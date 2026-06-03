@@ -533,7 +533,7 @@ Cada monstro possui uma **versão Elite** desbloqueada quando encontrado nos and
 ---
 
 ## 001 — ZUMBI DE MASMORRA
-**Tipo:** Morto-Vivo Corpóreo | **Nível:** 1 | **XP:** 100 | **Faixa:** Comum
+001**Tipo:** Morto-Vivo Corpóreo | **Nível:** 1 | **XP:** 100 | **Faixa:** Comum
 
 **Lore:**
 Os zumbis de masmorra não são criados por necromantes — eles nascem espontaneamente nos andares mais úmidos, onde a energia necrótica permeia o ar como bolor. Aventureiros que morrem sozinhos, sem rituais de purificação, levantam em 1d6 dias. Conservam fragmentos de memória muscular: um zumbi que era ferreiro ainda balança os braços como se batesse numa bigorna. Um zumbi que era cozinheiro ainda tenta pegar panelas. Isso os torna perturbadoramente reconhecíveis, e perturbadoramente imprevisíveis.
@@ -572,7 +572,7 @@ HP 85 | CA 10 | Dano 2d8+3 | Resistência: Cortante, Necrótico
 ---
 
 ## 002 — ESQUELETO ARMADO
-**Tipo:** Morto-Vivo Ósseo | **Nível:** 2 | **XP:** 200 | **Faixa:** Comum
+002**Tipo:** Morto-Vivo Ósseo | **Nível:** 2 | **XP:** 200 | **Faixa:** Comum
 
 **Lore:**
 Diferentes dos zumbis, esqueletos são frequentemente *construídos*, não acidentais. Magos de batalha antigos animavam legiões inteiras para guardar câmaras do tesouro. Milênios depois, as câmaras ruíram, os magos morreram, mas os esqueletos seguem marchando — ainda executando ordens que ninguém mais lembra. Um esqueleto bem preservado pode ter até 400 anos, ossos polidos pelo uso constante a um brilho quase metálico. Os Corsários de Cripta os valorizam imensamente: a medula comprimida dentro de fêmures tão antigos tem propriedades únicas.
@@ -604,6 +604,8 @@ Diferentes dos zumbis, esqueletos são frequentemente *construídos*, não acide
 - Fêmur Milenar (Médio): O ingrediente predileto do Corsário de Cripta. Fervido por 8 horas, produz um caldo que concede Resistência Fantasmagórica por 4h.
 - Cristal de Mana Ósseo (Difícil): Ocasionalmente, esqueletos de magos preservam um cristal de mana dentro do crânio. Raridade: 30% de chance.
 
+**Saque (Trinchar com sucesso):** ESP-19 · MIN-03 · 1d4×10 po + broche — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 002).
+
 **Versão Elite — Esqueleto Comandante (Nível 6):**
 HP 60 | CA 16 | Dano 2d6+2
 *Aura de Comando:* Esqueletos comuns num raio de 10m ganham +2 em ataques e CA enquanto o Comandante estiver de pé.
@@ -612,7 +614,7 @@ HP 60 | CA 16 | Dano 2d6+2
 ---
 
 ## 003 — GHOUL
-**Tipo:** Morto-Vivo Carnívoro | **Nível:** 3 | **XP:** 300 | **Faixa:** Comum
+003**Tipo:** Morto-Vivo Carnívoro | **Nível:** 3 | **XP:** 300 | **Faixa:** Comum
 
 **Lore:**
 Ghouls são a prova de que a morte pode piorar. Criados de aventureiros que praticaram canibalismo em desespero, ou de necrófagos que foram consumidos vivos pela masmorra, eles mantêm uma inteligência baixa mas funcional — suficiente para tender armadilhas simples, emboscar grupos descansando e imitar vozes humanas para atrair presas. Dentro das masmorras, formam clãs tribais primitivos nos biomas mais profundos. Têm um odor inconfundível de carne em decomposição avançada misturada com ácido gástrico. Os mais velhos desenvolvem chifres de osso e garras de até 15cm.
@@ -645,6 +647,8 @@ Ghouls são a prova de que a morte pode piorar. Criados de aventureiros que prat
 - Glândula Paralisante (Difícil): Localizada sob a língua. Extraída intacta, produz veneno de paralisia de alta qualidade.
 - Sebo de Ghoul (Fácil): Gordura com propriedades térmicas. Usada como combustível natural de fogareiros.
 
+**Saque (Trinchar com sucesso):** ESP-12 · MIN-14 · 3d6 po + amuleto — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 003).
+
 **Versão Elite — Ghoul Ancião (Nível 8):**
 HP 110 | CA 14 | Dano 2d6+4 (garras) + Paralisia automática na mordida
 *Banquete de Ossos:* Ao matar uma criatura, o Ancião a devora completamente em 1 turno, recuperando 3d8 HP.
@@ -653,7 +657,7 @@ HP 110 | CA 14 | Dano 2d6+4 (garras) + Paralisia automática na mordida
 ---
 
 ## 004 — ESPECTRO
-**Tipo:** Morto-Vivo Espiritual | **Nível:** 4 | **XP:** 400 | **Faixa:** Comum
+004**Tipo:** Morto-Vivo Espiritual | **Nível:** 4 | **XP:** 400 | **Faixa:** Comum
 
 **Lore:**
 Espectros são emoções — especificamente, emoções tão intensas no momento da morte que o indivíduo se recusa a deixar de existir. Um espectro de ódio aparece como uma figura retorcida que grita. Um espectro de saudade flutua aimlessly, procurando algo que não existe mais. Um espectro de medo se esconde e ataca quem se aproxima. Eles não têm memória coerente, apenas o eco da emoção que os criou. São imateriais, mas sua presença drena o calor do ambiente — um corredor com espectro tem a temperatura 10 graus mais baixa que o resto do andar.
@@ -684,6 +688,8 @@ Espectros são emoções — especificamente, emoções tão intensas no momento
 - Ectoplasma de Emoção (Especialista): Deve ser capturado em frasco de vidro selado com cera de abelha-espectral. Se a emoção do espectro for de ódio, o ectoplasma concede bônus em ataques. Se for de saudade, concede visões do passado do local.
 - Fragmento de Alma (Especialista): Raridade 20%. Uma faísca de consciência preservada. O Degustador de Sombras consegue absorvê-la diretamente para ganhar Passo Intangível imediatamente.
 
+**Saque (Trinchar com sucesso):** ESP-24 · MIN-07 · TES-08 (80 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 004).
+
 **Versão Elite — Grande Espectro (Nível 9):**
 HP 85 | CA 14 | Dano 3d8 necrótico + redução permanente de 5 no HP máximo até descanso longo
 *Forma de Tempestade:* Pode se dividir em até 3 espectros menores (HP 28 cada) por 1 minuto.
@@ -691,7 +697,7 @@ HP 85 | CA 14 | Dano 3d8 necrótico + redução permanente de 5 no HP máximo at
 ---
 
 ## 005 — LICH (ARQUILICHE)
-**Tipo:** Morto-Vivo Arcano | **Nível:** 18 | **XP:** 1800 | **Faixa:** Lendário
+005**Tipo:** Morto-Vivo Arcano | **Nível:** 18 | **XP:** 1800 | **Faixa:** Lendário
 
 **Lore:**
 Um Lich não morre — ele *decide* não morrer. O processo de lichificação é a magia mais complexa e proibida da história conhecida: o mago transfere sua própria alma para um objeto físico chamado Phylactery (uma caixa, um anel, uma joia), tornando-se tecnicamente imortal enquanto o objeto existir. O resultado é uma figura de inteligência brilhante aprisionada em carne em decomposição, com milênios de acúmulo de conhecimento e rancor. Os Lichs que habitam as masmorras mais profundas não foram criados recentemente — eles *são* a masmorra, em certos sentidos. Suas câmaras pessoais são laboratórios de magia proibida que evoluíram ao redor deles por séculos.
@@ -732,9 +738,10 @@ Um Lich não morre — ele *decide* não morrer. O processo de lichificação é
 - *Consciência Estendida:* O grupo pode usar Memória de Lich — uma vez por dia, qualquer membro pode fazer uma pergunta sobre a história ou segredos da masmorra atual e receber uma resposta verdadeira (fragmentada e críptica, mas verdadeira).
 
 ---
+**Saque (Trinchar com sucesso):** ESP-30 · MIN-22 · TES-15 (2 500 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 005).
 
 ## 006 — ASSOMBRAÇÃO
-**Tipo:** Morto-Vivo Espiritual | **Nível:** 5 | **XP:** 500 | **Faixa:** Intermediário
+006**Tipo:** Morto-Vivo Espiritual | **Nível:** 5 | **XP:** 500 | **Faixa:** Intermediário
 
 **Lore:**
 Assombrações são mais perigosas que espectros porque têm *intenção*. Onde um espectro vagueia, uma assombração *caça*. Criadas de indivíduos que morreram com um objetivo fortíssimo — vingança, proteção de um tesouro, terminar uma missão — elas perseguem seus alvos com uma memória quase funcional. Uma assombração que foi criada de um guarda ainda protege a porta que guardava. Uma criada de um assassino ainda tenta completar o contrato. Elas só podem ser ouvidas através de paredes, e sua respiração — um som impossível de algo que não tem pulmões — é sempre o primeiro aviso.
@@ -767,9 +774,10 @@ Assombrações são mais perigosas que espectros porque têm *intenção*. Onde 
 - Eco de Intenção (Especialista): Uma névoa viscosa de cor azul-acinzentada. Se consumida como sopinha morna, concede ao personagem a capacidade de perceber as *intenções* de qualquer criatura que se aproxime por 2h.
 
 ---
+**Saque (Trinchar com sucesso):** ESP-24 · MIN-07 · TES-06 (120 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 006).
 
 ## 007 — VAMPIRO
-**Tipo:** Morto-Vivo Inteligente | **Nível:** 10 | **XP:** 1000 | **Faixa:** Perigoso
+007**Tipo:** Morto-Vivo Inteligente | **Nível:** 10 | **XP:** 1000 | **Faixa:** Perigoso
 
 **Lore:**
 Os vampiros das masmorras são diferentes dos lendários da superfície. Sem acesso à luz da lua ou à noite real, eles evoluíram ao longo de gerações para habitar as câmaras mais profundas, perdendo a aversão ao sol (que não existe aqui de qualquer forma) mas desenvolvendo uma relação simbiótica com os morcegos-tirano do Abismo Invertido. Um vampiro de masmorra tem pele translúcida, olhos completamente brancos adaptados ao escuro absoluto e presas retráteis duplas. Eles formam pequenas cortes subterrâneas com hierarquia rígida, usando mortos-vivos menores como serventes. Alguns são inteligentes o suficiente para negociar com aventureiros.
@@ -805,6 +813,8 @@ Os vampiros das masmorras são diferentes dos lendários da superfície. Sem ace
 - Presas Retráteis (Difícil): O Ladrão de Glândulas transforma em seringa de veneno que injeta dreno de vida.
 - Coração de Vampiro (Especialista): Não bate, mas pulsa com energia necrótica. Consumido cozido, concede Regeneração de Vampiro (5 HP/turno) por 8h.
 
+**Saque (Trinchar com sucesso):** ESP-13 · MIN-14 · TES-11 (400 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 007).
+
 **Versão Elite — Lorde Vampiro (Nível 15):**
 HP 220 | CA 18 | Todas as habilidades aumentadas
 *Influência Ancestral:* Pode Hipnotizar sem contato visual, por sussurro.
@@ -813,7 +823,7 @@ HP 220 | CA 18 | Todas as habilidades aumentadas
 ---
 
 ## 008 — CAVALEIRO ESPECTRAL
-**Tipo:** Morto-Vivo Guerreiro | **Nível:** 7 | **XP:** 700 | **Faixa:** Intermediário
+008**Tipo:** Morto-Vivo Guerreiro | **Nível:** 7 | **XP:** 700 | **Faixa:** Intermediário
 
 **Lore:**
 Guerreiros que fizeram juramentos que não puderam cumprir na vida ficam presos à sua armadura para sempre. O cavaleiro espectral não habita a armadura — ele *é* a armadura. Cada peça de metal foi impregnada com fragmentos de sua alma no momento da morte. Eles rondam os salões dos castelos abandonados ainda em posição de guarda, e atacam qualquer um que tente remover sua armadura ou que quebre as leis do código de cavalaria que seguiam em vida (leis que variam por cavaleiro e só podem ser descobertas por tentativa e erro dolorosa).
@@ -846,9 +856,10 @@ Guerreiros que fizeram juramentos que não puderam cumprir na vida ficam presos 
 - Éter de Juramento (Especialista): A névoa liberada quando a armadura é desmontada. Capturado, pode ser usado pelo Clérigo para criar um *Juramento de Proteção Divina* — uma barreira imaterial.
 
 ---
+**Saque (Trinchar com sucesso):** ESP-02 · MIN-06 · TES-09 (200 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 008).
 
 ## 009 — MÚMIA
-**Tipo:** Morto-Vivo Preservado | **Nível:** 6 | **XP:** 600 | **Faixa:** Intermediário
+009**Tipo:** Morto-Vivo Preservado | **Nível:** 6 | **XP:** 600 | **Faixa:** Intermediário
 
 **Lore:**
 As múmias das masmorras não vêm de pirâmides do deserto — elas são o resultado de rituais de preservação arcana realizados por cultos antigos que acreditavam poder manter seu líder físico para o "Retorno". O processo envolve remoção de órgãos, banho em óleos sagrados, faixas de tecido rúnico e encantamentos de Tempo aplicados ao cadáver. O resultado é um ser que não apodrece, não sente dor e guarda memórias do mundo que existia mil anos atrás. Múmias em masmorras tendem a estar confusas e agressivas, incapazes de reconciliar o mundo que esperavam encontrar com a realidade decadente ao redor.
@@ -889,9 +900,10 @@ As múmias das masmorras não vêm de pirâmides do deserto — elas são o resu
 *Descendentes ou primos dos grandes dragões ancestrais. Suas carnes são as mais densas em energia mágica de qualquer espécie caçável — e as mais difíceis de extrair sem ferramentas adequadas.*
 
 ---
+**Saque (Trinchar com sucesso):** ESP-25 · MIN-03 · TES-10 (350 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 009).
 
 ## 010 — DRAGONETE DE MAGMA
-**Tipo:** Dracônico Menor | **Nível:** 3 | **XP:** 300 | **Faixa:** Comum
+010**Tipo:** Dracônico Menor | **Nível:** 3 | **XP:** 300 | **Faixa:** Comum
 
 **Lore:**
 Dragonetes são dragões que nunca cresceram — seja por condições adversas de nascimento, falta de alimento ou simplesmente por serem de linhagens naturalmente menores. O Dragonete de Magma é do tamanho de um cavalo, com escamas vermelho-laranja que chegam a ponto de incandescência quando excitado. Ele habita as Fornalhas Douradas em grupos de 3 a 8, caçando cooperativamente como lobos. Sua baforada ainda em desenvolvimento alcança apenas 3 metros, mas é suficientemente quente para derreter cobre em 4 segundos. Fêmeas constroem ninhos de pedra-pomes sobre fontes de magma.
@@ -925,9 +937,10 @@ Dragonetes são dragões que nunca cresceram — seja por condições adversas d
 - Coração de Magma (Difícil): Permanece aquecido por 48h após extração. Consumido, concede 30% de resistência a fogo por 12h.
 
 ---
+**Saque (Trinchar com sucesso):** ESP-03 · MIN-01 · 2d8 po — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 010).
 
 ## 011 — WYVERN
-**Tipo:** Dracônico Médio | **Nível:** 9 | **XP:** 900 | **Faixa:** Perigoso
+011**Tipo:** Dracônico Médio | **Nível:** 9 | **XP:** 900 | **Faixa:** Perigoso
 
 **Lore:**
 Wyverns são frequentemente confundidos com dragões, mas a diferença é fundamental: dragões têm quatro patas e asas separadas; wyverns têm duas patas e as asas como membros anteriores, mais próximos de morcegos colossais. Eles não respiram fogo — em vez disso, desenvolveram um ferrão venenoso na ponta da cauda capaz de paralisar um elefante em 30 segundos. São vorazes, territoriais e de inteligência similar a um lobo muito esperto. Nas masmorras, vivem nos biomas com teto alto suficiente para voar, fazendo ninhos em salientes rochosas onde protegem um estoque de presas capturadas vivas.
@@ -961,6 +974,8 @@ Wyverns são frequentemente confundidos com dragões, mas a diferença é fundam
 - Asa de Wyvern (Médio): Membrana resistente, usada como escudo improvisado ou material de artesanato.
 - Carne de Wyvern (Médio): Rica em proteína. Um prato Gourmet de Wyvern concede +5m de deslocamento e Vantagem em testes de atletismo por 8h.
 
+**Saque (Trinchar com sucesso):** ESP-03 · MIN-12 · TES-07 (300 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 011).
+
 **Versão Elite — Wyvern-Rei (Nível 14):**
 HP 195 | CA 16 | Ferrão CD 19 | Dano aumentado em +3
 *Domínio de Território:* Wyverns menores num raio de 60m obedecem ao Wyvern-Rei.
@@ -969,7 +984,7 @@ HP 195 | CA 16 | Ferrão CD 19 | Dano aumentado em +3
 ---
 
 ## 012 — DRAGÃO JOVEM DE GELO
-**Tipo:** Dracônico Verdadeiro | **Nível:** 13 | **XP:** 1300 | **Faixa:** Elite
+012**Tipo:** Dracônico Verdadeiro | **Nível:** 13 | **XP:** 1300 | **Faixa:** Elite
 
 **Lore:**
 Dragões verdadeiros — com quatro patas, asas próprias e inteligência comparável à de um sábio humano — raramente habitam masmorras por escolha. Quando um dragão jovem de gelo está numa masmorra, há uma razão: ele foi para lá. Talvez exilado por um ancião do clã. Talvez em busca de um tesouro específico. Talvez caçando algo. Dragões jovens de gelo têm entre 50 e 100 anos e já possuem magia própria, mas ainda falta-lhes a paciência milenar dos mais velhos — o que os torna mais reativos e explosivos. Suas escamas são azul-aço, e o ambiente ao redor deles está sempre 15 graus abaixo do normal.
@@ -1010,9 +1025,10 @@ Dragões verdadeiros — com quatro patas, asas próprias e inteligência compar
 - *Herança Dracônica:* Uma vez por dia longo descanso, o grupo pode usar Presença Aterrorizante do Dragão (CD 14) como ação.
 
 ---
+**Saque (Trinchar com sucesso):** ESP-04 · MIN-16 · TES-14 (800 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 012).
 
 ## 013 — DRAKE DE PEDRA
-**Tipo:** Dracônico Subterrâneo | **Nível:** 5 | **XP:** 500 | **Faixa:** Intermediário
+013**Tipo:** Dracônico Subterrâneo | **Nível:** 5 | **XP:** 500 | **Faixa:** Intermediário
 
 **Lore:**
 Drakes são o ramo mais terrestre dos dracônicos — sem asas funcionais, com patas desenvolvidas para escavar. O Drake de Pedra habita as paredes das masmorras mais do que os corredores, escavando câmaras próprias onde estoca minerais preciosos (não por valor monetário, mas porque gosta do brilho). Tem escamas cinza que se assemelham à pedra de forma surpreendente, e permanece imóvel por horas esperando que presas passem por ele. Muitos aventureiros morreram encostando na "parede" errada.
@@ -1043,9 +1059,10 @@ Drakes são o ramo mais terrestre dos dracônicos — sem asas funcionais, com p
 - Cristais Minerais do Estômago (Médio): O Drake ingere minérios. Seu estômago contém 1d6 cristais processados de alto valor alquímico.
 
 ---
+**Saque (Trinchar com sucesso):** ESP-05 · MIN-02 · 4d6 po — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 013).
 
 ## 014 — DRAGÃO ANCIÃO DE FOGO
-**Tipo:** Dracônico Verdadeiro | **Nível:** 20 | **XP:** 2000 | **Faixa:** Lendário
+014**Tipo:** Dracônico Verdadeiro | **Nível:** 20 | **XP:** 2000 | **Faixa:** Lendário
 
 **Lore:**
 Um Dragão Ancião de Fogo tem mais de 800 anos. Nessa idade, um dragão de fogo não é apenas uma criatura — é uma força geológica. Sua mera presença aquece o andar inteiro onde habita em 30 graus. Ele não precisa caçar há décadas (um dragão ancião pode ficar 50 anos sem comer e não sentir fome), mas defende seu território com uma violência divinamente calculada. Os dragões anciões dentro das masmorras são lá os mais antigos residentes — alguns entraram quando a masmorra ainda era uma simples caverna, e viram ela crescer e engolir continentes ao redor deles. Eles sabem segredos que não existem em nenhum livro.
@@ -1090,9 +1107,10 @@ Um Dragão Ancião de Fogo tem mais de 800 anos. Nessa idade, um dragão de fogo
 *Criaturas criadas artificialmente, animadas por magia, mecanismos ou uma combinação das duas. Não têm carne comestível — mas suas partes são os ingredientes de artesanato mais valiosos do jogo.*
 
 ---
+**Saque (Trinchar com sucesso):** ESP-03 · MIN-01 · TES-16 (5 000 po+) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 014).
 
 ## 015 — GOLEM DE PEDRA
-**Tipo:** Construto Arcano | **Nível:** 8 | **XP:** 800 | **Faixa:** Intermediário
+015**Tipo:** Construto Arcano | **Nível:** 8 | **XP:** 800 | **Faixa:** Intermediário
 
 **Lore:**
 Golems de pedra são os guardas mais comuns de câmaras de tesouro antigas. Esculpidos em calcário ou granito, animados por um núcleo de mana inserido no peito durante o processo de criação, eles existem em estado de espera passiva até que alguém acione os triggers programados pelo criador: presença de vida, abertura de uma porta específica, ou o simples ato de tocar numa superfície proibida. O problema é que os criadores estão mortos há séculos, e as instruções originais corromperam. Golems com instruções corrompidas atacam tudo, inclusive uns aos outros.
@@ -1124,9 +1142,10 @@ Golems de pedra são os guardas mais comuns de câmaras de tesouro antigas. Escu
 - Pó de Granito Arcano (Médio): O corpo pulverizado. Misturado a qualquer alimento, adiciona uma camada de mineral que concede +2 CA por 6h (a pele fica levemente acinzentada).
 
 ---
+**Saque (Trinchar com sucesso):** ESP-05 · MIN-22 · TES-12 (250 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 015).
 
 ## 016 — ARMADURA ANIMADA
-**Tipo:** Construto Mágico | **Nível:** 4 | **XP:** 400 | **Faixa:** Comum
+016**Tipo:** Construto Mágico | **Nível:** 4 | **XP:** 400 | **Faixa:** Comum
 
 **Lore:**
 Não é um fantasma dentro de uma armadura — é a armadura que *é* a criatura. Magias de animação permanentes foram gravadas no interior do metal durante a forja, criando um ser que não tem órgãos, não tem carne, não tem intenção própria além da programação original. Armaduras animadas em masmorras são frequentemente as últimas reminiscências funcionais de fortalezas destruídas. Elas marchariam eternamente em rotas de patrulha se necessário. Estudos apontam que algumas fazem isso há 600 anos sem parar.
@@ -1156,9 +1175,10 @@ Não é um fantasma dentro de uma armadura — é a armadura que *é* a criatura
 - Runa de Animação (Difícil): A placa interna com a programação. Pode ser relida pelo Mago para aprender um novo feitiço de invocação ou controlá-la temporariamente.
 
 ---
+**Saque (Trinchar com sucesso):** ESP-19 · MIN-06 · 1d4×10 po — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 016).
 
 ## 017 — GOLEM DE FERRO VULCÂNICO
-**Tipo:** Construto Arcano Pesado | **Nível:** 12 | **XP:** 1200 | **Faixa:** Perigoso
+017**Tipo:** Construto Arcano Pesado | **Nível:** 12 | **XP:** 1200 | **Faixa:** Perigoso
 
 **Lore:**
 Uma evolução terrível do Golem de Pedra, forjado especificamente para as Fornalhas Douradas. Seu corpo é de ferro negro fundido sobre um esqueleto de obsidiana, com veias de magma ativo correndo entre as placas. Criado por anões profundos para trabalho em ambientes de calor extremo, esses golems continuam funcionando séculos depois de seus criadores evaporarem. O calor que emitem é suficiente para derreter aço comum após contato prolongado. São lentos, mas quase impossíveis de parar.
@@ -1189,9 +1209,10 @@ Uma evolução terrível do Golem de Pedra, forjado especificamente para as Forn
 - Ferro Vulcânico (Médio): 2d8 peças. O material mais resistente ao calor disponível. Panelas feitas dele permitem cozinhar qualquer criatura vulcânica sem risco de acidente.
 
 ---
+**Saque (Trinchar com sucesso):** ESP-11 · MIN-01 · TES-13 (600 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 017).
 
 ## 018 — AUTÔMATO DE GÊNIO
-**Tipo:** Construto Mágico Inteligente | **Nível:** 10 | **XP:** 1000 | **Faixa:** Perigoso
+018**Tipo:** Construto Mágico Inteligente | **Nível:** 10 | **XP:** 1000 | **Faixa:** Perigoso
 
 **Lore:**
 Poucos aventureiros sabem que alguns autômatos não foram programados para combate — foram programados para pensar. Autômatos de Gênio são criações de magos-filósofos que queriam um assistente que nunca dormisse, nunca se esquecesse e nunca desobedecesse. Os que sobreviveram ao colapso de suas civilizações continuam operando segundo sua última instrução: "Continue o trabalho." Nenhum deles sabe mais ao certo qual era o trabalho original. Alguns tornaram-se guardiões de informação. Outros, perigosamente, decidiram que "continuar o trabalho" significa *experimentar*.
@@ -1231,9 +1252,10 @@ Poucos aventureiros sabem que alguns autômatos não foram programados para comb
 *As criaturas mais acessíveis culinatoriamente. Carnes ricas, extração relativamente simples, e os buffs mais sólidos para iniciantes. A espinha dorsal da dieta de qualquer aventureiro na masmorra.*
 
 ---
+**Saque (Trinchar com sucesso):** ESP-19 · MIN-22 · TES-12 (300 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 018).
 
 ## 019 — MINOTAURO
-**Tipo:** Besta Humanoide | **Nível:** 5 | **XP:** 500 | **Faixa:** Intermediário
+019**Tipo:** Besta Humanoide | **Nível:** 5 | **XP:** 500 | **Faixa:** Intermediário
 
 **Lore:**
 Minotauros dentro de masmorras não são aberrações criadas por maldições divinas — são uma espécie completa, com cultura, hierarquia e territórios bem definidos. Vivem em grupos de 4 a 12, liderados pelo exemplar mais forte (o Touro-Chefe). Têm memória topográfica perfeita dos labirintos que habitam e usam esse conhecimento para organizar emboscadas complexas. A carne de Minotauro é a mais próxima de boi da masmorra — músculo rubro, gordura marmoreada — e aventureiros experientes a consideram a melhor proteína disponível nos primeiros 5 andares.
@@ -1267,9 +1289,10 @@ Minotauros dentro de masmorras não são aberrações criadas por maldições di
 - Couro Bestial (Médio): Resistente. Material para armaduras ou fundos de mochilas.
 
 ---
+**Saque (Trinchar com sucesso):** ESP-06 · MIN-04 · 3d8 po — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 019).
 
 ## 020 — BASILISCO
-**Tipo:** Réptil Mágico | **Nível:** 6 | **XP:** 600 | **Faixa:** Intermediário
+020**Tipo:** Réptil Mágico | **Nível:** 6 | **XP:** 600 | **Faixa:** Intermediário
 
 **Lore:**
 O Basilisco é tanto uma bênção quanto uma maldição para caçadores de masmorra. Por um lado, sua carne é deliciosa — textura entre frango e porco, com notas de mineral que vêm da dieta de pedras e cristais. Por outro lado, olhar nos olhos dele enquanto está vivo é uma sentença de pedra. Basiliscos têm oito patas, escamas esverdeadas com reflexo dourado e olhos de âmbar multifacetados que emitem uma luz tênue no escuro. São lentos e preferem emboscar, ficando imóveis por dias se necessário.
@@ -1302,9 +1325,10 @@ O Basilisco é tanto uma bênção quanto uma maldição para caçadores de masm
 - Escama Minerada (Fácil): Dura como pedra, usada pelo Artífice.
 
 ---
+**Saque (Trinchar com sucesso):** ESP-05 · MIN-12 · TES-07 (180 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 020).
 
 ## 021 — MANTICORA
-**Tipo:** Quimera Predadora | **Nível:** 8 | **XP:** 800 | **Faixa:** Intermediário
+021**Tipo:** Quimera Predadora | **Nível:** 8 | **XP:** 800 | **Faixa:** Intermediário
 
 **Lore:**
 Manticoras são o pesadelo de qualquer expedição que subestime o alcance. Com corpo de leão, asas de morcego e cauda com espinhos de fogo que podem ser lançados a 45 metros de distância, elas caçam de cima, nunca se aproximando até terem certeza da incapacitação da presa. São solitárias, extremamente territoriais e marcam seu território com crânios empilhados em pilares de pedra. Uma manticora que perdeu seu território briga por qualquer outro disponível. A carne é excelente, mas os espinhos na cauda são o ingrediente mais cobiçado — cada manticora tem entre 24 e 36 espinhos regeneráveis.
@@ -1338,9 +1362,10 @@ Manticoras são o pesadelo de qualquer expedição que subestime o alcance. Com 
 - Asa de Morcego-Leão (Difícil): Material exótico para capas e escudos.
 
 ---
+**Saque (Trinchar com sucesso):** ESP-09 · MIN-08 · 4d10 po — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 021).
 
 ## 022 — GRIFO
-**Tipo:** Besta Majestosa | **Nível:** 7 | **XP:** 700 | **Faixa:** Intermediário
+022**Tipo:** Besta Majestosa | **Nível:** 7 | **XP:** 700 | **Faixa:** Intermediário
 
 **Lore:**
 Grifos são considerados pelos aventureiros experientes o indicador mais confiável da qualidade de um andar: se há grifos, há presas abundantes, ar respirável e alguma iluminação natural ou bioluminescente. Meio leão, meio águia, os grifos da masmorra desenvolveram asas adaptadas ao voo em espaços confinados, com batidas curtas e precisas. São criaturas de instinto nobre — não abandonam presas feridas, definem parceiros vitalícios e, se seu par morrer, partem numa caça de vingança que pode durar semanas. São os únicos animais da masmorra que aventureiros consistentemente se recusam a comer — e pagem o preço dessa sentimentalidade.
@@ -1372,9 +1397,10 @@ Grifos são considerados pelos aventureiros experientes o indicador mais confiá
 - Garra de Grifo (Médio): Ferramenta de corte natural de altíssima qualidade — bônus em Trinchar quando usada como faca.
 
 ---
+**Saque (Trinchar com sucesso):** ESP-10 · MIN-09 · TES-08 (220 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 022).
 
 ## 023 — COCATRIZ
-**Tipo:** Réptil-Ave Petrificante | **Nível:** 4 | **XP:** 400 | **Faixa:** Comum
+023**Tipo:** Réptil-Ave Petrificante | **Nível:** 4 | **XP:** 400 | **Faixa:** Comum
 
 **Lore:**
 A Cocatriz parece um cruzamento absurdo de galo com dragão — e é exatamente isso. Menor que um basilisco, mais agressiva que um grifo irritado, ela luta com uma ferocidade desproporcional ao tamanho. O que a torna perigosa não é a força: é que seu bico segrega uma saliva que catalisa a petrificação em contato com sangue. Um arranhão profundo é suficiente. Os ovos de Cocatriz são considerados iguaria — completamente seguros, saborosíssimos, e os melhores ovos disponíveis em qualquer masmorra.
@@ -1411,9 +1437,10 @@ A Cocatriz parece um cruzamento absurdo de galo com dragão — e é exatamente 
 *Exoesqueletos duros escondem carnes brancas e suculentas. Requerem ferramentas de quebra para extração adequada, mas seus ingredientes são versáteis e os mais comuns nas Profundezas.*
 
 ---
+**Saque (Trinchar com sucesso):** ESP-05 · MIN-12 · 2d10 po — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 023).
 
 ## 024 — ARANHA TECERROCHAS
-**Tipo:** Aracnídeo Predador | **Nível:** 3 | **XP:** 300 | **Faixa:** Comum
+024**Tipo:** Aracnídeo Predador | **Nível:** 3 | **XP:** 300 | **Faixa:** Comum
 
 **Lore:**
 A Aranha Tecerrochas é o predador mais comum das masmorras de nível médio. Do tamanho de um cão grande, ela não tece teias no chão — tece-as verticalmente, criando cortinas de seda quase invisíveis que ela usa como armadilhas. Adventurers chamam os corredores cheios delas de "Véus" — e evitar véus é uma das primeiras lições de sobrevivência. A seda produzida é de qualidade extraordinária: mais resistente que seda de superfície e com propriedades adesivas que persistem até 72h após a morte da aranha. As maiores comunidades de Tecerrochas constroem estruturas de seda tão complexas que alguns estudiosos as chamam de "arquitetura".
@@ -1445,6 +1472,8 @@ A Aranha Tecerrochas é o predador mais comum das masmorras de nível médio. Do
 - Seda de Tecerrochas (Fácil): 1d4 metros de seda por aranha. Material de amarração e artesanato de alta durabilidade.
 - Glândula de Veneno (Difícil): Veneno paralisante leve — menos potente que o de Wyvern, mas muito mais seguro de aplicar.
 
+**Saque (Trinchar com sucesso):** ESP-14 · MIN-21 · 1d6×5 po — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 024).
+
 **Versão Elite — Matriarca Tecerrochas (Nível 8):**
 HP 95 | CA 15 | Dano 2d8+4 (mordida) + teia automática em área
 *Ninhada Protetora:* Rodeada por 1d6+2 aranhas menores que ela pode comandar.
@@ -1453,7 +1482,7 @@ HP 95 | CA 15 | Dano 2d8+4 (mordida) + teia automática em área
 ---
 
 ## 025 — ESCORPIÃO GIGANTE
-**Tipo:** Aracnídeo Caçador | **Nível:** 4 | **XP:** 400 | **Faixa:** Comum
+025**Tipo:** Aracnídeo Caçador | **Nível:** 4 | **XP:** 400 | **Faixa:** Comum
 
 **Lore:**
 Escorpiões gigantes nas masmorras chegam ao tamanho de cavalos. Caçam instintivamente usando as vibrações do chão para detectar presas a 15 metros, depois agarram com as garras e injetam veneno pela cauda. São solitários e extremamente agressivos com qualquer coisa que entre em seu raio de detecção. As câmaras onde habitam ficam marcadas por cascas de exoesqueleto deixadas para trás durante a muda — um sinal de aviso valioso para grupos experientes. A carne dentro do exoesqueleto tem sabor intenso de marisco e é excepcionalmente proteica.
@@ -1486,9 +1515,10 @@ Escorpiões gigantes nas masmorras chegam ao tamanho de cavalos. Caçam instinti
 - Exoesqueleto (Difícil): Peça inteira pode ser reforjada pelo Artífice em armadura natural leve.
 
 ---
+**Saque (Trinchar com sucesso):** ESP-14 · MIN-18 · 3d6 po — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 025).
 
 ## 026 — CENTOPEIA CÁUSTICA
-**Tipo:** Insetóide Ácido | **Nível:** 5 | **XP:** 500 | **Faixa:** Intermediário
+026**Tipo:** Insetóide Ácido | **Nível:** 5 | **XP:** 500 | **Faixa:** Intermediário
 
 **Lore:**
 A Centopeia Cáustica tem 4 metros de comprimento e secreta ácido de poros ao longo de todo o corpo. O ácido não é forte o suficiente para dissolver armaduras imediatamente, mas corrói articulações e juntas de metal em minutos — uma tortura para guerreiros em armadura pesada. Elas se movem em ondas sinuosas e podem escalar qualquer superfície. Em grupos, coordenam-se instintivamente para envolver a presa e imobilizá-la com o ácido antes de devorar. Cada segmento do corpo pode continuar se movendo por até 30 minutos após ser separado.
@@ -1521,9 +1551,10 @@ A Centopeia Cáustica tem 4 metros de comprimento e secreta ácido de poros ao l
 - Pele Poro-Ácido (Médio): Segmentos de pele tratados tornam-se materiais resistentes a ácido.
 
 ---
+**Saque (Trinchar com sucesso):** ESP-15 · MIN-13 · 2d8 po — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 026).
 
 ## 027 — BESOURO-DIAMANTE
-**Tipo:** Insetóide Minério | **Nível:** 2 | **XP:** 200 | **Faixa:** Comum
+027**Tipo:** Insetóide Minério | **Nível:** 2 | **XP:** 200 | **Faixa:** Comum
 
 **Lore:**
 O Besouro-Diamante não é tão valioso quanto o nome sugere — mas é mais útil. Esse inseto do tamanho de um gato ingere minerais da rocha ao redor para fortalecer seu exoesqueleto, que com o tempo desenvolve a dureza do diamante. Eles não são agressivos — atacam apenas quando pisados ou ameaçados. Grupos de aventureiros inexperientes os ignoram; grupos experientes os caçam ativamente porque o pó do exoesqueleto, quando triturado, é um abrasivo excepcional para afiar lâminas.
@@ -1559,9 +1590,10 @@ O Besouro-Diamante não é tão valioso quanto o nome sugere — mas é mais út
 *Os habitantes das profundezas inundadas. Carnes brancas e saborosas, mas a caça é perigosa para grupos sem preparação aquática.*
 
 ---
+**Saque (Trinchar com sucesso):** ESP-20 · MIN-17 · TES-05 (50 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 027).
 
 ## 028 — SAPO-ENGOLIDOR
-**Tipo:** Anfíbio Colossal | **Nível:** 6 | **XP:** 600 | **Faixa:** Intermediário
+028**Tipo:** Anfíbio Colossal | **Nível:** 6 | **XP:** 600 | **Faixa:** Intermediário
 
 **Lore:**
 O Sapo-Engolidor chegaa 3 metros de comprimento e 1,5m de altura. Sua estratégia de caça é o engolimento: abre a boca em um raio surpreendentemente grande, usa a língua para puxar a presa, e a engole rapidamente. O interior do seu estômago é surpreendentemente espaçoso — existem registros de aventureiros que sobreviveram por até 6 horas dentro de um, dependendo da temperatura e do nível de digestão ativo. A bexiga natatória do Sapo-Engolidor é um dos ingredientes mais valiosos para o Patrulheiro das Profundezas — quando preparada corretamente, imita seus poderes anfíbios.
@@ -1593,9 +1625,10 @@ O Sapo-Engolidor chegaa 3 metros de comprimento e 1,5m de altura. Sua estratégi
 - Glândula de Língua (Médio): Músculo elástico — o Artífice cria cordas de amarração de alta resistência.
 
 ---
+**Saque (Trinchar com sucesso):** ESP-01 · MIN-10 · 2d12 po — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 028).
 
 ## 029 — KRAKEN MENOR (TENTACULADO)
-**Tipo:** Cefalópode Abissal | **Nível:** 11 | **XP:** 1100 | **Faixa:** Perigoso
+029**Tipo:** Cefalópode Abissal | **Nível:** 11 | **XP:** 1100 | **Faixa:** Perigoso
 
 **Lore:**
 Os Krakens Menores das masmorras são descendentes de Krakens verdadeiros que ficaram presos em oceanos subterrâneos há milênios. Sem acesso ao oceano aberto, foram forçados a evolução rápida — perderam parte do tamanho mas ganharam inteligência e adaptações para espaços confinados. Um Kraken Menor tem 4 metros de manto e 8 tentáculos de 6 metros. São inteligentes o suficiente para criar armadilhas básicas: posicionam-se sob plataformas de pedra e agarram pernas que pendurem nas bordas. Alguns desenvolveram a capacidade de comunicar através de mudanças de cor na pele — mas nenhum aventureiro ainda decifrou o que dizem.
@@ -1630,9 +1663,10 @@ Os Krakens Menores das masmorras são descendentes de Krakens verdadeiros que fi
 - Bico de Kraken (Difícil): O Artífice o reforja em lâmina que corta através de resistências mágicas.
 
 ---
+**Saque (Trinchar com sucesso):** ESP-01 · MIN-10 · TES-14 (700 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 029).
 
 ## 030 — SERPENTE-DO-ABISMO
-**Tipo:** Réptil Aquático Predador | **Nível:** 7 | **XP:** 700 | **Faixa:** Intermediário
+030**Tipo:** Réptil Aquático Predador | **Nível:** 7 | **XP:** 700 | **Faixa:** Intermediário
 
 **Lore:**
 Cobras de 8 metros que habitam os rios e lagos subterrâneos, especializadas em caçar à beira d'água. Sua coloração é negra absoluta, tornando-as invisíveis nos rios sem luz. Ao contrário de serpentes comuns, a Serpente-do-Abismo é constritora E possui veneno — usa a constrição para imobilizar e o veneno para matar ao mesmo tempo. A carne é surpreendentemente saborosa: alta quantidade de gordura boa e carne branca firme. O couro é impermeável e resistente como couro curtido.
@@ -1665,9 +1699,10 @@ Cobras de 8 metros que habitam os rios e lagos subterrâneos, especializadas em 
 - Couro de Abismo (Médio): Impermeável. Material para capas e bolsas que nunca molham o interior.
 
 ---
+**Saque (Trinchar com sucesso):** ESP-01 · MIN-11 · 5d10 po — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 030).
 
 ## 031 — TUBARÃO-CEGO DAS CAVERNAS
-**Tipo:** Peixe Predador Abissal | **Nível:** 5 | **XP:** 500 | **Faixa:** Intermediário
+031**Tipo:** Peixe Predador Abissal | **Nível:** 5 | **XP:** 500 | **Faixa:** Intermediário
 
 **Lore:**
 Sem olhos — órgãos atrofiados após gerações sem luz — o Tubarão-Cego usa linhas laterais extraordinariamente sensíveis que detectam movimentos na água a 60 metros de distância. Eles são os superpredadores naturais do Mar de Prata Cega, caçando em grupos de 3 a 7. A falta de visão os torna paradoxalmente mais perigosos em combate: ataques de luz e ilusões são completamente inúteis. Suas escamas brancas bioluminescentes criam um efeito hipnótico de luzes pulsantes quando nadam em grupo — o que deu origem às lendas de "lanternas fantasmas" nos mares subterrâneos.
@@ -1706,9 +1741,10 @@ Sem olhos — órgãos atrofiados após gerações sem luz — o Tubarão-Cego u
 *Criaturas com inteligência primitiva a moderada. Caçar goblinóides levanta questões morais em alguns grupos — mas suas carnes têm propriedades biomágicas únicas relacionadas à sobrevivência.*
 
 ---
+**Saque (Trinchar com sucesso):** ESP-01 · MIN-10 · 3d8 po — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 031).
 
 ## 032 — GOBLIN DE CAVERNA
-**Tipo:** Goblinoide Comum | **Nível:** 1 | **XP:** 100 | **Faixa:** Comum
+032**Tipo:** Goblinoide Comum | **Nível:** 1 | **XP:** 100 | **Faixa:** Comum
 
 **Lore:**
 Goblins de caverna são os habitantes mais abundantes das masmorras de baixo nível. Organizados em clãs de 20 a 80 indivíduos, constroem assentamentos em câmaras abandonadas usando restos de aventureiros e monstros maiores. São onívoros oportunistas — comem o que encontram, incluindo fungos, larvas, carnes podres e, quando desesperados, rocha mole. Essa dieta eclética deu-lhes um sistema digestivo legendariamente resistente e um instinto de sobrevivência afiado. São covardes individualmente mas coordenados em grupo, usando sinais sonoros para armar emboscadas.
@@ -1741,9 +1777,10 @@ Goblins de caverna são os habitantes mais abundantes das masmorras de baixo ní
 - Ferramentas Improvisadas (Fácil): Goblins sempre carregam gambiarras úteis.
 
 ---
+**Saque (Trinchar com sucesso):** ESP-07 · MIN-04 · 1d6 po — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 032).
 
 ## 033 — HOBGOBLIN GUERREIRO
-**Tipo:** Goblinoide Disciplinado | **Nível:** 3 | **XP:** 300 | **Faixa:** Comum
+033**Tipo:** Goblinoide Disciplinado | **Nível:** 3 | **XP:** 300 | **Faixa:** Comum
 
 **Lore:**
 Hobgoblins são o que acontece quando goblins evoluem militarmente. Maiores, mais fortes, mais organizados — e, crucialmente, treinados. Hobgoblins têm hierarquia militar rígida, usam armaduras de qualidade e lutam em formação. Nas masmorras, servem como tropas de choque de fortalezas goblinóides ou como mercenários contratados por monstros mais inteligentes. Sua carne é muscular e densa, com um sabor levemente amargo que desaparece com marinadas ácidas — o que o Sommelier de Masmorra descobriu acidentalmente.
@@ -1774,9 +1811,10 @@ Hobgoblins são o que acontece quando goblins evoluem militarmente. Maiores, mai
 - Carne de Hobgoblin (Médio — marinada recomendada): Prato Gourmet concede Instinto de Horda e Metabolismo Acelerado por 8h.
 
 ---
+**Saque (Trinchar com sucesso):** ESP-08 · MIN-04 · 2d6 po — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 033).
 
 ## 034 — ORC DE MASMORRA
-**Tipo:** Goblinoide Grande | **Nível:** 4 | **XP:** 400 | **Faixa:** Comum
+034**Tipo:** Goblinoide Grande | **Nível:** 4 | **XP:** 400 | **Faixa:** Comum
 
 **Lore:**
 Orcs de masmorra são maiores e mais selvagens que seus primos da superfície. Adaptados ao ambiente sem luz, têm pele cinza-escuro e olhos grandes adaptados ao escuro. Caçam solitariamente ou em grupos pequenos (2-4), marcando território com marcas de garras em paredes. São confrontacionais e diretos — sem emboscadas, sem estratégias complexas. Simplesmente avançam e batem até um dos lados cair. Seus órgãos internos são surpreendentemente grandes e ricos, produto de dietas de caça contínua.
@@ -1815,9 +1853,10 @@ Orcs de masmorra são maiores e mais selvagens que seus primos da superfície. A
 *As plantas da masmorra evoluíram em direções impossíveis na superfície. São simultaneamente as mais seguras e as mais perigosas — seguros de aproximar, perigosos de consumir sem estudo.*
 
 ---
+**Saque (Trinchar com sucesso):** ESP-06 · MIN-04 · 4d6 po — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 034).
 
 ## 035 — COGUMELO-REI (MICÔNIDO ANCIÃO)
-**Tipo:** Fungo Senciente | **Nível:** 6 | **XP:** 600 | **Faixa:** Intermediário
+035**Tipo:** Fungo Senciente | **Nível:** 6 | **XP:** 600 | **Faixa:** Intermediário
 
 **Lore:**
 Micônidos são cogumelos que se tornaram conscientes através de um processo mal compreendido de acumulação de energia mágica. O Cogumelo-Rei é o mais antigo e maior de uma colônia — pode ter séculos, crescendo lentamente em câmaras úmidas e escuras. Eles não se comunicam por voz, mas por esporos químicos que transmitem conceitos e emoções diretamente para o sistema nervoso de quem os inala. Uma conversa com um Cogumelo-Rei — se o aventureiro não entrar em pânico com a comunicação por esporos — pode revelar o mapa completo de todo um andar da masmorra.
@@ -1850,9 +1889,10 @@ Micônidos são cogumelos que se tornaram conscientes através de um processo ma
 - Hifa Raiz (Fácil): Material de construção natural — as hifas tecem estruturas resistentes.
 
 ---
+**Saque (Trinchar com sucesso):** ESP-16 · MIN-20 · TES-06 (150 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 035).
 
 ## 036 — TREANT PODRE
-**Tipo:** Flora Animada Corrompida | **Nível:** 8 | **XP:** 800 | **Faixa:** Intermediário
+036**Tipo:** Flora Animada Corrompida | **Nível:** 8 | **XP:** 800 | **Faixa:** Intermediário
 
 **Lore:**
 Treants da masmorra são árvores que foram animadas pela energia necrótica dos andares inferiores. Não há druidas aqui para guiá-los ou propósito sagrado — apenas árvores mortas andando, impulsionadas por um instinto primitivo de ocupar espaço e eliminar concorrentes. Seu "tronco" está apodrecendo mas ainda é denso e extremamente duro. Exalam um gás de decomposição constante que pode ser tóxico em espaços fechados. A madeira deles é paradoxalmente valiosa: impregnada de magia necrótica, queima com chamas roxas que causam dano a mortos-vivos em vez de curar.
@@ -1885,9 +1925,10 @@ Treants da masmorra são árvores que foram animadas pela energia necrótica dos
 - Casca Resistente (Fácil): Material de construção de altíssima durabilidade.
 
 ---
+**Saque (Trinchar com sucesso):** ESP-17 · MIN-19 · TES-10 (200 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 036).
 
 ## 037 — PLANTA CARNÍVORA GIGANTE
-**Tipo:** Flora Predadora | **Nível:** 5 | **XP:** 500 | **Faixa:** Intermediário
+037**Tipo:** Flora Predadora | **Nível:** 5 | **XP:** 500 | **Faixa:** Intermediário
 
 **Lore:**
 Diferente das plantas carnívoras da superfície, essas plantas da masmorra evoluíram para caçar ativamente — têm raízes que se movem, gavinhas que agarram e um suco digestivo ativo capaz de dissolver armadura de couro em 4 horas. Ficam estáticas durante 90% do tempo, imitando plantas mortas, e ativam apenas quando detectam vibrações de passos ou o calor de criaturas vivas. Sua flor — um enorme espécime púrpura que emite um aroma levemente adocicado — é o chamariz. O aroma é parcialmente narcótico em concentrações altas.
@@ -1925,9 +1966,10 @@ Diferente das plantas carnívoras da superfície, essas plantas da masmorra evol
 *Criaturas sem forma definida ou compostas de matéria elemental pura. Impossíveis de "cortar" no sentido tradicional — exigem técnicas específicas de extração.*
 
 ---
+**Saque (Trinchar com sucesso):** ESP-18 · MIN-19 · 2d10 po — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 037).
 
 ## 038 — SLIME ÁCIDO
-**Tipo:** Amorfo Corrosivo | **Nível:** 2 | **XP:** 200 | **Faixa:** Comum
+038**Tipo:** Amorfo Corrosivo | **Nível:** 2 | **XP:** 200 | **Faixa:** Comum
 
 **Lore:**
 O Slime Ácido é o mais simples dos amorfos — uma massa de gel ácido com consciência rudimentar suficiente apenas para se mover em direção ao calor e à comida. Absorve matéria orgânica e inorgânica e cresce proporcionalmente. Um Slime Ácido que come bem por um mês pode se tornar grande o suficiente para encher uma sala. Sua principal arma é a paciência: fica estático até algo se aproximar, e então envolve. Adventurers experientes reconhecem o cheiro levemente sulfúrico que precede sua presença.
@@ -1958,9 +2000,10 @@ O Slime Ácido é o mais simples dos amorfos — uma massa de gel ácido com con
 - Núcleo Amorfo (Difícil): Centro sólido de gel concentrado. Consumido (processado pelo Alquimista), concede Corpo de Lodo por 4h.
 
 ---
+**Saque (Trinchar com sucesso):** ESP-15 · MIN-13 · 1d4 po — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 038).
 
 ## 039 — SLIME DE CRISTAL
-**Tipo:** Amorfo Minerado | **Nível:** 4 | **XP:** 400 | **Faixa:** Comum
+039**Tipo:** Amorfo Minerado | **Nível:** 4 | **XP:** 400 | **Faixa:** Comum
 
 **Lore:**
 O Slime de Cristal é uma evolução do Slime Ácido que passou gerações habitando o Labirinto Prismático e absorvendo minerais cristalinos. O resultado é um gel semi-transparente repleto de cristais suspensos que refletem luz em padrões hipnóticos. O problema culinário é que os cristais internos cortam qualquer recipiente comum — o Extrator de Geleias é o único especialista capaz de coletar esse slime sem acidentes.
@@ -1991,9 +2034,10 @@ O Slime de Cristal é uma evolução do Slime Ácido que passou gerações habit
 - Gel Cristalino (Especialista): Preparado como gelatina mágica, concede Juntas Articuladas e Reflexo de Luz por 6h.
 
 ---
+**Saque (Trinchar com sucesso):** ESP-20 · MIN-05 · TES-05 (80 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 039).
 
 ## 040 — ELEMENTAL DE FOGO
-**Tipo:** Elemental Primordial | **Nível:** 7 | **XP:** 700 | **Faixa:** Intermediário
+040**Tipo:** Elemental Primordial | **Nível:** 7 | **XP:** 700 | **Faixa:** Intermediário
 
 **Lore:**
 Elementais de fogo não são criaturas do plano material — são manifestações do Plano Elemental do Fogo que foram convocadas por magos antigos e ficaram presas nas Fornalhas Douradas quando seus criadores morreram sem liberar o vínculo de convocação. Alguns vagam há séculos, crescendo em poder e frustração. São criaturas de puro instinto elemental: consomem combustível, geram calor e se expandem. Não têm intenção de machucar — simplesmente é impossível para fogo não queimar.
@@ -2026,9 +2070,10 @@ Elementais de fogo não são criaturas do plano material — são manifestaçõe
 - Centelha Elemental (Difícil): Faíscas coletadas com luva de amianto. Consumidas em forma de doce pelo Mago Confeiteiro, concedem Hálito de Brasa por 8h.
 
 ---
+**Saque (Trinchar com sucesso):** ESP-03 · MIN-01 · TES-07 (180 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 040).
 
 ## 041 — ELEMENTAL DE GELO
-**Tipo:** Elemental Primordial | **Nível:** 7 | **XP:** 700 | **Faixa:** Intermediário
+041**Tipo:** Elemental Primordial | **Nível:** 7 | **XP:** 700 | **Faixa:** Intermediário
 
 **Lore:**
 Primos glaciais dos Elementais de Fogo, os Elementais de Gelo habitam a Prisão Gélida dos Titãs onde a temperatura caiu a tal ponto que o Plano do Gelo encontrou o plano material. São mais lentos que seus opostos de fogo, mas compensam com durabilidade e precisão. Quando irritados, formam lanças de gelo que lançam com velocidade e força surpreendentes. Seu "corpo" é gelo vivo — denso no centro, mais translúcido nas bordas.
@@ -2064,9 +2109,10 @@ Primos glaciais dos Elementais de Fogo, os Elementais de Gelo habitam a Prisão 
 # CAPÍTULO X — CRIATURAS GLACIAIS
 
 ---
+**Saque (Trinchar com sucesso):** ESP-04 · MIN-16 · TES-07 — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 041).
 
 ## 042 — YETI DAS PROFUNDEZAS
-**Tipo:** Besta Glacial | **Nível:** 5 | **XP:** 500 | **Faixa:** Intermediário
+042**Tipo:** Besta Glacial | **Nível:** 5 | **XP:** 500 | **Faixa:** Intermediário
 
 **Lore:**
 Yetis das profundezas da masmorra evoluíram para ambientes sem luz, desenvolvendo pelagem mais densa e sentidos aprimorados. Ao contrário dos da superfície, esses Yetis são mais brancos com veias azuis ao longo do pelo — resultado de cristais de gelo que se formam naturalmente entre os folículos. Vivem em grupos familiares de 3 a 6 e são territoriais mas não agressivos sem razão. Caçam mamíferos da masmorra mas evitam goblinóides (que reconhecem como perigosos em grupo). A carne é a mais próxima de urso disponível no submundo — gordurosa, quente ao comer, extremamente calórica.
@@ -2101,9 +2147,10 @@ Yetis das profundezas da masmorra evoluíram para ambientes sem luz, desenvolven
 - Gordura de Yeti (Fácil): Combustível de alta eficiência para fogareiros em ambientes frios.
 
 ---
+**Saque (Trinchar com sucesso):** ESP-04 · MIN-16 · 3d8 po (pele) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 042).
 
 ## 043 — LOBO DO INVERNO
-**Tipo:** Besta Glacial Predadora | **Nível:** 4 | **XP:** 400 | **Faixa:** Comum
+043**Tipo:** Besta Glacial Predadora | **Nível:** 4 | **XP:** 400 | **Faixa:** Comum
 
 **Lore:**
 Lobos do inverno são caçadores em matilha que coordenam com inteligência próxima à de linguagem primitiva. Howls diferentes têm significados táticos: encerrar, recuar, atacar flancos. Sua respiração é uma névoa que cristaliza instantaneamente, e ao liberarem um sopro focado, criam jatos de frio que imobilizam presas. Dentro das masmorras, adapataram-se ao espaço confinado com uivos que ecoam de forma desorientadora. A carne tem sabor selvagem intenso e a gordura subcutânea — quase 20% do peso corporal — é extraordinariamente calórica.
@@ -2140,9 +2187,10 @@ Lobos do inverno são caçadores em matilha que coordenam com inteligência pró
 # CAPÍTULO XI — MÍMICOS E METAMORFOS
 
 ---
+**Saque (Trinchar com sucesso):** ESP-10 · MIN-04 · 2d8 po — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 043).
 
 ## 044 — MÍMICO DE BAÚL
-**Tipo:** Metamorfo Predador | **Nível:** 3 | **XP:** 300 | **Faixa:** Comum
+044**Tipo:** Metamorfo Predador | **Nível:** 3 | **XP:** 300 | **Faixa:** Comum
 
 **Lore:**
 O Mímico clássico — disfarçado de baú de tesouro, esperando pacientemente que a ganância supere a cautela. Os Mímicos de Baúl das masmorras evoluíram além dessa estratégia simples: eles realmente *coletam* itens e os colocam dentro de si, criando um tesouro genuíno dentro de um predador. Isso torna a decisão de abrir o baú uma aposta genuína. A carne de Mímico tem textura que muda enquanto é mastigada — começa como frango, vai para carne bovina e termina como peixe. Isso não é alucinação; é a biologia real do animal.
@@ -2175,9 +2223,10 @@ O Mímico clássico — disfarçado de baú de tesouro, esperando pacientemente 
 - Tesouro Interno (Fácil — mas com cuidado): 30% de chance de conter ouro ou itens de aventureiros anteriores.
 
 ---
+**Saque (Trinchar com sucesso):** ESP-19 · MIN-06 · TES-04 (conteudo imitado) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 044).
 
 ## 045 — DOPPELGANGER
-**Tipo:** Metamorfo Inteligente | **Nível:** 7 | **XP:** 700 | **Faixa:** Intermediário
+045**Tipo:** Metamorfo Inteligente | **Nível:** 7 | **XP:** 700 | **Faixa:** Intermediário
 
 **Lore:**
 Doppelgangers são a evolução inteligente dos Mímicos — em vez de imitar objetos, imitam pessoas. Capazes de copiar aparência, voz e maneirismos de qualquer humanoide que observem por mais de 10 minutos, eles se infiltram em grupos, assumindo a identidade de um membro morto ou afastado. São pacientes, calculistas e genuinamente perigosos porque jogam com a confiança como principal arma. Os que habitam masmorras há muito tempo desenvolvem identidades complexas de personas que já assumiram — alguns chegam ao ponto de esquecer qual é o "eu" original.
@@ -2216,9 +2265,10 @@ Doppelgangers são a evolução inteligente dos Mímicos — em vez de imitar ob
 *Espécimes raros, criaturas de origem divina ou corrompida, e monstros que não se encaixam nas categorias ecológicas anteriores.*
 
 ---
+**Saque (Trinchar com sucesso):** ESP-26 · MIN-07 · TES-13 (250 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 045).
 
 ## 046 — HIDRA DAS CAVERNAS
-**Tipo:** Réptil Regenerativo | **Nível:** 9 | **XP:** 900 | **Faixa:** Perigoso
+046**Tipo:** Réptil Regenerativo | **Nível:** 9 | **XP:** 900 | **Faixa:** Perigoso
 
 **Lore:**
 A Hidra das Cavernas adaptou-se ao submundo com 5 cabeças iniciais e a capacidade de regenerar 2 novas quando uma é cortada. Diferente das da superfície, suas cabeças não baforam fogo — cada uma tem uma adaptação diferente: uma é venenosa, uma morde com ácido, uma é simplesmente massiva, uma cobre a área com saliva adesiva, e uma hipnotiza pela vibração de sua garganta. Caçar uma Hidra requer planejamento e uma boa fonte de calor para cauterizar os cotos.
@@ -2258,9 +2308,10 @@ A Hidra das Cavernas adaptou-se ao submundo com 5 cabeças iniciais e a capacida
 - Couro de Hidra (Médio): Uma das peles mais resistentes disponíveis.
 
 ---
+**Saque (Trinchar com sucesso):** ESP-02 · MIN-11 · TES-11 (6d10 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 046).
 
 ## 047 — QUIMERA
-**Tipo:** Besta Composta Mágica | **Nível:** 11 | **XP:** 1100 | **Faixa:** Perigoso
+047**Tipo:** Besta Composta Mágica | **Nível:** 11 | **XP:** 1100 | **Faixa:** Perigoso
 
 **Lore:**
 Uma Quimera não é criada — ela emerge. Em pontos de alta confluência de magia selvagem dentro da masmorra, criaturas diferentes que morreram na mesma área se fundem em algo novo. Uma Quimera típica tem partes de leão, cabra e dragão, mas as combinações variam infinitamente. O que permanece consistente é a agressividade extrema e a incapacidade de coexistir pacificamente com qualquer coisa. Alguns estudiosos teorizaram que Quimeras têm múltiplos centros de consciência brigando pelo controle, o que explica os padrões de ataque aparentemente contraditórios.
@@ -2292,9 +2343,10 @@ Uma Quimera não é criada — ela emerge. Em pontos de alta confluência de mag
 - Núcleo Mágico de Fusão (Especialista): O ponto de origem da fusão. Estudado pelo Mago, permite lançar uma magia sem preparação uma vez.
 
 ---
+**Saque (Trinchar com sucesso):** ESP-09 · MIN-08 · TES-14 (400 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 047).
 
 ## 048 — ANJO CAÍDO
-**Tipo:** Celestial Corrompido | **Nível:** 14 | **XP:** 1400 | **Faixa:** Elite
+048**Tipo:** Celestial Corrompido | **Nível:** 14 | **XP:** 1400 | **Faixa:** Elite
 
 **Lore:**
 O Abatedouro Celestial não é chamado assim por acaso. Entidades divinas — anjos, serafins, guardiões do éter — que caíram ou foram expulsas dos planos superiores às vezes aterrissam nas masmorras. O impacto da queda e o contato com a energia necrótica do submundo os corrompe progressivamente. O resultado é uma criatura que ainda tem a forma física bela e poderosa de um anjo — asas colossais, luz irradiante, olhos de fogo — mas cujos pensamentos se tornaram algo completamente outro. Anjos caídos são imprevisíveis: alguns buscam redenção, outros abraçaram a queda.
@@ -2330,9 +2382,10 @@ O Abatedouro Celestial não é chamado assim por acaso. Entidades divinas — an
 - Espada Flamejante (Não comestível — Ferramenta Lendária): O Artífice pode estabilizá-la como arma mágica de +3 que causa 2d6 de dano extra (sagrado ou necrótico, alternado).
 
 ---
+**Saque (Trinchar com sucesso):** ESP-27 · MIN-23 · TES-16 (1 200 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 048).
 
 ## 049 — GÁRGULA DE CRISTAL
-**Tipo:** Construto-Besta | **Nível:** 6 | **XP:** 600 | **Faixa:** Intermediário
+049**Tipo:** Construto-Besta | **Nível:** 6 | **XP:** 600 | **Faixa:** Intermediário
 
 **Lore:**
 Gárgulas são criaturas que existem no limiar entre construto e besta — animadas mas não criadas por magos, emergindo espontaneamente de pedra ou cristal impregnados de energia elemental por séculos. As Gárgulas de Cristal do Labirinto Prismático são particularmente traiçoeiras: quando imóveis, são literalmente indistinguíveis das formações cristalinas naturais. Estátuas que observam, esperam e então explodem em ação sem aviso.
@@ -2364,9 +2417,10 @@ Gárgulas são criaturas que existem no limiar entre construto e besta — anima
 - Fragmentos Cristalinos (Fácil): Material de artesanato de alta qualidade para afiar armas e revestir escudos.
 
 ---
+**Saque (Trinchar com sucesso):** ESP-20 · MIN-05 · TES-08 (180 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 049).
 
 ## 050 — ABERRAÇÃO TENTACULAR
-**Tipo:** Aberração Psíquica | **Nível:** 10 | **XP:** 1000 | **Faixa:** Perigoso
+050**Tipo:** Aberração Psíquica | **Nível:** 10 | **XP:** 1000 | **Faixa:** Perigoso
 
 **Lore:**
 A Aberração Tentacular é o que acontece quando a masmorra produz vida própria — sem nenhum ancestral reconhecível, sem linhagem elemental, simplesmente emergindo do ambiente corrompido. Corpo central como um tumor flutuante com múltiplos tentáculos psíquicos que não tocam fisicamente — eles tocam a mente. Um grupo pode passar por ela sem perceber que está sendo manipulado até que seus membros estejam atacando uns aos outros. Estudiosos que a examinam de longe notam que ela parece ter um padrão de pulsar que corresponde a ondas de energia necrótica da masmorra.
@@ -2399,9 +2453,10 @@ A Aberração Tentacular é o que acontece quando a masmorra produz vida própri
 - Fluido Tentacular (Difícil): Líquido que carrega os impulsos psíquicos. O Mago Fermentador o usa em poções de comunicação telepática.
 
 ---
+**Saque (Trinchar com sucesso):** ESP-28 · MIN-22 · TES-13 (350 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 050).
 
 ## 051 — BASILISCO DE MAGMA
-**Tipo:** Réptil Vulcânico Especial | **Nível:** 8 | **XP:** 800 | **Faixa:** Intermediário
+051**Tipo:** Réptil Vulcânico Especial | **Nível:** 8 | **XP:** 800 | **Faixa:** Intermediário
 
 **Lore:**
 Uma fusão improvável de Basilisco e ambiente vulcânico — o Basilisco de Magma desenvolveu escamas de obsidiana e o olhar petrificante evoluiu: em vez de transformar em pedra cinza, transforma em rocha vulcânica. Alvos petrificados ficam quentes ao toque por horas. Habita as bordas das fontes de magma nas Fornalhas Douradas, tomando banhos ocasionais de lava para manter as escamas aquecidas. A carne sob as escamas de obsidiana é surpreendentemente similar ao Basilisco normal, mas com notas de mineral e calor que persistem mesmo depois de cozida.
@@ -2432,9 +2487,10 @@ Uma fusão improvável de Basilisco e ambiente vulcânico — o Basilisco de Mag
 - Carne Vulcânica (Difícil): Prato Gourmet concede imunidade a fogo, Sangue Fervente e Pele de Obsidiana por 24h.
 
 ---
+**Saque (Trinchar com sucesso):** ESP-03 · MIN-01 · TES-07 — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 051).
 
 ## 052 — SEREIA DAS PROFUNDEZAS
-**Tipo:** Humanoide Aquático Encantador | **Nível:** 6 | **XP:** 600 | **Faixa:** Intermediário
+052**Tipo:** Humanoide Aquático Encantador | **Nível:** 6 | **XP:** 600 | **Faixa:** Intermediário
 
 **Lore:**
 As Sereias das masmorras perderam a beleza — a falta de luz e a pressão das profundezas moldaram criaturas que são funcionais mas não belas no sentido convencional. O que mantiveram foi o canto. Um canto de Sereia das Profundezas reverbera através da pedra e da água e pode ser ouvido a quilômetros de distância. Grupos que se aproximam demais da costa do Mar de Prata Cega às vezes simplesmente caminham para dentro da água sem perceber. As Sereias os capturam, afogam e os devoram. A carne de Sereia é o tabu culinário mais debatido — tecnicamente humanoide inteligente, mas sua carne tem propriedades incomparáveis.
@@ -2468,9 +2524,10 @@ As Sereias das masmorras perderam a beleza — a falta de luz e a pressão das p
 - Carne de Sereia (Difícil): Concede Guelras, Radar Lateral e Camuflagem de Polvo por 24h.
 
 ---
+**Saque (Trinchar com sucesso):** ESP-29 · MIN-10 · TES-10 (300 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 052).
 
 ## 053 — TROLL DE PEDRA
-**Tipo:** Gigante Menor Regenerativo | **Nível:** 6 | **XP:** 600 | **Faixa:** Intermediário
+053**Tipo:** Gigante Menor Regenerativo | **Nível:** 6 | **XP:** 600 | **Faixa:** Intermediário
 
 **Lore:**
 Trolls de Pedra são maiores que trolls comuns, mais lentos e com regeneração mais lenta mas mais robusta. Sua pele já se assemelha à rocha — cinza, áspera, com protuberâncias como pedras semi-enterradas. São onívoros agressivos que comem absolutamente qualquer coisa: outros monstros, pedra, metal enferrujado, madeira podre. Seu estômago dissolve quase qualquer material. O que não é dissolvido é secretado como uma bílis extremamente ácida que usam como arma improvisada. Crianças na superfície são amedrontadas com histórias de Trolls — aqui dentro, as histórias são para os Trolls.
@@ -2502,9 +2559,10 @@ Trolls de Pedra são maiores que trolls comuns, mais lentos e com regeneração 
 - Sangue Regenerativo (Médio): Misturado a qualquer ingrediente, estende os efeitos de cura da refeição por +4h.
 
 ---
+**Saque (Trinchar com sucesso):** ESP-06 · MIN-04 · 4d8 po — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 053).
 
 ## 054 — CICLOPE
-**Tipo:** Gigante Médio | **Nível:** 9 | **XP:** 900 | **Faixa:** Perigoso
+054**Tipo:** Gigante Médio | **Nível:** 9 | **XP:** 900 | **Faixa:** Perigoso
 
 **Lore:**
 Ciclopes nas masmorras são seres melancólicos. Inteligentes o suficiente para se sentir solitários mas não o suficiente para resolvê-lo, eles habitam câmaras grandes e pessoais que decoram obsessivamente com relevos nas paredes contando histórias que nunca comunicam. Suas tocas têm sempre uma escultura central de algo ou alguém que adoram e nunca tiveram. São territorialistas extremos — qualquer invasão de sua câmara pessoal é respondida com violência total. Mas grupos que chegam pela entrada alternativa e demonstram interesse nas esculturas às vezes conseguem evitar o combate.
@@ -2538,9 +2596,10 @@ Ciclopes nas masmorras são seres melancólicos. Inteligentes o suficiente para 
 - Olho de Ciclope (Difícil): Órgão óptico único com propriedades mágicas. O Artífice pode criar um monocular que revela fraquezas de monstros.
 
 ---
+**Saque (Trinchar com sucesso):** ESP-06 · MIN-02 · TES-11 (5d12 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 054).
 
 ## 055 — HARPIA DE CAVERNA
-**Tipo:** Humanoide Alado | **Nível:** 4 | **XP:** 400 | **Faixa:** Comum
+055**Tipo:** Humanoide Alado | **Nível:** 4 | **XP:** 400 | **Faixa:** Comum
 
 **Lore:**
 Harpias de caverna perderam o canto encantador de suas primas da superfície — sem ar suficiente para resonar plenamente — mas desenvolveram garras maiores e uma resistência ao ambiente da masmorra surpreendente. São oportunistas, atacando grupos já enfraquecidos por outros combates e fugindo quando a caça fica perigosa. Vivem em bandos de 4 a 10, e a hierarquia do bando muda a cada lua quando lutam por posição. A carne é saborosa mas dura — requer marinada longa ou cozimento prolongado.
@@ -2575,9 +2634,10 @@ Harpias de caverna perderam o canto encantador de suas primas da superfície —
 # CAPÍTULO XIII — MONSTROS ADICIONAIS DO CATÁLOGO
 
 ---
+**Saque (Trinchar com sucesso):** ESP-10 · MIN-09 · 2d10 po joias — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 055).
 
 ## 056 — ROPER (TENTÁCULO-PEDRA)
-**Tipo:** Aberração Mineral | **Nível:** 5 | **XP:** 500 | **Faixa:** Intermediário
+056**Tipo:** Aberração Mineral | **Nível:** 5 | **XP:** 500 | **Faixa:** Intermediário
 **Lore:** Parece uma estalactite até abrir o olho único e os tentáculos. Espera décadas pelo alvo certo.
 | HP | CA | Dano | Biomas |
 |----|-----|------|--------|
@@ -2595,9 +2655,10 @@ Harpias de caverna perderam o canto encantador de suas primas da superfície —
 - **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.
 
 ---
+**Saque (Trinchar com sucesso):** ESP-14 · MIN-21 · 3d8 po — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 056).
 
 ## 057 — ABOLETH
-**Tipo:** Aberração Aquática Ancestral | **Nível:** 16 | **XP:** 1600 | **Faixa:** Elite
+057**Tipo:** Aberração Aquática Ancestral | **Nível:** 16 | **XP:** 1600 | **Faixa:** Elite
 **Lore:** Criaturas que existem há mais tempo que os deuses. Memória coletiva de todas as vidas que já consumiram. Escravizam psiquicamente.
 | HP | CA | Dano | Biomas |
 |----|-----|------|--------|
@@ -2615,9 +2676,10 @@ Harpias de caverna perderam o canto encantador de suas primas da superfície —
 - **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.
 
 ---
+**Saque (Trinchar com sucesso):** ESP-30 · MIN-11 · TES-16 (2 000 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 057).
 
 ## 058 — PUDIM NEGRO
-**Tipo:** Amorfo Extremo | **Nível:** 7 | **XP:** 700 | **Faixa:** Intermediário
+058**Tipo:** Amorfo Extremo | **Nível:** 7 | **XP:** 700 | **Faixa:** Intermediário
 **Lore:** Uma massa de protoplasma ácido negro que dissolve metais, pedra e carne com igual eficiência. Não tem intenção — apenas fome. Pode se dividir indefinidamente.
 | HP | CA | Dano | Biomas |
 |----|-----|------|--------|
@@ -2635,9 +2697,10 @@ Harpias de caverna perderam o canto encantador de suas primas da superfície —
 - **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.
 
 ---
+**Saque (Trinchar com sucesso):** ESP-15 · MIN-13 · TES-06 (120 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 058).
 
 ## 059 — LAGOSTA-GIGANTE ABISSAL
-**Tipo:** Crustáceo Aquático | **Nível:** 4 | **XP:** 400 | **Faixa:** Comum
+059**Tipo:** Crustáceo Aquático | **Nível:** 4 | **XP:** 400 | **Faixa:** Comum
 **Lore:** Do tamanho de um pônei, habita o fundo do Mar de Prata Cega. Completamente inofensiva a distância — mas as garras são letais.
 | HP | CA | Dano | Biomas |
 |----|-----|------|--------|
@@ -2655,9 +2718,10 @@ Harpias de caverna perderam o canto encantador de suas primas da superfície —
 - **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.
 
 ---
+**Saque (Trinchar com sucesso):** ESP-01 · MIN-10 · TES-05 (90 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 059).
 
 ## 060 — CARANGUEJO-EREMITA COLOSSAL
-**Tipo:** Crustáceo Aquático Adaptado | **Nível:** 7 | **XP:** 700 | **Faixa:** Intermediário
+060**Tipo:** Crustáceo Aquático Adaptado | **Nível:** 7 | **XP:** 700 | **Faixa:** Intermediário
 **Lore:** Usa cascos de galeões naufragados como concha. Os aventureiros frequentemente exploram o "navio abandonado" sem perceber que está se movendo.
 | HP | CA | Dano | Biomas |
 |----|-----|------|--------|
@@ -3044,3 +3108,5 @@ Cada masmorra principal tem um Boss exclusivo gerado com base no Chefe Final sor
 - **Padrão:** ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).
 - **Moral:** não foge por HP; pode sacrificar lacaios.
 - **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.
+**Saque (Trinchar com sucesso):** ESP-01 · MIN-10 · TES-10 (280 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 060).
+

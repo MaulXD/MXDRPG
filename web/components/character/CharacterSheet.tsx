@@ -17,10 +17,11 @@ import {
 import { LevelUpWizard } from "@/components/character/LevelUpWizard";
 import { SubclassTrackPanel } from "@/components/character/SubclassTrackPanel";
 import { CombatLoadoutPanel } from "@/components/character/CombatLoadoutPanel";
+import { LootEconomyPanel } from "@/components/character/LootEconomyPanel";
 import { proficiencyBonus } from "@/lib/character/rules";
 import "./sheet.css";
 
-type Tab = "inventario" | "habilidades" | "magias";
+type Tab = "inventario" | "tesouro" | "habilidades" | "magias";
 
 type Props = {
   character: CharacterSheetData;
@@ -249,6 +250,13 @@ export function CharacterSheet({
           </button>
           <button
             type="button"
+            className={`sheet-tab ${tab === "tesouro" ? "active" : ""}`}
+            onClick={() => setTab("tesouro")}
+          >
+            Tesouro
+          </button>
+          <button
+            type="button"
             className={`sheet-tab ${tab === "habilidades" ? "active" : ""}`}
             onClick={() => setTab("habilidades")}
           >
@@ -265,16 +273,28 @@ export function CharacterSheet({
 
         <div className="sheet-toolbar">
           <h2 style={{ margin: 0, fontSize: "1.1rem", fontFamily: "var(--font-display)" }}>
-            {tab === "inventario" ? "Inventário" : tab === "habilidades" ? "Habilidades" : "Magias"}
+            {tab === "inventario"
+              ? "Inventário"
+              : tab === "tesouro"
+                ? "Tesouro e riquezas"
+                : tab === "habilidades"
+                  ? "Habilidades"
+                  : "Magias"}
           </h2>
-          {canEdit ? (
+          {canEdit && tab !== "tesouro" ? (
             <button type="button" className="btn" onClick={() => setPickerOpen(true)}>
               + Compêndio
             </button>
           ) : null}
         </div>
 
-        {filtered.length === 0 ? (
+        {tab === "tesouro" ? (
+          <LootEconomyPanel
+            characterId={character.id}
+            seed={live.lootEconomy ?? character.lootEconomy}
+            canEdit={canEdit}
+          />
+        ) : filtered.length === 0 ? (
           <div className="inv-empty">
             {tab === "inventario"
               ? "Nenhum item no inventário."

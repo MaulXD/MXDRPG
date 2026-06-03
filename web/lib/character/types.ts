@@ -31,6 +31,14 @@ export type CharacterIdentity = {
   talentos?: Array<{ level: number; id: string; name: string }>;
 };
 
+/** Especiarias, minerios, tesouros (Cap. 5.6) */
+export type LootEconomy = {
+  po: number;
+  especiarias: Record<string, number>;
+  minerios: Record<string, number>;
+  tesouros: Record<string, number>;
+};
+
 /** Item na ficha — referência ao compêndio + instância */
 export type InventoryItem = {
   instanceId: string;
@@ -58,6 +66,8 @@ export type CharacterSheet = {
   tactical: { defesa: number; iniciativa: number };
   /** Seed inicial; runtime merge com localStorage */
   inventory: InventoryItem[];
+  /** PO + ESP/MIN/TES — localStorage em runtime */
+  lootEconomy?: LootEconomy;
   /** Arma ou magia ofensiva selecionada na mesa */
   combatLoadout?: CombatLoadout | null;
 };

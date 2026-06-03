@@ -1,31 +1,33 @@
-# MXDRPG — Eldarin / Vinite
+# MXDRPG — Eldarin
 
-Repositório: livros, módulo Foundry (`vinite/`) e **VTT Next.js na raiz**.
+| Pasta | O quê |
+|-------|--------|
+| **`web/`** | App Next.js (VTT) — **é isso que vai na Vercel** |
+| `livros/` | Regras e lore |
+| `vinite/` | Módulo Foundry |
 
-## Rodar local
+## Local
 
 ```bash
+cd web
 npm install
 npm run dev
 ```
 
-http://localhost:3000 — `/entrar` — demo `jogador@vinite.local` / `vinite-dev` — `/painel` — `/mesa/demo`
+http://localhost:3000
 
-## Deploy Vercel
+## Vercel (obrigatório)
 
-Ver [`VERCEL.md`](VERCEL.md). **Root Directory vazio** (repo root). Framework **Next.js**. **Output Directory vazio**.
+**Settings → Build and Deployment:**
 
-Teste após deploy: `/api/health` → `{"ok":true,"app":"eldarin-vtt"}`
+- **Root Directory:** `web` ← sem isso = 404
+- **Framework:** Next.js
+- **Output Directory:** *(vazio — apague `public`)*
 
-## Estrutura
+Depois **Redeploy** sem cache.
 
-| Pasta | Conteúdo |
-|-------|----------|
-| `app/` | Rotas Next.js |
-| `components/` | UI |
-| `lib/` | Lógica combate, auth, VTT |
-| `data/` | Compêndios JSON |
-| `vinite/` | Foundry (separado) |
-| `livros/` | Fontes Eldarin |
+Teste: `https://SEU-SITE.vercel.app/api/health`
+
+Detalhes: [web/VERCEL.md](web/VERCEL.md)
 
 GitHub: https://github.com/MaulXD/MXDRPG.git
