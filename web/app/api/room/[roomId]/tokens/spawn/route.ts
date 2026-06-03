@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getSession } from "@/lib/auth/session";
+import { requireRoomManage } from "@/lib/auth/authorize-room";
 import { spawnRoomMonster } from "@/lib/room/store";
 
 type Params = { params: Promise<{ roomId: string }> };
@@ -14,10 +14,9 @@ type Body = {
 
 export async function POST(req: Request, { params }: Params) {
   const { roomId } = await params;
-  const session = await getSession();
-
-  if (!session || (session.user.role !== "mestre" && session.user.role !== "admin")) {
-    return NextResponse.json({ error: "Apenas mestre pode invocar monstros" }, { status: 403 });
+  const auth = await requireRoomManage(roomId);
+  if ("error" in auth) {
+    return NextResponse.json({ error: auth.error }, { status: auth.status });
   }
 
   const body = (await req.json()) as Body;

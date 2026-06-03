@@ -1,5 +1,5 @@
-/** Papéis da plataforma Eldarin */
-export type UserRole = "admin" | "mestre" | "jogador";
+/** Papéis da plataforma — sem “mestre/jogador” global */
+export type UserRole = "member" | "admin";
 
 export interface SessionUser {
   id: string;

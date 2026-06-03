@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { authenticateDemo } from "@/lib/auth/demo-users";
+import { authenticateUser } from "@/lib/auth/user-store";
 import { portalPathForRole } from "@/lib/auth/roles";
 import { createSession } from "@/lib/auth/session";
 
@@ -9,7 +9,7 @@ export async function POST(request: Request) {
   const password = String(body.password ?? "");
   const redirect = String(body.redirect ?? "");
 
-  const user = authenticateDemo(email, password);
+  const user = authenticateUser(email, password);
   if (!user) {
     return NextResponse.json({ error: "Credenciais inválidas" }, { status: 401 });
   }

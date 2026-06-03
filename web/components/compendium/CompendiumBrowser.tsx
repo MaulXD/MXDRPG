@@ -73,7 +73,7 @@ export function CompendiumBrowser({ packs, data, role }: Props) {
             </li>
           ))}
         </ul>
-        {role === "mestre" || role === "admin" ? (
+        {role === "admin" ? (
           <p style={{ marginTop: "1rem", fontSize: "0.75rem", color: "var(--text-dim)" }}>
             Monstros visíveis só para mestre.
           </p>

@@ -6,14 +6,12 @@ const SESSION_COOKIE = "vinite_session";
 
 const AREA_ROLES: Record<string, UserRole> = {
   admin: "admin",
-  mestre: "mestre",
-  jogador: "jogador",
+  painel: "member",
 };
 
 const ROLE_LEVEL: Record<UserRole, number> = {
   admin: 100,
-  mestre: 50,
-  jogador: 10,
+  member: 10,
 };
 
 function readRole(request: NextRequest): UserRole | null {
@@ -30,6 +28,12 @@ function readRole(request: NextRequest): UserRole | null {
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+
+  if (pathname.startsWith("/mestre") || pathname.startsWith("/jogador")) {
+    const target = new URL("/painel", request.url);
+    return NextResponse.redirect(target);
+  }
+
   const segment = pathname.split("/")[1];
   const required = AREA_ROLES[segment];
   if (!required) return NextResponse.next();
@@ -42,12 +46,12 @@ export function middleware(request: NextRequest) {
   }
 
   if (ROLE_LEVEL[userRole] < ROLE_LEVEL[required]) {
-    return NextResponse.redirect(new URL(`/${userRole}`, request.url));
+    return NextResponse.redirect(new URL("/painel", request.url));
   }
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/admin/:path*", "/mestre/:path*", "/jogador/:path*"],
+  matcher: ["/admin/:path*", "/painel/:path*", "/mestre/:path*", "/jogador/:path*"],
 };

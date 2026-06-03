@@ -24,8 +24,7 @@ export function SiteShell({ children, header, footer }: Props) {
           <nav className="vtt-nav">
             <Link href="/mesa">Mesas</Link>
             <Link href="/biblioteca">Compêndios</Link>
-            <Link href="/mestre">Mestre</Link>
-            <Link href="/jogador">Jogador</Link>
+            <Link href="/painel">Minhas mesas</Link>
           </nav>
           <div className="vtt-topbar-actions">
             <ThemeToggle />

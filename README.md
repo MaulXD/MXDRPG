@@ -15,9 +15,11 @@ npm run dev
 
 Abra [http://localhost:3000](http://localhost:3000).
 
-Login demo: `/entrar` — `jogador@vinite.local` ou `mestre@vinite.local` · senha **`vinite-dev`**.
+Contas: `/entrar` — **criar conta** ou login. Demo: `jogador@vinite.local` · senha **`vinite-dev`**.
 
-Mesa de teste: [http://localhost:3000/mesa/demo](http://localhost:3000/mesa/demo)
+Painel: [http://localhost:3000/painel](http://localhost:3000/painel) — criar mesa, código convite (Roll20-style). Mestre **só** na mesa que você criou.
+
+Mesa demo pública: [http://localhost:3000/mesa/demo](http://localhost:3000/mesa/demo)
 
 ## Deploy na Vercel
 

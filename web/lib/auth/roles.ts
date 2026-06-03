@@ -6,25 +6,19 @@ export const ROLES: Record<
 > = {
   admin: {
     label: "Administrador",
-    description: "Configuração global, usuários e mundos.",
+    description: "Configuração global da plataforma.",
     level: 100,
     homePath: "/admin",
   },
-  mestre: {
-    label: "Mestre",
-    description: "Campanhas, cenas Foundry e mesa.",
-    level: 50,
-    homePath: "/mestre",
-  },
-  jogador: {
-    label: "Jogador",
-    description: "Personagens, fichas e sessões.",
+  member: {
+    label: "Membro",
+    description: "Cria mesas, joga nas suas e nas que entrou.",
     level: 10,
-    homePath: "/jogador",
+    homePath: "/painel",
   },
 };
 
-export const ROLE_ORDER: UserRole[] = ["admin", "mestre", "jogador"];
+export const ROLE_ORDER: UserRole[] = ["admin", "member"];
 
 export function roleAtLeast(userRole: UserRole, required: UserRole): boolean {
   return ROLES[userRole].level >= ROLES[required].level;

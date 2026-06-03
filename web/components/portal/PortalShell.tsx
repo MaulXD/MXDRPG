@@ -41,13 +41,11 @@ export function PortalShell({ user, children }: Props) {
               Admin
             </Link>
           )}
-          {(user.role === "admin" || user.role === "mestre") && (
-            <Link href="/mestre" className="btn btn-secondary" style={{ padding: "0.4rem 0.85rem", fontSize: "0.85rem" }}>
-              Mestre
-            </Link>
-          )}
-          <Link href="/jogador" className="btn btn-secondary" style={{ padding: "0.4rem 0.85rem", fontSize: "0.85rem" }}>
-            Jogador
+          <Link href="/painel" className="btn btn-secondary" style={{ padding: "0.4rem 0.85rem", fontSize: "0.85rem" }}>
+            Mesas
+          </Link>
+          <Link href="/mesa/demo" className="btn btn-secondary" style={{ padding: "0.4rem 0.85rem", fontSize: "0.85rem" }}>
+            VTT demo
           </Link>
           <LogoutButton />
         </nav>

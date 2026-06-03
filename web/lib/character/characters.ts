@@ -5,7 +5,7 @@ import { normalizeCharacter } from "./normalize";
 const DEMO_CHARACTERS: CharacterSheet[] = [
   normalizeCharacter({
     id: "pc-aventureiro",
-    ownerId: "usr_jogador_01",
+    ownerId: "usr_demo_jogador",
     name: "Aventureiro",
     biography: "Explorador das galerias de Valdremor. Especialista em trinchar e sobreviver na masmorra.",
     identity: {
@@ -74,7 +74,7 @@ const DEMO_CHARACTERS: CharacterSheet[] = [
   }),
   normalizeCharacter({
     id: "pc-mestre-demo",
-    ownerId: "usr_mestre_01",
+    ownerId: "usr_demo_mestre",
     name: "NPC Demo",
     biography: "Ficha de exemplo do mestre.",
     identity: {
@@ -132,8 +132,50 @@ export function getCharacter(id: string): CharacterSheet | null {
 export function canEditCharacter(
   character: CharacterSheet,
   userId: string,
-  role: "admin" | "mestre" | "jogador"
+  role: "admin" | "member"
 ): boolean {
-  if (role === "admin" || role === "mestre") return true;
+  if (role === "admin") return true;
   return character.ownerId === userId;
+}
+
+export function listCharactersForUser(userId: string): CharacterSheet[] {
+  return DEMO_CHARACTERS.filter((c) => c.ownerId === userId).map((c) =>
+    normalizeCharacter({ ...c })
+  );
+}
+
+export function createCharacter(userId: string, name: string): CharacterSheet {
+  const sheet = normalizeCharacter({
+    id: `pc-${Date.now().toString(36)}`,
+    ownerId: userId,
+    name: name.trim().slice(0, 80) || "Novo personagem",
+    biography: "",
+    identity: {
+      nivel: 1,
+      xpTotal: 0,
+      raca: "Humano",
+      classe: "Guerreiro",
+      antecedente: "Aventureiro",
+      talentos: [],
+    },
+    attributes: {
+      forca: 12,
+      destreza: 12,
+      constituicao: 12,
+      inteligencia: 10,
+      sabedoria: 10,
+      carisma: 10,
+    },
+    culinary: computeCulinary("Guerreiro", "Humano"),
+    resources: {
+      vida: { value: 20, max: 20 },
+      pontosAcao: { value: 4, max: 4 },
+    },
+    movement: { walk: 4, run: 6 },
+    tactical: { defesa: 11, iniciativa: 0 },
+    inventory: [],
+    combatLoadout: null,
+  });
+  DEMO_CHARACTERS.push(sheet);
+  return sheet;
 }

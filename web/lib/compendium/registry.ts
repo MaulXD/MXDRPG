@@ -54,7 +54,7 @@ export const COMPENDIUM_PACKS: CompendiumPackMeta[] = [
     label: "Monstros",
     description: "NPCs prontos para o mestre colocar na mesa.",
     documentKind: "actor",
-    roles: ["admin", "mestre"],
+    roles: ["admin"],
   },
 ];
 
@@ -67,22 +67,30 @@ function entriesForPack(packId: CompendiumPackId): CompendiumEntry[] {
   return PACK_DATA[packId].map((raw, i) => normalizeEntry(packId, raw, i));
 }
 
-export function canViewPack(pack: CompendiumPackMeta, role: UserRole | null): boolean {
+export function canViewPack(
+  pack: CompendiumPackMeta,
+  role: UserRole | null,
+  opts?: { isRoomGm?: boolean }
+): boolean {
   if (pack.roles === "public") return true;
+  if (pack.id === "monstros") {
+    return role === "admin" || Boolean(opts?.isRoomGm);
+  }
   if (!role) return false;
-  return pack.roles.includes(role);
+  if (Array.isArray(pack.roles)) return pack.roles.includes(role);
+  return false;
 }
 
-export function getVisiblePacks(role: UserRole | null): CompendiumPackMeta[] {
-  return COMPENDIUM_PACKS.filter((p) => canViewPack(p, role));
+export function getVisiblePacks(role: UserRole | null, opts?: { isRoomGm?: boolean }): CompendiumPackMeta[] {
+  return COMPENDIUM_PACKS.filter((p) => canViewPack(p, role, opts));
 }
 
 export function getPackEntries(
   packId: CompendiumPackId,
-  opts?: { query?: string; role?: UserRole | null }
+  opts?: { query?: string; role?: UserRole | null; isRoomGm?: boolean }
 ): CompendiumEntry[] {
   const pack = COMPENDIUM_PACKS.find((p) => p.id === packId);
-  if (!pack || !canViewPack(pack, opts?.role ?? null)) return [];
+  if (!pack || !canViewPack(pack, opts?.role ?? null, { isRoomGm: opts?.isRoomGm })) return [];
 
   const q = opts?.query?.trim().toLowerCase() ?? "";
   let entries = entriesForPack(packId);
