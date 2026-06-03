@@ -1,0 +1,12 @@
+{
+  "name": "mxdrpg",
+  "private": true,
+  "workspaces": [
+    "web"
+  ],
+  "scripts": {
+    "dev": "npm run dev -w vinite-site",
+    "build": "npm run build -w vinite-site",
+    "vercel-build": "npm run build -w vinite-site"
+  }
+}
