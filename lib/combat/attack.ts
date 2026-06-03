@@ -18,6 +18,12 @@ import { attackRollMode, canTokenAct } from "@/lib/combat/conditions";
 import { combineRollModes, formatD20Detail, formatRollMode, rollD20, type RollMode } from "@/lib/combat/d20";
 import { parseAreaShape } from "@/lib/combat/area-spell";
 import { listSubclassCombatActions } from "@/lib/character/subclass-vtt";
+import {
+  appendHealToSummary,
+  applyEquipmentOnHitEffects,
+  mergeBonusIntoDamage,
+  normalizeWeaponSpecial,
+} from "@/lib/combat/equipment-effects";
 import type {
   AttackMark,
   AttackModifier,
@@ -68,6 +74,10 @@ export type AttackResolution = {
   damage: DamageBreakdown | null;
   defenderHpBefore: number;
   defenderHpAfter: number;
+  attackerHpBefore?: number;
+  attackerHpAfter?: number;
+  attackerHeal?: number;
+  specialNotes?: string[];
   summary: string;
   attackIndex?: number;
   attackCount?: number;
@@ -117,7 +127,11 @@ function actionFromEntry(
   packId: "armas" | "magias"
 ): CombatActionOption | null {
   const weapon = entry.system.weapon as
-    | { dano?: { formula?: string; tipo?: string }; ataque?: { bonus?: number } }
+    | {
+        dano?: { formula?: string; tipo?: string };
+        ataque?: { bonus?: number };
+        special?: unknown;
+      }
     | undefined;
   const spell = entry.system.spell as
     | {
@@ -159,7 +173,55 @@ function actionFromEntry(
     areaShape: packId === "magias" && areaShape !== "single" ? areaShape : undefined,
     areaRadiusHex: areaShape === "burst" ? areaRadiusHex : undefined,
     areaHexCount: areaShape === "wall" ? areaHexCount ?? 3 : undefined,
+    equipmentSpecials:
+      packId === "armas" ? normalizeWeaponSpecial(weapon?.special) : undefined,
     label: `${entry.name} · ${rangeHex} hex · PA ${paCost}${isSaveSpell ? " · save" : ""}${areaShape !== "single" ? ` · área ${areaShape}` : ""}`,
+  };
+}
+
+function attackerHp(token: BattleToken): number {
+  return token.vida ?? 0;
+}
+
+function applyHitSpecialsToResolution(
+  res: AttackResolution,
+  attackerToken: BattleToken,
+  action: CombatActionOption,
+  hit: boolean,
+  critical: boolean,
+  damage: DamageBreakdown | null,
+  hpBefore: number
+): AttackResolution {
+  const specials = action.equipmentSpecials ?? [];
+  if (!specials.length) return res;
+
+  const fx = applyEquipmentOnHitEffects(specials, hit, critical);
+  let hpAfter = res.defenderHpAfter;
+  let dmg = damage;
+  if (hit && dmg && fx.bonusDamage > 0) {
+    dmg = mergeBonusIntoDamage(dmg, fx.bonusDamage, fx.notes);
+    hpAfter = Math.max(0, hpBefore - dmg.total);
+  }
+
+  const atkHpBefore = attackerHp(attackerToken);
+  const atkMax = attackerToken.vidaMax ?? atkHpBefore;
+  const atkHpAfter =
+    fx.attackerHeal > 0
+      ? Math.min(atkMax, atkHpBefore + fx.attackerHeal)
+      : atkHpBefore;
+
+  let summary = res.summary;
+  if (fx.attackerHeal > 0) summary = appendHealToSummary(summary, fx.attackerHeal);
+
+  return {
+    ...res,
+    damage: dmg,
+    defenderHpAfter: hpAfter,
+    attackerHpBefore: atkHpBefore,
+    attackerHpAfter: atkHpAfter,
+    attackerHeal: fx.attackerHeal || undefined,
+    specialNotes: fx.notes.length ? fx.notes : undefined,
+    summary,
   };
 }
 
@@ -491,20 +553,7 @@ function resolveMonsterAttack(
     hpAfter = Math.max(0, hpBefore - damage.total);
   }
 
-  const name = attackerToken.name;
-  const modeTag = rollMode !== "normal" ? ` [${formatRollMode(rollMode)}]` : "";
-  let summary: string;
-  if (criticalFail) {
-    summary = `${name} falha ao atacar! (natural 1)`;
-  } else if (!hit) {
-    summary = `${name} ataca${modeTag} ${defenderToken.name}: ${attackTotal} vs CA ${ac} — ERROU`;
-  } else if (critical) {
-    summary = `${name} CRÍTICO${modeTag} em ${defenderToken.name}! ${damage!.total} ${action.damageType}`;
-  } else {
-    summary = `${name} acerta${modeTag} ${defenderToken.name}: ${attackTotal} vs CA ${ac} — ${damage!.total} ${action.damageType}`;
-  }
-
-  return {
+  let baseRes: AttackResolution = {
     attackerTokenId: attackerToken.id,
     defenderTokenId: defenderToken.id,
     actionKind: action.kind,
@@ -528,8 +577,32 @@ function resolveMonsterAttack(
     damage,
     defenderHpBefore: hpBefore,
     defenderHpAfter: hpAfter,
-    summary,
+    summary: "",
   };
+
+  const name = attackerToken.name;
+  const modeTag = rollMode !== "normal" ? ` [${formatRollMode(rollMode)}]` : "";
+  let summary: string;
+  if (criticalFail) {
+    summary = `${name} falha ao atacar! (natural 1)`;
+  } else if (!hit) {
+    summary = `${name} ataca${modeTag} ${defenderToken.name}: ${attackTotal} vs CA ${ac} — ERROU`;
+  } else if (critical) {
+    summary = `${name} CRÍTICO${modeTag} em ${defenderToken.name}! ${damage!.total} ${action.damageType}`;
+  } else {
+    summary = `${name} acerta${modeTag} ${defenderToken.name}: ${attackTotal} vs CA ${ac} — ${damage!.total} ${action.damageType}`;
+  }
+
+  baseRes.summary = summary;
+  return applyHitSpecialsToResolution(
+    baseRes,
+    attackerToken,
+    action,
+    hit,
+    critical,
+    damage,
+    hpBefore
+  );
 }
 
 export function resolveAttack(
@@ -594,7 +667,7 @@ export function resolveAttack(
     summary = `${actor.name} acerta${modLabel} ${defenderToken.name}: ${attackTotal} vs CA ${ac} — ${damage!.total} ${action.damageType}`;
   }
 
-  return {
+  const baseRes: AttackResolution = {
     attackerTokenId: attackerToken.id,
     defenderTokenId: defenderToken.id,
     actionKind: action.kind,
@@ -620,10 +693,20 @@ export function resolveAttack(
     defenderHpAfter: hpAfter,
     summary,
   };
+
+  return applyHitSpecialsToResolution(
+    baseRes,
+    attackerToken,
+    action,
+    hit,
+    critical,
+    damage,
+    hpBefore
+  );
 }
 
 export function resolveMultiAttack(
-  attackerToken: BattleToken,
+  attackerTokenIn: BattleToken,
   defenderToken: BattleToken,
   actor: CharacterSheet,
   action: CombatActionOption,
@@ -633,6 +716,7 @@ export function resolveMultiAttack(
   const count = warriorAttackCount(actor, action);
   const results: AttackResolution[] = [];
   let currentDefender = { ...defenderToken };
+  let attackerToken = { ...attackerTokenIn };
 
   for (let i = 0; i < count; i++) {
     const res = resolveAttack(attackerToken, currentDefender, actor, action, turn, undefined, allTokens);
@@ -644,6 +728,9 @@ export function resolveMultiAttack(
     }
     results.push(res);
     currentDefender = { ...currentDefender, vida: res.defenderHpAfter };
+    if (res.attackerHpAfter != null) {
+      attackerToken = { ...attackerToken, vida: res.attackerHpAfter };
+    }
     if ((currentDefender.vida ?? 0) <= 0) break;
   }
 
@@ -682,6 +769,12 @@ export function formatAttackChatDetail(res: AttackResolution): string {
       `Dano ${res.damage.rolls.join("+")}${res.damage.attributeMod ? `+${res.damage.attributeMod}` : ""} = ${res.damage.total}`
     );
     parts.push(`HP ${res.defenderHpBefore}→${res.defenderHpAfter}`);
+  }
+  if (res.attackerHeal && res.attackerHpBefore != null && res.attackerHpAfter != null) {
+    parts.push(`Atacante HP ${res.attackerHpBefore}→${res.attackerHpAfter}`);
+  }
+  if (res.specialNotes?.length) {
+    parts.push(res.specialNotes.join(", "));
   }
   return parts.join(" · ");
 }

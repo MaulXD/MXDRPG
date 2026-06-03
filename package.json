@@ -1,12 +1,28 @@
 {
-  "name": "mxdrpg",
+  "name": "eldarin-vtt",
+  "version": "0.1.0",
   "private": true,
-  "description": "MXDRPG monorepo — app Next.js em web/",
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
-    "dev": "npm run dev --prefix web",
-    "dev:clean": "npm run dev:clean --prefix web",
-    "build": "npm run build --prefix web",
-    "start": "npm run start --prefix web",
-    "install:web": "npm install --prefix web"
+    "dev": "next dev",
+    "dev:clean": "node -e \"require('fs').rmSync('.next',{recursive:true,force:true})\" && next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "next": "^15.1.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/node": "^22.10.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "typescript": "^5.7.0"
   }
 }
