@@ -9,6 +9,10 @@ Adaptados a **pressão**, escuridão e corrente. Predadores de emboscada (tubar�
 
 **Bioma:** Mar de Prata Cega — campanhas inteiras só com este guia.
 
+**Sobrevivencia completa:** `BIOMAS-APROFUNDADOS.md` (Bioma 2) · plantas #05, #12, #15, #29 · objetos OBJ-B02 · regras `REGRAS-ECOLOGIA-DE-SOBREVIVENCIA.md`.
+
+**Respirar agua:** assimilacao *Guelras de Profundeza* (tubarao 031, sereia 052, kraken 029). Algas #12 = nado/visao, **nao** respiracao. Bolha OBJ-G15 = 10 min emergencia.
+
 ---
 
 ## Perigos ambientais

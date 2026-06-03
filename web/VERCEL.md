@@ -1,34 +1,43 @@
-# Deploy na Vercel (MXDRPG)
+# Deploy Vercel — MXDRPG
 
-## Configuração obrigatória no dashboard
+## Configuração (uma vez)
 
-Abra o projeto → **Settings** → **Build and Deployment**:
+**Project → Settings → Build and Deployment**
 
-| Campo | Valor correto |
-|-------|----------------|
+| Campo | Valor |
+|-------|--------|
 | **Root Directory** | `web` |
 | **Framework Preset** | Next.js |
-| **Build Command** | *(vazio — padrão)* |
-| **Output Directory** | *(vazio — apague `public`; desligue **Override** se estiver ligado)* |
-| **Install Command** | *(vazio — padrão)* |
+| **Build Command** | *(vazio)* |
+| **Output Directory** | *(vazio — sem override, sem `public`)* |
+| **Install Command** | *(vazio)* |
 
-> Se **Output Directory** = `public`, o build quebra.  
-> O repo usa `vercel.json` com `"use": "@vercel/next"` para forçar deploy Next.js.
+Clique **Save**.
 
-### Se o erro `public` continuar
+## Deploy
 
-1. **Settings** → **Build and Deployment** → em **Output Directory**, clique para **remover o override** (não pode ficar `public`).
-2. Confirme **Root Directory** = `web` (salve de novo).
-3. **Deployments** → **Redeploy** (sem cache: desmarque *Use existing Build Cache*).
+1. Push no GitHub (`main`)
+2. **Deployments** → aguarde **Ready** (verde)
+3. Abra a URL do deploy (ex. `mxdrpg-xxx.vercel.app`)
 
-## Depois de salvar
+## Testar
 
-**Deployments** → último deploy → **Redeploy**.
+- `/` — landing
+- `/api/health` — deve retornar `{"ok":true,"app":"eldarin-vtt"}`
+- `/entrar` — login
 
-## Estrutura
+## Erros comuns
 
-Só `web/package-lock.json` deve existir (não há `package-lock.json` na raiz do repo).
+### `No Output Directory named "public"`
+**Output Directory** no dashboard está `public`. Apague / desligue override. Framework = Next.js.
 
-## Variáveis (opcional)
+### `404: NOT_FOUND` na URL do site
+Quase sempre **Root Directory não é `web`** (builda repo errado) ou deploy antigo falho.
 
-`ELDARIN_DEMO_PASSWORD` = `vinite-dev`
+1. Confirme **Root Directory = `web`**
+2. Remova `vercel.json` com `builds` (repo atual não usa)
+3. **Redeploy** sem cache
+4. Teste `/api/health` na URL do deploy
+
+### `multiple lockfiles`
+Só deve existir `web/package-lock.json` (não há lockfile na raiz do repo).

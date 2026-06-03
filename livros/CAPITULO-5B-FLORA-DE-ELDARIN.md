@@ -1,6 +1,7 @@
 # CAPITULO 5B — FLORA DE MASMORRA (40 ESPECIES)
 
-> Alimentacao **vegetal** para Druidas, Forrageiros e Clerigo do Pao da Vida. Cada planta ativa **Bonus de Dieta Base** e efeito proprio (sem precisar de monstro). Ver tambem **Assimilacao por Especime** (Cap. 6.2) para carne de monstro.
+> Alimentacao **vegetal** para Druidas, Forrageiros e Clerigo do Pao da Vida. Cada planta ativa **Bonus de Dieta Base** e efeito proprio (sem precisar de monstro). Ver tambem **Assimilacao por Especime** (Cap. 6.2) para carne de monstro.  
+> **Sobrevivencia em biomas:** muitas plantas **nao substituem** monstro (ex.: #12 nao respira agua) — ver `BIOMAS-APROFUNDADOS.md` e `REGRAS-ECOLOGIA-DE-SOBREVIVENCIA.md`.
 
 ---
 

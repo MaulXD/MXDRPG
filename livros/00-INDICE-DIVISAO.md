@@ -11,6 +11,9 @@
 | **Assimilacao (completa)** | `ASSIMILACAO-POR-ESPECIME.md` | 60 monstros × 8 habilidades (espelho do bestiario) |
 | **XP por especime** | `TABELA-XP-ESPECIMES.md` | 001–060 · 100×Nv (Cap. 2.5 Jogador) |
 | **Flora (referencia)** | `CAPITULO-5B-FLORA-DE-ELDARIN.md` | Copia tambem embutida no Jogador apos Cap. 6 |
+| **Biomas (profundo)** | `BIOMAS-APROFUNDADOS.md` | Origem, sobrevivencia flora/fauna, 20 biomas |
+| **Objetos de cenario** | `CATALOGO-OBJETOS-DE-CENARIO.md` | Terreno, props, perigos por bioma (OBJ-G, OBJ-B##) |
+| **Sobrevivencia (regras)** | `REGRAS-ECOLOGIA-DE-SOBREVIVENCIA.md` | 3 vias, pressao ambiental, composicao de mapa |
 | **Livro do Mestre** | `LIVRO-DO-MESTRE.md` | Biomas, 11 Bocas, bosses, **Magia na mesa** (NPC), **Comportamentos**, bestiário (~80) |
 
 ## Suplementos (opcionais)
