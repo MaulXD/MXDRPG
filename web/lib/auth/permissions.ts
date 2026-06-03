@@ -1,7 +1,6 @@
 import type { UserRole } from "./types";
 import { roleAtLeast } from "./roles";
 
-/** Permissões granulares da plataforma */
 export const Permission = {
   USERS_MANAGE: "users.manage",
   WORLDS_MANAGE: "worlds.manage",
@@ -19,19 +18,12 @@ export type Permission = (typeof Permission)[keyof typeof Permission];
 
 const ROLE_PERMISSIONS: Record<UserRole, Permission[]> = {
   admin: Object.values(Permission),
-  mestre: [
+  member: [
     Permission.CAMPAIGNS_MANAGE,
+    Permission.CHARACTERS_OWN,
+    Permission.SESSIONS_JOIN,
+    Permission.SHEETS_VIEW,
     Permission.SCENES_MANAGE,
-    Permission.COMPENDIUMS_MANAGE,
-    Permission.PLAYERS_VIEW,
-    Permission.CHARACTERS_OWN,
-    Permission.SESSIONS_JOIN,
-    Permission.SHEETS_VIEW,
-  ],
-  jogador: [
-    Permission.CHARACTERS_OWN,
-    Permission.SESSIONS_JOIN,
-    Permission.SHEETS_VIEW,
   ],
 };
 
@@ -39,6 +31,7 @@ export function can(role: UserRole, permission: Permission): boolean {
   return ROLE_PERMISSIONS[role].includes(permission);
 }
 
-export function canAccessArea(role: UserRole, area: "admin" | "mestre" | "jogador"): boolean {
-  return roleAtLeast(role, area);
+export function canAccessArea(role: UserRole, area: "admin" | "painel"): boolean {
+  if (area === "painel") return role === "member" || role === "admin";
+  return roleAtLeast(role, "admin");
 }

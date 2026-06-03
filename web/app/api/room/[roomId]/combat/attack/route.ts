@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
+import { chatRoleForUser } from "@/lib/auth/authorize-room";
+import { canManageRoom } from "@/lib/auth/room-access";
 import { getSession } from "@/lib/auth/session";
-import { executeRoomAttack } from "@/lib/room/store";
+import { executeRoomAttack, getRoom } from "@/lib/room/store";
 import type { ChatMessage } from "@/lib/room/chat";
 
 type Params = { params: Promise<{ roomId: string }> };
@@ -13,12 +15,22 @@ type Body = {
   bypassTurn?: boolean;
 };
 
-function authorFromSession(session: Awaited<ReturnType<typeof getSession>>) {
+function authorFromSession(
+  session: Awaited<ReturnType<typeof getSession>>,
+  room: ReturnType<typeof getRoom>
+) {
+  if (session && room) {
+    return {
+      authorId: session.user.id,
+      authorName: session.user.name,
+      authorRole: chatRoleForUser(room, session.user),
+    };
+  }
   if (session) {
     return {
       authorId: session.user.id,
       authorName: session.user.name,
-      authorRole: session.user.role as ChatMessage["authorRole"],
+      authorRole: "jogador" as const,
     };
   }
   return {
@@ -31,7 +43,8 @@ function authorFromSession(session: Awaited<ReturnType<typeof getSession>>) {
 export async function POST(req: Request, { params }: Params) {
   const { roomId } = await params;
   const session = await getSession();
-  const author = authorFromSession(session);
+  const room = getRoom(roomId);
+  const author = authorFromSession(session, room);
   const body = (await req.json()) as Body;
 
   const attackerTokenId = body.attackerTokenId?.trim();
@@ -41,7 +54,7 @@ export async function POST(req: Request, { params }: Params) {
     return NextResponse.json({ error: "Tokens inválidos" }, { status: 400 });
   }
 
-  const canBypass = session?.user.role === "mestre" || session?.user.role === "admin";
+  const canBypass = room && session ? canManageRoom(room, session.user) : false;
   const bypassTurn = Boolean(body.bypassTurn && canBypass);
 
   const result = executeRoomAttack(roomId, attackerTokenId, defenderTokenId, author, {

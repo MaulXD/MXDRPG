@@ -31,8 +31,9 @@ import type { MonsterSpawnOptions } from "@/lib/vtt/monster-scaling";
 import type { BattleToken } from "@/lib/vtt/types";
 import { createChatId, welcomeChat, type ChatMessage } from "./chat";
 import { emptyCombat, nextTurn, rollInitiative, activeTokenId } from "./combat";
+import { DEMO_SCENE } from "@/lib/vtt/demo-scene";
 import { createDemoRoom, syncLinkedTokens } from "./sync";
-import type { RoomActor, RoomSnapshot, RoomState } from "./types";
+import type { RoomActor, RoomListItem, RoomSnapshot, RoomState } from "./types";
 
 declare global {
   // eslint-disable-next-line no-var
@@ -123,6 +124,97 @@ export function getRoom(roomId: string): RoomState | null {
 export function getRoomSnapshot(roomId: string): RoomSnapshot | null {
   const room = getRoom(roomId);
   return room ? snapshot(room) : null;
+}
+
+function randomInviteCode(): string {
+  const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  let s = "";
+  for (let i = 0; i < 8; i++) s += chars[Math.floor(Math.random() * chars.length)];
+  return s;
+}
+
+function slugRoomId(name: string): string {
+  const base =
+    name
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/\p{M}/gu, "")
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-|-$/g, "")
+      .slice(0, 24) || "mesa";
+  return `${base}-${Date.now().toString(36).slice(-5)}`;
+}
+
+export function createRoom(ownerId: string, name: string): RoomState {
+  const roomId = slugRoomId(name);
+  const label = name.trim().slice(0, 80) || "Nova mesa";
+  const scene = {
+    ...DEMO_SCENE,
+    id: roomId,
+    name: label,
+    tokens: [],
+  };
+  const state: RoomState = {
+    roomId,
+    ownerId,
+    name: label,
+    inviteCode: randomInviteCode(),
+    memberIds: [],
+    scene,
+    actors: {},
+    combat: emptyCombat([]),
+    chat: [welcomeChat()],
+    revision: 1,
+    updatedAt: Date.now(),
+  };
+  rooms().set(roomId, state);
+  return state;
+}
+
+export function joinRoomByInvite(inviteCode: string, userId: string): RoomState | null {
+  const code = inviteCode.trim().toUpperCase();
+  for (const room of rooms().values()) {
+    if (room.inviteCode.toUpperCase() !== code) continue;
+    if (room.ownerId !== userId && !room.memberIds.includes(userId)) {
+      room.memberIds.push(userId);
+      room.updatedAt = Date.now();
+      room.revision += 1;
+    }
+    return room;
+  }
+  return null;
+}
+
+export function listRoomsForUser(userId: string): RoomListItem[] {
+  const out: RoomListItem[] = [];
+  for (const room of rooms().values()) {
+    if (room.ownerId === userId || room.memberIds.includes(userId)) {
+      out.push({
+        roomId: room.roomId,
+        name: room.name,
+        ownerId: room.ownerId,
+        inviteCode: room.inviteCode,
+        isOwner: room.ownerId === userId,
+        updatedAt: room.updatedAt,
+      });
+    }
+  }
+  return out.sort((a, b) => b.updatedAt - a.updatedAt);
+}
+
+export function getRoomMeta(roomId: string): Pick<
+  RoomState,
+  "roomId" | "ownerId" | "name" | "inviteCode" | "memberIds"
+> | null {
+  const room = getRoom(roomId);
+  if (!room) return null;
+  return {
+    roomId: room.roomId,
+    ownerId: room.ownerId,
+    name: room.name,
+    inviteCode: room.inviteCode,
+    memberIds: room.memberIds,
+  };
 }
 
 export function getRoomActor(roomId: string, actorId: string): RoomActor | null {

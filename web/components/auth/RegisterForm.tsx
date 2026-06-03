@@ -3,14 +3,9 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-const QUICK = [
-  { email: "jogador@vinite.local", label: "Demo" },
-];
-
-type Props = { redirect?: string };
-
-export function LoginForm({ redirect = "" }: Props) {
+export function RegisterForm() {
   const router = useRouter();
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -21,26 +16,36 @@ export function LoginForm({ redirect = "" }: Props) {
     setLoading(true);
     setError("");
 
-    const res = await fetch("/api/auth/login", {
+    const res = await fetch("/api/auth/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password, redirect }),
+      body: JSON.stringify({ name, email, password }),
     });
-
     const data = await res.json();
     setLoading(false);
 
     if (!res.ok) {
-      setError(data.error ?? "Falha no login");
+      setError(data.error ?? "Falha no cadastro");
       return;
     }
 
-    router.push(data.redirect);
+    router.push(data.redirect ?? "/painel");
     router.refresh();
   }
 
   return (
     <form onSubmit={submit} style={{ display: "flex", flexDirection: "column", gap: "0.85rem" }}>
+      <label style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}>
+        Nome
+        <input
+          type="text"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          required
+          style={inputStyle}
+          placeholder="Seu nome na mesa"
+        />
+      </label>
       <label style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}>
         E-mail
         <input
@@ -49,36 +54,23 @@ export function LoginForm({ redirect = "" }: Props) {
           onChange={(e) => setEmail(e.target.value)}
           required
           style={inputStyle}
-          placeholder="jogador@vinite.local"
         />
       </label>
       <label style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}>
-        Senha
+        Senha (mín. 6)
         <input
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
+          minLength={6}
           style={inputStyle}
         />
       </label>
       {error && <p style={{ color: "#ff6b8a", margin: 0, fontSize: "0.85rem" }}>{error}</p>}
       <button type="submit" className="btn" disabled={loading}>
-        {loading ? "Entrando…" : "Entrar"}
+        {loading ? "Criando conta…" : "Criar conta"}
       </button>
-      <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
-        {QUICK.map((q) => (
-          <button
-            key={q.email}
-            type="button"
-            className="btn btn-secondary"
-            style={{ fontSize: "0.75rem", padding: "0.35rem 0.65rem" }}
-            onClick={() => setEmail(q.email)}
-          >
-            {q.label}
-          </button>
-        ))}
-      </div>
     </form>
   );
 }

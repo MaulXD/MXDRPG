@@ -1,4 +1,5 @@
-# Next.js app
+# Dependencies
+node_modules/
 web/node_modules/
 web/.next/
 web/out/

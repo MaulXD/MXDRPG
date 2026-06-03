@@ -9,11 +9,26 @@ export type RoomActor = CharacterSheet & { revision: number };
 
 export type RoomState = {
   roomId: string;
+  /** Dono da mesa — único com poderes de mestre nesta sala */
+  ownerId: string;
+  name: string;
+  /** Código para jogadores entrarem (Roll20: link de convite) */
+  inviteCode: string;
+  memberIds: string[];
   scene: BattleScene;
   actors: Record<string, RoomActor>;
   combat: CombatTrack;
   chat: ChatMessage[];
   revision: number;
+  updatedAt: number;
+};
+
+export type RoomListItem = {
+  roomId: string;
+  name: string;
+  ownerId: string;
+  inviteCode: string;
+  isOwner: boolean;
   updatedAt: number;
 };
 

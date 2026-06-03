@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import type { BattleToken } from "@/lib/vtt/types";
+import { canMoveToken } from "@/lib/auth/authorize-room";
 import { getSession } from "@/lib/auth/session";
-import { getRoomSnapshot, updateRoomToken } from "@/lib/room/store";
+import { getRoom, getRoomSnapshot, updateRoomToken } from "@/lib/room/store";
 
 type Params = { params: Promise<{ roomId: string; tokenId: string }> };
 
@@ -21,10 +22,9 @@ export async function PATCH(req: Request, { params }: Params) {
 
   const body = (await req.json()) as Partial<BattleToken>;
 
-  if (session) {
-    const isOwner = token.ownerRole === "jogador" && session.user.role === "jogador";
-    const isMestre = session.user.role === "mestre" || session.user.role === "admin";
-    if (!isOwner && !isMestre) {
+  const room = getRoom(roomId);
+  if (session && room) {
+    if (!canMoveToken(room, session.user, token)) {
       return NextResponse.json({ error: "Sem permissão" }, { status: 403 });
     }
   }

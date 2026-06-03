@@ -72,6 +72,10 @@ export function createDemoRoom(): RoomState {
 
   return {
     roomId: "demo",
+    ownerId: "usr_admin_01",
+    name: "Mesa demonstração",
+    inviteCode: "DEMOELDR",
+    memberIds: [],
     scene,
     actors,
     combat: emptyCombat(scene.tokens),
