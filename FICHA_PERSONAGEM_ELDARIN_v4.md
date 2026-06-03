@@ -59,6 +59,10 @@ Truques: _________________________ · Magias nv1–3: _________________________
 
 **XP:** monstro = 100×Nv (÷ PCs) · subir nv = 50×Nv×(Nv−1) acum. · fraco: ×0,5 / ×0,25
 
+**Bioma:** ☐ gas/sem tocha → Brasas ou Calor de Panela · ☐ vertical (9/12) · Brasas restantes ___
+
 Condições: ☐ agarrado ☐ atordoado ☐ envenenado ☐ exausto · Exaustão nv ___ · PO ___
+
+ESP: __________ MIN: __________ TES: __________ (catalogo tesouros)
 
 Notas: _________________________________________________________________

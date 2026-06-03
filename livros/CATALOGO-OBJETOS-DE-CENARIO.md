@@ -143,7 +143,9 @@
 | OBJ-B09-01 | Plataforma Flutuante de Ruina | CH | 4m x 4m; instavel DES CD 11 | Musgo Estelar (#35) |
 | OBJ-B09-02 | Vento Ascendente | PE | Puxa 3m para cima no fim do turno | Grifo 022: voo |
 | OBJ-B09-03 | Fio de Ancoragem (Tubarao-Relva) | RE | 1x P15; corda natural 15m | P15 |
-| OBJ-B09-04 | Queda no Vazio | TE | Queda “infinita” ate corda/magia | Wyvern 011 |
+| OBJ-B09-04 | Vao sem Fundo (marcador) | TE | Camada C: queda; so voo 9m+ ou assimilacao | Wyvern 011 · Grifo 022 |
+| OBJ-B09-05 | Ponte de Teia Ancora (rara) | IN | Travessia camada B; FOR CD 12 se romper | Aranha 024 |
+| OBJ-B09-06 | Plataforma Instavel (camada B) | CH | DES CD 11 ou cai 1d6 | Plano de rotas INT CD 12 |
 
 ---
 
@@ -155,6 +157,7 @@
 | OBJ-B10-02 | Bolha de Gas Letal | PE | CON CD 13 ou 3d6 + Envenenado | Folha Salmour (#05) |
 | OBJ-B10-03 | Lama Viva | CH | Afunda: FOR CD 12 cada rodada | Sapo 028: Pele |
 | OBJ-B10-04 | Tronco Podre com Salmour | RE | P05 automatico 1x | P05 |
+| OBJ-B10-05 | Refugio de Pedra sem Gas | PR | Dentro: tocha proibida; Brasas/Calor de Panela OK | Kit 16.2.1 |
 
 ---
 
@@ -177,6 +180,8 @@
 | OBJ-B12-02 | Ovo de Aranha (carruagem) | PR | Ruido alto: eclosao 1d4 filhotes | — |
 | OBJ-B12-03 | Casulo de Proteina | RE | 1 refeicao Comum se abrir CD 10 | Mel Xilema (#20) |
 | OBJ-B12-04 | Flor Narcotica (teia) | RE | P22 com Harmonizacao CD 12 | P22 |
+| OBJ-B12-05 | Camada 2 — Bolsa Central | CH | So voo/planagem ou SAB CD 15 teia-viva | #35 Musgo Estelar |
+| OBJ-B12-06 | Nicho de Brasas (NPC) | RE | 1 Kit Brasas Magicas escondido | Calor de Panela |
 
 ---
 
@@ -267,4 +272,30 @@ Rola **1d20** ao descrever sala: usa objeto da linha correspondente ao bioma + *
 
 ---
 
-*Biomas narrados: `BIOMAS-APROFUNDADOS.md` · Plantas: `CAPITULO-5B-FLORA-DE-ELDARIN.md`*
+## Recursos economicos (OBJ-R) — minerios, especiarias, tesouro
+
+Tipo **RE** = saqueavel (nao e só decoracao). Ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` para IDs ESP/MIN/TES e tabela 1d12 por bioma.
+
+| ID | Nome | Bioma | Saque |
+|----|------|-------|-------|
+| OBJ-R01 | Veio de Ferro Vulcanico | 4 | 3× MIN-01 (Trinchar pedra CD 12) |
+| OBJ-R02 | Cranio-Gema Enterrado | 7 | TES-11 + 2× MIN-03 |
+| OBJ-R03 | Banco de Perolas Turvas | 2 | 2d4× MIN-10 |
+| OBJ-R04 | Estante-Tesouro (Arquivos) | 11 | TES-12 + ESP-19; armadilha INT CD 14 |
+| OBJ-R05 | Pedra Magnetita Flutuante | 17 | MIN-02; DES CD 13 alcancar |
+| OBJ-R06 | Altar de Oferendas | 20 | TES-20 + MIN-30 |
+| OBJ-R07 | Bau de Expedicao Oxidadado | 1, 8 | 4d10 po + 1 ESP Comum |
+| OBJ-R08 | Nicho de Especiarias Secas | 3, 10 | 1d4 ESP aleatorias do bioma |
+| OBJ-R09 | Cristalao Partido | 6, 13 | 2× MIN-05 + TES-05 |
+| OBJ-R10 | Covil Draconico (marca no mapa) | 4, 9 | 8d10 po + 1 TES Raro (catalogo) |
+| OBJ-R11 | Saco de Minerio Goblin | 1, 32 | 5× MIN-04 + 2d6 po |
+| OBJ-R12 | Tumba com Tabua de Ouro | 7, 9 | TES-10 |
+| OBJ-R13 | Fio de Prata com Joias | 18 | 3× MIN-09 + TES-05 |
+| OBJ-R14 | Lago de Salmour (evaporar) | 2, 10 | 3× ESP-01 por descanso longo |
+| OBJ-R15 | Runa em Pedra (Golem morto) | 8, 15 | MIN-22 + TES-12 |
+
+**Mesa:** 1–2 OBJ-R por sala de exploracao; covis de boss usam OBJ-R10 ou tabela de covil no catalogo.
+
+---
+
+*Biomas: `BIOMAS-APROFUNDADOS.md` · Plantas: `CAPITULO-5B` · Tesouros: `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md`*

@@ -7,13 +7,15 @@
 
 | Volume | Arquivo | Conteúdo |
 |--------|---------|----------|
-| **Livro do Jogador** | `LIVRO-DO-JOGADOR.md` | **Cap. 5B:** 40 plantas · **Cap. 6:** assimilacao **por especime** (001–060, 8 cada) · **60 magias** |
+| **Livro do Jogador** | `LIVRO-DO-JOGADOR.md` | **Cap. 5B:** 40 plantas · **Cap. 6:** assimilacao **por especime** (001–060, 8 cada) · **61 magias** (incl. truque Calor de Panela) |
 | **Assimilacao (completa)** | `ASSIMILACAO-POR-ESPECIME.md` | 60 monstros × 8 habilidades (espelho do bestiario) |
 | **XP por especime** | `TABELA-XP-ESPECIMES.md` | 001–060 · 100×Nv (Cap. 2.5 Jogador) |
 | **Flora (referencia)** | `CAPITULO-5B-FLORA-DE-ELDARIN.md` | Copia tambem embutida no Jogador apos Cap. 6 |
 | **Biomas (profundo)** | `BIOMAS-APROFUNDADOS.md` | Origem, sobrevivencia flora/fauna, 20 biomas |
 | **Objetos de cenario** | `CATALOGO-OBJETOS-DE-CENARIO.md` | Terreno, props, perigos por bioma (OBJ-G, OBJ-B##) |
 | **Sobrevivencia (regras)** | `REGRAS-ECOLOGIA-DE-SOBREVIVENCIA.md` | 3 vias, pressao ambiental, composicao de mapa |
+| **Vertical, luz, brasas** | `SUPLEMENTO-BIOMAS-VERTICAIS-LUZ-E-BRASAS.md` | Biomas 9 e 12 (voo/plano); 12 sem tocha; Brasas + truque Calor de Panela |
+| **Tesouros e minerios** | `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` | 30 ESP · 30 MIN · 20 TES · saque por monstro 001–060 · OBJ-R |
 | **Livro do Mestre** | `LIVRO-DO-MESTRE.md` | Biomas, 11 Bocas, bosses, **Magia na mesa** (NPC), **Comportamentos**, bestiário (~80) |
 
 ## Suplementos (opcionais)

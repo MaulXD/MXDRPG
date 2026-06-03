@@ -1,11 +1,10 @@
-# Dependencies
+# Next.js
 node_modules/
-web/node_modules/
-web/.next/
-web/out/
-web/.vercel/
-web/*.tsbuildinfo
-web/next-env.d.ts
+.next/
+out/
+.vercel/
+*.tsbuildinfo
+next-env.d.ts
 
 # Secrets
 .env
@@ -18,5 +17,5 @@ web/next-env.d.ts
 Thumbs.db
 *.log
 
-# Uploads / local media (optional large files)
-web/public/uploads/
+# Uploads
+public/uploads/
