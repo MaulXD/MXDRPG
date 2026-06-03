@@ -23,6 +23,18 @@ Mesa demo pública: [http://localhost:3000/mesa/demo](http://localhost:3000/mesa
 
 ## Deploy na Vercel
 
+### Se aparecer `No Output Directory named "public"`
+
+O projeto foi detectado como site estático. Corrija no dashboard:
+
+1. **Settings** → **Build and Deployment**
+2. **Framework Preset** → **Next.js**
+3. **Output Directory** → **deixe vazio** (apague `public` se estiver preenchido)
+4. **Root Directory** → `web`
+5. **Redeploy**
+
+O `vercel.json` em `web/` força `framework: nextjs` e evita output `public`.
+
 ### Se aparecer `404: NOT_FOUND` (como na captura)
 
 A Vercel está servindo a **raiz do repo** sem o app Next.js. Corrija assim:
