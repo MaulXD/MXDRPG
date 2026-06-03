@@ -1,6 +1,6 @@
 # Deploy opcional via GitHub Actions (se o dashboard da Vercel falhar).
 # Secrets: VERCEL_TOKEN, VERCEL_ORG_ID, VERCEL_PROJECT_ID
-name: Deploy Vercel (web)
+name: Deploy Vercel
 on:
   push:
     branches: [main]
@@ -9,9 +9,6 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: web
     steps:
       - uses: actions/checkout@v4
 
@@ -19,7 +16,7 @@ jobs:
         with:
           node-version: "20"
           cache: npm
-          cache-dependency-path: web/package-lock.json
+          cache-dependency-path: package-lock.json
 
       - name: Install
         run: npm ci
@@ -34,5 +31,5 @@ jobs:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
           vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
           vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          working-directory: ./web
+          working-directory: ./
           vercel-args: "--prod"

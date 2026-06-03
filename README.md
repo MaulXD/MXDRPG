@@ -2,57 +2,28 @@
 
 | Pasta | O quê |
 |-------|--------|
-| **`web/`** | App Next.js (VTT) — **é isso que vai na Vercel** |
+| **`app/`, `components/`, `lib/`** | App Next.js (VTT) — deploy na Vercel na **raiz** do repo |
 | `livros/` | Regras e lore |
 | `vinite/` | Módulo Foundry |
+| `web/` | Legado — só cache local; app está na raiz |
 
 ## Local
 
-Na raiz do repo (ou dentro de `web/`):
-
 ```bash
-npm run install:web
-npm run dev
-```
-
-Equivalente manual:
-
-```bash
-cd web
-npm install
+npm ci
 npm run dev
 ```
 
 http://localhost:3000
 
-**Página sem tema (links azuis, fonte padrão)?** O CSS do Next quebrou no cache. Pare o servidor (Ctrl+C), depois:
+**CSS quebrado?** `npm run dev:clean`
 
-```bash
-npm run dev:clean
-```
+## Vercel
 
-(ou apague a pasta `web/.next` manualmente e rode `npm run dev` de novo.)
+- **Root Directory:** *(vazio)*
+- **Framework:** Next.js
+- **Output Directory:** *(vazio — nunca `public`)*
 
-## Vercel (obrigatório)
-
-**Deploy:** use **`mxdrpg.vercel.app`** com repo `MXDRPG` e Root Directory `web` — [DEPLOY.md](DEPLOY.md).  
-**`drpg.vercel.app`** hoje é outro app (Create React App); ignore ou reconecte ao mesmo repo.
-
-**Settings → Build and Deployment:**
-
-- **Root Directory:** `web` ← **recomendado**
-- **Framework:** Next.js (não Other)
-- **Output Directory:** *(vazio — apague `public`; desligue **Override**)*
-- **Redeploy** com **Clear Build Cache** (evita lockfile duplicado na raiz)
-
-Se o log mostrar `npm run build --prefix web` e commit antigo, o deploy não pegou o `vercel.json` novo — redeploy em `main` atual.
-
-Depois **Redeploy** sem cache.
-
-Teste: `https://SEU-SITE.vercel.app/api/health`
-
-Detalhes: [web/VERCEL.md](web/VERCEL.md)
-
-**Importante:** não crie `package-lock.json` na raiz do monorepo (só em `web/`), senão a Vercel avisa “multiple lockfiles”.
+[VERCEL.md](VERCEL.md) · [DEPLOY.md](DEPLOY.md)
 
 GitHub: https://github.com/MaulXD/MXDRPG.git

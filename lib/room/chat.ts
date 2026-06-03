@@ -36,6 +36,9 @@ export type ChatMessage = {
     damageTotal: number | null;
     defenderHpBefore: number;
     defenderHpAfter: number;
+    attackerHpBefore?: number;
+    attackerHpAfter?: number;
+    attackerHeal?: number;
     detail: string;
     attackIndex?: number;
     attackCount?: number;
