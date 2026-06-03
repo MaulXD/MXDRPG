@@ -10,6 +10,13 @@ O app Next.js está na **raiz** do repositório (não em `web/`).
 4. **Output Directory:** *(vazio)*
 5. Deploy → teste `https://mxdrpg.vercel.app/api/health`
 
+## Qual URL abrir?
+
+| URL | O que é |
+|-----|---------|
+| **https://mxdrpg.vercel.app** | Eldarin (MXDRPG) — correto |
+| https://drpg.vercel.app | Outro app (Create React App) — errado |
+
 ## Se ainda falhar
 
 - **Clear Build Cache** no redeploy
