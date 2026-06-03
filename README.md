@@ -1,5 +1,10 @@
 # MXDRPG — Eldarin
 
+**Site no ar:** https://mxdrpg.vercel.app  
+**Saúde:** https://mxdrpg.vercel.app/api/health  
+
+Não use `drpg.vercel.app` — é outro projeto (React App antigo), não este VTT.
+
 | Pasta | O quê |
 |-------|--------|
 | **`app/`, `components/`, `lib/`** | App Next.js (VTT) — deploy na Vercel na **raiz** do repo |
