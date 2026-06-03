@@ -1,5 +1,5 @@
 import { getSession } from "@/lib/auth/session";
-import { portalPathForRole, ROLES } from "@/lib/auth/roles";
+import { portalPathForRole, roleMeta } from "@/lib/auth/roles";
 import Link from "next/link";
 import { ThemeToggle } from "@/components/ThemeToggle";
 
@@ -27,7 +27,7 @@ export async function SiteHeaderWrapper() {
         <ThemeToggle />
         {session ? (
           <Link href={portalPathForRole(session.user.role)} className="btn nav-cta">
-            {ROLES[session.user.role].label}
+            {roleMeta(session.user.role).label}
           </Link>
         ) : (
           <Link href="/entrar" className="btn nav-cta">

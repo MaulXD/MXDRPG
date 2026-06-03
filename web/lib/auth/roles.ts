@@ -20,10 +20,23 @@ export const ROLES: Record<
 
 export const ROLE_ORDER: UserRole[] = ["admin", "member"];
 
-export function roleAtLeast(userRole: UserRole, required: UserRole): boolean {
-  return ROLES[userRole].level >= ROLES[required].level;
+/** Papéis globais antigos (cookie/sessão) → modelo atual */
+export function normalizeUserRole(role: string | undefined | null): UserRole {
+  if (role === "admin" || role === "member") return role;
+  if (role === "mestre" || role === "jogador") return "member";
+  return "member";
 }
 
-export function portalPathForRole(role: UserRole): string {
-  return ROLES[role].homePath;
+export function roleMeta(role: UserRole | string) {
+  return ROLES[normalizeUserRole(role)];
+}
+
+export function roleAtLeast(userRole: UserRole, required: UserRole): boolean {
+  const u = normalizeUserRole(userRole);
+  const r = normalizeUserRole(required);
+  return ROLES[u].level >= ROLES[r].level;
+}
+
+export function portalPathForRole(role: UserRole | string): string {
+  return roleMeta(role).homePath;
 }

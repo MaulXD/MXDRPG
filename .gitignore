@@ -1,6 +1,10 @@
 # Build artifacts (never commit)
 .next/
 node_modules/
+/package-lock.json
+
+# Runtime user registry (seed stays in git)
+web/data/users/registry.json
 
 # Next.js (web/)
 web/node_modules/
