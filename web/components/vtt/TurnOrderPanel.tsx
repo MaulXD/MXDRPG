@@ -81,4 +81,12 @@ export function TurnOrderPanel({ roomId, combat, tokens, canControl, onUpdate }:
                     ? ` · ${token.monsterVariant}`
                     : ""}
                 </small>
-              </span
+              </span>
+              {active ? <span className="vtt-turn-now">vez</span> : null}
+            </li>
+          );
+        })}
+      </ol>
+    </div>
+  );
+}
