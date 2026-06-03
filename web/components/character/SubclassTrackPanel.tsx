@@ -35,16 +35,33 @@ export function SubclassTrackPanel({ actor }: Props) {
         {track.specialty} · Dieta nv2 ativa após refeição Comum+
       </p>
       <ol className="sheet-track-list">
-        {rows.map((row) => (
-          <li key={`${row.level}-${row.label}`} className={`sheet-track-item sheet-track-${row.state}`}>
-            <span className="sheet-track-lv">Nv {row.level}</span>
-            <span className="sheet-track-label">{row.label}</span>
-            <span className="sheet-track-state">
-              {row.state === "done"
-                ? "✓"
-                : row.state === "available"
-                  ? "→"
-                  : row.state === "locked"
-                    ? "!"
-                    : "·"}
-           
+        {rows.map((row) => {
+          const talent = track.talents.find((t) => t.level === row.level);
+          const onVtt =
+            row.state === "done" &&
+            talent &&
+            talent.kind === "talent" &&
+            habilidadeEntryForTalent(talent, track.classId);
+          return (
+            <li key={`${row.level}-${row.label}`} className={`sheet-track-item sheet-track-${row.state}`}>
+              <span className="sheet-track-lv">Nv {row.level}</span>
+              <span className="sheet-track-label">
+                {row.label}
+                {onVtt ? <small className="sheet-track-vtt"> · mesa</small> : null}
+              </span>
+              <span className="sheet-track-state">
+                {row.state === "done"
+                  ? "✓"
+                  : row.state === "available"
+                    ? "→"
+                    : row.state === "locked"
+                      ? "!"
+                      : "·"}
+              </span>
+            </li>
+          );
+        })}
+      </ol>
+    </div>
+  );
+}

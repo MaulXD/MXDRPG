@@ -54,6 +54,7 @@ import {
 
 } from "@/lib/vtt/action-mode";
 
+import { listSubclassCombatActions } from "@/lib/character/subclass-vtt";
 import { patchRoomActor, postRoomAttack, postRoomAbility } from "@/hooks/useRoomSync";
 
 import { useCombatTurn } from "@/hooks/useCombatActions";
@@ -151,6 +152,14 @@ export function TokenActionPanel({
     () => listTokenCombatActions(token, actor, "ability"),
 
     [token, actor]
+
+  );
+
+  const trackAbilities = useMemo(
+
+    () => (actor ? listSubclassCombatActions(actor) : []),
+
+    [actor]
 
   );
 
@@ -438,6 +447,17 @@ export function TokenActionPanel({
 
         <p className="vtt-combat-turn-hint">Aguarde seu turno na iniciativa.</p>
 
+      ) : null}
+
+      {trackAbilities.length > 0 ? (
+        <p className="vtt-combat-hint">
+          Trilha ({actor?.identity.subclasse}):{" "}
+          {trackAbilities.map((a) => a.name).join(", ")} — modo Habilidade.
+        </p>
+      ) : actor?.identity.subclasse ? (
+        <p className="vtt-combat-hint">
+          Trilha {actor.identity.subclasse}: talentos aparecem ao subir nv 4+ na ficha.
+        </p>
       ) : null}
 
 

@@ -1,6 +1,10 @@
 /**
  * Gera compêndios Eldarin a partir do Livro do Mestre / Parte X (magias).
  * Uso: node scripts/generate-compendium.mjs
+ *
+ * Variantes Elite/Colossal na mesa são aplicadas em runtime por
+ * lib/vtt/monster-scaling.ts (spawn), não duplicam entradas aqui.
+ * Cap. XII groupLevelDelta também é runtime no painel de invocação.
  */
 import { writeFileSync } from "fs";
 import { join, dirname } from "path";
@@ -87,6 +91,7 @@ function slug(name) {
     .replace(/^-|-$/g, "");
 }
 
+/** Template base; Elite/Colossal são multiplicadores no spawn VTT. */
 function mob(
   name,
   nivel,

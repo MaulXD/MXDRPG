@@ -761,6 +761,34 @@
   color: #e8a020;
 }
 
+.combat-fx-damage.heal {
+  color: var(--accent-success);
+}
+
+.combat-fx-reduced .combat-d20.rolling {
+  animation: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .combat-fx-slash-line,
+  .combat-fx-impact,
+  .combat-d20.rolling,
+  .combat-d20.landed,
+  .combat-fx-damage,
+  .combat-fx-miss {
+    animation: none !important;
+  }
+}
+
+.sheet-track-vtt {
+  color: var(--accent-success);
+  font-size: 0.68rem;
+}
+
+.sheet-loadout {
+  margin-bottom: 0.75rem;
+}
+
 .combat-fx-miss {
   position: absolute;
   transform: translate(-50%, -100%);
