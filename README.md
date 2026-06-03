@@ -21,12 +21,28 @@ Mesa de teste: [http://localhost:3000/mesa/demo](http://localhost:3000/mesa/demo
 
 ## Deploy na Vercel
 
-1. Importe o repositório `MaulXD/MXDRPG`.
-2. **Root Directory:** `web` (obrigatório).
-3. Framework: Next.js (detectado automaticamente).
-4. Variável opcional: `ELDARIN_DEMO_PASSWORD=vinite-dev`
+### Se aparecer `404: NOT_FOUND` (como na captura)
 
-Se a raiz do projeto na Vercel for `/` (padrão), o build falha — não há `package.json` na raiz.
+A Vercel está servindo a **raiz do repo** sem o app Next.js. Corrija assim:
+
+1. [Vercel Dashboard](https://vercel.com) → projeto **MXDRPG** → **Settings** → **General**
+2. **Root Directory** → **Edit** → digite `web` → **Save**
+3. **Deployments** → último deploy → **⋯** → **Redeploy** (marque *Use existing Build Cache* se quiser)
+
+Alternativa na importação: ao conectar o GitHub, em **Root Directory** clique **Edit** e escolha `web` **antes** do primeiro deploy.
+
+### Configuração recomendada
+
+| Campo | Valor |
+|-------|--------|
+| Root Directory | `web` |
+| Framework | Next.js |
+| Build Command | `npm run build` (padrão dentro de `web/`) |
+| Install Command | `npm install` |
+
+Variável opcional: `ELDARIN_DEMO_PASSWORD` = `vinite-dev`
+
+Há também `package.json` + `vercel.json` na raiz do repo (workspaces) para monorepo; mesmo assim, **Root Directory = `web`** é o mais confiável.
 
 ## Estrutura
 
