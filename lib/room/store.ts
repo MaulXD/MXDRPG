@@ -610,13 +610,20 @@ export function executeRoomAttack(
 
   const attackResults = Array.isArray(results) ? results : [results];
   const paCost = action.paCost;
-  const finalHp = attackResults[attackResults.length - 1].defenderHpAfter;
+  const last = attackResults[attackResults.length - 1];
+  const finalHp = last.defenderHpAfter;
+  const finalAttackerHp =
+    last.attackerHpAfter ?? attacker.vida ?? null;
   const newAttackerPa = Math.max(0, attacker.pa - paCost);
 
   room.scene = {
     ...room.scene,
     tokens: room.scene.tokens.map((t) => {
-      if (t.id === attackerTokenId) return { ...t, pa: newAttackerPa };
+      if (t.id === attackerTokenId) {
+        const patch: typeof t = { ...t, pa: newAttackerPa };
+        if (finalAttackerHp != null && t.vidaMax != null) patch.vida = finalAttackerHp;
+        return patch;
+      }
       if (t.id === defenderTokenId && t.vidaMax != null) return { ...t, vida: finalHp };
       return t;
     }),
@@ -624,11 +631,16 @@ export function executeRoomAttack(
 
   if (attacker.actorId && room.actors[attacker.actorId]) {
     const a = room.actors[attacker.actorId];
+    const vidaVal =
+      finalAttackerHp != null
+        ? finalAttackerHp
+        : a.resources.vida.value;
     room.actors[attacker.actorId] = {
       ...a,
       resources: {
         ...a.resources,
         pontosAcao: { ...a.resources.pontosAcao, value: newAttackerPa },
+        vida: { ...a.resources.vida, value: vidaVal },
       },
       revision: a.revision + 1,
     };

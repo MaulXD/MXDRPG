@@ -1,18 +1,17 @@
 # Build artifacts (never commit)
 .next/
 node_modules/
-/package-lock.json
+out/
+.vercel/
+*.tsbuildinfo
+next-env.d.ts
 
 # Runtime user registry (seed stays in git)
-web/data/users/registry.json
+data/users/registry.json
 
-# Next.js (web/)
+# Legacy web/ (app na raiz)
 web/node_modules/
 web/.next/
-web/out/
-web/.vercel/
-web/*.tsbuildinfo
-web/next-env.d.ts
 
 # Secrets
 .env
@@ -25,4 +24,4 @@ web/next-env.d.ts
 Thumbs.db
 *.log
 
-web/public/uploads/
+public/uploads/
