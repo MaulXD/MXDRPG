@@ -25,6 +25,8 @@ CLASS_NEW = (
     "(ex.: `## 024 —`) e o indice de assimilacao.\n\n"
     "**Flora de masmorra:** 40 especies em **Cap. 5B** — Druidas e ecossistema; monstros "
     "**Consumidores** listados por planta.\n\n"
+    "**Saque economico:** Trinchar com sucesso concede ESP/MIN/tesouro por codigo em "
+    "`CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md`; cenario **OBJ-R**.\n\n"
     "### Estatísticas"
 )
 
@@ -60,10 +62,30 @@ def main() -> int:
     ci, cj = slice_between(c, MARK_V, MARK_VI)
     c = c[:ci] + parte_v + "\n\n---\n\n" + c[cj:]
 
-    if CLASS_OLD not in c:
-        print("AVISO: bloco de classificacao do bestiario nao encontrado; pulando patch LM.")
-    else:
+    flora_tail = (
+        "**Flora de masmorra:** 40 especies em **Cap. 5B** — Druidas e ecossistema; monstros "
+        "**Consumidores** listados por planta.\n\n### Estatísticas"
+    )
+    flora_saque = flora_tail.replace(
+        "planta.\n\n###",
+        "planta.\n\n**Saque economico:** Trinchar com sucesso concede ESP/MIN/tesouro por codigo em "
+        "`CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md`; cenario **OBJ-R**.\n\n###",
+        1,
+    )
+    if flora_tail in c and "**Saque economico:**" not in c:
+        c = c.replace(flora_tail, flora_saque, 1)
+    elif CLASS_OLD in c:
         c = c.replace(CLASS_OLD, CLASS_NEW, 1)
+    elif "**Saque economico:**" not in c:
+        print("AVISO: bloco de classificacao do bestiario nao encontrado; pulando patch LM.")
+
+    tesouros = ROOT / "livros" / "CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md"
+    mark_app = "# APENDICE — CATALOGO TESOUROS"
+    if tesouros.exists() and mark_app not in c:
+        body = tesouros.read_text(encoding="utf-8")
+        parts = body.split("---\n", 1)
+        inner = parts[1].strip() if len(parts) > 1 else body.strip()
+        c = c.rstrip() + "\n\n---\n\n" + mark_app + "\n\n" + inner + "\n"
 
     COMPLETO.write_text(c, encoding="utf-8")
     lines = len(c.splitlines())

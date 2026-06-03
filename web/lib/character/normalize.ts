@@ -3,6 +3,7 @@ import { parseCharacterTalents } from "@/lib/character/subclass-tracks";
 import { computeCulinary, hpMaxFor, attributeMod, paMaxFor } from "@/lib/character/rules";
 import { xpTotalForLevel } from "@/lib/character/xp";
 import { syncSubclassTalentsToInventory } from "@/lib/character/subclass-vtt";
+import { EMPTY_LOOT } from "@/lib/character/loot-storage";
 
 const DEFAULT_ATTRS: CharacterAttributes = {
   forca: 10,
@@ -55,6 +56,7 @@ export function normalizeCharacter(sheet: CharacterSheet): CharacterSheet {
     identity,
     attributes,
     culinary,
+    lootEconomy: sheet.lootEconomy ?? EMPTY_LOOT,
     resources: {
       vida: {
         max: hpMax,

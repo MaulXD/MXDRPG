@@ -71,6 +71,12 @@ const DEMO_CHARACTERS: CharacterSheet[] = [
       },
     ],
     combatLoadout: { packId: "armas", entryId: "armas-lamina-de-vinha" },
+    lootEconomy: {
+      po: 48,
+      especiarias: { "ESP-12": 1, "ESP-07": 2 },
+      minerios: { "MIN-03": 1 },
+      tesouros: {},
+    },
   }),
   normalizeCharacter({
     id: "pc-mestre-demo",
