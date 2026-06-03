@@ -1,0 +1,20 @@
+<form class="{{cssClass}} vinite-item-sheet" autocomplete="off">
+  <header class="vinite-sheet-header glass-panel">
+    <img src="{{item.img}}" data-edit="img" height="64" width="64" />
+    <h1 class="item-name">
+      <input name="name" type="text" value="{{item.name}}" {{#unless editable}}disabled{{/unless}} />
+    </h1>
+    <span class="item-type-badge">{{localize 'ELDARIN.Item.types.efeito'}}</span>
+  </header>
+  <section class="vinite-sheet-body glass-panel">
+    <div class="item-fields-grid">
+      <label>{{localize 'ELDARIN.Item.duration'}}
+        <input type="text" name="system.effect.duracao" value="{{system.effect.duracao}}" />
+      </label>
+      <label>{{localize 'ELDARIN.Item.rangeHex'}}
+        <input type="number" name="system.effect.alcanceHex.value" value="{{system.effect.alcanceHex.value}}" min="0" />
+      </label>
+    </div>
+    {{editor enrichedDescription target="system.description" engine="prosemirror" collaborate=false editable=editable}}
+  </section>
+</form>

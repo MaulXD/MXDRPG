@@ -1,0 +1,44 @@
+<div class="tab inventory-tab" data-group="primary" data-tab="inventory">
+  <section class="glass-panel items-drop-zone" data-drop-zone="inventory">
+    <h2 class="panel-title"><i class="fas fa-backpack"></i> {{localize 'ELDARIN.Sheet.inventory'}}</h2>
+    <p class="drop-hint">{{localize 'ELDARIN.Sheet.dropHint'}}</p>
+
+    {{#each inventorySections as |section|}}
+    <div class="inventory-section" data-item-type="{{section.type}}">
+      <header class="inventory-section-header">
+        <h3>{{section.label}} <span class="count">({{section.items.length}})</span></h3>
+        {{#if ../editable}}
+        <button type="button" class="neon-button subtle" data-action="item-create" data-type="{{section.type}}">
+          <i class="fas fa-plus"></i>
+        </button>
+        {{/if}}
+      </header>
+      <ol class="inventory-list">
+        {{#each section.items as |item|}}
+        <li class="inventory-item" data-item-id="{{item.id}}">
+          <img src="{{item.img}}" width="32" height="32" />
+          <a class="item-name" data-action="item-edit" data-item-id="{{item.id}}">{{item.name}}</a>
+          <span class="item-meta">{{item.meta}}</span>
+          {{#if item.canAttack}}
+          <button type="button" class="neon-button icon-only" data-action="attack" data-item-id="{{item.id}}" title="{{localize 'ELDARIN.Attack.execute'}}">
+            <i class="fas fa-crosshairs"></i>
+          </button>
+          {{/if}}
+          {{#if ../editable}}
+          <button type="button" class="item-control" data-action="item-delete" data-item-id="{{item.id}}" title="{{localize 'ELDARIN.Sheet.deleteItem'}}">
+            <i class="fas fa-trash"></i>
+          </button>
+          {{/if}}
+        </li>
+        {{else}}
+        <li class="inventory-empty">{{localize 'ELDARIN.Sheet.sectionEmpty'}}</li>
+        {{/each}}
+      </ol>
+    </div>
+    {{/each}}
+
+    {{#unless flags.sequencerReady}}
+    <p class="module-warning"><i class="fas fa-triangle-exclamation"></i> {{localize 'ELDARIN.Warnings.sequencer'}}</p>
+    {{/unless}}
+  </section>
+</div>

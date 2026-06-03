@@ -1,0 +1,51 @@
+/* Folhetos de ecologia — compactos */
+.cover.ecologia {
+  min-height: 200mm;
+  background:
+    radial-gradient(ellipse 90% 70% at 50% 100%, rgba(61, 92, 64, 0.35), transparent 50%),
+    linear-gradient(165deg, #1a2822 0%, #121a16 55%, #1c1814 100%);
+}
+
+.cover.ecologia h1 {
+  font-size: 17pt;
+  max-width: 15cm;
+}
+
+.cover.ecologia .folio-num {
+  font-family: "Cinzel", Georgia, serif;
+  font-size: 28pt;
+  color: var(--gold-light);
+  margin-bottom: 0.2em;
+  letter-spacing: 0.05em;
+}
+
+.cover.compedio {
+  min-height: 260mm;
+}
+
+body.book.ecologia-doc .content h1.guia-folio {
+  page-break-before: always;
+  margin-top: 0;
+  padding-top: 0.4em;
+  font-size: 14pt;
+  border-bottom-color: var(--moss);
+}
+
+body.book.ecologia-doc .content h1.guia-folio:first-child {
+  page-break-before: avoid;
+}
+
+body.book.ecologia-doc .content h1.parte-interna {
+  page-break-before: always;
+  font-size: 12pt;
+  color: var(--ember);
+  border-bottom: 1px solid var(--rule);
+}
+
+body.book.ecologia-doc .content {
+  font-size: 10pt;
+}
+
+body.book.ecologia-doc .content table {
+  font-size: 8.5pt;
+}

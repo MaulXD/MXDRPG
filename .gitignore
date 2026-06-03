@@ -1,0 +1,21 @@
+# Next.js app
+web/node_modules/
+web/.next/
+web/out/
+web/.vercel/
+web/*.tsbuildinfo
+web/next-env.d.ts
+
+# Secrets
+.env
+.env.*
+!.env.example
+**/.env*.local
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.log
+
+# Uploads / local media (optional large files)
+web/public/uploads/

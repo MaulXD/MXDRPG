@@ -1,0 +1,30 @@
+<form class="{{cssClass}} vinite-item-sheet" autocomplete="off">
+  <header class="vinite-sheet-header glass-panel">
+    <img src="{{item.img}}" data-edit="img" height="64" width="64" />
+    <h1 class="item-name">
+      <input name="name" type="text" value="{{item.name}}" {{#unless editable}}disabled{{/unless}} />
+    </h1>
+    <span class="item-type-badge">{{localize 'ELDARIN.Item.types.habilidade'}}</span>
+  </header>
+  <section class="vinite-sheet-body glass-panel">
+    <div class="item-fields-grid">
+      <label>{{localize 'ELDARIN.Item.rangeHex'}}
+        <input type="number" name="system.tactical.alcanceHex.value" value="{{system.tactical.alcanceHex.value}}" min="0" />
+      </label>
+      <label>{{localize 'ELDARIN.Item.apCost'}}
+        <input type="number" name="system.tactical.custoPontosAcao.value" value="{{system.tactical.custoPontosAcao.value}}" min="0" />
+      </label>
+      <label>{{localize 'ELDARIN.Item.abilityType'}}
+        <select name="system.ability.tipo" {{#unless editable}}disabled{{/unless}}>
+          <option value="ativa" {{#if (eq system.ability.tipo "ativa")}}selected{{/if}}>{{localize 'ELDARIN.Item.abilityActive'}}</option>
+          <option value="passiva" {{#if (eq system.ability.tipo "passiva")}}selected{{/if}}>{{localize 'ELDARIN.Item.abilityPassive'}}</option>
+          <option value="reacao" {{#if (eq system.ability.tipo "reacao")}}selected{{/if}}>{{localize 'ELDARIN.Item.abilityReaction'}}</option>
+        </select>
+      </label>
+      <label>{{localize 'ELDARIN.Item.recharge'}}
+        <input type="text" name="system.ability.recarga" value="{{system.ability.recarga}}" />
+      </label>
+    </div>
+    {{editor enrichedDescription target="system.description" engine="prosemirror" collaborate=false editable=editable}}
+  </section>
+</form>

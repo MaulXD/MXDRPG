@@ -1,0 +1,314 @@
+[
+  {
+    "name": "Lâmina de Vinha",
+    "type": "arma",
+    "system": {
+      "description": "<p>Espada curta de masmorra.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d8",
+          "tipo": "cortante"
+        },
+        "ataque": {
+          "bonus": 0
+        }
+      }
+    }
+  },
+  {
+    "name": "Alabarda do Guardião",
+    "type": "arma",
+    "system": {
+      "description": "<p>Alcance estendido.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 2,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d10",
+          "tipo": "cortante"
+        },
+        "ataque": {
+          "bonus": 1
+        }
+      }
+    }
+  },
+  {
+    "name": "Arco de Teixo",
+    "type": "arma",
+    "system": {
+      "description": "<p>Arco longo.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 5,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d8",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 0
+        }
+      }
+    }
+  },
+  {
+    "name": "Martelo Rúnico",
+    "type": "arma",
+    "system": {
+      "description": "<p>Golpes pesados.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "2d6",
+          "tipo": "contundente"
+        },
+        "ataque": {
+          "bonus": -1
+        }
+      }
+    }
+  },
+  {
+    "name": "Adagas Gêmeas",
+    "type": "arma",
+    "system": {
+      "description": "<p>Par de adagas.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "2d4",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 1
+        }
+      }
+    }
+  },
+  {
+    "name": "Machado de Batalha",
+    "type": "arma",
+    "system": {
+      "description": "<p>Machado pesado.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d12",
+          "tipo": "cortante"
+        },
+        "ataque": {
+          "bonus": 0
+        }
+      }
+    }
+  },
+  {
+    "name": "Besta Leve",
+    "type": "arma",
+    "system": {
+      "description": "<p>Besta de masmorra.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 6,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d8",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 0
+        }
+      }
+    }
+  },
+  {
+    "name": "Lança Longa",
+    "type": "arma",
+    "system": {
+      "description": "<p>Formação tática.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 2,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d10",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 0
+        }
+      }
+    }
+  },
+  {
+    "name": "Maça Pesada",
+    "type": "arma",
+    "system": {
+      "description": "<p>Quebra armaduras.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "2d6",
+          "tipo": "contundente"
+        },
+        "ataque": {
+          "bonus": 0
+        }
+      }
+    }
+  },
+  {
+    "name": "Rapieira",
+    "type": "arma",
+    "system": {
+      "description": "<p>Duelo em hex.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d8",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 1
+        }
+      }
+    }
+  },
+  {
+    "name": "Azagaia",
+    "type": "arma",
+    "system": {
+      "description": "<p>Arremesso.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 3,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d6",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 0
+        }
+      }
+    }
+  },
+  {
+    "name": "Clava Reforçada",
+    "type": "arma",
+    "system": {
+      "description": "<p>Arma simples.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d6",
+          "tipo": "contundente"
+        },
+        "ataque": {
+          "bonus": 0
+        }
+      }
+    }
+  }
+]

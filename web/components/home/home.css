@@ -1,0 +1,66 @@
+.hex-preview-glow {
+  position: absolute;
+  inset: 12%;
+  background: radial-gradient(circle, rgba(201, 169, 98, 0.15), transparent 65%);
+  filter: blur(32px);
+  pointer-events: none;
+}
+
+[data-theme="light"] .hex-preview-glow {
+  background: radial-gradient(circle, rgba(107, 68, 35, 0.12), transparent 65%);
+}
+
+.hex-preview-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.hex-cell {
+  animation: hex-pulse 5s ease-in-out infinite;
+}
+
+@keyframes hex-pulse {
+  0%,
+  100% {
+    opacity: 0.75;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.hex-preview-badge {
+  position: absolute;
+  bottom: 12%;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.5rem 1rem;
+  font-family: var(--font-display);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  white-space: nowrap;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-pill);
+  background: var(--glass);
+}
+
+.badge-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.badge-dot.walk {
+  background: var(--accent-success);
+}
+
+.badge-dot.run {
+  background: var(--accent-warn);
+}

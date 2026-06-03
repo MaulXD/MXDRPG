@@ -1,0 +1,1677 @@
+{
+  "version": 1,
+  "tracks": [
+    {
+      "id": "acougueiro-de-batalha",
+      "classId": "Guerreiro",
+      "subclass": "Acougueiro de Batalha",
+      "specialty": "Feras e Bestiais",
+      "diet": "Carne vermelha de feras: +2 FOR e regen 3 HP/turno por 4h",
+      "talents": [
+        {
+          "level": 4,
+          "id": "corte-limpo",
+          "name": "Corte Limpo",
+          "kind": "talent",
+          "requires": null
+        },
+        {
+          "level": 8,
+          "id": "maestria-de-acougue",
+          "name": "Maestria de Acougue",
+          "kind": "talent",
+          "requires": "corte-limpo"
+        },
+        {
+          "level": 12,
+          "id": "abate-perfeito",
+          "name": "Abate Perfeito",
+          "kind": "talent",
+          "requires": "maestria-de-acougue"
+        },
+        {
+          "level": 16,
+          "id": "sangue-de-predador",
+          "name": "Sangue de Predador",
+          "kind": "talent",
+          "requires": "abate-perfeito"
+        },
+        {
+          "level": 20,
+          "id": "legado-do-acougue",
+          "name": "Legado do Acougue",
+          "kind": "ascension",
+          "requires": null
+        }
+      ]
+    },
+    {
+      "id": "quebra-cascos",
+      "classId": "Guerreiro",
+      "subclass": "Quebra-Cascos",
+      "specialty": "Carapaças e Insetoides",
+      "diet": "Artropodes: imune a críticos temporário e +2 CA por 8h",
+      "talents": [
+        {
+          "level": 4,
+          "id": "percussao-penetrante",
+          "name": "Percussão Penetrante",
+          "kind": "talent",
+          "requires": null
+        },
+        {
+          "level": 8,
+          "id": "estrutura-quitinosa",
+          "name": "Estrutura Quitinosa",
+          "kind": "talent",
+          "requires": "percussao-penetrante"
+        },
+        {
+          "level": 12,
+          "id": "esmagamento-total",
+          "name": "Esmagamento Total",
+          "kind": "talent",
+          "requires": "estrutura-quitinosa"
+        },
+        {
+          "level": 16,
+          "id": "corpo-de-crustaceo",
+          "name": "Corpo de Crustáceo",
+          "kind": "talent",
+          "requires": "esmagamento-total"
+        },
+        {
+          "level": 20,
+          "id": "carapaca-viva",
+          "name": "Carapaça Viva",
+          "kind": "ascension",
+          "requires": null
+        }
+      ]
+    },
+    {
+      "id": "cavaleiro-draconico",
+      "classId": "Guerreiro",
+      "subclass": "Cavaleiro Dracônico",
+      "specialty": "Escamosos e Draconídeos",
+      "diet": "Répteis/dracônicos: resistência elemental e baforada 2d6",
+      "talents": [
+        {
+          "level": 4,
+          "id": "escama-de-wyrm",
+          "name": "Escama de Wyrm",
+          "kind": "talent",
+          "requires": null
+        },
+        {
+          "level": 8,
+          "id": "ira-draconica",
+          "name": "Ira Dracônica",
+          "kind": "talent",
+          "requires": "escama-de-wyrm"
+        },
+        {
+          "level": 12,
+          "id": "heranca-de-sangue",
+          "name": "Herança de Sangue",
+          "kind": "talent",
+          "requires": "ira-draconica"
+        },
+        {
+          "level": 16,
+          "id": "majestade-do-dragao",
+          "name": "Majestade do Dragão",
+          "kind": "talent",
+          "requires": "heranca-de-sangue"
+        },
+        {
+          "level": 20,
+          "id": "ascensao-draconica",
+          "name": "Ascensão Dracônica",
+          "kind": "ascension",
+          "requires": null
+        }
+      ]
+    },
+    {
+      "id": "guerreiro-das-profundezas",
+      "classId": "Guerreiro",
+      "subclass": "Guerreiro das Profundezas",
+      "specialty": "Aquáticos e Anfíbios",
+      "diet": "Aquáticos: respiração aquática, nado 12m",
+      "talents": [
+        {
+          "level": 4,
+          "id": "combate-subaquatico",
+          "name": "Combate Subaquático",
+          "kind": "talent",
+          "requires": null
+        },
+        {
+          "level": 8,
+          "id": "pele-anfibia",
+          "name": "Pele Anfíbia",
+          "kind": "talent",
+          "requires": "combate-subaquatico"
+        },
+        {
+          "level": 12,
+          "id": "pressao-das-profundezas",
+          "name": "Pressão das Profundezas",
+          "kind": "talent",
+          "requires": "pele-anfibia"
+        },
+        {
+          "level": 16,
+          "id": "mestre-das-aguas-negras",
+          "name": "Mestre das Águas Negras",
+          "kind": "talent",
+          "requires": "pressao-das-profundezas"
+        },
+        {
+          "level": 20,
+          "id": "forma-abissal",
+          "name": "Forma Abissal",
+          "kind": "ascension",
+          "requires": null
+        }
+      ]
+    },
+    {
+      "id": "cacador-celeste",
+      "classId": "Patrulheiro",
+      "subclass": "Caçador Celeste",
+      "specialty": "Aves e Voadores",
+      "diet": "Aves: visão 36m e +9m alcance por 8h",
+      "talents": [
+        {
+          "level": 4,
+          "id": "tiro-de-precisao",
+          "name": "Tiro de Precisão",
+          "kind": "talent",
+          "requires": null
+        },
+        {
+          "level": 8,
+          "id": "rastreio-aereo",
+          "name": "Rastreio Aéreo",
+          "kind": "talent",
+          "requires": "tiro-de-precisao"
+        },
+        {
+          "level": 12,
+          "id": "olho-de-falcao",
+          "name": "Olho de Falcão",
+          "kind": "talent",
+          "requires": "rastreio-aereo"
+        },
+        {
+          "level": 16,
+          "id": "golpe-celeste",
+          "name": "Golpe Celeste",
+          "kind": "talent",
+          "requires": "olho-de-falcao"
+        },
+        {
+          "level": 20,
+          "id": "ataque-de-mergulho",
+          "name": "Ataque de Mergulho",
+          "kind": "ascension",
+          "requires": null
+        }
+      ]
+    },
+    {
+      "id": "forrageiro-dos-esporos",
+      "classId": "Patrulheiro",
+      "subclass": "Forrageiro dos Esporos",
+      "specialty": "Flora e Fungos",
+      "diet": "Flora/fungos: imune controle mental",
+      "talents": [
+        {
+          "level": 4,
+          "id": "identificacao-de-flora",
+          "name": "Identificação de Flora",
+          "kind": "talent",
+          "requires": null
+        },
+        {
+          "level": 8,
+          "id": "flechas-de-esporo",
+          "name": "Flechas de Esporo",
+          "kind": "talent",
+          "requires": "identificacao-de-flora"
+        },
+        {
+          "level": 12,
+          "id": "nuvem-de-cura",
+          "name": "Nuvem de Cura",
+          "kind": "talent",
+          "requires": "flechas-de-esporo"
+        },
+        {
+          "level": 16,
+          "id": "rede-de-raizes",
+          "name": "Rede de Raízes",
+          "kind": "talent",
+          "requires": "nuvem-de-cura"
+        },
+        {
+          "level": 20,
+          "id": "florescimento-toxico",
+          "name": "Florescimento Tóxico",
+          "kind": "ascension",
+          "requires": null
+        }
+      ]
+    },
+    {
+      "id": "rastreador-de-sangue-frio",
+      "classId": "Patrulheiro",
+      "subclass": "Rastreador de Sangue Frio",
+      "specialty": "Répteis e Basiliscos",
+      "diet": "Répteis: imune petrificação",
+      "talents": [
+        {
+          "level": 4,
+          "id": "rastejamento-silencioso",
+          "name": "Rastejamento Silencioso",
+          "kind": "talent",
+          "requires": null
+        },
+        {
+          "level": 8,
+          "id": "sentido-termico",
+          "name": "Sentido Térmico",
+          "kind": "talent",
+          "requires": "rastejamento-silencioso"
+        },
+        {
+          "level": 12,
+          "id": "escamas-adaptativas",
+          "name": "Escamas Adaptativas",
+          "kind": "talent",
+          "requires": "sentido-termico"
+        },
+        {
+          "level": 16,
+          "id": "olhar-frio",
+          "name": "Olhar Frio",
+          "kind": "talent",
+          "requires": "escamas-adaptativas"
+        },
+        {
+          "level": 20,
+          "id": "forma-de-reptil",
+          "name": "Forma de Réptil",
+          "kind": "ascension",
+          "requires": null
+        }
+      ]
+    },
+    {
+      "id": "guia-de-enxame",
+      "classId": "Patrulheiro",
+      "subclass": "Guia de Enxame",
+      "specialty": "Pragas e Insetos",
+      "diet": "Insetos: telepatia local",
+      "talents": [
+        {
+          "level": 4,
+          "id": "sentido-de-formigueiro",
+          "name": "Sentido de Formigueiro",
+          "kind": "talent",
+          "requires": null
+        },
+        {
+          "level": 8,
+          "id": "direcao-de-enxame",
+          "name": "Direção de Enxame",
+          "kind": "talent",
+          "requires": "sentido-de-formigueiro"
+        },
+        {
+          "level": 12,
+          "id": "convocacao-de-insetos",
+          "name": "Convocação de Insetos",
+          "kind": "talent",
+          "requires": "direcao-de-enxame"
+        },
+        {
+          "level": 16,
+          "id": "mente-coletiva",
+          "name": "Mente Coletiva",
+          "kind": "talent",
+          "requires": "convocacao-de-insetos"
+        },
+        {
+          "level": 20,
+          "id": "infestacao",
+          "name": "Infestação",
+          "kind": "ascension",
+          "requires": null
+        }
+      ]
+    },
+    {
+      "id": "degustador-de-sombras",
+      "classId": "Ladino",
+      "subclass": "Degustador de Sombras",
+      "specialty": "Espirituais",
+      "diet": "Ectoplasma: intangível 1 turno",
+      "talents": [
+        {
+          "level": 4,
+          "id": "toque-fantasmal",
+          "name": "Toque Fantasmal",
+          "kind": "talent",
+          "requires": null
+        },
+        {
+          "level": 8,
+          "id": "passo-entre-sombras",
+          "name": "Passo entre Sombras",
+          "kind": "talent",
+          "requires": "toque-fantasmal"
+        },
+        {
+          "level": 12,
+          "id": "absorcao-de-eter",
+          "name": "Absorção de Éter",
+          "kind": "talent",
+          "requires": "passo-entre-sombras"
+        },
+        {
+          "level": 16,
+          "id": "forma-translucida",
+          "name": "Forma Translúcida",
+          "kind": "talent",
+          "requires": "absorcao-de-eter"
+        },
+        {
+          "level": 20,
+          "id": "mente-morta",
+          "name": "Mente Morta",
+          "kind": "ascension",
+          "requires": null
+        }
+      ]
+    },
+    {
+      "id": "extrator-de-geleias",
+      "classId": "Ladino",
+      "subclass": "Extrator de Geleias",
+      "specialty": "Amorfos e Slimes",
+      "diet": "Slimes: elasticidade e resistência ácido",
+      "talents": [
+        {
+          "level": 4,
+          "id": "flexibilidade-extrema",
+          "name": "Flexibilidade Extrema",
+          "kind": "talent",
+          "requires": null
+        },
+        {
+          "level": 8,
+          "id": "absorcao-de-impacto",
+          "name": "Absorção de Impacto",
+          "kind": "talent",
+          "requires": "flexibilidade-extrema"
+        },
+        {
+          "level": 12,
+          "id": "forma-fluida",
+          "name": "Forma Fluida",
+          "kind": "talent",
+          "requires": "absorcao-de-impacto"
+        },
+        {
+          "level": 16,
+          "id": "corpo-de-gel",
+          "name": "Corpo de Gel",
+          "kind": "talent",
+          "requires": "forma-fluida"
+        },
+        {
+          "level": 20,
+          "id": "dissolucao",
+          "name": "Dissolução",
+          "kind": "ascension",
+          "requires": null
+        }
+      ]
+    },
+    {
+      "id": "ladrao-de-glandulas",
+      "classId": "Ladino",
+      "subclass": "Ladrão de Glândulas",
+      "specialty": "Peçonhentos",
+      "diet": "Veneno purificado: +1d4 veneno",
+      "talents": [
+        {
+          "level": 4,
+          "id": "resistencia-a-veneno",
+          "name": "Resistência a Veneno",
+          "kind": "talent",
+          "requires": null
+        },
+        {
+          "level": 8,
+          "id": "aplicacao-rapida",
+          "name": "Aplicação Rápida",
+          "kind": "talent",
+          "requires": "resistencia-a-veneno"
+        },
+        {
+          "level": 12,
+          "id": "veneno-personalizado",
+          "name": "Veneno Personalizado",
+          "kind": "talent",
+          "requires": "aplicacao-rapida"
+        },
+        {
+          "level": 16,
+          "id": "imunidade-total",
+          "name": "Imunidade Total",
+          "kind": "talent",
+          "requires": "veneno-personalizado"
+        },
+        {
+          "level": 20,
+          "id": "veneno-lendario",
+          "name": "Veneno Lendário",
+          "kind": "ascension",
+          "requires": null
+        }
+      ]
+    },
+    {
+      "id": "corsario-de-cripta",
+      "classId": "Ladino",
+      "subclass": "Corsário de Cripta",
+      "specialty": "Ossos e Mortos-Vivos",
+      "diet": "Ossos: fingir morte, resistência necrotico",
+      "talents": [
+        {
+          "level": 4,
+          "id": "sussurro-de-tumba",
+          "name": "Sussurro de Tumba",
+          "kind": "talent",
+          "requires": null
+        },
+        {
+          "level": 8,
+          "id": "aparencia-cadaverica",
+          "name": "Aparência Cadavérica",
+          "kind": "talent",
+          "requires": "sussurro-de-tumba"
+        },
+        {
+          "level": 12,
+          "id": "aura-de-morte",
+          "name": "Aura de Morte",
+          "kind": "talent",
+          "requires": "aparencia-cadaverica"
+        },
+        {
+          "level": 16,
+          "id": "controle-de-morto-vivo",
+          "name": "Controle de Morto-Vivo",
+          "kind": "talent",
+          "requires": "aura-de-morte"
+        },
+        {
+          "level": 20,
+          "id": "senhor-da-cripta",
+          "name": "Senhor da Cripta",
+          "kind": "ascension",
+          "requires": null
+        }
+      ]
+    },
+    {
+      "id": "piromante-de-forno",
+      "classId": "Mago",
+      "subclass": "Piromante de Forno",
+      "specialty": "Calor e Assados",
+      "diet": "Assados maximizam mana do grupo",
+      "talents": [
+        {
+          "level": 4,
+          "id": "chama-controlada",
+          "name": "Chama Controlada",
+          "kind": "talent",
+          "requires": null
+        },
+        {
+          "level": 8,
+          "id": "forno-de-campo",
+          "name": "Forno de Campo",
+          "kind": "talent",
+          "requires": "chama-controlada"
+        },
+        {
+          "level": 12,
+          "id": "combustao-arcana",
+          "name": "Combustão Arcana",
+          "kind": "talent",
+          "requires": "forno-de-campo"
+        },
+        {
+          "level": 16,
+          "id": "brasas-persistentes",
+          "name": "Brasas Persistentes",
+          "kind": "talent",
+          "requires": "combustao-arcana"
+        },
+        {
+          "level": 20,
+          "id": "coracao-do-forno",
+          "name": "Coração do Forno",
+          "kind": "ascension",
+          "requires": null
+        }
+      ]
+    },
+    {
+      "id": "criomante-de-conservacao",
+      "classId": "Mago",
+      "subclass": "Criomante de Conservação",
+      "specialty": "Gelo e Dry-Aged",
+      "diet": "Dry-aged: aura frio e +3 CA",
+      "talents": [
+        {
+          "level": 4,
+          "id": "gelar-ingrediente",
+          "name": "Gelar Ingrediente",
+          "kind": "talent",
+          "requires": null
+        },
+        {
+          "level": 8,
+          "id": "camara-fria-portatil",
+          "name": "Câmara Fria Portátil",
+          "kind": "talent",
+          "requires": "gelar-ingrediente"
+        },
+        {
+          "level": 12,
+          "id": "escudo-de-geada",
+          "name": "Escudo de Geada",
+          "kind": "talent",
+          "requires": "camara-fria-portatil"
+        },
+        {
+          "level": 16,
+          "id": "envelhecimento-instantaneo",
+          "name": "Envelhecimento Instantâneo",
+          "kind": "talent",
+          "requires": "escudo-de-geada"
+        },
+        {
+          "level": 20,
+          "id": "zero-absoluto",
+          "name": "Zero Absoluto",
+          "kind": "ascension",
+          "requires": null
+        }
+      ]
+    },
+    {
+      "id": "mago-fermentador",
+      "classId": "Mago",
+      "subclass": "Mago Fermentador",
+      "specialty": "Fermentados",
+      "diet": "Fermentados: imune ilusão",
+      "talents": [
+        {
+          "level": 4,
+          "id": "fermentacao-acelerada",
+          "name": "Fermentação Acelerada",
+          "kind": "talent",
+          "requires": null
+        },
+        {
+          "level": 8,
+          "id": "cultura-viva",
+          "name": "Cultura Viva",
+          "kind": "talent",
+          "requires": "fermentacao-acelerada"
+        },
+        {
+          "level": 12,
+          "id": "nuvem-bacteriana",
+          "name": "Nuvem Bacteriana",
+          "kind": "talent",
+          "requires": "cultura-viva"
+        },
+        {
+          "level": 16,
+          "id": "transmutacao-enzimatica",
+          "name": "Transmutação Enzimática",
+          "kind": "talent",
+          "requires": "nuvem-bacteriana"
+        },
+        {
+          "level": 20,
+          "id": "grande-barril",
+          "name": "Grande Barril",
+          "kind": "ascension",
+          "requires": null
+        }
+      ]
+    },
+    {
+      "id": "alquimista-de-caldos",
+      "classId": "Mago",
+      "subclass": "Alquimista de Caldos",
+      "specialty": "Ácidos e Líquidos",
+      "diet": "Sopas: ácido ou névoa venenosa",
+      "talents": [
+        {
+          "level": 4,
+          "id": "caldo-corrosivo",
+          "name": "Caldo Corrosivo",
+          "kind": "talent",
+          "requires": null
+        },
+        {
+          "level": 8,
+          "id": "sopa-de-resistencia",
+          "name": "Sopa de Resistência",
+          "kind": "talent",
+          "requires": "caldo-corrosivo"
+        },
+        {
+          "level": 12,
+          "id": "nevoa-de-caldeira",
+          "name": "Névoa de Caldeira",
+          "kind": "talent",
+          "requires": "sopa-de-resistencia"
+        },
+        {
+          "level": 16,
+          "id": "extracao-liquida",
+          "name": "Extração Líquida",
+          "kind": "talent",
+          "requires": "nevoa-de-caldeira"
+        },
+        {
+          "level": 20,
+          "id": "mare-acida",
+          "name": "Maré Ácida",
+          "kind": "ascension",
+          "requires": null
+        }
+      ]
+    },
+    {
+      "id": "mago-confeiteiro",
+      "classId": "Mago",
+      "subclass": "Mago Confeiteiro",
+      "specialty": "Doces Mágicos",
+      "diet": "Glicose arcana: encantamento grátis",
+      "talents": [
+        {
+          "level": 4,
+          "id": "doce-encantador",
+          "name": "Doce Encantador",
+          "kind": "talent",
+          "requires": null
+        },
+        {
+          "level": 8,
+          "id": "banquete-minimo",
+          "name": "Banquete Mínimo",
+          "kind": "talent",
+          "requires": "doce-encantador"
+        },
+        {
+          "level": 12,
+          "id": "acucar-cristalizado",
+          "name": "Açúcar Cristalizado",
+          "kind": "talent",
+          "requires": "banquete-minimo"
+        },
+        {
+          "level": 16,
+          "id": "festa-hipnotica",
+          "name": "Festa Hipnótica",
+          "kind": "talent",
+          "requires": "acucar-cristalizado"
+        },
+        {
+          "level": 20,
+          "id": "imperio-do-doce",
+          "name": "Império do Doce",
+          "kind": "ascension",
+          "requires": null
+        }
+      ]
+    },
+    {
+      "id": "sacerdote-da-purificacao",
+      "classId": "Clérigo",
+      "subclass": "Sacerdote da Purificação",
+      "specialty": "Amaldiçoados",
+      "diet": "Carnes purificadas: +3 vs mal",
+      "talents": [
+        {
+          "level": 4,
+          "id": "purificar-veneno",
+          "name": "Purificar Veneno",
+          "kind": "talent",
+          "requires": null
+        },
+        {
+          "level": 8,
+          "id": "laminas-abencoadas",
+          "name": "Lâminas Abençoadas",
+          "kind": "talent",
+          "requires": "purificar-veneno"
+        },
+        {
+          "level": 12,
+          "id": "purificacao-abencoada",
+          "name": "Purificação Abençoada",
+          "kind": "talent",
+          "requires": "laminas-abencoadas"
+        },
+        {
+          "level": 16,
+          "id": "aura-sagrada",
+          "name": "Aura Sagrada",
+          "kind": "talent",
+          "requires": "purificacao-abencoada"
+        },
+        {
+          "level": 20,
+          "id": "julgamento-da-mesa",
+          "name": "Julgamento da Mesa",
+          "kind": "ascension",
+          "requires": null
+        }
+      ]
+    },
+    {
+      "id": "monge-do-jejum",
+      "classId": "Clérigo",
+      "subclass": "Monge do Jejum",
+      "specialty": "Energia Interna",
+      "diet": "Jejum 8h+: +4 esquiva e radiante",
+      "talents": [
+        {
+          "level": 4,
+          "id": "disciplina-vazia",
+          "name": "Disciplina Vazia",
+          "kind": "talent",
+          "requires": null
+        },
+        {
+          "level": 8,
+          "id": "golpe-do-jejum",
+          "name": "Golpe do Jejum",
+          "kind": "talent",
+          "requires": "disciplina-vazia"
+        },
+        {
+          "level": 12,
+          "id": "jejum-prolongado",
+          "name": "Jejum Prolongado",
+          "kind": "talent",
+          "requires": "golpe-do-jejum"
+        },
+        {
+          "level": 16,
+          "id": "corpo-templo",
+          "name": "Corpo Templo",
+          "kind": "talent",
+          "requires": "jejum-prolongado"
+        },
+        {
+          "level": 20,
+          "id": "transfiguracao-pelo-vazio",
+          "name": "Transfiguração pelo Vazio",
+          "kind": "ascension",
+          "requires": null
+        }
+      ]
+    },
+    {
+      "id": "clerigo-do-pao-da-vida",
+      "classId": "Clérigo",
+      "subclass": "Clérigo do Pão da Vida",
+      "specialty": "Flora Divina",
+      "diet": "Pães: HP temp nv×3",
+      "talents": [
+        {
+          "level": 4,
+          "id": "pao-da-manha",
+          "name": "Pão da Manhã",
+          "kind": "talent",
+          "requires": null
+        },
+        {
+          "level": 8,
+          "id": "fermento-sagrado",
+          "name": "Fermento Sagrado",
+          "kind": "talent",
+          "requires": "pao-da-manha"
+        },
+        {
+          "level": 12,
+          "id": "mesa-abundante",
+          "name": "Mesa Abundante",
+          "kind": "talent",
+          "requires": "fermento-sagrado"
+        },
+        {
+          "level": 16,
+          "id": "bencao-do-forno",
+          "name": "Bênção do Forno",
+          "kind": "talent",
+          "requires": "mesa-abundante"
+        },
+        {
+          "level": 20,
+          "id": "milagre-do-pao",
+          "name": "Milagre do Pão",
+          "kind": "ascension",
+          "requires": null
+        }
+      ]
+    },
+    {
+      "id": "pastor-de-quimeras",
+      "classId": "Clérigo",
+      "subclass": "Pastor de Quimeras",
+      "specialty": "Monstros Mistos",
+      "diet": "Quimeras: aura animal",
+      "talents": [
+        {
+          "level": 4,
+          "id": "ecologia-sagrada",
+          "name": "Ecologia Sagrada",
+          "kind": "talent",
+          "requires": null
+        },
+        {
+          "level": 8,
+          "id": "aura-dupla",
+          "name": "Aura Dupla",
+          "kind": "talent",
+          "requires": "ecologia-sagrada"
+        },
+        {
+          "level": 12,
+          "id": "chamado-do-rebanho",
+          "name": "Chamado do Rebanho",
+          "kind": "talent",
+          "requires": "aura-dupla"
+        },
+        {
+          "level": 16,
+          "id": "sincretismo",
+          "name": "Sincretismo",
+          "kind": "talent",
+          "requires": "chamado-do-rebanho"
+        },
+        {
+          "level": 20,
+          "id": "cordeiro-e-leao",
+          "name": "Cordeiro e Leão",
+          "kind": "ascension",
+          "requires": null
+        }
+      ]
+    },
+    {
+      "id": "clerigo-do-limiar",
+      "classId": "Clérigo",
+      "subclass": "Clérigo do Limiar",
+      "specialty": "Mortos-vivos (Necromântica)",
+      "diet": "Ossos: servos ignoram você como alvo",
+      "talents": [
+        {
+          "level": 4,
+          "id": "dominio-do-limiar",
+          "name": "Domínio do Limiar",
+          "kind": "talent",
+          "requires": null
+        },
+        {
+          "level": 8,
+          "id": "colheita-de-alma",
+          "name": "Colheita de Alma",
+          "kind": "talent",
+          "requires": "dominio-do-limiar"
+        },
+        {
+          "level": 12,
+          "id": "sacrificio-ritual",
+          "name": "Sacrifício Ritual",
+          "kind": "talent",
+          "requires": "colheita-de-alma"
+        },
+        {
+          "level": 16,
+          "id": "senhor-da-fronteira",
+          "name": "Senhor da Fronteira",
+          "kind": "talent",
+          "requires": "sacrificio-ritual"
+        },
+        {
+          "level": 20,
+          "id": "desejo-do-limiar",
+          "name": "Desejo do Limiar",
+          "kind": "ascension",
+          "requires": null
+        }
+      ]
+    },
+    {
+      "id": "devorador-de-coracoes",
+      "classId": "Bárbaro",
+      "subclass": "Devorador de Corações",
+      "specialty": "Órgãos Vitais",
+      "diet": "Coração: traço instintivo 24h",
+      "talents": [
+        {
+          "level": 4,
+          "id": "mordida-do-coracao",
+          "name": "Mordida do Coração",
+          "kind": "talent",
+          "requires": null
+        },
+        {
+          "level": 8,
+          "id": "instinto-roubado",
+          "name": "Instinto Roubado",
+          "kind": "talent",
+          "requires": "mordida-do-coracao"
+        },
+        {
+          "level": 12,
+          "id": "coracao-duplo",
+          "name": "Coração Duplo",
+          "kind": "talent",
+          "requires": "instinto-roubado"
+        },
+        {
+          "level": 16,
+          "id": "predador-alfa",
+          "name": "Predador Alfa",
+          "kind": "talent",
+          "requires": "coracao-duplo"
+        },
+        {
+          "level": 20,
+          "id": "legiao-de-coracoes",
+          "name": "Legião de Corações",
+          "kind": "ascension",
+          "requires": null
+        }
+      ]
+    },
+    {
+      "id": "mandibula-de-ferro",
+      "classId": "Bárbaro",
+      "subclass": "Mandíbula de Ferro",
+      "specialty": "Ossos e Carapaças",
+      "diet": "Exoesqueletos: +1d6 perfurante",
+      "talents": [
+        {
+          "level": 4,
+          "id": "mastigador",
+          "name": "Mastigador",
+          "kind": "talent",
+          "requires": null
+        },
+        {
+          "level": 8,
+          "id": "ossos-como-arma",
+          "name": "Ossos como Arma",
+          "kind": "talent",
+          "requires": "mastigador"
+        },
+        {
+          "level": 12,
+          "id": "mandibula-de-ferro",
+          "name": "Mandíbula de Ferro",
+          "kind": "talent",
+          "requires": "ossos-como-arma"
+        },
+        {
+          "level": 16,
+          "id": "esmagar-cranio",
+          "name": "Esmagar Crânio",
+          "kind": "talent",
+          "requires": "mandibula-de-ferro"
+        },
+        {
+          "level": 20,
+          "id": "titereiro-de-quitina",
+          "name": "Titereiro de Quitina",
+          "kind": "ascension",
+          "requires": null
+        }
+      ]
+    },
+    {
+      "id": "ruminante-das-neves",
+      "classId": "Bárbaro",
+      "subclass": "Ruminante das Neves",
+      "specialty": "Gordura e Gigantes",
+      "diet": "Gordura: imune frio",
+      "talents": [
+        {
+          "level": 4,
+          "id": "reserva-de-gordura",
+          "name": "Reserva de Gordura",
+          "kind": "talent",
+          "requires": null
+        },
+        {
+          "level": 8,
+          "id": "avalanche",
+          "name": "Avalanche",
+          "kind": "talent",
+          "requires": "reserva-de-gordura"
+        },
+        {
+          "level": 12,
+          "id": "hibernacao-de-combate",
+          "name": "Hibernação de Combate",
+          "kind": "talent",
+          "requires": "avalanche"
+        },
+        {
+          "level": 16,
+          "id": "pele-de-mamute",
+          "name": "Pele de Mamute",
+          "kind": "talent",
+          "requires": "hibernacao-de-combate"
+        },
+        {
+          "level": 20,
+          "id": "inverno-eterno",
+          "name": "Inverno Eterno",
+          "kind": "ascension",
+          "requires": null
+        }
+      ]
+    },
+    {
+      "id": "frenetico-do-acucar",
+      "classId": "Bárbaro",
+      "subclass": "Frenético do Açúcar",
+      "specialty": "Doces Mágicos",
+      "diet": "Glicose: velocidade dobrada",
+      "talents": [
+        {
+          "level": 4,
+          "id": "pico-de-acucar",
+          "name": "Pico de Açúcar",
+          "kind": "talent",
+          "requires": null
+        },
+        {
+          "level": 8,
+          "id": "rush-doce",
+          "name": "Rush Doce",
+          "kind": "talent",
+          "requires": "pico-de-acucar"
+        },
+        {
+          "level": 12,
+          "id": "metabolismo-queimado",
+          "name": "Metabolismo Queimado",
+          "kind": "talent",
+          "requires": "rush-doce"
+        },
+        {
+          "level": 16,
+          "id": "sobredose-controlada",
+          "name": "Sobredose Controlada",
+          "kind": "talent",
+          "requires": "metabolismo-queimado"
+        },
+        {
+          "level": 20,
+          "id": "diabetes-arcano",
+          "name": "Diabetes Arcano",
+          "kind": "ascension",
+          "requires": null
+        }
+      ]
+    },
+    {
+      "id": "sommelier-de-masmorra",
+      "classId": "Bardo",
+      "subclass": "Sommelier de Masmorra",
+      "specialty": "Fermentados",
+      "diet": "Bebidas maximizam cura",
+      "talents": [
+        {
+          "level": 4,
+          "id": "harmonizacao-de-tacas",
+          "name": "Harmonização de Taças",
+          "kind": "talent",
+          "requires": null
+        },
+        {
+          "level": 8,
+          "id": "menu-de-expedicao",
+          "name": "Menu de Expedição",
+          "kind": "talent",
+          "requires": "harmonizacao-de-tacas"
+        },
+        {
+          "level": 12,
+          "id": "reserva-envelhecida",
+          "name": "Reserva Envelhecida",
+          "kind": "talent",
+          "requires": "menu-de-expedicao"
+        },
+        {
+          "level": 16,
+          "id": "brinde-de-batalha",
+          "name": "Brinde de Batalha",
+          "kind": "talent",
+          "requires": "reserva-envelhecida"
+        },
+        {
+          "level": 20,
+          "id": "grande-cru",
+          "name": "Grande Cru",
+          "kind": "ascension",
+          "requires": null
+        }
+      ]
+    },
+    {
+      "id": "bardo-cervejeiro",
+      "classId": "Bardo",
+      "subclass": "Bardo Cervejeiro",
+      "specialty": "Fungos e Levedura",
+      "diet": "Cerveja: HP temp = Inspiração",
+      "talents": [
+        {
+          "level": 4,
+          "id": "fermento-de-masmorra",
+          "name": "Fermento de Masmorra",
+          "kind": "talent",
+          "requires": null
+        },
+        {
+          "level": 8,
+          "id": "ressaca-positiva",
+          "name": "Ressaca Positiva",
+          "kind": "talent",
+          "requires": "fermento-de-masmorra"
+        },
+        {
+          "level": 12,
+          "id": "cancao-ebria",
+          "name": "Canção Ébria",
+          "kind": "talent",
+          "requires": "ressaca-positiva"
+        },
+        {
+          "level": 16,
+          "id": "barril-explosivo",
+          "name": "Barril Explosivo",
+          "kind": "talent",
+          "requires": "cancao-ebria"
+        },
+        {
+          "level": 20,
+          "id": "festa-dos-fungos",
+          "name": "Festa dos Fungos",
+          "kind": "ascension",
+          "requires": null
+        }
+      ]
+    },
+    {
+      "id": "dancarino-das-facas",
+      "classId": "Bardo",
+      "subclass": "Dançarino das Facas",
+      "specialty": "Aves",
+      "diet": "Aves: CAR para atacar",
+      "talents": [
+        {
+          "level": 4,
+          "id": "arremesso-ritmico",
+          "name": "Arremesso Rítmico",
+          "kind": "talent",
+          "requires": null
+        },
+        {
+          "level": 8,
+          "id": "danca-de-laminas",
+          "name": "Dança de Lâminas",
+          "kind": "talent",
+          "requires": "arremesso-ritmico"
+        },
+        {
+          "level": 12,
+          "id": "espectaculo-sangrento",
+          "name": "Espectáculo Sangrento",
+          "kind": "talent",
+          "requires": "danca-de-laminas"
+        },
+        {
+          "level": 16,
+          "id": "faca-volta",
+          "name": "Faca Volta",
+          "kind": "talent",
+          "requires": "espectaculo-sangrento"
+        },
+        {
+          "level": 20,
+          "id": "finale-das-facas",
+          "name": "Finale das Facas",
+          "kind": "ascension",
+          "requires": null
+        }
+      ]
+    },
+    {
+      "id": "cantor-das-especiarias",
+      "classId": "Bardo",
+      "subclass": "Cantor das Especiarias",
+      "specialty": "Ervas",
+      "diet": "Especiarias: +3 CD ilusão",
+      "talents": [
+        {
+          "level": 4,
+          "id": "nota-picante",
+          "name": "Nota Picante",
+          "kind": "talent",
+          "requires": null
+        },
+        {
+          "level": 8,
+          "id": "refrao-queima",
+          "name": "Refrão Queima",
+          "kind": "talent",
+          "requires": "nota-picante"
+        },
+        {
+          "level": 12,
+          "id": "sinfonia-de-ervas",
+          "name": "Sinfonia de Ervas",
+          "kind": "talent",
+          "requires": "refrao-queima"
+        },
+        {
+          "level": 16,
+          "id": "encanto-culinario",
+          "name": "Encanto Culinário",
+          "kind": "talent",
+          "requires": "sinfonia-de-ervas"
+        },
+        {
+          "level": 20,
+          "id": "ode-ao-wasabi",
+          "name": "Ode ao Wasabi",
+          "kind": "ascension",
+          "requires": null
+        }
+      ]
+    },
+    {
+      "id": "circulo-da-decomposicao",
+      "classId": "Druida",
+      "subclass": "Círculo da Decomposição",
+      "specialty": "Fungos Necróticos",
+      "diet": "Cogumelos: imune necrotico",
+      "talents": [
+        {
+          "level": 4,
+          "id": "esporos-necroticos",
+          "name": "Esporos Necróticos",
+          "kind": "talent",
+          "requires": null
+        },
+        {
+          "level": 8,
+          "id": "podridao-fertil",
+          "name": "Podridão Fertil",
+          "kind": "talent",
+          "requires": "esporos-necroticos"
+        },
+        {
+          "level": 12,
+          "id": "toque-de-bolor",
+          "name": "Toque de Bolor",
+          "kind": "talent",
+          "requires": "podridao-fertil"
+        },
+        {
+          "level": 16,
+          "id": "grande-decomposicao",
+          "name": "Grande Decomposição",
+          "kind": "talent",
+          "requires": "toque-de-bolor"
+        },
+        {
+          "level": 20,
+          "id": "ciclo-da-podridem",
+          "name": "Ciclo da Podridem",
+          "kind": "ascension",
+          "requires": null
+        }
+      ]
+    },
+    {
+      "id": "circulo-do-superpredador",
+      "classId": "Druida",
+      "subclass": "Círculo do Superpredador",
+      "specialty": "Carne Crua de Feras",
+      "diet": "Forma Selvagem: HP extra",
+      "talents": [
+        {
+          "level": 4,
+          "id": "forma-aprimorada",
+          "name": "Forma Aprimorada",
+          "kind": "talent",
+          "requires": null
+        },
+        {
+          "level": 8,
+          "id": "fusao-biomagica",
+          "name": "Fusão Biomágica",
+          "kind": "talent",
+          "requires": "forma-aprimorada"
+        },
+        {
+          "level": 12,
+          "id": "forma-monstruosa",
+          "name": "Forma Monstruosa",
+          "kind": "talent",
+          "requires": "fusao-biomagica"
+        },
+        {
+          "level": 16,
+          "id": "caca-alpha",
+          "name": "Caça Alpha",
+          "kind": "talent",
+          "requires": "forma-monstruosa"
+        },
+        {
+          "level": 20,
+          "id": "forma-lendaria",
+          "name": "Forma Lendária",
+          "kind": "ascension",
+          "requires": null
+        }
+      ]
+    },
+    {
+      "id": "circulo-da-simbiose",
+      "classId": "Druida",
+      "subclass": "Círculo da Simbiose",
+      "specialty": "Sementes Mágicas",
+      "diet": "Vinhas: rebate 1d6 cortante",
+      "talents": [
+        {
+          "level": 4,
+          "id": "semente-guardia",
+          "name": "Semente Guardiã",
+          "kind": "talent",
+          "requires": null
+        },
+        {
+          "level": 8,
+          "id": "rede-simbiotica",
+          "name": "Rede Simbiótica",
+          "kind": "talent",
+          "requires": "semente-guardia"
+        },
+        {
+          "level": 12,
+          "id": "vinha-agarradora",
+          "name": "Vinha Agarradora",
+          "kind": "talent",
+          "requires": "rede-simbiotica"
+        },
+        {
+          "level": 16,
+          "id": "floresta-em-miniatura",
+          "name": "Floresta em Miniatura",
+          "kind": "talent",
+          "requires": "vinha-agarradora"
+        },
+        {
+          "level": 20,
+          "id": "corpo-bosque",
+          "name": "Corpo Bosque",
+          "kind": "ascension",
+          "requires": null
+        }
+      ]
+    },
+    {
+      "id": "circulo-do-solo-vivo",
+      "classId": "Druida",
+      "subclass": "Círculo do Solo Vivo",
+      "specialty": "Minerais e Terra",
+      "diet": "Pedras: resistência contundente",
+      "talents": [
+        {
+          "level": 4,
+          "id": "morder-a-terra",
+          "name": "Morder a Terra",
+          "kind": "talent",
+          "requires": null
+        },
+        {
+          "level": 8,
+          "id": "pele-de-pedra",
+          "name": "Pele de Pedra",
+          "kind": "talent",
+          "requires": "morder-a-terra"
+        },
+        {
+          "level": 12,
+          "id": "tremor-leve",
+          "name": "Tremor Leve",
+          "kind": "talent",
+          "requires": "pele-de-pedra"
+        },
+        {
+          "level": 16,
+          "id": "golem-momentaneo",
+          "name": "Golem Momentâneo",
+          "kind": "talent",
+          "requires": "tremor-leve"
+        },
+        {
+          "level": 20,
+          "id": "montanha-viva",
+          "name": "Montanha Viva",
+          "kind": "ascension",
+          "requires": null
+        }
+      ]
+    },
+    {
+      "id": "ferreiro-de-utensilios",
+      "classId": "Artífice",
+      "subclass": "Ferreiro de Utensílios",
+      "specialty": "Carapaças",
+      "diet": "Panelas de exoesqueleto: +2 CA",
+      "talents": [
+        {
+          "level": 4,
+          "id": "panela-viva",
+          "name": "Panela Viva",
+          "kind": "talent",
+          "requires": null
+        },
+        {
+          "level": 8,
+          "id": "armadura-de-caldeirao",
+          "name": "Armadura de Caldeirão",
+          "kind": "talent",
+          "requires": "panela-viva"
+        },
+        {
+          "level": 12,
+          "id": "reforco-de-campo",
+          "name": "Reforço de Campo",
+          "kind": "talent",
+          "requires": "armadura-de-caldeirao"
+        },
+        {
+          "level": 16,
+          "id": "forja-rapida",
+          "name": "Forja Rápida",
+          "kind": "talent",
+          "requires": "reforco-de-campo"
+        },
+        {
+          "level": 20,
+          "id": "mestre-de-utensilios",
+          "name": "Mestre de Utensílios",
+          "kind": "ascension",
+          "requires": null
+        }
+      ]
+    },
+    {
+      "id": "engenheiro-de-fogareiros",
+      "classId": "Artífice",
+      "subclass": "Engenheiro de Fogareiros",
+      "specialty": "Inflamáveis",
+      "diet": "Glandulas: resistência fogo, bombas +2d6",
+      "talents": [
+        {
+          "level": 4,
+          "id": "fogareiro-portatil",
+          "name": "Fogareiro Portátil",
+          "kind": "talent",
+          "requires": null
+        },
+        {
+          "level": 8,
+          "id": "bomba-de-glandula",
+          "name": "Bomba de Glândula",
+          "kind": "talent",
+          "requires": "fogareiro-portatil"
+        },
+        {
+          "level": 12,
+          "id": "caldeira-a-pressao",
+          "name": "Caldeira a Pressão",
+          "kind": "talent",
+          "requires": "bomba-de-glandula"
+        },
+        {
+          "level": 16,
+          "id": "motor-de-vapor-menor",
+          "name": "Motor de Vapor Menor",
+          "kind": "talent",
+          "requires": "caldeira-a-pressao"
+        },
+        {
+          "level": 20,
+          "id": "inferno-controlado",
+          "name": "Inferno Controlado",
+          "kind": "ascension",
+          "requires": null
+        }
+      ]
+    },
+    {
+      "id": "biologo-alquimico",
+      "classId": "Artífice",
+      "subclass": "Biólogo Alquímico",
+      "specialty": "Ácidos e Venenos",
+      "diet": "Micro-doses: imune veneno, +1d6 ácido",
+      "talents": [
+        {
+          "level": 4,
+          "id": "seringa-basica",
+          "name": "Seringa Básica",
+          "kind": "talent",
+          "requires": null
+        },
+        {
+          "level": 8,
+          "id": "catalisador",
+          "name": "Catalisador",
+          "kind": "talent",
+          "requires": "seringa-basica"
+        },
+        {
+          "level": 12,
+          "id": "laboratorio-de-campo",
+          "name": "Laboratório de Campo",
+          "kind": "talent",
+          "requires": "catalisador"
+        },
+        {
+          "level": 16,
+          "id": "mutageno-de-batalha",
+          "name": "Mutágeno de Batalha",
+          "kind": "talent",
+          "requires": "laboratorio-de-campo"
+        },
+        {
+          "level": 20,
+          "id": "mutacao-direcionada",
+          "name": "Mutação Direcionada",
+          "kind": "ascension",
+          "requires": null
+        }
+      ]
+    },
+    {
+      "id": "construtor-de-armadilhas",
+      "classId": "Artífice",
+      "subclass": "Construtor de Armadilhas",
+      "specialty": "Caça Intacta",
+      "diet": "Carne intacta: Vantagem INT/invenções",
+      "talents": [
+        {
+          "level": 4,
+          "id": "armadilha-biologica",
+          "name": "Armadilha Biológica",
+          "kind": "talent",
+          "requires": null
+        },
+        {
+          "level": 8,
+          "id": "extracao-perfeita",
+          "name": "Extração Perfeita",
+          "kind": "talent",
+          "requires": "armadilha-biologica"
+        },
+        {
+          "level": 12,
+          "id": "rede-de-campo",
+          "name": "Rede de Campo",
+          "kind": "talent",
+          "requires": "extracao-perfeita"
+        },
+        {
+          "level": 16,
+          "id": "engenho-de-caca",
+          "name": "Engenho de Caça",
+          "kind": "talent",
+          "requires": "rede-de-campo"
+        },
+        {
+          "level": 20,
+          "id": "arquiteto-da-masmorra",
+          "name": "Arquiteto da Masmorra",
+          "kind": "ascension",
+          "requires": null
+        }
+      ]
+    }
+  ]
+}

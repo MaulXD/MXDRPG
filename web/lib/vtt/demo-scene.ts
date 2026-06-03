@@ -1,0 +1,47 @@
+import type { BattleScene } from "./types";
+import { defaultMovementFields } from "./movement";
+
+export const DEMO_SCENE: BattleScene = {
+  id: "demo",
+  name: "Masmorra — Sala Hex",
+  gridRadius: 8,
+  hexSize: 36,
+  tokens: [
+    {
+      id: "t1",
+      name: "Aventureiro",
+      axial: { q: 0, r: 0 },
+      color: "#4a90d9",
+      walk: 4,
+      run: 7,
+      pa: 4,
+      paMax: 4,
+      ownerRole: "jogador",
+      actorId: "pc-aventureiro",
+      linked: true,
+      nivel: 3,
+      vida: 28,
+      vidaMax: 28,
+      defesa: 13,
+      ...defaultMovementFields({ walk: 4, run: 7 }),
+    },
+    {
+      id: "t2",
+      name: "Goblin",
+      axial: { q: 1, r: 0 },
+      color: "#8b4513",
+      walk: 4,
+      run: 6,
+      pa: 3,
+      paMax: 3,
+      ownerRole: "mestre",
+      nivel: 1,
+      vida: 12,
+      vidaMax: 12,
+      defesa: 13,
+      monsterEntryId: "monstros-goblin",
+      monsterTier: "mob",
+      ...defaultMovementFields({ walk: 4, run: 6 }),
+    },
+  ],
+};

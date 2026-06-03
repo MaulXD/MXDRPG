@@ -1,0 +1,77 @@
+{
+  "id": "vinite",
+  "title": "Eldarin — Combate Tático Hexagonal",
+  "description": "Sistema proprietário de fantasia com combate tático em grid hexagonal, UI glass/neon e integrações Drag Ruler, Terrain Ruler, Sequencer, Token Magic FX e socketlib.",
+  "version": "0.4.0",
+  "compatibility": {
+    "minimum": "11",
+    "verified": "12"
+  },
+  "authors": [
+    {
+      "name": "Eldarin Team"
+    }
+  ],
+  "esmodules": ["vinite.mjs"],
+  "styles": ["styles/vinite.css"],
+  "packs": [
+    {
+      "name": "armas",
+      "label": "Armas Eldarin",
+      "system": "vinite",
+      "path": "packs/armas",
+      "type": "Item",
+      "private": false
+    },
+    {
+      "name": "habilidades",
+      "label": "Habilidades Eldarin",
+      "system": "vinite",
+      "path": "packs/habilidades",
+      "type": "Item",
+      "private": false
+    }
+  ],
+  "languages": [
+    {
+      "lang": "pt-BR",
+      "name": "Português (Brasil)",
+      "path": "lang/pt-BR.json"
+    }
+  ],
+  "documentTypes": {
+    "Actor": {
+      "character": {
+        "htmlFields": ["biography"]
+      },
+      "npc": {
+        "htmlFields": ["biography"]
+      }
+    },
+    "Item": {
+      "arma": {
+        "htmlFields": ["description"]
+      },
+      "habilidade": {
+        "htmlFields": ["description"]
+      },
+      "equipamento": {
+        "htmlFields": ["description"]
+      },
+      "efeito": {
+        "htmlFields": ["description"]
+      }
+    }
+  },
+  "grid": {
+    "distance": 1,
+    "units": "hex"
+  },
+  "primaryTokenAttribute": "resources.vida",
+  "secondaryTokenAttribute": "resources.pontosAcao",
+  "initiative": "1d20 + @attributes.agilidade.mod",
+  "socket": true,
+  "url": "",
+  "manifest": "",
+  "download": ""
+}

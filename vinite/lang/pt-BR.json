@@ -1,0 +1,109 @@
+{
+  "ELDARIN": {
+    "Attributes": {
+      "forca": "Força",
+      "agilidade": "Agilidade"
+    },
+    "Resources": {
+      "vida": "Vida",
+      "pontosAcao": "Pontos de Ação"
+    },
+    "Movement": {
+      "walk": "Caminhada (hex)",
+      "run": "Corrida (hex)",
+      "runApCost": "PA por corrida",
+      "modeWalk": "Caminhada",
+      "modeRun": "Corrida",
+      "dragRulerHint": "Drag Ruler: verde = caminhada, amarelo = corrida. Ultrapassar caminhada consome PA.",
+      "notEnoughPAForRun": "PA insuficientes para corrida (necessário: {cost}).",
+      "runApSpent": "Corrida: {cost} PA consumido(s)."
+    },
+    "DragRuler": {
+      "walk": "Caminhada",
+      "run": "Corrida"
+    },
+    "Sheet": {
+      "character": "Ficha Eldarin (Personagem)",
+      "npc": "Ficha Eldarin (NPC)",
+      "item": "Ficha Eldarin (Item)",
+      "namePlaceholder": "Nome do personagem",
+      "race": "Raça",
+      "class": "Classe",
+      "level": "Nível",
+      "threat": "Ameaça",
+      "attributes": "Atributos",
+      "resources": "Recursos",
+      "defense": "Defesa",
+      "modifier": "Modificador",
+      "restorePA": "Recuperar PA",
+      "hexMovement": "Movimento Hexagonal",
+      "weapons": "Armas",
+      "noWeapons": "Crie itens do tipo Arma na aba Itens do ator.",
+      "biography": "Biografia",
+      "tabStats": "Combate",
+      "tabInventory": "Inventário",
+      "tabBio": "Biografia",
+      "inventory": "Inventário",
+      "dropHint": "Arraste itens do compendium ou da pasta Itens para esta zona.",
+      "sectionEmpty": "Vazio — arraste ou use +",
+      "deleteItem": "Excluir item",
+      "equipped": "Equipado"
+    },
+    "Rolls": {
+      "initiative": "Iniciativa"
+    },
+    "Attack": {
+      "execute": "Atacar",
+      "range": "Alcance",
+      "noWeapon": "Arma não encontrada.",
+      "selectOneTarget": "Selecione exatamente 1 alvo no canvas.",
+      "noToken": "Nenhum token ativo para este personagem.",
+      "missingTokens": "Tokens de atacante ou alvo inválidos.",
+      "outOfRange": "Alvo fora de alcance ({range} hex).",
+      "notEnoughPA": "Pontos de Ação insuficientes.",
+      "rollFlavor": "{weapon} → {target}",
+      "damageFlavor": "Dano",
+      "noSequencerFallback": "Sequencer inativo — rolagens aplicadas sem VFX.",
+      "sequencerFailed": "Falha no Sequencer (JB2A instalado?)"
+    },
+    "Warnings": {
+      "sequencer": "Instale e ative Sequencer + JB2A para animações de combate."
+    },
+    "Item": {
+      "namePlaceholder": "Nome do item",
+      "description": "Descrição",
+      "tactical": "Combate tático",
+      "rangeHex": "Alcance (hex)",
+      "apCost": "Custo PA",
+      "attackBonus": "Bônus ataque",
+      "damageFormula": "Fórmula dano",
+      "damageType": "Tipo dano",
+      "abilityType": "Tipo",
+      "abilityActive": "Ativa",
+      "abilityPassive": "Passiva",
+      "abilityReaction": "Reação",
+      "recharge": "Recarga",
+      "weight": "Peso",
+      "equipped": "Equipado",
+      "duration": "Duração",
+      "needsActor": "Arraste o item para a ficha de um personagem para testar ataque.",
+      "types": {
+        "arma": "Arma",
+        "habilidade": "Habilidade",
+        "equipamento": "Equipamento",
+        "efeito": "Efeito"
+      }
+    },
+    "Seed": {
+      "armasTitle": "Importar armas exemplo?",
+      "armasBody": "Compendium Armas Eldarin vazio. Importar 5 armas?",
+      "habilidadesTitle": "Importar habilidades exemplo?",
+      "habilidadesBody": "Compendium Habilidades Eldarin vazio. Importar 5 habilidades?",
+      "done": "{count} itens importados.",
+      "gmOnly": "Apenas GM pode importar.",
+      "noPack": "Compendium não encontrado.",
+      "noPackNamed": "Pack ausente: {pack}",
+      "alreadyHasEntries": "Compendium já contém itens."
+    }
+  }
+}

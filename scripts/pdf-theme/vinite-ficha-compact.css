@@ -1,0 +1,75 @@
+/* Ficha 1–2 páginas A4 — sem capa */
+@page {
+  size: A4;
+  margin: 10mm 9mm 12mm 9mm;
+}
+
+body.book.ficha-compact {
+  font-size: 7.5pt;
+  line-height: 1.28;
+  background: #faf6ee;
+}
+
+body.book.ficha-compact .content {
+  column-count: 2;
+  column-gap: 7mm;
+  column-rule: 1px solid #c4b59a;
+}
+
+body.book.ficha-compact .content h1 {
+  column-span: all;
+  font-size: 11pt;
+  text-align: center;
+  border-bottom: 2px solid #b8922e;
+  margin: 0 0 0.5em;
+  padding-bottom: 0.2em;
+}
+
+body.book.ficha-compact .content h2 {
+  font-size: 8pt;
+  margin: 0.6em 0 0.25em;
+  padding: 0.15em 0.35em;
+  background: #3d5c40;
+  color: #f0e6d4;
+  page-break-after: avoid;
+  break-after: avoid;
+}
+
+body.book.ficha-compact .content blockquote {
+  column-span: all;
+  font-size: 6.5pt;
+  margin: 0 0 0.4em;
+  padding: 0.2em 0.5em;
+  border-left-width: 2px;
+}
+
+body.book.ficha-compact .content table {
+  width: 100%;
+  font-size: 6.5pt;
+  margin: 0.2em 0 0.45em;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+body.book.ficha-compact .content th,
+body.book.ficha-compact .content td {
+  padding: 0.15em 0.25em;
+}
+
+body.book.ficha-compact .content thead {
+  background: #2c3d2e;
+}
+
+body.book.ficha-compact .content hr {
+  margin: 0.45em 0;
+  column-span: all;
+}
+
+body.book.ficha-compact .content p {
+  margin: 0.2em 0;
+  font-size: 7pt;
+}
+
+body.book.ficha-compact .content strong {
+  font-size: 6.5pt;
+}
