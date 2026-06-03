@@ -9,8 +9,11 @@
 | **Build Command** | *(vazio)* |
 | **Install Command** | *(vazio)* |
 | **Output Directory** | *(vazio — NUNCA `public`)* |
+| **Node.js Version** | 20.x |
 
 Salve → **Deployments** → **Redeploy** (desmarque cache).
+
+O repositório inclui `web/vercel.json` com `installCommand` e `buildCommand` explícitos — não sobrescreva com preset “Other” ou output `public`.
 
 ## Por que dava 404?
 

@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { normalizeUserRole } from "@/lib/auth/roles";
 import type { UserRole } from "@/lib/auth/types";
 
 const SESSION_COOKIE = "vinite_session";
@@ -19,8 +20,9 @@ function readRole(request: NextRequest): UserRole | null {
   if (!raw) return null;
   try {
     const json = Buffer.from(raw, "base64url").toString("utf8");
-    const data = JSON.parse(json) as { user?: { role?: UserRole } };
-    return data.user?.role ?? null;
+    const data = JSON.parse(json) as { user?: { role?: string } };
+    if (!data.user?.role) return null;
+    return normalizeUserRole(data.user.role);
   } catch {
     return null;
   }
@@ -45,7 +47,8 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(login);
   }
 
-  if (ROLE_LEVEL[userRole] < ROLE_LEVEL[required]) {
+  const level = ROLE_LEVEL[userRole] ?? ROLE_LEVEL.member;
+  if (level < ROLE_LEVEL[required]) {
     return NextResponse.redirect(new URL("/painel", request.url));
   }
 
