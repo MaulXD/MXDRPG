@@ -1,5 +1,22 @@
 # Deploy Vercel — Eldarin (MXDRPG)
 
+## `mxdrpg.vercel.app` → 404 NOT_FOUND
+
+Esse domínio **existe na Vercel**, mas **não há deploy de produção** do app (nunca concluiu um build com sucesso, ou o projeto não está ligado ao GitHub).
+
+**Faça isto:**
+
+1. [vercel.com/new](https://vercel.com/new) → importar **`MaulXD/MXDRPG`**
+2. Nome do projeto: **mxdrpg** (gera `mxdrpg.vercel.app`)
+3. **Root Directory:** `web` → **Deploy**
+4. Quando o status for **Ready**, teste:  
+   `https://mxdrpg.vercel.app/api/health`  
+   → deve retornar `{"ok":true,"app":"eldarin-vtt"}`
+
+Se o projeto **mxdrpg** já existir mas só falhar build: **Deployments** → abra o último log → corrija **Root Directory = `web`**, **Framework = Next.js**, **Output Directory vazio** → **Redeploy** com **Clear Build Cache**.
+
+---
+
 ## Diagnóstico: `drpg.vercel.app` mostra 404 ou "React App"
 
 Se `/api/health` dá **404 NOT_FOUND** ou a home mostra **"React App"** / `create-react-app`, o domínio está ligado a **outro projeto** (CRA estático em `/DRPG/`), **não** a este repositório Next.js.
