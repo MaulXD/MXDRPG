@@ -1,15 +1,22 @@
 # Vercel — MXDRPG
 
-## Configuração (copie exatamente)
+## Configuração recomendada (copie exatamente)
 
 | Campo | Valor |
 |-------|--------|
-| **Root Directory** | `web` |
+| **Root Directory** | `web` ← **preferido** |
 | **Framework Preset** | Next.js |
-| **Build Command** | *(vazio)* |
+| **Build Command** | *(vazio — usa `web/vercel.json`)* |
 | **Install Command** | *(vazio)* |
-| **Output Directory** | *(vazio — apague `public`)* |
+| **Output Directory** | *(vazio — apague `public`; desligue Override)* |
 | **Node.js Version** | 20.x |
+
+### Se Root Directory ficar vazio (raiz do repo)
+
+O `vercel.json` na **raiz** roda `cd web && npm ci` e `next build` dentro de `web/`.  
+Mesmo assim, no dashboard: **Framework = Next.js**, **Output Directory vazio**.
+
+Após mudar settings: **Redeploy** e marque **Clear Build Cache** (remove `package-lock.json` fantasma na raiz).
 
 Salve → **Deployments** → **Redeploy** (desmarque cache).
 
