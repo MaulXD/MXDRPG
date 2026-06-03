@@ -1,4 +1,5 @@
 import { cookies } from "next/headers";
+import { normalizeUserRole } from "./roles";
 import type { SessionPayload, SessionUser, UserRole } from "./types";
 
 export const SESSION_COOKIE = "vinite_session";
@@ -11,7 +12,8 @@ function decode(raw: string): SessionPayload | null {
   try {
     const json = Buffer.from(raw, "base64url").toString("utf8");
     const data = JSON.parse(json) as SessionPayload;
-    if (!data?.user?.role || !data?.user?.id) return null;
+    if (!data?.user?.id) return null;
+    data.user.role = normalizeUserRole(data.user.role as string);
     return data;
   } catch {
     return null;

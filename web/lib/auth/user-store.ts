@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import { hashPassword, verifyPassword } from "@/lib/auth/password";
+import { normalizeUserRole } from "@/lib/auth/roles";
 import type { SessionUser, UserRole } from "@/lib/auth/types";
 
 export type StoredUser = {
@@ -61,7 +62,12 @@ function registry(): Map<string, StoredUser> {
 }
 
 function toSessionUser(u: StoredUser): SessionUser {
-  return { id: u.id, email: u.email, name: u.name, role: u.role };
+  return {
+    id: u.id,
+    email: u.email,
+    name: u.name,
+    role: normalizeUserRole(u.role as string),
+  };
 }
 
 export function authenticateUser(email: string, password: string): SessionUser | null {

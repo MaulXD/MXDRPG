@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { SessionUser } from "@/lib/auth/types";
-import { ROLES } from "@/lib/auth/roles";
+import { roleMeta } from "@/lib/auth/roles";
 import { LogoutButton } from "./LogoutButton";
 
 type Props = {
@@ -9,7 +9,7 @@ type Props = {
 };
 
 export function PortalShell({ user, children }: Props) {
-  const roleMeta = ROLES[user.role];
+  const meta = roleMeta(user.role);
 
   return (
     <div className="page-wrap" style={{ paddingTop: "1rem" }}>
@@ -27,7 +27,7 @@ export function PortalShell({ user, children }: Props) {
       >
         <div>
           <p style={{ margin: 0, fontSize: "0.72rem", color: "var(--neon-lime)", letterSpacing: "0.14em" }}>
-            PORTAL · {roleMeta.label.toUpperCase()}
+            PORTAL · {meta.label.toUpperCase()}
           </p>
           <h1 style={{ margin: "0.25rem 0 0", fontSize: "1.35rem" }}>{user.name}</h1>
           <p style={{ margin: "0.2rem 0 0", fontSize: "0.85rem", color: "var(--text-muted)" }}>{user.email}</p>
@@ -36,7 +36,7 @@ export function PortalShell({ user, children }: Props) {
           <Link href="/" className="btn btn-secondary" style={{ padding: "0.4rem 0.85rem", fontSize: "0.85rem" }}>
             Site
           </Link>
-          {user.role === "admin" && (
+          {meta.homePath === "/admin" && (
             <Link href="/admin" className="btn btn-secondary" style={{ padding: "0.4rem 0.85rem", fontSize: "0.85rem" }}>
               Admin
             </Link>
