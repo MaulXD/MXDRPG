@@ -9,12 +9,17 @@ Abra o projeto → **Settings** → **Build and Deployment**:
 | **Root Directory** | `web` |
 | **Framework Preset** | Next.js |
 | **Build Command** | *(vazio — padrão)* |
-| **Output Directory** | *(vazio — apague `public` se existir)* |
+| **Output Directory** | *(vazio — apague `public`; desligue **Override** se estiver ligado)* |
 | **Install Command** | *(vazio — padrão)* |
 
-> Se **Output Directory** = `public`, o build quebra com  
-> `No Output Directory named "public" found`.  
-> Next.js publica via `.next`, não pasta `public` como output.
+> Se **Output Directory** = `public`, o build quebra.  
+> O repo usa `vercel.json` com `"use": "@vercel/next"` para forçar deploy Next.js.
+
+### Se o erro `public` continuar
+
+1. **Settings** → **Build and Deployment** → em **Output Directory**, clique para **remover o override** (não pode ficar `public`).
+2. Confirme **Root Directory** = `web` (salve de novo).
+3. **Deployments** → **Redeploy** (sem cache: desmarque *Use existing Build Cache*).
 
 ## Depois de salvar
 
