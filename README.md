@@ -39,7 +39,8 @@ npm run dev:clean
 
 - **Root Directory:** `web` ← sem isso = 404
 - **Framework:** Next.js
-- **Output Directory:** *(vazio — apague `public`)*
+- **Output Directory:** *(vazio — apague `public`; preset deve ser **Next.js**, não Other)*
+- Se o build falhar com `public`: em Settings desligue **Override** em Output Directory e redeploy.
 
 Depois **Redeploy** sem cache.
 
