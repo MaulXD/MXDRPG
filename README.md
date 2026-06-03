@@ -35,6 +35,8 @@ npm run dev:clean
 
 ## Vercel (obrigatório)
 
+**Se `drpg.vercel.app` mostra "React App" ou 404 em `/api/health`:** o domínio não está no app Eldarin — veja [DEPLOY.md](DEPLOY.md).
+
 **Settings → Build and Deployment:**
 
 - **Root Directory:** `web` ← **recomendado**
