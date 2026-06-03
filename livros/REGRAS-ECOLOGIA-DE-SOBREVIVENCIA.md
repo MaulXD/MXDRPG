@@ -58,5 +58,8 @@ IDs de objetos: **OBJ-G** (gerais), **OBJ-B01** a **OBJ-B20** (por bioma). Ver `
 | Anti-ilusao/sono | 11, 19 | 02, 10, 22 | 045, 050 | B11-03, B19-02 |
 | Gravidade/altura | 9 | 15, 35 | 022, 011 | B09-01, G12 |
 | Pressao abissal | 2 (profundo) | 29 | 029, 057 | B02-06, G16 |
+| Voo / planejamento | 9, 12 | 35 | 011, 022, 024 | B09-05, B12-05 |
+| Sem tocha (escuro) | 12 | 01 | — | Brasas, Calor de Panela |
+| Sem fogo aberto (gas) | 10, 12, 8, 4 | — | — | Kit Brasas 16.2.1 |
 
-Detalhes narrativos e CD por bioma: **BIOMAS-APROFUNDADOS.md**.
+Detalhes: **BIOMAS-APROFUNDADOS.md** · vertical/luz/gas: **SUPLEMENTO-BIOMAS-VERTICAIS-LUZ-E-BRASAS.md**.

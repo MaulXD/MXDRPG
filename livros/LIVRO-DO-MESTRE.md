@@ -21,6 +21,8 @@ Cada bioma tem ambiente, perigos e fauna proprios. Ao montar um andar, o Mestre 
 | `CATALOGO-OBJETOS-DE-CENARIO.md` | OBJ-G + OBJ-B01–B20 para montar mapas |
 | `REGRAS-ECOLOGIA-DE-SOBREVIVENCIA.md` | Tres vias (planta / monstro / objeto), pressao ambiental |
 | `CAPITULO-5B-FLORA-DE-ELDARIN.md` | 40 plantas — efeitos 24h |
+| `SUPLEMENTO-BIOMAS-VERTICAIS-LUZ-E-BRASAS.md` | Biomas 9/12 verticais; 12 escuro sem tocha; Brasas; truque Calor de Panela |
+| `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` | ESP/MIN/TES; saque 001–060; forrageio por bioma; OBJ-R |
 
 **Principio:** plantas do bioma e carne de monstro **nativo** concedem adaptacao ao ambiente (ex.: Mar de Prata — respirar agua via Guelras apos prato de tubarao ou sereia; algas #12 ajudam visao e nado, nao substituem guelras).
 
@@ -74,15 +76,15 @@ Perigos: Maquinario funcionando (dano de esmagamento), vapores toxicos, eletrocu
 Fauna Nativa: Construtos (Golems de Ferro, Armaduras Animadas, Automatos de Genio), Mimicos (disfarCados de maquinario), Aracnideos (Aranhas usando fios de cobre como teia, Besouros-Trovao).
 Ingredientes Tipicos: Nucleo de Mana de Pedra, Aco Encantado, Ferro Vulcanico, Fluido Arcano.
 
-### BIOMA 9 — ABISMO INVERTIDO
+### BIOMA 9 — ABISMO INVERTIDO *(acesso vertical — voo ou planejamento)*
 Ambiente: A gravidade aqui esta quebrada. Pedacos de terra e ruinas flutuam sobre um buraco sem fundo. Para atravessar, e preciso pular entre plataformas ou usar cordas. Teto sempre a centenas de metros. Vento constante de baixo para cima.
-Perigos: Quedas no Abismo (possivelmente infinitas), plataformas instaveis, ventos que empurram.
+Perigos: Quedas no Abismo (possivelmente infinitas), plataformas instaveis, ventos que empurram. **Camadas B/C** exigem voo, mutacao de voo (Grifo, Wyvern) ou rotas planejadas — ver `SUPLEMENTO-BIOMAS-VERTICAIS-LUZ-E-BRASAS.md`.
 Fauna Nativa: Alados (Grifos, Harpias, Morcegos-Tirano, Manticoras), Draconicos (Wyverns, Dragonetes de Magma), Quimeras (formadas de bestas que cairam juntas).
 Ingredientes Tipicos: Carne de Grifo, Penas de Voo, Asa de Wyvern, Membrana de Morcego.
 
-### BIOMA 10 — PANTANO DA DECOMPOSICAO
+### BIOMA 10 — PANTANO DA DECOMPOSICAO *(bolsoes sem fogo aberto)*
 Ambiente: Fossa que recebe todo o esgoto do mundo acima. Lagoas quimicas de cores vibrantes (verde acido, roxo toxico, laranja bioluminescente). Bolhas de gas constantes. Cheiro insuportavel. Chao instavel de lama organica.
-Perigos: Acidos nas lagoas (dano passivo sem protecao), gases letais em bolsoes, afundamento na lama.
+Perigos: Acidos nas lagoas (dano passivo sem protecao), gases letais em bolsoes, afundamento na lama. **Tocha/fogueira/Chama de Fogareiro** em bolsoes de gas: CON CD 13 ou 2d6 fogo. Cozinha: **Calor de Panela** ou **Kit de Brasas Magicas** (Jogador 16.2.1).
 Fauna Nativa: Amorfos (Slimes Corrosivos, Pudins Negros, Geleias de todas as cores), Aquaticos (Sapos-Engolidor, Serpentes do Abismo), Insetoides (Moscas-Carnica em enxames massivos, Centopeias Causticas).
 Ingredientes Tipicos: Acido de Slime, Nucleo de Pudim, Glandula Digestiva de Mosca, Suco de Planta Carnivora.
 
@@ -92,9 +94,9 @@ Perigos: Mobilia animada hostil, armadilhas de feiticos presos em livros, labiri
 Fauna Nativa: Mimicos (Grimorios Falsos, Mimicos de Movel), Espirituais (Espiritos de Magos Antigos, Banshees), Insetoides (Tracas-Gigantes que comem conhecimento), Construtos (Automatos de Genio, guardioes dos arquivos).
 Ingredientes Tipicos: Fluido Mental, Eco de Intencao, Pergaminho Arcano (tempero para Mago Fermentador).
 
-### BIOMA 12 — NINHO CREPUSCULAR
+### BIOMA 12 — NINHO CREPUSCULAR *(vertical + escuridao sem tocha)*
 Ambiente: Abismo vertical forrado apenas por seda cinza. Nao ha chao ou paredes visiveis — apenas teias em camadas. Ovos do tamanho de carruagens pendurados em cachos. Silencio perturbador interrompido por sons de coisas se movendo nas teias.
-Perigos: Teia adesiva (movimento reduzido, teste de Forca para sair), ovos que eclodem ao menor som alto, perda de orientacao.
+Perigos: Teia adesiva (movimento reduzido, teste de Forca para sair), ovos que eclodem ao menor som alto, perda de orientacao. **Escuridao profunda** (Percepcao -6/-8). **Proibido:** tocha, lanterna de oleo, fogueira, **Chama de Fogareiro** (detonacao 2d6). **Camada 2+** exige voo/planagem ou negociar teia. Cozinha: **Calor de Panela** / **Brasas Magicas** apenas. Ver supplemento vertical/luz.
 Fauna Nativa: Aracnideos (Super-Aranhas, Matriarcas Tecerrochas, Aranha-Cavaleira), Parasitas (Vermes, Larvas de tamanhos variados), Insetoides (Besouros parasitarios).
 Ingredientes Tipicos: Seda de Matriarca, Veneno Concentrado, Ovos de Aranha (nutritivos), Casulo de Proteina.
 
@@ -509,6 +511,8 @@ Cada monstro possui uma **versão Elite** desbloqueada quando encontrado nos and
 
 **Flora de masmorra:** 40 especies em Livro do Jogador **Cap. 5B** — Druidas e ecossistema; monstros **Consumidores** listados por planta.
 
+**Saque economico:** alem de ingredientes culinarios, Trinchar com sucesso concede **especiaria, minerio e tesouro** por codigo em `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md`. Cenario: **OBJ-R** em `CATALOGO-OBJETOS-DE-CENARIO.md`.
+
 ### Estatísticas
 
 - **HP:** Pontos de vida totais
@@ -558,6 +562,8 @@ Os zumbis de masmorra não são criados por necromantes — eles nascem espontan
 **Ingredientes (Extração):**
 - Medula Podre (Fácil): Ingrediente básico de caldos necróticos. Sem bônus próprio, mas usado como base para receitas do Mago Fermentador.
 - Dente de Masmorra (Fácil): 1d4 dentes por zumbi. O Ladrão de Glândulas pode transformá-los em veneno de decomposição.
+
+**Saque (Trinchar com sucesso):** ESP-12 · MIN-03 · 2d6 po — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 001).
 
 **Versão Elite — Zumbi Colossal (Nível 5):**
 HP 85 | CA 10 | Dano 2d8+3 | Resistência: Cortante, Necrótico

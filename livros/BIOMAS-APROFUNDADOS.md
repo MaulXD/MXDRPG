@@ -184,7 +184,7 @@
 
 ---
 
-### BIOMA 9 — ABISMO INVERTIDO
+### BIOMA 9 — ABISMO INVERTIDO *(bioma vertical)*
 
 **Origem:** Falha de **gravidade** onde uma Boca “caiu” para dentro; ilhas de ruína flutuam em vento ascendente eterno.
 
@@ -192,14 +192,17 @@
 
 **Ambiente:** Queda = morte ou Mestre define. Vento: empurra 3m/turno. Severidade **moderada** em plataformas.
 
+**Acesso vertical (obrigatorio planejar):** camadas **A / B / C** — ver `SUPLEMENTO-BIOMAS-VERTICAIS-LUZ-E-BRASAS.md`. **B** exige rotas (corda, salto, #35); **C** exige **voo** ou assimilacao de voo (#011, #022). INT/SAB CD 12 antes de entrar em B revela rotas seguras.
+
 | Necessidade | Flora | Fauna |
 |-------------|-------|-------|
 | Queda/voo | #35 Musgo Estelar · #15 | #022 Grifo · #011 Wyvern · #021 Manticora |
 | Cordas/natureza | #15 Tubarao-Relva (fibra) | #024 Aranha teia |
+| Travessia B sem voo | plano de rotas | — |
 
-**Objetos:** OBJ-B09-01 a 04, OBJ-G12, G16.
+**Objetos:** OBJ-B09-01 a 05, OBJ-G12, G16.
 
-**1d6:** 1 plataforma instavel · 2 vento · 3 harpia · 4 relva ancora · 5 quimera · 6 ponte natural teia.
+**1d6:** 1 plataforma instavel · 2 vento · 3 harpia (negocia) · 4 relva ancora · 5 quimera · 6 ponte de teia ancora (OBJ-B09-05).
 
 ---
 
@@ -211,13 +214,16 @@
 
 **Ambiente:** **extrema** toxina. Lama: FOR CD 12. Gas: CON CD 13. Acido: 2d6.
 
+**Sem fogo aberto (bolsoes de gas):** tocha, fogueira e **Chama de Fogareiro** → CON CD 13 ou 2d6 fogo. Cozinha: **Calor de Panela** ou **Kit de Brasas Magicas** (Cap. 16.2.1).
+
 | Necessidade | Flora | Fauna |
 |-------------|-------|-------|
 | Gas/acido | #05 · #06 | #028 Sapo · #038/058 Slimes/Pudim |
 | Agua parcial | #05 | #028 |
 | Imunidade podridao | #06 | #001 Zumbi |
+| Cozinhar | Brasas / Calor de Panela | — |
 
-**Objetos:** OBJ-B10-01 a 04.
+**Objetos:** OBJ-B10-01 a 05 (incl. Refugio sem gas).
 
 **1d6:** 1 bolha gas · 2 lagoa acida · 3 sapo · 4 salmour · 5 slime · 6 enxame moscas.
 
@@ -243,7 +249,7 @@
 
 ---
 
-### BIOMA 12 — NINHO CREPUSCULAR
+### BIOMA 12 — NINHO CREPUSCULAR *(vertical + escuridao sem tocha)*
 
 **Origem:** **Matriarca Tecerrochas** morta virou bioma — o corpo dela é o teto; ovos são renovação constante.
 
@@ -251,13 +257,19 @@
 
 **Ambiente:** Teia: FOR CD 14. Ovos: ruído alto eclode. Perda orientação: SAB CD 12.
 
+**Escuridao:** Percepção **-6** (-8 sem luz permitida). **Proibido:** tocha, lanterna de óleo, fogueira, **Chama de Fogareiro** (2d6 + alerta). **Luz ok:** Calor de Panela (penumbra), Brasas Magicas, cristal de luz, #01 Musgo-Lanterna.
+
+**Vertical:** camadas **0–3** — camada **2+** exige voo/planagem, #35 ou teia-viva (supplemento). Sem plano = preso em Trama baixa.
+
 | Necessidade | Flora | Fauna |
 |-------------|-------|-------|
 | Teia/veneno aracnideo | #36 Polen Matriarca · #21 | #024 Aranha · #061 Aranha-Cavaleira |
+| Luz sem chama | #01 (se trouxer) | — |
+| Cozinhar | Brasas · Calor de Panela | — |
+| Subir camada 2 | #35 · voo assimilacao | #024 escalar teia |
 | Descanso narcotico | #22 Flor Narcotica | — |
-| Proteina | casulo OBJ | #027 Besouro |
 
-**Objetos:** OBJ-B12-01 a 04.
+**Objetos:** OBJ-B12-01 a 06.
 
 **1d6:** 1 teia bloqueia · 2 ovos · 3 aranha cavaleira · 4 flor narcotica · 5 casulo comida · 6 matriarca sente grupo.
 
@@ -435,6 +447,7 @@ Quando o Mestre mistura biomas num andar:
 ## Integracao VTT / ficha
 
 - Token de terreno: etiqueta `OBJ-Bxx-xx` na nota.  
+- **Tesouro:** `OBJ-Rxx` + forrageio 1d12 do bioma (`CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md`).  
 - Jogadores marcam mutações ativas de **sobrevivencia** na ficha (mesma área de mutações culinárias).  
 - Druida pode gastar 10 min rituais para “plantar” #03, #25, #32 numa zona — próximo descanso curto ali concede **1 via** automática.
 

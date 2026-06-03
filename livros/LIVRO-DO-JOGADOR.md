@@ -910,6 +910,25 @@ O Cozinheiro escolhe 1 habilidade da **tabela do especime** preparado (Cap. 6.2 
 - O maximo de mutacoes ativas simultaneamente e 8.
 - Ao dormir e acordar sem comer, todas as mutacoes ativas expiram.
 
+### 5.6 Minerios, especiarias e tesouros
+
+Alem de **ingredientes** (carne, glandulas), masmorras geram **riqueza capturavel**: especiarias para cozinha, minerios para craft e tesouros para faccao ou mercado.
+
+| Fonte | Regra |
+|-------|--------|
+| **Monstro** | Apos Trinchar com **sucesso**, cada especime concede **1 saque** (especiaria + minerio + moedas/tesouro) — tabela **001–060** em `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` |
+| **Trinchar excepcional** | Resultado **5+ acima da CD** = +1 especiaria **ou** +1 minerio (escolha do grupo) |
+| **Cenario** | Objetos **OBJ-R** (veios, baus, altares) — saque fixo ou rolagem 1d12 do bioma |
+| **Forrageio** | 1x por descanso curto no bioma: SAB ou INT + Natureza CD 12 → 1d6 (catalogo) |
+
+**Especiaria em prato:** 1 ESP por refeicao = **+1 Harmonizacao** no teste de Coccao daquela refeicao.
+
+**Minerio:** vendido ou usado em craft (Artifice CD 12; 3 unidades Comuns = 1 item +0 organico 24h).
+
+**Covil / sala de tesouro:** 2d6 × (10 × nivel do andar) **po** + 1 item TES raro se a sala estiver marcada no mapa.
+
+Lista completa: **ESP-01–30**, **MIN-01–30**, **TES-01–20** no catalogo.
+
 ---
 
 ## CAPITULO 6 — ASSIMILACAO BIOMAGICA
@@ -2595,6 +2614,21 @@ Criada das glandulas intactas da Matriarca Tecela de Cristal. Lanca fios microsc
 | Cera de Mumia (Preservacao) | Ingredientes nao estragam por 7 dias | 50 po/bloco |
 | Frascos de Fermentacao | +2 Harmonizacao em ingredientes fermentados | 30 po/conjunto |
 
+### 16.2.1 Kit de Brasas Magicas (biomas sem fogo aberto)
+
+Para **Pantano da Decomposicao**, **Ninho Crepuscular** e trechos de **Engrenagens/Fornalhas** com gas — tocha e `Chama de Fogareiro` **proibidos** (detonam ou apagam). Ver `SUPLEMENTO-BIOMAS-VERTICAIS-LUZ-E-BRASAS.md`.
+
+| Item | Efeito | Preco |
+|------|--------|-------|
+| Kit de Brasas Magicas (6 brasas) | 30 min calor/panela cada; penumbra 3m; +1 Coccao; nao detona gas | 45 po |
+| Brasa Magica (avulsa) | 1 uso, 30 min | 12 po |
+| Bolsa de Recarga (6 brasas) | Repoe kit | 35 po |
+| Suporte de Pedra-Caldeira | +1 Harmonizacao em sopas com brasa | 25 po |
+| Panela Selada de Masmorra | Coccao segura em gas (tampa vedada) | 20 po |
+| Pano Umido Antifaisca (3 usos) | Evita 1 detonacao por faisca acidental | 8 po |
+
+Conjuradores usam o truque **Calor de Panela** (Cap. 18) em vez do kit.
+
 ### 16.3 Protecoes e Vestimentas
 
 | Item | CA | Notas | Preco |
@@ -2625,6 +2659,9 @@ Criada das glandulas intactas da Matriarca Tecela de Cristal. Lanca fios microsc
 | Bussola de Masmorra | Aponta para a saida mais proxima | 200 po |
 | Saco de Dormir Aquecido | Imune a Exaustao por frio durante descanso | 15 po |
 | Recipiente Isotermico | Ingredientes nao degradam por 48h | 40 po |
+| Bolsa de Especiarias (10 slots) | Organiza ESP; +1 Harmon se usar 1 ESP/prato | 18 po |
+| Maleta de Minerios (8 slots) | Transporte seguro de MIN; evita quebra em queda DES 12 | 35 po |
+| Kit de Avaliacao (joias) | Vantagem em identificar TES genuino vs TES-03 falso | 50 po |
 
 
 ---
@@ -2697,11 +2734,11 @@ Algumas magias da lista geral possuem **variante** anotada no Cap. 19 (ex.: Piro
 
 ### 17.6 Classificacao por nivel e escola
 
-**Circulos de poder (lista geral, 52 magias):**
+**Circulos de poder (lista geral, 53 magias):**
 
 | Nivel | Nome na mesa | Poder tipico | Qtd. | Quando o grupo costuma ver |
 |------:|--------------|--------------|-----:|----------------------------|
-| 0 | **Truque** | Utilidade, cozinha, 1d4 | 5 | Nv. 1+ (sem gastar espaco) |
+| 0 | **Truque** | Utilidade, cozinha, 1d4 | 6 | Nv. 1+ (sem gastar espaco) |
 | 1 | **1o circulo** | Cura leve, armadura, identificar | 8 | Nv. 1–3 |
 | 2 | **2o circulo** | Controle, preservar, ilusao menor | 9 | Nv. 3–5 |
 | 3 | **3o circulo** | Area, fogo, necromancia media | 8 | Nv. 5–7 |
@@ -2720,7 +2757,7 @@ Algumas magias da lista geral possuem **variante** anotada no Cap. 19 (ex.: Piro
 |--------|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
 | Biomancia | 0 | 1 | 1 | 1 | 2 | 1 | 0 | 2 | 0 | 1 | 9 |
 | Evocacao | 1 | 1 | 1 | 3 | 1 | 1 | 1 | 0 | 1 | 0 | 10 |
-| Transmutacao | 1 | 1 | 3 | 0 | 1 | 1 | 1 | 0 | 0 | 0 | 8 |
+| Transmutacao | 2 | 1 | 3 | 0 | 1 | 1 | 1 | 0 | 0 | 0 | 9 |
 | Necromancia | 0 | 0 | 1 | 2 | 1 | 1 | 1 | 0 | 0 | 1 | 7 |
 | Abjuracao | 1 | 2 | 1 | 0 | 1 | 1 | 0 | 1 | 0 | 0 | 7 |
 | Adivinhacao | 1 | 1 | 0 | 1 | 1 | 0 | 0 | 0 | 0 | 0 | 4 |
@@ -2738,12 +2775,15 @@ Algumas magias da lista geral possuem **variante** anotada no Cap. 19 (ex.: Piro
 
 ## CAPITULO 18 — LISTA DE MAGIAS (GRIMORIO DE ELDARIN)
 
-> **Total:** 52 magias na lista geral (Cap. 18) + 8 exclusivas de subclasse (Cap. 19) = **60** feiticos no sistema.
+> **Total:** 53 magias na lista geral (Cap. 18) + 8 exclusivas de subclasse (Cap. 19) = **61** feiticos no sistema.
 
 ### NIVEL 0 — TRUQUES (SEM CUSTO)
 
+**Calor de Panela** — Transmutacao | Acao | Toque | Concentracao, ate 1 hora | Mago, Clerigo, Bardo, Druida, Artifice
+Aquece recipiente fechado sem chama visivel; penumbra 3m. Coccao segura em biomas sem fogo aberto (Cap. 16.2.1). +1 Coccao se unica fonte de calor no prato. **Todo conjurador inicia com este truque.**
+
 **Chama de Fogareiro** — Evocacao | Acao | Toque | Ate ser apagada | Mago, Clerigo, Bardo, Druida, Artifice
-Chama pequena e controlavel na ponta dos dedos; temperatura precisa. Uso culinario: dispensa fogareiro ou lenha.
+Chama na ponta dos dedos. **Proibida** em Ninho Crepuscular (12), gas do Pantano (10), vapor oleoso (8), bolsao sulfuroso (4). Use Calor de Panela ou Brasas Magicas.
 
 **Lamina de Espirito** — Transmutacao | Acao Bonus | Pessoal | 1 minuto | Mago, Bardo, Artifice
 Lamina eterea (1d4 forca). +2 em testes de Trinchar com ela.
@@ -3036,7 +3076,7 @@ Um humanoide CON CD ou Amedrontado e Desvantagem em Percepcao por 1 minuto (sabo
 
 | Nv | Magias disponiveis |
 |---:|---|
-| 0 | Chama de Fogareiro; Lamina de Espirito; Detectar Veneno; Maos Firmes; *(excl.)* Envelhecer Materia |
+| 0 | Calor de Panela; Chama de Fogareiro; Lamina de Espirito; Detectar Veneno; Maos Firmes; *(excl.)* Envelhecer Materia |
 | 1 | Extracao Amplificada; Maos Gelidas; Identificar Ingrediente; Armadura Arcana; Onda de Trovao; *(excl.)* Maos Ardentes |
 | 2 | Aprimoramento Biomagico; Raios de Enfraquecimento; Esfera Acida de Monstro; Transmutacao de Carne; Preservacao Perfeita; Forma Menor; Escudo Arcano; Ilusao Menor; *(excl.)* Gelo de Conservacao; *(excl.)* Fermentacao Acelerada |
 | 3 | Animacao de Mortos; Injecao Biomagica; Bola de Fogo; Contagio Necrotico; Ventania; Ler Mentes; Relampago; Sono |
@@ -3052,7 +3092,7 @@ Um humanoide CON CD ou Amedrontado e Desvantagem em Percepcao por 1 minuto (sabo
 
 | Nv | Magias disponiveis |
 |---:|---|
-| 0 | Chama de Fogareiro; Detectar Veneno; Estabilizar |
+| 0 | Calor de Panela; Chama de Fogareiro; Detectar Veneno; Estabilizar |
 | 1 | Crescimento Acelerado; Purificar Veneno; Curar Ferimentos |
 | 2 | Raios de Enfraquecimento; Preservacao Perfeita |
 | 3 | Animacao de Mortos; Contagio Necrotico; Sono |
@@ -3069,7 +3109,7 @@ Um humanoide CON CD ou Amedrontado e Desvantagem em Percepcao por 1 minuto (sabo
 
 | Nv | Magias disponiveis |
 |---:|---|
-| 0 | Chama de Fogareiro; Lamina de Espirito; Detectar Veneno |
+| 0 | Calor de Panela; Chama de Fogareiro; Lamina de Espirito; Detectar Veneno |
 | 1 | Identificar Ingrediente; Onda de Trovao; Curar Ferimentos; *(excl.)* Doce Confuso |
 | 2 | Inspiracao Culinaria; Ilusao Menor |
 | 3 | Ler Mentes; Sono |
@@ -3080,7 +3120,7 @@ Um humanoide CON CD ou Amedrontado e Desvantagem em Percepcao por 1 minuto (sabo
 
 | Nv | Magias disponiveis |
 |---:|---|
-| 0 | Chama de Fogareiro; Detectar Veneno; Estabilizar; Maos Firmes; *(excl.)* Esporos Necroticos |
+| 0 | Calor de Panela; Chama de Fogareiro; Detectar Veneno; Estabilizar; Maos Firmes; *(excl.)* Esporos Necroticos |
 | 1 | Extracao Amplificada; Crescimento Acelerado; Purificar Veneno; Onda de Trovao; Curar Ferimentos |
 | 2 | Aprimoramento Biomagico; Preservacao Perfeita; Forma Menor |
 | 3 | Ventania; Relampago |
@@ -3094,7 +3134,7 @@ Um humanoide CON CD ou Amedrontado e Desvantagem em Percepcao por 1 minuto (sabo
 
 | Nv | Magias disponiveis |
 |---:|---|
-| 0 | Chama de Fogareiro; Lamina de Espirito; Detectar Veneno; Maos Firmes |
+| 0 | Calor de Panela; Chama de Fogareiro; Lamina de Espirito; Detectar Veneno; Maos Firmes |
 | 1 | Extracao Amplificada; Identificar Ingrediente; Armadura Arcana |
 | 2 | Aprimoramento Biomagico; Esfera Acida de Monstro; Transmutacao de Carne; Preservacao Perfeita; Escudo Arcano |
 | 3 | Injecao Biomagica |

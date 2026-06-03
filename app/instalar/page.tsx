@@ -4,7 +4,7 @@ export default function InstalarPage() {
       <header className="page-header">
         <p className="eyebrow">Deploy</p>
         <h1 className="display-lg text-gradient">Hospedar na Vercel</h1>
-        <p className="lead">Produto = pasta <code>web/</code>. Sem Foundry.</p>
+        <p className="lead">Produto = app Next.js na raiz do repo. Sem Foundry.</p>
       </header>
 
       <article className="glass content-card">
@@ -22,7 +22,7 @@ npm run build
         <h2>Repositórios</h2>
         <ul style={{ color: "var(--text-muted)", lineHeight: 1.9, margin: 0, paddingLeft: "1.2rem" }}>
           <li>
-            <code>web/</code> — site + VTT
+            raiz do repo — site + VTT
           </li>
           <li>
             <code>livros/</code> — regras Markdown
