@@ -37,10 +37,12 @@ npm run dev:clean
 
 **Settings → Build and Deployment:**
 
-- **Root Directory:** `web` ← sem isso = 404
-- **Framework:** Next.js
-- **Output Directory:** *(vazio — apague `public`; preset deve ser **Next.js**, não Other)*
-- Se o build falhar com `public`: em Settings desligue **Override** em Output Directory e redeploy.
+- **Root Directory:** `web` ← **recomendado**
+- **Framework:** Next.js (não Other)
+- **Output Directory:** *(vazio — apague `public`; desligue **Override**)*
+- **Redeploy** com **Clear Build Cache** (evita lockfile duplicado na raiz)
+
+Se o log mostrar `npm run build --prefix web` e commit antigo, o deploy não pegou o `vercel.json` novo — redeploy em `main` atual.
 
 Depois **Redeploy** sem cache.
 
