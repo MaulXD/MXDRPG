@@ -246,7 +246,7 @@
 |----|------|------|----------|---------------|
 | OBJ-B19-01 | Cristal Acustico (parede) | ME | Grito amplifica dano x2 raio | Capim Eco (#26) |
 | OBJ-B19-02 | Camara do Silencio Impossivel | TE | Nao existe silencio: SAB CD 13/hora | Erva-Sino (#04) |
-| OBJ-B19-03 | Eco de Medo Gravado | PE | Sabedoria CD 13 ou Fuga 1 turno | Banshee 290 area |
+| OBJ-B19-03 | Eco de Medo Gravado | PE | Sabedoria CD 13 ou Fuga 1 turno | Banshee #077 area |
 
 ---
 

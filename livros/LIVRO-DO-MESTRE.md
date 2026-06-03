@@ -13,6 +13,17 @@
 
 Cada bioma tem ambiente, perigos e fauna proprios. Ao montar um andar, o Mestre escolhe ou rola 2-3 biomas que se conectam de forma inesperada.
 
+**Ecologia de sobrevivencia (leitura obrigatoria para Mestre):**
+
+| Arquivo | Conteudo |
+|---------|----------|
+| `BIOMAS-APROFUNDADOS.md` | Por que cada bioma existe, ciclo, flora P##, fauna (assimilacao), 1d6 |
+| `CATALOGO-OBJETOS-DE-CENARIO.md` | OBJ-G + OBJ-B01–B20 para montar mapas |
+| `REGRAS-ECOLOGIA-DE-SOBREVIVENCIA.md` | Tres vias (planta / monstro / objeto), pressao ambiental |
+| `CAPITULO-5B-FLORA-DE-ELDARIN.md` | 40 plantas — efeitos 24h |
+
+**Principio:** plantas do bioma e carne de monstro **nativo** concedem adaptacao ao ambiente (ex.: Mar de Prata — respirar agua via Guelras apos prato de tubarao ou sereia; algas #12 ajudam visao e nado, nao substituem guelras).
+
 ---
 
 ### BIOMA 1 — CIDADELA PALIDA
