@@ -1,0 +1,21 @@
+<form class="{{cssClass}} vinite-item-sheet" autocomplete="off">
+  <header class="vinite-sheet-header glass-panel">
+    <img src="{{item.img}}" data-edit="img" height="64" width="64" />
+    <h1 class="item-name">
+      <input name="name" type="text" value="{{item.name}}" {{#unless editable}}disabled{{/unless}} />
+    </h1>
+    <span class="item-type-badge">{{localize 'ELDARIN.Item.types.equipamento'}}</span>
+  </header>
+  <section class="vinite-sheet-body glass-panel">
+    <div class="item-fields-grid">
+      <label>{{localize 'ELDARIN.Item.weight'}}
+        <input type="number" name="system.gear.peso" value="{{system.gear.peso}}" step="0.1" />
+      </label>
+      <label class="checkbox-row">
+        <input type="checkbox" name="system.gear.equipado" {{checked system.gear.equipado}} {{#unless editable}}disabled{{/unless}} />
+        {{localize 'ELDARIN.Item.equipped'}}
+      </label>
+    </div>
+    {{editor enrichedDescription target="system.description" engine="prosemirror" collaborate=false editable=editable}}
+  </section>
+</form>

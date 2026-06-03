@@ -1,0 +1,489 @@
+@charset "UTF-8";
+/* Eldarin System — Glassmorphism + Neon (fonte SCSS; compilado em vinite.css) */
+:root {
+  --vinite-font: "Segoe UI", system-ui, sans-serif;
+  --vinite-glass-bg: rgba(10, 14, 28, 0.52);
+  --vinite-glass-bg-elevated: rgba(18, 24, 42, 0.68);
+  --vinite-glass-border: rgba(255, 255, 255, 0.12);
+  --vinite-glass-blur: 18px;
+  --vinite-glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+  --vinite-neon-cyan: #00f5ff;
+  --vinite-neon-magenta: #ff00e5;
+  --vinite-neon-lime: #39ff14;
+  --vinite-neon-amber: #ffd700;
+  --vinite-neon-glow-cyan: 0 0 12px rgba(0, 245, 255, 0.55), 0 0 28px rgba(0, 245, 255, 0.25);
+  --vinite-neon-glow-magenta: 0 0 12px rgba(255, 0, 229, 0.5);
+  --vinite-text: #e8ecf4;
+  --vinite-text-muted: #9aa8c4;
+  --vinite-vida: #ff4d6d;
+  --vinite-pa: #7b61ff;
+  --vinite-radius: 14px;
+  --vinite-radius-sm: 8px;
+  --vinite-transition: 220ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.vinite.sheet.actor {
+  font-family: var(--vinite-font);
+  color: var(--vinite-text);
+  background: transparent;
+}
+.vinite.sheet.actor .window-content {
+  background: linear-gradient(145deg, rgba(8, 12, 24, 0.92), rgba(16, 22, 40, 0.88));
+  border: 1px solid var(--vinite-glass-border);
+  backdrop-filter: blur(var(--vinite-glass-blur));
+  -webkit-backdrop-filter: blur(var(--vinite-glass-blur));
+}
+.vinite.sheet.actor .glass-panel {
+  background: var(--vinite-glass-bg);
+  border: 1px solid var(--vinite-glass-border);
+  border-radius: var(--vinite-radius);
+  box-shadow: var(--vinite-glass-shadow);
+  backdrop-filter: blur(var(--vinite-glass-blur));
+  -webkit-backdrop-filter: blur(var(--vinite-glass-blur));
+  padding: 1rem 1.1rem;
+  margin-bottom: 0.85rem;
+  transition: border-color var(--vinite-transition), box-shadow var(--vinite-transition);
+}
+.vinite.sheet.actor .glass-panel:hover {
+  border-color: rgba(0, 245, 255, 0.28);
+  box-shadow: var(--vinite-glass-shadow), var(--vinite-neon-glow-cyan);
+}
+.vinite.sheet.actor .panel-title {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--vinite-neon-cyan);
+  margin: 0 0 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+.vinite.sheet.actor .vinite-sheet-header {
+  display: grid;
+  grid-template-columns: 96px 1fr auto;
+  gap: 1rem;
+  align-items: center;
+}
+.vinite.sheet.actor .vinite-sheet-header .profile-img {
+  border-radius: var(--vinite-radius);
+  border: 2px solid rgba(0, 245, 255, 0.35);
+  box-shadow: var(--vinite-neon-glow-cyan);
+  object-fit: cover;
+}
+.vinite.sheet.actor .vinite-sheet-header .charname input {
+  font-size: 1.45rem;
+  font-weight: 700;
+  background: transparent;
+  border: none;
+  color: var(--vinite-text);
+  border-bottom: 1px solid transparent;
+  transition: border-color var(--vinite-transition);
+}
+.vinite.sheet.actor .vinite-sheet-header .charname input:focus {
+  border-bottom-color: var(--vinite-neon-cyan);
+  box-shadow: var(--vinite-neon-glow-cyan);
+}
+.vinite.sheet.actor .vinite-sheet-header .identity-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+.vinite.sheet.actor .vinite-sheet-header .identity-grid label {
+  font-size: 0.7rem;
+  color: var(--vinite-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.vinite.sheet.actor .vinite-sheet-header .identity-grid input {
+  width: 100%;
+  background: var(--vinite-glass-bg-elevated);
+  border: 1px solid var(--vinite-glass-border);
+  border-radius: var(--vinite-radius-sm);
+  color: var(--vinite-text);
+  padding: 0.25rem 0.4rem;
+}
+.vinite.sheet.actor .vinite-columns {
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: 0.85rem;
+}
+.vinite.sheet.actor .attributes-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.65rem;
+}
+.vinite.sheet.actor .attribute-card {
+  background: var(--vinite-glass-bg-elevated);
+  border-radius: var(--vinite-radius-sm);
+  padding: 0.65rem;
+  text-align: center;
+  border: 1px solid transparent;
+  transition: border-color var(--vinite-transition), transform var(--vinite-transition);
+}
+.vinite.sheet.actor .attribute-card:hover {
+  border-color: rgba(255, 0, 229, 0.35);
+  transform: translateY(-2px);
+}
+.vinite.sheet.actor .attribute-card input {
+  width: 3rem;
+  text-align: center;
+  font-size: 1.25rem;
+  font-weight: 700;
+  background: transparent;
+  border: none;
+  color: var(--vinite-text);
+}
+.vinite.sheet.actor .attribute-card .attr-mod {
+  display: block;
+  font-size: 1rem;
+  margin-top: 0.2rem;
+}
+.vinite.sheet.actor .neon-text {
+  color: var(--vinite-neon-magenta);
+  text-shadow: var(--vinite-neon-glow-magenta);
+}
+.vinite.sheet.actor .resource-track {
+  margin-bottom: 1rem;
+}
+.vinite.sheet.actor .resource-track .resource-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  margin-bottom: 0.35rem;
+}
+.vinite.sheet.actor .resource-track .resource-values input {
+  width: 2.5rem;
+  background: transparent;
+  border: none;
+  color: var(--vinite-text);
+  text-align: center;
+}
+.vinite.sheet.actor .resource-track .resource-bar {
+  height: 10px;
+  background: rgba(0, 0, 0, 0.35);
+  border-radius: 999px;
+  overflow: hidden;
+  position: relative;
+}
+.vinite.sheet.actor .resource-track .resource-bar .resource-fill {
+  height: 100%;
+  width: var(--fill, 0%);
+  border-radius: inherit;
+  transition: width 400ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+.vinite.sheet.actor .resource-track .resource-bar .vida-fill {
+  background: linear-gradient(90deg, #ff4d6d, #ff8fa3);
+  box-shadow: 0 0 14px rgba(255, 77, 109, 0.6);
+}
+.vinite.sheet.actor .resource-track .resource-bar .pa-fill {
+  background: linear-gradient(90deg, #7b61ff, #b8a9ff);
+  box-shadow: 0 0 14px rgba(123, 97, 255, 0.55);
+}
+.vinite.sheet.actor .movement-modes {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+.vinite.sheet.actor .neon-chip {
+  flex: 1;
+  padding: 0.45rem 0.65rem;
+  border-radius: 999px;
+  border: 1px solid var(--vinite-glass-border);
+  background: var(--vinite-glass-bg-elevated);
+  color: var(--vinite-text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  transition: all var(--vinite-transition);
+}
+.vinite.sheet.actor .neon-chip .chip-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+.vinite.sheet.actor .neon-chip .walk-dot {
+  background: var(--vinite-neon-lime);
+  box-shadow: 0 0 8px var(--vinite-neon-lime);
+}
+.vinite.sheet.actor .neon-chip .run-dot {
+  background: var(--vinite-neon-amber);
+  box-shadow: 0 0 8px var(--vinite-neon-amber);
+}
+.vinite.sheet.actor .neon-chip.active {
+  color: var(--vinite-text);
+  border-color: var(--vinite-neon-cyan);
+  box-shadow: var(--vinite-neon-glow-cyan);
+}
+.vinite.sheet.actor .neon-chip:hover:not(.active) {
+  border-color: rgba(255, 255, 255, 0.25);
+  color: var(--vinite-text);
+}
+.vinite.sheet.actor .movement-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+}
+.vinite.sheet.actor .movement-stats .movement-stat {
+  font-size: 0.72rem;
+  color: var(--vinite-text-muted);
+  text-transform: uppercase;
+}
+.vinite.sheet.actor .movement-stats .movement-stat input {
+  display: block;
+  width: 100%;
+  margin-top: 0.2rem;
+  background: var(--vinite-glass-bg-elevated);
+  border: 1px solid var(--vinite-glass-border);
+  border-radius: var(--vinite-radius-sm);
+  color: var(--vinite-text);
+  padding: 0.3rem;
+}
+.vinite.sheet.actor .movement-hint {
+  font-size: 0.72rem;
+  color: var(--vinite-text-muted);
+  margin: 0.65rem 0 0;
+  font-style: italic;
+}
+.vinite.sheet.actor .neon-button {
+  border: 1px solid rgba(0, 245, 255, 0.45);
+  background: linear-gradient(135deg, rgba(0, 245, 255, 0.12), rgba(255, 0, 229, 0.08));
+  color: var(--vinite-neon-cyan);
+  border-radius: var(--vinite-radius-sm);
+  padding: 0.4rem 0.75rem;
+  cursor: pointer;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  transition: all var(--vinite-transition);
+}
+.vinite.sheet.actor .neon-button:hover {
+  box-shadow: var(--vinite-neon-glow-cyan);
+  transform: translateY(-1px);
+  color: #fff;
+}
+.vinite.sheet.actor .neon-button.subtle {
+  font-size: 0.72rem;
+  margin-top: 0.45rem;
+  width: 100%;
+}
+.vinite.sheet.actor .weapon-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.vinite.sheet.actor .weapon-row {
+  display: grid;
+  grid-template-columns: 36px 1fr auto;
+  gap: 0.65rem;
+  align-items: center;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+.vinite.sheet.actor .weapon-row:last-child {
+  border-bottom: none;
+}
+.vinite.sheet.actor .weapon-row img {
+  border-radius: 6px;
+  border: 1px solid var(--vinite-glass-border);
+}
+.vinite.sheet.actor .weapon-row .weapon-meta {
+  display: block;
+  font-size: 0.72rem;
+  color: var(--vinite-text-muted);
+}
+.vinite.sheet.actor .attack-button {
+  white-space: nowrap;
+}
+.vinite.sheet.actor .module-warning,
+.vinite.sheet.actor .empty-hint {
+  font-size: 0.78rem;
+  color: var(--vinite-neon-amber);
+  margin-top: 0.5rem;
+}
+.vinite.sheet.actor .sheet-tabs {
+  border-bottom: 1px solid var(--vinite-glass-border);
+  margin-bottom: 0.65rem;
+}
+.vinite.sheet.actor .sheet-tabs .item {
+  color: var(--vinite-text-muted);
+  padding: 0.45rem 0.85rem;
+  transition: color var(--vinite-transition), box-shadow var(--vinite-transition);
+}
+.vinite.sheet.actor .sheet-tabs .item.active, .vinite.sheet.actor .sheet-tabs .item:hover {
+  color: var(--vinite-neon-cyan);
+  box-shadow: inset 0 -2px 0 var(--vinite-neon-cyan);
+}
+.vinite.sheet.actor .items-drop-zone {
+  min-height: 120px;
+  border: 1px dashed rgba(0, 245, 255, 0.25);
+  transition: border-color var(--vinite-transition), background var(--vinite-transition);
+}
+.vinite.sheet.actor .items-drop-zone.drag-over {
+  border-color: var(--vinite-neon-cyan);
+  background: rgba(0, 245, 255, 0.06);
+}
+.vinite.sheet.actor .drop-hint {
+  font-size: 0.72rem;
+  color: var(--vinite-text-muted);
+  margin: 0 0 0.75rem;
+}
+.vinite.sheet.actor .inventory-section {
+  margin-bottom: 0.85rem;
+}
+.vinite.sheet.actor .inventory-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.35rem;
+}
+.vinite.sheet.actor .inventory-section-header h3 {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--vinite-neon-magenta);
+  margin: 0;
+}
+.vinite.sheet.actor .inventory-section-header h3 .count {
+  color: var(--vinite-text-muted);
+  font-weight: 400;
+}
+.vinite.sheet.actor .inventory-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.vinite.sheet.actor .inventory-item {
+  display: grid;
+  grid-template-columns: 32px 1fr auto auto auto;
+  gap: 0.45rem;
+  align-items: center;
+  padding: 0.35rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+.vinite.sheet.actor .inventory-item .item-name {
+  color: var(--vinite-text);
+  cursor: pointer;
+}
+.vinite.sheet.actor .inventory-item .item-name:hover {
+  color: var(--vinite-neon-cyan);
+}
+.vinite.sheet.actor .inventory-item .item-meta {
+  font-size: 0.68rem;
+  color: var(--vinite-text-muted);
+  grid-column: 2;
+}
+.vinite.sheet.actor .inventory-item .icon-only {
+  padding: 0.25rem 0.45rem;
+}
+.vinite.sheet.actor .inventory-item .item-control {
+  background: transparent;
+  border: none;
+  color: #ff6b8a;
+  cursor: pointer;
+  opacity: 0.7;
+}
+.vinite.sheet.actor .inventory-item .item-control:hover {
+  opacity: 1;
+}
+.vinite.sheet.actor .inventory-empty {
+  font-size: 0.75rem;
+  color: var(--vinite-text-muted);
+  font-style: italic;
+}
+.vinite.sheet.actor .biography-panel .editor {
+  min-height: 120px;
+  background: var(--vinite-glass-bg-elevated);
+  border-radius: var(--vinite-radius-sm);
+  border: 1px solid var(--vinite-glass-border);
+}
+
+.vinite.sheet.item {
+  font-family: var(--vinite-font);
+  color: var(--vinite-text);
+}
+.vinite.sheet.item .window-content {
+  background: linear-gradient(145deg, rgba(8, 12, 24, 0.92), rgba(16, 22, 40, 0.88));
+  border: 1px solid var(--vinite-glass-border);
+  backdrop-filter: blur(var(--vinite-glass-blur));
+}
+.vinite.sheet.item .glass-panel {
+  background: var(--vinite-glass-bg);
+  border: 1px solid var(--vinite-glass-border);
+  border-radius: var(--vinite-radius);
+  box-shadow: var(--vinite-glass-shadow);
+  backdrop-filter: blur(var(--vinite-glass-blur));
+  padding: 1rem 1.1rem;
+  margin-bottom: 0.85rem;
+}
+.vinite.sheet.item .panel-title {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--vinite-neon-cyan);
+  margin: 0 0 0.75rem;
+}
+.vinite.sheet.item .vinite-item-sheet .vinite-sheet-header {
+  grid-template-columns: 64px 1fr auto;
+}
+.vinite.sheet.item .item-type-badge {
+  display: inline-block;
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--vinite-neon-cyan);
+  margin-top: 0.25rem;
+}
+.vinite.sheet.item .item-fields-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.55rem;
+  margin-bottom: 0.75rem;
+}
+.vinite.sheet.item .item-fields-grid label {
+  font-size: 0.72rem;
+  color: var(--vinite-text-muted);
+  text-transform: uppercase;
+}
+.vinite.sheet.item .item-fields-grid input,
+.vinite.sheet.item .item-fields-grid select {
+  display: block;
+  width: 100%;
+  margin-top: 0.2rem;
+  background: var(--vinite-glass-bg-elevated);
+  border: 1px solid var(--vinite-glass-border);
+  border-radius: var(--vinite-radius-sm);
+  color: var(--vinite-text);
+  padding: 0.3rem;
+}
+.vinite.sheet.item .item-fields-grid .span-2 {
+  grid-column: span 2;
+}
+.vinite.sheet.item .item-fields-grid .checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  text-transform: none;
+  color: var(--vinite-text);
+}
+
+.vinite.sheet.actor.npc .npc-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+.vinite.sheet.actor.npc .npc-stats label {
+  font-size: 0.75rem;
+  color: var(--vinite-text-muted);
+}
+.vinite.sheet.actor.npc .npc-stats input {
+  width: 100%;
+  background: var(--vinite-glass-bg-elevated);
+  border: 1px solid var(--vinite-glass-border);
+  color: var(--vinite-text);
+  border-radius: var(--vinite-radius-sm);
+}

@@ -1,0 +1,44 @@
+<form class="{{cssClass}} vinite-item-sheet" autocomplete="off">
+  <header class="vinite-sheet-header glass-panel">
+    <img src="{{item.img}}" data-edit="img" title="{{item.name}}" height="64" width="64" />
+    <div class="header-block">
+      <h1 class="item-name">
+        <input name="name" type="text" value="{{item.name}}" placeholder="{{localize 'ELDARIN.Item.namePlaceholder'}}" {{#unless editable}}disabled{{/unless}} />
+      </h1>
+      <span class="item-type-badge">{{localize 'ELDARIN.Item.types.arma'}}</span>
+    </div>
+    {{#if item.actor}}
+    <button type="button" class="neon-button" data-action="attack-preview" title="{{localize 'ELDARIN.Attack.execute'}}">
+      <i class="fas fa-crosshairs"></i>
+    </button>
+    {{/if}}
+  </header>
+
+  <section class="vinite-sheet-body">
+    <section class="glass-panel">
+      <h2 class="panel-title">{{localize 'ELDARIN.Item.tactical'}}</h2>
+      <div class="item-fields-grid">
+        <label>{{localize 'ELDARIN.Item.rangeHex'}}
+          <input type="number" name="system.tactical.alcanceHex.value" value="{{system.tactical.alcanceHex.value}}" min="0" {{#unless editable}}disabled{{/unless}} />
+        </label>
+        <label>{{localize 'ELDARIN.Item.apCost'}}
+          <input type="number" name="system.tactical.custoPontosAcao.value" value="{{system.tactical.custoPontosAcao.value}}" min="0" {{#unless editable}}disabled{{/unless}} />
+        </label>
+        <label>{{localize 'ELDARIN.Item.attackBonus'}}
+          <input type="number" name="system.weapon.ataque.bonus" value="{{system.weapon.ataque.bonus}}" {{#unless editable}}disabled{{/unless}} />
+        </label>
+        <label>{{localize 'ELDARIN.Item.damageFormula'}}
+          <input type="text" name="system.weapon.dano.formula" value="{{system.weapon.dano.formula}}" {{#unless editable}}disabled{{/unless}} />
+        </label>
+        <label class="span-2">{{localize 'ELDARIN.Item.damageType'}}
+          <input type="text" name="system.weapon.dano.tipo" value="{{system.weapon.dano.tipo}}" placeholder="cortante, perfurante…" {{#unless editable}}disabled{{/unless}} />
+        </label>
+      </div>
+    </section>
+
+    <section class="glass-panel">
+      <h2 class="panel-title">{{localize 'ELDARIN.Item.description'}}</h2>
+      {{editor enrichedDescription target="system.description" engine="prosemirror" collaborate=false editable=editable}}
+    </section>
+  </section>
+</form>

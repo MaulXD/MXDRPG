@@ -1,0 +1,5927 @@
+[
+  {
+    "name": "Zumbi de Masmorra",
+    "type": "npc",
+    "system": {
+      "description": "<p>Zumbi de Masmorra — espécime nv 2 (Eldarin v4).</p>",
+      "attributes": {
+        "forca": {
+          "value": 13,
+          "mod": 1
+        },
+        "agilidade": {
+          "value": 8,
+          "mod": -1
+        }
+      },
+      "resources": {
+        "vida": {
+          "value": 22,
+          "max": 22
+        },
+        "pontosAcao": {
+          "value": 3,
+          "max": 3
+        }
+      },
+      "movement": {
+        "hex": {
+          "walk": {
+            "value": 3
+          },
+          "run": {
+            "value": 5
+          }
+        }
+      },
+      "tactical": {
+        "defesa": {
+          "value": 10
+        },
+        "ameaca": {
+          "value": 2
+        },
+        "tier": "mob"
+      },
+      "actions": [
+        {
+          "packId": "unarmed",
+          "entryId": "zumbi-de-masmorra-mordida",
+          "name": "Mordida",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d6",
+          "damageType": "perfurante",
+          "attackBonus": 1,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Mordida · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "zumbi-de-masmorra-garras",
+          "name": "Garras",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d8",
+          "damageType": "cortante",
+          "attackBonus": -1,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Garras · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "zumbi-de-masmorra-special",
+          "name": "Investida",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d10",
+          "damageType": "contundente",
+          "attackBonus": 1,
+          "rangeHex": 2,
+          "paCost": 1,
+          "label": "Investida · 2 hex · PA 1"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Esqueleto Armado",
+    "type": "npc",
+    "system": {
+      "description": "<p>Esqueleto Armado — espécime nv 2 (Eldarin v4).</p>",
+      "attributes": {
+        "forca": {
+          "value": 10,
+          "mod": 0
+        },
+        "agilidade": {
+          "value": 14,
+          "mod": 2
+        }
+      },
+      "resources": {
+        "vida": {
+          "value": 18,
+          "max": 18
+        },
+        "pontosAcao": {
+          "value": 3,
+          "max": 3
+        }
+      },
+      "movement": {
+        "hex": {
+          "walk": {
+            "value": 4
+          },
+          "run": {
+            "value": 6
+          }
+        }
+      },
+      "tactical": {
+        "defesa": {
+          "value": 13
+        },
+        "ameaca": {
+          "value": 2
+        },
+        "tier": "mob"
+      },
+      "actions": [
+        {
+          "packId": "unarmed",
+          "entryId": "esqueleto-armado-mordida",
+          "name": "Mordida",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d6",
+          "damageType": "perfurante",
+          "attackBonus": 1,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Mordida · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "esqueleto-armado-garras",
+          "name": "Garras",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d8",
+          "damageType": "cortante",
+          "attackBonus": 2,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Garras · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "esqueleto-armado-special",
+          "name": "Investida",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d10",
+          "damageType": "contundente",
+          "attackBonus": 0,
+          "rangeHex": 2,
+          "paCost": 1,
+          "label": "Investida · 2 hex · PA 1"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Ghoul",
+    "type": "npc",
+    "system": {
+      "description": "<p>Ghoul — espécime nv 3 (Eldarin v4).</p>",
+      "attributes": {
+        "forca": {
+          "value": 13,
+          "mod": 1
+        },
+        "agilidade": {
+          "value": 15,
+          "mod": 2
+        }
+      },
+      "resources": {
+        "vida": {
+          "value": 36,
+          "max": 36
+        },
+        "pontosAcao": {
+          "value": 3,
+          "max": 3
+        }
+      },
+      "movement": {
+        "hex": {
+          "walk": {
+            "value": 4
+          },
+          "run": {
+            "value": 6
+          }
+        }
+      },
+      "tactical": {
+        "defesa": {
+          "value": 12
+        },
+        "ameaca": {
+          "value": 3
+        },
+        "tier": "mob"
+      },
+      "actions": [
+        {
+          "packId": "unarmed",
+          "entryId": "ghoul-mordida",
+          "name": "Mordida",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d6",
+          "damageType": "perfurante",
+          "attackBonus": 1,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Mordida · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "ghoul-garras",
+          "name": "Garras",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d8",
+          "damageType": "cortante",
+          "attackBonus": 2,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Garras · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "ghoul-special",
+          "name": "Investida",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d10",
+          "damageType": "contundente",
+          "attackBonus": 1,
+          "rangeHex": 2,
+          "paCost": 1,
+          "label": "Investida · 2 hex · PA 1"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Espectro",
+    "type": "npc",
+    "system": {
+      "description": "<p>Espectro — espécime nv 4 (Eldarin v4).</p>",
+      "attributes": {
+        "forca": {
+          "value": 8,
+          "mod": -1
+        },
+        "agilidade": {
+          "value": 14,
+          "mod": 2
+        }
+      },
+      "resources": {
+        "vida": {
+          "value": 28,
+          "max": 28
+        },
+        "pontosAcao": {
+          "value": 3,
+          "max": 3
+        }
+      },
+      "movement": {
+        "hex": {
+          "walk": {
+            "value": 4
+          },
+          "run": {
+            "value": 6
+          }
+        }
+      },
+      "tactical": {
+        "defesa": {
+          "value": 14
+        },
+        "ameaca": {
+          "value": 4
+        },
+        "tier": "mini"
+      },
+      "actions": [
+        {
+          "packId": "unarmed",
+          "entryId": "espectro-mordida",
+          "name": "Mordida",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d10",
+          "damageType": "perfurante",
+          "attackBonus": 2,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Mordida · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "espectro-garras",
+          "name": "Garras",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d8",
+          "damageType": "cortante",
+          "attackBonus": 2,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Garras · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "espectro-special",
+          "name": "Ataque especial",
+          "kind": "spell",
+          "resolution": "attack",
+          "damageFormula": "2d8",
+          "damageType": "mágico",
+          "attackBonus": 4,
+          "rangeHex": 4,
+          "paCost": 2,
+          "label": "Ataque especial · 4 hex · PA 2"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Lich (Arquiliche)",
+    "type": "npc",
+    "system": {
+      "description": "<p>Lich (Arquiliche) — espécime nv 18 (Eldarin v4).</p>",
+      "attributes": {
+        "forca": {
+          "value": 11,
+          "mod": 0
+        },
+        "agilidade": {
+          "value": 16,
+          "mod": 3
+        }
+      },
+      "resources": {
+        "vida": {
+          "value": 285,
+          "max": 285
+        },
+        "pontosAcao": {
+          "value": 4,
+          "max": 4
+        }
+      },
+      "movement": {
+        "hex": {
+          "walk": {
+            "value": 4
+          },
+          "run": {
+            "value": 6
+          }
+        }
+      },
+      "tactical": {
+        "defesa": {
+          "value": 17
+        },
+        "ameaca": {
+          "value": 18
+        },
+        "tier": "boss"
+      },
+      "actions": [
+        {
+          "packId": "unarmed",
+          "entryId": "lich-arquiliche-mordida",
+          "name": "Mordida",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "2d8",
+          "damageType": "perfurante",
+          "attackBonus": 2,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Mordida · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "lich-arquiliche-garras",
+          "name": "Garras",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "2d6",
+          "damageType": "cortante",
+          "attackBonus": 3,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Garras · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "lich-arquiliche-special",
+          "name": "Ataque especial",
+          "kind": "spell",
+          "resolution": "attack",
+          "damageFormula": "3d10",
+          "damageType": "mágico",
+          "attackBonus": 18,
+          "rangeHex": 6,
+          "paCost": 2,
+          "label": "Ataque especial · 6 hex · PA 2"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Assombração",
+    "type": "npc",
+    "system": {
+      "description": "<p>Assombração — espécime nv 3 (Eldarin v4).</p>",
+      "attributes": {
+        "forca": {
+          "value": 6,
+          "mod": -2
+        },
+        "agilidade": {
+          "value": 16,
+          "mod": 3
+        }
+      },
+      "resources": {
+        "vida": {
+          "value": 45,
+          "max": 45
+        },
+        "pontosAcao": {
+          "value": 3,
+          "max": 3
+        }
+      },
+      "movement": {
+        "hex": {
+          "walk": {
+            "value": 4
+          },
+          "run": {
+            "value": 6
+          }
+        }
+      },
+      "tactical": {
+        "defesa": {
+          "value": 13
+        },
+        "ameaca": {
+          "value": 3
+        },
+        "tier": "mob"
+      },
+      "actions": [
+        {
+          "packId": "unarmed",
+          "entryId": "assombracao-mordida",
+          "name": "Mordida",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d6",
+          "damageType": "perfurante",
+          "attackBonus": 1,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Mordida · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "assombracao-garras",
+          "name": "Garras",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d8",
+          "damageType": "cortante",
+          "attackBonus": 3,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Garras · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "assombracao-special",
+          "name": "Investida",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d10",
+          "damageType": "contundente",
+          "attackBonus": -2,
+          "rangeHex": 2,
+          "paCost": 1,
+          "label": "Investida · 2 hex · PA 1"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Vampiro",
+    "type": "npc",
+    "system": {
+      "description": "<p>Vampiro — espécime nv 10 (Eldarin v4).</p>",
+      "attributes": {
+        "forca": {
+          "value": 18,
+          "mod": 4
+        },
+        "agilidade": {
+          "value": 18,
+          "mod": 4
+        }
+      },
+      "resources": {
+        "vida": {
+          "value": 144,
+          "max": 144
+        },
+        "pontosAcao": {
+          "value": 3,
+          "max": 3
+        }
+      },
+      "movement": {
+        "hex": {
+          "walk": {
+            "value": 5
+          },
+          "run": {
+            "value": 8
+          }
+        }
+      },
+      "tactical": {
+        "defesa": {
+          "value": 16
+        },
+        "ameaca": {
+          "value": 10
+        },
+        "tier": "boss"
+      },
+      "actions": [
+        {
+          "packId": "unarmed",
+          "entryId": "vampiro-mordida",
+          "name": "Mordida",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "2d8",
+          "damageType": "perfurante",
+          "attackBonus": 2,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Mordida · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "vampiro-garras",
+          "name": "Garras",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "2d6",
+          "damageType": "cortante",
+          "attackBonus": 4,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Garras · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "vampiro-special",
+          "name": "Ataque especial",
+          "kind": "spell",
+          "resolution": "attack",
+          "damageFormula": "3d10",
+          "damageType": "mágico",
+          "attackBonus": 10,
+          "rangeHex": 6,
+          "paCost": 2,
+          "label": "Ataque especial · 6 hex · PA 2"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Cavaleiro Espectral",
+    "type": "npc",
+    "system": {
+      "description": "<p>Cavaleiro Espectral — espécime nv 5 (Eldarin v4).</p>",
+      "attributes": {
+        "forca": {
+          "value": 16,
+          "mod": 3
+        },
+        "agilidade": {
+          "value": 12,
+          "mod": 1
+        }
+      },
+      "resources": {
+        "vida": {
+          "value": 45,
+          "max": 45
+        },
+        "pontosAcao": {
+          "value": 3,
+          "max": 3
+        }
+      },
+      "movement": {
+        "hex": {
+          "walk": {
+            "value": 4
+          },
+          "run": {
+            "value": 6
+          }
+        }
+      },
+      "tactical": {
+        "defesa": {
+          "value": 14
+        },
+        "ameaca": {
+          "value": 5
+        },
+        "tier": "mini"
+      },
+      "actions": [
+        {
+          "packId": "unarmed",
+          "entryId": "cavaleiro-espectral-mordida",
+          "name": "Mordida",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d10",
+          "damageType": "perfurante",
+          "attackBonus": 2,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Mordida · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "cavaleiro-espectral-garras",
+          "name": "Garras",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d8",
+          "damageType": "cortante",
+          "attackBonus": 1,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Garras · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "cavaleiro-espectral-special",
+          "name": "Ataque especial",
+          "kind": "spell",
+          "resolution": "attack",
+          "damageFormula": "2d8",
+          "damageType": "mágico",
+          "attackBonus": 5,
+          "rangeHex": 4,
+          "paCost": 2,
+          "label": "Ataque especial · 4 hex · PA 2"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Múmia",
+    "type": "npc",
+    "system": {
+      "description": "<p>Múmia — espécime nv 5 (Eldarin v4).</p>",
+      "attributes": {
+        "forca": {
+          "value": 16,
+          "mod": 3
+        },
+        "agilidade": {
+          "value": 10,
+          "mod": 0
+        }
+      },
+      "resources": {
+        "vida": {
+          "value": 58,
+          "max": 58
+        },
+        "pontosAcao": {
+          "value": 3,
+          "max": 3
+        }
+      },
+      "movement": {
+        "hex": {
+          "walk": {
+            "value": 4
+          },
+          "run": {
+            "value": 6
+          }
+        }
+      },
+      "tactical": {
+        "defesa": {
+          "value": 13
+        },
+        "ameaca": {
+          "value": 5
+        },
+        "tier": "mini"
+      },
+      "actions": [
+        {
+          "packId": "unarmed",
+          "entryId": "mumia-mordida",
+          "name": "Mordida",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d10",
+          "damageType": "perfurante",
+          "attackBonus": 2,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Mordida · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "mumia-garras",
+          "name": "Garras",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d8",
+          "damageType": "cortante",
+          "attackBonus": 0,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Garras · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "mumia-special",
+          "name": "Ataque especial",
+          "kind": "spell",
+          "resolution": "attack",
+          "damageFormula": "2d8",
+          "damageType": "mágico",
+          "attackBonus": 5,
+          "rangeHex": 4,
+          "paCost": 2,
+          "label": "Ataque especial · 4 hex · PA 2"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Dragonete de Magma",
+    "type": "npc",
+    "system": {
+      "description": "<p>Dragonete de Magma — espécime nv 6 (Eldarin v4).</p>",
+      "attributes": {
+        "forca": {
+          "value": 17,
+          "mod": 3
+        },
+        "agilidade": {
+          "value": 12,
+          "mod": 1
+        }
+      },
+      "resources": {
+        "vida": {
+          "value": 68,
+          "max": 68
+        },
+        "pontosAcao": {
+          "value": 3,
+          "max": 3
+        }
+      },
+      "movement": {
+        "hex": {
+          "walk": {
+            "value": 4
+          },
+          "run": {
+            "value": 7
+          }
+        }
+      },
+      "tactical": {
+        "defesa": {
+          "value": 15
+        },
+        "ameaca": {
+          "value": 6
+        },
+        "tier": "mini"
+      },
+      "actions": [
+        {
+          "packId": "unarmed",
+          "entryId": "dragonete-de-magma-mordida",
+          "name": "Mordida",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d10",
+          "damageType": "perfurante",
+          "attackBonus": 2,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Mordida · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "dragonete-de-magma-garras",
+          "name": "Garras",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d8",
+          "damageType": "cortante",
+          "attackBonus": 1,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Garras · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "dragonete-de-magma-special",
+          "name": "Ataque especial",
+          "kind": "spell",
+          "resolution": "attack",
+          "damageFormula": "2d8",
+          "damageType": "mágico",
+          "attackBonus": 6,
+          "rangeHex": 4,
+          "paCost": 2,
+          "label": "Ataque especial · 4 hex · PA 2"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Wyvern",
+    "type": "npc",
+    "system": {
+      "description": "<p>Wyvern — espécime nv 9 (Eldarin v4).</p>",
+      "attributes": {
+        "forca": {
+          "value": 19,
+          "mod": 4
+        },
+        "agilidade": {
+          "value": 14,
+          "mod": 2
+        }
+      },
+      "resources": {
+        "vida": {
+          "value": 110,
+          "max": 110
+        },
+        "pontosAcao": {
+          "value": 3,
+          "max": 3
+        }
+      },
+      "movement": {
+        "hex": {
+          "walk": {
+            "value": 4
+          },
+          "run": {
+            "value": 10
+          }
+        }
+      },
+      "tactical": {
+        "defesa": {
+          "value": 14
+        },
+        "ameaca": {
+          "value": 9
+        },
+        "tier": "mini"
+      },
+      "actions": [
+        {
+          "packId": "unarmed",
+          "entryId": "wyvern-mordida",
+          "name": "Mordida",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d10",
+          "damageType": "perfurante",
+          "attackBonus": 2,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Mordida · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "wyvern-garras",
+          "name": "Garras",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d8",
+          "damageType": "cortante",
+          "attackBonus": 2,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Garras · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "wyvern-special",
+          "name": "Ataque especial",
+          "kind": "spell",
+          "resolution": "attack",
+          "damageFormula": "2d8",
+          "damageType": "mágico",
+          "attackBonus": 9,
+          "rangeHex": 4,
+          "paCost": 2,
+          "label": "Ataque especial · 4 hex · PA 2"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Dragão Jovem de Gelo",
+    "type": "npc",
+    "system": {
+      "description": "<p>Dragão Jovem de Gelo — espécime nv 13 (Eldarin v4).</p>",
+      "attributes": {
+        "forca": {
+          "value": 22,
+          "mod": 6
+        },
+        "agilidade": {
+          "value": 12,
+          "mod": 1
+        }
+      },
+      "resources": {
+        "vida": {
+          "value": 178,
+          "max": 178
+        },
+        "pontosAcao": {
+          "value": 3,
+          "max": 3
+        }
+      },
+      "movement": {
+        "hex": {
+          "walk": {
+            "value": 5
+          },
+          "run": {
+            "value": 9
+          }
+        }
+      },
+      "tactical": {
+        "defesa": {
+          "value": 17
+        },
+        "ameaca": {
+          "value": 13
+        },
+        "tier": "boss"
+      },
+      "actions": [
+        {
+          "packId": "unarmed",
+          "entryId": "dragao-jovem-de-gelo-mordida",
+          "name": "Mordida",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "2d8",
+          "damageType": "perfurante",
+          "attackBonus": 2,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Mordida · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "dragao-jovem-de-gelo-garras",
+          "name": "Garras",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "2d6",
+          "damageType": "cortante",
+          "attackBonus": 1,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Garras · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "dragao-jovem-de-gelo-special",
+          "name": "Ataque especial",
+          "kind": "spell",
+          "resolution": "attack",
+          "damageFormula": "3d10",
+          "damageType": "mágico",
+          "attackBonus": 13,
+          "rangeHex": 6,
+          "paCost": 2,
+          "label": "Ataque especial · 6 hex · PA 2"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Drake de Pedra",
+    "type": "npc",
+    "system": {
+      "description": "<p>Drake de Pedra — espécime nv 5 (Eldarin v4).</p>",
+      "attributes": {
+        "forca": {
+          "value": 19,
+          "mod": 4
+        },
+        "agilidade": {
+          "value": 10,
+          "mod": 0
+        }
+      },
+      "resources": {
+        "vida": {
+          "value": 62,
+          "max": 62
+        },
+        "pontosAcao": {
+          "value": 3,
+          "max": 3
+        }
+      },
+      "movement": {
+        "hex": {
+          "walk": {
+            "value": 4
+          },
+          "run": {
+            "value": 6
+          }
+        }
+      },
+      "tactical": {
+        "defesa": {
+          "value": 16
+        },
+        "ameaca": {
+          "value": 5
+        },
+        "tier": "mini"
+      },
+      "actions": [
+        {
+          "packId": "unarmed",
+          "entryId": "drake-de-pedra-mordida",
+          "name": "Mordida",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d10",
+          "damageType": "perfurante",
+          "attackBonus": 2,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Mordida · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "drake-de-pedra-garras",
+          "name": "Garras",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d8",
+          "damageType": "cortante",
+          "attackBonus": 0,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Garras · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "drake-de-pedra-special",
+          "name": "Ataque especial",
+          "kind": "spell",
+          "resolution": "attack",
+          "damageFormula": "2d8",
+          "damageType": "mágico",
+          "attackBonus": 5,
+          "rangeHex": 4,
+          "paCost": 2,
+          "label": "Ataque especial · 4 hex · PA 2"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Dragão Ancião de Fogo",
+    "type": "npc",
+    "system": {
+      "description": "<p>Dragão Ancião de Fogo — espécime nv 19 (Eldarin v4).</p>",
+      "attributes": {
+        "forca": {
+          "value": 27,
+          "mod": 8
+        },
+        "agilidade": {
+          "value": 12,
+          "mod": 1
+        }
+      },
+      "resources": {
+        "vida": {
+          "value": 546,
+          "max": 546
+        },
+        "pontosAcao": {
+          "value": 5,
+          "max": 5
+        }
+      },
+      "movement": {
+        "hex": {
+          "walk": {
+            "value": 6
+          },
+          "run": {
+            "value": 10
+          }
+        }
+      },
+      "tactical": {
+        "defesa": {
+          "value": 19
+        },
+        "ameaca": {
+          "value": 19
+        },
+        "tier": "boss"
+      },
+      "actions": [
+        {
+          "packId": "unarmed",
+          "entryId": "dragao-anciao-de-fogo-mordida",
+          "name": "Mordida",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "2d8",
+          "damageType": "perfurante",
+          "attackBonus": 2,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Mordida · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "dragao-anciao-de-fogo-garras",
+          "name": "Garras",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "2d6",
+          "damageType": "cortante",
+          "attackBonus": 1,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Garras · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "dragao-anciao-de-fogo-special",
+          "name": "Ataque especial",
+          "kind": "spell",
+          "resolution": "attack",
+          "damageFormula": "3d10",
+          "damageType": "mágico",
+          "attackBonus": 19,
+          "rangeHex": 6,
+          "paCost": 2,
+          "label": "Ataque especial · 6 hex · PA 2"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Golem de Pedra",
+    "type": "npc",
+    "system": {
+      "description": "<p>Golem de Pedra — espécime nv 8 (Eldarin v4).</p>",
+      "attributes": {
+        "forca": {
+          "value": 20,
+          "mod": 5
+        },
+        "agilidade": {
+          "value": 8,
+          "mod": -1
+        }
+      },
+      "resources": {
+        "vida": {
+          "value": 92,
+          "max": 92
+        },
+        "pontosAcao": {
+          "value": 3,
+          "max": 3
+        }
+      },
+      "movement": {
+        "hex": {
+          "walk": {
+            "value": 3
+          },
+          "run": {
+            "value": 5
+          }
+        }
+      },
+      "tactical": {
+        "defesa": {
+          "value": 17
+        },
+        "ameaca": {
+          "value": 8
+        },
+        "tier": "mini"
+      },
+      "actions": [
+        {
+          "packId": "unarmed",
+          "entryId": "golem-de-pedra-mordida",
+          "name": "Mordida",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d10",
+          "damageType": "perfurante",
+          "attackBonus": 2,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Mordida · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "golem-de-pedra-garras",
+          "name": "Garras",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d8",
+          "damageType": "cortante",
+          "attackBonus": -1,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Garras · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "golem-de-pedra-special",
+          "name": "Ataque especial",
+          "kind": "spell",
+          "resolution": "attack",
+          "damageFormula": "2d8",
+          "damageType": "mágico",
+          "attackBonus": 8,
+          "rangeHex": 4,
+          "paCost": 2,
+          "label": "Ataque especial · 4 hex · PA 2"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Armadura Animada",
+    "type": "npc",
+    "system": {
+      "description": "<p>Armadura Animada — espécime nv 1 (Eldarin v4).</p>",
+      "attributes": {
+        "forca": {
+          "value": 14,
+          "mod": 2
+        },
+        "agilidade": {
+          "value": 8,
+          "mod": -1
+        }
+      },
+      "resources": {
+        "vida": {
+          "value": 33,
+          "max": 33
+        },
+        "pontosAcao": {
+          "value": 3,
+          "max": 3
+        }
+      },
+      "movement": {
+        "hex": {
+          "walk": {
+            "value": 2
+          },
+          "run": {
+            "value": 4
+          }
+        }
+      },
+      "tactical": {
+        "defesa": {
+          "value": 18
+        },
+        "ameaca": {
+          "value": 1
+        },
+        "tier": "mob"
+      },
+      "actions": [
+        {
+          "packId": "unarmed",
+          "entryId": "armadura-animada-mordida",
+          "name": "Mordida",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d6",
+          "damageType": "perfurante",
+          "attackBonus": 0,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Mordida · 1 hex · PA 1"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Golem de Ferro Vulcânico",
+    "type": "npc",
+    "system": {
+      "description": "<p>Golem de Ferro Vulcânico — espécime nv 10 (Eldarin v4).</p>",
+      "attributes": {
+        "forca": {
+          "value": 22,
+          "mod": 6
+        },
+        "agilidade": {
+          "value": 8,
+          "mod": -1
+        }
+      },
+      "resources": {
+        "vida": {
+          "value": 105,
+          "max": 105
+        },
+        "pontosAcao": {
+          "value": 3,
+          "max": 3
+        }
+      },
+      "movement": {
+        "hex": {
+          "walk": {
+            "value": 3
+          },
+          "run": {
+            "value": 5
+          }
+        }
+      },
+      "tactical": {
+        "defesa": {
+          "value": 18
+        },
+        "ameaca": {
+          "value": 10
+        },
+        "tier": "mini"
+      },
+      "actions": [
+        {
+          "packId": "unarmed",
+          "entryId": "golem-de-ferro-vulcanico-mordida",
+          "name": "Mordida",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d10",
+          "damageType": "perfurante",
+          "attackBonus": 2,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Mordida · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "golem-de-ferro-vulcanico-garras",
+          "name": "Garras",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d8",
+          "damageType": "cortante",
+          "attackBonus": -1,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Garras · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "golem-de-ferro-vulcanico-special",
+          "name": "Ataque especial",
+          "kind": "spell",
+          "resolution": "attack",
+          "damageFormula": "2d8",
+          "damageType": "mágico",
+          "attackBonus": 10,
+          "rangeHex": 4,
+          "paCost": 2,
+          "label": "Ataque especial · 4 hex · PA 2"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Autômato de Gênio",
+    "type": "npc",
+    "system": {
+      "description": "<p>Autômato de Gênio — espécime nv 7 (Eldarin v4).</p>",
+      "attributes": {
+        "forca": {
+          "value": 16,
+          "mod": 3
+        },
+        "agilidade": {
+          "value": 14,
+          "mod": 2
+        }
+      },
+      "resources": {
+        "vida": {
+          "value": 76,
+          "max": 76
+        },
+        "pontosAcao": {
+          "value": 3,
+          "max": 3
+        }
+      },
+      "movement": {
+        "hex": {
+          "walk": {
+            "value": 4
+          },
+          "run": {
+            "value": 6
+          }
+        }
+      },
+      "tactical": {
+        "defesa": {
+          "value": 16
+        },
+        "ameaca": {
+          "value": 7
+        },
+        "tier": "mini"
+      },
+      "actions": [
+        {
+          "packId": "unarmed",
+          "entryId": "automato-de-genio-mordida",
+          "name": "Mordida",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d10",
+          "damageType": "perfurante",
+          "attackBonus": 2,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Mordida · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "automato-de-genio-garras",
+          "name": "Garras",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d8",
+          "damageType": "cortante",
+          "attackBonus": 2,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Garras · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "automato-de-genio-special",
+          "name": "Ataque especial",
+          "kind": "spell",
+          "resolution": "attack",
+          "damageFormula": "2d8",
+          "damageType": "mágico",
+          "attackBonus": 7,
+          "rangeHex": 4,
+          "paCost": 2,
+          "label": "Ataque especial · 4 hex · PA 2"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Minotauro",
+    "type": "npc",
+    "system": {
+      "description": "<p>Minotauro — espécime nv 6 (Eldarin v4).</p>",
+      "attributes": {
+        "forca": {
+          "value": 18,
+          "mod": 4
+        },
+        "agilidade": {
+          "value": 11,
+          "mod": 0
+        }
+      },
+      "resources": {
+        "vida": {
+          "value": 52,
+          "max": 52
+        },
+        "pontosAcao": {
+          "value": 3,
+          "max": 3
+        }
+      },
+      "movement": {
+        "hex": {
+          "walk": {
+            "value": 4
+          },
+          "run": {
+            "value": 6
+          }
+        }
+      },
+      "tactical": {
+        "defesa": {
+          "value": 14
+        },
+        "ameaca": {
+          "value": 6
+        },
+        "tier": "mini"
+      },
+      "actions": [
+        {
+          "packId": "unarmed",
+          "entryId": "minotauro-mordida",
+          "name": "Mordida",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d10",
+          "damageType": "perfurante",
+          "attackBonus": 2,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Mordida · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "minotauro-garras",
+          "name": "Garras",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d8",
+          "damageType": "cortante",
+          "attackBonus": 0,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Garras · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "minotauro-special",
+          "name": "Ataque especial",
+          "kind": "spell",
+          "resolution": "attack",
+          "damageFormula": "2d8",
+          "damageType": "mágico",
+          "attackBonus": 6,
+          "rangeHex": 4,
+          "paCost": 2,
+          "label": "Ataque especial · 4 hex · PA 2"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Basilisco",
+    "type": "npc",
+    "system": {
+      "description": "<p>Basilisco — espécime nv 7 (Eldarin v4).</p>",
+      "attributes": {
+        "forca": {
+          "value": 16,
+          "mod": 3
+        },
+        "agilidade": {
+          "value": 8,
+          "mod": -1
+        }
+      },
+      "resources": {
+        "vida": {
+          "value": 52,
+          "max": 52
+        },
+        "pontosAcao": {
+          "value": 3,
+          "max": 3
+        }
+      },
+      "movement": {
+        "hex": {
+          "walk": {
+            "value": 4
+          },
+          "run": {
+            "value": 6
+          }
+        }
+      },
+      "tactical": {
+        "defesa": {
+          "value": 15
+        },
+        "ameaca": {
+          "value": 7
+        },
+        "tier": "mini"
+      },
+      "actions": [
+        {
+          "packId": "unarmed",
+          "entryId": "basilisco-mordida",
+          "name": "Mordida",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d10",
+          "damageType": "perfurante",
+          "attackBonus": 2,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Mordida · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "basilisco-garras",
+          "name": "Garras",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d8",
+          "damageType": "cortante",
+          "attackBonus": -1,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Garras · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "basilisco-special",
+          "name": "Ataque especial",
+          "kind": "spell",
+          "resolution": "attack",
+          "damageFormula": "2d8",
+          "damageType": "mágico",
+          "attackBonus": 7,
+          "rangeHex": 4,
+          "paCost": 2,
+          "label": "Ataque especial · 4 hex · PA 2"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Manticora",
+    "type": "npc",
+    "system": {
+      "description": "<p>Manticora — espécime nv 8 (Eldarin v4).</p>",
+      "attributes": {
+        "forca": {
+          "value": 17,
+          "mod": 3
+        },
+        "agilidade": {
+          "value": 15,
+          "mod": 2
+        }
+      },
+      "resources": {
+        "vida": {
+          "value": 98,
+          "max": 98
+        },
+        "pontosAcao": {
+          "value": 3,
+          "max": 3
+        }
+      },
+      "movement": {
+        "hex": {
+          "walk": {
+            "value": 5
+          },
+          "run": {
+            "value": 8
+          }
+        }
+      },
+      "tactical": {
+        "defesa": {
+          "value": 14
+        },
+        "ameaca": {
+          "value": 8
+        },
+        "tier": "mini"
+      },
+      "actions": [
+        {
+          "packId": "unarmed",
+          "entryId": "manticora-mordida",
+          "name": "Mordida",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d10",
+          "damageType": "perfurante",
+          "attackBonus": 2,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Mordida · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "manticora-garras",
+          "name": "Garras",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d8",
+          "damageType": "cortante",
+          "attackBonus": 2,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Garras · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "manticora-special",
+          "name": "Ataque especial",
+          "kind": "spell",
+          "resolution": "attack",
+          "damageFormula": "2d8",
+          "damageType": "mágico",
+          "attackBonus": 8,
+          "rangeHex": 4,
+          "paCost": 2,
+          "label": "Ataque especial · 4 hex · PA 2"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Grifo",
+    "type": "npc",
+    "system": {
+      "description": "<p>Grifo — espécime nv 5 (Eldarin v4).</p>",
+      "attributes": {
+        "forca": {
+          "value": 18,
+          "mod": 4
+        },
+        "agilidade": {
+          "value": 15,
+          "mod": 2
+        }
+      },
+      "resources": {
+        "vida": {
+          "value": 59,
+          "max": 59
+        },
+        "pontosAcao": {
+          "value": 3,
+          "max": 3
+        }
+      },
+      "movement": {
+        "hex": {
+          "walk": {
+            "value": 5
+          },
+          "run": {
+            "value": 10
+          }
+        }
+      },
+      "tactical": {
+        "defesa": {
+          "value": 13
+        },
+        "ameaca": {
+          "value": 5
+        },
+        "tier": "mini"
+      },
+      "actions": [
+        {
+          "packId": "unarmed",
+          "entryId": "grifo-mordida",
+          "name": "Mordida",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d10",
+          "damageType": "perfurante",
+          "attackBonus": 2,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Mordida · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "grifo-garras",
+          "name": "Garras",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d8",
+          "damageType": "cortante",
+          "attackBonus": 2,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Garras · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "grifo-special",
+          "name": "Ataque especial",
+          "kind": "spell",
+          "resolution": "attack",
+          "damageFormula": "2d8",
+          "damageType": "mágico",
+          "attackBonus": 5,
+          "rangeHex": 4,
+          "paCost": 2,
+          "label": "Ataque especial · 4 hex · PA 2"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Cocatriz",
+    "type": "npc",
+    "system": {
+      "description": "<p>Cocatriz — espécime nv 4 (Eldarin v4).</p>",
+      "attributes": {
+        "forca": {
+          "value": 12,
+          "mod": 1
+        },
+        "agilidade": {
+          "value": 14,
+          "mod": 2
+        }
+      },
+      "resources": {
+        "vida": {
+          "value": 27,
+          "max": 27
+        },
+        "pontosAcao": {
+          "value": 3,
+          "max": 3
+        }
+      },
+      "movement": {
+        "hex": {
+          "walk": {
+            "value": 4
+          },
+          "run": {
+            "value": 6
+          }
+        }
+      },
+      "tactical": {
+        "defesa": {
+          "value": 12
+        },
+        "ameaca": {
+          "value": 4
+        },
+        "tier": "mob"
+      },
+      "actions": [
+        {
+          "packId": "unarmed",
+          "entryId": "cocatriz-mordida",
+          "name": "Mordida",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d6",
+          "damageType": "perfurante",
+          "attackBonus": 2,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Mordida · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "cocatriz-garras",
+          "name": "Garras",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d8",
+          "damageType": "cortante",
+          "attackBonus": 2,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Garras · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "cocatriz-special",
+          "name": "Ataque especial",
+          "kind": "spell",
+          "resolution": "attack",
+          "damageFormula": "2d8",
+          "damageType": "mágico",
+          "attackBonus": 4,
+          "rangeHex": 4,
+          "paCost": 2,
+          "label": "Ataque especial · 4 hex · PA 2"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Aranha Tecerrochas",
+    "type": "npc",
+    "system": {
+      "description": "<p>Aranha Tecerrochas — espécime nv 2 (Eldarin v4).</p>",
+      "attributes": {
+        "forca": {
+          "value": 12,
+          "mod": 1
+        },
+        "agilidade": {
+          "value": 16,
+          "mod": 3
+        }
+      },
+      "resources": {
+        "vida": {
+          "value": 26,
+          "max": 26
+        },
+        "pontosAcao": {
+          "value": 3,
+          "max": 3
+        }
+      },
+      "movement": {
+        "hex": {
+          "walk": {
+            "value": 4
+          },
+          "run": {
+            "value": 6
+          }
+        }
+      },
+      "tactical": {
+        "defesa": {
+          "value": 13
+        },
+        "ameaca": {
+          "value": 2
+        },
+        "tier": "mob"
+      },
+      "actions": [
+        {
+          "packId": "unarmed",
+          "entryId": "aranha-tecerrochas-mordida",
+          "name": "Mordida",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d6",
+          "damageType": "perfurante",
+          "attackBonus": 1,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Mordida · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "aranha-tecerrochas-garras",
+          "name": "Garras",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d8",
+          "damageType": "cortante",
+          "attackBonus": 3,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Garras · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "aranha-tecerrochas-special",
+          "name": "Investida",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d10",
+          "damageType": "contundente",
+          "attackBonus": 1,
+          "rangeHex": 2,
+          "paCost": 1,
+          "label": "Investida · 2 hex · PA 1"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Escorpião Gigante",
+    "type": "npc",
+    "system": {
+      "description": "<p>Escorpião Gigante — espécime nv 3 (Eldarin v4).</p>",
+      "attributes": {
+        "forca": {
+          "value": 15,
+          "mod": 2
+        },
+        "agilidade": {
+          "value": 12,
+          "mod": 1
+        }
+      },
+      "resources": {
+        "vida": {
+          "value": 52,
+          "max": 52
+        },
+        "pontosAcao": {
+          "value": 3,
+          "max": 3
+        }
+      },
+      "movement": {
+        "hex": {
+          "walk": {
+            "value": 4
+          },
+          "run": {
+            "value": 6
+          }
+        }
+      },
+      "tactical": {
+        "defesa": {
+          "value": 15
+        },
+        "ameaca": {
+          "value": 3
+        },
+        "tier": "mob"
+      },
+      "actions": [
+        {
+          "packId": "unarmed",
+          "entryId": "escorpiao-gigante-mordida",
+          "name": "Mordida",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d6",
+          "damageType": "perfurante",
+          "attackBonus": 1,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Mordida · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "escorpiao-gigante-garras",
+          "name": "Garras",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d8",
+          "damageType": "cortante",
+          "attackBonus": 1,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Garras · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "escorpiao-gigante-special",
+          "name": "Investida",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d10",
+          "damageType": "contundente",
+          "attackBonus": 2,
+          "rangeHex": 2,
+          "paCost": 1,
+          "label": "Investida · 2 hex · PA 1"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Centopeia Cáustica",
+    "type": "npc",
+    "system": {
+      "description": "<p>Centopeia Cáustica — espécime nv 4 (Eldarin v4).</p>",
+      "attributes": {
+        "forca": {
+          "value": 14,
+          "mod": 2
+        },
+        "agilidade": {
+          "value": 13,
+          "mod": 1
+        }
+      },
+      "resources": {
+        "vida": {
+          "value": 65,
+          "max": 65
+        },
+        "pontosAcao": {
+          "value": 3,
+          "max": 3
+        }
+      },
+      "movement": {
+        "hex": {
+          "walk": {
+            "value": 4
+          },
+          "run": {
+            "value": 6
+          }
+        }
+      },
+      "tactical": {
+        "defesa": {
+          "value": 13
+        },
+        "ameaca": {
+          "value": 4
+        },
+        "tier": "mob"
+      },
+      "actions": [
+        {
+          "packId": "unarmed",
+          "entryId": "centopeia-caustica-mordida",
+          "name": "Mordida",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d6",
+          "damageType": "perfurante",
+          "attackBonus": 2,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Mordida · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "centopeia-caustica-garras",
+          "name": "Garras",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d8",
+          "damageType": "cortante",
+          "attackBonus": 1,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Garras · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "centopeia-caustica-special",
+          "name": "Ataque especial",
+          "kind": "spell",
+          "resolution": "attack",
+          "damageFormula": "2d8",
+          "damageType": "mágico",
+          "attackBonus": 4,
+          "rangeHex": 4,
+          "paCost": 2,
+          "label": "Ataque especial · 4 hex · PA 2"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Besouro-Diamante",
+    "type": "npc",
+    "system": {
+      "description": "<p>Besouro-Diamante — espécime nv 5 (Eldarin v4).</p>",
+      "attributes": {
+        "forca": {
+          "value": 16,
+          "mod": 3
+        },
+        "agilidade": {
+          "value": 12,
+          "mod": 1
+        }
+      },
+      "resources": {
+        "vida": {
+          "value": 45,
+          "max": 45
+        },
+        "pontosAcao": {
+          "value": 3,
+          "max": 3
+        }
+      },
+      "movement": {
+        "hex": {
+          "walk": {
+            "value": 4
+          },
+          "run": {
+            "value": 6
+          }
+        }
+      },
+      "tactical": {
+        "defesa": {
+          "value": 15
+        },
+        "ameaca": {
+          "value": 5
+        },
+        "tier": "mini"
+      },
+      "actions": [
+        {
+          "packId": "unarmed",
+          "entryId": "besouro-diamante-mordida",
+          "name": "Mordida",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d10",
+          "damageType": "perfurante",
+          "attackBonus": 2,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Mordida · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "besouro-diamante-garras",
+          "name": "Garras",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d8",
+          "damageType": "cortante",
+          "attackBonus": 1,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Garras · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "besouro-diamante-special",
+          "name": "Ataque especial",
+          "kind": "spell",
+          "resolution": "attack",
+          "damageFormula": "2d8",
+          "damageType": "mágico",
+          "attackBonus": 5,
+          "rangeHex": 4,
+          "paCost": 2,
+          "label": "Ataque especial · 4 hex · PA 2"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Sapo-Engolidor",
+    "type": "npc",
+    "system": {
+      "description": "<p>Sapo-Engolidor — espécime nv 6 (Eldarin v4).</p>",
+      "attributes": {
+        "forca": {
+          "value": 18,
+          "mod": 4
+        },
+        "agilidade": {
+          "value": 10,
+          "mod": 0
+        }
+      },
+      "resources": {
+        "vida": {
+          "value": 75,
+          "max": 75
+        },
+        "pontosAcao": {
+          "value": 3,
+          "max": 3
+        }
+      },
+      "movement": {
+        "hex": {
+          "walk": {
+            "value": 4
+          },
+          "run": {
+            "value": 6
+          }
+        }
+      },
+      "tactical": {
+        "defesa": {
+          "value": 12
+        },
+        "ameaca": {
+          "value": 6
+        },
+        "tier": "mini"
+      },
+      "actions": [
+        {
+          "packId": "unarmed",
+          "entryId": "sapo-engolidor-mordida",
+          "name": "Mordida",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d10",
+          "damageType": "perfurante",
+          "attackBonus": 2,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Mordida · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "sapo-engolidor-garras",
+          "name": "Garras",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d8",
+          "damageType": "cortante",
+          "attackBonus": 0,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Garras · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "sapo-engolidor-special",
+          "name": "Ataque especial",
+          "kind": "spell",
+          "resolution": "attack",
+          "damageFormula": "2d8",
+          "damageType": "mágico",
+          "attackBonus": 6,
+          "rangeHex": 4,
+          "paCost": 2,
+          "label": "Ataque especial · 4 hex · PA 2"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Kraken Menor",
+    "type": "npc",
+    "system": {
+      "description": "<p>Kraken Menor — espécime nv 12 (Eldarin v4).</p>",
+      "attributes": {
+        "forca": {
+          "value": 22,
+          "mod": 6
+        },
+        "agilidade": {
+          "value": 10,
+          "mod": 0
+        }
+      },
+      "resources": {
+        "vida": {
+          "value": 152,
+          "max": 152
+        },
+        "pontosAcao": {
+          "value": 3,
+          "max": 3
+        }
+      },
+      "movement": {
+        "hex": {
+          "walk": {
+            "value": 3
+          },
+          "run": {
+            "value": 6
+          }
+        }
+      },
+      "tactical": {
+        "defesa": {
+          "value": 16
+        },
+        "ameaca": {
+          "value": 12
+        },
+        "tier": "boss"
+      },
+      "actions": [
+        {
+          "packId": "unarmed",
+          "entryId": "kraken-menor-mordida",
+          "name": "Mordida",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "2d8",
+          "damageType": "perfurante",
+          "attackBonus": 2,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Mordida · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "kraken-menor-garras",
+          "name": "Garras",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "2d6",
+          "damageType": "cortante",
+          "attackBonus": 0,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Garras · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "kraken-menor-special",
+          "name": "Ataque especial",
+          "kind": "spell",
+          "resolution": "attack",
+          "damageFormula": "3d10",
+          "damageType": "mágico",
+          "attackBonus": 12,
+          "rangeHex": 6,
+          "paCost": 2,
+          "label": "Ataque especial · 6 hex · PA 2"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Serpente-do-Abismo",
+    "type": "npc",
+    "system": {
+      "description": "<p>Serpente-do-Abismo — espécime nv 8 (Eldarin v4).</p>",
+      "attributes": {
+        "forca": {
+          "value": 18,
+          "mod": 4
+        },
+        "agilidade": {
+          "value": 14,
+          "mod": 2
+        }
+      },
+      "resources": {
+        "vida": {
+          "value": 85,
+          "max": 85
+        },
+        "pontosAcao": {
+          "value": 3,
+          "max": 3
+        }
+      },
+      "movement": {
+        "hex": {
+          "walk": {
+            "value": 4
+          },
+          "run": {
+            "value": 6
+          }
+        }
+      },
+      "tactical": {
+        "defesa": {
+          "value": 14
+        },
+        "ameaca": {
+          "value": 8
+        },
+        "tier": "mini"
+      },
+      "actions": [
+        {
+          "packId": "unarmed",
+          "entryId": "serpente-do-abismo-mordida",
+          "name": "Mordida",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d10",
+          "damageType": "perfurante",
+          "attackBonus": 2,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Mordida · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "serpente-do-abismo-garras",
+          "name": "Garras",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d8",
+          "damageType": "cortante",
+          "attackBonus": 2,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Garras · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "serpente-do-abismo-special",
+          "name": "Ataque especial",
+          "kind": "spell",
+          "resolution": "attack",
+          "damageFormula": "2d8",
+          "damageType": "mágico",
+          "attackBonus": 8,
+          "rangeHex": 4,
+          "paCost": 2,
+          "label": "Ataque especial · 4 hex · PA 2"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Tubarão-Cego",
+    "type": "npc",
+    "system": {
+      "description": "<p>Tubarão-Cego — espécime nv 5 (Eldarin v4).</p>",
+      "attributes": {
+        "forca": {
+          "value": 18,
+          "mod": 4
+        },
+        "agilidade": {
+          "value": 14,
+          "mod": 2
+        }
+      },
+      "resources": {
+        "vida": {
+          "value": 58,
+          "max": 58
+        },
+        "pontosAcao": {
+          "value": 3,
+          "max": 3
+        }
+      },
+      "movement": {
+        "hex": {
+          "walk": {
+            "value": 5
+          },
+          "run": {
+            "value": 8
+          }
+        }
+      },
+      "tactical": {
+        "defesa": {
+          "value": 13
+        },
+        "ameaca": {
+          "value": 5
+        },
+        "tier": "mini"
+      },
+      "actions": [
+        {
+          "packId": "unarmed",
+          "entryId": "tubarao-cego-mordida",
+          "name": "Mordida",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d10",
+          "damageType": "perfurante",
+          "attackBonus": 2,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Mordida · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "tubarao-cego-garras",
+          "name": "Garras",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d8",
+          "damageType": "cortante",
+          "attackBonus": 2,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Garras · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "tubarao-cego-special",
+          "name": "Ataque especial",
+          "kind": "spell",
+          "resolution": "attack",
+          "damageFormula": "2d8",
+          "damageType": "mágico",
+          "attackBonus": 5,
+          "rangeHex": 4,
+          "paCost": 2,
+          "label": "Ataque especial · 4 hex · PA 2"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Goblin de Caverna",
+    "type": "npc",
+    "system": {
+      "description": "<p>Goblin de Caverna — espécime nv 1 (Eldarin v4).</p>",
+      "attributes": {
+        "forca": {
+          "value": 8,
+          "mod": -1
+        },
+        "agilidade": {
+          "value": 14,
+          "mod": 2
+        }
+      },
+      "resources": {
+        "vida": {
+          "value": 7,
+          "max": 7
+        },
+        "pontosAcao": {
+          "value": 3,
+          "max": 3
+        }
+      },
+      "movement": {
+        "hex": {
+          "walk": {
+            "value": 4
+          },
+          "run": {
+            "value": 6
+          }
+        }
+      },
+      "tactical": {
+        "defesa": {
+          "value": 13
+        },
+        "ameaca": {
+          "value": 1
+        },
+        "tier": "mob"
+      },
+      "actions": [
+        {
+          "packId": "unarmed",
+          "entryId": "goblin-de-caverna-mordida",
+          "name": "Mordida",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d6",
+          "damageType": "perfurante",
+          "attackBonus": 0,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Mordida · 1 hex · PA 1"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Hobgoblin Guerreiro",
+    "type": "npc",
+    "system": {
+      "description": "<p>Hobgoblin Guerreiro — espécime nv 3 (Eldarin v4).</p>",
+      "attributes": {
+        "forca": {
+          "value": 13,
+          "mod": 1
+        },
+        "agilidade": {
+          "value": 12,
+          "mod": 1
+        }
+      },
+      "resources": {
+        "vida": {
+          "value": 11,
+          "max": 11
+        },
+        "pontosAcao": {
+          "value": 3,
+          "max": 3
+        }
+      },
+      "movement": {
+        "hex": {
+          "walk": {
+            "value": 4
+          },
+          "run": {
+            "value": 6
+          }
+        }
+      },
+      "tactical": {
+        "defesa": {
+          "value": 15
+        },
+        "ameaca": {
+          "value": 3
+        },
+        "tier": "mob"
+      },
+      "actions": [
+        {
+          "packId": "unarmed",
+          "entryId": "hobgoblin-guerreiro-mordida",
+          "name": "Mordida",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d6",
+          "damageType": "perfurante",
+          "attackBonus": 1,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Mordida · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "hobgoblin-guerreiro-garras",
+          "name": "Garras",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d8",
+          "damageType": "cortante",
+          "attackBonus": 1,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Garras · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "hobgoblin-guerreiro-special",
+          "name": "Investida",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d10",
+          "damageType": "contundente",
+          "attackBonus": 1,
+          "rangeHex": 2,
+          "paCost": 1,
+          "label": "Investida · 2 hex · PA 1"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Orc de Masmorra",
+    "type": "npc",
+    "system": {
+      "description": "<p>Orc de Masmorra — espécime nv 4 (Eldarin v4).</p>",
+      "attributes": {
+        "forca": {
+          "value": 16,
+          "mod": 3
+        },
+        "agilidade": {
+          "value": 10,
+          "mod": 0
+        }
+      },
+      "resources": {
+        "vida": {
+          "value": 15,
+          "max": 15
+        },
+        "pontosAcao": {
+          "value": 3,
+          "max": 3
+        }
+      },
+      "movement": {
+        "hex": {
+          "walk": {
+            "value": 4
+          },
+          "run": {
+            "value": 6
+          }
+        }
+      },
+      "tactical": {
+        "defesa": {
+          "value": 14
+        },
+        "ameaca": {
+          "value": 4
+        },
+        "tier": "mob"
+      },
+      "actions": [
+        {
+          "packId": "unarmed",
+          "entryId": "orc-de-masmorra-mordida",
+          "name": "Mordida",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d6",
+          "damageType": "perfurante",
+          "attackBonus": 2,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Mordida · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "orc-de-masmorra-garras",
+          "name": "Garras",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d8",
+          "damageType": "cortante",
+          "attackBonus": 0,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Garras · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "orc-de-masmorra-special",
+          "name": "Ataque especial",
+          "kind": "spell",
+          "resolution": "attack",
+          "damageFormula": "2d8",
+          "damageType": "mágico",
+          "attackBonus": 4,
+          "rangeHex": 4,
+          "paCost": 2,
+          "label": "Ataque especial · 4 hex · PA 2"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Cogumelo-Rei",
+    "type": "npc",
+    "system": {
+      "description": "<p>Cogumelo-Rei — espécime nv 7 (Eldarin v4).</p>",
+      "attributes": {
+        "forca": {
+          "value": 14,
+          "mod": 2
+        },
+        "agilidade": {
+          "value": 8,
+          "mod": -1
+        }
+      },
+      "resources": {
+        "vida": {
+          "value": 68,
+          "max": 68
+        },
+        "pontosAcao": {
+          "value": 3,
+          "max": 3
+        }
+      },
+      "movement": {
+        "hex": {
+          "walk": {
+            "value": 4
+          },
+          "run": {
+            "value": 6
+          }
+        }
+      },
+      "tactical": {
+        "defesa": {
+          "value": 12
+        },
+        "ameaca": {
+          "value": 7
+        },
+        "tier": "mini"
+      },
+      "actions": [
+        {
+          "packId": "unarmed",
+          "entryId": "cogumelo-rei-mordida",
+          "name": "Mordida",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d10",
+          "damageType": "perfurante",
+          "attackBonus": 2,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Mordida · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "cogumelo-rei-garras",
+          "name": "Garras",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d8",
+          "damageType": "cortante",
+          "attackBonus": -1,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Garras · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "cogumelo-rei-special",
+          "name": "Ataque especial",
+          "kind": "spell",
+          "resolution": "attack",
+          "damageFormula": "2d8",
+          "damageType": "mágico",
+          "attackBonus": 7,
+          "rangeHex": 4,
+          "paCost": 2,
+          "label": "Ataque especial · 4 hex · PA 2"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Treant Podre",
+    "type": "npc",
+    "system": {
+      "description": "<p>Treant Podre — espécime nv 9 (Eldarin v4).</p>",
+      "attributes": {
+        "forca": {
+          "value": 20,
+          "mod": 5
+        },
+        "agilidade": {
+          "value": 8,
+          "mod": -1
+        }
+      },
+      "resources": {
+        "vida": {
+          "value": 136,
+          "max": 136
+        },
+        "pontosAcao": {
+          "value": 3,
+          "max": 3
+        }
+      },
+      "movement": {
+        "hex": {
+          "walk": {
+            "value": 3
+          },
+          "run": {
+            "value": 5
+          }
+        }
+      },
+      "tactical": {
+        "defesa": {
+          "value": 15
+        },
+        "ameaca": {
+          "value": 9
+        },
+        "tier": "mini"
+      },
+      "actions": [
+        {
+          "packId": "unarmed",
+          "entryId": "treant-podre-mordida",
+          "name": "Mordida",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d10",
+          "damageType": "perfurante",
+          "attackBonus": 2,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Mordida · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "treant-podre-garras",
+          "name": "Garras",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d8",
+          "damageType": "cortante",
+          "attackBonus": -1,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Garras · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "treant-podre-special",
+          "name": "Ataque especial",
+          "kind": "spell",
+          "resolution": "attack",
+          "damageFormula": "2d8",
+          "damageType": "mágico",
+          "attackBonus": 9,
+          "rangeHex": 4,
+          "paCost": 2,
+          "label": "Ataque especial · 4 hex · PA 2"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Planta Carnívora Gigante",
+    "type": "npc",
+    "system": {
+      "description": "<p>Planta Carnívora Gigante — espécime nv 5 (Eldarin v4).</p>",
+      "attributes": {
+        "forca": {
+          "value": 17,
+          "mod": 3
+        },
+        "agilidade": {
+          "value": 6,
+          "mod": -2
+        }
+      },
+      "resources": {
+        "vida": {
+          "value": 55,
+          "max": 55
+        },
+        "pontosAcao": {
+          "value": 3,
+          "max": 3
+        }
+      },
+      "movement": {
+        "hex": {
+          "walk": {
+            "value": 4
+          },
+          "run": {
+            "value": 6
+          }
+        }
+      },
+      "tactical": {
+        "defesa": {
+          "value": 11
+        },
+        "ameaca": {
+          "value": 5
+        },
+        "tier": "mob"
+      },
+      "actions": [
+        {
+          "packId": "unarmed",
+          "entryId": "planta-carnivora-gigante-mordida",
+          "name": "Mordida",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d6",
+          "damageType": "perfurante",
+          "attackBonus": 2,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Mordida · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "planta-carnivora-gigante-garras",
+          "name": "Garras",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d8",
+          "damageType": "cortante",
+          "attackBonus": -2,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Garras · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "planta-carnivora-gigante-special",
+          "name": "Ataque especial",
+          "kind": "spell",
+          "resolution": "attack",
+          "damageFormula": "2d8",
+          "damageType": "mágico",
+          "attackBonus": 5,
+          "rangeHex": 4,
+          "paCost": 2,
+          "label": "Ataque especial · 4 hex · PA 2"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Slime Ácido",
+    "type": "npc",
+    "system": {
+      "description": "<p>Slime Ácido — espécime nv 2 (Eldarin v4).</p>",
+      "attributes": {
+        "forca": {
+          "value": 12,
+          "mod": 1
+        },
+        "agilidade": {
+          "value": 6,
+          "mod": -2
+        }
+      },
+      "resources": {
+        "vida": {
+          "value": 22,
+          "max": 22
+        },
+        "pontosAcao": {
+          "value": 3,
+          "max": 3
+        }
+      },
+      "movement": {
+        "hex": {
+          "walk": {
+            "value": 2
+          },
+          "run": {
+            "value": 3
+          }
+        }
+      },
+      "tactical": {
+        "defesa": {
+          "value": 8
+        },
+        "ameaca": {
+          "value": 2
+        },
+        "tier": "mob"
+      },
+      "actions": [
+        {
+          "packId": "unarmed",
+          "entryId": "slime-acido-mordida",
+          "name": "Mordida",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d6",
+          "damageType": "perfurante",
+          "attackBonus": 1,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Mordida · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "slime-acido-garras",
+          "name": "Garras",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d8",
+          "damageType": "cortante",
+          "attackBonus": -2,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Garras · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "slime-acido-special",
+          "name": "Investida",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d10",
+          "damageType": "contundente",
+          "attackBonus": 1,
+          "rangeHex": 2,
+          "paCost": 1,
+          "label": "Investida · 2 hex · PA 1"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Slime de Cristal",
+    "type": "npc",
+    "system": {
+      "description": "<p>Slime de Cristal — espécime nv 3 (Eldarin v4).</p>",
+      "attributes": {
+        "forca": {
+          "value": 10,
+          "mod": 0
+        },
+        "agilidade": {
+          "value": 8,
+          "mod": -1
+        }
+      },
+      "resources": {
+        "vida": {
+          "value": 38,
+          "max": 38
+        },
+        "pontosAcao": {
+          "value": 3,
+          "max": 3
+        }
+      },
+      "movement": {
+        "hex": {
+          "walk": {
+            "value": 4
+          },
+          "run": {
+            "value": 6
+          }
+        }
+      },
+      "tactical": {
+        "defesa": {
+          "value": 10
+        },
+        "ameaca": {
+          "value": 3
+        },
+        "tier": "mob"
+      },
+      "actions": [
+        {
+          "packId": "unarmed",
+          "entryId": "slime-de-cristal-mordida",
+          "name": "Mordida",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d6",
+          "damageType": "perfurante",
+          "attackBonus": 1,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Mordida · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "slime-de-cristal-garras",
+          "name": "Garras",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d8",
+          "damageType": "cortante",
+          "attackBonus": -1,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Garras · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "slime-de-cristal-special",
+          "name": "Investida",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d10",
+          "damageType": "contundente",
+          "attackBonus": 0,
+          "rangeHex": 2,
+          "paCost": 1,
+          "label": "Investida · 2 hex · PA 1"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Elemental de Fogo",
+    "type": "npc",
+    "system": {
+      "description": "<p>Elemental de Fogo — espécime nv 6 (Eldarin v4).</p>",
+      "attributes": {
+        "forca": {
+          "value": 14,
+          "mod": 2
+        },
+        "agilidade": {
+          "value": 16,
+          "mod": 3
+        }
+      },
+      "resources": {
+        "vida": {
+          "value": 72,
+          "max": 72
+        },
+        "pontosAcao": {
+          "value": 3,
+          "max": 3
+        }
+      },
+      "movement": {
+        "hex": {
+          "walk": {
+            "value": 4
+          },
+          "run": {
+            "value": 6
+          }
+        }
+      },
+      "tactical": {
+        "defesa": {
+          "value": 13
+        },
+        "ameaca": {
+          "value": 6
+        },
+        "tier": "mini"
+      },
+      "actions": [
+        {
+          "packId": "unarmed",
+          "entryId": "elemental-de-fogo-mordida",
+          "name": "Mordida",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d10",
+          "damageType": "perfurante",
+          "attackBonus": 2,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Mordida · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "elemental-de-fogo-garras",
+          "name": "Garras",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d8",
+          "damageType": "cortante",
+          "attackBonus": 3,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Garras · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "elemental-de-fogo-special",
+          "name": "Ataque especial",
+          "kind": "spell",
+          "resolution": "attack",
+          "damageFormula": "2d8",
+          "damageType": "mágico",
+          "attackBonus": 6,
+          "rangeHex": 4,
+          "paCost": 2,
+          "label": "Ataque especial · 4 hex · PA 2"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Elemental de Gelo",
+    "type": "npc",
+    "system": {
+      "description": "<p>Elemental de Gelo — espécime nv 6 (Eldarin v4).</p>",
+      "attributes": {
+        "forca": {
+          "value": 16,
+          "mod": 3
+        },
+        "agilidade": {
+          "value": 14,
+          "mod": 2
+        }
+      },
+      "resources": {
+        "vida": {
+          "value": 75,
+          "max": 75
+        },
+        "pontosAcao": {
+          "value": 3,
+          "max": 3
+        }
+      },
+      "movement": {
+        "hex": {
+          "walk": {
+            "value": 4
+          },
+          "run": {
+            "value": 6
+          }
+        }
+      },
+      "tactical": {
+        "defesa": {
+          "value": 14
+        },
+        "ameaca": {
+          "value": 6
+        },
+        "tier": "mini"
+      },
+      "actions": [
+        {
+          "packId": "unarmed",
+          "entryId": "elemental-de-gelo-mordida",
+          "name": "Mordida",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d10",
+          "damageType": "perfurante",
+          "attackBonus": 2,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Mordida · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "elemental-de-gelo-garras",
+          "name": "Garras",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d8",
+          "damageType": "cortante",
+          "attackBonus": 2,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Garras · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "elemental-de-gelo-special",
+          "name": "Ataque especial",
+          "kind": "spell",
+          "resolution": "attack",
+          "damageFormula": "2d8",
+          "damageType": "mágico",
+          "attackBonus": 6,
+          "rangeHex": 4,
+          "paCost": 2,
+          "label": "Ataque especial · 4 hex · PA 2"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Yeti das Profundezas",
+    "type": "npc",
+    "system": {
+      "description": "<p>Yeti das Profundezas — espécime nv 8 (Eldarin v4).</p>",
+      "attributes": {
+        "forca": {
+          "value": 20,
+          "mod": 5
+        },
+        "agilidade": {
+          "value": 10,
+          "mod": 0
+        }
+      },
+      "resources": {
+        "vida": {
+          "value": 114,
+          "max": 114
+        },
+        "pontosAcao": {
+          "value": 3,
+          "max": 3
+        }
+      },
+      "movement": {
+        "hex": {
+          "walk": {
+            "value": 4
+          },
+          "run": {
+            "value": 6
+          }
+        }
+      },
+      "tactical": {
+        "defesa": {
+          "value": 13
+        },
+        "ameaca": {
+          "value": 8
+        },
+        "tier": "mini"
+      },
+      "actions": [
+        {
+          "packId": "unarmed",
+          "entryId": "yeti-das-profundezas-mordida",
+          "name": "Mordida",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d10",
+          "damageType": "perfurante",
+          "attackBonus": 2,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Mordida · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "yeti-das-profundezas-garras",
+          "name": "Garras",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d8",
+          "damageType": "cortante",
+          "attackBonus": 0,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Garras · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "yeti-das-profundezas-special",
+          "name": "Ataque especial",
+          "kind": "spell",
+          "resolution": "attack",
+          "damageFormula": "2d8",
+          "damageType": "mágico",
+          "attackBonus": 8,
+          "rangeHex": 4,
+          "paCost": 2,
+          "label": "Ataque especial · 4 hex · PA 2"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Lobo do Inverno",
+    "type": "npc",
+    "system": {
+      "description": "<p>Lobo do Inverno — espécime nv 3 (Eldarin v4).</p>",
+      "attributes": {
+        "forca": {
+          "value": 14,
+          "mod": 2
+        },
+        "agilidade": {
+          "value": 15,
+          "mod": 2
+        }
+      },
+      "resources": {
+        "vida": {
+          "value": 22,
+          "max": 22
+        },
+        "pontosAcao": {
+          "value": 3,
+          "max": 3
+        }
+      },
+      "movement": {
+        "hex": {
+          "walk": {
+            "value": 5
+          },
+          "run": {
+            "value": 8
+          }
+        }
+      },
+      "tactical": {
+        "defesa": {
+          "value": 12
+        },
+        "ameaca": {
+          "value": 3
+        },
+        "tier": "mob"
+      },
+      "actions": [
+        {
+          "packId": "unarmed",
+          "entryId": "lobo-do-inverno-mordida",
+          "name": "Mordida",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d6",
+          "damageType": "perfurante",
+          "attackBonus": 1,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Mordida · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "lobo-do-inverno-garras",
+          "name": "Garras",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d8",
+          "damageType": "cortante",
+          "attackBonus": 2,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Garras · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "lobo-do-inverno-special",
+          "name": "Investida",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d10",
+          "damageType": "contundente",
+          "attackBonus": 2,
+          "rangeHex": 2,
+          "paCost": 1,
+          "label": "Investida · 2 hex · PA 1"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Mímico de Baú",
+    "type": "npc",
+    "system": {
+      "description": "<p>Mímico de Baú — espécime nv 4 (Eldarin v4).</p>",
+      "attributes": {
+        "forca": {
+          "value": 17,
+          "mod": 3
+        },
+        "agilidade": {
+          "value": 10,
+          "mod": 0
+        }
+      },
+      "resources": {
+        "vida": {
+          "value": 52,
+          "max": 52
+        },
+        "pontosAcao": {
+          "value": 3,
+          "max": 3
+        }
+      },
+      "movement": {
+        "hex": {
+          "walk": {
+            "value": 4
+          },
+          "run": {
+            "value": 6
+          }
+        }
+      },
+      "tactical": {
+        "defesa": {
+          "value": 12
+        },
+        "ameaca": {
+          "value": 4
+        },
+        "tier": "mob"
+      },
+      "actions": [
+        {
+          "packId": "unarmed",
+          "entryId": "mimico-de-bau-mordida",
+          "name": "Mordida",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d6",
+          "damageType": "perfurante",
+          "attackBonus": 2,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Mordida · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "mimico-de-bau-garras",
+          "name": "Garras",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d8",
+          "damageType": "cortante",
+          "attackBonus": 0,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Garras · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "mimico-de-bau-special",
+          "name": "Ataque especial",
+          "kind": "spell",
+          "resolution": "attack",
+          "damageFormula": "2d8",
+          "damageType": "mágico",
+          "attackBonus": 4,
+          "rangeHex": 4,
+          "paCost": 2,
+          "label": "Ataque especial · 4 hex · PA 2"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Doppelganger",
+    "type": "npc",
+    "system": {
+      "description": "<p>Doppelganger — espécime nv 5 (Eldarin v4).</p>",
+      "attributes": {
+        "forca": {
+          "value": 14,
+          "mod": 2
+        },
+        "agilidade": {
+          "value": 16,
+          "mod": 3
+        }
+      },
+      "resources": {
+        "vida": {
+          "value": 52,
+          "max": 52
+        },
+        "pontosAcao": {
+          "value": 3,
+          "max": 3
+        }
+      },
+      "movement": {
+        "hex": {
+          "walk": {
+            "value": 4
+          },
+          "run": {
+            "value": 6
+          }
+        }
+      },
+      "tactical": {
+        "defesa": {
+          "value": 14
+        },
+        "ameaca": {
+          "value": 5
+        },
+        "tier": "mini"
+      },
+      "actions": [
+        {
+          "packId": "unarmed",
+          "entryId": "doppelganger-mordida",
+          "name": "Mordida",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d10",
+          "damageType": "perfurante",
+          "attackBonus": 2,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Mordida · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "doppelganger-garras",
+          "name": "Garras",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d8",
+          "damageType": "cortante",
+          "attackBonus": 3,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Garras · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "doppelganger-special",
+          "name": "Ataque especial",
+          "kind": "spell",
+          "resolution": "attack",
+          "damageFormula": "2d8",
+          "damageType": "mágico",
+          "attackBonus": 5,
+          "rangeHex": 4,
+          "paCost": 2,
+          "label": "Ataque especial · 4 hex · PA 2"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Hidra das Cavernas",
+    "type": "npc",
+    "system": {
+      "description": "<p>Hidra das Cavernas — espécime nv 9 (Eldarin v4).</p>",
+      "attributes": {
+        "forca": {
+          "value": 20,
+          "mod": 5
+        },
+        "agilidade": {
+          "value": 12,
+          "mod": 1
+        }
+      },
+      "resources": {
+        "vida": {
+          "value": 168,
+          "max": 168
+        },
+        "pontosAcao": {
+          "value": 3,
+          "max": 3
+        }
+      },
+      "movement": {
+        "hex": {
+          "walk": {
+            "value": 4
+          },
+          "run": {
+            "value": 6
+          }
+        }
+      },
+      "tactical": {
+        "defesa": {
+          "value": 15
+        },
+        "ameaca": {
+          "value": 9
+        },
+        "tier": "boss"
+      },
+      "actions": [
+        {
+          "packId": "unarmed",
+          "entryId": "hidra-das-cavernas-mordida",
+          "name": "Mordida",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "2d8",
+          "damageType": "perfurante",
+          "attackBonus": 2,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Mordida · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "hidra-das-cavernas-garras",
+          "name": "Garras",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "2d6",
+          "damageType": "cortante",
+          "attackBonus": 1,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Garras · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "hidra-das-cavernas-special",
+          "name": "Ataque especial",
+          "kind": "spell",
+          "resolution": "attack",
+          "damageFormula": "3d10",
+          "damageType": "mágico",
+          "attackBonus": 9,
+          "rangeHex": 6,
+          "paCost": 2,
+          "label": "Ataque especial · 6 hex · PA 2"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Quimera",
+    "type": "npc",
+    "system": {
+      "description": "<p>Quimera — espécime nv 10 (Eldarin v4).</p>",
+      "attributes": {
+        "forca": {
+          "value": 19,
+          "mod": 4
+        },
+        "agilidade": {
+          "value": 14,
+          "mod": 2
+        }
+      },
+      "resources": {
+        "vida": {
+          "value": 114,
+          "max": 114
+        },
+        "pontosAcao": {
+          "value": 3,
+          "max": 3
+        }
+      },
+      "movement": {
+        "hex": {
+          "walk": {
+            "value": 5
+          },
+          "run": {
+            "value": 8
+          }
+        }
+      },
+      "tactical": {
+        "defesa": {
+          "value": 14
+        },
+        "ameaca": {
+          "value": 10
+        },
+        "tier": "boss"
+      },
+      "actions": [
+        {
+          "packId": "unarmed",
+          "entryId": "quimera-mordida",
+          "name": "Mordida",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "2d8",
+          "damageType": "perfurante",
+          "attackBonus": 2,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Mordida · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "quimera-garras",
+          "name": "Garras",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "2d6",
+          "damageType": "cortante",
+          "attackBonus": 2,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Garras · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "quimera-special",
+          "name": "Ataque especial",
+          "kind": "spell",
+          "resolution": "attack",
+          "damageFormula": "3d10",
+          "damageType": "mágico",
+          "attackBonus": 10,
+          "rangeHex": 6,
+          "paCost": 2,
+          "label": "Ataque especial · 6 hex · PA 2"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Anjo Caído",
+    "type": "npc",
+    "system": {
+      "description": "<p>Anjo Caído — espécime nv 14 (Eldarin v4).</p>",
+      "attributes": {
+        "forca": {
+          "value": 22,
+          "mod": 6
+        },
+        "agilidade": {
+          "value": 18,
+          "mod": 4
+        }
+      },
+      "resources": {
+        "vida": {
+          "value": 220,
+          "max": 220
+        },
+        "pontosAcao": {
+          "value": 3,
+          "max": 3
+        }
+      },
+      "movement": {
+        "hex": {
+          "walk": {
+            "value": 5
+          },
+          "run": {
+            "value": 10
+          }
+        }
+      },
+      "tactical": {
+        "defesa": {
+          "value": 18
+        },
+        "ameaca": {
+          "value": 14
+        },
+        "tier": "boss"
+      },
+      "actions": [
+        {
+          "packId": "unarmed",
+          "entryId": "anjo-caido-mordida",
+          "name": "Mordida",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "2d8",
+          "damageType": "perfurante",
+          "attackBonus": 2,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Mordida · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "anjo-caido-garras",
+          "name": "Garras",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "2d6",
+          "damageType": "cortante",
+          "attackBonus": 4,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Garras · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "anjo-caido-special",
+          "name": "Ataque especial",
+          "kind": "spell",
+          "resolution": "attack",
+          "damageFormula": "3d10",
+          "damageType": "mágico",
+          "attackBonus": 14,
+          "rangeHex": 6,
+          "paCost": 2,
+          "label": "Ataque especial · 6 hex · PA 2"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Gárgula de Cristal",
+    "type": "npc",
+    "system": {
+      "description": "<p>Gárgula de Cristal — espécime nv 4 (Eldarin v4).</p>",
+      "attributes": {
+        "forca": {
+          "value": 14,
+          "mod": 2
+        },
+        "agilidade": {
+          "value": 15,
+          "mod": 2
+        }
+      },
+      "resources": {
+        "vida": {
+          "value": 52,
+          "max": 52
+        },
+        "pontosAcao": {
+          "value": 3,
+          "max": 3
+        }
+      },
+      "movement": {
+        "hex": {
+          "walk": {
+            "value": 4
+          },
+          "run": {
+            "value": 6
+          }
+        }
+      },
+      "tactical": {
+        "defesa": {
+          "value": 15
+        },
+        "ameaca": {
+          "value": 4
+        },
+        "tier": "mob"
+      },
+      "actions": [
+        {
+          "packId": "unarmed",
+          "entryId": "gargula-de-cristal-mordida",
+          "name": "Mordida",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d6",
+          "damageType": "perfurante",
+          "attackBonus": 2,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Mordida · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "gargula-de-cristal-garras",
+          "name": "Garras",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d8",
+          "damageType": "cortante",
+          "attackBonus": 2,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Garras · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "gargula-de-cristal-special",
+          "name": "Ataque especial",
+          "kind": "spell",
+          "resolution": "attack",
+          "damageFormula": "2d8",
+          "damageType": "mágico",
+          "attackBonus": 4,
+          "rangeHex": 4,
+          "paCost": 2,
+          "label": "Ataque especial · 4 hex · PA 2"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Aberração Tentacular",
+    "type": "npc",
+    "system": {
+      "description": "<p>Aberração Tentacular — espécime nv 8 (Eldarin v4).</p>",
+      "attributes": {
+        "forca": {
+          "value": 18,
+          "mod": 4
+        },
+        "agilidade": {
+          "value": 10,
+          "mod": 0
+        }
+      },
+      "resources": {
+        "vida": {
+          "value": 84,
+          "max": 84
+        },
+        "pontosAcao": {
+          "value": 3,
+          "max": 3
+        }
+      },
+      "movement": {
+        "hex": {
+          "walk": {
+            "value": 4
+          },
+          "run": {
+            "value": 6
+          }
+        }
+      },
+      "tactical": {
+        "defesa": {
+          "value": 14
+        },
+        "ameaca": {
+          "value": 8
+        },
+        "tier": "mini"
+      },
+      "actions": [
+        {
+          "packId": "unarmed",
+          "entryId": "aberracao-tentacular-mordida",
+          "name": "Mordida",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d10",
+          "damageType": "perfurante",
+          "attackBonus": 2,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Mordida · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "aberracao-tentacular-garras",
+          "name": "Garras",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d8",
+          "damageType": "cortante",
+          "attackBonus": 0,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Garras · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "aberracao-tentacular-special",
+          "name": "Ataque especial",
+          "kind": "spell",
+          "resolution": "attack",
+          "damageFormula": "2d8",
+          "damageType": "mágico",
+          "attackBonus": 8,
+          "rangeHex": 4,
+          "paCost": 2,
+          "label": "Ataque especial · 4 hex · PA 2"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Basilisco de Magma",
+    "type": "npc",
+    "system": {
+      "description": "<p>Basilisco de Magma — espécime nv 8 (Eldarin v4).</p>",
+      "attributes": {
+        "forca": {
+          "value": 17,
+          "mod": 3
+        },
+        "agilidade": {
+          "value": 10,
+          "mod": 0
+        }
+      },
+      "resources": {
+        "vida": {
+          "value": 88,
+          "max": 88
+        },
+        "pontosAcao": {
+          "value": 3,
+          "max": 3
+        }
+      },
+      "movement": {
+        "hex": {
+          "walk": {
+            "value": 4
+          },
+          "run": {
+            "value": 6
+          }
+        }
+      },
+      "tactical": {
+        "defesa": {
+          "value": 15
+        },
+        "ameaca": {
+          "value": 8
+        },
+        "tier": "mini"
+      },
+      "actions": [
+        {
+          "packId": "unarmed",
+          "entryId": "basilisco-de-magma-mordida",
+          "name": "Mordida",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d10",
+          "damageType": "perfurante",
+          "attackBonus": 2,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Mordida · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "basilisco-de-magma-garras",
+          "name": "Garras",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d8",
+          "damageType": "cortante",
+          "attackBonus": 0,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Garras · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "basilisco-de-magma-special",
+          "name": "Ataque especial",
+          "kind": "spell",
+          "resolution": "attack",
+          "damageFormula": "2d8",
+          "damageType": "mágico",
+          "attackBonus": 8,
+          "rangeHex": 4,
+          "paCost": 2,
+          "label": "Ataque especial · 4 hex · PA 2"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Sereia das Profundezas",
+    "type": "npc",
+    "system": {
+      "description": "<p>Sereia das Profundezas — espécime nv 6 (Eldarin v4).</p>",
+      "attributes": {
+        "forca": {
+          "value": 14,
+          "mod": 2
+        },
+        "agilidade": {
+          "value": 14,
+          "mod": 2
+        }
+      },
+      "resources": {
+        "vida": {
+          "value": 65,
+          "max": 65
+        },
+        "pontosAcao": {
+          "value": 3,
+          "max": 3
+        }
+      },
+      "movement": {
+        "hex": {
+          "walk": {
+            "value": 4
+          },
+          "run": {
+            "value": 6
+          }
+        }
+      },
+      "tactical": {
+        "defesa": {
+          "value": 13
+        },
+        "ameaca": {
+          "value": 6
+        },
+        "tier": "mini"
+      },
+      "actions": [
+        {
+          "packId": "unarmed",
+          "entryId": "sereia-das-profundezas-mordida",
+          "name": "Mordida",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d10",
+          "damageType": "perfurante",
+          "attackBonus": 2,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Mordida · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "sereia-das-profundezas-garras",
+          "name": "Garras",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d8",
+          "damageType": "cortante",
+          "attackBonus": 2,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Garras · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "sereia-das-profundezas-special",
+          "name": "Ataque especial",
+          "kind": "spell",
+          "resolution": "attack",
+          "damageFormula": "2d8",
+          "damageType": "mágico",
+          "attackBonus": 6,
+          "rangeHex": 4,
+          "paCost": 2,
+          "label": "Ataque especial · 4 hex · PA 2"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Troll de Pedra",
+    "type": "npc",
+    "system": {
+      "description": "<p>Troll de Pedra — espécime nv 7 (Eldarin v4).</p>",
+      "attributes": {
+        "forca": {
+          "value": 20,
+          "mod": 5
+        },
+        "agilidade": {
+          "value": 8,
+          "mod": -1
+        }
+      },
+      "resources": {
+        "vida": {
+          "value": 105,
+          "max": 105
+        },
+        "pontosAcao": {
+          "value": 3,
+          "max": 3
+        }
+      },
+      "movement": {
+        "hex": {
+          "walk": {
+            "value": 4
+          },
+          "run": {
+            "value": 6
+          }
+        }
+      },
+      "tactical": {
+        "defesa": {
+          "value": 15
+        },
+        "ameaca": {
+          "value": 7
+        },
+        "tier": "mini"
+      },
+      "actions": [
+        {
+          "packId": "unarmed",
+          "entryId": "troll-de-pedra-mordida",
+          "name": "Mordida",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d10",
+          "damageType": "perfurante",
+          "attackBonus": 2,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Mordida · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "troll-de-pedra-garras",
+          "name": "Garras",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d8",
+          "damageType": "cortante",
+          "attackBonus": -1,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Garras · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "troll-de-pedra-special",
+          "name": "Ataque especial",
+          "kind": "spell",
+          "resolution": "attack",
+          "damageFormula": "2d8",
+          "damageType": "mágico",
+          "attackBonus": 7,
+          "rangeHex": 4,
+          "paCost": 2,
+          "label": "Ataque especial · 4 hex · PA 2"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Ciclope",
+    "type": "npc",
+    "system": {
+      "description": "<p>Ciclope — espécime nv 9 (Eldarin v4).</p>",
+      "attributes": {
+        "forca": {
+          "value": 22,
+          "mod": 6
+        },
+        "agilidade": {
+          "value": 8,
+          "mod": -1
+        }
+      },
+      "resources": {
+        "vida": {
+          "value": 138,
+          "max": 138
+        },
+        "pontosAcao": {
+          "value": 3,
+          "max": 3
+        }
+      },
+      "movement": {
+        "hex": {
+          "walk": {
+            "value": 4
+          },
+          "run": {
+            "value": 6
+          }
+        }
+      },
+      "tactical": {
+        "defesa": {
+          "value": 14
+        },
+        "ameaca": {
+          "value": 9
+        },
+        "tier": "boss"
+      },
+      "actions": [
+        {
+          "packId": "unarmed",
+          "entryId": "ciclope-mordida",
+          "name": "Mordida",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "2d8",
+          "damageType": "perfurante",
+          "attackBonus": 2,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Mordida · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "ciclope-garras",
+          "name": "Garras",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "2d6",
+          "damageType": "cortante",
+          "attackBonus": -1,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Garras · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "ciclope-special",
+          "name": "Ataque especial",
+          "kind": "spell",
+          "resolution": "attack",
+          "damageFormula": "3d10",
+          "damageType": "mágico",
+          "attackBonus": 9,
+          "rangeHex": 6,
+          "paCost": 2,
+          "label": "Ataque especial · 6 hex · PA 2"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Harpia de Caverna",
+    "type": "npc",
+    "system": {
+      "description": "<p>Harpia de Caverna — espécime nv 4 (Eldarin v4).</p>",
+      "attributes": {
+        "forca": {
+          "value": 12,
+          "mod": 1
+        },
+        "agilidade": {
+          "value": 16,
+          "mod": 3
+        }
+      },
+      "resources": {
+        "vida": {
+          "value": 38,
+          "max": 38
+        },
+        "pontosAcao": {
+          "value": 3,
+          "max": 3
+        }
+      },
+      "movement": {
+        "hex": {
+          "walk": {
+            "value": 4
+          },
+          "run": {
+            "value": 8
+          }
+        }
+      },
+      "tactical": {
+        "defesa": {
+          "value": 12
+        },
+        "ameaca": {
+          "value": 4
+        },
+        "tier": "mob"
+      },
+      "actions": [
+        {
+          "packId": "unarmed",
+          "entryId": "harpia-de-caverna-mordida",
+          "name": "Mordida",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d6",
+          "damageType": "perfurante",
+          "attackBonus": 2,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Mordida · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "harpia-de-caverna-garras",
+          "name": "Garras",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d8",
+          "damageType": "cortante",
+          "attackBonus": 3,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Garras · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "harpia-de-caverna-special",
+          "name": "Ataque especial",
+          "kind": "spell",
+          "resolution": "attack",
+          "damageFormula": "2d8",
+          "damageType": "mágico",
+          "attackBonus": 4,
+          "rangeHex": 4,
+          "paCost": 2,
+          "label": "Ataque especial · 4 hex · PA 2"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Roper",
+    "type": "npc",
+    "system": {
+      "description": "<p>Roper — espécime nv 5 (Eldarin v4).</p>",
+      "attributes": {
+        "forca": {
+          "value": 18,
+          "mod": 4
+        },
+        "agilidade": {
+          "value": 6,
+          "mod": -2
+        }
+      },
+      "resources": {
+        "vida": {
+          "value": 93,
+          "max": 93
+        },
+        "pontosAcao": {
+          "value": 3,
+          "max": 3
+        }
+      },
+      "movement": {
+        "hex": {
+          "walk": {
+            "value": 4
+          },
+          "run": {
+            "value": 6
+          }
+        }
+      },
+      "tactical": {
+        "defesa": {
+          "value": 20
+        },
+        "ameaca": {
+          "value": 5
+        },
+        "tier": "mini"
+      },
+      "actions": [
+        {
+          "packId": "unarmed",
+          "entryId": "roper-mordida",
+          "name": "Mordida",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d10",
+          "damageType": "perfurante",
+          "attackBonus": 2,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Mordida · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "roper-garras",
+          "name": "Garras",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d8",
+          "damageType": "cortante",
+          "attackBonus": -2,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Garras · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "roper-special",
+          "name": "Ataque especial",
+          "kind": "spell",
+          "resolution": "attack",
+          "damageFormula": "2d8",
+          "damageType": "mágico",
+          "attackBonus": 5,
+          "rangeHex": 4,
+          "paCost": 2,
+          "label": "Ataque especial · 4 hex · PA 2"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Aboleth",
+    "type": "npc",
+    "system": {
+      "description": "<p>Aboleth — espécime nv 16 (Eldarin v4).</p>",
+      "attributes": {
+        "forca": {
+          "value": 16,
+          "mod": 3
+        },
+        "agilidade": {
+          "value": 10,
+          "mod": 0
+        }
+      },
+      "resources": {
+        "vida": {
+          "value": 195,
+          "max": 195
+        },
+        "pontosAcao": {
+          "value": 3,
+          "max": 3
+        }
+      },
+      "movement": {
+        "hex": {
+          "walk": {
+            "value": 3
+          },
+          "run": {
+            "value": 5
+          }
+        }
+      },
+      "tactical": {
+        "defesa": {
+          "value": 17
+        },
+        "ameaca": {
+          "value": 16
+        },
+        "tier": "boss"
+      },
+      "actions": [
+        {
+          "packId": "unarmed",
+          "entryId": "aboleth-mordida",
+          "name": "Mordida",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "2d8",
+          "damageType": "perfurante",
+          "attackBonus": 2,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Mordida · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "aboleth-garras",
+          "name": "Garras",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "2d6",
+          "damageType": "cortante",
+          "attackBonus": 0,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Garras · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "aboleth-special",
+          "name": "Ataque especial",
+          "kind": "spell",
+          "resolution": "attack",
+          "damageFormula": "3d10",
+          "damageType": "mágico",
+          "attackBonus": 16,
+          "rangeHex": 6,
+          "paCost": 2,
+          "label": "Ataque especial · 6 hex · PA 2"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Pudim Negro",
+    "type": "npc",
+    "system": {
+      "description": "<p>Pudim Negro — espécime nv 7 (Eldarin v4).</p>",
+      "attributes": {
+        "forca": {
+          "value": 14,
+          "mod": 2
+        },
+        "agilidade": {
+          "value": 6,
+          "mod": -2
+        }
+      },
+      "resources": {
+        "vida": {
+          "value": 85,
+          "max": 85
+        },
+        "pontosAcao": {
+          "value": 3,
+          "max": 3
+        }
+      },
+      "movement": {
+        "hex": {
+          "walk": {
+            "value": 2
+          },
+          "run": {
+            "value": 4
+          }
+        }
+      },
+      "tactical": {
+        "defesa": {
+          "value": 7
+        },
+        "ameaca": {
+          "value": 7
+        },
+        "tier": "mini"
+      },
+      "actions": [
+        {
+          "packId": "unarmed",
+          "entryId": "pudim-negro-mordida",
+          "name": "Mordida",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d10",
+          "damageType": "perfurante",
+          "attackBonus": 2,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Mordida · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "pudim-negro-garras",
+          "name": "Garras",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d8",
+          "damageType": "cortante",
+          "attackBonus": -2,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Garras · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "pudim-negro-special",
+          "name": "Ataque especial",
+          "kind": "spell",
+          "resolution": "attack",
+          "damageFormula": "2d8",
+          "damageType": "mágico",
+          "attackBonus": 7,
+          "rangeHex": 4,
+          "paCost": 2,
+          "label": "Ataque especial · 4 hex · PA 2"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Lagosta-Gigante Abissal",
+    "type": "npc",
+    "system": {
+      "description": "<p>Lagosta-Gigante Abissal — espécime nv 4 (Eldarin v4).</p>",
+      "attributes": {
+        "forca": {
+          "value": 16,
+          "mod": 3
+        },
+        "agilidade": {
+          "value": 10,
+          "mod": 0
+        }
+      },
+      "resources": {
+        "vida": {
+          "value": 52,
+          "max": 52
+        },
+        "pontosAcao": {
+          "value": 3,
+          "max": 3
+        }
+      },
+      "movement": {
+        "hex": {
+          "walk": {
+            "value": 4
+          },
+          "run": {
+            "value": 6
+          }
+        }
+      },
+      "tactical": {
+        "defesa": {
+          "value": 16
+        },
+        "ameaca": {
+          "value": 4
+        },
+        "tier": "mob"
+      },
+      "actions": [
+        {
+          "packId": "unarmed",
+          "entryId": "lagosta-gigante-abissal-mordida",
+          "name": "Mordida",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d6",
+          "damageType": "perfurante",
+          "attackBonus": 2,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Mordida · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "lagosta-gigante-abissal-garras",
+          "name": "Garras",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d8",
+          "damageType": "cortante",
+          "attackBonus": 0,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Garras · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "lagosta-gigante-abissal-special",
+          "name": "Ataque especial",
+          "kind": "spell",
+          "resolution": "attack",
+          "damageFormula": "2d8",
+          "damageType": "mágico",
+          "attackBonus": 4,
+          "rangeHex": 4,
+          "paCost": 2,
+          "label": "Ataque especial · 4 hex · PA 2"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Caranguejo-Eremita Colossal",
+    "type": "npc",
+    "system": {
+      "description": "<p>Caranguejo-Eremita Colossal — espécime nv 7 (Eldarin v4).</p>",
+      "attributes": {
+        "forca": {
+          "value": 18,
+          "mod": 4
+        },
+        "agilidade": {
+          "value": 8,
+          "mod": -1
+        }
+      },
+      "resources": {
+        "vida": {
+          "value": 88,
+          "max": 88
+        },
+        "pontosAcao": {
+          "value": 3,
+          "max": 3
+        }
+      },
+      "movement": {
+        "hex": {
+          "walk": {
+            "value": 4
+          },
+          "run": {
+            "value": 6
+          }
+        }
+      },
+      "tactical": {
+        "defesa": {
+          "value": 18
+        },
+        "ameaca": {
+          "value": 7
+        },
+        "tier": "mini"
+      },
+      "actions": [
+        {
+          "packId": "unarmed",
+          "entryId": "caranguejo-eremita-colossal-mordida",
+          "name": "Mordida",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d10",
+          "damageType": "perfurante",
+          "attackBonus": 2,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Mordida · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "caranguejo-eremita-colossal-garras",
+          "name": "Garras",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d8",
+          "damageType": "cortante",
+          "attackBonus": -1,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Garras · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "caranguejo-eremita-colossal-special",
+          "name": "Ataque especial",
+          "kind": "spell",
+          "resolution": "attack",
+          "damageFormula": "2d8",
+          "damageType": "mágico",
+          "attackBonus": 7,
+          "rangeHex": 4,
+          "paCost": 2,
+          "label": "Ataque especial · 4 hex · PA 2"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Aranha-Cavaleira",
+    "type": "npc",
+    "system": {
+      "description": "<p>Aranha-Cavaleira — espécime nv 9 (Eldarin v4).</p>",
+      "attributes": {
+        "forca": {
+          "value": 14,
+          "mod": 2
+        },
+        "agilidade": {
+          "value": 18,
+          "mod": 4
+        }
+      },
+      "resources": {
+        "vida": {
+          "value": 105,
+          "max": 105
+        },
+        "pontosAcao": {
+          "value": 3,
+          "max": 3
+        }
+      },
+      "movement": {
+        "hex": {
+          "walk": {
+            "value": 4
+          },
+          "run": {
+            "value": 6
+          }
+        }
+      },
+      "tactical": {
+        "defesa": {
+          "value": 14
+        },
+        "ameaca": {
+          "value": 9
+        },
+        "tier": "mini"
+      },
+      "actions": [
+        {
+          "packId": "unarmed",
+          "entryId": "aranha-cavaleira-mordida",
+          "name": "Mordida",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d10",
+          "damageType": "perfurante",
+          "attackBonus": 2,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Mordida · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "aranha-cavaleira-garras",
+          "name": "Garras",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d8",
+          "damageType": "cortante",
+          "attackBonus": 4,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Garras · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "aranha-cavaleira-special",
+          "name": "Ataque especial",
+          "kind": "spell",
+          "resolution": "attack",
+          "damageFormula": "2d8",
+          "damageType": "mágico",
+          "attackBonus": 9,
+          "rangeHex": 4,
+          "paCost": 2,
+          "label": "Ataque especial · 4 hex · PA 2"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Mosca-Carniça Colossal",
+    "type": "npc",
+    "system": {
+      "description": "<p>Mosca-Carniça Colossal — espécime nv 2 (Eldarin v4).</p>",
+      "attributes": {
+        "forca": {
+          "value": 8,
+          "mod": -1
+        },
+        "agilidade": {
+          "value": 14,
+          "mod": 2
+        }
+      },
+      "resources": {
+        "vida": {
+          "value": 8,
+          "max": 8
+        },
+        "pontosAcao": {
+          "value": 3,
+          "max": 3
+        }
+      },
+      "movement": {
+        "hex": {
+          "walk": {
+            "value": 4
+          },
+          "run": {
+            "value": 6
+          }
+        }
+      },
+      "tactical": {
+        "defesa": {
+          "value": 11
+        },
+        "ameaca": {
+          "value": 2
+        },
+        "tier": "mob"
+      },
+      "actions": [
+        {
+          "packId": "unarmed",
+          "entryId": "mosca-carnica-colossal-mordida",
+          "name": "Mordida",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d6",
+          "damageType": "perfurante",
+          "attackBonus": 1,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Mordida · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "mosca-carnica-colossal-garras",
+          "name": "Garras",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d8",
+          "damageType": "cortante",
+          "attackBonus": 2,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Garras · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "mosca-carnica-colossal-special",
+          "name": "Investida",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d10",
+          "damageType": "contundente",
+          "attackBonus": -1,
+          "rangeHex": 2,
+          "paCost": 1,
+          "label": "Investida · 2 hex · PA 1"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Besouro-Trovão",
+    "type": "npc",
+    "system": {
+      "description": "<p>Besouro-Trovão — espécime nv 5 (Eldarin v4).</p>",
+      "attributes": {
+        "forca": {
+          "value": 14,
+          "mod": 2
+        },
+        "agilidade": {
+          "value": 12,
+          "mod": 1
+        }
+      },
+      "resources": {
+        "vida": {
+          "value": 45,
+          "max": 45
+        },
+        "pontosAcao": {
+          "value": 3,
+          "max": 3
+        }
+      },
+      "movement": {
+        "hex": {
+          "walk": {
+            "value": 4
+          },
+          "run": {
+            "value": 6
+          }
+        }
+      },
+      "tactical": {
+        "defesa": {
+          "value": 15
+        },
+        "ameaca": {
+          "value": 5
+        },
+        "tier": "mini"
+      },
+      "actions": [
+        {
+          "packId": "unarmed",
+          "entryId": "besouro-trovao-mordida",
+          "name": "Mordida",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d10",
+          "damageType": "perfurante",
+          "attackBonus": 2,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Mordida · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "besouro-trovao-garras",
+          "name": "Garras",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d8",
+          "damageType": "cortante",
+          "attackBonus": 1,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Garras · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "besouro-trovao-special",
+          "name": "Ataque especial",
+          "kind": "spell",
+          "resolution": "attack",
+          "damageFormula": "2d8",
+          "damageType": "mágico",
+          "attackBonus": 5,
+          "rangeHex": 4,
+          "paCost": 2,
+          "label": "Ataque especial · 4 hex · PA 2"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Verme Gigante de Pedra",
+    "type": "npc",
+    "system": {
+      "description": "<p>Verme Gigante de Pedra — espécime nv 10 (Eldarin v4).</p>",
+      "attributes": {
+        "forca": {
+          "value": 22,
+          "mod": 6
+        },
+        "agilidade": {
+          "value": 6,
+          "mod": -2
+        }
+      },
+      "resources": {
+        "vida": {
+          "value": 142,
+          "max": 142
+        },
+        "pontosAcao": {
+          "value": 3,
+          "max": 3
+        }
+      },
+      "movement": {
+        "hex": {
+          "walk": {
+            "value": 4
+          },
+          "run": {
+            "value": 6
+          }
+        }
+      },
+      "tactical": {
+        "defesa": {
+          "value": 18
+        },
+        "ameaca": {
+          "value": 10
+        },
+        "tier": "boss"
+      },
+      "actions": [
+        {
+          "packId": "unarmed",
+          "entryId": "verme-gigante-de-pedra-mordida",
+          "name": "Mordida",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "2d8",
+          "damageType": "perfurante",
+          "attackBonus": 2,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Mordida · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "verme-gigante-de-pedra-garras",
+          "name": "Garras",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "2d6",
+          "damageType": "cortante",
+          "attackBonus": -2,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Garras · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "verme-gigante-de-pedra-special",
+          "name": "Ataque especial",
+          "kind": "spell",
+          "resolution": "attack",
+          "damageFormula": "3d10",
+          "damageType": "mágico",
+          "attackBonus": 10,
+          "rangeHex": 6,
+          "paCost": 2,
+          "label": "Ataque especial · 6 hex · PA 2"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Salamandra Gigante",
+    "type": "npc",
+    "system": {
+      "description": "<p>Salamandra Gigante — espécime nv 6 (Eldarin v4).</p>",
+      "attributes": {
+        "forca": {
+          "value": 15,
+          "mod": 2
+        },
+        "agilidade": {
+          "value": 12,
+          "mod": 1
+        }
+      },
+      "resources": {
+        "vida": {
+          "value": 65,
+          "max": 65
+        },
+        "pontosAcao": {
+          "value": 3,
+          "max": 3
+        }
+      },
+      "movement": {
+        "hex": {
+          "walk": {
+            "value": 4
+          },
+          "run": {
+            "value": 6
+          }
+        }
+      },
+      "tactical": {
+        "defesa": {
+          "value": 13
+        },
+        "ameaca": {
+          "value": 6
+        },
+        "tier": "mini"
+      },
+      "actions": [
+        {
+          "packId": "unarmed",
+          "entryId": "salamandra-gigante-mordida",
+          "name": "Mordida",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d10",
+          "damageType": "perfurante",
+          "attackBonus": 2,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Mordida · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "salamandra-gigante-garras",
+          "name": "Garras",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d8",
+          "damageType": "cortante",
+          "attackBonus": 1,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Garras · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "salamandra-gigante-special",
+          "name": "Ataque especial",
+          "kind": "spell",
+          "resolution": "attack",
+          "damageFormula": "2d8",
+          "damageType": "mágico",
+          "attackBonus": 6,
+          "rangeHex": 4,
+          "paCost": 2,
+          "label": "Ataque especial · 4 hex · PA 2"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Behemoth de Pedra",
+    "type": "npc",
+    "system": {
+      "description": "<p>Behemoth de Pedra — espécime nv 14 (Eldarin v4).</p>",
+      "attributes": {
+        "forca": {
+          "value": 24,
+          "mod": 7
+        },
+        "agilidade": {
+          "value": 6,
+          "mod": -2
+        }
+      },
+      "resources": {
+        "vida": {
+          "value": 230,
+          "max": 230
+        },
+        "pontosAcao": {
+          "value": 3,
+          "max": 3
+        }
+      },
+      "movement": {
+        "hex": {
+          "walk": {
+            "value": 4
+          },
+          "run": {
+            "value": 6
+          }
+        }
+      },
+      "tactical": {
+        "defesa": {
+          "value": 19
+        },
+        "ameaca": {
+          "value": 14
+        },
+        "tier": "boss"
+      },
+      "actions": [
+        {
+          "packId": "unarmed",
+          "entryId": "behemoth-de-pedra-mordida",
+          "name": "Mordida",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "2d8",
+          "damageType": "perfurante",
+          "attackBonus": 2,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Mordida · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "behemoth-de-pedra-garras",
+          "name": "Garras",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "2d6",
+          "damageType": "cortante",
+          "attackBonus": -2,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Garras · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "behemoth-de-pedra-special",
+          "name": "Ataque especial",
+          "kind": "spell",
+          "resolution": "attack",
+          "damageFormula": "3d10",
+          "damageType": "mágico",
+          "attackBonus": 14,
+          "rangeHex": 6,
+          "paCost": 2,
+          "label": "Ataque especial · 6 hex · PA 2"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Goblin",
+    "type": "npc",
+    "system": {
+      "description": "<p>Alias de Goblin de Caverna para spawn rápido.</p>",
+      "attributes": {
+        "forca": {
+          "value": 8,
+          "mod": -1
+        },
+        "agilidade": {
+          "value": 14,
+          "mod": 2
+        }
+      },
+      "resources": {
+        "vida": {
+          "value": 7,
+          "max": 7
+        },
+        "pontosAcao": {
+          "value": 3,
+          "max": 3
+        }
+      },
+      "movement": {
+        "hex": {
+          "walk": {
+            "value": 4
+          },
+          "run": {
+            "value": 6
+          }
+        }
+      },
+      "tactical": {
+        "defesa": {
+          "value": 13
+        },
+        "ameaca": {
+          "value": 1
+        },
+        "tier": "mob"
+      },
+      "actions": [
+        {
+          "packId": "unarmed",
+          "entryId": "goblin-mordida",
+          "name": "Mordida",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d6",
+          "damageType": "perfurante",
+          "attackBonus": 0,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Mordida · 1 hex · PA 1"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Esqueleto de Guarda",
+    "type": "npc",
+    "system": {
+      "description": "<p>Esqueleto de Guarda — espécime nv 2 (Eldarin v4).</p>",
+      "attributes": {
+        "forca": {
+          "value": 12,
+          "mod": 1
+        },
+        "agilidade": {
+          "value": 10,
+          "mod": 0
+        }
+      },
+      "resources": {
+        "vida": {
+          "value": 22,
+          "max": 22
+        },
+        "pontosAcao": {
+          "value": 3,
+          "max": 3
+        }
+      },
+      "movement": {
+        "hex": {
+          "walk": {
+            "value": 4
+          },
+          "run": {
+            "value": 6
+          }
+        }
+      },
+      "tactical": {
+        "defesa": {
+          "value": 14
+        },
+        "ameaca": {
+          "value": 2
+        },
+        "tier": "mob"
+      },
+      "actions": [
+        {
+          "packId": "unarmed",
+          "entryId": "esqueleto-de-guarda-mordida",
+          "name": "Mordida",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d6",
+          "damageType": "perfurante",
+          "attackBonus": 1,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Mordida · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "esqueleto-de-guarda-garras",
+          "name": "Garras",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d8",
+          "damageType": "cortante",
+          "attackBonus": 0,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Garras · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "esqueleto-de-guarda-special",
+          "name": "Investida",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d10",
+          "damageType": "contundente",
+          "attackBonus": 1,
+          "rangeHex": 2,
+          "paCost": 1,
+          "label": "Investida · 2 hex · PA 1"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Slime de Masmorra",
+    "type": "npc",
+    "system": {
+      "description": "<p>Slime de Masmorra — espécime nv 2 (Eldarin v4).</p>",
+      "attributes": {
+        "forca": {
+          "value": 14,
+          "mod": 2
+        },
+        "agilidade": {
+          "value": 6,
+          "mod": -2
+        }
+      },
+      "resources": {
+        "vida": {
+          "value": 30,
+          "max": 30
+        },
+        "pontosAcao": {
+          "value": 3,
+          "max": 3
+        }
+      },
+      "movement": {
+        "hex": {
+          "walk": {
+            "value": 2
+          },
+          "run": {
+            "value": 3
+          }
+        }
+      },
+      "tactical": {
+        "defesa": {
+          "value": 11
+        },
+        "ameaca": {
+          "value": 2
+        },
+        "tier": "mob"
+      },
+      "actions": [
+        {
+          "packId": "unarmed",
+          "entryId": "slime-de-masmorra-mordida",
+          "name": "Mordida",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d6",
+          "damageType": "perfurante",
+          "attackBonus": 1,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Mordida · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "slime-de-masmorra-garras",
+          "name": "Garras",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d8",
+          "damageType": "cortante",
+          "attackBonus": -2,
+          "rangeHex": 1,
+          "paCost": 1,
+          "label": "Garras · 1 hex · PA 1"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "slime-de-masmorra-special",
+          "name": "Investida",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d10",
+          "damageType": "contundente",
+          "attackBonus": 2,
+          "rangeHex": 2,
+          "paCost": 1,
+          "label": "Investida · 2 hex · PA 1"
+        }
+      ]
+    }
+  }
+]

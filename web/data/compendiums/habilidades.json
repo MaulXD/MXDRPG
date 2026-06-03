@@ -1,0 +1,485 @@
+[
+  {
+    "name": "Investida Hexagonal",
+    "type": "habilidade",
+    "system": {
+      "description": "<p>Movimento 2 hex sem provocar.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 2,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "ability": {
+        "tipo": "ativa",
+        "recarga": "1/turno"
+      }
+    }
+  },
+  {
+    "name": "Golpe Flanqueador",
+    "type": "habilidade",
+    "system": {
+      "description": "<p>Ataque cac com vantagem se flanqueio.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "ability": {
+        "tipo": "ativa",
+        "recarga": ""
+      }
+    }
+  },
+  {
+    "name": "Postura Defensiva",
+    "type": "habilidade",
+    "system": {
+      "description": "<p>+2 defesa até próximo turno.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 0,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "ability": {
+        "tipo": "ativa",
+        "recarga": ""
+      }
+    }
+  },
+  {
+    "name": "Reflexos de Masmorra",
+    "type": "habilidade",
+    "system": {
+      "description": "<p>Reação: desloca 1 hex.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "ability": {
+        "tipo": "reacao",
+        "recarga": ""
+      }
+    }
+  },
+  {
+    "name": "Olhar do Caçador",
+    "type": "habilidade",
+    "system": {
+      "description": "<p>Marca alvo; +2 próximo ataque à distância.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 5,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "ability": {
+        "tipo": "ativa",
+        "recarga": ""
+      }
+    }
+  },
+  {
+    "name": "Investida do Guerreiro",
+    "type": "habilidade",
+    "system": {
+      "description": "<p>Corrida em linha reta.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 2,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "ability": {
+        "tipo": "ativa",
+        "recarga": "1/turno"
+      }
+    }
+  },
+  {
+    "name": "Golpe Devastador",
+    "type": "habilidade",
+    "system": {
+      "description": "<p>+2 no próximo ataque corpo a corpo.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "ability": {
+        "tipo": "ativa",
+        "recarga": ""
+      }
+    }
+  },
+  {
+    "name": "Esquiva Tática",
+    "type": "habilidade",
+    "system": {
+      "description": "<p>+2 defesa até seu próximo turno.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 0,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "ability": {
+        "tipo": "ativa",
+        "recarga": ""
+      }
+    }
+  },
+  {
+    "name": "Tiro Certeiro",
+    "type": "habilidade",
+    "system": {
+      "description": "<p>Próximo ataque à distância com vantagem.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 5,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "ability": {
+        "tipo": "ativa",
+        "recarga": ""
+      }
+    }
+  },
+  {
+    "name": "Emboscada",
+    "type": "habilidade",
+    "system": {
+      "description": "<p>Ataque furtivo adjacente.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "ability": {
+        "tipo": "ativa",
+        "recarga": ""
+      }
+    }
+  },
+  {
+    "name": "Finta",
+    "type": "habilidade",
+    "system": {
+      "description": "<p>Alvo tem desvantagem no próximo ataque contra ele.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "ability": {
+        "tipo": "ativa",
+        "recarga": ""
+      }
+    }
+  },
+  {
+    "name": "Passo das Sombras",
+    "type": "habilidade",
+    "system": {
+      "description": "<p>Teleporte curto 2 hex (movimento).</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 2,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "ability": {
+        "tipo": "ativa",
+        "recarga": "1/turno"
+      }
+    }
+  },
+  {
+    "name": "Raio Arcano",
+    "type": "habilidade",
+    "system": {
+      "description": "<p>Truque ofensivo 1d10+INT.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 6,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "ability": {
+        "tipo": "ativa",
+        "recarga": ""
+      }
+    }
+  },
+  {
+    "name": "Escudo Mágico",
+    "type": "habilidade",
+    "system": {
+      "description": "<p>+3 defesa 1 rodada.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 0,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "ability": {
+        "tipo": "ativa",
+        "recarga": ""
+      }
+    }
+  },
+  {
+    "name": "Canalizar Energia",
+    "type": "habilidade",
+    "system": {
+      "description": "<p>Ataque sagrado +2d6 radiante.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "ability": {
+        "tipo": "ativa",
+        "recarga": ""
+      }
+    }
+  },
+  {
+    "name": "Fúria Controlada",
+    "type": "habilidade",
+    "system": {
+      "description": "<p>Resistência contundente 1 turno.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 0,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "ability": {
+        "tipo": "ativa",
+        "recarga": ""
+      }
+    }
+  },
+  {
+    "name": "Investida Bárbara",
+    "type": "habilidade",
+    "system": {
+      "description": "<p>Corre 3 hex em linha.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 3,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "ability": {
+        "tipo": "ativa",
+        "recarga": "1/turno"
+      }
+    }
+  },
+  {
+    "name": "Inspiração de Batalha",
+    "type": "habilidade",
+    "system": {
+      "description": "<p>Aliado ganha vantagem no próximo ataque.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 4,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "ability": {
+        "tipo": "ativa",
+        "recarga": ""
+      }
+    }
+  },
+  {
+    "name": "Canção de Cura",
+    "type": "habilidade",
+    "system": {
+      "description": "<p>Aliado recupera 1d6 HP.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "ability": {
+        "tipo": "ativa",
+        "recarga": ""
+      }
+    }
+  },
+  {
+    "name": "Forma Selvagem",
+    "type": "habilidade",
+    "system": {
+      "description": "<p>Prepara transformação (movimento).</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 0,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "ability": {
+        "tipo": "ativa",
+        "recarga": "1/turno"
+      }
+    }
+  },
+  {
+    "name": "Raízes Prendentes",
+    "type": "habilidade",
+    "system": {
+      "description": "<p>Restringe alvo 1 turno.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 4,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "ability": {
+        "tipo": "ativa",
+        "recarga": ""
+      }
+    }
+  },
+  {
+    "name": "Disparo de Artilheiro",
+    "type": "habilidade",
+    "system": {
+      "description": "<p>Projétil 2d8.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 6,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "ability": {
+        "tipo": "ativa",
+        "recarga": ""
+      }
+    }
+  },
+  {
+    "name": "Barreira de Cobre",
+    "type": "habilidade",
+    "system": {
+      "description": "<p>+2 defesa contra magia.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 0,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "ability": {
+        "tipo": "ativa",
+        "recarga": ""
+      }
+    }
+  }
+]

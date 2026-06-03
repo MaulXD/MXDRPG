@@ -1,0 +1,12 @@
+{
+  "name": "vinite",
+  "version": "0.2.0",
+  "private": true,
+  "scripts": {
+    "build:css": "sass styles/vinite.scss styles/vinite.css --no-source-map",
+    "watch:css": "sass --watch styles/vinite.scss:styles/vinite.css"
+  },
+  "devDependencies": {
+    "sass": "^1.77.0"
+  }
+}

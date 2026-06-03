@@ -1,0 +1,104 @@
+<form class="{{cssClass}} vinite-character-sheet" autocomplete="off">
+  <header class="vinite-sheet-header glass-panel">
+    <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="96" width="96" />
+    <div class="header-block">
+      <h1 class="charname">
+        <input name="name" type="text" value="{{actor.name}}" placeholder="{{localize 'ELDARIN.Sheet.namePlaceholder'}}" {{#unless editable}}disabled{{/unless}} />
+      </h1>
+      <div class="identity-grid">
+        <label>{{localize 'ELDARIN.Sheet.race'}}<input type="text" name="system.identity.raca" value="{{system.identity.raca}}" {{#unless editable}}disabled{{/unless}} /></label>
+        <label>{{localize 'ELDARIN.Sheet.class'}}<input type="text" name="system.identity.classe" value="{{system.identity.classe}}" {{#unless editable}}disabled{{/unless}} /></label>
+        <label>{{localize 'ELDARIN.Sheet.level'}}<input type="number" name="system.identity.nivel.value" value="{{system.identity.nivel.value}}" min="{{system.identity.nivel.min}}" max="{{system.identity.nivel.max}}" {{#unless editable}}disabled{{/unless}} /></label>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button type="button" class="rollable neon-button" data-roll="iniciativa">
+        <i class="fas fa-bolt"></i> {{localize 'ELDARIN.Rolls.initiative'}}
+      </button>
+    </div>
+  </header>
+
+  <nav class="sheet-tabs tabs" data-group="primary">
+    <a class="item active" data-tab="stats"><i class="fas fa-user"></i> {{localize 'ELDARIN.Sheet.tabStats'}}</a>
+    <a class="item" data-tab="inventory"><i class="fas fa-backpack"></i> {{localize 'ELDARIN.Sheet.tabInventory'}}</a>
+    <a class="item" data-tab="biography"><i class="fas fa-book-open"></i> {{localize 'ELDARIN.Sheet.tabBio'}}</a>
+  </nav>
+
+  <section class="sheet-body vinite-sheet-body">
+    <div class="tab active" data-group="primary" data-tab="stats">
+      <div class="vinite-columns">
+        <section class="vinite-col glass-panel">
+          <h2 class="panel-title"><i class="fas fa-fist-raised"></i> {{localize 'ELDARIN.Sheet.attributes'}}</h2>
+          <div class="attributes-grid">
+            {{#each attributes as |attr|}}
+            <div class="attribute-card">
+              <label class="attr-label">{{attr.label}}</label>
+              <input type="number" name="system.attributes.{{attr.key}}.value" value="{{attr.value}}" min="{{attr.min}}" max="{{attr.max}}" {{#unless ../editable}}disabled{{/unless}} />
+              <span class="attr-mod neon-text">{{numberFormat attr.mod sign=true}}</span>
+            </div>
+            {{/each}}
+          </div>
+        </section>
+
+        <section class="vinite-col glass-panel">
+          <h2 class="panel-title"><i class="fas fa-heart-pulse"></i> {{localize 'ELDARIN.Sheet.resources'}}</h2>
+          <div class="resource-track vida-track">
+            <div class="resource-header">
+              <span>{{resources.vida.label}}</span>
+              <span class="resource-values">
+                <input type="number" name="system.resources.vida.value" value="{{resources.vida.value}}" min="{{resources.vida.min}}" max="{{resources.vida.max}}" />
+                <span>/</span>
+                <input type="number" name="system.resources.vida.max" value="{{resources.vida.max}}" />
+              </span>
+            </div>
+            <div class="resource-bar" style="--fill: {{resources.vida.pct}}%;"><div class="resource-fill vida-fill"></div></div>
+          </div>
+          <div class="resource-track pa-track">
+            <div class="resource-header">
+              <span>{{resources.pontosAcao.label}}</span>
+              <span class="resource-values">
+                <input type="number" name="system.resources.pontosAcao.value" value="{{resources.pontosAcao.value}}" min="{{resources.pontosAcao.min}}" max="{{resources.pontosAcao.max}}" />
+                <span>/</span>
+                <input type="number" name="system.resources.pontosAcao.max" value="{{resources.pontosAcao.max}}" />
+              </span>
+            </div>
+            <div class="resource-bar" style="--fill: {{resources.pontosAcao.pct}}%;"><div class="resource-fill pa-fill"></div></div>
+            <button type="button" class="neon-button subtle" data-action="rest-pa">{{localize 'ELDARIN.Sheet.restorePA'}}</button>
+          </div>
+          <label>{{localize 'ELDARIN.Sheet.defense'}}
+            <input type="number" name="system.tactical.defesa.value" value="{{system.tactical.defesa.value}}" min="0" />
+          </label>
+        </section>
+      </div>
+
+      <section class="glass-panel movement-panel">
+        <h2 class="panel-title"><i class="fas fa-draw-polygon"></i> {{localize 'ELDARIN.Sheet.hexMovement'}}</h2>
+        <div class="movement-modes">
+          <button type="button" class="movement-mode neon-chip {{#if movement.isWalk}}active{{/if}}" data-mode="walk">
+            <span class="chip-dot walk-dot"></span> {{localize 'ELDARIN.Movement.modeWalk'}}
+          </button>
+          <button type="button" class="movement-mode neon-chip {{#if movement.isRun}}active{{/if}}" data-mode="run">
+            <span class="chip-dot run-dot"></span> {{localize 'ELDARIN.Movement.modeRun'}}
+          </button>
+        </div>
+        <div class="movement-stats">
+          <label class="movement-stat"><span>{{localize 'ELDARIN.Movement.walk'}}</span>
+            <input type="number" name="system.movement.hex.walk.value" value="{{movement.walk.value}}" min="0" /></label>
+          <label class="movement-stat"><span>{{localize 'ELDARIN.Movement.run'}}</span>
+            <input type="number" name="system.movement.hex.run.value" value="{{movement.run.value}}" min="0" /></label>
+          <label class="movement-stat"><span>{{localize 'ELDARIN.Movement.runApCost'}}</span>
+            <input type="number" name="system.movement.hex.runActionPointCost" value="{{movement.runApCost}}" min="0" /></label>
+        </div>
+        <p class="movement-hint">{{localize 'ELDARIN.Movement.dragRulerHint'}}</p>
+      </section>
+    </div>
+
+    {{> "systems/vinite/templates/actor/parts/inventory-tab"}}
+
+    <div class="tab biography-tab" data-group="primary" data-tab="biography">
+      <section class="glass-panel biography-panel">
+        {{editor enrichedBiography target="system.biography" engine="prosemirror" collaborate=false editable=editable}}
+      </section>
+    </div>
+  </section>
+</form>

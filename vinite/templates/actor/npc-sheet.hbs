@@ -1,0 +1,36 @@
+<form class="{{cssClass}} vinite-npc-sheet" autocomplete="off">
+  <header class="vinite-sheet-header glass-panel">
+    <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="80" width="80" />
+    <h1 class="charname">
+      <input name="name" type="text" value="{{actor.name}}" {{#unless editable}}disabled{{/unless}} />
+    </h1>
+  </header>
+  <section class="vinite-sheet-body glass-panel">
+    <div class="npc-stats">
+      <label>{{localize 'ELDARIN.Sheet.level'}}
+        <input type="number" name="system.identity.nivel.value" value="{{system.identity.nivel.value}}" />
+      </label>
+      <label>{{localize 'ELDARIN.Sheet.threat'}}
+        <input type="number" name="system.tactical.ameaca.value" value="{{system.tactical.ameaca.value}}" />
+      </label>
+      <label>{{localize 'ELDARIN.Attributes.forca'}}
+        <input type="number" name="system.attributes.forca.value" value="{{system.attributes.forca.value}}" />
+      </label>
+      <label>{{localize 'ELDARIN.Attributes.agilidade'}}
+        <input type="number" name="system.attributes.agilidade.value" value="{{system.attributes.agilidade.value}}" />
+      </label>
+      <label>{{localize 'ELDARIN.Resources.vida'}}
+        <input type="number" name="system.resources.vida.value" value="{{system.resources.vida.value}}" />
+        /
+        <input type="number" name="system.resources.vida.max" value="{{system.resources.vida.max}}" />
+      </label>
+      <label>{{localize 'ELDARIN.Movement.walk'}}
+        <input type="number" name="system.movement.hex.walk.value" value="{{system.movement.hex.walk.value}}" />
+      </label>
+      <label>{{localize 'ELDARIN.Movement.run'}}
+        <input type="number" name="system.movement.hex.run.value" value="{{system.movement.hex.run.value}}" />
+      </label>
+    </div>
+    {{editor enrichedBiography target="system.biography" engine="prosemirror" collaborate=false editable=editable}}
+  </section>
+</form>

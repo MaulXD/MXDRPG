@@ -1,0 +1,1697 @@
+[
+  {
+    "name": "Chama de Fogareiro",
+    "type": "magia",
+    "system": {
+      "description": "<p>Chama controlável; uso culinário.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "spell": {
+        "nivel": 0,
+        "escola": "Evocação",
+        "tempo": "1 ação",
+        "alcance": "1 hex"
+      }
+    }
+  },
+  {
+    "name": "Lâmina de Espírito",
+    "type": "magia",
+    "system": {
+      "description": "<p>Lâmina etérea 1d4; +2 Trinchar.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "spell": {
+        "nivel": 0,
+        "escola": "Transmutação",
+        "tempo": "1 ação",
+        "alcance": "1 hex"
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d4",
+          "tipo": "força"
+        },
+        "ataque": {
+          "bonus": 0
+        }
+      }
+    }
+  },
+  {
+    "name": "Detectar Veneno",
+    "type": "magia",
+    "system": {
+      "description": "<p>Detecta toxinas em 3 hex.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 3,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "spell": {
+        "nivel": 0,
+        "escola": "Adivinhação",
+        "tempo": "1 ação",
+        "alcance": "3 hex"
+      }
+    }
+  },
+  {
+    "name": "Estabilizar",
+    "type": "magia",
+    "system": {
+      "description": "<p>Criatura a 0 HP para de falhar morte.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "spell": {
+        "nivel": 0,
+        "escola": "Abjuração",
+        "tempo": "1 ação",
+        "alcance": "1 hex"
+      }
+    }
+  },
+  {
+    "name": "Mãos Firmes",
+    "type": "magia",
+    "system": {
+      "description": "<p>+2 Trinchar por 1 hora.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "spell": {
+        "nivel": 0,
+        "escola": "Transmutação",
+        "tempo": "1 ação",
+        "alcance": "1 hex"
+      }
+    }
+  },
+  {
+    "name": "Extração Amplificada",
+    "type": "magia",
+    "system": {
+      "description": "<p>Dobra ingredientes; +4 Trinchar 1h.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "spell": {
+        "nivel": 1,
+        "escola": "Biomancia",
+        "tempo": "1 minuto",
+        "alcance": "1 hex"
+      }
+    }
+  },
+  {
+    "name": "Mãos Gelidas",
+    "type": "magia",
+    "system": {
+      "description": "<p>Cone 2d6 frio; save CON.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 2,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "spell": {
+        "nivel": 1,
+        "escola": "Evocação",
+        "tempo": "1 ação",
+        "alcance": "2 hex",
+        "save": {
+          "attribute": "constituicao"
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "2d6",
+          "tipo": "frio"
+        },
+        "ataque": {
+          "bonus": 0
+        }
+      }
+    }
+  },
+  {
+    "name": "Crescimento Acelerado",
+    "type": "magia",
+    "system": {
+      "description": "<p>Semente vira planta em 1h.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "spell": {
+        "nivel": 1,
+        "escola": "Transmutação",
+        "tempo": "1 hora",
+        "alcance": "1 hex"
+      }
+    }
+  },
+  {
+    "name": "Purificar Veneno",
+    "type": "magia",
+    "system": {
+      "description": "<p>Remove envenenado ou toxina em ingrediente.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "spell": {
+        "nivel": 1,
+        "escola": "Abjuração",
+        "tempo": "1 ação",
+        "alcance": "1 hex"
+      }
+    }
+  },
+  {
+    "name": "Identificar Ingrediente",
+    "type": "magia",
+    "system": {
+      "description": "<p>Revela origem e propriedades biomágicas.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "spell": {
+        "nivel": 1,
+        "escola": "Adivinhação",
+        "tempo": "1 minuto",
+        "alcance": "1 hex"
+      }
+    }
+  },
+  {
+    "name": "Armadura Arcana",
+    "type": "magia",
+    "system": {
+      "description": "<p>CA 13 + INT por 8h.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "spell": {
+        "nivel": 1,
+        "escola": "Abjuração",
+        "tempo": "1 ação",
+        "alcance": "1 hex"
+      }
+    }
+  },
+  {
+    "name": "Onda de Trovão",
+    "type": "magia",
+    "system": {
+      "description": "<p>Cubo 2d8 trovão; save CON.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 2,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "spell": {
+        "nivel": 1,
+        "escola": "Evocação",
+        "tempo": "1 ação",
+        "alcance": "2 hex",
+        "save": {
+          "attribute": "constituicao"
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "2d8",
+          "tipo": "trovão"
+        },
+        "ataque": {
+          "bonus": 0
+        }
+      }
+    }
+  },
+  {
+    "name": "Curar Ferimentos",
+    "type": "magia",
+    "system": {
+      "description": "<p>Cura 1d8 + mod conjuração.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "spell": {
+        "nivel": 1,
+        "escola": "Abjuração",
+        "tempo": "1 ação",
+        "alcance": "1 hex"
+      }
+    }
+  },
+  {
+    "name": "Chama de Vinha",
+    "type": "magia",
+    "system": {
+      "description": "<p>Projétil 2d6 fogo.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 4,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "spell": {
+        "nivel": 1,
+        "escola": "Evocação",
+        "tempo": "1 ação",
+        "alcance": "4 hex"
+      },
+      "weapon": {
+        "dano": {
+          "formula": "2d6",
+          "tipo": "fogo"
+        },
+        "ataque": {
+          "bonus": 0
+        }
+      }
+    }
+  },
+  {
+    "name": "Sussurro de Masmorra",
+    "type": "magia",
+    "system": {
+      "description": "<p>Telepatia com aliado visível.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 10,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "spell": {
+        "nivel": 1,
+        "escola": "Adivinhação",
+        "tempo": "1 ação",
+        "alcance": "10 hex"
+      }
+    }
+  },
+  {
+    "name": "Aprimoramento Biomágico",
+    "type": "magia",
+    "system": {
+      "description": "<p>+1 habilidade assimilacao na próxima refeição.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "spell": {
+        "nivel": 2,
+        "escola": "Biomancia",
+        "tempo": "10 minutos",
+        "alcance": "1 hex"
+      }
+    }
+  },
+  {
+    "name": "Raios de Enfraquecimento",
+    "type": "magia",
+    "system": {
+      "description": "<p>3 raios; save CON ou desvantagem.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 6,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "spell": {
+        "nivel": 2,
+        "escola": "Necromancia",
+        "tempo": "1 ação",
+        "alcance": "6 hex",
+        "save": {
+          "attribute": "constituicao"
+        }
+      }
+    }
+  },
+  {
+    "name": "Esfera Ácida de Monstro",
+    "type": "magia",
+    "system": {
+      "description": "<p>4d6 ácido; save DES.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 6,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "spell": {
+        "nivel": 2,
+        "escola": "Evocação",
+        "tempo": "1 ação",
+        "alcance": "6 hex",
+        "save": {
+          "attribute": "destreza"
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "4d6",
+          "tipo": "ácido"
+        },
+        "ataque": {
+          "bonus": 0
+        }
+      }
+    }
+  },
+  {
+    "name": "Transmutação de Carne",
+    "type": "magia",
+    "system": {
+      "description": "<p>Converte ingrediente em equivalente.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "spell": {
+        "nivel": 2,
+        "escola": "Transmutação",
+        "tempo": "1 hora",
+        "alcance": "1 hex"
+      }
+    }
+  },
+  {
+    "name": "Inspiração Culinária",
+    "type": "magia",
+    "system": {
+      "description": "<p>+3 Coccão/Harmonização 1h.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 4,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "spell": {
+        "nivel": 2,
+        "escola": "Encantamento",
+        "tempo": "1 ação",
+        "alcance": "4 hex"
+      }
+    }
+  },
+  {
+    "name": "Preservação Perfeita",
+    "type": "magia",
+    "system": {
+      "description": "<p>Ingrediente preservado 30 dias.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "spell": {
+        "nivel": 2,
+        "escola": "Transmutação",
+        "tempo": "1 ação",
+        "alcance": "1 hex"
+      }
+    }
+  },
+  {
+    "name": "Forma Menor",
+    "type": "magia",
+    "system": {
+      "description": "<p>Polimorfo em besta pequena.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 0,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "spell": {
+        "nivel": 2,
+        "escola": "Transmutação",
+        "tempo": "1 ação",
+        "alcance": "0 hex"
+      }
+    }
+  },
+  {
+    "name": "Escudo Arcano",
+    "type": "magia",
+    "system": {
+      "description": "<p>Reação: +5 CA 1 rodada.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 0,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "spell": {
+        "nivel": 2,
+        "escola": "Abjuração",
+        "tempo": "reação",
+        "alcance": "0 hex"
+      }
+    }
+  },
+  {
+    "name": "Ilusão Menor",
+    "type": "magia",
+    "system": {
+      "description": "<p>Som ou imagem estática.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 6,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "spell": {
+        "nivel": 2,
+        "escola": "Ilusão",
+        "tempo": "1 ação",
+        "alcance": "6 hex"
+      }
+    }
+  },
+  {
+    "name": "Muralha Hexagonal",
+    "type": "magia",
+    "system": {
+      "description": "<p>Barreira em 3 hex.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 3,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "spell": {
+        "nivel": 2,
+        "escola": "Abjuração",
+        "tempo": "1 ação",
+        "alcance": "3 hex",
+        "area": {
+          "shape": "wall",
+          "hexCount": 3
+        }
+      }
+    }
+  },
+  {
+    "name": "Animação de Mortos",
+    "type": "magia",
+    "system": {
+      "description": "<p>Anima 2 cadáveres por 24h.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 3,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "spell": {
+        "nivel": 3,
+        "escola": "Necromancia",
+        "tempo": "1 minuto",
+        "alcance": "3 hex"
+      }
+    }
+  },
+  {
+    "name": "Injeção Biomágica",
+    "type": "magia",
+    "system": {
+      "description": "<p>Habilidade assimilacao 12h do ingrediente.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "spell": {
+        "nivel": 3,
+        "escola": "Biomancia",
+        "tempo": "1 ação",
+        "alcance": "1 hex"
+      }
+    }
+  },
+  {
+    "name": "Bola de Fogo",
+    "type": "magia",
+    "system": {
+      "description": "<p>Raio 8d6 fogo; save DES.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 10,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "spell": {
+        "nivel": 3,
+        "escola": "Evocação",
+        "tempo": "1 ação",
+        "alcance": "10 hex",
+        "save": {
+          "attribute": "destreza"
+        },
+        "area": {
+          "shape": "burst",
+          "radiusHex": 2
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "8d6",
+          "tipo": "fogo"
+        },
+        "ataque": {
+          "bonus": 0
+        }
+      }
+    }
+  },
+  {
+    "name": "Nova Hex",
+    "type": "magia",
+    "system": {
+      "description": "<p>Explosão 3d6 fogo em área.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 5,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "spell": {
+        "nivel": 3,
+        "escola": "Evocação",
+        "tempo": "1 ação",
+        "alcance": "5 hex",
+        "save": {
+          "attribute": "destreza"
+        },
+        "area": {
+          "shape": "burst",
+          "radiusHex": 2
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "3d6",
+          "tipo": "fogo"
+        },
+        "ataque": {
+          "bonus": 0
+        }
+      }
+    }
+  },
+  {
+    "name": "Contágio Necrótico",
+    "type": "magia",
+    "system": {
+      "description": "<p>Save CON ou envenenado prolongado.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "spell": {
+        "nivel": 3,
+        "escola": "Necromancia",
+        "tempo": "1 ação",
+        "alcance": "1 hex",
+        "save": {
+          "attribute": "constituicao"
+        }
+      }
+    }
+  },
+  {
+    "name": "Ventania",
+    "type": "magia",
+    "system": {
+      "description": "<p>Linha empurra; save FOR.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 6,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "spell": {
+        "nivel": 3,
+        "escola": "Evocação",
+        "tempo": "1 ação",
+        "alcance": "6 hex"
+      }
+    }
+  },
+  {
+    "name": "Ler Mentes",
+    "type": "magia",
+    "system": {
+      "description": "<p>Lê pensamentos superficiais.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 4,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "spell": {
+        "nivel": 3,
+        "escola": "Adivinhação",
+        "tempo": "1 ação",
+        "alcance": "4 hex"
+      }
+    }
+  },
+  {
+    "name": "Relâmpago",
+    "type": "magia",
+    "system": {
+      "description": "<p>4d8 relâmpago; save DES.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 8,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "spell": {
+        "nivel": 3,
+        "escola": "Evocação",
+        "tempo": "1 ação",
+        "alcance": "8 hex",
+        "save": {
+          "attribute": "destreza"
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "4d8",
+          "tipo": "relâmpago"
+        },
+        "ataque": {
+          "bonus": 0
+        }
+      }
+    }
+  },
+  {
+    "name": "Sono",
+    "type": "magia",
+    "system": {
+      "description": "<p>Até 5 alvos; save SAB.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 6,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "spell": {
+        "nivel": 3,
+        "escola": "Encantamento",
+        "tempo": "1 ação",
+        "alcance": "6 hex",
+        "save": {
+          "attribute": "sabedoria"
+        }
+      }
+    }
+  },
+  {
+    "name": "Raio do Limiar",
+    "type": "magia",
+    "system": {
+      "description": "<p>4d8 necrótico; save CON.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 6,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "spell": {
+        "nivel": 3,
+        "escola": "Necromancia",
+        "tempo": "1 ação",
+        "alcance": "6 hex",
+        "save": {
+          "attribute": "constituicao"
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "4d8",
+          "tipo": "necrótico"
+        },
+        "ataque": {
+          "bonus": 0
+        }
+      }
+    }
+  },
+  {
+    "name": "Visão do Ecossistema",
+    "type": "magia",
+    "system": {
+      "description": "<p>Visão através de criatura do bioma.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 0,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "spell": {
+        "nivel": 4,
+        "escola": "Adivinhação",
+        "tempo": "10 minutos",
+        "alcance": "0 hex"
+      }
+    }
+  },
+  {
+    "name": "Murcha",
+    "type": "magia",
+    "system": {
+      "description": "<p>8d8 necrótico; save CON.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 2,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "spell": {
+        "nivel": 4,
+        "escola": "Necromancia",
+        "tempo": "1 ação",
+        "alcance": "2 hex",
+        "save": {
+          "attribute": "constituicao"
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "8d8",
+          "tipo": "necrótico"
+        },
+        "ataque": {
+          "bonus": 0
+        }
+      }
+    }
+  },
+  {
+    "name": "Mutação Forçada",
+    "type": "magia",
+    "system": {
+      "description": "<p>Mutação negativa aleatória 1h.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 6,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "spell": {
+        "nivel": 4,
+        "escola": "Biomancia",
+        "tempo": "1 ação",
+        "alcance": "6 hex"
+      }
+    }
+  },
+  {
+    "name": "Parede de Fogo",
+    "type": "magia",
+    "system": {
+      "description": "<p>Parede 5d8 fogo.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 8,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "spell": {
+        "nivel": 4,
+        "escola": "Evocação",
+        "tempo": "1 ação",
+        "alcance": "8 hex",
+        "area": {
+          "shape": "wall",
+          "hexCount": 4
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "5d8",
+          "tipo": "fogo"
+        },
+        "ataque": {
+          "bonus": 0
+        }
+      }
+    }
+  },
+  {
+    "name": "Preservação Anual",
+    "type": "magia",
+    "system": {
+      "description": "<p>Preserva ingrediente 1 ano.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "spell": {
+        "nivel": 4,
+        "escola": "Transmutação",
+        "tempo": "1 ação",
+        "alcance": "1 hex"
+      }
+    }
+  },
+  {
+    "name": "Cura em Massa",
+    "type": "magia",
+    "system": {
+      "description": "<p>Até 6 alvos: 3d8 + mod.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 6,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "spell": {
+        "nivel": 4,
+        "escola": "Abjuração",
+        "tempo": "1 ação",
+        "alcance": "6 hex"
+      }
+    }
+  },
+  {
+    "name": "Ressurreição Incompleta",
+    "type": "magia",
+    "system": {
+      "description": "<p>Aliado volta com 1 HP.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 3,
+          "min": 0
+        }
+      },
+      "spell": {
+        "nivel": 5,
+        "escola": "Necromancia",
+        "tempo": "1 hora",
+        "alcance": "1 hex"
+      }
+    }
+  },
+  {
+    "name": "Grande Transmutação Biomágica",
+    "type": "magia",
+    "system": {
+      "description": "<p>Mutacao forte 7 dias (boss).</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 3,
+          "min": 0
+        }
+      },
+      "spell": {
+        "nivel": 5,
+        "escola": "Biomancia",
+        "tempo": "1 hora",
+        "alcance": "1 hex"
+      }
+    }
+  },
+  {
+    "name": "Cone de Frio",
+    "type": "magia",
+    "system": {
+      "description": "<p>8d8 frio em cone.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 6,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "spell": {
+        "nivel": 5,
+        "escola": "Evocação",
+        "tempo": "1 ação",
+        "alcance": "6 hex",
+        "save": {
+          "attribute": "constituicao"
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "8d8",
+          "tipo": "frio"
+        },
+        "ataque": {
+          "bonus": 0
+        }
+      }
+    }
+  },
+  {
+    "name": "Despertar",
+    "type": "magia",
+    "system": {
+      "description": "<p>Planta ou besta ganha INT 10.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 3,
+          "min": 0
+        }
+      },
+      "spell": {
+        "nivel": 5,
+        "escola": "Transmutação",
+        "tempo": "8 horas",
+        "alcance": "1 hex"
+      }
+    }
+  },
+  {
+    "name": "Salto Dimensional",
+    "type": "magia",
+    "system": {
+      "description": "<p>Teletransporte 6 hex.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 6,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "spell": {
+        "nivel": 5,
+        "escola": "Conjuração",
+        "tempo": "ação bônus",
+        "alcance": "6 hex"
+      }
+    }
+  },
+  {
+    "name": "Restaurar Vigor",
+    "type": "magia",
+    "system": {
+      "description": "<p>Remove 1 exaustão e doença leve.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "spell": {
+        "nivel": 5,
+        "escola": "Abjuração",
+        "tempo": "1 hora",
+        "alcance": "1 hex"
+      }
+    }
+  },
+  {
+    "name": "Causar Praga",
+    "type": "magia",
+    "system": {
+      "description": "<p>10d6 veneno; save CON.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 6,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "spell": {
+        "nivel": 6,
+        "escola": "Necromancia",
+        "tempo": "1 ação",
+        "alcance": "6 hex",
+        "save": {
+          "attribute": "constituicao"
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "10d6",
+          "tipo": "veneno"
+        },
+        "ataque": {
+          "bonus": 0
+        }
+      }
+    }
+  },
+  {
+    "name": "Desintegrar",
+    "type": "magia",
+    "system": {
+      "description": "<p>10d6+40 força; save DES.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 6,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "spell": {
+        "nivel": 6,
+        "escola": "Transmutação",
+        "tempo": "1 ação",
+        "alcance": "6 hex",
+        "save": {
+          "attribute": "destreza"
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "10d6+40",
+          "tipo": "força"
+        },
+        "ataque": {
+          "bonus": 0
+        }
+      }
+    }
+  },
+  {
+    "name": "Cadeia de Relâmpago",
+    "type": "magia",
+    "system": {
+      "description": "<p>10d8 relâmpago em cadeia.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 10,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "spell": {
+        "nivel": 6,
+        "escola": "Evocação",
+        "tempo": "1 ação",
+        "alcance": "10 hex",
+        "save": {
+          "attribute": "destreza"
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "10d8",
+          "tipo": "relâmpago"
+        },
+        "ataque": {
+          "bonus": 0
+        }
+      }
+    }
+  },
+  {
+    "name": "Forma de Monstro",
+    "type": "magia",
+    "system": {
+      "description": "<p>Polimorfo em monstro do bestiário.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "spell": {
+        "nivel": 7,
+        "escola": "Biomancia",
+        "tempo": "1 ação",
+        "alcance": "1 hex"
+      }
+    }
+  },
+  {
+    "name": "Prisão de Gelo",
+    "type": "magia",
+    "system": {
+      "description": "<p>Restringido + 5d6 frio/turno.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 6,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "spell": {
+        "nivel": 7,
+        "escola": "Evocação",
+        "tempo": "1 ação",
+        "alcance": "6 hex"
+      },
+      "weapon": {
+        "dano": {
+          "formula": "5d6",
+          "tipo": "frio"
+        },
+        "ataque": {
+          "bonus": 0
+        }
+      }
+    }
+  },
+  {
+    "name": "Regeneração Biomágica",
+    "type": "magia",
+    "system": {
+      "description": "<p>4d8+15 HP no início de cada turno.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "spell": {
+        "nivel": 7,
+        "escola": "Biomancia",
+        "tempo": "1 ação",
+        "alcance": "1 hex"
+      }
+    }
+  },
+  {
+    "name": "Invisibilidade Maior",
+    "type": "magia",
+    "system": {
+      "description": "<p>Até 6 aliados invisíveis.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "spell": {
+        "nivel": 7,
+        "escola": "Ilusão",
+        "tempo": "1 ação",
+        "alcance": "1 hex"
+      }
+    }
+  },
+  {
+    "name": "Terremoto",
+    "type": "magia",
+    "system": {
+      "description": "<p>Área 30 hex; save DES prostrado.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 20,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "spell": {
+        "nivel": 8,
+        "escola": "Evocação",
+        "tempo": "1 ação",
+        "alcance": "20 hex"
+      }
+    }
+  },
+  {
+    "name": "Biomancia Suprema — Transcendência",
+    "type": "magia",
+    "system": {
+      "description": "<p>Integra DNA de 3 bosses.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 0,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 3,
+          "min": 0
+        }
+      },
+      "spell": {
+        "nivel": 9,
+        "escola": "Biomancia",
+        "tempo": "1 hora",
+        "alcance": "0 hex"
+      }
+    }
+  },
+  {
+    "name": "Desejo de Morte",
+    "type": "magia",
+    "system": {
+      "description": "<p>Condição irrevogável de morte.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 0,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 3,
+          "min": 0
+        }
+      },
+      "spell": {
+        "nivel": 9,
+        "escola": "Necromancia",
+        "tempo": "1 ação",
+        "alcance": "0 hex"
+      }
+    }
+  },
+  {
+    "name": "Mãos Ardentes",
+    "type": "magia",
+    "system": {
+      "description": "<p>Piromante: 3d6 fogo ao toque.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "spell": {
+        "nivel": 1,
+        "escola": "Evocação",
+        "tempo": "1 ação",
+        "alcance": "1 hex",
+        "save": {
+          "attribute": "destreza"
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "3d6",
+          "tipo": "fogo"
+        },
+        "ataque": {
+          "bonus": 0
+        }
+      }
+    }
+  },
+  {
+    "name": "Gelo de Conservação",
+    "type": "magia",
+    "system": {
+      "description": "<p>Criomante: estase de ingrediente 8h.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "spell": {
+        "nivel": 2,
+        "escola": "Transmutação",
+        "tempo": "1 ação",
+        "alcance": "1 hex"
+      }
+    }
+  },
+  {
+    "name": "Fermentação Acelerada",
+    "type": "magia",
+    "system": {
+      "description": "<p>Mago Fermentador: fermenta em 1 min.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "spell": {
+        "nivel": 2,
+        "escola": "Transmutação",
+        "tempo": "10 minutos",
+        "alcance": "1 hex"
+      }
+    }
+  },
+  {
+    "name": "Purificação Abençoada",
+    "type": "magia",
+    "system": {
+      "description": "<p>Remove maldição ou veneno.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "spell": {
+        "nivel": 4,
+        "escola": "Abjuração",
+        "tempo": "1 ação",
+        "alcance": "1 hex"
+      }
+    }
+  },
+  {
+    "name": "Esporos Necróticos",
+    "type": "magia",
+    "system": {
+      "description": "<p>Nuvem: save CON ou envenenado.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 2,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "spell": {
+        "nivel": 0,
+        "escola": "Necromancia",
+        "tempo": "1 ação",
+        "alcance": "2 hex",
+        "save": {
+          "attribute": "constituicao"
+        }
+      }
+    }
+  },
+  {
+    "name": "Grande Decomposição",
+    "type": "magia",
+    "system": {
+      "description": "<p>Decompõe orgânico em cubo 3 hex.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 4,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "spell": {
+        "nivel": 5,
+        "escola": "Transmutação",
+        "tempo": "1 ação",
+        "alcance": "4 hex"
+      }
+    }
+  },
+  {
+    "name": "Doce Confuso",
+    "type": "magia",
+    "system": {
+      "description": "<p>Save CON ou amedrontado.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 6,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "spell": {
+        "nivel": 1,
+        "escola": "Encantamento",
+        "tempo": "1 ação",
+        "alcance": "6 hex",
+        "save": {
+          "attribute": "constituicao"
+        }
+      }
+    }
+  }
+]

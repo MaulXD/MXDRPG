@@ -1,0 +1,33 @@
+@import url("vinite-book.css");
+
+@page {
+  margin: 16mm 14mm 18mm 14mm;
+}
+
+body.book.ficha-doc .content h2 {
+  page-break-before: auto;
+  background: var(--moss-dark);
+  color: #f0e6d4;
+  padding: 0.35em 0.6em;
+  margin: 1em 0 0.5em;
+  font-size: 10pt;
+}
+
+body.book.ficha-doc .content ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+body.book.ficha-doc .content li {
+  border-bottom: 1px dotted var(--rule);
+  padding: 0.35em 0 0.5em;
+  min-height: 1.6em;
+}
+
+body.book.ficha-doc .content table {
+  font-size: 8.5pt;
+}
+
+body.book.ficha-doc .content h1 {
+  font-size: 13pt;
+}

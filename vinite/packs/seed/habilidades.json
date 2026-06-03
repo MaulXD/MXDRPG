@@ -1,0 +1,67 @@
+[
+  {
+    "name": "Investida Hexagonal",
+    "type": "habilidade",
+    "img": "icons/skills/movement/arrow-dodge-blue.webp",
+    "system": {
+      "description": "<p>Movimento em linha reta até 2 hex sem provocar. Custa 1 PA além do movimento.</p>",
+      "tactical": {
+        "alcanceHex": { "value": 2, "min": 0 },
+        "custoPontosAcao": { "value": 1, "min": 0 }
+      },
+      "ability": { "tipo": "ativa", "recarga": "1/turno" }
+    }
+  },
+  {
+    "name": "Golpe Flanqueador",
+    "type": "habilidade",
+    "img": "icons/skills/melee/strike-sword-steel-yellow.webp",
+    "system": {
+      "description": "<p>Ataque corpo a corpo com vantagem se alvo tiver inimigo adjacente oposto.</p>",
+      "tactical": {
+        "alcanceHex": { "value": 1, "min": 0 },
+        "custoPontosAcao": { "value": 2, "min": 0 }
+      },
+      "ability": { "tipo": "ativa", "recarga": "" }
+    }
+  },
+  {
+    "name": "Postura Defensiva",
+    "type": "habilidade",
+    "img": "icons/skills/defensive/shield-block-bronze.webp",
+    "system": {
+      "description": "<p>+2 defesa até início do próximo turno.</p>",
+      "tactical": {
+        "alcanceHex": { "value": 0, "min": 0 },
+        "custoPontosAcao": { "value": 1, "min": 0 }
+      },
+      "ability": { "tipo": "ativa", "recarga": "" }
+    }
+  },
+  {
+    "name": "Reflexos de Masmorra",
+    "type": "habilidade",
+    "img": "icons/skills/movement/feet-winged-sandals-tan.webp",
+    "system": {
+      "description": "<p>Reação: desloca 1 hex quando alvo de ataque corpo a corpo.</p>",
+      "tactical": {
+        "alcanceHex": { "value": 1, "min": 0 },
+        "custoPontosAcao": { "value": 1, "min": 0 }
+      },
+      "ability": { "tipo": "reacao", "recarga": "1/rodada" }
+    }
+  },
+  {
+    "name": "Olhar do Caçador",
+    "type": "habilidade",
+    "img": "icons/skills/targeting/target-strike-gray.webp",
+    "system": {
+      "description": "<p>Marca alvo em alcance 5 hex. Próximo ataque à distância +2.</p>",
+      "tactical": {
+        "alcanceHex": { "value": 5, "min": 0 },
+        "custoPontosAcao": { "value": 1, "min": 0 }
+      },
+      "ability": { "tipo": "ativa", "recarga": "1/turno" }
+    }
+  }
+]

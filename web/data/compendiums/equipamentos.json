@@ -1,0 +1,253 @@
+[
+  {
+    "name": "Armadura de Couro Reforçado",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>+1 defesa</p>",
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      },
+      "tactical": {
+        "bonusDefesa": {
+          "value": 1
+        }
+      }
+    }
+  },
+  {
+    "name": "Kit de Trinchar",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Facas e sacos para ingredientes.</p>",
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      }
+    }
+  },
+  {
+    "name": "Tocha de Masmorra",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Ilumina 4 hex 1h.</p>",
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      },
+      "effect": {
+        "alcanceHex": {
+          "value": 4
+        },
+        "duracao": "1 hora"
+      }
+    }
+  },
+  {
+    "name": "Armadura de Placas",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>+3 defesa, pesada.</p>",
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      },
+      "tactical": {
+        "bonusDefesa": {
+          "value": 3
+        }
+      }
+    }
+  },
+  {
+    "name": "Escudo de Teixo",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>+2 defesa.</p>",
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      },
+      "tactical": {
+        "bonusDefesa": {
+          "value": 2
+        }
+      }
+    }
+  },
+  {
+    "name": "Corda de Seda de Aranha",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>50m, resistente.</p>",
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      }
+    }
+  },
+  {
+    "name": "Poção de Vida Menor",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Cura 2d4+2.</p>",
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      }
+    }
+  },
+  {
+    "name": "Antídoto de Masmorra",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Vantagem save veneno 1h.</p>",
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      }
+    }
+  },
+  {
+    "name": "Ração de Viagem",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>1 dia de comida.</p>",
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      }
+    }
+  },
+  {
+    "name": "Cantil Encantado",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Água infinita leve.</p>",
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      }
+    }
+  },
+  {
+    "name": "Kit de Primeiros Socorros",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>+2 Estabilizar.</p>",
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      }
+    }
+  },
+  {
+    "name": "Armadura de Mithral",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>+2 defesa sem penalidade.</p>",
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      },
+      "tactical": {
+        "bonusDefesa": {
+          "value": 2
+        }
+      }
+    }
+  },
+  {
+    "name": "Botas de Passo Silencioso",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>+2 furtividade.</p>",
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      }
+    }
+  },
+  {
+    "name": "Amuleto de Proteção",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>+1 defesa.</p>",
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      },
+      "tactical": {
+        "bonusDefesa": {
+          "value": 1
+        }
+      }
+    }
+  },
+  {
+    "name": "Bolsa de Componentes",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Para conjuradores.</p>",
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      }
+    }
+  },
+  {
+    "name": "Grimório Vazio",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Registro de magias.</p>",
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      }
+    }
+  },
+  {
+    "name": "Ferramentas de Artífice",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Craft em masmorra.</p>",
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      }
+    }
+  },
+  {
+    "name": "Máscara de Filtro",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Imune esporos leves.</p>",
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      }
+    }
+  },
+  {
+    "name": "Gancho de Escalada",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Vantagem escalar.</p>",
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      }
+    }
+  },
+  {
+    "name": "Pederneira de Masmorra",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Acende fogo úmido.</p>",
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      }
+    }
+  }
+]

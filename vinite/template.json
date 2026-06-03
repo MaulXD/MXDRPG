@@ -1,0 +1,150 @@
+{
+  "Actor": {
+    "types": ["character", "npc"],
+    "templates": {
+      "base": {
+        "biography": "",
+        "attributes": {
+          "forca": {
+            "value": 10,
+            "min": 1,
+            "max": 30,
+            "mod": 0
+          },
+          "agilidade": {
+            "value": 10,
+            "min": 1,
+            "max": 30,
+            "mod": 0
+          }
+        },
+        "resources": {
+          "vida": {
+            "value": 10,
+            "min": 0,
+            "max": 10
+          },
+          "pontosAcao": {
+            "value": 4,
+            "min": 0,
+            "max": 4
+          }
+        },
+        "movement": {
+          "hex": {
+            "walk": {
+              "value": 4,
+              "label": "Caminhada"
+            },
+            "run": {
+              "value": 7,
+              "label": "Corrida"
+            },
+            "runActionPointCost": 1
+          },
+          "mode": "walk"
+        }
+      }
+    },
+    "character": {
+      "templates": ["base"],
+      "identity": {
+        "nivel": {
+          "value": 1,
+          "min": 1,
+          "max": 20
+        },
+        "raca": "",
+        "classe": "",
+        "antecedente": ""
+      },
+      "tactical": {
+        "iniciativa": {
+          "value": 0,
+          "mod": 0
+        },
+        "defesa": {
+          "value": 10,
+          "min": 0
+        }
+      }
+    },
+    "npc": {
+      "templates": ["base"],
+      "identity": {
+        "nivel": {
+          "value": 1,
+          "min": 1,
+          "max": 30
+        }
+      },
+      "tactical": {
+        "ameaca": {
+          "value": 0,
+          "min": 0
+        },
+        "defesa": {
+          "value": 10,
+          "min": 0
+        }
+      }
+    }
+  },
+  "Item": {
+    "types": ["arma", "habilidade", "equipamento", "efeito"],
+    "templates": {
+      "base": {
+        "description": "",
+        "enabled": true
+      },
+      "combativel": {
+        "tactical": {
+          "alcanceHex": {
+            "value": 1,
+            "min": 0
+          },
+          "custoPontosAcao": {
+            "value": 1,
+            "min": 0
+          }
+        }
+      }
+    },
+    "arma": {
+      "templates": ["base", "combativel"],
+      "weapon": {
+        "dano": {
+          "formula": "1d6",
+          "tipo": ""
+        },
+        "ataque": {
+          "bonus": 0
+        }
+      }
+    },
+    "habilidade": {
+      "templates": ["base", "combativel"],
+      "ability": {
+        "tipo": "ativa",
+        "recarga": ""
+      }
+    },
+    "equipamento": {
+      "templates": ["base"],
+      "gear": {
+        "peso": 0,
+        "equipado": false
+      }
+    },
+    "efeito": {
+      "templates": ["base"],
+      "effect": {
+        "duracao": "",
+        "alcanceHex": {
+          "value": 0,
+          "min": 0
+        }
+      }
+    }
+  }
+}
