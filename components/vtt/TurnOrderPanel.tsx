@@ -255,41 +255,27 @@ export function TurnOrderPanel({
                 </span>
 
                 <span
-
-                  className={avatarClass}
-
-                  style={{
-
-                    ...(ringShadow ? { boxShadow: ringShadow } : {}),
-
-                    borderColor: token.color,
-
-                  }}
-
+                  className={`vtt-turn-avatar-slot${active ? " vtt-turn-avatar-slot--active" : ""}`}
                 >
-
-                  {token.imageUrl ? (
-
-                    // eslint-disable-next-line @next/next/no-img-element
-
-                    <img src={token.imageUrl} alt="" />
-
-                  ) : (
-
-                    <span
-
-                      className="vtt-turn-initial"
-
-                      style={{ background: `${token.color}33`, color: token.color }}
-
-                    >
-
-                      {token.name.slice(0, 1).toUpperCase()}
-
-                    </span>
-
-                  )}
-
+                  <span
+                    className={avatarClass}
+                    style={{
+                      ...(ringShadow && !active ? { boxShadow: ringShadow } : {}),
+                      borderColor: token.color,
+                    }}
+                  >
+                    {token.imageUrl ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src={token.imageUrl} alt="" />
+                    ) : (
+                      <span
+                        className="vtt-turn-initial"
+                        style={{ background: `${token.color}33`, color: token.color }}
+                      >
+                        {token.name.slice(0, 1).toUpperCase()}
+                      </span>
+                    )}
+                  </span>
                 </span>
 
                 <div className="vtt-turn-info">

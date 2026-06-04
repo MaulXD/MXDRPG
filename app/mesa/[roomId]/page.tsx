@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { MesaWorkspace } from "@/components/vtt/MesaWorkspace";
+import { RoomCharacterPrompt } from "@/components/vtt/RoomCharacterPrompt";
 import { RoomInviteBar } from "@/components/vtt/RoomInviteBar";
 import {
   canManageRoom,
@@ -13,6 +14,8 @@ import {
 import { getSession } from "@/lib/auth/session";
 import { getPackEntries, getVisiblePacks } from "@/lib/compendium/registry";
 import type { CompendiumPackId } from "@/lib/compendium/types";
+import { bindPlayerToAdventure } from "@/lib/adventure/store";
+import { syncAdventureActorsForRoom } from "@/lib/room/adventure-actors";
 import { joinRoomByInvite, getRoom } from "@/lib/room/store";
 
 type Props = {
@@ -50,6 +53,19 @@ export default async function MesaRoomPage({ params, searchParams }: Props) {
     if (joined) {
       redirect(`/mesa/${roomId}`);
     }
+  }
+
+  if (
+    session?.user &&
+    roomId !== "demo" &&
+    (room.ownerId === session.user.id || room.memberIds.includes(session.user.id))
+  ) {
+    const advId = room.adventureId ?? roomId;
+    if (room.ownerId !== session.user.id) {
+      await bindPlayerToAdventure(advId, session.user.id);
+    }
+    const synced = await syncAdventureActorsForRoom(roomId);
+    if (synced) room = synced;
   }
 
   if (!canViewRoom(room, session?.user ?? null, inviteCode)) {
@@ -110,11 +126,26 @@ export default async function MesaRoomPage({ params, searchParams }: Props) {
       ) : null}
 
       {isRoomGm ? (
-        <RoomInviteBar roomId={roomId} inviteCode={room.inviteCode} roomName={room.name} />
+        <RoomInviteBar
+          adventureId={room.adventureId ?? roomId}
+          roomId={roomId}
+          inviteCode={room.inviteCode}
+          roomName={room.name}
+        />
       ) : null}
+
+      <RoomCharacterPrompt
+        adventureId={room.adventureId ?? roomId}
+        roomId={roomId}
+        roomName={room.name}
+        actors={room.actors}
+        session={session?.user ?? null}
+        isVisitor={visitor}
+      />
 
       <MesaWorkspace
         roomId={roomId}
+        adventureId={room.adventureId ?? roomId}
         roomOwnerId={room.ownerId}
         memberIds={room.memberIds}
         scene={room.scene}

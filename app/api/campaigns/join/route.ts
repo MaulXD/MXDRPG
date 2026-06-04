@@ -22,6 +22,7 @@ export async function POST(request: Request) {
   return NextResponse.json({
     room: {
       roomId: room.roomId,
+      adventureId: room.adventureId ?? room.roomId,
       name: room.name,
       inviteCode: room.inviteCode,
       isOwner: room.ownerId === session.user.id,

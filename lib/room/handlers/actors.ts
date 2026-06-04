@@ -3,6 +3,7 @@ import { normalizeCharacter } from "@/lib/character/normalize";
 import type { CharacterSheet } from "@/lib/character/types";
 import type { IdentityPatch } from "@/lib/character/identity";
 import { mergeIdentityPatch, sanitizeActorPatch } from "../internal/actor-patch";
+import { persistActorToAdventureSheet } from "../adventure-actors";
 import { getRoom, persistRoom, toSnapshot } from "../internal/registry";
 import type { RoomActor, RoomSnapshot } from "../types";
 
@@ -35,6 +36,7 @@ export async function updateRoomActor(
 
   next = { ...normalizeCharacter(next), revision: current.revision + 1 };
   room.actors[actorId] = next;
+  await persistActorToAdventureSheet(next);
   return toSnapshot(await persistRoom(roomId, room));
 }
 
@@ -52,7 +54,9 @@ export async function levelUpRoomActor(
   if (!canLevelUp(current)) return null;
 
   const leveled = normalizeCharacter(applyLevelUp(current, choices));
-  room.actors[actorId] = { ...leveled, revision: current.revision + 1 };
+  const next = { ...leveled, revision: current.revision + 1 };
+  room.actors[actorId] = next;
+  await persistActorToAdventureSheet(next);
 
   return toSnapshot(await persistRoom(roomId, room));
 }

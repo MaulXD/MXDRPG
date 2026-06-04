@@ -45,8 +45,11 @@ for (const entry of raw) {
     fail(`${id}: precisa de ao menos 1 ação em system.actions`);
   } else {
     for (const a of actions) {
-      if (!a.name || a.rangeHex == null || a.paCost == null) {
+      if (!a.name || a.paCost == null) {
         fail(`${id}: ação ${a.entryId ?? "?"} incompleta`);
+      }
+      if (a.kind !== "ability" && a.rangeHex == null) {
+        fail(`${id}: ação ${a.entryId ?? "?"} sem rangeHex`);
       }
     }
   }

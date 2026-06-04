@@ -6,6 +6,7 @@ export const DEMO_CHARACTERS: CharacterSheet[] = [
   normalizeCharacter({
     id: "pc-aventureiro",
     ownerId: "usr_demo_jogador",
+    adventureId: "demo",
     name: "Aventureiro",
     biography: "Explorador das galerias de Valdremor. Especialista em trinchar e sobreviver na masmorra.",
     identity: {
