@@ -31,6 +31,11 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+        tags: |
+          type=ref,event=branch
+          type=ref,event=pr
+          type=semver,pattern={{version}}
+          type=sha,format=short
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
@@ -40,11 +45,8 @@ jobs:
           push: true
           provenance: true
           sbom: true
-          context: ${{ inputs.build_context }}
           annotations: ${{ steps.meta.outputs.annotations }}
-          labels: ${{ steps.meta.outputs.labels }}
-          # tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          tags: ${{ env.REGISTRY }}/pradumnasaraf/hello-world:latest
+          tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
 # vim: nu ts=2 fdm=indent et ft=yaml shiftwidth=2 softtabstop=2:
