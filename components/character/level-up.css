@@ -1,0 +1,468 @@
+/* Level-up wizard — estilo Foundry (passos + trilha + bônus) */
+
+.lu-trigger-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.65rem;
+  margin-bottom: 0.5rem;
+}
+
+.lu-trigger-row .btn {
+  flex-shrink: 0;
+}
+
+.lu-trigger-row .btn--level-ready {
+  border-color: rgba(184, 255, 60, 0.55);
+  background: linear-gradient(135deg, rgba(184, 255, 60, 0.22), rgba(139, 92, 246, 0.18));
+  box-shadow: 0 0 20px rgba(184, 255, 60, 0.2);
+}
+
+.lu-trigger-row .btn--level-ready:hover:not(:disabled) {
+  box-shadow: 0 0 28px rgba(184, 255, 60, 0.35);
+}
+
+.lu-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  background: rgba(8, 6, 4, 0.78);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.lu-shell {
+  width: min(960px, 100%);
+  max-height: min(92vh, 820px);
+  display: grid;
+  grid-template-rows: auto auto 1fr auto;
+  border-radius: 14px;
+  border: 1px solid var(--glass-border-bright, rgba(201, 169, 98, 0.35));
+  background: linear-gradient(165deg, rgba(32, 28, 22, 0.98), rgba(14, 12, 10, 0.99));
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.55);
+  overflow: hidden;
+}
+
+.lu-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.15rem 0.65rem;
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.lu-header h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 400;
+  color: var(--accent, #c9a962);
+}
+
+.lu-header-meta {
+  margin: 0.2rem 0 0;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.lu-close {
+  padding: 0.35rem 0.65rem;
+  font-size: 0.75rem;
+}
+
+.lu-stepper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  padding: 0.55rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.lu-step-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.28rem 0.65rem;
+  border-radius: var(--radius-pill, 999px);
+  border: 1px solid transparent;
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.lu-step-pill--active {
+  border-color: rgba(201, 169, 98, 0.45);
+  color: var(--accent);
+  background: rgba(201, 169, 98, 0.1);
+}
+
+.lu-step-pill--done {
+  color: var(--accent-success, #8fad7a);
+}
+
+.lu-body {
+  display: grid;
+  grid-template-columns: 1fr min(280px, 34%);
+  gap: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+@media (max-width: 720px) {
+  .lu-body {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr auto;
+  }
+}
+
+.lu-main {
+  padding: 1rem 1.15rem;
+  overflow-y: auto;
+  min-height: 0;
+}
+
+.lu-aside {
+  padding: 1rem;
+  border-left: 1px solid var(--glass-border);
+  background: rgba(0, 0, 0, 0.25);
+  overflow-y: auto;
+  min-height: 0;
+}
+
+@media (max-width: 720px) {
+  .lu-aside {
+    border-left: none;
+    border-top: 1px solid var(--glass-border);
+    max-height: 200px;
+  }
+}
+
+.lu-aside-title {
+  margin: 0 0 0.65rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.lu-bonus-group {
+  margin-bottom: 0.85rem;
+}
+
+.lu-bonus-group h5 {
+  margin: 0 0 0.35rem;
+  font-size: 0.72rem;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.lu-bonus-group ul {
+  margin: 0;
+  padding-left: 1rem;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  line-height: 1.45;
+}
+
+.lu-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border-top: 1px solid var(--glass-border);
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.lu-footer-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.lu-err {
+  font-size: 0.75rem;
+  color: var(--accent-secondary, #c46a5a);
+  margin: 0.5rem 0 0;
+}
+
+.lu-hint {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin: 0 0 0.85rem;
+}
+
+/* Subclass cards */
+.lu-subclass-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 0.65rem;
+}
+
+.lu-subclass-card {
+  text-align: left;
+  padding: 0.75rem;
+  border-radius: 10px;
+  border: 1px solid var(--glass-border);
+  background: rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  color: inherit;
+  font-family: inherit;
+}
+
+.lu-subclass-card:hover {
+  border-color: rgba(201, 169, 98, 0.4);
+}
+
+.lu-subclass-card--active {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px rgba(201, 169, 98, 0.25), 0 8px 24px rgba(0, 0, 0, 0.35);
+  background: rgba(201, 169, 98, 0.06);
+}
+
+.lu-subclass-card h4 {
+  margin: 0 0 0.25rem;
+  font-size: 0.9rem;
+  color: var(--text);
+}
+
+.lu-subclass-card p {
+  margin: 0;
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+/* ASI */
+.lu-asi-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.45rem;
+  max-width: 360px;
+}
+
+.lu-asi-btn {
+  padding: 0.55rem 0.4rem;
+  border-radius: 8px;
+  border: 1px solid var(--glass-border);
+  background: rgba(0, 0, 0, 0.3);
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.12s;
+}
+
+.lu-asi-btn:hover {
+  border-color: rgba(201, 169, 98, 0.35);
+}
+
+.lu-asi-btn--on {
+  border-color: rgba(90, 115, 82, 0.65);
+  color: var(--accent-success);
+  background: rgba(90, 115, 82, 0.15);
+}
+
+.lu-asi-counter {
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  margin-top: 0.5rem;
+}
+
+/* Talent tree */
+.lu-tree {
+  --lu-node-w: 100%;
+}
+
+.lu-tree-head {
+  margin-bottom: 0.75rem;
+}
+
+.lu-tree-class {
+  display: inline-block;
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 0.15rem;
+}
+
+.lu-tree-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 400;
+  color: var(--text);
+}
+
+.lu-tree-specialty {
+  margin: 0.25rem 0 0;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+.lu-tree-chain {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.lu-tree-step {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.lu-tree-connector {
+  display: block;
+  width: 2px;
+  height: 14px;
+  margin: 0 auto 0 1.35rem;
+  align-self: flex-start;
+  background: linear-gradient(180deg, rgba(201, 169, 98, 0.5), rgba(201, 169, 98, 0.15));
+  border-radius: 1px;
+}
+
+.lu-tree-node {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-template-rows: auto auto;
+  gap: 0.15rem 0.65rem;
+  padding: 0.65rem 0.75rem;
+  border-radius: 10px;
+  border: 1px solid var(--glass-border);
+  background: rgba(0, 0, 0, 0.28);
+  text-align: left;
+  width: 100%;
+  color: inherit;
+  font-family: inherit;
+  cursor: default;
+}
+
+button.lu-tree-node {
+  cursor: pointer;
+}
+
+.lu-tree-node--selectable {
+  border-color: rgba(201, 169, 98, 0.45);
+  background: rgba(201, 169, 98, 0.08);
+}
+
+.lu-tree-node--selectable:hover {
+  border-color: var(--accent);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+.lu-tree-node--selected {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(201, 169, 98, 0.25);
+  background: rgba(201, 169, 98, 0.12);
+}
+
+.lu-tree-node--owned {
+  border-color: rgba(90, 115, 82, 0.4);
+  background: rgba(90, 115, 82, 0.1);
+}
+
+.lu-tree-node--locked {
+  border-color: rgba(180, 80, 60, 0.35);
+  opacity: 0.85;
+}
+
+.lu-tree-node--future,
+.lu-tree-node--ascension {
+  opacity: 0.55;
+}
+
+.lu-tree-lv {
+  grid-row: 1 / 3;
+  font-size: 0.62rem;
+  font-family: var(--font-display);
+  letter-spacing: 0.06em;
+  color: var(--text-dim);
+  align-self: center;
+  min-width: 2.5rem;
+}
+
+.lu-tree-name {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.lu-tree-blurb {
+  grid-column: 2;
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+.lu-tree-badge {
+  grid-row: 1 / 3;
+  align-self: center;
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: var(--text-dim);
+  min-width: 3rem;
+  text-align: right;
+}
+
+.lu-tree-node--selectable .lu-tree-badge {
+  color: var(--accent);
+}
+
+.lu-tree-node--owned .lu-tree-badge {
+  color: var(--accent-success);
+}
+
+.lu-tree--compact .lu-tree-blurb {
+  display: none;
+}
+
+.lu-tree--compact .lu-tree-node {
+  padding: 0.45rem 0.55rem;
+}
+
+.lu-confirm-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.lu-confirm-list li {
+  padding: 0.45rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.lu-confirm-list strong {
+  color: var(--text);
+}
+
+.lu-ascension-banner {
+  padding: 0.85rem 1rem;
+  border-radius: 10px;
+  border: 1px solid rgba(201, 169, 98, 0.35);
+  background: linear-gradient(135deg, rgba(201, 169, 98, 0.12), rgba(139, 69, 19, 0.08));
+  margin-bottom: 0.75rem;
+}
+
+.lu-ascension-banner strong {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  color: var(--accent);
+  margin-bottom: 0.25rem;
+}

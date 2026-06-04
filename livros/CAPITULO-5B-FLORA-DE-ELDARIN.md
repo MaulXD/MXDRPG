@@ -1,7 +1,7 @@
-# CAPITULO 5B — FLORA DE MASMORRA (40 ESPECIES)
+# CAPÍTULO 5B — FLORA DE MASMORRA (40 ESPECIES)
 
-> Alimentacao **vegetal** para Druidas, Forrageiros e Clerigo do Pao da Vida. Cada planta ativa **Bonus de Dieta Base** e efeito proprio (sem precisar de monstro). Ver tambem **Assimilacao por Especime** (Cap. 6.2) para carne de monstro.  
-> **Sobrevivencia em biomas:** muitas plantas **nao substituem** monstro (ex.: #12 nao respira agua) — ver `BIOMAS-APROFUNDADOS.md` e `REGRAS-ECOLOGIA-DE-SOBREVIVENCIA.md`.
+> Alimentacao **vegetal** para Druidas, Forrageiros e Clérigo do Pao da Vida. Cada planta ativa **Bonus de Dieta Base** e efeito proprio (sem precisar de monstro). Ver tambem **Assimilação por Espécime** (Cap. 6.2) para carne de monstro.  
+> **Sobrevivencia em biomas:** muitas plantas **não substituem** monstro (ex.: #12 não respira agua) — ver `BIOMAS-APROFUNDADOS.md` e `REGRAS-ECOLOGIA-DE-SOBREVIVENCIA.md`.
 
 ---
 
@@ -9,21 +9,21 @@
 
 | Regra | Detalhe |
 |-------|---------|
-| **Quem pode** | Druida (Ciclo da Vida), Forrageiro dos Esporos, Clerigo do Pao da Vida, qualquer um com Estomago de Ferro 4+ |
+| **Quem pode** | Druida (Ciclo da Vida), Forrageiro dos Esporos, Clérigo do Pao da Vida, qualquer um com Estômago de Ferro 4+ |
 | **Preparo** | Crua (Druida ok), refeicao Comum (Coccao 8+), ou ritual de Pao da Vida |
-| **Trinchar planta** | DES ou SAB + bonus; planta **Comum** nao exige Estudo de Anatomia |
-| **Mutacao** | Planta **nao** rola d4 de assimilacao de monstro — concede **efeito de planta** (24h ou nota) |
+| **Trinchar planta** | DES ou SAB + bonus; planta **Comum** não exige Estudo de Anatomia |
+| **Mutação** | Planta **não** rola d4 de assimilação de monstro — concede **efeito de planta** (24h ou nota) |
 | **Ecologia** | Monstros listados em **Consumidores** comem a planta no bioma; Mestre pode fazer encontros de herbivoria |
 
-**Qualidade:** Falha em Coccao com planta toxica = veneno leve (CON CD 12 ou 1d6/turno, 3 turnos). Prato Perfeito dobra duracao do efeito de planta.
+**Qualidade:** Falha em Coccao com planta toxica = veneno leve (CON CD 12 ou 1d6/turno, 3 turnos). Prato Perfeito dobra duração do efeito de planta.
 
 ---
 
 ## Indice das 40 plantas
 
-| # | Nome | Bioma tipico | Raridade |
+| # | Nome | Bioma típico | Raridade |
 |---|------|--------------|----------|
-| 01 | Musgo-Lanterna | Estomago Botanico, Arquivos | Comum |
+| 01 | Musgo-Lanterna | Estômago Botanico, Arquivos | Comum |
 | 02 | Raiz-Relogio | Engrenagens, Cidadela Palida | Comum |
 | 03 | Broto de Veia | Qualquer Boca (superficie de tunel) | Comum |
 | 04 | Erva-Sino | Abatedouro Celestial, planicie | Comum |
@@ -38,14 +38,14 @@
 | 13 | Hera Sangrenta | Fornalhas, Deserto de Carne | Incomum |
 | 14 | Samambaia de Cinza | Jardim de Cinzas | Comum |
 | 15 | Tubarao-Relva (alga rasteira) | Abismo Invertido | Incomum |
-| 16 | Esporo-Madrugada | Estomago Botanico | Comum |
+| 16 | Esporo-Madrugada | Estômago Botanico | Comum |
 | 17 | Raiz de Yeti | Montanhas geladas | Incomum |
 | 18 | Cacto Roxo | Deserto Purpura | Incomum |
-| 19 | Arvore-Racao (nucleo) | Vale Podre, Digestor | Raro |
+| 19 | Arvore-Raçao (nucleo) | Vale Podre, Digestor | Raro |
 | 20 | Mel de Xilema | Colmeia de insetos + flora | Incomum |
 | 21 | Casca-Brilho | Aranhas, teias antigas | Incomum |
 | 22 | Flor Narcotica | Ninho Crepuscular | Raro |
-| 23 | Planta Carnivora (bulbo) | Estomago Botanico | Incomum |
+| 23 | Planta Carnivora (bulbo) | Estômago Botanico | Incomum |
 | 24 | Musgo de Lareth | Ruinas engolidas | Raro |
 | 25 | Semente de Vinha Guardia | Simbiose druidica | Incomum |
 | 26 | Capim Eco | Fosso das Emocoes | Incomum |
@@ -61,8 +61,8 @@
 | 36 | Polen de Matriarca | Teias de aranha-rei | Raro |
 | 37 | Fruto de Hidra (sementes) | Cavernas aquaticas | Raro |
 | 38 | Liquen de Golem | Engrenagens vivas | Raro |
-| 39 | Broto Ancestral | Boss derrotado (1/semana) | Lendario |
-| 40 | Flor do Chefe Final | Boca Vazia (andares 1-3) | Lendario |
+| 39 | Broto Ancestral | Boss derrotado (1/semana) | Lendário |
+| 40 | Flor do Chefe Final | Boca Vazia (andares 1-3) | Lendário |
 
 ---
 
@@ -70,47 +70,47 @@
 
 ### 01 — Musgo-Lanterna
 **Consumidores:** Goblin, Besouro-Diamante, Planta Carnivora (filhotes).  
-**Efeito (24h):** Luz suave 3m; +2 em testes de orientacao em tunel; Druida cura 1d4+SAB ao descansar curto em area umida.
+**Efeito (24h):** Luz suave 3m; +2 em testes de orientacao em tunel; Druida cura 1d4+SAB ao descansar curto em área umida.
 
 ### 02 — Raiz-Relogio
-**Consumidores:** Esqueleto (nao come — energia ambiente), Autômato menor, ratos de masmorra.  
-**Efeito:** Imune a sono magico forcado 1x; proximo descanso curto em 5 min (raiz mastigada).
+**Consumidores:** Esqueleto (não come — energia ambiente), Autômato menor, ratos de masmorra.  
+**Efeito:** Imune a sono magico forcado 1x; próximo descanso curto em 5 min (raiz mastigada).
 
 ### 03 — Broto de Veia
 **Consumidores:** Quase todos os herbivoros pequenos; Centopeia (filhotes).  
-**Efeito:** +1 em Trinchar e Harmonizacao; primeira refeicao de **monstro** no dia conta como Comum+.
+**Efeito:** +1 em Trinchar e Harmonização; primeira refeicao de **monstro** no dia conta como Comum+.
 
 ### 04 — Erva-Sino
 **Consumidores:** Grifo (ninhos), Harpia, aventureiros locais.  
-**Efeito:** Vantagem em Percepcao auditiva; aliados a 6m acordam de surpresa com +2 Iniciativa 1 combate.
+**Efeito:** Vantagem em Percepção auditiva; aliados a 6m acordam de surpresa com +2 Iniciativa 1 combate.
 
 ### 05 — Folha de Salmour
 **Consumidores:** Sapo-Engolidor, peixes de caverna, Serpente-do-Abismo (jovem).  
-**Efeito:** Respiracao em ar umido/nevoa; +2 em CON vs gases 24h.
+**Efeito:** Respiração em ar umido/nevoa; +2 em CON vs gases 24h.
 
 ### 06 — Cogumelo-Bandeira
 **Consumidores:** Goblin, Cogumelo-Rei (simbiose), Ghoul (ocasional).  
-**Efeito:** +3 Estomago de Ferro; imune a podridao leve de ingrediente Comum.
+**Efeito:** +3 Estômago de Ferro; imune a podridao leve de ingrediente Comum.
 
 ### 07 — Trevo de Obelisco
-**Consumidores:** Zumbi (nao — supersticao); Espectro (energia); humanos de Grimwald.  
-**Efeito:** 1 reroll em save de morte por veneno/necrotico por 24h.
+**Consumidores:** Zumbi (não — supersticao); Espectro (energia); humanos de Grimwald.  
+**Efeito:** 1 reroll em save de morte por veneno/necrótico por 24h.
 
 ### 08 — Vinha de Grimwald
 **Consumidores:** Treant Podre, Planta Carnivora, Druida locais.  
-**Efeito:** Escalar superficie organica sem teste; rebate 1d4 cortante a quem te acertar corpo a corpo (1/combate).
+**Efeito:** Escalar superficie orgânica sem teste; rebaté 1d4 cortante a quem te acertar corpo a corpo (1/combate).
 
 ### 09 — Liquen Frio
 **Consumidores:** Lobo do Inverno, Yeti, Elemental de Gelo (ambiente).  
-**Efeito:** Resistencia a frio; ignora Exaustao por frio ambiental 24h.
+**Efeito:** Resistência a frio; ignora Exaustao por frio ambiental 24h.
 
 ### 10 — Flor de Espelho
-**Consumidores:** Mimico (polen), Doppelganger (nao digere — copia aroma).  
+**Consumidores:** Mimico (polen), Doppelganger (não digere — copia aroma).  
 **Efeito:** Vantagem em testes vs ilusao; detecta Mimico adjacente automaticamente.
 
 ### 11 — Palma de Ferromur
 **Consumidores:** Besouro-Diamante, construtos desligados (oxidacao reduzida).  
-**Efeito:** Armas metalicas do grupo nao oxidam na Boca Cinza 24h; +1 Coccao com ferro/forja.
+**Efeito:** Armas metalicas do grupo não oxidam na Boca Cinza 24h; +1 Coccao com ferro/forja.
 
 ### 12 — Algas de Prata
 **Consumidores:** Tubarao-Cego, Kraken Menor, Lagosta Abissal.  
@@ -118,11 +118,11 @@
 
 ### 13 — Hera Sangrenta
 **Consumidores:** Ghoul, Vampiro (suco), Dragonete (ninho).  
-**Efeito:** +1d4 necrotico em um ataque por combate; ou cura 2d6 se Druida Circulo Decomposicao.
+**Efeito:** +1d4 necrótico em um ataque por combate; ou cura 2d6 se Druida Circulo Decomposicao.
 
 ### 14 — Samambaia de Cinza
 **Consumidores:** Elemental de Fogo (contraste), Zumbi Colossal (ambiente).  
-**Efeito:** Resistencia a fogo ambiental (nao magia boss) metade dano 24h.
+**Efeito:** Resistência a fogo ambiental (não magia boss) metade dano 24h.
 
 ### 15 — Tubarao-Relva
 **Consumidores:** Serpente-do-Abismo, Sereia, peixes gigantes.  
@@ -130,19 +130,19 @@
 
 ### 16 — Esporo-Madrugada
 **Consumidores:** Cogumelo-Rei, Forrageiro (cultivo), insetos.  
-**Efeito:** Nuvem 1,5m curativa 1d8 HP (1/dia, acao); +2 Harmonizacao com fungos.
+**Efeito:** Nuvem 1,5m curativa 1d8 HP (1/dia, acao); +2 Harmonização com fungos.
 
 ### 17 — Raiz de Yeti
 **Consumidores:** Yeti, Lobo do Inverno, Basilisco de Gelo (raro).  
-**Efeito:** +2 FOR temporario 1h; depois 1 nivel Exaustao leve (crash) se nao comer carne no mesmo dia.
+**Efeito:** +2 FOR temporario 1h; depois 1 nivel Exaustao leve (crash) se não comer carne no mesmo dia.
 
 ### 18 — Cacto Roxo
-**Consumidores:** Escorpiao Gigante, Gargula de Cristal, viajantes Mirraga.  
-**Efeito:** +2 CA natural 4h; sede nao afeta 24h em deserto.
+**Consumidores:** Escorpião Gigante, Gargula de Cristal, viajantes Mirraga.  
+**Efeito:** +2 CA natural 4h; sede não afeta 24h em deserto.
 
-### 19 — Arvore-Racao (nucleo)
+### 19 — Arvore-Raçao (nucleo)
 **Consumidores:** Treant Podre, Rei Cogumelo, herbivoros grandes.  
-**Efeito:** Uma refeicao equivale a 3 dias de racao; grupo em 6m nao precisa comer hoje (1/semana).
+**Efeito:** Uma refeicao equivale a 3 dias de racao; grupo em 6m não precisa comer hoje (1/semana).
 
 ### 20 — Mel de Xilema
 **Consumidores:** Besouro-Diamante, Aranha Tecerrochas (larvas), ursos de caverna.  
@@ -153,16 +153,16 @@
 ## Ficha por planta (21–40)
 
 ### 21 — Casca-Brilho
-**Consumidores:** Aranha Tecerrochas, Escorpiao.  
-**Efeito:** +2 CA vs ataques de oportunidade; teia propria 1 uso (9m, imobiliza DES CD 13).
+**Consumidores:** Aranha Tecerrochas, Escorpião.  
+**Efeito:** +2 CA vs ataques de oportunidade; teia própria 1 uso (9m, imobiliza DES CD 13).
 
 ### 22 — Flor Narcotica
 **Consumidores:** Apenas preparadores (monstros evitam). Planta Carnivora se alimenta de insetos atraidos.  
-**Efeito:** Descanso longo em 4h; SAB CD 14 ou Lentidao 1h ao acordar. Bardo: +3 CD Encantamento 8h.
+**Efeito:** Descanso longo em 4h; SAB CD 14 ou Lentidão 1h ao acordar. Bardo: +3 CD Encantamento 8h.
 
 ### 23 — Planta Carnivora (bulbo)
 **Consumidores:** Ela mesma; Hidra (arranca).  
-**Efeito:** Ataque desarmado 1d6+DES acido 1/combate; +2 vs agarrar.
+**Efeito:** Ataque desarmado 1d6+DES ácido 1/combate; +2 vs agarrar.
 
 ### 24 — Musgo de Lareth
 **Consumidores:** Esqueletos antigos (decadencia), Golem de Pedra (minerais).  
@@ -170,7 +170,7 @@
 
 ### 25 — Semente de Vinha Guardia
 **Consumidores:** Druida planta; Ceifador não come.  
-**Efeito:** Como Circulo Simbiose: rebate 1d6 cortante 8h; plantar semente = vinha 3m escalar 24h.
+**Efeito:** Como Circulo Simbiose: rebaté 1d6 cortante 8h; plantar semente = vinha 3m escalar 24h.
 
 ### 26 — Capim Eco
 **Consumidores:** Banshee (nao); Espectro absorve.  
@@ -178,7 +178,7 @@
 
 ### 27 — Broto de Treant Podre
 **Consumidores:** Treant Podre, Cogumelo-Rei em guerra.  
-**Efeito:** 2d8 HP temp; resistencia a necrotico 24h; Forma Selvagem +5 HP max 24h.
+**Efeito:** 2d8 HP temp; resistência a necrótico 24h; Forma Selvagem +5 HP max 24h.
 
 ### 28 — Cristal-Mel (seiva)
 **Consumidores:** Gargula de Cristal, Slime de Cristal.  
@@ -189,8 +189,8 @@
 **Efeito:** Pressao profunda ignorada 24h; +2 em saves vs medo 24h.
 
 ### 30 — Erva do Limiar
-**Consumidores:** Mortos-vivos baixa INT (nao comem); Clerigo Limiar cultiva.  
-**Efeito:** 1 fragmento de alma “vazio” para ritual necromancia sem kill (Clerigo Limiar); ou cura 3d8.
+**Consumidores:** Mortos-vivos baixa INT (não comem); Clérigo Limiar cultiva.  
+**Efeito:** 1 fragmento de alma “vazio” para ritual necromancia sem kill (Clérigo Limiar); ou cura 3d8.
 
 ### 31 — Tuberculo de Lobo
 **Consumidores:** Lobo do Inverno, Orc, Patrulheiro besta.  
@@ -222,7 +222,7 @@
 
 ### 38 — Liquen de Golem
 **Consumidores:** Golem de Pedra (lento), construtos.  
-**Efeito:** Resistencia contundente 24h; +2 CA vs derrubar 24h.
+**Efeito:** Resistência contundente 24h; +2 CA vs derrubar 24h.
 
 ### 39 — Broto Ancestral
 **Consumidores:** Nenhum (Boss deixou).  
@@ -230,7 +230,7 @@
 
 ### 40 — Flor do Chefe Final
 **Consumidores:** Nao existe predador — flor sente “campanha”.  
-**Efeito:** Mestre revela 1 pista verdadeira sobre Chefe Final; grupo +2 em todos saves 24h apos Banquete de campanha.
+**Efeito:** Mestre revela 1 pista verdadeira sobre Chefe Final; grupo +2 em todos saves 24h após Banquete de campanha.
 
 ---
 

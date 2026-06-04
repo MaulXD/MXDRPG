@@ -1,4 +1,6 @@
 import { cookies } from "next/headers";
+import { resolveClerkSessionUser } from "@/lib/auth/clerk-sync";
+import { isClerkEnabled } from "@/lib/auth/clerk-config";
 import { normalizeUserRole } from "./roles";
 import type { SessionPayload, SessionUser, UserRole } from "./types";
 
@@ -37,7 +39,22 @@ export async function destroySession(): Promise<void> {
   store.delete(SESSION_COOKIE);
 }
 
+/** Sessão legada (e-mail/senha) sem Clerk ativo no request. */
+export async function getLegacyCookieSession(): Promise<SessionPayload | null> {
+  const store = await cookies();
+  const raw = store.get(SESSION_COOKIE)?.value;
+  if (!raw) return null;
+  return decode(raw);
+}
+
 export async function getSession(): Promise<SessionPayload | null> {
+  if (isClerkEnabled()) {
+    const clerkUser = await resolveClerkSessionUser();
+    if (clerkUser) {
+      return { user: clerkUser, issuedAt: Date.now() };
+    }
+  }
+
   const store = await cookies();
   const raw = store.get(SESSION_COOKIE)?.value;
   if (!raw) return null;

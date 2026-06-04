@@ -1,21 +1,30 @@
-"use client";
+﻿"use client";
 
-import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { Axial } from "@/lib/vtt/hex-math";
+import type { BattleScene } from "@/lib/vtt/types";
 import {
-  axialDistance,
-  axialToPixel,
-  hexCorners,
-  hexesInRange,
-  pixelToAxial,
-} from "@/lib/vtt/hex-math";
-import type { BattleScene, BattleToken } from "@/lib/vtt/types";
-import { moveRoomTokenBudget, postRoomAttack, postRoomAbility, postRoomAreaSpell, useRoomSync } from "@/hooks/useRoomSync";
-import { readThemeColor } from "@/lib/theme";
+  moveRoomTokenBudget,
+  postRoomAttack,
+  postRoomAbility,
+  postRoomAreaSpell,
+  postRoomPing,
+  revealRoomHex,
+  repositionRoomToken,
+} from "@/hooks/useRoomSync";
+import { visibleHexSetForPlayer } from "@/lib/vtt/fog-of-war";
+import { MapScenePanel } from "@/components/vtt/MapScenePanel";
+import { PlayerSpawnPanel } from "@/components/vtt/PlayerSpawnPanel";
+import type { RoomSnapshot } from "@/lib/room/types";
 import { TurnOrderPanel } from "@/components/vtt/TurnOrderPanel";
 import { TokenActionPanel } from "@/components/vtt/TokenActionPanel";
 import { MonsterSpawnPanel } from "@/components/vtt/MonsterSpawnPanel";
 import { TokenConditionsPanel } from "@/components/vtt/TokenConditionsPanel";
+import { BattlefieldViewControls } from "@/components/vtt/BattlefieldViewControls";
+import { MesaDockPanel } from "@/components/vtt/MesaDockPanel";
+import type { MesaPanelLayout } from "@/lib/vtt/mesa-panel-layout";
+import { effectiveMesaPanelWidth } from "@/lib/vtt/mesa-panel-layout";
+import { TokenEffectsRow } from "@/components/vtt/TokenEffectsRow";
 import {
   CombatFxLayer,
   combatFxFromMessage,
@@ -25,77 +34,135 @@ import {
 import type { ChatMessage } from "@/lib/room/chat";
 import { activeTokenId } from "@/lib/room/combat";
 import {
-  canAttackTarget,
   listTokenCombatActions,
   resolveCombatAction,
 } from "@/lib/combat/attack";
-import { canAbilityTarget } from "@/lib/combat/ability";
-import { canCastAreaAt, computeSpellAreaHexes } from "@/lib/combat/area-spell";
 import type { CombatActionOption } from "@/lib/combat/types";
-import {
-  canMoveToken,
-  hexToMeters,
-  reachableHexes,
-  walkRemaining,
-} from "@/lib/vtt/movement";
 import {
   isMoveMode,
   isTargetMode,
   type TokenActionMode,
 } from "@/lib/vtt/action-mode";
+import {
+  previewAreaCast,
+  previewAreaDirectionStep,
+  previewAttackOnTarget,
+  previewMove,
+  type ActionPreview,
+} from "@/lib/combat/action-preview";
+import { BattlefieldActionHud } from "@/components/vtt/BattlefieldActionHud";
+import { PaDotMeter } from "@/components/vtt/PaDotMeter";
+import { EndTurnBar } from "@/components/vtt/EndTurnBar";
 import { useCombatTurn } from "@/hooks/useCombatActions";
-import { collectPlayerActorIds, resolveTokenRing } from "@/lib/vtt/token-colors";
-import { drawCircularTokenImage, drawTokenIdentityRings } from "@/lib/vtt/token-canvas";
-import { DEFAULT_PORTRAIT_FOCUS, type PortraitFocus } from "@/lib/media/portrait-focus";
+import { useTokenImages } from "@/hooks/vtt/useTokenImages";
+import { usePortraitFocusByToken } from "@/hooks/vtt/usePortraitFocusByToken";
+import { useBattlefieldHighlights } from "@/hooks/vtt/useBattlefieldHighlights";
+import { useBattlefieldView } from "@/hooks/vtt/useBattlefieldView";
+import { useHexCanvas, type HexCanvasDrawState } from "@/hooks/vtt/useHexCanvas";
+import { useBattlefieldPointer } from "@/hooks/vtt/useBattlefieldPointer";
+import { useMonsterSpawnDrop } from "@/hooks/vtt/useMonsterSpawnDrop";
+import { paTurnRulesForActor } from "@/lib/combat/pa-economy";
+import { canMoveToken, type MovementPathContext } from "@/lib/vtt/movement";
+import { animateTokenAlongPath } from "@/lib/vtt/token-move-animation";
 import "./vtt.css";
 
 type Props = {
   scene: BattleScene;
   canEdit: boolean;
   canControlCombat?: boolean;
+  canEndTurn?: boolean;
+  canControlToken?: (token: import("@/lib/vtt/types").BattleToken) => boolean;
+  canViewTokenPa?: (token: import("@/lib/vtt/types").BattleToken) => boolean;
   roomId?: string;
-  onOpenSheet?: (actorId: string) => void;
-  onOpenCompendium?: () => void;
+  snapshot?: RoomSnapshot | null;
+  onRefresh?: () => void;
+  onApplySnapshot?: (snap: RoomSnapshot) => void;
+  onOpenSheet?: (actorId?: string) => void;
+  onHoverAxialChange?: (axial: Axial | null) => void;
+  showSpawnInSidebar?: boolean;
+  session?: import("@/lib/auth/types").SessionUser | null;
+  roomActors?: Record<string, import("@/lib/room/types").RoomActor>;
+  leftPanel?: MesaPanelLayout;
+  onLeftPanelChange?: (patch: Partial<MesaPanelLayout>) => void;
 };
 
 export function HexBattlefield({
   scene: initial,
   canEdit,
   canControlCombat = false,
+  canEndTurn: canEndTurnProp = false,
+  canControlToken,
+  canViewTokenPa,
   roomId = "demo",
+  snapshot = null,
+  onRefresh,
+  onApplySnapshot,
   onOpenSheet,
-  onOpenCompendium,
+  onHoverAxialChange,
+  showSpawnInSidebar = true,
+  session = null,
+  roomActors = {},
+  leftPanel,
+  onLeftPanelChange,
 }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
-  const imagesRef = useRef<Map<string, HTMLImageElement>>(new Map());
-  const [, setImgTick] = useState(0);
   const [scene, setScene] = useState(initial);
   const [selectedId, setSelectedId] = useState<string | null>(initial.tokens[0]?.id ?? null);
   const [actionMode, setActionMode] = useState<TokenActionMode>("idle");
   const [selectedCombatAction, setSelectedCombatAction] = useState<CombatActionOption | null>(null);
   const [hoverAxial, setHoverAxial] = useState<Axial | null>(null);
-  const [themeTick, setThemeTick] = useState(0);
+  const [hoverTargetId, setHoverTargetId] = useState<string | null>(null);
+  const [areaCenter, setAreaCenter] = useState<Axial | null>(null);
   const [combatFx, setCombatFx] = useState<CombatFxState | null>(null);
   const [tokenFlash, setTokenFlash] = useState<{
     tokenId: string;
     kind: NonNullable<TokenCombatFlash>;
   } | null>(null);
   const [actionErr, setActionErr] = useState<string | null>(null);
+  const [channelExtraPa, setChannelExtraPa] = useState(0);
   const seenCombatRef = useRef<Set<string>>(new Set());
-  const clickStartRef = useRef<{ x: number; y: number } | null>(null);
+  const [mapImage, setMapImage] = useState<HTMLImageElement | null>(null);
+  const [mapImgTick, setMapImgTick] = useState(0);
+
+  const displayScene = snapshot?.scene ?? scene;
+  const displayPings = snapshot?.pings ?? [];
 
   useEffect(() => {
-    const onTheme = () => setThemeTick((n) => n + 1);
-    window.addEventListener("eldarin-theme-change", onTheme);
-    return () => window.removeEventListener("eldarin-theme-change", onTheme);
-  }, []);
+    const url = displayScene.mapImageUrl?.trim();
+    if (!url) {
+      setMapImage(null);
+      return;
+    }
+    const img = new Image();
+    img.crossOrigin = "anonymous";
+    img.onload = () => {
+      setMapImage(img);
+      setMapImgTick((n) => n + 1);
+    };
+    img.onerror = () => setMapImage(null);
+    img.src = url;
+  }, [displayScene.mapImageUrl]);
 
-  const { snapshot, refresh } = useRoomSync(roomId);
+  const visibleHexSet = useMemo(() => {
+    if (canControlCombat) return null;
+    const actorIds = session?.id
+      ? Object.entries(roomActors)
+          .filter(([, a]) => a.ownerId === session.id)
+          .map(([id]) => id)
+      : [];
+    return visibleHexSetForPlayer(displayScene, displayScene.tokens, {
+      userId: session?.id,
+      actorIds,
+    });
+  }, [canControlCombat, displayScene, roomActors, session?.id]);
+
+  const { imagesRef, imgTick } = useTokenImages(displayScene.tokens);
+  const refresh = onRefresh ?? (() => {});
   const turnActiveId = snapshot?.combat ? activeTokenId(snapshot.combat) : null;
   const turn = useCombatTurn({ combat: snapshot?.combat, canBypassTurn: canControlCombat });
 
-  const selected = scene.tokens.find((t) => t.id === selectedId) ?? null;
+  const selected = displayScene.tokens.find((t) => t.id === selectedId) ?? null;
   const selectedActor =
     selected?.linked && selected.actorId ? snapshot?.actors[selected.actorId] ?? null : null;
 
@@ -106,74 +173,136 @@ export function HexBattlefield({
     return null;
   }, [selectedCombatAction, selectedActor, selected]);
 
-  const playerActorIds = useMemo(
-    () => collectPlayerActorIds(scene.tokens),
-    [scene.tokens]
+  const focusByTokenId = usePortraitFocusByToken(displayScene.tokens, snapshot?.actors);
+
+  const actorRacas = useMemo(() => {
+    const out: Record<string, string | undefined> = {};
+    if (!snapshot?.actors) return out;
+    for (const [id, a] of Object.entries(snapshot.actors)) {
+      out[id] = a.identity.raca;
+    }
+    return out;
+  }, [snapshot?.actors]);
+
+  const moveAnimRef = useRef<{ tokenId: string; q: number; r: number } | null>(null);
+  const moveBusyRef = useRef(false);
+  const combatFxIdRef = useRef<string | null>(null);
+
+  const syncRoom = useCallback(
+    (snap?: RoomSnapshot) => {
+      if (snap) {
+        setScene(snap.scene);
+        if (onApplySnapshot) onApplySnapshot(snap);
+        else refresh();
+      } else {
+        refresh();
+      }
+    },
+    [onApplySnapshot, refresh]
   );
 
-  const focusByTokenId = useMemo(() => {
-    const map = new Map<string, PortraitFocus>();
-    for (const token of scene.tokens) {
-      if (token.imageFocus) {
-        map.set(token.id, token.imageFocus);
-        continue;
-      }
-      if (token.actorId && snapshot?.actors[token.actorId]) {
-        const actor = snapshot.actors[token.actorId];
-        map.set(
-          token.id,
-          actor.portraitFocus ?? DEFAULT_PORTRAIT_FOCUS
-        );
-      }
-    }
-    return map;
-  }, [scene.tokens, snapshot?.actors]);
+  const battlefieldView = useBattlefieldView({ wrapRef, canvasRef });
 
-  const moveMode = actionMode === "move-run" ? "run" : "walk";
-  const showMovement = Boolean(selected && isMoveMode(actionMode));
-  const isAreaSpellMode = Boolean(
-    selected &&
-      actionMode === "spell" &&
-      activeCombatAction?.areaShape &&
-      activeCombatAction.areaShape !== "single"
+  const { spawnDragActive, spawnDropHandlers } = useMonsterSpawnDrop({
+    wrapRef,
+    canvasRef,
+    scene: displayScene,
+    roomId,
+    enabled: canControlCombat,
+    onSpawned: syncRoom,
+    setHoverAxial,
+    onHoverAxialChange,
+    onError: setActionErr,
+    viewRef: battlefieldView.viewRef,
+  });
+
+  const highlights = useBattlefieldHighlights({
+    scene: displayScene,
+    actorRacas,
+    selected,
+    selectedActor,
+    actionMode,
+    activeCombatAction,
+    hoverAxial,
+    areaCenter,
+    areaDirection: null,
+    turn,
+  });
+
+  const canvasState: HexCanvasDrawState = useMemo(
+    () => ({
+      scene: displayScene,
+      gridCells: highlights.gridCells,
+      showMovement: highlights.showMovement,
+      walkSet: highlights.walkSet,
+      paidWalkSet: highlights.paidWalkSet,
+      rangeSet: highlights.rangeSet,
+      actionMode,
+      attackRangeSet: highlights.attackRangeSet,
+      isAreaSpellMode: highlights.isAreaSpellMode,
+      areaPreviewSet: highlights.areaPreviewSet,
+      areaDirectionSet: highlights.areaDirectionSet,
+      hoverAxial,
+      hoverMovePreview: highlights.hoverMovePreview,
+      spawnDropHover: spawnDragActive && canControlCombat,
+      pathCells: highlights.hoverPathCells ?? [],
+      focusByTokenId,
+      selectedId,
+      turnActiveId,
+      attackableIds: highlights.attackableIds,
+      hoverAttackTargetId: hoverTargetId,
+      tokenFlash,
+      visibleHexSet,
+      pings: displayPings,
+      mapImage,
+    }),
+    [
+      displayScene,
+      highlights,
+      actionMode,
+      hoverAxial,
+      spawnDragActive,
+      canControlCombat,
+      focusByTokenId,
+      selectedId,
+      turnActiveId,
+      hoverTargetId,
+      tokenFlash,
+      visibleHexSet,
+      displayPings,
+      mapImage,
+    ]
   );
 
-  const attackableIds = useMemo(() => {
-    if (!selected || !activeCombatAction || !isTargetMode(actionMode)) return new Set<string>();
-    if (activeCombatAction.selfTarget) return new Set<string>();
-    const ids = new Set<string>();
-    for (const t of scene.tokens) {
-      if (t.id === selected.id) continue;
-      const check =
-        activeCombatAction.kind === "ability"
-          ? canAbilityTarget(selected, t, activeCombatAction, {
-              activeTokenId: turn.activeTokenId,
-              bypassTurn: turn.bypassTurn,
-            })
-          : canAttackTarget(selected, t, activeCombatAction, {
-              activeTokenId: turn.activeTokenId,
-              bypassTurn: turn.bypassTurn,
-            });
-      if (check.ok) ids.add(t.id);
-    }
-    return ids;
-  }, [selected, scene.tokens, activeCombatAction, actionMode, turn]);
+  const { redraw } = useHexCanvas(
+    canvasRef,
+    wrapRef,
+    imagesRef,
+    canvasState,
+    imgTick + mapImgTick,
+    moveAnimRef,
+    battlefieldView.view
+  );
 
   useEffect(() => {
     if (!snapshot?.chat) return;
     for (const msg of snapshot.chat) {
       if (msg.kind !== "combat" || !msg.combat || seenCombatRef.current.has(msg.id)) continue;
+      if (combatFxIdRef.current === msg.id) continue;
       seenCombatRef.current.add(msg.id);
       const defender = snapshot.scene.tokens.find((t) => t.id === msg.combat!.defenderTokenId);
       const attacker = snapshot.scene.tokens.find((t) => t.id === msg.combat!.attackerTokenId);
       if (!defender || !attacker) continue;
       const fx = combatFxFromMessage(msg, attacker.axial, defender.axial);
-      if (fx) setCombatFx(fx);
+      if (fx) {
+        combatFxIdRef.current = fx.id;
+        setCombatFx(fx);
+      }
     }
   }, [snapshot?.chat, snapshot?.scene.tokens]);
 
   useEffect(() => {
-    if (!snapshot) return;
+    if (!snapshot || moveBusyRef.current) return;
     setScene(snapshot.scene);
   }, [snapshot]);
 
@@ -181,463 +310,351 @@ export function HexBattlefield({
     setActionMode("idle");
     setSelectedCombatAction(null);
     setActionErr(null);
+    setAreaCenter(null);
+    setHoverTargetId(null);
   }, [selectedId]);
 
-  function triggerCombatFx(msg: ChatMessage) {
-    if (msg.kind !== "combat" || !msg.combat) return;
-    seenCombatRef.current.add(msg.id);
-    const defender = scene.tokens.find((t) => t.id === msg.combat!.defenderTokenId);
-    const attacker = scene.tokens.find((t) => t.id === msg.combat!.attackerTokenId);
-    if (!defender || !attacker) return;
-    const fx = combatFxFromMessage(msg, attacker.axial, defender.axial);
-    if (fx) setCombatFx(fx);
-  }
+  useEffect(() => {
+    setAreaCenter(null);
+    setChannelExtraPa(0);
+  }, [actionMode, selectedCombatAction?.entryId]);
 
-  async function castAreaSpell(center: Axial) {
-    if (!selected || !activeCombatAction?.areaShape) return;
-    setActionErr(null);
-    try {
-      const snap = await postRoomAreaSpell(roomId, selected.id, center.q, center.r, {
-        actionEntryId: activeCombatAction.entryId,
-        bypassTurn: turn.bypassTurn,
-      });
-      const combatMsgs = snap.chat.filter((m) => m.kind === "combat");
-      const last = combatMsgs[combatMsgs.length - 1];
-      if (last?.kind === "combat") triggerCombatFx(last);
-      setActionMode("idle");
-      refresh();
-    } catch (e) {
-      setActionErr(e instanceof Error ? e.message : "Falha na magia de área");
-    }
-  }
+  const triggerCombatFx = useCallback(
+    (msg: ChatMessage) => {
+      if (msg.kind !== "combat" || !msg.combat) return;
+      if (seenCombatRef.current.has(msg.id) && combatFxIdRef.current === msg.id) return;
+      seenCombatRef.current.add(msg.id);
+      const defender = displayScene.tokens.find((t) => t.id === msg.combat!.defenderTokenId);
+      const attacker = displayScene.tokens.find((t) => t.id === msg.combat!.attackerTokenId);
+      if (!defender || !attacker) return;
+      const fx = combatFxFromMessage(msg, attacker.axial, defender.axial);
+      if (fx) {
+        combatFxIdRef.current = fx.id;
+        setCombatFx(fx);
+      }
+    },
+    [displayScene.tokens]
+  );
 
-  async function attackToken(defenderId: string) {
-    if (!selected || !activeCombatAction) return;
-    setActionErr(null);
-    try {
-      let snap;
-      if (activeCombatAction.kind === "ability") {
-        snap = await postRoomAbility(roomId, selected.id, defenderId, {
+  const onCombatFxDone = useCallback(() => {
+    combatFxIdRef.current = null;
+    setCombatFx(null);
+    setTokenFlash(null);
+  }, []);
+
+  const onCombatTokenFlash = useCallback((tokenId: string | null, kind: import("@/lib/vtt/draw-battlefield").TokenFlashKind | null) => {
+    if (tokenId && kind) setTokenFlash({ tokenId, kind });
+    else setTokenFlash(null);
+  }, []);
+
+  const tokenDrawPosition = useCallback(
+    (token: import("@/lib/vtt/types").BattleToken) => {
+      const anim = moveAnimRef.current;
+      if (anim && anim.tokenId === token.id) return { q: anim.q, r: anim.r };
+      return token.axial;
+    },
+    []
+  );
+
+  const castAreaSpell = useCallback(
+    async (center: Axial, direction?: number) => {
+      if (!selected || !activeCombatAction?.areaShape) return;
+      setActionErr(null);
+      try {
+        const snap = await postRoomAreaSpell(roomId, selected.id, center.q, center.r, {
           actionEntryId: activeCombatAction.entryId,
           bypassTurn: turn.bypassTurn,
+          areaDirection: direction,
+          channelExtraPa,
         });
-      } else {
-        const packId =
-          activeCombatAction.packId === "armas" || activeCombatAction.packId === "magias"
-            ? activeCombatAction.packId
-            : undefined;
-        snap = await postRoomAttack(roomId, selected.id, defenderId, {
-          actionPack: packId,
-          actionEntryId: packId ? activeCombatAction.entryId : undefined,
-          bypassTurn: turn.bypassTurn,
-        });
+        const combatMsgs = snap.chat.filter((m) => m.kind === "combat");
+        const last = combatMsgs[combatMsgs.length - 1];
+        if (last?.kind === "combat") triggerCombatFx(last);
+        setActionMode("idle");
+        setAreaCenter(null);
+        syncRoom(snap);
+      } catch (e) {
+        setActionErr(e instanceof Error ? e.message : "Falha na magia de área");
       }
-      const combatMsgs = snap.chat.filter((m) => m.kind === "combat");
-      const last = combatMsgs[combatMsgs.length - 1];
-      if (last?.kind === "combat") triggerCombatFx(last);
-      setActionMode("idle");
-      refresh();
-    } catch (e) {
-      setActionErr(e instanceof Error ? e.message : "Falha no ataque");
-    }
-  }
+    },
+    [selected, activeCombatAction, roomId, turn.bypassTurn, channelExtraPa, syncRoom, triggerCombatFx]
+  );
 
-  async function moveSelectedTo(axial: Axial) {
-    if (!selected || !isMoveMode(actionMode)) return;
-    setActionErr(null);
-    try {
-      await moveRoomTokenBudget(roomId, selected.id, axial.q, axial.r, moveMode, turn.bypassTurn);
-      refresh();
-    } catch (e) {
-      setActionErr(e instanceof Error ? e.message : "Movimento inválido");
+  const actionPreview: ActionPreview | null = useMemo(() => {
+    if (!selected) return null;
+    if (highlights.showMovement && hoverAxial) {
+      const movePaOpts = selectedActor
+        ? { freeBasicMovePa: paTurnRulesForActor(selectedActor).freeBasicMovePa }
+        : undefined;
+      const moveCtx: MovementPathContext = {
+        tokens: displayScene.tokens,
+        gridRadius: displayScene.gridRadius,
+        actorRacas,
+      };
+      return previewMove(selected, hoverAxial, highlights.moveMode, movePaOpts, moveCtx);
     }
-  }
-
-  useEffect(() => {
-    const map = imagesRef.current;
-    for (const token of scene.tokens) {
-      if (!token.imageUrl) {
-        map.delete(token.id);
-        continue;
-      }
-      const cached = map.get(token.id);
-      if (cached?.src === token.imageUrl) continue;
-      const img = new Image();
-      img.onload = () => setImgTick((n) => n + 1);
-      img.src = token.imageUrl;
-      map.set(token.id, img);
-    }
-  }, [scene.tokens]);
-
-  const gridCells = useMemo(() => {
-    const cells: Axial[] = [];
-    const R = scene.gridRadius;
-    for (let q = -R; q <= R; q++) {
-      for (let r = Math.max(-R, -q - R); r <= Math.min(R, -q + R); r++) {
-        cells.push({ q, r });
+    if (highlights.needsAreaDirection && activeCombatAction) {
+      const shape = activeCombatAction.areaShape;
+      if (shape === "cone" || shape === "line") {
+        return previewAreaDirectionStep(shape, selected);
       }
     }
-    return cells;
-  }, [scene.gridRadius]);
-
-  const rangeSet = useMemo(() => {
-    if (!selected || !showMovement) return new Set<string>();
-    const max = reachableHexes(selected, moveMode);
-    return new Set(hexesInRange(selected.axial, max).map((c) => `${c.q},${c.r}`));
-  }, [selected, showMovement, moveMode]);
-
-  const walkSet = useMemo(() => {
-    if (!selected || !showMovement) return new Set<string>();
-    const max = walkRemaining(selected);
-    return new Set(hexesInRange(selected.axial, max).map((c) => `${c.q},${c.r}`));
-  }, [selected, showMovement]);
-
-  const attackRangeSet = useMemo(() => {
-    if (!selected || !activeCombatAction || !isTargetMode(actionMode)) return new Set<string>();
-    if (isAreaSpellMode) {
-      return new Set(
-        hexesInRange(selected.axial, activeCombatAction.rangeHex)
-          .map((c) => `${c.q},${c.r}`)
-      );
-    }
-    return new Set(
-      hexesInRange(selected.axial, activeCombatAction.rangeHex)
-        .filter((c) => axialDistance(selected.axial, c) > 0)
-        .map((c) => `${c.q},${c.r}`)
-    );
-  }, [selected, activeCombatAction, actionMode, isAreaSpellMode]);
-
-  const areaPreviewSet = useMemo(() => {
-    if (!selected || !activeCombatAction || !isAreaSpellMode || !hoverAxial) return new Set<string>();
-    const check = canCastAreaAt(selected, hoverAxial, activeCombatAction, {
-      activeTokenId: turn.activeTokenId,
-      bypassTurn: turn.bypassTurn,
-    });
-    if (!check.ok) return new Set<string>();
-    const hexes = computeSpellAreaHexes(
-      hoverAxial,
-      activeCombatAction.areaShape ?? "burst",
-      activeCombatAction.areaRadiusHex ?? 1,
-      activeCombatAction.areaHexCount
-    );
-    return new Set(hexes.map((c) => `${c.q},${c.r}`));
-  }, [selected, activeCombatAction, isAreaSpellMode, hoverAxial, turn]);
-
-  const hoverMovePreview = useMemo(() => {
-    if (!selected || !hoverAxial || !showMovement) return null;
-    return canMoveToken(selected, hoverAxial, moveMode);
-  }, [selected, hoverAxial, showMovement, moveMode]);
-
-  const draw = useCallback(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return false;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return false;
-
-    let w = canvas.clientWidth;
-    let h = canvas.clientHeight;
-    if (w < 10 || h < 10) {
-      w = wrapRef.current?.clientWidth ?? 800;
-      h = wrapRef.current?.clientHeight ?? 640;
-    }
-    if (w < 10 || h < 10) return false;
-
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    canvas.width = Math.floor(w * dpr);
-    canvas.height = Math.floor(h * dpr);
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-
-    const bg = ctx.createLinearGradient(0, 0, w, h);
-    bg.addColorStop(0, readThemeColor("--vtt-canvas-bg-0", "#1a1610"));
-    bg.addColorStop(1, readThemeColor("--vtt-canvas-bg-1", "#0f0d0a"));
-    ctx.fillStyle = bg;
-    ctx.fillRect(0, 0, w, h);
-
-    const ox = w / 2;
-    const oy = h / 2;
-    const size = scene.hexSize;
-
-    for (const cell of gridCells) {
-      const { x, y } = axialToPixel(cell.q, cell.r, size, ox, oy);
-      const key = `${cell.q},${cell.r}`;
-      let fill = readThemeColor("--vtt-hex-fill", "rgba(180,155,110,0.07)");
-      let stroke = readThemeColor("--vtt-hex-stroke", "rgba(180,155,110,0.28)");
-
-      if (showMovement && walkSet.has(key)) {
-        fill = readThemeColor("--vtt-hex-walk-fill", "rgba(90,115,82,0.28)");
-        stroke = readThemeColor("--vtt-hex-walk-stroke", "rgba(120,150,95,0.75)");
-      }
-      if (showMovement && rangeSet.has(key) && !walkSet.has(key)) {
-        fill = readThemeColor("--vtt-hex-run-fill", "rgba(184,134,11,0.22)");
-        stroke = readThemeColor("--vtt-hex-run-stroke", "rgba(201,169,98,0.65)");
-      }
-      if (isTargetMode(actionMode) && attackRangeSet.has(key)) {
-        fill = readThemeColor("--vtt-hex-attack-fill", "rgba(139,69,19,0.2)");
-        stroke = readThemeColor("--vtt-hex-attack-stroke", "rgba(180,80,60,0.7)");
-      }
-      if (isAreaSpellMode && areaPreviewSet.has(key)) {
-        fill = readThemeColor("--vtt-hex-area-fill", "rgba(120,60,180,0.35)");
-        stroke = readThemeColor("--vtt-hex-area-stroke", "rgba(180,120,255,0.85)");
-      }
-      if (isAreaSpellMode && hoverAxial?.q === cell.q && hoverAxial?.r === cell.r && areaPreviewSet.has(key)) {
-        fill = readThemeColor("--vtt-hex-area-center-fill", "rgba(200,100,255,0.45)");
-        stroke = readThemeColor("--vtt-hex-area-center-stroke", "#e8c4ff");
-        ctx.lineWidth = 2.5;
-      }
-      if (hoverAxial?.q === cell.q && hoverAxial?.r === cell.r) {
-        stroke = readThemeColor("--vtt-hex-hover-stroke", "#c9a962");
-        fill = readThemeColor("--vtt-hex-hover-fill", "rgba(201,169,98,0.18)");
-      }
-
-      ctx.beginPath();
-      const corners = hexCorners(x, y, size - 2);
-      ctx.moveTo(corners[0].x, corners[0].y);
-      for (let i = 1; i < corners.length; i++) ctx.lineTo(corners[i].x, corners[i].y);
-      ctx.closePath();
-      ctx.fillStyle = fill;
-      ctx.fill();
-      ctx.strokeStyle = stroke;
-      ctx.lineWidth = 1.5;
-      ctx.stroke();
-
-      if (
-        hoverMovePreview?.ok &&
-        hoverAxial?.q === cell.q &&
-        hoverAxial?.r === cell.r &&
-        hoverMovePreview.dist > 0
-      ) {
-        ctx.fillStyle = readThemeColor("--vtt-token-text", "#e8e0d4");
-        ctx.font = "600 10px Lora, Georgia, serif";
-        ctx.textAlign = "center";
-        ctx.fillText(
-          `${hoverMovePreview.dist} hex · ${hexToMeters(hoverMovePreview.dist)} m`,
-          x,
-          y + 4
+    if (highlights.isAreaSpellMode && activeCombatAction && hoverAxial) {
+      const center = highlights.needsAreaDirection ? areaCenter : hoverAxial;
+      if (center) {
+        return previewAreaCast(
+          selected,
+          center,
+          selectedActor,
+          activeCombatAction,
+          turn,
+          null,
+          channelExtraPa
         );
       }
     }
-
-    for (const token of scene.tokens) {
-      const { x, y } = axialToPixel(token.axial.q, token.axial.r, size, ox, oy);
-      const r = size * 0.42;
-      const img = imagesRef.current.get(token.id);
-      const focus = focusByTokenId.get(token.id) ?? DEFAULT_PORTRAIT_FOCUS;
-      const ringStyle = resolveTokenRing(token, playerActorIds);
-
-      ctx.beginPath();
-      ctx.arc(x, y, r + 5, 0, Math.PI * 2);
-      ctx.fillStyle = "rgba(0,0,0,0.4)";
-      ctx.fill();
-
-      if (img?.complete && img.naturalWidth > 0) {
-        drawCircularTokenImage(ctx, img, x, y, r, focus);
-      } else {
-        ctx.beginPath();
-        ctx.arc(x, y, r, 0, Math.PI * 2);
-        ctx.fillStyle = token.color;
-        ctx.fill();
+    if (
+      hoverTargetId &&
+      activeCombatAction &&
+      isTargetMode(actionMode) &&
+      !highlights.isAreaSpellMode
+    ) {
+      const defender = displayScene.tokens.find((t) => t.id === hoverTargetId);
+      if (defender) {
+        return previewAttackOnTarget(
+          selected,
+          defender,
+          selectedActor,
+          activeCombatAction,
+          displayScene.tokens,
+          turn,
+          channelExtraPa
+        );
       }
-
-      drawTokenIdentityRings(ctx, x, y, r, ringStyle);
-
-      if (tokenFlash?.tokenId === token.id) {
-        const flashColor =
-          tokenFlash.kind === "crit"
-            ? "rgba(232,160,32,0.95)"
-            : tokenFlash.kind === "hit"
-              ? "rgba(200,80,60,0.9)"
-              : "rgba(140,140,160,0.85)";
-        ctx.beginPath();
-        ctx.arc(x, y, r + 10, 0, Math.PI * 2);
-        ctx.strokeStyle = flashColor;
-        ctx.lineWidth = tokenFlash.kind === "crit" ? 4 : 3;
-        ctx.stroke();
-      }
-
-      if (token.id === turnActiveId) {
-        ctx.beginPath();
-        ctx.arc(x, y, r + 7, 0, Math.PI * 2);
-        ctx.strokeStyle = readThemeColor("--vtt-token-ring-turn", "#b8860b");
-        ctx.lineWidth = 3;
-        ctx.stroke();
-      }
-
-      if (token.id === selectedId) {
-        ctx.beginPath();
-        ctx.arc(x, y, r + 4, 0, Math.PI * 2);
-        ctx.strokeStyle = readThemeColor("--vtt-token-ring-selected", "#c9a962");
-        ctx.lineWidth = 2;
-        ctx.stroke();
-      }
-
-      if (attackableIds.has(token.id)) {
-        ctx.beginPath();
-        ctx.arc(x, y, r + 8, 0, Math.PI * 2);
-        ctx.strokeStyle = readThemeColor("--vtt-token-ring-target", "#c44");
-        ctx.lineWidth = 2;
-        ctx.setLineDash([4, 4]);
-        ctx.stroke();
-        ctx.setLineDash([]);
-      }
-
-      if (token.vidaMax != null && token.vida != null) {
-        const barW = size * 0.85;
-        const barH = 4;
-        const bx = x - barW / 2;
-        const by = y - r - 10;
-        ctx.fillStyle = "rgba(0,0,0,0.45)";
-        ctx.fillRect(bx, by, barW, barH);
-        ctx.fillStyle = readThemeColor("--vtt-hp-bar", "#5a7352");
-        ctx.fillRect(bx, by, barW * (token.vida / token.vidaMax), barH);
-      }
-
-      ctx.fillStyle = readThemeColor("--vtt-token-text", "#e8e0d4");
-      ctx.font = "600 12px Lora, Georgia, serif";
-      ctx.textAlign = "center";
-      ctx.fillText(token.name, x, y + r + 14);
-    }
-
-    return true;
-  }, [
-    gridCells,
-    scene,
-    selectedId,
-    rangeSet,
-    walkSet,
-    attackRangeSet,
-    areaPreviewSet,
-    isAreaSpellMode,
-    attackableIds,
-    hoverAxial,
-    hoverMovePreview,
-    turnActiveId,
-    themeTick,
-    showMovement,
-    actionMode,
-    playerActorIds,
-    focusByTokenId,
-    tokenFlash,
-    isAreaSpellMode,
-    areaPreviewSet,
-  ]);
-
-  useLayoutEffect(() => {
-    draw();
-    const ro = new ResizeObserver(() => draw());
-    if (wrapRef.current) ro.observe(wrapRef.current);
-    return () => ro.disconnect();
-  }, [draw]);
-
-  useEffect(() => {
-    const t1 = requestAnimationFrame(() => draw());
-    const t2 = setTimeout(() => draw(), 50);
-    return () => {
-      cancelAnimationFrame(t1);
-      clearTimeout(t2);
-    };
-  }, [draw]);
-
-  function canvasCenter() {
-    const canvas = canvasRef.current!;
-    return { ox: canvas.clientWidth / 2, oy: canvas.clientHeight / 2 };
-  }
-
-  function tokenAtPoint(px: number, py: number): BattleToken | null {
-    const { ox, oy } = canvasCenter();
-    for (const token of scene.tokens) {
-      const { x, y } = axialToPixel(token.axial.q, token.axial.r, scene.hexSize, ox, oy);
-      if (Math.hypot(px - x, py - y) < scene.hexSize * 0.5) return token;
     }
     return null;
-  }
+  }, [
+    selected,
+    selectedActor,
+    hoverAxial,
+    hoverTargetId,
+    highlights,
+    activeCombatAction,
+    actionMode,
+    areaCenter,
+    displayScene,
+    turn,
+    channelExtraPa,
+  ]);
 
-  function pointerPos(e: React.PointerEvent<HTMLCanvasElement>) {
-    const rect = canvasRef.current!.getBoundingClientRect();
-    return { px: e.clientX - rect.left, py: e.clientY - rect.top };
-  }
-
-  function onPointerDown(e: React.PointerEvent<HTMLCanvasElement>) {
-    const { px, py } = pointerPos(e);
-    clickStartRef.current = { x: px, y: py };
-    const hit = tokenAtPoint(px, py);
-
-    if (hit) {
-      if (hit.id !== selectedId) {
-        if (selectedId && attackableIds.has(hit.id)) return;
-        setSelectedId(hit.id);
+  const attackToken = useCallback(
+    async (defenderId: string) => {
+      if (!selected || !activeCombatAction) return;
+      setActionErr(null);
+      try {
+        let snap: RoomSnapshot;
+        if (activeCombatAction.kind === "ability") {
+          snap = await postRoomAbility(roomId, selected.id, defenderId, {
+            actionEntryId: activeCombatAction.entryId,
+            bypassTurn: turn.bypassTurn,
+          });
+        } else {
+          const packId =
+            activeCombatAction.packId === "armas" || activeCombatAction.packId === "magias"
+              ? activeCombatAction.packId
+              : undefined;
+          snap = await postRoomAttack(roomId, selected.id, defenderId, {
+            actionPack: packId,
+            actionEntryId: packId ? activeCombatAction.entryId : undefined,
+            bypassTurn: turn.bypassTurn,
+            channelExtraPa,
+          });
+        }
+        const combatMsgs = snap.chat.filter((m) => m.kind === "combat");
+        const last = combatMsgs[combatMsgs.length - 1];
+        if (last?.kind === "combat") triggerCombatFx(last);
+        setActionMode("idle");
+        syncRoom(snap);
+      } catch (e) {
+        setActionErr(e instanceof Error ? e.message : "Falha no ataque");
       }
-      return;
-    }
+    },
+    [selected, activeCombatAction, roomId, turn.bypassTurn, channelExtraPa, syncRoom, triggerCombatFx]
+  );
 
-    const axial = pixelToAxial(px, py, scene.hexSize, canvasCenter().ox, canvasCenter().oy);
-    if (canControlCombat && actionMode === "idle" && !selectedId) {
-      setHoverAxial(axial);
-    }
-  }
-
-  function onPointerMove(e: React.PointerEvent<HTMLCanvasElement>) {
-    const { px, py } = pointerPos(e);
-    const { ox, oy } = canvasCenter();
-    setHoverAxial(pixelToAxial(px, py, scene.hexSize, ox, oy));
-
-    const hoverToken = tokenAtPoint(px, py);
-    const canvas = canvasRef.current;
-    if (canvas) {
-      if (hoverToken && selectedId && attackableIds.has(hoverToken.id)) {
-        canvas.style.cursor = "crosshair";
-      } else if (showMovement) {
-        canvas.style.cursor = "cell";
-      } else {
-        canvas.style.cursor = "default";
-      }
-    }
-  }
-
-  function onPointerUp(e: React.PointerEvent<HTMLCanvasElement>) {
-    const start = clickStartRef.current;
-    clickStartRef.current = null;
-    if (!start) return;
-
-    const { px, py } = pointerPos(e);
-    if (Math.hypot(px - start.x, py - start.y) > 8) return;
-
-    const hit = tokenAtPoint(px, py);
-    const { ox, oy } = canvasCenter();
-    const axial = pixelToAxial(px, py, scene.hexSize, ox, oy);
-
-    if (hit) {
-      if (hit.id !== selectedId && selectedId && attackableIds.has(hit.id)) {
-        void attackToken(hit.id);
+  const moveSelectedTo = useCallback(
+    async (axial: Axial) => {
+      if (!selected || !isMoveMode(actionMode) || moveBusyRef.current) return;
+      const moveCtx: MovementPathContext = {
+        tokens: displayScene.tokens,
+        gridRadius: displayScene.gridRadius,
+        actorRacas,
+      };
+      const movePaOpts = selectedActor?.identity
+        ? { freeBasicMovePa: paTurnRulesForActor(selectedActor).freeBasicMovePa }
+        : undefined;
+      const check = canMoveToken(selected, axial, highlights.moveMode, moveCtx, movePaOpts);
+      if (!check.ok) {
+        setActionErr(check.reason ?? "Movimento inválido");
         return;
       }
-      setSelectedId(hit.id);
-      return;
-    }
-
-    if (selectedId && isMoveMode(actionMode)) {
-      void moveSelectedTo(axial);
-      return;
-    }
-
-    if (selectedId && isAreaSpellMode && activeCombatAction && selected) {
-      const check = canCastAreaAt(selected, axial, activeCombatAction, {
-        activeTokenId: turn.activeTokenId,
-        bypassTurn: turn.bypassTurn,
-      });
-      if (check.ok) {
-        void castAreaSpell(axial);
-      } else {
-        setActionErr(check.reason ?? "Centro de área inválido");
+      setActionErr(null);
+      moveBusyRef.current = true;
+      const path = check.path ?? [selected.axial, axial];
+      try {
+        await animateTokenAlongPath(path, (step) => {
+          moveAnimRef.current = { tokenId: selected.id, q: step.q, r: step.r };
+          redraw();
+        });
+        const snap = await moveRoomTokenBudget(
+          roomId,
+          selected.id,
+          axial.q,
+          axial.r,
+          highlights.moveMode,
+          turn.bypassTurn
+        );
+        moveAnimRef.current = null;
+        syncRoom(snap);
+        redraw();
+      } catch (e) {
+        setActionErr(e instanceof Error ? e.message : "Movimento inválido");
+        moveAnimRef.current = null;
+        redraw();
+      } finally {
+        moveBusyRef.current = false;
       }
-    }
-  }
+    },
+    [
+      selected,
+      actionMode,
+      roomId,
+      highlights.moveMode,
+      turn.bypassTurn,
+      syncRoom,
+      redraw,
+      displayScene.tokens,
+      displayScene.gridRadius,
+      actorRacas,
+    ]
+  );
+
+  const onGmReposition = useCallback(
+    async (tokenId: string, axial: Axial) => {
+      setActionErr(null);
+      try {
+        const snap = await repositionRoomToken(roomId, tokenId, axial.q, axial.r);
+        moveAnimRef.current = null;
+        syncRoom(snap);
+        redraw();
+      } catch (e) {
+        setActionErr(e instanceof Error ? e.message : "Falha ao mover token");
+        moveAnimRef.current = null;
+        redraw();
+      }
+    },
+    [roomId, syncRoom, redraw]
+  );
+
+  const onGmDragPreview = useCallback(
+    (tokenId: string, axial: Axial | null) => {
+      if (axial) {
+        moveAnimRef.current = { tokenId, q: axial.q, r: axial.r };
+      } else {
+        moveAnimRef.current = null;
+      }
+      redraw();
+    },
+    [redraw]
+  );
+
+  const onMapPing = useCallback(
+    async (axial: Axial) => {
+      setActionErr(null);
+      try {
+        const color = selected?.color ?? "#c9a962";
+        const snap = await postRoomPing(roomId, axial.q, axial.r, color);
+        syncRoom(snap);
+      } catch (e) {
+        setActionErr(e instanceof Error ? e.message : "Falha ao pingar");
+      }
+    },
+    [roomId, selected?.color, syncRoom]
+  );
+
+  const onRevealHex = useCallback(
+    async (axial: Axial) => {
+      if (!canControlCombat || !displayScene.fogEnabled) return;
+      setActionErr(null);
+      try {
+        const snap = await revealRoomHex(roomId, axial.q, axial.r);
+        syncRoom(snap);
+      } catch (e) {
+        setActionErr(e instanceof Error ? e.message : "Falha ao revelar hex");
+      }
+    },
+    [roomId, canControlCombat, displayScene.fogEnabled, syncRoom]
+  );
+
+  const pointer = useBattlefieldPointer({
+    canvasRef,
+    scene: displayScene,
+    tokenDrawPosition,
+    selectedId,
+    setSelectedId,
+    actionMode,
+    activeCombatAction,
+    attackableIds: highlights.attackableIds,
+    hoverAxial,
+    setHoverAxial,
+    onHoverAxialChange,
+    showMovement: highlights.showMovement,
+    isAreaSpellMode: highlights.isAreaSpellMode,
+    needsAreaDirection: highlights.needsAreaDirection,
+    areaCenter,
+    setAreaCenter,
+    selected,
+    turn,
+    canControlCombat,
+    canGmReposition: canControlCombat,
+    onGmReposition: (id, a) => void onGmReposition(id, a),
+    onGmDragPreview,
+    onHoverTargetChange: setHoverTargetId,
+    onAttack: (id) => void attackToken(id),
+    onMove: (a) => void moveSelectedTo(a),
+    onAreaSpell: (c, d) => void castAreaSpell(c, d),
+    onAreaSpellError: setActionErr,
+    onPing: (a) => void onMapPing(a),
+    onRevealHex: canControlCombat ? (a) => void onRevealHex(a) : undefined,
+    fogEnabled: Boolean(displayScene.fogEnabled),
+    viewRef: battlefieldView.viewRef,
+  });
+
+  const tokenControl =
+    canControlToken ?? (() => canControlCombat || Boolean(selected?.linked));
+
+  const canViewTokenPaFn =
+    canViewTokenPa ?? (() => canControlCombat || Boolean(selected?.linked));
 
   const canUseToken =
     selected &&
-    (selected.linked || selected.monsterEntryId || canControlCombat);
+    ((selected.monsterEntryId && canControlCombat) ||
+      (!selected.monsterEntryId && (canControlCombat || tokenControl(selected))));
 
-  return (
-    <div className="vtt-shell">
+  const combat = snapshot?.combat;
+  const canEndTurn = canEndTurnProp;
+
+  const attackTargetCursor =
+    actionMode === "attack" &&
+    isTargetMode(actionMode) &&
+    activeCombatAction &&
+    !activeCombatAction.selfTarget &&
+    !highlights.isAreaSpellMode;
+
+  const leftW = leftPanel ? effectiveMesaPanelWidth(leftPanel) : undefined;
+  const shellStyle = leftW != null ? { gridTemplateColumns: `${leftW}px minmax(0, 1fr)` } : undefined;
+
+  const sidebar = (
       <aside className="vtt-sidebar">
         <p className="vtt-eyebrow">Mesa ao vivo</p>
         {snapshot ? (
@@ -646,34 +663,59 @@ export function HexBattlefield({
             Sync · rev {snapshot.revision}
           </p>
         ) : null}
-        <h2 className="vtt-title">{scene.name}</h2>
-        <p className="vtt-hint">Selecione token → escolha ação → clique alvo ou hex</p>
-
-        <div className="vtt-mesa-tools">
-          <button
-            type="button"
-            className="btn btn-ghost"
-            onClick={() => {
-              const t = scene.tokens.find((x) => x.id === selectedId);
-              onOpenSheet?.(t?.actorId ?? "pc-aventureiro");
-            }}
-          >
-            Ficha
-          </button>
-          <button type="button" className="btn btn-ghost" onClick={() => onOpenCompendium?.()}>
-            Compêndios
-          </button>
-        </div>
+        <h2 className="vtt-title">{displayScene.name}</h2>
+        <p className="vtt-hint">
+          Token → ação → alvo ou hex. Alt+clique: ping. Mestre: arraste token; Ctrl+clique revela hex
+          com fog.
+        </p>
 
         {canControlCombat ? (
-          <MonsterSpawnPanel roomId={roomId} spawnAxial={hoverAxial} onSpawned={refresh} />
+          <MapScenePanel roomId={roomId} scene={displayScene} onUpdated={(snap) => syncRoom(snap)} />
+        ) : null}
+
+        {canEdit && Object.keys(roomActors).length > 0 ? (
+          <PlayerSpawnPanel
+            roomId={roomId}
+            actors={roomActors}
+            session={session}
+            tokens={displayScene.tokens}
+            spawnAxial={hoverAxial}
+            onPlaced={(snap) => syncRoom(snap)}
+          />
+        ) : null}
+
+        {canControlCombat && showSpawnInSidebar ? (
+          <MonsterSpawnPanel roomId={roomId} spawnAxial={hoverAxial} onSpawned={(snap) => syncRoom(snap)} />
+        ) : null}
+
+        {selected && highlights.showMovement ? (
+          <p className="vtt-move-legend vtt-combat-hint">
+            <span className="vtt-move-legend-swatch vtt-move-legend-swatch--free" /> sem PA extra
+            <span className="vtt-move-legend-swatch vtt-move-legend-swatch--paid" /> caminhada +PA
+            <span className="vtt-move-legend-swatch vtt-move-legend-swatch--run" /> só corrida
+          </p>
         ) : null}
 
         {selected && (
           <div className="vtt-token-panel">
             <strong style={{ color: selected.color }}>{selected.name}</strong>
             {selected.linked ? (
-              <p className="vtt-linked-badge">Ficha linkada</p>
+              <p className="vtt-linked-badge">
+                Ficha linkada
+                {onOpenSheet ? (
+                  <>
+                    {" "}
+                    ·{" "}
+                    <button
+                      type="button"
+                      className="vtt-inline-link"
+                      onClick={() => onOpenSheet(selected.actorId ?? "pc-aventureiro")}
+                    >
+                      Abrir ficha →
+                    </button>
+                  </>
+                ) : null}
+              </p>
             ) : selected.monsterEntryId ? (
               <p className="vtt-linked-badge">Monstro · {selected.monsterEntryId}</p>
             ) : null}
@@ -688,15 +730,23 @@ export function HexBattlefield({
                 {selected.defesaBonus ? ` (+${selected.defesaBonus} buff)` : ""}
               </p>
             ) : null}
-            <p>
-              PA: {selected.pa}/{selected.paMax}
-            </p>
+            <TokenEffectsRow token={selected} variant="full" className="vtt-effect-chips--sidebar" />
+            {canViewTokenPaFn(selected) ? (
+              <PaDotMeter
+                current={selected.pa}
+                max={selected.paMax}
+                banked={selected.bankedPa}
+                spentThisTurn={selected.paSpentThisTurn}
+              />
+            ) : (
+              <p className="vtt-combat-hint">PA do monstro — só o mestre vê.</p>
+            )}
 
             {canUseToken ? (
               <TokenActionPanel
                 roomId={roomId}
                 token={selected}
-                tokens={scene.tokens}
+                tokens={displayScene.tokens}
                 actor={selectedActor}
                 combat={snapshot?.combat}
                 canBypassTurn={canControlCombat}
@@ -704,8 +754,10 @@ export function HexBattlefield({
                 onActionModeChange={setActionMode}
                 selectedAction={selectedCombatAction}
                 onSelectedActionChange={setSelectedCombatAction}
+                channelExtraPa={channelExtraPa}
+                onChannelExtraPaChange={setChannelExtraPa}
                 onAttackResult={triggerCombatFx}
-                onUpdate={refresh}
+                onRoomSync={syncRoom}
               />
             ) : (
               <p className="vtt-combat-hint">Token sem stats de combate.</p>
@@ -723,18 +775,22 @@ export function HexBattlefield({
           </div>
         )}
 
-        {snapshot?.combat ? (
+        {combat ? (
           <TurnOrderPanel
             roomId={roomId}
-            combat={snapshot.combat}
-            tokens={scene.tokens}
+            combat={combat}
+            tokens={displayScene.tokens}
             canControl={canControlCombat}
+            canEndTurn={canEndTurn}
             onUpdate={refresh}
+            attackableIds={highlights.attackableIds}
+            hoverAttackTargetId={hoverTargetId}
+            onHoverAttackTargetChange={setHoverTargetId}
           />
         ) : null}
 
         <ul className="vtt-token-list">
-          {scene.tokens.map((t) => (
+          {displayScene.tokens.map((t) => (
             <li key={t.id}>
               <button
                 type="button"
@@ -742,34 +798,94 @@ export function HexBattlefield({
                 onClick={() => setSelectedId(t.id)}
               >
                 <span className="token-dot" style={{ background: t.color }} />
-                {t.name}
+                <span className="vtt-token-list-label">
+                  <span className="vtt-token-list-name">{t.name}</span>
+                  {canViewTokenPaFn(t) ? (
+                    <PaDotMeter
+                      current={t.pa}
+                      max={t.paMax}
+                      banked={t.bankedPa}
+                      showLabel={false}
+                      size="sm"
+                      compact
+                    />
+                  ) : null}
+                  <TokenEffectsRow token={t} className="vtt-effect-chips--list" max={4} />
+                </span>
               </button>
             </li>
           ))}
         </ul>
       </aside>
+  );
 
-      <div ref={wrapRef} className="vtt-canvas-wrap">
+  return (
+    <div className="vtt-shell" style={shellStyle}>
+      {leftPanel && onLeftPanelChange ? (
+        <MesaDockPanel
+          side="left"
+          label="Tokens"
+          layout={leftPanel}
+          onLayoutChange={onLeftPanelChange}
+        >
+          {sidebar}
+        </MesaDockPanel>
+      ) : (
+        sidebar
+      )}
+
+      <div
+        ref={wrapRef}
+        className={`vtt-canvas-wrap${attackTargetCursor ? " vtt-canvas-wrap--attack-target" : ""}${spawnDragActive ? " vtt-canvas-wrap--spawn-drop" : ""}${battlefieldView.isPanning ? " vtt-canvas-wrap--panning" : ""}`}
+        onWheel={battlefieldView.onWheel}
+        {...spawnDropHandlers}
+      >
+        <BattlefieldViewControls
+          zoomPercent={battlefieldView.zoomPercent}
+          canZoomIn={battlefieldView.canZoomIn}
+          canZoomOut={battlefieldView.canZoomOut}
+          onZoomIn={battlefieldView.zoomIn}
+          onZoomOut={battlefieldView.zoomOut}
+          onReset={battlefieldView.resetView}
+        />
         <canvas
           ref={canvasRef}
           className="vtt-canvas"
-          onPointerDown={onPointerDown}
-          onPointerMove={onPointerMove}
-          onPointerUp={onPointerUp}
-          onPointerLeave={() => setHoverAxial(null)}
+          onPointerDown={(e) => {
+            if (battlefieldView.onPointerDown(e)) return;
+            pointer.onPointerDown(e);
+          }}
+          onPointerMove={(e) => {
+            if (battlefieldView.onPointerMove(e)) return;
+            pointer.onPointerMove(e);
+          }}
+          onPointerUp={(e) => {
+            if (battlefieldView.endPan(e)) return;
+            pointer.onPointerUp(e);
+          }}
+          onPointerLeave={(e) => {
+            battlefieldView.endPan(e);
+            pointer.onPointerLeave();
+          }}
         />
+        {combat ? (
+          <EndTurnBar
+            roomId={roomId}
+            combat={combat}
+            tokens={displayScene.tokens}
+            canEndTurn={canEndTurn}
+            isGm={canControlCombat}
+            onUpdate={refresh}
+          />
+        ) : null}
+        <BattlefieldActionHud preview={actionPreview} />
         <CombatFxLayer
           wrapRef={wrapRef}
           hexSize={scene.hexSize}
           fx={combatFx}
-          onTokenFlash={(tokenId, kind) => {
-            if (tokenId && kind) setTokenFlash({ tokenId, kind });
-            else setTokenFlash(null);
-          }}
-          onDone={() => {
-            setCombatFx(null);
-            setTokenFlash(null);
-          }}
+          view={battlefieldView.view}
+          onTokenFlash={onCombatTokenFlash}
+          onDone={onCombatFxDone}
         />
       </div>
     </div>

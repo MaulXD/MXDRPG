@@ -2,6 +2,11 @@
 
 Esta pasta **não é o produto final**.
 
-O Eldarin é um **VTT próprio** hospedado em `../web/` (Next.js + canvas hex + portais Admin/Mestre/Jogador).
+O Eldarin é um **VTT próprio** na **raiz do repo** (`app/`, `components/`, `lib/`) — Next.js, canvas hex, mesa, ficha.
 
-Este código existia como hipótese “system.json para Foundry”. Foi mantido só como referência de regras (template.json, PA, hex). Pode apagar ao separar repositórios.
+## Uso hoje
+
+- **Referência** de regras (PA, hex, modelos de actor).
+- **Roteiro de vídeo:** grave no Foundry o que o grupo quer no VTT web; checklist em `docs/PARIDADE-FOUNDRY.md` (Passo 1 do [REFATORACAO.md](../REFATORACAO.md)).
+
+Não é necessário manter paridade de código com este módulo — só de **funcionalidade** no site React.

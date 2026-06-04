@@ -30,8 +30,44 @@ export type AttributeKey =
 
 export type CulinaryKey = "trinchar" | "harmonizacao" | "coccao" | "estomagoDeFerro";
 
+/** IDs canônicos (livros/TABELA-IDS) — não exibir na UI */
+export const CLASS_CANON_ID: Record<ClassId, string> = {
+  Guerreiro: "CLA-guerreiro",
+  Patrulheiro: "CLA-patrulheiro",
+  Ladino: "CLA-ladino",
+  Mago: "CLA-mago",
+  Clérigo: "CLA-clérigo",
+  Bárbaro: "CLA-bárbaro",
+  Bardo: "CLA-bardo",
+  Druida: "CLA-druida",
+  Artífice: "CLA-artífice",
+};
+
+export const RACE_CANON_ID: Record<RaceId, string> = {
+  Humano: "RAC-humano",
+  Elfo: "RAC-elfo",
+  Anão: "RAC-anao",
+  Halfling: "RAC-halfling",
+  Gnomo: "RAC-gnomo",
+  "Meio-Humano": "RAC-meio-humano",
+  "Forjado de Osso": "RAC-forjado-de-osso",
+};
+
+export const LINHAGEM_CANON_ID: Record<string, string> = {
+  "Linhagem do Gato": "LIN-gato",
+  "Linhagem da Cobra": "LIN-cobra",
+  "Linhagem do Urso": "LIN-urso",
+  "Linhagem do Tigre": "LIN-tigre",
+  "Linhagem da Águia": "LIN-aguia",
+  "Linhagem do Lobo": "LIN-lobo",
+  "Linhagem do Tubarão": "LIN-tubarao",
+  "Linhagem do Corvo": "LIN-corvo",
+};
+
 export type ClassDef = {
   id: ClassId;
+  /** ID canônico (ex. CLA-guerreiro) — uso interno/VTT, não exibir na UI */
+  canonId: string;
   hpDie: 6 | 8 | 10 | 12;
   hpDieMax: number;
   hpDieAvg: number;
@@ -44,6 +80,7 @@ export type ClassDef = {
 
 export type RaceDef = {
   id: RaceId;
+  canonId: string;
   attributeBonus: Partial<Record<AttributeKey, number>>;
   /** +1 CON + linhagem para Meio-Humano */
   fixedBonus?: Partial<Record<AttributeKey, number>>;
@@ -52,6 +89,7 @@ export type RaceDef = {
   milestones: Record<number, string>;
   linhagens?: Array<{
     id: string;
+    canonId?: string;
     attributeBonus: Partial<Record<AttributeKey, number>>;
     trait: string;
     milestones: Record<number, string>;
@@ -61,6 +99,7 @@ export type RaceDef = {
 export const CLASS_LIST: ClassDef[] = [
   {
     id: "Guerreiro",
+    canonId: CLASS_CANON_ID.Guerreiro,
     hpDie: 10,
     hpDieMax: 10,
     hpDieAvg: 6,
@@ -69,7 +108,7 @@ export const CLASS_LIST: ClassDef[] = [
     culinary: { trinchar: 3, estomagoDeFerro: 2 },
     dietBonus: "Metabolismo Focado — Vantagem em Força/Atletismo após refeição Comum+",
     subclasses: [
-      "Acougueiro de Batalha",
+      "Predador Voraz",
       "Quebra-Cascos",
       "Cavaleiro Dracônico",
       "Guerreiro das Profundezas",
@@ -77,6 +116,7 @@ export const CLASS_LIST: ClassDef[] = [
   },
   {
     id: "Patrulheiro",
+    canonId: CLASS_CANON_ID.Patrulheiro,
     hpDie: 10,
     hpDieMax: 10,
     hpDieAvg: 6,
@@ -93,6 +133,7 @@ export const CLASS_LIST: ClassDef[] = [
   },
   {
     id: "Ladino",
+    canonId: CLASS_CANON_ID.Ladino,
     hpDie: 8,
     hpDieMax: 8,
     hpDieAvg: 5,
@@ -109,6 +150,7 @@ export const CLASS_LIST: ClassDef[] = [
   },
   {
     id: "Mago",
+    canonId: CLASS_CANON_ID.Mago,
     hpDie: 6,
     hpDieMax: 6,
     hpDieAvg: 4,
@@ -126,6 +168,7 @@ export const CLASS_LIST: ClassDef[] = [
   },
   {
     id: "Clérigo",
+    canonId: CLASS_CANON_ID.Clérigo,
     hpDie: 8,
     hpDieMax: 8,
     hpDieAvg: 5,
@@ -143,6 +186,7 @@ export const CLASS_LIST: ClassDef[] = [
   },
   {
     id: "Bárbaro",
+    canonId: CLASS_CANON_ID.Bárbaro,
     hpDie: 12,
     hpDieMax: 12,
     hpDieAvg: 7,
@@ -159,6 +203,7 @@ export const CLASS_LIST: ClassDef[] = [
   },
   {
     id: "Bardo",
+    canonId: CLASS_CANON_ID.Bardo,
     hpDie: 8,
     hpDieMax: 8,
     hpDieAvg: 5,
@@ -175,6 +220,7 @@ export const CLASS_LIST: ClassDef[] = [
   },
   {
     id: "Druida",
+    canonId: CLASS_CANON_ID.Druida,
     hpDie: 8,
     hpDieMax: 8,
     hpDieAvg: 5,
@@ -191,6 +237,7 @@ export const CLASS_LIST: ClassDef[] = [
   },
   {
     id: "Artífice",
+    canonId: CLASS_CANON_ID["Artífice"],
     hpDie: 8,
     hpDieMax: 8,
     hpDieAvg: 5,
@@ -210,6 +257,7 @@ export const CLASS_LIST: ClassDef[] = [
 export const RACE_LIST: RaceDef[] = [
   {
     id: "Humano",
+    canonId: RACE_CANON_ID.Humano,
     attributeBonus: {
       forca: 1,
       destreza: 1,
@@ -230,6 +278,7 @@ export const RACE_LIST: RaceDef[] = [
   },
   {
     id: "Elfo",
+    canonId: RACE_CANON_ID.Elfo,
     attributeBonus: { destreza: 2, inteligencia: 1 },
     culinaryBonus: { harmonizacao: 3 },
     traits: ["Visão Arcana", "Instinto de Harmonização", "Sono Élfico", "Resistência a Encantamentos"],
@@ -243,6 +292,7 @@ export const RACE_LIST: RaceDef[] = [
   },
   {
     id: "Anão",
+    canonId: RACE_CANON_ID.Anão,
     attributeBonus: { constituicao: 2, forca: 1 },
     culinaryBonus: { trinchar: 2 },
     traits: ["Resistência Anã", "Visão de Escuro", "Mestria de Ferramentas", "Instinto de Forja"],
@@ -256,6 +306,7 @@ export const RACE_LIST: RaceDef[] = [
   },
   {
     id: "Halfling",
+    canonId: RACE_CANON_ID.Halfling,
     attributeBonus: { destreza: 2, sabedoria: 1 },
     traits: ["Sorte Inata", "Bravura Halfling", "Furtividade Natural", "Paladar de Especialista"],
     milestones: {
@@ -272,6 +323,7 @@ export const RACE_LIST: RaceDef[] = [
   },
   {
     id: "Gnomo",
+    canonId: RACE_CANON_ID.Gnomo,
     attributeBonus: { inteligencia: 2, sabedoria: 1 },
     culinaryBonus: { harmonizacao: 4 },
     traits: ["Mente Alquímica", "Pocioneiro Nato", "Identificação Instantânea", "Resistência Mágica"],
@@ -289,6 +341,7 @@ export const RACE_LIST: RaceDef[] = [
   },
   {
     id: "Meio-Humano",
+    canonId: RACE_CANON_ID["Meio-Humano"],
     fixedBonus: { constituicao: 1 },
     attributeBonus: {},
     traits: ["Herança Bestial", "Olfato Aguçado", "Corpo Resistente"],
@@ -296,6 +349,7 @@ export const RACE_LIST: RaceDef[] = [
     linhagens: [
       {
         id: "Linhagem do Gato",
+        canonId: LINHAGEM_CANON_ID["Linhagem do Gato"],
         attributeBonus: { destreza: 2, sabedoria: 1 },
         trait: "Aterrissagem Felina, Visão Noturna, Reflexos de Predador",
         milestones: {
@@ -308,6 +362,7 @@ export const RACE_LIST: RaceDef[] = [
       },
       {
         id: "Linhagem da Cobra",
+        canonId: LINHAGEM_CANON_ID["Linhagem da Cobra"],
         attributeBonus: { destreza: 2, inteligencia: 1 },
         trait: "Visão Térmica, Flexibilidade Óssea, Veneno Natural",
         milestones: {
@@ -320,6 +375,7 @@ export const RACE_LIST: RaceDef[] = [
       },
       {
         id: "Linhagem do Urso",
+        canonId: LINHAGEM_CANON_ID["Linhagem do Urso"],
         attributeBonus: { forca: 2, constituicao: 1 },
         trait: "Força Bruta, Agarrão Poderoso, Pelagem Grossa",
         milestones: {
@@ -332,30 +388,35 @@ export const RACE_LIST: RaceDef[] = [
       },
       {
         id: "Linhagem do Tigre",
+        canonId: LINHAGEM_CANON_ID["Linhagem do Tigre"],
         attributeBonus: { forca: 2, destreza: 1 },
         trait: "Salto Predatório, Camuflagem Listrada, Rugido",
         milestones: { 4: "Garras Afiadas", 8: "Emboscada", 12: "Instinto de Caça", 16: "Mordida", 20: "Forma de Tigre" },
       },
       {
         id: "Linhagem da Águia",
+        canonId: LINHAGEM_CANON_ID["Linhagem da Águia"],
         attributeBonus: { destreza: 2, sabedoria: 1 },
         trait: "Visão de Caçador, Voo Planado, Garras",
         milestones: { 4: "Mergulho", 8: "Olho de Águia", 12: "Asas Parciais", 16: "Garras Afiadas", 20: "Forma de Águia" },
       },
       {
         id: "Linhagem do Lobo",
+        canonId: LINHAGEM_CANON_ID["Linhagem do Lobo"],
         attributeBonus: { destreza: 1, sabedoria: 2 },
         trait: "Caça em Matilha, Faro, Mordida",
         milestones: { 4: "Mordida Aprimorada", 8: "Uivo de Matilha", 12: "Instinto de Alcateia", 16: "Forma Híbrida", 20: "Forma de Lobo" },
       },
       {
         id: "Linhagem do Tubarão",
+        canonId: LINHAGEM_CANON_ID["Linhagem do Tubarão"],
         attributeBonus: { forca: 2, constituicao: 1 },
         trait: "Frenesi Aquático, Mordida, Sentido de Sangue",
         milestones: { 4: "Mordida Devastadora", 8: "Nadador Natural", 12: "Frenesi", 16: "Pele Cartilaginosa", 20: "Forma de Tubarão" },
       },
       {
         id: "Linhagem do Corvo",
+        canonId: LINHAGEM_CANON_ID["Linhagem do Corvo"],
         attributeBonus: { inteligencia: 2, carisma: 1 },
         trait: "Memória, Voo, Augúrio",
         milestones: { 4: "Mensageiro", 8: "Visão Augúrio", 12: "Plumas Negras", 16: "Voz dos Mortos", 20: "Forma de Corvo" },
@@ -364,6 +425,7 @@ export const RACE_LIST: RaceDef[] = [
   },
   {
     id: "Forjado de Osso",
+    canonId: RACE_CANON_ID["Forjado de Osso"],
     attributeBonus: { constituicao: 2 },
     traits: ["Construto Vivo", "Núcleo de Alma", "Composição de Monstros", "Manutenção"],
     milestones: {
@@ -481,8 +543,9 @@ export function classLevelFeatures(classId: string, level: number): string[] {
   if (classId === "Guerreiro") {
     if (level === 5 || level === 11 || level === 17) {
       const attacks = level === 5 ? 2 : level === 11 ? 3 : 4;
-      out.push(`Ataque Extra — ${attacks} ataques/ação`);
+      out.push(`Ataque Extra — ${attacks} ataques/ação (1 PA por golpe)`);
     }
+    if (level === 5) out.push("Economia marcial — cada golpe de arma custa 1 PA");
     if (level === 14) out.push("Golpe de Veterano — críticos 19–20");
     if (level === 20) out.push("Campeão Implacável");
   }
@@ -495,6 +558,10 @@ export function classLevelFeatures(classId: string, level: number): string[] {
   if (classId === "Bárbaro" && level === 1) out.push("Fúria — 2 usos");
   if (classId === "Bardo" && level >= 1) out.push("Inspiração de Bardo evolui com o nível");
   if (classId === "Druida" && level === 1) out.push("Forma Selvagem");
+  const casters = ["Mago", "Clérigo", "Druida", "Bardo", "Artífice"];
+  if (casters.includes(classId) && level === 5) {
+    out.push("Afinidade Arcânica — magias 2+ PA custam 1 PA a menos");
+  }
   if (TALENT_LEVELS.includes(level as (typeof TALENT_LEVELS)[number])) {
     out.push(`Talento do Caminho de Subclasse (nv ${level})`);
   }
@@ -510,16 +577,10 @@ export function extraAttackCount(classId: string, level: number): number {
   return 1;
 }
 
-export function paMaxForLevel(level: number, base = 4): number {
-  let pa = base;
-  if (level >= 5) pa += 1;
-  if (level >= 10) pa += 1;
-  if (level >= 15) pa += 1;
-  return pa;
-}
+export { PA_BASE, paMaxForLevel, paMaxForActor } from "@/lib/combat/pa-economy";
 
 /** @alias paMaxForLevel */
-export const paMaxFor = paMaxForLevel;
+export { paMaxForLevel as paMaxFor } from "@/lib/combat/pa-economy";
 
 export function defaultAttributesForRace(raceId: string, linhagem?: string | null): Record<AttributeKey, number> {
   const base: Record<AttributeKey, number> = {

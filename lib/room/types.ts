@@ -1,5 +1,5 @@
 import type { CharacterSheet } from "@/lib/character/types";
-import type { BattleScene } from "@/lib/vtt/types";
+import type { BattlePing, BattleScene } from "@/lib/vtt/types";
 import type { ChatMessage } from "./chat";
 import type { CombatTrack } from "./combat";
 
@@ -19,6 +19,7 @@ export type RoomState = {
   actors: Record<string, RoomActor>;
   combat: CombatTrack;
   chat: ChatMessage[];
+  pings: BattlePing[];
   revision: number;
   updatedAt: number;
 };
@@ -38,5 +39,6 @@ export type RoomSnapshot = {
   actors: Record<string, RoomActor>;
   combat: CombatTrack;
   chat: ChatMessage[];
+  pings: BattlePing[];
   revision: number;
 };

@@ -1,25 +1,19 @@
 [
   {
-    "id": "usr_admin_01",
-    "email": "admin@vinite.local",
-    "name": "Admin Eldarin",
-    "passwordHash": "$2b$10$FNbaVfNjjOZ5wTrzSSXsAODJ9OwtanISAn06WQ95dhEC.MB/OFGwS",
-    "role": "admin",
-    "createdAt": 0
-  },
-  {
     "id": "usr_demo_mestre",
-    "email": "mestre@vinite.local",
-    "name": "Conta demo (legado mestre)",
-    "passwordHash": "$2b$10$FNbaVfNjjOZ5wTrzSSXsAODJ9OwtanISAn06WQ95dhEC.MB/OFGwS",
+    "email": "mestre@eldarin.local",
+    "nickname": "mestre",
+    "name": "Mestre",
+    "passwordHash": "$2b$10$5jMiQRTFk/O2ka4vVnsFjefQfutnvchT95k73D3C6zqWjl1W5Txbq",
     "role": "member",
     "createdAt": 0
   },
   {
     "id": "usr_demo_jogador",
-    "email": "jogador@vinite.local",
-    "name": "Conta demo (legado jogador)",
-    "passwordHash": "$2b$10$FNbaVfNjjOZ5wTrzSSXsAODJ9OwtanISAn06WQ95dhEC.MB/OFGwS",
+    "email": "jogador@eldarin.local",
+    "nickname": "jogador",
+    "name": "Jogador",
+    "passwordHash": "$2b$10$5jMiQRTFk/O2ka4vVnsFjefQfutnvchT95k73D3C6zqWjl1W5Txbq",
     "role": "member",
     "createdAt": 0
   }

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useMemo, useState } from "react";
 import type { CharacterSheet } from "@/lib/character/types";
@@ -31,7 +31,7 @@ export function CharacterIdentityEditor({ actor, roomId, canEdit, onSaved }: Pro
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState<string | null>(null);
 
-  const [raca, setRaca] = useState(actor.identity.raca);
+  const [raca, setRaça] = useState(actor.identity.raca);
   const [classe, setClasse] = useState(actor.identity.classe);
   const [subclasse, setSubclasse] = useState(actor.identity.subclasse ?? "");
   const [linhagem, setLinhagem] = useState(actor.identity.linhagem ?? "");
@@ -95,7 +95,7 @@ export function CharacterIdentityEditor({ actor, roomId, canEdit, onSaved }: Pro
         <div className="sheet-identity-form">
           <label>
             Raça
-            <select value={raca} onChange={(e) => setRaca(e.target.value)}>
+            <select value={raca} onChange={(e) => setRaça(e.target.value)}>
               {RACE_LIST.map((r) => (
                 <option key={r.id} value={r.id}>
                   {r.id}

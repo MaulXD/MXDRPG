@@ -11,7 +11,7 @@ export class EldarinNpcDataModel extends foundry.abstract.TypeDataModel {
       }),
       resources: new SchemaField({
         vida: resourceSchema(10),
-        pontosAcao: resourceSchema(4),
+        pontosAcao: resourceSchema(5),
       }),
       movement: new SchemaField({
         hex: new SchemaField({

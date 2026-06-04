@@ -1,16 +1,24 @@
-import { getCharacter } from "@/lib/character/characters";
+import { getCharacter } from "@/lib/character/demo-characters";
 import { normalizeCharacter } from "@/lib/character/normalize";
+import { paMaxForActor } from "@/lib/combat/pa-economy";
+import { normalizeTokenPaFields } from "@/lib/combat/pa-token-state";
 import { defaultMovementFields } from "@/lib/vtt/movement";
+import { tokenFootprint } from "@/lib/vtt/token-occupancy";
 import { collectPlayerActorIds, playerColorForActor } from "@/lib/vtt/token-colors";
 import { DEFAULT_PORTRAIT_FOCUS, sanitizePortraitFocus } from "@/lib/media/portrait-focus";
 import { DEMO_SCENE } from "@/lib/vtt/demo-scene";
 import type { BattleScene, BattleToken } from "@/lib/vtt/types";
 import { emptyCombat } from "./combat";
 import { welcomeChat } from "./chat";
+import { initCombatPaForRoom } from "./handlers/combat-turn";
 import type { RoomActor, RoomState } from "./types";
 
 /** Foundry: token linkado herda stats + imagem do Actor */
-export function syncLinkedTokens(scene: BattleScene, actors: Record<string, RoomActor>): BattleScene {
+export function syncLinkedTokens(
+  scene: BattleScene,
+  actors: Record<string, RoomActor>,
+  opts?: { preserveCombatPa?: boolean }
+): BattleScene {
   const playerIds = collectPlayerActorIds(scene.tokens);
 
   const tokens: BattleToken[] = scene.tokens.map((token) => {
@@ -20,6 +28,23 @@ export function syncLinkedTokens(scene: BattleScene, actors: Record<string, Room
 
     const focus = sanitizePortraitFocus(actor.portraitFocus) ?? DEFAULT_PORTRAIT_FOCUS;
     const playerColor = playerColorForActor(token.actorId, playerIds);
+    const paMax = paMaxForActor(actor);
+    const paSource =
+      opts?.preserveCombatPa && typeof token.pa === "number"
+        ? token.pa
+        : typeof token.pa === "number"
+          ? token.pa
+          : actor.resources.pontosAcao.value;
+    const paFields = normalizeTokenPaFields(
+      {
+        ...token,
+        pa: paSource,
+        bankedPa: opts?.preserveCombatPa ? (token.bankedPa ?? 0) : (token.bankedPa ?? 0),
+        paSpentThisTurn: token.paSpentThisTurn ?? 0,
+        paMax,
+      },
+      paMax
+    );
 
     return {
       ...token,
@@ -27,8 +52,7 @@ export function syncLinkedTokens(scene: BattleScene, actors: Record<string, Room
       color: playerColor,
       walk: actor.movement.walk,
       run: actor.movement.run,
-      pa: actor.resources.pontosAcao.value,
-      paMax: actor.resources.pontosAcao.max,
+      ...paFields,
       nivel: actor.identity.nivel,
       vida: actor.resources.vida.value,
       vidaMax: actor.resources.vida.max,
@@ -49,6 +73,7 @@ export function syncLinkedTokens(scene: BattleScene, actors: Record<string, Room
       movementWalkMax: actor.movement.walk,
       movementRunMax: actor.movement.run,
       movementSpentHex: token.movementSpentHex ?? 0,
+      footprint: tokenFootprint(token, actor.identity.raca),
     };
   });
 
@@ -70,9 +95,9 @@ export function createDemoRoom(): RoomState {
 
   const scene = syncLinkedTokens(DEMO_SCENE, actors);
 
-  return {
+  const room: RoomState = {
     roomId: "demo",
-    ownerId: "usr_admin_01",
+    ownerId: "usr_demo_mestre",
     name: "Mesa demonstração",
     inviteCode: "DEMOELDR",
     memberIds: [],
@@ -80,7 +105,11 @@ export function createDemoRoom(): RoomState {
     actors,
     combat: emptyCombat(scene.tokens),
     chat: [welcomeChat()],
+    pings: [],
     revision: 1,
     updatedAt: Date.now(),
   };
+
+  initCombatPaForRoom(room);
+  return room;
 }

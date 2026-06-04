@@ -1,15 +1,36 @@
 import type { Axial } from "@/lib/vtt/hex-math";
-import { axialDistance, hexNeighbors, hexesInRange } from "@/lib/vtt/hex-math";
+import { axialDistance } from "@/lib/vtt/hex-math";
+import {
+  areaNeedsDirection,
+  computeAreaHexes,
+  type AreaShape,
+} from "@/lib/vtt/hex-area";
 import type { BattleToken } from "@/lib/vtt/types";
 import type { CharacterSheet } from "@/lib/character/types";
 import type { CombatActionOption, CombatTurnOptions } from "@/lib/combat/types";
 import { canAttackTarget, resolveAttack, type AttackResolution } from "@/lib/combat/attack";
+import {
+  actionWithChannel,
+  clampChannelExtraPa,
+  totalChannelPaCost,
+} from "@/lib/combat/spell-channel";
+import { checkCanSpendPa } from "@/lib/combat/pa-turn";
 import { resolveSaveSpell, type SaveSpellResolution } from "@/lib/combat/spell";
 
-export type SpellAreaShape = "single" | "burst" | "wall";
+export type SpellAreaShape = AreaShape;
+
+export { areaNeedsDirection };
 
 export function parseAreaShape(raw: string | undefined): SpellAreaShape {
-  if (raw === "burst" || raw === "wall") return raw;
+  if (
+    raw === "burst" ||
+    raw === "wall" ||
+    raw === "cone" ||
+    raw === "line" ||
+    raw === "cube"
+  ) {
+    return raw;
+  }
   return "single";
 }
 
@@ -17,17 +38,18 @@ export function computeSpellAreaHexes(
   center: Axial,
   shape: SpellAreaShape,
   radiusHex: number,
-  hexCount?: number
+  hexCount?: number,
+  direction?: number | null,
+  lengthHex?: number
 ): Axial[] {
-  if (shape === "burst") {
-    return hexesInRange(center, Math.max(1, radiusHex));
-  }
-  if (shape === "wall") {
-    const count = hexCount ?? 3;
-    const cells = [center, ...hexNeighbors(center)];
-    return cells.slice(0, count);
-  }
-  return [center];
+  return computeAreaHexes({
+    center,
+    shape,
+    radiusHex,
+    hexCount,
+    lengthHex: lengthHex ?? radiusHex,
+    direction,
+  });
 }
 
 export function tokensInArea(tokens: BattleToken[], area: Axial[]): BattleToken[] {
@@ -39,7 +61,9 @@ export function canCastAreaAt(
   caster: BattleToken,
   center: Axial,
   action: CombatActionOption,
-  turn?: CombatTurnOptions
+  turn?: CombatTurnOptions,
+  actor?: CharacterSheet | null,
+  channelExtraPa = 0
 ): { ok: boolean; reason?: string } {
   if (action.areaShape === "single" || !action.areaShape) {
     return { ok: false, reason: "Magia não é de área" };
@@ -47,9 +71,10 @@ export function canCastAreaAt(
   if (turn?.activeTokenId && caster.id !== turn.activeTokenId && !turn.bypassTurn) {
     return { ok: false, reason: "Aguarde seu turno na iniciativa" };
   }
-  if (caster.pa < action.paCost) {
-    return { ok: false, reason: `PA insuficiente (precisa ${action.paCost})` };
-  }
+  const extra = clampChannelExtraPa(action, channelExtraPa);
+  const paNeed = actor ? totalChannelPaCost(actor, action, extra) : action.paCost + extra;
+  const paCheck = checkCanSpendPa(caster, paNeed);
+  if (!paCheck.ok) return { ok: false, reason: paCheck.reason };
   const dist = axialDistance(caster.axial, center);
   if (dist > action.rangeHex) {
     return { ok: false, reason: `Centro fora de alcance (${dist}/${action.rangeHex} hex)` };
@@ -79,28 +104,37 @@ export function resolveAreaSpell(
   action: CombatActionOption,
   allTokens: BattleToken[],
   actors: Record<string, CharacterSheet>,
-  turn?: CombatTurnOptions
+  turn?: CombatTurnOptions,
+  areaDirection?: number | null,
+  channelExtraPa = 0
 ): AreaSpellResolution {
-  const check = canCastAreaAt(caster, center, action, turn);
+  const extra = clampChannelExtraPa(action, channelExtraPa);
+  const resolved = actionWithChannel(action, extra);
+  const check = canCastAreaAt(caster, center, action, turn, actor, extra);
   if (!check.ok) throw new Error(check.reason ?? "Área inválida");
 
-  const shape = action.areaShape ?? "burst";
+  const shape = resolved.areaShape ?? "burst";
+  if (areaNeedsDirection(shape) && areaDirection == null) {
+    throw new Error("Escolha a direção da área (hex vizinho ao centro)");
+  }
   const areaHexes = computeSpellAreaHexes(
     center,
     shape,
-    action.areaRadiusHex ?? 1,
-    action.areaHexCount
+    resolved.areaRadiusHex ?? 1,
+    resolved.areaHexCount,
+    areaDirection ?? null,
+    resolved.areaRadiusHex ?? 1
   );
 
-  if (shape === "wall" && action.resolution !== "attack" && !action.damageFormula) {
+  if (shape === "wall" && resolved.resolution !== "attack" && !resolved.damageFormula) {
     return {
       casterTokenId: caster.id,
       center,
       areaHexes,
-      actionName: action.name,
-      paCost: action.paCost,
+      actionName: resolved.name,
+      paCost: totalChannelPaCost(actor, action, extra),
       hits: [],
-      summary: `${actor.name} conjura ${action.name} em ${areaHexes.length} hex (${areaHexes.map((h) => `q${h.q}r${h.r}`).join(", ")}).`,
+      summary: `${actor.name} conjura ${resolved.name} em ${areaHexes.length} hex (${areaHexes.map((h) => `q${h.q}r${h.r}`).join(", ")}).`,
     };
   }
 
@@ -110,15 +144,18 @@ export function resolveAreaSpell(
   for (const target of targets) {
     if ((target.vida ?? 0) <= 0 && target.vidaMax != null) continue;
 
-    if (action.resolution === "save") {
+    if (resolved.resolution === "save") {
       const defenderActor = target.linked && target.actorId ? actors[target.actorId] ?? null : null;
       const res = resolveSaveSpell(caster, target, actor, defenderActor, action, turn, {
         skipRangeCheck: true,
+        channelExtraPa: extra,
+        skipPaCheck: true,
       });
       hits.push({ tokenId: target.id, kind: "save", result: res });
     } else {
-      const res = resolveAttack(caster, target, actor, action, turn, undefined, allTokens, {
+      const res = resolveAttack(caster, target, actor, resolved, turn, undefined, allTokens, {
         skipRangeCheck: true,
+        skipPaCheck: true,
       });
       hits.push({ tokenId: target.id, kind: "attack", result: res });
     }
@@ -130,17 +167,18 @@ export function resolveAreaSpell(
     return sum;
   }, 0);
 
+  const channelTag = extra > 0 ? ` [canalizado +${extra} PA]` : "";
   const summary =
     hits.length === 0
-      ? `${actor.name} conjura ${action.name} — nenhum alvo na área.`
-      : `${actor.name} conjura ${action.name} (${areaHexes.length} hex) — ${hits.length} alvo(s), ${totalDmg} dano total.`;
+      ? `${actor.name} conjura ${resolved.name}${channelTag} — nenhum alvo na área.`
+      : `${actor.name} conjura ${resolved.name}${channelTag} (${areaHexes.length} hex) — ${hits.length} alvo(s), ${totalDmg} dano total.`;
 
   return {
     casterTokenId: caster.id,
     center,
     areaHexes,
-    actionName: action.name,
-    paCost: action.paCost,
+    actionName: resolved.name,
+    paCost: totalChannelPaCost(actor, action, extra),
     hits,
     summary,
   };

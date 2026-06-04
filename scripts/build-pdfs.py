@@ -41,7 +41,7 @@ BOOKS = [
         "subtitle": "Livro do Mestre",
         "tagline": "Partes XI–XII · Onze Bocas · ~80 espécimes",
         "css": ["vinite-book.css"],
-        "body_class": "book mestre bestiario",
+        "body_class": "book mestre bestiário",
     },
     {
         "id": "ficha",
@@ -66,7 +66,7 @@ BOOKS = [
         "subtitle": "Livro Geral",
         "tagline": "Partes I–XII · 34 subclasses · 60 magias · bestiário",
         "css": ["vinite-book.css"],
-        "body_class": "book geral bestiario",
+        "body_class": "book geral bestiário",
     },
 ]
 
@@ -95,9 +95,9 @@ def preprocess_md(text: str) -> str:
                 r'\1 <!--parte-->',
                 line,
             )
-        elif re.match(r"^## CAPITULO ", line, re.I):
+        elif re.match(r"^## CAPÍTULO ", line, re.I):
             line = re.sub(
-                r"^(## CAPITULO .+)$",
+                r"^(## CAPÍTULO .+)$",
                 r'\1 <!--capitulo-->',
                 line,
             )
@@ -123,7 +123,7 @@ def postprocess_html(html: str) -> str:
     )
     html = html.replace("<!--capitulo-->", "")
     html = re.sub(
-        r"<h2>(CAPITULO [^<]+)</h2>",
+        r"<h2>(CAPÍTULO [^<]+)</h2>",
         r'<h2 class="capitulo">\1</h2>',
         html,
         flags=re.I,
@@ -182,8 +182,8 @@ def build_html_document(book: dict, body_html: str) -> str:
         for name in book["css"]
     )
     fonts = (
-        '  <link rel="preconnect" href="https://fonts.googleapis.com">\n'
-        '  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n'
+        '  <link rel="preçonnect" href="https://fonts.googleapis.com">\n'
+        '  <link rel="preçonnect" href="https://fonts.gstatic.com" crossorigin>\n'
         '  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700'
         "&family=Lora:ital,wght@0,400;0,600;1,400&display=swap\" rel=\"stylesheet\">\n"
     )

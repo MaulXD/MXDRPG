@@ -1,9 +1,39 @@
 [
   {
-    "name": "Armadura de Couro Reforçado",
+    "id": "equipamentos-arm-01",
+    "name": "Couro Curtido",
     "type": "equipamento",
     "system": {
-      "description": "<p>+1 defesa</p>",
+      "description": "<p>Leve · CA base 11.</p>",
+      "catalogId": "ARM-01",
+      "enchant": 0,
+      "armor": {
+        "categoria": "leve",
+        "caBase": 11
+      },
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      },
+      "tactical": {
+        "bonusDefesa": {
+          "value": 0
+        }
+      }
+    }
+  },
+  {
+    "id": "equipamentos-arm-01-mais-1",
+    "name": "Couro Curtido +1",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Leve · CA base 11 +1 mágico.</p>",
+      "catalogId": "ARM-01",
+      "enchant": 1,
+      "armor": {
+        "categoria": "leve",
+        "caBase": 11
+      },
       "gear": {
         "peso": 2,
         "equipado": false
@@ -16,38 +46,40 @@
     }
   },
   {
-    "name": "Kit de Trinchar",
+    "id": "equipamentos-arm-01-mais-2",
+    "name": "Couro Curtido +2",
     "type": "equipamento",
     "system": {
-      "description": "<p>Facas e sacos para ingredientes.</p>",
-      "gear": {
-        "peso": 2,
-        "equipado": false
-      }
-    }
-  },
-  {
-    "name": "Tocha de Masmorra",
-    "type": "equipamento",
-    "system": {
-      "description": "<p>Ilumina 4 hex 1h.</p>",
+      "description": "<p>Leve · CA base 11 +2 mágico.</p>",
+      "catalogId": "ARM-01",
+      "enchant": 2,
+      "armor": {
+        "categoria": "leve",
+        "caBase": 11
+      },
       "gear": {
         "peso": 2,
         "equipado": false
       },
-      "effect": {
-        "alcanceHex": {
-          "value": 4
-        },
-        "duracao": "1 hora"
+      "tactical": {
+        "bonusDefesa": {
+          "value": 2
+        }
       }
     }
   },
   {
-    "name": "Armadura de Placas",
+    "id": "equipamentos-arm-01-mais-3",
+    "name": "Couro Curtido +3",
     "type": "equipamento",
     "system": {
-      "description": "<p>+3 defesa, pesada.</p>",
+      "description": "<p>Leve · CA base 11 +3 mágico.</p>",
+      "catalogId": "ARM-01",
+      "enchant": 3,
+      "armor": {
+        "categoria": "leve",
+        "caBase": 11
+      },
       "gear": {
         "peso": 2,
         "equipado": false
@@ -60,119 +92,40 @@
     }
   },
   {
-    "name": "Escudo de Teixo",
+    "id": "equipamentos-arm-02",
+    "name": "Couro Acolchoado",
     "type": "equipamento",
     "system": {
-      "description": "<p>+2 defesa.</p>",
+      "description": "<p>Leve · CA base 12.</p>",
+      "catalogId": "ARM-02",
+      "enchant": 0,
+      "armor": {
+        "categoria": "leve",
+        "caBase": 12
+      },
       "gear": {
         "peso": 2,
         "equipado": false
       },
       "tactical": {
         "bonusDefesa": {
-          "value": 2
+          "value": 0
         }
       }
     }
   },
   {
-    "name": "Corda de Seda de Aranha",
+    "id": "equipamentos-arm-02-mais-1",
+    "name": "Couro Acolchoado +1",
     "type": "equipamento",
     "system": {
-      "description": "<p>50m, resistente.</p>",
-      "gear": {
-        "peso": 2,
-        "equipado": false
-      }
-    }
-  },
-  {
-    "name": "Poção de Vida Menor",
-    "type": "equipamento",
-    "system": {
-      "description": "<p>Cura 2d4+2.</p>",
-      "gear": {
-        "peso": 2,
-        "equipado": false
-      }
-    }
-  },
-  {
-    "name": "Antídoto de Masmorra",
-    "type": "equipamento",
-    "system": {
-      "description": "<p>Vantagem save veneno 1h.</p>",
-      "gear": {
-        "peso": 2,
-        "equipado": false
-      }
-    }
-  },
-  {
-    "name": "Ração de Viagem",
-    "type": "equipamento",
-    "system": {
-      "description": "<p>1 dia de comida.</p>",
-      "gear": {
-        "peso": 2,
-        "equipado": false
-      }
-    }
-  },
-  {
-    "name": "Cantil Encantado",
-    "type": "equipamento",
-    "system": {
-      "description": "<p>Água infinita leve.</p>",
-      "gear": {
-        "peso": 2,
-        "equipado": false
-      }
-    }
-  },
-  {
-    "name": "Kit de Primeiros Socorros",
-    "type": "equipamento",
-    "system": {
-      "description": "<p>+2 Estabilizar.</p>",
-      "gear": {
-        "peso": 2,
-        "equipado": false
-      }
-    }
-  },
-  {
-    "name": "Armadura de Mithral",
-    "type": "equipamento",
-    "system": {
-      "description": "<p>+2 defesa sem penalidade.</p>",
-      "gear": {
-        "peso": 2,
-        "equipado": false
+      "description": "<p>Leve · CA base 12 +1 mágico.</p>",
+      "catalogId": "ARM-02",
+      "enchant": 1,
+      "armor": {
+        "categoria": "leve",
+        "caBase": 12
       },
-      "tactical": {
-        "bonusDefesa": {
-          "value": 2
-        }
-      }
-    }
-  },
-  {
-    "name": "Botas de Passo Silencioso",
-    "type": "equipamento",
-    "system": {
-      "description": "<p>+2 furtividade.</p>",
-      "gear": {
-        "peso": 2,
-        "equipado": false
-      }
-    }
-  },
-  {
-    "name": "Amuleto de Proteção",
-    "type": "equipamento",
-    "system": {
-      "description": "<p>+1 defesa.</p>",
       "gear": {
         "peso": 2,
         "equipado": false
@@ -185,10 +138,2260 @@
     }
   },
   {
-    "name": "Bolsa de Componentes",
+    "id": "equipamentos-arm-02-mais-2",
+    "name": "Couro Acolchoado +2",
     "type": "equipamento",
     "system": {
-      "description": "<p>Para conjuradores.</p>",
+      "description": "<p>Leve · CA base 12 +2 mágico.</p>",
+      "catalogId": "ARM-02",
+      "enchant": 2,
+      "armor": {
+        "categoria": "leve",
+        "caBase": 12
+      },
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      },
+      "tactical": {
+        "bonusDefesa": {
+          "value": 2
+        }
+      }
+    }
+  },
+  {
+    "id": "equipamentos-arm-02-mais-3",
+    "name": "Couro Acolchoado +3",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Leve · CA base 12 +3 mágico.</p>",
+      "catalogId": "ARM-02",
+      "enchant": 3,
+      "armor": {
+        "categoria": "leve",
+        "caBase": 12
+      },
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      },
+      "tactical": {
+        "bonusDefesa": {
+          "value": 3
+        }
+      }
+    }
+  },
+  {
+    "id": "equipamentos-arm-03",
+    "name": "Gibão de Peles",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Leve · CA base 11.</p>",
+      "catalogId": "ARM-03",
+      "enchant": 0,
+      "armor": {
+        "categoria": "leve",
+        "caBase": 11
+      },
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      },
+      "tactical": {
+        "bonusDefesa": {
+          "value": 0
+        }
+      }
+    }
+  },
+  {
+    "id": "equipamentos-arm-03-mais-1",
+    "name": "Gibão de Peles +1",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Leve · CA base 11 +1 mágico.</p>",
+      "catalogId": "ARM-03",
+      "enchant": 1,
+      "armor": {
+        "categoria": "leve",
+        "caBase": 11
+      },
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      },
+      "tactical": {
+        "bonusDefesa": {
+          "value": 1
+        }
+      }
+    }
+  },
+  {
+    "id": "equipamentos-arm-03-mais-2",
+    "name": "Gibão de Peles +2",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Leve · CA base 11 +2 mágico.</p>",
+      "catalogId": "ARM-03",
+      "enchant": 2,
+      "armor": {
+        "categoria": "leve",
+        "caBase": 11
+      },
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      },
+      "tactical": {
+        "bonusDefesa": {
+          "value": 2
+        }
+      }
+    }
+  },
+  {
+    "id": "equipamentos-arm-03-mais-3",
+    "name": "Gibão de Peles +3",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Leve · CA base 11 +3 mágico.</p>",
+      "catalogId": "ARM-03",
+      "enchant": 3,
+      "armor": {
+        "categoria": "leve",
+        "caBase": 11
+      },
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      },
+      "tactical": {
+        "bonusDefesa": {
+          "value": 3
+        }
+      }
+    }
+  },
+  {
+    "id": "equipamentos-arm-04",
+    "name": "Couro Batido",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Leve · CA base 12.</p>",
+      "catalogId": "ARM-04",
+      "enchant": 0,
+      "armor": {
+        "categoria": "leve",
+        "caBase": 12
+      },
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      },
+      "tactical": {
+        "bonusDefesa": {
+          "value": 0
+        }
+      }
+    }
+  },
+  {
+    "id": "equipamentos-arm-04-mais-1",
+    "name": "Couro Batido +1",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Leve · CA base 12 +1 mágico.</p>",
+      "catalogId": "ARM-04",
+      "enchant": 1,
+      "armor": {
+        "categoria": "leve",
+        "caBase": 12
+      },
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      },
+      "tactical": {
+        "bonusDefesa": {
+          "value": 1
+        }
+      }
+    }
+  },
+  {
+    "id": "equipamentos-arm-04-mais-2",
+    "name": "Couro Batido +2",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Leve · CA base 12 +2 mágico.</p>",
+      "catalogId": "ARM-04",
+      "enchant": 2,
+      "armor": {
+        "categoria": "leve",
+        "caBase": 12
+      },
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      },
+      "tactical": {
+        "bonusDefesa": {
+          "value": 2
+        }
+      }
+    }
+  },
+  {
+    "id": "equipamentos-arm-04-mais-3",
+    "name": "Couro Batido +3",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Leve · CA base 12 +3 mágico.</p>",
+      "catalogId": "ARM-04",
+      "enchant": 3,
+      "armor": {
+        "categoria": "leve",
+        "caBase": 12
+      },
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      },
+      "tactical": {
+        "bonusDefesa": {
+          "value": 3
+        }
+      }
+    }
+  },
+  {
+    "id": "equipamentos-arm-05",
+    "name": "Cota de Malha",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Média · CA base 13.</p>",
+      "catalogId": "ARM-05",
+      "enchant": 0,
+      "armor": {
+        "categoria": "media",
+        "caBase": 13
+      },
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      },
+      "tactical": {
+        "bonusDefesa": {
+          "value": 0
+        }
+      }
+    }
+  },
+  {
+    "id": "equipamentos-arm-05-mais-1",
+    "name": "Cota de Malha +1",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Média · CA base 13 +1 mágico.</p>",
+      "catalogId": "ARM-05",
+      "enchant": 1,
+      "armor": {
+        "categoria": "media",
+        "caBase": 13
+      },
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      },
+      "tactical": {
+        "bonusDefesa": {
+          "value": 1
+        }
+      }
+    }
+  },
+  {
+    "id": "equipamentos-arm-05-mais-2",
+    "name": "Cota de Malha +2",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Média · CA base 13 +2 mágico.</p>",
+      "catalogId": "ARM-05",
+      "enchant": 2,
+      "armor": {
+        "categoria": "media",
+        "caBase": 13
+      },
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      },
+      "tactical": {
+        "bonusDefesa": {
+          "value": 2
+        }
+      }
+    }
+  },
+  {
+    "id": "equipamentos-arm-05-mais-3",
+    "name": "Cota de Malha +3",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Média · CA base 13 +3 mágico.</p>",
+      "catalogId": "ARM-05",
+      "enchant": 3,
+      "armor": {
+        "categoria": "media",
+        "caBase": 13
+      },
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      },
+      "tactical": {
+        "bonusDefesa": {
+          "value": 3
+        }
+      }
+    }
+  },
+  {
+    "id": "equipamentos-arm-06",
+    "name": "Cota de Anéis",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Média · CA base 14.</p>",
+      "catalogId": "ARM-06",
+      "enchant": 0,
+      "armor": {
+        "categoria": "media",
+        "caBase": 14
+      },
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      },
+      "tactical": {
+        "bonusDefesa": {
+          "value": 0
+        }
+      }
+    }
+  },
+  {
+    "id": "equipamentos-arm-06-mais-1",
+    "name": "Cota de Anéis +1",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Média · CA base 14 +1 mágico.</p>",
+      "catalogId": "ARM-06",
+      "enchant": 1,
+      "armor": {
+        "categoria": "media",
+        "caBase": 14
+      },
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      },
+      "tactical": {
+        "bonusDefesa": {
+          "value": 1
+        }
+      }
+    }
+  },
+  {
+    "id": "equipamentos-arm-06-mais-2",
+    "name": "Cota de Anéis +2",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Média · CA base 14 +2 mágico.</p>",
+      "catalogId": "ARM-06",
+      "enchant": 2,
+      "armor": {
+        "categoria": "media",
+        "caBase": 14
+      },
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      },
+      "tactical": {
+        "bonusDefesa": {
+          "value": 2
+        }
+      }
+    }
+  },
+  {
+    "id": "equipamentos-arm-06-mais-3",
+    "name": "Cota de Anéis +3",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Média · CA base 14 +3 mágico.</p>",
+      "catalogId": "ARM-06",
+      "enchant": 3,
+      "armor": {
+        "categoria": "media",
+        "caBase": 14
+      },
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      },
+      "tactical": {
+        "bonusDefesa": {
+          "value": 3
+        }
+      }
+    }
+  },
+  {
+    "id": "equipamentos-arm-07",
+    "name": "Meia-armadura",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Média · CA base 14.</p>",
+      "catalogId": "ARM-07",
+      "enchant": 0,
+      "armor": {
+        "categoria": "media",
+        "caBase": 14
+      },
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      },
+      "tactical": {
+        "bonusDefesa": {
+          "value": 0
+        }
+      }
+    }
+  },
+  {
+    "id": "equipamentos-arm-07-mais-1",
+    "name": "Meia-armadura +1",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Média · CA base 14 +1 mágico.</p>",
+      "catalogId": "ARM-07",
+      "enchant": 1,
+      "armor": {
+        "categoria": "media",
+        "caBase": 14
+      },
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      },
+      "tactical": {
+        "bonusDefesa": {
+          "value": 1
+        }
+      }
+    }
+  },
+  {
+    "id": "equipamentos-arm-07-mais-2",
+    "name": "Meia-armadura +2",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Média · CA base 14 +2 mágico.</p>",
+      "catalogId": "ARM-07",
+      "enchant": 2,
+      "armor": {
+        "categoria": "media",
+        "caBase": 14
+      },
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      },
+      "tactical": {
+        "bonusDefesa": {
+          "value": 2
+        }
+      }
+    }
+  },
+  {
+    "id": "equipamentos-arm-07-mais-3",
+    "name": "Meia-armadura +3",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Média · CA base 14 +3 mágico.</p>",
+      "catalogId": "ARM-07",
+      "enchant": 3,
+      "armor": {
+        "categoria": "media",
+        "caBase": 14
+      },
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      },
+      "tactical": {
+        "bonusDefesa": {
+          "value": 3
+        }
+      }
+    }
+  },
+  {
+    "id": "equipamentos-arm-08",
+    "name": "Cota de Escamas",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Média · CA base 14.</p>",
+      "catalogId": "ARM-08",
+      "enchant": 0,
+      "armor": {
+        "categoria": "media",
+        "caBase": 14
+      },
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      },
+      "tactical": {
+        "bonusDefesa": {
+          "value": 0
+        }
+      }
+    }
+  },
+  {
+    "id": "equipamentos-arm-08-mais-1",
+    "name": "Cota de Escamas +1",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Média · CA base 14 +1 mágico.</p>",
+      "catalogId": "ARM-08",
+      "enchant": 1,
+      "armor": {
+        "categoria": "media",
+        "caBase": 14
+      },
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      },
+      "tactical": {
+        "bonusDefesa": {
+          "value": 1
+        }
+      }
+    }
+  },
+  {
+    "id": "equipamentos-arm-08-mais-2",
+    "name": "Cota de Escamas +2",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Média · CA base 14 +2 mágico.</p>",
+      "catalogId": "ARM-08",
+      "enchant": 2,
+      "armor": {
+        "categoria": "media",
+        "caBase": 14
+      },
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      },
+      "tactical": {
+        "bonusDefesa": {
+          "value": 2
+        }
+      }
+    }
+  },
+  {
+    "id": "equipamentos-arm-08-mais-3",
+    "name": "Cota de Escamas +3",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Média · CA base 14 +3 mágico.</p>",
+      "catalogId": "ARM-08",
+      "enchant": 3,
+      "armor": {
+        "categoria": "media",
+        "caBase": 14
+      },
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      },
+      "tactical": {
+        "bonusDefesa": {
+          "value": 3
+        }
+      }
+    }
+  },
+  {
+    "id": "equipamentos-arm-09",
+    "name": "Brigandina",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Média · CA base 14.</p>",
+      "catalogId": "ARM-09",
+      "enchant": 0,
+      "armor": {
+        "categoria": "media",
+        "caBase": 14
+      },
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      },
+      "tactical": {
+        "bonusDefesa": {
+          "value": 0
+        }
+      }
+    }
+  },
+  {
+    "id": "equipamentos-arm-09-mais-1",
+    "name": "Brigandina +1",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Média · CA base 14 +1 mágico.</p>",
+      "catalogId": "ARM-09",
+      "enchant": 1,
+      "armor": {
+        "categoria": "media",
+        "caBase": 14
+      },
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      },
+      "tactical": {
+        "bonusDefesa": {
+          "value": 1
+        }
+      }
+    }
+  },
+  {
+    "id": "equipamentos-arm-09-mais-2",
+    "name": "Brigandina +2",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Média · CA base 14 +2 mágico.</p>",
+      "catalogId": "ARM-09",
+      "enchant": 2,
+      "armor": {
+        "categoria": "media",
+        "caBase": 14
+      },
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      },
+      "tactical": {
+        "bonusDefesa": {
+          "value": 2
+        }
+      }
+    }
+  },
+  {
+    "id": "equipamentos-arm-09-mais-3",
+    "name": "Brigandina +3",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Média · CA base 14 +3 mágico.</p>",
+      "catalogId": "ARM-09",
+      "enchant": 3,
+      "armor": {
+        "categoria": "media",
+        "caBase": 14
+      },
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      },
+      "tactical": {
+        "bonusDefesa": {
+          "value": 3
+        }
+      }
+    }
+  },
+  {
+    "id": "equipamentos-arm-10",
+    "name": "Gibão de Placas",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Média · CA base 15.</p>",
+      "catalogId": "ARM-10",
+      "enchant": 0,
+      "armor": {
+        "categoria": "media",
+        "caBase": 15
+      },
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      },
+      "tactical": {
+        "bonusDefesa": {
+          "value": 0
+        }
+      }
+    }
+  },
+  {
+    "id": "equipamentos-arm-10-mais-1",
+    "name": "Gibão de Placas +1",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Média · CA base 15 +1 mágico.</p>",
+      "catalogId": "ARM-10",
+      "enchant": 1,
+      "armor": {
+        "categoria": "media",
+        "caBase": 15
+      },
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      },
+      "tactical": {
+        "bonusDefesa": {
+          "value": 1
+        }
+      }
+    }
+  },
+  {
+    "id": "equipamentos-arm-10-mais-2",
+    "name": "Gibão de Placas +2",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Média · CA base 15 +2 mágico.</p>",
+      "catalogId": "ARM-10",
+      "enchant": 2,
+      "armor": {
+        "categoria": "media",
+        "caBase": 15
+      },
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      },
+      "tactical": {
+        "bonusDefesa": {
+          "value": 2
+        }
+      }
+    }
+  },
+  {
+    "id": "equipamentos-arm-10-mais-3",
+    "name": "Gibão de Placas +3",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Média · CA base 15 +3 mágico.</p>",
+      "catalogId": "ARM-10",
+      "enchant": 3,
+      "armor": {
+        "categoria": "media",
+        "caBase": 15
+      },
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      },
+      "tactical": {
+        "bonusDefesa": {
+          "value": 3
+        }
+      }
+    }
+  },
+  {
+    "id": "equipamentos-arm-11",
+    "name": "Placas Parciais",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Pesada · CA base 15.</p>",
+      "catalogId": "ARM-11",
+      "enchant": 0,
+      "armor": {
+        "categoria": "pesada",
+        "caBase": 15
+      },
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      },
+      "tactical": {
+        "bonusDefesa": {
+          "value": 0
+        }
+      }
+    }
+  },
+  {
+    "id": "equipamentos-arm-11-mais-1",
+    "name": "Placas Parciais +1",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Pesada · CA base 15 +1 mágico.</p>",
+      "catalogId": "ARM-11",
+      "enchant": 1,
+      "armor": {
+        "categoria": "pesada",
+        "caBase": 15
+      },
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      },
+      "tactical": {
+        "bonusDefesa": {
+          "value": 1
+        }
+      }
+    }
+  },
+  {
+    "id": "equipamentos-arm-11-mais-2",
+    "name": "Placas Parciais +2",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Pesada · CA base 15 +2 mágico.</p>",
+      "catalogId": "ARM-11",
+      "enchant": 2,
+      "armor": {
+        "categoria": "pesada",
+        "caBase": 15
+      },
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      },
+      "tactical": {
+        "bonusDefesa": {
+          "value": 2
+        }
+      }
+    }
+  },
+  {
+    "id": "equipamentos-arm-11-mais-3",
+    "name": "Placas Parciais +3",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Pesada · CA base 15 +3 mágico.</p>",
+      "catalogId": "ARM-11",
+      "enchant": 3,
+      "armor": {
+        "categoria": "pesada",
+        "caBase": 15
+      },
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      },
+      "tactical": {
+        "bonusDefesa": {
+          "value": 3
+        }
+      }
+    }
+  },
+  {
+    "id": "equipamentos-arm-12",
+    "name": "Placas Completas",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Pesada · CA base 16.</p>",
+      "catalogId": "ARM-12",
+      "enchant": 0,
+      "armor": {
+        "categoria": "pesada",
+        "caBase": 16
+      },
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      },
+      "tactical": {
+        "bonusDefesa": {
+          "value": 0
+        }
+      }
+    }
+  },
+  {
+    "id": "equipamentos-arm-12-mais-1",
+    "name": "Placas Completas +1",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Pesada · CA base 16 +1 mágico.</p>",
+      "catalogId": "ARM-12",
+      "enchant": 1,
+      "armor": {
+        "categoria": "pesada",
+        "caBase": 16
+      },
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      },
+      "tactical": {
+        "bonusDefesa": {
+          "value": 1
+        }
+      }
+    }
+  },
+  {
+    "id": "equipamentos-arm-12-mais-2",
+    "name": "Placas Completas +2",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Pesada · CA base 16 +2 mágico.</p>",
+      "catalogId": "ARM-12",
+      "enchant": 2,
+      "armor": {
+        "categoria": "pesada",
+        "caBase": 16
+      },
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      },
+      "tactical": {
+        "bonusDefesa": {
+          "value": 2
+        }
+      }
+    }
+  },
+  {
+    "id": "equipamentos-arm-12-mais-3",
+    "name": "Placas Completas +3",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Pesada · CA base 16 +3 mágico.</p>",
+      "catalogId": "ARM-12",
+      "enchant": 3,
+      "armor": {
+        "categoria": "pesada",
+        "caBase": 16
+      },
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      },
+      "tactical": {
+        "bonusDefesa": {
+          "value": 3
+        }
+      }
+    }
+  },
+  {
+    "id": "equipamentos-arm-13",
+    "name": "Cota de Malha Pesada",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Pesada · CA base 16.</p>",
+      "catalogId": "ARM-13",
+      "enchant": 0,
+      "armor": {
+        "categoria": "pesada",
+        "caBase": 16
+      },
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      },
+      "tactical": {
+        "bonusDefesa": {
+          "value": 0
+        }
+      }
+    }
+  },
+  {
+    "id": "equipamentos-arm-13-mais-1",
+    "name": "Cota de Malha Pesada +1",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Pesada · CA base 16 +1 mágico.</p>",
+      "catalogId": "ARM-13",
+      "enchant": 1,
+      "armor": {
+        "categoria": "pesada",
+        "caBase": 16
+      },
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      },
+      "tactical": {
+        "bonusDefesa": {
+          "value": 1
+        }
+      }
+    }
+  },
+  {
+    "id": "equipamentos-arm-13-mais-2",
+    "name": "Cota de Malha Pesada +2",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Pesada · CA base 16 +2 mágico.</p>",
+      "catalogId": "ARM-13",
+      "enchant": 2,
+      "armor": {
+        "categoria": "pesada",
+        "caBase": 16
+      },
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      },
+      "tactical": {
+        "bonusDefesa": {
+          "value": 2
+        }
+      }
+    }
+  },
+  {
+    "id": "equipamentos-arm-13-mais-3",
+    "name": "Cota de Malha Pesada +3",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Pesada · CA base 16 +3 mágico.</p>",
+      "catalogId": "ARM-13",
+      "enchant": 3,
+      "armor": {
+        "categoria": "pesada",
+        "caBase": 16
+      },
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      },
+      "tactical": {
+        "bonusDefesa": {
+          "value": 3
+        }
+      }
+    }
+  },
+  {
+    "id": "equipamentos-arm-14",
+    "name": "Escamas de Dragonete",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Orgânica · CA base 14. · Resistência narrativa a petrificação..</p>",
+      "catalogId": "ARM-14",
+      "enchant": 0,
+      "armor": {
+        "categoria": "organica",
+        "caBase": 14,
+        "special": {
+          "effectId": "ARM-14",
+          "trigger": "whileEquipped",
+          "kind": "narrative",
+          "label": "Resistência narrativa a petrificação."
+        }
+      },
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      },
+      "tactical": {
+        "bonusDefesa": {
+          "value": 0
+        }
+      }
+    }
+  },
+  {
+    "id": "equipamentos-arm-14-mais-1",
+    "name": "Escamas de Dragonete +1",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Orgânica · CA base 14 +1 mágico.</p>",
+      "catalogId": "ARM-14",
+      "enchant": 1,
+      "armor": {
+        "categoria": "organica",
+        "caBase": 14
+      },
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      },
+      "tactical": {
+        "bonusDefesa": {
+          "value": 1
+        }
+      }
+    }
+  },
+  {
+    "id": "equipamentos-arm-14-mais-2",
+    "name": "Escamas de Dragonete +2",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Orgânica · CA base 14 +2 mágico.</p>",
+      "catalogId": "ARM-14",
+      "enchant": 2,
+      "armor": {
+        "categoria": "organica",
+        "caBase": 14
+      },
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      },
+      "tactical": {
+        "bonusDefesa": {
+          "value": 2
+        }
+      }
+    }
+  },
+  {
+    "id": "equipamentos-arm-14-mais-3",
+    "name": "Escamas de Dragonete +3",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Orgânica · CA base 14 +3 mágico.</p>",
+      "catalogId": "ARM-14",
+      "enchant": 3,
+      "armor": {
+        "categoria": "organica",
+        "caBase": 14
+      },
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      },
+      "tactical": {
+        "bonusDefesa": {
+          "value": 3
+        }
+      }
+    }
+  },
+  {
+    "id": "equipamentos-arm-15",
+    "name": "Couro de Troll",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Orgânica · CA base 13. · Regenera 1 CA em descansó curto (Mestre)..</p>",
+      "catalogId": "ARM-15",
+      "enchant": 0,
+      "armor": {
+        "categoria": "organica",
+        "caBase": 13,
+        "special": {
+          "effectId": "ARM-15",
+          "trigger": "whileEquipped",
+          "kind": "narrative",
+          "label": "Regenera 1 CA em descansó curto (Mestre)."
+        }
+      },
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      },
+      "tactical": {
+        "bonusDefesa": {
+          "value": 0
+        }
+      }
+    }
+  },
+  {
+    "id": "equipamentos-arm-15-mais-1",
+    "name": "Couro de Troll +1",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Orgânica · CA base 13 +1 mágico.</p>",
+      "catalogId": "ARM-15",
+      "enchant": 1,
+      "armor": {
+        "categoria": "organica",
+        "caBase": 13
+      },
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      },
+      "tactical": {
+        "bonusDefesa": {
+          "value": 1
+        }
+      }
+    }
+  },
+  {
+    "id": "equipamentos-arm-15-mais-2",
+    "name": "Couro de Troll +2",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Orgânica · CA base 13 +2 mágico.</p>",
+      "catalogId": "ARM-15",
+      "enchant": 2,
+      "armor": {
+        "categoria": "organica",
+        "caBase": 13
+      },
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      },
+      "tactical": {
+        "bonusDefesa": {
+          "value": 2
+        }
+      }
+    }
+  },
+  {
+    "id": "equipamentos-arm-15-mais-3",
+    "name": "Couro de Troll +3",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Orgânica · CA base 13 +3 mágico.</p>",
+      "catalogId": "ARM-15",
+      "enchant": 3,
+      "armor": {
+        "categoria": "organica",
+        "caBase": 13
+      },
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      },
+      "tactical": {
+        "bonusDefesa": {
+          "value": 3
+        }
+      }
+    }
+  },
+  {
+    "id": "equipamentos-arm-16",
+    "name": "Carapaça de Escorpião",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Orgânica · CA base 17. · Resistência a perfurante (Mestre)..</p>",
+      "catalogId": "ARM-16",
+      "enchant": 0,
+      "armor": {
+        "categoria": "organica",
+        "caBase": 17,
+        "special": {
+          "effectId": "ARM-16",
+          "trigger": "whileEquipped",
+          "kind": "narrative",
+          "label": "Resistência a perfurante (Mestre)."
+        }
+      },
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      },
+      "tactical": {
+        "bonusDefesa": {
+          "value": 0
+        }
+      }
+    }
+  },
+  {
+    "id": "equipamentos-arm-16-mais-1",
+    "name": "Carapaça de Escorpião +1",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Orgânica · CA base 17 +1 mágico.</p>",
+      "catalogId": "ARM-16",
+      "enchant": 1,
+      "armor": {
+        "categoria": "organica",
+        "caBase": 17
+      },
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      },
+      "tactical": {
+        "bonusDefesa": {
+          "value": 1
+        }
+      }
+    }
+  },
+  {
+    "id": "equipamentos-arm-16-mais-2",
+    "name": "Carapaça de Escorpião +2",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Orgânica · CA base 17 +2 mágico.</p>",
+      "catalogId": "ARM-16",
+      "enchant": 2,
+      "armor": {
+        "categoria": "organica",
+        "caBase": 17
+      },
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      },
+      "tactical": {
+        "bonusDefesa": {
+          "value": 2
+        }
+      }
+    }
+  },
+  {
+    "id": "equipamentos-arm-16-mais-3",
+    "name": "Carapaça de Escorpião +3",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Orgânica · CA base 17 +3 mágico.</p>",
+      "catalogId": "ARM-16",
+      "enchant": 3,
+      "armor": {
+        "categoria": "organica",
+        "caBase": 17
+      },
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      },
+      "tactical": {
+        "bonusDefesa": {
+          "value": 3
+        }
+      }
+    }
+  },
+  {
+    "id": "equipamentos-arm-17",
+    "name": "Cota de Basilisco",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Orgânica · CA base 16.</p>",
+      "catalogId": "ARM-17",
+      "enchant": 0,
+      "armor": {
+        "categoria": "organica",
+        "caBase": 16
+      },
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      },
+      "tactical": {
+        "bonusDefesa": {
+          "value": 0
+        }
+      }
+    }
+  },
+  {
+    "id": "equipamentos-arm-17-mais-1",
+    "name": "Cota de Basilisco +1",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Orgânica · CA base 16 +1 mágico.</p>",
+      "catalogId": "ARM-17",
+      "enchant": 1,
+      "armor": {
+        "categoria": "organica",
+        "caBase": 16
+      },
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      },
+      "tactical": {
+        "bonusDefesa": {
+          "value": 1
+        }
+      }
+    }
+  },
+  {
+    "id": "equipamentos-arm-17-mais-2",
+    "name": "Cota de Basilisco +2",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Orgânica · CA base 16 +2 mágico.</p>",
+      "catalogId": "ARM-17",
+      "enchant": 2,
+      "armor": {
+        "categoria": "organica",
+        "caBase": 16
+      },
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      },
+      "tactical": {
+        "bonusDefesa": {
+          "value": 2
+        }
+      }
+    }
+  },
+  {
+    "id": "equipamentos-arm-17-mais-3",
+    "name": "Cota de Basilisco +3",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Orgânica · CA base 16 +3 mágico.</p>",
+      "catalogId": "ARM-17",
+      "enchant": 3,
+      "armor": {
+        "categoria": "organica",
+        "caBase": 16
+      },
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      },
+      "tactical": {
+        "bonusDefesa": {
+          "value": 3
+        }
+      }
+    }
+  },
+  {
+    "id": "equipamentos-arm-18",
+    "name": "Placas de Golem",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Orgânica · CA base 17.</p>",
+      "catalogId": "ARM-18",
+      "enchant": 0,
+      "armor": {
+        "categoria": "organica",
+        "caBase": 17
+      },
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      },
+      "tactical": {
+        "bonusDefesa": {
+          "value": 0
+        }
+      }
+    }
+  },
+  {
+    "id": "equipamentos-arm-18-mais-1",
+    "name": "Placas de Golem +1",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Orgânica · CA base 17 +1 mágico.</p>",
+      "catalogId": "ARM-18",
+      "enchant": 1,
+      "armor": {
+        "categoria": "organica",
+        "caBase": 17
+      },
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      },
+      "tactical": {
+        "bonusDefesa": {
+          "value": 1
+        }
+      }
+    }
+  },
+  {
+    "id": "equipamentos-arm-18-mais-2",
+    "name": "Placas de Golem +2",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Orgânica · CA base 17 +2 mágico.</p>",
+      "catalogId": "ARM-18",
+      "enchant": 2,
+      "armor": {
+        "categoria": "organica",
+        "caBase": 17
+      },
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      },
+      "tactical": {
+        "bonusDefesa": {
+          "value": 2
+        }
+      }
+    }
+  },
+  {
+    "id": "equipamentos-arm-18-mais-3",
+    "name": "Placas de Golem +3",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Orgânica · CA base 17 +3 mágico.</p>",
+      "catalogId": "ARM-18",
+      "enchant": 3,
+      "armor": {
+        "categoria": "organica",
+        "caBase": 17
+      },
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      },
+      "tactical": {
+        "bonusDefesa": {
+          "value": 3
+        }
+      }
+    }
+  },
+  {
+    "id": "equipamentos-arm-19",
+    "name": "Manto de Grimwald",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Leve · CA base 11.</p>",
+      "catalogId": "ARM-19",
+      "enchant": 0,
+      "armor": {
+        "categoria": "leve",
+        "caBase": 11
+      },
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      },
+      "tactical": {
+        "bonusDefesa": {
+          "value": 0
+        }
+      }
+    }
+  },
+  {
+    "id": "equipamentos-arm-19-mais-1",
+    "name": "Manto de Grimwald +1",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Leve · CA base 11 +1 mágico.</p>",
+      "catalogId": "ARM-19",
+      "enchant": 1,
+      "armor": {
+        "categoria": "leve",
+        "caBase": 11
+      },
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      },
+      "tactical": {
+        "bonusDefesa": {
+          "value": 1
+        }
+      }
+    }
+  },
+  {
+    "id": "equipamentos-arm-19-mais-2",
+    "name": "Manto de Grimwald +2",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Leve · CA base 11 +2 mágico.</p>",
+      "catalogId": "ARM-19",
+      "enchant": 2,
+      "armor": {
+        "categoria": "leve",
+        "caBase": 11
+      },
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      },
+      "tactical": {
+        "bonusDefesa": {
+          "value": 2
+        }
+      }
+    }
+  },
+  {
+    "id": "equipamentos-arm-19-mais-3",
+    "name": "Manto de Grimwald +3",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Leve · CA base 11 +3 mágico.</p>",
+      "catalogId": "ARM-19",
+      "enchant": 3,
+      "armor": {
+        "categoria": "leve",
+        "caBase": 11
+      },
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      },
+      "tactical": {
+        "bonusDefesa": {
+          "value": 3
+        }
+      }
+    }
+  },
+  {
+    "id": "equipamentos-arm-20",
+    "name": "Arnês de Valdrun",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Média · CA base 14.</p>",
+      "catalogId": "ARM-20",
+      "enchant": 0,
+      "armor": {
+        "categoria": "media",
+        "caBase": 14
+      },
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      },
+      "tactical": {
+        "bonusDefesa": {
+          "value": 0
+        }
+      }
+    }
+  },
+  {
+    "id": "equipamentos-arm-20-mais-1",
+    "name": "Arnês de Valdrun +1",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Média · CA base 14 +1 mágico.</p>",
+      "catalogId": "ARM-20",
+      "enchant": 1,
+      "armor": {
+        "categoria": "media",
+        "caBase": 14
+      },
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      },
+      "tactical": {
+        "bonusDefesa": {
+          "value": 1
+        }
+      }
+    }
+  },
+  {
+    "id": "equipamentos-arm-20-mais-2",
+    "name": "Arnês de Valdrun +2",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Média · CA base 14 +2 mágico.</p>",
+      "catalogId": "ARM-20",
+      "enchant": 2,
+      "armor": {
+        "categoria": "media",
+        "caBase": 14
+      },
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      },
+      "tactical": {
+        "bonusDefesa": {
+          "value": 2
+        }
+      }
+    }
+  },
+  {
+    "id": "equipamentos-arm-20-mais-3",
+    "name": "Arnês de Valdrun +3",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Média · CA base 14 +3 mágico.</p>",
+      "catalogId": "ARM-20",
+      "enchant": 3,
+      "armor": {
+        "categoria": "media",
+        "caBase": 14
+      },
+      "gear": {
+        "peso": 2,
+        "equipado": false
+      },
+      "tactical": {
+        "bonusDefesa": {
+          "value": 3
+        }
+      }
+    }
+  },
+  {
+    "id": "equipamentos-poc-01",
+    "name": "Poção de Vida Menor",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>2d4+2</p>",
+      "catalogId": "POC-01",
+      "consumable": true,
+      "gear": {
+        "peso": 1,
+        "equipado": false
+      }
+    }
+  },
+  {
+    "id": "equipamentos-poc-02",
+    "name": "Poção de Vida",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>4d4+4</p>",
+      "catalogId": "POC-02",
+      "consumable": true,
+      "gear": {
+        "peso": 1,
+        "equipado": false
+      }
+    }
+  },
+  {
+    "id": "equipamentos-poc-03",
+    "name": "Poção de Vida Maior",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>8d4+8</p>",
+      "catalogId": "POC-03",
+      "consumable": true,
+      "gear": {
+        "peso": 1,
+        "equipado": false
+      }
+    }
+  },
+  {
+    "id": "equipamentos-poc-04",
+    "name": "Antídoto Universal",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>veneno</p>",
+      "catalogId": "POC-04",
+      "consumable": true,
+      "gear": {
+        "peso": 1,
+        "equipado": false
+      }
+    }
+  },
+  {
+    "id": "equipamentos-poc-05",
+    "name": "Antídoto de Masmorra",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>veneno+</p>",
+      "catalogId": "POC-05",
+      "consumable": true,
+      "gear": {
+        "peso": 1,
+        "equipado": false
+      }
+    }
+  },
+  {
+    "id": "equipamentos-poc-06",
+    "name": "Poção de Força de Touro",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>FOR+2 1h</p>",
+      "catalogId": "POC-06",
+      "consumable": true,
+      "gear": {
+        "peso": 1,
+        "equipado": false
+      }
+    }
+  },
+  {
+    "id": "equipamentos-poc-07",
+    "name": "Poção de Agilidade Felina",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>DES+2 1h</p>",
+      "catalogId": "POC-07",
+      "consumable": true,
+      "gear": {
+        "peso": 1,
+        "equipado": false
+      }
+    }
+  },
+  {
+    "id": "equipamentos-poc-08",
+    "name": "Poção de Vigor de Urso",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>CON+2 1h</p>",
+      "catalogId": "POC-08",
+      "consumable": true,
+      "gear": {
+        "peso": 1,
+        "equipado": false
+      }
+    }
+  },
+  {
+    "id": "equipamentos-poc-09",
+    "name": "Poção de Clarividência",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>ADV Percepção 8h</p>",
+      "catalogId": "POC-09",
+      "consumable": true,
+      "gear": {
+        "peso": 1,
+        "equipado": false
+      }
+    }
+  },
+  {
+    "id": "equipamentos-poc-10",
+    "name": "Poção de Resistência ao Fogo",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>res fogo 1h</p>",
+      "catalogId": "POC-10",
+      "consumable": true,
+      "gear": {
+        "peso": 1,
+        "equipado": false
+      }
+    }
+  },
+  {
+    "id": "equipamentos-poc-11",
+    "name": "Poção de Resistência ao Gelo",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>res gelo 1h</p>",
+      "catalogId": "POC-11",
+      "consumable": true,
+      "gear": {
+        "peso": 1,
+        "equipado": false
+      }
+    }
+  },
+  {
+    "id": "equipamentos-poc-12",
+    "name": "Poção de Resistência ao Ácido",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>res ácido 1h</p>",
+      "catalogId": "POC-12",
+      "consumable": true,
+      "gear": {
+        "peso": 1,
+        "equipado": false
+      }
+    }
+  },
+  {
+    "id": "equipamentos-poc-13",
+    "name": "Elixir de Trinchar",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>+2 Trinchar 8h</p>",
+      "catalogId": "POC-13",
+      "consumable": true,
+      "gear": {
+        "peso": 1,
+        "equipado": false
+      }
+    }
+  },
+  {
+    "id": "equipamentos-poc-14",
+    "name": "Elixir de Harmonização",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>+2 Harmon 8h</p>",
+      "catalogId": "POC-14",
+      "consumable": true,
+      "gear": {
+        "peso": 1,
+        "equipado": false
+      }
+    }
+  },
+  {
+    "id": "equipamentos-poc-15",
+    "name": "Tônico de Estômago de Ferro",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>imune podridão leve 24h</p>",
+      "catalogId": "POC-15",
+      "consumable": true,
+      "gear": {
+        "peso": 1,
+        "equipado": false
+      }
+    }
+  },
+  {
+    "id": "equipamentos-poc-16",
+    "name": "Soro de Mutação Estável",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>1 mutação leve 8h</p>",
+      "catalogId": "POC-16",
+      "consumable": true,
+      "gear": {
+        "peso": 1,
+        "equipado": false
+      }
+    }
+  },
+  {
+    "id": "equipamentos-poc-17",
+    "name": "Destilado de Wyvern",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>arma +1d6 veneno 5 ataques</p>",
+      "catalogId": "POC-17",
+      "consumable": true,
+      "gear": {
+        "peso": 1,
+        "equipado": false
+      }
+    }
+  },
+  {
+    "id": "equipamentos-poc-18",
+    "name": "Essência de Gelo Aromático",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>preserva 72h</p>",
+      "catalogId": "POC-18",
+      "consumable": true,
+      "gear": {
+        "peso": 1,
+        "equipado": false
+      }
+    }
+  },
+  {
+    "id": "equipamentos-poc-19",
+    "name": "Poção de Respiração Abissal",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>respirar água 8h</p>",
+      "catalogId": "POC-19",
+      "consumable": true,
+      "gear": {
+        "peso": 1,
+        "equipado": false
+      }
+    }
+  },
+  {
+    "id": "equipamentos-poc-20",
+    "name": "Poção de Pele de Pedra",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>+2 CA 1h</p>",
+      "catalogId": "POC-20",
+      "consumable": true,
+      "gear": {
+        "peso": 1,
+        "equipado": false
+      }
+    }
+  },
+  {
+    "id": "equipamentos-poc-21",
+    "name": "Poção de Passo Silencioso",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Vantagem Furtividade 8h</p>",
+      "catalogId": "POC-21",
+      "consumable": true,
+      "gear": {
+        "peso": 1,
+        "equipado": false
+      }
+    }
+  },
+  {
+    "id": "equipamentos-poc-22",
+    "name": "Poção de Visão no Escuro",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>18m 8h</p>",
+      "catalogId": "POC-22",
+      "consumable": true,
+      "gear": {
+        "peso": 1,
+        "equipado": false
+      }
+    }
+  },
+  {
+    "id": "equipamentos-poc-23",
+    "name": "Poção de Cura de Grupo",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>1d8 em 6m</p>",
+      "catalogId": "POC-23",
+      "consumable": true,
+      "gear": {
+        "peso": 1,
+        "equipado": false
+      }
+    }
+  },
+  {
+    "id": "equipamentos-poc-24",
+    "name": "Elixir Lendário de Valdrun",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Prato Perfeito 1x</p>",
+      "catalogId": "POC-24",
+      "consumable": true,
+      "gear": {
+        "peso": 1,
+        "equipado": false
+      }
+    }
+  },
+  {
+    "id": "equipamentos-mun-01",
+    "name": "Flecha Comum (20)",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Munição para arco.</p>",
+      "catalogId": "MUN-01",
+      "ammo": {
+        "weaponType": "arco"
+      },
+      "gear": {
+        "peso": 1,
+        "equipado": false
+      }
+    }
+  },
+  {
+    "id": "equipamentos-mun-02",
+    "name": "Flecha de Caça (20)",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Munição para arco.</p>",
+      "catalogId": "MUN-02",
+      "ammo": {
+        "weaponType": "arco"
+      },
+      "gear": {
+        "peso": 1,
+        "equipado": false
+      }
+    }
+  },
+  {
+    "id": "equipamentos-mun-03",
+    "name": "Flecha Cortante (20)",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Munição para arco.</p>",
+      "catalogId": "MUN-03",
+      "ammo": {
+        "weaponType": "arco"
+      },
+      "gear": {
+        "peso": 1,
+        "equipado": false
+      }
+    }
+  },
+  {
+    "id": "equipamentos-mun-04",
+    "name": "Flecha Perfurante (20)",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Munição para arco.</p>",
+      "catalogId": "MUN-04",
+      "ammo": {
+        "weaponType": "arco"
+      },
+      "gear": {
+        "peso": 1,
+        "equipado": false
+      }
+    }
+  },
+  {
+    "id": "equipamentos-mun-05",
+    "name": "Flecha de Fogo (10)",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Munição para arco.</p>",
+      "catalogId": "MUN-05",
+      "ammo": {
+        "weaponType": "arco"
+      },
+      "gear": {
+        "peso": 1,
+        "equipado": false
+      }
+    }
+  },
+  {
+    "id": "equipamentos-mun-06",
+    "name": "Flecha de Gelo (10)",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Munição para arco.</p>",
+      "catalogId": "MUN-06",
+      "ammo": {
+        "weaponType": "arco"
+      },
+      "gear": {
+        "peso": 1,
+        "equipado": false
+      }
+    }
+  },
+  {
+    "id": "equipamentos-mun-07",
+    "name": "Flecha de Veneno (10)",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Munição para arco.</p>",
+      "catalogId": "MUN-07",
+      "ammo": {
+        "weaponType": "arco"
+      },
+      "gear": {
+        "peso": 1,
+        "equipado": false
+      }
+    }
+  },
+  {
+    "id": "equipamentos-mun-08",
+    "name": "Flecha de Esporo (3)",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Munição para arco.</p>",
+      "catalogId": "MUN-08",
+      "ammo": {
+        "weaponType": "arco"
+      },
+      "gear": {
+        "peso": 1,
+        "equipado": false
+      }
+    }
+  },
+  {
+    "id": "equipamentos-mun-09",
+    "name": "Virote Comum (20)",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Munição para besta.</p>",
+      "catalogId": "MUN-09",
+      "ammo": {
+        "weaponType": "besta"
+      },
+      "gear": {
+        "peso": 1,
+        "equipado": false
+      }
+    }
+  },
+  {
+    "id": "equipamentos-mun-10",
+    "name": "Virote Pesado (10)",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Munição para besta.</p>",
+      "catalogId": "MUN-10",
+      "ammo": {
+        "weaponType": "besta"
+      },
+      "gear": {
+        "peso": 1,
+        "equipado": false
+      }
+    }
+  },
+  {
+    "id": "equipamentos-mun-11",
+    "name": "Virote Perfurante (10)",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Munição para besta.</p>",
+      "catalogId": "MUN-11",
+      "ammo": {
+        "weaponType": "besta"
+      },
+      "gear": {
+        "peso": 1,
+        "equipado": false
+      }
+    }
+  },
+  {
+    "id": "equipamentos-mun-12",
+    "name": "Agulha de Zarabatana (10)",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Munição para zarabatana.</p>",
+      "catalogId": "MUN-12",
+      "ammo": {
+        "weaponType": "zarabatana"
+      },
+      "gear": {
+        "peso": 1,
+        "equipado": false
+      }
+    }
+  },
+  {
+    "id": "equipamentos-kit-de-trinchar",
+    "name": "Kit de Trinchar",
+    "type": "equipamento",
+    "system": {
+      "description": "<p>Kit de Trinchar</p>",
+      "catalogId": "UTL-kit-de-trinchar",
       "gear": {
         "peso": 2,
         "equipado": false
@@ -196,10 +2399,12 @@
     }
   },
   {
-    "name": "Grimório Vazio",
+    "id": "equipamentos-tocha-de-masmorra",
+    "name": "Tocha de Masmorra",
     "type": "equipamento",
     "system": {
-      "description": "<p>Registro de magias.</p>",
+      "description": "<p>Tocha de Masmorra</p>",
+      "catalogId": "UTL-tocha-de-masmorra",
       "gear": {
         "peso": 2,
         "equipado": false
@@ -207,10 +2412,12 @@
     }
   },
   {
-    "name": "Ferramentas de Artífice",
+    "id": "equipamentos-corda-de-seda-de-aranha",
+    "name": "Corda de Seda de Aranha",
     "type": "equipamento",
     "system": {
-      "description": "<p>Craft em masmorra.</p>",
+      "description": "<p>Corda de Seda de Aranha</p>",
+      "catalogId": "UTL-corda-de-seda-de-aranha",
       "gear": {
         "peso": 2,
         "equipado": false
@@ -218,10 +2425,12 @@
     }
   },
   {
-    "name": "Máscara de Filtro",
+    "id": "equipamentos-kit-de-brasas-mágicas",
+    "name": "Kit de Brasas Mágicas (6)",
     "type": "equipamento",
     "system": {
-      "description": "<p>Imune esporos leves.</p>",
+      "description": "<p>Kit de Brasas Mágicas (6)</p>",
+      "catalogId": "UTL-kit-de-brasas-magicas",
       "gear": {
         "peso": 2,
         "equipado": false
@@ -229,21 +2438,12 @@
     }
   },
   {
-    "name": "Gancho de Escalada",
+    "id": "equipamentos-forja-portátil-do-artífice",
+    "name": "Forja Portátil do Artífice",
     "type": "equipamento",
     "system": {
-      "description": "<p>Vantagem escalar.</p>",
-      "gear": {
-        "peso": 2,
-        "equipado": false
-      }
-    }
-  },
-  {
-    "name": "Pederneira de Masmorra",
-    "type": "equipamento",
-    "system": {
-      "description": "<p>Acende fogo úmido.</p>",
+      "description": "<p>Forja Portátil do Artífice</p>",
+      "catalogId": "UTL-forja-portatil-do-artifice",
       "gear": {
         "peso": 2,
         "equipado": false

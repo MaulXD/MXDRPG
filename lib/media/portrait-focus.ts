@@ -5,7 +5,8 @@ export type PortraitFocus = {
   y: number;
 };
 
-export const DEFAULT_PORTRAIT_FOCUS: PortraitFocus = { x: 0.5, y: 0.5 };
+/** Ponto focal padrão (rostos em retrato vertical) */
+export const DEFAULT_PORTRAIT_FOCUS: PortraitFocus = { x: 0.5, y: 0.38 };
 
 export function sanitizePortraitFocus(value: unknown): PortraitFocus | null {
   if (!value || typeof value !== "object") return null;

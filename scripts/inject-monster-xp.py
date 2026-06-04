@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Insere | **XP:** N | apos Nivel em cada ficha do bestiario (100 x nivel)."""
+"""Insere | **XP:** N | após Nivel em cada ficha do bestiário (100 x nivel)."""
 
 from __future__ import annotations
 import re

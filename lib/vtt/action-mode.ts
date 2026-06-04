@@ -2,8 +2,8 @@ export type TokenActionMode = "idle" | "move-walk" | "move-run" | "attack" | "sp
 
 export const ACTION_MODE_LABEL: Record<TokenActionMode, string> = {
   idle: "Escolher ação…",
-  "move-walk": "Mover (caminhada)",
-  "move-run": "Correr (gasta PA além da caminhada)",
+  "move-walk": "Mover (caminhada · PA por faixa)",
+  "move-run": "Correr (corrida · PA por faixa)",
   attack: "Atacar",
   spell: "Conjurar",
   ability: "Habilidade",

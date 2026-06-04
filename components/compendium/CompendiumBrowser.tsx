@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
@@ -11,6 +11,8 @@ type Props = {
   packs: CompendiumPackMeta[];
   data: Record<CompendiumPackId, CompendiumEntry[]>;
   role: UserRole | null;
+  /** Painel estreito da mesa (layout em lista, sem grid largo) */
+  variant?: "page" | "rail";
 };
 
 const TYPE_COLOR: Record<string, string> = {
@@ -22,7 +24,7 @@ const TYPE_COLOR: Record<string, string> = {
   character: "#00f5ff",
 };
 
-export function CompendiumBrowser({ packs, data, role }: Props) {
+export function CompendiumBrowser({ packs, data, role, variant = "page" }: Props) {
   const [packId, setPackId] = useState<CompendiumPackId>(packs[0]?.id ?? "armas");
   const [query, setQuery] = useState("");
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -56,8 +58,69 @@ export function CompendiumBrowser({ packs, data, role }: Props) {
     );
   }
 
+  if (variant === "rail") {
+    return (
+      <div className="comp-shell comp-shell--rail">
+        <header className="comp-rail-head">
+          <p className="vtt-eyebrow comp-rail-eyebrow">Compêndio</p>
+          <div className="comp-rail-packs" role="tablist" aria-label="Pacotes">
+            {packs.map((p) => (
+              <button
+                key={p.id}
+                type="button"
+                role="tab"
+                aria-selected={p.id === packId}
+                className={`comp-rail-pack-chip${p.id === packId ? " active" : ""}`}
+                onClick={() => onPickPack(p.id)}
+              >
+                {p.label}
+              </button>
+            ))}
+          </div>
+        </header>
+
+        {activePack ? (
+          <>
+            <div className="comp-rail-toolbar">
+              <input
+                className="comp-search comp-search--rail"
+                type="search"
+                placeholder={`Buscar em ${activePack.label}…`}
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+              />
+              <span className="comp-count">{entries.length}</span>
+            </div>
+
+            <div className="comp-rail-list">
+              {entries.length === 0 ? (
+                <p className="comp-rail-empty">Nenhuma entrada encontrada.</p>
+              ) : (
+                entries.map((entry) => (
+                  <CompendiumCard
+                    key={entry.id}
+                    entry={entry}
+                    active={entry.id === selectedId}
+                    onSelect={() => setSelectedId(entry.id)}
+                    layout="rail"
+                  />
+                ))
+              )}
+            </div>
+
+            {selected ? <CompendiumDetail entry={selected} layout="rail" /> : null}
+          </>
+        ) : null}
+
+        {role === "admin" ? (
+          <p className="comp-rail-admin-hint">Monstros visíveis só para mestre.</p>
+        ) : null}
+      </div>
+    );
+  }
+
   return (
-    <div className="comp-shell">
+    <div className="comp-shell comp-shell--page">
       <aside className="comp-sidebar glass">
         <p className="eyebrow">Compêndios</p>
         <ul className="comp-pack-list">
@@ -107,11 +170,12 @@ export function CompendiumBrowser({ packs, data, role }: Props) {
                   entry={entry}
                   active={entry.id === selectedId}
                   onSelect={() => setSelectedId(entry.id)}
+                  layout="page"
                 />
               ))}
             </div>
 
-            {selected ? <CompendiumDetail entry={selected} /> : null}
+            {selected ? <CompendiumDetail entry={selected} layout="page" /> : null}
           </>
         ) : null}
       </div>
@@ -123,36 +187,53 @@ function CompendiumCard({
   entry,
   active,
   onSelect,
+  layout = "page",
 }: {
   entry: CompendiumEntry;
   active: boolean;
   onSelect: () => void;
+  layout?: "page" | "rail";
 }) {
   const tags = entrySummary(entry.system, entry.type);
   const color = TYPE_COLOR[entry.type] ?? "#00f5ff";
+  const tagLimit = layout === "rail" ? 4 : 3;
 
   return (
-    <button type="button" className={`comp-card ${active ? "active" : ""}`} onClick={onSelect}>
+    <button
+      type="button"
+      className={`comp-card comp-card--${layout} ${active ? "active" : ""}`}
+      onClick={onSelect}
+    >
       <div className="comp-icon" style={{ background: `${color}22`, color }}>
         {entry.name.charAt(0)}
       </div>
-      <h3>{entry.name}</h3>
-      <span className="comp-tag">{entry.type}</span>
-      {tags.slice(0, 3).map((t) => (
-        <span key={t} className="comp-tag">
-          {t}
-        </span>
-      ))}
+      <div className="comp-card-body">
+        <h3>{entry.name}</h3>
+        <div className="comp-card-tags">
+          <span className="comp-tag">{entry.type}</span>
+          {tags.slice(0, tagLimit).map((t) => (
+            <span key={t} className="comp-tag">
+              {t}
+            </span>
+          ))}
+        </div>
+      </div>
     </button>
   );
 }
 
-function CompendiumDetail({ entry }: { entry: CompendiumEntry }) {
+function CompendiumDetail({
+  entry,
+  layout = "page",
+}: {
+  entry: CompendiumEntry;
+  layout?: "page" | "rail";
+}) {
   const tags = entrySummary(entry.system, entry.type);
   const html = String(entry.system.description ?? "");
 
   return (
-    <article className="comp-detail">
+    <article className={`comp-detail comp-detail--${layout}`}>
       <p className="eyebrow">Detalhe</p>
       <h3>{entry.name}</h3>
       <div className="comp-tags" style={{ marginBottom: "1rem" }}>
@@ -164,9 +245,11 @@ function CompendiumDetail({ entry }: { entry: CompendiumEntry }) {
         ))}
       </div>
       <div className="comp-detail-body" dangerouslySetInnerHTML={{ __html: html }} />
-      <p style={{ marginTop: "1rem", fontSize: "0.78rem", color: "var(--text-dim)" }}>
-        Fase 2: arrastar para ficha ou mesa.
-      </p>
+      {layout === "page" ? (
+        <p style={{ marginTop: "1rem", fontSize: "0.78rem", color: "var(--text-dim)" }}>
+          Fase 2: arrastar para ficha ou mesa.
+        </p>
+      ) : null}
     </article>
   );
 }

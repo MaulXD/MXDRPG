@@ -2,7 +2,7 @@
 
 > **100 x Nivel** da ficha. Elite usa nivel da versao Elite.
 
-| Cod | Especime | Nv | XP |
+| Cod | Espécime | Nv | XP |
 |---|----------|----|----|
 | 001 | ZUMBI DE MASMORRA | 1 | 100 |
 | 002 | ESQUELETO ARMADO | 2 | 200 |

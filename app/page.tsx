@@ -3,7 +3,7 @@ import { HexPreview } from "@/components/home/HexPreview";
 const features = [
   {
     icon: "⬡",
-    title: "VTT no browser",
+    title: "VTT no navegador",
     text: "Mesa virtual própria — zero instalação, zero dependência de apps de terceiros.",
   },
   {
@@ -32,8 +32,8 @@ export default function HomePage() {
             <p className="eyebrow">VTT proprietário</p>
             <h1 className="display-xl">Eldarin</h1>
             <p className="lead" style={{ marginTop: "1.25rem" }}>
-              Seu virtual tabletop de fantasia: combate em hexágonos, pontos de ação e fichas com
-              identidade visual única — direto no browser.
+              Sua mesa virtual de fantasia: combaté em hexágonos, pontos de ação e fichas com
+              identidade visual única — direto no navegador.
             </p>
             <div className="hero-actions">
               <Link href="/mesa/demo" className="btn">
@@ -56,7 +56,7 @@ export default function HomePage() {
           </div>
           <div>
             <div className="stat-value">PA</div>
-            <div className="stat-label">Combate por turnos</div>
+            <div className="stat-label">Combaté por turnos</div>
           </div>
           <div>
             <div className="stat-value">3</div>

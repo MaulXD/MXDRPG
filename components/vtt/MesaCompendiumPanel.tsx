@@ -12,8 +12,8 @@ type Props = {
 
 export function MesaCompendiumPanel({ packs, data, role }: Props) {
   return (
-    <div className="mesa-panel-scroll">
-      <CompendiumBrowser packs={packs} data={data} role={role} />
+    <div className="mesa-compendium-rail">
+      <CompendiumBrowser packs={packs} data={data} role={role} variant="rail" />
     </div>
   );
 }

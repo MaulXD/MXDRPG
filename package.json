@@ -6,23 +6,38 @@
     "node": ">=20"
   },
   "scripts": {
-    "dev": "next dev",
-    "dev:clean": "node -e \"require('fs').rmSync('.next',{recursive:true,force:true})\" && next dev",
+    "dev": "next dev --turbo",
+    "dev:clean": "node scripts/dev-clean.mjs",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "sync:data": "node scripts/generate-compendium.mjs && python scripts/gen-equipment-compendium.py && python scripts/gen-tabela-ids.py && node scripts/generate-subclass-tracks.mjs && python scripts/gen-loot-catalog-ts.py",
+    "sync:data:check": "node scripts/verify-compendium-ids.mjs && node scripts/verify-monster-spawn.mjs",
+    "db:migrate": "node scripts/db/migrate.mjs",
+    "db:check": "node scripts/db/check.mjs",
+    "db:setup": "node scripts/db/setup.mjs",
+    "smoke:p0": "node scripts/smoke/p0-health.mjs",
+    "smoke:a1": "node scripts/smoke/a1-persistence.mjs",
+    "test:a1": "node scripts/db/check.mjs && node scripts/smoke/a1-persistence.mjs",
+    "test:pa": "node scripts/verify-pa-bank.mjs",
+    "test:move": "node scripts/verify-movement-pa.mjs",
+    "test": "node scripts/verify-pa-bank.mjs && node scripts/verify-movement-pa.mjs && node scripts/verify-hex-path.mjs && npm run sync:data:check"
   },
   "dependencies": {
+    "@clerk/nextjs": "^7.4.3",
     "bcryptjs": "^3.0.3",
     "next": "^15.1.0",
+    "postgres": "^3.4.7",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "three": "^0.184.0"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
     "@types/node": "^22.10.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
+    "@types/three": "^0.184.1",
     "typescript": "^5.7.0"
   }
 }

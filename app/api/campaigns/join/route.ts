@@ -14,7 +14,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Código de convite obrigatório" }, { status: 400 });
   }
 
-  const room = joinRoomByInvite(inviteCode, session.user.id);
+  const room = await joinRoomByInvite(inviteCode, session.user.id);
   if (!room) {
     return NextResponse.json({ error: "Código inválido ou mesa não encontrada" }, { status: 404 });
   }

@@ -16,7 +16,8 @@
 | | | | | | | |
 
 | CA | | HP máx / atual / temp | / / | DV d___ (rest.) | |
-| Inic. | | Desloc. | | Dieta ativa | ☐ |
+| PA máx / atual | / | (VTT: base 5; +1 nv 5/10/15) | Inic. | | Desloc. | |
+| Dieta ativa | ☐ |
 
 | | Save | ☐ | | Save | ☐ | | Save | ☐ |
 |---|:---:|:---:|---|:---:|:---:|---|:---:|
@@ -58,6 +59,8 @@ Truques: _________________________ · Magias nv1–3: _________________________
 ## Mesa rápida
 
 **XP:** monstro = 100×Nv (÷ PCs) · subir nv = 50×Nv×(Nv−1) acum. · fraco: ×0,5 / ×0,25
+
+**PA (VTT):** nv1=5 · nv5=6 · nv10=7 · nv15=8 · ataque/magia/hab = custo compendio · Guerreiro nv5+ = 1 PA/golpe · conjurador nv5+ = magia 2+ PA −1
 
 **Bioma:** ☐ gas/sem tocha → Brasas ou Calor de Panela · ☐ vertical (9/12) · Brasas restantes ___
 

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 
 
@@ -25,12 +25,17 @@ import {
 import { canAbilityTarget, canUseAbility } from "@/lib/combat/ability";
 
 import type { CombatActionOption } from "@/lib/combat/types";
+import { areaNeedsDirection } from "@/lib/combat/area-spell";
 
 import {
+
+  describeMovementPaBands,
 
   formatMovementLabel,
 
   hexToMeters,
+
+  movementPaBandsForToken,
 
   movementSpent,
 
@@ -56,6 +61,7 @@ import {
 
 import { listSubclassCombatActions } from "@/lib/character/subclass-vtt";
 import { patchRoomActor, postRoomAttack, postRoomAbility } from "@/hooks/useRoomSync";
+import { SpellChannelControl } from "@/components/vtt/SpellChannelControl";
 
 import { useCombatTurn } from "@/hooks/useCombatActions";
 
@@ -87,9 +93,13 @@ type Props = {
 
   onSelectedActionChange: (action: CombatActionOption | null) => void;
 
+  channelExtraPa?: number;
+
+  onChannelExtraPaChange?: (extra: number) => void;
+
   onAttackResult: (msg: ChatMessage) => void;
 
-  onUpdate: () => void;
+  onRoomSync: (snap?: import("@/lib/room/types").RoomSnapshot) => void;
 
 };
 
@@ -117,9 +127,13 @@ export function TokenActionPanel({
 
   onSelectedActionChange,
 
+  channelExtraPa = 0,
+
+  onChannelExtraPaChange,
+
   onAttackResult,
 
-  onUpdate,
+  onRoomSync,
 
 }: Props) {
 
@@ -192,6 +206,7 @@ export function TokenActionPanel({
   const walkMax = movementWalkMax(token);
 
   const moveLabel = formatMovementLabel(spent, walkMax);
+  const movePaHint = describeMovementPaBands(movementPaBandsForToken(token));
 
 
 
@@ -221,7 +236,7 @@ export function TokenActionPanel({
 
                 bypassTurn: turn.bypassTurn,
 
-              })
+              }, actor)
 
             : canAttackTarget(token, t, activeAction, {
 
@@ -229,7 +244,7 @@ export function TokenActionPanel({
 
                 bypassTurn: turn.bypassTurn,
 
-              });
+              }, { actor });
 
         return {
 
@@ -245,7 +260,7 @@ export function TokenActionPanel({
 
       .filter((x) => x.dist <= activeAction.rangeHex);
 
-  }, [token, tokens, activeAction, turn]);
+  }, [token, tokens, activeAction, turn, actor]);
 
 
 
@@ -259,9 +274,9 @@ export function TokenActionPanel({
 
       bypassTurn: turn.bypassTurn,
 
-    }).ok;
+    }, actor).ok;
 
-  }, [token, activeAction, turn]);
+  }, [token, activeAction, turn, actor]);
 
 
 
@@ -271,7 +286,7 @@ export function TokenActionPanel({
 
     await patchRoomActor(roomId, token.actorId, { combatLoadout: { packId, entryId } });
 
-    onUpdate();
+    onRoomSync();
 
   }
 
@@ -287,21 +302,17 @@ export function TokenActionPanel({
 
     try {
 
+      let snapshot: import("@/lib/room/types").RoomSnapshot;
+
       if (activeAction.kind === "ability") {
 
-        const snapshot = await postRoomAbility(roomId, token.id, defenderId, {
+        snapshot = await postRoomAbility(roomId, token.id, defenderId, {
 
           actionEntryId: activeAction.entryId,
 
           bypassTurn: turn.bypassTurn,
 
         });
-
-        const combatMsgs = snapshot.chat.filter((m) => m.kind === "combat");
-
-        const last = combatMsgs[combatMsgs.length - 1];
-
-        if (last?.kind === "combat") onAttackResult(last);
 
       } else {
 
@@ -313,7 +324,7 @@ export function TokenActionPanel({
 
             : undefined;
 
-        const snapshot = await postRoomAttack(roomId, token.id, defenderId, {
+        snapshot = await postRoomAttack(roomId, token.id, defenderId, {
 
           actionPack: packId,
 
@@ -321,19 +332,21 @@ export function TokenActionPanel({
 
           bypassTurn: turn.bypassTurn,
 
+          channelExtraPa: activeAction.channelMaxExtraPa ? channelExtraPa : undefined,
+
         });
-
-        const combatMsgs = snapshot.chat.filter((m) => m.kind === "combat");
-
-        const last = combatMsgs[combatMsgs.length - 1];
-
-        if (last?.kind === "combat") onAttackResult(last);
 
       }
 
+      const combatMsgs = snapshot.chat.filter((m) => m.kind === "combat");
+
+      const last = combatMsgs[combatMsgs.length - 1];
+
+      if (last?.kind === "combat") onAttackResult(last);
+
       onActionModeChange("idle");
 
-      onUpdate();
+      onRoomSync(snapshot);
 
     } catch (e) {
 
@@ -375,7 +388,7 @@ export function TokenActionPanel({
 
       onActionModeChange("idle");
 
-      onUpdate();
+      onRoomSync(snapshot);
 
     } catch (e) {
 
@@ -470,7 +483,7 @@ export function TokenActionPanel({
 
           Caminhada {walkRemaining(token)} hex ({hexToMeters(walkRemaining(token))} m) · Corrida{" "}
 
-          {runRemaining(token)} hex restantes
+          {runRemaining(token)} hex restantes · {movePaHint}
 
         </span>
 
@@ -644,7 +657,15 @@ export function TokenActionPanel({
 
       ) : null}
 
-
+      {actionMode === "spell" && activeAction?.channelMaxExtraPa && onChannelExtraPaChange ? (
+        <SpellChannelControl
+          action={activeAction}
+          token={token}
+          actor={actor}
+          value={channelExtraPa}
+          onChange={onChannelExtraPaChange}
+        />
+      ) : null}
 
       {actionMode === "ability" && abilities.length > 0 ? (
 
@@ -693,13 +714,18 @@ export function TokenActionPanel({
 
 
       {isSaveSpell ? (
-        <p className="vtt-combat-hint">Save vs CD — metade do dano se passar.</p>
+        <p className="vtt-combat-hint">Teste de resistência vs CD — metade do dano se passar.</p>
       ) : null}
 
       {actionMode === "spell" && activeAction?.areaShape && activeAction.areaShape !== "single" ? (
         <p className="vtt-combat-hint">
-          Magia de área ({activeAction.areaShape}) — clique hex centro no mapa (alcance{" "}
-          {activeAction.rangeHex} hex).
+          Área {activeAction.areaShape}
+          {activeAction.areaRadiusHex != null ? ` · ${activeAction.areaRadiusHex} hex` : ""}
+          {activeAction.areaHexCount != null ? ` · ${activeAction.areaHexCount} hex` : ""} — alcance{" "}
+          {activeAction.rangeHex} hex no mapa.
+          {areaNeedsDirection(activeAction.areaShape)
+            ? " 1º clique = centro · 2º = hex vizinho (direção)."
+            : " Clique o centro da área."}
         </p>
       ) : null}
 

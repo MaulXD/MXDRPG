@@ -16,7 +16,7 @@ export type ChatMessage = {
     defenderTokenId: string;
     actionKind: "weapon" | "spell" | "unarmed" | "ability";
     weaponName: string;
-    resolution?: "attack" | "save";
+    resolution?: "attack" | "save" | "defeat";
     attackNatural?: number;
     attackTotal?: number;
     attackRollMode?: "normal" | "advantage" | "disadvantage";

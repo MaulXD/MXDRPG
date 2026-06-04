@@ -121,7 +121,7 @@ export function useCombatActions(
 
                 bypassTurn: turn.bypassTurn,
 
-              })
+              }, actor)
 
             : canAttackTarget(attacker, t, action, {
 
@@ -129,7 +129,7 @@ export function useCombatActions(
 
                 bypassTurn: turn.bypassTurn,
 
-              });
+              }, { actor });
 
       if (check.ok && axialDistance(attacker.axial, t.axial) <= action.rangeHex) {
 

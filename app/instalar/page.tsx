@@ -2,17 +2,16 @@ export default function InstalarPage() {
   return (
     <div className="page-wrap">
       <header className="page-header">
-        <p className="eyebrow">Deploy</p>
+        <p className="eyebrow">Implantação</p>
         <h1 className="display-lg text-gradient">Hospedar na Vercel</h1>
-        <p className="lead">Produto = app Next.js na raiz do repo. Sem Foundry.</p>
+        <p className="lead">Produto = app Next.js na raiz do repositório. VTT Eldarin próprio, sem apps de terceiros.</p>
       </header>
 
       <article className="glass content-card">
         <h2>Vercel</h2>
-        <pre>{`cd web
-npm install
+        <pre>{`npm install
 npm run build
-# Root Directory: web`}</pre>
+# Diretório raiz do projeto na Vercel`}</pre>
         <p style={{ color: "var(--text-muted)", fontSize: "0.9rem", margin: "1rem 0 0" }}>
           Env: <code>ELDARIN_DEMO_PASSWORD</code> para senha do login demo.
         </p>
