@@ -17,8 +17,8 @@ export default async function BibliotecaPage() {
       <p className="eyebrow">Biblioteca Eldarin</p>
       <h1 className="display-lg">Compêndios</h1>
       <p style={{ color: "var(--text-muted)", maxWidth: "52ch", marginBottom: "2rem" }}>
-        Armas, habilidades, magias e equipamentos para jogadores. Monstros só para mestre — como no
-        Foundry, mas no browser.
+        Armas, habilidades, magias e equipamentos para jogadores. Monstros só para o mestre — tudo no
+        navegador, integrado à mesa Eldarin.
       </p>
       <CompendiumBrowser packs={packs} data={data} role={role} />
     </div>

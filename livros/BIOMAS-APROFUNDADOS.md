@@ -7,13 +7,13 @@
 
 ## Como ler cada bioma
 
-| Secao | Uso na mesa |
+| Seção | Uso na mesa |
 |-------|-------------|
 | **Origem** | Lore para jogadores (Sorn, Druida, Patrulheiro) |
 | **Ciclo** | Por que fauna e flora coexistem |
 | **Ambiente** | Saves, dano passivo, severidade |
 | **Flora** | P## e efeito de sobrevivencia |
-| **Fauna** | Cod. + habilidade de assimilacao que **substitui** carencia |
+| **Fauna** | Cod. + habilidade de assimilação que **substitui** carencia |
 | **Objetos** | IDs para o mapa |
 | **1d6 exploracao** | Evento ecologico |
 
@@ -50,13 +50,13 @@
 
 | Necessidade | Flora | Fauna (habilidade chave) |
 |-------------|-------|---------------------------|
-| **Respirar submerso** | #12 Algas (nado/visao, **nao** respira) · #05 ar umido/nevoa apenas | #031 Tubarao: *Guelras* · #052 Sereia: *Guelras* · #029 Kraken: *Guelras* · #028 Sapo: *Pele* + bolsa ar |
+| **Respirar submerso** | #12 Algas (nado/visao, **não** respira) · #05 ar umido/nevoa apenas | #031 Tubarao: *Guelras* · #052 Sereia: *Guelras* · #029 Kraken: *Guelras* · #028 Sapo: *Pele* + bolsa ar |
 | Ver na turva | #12 | #031: *Linha Lateral* |
 | Correntes/agarrar | #15 Tubarao-Relva | #031/#052: *Pele Escorregadia* |
-| Pressao profunda | #29 Folha Abismo | #029: *Resistencia Abissal* · #057 Aboleth: mente + pressao |
+| Pressao profunda | #29 Folha Abismo | #029: *Resistência Abissal* · #057 Aboleth: mente + pressao |
 | Medo abissal | #29 | #030 Serpente: faro |
 
-**Objetos:** OBJ-B02-01 a 07, OBJ-G15 (bolha temporaria — **combo**, nao substituto de Guelras).
+**Objetos:** OBJ-B02-01 a 07, OBJ-G15 (bolha temporária — **combo**, não substituto de Guelras).
 
 **Mesa:** grupo que **come peixe abissal** no mesmo dia em que explora fundo conta como tendo **duas vias** — nativos do Mar por 24h.
 
@@ -70,14 +70,14 @@
 
 **Ciclo:** esporos → fungos → herbívoros → plantas carnívoras → treants podres (equilíbrio interno).
 
-**Ambiente:** **moderada/extrema**. Esporos: CON CD 12/2h. Rio acido: 2d6. Chao: DES CD 11/10 min ou perde calcado.
+**Ambiente:** **moderada/extrema**. Esporos: CON CD 12/2h. Rio ácido: 2d6. Chao: DES CD 11/10 min ou perde calcado.
 
 | Necessidade | Flora | Fauna |
 |-------------|-------|-------|
-| Anti-esporo/toxina | #06 Cogumelo · #16 Esporo-Madrugada | #035 Cogumelo-Rei assimilacao |
-| Anti-acido ambiente | #14 Samambaia Cinza | #038 Slime Acido: resistencia acido |
-| Escalar organico | #08 Vinha | #036 Treant |
-| Nutricao densa | #19 Arvore-Racao | #037 Planta Carnivora |
+| Anti-esporo/toxina | #06 Cogumelo · #16 Esporo-Madrugada | #035 Cogumelo-Rei assimilação |
+| Anti-ácido ambiente | #14 Samambaia Cinza | #038 Slime Ácido: resistência ácido |
+| Escalar orgânico | #08 Vinha | #036 Treant |
+| Nutricao densa | #19 Arvore-Raçao | #037 Planta Carnivora |
 
 **Objetos:** OBJ-B03-01 a 06.
 
@@ -117,7 +117,7 @@
 |-------------|-------|-------|
 | Frio | #09 Liquen · #17 Raiz Yeti | #042 Yeti · #043 Lobo · #041 Gelo |
 | Rastrear/caçar | #31 Tuberculo Lobo | #043 |
-| Forca burst | #17 (crash depois) | #042 |
+| Força burst | #17 (crash depois) | #042 |
 
 **Objetos:** OBJ-B05-01 a 05, OBJ-G09.
 
@@ -140,7 +140,7 @@
 
 **Objetos:** OBJ-B06-01 a 04.
 
-**1d6:** 1 reflexo ataca · 2 camara cegante · 3 besouro · 4 veio cristal · 5 mimico espelho · 6 saida oculta Percepcao CD 16.
+**1d6:** 1 reflexo ataca · 2 camara cegante · 3 besouro · 4 veio cristal · 5 mimico espelho · 6 saida oculta Percepção CD 16.
 
 ---
 
@@ -192,7 +192,7 @@
 
 **Ambiente:** Queda = morte ou Mestre define. Vento: empurra 3m/turno. Severidade **moderada** em plataformas.
 
-**Acesso vertical (obrigatorio planejar):** camadas **A / B / C** — ver `SUPLEMENTO-BIOMAS-VERTICAIS-LUZ-E-BRASAS.md`. **B** exige rotas (corda, salto, #35); **C** exige **voo** ou assimilacao de voo (#011, #022). INT/SAB CD 12 antes de entrar em B revela rotas seguras.
+**Acesso vertical (obrigatorio planejar):** camadas **A / B / C** — ver `SUPLEMENTO-BIOMAS-VERTICAIS-LUZ-E-BRASAS.md`. **B** exige rotas (corda, salto, #35); **C** exige **voo** ou assimilação de voo (#011, #022). INT/SAB CD 12 antes de entrar em B revela rotas seguras.
 
 | Necessidade | Flora | Fauna |
 |-------------|-------|-------|
@@ -210,15 +210,15 @@
 
 **Origem:** **Esgoto mágico** de todas as cidades acima — tudo que desce, apodrece aqui. Cores vibrantes = química viva.
 
-**Ciclo:** lodo → slimes → sapos → serpentes → pudim negro no fundo.
+**Ciclo:** lodo → slimes → sapós → serpentes → pudim negro no fundo.
 
-**Ambiente:** **extrema** toxina. Lama: FOR CD 12. Gas: CON CD 13. Acido: 2d6.
+**Ambiente:** **extrema** toxina. Lama: FOR CD 12. Gas: CON CD 13. Ácido: 2d6.
 
 **Sem fogo aberto (bolsoes de gas):** tocha, fogueira e **Chama de Fogareiro** → CON CD 13 ou 2d6 fogo. Cozinha: **Calor de Panela** ou **Kit de Brasas Magicas** (Cap. 16.2.1).
 
 | Necessidade | Flora | Fauna |
 |-------------|-------|-------|
-| Gas/acido | #05 · #06 | #028 Sapo · #038/058 Slimes/Pudim |
+| Gas/ácido | #05 · #06 | #028 Sapo · #038/058 Slimes/Pudim |
 | Agua parcial | #05 | #028 |
 | Imunidade podridao | #06 | #001 Zumbi |
 | Cozinhar | Brasas / Calor de Panela | — |
@@ -235,7 +235,7 @@
 
 **Ciclo:** traças comem papel → grimórios miméticos → espíritos → autômatos guardiões.
 
-**Ambiente:** Silêncio hostil a som alto. Armadilhas em livros: INT CD 14. Mobília: combate nv.4.
+**Ambiente:** Silêncio hostil a som alto. Armadilhas em livros: INT CD 14. Mobília: combaté nv.4.
 
 | Necessidade | Flora | Fauna |
 |-------------|-------|-------|
@@ -245,7 +245,7 @@
 
 **Objetos:** OBJ-B11-01 a 04.
 
-**1d6:** 1 grimorio armadilha · 2 traca · 3 pergaminho util · 4 espirito · 5 estante colapsa · 6 sala silenciosa cura.
+**1d6:** 1 grimorio armadilha · 2 traça · 3 pergaminho util · 4 espirito · 5 estante colapsa · 6 sala silenciosa cura.
 
 ---
 
@@ -266,7 +266,7 @@
 | Teia/veneno aracnideo | #36 Polen Matriarca · #21 | #024 Aranha · #061 Aranha-Cavaleira |
 | Luz sem chama | #01 (se trouxer) | — |
 | Cozinhar | Brasas · Calor de Panela | — |
-| Subir camada 2 | #35 · voo assimilacao | #024 escalar teia |
+| Subir camada 2 | #35 · voo assimilação | #024 escalar teia |
 | Descanso narcotico | #22 Flor Narcotica | — |
 
 **Objetos:** OBJ-B12-01 a 06.
@@ -286,7 +286,7 @@
 | Necessidade | Flora | Fauna |
 |-------------|-------|-------|
 | Luz/escuro | lodo + #01 | slime fluorescente |
-| Mutacao boost | cristal neon (ingrediente) | — |
+| Mutação boost | cristal neon (ingrediente) | — |
 | Descanso | poco agua OBJ | #32 Flor Mira |
 
 **Objetos:** OBJ-B13-01 a 03.
@@ -345,12 +345,12 @@
 | Necessidade | Flora | Fauna |
 |-------------|-------|-------|
 | Fogo ambiente | #14 Samambaia | #051 Basilisco Magma · #020 Cocatriz |
-| Petrificacao | — | #020: olhar (contramedida Mestre) |
+| Petrificação | — | #020: olhar (contramedida Mestre) |
 | Furtividade | cinza cobre rastros | #044 Mimico |
 
 **Objetos:** OBJ-B16-01 a 03.
 
-**1d6:** 1 estatua viva · 2 nevasca cinza · 3 samambaia · 4 basilisco · 5 loot petrificado · 6 claridade temporaria.
+**1d6:** 1 estatua viva · 2 nevasca cinza · 3 samambaia · 4 basilisco · 5 loot petrificado · 6 claridade temporária.
 
 ---
 
@@ -385,11 +385,11 @@
 | Necessidade | Flora | Fauna |
 |-------------|-------|-------|
 | Cortes/teia | #21 Casca-Brilho · #36 | #024 Aranha · #061 Cavaleira |
-| Controle | — | #061: glandula montaria |
+| Controle | — | #061: glândula montaria |
 
 **Objetos:** OBJ-B18-01 a 03.
 
-**1d6:** 1 fio sangra · 2 marionete · 3 aranha longe · 4 glandula · 5 goblin armadilha · 6 “musica” acalma (SAB CD 12).
+**1d6:** 1 fio sangra · 2 marionete · 3 aranha longe · 4 glândula · 5 goblin armadilha · 6 “musica” acalma (SAB CD 12).
 
 ---
 
@@ -424,12 +424,12 @@
 | Necessidade | Flora | Fauna |
 |-------------|-------|-------|
 | Medo/divino | #04 Erva-Sino · #32 Mira | #048 Anjo Caido · boss Balor (nv.19) |
-| Radiante/necrotico | #30 Erva Limiar (Clerigo) | #048 |
+| Radiante/necrótico | #30 Erva Limiar (Clérigo) | #048 |
 | Moral grupo | #32 | Banquete lendario |
 
 **Objetos:** OBJ-B20-01 a 04, OBJ-G06.
 
-**1d6:** 1 altar ativa · 2 agua corrompida · 3 estatua · 4 pena · 5 anjo observa · 6 momento de graca (cura 2d8 1x).
+**1d6:** 1 altar ativa · 2 agua corrompida · 3 estatua · 4 pena · 5 anjo observa · 6 momento de graça (cura 2d8 1x).
 
 ---
 
@@ -438,8 +438,8 @@
 Quando o Mestre mistura biomas num andar:
 
 1. **Borda:** 1 objeto de cada bioma + save de **ambiente** do bioma mais severo.  
-2. **Flora:** plantas dos dois biomas com Harmonizacao CD +2.  
-3. **Fauna híbrida:** use assimilacao do espécime base + 1 habilidade aleatória do bioma vizinho (Mestre).  
+2. **Flora:** plantas dos dois biomas com Harmonização CD +2.  
+3. **Fauna híbrida:** use assimilação do espécime base + 1 habilidade aleatória do bioma vizinho (Mestre).  
 4. **Narrativa:** “predador migrante” explica criatura fora do habitat.
 
 ---

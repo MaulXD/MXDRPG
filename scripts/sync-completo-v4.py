@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Sincroniza Eldarin_Ecologia_de_Masmorra_COMPLETO_v4.md com Jogador (Cap. 5–6, 5B) + Assimilacao."""
+"""Sincroniza Eldarin_Ecologia_de_Masmorra_COMPLETO_v4.md com Jogador (Cap. 5–6, 5B) + Assimilação."""
 
 from __future__ import annotations
 
@@ -20,12 +20,12 @@ CLASS_OLD = (
 CLASS_NEW = (
     "Cada monstro possui uma **versão Elite** desbloqueada quando encontrado nos andares "
     "mais profundos (biomas de Nível 10+).\n\n"
-    "**Assimilacao (Jogador):** cada ficha numerada (**001–060**) tem **8 habilidades** proprias "
+    "**Assimilação (Jogador):** cada ficha numerada (**001–060**) tem **8 habilidades** proprias "
     "(Apendice neste arquivo / `ASSIMILACAO-POR-ESPECIME.md`). O codigo do titulo da ficha "
-    "(ex.: `## 024 —`) e o indice de assimilacao.\n\n"
+    "(ex.: `## 024 —`) e o indice de assimilação.\n\n"
     "**Flora de masmorra:** 40 especies em **Cap. 5B** — Druidas e ecossistema; monstros "
     "**Consumidores** listados por planta.\n\n"
-    "**Saque economico:** Trinchar com sucesso concede ESP/MIN/tesouro por codigo em "
+    "**Saque economico:** Trinchar com sucessó concede ESP/MIN/tesouro por codigo em "
     "`CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md`; cenario **OBJ-R**.\n\n"
     "### Estatísticas"
 )
@@ -34,10 +34,10 @@ CLASS_NEW = (
 def slice_between(text: str, start: str, end: str) -> tuple[int, int]:
     i = text.find(start)
     if i < 0:
-        raise SystemExit(f"Marcador nao encontrado: {start!r}")
+        raise SystemExit(f"Marcador não encontrado: {start!r}")
     j = text.find(end, i + 1)
     if j < 0:
-        raise SystemExit(f"Marcador nao encontrado: {end!r}")
+        raise SystemExit(f"Marcador não encontrado: {end!r}")
     return i, j
 
 
@@ -68,7 +68,7 @@ def main() -> int:
     )
     flora_saque = flora_tail.replace(
         "planta.\n\n###",
-        "planta.\n\n**Saque economico:** Trinchar com sucesso concede ESP/MIN/tesouro por codigo em "
+        "planta.\n\n**Saque economico:** Trinchar com sucessó concede ESP/MIN/tesouro por codigo em "
         "`CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md`; cenario **OBJ-R**.\n\n###",
         1,
     )
@@ -77,7 +77,7 @@ def main() -> int:
     elif CLASS_OLD in c:
         c = c.replace(CLASS_OLD, CLASS_NEW, 1)
     elif "**Saque economico:**" not in c:
-        print("AVISO: bloco de classificacao do bestiario nao encontrado; pulando patch LM.")
+        print("AVISO: bloco de classificacao do bestiário não encontrado; pulando patch LM.")
 
     tesouros = ROOT / "livros" / "CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md"
     mark_app = "# APENDICE — CATALOGO TESOUROS"

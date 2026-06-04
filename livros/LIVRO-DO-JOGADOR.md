@@ -3,28 +3,31 @@
 
 > Regras, personagem, combate, culinária biomágica, magia. Bestiário e masmorras: *Livro do Mestre*.
 
+**Pontos principais (mesa digital):** combate por **Pontos de Acao (PA)** — inspirado em **Divinity: Original Sin 2** — **recuperacao fixa 5 PA/turno** (talentos podem alterar); **acumula ate 9 PA** no pool se nao gastar; **sem teto de gasto no turno** (bonus de PA permitem gastar mais no mesmo turno); **ataque basico 2 PA**; **monstros 6 PA**, **bosses 9 PA**; movimento por faixas (`walk`/`run`); **Atordoado** zera PA (`Cap. 2.6`, `Cap. 3.1`).
+
 ---
 
 # PARTE I — O UNIVERSO DE ELDARIN
 
 ---
 
-## CAPITULO 1 — O MUNDO
+## CAPÍTULO 1 — O MUNDO
 
 > **Atlas completo** (cidades, vilas, castelos, torres, rotas): ver `livros/ATLAS-DE-ELDARIN.md`.
 
 ### 1.1 Sobre o Sistema
 
-> "A masmorra nao e um lugar. E um organismo. E como todo organismo, ela tem ecossistema, cadeia alimentar e, se voce souber onde olhar, um cardapio."
+> "A masmorra não e um lugar. E um organismo. E como todo organismo, ela tem ecossistema, cadeia alimentar e, se você souber onde olhar, um cardapio."
 > — Grimorio do Primeiro Descente, Autor Desconhecido
 
-Este RPG e inspirado na filosofia de Dungeon Meshi (Delicious in Dungeon): a masmorra e um ecossistema vivo, os monstros sao criaturas biologicas com anatomia funcional, e a sobrevivencia depende tanto de saber lutar quanto de saber cozinhar o que voce abate.
+Este RPG e inspirado na filosofia de Dungeon Meshi (Delicious in Dungeon): a masmorra e um ecossistema vivo, os monstros sao criaturas biologicas com anatomia funcional, e a sobrevivencia depende tanto de saber lutar quanto de saber cozinhar o que você abate.
 
 Pilares do sistema:
 - Explorar e necessario. Descansar e arriscado. Comer e poder.
-- Cada monstro e um ingrediente. Cada ingrediente tem propriedades. Cada refeicao e uma decisao tatica.
-- O grupo que nao aprende anatomia morre de fome ou de veneno. Frequentemente os dois.
-- Chefoes nao sao apenas vitorias — sao o melhor jantar da campanha.
+- Cada monstro e um ingrediente. Cada ingrediente tem propriedades. Cada refeicao e uma decisao tática.
+- O grupo que não aprende anatomia morre de fome ou de veneno. Frequentemente os dois.
+- Chefoes não sao apenas vitorias — sao o melhor jantar da campanha.
+- Na **mesa digital (VTT)**, o turno de combate e orcado em **Pontos de Acao** — cada golpe, magia, habilidade ou corrida estrategica consome PA ate o limite do personagem (`Cap. 2.6`, `Cap. 3.1`).
 
 ### 1.2 Visao Geral de Eldarin
 
@@ -34,23 +37,23 @@ Nao existe, em Eldarin, distincao cultural entre "aventureiro" e "cidadao". Expl
 
 ### 1.3 O Submundo como Organismo
 
-As masmorras de Eldarin nao foram construidas. Cresceram. O submundo e um organismo que engoliu cidades, florestas e montanhas. As 11 masmorras — **As Bocas** — ligam-se por tuneis chamados **Veias**.
+As masmorras de Eldarin não foram construidas. Cresceram. O submundo e um organismo que engoliu cidades, florestas e montanhas. As 11 masmorras — **As Bocas** — ligam-se por tuneis chamados **Veias**.
 
 ### 1.4 Economia e Cultura de Valdremor
 
-Ingredientes de monstros sao a principal commodity de Valdremor. Cada cidade proxima a uma masmorra tem um **Mercado de Especiarias** onde exploradores vendem loot culinario.
+Ingredientes de monstros sao a principal commodity de Valdremor. Cada cidade proxima a uma masmorra têm um **Mercado de Especiarias** onde exploradores vendem loot culinário.
 
-| Raridade | Exemplos | Preco Medio |
+| Raridade | Exemplos | Preço Medio |
 |----------|----------|-------------|
-| Comum | Carne basica de zumbi, osso de esqueleto | 2-10 po/kg |
+| Comum | Carne básica de zumbi, osso de esqueleto | 2-10 po/kg |
 | Incomum | Glandula de veneno, escama de dragonete | 25-80 po/unidade |
 | Raro | Coracao de vampiro, cristal de mana osseo | 200-500 po |
 | Muito Raro | Nucleo de elemental, ectoplasma puro | 1.000-3.000 po |
-| Lendario | Componentes de Boss | Sem preco fixo — leilao |
+| Lendário | Componentes de Boss | Sem preço fixo — leilao |
 
-**O Sindicato dos Exploradores:** Grupos de aventureiros se registram ao entrar em qualquer masmorra. Beneficios: seguro de vida (100 po por morte confirmada), acesso a mapas parciais, credito em lojas, informacao sobre monstros. Custo: 5% de toda renda obtida.
+**O Sindicato dos Exploradores:** Grupos de aventureiros se registram ao entrar em qualquer masmorra. Beneficios: seguro de vida (100 po por morte confirmada), acesso a mapas parciais, credito em lojas, informação sobre monstros. Custo: 5% de toda renda obtida.
 
-**A Academia de Culinaria de Ossenfurt:** A maior instituicao de ensino culinario-biomagico do mundo. Aceita estudantes, treina Harmonizacao e Coccao, publica pesquisas sobre novas combinacoes de ingredientes.
+**A Academia de Culinaria de Ossenfurt:** A maior instituicao de ensino culinário-biomagico do mundo. Aceita estudantes, treina Harmonização e Coccao, publica pesquisas sobre novas combinacoes de ingredientes.
 
 ---
 
@@ -58,17 +61,17 @@ Ingredientes de monstros sao a principal commodity de Valdremor. Cada cidade pro
 
 ---
 
-## CAPITULO 2 — A FICHA DE PERSONAGEM
+## CAPÍTULO 2 — A FICHA DE PERSONAGEM
 
 ### 2.1 Atributos Classicos
 
-| Atributo | Abreviacao | Uso |
+| Atributo | Abreviação | Uso |
 |----------|-----------|-----|
-| Forca | FOR | Ataques fisicos, peso carregado, quebrar portas |
+| Força | FOR | Ataques fisicos, peso carregado, quebrar portas |
 | Destreza | DES | Furtividade, acrobacia, ataques precisos |
-| Constituicao | CON | HP total, resistencia a doencas e venenos |
+| Constituicao | CON | HP total, resistência a doenças e venenos |
 | Inteligencia | INT | Estudo de anatomia, identificacao de ingredientes |
-| Sabedoria | SAB | Percepcao, harmonizacao culinaria, intuicao |
+| Sabedoria | SAB | Percepção, harmonização culinaria, intuicao |
 | Carisma | CAR | Negociacao, lideranca, inspiracao do grupo |
 
 **Modificador de Atributo:** (Atributo menos 10) dividido por 2, arredondado para baixo.
@@ -99,7 +102,7 @@ CA base = 10 + MOD DES (sem armadura)
 | Armadura media (cota de malha) | 13 + DES (max +2) | FOR 11 |
 | Armadura pesada (placas) | 16 | FOR 15 |
 | Escudo | +2 | — |
-| Armadura natural (monstro/Artifice) | variavel | — |
+| Armadura natural (monstro/Artífice) | variavel | — |
 
 ### 2.4 Atributos Culinarios
 
@@ -110,26 +113,26 @@ Alem dos atributos classicos, toda ficha possui a secao **Culinaria de Masmorra*
 - Sem treinamento: -2 na rolagem.
 - Com Estudo de Anatomia: Vantagem na rolagem.
 
-**Harmonizacao (Intuicao/Sabedoria):** A capacidade de equilibrar sabores, neutralizar toxinas e extrair o maximo biologico de um ingrediente.
+**Harmonização (Intuicao/Sabedoria):** A capacidade de equilibrar sabores, neutralizar toxinas e extrair o máximo biologico de um ingrediente.
 - Teste: 1d20 + MOD SAB + Proficiencia (se treinado)
 
 **Coccao (Tecnica/Fogo):** Controle de tempo e temperatura.
 - Teste: 1d20 + MOD INT + Proficiencia (se treinado)
 - Resultado abaixo de 8: Gororoba. 9-15: Comum. 16-20: Gourmet. 21+: Prato Perfeito.
 
-**Estomago de Ferro (Resistencia):** A tolerancia gastrica do personagem.
+**Estômago de Ferro (Resistência):** A tolerancia gastrica do personagem.
 - Teste: 1d20 + MOD CON + Proficiencia (se treinado)
-- CD 10: Alimentos estragados leves. CD 13: Venenos processados. CD 16: Ingredientes amaldicados. CD 19: Essencias demoniacas ou divinas.
+- CD 10: Alimentos estragados leves. CD 13: Venenos processados. CD 16: Ingredientes amaldicados. CD 19: Essências demoniacas ou divinas.
 
-Os atributos culinarios sobem com pratica: cada vez que o personagem prepara uma refeicao bem-sucedida com um novo tipo de monstro pela primeira vez, ganha +1 em um atributo culinario de sua escolha.
+Os atributos culinários sobem com pratica: cada vez que o personagem prepara uma refeicao bem-sucedida com um novo tipo de monstro pela primeira vez, ganha +1 em um atributo culinário de sua escolha.
 
 ### 2.5 Experiencia e Niveis (1–20)
 
-O **nivel do personagem** (1–20) segue o **nivel dos monstros** do bestiario. Subir de nivel exige **XP acumulado**; combate e marcos na masmorra concedem XP.
+O **nivel do personagem** (1–20) segue o **nivel dos monstros** do bestiário. Subir de nivel exige **XP acumulado**; combaté e marcos na masmorra concedem XP.
 
 #### XP total para estar em cada nivel
 
-| Nv | XP acumulado minimo | XP para subir ao proximo |
+| Nv | XP acumulado minimo | XP para subir ao próximo |
 |----|---------------------|--------------------------|
 | 1 | 0 | 100 |
 | 2 | 100 | 200 |
@@ -158,31 +161,86 @@ O **nivel do personagem** (1–20) segue o **nivel dos monstros** do bestiario. 
 
 | Regra | Valor |
 |-------|--------|
-| **Base** | **100 × Nivel da ficha** do especime (001–060) |
+| **Base** | **100 × Nivel da ficha** do espécime (001–060) |
 | **Versao Elite / Colossal** | Use o **nivel da versao Elite** na ficha (ex.: Zumbi Colossal nv. 5 = **500 XP**) |
-| **Divisao** | Divida o pool **igualmente** entre quem participou do combate (reduzido a 0,5 se so assistiu sem atacar) |
-| **Banquete no mesmo descanso** | +25% XP se o grupo fez **Prato Estruturado** com aquele especime antes do proximo descanso longo |
+| **Divisao** | Divida o pool **igualmente** entre quem participou do combaté (reduzido a 0,5 se só assistiu sem atacar) |
+| **Banquete no mesmo descanso** | +25% XP se o grupo fez **Prato Estruturado** com aquele espécime antes do próximo descanso longo |
 | **Monstro fraco demais** | Se **N medio do grupo − Nivel do monstro ≥ 4:** XP × 0,25 · se **≥ 2:** XP × 0,5 |
 | **Monstro acima do grupo** | Se monstro **2+ niveis** acima do N medio: XP × 1,25 |
 
-**Ritmo alvo (4 PCs):** ~**3–5** combates contra especimes do **mesmo nivel** do grupo para subir **1 nivel**; andares com enxames de Comuns (nv. 1–2) aceleram o inicio.
+**Ritmo alvo (4 PCs):** ~**3–5** combates contra espécimes do **mesmo nivel** do grupo para subir **1 nivel**; andares com enxames de Comuns (nv. 1–2) aceleram o inicio.
 
 #### Marcos do Mestre (sem combate)
 
 | Marco | XP sugerido |
 |-------|-------------|
-| Andar limpo (sem TPK) | 50% do XP que falta para o proximo nivel do grupo |
-| Boss de andar derrotado | 100% do gap para o proximo nivel **ou** soma dos XP dos lacaios + boss |
+| Andar limpo (sem TPK) | 50% do XP que falta para o próximo nivel do grupo |
+| Boss de andar derrotado | 100% do gap para o próximo nivel **ou** soma dos XP dos lacaios + boss |
 | Descoberta ecologica (bioma novo, 40 plantas) | 25 × nivel medio |
-| Banquete Lendario (Cap. Mestre) | +25% XP da sessao daquele boss |
+| Banquete Lendário (Cap. Mestre) | +25% XP da sessao daquele boss |
 
-**Subir de nivel:** quando o XP acumulado atinge a linha do proximo nivel, o personagem sobe: +HP (Cap. 2.2), talentos nos niveis 4/8/12/16/20, PA nos niveis 5/10/15 (se usar Pontos de Acao na mesa digital).
+**Subir de nivel:** quando o XP acumulado atinge a linha do próximo nivel, o personagem sobe: +HP (Cap. 2.2), talentos nos niveis 4/8/12/16/20. PA na mesa digital **nao** aumentam por nivel — apenas talentos passivos especificos alteram recuperacao ou inicio de turno (Cap. 2.6).
 
 **Tabela por codigo:** `livros/TABELA-XP-ESPECIMES.md` (001–060).
 
+### 2.6 Pontos de Acao (PA) — mesa digital
+
+**PA** medem quantas acoes taticas o personagem executa **no proprio turno** antes de passar a iniciativa. O modelo segue **Divinity: Original Sin (DOS)**: cada acao relevante gasta PA; **sobra nao some** ao passar o turno; no **inicio do seu turno** voce recupera PA **base** somados ao que ficou no pool (com teto). Movimento de hex **reinicia** a cada turno.
+
+#### Pool, recuperacao e Atordoado (estilo DOS 2)
+
+| Regra | Valor |
+|-------|--------|
+| **Recuperacao** | **+5 PA** no inicio de cada turno (salvo talentos que alteram isso) |
+| **PA nao gastos** | Ao **passar o turno**, a sobra **permanece no pool**, ate o teto de acumulo |
+| **Inicio do seu turno** | `PA no pool = min(9, sobra + 5)` — ex.: sobra **4** → **9 PA**; sobra **2** → **7 PA** |
+| **Teto de acumulo** | **9 PA** no pool entre turnos (sobra guardada). Acima disso ao passar turno, o excedente se perde |
+| **Gasto no turno** | **Sem teto fixo** — pode gastar mais que 9 no mesmo turno se ganhar PA (Carrasco, Adrenalina, etc.) |
+| **Atordoado / Stunned** | Ao receber a condicao, **perde todo PA** do pool |
+
+Ex.: comeca com **5 PA**; move (**1 PA**) e ataca (**2 PA**) → sobram **2 PA**; passa o turno → guarda **2**. Proximo turno: **min(9, 2+5) = 7 PA**. Se terminar com **9 PA** sem gastar e passar o turno, no proximo turno: **min(9, 9+5) = 9 PA** (recuperacao nao aumenta porque ja esta no teto de acumulo).
+
+#### Talentos passivos de PA (mesa digital)
+
+| Talento | Efeito |
+|---------|--------|
+| **Lobo Solitario** | Recuperacao **7 PA**/turno; acumula ate **11 PA** |
+| **Canhao de Vidro** | Inicia cada turno com **7 PA** (ignora sobra+recuperacao); armadura nao bloqueia status |
+| **Carrasco** | Ao eliminar inimigo: **+2 PA** imediatos (1x/turno) |
+| **O Peao** | **1 PA** do movimento basico (1º bloco) **nao gasta**; incompativel com Carrasco |
+| **Adrenalina** (ativa) | **+2 PA** agora; proximo turno recupera **2 a menos** |
+| **Aceleracao** (buff) | Recuperacao **+1 PA**/turno enquanto durar |
+
+IDs no VTT: `data/character/pa-modifiers.json` (`passivePa`).
+
+#### Monstros na mesa digital (VTT)
+
+| Regra | Valor |
+|-------|--------|
+| **PA padrao** | Monstros comuns e mini-boss: **6 PA** |
+| **Boss** | **9 PA** |
+| **Movimento** | Mesmas **faixas por hex** que personagens, usando `walk` e `run` do bloco do monstro (ex. walk 4, run 7: hex 1–2 → 1 PA; 3–5 livres; do 6º → PA de corrida) |
+| **Visibilidade** | Jogadores **nao veem** PA de monstros na mesa; o mestre ve e controla |
+
+O *Livro do Mestre* descreve ameaca e tier; o JSON `data/compendiums/monstros.json` e o VTT aplicam estes valores.
+
+#### O que gasta PA
+
+| Tipo | Custo tipico |
+|------|----------------|
+| Ataque com arma | **2 PA** por golpe (padrao; compendio pode variar) |
+| Magia | **1 PA** ou mais (`custoPontosAcao` na magia) |
+| Habilidade de classe / trilha | **1 PA** ou mais (compendio) |
+| **Movimentacao basica** (VTT) | **Faixas por hex** no turno (valores `walk` / `run` da ficha ou monstro): **1º bloco** (min. 2 hex, ou 1 se walk=1) → **1 PA**; **faixa livre** ate o hex anterior à corrida → **0 PA**; **corrida** a partir do hex **walk+2** (max. `run`) → **+1 PA a cada 2 hex** (ou 1 PA/hex se sobra 1 hex de corrida) |
+| Orcamento de hex | **Caminhada** ate `walk`; **corrida** ate `run` — ex. walk **4**, run **7**: hex **1–2** → 1 PA; **3–5** livres; do **6º** em diante → PA de corrida |
+
+Regras completas, exemplos de turno e tabelas de talentos: **Cap. 3.1** e **Cap. 12.0**. Referencia tecnica do VTT: `data/character/pa-modifiers.json`.
+
+**Ficha:** anote **PA atual / PA maximo** ao lado de HP (impresso: ver `FICHA_PERSONAGEM_ELDARIN_v4.md`).
+
 ---
 
-## CAPITULO 3 — MECANICA CENTRAL DE COMBATE
+## CAPÍTULO 3 — MECANICA CENTRAL DE COMBATE
 
 ### 3.1 Sequencia de Turno
 
@@ -192,13 +250,93 @@ O **nivel do personagem** (1–20) segue o **nivel dos monstros** do bestiario. 
 4. Movimento: Ate o valor de deslocamento base (normalmente 9m).
 5. Reacao: Uma por turno, em resposta a gatilhos especificos.
 
+**Mesa digital (VTT):** turnos usam **Pontos de Acao (PA)** (`Cap. 2.6`), no estilo **DOS**. No inicio do seu turno voce soma **PA base** ao que sobrou no pool (com teto). **Movimento, ataque, magia e habilidade** gastam PA conforme o compendio; **movimento basico = 1 PA**.
+
+### 3.1.1 Economia de PA (mesa digital)
+
+| Regra | Valor |
+|-------|--------|
+| Recuperacao por turno | **5 PA** (fixo; talentos alteram) |
+| Acumulo no pool | Ate **9 PA** entre turnos |
+| Gasto no turno | **Sem teto** — bonus podem permitir gastar bem mais no mesmo turno |
+| Ataque / magia / habilidade | Custo no item (`custoPontosAcao`; padrao **2 PA**) |
+| Movimentacao basica (VTT) | **Faixas** conforme `walk`/`run` (1º bloco = 1 PA; meio livre; corrida depois) |
+| Monstros (VTT) | **6 PA** (comum/mini); **9 PA** (boss) |
+| PA nao gastos (fim do turno) | **Permanecem no pool** (max. **9**); proximo turno **+5** recuperacao |
+| Atordoado | **Perde** todo PA acumulado |
+| Guerreiro nv. 5+ | Cada golpe de **Ataque Extra** custa **1 PA** (excecao; demais ataques com arma seguem o custo do item, em geral **2 PA**) |
+| Mago, Clérigo, Druida, Bardo, Artifice nv. 5+ | **Afinidade Arcanica** — magias com custo **2+ PA** custam **1 PA** a menos (min. 1) |
+| Monstros (VTT) | Custo por acao no compendio (muitas mordidas/garras **1 PA**); pool minimo **6 PA** |
+| Cantrips / utilitarios | Alguns truques sem dano de combate podem ter **1 PA** no compendio |
+
+#### 3.1.1.1 Areas na mesa digital (VTT)
+
+No site, magias e habilidades de **area** usam hex (1 hex = 1,5 m). O mestre ou jogador escolhe o **centro** (e a **direcao**, em cone ou linha); o VTT mostra os hex afetados antes de gastar PA.
+
+| Forma no VTT | Exemplo no livro | Parametro tipico |
+|--------------|------------------|------------------|
+| **burst** (raio) | Bola de Fogo, raio 6 m | `radiusHex` (6 m ≈ 4 hex) |
+| **wall** (muralha) | Muralha Hexagonal | `hexCount` em hex adjacentes |
+| **cone** | Maos Gelidas, cone | `lengthHex` + direcao |
+| **line** (linha) | Relampago em linha, Ventania | `lengthHex` + direcao |
+| **single** | Raio Arcano em um alvo | 1 hex |
+
+Detalhe tecnico e pipeline livro → JSON: `docs/VTT-ACOES-PA-AREAS.md`.
+
+#### 3.1.1.2 Magias canalizáveis (10 no compêndio)
+
+Dez magias de dano marcadas como **canalizáveis** no VTT (`spell.channel` no JSON):
+
+| Magia | Nv | PA base | Extra |
+|-------|-----|---------|-------|
+| Mãos Gelidas | 1 | 2 | até +2 PA |
+| Chama de Vinha | 1 | 2 | até +2 PA |
+| Onda de Trovão | 1 | 2 | até +2 PA |
+| Esfera Ácida de Monstro | 2 | 2 | até +2 PA |
+| Relâmpago | 3 | 2 | até +2 PA |
+| Bola de Fogo | 3 | 3 | até +2 PA |
+| Raio do Limiar | 3 | 2 | até +2 PA |
+| Murcha | 4 | 3 | até +2 PA |
+| Cone de Frio | 5 | 3 | até +2 PA |
+| Cadeia de Relâmpago | 6 | 3 | até +2 PA |
+
+Na mesa, antes de conjurar escolha **+0, +1 ou +2 PA extras**. Cada PA extra adiciona **+1d6** à fórmula de dano daquela conjuração. Os PA extras **não** são reduzidos por Afinidade Arcânica (só o custo base). Continua valendo o teto de **11 PA gastos** no turno.
+
+**Empilhamento:** reducoes de talento e de classe **somam** antes do minimo 0 PA. Ex.: magia de fogo 2 PA com *Chama Controlada* (−1) e Afinidade Arcanica (−1) = **0 PA** naquele turno.
+
+**Talentos** (Cap. 12.0) aumentam PA maximo ou reduzem custo de tipos especificos (arma, magia por elemento, magia de area, habilidade). A ficha deve registrar o talento pelo **nome**; no VTT o **id** da trilha (ex. `chama-controlada`) precisa constar em `talentos` para o calculo automatico.
+
+### 3.1.2 Exemplos de turno (PA)
+
+**Guerreiro nv. 5 (6 PA), espada, Ataque Extra (2 golpes):**
+1. Caminhar 4 hex → 0 PA (restam 6 PA).
+2. Atacar inimigo adjacente (2 golpes) → **2 PA** (restam 4 PA).
+3. *Investida do Guerreiro* (habilidade 1 PA) → 1 PA (restam 3 PA).
+4. Guardar 3 PA para o proximo turno (volta a 6 PA).
+
+**Mago nv. 5 (6 PA), *Chama Controlada* (nv. 4), Bola de Fogo (2 PA no compendio):**
+1. Correr alem da caminhada → 1 PA (restam 5 PA).
+2. Bola de Fogo → 2 − 1 (fogo) − 1 (Afinidade) = **0 PA** (restam 5 PA).
+3. Magia Cantrip 1 PA → 1 PA (restam 4 PA).
+
+**Clérigo nv. 10 (7 PA), sem talentos de reducao:**
+1. Magia 2 PA → Afinidade → **1 PA**.
+2. Cura aliado (habilidade 1 PA) → 1 PA.
+3. Ataque com maça 1 PA → 1 PA. Total gasto: 3 PA; sobram 4 PA.
+
+### 3.1.3 Movimento e PA no hexagonal (VTT)
+
+- **1 hex = 1,5 m.** Referencia de deslocamento: ~**9 m** por turno ≈ **6 hex** de corrida maxima; caminhada tipica ≈ **4 hex** com faixas de PA (`Cap. 2.6`).
+- **Rota no mapa:** ao mover, o VTT traca um **caminho pelo grid** (nao linha reta atraves de obstaculos) e anima o token ao longo da rota; hex bloqueados por **tokens medios**; **Halfling**, **Gnomo** e criaturas **pequenas** (mob com deslocamento curto, ou `sharedHex` no token) podem **dividir o mesmo hex** com outra criatura pequena (ate 2 no bloco).
+- **Modo caminhada / corrida:** orcamento de hex e custo de PA conforme faixas `walk`/`run` da ficha; o alcance mostrado na mesa respeita bloqueios e rotas validas.
+
 ### 3.2 Ataques
 
 **Rolagem de Ataque:** 1d20 + Modificador de Atributo + Bonus de Proficiencia (se proficiente)
 
 - Resultado maior ou igual a CA do alvo: Acerto
-- Natural 20: Acerto Critico — dano dobrado
-- Natural 1: Falha Critica — acao desperdicada, possivel acidente
+- Natural 20: Acerto Crítico — dano dobrado
+- Natural 1: Falha Critica — ação desperdicada, possivel acidente
 
 **Dano:** Dado da arma + Modificador de Atributo
 
@@ -210,22 +348,22 @@ O **nivel do personagem** (1–20) segue o **nivel dos monstros** do bestiario. 
 
 | Condicao | Efeito |
 |----------|--------|
-| Agarrado | Velocidade 0. Pode se soltar com Forca ou Acrobacia vs CD do agarrador. |
+| Agarrado | Velocidade 0. Pode se soltar com Força ou Acrobacia vs CD do agarrador. |
 | Amedrontado | Desvantagem em ataques e testes enquanto a fonte do medo estiver visivel. |
-| Atordoado | Incapaz de agir. Falha automatica em Forca e DES. Ataques contra tem Vantagem. |
+| Atordoado | Incapaz de agir. Falha automatica em Força e DES. Ataques contra tem Vantagem. |
 | Cego | Desvantagem em ataques. Ataques contra tem Vantagem. |
 | Encantado | Nao pode atacar o encantador. Encantador tem Vantagem em interacoes sociais. |
 | Envenenado | Desvantagem em ataques e testes de atributo. |
 | Exausto | Penalidades crescentes de 1 a 6. Nivel 6 = morte. |
 | Incapacitado | Sem acoes nem reacoes. |
 | Invisivel | Ataques tem Vantagem. Ataques contra tem Desvantagem. |
-| Paralisado | Incapacitado, sem movimento. Acertos sao criticos automaticos. |
-| Petrificado | Transformado em pedra. Incapacitado, peso dobrado, resistencia a todos os danos. |
+| Paralisado | Incapacitado, sem movimento. Acertos sao críticos automaticos. |
+| Petrificado | Transformado em pedra. Incapacitado, peso dobrado, resistência a todos os danos. |
 | Prostrado | Velocidade 0 exceto arrastando. Desvantagem em ataques. |
 | Restringido | Velocidade 0. Desvantagem em ataques e DES. Ataques contra tem Vantagem. |
-| Surdo | Falha automatica em Percepcao por som. |
+| Surdo | Falha automatica em Percepção por som. |
 
-### 3.5 Descanso e Recuperacao
+### 3.5 Descanso e Recuperação
 
 **Descanso Curto (1 hora):**
 - Recupera HP usando Dados de Vida: 1d(Dado da Classe) + MOD CON por dado gasto.
@@ -235,7 +373,7 @@ O **nivel do personagem** (1–20) segue o **nivel dos monstros** do bestiario. 
 **Descanso Longo (8 horas):**
 - Recupera HP total.
 - Recupera todos os espacos de magia.
-- Expira todas as mutacoes biomagicas ativas.
+- Expira todas as mutacoes biomágicas ativas.
 - Requer pelo menos uma Refeicao Comum antes de comecar. Sem refeicao: recupera apenas 50% do HP e metade dos espacos de magia.
 
 **Risco do Descanso na Masmorra:** Descansos longos dentro da masmorra tem risco de Encontro. O Mestre rola 1d6: 1-2 = Encontro de monstros durante o descanso; 3-5 = Nenhum encontro; 6 = O grupo e descoberto — proxima batalha e uma emboscada.
@@ -246,15 +384,15 @@ O **nivel do personagem** (1–20) segue o **nivel dos monstros** do bestiario. 
 
 ---
 
-> "Nas masmorras de Eldarin, a pergunta nao e de onde voce vem — e o que voce come, o que voce construiu, e o que corre nas suas veias."
+> "Nas masmorras de Eldarin, a pergunta não e de onde você vem — e o que você come, o que você construiu, e o que corre nas suas veias."
 
 ## VISAO GERAL DAS RACAS
 
-| Raca | Origem | Papel Natural |
+| Raça | Origem | Papel Natural |
 |------|--------|---------------|
 | Humano | Superficie | Versatil, adaptavel, genericamente competente |
 | Elfo | Florestas engolidas | Magico, sensivel, cozinheiro arcano supremo |
-| Anao | Cidades subterraneas | Artifice, resistente, forjador de Ferramentas Organicas |
+| Anão | Cidades subterraneas | Artífice, resistente, forjador de Ferramentas Orgânicas |
 | Halfling | Vilas rurais proximas as entradas | Sortudo, furtivo, sensor de perigo |
 | Gnomo | Torres de alquimia | Pocioneiro, curioso, inteligencia explosiva |
 | Meio-Humano | Familias com ancestral bestial | Fisico especializado por linhagem animal |
@@ -264,14 +402,14 @@ O **nivel do personagem** (1–20) segue o **nivel dos monstros** do bestiario. 
 
 ## HUMANO
 
-**Lore:** O mais abundante e o mais ignorado. Humanos chegam as masmorras por todas as razoes possiveis — ganancia, fuga, missao divina, curiosidade cientifica ou simplesmente porque estavam no lugar errado na hora errada. O que os define nao e forca nem magia, mas a velocidade com que aprendem e a teimosia com que sobrevivem.
+**Lore:** O mais abundante e o mais ignorado. Humanos chegam as masmorras por todas as razoes possiveis — ganancia, fuga, missao divina, curiosidade cientifica ou simplesmente porque estavam no lugar errado na hora errada. O que os define não e forca nem magia, mas a velocidade com que aprendem e a teimosia com que sobrevivem.
 
 **Atributos:** +1 em todos os seis atributos.
 
 **Habilidades Raciais:**
 - Adaptabilidade: Uma vez por descanso longo, ganha Vantagem em qualquer teste antes de rolar.
-- Paladar Versatil: Escolhe qual atributo culinario recebe o bonus de "primeira vez com novo monstro".
-- Resistencia Mundana: +2 permanente em Estomago de Ferro.
+- Paladar Versatil: Escolhe qual atributo culinário recebe o bônus de "primeira vez com novo monstro".
+- Resistência Mundana: +2 permanente em Estômago de Ferro.
 - Determinacao: Uma vez por dia, ao ser reduzido a 0 HP, fica a 1 HP em vez disso.
 
 **Progressao Racial:**
@@ -281,29 +419,29 @@ O **nivel do personagem** (1–20) segue o **nivel dos monstros** do bestiario. 
 | 4 | +1 em dois atributos a escolha |
 | 8 | Aprende uma habilidade de subclasse de qualquer aliado (30 dias de treino) |
 | 12 | Determinacao Humana — a habilidade acima funciona 2x/dia |
-| 16 | +2 em todos os atributos culinarios |
-| 20 | Legado — escolhe uma mutacao biomagica permanente de qualquer monstro consumido na campanha |
+| 16 | +2 em todos os atributos culinários |
+| 20 | Legado — escolhe uma mutação biomágica permanente de qualquer monstro consumido na campanha |
 
 ---
 
 ## ELFO
 
-**Lore:** Ha 800 anos, a Grande Floresta de Alverith foi engolida pela Masmorra 7. Os elfos que sobreviveram adaptaram-se ao submundo ao longo de geracoes: perderam a conexao com a luz solar e ganharam sensibilidade magica extrema as energias do ambiente. Sua pele emite bioluminescencia tenue (controlavel voluntariamente), e seus sentidos detectam campos magicos como um humano detecta fumaca. Sao considerados os melhores harmonizadores de ingredientes do mundo.
+**Lore:** Ha 800 anos, a Grande Floresta de Alverith foi engolida pela Masmorra 7. Os elfos que sobreviveram adaptaram-se ao submundo ao longo de geracoes: perderam a conexao com a luz solar e ganharam sensibilidade mágica extrema as energias do ambiente. Sua pele emite bioluminescencia tenue (controlável voluntariamente), e seus sentidos detectam campos magicos como um humano detecta fumaca. Sao considerados os melhores harmonizadores de ingredientes do mundo.
 
 **Atributos:** +2 DES, +1 INT
 
 **Habilidades Raciais:**
-- Visao Arcana: Visao no escuro ate 18m. Detecta campos magicos ativos (armadilhas, auras) num raio de 5m.
-- Instinto de Harmonizacao: +3 permanente em Harmonizacao.
+- Visao Arcana: Visao no escuro até 18m. Detecta campos magicos ativos (armadilhas, auras) num raio de 5m.
+- Instinto de Harmonização: +3 permanente em Harmonização.
 - Sono Elfico: Descanso Longo em apenas 4h de meditacao.
-- Resistencia a Encantamentos: Vantagem em saving throws contra Charme e Medo.
+- Resistência a Encantamentos: Vantagem em teste de resistências contra Charme e Medo.
 
 **Progressao Racial:**
 
 | Nivel | Bonus |
 |-------|-------|
 | 4 | Toque Purificador — neutraliza venenos nao-magicos em ingredientes com um toque, sem teste |
-| 8 | Leitura de Especime — toque em monstro morto equivale a Estudo de Anatomia automatico |
+| 8 | Leitura de Espécime — toque em monstro morto equivale a Estudo de Anatomia automatico |
 | 12 | Mutacoes Elementais duram 48h em vez de 24h |
 | 16 | Memoria Ancestral — acessa conhecimento ancestral 1x/semana (equivale ao Bestiario completo de 1 categoria) |
 | 20 | Harmonia Perfeita — pratos preparados por Elfos sempre resultam em Prato Perfeito |
@@ -312,39 +450,39 @@ O **nivel do personagem** (1–20) segue o **nivel dos monstros** do bestiario. 
 
 ## ANAO
 
-**Lore:** Os Anaos construiram imperios nas profundezas muito antes das masmorras existirem. Quando o submundo cresceu e engoliu suas cidades, eles simplesmente continuaram construindo — agora com materiais de monstros. Sao os criadores dos Forjados de Osso e os unicos que entendem completamente as Engrenagens Esquecidas. Sua cultura gira em torno da maxima: "Nada se desperdiça. Tudo vira ferramenta."
+**Lore:** Os Anaos construiram impérios nas profundezas muito antes das masmorras existirem. Quando o submundo cresceu e engoliu suas cidades, eles simplesmente continuaram construindo — agora com materiais de monstros. Sao os criadores dos Forjados de Osso e os unicos que entendem completamente as Engrenagens Esquecidas. Sua cultura gira em torno da máxima: "Nada se desperdiça. Tudo vira ferramenta."
 
 **Atributos:** +2 CON, +1 FOR
 
 **Habilidades Raciais:**
-- Resistencia Ana: Vantagem em saving throws contra veneno. Resistencia a dano de veneno.
+- Resistência Ana: Vantagem em teste de resistências contra veneno. Resistência a dano de veneno.
 - Visao de Escuro: 18m de visao perfeita no escuro.
 - Mestria de Ferramentas: Proficiencia automatica em todas as ferramentas de Trinchar, incluindo Especialista. +2 permanente em Trinchar.
-- Instinto de Forja: Ao criar Ferramentas Organicas de Boss, rola duas vezes e usa o melhor resultado.
+- Instinto de Forja: Ao criar Ferramentas Orgânicas de Boss, rola duas vezes e usa o melhor resultado.
 
 **Progressao Racial:**
 
 | Nivel | Bonus |
 |-------|-------|
-| 4 | Estomago de Pedra — imune a debuffs de Gororoba; refeicoes ruins sempre contam como Comuns |
-| 8 | Resistencia Termica — resistencia permanente a fogo e calor extremo |
-| 12 | Construtor Instintivo — Ferramentas Organicas de Boss em metade do tempo |
+| 4 | Estômago de Pedra — imune a debuffs de Gororoba; refeicoes ruins sempre contam como Comuns |
+| 8 | Resistência Termica — resistência permanente a fogo e calor extremo |
+| 12 | Construtor Instintivo — Ferramentas Orgânicas de Boss em metade do tempo |
 | 16 | Sangue de Forja — ataques corpo-a-corpo contam como magicos e adicionam +1d6 fogo |
-| 20 | Lenda da Forja — cria Ferramenta Organica Lendaria 1x/mes com ingredientes acumulados sem depender de Boss |
+| 20 | Lenda da Forja — cria Ferramenta Orgânica Lendaria 1x/mes com ingredientes acumulados sem depender de Boss |
 
 ---
 
 ## HALFLING
 
-**Lore:** Os Halflings vivem nas vilas agricolas nos arredores das entradas das masmorras de Eldarin — os unicos loucos o suficiente para construir casas a 500 metros de uma boca de masmorra. Seculos de vida nessa vizinhanca perigosa desenvolveram neles algo inexplicavel pela ciencia: sorte. Nao magia, nao habilidade — sorte biologica. Eles escorregam de armadilhas que deveriam te-los matado. Sobrevivem a situacoes que nao deveriam sobreviver.
+**Lore:** Os Halflings vivem nas vilas agricolas nos arredores das entradas das masmorras de Eldarin — os unicos loucos o suficiente para construir casas a 500 metros de uma boca de masmorra. Seculos de vida nessa vizinhanca perigosa desenvolveram neles algo inexplicavel pela ciencia: sorte. Nao magia, não habilidade — sorte biologica. Eles escorregam de armadilhas que deveriam te-los matado. Sobrevivem a situacoes que não deveriam sobreviver.
 
 **Atributos:** +2 DES, +1 SAB
 
 **Habilidades Raciais:**
 - Sorte Inata: Uma vez por descanso longo, quando rolar 1 natural, pode rolar o dado novamente e usar o segundo resultado.
-- Bravura Halfling: Vantagem em saving throws contra Medo. Halflings nao fogem de combate involuntariamente por efeitos de medo.
+- Bravura Halfling: Vantagem em teste de resistências contra Medo. Halflings não fogem de combaté involuntariamente por efeitos de medo.
 - Furtividade Natural: Pode tentar se esconder mesmo quando coberto apenas por uma criatura de tamanho Medio ou maior.
-- Sensores Agucados: +3 em Percepcao passiva. Detecta criaturas ocultas e armadilhas a 1,5m automaticamente.
+- Sensores Agucados: +3 em Percepção passiva. Detecta criaturas ocultas e armadilhas a 1,5m automaticamente.
 - Paladar de Especialista: Ao provar qualquer ingrediente cru, imediatamente sabe se e seguro, toxico leve, toxico severo ou letal.
 - Corpo Pequeno: Tamanho Pequeno. Desvantagem em armas pesadas.
 
@@ -354,10 +492,10 @@ O **nivel do personagem** (1–20) segue o **nivel dos monstros** do bestiario. 
 |-------|-------|
 | 4 | Sorte Dupla — Sorte Inata funciona 2x por descanso longo |
 | 6 | Passo Silencioso — movimento nunca provoca ataques de oportunidade em terreno natural |
-| 8 | Faro de Perigo — no inicio de cada sessao, o Mestre informa ao Halfling se ha uma armadilha mortal no proximo andar |
+| 8 | Faro de Perigo — no inicio de cada sessao, o Mestre informa ao Halfling se ha uma armadilha mortal no próximo andar |
 | 10 | Sorte Compartilhada — pode gastar um uso de Sorte Inata em favor de um aliado adjacente |
-| 12 | Reflexos de Sobrevivente — nunca pode ser surpreendido em combate |
-| 14 | +2 em Harmonizacao |
+| 12 | Reflexos de Sobrevivente — nunca pode ser surpreendido em combaté |
+| 14 | +2 em Harmonização |
 | 16 | Esquiva do Destino — uma vez por semana, cancela completamente um efeito que deveria afeta-lo |
 | 18 | Sentido de Horde — detecta automaticamente o numero aproximado de inimigos em uma sala antes de entrar |
 | 20 | Abencado pela Sorte — Sorte Inata funciona em qualquer dado, sem limite de usos diarios |
@@ -366,61 +504,61 @@ O **nivel do personagem** (1–20) segue o **nivel dos monstros** do bestiario. 
 
 ## GNOMO
 
-**Lore:** Os Gnomos habitam as Torres de Alquimia espalhadas por Eldarin — laboratorios construidos estrategicamente perto das masmorras para que os ingredientes cheguem frescos. Sua obsessao nao e a batalha nem a exploracao — e a transformacao. Todo monstro e uma equacao quimica por resolver. Todo veneno e uma pocao pela metade. A culinaria de masmorra e a alquimia de laboratorio, para os Gnomos, sao a mesma coisa expressa em vocabularios diferentes.
+**Lore:** Os Gnomos habitam as Torres de Alquimia espalhadas por Eldarin — laboratorios construidos estrategicamente perto das masmorras para que os ingredientes cheguem frescos. Sua obsessao não e a batalha nem a exploracao — e a transformacao. Todo monstro e uma equacao quimica por resolver. Todo veneno e uma poção pela metade. A culinaria de masmorra e a alquimia de laboratorio, para os Gnomos, sao a mesma coisa expressa em vocabularios diferentes.
 
 **Atributos:** +2 INT, +1 SAB
 
 **Habilidades Raciais:**
-- Mente Alquimica: +4 permanente em Harmonizacao para identificar e combinar propriedades de ingredientes.
-- Pocioneiro Nato: Ao criar qualquer pocao usando ingredientes de monstros, o resultado e sempre uma categoria acima do normal.
-- Identificacao Instantanea: Pode identificar qualquer substancia, veneno, pocao ou ingrediente com um teste de Arcana CD 10.
-- Laboratorio Portatil: Pode processar qualquer ingrediente bruto em componente alquimico estavel em 10 minutos.
-- Resistencia Magica: Vantagem em saving throws contra magias e efeitos magicos.
+- Mente Alquimica: +4 permanente em Harmonização para identificar e combinar propriedades de ingredientes.
+- Pocioneiro Nato: Ao criar qualquer poção usando ingredientes de monstros, o resultado e sempre uma categoria acima do normal.
+- Identificacao Instantanea: Pode identificar qualquer substancia, veneno, poção ou ingrediente com um teste de Arcana CD 10.
+- Laboratorio Portátil: Pode processar qualquer ingrediente bruto em componente alquimico estavel em 10 minutos.
+- Resistência Magica: Vantagem em teste de resistências contra magias e efeitos magicos.
 - Tamanho Pequeno: Mesmo beneficio do Halfling em espacos apertados.
 
 **Progressao Racial:**
 
 | Nivel | Bonus |
 |-------|-------|
-| 4 | Pocao Dupla — ao criar uma pocao, cria duas automaticamente com os mesmos ingredientes |
+| 4 | Poção Dupla — ao criar uma poção, cria duas automaticamente com os mesmos ingredientes |
 | 6 | Estabilizador de Veneno — pode neutralizar qualquer veneno de monstro sem teste |
-| 8 | Formula Secreta — cria uma pocao exclusiva (efeito customizado, discutido com o Mestre) |
-| 10 | Concentracao Arcana — pocoes criadas pelo Gnomo tem duracao dobrada |
+| 8 | Formula Secreta — cria uma poção exclusiva (efeito customizado, discutido com o Mestre) |
+| 10 | Concentracao Arcana — pocoes criadas pelo Gnomo tem duração dobrada |
 | 12 | Catalise Elemental — ao combinar ingredientes de dois tipos diferentes, pode criar efeitos hibridos |
 | 14 | +2 em Coccao permanente |
-| 16 | Grande Obra — uma vez por mes, cria uma Pocao Lendaria usando ingredientes de Boss |
-| 18 | Digestao Arcana — pode consumir qualquer pocao como refeicao |
+| 16 | Grande Obra — uma vez por mes, cria uma Poção Lendaria usando ingredientes de Boss |
+| 18 | Digestão Arcana — pode consumir qualquer poção como refeicao |
 | 20 | Pedra Filosofal Pessoal — transmuta qualquer ingrediente em qualquer outro de mesma raridade uma vez por semana |
 
 ---
 
 ## MEIO-HUMANO — AS NOVE LINHAGENS
 
-**Lore:** Ha geracoes, em Eldarin, cruzamentos entre humanos e criaturas da masmorra — sejam por magia selvagem, por mutacoes biomagicas acumuladas em familias que comiam certos monstros por seculos, ou por eventos que os historiadores preferem nao documentar — criaram linhagens que persistiram. Os Meio-Humanos nao sao monstros nem sao humanos puros: sao algo terceiro, portando fisica e instinto bestial dentro de uma mente humana.
+**Lore:** Ha geracoes, em Eldarin, cruzamentos entre humanos e criaturas da masmorra — sejam por magia selvagem, por mutacoes biomágicas acumuladas em familias que comiam certos monstros por séculos, ou por eventos que os historiadores preferem não documentar — criaram linhagens que persistiram. Os Meio-Humanos não sao monstros nem sao humanos puros: sao algo terceiro, portando fisica e instinto bestial dentro de uma mente humana.
 
 **Regra de Linhagem:** Ao criar um Meio-Humano, escolhe-se uma das 9 Linhagens. Essa escolha e permanente.
 
-**Atributos Comuns:** +1 CON (resistencia hibrida), +1 em dois atributos definidos pela linhagem.
+**Atributos Comuns:** +1 CON (resistência hibrida), +1 em dois atributos definidos pela linhagem.
 
 **Habilidades Comuns a Todos os Meio-Humanos:**
-- Heranca Bestial: Uma vez por dia, como acao bonus, acessa o instinto animal por 1 minuto.
+- Heranca Bestial: Uma vez por dia, como ação bonus, acessa o instinto animal por 1 minuto.
 - Olfato Agucado: Detecta criaturas ocultas ou camufladas pelo cheiro num raio de 9m.
-- Corpo Resistente: Resistencia a uma condicao definida pela linhagem.
+- Corpo Resistente: Resistência a uma condicao definida pela linhagem.
 
 ### Linhagem do Gato
 
-"Eles nao caem. Nunca vi um Meio-Gato cair de verdade."
+"Eles não caem. Nunca vi um Meio-Gato cair de verdade."
 
 Atributos: +2 DES, +1 SAB. Tracos Fisicos: Pupilas verticais, orelhas levemente pontudas, reflexo pupilar no escuro.
 
-Habilidades: Aterrissagem Felina (imune a dano de queda de ate 18m, sempre cai de pe), Visao Noturna (18m perfeita no escuro), Reflexos de Predador (+3 em Iniciativa, nunca surpreendido), Instinto (velocidade +6m, pode mover pelo teto e paredes por 1 minuto), Resistencia (imune a Prostrado involuntario).
+Habilidades: Aterrissagem Felina (imune a dano de queda de até 18m, sempre cai de pe), Visao Noturna (18m perfeita no escuro), Reflexos de Predador (+3 em Iniciativa, nunca surpreendido), Instinto (velocidade +6m, pode mover pelo teto e paredes por 1 minuto), Resistência (imune a Prostrado involuntario).
 
 | Nivel | Bonus |
 |-------|-------|
 | 4 | Garras Retrateis — ataques desarmados causam 1d6 cortante |
 | 8 | Furtividade Felina — Vantagem em todos os testes de Furtividade em superficies naturais |
 | 12 | Sete Vidas — ao ser reduzido a 0 HP, rola CON CD 13; sucesso: fica a 1 HP (max 3x por campanha) |
-| 16 | Predador Perfeito — acertos criticos em 19-20 enquanto Heranca Bestial ativa |
+| 16 | Predador Perfeito — acertos críticos em 19-20 enquanto Heranca Bestial ativa |
 | 20 | Forma de Felino — transforma-se em felino de medio porte 1x/dia por 1 hora |
 
 ### Linhagem da Cobra
@@ -429,31 +567,31 @@ Habilidades: Aterrissagem Felina (imune a dano de queda de ate 18m, sempre cai d
 
 Atributos: +2 DES, +1 INT. Tracos Fisicos: Pupilas elipticas douradas, lingua ligeiramente bifurcada, escamas finas imperceptiveis no pescoco e ombros.
 
-Habilidades: Visao Termica (enxerga criaturas de sangue quente ate 9m atraves de paredes), Flexibilidade Ossea (passa por aberturas de 15cm, imune a agarramento), Veneno Natural (mordida +1d4 venenoso, CD 12 CON ou Envenenado 1h), Instinto (visao termica 18m atravessa paredes), Resistencia (Vantagem contra Paralisia e Petrificacao).
+Habilidades: Visao Termica (enxerga criaturas de sangue quente até 9m atraves de paredes), Flexibilidade Ossea (passa por aberturas de 15cm, imune a agarramento), Veneno Natural (mordida +1d4 venenoso, CD 12 CON ou Envenenado 1h), Instinto (visao termica 18m atravessa paredes), Resistência (Vantagem contra Paralisia e Petrificação).
 
 | Nivel | Bonus |
 |-------|-------|
-| 4 | Veneno Aprimorado — CD aumenta para 14, duracao para 2 horas |
+| 4 | Veneno Aprimorado — CD aumenta para 14, duração para 2 horas |
 | 8 | Constricao — em agarramento, causa 2d6 de esmagamento automaticamente por turno |
-| 12 | Desprendimento — pode sair de qualquer restricao como acao bonus, sem teste |
+| 12 | Desprendimento — pode sair de qualquer restricao como ação bonus, sem teste |
 | 16 | Veneno Paralisante — o veneno causa Paralisia por 1 turno (CD 17) |
 | 20 | Olhar de Hipnose — como acao, forca SAB CD 16 ou alvo fica Encantado por 1 minuto |
 
 ### Linhagem do Urso
 
-"Quando ele agarrou o Wyvern pelo pescoco e simplesmente nao soltou, entendi que ia dar certo."
+"Quando ele agarrou o Wyvern pelo pescoco e simplesmente não soltou, entendi que ia dar certo."
 
 Atributos: +2 FOR, +2 CON (substituem o +1 CON base). Tracos Fisicos: Constituicao visivelmente mais larga, pelos mais grossos, unhas espessas.
 
-Habilidades: Abraco de Urso (dano 2d6+FOR em agarramento, CD 16 para escapar), Destrocar (ataque adicional contundente que ignora 5 pontos de CA), Constituicao Brutal (+3 HP por nivel), Instinto (FOR +4, agarramentos irresistiveis para criaturas de tamanho igual ou menor), Resistencia a dano contundente.
+Habilidades: Abraco de Urso (dano 2d6+FOR em agarramento, CD 16 para escapar), Destrocar (ataque adicional contundente que ignora 5 pontos de CA), Constituicao Brutal (+3 HP por nivel), Instinto (FOR +4, agarramentos irresistiveis para criaturas de tamanho igual ou menor), Resistência a dano contundente.
 
 | Nivel | Bonus |
 |-------|-------|
 | 4 | Pele Grossa — +1 CA natural permanente |
-| 8 | Rugido de Intimidacao — acao, CD 14 SAB em area de 6m ou Amedrontado por 1 minuto |
-| 12 | Hibernacao Rapida — descanso longo em 4 horas, recupera HP adicionais iguais ao dobro do nivel |
+| 8 | Rugido de Intimidacao — acao, CD 14 SAB em área de 6m ou Amedrontado por 1 minuto |
+| 12 | Hibernação Rápida — descanso longo em 4 horas, recupera HP adicionais iguais ao dobro do nivel |
 | 16 | Corpo Inabalavel — imune a ser Prostrado ou Empurrado involuntariamente |
-| 20 | Forca de Titan — durante Heranca Bestial, FOR temporariamente 26 (+8), conta como Enorme para agarramento |
+| 20 | Força de Titan — durante Heranca Bestial, FOR temporáriamente 26 (+8), conta como Enorme para agarramento |
 
 ### Linhagem do Tigre
 
@@ -461,15 +599,15 @@ Habilidades: Abraco de Urso (dano 2d6+FOR em agarramento, CD 16 para escapar), D
 
 Atributos: +2 DES, +2 FOR (substituem o +1 CON base). Tracos Fisicos: Listras tigradas sutis, musculatura incrivelmente densa, dentes caninos levemente mais longos.
 
-Habilidades: Mordida de Tigre (acao bonus: 2d8+FOR + agarramento automatico), Explosao Muscular (dobro de velocidade uma vez por turno), Velocidade Felina (velocidade base 12m), Instinto (velocidade 18m, ataques adicionais como acao bonus, mordida causa dano triplo no primeiro ataque), Resistencia (Vantagem contra lentidao e reducao de velocidade).
+Habilidades: Mordida de Tigre (ação bônus: 2d8+FOR + agarramento automatico), Explosao Muscular (dobro de velocidade uma vez por turno), Velocidade Felina (velocidade base 12m), Instinto (velocidade 18m, ataques adicionais como ação bonus, mordida causa dano triplo no primeiro ataque), Resistência (Vantagem contra lentidão e reducao de velocidade).
 
 | Nivel | Bonus |
 |-------|-------|
 | 4 | Salto Predatorio — pode saltar horizontalmente 9m como parte do movimento |
 | 8 | Investida Fulminante — se mover pelo menos 6m antes de atacar, dano dobrado |
-| 12 | Rip and Tear — mordida em alvo ja agarrado causa hemorragia (2d4 dano/turno ate curado) |
-| 16 | Velocidade Impossivel — durante Heranca Bestial, velocidade 24m, nao provoca ataques de oportunidade |
-| 20 | Apex Predator — ao matar uma criatura, recupera a acao de ataque imediatamente |
+| 12 | Rip and Tear — mordida em alvo ja agarrado causa hemorragia (2d4 dano/turno até curado) |
+| 16 | Velocidade Impossivel — durante Heranca Bestial, velocidade 24m, não provoca ataques de oportunidade |
+| 20 | Apex Predator — ao matar uma criatura, recupera a ação de ataque imediatamente |
 
 ### Linhagem da Aguia
 
@@ -477,30 +615,30 @@ Habilidades: Mordida de Tigre (acao bonus: 2d8+FOR + agarramento automatico), Ex
 
 Atributos: +2 DES, +1 SAB. Tracos Fisicos: Olhos dourados ou ambar com pupilas precisas, ossos levemente mais leves, cabelos rigidos com textura proxima a penas.
 
-Habilidades: Visao de Aguia (enxerga a 1,5km de distancia, sem penalidade em ataques a distancia por alcance ou nebliia leve), Planar Livremente (cai no maximo 3m por turno ao planar, velocidade horizontal 12m/turno), Percepcao Predatoria (+4 em Percepcao, detecta movimento a 300m), Instinto (asas completas emergem — voo de 15m/turno com ataques aereos em Vantagem), Resistencia (imune a Cegueira por ventos ou particulas).
+Habilidades: Visao de Aguia (enxerga a 1,5km de distancia, sem penalidade em ataques a distancia por alcance ou nebliia leve), Planar Livremente (cai no máximo 3m por turno ao planar, velocidade horizontal 12m/turno), Percepção Predatoria (+4 em Percepção, detecta movimento a 300m), Instinto (asas completas emergem — voo de 15m/turno com ataques aereos em Vantagem), Resistência (imune a Cegueira por ventos ou particulas).
 
 | Nivel | Bonus |
 |-------|-------|
 | 4 | Garras de Talao — ataques desarmados causam 1d8 cortante |
-| 8 | Voo Controlado — planar torna-se voo parcial (sobe ate 3m/turno) |
-| 12 | Mergulho em Queda Livre — dano triplo no primeiro ataque apos cair pelo menos 9m |
-| 16 | Olhos de Caca — vantagem em ataques contra alvos observados por 1 turno |
+| 8 | Voo Controlado — planar torna-se voo parcial (sobe até 3m/turno) |
+| 12 | Mergulho em Queda Livre — dano triplo no primeiro ataque após cair pelo menos 9m |
+| 16 | Olhos de Caça — vantagem em ataques contra alvos observados por 1 turno |
 | 20 | Senhor dos Ceus — Heranca Bestial concede asas permanentes de alta manobrabilidade (voo 18m) + mapa mental do andar atual |
 
 ### Linhagem do Lobo
 
-"O problema nao era ele. Era que ele sabia exatamente onde estávamos o tempo todo."
+"O problema não era ele. Era que ele sabia exatamente onde estávamos o tempo todo."
 
 Atributos: +1 FOR, +1 DES, +1 SAB. Tracos Fisicos: Olhos palidos (ambar, cinza ou azul-gelo), cabelos densos, audicao visivelmente agucada.
 
-Habilidades: Rastreamento Infalivel (rastreia qualquer criatura pelo cheiro das ultimas 24h sem teste), Uivo Tatico (aliados ganham +2 em ataques no proximo turno e sabem a posicao do inimigo mais proximo), Tatica de Matilha (Vantagem em ataques se aliado adjacente ao alvo), Instinto (detecta os 3 alvos mais fracos automaticamente, dano +2d6 contra eles), Resistencia (imune a se perder em qualquer ambiente).
+Habilidades: Rastreamento Infalivel (rastreia qualquer criatura pelo cheiro das ultimas 24h sem teste), Uivo Tatico (aliados ganham +2 em ataques no próximo turno e sabem a posicao do inimigo mais próximo), Tática de Matilha (Vantagem em ataques se aliado adjacente ao alvo), Instinto (detecta os 3 alvos mais fracos automaticamente, dano +2d6 contra eles), Resistência (imune a se perder em qualquer ambiente).
 
 | Nivel | Bonus |
 |-------|-------|
 | 4 | Mordida de Alcateia — ao atacar junto com um aliado no mesmo turno, a mordida causa dano adicional igual ao dado de ataque do aliado |
-| 8 | Visao Noturna de Predador — visao perfeita no escuro ate 24m |
+| 8 | Visao Noturna de Predador — visao perfeita no escuro até 24m |
 | 12 | Lider de Matilha — aliados adjacentes ganham +1 em todos os testes quando acima de 50% HP |
-| 16 | Caca Implacavel — uma vez que rastreia um alvo, nao pode ser impedido de encontra-lo no mesmo andar |
+| 16 | Caça Implacável — uma vez que rastreia um alvo, não pode ser impedido de encontra-lo no mesmo andar |
 | 20 | Espirito do Lobo — Heranca Bestial convoca 1d4 lobos espectrais (30 HP cada, ataques 2d6) |
 
 ### Linhagem do Tubarao
@@ -509,15 +647,15 @@ Habilidades: Rastreamento Infalivel (rastreia qualquer criatura pelo cheiro das 
 
 Atributos: +2 FOR, +1 CON. Tracos Fisicos: Dentes levemente mais duros, pele com textura aspera ao toque, membrana nictitante raramente visivel.
 
-Habilidades: Faro de Sangue (detecta criaturas com HP abaixo de 50% num raio de 30m, atraves de paredes), Frenesi Sanguinario (+2 em ataques e +1d8 no dano contra alvos com HP abaixo de 50%), Natacao Perfeita (velocidade de nado 15m, respira debaixo d'agua indefinidamente, sem penalidade em combate aquatico), Mordida Dilacerante (acao bonus: 2d8+FOR perfurante; em critico, hemorragia severa 3d6/turno ate cauterizado), Instinto (Frenesi ativa em criaturas abaixo de 75% HP, mordida dano dobrado), Resistencia (imune a debuffs em ambientes aquaticos).
+Habilidades: Faro de Sangue (detecta criaturas com HP abaixo de 50% num raio de 30m, atraves de paredes), Frenesi Sanguinario (+2 em ataques e +1d8 no dano contra alvos com HP abaixo de 50%), Natacao Perfeita (velocidade de nado 15m, respira debaixo d'agua indefinidamente, sem penalidade em combaté aquatico), Mordida Dilacerante (ação bônus: 2d8+FOR perfurante; em crítico, hemorragia severa 3d6/turno até cauterizado), Instinto (Frenesi ativa em criaturas abaixo de 75% HP, mordida dano dobrado), Resistência (imune a debuffs em ambientes aquaticos).
 
 | Nivel | Bonus |
 |-------|-------|
 | 4 | Couro de Tubarao — +1 CA natural; ataques cortantes causam 1 de dano ao atacante |
 | 8 | Sensor de Pressao — detecta movimentos na agua ou no solo a 30m |
-| 12 | Nao Para de Mover — regeneracao de 5 HP/turno se mover pelo menos 3m por turno |
-| 16 | Predador do Abismo — imune a Medo quando em combate contra inimigos com HP reduzido |
-| 20 | Rei das Profundezas — criaturas aquaticas de CR menor que 10 nao atacam o personagem voluntariamente |
+| 12 | Nao Para de Mover — regeneração de 5 HP/turno se mover pelo menos 3m por turno |
+| 16 | Predador do Abismo — imune a Medo quando em combaté contra inimigos com HP reduzido |
+| 20 | Rei das Profundezas — criaturas aquaticas de CR menor que 10 não atacam o personagem voluntariamente |
 
 ### Linhagem do Corvo
 
@@ -525,47 +663,47 @@ Habilidades: Faro de Sangue (detecta criaturas com HP abaixo de 50% num raio de 
 
 Atributos: +2 INT, +1 CAR. Tracos Fisicos: Cabelos invariavelmente negros com reflexo azulado, olhos escuros que refletem luz de forma incomum, movimentos de cabeca levemente angulares.
 
-Habilidades: Memoria Absoluta (lembra perfeitamente de tudo que viu ou ouviu, detecta automaticamente inconsistencias em informacoes), Presenca Enigmatica (+3 em Persuasao e Intimidacao quando possui informacao que o alvo nao sabe que ele tem), Voo de Corvo (transforma-se em corvo por 10 minutos 1x/descanso curto), Colecionador de Segredos (ao passar 1 minuto observando um local sem ser detectado, descobre automaticamente o segredo mais relevante), Instinto (mente em velocidade surreal — Vantagem em todos os testes de INT e SAB por 1 minuto), Resistencia (imune a Encantamento).
+Habilidades: Memoria Absoluta (lembra perfeitamente de tudo que viu ou ouviu, detecta automaticamente inconsistencias em informacoes), Presenca Enigmatica (+3 em Persuasao e Intimidacao quando possui informação que o alvo não sabe que ele tem), Voo de Corvo (transforma-se em corvo por 10 minutos 1x/descanso curto), Colecionador de Segredos (ao passar 1 minuto observando um local sem ser detectado, descobre automaticamente o segredo mais relevante), Instinto (mente em velocidade surreal — Vantagem em todos os testes de INT e SAB por 1 minuto), Resistência (imune a Encantamento).
 
 | Nivel | Bonus |
 |-------|-------|
-| 4 | Enganador Nato — Vantagem em testes de Enganacao e Percepcao para detectar mentiras |
-| 8 | Rede de Corvos — pode enviar mensagens atraves de corvos por ate 100km |
-| 12 | Analise de Combate — ao observar um inimigo por 1 turno, identifica sua maior fraqueza |
+| 4 | Enganador Nato — Vantagem em testes de Enganação e Percepção para detectar mentiras |
+| 8 | Rede de Corvos — pode enviar mensagens atraves de corvos por até 100km |
+| 12 | Analise de Combaté — ao observar um inimigo por 1 turno, identifica sua maior fraqueza |
 | 16 | Memoria de Batalha — imune a qualquer armadilha ou truque que ja tenha visto uma vez |
-| 20 | Mente Mestra — durante Heranca Bestial, pode reescrever a acao de um aliado que acabou de falhar (age novamente com Vantagem) |
+| 20 | Mente Mestra — durante Heranca Bestial, pode reescrever a ação de um aliado que acabou de falhar (age novamente com Vantagem) |
 
 ---
 
 ## FORJADO DE OSSO
 
-**Lore:** Ha duzentos anos, os Anaos de Forja enfrentaram um problema etico: como criar um guardiao que nao precisasse comer, nao sentisse medo e nao desobedecesse? A resposta foi os Forjados de Osso — construtos montados com ossos de monstros poderosos, articulados com metal anao, animados por um Nucleo de Alma instalado onde estaria o coracao.
+**Lore:** Ha duzentos anos, os Anaos de Forja enfrentaram um problema etico: como criar um guardiao que não precisasse comer, não sentisse medo e não desobedecesse? A resposta foi os Forjados de Osso — construtos montados com ossos de monstros poderosos, articulados com metal anao, animados por um Nucleo de Alma instalado onde estaria o coracao.
 
-O problema surgiu na terceira geracao: eles comecaram a ter opinioes. Ninguem sabe ao certo quando um Forjado de Osso adquire consciencia plena. Os Forjados de Osso conscientes que habitam Valdremor sao considerados legalmente pessoas — mas de segunda classe, sem direito a propriedade ou voto. Dentro das masmorras, ninguem se importa com isso.
+O problema surgiu na terceira geração: eles começaram a ter opiniões. Ninguem sabe ao certo quando um Forjado de Osso adquire consciência plena. Os Forjados de Osso conscientes que habitam Valdremor sao considerados legalmente pessoas — mas de segunda classe, sem direito a propriedade ou voto. Dentro das masmorras, ninguem se importa com isso.
 
-Um Forjado de Osso e feito de pecas de monstros diferentes — cada exemplar e unico. Alguns tem maxilares de Wyvern. Outros tem caixas toracicas de Basilisco. Essa composicao nao e apenas estetica: ela determina bonus passivos que variam por personagem.
+Um Forjado de Osso e feito de peças de monstros diferentes — cada exemplar e único. Alguns tem maxilares de Wyvern. Outros tem caixas torácicas de Basilisco. Essa composicao não e apenas estética: ela determina bônus passivos que variam por personagem.
 
 **Atributos:** +2 CON, +1 FOR ou INT (escolha)
 
 **Habilidades Raciais:**
-- Construto Vivo: Nao precisa respirar, comer ou dormir. Imune a Veneno e doencas. Nao pode ser Encantado.
-- Nucleo de Alma: Ao chegar a 0 HP, entra em modo de emergencia — fica Incapacitado mas estavel por 1d4 horas, apos o que o Nucleo reinicia o sistema com 1 HP. Se o Nucleo for destruido, o Forjado morre permanentemente.
+- Construto Vivo: Nao precisa respirar, comer ou dormir. Imune a Veneno e doenças. Nao pode ser Encantado.
+- Nucleo de Alma: Ao chegar a 0 HP, entra em modo de emergencia — fica Incapacitado mas estavel por 1d4 horas, após o que o Nucleo reinicia o sistema com 1 HP. Se o Nucleo for destruido, o Forjado morre permanentemente.
 - Composicao de Monstros: Ao criar o Forjado, escolhe-se 2 partes de monstros (ver tabela abaixo).
-- Manutencao: Em vez de Descanso Longo, precisa de manutencao por um Artifice (1 hora). Sem manutencao em 48h, sofre -1 em todos os testes cumulativamente.
+- Manutenção: Em vez de Descanso Longo, precisa de manutencao por um Artífice (1 hora). Sem manutencao em 48h, sofre -1 em todos os testes cumulativamente.
 - Sem Bonus Culinarios Passivos: Pode consumir ingredientes de monstros, mas precisa instalar componentes no proprio corpo (1 hora) para ativar mutacoes. As mutacoes duram 48h em vez de 24h.
 
 **Tabela de Partes de Monstros:**
 
 | Parte | Habilidade |
 |-------|-----------|
-| Osso de Dragao | +2 CA natural |
+| Osso de Dragão | +2 CA natural |
 | Mandibula de Wyvern | Mordida 2d6 perfurante + veneno (CD 13) |
 | Garra de Grifo | Escalar superficies sem teste |
-| Costela de Troll | Regeneracao de 3 HP/turno |
-| Cranio de Basilisco | Olhos de Dragao (ve auras magicas e criaturas invisiveis) |
-| Espinha de Hidra | +10 HP maximo; ao chegar a 0 HP, testa CON CD 14 para ficar a 1 HP |
-| Femur de Gigante | Tamanho conta como Grande para fins de agarramento |
-| Escama de Elemental | Resistencia a um elemento (escolha ao criar) |
+| Costela de Troll | Regeneração de 3 HP/turno |
+| Cranio de Basilisco | Olhos de Dragão (ve auras mágicas e criaturas invisiveis) |
+| Espinha de Hidra | +10 HP máximo; ao chegar a 0 HP, testa CON CD 14 para ficar a 1 HP |
+| Fêmur de Gigante | Tamanho conta como Grande para fins de agarramento |
+| Escama de Elemental | Resistência a um elemento (escolha ao criar) |
 | Dente de Vampiro | Ataques corpo-a-corpo curam 2 HP por acerto |
 
 **Progressao Racial:**
@@ -573,14 +711,14 @@ Um Forjado de Osso e feito de pecas de monstros diferentes — cada exemplar e u
 | Nivel | Bonus |
 |-------|-------|
 | 4 | Upgrade de Componente — pode adicionar uma 3a parte de monstro a composicao |
-| 6 | Amortecimento de Impacto — resistencia a dano contundente |
-| 8 | Processamento Avancado — modo de emergencia reinicia em 1d4 turnos em combate |
-| 10 | Instalacao Rapida — instala componentes em 10 minutos em vez de 1 hora |
+| 6 | Amortecimento de Impacto — resistência a dano contundente |
+| 8 | Processamento Avancado — modo de emergencia reinicia em 1d4 turnos em combaté |
+| 10 | Instalacao Rápida — instala componentes em 10 minutos em vez de 1 hora |
 | 12 | Estrutura Reforcada — +2 CA permanente adicional |
 | 14 | Quarta Parte — adiciona uma 4a parte de monstro a composicao |
-| 16 | Nucleo Aprimorado — pode consumir ingredientes normalmente sem instalacao (mutacao dura 12h) |
+| 16 | Nucleo Aprimorado — pode consumir ingredientes normalmente sem instalacao (mutação dura 12h) |
 | 18 | Autoreparo — como acao, gasta um componente armazenado para recuperar 4d8 HP |
-| 20 | Obra-Prima dos Anaos — pode substituir qualquer parte do proprio corpo apos um Banquete Lendario |
+| 20 | Obra-Prima dos Anaos — pode substituir qualquer parte do proprio corpo após um Banquete Lendário |
 
 
 ---
@@ -589,47 +727,51 @@ Um Forjado de Osso e feito de pecas de monstros diferentes — cada exemplar e u
 
 ---
 
-## CAPITULO 4 — AS NOVE CLASSES BASE
+## CAPÍTULO 4 — AS NOVE CLASSES BASE
 
-Cada classe define o papel de combate no Nivel 1 e o **Bonus de Dieta Base** — a vantagem passiva que qualquer boa refeicao ativa, independente do tipo de monstro. No **Nivel 2**, o personagem escolhe sua **Subclasse (Dieta Marcial)**.
+Cada classe define o papel de combaté no Nivel 1 e o **Bonus de Dieta Base** — a vantagem passiva que qualquer boa refeicao ativa, independente do tipo de monstro. No **Nivel 2**, o personagem escolhe sua **Subclasse (Dieta Marcial)**.
+
+**PA na mesa digital:** todas as classes comecam com **5 PA** (Cap. 2.6). **Guerreiro** paga **1 PA por golpe** de Ataque Extra a partir do nv. 5. **Mago, Clérigo, Druida, Bardo e Artifice** ganham **Afinidade Arcanica** no nv. 5 (magias caras −1 PA). Demais classes usam o custo do compendio, modificados pelos talentos do Cap. 12.0.
 
 ---
 
 ### GUERREIRO
 
-Dado de HP: 1d10 | Atributos Primarios: Forca ou Destreza
+Dado de HP: 1d10 | Atributos Primarios: Força ou Destreza
 Proficiencias: Todas as armaduras, todos os escudos, todas as armas
-Atributos Culinarios Iniciais: Trinchar +3, Estomago de Ferro +2
+Atributos Culinarios Iniciais: Trinchar +3, Estômago de Ferro +2
 
 **Bonus de Dieta Base (Nivel 1):**
-Metabolismo Focado — Apos uma Refeicao Comum ou melhor, ganha Vantagem em testes de Forca e Atletismo ate o proximo descanso longo.
+Metabolismo Focado — Apos uma Refeicao Comum ou melhor, ganha Vantagem em testes de Força e Atletismo até o próximo descanso longo.
 
 **Tabela de Progressao:**
 
 | Nivel | HP | Ataque Extra | Habilidades Notaveis |
 |-------|-----|-------------|---------------------|
-| 1 | 10+CON | — | Segundo Folego, Estilo de Combate |
+| 1 | 10+CON | — | Segundo Folego, Estilo de Combaté |
 | 2 | +6 | — | Subclasse, Bonus de Dieta Especializada |
-| 5 | +6 | 2 ataques/acao | Ataque Extra |
+| 5 | +6 | 2 ataques/acao | Ataque Extra · **+1 PA max** · 1 PA/golpe |
 | 11 | +6 | 3 ataques/acao | Ataque Extra Adicional |
 | 17 | +6 | 4 ataques/acao | Ataque Extra Maximo |
-| 20 | +6 | 4 ataques | Campeao Implacavel (+1 Resistencia Lendaria/dia) |
+| 20 | +6 | 4 ataques | Campeao Implacável (+1 Resistência Lendaria/dia) |
+
+**PA (VTT):** nv. 5+ cada golpe de arma na acao de Ataque custa **1 PA** (nao um unico PA para todos os golpes). Talentos: Cap. 12.0 (Guerreiro).
 
 **Habilidades Base:**
-- Segundo Folego (Nivel 1): Como acao bonus, recupera 1d10 + Nivel do Guerreiro em HP. 1 uso por descanso curto.
-- Estilo de Combate (Nivel 1): Escolha um: Duelo (+2 dano com arma de uma mao), Grande Arma (rolar dano minimo duas vezes, usar maior), Protecao (reacao: impoe Desvantagem a ataques contra aliado adjacente), Arqueria (+2 em ataques a distancia).
-- Golpe de Veterano (Nivel 14): Acertos criticos em 19 ou 20.
-- Campeao Implacavel (Nivel 20): Uma vez por dia, pode declarar falha como sucesso num saving throw.
+- Segundo Folego (Nivel 1): Como ação bonus, recupera 1d10 + Nivel do Guerreiro em HP. 1 uso por descanso curto.
+- Estilo de Combaté (Nivel 1): Escolha um: Duelo (+2 dano com arma de uma mao), Grande Arma (rolar dano minimo duas vezes, usar maior), Protecao (reacao: impoe Desvantagem a ataques contra aliado adjacente), Arqueria (+2 em ataques a distancia).
+- Golpe de Veterano (Nivel 14): Acertos críticos em 19 ou 20.
+- Campeao Implacável (Nivel 20): Uma vez por dia, pode declarar falha como sucesso num teste de resistência.
 
 **Subclasses do Guerreiro:**
 
-Acougueiro de Batalha (Especialidade: Feras e Bestiais): Ao comer carne vermelha de feras, ganha +2 FOR e regeneracao de 3 HP/turno por 4h. *Caminho de talentos: Cap. 12.*
+Predador Voraz (Especialidade: Feras e Bestiais): Ao comer carne vermelha de feras, ganha +2 FOR e regeneração de 3 HP/turno por 4h. *Caminho de talentos: Cap. 12.*
 
-Quebra-Cascos (Especialidade: Carapacas e Insetoides): Ao comer artropodes, pele endurece — imunidade temporaria a acertos criticos e +2 CA por 8h. *Caminho de talentos: Cap. 12.*
+Quebra-Cascos (Especialidade: Carapaças e Insetoides): Ao comer artropodes, pele endurece — imunidade temporária a acertos críticos e +2 CA por 8h. *Caminho de talentos: Cap. 12.*
 
-Cavaleiro Draconico (Especialidade: Escamosos e Draconideos): Consumir repteis ou draconicos concede resistencia elemental e baforada curta (2d6). *Caminho de talentos: Cap. 12.*
+Cavaleiro Draconico (Especialidade: Escamosos e Draconideos): Consumir repteis ou draconicos concede resistência elemental e baforada curta (2d6). *Caminho de talentos: Cap. 12.*
 
-Guerreiro das Profundezas (Especialidade: Aquaticos e Anfibios): Comer monstros aquaticos concede respiracao aquatica, nado de 12m/turno e pele escorregadia por 8h. *Caminho de talentos: Cap. 12.*
+Guerreiro das Profundezas (Especialidade: Aquaticos e Anfibios): Comer monstros aquaticos concede respiração aquatica, nado de 12m/turno e pele escorregadia por 8h. *Caminho de talentos: Cap. 12.*
 
 ---
 
@@ -637,18 +779,18 @@ Guerreiro das Profundezas (Especialidade: Aquaticos e Anfibios): Comer monstros 
 
 Dado de HP: 1d10 | Atributos Primarios: Destreza e Sabedoria
 Proficiencias: Armaduras leves e medias, escudos, armas simples e marciais
-Atributos Culinarios Iniciais: Harmonizacao +3, Trinchar +2
+Atributos Culinarios Iniciais: Harmonização +3, Trinchar +2
 
 **Bonus de Dieta Base (Nivel 1):**
-Estomago Selvagem — Nao sofre penalidades ao consumir alimentos crus, semi-preparados ou de qualidade duvidosa. Pode comer no campo sem fogueira sem risco.
+Estômago Selvagem — Nao sofre penalidades ao consumir alimentos crus, semi-preparados ou de qualidade duvidosa. Pode comer no campo sem fogueira sem risco.
 
 **Subclasses do Patrulheiro:**
 
-Cacador Celeste (Especialidade: Aves e Voadores): Comer monstros alados afia a visao no escuro (perfeita ate 36m) e aumenta alcance de ataques em +9m por 8h. *Caminho de talentos: Cap. 12.*
+Caçador Celeste (Especialidade: Aves e Voadores): Comer monstros alados afia a visao no escuro (perfeita até 36m) e aumenta alcance de ataques em +9m por 8h. *Caminho de talentos: Cap. 12.*
 
 Forrageiro dos Esporos (Especialidade: Flora e Fungos): Imunidade a controle mental, ataques toxicos passivos e nuvens de esporos curativos no descanso por 12h. *Caminho de talentos: Cap. 12.*
 
-Rastreador de Sangue Frio (Especialidade: Repteis e Basiliscos): Imunidade a petrificacao e camuflagem de pele ativa (Advantage em Furtividade em terrenos rochosos) por 8h. *Caminho de talentos: Cap. 12.*
+Rastreador de Sangue Frio (Especialidade: Repteis e Basiliscos): Imunidade a petrificação e camuflagem de pele ativa (Advantage em Furtividade em terrenos rochosos) por 8h. *Caminho de talentos: Cap. 12.*
 
 Guia de Enxame (Especialidade: Pragas e Insetos Menores): Conexao telepatica com insetos locais — detecta vibracoes no chao a 15m e localiza inimigos invisiveis. *Caminho de talentos: Cap. 12.*
 
@@ -658,22 +800,22 @@ Guia de Enxame (Especialidade: Pragas e Insetos Menores): Conexao telepatica com
 
 Dado de HP: 1d8 | Atributos Primarios: Destreza e Inteligencia
 Proficiencias: Armaduras leves, armas simples, espadas curtas, bestas de mao, rapiers
-Atributos Culinarios Iniciais: Trinchar +4, Harmonizacao +2
+Atributos Culinarios Iniciais: Trinchar +4, Harmonização +2
 
 **Bonus de Dieta Base (Nivel 1):**
-Digestao Rapida — Uma refeicao antes da batalha concede +6m de deslocamento e Vantagem em Iniciativa no primeiro turno de qualquer combate.
+Digestão Rápida — Uma refeicao antes da batalha concede +6m de deslocamento e Vantagem em Iniciativa no primeiro turno de qualquer combate.
 
-**Ataque Furtivo:** Causa dano bonus (1d6 no nivel 1, crescendo ate 10d6 no nivel 20) ao atacar com Vantagem ou quando um aliado esta adjacente ao alvo.
+**Ataque Furtivo:** Causa dano bônus (1d6 no nivel 1, crescendo até 10d6 no nivel 20) ao atacar com Vantagem ou quando um aliado esta adjacente ao alvo.
 
 **Subclasses do Ladino:**
 
-Degustador de Sombras (Especialidade: Espirituais): Comer ectoplasma permite ficar intangivel por 1 turno uma vez por combate, e adiciona +1d6 necrotico a ataques furtivos. *Caminho de talentos: Cap. 12.*
+Degustador de Sombras (Especialidade: Espirituais): Comer ectoplasma permite ficar intangivel por 1 turno uma vez por combate, e adiciona +1d6 necrótico a ataques furtivos. *Caminho de talentos: Cap. 12.*
 
-Extrator de Geleias (Especialidade: Amorfos e Slimes): Corpo ganha elasticidade anormal — passa por frestas de 15cm, escapa de qualquer agarramento automaticamente, resistencia a acido. *Caminho de talentos: Cap. 12.*
+Extrator de Geleias (Especialidade: Amorfos e Slimes): Corpo ganha elasticidade anormal — passa por frestas de 15cm, escapa de qualquer agarramento automaticamente, resistência a ácido. *Caminho de talentos: Cap. 12.*
 
 Ladrao de Glandulas (Especialidade: Peconhentos): Bebendo veneno purificado, ataques ganham dano venenoso passivo (+1d4) e saliva torna-se corrosiva. *Caminho de talentos: Cap. 12.*
 
-Corsario de Cripta (Especialidade: Osseos e Mortos-Vivos Corporeos): Resistencia a dano necrotico e capacidade de fingir de morto perfeitamente (zerando aggro). *Caminho de talentos: Cap. 12.*
+Corsario de Cripta (Especialidade: Osseos e Mortos-Vivos Corporeos): Resistência a dano necrótico e capacidade de fingir de morto perfeitamente (zerando aggro). *Caminho de talentos: Cap. 12.*
 
 ---
 
@@ -681,22 +823,24 @@ Corsario de Cripta (Especialidade: Osseos e Mortos-Vivos Corporeos): Resistencia
 
 Dado de HP: 1d6 | Atributos Primarios: Inteligencia
 Proficiencias: Adagas, dardos, fundas, cajados, bestas leves
-Atributos Culinarios Iniciais: Coccao +4, Harmonizacao +3
+Atributos Culinarios Iniciais: Coccao +4, Harmonização +3
 
 **Bonus de Dieta Base (Nivel 1):**
-Mente Nutrigena — Consumir qualquer ingrediente magico (lodo elemental, glandula de mana, cristal de monstro) restaura 1 espaco de feitico de nivel baixo.
+Mente Nutrigena — Consumir qualquer ingrediente magico (lodo elemental, glândula de mana, cristal de monstro) restaura 1 espaco de feitico de nivel baixo.
 
 **Subclasses do Mago:**
 
 Piromante de Forno (Especialidade: Calor e Assados): Refeicoes assadas pelo Mago maximizam a Mana do grupo; feiticos de fogo dispensam componentes e causam +1d6 em criaturas de Gelo/Agua.
 
-Criomante de Conservacao (Especialidade: Gelo e Dry-Aged): Carnes envelhecidas magicamente no gelo concedem aura congelante passiva (1d4 frio a adjacentes) e escudos de gelo (+3 CA temporaria).
+Criomante de Conservacao (Especialidade: Gelo e Dry-Aged): Carnes envelhecidas mágicamente no gelo concedem aura congelante passiva (1d4 frio a adjacentes) e escudos de gelo (+3 CA temporária).
 
-Mago Fermentador (Especialidade: Tempo e Bacterias): Pratos fermentados garantem imunidade a ilusao e curam doencas/maldicoes do grupo.
+Mago Fermentador (Especialidade: Tempo e Bacterias): Pratos fermentados garantem imunidade a ilusao e curam doenças/maldicoes do grupo.
 
-Alquimista de Caldos (Especialidade: Acidos e Liquidos): Sopas densas de monstro permitem regurgitar acido (2d6) ou expelir nevoa venenosa (CD 13 CON ou Envenenado) em combate.
+Alquimista de Caldos (Especialidade: Ácidos e Liquidos): Sopas densas de monstro permitem regurgitar ácido (2d6) ou expelir nevoa venenosa (CD 13 CON ou Envenenado) em combate.
 
-Mago Confeiteiro (Especialidade: Doces Magicos): Dieta rica em glicose arcana concede feiticos de encantamento e confusao de graca (sem espaco de magia) uma vez por dia.
+Mago Confeiteiro (Especialidade: Doces Magicos): Dieta rica em glicose arcana concede feiticos de encantamento e confusao de graça (sem espaco de magia) uma vez por dia.
+
+**PA (VTT):** nv. 5 **Afinidade Arcanica** (magias 2+ PA −1). Talentos de trilha reduzem PA de magias por elemento ou area — Cap. 12.0 (Mago).
 
 ---
 
@@ -704,45 +848,49 @@ Mago Confeiteiro (Especialidade: Doces Magicos): Dieta rica em glicose arcana co
 
 Dado de HP: 1d8 | Atributos Primarios: Sabedoria e Carisma
 Proficiencias: Armaduras leves e medias, escudos, armas simples
-Atributos Culinarios Iniciais: Harmonizacao +4, Estomago de Ferro +3
+Atributos Culinarios Iniciais: Harmonização +4, Estômago de Ferro +3
 
 **Bonus de Dieta Base (Nivel 1):**
-Comunhao Material — Toda vez que se alimenta de qualquer refeicao, recebe HP Temporarios igual ao nivel do Clerigo vezes 2.
+Comunhao Material — Toda vez que se alimenta de qualquer refeicao, recebe HP Temporarios igual ao nivel do Clérigo vezes 2.
 
-**Subclasses do Clerigo:**
+**Subclasses do Clérigo:**
 
-Sacerdote da Purificacao (Especialidade: Amaldicados e Infectados): Carnes purificadas por reza concedem +3 em ataques contra o mal e curam maldicoes ativas no grupo apos a refeicao.
+Sacerdote da Purificacao (Especialidade: Amaldicados e Infectados): Carnes purificadas por reza concedem +3 em ataques contra o mal e curam maldicoes ativas no grupo após a refeicao.
 
-Monge do Jejum (Especialidade: Energia Interna): Lutar de barriga vazia por 8h+ concede +4 em esquiva e dano radiante. Quando finalmente come, libera onda de choque (3d8 radiante, area 6m).
+Monge do Jejum (Especialidade: Energia Interna): Lutar de barriga vazia por 8h+ concede +4 em esquiva e dano radiante. Quando finalmente come, libera onda de choque (3d8 radiante, área 6m).
 
-Clerigo do Pao da Vida (Especialidade: Flora Divina): Transforma musgos e plantas em paes que fornecem HP Temporario extra (Nivel x3) a todo o grupo a cada manha.
+Clérigo do Pao da Vida (Especialidade: Flora Divina): Transforma musgos e plantas em paes que fornecem HP Temporario extra (Nivel x3) a todo o grupo a cada manha.
 
-Pastor de Quimeras (Especialidade: Monstros Mistos): Ao consumir bestas magicas complexas, canaliza aura do animal para o grupo (ex: Aura do Leao — aliados adjacentes tem Vantagem em ataques).
+Pastor de Quimeras (Especialidade: Monstros Mistos): Ao consumir bestas mágicas complexas, canaliza aura do animal para o grupo (ex: Aura do Leao — aliados adjacentes tem Vantagem em ataques).
 
-Clerigo do Limiar (Especialidade: Mortos-Vivos Corporeos e Carnes Necroticas): Ao comer carne ossea ou de morto-vivo corporeo (rito de Limiar), resistencia a necrotico e mortos-vivos com INT 3 ou menos nao te escolhem como primeiro alvo ate voce ataca-los ou lancar necromancia hostil. *Caminho de talentos: Cap. 12 (Trilha Necromantica).*
+Clérigo do Limiar (Especialidade: Mortos-Vivos Corporeos e Carnes Necroticas): Ao comer carne ossea ou de morto-vivo corporeo (rito de Limiar), resistência a necrótico e mortos-vivos com INT 3 ou menos não te escolhem como primeiro alvo até você ataca-los ou lancar necromancia hostil. *Caminho de talentos: Cap. 12 (Trilha Necromantica).*
+
+**PA (VTT):** nv. 5 **Afinidade Arcanica**. Talentos de cura, area e necrotico — Cap. 12.0 (Clérigo).
 
 ---
 
 ### BARBARO
 
-Dado de HP: 1d12 | Atributos Primarios: Forca e Constituicao
-Proficiencias: Armaduras leves e medias (nao pesadas), escudos, todas as armas
-Atributos Culinarios Iniciais: Estomago de Ferro +4, Trinchar +2
+Dado de HP: 1d12 | Atributos Primarios: Força e Constituicao
+Proficiencias: Armaduras leves e medias (não pesadas), escudos, todas as armas
+Atributos Culinarios Iniciais: Estômago de Ferro +4, Trinchar +2
 
 **Bonus de Dieta Base (Nivel 1):**
-Sede de Sangue — Consumir carne crua ou o coracao de um monstro recem-abatido (acao bonus) cura 1d8+CON em HP e estende a duracao da Furia em 2 turnos.
+Sede de Sangue — Consumir carne crua ou o coracao de um monstro recem-abatido (ação bônus) cura 1d8+CON em HP e estende a duração da Furia em 2 turnos.
 
-**Furia:** Como acao bonus, entra em Furia por 1 minuto. Durante a Furia: +2 dano em ataques de Forca, Vantagem em testes de Forca e CON, resistencia a dano contundente/cortante/perfurante. Usos: 2 no Nivel 1, crescendo com o nivel.
+**Furia:** Como ação bonus, entra em Furia por 1 minuto. Durante a Furia: +2 dano em ataques de Forca, Vantagem em testes de Força e CON, resistência a dano contundente/cortante/perfurante. Usos: 2 no Nivel 1, crescendo com o nivel.
 
-**Subclasses do Barbaro:**
+**Subclasses do Bárbaro:**
 
-Devorador de Coracoes (Especialidade: Orgaos Vitais de Predadores): Ao comer coracao do monstro, assimila um traco instintivo (faro, garras, regeneracao) por 24h correspondente ao monstro consumido.
+Devorador de Coracoes (Especialidade: Orgaos Vitais de Predadores): Ao comer coracao do monstro, assimila um traco instintivo (faro, garras, regeneração) por 24h correspondente ao monstro consumido.
 
-Mandibula de Ferro (Especialidade: Ossos e Carapacas): Mastigar exoesqueletos concede +1d6 dano perfurante em ataques desarmados (estilhacos entre os punhos).
+Mandibula de Ferro (Especialidade: Ossos e Carapaças): Mastigar exoesqueletos concede +1d6 dano perfurante em ataques desarmados (estilhacos entre os punhos).
 
 Ruminante das Neves (Especialidade: Gordura e Monstros Gigantes): Imunidade a dano de frio e ignora penalidades de Exaustao ao estocar calorias de criaturas gordurosas. Pode reservar uma refeicao para dias sem comer.
 
-Frenetico do Acucar (Especialidade: Doces Magicos e Slimes de Fruta): Velocidade de movimento dobra e ganha Acao Bonus extra ao consumir glicose magica, mas sofre crash (Nivel 1 de Exaustao) quando o efeito acaba.
+Frenetico do Acucar (Especialidade: Doces Magicos e Slimes de Fruta): Velocidade de movimento dobra e ganha Acao Bonus extra ao consumir glicose mágica, mas sofre crash (Nivel 1 de Exaustao) quando o efeito acaba.
+
+**PA (VTT):** custo padrao do compendio; talentos *Rush Doce*, *Mordida do Coracao*, +PA max — Cap. 12.0 (Bárbaro).
 
 ---
 
@@ -750,12 +898,12 @@ Frenetico do Acucar (Especialidade: Doces Magicos e Slimes de Fruta): Velocidade
 
 Dado de HP: 1d8 | Atributos Primarios: Carisma e Destreza
 Proficiencias: Armaduras leves, armas simples, algumas marciais, todos os instrumentos musicais
-Atributos Culinarios Iniciais: Harmonizacao +5, Coccao +2
+Atributos Culinarios Iniciais: Harmonização +5, Coccao +2
 
 **Bonus de Dieta Base (Nivel 1):**
-Harmonia de Sabores — Quando o Bardo come junto do grupo, a duracao dos bonus de comida de todos os membros e estendida em 50%.
+Harmonia de Sabores — Quando o Bardo come junto do grupo, a duração dos bônus de comida de todos os membros e estendida em 50%.
 
-**Inspiracao de Bardo:** Como acao bonus, concede 1d6 de Inspiracao a um aliado. O aliado pode adicionar esse dado a qualquer teste. Evolui de 1d6 para 1d12 conforme o nivel.
+**Inspiracao de Bardo:** Como ação bonus, concede 1d6 de Inspiracao a um aliado. O aliado pode adicionar esse dado a qualquer teste. Evolui de 1d6 para 1d12 conforme o nivel.
 
 **Subclasses do Bardo:**
 
@@ -765,30 +913,34 @@ Bardo Cervejeiro (Especialidade: Fungos e Levedura): Beber suas cervejas de fung
 
 Danciarino das Facas (Especialidade: Aves e Ingredientes Ageis): Carnes magras de aves permitem usar Carisma em vez de Destreza para atacar e recuperar facas de trinchar lancadas.
 
-Cantor das Especiarias (Especialidade: Ervas e Plantas Magicas): Mastigar raizes picantes raras aumenta a CD de resistencia dos feiticos de ilusao e encantamento em +3.
+Cantor das Especiarias (Especialidade: Ervas e Plantas Magicas): Mastigar raizes picantes raras aumenta a CD de resistência dos feiticos de ilusao e encantamento em +3.
+
+**PA (VTT):** nv. 5 **Afinidade Arcanica**. Talentos de magia, habilidade e area — Cap. 12.0 (Bardo).
 
 ---
 
 ### DRUIDA
 
 Dado de HP: 1d8 | Atributos Primarios: Sabedoria
-Proficiencias: Armaduras leves e medias (nao metalicas), escudos nao metalicos, armas simples nao metalicas
-Atributos Culinarios Iniciais: Harmonizacao +5, Trinchar +1
+Proficiencias: Armaduras leves e medias (não metalicas), escudos não metalicos, armas simples não metalicas
+Atributos Culinarios Iniciais: Harmonização +5, Trinchar +1
 
 **Bonus de Dieta Base (Nivel 1):**
 Ciclo da Vida — Pode se alimentar de qualquer planta, raiz ou fungo venenoso da masmorra, convertendo o veneno em nutricao sem sofrer dano.
 
-**Forma Selvagem:** Como acao, transforma-se em qualquer besta que ja tenha encontrado (HP maximo do animal, mantém INT e SAB). Usos e limites evoluem com o nivel.
+**Forma Selvagem:** Como acao, transforma-se em qualquer besta que ja tenha encontrado (HP máximo do animal, mantém INT e SAB). Usos e limites evoluem com o nivel.
 
 **Subclasses do Druida:**
 
-Circulo da Decomposicao (Especialidade: Fungos Necroticos e Lodo): Cogumelos necroticos concedem imunidade a necrotico e fazem magias de terra causarem envenenamento passivo.
+Circulo da Decomposicao (Especialidade: Fungos Necroticos e Lodo): Cogumelos necróticos concedem imunidade a necrótico e fazem magias de terra causarem envenenamento passivo.
 
-Circulo do Superpredador (Especialidade: Carne Crua de Feras): Forma Selvagem ganha HP extra igual ao HP maximo do ultimo monstro grande consumido.
+Circulo do Superpredador (Especialidade: Carne Crua de Feras): Forma Selvagem ganha HP extra igual ao HP máximo do ultimo monstro grande consumido.
 
-Circulo da Simbiose (Especialidade: Seiva e Sementes Magicas): Ingerir sementes magicas cria armadura de vinhas viva sob a pele — rebate dano cortante ao atacante (1d6 por ataque recebido).
+Circulo da Simbiose (Especialidade: Seiva e Sementes Magicas): Ingerir sementes mágicas cria armadura de vinhas viva sob a pele — rebaté dano cortante ao atacante (1d6 por ataque recebido).
 
-Circulo do Solo Vivo (Especialidade: Minerais e Elementais de Terra): Mastigar pedras elementais concede resistencia permanente a dano contundente enquanto dieta ativa.
+Circulo do Solo Vivo (Especialidade: Minerais e Elementais de Terra): Mastigar pedras elementais concede resistência permanente a dano contundente enquanto dieta ativa.
+
+**PA (VTT):** nv. 5 **Afinidade Arcanica**. *Forma Selvagem* e magias de trilha usam PA do compendio; talentos −PA — Cap. 12.0 (Druida).
 
 ---
 
@@ -799,20 +951,21 @@ Proficiencias: Armaduras leves e medias, escudos, todas as ferramentas, armas si
 Atributos Culinarios Iniciais: Coccao +5, Trinchar +3
 
 **Bonus de Dieta Base (Nivel 1):**
-Panela de Pressao — Utensilios criados pelo Artifice fazem qualquer ingrediente render o dobro de porcoes.
+Panela de Pressao — Utensilios criados pelo Artífice fazem qualquer ingrediente render o dobro de porcoes.
 
-**Infusoes:** O Artifice pode criar Infusoes Magicas em itens mundanos — transformando uma espada comum em +1, ou uma mochila em extradimensional.
+**Infusoes:** O Artífice pode criar Infusoes Magicas em itens mundanos — transformando uma espada comum em +1, ou uma mochila em extradimensional.
 
-**Subclasses do Artifice:**
+**Subclasses do Artífice:**
 
-Ferreiro de Utensilios (Especialidade: Carapacas e Ingredientes Duros): Comer pratos feitos em panelas forjadas de exoesqueleto aumenta a CA das proprias armaduras em +2.
+Ferreiro de Utensilios (Especialidade: Carapaças e Ingredientes Duros): Comer pratos feitos em panelas forjadas de exoesqueleto aumenta a CA das proprias armaduras em +2.
 
-Engenheiro de Fogareiros (Especialidade: Inflamaveis e Glandulas de Fogo): Consumir glandulas combustiveis concede resistencia a Fogo e aumenta o dano de bombas e engenhocas em +2d6.
+Engenheiro de Fogareiros (Especialidade: Inflamaveis e Glandulas de Fogo): Consumir glândulas combustiveis concede resistência a Fogo e aumenta o dano de bombas e engenhocas em +2d6.
 
-Biologo Alquimico (Especialidade: Acidos e Venenos): Micro-doses de toxinas processadas garantem imunidade a envenenamento e a habilidade de revestir armas com acido corrosivo (+1d6 acido, 1 minuto).
+Biologo Alquimico (Especialidade: Ácidos e Venenos): Micro-doses de toxinas processadas garantem imunidade a envenenamento e a habilidade de revestir armas com ácido corrosivo (+1d6 ácido, 1 minuto).
 
-Construtor de Armadilhas (Especialidade: Caca Intacta e Extracao Perfeita): Comer carne extraida sem dano de batalha concede Vantagem em todos os testes de INT e na criacao de invencoes por 24h.
+Construtor de Armadilhas (Especialidade: Caça Intacta e Extracao Perfeita): Comer carne extraída sem dano de batalha concede Vantagem em todos os testes de INT e na criacao de invencoes por 24h.
 
+**PA (VTT):** nv. 5 **Afinidade Arcanica**. Bombas, infusoes e habilidades de engenharia — custo no compendio; talentos −PA — Cap. 12.0 (Artifice).
 
 ---
 
@@ -820,16 +973,16 @@ Construtor de Armadilhas (Especialidade: Caca Intacta e Extracao Perfeita): Come
 
 ---
 
-## CAPITULO 5 — A NECESSIDADE DE COMER
+## CAPÍTULO 5 — A NECESSIDADE DE COMER
 
-Na masmorra, a fome nao e um inconveniente — e uma mecanica.
+Na masmorra, a fome não e um inconveniente — e uma mecanica.
 
 **Frequencia:** Uma refeicao completa por dia e necessaria para evitar Exaustao.
 
 **Exaustao por Fome:**
 - Dia 1 sem comer: Nivel 1 de Exaustao (-2 em todas as rolagens)
 - Dia 2 sem comer: Nivel 2 (-2 em velocidade)
-- Dia 3+: Progressao ate Nivel 6 (morte)
+- Dia 3+: Progressao até Nivel 6 (morte)
 
 ### 5.1 Estudo de Anatomia
 
@@ -838,28 +991,28 @@ Antes de extrair ingredientes de um monstro, o grupo pode fazer um Estudo de Ana
 - Qualquer personagem faz um teste de Inteligencia/Natureza contra a CD do monstro.
 - CD = 10 + Nivel do monstro dividido por 2 (arredondado)
 - Sucesso: O grupo mapeia a Anatomia daquela especie permanentemente. Futuras rolagens de Trinchar contra aquela especie tem Vantagem.
-- Falha: Pode tentar novamente apos matar 3 exemplares adicionais da mesma especie.
+- Falha: Pode tentar novamente após matar 3 exemplares adicionais da mesma especie.
 
 **Bonus de Anatomia por Classe:**
 - Patrulheiro: +3 em testes de Anatomia de feras e bestiais
-- Artifice Biologo Alquimico: +5 em testes de Anatomia de qualquer especie
+- Artífice Biologo Alquimico: +5 em testes de Anatomia de qualquer especie
 - Druida: Automaticamente conhece anatomia de Flora e Fungos
 
 ### 5.2 Extracao de Ingredientes (Trinchar)
 
-Apos matar um monstro, o grupo tem **1 hora** antes que a carne comece a degradar magicamente.
+Apos matar um monstro, o grupo tem **1 hora** antes que a carne comece a degradar mágicamente.
 
 | Dificuldade | CD de Trinchar | Resultado em falha |
 |-------------|---------------|-------------------|
-| Facil | 10 | Carne basica obtida, partes nobres destruidas |
+| Facil | 10 | Carne básica obtida, partes nobres destruidas |
 | Medio | 14 | Metade dos ingredientes recuperados |
-| Dificil | 17 | Apenas ingredientes basicos, sem glandulas |
+| Dificil | 17 | Apenas ingredientes basicos, sem glândulas |
 | Especialista | 20 | Falha total — ingrediente perdido ou perigoso |
 
 **Ferramentas de Extracao:**
 - Faca comum: Serve para Facil e Medio.
-- Kit de Trinchar (do Artifice): +2 em todos os testes, serve para Dificil.
-- Ferramentas Especializadas (organicas ou magicas): Necessarias para Especialista.
+- Kit de Trinchar (do Artífice): +2 em todos os testes, serve para Dificil.
+- Ferramentas Especializadas (orgânicas ou mágicas): Necessarias para Especialista.
 - Recipiente Magico Selado: Necessario para Espirituais e Elementais.
 
 ### 5.3 Qualidade da Refeicao
@@ -868,27 +1021,27 @@ O Cozinheiro do grupo (quem tem maior Coccao) rola para determinar a qualidade d
 
 | Resultado do Teste de Coccao | Qualidade | Efeito |
 |-----------------------------|-----------|--------|
-| 7 ou menos | Gororoba | Recupera HP minimo (1d4). Teste de Estomago de Ferro CD 13 ou sofre debuff severo. |
+| 7 ou menos | Gororoba | Recupera HP minimo (1d4). Teste de Estômago de Ferro CD 13 ou sofre debuff severo. |
 | 8–15 | Refeicao Comum | Restaura 50% do HP e Mana perdidos. Ativa Bonus de Dieta Base e Subclasse. |
 | 16–20 | Refeicao Gourmet | Restaura 100% do HP e Mana. Concede Buff Temporario ao grupo inteiro por 2 horas. |
 | 21+ | Prato Perfeito | Como Gourmet + o cozinheiro rola 2d4 na Rolagem do Prato (escolhe o maior). |
 
-**Debuffs de Gororoba (Teste de Estomago de Ferro, CD 13):**
+**Debuffs de Gororoba (Teste de Estômago de Ferro, CD 13):**
 - Falha por 1-4: -20% do HP Maximo por 24h
 - Falha por 5-9: Velocidade reduzida a metade por 12h
 - Falha por 10+: Impossibilidade de lancar magias complexas por enjoo severo por 8h
 - Falha critica (natural 1): Todos os tres efeitos acima simultaneamente
 
-### 5.4 Adaptacao Biomagica — A Regra do Prato Estruturado
+### 5.4 Adaptacao Biomágica — A Regra do Prato Estruturado
 
-Esta e a mecanica central do sistema. Ao preparar um prato de monstro especifico, o Cozinheiro extrai DNA magico que temporariamente altera os corpos do grupo.
+Esta e a mecanica central do sistema. Ao preparar um prato de monstro especifico, o Cozinheiro extrai DNA magico que temporáriamente altera os corpos do grupo.
 
-**As mutacoes duram 24 horas** (ou ate o proximo descanso longo).
+**As mutacoes duram 24 horas** (ou até o próximo descanso longo).
 
 **Passo 1 — O Foco (Garantido):**
-O Cozinheiro escolhe 1 habilidade da **tabela do especime** preparado (Cap. 6.2 / `ASSIMILACAO-POR-ESPECIME.md` — 8 por monstro, codigo 001–060). Essa habilidade e garantida para todo o grupo.
+O Cozinheiro escolhe 1 habilidade da **tabela do espécime** preparado (Cap. 6.2 / `ASSIMILACAO-POR-ESPECIME.md` — 8 por monstro, codigo 001–060). Essa habilidade e garantida para todo o grupo.
 
-**Refeicao so de planta (sem monstro):** use **Cap. 5B** — 40 especies; nao rola d4 de assimilacao; efeito de planta por 24h.
+**Refeicao só de planta (sem monstro):** use **Cap. 5B** — 40 especies; não rola d4 de assimilação; efeito de planta por 24h.
 
 **Passo 2 — O Aproveitamento (Rolagem do 1d4):**
 
@@ -897,7 +1050,7 @@ O Cozinheiro escolhe 1 habilidade da **tabela do especime** preparado (Cap. 6.2 
 | 1 | Apenas o Foco (1 habilidade) |
 | 2 | Foco + 1 escolha do Cozinheiro (2 total) |
 | 3 | Foco + 2 escolhas do Cozinheiro (3 total) |
-| 4 | Foco + 3 escolhas do Cozinheiro (4 total — maximo) |
+| 4 | Foco + 3 escolhas do Cozinheiro (4 total — máximo) |
 
 **Passo 3 — Distribuicao:** Todas as habilidades obtidas se aplicam a todo o grupo que participou da refeicao.
 
@@ -905,37 +1058,37 @@ O Cozinheiro escolhe 1 habilidade da **tabela do especime** preparado (Cap. 6.2 
 
 ### 5.5 Duracao e Sobreposicao de Mutacoes
 
-- Mutacoes do mesmo tipo nao se acumulam — a mais recente substitui a anterior.
+- Mutacoes do mesmo tipo não se acumulam — a mais recente substitui a anterior.
 - Mutacoes de tipos diferentes coexistem normalmente.
-- O maximo de mutacoes ativas simultaneamente e 8.
+- O máximo de mutacoes ativas simultaneamente e 8.
 - Ao dormir e acordar sem comer, todas as mutacoes ativas expiram.
 
-### 5.6 Minerios, especiarias e tesouros
+### 5.6 Minérios, especiarias e tesouros
 
-Alem de **ingredientes** (carne, glandulas), masmorras geram **riqueza capturavel**: especiarias para cozinha, minerios para craft e tesouros para faccao ou mercado.
+Alem de **ingredientes** (carne, glândulas), masmorras geram **riqueza capturavel**: especiarias para cozinha, minérios para craft e tesouros para faccao ou mercado.
 
 | Fonte | Regra |
 |-------|--------|
-| **Monstro** | Apos Trinchar com **sucesso**, cada especime concede **1 saque** (especiaria + minerio + moedas/tesouro) — tabela **001–060** em `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` |
-| **Trinchar excepcional** | Resultado **5+ acima da CD** = +1 especiaria **ou** +1 minerio (escolha do grupo) |
+| **Monstro** | Apos Trinchar com **sucesso**, cada espécime concede **1 saque** (especiaria + minério + moedas/tesouro) — tabela **001–060** em `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` |
+| **Trinchar excepcional** | Resultado **5+ acima da CD** = +1 especiaria **ou** +1 minério (escolha do grupo) |
 | **Cenario** | Objetos **OBJ-R** (veios, baus, altares) — saque fixo ou rolagem 1d12 do bioma |
-| **Forrageio** | 1x por descanso curto no bioma: SAB ou INT + Natureza CD 12 → 1d6 (catalogo) |
+| **Forrageio** | 1x por descanso curto no bioma: SAB ou INT + Natureza CD 12 → 1d6 (catálogo) |
 
-**Especiaria em prato:** 1 ESP por refeicao = **+1 Harmonizacao** no teste de Coccao daquela refeicao.
+**Especiaria em prato:** 1 ESP por refeicao = **+1 Harmonização** no teste de Coccao daquela refeicao.
 
-**Minerio:** vendido ou usado em craft (Artifice CD 12; 3 unidades Comuns = 1 item +0 organico 24h).
+**Minério:** vendido ou usado em craft (Artífice CD 12; 3 unidades Comuns = 1 item +0 orgânico 24h).
 
 **Covil / sala de tesouro:** 2d6 × (10 × nivel do andar) **po** + 1 item TES raro se a sala estiver marcada no mapa.
 
-Lista completa: **ESP-01–30**, **MIN-01–30**, **TES-01–20** no catalogo.
+Lista completa: **ESP-01–30**, **MIN-01–30**, **TES-01–20** no catálogo.
 
 ---
 
-## CAPITULO 6 — ASSIMILACAO BIOMAGICA
+## CAPÍTULO 6 — ASSIMILACAO BIOMAGICA
 
 ### 6.1 Regra central
 
-Cada **especime** do bestiario (Livro do Mestre, codigos **001–060**) possui **8 habilidades** proprias. Ao cozinhar aquele monstro, use **somente** a tabela daquele codigo — nao a categoria ecologica antiga.
+Cada **espécime** do bestiário (Livro do Mestre, codigos **001–060**) possui **8 habilidades** proprias. Ao cozinhar aquele monstro, use **somente** a tabela daquele codigo — não a categoria ecologica antiga.
 
 | Fonte | Uso |
 |-------|-----|
@@ -943,11 +1096,11 @@ Cada **especime** do bestiario (Livro do Mestre, codigos **001–060**) possui *
 | **Cap. 5.4** | Foco + d4 + Prato Perfeito |
 | **Cap. 5B** | Plantas (sem d4; efeito vegetal) |
 
-Nomes de habilidade **podem repetir** entre especimes diferentes (ex.: varios tem *Resistencia Necrotica*), mas cada monstro sempre lista **seus** 8 numerados.
+Nomes de habilidade **podem repetir** entre espécimes diferentes (ex.: varios tem *Resistência Necrotica*), mas cada monstro sempre lista **seus** 8 numerados.
 
-### 6.2 Indice de especimes (001–060)
+### 6.2 Indice de espécimes (001–060)
 
-| Cod | Especime |
+| Cod | Espécime |
 |-----|----------|
 | 001 | Zumbi de Masmorra |
 | 002 | Esqueleto Armado |
@@ -960,9 +1113,9 @@ Nomes de habilidade **podem repetir** entre especimes diferentes (ex.: varios te
 | 009 | Mumia |
 | 010 | Dragonete de Magma |
 | 011 | Wyvern |
-| 012 | Dragao Jovem de Gelo |
+| 012 | Dragão Jovem de Gelo |
 | 013 | Drake de Pedra |
-| 014 | Dragao Anciao de Fogo |
+| 014 | Dragão Anciao de Fogo |
 | 015 | Golem de Pedra |
 | 016 | Armadura Animada |
 | 017 | Golem de Ferro Vulcanico |
@@ -973,7 +1126,7 @@ Nomes de habilidade **podem repetir** entre especimes diferentes (ex.: varios te
 | 022 | Grifo |
 | 023 | Cocatriz |
 | 024 | Aranha Tecerrochas |
-| 025 | Escorpiao Gigante |
+| 025 | Escorpião Gigante |
 | 026 | Centopeia Caustica |
 | 027 | Besouro-Diamante |
 | 028 | Sapo-Engolidor |
@@ -986,7 +1139,7 @@ Nomes de habilidade **podem repetir** entre especimes diferentes (ex.: varios te
 | 035 | Cogumelo-Rei |
 | 036 | Treant Podre |
 | 037 | Planta Carnivora Gigante |
-| 038 | Slime Acido |
+| 038 | Slime Ácido |
 | 039 | Slime de Cristal |
 | 040 | Elemental de Fogo |
 | 041 | Elemental de Gelo |
@@ -1010,13 +1163,13 @@ Nomes de habilidade **podem repetir** entre especimes diferentes (ex.: varios te
 | 059 | Lagosta-Gigante Abissal |
 | 060 | Caranguejo-Eremita Colossal |
 
-**Variante Elite / Colossal:** use a tabela do **especime base** (ex.: Zumbi Colossal = 001).
+**Variante Elite / Colossal:** use a tabela do **espécime base** (ex.: Zumbi Colossal = 001).
 
-**Especime novo (Mestre):** copie estrutura de 8 linhas; 4–6 podem espelhar categoria proxima, 2–4 unicos.
+**Espécime novo (Mestre):** copie estrutura de 8 linhas; 4–6 podem espelhar categoria proxima, 2–4 unicos.
 
 ### 6.3 Categorias ecologicas (referencia legada)
 
-> **Nao usar** em Prato Estruturado se o especime tiver codigo 001–060. Apenas referencia de design para especimes sem ficha.
+> **Nao usar** em Prato Estruturado se o espécime tiver codigo 001–060. Apenas referencia de design para espécimes sem ficha.
 
 ### ARACNIDEOS E INSETOIDES
 (Aranhas, Escorpioes, Centopeias, Besouros)
@@ -1029,10 +1182,10 @@ Nomes de habilidade **podem repetir** entre especimes diferentes (ex.: varios te
 | 4 | Sentido Sismico | Visao as cegas 10m — detecta qualquer movimento no solo, incluindo invisiveis. |
 | 5 | Armadura Fina | Quitina cresce sob a pele: +2 CA permanente enquanto ativa. |
 | 6 | Patas Multiplas | Velocidade base aumenta em 5m por turno. |
-| 7 | Metabolismo Filtrador | Imunidade total a venenos e doencas nao-magicas. |
-| 8 | Queliceras Acidas | Ataques corpo-a-corpo e mordidas ganham +1d6 de dano venenoso. |
+| 7 | Metabolismo Filtrador | Imunidade total a venenos e doenças nao-mágicas. |
+| 8 | Quelíceras Acidas | Ataques corpo-a-corpo e mordidas ganham +1d6 de dano venenoso. |
 
-Especimes-chave: Aranha Tecerrochas (Nivel 3), Escorpiao Gigante (Nivel 4), Centopeia Caustica (Nivel 5), Besouro-Diamante (Nivel 2), Aranha-Cavaleira (Nivel 9).
+Espécimes-chave: Aranha Tecerrochas (Nivel 3), Escorpião Gigante (Nivel 4), Centopeia Caustica (Nivel 5), Besouro-Diamante (Nivel 2), Aranha-Cavaleira (Nivel 9).
 
 ### VULCANICOS E ELEMENTAIS DE FOGO
 (Salamandras, Dragonetes de Magma, Elementais)
@@ -1040,24 +1193,24 @@ Especimes-chave: Aranha Tecerrochas (Nivel 3), Escorpiao Gigante (Nivel 4), Cent
 | # | Habilidade | Efeito |
 |---|-----------|--------|
 | 1 | Fornalha Interna | Imune ao frio extremo. Pode ferver liquidos segurando-os. |
-| 2 | Sangue Fervente | 50% de resistencia a dano de Fogo e Magma. |
+| 2 | Sangue Fervente | 50% de resistência a dano de Fogo e Magma. |
 | 3 | Toque Cauterizante | Ataques corpo-a-corpo causam +1d6 de dano de fogo. |
 | 4 | Halito de Brasa | Cospe cone de chamas (4m, 3d6 fogo) uma vez por combate. |
-| 5 | Pele de Obsidiana | Ignora o dano extra de acertos criticos inimigos. |
-| 6 | Suor Fumegante | Exala fumaca — ataques a distancia contra voce tem Desvantagem. |
+| 5 | Pele de Obsidiana | Ignora o dano extra de acertos críticos inimigos. |
+| 6 | Suor Fumegante | Exala fumaca — ataques a distancia contra você tem Desvantagem. |
 | 7 | Pegadas de Magma | Rastro de chamas atras — inimigos que seguirem sofrem 1d6 fogo/turno. |
-| 8 | Digestao Derretida | Pode comer metais e pedras brutas para recuperar 2d6 HP. |
+| 8 | Digestão Derretida | Pode comer metais e pedras brutas para recuperar 2d6 HP. |
 
 ### BESTIAIS ALADOS E HIBRIDOS AEREOS
 (Grifos, Harpias, Morcegos-Tirano, Manticoras)
 
 | # | Habilidade | Efeito |
 |---|-----------|--------|
-| 1 | Ossos Ocos | Peso despenca. Sem dano de quedas de ate 15m. Saltos triplicam. |
+| 1 | Ossos Ocos | Peso despenca. Sem dano de quedas de até 15m. Saltos triplicam. |
 | 2 | Visao de Rapina | Enxerga quilometros. Sem penalidade para tiros a longa distancia. |
 | 3 | Asas de Planagem | Membranas sob os bracos permitem planar controladamente. |
 | 4 | Voo Verdadeiro | Asas plenas crescem — voo livre de 12m/turno. |
-| 5 | Vocalizacao Sonica | Grito em area que atordoa inimigos (CD 13 CON, Atordoado 1 turno). |
+| 5 | Vocalizacao Sonica | Grito em área que atordoa inimigos (CD 13 CON, Atordoado 1 turno). |
 | 6 | Garras Retrateis | Pes firmam no chao (imune a empur xoes). Pode prender inimigos. |
 | 7 | Pena-Bussola | Sabe exatamente o Norte. Detecta mudancas climaticas e sismicas. |
 | 8 | Plumagem Furtiva | Passos e equipamentos silenciados. Vantagem em Furtividade. |
@@ -1067,28 +1220,28 @@ Especimes-chave: Aranha Tecerrochas (Nivel 3), Escorpiao Gigante (Nivel 4), Cent
 
 | # | Habilidade | Efeito |
 |---|-----------|--------|
-| 1 | Estomago de Ferro | Imune a penalidades por alimentos estragados ou podres. |
+| 1 | Estômago de Ferro | Imune a penalidades por alimentos estragados ou podres. |
 | 2 | Instinto de Horda | Bonus de +2 em dano quando um aliado tambem estiver atacando o mesmo alvo. |
-| 3 | Faro para Ouro | Detecta metais preciosos e tesouros atraves de paredes ate 10m. |
-| 4 | Adrenalina Covarde | Velocidade dobra temporariamente ao se afastar de um inimigo mais forte. |
+| 3 | Faro para Ouro | Detecta metais preciosos e tesouros atraves de paredes até 10m. |
+| 4 | Adrenalina Covarde | Velocidade dobra temporáriamente ao se afastar de um inimigo mais forte. |
 | 5 | Garras de Escavador | Escava terra ou cascalho a velocidade de caminhada. |
 | 6 | Metabolismo Acelerado | Precisa de metade do tempo para descanso curto e longo. |
 | 7 | Visao de Submundo | Visao perfeita no escuro absoluto. |
-| 8 | Aderencia Rasteira | Move-se em velocidade maxima mesmo rastejando ou deitado. |
+| 8 | Aderencia Rasteira | Move-se em velocidade máxima mesmo rastejando ou deitado. |
 
 ### DRACONICOS
 (Wyverns, Drakes, Dragoes Jovens, Dragonetes)
 
 | # | Habilidade | Efeito |
 |---|-----------|--------|
-| 1 | Escamas de Wyrm | CA base aumenta em +3 (nao acumula com armaduras pesadas). |
+| 1 | Escamas de Wyrm | CA base aumenta em +3 (não acumula com armaduras pesadas). |
 | 2 | Sangue de Fera Ancestral | Vantagem em Intimidacao. Monstros de nivel 4 ou menos hesitam. |
 | 3 | Figado Alquimico | Qualquer veneno no corpo e queimado para restaurar 1d6 Mana. |
-| 4 | Olhos de Dragao | Enxerga auras magicas, objetos ilusorios e criaturas invisiveis. |
+| 4 | Olhos de Dragão | Enxerga auras mágicas, objetos ilusorios e criaturas invisiveis. |
 | 5 | Garras de Adamante | Ataques desarmados cortam metal e podem quebrar armas inimigas. |
-| 6 | Pulmoes de Fole | Prende respiracao por horas. Imune a gases, venenos inalados e esporos. |
+| 6 | Pulmoes de Fole | Prende respiração por horas. Imune a gases, venenos inalados e esporos. |
 | 7 | Cauda Preensil | Cauda robusta cresce — segura armas leves ou derruba oponentes. |
-| 8 | Aura de Majestade | Monstros de INT 5 ou menos nao te atacam primeiro sem provocacao. |
+| 8 | Aura de Majestade | Monstros de INT 5 ou menos não te atacam primeiro sem provocação. |
 
 ### GLACIAIS
 (Yetis, Lobos do Inverno, Elementais de Gelo)
@@ -1101,7 +1254,7 @@ Especimes-chave: Aranha Tecerrochas (Nivel 3), Escorpiao Gigante (Nivel 4), Cent
 | 4 | Pelagem de Tundra | Pelos brancos crescem — ganha HP Temporario (5) a cada hora. |
 | 5 | Visao de Nevasca | Visao perfeita atraves de neblina, chuva, fumaca ou neve. |
 | 6 | Halito de Inverno | Rajada de gelo (cone 4m, 3d6 frio) que apaga chamas e cristaliza alvos. |
-| 7 | Sono de Hibernacao | Transe profundo que pausa progressao de maldicoes, venenos e sangramento. |
+| 7 | Sono de Hibernação | Transe profundo que pausa progressao de maldicoes, venenos e sangramento. |
 | 8 | Gelo Espinhoso | Ao sofrer dano fisico, estilhacos de gelo causam 1d6 ao atacante. |
 
 ### ESPIRITUAIS E AMALDICADOS
@@ -1111,11 +1264,11 @@ Especimes-chave: Aranha Tecerrochas (Nivel 3), Escorpiao Gigante (Nivel 4), Cent
 |---|-----------|--------|
 | 1 | Passo Intangivel | Atravessa portas trancadas ou paredes finas uma vez por combate. |
 | 2 | Levitacao Espectral | Pes flutuam. Imune a armadilhas de piso e terreno dificil. |
-| 3 | Toque Drenante | Ataques desarmados causam dano necrotico e curam o personagem na mesma proporcao. |
+| 3 | Toque Drenante | Ataques desarmados causam dano necrótico e curam o personagem na mesma proporcao. |
 | 4 | Olhos do Alem | Ao tocar um cadaver, ve os ultimos 5 segundos de vida da criatura. |
 | 5 | Voz de Tumba | Fala telepaticamente a 30m. A voz causa pavor — CD 12 SAB ou Amedrontado. |
-| 6 | Corpo Translucido | Mistura-se com sombras automaticamente em luz fraca (quase invisivel). |
-| 7 | Resistencia Fantasmagorica | Sofre metade do dano de ataques fisicos nao-magicos. |
+| 6 | Corpo Translucido | Mistura-se com sombras automaticamente em luz fraça (quase invisivel). |
+| 7 | Resistência Fantasmagorica | Sofre metade do dano de ataques fisicos nao-magicos. |
 | 8 | Sexto Sentido Frio | Nao pode ser surpreendido. Detecta mortos-vivos num raio de 20m. |
 
 ### MIMICOS E METAMORFOS
@@ -1126,25 +1279,25 @@ Especimes-chave: Aranha Tecerrochas (Nivel 3), Escorpiao Gigante (Nivel 4), Cent
 | 1 | Camuflagem Perfeita | Se imovel, torna-se indistinguivel de objeto comum. |
 | 2 | Lingua Adesiva | Lingua se estende a 3m como chicote para desarmar ou puxar objetos. |
 | 3 | Pele Mutavel | Altera cor da pele, feicoes e tom de voz para imitar qualquer humanoide. |
-| 4 | Bolsa Dimensional Gastrica | Estomago torna-se espaco extra-dimensional — engole itens sem ganhar peso. |
-| 5 | Mordida Surpresa | Mordida em alvo que nao notou voce causa o triplo do dano normal. |
+| 4 | Bolsa Dimensional Gastrica | Estômago torna-se espaco extra-dimensional — engole itens sem ganhar peso. |
+| 5 | Mordida Surpresa | Mordida em alvo que não notou você causa o triplo do dano normal. |
 | 6 | Juntas Articuladas | Desloca ossos a vontade para escapar de qualquer restricao fisica. |
-| 7 | Metabolismo de Material | Ganha resistencia fisica baseada no ultimo material que o Mimiico imitava. |
-| 8 | Sangue Corrosivo | Secreta acido leve — dissolve fechaduras, grades e metais mundanos silenciosamente. |
+| 7 | Metabolismo de Material | Ganha resistência fisica baseada no ultimo material que o Mimiico imitava. |
+| 8 | Sangue Corrosivo | Secreta ácido leve — dissolve fechaduras, grades e metais mundanos silenciosamente. |
 
 ### AQUATICOS E ABISSAIS
 (Sapos, Krakens, Serpentes, Tubaroes-Cegos)
 
 | # | Habilidade | Efeito |
 |---|-----------|--------|
-| 1 | Guelras de Profundeza | Respiracao subaquatica infinita, sem limite de profundidade. |
+| 1 | Guelras de Profundeza | Respiração subaquatica infinita, sem limite de profundidade. |
 | 2 | Pele Escorregadia | Impossivel de ser agarrado, imobilizado ou preso por correntes. |
 | 3 | Bexiga Natatoria | Infla o peito para flutuar no ar ou armazenar oxigenio para aliados. |
 | 4 | Radar de Linha Lateral | Sente movimentacao e batimentos cardiacos atraves de paredes ou agua. |
 | 5 | Jato de Tinta Cega | Nuvem de tinta (raio 6m) que cega por 1 minuto. |
 | 6 | Bioeletricidade | Corpo gera carga — ataques dao choque (+1d6 eletrico) e armas de metal recebem descarga de volta. |
 | 7 | Camuflagem de Polvo | Muda cor e textura instantaneamente — invisivel ao colar em parede. |
-| 8 | Resistencia Abissal | Imune a dano de esmagamento e mudancas extremas de pressao. |
+| 8 | Resistência Abissal | Imune a dano de esmagamento e mudancas extremas de pressao. |
 
 
 ---
@@ -1158,9 +1311,9 @@ Especimes-chave: Aranha Tecerrochas (Nivel 3), Escorpiao Gigante (Nivel 4), Cent
 
 ---
 
-# CAPITULO 5B — FLORA DE MASMORRA (40 ESPECIES)
+# CAPÍTULO 5B — FLORA DE MASMORRA (40 ESPECIES)
 
-> Alimentacao **vegetal** para Druidas, Forrageiros e Clerigo do Pao da Vida. Cada planta ativa **Bonus de Dieta Base** e efeito proprio (sem precisar de monstro). Ver tambem **Assimilacao por Especime** (Cap. 6.2) para carne de monstro.
+> Alimentacao **vegetal** para Druidas, Forrageiros e Clérigo do Pao da Vida. Cada planta ativa **Bonus de Dieta Base** e efeito proprio (sem precisar de monstro). Ver tambem **Assimilação por Espécime** (Cap. 6.2) para carne de monstro.
 
 ---
 
@@ -1168,21 +1321,21 @@ Especimes-chave: Aranha Tecerrochas (Nivel 3), Escorpiao Gigante (Nivel 4), Cent
 
 | Regra | Detalhe |
 |-------|---------|
-| **Quem pode** | Druida (Ciclo da Vida), Forrageiro dos Esporos, Clerigo do Pao da Vida, qualquer um com Estomago de Ferro 4+ |
+| **Quem pode** | Druida (Ciclo da Vida), Forrageiro dos Esporos, Clérigo do Pao da Vida, qualquer um com Estômago de Ferro 4+ |
 | **Preparo** | Crua (Druida ok), refeicao Comum (Coccao 8+), ou ritual de Pao da Vida |
-| **Trinchar planta** | DES ou SAB + bonus; planta **Comum** nao exige Estudo de Anatomia |
-| **Mutacao** | Planta **nao** rola d4 de assimilacao de monstro — concede **efeito de planta** (24h ou nota) |
+| **Trinchar planta** | DES ou SAB + bonus; planta **Comum** não exige Estudo de Anatomia |
+| **Mutação** | Planta **não** rola d4 de assimilação de monstro — concede **efeito de planta** (24h ou nota) |
 | **Ecologia** | Monstros listados em **Consumidores** comem a planta no bioma; Mestre pode fazer encontros de herbivoria |
 
-**Qualidade:** Falha em Coccao com planta toxica = veneno leve (CON CD 12 ou 1d6/turno, 3 turnos). Prato Perfeito dobra duracao do efeito de planta.
+**Qualidade:** Falha em Coccao com planta toxica = veneno leve (CON CD 12 ou 1d6/turno, 3 turnos). Prato Perfeito dobra duração do efeito de planta.
 
 ---
 
 ## Indice das 40 plantas
 
-| # | Nome | Bioma tipico | Raridade |
+| # | Nome | Bioma típico | Raridade |
 |---|------|--------------|----------|
-| 01 | Musgo-Lanterna | Estomago Botanico, Arquivos | Comum |
+| 01 | Musgo-Lanterna | Estômago Botanico, Arquivos | Comum |
 | 02 | Raiz-Relogio | Engrenagens, Cidadela Palida | Comum |
 | 03 | Broto de Veia | Qualquer Boca (superficie de tunel) | Comum |
 | 04 | Erva-Sino | Abatedouro Celestial, planicie | Comum |
@@ -1197,14 +1350,14 @@ Especimes-chave: Aranha Tecerrochas (Nivel 3), Escorpiao Gigante (Nivel 4), Cent
 | 13 | Hera Sangrenta | Fornalhas, Deserto de Carne | Incomum |
 | 14 | Samambaia de Cinza | Jardim de Cinzas | Comum |
 | 15 | Tubarao-Relva (alga rasteira) | Abismo Invertido | Incomum |
-| 16 | Esporo-Madrugada | Estomago Botanico | Comum |
+| 16 | Esporo-Madrugada | Estômago Botanico | Comum |
 | 17 | Raiz de Yeti | Montanhas geladas | Incomum |
 | 18 | Cacto Roxo | Deserto Purpura | Incomum |
-| 19 | Arvore-Racao (nucleo) | Vale Podre, Digestor | Raro |
+| 19 | Arvore-Raçao (nucleo) | Vale Podre, Digestor | Raro |
 | 20 | Mel de Xilema | Colmeia de insetos + flora | Incomum |
 | 21 | Casca-Brilho | Aranhas, teias antigas | Incomum |
 | 22 | Flor Narcotica | Ninho Crepuscular | Raro |
-| 23 | Planta Carnivora (bulbo) | Estomago Botanico | Incomum |
+| 23 | Planta Carnivora (bulbo) | Estômago Botanico | Incomum |
 | 24 | Musgo de Lareth | Ruinas engolidas | Raro |
 | 25 | Semente de Vinha Guardia | Simbiose druidica | Incomum |
 | 26 | Capim Eco | Fosso das Emocoes | Incomum |
@@ -1220,8 +1373,8 @@ Especimes-chave: Aranha Tecerrochas (Nivel 3), Escorpiao Gigante (Nivel 4), Cent
 | 36 | Polen de Matriarca | Teias de aranha-rei | Raro |
 | 37 | Fruto de Hidra (sementes) | Cavernas aquaticas | Raro |
 | 38 | Liquen de Golem | Engrenagens vivas | Raro |
-| 39 | Broto Ancestral | Boss derrotado (1/semana) | Lendario |
-| 40 | Flor do Chefe Final | Boca Vazia (andares 1-3) | Lendario |
+| 39 | Broto Ancestral | Boss derrotado (1/semana) | Lendário |
+| 40 | Flor do Chefe Final | Boca Vazia (andares 1-3) | Lendário |
 
 ---
 
@@ -1229,47 +1382,47 @@ Especimes-chave: Aranha Tecerrochas (Nivel 3), Escorpiao Gigante (Nivel 4), Cent
 
 ### 01 — Musgo-Lanterna
 **Consumidores:** Goblin, Besouro-Diamante, Planta Carnivora (filhotes).  
-**Efeito (24h):** Luz suave 3m; +2 em testes de orientacao em tunel; Druida cura 1d4+SAB ao descansar curto em area umida.
+**Efeito (24h):** Luz suave 3m; +2 em testes de orientacao em tunel; Druida cura 1d4+SAB ao descansar curto em área umida.
 
 ### 02 — Raiz-Relogio
-**Consumidores:** Esqueleto (nao come — energia ambiente), Autômato menor, ratos de masmorra.  
-**Efeito:** Imune a sono magico forcado 1x; proximo descanso curto em 5 min (raiz mastigada).
+**Consumidores:** Esqueleto (não come — energia ambiente), Autômato menor, ratos de masmorra.  
+**Efeito:** Imune a sono magico forcado 1x; próximo descanso curto em 5 min (raiz mastigada).
 
 ### 03 — Broto de Veia
 **Consumidores:** Quase todos os herbivoros pequenos; Centopeia (filhotes).  
-**Efeito:** +1 em Trinchar e Harmonizacao; primeira refeicao de **monstro** no dia conta como Comum+.
+**Efeito:** +1 em Trinchar e Harmonização; primeira refeicao de **monstro** no dia conta como Comum+.
 
 ### 04 — Erva-Sino
 **Consumidores:** Grifo (ninhos), Harpia, aventureiros locais.  
-**Efeito:** Vantagem em Percepcao auditiva; aliados a 6m acordam de surpresa com +2 Iniciativa 1 combate.
+**Efeito:** Vantagem em Percepção auditiva; aliados a 6m acordam de surpresa com +2 Iniciativa 1 combate.
 
 ### 05 — Folha de Salmour
 **Consumidores:** Sapo-Engolidor, peixes de caverna, Serpente-do-Abismo (jovem).  
-**Efeito:** Respiracao em ar umido/nevoa; +2 em CON vs gases 24h.
+**Efeito:** Respiração em ar umido/nevoa; +2 em CON vs gases 24h.
 
 ### 06 — Cogumelo-Bandeira
 **Consumidores:** Goblin, Cogumelo-Rei (simbiose), Ghoul (ocasional).  
-**Efeito:** +3 Estomago de Ferro; imune a podridao leve de ingrediente Comum.
+**Efeito:** +3 Estômago de Ferro; imune a podridao leve de ingrediente Comum.
 
 ### 07 — Trevo de Obelisco
-**Consumidores:** Zumbi (nao — supersticao); Espectro (energia); humanos de Grimwald.  
-**Efeito:** 1 reroll em save de morte por veneno/necrotico por 24h.
+**Consumidores:** Zumbi (não — supersticao); Espectro (energia); humanos de Grimwald.  
+**Efeito:** 1 reroll em save de morte por veneno/necrótico por 24h.
 
 ### 08 — Vinha de Grimwald
 **Consumidores:** Treant Podre, Planta Carnivora, Druida locais.  
-**Efeito:** Escalar superficie organica sem teste; rebate 1d4 cortante a quem te acertar corpo a corpo (1/combate).
+**Efeito:** Escalar superficie orgânica sem teste; rebaté 1d4 cortante a quem te acertar corpo a corpo (1/combate).
 
 ### 09 — Liquen Frio
 **Consumidores:** Lobo do Inverno, Yeti, Elemental de Gelo (ambiente).  
-**Efeito:** Resistencia a frio; ignora Exaustao por frio ambiental 24h.
+**Efeito:** Resistência a frio; ignora Exaustao por frio ambiental 24h.
 
 ### 10 — Flor de Espelho
-**Consumidores:** Mimico (polen), Doppelganger (nao digere — copia aroma).  
+**Consumidores:** Mimico (polen), Doppelganger (não digere — copia aroma).  
 **Efeito:** Vantagem em testes vs ilusao; detecta Mimico adjacente automaticamente.
 
 ### 11 — Palma de Ferromur
 **Consumidores:** Besouro-Diamante, construtos desligados (oxidacao reduzida).  
-**Efeito:** Armas metalicas do grupo nao oxidam na Boca Cinza 24h; +1 Coccao com ferro/forja.
+**Efeito:** Armas metalicas do grupo não oxidam na Boca Cinza 24h; +1 Coccao com ferro/forja.
 
 ### 12 — Algas de Prata
 **Consumidores:** Tubarao-Cego, Kraken Menor, Lagosta Abissal.  
@@ -1277,11 +1430,11 @@ Especimes-chave: Aranha Tecerrochas (Nivel 3), Escorpiao Gigante (Nivel 4), Cent
 
 ### 13 — Hera Sangrenta
 **Consumidores:** Ghoul, Vampiro (suco), Dragonete (ninho).  
-**Efeito:** +1d4 necrotico em um ataque por combate; ou cura 2d6 se Druida Circulo Decomposicao.
+**Efeito:** +1d4 necrótico em um ataque por combate; ou cura 2d6 se Druida Circulo Decomposicao.
 
 ### 14 — Samambaia de Cinza
 **Consumidores:** Elemental de Fogo (contraste), Zumbi Colossal (ambiente).  
-**Efeito:** Resistencia a fogo ambiental (nao magia boss) metade dano 24h.
+**Efeito:** Resistência a fogo ambiental (não magia boss) metade dano 24h.
 
 ### 15 — Tubarao-Relva
 **Consumidores:** Serpente-do-Abismo, Sereia, peixes gigantes.  
@@ -1289,19 +1442,19 @@ Especimes-chave: Aranha Tecerrochas (Nivel 3), Escorpiao Gigante (Nivel 4), Cent
 
 ### 16 — Esporo-Madrugada
 **Consumidores:** Cogumelo-Rei, Forrageiro (cultivo), insetos.  
-**Efeito:** Nuvem 1,5m curativa 1d8 HP (1/dia, acao); +2 Harmonizacao com fungos.
+**Efeito:** Nuvem 1,5m curativa 1d8 HP (1/dia, acao); +2 Harmonização com fungos.
 
 ### 17 — Raiz de Yeti
 **Consumidores:** Yeti, Lobo do Inverno, Basilisco de Gelo (raro).  
-**Efeito:** +2 FOR temporario 1h; depois 1 nivel Exaustao leve (crash) se nao comer carne no mesmo dia.
+**Efeito:** +2 FOR temporario 1h; depois 1 nivel Exaustao leve (crash) se não comer carne no mesmo dia.
 
 ### 18 — Cacto Roxo
-**Consumidores:** Escorpiao Gigante, Gargula de Cristal, viajantes Mirraga.  
-**Efeito:** +2 CA natural 4h; sede nao afeta 24h em deserto.
+**Consumidores:** Escorpião Gigante, Gargula de Cristal, viajantes Mirraga.  
+**Efeito:** +2 CA natural 4h; sede não afeta 24h em deserto.
 
-### 19 — Arvore-Racao (nucleo)
+### 19 — Arvore-Raçao (nucleo)
 **Consumidores:** Treant Podre, Rei Cogumelo, herbivoros grandes.  
-**Efeito:** Uma refeicao equivale a 3 dias de racao; grupo em 6m nao precisa comer hoje (1/semana).
+**Efeito:** Uma refeicao equivale a 3 dias de racao; grupo em 6m não precisa comer hoje (1/semana).
 
 ### 20 — Mel de Xilema
 **Consumidores:** Besouro-Diamante, Aranha Tecerrochas (larvas), ursos de caverna.  
@@ -1312,16 +1465,16 @@ Especimes-chave: Aranha Tecerrochas (Nivel 3), Escorpiao Gigante (Nivel 4), Cent
 ## Ficha por planta (21–40)
 
 ### 21 — Casca-Brilho
-**Consumidores:** Aranha Tecerrochas, Escorpiao.  
-**Efeito:** +2 CA vs ataques de oportunidade; teia propria 1 uso (9m, imobiliza DES CD 13).
+**Consumidores:** Aranha Tecerrochas, Escorpião.  
+**Efeito:** +2 CA vs ataques de oportunidade; teia própria 1 uso (9m, imobiliza DES CD 13).
 
 ### 22 — Flor Narcotica
 **Consumidores:** Apenas preparadores (monstros evitam). Planta Carnivora se alimenta de insetos atraidos.  
-**Efeito:** Descanso longo em 4h; SAB CD 14 ou Lentidao 1h ao acordar. Bardo: +3 CD Encantamento 8h.
+**Efeito:** Descanso longo em 4h; SAB CD 14 ou Lentidão 1h ao acordar. Bardo: +3 CD Encantamento 8h.
 
 ### 23 — Planta Carnivora (bulbo)
 **Consumidores:** Ela mesma; Hidra (arranca).  
-**Efeito:** Ataque desarmado 1d6+DES acido 1/combate; +2 vs agarrar.
+**Efeito:** Ataque desarmado 1d6+DES ácido 1/combate; +2 vs agarrar.
 
 ### 24 — Musgo de Lareth
 **Consumidores:** Esqueletos antigos (decadencia), Golem de Pedra (minerais).  
@@ -1329,7 +1482,7 @@ Especimes-chave: Aranha Tecerrochas (Nivel 3), Escorpiao Gigante (Nivel 4), Cent
 
 ### 25 — Semente de Vinha Guardia
 **Consumidores:** Druida planta; Ceifador não come.  
-**Efeito:** Como Circulo Simbiose: rebate 1d6 cortante 8h; plantar semente = vinha 3m escalar 24h.
+**Efeito:** Como Circulo Simbiose: rebaté 1d6 cortante 8h; plantar semente = vinha 3m escalar 24h.
 
 ### 26 — Capim Eco
 **Consumidores:** Banshee (nao); Espectro absorve.  
@@ -1337,7 +1490,7 @@ Especimes-chave: Aranha Tecerrochas (Nivel 3), Escorpiao Gigante (Nivel 4), Cent
 
 ### 27 — Broto de Treant Podre
 **Consumidores:** Treant Podre, Cogumelo-Rei em guerra.  
-**Efeito:** 2d8 HP temp; resistencia a necrotico 24h; Forma Selvagem +5 HP max 24h.
+**Efeito:** 2d8 HP temp; resistência a necrótico 24h; Forma Selvagem +5 HP max 24h.
 
 ### 28 — Cristal-Mel (seiva)
 **Consumidores:** Gargula de Cristal, Slime de Cristal.  
@@ -1348,8 +1501,8 @@ Especimes-chave: Aranha Tecerrochas (Nivel 3), Escorpiao Gigante (Nivel 4), Cent
 **Efeito:** Pressao profunda ignorada 24h; +2 em saves vs medo 24h.
 
 ### 30 — Erva do Limiar
-**Consumidores:** Mortos-vivos baixa INT (nao comem); Clerigo Limiar cultiva.  
-**Efeito:** 1 fragmento de alma “vazio” para ritual necromancia sem kill (Clerigo Limiar); ou cura 3d8.
+**Consumidores:** Mortos-vivos baixa INT (não comem); Clérigo Limiar cultiva.  
+**Efeito:** 1 fragmento de alma “vazio” para ritual necromancia sem kill (Clérigo Limiar); ou cura 3d8.
 
 ### 31 — Tuberculo de Lobo
 **Consumidores:** Lobo do Inverno, Orc, Patrulheiro besta.  
@@ -1381,7 +1534,7 @@ Especimes-chave: Aranha Tecerrochas (Nivel 3), Escorpiao Gigante (Nivel 4), Cent
 
 ### 38 — Liquen de Golem
 **Consumidores:** Golem de Pedra (lento), construtos.  
-**Efeito:** Resistencia contundente 24h; +2 CA vs derrubar 24h.
+**Efeito:** Resistência contundente 24h; +2 CA vs derrubar 24h.
 
 ### 39 — Broto Ancestral
 **Consumidores:** Nenhum (Boss deixou).  
@@ -1389,7 +1542,7 @@ Especimes-chave: Aranha Tecerrochas (Nivel 3), Escorpiao Gigante (Nivel 4), Cent
 
 ### 40 — Flor do Chefe Final
 **Consumidores:** Nao existe predador — flor sente “campanha”.  
-**Efeito:** Mestre revela 1 pista verdadeira sobre Chefe Final; grupo +2 em todos saves 24h apos Banquete de campanha.
+**Efeito:** Mestre revela 1 pista verdadeira sobre Chefe Final; grupo +2 em todos saves 24h após Banquete de campanha.
 
 ---
 
@@ -1418,11 +1571,11 @@ Especimes-chave: Aranha Tecerrochas (Nivel 3), Escorpiao Gigante (Nivel 4), Cent
 
 ---
 
-## CAPITULO 7 — O PANTEAO DE ELDARIN
+## CAPÍTULO 7 — O PANTEAO DE ELDARIN
 
-Em Eldarin, os deuses nao sao figuras distantes de mito — eles sao evidentes no dia a dia das masmorras. Criaturas angelicas e demoniacas aparecem literalmente nas profundezas. Ingredientes com propriedades "divinas" ou "abissais" existem no bestiario. A forca que anima os Forjados de Osso e de origem incerta.
+Em Eldarin, os deuses não sao figuras distantes de mito — eles sao evidentes no dia a dia das masmorras. Criaturas angelicas e demoniacas aparecem literalmente nas profundezas. Ingredientes com propriedades "divinas" ou "abissais" existem no bestiário. A forca que anima os Forjados de Osso e de origem incerta.
 
-As religioes de Eldarin emergiram dessa realidade concreta: as pessoas nao adoram os deuses por fe cega, mas porque os deuses sao palpaveis — suas bencoes chegam, seus ensinamentos funcionam, seus segredos estao literalmente enterrados nas profundezas.
+As religioes de Eldarin emergiram dessa realidade concreta: as pessoas não adoram os deuses por fe cega, mas porque os deuses sao palpaveis — suas bencoes chegam, seus ensinamentos funcionam, seus segredos estão literalmente enterrados nas profundezas.
 
 Ha tres deuses principais no panteao de Eldarin, alem de cultos menores e a opcao de vida sem devocao religiosa.
 
@@ -1430,78 +1583,78 @@ Ha tres deuses principais no panteao de Eldarin, alem de cultos menores e a opca
 
 ### VALDRUN — O ETERNO FORJADOR
 
-Dominio: Criacao, Artesanato, Transformacao, Trabalho
+Domínio: Criação, Artesanato, Transformacao, Trabalho
 Simbolo: Uma bigorna partida ao meio com uma chama no centro
 Alinhamento: Neutro Bom
 Clero: Chamados de Mestres da Forja; vestem avental de couro negro com simbolos gravados a fogo
 
-**Lore:** Valdrun e o deus mais antigo do panteao, adorado pelos Anaos antes mesmo das masmorras existirem. Segundo a crenca, foi ele quem ensinou os primeiros Anaos a trabalhar o metal e a pedra — e quando as masmorras surgiram e engoliriram as cidades subterraneas, os Anaos nao fugiram: eles continuaram construindo, porque Valdrun ensina que nao ha tragedia que nao possa virar material.
+**Lore:** Valdrun e o deus mais antigo do panteao, adorado pelos Anaos antes mesmo das masmorras existirem. Segundo a crenca, foi ele quem ensinou os primeiros Anaos a trabalhar o metal e a pedra — e quando as masmorras surgiram e engoliriram as cidades subterraneas, os Anaos não fugiram: eles continuaram construindo, porque Valdrun ensina que não ha tragedia que não possa virar material.
 
-A crenca central de Valdrun: **nada no universo e refugo**. Tudo pode ser transformado. Um osso de monstro e uma ferramenta esperando ser descoberta. Um veneno e uma medicina a ser refinada. Um inimigo morto e um ingrediente a ser aproveitado. Este principio e a fundacao filosofica de toda a culinaria biomagica.
+A crenca central de Valdrun: **nada no universo e refugo**. Tudo pode ser transformado. Um osso de monstro e uma ferramenta esperando ser descoberta. Um veneno e uma medicina a ser refinada. Um inimigo morto e um ingrediente a ser aproveitado. Este principio e a fundacao filosofica de toda a culinaria biomágica.
 
-Valdrun tambem e associado aos Forjados de Osso: a crenca e que o "momento em que um Forjado adquire consciencia" e o instante em que Valdrun sopra uma fagulha de alma no Nucleo de Alma. Isso torna os Forjados tecnicamente criatura sagrada dentro desta fe.
+Valdrun tambem e associado aos Forjados de Osso: a crenca e que o "momento em que um Forjado adquire consciência" e o instante em que Valdrun sopra uma fagulha de alma no Nucleo de Alma. Isso torna os Forjados tecnicamente criatura sagrada dentro desta fe.
 
 **Cultos:** A Igreja da Forja Permanente e a religiao organizada de Valdrun — hierarquica, tecnica, com rituais que envolvem trabalho manual. O Culto do Desperdicio Zero e uma seita mais radical que considera pecado mortal descartar qualquer ingrediente de monstro sem aproveitar completamente.
 
 **Bonus para Seguidores de Valdrun:**
 - Artesao Abencado: Proficiencia automatica em ferramentas de Trinchar de todos os niveis.
-- Transformador: Uma vez por dia, ao falhar num teste de Harmonizacao, pode rolar novamente (Valdrun "inspira" a tecnica correta).
+- Transformador: Uma vez por dia, ao falhar num teste de Harmonização, pode rolar novamente (Valdrun "inspira" a tecnica correta).
 - Nucleo Resiliente: Seguidores que tambem sao Forjados de Osso tem o CD de destruicao do Nucleo de Alma aumentado em +4.
-- Bencao do Aproveitamento: Ao preparar um Banquete Lendario de Boss, rola uma habilidade de assimilacao extra garantida alem do Foco normal.
+- Bencao do Aproveitamento: Ao preparar um Banquete Lendário de Boss, rola uma habilidade de assimilação extra garantida alem do Foco normal.
 
 ---
 
 ### MIRA — A MAE-ABISMO
 
-Dominio: Submundo, Adaptacao, Sobrevivencia, Ciclismo da Vida
+Domínio: Submundo, Adaptacao, Sobrevivencia, Ciclismo da Vida
 Simbolo: Uma boca aberta com dentes em forma de estalagmites, da qual brota um broto verde
 Alinhamento: Neutro
 Clero: Chamados de Descentes; sem vestes fixas — cada um usa o que encontrou na masmorra
 
-**Lore:** Mira e a personificacao do submundo como organismo. Para seus seguidores, as masmorras nao sao lugares — sao partes do corpo de Mira. Cada Boca e uma abertura de sua anatomia. Cada corredor e uma veia. Cada monstro e uma celula de seu sistema imunologico.
+**Lore:** Mira e a personificacao do submundo como organismo. Para seus seguidores, as masmorras não sao lugares — sao partes do corpo de Mira. Cada Boca e uma abertura de sua anatomia. Cada corredor e uma veia. Cada monstro e uma celula de seu sistema imunologico.
 
-A crenca central de Mira: **a masmorra nao e inimiga — e um ambiente**. Exploradores que morrem nao sao vitimas; sao ingredientes da propria ecologia do submundo, devolvidos ao ciclo. Seguidores de Mira nao combatem a masmorra — eles aprendem a coexistir, adaptar e aproveitar. E por isso que a culinaria biomagica, para eles, e ato sagrado: ao comer um monstro, voce incorpora a vida da masmorra em si mesmo. Voce se torna mais Masmorra.
+A crenca central de Mira: **a masmorra não e inimiga — e um ambiente**. Exploradores que morrem não sao vitimas; sao ingredientes da própria ecologia do submundo, devolvidos ao ciclo. Seguidores de Mira não combatem a masmorra — eles aprendem a coexistir, adaptar e aproveitar. E por isso que a culinaria biomágica, para eles, e ato sagrado: ao comer um monstro, você incorpora a vida da masmorra em si mesmo. Você se torna mais Masmorra.
 
-Mira e a deusa mais popular entre exploradores veteranos, Meio-Humanos com linhagens bestiais, Druidas e Patrulheiros. Tambem e invocada por familias que moram proximo as Bocas.
+Mira e a deusa mais popular entre exploradores veteranos, Meio-Humanos com linhagens bestiais, Druidas e Patrulheiros. Tambem e invocada por familias que moram próximo as Bocas.
 
-Existe um dogma secreto da fe de Mira que apenas clerigos de alto nivel conhecem: o Chefe Final da Masmorra 11 nao e um inimigo criado por acidente. E uma extensao do proprio corpo de Mira, e o verdadeiro "Rito de Passagem" que a deusa exige de quem deseja compreender o submundo completamente.
+Existe um dogma secreto da fe de Mira que apenas clérigos de alto nivel conhecem: o Chefe Final da Masmorra 11 não e um inimigo criado por acidente. E uma extensao do proprio corpo de Mira, e o verdadeiro "Rito de Passagem" que a deusa exige de quem deseja compreender o submundo completamente.
 
-**Cultos:** O Culto dos Descentes e descentralizado — sem templos fixos, sem hierarquia formal. O Circulo das Bocas e uma organizacao de Clerigos de Mira que mapeiam as conexoes entre as 11 masmorras, acreditando que juntas formam um unico ser consciente.
+**Cultos:** O Culto dos Descentes e descentralizado — sem templos fixos, sem hierarquia formal. O Circulo das Bocas e uma organizacao de Clérigos de Mira que mapeiam as conexoes entre as 11 masmorras, acreditando que juntas formam um único ser consciente.
 
 **Bonus para Seguidores de Mira:**
 - Filho da Masmorra: Bonus de +2 em todos os Saving Throws realizados dentro de masmorras.
-- Adaptacao Acelerada: Mutacoes biomagicas de qualquer tipo duram 36h em vez de 24h.
-- Digestao Sagrada: Uma vez por descanso longo, pode comer um ingrediente de monstro sem preparo ou coccao e ativar uma habilidade de assimilacao aleatoria (rola 1d8 na tabela da categoria do monstro).
-- Ciclo da Vida: Ao morrer dentro de uma masmorra com pelo menos 3 seguidores de Mira presentes, existe 25% de chance de reviver espontaneamente com 1 HP no inicio do proximo turno.
+- Adaptacao Acelerada: Mutacoes biomágicas de qualquer tipo duram 36h em vez de 24h.
+- Digestão Sagrada: Uma vez por descanso longo, pode comer um ingrediente de monstro sem preparo ou coccao e ativar uma habilidade de assimilação aleatoria (rola 1d8 na tabela da categoria do monstro).
+- Ciclo da Vida: Ao morrer dentro de uma masmorra com pelo menos 3 seguidores de Mira presentes, existe 25% de chance de reviver espontaneamente com 1 HP no inicio do próximo turno.
 
 ---
 
 ### SORN — O SENHOR DO CONHECIMENTO PROIBIDO
 
-Dominio: Conhecimento, Segredos, Anatomia, Magia das Profundezas
+Domínio: Conhecimento, Segredos, Anatomia, Magia das Profundezas
 Simbolo: Um olho aberto com pupila em forma de chave
 Alinhamento: Neutro Maligno (o deus em si); a maioria dos seguidores e Neutro
 Clero: Chamados de Leitores; vestem robes cinza com textos gravados em tinta de monstro
 
-**Lore:** Sorn nao e adorado por forca ou bondade — e adorado por saber. Para seus seguidores, o conhecimento e o bem supremo, e o submundo e a maior biblioteca do mundo: cada monstro e um capitulo, cada bioma e um volume, cada masmorra e um tomo que aguarda leitura.
+**Lore:** Sorn não e adorado por forca ou bondade — e adorado por saber. Para seus seguidores, o conhecimento e o bem supremo, e o submundo e a maior biblioteca do mundo: cada monstro e um capitulo, cada bioma e um volume, cada masmorra e um tomo que aguarda leitura.
 
-A crenca central de Sorn: **nenhum conhecimento deve ser destruido**. Monstros nao devem ser simplesmente mortos — devem ser estudados, catalogados, entendidos. A culinaria biomagica e, para os Leitores, uma extensao do estudo anatomico: ao transformar um monstro em prato e consumi-lo, voce literalmente incorpora o conhecimento da criatura em seu proprio corpo.
+A crenca central de Sorn: **nenhum conhecimento deve ser destruido**. Monstros não devem ser simplesmente mortos — devem ser estudados, catalogados, entendidos. A culinaria biomágica e, para os Leitores, uma extensao do estudo anatomico: ao transformar um monstro em prato e consumi-lo, você literalmente incorpora o conhecimento da criatura em seu proprio corpo.
 
-Sorn tem um lado sombrio que seus seguidores moderam com etica pessoal: o deus nao distingue entre conhecimento "bom" e "ruim". Os extremistas da fe de Sorn chegam a criar monstros, poluem masmorras com experiencias e manipulam ecossistemas inteiros — pela gloriosa causa do conhecimento.
+Sorn têm um lado sombrio que seus seguidores moderam com etica pessoal: o deus não distingue entre conhecimento "bom" e "ruim". Os extremistas da fe de Sorn chegam a criar monstros, poluem masmorras com experiencias e manipulam ecossistemas inteiros — pela gloriosa causa do conhecimento.
 
 Sorn e popular entre Magos, Gnomos Arcanistas, Artífices Biologos Alquimicos e qualquer personagem com Inteligencia alta que valoriza o Estudo de Anatomia.
 
-**Cultos:** A Academia Cinzenta e a organizacao de culto legitima e academica de Sorn — mantida dentro da universidade de Vesper, proxima a Masmorra 5. O Convento do Olho Aberto e uma seita clandestina que acredita que as respostas para todos os segredos do submundo estao no Andar 4 da Masmorra 11.
+**Cultos:** A Academia Cinzenta e a organizacao de culto legitima e academica de Sorn — mantida dentro da universidade de Vesper, proxima a Masmorra 5. O Convento do Olho Aberto e uma seita clandestina que acredita que as respostas para todos os segredos do submundo estão no Andar 4 da Masmorra 11.
 
 **Bonus para Seguidores de Sorn:**
-- Leitor de Especimes: Bonus de +4 em todos os testes de Estudo de Anatomia.
+- Leitor de Espécimes: Bonus de +4 em todos os testes de Estudo de Anatomia.
 - Arquivo Mental: Ao mapear a Anatomia de uma especie, nunca esquece — o beneficio e sempre ativo.
-- Revelacao Proibida: Uma vez por semana, pode fazer uma pergunta ao Mestre sobre a natureza de qualquer monstro recentemente derrotado (o Mestre revela uma resistencia, imunidade ou habilidade especial nao declarada).
-- Conhecimento e Carne: Ao realizar um Prato Perfeito com uma especie estudada anatomicamente, rola 2 habilidades de assimilacao garantidas (Foco duplo) em vez de apenas 1.
+- Revelacao Proibida: Uma vez por semana, pode fazer uma pergunta ao Mestre sobre a natureza de qualquer monstro recentemente derrotado (o Mestre revela uma resistência, imunidade ou habilidade especial não declarada).
+- Conhecimento e Carne: Ao realizar um Prato Perfeito com uma especie estudada anatomicamente, rola 2 habilidades de assimilação garantidas (Foco duplo) em vez de apenas 1.
 
 ---
 
-## CAPITULO 8 — OS SEM-DEUSES: BONUS DO NAO-CRENTE
+## CAPÍTULO 8 — OS SEM-DEUSES: BONUS DO NAO-CRENTE
 
 Nem todos os habitantes de Eldarin seguem uma divindade. Exploradores ceticos, filosofos pragmaticos e sobreviventes que viram deuses demais para confiar em algum deles frequentemente decidem trilhar o caminho sem deus.
 
@@ -1510,21 +1663,21 @@ Em Eldarin, essa escolha tem custo e recompensa proprias. Sem o amparo de um deu
 **Regra do Sem-Deus:** Ao criar o personagem, se o jogador declarar que o personagem e sem devocao religiosa (e mantiver isso durante a campanha, recusando-se a invocar qualquer divindade mesmo em momentos de desespero), o personagem recebe:
 
 - Autoconfianca: Uma vez por descanso longo, pode adicionar 1d6 a qualquer teste ANTES de rolar. Nao e sorte divina — e preparo proprio.
-- Metabolismo Puro: Mutacoes duram o dobro do tempo normal (48h em vez de 24h) — sem um deus "filtrando" a assimilacao, o corpo absorve mais completamente.
+- Metabolismo Puro: Mutacoes duram o dobro do tempo normal (48h em vez de 24h) — sem um deus "filtrando" a assimilação, o corpo absorve mais completamente.
 - Sem Saving Throw Religiosa: E imune a qualquer efeito de maldade ou bondade divina que exija falta de fe como CD adicional.
-- Orgulho Terreno: Ao chegar a 0 HP sem aliados vivos, pode gastar um Dado de Vida adicional como acao bonus.
+- Orgulho Terreno: Ao chegar a 0 HP sem aliados vivos, pode gastar um Dado de Vida adicional como ação bonus.
 
-**Penalidade do Sem-Deus:** Sem a bencao de nenhuma divindade, o personagem nao pode comprar servicos religiosos, nao tem acesso a magias que exijam apelo divino acima do nivel 4, e sera tratado com desconfianca em cidades profundamente religiosas.
+**Penalidade do Sem-Deus:** Sem a bencao de nenhuma divindade, o personagem não pode comprar servicos religiosos, não tem acesso a magias que exijam apelo divino acima do nivel 4, e sera tratado com desconfianca em cidades profundamente religiosas.
 
 ---
 
-## CAPITULO 9 — CULTOS MENORES E DEIDADES SECUNDARIAS
+## CAPÍTULO 9 — CULTOS MENORES E DEIDADES SECUNDARIAS
 
-**A Faca Sem Nome:** Entidade adorada por assassinos e Ladinos que cultivam o silencio como pratica religiosa. Nao tem lore, nao tem mito — apenas um simbolo (uma faca vertical com a lamina virada para dentro) e uma pratica: nunca revelar o nome do alvo apos o servico. Bonus: +2 em todos os ataques furtivos e imunidade a deteccao magica de presenca.
+**A Faca Sem Nome:** Entidade adorada por assassinos e Ladinos que cultivam o silencio como pratica religiosa. Nao tem lore, não tem mito — apenas um simbolo (uma faca vertical com a lâmina virada para dentro) e uma pratica: nunca revelar o nome do alvo após o servico. Bonus: +2 em todos os ataques furtivos e imunidade a deteccao mágica de presenca.
 
-**O Enxame:** Deidade insular adorada por tribos de Goblins Fungicos da Masmorra 3 e por algumas familias Halfling. Entidade coletiva, sem forma individual — e a soma de todas as criaturas pequenas do submundo. Bonus: quando rodeado por 3 ou mais aliados, ganha +1 CA e +1 em todos os ataques por aliado adicional acima de 2 (maximo +4).
+**O Enxame:** Deidade insular adorada por tribos de Goblins Fungicos da Masmorra 3 e por algumas familias Halfling. Entidade coletiva, sem forma individual — e a soma de todas as criaturas pequenas do submundo. Bonus: quando rodeado por 3 ou mais aliados, ganha +1 CA e +1 em todos os ataques por aliado adicional acima de 2 (máximo +4).
 
-**O Primeiro Cozinheiro:** Figura mitica — nao exatamente um deus, mas adorado como tal. Teria sido o primeiro ser a preparar um prato de monstro e sobreviver. A Academia de Culinaria de Ossenfurt mantem um altar a ele. Bonus: ao preparar um Prato Perfeito pela primeira vez com uma especie nova, recupera todos os espacos de magia gastos durante o preparo da refeicao.
+**O Primeiro Cozinheiro:** Figura mitica — não exatamente um deus, mas adorado como tal. Teria sido o primeiro ser a preparar um prato de monstro e sobreviver. A Academia de Culinaria de Ossenfurt mantem um altar a ele. Bonus: ao preparar um Prato Perfeito pela primeira vez com uma especie nova, recupera todos os espacos de magia gastos durante o preparo da refeicao.
 
 ---
 
@@ -1536,18 +1689,18 @@ Em Eldarin, essa escolha tem custo e recompensa proprias. Sem o amparo de um deu
 
 ---
 
-## CAPITULO 10 — GUIA PASSO A PASSO
+## CAPÍTULO 10 — GUIA PASSO A PASSO
 
 ### Passo 1 — Conceito
 
 Antes de qualquer numero, decida a premissa narrativa do seu personagem. Responda:
-- Por que voce esta nas masmorras? (ganancia, missao, fuga, curiosidade, devocao religiosa)
+- Por que você esta nas masmorras? (ganancia, missao, fuga, curiosidade, devocao religiosa)
 - Qual e sua relacao com comida de monstro? (louco por culinaria, pragmatico puro, com nojo mas adaptando, estudioso)
-- Voce segue algum deus do panteao? Qual e sua relacao com essa fe?
+- Você segue algum deus do panteao? Qual e sua relacao com essa fe?
 
-### Passo 2 — Escolha de Raca
+### Passo 2 — Escolha de Raça
 
-Escolha uma das sete racas jogaveis. Se Meio-Humano, escolha uma das nove linhagens. Anote os bonus de atributo racial e as habilidades raciais de Nivel 1.
+Escolha uma das sete racas jogaveis. Se Meio-Humano, escolha uma das nove linhagens. Anote os bônus de atributo racial e as habilidades raciais de Nivel 1.
 
 ### Passo 3 — Distribuicao de Atributos
 
@@ -1566,13 +1719,15 @@ Escolha uma das sete racas jogaveis. Se Meio-Humano, escolha uma das nove linhag
 
 **Metodo Alternativo (mais caos):** Role 4d6, descarte o menor dado, some os tres restantes. Repita 6 vezes. Distribua os resultados livremente.
 
-Apos distribuir, aplique os bonus raciais.
+Apos distribuir, aplique os bônus raciais.
 
 ### Passo 4 — Escolha de Classe
 
-Escolha uma das nove classes. Anote o Dado de HP, os atributos primarios, as proficiencias iniciais e os atributos culinarios iniciais.
+Escolha uma das nove classes. Anote o Dado de HP, os atributos primarios, as proficiencias iniciais e os atributos culinários iniciais.
 
-Calcule o HP inicial: Dado maximo da classe + MOD CON.
+Calcule o HP inicial: Dado máximo da classe + MOD CON.
+
+**PA (mesa digital):** anote **5 / 5** PA (atual / maximo) na ficha — Cap. 2.6.
 
 A subclasse (Dieta Marcial) e escolhida no **Nivel 2** — anote a Dieta Especializada do Cap. 4.
 - **Niveis 4, 8, 12 e 16:** um talento do **Caminho de Subclasse** (Cap. 12), em ordem.
@@ -1580,16 +1735,16 @@ A subclasse (Dieta Marcial) e escolhida no **Nivel 2** — anote a Dieta Especia
 
 ### Passo 5 — Religiao
 
-Decida se o personagem segue Valdrun, Mira, Sorn, um culto menor, ou e Sem-Deus. Anote os bonus da devocao escolhida. Discuta com o Mestre as implicacoes narrativas.
+Decida se o personagem segue Valdrun, Mira, Sorn, um culto menor, ou e Sem-Deus. Anote os bônus da devocao escolhida. Discuta com o Mestre as implicacoes narrativas.
 
 ### Passo 6 — Atributos Culinarios Iniciais
 
-Some os bonus da classe com quaisquer bonus raciais.
+Some os bônus da classe com quaisquer bônus raciais.
 
-- Trinchar: base 0 + bonus de classe + bonus racial
-- Harmonizacao: base 0 + bonus de classe + bonus racial
-- Coccao: base 0 + bonus de classe + bonus racial
-- Estomago de Ferro: base 0 + bonus de classe + bonus racial
+- Trinchar: base 0 + bônus de classe + bônus racial
+- Harmonização: base 0 + bônus de classe + bônus racial
+- Coccao: base 0 + bônus de classe + bônus racial
+- Estômago de Ferro: base 0 + bônus de classe + bônus racial
 
 ### Passo 7 — Equipamento Inicial
 
@@ -1600,14 +1755,14 @@ Cada personagem comeca com:
 
 Itens especiais por raca:
 - Anao: Um kit de ferramentas de Trinchar completo (normalmente 150 po)
-- Gnomo: Um laboratorio portatil de destilacao (normalmente 200 po)
+- Gnomo: Um laboratorio portátil de destilacao (normalmente 200 po)
 - Forjado de Osso: Ferramentas de manutencao (1 conjunto, normalmente 100 po)
 
 ### Passo 8 — Background
 
 Escolha ou crie um background narrativo. Responda:
-- Qual e o primeiro monstro que voce ja comeu?
-- Qual e o pior prato que voce ja preparou ou comeu?
+- Qual e o primeiro monstro que você ja comeu?
+- Qual e o pior prato que você ja preparou ou comeu?
 - Qual e o seu objetivo ao explorar as masmorras de Eldarin?
 
 
@@ -1617,9 +1772,9 @@ Escolha ou crie um background narrativo. Responda:
 
 ---
 
-## CAPITULO 11 — REGRAS DE TALENTOS
+## CAPÍTULO 11 — REGRAS DE TALENTOS
 
-Nos **Niveis 4, 8, 12 e 16**, alem dos bonus normais de progressao, cada personagem escolhe **1 Talento do Caminho de Subclasse** (Cap. 12), ligado a **Dieta Marcial** escolhida no Nivel 2.
+Nos **Niveis 4, 8, 12 e 16**, alem dos bônus normais de progressao, cada personagem escolhe **1 Talento do Caminho de Subclasse** (Cap. 12), ligado a **Dieta Marcial** escolhida no Nivel 2.
 
 **Fontes de Talentos:**
 - **Caminho de Subclasse (obrigatorio):** 34 caminhos — um por subclasse (Cap. 4). Cadeia 4 → 8 → 12 → 16, mais **Ascensao** no Nivel 20.
@@ -1627,9 +1782,21 @@ Nos **Niveis 4, 8, 12 e 16**, alem dos bonus normais de progressao, cada persona
 
 **Pre-requisito:** Talentos de nv. 8, 12 e 16 exigem o talento anterior do **mesmo** caminho de subclasse.
 
-**Limite padrao:** 4 talentos de subclasse (um por janela) + Ascensao no 20. O extra universal do nv. 12 nao substitui o talento de subclasse — e adicional se o Mestre permitir.
+**Limite padrão:** 4 talentos de subclasse (um por janela) + Ascensao no 20. O extra universal do nv. 12 não substitui o talento de subclasse — e adicional se o Mestre permitir.
 
 **Nivel 2:** Escolha a subclasse; ganha a **Dieta Especializada** passiva (Cap. 4 e Cap. 12).
+
+### Talentos e Pontos de Acao (mesa digital)
+
+Alem dos efeitos narrativos de cada talento (Cap. 12), muitos caminhos alteram a **economia de PA** no VTT:
+
+| Tipo de bonus | Quando aparece | Efeito |
+|---------------|--------------|--------|
+| **+1 PA maximo** | Em geral talentos de nv. **8** (alguns nv. 16) | Soma ao PA maximo da tabela do Cap. 2.6 |
+| **−1 PA no custo** | Talentos de nv. **4** (e alguns 8/12) | Reduz o custo da acao indicada (arma, magia, habilidade) |
+| **Afinidade Arcanica** | Mago, Clérigo, Druida, Bardo, Artifice **nv. 5** | Magias com custo 2+ PA: −1 PA (min. 1) — nao exige talento |
+
+**Tabela por subclasse:** Cap. **12.0**. O Mestre pode ignorar PA na mesa puramente narrativa (sem VTT); neste caso use acao / acao bonus / movimento do Cap. 3.1 classico.
 
 ### Balanceamento (classes vs monstros)
 
@@ -1639,16 +1806,72 @@ Use a **faixa de andar** (Livro do Mestre, Cap. 21) e o **escalonamento** quando
 |-------|------------|
 | Nv. 1–4 | 1–2 inimigos Comuns por PC; CA 8–14; evite 3+ Hobgoblins sem flanquear |
 | Nv. 5–8 | Elites e pares; Ladino/Guerreiro com subclasse definem DPR |
-| Nv. 9–12 | Intermediarios + controle; Clerigo/Druida sustentam |
-| Nv. 13+ | Lendarios com Resistencia Lendaria; preparar fogo/luz vs mortos-vivos |
+| Nv. 9–12 | Intermediarios + controle; Clérigo/Druida sustentam |
+| Nv. 13+ | Lendários com Resistência Lendaria; preparar fogo/luz vs mortos-vivos |
 
-**Abismos conhecidos (ajuste de mesa):** Hobgoblin CA 18 no nv. 3 e duro sem Vantagem — use moral ou versao nv. 2. Guerreiro nv. 17+ com 4 ataques supera ficha estatica se nao escalar HP. Mago 1d6 HP exige distancia. **Corsario de Cripta** vs **Clerigo do Limiar:** mesmo tema, Ladino = furtivo/aggro; Clerigo = servos/magia/`Desejo de Morte`.
+**Abismos conhecidos (ajuste de mesa):** Hobgoblin CA 18 no nv. 3 e duro sem Vantagem — use moral ou versao nv. 2. Guerreiro nv. 17+ com 4 ataques supera ficha estática se não escalar HP. Mago 1d6 HP exige distancia. **Corsario de Cripta** vs **Clérigo do Limiar:** mesmo tema, Ladino = furtivo/aggro; Clérigo = servos/magia/`Desejo de Morte`.
 
 ---
 
-## CAPITULO 12 — CAMINHOS DE SUBCLASSE (DIETA MARCIAL)
+## CAPÍTULO 12 — CAMINHOS DE SUBCLASSE (DIETA MARCIAL)
 
 > **Nota de edicao:** Este capitulo substitui as arvores genericas de talentos por classe (Caminho do Acougueiro/Bastiao, Predador/Guia, etc.). A identidade mecanica vem da **Subclasse (Cap. 4)** escolhida no Nivel 2.
+
+### 12.0 Pontos de Acao e talentos de subclasse (VTT)
+
+Na mesa digital, talentos abaixo **somam-se** a **Afinidade Arcanica** (conjuradores nv. 5) e as regras do Cap. 3.1. **−1 PA** nunca reduz abaixo de **0**. Varias reducoes no **mesmo** conjuro **acumulam**.
+
+#### +1 PA maximo (talento)
+
+| Classe | Talentos (nv. tipico) |
+|--------|------------------------|
+| Guerreiro | *Maestria de Acougue* (8), *Sangue de Predador* (16) |
+| Patrulheiro | — (talentos focam **−PA** em ataques a distancia; ver abaixo) |
+| Bárbaro | *Instinto Roubado* (8), *Coracao Duplo* (12), *Sobredose Controlada* (16) |
+| Mago | *Forno de Campo*, *Camara Fria Portatil*, *Cultura Viva*, *Sopa de Resistencia*, *Banquete Minimo* (8); *Brasas Persistentes*, *Envelhecimento Instantaneo*, *Transmutacao Enzimatica*, *Festa Hipnotica* (16) |
+| Clérigo | *Fermento Sagrado* (8), *Disciplina Vazia*, *Ecologia Sagrada* (8); *Aura Sagrada*, *Corpo Templo*, *Bencao do Forno*, *Sincretismo*, *Colheita de Alma* (16) |
+| Bardo | *Menu de Expedicao* (8), *Cancao Ebria* (12), *Brinde de Batalha*, *Barril Explosivo*, *Encanto Culinario* (16) |
+| Druida | *Podridao Fertil* (8), *Fusao Biomagica* (8); *Grande Decomposicao*, *Caca Alpha*, *Floresta em Miniatura* (16) |
+| Artifice | *Catalisador*, *Fogareiro Portatil* (8); *Forja Rapida*, *Motor de Vapor Menor*, *Mutageno de Batalha*, *Engenho de Caca* (16) |
+| Ladino | — (reducoes de custo; ver abaixo) |
+
+#### −1 PA no custo (talento)
+
+| Classe | Talento | Aplica-se a |
+|--------|---------|-------------|
+| **Guerreiro** | *Corte Limpo* (4) | 1º golpe de **arma** no turno |
+| **Patrulheiro** | *Tiro de Precisao* (4) | Ataques a **distancia** (arma) |
+| **Ladino** | *Toque Fantasmal*, *Passo entre Sombras* (4/8) | **Habilidades** |
+| | *Aplicacao Rapida* (8) | **Arma** ou **habilidade** |
+| | *Arremesso Ritmico* (4) | Arma custo **2+ PA** |
+| **Bárbaro** | *Rush Doce* (8), *Mordida do Coracao* (4) | **Habilidades** |
+| **Mago** | *Chama Controlada*, *Combustao Arcana* | Magias **fogo** |
+| | *Gelar Ingrediente*, *Escudo de Geada* | Magias **frio** |
+| | *Fermentacao Acelerada* | Qualquer **magia** |
+| | *Nuvem Bacteriana*, *Brasas Persistentes*, *Nevoa de Caldeira* | Magias de **area** |
+| | *Caldo Corrosivo* | Magias **acido** / **veneno** |
+| | *Doce Encantador* | Qualquer **magia** |
+| | *Acucar Cristalizado* (12) | Magias custo **2+ PA** |
+| **Clérigo** | *Purificar Veneno*, *Pao da Manha* | **Magia** e **habilidade** |
+| | *Purificacao Abencoada*, *Golpe do Jejum* | **Magias** |
+| | *Mesa Abundante* | Magias de **area** |
+| | *Dominio do Limiar*, *Colheita de Alma* | Magias **necroticas** |
+| **Bardo** | *Harmonizacao de Tacas* | **Magia** e **habilidade** |
+| | *Menu de Expedicao*, *Fermento de Masmorra* | **Habilidades** |
+| | *Cancao Ebria*, *Nota Picante* | **Magias** |
+| | *Sinfonia de Ervas* | Magias de **area** |
+| **Druida** | *Esporos Necroticos* | **Necrotico** |
+| | *Toque de Bolor*, *Vinha Agarradora*, *Semente Guardia* | **Magias** |
+| | *Forma Aprimorada* | **Habilidades** (ex.: Forma Selvagem) |
+| | *Tremor Leve* | **Trovao** / **forca** |
+| **Artifice** | *Panela Viva* | **Habilidades** |
+| | *Fogareiro Portatil* | **Fogo** (magia/habilidade) |
+| | *Seringa Basica* | **Magia** e **habilidade** |
+| | *Bomba de Glandula* | Magias de **area** |
+| | *Laboratorio de Campo* (12) | Magias **2+ PA** |
+| | *Armadilha Biologica* | **Habilidades** |
+
+**Referencia VTT:** `data/character/pa-modifiers.json` (ids em kebab-case, ex. `chama-controlada`).
 
 ---
 
@@ -1656,11 +1879,11 @@ Use a **faixa de andar** (Livro do Mestre, Cap. 21) e o **escalonamento** quando
 
 | Classe | Subclasse |
 |--------|-----------|
-| **Guerreiro** | Acougueiro de Batalha |
+| **Guerreiro** | Predador Voraz |
 | | Quebra-Cascos |
 | | Cavaleiro Draconico |
 | | Guerreiro das Profundezas |
-| **Patrulheiro** | Cacador Celeste |
+| **Patrulheiro** | Caçador Celeste |
 | | Forrageiro dos Esporos |
 | | Rastreador de Sangue Frio |
 | | Guia de Enxame |
@@ -1673,12 +1896,12 @@ Use a **faixa de andar** (Livro do Mestre, Cap. 21) e o **escalonamento** quando
 | | Mago Fermentador |
 | | Alquimista de Caldos |
 | | Mago Confeiteiro |
-| **Clerigo** | Sacerdote da Purificacao |
+| **Clérigo** | Sacerdote da Purificacao |
 | | Monge do Jejum |
-| | Clerigo do Pao da Vida |
+| | Clérigo do Pao da Vida |
 | | Pastor de Quimeras |
-| | Clerigo do Limiar *(Trilha Necromantica)* |
-| **Barbaro** | Devorador de Coracoes |
+| | Clérigo do Limiar *(Trilha Necromantica)* |
+| **Bárbaro** | Devorador de Coracoes |
 | | Mandibula de Ferro |
 | | Ruminante das Neves |
 | | Frenetico do Acucar |
@@ -1690,7 +1913,7 @@ Use a **faixa de andar** (Livro do Mestre, Cap. 21) e o **escalonamento** quando
 | | Circulo do Superpredador |
 | | Circulo da Simbiose |
 | | Circulo do Solo Vivo |
-| **Artifice** | Ferreiro de Utensilios |
+| **Artífice** | Ferreiro de Utensilios |
 | | Engenheiro de Fogareiros |
 | | Biologo Alquimico |
 | | Construtor de Armadilhas |
@@ -1700,28 +1923,28 @@ Use a **faixa de andar** (Livro do Mestre, Cap. 21) e o **escalonamento** quando
 ## Regras
 
 ### Escolha e identidade
-- **Nivel 2:** escolhe **uma** Subclasse listada no Capitulo 4. Ganha imediatamente a **Dieta Especializada** passiva da subclasse (bonus ativo apos Refeicao Comum ou melhor, como o Bonus de Dieta Base da classe).
-- A subclasse define **identidade de combate e culinaria** — nao ha mais caminhos genericos duplicados por classe.
-- Especialidade alimentar indica quais monstros/ingredientes **otimizam** a dieta; outras refeicoes ainda ativam Bonus de Dieta Base, mas nao os efeitos da Dieta Especializada.
+- **Nivel 2:** escolhe **uma** Subclasse listada no Capítulo 4. Ganha imediatamente a **Dieta Especializada** passiva da subclasse (bonus ativo após Refeicao Comum ou melhor, como o Bonus de Dieta Base da classe).
+- A subclasse define **identidade de combaté e culinaria** — não ha mais caminhos genericos duplicados por classe.
+- Especialidade alimentar indica quais monstros/ingredientes **otimizam** a dieta; outras refeicoes ainda ativam Bonus de Dieta Base, mas não os efeitos da Dieta Especializada.
 
 ### Talentos obrigatorios do Caminho
 - **Niveis 4, 8, 12 e 16:** em cada janela, o personagem escolhe **exatamente 1** talento do **seu** Caminho de Subclasse (cadeia com pre-requisito).
 - **Nivel 8** exige o talento de nv. 4 do mesmo caminho; **nv. 12** exige o de nv. 8; **nv. 16** exige o de nv. 12.
-- **Nivel 20:** ganha a **Ascensao** (capstone) da subclasse — nao conta como um dos 4 talentos de janela.
+- **Nivel 20:** ganha a **Ascensao** (capstone) da subclasse — não conta como um dos 4 talentos de janela.
 
 ### Talentos Universais (Cap. 13)
-- Por padrao, **nao** ha talento extra nas janelas 4/8/12/16 — apenas o da subclasse.
+- Por padrão, **não** ha talento extra nas janelas 4/8/12/16 — apenas o da subclasse.
 - **Opcional (Mestre):** pode permitir **1** Talento Universal extra **somente** na janela do **Nivel 12**, OU (raro, narrativa forte) permitir **trocar** a Ascensao de nv. 20 por um Talento Universal de nv. 20 equivalente — o personagem perde o capstone da subclasse.
 
 ### Integracao com progressao de classe
 - **Guerreiro:** Ataque Extra em nv. 5 (2 ataques), 11 (3), 17 (4) — soma-se aos talentos de subclasse.
-- **Ladino:** Ataque Furtivo escala normalmente; talentos de subclasse podem modificar tipo de dano ou condicoes do furtivo.
-- **Barbaro:** Furia e talentos de subclasse interagem onde indicado.
-- **Mago / Clerigo / Bardo / Druida / Artifice:** magias exclusivas de subclasse (Cap. 19) **somam-se** ao grimorio ou lista de preparacao e **nao** substituem talentos de caminho.
+- **Ladino:** Ataque Furtivo escala normalmente; talentos de subclasse podem modificar tipo de dano ou condições do furtivo.
+- **Bárbaro:** Furia e talentos de subclasse interagem onde indicado.
+- **Mago / Clérigo / Bardo / Druida / Artífice:** magias exclusivas de subclasse (Cap. 19) **somam-se** ao grimorio ou lista de preparacao e **não** substituem talentos de caminho.
 
 ### Culinaria em masmorra (estilo expedicao)
-- Muitos talentos referem **Trinchar**, **Estudo de Anatomia**, **qualidade de ingrediente** e **refeicao de campo** — assumem o sistema de Parte V (Alimentacao e Culinaria Biomagica).
-- Quando um talento diz "ingrediente intacto", significa qualidade maxima para aquela parte sem teste adicional de Trinchar.
+- Muitos talentos referem **Trinchar**, **Estudo de Anatomia**, **qualidade de ingrediente** e **refeicao de campo** — assumem o sistema de Parte V (Alimentacao e Culinaria Biomágica).
+- Quando um talento diz "ingrediente intacto", significa qualidade máxima para aquela parte sem teste adicional de Trinchar.
 
 ---
 
@@ -1731,65 +1954,65 @@ Use a **faixa de andar** (Livro do Mestre, Cap. 21) e o **escalonamento** quando
 
 ## GUERREIRO
 
-### Acougueiro de Batalha (Guerreiro)
+### Predador Voraz (Guerreiro)
 
-**Dieta nv.2:** Ao comer carne vermelha de feras e bestiais, ganha +2 FOR e regeneracao de 3 HP por turno por 4 horas.
+**Dieta nv.2:** Ao comer carne vermelha de feras e bestiais, ganha +2 FOR e regeneração de 3 HP por turno por 4 horas.
 
-**Nv 4 — Corte Limpo:** Ataques contra feras e bestiais ignoram 3 pontos de CA. Acertos criticos causam sangramento (2d4 HP no inicio do turno do alvo, 3 turnos). Criaturas mortas por critico rendem o triplo de porcoes de carne.
+**Nv 4 — Corte Limpo:** Ataques contra feras e bestiais ignoram 3 pontos de CA. Acertos críticos causam sangramento (2d4 HP no inicio do turno do alvo, 3 turnos). Criaturas mortas por crítico rendem o triplo de porcoes de carne.
 
-**Nv 8 — Maestria de Acougue (requer Corte Limpo):** +4 permanente em Trinchar ao processar feras. Como acao bonus, pode Trinchar um monstro bestial vivo acima de 25% HP — o alvo fica Atordoado 1 turno e perde 1d10 HP. Uma vez por combate.
+**Nv 8 — Maestria Voraz (requer Corte Limpo):** +4 permanente em Trinchar ao processar feras. Como ação bonus, pode Trinchar um monstro bestial vivo acima de 25% HP — o alvo fica Atordoado 1 turno e perde 1d10 HP. Uma vez por combate.
 
-**Nv 12 — Abate Perfeito (requer Maestria de Acougue):** Uma vez por turno, se reduzir um inimigo a 0 HP com um unico ataque corpo a corpo, todos os ingredientes da carcaca ficam intactos (qualidade superior automatica). Com 2+ ataques por acao (nv. 5+), pode declarar qual ataque e o "abate" antes de rolar.
+**Nv 12 — Abaté Perfeito (requer Maestria Voraz):** Uma vez por turno, se reduzir um inimigo a 0 HP com um único ataque corpo a corpo, todos os ingredientes da carcaca ficam intactos (qualidade superior automatica). Com 2+ ataques por ação (nv. 5+), pode declarar qual ataque e o "abate" antes de rolar.
 
-**Nv 16 — Sangue de Predador (requer Abate Perfeito):** Como acao bonus, consome coracao de fera (inventario ou extraido na hora): recupera 2d10 HP e ganha +3 em ataques corpo a corpo ate o fim do combate. Usos: CON por descanso curto.
+**Nv 16 — Sangue de Predador (requer Abaté Perfeito):** Como ação bonus, consome coracao de fera (inventário ou extraido na hora): recupera 2d10 HP e ganha +3 em ataques corpo a corpo até o fim do combate. Usos: CON por descanso curto.
 
-**Nv 20 — Ascensao — Legado do Acougue:** Mutacoes biomagicas obtidas de feras duram 48 horas em vez de 24. Uma vez por descanso longo, pode assumir por 10 minutos um traco de predador supremo (+4 FOR, garras 2d6, sentido de cheiro 18m). Enquanto ativo, cada acerto critico em fera ou bestial cura 1d10 HP.
+**Nv 20 — Ascensao — Legado do Predador:** Mutacoes biomágicas obtidas de feras duram 48 horas em vez de 24. Uma vez por descanso longo, pode assumir por 10 minutos um traco de predador supremo (+4 FOR, garras 2d6, sentido de cheiro 18m). Enquanto ativo, cada acerto crítico em fera ou bestial cura 1d10 HP.
 
 ---
 
 ### Quebra-Cascos (Guerreiro)
 
-**Dieta nv.2:** Ao comer artropodes e carapaceos, a pele endurece — imunidade temporaria a acertos criticos contra voce e +2 CA por 8 horas.
+**Dieta nv.2:** Ao comer artropodes e carapaceos, a pele endurece — imunidade temporária a acertos críticos contra você e +2 CA por 8 horas.
 
-**Nv 4 — Percussao Penetrante:** Ataques com armas contundentes ou de impacto ignoram 5 pontos de CA de criaturas com carapaca natural ou armadura nao-metalica pesada. +1d6 dano contra insetoides e crustaceos.
+**Nv 4 — Percussao Penetrante:** Ataques com armas contundentes ou de impacto ignoram 5 pontos de CA de criaturas com carapaça natural ou armadura nao-metalica pesada. +1d6 dano contra insetoides e crustaceos.
 
-**Nv 8 — Estrutura Quitinosa (requer Percussao Penetrante):** Enquanto a dieta estiver ativa, +4 CA adicional (cumulativo com a dieta). Escudo e armadura media contam como +1 slot de protecao contra critico (primeiro critico por combate vira acerto normal).
+**Nv 8 — Estrutura Quitinosa (requer Percussao Penetrante):** Enquanto a dieta estiver ativa, +4 CA adicional (cumulativo com a dieta). Escudo e armadura media contam como +1 slot de protecao contra crítico (primeiro crítico por combaté vira acerto normal).
 
-**Nv 12 — Esmagamento Total (requer Estrutura Quitinosa):** Ao acertar um ataque contundente, pode escolher destruir a carapaca do alvo: -4 CA permanente ate reparar/armadura nova, e voce extrai 1 porcao de quitina intacta. Uma vez por alvo por combate.
+**Nv 12 — Esmagamento Total (requer Estrutura Quitinosa):** Ao acertar um ataque contundente, pode escolher destruir a carapaça do alvo: -4 CA permanente até reparar/armadura nova, e você extrai 1 porcao de quitina intacta. Uma vez por alvo por combate.
 
-**Nv 16 — Corpo de Crustaceo (requer Esmagamento Total):** Resistencia a dano perfurante e cortante enquanto dieta ativa. Reacao: ao sofrer dano fisico, reduz 1d10+CON (minimo 1). Usos: CON por descanso curto.
+**Nv 16 — Corpo de Crustaceo (requer Esmagamento Total):** Resistência a dano perfurante e cortante enquanto dieta ativa. Reacao: ao sofrer dano fisico, reduz 1d10+CON (minimo 1). Usos: CON por descanso curto.
 
-**Nv 20 — Ascensao — Carapaca Viva:** +2 CA base permanente. Uma vez por descanso longo, endurece a pele em carapaca viva (10 min): imune a critico, resistencia a perfurante/cortante/contundente, e ataques desarmados seus causam 2d8+FOR perfurante.
+**Nv 20 — Ascensao — Carapaça Viva:** +2 CA base permanente. Uma vez por descanso longo, endurece a pele em carapaça viva (10 min): imune a crítico, resistência a perfurante/cortante/contundente, e ataques desarmados seus causam 2d8+FOR perfurante.
 
 ---
 
 ### Cavaleiro Draconico (Guerreiro)
 
-**Dieta nv.2:** Ao consumir repteis ou draconideos, ganha resistencia a um tipo elemental (escolha ao comer) e baforada curta 2d6 (acao bonus, cone 4,5m, 1/combate).
+**Dieta nv.2:** Ao consumir repteis ou draconideos, ganha resistência a um tipo elemental (escolha ao comer) e baforada curta 2d6 (ação bônus, cone 4,5m, 1/combate).
 
 **Nv 4 — Escama de Wyrm:** Armadura ou escudo reforcado com couro draconico concede +1 CA. Imune a medo de dragoes e reptis gigantes.
 
-**Nv 8 — Ira Draconica (requer Escama de Wyrm):** Baforada da dieta passa a 4d6 e empurra alvos 3m (FOR CD 14). Se voce ja tem 2+ ataques por acao, pode substituir um ataque da acao por baforada.
+**Nv 8 — Ira Draconica (requer Escama de Wyrm):** Baforada da dieta passa a 4d6 e empurra alvos 3m (FOR CD 14). Se você ja tem 2+ ataques por acao, pode substituir um ataque da ação por baforada.
 
-**Nv 12 — Heranca de Sangue (requer Ira Draconica):** Resistencia elemental da dieta vira **imunidade** ao tipo escolhido enquanto dieta ativa. Primeiro ataque corpo a corpo em cada combate causa +2d6 do tipo elemental.
+**Nv 12 — Heranca de Sangue (requer Ira Draconica):** Resistência elemental da dieta vira **imunidade** ao tipo escolhido enquanto dieta ativa. Primeiro ataque corpo a corpo em cada combaté causa +2d6 do tipo elemental.
 
-**Nv 16 — Majestade do Dragao (requer Heranca de Sangue):** Acao bonus: Presenca Aterrorizante (9m, SAB CD 15 ou Amedrontado 1 min, reteste no fim do turno). Criaturas de tipo reptil/draconico tem Desvantagem no save.
+**Nv 16 — Majestade do Dragão (requer Heranca de Sangue):** Acao bonus: Presenca Aterrorizante (9m, SAB CD 15 ou Amedrontado 1 min, reteste no fim do turno). Criaturas de tipo reptil/draconico tem Desvantagem no save.
 
-**Nv 20 — Ascensao — Ascensao Draconica:** 10 minutos, 1/descanso longo: asas (voo 12m), baforada ilimitada no tipo elemental, +4 FOR, escamas +2 CA. Ao terminar, deve comer uma porcao draconica ou sofre 1 nivel de Exaustao ate a proxima refeicao.
+**Nv 20 — Ascensao — Ascensao Draconica:** 10 minutos, 1/descanso longo: asas (voo 12m), baforada ilimitada no tipo elemental, +4 FOR, escamas +2 CA. Ao terminar, deve comer uma porcao draconica ou sofre 1 nivel de Exaustao até a proxima refeicao.
 
 ---
 
 ### Guerreiro das Profundezas (Guerreiro)
 
-**Dieta nv.2:** Ao comer aquaticos e anfibios, ganha respiracao aquatica, nado 12m/turno e pele escorregadia (+2 em testes para escapar agarrao) por 8 horas.
+**Dieta nv.2:** Ao comer aquaticos e anfibios, ganha respiração aquatica, nado 12m/turno e pele escorregadia (+2 em testes para escapar agarrao) por 8 horas.
 
-**Nv 4 — Combate Subaquatico:** Sem penalidade de ataque ou movimento sob agua. Em terreno encharcado ou chuva, +1 CA por escorregadio.
+**Nv 4 — Combaté Subaquatico:** Sem penalidade de ataque ou movimento sob agua. Em terreno encharcado ou chuva, +1 CA por escorregadio.
 
-**Nv 8 — Pele Anfibia (requer Combate Subaquatico):** Ignora terreno dificil molhado/lodoso. Pode agarrar com vantagem em oponentes em superficie molhada.
+**Nv 8 — Pele Anfibia (requer Combaté Subaquatico):** Ignora terreno dificil molhado/lodoso. Pode agarrar com vantagem em oponentes em superficie molhada.
 
-**Nv 12 — Pressao das Profundezas (requer Pele Anfibia):** Imune a dano de pressao, sufocamento por mergulho e efeitos de "puxar para o fundo". Aliados adjacentes em agua profunda podem respirar se voce permitir (acao bonus, 8h).
+**Nv 12 — Pressao das Profundezas (requer Pele Anfibia):** Imune a dano de pressao, sufocamento por mergulho e efeitos de "puxar para o fundo". Aliados adjacentes em agua profunda podem respirar se você permitir (ação bônus, 8h).
 
-**Nv 16 — Mestre das Aguas Negras (requer Pressao das Profundezas):** Enquanto submerso ou em chuva forte: +2 CA e **+1 ataque** por acao de Ataque (cumulativo com Ataque Extra de nv. 5/11/17). Fora d'agua, mantem +1 ataque se dieta ativa nas ultimas 4h.
+**Nv 16 — Mestre das Aguas Negras (requer Pressao das Profundezas):** Enquanto submerso ou em chuva forte: +2 CA e **+1 ataque** por ação de Ataque (cumulativo com Ataque Extra de nv. 5/11/17). Fora d'agua, mantem +1 ataque se dieta ativa nas ultimas 4h.
 
 **Nv 20 — Ascensao — Forma Abissal:** 1/descanso longo, 1 minuto: controla correntes em raio 9m (terreno dificil, empurra 3m no inicio do turno dos inimigos, aliados ganham nado). Seus ataques em agua causam +2d8 frio ou pressao (escolha ao ativar).
 
@@ -1797,19 +2020,19 @@ Use a **faixa de andar** (Livro do Mestre, Cap. 21) e o **escalonamento** quando
 
 ## PATRULHEIRO
 
-### Cacador Celeste (Patrulheiro)
+### Caçador Celeste (Patrulheiro)
 
-**Dieta nv.2:** Ao comer aves e voadores, visao no escuro perfeita ate 36m e +9m de alcance em ataques a distancia por 8 horas.
+**Dieta nv.2:** Ao comer aves e voadores, visao no escuro perfeita até 36m e +9m de alcance em ataques a distancia por 8 horas.
 
-**Nv 4 — Tiro de Precisao:** Primeiro ataque a distancia em cada combate contra alvo com HP cheio causa +2d6 dano (estilo Primeiro Sangue). Se o alvo for voador, +3d6.
+**Nv 4 — Tiro de Precisao:** Primeiro ataque a distancia em cada combaté contra alvo com HP cheio causa +2d6 dano (estilo Primeiro Sangue). Se o alvo for voador, +3d6.
 
-**Nv 8 — Rastreio Aereo (requer Tiro de Precisao):** Estudo de Anatomia em aves concede ignorar meia cobertura e tres quartos contra aquela especie. Pode localizar criaturas voadoras no mesmo andar por som de asa (Percepcao automatica CD 12 para surpresa).
+**Nv 8 — Rastreio Aereo (requer Tiro de Precisao):** Estudo de Anatomia em aves concede ignorar meia cobertura e tres quartos contra aquela especie. Pode localizar criaturas voadoras no mesmo andar por som de asa (Percepção automatica CD 12 para surpresa).
 
-**Nv 12 — Olho de Falcao (requer Rastreio Aereo):** Marca uma Presa (acao bonus, 1/descanso curto): sabe direcao exata no andar; ataques a distancia com Vantagem se a Presa nao tiver visto voce neste combate.
+**Nv 12 — Olho de Falcao (requer Rastreio Aereo):** Marca uma Presa (ação bônus, 1/descanso curto): sabe direcao exata no andar; ataques a distancia com Vantagem se a Presa não tiver visto você neste combate.
 
-**Nv 16 — Golpe Celeste (requer Olho de Falcao):** 1/descanso longo: um ataque a distancia ignora CA, resistencias e imunidades fisicas; trata como critico para dano e extracao (penas intactas).
+**Nv 16 — Golpe Celeste (requer Olho de Falcao):** 1/descanso longo: um ataque a distancia ignora CA, resistências e imunidades fisicas; trata como crítico para dano e extracao (penas intactas).
 
-**Nv 20 — Ascensao — Ataque de Mergulho:** Uma vez por combate, pode "mergulhar" de plataforma ou salto (minimo 3m de queda ou voo): ataque a distancia ou corpo a corpo com +4d6 e derruba Prostrado (DES CD 16). Se matar, recupera a municao ou arma e 1d10 HP de adrenalina.
+**Nv 20 — Ascensao — Ataque de Mergulho:** Uma vez por combate, pode "mergulhar" de plataforma ou salto (minimo 3m de queda ou voo): ataque a distancia ou corpo a corpo com +4d6 e derruba Prostrado (DES CD 16). Se matar, recupera a munição ou arma e 1d10 HP de adrenalina.
 
 ---
 
@@ -1819,11 +2042,11 @@ Use a **faixa de andar** (Livro do Mestre, Cap. 21) e o **escalonamento** quando
 
 **Nv 4 — Identificacao de Flora:** Vantagem em Natureza e Coccao com fungos/plantas. Pode identificar esporos toxicos ou curativos sem kit em 1 minuto.
 
-**Nv 8 — Flechas de Esporo (requer Identificacao de Flora):** Prepara 3 municoes de esporo por descanso longo: ao acertar, alvo testa CON CD 14 ou Envenenado; aliados podem usar esporo curativo (cura 2d8, acao bonus).
+**Nv 8 — Flechas de Esporo (requer Identificacao de Flora):** Prepara 3 municoes de esporo por descanso longo: ao acertar, alvo testa CON CD 14 ou Envenenado; aliados podem usar esporo curativo (cura 2d8, ação bonus).
 
 **Nv 12 — Nuvem de Cura (requer Flechas de Esporo):** No descanso curto, espalha esporos curativos (raio 6m): aliados recuperam 2d8+SAB HP e removem 1 condicao de veneno ou doenca leve.
 
-**Nv 16 — Rede de Raizes (requer Nuvem de Cura):** 1/descanso longo em area com vegetacao ou fungos: raizes Restringem inimigos em raio 6m (FOR CD 15, metade velocidade se passar). Aliados no raio tem cobertura parcial (+2 CA).
+**Nv 16 — Rede de Raizes (requer Nuvem de Cura):** 1/descanso longo em área com vegetacao ou fungos: raizes Restringem inimigos em raio 6m (FOR CD 15, metade velocidade se passar). Aliados no raio tem cobertura parcial (+2 CA).
 
 **Nv 20 — Ascensao — Florescimento Toxico:** 10 minutos, 1/descanso longo: nuvem 9m de esporos — inimigos 4d8 veneno + Envenenado (CON CD 16); aliados imunes e curados 2d8. Apos efeito, nascem 1d4 porcoes de fungo raro no chao.
 
@@ -1831,17 +2054,17 @@ Use a **faixa de andar** (Livro do Mestre, Cap. 21) e o **escalonamento** quando
 
 ### Rastreador de Sangue Frio (Patrulheiro)
 
-**Dieta nv.2:** Ao comer repteis e basiliscos, imunidade a petrificacao e camuflagem de pele (Vantagem em Furtividade em terreno rochoso) por 8 horas.
+**Dieta nv.2:** Ao comer repteis e basiliscos, imunidade a petrificação e camuflagem de pele (Vantagem em Furtividade em terreno rochoso) por 8 horas.
 
 **Nv 4 — Rastejamento Silencioso:** Vantagem em Furtividade e Iniciativa em cavernas e ruinas. Primeiro ataque em surpresa causa +2d6 se dieta ativa.
 
 **Nv 8 — Sentido Termico (requer Rastejamento Silencioso):** Detecta criaturas vivas a 18m mesmo invisiveis ou atras de parede fina (1m). Nao funciona em constructos frios.
 
-**Nv 12 — Escamas Adaptativas (requer Sentido Termico):** Resistencia a frio e fogo enquanto dieta ativa. Reacao: +4 CA contra um ataque que voce viu (escamas eriçadas). Usos: SAB por descanso curto.
+**Nv 12 — Escamas Adaptativas (requer Sentido Termico):** Resistência a frio e fogo enquanto dieta ativa. Reacao: +4 CA contra um ataque que você viu (escamas eriçadas). Usos: SAB por descanso curto.
 
-**Nv 16 — Olhar Frio (requer Escamas Adaptativas):** 1/descanso curto: olhar reptiliano (1 alvo, 18m, CON CD 15 ou Lentidao 1 min; falha por 5+ = Paralisado 1 turno). Criaturas ja Envenenadas tem Desvantagem no save.
+**Nv 16 — Olhar Frio (requer Escamas Adaptativas):** 1/descanso curto: olhar reptiliano (1 alvo, 18m, CON CD 15 ou Lentidão 1 min; falha por 5+ = Paralisado 1 turno). Criaturas ja Envenenadas tem Desvantagem no save.
 
-**Nv 20 — Ascensao — Forma de Reptil:** Transformacao parcial 10 min (1/descanso longo): escamas +2 CA, escalada 9m, mordida 2d6+DES perfurante como acao bonus, imunidade a petrificacao. Pode extrair glandula de petrificacao de basilisco morto com Vantagem em Trinchar.
+**Nv 20 — Ascensao — Forma de Reptil:** Transformacao parcial 10 min (1/descanso longo): escamas +2 CA, escalada 9m, mordida 2d6+DES perfurante como ação bonus, imunidade a petrificação. Pode extrair glândula de petrificação de basilisco morto com Vantagem em Trinchar.
 
 ---
 
@@ -1849,15 +2072,15 @@ Use a **faixa de andar** (Livro do Mestre, Cap. 21) e o **escalonamento** quando
 
 **Dieta nv.2:** Ao comer pragas e insetos menores, conexao telepatica com insetos locais — detecta vibracoes no chao a 15m e localiza invisiveis "sentindo" o enxame.
 
-**Nv 4 — Sentido de Formigueiro:** Aliados a 3m ganham +2 em Percepcao passiva. Voce nao pode ser surpreendido por criaturas Medias ou menores.
+**Nv 4 — Sentido de Formigueiro:** Aliados a 3m ganham +2 em Percepção passiva. Você não pode ser surpreendido por criaturas Medias ou menores.
 
-**Nv 8 — Direcao de Enxame (requer Sentido de Formigueiro):** Acao bonus: direciona insetos para um quadrado — proximo ataque contra ocupante tem Vantagem, ou aliado naquele quadrado ganha +2 CA ate seu proximo turno. Usos: SAB por descanso curto.
+**Nv 8 — Direcao de Enxame (requer Sentido de Formigueiro):** Acao bonus: direciona insetos para um quadrado — próximo ataque contra ocupante tem Vantagem, ou aliado naquele quadrado ganha +2 CA até seu próximo turno. Usos: SAB por descanso curto.
 
-**Nv 12 — Convocacao de Insetos (requer Direcao de Enxame):** 1/descanso longo: enxame ocupa 6m (dano 2d8 perfurante no turno deles a quem entrar, velocidade metade). Dura 1 minuto ou ate dispersar (fogo area 3d6+).
+**Nv 12 — Convocacao de Insetos (requer Direcao de Enxame):** 1/descanso longo: enxame ocupa 6m (dano 2d8 perfurante no turno deles a quem entrar, velocidade metade). Dura 1 minuto ou até dispersar (fogo área 3d6+).
 
-**Nv 16 — Mente Coletiva (requer Convocacao de Insetos):** Compartilha sentidos com aliados a 9m (todos veem o que um viu neste turno, 1 rodada). Mapa mental de armadilhas no andar apos 30 min de exploracao (estilo Cartografo Nato, apenas passagens e armadilhas mecanicas).
+**Nv 16 — Mente Coletiva (requer Convocacao de Insetos):** Compartilha sentidos com aliados a 9m (todos veem o que um viu neste turno, 1 rodada). Mapa mental de armadilhas no andar após 30 min de exploracao (estilo Cartografo Nato, apenas passagens e armadilhas mecanicas).
 
-**Nv 20 — Ascensao — Infestacao:** 1/descanso longo: infesta o andar — por 1 hora, voce sempre sabe numero aproximado e tipo de criaturas Medias- no raio 30m; inimigos que descansam no andar sofrem 2d6 veneno ao acordar (CON CD 16 metade). Aliados ganham +3 em sobrevivencia e forrageio.
+**Nv 20 — Ascensao — Infestacao:** 1/descanso longo: infesta o andar — por 1 hora, você sempre sabe numero aproximado e tipo de criaturas Medias- no raio 30m; inimigos que descansam no andar sofrem 2d6 veneno ao acordar (CON CD 16 metade). Aliados ganham +3 em sobrevivencia e forrageio.
 
 ---
 
@@ -1865,33 +2088,33 @@ Use a **faixa de andar** (Livro do Mestre, Cap. 21) e o **escalonamento** quando
 
 ### Degustador de Sombras (Ladino)
 
-**Dieta nv.2:** Ao comer ectoplasma e residuos espirituais, pode ficar intangivel 1 turno por combate e Ataque Furtivo ganha +1d6 necrotico.
+**Dieta nv.2:** Ao comer ectoplasma e residuos espirituais, pode ficar intangivel 1 turno por combaté e Ataque Furtivo ganha +1d6 necrótico.
 
-**Nv 4 — Toque Fantasmal:** Ataque Furtivo pode aplicar Lentidao espiritual (velocidade -3m, 1 min, CON CD 13). Uma vez por combate, atravessa parede fina (30cm) como movimento.
+**Nv 4 — Toque Fantasmal:** Ataque Furtivo pode aplicar Lentidão espiritual (velocidade -3m, 1 min, CON CD 13). Uma vez por combate, atravessa parede fina (30cm) como movimento.
 
-**Nv 8 — Passo entre Sombras (requer Toque Fantasmal):** Intangibilidade da dieta sobe para 2 turnos/combate. Ao sair de intangibilidade, proximo ataque furtivo tem Vantagem automatica.
+**Nv 8 — Passo entre Sombras (requer Toque Fantasmal):** Intangibilidade da dieta sobe para 2 turnos/combate. Ao sair de intangibilidade, próximo ataque furtivo tem Vantagem automatica.
 
-**Nv 12 — Absorcao de Eter (requer Passo entre Sombras):** Ao reduzir espiritual a 0 HP, absorve fragmento: recupera 1 uso de intangibilidade ou 1d8 HP. Ataques furtivos contra espirituais causam dano maximo nos dados de furtivo.
+**Nv 12 — Absorção de Eter (requer Passo entre Sombras):** Ao reduzir espiritual a 0 HP, absorve fragmento: recupera 1 uso de intangibilidade ou 1d8 HP. Ataques furtivos contra espirituais causam dano máximo nos dados de furtivo.
 
-**Nv 16 — Forma Translucida (requer Absorcao de Eter):** 1/descanso longo, 1 minuto: semi-invisivel (ataques contra voce com Desvantagem; seus furtivos +2d6). Comunica telepaticamente com aliados a 18m.
+**Nv 16 — Forma Translucida (requer Absorção de Eter):** 1/descanso longo, 1 minuto: semi-invisivel (ataques contra você com Desvantagem; seus furtivos +2d6). Comunica telepaticamente com aliados a 18m.
 
-**Nv 20 — Ascensao — Mente Morta:** Imune a medo e encantamento. 1/combate, quando um aliado cai a 0 HP, reacao: fica intangivel ate o fim do turno e faz um Ataque Furtivo contra quem causou o dano com critico em 19-20.
+**Nv 20 — Ascensao — Mente Morta:** Imune a medo e encantamento. 1/combate, quando um aliado cai a 0 HP, reacao: fica intangivel até o fim do turno e faz um Ataque Furtivo contra quem causou o dano com crítico em 19-20.
 
 ---
 
 ### Extrator de Geleias (Ladino)
 
-**Dieta nv.2:** Ao comer amorfos e slimes, corpo elastico — passa por frestas de 15cm, escapa agarramento automaticamente, resistencia a acido.
+**Dieta nv.2:** Ao comer amorfos e slimes, corpo elastico — passa por frestas de 15cm, escapa agarramento automaticamente, resistência a ácido.
 
-**Nv 4 — Flexibilidade Extrema:** Vantagem em testes para escapar e em Furtividade em tubos. Ataque Furtivo em alvo Agarrado causa +1d6 acido.
+**Nv 4 — Flexibilidade Extrema:** Vantagem em testes para escapar e em Furtividade em tubos. Ataque Furtivo em alvo Agarrado causa +1d6 ácido.
 
-**Nv 8 — Absorcao de Impacto (requer Flexibilidade Extrema):** Reacao ao dano contundente ou de queda: reduz metade. Pode "rebater" 1d10 acido ao atacante se o dano foi reduzido a 0.
+**Nv 8 — Absorção de Impacto (requer Flexibilidade Extrema):** Reacao ao dano contundente ou de queda: reduz metade. Pode "rebater" 1d10 ácido ao atacante se o dano foi reduzido a 0.
 
-**Nv 12 — Forma Fluida (requer Absorcao de Impacto):** 1/descanso curto, 3 turnos: imune a agarrao, critico contra voce vira acerto normal, deslocamento +3m. Ataques furtivos aplicam Desarme leve (objeto cai) em falha de DES CD 14.
+**Nv 12 — Forma Fluida (requer Absorção de Impacto):** 1/descanso curto, 3 turnos: imune a agarrao, crítico contra você vira acerto normal, deslocamento +3m. Ataques furtivos aplicam Desarme leve (objeto cai) em falha de DES CD 14.
 
-**Nv 16 — Corpo de Gel (requer Forma Fluida):** Resistencia a acido e perfurante. Pode se comprimir em espaco de 5cm por 1 rodada (acao bonus). Extrair nucleo de slime morto: Vantagem em Trinchar, qualidade maxima.
+**Nv 16 — Corpo de Gel (requer Forma Fluida):** Resistência a ácido e perfurante. Pode se comprimir em espaco de 5cm por 1 rodada (ação bônus). Extrair nucleo de slime morto: Vantagem em Trinchar, qualidade máxima.
 
-**Nv 20 — Ascensao — Dissolucao:** 1/descanso longo: dissolve armadura nao-magica de metal em contato (1 peca, 1 minuto fora de combate) OU em combate toca alvo — 6d8 acido e equipamento leve corroi (DES CD 16 metade dano). Ataque Furtivo maximo (10d6 em nv. 20) contra alvo sem armadura pesada ganha +2d6.
+**Nv 20 — Ascensao — Dissolucao:** 1/descanso longo: dissolve armadura nao-mágica de metal em contato (1 peca, 1 minuto fora de combate) OU em combaté toca alvo — 6d8 ácido e equipamento leve corroi (DES CD 16 metade dano). Ataque Furtivo máximo (10d6 em nv. 20) contra alvo sem armadura pesada ganha +2d6.
 
 ---
 
@@ -1899,31 +2122,31 @@ Use a **faixa de andar** (Livro do Mestre, Cap. 21) e o **escalonamento** quando
 
 **Dieta nv.2:** Ao beber veneno purificado de peconhentos, ataques ganham +1d4 veneno passivo e saliva corrosiva (interrogatorio, +2 em Intimidacao com criaturas que sentem dor).
 
-**Nv 4 — Resistencia a Veneno:** Imune a veneno comum; metade de veneno magico. Pode aplicar veneno de monstro a arma como acao bonus (3 ataques de duracao).
+**Nv 4 — Resistência a Veneno:** Imune a veneno comum; metade de veneno magico. Pode aplicar veneno de monstro a arma como ação bônus (3 ataques de duração).
 
-**Nv 8 — Aplicacao Rapida (requer Resistencia a Veneno):** Mantem ate 3 venenos ativos em armas diferentes. Ataque Furtivo pode dobrar dado de veneno em vez de somar furtivo (escolha ao acertar).
+**Nv 8 — Aplicacao Rápida (requer Resistência a Veneno):** Mantem até 3 venenos ativos em armas diferentes. Ataque Furtivo pode dobrar dado de veneno em vez de somar furtivo (escolha ao acertar).
 
-**Nv 12 — Veneno Personalizado (requer Aplicacao Rapida):** Prepara 1 veneno "assinatura" por descanso longo com efeito de monstro estudado (paralisia leve, cegueira, etc., CON CD 14). Ingredientes de glandula extraidos em furtivo critico sao sempre superiores.
+**Nv 12 — Veneno Personalizado (requer Aplicacao Rápida):** Prepara 1 veneno "assinatura" por descanso longo com efeito de monstro estudado (paralisia leve, cegueira, etc., CON CD 14). Ingredientes de glândula extraidos em furtivo crítico sao sempre superiores.
 
-**Nv 16 — Imunidade Total (requer Veneno Personalizado):** Imune a veneno magico. 1/combate: Golpe Envenenado — se Ataque Furtivo acertar, alvo testa CON CD 16 ou Envenenado e perde 1 acao na proxima rodada.
+**Nv 16 — Imunidade Total (requer Veneno Personalizado):** Imune a veneno magico. 1/combate: Golpe Envenenado — se Ataque Furtivo acertar, alvo testa CON CD 16 ou Envenenado e perde 1 ação na proxima rodada.
 
-**Nv 20 — Ascensao — Veneno Lendario:** 1/descanso longo, coat veneno lendario (24h): armas causam +2d8 veneno; seu sangue envenena quem te morder (4d8, CON CD 17). Ataque Furtivo contra Envenenado pode aplicar Um Golpe, Uma Morte em alvos com 25% HP ou menos (CD 16 CON negar).
+**Nv 20 — Ascensao — Veneno Lendário:** 1/descanso longo, coat veneno lendario (24h): armas causam +2d8 veneno; seu sangue envenena quem te morder (4d8, CON CD 17). Ataque Furtivo contra Envenenado pode aplicar Um Golpe, Uma Morte em alvos com 25% HP ou menos (CD 16 CON negar).
 
 ---
 
 ### Corsario de Cripta (Ladino)
 
-**Dieta nv.2:** Ao comer osseos e mortos-vivos corporeos, resistencia a necrotico e pode fingir morte perfeita (zera aggro ate se mover ou 1 hora).
+**Dieta nv.2:** Ao comer osseos e mortos-vivos corporeos, resistência a necrótico e pode fingir morte perfeita (zera aggro até se mover ou 1 hora).
 
-**Nv 4 — Sussurro de Tumba:** Comunica com mortos-vivos Int 3+ como se compartilhasse idioma por 1 minuto (nao controla). Vantagem em Ataque Furtivo contra mortos-vivos distraidos.
+**Nv 4 — Sussurro de Tumba:** Comunica com mortos-vivos Int 3+ como se compartilhasse idioma por 1 minuto (não controla). Vantagem em Ataque Furtivo contra mortos-vivos distraidos.
 
-**Nv 8 — Aparencia Cadaverica (requer Sussurro de Tumba):** Parece morto-vivo para inspecao casual. Pode entrar em criptas sem alarme social. Fingir morte agora e acao bonus.
+**Nv 8 — Aparencia Cadaverica (requer Sussurro de Tumba):** Parece morto-vivo para inspecao casual. Pode entrar em criptas sem alarme social. Fingir morte agora e ação bonus.
 
 **Nv 12 — Aura de Morte (requer Aparencia Cadaverica):** Raio 3m: inimigos vivos tem -1 em ataques (medo visceral). 1/descanso curto, comanda 1 morto-vivo Fraco (HP 15, 1 ataque) por 10 min — ele pode Trinchar para o grupo.
 
-**Nv 16 — Controle de Morto-Vivo (requer Aura de Morte):** Ate 3 mortos-vivos Fracos ou 1 Medio (estatisticas do Mestre) obedecendo por 1 hora. Ataques furtivos contra alvos adjacentes a seu morto-vivo ganham +2d6 necrotico.
+**Nv 16 — Controle de Morto-Vivo (requer Aura de Morte):** Ate 3 mortos-vivos Fracos ou 1 Medio (estatisticas do Mestre) obedecendo por 1 hora. Ataques furtivos contra alvos adjacentes a seu morto-vivo ganham +2d6 necrótico.
 
-**Nv 20 — Ascensao — Senhor da Cripta:** 1/descanso longo: levanta esqueleto de monstro Grande morto na sessao (metade HP original, ataques do monstro sem magia). Enquanto ativo, voce tem resistencia a necrotico e critico em mortos-vivos em 19-20. Ossos extraidos por voce contam como ingrediente Lendario menor.
+**Nv 20 — Ascensao — Senhor da Cripta:** 1/descanso longo: levanta esqueleto de monstro Grande morto na sessao (metade HP original, ataques do monstro sem magia). Enquanto ativo, você tem resistência a necrótico e crítico em mortos-vivos em 19-20. Ossos extraidos por você contam como ingrediente Lendário menor.
 
 ---
 
@@ -1931,47 +2154,47 @@ Use a **faixa de andar** (Livro do Mestre, Cap. 21) e o **escalonamento** quando
 
 ### Piromante de Forno (Mago)
 
-**Dieta nv.2:** Refeicoes assadas por voce maximizam recuperacao de Mana do grupo no descanso; feiticos de fogo +1d6 vs gelo/agua e dispensam componentes de fogo.
+**Dieta nv.2:** Refeicoes assadas por você maximizam recuperacao de Mana do grupo no descanso; feiticos de fogo +1d6 vs gelo/agua e dispensam componentes de fogo.
 
 **Nv 4 — Chama Controlada:** Truque `Chama de Fogareiro` extra. 1/descanso curto, maximize dano de um feitico de fogo de nivel 3 ou menor.
 
-**Nv 8 — Forno de Campo (requer Chama Controlada):** Prepara refeicao assada em combate (10 min) ou acao bonus "lanche carbonizado" (1d8 HP temp a aliado adjacente). Aliados que comem ganham resistencia a frio 1 hora.
+**Nv 8 — Forno de Campo (requer Chama Controlada):** Prepara refeicao assada em combaté (10 min) ou ação bônus "lanche carbonizado" (1d8 HP temp a aliado adjacente). Aliados que comem ganham resistência a frio 1 hora.
 
-**Nv 12 — Combustao Arcana (requer Forno de Campo):** Ao lancar feitico de fogo, pode acender ingrediente inflamavel em alcance — +2d6 no proximo ataque de aliado contra alvo naquele quadrado.
+**Nv 12 — Combustao Arcana (requer Forno de Campo):** Ao lancar feitico de fogo, pode acender ingrediente inflamavel em alcance — +2d6 no próximo ataque de aliado contra alvo naquele quadrado.
 
-**Nv 16 — Brasas Persistentes (requer Combustao Arcana):** Feiticos de fogo deixam brasas 1 rodada (2d6 fogo a quem iniciar turno no espaco). `Bola de Fogo` pode nao incendiar comida aliada (variante Forno Arcano, Cap. 19).
+**Nv 16 — Brasas Persistentes (requer Combustao Arcana):** Feiticos de fogo deixam brasas 1 rodada (2d6 fogo a quem iniciar turno no espaco). `Bola de Fogo` pode não incendiar comida aliada (variante Forno Arcano, Cap. 19).
 
-**Nv 20 — Ascensao — Coracao do Forno:** 1/descanso longo, 1 minuto: aura 6m de calor — aliados +2 em Coccao e recuperam 1 espaco de magia de nivel 3 ou menor ao fim; inimigos 4d10 fogo no inicio do turno (DES CD 17 metade). Seus feiticos de fogo ignoram resistencia enquanto ativo.
+**Nv 20 — Ascensao — Coracao do Forno:** 1/descanso longo, 1 minuto: aura 6m de calor — aliados +2 em Coccao e recuperam 1 espaco de magia de nivel 3 ou menor ao fim; inimigos 4d10 fogo no inicio do turno (DES CD 17 metade). Seus feiticos de fogo ignoram resistência enquanto ativo.
 
 ---
 
 ### Criomante de Conservacao (Mago)
 
-**Dieta nv.2:** Carnes dry-aged magicamente concedem aura 1d4 frio a adjacentes no inicio do turno inimigo e +3 CA temporaria de gelo (8h).
+**Dieta nv.2:** Carnes dry-aged mágicamente concedem aura 1d4 frio a adjacentes no inicio do turno inimigo e +3 CA temporária de gelo (8h).
 
-**Nv 4 — Gelar Ingrediente:** Pode preservar ingredientes indefinidamente com toque (1 min). Magia `Gelo de Conservacao` (Cap. 19) no grimorio.
+**Nv 4 — Gelar Ingrediente:** Pode preservar ingredientes indefinidamente com toque (1 min). Magia `Gelo de Conservação` (Cap. 19) no grimorio.
 
-**Nv 8 — Camara Fria Portatil (requer Gelar Ingrediente):** Bolsa extradimensional fria: 50 kg de carne sem estragar. Descanso longo em grupo: +1d8 HP extra por porcao conservada.
+**Nv 8 — Camara Fria Portátil (requer Gelar Ingrediente):** Bolsa extradimensional fria: 50 kg de carne sem estragar. Descanso longo em grupo: +1d8 HP extra por porcao conservada.
 
-**Nv 12 — Escudo de Geada (requer Camara Fria Portatil):** Reacao: +5 CA vs um ataque corpo a corpo (gelo quebra a lamina). Usos: INT por descanso curto. Aliados adjacentes +1 CA.
+**Nv 12 — Escudo de Geada (requer Camara Fria Portátil):** Reacao: +5 CA vs um ataque corpo a corpo (gelo quebra a lâmina). Usos: INT por descanso curto. Aliados adjacentes +1 CA.
 
 **Nv 16 — Envelhecimento Instantaneo (requer Escudo de Geada):** 1/descanso longo: envelhece ingrediente 10 anos em 1 rodada (efeito fermentacao ou dry-age superior). Proximo prato do grupo conta como Gourmet automatico.
 
-**Nv 20 — Ascensao — Zero Absoluto:** 1/descanso longo: raio 9m, 1 rodada — inimigos CON CD 17 ou 6d8 frio e velocidade 0; criaturas de fogo/gelo falham automaticamente. Aliados na area preservam ingredientes em inventario e imunidade a frio ambiental 24h.
+**Nv 20 — Ascensao — Zero Absoluto:** 1/descanso longo: raio 9m, 1 rodada — inimigos CON CD 17 ou 6d8 frio e velocidade 0; criaturas de fogo/gelo falham automaticamente. Aliados na área preservam ingredientes em inventário e imunidade a frio ambiental 24h.
 
 ---
 
 ### Mago Fermentador (Mago)
 
-**Dieta nv.2:** Pratos fermentados garantem imunidade a ilusao ao grupo por 8h e removem doenca ou maldicao leve apos refeicao.
+**Dieta nv.2:** Pratos fermentados garantem imunidade a ilusao ao grupo por 8h e removem doenca ou maldicao leve após refeicao.
 
-**Nv 4 — Fermentacao Acelerada:** Magias `Envelhecer Materia` e `Fermentacao Acelerada` (Cap. 19). Transforma Comum em Incomum com 1 espaco nv. 1 em 1 minuto.
+**Nv 4 — Fermentação Acelerada:** Magias `Envelhecer Matéria` e `Fermentação Acelerada` (Cap. 19). Transforma Comum em Incomum com 1 espaco nv. 1 em 1 minuto.
 
-**Nv 8 — Cultura Viva (requer Fermentacao Acelerada):** Cria antidoto cultural para veneno identificado (5 min, 3 doses). Aliados que comem seu fermentado ganham Vantagem em saves de ilusao e encantamento 24h.
+**Nv 8 — Cultura Viva (requer Fermentação Acelerada):** Cria antidoto cultural para veneno identificado (5 min, 3 doses). Aliados que comem seu fermentado ganham Vantagem em saves de ilusao e encantamento 24h.
 
 **Nv 12 — Nuvem Bacteriana (requer Cultura Viva):** 1/descanso curto: nuvem 4,5m — inimigos CON CD 14 ou Envenenado "fermentado" (Desvantagem em Concentracao); aliados curam 2d8+INT.
 
-**Nv 16 — Transmutacao Enzimatica (requer Nuvem Bacteriana):** Combina dois ingredientes incompativeis em hibrido 1/descanso longo (propriedades de ambos, 24h). Veneno vira antidoto correspondente.
+**Nv 16 — Transmutação Enzimatica (requer Nuvem Bacteriana):** Combina dois ingredientes incompativeis em hibrido 1/descanso longo (propriedades de ambos, 24h). Veneno vira antidoto correspondente.
 
 **Nv 20 — Ascensao — Grande Barril:** 1/semana: barril de fermento lendario — grupo inteiro imune a ilusao, doenca e maldicao moderada por 7 dias; 1/dia cada um pode rerrolar um save mental falho.
 
@@ -1979,17 +2202,17 @@ Use a **faixa de andar** (Livro do Mestre, Cap. 21) e o **escalonamento** quando
 
 ### Alquimista de Caldos (Mago)
 
-**Dieta nv.2:** Sopas densas permitem regurgitar acido 2d6 ou expelir nevoa venenosa (CD 13 CON ou Envenenado) 1/combate apos refeicao propria.
+**Dieta nv.2:** Sopas densas permitem regurgitar ácido 2d6 ou expelir nevoa venenosa (CD 13 CON ou Envenenado) 1/combaté após refeicao propria.
 
-**Nv 4 — Caldo Corrosivo:** Truque de acidificar liquido. +2 em Coccao para sopas. 1/descanso longo: cone 4,5m 4d6 acido (INT CD 14 metade) apos Gourmet proprio.
+**Nv 4 — Caldo Corrosivo:** Truque de acidificar liquido. +2 em Coccao para sopas. 1/descanso longo: cone 4,5m 4d6 ácido (INT CD 14 metade) após Gourmet proprio.
 
-**Nv 8 — Sopa de Resistencia (requer Caldo Corrosivo):** Refeicao de sopa concede resistencia a acido e veneno ao grupo 8h. Voce pode armazenar 1 "engolida" de acido para usar reacao (3d6 acido ao ser golpeado corpo a corpo).
+**Nv 8 — Sopa de Resistência (requer Caldo Corrosivo):** Refeicao de sopa concede resistência a ácido e veneno ao grupo 8h. Você pode armazenar 1 "engolida" de ácido para usar reacao (3d6 ácido ao ser golpeado corpo a corpo).
 
-**Nv 12 — Nevoa de Caldeira (requer Sopa de Resistencia):** Nevoa 6m: CON CD 15 ou Envenenado; visibilidade reduzida para inimigos. Aliados dentro veem normalmente.
+**Nv 12 — Nevoa de Caldeira (requer Sopa de Resistência):** Nevoa 6m: CON CD 15 ou Envenenado; visibilidade reduzida para inimigos. Aliados dentro veem normalmente.
 
-**Nv 16 — Extracao Liquida (requer Nevoa de Caldeira):** Trinchar liquido: de monstros amorfos extrai 1d4 porcoes extras com teste de Coccao CD 14. Feiticos de acido +2d6.
+**Nv 16 — Extracao Liquida (requer Nevoa de Caldeira):** Trinchar liquido: de monstros amorfos extrai 1d4 porcoes extras com teste de Coccao CD 14. Feiticos de ácido +2d6.
 
-**Nv 20 — Ascensao — Maré Acida:** 1/descanso longo: linha 18m x 3m de caldo fervente — 8d8 acido e terreno dificil 1 min. Se matar com este dano, corpo dissolve em ingredientes alquimicos (qualidade superior automatica).
+**Nv 20 — Ascensao — Maré Acida:** 1/descanso longo: linha 18m x 3m de caldo fervente — 8d8 ácido e terreno dificil 1 min. Se matar com este dano, corpo dissolve em ingredientes alquimicos (qualidade superior automatica).
 
 ---
 
@@ -1999,11 +2222,11 @@ Use a **faixa de andar** (Livro do Mestre, Cap. 21) e o **escalonamento** quando
 
 **Nv 4 — Doce Encantador:** Truque `Doce Confuso` (Cap. 19). Inspirar aliado com doce: +1d4 em um teste social ou Coccao em 1 hora.
 
-**Nv 8 — Banquete Minimo (requer Doce Encantador):** Acao bonus: distribui doces (3 aliados) — +1d6 HP temp e Vantagem no proximo save de Sabedoria.
+**Nv 8 — Banquete Minimo (requer Doce Encantador):** Acao bonus: distribui doces (3 aliados) — +1d6 HP temp e Vantagem no próximo save de Sabedoria.
 
 **Nv 12 — Acucar Cristalizado (requer Banquete Minimo):** 1/descanso curto: cristal de acucar arcano — prende 1 inimigo Pequeno/Medio (DES CD 15 ou Restringido 1 min). Ou cura aliado 3d8+INT.
 
-**Nv 16 — Festa Hipnotica (requer Acucar Cristalizado):** 1/descanso longo: 9m, criaturas com INT 4+ testam SAB CD 16 ou Encantados (nao atacam grupo) por 1 rodada; aliados recuperam 2d8 HP.
+**Nv 16 — Festa Hipnotica (requer Acucar Cristalizado):** 1/descanso longo: 9m, criaturas com INT 4+ testam SAB CD 16 ou Encantados (não atacam grupo) por 1 rodada; aliados recuperam 2d8 HP.
 
 **Nv 20 — Ascensao — Imperio do Doce:** Encantamento diario sobe para nv. 4 sem espaco 1x/dia. Grupo que come seu banquete semanal (preparacao 1h) tem Vantagem contra medo e charm por 24h e +2 CD em suas magias de encantamento.
 
@@ -2011,43 +2234,43 @@ Use a **faixa de andar** (Livro do Mestre, Cap. 21) e o **escalonamento** quando
 
 ## CLERIGO
 
-### Sacerdote da Purificacao (Clerigo)
+### Sacerdote da Purificacao (Clérigo)
 
-**Dieta nv.2:** Carnes purificadas por reza concedem +3 em ataques contra aberracoes e mortos-vivos e curam maldicoes leves do grupo apos a refeicao.
+**Dieta nv.2:** Carnes purificadas por reza concedem +3 em ataques contra aberracoes e mortos-vivos e curam maldicoes leves do grupo após a refeicao.
 
 **Nv 4 — Purificar Veneno:** `Purificar Veneno` 3x/dia sem espaco nv. 1 (Cap. 19). Toque purifica 1 porcao de carne amaldicoada.
 
-**Nv 8 — Laminas Abencoadas (requer Purificar Veneno):** Armas do grupo contam como magicas vs mortos-vivos por 1 hora apos benzer refeicao (acao bonus). +1d6 radiante em Ataque Furtivo de aliado contra morto-vivo (nao empilha com furtivo do Ladino em excesso — use o maior bonus).
+**Nv 8 — Laminas Abencoadas (requer Purificar Veneno):** Armas do grupo contam como mágicas vs mortos-vivos por 1 hora após benzer refeicao (ação bônus). +1d6 radiante em Ataque Furtivo de aliado contra morto-vivo (não empilha com furtivo do Ladino em excesso — use o maior bonus).
 
-**Nv 12 — Purificacao Abencoada (requer Laminas Abencoadas):** Magia Cap. 19. 1/descanso longo remove maldicao moderada do grupo apos ritual de 10 min e refeicao.
+**Nv 12 — Purificacao Abencoada (requer Laminas Abencoadas):** Magia Cap. 19. 1/descanso longo remove maldicao moderada do grupo após ritual de 10 min e refeicao.
 
-**Nv 16 — Aura Sagrada (requer Purificacao Abencoada):** Raio 3m: aliados +2 em saves vs necrotico e veneno; mortos-vivos tem Desvantagem em ataques contra aliados na aura.
+**Nv 16 — Aura Sagrada (requer Purificacao Abencoada):** Raio 3m: aliados +2 em saves vs necrótico e veneno; mortos-vivos tem Desvantagem em ataques contra aliados na aura.
 
-**Nv 20 — Ascensao — Julgamento da Mesa:** 1/descanso longo: todos os inimigos mortos-vivos ou aberracoes em 9m — 8d8 radiante (SAB CD 17 metade) e nao regeneram por 24h. Aliados que comeram sua refeicao purificada neste dia rerrolam 1 save falho cada.
+**Nv 20 — Ascensao — Julgamento da Mesa:** 1/descanso longo: todos os inimigos mortos-vivos ou aberracoes em 9m — 8d8 radiante (SAB CD 17 metade) e não regeneram por 24h. Aliados que comeram sua refeicao purificada neste dia rerrolam 1 save falho cada.
 
 ---
 
-### Monge do Jejum (Clerigo)
+### Monge do Jejum (Clérigo)
 
 **Dieta nv.2:** Após 8h sem comer, +4 em esquiva e dano radiante nos ataques; ao quebrar o jejum com refeicao, onda 3d8 radiante em 6m (CON CD 14 metade).
 
-**Nv 4 — Disciplina Vazia:** Enquanto em jejum ativo, nao precisa comer para manter Bonus de Dieta Base da classe (nao o da subclasse). +2 em Concentracao.
+**Nv 4 — Disciplina Vazia:** Enquanto em jejum ativo, não precisa comer para manter Bonus de Dieta Base da classe (não o da subclasse). +2 em Concentracao.
 
-**Nv 8 — Golpe do Jejum (requer Disciplina Vazia):** Primeiro ataque apos quebrar jejum causa +3d8 radiante extra. 1/combate se permanecer em jejum: esquiva reacao +4 CA.
+**Nv 8 — Golpe do Jejum (requer Disciplina Vazia):** Primeiro ataque após quebrar jejum causa +3d8 radiante extra. 1/combaté se permanecer em jejum: esquiva reacao +4 CA.
 
-**Nv 12 — Jejum Prolongado (requer Golpe do Jejum):** Jejum seguro ate 3 dias sem Exaustao (agua normal). No 3o dia, onda ao comer sobe para 5d8.
+**Nv 12 — Jejum Prolongado (requer Golpe do Jejum):** Jejum seguro até 3 dias sem Exaustao (agua normal). No 3o dia, onda ao comer sobe para 5d8.
 
-**Nv 16 — Corpo Templo (requer Jejum Prolongado):** Resistencia a necrotico e veneno enquanto jejum 8h+. Cura magica em voce cura +2 HP por nivel de espaco.
+**Nv 16 — Corpo Templo (requer Jejum Prolongado):** Resistência a necrótico e veneno enquanto jejum 8h+. Cura mágica em você cura +2 HP por nivel de espaco.
 
 **Nv 20 — Ascensao — Transfiguracao pelo Vazio:** 1/descanso longo: jejum instantaneo 1 minuto e explosao 10d8 radiante em 9m (inimigos CON CD 17); aliados curados 4d8. Proximas 24h: imune a fome forcada e veneno.
 
 ---
 
-### Clerigo do Pao da Vida (Clerigo)
+### Clérigo do Pao da Vida (Clérigo)
 
 **Dieta nv.2:** Transforma musgos e plantas em pao que concede HP temporario extra (nivel x3) a todo o grupo ao amanhecer.
 
-**Nv 4 — Pao da Manha:** Ritual (10 min, R): paes = nivel do Clerigo; quem come ao amanhecer ganha HP temp = nivel x3 (Cap. 19).
+**Nv 4 — Pao da Manha:** Ritual (10 min, R): paes = nivel do Clérigo; quem come ao amanhecer ganha HP temp = nivel x3 (Cap. 19).
 
 **Nv 8 — Fermento Sagrado (requer Pao da Manha):** Pao tambem remove 1 nivel de Exaustao leve (1 ou menos). 2 usos de ritual por descanso longo.
 
@@ -2055,105 +2278,105 @@ Use a **faixa de andar** (Livro do Mestre, Cap. 21) e o **escalonamento** quando
 
 **Nv 16 — Bencao do Forno (requer Mesa Abundante):** Aliados a 6m recuperam 1d8 HP no inicio do seu turno se comeram seu pao nas ultimas 8h.
 
-**Nv 20 — Ascensao — Milagre do Pao:** 1/semana: alimenta ate 50 criaturas com 1 refeicao — cada uma ganha HP maximo temp igual nivel x5 por 24h e imunidade a fome. Em combate, fragmento de pao como acao bonus cura 4d8+SAB.
+**Nv 20 — Ascensao — Milagre do Pao:** 1/semana: alimenta até 50 criaturas com 1 refeicao — cada uma ganha HP máximo temp igual nivel x5 por 24h e imunidade a fome. Em combate, fragmento de pao como ação bônus cura 4d8+SAB.
 
 ---
 
-### Pastor de Quimeras (Clerigo)
+### Pastor de Quimeras (Clérigo)
 
-**Dieta nv.2:** Ao comer bestas magicas complexas, canaliza aura de animal (ex.: Leao — aliados adjacentes Vantagem em ataques) por 8h.
+**Dieta nv.2:** Ao comer bestas mágicas complexas, canaliza aura de animal (ex.: Leao — aliados adjacentes Vantagem em ataques) por 8h.
 
 **Nv 4 — Ecologia Sagrada:** Estudo de Anatomia em quimeras com Vantagem. Identifica qual traco animal a carne concedera antes de cozinhar.
 
-**Nv 8 — Aura Dupla (requer Ecologia Sagrada):** Pode manter duas auras menores simultaneas (metade do bonus cada) ou uma aura maior (+1 aliados adjacentes em dano).
+**Nv 8 — Aura Dupla (requer Ecologia Sagrada):** Pode manter duas auras menores simultaneas (metade do bônus cada) ou uma aura maior (+1 aliados adjacentes em dano).
 
 **Nv 12 — Chamado do Rebanho (requer Aura Dupla):** Convoca espirito-bestia Medio (HP 30, 1 ataque 2d6) por 10 min, 1/descanso longo. Espirito pode carregar 1 porcao de ingrediente sem estragar.
 
 **Nv 16 — Sincretismo (requer Chamado do Rebanho):** Ao cozinhar quimera, grupo escolhe 2 mutacoes leves da lista da especie em vez de 1.
 
-**Nv 20 — Ascensao — Cordeiro e Leao:** 1/descanso longo, 10 min: aura 9m — aliados +2 ataques/dano e imunes a medo; voce assume tracos de Boss quimera ja consumido (asas, baforada ou escamas, a escolha do Mestre). Mortos-vivos animais fogem (SAB CD 17).
+**Nv 20 — Ascensao — Cordeiro e Leao:** 1/descanso longo, 10 min: aura 9m — aliados +2 ataques/dano e imunes a medo; você assume tracos de Boss quimera ja consumido (asas, baforada ou escamas, a escolha do Mestre). Mortos-vivos animais fogem (SAB CD 17).
 
 ---
 
-### Clerigo do Limiar (Clerigo) — *Trilha Necromantica*
+### Clérigo do Limiar (Clérigo) — *Trilha Necromantica*
 
-**Dieta nv.2:** Carnes osseas ou de morto-vivo corporeo consumidas com rito do Limiar concedem resistencia a necrotico e fazem mortos-vivos com INT 3 ou menos ignorarem voce como primeiro alvo do combate ate voce ataca-los ou usar necromancia hostil contra a especie.
+**Dieta nv.2:** Carnes osseas ou de morto-vivo corporeo consumidas com rito do Limiar concedem resistência a necrótico e fazem mortos-vivos com INT 3 ou menos ignorarem você como primeiro alvo do combaté até você ataca-los ou usar necromancia hostil contra a especie.
 
-**Nv 4 — Dominio do Limiar:** Comanda **servos** mortos-vivos (zumbi ou esqueleto reduzido: HP = 10 + nivel×3, CA = 8 + nivel÷4, ataque 1d6 + mod. SAB necrotico). Maximo de servos = min(3, mod. SAB). Agem na sua iniciativa (acao bonus para ordenar ataque ou movimento). Recupera 1 servo destruido por descanso longo se tiver carcaca. Servos podem Trinchar corpos mortos com metade do seu bonus de Trinchar.
+**Nv 4 — Domínio do Limiar:** Comanda **servos** mortos-vivos (zumbi ou esqueleto reduzido: HP = 10 + nivel×3, CA = 8 + nivel÷4, ataque 1d6 + mod. SAB necrótico). Maximo de servos = min(3, mod. SAB). Agem na sua iniciativa (acao bônus para ordenar ataque ou movimento). Recupera 1 servo destruido por descanso longo se tiver carcaca. Servos podem Trinchar corpos mortos com metade do seu bônus de Trinchar.
 
-**Nv 8 — Colheita de Alma (requer Dominio do Limiar):** Ao reduzir criatura viva a 0 HP, captura 1 fragmento de alma (inventario, max 3). Consumir fragmento: cura 2d8 + SAB OU lanca 1 magia de Necromancia de nv. 3 ou menos sem gastar espaco (1/descanso longo). Fragmento alimenta `Animacao de Mortos` sem componente de carcaca se usado no mesmo dia.
+**Nv 8 — Colheita de Alma (requer Domínio do Limiar):** Ao reduzir criatura viva a 0 HP, captura 1 fragmento de alma (inventário, max 3). Consumir fragmento: cura 2d8 + SAB OU lança 1 magia de Necromancia de nv. 3 ou menos sem gastar espaco (1/descanso longo). Fragmento alimenta `Animação de Mortos` sem componente de carcaca se usado no mesmo dia.
 
 **Nv 12 — Sacrificio Ritual (requer Colheita de Alma):** Transfere HP proprio a aliado na taxa 1:2 (minimo 1 HP transferido). Pode manter Concentracao enquanto transfere. 1/descanso curto, pode sacrificar um servo para curar aliado 4d8 + nivel sem custo de HP.
 
-**Nv 16 — Senhor da Fronteira (requer Sacrificio Ritual):** Imune a morte instantanea. Ao chegar a 0 HP, estado **liminar** 1 minuto: age normalmente, nao pode ser curado, ao fim testa CON CD 17 — sucesso fica com 1 HP, falha morre (ou narrativa de Phylactery se campanha permitir).
+**Nv 16 — Senhor da Fronteira (requer Sacrificio Ritual):** Imune a morte instantanea. Ao chegar a 0 HP, estado **liminar** 1 minuto: age normalmente, não pode ser curado, ao fim testa CON CD 17 — sucesso fica com 1 HP, falha morre (ou narrativa de Phylactery se campanha permitir).
 
-**Nv 20 — Ascensao — Desejo do Limiar:** Desbloqueia a magia **Desejo de Morte** (Cap. 18) — pode prepara-la 1x apos descanso longo sem gastar espaco de nv. 9. Servos ativos sobem para min(6, mod. SAB + 2) e usam estatisticas de Esqueleto Armado ou Zumbi de Masmorra do bestiario com HP dobrado. Uma vez por descanso longo, `Animacao de Mortos` dura 24h sem Concentracao.
+**Nv 20 — Ascensao — Desejo do Limiar:** Desbloqueia a magia **Desejo de Morte** (Cap. 18) — pode prepara-la 1x após descanso longo sem gastar espaco de nv. 9. Servos ativos sobem para min(6, mod. SAB + 2) e usam estatisticas de Esqueleto Armado ou Zumbi de Masmorra do bestiário com HP dobrado. Uma vez por descanso longo, `Animação de Mortos` dura 24h sem Concentracao.
 
 ---
 
 ## BARBARO
 
-### Devorador de Coracoes (Barbaro)
+### Devorador de Coracoes (Bárbaro)
 
-**Dieta nv.2:** Ao comer coracao de predador, assimila traco instintivo da especie (faro, garras, regeneracao) por 24h conforme o monstro.
+**Dieta nv.2:** Ao comer coracao de predador, assimila traco instintivo da especie (faro, garras, regeneração) por 24h conforme o monstro.
 
-**Nv 4 — Mordida do Coracao:** Em Furia, acao bonus comer coracao (monstro morto na sessao): +1d10 HP e estende Furia 2 turnos.
+**Nv 4 — Mordida do Coracao:** Em Furia, ação bônus comer coracao (monstro morto na sessao): +1d10 HP e estende Furia 2 turnos.
 
-**Nv 8 — Instinto Roubado (requer Mordida do Coracao):** Durante Furia, traco assimilado e dobrado (ex.: faro 18m vira 27m). 1 ataque extra como acao bonus com -2 dano (estilo Ataque Frenetico).
+**Nv 8 — Instinto Roubado (requer Mordida do Coracao):** Durante Furia, traco assimilado e dobrado (ex.: faro 18m vira 27m). 1 ataque extra como ação bônus com -2 dano (estilo Ataque Frenetico).
 
-**Nv 12 — Coracao Duplo (requer Instinto Roubado):** Pode armazenar 2 tracos de especies diferentes; troca com acao bonus. Criticos em Furia extraem coracao automatico.
+**Nv 12 — Coracao Duplo (requer Instinto Roubado):** Pode armazenar 2 tracos de especies diferentes; troca com ação bonus. Críticos em Furia extraem coracao automatico.
 
-**Nv 16 — Predador Alfa (requer Coracao Duplo):** Imune a medo em Furia. Ao cair abaixo 50% HP, +2 ataques e +2d6 dano ate subir acima de 50%.
+**Nv 16 — Predador Alfa (requer Coracao Duplo):** Imune a medo em Furia. Ao cair abaixo 50% HP, +2 ataques e +2d6 dano até subir acima de 50%.
 
-**Nv 20 — Ascensao — Legiao de Coracoes:** 1/descanso longo: consome coracao lendario — 10 min de Furia sem limite de usos, todos os tracos de predadores ja comidos nesta campanha ativos simultaneamente (Mestre limita a 3 efeitos fortes). HP maximo +20 ate descanso longo.
+**Nv 20 — Ascensao — Legiao de Coracoes:** 1/descanso longo: consome coracao lendario — 10 min de Furia sem limite de usos, todos os tracos de predadores ja comidos nesta campanha ativos simultaneamente (Mestre limita a 3 efeitos fortes). HP máximo +20 até descanso longo.
 
 ---
 
-### Mandibula de Ferro (Barbaro)
+### Mandibula de Ferro (Bárbaro)
 
 **Dieta nv.2:** Mastigar exoesqueletos concede +1d6 perfurante em ataques desarmados (estilhacos entre os punhos) por 8h.
 
-**Nv 4 — Mastigador:** Pode morder carapaca como acao bonus em agarramento: 2d6+FOR perfurante e alvo -2 CA ate fim do turno dele.
+**Nv 4 — Mastigador:** Pode morder carapaça como ação bônus em agarramento: 2d6+FOR perfurante e alvo -2 CA até fim do turno dele.
 
-**Nv 8 — Ossos como Arma (requer Mastigador):** Em Furia, ataques desarmados contam como magicos e +1d8. Pode quebrar escudo inimigo em critico (DES CD 14).
+**Nv 8 — Ossos como Arma (requer Mastigador):** Em Furia, ataques desarmados contam como magicos e +1d8. Pode quebrar escudo inimigo em crítico (DES CD 14).
 
-**Nv 12 — Mandibula de Ferro (requer Ossos como Arma):** Resistencia a perfurante fora de Furia; em Furia, imune a critico. Mordida recupera 1d6 HP se dano causado >= 10.
+**Nv 12 — Mandibula de Ferro (requer Ossos como Arma):** Resistência a perfurante fora de Furia; em Furia, imune a crítico. Mordida recupera 1d6 HP se dano causado >= 10.
 
-**Nv 16 — Esmagar Cranio (requer Mandibula de Ferro):** 1/combate em Furia: mordida em alvo Agarrado — se HP restante < 5d6+FOR, execucao narrativa (Mestre confirma) e voce ganha +2 CA de restos de carapaca.
+**Nv 16 — Esmagar Cranio (requer Mandibula de Ferro):** 1/combaté em Furia: mordida em alvo Agarrado — se HP restante < 5d6+FOR, execucao narrativa (Mestre confirma) e você ganha +2 CA de restos de carapaça.
 
-**Nv 20 — Ascensao — Titereiro de Quitina:** Furia transforma pele em carapaca total: +3 CA, garras 3d6 perfurante, resistencia cortante/contundente. 1/descanso longo, mordida area (cone 3m) 6d6 perfurante.
+**Nv 20 — Ascensao — Titereiro de Quitina:** Furia transforma pele em carapaça total: +3 CA, garras 3d6 perfurante, resistência cortante/contundente. 1/descanso longo, mordida área (cone 3m) 6d6 perfurante.
 
 ---
 
-### Ruminante das Neves (Barbaro)
+### Ruminante das Neves (Bárbaro)
 
 **Dieta nv.2:** Imunidade a frio e ignora 1 nivel de Exaustao por estocar calorias de criaturas gordurosas; pode reservar 1 refeicao para dia sem comer.
 
-**Nv 4 — Reserva de Gordura:** Sem comer 24h, mantem dieta ativa. Em Furia, resistencia a frio vira imunidade.
+**Nv 4 — Reserva de Gordura:** Sem comer 24h, mantem dieta ativa. Em Furia, resistência a frio vira imunidade.
 
 **Nv 8 — Avalanche (requer Reserva de Gordura):** Em neve ou gelo, deslocamento +6m e primeiro ataque em Furia derruba (FOR CD 15 Prostrado).
 
-**Nv 12 — Hibernacao de Combate (requer Avalanche):** 1/descanso curto: 1 rodada "dormir" em Furia — proximo turno acorda com acao completa extra e 3d8 HP.
+**Nv 12 — Hibernação de Combaté (requer Avalanche):** 1/descanso curto: 1 rodada "dormir" em Furia — próximo turno acorda com ação completa extra e 3d8 HP.
 
-**Nv 16 — Pele de Mamute (requer Hibernacao de Combate):** +2 CA em Furia. Aliados adjacentes em clima frio extremo nao ganham Exaustao ambiental.
+**Nv 16 — Pele de Mamute (requer Hibernação de Combate):** +2 CA em Furia. Aliados adjacentes em clima frio extremo não ganham Exaustao ambiental.
 
-**Nv 20 — Ascensao — Inverno Eterno:** 1/descanso longo, 1 min: aura 9m de frio — inimigos 3d8 frio e velocidade metade; voce tamanho Grande, +4 CON temporario, Furia automatica sem gastar uso. Terreno torna-se dificil para inimigos.
+**Nv 20 — Ascensao — Inverno Eterno:** 1/descanso longo, 1 min: aura 9m de frio — inimigos 3d8 frio e velocidade metade; você tamanho Grande, +4 CON temporario, Furia automatica sem gastar uso. Terreno torna-se dificil para inimigos.
 
 ---
 
-### Frenetico do Acucar (Barbaro)
+### Frenetico do Acucar (Bárbaro)
 
-**Dieta nv.2:** Glicose magica dobra velocidade e concede 1 acao bonus extra por combate; ao terminar, 1 nivel de Exaustao.
+**Dieta nv.2:** Glicose mágica dobra velocidade e concede 1 ação bônus extra por combate; ao terminar, 1 nivel de Exaustao.
 
-**Nv 4 — Pico de Acucar:** Acao bonus consumir doce: +3m e proximo ataque +1d6. Nao acumula crash ate fim do combate.
+**Nv 4 — Pico de Acucar:** Acao bônus consumir doce: +3m e próximo ataque +1d6. Nao acumula crash até fim do combate.
 
-**Nv 8 — Rush Doce (requer Pico de Acucar):** Em Furia apos doce, acao bonus adicional pode ser ataque ou movimento. Crash reduzido: sem Exaustao se descanso curto apos.
+**Nv 8 — Rush Doce (requer Pico de Acucar):** Em Furia após doce, ação bônus adicional pode ser ataque ou movimento. Crash reduzido: sem Exaustao se descanso curto apos.
 
 **Nv 12 — Metabolismo Queimado (requer Rush Doce):** 2 doces por descanso longo sem crash duplo. Furia +2 DES temporario.
 
-**Nv 16 — Sobredose Controlada (requer Metabolismo Queimado):** 1/combate: triplica acao bonus do doce — 2 ataques bonus ou movimento+dash+ataque.
+**Nv 16 — Sobredose Controlada (requer Metabolismo Queimado):** 1/combate: triplica ação bônus do doce — 2 ataques bônus ou movimento+dash+ataque.
 
-**Nv 20 — Ascensao — Diabete Arcano:** 1/descanso longo: 5 min de hiper — velocidade dobrada, 2 acoes bonus por turno, +2d6 em todos os ataques em Furia automatica; ao fim, 2 niveis Exaustao recuperaveis 1 por descanso longo. Slimes de fruta mortos por voce explodem em doce curativo 4d8 para aliados.
+**Nv 20 — Ascensao — Diabete Arcano:** 1/descanso longo: 5 min de hiper — velocidade dobrada, 2 acoes bônus por turno, +2d6 em todos os ataques em Furia automatica; ao fim, 2 niveis Exaustao recuperaveis 1 por descanso longo. Slimes de fruta mortos por você explodem em doce curativo 4d8 para aliados.
 
 ---
 
@@ -2163,15 +2386,15 @@ Use a **faixa de andar** (Livro do Mestre, Cap. 21) e o **escalonamento** quando
 
 **Dieta nv.2:** Bebidas emparelhadas com prato maximizam dados de cura de magias do Bardo pelas proximas horas.
 
-**Nv 4 — Harmonizacao de Taças:** Ao usar Inspiracao em quem vai cozinhar, alvo ganha +1d6 em Coccao/Harmonizacao por 1h (Cap. 19).
+**Nv 4 — Harmonização de Taças:** Ao usar Inspiracao em quem vai cozinhar, alvo ganha +1d6 em Coccao/Harmonização por 1h (Cap. 19).
 
-**Nv 8 — Menu de Expedicao (requer Harmonizacao de Taças):** Descanso curto com bebida sua: grupo recupera +1d8 HP extra e ativa dieta mesmo com refeicao Comum.
+**Nv 8 — Menu de Expedicao (requer Harmonização de Taças):** Descanso curto com bebida sua: grupo recupera +1d8 HP extra e ativa dieta mesmo com refeicao Comum.
 
-**Nv 12 — Reserva Envelhecida (requer Menu de Expedicao):** 1 magia de cura por descanso longo cura valor maximo dos dados se vinho correto foi consumido antes.
+**Nv 12 — Reserva Envelhecida (requer Menu de Expedicao):** 1 magia de cura por descanso longo cura valor máximo dos dados se vinho correto foi consumido antes.
 
-**Nv 16 — Brinde de Batalha (requer Reserva Envelhecida):** Acao bonus: aliado bebe — proximo ataque Vantagem e +1d8 dano. Usos: CAR por descanso curto.
+**Nv 16 — Brinde de Batalha (requer Reserva Envelhecida):** Acao bonus: aliado bebe — próximo ataque Vantagem e +1d8 dano. Usos: CAR por descanso curto.
 
-**Nv 20 — Ascensao — Grande Cru:** 1/semana: banquete liquido — magias de cura do grupo dobram dados por 24h; 1/dia cada aliado rerrola save de veneno ou medo apos brinde.
+**Nv 20 — Ascensao — Grande Cru:** 1/semana: banquete liquido — magias de cura do grupo dobram dados por 24h; 1/dia cada aliado rerrola save de veneno ou medo após brinde.
 
 ---
 
@@ -2179,15 +2402,15 @@ Use a **faixa de andar** (Livro do Mestre, Cap. 21) e o **escalonamento** quando
 
 **Dieta nv.2:** Cervejas de fungo concedem HP temporario igual ao dado de Inspiracao atual sempre que usa Inspiracao de Bardo.
 
-**Nv 4 — Fermento de Masmorra:** Cria 3 cervejas por descanso longo (acao bonus beber: 1d8 HP temp + 1d6 Inspiracao extra ao proximo teste).
+**Nv 4 — Fermento de Masmorra:** Cria 3 cervejas por descanso longo (acao bônus beber: 1d8 HP temp + 1d6 Inspiracao extra ao próximo teste).
 
 **Nv 8 — Ressaca Positiva (requer Fermento de Masmorra):** Aliado que bebe recupera 1 uso de habilidade de classe em descanso curto (1/dia por grupo).
 
-**Nv 12 — Cancao Ebria (requer Ressaca Positiva):** 1/descanso curto, Cancao de Poder (1 min): aliados que ouvem +2 ataques e saving throws; inimigos SAB CD 15 ou Distraidos (-2 ataques).
+**Nv 12 — Cancao Ebria (requer Ressaca Positiva):** 1/descanso curto, Cancao de Poder (1 min): aliados que ouvem +2 ataques e teste de resistências; inimigos SAB CD 15 ou Distraidos (-2 ataques).
 
 **Nv 16 — Barril Explosivo (requer Cançao Ebria):** Arremessa barril (18m): 4d6 fogo + CON CD 15 ou Envenenado leve. Ingrediente de fungo necessario.
 
-**Nv 20 — Ascensao — Festa dos Fungos:** 1/descanso longo: nuvem alegra 9m — aliados Vantagem em todos os saves mentais 10 min; inimigos com INT 6+ testam CAR CD 17 ou nao atacam (encantamento) 1 rodada. Inspiracao de Bardo sobe 1 passo de dado (ex.: 1d8 para 1d10) ate descanso longo.
+**Nv 20 — Ascensao — Festa dos Fungos:** 1/descanso longo: nuvem alegra 9m — aliados Vantagem em todos os saves mentais 10 min; inimigos com INT 6+ testam CAR CD 17 ou não atacam (encantamento) 1 rodada. Inspiracao de Bardo sobe 1 passo de dado (ex.: 1d8 para 1d10) até descanso longo.
 
 ---
 
@@ -2197,29 +2420,29 @@ Use a **faixa de andar** (Livro do Mestre, Cap. 21) e o **escalonamento** quando
 
 **Nv 4 — Arremesso Ritmico:** Proficiencia em facas de trinchar como arma (1d6). Ataque a distancia com CAR. 1/descanso curto recupera 1d4 facas lancadas.
 
-**Nv 8 — Danca de Laminas (requer Arremesso Ritmico):** Acao bonus: ate 2 ataques com facas (CAR para acerto). Se acertar ambos em mesmo alvo, +1d6 furtivo "de palco".
+**Nv 8 — Danca de Laminas (requer Arremesso Ritmico):** Acao bonus: até 2 ataques com facas (CAR para acerto). Se acertar ambos em mesmo alvo, +1d6 furtivo "de palco".
 
-**Nv 12 — Espectaculo Sangrento (requer Danca de Laminas):** 1/combate: performance 1 turno (CON CD 14 ou inimigos Desvantagem vs grupo); voce ganha 2 acoes bonus de faca neste turno.
+**Nv 12 — Espectaculo Sangrento (requer Danca de Laminas):** 1/combate: performance 1 turno (CON CD 14 ou inimigos Desvantagem vs grupo); você ganha 2 acoes bônus de faca neste turno.
 
-**Nv 16 — Faca Volta (requer Espectaculo Sangrento):** Facas magicas retornam apos acerto ou erro. Critico com faca: alvo sangra 2d4 e ingrediente de ave intacto.
+**Nv 16 — Faca Volta (requer Espectaculo Sangrento):** Facas mágicas retornam após acerto ou erro. Crítico com faca: alvo sangra 2d4 e ingrediente de ave intacto.
 
-**Nv 20 — Ascensao — Finale das Facas:** 1/descanso longo: chuva de facas em raio 6m — 8d6 cortante (DES CD 17 metade); voce pode mover ate metade do deslocamento entre cada 2d6 sem provocar oportunidade. Inspiracao concedida a aliado que acertar critico neste combate e maximizada.
+**Nv 20 — Ascensao — Finale das Facas:** 1/descanso longo: chuva de facas em raio 6m — 8d6 cortante (DES CD 17 metade); você pode mover até metade do deslocamento entre cada 2d6 sem provocar oportunidade. Inspiracao concedida a aliado que acertar crítico neste combaté e maximizada.
 
 ---
 
 ### Cantor das Especiarias (Bardo)
 
-**Dieta nv.2:** Raizes picantes raras aumentam CD de resistencia de ilusao e encantamento em +3 por 8h.
+**Dieta nv.2:** Raizes picantes raras aumentam CD de resistência de ilusao e encantamento em +3 por 8h.
 
 **Nv 4 — Nota Picante:** +1 CD em ilusao/encantamento. Truque de ilusao olfativa (nuvem de especiaria).
 
-**Nv 8 — Refrao Queima (requer Nota Picante):** 1/descanso curto: aliado que falhou save mental repete com Vantagem apos cheirar especiaria (acao bonus).
+**Nv 8 — Refrao Queima (requer Nota Picante):** 1/descanso curto: aliado que falhou save mental repete com Vantagem após cheirar especiaria (ação bônus).
 
 **Nv 12 — Sinfornia de Ervas (requer Refrao Queima):** Contracanto (estilo Cap. 12): reacao interrompe feitico 18m, CD Concentracao 14+CAR.
 
-**Nv 16 — Encanto Culinario (requer Sinfornia de Ervas):** Refeicao com especiarias: quem come ganha +2 CD em saves mentais 8h. Voce prepara 2 porcoes extra de efeito.
+**Nv 16 — Encanto Culinario (requer Sinfornia de Ervas):** Refeicao com especiarias: quem come ganha +2 CD em saves mentais 8h. Você prepara 2 porcoes extra de efeito.
 
-**Nv 20 — Ascensao — Ode ao Wasabi:** 1/descanso longo: canto 1 min — inimigos 6d8 psiquico + SAB CD 18 ou Atordoado 1 turno; aliados imunes e +3 CD em magias mentais 1 hora. Ilusoes criadas por voce parecem reais ate dano fisico (CD 19 para desacreditar).
+**Nv 20 — Ascensao — Ode ao Wasabi:** 1/descanso longo: canto 1 min — inimigos 6d8 psiquico + SAB CD 18 ou Atordoado 1 turno; aliados imunes e +3 CD em magias mentais 1 hora. Ilusoes criadas por você parecem reais até dano fisico (CD 19 para desacreditar).
 
 ---
 
@@ -2227,31 +2450,31 @@ Use a **faixa de andar** (Livro do Mestre, Cap. 21) e o **escalonamento** quando
 
 ### Circulo da Decomposicao (Druida)
 
-**Dieta nv.2:** Cogumelos necroticos concedem imunidade a necrotico e magias de terra causam envenenamento passivo (+1d4 veneno, 1/combate).
+**Dieta nv.2:** Cogumelos necróticos concedem imunidade a necrótico e magias de terra causam envenenamento passivo (+1d4 veneno, 1/combate).
 
-**Nv 4 — Esporos Necroticos:** Magias Cap. 19 no grimorio. Forma Selvagem mantem imunidade a necrotico.
+**Nv 4 — Esporos Necroticos:** Magias Cap. 19 no grimorio. Forma Selvagem mantem imunidade a necrótico.
 
-**Nv 8 — Podridao Fertil (requer Esporos Necroticos):** Monstros mortos por voce apodrecem em nutrientes: 1d4 porcoes de fungo Comum em 1 hora.
+**Nv 8 — Podridao Fertil (requer Esporos Necroticos):** Monstros mortos por você apodrecem em nutrientes: 1d4 porcoes de fungo Comum em 1 hora.
 
-**Nv 12 — Toque de Bolor (requer Podridao Fertil):** Ataque em Forma Selvagem ou magia: +2d6 necrotico. 1/descanso curto, nuvem 3m 3d8 necrotico (CON CD 14).
+**Nv 12 — Toque de Bolor (requer Podridao Fertil):** Ataque em Forma Selvagem ou magia: +2d6 necrótico. 1/descanso curto, nuvem 3m 3d8 necrótico (CON CD 14).
 
-**Nv 16 — Grande Decomposicao (requer Toque de Bolor):** Magia Cap. 19. Terreno 6m torna-se dificil e 2d6 necrotico ao entrar (1 min).
+**Nv 16 — Grande Decomposicao (requer Toque de Bolor):** Magia Cap. 19. Terreno 6m torna-se dificil e 2d6 necrótico ao entrar (1 min).
 
-**Nv 20 — Ascensao — Ciclo da Podridem:** 1/descanso longo: area 12m — mortos-vivos 10d8 necrotico (SAB CD 17); vivos inimigos Envenenado. Aliados curam 2d8 ao comer fungos gerados. Forma Selvagem pode ser esqueleto-florestal (imune necrotico, aura 1d6 necrotico adjacente).
+**Nv 20 — Ascensao — Ciclo da Podridem:** 1/descanso longo: área 12m — mortos-vivos 10d8 necrótico (SAB CD 17); vivos inimigos Envenenado. Aliados curam 2d8 ao comer fungos gerados. Forma Selvagem pode ser esqueleto-florestal (imune necrótico, aura 1d6 necrótico adjacente).
 
 ---
 
 ### Circulo do Superpredador (Druida)
 
-**Dieta nv.2:** Forma Selvagem ganha HP extra igual ao HP maximo do ultimo monstro Grande consumido (aplicar uma vez por transformacao).
+**Dieta nv.2:** Forma Selvagem ganha HP extra igual ao HP máximo do ultimo monstro Grande consumido (aplicar uma vez por transformacao).
 
-**Nv 4 — Forma Aprimorada:** Forma Selvagem ate CR dobro do limite normal de nivel.
+**Nv 4 — Forma Aprimorada:** Forma Selvagem até CR dobro do limite normal de nivel.
 
-**Nv 8 — Fusao Biomagica (requer Forma Aprimorada):** Em forma de especie cuja carne comeu, ganha mutacao biomagica da especie enquanto transformado.
+**Nv 8 — Fusao Biomágica (requer Forma Aprimorada):** Em forma de especie cuja carne comeu, ganha mutação biomágica da especie enquanto transformado.
 
-**Nv 12 — Forma Monstruosa (requer Fusao Biomagica):** Pode assumir monstros ate CR = nivel do Druida (basilisco, manticora, etc.).
+**Nv 12 — Forma Monstruosa (requer Fusao Biomágica):** Pode assumir monstros até CR = nivel do Druida (basilisco, manticora, etc.).
 
-**Nv 16 — Caca Alpha (requer Forma Monstruosa):** Em Forma Selvagem, +2d6 no primeiro ataque contra presa com HP cheio. Trinchar em forma concede Vantagem.
+**Nv 16 — Caça Alpha (requer Forma Monstruosa):** Em Forma Selvagem, +2d6 no primeiro ataque contra presa com HP cheio. Trinchar em forma concede Vantagem.
 
 **Nv 20 — Ascensao — Forma Lendaria:** 1/descanso longo: Forma de Boss derrotado pela campanha (10 min), mantem INT/SAB, estatisticas fisicas do Boss. HP extra da dieta dobra. Apos terminar, deve comer 1 porcao da especie ou Exaustao 1.
 
@@ -2259,99 +2482,99 @@ Use a **faixa de andar** (Livro do Mestre, Cap. 21) e o **escalonamento** quando
 
 ### Circulo da Simbiose (Druida)
 
-**Dieta nv.2:** Sementes magicas criam armadura de vinhas (rebate 1d6 cortante a cada ataque recebido) por 8h.
+**Dieta nv.2:** Sementes mágicas criam armadura de vinhas (rebaté 1d6 cortante a cada ataque recebido) por 8h.
 
 **Nv 4 — Semente Guardia:** Armadura de vinhas +2 CA e 1d6 rebate. Planta semente em 1 min: cresce fruta curativa 1d8 em 8h.
 
-**Nv 8 — Rede Simbiotica (requer Semente Guardia):** Aliado adjacente ganha metade do rebate (arredonda 1d4 minimo). Pode compartilhar 1 mutacao vegetal com aliado por descanso longo.
+**Nv 8 — Rede Simbiotica (requer Semente Guardia):** Aliado adjacente ganha metade do rebaté (arredonda 1d4 minimo). Pode compartilhar 1 mutação vegetal com aliado por descanso longo.
 
-**Nv 12 — Vinha Agarradora (requer Rede Simbiotica):** 1/descanso curto: vinhas 6m Restringem (FOR CD 15). Em Forma Selvagem, ataques aplicam Lentidao em falha de DES CD 14.
+**Nv 12 — Vinha Agarradora (requer Rede Simbiotica):** 1/descanso curto: vinhas 6m Restringem (FOR CD 15). Em Forma Selvagem, ataques aplicam Lentidão em falha de DES CD 14.
 
-**Nv 16 — Floresta em Miniatura (requer Vinha Agarradora):** Descanso longo em area verde: cria 2d4 porcoes de planta Comum. Imune a veneno de plantas enquanto dieta ativa.
+**Nv 16 — Floresta em Miniatura (requer Vinha Agarradora):** Descanso longo em área verde: cria 2d4 porcoes de planta Comum. Imune a veneno de plantas enquanto dieta ativa.
 
-**Nv 20 — Ascensao — Corpo Bosque:** 10 min, 1/descanso longo: pele-bosque — CA 16+SAB, rebate 2d6, regenera 2d8/turno. Aliados a 3m ganham +2 CA de vinhas. Ao terminar, planta arvore que frutifica em 1 semana (recurso de faccao).
+**Nv 20 — Ascensao — Corpo Bosque:** 10 min, 1/descanso longo: pele-bosque — CA 16+SAB, rebaté 2d6, regenera 2d8/turno. Aliados a 3m ganham +2 CA de vinhas. Ao terminar, planta arvore que frutifica em 1 semana (recurso de faccao).
 
 ---
 
 ### Circulo do Solo Vivo (Druida)
 
-**Dieta nv.2:** Pedras elementais concedem resistencia a dano contundente enquanto dieta ativa.
+**Dieta nv.2:** Pedras elementais concedem resistência a dano contundente enquanto dieta ativa.
 
 **Nv 4 — Morder a Terra:** Pode mastigar mineral elemental (1/dia) para curar 2d8+CON sem magia.
 
-**Nv 8 — Pele de Pedra (requer Morder a Terra):** +2 CA em Forma Selvagem ou humanoide com dieta. Terreno rochoso nao e dificil para voce.
+**Nv 8 — Pele de Pedra (requer Morder a Terra):** +2 CA em Forma Selvagem ou humanoide com dieta. Terreno rochoso não e dificil para voce.
 
 **Nv 12 — Tremor Leve (requer Pele de Pedra):** 1/descanso curto: 6m, criaturas FOR CD 14 ou Prostradas. Estruturas frageis racham (narrativo).
 
 **Nv 16 — Golem Momentaneo (requer Tremor Leve):** 1/descanso longo: elemental de pedra Pequeno (30 HP) por 10 min obedece; pode Trinchar rochas.
 
-**Nv 20 — Ascensao — Montanha Viva:** 1/descanso longo, 10 min: tamanho Grande, resistencia contundente/perfurante/cortante, esmagamento 3d10 contundente (acao, 1/turno). Aliados em 3m imunes a tremor e desabamento. Pedras comidas neste estado alimentam grupo 1 dia sem refeicao.
+**Nv 20 — Ascensao — Montanha Viva:** 1/descanso longo, 10 min: tamanho Grande, resistência contundente/perfurante/cortante, esmagamento 3d10 contundente (acao, 1/turno). Aliados em 3m imunes a tremor e desabamento. Pedras comidas neste estado alimentam grupo 1 dia sem refeicao.
 
 ---
 
 ## ARTIFICE
 
-### Ferreiro de Utensilios (Artifice)
+### Ferreiro de Utensilios (Artífice)
 
 **Dieta nv.2:** Pratos em panelas de exoesqueleto aumentam CA das proprias armaduras em +2 por 8h.
 
-**Nv 4 — Panela Viva:** Infusao em utensilio de cozinha: ingredientes rendem dobro (empilha com Panela de Pressao da classe em +50% total, nao triplica). +2 em Coccao com seu kit.
+**Nv 4 — Panela Viva:** Infusão em utensilio de cozinha: ingredientes rendem dobro (empilha com Panela de Pressao da classe em +50% total, não triplica). +2 em Coccao com seu kit.
 
-**Nv 8 — Armadura de Caldeirao (requer Panela Viva):** Infusao +1 em armadura media que voce veste; se forjada com quitina, +2 total.
+**Nv 8 — Armadura de Caldeirao (requer Panela Viva):** Infusão +1 em armadura media que você veste; se forjada com quitina, +2 total.
 
-**Nv 12 — Reforco de Campo (requer Armadura de Caldeirao):** Aliado usa sua panela 1 descanso: +1 CA por 8h. Voce repara armadura quebrada em 1 hora com exoesqueleto.
+**Nv 12 — Reforco de Campo (requer Armadura de Caldeirao):** Aliado usa sua panela 1 descanso: +1 CA por 8h. Você repara armadura quebrada em 1 hora com exoesqueleto.
 
-**Nv 16 — Forja Rapida (requer Reforco de Campo):** Cria arma organica +1 em 4 horas (dano tipo monstro). 1 arma ativa por vez.
+**Nv 16 — Forja Rápida (requer Reforco de Campo):** Cria arma orgânica +1 em 4 horas (dano tipo monstro). 1 arma ativa por vez.
 
-**Nv 20 — Ascensao — Mestre de Utensilios:** Armadura que voce veste +3 CA permanente (magic). 1/descanso longo: distribui 3 utensilios infundidos (+1 Coccao ou +1 CA) ao grupo por 24h. Constructos de metal ignoram rustico de masmorra.
+**Nv 20 — Ascensao — Mestre de Utensilios:** Armadura que você veste +3 CA permanente (magic). 1/descanso longo: distribui 3 utensilios infundidos (+1 Coccao ou +1 CA) ao grupo por 24h. Constructos de metal ignoram rustico de masmorra.
 
 ---
 
-### Engenheiro de Fogareiros (Artifice)
+### Engenheiro de Fogareiros (Artífice)
 
-**Dieta nv.2:** Glandulas combustiveis concedem resistencia a Fogo e +2d6 em bombas e engenhocas por 8h.
+**Dieta nv.2:** Glandulas combustiveis concedem resistência a Fogo e +2d6 em bombas e engenhocas por 8h.
 
-**Nv 4 — Fogareiro Portatil:** Acende fogueira segura em 1 acao; cozinha em combate em dobro de velocidade (minimo 5 min por prato simples).
+**Nv 4 — Fogareiro Portátil:** Acende fogueira segura em 1 acao; cozinha em combaté em dobro de velocidade (minimo 5 min por prato simples).
 
-**Nv 8 — Bomba de Glandula (requer Fogareiro Portatil):** 3 bombas/descanso longo (4d6 fogo, 3m, DES CD 14). Nao afeta comida aliada se acertar panela — escolhe ao arremessar.
+**Nv 8 — Bomba de Glandula (requer Fogareiro Portátil):** 3 bombas/descanso longo (4d6 fogo, 3m, DES CD 14). Nao afeta comida aliada se acertar panela — escolhe ao arremessar.
 
-**Nv 12 — Caldeira a Pressao (requer Bomba de Glandula):** Reacao: explosao controlada reduz dano de fogo em voce a 0 e reflete 2d8 fogo ao atacante (alcance 3m).
+**Nv 12 — Caldeira a Pressao (requer Bomba de Glandula):** Reacao: explosao controlada reduz dano de fogo em você a 0 e reflete 2d8 fogo ao atacante (alcance 3m).
 
 **Nv 16 — Motor de Vapor Menor (requer Caldeira a Pressao):** Se tiver Construto Auxiliar (Pequeno, 20 HP, CA 13), ele ganha lanca-fogo integrada 2d6+INT; senao, pode criar um em 8 horas de descanso longo.
 
-**Nv 20 — Ascensao — Inferno Controlado:** 1/descanso longo: incendio direcionado 12m linha 10d6 fogo (DES CD 17 metade); aliados na linha sofrem metade automaticamente. Bombas dobram dado ate descanso longo. Imune a proprio fogo.
+**Nv 20 — Ascensao — Inferno Controlado:** 1/descanso longo: incendio direcionado 12m linha 10d6 fogo (DES CD 17 metade); aliados na linha sofrem metade automaticamente. Bombas dobram dado até descanso longo. Imune a proprio fogo.
 
 ---
 
-### Biologo Alquimico (Artifice)
+### Biologo Alquimico (Artífice)
 
-**Dieta nv.2:** Micro-doses de toxina garantem imunidade a envenenamento e revestir arma com +1d6 acido por 1 minuto (3/combate).
+**Dieta nv.2:** Micro-doses de toxina garantem imunidade a envenenamento e revestir arma com +1d6 ácido por 1 minuto (3/combate).
 
-**Nv 4 — Seringa Basica:** 2 seringas/descanso longo — aliado ganha 1 mutacao leve 8h ou antidoto a veneno conhecido.
+**Nv 4 — Seringa Basica:** 2 seringas/descanso longo — aliado ganha 1 mutação leve 8h ou antidoto a veneno conhecido.
 
-**Nv 8 — Catalisador (requer Seringa Basica):** Dobrar ingrediente Comum em pocao (10 min). Veneno em arma dura 5 ataques.
+**Nv 8 — Catalisador (requer Seringa Basica):** Dobrar ingrediente Comum em poção (10 min). Veneno em arma dura 5 ataques.
 
 **Nv 12 — Laboratorio de Campo (requer Catalisador):** Kit completo sem penalidade; antidoto em 5 min para veneno identificado.
 
-**Nv 16 — Mutageno de Batalha (requer Laboratorio de Campo):** Voce injeta mutageno: +2 STR ou +2 DES por 10 min, 1 Exaustao depois. 1/descanso longo.
+**Nv 16 — Mutageno de Batalha (requer Laboratorio de Campo):** Você injeta mutageno: +2 STR ou +2 DES por 10 min, 1 Exaustao depois. 1/descanso longo.
 
-**Nv 20 — Ascensao — Mutacao Direcionada:** 1/semana: mutacao permanente sintetica para aliado (equivalente Boss medio, aprovacao Mestre). Em combate, nuvem 6m 5d8 acido+veneno (CON CD 17) 1/descanso longo; aliados imunes.
+**Nv 20 — Ascensao — Mutação Direcionada:** 1/semana: mutação permanente sintetica para aliado (equivalente Boss medio, aprovacao Mestre). Em combate, nuvem 6m 5d8 ácido+veneno (CON CD 17) 1/descanso longo; aliados imunes.
 
 ---
 
-### Construtor de Armadilhas (Artifice)
+### Construtor de Armadilhas (Artífice)
 
-**Dieta nv.2:** Carne extraida sem dano de batalha concede Vantagem em INT e criacao de invencoes por 24h.
+**Dieta nv.2:** Carne extraída sem dano de batalha concede Vantagem em INT e criacao de invencoes por 24h.
 
-**Nv 4 — Armadilha Biologica:** Monta armadilha em 5 min com ingrediente (efeito biomagico do monstro, Percepcao CD 18 detectar).
+**Nv 4 — Armadilha Biologica:** Monta armadilha em 5 min com ingrediente (efeito biomagico do monstro, Percepção CD 18 detectar).
 
 **Nv 8 — Extracao Perfeita (requer Armadilha Biologica):** Vantagem em Trinchar se monstro morreu em armadilha sua ou com 0 dano de arma cortante.
 
 **Nv 12 — Rede de Campo (requer Extracao Perfeita):** 3 armadilhas ativas simultaneas. Armadilha pode ser remota (corda, 9m).
 
-**Nv 16 — Engenho de Caca (requer Rede de Campo):** 1/descanso longo: armadilha maior (6d8 dano tipo escolhido + condicao do ingrediente, FOR ou DES CD 16).
+**Nv 16 — Engenho de Caça (requer Rede de Campo):** 1/descanso longo: armadilha maior (6d8 dano tipo escolhido + condicao do ingrediente, FOR ou DES CD 16).
 
-**Nv 20 — Ascensao — Arquiteto da Masmorra:** 1/descanso longo: converte area 12m em "zona preparada" 1 hora — todas as armadilhas +2d6, Percepcao inimiga CD 20, voce e aliados Vantagem em Furtividade e INT para invencoes. Ao fim, recupera todos os ingredientes usados (metade porcoes, qualidade preservada).
+**Nv 20 — Ascensao — Arquiteto da Masmorra:** 1/descanso longo: converte área 12m em "zona preparada" 1 hora — todas as armadilhas +2d6, Percepção inimiga CD 20, você e aliados Vantagem em Furtividade e INT para invencoes. Ao fim, recupera todos os ingredientes usados (metade porcoes, qualidade preservada).
 
 ---
 
@@ -2370,46 +2593,46 @@ Use a **faixa de andar** (Livro do Mestre, Cap. 21) e o **escalonamento** quando
 
 ---
 
-*Fim do Capitulo 12 — Caminhos de Subclasse (Dieta Marcial).*
+*Fim do Capítulo 12 — Caminhos de Subclasse (Dieta Marcial).*
 
 
-## CAPITULO 13 — TALENTOS UNIVERSAIS
+## CAPÍTULO 13 — TALENTOS UNIVERSAIS
 
 ### TALENTOS DE COMBATE
 
-Especialista em Armas Organicas (Nivel 4): Proficiencia em todas as armas organicas. Armas organicas nas suas maos causam +1d4 de dano adicional do tipo correspondente ao monstro de origem.
+Especialista em Armas Orgânicas (Nivel 4): Proficiencia em todas as armas orgânicas. Armas orgânicas nas suas maos causam +1d4 de dano adicional do tipo correspondente ao monstro de origem.
 
 Pele Grossa (CON 14, Nivel 4): +1 CA permanente. Quando sofre dano que o reduziria a exatamente 0 HP, pode testar CON CD 12 para ficar a 1 HP em vez disso. 1x por descanso curto.
 
-Reflexos de Combate (DES 16, Nivel 8): Pode usar reacao para fazer um ataque contra qualquer inimigo que entre no seu alcance de ameaca. Nao conta como ataque de oportunidade.
+Reflexos de Combaté (DES 16, Nivel 8): Pode usar reacao para fazer um ataque contra qualquer inimigo que entre no seu alcance de ameaca. Nao conta como ataque de oportunidade.
 
-Golpe Brutal (FOR 18, Nivel 12): Uma vez por turno, pode declarar um Golpe Brutal. Se acertar, o alvo e derrubado Prostrado (sem saving throw) e sofre dano adicional igual ao modificador de FOR.
+Golpe Brutal (FOR 18, Nivel 12): Uma vez por turno, pode declarar um Golpe Brutal. Se acertar, o alvo e derrubado Prostrado (sem teste de resistência) e sofre dano adicional igual ao modificador de FOR.
 
 ### TALENTOS CULINARIOS
 
 Maos de Mestre — Trinchar (Trinchar +4, Nivel 4): +3 permanente em Trinchar. Nunca sofre penalidade por extrair ingredientes "as cegas" — mesmo sem Estudo de Anatomia, extrai como se tivesse feito o estudo.
 
-Paladar Apurado — Harmonizacao (Harmonizacao +5, Nivel 4): +3 permanente em Harmonizacao. Uma vez por refeicao, pode rolar o resultado de Harmonizacao com Vantagem.
+Paladar Apurado — Harmonização (Harmonização +5, Nivel 4): +3 permanente em Harmonização. Uma vez por refeicao, pode rolar o resultado de Harmonização com Vantagem.
 
 Controle de Chama Perfeito — Coccao (Coccao +4, Nivel 8): O resultado minimo em testes de Coccao e sempre 10 (nunca Gororoba). Prato Perfeito agora exige resultado 18+ em vez de 21+.
 
-Estomago Lendario (Estomago de Ferro +5, Nivel 8): Imune a debuffs de Gororoba. Pode comer ingredientes de categoria Especialista crus. Uma vez por semana, pode ingerir um ingrediente bruto de Boss e receber 1 mutacao aleatoria por 8h.
+Estômago Lendário (Estômago de Ferro +5, Nivel 8): Imune a debuffs de Gororoba. Pode comer ingredientes de categoria Especialista crus. Uma vez por semana, pode ingerir um ingrediente bruto de Boss e receber 1 mutação aleatoria por 8h.
 
-Cozinheiro de Expedicao (Nivel 4): Pode preparar refeicoes em metade do tempo normal. Em combate, pode preparar uma "refeicao de emergencia" como acao bonus — concede 2d8 HP Temporarios e ativa o Bonus de Dieta Base de qualquer aliado que consuma.
+Cozinheiro de Expedicao (Nivel 4): Pode preparar refeicoes em metade do tempo normal. Em combate, pode preparar uma "refeicao de emergencia" como ação bônus — concede 2d8 HP Temporarios e ativa o Bonus de Dieta Base de qualquer aliado que consuma.
 
 Extrator de Elite (Trinchar +6, Nivel 12): Ao extrair ingredientes de um monstro com Estudo de Anatomia, extrai automaticamente o dobro de ingredientes normais. Nunca destroca ingredientes de Boss durante extracao.
 
 ### TALENTOS DE SOBREVIVENCIA
 
-Sentido de Masmorra (Nivel 4): Ao entrar num bioma, recebe automaticamente informacao sobre nivel de perigo, presenca de armadilhas obvias e tipo de criaturas predominantes. Nunca se perde em andares ja visitados.
+Sentido de Masmorra (Nivel 4): Ao entrar num bioma, recebe automaticamente informação sobre nivel de perigo, presenca de armadilhas obvias e tipo de criaturas predominantes. Nunca se perde em andares ja visitados.
 
-Metabolismo Acelerado (CON 14, Nivel 4): Mutacoes biomagicas duram 36h em vez de 24h. Pode manter uma mutacao "reservada" — ao perder uma mutacao, a reservada ativa automaticamente.
+Metabolismo Acelerado (CON 14, Nivel 4): Mutacoes biomágicas duram 36h em vez de 24h. Pode manter uma mutação "reservada" — ao perder uma mutação, a reservada ativa automaticamente.
 
-Primeiros Socorros Avancados (SAB 13, Nivel 4): Pode estabilizar um aliado a 0 HP como acao bonus. Ao usar kit medico mais ingredientes curativos, cura 3d8 HP como acao (uma vez por descanso curto por aliado).
+Primeiros Socorros Avancados (SAB 13, Nivel 4): Pode estabilizar um aliado a 0 HP como ação bonus. Ao usar kit medico mais ingredientes curativos, cura 3d8 HP como ação (uma vez por descanso curto por aliado).
 
-Resistencia Elemental (CON 16, Nivel 8): Escolhe dois elementos (Fogo, Frio, Acido, Relampago, Veneno). Ganha resistencia permanente a ambos. Pode ser escolhido uma segunda vez para imunidade a um dos dois elementos.
+Resistência Elemental (CON 16, Nivel 8): Escolhe dois elementos (Fogo, Frio, Ácido, Relâmpago, Veneno). Ganha resistência permanente a ambos. Pode ser escolhido uma segunda vez para imunidade a um dos dois elementos.
 
-Visao no Escuro (Nivel 4): Se nao tinha, ganha visao no escuro ate 12m. Se ja tinha, a distancia dobra e pode ver cores em vez de tons de cinza no escuro.
+Visao no Escuro (Nivel 4): Se não tinha, ganha visao no escuro até 12m. Se ja tinha, a distancia dobra e pode ver cores em vez de tons de cinza no escuro.
 
 ### TALENTOS SOCIAIS E ESPECIAIS
 
@@ -2417,11 +2640,11 @@ Estudioso de Bestiario (INT 14, Nivel 4): Escolhe 3 categorias de monstros. Para
 
 Negociador do Submundo (CAR 15, Nivel 4): Pode tentar negociar com qualquer monstro inteligente (INT 6+) em vez de combater. Testa CAR (Persuasao) contra CD 8 + nivel do monstro. Sucesso: monstro torna-se neutro e pode fornecer informacoes ou ingredientes voluntariamente.
 
-Mercador de Ingredientes (Nivel 4): Vende ingredientes por 150% do preco normal. Recebe informacao sobre demanda atual — sabe quais ingredientes estao valorizados antes de entrar na masmorra.
+Mercador de Ingredientes (Nivel 4): Vende ingredientes por 150% do preço normal. Recebe informação sobre demanda atual — sabe quais ingredientes estão valorizados antes de entrar na masmorra.
 
 Especializacao de Inimigo (Nivel 8): Escolhe um tipo de monstro. Ganha +2 em ataques, +2d6 de dano e Vantagem em Trinchar contra esse tipo. Pode ser escolhido multiplas vezes para tipos diferentes.
 
-Alquimista Amador (INT 13, Nivel 4): Pode criar pocoes basicas (Cura Leve, Antidoto, Resistencia Elemental) com ingredientes de monstros sem ser Gnomo ou ter subclasse de alquimia.
+Alquimista Amador (INT 13, Nivel 4): Pode criar pocoes básicas (Cura Leve, Antidoto, Resistência Elemental) com ingredientes de monstros sem ser Gnomo ou ter subclasse de alquimia.
 
 
 ---
@@ -2430,7 +2653,7 @@ Alquimista Amador (INT 13, Nivel 4): Pode criar pocoes basicas (Cura Leve, Antid
 
 ---
 
-## CAPITULO 14 — ARMAS CLASSICAS
+## CAPÍTULO 14 — ARMAS CLASSICAS
 
 ### 14.1 Propriedades de Armas
 
@@ -2441,47 +2664,47 @@ Alquimista Amador (INT 13, Nivel 4): Pode criar pocoes basicas (Cura Leve, Antid
 | Versatil | Pode ser usada com uma ou duas maos (dois danos listados) |
 | Alcance | Alcance de ataque aumentado para 3m em vez de 1,5m |
 | Arremesso | Pode ser arremessada com as estatisticas indicadas |
-| Municao | Requer municao. Sem municao, nao pode ser usada para ataque a distancia |
-| Recarga | Apos cada disparo, requer acao bonus para recarregar |
+| Munição | Requer munição. Sem munição, não pode ser usada para ataque a distancia |
+| Recarga | Apos cada disparo, requer ação bônus para recarregar |
 | Penetrante | Ignora 2 pontos de CA de armaduras metalicas |
-| Esmagadora | Acertos criticos derrubam o alvo Prostrado (CON CD 13) |
-| Cortante | Causa Sangramento em acertos criticos (1d4 dano/turno) |
-| Perfurante | Em acertos criticos, o dado de dano e rolado 3 vezes |
+| Esmagadora | Acertos críticos derrubam o alvo Prostrado (CON CD 13) |
+| Cortante | Causa Sangramento em acertos críticos (1d4 dano/turno) |
+| Perfurante | Em acertos críticos, o dado de dano e rolado 3 vezes |
 
 ### 14.2 Armas Simples (Corpo a Corpo)
 
-| Arma | Dano | Propriedades | Preco |
+| Arma | Dano | Propriedades | Preço |
 |------|------|-------------|-------|
 | Clava | 1d4 contundente | Leve | 1 po |
 | Adaga | 1d4 perfurante | Leve, Arremesso (6/18m) | 2 po |
 | Foice Curta | 1d4 cortante | Leve | 1 po |
-| Lanca | 1d6 perfurante | Arremesso (6/12m), Versatil (1d8) | 1 po |
+| Lança | 1d6 perfurante | Arremesso (6/12m), Versatil (1d8) | 1 po |
 | Cajado | 1d6 contundente | Versatil (1d8) | 2 po |
 | Machado de Mao | 1d6 cortante | Leve, Arremesso (6/12m) | 5 po |
-| Maca | 1d6 contundente | Esmagadora | 5 po |
+| Maça | 1d6 contundente | Esmagadora | 5 po |
 | Martelo de Guerra | 1d8 contundente | Versatil (1d10), Esmagadora | 15 po |
 
 ### 14.3 Armas Simples (A Distancia)
 
-| Arma | Dano | Alcance | Propriedades | Preco |
+| Arma | Dano | Alcance | Propriedades | Preço |
 |------|------|---------|-------------|-------|
-| Besta Leve | 1d8 perfurante | 24/96m | Municao, Recarga | 25 po |
+| Besta Leve | 1d8 perfurante | 24/96m | Munição, Recarga | 25 po |
 | Dardo | 1d4 perfurante | 6/18m | Leve, Arremesso | 5 cp |
-| Funda | 1d4 contundente | 9/36m | Municao | 1 po |
-| Zarabatana | 1 perfurante | 7,5/30m | Municao (agulha) | 10 po |
+| Funda | 1d4 contundente | 9/36m | Munição | 1 po |
+| Zarabatana | 1 perfurante | 7,5/30m | Munição (agulha) | 10 po |
 
 ### 14.4 Armas Marciais (Corpo a Corpo)
 
-| Arma | Dano | Propriedades | Preco |
+| Arma | Dano | Propriedades | Preço |
 |------|------|-------------|-------|
 | Espada Curta | 1d6 perfurante | Leve, Perfurante | 10 po |
 | Espada Longa | 1d8 cortante | Versatil (1d10), Cortante | 15 po |
 | Montante | 2d6 cortante | Pesada, Alcance, Cortante | 50 po |
 | Machado de Batalha | 1d8 cortante | Versatil (1d10) | 10 po |
 | Machado Grande | 1d12 cortante | Pesada, Cortante | 30 po |
-| Maca de Guerra | 2d6 contundente | Pesada, Esmagadora | 50 po |
+| Maça de Guerra | 2d6 contundente | Pesada, Esmagadora | 50 po |
 | Alabarda | 1d10 cortante | Pesada, Alcance | 20 po |
-| Lanca Longa | 1d10 perfurante | Pesada, Alcance | 10 po |
+| Lança Longa | 1d10 perfurante | Pesada, Alcance | 10 po |
 | Rapieira | 1d8 perfurante | Leve, Perfurante | 25 po |
 | Sabre | 1d6 cortante | Leve, Cortante | 25 po |
 | Tridente | 1d6 perfurante | Arremesso (6/12m), Versatil (1d8) | 5 po |
@@ -2489,141 +2712,157 @@ Alquimista Amador (INT 13, Nivel 4): Pode criar pocoes basicas (Cura Leve, Antid
 
 ### 14.5 Armas Marciais (A Distancia)
 
-| Arma | Dano | Alcance | Propriedades | Preco |
+| Arma | Dano | Alcance | Propriedades | Preço |
 |------|------|---------|-------------|-------|
-| Arco Curto | 1d6 perfurante | 24/96m | Municao, Cortante | 25 po |
-| Arco Longo | 1d8 perfurante | 45/180m | Municao, Pesada, Perfurante | 50 po |
-| Besta Pesada | 1d10 perfurante | 30/120m | Municao, Pesada, Recarga | 50 po |
-| Besta de Mao | 1d6 perfurante | 9/36m | Leve, Municao, Recarga | 75 po |
+| Arco Curto | 1d6 perfurante | 24/96m | Munição, Cortante | 25 po |
+| Arco Longo | 1d8 perfurante | 45/180m | Munição, Pesada, Perfurante | 50 po |
+| Besta Pesada | 1d10 perfurante | 30/120m | Munição, Pesada, Recarga | 50 po |
+| Besta de Mao | 1d6 perfurante | 9/36m | Leve, Munição, Recarga | 75 po |
 
 ### 14.6 Escudos e Protecao
 
-| Item | Bonus CA | Notas | Preco |
+| Item | Bonus CA | Notas | Preço |
 |------|---------|-------|-------|
 | Escudo de Madeira | +1 | Leve, pode ser destruido | 5 po |
 | Escudo de Metal | +2 | Padrao | 20 po |
 | Escudo de Torre | +3 | Pesado — Desvantagem em DES | 50 po |
 | Escudo de Espinhos | +2 | Atacantes que acertem corpo-a-corpo tomam 1d4 | 75 po |
 
+### 14.8 Propriedades mágicas (efeitos EFE)
+
+Catálogo técnico: **`CATALOGO-EFEITOS-DE-EQUIPAMENTO.md`**. No VTT, armas com `weapon.special` aplicam cura ou dano extra no acerto conforme o gatilho.
+
+| Gatilho | Exemplo |
+|---------|---------|
+| **onHit** | Lâmina vampírica: +1 HP ao atacante por acerto (EFE-01) |
+| **onCrit** | Maça necrótica: +2d6 necrótico no crítico (EFE-05) |
+| **whileEquipped** | Armadura orgânica: resistências narrativas (Mestre) |
+
+**Encantamento +3:** além de bônus numérico (+3 ataque/dano ou CA), ganha **um efeito EFE** extra (tabela no catálogo) ou vampírico padrão (EFE-01) se a arma +0 não tinha propriedade.
+
+**Orgânicas (Cap. 15):** entradas **ORG-01–ORG-08** no compêndio `armas` com os mesmos gatilhos; veneno com save, lentidão e HP máximo seguem regra de mesa até automação completa.
+
 ---
 
-## CAPITULO 15 — ARMAS ORGANICAS
+## CAPÍTULO 15 — ARMAS ORGÂNICAS
 
-Armas forjadas de partes de monstros da masmorra. Cada uma carrega o DNA do ser que a originou — e algumas ainda estao, de certa forma, vivas.
+Armas forjadas de partes de monstros da masmorra. Cada uma carrega o DNA do ser que a originou — e algumas ainda estão, de certa forma, vivas.
 
-### 15.1 Regras de Armas Organicas
+### 15.1 Regras de Armas Orgânicas
 
-**Criacao:** O Artifice (ou ferreiro especializado) cria armas organicas durante ou apos um Banquete. Tempo de forja: 1d4 dias para armas comuns, 1d6+1 semanas para armas de Boss.
+**Criação:** O Artífice (ou ferreiro especializado) cria armas orgânicas durante ou após um Banquete. Tempo de forja: 1d4 dias para armas comuns, 1d6+1 semanas para armas de Boss.
 
-**Degradacao:** Armas organicas tem um **Contador de Durabilidade (CD)**. A cada acerto critico ou exposicao a condicoes extremas, perde 1 de CD. Ao chegar a 0, a arma perde suas propriedades especiais mas ainda funciona como arma mundana.
+**Degradação:** Armas orgânicas têm um **Contador de Durabilidade (CD)**. A cada acerto crítico ou exposição a condições extremas, perde 1 de CD. Ao chegar a 0, a arma perde suas propriedades especiais mas ainda funciona como arma mundana.
 
-**Manutencao:** O Artifice pode restaurar CD gastando ingredientes do mesmo tipo do monstro de origem (1 ingrediente por 2 CD restaurados, 1 hora de trabalho).
+**Manutenção:** O Artífice pode restaurar CD gastando ingredientes do mesmo tipo do monstro de origem (1 ingrediente por 2 CD restaurados, 1 hora de trabalho).
 
-**Evolucao:** Armas organicas de Boss podem ser "aprimoradas" ao serem alimentadas com ingredientes do mesmo tipo de monstro ao longo do tempo — ganham +1 em dano a cada 10 ingredientes absorvidos, maximo +3.
+**Evolução:** Armas orgânicas de Boss podem ser "aprimoradas" ao serem alimentadas com ingredientes do mesmo tipo de monstro ao longo do tempo — ganham +1 em dano a cada 10 ingredientes absorvidos, máximo +3.
 
-### 15.2 Catalogo de Armas Organicas
+### 15.2 Catálogo de Armas Orgânicas
 
-**Lamina de Dente de Wyvern** (Espada Curta | Dano: 1d8 perfurante + 1d6 veneno | CD: 15)
-Extraida da mandibula de um Wyvern. A glandula de veneno na base ainda funciona. Propriedades: Perfurante. A cada acerto, injeta veneno automaticamente (CON CD 14 ou Paralisado por 1 turno). Manutencao: alimentada com veneno de qualquer reptil venenoso (1 frasco = 3 CD). Preco: 350 po.
+> **VTT:** IDs **ORG-01–ORG-08** em `armas.json` (efeitos EFE automáticos; saves e lentidão = Mestre). Ver **`CATALOGO-EFEITOS-DE-EQUIPAMENTO.md`**.
 
-**Maca de Femur Milenar** (Maca de Guerra | Dano: 2d6+2 contundente | CD: 20)
-O femur de um Esqueleto Comandante com seculos de existencia. Propriedades: Esmagadora. Acertos criticos liberam um pulso de energia necrotica (area 3m, 2d6 necrotico, CD 13 CON ou Amedrontado por 1 turno). Preco: 280 po.
+**Lâmina de Dente de Wyvern** (Espada Curta | Dano: 1d8 perfurante + 1d6 veneno | CD: 15)
+Extraída da mandíbula de um Wyvern. A glândula de veneno na base ainda funciona. Propriedades: Perfurante. A cada acerto, injeta veneno automaticamente (CON CD 14 ou Paralisado por 1 turno). Manutenção: alimentada com veneno de qualquer reptil venenoso (1 frasco = 3 CD). Preço: 350 po.
 
-**Adaga de Quelicera de Aranha** (Adaga | Dano: 1d6 perfurante + 1d4 veneno | CD: 12)
-A quelicera principal de uma Aranha Tecerrochas Matriarca. Propriedades: Leve, Arremesso (6/18m). O veneno causa lentidao (-3m de velocidade por 2 horas; sem saving throw). Preco: 180 po.
+**Maça de Fêmur Milenar** (Maça de Guerra | Dano: 2d6+2 contundente | CD: 20)
+O fêmur de um Esqueleto Comandante com séculos de existência. Propriedades: Esmagadora. Acertos críticos liberam um pulso de energia necrótica (área 3m, 2d6 necrótico, CD 13 CON ou Amedrontado por 1 turno). Preço: 280 po.
 
-**Espada de Escama de Dragao** (Espada Longa | Dano: 1d10 cortante + 1d6 do elemento do dragao | CD: 25)
-Escamas sobrepostas de um Dragao Jovem, forjadas em lamina. Propriedades: Cortante. Dano elemental corresponde ao tipo do dragao (Fogo, Gelo, Acido, Relampago). Causa dano dobrado contra criaturas com imunidade ao elemento oposto. Preco: 500 po.
+**Adaga de Quelícera de Aranha** (Adaga | Dano: 1d6 perfurante + 1d4 veneno | CD: 12)
+A quelícera principal de uma Aranha Tecerrochas Matriarca. Propriedades: Leve, Arremesso (6/18m). O veneno causa lentidão (-3m de velocidade por 2 horas; sem teste de resistência). Preço: 180 po.
 
-**Lanca de Ferrao de Escorpiao** (Lanca | Dano: 1d8 perfurante + 1d8 veneno | CD: 18)
-O ferrao caudal de um Escorpiao Gigante. Propriedades: Arremesso (6/12m), Versatil (1d10+1d8 veneno). O veneno causa Envenenamento por 1 hora (CON CD 15). Preco: 220 po.
+**Espada de Escama de Dragão** (Espada Longa | Dano: 1d10 cortante + 1d6 do elemento do dragão | CD: 25)
+Escamas sobrepostas de um Dragão Jovem, forjadas em lâmina. Propriedades: Cortante. Dano elemental corresponde ao tipo do dragão (Fogo, Gelo, Ácido, Relâmpago). Causa dano dobrado contra criaturas com imunidade ao elemento oposto. Preço: 500 po.
+
+**Lança de Ferrão de Escorpião** (Lança | Dano: 1d8 perfurante + 1d8 veneno | CD: 18)
+O ferrao caudal de um Escorpião Gigante. Propriedades: Arremesso (6/12m), Versatil (1d10+1d8 veneno). O veneno causa Envenenamento por 1 hora (CON CD 15). Preço: 220 po.
 
 **Martelo Fornalha (de Magma)** (Martelo de Guerra | Dano: 2d8 contundente + 1d8 fogo | CD: 22)
-Forjado da mandibula calcificada do Leviata de Magma. Propriedades: Esmagadora. Acertos criticos causam Ignicao (alvo pega fogo — 1d6 fogo/turno ate apagado). Pode ser usado para cozinhar sem fogueira. Preco: 650 po.
+Forjado da mandíbula calcificada do Leviata de Magma. Propriedades: Esmagadora. Acertos críticos causam Ignição (alvo pega fogo — 1d6 fogo/turno até apagado). Pode ser usado para cozinhar sem fogueira. Preço: 650 po.
 
 **Arco de Osso de Grifo** (Arco Longo | Dano: 1d10 perfurante | CD: 18)
-Ossos ocos das asas de um Grifo adulto. Extremamente leves. Propriedades: Municao, Pesada (para classes sem proficiencia), Perfurante. O peso reduzido concede +3m de alcance a todos os disparos. Preco: 400 po.
+Ossos ocos das asas de um Grifo adulto. Extremamente leves. Propriedades: Munição, Pesada (para classes sem proficiencia), Perfurante. O peso reduzido concede +3m de alcance a todos os disparos. Preço: 400 po.
 
 **Cutelo Fornalha — Ferramenta-Arma** (Machado Grande | Dano: 2d8 cortante + 1d6 fogo | CD: 28)
-A mandibula inferior do Leviata de Magma. Serve como arma de combate e utensilio culinario. Propriedades: Pesada, Cortante. Qualquer carne cortada pelo Cutelo sai parcialmente cozida — reduz o tempo de preparo em 50%. Preco: Inestimavel (unico).
+A mandíbula inferior do Leviata de Magma. Serve como arma de combaté e utensilio culinário. Propriedades: Pesada, Cortante. Qualquer carne cortada pelo Cutelo sai parcialmente cozida — reduz o tempo de preparo em 50%. Preço: Inestimavel (unico).
 
 **Rede de Seda da Matriarca** (Rede | Dano: — (restringe) | CD: 20)
-Tecida da seda da Matriarca Tecela de Cristal. Cada fio resiste a forca de uma manticora. Propriedades: Arremesso (6m). Ao acertar: alvo Restringido (FOR ou DES CD 17 para escapar — acao completa). A seda crystalina corta quem tenta rasgar com forca bruta (2d6 cortante). Preco: 300 po.
+Tecida da seda da Matriarca Tecela de Cristal. Cada fio resiste a forca de uma manticora. Propriedades: Arremesso (6m). Ao acertar: alvo Restringido (FOR ou DES CD 17 para escapar — ação completa). A seda crystalina corta quem tenta rasgar com forca bruta (2d6 cortante). Preço: 300 po.
 
 **Chicote de Tentaculo de Kraken** (Chicote | Dano: 2d6 cortante + Agarramento | CD: 20)
-Um tentaculo preservado de Kraken Menor. Propriedades: Alcance (6m em vez de 3m). Acertos: alem do dano, o alvo fica Agarrado (FOR CD 15 para escapar). O chicote pode agarrar e puxar objetos de ate 50kg a distancia. Preco: 380 po.
+Um tentaculo preservado de Kraken Menor. Propriedades: Alcance (6m em vez de 3m). Acertos: alem do dano, o alvo fica Agarrado (FOR CD 15 para escapar). O chicote pode agarrar e puxar objetos de até 50kg a distancia. Preço: 380 po.
 
-**Arco de Costela de Lich** (Arco Curto Magico | Dano: 1d8 perfurante + 1d6 necrotico | CD: 30)
-Costelas do Arquiliche, curvadas e mantidas em forma por encantamentos. Propriedades: Municao. Nao precisa de flechas fisicas — conjura flechas necroticas automaticamente. Cada flecha reduz o HP maximo do alvo em 2 ate descanso longo. Preco: Inestimavel (arma de Boss unica).
+**Arco de Costela de Lich** (Arco Curto Magico | Dano: 1d8 perfurante + 1d6 necrótico | CD: 30)
+Costelas do Arquiliche, curvadas e mantidas em forma por encantamentos. Propriedades: Munição. Nao precisa de flechas fisicas — conjura flechas necróticas automaticamente. Cada flecha reduz o HP máximo do alvo em 2 até descanso longo. Preço: Inestimavel (arma de Boss unica).
 
-**Espada de Garra de Dragao de Gelo** (Espada Longa | Dano: 1d10 cortante + 2d6 frio | CD: 24)
-A garra dianteira de um Dragao Jovem de Gelo. Propriedades: Cortante. Acertos criticos congelam parcialmente o alvo (velocidade reduzida a metade por 1 minuto, CON CD 16). Em combate aquatico, causa dano dobrado. Preco: 600 po.
+**Espada de Garra de Dragão de Gelo** (Espada Longa | Dano: 1d10 cortante + 2d6 frio | CD: 24)
+A garra dianteira de um Dragão Jovem de Gelo. Propriedades: Cortante. Acertos críticos congelam parcialmente o alvo (velocidade reduzida a metade por 1 minuto, CON CD 16). Em combaté aquatico, causa dano dobrado. Preço: 600 po.
 
 **Pelagem-Armadura de Grifo** (Armadura Media + Arma | CA: 15+DES(max2) | Dano das Garras: 1d8 cortante | CD: 18)
-O couro e as garras dianteiras de um Grifo adulto, montados como armadura funcional. Propriedades: Garras contam como armas leves que nao ocupam as maos. Ao escalar, nao requer teste. Quedas de ate 12m sem dano. Preco: 450 po.
+O couro e as garras dianteiras de um Grifo adulto, montados como armadura funcional. Propriedades: Garras contam como armas leves que não ocupam as maos. Ao escalar, não requer teste. Quedas de até 12m sem dano. Preço: 450 po.
 
 **Manopla de Seda Cortante** (Luva Especial | Dano: 1d6 cortante (fios) | CD: 22)
-Criada das glandulas intactas da Matriarca Tecela de Cristal. Lanca fios microscopicos invisiveis que cortam qualquer material. Propriedades: Como acao bonus, pode lancar fios em area de 9m — criaturas que passem por eles testam DES CD 15 ou tomam 2d6 cortante e ficam Restringidas. Preco: Inestimavel (unico).
+Criada das glândulas intactas da Matriarca Tecela de Cristal. Lança fios microscopicos invisiveis que cortam qualquer material. Propriedades: Como ação bonus, pode lancar fios em área de 9m — criaturas que passem por eles testam DES CD 15 ou tomam 2d6 cortante e ficam Restringidas. Preço: Inestimavel (unico).
 
-### 15.3 Tabela Resumida de Armas Organicas
+### 15.3 Tabela Resumida de Armas Orgânicas
 
-| Arma | Base | Dano | Efeito Especial | CD | Preco |
+| Arma | Base | Dano | Efeito Especial | CD | Preço |
 |------|------|------|----------------|-----|-------|
-| Lamina de Dente de Wyvern | Espada Curta | 1d8+1d6 veneno | Paralisia CD14 | 15 | 350 po |
-| Maca de Femur Milenar | Maca de Guerra | 2d6+2 | Pulso necrotico | 20 | 280 po |
-| Adaga de Quelicera | Adaga | 1d6+1d4 veneno | Lentidao | 12 | 180 po |
-| Espada de Escama de Dragao | Espada Longa | 1d10+1d6 elemental | Dano elemental duplo | 25 | 500 po |
-| Lanca de Ferrao de Escorpiao | Lanca | 1d8+1d8 veneno | Envenenamento CD15 | 18 | 220 po |
-| Martelo Fornalha | Martelo de Guerra | 2d8+1d8 fogo | Ignicao critico | 22 | 650 po |
+| Lâmina de Dente de Wyvern | Espada Curta | 1d8+1d6 veneno | Paralisia CD14 | 15 | 350 po |
+| Maça de Fêmur Milenar | Maça de Guerra | 2d6+2 | Pulso necrótico | 20 | 280 po |
+| Adaga de Quelícera | Adaga | 1d6+1d4 veneno | Lentidão | 12 | 180 po |
+| Espada de Escama de Dragão | Espada Longa | 1d10+1d6 elemental | Dano elemental duplo | 25 | 500 po |
+| Lança de Ferrão de Escorpião | Lança | 1d8+1d8 veneno | Envenenamento CD15 | 18 | 220 po |
+| Martelo Fornalha | Martelo de Guerra | 2d8+1d8 fogo | Ignição crítico | 22 | 650 po |
 | Arco de Osso de Grifo | Arco Longo | 1d10 | +3m alcance | 18 | 400 po |
 | Cutelo Fornalha | Machado Grande | 2d8+1d6 fogo | Cozinha sem fogo | 28 | Unico |
 | Rede de Seda da Matriarca | Rede | — | Restricao CD17 | 20 | 300 po |
 | Chicote de Tentaculo | Chicote | 2d6+Agarre | Alcance 6m | 20 | 380 po |
-| Arco de Costela de Lich | Arco Curto | 1d8+1d6 necrotico | Reduz HP max | 30 | Unico |
-| Espada de Garra de Dragao de Gelo | Espada Longa | 1d10+2d6 frio | Congelamento critico | 24 | 600 po |
+| Arco de Costela de Lich | Arco Curto | 1d8+1d6 necrótico | Reduz HP max | 30 | Unico |
+| Espada de Garra de Dragão de Gelo | Espada Longa | 1d10+2d6 frio | Congelamento crítico | 24 | 600 po |
 | Pelagem-Armadura de Grifo | Armadura Media | CA15 + 1d8 garras | Escalada livre | 18 | 450 po |
 | Manopla de Seda Cortante | Luva | 1d6 (fios) | Armadilha de fios | 22 | Unico |
 
 ---
 
-## CAPITULO 16 — EQUIPAMENTOS E ITENS DE AVENTURA
+## CAPÍTULO 16 — EQUIPAMENTOS E ITENS DE AVENTURA
 
 ### 16.1 Ferramentas de Trinchar
 
-| Item | Bonus | Notas | Preco |
+| Item | Bonus | Notas | Preço |
 |------|-------|-------|-------|
 | Faca de Campo | +0 | Basica. Serve para Facil | 2 po |
 | Kit de Trinchar Basico | +1 | Facil e Medio sem penalidade | 15 po |
 | Kit de Trinchar Avancado | +2 | Ate Dificil sem penalidade | 50 po |
-| Kit de Artifice (Trinchar) | +3 | Todas as dificuldades, incluindo Especialista | 150 po |
-| Recipiente de Vidro Grosso | Necessario | Para Slimes e Acidos | 25 po/conjunto |
+| Kit de Artífice (Trinchar) | +3 | Todas as dificuldades, incluindo Especialista | 150 po |
+| Recipiente de Vidro Grosso | Necessario | Para Slimes e Ácidos | 25 po/conjunto |
 | Frasco Selado Magicamente | Necessario | Para Espirituais e Elementais | 80 po/frasco |
-| Luva Resistente a Acido | Protecao | Necessaria para Centopeias e Pudins | 30 po |
-| Martelo de Exoesqueleto | Ferramenta | Necessario para Carapacas Dificeis | 20 po |
+| Luva Resistente a Ácido | Protecao | Necessaria para Centopeias e Pudins | 30 po |
+| Martelo de Exoesqueleto | Ferramenta | Necessario para Carapaças Dificeis | 20 po |
 
 ### 16.2 Equipamentos de Cozinha
 
-| Item | Efeito | Preco |
+| Item | Efeito | Preço |
 |------|--------|-------|
-| Panela de Campo | Basica. Sem bonus | 5 po |
-| Panela de Ferro Anao | +1 em Coccao | 40 po |
-| Panela de Escama de Dragao | +2 em Coccao. Resistente a fogo | 200 po |
-| Panela de Carapaca de Escorpiao | +2 Coccao. Resistente a acido | 180 po |
-| Fogareiro Portatil (Artifice) | Controle de temperatura preciso (+3 Coccao) | 300 po |
+| Panela de Campo | Basica. Sem bônus | 5 po |
+| Panela de Ferro Anão | +1 em Coccao | 40 po |
+| Panela de Escama de Dragão | +2 em Coccao. Resistente a fogo | 200 po |
+| Panela de Carapaça de Escorpião | +2 Coccao. Resistente a ácido | 180 po |
+| Fogareiro Portátil (Artífice) | Controle de temperatura preciso (+3 Coccao) | 300 po |
 | Nucleo de Chama Primordial | Fonte de calor eterno. Nunca apaga | 800 po |
-| Cera de Mumia (Preservacao) | Ingredientes nao estragam por 7 dias | 50 po/bloco |
-| Frascos de Fermentacao | +2 Harmonizacao em ingredientes fermentados | 30 po/conjunto |
+| Cera de Mumia (Preservacao) | Ingredientes não estragam por 7 dias | 50 po/bloco |
+| Frascos de Fermentacao | +2 Harmonização em ingredientes fermentados | 30 po/conjunto |
 
 ### 16.2.1 Kit de Brasas Magicas (biomas sem fogo aberto)
 
 Para **Pantano da Decomposicao**, **Ninho Crepuscular** e trechos de **Engrenagens/Fornalhas** com gas — tocha e `Chama de Fogareiro` **proibidos** (detonam ou apagam). Ver `SUPLEMENTO-BIOMAS-VERTICAIS-LUZ-E-BRASAS.md`.
 
-| Item | Efeito | Preco |
+| Item | Efeito | Preço |
 |------|--------|-------|
-| Kit de Brasas Magicas (6 brasas) | 30 min calor/panela cada; penumbra 3m; +1 Coccao; nao detona gas | 45 po |
+| Kit de Brasas Magicas (6 brasas) | 30 min calor/panela cada; penumbra 3m; +1 Coccao; não detona gas | 45 po |
 | Brasa Magica (avulsa) | 1 uso, 30 min | 12 po |
 | Bolsa de Recarga (6 brasas) | Repoe kit | 35 po |
-| Suporte de Pedra-Caldeira | +1 Harmonizacao em sopas com brasa | 25 po |
+| Suporte de Pedra-Caldeira | +1 Harmonização em sopas com brasa | 25 po |
 | Panela Selada de Masmorra | Coccao segura em gas (tampa vedada) | 20 po |
 | Pano Umido Antifaisca (3 usos) | Evita 1 detonacao por faisca acidental | 8 po |
 
@@ -2631,7 +2870,7 @@ Conjuradores usam o truque **Calor de Panela** (Cap. 18) em vez do kit.
 
 ### 16.3 Protecoes e Vestimentas
 
-| Item | CA | Notas | Preco |
+| Item | CA | Notas | Preço |
 |------|-----|-------|-------|
 | Roupas Comuns | 10 | Sem protecao | 1 po |
 | Couro Curtido | 11+DES | Armadura leve | 10 po |
@@ -2641,15 +2880,15 @@ Conjuradores usam o truque **Calor de Panela** (Cap. 18) em vez do kit.
 | Cota de Escamas | 14+DES(max2) | Armadura media | 50 po |
 | Armadura de Placas Parcial | 15 | Armadura pesada | 400 po |
 | Armadura de Placas Completa | 16 | Armadura pesada | 1.500 po |
-| Couro de Troll | 13+DES | Armadura leve organica. Regenera 1 CA/descanso curto | 250 po |
-| Cota de Escama de Basilisco | 16 | Armadura media organica. Resistencia a petrificacao | 500 po |
-| Armadura de Carapaca de Escorpiao | 17 | Armadura pesada organica. Resiste a perfurante | 600 po |
+| Couro de Troll | 13+DES | Armadura leve orgânica. Regenera 1 CA/descanso curto | 250 po |
+| Cota de Escama de Basilisco | 16 | Armadura media orgânica. Resistência a petrificação | 500 po |
+| Armadura de Carapaça de Escorpião | 17 | Armadura pesada orgânica. Resiste a perfurante | 600 po |
 
-### 16.4 Itens Miscelaneos Essenciais
+### 16.4 Itens Miscelaneos Essênciais
 
-| Item | Efeito | Preco |
+| Item | Efeito | Preço |
 |------|--------|-------|
-| Corda de Seda de Aranha (15m) | Resistencia: 500kg. Nao queima | 25 po |
+| Corda de Seda de Aranha (15m) | Resistência: 500kg. Nao queima | 25 po |
 | Tocha de Pena de Fenix | Eterna. Nao apaga em vento ou agua | 150 po |
 | Mapa de Sindicato (andar) | Parcial. Revela 60% do andar | 50 po |
 | Antidoto Universal | Neutraliza 1 veneno identificado | 50 po |
@@ -2658,9 +2897,9 @@ Conjuradores usam o truque **Calor de Panela** (Cap. 18) em vez do kit.
 | Cristal de Luz Continua | Luz permanente, raio 6m | 50 po |
 | Bussola de Masmorra | Aponta para a saida mais proxima | 200 po |
 | Saco de Dormir Aquecido | Imune a Exaustao por frio durante descanso | 15 po |
-| Recipiente Isotermico | Ingredientes nao degradam por 48h | 40 po |
+| Recipiente Isotermico | Ingredientes não degradam por 48h | 40 po |
 | Bolsa de Especiarias (10 slots) | Organiza ESP; +1 Harmon se usar 1 ESP/prato | 18 po |
-| Maleta de Minerios (8 slots) | Transporte seguro de MIN; evita quebra em queda DES 12 | 35 po |
+| Maleta de Minérios (8 slots) | Transporte seguro de MIN; evita quebra em queda DES 12 | 35 po |
 | Kit de Avaliacao (joias) | Vantagem em identificar TES genuino vs TES-03 falso | 50 po |
 
 
@@ -2675,13 +2914,13 @@ Conjuradores usam o truque **Calor de Panela** (Cap. 18) em vez do kit.
 
 ---
 
-## CAPITULO 17 — SISTEMA DE MAGIA
+## CAPÍTULO 17 — SISTEMA DE MAGIA
 
 ### 17.1 Espacos de Magia
 
-Classes conjuradoras: **Mago, Clerigo, Bardo, Druida, Artifice**. Possuem **Espacos de Magia** — reservatorios que se renovam apos Descanso Longo.
+Classes conjuradoras: **Mago, Clérigo, Bardo, Druida, Artífice**. Possuem **Espacos de Magia** — reservatorios que se renovam após Descanso Longo.
 
-| Nivel do Personagem | Espacos por Nivel de Magia disponiveis |
+| Nivel do Personagem | Espacos por Nivel de Magia disíponíveis |
 |--------------------|----------------------------------------|
 | 1 | Nivel 1: 2 |
 | 2 | Nivel 1: 3 |
@@ -2695,7 +2934,7 @@ Classes conjuradoras: **Mago, Clerigo, Bardo, Druida, Artifice**. Possuem **Espa
 | 17 | + Nivel 9: 1 |
 | 20 | Maximo completo de todos os niveis |
 
-**Artifice:** Usa a mesma tabela de espacos. Prepara apenas magias da lista geral que incluam **Artifice** na linha de classes, mais magias exclusivas de subclasse de Artifice (Cap. 19).
+**Artífice:** Usa a mesma tabela de espacos. Prepara apenas magias da lista geral que incluam **Artífice** na linha de classes, mais magias exclusivas de subclasse de Artífice (Cap. 19).
 
 **Gnomo:** Pode aprender magias marcadas com **Gnomo** como se fosse Mago (uma magia a mais por nivel de espaco, a escolha do jogador).
 
@@ -2712,9 +2951,9 @@ Classes conjuradoras: **Mago, Clerigo, Bardo, Druida, Artifice**. Possuem **Espa
 | Escola | Foco |
 |--------|------|
 | Biomancia | DNA e biologia de monstros (exclusiva de Eldarin) |
-| Necromancia | Morte, mortos-vivos, energia necrotica |
+| Necromancia | Morte, mortos-vivos, energia necrótica |
 | Evocacao | Energia elemental bruta |
-| Transmutacao | Materia, culinaria arcana |
+| Transmutação | Materia, culinaria arcana |
 | Abjuracao | Protecao, purificacao, cura |
 | Ilusao | Engano, disfarce, sentidos |
 | Adivinhacao | Informacao, visao |
@@ -2723,14 +2962,14 @@ Classes conjuradoras: **Mago, Clerigo, Bardo, Druida, Artifice**. Possuem **Espa
 
 ### 17.4 Grimorio e magias conhecidas
 
-- **Mago / Artifice:** Escolhem magias da lista geral (Cap. 18) permitidas a sua classe. Mago inicia com 6 magias de nivel 1 + 2 truques; ganha 2 magias por nivel ao subir (nivel da magia <= nivel de espaco disponivel).
-- **Clerigo / Druida:** Escolhem da lista geral permitida; tem acesso a todas as magias de nivel que possuem espaco (preparacao diaria: nivel + mod. SAB).
-- **Bardo:** Lista geral permitida; aprende como Mago (menos magias de combate direto, mais encantamento/adivinhacao).
-- **Subclasse:** Magias do Cap. 19 somam-se ao grimorio; nao contam no limite de “magias aprendidas” do Mago.
+- **Mago / Artífice:** Escolhem magias da lista geral (Cap. 18) permitidas a sua classe. Mago inicia com 6 magias de nivel 1 + 2 truques; ganha 2 magias por nivel ao subir (nivel da magia <= nivel de espaco disponivel).
+- **Clérigo / Druida:** Escolhem da lista geral permitida; tem acesso a todas as magias de nivel que possuem espaco (preparacao diaria: nivel + mod. SAB).
+- **Bardo:** Lista geral permitida; aprende como Mago (menos magias de combaté direto, mais encantamento/adivinhacao).
+- **Subclasse:** Magias do Cap. 19 somam-se ao grimorio; não contam no limite de “magias aprendidas” do Mago.
 
 ### 17.5 Variantes de subclasse
 
-Algumas magias da lista geral possuem **variante** anotada no Cap. 19 (ex.: Piromante e `Bola de Fogo`). Lancar a variante gasta o **mesmo espaco** que a magia base; nao e uma magia extra na contagem do grimorio.
+Algumas magias da lista geral possuem **variante** anotada no Cap. 19 (ex.: Piromante e `Bola de Fogo`). Lancar a variante gasta o **mesmo espaco** que a magia base; não e uma magia extra na contagem do grimorio.
 
 ### 17.6 Classificacao por nivel e escola
 
@@ -2742,14 +2981,14 @@ Algumas magias da lista geral possuem **variante** anotada no Cap. 19 (ex.: Piro
 | 1 | **1o circulo** | Cura leve, armadura, identificar | 8 | Nv. 1–3 |
 | 2 | **2o circulo** | Controle, preservar, ilusao menor | 9 | Nv. 3–5 |
 | 3 | **3o circulo** | Area, fogo, necromancia media | 8 | Nv. 5–7 |
-| 4 | **4o circulo** | Mutacao, ecossistema, purificacao forte | 6 | Nv. 7–9 |
+| 4 | **4o circulo** | Mutação, ecossistema, purificacao forte | 6 | Nv. 7–9 |
 | 5 | **5o circulo** | Teleporte, cone de frio, biomancia maior | 6 | Nv. 9–11 |
 | 6 | **6o circulo** | Praga, desintegrar, cadeia | 3 | Nv. 11–13 |
-| 7 | **7o circulo** | Polimorfismo, prisao de gelo, regeneracao | 4 | Nv. 13–15 |
+| 7 | **7o circulo** | Polimorfismo, prisao de gelo, regeneração | 4 | Nv. 13–15 |
 | 8 | **8o circulo** | Terremoto | 1 | Nv. 15–17 |
-| 9 | **9o circulo / Lenda** | Transcendencia, Desejo de Morte | 2 | Nv. 17–20 (Clerigo do Limiar: capstone) |
+| 9 | **9o circulo / Lenda** | Transcendência, Desejo de Morte | 2 | Nv. 17–20 (Clérigo do Limiar: capstone) |
 
-**+ 8 magias exclusivas de subclasse** (Cap. 19.3) — nao entram na tabela acima; somam-se ao grimorio.
+**+ 8 magias exclusivas de subclasse** (Cap. 19.3) — não entram na tabela acima; somam-se ao grimorio.
 
 **Por escola (lista geral):**
 
@@ -2757,7 +2996,7 @@ Algumas magias da lista geral possuem **variante** anotada no Cap. 19 (ex.: Piro
 |--------|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
 | Biomancia | 0 | 1 | 1 | 1 | 2 | 1 | 0 | 2 | 0 | 1 | 9 |
 | Evocacao | 1 | 1 | 1 | 3 | 1 | 1 | 1 | 0 | 1 | 0 | 10 |
-| Transmutacao | 2 | 1 | 3 | 0 | 1 | 1 | 1 | 0 | 0 | 0 | 9 |
+| Transmutação | 2 | 1 | 3 | 0 | 1 | 1 | 1 | 0 | 0 | 0 | 9 |
 | Necromancia | 0 | 0 | 1 | 2 | 1 | 1 | 1 | 0 | 0 | 1 | 7 |
 | Abjuracao | 1 | 2 | 1 | 0 | 1 | 1 | 0 | 1 | 0 | 0 | 7 |
 | Adivinhacao | 1 | 1 | 0 | 1 | 1 | 0 | 0 | 0 | 0 | 0 | 4 |
@@ -2773,115 +3012,115 @@ Algumas magias da lista geral possuem **variante** anotada no Cap. 19 (ex.: Piro
 
 ---
 
-## CAPITULO 18 — LISTA DE MAGIAS (GRIMORIO DE ELDARIN)
+## CAPÍTULO 18 — LISTA DE MAGIAS (GRIMORIO DE ELDARIN)
 
 > **Total:** 53 magias na lista geral (Cap. 18) + 8 exclusivas de subclasse (Cap. 19) = **61** feiticos no sistema.
 
 ### NIVEL 0 — TRUQUES (SEM CUSTO)
 
-**Calor de Panela** — Transmutacao | Acao | Toque | Concentracao, ate 1 hora | Mago, Clerigo, Bardo, Druida, Artifice
+**Calor de Panela** — Transmutação | Acao | Toque | Concentracao, até 1 hora | Mago, Clérigo, Bardo, Druida, Artífice
 Aquece recipiente fechado sem chama visivel; penumbra 3m. Coccao segura em biomas sem fogo aberto (Cap. 16.2.1). +1 Coccao se unica fonte de calor no prato. **Todo conjurador inicia com este truque.**
 
-**Chama de Fogareiro** — Evocacao | Acao | Toque | Ate ser apagada | Mago, Clerigo, Bardo, Druida, Artifice
+**Chama de Fogareiro** — Evocacao | Acao | Toque | Ate ser apagada | Mago, Clérigo, Bardo, Druida, Artífice
 Chama na ponta dos dedos. **Proibida** em Ninho Crepuscular (12), gas do Pantano (10), vapor oleoso (8), bolsao sulfuroso (4). Use Calor de Panela ou Brasas Magicas.
 
-**Lamina de Espirito** — Transmutacao | Acao Bonus | Pessoal | 1 minuto | Mago, Bardo, Artifice
-Lamina eterea (1d4 forca). +2 em testes de Trinchar com ela.
+**Lâmina de Espirito** — Transmutação | Acao Bonus | Pessoal | 1 minuto | Mago, Bardo, Artífice
+Lâmina eterea (1d4 forca). +2 em testes de Trinchar com ela.
 
-**Detectar Veneno** — Adivinhacao | Acao | Pessoal | 10 minutos | Mago, Clerigo, Bardo, Druida, Artifice
+**Detectar Veneno** — Adivinhacao | Acao | Pessoal | 10 minutos | Mago, Clérigo, Bardo, Druida, Artífice
 Em raio de 3m, detecta toxinas em comida, bebida ou ingrediente (aura avermelhada).
 
-**Estabilizar** — Abjuracao | Acao | Toque | Instantanea | Clerigo, Druida
-Criatura a 0 HP para de fazer falhas de morte; nao cura HP.
+**Estabilizar** — Abjuracao | Acao | Toque | Instantanea | Clérigo, Druida
+Criatura a 0 HP para de fazer falhas de morte; não cura HP.
 
-**Maos Firmes** — Transmutacao | Acao | Toque | 1 hora | Mago, Druida, Artifice
-Alvo (voce ou aliado) ganha +2 em Trinchar e nao sofre -2 por falta de treinamento nesta hora.
+**Maos Firmes** — Transmutação | Acao | Toque | 1 hora | Mago, Druida, Artífice
+Alvo (você ou aliado) ganha +2 em Trinchar e não sofre -2 por falta de treinamento nesta hora.
 
 ---
 
 ### NIVEL 1
 
-**Extracao Amplificada** — Biomancia | 1 minuto | Toque | Instantanea | Mago, Druida, Artifice
+**Extracao Amplificada** — Biomancia | 1 minuto | Toque | Instantanea | Mago, Druida, Artífice
 Monstro morto rende dobro de ingredientes; testes de Trinchar na proxima 1h tem +4.
 
 **Maos Gelidas** — Evocacao | Acao | 4,5m | Instantanea | Mago
 Cone 4,5m: 2d6 frio (CON CD ou dobro). Congela ingredientes.
 
-**Crescimento Acelerado** — Transmutacao (R) | 1 hora | Toque | Permanente | Druida, Clerigo
+**Crescimento Acelerado** — Transmutação (R) | 1 hora | Toque | Permanente | Druida, Clérigo
 Semente vira planta adulta em 1h com propriedades do bioma.
 
-**Purificar Veneno** — Abjuracao | Acao | Toque | Instantanea | Clerigo, Druida
+**Purificar Veneno** — Abjuracao | Acao | Toque | Instantanea | Clérigo, Druida
 Remove Envenenado em criatura ou torna ingrediente toxico seguro para processamento.
 
-**Identificar Ingrediente** — Adivinhacao (R) | 1 minuto | Toque | Instantanea | Mago, Bardo, Artifice
-Origem do monstro, propriedades biomagicas, preparo ideal e riscos.
+**Identificar Ingrediente** — Adivinhacao (R) | 1 minuto | Toque | Instantanea | Mago, Bardo, Artífice
+Origem do monstro, propriedades biomágicas, preparo ideal e riscos.
 
-**Armadura Arcana** — Abjuracao | Acao | Toque | 8 horas | Mago, Artifice
-CA 13 + INT; nao interfere com gestos de magia.
+**Armadura Arcana** — Abjuracao | Acao | Toque | 8 horas | Mago, Artífice
+CA 13 + INT; não interfere com gestos de magia.
 
 **Onda de Trovao** — Evocacao | Acao | Pessoal (cubo 4,5m) | Instantanea | Mago, Bardo, Druida
 2d8 trovao (CON CD ou metade); falha empurra 3m.
 
-**Curar Ferimentos** — Abjuracao | Acao | Toque | Instantanea | Clerigo, Druida, Bardo
+**Curar Ferimentos** — Abjuracao | Acao | Toque | Instantanea | Clérigo, Druida, Bardo
 Cura 1d8 + mod. de atributo de conjuracao (SAB ou CAR).
 
 ---
 
 ### NIVEL 2
 
-**Aprimoramento Biomagico** — Biomancia | 10 minutos | Toque | 8 horas | Mago, Druida, Artifice
-Proxima refeicao com esse ingrediente concede +1 habilidade de assimilacao alem do d4.
+**Aprimoramento Biomagico** — Biomancia | 10 minutos | Toque | 8 horas | Mago, Druida, Artífice
+Proxima refeicao com esse ingrediente concede +1 habilidade de assimilação alem do d4.
 
-**Raios de Enfraquecimento** — Necromancia | Acao | 18m | Concentracao ate 1 minuto (C) | Mago, Clerigo
+**Raios de Enfraquecimento** — Necromancia | Acao | 18m | Concentracao até 1 minuto (C) | Mago, Clérigo
 Tres raios: CON CD ou Desvantagem em ataques e FOR por 1 minuto.
 
-**Esfera Acida de Monstro** — Evocacao | Acao | 18m | Concentracao ate 1 minuto (C) | Mago, Artifice
-Esfera 1m: 4d6 acido (DES CD); -1 CA em armadura atingida.
+**Esfera Acida de Monstro** — Evocacao | Acao | 18m | Concentracao até 1 minuto (C) | Mago, Artífice
+Esfera 1m: 4d6 ácido (DES CD); -1 CA em armadura atingida.
 
-**Transmutacao de Carne** — Transmutacao | 1 hora | Toque | Permanente | Mago, Gnomo, Artifice
+**Transmutação de Carne** — Transmutação | 1 hora | Toque | Permanente | Mago, Gnomo, Artífice
 Converte ingrediente em equivalente de mesma raridade (ex.: goblin -> grifo).
 
 **Inspiracao Culinaria** — Encantamento | Acao Bonus | 9m | 1 hora | Bardo
-+3 em Coccao e Harmonizacao; Prato Perfeito durante efeito da +1d6 HP temp por nivel do Bardo ao grupo.
++3 em Coccao e Harmonização; Prato Perfeito durante efeito da +1d6 HP temp por nivel do Bardo ao grupo.
 
-**Preservacao Perfeita** — Transmutacao | Acao | Toque | 30 dias | Mago, Clerigo, Druida, Artifice
-Ingrediente preservado 30 dias sem perder propriedades biomagicas.
+**Preservação Perfeita** — Transmutação | Acao | Toque | 30 dias | Mago, Clérigo, Druida, Artífice
+Ingrediente preservado 30 dias sem perder propriedades biomágicas.
 
-**Forma Menor** — Transmutacao | Acao | Pessoal | Concentracao ate 1 hora (C) | Druida, Mago
+**Forma Menor** — Transmutação | Acao | Pessoal | Concentracao até 1 hora (C) | Druida, Mago
 Transforma-se em besta Minuscula ou Pequena; mantem INT, SAB, CAR; sem magia na forma.
 
-**Escudo Arcano** — Abjuracao | Reacao | Pessoal | 1 rodada | Mago, Artifice
-Quando atingido ou alvo de magia: +5 CA ate inicio do proximo turno (inclui contra a magia que disparou).
+**Escudo Arcano** — Abjuracao | Reacao | Pessoal | 1 rodada | Mago, Artífice
+Quando atingido ou alvo de magia: +5 CA até inicio do próximo turno (inclui contra a magia que disparou).
 
-**Ilusao Menor** — Ilusao | Acao | 18m | 1 minuto | Mago, Bardo
-Som ou imagem estatica em cubo 1,5m; nao causa dano.
+**Ilusão Menor** — Ilusao | Acao | 18m | 1 minuto | Mago, Bardo
+Som ou imagem estática em cubo 1,5m; não causa dano.
 
 ---
 
 ### NIVEL 3
 
-**Animacao de Mortos** — Necromancia | 1 minuto | 3m | 24 horas | Mago, Clerigo
-Anima ate 2 cadaveres Medios ou menores; podem Trinchar com proficiencia = metade do nivel do conjurador. Em espaco de nivel 5: 4 Medios ou 2 Grandes.
+**Animação de Mortos** — Necromancia | 1 minuto | 3m | 24 horas | Mago, Clérigo
+Anima até 2 cadaveres Medios ou menores; podem Trinchar com proficiencia = metade do nivel do conjurador. Em espaco de nivel 5: 4 Medios ou 2 Grandes.
 
-**Injecao Biomagica** — Biomancia | Acao | Toque | 12 horas | Mago, Artifice
-Uma habilidade de assimilacao do ingrediente usado, 12h, sem refeicao (ingrediente consumido).
+**Injecao Biomágica** — Biomancia | Acao | Toque | 12 horas | Mago, Artífice
+Uma habilidade de assimilação do ingrediente usado, 12h, sem refeicao (ingrediente consumido).
 
 **Bola de Fogo** — Evocacao | Acao | 45m | Instantanea | Mago
 Raio 6m: 8d6 fogo (DES CD ou metade). *Variante Piromante: Cap. 19.*
 
-**Contagio Necrotico** — Necromancia | Acao | Toque | 7 dias | Clerigo, Mago
+**Contágio Necrótico** — Necromancia | Acao | Toque | 7 dias | Clérigo, Mago
 CON CD ou Envenenado; progressao por falhas/sucessos diarios.
 
-**Ventania** — Evocacao | Acao | Pessoal (linha 18m) | Concentracao ate 1 minuto (C) | Mago, Druida
+**Ventania** — Evocacao | Acao | Pessoal (linha 18m) | Concentracao até 1 minuto (C) | Mago, Druida
 STR CD ou empurrao 4,5m; apaga chamas e dispersa gases/esporos.
 
-**Ler Mentes** — Adivinhacao | Acao | 9m | Concentracao ate 1 minuto (C) | Mago, Bardo
+**Ler Mentes** — Adivinhacao | Acao | 9m | Concentracao até 1 minuto (C) | Mago, Bardo
 Pensamentos superficiais (SAB CD); INT 6+.
 
-**Relampago** — Evocacao | Acao | 36m | Instantanea | Mago, Druida
-Um alvo: 4d8 relampago (DES CD ou metade). Em ingredientes aquaticos congelados: preserva 24h.
+**Relâmpago** — Evocacao | Acao | 36m | Instantanea | Mago, Druida
+Um alvo: 4d8 relâmpago (DES CD ou metade). Em ingredientes aquaticos congelados: preserva 24h.
 
-**Sono** — Encantamento | Acao | 18m | 1 minuto | Mago, Bardo, Clerigo
+**Sono** — Encantamento | Acao | 18m | 1 minuto | Mago, Bardo, Clérigo
 Ate 5 criaturas com menos de 90 HP: SAB CD ou Inconsciente (dano acorda).
 
 ---
@@ -2889,120 +3128,120 @@ Ate 5 criaturas com menos de 90 HP: SAB CD ou Inconsciente (dano acorda).
 ### NIVEL 4
 
 **Visao do Ecossistema** — Adivinhacao (R) | 10 minutos | Pessoal | 1 hora | Druida, Mago
-Ve atraves de criatura no mesmo bioma (SAB CD 15); troca alvo como acao bonus.
+Ve atraves de criatura no mesmo bioma (SAB CD 15); troca alvo como ação bonus.
 
-**Murcha** — Necromancia | Acao | 4,5m | Instantanea | Mago, Clerigo
-8d8 necrotico (CON CD ou metade); conjurador cura metade do dano.
+**Murcha** — Necromancia | Acao | 4,5m | Instantanea | Mago, Clérigo
+8d8 necrótico (CON CD ou metade); conjurador cura metade do dano.
 
-**Mutacao Forcada** — Biomancia | Acao | 18m | Concentracao ate 1 hora (C) | Mago
-CON CD ou mutacao negativa aleatoria 1h.
+**Mutação Forcada** — Biomancia | Acao | 18m | Concentracao até 1 hora (C) | Mago
+CON CD ou mutação negativa aleatoria 1h.
 
-**Parede de Fogo** — Evocacao | Acao | 36m | Concentracao ate 1 minuto (C) | Mago, Druida
-Parede ate 18m: 5d8 ao atravessar; 2d8 radiante a 3m por turno.
+**Parede de Fogo** — Evocacao | Acao | 36m | Concentracao até 1 minuto (C) | Mago, Druida
+Parede até 18m: 5d8 ao atravessar; 2d8 radiante a 3m por turno.
 
-**Preservacao Anual** — Transmutacao | Acao | Toque | 1 ano | Mago, Clerigo, Druida, Artifice
-Como Preservacao Perfeita, mas duracao 1 ano (requer espaco de nivel 4).
+**Preservação Anual** — Transmutação | Acao | Toque | 1 ano | Mago, Clérigo, Druida, Artífice
+Como Preservação Perfeita, mas duração 1 ano (requer espaco de nivel 4).
 
-**Cura em Massa** — Abjuracao | Acao | 18m | Instantanea | Clerigo, Druida
+**Cura em Massa** — Abjuracao | Acao | 18m | Instantanea | Clérigo, Druida
 Ate 6 criaturas em raio de 3m: 3d8 + mod. de conjuracao.
 
 ---
 
 ### NIVEL 5
 
-**Ressurreicao Incompleta** — Necromancia | 1 hora | Toque | Permanente | Clerigo
-Aliado morto ha menos de 10 dias volta com 1 HP e 1 Exaustao; corpo intacto; nao se foi devorado.
+**Ressurreicao Incompleta** — Necromancia | 1 hora | Toque | Permanente | Clérigo
+Aliado morto ha menos de 10 dias volta com 1 HP e 1 Exaustao; corpo intacto; não se foi devorado.
 
-**Grande Transmutacao Biomagica** — Biomancia | 1 hora | Toque | 7 dias | Mago, Gnomo
-Ingrediente de Boss concede mutacao forte 7 dias (consumido).
+**Grande Transmutação Biomágica** — Biomancia | 1 hora | Toque | 7 dias | Mago, Gnomo
+Ingrediente de Boss concede mutação forte 7 dias (consumido).
 
 **Cone de Frio** — Evocacao | Acao | Pessoal (cone 18m) | Instantanea | Mago
 8d8 frio (CON CD ou metade); mortos por frio preservam ingredientes 72h.
 
-**Despertar** — Transmutacao | 8 horas | Toque | Permanente | Druida
+**Despertar** — Transmutação | 8 horas | Toque | Permanente | Druida
 Planta ou besta ganha INT 10 e linguagem.
 
-**Salto Dimensional** — Conjuracao | Acao Bonus | Pessoal | Instantanea | Mago, Bardo, Artifice
-Teletransporte ate 18m para ponto visivel.
+**Salto Dimensional** — Conjuracao | Acao Bonus | Pessoal | Instantanea | Mago, Bardo, Artífice
+Teletransporte até 18m para ponto visivel.
 
-**Restaurar Vigor** — Abjuracao | 1 hora | Toque | Instantanea | Clerigo, Druida
+**Restaurar Vigor** — Abjuracao | 1 hora | Toque | Instantanea | Clérigo, Druida
 Remove 1 nivel de Exaustao e uma doenca ou maldicao leve.
 
 ---
 
 ### NIVEL 6
 
-**Causar Praga** — Necromancia | Acao | 18m | Concentracao ate 1 minuto (C) | Clerigo, Mago
-CON CD ou 10d6 veneno/necrotico + Envenenado 1 minuto.
+**Causar Praga** — Necromancia | Acao | 18m | Concentracao até 1 minuto (C) | Clérigo, Mago
+CON CD ou 10d6 veneno/necrótico + Envenenado 1 minuto.
 
-**Disintegrar** — Transmutacao | Acao | 18m | Instantanea | Mago
+**Disintegrar** — Transmutação | Acao | 18m | Instantanea | Mago
 10d6+40 forca (DES CD ou metade); 0 HP = sem corpo para extracao.
 
-**Cadeia de Relampago** — Evocacao | Acao | 45m | Instantanea | Mago, Druida
-Primeiro alvo 10d8 relampago; salta ate 3 alvos adicionais a 9m (metade do dano cada, DES CD).
+**Cadeia de Relâmpago** — Evocacao | Acao | 45m | Instantanea | Mago, Druida
+Primeiro alvo 10d8 relâmpago; salta até 3 alvos adicionais a 9m (metade do dano cada, DES CD).
 
 ---
 
 ### NIVEL 7
 
-**Forma de Monstro (Polimorfismo Supremo)** — Biomancia / Transmutacao | Acao | Toque | Concentracao ate 1 hora (C) | Mago, Druida
-Voluntario vira monstro do bestiario ate nivel conjurador -2; inimigo SAB CD ou besta inofensiva CR 1.
+**Forma de Monstro (Polimorfismo Supremo)** — Biomancia / Transmutação | Acao | Toque | Concentracao até 1 hora (C) | Mago, Druida
+Voluntario vira monstro do bestiário até nivel conjurador -2; inimigo SAB CD ou besta inofensiva CR 1.
 
-**Prisao de Gelo** — Evocacao | Acao | 18m | Concentracao ate 10 minutos (C) | Mago
+**Prisao de Gelo** — Evocacao | Acao | 18m | Concentracao até 10 minutos (C) | Mago
 STR CD ou Restringido no gelo; 5d6 frio por turno; preserva corpo para extracao.
 
-**Regeneracao Biomagica** — Biomancia | Acao | Toque | Concentracao ate 1 hora (C) | Clerigo, Druida, Mago
-Alvo recupera 4d8 + 15 HP no inicio de cada turno do conjurador; termina se alvo sofrer dano de fogo ou acido.
+**Regeneração Biomágica** — Biomancia | Acao | Toque | Concentracao até 1 hora (C) | Clérigo, Druida, Mago
+Alvo recupera 4d8 + 15 HP no inicio de cada turno do conjurador; termina se alvo sofrer dano de fogo ou ácido.
 
-**Invisibilidade Maior** — Ilusao | Acao | Toque | Concentracao ate 1 hora (C) | Mago, Bardo
+**Invisibilidade Maior** — Ilusao | Acao | Toque | Concentracao até 1 hora (C) | Mago, Bardo
 Ate 6 aliados invisiveis; termina ao atacar ou conjurar ofensivamente.
 
 ---
 
 ### NIVEL 8
 
-**Terremoto** — Evocacao | Acao | 150m | Concentracao ate 1 minuto (C) | Druida, Clerigo
+**Terremoto** — Evocacao | Acao | 150m | Concentracao até 1 minuto (C) | Druida, Clérigo
 Raio 30m: DES CD ou Prostrado; risco de colapso na masmorra.
 
 ---
 
 ### NIVEL 9
 
-**Biomancia Suprema — Transcendencia** — Biomancia | 1 hora | Pessoal | Permanente | Mago (Biomancia), Gnomo (Nivel 20)
+**Biomancia Suprema — Transcendência** — Biomancia | 1 hora | Pessoal | Permanente | Mago (Biomancia), Gnomo (Nivel 20)
 Integra DNA de 3 Bosses; uma habilidade permanente de Banquete de cada (requer ingredientes).
 
-**Desejo de Morte** — Conjuracao / Necromancia | Acao | Pessoal | Especial | Clerigo do Limiar (Ascensao nv. 20)
-Condicao irrevogavel mata alvo quando satisfeita; preco 4d10 necrotico por nivel do alvo.
+**Desejo de Morte** — Conjuracao / Necromancia | Acao | Pessoal | Especial | Clérigo do Limiar (Ascensao nv. 20)
+Condicao irrevogavel mata alvo quando satisfeita; preço 4d10 necrótico por nivel do alvo.
 
 ---
 
-## CAPITULO 19 — SUBCLASSES: BONUS E MAGIAS EXCLUSIVAS
+## CAPÍTULO 19 — SUBCLASSES: BONUS E MAGIAS EXCLUSIVAS
 
 ### 19.1 Bonus que NAO sao magias novas
 
-Estes efeitos **nao entram** na contagem de 60 feiticos:
+Estes efeitos **não entram** na contagem de 60 feiticos:
 
 | Subclasse | Bonus |
 |-----------|--------|
 | **Piromante de Forno** | Conhece truque `Chama de Fogareiro` extra; feiticos de fogo +1d6 vs criaturas de gelo/agua; sem componentes de fogo |
 | **Sacerdote da Purificacao** | `Purificar Veneno` 3x/dia sem gastar espaco de nivel 1 |
 | **Mago Confeiteiro** | 1 magia de Encantamento nv. 1–3 por dia sem gastar espaco (escolhida ao preparar) |
-| **Clerigo do Pao da Vida** | Ritual `Pao da Manha` (R, 10 min): paes = nivel do Clerigo; quem come ao amanhecer ganha HP temp = nivel x3 |
-| **Sommelier de Masmorra** | Ao usar Inspiracao de Bardo em quem prepara refeicao, alvo ganha +1d6 em Coccao/Harmonizacao por 1h |
-| **Alquimista de Caldos** | 1x/descanso longo: expelir caldo (cone 4,5m 4d6 acido ou nuvem 3m DES CD 13 Envenenado) apos refeicao Gourmet propria |
+| **Clérigo do Pao da Vida** | Ritual `Pao da Manha` (R, 10 min): paes = nivel do Clérigo; quem come ao amanhecer ganha HP temp = nivel x3 |
+| **Sommelier de Masmorra** | Ao usar Inspiracao de Bardo em quem prepara refeicao, alvo ganha +1d6 em Coccao/Harmonização por 1h |
+| **Alquimista de Caldos** | 1x/descanso longo: expelir caldo (cone 4,5m 4d6 ácido ou nuvem 3m DES CD 13 Envenenado) após refeicao Gourmet própria |
 | **Criomante de Conservacao** | Dieta gelo: aura 1d4 frio em adjacentes; ver magia exclusiva Cap. 19.3 |
-| **Alquimista de Caldos (Mago)** | Sopas: regurgitar acido 2d6 ou nevoa venenosa 1x/combate |
-| **Monge do Jejum** | 8h sem comer: +4 esquiva e 3d8 radiante em area ao primeiro prato |
+| **Alquimista de Caldos (Mago)** | Sopas: regurgitar ácido 2d6 ou nevoa venenosa 1x/combaté |
+| **Monge do Jejum** | 8h sem comer: +4 esquiva e 3d8 radiante em área ao primeiro prato |
 | **Pastor de Quimeras** | Dieta de quimera: aura de animal (ex. Leao) para aliados adjacentes |
-| **Clerigo do Limiar** | `Toque do Limiar` (truque, 2x/descanso curto): 1d8 necrotico ou cura 1d4+SAB em morto-vivo aliado; servos da subclasse contam como aliados para alcance de toque |
-| **Cantor das Especiarias** | +3 CD em Ilusao/Encantamento apos ervas raras |
+| **Clérigo do Limiar** | `Toque do Limiar` (truque, 2x/descanso curto): 1d8 necrótico ou cura 1d4+SAB em morto-vivo aliado; servos da subclasse contam como aliados para alcance de toque |
+| **Cantor das Especiarias** | +3 CD em Ilusao/Encantamento após ervas raras |
 | **Dancarino das Facas** | Carne de ave: atacar com CAR; recuperar facas de trinchar |
 | **Bardo Cervejeiro** | Inspiracao de Bardo concede HP temp = dado de Inspiracao atual |
 | **Circulo do Superpredador** | Forma Selvagem +HP do ultimo monstro grande comido |
 | **Circulo da Simbiose** | Sementes: armadura de vinhas, 1d6 cortante ao atacante |
-| **Circulo do Solo Vivo** | Pedras elementais: resistencia contundente enquanto dieta ativa |
-| **Biologo Alquimico (Artifice)** | Micro-doses: imunidade veneno; arma +1d6 acido 1 min |
-| **Engenheiro de Fogareiros** | Glandulas de fogo: resistencia Fogo; bombas +2d6 |
+| **Circulo do Solo Vivo** | Pedras elementais: resistência contundente enquanto dieta ativa |
+| **Biologo Alquimico (Artífice)** | Micro-doses: imunidade veneno; arma +1d6 ácido 1 min |
+| **Engenheiro de Fogareiros** | Glandulas de fogo: resistência Fogo; bombas +2d6 |
 | **Ferreiro de Utensilios** | Prato em panela de exoesqueleto: +2 CA em armaduras proprias |
 | **Construtor de Armadilhas** | Carne intacta: Vantagem INT e invencoes 24h |
 
@@ -3011,44 +3250,44 @@ Estes efeitos **nao entram** na contagem de 60 feiticos:
 | Subclasse | Magia exclusiva (Cap. 19.3) |
 |-----------|----------------------------|
 | Piromante de Forno | Maos Ardentes |
-| Criomante de Conservacao | Gelo de Conservacao |
-| Mago Fermentador | Envelhecer Materia, Fermentacao Acelerada |
+| Criomante de Conservacao | Gelo de Conservação |
+| Mago Fermentador | Envelhecer Matéria, Fermentação Acelerada |
 | Sacerdote da Purificacao | Purificacao Abencada |
 | Circulo da Decomposicao | Esporos Necroticos, Grande Decomposicao |
 | Bardo Confeiteiro | Doce Confuso |
-| Clerigo do Limiar | **Desejo de Morte** (nv. 9 — via Ascensao Cap. 12; fora dos 8 de 19.3) |
+| Clérigo do Limiar | **Desejo de Morte** (nv. 9 — via Ascensao Cap. 12; fora dos 8 de 19.3) |
 
 ### 19.2 Variantes (mesmo espaco que magia base)
 
 | Subclasse | Base | Variante |
 |-----------|------|----------|
-| **Piromante de Forno** | `Bola de Fogo` (nv. 3) | **Forno Arcano:** mesma area e dano; aliados na area sofrem metade ou nenhum dano (escolha do conjurador); nao incendeia comida do grupo |
+| **Piromante de Forno** | `Bola de Fogo` (nv. 3) | **Forno Arcano:** mesma área e dano; aliados na área sofrem metade ou nenhum dano (escolha do conjurador); não incendeia comida do grupo |
 
 ### 19.3 Magias exclusivas (8 — contam no total de 60)
 
 **Piromante de Forno — Maos Ardentes** — Evocacao | Acao | Toque | Instantanea | Nivel 1
 Toque: 3d6 fogo (DES CD ou metade). Ingrediente tocado e selado e assado por dentro em 1 rodada.
 
-**Criomante de Conservacao — Gelo de Conservacao** — Transmutacao | Acao | Toque | 8 horas | Nivel 2
-Ingrediente fica em estase de gelo seco: propriedades biomagicas preservadas 8h sem recipiente; +2 CA temp ao conjurador enquanto segura o ingrediente.
+**Criomante de Conservacao — Gelo de Conservação** — Transmutação | Acao | Toque | 8 horas | Nivel 2
+Ingrediente fica em estase de gelo seco: propriedades biomágicas preservadas 8h sem recipiente; +2 CA temp ao conjurador enquanto segura o ingrediente.
 
-**Mago Fermentador — Envelhecer Materia** — Transmutacao | Truque | Toque | Instantanea
-Objeto organico inanimado envelhece visualmente (fermentacao aparente); nao altera propriedades magicas ate conjurar `Fermentacao Acelerada`.
+**Mago Fermentador — Envelhecer Matéria** — Transmutação | Truque | Toque | Instantanea
+Objeto orgânico inanimado envelhece visualmente (fermentacao aparente); não altera propriedades mágicas até conjurar `Fermentação Acelerada`.
 
-**Mago Fermentador — Fermentacao Acelerada** — Transmutacao | 10 minutos | Toque | Instantanea | Nivel 2
-Ingrediente fermenta em 1 minuto com efeito de 1 ano de cura natural; remove doencas leves nao magicas em quem consumir.
+**Mago Fermentador — Fermentação Acelerada** — Transmutação | 10 minutos | Toque | Instantanea | Nivel 2
+Ingrediente fermenta em 1 minuto com efeito de 1 ano de cura natural; remove doenças leves não mágicas em quem consumir.
 
 **Sacerdote da Purificacao — Purificacao Abencada** — Abjuracao | Acao | Toque | Instantanea | Nivel 4
-Remove maldicao, veneno ou corrupcao magica em criatura ou ingrediente.
+Remove maldicao, veneno ou corrupcao mágica em criatura ou ingrediente.
 
 **Druida, Circulo da Decomposicao — Esporos Necroticos** — Necromancia | Acao | Pessoal | Instantanea | Truque
-Nuvem 1,5m: criaturas CON CD ou Envenenado 1 rodada; ingredientes necrofagos na nuvem ganham +1 na rolagem de assimilacao.
+Nuvem 1,5m: criaturas CON CD ou Envenenado 1 rodada; ingredientes necrofagos na nuvem ganham +1 na rolagem de assimilação.
 
-**Druida, Circulo da Decomposicao — Grande Decomposicao** — Transmutacao | Acao | 9m | Instantanea | Nivel 5
+**Druida, Circulo da Decomposicao — Grande Decomposicao** — Transmutação | Acao | 9m | Instantanea | Nivel 5
 Organico em cubo 3m vira fertilizante seguro; decompoe carcaca para extracao automatica (como Trinchar CD 14 bem-sucedido).
 
 **Bardo Confeiteiro — Doce Confuso** — Encantamento | Acao | 18m | Instantanea | Nivel 1
-Um humanoide CON CD ou Amedrontado e Desvantagem em Percepcao por 1 minuto (sabor de panico).
+Um humanoide CON CD ou Amedrontado e Desvantagem em Percepção por 1 minuto (sabor de panico).
 
 ---
 
@@ -3058,7 +3297,7 @@ Um humanoide CON CD ou Amedrontado e Desvantagem em Percepcao por 1 minuto (sabo
 |--------|---------------------|
 | Biomancia | 7 |
 | Evocacao | 12 |
-| Transmutacao | 8 |
+| Transmutação | 8 |
 | Necromancia | 7 |
 | Abjuracao | 8 |
 | Adivinhacao | 5 |
@@ -3068,79 +3307,79 @@ Um humanoide CON CD ou Amedrontado e Desvantagem em Percepcao por 1 minuto (sabo
 
 ---
 
-## CAPITULO 20 — MAGIAS POR CLASSE (REFERENCIA RAPIDA)
+## CAPÍTULO 20 — MAGIAS POR CLASSE (REFERÊNCIA RÁPIDA)
 
 > Texto completo de cada magia: Cap. 18–19.
 
 ### MAGO
 
-| Nv | Magias disponiveis |
+| Nv | Magias disíponíveis |
 |---:|---|
-| 0 | Calor de Panela; Chama de Fogareiro; Lamina de Espirito; Detectar Veneno; Maos Firmes; *(excl.)* Envelhecer Materia |
+| 0 | Calor de Panela; Chama de Fogareiro; Lâmina de Espirito; Detectar Veneno; Maos Firmes; *(excl.)* Envelhecer Matéria |
 | 1 | Extracao Amplificada; Maos Gelidas; Identificar Ingrediente; Armadura Arcana; Onda de Trovao; *(excl.)* Maos Ardentes |
-| 2 | Aprimoramento Biomagico; Raios de Enfraquecimento; Esfera Acida de Monstro; Transmutacao de Carne; Preservacao Perfeita; Forma Menor; Escudo Arcano; Ilusao Menor; *(excl.)* Gelo de Conservacao; *(excl.)* Fermentacao Acelerada |
-| 3 | Animacao de Mortos; Injecao Biomagica; Bola de Fogo; Contagio Necrotico; Ventania; Ler Mentes; Relampago; Sono |
-| 4 | Visao do Ecossistema; Murcha; Mutacao Forcada; Parede de Fogo; Preservacao Anual |
-| 5 | Grande Transmutacao Biomagica; Cone de Frio; Salto Dimensional |
-| 6 | Causar Praga; Disintegrar; Cadeia de Relampago |
-| 7 | Forma de Monstro; Prisao de Gelo; Regeneracao Biomagica; Invisibilidade Maior |
-| 9 | Biomancia Suprema — Transcendencia |
+| 2 | Aprimoramento Biomagico; Raios de Enfraquecimento; Esfera Acida de Monstro; Transmutação de Carne; Preservação Perfeita; Forma Menor; Escudo Arcano; Ilusão Menor; *(excl.)* Gelo de Conservação; *(excl.)* Fermentação Acelerada |
+| 3 | Animação de Mortos; Injecao Biomágica; Bola de Fogo; Contágio Necrótico; Ventania; Ler Mentes; Relâmpago; Sono |
+| 4 | Visao do Ecossistema; Murcha; Mutação Forcada; Parede de Fogo; Preservação Anual |
+| 5 | Grande Transmutação Biomágica; Cone de Frio; Salto Dimensional |
+| 6 | Causar Praga; Disintegrar; Cadeia de Relâmpago |
+| 7 | Forma de Monstro; Prisao de Gelo; Regeneração Biomágica; Invisibilidade Maior |
+| 9 | Biomancia Suprema — Transcendência |
 
 **Piromante:** variante Forno Arcano em `Bola de Fogo` (19.2).
 
 ### CLERIGO
 
-| Nv | Magias disponiveis |
+| Nv | Magias disíponíveis |
 |---:|---|
 | 0 | Calor de Panela; Chama de Fogareiro; Detectar Veneno; Estabilizar |
 | 1 | Crescimento Acelerado; Purificar Veneno; Curar Ferimentos |
-| 2 | Raios de Enfraquecimento; Preservacao Perfeita |
-| 3 | Animacao de Mortos; Contagio Necrotico; Sono |
-| 4 | Murcha; Preservacao Anual; Cura em Massa; *(excl.)* Purificacao Abencada |
+| 2 | Raios de Enfraquecimento; Preservação Perfeita |
+| 3 | Animação de Mortos; Contágio Necrótico; Sono |
+| 4 | Murcha; Preservação Anual; Cura em Massa; *(excl.)* Purificacao Abencada |
 | 5 | Ressurreicao Incompleta; Restaurar Vigor |
 | 6 | Causar Praga |
-| 7 | Regeneracao Biomagica |
+| 7 | Regeneração Biomágica |
 | 8 | Terremoto |
-| 9 | Desejo de Morte *(Clerigo do Limiar, Ascensao nv. 20)* |
+| 9 | Desejo de Morte *(Clérigo do Limiar, Ascensao nv. 20)* |
 
-**Talentos (Cap. 12):** 34 caminhos de subclasse (4/8/12/16 + Ascensao 20); **Clerigo do Limiar** = trilha necromantica + `Desejo de Morte`. Magias de 19.3 somam-se ao grimorio e nao substituem talentos de caminho.
+**Talentos (Cap. 12):** 34 caminhos de subclasse (4/8/12/16 + Ascensao 20); **Clérigo do Limiar** = trilha necromantica + `Desejo de Morte`. Magias de 19.3 somam-se ao grimorio e não substituem talentos de caminho.
 
 ### BARDO
 
-| Nv | Magias disponiveis |
+| Nv | Magias disíponíveis |
 |---:|---|
-| 0 | Calor de Panela; Chama de Fogareiro; Lamina de Espirito; Detectar Veneno |
+| 0 | Calor de Panela; Chama de Fogareiro; Lâmina de Espirito; Detectar Veneno |
 | 1 | Identificar Ingrediente; Onda de Trovao; Curar Ferimentos; *(excl.)* Doce Confuso |
-| 2 | Inspiracao Culinaria; Ilusao Menor |
+| 2 | Inspiracao Culinaria; Ilusão Menor |
 | 3 | Ler Mentes; Sono |
 | 5 | Salto Dimensional |
 | 7 | Invisibilidade Maior |
 
 ### DRUIDA
 
-| Nv | Magias disponiveis |
+| Nv | Magias disíponíveis |
 |---:|---|
 | 0 | Calor de Panela; Chama de Fogareiro; Detectar Veneno; Estabilizar; Maos Firmes; *(excl.)* Esporos Necroticos |
 | 1 | Extracao Amplificada; Crescimento Acelerado; Purificar Veneno; Onda de Trovao; Curar Ferimentos |
-| 2 | Aprimoramento Biomagico; Preservacao Perfeita; Forma Menor |
-| 3 | Ventania; Relampago |
-| 4 | Visao do Ecossistema; Parede de Fogo; Preservacao Anual; Cura em Massa |
+| 2 | Aprimoramento Biomagico; Preservação Perfeita; Forma Menor |
+| 3 | Ventania; Relâmpago |
+| 4 | Visao do Ecossistema; Parede de Fogo; Preservação Anual; Cura em Massa |
 | 5 | Despertar; Restaurar Vigor; *(excl.)* Grande Decomposicao |
-| 6 | Cadeia de Relampago |
-| 7 | Forma de Monstro; Regeneracao Biomagica |
+| 6 | Cadeia de Relâmpago |
+| 7 | Forma de Monstro; Regeneração Biomágica |
 | 8 | Terremoto |
 
 ### ARTIFICE
 
-| Nv | Magias disponiveis |
+| Nv | Magias disíponíveis |
 |---:|---|
-| 0 | Calor de Panela; Chama de Fogareiro; Lamina de Espirito; Detectar Veneno; Maos Firmes |
+| 0 | Calor de Panela; Chama de Fogareiro; Lâmina de Espirito; Detectar Veneno; Maos Firmes |
 | 1 | Extracao Amplificada; Identificar Ingrediente; Armadura Arcana |
-| 2 | Aprimoramento Biomagico; Esfera Acida de Monstro; Transmutacao de Carne; Preservacao Perfeita; Escudo Arcano |
-| 3 | Injecao Biomagica |
-| 4 | Preservacao Anual |
+| 2 | Aprimoramento Biomagico; Esfera Acida de Monstro; Transmutação de Carne; Preservação Perfeita; Escudo Arcano |
+| 3 | Injecao Biomágica |
+| 4 | Preservação Anual |
 | 5 | Salto Dimensional |
 
-Poder extra: **Infusoes** (Cap. IV), nao lista 19.3.
+Poder extra: **Infusoes** (Cap. IV), não lista 19.3.
 
 ---

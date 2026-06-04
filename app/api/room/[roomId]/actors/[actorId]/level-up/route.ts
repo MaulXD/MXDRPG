@@ -1,28 +1,30 @@
 import { NextResponse } from "next/server";
+import { canEditRoomActor } from "@/lib/auth/room-access";
 import { getSession } from "@/lib/auth/session";
 import { canLevelUp, validateLevelUpChoices, type LevelUpChoices } from "@/lib/character/level-up";
-import { canEditCharacter, getCharacter } from "@/lib/character/characters";
-import { getRoomActor, levelUpRoomActor, addRoomChatMessage } from "@/lib/room/store";
+import { resolveCharacter } from "@/lib/character/characters";
+import { getRoom, getRoomActor, levelUpRoomActor, addRoomChatMessage } from "@/lib/room/store";
 
 type Params = { params: Promise<{ roomId: string; actorId: string }> };
 
 export async function POST(req: Request, { params }: Params) {
+  const { roomId, actorId } = await params;
   const session = await getSession();
-  if (!session) {
-    return NextResponse.json({ error: "Não autenticado" }, { status: 401 });
+  const room = await getRoom(roomId);
+  if (!room) {
+    return NextResponse.json({ error: "Sala não encontrada" }, { status: 404 });
   }
 
-  const { roomId, actorId } = await params;
-  const seed = getCharacter(actorId);
+  const seed = await resolveCharacter(actorId);
   if (!seed) {
     return NextResponse.json({ error: "Personagem inválido" }, { status: 404 });
   }
 
-  if (!canEditCharacter(seed, session.user.id, session.user.role)) {
-    return NextResponse.json({ error: "Sem permissão" }, { status: 403 });
+  if (!canEditRoomActor(room, seed, session?.user ?? null)) {
+    return NextResponse.json({ error: "Sem permissão para editar esta ficha" }, { status: 403 });
   }
 
-  const current = getRoomActor(roomId, actorId);
+  const current = await getRoomActor(roomId, actorId);
   if (!current) {
     return NextResponse.json({ error: "Personagem não está na sala" }, { status: 404 });
   }
@@ -44,13 +46,13 @@ export async function POST(req: Request, { params }: Params) {
     return NextResponse.json({ error: err }, { status: 400 });
   }
 
-  const snapshot = levelUpRoomActor(roomId, actorId, choices);
+  const snapshot = await levelUpRoomActor(roomId, actorId, choices);
   if (!snapshot) {
     return NextResponse.json({ error: "Falha ao subir nível" }, { status: 500 });
   }
 
   const actor = snapshot.actors[actorId];
-  addRoomChatMessage(roomId, {
+  await addRoomChatMessage(roomId, {
     authorId: "system",
     authorName: "Sistema",
     authorRole: "mestre",

@@ -13,6 +13,7 @@ export function SiteFooter() {
         <Link href="/sistema">Sistema</Link>
         <Link href="/mesa">Mesa</Link>
         <Link href="/entrar">Entrar</Link>
+        <Link href="/privacidade">Privacidade</Link>
       </nav>
     </footer>
   );

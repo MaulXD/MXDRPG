@@ -2,9 +2,9 @@
   "version": 1,
   "tracks": [
     {
-      "id": "acougueiro-de-batalha",
+      "id": "predador-voraz",
       "classId": "Guerreiro",
-      "subclass": "Acougueiro de Batalha",
+      "subclass": "Predador Voraz",
       "specialty": "Feras e Bestiais",
       "diet": "Carne vermelha de feras: +2 FOR e regen 3 HP/turno por 4h",
       "talents": [
@@ -18,7 +18,7 @@
         {
           "level": 8,
           "id": "maestria-de-acougue",
-          "name": "Maestria de Acougue",
+          "name": "Maestria Voraz",
           "kind": "talent",
           "requires": "corte-limpo"
         },
@@ -39,7 +39,7 @@
         {
           "level": 20,
           "id": "legado-do-acougue",
-          "name": "Legado do Acougue",
+          "name": "Legado do Predador",
           "kind": "ascension",
           "requires": null
         }

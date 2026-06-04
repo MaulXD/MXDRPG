@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
-import { canManageRoom } from "@/lib/auth/room-access";
+import { canBypassCombatTurn, canParticipateInRoom } from "@/lib/auth/room-access";
 import { canMoveToken } from "@/lib/auth/authorize-room";
 import { getSession } from "@/lib/auth/session";
+import { snapshotForViewer } from "@/lib/room/snapshot-for-viewer";
 import { moveRoomToken, getRoom, getRoomSnapshot } from "@/lib/room/store";
 import { activeTokenId } from "@/lib/room/combat";
 import type { MoveMode } from "@/lib/vtt/movement";
@@ -26,7 +27,7 @@ export async function POST(req: Request, { params }: Params) {
     return NextResponse.json({ error: "Parâmetros inválidos" }, { status: 400 });
   }
 
-  const snapshotBefore = getRoomSnapshot(roomId);
+  const snapshotBefore = await getRoomSnapshot(roomId);
   if (!snapshotBefore) {
     return NextResponse.json({ error: "Sala não encontrada" }, { status: 404 });
   }
@@ -36,21 +37,23 @@ export async function POST(req: Request, { params }: Params) {
     return NextResponse.json({ error: "Token não encontrado" }, { status: 404 });
   }
 
-  const room = getRoom(roomId);
+  const room = await getRoom(roomId);
   if (!room) {
     return NextResponse.json({ error: "Sala não encontrada" }, { status: 404 });
   }
 
-  if (session) {
-    if (!canMoveToken(room, session.user, token)) {
-      return NextResponse.json({ error: "Sem permissão" }, { status: 403 });
-    }
+  if (!canParticipateInRoom(room, session?.user ?? null)) {
+    return NextResponse.json({ error: "Sem permissão" }, { status: 403 });
   }
 
-  const canBypass = session ? canManageRoom(room, session.user) : false;
+  if (session && !canMoveToken(room, session.user, token)) {
+    return NextResponse.json({ error: "Sem permissão neste token" }, { status: 403 });
+  }
+
+  const canBypass = canBypassCombatTurn(room, session?.user ?? null);
   const mode: MoveMode = body.mode === "run" ? "run" : "walk";
 
-  const result = moveRoomToken(
+  const result = await moveRoomToken(
     roomId,
     tokenId,
     { q: body.q, r: body.r },
@@ -65,5 +68,7 @@ export async function POST(req: Request, { params }: Params) {
     return NextResponse.json({ error: result.error }, { status: 400 });
   }
 
-  return NextResponse.json(result.snapshot);
+  return NextResponse.json(
+    snapshotForViewer(result.snapshot, room, session?.user ?? null)
+  );
 }

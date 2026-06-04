@@ -1,0 +1,126 @@
+.char-wizard {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.char-wizard-steps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.75rem;
+  margin-bottom: 1rem;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.char-wizard-step.active {
+  color: var(--neon-lime);
+  font-weight: 600;
+}
+
+.char-wizard-step.done {
+  color: var(--text);
+}
+
+.char-wizard-panel {
+  padding: 1.5rem;
+}
+
+.char-wizard-panel h2 {
+  margin: 0 0 1rem;
+  font-size: 1.15rem;
+}
+
+.char-wizard-panel label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+}
+
+.char-wizard-panel input,
+.char-wizard-panel select,
+.char-wizard-panel textarea {
+  padding: 0.65rem 0.75rem;
+  border-radius: 8px;
+  border: 1px solid var(--glass-border);
+  background: rgba(0, 0, 0, 0.35);
+  color: var(--text);
+  font-family: var(--font-body);
+}
+
+.char-wizard-notes {
+  margin: 0;
+  padding-left: 1.1rem;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
+.char-wizard-meta {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.char-wizard-attrs {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.char-wizard-attr {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.25rem 1rem;
+  align-items: center;
+}
+
+.char-wizard-attr-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.char-wizard-attr-controls button {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 8px;
+  border: 1px solid var(--glass-border);
+  background: rgba(0, 0, 0, 0.4);
+  color: var(--text);
+  cursor: pointer;
+}
+
+.char-wizard-attr small {
+  grid-column: 1 / -1;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+}
+
+.char-wizard-review {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.35rem 1rem;
+  font-size: 0.9rem;
+}
+
+.char-wizard-review dt {
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.char-wizard-review dd {
+  margin: 0;
+}
+
+.char-wizard-err {
+  color: #ff6b8a;
+  font-size: 0.85rem;
+}
+
+.char-wizard-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1.25rem;
+  justify-content: flex-end;
+}

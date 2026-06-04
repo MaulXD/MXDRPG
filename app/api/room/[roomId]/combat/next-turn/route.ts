@@ -1,19 +1,45 @@
 import { NextResponse } from "next/server";
-import { requireRoomManage } from "@/lib/auth/authorize-room";
-import { advanceRoomTurn } from "@/lib/room/store";
+import { canAdvanceCombatTurn } from "@/lib/auth/combat-turn-access";
+import { canParticipateInRoom } from "@/lib/auth/room-access";
+import { getSession } from "@/lib/auth/session";
+import { snapshotForViewer } from "@/lib/room/snapshot-for-viewer";
+import { advanceRoomTurn, getRoom } from "@/lib/room/store";
 
 type Params = { params: Promise<{ roomId: string }> };
 
 export async function POST(_req: Request, { params }: Params) {
   const { roomId } = await params;
-  const auth = await requireRoomManage(roomId);
-  if ("error" in auth) {
-    return NextResponse.json({ error: auth.error }, { status: auth.status });
-  }
+  const session = await getSession();
+  const room = await getRoom(roomId);
 
-  const snapshot = advanceRoomTurn(roomId);
-  if (!snapshot) {
+  if (!room) {
     return NextResponse.json({ error: "Sala não encontrada" }, { status: 404 });
   }
-  return NextResponse.json(snapshot);
+
+  if (room.roomId !== "demo") {
+    if (!session?.user) {
+      return NextResponse.json({ error: "Faça login para passar o turno" }, { status: 401 });
+    }
+    if (!canParticipateInRoom(room, session.user)) {
+      return NextResponse.json({ error: "Você não participa desta mesa" }, { status: 403 });
+    }
+  }
+
+  if (!canAdvanceCombatTurn(room, session?.user ?? null, room.combat)) {
+    return NextResponse.json(
+      { error: "Só o mestre ou quem está na vez pode passar o turno" },
+      { status: 403 }
+    );
+  }
+
+  try {
+    const snapshot = await advanceRoomTurn(roomId);
+    if (!snapshot) {
+      return NextResponse.json({ error: "Sala não encontrada" }, { status: 404 });
+    }
+    return NextResponse.json(snapshotForViewer(snapshot, room, session?.user ?? null));
+  } catch (e) {
+    const message = e instanceof Error ? e.message : "Erro ao avançar turno";
+    return NextResponse.json({ error: message }, { status: 500 });
+  }
 }

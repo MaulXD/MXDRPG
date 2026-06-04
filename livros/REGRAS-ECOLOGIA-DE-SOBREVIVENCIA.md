@@ -1,7 +1,7 @@
 # ECOLOGIA DE SOBREVIVENCIA — Eldarin v4.0
 
-> Complementa **Cap. 5B** (40 plantas), **Cap. 6** (assimilacao por monstro) e **BIOMAS-APROFUNDADOS.md**.  
-> Principio: **o bioma nao e so cenario — e um sistema**. Plantas, criaturas e objetos existem porque o ambiente os selecionou.
+> Complementa **Cap. 5B** (40 plantas), **Cap. 6** (assimilação por monstro) e **BIOMAS-APROFUNDADOS.md**.  
+> Principio: **o bioma não e só cenario — e um sistema**. Plantas, criaturas e objetos existem porque o ambiente os selecionou.
 
 ---
 
@@ -10,10 +10,10 @@
 | Via | O que e | Duracao tipica | Exemplo (Mar de Prata) |
 |-----|---------|----------------|------------------------|
 | **Flora** | Forragear/preparar planta do bioma (Cap. 5B) | 24h (Prato Perfeito dobra) | Algas de Prata (#12): nado + visao na turva |
-| **Fauna** | Derrotar monstro, **Prato Estruturado**, assimilacao (Cap. 6.2) | 24h | Tubarao (#031): *Guelras de Profundeza* |
-| **Cenario** | Objeto fixo no mapa; ritual, craft ou interacao (catalogo OBJ) | variavel | Bolha de Ar Fossilizada (OBJ-G15) |
+| **Fauna** | Derrotar monstro, **Prato Estruturado**, assimilação (Cap. 6.2) | 24h | Tubarao (#031): *Guelras de Profundeza* |
+| **Cenario** | Objeto fixo no mapa; ritual, craft ou interacao (catálogo OBJ) | variavel | Bolha de Ar Fossilizada (OBJ-G15) |
 
-**Regra de ouro:** sem nenhuma via, aplique **Condicao ambiental** do bioma (Exaustao, afogamento, dano passivo). Com **duas vias** ativas (ex.: planta + mutacao), o personagem conta como **nativo** — Vantagem em Furtividade e rastreamento naquele bioma por 24h.
+**Regra de ouro:** sem nenhuma via, aplique **Condicao ambiental** do bioma (Exaustao, afogamento, dano passivo). Com **duas vias** ativas (ex.: planta + mutação), o personagem conta como **nativo** — Vantagem em Furtividade e rastreamento naquele bioma por 24h.
 
 ---
 
@@ -23,7 +23,7 @@
 |------------|--------------|-----------|-------------|
 | **Leve** | DES ou CON CD 10 a cada 4h | ignora penalidade leve | imune |
 | **Moderada** | CON CD 12 a cada 2h; falha = 1d6 + Exaustao 1 | metade dano; sem Exaustao na 1a falha | imune |
-| **Extrema** | CON CD 14 a cada 1h; falha = 2d6 + Exaustao 2 | resistencia ao tipo; CD -2 | imune + 1 beneficio extra do bioma |
+| **Extrema** | CON CD 14 a cada 1h; falha = 2d6 + Exaustao 2 | resistência ao tipo; CD -2 | imune + 1 beneficio extra do bioma |
 
 **Druida (Ciclo da Vida):** pode substituir uma via por teste de **SAB + proficiencia Natureza** CD = 10 + severidade do bioma (tabela em cada bioma).
 
@@ -40,7 +40,7 @@ Ao montar um mapa, empilhe **1 de cada camada** + **1-3 props** + **0-1 perigo p
 3. **Teto** — queda, gotejamento, fios, estalactites.  
 4. **Prop** — decoracao interativa (altar, maquina, ovo).  
 5. **Recurso** — coletavel 1x por descanso curto (sal, algas, nucleo).  
-6. **Perigo** — dano ou save ao entrar/passar (gas, acido, magnetismo).
+6. **Perigo** — dano ou save ao entrar/passar (gas, ácido, magnetismo).
 
 IDs de objetos: **OBJ-G** (gerais), **OBJ-B01** a **OBJ-B20** (por bioma). Ver `CATALOGO-OBJETOS-DE-CENARIO.md`.
 
@@ -48,7 +48,7 @@ IDs de objetos: **OBJ-G** (gerais), **OBJ-B01** a **OBJ-B20** (por bioma). Ver `
 
 ## Tabela rapida — necessidade x bioma
 
-| Necessidade | Biomas criticos | Flora (P#) | Fauna (cod.) | Objeto |
+| Necessidade | Biomas críticos | Flora (P#) | Fauna (cod.) | Objeto |
 |-------------|-----------------|------------|--------------|--------|
 | Respirar agua | 2, 10 (lagoas) | 05, 12, 15, 29 | 028, 031, 052, 029 | G15, B02-03 |
 | Resistir calor | 4, 16 | 13, 14 | 010, 040, 051 | B04-02, G08 |

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 export function RegisterForm() {
   const router = useRouter();
   const [name, setName] = useState("");
+  const [nickname, setNickname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -19,7 +20,7 @@ export function RegisterForm() {
     const res = await fetch("/api/auth/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, email, password }),
+      body: JSON.stringify({ name, nickname: nickname.trim() || undefined, email, password }),
     });
     const data = await res.json();
     setLoading(false);
@@ -44,6 +45,19 @@ export function RegisterForm() {
           required
           style={inputStyle}
           placeholder="Seu nome na mesa"
+        />
+      </label>
+      <label style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}>
+        Apelido (opcional)
+        <input
+          type="text"
+          value={nickname}
+          onChange={(e) => setNickname(e.target.value)}
+          minLength={3}
+          maxLength={24}
+          pattern="[a-zA-Z0-9_-]*"
+          style={inputStyle}
+          placeholder="ex: meu_apelido"
         />
       </label>
       <label style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}>

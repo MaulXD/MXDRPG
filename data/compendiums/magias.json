@@ -1,8 +1,10 @@
 [
   {
+    "id": "magias-chama-de-fogareiro",
     "name": "Chama de Fogareiro",
     "type": "magia",
     "system": {
+      "catalogId": "MAG-chama-de-fogareiro",
       "description": "<p>Chama controlável; uso culinário.</p>",
       "tactical": {
         "alcanceHex": {
@@ -10,7 +12,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -23,9 +25,11 @@
     }
   },
   {
+    "id": "magias-lamina-de-espirito",
     "name": "Lâmina de Espírito",
     "type": "magia",
     "system": {
+      "catalogId": "MAG-lamina-de-espirito",
       "description": "<p>Lâmina etérea 1d4; +2 Trinchar.</p>",
       "tactical": {
         "alcanceHex": {
@@ -33,7 +37,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -55,9 +59,11 @@
     }
   },
   {
+    "id": "magias-detectar-veneno",
     "name": "Detectar Veneno",
     "type": "magia",
     "system": {
+      "catalogId": "MAG-detectar-veneno",
       "description": "<p>Detecta toxinas em 3 hex.</p>",
       "tactical": {
         "alcanceHex": {
@@ -65,7 +71,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -78,9 +84,11 @@
     }
   },
   {
+    "id": "magias-estabilizar",
     "name": "Estabilizar",
     "type": "magia",
     "system": {
+      "catalogId": "MAG-estabilizar",
       "description": "<p>Criatura a 0 HP para de falhar morte.</p>",
       "tactical": {
         "alcanceHex": {
@@ -88,7 +96,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -101,9 +109,11 @@
     }
   },
   {
+    "id": "magias-maos-firmes",
     "name": "Mãos Firmes",
     "type": "magia",
     "system": {
+      "catalogId": "MAG-maos-firmes",
       "description": "<p>+2 Trinchar por 1 hora.</p>",
       "tactical": {
         "alcanceHex": {
@@ -111,7 +121,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -124,9 +134,11 @@
     }
   },
   {
+    "id": "magias-extracao-amplificada",
     "name": "Extração Amplificada",
     "type": "magia",
     "system": {
+      "catalogId": "MAG-extracao-amplificada",
       "description": "<p>Dobra ingredientes; +4 Trinchar 1h.</p>",
       "tactical": {
         "alcanceHex": {
@@ -134,7 +146,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -147,17 +159,19 @@
     }
   },
   {
+    "id": "magias-maos-gelidas",
     "name": "Mãos Gelidas",
     "type": "magia",
     "system": {
-      "description": "<p>Cone 2d6 frio; save CON.</p>",
+      "catalogId": "MAG-maos-gelidas",
+      "description": "<p>Cone 2d6 frio; save CON. Canalizável.</p>",
       "tactical": {
         "alcanceHex": {
           "value": 2,
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -168,6 +182,14 @@
         "alcance": "2 hex",
         "save": {
           "attribute": "constituicao"
+        },
+        "area": {
+          "shape": "cone",
+          "lengthHex": 2
+        },
+        "channel": {
+          "maxExtraPa": 2,
+          "bonusPerPa": "1d6"
         }
       },
       "weapon": {
@@ -182,9 +204,11 @@
     }
   },
   {
+    "id": "magias-crescimento-acelerado",
     "name": "Crescimento Acelerado",
     "type": "magia",
     "system": {
+      "catalogId": "MAG-crescimento-acelerado",
       "description": "<p>Semente vira planta em 1h.</p>",
       "tactical": {
         "alcanceHex": {
@@ -192,7 +216,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -205,9 +229,11 @@
     }
   },
   {
+    "id": "magias-purificar-veneno",
     "name": "Purificar Veneno",
     "type": "magia",
     "system": {
+      "catalogId": "MAG-purificar-veneno",
       "description": "<p>Remove envenenado ou toxina em ingrediente.</p>",
       "tactical": {
         "alcanceHex": {
@@ -215,7 +241,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -228,9 +254,11 @@
     }
   },
   {
+    "id": "magias-identificar-ingrediente",
     "name": "Identificar Ingrediente",
     "type": "magia",
     "system": {
+      "catalogId": "MAG-identificar-ingrediente",
       "description": "<p>Revela origem e propriedades biomágicas.</p>",
       "tactical": {
         "alcanceHex": {
@@ -238,7 +266,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -251,9 +279,11 @@
     }
   },
   {
+    "id": "magias-armadura-arcana",
     "name": "Armadura Arcana",
     "type": "magia",
     "system": {
+      "catalogId": "MAG-armadura-arcana",
       "description": "<p>CA 13 + INT por 8h.</p>",
       "tactical": {
         "alcanceHex": {
@@ -261,7 +291,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -274,17 +304,19 @@
     }
   },
   {
+    "id": "magias-onda-de-trovao",
     "name": "Onda de Trovão",
     "type": "magia",
     "system": {
-      "description": "<p>Cubo 2d8 trovão; save CON.</p>",
+      "catalogId": "MAG-onda-de-trovao",
+      "description": "<p>Cubo 2d8 trovão; save CON. Canalizável.</p>",
       "tactical": {
         "alcanceHex": {
           "value": 2,
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -295,6 +327,14 @@
         "alcance": "2 hex",
         "save": {
           "attribute": "constituicao"
+        },
+        "area": {
+          "shape": "cube",
+          "radiusHex": 2
+        },
+        "channel": {
+          "maxExtraPa": 2,
+          "bonusPerPa": "1d6"
         }
       },
       "weapon": {
@@ -309,9 +349,11 @@
     }
   },
   {
+    "id": "magias-curar-ferimentos",
     "name": "Curar Ferimentos",
     "type": "magia",
     "system": {
+      "catalogId": "MAG-curar-ferimentos",
       "description": "<p>Cura 1d8 + mod conjuração.</p>",
       "tactical": {
         "alcanceHex": {
@@ -319,7 +361,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -332,17 +374,19 @@
     }
   },
   {
+    "id": "magias-chama-de-vinha",
     "name": "Chama de Vinha",
     "type": "magia",
     "system": {
-      "description": "<p>Projétil 2d6 fogo.</p>",
+      "catalogId": "MAG-chama-de-vinha",
+      "description": "<p>Projétil 2d6 fogo. Canalizável.</p>",
       "tactical": {
         "alcanceHex": {
           "value": 4,
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -350,7 +394,11 @@
         "nivel": 1,
         "escola": "Evocação",
         "tempo": "1 ação",
-        "alcance": "4 hex"
+        "alcance": "4 hex",
+        "channel": {
+          "maxExtraPa": 2,
+          "bonusPerPa": "1d6"
+        }
       },
       "weapon": {
         "dano": {
@@ -364,9 +412,11 @@
     }
   },
   {
+    "id": "magias-sussurro-de-masmorra",
     "name": "Sussurro de Masmorra",
     "type": "magia",
     "system": {
+      "catalogId": "MAG-sussurro-de-masmorra",
       "description": "<p>Telepatia com aliado visível.</p>",
       "tactical": {
         "alcanceHex": {
@@ -374,7 +424,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -387,9 +437,11 @@
     }
   },
   {
+    "id": "magias-aprimoramento-biomagico",
     "name": "Aprimoramento Biomágico",
     "type": "magia",
     "system": {
+      "catalogId": "MAG-aprimoramento-biomagico",
       "description": "<p>+1 habilidade assimilacao na próxima refeição.</p>",
       "tactical": {
         "alcanceHex": {
@@ -410,9 +462,11 @@
     }
   },
   {
+    "id": "magias-raios-de-enfraquecimento",
     "name": "Raios de Enfraquecimento",
     "type": "magia",
     "system": {
+      "catalogId": "MAG-raios-de-enfraquecimento",
       "description": "<p>3 raios; save CON ou desvantagem.</p>",
       "tactical": {
         "alcanceHex": {
@@ -420,7 +474,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -436,17 +490,19 @@
     }
   },
   {
+    "id": "magias-esfera-acida-de-monstro",
     "name": "Esfera Ácida de Monstro",
     "type": "magia",
     "system": {
-      "description": "<p>4d6 ácido; save DES.</p>",
+      "catalogId": "MAG-esfera-acida-de-monstro",
+      "description": "<p>4d6 ácido; save DES. Canalizável.</p>",
       "tactical": {
         "alcanceHex": {
           "value": 6,
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -457,6 +513,10 @@
         "alcance": "6 hex",
         "save": {
           "attribute": "destreza"
+        },
+        "channel": {
+          "maxExtraPa": 2,
+          "bonusPerPa": "1d6"
         }
       },
       "weapon": {
@@ -471,9 +531,11 @@
     }
   },
   {
+    "id": "magias-transmutacao-de-carne",
     "name": "Transmutação de Carne",
     "type": "magia",
     "system": {
+      "catalogId": "MAG-transmutacao-de-carne",
       "description": "<p>Converte ingrediente em equivalente.</p>",
       "tactical": {
         "alcanceHex": {
@@ -494,9 +556,11 @@
     }
   },
   {
+    "id": "magias-inspiracao-culinaria",
     "name": "Inspiração Culinária",
     "type": "magia",
     "system": {
+      "catalogId": "MAG-inspiracao-culinaria",
       "description": "<p>+3 Coccão/Harmonização 1h.</p>",
       "tactical": {
         "alcanceHex": {
@@ -504,7 +568,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -517,9 +581,11 @@
     }
   },
   {
+    "id": "magias-preservacao-perfeita",
     "name": "Preservação Perfeita",
     "type": "magia",
     "system": {
+      "catalogId": "MAG-preservacao-perfeita",
       "description": "<p>Ingrediente preservado 30 dias.</p>",
       "tactical": {
         "alcanceHex": {
@@ -527,7 +593,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -540,9 +606,11 @@
     }
   },
   {
+    "id": "magias-forma-menor",
     "name": "Forma Menor",
     "type": "magia",
     "system": {
+      "catalogId": "MAG-forma-menor",
       "description": "<p>Polimorfo em besta pequena.</p>",
       "tactical": {
         "alcanceHex": {
@@ -550,7 +618,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -563,9 +631,11 @@
     }
   },
   {
+    "id": "magias-escudo-arcano",
     "name": "Escudo Arcano",
     "type": "magia",
     "system": {
+      "catalogId": "MAG-escudo-arcano",
       "description": "<p>Reação: +5 CA 1 rodada.</p>",
       "tactical": {
         "alcanceHex": {
@@ -573,7 +643,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -586,9 +656,11 @@
     }
   },
   {
+    "id": "magias-ilusao-menor",
     "name": "Ilusão Menor",
     "type": "magia",
     "system": {
+      "catalogId": "MAG-ilusao-menor",
       "description": "<p>Som ou imagem estática.</p>",
       "tactical": {
         "alcanceHex": {
@@ -596,7 +668,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -609,9 +681,11 @@
     }
   },
   {
+    "id": "magias-muralha-hexagonal",
     "name": "Muralha Hexagonal",
     "type": "magia",
     "system": {
+      "catalogId": "MAG-muralha-hexagonal",
       "description": "<p>Barreira em 3 hex.</p>",
       "tactical": {
         "alcanceHex": {
@@ -636,9 +710,11 @@
     }
   },
   {
+    "id": "magias-animacao-de-mortos",
     "name": "Animação de Mortos",
     "type": "magia",
     "system": {
+      "catalogId": "MAG-animacao-de-mortos",
       "description": "<p>Anima 2 cadáveres por 24h.</p>",
       "tactical": {
         "alcanceHex": {
@@ -659,9 +735,11 @@
     }
   },
   {
+    "id": "magias-injecao-biomagica",
     "name": "Injeção Biomágica",
     "type": "magia",
     "system": {
+      "catalogId": "MAG-injecao-biomagica",
       "description": "<p>Habilidade assimilacao 12h do ingrediente.</p>",
       "tactical": {
         "alcanceHex": {
@@ -669,7 +747,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -682,17 +760,19 @@
     }
   },
   {
+    "id": "magias-bola-de-fogo",
     "name": "Bola de Fogo",
     "type": "magia",
     "system": {
-      "description": "<p>Raio 8d6 fogo; save DES.</p>",
+      "catalogId": "MAG-bola-de-fogo",
+      "description": "<p>Raio 8d6 fogo; save DES. Canalizável.</p>",
       "tactical": {
         "alcanceHex": {
           "value": 10,
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 2,
+          "value": 3,
           "min": 0
         }
       },
@@ -707,6 +787,10 @@
         "area": {
           "shape": "burst",
           "radiusHex": 2
+        },
+        "channel": {
+          "maxExtraPa": 2,
+          "bonusPerPa": "1d6"
         }
       },
       "weapon": {
@@ -721,9 +805,11 @@
     }
   },
   {
+    "id": "magias-nova-hex",
     "name": "Nova Hex",
     "type": "magia",
     "system": {
+      "catalogId": "MAG-nova-hex",
       "description": "<p>Explosão 3d6 fogo em área.</p>",
       "tactical": {
         "alcanceHex": {
@@ -760,9 +846,11 @@
     }
   },
   {
+    "id": "magias-contagio-necrotico",
     "name": "Contágio Necrótico",
     "type": "magia",
     "system": {
+      "catalogId": "MAG-contagio-necrotico",
       "description": "<p>Save CON ou envenenado prolongado.</p>",
       "tactical": {
         "alcanceHex": {
@@ -786,17 +874,19 @@
     }
   },
   {
+    "id": "magias-ventania",
     "name": "Ventania",
     "type": "magia",
     "system": {
-      "description": "<p>Linha empurra; save FOR.</p>",
+      "catalogId": "MAG-ventania",
+      "description": "<p>Linha 6 hex empurra; save FOR.</p>",
       "tactical": {
         "alcanceHex": {
           "value": 6,
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -804,14 +894,32 @@
         "nivel": 3,
         "escola": "Evocação",
         "tempo": "1 ação",
-        "alcance": "6 hex"
+        "alcance": "6 hex",
+        "save": {
+          "attribute": "forca"
+        },
+        "area": {
+          "shape": "line",
+          "lengthHex": 6
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "2d6",
+          "tipo": "contundente"
+        },
+        "ataque": {
+          "bonus": 0
+        }
       }
     }
   },
   {
+    "id": "magias-ler-mentes",
     "name": "Ler Mentes",
     "type": "magia",
     "system": {
+      "catalogId": "MAG-ler-mentes",
       "description": "<p>Lê pensamentos superficiais.</p>",
       "tactical": {
         "alcanceHex": {
@@ -819,7 +927,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -832,17 +940,19 @@
     }
   },
   {
+    "id": "magias-relampago",
     "name": "Relâmpago",
     "type": "magia",
     "system": {
-      "description": "<p>4d8 relâmpago; save DES.</p>",
+      "catalogId": "MAG-relampago",
+      "description": "<p>Raio 4d8 relâmpago; save DES. Canalizável.</p>",
       "tactical": {
         "alcanceHex": {
           "value": 8,
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -853,6 +963,14 @@
         "alcance": "8 hex",
         "save": {
           "attribute": "destreza"
+        },
+        "area": {
+          "shape": "line",
+          "lengthHex": 6
+        },
+        "channel": {
+          "maxExtraPa": 2,
+          "bonusPerPa": "1d6"
         }
       },
       "weapon": {
@@ -867,9 +985,11 @@
     }
   },
   {
+    "id": "magias-sono",
     "name": "Sono",
     "type": "magia",
     "system": {
+      "catalogId": "MAG-sono",
       "description": "<p>Até 5 alvos; save SAB.</p>",
       "tactical": {
         "alcanceHex": {
@@ -877,7 +997,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -893,10 +1013,12 @@
     }
   },
   {
+    "id": "magias-raio-do-limiar",
     "name": "Raio do Limiar",
     "type": "magia",
     "system": {
-      "description": "<p>4d8 necrótico; save CON.</p>",
+      "catalogId": "MAG-raio-do-limiar",
+      "description": "<p>4d8 necrótico; save CON. Canalizável.</p>",
       "tactical": {
         "alcanceHex": {
           "value": 6,
@@ -914,6 +1036,10 @@
         "alcance": "6 hex",
         "save": {
           "attribute": "constituicao"
+        },
+        "channel": {
+          "maxExtraPa": 2,
+          "bonusPerPa": "1d6"
         }
       },
       "weapon": {
@@ -928,9 +1054,11 @@
     }
   },
   {
+    "id": "magias-visao-do-ecossistema",
     "name": "Visão do Ecossistema",
     "type": "magia",
     "system": {
+      "catalogId": "MAG-visao-do-ecossistema",
       "description": "<p>Visão através de criatura do bioma.</p>",
       "tactical": {
         "alcanceHex": {
@@ -951,17 +1079,19 @@
     }
   },
   {
+    "id": "magias-murcha",
     "name": "Murcha",
     "type": "magia",
     "system": {
-      "description": "<p>8d8 necrótico; save CON.</p>",
+      "catalogId": "MAG-murcha",
+      "description": "<p>8d8 necrótico; save CON. Canalizável.</p>",
       "tactical": {
         "alcanceHex": {
           "value": 2,
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 3,
           "min": 0
         }
       },
@@ -972,6 +1102,10 @@
         "alcance": "2 hex",
         "save": {
           "attribute": "constituicao"
+        },
+        "channel": {
+          "maxExtraPa": 2,
+          "bonusPerPa": "1d6"
         }
       },
       "weapon": {
@@ -986,9 +1120,11 @@
     }
   },
   {
+    "id": "magias-mutacao-forcada",
     "name": "Mutação Forçada",
     "type": "magia",
     "system": {
+      "catalogId": "MAG-mutacao-forcada",
       "description": "<p>Mutação negativa aleatória 1h.</p>",
       "tactical": {
         "alcanceHex": {
@@ -996,7 +1132,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -1009,9 +1145,11 @@
     }
   },
   {
+    "id": "magias-parede-de-fogo",
     "name": "Parede de Fogo",
     "type": "magia",
     "system": {
+      "catalogId": "MAG-parede-de-fogo",
       "description": "<p>Parede 5d8 fogo.</p>",
       "tactical": {
         "alcanceHex": {
@@ -1019,7 +1157,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -1045,9 +1183,11 @@
     }
   },
   {
+    "id": "magias-preservacao-anual",
     "name": "Preservação Anual",
     "type": "magia",
     "system": {
+      "catalogId": "MAG-preservacao-anual",
       "description": "<p>Preserva ingrediente 1 ano.</p>",
       "tactical": {
         "alcanceHex": {
@@ -1055,7 +1195,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -1068,9 +1208,11 @@
     }
   },
   {
+    "id": "magias-cura-em-massa",
     "name": "Cura em Massa",
     "type": "magia",
     "system": {
+      "catalogId": "MAG-cura-em-massa",
       "description": "<p>Até 6 alvos: 3d8 + mod.</p>",
       "tactical": {
         "alcanceHex": {
@@ -1078,7 +1220,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -1091,9 +1233,11 @@
     }
   },
   {
+    "id": "magias-ressurreicao-incompleta",
     "name": "Ressurreição Incompleta",
     "type": "magia",
     "system": {
+      "catalogId": "MAG-ressurreicao-incompleta",
       "description": "<p>Aliado volta com 1 HP.</p>",
       "tactical": {
         "alcanceHex": {
@@ -1114,9 +1258,11 @@
     }
   },
   {
+    "id": "magias-grande-transmutacao-biomagica",
     "name": "Grande Transmutação Biomágica",
     "type": "magia",
     "system": {
+      "catalogId": "MAG-grande-transmutacao-biomagica",
       "description": "<p>Mutacao forte 7 dias (boss).</p>",
       "tactical": {
         "alcanceHex": {
@@ -1137,17 +1283,19 @@
     }
   },
   {
+    "id": "magias-cone-de-frio",
     "name": "Cone de Frio",
     "type": "magia",
     "system": {
-      "description": "<p>8d8 frio em cone.</p>",
+      "catalogId": "MAG-cone-de-frio",
+      "description": "<p>8d8 frio em cone. Canalizável.</p>",
       "tactical": {
         "alcanceHex": {
           "value": 6,
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 2,
+          "value": 3,
           "min": 0
         }
       },
@@ -1158,6 +1306,14 @@
         "alcance": "6 hex",
         "save": {
           "attribute": "constituicao"
+        },
+        "area": {
+          "shape": "cone",
+          "lengthHex": 4
+        },
+        "channel": {
+          "maxExtraPa": 2,
+          "bonusPerPa": "1d6"
         }
       },
       "weapon": {
@@ -1172,9 +1328,11 @@
     }
   },
   {
+    "id": "magias-despertar",
     "name": "Despertar",
     "type": "magia",
     "system": {
+      "catalogId": "MAG-despertar",
       "description": "<p>Planta ou besta ganha INT 10.</p>",
       "tactical": {
         "alcanceHex": {
@@ -1195,9 +1353,11 @@
     }
   },
   {
+    "id": "magias-salto-dimensional",
     "name": "Salto Dimensional",
     "type": "magia",
     "system": {
+      "catalogId": "MAG-salto-dimensional",
       "description": "<p>Teletransporte 6 hex.</p>",
       "tactical": {
         "alcanceHex": {
@@ -1205,7 +1365,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -1218,9 +1378,11 @@
     }
   },
   {
+    "id": "magias-restaurar-vigor",
     "name": "Restaurar Vigor",
     "type": "magia",
     "system": {
+      "catalogId": "MAG-restaurar-vigor",
       "description": "<p>Remove 1 exaustão e doença leve.</p>",
       "tactical": {
         "alcanceHex": {
@@ -1241,9 +1403,11 @@
     }
   },
   {
+    "id": "magias-causar-praga",
     "name": "Causar Praga",
     "type": "magia",
     "system": {
+      "catalogId": "MAG-causar-praga",
       "description": "<p>10d6 veneno; save CON.</p>",
       "tactical": {
         "alcanceHex": {
@@ -1251,7 +1415,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -1276,9 +1440,11 @@
     }
   },
   {
+    "id": "magias-desintegrar",
     "name": "Desintegrar",
     "type": "magia",
     "system": {
+      "catalogId": "MAG-desintegrar",
       "description": "<p>10d6+40 força; save DES.</p>",
       "tactical": {
         "alcanceHex": {
@@ -1286,7 +1452,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -1311,17 +1477,19 @@
     }
   },
   {
+    "id": "magias-cadeia-de-relampago",
     "name": "Cadeia de Relâmpago",
     "type": "magia",
     "system": {
-      "description": "<p>10d8 relâmpago em cadeia.</p>",
+      "catalogId": "MAG-cadeia-de-relampago",
+      "description": "<p>10d8 relâmpago em cadeia. Canalizável.</p>",
       "tactical": {
         "alcanceHex": {
           "value": 10,
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 3,
           "min": 0
         }
       },
@@ -1332,6 +1500,10 @@
         "alcance": "10 hex",
         "save": {
           "attribute": "destreza"
+        },
+        "channel": {
+          "maxExtraPa": 2,
+          "bonusPerPa": "1d6"
         }
       },
       "weapon": {
@@ -1346,9 +1518,11 @@
     }
   },
   {
+    "id": "magias-forma-de-monstro",
     "name": "Forma de Monstro",
     "type": "magia",
     "system": {
+      "catalogId": "MAG-forma-de-monstro",
       "description": "<p>Polimorfo em monstro do bestiário.</p>",
       "tactical": {
         "alcanceHex": {
@@ -1369,9 +1543,11 @@
     }
   },
   {
+    "id": "magias-prisao-de-gelo",
     "name": "Prisão de Gelo",
     "type": "magia",
     "system": {
+      "catalogId": "MAG-prisao-de-gelo",
       "description": "<p>Restringido + 5d6 frio/turno.</p>",
       "tactical": {
         "alcanceHex": {
@@ -1379,7 +1555,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -1401,9 +1577,11 @@
     }
   },
   {
+    "id": "magias-regeneracao-biomagica",
     "name": "Regeneração Biomágica",
     "type": "magia",
     "system": {
+      "catalogId": "MAG-regeneracao-biomagica",
       "description": "<p>4d8+15 HP no início de cada turno.</p>",
       "tactical": {
         "alcanceHex": {
@@ -1411,7 +1589,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -1424,9 +1602,11 @@
     }
   },
   {
+    "id": "magias-invisibilidade-maior",
     "name": "Invisibilidade Maior",
     "type": "magia",
     "system": {
+      "catalogId": "MAG-invisibilidade-maior",
       "description": "<p>Até 6 aliados invisíveis.</p>",
       "tactical": {
         "alcanceHex": {
@@ -1434,7 +1614,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -1447,9 +1627,11 @@
     }
   },
   {
+    "id": "magias-terremoto",
     "name": "Terremoto",
     "type": "magia",
     "system": {
+      "catalogId": "MAG-terremoto",
       "description": "<p>Área 30 hex; save DES prostrado.</p>",
       "tactical": {
         "alcanceHex": {
@@ -1465,14 +1647,32 @@
         "nivel": 8,
         "escola": "Evocação",
         "tempo": "1 ação",
-        "alcance": "20 hex"
+        "alcance": "20 hex",
+        "save": {
+          "attribute": "destreza"
+        },
+        "area": {
+          "shape": "burst",
+          "radiusHex": 5
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "6d6",
+          "tipo": "contundente"
+        },
+        "ataque": {
+          "bonus": 0
+        }
       }
     }
   },
   {
+    "id": "magias-biomancia-suprema-transcendencia",
     "name": "Biomancia Suprema — Transcendência",
     "type": "magia",
     "system": {
+      "catalogId": "MAG-biomancia-suprema-transcendencia",
       "description": "<p>Integra DNA de 3 bosses.</p>",
       "tactical": {
         "alcanceHex": {
@@ -1493,9 +1693,11 @@
     }
   },
   {
+    "id": "magias-desejo-de-morte",
     "name": "Desejo de Morte",
     "type": "magia",
     "system": {
+      "catalogId": "MAG-desejo-de-morte",
       "description": "<p>Condição irrevogável de morte.</p>",
       "tactical": {
         "alcanceHex": {
@@ -1516,9 +1718,11 @@
     }
   },
   {
+    "id": "magias-maos-ardentes",
     "name": "Mãos Ardentes",
     "type": "magia",
     "system": {
+      "catalogId": "MAG-maos-ardentes",
       "description": "<p>Piromante: 3d6 fogo ao toque.</p>",
       "tactical": {
         "alcanceHex": {
@@ -1526,7 +1730,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -1551,9 +1755,11 @@
     }
   },
   {
+    "id": "magias-gelo-de-conservacao",
     "name": "Gelo de Conservação",
     "type": "magia",
     "system": {
+      "catalogId": "MAG-gelo-de-conservacao",
       "description": "<p>Criomante: estase de ingrediente 8h.</p>",
       "tactical": {
         "alcanceHex": {
@@ -1561,7 +1767,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -1574,9 +1780,11 @@
     }
   },
   {
+    "id": "magias-fermentacao-acelerada",
     "name": "Fermentação Acelerada",
     "type": "magia",
     "system": {
+      "catalogId": "MAG-fermentacao-acelerada",
       "description": "<p>Mago Fermentador: fermenta em 1 min.</p>",
       "tactical": {
         "alcanceHex": {
@@ -1597,9 +1805,11 @@
     }
   },
   {
+    "id": "magias-purificacao-abencoada",
     "name": "Purificação Abençoada",
     "type": "magia",
     "system": {
+      "catalogId": "MAG-purificacao-abencoada",
       "description": "<p>Remove maldição ou veneno.</p>",
       "tactical": {
         "alcanceHex": {
@@ -1607,7 +1817,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -1620,9 +1830,11 @@
     }
   },
   {
+    "id": "magias-esporos-necroticos",
     "name": "Esporos Necróticos",
     "type": "magia",
     "system": {
+      "catalogId": "MAG-esporos-necroticos",
       "description": "<p>Nuvem: save CON ou envenenado.</p>",
       "tactical": {
         "alcanceHex": {
@@ -1630,7 +1842,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -1641,14 +1853,29 @@
         "alcance": "2 hex",
         "save": {
           "attribute": "constituicao"
+        },
+        "area": {
+          "shape": "burst",
+          "radiusHex": 1
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d6",
+          "tipo": "necrótico"
+        },
+        "ataque": {
+          "bonus": 0
         }
       }
     }
   },
   {
+    "id": "magias-grande-decomposicao",
     "name": "Grande Decomposição",
     "type": "magia",
     "system": {
+      "catalogId": "MAG-grande-decomposicao",
       "description": "<p>Decompõe orgânico em cubo 3 hex.</p>",
       "tactical": {
         "alcanceHex": {
@@ -1664,14 +1891,20 @@
         "nivel": 5,
         "escola": "Transmutação",
         "tempo": "1 ação",
-        "alcance": "4 hex"
+        "alcance": "4 hex",
+        "area": {
+          "shape": "cube",
+          "radiusHex": 1
+        }
       }
     }
   },
   {
+    "id": "magias-doce-confuso",
     "name": "Doce Confuso",
     "type": "magia",
     "system": {
+      "catalogId": "MAG-doce-confuso",
       "description": "<p>Save CON ou amedrontado.</p>",
       "tactical": {
         "alcanceHex": {
@@ -1679,7 +1912,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },

@@ -8,7 +8,7 @@ export async function GET() {
     return NextResponse.json({ error: "Faça login" }, { status: 401 });
   }
 
-  const rooms = listRoomsForUser(session.user.id);
+  const rooms = await listRoomsForUser(session.user.id);
   return NextResponse.json({ rooms });
 }
 
@@ -24,7 +24,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Nome da mesa obrigatório" }, { status: 400 });
   }
 
-  const room = createRoom(session.user.id, name);
+  const room = await createRoom(session.user.id, name);
   return NextResponse.json({
     room: {
       roomId: room.roomId,

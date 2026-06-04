@@ -48,7 +48,8 @@ function ownedTalents(actor: CharacterSheet): CharacterTalent[] {
 }
 
 export function canLevelUp(actor: CharacterSheet): boolean {
-  const { nivel, xpTotal } = actor.identity;
+  const nivel = actor.identity.nivel;
+  const xpTotal = actor.identity.xpTotal ?? 0;
   return canAdvanceLevel(nivel, xpTotal);
 }
 

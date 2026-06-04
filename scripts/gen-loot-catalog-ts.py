@@ -4,10 +4,10 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 src = ROOT / "livros" / "CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md"
-out = ROOT / "web" / "lib" / "character" / "loot-catalog.ts"
+out = ROOT / "lib" / "character" / "loot-catalog.ts"
 text = src.read_text(encoding="utf-8")
 rows = re.findall(r"^\| (ESP|MIN|TES)-(\d{2}) \| ([^|]+) \|", text, re.M)
-lines = ["/** Gerado por scripts/gen-loot-catalog-ts.py — nao editar a mao */", "", "export const LOOT_NAMES: Record<string, string> = {"]
+lines = ["/** Gerado por scripts/gen-loot-catalog-ts.py — não editar a mao */", "", "export const LOOT_NAMES: Record<string, string> = {"]
 for kind, num, name in rows:
     key = f"{kind}-{num}"
     safe = name.strip().replace("\\", "\\\\").replace('"', '\\"')

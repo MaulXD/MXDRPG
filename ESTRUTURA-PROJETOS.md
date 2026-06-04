@@ -1,26 +1,29 @@
-# Estrutura do monorepo local (antes de separar Git)
+# Estrutura do repositório MXDRPG
 
 ```
-RPG/
-├── vinite/          → Repo futuro: sistema Foundry VTT
-├── web/             → Repo futuro: site Next.js (Vercel)
-├── livros/          → Repo futuro (opcional): regras Markdown
-└── FICHA_*.md       → Design docs / referência
+RPG/                          ← raiz = app Next.js (deploy Vercel)
+├── app/                      → rotas (mesa, ficha, auth, API)
+├── components/               → UI + VTT
+├── lib/                      → regras, sala, combate, auth
+├── data/                     → JSON gerados
+├── livros/                   → fonte das regras
+├── scripts/                  → geradores
+├── vinite/                   → módulo Foundry (referência / vídeo paridade)
+├── archive/web/              → legado (não editar)
+└── REFATORACAO.md            → plano de refatoração
 ```
 
 ## Deploy
 
-| Parte | Onde hospeda |
-|-------|----------------|
-| `web/` | Vercel (Root Directory = `web`) |
-| `vinite/` | Foundry: cópia manual ou release ZIP no GitHub |
-
-Nenhum push Git foi feito pelo assistente — você separa quando quiser.
+| Parte | Onde |
+|-------|------|
+| Raiz (`package.json`) | Vercel — Framework Next.js, Root Directory **vazio** |
+| `vinite/` | Foundry local ou release ZIP (fora da Vercel) |
 
 ## Site — papéis
 
-- **Admin** (`/admin`) — usuários, mundos, config sistema
-- **Mestre** (`/mestre`) — campanhas, cenas, compendiums
-- **Jogador** (`/jogador`) — personagens, sessões, fichas
+- **Admin** (`/admin`)
+- **Mestre** — dono da sala, convite, spawn
+- **Jogador** — ficha + mesa
 
-Auth atual: cookie demo (`lib/auth/demo-users.ts`). Produção: trocar por Clerk/Auth0/Neon.
+Auth atual: demo (`lib/auth/`). Produção: fase posterior do [REFATORACAO.md](REFATORACAO.md).

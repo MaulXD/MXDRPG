@@ -100,10 +100,13 @@ function mob(
   tier,
   attrs = { forca: 10, agilidade: 10 },
   move = { walk: 4, run: 6 },
-  pa = 3,
+  pa = 6,
   desc = ""
 ) {
+  const paMin = 6;
+  const paMax = Math.max(paMin, pa);
   return {
+    id: `monstros-${slug(name)}`,
     name,
     type: "npc",
     system: {
@@ -114,7 +117,7 @@ function mob(
       },
       resources: {
         vida: { value: hp, max: hp },
-        pontosAcao: { value: pa, max: pa },
+        pontosAcao: { value: paMax, max: paMax },
       },
       movement: { hex: { walk: { value: move.walk }, run: { value: move.run } } },
       tactical: { defesa: { value: ca }, ameaca: { value: nivel }, tier },
@@ -123,7 +126,11 @@ function mob(
   };
 }
 
-/** 001–060 + extras do catálogo */
+function monCod(n) {
+  return `MON-${String(n).padStart(3, "0")}`;
+}
+
+/** 001–060 + extras (ordem = LIVRO-DO-JOGADOR §6.2) */
 const MONSTERS = [
   mob("Zumbi de Masmorra", 2, 22, 10, "mob", { forca: 13, agilidade: 8 }, { walk: 3, run: 5 }),
   mob("Esqueleto Armado", 2, 18, 13, "mob", { forca: 10, agilidade: 14 }),
@@ -197,6 +204,10 @@ const MONSTERS = [
   mob("Slime de Masmorra", 2, 30, 11, "mob", { forca: 14, agilidade: 6 }, { walk: 2, run: 3 }),
 ];
 
+for (let i = 0; i < MONSTERS.length; i++) {
+  MONSTERS[i].system.catalogId = monCod(i + 1);
+}
+
 function spell(
   name,
   nivel,
@@ -207,9 +218,11 @@ function spell(
   opts = {}
 ) {
   const s = {
+    id: `magias-${slug(name)}`,
     name,
     type: "magia",
     system: {
+      catalogId: `MAG-${slug(name)}`,
       description: `<p>${desc}</p>`,
       tactical: { alcanceHex: { value: alcanceHex, min: 0 }, custoPontosAcao: { value: pa, min: 0 } },
       spell: {
@@ -219,6 +232,7 @@ function spell(
         alcance: `${alcanceHex} hex`,
         ...(opts.save ? { save: { attribute: opts.save } } : {}),
         ...(opts.area ? { area: opts.area } : {}),
+        ...(opts.channel ? { channel: { maxExtraPa: 2, bonusPerPa: "1d6" } } : {}),
       },
     },
   };
@@ -238,18 +252,39 @@ const SPELLS = [
   spell("Estabilizar", 0, "Abjuração", 1, 1, "Criatura a 0 HP para de falhar morte."),
   spell("Mãos Firmes", 0, "Transmutação", 1, 1, "+2 Trinchar por 1 hora."),
   spell("Extração Amplificada", 1, "Biomancia", 1, 1, "Dobra ingredientes; +4 Trinchar 1h.", { tempo: "1 minuto" }),
-  spell("Mãos Gelidas", 1, "Evocação", 2, 1, "Cone 2d6 frio; save CON.", { dano: "2d6", tipo: "frio", save: "constituicao" }),
+  spell("Mãos Gelidas", 1, "Evocação", 2, 2, "Cone 2d6 frio; save CON. Canalizável.", {
+    dano: "2d6",
+    tipo: "frio",
+    save: "constituicao",
+    area: { shape: "cone", lengthHex: 2 },
+    channel: true,
+  }),
   spell("Crescimento Acelerado", 1, "Transmutação", 1, 1, "Semente vira planta em 1h.", { tempo: "1 hora" }),
   spell("Purificar Veneno", 1, "Abjuração", 1, 1, "Remove envenenado ou toxina em ingrediente."),
   spell("Identificar Ingrediente", 1, "Adivinhação", 1, 1, "Revela origem e propriedades biomágicas.", { tempo: "1 minuto" }),
   spell("Armadura Arcana", 1, "Abjuração", 1, 1, "CA 13 + INT por 8h."),
-  spell("Onda de Trovão", 1, "Evocação", 2, 1, "Cubo 2d8 trovão; save CON.", { dano: "2d8", tipo: "trovão", save: "constituicao" }),
+  spell("Onda de Trovão", 1, "Evocação", 2, 2, "Cubo 2d8 trovão; save CON. Canalizável.", {
+    dano: "2d8",
+    tipo: "trovão",
+    save: "constituicao",
+    area: { shape: "cube", radiusHex: 2 },
+    channel: true,
+  }),
   spell("Curar Ferimentos", 1, "Abjuração", 1, 1, "Cura 1d8 + mod conjuração."),
-  spell("Chama de Vinha", 1, "Evocação", 4, 1, "Projétil 2d6 fogo.", { dano: "2d6", tipo: "fogo" }),
+  spell("Chama de Vinha", 1, "Evocação", 4, 2, "Projétil 2d6 fogo. Canalizável.", {
+    dano: "2d6",
+    tipo: "fogo",
+    channel: true,
+  }),
   spell("Sussurro de Masmorra", 1, "Adivinhação", 10, 1, "Telepatia com aliado visível."),
   spell("Aprimoramento Biomágico", 2, "Biomancia", 1, 2, "+1 habilidade assimilacao na próxima refeição.", { tempo: "10 minutos" }),
   spell("Raios de Enfraquecimento", 2, "Necromancia", 6, 1, "3 raios; save CON ou desvantagem.", { save: "constituicao" }),
-  spell("Esfera Ácida de Monstro", 2, "Evocação", 6, 1, "4d6 ácido; save DES.", { dano: "4d6", tipo: "ácido", save: "destreza" }),
+  spell("Esfera Ácida de Monstro", 2, "Evocação", 6, 2, "4d6 ácido; save DES. Canalizável.", {
+    dano: "4d6",
+    tipo: "ácido",
+    save: "destreza",
+    channel: true,
+  }),
   spell("Transmutação de Carne", 2, "Transmutação", 1, 2, "Converte ingrediente em equivalente.", { tempo: "1 hora" }),
   spell("Inspiração Culinária", 2, "Encantamento", 4, 1, "+3 Coccão/Harmonização 1h."),
   spell("Preservação Perfeita", 2, "Transmutação", 1, 1, "Ingrediente preservado 30 dias."),
@@ -259,11 +294,12 @@ const SPELLS = [
   spell("Muralha Hexagonal", 2, "Abjuração", 3, 2, "Barreira em 3 hex.", { area: { shape: "wall", hexCount: 3 } }),
   spell("Animação de Mortos", 3, "Necromancia", 3, 2, "Anima 2 cadáveres por 24h.", { tempo: "1 minuto" }),
   spell("Injeção Biomágica", 3, "Biomancia", 1, 1, "Habilidade assimilacao 12h do ingrediente."),
-  spell("Bola de Fogo", 3, "Evocação", 10, 2, "Raio 8d6 fogo; save DES.", {
+  spell("Bola de Fogo", 3, "Evocação", 10, 3, "Raio 8d6 fogo; save DES. Canalizável.", {
     dano: "8d6",
     tipo: "fogo",
     save: "destreza",
     area: { shape: "burst", radiusHex: 2 },
+    channel: true,
   }),
   spell("Nova Hex", 3, "Evocação", 5, 2, "Explosão 3d6 fogo em área.", {
     dano: "3d6",
@@ -272,31 +308,68 @@ const SPELLS = [
     area: { shape: "burst", radiusHex: 2 },
   }),
   spell("Contágio Necrótico", 3, "Necromancia", 1, 2, "Save CON ou envenenado prolongado.", { save: "constituicao" }),
-  spell("Ventania", 3, "Evocação", 6, 1, "Linha empurra; save FOR."),
+  spell("Ventania", 3, "Evocação", 6, 1, "Linha 6 hex empurra; save FOR.", {
+    dano: "2d6",
+    tipo: "contundente",
+    save: "forca",
+    area: { shape: "line", lengthHex: 6 },
+  }),
   spell("Ler Mentes", 3, "Adivinhação", 4, 1, "Lê pensamentos superficiais."),
-  spell("Relâmpago", 3, "Evocação", 8, 1, "4d8 relâmpago; save DES.", { dano: "4d8", tipo: "relâmpago", save: "destreza" }),
+  spell("Relâmpago", 3, "Evocação", 8, 2, "Raio 4d8 relâmpago; save DES. Canalizável.", {
+    dano: "4d8",
+    tipo: "relâmpago",
+    save: "destreza",
+    area: { shape: "line", lengthHex: 6 },
+    channel: true,
+  }),
   spell("Sono", 3, "Encantamento", 6, 1, "Até 5 alvos; save SAB.", { save: "sabedoria" }),
-  spell("Raio do Limiar", 3, "Necromancia", 6, 2, "4d8 necrótico; save CON.", { dano: "4d8", tipo: "necrótico", save: "constituicao" }),
+  spell("Raio do Limiar", 3, "Necromancia", 6, 2, "4d8 necrótico; save CON. Canalizável.", {
+    dano: "4d8",
+    tipo: "necrótico",
+    save: "constituicao",
+    channel: true,
+  }),
   spell("Visão do Ecossistema", 4, "Adivinhação", 0, 2, "Visão através de criatura do bioma.", { tempo: "10 minutos" }),
-  spell("Murcha", 4, "Necromancia", 2, 1, "8d8 necrótico; save CON.", { dano: "8d8", tipo: "necrótico", save: "constituicao" }),
+  spell("Murcha", 4, "Necromancia", 2, 3, "8d8 necrótico; save CON. Canalizável.", {
+    dano: "8d8",
+    tipo: "necrótico",
+    save: "constituicao",
+    channel: true,
+  }),
   spell("Mutação Forçada", 4, "Biomancia", 6, 1, "Mutação negativa aleatória 1h."),
   spell("Parede de Fogo", 4, "Evocação", 8, 1, "Parede 5d8 fogo.", { dano: "5d8", tipo: "fogo", area: { shape: "wall", hexCount: 4 } }),
   spell("Preservação Anual", 4, "Transmutação", 1, 1, "Preserva ingrediente 1 ano."),
   spell("Cura em Massa", 4, "Abjuração", 6, 1, "Até 6 alvos: 3d8 + mod."),
   spell("Ressurreição Incompleta", 5, "Necromancia", 1, 3, "Aliado volta com 1 HP.", { tempo: "1 hora" }),
   spell("Grande Transmutação Biomágica", 5, "Biomancia", 1, 3, "Mutacao forte 7 dias (boss).", { tempo: "1 hora" }),
-  spell("Cone de Frio", 5, "Evocação", 6, 2, "8d8 frio em cone.", { dano: "8d8", tipo: "frio", save: "constituicao" }),
+  spell("Cone de Frio", 5, "Evocação", 6, 3, "8d8 frio em cone. Canalizável.", {
+    dano: "8d8",
+    tipo: "frio",
+    save: "constituicao",
+    area: { shape: "cone", lengthHex: 4 },
+    channel: true,
+  }),
   spell("Despertar", 5, "Transmutação", 1, 3, "Planta ou besta ganha INT 10.", { tempo: "8 horas" }),
   spell("Salto Dimensional", 5, "Conjuração", 6, 1, "Teletransporte 6 hex.", { tempo: "ação bônus" }),
   spell("Restaurar Vigor", 5, "Abjuração", 1, 2, "Remove 1 exaustão e doença leve.", { tempo: "1 hora" }),
   spell("Causar Praga", 6, "Necromancia", 6, 1, "10d6 veneno; save CON.", { dano: "10d6", tipo: "veneno", save: "constituicao" }),
   spell("Desintegrar", 6, "Transmutação", 6, 1, "10d6+40 força; save DES.", { dano: "10d6+40", tipo: "força", save: "destreza" }),
-  spell("Cadeia de Relâmpago", 6, "Evocação", 10, 1, "10d8 relâmpago em cadeia.", { dano: "10d8", tipo: "relâmpago", save: "destreza" }),
+  spell("Cadeia de Relâmpago", 6, "Evocação", 10, 3, "10d8 relâmpago em cadeia. Canalizável.", {
+    dano: "10d8",
+    tipo: "relâmpago",
+    save: "destreza",
+    channel: true,
+  }),
   spell("Forma de Monstro", 7, "Biomancia", 1, 2, "Polimorfo em monstro do bestiário."),
   spell("Prisão de Gelo", 7, "Evocação", 6, 1, "Restringido + 5d6 frio/turno.", { dano: "5d6", tipo: "frio" }),
   spell("Regeneração Biomágica", 7, "Biomancia", 1, 1, "4d8+15 HP no início de cada turno."),
   spell("Invisibilidade Maior", 7, "Ilusão", 1, 1, "Até 6 aliados invisíveis."),
-  spell("Terremoto", 8, "Evocação", 20, 2, "Área 30 hex; save DES prostrado."),
+  spell("Terremoto", 8, "Evocação", 20, 2, "Área 30 hex; save DES prostrado.", {
+    dano: "6d6",
+    tipo: "contundente",
+    save: "destreza",
+    area: { shape: "burst", radiusHex: 5 },
+  }),
   spell("Biomancia Suprema — Transcendência", 9, "Biomancia", 0, 3, "Integra DNA de 3 bosses.", { tempo: "1 hora" }),
   spell("Desejo de Morte", 9, "Necromancia", 0, 3, "Condição irrevogável de morte."),
   // Subclasse (mesa / grimório)
@@ -304,33 +377,17 @@ const SPELLS = [
   spell("Gelo de Conservação", 2, "Transmutação", 1, 1, "Criomante: estase de ingrediente 8h."),
   spell("Fermentação Acelerada", 2, "Transmutação", 1, 2, "Mago Fermentador: fermenta em 1 min.", { tempo: "10 minutos" }),
   spell("Purificação Abençoada", 4, "Abjuração", 1, 1, "Remove maldição ou veneno."),
-  spell("Esporos Necróticos", 0, "Necromancia", 2, 1, "Nuvem: save CON ou envenenado.", { save: "constituicao" }),
-  spell("Grande Decomposição", 5, "Transmutação", 4, 2, "Decompõe orgânico em cubo 3 hex."),
+  spell("Esporos Necróticos", 0, "Necromancia", 2, 1, "Nuvem: save CON ou envenenado.", {
+    dano: "1d6",
+    tipo: "necrótico",
+    save: "constituicao",
+    area: { shape: "burst", radiusHex: 1 },
+  }),
+  spell("Grande Decomposição", 5, "Transmutação", 4, 2, "Decompõe orgânico em cubo 3 hex.", {
+    area: { shape: "cube", radiusHex: 1 },
+  }),
   spell("Doce Confuso", 1, "Encantamento", 6, 1, "Save CON ou amedrontado.", { save: "constituicao" }),
 ];
-
-const WEAPONS = [
-  { name: "Lâmina de Vinha", dano: "1d8", tipo: "cortante", alcance: 1, pa: 1, bonus: 0, desc: "Espada curta de masmorra." },
-  { name: "Alabarda do Guardião", dano: "1d10", tipo: "cortante", alcance: 2, pa: 1, bonus: 1, desc: "Alcance estendido." },
-  { name: "Arco de Teixo", dano: "1d8", tipo: "perfurante", alcance: 5, pa: 1, bonus: 0, desc: "Arco longo." },
-  { name: "Martelo Rúnico", dano: "2d6", tipo: "contundente", alcance: 1, pa: 2, bonus: -1, desc: "Golpes pesados." },
-  { name: "Adagas Gêmeas", dano: "2d4", tipo: "perfurante", alcance: 1, pa: 1, bonus: 1, desc: "Par de adagas." },
-  { name: "Machado de Batalha", dano: "1d12", tipo: "cortante", alcance: 1, pa: 1, bonus: 0, desc: "Machado pesado." },
-  { name: "Besta Leve", dano: "1d8", tipo: "perfurante", alcance: 6, pa: 1, bonus: 0, desc: "Besta de masmorra." },
-  { name: "Lança Longa", dano: "1d10", tipo: "perfurante", alcance: 2, pa: 1, bonus: 0, desc: "Formação tática." },
-  { name: "Maça Pesada", dano: "2d6", tipo: "contundente", alcance: 1, pa: 2, bonus: 0, desc: "Quebra armaduras." },
-  { name: "Rapieira", dano: "1d8", tipo: "perfurante", alcance: 1, pa: 1, bonus: 1, desc: "Duelo em hex." },
-  { name: "Azagaia", dano: "1d6", tipo: "perfurante", alcance: 3, pa: 1, bonus: 0, desc: "Arremesso." },
-  { name: "Clava Reforçada", dano: "1d6", tipo: "contundente", alcance: 1, pa: 1, bonus: 0, desc: "Arma simples." },
-].map((w) => ({
-  name: w.name,
-  type: "arma",
-  system: {
-    description: `<p>${w.desc}</p>`,
-    tactical: { alcanceHex: { value: w.alcance, min: 0 }, custoPontosAcao: { value: w.pa, min: 0 } },
-    weapon: { dano: { formula: w.dano, tipo: w.tipo }, ataque: { bonus: w.bonus } },
-  },
-}));
 
 const ABILITIES = [
   ["Investida Hexagonal", 2, 1, "charge", "Movimento 2 hex sem provocar."],
@@ -357,53 +414,21 @@ const ABILITIES = [
   ["Disparo de Artilheiro", 6, 1, "spell", "Projétil 2d8."],
   ["Barreira de Cobre", 0, 1, "defense_buff", "+2 defesa contra magia."],
 ].map(([name, range, pa, tipo, desc]) => ({
+  id: `habilidades-${slug(name)}`,
   name,
   type: "habilidade",
   system: {
+    catalogId: `HAB-${slug(name)}`,
     description: `<p>${desc}</p>`,
     tactical: { alcanceHex: { value: range, min: 0 }, custoPontosAcao: { value: pa, min: 0 } },
     ability: { tipo: tipo === "reacao" ? "reacao" : "ativa", recarga: tipo === "charge" ? "1/turno" : "" },
   },
 }));
 
-const GEAR = [
-  ["Armadura de Couro Reforçado", "+1 defesa", { bonusDefesa: 1 }],
-  ["Kit de Trinchar", "Facas e sacos para ingredientes.", {}],
-  ["Tocha de Masmorra", "Ilumina 4 hex 1h.", { alcanceHex: 4 }],
-  ["Armadura de Placas", "+3 defesa, pesada.", { bonusDefesa: 3 }],
-  ["Escudo de Teixo", "+2 defesa.", { bonusDefesa: 2 }],
-  ["Corda de Seda de Aranha", "50m, resistente.", {}],
-  ["Poção de Vida Menor", "Cura 2d4+2.", {}],
-  ["Antídoto de Masmorra", "Vantagem save veneno 1h.", {}],
-  ["Ração de Viagem", "1 dia de comida.", {}],
-  ["Cantil Encantado", "Água infinita leve.", {}],
-  ["Kit de Primeiros Socorros", "+2 Estabilizar.", {}],
-  ["Armadura de Mithral", "+2 defesa sem penalidade.", { bonusDefesa: 2 }],
-  ["Botas de Passo Silencioso", "+2 furtividade.", {}],
-  ["Amuleto de Proteção", "+1 defesa.", { bonusDefesa: 1 }],
-  ["Bolsa de Componentes", "Para conjuradores.", {}],
-  ["Grimório Vazio", "Registro de magias.", {}],
-  ["Ferramentas de Artífice", "Craft em masmorra.", {}],
-  ["Máscara de Filtro", "Imune esporos leves.", {}],
-  ["Gancho de Escalada", "Vantagem escalar.", {}],
-  ["Pederneira de Masmorra", "Acende fogo úmido.", {}],
-].map(([name, desc, extra]) => ({
-  name,
-  type: "equipamento",
-  system: {
-    description: `<p>${desc}</p>`,
-    gear: { peso: 2, equipado: false },
-    ...(extra.bonusDefesa ? { tactical: { bonusDefesa: { value: extra.bonusDefesa } } } : {}),
-    ...(extra.alcanceHex ? { effect: { alcanceHex: { value: extra.alcanceHex }, duracao: "1 hora" } } : {}),
-  },
-}));
-
 writeFileSync(join(OUT, "monstros.json"), JSON.stringify(MONSTERS, null, 2) + "\n");
 writeFileSync(join(OUT, "magias.json"), JSON.stringify(SPELLS, null, 2) + "\n");
-writeFileSync(join(OUT, "armas.json"), JSON.stringify(WEAPONS, null, 2) + "\n");
 writeFileSync(join(OUT, "habilidades.json"), JSON.stringify(ABILITIES, null, 2) + "\n");
-writeFileSync(join(OUT, "equipamentos.json"), JSON.stringify(GEAR, null, 2) + "\n");
 
 console.log(
-  `OK: ${MONSTERS.length} monstros, ${SPELLS.length} magias, ${WEAPONS.length} armas, ${ABILITIES.length} habilidades, ${GEAR.length} equipamentos`
+  `OK: ${MONSTERS.length} monstros, ${SPELLS.length} magias, ${ABILITIES.length} habilidades (armas/equipamentos: scripts/gen-equipment-compendium.py)`
 );

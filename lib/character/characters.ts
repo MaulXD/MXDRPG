@@ -1,156 +1,87 @@
+import "server-only";
 import type { CharacterSheet } from "./types";
 import { computeCulinary } from "./rules";
 import { normalizeCharacter } from "./normalize";
+import { dbEnabled } from "@/lib/db/enabled";
+import {
+  DEMO_CHARACTERS,
+  getCharacter,
+  canEditCharacter,
+} from "./demo-characters";
 
-const DEMO_CHARACTERS: CharacterSheet[] = [
-  normalizeCharacter({
-    id: "pc-aventureiro",
-    ownerId: "usr_demo_jogador",
-    name: "Aventureiro",
-    biography: "Explorador das galerias de Valdremor. Especialista em trinchar e sobreviver na masmorra.",
-    identity: {
-      nivel: 3,
-      xpTotal: 600,
-      raca: "Humano",
-      classe: "Guerreiro",
-      subclasse: "Acougueiro de Batalha",
-      antecedente: "Explorador",
-      talentos: [],
-    },
-    attributes: {
-      forca: 15,
-      destreza: 13,
-      constituicao: 14,
-      inteligencia: 11,
-      sabedoria: 11,
-      carisma: 11,
-    },
-    culinary: computeCulinary("Guerreiro", "Humano"),
-    resources: {
-      vida: { value: 28, max: 28 },
-      pontosAcao: { value: 4, max: 4 },
-    },
-    movement: { walk: 4, run: 7 },
-    tactical: { defesa: 13, iniciativa: 1 },
-    inventory: [
-      {
-        instanceId: "inv-seed-1",
-        packId: "armas",
-        entryId: "armas-lamina-de-vinha",
-        quantity: 1,
-      },
-      {
-        instanceId: "inv-seed-2",
-        packId: "armas",
-        entryId: "armas-adagas-gemeas",
-        quantity: 1,
-      },
-      {
-        instanceId: "inv-seed-3",
-        packId: "habilidades",
-        entryId: "habilidades-investida-do-guerreiro",
-        quantity: 1,
-      },
-      {
-        instanceId: "inv-seed-4",
-        packId: "habilidades",
-        entryId: "habilidades-golpe-flanqueador",
-        quantity: 1,
-      },
-      {
-        instanceId: "inv-seed-5",
-        packId: "habilidades",
-        entryId: "habilidades-postura-defensiva",
-        quantity: 1,
-      },
-      {
-        instanceId: "inv-seed-6",
-        packId: "equipamentos",
-        entryId: "equipamentos-kit-de-trinchar",
-        quantity: 1,
-      },
-    ],
-    combatLoadout: { packId: "armas", entryId: "armas-lamina-de-vinha" },
-    lootEconomy: {
-      po: 48,
-      especiarias: { "ESP-12": 1, "ESP-07": 2 },
-      minerios: { "MIN-03": 1 },
-      tesouros: {},
-    },
-  }),
-  normalizeCharacter({
-    id: "pc-mestre-demo",
-    ownerId: "usr_demo_mestre",
-    name: "NPC Demo",
-    biography: "Ficha de exemplo do mestre.",
-    identity: {
-      nivel: 1,
-      xpTotal: 0,
-      raca: "Elfo",
-      classe: "Mago",
-      antecedente: "Erudito",
-      talentos: [],
-    },
-    attributes: {
-      forca: 9,
-      destreza: 15,
-      constituicao: 10,
-      inteligencia: 17,
-      sabedoria: 12,
-      carisma: 10,
-    },
-    culinary: computeCulinary("Mago", "Elfo"),
-    resources: {
-      vida: { value: 10, max: 10 },
-      pontosAcao: { value: 4, max: 4 },
-    },
-    movement: { walk: 4, run: 6 },
-    tactical: { defesa: 12, iniciativa: 2 },
-    inventory: [
-      {
-        instanceId: "inv-m-1",
-        packId: "magias",
-        entryId: "magias-chama-de-vinha",
-        quantity: 1,
-      },
-      {
-        instanceId: "inv-m-2",
-        packId: "magias",
-        entryId: "magias-nova-hex",
-        quantity: 1,
-      },
-      {
-        instanceId: "inv-m-3",
-        packId: "magias",
-        entryId: "magias-muralha-hexagonal",
-        quantity: 1,
-      },
-    ],
-    combatLoadout: { packId: "magias", entryId: "magias-nova-hex" },
-  }),
-];
+export { getCharacter, canEditCharacter };
 
-export function getCharacter(id: string): CharacterSheet | null {
-  const found = DEMO_CHARACTERS.find((c) => c.id === id);
-  return found ? normalizeCharacter({ ...found }) : null;
+declare global {
+  // eslint-disable-next-line no-var
+  var __eldarinDbCharactersSeeded: boolean | undefined;
 }
 
-export function canEditCharacter(
-  character: CharacterSheet,
-  userId: string,
-  role: "admin" | "member"
-): boolean {
-  if (role === "admin") return true;
-  return character.ownerId === userId;
+async function ensureDbCharactersSeeded(): Promise<void> {
+  if (!dbEnabled() || globalThis.__eldarinDbCharactersSeeded) return;
+  const { upsertCharacter } = await import("@/lib/db/characters");
+  for (const sheet of DEMO_CHARACTERS) {
+    await upsertCharacter(sheet);
+  }
+  globalThis.__eldarinDbCharactersSeeded = true;
 }
 
-export function listCharactersForUser(userId: string): CharacterSheet[] {
+export async function resolveCharacter(id: string): Promise<CharacterSheet | null> {
+  if (dbEnabled()) {
+    await ensureDbCharactersSeeded();
+    const { fetchCharacter } = await import("@/lib/db/characters");
+    const fromDb = await fetchCharacter(id);
+    if (fromDb) return fromDb;
+  }
+  return getCharacter(id);
+}
+
+export async function listCharactersForUser(userId: string): Promise<CharacterSheet[]> {
+  if (dbEnabled()) {
+    await ensureDbCharactersSeeded();
+    const { listCharactersByOwner } = await import("@/lib/db/characters");
+    return listCharactersByOwner(userId);
+  }
   return DEMO_CHARACTERS.filter((c) => c.ownerId === userId).map((c) =>
     normalizeCharacter({ ...c })
   );
 }
 
-export function createCharacter(userId: string, name: string): CharacterSheet {
+export const MAX_CHARACTERS_PER_USER = 10;
+
+export async function saveCharacter(sheet: CharacterSheet): Promise<CharacterSheet> {
+  const normalized = normalizeCharacter(sheet);
+  const idx = DEMO_CHARACTERS.findIndex((c) => c.id === normalized.id);
+  if (idx >= 0) DEMO_CHARACTERS[idx] = normalized;
+  else DEMO_CHARACTERS.push(normalized);
+
+  if (dbEnabled()) {
+    const { upsertCharacter } = await import("@/lib/db/characters");
+    await upsertCharacter(normalized);
+  }
+  return normalized;
+}
+
+export async function createCharacterFromWizard(
+  userId: string,
+  draft: import("./wizard-types").CharacterWizardDraft
+): Promise<CharacterSheet> {
+  const existing = await listCharactersForUser(userId);
+  if (existing.length >= MAX_CHARACTERS_PER_USER) {
+    throw new Error(`Limite de ${MAX_CHARACTERS_PER_USER} fichas por conta`);
+  }
+  const { buildCharacterFromWizard } = await import("./build-from-wizard");
+  const sheet = buildCharacterFromWizard(userId, draft);
+  return saveCharacter(sheet);
+}
+
+export async function createCharacter(
+  userId: string,
+  name: string
+): Promise<CharacterSheet> {
+  const existing = await listCharactersForUser(userId);
+  if (existing.length >= MAX_CHARACTERS_PER_USER) {
+    throw new Error(`Limite de ${MAX_CHARACTERS_PER_USER} fichas por conta`);
+  }
   const sheet = normalizeCharacter({
     id: `pc-${Date.now().toString(36)}`,
     ownerId: userId,
@@ -182,6 +113,5 @@ export function createCharacter(userId: string, name: string): CharacterSheet {
     inventory: [],
     combatLoadout: null,
   });
-  DEMO_CHARACTERS.push(sheet);
-  return sheet;
+  return saveCharacter(sheet);
 }

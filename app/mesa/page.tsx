@@ -10,8 +10,8 @@ export default async function MesaIndexPage() {
     <div className="page-wrap">
       <h1 className="neon-title">Mesa virtual</h1>
       <p style={{ color: "var(--text-muted)", maxWidth: 560, lineHeight: 1.6 }}>
-        Grid hex, tokens, PA e combate Eldarin no browser. Crie conta, abra sua mesa e convide com código
-        (estilo Roll20).
+        Grade hexagonal, tokens, PA e combaté Eldarin no navegador. Crie conta, abra sua mesa e convide o grupo com
+        código de sala.
       </p>
       <Link href="/mesa/demo" className="btn" style={{ marginTop: "1rem" }}>
         Mesa demo (pública)

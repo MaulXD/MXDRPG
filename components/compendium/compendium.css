@@ -5,6 +5,11 @@
   align-items: start;
 }
 
+.comp-shell--page {
+  width: 100%;
+  max-width: 100%;
+}
+
 @media (max-width: 800px) {
   .comp-shell {
     grid-template-columns: 1fr;
@@ -94,6 +99,10 @@
 }
 
 .comp-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
   padding: 1rem;
   border-radius: var(--radius);
   background: var(--glass);
@@ -103,6 +112,20 @@
   text-align: left;
   font-family: inherit;
   color: inherit;
+  box-sizing: border-box;
+}
+
+.comp-card-body {
+  width: 100%;
+  min-width: 0;
+}
+
+.comp-card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin-top: 0.4rem;
+  line-height: 1.35;
 }
 
 .comp-card:hover {
@@ -129,10 +152,192 @@
 }
 
 .comp-card h3 {
-  margin: 0 0 0.35rem;
+  margin: 0;
   font-size: 1rem;
   font-family: var(--font-display);
   font-weight: 700;
+  line-height: 1.25;
+  word-break: break-word;
+}
+
+/* —— Mesa: painel lateral estreito —— */
+.comp-shell--rail {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
+  width: 100%;
+  max-width: 100%;
+  height: 100%;
+  overflow: hidden;
+  gap: 0;
+  grid-template-columns: unset;
+  align-items: stretch;
+}
+
+.comp-rail-head {
+  flex-shrink: 0;
+  padding: 0.65rem 0.75rem 0.5rem;
+  border-bottom: 1px solid var(--glass-border);
+  background: var(--glass-strong);
+}
+
+.comp-rail-eyebrow {
+  margin: 0 0 0.45rem;
+}
+
+.comp-rail-packs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.comp-rail-pack-chip {
+  padding: 0.35rem 0.6rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--glass-border);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-muted);
+  font-family: var(--font-display);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+}
+
+.comp-rail-pack-chip:hover {
+  color: var(--text);
+}
+
+.comp-rail-pack-chip.active {
+  color: var(--accent);
+  border-color: var(--glass-border-bright);
+  background: rgba(201, 169, 98, 0.12);
+}
+
+.comp-rail-toolbar {
+  flex-shrink: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 0.75rem;
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.comp-search--rail {
+  flex: 1 1 8rem;
+  min-width: 0;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.82rem;
+}
+
+.comp-rail-list {
+  flex: 1;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: 0.5rem 0.65rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  align-content: flex-start;
+}
+
+.comp-rail-list .comp-card--rail {
+  flex: 0 0 auto;
+  flex-shrink: 0;
+}
+
+.comp-rail-empty {
+  margin: 0.5rem 0;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.comp-card--rail {
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 0.6rem;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  padding: 0.55rem 0.65rem;
+  transform: none;
+  overflow: hidden;
+}
+
+.comp-card--rail:hover {
+  transform: none;
+  border-color: var(--glass-border-bright);
+}
+
+.comp-card--rail .comp-icon {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  margin: 0;
+  font-size: 0.95rem;
+  border-radius: 8px;
+}
+
+.comp-card--rail .comp-card-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.comp-card--rail h3 {
+  font-size: 0.88rem;
+  line-height: 1.3;
+}
+
+.comp-card--rail .comp-card-tags {
+  margin-top: 0.25rem;
+  gap: 0.25rem;
+}
+
+.comp-card--rail .comp-tag {
+  font-size: 0.68rem;
+  padding: 0.15rem 0.42rem;
+  color: var(--text-muted);
+  background: rgba(255, 255, 255, 0.07);
+  line-height: 1.25;
+  white-space: normal;
+  max-width: 100%;
+}
+
+.comp-detail--rail {
+  flex-shrink: 0;
+  max-height: 38%;
+  overflow-y: auto;
+  margin: 0;
+  padding: 0.65rem 0.75rem;
+  border-radius: 0;
+  border: none;
+  border-top: 1px solid var(--glass-border-bright);
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.comp-detail--rail h3 {
+  font-size: 1rem;
+}
+
+.comp-detail--rail .comp-detail-body {
+  font-size: 0.8rem;
+  line-height: 1.5;
+}
+
+.comp-rail-admin-hint {
+  flex-shrink: 0;
+  margin: 0;
+  padding: 0.4rem 0.75rem 0.55rem;
+  font-size: 0.68rem;
+  color: var(--text-dim);
+  border-top: 1px solid var(--glass-border);
 }
 
 .comp-tags {

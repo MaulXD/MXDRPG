@@ -1,0 +1,203 @@
+# VTT — PA, movimento, habilidades e áreas (spec técnica)
+
+> Complementa **Epic 9** do [PRD-ELDARIN-VTT.md](./PRD-ELDARIN-VTT.md).  
+> Regra de ouro: **livro manda** → dados no compêndio → `lib/` → preview na UI → API confirma.
+
+---
+
+## 1. PA — o que mostrar antes de confirmar
+
+Toda ação na mesa deve exibir **PA efetivo** (não só o custo bruto do JSON):
+
+| Fonte | Função | UI |
+|-------|--------|-----|
+| Compêndio | `tactical.custoPontosAcao.value` | Custo base (padrão **2 PA** se omitido) |
+| Motor | `effectivePaCost(actor, action, ctx?)` | Custo após talentos / Afinidade / Guerreiro |
+| Motor | `totalAttackPaCost` | Multi-ataque arma |
+| Motor | `paMaxForActor` (PC) / `MONSTER_PA_MIN` 6 (NPC) + token `pa` | “Gasta X · restam Y” |
+
+**Chip padrão no hover/rodapé:**
+
+```text
+PA: 2 → 1 (Afinidade) · Restam 4/6
+```
+
+---
+
+## 2. Movimento e PA
+
+### Regra (livro + código)
+
+| Modo | PA | Implementação |
+|------|-----|----------------|
+| Movimentação | **Faixas** | `lib/vtt/movement-pa.ts` — 1º bloco (2 hex) = 1 PA; meio livre; corrida a partir de `walk+2` |
+| Limite de hex | walk / run | Por ficha/monstro; ex. walk 4 run 7: hex 1–2 → 1 PA; 3–5 livre; 6+ → PA corrida |
+
+Arquivo: `lib/vtt/movement.ts`.
+
+### UX (modo jogo)
+
+1. Botão **Caminhar** / **Correr** (já existe `move-walk` / `move-run`).
+2. Pintar hexes: verde = caminhada grátis; amarelo = precisa corrida (+1 PA).
+3. **Hover no hex destino:**
+   - `+0 PA` ou `+1 PA (corrida)`
+   - `Movimento: 3/6 hex (4,5/9 m)`
+   - Se `needsPa && pa < 1` → hex vermelho + “PA insuficiente”
+4. Clique confirma → `POST tokens/move`.
+
+**Gap:** `useBattlefieldHighlights` já tem `hoverMovePreview` — falta chip PA visível e cores distintas walk vs run-paid.
+
+---
+
+## 3. Habilidades — alvo, PA, área
+
+### Tipos hoje (`lib/combat/compendium-actions.ts`)
+
+| Efeito | Alvo | Área |
+|--------|------|------|
+| `melee_attack_bonus`, `spell_strike` | Token inimigo | Não |
+| `charge`, `shadow_step`, buffs | Self / aliado | Não |
+| `restrain`, saves | Token | Não |
+| (futuro) rugido, nuvem, enxame | Vários | **Sim** |
+
+### UX por tipo
+
+| Tipo | Fluxo mapa |
+|------|------------|
+| Alvo único | Igual ataque: alcance hex → hover preview vantagem → clique alvo |
+| Self / aliado | Alcance 0–1 hex; clique no token aliado |
+| **Área** | Ver §4 |
+
+**PA:** sempre `effectivePaCost(actor, abilityAction)` no painel e no hover antes de confirmar.
+
+---
+
+## 4. Áreas — modelo de dados (livro → JSON)
+
+### Conversão livro ↔ hex
+
+| Livro (métrico) | Hex (1 hex = 1,5 m) | Fórmula |
+|-----------------|---------------------|---------|
+| 3 m | 2 hex | `round(m / 1.5)` |
+| 6 m raio | 4 hex | `round(6 / 1.5)` |
+| 9 m | 6 hex | idem |
+| 12 m | 8 hex | idem |
+
+Constante: `METERS_PER_HEX = 1.5` (`lib/vtt/movement.ts`).
+
+### Formas suportadas (alvo v2)
+
+| `shape` | Uso no livro | Parâmetros | Motor hoje |
+|---------|--------------|------------|------------|
+| `single` | Alvo único | — | ✅ |
+| `burst` | Raio, esfera, “área X m” | `radiusHex` | ✅ `hexesInRange` |
+| `wall` | Muralha, parede | `hexCount`, origem + vizinhos | ✅ parcial |
+| `cone` | Cone de frio, mordida | `lengthHex`, `direction` (q,r) | ❌ gerar `coneHexes()` |
+| `line` | Raio, ventania, linha | `lengthHex`, `direction` | ❌ gerar `lineHexes()` |
+| `cube` | Cubo (Onda de Trovão) | `sizeHex` (lado) | ❌ tratar como `burst` com raio derivado ou cubo em hex |
+
+**Schema JSON (magias e habilidades):**
+
+```json
+{
+  "tactical": {
+    "alcanceHex": { "value": 6 },
+    "custoPontosAcao": { "value": 2 }
+  },
+  "spell": {
+    "area": {
+      "shape": "burst",
+      "radiusHex": 2,
+      "origin": "center",
+      "friendlyFire": false
+    }
+  }
+}
+```
+
+**Habilidades** — mesmo bloco em `system.tactical.area` ou `system.ability.area` (espelhar `spell.area`).
+
+### Onde preencher no pipeline
+
+| Passo | Quem |
+|-------|------|
+| 1 | Texto no `livros/LIVRO-DO-JOGADOR.md` / catálogo (metros + forma) |
+| 2 | `scripts/generate-compendium.mjs` — helper `metersToHex(n)` + `area: { shape, ... }` |
+| 3 | Habilidades com área: entrada explícita em `habilidades.json` ou mapa em `compendium-actions.ts` |
+| 4 | `npm run sync:data` + `sync:data:check` valida `shape` ∈ enum |
+
+**Exemplos já no gerador:**
+
+- `Muralha Hexagonal` → `wall`, `hexCount: 3`
+- `Bola de Fogo` / `Nova Hex` → `burst`, `radiusHex: 2`
+
+**Gap livro:** “Cubo”, “cone”, “linha” no texto — falta `area` no JSON de várias magias (ex. Onda de Trovão só diz “Cubo” na descrição).
+
+---
+
+## 5. UX — colocar área na mesa (fluxo jogo)
+
+### Magia / habilidade com `area.shape !== single`
+
+```mermaid
+flowchart LR
+  A[Escolher magia/habilidade] --> B[Pintar alcance de conjuração]
+  B --> C[Hover/click centro da área]
+  C --> D[Preview hexes afetados]
+  D --> E[Chip: PA + alvos N + save/ataque]
+  E --> F[Confirmar]
+  F --> G[POST combat/area]
+```
+
+| Passo | UI | Servidor |
+|-------|-----|----------|
+| Alcance | Hexes até `rangeHex` do caster | `canCastAreaAt` |
+| Centro | Clique em hex vazio ou token | `centerQ/R` |
+| Cone/linha | 2º clique = direção (vizinho do centro) | `direction` no body |
+| Preview | `computeSpellAreaHexes` + highlight vermelho | Mesma fn |
+| Alvos | Tokens em `tokensInArea` — lista + preview save/VD | `resolveAreaSpell` |
+| PA | `effectivePaCost` antes de confirmar | Deduz no handler |
+
+**Cores sugeridas:**
+
+- Azul claro: alcance de conjuração
+- Laranja: área preview (hover)
+- Borda roxa: tokens que serão atingidos
+
+### Ataque em área (save em lote)
+
+- Hover no centro mostra **quais tokens** entram e **VD/Save** por alvo (sem rolar).
+- Confirma → um POST; chat pode detalhar por alvo (já faz loop em `combat-area.ts`).
+
+---
+
+## 6. Arquivos a criar / alterar (P5)
+
+| Arquivo | Mudança |
+|---------|---------|
+| `lib/vtt/hex-area.ts` | **Novo:** `coneHexes`, `lineHexes`, `cubeHexes`, unificar `computeAreaHexes` |
+| `lib/combat/area-spell.ts` | Usar hex-area; suportar cone/line |
+| `lib/combat/preview-action.ts` | **Novo:** preview ataque + PA + roll mode sem rolar |
+| `lib/combat/preview-move.ts` | **Novo:** wrap `canMoveToken` + labels PA |
+| `hooks/vtt/useActionPreview.ts` | Chip UI: PA, vantagem, movimento |
+| `components/vtt/HexBattlefield.tsx` | Modos unificados; 2-step direction para cone/line |
+| `scripts/generate-compendium.mjs` | `metersToHex`, preencher `area` em todas magias de área do livro |
+| `data/compendiums/magias.json` | Regenerar |
+| `data/compendiums/habilidades.json` | `area` onde livro indicar |
+| `livros/LIVRO-DO-JOGADOR.md` | Tabela “formas de área na mesa digital” (opcional Cap. 3.1) |
+
+---
+
+## 7. Checklist conteúdo (100% livro)
+
+Para cada magia/habilidade de área no livro:
+
+- [ ] `shape` + parâmetros em hex
+- [ ] `custoPontosAcao` no tactical
+- [ ] `alcanceHex` (distância até o **centro** da área)
+- [ ] `save` ou `attack` + fórmula dano
+- [ ] Teste na `/mesa/demo` com preview laranja
+
+---
+
+*Spec v1.0 — Epic 9 PRD v2.1+*

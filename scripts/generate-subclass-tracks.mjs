@@ -5,7 +5,7 @@ import { fileURLToPath } from "url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const raw = [
-  ["Guerreiro", "Acougueiro de Batalha", "Feras e Bestiais", "Carne vermelha de feras: +2 FOR e regen 3 HP/turno por 4h", 4, "Corte Limpo", 8, "Maestria de Acougue", 12, "Abate Perfeito", 16, "Sangue de Predador", 20, "Legado do Acougue"],
+  ["Guerreiro", "Predador Voraz", "Feras e Bestiais", "Carne vermelha de feras: +2 FOR e regen 3 HP/turno por 4h", 4, "Corte Limpo", 8, "Maestria Voraz", 12, "Abate Perfeito", 16, "Sangue de Predador", 20, "Legado do Predador"],
   ["Guerreiro", "Quebra-Cascos", "Carapaças e Insetoides", "Artropodes: imune a críticos temporário e +2 CA por 8h", 4, "Percussão Penetrante", 8, "Estrutura Quitinosa", 12, "Esmagamento Total", 16, "Corpo de Crustáceo", 20, "Carapaça Viva"],
   ["Guerreiro", "Cavaleiro Dracônico", "Escamosos e Draconídeos", "Répteis/dracônicos: resistência elemental e baforada 2d6", 4, "Escama de Wyrm", 8, "Ira Dracônica", 12, "Herança de Sangue", 16, "Majestade do Dragão", 20, "Ascensão Dracônica"],
   ["Guerreiro", "Guerreiro das Profundezas", "Aquáticos e Anfíbios", "Aquáticos: respiração aquática, nado 12m", 4, "Combate Subaquático", 8, "Pele Anfíbia", 12, "Pressão das Profundezas", 16, "Mestre das Águas Negras", 20, "Forma Abissal"],

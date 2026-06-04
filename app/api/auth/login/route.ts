@@ -5,11 +5,11 @@ import { createSession } from "@/lib/auth/session";
 
 export async function POST(request: Request) {
   const body = await request.json();
-  const email = String(body.email ?? "").trim();
+  const login = String(body.login ?? body.email ?? "").trim();
   const password = String(body.password ?? "");
   const redirect = String(body.redirect ?? "");
 
-  const user = authenticateUser(email, password);
+  const user = await authenticateUser(login, password);
   if (!user) {
     return NextResponse.json({ error: "Credenciais inválidas" }, { status: 401 });
   }

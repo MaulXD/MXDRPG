@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
-import { chatRoleForUser } from "@/lib/auth/authorize-room";
-import { canManageRoom } from "@/lib/auth/room-access";
+import { assertTokenControl, chatRoleForUser } from "@/lib/auth/authorize-room";
+import { canBypassCombatTurn } from "@/lib/auth/room-access";
 import { getSession } from "@/lib/auth/session";
+import { snapshotForViewer } from "@/lib/room/snapshot-for-viewer";
 import { executeRoomAbility, getRoom } from "@/lib/room/store";
 import type { ChatMessage } from "@/lib/room/chat";
 
@@ -17,7 +18,7 @@ type Body = {
 
 function authorFromSession(
   session: Awaited<ReturnType<typeof getSession>>,
-  room: ReturnType<typeof getRoom>
+  room: Awaited<ReturnType<typeof getRoom>>
 ) {
   if (session && room) {
     return {
@@ -43,7 +44,7 @@ function authorFromSession(
 export async function POST(req: Request, { params }: Params) {
   const { roomId } = await params;
   const session = await getSession();
-  const room = getRoom(roomId);
+  const room = await getRoom(roomId);
   const author = authorFromSession(session, room);
   const body = (await req.json()) as Body;
 
@@ -52,10 +53,20 @@ export async function POST(req: Request, { params }: Params) {
     return NextResponse.json({ error: "Token inválido" }, { status: 400 });
   }
 
-  const canBypass = room && session ? canManageRoom(room, session.user) : false;
+  if (!room) {
+    return NextResponse.json({ error: "Sala não encontrada" }, { status: 404 });
+  }
+
+  const attacker = room.scene.tokens.find((t) => t.id === attackerTokenId);
+  const ctrl = assertTokenControl(room, session?.user ?? null, attacker);
+  if (ctrl) {
+    return NextResponse.json({ error: ctrl.error }, { status: ctrl.status });
+  }
+
+  const canBypass = canBypassCombatTurn(room, session?.user ?? null);
   const bypassTurn = Boolean(body.bypassTurn && canBypass);
 
-  const result = executeRoomAbility(
+  const result = await executeRoomAbility(
     roomId,
     attackerTokenId,
     body.defenderTokenId?.trim() ?? null,
@@ -71,5 +82,7 @@ export async function POST(req: Request, { params }: Params) {
     return NextResponse.json({ error: result.error }, { status: 400 });
   }
 
-  return NextResponse.json(result.snapshot);
+  return NextResponse.json(
+    snapshotForViewer(result.snapshot, room, session?.user ?? null)
+  );
 }

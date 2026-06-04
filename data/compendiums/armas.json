@@ -1,68 +1,19 @@
 [
   {
-    "name": "Lâmina de Vinha",
+    "id": "armas-arc-l01",
+    "name": "Arco Longo de Vinha",
     "type": "arma",
     "system": {
-      "description": "<p>Espada curta de masmorra.</p>",
-      "tactical": {
-        "alcanceHex": {
-          "value": 1,
-          "min": 0
-        },
-        "custoPontosAcao": {
-          "value": 1,
-          "min": 0
-        }
-      },
-      "weapon": {
-        "dano": {
-          "formula": "1d8",
-          "tipo": "cortante"
-        },
-        "ataque": {
-          "bonus": 0
-        }
-      }
-    }
-  },
-  {
-    "name": "Alabarda do Guardião",
-    "type": "arma",
-    "system": {
-      "description": "<p>Alcance estendido.</p>",
-      "tactical": {
-        "alcanceHex": {
-          "value": 2,
-          "min": 0
-        },
-        "custoPontosAcao": {
-          "value": 1,
-          "min": 0
-        }
-      },
-      "weapon": {
-        "dano": {
-          "formula": "1d10",
-          "tipo": "cortante"
-        },
-        "ataque": {
-          "bonus": 1
-        }
-      }
-    }
-  },
-  {
-    "name": "Arco de Teixo",
-    "type": "arma",
-    "system": {
-      "description": "<p>Arco longo.</p>",
+      "description": "<p>Ataque +0 · Dano 1d8.</p>",
+      "catalogId": "ARC-L01",
+      "enchant": 0,
       "tactical": {
         "alcanceHex": {
           "value": 5,
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -78,10 +29,3647 @@
     }
   },
   {
-    "name": "Martelo Rúnico",
+    "id": "armas-arc-l01-mais-1",
+    "name": "Arco Longo de Vinha +1",
     "type": "arma",
     "system": {
-      "description": "<p>Golpes pesados.</p>",
+      "description": "<p>Ataque +1 · Dano 1d8.</p>",
+      "catalogId": "ARC-L01",
+      "enchant": 1,
+      "tactical": {
+        "alcanceHex": {
+          "value": 5,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d8",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 1
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-arc-l01-mais-2",
+    "name": "Arco Longo de Vinha +2",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +2 · Dano 1d8.</p>",
+      "catalogId": "ARC-L01",
+      "enchant": 2,
+      "tactical": {
+        "alcanceHex": {
+          "value": 5,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d8",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 2
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-arc-l01-mais-3",
+    "name": "Arco Longo de Vinha +3",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +3 · Dano 1d8. · Efeito: Vampírico.</p>",
+      "catalogId": "ARC-L01",
+      "enchant": 3,
+      "tactical": {
+        "alcanceHex": {
+          "value": 5,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d8",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 3
+        },
+        "special": {
+          "effectId": "EFE-01",
+          "trigger": "onHit",
+          "kind": "healSelf",
+          "amount": 1,
+          "label": "Vampírico"
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-arc-l02",
+    "name": "Arco Longo de Teixo",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +0 · Dano 1d8.</p>",
+      "catalogId": "ARC-L02",
+      "enchant": 0,
+      "tactical": {
+        "alcanceHex": {
+          "value": 5,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d8",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 0
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-arc-l02-mais-1",
+    "name": "Arco Longo de Teixo +1",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +1 · Dano 1d8.</p>",
+      "catalogId": "ARC-L02",
+      "enchant": 1,
+      "tactical": {
+        "alcanceHex": {
+          "value": 5,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d8",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 1
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-arc-l02-mais-2",
+    "name": "Arco Longo de Teixo +2",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +2 · Dano 1d8.</p>",
+      "catalogId": "ARC-L02",
+      "enchant": 2,
+      "tactical": {
+        "alcanceHex": {
+          "value": 5,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d8",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 2
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-arc-l02-mais-3",
+    "name": "Arco Longo de Teixo +3",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +3 · Dano 1d8. · Efeito: Vampírico.</p>",
+      "catalogId": "ARC-L02",
+      "enchant": 3,
+      "tactical": {
+        "alcanceHex": {
+          "value": 5,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d8",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 3
+        },
+        "special": {
+          "effectId": "EFE-01",
+          "trigger": "onHit",
+          "kind": "healSelf",
+          "amount": 1,
+          "label": "Vampírico"
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-arc-l03",
+    "name": "Arco Longo de Grimwald",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +0 · Dano 1d8.</p>",
+      "catalogId": "ARC-L03",
+      "enchant": 0,
+      "tactical": {
+        "alcanceHex": {
+          "value": 6,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d8",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 0
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-arc-l03-mais-1",
+    "name": "Arco Longo de Grimwald +1",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +1 · Dano 1d8.</p>",
+      "catalogId": "ARC-L03",
+      "enchant": 1,
+      "tactical": {
+        "alcanceHex": {
+          "value": 6,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d8",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 1
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-arc-l03-mais-2",
+    "name": "Arco Longo de Grimwald +2",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +2 · Dano 1d8.</p>",
+      "catalogId": "ARC-L03",
+      "enchant": 2,
+      "tactical": {
+        "alcanceHex": {
+          "value": 6,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d8",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 2
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-arc-l03-mais-3",
+    "name": "Arco Longo de Grimwald +3",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +3 · Dano 1d8. · Efeito: Vampírico.</p>",
+      "catalogId": "ARC-L03",
+      "enchant": 3,
+      "tactical": {
+        "alcanceHex": {
+          "value": 6,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d8",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 3
+        },
+        "special": {
+          "effectId": "EFE-01",
+          "trigger": "onHit",
+          "kind": "healSelf",
+          "amount": 1,
+          "label": "Vampírico"
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-arc-l04",
+    "name": "Arco Longo de Prata",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +0 · Dano 1d8.</p>",
+      "catalogId": "ARC-L04",
+      "enchant": 0,
+      "tactical": {
+        "alcanceHex": {
+          "value": 6,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d8",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 0
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-arc-l04-mais-1",
+    "name": "Arco Longo de Prata +1",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +1 · Dano 1d8.</p>",
+      "catalogId": "ARC-L04",
+      "enchant": 1,
+      "tactical": {
+        "alcanceHex": {
+          "value": 6,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d8",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 1
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-arc-l04-mais-2",
+    "name": "Arco Longo de Prata +2",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +2 · Dano 1d8.</p>",
+      "catalogId": "ARC-L04",
+      "enchant": 2,
+      "tactical": {
+        "alcanceHex": {
+          "value": 6,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d8",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 2
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-arc-l04-mais-3",
+    "name": "Arco Longo de Prata +3",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +3 · Dano 1d8. · Efeito: Vampírico.</p>",
+      "catalogId": "ARC-L04",
+      "enchant": 3,
+      "tactical": {
+        "alcanceHex": {
+          "value": 6,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d8",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 3
+        },
+        "special": {
+          "effectId": "EFE-01",
+          "trigger": "onHit",
+          "kind": "healSelf",
+          "amount": 1,
+          "label": "Vampírico"
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-arc-l05",
+    "name": "Arco Longo de Cripta",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +0 · Dano 1d8.</p>",
+      "catalogId": "ARC-L05",
+      "enchant": 0,
+      "tactical": {
+        "alcanceHex": {
+          "value": 5,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d8",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 0
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-arc-l05-mais-1",
+    "name": "Arco Longo de Cripta +1",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +1 · Dano 1d8.</p>",
+      "catalogId": "ARC-L05",
+      "enchant": 1,
+      "tactical": {
+        "alcanceHex": {
+          "value": 5,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d8",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 1
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-arc-l05-mais-2",
+    "name": "Arco Longo de Cripta +2",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +2 · Dano 1d8.</p>",
+      "catalogId": "ARC-L05",
+      "enchant": 2,
+      "tactical": {
+        "alcanceHex": {
+          "value": 5,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d8",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 2
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-arc-l05-mais-3",
+    "name": "Arco Longo de Cripta +3",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +3 · Dano 1d8. · Efeito: Vampírico.</p>",
+      "catalogId": "ARC-L05",
+      "enchant": 3,
+      "tactical": {
+        "alcanceHex": {
+          "value": 5,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d8",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 3
+        },
+        "special": {
+          "effectId": "EFE-01",
+          "trigger": "onHit",
+          "kind": "healSelf",
+          "amount": 1,
+          "label": "Vampírico"
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-arc-l06",
+    "name": "Arco Longo de Osso de Grifo",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +0 · Dano 1d10. · Efeito: Veneno.</p>",
+      "catalogId": "ARC-L06",
+      "enchant": 0,
+      "tactical": {
+        "alcanceHex": {
+          "value": 6,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d10",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 0
+        },
+        "special": {
+          "effectId": "EFE-04",
+          "trigger": "onHit",
+          "kind": "bonusDamage",
+          "formula": "1d6",
+          "damageType": "veneno",
+          "label": "Veneno"
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-arc-l06-mais-1",
+    "name": "Arco Longo de Osso de Grifo +1",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +1 · Dano 1d10. · Efeito: Veneno.</p>",
+      "catalogId": "ARC-L06",
+      "enchant": 1,
+      "tactical": {
+        "alcanceHex": {
+          "value": 6,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d10",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 1
+        },
+        "special": {
+          "effectId": "EFE-04",
+          "trigger": "onHit",
+          "kind": "bonusDamage",
+          "formula": "1d6",
+          "damageType": "veneno",
+          "label": "Veneno"
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-arc-l06-mais-2",
+    "name": "Arco Longo de Osso de Grifo +2",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +2 · Dano 1d10. · Efeito: Veneno.</p>",
+      "catalogId": "ARC-L06",
+      "enchant": 2,
+      "tactical": {
+        "alcanceHex": {
+          "value": 6,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d10",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 2
+        },
+        "special": {
+          "effectId": "EFE-04",
+          "trigger": "onHit",
+          "kind": "bonusDamage",
+          "formula": "1d6",
+          "damageType": "veneno",
+          "label": "Veneno"
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-arc-l06-mais-3",
+    "name": "Arco Longo de Osso de Grifo +3",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +3 · Dano 1d10. · Efeito: Veneno.</p>",
+      "catalogId": "ARC-L06",
+      "enchant": 3,
+      "tactical": {
+        "alcanceHex": {
+          "value": 6,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d10",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 3
+        },
+        "special": {
+          "effectId": "EFE-04",
+          "trigger": "onHit",
+          "kind": "bonusDamage",
+          "formula": "1d6",
+          "damageType": "veneno",
+          "label": "Veneno"
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-arc-l07",
+    "name": "Arco Longo de Dragão",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +0 · Dano 1d10.</p>",
+      "catalogId": "ARC-L07",
+      "enchant": 0,
+      "tactical": {
+        "alcanceHex": {
+          "value": 5,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d10",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 0
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-arc-l07-mais-1",
+    "name": "Arco Longo de Dragão +1",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +1 · Dano 1d10.</p>",
+      "catalogId": "ARC-L07",
+      "enchant": 1,
+      "tactical": {
+        "alcanceHex": {
+          "value": 5,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d10",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 1
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-arc-l07-mais-2",
+    "name": "Arco Longo de Dragão +2",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +2 · Dano 1d10.</p>",
+      "catalogId": "ARC-L07",
+      "enchant": 2,
+      "tactical": {
+        "alcanceHex": {
+          "value": 5,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d10",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 2
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-arc-l07-mais-3",
+    "name": "Arco Longo de Dragão +3",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +3 · Dano 1d10. · Efeito: Vampírico.</p>",
+      "catalogId": "ARC-L07",
+      "enchant": 3,
+      "tactical": {
+        "alcanceHex": {
+          "value": 5,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d10",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 3
+        },
+        "special": {
+          "effectId": "EFE-01",
+          "trigger": "onHit",
+          "kind": "healSelf",
+          "amount": 1,
+          "label": "Vampírico"
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-arc-l08",
+    "name": "Arco Longo de Abismo",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +0 · Dano 1d8.</p>",
+      "catalogId": "ARC-L08",
+      "enchant": 0,
+      "tactical": {
+        "alcanceHex": {
+          "value": 7,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d8",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 0
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-arc-l08-mais-1",
+    "name": "Arco Longo de Abismo +1",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +1 · Dano 1d8.</p>",
+      "catalogId": "ARC-L08",
+      "enchant": 1,
+      "tactical": {
+        "alcanceHex": {
+          "value": 7,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d8",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 1
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-arc-l08-mais-2",
+    "name": "Arco Longo de Abismo +2",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +2 · Dano 1d8.</p>",
+      "catalogId": "ARC-L08",
+      "enchant": 2,
+      "tactical": {
+        "alcanceHex": {
+          "value": 7,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d8",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 2
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-arc-l08-mais-3",
+    "name": "Arco Longo de Abismo +3",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +3 · Dano 1d8. · Efeito: Vampírico.</p>",
+      "catalogId": "ARC-L08",
+      "enchant": 3,
+      "tactical": {
+        "alcanceHex": {
+          "value": 7,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d8",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 3
+        },
+        "special": {
+          "effectId": "EFE-01",
+          "trigger": "onHit",
+          "kind": "healSelf",
+          "amount": 1,
+          "label": "Vampírico"
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-arc-l09",
+    "name": "Arco Longo de Valdrun",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +0 · Dano 1d10.</p>",
+      "catalogId": "ARC-L09",
+      "enchant": 0,
+      "tactical": {
+        "alcanceHex": {
+          "value": 6,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d10",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 0
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-arc-l09-mais-1",
+    "name": "Arco Longo de Valdrun +1",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +1 · Dano 1d10.</p>",
+      "catalogId": "ARC-L09",
+      "enchant": 1,
+      "tactical": {
+        "alcanceHex": {
+          "value": 6,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d10",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 1
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-arc-l09-mais-2",
+    "name": "Arco Longo de Valdrun +2",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +2 · Dano 1d10.</p>",
+      "catalogId": "ARC-L09",
+      "enchant": 2,
+      "tactical": {
+        "alcanceHex": {
+          "value": 6,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d10",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 2
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-arc-l09-mais-3",
+    "name": "Arco Longo de Valdrun +3",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +3 · Dano 1d10. · Efeito: Vampírico.</p>",
+      "catalogId": "ARC-L09",
+      "enchant": 3,
+      "tactical": {
+        "alcanceHex": {
+          "value": 6,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d10",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 3
+        },
+        "special": {
+          "effectId": "EFE-01",
+          "trigger": "onHit",
+          "kind": "healSelf",
+          "amount": 1,
+          "label": "Vampírico"
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-arc-c01",
+    "name": "Arco Curto de Caçador",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +0 · Dano 1d6.</p>",
+      "catalogId": "ARC-C01",
+      "enchant": 0,
+      "tactical": {
+        "alcanceHex": {
+          "value": 4,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d6",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 0
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-arc-c01-mais-1",
+    "name": "Arco Curto de Caçador +1",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +1 · Dano 1d6.</p>",
+      "catalogId": "ARC-C01",
+      "enchant": 1,
+      "tactical": {
+        "alcanceHex": {
+          "value": 4,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d6",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 1
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-arc-c01-mais-2",
+    "name": "Arco Curto de Caçador +2",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +2 · Dano 1d6.</p>",
+      "catalogId": "ARC-C01",
+      "enchant": 2,
+      "tactical": {
+        "alcanceHex": {
+          "value": 4,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d6",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 2
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-arc-c01-mais-3",
+    "name": "Arco Curto de Caçador +3",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +3 · Dano 1d6. · Efeito: Vampírico.</p>",
+      "catalogId": "ARC-C01",
+      "enchant": 3,
+      "tactical": {
+        "alcanceHex": {
+          "value": 4,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d6",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 3
+        },
+        "special": {
+          "effectId": "EFE-01",
+          "trigger": "onHit",
+          "kind": "healSelf",
+          "amount": 1,
+          "label": "Vampírico"
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-arc-c02",
+    "name": "Arco Curto de Teixo",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +0 · Dano 1d6.</p>",
+      "catalogId": "ARC-C02",
+      "enchant": 0,
+      "tactical": {
+        "alcanceHex": {
+          "value": 4,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d6",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 0
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-arc-c02-mais-1",
+    "name": "Arco Curto de Teixo +1",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +1 · Dano 1d6.</p>",
+      "catalogId": "ARC-C02",
+      "enchant": 1,
+      "tactical": {
+        "alcanceHex": {
+          "value": 4,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d6",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 1
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-arc-c02-mais-2",
+    "name": "Arco Curto de Teixo +2",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +2 · Dano 1d6.</p>",
+      "catalogId": "ARC-C02",
+      "enchant": 2,
+      "tactical": {
+        "alcanceHex": {
+          "value": 4,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d6",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 2
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-arc-c02-mais-3",
+    "name": "Arco Curto de Teixo +3",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +3 · Dano 1d6. · Efeito: Vampírico.</p>",
+      "catalogId": "ARC-C02",
+      "enchant": 3,
+      "tactical": {
+        "alcanceHex": {
+          "value": 4,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d6",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 3
+        },
+        "special": {
+          "effectId": "EFE-01",
+          "trigger": "onHit",
+          "kind": "healSelf",
+          "amount": 1,
+          "label": "Vampírico"
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-arc-c03",
+    "name": "Arco Curto de Goblin",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +0 · Dano 1d6.</p>",
+      "catalogId": "ARC-C03",
+      "enchant": 0,
+      "tactical": {
+        "alcanceHex": {
+          "value": 3,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d6",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 0
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-arc-c03-mais-1",
+    "name": "Arco Curto de Goblin +1",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +1 · Dano 1d6.</p>",
+      "catalogId": "ARC-C03",
+      "enchant": 1,
+      "tactical": {
+        "alcanceHex": {
+          "value": 3,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d6",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 1
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-arc-c03-mais-2",
+    "name": "Arco Curto de Goblin +2",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +2 · Dano 1d6.</p>",
+      "catalogId": "ARC-C03",
+      "enchant": 2,
+      "tactical": {
+        "alcanceHex": {
+          "value": 3,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d6",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 2
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-arc-c03-mais-3",
+    "name": "Arco Curto de Goblin +3",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +3 · Dano 1d6. · Efeito: Vampírico.</p>",
+      "catalogId": "ARC-C03",
+      "enchant": 3,
+      "tactical": {
+        "alcanceHex": {
+          "value": 3,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d6",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 3
+        },
+        "special": {
+          "effectId": "EFE-01",
+          "trigger": "onHit",
+          "kind": "healSelf",
+          "amount": 1,
+          "label": "Vampírico"
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-arc-c04",
+    "name": "Arco Curto de Cripta",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +0 · Dano 1d6.</p>",
+      "catalogId": "ARC-C04",
+      "enchant": 0,
+      "tactical": {
+        "alcanceHex": {
+          "value": 4,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d6",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 0
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-arc-c04-mais-1",
+    "name": "Arco Curto de Cripta +1",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +1 · Dano 1d6.</p>",
+      "catalogId": "ARC-C04",
+      "enchant": 1,
+      "tactical": {
+        "alcanceHex": {
+          "value": 4,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d6",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 1
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-arc-c04-mais-2",
+    "name": "Arco Curto de Cripta +2",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +2 · Dano 1d6.</p>",
+      "catalogId": "ARC-C04",
+      "enchant": 2,
+      "tactical": {
+        "alcanceHex": {
+          "value": 4,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d6",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 2
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-arc-c04-mais-3",
+    "name": "Arco Curto de Cripta +3",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +3 · Dano 1d6. · Efeito: Vampírico.</p>",
+      "catalogId": "ARC-C04",
+      "enchant": 3,
+      "tactical": {
+        "alcanceHex": {
+          "value": 4,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d6",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 3
+        },
+        "special": {
+          "effectId": "EFE-01",
+          "trigger": "onHit",
+          "kind": "healSelf",
+          "amount": 1,
+          "label": "Vampírico"
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-arc-c05",
+    "name": "Arco Curto de Costela",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +0 · Dano 1d8. · Efeito: Veneno.</p>",
+      "catalogId": "ARC-C05",
+      "enchant": 0,
+      "tactical": {
+        "alcanceHex": {
+          "value": 4,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d8",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 0
+        },
+        "special": {
+          "effectId": "EFE-04",
+          "trigger": "onHit",
+          "kind": "bonusDamage",
+          "formula": "1d6",
+          "damageType": "veneno",
+          "label": "Veneno"
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-arc-c05-mais-1",
+    "name": "Arco Curto de Costela +1",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +1 · Dano 1d8. · Efeito: Veneno.</p>",
+      "catalogId": "ARC-C05",
+      "enchant": 1,
+      "tactical": {
+        "alcanceHex": {
+          "value": 4,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d8",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 1
+        },
+        "special": {
+          "effectId": "EFE-04",
+          "trigger": "onHit",
+          "kind": "bonusDamage",
+          "formula": "1d6",
+          "damageType": "veneno",
+          "label": "Veneno"
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-arc-c05-mais-2",
+    "name": "Arco Curto de Costela +2",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +2 · Dano 1d8. · Efeito: Veneno.</p>",
+      "catalogId": "ARC-C05",
+      "enchant": 2,
+      "tactical": {
+        "alcanceHex": {
+          "value": 4,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d8",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 2
+        },
+        "special": {
+          "effectId": "EFE-04",
+          "trigger": "onHit",
+          "kind": "bonusDamage",
+          "formula": "1d6",
+          "damageType": "veneno",
+          "label": "Veneno"
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-arc-c05-mais-3",
+    "name": "Arco Curto de Costela +3",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +3 · Dano 1d8. · Efeito: Veneno.</p>",
+      "catalogId": "ARC-C05",
+      "enchant": 3,
+      "tactical": {
+        "alcanceHex": {
+          "value": 4,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d8",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 3
+        },
+        "special": {
+          "effectId": "EFE-04",
+          "trigger": "onHit",
+          "kind": "bonusDamage",
+          "formula": "1d6",
+          "damageType": "veneno",
+          "label": "Veneno"
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-arc-c06",
+    "name": "Arco Curto de Matriarca",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +0 · Dano 1d6.</p>",
+      "catalogId": "ARC-C06",
+      "enchant": 0,
+      "tactical": {
+        "alcanceHex": {
+          "value": 5,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d6",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 0
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-arc-c06-mais-1",
+    "name": "Arco Curto de Matriarca +1",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +1 · Dano 1d6.</p>",
+      "catalogId": "ARC-C06",
+      "enchant": 1,
+      "tactical": {
+        "alcanceHex": {
+          "value": 5,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d6",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 1
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-arc-c06-mais-2",
+    "name": "Arco Curto de Matriarca +2",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +2 · Dano 1d6.</p>",
+      "catalogId": "ARC-C06",
+      "enchant": 2,
+      "tactical": {
+        "alcanceHex": {
+          "value": 5,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d6",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 2
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-arc-c06-mais-3",
+    "name": "Arco Curto de Matriarca +3",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +3 · Dano 1d6. · Efeito: Vampírico.</p>",
+      "catalogId": "ARC-C06",
+      "enchant": 3,
+      "tactical": {
+        "alcanceHex": {
+          "value": 5,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d6",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 3
+        },
+        "special": {
+          "effectId": "EFE-01",
+          "trigger": "onHit",
+          "kind": "healSelf",
+          "amount": 1,
+          "label": "Vampírico"
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-arc-c07",
+    "name": "Arco Curto de Ninho",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +0 · Dano 1d6.</p>",
+      "catalogId": "ARC-C07",
+      "enchant": 0,
+      "tactical": {
+        "alcanceHex": {
+          "value": 4,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d6",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 0
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-arc-c07-mais-1",
+    "name": "Arco Curto de Ninho +1",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +1 · Dano 1d6.</p>",
+      "catalogId": "ARC-C07",
+      "enchant": 1,
+      "tactical": {
+        "alcanceHex": {
+          "value": 4,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d6",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 1
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-arc-c07-mais-2",
+    "name": "Arco Curto de Ninho +2",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +2 · Dano 1d6.</p>",
+      "catalogId": "ARC-C07",
+      "enchant": 2,
+      "tactical": {
+        "alcanceHex": {
+          "value": 4,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d6",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 2
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-arc-c07-mais-3",
+    "name": "Arco Curto de Ninho +3",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +3 · Dano 1d6. · Efeito: Vampírico.</p>",
+      "catalogId": "ARC-C07",
+      "enchant": 3,
+      "tactical": {
+        "alcanceHex": {
+          "value": 4,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d6",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 3
+        },
+        "special": {
+          "effectId": "EFE-01",
+          "trigger": "onHit",
+          "kind": "healSelf",
+          "amount": 1,
+          "label": "Vampírico"
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-arc-c08",
+    "name": "Arco Curto de Marfim",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +0 · Dano 1d6.</p>",
+      "catalogId": "ARC-C08",
+      "enchant": 0,
+      "tactical": {
+        "alcanceHex": {
+          "value": 4,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d6",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 0
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-arc-c08-mais-1",
+    "name": "Arco Curto de Marfim +1",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +1 · Dano 1d6.</p>",
+      "catalogId": "ARC-C08",
+      "enchant": 1,
+      "tactical": {
+        "alcanceHex": {
+          "value": 4,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d6",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 1
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-arc-c08-mais-2",
+    "name": "Arco Curto de Marfim +2",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +2 · Dano 1d6.</p>",
+      "catalogId": "ARC-C08",
+      "enchant": 2,
+      "tactical": {
+        "alcanceHex": {
+          "value": 4,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d6",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 2
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-arc-c08-mais-3",
+    "name": "Arco Curto de Marfim +3",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +3 · Dano 1d6. · Efeito: Vampírico.</p>",
+      "catalogId": "ARC-C08",
+      "enchant": 3,
+      "tactical": {
+        "alcanceHex": {
+          "value": 4,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d6",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 3
+        },
+        "special": {
+          "effectId": "EFE-01",
+          "trigger": "onHit",
+          "kind": "healSelf",
+          "amount": 1,
+          "label": "Vampírico"
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-arc-c09",
+    "name": "Arco Curto de Valdrun",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +0 · Dano 1d8.</p>",
+      "catalogId": "ARC-C09",
+      "enchant": 0,
+      "tactical": {
+        "alcanceHex": {
+          "value": 5,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d8",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 0
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-arc-c09-mais-1",
+    "name": "Arco Curto de Valdrun +1",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +1 · Dano 1d8.</p>",
+      "catalogId": "ARC-C09",
+      "enchant": 1,
+      "tactical": {
+        "alcanceHex": {
+          "value": 5,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d8",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 1
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-arc-c09-mais-2",
+    "name": "Arco Curto de Valdrun +2",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +2 · Dano 1d8.</p>",
+      "catalogId": "ARC-C09",
+      "enchant": 2,
+      "tactical": {
+        "alcanceHex": {
+          "value": 5,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d8",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 2
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-arc-c09-mais-3",
+    "name": "Arco Curto de Valdrun +3",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +3 · Dano 1d8. · Efeito: Vampírico.</p>",
+      "catalogId": "ARC-C09",
+      "enchant": 3,
+      "tactical": {
+        "alcanceHex": {
+          "value": 5,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d8",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 3
+        },
+        "special": {
+          "effectId": "EFE-01",
+          "trigger": "onHit",
+          "kind": "healSelf",
+          "amount": 1,
+          "label": "Vampírico"
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-bst-01",
+    "name": "Besta Leve",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +0 · Dano 1d8.</p>",
+      "catalogId": "BST-01",
+      "enchant": 0,
+      "tactical": {
+        "alcanceHex": {
+          "value": 6,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d8",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 0
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-bst-01-mais-1",
+    "name": "Besta Leve +1",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +1 · Dano 1d8.</p>",
+      "catalogId": "BST-01",
+      "enchant": 1,
+      "tactical": {
+        "alcanceHex": {
+          "value": 6,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d8",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 1
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-bst-01-mais-2",
+    "name": "Besta Leve +2",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +2 · Dano 1d8.</p>",
+      "catalogId": "BST-01",
+      "enchant": 2,
+      "tactical": {
+        "alcanceHex": {
+          "value": 6,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d8",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 2
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-bst-01-mais-3",
+    "name": "Besta Leve +3",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +3 · Dano 1d8. · Efeito: Vampírico.</p>",
+      "catalogId": "BST-01",
+      "enchant": 3,
+      "tactical": {
+        "alcanceHex": {
+          "value": 6,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d8",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 3
+        },
+        "special": {
+          "effectId": "EFE-01",
+          "trigger": "onHit",
+          "kind": "healSelf",
+          "amount": 1,
+          "label": "Vampírico"
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-bst-02",
+    "name": "Besta de Mão",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +0 · Dano 1d6.</p>",
+      "catalogId": "BST-02",
+      "enchant": 0,
+      "tactical": {
+        "alcanceHex": {
+          "value": 3,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d6",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 0
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-bst-02-mais-1",
+    "name": "Besta de Mão +1",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +1 · Dano 1d6.</p>",
+      "catalogId": "BST-02",
+      "enchant": 1,
+      "tactical": {
+        "alcanceHex": {
+          "value": 3,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d6",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 1
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-bst-02-mais-2",
+    "name": "Besta de Mão +2",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +2 · Dano 1d6.</p>",
+      "catalogId": "BST-02",
+      "enchant": 2,
+      "tactical": {
+        "alcanceHex": {
+          "value": 3,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d6",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 2
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-bst-02-mais-3",
+    "name": "Besta de Mão +3",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +3 · Dano 1d6. · Efeito: Vampírico.</p>",
+      "catalogId": "BST-02",
+      "enchant": 3,
+      "tactical": {
+        "alcanceHex": {
+          "value": 3,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d6",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 3
+        },
+        "special": {
+          "effectId": "EFE-01",
+          "trigger": "onHit",
+          "kind": "healSelf",
+          "amount": 1,
+          "label": "Vampírico"
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-bst-03",
+    "name": "Besta Pesada",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +0 · Dano 1d10. · Efeito: Ferrão.</p>",
+      "catalogId": "BST-03",
+      "enchant": 0,
+      "tactical": {
+        "alcanceHex": {
+          "value": 5,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d10",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 0
+        },
+        "special": {
+          "effectId": "EFE-10",
+          "trigger": "onHit",
+          "kind": "bonusDamage",
+          "formula": "1d8",
+          "damageType": "perfurante",
+          "label": "Ferrão"
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-bst-03-mais-1",
+    "name": "Besta Pesada +1",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +1 · Dano 1d10. · Efeito: Ferrão.</p>",
+      "catalogId": "BST-03",
+      "enchant": 1,
+      "tactical": {
+        "alcanceHex": {
+          "value": 5,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d10",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 1
+        },
+        "special": {
+          "effectId": "EFE-10",
+          "trigger": "onHit",
+          "kind": "bonusDamage",
+          "formula": "1d8",
+          "damageType": "perfurante",
+          "label": "Ferrão"
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-bst-03-mais-2",
+    "name": "Besta Pesada +2",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +2 · Dano 1d10. · Efeito: Ferrão.</p>",
+      "catalogId": "BST-03",
+      "enchant": 2,
+      "tactical": {
+        "alcanceHex": {
+          "value": 5,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d10",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 2
+        },
+        "special": {
+          "effectId": "EFE-10",
+          "trigger": "onHit",
+          "kind": "bonusDamage",
+          "formula": "1d8",
+          "damageType": "perfurante",
+          "label": "Ferrão"
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-bst-03-mais-3",
+    "name": "Besta Pesada +3",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +3 · Dano 1d10. · Efeito: Ferrão.</p>",
+      "catalogId": "BST-03",
+      "enchant": 3,
+      "tactical": {
+        "alcanceHex": {
+          "value": 5,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d10",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 3
+        },
+        "special": {
+          "effectId": "EFE-10",
+          "trigger": "onHit",
+          "kind": "bonusDamage",
+          "formula": "1d8",
+          "damageType": "perfurante",
+          "label": "Ferrão"
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-bst-04",
+    "name": "Besta de Repetição",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +0 · Dano 1d8.</p>",
+      "catalogId": "BST-04",
+      "enchant": 0,
+      "tactical": {
+        "alcanceHex": {
+          "value": 5,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d8",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 0
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-bst-04-mais-1",
+    "name": "Besta de Repetição +1",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +1 · Dano 1d8.</p>",
+      "catalogId": "BST-04",
+      "enchant": 1,
+      "tactical": {
+        "alcanceHex": {
+          "value": 5,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d8",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 1
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-bst-04-mais-2",
+    "name": "Besta de Repetição +2",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +2 · Dano 1d8.</p>",
+      "catalogId": "BST-04",
+      "enchant": 2,
+      "tactical": {
+        "alcanceHex": {
+          "value": 5,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d8",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 2
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-bst-04-mais-3",
+    "name": "Besta de Repetição +3",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +3 · Dano 1d8. · Efeito: Vampírico.</p>",
+      "catalogId": "BST-04",
+      "enchant": 3,
+      "tactical": {
+        "alcanceHex": {
+          "value": 5,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d8",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 3
+        },
+        "special": {
+          "effectId": "EFE-01",
+          "trigger": "onHit",
+          "kind": "healSelf",
+          "amount": 1,
+          "label": "Vampírico"
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-bst-05",
+    "name": "Besta de Assalto",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +0 · Dano 1d10.</p>",
+      "catalogId": "BST-05",
+      "enchant": 0,
+      "tactical": {
+        "alcanceHex": {
+          "value": 4,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d10",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 0
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-bst-05-mais-1",
+    "name": "Besta de Assalto +1",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +1 · Dano 1d10.</p>",
+      "catalogId": "BST-05",
+      "enchant": 1,
+      "tactical": {
+        "alcanceHex": {
+          "value": 4,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d10",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 1
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-bst-05-mais-2",
+    "name": "Besta de Assalto +2",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +2 · Dano 1d10.</p>",
+      "catalogId": "BST-05",
+      "enchant": 2,
+      "tactical": {
+        "alcanceHex": {
+          "value": 4,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d10",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 2
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-bst-05-mais-3",
+    "name": "Besta de Assalto +3",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +3 · Dano 1d10. · Efeito: Vampírico.</p>",
+      "catalogId": "BST-05",
+      "enchant": 3,
+      "tactical": {
+        "alcanceHex": {
+          "value": 4,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d10",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 3
+        },
+        "special": {
+          "effectId": "EFE-01",
+          "trigger": "onHit",
+          "kind": "healSelf",
+          "amount": 1,
+          "label": "Vampírico"
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-bst-06",
+    "name": "Besta de Caverna",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +0 · Dano 1d8.</p>",
+      "catalogId": "BST-06",
+      "enchant": 0,
+      "tactical": {
+        "alcanceHex": {
+          "value": 4,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d8",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 0
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-bst-06-mais-1",
+    "name": "Besta de Caverna +1",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +1 · Dano 1d8.</p>",
+      "catalogId": "BST-06",
+      "enchant": 1,
+      "tactical": {
+        "alcanceHex": {
+          "value": 4,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d8",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 1
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-bst-06-mais-2",
+    "name": "Besta de Caverna +2",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +2 · Dano 1d8.</p>",
+      "catalogId": "BST-06",
+      "enchant": 2,
+      "tactical": {
+        "alcanceHex": {
+          "value": 4,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d8",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 2
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-bst-06-mais-3",
+    "name": "Besta de Caverna +3",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +3 · Dano 1d8. · Efeito: Vampírico.</p>",
+      "catalogId": "BST-06",
+      "enchant": 3,
+      "tactical": {
+        "alcanceHex": {
+          "value": 4,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d8",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 3
+        },
+        "special": {
+          "effectId": "EFE-01",
+          "trigger": "onHit",
+          "kind": "healSelf",
+          "amount": 1,
+          "label": "Vampírico"
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-bst-07",
+    "name": "Besta de Alcance",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +0 · Dano 1d10.</p>",
+      "catalogId": "BST-07",
+      "enchant": 0,
+      "tactical": {
+        "alcanceHex": {
+          "value": 7,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d10",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 0
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-bst-07-mais-1",
+    "name": "Besta de Alcance +1",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +1 · Dano 1d10.</p>",
+      "catalogId": "BST-07",
+      "enchant": 1,
+      "tactical": {
+        "alcanceHex": {
+          "value": 7,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d10",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 1
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-bst-07-mais-2",
+    "name": "Besta de Alcance +2",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +2 · Dano 1d10.</p>",
+      "catalogId": "BST-07",
+      "enchant": 2,
+      "tactical": {
+        "alcanceHex": {
+          "value": 7,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d10",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 2
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-bst-07-mais-3",
+    "name": "Besta de Alcance +3",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +3 · Dano 1d10. · Efeito: Vampírico.</p>",
+      "catalogId": "BST-07",
+      "enchant": 3,
+      "tactical": {
+        "alcanceHex": {
+          "value": 7,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d10",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 3
+        },
+        "special": {
+          "effectId": "EFE-01",
+          "trigger": "onHit",
+          "kind": "healSelf",
+          "amount": 1,
+          "label": "Vampírico"
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-bst-08",
+    "name": "Besta de Engenharia",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +0 · Dano 1d10.</p>",
+      "catalogId": "BST-08",
+      "enchant": 0,
+      "tactical": {
+        "alcanceHex": {
+          "value": 6,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d10",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 0
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-bst-08-mais-1",
+    "name": "Besta de Engenharia +1",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +1 · Dano 1d10.</p>",
+      "catalogId": "BST-08",
+      "enchant": 1,
+      "tactical": {
+        "alcanceHex": {
+          "value": 6,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d10",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 1
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-bst-08-mais-2",
+    "name": "Besta de Engenharia +2",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +2 · Dano 1d10.</p>",
+      "catalogId": "BST-08",
+      "enchant": 2,
+      "tactical": {
+        "alcanceHex": {
+          "value": 6,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d10",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 2
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-bst-08-mais-3",
+    "name": "Besta de Engenharia +3",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +3 · Dano 1d10. · Efeito: Vampírico.</p>",
+      "catalogId": "BST-08",
+      "enchant": 3,
+      "tactical": {
+        "alcanceHex": {
+          "value": 6,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d10",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 3
+        },
+        "special": {
+          "effectId": "EFE-01",
+          "trigger": "onHit",
+          "kind": "healSelf",
+          "amount": 1,
+          "label": "Vampírico"
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-s01",
+    "name": "Lâmina de Vinha",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +0 · Dano 1d6. · Efeito: Vampírico.</p>",
+      "catalogId": "WPN-S01",
+      "enchant": 0,
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d6",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 0
+        },
+        "special": {
+          "effectId": "EFE-01",
+          "trigger": "onHit",
+          "kind": "healSelf",
+          "amount": 1,
+          "label": "Vampírico"
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-s01-mais-1",
+    "name": "Lâmina de Vinha +1",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +1 · Dano 1d6. · Efeito: Vampírico.</p>",
+      "catalogId": "WPN-S01",
+      "enchant": 1,
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d6",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 1
+        },
+        "special": {
+          "effectId": "EFE-01",
+          "trigger": "onHit",
+          "kind": "healSelf",
+          "amount": 1,
+          "label": "Vampírico"
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-s01-mais-2",
+    "name": "Lâmina de Vinha +2",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +2 · Dano 1d6. · Efeito: Vampírico.</p>",
+      "catalogId": "WPN-S01",
+      "enchant": 2,
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d6",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 2
+        },
+        "special": {
+          "effectId": "EFE-01",
+          "trigger": "onHit",
+          "kind": "healSelf",
+          "amount": 1,
+          "label": "Vampírico"
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-s01-mais-3",
+    "name": "Lâmina de Vinha +3",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +3 · Dano 1d6. · Efeito: Vampírico.</p>",
+      "catalogId": "WPN-S01",
+      "enchant": 3,
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d6",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 3
+        },
+        "special": {
+          "effectId": "EFE-01",
+          "trigger": "onHit",
+          "kind": "healSelf",
+          "amount": 1,
+          "label": "Vampírico"
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-s02",
+    "name": "Espada Longa",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +0 · Dano 1d8.</p>",
+      "catalogId": "WPN-S02",
+      "enchant": 0,
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d8",
+          "tipo": "cortante"
+        },
+        "ataque": {
+          "bonus": 0
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-s02-mais-1",
+    "name": "Espada Longa +1",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +1 · Dano 1d8.</p>",
+      "catalogId": "WPN-S02",
+      "enchant": 1,
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d8",
+          "tipo": "cortante"
+        },
+        "ataque": {
+          "bonus": 1
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-s02-mais-2",
+    "name": "Espada Longa +2",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +2 · Dano 1d8.</p>",
+      "catalogId": "WPN-S02",
+      "enchant": 2,
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d8",
+          "tipo": "cortante"
+        },
+        "ataque": {
+          "bonus": 2
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-s02-mais-3",
+    "name": "Espada Longa +3",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +3 · Dano 1d8. · Efeito: Vampírico.</p>",
+      "catalogId": "WPN-S02",
+      "enchant": 3,
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d8",
+          "tipo": "cortante"
+        },
+        "ataque": {
+          "bonus": 3
+        },
+        "special": {
+          "effectId": "EFE-01",
+          "trigger": "onHit",
+          "kind": "healSelf",
+          "amount": 1,
+          "label": "Vampírico"
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-s03",
+    "name": "Espada Bastarda",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +0 · Dano 1d10.</p>",
+      "catalogId": "WPN-S03",
+      "enchant": 0,
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d10",
+          "tipo": "cortante"
+        },
+        "ataque": {
+          "bonus": 0
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-s03-mais-1",
+    "name": "Espada Bastarda +1",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +1 · Dano 1d10.</p>",
+      "catalogId": "WPN-S03",
+      "enchant": 1,
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d10",
+          "tipo": "cortante"
+        },
+        "ataque": {
+          "bonus": 1
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-s03-mais-2",
+    "name": "Espada Bastarda +2",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +2 · Dano 1d10.</p>",
+      "catalogId": "WPN-S03",
+      "enchant": 2,
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d10",
+          "tipo": "cortante"
+        },
+        "ataque": {
+          "bonus": 2
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-s03-mais-3",
+    "name": "Espada Bastarda +3",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +3 · Dano 1d10. · Efeito: Vampírico.</p>",
+      "catalogId": "WPN-S03",
+      "enchant": 3,
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d10",
+          "tipo": "cortante"
+        },
+        "ataque": {
+          "bonus": 3
+        },
+        "special": {
+          "effectId": "EFE-01",
+          "trigger": "onHit",
+          "kind": "healSelf",
+          "amount": 1,
+          "label": "Vampírico"
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-s04",
+    "name": "Montante",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +0 · Dano 2d6.</p>",
+      "catalogId": "WPN-S04",
+      "enchant": 0,
       "tactical": {
         "alcanceHex": {
           "value": 1,
@@ -95,26 +3683,2585 @@
       "weapon": {
         "dano": {
           "formula": "2d6",
-          "tipo": "contundente"
+          "tipo": "cortante"
         },
         "ataque": {
-          "bonus": -1
+          "bonus": 0
         }
       }
     }
   },
   {
-    "name": "Adagas Gêmeas",
+    "id": "armas-wpn-s04-mais-1",
+    "name": "Montante +1",
     "type": "arma",
     "system": {
-      "description": "<p>Par de adagas.</p>",
+      "description": "<p>Ataque +1 · Dano 2d6.</p>",
+      "catalogId": "WPN-S04",
+      "enchant": 1,
       "tactical": {
         "alcanceHex": {
           "value": 1,
           "min": 0
         },
         "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "2d6",
+          "tipo": "cortante"
+        },
+        "ataque": {
+          "bonus": 1
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-s04-mais-2",
+    "name": "Montante +2",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +2 · Dano 2d6.</p>",
+      "catalogId": "WPN-S04",
+      "enchant": 2,
+      "tactical": {
+        "alcanceHex": {
           "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "2d6",
+          "tipo": "cortante"
+        },
+        "ataque": {
+          "bonus": 2
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-s04-mais-3",
+    "name": "Montante +3",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +3 · Dano 2d6. · Efeito: Vampírico.</p>",
+      "catalogId": "WPN-S04",
+      "enchant": 3,
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "2d6",
+          "tipo": "cortante"
+        },
+        "ataque": {
+          "bonus": 3
+        },
+        "special": {
+          "effectId": "EFE-01",
+          "trigger": "onHit",
+          "kind": "healSelf",
+          "amount": 1,
+          "label": "Vampírico"
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-s05",
+    "name": "Rapieira",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +0 · Dano 1d8.</p>",
+      "catalogId": "WPN-S05",
+      "enchant": 0,
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d8",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 0
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-s05-mais-1",
+    "name": "Rapieira +1",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +1 · Dano 1d8.</p>",
+      "catalogId": "WPN-S05",
+      "enchant": 1,
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d8",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 1
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-s05-mais-2",
+    "name": "Rapieira +2",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +2 · Dano 1d8.</p>",
+      "catalogId": "WPN-S05",
+      "enchant": 2,
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d8",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 2
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-s05-mais-3",
+    "name": "Rapieira +3",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +3 · Dano 1d8. · Efeito: Vampírico.</p>",
+      "catalogId": "WPN-S05",
+      "enchant": 3,
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d8",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 3
+        },
+        "special": {
+          "effectId": "EFE-01",
+          "trigger": "onHit",
+          "kind": "healSelf",
+          "amount": 1,
+          "label": "Vampírico"
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-s06",
+    "name": "Sabre de Cavalaria",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +0 · Dano 1d6.</p>",
+      "catalogId": "WPN-S06",
+      "enchant": 0,
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d6",
+          "tipo": "cortante"
+        },
+        "ataque": {
+          "bonus": 0
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-s06-mais-1",
+    "name": "Sabre de Cavalaria +1",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +1 · Dano 1d6.</p>",
+      "catalogId": "WPN-S06",
+      "enchant": 1,
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d6",
+          "tipo": "cortante"
+        },
+        "ataque": {
+          "bonus": 1
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-s06-mais-2",
+    "name": "Sabre de Cavalaria +2",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +2 · Dano 1d6.</p>",
+      "catalogId": "WPN-S06",
+      "enchant": 2,
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d6",
+          "tipo": "cortante"
+        },
+        "ataque": {
+          "bonus": 2
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-s06-mais-3",
+    "name": "Sabre de Cavalaria +3",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +3 · Dano 1d6. · Efeito: Vampírico.</p>",
+      "catalogId": "WPN-S06",
+      "enchant": 3,
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d6",
+          "tipo": "cortante"
+        },
+        "ataque": {
+          "bonus": 3
+        },
+        "special": {
+          "effectId": "EFE-01",
+          "trigger": "onHit",
+          "kind": "healSelf",
+          "amount": 1,
+          "label": "Vampírico"
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-s07",
+    "name": "Cimitarra de Grimwald",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +0 · Dano 1d6. · Efeito: Veneno leve.</p>",
+      "catalogId": "WPN-S07",
+      "enchant": 0,
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d6",
+          "tipo": "cortante"
+        },
+        "ataque": {
+          "bonus": 0
+        },
+        "special": {
+          "effectId": "EFE-03",
+          "trigger": "onHit",
+          "kind": "bonusDamage",
+          "formula": "1d4",
+          "damageType": "veneno",
+          "label": "Veneno leve"
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-s07-mais-1",
+    "name": "Cimitarra de Grimwald +1",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +1 · Dano 1d6. · Efeito: Veneno leve.</p>",
+      "catalogId": "WPN-S07",
+      "enchant": 1,
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d6",
+          "tipo": "cortante"
+        },
+        "ataque": {
+          "bonus": 1
+        },
+        "special": {
+          "effectId": "EFE-03",
+          "trigger": "onHit",
+          "kind": "bonusDamage",
+          "formula": "1d4",
+          "damageType": "veneno",
+          "label": "Veneno leve"
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-s07-mais-2",
+    "name": "Cimitarra de Grimwald +2",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +2 · Dano 1d6. · Efeito: Veneno leve.</p>",
+      "catalogId": "WPN-S07",
+      "enchant": 2,
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d6",
+          "tipo": "cortante"
+        },
+        "ataque": {
+          "bonus": 2
+        },
+        "special": {
+          "effectId": "EFE-03",
+          "trigger": "onHit",
+          "kind": "bonusDamage",
+          "formula": "1d4",
+          "damageType": "veneno",
+          "label": "Veneno leve"
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-s07-mais-3",
+    "name": "Cimitarra de Grimwald +3",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +3 · Dano 1d6. · Efeito: Veneno leve.</p>",
+      "catalogId": "WPN-S07",
+      "enchant": 3,
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d6",
+          "tipo": "cortante"
+        },
+        "ataque": {
+          "bonus": 3
+        },
+        "special": {
+          "effectId": "EFE-03",
+          "trigger": "onHit",
+          "kind": "bonusDamage",
+          "formula": "1d4",
+          "damageType": "veneno",
+          "label": "Veneno leve"
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-s08",
+    "name": "Gladius de Masmorra",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +0 · Dano 1d6.</p>",
+      "catalogId": "WPN-S08",
+      "enchant": 0,
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d6",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 0
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-s08-mais-1",
+    "name": "Gladius de Masmorra +1",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +1 · Dano 1d6.</p>",
+      "catalogId": "WPN-S08",
+      "enchant": 1,
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d6",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 1
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-s08-mais-2",
+    "name": "Gladius de Masmorra +2",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +2 · Dano 1d6.</p>",
+      "catalogId": "WPN-S08",
+      "enchant": 2,
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d6",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 2
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-s08-mais-3",
+    "name": "Gladius de Masmorra +3",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +3 · Dano 1d6. · Efeito: Vampírico.</p>",
+      "catalogId": "WPN-S08",
+      "enchant": 3,
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d6",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 3
+        },
+        "special": {
+          "effectId": "EFE-01",
+          "trigger": "onHit",
+          "kind": "healSelf",
+          "amount": 1,
+          "label": "Vampírico"
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-s09",
+    "name": "Claymore de Valdrun",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +0 · Dano 2d6.</p>",
+      "catalogId": "WPN-S09",
+      "enchant": 0,
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "2d6",
+          "tipo": "cortante"
+        },
+        "ataque": {
+          "bonus": 0
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-s09-mais-1",
+    "name": "Claymore de Valdrun +1",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +1 · Dano 2d6.</p>",
+      "catalogId": "WPN-S09",
+      "enchant": 1,
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "2d6",
+          "tipo": "cortante"
+        },
+        "ataque": {
+          "bonus": 1
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-s09-mais-2",
+    "name": "Claymore de Valdrun +2",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +2 · Dano 2d6.</p>",
+      "catalogId": "WPN-S09",
+      "enchant": 2,
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "2d6",
+          "tipo": "cortante"
+        },
+        "ataque": {
+          "bonus": 2
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-s09-mais-3",
+    "name": "Claymore de Valdrun +3",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +3 · Dano 2d6. · Efeito: Sede de sangue.</p>",
+      "catalogId": "WPN-S09",
+      "enchant": 3,
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "2d6",
+          "tipo": "cortante"
+        },
+        "ataque": {
+          "bonus": 3
+        },
+        "special": {
+          "effectId": "EFE-02",
+          "trigger": "onCrit",
+          "kind": "healSelf",
+          "amount": 2,
+          "label": "Sede de sangue"
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-s10",
+    "name": "Espada de Cripta",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +0 · Dano 1d8. · Efeito: Sede de sangue.</p>",
+      "catalogId": "WPN-S10",
+      "enchant": 0,
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d8",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 0
+        },
+        "special": {
+          "effectId": "EFE-02",
+          "trigger": "onCrit",
+          "kind": "healSelf",
+          "amount": 2,
+          "label": "Sede de sangue"
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-s10-mais-1",
+    "name": "Espada de Cripta +1",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +1 · Dano 1d8. · Efeito: Sede de sangue.</p>",
+      "catalogId": "WPN-S10",
+      "enchant": 1,
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d8",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 1
+        },
+        "special": {
+          "effectId": "EFE-02",
+          "trigger": "onCrit",
+          "kind": "healSelf",
+          "amount": 2,
+          "label": "Sede de sangue"
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-s10-mais-2",
+    "name": "Espada de Cripta +2",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +2 · Dano 1d8. · Efeito: Sede de sangue.</p>",
+      "catalogId": "WPN-S10",
+      "enchant": 2,
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d8",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 2
+        },
+        "special": {
+          "effectId": "EFE-02",
+          "trigger": "onCrit",
+          "kind": "healSelf",
+          "amount": 2,
+          "label": "Sede de sangue"
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-s10-mais-3",
+    "name": "Espada de Cripta +3",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +3 · Dano 1d8. · Efeito: Sede de sangue.</p>",
+      "catalogId": "WPN-S10",
+      "enchant": 3,
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d8",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 3
+        },
+        "special": {
+          "effectId": "EFE-02",
+          "trigger": "onCrit",
+          "kind": "healSelf",
+          "amount": 2,
+          "label": "Sede de sangue"
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-s11",
+    "name": "Lâmina de Teixo",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +0 · Dano 1d8.</p>",
+      "catalogId": "WPN-S11",
+      "enchant": 0,
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d8",
+          "tipo": "cortante"
+        },
+        "ataque": {
+          "bonus": 0
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-s11-mais-1",
+    "name": "Lâmina de Teixo +1",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +1 · Dano 1d8.</p>",
+      "catalogId": "WPN-S11",
+      "enchant": 1,
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d8",
+          "tipo": "cortante"
+        },
+        "ataque": {
+          "bonus": 1
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-s11-mais-2",
+    "name": "Lâmina de Teixo +2",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +2 · Dano 1d8.</p>",
+      "catalogId": "WPN-S11",
+      "enchant": 2,
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d8",
+          "tipo": "cortante"
+        },
+        "ataque": {
+          "bonus": 2
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-s11-mais-3",
+    "name": "Lâmina de Teixo +3",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +3 · Dano 1d8. · Efeito: Vampírico.</p>",
+      "catalogId": "WPN-S11",
+      "enchant": 3,
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d8",
+          "tipo": "cortante"
+        },
+        "ataque": {
+          "bonus": 3
+        },
+        "special": {
+          "effectId": "EFE-01",
+          "trigger": "onHit",
+          "kind": "healSelf",
+          "amount": 1,
+          "label": "Vampírico"
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-s12",
+    "name": "Espada de Prata",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +0 · Dano 1d8. · Efeito: Corte prateado.</p>",
+      "catalogId": "WPN-S12",
+      "enchant": 0,
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d8",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 0
+        },
+        "special": {
+          "effectId": "EFE-08",
+          "trigger": "onHit",
+          "kind": "bonusDamage",
+          "formula": "1d6",
+          "damageType": "mágico",
+          "label": "Corte prateado"
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-s12-mais-1",
+    "name": "Espada de Prata +1",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +1 · Dano 1d8. · Efeito: Corte prateado.</p>",
+      "catalogId": "WPN-S12",
+      "enchant": 1,
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d8",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 1
+        },
+        "special": {
+          "effectId": "EFE-08",
+          "trigger": "onHit",
+          "kind": "bonusDamage",
+          "formula": "1d6",
+          "damageType": "mágico",
+          "label": "Corte prateado"
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-s12-mais-2",
+    "name": "Espada de Prata +2",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +2 · Dano 1d8. · Efeito: Corte prateado.</p>",
+      "catalogId": "WPN-S12",
+      "enchant": 2,
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d8",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 2
+        },
+        "special": {
+          "effectId": "EFE-08",
+          "trigger": "onHit",
+          "kind": "bonusDamage",
+          "formula": "1d6",
+          "damageType": "mágico",
+          "label": "Corte prateado"
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-s12-mais-3",
+    "name": "Espada de Prata +3",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +3 · Dano 1d8. · Efeito: Corte prateado.</p>",
+      "catalogId": "WPN-S12",
+      "enchant": 3,
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d8",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 3
+        },
+        "special": {
+          "effectId": "EFE-08",
+          "trigger": "onHit",
+          "kind": "bonusDamage",
+          "formula": "1d6",
+          "damageType": "mágico",
+          "label": "Corte prateado"
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-p01",
+    "name": "Lança Curta",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +0 · Dano 1d6.</p>",
+      "catalogId": "WPN-P01",
+      "enchant": 0,
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d6",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 0
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-p01-mais-1",
+    "name": "Lança Curta +1",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +1 · Dano 1d6.</p>",
+      "catalogId": "WPN-P01",
+      "enchant": 1,
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d6",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 1
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-p01-mais-2",
+    "name": "Lança Curta +2",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +2 · Dano 1d6.</p>",
+      "catalogId": "WPN-P01",
+      "enchant": 2,
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d6",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 2
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-p01-mais-3",
+    "name": "Lança Curta +3",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +3 · Dano 1d6. · Efeito: Vampírico.</p>",
+      "catalogId": "WPN-P01",
+      "enchant": 3,
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d6",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 3
+        },
+        "special": {
+          "effectId": "EFE-01",
+          "trigger": "onHit",
+          "kind": "healSelf",
+          "amount": 1,
+          "label": "Vampírico"
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-p02",
+    "name": "Lança Longa",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +0 · Dano 1d10.</p>",
+      "catalogId": "WPN-P02",
+      "enchant": 0,
+      "tactical": {
+        "alcanceHex": {
+          "value": 2,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d10",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 0
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-p02-mais-1",
+    "name": "Lança Longa +1",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +1 · Dano 1d10.</p>",
+      "catalogId": "WPN-P02",
+      "enchant": 1,
+      "tactical": {
+        "alcanceHex": {
+          "value": 2,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d10",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 1
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-p02-mais-2",
+    "name": "Lança Longa +2",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +2 · Dano 1d10.</p>",
+      "catalogId": "WPN-P02",
+      "enchant": 2,
+      "tactical": {
+        "alcanceHex": {
+          "value": 2,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d10",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 2
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-p02-mais-3",
+    "name": "Lança Longa +3",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +3 · Dano 1d10. · Efeito: Vampírico.</p>",
+      "catalogId": "WPN-P02",
+      "enchant": 3,
+      "tactical": {
+        "alcanceHex": {
+          "value": 2,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d10",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 3
+        },
+        "special": {
+          "effectId": "EFE-01",
+          "trigger": "onHit",
+          "kind": "healSelf",
+          "amount": 1,
+          "label": "Vampírico"
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-p03",
+    "name": "Pique de Falange",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +0 · Dano 1d10.</p>",
+      "catalogId": "WPN-P03",
+      "enchant": 0,
+      "tactical": {
+        "alcanceHex": {
+          "value": 2,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d10",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 0
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-p03-mais-1",
+    "name": "Pique de Falange +1",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +1 · Dano 1d10.</p>",
+      "catalogId": "WPN-P03",
+      "enchant": 1,
+      "tactical": {
+        "alcanceHex": {
+          "value": 2,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d10",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 1
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-p03-mais-2",
+    "name": "Pique de Falange +2",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +2 · Dano 1d10.</p>",
+      "catalogId": "WPN-P03",
+      "enchant": 2,
+      "tactical": {
+        "alcanceHex": {
+          "value": 2,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d10",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 2
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-p03-mais-3",
+    "name": "Pique de Falange +3",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +3 · Dano 1d10. · Efeito: Vampírico.</p>",
+      "catalogId": "WPN-P03",
+      "enchant": 3,
+      "tactical": {
+        "alcanceHex": {
+          "value": 2,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d10",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 3
+        },
+        "special": {
+          "effectId": "EFE-01",
+          "trigger": "onHit",
+          "kind": "healSelf",
+          "amount": 1,
+          "label": "Vampírico"
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-p04",
+    "name": "Azagaia",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +0 · Dano 1d6.</p>",
+      "catalogId": "WPN-P04",
+      "enchant": 0,
+      "tactical": {
+        "alcanceHex": {
+          "value": 3,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d6",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 0
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-p04-mais-1",
+    "name": "Azagaia +1",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +1 · Dano 1d6.</p>",
+      "catalogId": "WPN-P04",
+      "enchant": 1,
+      "tactical": {
+        "alcanceHex": {
+          "value": 3,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d6",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 1
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-p04-mais-2",
+    "name": "Azagaia +2",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +2 · Dano 1d6.</p>",
+      "catalogId": "WPN-P04",
+      "enchant": 2,
+      "tactical": {
+        "alcanceHex": {
+          "value": 3,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d6",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 2
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-p04-mais-3",
+    "name": "Azagaia +3",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +3 · Dano 1d6. · Efeito: Vampírico.</p>",
+      "catalogId": "WPN-P04",
+      "enchant": 3,
+      "tactical": {
+        "alcanceHex": {
+          "value": 3,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d6",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 3
+        },
+        "special": {
+          "effectId": "EFE-01",
+          "trigger": "onHit",
+          "kind": "healSelf",
+          "amount": 1,
+          "label": "Vampírico"
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-p05",
+    "name": "Tridente",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +0 · Dano 1d6. · Efeito: Veneno leve.</p>",
+      "catalogId": "WPN-P05",
+      "enchant": 0,
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d6",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 0
+        },
+        "special": {
+          "effectId": "EFE-03",
+          "trigger": "onHit",
+          "kind": "bonusDamage",
+          "formula": "1d4",
+          "damageType": "veneno",
+          "label": "Veneno leve"
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-p05-mais-1",
+    "name": "Tridente +1",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +1 · Dano 1d6. · Efeito: Veneno leve.</p>",
+      "catalogId": "WPN-P05",
+      "enchant": 1,
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d6",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 1
+        },
+        "special": {
+          "effectId": "EFE-03",
+          "trigger": "onHit",
+          "kind": "bonusDamage",
+          "formula": "1d4",
+          "damageType": "veneno",
+          "label": "Veneno leve"
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-p05-mais-2",
+    "name": "Tridente +2",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +2 · Dano 1d6. · Efeito: Veneno leve.</p>",
+      "catalogId": "WPN-P05",
+      "enchant": 2,
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d6",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 2
+        },
+        "special": {
+          "effectId": "EFE-03",
+          "trigger": "onHit",
+          "kind": "bonusDamage",
+          "formula": "1d4",
+          "damageType": "veneno",
+          "label": "Veneno leve"
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-p05-mais-3",
+    "name": "Tridente +3",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +3 · Dano 1d6. · Efeito: Veneno leve.</p>",
+      "catalogId": "WPN-P05",
+      "enchant": 3,
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d6",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 3
+        },
+        "special": {
+          "effectId": "EFE-03",
+          "trigger": "onHit",
+          "kind": "bonusDamage",
+          "formula": "1d4",
+          "damageType": "veneno",
+          "label": "Veneno leve"
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-p06",
+    "name": "Alabarda",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +0 · Dano 1d10.</p>",
+      "catalogId": "WPN-P06",
+      "enchant": 0,
+      "tactical": {
+        "alcanceHex": {
+          "value": 2,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d10",
+          "tipo": "cortante"
+        },
+        "ataque": {
+          "bonus": 0
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-p06-mais-1",
+    "name": "Alabarda +1",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +1 · Dano 1d10.</p>",
+      "catalogId": "WPN-P06",
+      "enchant": 1,
+      "tactical": {
+        "alcanceHex": {
+          "value": 2,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d10",
+          "tipo": "cortante"
+        },
+        "ataque": {
+          "bonus": 1
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-p06-mais-2",
+    "name": "Alabarda +2",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +2 · Dano 1d10.</p>",
+      "catalogId": "WPN-P06",
+      "enchant": 2,
+      "tactical": {
+        "alcanceHex": {
+          "value": 2,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d10",
+          "tipo": "cortante"
+        },
+        "ataque": {
+          "bonus": 2
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-p06-mais-3",
+    "name": "Alabarda +3",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +3 · Dano 1d10. · Efeito: Vampírico.</p>",
+      "catalogId": "WPN-P06",
+      "enchant": 3,
+      "tactical": {
+        "alcanceHex": {
+          "value": 2,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d10",
+          "tipo": "cortante"
+        },
+        "ataque": {
+          "bonus": 3
+        },
+        "special": {
+          "effectId": "EFE-01",
+          "trigger": "onHit",
+          "kind": "healSelf",
+          "amount": 1,
+          "label": "Vampírico"
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-p07",
+    "name": "Lança de Cavalaria",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +0 · Dano 1d8.</p>",
+      "catalogId": "WPN-P07",
+      "enchant": 0,
+      "tactical": {
+        "alcanceHex": {
+          "value": 2,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d8",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 0
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-p07-mais-1",
+    "name": "Lança de Cavalaria +1",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +1 · Dano 1d8.</p>",
+      "catalogId": "WPN-P07",
+      "enchant": 1,
+      "tactical": {
+        "alcanceHex": {
+          "value": 2,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d8",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 1
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-p07-mais-2",
+    "name": "Lança de Cavalaria +2",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +2 · Dano 1d8.</p>",
+      "catalogId": "WPN-P07",
+      "enchant": 2,
+      "tactical": {
+        "alcanceHex": {
+          "value": 2,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d8",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 2
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-p07-mais-3",
+    "name": "Lança de Cavalaria +3",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +3 · Dano 1d8. · Efeito: Vampírico.</p>",
+      "catalogId": "WPN-P07",
+      "enchant": 3,
+      "tactical": {
+        "alcanceHex": {
+          "value": 2,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d8",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 3
+        },
+        "special": {
+          "effectId": "EFE-01",
+          "trigger": "onHit",
+          "kind": "healSelf",
+          "amount": 1,
+          "label": "Vampírico"
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-p08",
+    "name": "Javelin de Caça",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +0 · Dano 1d6.</p>",
+      "catalogId": "WPN-P08",
+      "enchant": 0,
+      "tactical": {
+        "alcanceHex": {
+          "value": 3,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d6",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 0
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-p08-mais-1",
+    "name": "Javelin de Caça +1",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +1 · Dano 1d6.</p>",
+      "catalogId": "WPN-P08",
+      "enchant": 1,
+      "tactical": {
+        "alcanceHex": {
+          "value": 3,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d6",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 1
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-p08-mais-2",
+    "name": "Javelin de Caça +2",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +2 · Dano 1d6.</p>",
+      "catalogId": "WPN-P08",
+      "enchant": 2,
+      "tactical": {
+        "alcanceHex": {
+          "value": 3,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d6",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 2
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-p08-mais-3",
+    "name": "Javelin de Caça +3",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +3 · Dano 1d6. · Efeito: Vampírico.</p>",
+      "catalogId": "WPN-P08",
+      "enchant": 3,
+      "tactical": {
+        "alcanceHex": {
+          "value": 3,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d6",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 3
+        },
+        "special": {
+          "effectId": "EFE-01",
+          "trigger": "onHit",
+          "kind": "healSelf",
+          "amount": 1,
+          "label": "Vampírico"
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-p09",
+    "name": "Lança de Teixo",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +0 · Dano 1d8.</p>",
+      "catalogId": "WPN-P09",
+      "enchant": 0,
+      "tactical": {
+        "alcanceHex": {
+          "value": 2,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d8",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 0
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-p09-mais-1",
+    "name": "Lança de Teixo +1",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +1 · Dano 1d8.</p>",
+      "catalogId": "WPN-P09",
+      "enchant": 1,
+      "tactical": {
+        "alcanceHex": {
+          "value": 2,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d8",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 1
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-p09-mais-2",
+    "name": "Lança de Teixo +2",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +2 · Dano 1d8.</p>",
+      "catalogId": "WPN-P09",
+      "enchant": 2,
+      "tactical": {
+        "alcanceHex": {
+          "value": 2,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d8",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 2
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-p09-mais-3",
+    "name": "Lança de Teixo +3",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +3 · Dano 1d8. · Efeito: Vampírico.</p>",
+      "catalogId": "WPN-P09",
+      "enchant": 3,
+      "tactical": {
+        "alcanceHex": {
+          "value": 2,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d8",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 3
+        },
+        "special": {
+          "effectId": "EFE-01",
+          "trigger": "onHit",
+          "kind": "healSelf",
+          "amount": 1,
+          "label": "Vampírico"
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-p10",
+    "name": "Lança de Valdrun",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +0 · Dano 1d10.</p>",
+      "catalogId": "WPN-P10",
+      "enchant": 0,
+      "tactical": {
+        "alcanceHex": {
+          "value": 2,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d10",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 0
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-p10-mais-1",
+    "name": "Lança de Valdrun +1",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +1 · Dano 1d10.</p>",
+      "catalogId": "WPN-P10",
+      "enchant": 1,
+      "tactical": {
+        "alcanceHex": {
+          "value": 2,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d10",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 1
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-p10-mais-2",
+    "name": "Lança de Valdrun +2",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +2 · Dano 1d10.</p>",
+      "catalogId": "WPN-P10",
+      "enchant": 2,
+      "tactical": {
+        "alcanceHex": {
+          "value": 2,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d10",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 2
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-p10-mais-3",
+    "name": "Lança de Valdrun +3",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +3 · Dano 1d10. · Efeito: Vampírico.</p>",
+      "catalogId": "WPN-P10",
+      "enchant": 3,
+      "tactical": {
+        "alcanceHex": {
+          "value": 2,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d10",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 3
+        },
+        "special": {
+          "effectId": "EFE-01",
+          "trigger": "onHit",
+          "kind": "healSelf",
+          "amount": 1,
+          "label": "Vampírico"
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-o01",
+    "name": "Adaga de Masmorra",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +0 · Dano 1d4.</p>",
+      "catalogId": "WPN-O01",
+      "enchant": 0,
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d4",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 0
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-o01-mais-1",
+    "name": "Adaga de Masmorra +1",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +1 · Dano 1d4.</p>",
+      "catalogId": "WPN-O01",
+      "enchant": 1,
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d4",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 1
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-o01-mais-2",
+    "name": "Adaga de Masmorra +2",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +2 · Dano 1d4.</p>",
+      "catalogId": "WPN-O01",
+      "enchant": 2,
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d4",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 2
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-o01-mais-3",
+    "name": "Adaga de Masmorra +3",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +3 · Dano 1d4. · Efeito: Vampírico.</p>",
+      "catalogId": "WPN-O01",
+      "enchant": 3,
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d4",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 3
+        },
+        "special": {
+          "effectId": "EFE-01",
+          "trigger": "onHit",
+          "kind": "healSelf",
+          "amount": 1,
+          "label": "Vampírico"
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-o02",
+    "name": "Adagas Gêmeas",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +0 · Dano 2d4.</p>",
+      "catalogId": "WPN-O02",
+      "enchant": 0,
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "2d4",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 0
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-o02-mais-1",
+    "name": "Adagas Gêmeas +1",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +1 · Dano 2d4.</p>",
+      "catalogId": "WPN-O02",
+      "enchant": 1,
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
           "min": 0
         }
       },
@@ -130,17 +6277,208 @@
     }
   },
   {
-    "name": "Machado de Batalha",
+    "id": "armas-wpn-o02-mais-2",
+    "name": "Adagas Gêmeas +2",
     "type": "arma",
     "system": {
-      "description": "<p>Machado pesado.</p>",
+      "description": "<p>Ataque +2 · Dano 2d4.</p>",
+      "catalogId": "WPN-O02",
+      "enchant": 2,
       "tactical": {
         "alcanceHex": {
           "value": 1,
           "min": 0
         },
         "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "2d4",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 2
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-o02-mais-3",
+    "name": "Adagas Gêmeas +3",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +3 · Dano 2d4. · Efeito: Vampírico.</p>",
+      "catalogId": "WPN-O02",
+      "enchant": 3,
+      "tactical": {
+        "alcanceHex": {
           "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "2d4",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 3
+        },
+        "special": {
+          "effectId": "EFE-01",
+          "trigger": "onHit",
+          "kind": "healSelf",
+          "amount": 1,
+          "label": "Vampírico"
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-o03",
+    "name": "Machado de Batalha",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +0 · Dano 1d8.</p>",
+      "catalogId": "WPN-O03",
+      "enchant": 0,
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d8",
+          "tipo": "cortante"
+        },
+        "ataque": {
+          "bonus": 0
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-o03-mais-1",
+    "name": "Machado de Batalha +1",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +1 · Dano 1d8.</p>",
+      "catalogId": "WPN-O03",
+      "enchant": 1,
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d8",
+          "tipo": "cortante"
+        },
+        "ataque": {
+          "bonus": 1
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-o03-mais-2",
+    "name": "Machado de Batalha +2",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +2 · Dano 1d8.</p>",
+      "catalogId": "WPN-O03",
+      "enchant": 2,
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d8",
+          "tipo": "cortante"
+        },
+        "ataque": {
+          "bonus": 2
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-o03-mais-3",
+    "name": "Machado de Batalha +3",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +3 · Dano 1d8. · Efeito: Vampírico.</p>",
+      "catalogId": "WPN-O03",
+      "enchant": 3,
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d8",
+          "tipo": "cortante"
+        },
+        "ataque": {
+          "bonus": 3
+        },
+        "special": {
+          "effectId": "EFE-01",
+          "trigger": "onHit",
+          "kind": "healSelf",
+          "amount": 1,
+          "label": "Vampírico"
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-o04",
+    "name": "Machado Grande",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +0 · Dano 1d12.</p>",
+      "catalogId": "WPN-O04",
+      "enchant": 0,
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
           "min": 0
         }
       },
@@ -156,62 +6494,256 @@
     }
   },
   {
-    "name": "Besta Leve",
+    "id": "armas-wpn-o04-mais-1",
+    "name": "Machado Grande +1",
     "type": "arma",
     "system": {
-      "description": "<p>Besta de masmorra.</p>",
+      "description": "<p>Ataque +1 · Dano 1d12.</p>",
+      "catalogId": "WPN-O04",
+      "enchant": 1,
       "tactical": {
         "alcanceHex": {
-          "value": 6,
+          "value": 1,
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
-          "min": 0
-        }
-      },
-      "weapon": {
-        "dano": {
-          "formula": "1d8",
-          "tipo": "perfurante"
-        },
-        "ataque": {
-          "bonus": 0
-        }
-      }
-    }
-  },
-  {
-    "name": "Lança Longa",
-    "type": "arma",
-    "system": {
-      "description": "<p>Formação tática.</p>",
-      "tactical": {
-        "alcanceHex": {
           "value": 2,
           "min": 0
-        },
-        "custoPontosAcao": {
-          "value": 1,
-          "min": 0
         }
       },
       "weapon": {
         "dano": {
-          "formula": "1d10",
-          "tipo": "perfurante"
+          "formula": "1d12",
+          "tipo": "cortante"
         },
         "ataque": {
-          "bonus": 0
+          "bonus": 1
         }
       }
     }
   },
   {
-    "name": "Maça Pesada",
+    "id": "armas-wpn-o04-mais-2",
+    "name": "Machado Grande +2",
     "type": "arma",
     "system": {
-      "description": "<p>Quebra armaduras.</p>",
+      "description": "<p>Ataque +2 · Dano 1d12.</p>",
+      "catalogId": "WPN-O04",
+      "enchant": 2,
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d12",
+          "tipo": "cortante"
+        },
+        "ataque": {
+          "bonus": 2
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-o04-mais-3",
+    "name": "Machado Grande +3",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +3 · Dano 1d12. · Efeito: Esmagadora.</p>",
+      "catalogId": "WPN-O04",
+      "enchant": 3,
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d12",
+          "tipo": "cortante"
+        },
+        "ataque": {
+          "bonus": 3
+        },
+        "special": {
+          "effectId": "EFE-06",
+          "trigger": "onCrit",
+          "kind": "bonusDamage",
+          "formula": "1d8",
+          "damageType": "contundente",
+          "label": "Esmagadora"
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-o05",
+    "name": "Maça de Guerra",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +0 · Dano 2d6. · Efeito: Esmagadora.</p>",
+      "catalogId": "WPN-O05",
+      "enchant": 0,
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "2d6",
+          "tipo": "contundente"
+        },
+        "ataque": {
+          "bonus": 0
+        },
+        "special": {
+          "effectId": "EFE-06",
+          "trigger": "onCrit",
+          "kind": "bonusDamage",
+          "formula": "1d8",
+          "damageType": "contundente",
+          "label": "Esmagadora"
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-o05-mais-1",
+    "name": "Maça de Guerra +1",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +1 · Dano 2d6. · Efeito: Esmagadora.</p>",
+      "catalogId": "WPN-O05",
+      "enchant": 1,
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "2d6",
+          "tipo": "contundente"
+        },
+        "ataque": {
+          "bonus": 1
+        },
+        "special": {
+          "effectId": "EFE-06",
+          "trigger": "onCrit",
+          "kind": "bonusDamage",
+          "formula": "1d8",
+          "damageType": "contundente",
+          "label": "Esmagadora"
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-o05-mais-2",
+    "name": "Maça de Guerra +2",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +2 · Dano 2d6. · Efeito: Esmagadora.</p>",
+      "catalogId": "WPN-O05",
+      "enchant": 2,
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "2d6",
+          "tipo": "contundente"
+        },
+        "ataque": {
+          "bonus": 2
+        },
+        "special": {
+          "effectId": "EFE-06",
+          "trigger": "onCrit",
+          "kind": "bonusDamage",
+          "formula": "1d8",
+          "damageType": "contundente",
+          "label": "Esmagadora"
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-o05-mais-3",
+    "name": "Maça de Guerra +3",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +3 · Dano 2d6. · Efeito: Esmagadora.</p>",
+      "catalogId": "WPN-O05",
+      "enchant": 3,
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "2d6",
+          "tipo": "contundente"
+        },
+        "ataque": {
+          "bonus": 3
+        },
+        "special": {
+          "effectId": "EFE-06",
+          "trigger": "onCrit",
+          "kind": "bonusDamage",
+          "formula": "1d8",
+          "damageType": "contundente",
+          "label": "Esmagadora"
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-o06",
+    "name": "Martelo de Guerra",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +0 · Dano 2d6.</p>",
+      "catalogId": "WPN-O06",
+      "enchant": 0,
       "tactical": {
         "alcanceHex": {
           "value": 1,
@@ -234,17 +6766,115 @@
     }
   },
   {
-    "name": "Rapieira",
+    "id": "armas-wpn-o06-mais-1",
+    "name": "Martelo de Guerra +1",
     "type": "arma",
     "system": {
-      "description": "<p>Duelo em hex.</p>",
+      "description": "<p>Ataque +1 · Dano 2d6.</p>",
+      "catalogId": "WPN-O06",
+      "enchant": 1,
       "tactical": {
         "alcanceHex": {
           "value": 1,
           "min": 0
         },
         "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "2d6",
+          "tipo": "contundente"
+        },
+        "ataque": {
+          "bonus": 1
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-o06-mais-2",
+    "name": "Martelo de Guerra +2",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +2 · Dano 2d6.</p>",
+      "catalogId": "WPN-O06",
+      "enchant": 2,
+      "tactical": {
+        "alcanceHex": {
           "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "2d6",
+          "tipo": "contundente"
+        },
+        "ataque": {
+          "bonus": 2
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-wpn-o06-mais-3",
+    "name": "Martelo de Guerra +3",
+    "type": "arma",
+    "system": {
+      "description": "<p>Ataque +3 · Dano 2d6. · Efeito: Vampírico.</p>",
+      "catalogId": "WPN-O06",
+      "enchant": 3,
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "2d6",
+          "tipo": "contundente"
+        },
+        "ataque": {
+          "bonus": 3
+        },
+        "special": {
+          "effectId": "EFE-01",
+          "trigger": "onHit",
+          "kind": "healSelf",
+          "amount": 1,
+          "label": "Vampírico"
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-org-01",
+    "name": "Lâmina de Dente de Wyvern",
+    "type": "arma",
+    "system": {
+      "description": "<p>Arma orgânica · CD de durabilidade na ficha.</p>",
+      "catalogId": "ORG-01",
+      "enchant": 0,
+      "organic": true,
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
           "min": 0
         }
       },
@@ -255,22 +6885,72 @@
         },
         "ataque": {
           "bonus": 1
+        },
+        "special": {
+          "effectId": "EFE-04",
+          "trigger": "onHit",
+          "kind": "bonusDamage",
+          "formula": "1d6",
+          "damageType": "veneno",
+          "label": "Veneno"
         }
       }
     }
   },
   {
-    "name": "Azagaia",
+    "id": "armas-org-02",
+    "name": "Maça de Fêmur Milenar",
     "type": "arma",
     "system": {
-      "description": "<p>Arremesso.</p>",
+      "description": "<p>Arma orgânica · CD de durabilidade na ficha.</p>",
+      "catalogId": "ORG-02",
+      "enchant": 0,
+      "organic": true,
       "tactical": {
         "alcanceHex": {
-          "value": 3,
+          "value": 1,
           "min": 0
         },
         "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "2d6",
+          "tipo": "contundente"
+        },
+        "ataque": {
+          "bonus": 1
+        },
+        "special": {
+          "effectId": "EFE-05",
+          "trigger": "onCrit",
+          "kind": "bonusDamage",
+          "formula": "2d6",
+          "damageType": "necrótico",
+          "label": "Pulsó necrótico"
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-org-03",
+    "name": "Adaga de Quelícera",
+    "type": "arma",
+    "system": {
+      "description": "<p>Arma orgânica · CD de durabilidade na ficha.</p>",
+      "catalogId": "ORG-03",
+      "enchant": 0,
+      "organic": true,
+      "tactical": {
+        "alcanceHex": {
           "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
           "min": 0
         }
       },
@@ -280,33 +6960,209 @@
           "tipo": "perfurante"
         },
         "ataque": {
-          "bonus": 0
+          "bonus": 1
+        },
+        "special": {
+          "effectId": "EFE-03",
+          "trigger": "onHit",
+          "kind": "bonusDamage",
+          "formula": "1d4",
+          "damageType": "veneno",
+          "label": "Veneno leve"
         }
       }
     }
   },
   {
-    "name": "Clava Reforçada",
+    "id": "armas-org-04",
+    "name": "Espada de Escama de Dragão",
     "type": "arma",
     "system": {
-      "description": "<p>Arma simples.</p>",
+      "description": "<p>Arma orgânica · CD de durabilidade na ficha.</p>",
+      "catalogId": "ORG-04",
+      "enchant": 0,
+      "organic": true,
       "tactical": {
         "alcanceHex": {
           "value": 1,
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
       "weapon": {
         "dano": {
+          "formula": "1d10",
+          "tipo": "cortante"
+        },
+        "ataque": {
+          "bonus": 1
+        },
+        "special": {
+          "effectId": "EFE-07",
+          "trigger": "onHit",
+          "kind": "bonusDamage",
           "formula": "1d6",
+          "damageType": "fogo",
+          "label": "Ignição"
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-org-05",
+    "name": "Lança de Ferrão de Escorpião",
+    "type": "arma",
+    "system": {
+      "description": "<p>Arma orgânica · CD de durabilidade na ficha.</p>",
+      "catalogId": "ORG-05",
+      "enchant": 0,
+      "organic": true,
+      "tactical": {
+        "alcanceHex": {
+          "value": 2,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d8",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 1
+        },
+        "special": {
+          "effectId": "EFE-10",
+          "trigger": "onHit",
+          "kind": "bonusDamage",
+          "formula": "1d8",
+          "damageType": "perfurante",
+          "label": "Ferrão"
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-org-06",
+    "name": "Martelo Fornalha",
+    "type": "arma",
+    "system": {
+      "description": "<p>Arma orgânica · CD de durabilidade na ficha.</p>",
+      "catalogId": "ORG-06",
+      "enchant": 0,
+      "organic": true,
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "2d8",
           "tipo": "contundente"
         },
         "ataque": {
-          "bonus": 0
+          "bonus": 1
+        },
+        "special": {
+          "effects": [
+            {
+              "effectId": "EFE-07",
+              "trigger": "onHit",
+              "kind": "bonusDamage",
+              "formula": "1d6",
+              "damageType": "fogo",
+              "label": "Ignição"
+            },
+            {
+              "effectId": "EFE-06",
+              "trigger": "onCrit",
+              "kind": "bonusDamage",
+              "formula": "1d8",
+              "damageType": "contundente",
+              "label": "Esmagadora"
+            }
+          ]
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-org-07",
+    "name": "Arco de Osso de Grifo",
+    "type": "arma",
+    "system": {
+      "description": "<p>Arma orgânica · CD de durabilidade na ficha.</p>",
+      "catalogId": "ORG-07",
+      "enchant": 0,
+      "organic": true,
+      "tactical": {
+        "alcanceHex": {
+          "value": 6,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d10",
+          "tipo": "perfurante"
+        },
+        "ataque": {
+          "bonus": 1
+        }
+      }
+    }
+  },
+  {
+    "id": "armas-org-08",
+    "name": "Espada de Garra de Gelo",
+    "type": "arma",
+    "system": {
+      "description": "<p>Arma orgânica · CD de durabilidade na ficha.</p>",
+      "catalogId": "ORG-08",
+      "enchant": 0,
+      "organic": true,
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "weapon": {
+        "dano": {
+          "formula": "1d10",
+          "tipo": "cortante"
+        },
+        "ataque": {
+          "bonus": 1
+        },
+        "special": {
+          "effectId": "EFE-09",
+          "trigger": "onCrit",
+          "kind": "bonusDamage",
+          "formula": "2d6",
+          "damageType": "frio",
+          "label": "Congelamento"
         }
       }
     }

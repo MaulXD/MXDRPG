@@ -1,12 +1,13 @@
 "use client";
 
 import { useState } from "react";
+import { ClerkSignInLinks } from "@/components/auth/ClerkSignInLinks";
 import { LoginForm } from "@/components/auth/LoginForm";
 import { RegisterForm } from "@/components/auth/RegisterForm";
 
-type Props = { redirect?: string };
+type Props = { redirect?: string; clerkEnabled?: boolean };
 
-export function AuthTabs({ redirect = "" }: Props) {
+export function AuthTabs({ redirect = "", clerkEnabled = false }: Props) {
   const [tab, setTab] = useState<"login" | "register">("login");
 
   return (
@@ -29,7 +30,17 @@ export function AuthTabs({ redirect = "" }: Props) {
           Criar conta
         </button>
       </div>
+      {clerkEnabled && tab === "login" ? <ClerkSignInLinks /> : null}
       {tab === "login" ? <LoginForm redirect={redirect} /> : <RegisterForm />}
+      <p style={{ marginTop: "1rem", fontSize: "0.8rem", color: "var(--text-muted)" }}>
+        <a href="/privacidade">Política de privacidade</a>
+        {clerkEnabled ? (
+          <>
+            {" "}
+            · <a href="/sign-in">Login Clerk (página)</a>
+          </>
+        ) : null}
+      </p>
     </div>
   );
 }

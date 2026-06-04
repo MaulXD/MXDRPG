@@ -19,9 +19,12 @@ web/.next/
 !.env.example
 **/.env*.local
 
-# OS
+# OS / IDE / Python
 .DS_Store
 Thumbs.db
 *.log
+.cursor/
+__pycache__/
+*.pyc
 
 public/uploads/

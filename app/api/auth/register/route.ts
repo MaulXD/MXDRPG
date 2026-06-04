@@ -9,7 +9,8 @@ export async function POST(request: Request) {
   const name = String(body.name ?? "").trim();
   const password = String(body.password ?? "");
 
-  const result = registerUser(email, name, password);
+  const nickname = String(body.nickname ?? "").trim() || undefined;
+  const result = await registerUser(email, name, password, nickname);
   if (!result.ok) {
     return NextResponse.json({ error: result.error }, { status: 400 });
   }

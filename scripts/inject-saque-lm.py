@@ -23,7 +23,7 @@ def parse_loot_table() -> dict[str, tuple[str, str, str]]:
     text = CATALOG.read_text(encoding="utf-8")
     start = text.find("| 001 |")
     if start < 0:
-        raise SystemExit("Tabela 001-060 nao encontrada no catalogo")
+        raise SystemExit("Tabela 001-060 não encontrada no catálogo")
     chunk = text[start:]
     out: dict[str, tuple[str, str, str]] = {}
     for m in ROW_RE.finditer(chunk):

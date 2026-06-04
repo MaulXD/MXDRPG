@@ -11,6 +11,12 @@ export type BattleToken = {
   run: number;
   pa: number;
   paMax: number;
+  /** PA guardados para o próximo turno (máx. 2) */
+  bankedPa?: number;
+  /** PA já gastos neste turno (informativo; sem teto de gasto) */
+  paSpentThisTurn?: number;
+  /** O Peão: 1 PA de movimento básico já isento neste turno */
+  peaoFreeMoveUsed?: boolean;
   ownerRole: "mestre" | "jogador";
   /** Foundry: token linkado ao Actor — stats vêm da ficha */
   actorId?: string;
@@ -31,6 +37,10 @@ export type BattleToken = {
   monsterVariant?: import("@/lib/vtt/monster-scaling").MonsterSpawnVariant;
   /** Foco da imagem no token (sync da ficha) */
   imageFocus?: import("@/lib/media/portrait-focus").PortraitFocus;
+  /** Tamanho no hex — small compartilha bloco dividido (Halfling, Gnomo, mob pequeno) */
+  footprint?: "medium" | "small";
+  /** Criatura que pode dividir hex com outra pequena */
+  sharedHex?: boolean;
   /** Hex gastos no turno atual */
   movementSpentHex?: number;
   /** Orçamento caminhada do turno (= walk) */
@@ -60,10 +70,29 @@ export type BattleToken = {
   conditions?: import("@/lib/combat/conditions").TokenCondition[];
 };
 
+export type BattlePing = {
+  id: string;
+  q: number;
+  r: number;
+  color: string;
+  author: string;
+  at: number;
+};
+
 export type BattleScene = {
   id: string;
   name: string;
   gridRadius: number;
   hexSize: number;
   tokens: BattleToken[];
+  /** URL da imagem de mapa (fundo do hex) */
+  mapImageUrl?: string | null;
+  /** Escala do mapa (1 = automático ao grid) */
+  mapImageScale?: number;
+  mapImageOffsetX?: number;
+  mapImageOffsetY?: number;
+  /** Fog of war — jogadores só veem hexes revelados + visão dos próprios tokens */
+  fogEnabled?: boolean;
+  /** Chaves "q,r" reveladas permanentemente */
+  revealedHexes?: string[];
 };
