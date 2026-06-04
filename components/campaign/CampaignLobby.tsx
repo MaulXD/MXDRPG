@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 type RoomRow = {
   roomId: string;
@@ -31,6 +31,9 @@ export function CampaignLobby() {
     load();
   }, [load]);
 
+  const asMaster = useMemo(() => rooms.filter((r) => r.isOwner), [rooms]);
+  const asPlayer = useMemo(() => rooms.filter((r) => !r.isOwner), [rooms]);
+
   async function createRoom(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
@@ -46,7 +49,7 @@ export function CampaignLobby() {
       setError(data.error ?? "Erro ao criar mesa");
       return;
     }
-    router.push(`/mesa/${data.room.roomId}`);
+    router.push(`/mesa/${data.room.roomId}/configurar`);
   }
 
   async function joinRoom(e: React.FormEvent) {
@@ -70,18 +73,18 @@ export function CampaignLobby() {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem", maxWidth: 720 }}>
       <p style={{ color: "var(--text-muted)", lineHeight: 1.6, margin: 0 }}>
-        Estilo Roll20: qualquer conta joga e também cria mesas. Você só é <strong>mestre</strong> nas
-        mesas que <em>você</em> criou; nas outras entra como jogador pelo código de convite.
+        Uma conta faz tudo: crie fichas no painel, <strong>mestreie</strong> suas mesas (cenário, monstros,
+        configurações) e <strong>jogue</strong> nas mesas de outros com o código de convite — como no Roll20.
       </p>
 
       <div className="grid-2">
         <section className="glass-panel" style={{ padding: "1.25rem" }}>
-          <h3 style={{ margin: "0 0 0.75rem", fontSize: "1rem" }}>Criar mesa</h3>
+          <h3 style={{ margin: "0 0 0.75rem", fontSize: "1rem" }}>Criar mesa (você será o mestre)</h3>
           <form onSubmit={createRoom} style={{ display: "flex", flexDirection: "column", gap: "0.65rem" }}>
             <input
               value={newName}
               onChange={(e) => setNewName(e.target.value)}
-              placeholder="Nome da campanha"
+              placeholder="Nome da campanha / cenário"
               required
               style={inputStyle}
             />
@@ -89,15 +92,18 @@ export function CampaignLobby() {
               Nova mesa
             </button>
           </form>
+          <p style={{ fontSize: "0.75rem", color: "var(--text-muted)", margin: "0.5rem 0 0" }}>
+            Após criar, você configura HP visível, mapa e convite antes de abrir a mesa.
+          </p>
         </section>
 
         <section className="glass-panel" style={{ padding: "1.25rem" }}>
-          <h3 style={{ margin: "0 0 0.75rem", fontSize: "1rem" }}>Entrar com código</h3>
+          <h3 style={{ margin: "0 0 0.75rem", fontSize: "1rem" }}>Entrar como jogador</h3>
           <form onSubmit={joinRoom} style={{ display: "flex", flexDirection: "column", gap: "0.65rem" }}>
             <input
               value={joinCode}
               onChange={(e) => setJoinCode(e.target.value.toUpperCase())}
-              placeholder="Ex: DEMOELDR"
+              placeholder="Código do mestre"
               required
               style={inputStyle}
             />
@@ -108,36 +114,63 @@ export function CampaignLobby() {
         </section>
       </div>
 
-      {error && <p style={{ color: "#ff6b8a", margin: 0 }}>{error}</p>}
+      {error ? <p style={{ color: "#ff6b8a", margin: 0 }}>{error}</p> : null}
 
-      <section>
-        <h3 style={{ fontSize: "1rem", marginBottom: "0.75rem" }}>Suas mesas</h3>
-        {rooms.length === 0 ? (
-          <p style={{ color: "var(--text-muted)" }}>Nenhuma mesa ainda — crie uma ou use o código de convite.</p>
-        ) : (
-          <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-            {rooms.map((r) => (
+      {asMaster.length > 0 ? (
+        <section>
+          <h3 style={{ fontSize: "1rem", marginBottom: "0.75rem" }}>Mesas que você mestreia</h3>
+          <ul style={listStyle}>
+            {asMaster.map((r) => (
+              <li key={r.roomId} className="glass-panel" style={{ padding: "0.85rem 1rem" }}>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem", alignItems: "center" }}>
+                  <Link href={`/mesa/${r.roomId}`} style={{ fontWeight: 600 }}>
+                    {r.name}
+                  </Link>
+                  <span style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}>
+                    convite <code>{r.inviteCode}</code>
+                  </span>
+                </div>
+                <div style={{ display: "flex", gap: "0.5rem", marginTop: "0.5rem", flexWrap: "wrap" }}>
+                  <Link href={`/mesa/${r.roomId}/configurar`} className="btn btn-secondary" style={{ fontSize: "0.8rem" }}>
+                    Configurar mesa
+                  </Link>
+                  <Link href={`/mesa/${r.roomId}`} className="btn btn-ghost" style={{ fontSize: "0.8rem" }}>
+                    Abrir mesa
+                  </Link>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
+
+      {asPlayer.length > 0 ? (
+        <section>
+          <h3 style={{ fontSize: "1rem", marginBottom: "0.75rem" }}>Mesas em que você joga</h3>
+          <ul style={listStyle}>
+            {asPlayer.map((r) => (
               <li key={r.roomId} className="glass-panel" style={{ padding: "0.85rem 1rem" }}>
                 <Link href={`/mesa/${r.roomId}`} style={{ fontWeight: 600 }}>
                   {r.name}
                 </Link>
                 <span style={{ marginLeft: "0.5rem", fontSize: "0.8rem", color: "var(--text-muted)" }}>
-                  {r.isOwner ? "· você é o mestre" : "· jogador"}
-                  {r.isOwner && (
-                    <>
-                      {" "}
-                      · código <code>{r.inviteCode}</code>
-                    </>
-                  )}
+                  · jogador
                 </span>
               </li>
             ))}
           </ul>
-        )}
-        <Link href="/mesa/demo" className="btn btn-secondary" style={{ marginTop: "1rem" }}>
-          Mesa demo pública
-        </Link>
-      </section>
+        </section>
+      ) : null}
+
+      {rooms.length === 0 ? (
+        <p style={{ color: "var(--text-muted)" }}>
+          Nenhuma mesa ainda — crie uma campanha ou entre com o código de outro mestre.
+        </p>
+      ) : null}
+
+      <Link href="/mesa/demo" className="btn btn-secondary">
+        Mesa demo pública
+      </Link>
     </div>
   );
 }
@@ -150,4 +183,13 @@ const inputStyle: React.CSSProperties = {
   color: "var(--text)",
   fontFamily: "var(--font-body)",
   width: "100%",
+};
+
+const listStyle: React.CSSProperties = {
+  listStyle: "none",
+  padding: 0,
+  margin: 0,
+  display: "flex",
+  flexDirection: "column",
+  gap: "0.5rem",
 };

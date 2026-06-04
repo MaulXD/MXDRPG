@@ -1,15 +1,17 @@
 "use client";
 
+import Link from "next/link";
 import { useCallback, useState } from "react";
 import { roomInviteUrl } from "@/lib/auth/room-access";
 
 type Props = {
+  adventureId: string;
   roomId: string;
   inviteCode: string;
   roomName: string;
 };
 
-export function RoomInviteBar({ roomId, inviteCode, roomName }: Props) {
+export function RoomInviteBar({ adventureId, roomId, inviteCode, roomName }: Props) {
   const [copied, setCopied] = useState<"code" | "link" | null>(null);
 
   const magicLink =
@@ -52,6 +54,13 @@ export function RoomInviteBar({ roomId, inviteCode, roomName }: Props) {
       >
         {copied === "link" ? "OK" : "Link"}
       </button>
+      <Link
+        href={`/aventura/${adventureId}/configurar`}
+        className="btn btn-ghost room-invite-btn"
+        style={{ marginLeft: "0.25rem" }}
+      >
+        Configurar
+      </Link>
     </div>
   );
 }

@@ -1,16 +1,33 @@
-/** Indicador discreto de turno ativo (sem animação / glow). */
+/** Anel dourado girando — turno ativo no hex. */
 export function drawTurnActiveIndicator(
   ctx: CanvasRenderingContext2D,
   x: number,
   y: number,
-  r: number
+  r: number,
+  timeSec: number
 ): void {
+  const pulse = 0.5 + 0.5 * Math.sin(timeSec * 2.8);
+  const ringR = r + 8;
+
   ctx.save();
+
+  ctx.setLineDash([10, 7]);
+  ctx.lineDashOffset = -timeSec * 42;
   ctx.beginPath();
-  ctx.arc(x, y, r + 5, 0, Math.PI * 2);
-  ctx.strokeStyle = "rgba(201, 169, 98, 0.85)";
-  ctx.lineWidth = 2;
+  ctx.arc(x, y, ringR, 0, Math.PI * 2);
+  ctx.strokeStyle = `rgba(201, 169, 98, ${0.72 + pulse * 0.22})`;
+  ctx.lineWidth = 2.5;
   ctx.stroke();
+
+  ctx.setLineDash([4, 11]);
+  ctx.lineDashOffset = timeSec * 28;
+  ctx.beginPath();
+  ctx.arc(x, y, ringR - 2, 0, Math.PI * 2);
+  ctx.strokeStyle = `rgba(255, 220, 140, ${0.38 + pulse * 0.15})`;
+  ctx.lineWidth = 1.5;
+  ctx.stroke();
+
+  ctx.setLineDash([]);
   ctx.restore();
 }
 

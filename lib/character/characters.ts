@@ -1,8 +1,14 @@
 import "server-only";
 import type { CharacterSheet } from "./types";
+import {
+  MAX_CHARACTERS_PER_USER_PER_ADVENTURE,
+} from "./adventure-bind";
 import { computeCulinary } from "./rules";
 import { normalizeCharacter } from "./normalize";
 import { dbEnabled } from "@/lib/db/enabled";
+import { isAdventureMember } from "@/lib/auth/adventure-access";
+import { getAdventure } from "@/lib/adventure/store";
+import { syncAdventureActorsForRoom } from "@/lib/room/adventure-actors";
 import {
   DEMO_CHARACTERS,
   getCharacter,
@@ -10,6 +16,7 @@ import {
 } from "./demo-characters";
 
 export { getCharacter, canEditCharacter };
+export { MAX_CHARACTERS_PER_USER_PER_ADVENTURE } from "./adventure-bind";
 
 declare global {
   // eslint-disable-next-line no-var
@@ -46,6 +53,21 @@ export async function listCharactersForUser(userId: string): Promise<CharacterSh
   );
 }
 
+export async function listCharactersForUserInAdventure(
+  userId: string,
+  adventureId: string
+): Promise<CharacterSheet[]> {
+  const all = await listCharactersForUser(userId);
+  return all.filter((c) => (c.adventureId ?? c.campaignRoomId) === adventureId);
+}
+
+export async function countCharactersForUserInAdventure(
+  userId: string,
+  adventureId: string
+): Promise<number> {
+  return (await listCharactersForUserInAdventure(userId, adventureId)).length;
+}
+
 export const MAX_CHARACTERS_PER_USER = 10;
 
 export async function saveCharacter(sheet: CharacterSheet): Promise<CharacterSheet> {
@@ -63,15 +85,38 @@ export async function saveCharacter(sheet: CharacterSheet): Promise<CharacterShe
 
 export async function createCharacterFromWizard(
   userId: string,
-  draft: import("./wizard-types").CharacterWizardDraft
+  draft: import("./wizard-types").CharacterWizardDraft,
+  opts?: { adventureId?: string | null; roomId?: string | null }
 ): Promise<CharacterSheet> {
   const existing = await listCharactersForUser(userId);
   if (existing.length >= MAX_CHARACTERS_PER_USER) {
     throw new Error(`Limite de ${MAX_CHARACTERS_PER_USER} fichas por conta`);
   }
+
+  const adventureId =
+    opts?.adventureId?.trim() || opts?.roomId?.trim() || null;
+  if (adventureId) {
+    const adventure = await getAdventure(adventureId);
+    if (!adventure) throw new Error("Aventura não encontrada");
+    if (!isAdventureMember(adventure, userId)) {
+      throw new Error("Entre na aventura antes de criar a ficha");
+    }
+    const inAdv = await countCharactersForUserInAdventure(userId, adventure.adventureId);
+    if (inAdv >= MAX_CHARACTERS_PER_USER_PER_ADVENTURE) {
+      throw new Error("Você já tem um personagem nesta aventura");
+    }
+  }
+
   const { buildCharacterFromWizard } = await import("./build-from-wizard");
-  const sheet = buildCharacterFromWizard(userId, draft);
-  return saveCharacter(sheet);
+  const sheet = buildCharacterFromWizard(userId, draft, undefined, adventureId);
+  const saved = await saveCharacter(sheet);
+
+  if (adventureId) {
+    const adv = await getAdventure(adventureId);
+    if (adv) await syncAdventureActorsForRoom(adv.primaryRoomId);
+  }
+
+  return saved;
 }
 
 export async function createCharacter(

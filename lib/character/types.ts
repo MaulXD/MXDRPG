@@ -50,6 +50,10 @@ export type InventoryItem = {
 export type CharacterSheet = {
   id: string;
   ownerId: string;
+  /** Aventura à qual a ficha pertence (null = legado sem campanha). */
+  adventureId?: string | null;
+  /** @deprecated use adventureId — migrado em normalizeCharacter */
+  campaignRoomId?: string | null;
   name: string;
   biography: string;
   /** Retrato na ficha (Foundry: Actor artwork) */

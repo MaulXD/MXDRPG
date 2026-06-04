@@ -1,0 +1,43 @@
+import { NextResponse } from "next/server";
+import { createAdventure, listAdventuresForUser } from "@/lib/adventure/store";
+import { getSession } from "@/lib/auth/session";
+
+export async function GET() {
+  const session = await getSession();
+  if (!session) {
+    return NextResponse.json({ error: "Faça login" }, { status: 401 });
+  }
+  const adventures = await listAdventuresForUser(session.user.id);
+  return NextResponse.json({ adventures });
+}
+
+export async function POST(request: Request) {
+  const session = await getSession();
+  if (!session) {
+    return NextResponse.json({ error: "Faça login" }, { status: 401 });
+  }
+
+  const body = await request.json();
+  const name = String(body.name ?? "").trim();
+  if (!name) {
+    return NextResponse.json({ error: "Nome da aventura obrigatório" }, { status: 400 });
+  }
+
+  const inviteCodeRaw = body.inviteCode != null ? String(body.inviteCode) : undefined;
+  const result = await createAdventure(session.user.id, name, {
+    inviteCode: inviteCodeRaw,
+  });
+  if (!result.ok) {
+    return NextResponse.json({ error: result.error }, { status: 400 });
+  }
+  const { adventure } = result;
+  return NextResponse.json({
+    adventure: {
+      adventureId: adventure.adventureId,
+      name: adventure.name,
+      inviteCode: adventure.inviteCode,
+      primaryRoomId: adventure.primaryRoomId,
+      isOwner: true,
+    },
+  });
+}

@@ -44,6 +44,8 @@ export function normalizeIdentity(identity: Partial<CharacterIdentity> & { nivel
 }
 
 export function normalizeCharacter(sheet: CharacterSheet): CharacterSheet {
+  const adventureId =
+    sheet.adventureId?.trim() || sheet.campaignRoomId?.trim() || null;
   const identity = normalizeIdentity(sheet.identity);
   const attributes = migrateAttributes(sheet.attributes as unknown as Record<string, number>);
   const conMod = attributeMod(attributes.constituicao);
@@ -54,6 +56,8 @@ export function normalizeCharacter(sheet: CharacterSheet): CharacterSheet {
 
   const base = {
     ...sheet,
+    adventureId,
+    campaignRoomId: undefined,
     identity,
     attributes,
     culinary,

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { DeleteAccountButton } from "@/components/auth/DeleteAccountButton";
-import { CampaignLobby } from "@/components/campaign/CampaignLobby";
+import { AdventureLobby } from "@/components/adventure/AdventureLobby";
 import { DashboardCard } from "@/components/portal/DashboardCard";
 import { listCharactersForUser, MAX_CHARACTERS_PER_USER } from "@/lib/character/characters";
 import { dbEnabled } from "@/lib/db/enabled";
@@ -20,10 +20,10 @@ export default async function PainelPage() {
         Olá, {user.name}
       </h2>
       <p style={{ color: "var(--text-muted)", marginBottom: "1.5rem" }}>
-        Uma conta — joga e mestreia. Poderes de mestre só na sua mesa.
+        Uma conta — joga e mestreia. Cada aventura tem mesa, fichas e registros próprios.
       </p>
 
-      <CampaignLobby />
+      <AdventureLobby />
 
       <div
         style={{
@@ -56,7 +56,9 @@ export default async function PainelPage() {
             <DashboardCard
               key={c.id}
               title={c.name}
-              description={`Nv ${c.identity.nivel} · ${c.identity.classe}`}
+              description={`Nv ${c.identity.nivel} · ${c.identity.classe}${
+                c.adventureId ? " · aventura vinculada" : ""
+              }`}
               accent="magenta"
               href={`/personagem/${c.id}`}
             />

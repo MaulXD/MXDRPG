@@ -9,6 +9,8 @@ import type { CompendiumEntry, CompendiumPackId } from "@/lib/compendium/types";
 import { entrySummary } from "@/lib/compendium/format";
 import { getEntry } from "@/lib/compendium/registry";
 import { useRoomSync } from "@/hooks/useRoomSync";
+import { CharacterSheetCover } from "@/components/character/CharacterSheetCover";
+import { CharacterPortraitFields } from "@/components/character/CharacterPortraitFields";
 import { PortraitFields } from "@/components/character/PortraitFields";
 import {
   CharacterIdentityEditor,
@@ -18,7 +20,6 @@ import { LevelUpWizard } from "@/components/character/LevelUpWizard";
 import { SubclassTrackPanel } from "@/components/character/SubclassTrackPanel";
 import { CombatLoadoutPanel } from "@/components/character/CombatLoadoutPanel";
 import { LootEconomyPanel } from "@/components/character/LootEconomyPanel";
-import { proficiencyBonus } from "@/lib/character/rules";
 import "./sheet.css";
 
 type Tab = "inventário" | "tesouro" | "habilidades" | "magias";
@@ -115,6 +116,13 @@ export function CharacterSheet({
 
   return (
     <div className={`sheet-shell ${embedded ? "sheet-embedded" : ""}`}>
+      <CharacterSheetCover
+        name={live.name}
+        identity={identity}
+        portraitUrl={live.portraitUrl}
+        portraitFocus={live.portraitFocus}
+      />
+
       <aside className="sheet-sidebar glass">
         {inRoom ? (
           <div className="sheet-live">
@@ -123,34 +131,7 @@ export function CharacterSheet({
           </div>
         ) : null}
 
-        {live.portraitUrl ? (
-          <div className="sheet-hero-portrait">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={live.portraitUrl}
-              alt={live.name}
-              className="sheet-portrait-img-cover"
-              style={{
-                objectPosition:
-                  live.portraitFocus
-                    ? `${Math.round((live.portraitFocus.x ?? 0.5) * 100)}% ${Math.round((live.portraitFocus.y ?? 0.5) * 100)}%`
-                    : "50% 50%",
-              }}
-            />
-          </div>
-        ) : null}
-
-        <p className="eyebrow">Ficha</p>
-        <h1 className="sheet-name">{live.name}</h1>
-        <p className="sheet-meta">
-          Nv {identity.nivel} · {identity.raca}
-          {identity.linhagem ? ` (${identity.linhagem})` : ""} · {identity.classe}
-          {identity.subclasse ? ` · ${identity.subclasse}` : ""}
-        </p>
-        <p className="sheet-meta sheet-meta-sub">
-          {identity.antecedente} · Prof +{proficiencyBonus(identity.nivel)}
-        </p>
-        <p className="sheet-meta" style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}>
+        <p className="sheet-meta" style={{ fontSize: "0.8rem", color: "var(--text-muted)", marginTop: 0 }}>
           {formatXpProgress(identity.nivel, identity.xpTotal ?? 0)}
         </p>
 
@@ -172,7 +153,7 @@ export function CharacterSheet({
           />
         ) : null}
 
-        {inRoom ? (
+        {canEdit && inRoom ? (
           <PortraitFields
             roomId={roomId}
             actorId={character.id}
@@ -181,6 +162,16 @@ export function CharacterSheet({
             tokenImageUrl={live.tokenImageUrl}
             canEdit={canEdit}
             onSaved={refresh}
+          />
+        ) : null}
+
+        {canEdit && !inRoom ? (
+          <CharacterPortraitFields
+            characterId={character.id}
+            portraitUrl={live.portraitUrl ?? character.portraitUrl}
+            portraitFocus={live.portraitFocus ?? character.portraitFocus}
+            tokenImageUrl={live.tokenImageUrl ?? character.tokenImageUrl}
+            canEdit={canEdit}
           />
         ) : null}
 
@@ -254,7 +245,7 @@ export function CharacterSheet({
         ) : null}
       </aside>
 
-      <section className="sheet-panel glass">
+      <section className="sheet-panel glass sheet-main">
         <div className="sheet-tabs">
           <button
             type="button"
