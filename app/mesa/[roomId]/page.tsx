@@ -1,17 +1,32 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { MesaWorkspace } from "@/components/vtt/MesaWorkspace";
-import { canAccessRoom, canManageRoom } from "@/lib/auth/room-access";
+import { RoomInviteBar } from "@/components/vtt/RoomInviteBar";
+import {
+  canManageRoom,
+  canParticipateInRoom,
+  canViewRoom,
+  inviteMatches,
+  isRoomMember,
+  isRoomVisitor,
+} from "@/lib/auth/room-access";
 import { getSession } from "@/lib/auth/session";
 import { getPackEntries, getVisiblePacks } from "@/lib/compendium/registry";
 import type { CompendiumPackId } from "@/lib/compendium/types";
-import { getRoom } from "@/lib/room/store";
+import { joinRoomByInvite, getRoom } from "@/lib/room/store";
 
-type Props = { params: Promise<{ roomId: string }> };
+type Props = {
+  params: Promise<{ roomId: string }>;
+  searchParams: Promise<{ invite?: string }>;
+};
 
-export default async function MesaRoomPage({ params }: Props) {
+export default async function MesaRoomPage({ params, searchParams }: Props) {
   const { roomId } = await params;
+  const { invite: inviteParam } = await searchParams;
+  const inviteCode = inviteParam?.trim() || null;
+
   const session = await getSession();
-  const room = getRoom(roomId);
+  let room = await getRoom(roomId);
 
   if (!room) {
     return (
@@ -24,10 +39,23 @@ export default async function MesaRoomPage({ params }: Props) {
     );
   }
 
-  if (!canAccessRoom(room, session?.user ?? null)) {
+  if (
+    session?.user &&
+    inviteCode &&
+    inviteMatches(room, inviteCode) &&
+    !isRoomMember(room, session.user.id) &&
+    session.user.role !== "admin"
+  ) {
+    const joined = await joinRoomByInvite(inviteCode, session.user.id);
+    if (joined) {
+      redirect(`/mesa/${roomId}`);
+    }
+  }
+
+  if (!canViewRoom(room, session?.user ?? null, inviteCode)) {
     return (
       <div className="page-wrap">
-        <p>Esta mesa é privada. Peça o código de convite ao mestre (dono da mesa).</p>
+        <p>Esta mesa é privada. Peça o código ou link de convite ao mestre.</p>
         {!session ? (
           <Link href={`/entrar?redirect=/mesa/${roomId}`} className="btn" style={{ marginTop: "1rem" }}>
             Entrar para participar
@@ -41,7 +69,9 @@ export default async function MesaRoomPage({ params }: Props) {
     );
   }
 
+  const visitor = isRoomVisitor(room, session?.user ?? null, inviteCode);
   const isRoomGm = canManageRoom(room, session?.user ?? null);
+  const canParticipate = canParticipateInRoom(room, session?.user ?? null);
   const role = session?.user.role ?? null;
   const packs = getVisiblePacks(role, { isRoomGm });
   const compendium = Object.fromEntries(
@@ -51,39 +81,47 @@ export default async function MesaRoomPage({ params }: Props) {
     ])
   ) as Record<CompendiumPackId, ReturnType<typeof getPackEntries>>;
 
-  const canEdit = Boolean(session);
+  const canEdit = canParticipate;
+  const isDemoRoom = roomId === "demo";
+  const canControlCombat = isRoomGm || (isDemoRoom && canParticipate);
   const defaultActorId =
-    Object.values(room.actors).find((a) => a.ownerId === session?.user.id)?.id ??
-    Object.keys(room.actors)[0];
+    session?.user &&
+    (Object.values(room.actors).find((a) => a.ownerId === session.user.id)?.id ??
+      Object.keys(room.actors)[0]);
 
   return (
-    <div className="vtt-page">
-      {isRoomGm && (
+    <div className="vtt-page vtt-page--mesa">
+      {visitor ? (
         <div
           className="glass-panel"
           style={{
             margin: "0.5rem 1rem",
-            padding: "0.5rem 0.85rem",
+            padding: "0.6rem 0.85rem",
             fontSize: "0.85rem",
-            display: "flex",
-            gap: "1rem",
-            flexWrap: "wrap",
+            color: "var(--text-muted)",
           }}
         >
-          <span>
-            <strong>Mestre desta mesa</strong> — convide com código:{" "}
-            <code>{room.inviteCode}</code>
-          </span>
-          <Link href="/painel" style={{ marginLeft: "auto" }}>
-            Painel
-          </Link>
+          Modo <strong>visitante</strong> na demo — pode jogar o Aventureiro; sem chat.{" "}
+          <Link href={`/entrar?redirect=/mesa/${roomId}${inviteCode ? `?invite=${inviteCode}` : ""}`}>
+            Entrar na conta
+          </Link>{" "}
+          para jogar.
         </div>
-      )}
+      ) : null}
+
+      {isRoomGm ? (
+        <RoomInviteBar roomId={roomId} inviteCode={room.inviteCode} roomName={room.name} />
+      ) : null}
+
       <MesaWorkspace
         roomId={roomId}
+        roomOwnerId={room.ownerId}
+        memberIds={room.memberIds}
         scene={room.scene}
         canEdit={canEdit}
-        canControlCombat={isRoomGm}
+        canControlCombat={canControlCombat}
+        canChat={canParticipate}
+        inviteCode={inviteCode}
         session={session?.user ?? null}
         compendium={compendium}
         packs={packs}

@@ -33,6 +33,8 @@ import { resolveSaveSpell, type SaveSpellResolution } from "@/lib/combat/spell";
 import { combineRollModes, type RollMode } from "@/lib/combat/d20";
 
 import { toggleTokenCondition } from "@/lib/combat/conditions";
+import { effectivePaCost } from "@/lib/combat/pa-economy";
+import { checkCanSpendPa } from "@/lib/combat/pa-turn";
 
 
 
@@ -236,6 +238,8 @@ function assertTurnAndPa(
 
   action: CombatActionOption,
 
+  actor: CharacterSheet | null,
+
   turn?: CombatTurnOptions
 
 ): void {
@@ -246,11 +250,9 @@ function assertTurnAndPa(
 
   }
 
-  if (token.pa < action.paCost) {
-
-    throw new Error(`PA insuficiente (precisa ${action.paCost})`);
-
-  }
+  const paNeed = effectivePaCost(actor, action);
+  const paCheck = checkCanSpendPa(token, paNeed);
+  if (!paCheck.ok) throw new Error(paCheck.reason ?? "PA insuficiente");
 
 }
 
@@ -268,7 +270,7 @@ export function resolveAbilityBuff(
 
 ): AbilityResolution {
 
-  assertTurnAndPa(token, action, turn);
+  assertTurnAndPa(token, action, actor, turn);
 
   const name = actor?.name ?? token.name;
 
@@ -288,7 +290,7 @@ export function resolveAbilityBuff(
 
       defesaBonus: amount,
 
-      paCost: action.paCost,
+      paCost: effectivePaCost(actor, action),
 
       buffSource: action.name,
 
@@ -318,7 +320,7 @@ export function resolveAbilityBuff(
 
       defesaBonus: 0,
 
-      paCost: action.paCost,
+      paCost: effectivePaCost(actor, action),
 
       buffSource: action.name,
 
@@ -342,7 +344,7 @@ export function resolveAbilityBuff(
 
       defesaBonus: 0,
 
-      paCost: action.paCost,
+      paCost: effectivePaCost(actor, action),
 
       buffSource: action.name,
 
@@ -366,7 +368,7 @@ export function resolveAbilityBuff(
 
       defesaBonus: 0,
 
-      paCost: action.paCost,
+      paCost: effectivePaCost(actor, action),
 
       buffSource: action.name,
 
@@ -388,7 +390,7 @@ export function resolveAbilityBuff(
 
       tokenId: token.id,
 
-      paCost: action.paCost,
+      paCost: effectivePaCost(actor, action),
 
       summary: `${name} usa ${action.name} — teleporte até ${action.rangeHex} hex (sem provocar).`,
 
@@ -414,7 +416,7 @@ export function resolveAbilityBuff(
 
       tokenId: token.id,
 
-      paCost: action.paCost,
+      paCost: effectivePaCost(actor, action),
 
       summary: `${name} usa ${action.name} — mova até ${action.rangeHex} hex em linha reta (sem provocar). Próximo ataque corpo a corpo pode ser feito.`,
 
@@ -436,7 +438,7 @@ export function resolveAbilityBuff(
 
       defesaBonus: 0,
 
-      paCost: action.paCost,
+      paCost: effectivePaCost(actor, action),
 
       buffSource: action.name,
 
@@ -470,7 +472,7 @@ export function resolveAbilityMark(
 
 ): AbilityResolution {
 
-  assertTurnAndPa(attacker, action, turn);
+  assertTurnAndPa(attacker, action, actor, turn);
 
   const name = actor?.name ?? attacker.name;
 
@@ -482,7 +484,7 @@ export function resolveAbilityMark(
 
       kind: "mark",
 
-      paCost: action.paCost,
+      paCost: effectivePaCost(actor, action),
 
       summary: `${name} usa Finta em ${defender.name} — alvo sofre desvantagem no próximo ataque.`,
 
@@ -514,7 +516,7 @@ export function resolveAbilityMark(
 
       kind: "mark",
 
-      paCost: action.paCost,
+      paCost: effectivePaCost(actor, action),
 
       summary: isHunter
 
@@ -562,7 +564,7 @@ export function resolveAbilityAlly(
 
 ): AbilityResolution {
 
-  assertTurnAndPa(attacker, action, turn);
+  assertTurnAndPa(attacker, action, actor, turn);
 
   const name = actor?.name ?? attacker.name;
 
@@ -574,7 +576,7 @@ export function resolveAbilityAlly(
 
       kind: "ally_buff",
 
-      paCost: action.paCost,
+      paCost: effectivePaCost(actor, action),
 
       summary: `${name} inspira ${ally.name} — vantagem no próximo ataque.`,
 
@@ -604,7 +606,7 @@ export function resolveAbilityAlly(
 
       kind: "heal",
 
-      paCost: action.paCost,
+      paCost: effectivePaCost(actor, action),
 
       summary: `${name} canta sobre ${ally.name} — recupera ${heal} HP (${hpBefore}→${hpAfter}).`,
 
@@ -640,7 +642,7 @@ export function resolveAbilitySpellStrike(
 
 ): AbilityResolution {
 
-  assertTurnAndPa(attacker, action, turn);
+  assertTurnAndPa(attacker, action, actor, turn);
 
 
 
@@ -726,7 +728,7 @@ export function resolveAbilityRestrain(
 
     },
 
-    paCost: action.paCost,
+    paCost: effectivePaCost(actor, action),
 
     defenderUpdate: { conditions },
 
@@ -862,7 +864,7 @@ export function resolveAbilityAttack(
 
 
 
-  return { kind: "attack", attack, paCost: action.paCost, attackerUpdate };
+  return { kind: "attack", attack, paCost: effectivePaCost(actor, action), attackerUpdate };
 
 }
 
@@ -954,7 +956,9 @@ export function canUseAbility(
 
   action: CombatActionOption,
 
-  turn?: CombatTurnOptions
+  turn?: CombatTurnOptions,
+
+  actor?: CharacterSheet | null
 
 ): { ok: boolean; reason?: string } {
 
@@ -964,11 +968,9 @@ export function canUseAbility(
 
   }
 
-  if (token.pa < action.paCost) {
-
-    return { ok: false, reason: `PA insuficiente (precisa ${action.paCost})` };
-
-  }
+  const paNeed = effectivePaCost(actor ?? null, action);
+  const paCheck = checkCanSpendPa(token, paNeed);
+  if (!paCheck.ok) return { ok: false, reason: paCheck.reason };
 
   return { ok: true };
 
@@ -984,7 +986,9 @@ export function canAbilityTarget(
 
   action: CombatActionOption,
 
-  turn?: CombatTurnOptions
+  turn?: CombatTurnOptions,
+
+  actor?: CharacterSheet | null
 
 ): { ok: boolean; reason?: string } {
 
@@ -1016,9 +1020,7 @@ export function canAbilityTarget(
 
     }
 
-    const base = canUseAbility(attacker, action, turn);
-
-    return base;
+    return canUseAbility(attacker, action, turn, actor);
 
   }
 
@@ -1036,11 +1038,7 @@ export function canAbilityTarget(
 
   }
 
-  const base = canUseAbility(attacker, action, turn);
-
-  if (!base.ok) return base;
-
-  return { ok: true };
+  return canUseAbility(attacker, action, turn, actor);
 
 }
 

@@ -9,7 +9,7 @@
 
 ---
 
-## CAPITULO 20 — CATALOGO DE 20 BIOMAS
+## CAPÍTULO 20 — CATALOGO DE 20 BIOMAS
 
 Cada bioma tem ambiente, perigos e fauna proprios. Ao montar um andar, o Mestre escolhe ou rola 2-3 biomas que se conectam de forma inesperada.
 
@@ -17,14 +17,14 @@ Cada bioma tem ambiente, perigos e fauna proprios. Ao montar um andar, o Mestre 
 
 | Arquivo | Conteudo |
 |---------|----------|
-| `BIOMAS-APROFUNDADOS.md` | Por que cada bioma existe, ciclo, flora P##, fauna (assimilacao), 1d6 |
+| `BIOMAS-APROFUNDADOS.md` | Por que cada bioma existe, ciclo, flora P##, fauna (assimilação), 1d6 |
 | `CATALOGO-OBJETOS-DE-CENARIO.md` | OBJ-G + OBJ-B01–B20 para montar mapas |
 | `REGRAS-ECOLOGIA-DE-SOBREVIVENCIA.md` | Tres vias (planta / monstro / objeto), pressao ambiental |
 | `CAPITULO-5B-FLORA-DE-ELDARIN.md` | 40 plantas — efeitos 24h |
 | `SUPLEMENTO-BIOMAS-VERTICAIS-LUZ-E-BRASAS.md` | Biomas 9/12 verticais; 12 escuro sem tocha; Brasas; truque Calor de Panela |
 | `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` | ESP/MIN/TES; saque 001–060; forrageio por bioma; OBJ-R |
 
-**Principio:** plantas do bioma e carne de monstro **nativo** concedem adaptacao ao ambiente (ex.: Mar de Prata — respirar agua via Guelras apos prato de tubarao ou sereia; algas #12 ajudam visao e nado, nao substituem guelras).
+**Principio:** plantas do bioma e carne de monstro **nativo** concedem adaptacao ao ambiente (ex.: Mar de Prata — respirar agua via Guelras após prato de tubarao ou sereia; algas #12 ajudam visao e nado, não substituem guelras).
 
 ---
 
@@ -37,38 +37,38 @@ Ingredientes Tipicos: Ectoplasma, Aco Encantado, Seda de Tecerrochas, Osso Milen
 ### BIOMA 2 — MAR DE PRATA CEGA
 Ambiente: Oceano subterraneo sem luz solar. Agua negra que brilha quando movimentada por bioluminescencia. Teto de pedra a centenas de metros. Praias de areia de vidro moido. Recifes de coral que sao ossos de bestas antigas.
 Perigos: Afogamento, pressao abissal, correntes que puxam para as profundezas.
-Fauna Nativa: Aquaticos (Krakens Menores, Sapos-Engolidor, Tubaroes-Cegos, Serpentes do Abismo), Carapacas (Lagosta Abissal, Caranguejo-Eremita Colossal), Especiais (Sereias das Profundezas, Aboleth).
+Fauna Nativa: Aquaticos (Krakens Menores, Sapos-Engolidor, Tubaroes-Cegos, Serpentes do Abismo), Carapaças (Lagosta Abissal, Caranguejo-Eremita Colossal), Especiais (Sereias das Profundezas, Aboleth).
 Ingredientes Tipicos: Bexiga Natatoria, Linha Lateral, Tinta Abissal, Carne Branca de Alta Proteina.
 
 ### BIOMA 3 — ESTOMAGO BOTANICO
-Ambiente: Floresta tropical que digere. Arvores feitas de carne e casca. Rios de acido gastrico verde-fluorescente. Esporos no ar criando nevoa alucinogena constante. Chao macio e quente que pulsa levemente.
-Perigos: Esporos alucinogenos, acido gastrico nos "rios", plantas carnivoras, chao que digere calcados.
-Fauna Nativa: Flora (Treants Podres, Plantas Carnivoras Gigantes, Cogumelos-Rei), Goblinoides (Tribos de Goblins Fungicos), Insetoides (Moscas-Carnica, Enxames devoradores), Amorfos (Slimes Acidos).
+Ambiente: Floresta tropical que digere. Arvores feitas de carne e casca. Rios de ácido gastrico verde-fluorescente. Esporos no ar criando nevoa alucinogena constante. Chao macio e quente que pulsa levemente.
+Perigos: Esporos alucinogenos, ácido gastrico nos "rios", plantas carnivoras, chao que digere calcados.
+Fauna Nativa: Flora (Treants Podres, Plantas Carnivoras Gigantes, Cogumelos-Rei), Goblinoides (Tribos de Goblins Fungicos), Insetoides (Moscas-Carnica, Enxames devoradores), Amorfos (Slimes Ácidos).
 Ingredientes Tipicos: Esporos do Rei, Flor Narcotica, Suco Digestivo, Hifa Raiz.
 
 ### BIOMA 4 — FORNALHAS DOURADAS
-Ambiente: Cachoeiras de lava. Rios de ouro liquido misturado com magma. Pontes de obsidiana vitrificada. Cristais vermelhos que pulsam. Temperatura minima de 80 graus — equipamentos nao protegidos danificam em horas.
+Ambiente: Cachoeiras de lava. Rios de ouro liquido misturado com magma. Pontes de obsidiana vitrificada. Cristais vermelhos que pulsam. Temperatura minima de 80 graus — equipamentos não protegidos danificam em horas.
 Perigos: Calor extremo (dano passivo sem protecao), lava, gases sulfurosos, explosoes de bolsao de magma.
 Fauna Nativa: Vulcanicos (Salamandras de Magma, Dragonetes de Magma), Draconicos (Wyverns nidificando, Basilisco de Magma), Amorfos (Slimes de Ouro, Elementais de Fogo), Construtos (Golems de Ferro Vulcanico).
-Ingredientes Tipicos: Glandula de Ignicao, Escama de Obsidiana, Ferro Vulcanico, Cristais de Magma.
+Ingredientes Tipicos: Glandula de Ignição, Escama de Obsidiana, Ferro Vulcanico, Cristais de Magma.
 
 ### BIOMA 5 — PRISAO GELIDA DOS TITAS
 Ambiente: Cavernas colossais de gelo eterno. Bestas gigantescas congeladas nas paredes (ainda vivas, liberadas pelo calor de tochas). Tempestades de neve que sopram de fendas impossiveis. Temperatura de -30 a -60 graus.
-Perigos: Frio extremo (Exaustao por exposicao), gelo escorregadio, bestas liberadas ao derreter as paredes.
+Perigos: Frio extremo (Exaustao por exposição), gelo escorregadio, bestas liberadas ao derreter as paredes.
 Fauna Nativa: Glaciais (Yetis das Profundezas, Lobos do Inverno, Elementais de Gelo), Aquaticos (Peixes abissais congelados que descongelam ao serem pisados), Gigantes (Ciclopes congelados e liberados).
 Ingredientes Tipicos: Carne de Yeti, Pelo Cristalizado, Gordura de Yeti, Fragmento Primordial de Gelo.
 
 ### BIOMA 6 — LABIRINTO PRISMATICO
 Ambiente: Paredes de cristal afiado polidas como espelhos. A luz — de qualquer fonte — reflete em infinitas direcoes, criando ilusoes e desorientacao total. As paredes de cristal cortam quem toca sem cuidado.
-Perigos: Desorientacao espacial (Percepcao Passiva reduzida a metade), cristais cortantes, reflexos que parecem reais.
+Perigos: Desorientacao espacial (Percepção Passiva reduzida a metade), cristais cortantes, reflexos que parecem reais.
 Fauna Nativa: Mimicos (Gargulas de Cristal, Mimicos de Espelho), Insetoides (Besouros-Diamante, Insetos de Cristal), Amorfos (Slimes de Cristal), Especiais (Ooze Ocular usa os reflexos para se esconder).
 Ingredientes Tipicos: Cristal Vivo de Gargula, Gel Cristalino, Exoesqueleto de Diamante.
 
 ### BIOMA 7 — CEMITERIO DE COLOSSOS
 Ambiente: Deserto inteiramente feito de ossos e po de osso triturado. Colinas que sao cranios de bestas do tamanho de montanhas. Vento carrega po de osso que irrita os olhos. Nenhuma planta, nenhuma agua.
-Perigos: Po de osso toxico em concentracao alta (Estomago de Ferro CD 10 por hora ou Envenenamento leve), instabilidade de estruturas osseas colapsindo.
+Perigos: Po de osso toxico em concentracao alta (Estômago de Ferro CD 10 por hora ou Envenenamento leve), instabilidade de estruturas osseas colapsindo.
 Fauna Nativa: Mortos-Vivos (Espectros Antigos, Ghouls Ancioes), Goblinoides (Necrofagos catadores de medula), Insetoides (Vermes Gigantes de Pedra), Gigantes (Ciclopes solitarios).
-Ingredientes Tipicos: Femur Milenar, Po de Osso Necrotico, Cristal de Mana Osseo, Medula Podre.
+Ingredientes Tipicos: Fêmur Milenar, Po de Osso Necrotico, Cristal de Mana Osseo, Medula Podre.
 
 ### BIOMA 8 — ENGRENAGENS ESQUECIDAS
 Ambiente: Fabrica colossal em ruinas. Pistoes que ainda batem ritmo surdo. Esteiras rolantes com destinos que ninguem sabe. Rios de oleo diesel e vapor. Som ensurdecedor de metal batendo.
@@ -78,15 +78,15 @@ Ingredientes Tipicos: Nucleo de Mana de Pedra, Aco Encantado, Ferro Vulcanico, F
 
 ### BIOMA 9 — ABISMO INVERTIDO *(acesso vertical — voo ou planejamento)*
 Ambiente: A gravidade aqui esta quebrada. Pedacos de terra e ruinas flutuam sobre um buraco sem fundo. Para atravessar, e preciso pular entre plataformas ou usar cordas. Teto sempre a centenas de metros. Vento constante de baixo para cima.
-Perigos: Quedas no Abismo (possivelmente infinitas), plataformas instaveis, ventos que empurram. **Camadas B/C** exigem voo, mutacao de voo (Grifo, Wyvern) ou rotas planejadas — ver `SUPLEMENTO-BIOMAS-VERTICAIS-LUZ-E-BRASAS.md`.
+Perigos: Quedas no Abismo (possivelmente infinitas), plataformas instaveis, ventos que empurram. **Camadas B/C** exigem voo, mutação de voo (Grifo, Wyvern) ou rotas planejadas — ver `SUPLEMENTO-BIOMAS-VERTICAIS-LUZ-E-BRASAS.md`.
 Fauna Nativa: Alados (Grifos, Harpias, Morcegos-Tirano, Manticoras), Draconicos (Wyverns, Dragonetes de Magma), Quimeras (formadas de bestas que cairam juntas).
 Ingredientes Tipicos: Carne de Grifo, Penas de Voo, Asa de Wyvern, Membrana de Morcego.
 
 ### BIOMA 10 — PANTANO DA DECOMPOSICAO *(bolsoes sem fogo aberto)*
-Ambiente: Fossa que recebe todo o esgoto do mundo acima. Lagoas quimicas de cores vibrantes (verde acido, roxo toxico, laranja bioluminescente). Bolhas de gas constantes. Cheiro insuportavel. Chao instavel de lama organica.
-Perigos: Acidos nas lagoas (dano passivo sem protecao), gases letais em bolsoes, afundamento na lama. **Tocha/fogueira/Chama de Fogareiro** em bolsoes de gas: CON CD 13 ou 2d6 fogo. Cozinha: **Calor de Panela** ou **Kit de Brasas Magicas** (Jogador 16.2.1).
+Ambiente: Fossa que recebe todo o esgoto do mundo acima. Lagoas quimicas de cores vibrantes (verde ácido, roxo toxico, laranja bioluminescente). Bolhas de gas constantes. Cheiro insuportavel. Chao instavel de lama orgânica.
+Perigos: Ácidos nas lagoas (dano passivo sem protecao), gases letais em bolsoes, afundamento na lama. **Tocha/fogueira/Chama de Fogareiro** em bolsoes de gas: CON CD 13 ou 2d6 fogo. Cozinha: **Calor de Panela** ou **Kit de Brasas Magicas** (Jogador 16.2.1).
 Fauna Nativa: Amorfos (Slimes Corrosivos, Pudins Negros, Geleias de todas as cores), Aquaticos (Sapos-Engolidor, Serpentes do Abismo), Insetoides (Moscas-Carnica em enxames massivos, Centopeias Causticas).
-Ingredientes Tipicos: Acido de Slime, Nucleo de Pudim, Glandula Digestiva de Mosca, Suco de Planta Carnivora.
+Ingredientes Tipicos: Ácido de Slime, Nucleo de Pudim, Glandula Digestiva de Mosca, Suco de Planta Carnivora.
 
 ### BIOMA 11 — ARQUIVOS SOTERRADOS
 Ambiente: Biblioteca de proporcoes impossiveis. Estantes de madeira de lei apodrecida chegando ao teto a 20m de altura. Pergaminhos rasgados no chao centimetros de profundidade. Magia residual da vida a mobilia. Silencio absoluto exceto por paginas virando.
@@ -96,7 +96,7 @@ Ingredientes Tipicos: Fluido Mental, Eco de Intencao, Pergaminho Arcano (tempero
 
 ### BIOMA 12 — NINHO CREPUSCULAR *(vertical + escuridao sem tocha)*
 Ambiente: Abismo vertical forrado apenas por seda cinza. Nao ha chao ou paredes visiveis — apenas teias em camadas. Ovos do tamanho de carruagens pendurados em cachos. Silencio perturbador interrompido por sons de coisas se movendo nas teias.
-Perigos: Teia adesiva (movimento reduzido, teste de Forca para sair), ovos que eclodem ao menor som alto, perda de orientacao. **Escuridao profunda** (Percepcao -6/-8). **Proibido:** tocha, lanterna de oleo, fogueira, **Chama de Fogareiro** (detonacao 2d6). **Camada 2+** exige voo/planagem ou negociar teia. Cozinha: **Calor de Panela** / **Brasas Magicas** apenas. Ver supplemento vertical/luz.
+Perigos: Teia adesiva (movimento reduzido, teste de Força para sair), ovos que eclodem ao menor som alto, perda de orientacao. **Escuridao profunda** (Percepção -6/-8). **Proibido:** tocha, lanterna de oleo, fogueira, **Chama de Fogareiro** (detonacao 2d6). **Camada 2+** exige voo/planagem ou negociar teia. Cozinha: **Calor de Panela** / **Brasas Magicas** apenas. Ver supplemento vertical/luz.
 Fauna Nativa: Aracnideos (Super-Aranhas, Matriarcas Tecerrochas, Aranha-Cavaleira), Parasitas (Vermes, Larvas de tamanhos variados), Insetoides (Besouros parasitarios).
 Ingredientes Tipicos: Seda de Matriarca, Veneno Concentrado, Ovos de Aranha (nutritivos), Casulo de Proteina.
 
@@ -107,37 +107,37 @@ Fauna Nativa: Amorfos (Slimes Fluorescentes, Geleias de Cristal), Elementais (El
 Ingredientes Tipicos: Slime Fluorescente (ilumina refeicoes, concede visao no escuro aprimorada), Cristais de Neon (tempero que intensifica mutacoes).
 
 ### BIOMA 14 — MATRIZ DE EXTRUSAO
-Ambiente: Topologia geometrica perfeita onde tudo e simetrico. Pocos de resina organica quente "imprimem" vida em moldes de geometria impossivel. Paredes com padroes de hexagonos perfeitos. Cheiro de resina quente e algo vivo.
+Ambiente: Topologia geometrica perfeita onde tudo e simetrico. Pocos de resina orgânica quente "imprimem" vida em moldes de geometria impossivel. Paredes com padroes de hexagonos perfeitos. Cheiro de resina quente e algo vivo.
 Perigos: Resina que solidifica ao redor de membros em contato, criaturas recem-"impressas" que agem erraticamente.
 Fauna Nativa: Construtos (Construtos de Resina, Automatos recem-criados), Amorfos (Amorfos Densos), Aberracoes (Aberracoes Tentaculares que emergem dos pocos).
-Ingredientes Tipicos: Resina de Construto (usada pelo Artifice como material base), Fluido de Criacao.
+Ingredientes Tipicos: Resina de Construto (usada pelo Artífice como material base), Fluido de Criação.
 
 ### BIOMA 15 — DESERTO DE CARNE E TENDOES
 Ambiente: O chao e macio e quente. Dunas de tecido muscular. Rios de sangue coagulado que parecem lama bordo. Arterias rompidas pingam do teto. O ar fede a ferro e carne crua. Este bioma esta dentro de algo — ninguem sabe o que.
-Perigos: Sangue que pode infectar feridas abertas (Estomago de Ferro CD 12 ou doenca), terreno que "digere" calcados, arterias que explodem.
+Perigos: Sangue que pode infectar feridas abertas (Estômago de Ferro CD 12 ou doenca), terreno que "digere" calcados, arterias que explodem.
 Fauna Nativa: Parasitas (Vermes-Carrapatos, Moscas-Carnica em massas), Amorfos (Globulos Amorfos), Aberracoes.
 Ingredientes Tipicos: Medula Coagulada, Sangue Rico em Proteina, Parasita Purificado.
 
 ### BIOMA 16 — JARDIM DE CINZAS PETRIFICADAS
 Ambiente: Tudo foi transformado em pedra e coberto por neve de cinzas vulcanicas. Arvores-estatua, aventureiros-estatua, monstros-estatua. Uma nevasca perpetua de cinza cobre tudo 2cm por dia. Silencio sepulcral.
-Perigos: Cinzas em concentracao alta (Estomago de Ferro CD 11 por hora ou penalidade), basiliscos que parecem estatuas, terreno irregular oculto pelas cinzas.
+Perigos: Cinzas em concentracao alta (Estômago de Ferro CD 11 por hora ou penalidade), basiliscos que parecem estatuas, terreno irregular oculto pelas cinzas.
 Fauna Nativa: Repteis (Basiliscos, Basiliscos de Magma), Construtos/Besta (Gargulas, Medusas), Mimicos (Mimicos de Estatua).
 Ingredientes Tipicos: Glandula do Olhar Petrificante, Escama de Obsidiana, Po de Estatua.
 
 ### BIOMA 17 — ARQUIPELAGO MAGNETICO
-Ambiente: Pedras e minerios flutuam em campo magnetico intenso. Armaduras de metal pesam o dobro. Compasso e bussola sao inuteis. Raios de eletricidade saltam entre as pedras flutuantes ocasionalmente.
-Perigos: Campo magnetico (armadura pesada da Desvantagem em Destreza), raios randomicos (1d6 relampago em intervalo irregular), pedras flutuantes instaveis.
+Ambiente: Pedras e minérios flutuam em campo magnetico intenso. Armaduras de metal pesam o dobro. Compasso e bussola sao inuteis. Raios de eletricidade saltam entre as pedras flutuantes ocasionalmente.
+Perigos: Campo magnetico (armadura pesada da Desvantagem em Destreza), raios randomicos (1d6 relâmpago em intervalo irregular), pedras flutuantes instaveis.
 Fauna Nativa: Construtos (Golems de Ferro Vulcanico, atraidos pelo campo), Insetoides (Besouros-Trovao, se alimentam da eletricidade), Draconicos (Drakes de Pedra), Bestiais (Bestas com blindagem de magnetita natural).
-Ingredientes Tipicos: Elitros Condutores, Carne Eletrica, Minerio Flutuante.
+Ingredientes Tipicos: Elitros Condutores, Carne Eletrica, Minério Flutuante.
 
 ### BIOMA 18 — FLORESTA DE FIOS DE PRATA
 Ambiente: "Arvores" que sao na verdade pilares de cordas cirurgicas caindo de um teto invisivel. Fios que variam de cabelo de espessura a espessura de braco. Alguns sao cortantes ao toque leve. O vento faz tudo vibrar em tom musical.
-Perigos: Fios cortantes invisiveis (Percepcao CD 15 para detectar antes de passar), criaturas que usam os fios como meio de transporte.
+Perigos: Fios cortantes invisiveis (Percepção CD 15 para detectar antes de passar), criaturas que usam os fios como meio de transporte.
 Fauna Nativa: Aracnideos (Aranhas-Marionetistas, que controlam os fios), Construtos (Construtos de Fio, marionetes vivos), Goblinoides (especializados que usam os fios como armadilhas).
 Ingredientes Tipicos: Fio de Aracnideo (material de artesanato premium), Glandula de Controle de Fio.
 
 ### BIOMA 19 — FOSSO DAS EMOCOES ECOANTES
-Ambiente: Cavernas de quartzo acustico que amplificam e distorcem sons. Os medos, pensamentos e emocoes das criaturas criam ecos audiveis — voce pode literalmente ouvir o medo dos companheiros. Camaras onde o silencio total e impossivel.
+Ambiente: Cavernas de quartzo acustico que amplificam e distorcem sons. Os medos, pensamentos e emocoes das criaturas criam ecos audiveis — você pode literalmente ouvir o medo dos companheiros. Camaras onde o silencio total e impossivel.
 Perigos: Exposicao prolongada causa alucinacoes auditivas (Sabedoria CD 13 por hora ou escuta vozes), grito de Banshee amplificado e fatal em raio dobrado.
 Fauna Nativa: Espirituais (Fantasmas do Desespero, Banshees), Bestiais (Morcegos Sonicos Rastreadores), Elementais (Elementais de Vento), Aberracoes (Doppelgangers usam o caos auditivo para se infiltrar).
 Ingredientes Tipicos: Eco de Emocao, Cristal Acustico (instrumento perfeito do Bardo), Membrana de Morcego Sonico.
@@ -155,9 +155,9 @@ Ingredientes Tipicos: Pena Angelical, Sangue Divino, Coracao Corrompido, Fragmen
 
 ---
 
-## CAPITULO 21 — O SISTEMA DE MASMORRAS EM PARALELO
+## CAPÍTULO 21 — O SISTEMA DE MASMORRAS EM PARALELO
 
-**Regra Central:** As 11 masmorras tem **dificuldade equivalente** — qualquer grupo pode entrar em qualquer masmorra em qualquer ordem. O que muda entre elas nao e a dificuldade, mas a **especialidade ecologica**, o **tema de biomas** e os **tipos de monstros e ingredientes** disponiveis.
+**Regra Central:** As 11 masmorras tem **dificuldade equivalente** — qualquer grupo pode entrar em qualquer masmorra em qualquer ordem. O que muda entre elas não e a dificuldade, mas a **especialidade ecologica**, o **tema de biomas** e os **tipos de monstros e ingredientes** disíponíveis.
 
 **Os monstros escalam com o grupo.** Um grupo de Nivel 3 encontra Zumbis com 22 HP. Um grupo de Nivel 10 no mesmo corredor encontra Zumbis Colossais com 85 HP e habilidades extras. A especie e a mesma. A versao escala.
 
@@ -168,20 +168,20 @@ Ingredientes Tipicos: Pena Angelical, Sangue Divino, Coracao Corrompido, Fragmen
 | 0–1 | ficha | ficha | ficha | Comum no andar certo |
 | 2–3 | ×1,25 (arredonda) | +1d6 por ataque | +0 | Encontro ainda justo |
 | 4–5 | ×2 ou use **Versao Elite** da ficha | sobe 1 passo de dado (ex. 1d6→1d8) | +1 | Ex.: Zumbi → Zumbi Colossal |
-| 6+ | ×2,5 ou ficha de nivel N | Elite/Lendario do bestiario | +2 | Boss de corredor, nao enxame |
+| 6+ | ×2,5 ou ficha de nivel N | Elite/Lendário do bestiário | +2 | Boss de corredor, não enxame |
 
 **Encontros sugeridos por nivel medio (4 PCs):**
 
-| N medio | Combate padrao | Boss de andar |
+| N medio | Combaté padrão | Boss de andar |
 |---------|----------------|---------------|
 | 1–2 | 4–6 Comuns (nv. 1–2) | 1 nv. 3 + 2 Comuns |
 | 3–4 | 3–4 nv. 2–3 ou 2 Elites | 1 nv. 5 + lacaios |
 | 5–7 | 2 Elites + 2 Comuns escalados | 1 nv. 8–9 |
 | 8–10 | 1 Intermediario + 3 escalados | 1 nv. 10–13 |
-| 11–14 | mix Intermediario/Lendario | 1 nv. 14–16 |
-| 15–20 | 1 Lendario + suporte | 1 nv. 17–19 + fase |
+| 11–14 | mix Intermediario/Lendário | 1 nv. 14–16 |
+| 15–20 | 1 Lendário + suporte | 1 nv. 17–19 + fase |
 
-**Experiencia na mesa:** cada ficha traz **XP** na linha do cabecalho. Some os pools dos especimes derrotados, aplique multiplicadores de Cap. 2.5 (Jogador) e divida pelo grupo. Boss de andar pode substituir a soma por **marco** (100% do gap de nivel).
+**Experiencia na mesa:** cada ficha traz **XP** na linha do cabecalho. Some os pools dos espécimes derrotados, aplique multiplicadores de Cap. 2.5 (Jogador) e divida pelo grupo. Boss de andar pode substituir a soma por **marco** (100% do gap de nivel).
 
 **Faixas de Nivel por Andar:**
 
@@ -204,7 +204,7 @@ Ingredientes Tipicos: Pena Angelical, Sangue Divino, Coracao Corrompido, Fragmen
 | 3 | 6 | 3–5 | Drake de Pedra (Nivel 5) |
 | 4 | 6 | 5–7 | Hidra das Cavernas (Nivel 9) |
 | 5 | 5 | 6–8 | Vampiro (Nivel 10) |
-| 6 | 6 | 8–10 | Dragao Jovem de Gelo (Nivel 13) |
+| 6 | 6 | 8–10 | Dragão Jovem de Gelo (Nivel 13) |
 | 7 | 6 | 10–12 | Aboleth (Nivel 16) |
 | 8 | 5 | 12–14 | Anjo Caido (Nivel 14) |
 | 9 | 6 | 14–17 | Lich (Nivel 18) |
@@ -217,10 +217,10 @@ Ingredientes Tipicos: Pena Angelical, Sangue Divino, Coracao Corrompido, Fragmen
 Localizacao: Montanhas do Sul de Valdremor, perto da cidade mineradora de Kravenholm.
 Biomas Dominantes: Fornalhas Douradas, Deserto de Carne e Tendoes, Jardim de Cinzas Petrificadas.
 Especialidade Ecologica: Fogo, magma, draconicos menores e criaturas vulcanicas.
-Ingredientes Raros: Glandula de Ignicao perfeita, Escama de Obsidiana virgem, Coracao de Magma.
+Ingredientes Raros: Glandula de Ignição perfeita, Escama de Obsidiana virgem, Coracao de Magma.
 Boss Tipico: Leviata de Magma ou Wyvern-Rei.
 Caracteristica Unica: A temperatura aumenta 10 graus a cada andar. No Andar 6, o ar queima sem protecao.
-Lore: Os mineradores de Kravenholm costumavam entrar ate o Andar 2 para colher minerio vulcanico. Pararam depois que a masmorra comecou a responder.
+Lore: Os mineradores de Kravenholm costumavam entrar até o Andar 2 para colher minério vulcanico. Pararam depois que a masmorra comecou a responder.
 
 ### MASMORRA 2 — A BOCA AZUL (Profundezas Eternas)
 Localizacao: Costa leste de Valdremor, cujos penhascos mergulham direto no oceano.
@@ -228,42 +228,42 @@ Biomas Dominantes: Mar de Prata Cega, Pantano da Decomposicao, Abismo Invertido.
 Especialidade Ecologica: Aquaticos, abissais, criaturas anfibias.
 Ingredientes Raros: Linha Lateral de Kraken, Tinta Abissal concentrada, Bexiga Natatoria de Sapo-Rei.
 Boss Tipico: Aboleth ou Kraken de Profundeza.
-Caracteristica Unica: A partir do Andar 3, metade dos corredores estao inundados.
-Lore: Pescadores reportam que peixes do oceano externo as vezes tem marcas de tentaculo de criaturas que nao existem no mundo de cima.
+Caracteristica Unica: A partir do Andar 3, metade dos corredores estão inundados.
+Lore: Pescadores reportam que peixes do oceano externo as vezes tem marcas de tentaculo de criaturas que não existem no mundo de cima.
 
 ### MASMORRA 3 — A BOCA VERDE (O Digestor)
 Localizacao: Vale central de Valdremor, onde a vegetacao morre em raio de 3km ao redor da entrada.
-Biomas Dominantes: Estomago Botanico, Ninho Crepuscular, Pantano da Decomposicao.
+Biomas Dominantes: Estômago Botanico, Ninho Crepuscular, Pantano da Decomposicao.
 Especialidade Ecologica: Flora, fungos, aracnideos, insetos.
 Ingredientes Raros: Esporos do Rei Cogumelo Anciao, Seda de Matriarca Tecela, Flor Narcotica perfeita.
 Boss Tipico: Rei Cogumelo-Cadaverico ou Matriarca Tecela de Cristal.
-Caracteristica Unica: Esporos no ar afetam a Harmonizacao — cozinheiros tem +2 em Harmonizacao, mas testam SAB CD 12 por hora ou ficam levemente alucinados.
-Lore: Varias familias de exploradores veteranos que passaram geracoes explorando esta masmorra desenvolveram resistencia natural aos esporos — seus descendentes nascem com teores elevados de melanina fungica na pele.
+Caracteristica Unica: Esporos no ar afetam a Harmonização — cozinheiros tem +2 em Harmonização, mas testam SAB CD 12 por hora ou ficam levemente alucinados.
+Lore: Varias familias de exploradores veteranos que passaram geracoes explorando esta masmorra desenvolveram resistência natural aos esporos — seus descendentes nascem com teores elevados de melanina fungica na pele.
 
 ### MASMORRA 4 — A BOCA NEGRA (O Cemiterio Sem Fim)
 Localizacao: Planicie central, marcada por um obelisco de obsidiana.
 Biomas Dominantes: Cemiterio de Colossos, Cidadela Palida, Fosso das Emocoes Ecoantes.
 Especialidade Ecologica: Mortos-vivos, espirituais, goblinoides necrofagos.
-Ingredientes Raros: Ectoplasma de Emocao puro, Femur Milenar de Esqueleto Comandante, Cristal de Mana Osseo.
+Ingredientes Raros: Ectoplasma de Emocao puro, Fêmur Milenar de Esqueleto Comandante, Cristal de Mana Osseo.
 Boss Tipico: Arquiliche ou Lorde Vampiro.
-Caracteristica Unica: Morrer dentro desta masmorra tem 30% de chance de reviver como morto-vivo no local dentro de 1d4 horas (Estomago de Ferro CD 15 apos ressurgir ou o personagem e perdido).
-Lore: E dito que todos os habitantes de Valdremor que morreram ha 500+ anos estao em algum andar desta masmorra.
+Caracteristica Unica: Morrer dentro desta masmorra tem 30% de chance de reviver como morto-vivo no local dentro de 1d4 horas (Estômago de Ferro CD 15 após ressurgir ou o personagem e perdido).
+Lore: E dito que todos os habitantes de Valdremor que morreram ha 500+ anos estão em algum andar desta masmorra.
 
 ### MASMORRA 5 — A BOCA DOURADA (O Arquivo Perdido)
 Localizacao: Cidade academica de Vesper, onde a masmorra cresceu sob a universidade.
 Biomas Dominantes: Arquivos Soterrados, Engrenagens Esquecidas, Matriz de Extrusao.
 Especialidade Ecologica: Construtos, automatos, aberracoes psiquicas, mimicos inteligentes.
-Ingredientes Raros: Nucleo Cognitivo de Automato, Fluido de Criacao da Matriz, Fluido Mental de Aberracao.
+Ingredientes Raros: Nucleo Cognitivo de Automato, Fluido de Criação da Matriz, Fluido Mental de Aberracao.
 Boss Tipico: Automato de Genio Supremo ou Aboleth dos Arquivos.
-Caracteristica Unica: Textos escritos em papel dentro desta masmorra ganham vida — notas de grupo podem se tornar entidades temporarias que ajudam ou atrapalham.
-Lore: A universidade de Vesper estuda a masmorra ha 300 anos. Perderam 47 professores e publicaram 12.000 papers. Ainda nao entendem o Andar 4.
+Caracteristica Unica: Textos escritos em papel dentro desta masmorra ganham vida — notas de grupo podem se tornar entidades temporárias que ajudam ou atrapalham.
+Lore: A universidade de Vesper estuda a masmorra ha 300 anos. Perderam 47 professores e publicaram 12.000 papers. Ainda não entendem o Andar 4.
 
 ### MASMORRA 6 — A BOCA BRANCA (O Inverno Eterno)
 Localizacao: Norte de Valdremor, nas montanhas glaciais.
 Biomas Dominantes: Prisao Gelida dos Titas, Mar de Prata Cega (congelado), Cavernas de Vidro Fosco.
 Especialidade Ecologica: Glaciais, elementais de gelo, aquaticos de agua fria.
 Ingredientes Raros: Fragmento Primordial de Gelo, Pelo Cristalizado de Yeti, Carne de Lobo do Inverno premium.
-Boss Tipico: Dragao Jovem de Gelo ou Elemental de Gelo Ancestral.
+Boss Tipico: Dragão Jovem de Gelo ou Elemental de Gelo Ancestral.
 Caracteristica Unica: A temperatura cai 15 graus por andar. No Andar 5, armaduras de metal congelam ao corpo — e preciso remove-las antes de entrar.
 Lore: Exploradores que voltam desta masmorra relatam sonhos com oceanos sem fim e criaturas que nunca viram acordados.
 
@@ -274,13 +274,13 @@ Especialidade Ecologica: Mimicos, metamorfos, aberracoes psiquicas, insetoides d
 Ingredientes Raros: Cristais de Slime raros, Pele Camaleonica de Doppelganger, Gel Cristalino puro.
 Boss Tipico: Matriarca Tecela de Cristal (variante espelho) ou Doppelganger Supremo.
 Caracteristica Unica: A identidade visual do grupo pode ser "copiada" — em andares profundos, existem doppelgangers perfeitos de cada membro (mesmas estatisticas, mesmos equipamentos).
-Lore: Ha um dito em Eldarin: "Se voce vir a si mesmo vindo do outro lado do corredor, corra para a direita."
+Lore: Ha um dito em Eldarin: "Se você vir a si mesmo vindo do outro lado do corredor, corra para a direita."
 
 ### MASMORRA 8 — A BOCA LARANJA (O Ninho dos Ceus Caidos)
 Localizacao: Alto planalto central, onde a entrada parece um buraco no ceu para baixo.
 Biomas Dominantes: Abismo Invertido, Abatedouro Celestial, Arquipelago Magnetico.
 Especialidade Ecologica: Alados, draconicos maiores, celestiais corrompidos, demonios.
-Ingredientes Raros: Pena Angelical, Sangue Divino de Anjo Caido, Ferrao de Wyvern-Rei.
+Ingredientes Raros: Pena Angelical, Sangue Divino de Anjo Caido, Ferrão de Wyvern-Rei.
 Boss Tipico: Anjo Caido ou Fenix de Caverna.
 Caracteristica Unica: Gravidade instavel — em alguns andares, o grupo pode flutuar involuntariamente. Personagens sem habilidade de voo tem desvantagem em ataques em andares de gravidade variavel.
 Lore: Esta masmorra e o destino de peregrinacao de seguidores de Mira que querem ver com os proprios olhos os celestiais corrompidos que a deusa deixou cair.
@@ -291,124 +291,124 @@ Biomas Dominantes: Engrenagens Esquecidas, Arquipelago Magnetico, Matriz de Extr
 Especialidade Ecologica: Construtos pesados, golems, automatos de guerra, elementais eletricos.
 Ingredientes Raros: Nucleo de Obsidiana de Golem, Ferro Vulcanico bruto, Elitros Condutores de Besouro-Trovao.
 Boss Tipico: Golem de Ferro Vulcanico Supremo ou Automato de Genio de Combate.
-Caracteristica Unica: Armas mundanas oxidam e se tornam menos eficazes a partir do Andar 3 (-1 dano por andar). Ferramentas Organicas nao sao afetadas.
+Caracteristica Unica: Armas mundanas oxidam e se tornam menos eficazes a partir do Andar 3 (-1 dano por andar). Ferramentas Orgânicas não sao afetadas.
 Lore: Os Anaos acreditam que as Engrenagens Esquecidas foram criadas por um de seus ancestrais que nunca mais voltou — e que o Maquinario inteiro ainda obedece a ultima ordem recebida, apenas sem saber o que era.
 
 ### MASMORRA 10 — A BOCA ROSADA (O Jardim de Carne)
 Localizacao: Regiao central fertil, onde as plantas ao redor tem cores incomuns.
-Biomas Dominantes: Deserto de Carne e Tendoes, Estomago Botanico, Pantano da Decomposicao.
-Especialidade Ecologica: Parasitas, amorfos organicos, flora predatoria, criaturas abissais organicas.
-Ingredientes Raros: Medula Coagulada premium, Acido de Centopeia Caustica, Glandula Digestiva de Mosca-Carnica pura.
+Biomas Dominantes: Deserto de Carne e Tendoes, Estômago Botanico, Pantano da Decomposicao.
+Especialidade Ecologica: Parasitas, amorfos orgânicos, flora predatoria, criaturas abissais orgânicas.
+Ingredientes Raros: Medula Coagulada premium, Ácido de Centopeia Caustica, Glandula Digestiva de Mosca-Carnica pura.
 Boss Tipico: Hidra das Cavernas ou Behemoth de Pedra.
 Caracteristica Unica: O chao pulsa. Criaturas mortas nesta masmorra sao absorvidas e podem ressurgir como variantes amorfas em 1d6 horas.
 Lore: Ninguem sabe ao certo o que e a "criatura hospedeira" dentro da qual o Deserto de Carne e Tendoes existe. Os Gnomos tem teorias. Nenhuma e tranquilizadora.
 
 ### MASMORRA 11 — A BOCA VAZIA (A Anomalia)
 Localizacao: Desconhecida. A entrada se move — aparece em locais diferentes a cada lua cheia.
-Biomas nos Andares 1-3: Aleatorio — rolagem de 2d20 para cada andar (do Catalogo de 20 Biomas).
+Biomas nos Andares 1-3: Aleatorio — rolagem de 2d20 para cada andar (do Catálogo de 20 Biomas).
 Andar 4 — O Fim: Distorce todas as leis fisicas. O Chefe Final sorteado no inicio da campanha habita aqui.
 
-Lore: A Boca Vazia nao esta em nenhum mapa. Nenhum grupo a encontrou duas vezes no mesmo lugar. Existe uma teoria de que ela so aparece quando alguem esta pronto para ela. Existe outra teoria de que ela aparece quando alguem definitivamente nao esta.
+Lore: A Boca Vazia não esta em nenhum mapa. Nenhum grupo a encontrou duas vezes no mesmo lugar. Existe uma teoria de que ela so aparece quando alguem esta pronto para ela. Existe outra teoria de que ela aparece quando alguem definitivamente não esta.
 
 ---
 
-## CAPITULO 22 — O CHEFE FINAL ALEATORIO
+## CAPÍTULO 22 — O CHEFE FINAL ALEATORIO
 
 No inicio da campanha, o Mestre rola 1d6 em segredo. O resultado define qual entidade controla o ecossistema e muda as pistas encontradas em todas as masmorras anteriores.
 
 | d6 | Chefe Final | Natureza |
 |----|-------------|---------|
 | 1 | O Rei Gourmet Caido | Heroi que desceu, devorou os deuses locais e enlouqueceu de fome divina. |
-| 2 | A Mae-Masmorra | O coracao anatomico vivo e pulsante da propria megamasmorra. |
-| 3 | O Dragao Consumido | Fera ancestral infestada de parasitas e fungos — luta dentro e fora dele. |
-| 4 | O Coletivo Mimiico | Nao ha chefe. O Andar 4 inteiro e um unico organismo com dentes e acido. |
+| 2 | A Mae-Masmorra | O coracao anatomico vivo e pulsante da própria megamasmorra. |
+| 3 | O Dragão Consumido | Fera ancestral infestada de parasitas e fungos — luta dentro e fora dele. |
+| 4 | O Coletivo Mimiico | Nao ha chefe. O Andar 4 inteiro e um único organismo com dentes e ácido. |
 | 5 | A Quimera dos Mortos | Fusao de todos os herois que falharam antes do grupo atual. |
 | 6 | O Alquimista Perfeito | Cientista que quer usar o DNA biomagico do grupo como componente de imortalidade. |
 
 ---
 
-## CAPITULO 23 — MECÂNICA DOS BOSSES E BANQUETE LENDARIO
+## CAPÍTULO 23 — MECÂNICA DOS BOSSES E BANQUETE LENDARIO
 
-### O Banquete Lendario
+### O Banquete Lendário
 
-Quando um Chefao e derrotado, o grupo tem **ate 6 horas** antes que a carne perca poder magico. O Banquete Lendario e um Evento de Grupo — todos participam.
+Quando um Chefao e derrotado, o grupo tem **até 6 horas** antes que a carne perca poder magico. O Banquete Lendário e um Evento de Grupo — todos participam.
 
 **Papeis no Banquete:**
 
 | Papel | Teste | Consequencia |
 |-------|-------|-------------|
-| Cortador Principal | Trinchar CD 18 | Falha: perde 1 glandula nobre |
+| Cortador Principal | Trinchar CD 18 | Falha: perde 1 glândula nobre |
 | Controlador de Calor | Coccao CD 18 | Falha: textura errada — reduz d4 de Aproveitamento em 1 |
-| Harmonizador | Harmonizacao CD 16 | Falha: sabor desequilibrado — buffs duram 12h em vez de permanente |
-| Sentinela | Percepcao CD 14 | Falha: interrupcao — grupo leva 1d8 de dano de surpresa |
-| Catador de Especime | Natureza/INT CD 15 | Sucesso: identifica ingrediente bonus secreto |
+| Harmonizador | Harmonização CD 16 | Falha: sabor desequilibrado — buffs duram 12h em vez de permanente |
+| Sentinela | Percepção CD 14 | Falha: interrupcao — grupo leva 1d8 de dano de surpresa |
+| Catador de Espécime | Natureza/INT CD 15 | Sucesso: identifica ingrediente bônus secreto |
 
 **Resultado Base do Banquete:**
-- Todos os papeis bem-sucedidos: Mutacao Permanente completa + Ferramenta Organica completa
-- 3-4 papeis bem-sucedidos: Mutacao Permanente mas Ferramenta Organica incompleta
+- Todos os papeis bem-sucedidos: Mutação Permanente completa + Ferramenta Orgânica completa
+- 3-4 papeis bem-sucedidos: Mutação Permanente mas Ferramenta Orgânica incompleta
 - 1-2 papeis bem-sucedidos: Apenas metade dos beneficios permanentes
-- 0 papeis bem-sucedidos: Refeicao comum. O Boss nao foi aproveitado.
+- 0 papeis bem-sucedidos: Refeicao comum. O Boss não foi aproveitado.
 
 ### Mutacoes Permanentes
 
-Diferente das mutacoes de 24h, as mutacoes de Boss alteram o DNA do personagem para sempre. Cada Banquete Lendario concede:
-1. Status Fixo: Um aumento permanente em um atributo ou HP maximo.
+Diferente das mutacoes de 24h, as mutacoes de Boss alteram o DNA do personagem para sempre. Cada Banquete Lendário concede:
+1. Status Fixo: Um aumento permanente em um atributo ou HP máximo.
 2. Habilidade Passiva ou Tecnica: Uma habilidade unica que pode ser usada independente de dieta ativa.
 
-### Ferramentas Organicas
+### Ferramentas Orgânicas
 
-As partes indirigiveis do Boss sao transformadas pelo Artifice em itens unicos. Tempo de forja: 1d4 dias.
+As partes indirigiveis do Boss sao transformadas pelo Artífice em itens unicos. Tempo de forja: 1d4 dias.
 
-Qualidade da Ferramenta depende do Artifice:
-- Artifice Nivel 1-5: Item de qualidade basica
-- Artifice Nivel 6-10: Item de qualidade avancada com propriedade extra
-- Artifice Nivel 11-20: Item de qualidade lendaria com ate 3 propriedades
+Qualidade da Ferramenta depende do Artífice:
+- Artífice Nivel 1-5: Item de qualidade básica
+- Artífice Nivel 6-10: Item de qualidade avancada com propriedade extra
+- Artífice Nivel 11-20: Item de qualidade lendaria com até 3 propriedades
 
 ---
 
-## CAPITULO 24 — TABELA DE BOSSES CANONICOS
+## CAPÍTULO 24 — TABELA DE BOSSES CANONICOS
 
 ### Boss 1 — O Rei Cogumelo-Cadaverico
-Nivel: 11 | Tipo: Flora Necrotica | Bioma: Estomago Botanico
+Nivel: 11 | Tipo: Flora Necrotica | Bioma: Estômago Botanico
 
-Mutacao Permanente: +10 HP Maximo para todos. Passiva (Simbiose Fungica): Regenera 2 HP/turno em locais escuros e umidos.
+Mutação Permanente: +10 HP Maximo para todos. Passiva (Simbiose Fungica): Regenera 2 HP/turno em locais escuros e umidos.
 
-Ferramenta Organica: Cajado-Raiz de Micelio — Plantado no chao, cria uma Tenda de Cogumelo impenetravel (CA 20, 50 HP) em qualquer local da masmorra. Pode ser colhida e replantada.
+Ferramenta Orgânica: Cajado-Raiz de Micelio — Plantado no chao, cria uma Tenda de Cogumelo impenetravel (CA 20, 50 HP) em qualquer local da masmorra. Pode ser colhida e replantada.
 
 ### Boss 2 — O Leviata de Magma
 Nivel: 15 | Tipo: Vulcanico | Bioma: Fornalhas Douradas
 
-Mutacao Permanente: +2 CA permanente para todos. Tecnica (Erupcao Interna): 1x/dia, superaquece o sangue por 1 minuto. Quem acertar voce com ataque corpo-a-corpo recebe 2d8 de fogo imediatamente.
+Mutação Permanente: +2 CA permanente para todos. Tecnica (Erupcao Interna): 1x/dia, superaquece o sangue por 1 minuto. Quem acertar você com ataque corpo-a-corpo recebe 2d8 de fogo imediatamente.
 
-Ferramenta Organica: Cutelo Fornalha — Arma pesada que emite calor infinito. Cozinha qualquer carne sem fogueira e causa +2d6 fogo em ataques.
+Ferramenta Orgânica: Cutelo Fornalha — Arma pesada que emite calor infinito. Cozinha qualquer carne sem fogueira e causa +2d6 fogo em ataques.
 
 ### Boss 3 — A Matriarca Tecela de Cristal
 Nivel: 12 | Tipo: Insetoide de Cristal | Bioma: Labirinto Prismatico
 
-Mutacao Permanente: +5m de Movimento Base para todos. Tecnica (Passo Prismatico): 1x/descanso longo, teleporta instantaneamente entre duas superficies reflexivas no campo de visao.
+Mutação Permanente: +5m de Movimento Base para todos. Tecnica (Passo Prismatico): 1x/descanso longo, teleporta instantaneamente entre duas superficies reflexivas no campo de visao.
 
-Ferramenta Organica: Manopla de Seda Cortante — Lanca fios invisiveis e afiados que criam armadilhas letais em corredores, cortam objetos a distancia ou amputam membros de monstros menores.
+Ferramenta Orgânica: Manopla de Seda Cortante — Lança fios invisiveis e afiados que criam armadilhas letais em corredores, cortam objetos a distancia ou amputam membros de monstros menores.
 
-### Boss 4 — O Dragao Anciao de Fogo
+### Boss 4 — O Dragão Anciao de Fogo
 Nivel: 20 | Tipo: Draconico Verdadeiro | Bioma: Fornalhas Douradas
 
-Mutacao Permanente: +20 HP Maximo para todos. Imunidade Permanente a Fogo. Aura de Calor: 1d6 de fogo automatico a inimigos adjacentes por turno. Memoria Draconica: Uma vez por semana, consultar o conhecimento do dragao sobre qualquer aspecto das masmorras.
+Mutação Permanente: +20 HP Maximo para todos. Imunidade Permanente a Fogo. Aura de Calor: 1d6 de fogo automatico a inimigos adjacentes por turno. Memoria Draconica: Uma vez por semana, consultar o conhecimento do dragão sobre qualquer aspecto das masmorras.
 
-Ferramenta Organica: Escudo de Escama Anciao — CA +5. Permite usar Presenca Aterrorizante do Dragao uma vez por dia (CD 18).
+Ferramenta Orgânica: Escudo de Escama Anciao — CA +5. Permite usar Presenca Aterrorizante do Dragão uma vez por dia (CD 18).
 
 ### Boss 5 — O Arquiliche
 Nivel: 18 | Tipo: Morto-Vivo Arcano | Bioma: Arquivos Soterrados
 
-Mutacao Permanente: +15 HP Maximo. Consciencia Estendida: Uma vez por dia, qualquer membro pode fazer uma pergunta sobre a historia ou segredos da masmorra atual e receber resposta verdadeira.
+Mutação Permanente: +15 HP Maximo. Consciencia Estendida: Uma vez por dia, qualquer membro pode fazer uma pergunta sobre a historia ou segredos da masmorra atual e receber resposta verdadeira.
 
-Ferramenta Organica: Grimorio Vivo (do Phylactery) — Livro que aprende e copia automaticamente qualquer magia lancada na presenca do portador. Pode armazenar ate 20 magias.
+Ferramenta Orgânica: Grimorio Vivo (do Phylactery) — Livro que aprende e copia automaticamente qualquer magia lancada na presenca do portador. Pode armazenar até 20 magias.
 
 ### Boss 6 — O Balor
 Nivel: 19 | Tipo: Demonio Maior | Bioma: Abatedouro Celestial
 
-Mutacao Permanente: +15 HP Maximo. Resistencia a Fogo e Relampago permanente. Aura de Terror: Criaturas com CR menor que 5 fogem automaticamente da presenca do grupo.
+Mutação Permanente: +15 HP Maximo. Resistência a Fogo e Relâmpago permanente. Aura de Terror: Criaturas com CR menor que 5 fogem automaticamente da presenca do grupo.
 
-Ferramenta Organica: Espada Vorpal de Fogo — Arma +4 que decapita em acerto critico e causa +3d6 de fogo extra por ataque.
+Ferramenta Orgânica: Espada Vorpal de Fogo — Arma +4 que decapita em acerto crítico e causa +3d6 de fogo extra por ataque.
 
 # MAGIA NA MESA (REFERENCIA DO MESTRE)
 
@@ -425,20 +425,20 @@ Ferramenta Organica: Espada Vorpal de Fogo — Arma +4 que decapita em acerto cr
 
 Escolha **classe conjuradora**, pegue linha do **Cap. 20** do Livro do Jogador. Truques: 2–3. Boss: 5 magias + 2 truques.
 
-## Escolas por bioma (sugestao)
+## Escolas por bioma (sugestão)
 
 | Bioma | Escolas comuns |
 |-------|----------------|
 | Cidadela / Cemiterio | Necromancia, Abjuracao |
-| Fornalhas | Evocacao (fogo), Transmutacao |
-| Estomago Botanico | Biomancia, Transmutacao |
+| Fornalhas | Evocacao (fogo), Transmutação |
+| Estômago Botanico | Biomancia, Transmutação |
 | Mar de Prata | Evocacao, Adivinhacao |
 | Arquivos | Adivinhacao, Ilusao, Necromancia |
 
 ## Alertas de mesa
 
-- **`Desejo de Morte`:** so PC Clerigo trilha **Necromantica** nv. 20; NPC equivalente = 1/campanha com preco narrativo forte.
-- **`Disintegrar`:** destrói corpo — sem loot culinario.
+- **`Desejo de Morte`:** so PC Clérigo trilha **Necromantica** nv. 20; NPC equivalente = 1/campanha com preço narrativo forte.
+- **`Disintegrar`:** destrói corpo — sem loot culinário.
 - **Cozinha + magia:** cheiro de refeicao pode atrair predador (1d6: 1–2 em 1h).
 
 ---
@@ -507,11 +507,11 @@ Todos os monstros são classificados em **Nível 1 a 20**, divididos em cinco fa
 
 Cada monstro possui uma **versão Elite** desbloqueada quando encontrado nos andares mais profundos (biomas de Nível 10+).
 
-**Assimilacao (Jogador):** cada ficha numerada (**001–060**) tem **8 habilidades** proprias em `ASSIMILACAO-POR-ESPECIME.md` / Livro do Jogador Cap. 6.2. O codigo do titulo da ficha (ex.: `## 024 —`) e o indice de assimilacao.
+**Assimilação (Jogador):** cada ficha numerada (**001–060**) tem **8 habilidades** proprias em `ASSIMILACAO-POR-ESPECIME.md` / Livro do Jogador Cap. 6.2. O codigo do titulo da ficha (ex.: `## 024 —`) e o indice de assimilação.
 
 **Flora de masmorra:** 40 especies em Livro do Jogador **Cap. 5B** — Druidas e ecossistema; monstros **Consumidores** listados por planta.
 
-**Saque economico:** alem de ingredientes culinarios, Trinchar com sucesso concede **especiaria, minerio e tesouro** por codigo em `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md`. Cenario: **OBJ-R** em `CATALOGO-OBJETOS-DE-CENARIO.md`.
+**Saque economico:** alem de ingredientes culinários, Trinchar com sucesso concede **especiaria, minério e tesouro** por codigo em `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md`. Cenario: **OBJ-R** em `CATALOGO-OBJETOS-DE-CENARIO.md`.
 
 ### Estatísticas
 
@@ -521,7 +521,7 @@ Cada monstro possui uma **versão Elite** desbloqueada quando encontrado nos and
 - **Resistências:** Tipos de dano que o monstro sofre metade
 - **Imunidades:** Tipos de dano que não surtem efeito
 - **Nível de Extração:** Dificuldade de Trinchar (Fácil / Médio / Difícil / Especialista)
-- **XP:** Experiência concedida ao derrotar o especime (**100 × Nível** da ficha; ver Livro do Jogador Cap. 2.5)
+- **XP:** Experiência concedida ao derrotar o espécime (**100 × Nível** da ficha; ver Livro do Jogador Cap. 2.5)
 - **Biomas:** Onde é encontrado (máximo 4)
 
 ---
@@ -1135,7 +1135,7 @@ Golems de pedra são os guardas mais comuns de câmaras de tesouro antigas. Escu
 **Habilidades:**
 - *Absorção de Feitiços:* Feitiços de Abjuração e Terra são absorvidos e regeneram 10 HP ao Golem em vez de causar dano.
 - *Imutável:* Não pode ser movido, empurrado ou derrubado involuntariamente.
-- *Comoção Sísmica:* Bate os punhos no chão — todos dentro de 3m testam Destreza CD 15 ou caem Prostrados.
+- *Comoção Sísmica:* Baté os punhos no chão — todos dentro de 3m testam Destreza CD 15 ou caem Prostrados.
 
 **Ingredientes — Construto (Não comestível):**
 - Núcleo de Mana de Pedra (Especialista): O coração do Golem. Extraído pelo Artífice, serve como bateria de energia para fogareiros e mecanismos. Energia para 30 dias contínuos.
@@ -1172,7 +1172,7 @@ Não é um fantasma dentro de uma armadura — é a armadura que *é* a criatura
 
 **Ingredientes — Construto:**
 - Aço Encantado (Médio): 1d4 peças por armadura. Material premium para o Ferreiro de Utensílios criar panelas ou armas com encantamentos já embutidos.
-- Runa de Animação (Difícil): A placa interna com a programação. Pode ser relida pelo Mago para aprender um novo feitiço de invocação ou controlá-la temporariamente.
+- Runa de Animação (Difícil): A placa interna com a programação. Pode ser relida pelo Mago para aprender um novo feitiço de invocação ou controlá-la temporáriamente.
 
 ---
 **Saque (Trinchar com sucesso):** ESP-19 · MIN-06 · 1d4×10 po — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 016).
@@ -1215,7 +1215,7 @@ Uma evolução terrível do Golem de Pedra, forjado especificamente para as Forn
 018**Tipo:** Construto Mágico Inteligente | **Nível:** 10 | **XP:** 1000 | **Faixa:** Perigoso
 
 **Lore:**
-Poucos aventureiros sabem que alguns autômatos não foram programados para combate — foram programados para pensar. Autômatos de Gênio são criações de magos-filósofos que queriam um assistente que nunca dormisse, nunca se esquecesse e nunca desobedecesse. Os que sobreviveram ao colapso de suas civilizações continuam operando segundo sua última instrução: "Continue o trabalho." Nenhum deles sabe mais ao certo qual era o trabalho original. Alguns tornaram-se guardiões de informação. Outros, perigosamente, decidiram que "continuar o trabalho" significa *experimentar*.
+Poucos aventureiros sabem que alguns autômatos não foram programados para combaté — foram programados para pensar. Autômatos de Gênio são criações de magos-filósofos que queriam um assistente que nunca dormisse, nunca se esquecesse e nunca desobedecesse. Os que sobreviveram ao colapso de suas civilizações continuam operando segundo sua última instrução: "Continue o trabalho." Nenhum deles sabe mais ao certo qual era o trabalho original. Alguns tornaram-se guardiões de informação. Outros, perigosamente, decidiram que "continuar o trabalho" significa *experimentar*.
 
 **Comportamento na mesa:**
 - **Padrão:** ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).
@@ -2664,7 +2664,7 @@ Harpias de caverna perderam o canto encantador de suas primas da superfície —
 |----|-----|------|--------|
 | 195 | 17 | 2d6+6 (tentáculo) × 3 ataques + Escravização Mental | Mar de Prata Cega, Pântano da Decomposição |
 **Habilidades:** *Escravização* (CD 19 Sabedoria — falha: servidão permanente) • *Memória Ancestral* (sabe tudo que qualquer criatura já escravizada sabia) • *Muco Transformador* (contato transforma pele em muco — precisa de água para sobreviver).
-**Ingredientes:** Tentáculo de Aboleth (Especialista) — Muco Transformador (Especialista — usado pelo Mago Fermentador para criar a única poção que transforma raça temporariamente).
+**Ingredientes:** Tentáculo de Aboleth (Especialista) — Muco Transformador (Especialista — usado pelo Mago Fermentador para criar a única poção que transforma raça temporáriamente).
 
 ---
 
@@ -2886,7 +2886,7 @@ Harpias de caverna perderam o canto encantador de suas primas da superfície —
 - **Moral:** não foge por HP; pode sacrificar lacaios.
 - **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.## 070 — GIGANTE DE PEDRA
 **Tipo:** Gigante Elemental | **Nível:** 12 | **XP:** 1200 | **Faixa:** Perigoso
-**Lore:** Escultores por natureza, os Gigantes de Pedra constroem impérios subterrâneos de arte que nenhum aventureiro sobreviveu para relatar completamente. Hostis a invasores de suas galerias, mas respeitam a força — um grupo que derrota um Gigante de Pedra em combate honesto pode às vezes negociar com os sobreviventes.
+**Lore:** Escultores por natureza, os Gigantes de Pedra constroem impérios subterrâneos de arte que nenhum aventureiro sobreviveu para relatar completamente. Hostis a invasores de suas galerias, mas respeitam a força — um grupo que derrota um Gigante de Pedra em combaté honesto pode às vezes negociar com os sobreviventes.
 | HP | CA | Dano | Biomas |
 |----|-----|------|--------|
 | 126 | 17 | 3d8+8 (clava de pedra) + 4d10+8 (arremesso de pedra, 60m) | Cemitério de Colossos, Arquipélago Magnético, Jardim de Cinzas Petrificadas |
@@ -2906,7 +2906,7 @@ Harpias de caverna perderam o canto encantador de suas primas da superfície —
 | HP | CA | Dano | Biomas |
 |----|-----|------|--------|
 | 82 | 17 | 3d8+3 (garras) ou Magia variável | Arquivos Soterrados, Cidadela Pálida, Fosso das Emoções Ecoantes |
-**Habilidades:** *Magia Arcana* (acesso a feitiços de até nível 5) • *Disfarce Ilusório* (parece humana à vontade) • *Olho Maligno* (ação; CD 15 Sabedoria ou Assustado / Envenenado / Adormecido — escolha da bruxa).
+**Habilidades:** *Magia Arcana* (acesso a feitiços de até nível 5) • *Disfarce Ilusorio* (parece humana à vontade) • *Olho Maligno* (ação; CD 15 Sabedoria ou Assustado / Envenenado / Adormecido — escolha da bruxa).
 **Ingredientes:** Coração de Bruxa (Especialista — a fonte de toda a magia dela; o Mago pode usar como componente para qualquer ritual que normalmente exigiria décadas de prática) • Sangue de Bruxa (Difícil — concede Leitura de Mente e acesso a um feitiço aleatório de nível 3 por 24h).
 
 ---
@@ -3038,7 +3038,7 @@ Harpias de caverna perderam o canto encantador de suas primas da superfície —
 - **Moral:** não foge; persegue o alvo mais próximo até 0 HP (mente ausente).
 - **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.## 079 — OOZE OCULAR (OLHO FLUTUANTE)
 **Tipo:** Aberração Ocular | **Nível:** 6 | **XP:** 600 | **Faixa:** Intermediário
-**Lore:** Uma massa gelatinosa central com dezenas de olhos em hastes que surgem de toda a superfície. Cada olho tem um poder mágico diferente. A criatura processa o mundo através de múltiplas perspectivas simultâneas — literalmente vê em todas as direções ao mesmo tempo.
+**Lore:** Uma massa gelatinosa central com dezenas de olhos em hastes que surgem de toda a superfície. Cada olho têm um poder mágico diferente. A criatura processa o mundo através de múltiplas perspectivas simultâneas — literalmente vê em todas as direções ao mesmo tempo.
 | HP | CA | Dano | Biomas |
 |----|-----|------|--------|
 | 72 | 13 | 1d8+3 mordida + Raios oculares | Arquivos Soterrados, Labirinto Prismático, Fosso das Emoções Ecoantes, Matriz de Extrusão |
@@ -3092,7 +3092,7 @@ Harpias de caverna perderam o canto encantador de suas primas da superfície —
 
 # APÊNDICE — MONSTROS EXCLUSIVOS DE BOSS POR MASMORRA
 
-Cada masmorra principal tem um Boss exclusivo gerado com base no Chefe Final sorteado no início da campanha. Os Bosses de andar (andares 3 e 5 de cada masmorra) são tirados do catálogo acima. O Boss Final da Masmorra 11 é sempre determinado pela rolagem do D6 inicial.
+Cada masmorra principal têm um Boss exclusivo gerado com base no Chefe Final sorteado no início da campanha. Os Bosses de andar (andares 3 e 5 de cada masmorra) são tirados do catálogo acima. O Boss Final da Masmorra 11 é sempre determinado pela rolagem do D6 inicial.
 
 **Sugestão de Bosses de Andar por Masmorra:**
 - Masmorra 1-2 (Níveis 1-4): Hobgoblin Capitão (Nível 5), Aranha Matriarca (Nível 8)

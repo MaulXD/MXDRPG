@@ -1,12 +1,18 @@
 import Link from "next/link";
+import { DeleteAccountButton } from "@/components/auth/DeleteAccountButton";
 import { CampaignLobby } from "@/components/campaign/CampaignLobby";
 import { DashboardCard } from "@/components/portal/DashboardCard";
-import { listCharactersForUser } from "@/lib/character/characters";
+import { listCharactersForUser, MAX_CHARACTERS_PER_USER } from "@/lib/character/characters";
+import { dbEnabled } from "@/lib/db/enabled";
 import { requireSession } from "@/lib/auth/session";
+import { redirect } from "next/navigation";
 
 export default async function PainelPage() {
   const user = await requireSession();
-  const characters = listCharactersForUser(user.id);
+  if (dbEnabled() && !user.nickname) {
+    redirect("/entrar/apelido");
+  }
+  const characters = await listCharactersForUser(user.id);
 
   return (
     <>
@@ -19,10 +25,32 @@ export default async function PainelPage() {
 
       <CampaignLobby />
 
-      <h3 style={{ fontSize: "1rem", margin: "2rem 0 0.75rem" }}>Personagens</h3>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          margin: "2rem 0 0.75rem",
+          flexWrap: "wrap",
+          gap: "0.5rem",
+        }}
+      >
+        <h3 style={{ fontSize: "1rem", margin: 0 }}>Personagens</h3>
+        {characters.length < MAX_CHARACTERS_PER_USER ? (
+          <Link href="/personagem/novo" className="btn" style={{ fontSize: "0.85rem" }}>
+            + Nova ficha
+          </Link>
+        ) : (
+          <span style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}>
+            Limite {MAX_CHARACTERS_PER_USER} fichas
+          </span>
+        )}
+      </div>
       <div className="grid-2">
         {characters.length === 0 ? (
-          <p style={{ color: "var(--text-muted)" }}>Crie uma ficha em breve pelo painel.</p>
+          <p style={{ color: "var(--text-muted)" }}>
+            <Link href="/personagem/novo">Criar primeira ficha</Link>
+          </p>
         ) : (
           characters.map((c) => (
             <DashboardCard
@@ -47,6 +75,8 @@ export default async function PainelPage() {
           <Link href="/admin">Administração</Link>
         </p>
       )}
+
+      {dbEnabled() ? <DeleteAccountButton /> : null}
     </>
   );
 }

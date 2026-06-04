@@ -1,6 +1,6 @@
 import { redirect, notFound } from "next/navigation";
 import { CharacterSheet } from "@/components/character/CharacterSheet";
-import { canEditCharacter, getCharacter } from "@/lib/character/characters";
+import { canEditCharacter, resolveCharacter } from "@/lib/character/characters";
 import { getSession } from "@/lib/auth/session";
 import { getPackEntries } from "@/lib/compendium/registry";
 import type { CompendiumPackId } from "@/lib/compendium/types";
@@ -14,7 +14,7 @@ export default async function PersonagemPage({ params }: Props) {
   const session = await getSession();
   if (!session) redirect(`/entrar?redirect=/personagem/${id}`);
 
-  const character = getCharacter(id);
+  const character = await resolveCharacter(id);
   if (!character) notFound();
 
   const canEdit = canEditCharacter(character, session.user.id, session.user.role);

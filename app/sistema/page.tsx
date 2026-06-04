@@ -1,40 +1,76 @@
 import Link from "next/link";
 
+const LIVE = [
+  "Mesa hex ao vivo com sync SSE (fallback poll)",
+  "Combate: PA, movimento, ataque, habilidade, magias de área (cone/linha)",
+  "Preview no mapa: PA, alcance, vantagem/desvantagem",
+  "Iniciativa, condições, spawn do bestiário (69 espécies)",
+  "Wizard de ficha (7 passos) e compêndios sincronizados do livro",
+  "Convite de sala + modo visitante (só leitura)",
+  "Login Clerk + apelido (opcional) ou demo local",
+];
+
+const NEXT = [
+  "Persistência Neon em produção (salas e fichas na nuvem)",
+  "Delegação explícita de token entre jogadores",
+  "Névoa de guerra e macros",
+];
+
 export default function SistemaPage() {
   return (
     <div className="page-wrap">
       <header className="page-header">
         <p className="eyebrow">Plataforma</p>
-        <h1 className="display-lg text-gradient">Roadmap Eldarin</h1>
-        <p className="lead">O que já roda na mesa e o que entra na próxima sprint.</p>
+        <h1 className="display-lg text-gradient">Eldarin VTT</h1>
+        <p className="lead">
+          Mesa tática online alinhada ao livro Eldarin v4 — o que já está jogável e o que vem na sequência.
+        </p>
       </header>
+
+      <section className="glass" style={{ padding: "1.25rem 1.5rem", marginBottom: "1.5rem" }}>
+        <h2 style={{ marginTop: 0, fontSize: "1.1rem" }}>Jogável agora</h2>
+        <ul style={{ margin: 0, paddingLeft: "1.2rem", lineHeight: 1.6 }}>
+          {LIVE.map((item) => (
+            <li key={item}>{item}</li>
+          ))}
+        </ul>
+      </section>
+
+      <section className="glass" style={{ padding: "1.25rem 1.5rem", marginBottom: "1.5rem" }}>
+        <h2 style={{ marginTop: 0, fontSize: "1.1rem" }}>Em seguida</h2>
+        <ul style={{ margin: 0, paddingLeft: "1.2rem", lineHeight: 1.6, color: "var(--text-muted)" }}>
+          {NEXT.map((item) => (
+            <li key={item}>{item}</li>
+          ))}
+        </ul>
+      </section>
 
       <div className="grid-2">
         <article className="glass feature-card">
-          <div className="feature-icon">✓</div>
-          <h3>Pronto agora</h3>
-          <p>Grid hex canvas, tokens, PA, portais Admin/Mestre/Jogador, login demo.</p>
-        </article>
-        <article className="glass feature-card">
-          <div className="feature-icon">→</div>
-          <h3>Em breve</h3>
-          <p>Multiplayer WebSocket, fichas persistentes, fog of war, pipeline VFX.</p>
-        </article>
-        <article className="glass feature-card">
           <div className="feature-icon">⚔</div>
           <h3>Combate</h3>
-          <p>Alcance hex, rolagens integradas, animações de ataque.</p>
+          <p>
+            Motor com PA (acúmulo, teto, stun), saves, áreas burst/wall/cone/line. HUD no canto do mapa.
+          </p>
         </article>
         <article className="glass feature-card">
           <div className="feature-icon">◇</div>
-          <h3>Assets</h3>
-          <p>Suporte a tokens e props 3D exportados do Blender.</p>
+          <h3>Dados</h3>
+          <p>
+            <code>npm run sync:data</code> gera monstros, magias e habilidades a partir do livro.
+          </p>
         </article>
       </div>
 
-      <div style={{ marginTop: "2rem" }}>
+      <div style={{ marginTop: "2rem", display: "flex", flexWrap: "wrap", gap: "0.75rem" }}>
         <Link href="/mesa/demo" className="btn">
-          Testar mesa demo
+          Mesa demo
+        </Link>
+        <Link href="/personagem/novo" className="btn btn-ghost">
+          Nova ficha
+        </Link>
+        <Link href="/painel" className="btn btn-ghost">
+          Painel
         </Link>
       </div>
     </div>

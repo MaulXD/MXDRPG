@@ -4,26 +4,9 @@ import type { BattleToken } from "@/lib/vtt/types";
 import type { TokenCondition } from "@/lib/combat/conditions";
 import { toggleTokenCondition } from "@/lib/combat/conditions";
 import { patchRoomToken } from "@/hooks/useRoomSync";
-
-const CONDITION_LABEL: Record<TokenCondition, string> = {
-  amedrontado: "Amedrontado",
-  cego: "Cego",
-  atordoado: "Atordoado",
-  envenenado: "Envenenado",
-  prostrado: "Prostrado",
-  restringido: "Restringido",
-  encantado: "Encantado",
-};
-
-const ALL_CONDITIONS: TokenCondition[] = [
-  "amedrontado",
-  "cego",
-  "atordoado",
-  "envenenado",
-  "prostrado",
-  "restringido",
-  "encantado",
-];
+import { ALL_TOKEN_CONDITIONS, CONDITION_META } from "@/lib/vtt/token-effects";
+import { TokenEffectIcon } from "@/components/vtt/TokenEffectIcon";
+import { TokenEffectsRow } from "@/components/vtt/TokenEffectsRow";
 
 type Props = {
   roomId: string;
@@ -45,17 +28,19 @@ export function TokenConditionsPanel({ roomId, token, canEdit, onUpdate }: Props
 
   return (
     <div className="vtt-conditions-panel">
+      <TokenEffectsRow token={token} variant="full" className="vtt-effect-chips--panel" />
       <p className="vtt-eyebrow">Condições (Cap. 3.4)</p>
       <div className="vtt-conditions-grid">
-        {ALL_CONDITIONS.map((c) => (
+        {ALL_TOKEN_CONDITIONS.map((c) => (
           <button
             key={c}
             type="button"
             className={`btn btn-ghost vtt-condition-btn${active.includes(c) ? " active" : ""}`}
             onClick={() => void toggle(c)}
-            title={CONDITION_LABEL[c]}
+            title={CONDITION_META[c].label}
           >
-            {CONDITION_LABEL[c]}
+            <TokenEffectIcon icon={CONDITION_META[c].icon} size={16} />
+            <span>{CONDITION_META[c].label}</span>
           </button>
         ))}
       </div>

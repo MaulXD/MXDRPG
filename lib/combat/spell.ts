@@ -7,6 +7,11 @@ import { saveRollMode } from "@/lib/combat/conditions";
 import { formatD20Detail, formatRollMode, rollD20, type RollMode } from "@/lib/combat/d20";
 import type { CombatActionOption, CombatTurnOptions } from "@/lib/combat/types";
 import { canAttackTarget, spellcastingAttribute } from "@/lib/combat/attack";
+import {
+  actionWithChannel,
+  clampChannelExtraPa,
+  totalChannelPaCost,
+} from "@/lib/combat/spell-channel";
 import type { DamageBreakdown } from "@/lib/combat/attack";
 
 export type SaveRollBreakdown = {
@@ -84,17 +89,24 @@ export function resolveSaveSpell(
   defenderActor: CharacterSheet | null,
   action: CombatActionOption,
   turn?: CombatTurnOptions,
-  opts?: { skipRangeCheck?: boolean }
+  opts?: { skipRangeCheck?: boolean; channelExtraPa?: number; skipPaCheck?: boolean }
 ): SaveSpellResolution {
+  const channelExtra = clampChannelExtraPa(action, opts?.channelExtraPa ?? 0);
+  const resolved = actionWithChannel(action, channelExtra);
+
   if (!opts?.skipRangeCheck) {
-    const check = canAttackTarget(attackerToken, defenderToken, action, turn);
+    const check = canAttackTarget(attackerToken, defenderToken, action, turn, {
+      actor,
+      channelExtraPa: channelExtra,
+      skipPaCheck: opts?.skipPaCheck,
+    });
     if (!check.ok) throw new Error(check.reason ?? "Magia inválida");
   } else if (turn?.activeTokenId && attackerToken.id !== turn.activeTokenId && !turn.bypassTurn) {
     throw new Error("Aguarde seu turno na iniciativa");
   }
 
-  const saveKey = action.saveAttribute ?? "constituicao";
-  const dc = computeSpellSaveDc(actor, action);
+  const saveKey = resolved.saveAttribute ?? "constituicao";
+  const dc = computeSpellSaveDc(actor, resolved);
 
   const saveAttr =
     defenderActor?.attributes[saveKey] ??
@@ -110,21 +122,22 @@ export function resolveSaveSpell(
   const success = saveTotal >= dc;
 
   const hpBefore = defenderHp(defenderToken);
-  const damage = rollSaveDamage(action.damageFormula, success);
+  const damage = rollSaveDamage(resolved.damageFormula, success);
   const hpAfter = Math.max(0, hpBefore - damage.total);
 
   const attr = attributeLabel(saveKey);
   const modeTag = rollMode !== "normal" ? ` [${formatRollMode(rollMode)}]` : "";
   const outcome = success ? "resistiu (metade)" : "falhou (dano pleno)";
-  const summary = `${actor.name} conjura ${action.name}${modeTag} em ${defenderToken.name}: save ${attr} ${saveTotal} vs CD ${dc} — ${outcome} — ${damage.total} ${action.damageType}`;
+  const channelTag = channelExtra > 0 ? ` [canalizado +${channelExtra} PA]` : "";
+  const summary = `${actor.name} conjura ${resolved.name}${channelTag}${modeTag} em ${defenderToken.name}: teste ${attr} ${saveTotal} vs CD ${dc} — ${outcome} — ${damage.total} ${resolved.damageType}`;
 
   return {
     attackerTokenId: attackerToken.id,
     defenderTokenId: defenderToken.id,
     actionKind: "spell",
-    weaponName: action.name,
-    rangeHex: action.rangeHex,
-    paCost: action.paCost,
+    weaponName: resolved.name,
+    rangeHex: resolved.rangeHex,
+    paCost: totalChannelPaCost(actor, action, channelExtra),
     save: {
       natural,
       attributeMod: saveMod,
@@ -147,7 +160,7 @@ export function formatSaveChatDetail(res: SaveSpellResolution): string {
   const s = res.save;
   const rollPart = s.d20Detail ?? `1d20=${s.natural}`;
   return [
-    `Save ${rollPart} +${s.attributeMod}${s.profBonus ? `+${s.profBonus}` : ""} = ${s.total}`,
+    `Teste ${rollPart} +${s.attributeMod}${s.profBonus ? `+${s.profBonus}` : ""} = ${s.total}`,
     `CD ${s.dc}`,
     s.success ? "Sucesso (metade)" : "Falha (pleno)",
     `Dano ${res.damage.rolls.join("+")} = ${res.damage.total}`,

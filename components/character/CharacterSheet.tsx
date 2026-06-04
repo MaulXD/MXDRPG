@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
@@ -21,7 +21,7 @@ import { LootEconomyPanel } from "@/components/character/LootEconomyPanel";
 import { proficiencyBonus } from "@/lib/character/rules";
 import "./sheet.css";
 
-type Tab = "inventario" | "tesouro" | "habilidades" | "magias";
+type Tab = "inventário" | "tesouro" | "habilidades" | "magias";
 
 type Props = {
   character: CharacterSheetData;
@@ -47,12 +47,12 @@ export function CharacterSheet({
   roomId = "demo",
   embedded = false,
 }: Props) {
-  const [tab, setTab] = useState<Tab>("inventario");
+  const [tab, setTab] = useState<Tab>("inventário");
   const [inventory, setInventory] = useState<InventoryItem[]>(character.inventory);
   const [pickerOpen, setPickerOpen] = useState(false);
   const [pickerPack, setPickerPack] = useState<CompendiumPackId>("armas");
 
-  const { snapshot, refresh } = useRoomSync(roomId);
+  const { snapshot, refresh, applySnapshot } = useRoomSync(roomId);
   const live = snapshot?.actors[character.id] ?? character;
   const inRoom = Boolean(snapshot?.actors[character.id]);
 
@@ -154,6 +154,24 @@ export function CharacterSheet({
           {formatXpProgress(identity.nivel, identity.xpTotal ?? 0)}
         </p>
 
+        {canEdit ? (
+          <LevelUpWizard
+            actor={live}
+            roomId={roomId}
+            canEdit={canEdit}
+            onDone={refresh}
+            onApplied={(patch) => {
+              if (!snapshot) return;
+              applySnapshot({
+                ...snapshot,
+                actors: { ...snapshot.actors, [patch.actor.id]: patch.actor },
+                scene: patch.scene,
+                revision: patch.revision,
+              });
+            }}
+          />
+        ) : null}
+
         {inRoom ? (
           <PortraitFields
             roomId={roomId}
@@ -188,15 +206,12 @@ export function CharacterSheet({
         ) : null}
 
         {canEdit && inRoom ? (
-          <>
-            <CharacterIdentityEditor
-              actor={live}
-              roomId={roomId}
-              canEdit={canEdit}
-              onSaved={refresh}
-            />
-            <LevelUpWizard actor={live} roomId={roomId} canEdit={canEdit} onDone={refresh} />
-          </>
+          <CharacterIdentityEditor
+            actor={live}
+            roomId={roomId}
+            canEdit={canEdit}
+            onSaved={refresh}
+          />
         ) : null}
 
         <CharacterStatsGrid actor={live} />
@@ -243,8 +258,8 @@ export function CharacterSheet({
         <div className="sheet-tabs">
           <button
             type="button"
-            className={`sheet-tab ${tab === "inventario" ? "active" : ""}`}
-            onClick={() => setTab("inventario")}
+            className={`sheet-tab ${tab === "inventário" ? "active" : ""}`}
+            onClick={() => setTab("inventário")}
           >
             Inventário
           </button>
@@ -273,7 +288,7 @@ export function CharacterSheet({
 
         <div className="sheet-toolbar">
           <h2 style={{ margin: 0, fontSize: "1.1rem", fontFamily: "var(--font-display)" }}>
-            {tab === "inventario"
+            {tab === "inventário"
               ? "Inventário"
               : tab === "tesouro"
                 ? "Tesouro e riquezas"
@@ -296,7 +311,7 @@ export function CharacterSheet({
           />
         ) : filtered.length === 0 ? (
           <div className="inv-empty">
-            {tab === "inventario"
+            {tab === "inventário"
               ? "Nenhum item no inventário."
               : tab === "habilidades"
                 ? "Nenhuma habilidade — use + Compêndio ou suba de nível na trilha de subclasse."

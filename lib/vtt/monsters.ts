@@ -5,11 +5,14 @@ import type { Axial } from "@/lib/vtt/hex-math";
 import { defaultMovementFields } from "@/lib/vtt/movement";
 import type { CombatActionOption } from "@/lib/combat/types";
 import type { BattleToken } from "@/lib/vtt/types";
+import { MONSTER_PA_MIN, normalizeMonsterPa } from "@/lib/vtt/monster-pa";
 import {
   applyMonsterSpawnScaling,
   type MonsterSpawnOptions,
   type MonsterSpawnVariant,
 } from "@/lib/vtt/monster-scaling";
+
+export { MONSTER_PA_MIN, normalizeMonsterPa } from "@/lib/vtt/monster-pa";
 
 export type MonsterTier = "mob" | "mini" | "boss";
 export type { MonsterSpawnVariant, MonsterSpawnOptions };
@@ -68,15 +71,21 @@ function parseMonster(raw: CompendiumEntryRaw, index: number): MonsterTemplate {
   const tactical = sys.tactical ?? {};
   const ameaca = tactical.ameaca?.value ?? 1;
 
+  const tier = parseMonsterTier(tactical.tier, ameaca);
+  const tierFloor = tier === "boss" ? 9 : MONSTER_PA_MIN;
+  const rawPaMax = resources.pontosAcao?.max ?? resources.pontosAcao?.value ?? tierFloor;
+  const rawPa = resources.pontosAcao?.value ?? rawPaMax;
+  const { pa, paMax } = normalizeMonsterPa(rawPaMax, rawPa, tier);
+
   return {
     entryId,
     name: raw.name,
     description: sys.description ?? "",
-    tier: parseMonsterTier(tactical.tier, ameaca),
+    tier,
     vida: resources.vida?.value ?? resources.vida?.max ?? 10,
     vidaMax: resources.vida?.max ?? resources.vida?.value ?? 10,
-    pa: resources.pontosAcao?.value ?? resources.pontosAcao?.max ?? 3,
-    paMax: resources.pontosAcao?.max ?? resources.pontosAcao?.value ?? 3,
+    pa,
+    paMax,
     defesa: tactical.defesa?.value ?? 10,
     walk: movement.walk?.value ?? 4,
     run: movement.run?.value ?? 6,
@@ -136,6 +145,8 @@ export function createMonsterToken(
     monsterTier: template.tier,
     monsterVariant: spawnMeta?.variant && spawnMeta.variant !== "normal" ? spawnMeta.variant : undefined,
     ...defaultMovementFields({ walk: template.walk, run: template.run }),
+    footprint:
+      template.tier === "mob" && template.walk <= 3 ? "small" : "medium",
   };
 }
 

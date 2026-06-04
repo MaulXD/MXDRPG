@@ -1,4 +1,5 @@
 import { AuthTabs } from "@/components/auth/AuthTabs";
+import { isClerkEnabled } from "@/lib/auth/clerk-config";
 
 type Props = { searchParams: Promise<{ redirect?: string }> };
 
@@ -17,19 +18,14 @@ export default async function EntrarPage({ searchParams }: Props) {
       </header>
 
       <div className="glass" style={{ padding: "1.75rem" }}>
-        <AuthTabs redirect={redirect} />
+        <AuthTabs redirect={redirect} clerkEnabled={isClerkEnabled()} />
       </div>
 
       <article className="glass content-card" style={{ marginTop: "1.25rem" }}>
-        <h2>Contas demo (senha <code>vinite-dev</code>)</h2>
-        <ul style={{ margin: 0, paddingLeft: "1.1rem", color: "var(--text-muted)", lineHeight: 1.8 }}>
-          <li>
-            <code>admin@vinite.local</code>
-          </li>
-          <li>
-            <code>mestre@vinite.local</code> / <code>jogador@vinite.local</code>
-          </li>
-        </ul>
+        <h2>Contas demo</h2>
+        <p style={{ margin: 0, color: "var(--text-muted)", lineHeight: 1.8 }}>
+          Usuário <code>mestre</code> ou <code>jogador</code> · senha <code>123</code>
+        </p>
       </article>
     </div>
   );

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Copia bestiario (Cap. I+) do LIVRO-DO-MESTRE para COMPLETO_v4."""
+"""Copia bestiário (Cap. I+) do LIVRO-DO-MESTRE para COMPLETO_v4."""
 
 from __future__ import annotations
 
@@ -16,10 +16,10 @@ MARK_END = "# APÊNDICE — MONSTROS EXCLUSIVOS DE BOSS POR MASMORRA"
 def slice_between(text: str, start: str, end: str) -> tuple[int, int]:
     i = text.find(start)
     if i < 0:
-        raise SystemExit(f"Marcador nao encontrado: {start!r}")
+        raise SystemExit(f"Marcador não encontrado: {start!r}")
     j = text.find(end, i + 1)
     if j < 0:
-        raise SystemExit(f"Marcador nao encontrado: {end!r}")
+        raise SystemExit(f"Marcador não encontrado: {end!r}")
     return i, j
 
 
@@ -31,7 +31,7 @@ def main() -> int:
     block = lm[li:lj].rstrip() + "\n\n"
     c = c[:ci] + block + c[cj:]
     COMPLETO.write_text(c, encoding="utf-8")
-    print(f"OK: bestiario sincronizado -> {COMPLETO.name}")
+    print(f"OK: bestiário sincronizado -> {COMPLETO.name}")
     return 0
 
 

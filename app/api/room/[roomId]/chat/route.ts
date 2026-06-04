@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { rollDice, formatRollMessage } from "@/lib/dice/roll";
+import { canChatInRoom } from "@/lib/auth/room-access";
 import { getSession } from "@/lib/auth/session";
+import { getRoom } from "@/lib/room/store";
 import { addRoomChatMessage } from "@/lib/room/store";
 import type { ChatMessage } from "@/lib/room/chat";
 
@@ -12,25 +14,29 @@ type Body = {
   formula?: string;
 };
 
-function authorFromSession(session: Awaited<ReturnType<typeof getSession>>) {
-  if (session) {
-    return {
-      authorId: session.user.id,
-      authorName: session.user.name,
-      authorRole: session.user.role as ChatMessage["authorRole"],
-    };
-  }
-  return {
-    authorId: "guest",
-    authorName: "Visitante",
-    authorRole: "guest" as const,
-  };
-}
-
 export async function POST(req: Request, { params }: Params) {
   const { roomId } = await params;
   const session = await getSession();
-  const author = authorFromSession(session);
+  if (!session) {
+    return NextResponse.json({ error: "Faça login para enviar mensagens" }, { status: 401 });
+  }
+
+  const room = await getRoom(roomId);
+  if (!room) {
+    return NextResponse.json({ error: "Sala não encontrada" }, { status: 404 });
+  }
+  if (!canChatInRoom(room, session.user)) {
+    return NextResponse.json(
+      { error: "Visitantes só podem assistir — entre na mesa pelo painel com o código" },
+      { status: 403 }
+    );
+  }
+
+  const author = {
+    authorId: session.user.id,
+    authorName: session.user.name,
+    authorRole: session.user.role as ChatMessage["authorRole"],
+  };
   const body = (await req.json()) as Body;
 
   if (body.kind === "roll" || body.formula) {
@@ -40,7 +46,7 @@ export async function POST(req: Request, { params }: Params) {
     }
     try {
       const result = rollDice(formula);
-      const snapshot = addRoomChatMessage(roomId, {
+      const snapshot = await addRoomChatMessage(roomId, {
         ...author,
         kind: "roll",
         text: formatRollMessage(result),
@@ -67,7 +73,7 @@ export async function POST(req: Request, { params }: Params) {
     return NextResponse.json({ error: "Mensagem inválida (máx 500)" }, { status: 400 });
   }
 
-  const snapshot = addRoomChatMessage(roomId, {
+  const snapshot = await addRoomChatMessage(roomId, {
     ...author,
     kind: "chat",
     text,

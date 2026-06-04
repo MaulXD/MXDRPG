@@ -5,10 +5,10 @@ function mod(score: number): number {
   return Math.floor((score - 10) / 2);
 }
 
-export function monsterCombatActions(entryId: string): CombatActionOption[] {
-  const t = getMonsterTemplate(entryId);
-  if (!t) return [];
-
+function generatedMonsterActions(
+  entryId: string,
+  t: NonNullable<ReturnType<typeof getMonsterTemplate>>
+): CombatActionOption[] {
   const forMod = mod(t.forca);
   const dexMod = mod(t.agilidade);
   const actions: CombatActionOption[] = [];
@@ -77,4 +77,18 @@ export function monsterCombatActions(entryId: string): CombatActionOption[] {
   }
 
   return actions;
+}
+
+export function monsterCombatActions(entryId: string): CombatActionOption[] {
+  const t = getMonsterTemplate(entryId);
+  if (!t) return [];
+
+  if (t.actions.length > 0) {
+    return t.actions.map((a) => ({
+      ...a,
+      label: a.label ?? `${a.name} · ${a.rangeHex ?? 1} hex · PA ${a.paCost}`,
+    }));
+  }
+
+  return generatedMonsterActions(entryId, t);
 }

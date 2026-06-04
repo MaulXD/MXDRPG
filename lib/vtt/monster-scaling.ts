@@ -1,4 +1,5 @@
 import type { MonsterTemplate } from "@/lib/vtt/monsters";
+import { normalizeMonsterPa } from "@/lib/vtt/monster-pa";
 
 /** Variante de spawn na mesa (Cap. XII — Elite / Colossal simplificado). */
 export type MonsterSpawnVariant = "normal" | "elite" | "colossal";
@@ -52,7 +53,12 @@ export function applyMonsterSpawnScaling(
   }
 
   const vidaMax = scaleHp(template.vidaMax, hpFactor);
-  const paMax = template.paMax + paBonus;
+  const tier = template.tier;
+  const { pa, paMax } = normalizeMonsterPa(
+    template.paMax + paBonus,
+    template.paMax + paBonus,
+    tier
+  );
 
   const nameSuffix =
     variant === "elite" ? " (Elite)" : variant === "colossal" ? " (Colossal)" : "";
@@ -63,7 +69,7 @@ export function applyMonsterSpawnScaling(
     ameaca,
     vida: vidaMax,
     vidaMax,
-    pa: paMax,
+    pa,
     paMax,
     actions: scaleActions(template, ameaca),
   };

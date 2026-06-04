@@ -1,8 +1,10 @@
 [
   {
+    "id": "habilidades-investida-hexagonal",
     "name": "Investida Hexagonal",
     "type": "habilidade",
     "system": {
+      "catalogId": "HAB-investida-hexagonal",
       "description": "<p>Movimento 2 hex sem provocar.</p>",
       "tactical": {
         "alcanceHex": {
@@ -10,7 +12,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -21,9 +23,11 @@
     }
   },
   {
+    "id": "habilidades-golpe-flanqueador",
     "name": "Golpe Flanqueador",
     "type": "habilidade",
     "system": {
+      "catalogId": "HAB-golpe-flanqueador",
       "description": "<p>Ataque cac com vantagem se flanqueio.</p>",
       "tactical": {
         "alcanceHex": {
@@ -42,9 +46,11 @@
     }
   },
   {
+    "id": "habilidades-postura-defensiva",
     "name": "Postura Defensiva",
     "type": "habilidade",
     "system": {
+      "catalogId": "HAB-postura-defensiva",
       "description": "<p>+2 defesa até próximo turno.</p>",
       "tactical": {
         "alcanceHex": {
@@ -52,7 +58,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -63,9 +69,11 @@
     }
   },
   {
+    "id": "habilidades-reflexos-de-masmorra",
     "name": "Reflexos de Masmorra",
     "type": "habilidade",
     "system": {
+      "catalogId": "HAB-reflexos-de-masmorra",
       "description": "<p>Reação: desloca 1 hex.</p>",
       "tactical": {
         "alcanceHex": {
@@ -73,7 +81,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -84,9 +92,11 @@
     }
   },
   {
+    "id": "habilidades-olhar-do-cacador",
     "name": "Olhar do Caçador",
     "type": "habilidade",
     "system": {
+      "catalogId": "HAB-olhar-do-cacador",
       "description": "<p>Marca alvo; +2 próximo ataque à distância.</p>",
       "tactical": {
         "alcanceHex": {
@@ -94,7 +104,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -105,9 +115,11 @@
     }
   },
   {
+    "id": "habilidades-investida-do-guerreiro",
     "name": "Investida do Guerreiro",
     "type": "habilidade",
     "system": {
+      "catalogId": "HAB-investida-do-guerreiro",
       "description": "<p>Corrida em linha reta.</p>",
       "tactical": {
         "alcanceHex": {
@@ -115,7 +127,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -126,9 +138,11 @@
     }
   },
   {
+    "id": "habilidades-golpe-devastador",
     "name": "Golpe Devastador",
     "type": "habilidade",
     "system": {
+      "catalogId": "HAB-golpe-devastador",
       "description": "<p>+2 no próximo ataque corpo a corpo.</p>",
       "tactical": {
         "alcanceHex": {
@@ -147,9 +161,11 @@
     }
   },
   {
+    "id": "habilidades-esquiva-tatica",
     "name": "Esquiva Tática",
     "type": "habilidade",
     "system": {
+      "catalogId": "HAB-esquiva-tatica",
       "description": "<p>+2 defesa até seu próximo turno.</p>",
       "tactical": {
         "alcanceHex": {
@@ -157,7 +173,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -168,9 +184,11 @@
     }
   },
   {
+    "id": "habilidades-tiro-certeiro",
     "name": "Tiro Certeiro",
     "type": "habilidade",
     "system": {
+      "catalogId": "HAB-tiro-certeiro",
       "description": "<p>Próximo ataque à distância com vantagem.</p>",
       "tactical": {
         "alcanceHex": {
@@ -178,7 +196,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -189,9 +207,11 @@
     }
   },
   {
+    "id": "habilidades-emboscada",
     "name": "Emboscada",
     "type": "habilidade",
     "system": {
+      "catalogId": "HAB-emboscada",
       "description": "<p>Ataque furtivo adjacente.</p>",
       "tactical": {
         "alcanceHex": {
@@ -210,9 +230,11 @@
     }
   },
   {
+    "id": "habilidades-finta",
     "name": "Finta",
     "type": "habilidade",
     "system": {
+      "catalogId": "HAB-finta",
       "description": "<p>Alvo tem desvantagem no próximo ataque contra ele.</p>",
       "tactical": {
         "alcanceHex": {
@@ -220,7 +242,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -231,9 +253,11 @@
     }
   },
   {
+    "id": "habilidades-passo-das-sombras",
     "name": "Passo das Sombras",
     "type": "habilidade",
     "system": {
+      "catalogId": "HAB-passo-das-sombras",
       "description": "<p>Teleporte curto 2 hex (movimento).</p>",
       "tactical": {
         "alcanceHex": {
@@ -241,7 +265,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -252,9 +276,11 @@
     }
   },
   {
+    "id": "habilidades-raio-arcano",
     "name": "Raio Arcano",
     "type": "habilidade",
     "system": {
+      "catalogId": "HAB-raio-arcano",
       "description": "<p>Truque ofensivo 1d10+INT.</p>",
       "tactical": {
         "alcanceHex": {
@@ -262,7 +288,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -273,9 +299,11 @@
     }
   },
   {
+    "id": "habilidades-escudo-magico",
     "name": "Escudo Mágico",
     "type": "habilidade",
     "system": {
+      "catalogId": "HAB-escudo-magico",
       "description": "<p>+3 defesa 1 rodada.</p>",
       "tactical": {
         "alcanceHex": {
@@ -283,7 +311,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -294,9 +322,11 @@
     }
   },
   {
+    "id": "habilidades-canalizar-energia",
     "name": "Canalizar Energia",
     "type": "habilidade",
     "system": {
+      "catalogId": "HAB-canalizar-energia",
       "description": "<p>Ataque sagrado +2d6 radiante.</p>",
       "tactical": {
         "alcanceHex": {
@@ -315,9 +345,11 @@
     }
   },
   {
+    "id": "habilidades-furia-controlada",
     "name": "Fúria Controlada",
     "type": "habilidade",
     "system": {
+      "catalogId": "HAB-furia-controlada",
       "description": "<p>Resistência contundente 1 turno.</p>",
       "tactical": {
         "alcanceHex": {
@@ -325,7 +357,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -336,9 +368,11 @@
     }
   },
   {
+    "id": "habilidades-investida-barbara",
     "name": "Investida Bárbara",
     "type": "habilidade",
     "system": {
+      "catalogId": "HAB-investida-barbara",
       "description": "<p>Corre 3 hex em linha.</p>",
       "tactical": {
         "alcanceHex": {
@@ -346,7 +380,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -357,9 +391,11 @@
     }
   },
   {
+    "id": "habilidades-inspiracao-de-batalha",
     "name": "Inspiração de Batalha",
     "type": "habilidade",
     "system": {
+      "catalogId": "HAB-inspiracao-de-batalha",
       "description": "<p>Aliado ganha vantagem no próximo ataque.</p>",
       "tactical": {
         "alcanceHex": {
@@ -367,7 +403,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -378,9 +414,11 @@
     }
   },
   {
+    "id": "habilidades-cancao-de-cura",
     "name": "Canção de Cura",
     "type": "habilidade",
     "system": {
+      "catalogId": "HAB-cancao-de-cura",
       "description": "<p>Aliado recupera 1d6 HP.</p>",
       "tactical": {
         "alcanceHex": {
@@ -388,7 +426,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -399,9 +437,11 @@
     }
   },
   {
+    "id": "habilidades-forma-selvagem",
     "name": "Forma Selvagem",
     "type": "habilidade",
     "system": {
+      "catalogId": "HAB-forma-selvagem",
       "description": "<p>Prepara transformação (movimento).</p>",
       "tactical": {
         "alcanceHex": {
@@ -420,9 +460,11 @@
     }
   },
   {
+    "id": "habilidades-raizes-prendentes",
     "name": "Raízes Prendentes",
     "type": "habilidade",
     "system": {
+      "catalogId": "HAB-raizes-prendentes",
       "description": "<p>Restringe alvo 1 turno.</p>",
       "tactical": {
         "alcanceHex": {
@@ -441,9 +483,11 @@
     }
   },
   {
+    "id": "habilidades-disparo-de-artilheiro",
     "name": "Disparo de Artilheiro",
     "type": "habilidade",
     "system": {
+      "catalogId": "HAB-disparo-de-artilheiro",
       "description": "<p>Projétil 2d8.</p>",
       "tactical": {
         "alcanceHex": {
@@ -451,7 +495,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -462,9 +506,11 @@
     }
   },
   {
+    "id": "habilidades-barreira-de-cobre",
     "name": "Barreira de Cobre",
     "type": "habilidade",
     "system": {
+      "catalogId": "HAB-barreira-de-cobre",
       "description": "<p>+2 defesa contra magia.</p>",
       "tactical": {
         "alcanceHex": {
@@ -472,7 +518,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },

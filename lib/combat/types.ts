@@ -62,6 +62,9 @@ export type CombatActionOption = {
   areaHexCount?: number;
   /** Propriedades mágicas / orgânicas (Cap. 14.8) */
   equipmentSpecials?: EquipmentSpecial[];
+  /** Magia canalizável — até N PA extras na mesma conjuração */
+  channelMaxExtraPa?: number;
+  channelBonusPerPa?: string;
 };
 
 export type CombatTurnOptions = {
@@ -78,6 +81,10 @@ export type CombatActionRequest = {
   /** Centro de magia de área */
   centerQ?: number;
   centerR?: number;
+  /** Direção 0–5 (cone/linha) */
+  areaDirection?: number;
+  /** PA extras de canalização (0–2) */
+  channelExtraPa?: number;
 };
 
 export type AttackModifier = {

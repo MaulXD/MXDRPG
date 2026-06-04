@@ -1,5 +1,6 @@
 [
   {
+    "id": "monstros-zumbi-de-masmorra",
     "name": "Zumbi de Masmorra",
     "type": "npc",
     "system": {
@@ -20,8 +21,8 @@
           "max": 22
         },
         "pontosAcao": {
-          "value": 3,
-          "max": 3
+          "value": 6,
+          "max": 6
         }
       },
       "movement": {
@@ -83,10 +84,12 @@
           "paCost": 1,
           "label": "Investida · 2 hex · PA 1"
         }
-      ]
+      ],
+      "catalogId": "MON-001"
     }
   },
   {
+    "id": "monstros-esqueleto-armado",
     "name": "Esqueleto Armado",
     "type": "npc",
     "system": {
@@ -107,8 +110,8 @@
           "max": 18
         },
         "pontosAcao": {
-          "value": 3,
-          "max": 3
+          "value": 6,
+          "max": 6
         }
       },
       "movement": {
@@ -170,10 +173,12 @@
           "paCost": 1,
           "label": "Investida · 2 hex · PA 1"
         }
-      ]
+      ],
+      "catalogId": "MON-002"
     }
   },
   {
+    "id": "monstros-ghoul",
     "name": "Ghoul",
     "type": "npc",
     "system": {
@@ -194,8 +199,8 @@
           "max": 36
         },
         "pontosAcao": {
-          "value": 3,
-          "max": 3
+          "value": 6,
+          "max": 6
         }
       },
       "movement": {
@@ -257,10 +262,12 @@
           "paCost": 1,
           "label": "Investida · 2 hex · PA 1"
         }
-      ]
+      ],
+      "catalogId": "MON-003"
     }
   },
   {
+    "id": "monstros-espectro",
     "name": "Espectro",
     "type": "npc",
     "system": {
@@ -281,8 +288,8 @@
           "max": 28
         },
         "pontosAcao": {
-          "value": 3,
-          "max": 3
+          "value": 6,
+          "max": 6
         }
       },
       "movement": {
@@ -344,10 +351,12 @@
           "paCost": 2,
           "label": "Ataque especial · 4 hex · PA 2"
         }
-      ]
+      ],
+      "catalogId": "MON-004"
     }
   },
   {
+    "id": "monstros-lich-arquiliche",
     "name": "Lich (Arquiliche)",
     "type": "npc",
     "system": {
@@ -368,8 +377,8 @@
           "max": 285
         },
         "pontosAcao": {
-          "value": 4,
-          "max": 4
+          "value": 6,
+          "max": 6
         }
       },
       "movement": {
@@ -431,10 +440,12 @@
           "paCost": 2,
           "label": "Ataque especial · 6 hex · PA 2"
         }
-      ]
+      ],
+      "catalogId": "MON-005"
     }
   },
   {
+    "id": "monstros-assombracao",
     "name": "Assombração",
     "type": "npc",
     "system": {
@@ -455,8 +466,8 @@
           "max": 45
         },
         "pontosAcao": {
-          "value": 3,
-          "max": 3
+          "value": 6,
+          "max": 6
         }
       },
       "movement": {
@@ -518,10 +529,12 @@
           "paCost": 1,
           "label": "Investida · 2 hex · PA 1"
         }
-      ]
+      ],
+      "catalogId": "MON-006"
     }
   },
   {
+    "id": "monstros-vampiro",
     "name": "Vampiro",
     "type": "npc",
     "system": {
@@ -542,8 +555,8 @@
           "max": 144
         },
         "pontosAcao": {
-          "value": 3,
-          "max": 3
+          "value": 6,
+          "max": 6
         }
       },
       "movement": {
@@ -605,10 +618,12 @@
           "paCost": 2,
           "label": "Ataque especial · 6 hex · PA 2"
         }
-      ]
+      ],
+      "catalogId": "MON-007"
     }
   },
   {
+    "id": "monstros-cavaleiro-espectral",
     "name": "Cavaleiro Espectral",
     "type": "npc",
     "system": {
@@ -629,8 +644,8 @@
           "max": 45
         },
         "pontosAcao": {
-          "value": 3,
-          "max": 3
+          "value": 6,
+          "max": 6
         }
       },
       "movement": {
@@ -692,10 +707,12 @@
           "paCost": 2,
           "label": "Ataque especial · 4 hex · PA 2"
         }
-      ]
+      ],
+      "catalogId": "MON-008"
     }
   },
   {
+    "id": "monstros-mumia",
     "name": "Múmia",
     "type": "npc",
     "system": {
@@ -716,8 +733,8 @@
           "max": 58
         },
         "pontosAcao": {
-          "value": 3,
-          "max": 3
+          "value": 6,
+          "max": 6
         }
       },
       "movement": {
@@ -779,10 +796,12 @@
           "paCost": 2,
           "label": "Ataque especial · 4 hex · PA 2"
         }
-      ]
+      ],
+      "catalogId": "MON-009"
     }
   },
   {
+    "id": "monstros-dragonete-de-magma",
     "name": "Dragonete de Magma",
     "type": "npc",
     "system": {
@@ -803,8 +822,8 @@
           "max": 68
         },
         "pontosAcao": {
-          "value": 3,
-          "max": 3
+          "value": 6,
+          "max": 6
         }
       },
       "movement": {
@@ -866,10 +885,12 @@
           "paCost": 2,
           "label": "Ataque especial · 4 hex · PA 2"
         }
-      ]
+      ],
+      "catalogId": "MON-010"
     }
   },
   {
+    "id": "monstros-wyvern",
     "name": "Wyvern",
     "type": "npc",
     "system": {
@@ -890,8 +911,8 @@
           "max": 110
         },
         "pontosAcao": {
-          "value": 3,
-          "max": 3
+          "value": 6,
+          "max": 6
         }
       },
       "movement": {
@@ -953,10 +974,12 @@
           "paCost": 2,
           "label": "Ataque especial · 4 hex · PA 2"
         }
-      ]
+      ],
+      "catalogId": "MON-011"
     }
   },
   {
+    "id": "monstros-dragao-jovem-de-gelo",
     "name": "Dragão Jovem de Gelo",
     "type": "npc",
     "system": {
@@ -977,8 +1000,8 @@
           "max": 178
         },
         "pontosAcao": {
-          "value": 3,
-          "max": 3
+          "value": 6,
+          "max": 6
         }
       },
       "movement": {
@@ -1040,10 +1063,12 @@
           "paCost": 2,
           "label": "Ataque especial · 6 hex · PA 2"
         }
-      ]
+      ],
+      "catalogId": "MON-012"
     }
   },
   {
+    "id": "monstros-drake-de-pedra",
     "name": "Drake de Pedra",
     "type": "npc",
     "system": {
@@ -1064,8 +1089,8 @@
           "max": 62
         },
         "pontosAcao": {
-          "value": 3,
-          "max": 3
+          "value": 6,
+          "max": 6
         }
       },
       "movement": {
@@ -1127,10 +1152,12 @@
           "paCost": 2,
           "label": "Ataque especial · 4 hex · PA 2"
         }
-      ]
+      ],
+      "catalogId": "MON-013"
     }
   },
   {
+    "id": "monstros-dragao-anciao-de-fogo",
     "name": "Dragão Ancião de Fogo",
     "type": "npc",
     "system": {
@@ -1151,8 +1178,8 @@
           "max": 546
         },
         "pontosAcao": {
-          "value": 5,
-          "max": 5
+          "value": 6,
+          "max": 6
         }
       },
       "movement": {
@@ -1214,10 +1241,12 @@
           "paCost": 2,
           "label": "Ataque especial · 6 hex · PA 2"
         }
-      ]
+      ],
+      "catalogId": "MON-014"
     }
   },
   {
+    "id": "monstros-golem-de-pedra",
     "name": "Golem de Pedra",
     "type": "npc",
     "system": {
@@ -1238,8 +1267,8 @@
           "max": 92
         },
         "pontosAcao": {
-          "value": 3,
-          "max": 3
+          "value": 6,
+          "max": 6
         }
       },
       "movement": {
@@ -1301,10 +1330,12 @@
           "paCost": 2,
           "label": "Ataque especial · 4 hex · PA 2"
         }
-      ]
+      ],
+      "catalogId": "MON-015"
     }
   },
   {
+    "id": "monstros-armadura-animada",
     "name": "Armadura Animada",
     "type": "npc",
     "system": {
@@ -1325,8 +1356,8 @@
           "max": 33
         },
         "pontosAcao": {
-          "value": 3,
-          "max": 3
+          "value": 6,
+          "max": 6
         }
       },
       "movement": {
@@ -1362,10 +1393,12 @@
           "paCost": 1,
           "label": "Mordida · 1 hex · PA 1"
         }
-      ]
+      ],
+      "catalogId": "MON-016"
     }
   },
   {
+    "id": "monstros-golem-de-ferro-vulcanico",
     "name": "Golem de Ferro Vulcânico",
     "type": "npc",
     "system": {
@@ -1386,8 +1419,8 @@
           "max": 105
         },
         "pontosAcao": {
-          "value": 3,
-          "max": 3
+          "value": 6,
+          "max": 6
         }
       },
       "movement": {
@@ -1449,10 +1482,12 @@
           "paCost": 2,
           "label": "Ataque especial · 4 hex · PA 2"
         }
-      ]
+      ],
+      "catalogId": "MON-017"
     }
   },
   {
+    "id": "monstros-automato-de-genio",
     "name": "Autômato de Gênio",
     "type": "npc",
     "system": {
@@ -1473,8 +1508,8 @@
           "max": 76
         },
         "pontosAcao": {
-          "value": 3,
-          "max": 3
+          "value": 6,
+          "max": 6
         }
       },
       "movement": {
@@ -1536,10 +1571,12 @@
           "paCost": 2,
           "label": "Ataque especial · 4 hex · PA 2"
         }
-      ]
+      ],
+      "catalogId": "MON-018"
     }
   },
   {
+    "id": "monstros-minotauro",
     "name": "Minotauro",
     "type": "npc",
     "system": {
@@ -1560,8 +1597,8 @@
           "max": 52
         },
         "pontosAcao": {
-          "value": 3,
-          "max": 3
+          "value": 6,
+          "max": 6
         }
       },
       "movement": {
@@ -1623,10 +1660,12 @@
           "paCost": 2,
           "label": "Ataque especial · 4 hex · PA 2"
         }
-      ]
+      ],
+      "catalogId": "MON-019"
     }
   },
   {
+    "id": "monstros-basilisco",
     "name": "Basilisco",
     "type": "npc",
     "system": {
@@ -1647,8 +1686,8 @@
           "max": 52
         },
         "pontosAcao": {
-          "value": 3,
-          "max": 3
+          "value": 6,
+          "max": 6
         }
       },
       "movement": {
@@ -1710,10 +1749,12 @@
           "paCost": 2,
           "label": "Ataque especial · 4 hex · PA 2"
         }
-      ]
+      ],
+      "catalogId": "MON-020"
     }
   },
   {
+    "id": "monstros-manticora",
     "name": "Manticora",
     "type": "npc",
     "system": {
@@ -1734,8 +1775,8 @@
           "max": 98
         },
         "pontosAcao": {
-          "value": 3,
-          "max": 3
+          "value": 6,
+          "max": 6
         }
       },
       "movement": {
@@ -1797,10 +1838,12 @@
           "paCost": 2,
           "label": "Ataque especial · 4 hex · PA 2"
         }
-      ]
+      ],
+      "catalogId": "MON-021"
     }
   },
   {
+    "id": "monstros-grifo",
     "name": "Grifo",
     "type": "npc",
     "system": {
@@ -1821,8 +1864,8 @@
           "max": 59
         },
         "pontosAcao": {
-          "value": 3,
-          "max": 3
+          "value": 6,
+          "max": 6
         }
       },
       "movement": {
@@ -1884,10 +1927,12 @@
           "paCost": 2,
           "label": "Ataque especial · 4 hex · PA 2"
         }
-      ]
+      ],
+      "catalogId": "MON-022"
     }
   },
   {
+    "id": "monstros-cocatriz",
     "name": "Cocatriz",
     "type": "npc",
     "system": {
@@ -1908,8 +1953,8 @@
           "max": 27
         },
         "pontosAcao": {
-          "value": 3,
-          "max": 3
+          "value": 6,
+          "max": 6
         }
       },
       "movement": {
@@ -1971,10 +2016,12 @@
           "paCost": 2,
           "label": "Ataque especial · 4 hex · PA 2"
         }
-      ]
+      ],
+      "catalogId": "MON-023"
     }
   },
   {
+    "id": "monstros-aranha-tecerrochas",
     "name": "Aranha Tecerrochas",
     "type": "npc",
     "system": {
@@ -1995,8 +2042,8 @@
           "max": 26
         },
         "pontosAcao": {
-          "value": 3,
-          "max": 3
+          "value": 6,
+          "max": 6
         }
       },
       "movement": {
@@ -2058,10 +2105,12 @@
           "paCost": 1,
           "label": "Investida · 2 hex · PA 1"
         }
-      ]
+      ],
+      "catalogId": "MON-024"
     }
   },
   {
+    "id": "monstros-escorpiao-gigante",
     "name": "Escorpião Gigante",
     "type": "npc",
     "system": {
@@ -2082,8 +2131,8 @@
           "max": 52
         },
         "pontosAcao": {
-          "value": 3,
-          "max": 3
+          "value": 6,
+          "max": 6
         }
       },
       "movement": {
@@ -2145,10 +2194,12 @@
           "paCost": 1,
           "label": "Investida · 2 hex · PA 1"
         }
-      ]
+      ],
+      "catalogId": "MON-025"
     }
   },
   {
+    "id": "monstros-centopeia-caustica",
     "name": "Centopeia Cáustica",
     "type": "npc",
     "system": {
@@ -2169,8 +2220,8 @@
           "max": 65
         },
         "pontosAcao": {
-          "value": 3,
-          "max": 3
+          "value": 6,
+          "max": 6
         }
       },
       "movement": {
@@ -2232,10 +2283,12 @@
           "paCost": 2,
           "label": "Ataque especial · 4 hex · PA 2"
         }
-      ]
+      ],
+      "catalogId": "MON-026"
     }
   },
   {
+    "id": "monstros-besouro-diamante",
     "name": "Besouro-Diamante",
     "type": "npc",
     "system": {
@@ -2256,8 +2309,8 @@
           "max": 45
         },
         "pontosAcao": {
-          "value": 3,
-          "max": 3
+          "value": 6,
+          "max": 6
         }
       },
       "movement": {
@@ -2319,10 +2372,12 @@
           "paCost": 2,
           "label": "Ataque especial · 4 hex · PA 2"
         }
-      ]
+      ],
+      "catalogId": "MON-027"
     }
   },
   {
+    "id": "monstros-sapo-engolidor",
     "name": "Sapo-Engolidor",
     "type": "npc",
     "system": {
@@ -2343,8 +2398,8 @@
           "max": 75
         },
         "pontosAcao": {
-          "value": 3,
-          "max": 3
+          "value": 6,
+          "max": 6
         }
       },
       "movement": {
@@ -2406,10 +2461,12 @@
           "paCost": 2,
           "label": "Ataque especial · 4 hex · PA 2"
         }
-      ]
+      ],
+      "catalogId": "MON-028"
     }
   },
   {
+    "id": "monstros-kraken-menor",
     "name": "Kraken Menor",
     "type": "npc",
     "system": {
@@ -2430,8 +2487,8 @@
           "max": 152
         },
         "pontosAcao": {
-          "value": 3,
-          "max": 3
+          "value": 6,
+          "max": 6
         }
       },
       "movement": {
@@ -2493,10 +2550,12 @@
           "paCost": 2,
           "label": "Ataque especial · 6 hex · PA 2"
         }
-      ]
+      ],
+      "catalogId": "MON-029"
     }
   },
   {
+    "id": "monstros-serpente-do-abismo",
     "name": "Serpente-do-Abismo",
     "type": "npc",
     "system": {
@@ -2517,8 +2576,8 @@
           "max": 85
         },
         "pontosAcao": {
-          "value": 3,
-          "max": 3
+          "value": 6,
+          "max": 6
         }
       },
       "movement": {
@@ -2580,10 +2639,12 @@
           "paCost": 2,
           "label": "Ataque especial · 4 hex · PA 2"
         }
-      ]
+      ],
+      "catalogId": "MON-030"
     }
   },
   {
+    "id": "monstros-tubarao-cego",
     "name": "Tubarão-Cego",
     "type": "npc",
     "system": {
@@ -2604,8 +2665,8 @@
           "max": 58
         },
         "pontosAcao": {
-          "value": 3,
-          "max": 3
+          "value": 6,
+          "max": 6
         }
       },
       "movement": {
@@ -2667,10 +2728,12 @@
           "paCost": 2,
           "label": "Ataque especial · 4 hex · PA 2"
         }
-      ]
+      ],
+      "catalogId": "MON-031"
     }
   },
   {
+    "id": "monstros-goblin-de-caverna",
     "name": "Goblin de Caverna",
     "type": "npc",
     "system": {
@@ -2691,8 +2754,8 @@
           "max": 7
         },
         "pontosAcao": {
-          "value": 3,
-          "max": 3
+          "value": 6,
+          "max": 6
         }
       },
       "movement": {
@@ -2717,21 +2780,36 @@
       "actions": [
         {
           "packId": "unarmed",
-          "entryId": "goblin-de-caverna-mordida",
-          "name": "Mordida",
+          "entryId": "goblin-de-caverna-facao",
+          "name": "Facão enferrujado",
           "kind": "weapon",
           "resolution": "attack",
-          "damageFormula": "1d6",
-          "damageType": "perfurante",
+          "damageFormula": "1d6+1",
+          "damageType": "cortante",
           "attackBonus": 0,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Mordida · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Facão · 1 hex · PA 2"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "goblin-de-caverna-arco",
+          "name": "Arco pequeno",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d4",
+          "damageType": "perfurante",
+          "attackBonus": 0,
+          "rangeHex": 4,
+          "paCost": 2,
+          "label": "Arco · 4 hex · PA 2"
         }
-      ]
+      ],
+      "catalogId": "MON-032"
     }
   },
   {
+    "id": "monstros-hobgoblin-guerreiro",
     "name": "Hobgoblin Guerreiro",
     "type": "npc",
     "system": {
@@ -2752,8 +2830,8 @@
           "max": 11
         },
         "pontosAcao": {
-          "value": 3,
-          "max": 3
+          "value": 6,
+          "max": 6
         }
       },
       "movement": {
@@ -2815,10 +2893,12 @@
           "paCost": 1,
           "label": "Investida · 2 hex · PA 1"
         }
-      ]
+      ],
+      "catalogId": "MON-033"
     }
   },
   {
+    "id": "monstros-orc-de-masmorra",
     "name": "Orc de Masmorra",
     "type": "npc",
     "system": {
@@ -2839,8 +2919,8 @@
           "max": 15
         },
         "pontosAcao": {
-          "value": 3,
-          "max": 3
+          "value": 6,
+          "max": 6
         }
       },
       "movement": {
@@ -2902,10 +2982,12 @@
           "paCost": 2,
           "label": "Ataque especial · 4 hex · PA 2"
         }
-      ]
+      ],
+      "catalogId": "MON-034"
     }
   },
   {
+    "id": "monstros-cogumelo-rei",
     "name": "Cogumelo-Rei",
     "type": "npc",
     "system": {
@@ -2926,8 +3008,8 @@
           "max": 68
         },
         "pontosAcao": {
-          "value": 3,
-          "max": 3
+          "value": 6,
+          "max": 6
         }
       },
       "movement": {
@@ -2989,10 +3071,12 @@
           "paCost": 2,
           "label": "Ataque especial · 4 hex · PA 2"
         }
-      ]
+      ],
+      "catalogId": "MON-035"
     }
   },
   {
+    "id": "monstros-treant-podre",
     "name": "Treant Podre",
     "type": "npc",
     "system": {
@@ -3013,8 +3097,8 @@
           "max": 136
         },
         "pontosAcao": {
-          "value": 3,
-          "max": 3
+          "value": 6,
+          "max": 6
         }
       },
       "movement": {
@@ -3076,10 +3160,12 @@
           "paCost": 2,
           "label": "Ataque especial · 4 hex · PA 2"
         }
-      ]
+      ],
+      "catalogId": "MON-036"
     }
   },
   {
+    "id": "monstros-planta-carnivora-gigante",
     "name": "Planta Carnívora Gigante",
     "type": "npc",
     "system": {
@@ -3100,8 +3186,8 @@
           "max": 55
         },
         "pontosAcao": {
-          "value": 3,
-          "max": 3
+          "value": 6,
+          "max": 6
         }
       },
       "movement": {
@@ -3163,10 +3249,12 @@
           "paCost": 2,
           "label": "Ataque especial · 4 hex · PA 2"
         }
-      ]
+      ],
+      "catalogId": "MON-037"
     }
   },
   {
+    "id": "monstros-slime-acido",
     "name": "Slime Ácido",
     "type": "npc",
     "system": {
@@ -3187,8 +3275,8 @@
           "max": 22
         },
         "pontosAcao": {
-          "value": 3,
-          "max": 3
+          "value": 6,
+          "max": 6
         }
       },
       "movement": {
@@ -3250,10 +3338,12 @@
           "paCost": 1,
           "label": "Investida · 2 hex · PA 1"
         }
-      ]
+      ],
+      "catalogId": "MON-038"
     }
   },
   {
+    "id": "monstros-slime-de-cristal",
     "name": "Slime de Cristal",
     "type": "npc",
     "system": {
@@ -3274,8 +3364,8 @@
           "max": 38
         },
         "pontosAcao": {
-          "value": 3,
-          "max": 3
+          "value": 6,
+          "max": 6
         }
       },
       "movement": {
@@ -3337,10 +3427,12 @@
           "paCost": 1,
           "label": "Investida · 2 hex · PA 1"
         }
-      ]
+      ],
+      "catalogId": "MON-039"
     }
   },
   {
+    "id": "monstros-elemental-de-fogo",
     "name": "Elemental de Fogo",
     "type": "npc",
     "system": {
@@ -3361,8 +3453,8 @@
           "max": 72
         },
         "pontosAcao": {
-          "value": 3,
-          "max": 3
+          "value": 6,
+          "max": 6
         }
       },
       "movement": {
@@ -3424,10 +3516,12 @@
           "paCost": 2,
           "label": "Ataque especial · 4 hex · PA 2"
         }
-      ]
+      ],
+      "catalogId": "MON-040"
     }
   },
   {
+    "id": "monstros-elemental-de-gelo",
     "name": "Elemental de Gelo",
     "type": "npc",
     "system": {
@@ -3448,8 +3542,8 @@
           "max": 75
         },
         "pontosAcao": {
-          "value": 3,
-          "max": 3
+          "value": 6,
+          "max": 6
         }
       },
       "movement": {
@@ -3511,10 +3605,12 @@
           "paCost": 2,
           "label": "Ataque especial · 4 hex · PA 2"
         }
-      ]
+      ],
+      "catalogId": "MON-041"
     }
   },
   {
+    "id": "monstros-yeti-das-profundezas",
     "name": "Yeti das Profundezas",
     "type": "npc",
     "system": {
@@ -3535,8 +3631,8 @@
           "max": 114
         },
         "pontosAcao": {
-          "value": 3,
-          "max": 3
+          "value": 6,
+          "max": 6
         }
       },
       "movement": {
@@ -3598,10 +3694,12 @@
           "paCost": 2,
           "label": "Ataque especial · 4 hex · PA 2"
         }
-      ]
+      ],
+      "catalogId": "MON-042"
     }
   },
   {
+    "id": "monstros-lobo-do-inverno",
     "name": "Lobo do Inverno",
     "type": "npc",
     "system": {
@@ -3622,8 +3720,8 @@
           "max": 22
         },
         "pontosAcao": {
-          "value": 3,
-          "max": 3
+          "value": 6,
+          "max": 6
         }
       },
       "movement": {
@@ -3685,10 +3783,12 @@
           "paCost": 1,
           "label": "Investida · 2 hex · PA 1"
         }
-      ]
+      ],
+      "catalogId": "MON-043"
     }
   },
   {
+    "id": "monstros-mimico-de-bau",
     "name": "Mímico de Baú",
     "type": "npc",
     "system": {
@@ -3709,8 +3809,8 @@
           "max": 52
         },
         "pontosAcao": {
-          "value": 3,
-          "max": 3
+          "value": 6,
+          "max": 6
         }
       },
       "movement": {
@@ -3772,10 +3872,12 @@
           "paCost": 2,
           "label": "Ataque especial · 4 hex · PA 2"
         }
-      ]
+      ],
+      "catalogId": "MON-044"
     }
   },
   {
+    "id": "monstros-doppelganger",
     "name": "Doppelganger",
     "type": "npc",
     "system": {
@@ -3796,8 +3898,8 @@
           "max": 52
         },
         "pontosAcao": {
-          "value": 3,
-          "max": 3
+          "value": 6,
+          "max": 6
         }
       },
       "movement": {
@@ -3859,10 +3961,12 @@
           "paCost": 2,
           "label": "Ataque especial · 4 hex · PA 2"
         }
-      ]
+      ],
+      "catalogId": "MON-045"
     }
   },
   {
+    "id": "monstros-hidra-das-cavernas",
     "name": "Hidra das Cavernas",
     "type": "npc",
     "system": {
@@ -3883,8 +3987,8 @@
           "max": 168
         },
         "pontosAcao": {
-          "value": 3,
-          "max": 3
+          "value": 6,
+          "max": 6
         }
       },
       "movement": {
@@ -3946,10 +4050,12 @@
           "paCost": 2,
           "label": "Ataque especial · 6 hex · PA 2"
         }
-      ]
+      ],
+      "catalogId": "MON-046"
     }
   },
   {
+    "id": "monstros-quimera",
     "name": "Quimera",
     "type": "npc",
     "system": {
@@ -3970,8 +4076,8 @@
           "max": 114
         },
         "pontosAcao": {
-          "value": 3,
-          "max": 3
+          "value": 6,
+          "max": 6
         }
       },
       "movement": {
@@ -4033,10 +4139,12 @@
           "paCost": 2,
           "label": "Ataque especial · 6 hex · PA 2"
         }
-      ]
+      ],
+      "catalogId": "MON-047"
     }
   },
   {
+    "id": "monstros-anjo-caido",
     "name": "Anjo Caído",
     "type": "npc",
     "system": {
@@ -4057,8 +4165,8 @@
           "max": 220
         },
         "pontosAcao": {
-          "value": 3,
-          "max": 3
+          "value": 6,
+          "max": 6
         }
       },
       "movement": {
@@ -4120,10 +4228,12 @@
           "paCost": 2,
           "label": "Ataque especial · 6 hex · PA 2"
         }
-      ]
+      ],
+      "catalogId": "MON-048"
     }
   },
   {
+    "id": "monstros-gargula-de-cristal",
     "name": "Gárgula de Cristal",
     "type": "npc",
     "system": {
@@ -4144,8 +4254,8 @@
           "max": 52
         },
         "pontosAcao": {
-          "value": 3,
-          "max": 3
+          "value": 6,
+          "max": 6
         }
       },
       "movement": {
@@ -4207,10 +4317,12 @@
           "paCost": 2,
           "label": "Ataque especial · 4 hex · PA 2"
         }
-      ]
+      ],
+      "catalogId": "MON-049"
     }
   },
   {
+    "id": "monstros-aberracao-tentacular",
     "name": "Aberração Tentacular",
     "type": "npc",
     "system": {
@@ -4231,8 +4343,8 @@
           "max": 84
         },
         "pontosAcao": {
-          "value": 3,
-          "max": 3
+          "value": 6,
+          "max": 6
         }
       },
       "movement": {
@@ -4294,10 +4406,12 @@
           "paCost": 2,
           "label": "Ataque especial · 4 hex · PA 2"
         }
-      ]
+      ],
+      "catalogId": "MON-050"
     }
   },
   {
+    "id": "monstros-basilisco-de-magma",
     "name": "Basilisco de Magma",
     "type": "npc",
     "system": {
@@ -4318,8 +4432,8 @@
           "max": 88
         },
         "pontosAcao": {
-          "value": 3,
-          "max": 3
+          "value": 6,
+          "max": 6
         }
       },
       "movement": {
@@ -4381,10 +4495,12 @@
           "paCost": 2,
           "label": "Ataque especial · 4 hex · PA 2"
         }
-      ]
+      ],
+      "catalogId": "MON-051"
     }
   },
   {
+    "id": "monstros-sereia-das-profundezas",
     "name": "Sereia das Profundezas",
     "type": "npc",
     "system": {
@@ -4405,8 +4521,8 @@
           "max": 65
         },
         "pontosAcao": {
-          "value": 3,
-          "max": 3
+          "value": 6,
+          "max": 6
         }
       },
       "movement": {
@@ -4468,10 +4584,12 @@
           "paCost": 2,
           "label": "Ataque especial · 4 hex · PA 2"
         }
-      ]
+      ],
+      "catalogId": "MON-052"
     }
   },
   {
+    "id": "monstros-troll-de-pedra",
     "name": "Troll de Pedra",
     "type": "npc",
     "system": {
@@ -4492,8 +4610,8 @@
           "max": 105
         },
         "pontosAcao": {
-          "value": 3,
-          "max": 3
+          "value": 6,
+          "max": 6
         }
       },
       "movement": {
@@ -4555,10 +4673,12 @@
           "paCost": 2,
           "label": "Ataque especial · 4 hex · PA 2"
         }
-      ]
+      ],
+      "catalogId": "MON-053"
     }
   },
   {
+    "id": "monstros-ciclope",
     "name": "Ciclope",
     "type": "npc",
     "system": {
@@ -4579,8 +4699,8 @@
           "max": 138
         },
         "pontosAcao": {
-          "value": 3,
-          "max": 3
+          "value": 6,
+          "max": 6
         }
       },
       "movement": {
@@ -4642,10 +4762,12 @@
           "paCost": 2,
           "label": "Ataque especial · 6 hex · PA 2"
         }
-      ]
+      ],
+      "catalogId": "MON-054"
     }
   },
   {
+    "id": "monstros-harpia-de-caverna",
     "name": "Harpia de Caverna",
     "type": "npc",
     "system": {
@@ -4666,8 +4788,8 @@
           "max": 38
         },
         "pontosAcao": {
-          "value": 3,
-          "max": 3
+          "value": 6,
+          "max": 6
         }
       },
       "movement": {
@@ -4729,10 +4851,12 @@
           "paCost": 2,
           "label": "Ataque especial · 4 hex · PA 2"
         }
-      ]
+      ],
+      "catalogId": "MON-055"
     }
   },
   {
+    "id": "monstros-roper",
     "name": "Roper",
     "type": "npc",
     "system": {
@@ -4753,8 +4877,8 @@
           "max": 93
         },
         "pontosAcao": {
-          "value": 3,
-          "max": 3
+          "value": 6,
+          "max": 6
         }
       },
       "movement": {
@@ -4816,10 +4940,12 @@
           "paCost": 2,
           "label": "Ataque especial · 4 hex · PA 2"
         }
-      ]
+      ],
+      "catalogId": "MON-056"
     }
   },
   {
+    "id": "monstros-aboleth",
     "name": "Aboleth",
     "type": "npc",
     "system": {
@@ -4840,8 +4966,8 @@
           "max": 195
         },
         "pontosAcao": {
-          "value": 3,
-          "max": 3
+          "value": 6,
+          "max": 6
         }
       },
       "movement": {
@@ -4903,10 +5029,12 @@
           "paCost": 2,
           "label": "Ataque especial · 6 hex · PA 2"
         }
-      ]
+      ],
+      "catalogId": "MON-057"
     }
   },
   {
+    "id": "monstros-pudim-negro",
     "name": "Pudim Negro",
     "type": "npc",
     "system": {
@@ -4927,8 +5055,8 @@
           "max": 85
         },
         "pontosAcao": {
-          "value": 3,
-          "max": 3
+          "value": 6,
+          "max": 6
         }
       },
       "movement": {
@@ -4990,10 +5118,12 @@
           "paCost": 2,
           "label": "Ataque especial · 4 hex · PA 2"
         }
-      ]
+      ],
+      "catalogId": "MON-058"
     }
   },
   {
+    "id": "monstros-lagosta-gigante-abissal",
     "name": "Lagosta-Gigante Abissal",
     "type": "npc",
     "system": {
@@ -5014,8 +5144,8 @@
           "max": 52
         },
         "pontosAcao": {
-          "value": 3,
-          "max": 3
+          "value": 6,
+          "max": 6
         }
       },
       "movement": {
@@ -5077,10 +5207,12 @@
           "paCost": 2,
           "label": "Ataque especial · 4 hex · PA 2"
         }
-      ]
+      ],
+      "catalogId": "MON-059"
     }
   },
   {
+    "id": "monstros-caranguejo-eremita-colossal",
     "name": "Caranguejo-Eremita Colossal",
     "type": "npc",
     "system": {
@@ -5101,8 +5233,8 @@
           "max": 88
         },
         "pontosAcao": {
-          "value": 3,
-          "max": 3
+          "value": 6,
+          "max": 6
         }
       },
       "movement": {
@@ -5164,10 +5296,12 @@
           "paCost": 2,
           "label": "Ataque especial · 4 hex · PA 2"
         }
-      ]
+      ],
+      "catalogId": "MON-060"
     }
   },
   {
+    "id": "monstros-aranha-cavaleira",
     "name": "Aranha-Cavaleira",
     "type": "npc",
     "system": {
@@ -5188,8 +5322,8 @@
           "max": 105
         },
         "pontosAcao": {
-          "value": 3,
-          "max": 3
+          "value": 6,
+          "max": 6
         }
       },
       "movement": {
@@ -5251,10 +5385,12 @@
           "paCost": 2,
           "label": "Ataque especial · 4 hex · PA 2"
         }
-      ]
+      ],
+      "catalogId": "MON-061"
     }
   },
   {
+    "id": "monstros-mosca-carnica-colossal",
     "name": "Mosca-Carniça Colossal",
     "type": "npc",
     "system": {
@@ -5275,8 +5411,8 @@
           "max": 8
         },
         "pontosAcao": {
-          "value": 3,
-          "max": 3
+          "value": 6,
+          "max": 6
         }
       },
       "movement": {
@@ -5338,10 +5474,12 @@
           "paCost": 1,
           "label": "Investida · 2 hex · PA 1"
         }
-      ]
+      ],
+      "catalogId": "MON-062"
     }
   },
   {
+    "id": "monstros-besouro-trovao",
     "name": "Besouro-Trovão",
     "type": "npc",
     "system": {
@@ -5362,8 +5500,8 @@
           "max": 45
         },
         "pontosAcao": {
-          "value": 3,
-          "max": 3
+          "value": 6,
+          "max": 6
         }
       },
       "movement": {
@@ -5425,10 +5563,12 @@
           "paCost": 2,
           "label": "Ataque especial · 4 hex · PA 2"
         }
-      ]
+      ],
+      "catalogId": "MON-063"
     }
   },
   {
+    "id": "monstros-verme-gigante-de-pedra",
     "name": "Verme Gigante de Pedra",
     "type": "npc",
     "system": {
@@ -5449,8 +5589,8 @@
           "max": 142
         },
         "pontosAcao": {
-          "value": 3,
-          "max": 3
+          "value": 6,
+          "max": 6
         }
       },
       "movement": {
@@ -5512,10 +5652,12 @@
           "paCost": 2,
           "label": "Ataque especial · 6 hex · PA 2"
         }
-      ]
+      ],
+      "catalogId": "MON-064"
     }
   },
   {
+    "id": "monstros-salamandra-gigante",
     "name": "Salamandra Gigante",
     "type": "npc",
     "system": {
@@ -5536,8 +5678,8 @@
           "max": 65
         },
         "pontosAcao": {
-          "value": 3,
-          "max": 3
+          "value": 6,
+          "max": 6
         }
       },
       "movement": {
@@ -5599,10 +5741,12 @@
           "paCost": 2,
           "label": "Ataque especial · 4 hex · PA 2"
         }
-      ]
+      ],
+      "catalogId": "MON-065"
     }
   },
   {
+    "id": "monstros-behemoth-de-pedra",
     "name": "Behemoth de Pedra",
     "type": "npc",
     "system": {
@@ -5623,8 +5767,8 @@
           "max": 230
         },
         "pontosAcao": {
-          "value": 3,
-          "max": 3
+          "value": 6,
+          "max": 6
         }
       },
       "movement": {
@@ -5686,14 +5830,16 @@
           "paCost": 2,
           "label": "Ataque especial · 6 hex · PA 2"
         }
-      ]
+      ],
+      "catalogId": "MON-066"
     }
   },
   {
+    "id": "monstros-goblin",
     "name": "Goblin",
     "type": "npc",
     "system": {
-      "description": "<p>Alias de Goblin de Caverna para spawn rápido.</p>",
+      "description": "<p>Goblin de Caverna (§032) — facão 1d6+1, arco 1d4; Fuga Covarde, Ataque Furtivo e Coordenação de Horda no motor de combate.</p>",
       "attributes": {
         "forca": {
           "value": 8,
@@ -5710,8 +5856,8 @@
           "max": 7
         },
         "pontosAcao": {
-          "value": 3,
-          "max": 3
+          "value": 6,
+          "max": 6
         }
       },
       "movement": {
@@ -5729,28 +5875,43 @@
           "value": 13
         },
         "ameaca": {
-          "value": 1
+          "value": 2
         },
         "tier": "mob"
       },
       "actions": [
         {
           "packId": "unarmed",
-          "entryId": "goblin-mordida",
-          "name": "Mordida",
+          "entryId": "goblin-facao",
+          "name": "Facão enferrujado",
           "kind": "weapon",
           "resolution": "attack",
-          "damageFormula": "1d6",
-          "damageType": "perfurante",
+          "damageFormula": "1d6+1",
+          "damageType": "cortante",
           "attackBonus": 0,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Mordida · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Facão · 1 hex · PA 2"
+        },
+        {
+          "packId": "unarmed",
+          "entryId": "goblin-arco",
+          "name": "Arco pequeno",
+          "kind": "weapon",
+          "resolution": "attack",
+          "damageFormula": "1d4",
+          "damageType": "perfurante",
+          "attackBonus": 0,
+          "rangeHex": 4,
+          "paCost": 2,
+          "label": "Arco · 4 hex · PA 2"
         }
-      ]
+      ],
+      "catalogId": "MON-067"
     }
   },
   {
+    "id": "monstros-esqueleto-de-guarda",
     "name": "Esqueleto de Guarda",
     "type": "npc",
     "system": {
@@ -5771,8 +5932,8 @@
           "max": 22
         },
         "pontosAcao": {
-          "value": 3,
-          "max": 3
+          "value": 6,
+          "max": 6
         }
       },
       "movement": {
@@ -5834,10 +5995,12 @@
           "paCost": 1,
           "label": "Investida · 2 hex · PA 1"
         }
-      ]
+      ],
+      "catalogId": "MON-068"
     }
   },
   {
+    "id": "monstros-slime-de-masmorra",
     "name": "Slime de Masmorra",
     "type": "npc",
     "system": {
@@ -5858,8 +6021,8 @@
           "max": 30
         },
         "pontosAcao": {
-          "value": 3,
-          "max": 3
+          "value": 6,
+          "max": 6
         }
       },
       "movement": {
@@ -5921,7 +6084,8 @@
           "paCost": 1,
           "label": "Investida · 2 hex · PA 1"
         }
-      ]
+      ],
+      "catalogId": "MON-069"
     }
   }
 ]

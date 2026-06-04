@@ -1,20 +1,28 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 const QUICK = [
-  { email: "jogador@vinite.local", label: "Demo" },
-];
+  { login: "jogador", label: "Jogador" },
+  { login: "mestre", label: "Mestre" },
+] as const;
+
+const DEMO_PASSWORD = "123";
 
 type Props = { redirect?: string };
 
 export function LoginForm({ redirect = "" }: Props) {
   const router = useRouter();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [login, setLogin] = useState("");
+  const [password, setPassword] = useState(DEMO_PASSWORD);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  function fillDemo(user: string) {
+    setLogin(user);
+    setPassword(DEMO_PASSWORD);
+  }
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -24,7 +32,7 @@ export function LoginForm({ redirect = "" }: Props) {
     const res = await fetch("/api/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password, redirect }),
+      body: JSON.stringify({ login, password, redirect }),
     });
 
     const data = await res.json();
@@ -42,14 +50,15 @@ export function LoginForm({ redirect = "" }: Props) {
   return (
     <form onSubmit={submit} style={{ display: "flex", flexDirection: "column", gap: "0.85rem" }}>
       <label style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}>
-        E-mail
+        Usuário
         <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          type="text"
+          value={login}
+          onChange={(e) => setLogin(e.target.value)}
           required
+          autoComplete="username"
           style={inputStyle}
-          placeholder="jogador@vinite.local"
+          placeholder="mestre ou jogador"
         />
       </label>
       <label style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}>
@@ -59,6 +68,7 @@ export function LoginForm({ redirect = "" }: Props) {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
+          autoComplete="current-password"
           style={inputStyle}
         />
       </label>
@@ -69,11 +79,11 @@ export function LoginForm({ redirect = "" }: Props) {
       <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
         {QUICK.map((q) => (
           <button
-            key={q.email}
+            key={q.login}
             type="button"
             className="btn btn-secondary"
             style={{ fontSize: "0.75rem", padding: "0.35rem 0.65rem" }}
-            onClick={() => setEmail(q.email)}
+            onClick={() => fillDemo(q.login)}
           >
             {q.label}
           </button>

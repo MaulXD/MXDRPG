@@ -7,15 +7,18 @@
 
 | Volume | Arquivo | Conteúdo |
 |--------|---------|----------|
-| **Livro do Jogador** | `LIVRO-DO-JOGADOR.md` | **Cap. 5B:** 40 plantas · **Cap. 6:** assimilacao **por especime** (001–060, 8 cada) · **61 magias** (incl. truque Calor de Panela) |
-| **Assimilacao (completa)** | `ASSIMILACAO-POR-ESPECIME.md` | 60 monstros × 8 habilidades (espelho do bestiario) |
-| **XP por especime** | `TABELA-XP-ESPECIMES.md` | 001–060 · 100×Nv (Cap. 2.5 Jogador) |
-| **Flora (referencia)** | `CAPITULO-5B-FLORA-DE-ELDARIN.md` | Copia tambem embutida no Jogador apos Cap. 6 |
-| **Biomas (profundo)** | `BIOMAS-APROFUNDADOS.md` | Origem, sobrevivencia flora/fauna, 20 biomas |
-| **Objetos de cenario** | `CATALOGO-OBJETOS-DE-CENARIO.md` | Terreno, props, perigos por bioma (OBJ-G, OBJ-B##) |
+| **Livro do Jogador** | `LIVRO-DO-JOGADOR.md` | **Cap. 2.6 / 3.1:** Pontos de Acao (PA, mesa digital) · **Cap. 12.0:** talentos ±PA · **Cap. 5B:** 40 plantas · **Cap. 6:** assimilação **por espécime** (001–060, 8 cada) · **61 magias** · **Cap. 14.8** efeitos EFE no VTT |
+| **Efeitos de equipamento** | `CATALOGO-EFEITOS-DE-EQUIPAMENTO.md` | EFE-01–10 · ORG-01–08 · `weapon.special` |
+| **Site / VTT** | `app/`, `components/`, `data/compendiums/` | UI em PT-BR (`lang=pt-BR`); slugs VTT sem acento |
+| **Site jogável (roteiro)** | `docs/ELDARIN-SITE-JOGAVEL.md` | Camadas, rotas, fases MVP→v1, DoD, pipeline livro→JSON |
+| **Assimilação (completa)** | `ASSIMILACAO-POR-ESPECIME.md` | 60 monstros × 8 habilidades (espelho do bestiário) |
+| **XP por espécime** | `TABELA-XP-ESPECIMES.md` | 001–060 · 100×Nv (Cap. 2.5 Jogador) |
+| **Flora (referência)** | `CAPITULO-5B-FLORA-DE-ELDARIN.md` | Cópia também embutida no Jogador após Cap. 6 |
+| **Biomas (profundo)** | `BIOMAS-APROFUNDADOS.md` | Origem, sobrevivência flora/fauna, 20 biomas |
+| **Objetos de cenário** | `CATALOGO-OBJETOS-DE-CENARIO.md` | Terreno, props, perigos por bioma (OBJ-G, OBJ-B##) |
 | **Sobrevivencia (regras)** | `REGRAS-ECOLOGIA-DE-SOBREVIVENCIA.md` | 3 vias, pressao ambiental, composicao de mapa |
 | **Vertical, luz, brasas** | `SUPLEMENTO-BIOMAS-VERTICAIS-LUZ-E-BRASAS.md` | Biomas 9 e 12 (voo/plano); 12 sem tocha; Brasas + truque Calor de Panela |
-| **Tesouros e minerios** | `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` | 30 ESP · 30 MIN · 20 TES · saque por monstro 001–060 · OBJ-R |
+| **Tesouros e minérios** | `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` | 30 ESP · 30 MIN · 20 TES · saque por monstro 001–060 · OBJ-R |
 | **Livro do Mestre** | `LIVRO-DO-MESTRE.md` | Biomas, 11 Bocas, bosses, **Magia na mesa** (NPC), **Comportamentos**, bestiário (~80) |
 
 ## Suplementos (opcionais)

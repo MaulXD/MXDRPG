@@ -10,7 +10,7 @@ export async function PATCH(req: Request, { params }: Params) {
   const session = await getSession();
   const { roomId, tokenId } = await params;
 
-  const snapshotBefore = getRoomSnapshot(roomId);
+  const snapshotBefore = await getRoomSnapshot(roomId);
   if (!snapshotBefore) {
     return NextResponse.json({ error: "Sala não encontrada" }, { status: 404 });
   }
@@ -22,14 +22,14 @@ export async function PATCH(req: Request, { params }: Params) {
 
   const body = (await req.json()) as Partial<BattleToken>;
 
-  const room = getRoom(roomId);
+  const room = await getRoom(roomId);
   if (session && room) {
     if (!canMoveToken(room, session.user, token)) {
       return NextResponse.json({ error: "Sem permissão" }, { status: 403 });
     }
   }
 
-  const snapshot = updateRoomToken(roomId, tokenId, body);
+  const snapshot = await updateRoomToken(roomId, tokenId, body);
   if (!snapshot) {
     return NextResponse.json({ error: "Falha ao atualizar token" }, { status: 500 });
   }

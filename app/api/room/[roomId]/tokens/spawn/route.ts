@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
-import { requireRoomManage } from "@/lib/auth/authorize-room";
+import { requireRoomSpawn } from "@/lib/auth/authorize-room";
+import { snapshotForViewer } from "@/lib/room/snapshot-for-viewer";
 import { spawnRoomMonster } from "@/lib/room/store";
 
 type Params = { params: Promise<{ roomId: string }> };
@@ -14,7 +15,7 @@ type Body = {
 
 export async function POST(req: Request, { params }: Params) {
   const { roomId } = await params;
-  const auth = await requireRoomManage(roomId);
+  const auth = await requireRoomSpawn(roomId);
   if ("error" in auth) {
     return NextResponse.json({ error: auth.error }, { status: auth.status });
   }
@@ -25,7 +26,7 @@ export async function POST(req: Request, { params }: Params) {
     return NextResponse.json({ error: "Parâmetros inválidos" }, { status: 400 });
   }
 
-  const result = spawnRoomMonster(
+  const result = await spawnRoomMonster(
     roomId,
     monsterEntryId,
     { q: body.q, r: body.r },
@@ -38,5 +39,5 @@ export async function POST(req: Request, { params }: Params) {
     return NextResponse.json({ error: result.error }, { status: 400 });
   }
 
-  return NextResponse.json(result.snapshot);
+  return NextResponse.json(snapshotForViewer(result.snapshot, auth.room, auth.user));
 }

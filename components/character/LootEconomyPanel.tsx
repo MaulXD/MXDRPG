@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useCallback, useEffect, useState } from "react";
 import type { LootEconomy } from "@/lib/character/types";
@@ -9,7 +9,7 @@ type StackKind = "especiarias" | "minerios" | "tesouros";
 
 const KIND_LABEL: Record<StackKind, string> = {
   especiarias: "Especiarias",
-  minerios: "Minerios",
+  minerios: "Minérios",
   tesouros: "Tesouros",
 };
 
@@ -147,7 +147,7 @@ export function LootEconomyPanel({ characterId, seed, canEdit }: Props) {
         )}
       </div>
       <p className="loot-hint">
-        Trinchar, forrageio e OBJ-R — catalogo Cap. 5.6
+        Trinchar, forrageio e OBJ-R — catálogo Cap. 5.6
       </p>
       <StackSection kind="especiarias" loot={loot} canEdit={canEdit} onChange={persist} />
       <StackSection kind="minerios" loot={loot} canEdit={canEdit} onChange={persist} />
