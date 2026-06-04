@@ -5,6 +5,7 @@ import { DEMO_SCENE } from "@/lib/vtt/demo-scene";
 import { welcomeChat } from "../chat";
 import { emptyCombat } from "../combat";
 import { prunePings } from "@/lib/vtt/ping";
+import { normalizeRoomSettings } from "../settings";
 import { createDemoRoom, syncLinkedTokens } from "../sync";
 import type { RoomSnapshot, RoomState } from "../types";
 
@@ -23,6 +24,7 @@ export function rooms(): Map<string, RoomState> {
 export function toSnapshot(state: RoomState): RoomSnapshot {
   return {
     roomId: state.roomId,
+    settings: normalizeRoomSettings(state.settings),
     scene: state.scene,
     actors: state.actors,
     combat: state.combat,
@@ -129,6 +131,10 @@ export async function getRoom(roomId: string): Promise<RoomState | null> {
   }
   if (room && !room.chat?.length) {
     room.chat = [welcomeChat()];
+  }
+  if (room) {
+    room.settings = normalizeRoomSettings(room.settings);
+    if (!room.adventureId) room.adventureId = room.roomId;
   }
   return room;
 }

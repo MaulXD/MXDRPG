@@ -4,7 +4,29 @@ import { attributesAfterRacial, validatePointBuy } from "@/lib/character/point-b
 import type { CharacterWizardDraft } from "@/lib/character/wizard-types";
 import type { CharacterSheet } from "@/lib/character/types";
 import { attributeMod, hpMaxFor } from "@/lib/character/rules";
+import { validateImageDataUrl } from "@/lib/media/image-data-url";
 import { xpTotalForLevel } from "@/lib/character/xp";
+
+const MAX_PORTRAIT_FIELD_CHARS = 900_000;
+
+/** Evita 413 no POST quando data URLs excedem limite do parser. */
+export function sanitizeWizardDraftForSave(
+  draft: CharacterWizardDraft
+): CharacterWizardDraft {
+  const portraitUrl =
+    draft.portraitUrl && draft.portraitUrl.length <= MAX_PORTRAIT_FIELD_CHARS
+      ? validateImageDataUrl(draft.portraitUrl) ?? null
+      : null;
+  const tokenImageUrl =
+    draft.tokenImageUrl && draft.tokenImageUrl.length <= MAX_PORTRAIT_FIELD_CHARS
+      ? validateImageDataUrl(draft.tokenImageUrl) ?? null
+      : null;
+  return {
+    ...draft,
+    portraitUrl,
+    tokenImageUrl,
+  };
+}
 
 export function validateWizardDraft(draft: CharacterWizardDraft): string | null {
   const name = draft.name.trim();
@@ -24,36 +46,39 @@ export function validateWizardDraft(draft: CharacterWizardDraft): string | null 
 export function buildCharacterFromWizard(
   userId: string,
   draft: CharacterWizardDraft,
-  id?: string
+  id?: string,
+  adventureId?: string | null
 ): CharacterSheet {
-  const err = validateWizardDraft(draft);
+  const safeDraft = sanitizeWizardDraftForSave(draft);
+  const err = validateWizardDraft(safeDraft);
   if (err) throw new Error(err);
 
   const attributes = attributesAfterRacial(
-    draft.pointBuy,
-    draft.raca,
-    draft.linhagem
+    safeDraft.pointBuy,
+    safeDraft.raca,
+    safeDraft.linhagem
   );
   const conMod = attributeMod(attributes.constituicao);
-  const hpMax = hpMaxFor(draft.classe, 1, conMod);
+  const hpMax = hpMaxFor(safeDraft.classe, 1, conMod);
   const desMod = attributeMod(attributes.destreza);
 
   const shell: CharacterSheet = normalizeCharacter({
     id: id ?? `pc-${Date.now().toString(36)}`,
     ownerId: userId,
-    name: draft.name.trim(),
-    biography: draft.biography.trim().slice(0, 2000),
-    portraitUrl: draft.portraitUrl ?? null,
-    tokenImageUrl: draft.tokenImageUrl ?? null,
-    portraitFocus: draft.portraitFocus ?? null,
+    adventureId: adventureId ?? null,
+    name: safeDraft.name.trim(),
+    biography: safeDraft.biography.trim().slice(0, 2000),
+    portraitUrl: safeDraft.portraitUrl ?? null,
+    tokenImageUrl: safeDraft.tokenImageUrl ?? null,
+    portraitFocus: safeDraft.portraitFocus ?? null,
     identity: {
       nivel: 1,
       xpTotal: xpTotalForLevel(1),
-      raca: draft.raca,
-      classe: draft.classe,
+      raca: safeDraft.raca,
+      classe: safeDraft.classe,
       subclasse: null,
-      linhagem: draft.raca === "Meio-Humano" ? draft.linhagem : null,
-      antecedente: draft.antecedente,
+      linhagem: safeDraft.raca === "Meio-Humano" ? safeDraft.linhagem : null,
+      antecedente: safeDraft.antecedente,
       talentos: [],
     },
     attributes,
@@ -69,10 +94,10 @@ export function buildCharacterFromWizard(
   });
 
   return applyIdentityPatch(shell, {
-    raca: draft.raca,
-    classe: draft.classe,
-    linhagem: draft.raca === "Meio-Humano" ? draft.linhagem : null,
-    antecedente: draft.antecedente,
+    raca: safeDraft.raca,
+    classe: safeDraft.classe,
+    linhagem: safeDraft.raca === "Meio-Humano" ? safeDraft.linhagem : null,
+    antecedente: safeDraft.antecedente,
     attributes,
   });
 }

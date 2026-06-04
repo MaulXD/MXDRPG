@@ -257,7 +257,7 @@ export function drawTokensLayer(ctx: CanvasRenderingContext2D, p: TokenDrawParam
     const ringStyle = resolveTokenRing(token, playerActorIds);
 
     if (token.id === p.turnActiveId) {
-      drawTurnActiveIndicator(ctx, x, y, r);
+      drawTurnActiveIndicator(ctx, x, y, r, p.tokenAnimTimeSec);
     }
 
     drawTokenDropShadow(ctx, x, y, r);

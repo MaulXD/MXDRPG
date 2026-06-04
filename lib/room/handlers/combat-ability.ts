@@ -6,6 +6,7 @@ import {
   type AbilityResolution,
 } from "@/lib/combat/ability";
 import { abilityFromEntry } from "@/lib/combat/compendium-actions";
+import { monsterCombatActions } from "@/lib/vtt/monster-actions";
 import { prepareCombatToken, syncActorPaFromToken } from "@/lib/combat/combat-token-pa";
 import { applyPaSpend } from "@/lib/combat/pa-turn";
 import { getEntry } from "@/lib/compendium/registry";
@@ -32,6 +33,11 @@ function resolveRoomAbilityAction(
 ) {
   if (actor) return resolveCombatAction(actor, opts);
   if (opts.entryId && attacker.monsterEntryId) {
+    const fromMonster = monsterCombatActions(attacker.monsterEntryId).find(
+      (a) => a.kind === "ability" && a.entryId === opts.entryId
+    );
+    if (fromMonster) return fromMonster;
+
     const entry = getEntry("habilidades", opts.entryId);
     if (entry) {
       const a = abilityFromEntry(entry);

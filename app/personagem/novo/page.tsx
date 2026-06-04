@@ -34,7 +34,8 @@ export default async function NovoPersonagemPage() {
         <p className="eyebrow">Criação de personagem</p>
         <h1 className="display-lg">Nova ficha Eldarin</h1>
         <p className="lead">
-          Wizard completo (raça, classe, compra de pontos, antecedente, retrato). Subclasse no nv 2.
+          Ficha geral da conta (sem mesa fixa). Para campanha, crie o personagem dentro da mesa em
+          Configurar → ou pelo aviso ao entrar na sala.
         </p>
       </header>
       <CharacterCreationWizard slotsLeft={slotsLeft} />

@@ -79,6 +79,7 @@ export function useHexCanvas(
 
   const needsCanvasAnimation = useCallback((s: HexCanvasDrawState) => {
     return (
+      Boolean(s.turnActiveId) ||
       s.attackableIds.size > 0 ||
       Boolean(s.hoverAttackTargetId) ||
       (s.pathCells?.length ?? 0) >= 2 ||
@@ -194,6 +195,7 @@ export function useHexCanvas(
     frameAnimRef.current = requestAnimationFrame(loop);
     return stopLoop;
   }, [
+    state.turnActiveId,
     state.hoverAttackTargetId,
     state.attackableIds,
     state.pathCells,

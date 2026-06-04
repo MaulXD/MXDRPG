@@ -398,6 +398,28 @@ export type ScenePatchBody = {
   revealedHexes?: string[];
 };
 
+export type RoomSettingsPatchBody = {
+  name?: string;
+  showMonsterHpToPlayers?: boolean;
+  showMonsterHpInChat?: boolean;
+  allowPlayerPing?: boolean;
+};
+
+export async function patchRoomSettings(roomId: string, patch: RoomSettingsPatchBody) {
+  const res = await fetch(`/api/room/${roomId}/settings`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    credentials: "same-origin",
+    body: JSON.stringify(patch),
+  });
+  if (!res.ok) {
+    const err = (await res.json()) as { error?: string };
+    throw new Error(err.error ?? "Falha ao salvar configurações");
+  }
+  const data = (await res.json()) as { snapshot: RoomSnapshot };
+  return data.snapshot;
+}
+
 export async function patchRoomScene(roomId: string, patch: ScenePatchBody) {
   const res = await fetch(`/api/room/${roomId}/scene`, {
     method: "PATCH",
