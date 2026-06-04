@@ -1,5 +1,5 @@
 .char-wizard {
-  max-width: 720px;
+  max-width: 860px;
   margin: 0 auto;
 }
 
@@ -12,13 +12,84 @@
   color: var(--text-muted);
 }
 
-.char-wizard-step.active {
-  color: var(--neon-lime);
-  font-weight: 600;
+.char-wizard-step {
+  border: none;
+  background: none;
+  padding: 0;
+  font: inherit;
+  cursor: default;
+  color: var(--text-muted);
 }
 
 .char-wizard-step.done {
   color: var(--text);
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.char-wizard-step.done:hover {
+  color: var(--neon-lime);
+}
+
+.char-wizard-step.active {
+  color: var(--neon-lime);
+  font-weight: 600;
+  cursor: default;
+  text-decoration: none;
+}
+
+.char-wizard-step:disabled:not(.active) {
+  opacity: 0.55;
+}
+
+.char-wizard-pick-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr));
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.char-wizard-pick {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  align-items: flex-start;
+  text-align: left;
+  padding: 0.65rem 0.75rem;
+  border-radius: 8px;
+  border: 1px solid var(--glass-border);
+  background: rgba(0, 0, 0, 0.3);
+  color: var(--text);
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.char-wizard-pick strong {
+  font-size: 0.88rem;
+}
+
+.char-wizard-pick span {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  line-height: 1.35;
+}
+
+.char-wizard-pick:hover {
+  border-color: rgba(201, 169, 98, 0.45);
+}
+
+.char-wizard-pick--on {
+  border-color: rgba(184, 255, 60, 0.55);
+  background: rgba(184, 255, 60, 0.08);
+  box-shadow: 0 0 0 1px rgba(184, 255, 60, 0.2);
+}
+
+.char-wizard-attr-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
 }
 
 .char-wizard-panel {
@@ -89,6 +160,11 @@
   background: rgba(0, 0, 0, 0.4);
   color: var(--text);
   cursor: pointer;
+}
+
+.char-wizard-attr-controls button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
 }
 
 .char-wizard-attr small {

@@ -11,6 +11,7 @@ import type { BattleScene, BattleToken } from "@/lib/vtt/types";
 import { emptyCombat } from "./combat";
 import { welcomeChat } from "./chat";
 import { initCombatPaForRoom } from "./handlers/combat-turn";
+import { DEFAULT_ROOM_SETTINGS } from "./settings";
 import type { RoomActor, RoomState } from "./types";
 
 /** Foundry: token linkado herda stats + imagem do Actor */
@@ -97,10 +98,12 @@ export function createDemoRoom(): RoomState {
 
   const room: RoomState = {
     roomId: "demo",
+    adventureId: "demo",
     ownerId: "usr_demo_mestre",
     name: "Mesa demonstração",
     inviteCode: "DEMOELDR",
     memberIds: [],
+    settings: { ...DEFAULT_ROOM_SETTINGS },
     scene,
     actors,
     combat: emptyCombat(scene.tokens),

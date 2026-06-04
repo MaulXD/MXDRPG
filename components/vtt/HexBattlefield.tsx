@@ -14,6 +14,7 @@ import {
 } from "@/hooks/useRoomSync";
 import { visibleHexSetForPlayer } from "@/lib/vtt/fog-of-war";
 import { MapScenePanel } from "@/components/vtt/MapScenePanel";
+import { RoomSettingsPanel } from "@/components/vtt/RoomSettingsPanel";
 import { PlayerSpawnPanel } from "@/components/vtt/PlayerSpawnPanel";
 import type { RoomSnapshot } from "@/lib/room/types";
 import { TurnOrderPanel } from "@/components/vtt/TurnOrderPanel";
@@ -74,6 +75,8 @@ type Props = {
   canControlToken?: (token: import("@/lib/vtt/types").BattleToken) => boolean;
   canViewTokenPa?: (token: import("@/lib/vtt/types").BattleToken) => boolean;
   roomId?: string;
+  adventureId?: string;
+  inviteCode?: string | null;
   snapshot?: RoomSnapshot | null;
   onRefresh?: () => void;
   onApplySnapshot?: (snap: RoomSnapshot) => void;
@@ -94,6 +97,8 @@ export function HexBattlefield({
   canControlToken,
   canViewTokenPa,
   roomId = "demo",
+  adventureId: adventureIdProp,
+  inviteCode = null,
   snapshot = null,
   onRefresh,
   onApplySnapshot,
@@ -669,6 +674,16 @@ export function HexBattlefield({
           com fog.
         </p>
 
+        {canControlCombat && snapshot ? (
+          <RoomSettingsPanel
+            roomId={roomId}
+            roomName={displayScene.name}
+            inviteCode={inviteCode ?? "—"}
+            settings={snapshot.settings}
+            onUpdated={(snap) => syncRoom(snap)}
+          />
+        ) : null}
+
         {canControlCombat ? (
           <MapScenePanel roomId={roomId} scene={displayScene} onUpdated={(snap) => syncRoom(snap)} />
         ) : null}
@@ -681,6 +696,8 @@ export function HexBattlefield({
             tokens={displayScene.tokens}
             spawnAxial={hoverAxial}
             onPlaced={(snap) => syncRoom(snap)}
+            adventureId={adventureIdProp ?? roomId}
+            showCreateLink={roomId !== "demo" && canEdit}
           />
         ) : null}
 

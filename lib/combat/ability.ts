@@ -450,7 +450,18 @@ export function resolveAbilityBuff(
 
   }
 
-
+  if (!effect) {
+    const detail = action.label ?? action.name;
+    return {
+      kind: "buff",
+      tokenId: token.id,
+      defesaBonus: 0,
+      paCost: effectivePaCost(actor, action),
+      buffSource: action.name,
+      summary: `${name} — ${detail}`,
+      attackerUpdate: {},
+    };
+  }
 
   throw new Error("Habilidade não suportada");
 
@@ -917,8 +928,6 @@ export function resolveAbilityUse(
     return resolveAbilityMark(attacker, defender, action, actor, turn);
 
   }
-
-
 
   if (effect === "spell_strike") {
 
