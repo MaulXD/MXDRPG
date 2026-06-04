@@ -907,11 +907,12 @@
   gap: 0.35rem;
   max-height: 220px;
   overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .vtt-turn-list li {
   display: grid;
-  grid-template-columns: 1.25rem 40px minmax(0, 1fr) auto;
+  grid-template-columns: 1.25rem 48px minmax(0, 1fr) auto;
   gap: 0.55rem;
   align-items: center;
   padding: 0.55rem 0.6rem;
@@ -919,19 +920,59 @@
   border: 1px solid transparent;
   background: var(--surface);
   transition: border-color 0.15s, background 0.15s;
+  contain: layout style;
 }
 
 .vtt-turn-list li.active,
 .vtt-turn-list li.vtt-turn-active {
   border-color: rgba(201, 169, 98, 0.55);
   background: rgba(201, 169, 98, 0.1);
-  box-shadow: inset 3px 0 0 rgba(201, 169, 98, 0.75);
+  box-shadow: inset 3px 0 0 rgba(201, 169, 98, 0.85);
+}
+
+.vtt-turn-avatar-slot {
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.vtt-turn-avatar-slot--active::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 46px;
+  height: 46px;
+  margin: -23px 0 0 -23px;
+  border-radius: 50%;
+  border: 2px dashed rgba(201, 169, 98, 0.92);
+  box-sizing: border-box;
+  pointer-events: none;
+  z-index: 2;
+  animation: vtt-turn-ring-spin 2.8s linear infinite;
 }
 
 .vtt-turn-avatar--active {
-  box-shadow:
-    0 0 0 2px rgba(201, 169, 98, 0.9),
-    0 0 0 3px rgba(255, 220, 140, 0.35);
+  box-shadow: 0 0 0 2px rgba(201, 169, 98, 0.88);
+}
+
+@keyframes vtt-turn-ring-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.vtt-turn-list li.vtt-turn-attack-focus .vtt-turn-avatar-slot--active::before,
+.vtt-turn-list li.vtt-turn-attackable .vtt-turn-avatar-slot--active::before {
+  animation: none;
+  opacity: 0.35;
 }
 
 .vtt-turn-list li.defeated {
@@ -954,7 +995,7 @@
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  overflow: visible;
+  overflow: hidden;
   border: 2px solid var(--glass-border);
   flex-shrink: 0;
 }
@@ -1206,6 +1247,12 @@
   letter-spacing: 0.08em;
   color: var(--accent-warn);
   font-weight: 700;
+  flex-shrink: 0;
+}
+
+.vtt-turn-name-row .vtt-turn-name {
+  flex: 1;
+  min-width: 0;
 }
 
 .mesa-workspace {
@@ -2269,6 +2316,20 @@
   display: flex;
   flex-wrap: wrap;
   gap: 0.4rem;
+}
+
+.vtt-settings-fieldset {
+  border: 1px solid var(--glass-border);
+  border-radius: 8px;
+  padding: 0.65rem 0.75rem;
+  margin: 0.5rem 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.vtt-settings-fieldset legend {
+  padding: 0 0.25rem;
 }
 
 .vtt-btn {

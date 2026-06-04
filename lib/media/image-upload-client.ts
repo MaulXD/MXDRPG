@@ -3,6 +3,7 @@
 import { validateImageDataUrl } from "@/lib/media/image-data-url";
 import {
   DEFAULT_PORTRAIT_FOCUS,
+  normalizePortraitFocus,
   type PortraitFocus,
 } from "@/lib/media/portrait-focus";
 
@@ -61,13 +62,15 @@ function drawCover(
   height: number,
   focus: PortraitFocus
 ): void {
+  const f = normalizePortraitFocus(focus);
   const iw = img.naturalWidth;
   const ih = img.naturalHeight;
-  const scale = Math.max(width / iw, height / ih);
+  const zoom = f.scale ?? 1;
+  const scale = Math.max(width / iw, height / ih) * zoom;
   const sw = width / scale;
   const sh = height / scale;
-  const sx = Math.max(0, Math.min(iw - sw, (iw - sw) * focus.x));
-  const sy = Math.max(0, Math.min(ih - sh, (ih - sh) * focus.y));
+  const sx = Math.max(0, Math.min(iw - sw, (iw - sw) * f.x));
+  const sy = Math.max(0, Math.min(ih - sh, (ih - sh) * f.y));
   ctx.drawImage(img, sx, sy, sw, sh, 0, 0, width, height);
 }
 
@@ -137,7 +140,8 @@ export async function buildPortraitBundleFromImage(
   img: HTMLImageElement,
   focus: PortraitFocus
 ): Promise<PortraitBundle> {
-  const portraitUrl = encodeWebpCover(img, PORTRAIT_MAX_EDGE, focus);
-  const tokenImageUrl = encodeWebpCover(img, TOKEN_MAX_EDGE, focus);
-  return { portraitUrl, tokenImageUrl, portraitFocus: focus };
+  const normalized = normalizePortraitFocus(focus);
+  const portraitUrl = encodeWebpCover(img, PORTRAIT_MAX_EDGE, normalized);
+  const tokenImageUrl = encodeWebpCover(img, TOKEN_MAX_EDGE, normalized);
+  return { portraitUrl, tokenImageUrl, portraitFocus: normalized };
 }

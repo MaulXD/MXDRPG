@@ -49,6 +49,98 @@ export function defaultPointBuyScores(): Record<AttributeKey, number> {
   };
 }
 
+/** Distribuição sugerida (27 pts) por classe — Eldarin point-buy. */
+export function suggestedPointBuyForClass(classe: string): Record<AttributeKey, number> {
+  switch (classe) {
+    case "Mago":
+    case "Artífice":
+      return {
+        forca: 8,
+        destreza: 13,
+        constituicao: 14,
+        inteligencia: 15,
+        sabedoria: 12,
+        carisma: 10,
+      };
+    case "Clérigo":
+    case "Druida":
+      return {
+        forca: 8,
+        destreza: 12,
+        constituicao: 14,
+        inteligencia: 10,
+        sabedoria: 15,
+        carisma: 13,
+      };
+    case "Ladino":
+    case "Bardo":
+      return {
+        forca: 8,
+        destreza: 15,
+        constituicao: 12,
+        inteligencia: 10,
+        sabedoria: 10,
+        carisma: 14,
+      };
+    case "Patrulheiro":
+      return {
+        forca: 10,
+        destreza: 15,
+        constituicao: 14,
+        inteligencia: 10,
+        sabedoria: 12,
+        carisma: 8,
+      };
+    case "Bárbaro":
+      return {
+        forca: 15,
+        destreza: 12,
+        constituicao: 14,
+        inteligencia: 8,
+        sabedoria: 10,
+        carisma: 10,
+      };
+    default:
+      return {
+        forca: 15,
+        destreza: 14,
+        constituicao: 14,
+        inteligencia: 8,
+        sabedoria: 12,
+        carisma: 8,
+      };
+  }
+}
+
+export function isUnsetPointBuy(scores: Record<AttributeKey, number>): boolean {
+  return totalPointBuyCost(scores) === 0;
+}
+
+export function pointBuyIncreaseCost(
+  scores: Record<AttributeKey, number>,
+  key: AttributeKey
+): number {
+  const cur = scores[key] ?? POINT_BUY_MIN;
+  if (cur >= POINT_BUY_MAX_BEFORE_RACIAL) return 99;
+  return pointBuyCost(cur + 1) - pointBuyCost(cur);
+}
+
+export function canIncreasePointBuy(
+  scores: Record<AttributeKey, number>,
+  key: AttributeKey
+): boolean {
+  const cur = scores[key] ?? POINT_BUY_MIN;
+  if (cur >= POINT_BUY_MAX_BEFORE_RACIAL) return false;
+  return totalPointBuyCost(scores) + pointBuyIncreaseCost(scores, key) <= POINT_BUY_POOL;
+}
+
+export function canDecreasePointBuy(
+  scores: Record<AttributeKey, number>,
+  key: AttributeKey
+): boolean {
+  return (scores[key] ?? POINT_BUY_MIN) > POINT_BUY_MIN;
+}
+
 export function validatePointBuy(scores: Record<AttributeKey, number>): string | null {
   for (const key of ATTR_ORDER) {
     const v = scores[key];
@@ -59,6 +151,9 @@ export function validatePointBuy(scores: Record<AttributeKey, number>): string |
   const spent = totalPointBuyCost(scores);
   if (spent > POINT_BUY_POOL) {
     return `Gastou ${spent} pontos (máx ${POINT_BUY_POOL})`;
+  }
+  if (spent < POINT_BUY_POOL) {
+    return `Ainda restam ${POINT_BUY_POOL - spent} pontos para distribuir`;
   }
   return null;
 }

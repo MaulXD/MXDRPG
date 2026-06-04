@@ -1,8 +1,12 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { WizardPortraitStep } from "@/components/character/wizard/WizardPortraitStep";
+import {
+  sanitizeWizardDraftForSave,
+  validateWizardDraft,
+} from "@/lib/character/build-from-wizard";
 import {
   ANTECEDENTE_OPTIONS,
   EMPTY_WIZARD_DRAFT,
@@ -12,7 +16,11 @@ import {
   ATTR_ORDER,
   POINT_BUY_POOL,
   attributesAfterRacial,
+  canDecreasePointBuy,
+  canIncreasePointBuy,
+  isUnsetPointBuy,
   pointBuyCost,
+  suggestedPointBuyForClass,
   totalPointBuyCost,
   validatePointBuy,
 } from "@/lib/character/point-buy";
@@ -25,7 +33,6 @@ import {
   getRace,
   hpMaxFor,
 } from "@/lib/character/rules";
-import { validateWizardDraft } from "@/lib/character/build-from-wizard";
 import "@/components/character/wizard/wizard.css";
 
 const STEPS = [
@@ -40,14 +47,40 @@ const STEPS = [
 
 type Props = {
   slotsLeft: number;
+  /** Ficha vinculada a esta aventura. */
+  adventureId?: string | null;
+  adventureName?: string | null;
+  /** @deprecated use adventureId */
+  roomId?: string | null;
+  roomName?: string | null;
 };
 
-export function CharacterCreationWizard({ slotsLeft }: Props) {
+function ensurePointBuyIfUnset(
+  draft: CharacterWizardDraft
+): CharacterWizardDraft {
+  if (!isUnsetPointBuy(draft.pointBuy)) return draft;
+  return { ...draft, pointBuy: suggestedPointBuyForClass(draft.classe) };
+}
+
+export function CharacterCreationWizard({
+  slotsLeft,
+  adventureId: adventureIdProp = null,
+  adventureName = null,
+  roomId = null,
+  roomName = null,
+}: Props) {
+  const adventureId = adventureIdProp ?? roomId;
+  const label = adventureName ?? roomName;
   const router = useRouter();
   const [step, setStep] = useState(0);
-  const [draft, setDraft] = useState<CharacterWizardDraft>({ ...EMPTY_WIZARD_DRAFT });
+  const [draft, setDraft] = useState<CharacterWizardDraft>({
+    ...EMPTY_WIZARD_DRAFT,
+    pointBuy: suggestedPointBuyForClass(EMPTY_WIZARD_DRAFT.classe),
+  });
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
+  const [portraitPending, setPortraitPending] = useState(false);
+  const [pbAutoApplied, setPbAutoApplied] = useState(true);
 
   const raceDef = getRace(draft.raca);
   const classDef = getClass(draft.classe);
@@ -61,23 +94,37 @@ export function CharacterCreationWizard({ slotsLeft }: Props) {
 
   const previewHp = hpMaxFor(draft.classe, 1, attributeMod(finalAttrs.constituicao));
 
+  useEffect(() => {
+    if (step !== 3 || !isUnsetPointBuy(draft.pointBuy)) return;
+    setDraft((d) => ensurePointBuyIfUnset(d));
+    setPbAutoApplied(true);
+  }, [step, draft.pointBuy, draft.classe]);
+
   function patch(p: Partial<CharacterWizardDraft>) {
     setDraft((d) => ({ ...d, ...p }));
   }
 
   function setAttr(key: (typeof ATTR_ORDER)[number], delta: number) {
-    setDraft((d) => ({
-      ...d,
-      pointBuy: {
-        ...d.pointBuy,
-        [key]: Math.max(8, Math.min(15, d.pointBuy[key] + delta)),
-      },
-    }));
+    setDraft((d) => {
+      const cur = d.pointBuy[key];
+      if (delta > 0 && !canIncreasePointBuy(d.pointBuy, key)) return d;
+      if (delta < 0 && !canDecreasePointBuy(d.pointBuy, key)) return d;
+      return {
+        ...d,
+        pointBuy: {
+          ...d.pointBuy,
+          [key]: Math.max(8, Math.min(15, cur + delta)),
+        },
+      };
+    });
+    setPbAutoApplied(false);
   }
 
   function stepError(index: number): string | null {
     if (index === 0) {
-      if (!draft.name.trim()) return "Nome obrigatório";
+      const name = draft.name.trim();
+      if (!name) return "Nome obrigatório";
+      if (name.length < 2) return "Nome precisa de pelo menos 2 caracteres";
       return null;
     }
     if (index === 1) {
@@ -89,7 +136,31 @@ export function CharacterCreationWizard({ slotsLeft }: Props) {
       if (!draft.antecedente) return "Escolha antecedente";
       return null;
     }
+    if (index === 5 && portraitPending) {
+      return "Aplique o retrato com «Aplicar retrato + token» ou use «Pular por agora»";
+    }
     return null;
+  }
+
+  function firstInvalidStep(): number | null {
+    for (let i = 0; i < STEPS.length - 1; i++) {
+      const e = stepError(i);
+      if (e) return i;
+    }
+    const v = validateWizardDraft(draft);
+    if (!v) return null;
+    if (v.includes("pontos") || v.includes("Atributo")) return 3;
+    if (v.includes("linhagem") || v.includes("raça")) return 1;
+    if (v.includes("antecedente")) return 4;
+    if (v.includes("classe")) return 2;
+    if (v.includes("Nome")) return 0;
+    return 6;
+  }
+
+  function goToStep(index: number) {
+    if (index > step) return;
+    setErr(null);
+    setStep(index);
   }
 
   function next() {
@@ -99,7 +170,12 @@ export function CharacterCreationWizard({ slotsLeft }: Props) {
       return;
     }
     setErr(null);
-    setStep((s) => Math.min(s + 1, STEPS.length - 1));
+    const nextStep = Math.min(step + 1, STEPS.length - 1);
+    if (nextStep === 3) {
+      setDraft((d) => ensurePointBuyIfUnset(d));
+      setPbAutoApplied(isUnsetPointBuy(draft.pointBuy));
+    }
+    setStep(nextStep);
   }
 
   function back() {
@@ -108,39 +184,68 @@ export function CharacterCreationWizard({ slotsLeft }: Props) {
   }
 
   async function finish() {
-    const validation = validateWizardDraft(draft);
-    if (validation) {
-      setErr(validation);
+    const invalidAt = firstInvalidStep();
+    if (invalidAt !== null) {
+      const message = stepError(invalidAt) ?? validateWizardDraft(draft);
+      setStep(invalidAt);
+      setErr(message ?? "Revise os passos antes de criar");
       return;
     }
     setBusy(true);
     setErr(null);
     try {
+      const payload = sanitizeWizardDraftForSave(draft);
       const res = await fetch("/api/characters", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(draft),
+        credentials: "same-origin",
+        body: JSON.stringify({
+          ...payload,
+          adventureId: adventureId ?? undefined,
+          roomId: adventureId ?? undefined,
+        }),
       });
-      const data = await res.json();
+      let data: { error?: string; character?: { id: string } } = {};
+      try {
+        data = (await res.json()) as typeof data;
+      } catch {
+        if (!res.ok) throw new Error(res.status === 413 ? "Dados muito grandes — pule o retrato ou use imagem menor" : `Erro ${res.status}`);
+      }
       if (!res.ok) throw new Error(data.error ?? "Erro ao criar");
-      router.push(`/personagem/${data.character.id}`);
+      if (!data.character?.id) throw new Error("Resposta inválida do servidor");
+      if (adventureId) {
+        router.push(`/aventura/${adventureId}`);
+      } else {
+        router.push(`/personagem/${data.character.id}`);
+      }
       router.refresh();
     } catch (e) {
       setErr(e instanceof Error ? e.message : "Erro");
+    } finally {
       setBusy(false);
     }
   }
 
   return (
     <div className="char-wizard">
+      {adventureId ? (
+        <p className="char-wizard-meta" style={{ marginBottom: "0.75rem" }}>
+          Ficha exclusiva da aventura <strong>{label ?? adventureId}</strong> — mesa, registros e
+          progresso ficam nesta campanha.
+        </p>
+      ) : null}
       <nav className="char-wizard-steps" aria-label="Passos">
         {STEPS.map((label, i) => (
-          <span
+          <button
             key={label}
+            type="button"
             className={`char-wizard-step ${i === step ? "active" : ""} ${i < step ? "done" : ""}`}
+            disabled={i > step || busy}
+            onClick={() => goToStep(i)}
+            aria-current={i === step ? "step" : undefined}
           >
             {i + 1}. {label}
-          </span>
+          </button>
         ))}
       </nav>
 
@@ -174,24 +279,28 @@ export function CharacterCreationWizard({ slotsLeft }: Props) {
         {step === 1 ? (
           <>
             <h2>Raça</h2>
-            <label>
-              Raça
-              <select
-                value={draft.raca}
-                onChange={(e) =>
-                  patch({
-                    raca: e.target.value,
-                    linhagem: e.target.value === "Meio-Humano" ? draft.linhagem : null,
-                  })
-                }
-              >
-                {RACE_LIST.map((r) => (
-                  <option key={r.id} value={r.id}>
-                    {r.id}
-                  </option>
-                ))}
-              </select>
-            </label>
+            <div className="char-wizard-pick-grid" role="listbox" aria-label="Raça">
+              {RACE_LIST.map((r) => (
+                <button
+                  key={r.id}
+                  type="button"
+                  role="option"
+                  aria-selected={draft.raca === r.id}
+                  className={`char-wizard-pick ${draft.raca === r.id ? "char-wizard-pick--on" : ""}`}
+                  onClick={() => {
+                    const def = getRace(r.id);
+                    const linhagem =
+                      r.id === "Meio-Humano"
+                        ? draft.linhagem ?? def?.linhagens?.[0]?.id ?? null
+                        : null;
+                    patch({ raca: r.id, linhagem });
+                  }}
+                >
+                  <strong>{r.id}</strong>
+                  <span>{r.traits[0]}</span>
+                </button>
+              ))}
+            </div>
             {draft.raca === "Meio-Humano" ? (
               <label>
                 Linhagem
@@ -221,16 +330,29 @@ export function CharacterCreationWizard({ slotsLeft }: Props) {
         {step === 2 ? (
           <>
             <h2>Classe</h2>
-            <label>
-              Classe
-              <select value={draft.classe} onChange={(e) => patch({ classe: e.target.value })}>
-                {CLASS_LIST.map((c) => (
-                  <option key={c.id} value={c.id}>
-                    {c.id} (d{c.hpDie} · {c.primary})
-                  </option>
-                ))}
-              </select>
-            </label>
+            <div className="char-wizard-pick-grid" role="listbox" aria-label="Classe">
+              {CLASS_LIST.map((c) => (
+                <button
+                  key={c.id}
+                  type="button"
+                  role="option"
+                  aria-selected={draft.classe === c.id}
+                  className={`char-wizard-pick ${draft.classe === c.id ? "char-wizard-pick--on" : ""}`}
+                  onClick={() => {
+                    const pointBuy = isUnsetPointBuy(draft.pointBuy)
+                      ? suggestedPointBuyForClass(c.id)
+                      : draft.pointBuy;
+                    patch({ classe: c.id, pointBuy });
+                    setPbAutoApplied(isUnsetPointBuy(draft.pointBuy));
+                  }}
+                >
+                  <strong>{c.id}</strong>
+                  <span>
+                    d{c.hpDie} · {c.primary}
+                  </span>
+                </button>
+              ))}
+            </div>
             {classDef ? (
               <ul className="char-wizard-notes">
                 <li>{classDef.proficiencies}</li>
@@ -246,23 +368,62 @@ export function CharacterCreationWizard({ slotsLeft }: Props) {
             <h2>Atributos — compra de pontos</h2>
             <p className="char-wizard-meta">
               Pool {POINT_BUY_POOL} · gastos {pbSpent} · restam{" "}
-              <strong style={{ color: pbLeft < 0 ? "#ff6b8a" : undefined }}>{pbLeft}</strong>
+              <strong style={{ color: pbLeft !== 0 ? "#ff6b8a" : "var(--neon-lime)" }}>
+                {pbLeft}
+              </strong>
+              {pbAutoApplied && pbLeft === 0 ? (
+                <> · sugestão para {draft.classe} aplicada (ajuste com +/−)</>
+              ) : null}
             </p>
+            <div className="char-wizard-attr-actions">
+              <button
+                type="button"
+                className="btn btn-secondary"
+                onClick={() => {
+                  patch({ pointBuy: suggestedPointBuyForClass(draft.classe) });
+                  setPbAutoApplied(true);
+                }}
+              >
+                Sugestão para {draft.classe}
+              </button>
+              <button
+                type="button"
+                className="btn btn-ghost"
+                onClick={() => {
+                  patch({ pointBuy: { ...EMPTY_WIZARD_DRAFT.pointBuy } });
+                  setPbAutoApplied(false);
+                }}
+              >
+                Resetar (8 em tudo)
+              </button>
+            </div>
             <div className="char-wizard-attrs">
               {ATTR_ORDER.map((key) => (
                 <div key={key} className="char-wizard-attr">
                   <span>{ATTRIBUTE_LABELS[key]}</span>
                   <div className="char-wizard-attr-controls">
-                    <button type="button" onClick={() => setAttr(key, -1)} disabled={draft.pointBuy[key] <= 8}>
+                    <button
+                      type="button"
+                      onClick={() => setAttr(key, -1)}
+                      disabled={!canDecreasePointBuy(draft.pointBuy, key)}
+                      aria-label={`Diminuir ${ATTRIBUTE_LABELS[key]}`}
+                    >
                       −
                     </button>
                     <strong>{draft.pointBuy[key]}</strong>
-                    <button type="button" onClick={() => setAttr(key, 1)} disabled={draft.pointBuy[key] >= 15}>
+                    <button
+                      type="button"
+                      onClick={() => setAttr(key, 1)}
+                      disabled={!canIncreasePointBuy(draft.pointBuy, key)}
+                      aria-label={`Aumentar ${ATTRIBUTE_LABELS[key]}`}
+                    >
                       +
                     </button>
                   </div>
                   <small>
-                    custo {pointBuyCost(draft.pointBuy[key])} → {finalAttrs[key]} c/ raça
+                    custo {pointBuyCost(draft.pointBuy[key])} → {finalAttrs[key]} (mod{" "}
+                    {attributeMod(finalAttrs[key]) >= 0 ? "+" : ""}
+                    {attributeMod(finalAttrs[key])})
                   </small>
                 </div>
               ))}
@@ -297,6 +458,7 @@ export function CharacterCreationWizard({ slotsLeft }: Props) {
               tokenImageUrl={draft.tokenImageUrl ?? null}
               portraitFocus={draft.portraitFocus ?? null}
               onChange={(p) => patch(p)}
+              onPendingChange={setPortraitPending}
             />
           </>
         ) : null}
