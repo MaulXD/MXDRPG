@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useMemo, useRef } from "react";
 import type { Axial } from "@/lib/vtt/hex-math";
 import type { RoomActor, RoomSnapshot } from "@/lib/room/types";
@@ -9,23 +10,29 @@ import { clearActiveActorSpawnDragPayload, writeActorSpawnDrag } from "@/lib/vtt
 import { placeRoomActorOnHex } from "@/hooks/useRoomSync";
 
 type Props = {
+  adventureId?: string;
   roomId: string;
   actors: Record<string, RoomActor>;
   session: SessionUser | null;
   tokens: { actorId?: string; linked?: boolean; axial: Axial }[];
   spawnAxial: Axial | null;
   onPlaced: (snapshot: RoomSnapshot) => void;
+  showCreateLink?: boolean;
 };
 
 export function PlayerSpawnPanel({
+  adventureId: adventureIdProp,
   roomId,
   actors,
   session,
   tokens,
   spawnAxial,
   onPlaced,
+  showCreateLink = false,
 }: Props) {
   const dragGhostRef = useRef<HTMLElement | null>(null);
+
+  const adventureId = adventureIdProp ?? roomId;
 
   const playable = useMemo(() => {
     return Object.values(actors).filter((a) =>
@@ -35,9 +42,18 @@ export function PlayerSpawnPanel({
 
   if (playable.length === 0) {
     return (
-      <p className="vtt-combat-hint" style={{ marginTop: "0.5rem" }}>
-        Nenhum personagem seu nesta aventura.
-      </p>
+      <div style={{ marginTop: "0.5rem" }}>
+        <p className="vtt-combat-hint">Nenhum personagem seu nesta mesa.</p>
+        {showCreateLink && roomId !== "demo" ? (
+          <Link
+            href={`/aventura/${adventureId}/personagem/novo`}
+            className="btn btn-secondary"
+            style={{ marginTop: "0.5rem", fontSize: "0.8rem", display: "inline-block" }}
+          >
+            Criar ficha para esta mesa
+          </Link>
+        ) : null}
+      </div>
     );
   }
 

@@ -1,13 +1,128 @@
 .sheet-shell {
   display: grid;
   grid-template-columns: 280px 1fr;
+  grid-template-areas:
+    "cover cover"
+    "sidebar main";
   gap: 1.25rem;
   align-items: start;
+}
+
+.sheet-cover {
+  grid-area: cover;
+}
+
+.sheet-sidebar {
+  grid-area: sidebar;
+}
+
+.sheet-main,
+.sheet-panel {
+  grid-area: main;
 }
 
 @media (max-width: 900px) {
   .sheet-shell {
     grid-template-columns: 1fr;
+    grid-template-areas:
+      "cover"
+      "sidebar"
+      "main";
+  }
+}
+
+/* Capa horizontal — faixa fina da imagem + nome ao lado */
+.sheet-cover {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  min-height: 88px;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--glass-border-bright);
+  background: rgba(0, 0, 0, 0.35);
+  box-shadow: var(--shadow-glow);
+}
+
+.sheet-cover-strip {
+  position: relative;
+  flex: 0 0 clamp(140px, 32%, 240px);
+  min-height: 88px;
+  max-height: 96px;
+  overflow: hidden;
+  background: linear-gradient(120deg, rgba(201, 169, 98, 0.15), rgba(0, 0, 0, 0.5));
+}
+
+.sheet-cover-strip-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.sheet-cover-strip-fallback {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.25), rgba(0, 0, 0, 0.55));
+}
+
+.sheet-cover-initials {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--accent);
+  opacity: 0.85;
+}
+
+.sheet-cover-strip-shade {
+  display: none;
+}
+
+.sheet-cover-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0.85rem 1.25rem;
+  min-width: 0;
+}
+
+.sheet-cover-eyebrow {
+  margin: 0 0 0.15rem;
+}
+
+.sheet-cover-name {
+  font-family: var(--font-display);
+  font-size: clamp(1.2rem, 2.5vw, 1.65rem);
+  font-weight: 700;
+  margin: 0 0 0.2rem;
+  line-height: 1.15;
+}
+
+.sheet-cover-meta {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  margin: 0;
+  line-height: 1.35;
+}
+
+.sheet-cover-meta-sub {
+  font-size: 0.75rem;
+  margin-top: 0.12rem;
+}
+
+@media (max-width: 480px) {
+  .sheet-cover {
+    flex-direction: column;
+  }
+
+  .sheet-cover-strip {
+    flex: 0 0 auto;
+    width: 100%;
+    max-height: 64px;
+    min-height: 64px;
   }
 }
 
@@ -249,23 +364,6 @@
   }
 }
 
-.sheet-hero-portrait {
-  width: 100%;
-  aspect-ratio: 1;
-  max-height: 200px;
-  border-radius: 16px;
-  overflow: hidden;
-  margin-bottom: 1rem;
-  border: 1px solid var(--glass-border-bright);
-  box-shadow: var(--shadow-glow);
-}
-
-.sheet-hero-portrait img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
 .sheet-portraits {
   margin: 1rem 0;
   padding-top: 0.5rem;
@@ -274,8 +372,49 @@
 
 .sheet-portrait-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr auto auto;
   gap: 0.65rem;
+  align-items: start;
+}
+
+@media (max-width: 520px) {
+  .sheet-portrait-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.sheet-portrait-slot--wide {
+  grid-column: 1 / -1;
+}
+
+.sheet-portrait-cover-preview {
+  width: 100%;
+  height: 48px;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 2px dashed var(--glass-border);
+  background: rgba(0, 0, 0, 0.3);
+  display: grid;
+  place-items: center;
+}
+
+.sheet-portrait-cover-preview.has-image {
+  border-style: solid;
+  border-color: var(--glass-border-bright);
+}
+
+.sheet-portrait-cover-empty {
+  font-size: 0.65rem;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.sheet-portrait-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.65rem;
 }
 
 .sheet-portrait-slot {
@@ -344,6 +483,49 @@
 
 .portrait-focus-editor {
   margin-top: 0.75rem;
+}
+
+.portrait-focus-previews {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.75rem;
+  align-items: end;
+  margin-bottom: 0.65rem;
+}
+
+@media (max-width: 420px) {
+  .portrait-focus-previews {
+    grid-template-columns: 1fr;
+  }
+}
+
+.portrait-focus-preview-slot {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.portrait-focus-preview-label {
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-dim);
+}
+
+.portrait-focus-preview-cover {
+  height: 44px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--glass-border);
+  background: #111;
+}
+
+.portrait-focus-frame--main {
+  margin: 0 auto 0.5rem;
+}
+
+.portrait-focus-frame--token {
+  margin: 0;
 }
 
 .portrait-focus-frame {

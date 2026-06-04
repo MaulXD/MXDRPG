@@ -10,6 +10,7 @@ import type { MonsterSpawnOptions } from "@/lib/vtt/monster-scaling";
 import type { BattleToken } from "@/lib/vtt/types";
 import { activeTokenId } from "../combat";
 import { revealAxial } from "@/lib/vtt/fog-of-war";
+import { characterBelongsToAdventure } from "@/lib/character/adventure-bind";
 import { getRoom, persistRoom, toSnapshot } from "../internal/registry";
 import type { RoomSnapshot } from "../types";
 
@@ -207,6 +208,10 @@ export async function placeRoomActorOnHex(
 
   const actor = room.actors[actorId];
   if (!actor) return { ok: false, error: "Personagem não está nesta aventura" };
+  const adventureId = room.adventureId ?? roomId;
+  if (!characterBelongsToAdventure(actor, adventureId)) {
+    return { ok: false, error: "Esta ficha pertence a outra aventura" };
+  }
 
   if (!hexInGrid(target, room.scene.gridRadius)) {
     return { ok: false, error: "Fora do tabuleiro" };

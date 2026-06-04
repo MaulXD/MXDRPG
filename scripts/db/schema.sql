@@ -25,8 +25,24 @@ CREATE TABLE IF NOT EXISTS eldarin_characters (
 
 CREATE INDEX IF NOT EXISTS eldarin_characters_owner ON eldarin_characters (owner_id);
 
+CREATE TABLE IF NOT EXISTS eldarin_adventures (
+  adventure_id TEXT PRIMARY KEY,
+  owner_id TEXT NOT NULL,
+  name TEXT NOT NULL,
+  synopsis TEXT NOT NULL DEFAULT '',
+  invite_code TEXT NOT NULL,
+  member_ids JSONB NOT NULL DEFAULT '[]'::jsonb,
+  primary_room_id TEXT NOT NULL,
+  created_at BIGINT NOT NULL,
+  updated_at BIGINT NOT NULL
+);
+
+CREATE UNIQUE INDEX IF NOT EXISTS eldarin_adventures_invite_upper ON eldarin_adventures (UPPER(invite_code));
+CREATE INDEX IF NOT EXISTS eldarin_adventures_owner ON eldarin_adventures (owner_id);
+
 CREATE TABLE IF NOT EXISTS eldarin_rooms (
   room_id TEXT PRIMARY KEY,
+  adventure_id TEXT NOT NULL,
   owner_id TEXT NOT NULL,
   name TEXT NOT NULL,
   invite_code TEXT NOT NULL,
@@ -35,6 +51,7 @@ CREATE TABLE IF NOT EXISTS eldarin_rooms (
   actors JSONB NOT NULL DEFAULT '{}'::jsonb,
   combat JSONB NOT NULL,
   chat JSONB NOT NULL DEFAULT '[]'::jsonb,
+  settings JSONB NOT NULL DEFAULT '{}'::jsonb,
   revision INTEGER NOT NULL DEFAULT 1,
   updated_at BIGINT NOT NULL
 );

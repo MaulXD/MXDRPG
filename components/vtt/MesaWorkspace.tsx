@@ -23,6 +23,7 @@ import { PlayerSpawnPanel } from "@/components/vtt/PlayerSpawnPanel";
 
 type Props = {
   roomId: string;
+  adventureId: string;
   roomOwnerId: string;
   memberIds: string[];
   scene: BattleScene;
@@ -38,6 +39,7 @@ type Props = {
 
 export function MesaWorkspace({
   roomId,
+  adventureId,
   roomOwnerId,
   memberIds,
   scene,
@@ -113,6 +115,8 @@ export function MesaWorkspace({
           canControlToken={canControlToken}
           canViewTokenPa={canViewTokenPaCb}
           roomId={roomId}
+          adventureId={adventureId}
+          inviteCode={inviteCode}
           snapshot={snapshot}
           session={session}
           roomActors={snapshot?.actors ?? {}}
@@ -163,6 +167,8 @@ export function MesaWorkspace({
                 tokens={snapshot.scene.tokens}
                 spawnAxial={spawnAxial}
                 onPlaced={applySnapshot}
+                adventureId={adventureId}
+                showCreateLink={roomId !== "demo"}
               />
             ) : null}
             <MesaSheetPanel

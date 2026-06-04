@@ -29,7 +29,7 @@ export default async function PersonagemPage({ params }: Props) {
         character={character}
         canEdit={canEdit}
         compendium={compendium}
-        roomId="demo"
+        roomId={character.adventureId ?? "demo"}
       />
     </div>
   );
