@@ -61,6 +61,7 @@ import {
 
 import { listSubclassCombatActions } from "@/lib/character/subclass-vtt";
 import { patchRoomActor, postRoomAttack, postRoomAbility } from "@/hooks/useRoomSync";
+import { CombatActionDetail } from "@/components/vtt/CombatActionDetail";
 import { SpellChannelControl } from "@/components/vtt/SpellChannelControl";
 
 import { useCombatTurn } from "@/hooks/useCombatActions";
@@ -711,7 +712,10 @@ export function TokenActionPanel({
 
       ) : null}
 
-
+      {(actionMode === "attack" || actionMode === "spell" || actionMode === "ability") &&
+      activeAction ? (
+        <CombatActionDetail action={activeAction} actor={actor} />
+      ) : null}
 
       {isSaveSpell ? (
         <p className="vtt-combat-hint">Teste de resistência vs CD — metade do dano se passar.</p>
