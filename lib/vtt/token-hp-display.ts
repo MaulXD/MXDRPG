@@ -27,11 +27,31 @@ function lerpRgb(
   return `rgb(${r},${g},${bl})`;
 }
 
-/** Verde (cheio) → vermelho (crítico). */
+const HP_COLOR_GREEN: [number, number, number] = [72, 168, 88];
+const HP_COLOR_YELLOW: [number, number, number] = [228, 196, 48];
+const HP_COLOR_ORANGE: [number, number, number] = [240, 140, 42];
+const HP_COLOR_RED: [number, number, number] = [196, 48, 42];
+const HP_COLOR_BLACK: [number, number, number] = [8, 8, 8];
+
+/** Cheio verde → 50% amarelo → laranja → vermelho (low) → preto em 0. */
 export function hpBarColor(ratio: number): string {
   const t = Math.max(0, Math.min(1, ratio));
-  if (t <= 0) return "rgb(48, 42, 40)";
-  return lerpRgb([196, 48, 42], [72, 168, 88], t);
+  if (t <= 0) return "rgb(8, 8, 8)";
+
+  if (t >= 0.5) {
+    const u = (t - 0.5) / 0.5;
+    return lerpRgb(HP_COLOR_YELLOW, HP_COLOR_GREEN, u);
+  }
+  if (t >= 0.25) {
+    const u = (t - 0.25) / 0.25;
+    return lerpRgb(HP_COLOR_ORANGE, HP_COLOR_YELLOW, u);
+  }
+  if (t > 0.08) {
+    const u = (t - 0.08) / 0.17;
+    return lerpRgb(HP_COLOR_RED, HP_COLOR_ORANGE, u);
+  }
+  const u = t / 0.08;
+  return lerpRgb(HP_COLOR_BLACK, HP_COLOR_RED, u);
 }
 
 export function hpRatio(token: BattleToken): number {
@@ -115,10 +135,12 @@ export function drawTokenHpSegments(
   color: string
 ): void {
   const clamped = Math.max(0, Math.min(1, ratio));
-  const filled = Math.round(clamped * HP_SEGMENT_COUNT);
+  const defeated = clamped <= 0;
+  const filled = defeated ? 0 : Math.round(clamped * HP_SEGMENT_COUNT);
   const segAngle = (Math.PI * 2) / HP_SEGMENT_COUNT;
   const gap = 0.07;
   const emptyColor = "rgba(32, 30, 28, 0.95)";
+  const deadColor = "rgb(8, 8, 8)";
   const startBase = -Math.PI / 2;
   const outerR = layout.trackR + layout.width / 2;
   const innerR = layout.trackR - layout.width / 2;
@@ -129,11 +151,11 @@ export function drawTokenHpSegments(
   for (let i = 0; i < HP_SEGMENT_COUNT; i++) {
     const a0 = startBase + i * segAngle + gap / 2;
     const a1 = a0 + segAngle - gap;
-    const isFilled = i < filled;
+    const isFilled = !defeated && i < filled;
 
     ctx.beginPath();
     ctx.arc(x, y, layout.trackR, a0, a1);
-    ctx.strokeStyle = isFilled ? color : emptyColor;
+    ctx.strokeStyle = defeated ? deadColor : isFilled ? color : emptyColor;
     ctx.lineWidth = layout.width;
     ctx.stroke();
   }
@@ -243,7 +265,7 @@ export function drawTokenHpLabel(
   ctx.fill();
   ctx.stroke();
 
-  ctx.fillStyle = defeated ? "rgb(220, 120, 100)" : color;
+  ctx.fillStyle = defeated ? "rgb(140, 140, 140)" : color;
   ctx.fillText(hpText, x, byBox + bh / 2 + 0.5);
   ctx.restore();
 }

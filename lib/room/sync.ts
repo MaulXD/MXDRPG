@@ -35,7 +35,7 @@ export function syncLinkedTokens(
         ? token.pa
         : typeof token.pa === "number"
           ? token.pa
-          : actor.resources.pontosAcao.value;
+          : 0;
     const paFields = normalizeTokenPaFields(
       {
         ...token,

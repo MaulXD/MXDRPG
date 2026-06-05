@@ -53,6 +53,17 @@ export function materializeCombatPa(token: BattleToken, paMax: number): BattleTo
   };
 }
 
+/** Zera pool antes de conceder PA no turno — evita carry fantasma do spawn (ex. 5+5=9). */
+export function clearCombatPaPool(token: BattleToken): BattleToken {
+  return {
+    ...token,
+    pa: 0,
+    bankedPa: 0,
+    paSpentThisTurn: 0,
+    peaoFreeMoveUsed: false,
+  };
+}
+
 /** Ao receber Atordoado: zera PA (livro / DOS stun). */
 export function clearBankedPaOnStun(token: BattleToken): BattleToken {
   if (!hasCondition(token, "atordoado")) return token;

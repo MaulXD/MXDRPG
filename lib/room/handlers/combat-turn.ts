@@ -6,6 +6,7 @@ import {
 import { normalizeTokenPaFields } from "@/lib/combat/pa-token-state";
 import {
   bankPaAtEndOfTurn,
+  clearCombatPaPool,
   formatStunSkipNotice,
   formatTurnStartPaNotice,
   planEndOfTurnPaBank,
@@ -36,8 +37,29 @@ function paMaxForToken(room: RoomState, token: BattleToken): number {
   return paRulesForToken(room, token).recoveryPerTurn;
 }
 
+/** Zera pools de todos; só o ativo recebe PA na iniciativa. */
+function zeroAllTokenPaPools(room: RoomState): void {
+  const tokens = room.scene.tokens.map((t) => clearCombatPaPool(t));
+  room.scene = { ...room.scene, tokens };
+
+  for (const token of tokens) {
+    if (!token.linked || !token.actorId) continue;
+    const actor = room.actors[token.actorId];
+    if (!actor) continue;
+    room.actors[token.actorId] = {
+      ...actor,
+      resources: {
+        ...actor.resources,
+        pontosAcao: { ...actor.resources.pontosAcao, value: 0 },
+      },
+      revision: actor.revision + 1,
+    };
+  }
+}
+
 /** Garante PA do token ativo na iniciativa (demo / sala nova). */
 export function initCombatPaForRoom(room: RoomState): void {
+  zeroAllTokenPaPools(room);
   refreshActiveTokenPa(room, "full");
 }
 
@@ -180,6 +202,7 @@ export async function rollRoomInitiative(roomId: string): Promise<RoomSnapshot |
   };
   syncCombatOrderWithTokens(room);
   resetAllTokenMovement(room);
+  zeroAllTokenPaPools(room);
 
   const notices: string[] = [];
   const maxSkips = Math.max(1, room.combat.order.length + 1);
