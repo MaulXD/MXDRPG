@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
+import { WizardHoverTip } from "@/components/character/wizard/WizardHoverTip";
 import { WizardPortraitStep } from "@/components/character/wizard/WizardPortraitStep";
 import {
   sanitizeWizardDraftForSave,
@@ -25,6 +26,11 @@ import {
   validatePointBuy,
 } from "@/lib/character/point-buy";
 import { ANTECEDENTE_META } from "@/lib/character/wizard-meta";
+import {
+  antecedenteGainDescription,
+  linhagemTraitLines,
+  racialTraitDescription,
+} from "@/lib/character/wizard-tooltips";
 import { buildWizardPreview } from "@/lib/character/wizard-preview";
 import { listSubclassOptions } from "@/lib/character/level-up-ui";
 import {
@@ -306,7 +312,11 @@ export function CharacterCreationWizard({
                   }}
                 >
                   <strong>{r.id}</strong>
-                  <span>{r.traits[0]}</span>
+                  <span>
+                    <WizardHoverTip text={racialTraitDescription(r.traits[0])}>
+                      {r.traits[0]}
+                    </WizardHoverTip>
+                  </span>
                 </button>
               ))}
             </div>
@@ -326,7 +336,14 @@ export function CharacterCreationWizard({
                       onClick={() => patch({ linhagem: l.id })}
                     >
                       <strong>{l.id}</strong>
-                      <span>{l.trait}</span>
+                      <span>
+                        {linhagemTraitLines(l.trait).map((tr, i) => (
+                          <span key={tr.name}>
+                            {i > 0 ? " · " : null}
+                            <WizardHoverTip text={tr.description}>{tr.name}</WizardHoverTip>
+                          </span>
+                        ))}
+                      </span>
                       <span>
                         {Object.entries(l.attributeBonus)
                           .map(([k, v]) => `${ATTRIBUTE_LABELS[k as keyof typeof ATTRIBUTE_LABELS]} +${v}`)
@@ -338,11 +355,50 @@ export function CharacterCreationWizard({
               </>
             ) : null}
             {raceDef ? (
-              <ul className="char-wizard-notes">
-                {raceDef.traits.map((t) => (
-                  <li key={t}>{t}</li>
-                ))}
-              </ul>
+              <>
+                <p className="char-wizard-meta" style={{ marginTop: "0.75rem", marginBottom: "0.35rem" }}>
+                  Habilidades raciais — passe o mouse para ver o efeito:
+                </p>
+                <ul className="char-wizard-notes">
+                  {raceDef.traits.map((t) => (
+                    <li key={t}>
+                      <WizardHoverTip text={racialTraitDescription(t)}>{t}</WizardHoverTip>
+                    </li>
+                  ))}
+                </ul>
+                {draft.raca === "Meio-Humano" && draft.linhagem ? (
+                  <>
+                    <p className="char-wizard-meta" style={{ marginTop: "0.5rem", marginBottom: "0.35rem" }}>
+                      Traços da {draft.linhagem}:
+                    </p>
+                    <ul className="char-wizard-notes">
+                      {linhagemTraitLines(
+                        raceDef.linhagens?.find((l) => l.id === draft.linhagem)?.trait ?? ""
+                      ).map((tr) => (
+                        <li key={tr.name}>
+                          <WizardHoverTip text={tr.description}>{tr.name}</WizardHoverTip>
+                        </li>
+                      ))}
+                    </ul>
+                  </>
+                ) : null}
+                {Object.keys(raceDef.milestones).length > 0 ? (
+                  <div className="char-wizard-milestones">
+                    <p className="char-wizard-milestones__title">Progressão racial (níveis futuros)</p>
+                    <ul>
+                      {Object.entries(raceDef.milestones)
+                        .sort(([a], [b]) => Number(a) - Number(b))
+                        .map(([lvl, text]) => (
+                          <li key={lvl}>
+                            <WizardHoverTip text={text}>
+                              Nv {lvl}: {text}
+                            </WizardHoverTip>
+                          </li>
+                        ))}
+                    </ul>
+                  </div>
+                ) : null}
+              </>
             ) : null}
           </>
         ) : null}
@@ -377,13 +433,21 @@ export function CharacterCreationWizard({
               <>
                 <ul className="char-wizard-notes">
                   <li>
-                    <strong>Proficiências:</strong> {classDef.proficiencies}
+                    <strong>Proficiências:</strong>{" "}
+                    <WizardHoverTip text={`Armas, armaduras e ferramentas que ${draft.classe} usa sem penalidade de treino.`}>
+                      {classDef.proficiencies}
+                    </WizardHoverTip>
                   </li>
                   <li>
-                    <strong>Dieta base:</strong> {classDef.dietBonus}
+                    <strong>Dieta base:</strong>{" "}
+                    <WizardHoverTip text="Bônus culinário permanente da classe — afeta preparo de refeições com ingredientes de monstro.">
+                      {classDef.dietBonus}
+                    </WizardHoverTip>
                   </li>
                   <li>
-                    <strong>Nível 2:</strong> escolha uma Dieta Marcial (subclasse) — trilhas abaixo.
+                    <WizardHoverTip text="No nível 2 você escolhe uma subclasse (Dieta Marcial). Talentos de trilha nos níveis 4, 8, 12, 16 e ascensão no 20.">
+                      <strong>Nível 2:</strong> escolha uma Dieta Marcial (subclasse) — trilhas abaixo.
+                    </WizardHoverTip>
                   </li>
                 </ul>
                 {subclassTracks.length ? (
@@ -492,7 +556,15 @@ export function CharacterCreationWizard({
                 >
                   <strong>{a.title}</strong>
                   <span>{a.summary}</span>
-                  <span>Você ganha: {a.gains.join(" · ")}</span>
+                  <span>
+                    Você ganha:{" "}
+                    {a.gains.map((g, i) => (
+                      <span key={g}>
+                        {i > 0 ? " · " : null}
+                        <WizardHoverTip text={antecedenteGainDescription(g)}>{g}</WizardHoverTip>
+                      </span>
+                    ))}
+                  </span>
                 </button>
               ))}
             </div>
