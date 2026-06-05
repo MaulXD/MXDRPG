@@ -16,8 +16,8 @@ import { useCombatTurnFlow } from "@/hooks/vtt/useCombatTurnFlow";
 import { useFoundryWindows } from "@/hooks/vtt/useFoundryWindows";
 import { useRoomSync } from "@/hooks/useRoomSync";
 import { VttToastProvider } from "@/components/vtt/VttToast";
-import { FoundryWindow } from "@/components/vtt/foundry/FoundryWindow";
-import { MesaIconBar } from "@/components/vtt/foundry/MesaIconBar";
+import { FoundryDockPanel } from "@/components/vtt/foundry/FoundryDockPanel";
+import { MesaFoundrySidebar } from "@/components/vtt/foundry/MesaFoundrySidebar";
 import { HexBattlefield } from "@/components/vtt/HexBattlefield";
 import { CharacterSheetPopup } from "@/components/vtt/CharacterSheetPopup";
 import { RoomChat } from "@/components/vtt/RoomChat";
@@ -75,6 +75,10 @@ export function MesaWorkspace({
     windows.close("character");
   }, [windows]);
 
+  const openDungeonPanel = useCallback(() => {
+    windows.open("dungeon");
+  }, [windows]);
+
   const chat = snapshot?.chat ?? [];
 
   const turnRoom = useMemo(
@@ -115,199 +119,201 @@ export function MesaWorkspace({
   }, [roomOwnerId, snapshot?.settings, session]);
 
   const win = windows.get;
+  const dockOpen = windows.isDockOpen();
 
   return (
     <VttToastProvider>
-    <MesaWorkspaceCombatFlow
-      roomId={roomId}
-      roomOwnerId={roomOwnerId}
-      memberIds={memberIds}
-      snapshot={snapshot}
-      session={session}
-      canEndTurn={canEndTurn}
-      applySnapshot={applySnapshot}
-      refresh={refresh}
-    />
-    <div className="mesa-workspace mesa-workspace--foundry">
-      {syncError ? (
-        <p className="mesa-sync-err" role="alert">
-          {syncError}{" "}
-          <button type="button" className="btn btn-ghost" style={{ fontSize: "0.8rem" }} onClick={() => refresh()}>
-            Tentar de novo
-          </button>
-        </p>
-      ) : null}
-
-      <div className="foundry-mesa">
-        <div className="foundry-mesa__stage">
-          <HexBattlefield
-            scene={scene}
-            canEdit={canEdit}
-            canControlCombat={canControlCombat}
-            canBypassTurn={canBypassTurn}
-            canEndTurn={canEndTurn}
-            roomOwnerId={roomOwnerId}
-            canControlToken={canControlToken}
-            canViewTokenPa={canViewTokenPaCb}
-            roomId={roomId}
-            adventureId={adventureId}
-            inviteCode={inviteCode}
-            snapshot={snapshot}
-            session={session}
-            roomActors={snapshot?.actors ?? {}}
-            onRefresh={refresh}
-            onApplySnapshot={applySnapshot}
-            onOpenSheet={openSheet}
-            onHoverAxialChange={setSpawnAxial}
-            showSpawnInSidebar={false}
-            foundryLayout
-            actorsWindowLayout={win("actors")}
-            onActorsWindowLayoutChange={(patch) => windows.patch("actors", patch)}
-            onActorsWindowClose={() => windows.close("actors")}
-            onActorsWindowMinimize={() =>
-              win("actors").minimized ? windows.restore("actors") : windows.minimize("actors")
-            }
-            onActorsWindowFocus={() => windows.focus("actors")}
-            gmWindowLayout={win("gm")}
-            onGmWindowLayoutChange={(patch) => windows.patch("gm", patch)}
-            onGmWindowClose={() => windows.close("gm")}
-            onGmWindowMinimize={() =>
-              win("gm").minimized ? windows.restore("gm") : windows.minimize("gm")
-            }
-            onGmWindowFocus={() => windows.focus("gm")}
-            initiativeWindowLayout={win("initiative")}
-            onInitiativeWindowLayoutChange={(patch) => windows.patch("initiative", patch)}
-            onInitiativeWindowClose={() => windows.close("initiative")}
-            onInitiativeWindowMinimize={() =>
-              win("initiative").minimized ? windows.restore("initiative") : windows.minimize("initiative")
-            }
-            onInitiativeWindowFocus={() => windows.focus("initiative")}
-          />
-        </div>
-
-        <div id="foundry-mesa-hud" className="foundry-mesa__hud">
-          <div id="foundry-mesa-windows" className="foundry-mesa__windows">
-          <FoundryWindow
-            title="Chat"
-            layout={win("chat")}
-            className="foundry-window--chat"
-            onLayoutChange={(patch) => windows.patch("chat", patch)}
-            onClose={() => windows.close("chat")}
-            onMinimize={() =>
-              win("chat").minimized ? windows.restore("chat") : windows.minimize("chat")
-            }
-            onFocus={() => windows.focus("chat")}
-            minHeight={160}
-          >
-            <RoomChat
-              roomId={roomId}
-              messages={chat}
-              onUpdate={refresh}
-              readOnly={!canChat}
-            />
-          </FoundryWindow>
-
-          <FoundryWindow
-            title="Dados"
-            layout={win("dice")}
-            className="foundry-window--dice"
-            onLayoutChange={(patch) => windows.patch("dice", patch)}
-            onClose={() => windows.close("dice")}
-            onMinimize={() =>
-              win("dice").minimized ? windows.restore("dice") : windows.minimize("dice")
-            }
-            onFocus={() => windows.focus("dice")}
-            minHeight={140}
-          >
-            {canChat ? (
-              <DiceRoller roomId={roomId} onUpdate={refresh} />
-            ) : (
-              <p className="vtt-combat-hint" style={{ padding: "1rem" }}>
-                Visitantes não rolam dados no chat.
-              </p>
-            )}
-          </FoundryWindow>
-
-          <FoundryWindow
-            title="Ficha"
-            layout={win("ficha")}
-            className="foundry-window--ficha"
-            onLayoutChange={(patch) => windows.patch("ficha", patch)}
-            onClose={() => windows.close("ficha")}
-            onMinimize={() =>
-              win("ficha").minimized ? windows.restore("ficha") : windows.minimize("ficha")
-            }
-            onFocus={() => windows.focus("ficha")}
-            minHeight={180}
-          >
-            <div className="mesa-sheet-rail-hint">
-              <p className="vtt-combat-hint">
-                Clique em um token com ficha e use <strong>Abrir ficha</strong>, ou abaixo.
-                Colocar personagens no mapa: painel <strong>👥 Personagens</strong> (arrastar para o hex).
-              </p>
-              <button
-                type="button"
-                className="btn btn-secondary"
-                style={{ width: "100%", marginTop: "0.5rem" }}
-                onClick={() => openSheet(defaultActorId)}
-              >
-                Abrir minha ficha
-              </button>
-            </div>
-          </FoundryWindow>
-
-          {canControlCombat ? (
-            <FoundryWindow
-              title="Invocar"
-              layout={win("spawn")}
-              className="foundry-window--spawn"
-              onLayoutChange={(patch) => windows.patch("spawn", patch)}
-              onClose={() => windows.close("spawn")}
-              onMinimize={() =>
-                win("spawn").minimized ? windows.restore("spawn") : windows.minimize("spawn")
-              }
-              onFocus={() => windows.focus("spawn")}
-              minHeight={200}
+      <MesaWorkspaceCombatFlow
+        roomId={roomId}
+        roomOwnerId={roomOwnerId}
+        memberIds={memberIds}
+        snapshot={snapshot}
+        session={session}
+        canEndTurn={canEndTurn}
+        applySnapshot={applySnapshot}
+        refresh={refresh}
+      />
+      <div className="mesa-workspace mesa-workspace--foundry">
+        {syncError ? (
+          <p className="mesa-sync-err" role="alert">
+            {syncError}{" "}
+            <button
+              type="button"
+              className="btn btn-ghost"
+              style={{ fontSize: "0.8rem" }}
+              onClick={() => refresh()}
             >
-              <div className="mesa-panel-scroll mesa-panel-scroll--rail">
-                <MonsterSpawnPanel
-                  roomId={roomId}
-                  spawnAxial={spawnAxial}
-                  onSpawned={(snap) => applySnapshot(snap)}
-                />
-              </div>
-            </FoundryWindow>
-          ) : null}
+              Tentar de novo
+            </button>
+          </p>
+        ) : null}
 
-          {sheetPopupActorId && snapshot ? (
-            <CharacterSheetPopup
-              actorId={sheetPopupActorId}
-              roomId={roomId}
-              adventureId={adventureId}
-              actors={snapshot.actors}
-              session={session}
-              compendium={compendium}
-              layout={win("character")}
-              onLayoutChange={(patch) => windows.patch("character", patch)}
-              onFocus={() => windows.focus("character")}
-              onMinimize={() =>
-                win("character").minimized
-                  ? windows.restore("character")
-                  : windows.minimize("character")
-              }
-              onClose={closeSheet}
-            />
-          ) : null}
-          </div>
-
-          <MesaIconBar
+        <div className="foundry-mesa">
+          <MesaFoundrySidebar
             isActive={windows.isActive}
             onToggle={windows.toggle}
             showGm={canControlCombat}
-          />
+            dockOpen={dockOpen}
+          >
+            <FoundryDockPanel
+              title="Chat"
+              open={win("chat").open}
+              minimized={win("chat").minimized}
+              className="foundry-dock-panel--chat"
+              onClose={() => windows.close("chat")}
+              onMinimize={() =>
+                win("chat").minimized ? windows.restore("chat") : windows.minimize("chat")
+              }
+            >
+              <RoomChat roomId={roomId} messages={chat} onUpdate={refresh} readOnly={!canChat} />
+            </FoundryDockPanel>
+
+            <FoundryDockPanel
+              title="Rolador de dados"
+              open={win("dice").open}
+              minimized={win("dice").minimized}
+              className="foundry-dock-panel--dice"
+              onClose={() => windows.close("dice")}
+              onMinimize={() =>
+                win("dice").minimized ? windows.restore("dice") : windows.minimize("dice")
+              }
+            >
+              {canChat ? (
+                <DiceRoller roomId={roomId} onUpdate={refresh} />
+              ) : (
+                <p className="vtt-combat-hint" style={{ padding: "1rem" }}>
+                  Visitantes não rolam dados no chat.
+                </p>
+              )}
+            </FoundryDockPanel>
+
+            <FoundryDockPanel
+              title="Ficha do personagem"
+              open={win("ficha").open}
+              minimized={win("ficha").minimized}
+              className="foundry-dock-panel--ficha"
+              onClose={() => windows.close("ficha")}
+              onMinimize={() =>
+                win("ficha").minimized ? windows.restore("ficha") : windows.minimize("ficha")
+              }
+            >
+              <div className="mesa-sheet-rail-hint">
+                <p className="vtt-combat-hint">
+                  Selecione um token e use <strong>Abrir ficha</strong>, ou o botão abaixo. Para
+                  colocar PCs no mapa, use o painel <strong>Tokens</strong>.
+                </p>
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  style={{ width: "100%", marginTop: "0.5rem" }}
+                  onClick={() => openSheet(defaultActorId)}
+                >
+                  Abrir minha ficha
+                </button>
+              </div>
+            </FoundryDockPanel>
+
+            {canControlCombat ? (
+              <FoundryDockPanel
+                title="Invocar monstros"
+                open={win("spawn").open}
+                minimized={win("spawn").minimized}
+                className="foundry-dock-panel--spawn"
+                onClose={() => windows.close("spawn")}
+                onMinimize={() =>
+                  win("spawn").minimized ? windows.restore("spawn") : windows.minimize("spawn")
+                }
+              >
+                <div className="mesa-panel-scroll mesa-panel-scroll--rail">
+                  <MonsterSpawnPanel
+                    roomId={roomId}
+                    spawnAxial={spawnAxial}
+                    onSpawned={(snap) => applySnapshot(snap)}
+                  />
+                </div>
+              </FoundryDockPanel>
+            ) : null}
+          </MesaFoundrySidebar>
+
+          <div className="foundry-mesa__stage">
+            <HexBattlefield
+              scene={scene}
+              canEdit={canEdit}
+              canControlCombat={canControlCombat}
+              canBypassTurn={canBypassTurn}
+              canEndTurn={canEndTurn}
+              roomOwnerId={roomOwnerId}
+              canControlToken={canControlToken}
+              canViewTokenPa={canViewTokenPaCb}
+              roomId={roomId}
+              adventureId={adventureId}
+              inviteCode={inviteCode}
+              snapshot={snapshot}
+              session={session}
+              roomActors={snapshot?.actors ?? {}}
+              onRefresh={refresh}
+              onApplySnapshot={applySnapshot}
+              onOpenSheet={openSheet}
+              onHoverAxialChange={setSpawnAxial}
+              onOpenDungeonPanel={openDungeonPanel}
+              showSpawnInSidebar={false}
+              foundryLayout
+              actorsWindowLayout={win("actors")}
+              onActorsWindowLayoutChange={(patch) => windows.patch("actors", patch)}
+              onActorsWindowClose={() => windows.close("actors")}
+              onActorsWindowMinimize={() =>
+                win("actors").minimized ? windows.restore("actors") : windows.minimize("actors")
+              }
+              onActorsWindowFocus={() => windows.focus("actors")}
+              gmWindowLayout={win("gm")}
+              onGmWindowLayoutChange={(patch) => windows.patch("gm", patch)}
+              onGmWindowClose={() => windows.close("gm")}
+              onGmWindowMinimize={() =>
+                win("gm").minimized ? windows.restore("gm") : windows.minimize("gm")
+              }
+              onGmWindowFocus={() => windows.focus("gm")}
+              dungeonWindowLayout={win("dungeon")}
+              onDungeonWindowClose={() => windows.close("dungeon")}
+              onDungeonWindowMinimize={() =>
+                win("dungeon").minimized ? windows.restore("dungeon") : windows.minimize("dungeon")
+              }
+              initiativeWindowLayout={win("initiative")}
+              onInitiativeWindowLayoutChange={(patch) => windows.patch("initiative", patch)}
+              onInitiativeWindowClose={() => windows.close("initiative")}
+              onInitiativeWindowMinimize={() =>
+                win("initiative").minimized
+                  ? windows.restore("initiative")
+                  : windows.minimize("initiative")
+              }
+              onInitiativeWindowFocus={() => windows.focus("initiative")}
+            />
+          </div>
+
+          <div id="foundry-mesa-hud" className="foundry-mesa__hud">
+            <div id="foundry-mesa-windows" className="foundry-mesa__windows">
+              {sheetPopupActorId && snapshot ? (
+                <CharacterSheetPopup
+                  actorId={sheetPopupActorId}
+                  roomId={roomId}
+                  adventureId={adventureId}
+                  actors={snapshot.actors}
+                  session={session}
+                  compendium={compendium}
+                  layout={win("character")}
+                  onLayoutChange={(patch) => windows.patch("character", patch)}
+                  onFocus={() => windows.focus("character")}
+                  onMinimize={() =>
+                    win("character").minimized
+                      ? windows.restore("character")
+                      : windows.minimize("character")
+                  }
+                  onClose={closeSheet}
+                />
+              ) : null}
+            </div>
+          </div>
         </div>
       </div>
-    </div>
     </VttToastProvider>
   );
 }

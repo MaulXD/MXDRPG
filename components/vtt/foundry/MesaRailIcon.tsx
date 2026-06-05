@@ -4,6 +4,7 @@ export type MesaRailIconName =
   | "chat"
   | "dice"
   | "ficha"
+  | "dungeon"
   | "gm"
   | "spawn";
 
@@ -50,6 +51,12 @@ export function MesaRailIcon({ name, className = "foundry-icon-bar__icon" }: Pro
       return (
         <svg {...common}>
           <path d="M7 2a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8.4a1 1 0 0 0-.3-.7L14.3 2.3A1 1 0 0 0 13.6 2H7Zm8 6h3.6L15 4.4V8ZM8 11h8v2H8v-2Zm0 4h5v2H8v-2Z" />
+        </svg>
+      );
+    case "dungeon":
+      return (
+        <svg {...common}>
+          <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3h11A2.5 2.5 0 0 1 20 5.5v13A2.5 2.5 0 0 1 17.5 21h-11A2.5 2.5 0 0 1 4 18.5v-13ZM8 7h8v2H8V7Zm0 4h5v2H8v-2Z" />
         </svg>
       );
     case "gm":

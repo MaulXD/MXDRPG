@@ -5,6 +5,7 @@ import { useCallback, useEffect, useState } from "react";
 export type MesaWindowId =
   | "actors"
   | "gm"
+  | "dungeon"
   | "tokens"
   | "initiative"
   | "chat"
@@ -12,6 +13,18 @@ export type MesaWindowId =
   | "ficha"
   | "spawn"
   | "character";
+
+/** Painéis fixos na coluna esquerda (um aberto por vez). */
+export const FOUNDRY_DOCK_PANEL_IDS: MesaWindowId[] = [
+  "actors",
+  "initiative",
+  "chat",
+  "dice",
+  "ficha",
+  "spawn",
+  "gm",
+  "dungeon",
+];
 
 export type FoundryWindowLayout = {
   open: boolean;
@@ -28,6 +41,7 @@ type Registry = Partial<Record<MesaWindowId, FoundryWindowLayout>>;
 const DEFAULT_LAYOUTS: Record<MesaWindowId, Omit<FoundryWindowLayout, "open" | "minimized" | "z">> = {
   actors: { x: 52, y: 48, width: 280, height: 440 },
   gm: { x: 52, y: 48, width: 300, height: 480 },
+  dungeon: { x: 52, y: 48, width: 300, height: 520 },
   tokens: { x: 52, y: 48, width: 300, height: 480 },
   initiative: { x: 52, y: 500, width: 280, height: 360 },
   chat: { x: 52, y: 48, width: 340, height: 340 },
@@ -140,11 +154,24 @@ export function useFoundryWindows(roomId?: string) {
   const toggle = useCallback((id: MesaWindowId) => {
     setRegistry((prev) => {
       const cur = prev[id] ?? defaultEntry(id, 10);
-      if (cur.open && !cur.minimized) {
-        return { ...prev, [id]: { ...cur, open: false, minimized: false } };
+      const closing = cur.open && !cur.minimized;
+      const next: Registry = { ...prev };
+
+      if (FOUNDRY_DOCK_PANEL_IDS.includes(id) && !closing) {
+        for (const dockId of FOUNDRY_DOCK_PANEL_IDS) {
+          if (dockId === id) continue;
+          const other = next[dockId] ?? defaultEntry(dockId, 10);
+          next[dockId] = { ...other, open: false, minimized: false };
+        }
       }
-      const z = maxZ(prev) + 1;
-      return { ...prev, [id]: { ...cur, open: true, minimized: false, z } };
+
+      if (closing) {
+        next[id] = { ...cur, open: false, minimized: false };
+      } else {
+        const z = maxZ(prev) + 1;
+        next[id] = { ...cur, open: true, minimized: false, z };
+      }
+      return next;
     });
   }, []);
 
@@ -195,6 +222,13 @@ export function useFoundryWindows(roomId?: string) {
     [registry]
   );
 
+  const isDockOpen = useCallback(() => {
+    return FOUNDRY_DOCK_PANEL_IDS.some((id) => {
+      const w = registry[id];
+      return Boolean(w?.open);
+    });
+  }, [registry]);
+
   return {
     get,
     patch,
@@ -205,6 +239,7 @@ export function useFoundryWindows(roomId?: string) {
     restore,
     focus,
     isActive,
+    isDockOpen,
     hydrated,
   };
 }
