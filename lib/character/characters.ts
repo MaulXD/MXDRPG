@@ -84,8 +84,16 @@ export const MAX_CHARACTERS_PER_USER = 10;
 export async function saveCharacter(sheet: CharacterSheet): Promise<CharacterSheet> {
   const normalized = upsertCharacterRegistry(sheet);
   if (dbEnabled()) {
-    const { upsertCharacter } = await import("@/lib/db/characters");
-    await upsertCharacter(normalized);
+    try {
+      const { upsertCharacter } = await import("@/lib/db/characters");
+      await upsertCharacter(normalized);
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : String(e);
+      console.warn(
+        `[eldarin] Falha ao gravar ficha no Postgres (${normalized.id}); mantida em registry.json:`,
+        msg
+      );
+    }
   }
   return normalized;
 }

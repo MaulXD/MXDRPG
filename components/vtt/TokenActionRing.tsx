@@ -18,6 +18,7 @@ import { useCombatTurn } from "@/hooks/useCombatActions";
 import { patchRoomActor } from "@/hooks/useRoomSync";
 import { formatCombatActionTooltip } from "@/lib/combat/action-tooltip";
 import { collectPlayerActorIds, primaryTokenRingColor } from "@/lib/vtt/token-colors";
+import { CombatActionDetail } from "@/components/vtt/CombatActionDetail";
 import "./token-action-ring.css";
 
 type SlotTone = "walk" | "run" | "attack" | "spell" | "ability";
@@ -33,6 +34,8 @@ type DisplaySlot = {
   title?: string;
   longLabel?: boolean;
   rechargeHint?: string;
+  action?: CombatActionOption | null;
+  detailHint?: string;
   onClick: () => void;
 };
 
@@ -105,6 +108,7 @@ export function TokenActionRing({
   onRoomSync,
 }: Props) {
   const [ringView, setRingView] = useState<RingView>("main");
+  const [hoveredSlotId, setHoveredSlotId] = useState<string | null>(null);
   const turn = useCombatTurn({ combat, canBypassTurn });
 
   const weapons = useMemo(
@@ -129,7 +133,12 @@ export function TokenActionRing({
 
   useEffect(() => {
     setRingView("main");
+    setHoveredSlotId(null);
   }, [token.id]);
+
+  useEffect(() => {
+    setHoveredSlotId(null);
+  }, [ringView]);
 
   const saveLoadout = useCallback(
     async (packId: "armas" | "magias" | "habilidades", entryId: string) => {
@@ -213,6 +222,7 @@ export function TokenActionRing({
         ]
           .filter(Boolean)
           .join("\n"),
+        action,
         onClick: pick,
       };
     },
@@ -245,6 +255,7 @@ export function TokenActionRing({
         paLabel: movePa,
         disabled: turnBlocked,
         title: "Próximo hex · caminhada",
+        detailHint: "Caminhada — próximo hex na faixa gratuita ou com PA conforme distância já percorrida.",
         onClick: () => pickMain("move-walk"),
       },
       {
@@ -255,6 +266,7 @@ export function TokenActionRing({
         paLabel: movePa,
         disabled: turnBlocked,
         title: "Próximo hex · corrida",
+        detailHint: "Corrida — deslocamento extra com custo de PA maior que a caminhada.",
         onClick: () => pickMain("move-run"),
       },
       {
@@ -265,6 +277,7 @@ export function TokenActionRing({
         paLabel: combatActionPaLabel(actor, weapon),
         disabled: turnBlocked || weapons.length === 0,
         title: weapon ? formatCombatActionTooltip(weapon, actor) : undefined,
+        action: weapon ?? null,
         onClick: () => pickMain("attack"),
       },
       {
@@ -280,6 +293,11 @@ export function TokenActionRing({
             : spell
               ? formatCombatActionTooltip(spell, actor)
               : undefined,
+        action: spells.length === 1 ? spell ?? null : null,
+        detailHint:
+          spells.length > 1
+            ? `${spells.length} magias — clique para abrir a lista e passe o mouse para ver cada descrição.`
+            : undefined,
         onClick: () => pickMain("spell"),
       },
       {
@@ -295,6 +313,11 @@ export function TokenActionRing({
             : ability
               ? formatCombatActionTooltip(ability, actor)
               : undefined,
+        action: abilities.length === 1 ? ability ?? null : null,
+        detailHint:
+          abilities.length > 1
+            ? `${abilities.length} habilidades — clique para abrir a lista e passe o mouse para ver cada descrição.`
+            : undefined,
         onClick: () => pickMain("ability"),
       },
     ];
@@ -313,6 +336,13 @@ export function TokenActionRing({
   ]);
 
   const layout = ringLayout(displaySlots.length);
+
+  const hoveredSlot = useMemo(
+    () => displaySlots.find((s) => s.id === hoveredSlotId) ?? null,
+    [displaySlots, hoveredSlotId]
+  );
+
+  const detailOffset = layout.radius + 72;
 
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
@@ -425,6 +455,8 @@ export function TokenActionRing({
               }
               disabled={slot.disabled}
               title={slot.title ?? `${slot.label} · ${slot.paLabel}`}
+              onMouseEnter={() => setHoveredSlotId(slot.id)}
+              onFocus={() => setHoveredSlotId(slot.id)}
               onClick={slot.onClick}
             >
               <span className="token-action-ring__glyph" aria-hidden>
@@ -449,6 +481,39 @@ export function TokenActionRing({
             </button>
           );
         })}
+
+        {hoveredSlot?.action ? (
+          <div
+            className="token-action-ring__detail"
+            style={{ "--tar-detail-offset": `${detailOffset}px` } as CSSProperties}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <CombatActionDetail
+              action={hoveredSlot.action}
+              actor={actor}
+              className="combat-action-detail--ring"
+            />
+          </div>
+        ) : hoveredSlot?.detailHint ? (
+          <div
+            className="token-action-ring__detail token-action-ring__detail--hint"
+            style={{ "--tar-detail-offset": `${detailOffset}px` } as CSSProperties}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <p className="token-action-ring__detail-hint">{hoveredSlot.detailHint}</p>
+          </div>
+        ) : ringView !== "main" ? (
+          <div
+            className="token-action-ring__detail token-action-ring__detail--hint"
+            style={{ "--tar-detail-offset": `${detailOffset}px` } as CSSProperties}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <p className="token-action-ring__detail-hint">
+              Passe o mouse sobre {ringView === "spell" ? "uma magia" : "uma habilidade"} para ver a
+              descrição completa.
+            </p>
+          </div>
+        ) : null}
       </div>
     </div>
   );

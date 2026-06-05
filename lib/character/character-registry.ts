@@ -2,7 +2,6 @@ import "server-only";
 
 import fs from "fs";
 import path from "path";
-import { dbEnabled } from "@/lib/db/enabled";
 import { DEMO_CHARACTERS } from "@/lib/character/demo-characters";
 import { normalizeCharacter } from "@/lib/character/normalize";
 import type { CharacterSheet } from "@/lib/character/types";
@@ -72,9 +71,7 @@ export function upsertCharacterRegistry(sheet: CharacterSheet): CharacterSheet {
     DEMO_CHARACTERS.push(normalized);
   }
 
-  if (!dbEnabled()) {
-    savePersisted(characterRegistry());
-  }
+  savePersisted(characterRegistry());
 
   return normalized;
 }
