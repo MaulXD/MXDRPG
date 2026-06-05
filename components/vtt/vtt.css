@@ -2970,3 +2970,40 @@
   background: rgba(201, 169, 98, 0.1);
 }
 
+.vtt-gm-progress {
+  margin-top: 0.75rem;
+}
+
+.vtt-gm-progress .vtt-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  margin-bottom: 0.5rem;
+}
+
+.vtt-gm-progress .vtt-field select,
+.vtt-gm-progress .vtt-field input {
+  padding: 0.35rem 0.5rem;
+  border-radius: 6px;
+  border: 1px solid rgba(201, 169, 98, 0.25);
+  background: rgba(4, 6, 10, 0.8);
+  color: var(--text, #e8e0d4);
+  font-size: 0.78rem;
+}
+
+.vtt-gm-progress-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 0.4rem;
+  margin-bottom: 0.5rem;
+}
+
+.vtt-gm-progress-row .vtt-field--inline {
+  flex: 1;
+  min-width: 5.5rem;
+  margin-bottom: 0;
+}
+

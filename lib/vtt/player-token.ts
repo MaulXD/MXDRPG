@@ -4,7 +4,7 @@ import type { Axial } from "@/lib/vtt/hex-math";
 import { defaultMovementFields } from "@/lib/vtt/movement";
 import { creatureSizeOf } from "@/lib/vtt/creature-size";
 import { playerColorForActor } from "@/lib/vtt/token-colors";
-import { DEFAULT_PORTRAIT_FOCUS, sanitizePortraitFocus } from "@/lib/media/portrait-focus";
+import { DEFAULT_PORTRAIT_FOCUS, resolveTokenFocus } from "@/lib/media/portrait-focus";
 import type { BattleToken } from "@/lib/vtt/types";
 
 export function createPlayerTokenFromActor(
@@ -15,7 +15,7 @@ export function createPlayerTokenFromActor(
   const id = tokenId ?? `tk-${actor.id}`;
   const paMax = paMaxForActor(actor);
   const pa = Math.min(paMax, Math.max(0, actor.resources.pontosAcao.value));
-  const focus = sanitizePortraitFocus(actor.portraitFocus) ?? DEFAULT_PORTRAIT_FOCUS;
+  const focus = resolveTokenFocus(actor) ?? DEFAULT_PORTRAIT_FOCUS;
 
   return {
     id,

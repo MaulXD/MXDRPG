@@ -14,11 +14,32 @@ const INPUT_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif"];
 const PORTRAIT_MAX_EDGE = 1024;
 const TOKEN_MAX_EDGE = 512;
 
+export type PortraitFocusSet = {
+  portraitFocus: PortraitFocus;
+  coverFocus?: PortraitFocus;
+  tokenFocus?: PortraitFocus;
+};
+
 export type PortraitBundle = {
   portraitUrl: string;
   tokenImageUrl: string;
   portraitFocus: PortraitFocus;
+  coverFocus: PortraitFocus;
+  tokenFocus: PortraitFocus;
 };
+
+function normalizeFocusSet(input: PortraitFocus | PortraitFocusSet): Required<PortraitFocusSet> {
+  if ("portraitFocus" in input) {
+    const portraitFocus = normalizePortraitFocus(input.portraitFocus);
+    return {
+      portraitFocus,
+      coverFocus: normalizePortraitFocus(input.coverFocus ?? input.portraitFocus),
+      tokenFocus: normalizePortraitFocus(input.tokenFocus ?? input.portraitFocus),
+    };
+  }
+  const f = normalizePortraitFocus(input);
+  return { portraitFocus: f, coverFocus: f, tokenFocus: f };
+}
 
 function loadImageFromFile(file: File): Promise<HTMLImageElement> {
   return new Promise((resolve, reject) => {
@@ -111,10 +132,10 @@ function encodeWebpCover(
   throw new Error("Imagem grande demais mesmo após compressão WebP.");
 }
 
-/** Retrato + token WebP a partir do arquivo e do ponto focal */
+/** Retrato + token WebP a partir do arquivo e focos por slot */
 export async function buildPortraitBundle(
   file: File,
-  focus: PortraitFocus = DEFAULT_PORTRAIT_FOCUS
+  focuses: PortraitFocus | PortraitFocusSet = DEFAULT_PORTRAIT_FOCUS
 ): Promise<PortraitBundle> {
   if (!INPUT_TYPES.includes(file.type)) {
     throw new Error("Formato inválido. Use JPEG, PNG, WebP ou GIF.");
@@ -124,24 +145,30 @@ export async function buildPortraitBundle(
   }
 
   const img = await loadImageFromFile(file);
-  return buildPortraitBundleFromImage(img, focus);
+  return buildPortraitBundleFromImage(img, focuses);
 }
 
-/** Regenera token (e opcionalmente retrato) a partir de data URL existente */
+/** Regenera retrato/token a partir de data URL existente */
 export async function buildPortraitBundleFromDataUrl(
   portraitDataUrl: string,
-  focus: PortraitFocus
+  focuses: PortraitFocus | PortraitFocusSet
 ): Promise<PortraitBundle> {
   const img = await loadImageFromDataUrl(portraitDataUrl);
-  return buildPortraitBundleFromImage(img, focus);
+  return buildPortraitBundleFromImage(img, focuses);
 }
 
 export async function buildPortraitBundleFromImage(
   img: HTMLImageElement,
-  focus: PortraitFocus
+  focuses: PortraitFocus | PortraitFocusSet
 ): Promise<PortraitBundle> {
-  const normalized = normalizePortraitFocus(focus);
-  const portraitUrl = encodeWebpCover(img, PORTRAIT_MAX_EDGE, normalized);
-  const tokenImageUrl = encodeWebpCover(img, TOKEN_MAX_EDGE, normalized);
-  return { portraitUrl, tokenImageUrl, portraitFocus: normalized };
+  const set = normalizeFocusSet(focuses);
+  const portraitUrl = encodeWebpCover(img, PORTRAIT_MAX_EDGE, set.portraitFocus);
+  const tokenImageUrl = encodeWebpCover(img, TOKEN_MAX_EDGE, set.tokenFocus);
+  return {
+    portraitUrl,
+    tokenImageUrl,
+    portraitFocus: set.portraitFocus,
+    coverFocus: set.coverFocus,
+    tokenFocus: set.tokenFocus,
+  };
 }
