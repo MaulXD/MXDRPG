@@ -13,6 +13,7 @@ import {
   usePerformAttack,
 } from "@/hooks/useCombatActions";
 import type { ChatMessage } from "@/lib/room/chat";
+import { CombatActionDetail } from "@/components/vtt/CombatActionDetail";
 
 type Props = {
   roomId: string;
@@ -155,6 +156,8 @@ export function CombatActionBar({
       {extraAttacks > 1 && action.kind === "weapon" ? (
         <p className="vtt-combat-hint">Ataque Extra — {extraAttacks} rolagens por ação{multiLabel}</p>
       ) : null}
+
+      <CombatActionDetail action={action} actor={actor} />
 
       {isSaveSpell ? (
         <p className="vtt-combat-hint">Magia com save — alvo rola vs CD (metade se passar).</p>

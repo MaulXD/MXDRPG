@@ -16,6 +16,7 @@ import type { TokenActionMode } from "@/lib/vtt/action-mode";
 import { movementPaCost, movementPaBandsForToken } from "@/lib/vtt/movement-pa";
 import { useCombatTurn } from "@/hooks/useCombatActions";
 import { patchRoomActor } from "@/hooks/useRoomSync";
+import { formatCombatActionTooltip } from "@/lib/combat/action-tooltip";
 import { collectPlayerActorIds, primaryTokenRingColor } from "@/lib/vtt/token-colors";
 import "./token-action-ring.css";
 
@@ -206,12 +207,12 @@ export function TokenActionRing({
         disabled: turnBlocked || cd.blocked,
         rechargeHint: cd.blocked ? cd.hint : undefined,
         title: [
-          action.label || action.name,
+          formatCombatActionTooltip(action, actor),
           rechargeTitle ? `Recarga: ${rechargeTitle}` : null,
           cd.blocked && cd.hint ? `Disponível: ${cd.hint}` : null,
         ]
           .filter(Boolean)
-          .join(" · "),
+          .join("\n"),
         onClick: pick,
       };
     },
@@ -263,7 +264,7 @@ export function TokenActionRing({
         glyph: "⚔",
         paLabel: combatActionPaLabel(actor, weapon),
         disabled: turnBlocked || weapons.length === 0,
-        title: weapon?.label ?? weapon?.name,
+        title: weapon ? formatCombatActionTooltip(weapon, actor) : undefined,
         onClick: () => pickMain("attack"),
       },
       {
@@ -275,8 +276,10 @@ export function TokenActionRing({
         disabled: turnBlocked || spells.length === 0,
         title:
           spells.length > 1
-            ? `${spells.length} magias disponíveis`
-            : spell?.label ?? spell?.name,
+            ? `${spells.length} magias disponíveis — abra o submenu`
+            : spell
+              ? formatCombatActionTooltip(spell, actor)
+              : undefined,
         onClick: () => pickMain("spell"),
       },
       {
@@ -288,8 +291,10 @@ export function TokenActionRing({
         disabled: turnBlocked || abilities.length === 0,
         title:
           abilities.length > 1
-            ? `${abilities.length} habilidades disponíveis`
-            : ability?.label ?? ability?.name,
+            ? `${abilities.length} habilidades disponíveis — abra o submenu`
+            : ability
+              ? formatCombatActionTooltip(ability, actor)
+              : undefined,
         onClick: () => pickMain("ability"),
       },
     ];
@@ -419,11 +424,7 @@ export function TokenActionRing({
                 } as CSSProperties
               }
               disabled={slot.disabled}
-              title={
-                slot.title
-                  ? `${slot.title} · ${slot.paLabel}`
-                  : `${slot.label} · ${slot.paLabel}`
-              }
+              title={slot.title ?? `${slot.label} · ${slot.paLabel}`}
               onClick={slot.onClick}
             >
               <span className="token-action-ring__glyph" aria-hidden>
