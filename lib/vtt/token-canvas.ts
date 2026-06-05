@@ -1,12 +1,14 @@
 import type { PortraitFocus } from "@/lib/media/portrait-focus";
 import { DEFAULT_PORTRAIT_FOCUS } from "@/lib/media/portrait-focus";
+import type { CreatureSize } from "@/lib/vtt/creature-size";
+import { tokenDrawRadius } from "@/lib/vtt/creature-size";
 import type { TokenRingStyle } from "@/lib/vtt/token-colors";
 
-/** Raio do token em relação ao hex */
+/** Raio do token Médio em relação ao hex */
 export const TOKEN_RADIUS_RATIO = 0.48;
 
-export function tokenRadius(hexSize: number): number {
-  return hexSize * TOKEN_RADIUS_RATIO;
+export function tokenRadius(hexSize: number, size: CreatureSize = "medium"): number {
+  return tokenDrawRadius(hexSize, size);
 }
 
 export function drawTokenDropShadow(

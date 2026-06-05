@@ -1,5 +1,6 @@
 import type { Axial } from "@/lib/vtt/hex-math";
 import { hexNeighbors } from "@/lib/vtt/hex-math";
+import { tokenOccupiedHexes } from "@/lib/vtt/creature-size";
 import { axialKey } from "@/lib/vtt/token-occupancy";
 import type { BattleScene, BattleToken } from "@/lib/vtt/types";
 
@@ -32,9 +33,11 @@ export function visibleHexSetForPlayer(
       (opts.userId && token.actorId && opts.actorIds?.includes(token.actorId)) ||
       token.ownerRole === "jogador";
     if (!isOwn) continue;
-    set.add(hexKey(token.axial.q, token.axial.r));
-    for (const n of hexNeighbors(token.axial)) {
-      set.add(hexKey(n.q, n.r));
+    for (const hex of tokenOccupiedHexes(token)) {
+      set.add(hexKey(hex.q, hex.r));
+      for (const n of hexNeighbors(hex)) {
+        set.add(hexKey(n.q, n.r));
+      }
     }
   }
 

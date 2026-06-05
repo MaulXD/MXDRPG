@@ -2,7 +2,7 @@ import { paMaxForActor } from "@/lib/combat/pa-economy";
 import type { RoomActor } from "@/lib/room/types";
 import type { Axial } from "@/lib/vtt/hex-math";
 import { defaultMovementFields } from "@/lib/vtt/movement";
-import { tokenFootprint } from "@/lib/vtt/token-occupancy";
+import { creatureSizeOf } from "@/lib/vtt/creature-size";
 import { playerColorForActor } from "@/lib/vtt/token-colors";
 import { DEFAULT_PORTRAIT_FOCUS, sanitizePortraitFocus } from "@/lib/media/portrait-focus";
 import type { BattleToken } from "@/lib/vtt/types";
@@ -40,7 +40,7 @@ export function createPlayerTokenFromActor(
     movementWalkMax: actor.movement.walk,
     movementRunMax: actor.movement.run,
     movementSpentHex: 0,
-    footprint: tokenFootprint({} as BattleToken, actor.identity.raca),
+    creatureSize: creatureSizeOf({} as BattleToken, actor.identity.raca),
     ...defaultMovementFields({ walk: actor.movement.walk, run: actor.movement.run }),
   };
 }

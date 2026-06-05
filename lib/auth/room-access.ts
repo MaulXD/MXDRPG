@@ -7,8 +7,10 @@ import type { CharacterSheet } from "@/lib/character/types";
 import type { SessionUser } from "@/lib/auth/types";
 import type { RoomState } from "@/lib/room/types";
 
-/** PC jogável na mesa demo sem login (visitante). */
-export const DEMO_PLAYABLE_ACTOR_ID = "pc-aventureiro";
+/** PCs jogáveis na mesa demo sem login (visitante). */
+export const DEMO_PLAYABLE_ACTOR_IDS = ["pc-aventureiro", "pc-aventureira-maga"] as const;
+/** @deprecated Use DEMO_PLAYABLE_ACTOR_IDS */
+export const DEMO_PLAYABLE_ACTOR_ID = DEMO_PLAYABLE_ACTOR_IDS[0];
 
 export function normalizeInviteCode(code: string): string {
   return code.trim().toUpperCase();
@@ -145,7 +147,10 @@ export function canEditRoomActor(
   const authActor = actorForRoomAuth(room, actor);
   if (!characterBelongsToAdventure(authActor, adventureId)) return false;
   if (user) return canEditCharacter(authActor as CharacterSheet, user.id, user.role);
-  return room.roomId === "demo" && actor.id === DEMO_PLAYABLE_ACTOR_ID;
+  return (
+    room.roomId === "demo" &&
+    DEMO_PLAYABLE_ACTOR_IDS.includes(actor.id as (typeof DEMO_PLAYABLE_ACTOR_IDS)[number])
+  );
 }
 
 export function canViewMonsterCompendium(

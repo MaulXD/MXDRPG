@@ -3,7 +3,7 @@ import { normalizeCharacter } from "@/lib/character/normalize";
 import { paMaxForActor } from "@/lib/combat/pa-economy";
 import { normalizeTokenPaFields } from "@/lib/combat/pa-token-state";
 import { defaultMovementFields } from "@/lib/vtt/movement";
-import { tokenFootprint } from "@/lib/vtt/token-occupancy";
+import { creatureSizeOf } from "@/lib/vtt/creature-size";
 import { collectPlayerActorIds, playerColorForActor } from "@/lib/vtt/token-colors";
 import { DEFAULT_PORTRAIT_FOCUS, sanitizePortraitFocus } from "@/lib/media/portrait-focus";
 import { DEMO_SCENE } from "@/lib/vtt/demo-scene";
@@ -74,7 +74,7 @@ export function syncLinkedTokens(
       movementWalkMax: actor.movement.walk,
       movementRunMax: actor.movement.run,
       movementSpentHex: token.movementSpentHex ?? 0,
-      footprint: tokenFootprint(token, actor.identity.raca),
+      creatureSize: creatureSizeOf(token, actor.identity.raca),
     };
   });
 
@@ -88,10 +88,12 @@ function ensureMovementFields(token: BattleToken): BattleToken {
 
 export function createDemoRoom(): RoomState {
   const aventureiro = getCharacter("pc-aventureiro");
-  if (!aventureiro) throw new Error("Demo character missing");
+  const maga = getCharacter("pc-aventureira-maga");
+  if (!aventureiro || !maga) throw new Error("Demo character missing");
 
   const actors: Record<string, RoomActor> = {
     [aventureiro.id]: { ...normalizeCharacter(aventureiro), revision: 1 },
+    [maga.id]: { ...normalizeCharacter(maga), revision: 1 },
   };
 
   const scene = syncLinkedTokens(DEMO_SCENE, actors);

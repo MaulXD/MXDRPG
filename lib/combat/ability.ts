@@ -8,6 +8,8 @@ import { rollDice } from "@/lib/dice/roll";
 
 import type { BattleToken } from "@/lib/vtt/types";
 
+import { tokenAxialDistance } from "@/lib/vtt/creature-size";
+
 import { getMonsterTemplate } from "@/lib/vtt/monsters";
 
 import { axialDistance, hexDirection, HEX_DIRECTIONS } from "@/lib/vtt/hex-math";
@@ -1005,7 +1007,7 @@ export function canAbilityTarget(
 
 
 
-  const dist = axialDistance(attacker.axial, defender.axial);
+  const dist = tokenAxialDistance(attacker, defender);
 
   if (dist > action.rangeHex) {
 

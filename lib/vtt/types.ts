@@ -37,7 +37,9 @@ export type BattleToken = {
   monsterVariant?: import("@/lib/vtt/monster-scaling").MonsterSpawnVariant;
   /** Foco da imagem no token (sync da ficha) */
   imageFocus?: import("@/lib/media/portrait-focus").PortraitFocus;
-  /** Tamanho no hex — small compartilha bloco dividido (Halfling, Gnomo, mob pequeno) */
+  /** Tamanho corporal — Médio 1 hex · Grande 3 · Gigante 7 · … */
+  creatureSize?: import("@/lib/vtt/creature-size").CreatureSize;
+  /** @deprecated use creatureSize */
   footprint?: "medium" | "small";
   /** Criatura que pode dividir hex com outra pequena */
   sharedHex?: boolean;

@@ -17,6 +17,7 @@ import {
 } from "@/lib/vtt/goblin-combat";
 import { monsterCombatActions } from "@/lib/vtt/monster-actions";
 import type { BattleToken } from "@/lib/vtt/types";
+import { tokenAxialDistance } from "@/lib/vtt/creature-size";
 import { axialDistance } from "@/lib/vtt/hex-math";
 import { abilityFromEntry } from "@/lib/combat/compendium-actions";
 import { attackRollMode, canTokenAct } from "@/lib/combat/conditions";
@@ -536,7 +537,7 @@ export function canAttackTarget(
   const act = canTokenAct(attacker);
   if (!act.ok) return act;
 
-  const dist = axialDistance(attacker.axial, defender.axial);
+  const dist = tokenAxialDistance(attacker, defender);
   if (!opts?.skipRangeCheck && dist > action.rangeHex) {
     return { ok: false, reason: `Fora de alcance (${dist} hex, máx ${action.rangeHex})` };
   }

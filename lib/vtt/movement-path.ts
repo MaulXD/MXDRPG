@@ -16,10 +16,10 @@ export type MovementPathContext = {
 
 function canEnterFactory(
   occupancy: OccupancyMap,
-  moverFootprint: ReturnType<typeof occupancyContext>["moverFootprint"],
+  moverSize: ReturnType<typeof occupancyContext>["moverSize"],
   gridRadius: number
 ): (hex: Axial) => boolean {
-  return (hex) => canEnterHex(hex, moverFootprint, occupancy, gridRadius);
+  return (hex) => canEnterHex(hex, moverSize, occupancy, gridRadius);
 }
 
 export function movementPathTo(
@@ -29,12 +29,8 @@ export function movementPathTo(
   ctx: MovementPathContext
 ): Axial[] | null {
   const maxSteps = mode === "walk" ? walkRemaining(token) : runRemaining(token);
-  const { occupancy, moverFootprint } = occupancyContext(
-    ctx.tokens,
-    token,
-    ctx.actorRacas
-  );
-  const canEnter = canEnterFactory(occupancy, moverFootprint, ctx.gridRadius);
+  const { occupancy, moverSize } = occupancyContext(ctx.tokens, token, ctx.actorRacas);
+  const canEnter = canEnterFactory(occupancy, moverSize, ctx.gridRadius);
   return findHexPath(token.axial, target, { maxSteps, canEnter });
 }
 
@@ -56,11 +52,7 @@ export function reachableMovementHexes(
   actorRacas?: Record<string, string | undefined>
 ): Axial[] {
   const maxSteps = mode === "walk" ? walkRemaining(token) : runRemaining(token);
-  const { occupancy, moverFootprint } = occupancyContext(
-    scene.tokens,
-    token,
-    actorRacas
-  );
-  const canEnter = canEnterFactory(occupancy, moverFootprint, scene.gridRadius);
+  const { occupancy, moverSize } = occupancyContext(scene.tokens, token, actorRacas);
+  const canEnter = canEnterFactory(occupancy, moverSize, scene.gridRadius);
   return reachableHexesBfs(token.axial, maxSteps, canEnter);
 }

@@ -977,7 +977,7 @@
   box-sizing: border-box;
   pointer-events: none;
   z-index: 2;
-  animation: vtt-turn-ring-spin 2.8s linear infinite;
+  animation: vtt-turn-ring-spin 11s linear infinite;
 }
 
 .vtt-turn-avatar--active {
@@ -2269,6 +2269,70 @@
 .vtt-spawn-drag-card-body span {
   font-size: 0.68rem;
   color: var(--text-muted);
+}
+
+.vtt-spawn-drag-card--actor {
+  align-items: center;
+}
+
+.vtt-spawn-drag-avatar {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid rgba(201, 169, 98, 0.45);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.vtt-spawn-drag-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.vtt-spawn-drag-initial {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  font-weight: 700;
+  font-family: var(--font-display);
+}
+
+.vtt-spawn-drag-list > li {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.vtt-spawn-pull-back {
+  align-self: flex-end;
+  margin-right: 0.15rem;
+  padding: 0.15rem 0.45rem;
+  font-size: 0.62rem;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  border: 1px solid var(--glass-border);
+  border-radius: 4px;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.vtt-spawn-pull-back:hover:not(:disabled) {
+  border-color: rgba(201, 169, 98, 0.45);
+  color: var(--text);
+}
+
+.vtt-spawn-pull-back:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
 }
 
 .vtt-spawn-drag-ghost {
