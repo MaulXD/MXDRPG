@@ -72,6 +72,12 @@ export function resolveTokenRing(
   };
 }
 
+/** Cor principal do anel de identidade (jogador ou monstro). */
+export function primaryTokenRingColor(token: BattleToken, playerActorIds: string[]): string {
+  const { rings } = resolveTokenRing(token, playerActorIds);
+  return rings[0]?.color ?? token.color;
+}
+
 export function monsterTierLabel(tier: MonsterTier): string {
   if (tier === "boss") return "Boss";
   if (tier === "mini") return "Mini-boss";

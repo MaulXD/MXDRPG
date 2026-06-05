@@ -1,24 +1,62 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useRef } from "react";
+import { useMemo, useRef, useState } from "react";
 import type { Axial } from "@/lib/vtt/hex-math";
 import type { RoomActor, RoomSnapshot } from "@/lib/room/types";
 import { canEditRoomActor } from "@/lib/auth/room-access";
 import type { SessionUser } from "@/lib/auth/types";
+import { collectPlayerActorIds, playerColorForActor } from "@/lib/vtt/token-colors";
 import { clearActiveActorSpawnDragPayload, writeActorSpawnDrag } from "@/lib/vtt/spawn-drag";
-import { placeRoomActorOnHex } from "@/hooks/useRoomSync";
+import { deleteRoomToken, placeRoomActorOnHex } from "@/hooks/useRoomSync";
+import type { BattleToken } from "@/lib/vtt/types";
 
 type Props = {
   adventureId?: string;
   roomId: string;
   actors: Record<string, RoomActor>;
   session: SessionUser | null;
-  tokens: { actorId?: string; linked?: boolean; axial: Axial }[];
+  tokens: BattleToken[];
   spawnAxial: Axial | null;
   onPlaced: (snapshot: RoomSnapshot) => void;
   showCreateLink?: boolean;
+  canPullBack?: boolean;
+  /** Mestre vê todos os personagens da aventura */
+  showAllActors?: boolean;
 };
+
+function buildDragGhost(label: string): HTMLElement {
+  const el = document.createElement("div");
+  el.className = "vtt-spawn-drag-ghost";
+  el.textContent = label;
+  el.style.position = "fixed";
+  el.style.left = "-9999px";
+  el.style.top = "0";
+  document.body.appendChild(el);
+  return el;
+}
+
+function ActorSpawnAvatar({
+  actor,
+  ringColor,
+}: {
+  actor: RoomActor;
+  ringColor: string;
+}) {
+  const img = actor.tokenImageUrl ?? actor.portraitUrl;
+  return (
+    <span className="vtt-spawn-drag-avatar" style={{ borderColor: ringColor }}>
+      {img ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img src={img} alt="" />
+      ) : (
+        <span className="vtt-spawn-drag-initial" style={{ background: `${ringColor}33`, color: ringColor }}>
+          {actor.name.slice(0, 1).toUpperCase()}
+        </span>
+      )}
+    </span>
+  );
+}
 
 export function PlayerSpawnPanel({
   adventureId: adventureIdProp,
@@ -29,21 +67,81 @@ export function PlayerSpawnPanel({
   spawnAxial,
   onPlaced,
   showCreateLink = false,
+  canPullBack = false,
+  showAllActors = false,
 }: Props) {
   const dragGhostRef = useRef<HTMLElement | null>(null);
+  const [busyId, setBusyId] = useState<string | null>(null);
+  const [msg, setMsg] = useState<string | null>(null);
 
   const adventureId = adventureIdProp ?? roomId;
 
-  const playable = useMemo(() => {
-    return Object.values(actors).filter((a) =>
-      canEditRoomActor({ roomId }, a, session)
-    );
-  }, [actors, roomId, session]);
+  const playerActorIds = useMemo(
+    () => collectPlayerActorIds(tokens.filter((t) => t.linked && t.actorId)),
+    [tokens]
+  );
 
-  if (playable.length === 0) {
+  const roster = useMemo(() => {
+    const all = Object.values(actors);
+    if (showAllActors) return all.sort((a, b) => a.name.localeCompare(b.name, "pt"));
+    return all
+      .filter((a) => canEditRoomActor({ roomId, adventureId }, a, session))
+      .sort((a, b) => a.name.localeCompare(b.name, "pt"));
+  }, [actors, showAllActors, roomId, adventureId, session]);
+
+  function tokenOnBoard(actorId: string) {
+    return tokens.find((t) => t.linked && t.actorId === actorId);
+  }
+
+  async function placeAt(actorId: string, axial: Axial) {
+    setBusyId(actorId);
+    setMsg(null);
+    try {
+      const snapshot = await placeRoomActorOnHex(roomId, actorId, axial.q, axial.r);
+      const actor = actors[actorId];
+      setMsg(`${actor?.name ?? "Personagem"} colocado no mapa.`);
+      onPlaced(snapshot);
+    } catch (e) {
+      setMsg(e instanceof Error ? e.message : "Falha ao colocar personagem");
+    } finally {
+      setBusyId(null);
+    }
+  }
+
+  async function pullBack(actorId: string, tokenId: string) {
+    setBusyId(actorId);
+    setMsg(null);
+    try {
+      const snapshot = await deleteRoomToken(roomId, tokenId);
+      const actor = actors[actorId];
+      setMsg(`${actor?.name ?? "Personagem"} retirado do mapa.`);
+      onPlaced(snapshot);
+    } catch (e) {
+      setMsg(e instanceof Error ? e.message : "Falha ao retirar do mapa");
+    } finally {
+      setBusyId(null);
+    }
+  }
+
+  function onDragStart(actorId: string, name: string, e: React.DragEvent) {
+    e.stopPropagation();
+    writeActorSpawnDrag(e.dataTransfer, { actorId });
+    dragGhostRef.current?.remove();
+    const ghost = buildDragGhost(name);
+    dragGhostRef.current = ghost;
+    e.dataTransfer.setDragImage(ghost, 28, 18);
+  }
+
+  function onDragEnd() {
+    clearActiveActorSpawnDragPayload();
+    dragGhostRef.current?.remove();
+    dragGhostRef.current = null;
+  }
+
+  if (roster.length === 0) {
     return (
-      <div style={{ marginTop: "0.5rem" }}>
-        <p className="vtt-combat-hint">Nenhum personagem seu nesta mesa.</p>
+      <div className="vtt-spawn-panel vtt-spawn-panel--players">
+        <p className="vtt-combat-hint">Nenhum personagem disponível nesta aventura.</p>
         {showCreateLink && roomId !== "demo" ? (
           <Link
             href={`/aventura/${adventureId}/personagem/novo`}
@@ -57,69 +155,89 @@ export function PlayerSpawnPanel({
     );
   }
 
-  function tokenOnBoard(actorId: string) {
-    return tokens.find((t) => t.linked && t.actorId === actorId);
-  }
-
-  async function placeAt(actorId: string, axial: Axial) {
-    const snapshot = await placeRoomActorOnHex(roomId, actorId, axial.q, axial.r);
-    onPlaced(snapshot);
-  }
-
-  function onDragStart(actorId: string, name: string, e: React.DragEvent) {
-    e.stopPropagation();
-    writeActorSpawnDrag(e.dataTransfer, { actorId });
-    dragGhostRef.current?.remove();
-    const ghost = document.createElement("div");
-    ghost.textContent = name;
-    ghost.style.cssText =
-      "position:fixed;top:-999px;padding:6px 10px;background:#1a2332;color:#e8ecf4;border-radius:6px;font-size:12px;pointer-events:none;";
-    document.body.appendChild(ghost);
-    dragGhostRef.current = ghost;
-    e.dataTransfer.setDragImage(ghost, 28, 18);
-  }
-
-  function onDragEnd() {
-    clearActiveActorSpawnDragPayload();
-    dragGhostRef.current?.remove();
-    dragGhostRef.current = null;
-  }
-
   return (
     <div className="vtt-spawn-panel vtt-spawn-panel--players">
-      <h3 className="vtt-spawn-title">Personagens</h3>
-      <p className="vtt-combat-hint">
-        Arraste para um hex no mapa ou use o botão com o cursor sobre o tabuleiro.
+      <p className="vtt-eyebrow">Personagens da aventura</p>
+      <p className="vtt-combat-hint vtt-spawn-drag-hint">
+        Arraste para um hex no mapa para colocar ou reposicionar. Quem está fora do tabuleiro pode
+        ser puxado de volta assim.
       </p>
-      <ul className="vtt-spawn-list">
-        {playable.map((actor) => {
+
+      <ul className="vtt-spawn-drag-list" role="list">
+        {roster.map((actor) => {
           const onBoard = tokenOnBoard(actor.id);
+          const ringColor = playerColorForActor(actor.id, [
+            ...new Set([...playerActorIds, actor.id]),
+          ]);
+          const busy = busyId === actor.id;
+
           return (
             <li key={actor.id}>
-              <button
-                type="button"
-                className="vtt-spawn-row vtt-spawn-row--draggable"
-                draggable
+              <div
+                role="button"
+                tabIndex={0}
+                draggable={!busy}
+                className="vtt-spawn-drag-card vtt-spawn-drag-card--actor"
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    if (spawnAxial && !busy) void placeAt(actor.id, spawnAxial);
+                  }
+                }}
                 onDragStart={(e) => onDragStart(actor.id, actor.name, e)}
                 onDragEnd={onDragEnd}
-                disabled={!spawnAxial}
-                title="Arraste para o hex desejado"
                 onClick={() => {
-                  if (spawnAxial) void placeAt(actor.id, spawnAxial);
+                  if (spawnAxial && !busy) void placeAt(actor.id, spawnAxial);
                 }}
+                title={`Arrastar ${actor.name} para o mapa`}
               >
-                <span className="vtt-spawn-row-name">{actor.name}</span>
-                <span className="vtt-spawn-row-meta">
-                  Nv {actor.identity.nivel}
-                  {onBoard
-                    ? ` · no mapa (${onBoard.axial.q}, ${onBoard.axial.r})`
-                    : " · fora do mapa"}
+                <span className="vtt-spawn-drag-grip" aria-hidden>
+                  ⠿
                 </span>
-              </button>
+                <ActorSpawnAvatar actor={actor} ringColor={ringColor} />
+                <span className="vtt-spawn-drag-card-body">
+                  <strong>{actor.name}</strong>
+                  <span>
+                    Nv {actor.identity.nivel} · {actor.identity.classe}
+                    {onBoard
+                      ? ` · no mapa (q${onBoard.axial.q}, r${onBoard.axial.r})`
+                      : " · fora do mapa"}
+                  </span>
+                </span>
+              </div>
+              {canPullBack && onBoard ? (
+                <button
+                  type="button"
+                  className="vtt-spawn-pull-back"
+                  disabled={busy}
+                  onClick={() => void pullBack(actor.id, onBoard.id)}
+                  title="Retirar do mapa (ficha permanece na aventura)"
+                >
+                  Retirar do mapa
+                </button>
+              ) : null}
             </li>
           );
         })}
       </ul>
+
+      <p className="vtt-combat-hint">
+        {spawnAxial
+          ? `Hex alvo: q${spawnAxial.q}, r${spawnAxial.r}`
+          : "Passe o mouse no mapa ou solte o personagem em um hex."}
+      </p>
+
+      {msg ? <p className="sheet-inline-msg">{msg}</p> : null}
+
+      {showCreateLink && roomId !== "demo" ? (
+        <Link
+          href={`/aventura/${adventureId}/personagem/novo`}
+          className="btn btn-secondary"
+          style={{ marginTop: "0.5rem", fontSize: "0.8rem", display: "inline-block", width: "100%" }}
+        >
+          Criar nova ficha
+        </Link>
+      ) : null}
     </div>
   );
 }

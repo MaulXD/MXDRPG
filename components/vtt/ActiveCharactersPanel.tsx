@@ -1,15 +1,24 @@
 "use client";
 
 import type { BattleToken } from "@/lib/vtt/types";
+import type { Axial } from "@/lib/vtt/hex-math";
+import type { RoomActor, RoomSnapshot } from "@/lib/room/types";
 import type { CombatTrack } from "@/lib/room/combat";
 import { activeTokenId } from "@/lib/room/combat";
+import type { SessionUser } from "@/lib/auth/types";
 import { ACTION_MODE_LABEL, type TokenActionMode } from "@/lib/vtt/action-mode";
 import { PaDotMeter } from "@/components/vtt/PaDotMeter";
 import { TokenEffectsRow } from "@/components/vtt/TokenEffectsRow";
 import { TokenConditionsPanel } from "@/components/vtt/TokenConditionsPanel";
+import { PlayerSpawnPanel } from "@/components/vtt/PlayerSpawnPanel";
 
 type Props = {
   tokens: BattleToken[];
+  allSceneTokens: BattleToken[];
+  roomActors: Record<string, RoomActor>;
+  session: SessionUser | null;
+  adventureId: string;
+  spawnAxial: Axial | null;
   selectedId: string | null;
   onSelect: (id: string) => void;
   selected: BattleToken | null;
@@ -22,12 +31,18 @@ type Props = {
   actionErr: string | null;
   roomId: string;
   onOpenSheet?: (actorId?: string) => void;
+  onPlaced: (snapshot: RoomSnapshot) => void;
   onUpdate: () => void;
   fogHint?: boolean;
 };
 
 export function ActiveCharactersPanel({
   tokens,
+  allSceneTokens,
+  roomActors,
+  session,
+  adventureId,
+  spawnAxial,
   selectedId,
   onSelect,
   selected,
@@ -40,12 +55,32 @@ export function ActiveCharactersPanel({
   actionErr,
   roomId,
   onOpenSheet,
+  onPlaced,
   onUpdate,
   fogHint = false,
 }: Props) {
+  const hasRoster = Object.keys(roomActors).length > 0;
+
   return (
     <aside className="vtt-sidebar vtt-sidebar--actors">
-      <p className="vtt-eyebrow">Personagens ativos</p>
+      {hasRoster ? (
+        <PlayerSpawnPanel
+          roomId={roomId}
+          adventureId={adventureId}
+          actors={roomActors}
+          session={session}
+          tokens={allSceneTokens}
+          spawnAxial={spawnAxial}
+          onPlaced={onPlaced}
+          showAllActors={canControlCombat}
+          canPullBack={canControlCombat}
+          showCreateLink={roomId !== "demo" && canControlCombat}
+        />
+      ) : null}
+
+      <p className="vtt-eyebrow" style={{ marginTop: hasRoster ? "0.75rem" : 0 }}>
+        No mapa
+      </p>
       {fogHint ? (
         <p className="vtt-combat-hint vtt-fog-list-hint">
           Só aparecem jogadores e criaturas no seu campo de visão.
@@ -109,8 +144,8 @@ export function ActiveCharactersPanel({
           {canUseToken && combat?.order.length ? (
             <p className="vtt-combat-hint vtt-action-ring-hint">
               {selected.id === activeTokenId(combat)
-                  ? "Clique direito no personagem ou hex dele para o anel de ações. Passe o mouse para ver o alcance."
-                  : "Aguarde seu turno na iniciativa (painel ⏱)."}
+                ? "Clique direito no personagem ou hex dele para o anel de ações. Passe o mouse para ver o alcance."
+                : "Aguarde seu turno na iniciativa (painel ⏱)."}
             </p>
           ) : canUseToken ? (
             <p className="vtt-combat-hint">Inicie o combate (rolar iniciativa) para usar ações.</p>
