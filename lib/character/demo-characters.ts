@@ -248,7 +248,7 @@ export const DEMO_CHARACTERS: CharacterSheet[] = [
   }),
 ];
 
-/** Demo / cliente — sem Postgres. Servidor: `resolveCharacter`. */
+/** @deprecated Use `resolveCharacter` (servidor) ou `getCharacterFromRegistry`. */
 export function getCharacter(id: string): CharacterSheet | null {
   const found = DEMO_CHARACTERS.find((c) => c.id === id);
   return found ? normalizeCharacter({ ...found }) : null;

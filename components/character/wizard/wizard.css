@@ -8,6 +8,7 @@
   grid-template-columns: 1fr minmax(220px, 280px);
   gap: 1rem;
   align-items: start;
+  min-width: 0;
 }
 
 @media (max-width: 900px) {
@@ -111,6 +112,19 @@
 
 .char-wizard-panel {
   padding: 1.5rem;
+  min-width: 0;
+  overflow-x: hidden;
+}
+
+.wizard-portrait {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.wizard-portrait .sheet-portraits {
+  margin: 0;
+  padding-top: 0;
+  border-top: none;
 }
 
 .char-wizard-panel h2 {
@@ -314,6 +328,40 @@
 .char-wizard-track strong {
   color: var(--text);
   font-size: 0.85rem;
+}
+
+.char-wizard-track__line {
+  display: block;
+}
+
+.char-wizard-track__diet {
+  color: var(--neon-gold, #c9a86c);
+}
+
+.char-wizard-track__talents {
+  list-style: none;
+  margin: 0.35rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0.2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding-top: 0.4rem;
+}
+
+.char-wizard-track__talents li {
+  font-size: 0.72rem;
+  line-height: 1.35;
+}
+
+.char-wizard-track__talents .wizard-hover-tip {
+  cursor: help;
+  text-decoration: underline dotted rgba(201, 168, 108, 0.45);
+  text-underline-offset: 2px;
+}
+
+.char-wizard-track__ascension {
+  color: var(--neon-gold, #c9a86c);
+  margin-top: 0.15rem;
 }
 
 .char-wizard-preview {

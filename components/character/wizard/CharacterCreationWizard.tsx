@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
+import { SubclassTrackCard } from "@/components/character/wizard/SubclassTrackCard";
 import { WizardHoverTip } from "@/components/character/wizard/WizardHoverTip";
 import { WizardPortraitStep } from "@/components/character/wizard/WizardPortraitStep";
 import {
@@ -26,6 +27,7 @@ import {
   validatePointBuy,
 } from "@/lib/character/point-buy";
 import { ANTECEDENTE_META } from "@/lib/character/wizard-meta";
+import { subclassTrackIntroTooltip } from "@/lib/character/subclass-wizard-tooltips";
 import {
   antecedenteGainDescription,
   linhagemTraitLines,
@@ -227,11 +229,10 @@ export function CharacterCreationWizard({
       }
       if (!res.ok) throw new Error(data.error ?? "Erro ao criar");
       if (!data.character?.id) throw new Error("Resposta inválida do servidor");
-      if (adventureId) {
-        router.push(`/aventura/${adventureId}`);
-      } else {
-        router.push(`/personagem/${data.character.id}`);
-      }
+      const dest = adventureId
+        ? `/personagem/${data.character.id}?campanha=${encodeURIComponent(adventureId)}`
+        : `/personagem/${data.character.id}`;
+      router.push(dest);
       router.refresh();
     } catch (e) {
       setErr(e instanceof Error ? e.message : "Erro");
@@ -445,7 +446,7 @@ export function CharacterCreationWizard({
                     </WizardHoverTip>
                   </li>
                   <li>
-                    <WizardHoverTip text="No nível 2 você escolhe uma subclasse (Dieta Marcial). Talentos de trilha nos níveis 4, 8, 12, 16 e ascensão no 20.">
+                    <WizardHoverTip text={subclassTrackIntroTooltip()}>
                       <strong>Nível 2:</strong> escolha uma Dieta Marcial (subclasse) — trilhas abaixo.
                     </WizardHoverTip>
                   </li>
@@ -454,14 +455,7 @@ export function CharacterCreationWizard({
                   <div className="char-wizard-tracks">
                     <p className="char-wizard-meta">Caminhos disponíveis no nível 2</p>
                     {subclassTracks.map((t) => (
-                      <article key={t.id} className="char-wizard-track">
-                        <strong>{t.subclass}</strong>
-                        <span>{t.specialty}</span>
-                        <span>Dieta: {t.diet}</span>
-                        <small>
-                          Talentos nv 4, 8, 12, 16 · ascensão nv 20
-                        </small>
-                      </article>
+                      <SubclassTrackCard key={t.id} track={t} />
                     ))}
                   </div>
                 ) : null}
