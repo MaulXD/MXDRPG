@@ -3,9 +3,10 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import type { Axial } from "@/lib/vtt/hex-math";
-import type { BattleScene, BattleToken } from "@/lib/vtt/types";
+import type { BattleScene, BattleToken, MapMarkup, MapMarkupDurability } from "@/lib/vtt/types";
 import {
   moveRoomTokenBudget,
+  patchRoomScene,
   postRoomAttack,
   postRoomAbility,
   postRoomAreaSpell,
@@ -14,6 +15,16 @@ import {
   repositionRoomToken,
   deleteRoomToken,
 } from "@/hooks/useRoomSync";
+import {
+  appendMapMarkup,
+  createMapMarkup,
+  hitTestMapMarkup,
+  mapMarkupsOf,
+  moveMapMarkup,
+  pruneMapMarkups,
+  removeMapMarkup,
+  type WhiteboardTool,
+} from "@/lib/vtt/map-markup";
 import { useVttToast } from "@/components/vtt/VttToast";
 import { canManageRoom } from "@/lib/auth/room-access";
 import { normalizeRoomSettings } from "@/lib/room/settings";
@@ -22,6 +33,7 @@ import { resolveTokenHpDisplay } from "@/lib/vtt/token-hp-display";
 import { ActiveCharactersPanel } from "@/components/vtt/ActiveCharactersPanel";
 import { GmToolsPanel } from "@/components/vtt/GmToolsPanel";
 import { DungeonEditorPanel } from "@/components/vtt/DungeonEditorPanel";
+import { WhiteboardPanel } from "@/components/vtt/WhiteboardPanel";
 import { FoundryDockPanel } from "@/components/vtt/foundry/FoundryDockPanel";
 import type { RoomSnapshot } from "@/lib/room/types";
 import { TokenActionRing } from "@/components/vtt/TokenActionRing";
@@ -127,6 +139,9 @@ type Props = {
   dungeonWindowLayout?: FoundryWindowLayout;
   onDungeonWindowClose?: () => void;
   onDungeonWindowMinimize?: () => void;
+  whiteboardWindowLayout?: FoundryWindowLayout;
+  onWhiteboardWindowClose?: () => void;
+  onWhiteboardWindowMinimize?: () => void;
 };
 
 export function HexBattlefield({
@@ -171,6 +186,9 @@ export function HexBattlefield({
   dungeonWindowLayout,
   onDungeonWindowClose,
   onDungeonWindowMinimize,
+  whiteboardWindowLayout,
+  onWhiteboardWindowClose,
+  onWhiteboardWindowMinimize,
 }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
@@ -201,8 +219,23 @@ export function HexBattlefield({
   const [dungeonEditorActive, setDungeonEditorActive] = useState(false);
   const [dungeonTool, setDungeonTool] = useState<DungeonEditorTool>("wall");
   const [selectedDungeonObjectId, setSelectedDungeonObjectId] = useState<string | null>(null);
+  const [whiteboardActive, setWhiteboardActive] = useState(false);
+  const [whiteboardTool, setWhiteboardTool] = useState<WhiteboardTool>("pen");
+  const [markupColor, setMarkupColor] = useState("#3498db");
+  const [markupWidth, setMarkupWidth] = useState(4);
+  const [markupDurability, setMarkupDurability] = useState<MapMarkupDurability>("temporary");
+  const [markupPreview, setMarkupPreview] = useState<MapMarkup | null>(null);
+  const [selectedMarkupId, setSelectedMarkupId] = useState<string | null>(null);
 
   const displayScene = snapshot?.scene ?? scene;
+  const displayMarkups = useMemo(
+    () => pruneMapMarkups(mapMarkupsOf(displayScene)),
+    [displayScene]
+  );
+  const tempMarkupCount = useMemo(
+    () => displayMarkups.filter((m) => m.durability === "temporary").length,
+    [displayMarkups]
+  );
   const displayPings = snapshot?.pings ?? [];
 
   useEffect(() => {
@@ -469,9 +502,15 @@ export function HexBattlefield({
       dungeonEditorTool:
         dungeonTool === "wall" || dungeonTool === "object" ? dungeonTool : null,
       selectedDungeonObjectId,
+      mapMarkups: displayMarkups,
+      markupPreview,
+      selectedMarkupId,
     }),
     [
       displayScene,
+      displayMarkups,
+      markupPreview,
+      selectedMarkupId,
       highlights,
       actionMode,
       hoverAxial,
@@ -1007,6 +1046,66 @@ export function HexBattlefield({
     [roomId, canControlCombat, displayScene.fogEnabled, syncRoom]
   );
 
+  const persistMapMarkups = useCallback(
+    async (next: MapMarkup[]) => {
+      setActionErr(null);
+      try {
+        const snap = await patchRoomScene(roomId, { mapMarkups: next });
+        syncRoom(snap);
+      } catch (e) {
+        setActionErr(e instanceof Error ? e.message : "Falha ao salvar lousa");
+      }
+    },
+    [roomId, syncRoom]
+  );
+
+  const createWhiteboardMarkup = useCallback(
+    (kind: MapMarkup["kind"], points: { x: number; y: number }[], text?: string) =>
+      createMapMarkup({
+        kind,
+        durability: markupDurability,
+        color: markupColor,
+        width: markupWidth,
+        points,
+        text,
+        author: session?.name ?? session?.email ?? "mestre",
+      }),
+    [markupColor, markupDurability, markupWidth, session?.email, session?.name]
+  );
+
+  const onMarkupCommit = useCallback(
+    (markup: MapMarkup) => {
+      void persistMapMarkups(appendMapMarkup(mapMarkupsOf(displayScene), markup));
+    },
+    [displayScene, persistMapMarkups]
+  );
+
+  const onMarkupMoveCommit = useCallback(
+    (id: string, dx: number, dy: number) => {
+      void persistMapMarkups(moveMapMarkup(mapMarkupsOf(displayScene), id, dx, dy));
+    },
+    [displayScene, persistMapMarkups]
+  );
+
+  const onMarkupErase = useCallback(
+    (id: string) => {
+      void persistMapMarkups(removeMapMarkup(mapMarkupsOf(displayScene), id));
+      setSelectedMarkupId((cur) => (cur === id ? null : cur));
+    },
+    [displayScene, persistMapMarkups]
+  );
+
+  const onMarkupTextRequest = useCallback(
+    (wx: number, wy: number) => {
+      const text = window.prompt("Texto da marcação:");
+      if (!text?.trim()) return;
+      onMarkupCommit(
+        createWhiteboardMarkup("text", [{ x: wx, y: wy }], text.trim())
+      );
+    },
+    [createWhiteboardMarkup, onMarkupCommit]
+  );
+
   const pointer = useBattlefieldPointer({
     canvasRef,
     scene: displayScene,
@@ -1048,11 +1147,27 @@ export function HexBattlefield({
     dungeonEditor: isRoomGm
       ? {
           layer: dungeonLayer,
-          active: dungeonEditorActive,
+          active: dungeonEditorActive && !whiteboardActive,
           tool: dungeonTool,
           selectedObjectId: selectedDungeonObjectId,
           onSelectObject: setSelectedDungeonObjectId,
           onHexEdit: (a, dragId) => void onDungeonHexEdit(a, dragId),
+        }
+      : undefined,
+    whiteboard: isRoomGm
+      ? {
+          active: whiteboardActive,
+          tool: whiteboardTool,
+          markups: displayMarkups,
+          selectedId: selectedMarkupId,
+          hitTest: (wx, wy) => hitTestMapMarkup(displayMarkups, wx, wy),
+          onSelect: setSelectedMarkupId,
+          onPreview: setMarkupPreview,
+          onCommit: onMarkupCommit,
+          onMoveCommit: onMarkupMoveCommit,
+          onErase: onMarkupErase,
+          createMarkup: createWhiteboardMarkup,
+          onTextRequest: onMarkupTextRequest,
         }
       : undefined,
   });
@@ -1118,6 +1233,33 @@ export function HexBattlefield({
         roomActors={roomActors}
         spawnAxial={hoverAxial}
         onSceneUpdated={(snap) => syncRoom(snap)}
+      />
+    ) : null;
+
+  const whiteboardPanel =
+    isRoomGm && snapshot ? (
+      <WhiteboardPanel
+        roomId={roomId}
+        scene={displayScene}
+        active={whiteboardActive}
+        tool={whiteboardTool}
+        color={markupColor}
+        width={markupWidth}
+        durability={markupDurability}
+        markupCount={displayMarkups.length}
+        tempCount={tempMarkupCount}
+        onActiveChange={(active) => {
+          setWhiteboardActive(active);
+          if (active) {
+            setDungeonEditorActive(false);
+            setMarkupPreview(null);
+          }
+        }}
+        onToolChange={setWhiteboardTool}
+        onColorChange={setMarkupColor}
+        onWidthChange={setMarkupWidth}
+        onDurabilityChange={setMarkupDurability}
+        onUpdated={(snap) => syncRoom(snap)}
       />
     ) : null;
 
@@ -1225,6 +1367,23 @@ export function HexBattlefield({
   const dungeonPortal =
     dungeonDock && dockTarget ? createPortal(dungeonDock, dockTarget) : dungeonDock;
 
+  const whiteboardDock =
+    foundryLayout && whiteboardWindowLayout && whiteboardPanel ? (
+      <FoundryDockPanel
+        title="Lousa do mapa"
+        open={whiteboardWindowLayout.open}
+        minimized={whiteboardWindowLayout.minimized}
+        className="foundry-dock-panel--whiteboard"
+        onClose={onWhiteboardWindowClose ?? (() => {})}
+        onMinimize={onWhiteboardWindowMinimize}
+      >
+        <div className="mesa-panel-scroll mesa-panel-scroll--rail">{whiteboardPanel}</div>
+      </FoundryDockPanel>
+    ) : null;
+
+  const whiteboardPortal =
+    whiteboardDock && dockTarget ? createPortal(whiteboardDock, dockTarget) : whiteboardDock;
+
   const initiativeDock =
     foundryLayout && initiativeWindowLayout && combat ? (
       <FoundryDockPanel
@@ -1263,6 +1422,7 @@ export function HexBattlefield({
       {foundryLayout ? actorsPortal : null}
       {foundryLayout ? gmPortal : null}
       {foundryLayout ? dungeonPortal : null}
+      {foundryLayout ? whiteboardPortal : null}
       {foundryLayout ? initiativePortal : null}
       {!foundryLayout && leftPanel && onLeftPanelChange ? (
         <MesaDockPanel

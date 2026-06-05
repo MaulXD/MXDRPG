@@ -26,11 +26,29 @@ function loadPersisted(): CharacterSheet[] {
   }
 }
 
-function savePersisted(registry: Map<string, CharacterSheet>): void {
+function canWriteRegistryFile(): boolean {
+  if (process.env.VERCEL === "1" || process.env.AWS_LAMBDA_FUNCTION_NAME) return false;
   const dir = path.dirname(REGISTRY_PATH);
-  if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-  const list = [...registry.values()].filter((c) => !SEED_CHARACTER_IDS.has(c.id));
-  fs.writeFileSync(REGISTRY_PATH, `${JSON.stringify(list, null, 2)}\n`, "utf8");
+  try {
+    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+    fs.accessSync(dir, fs.constants.W_OK);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function savePersisted(registry: Map<string, CharacterSheet>): void {
+  if (!canWriteRegistryFile()) return;
+  try {
+    const list = [...registry.values()].filter((c) => !SEED_CHARACTER_IDS.has(c.id));
+    fs.writeFileSync(REGISTRY_PATH, `${JSON.stringify(list, null, 2)}\n`, "utf8");
+  } catch (e) {
+    console.warn(
+      "[eldarin] registry.json indisponível (somente memória/Postgres):",
+      e instanceof Error ? e.message : e
+    );
+  }
 }
 
 /** Registro em memória + arquivo local (modo sem Postgres). */

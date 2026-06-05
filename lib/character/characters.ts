@@ -82,20 +82,17 @@ export async function countCharactersForUserInAdventure(
 export const MAX_CHARACTERS_PER_USER = 10;
 
 export async function saveCharacter(sheet: CharacterSheet): Promise<CharacterSheet> {
-  const normalized = upsertCharacterRegistry(sheet);
+  const normalized = normalizeCharacter(sheet);
+  characterRegistry().set(normalized.id, normalized);
+
   if (dbEnabled()) {
-    try {
-      const { upsertCharacter } = await import("@/lib/db/characters");
-      await upsertCharacter(normalized);
-    } catch (e) {
-      const msg = e instanceof Error ? e.message : String(e);
-      console.warn(
-        `[eldarin] Falha ao gravar ficha no Postgres (${normalized.id}); mantida em registry.json:`,
-        msg
-      );
-    }
+    const { upsertCharacter } = await import("@/lib/db/characters");
+    await upsertCharacter(normalized);
+    upsertCharacterRegistry(normalized);
+    return normalized;
   }
-  return normalized;
+
+  return upsertCharacterRegistry(normalized);
 }
 
 export async function createCharacterFromWizard(

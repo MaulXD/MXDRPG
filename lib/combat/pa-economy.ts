@@ -42,11 +42,22 @@ type PassivePaRule = {
 
 type PaModifiersFile = {
   passivePa?: Record<string, PassivePaRule>;
+  paMaxByTalent?: Record<string, number>;
   costReduce?: unknown[];
   classFeatures?: unknown[];
 };
 
 const PASSIVE_PA = (paModifiers as PaModifiersFile).passivePa ?? {};
+const PA_MAX_BY_TALENT = (paModifiers as PaModifiersFile).paMaxByTalent ?? {};
+
+function paMaxBonusFromTalents(sheet: CharacterSheet): number {
+  let bonus = 0;
+  for (const [talentId, amount] of Object.entries(PA_MAX_BY_TALENT)) {
+    if (!hasTalent(sheet, talentId)) continue;
+    bonus += typeof amount === "number" ? amount : 0;
+  }
+  return bonus;
+}
 
 export type PaCostContext = {
   attackIndex?: number;
@@ -102,6 +113,13 @@ export function paTurnRulesForActor(sheet: CharacterSheet): PaTurnRules {
     if (rule.accumulationCap != null) accumulationCap = rule.accumulationCap;
     if (rule.turnStartPa != null) turnStartPa = rule.turnStartPa;
     if (rule.freeBasicMovePa) freeBasicMovePa = true;
+  }
+
+  const talentPaBonus = paMaxBonusFromTalents(sheet);
+  if (talentPaBonus > 0) {
+    recoveryPerTurn += talentPaBonus;
+    if (turnStartPa != null) turnStartPa += talentPaBonus;
+    accumulationCap += talentPaBonus;
   }
 
   return { recoveryPerTurn, accumulationCap, turnStartPa, freeBasicMovePa };

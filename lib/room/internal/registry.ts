@@ -9,6 +9,7 @@ import {
 } from "@/lib/vtt/token-integrity";
 import { welcomeChat } from "../chat";
 import { emptyCombat } from "../combat";
+import { pruneMapMarkups } from "@/lib/vtt/map-markup";
 import { prunePings } from "@/lib/vtt/ping";
 import { getRoomGmCreations } from "../gm-creations";
 import { normalizeRoomSettings } from "../settings";
@@ -31,7 +32,10 @@ export function toSnapshot(state: RoomState): RoomSnapshot {
   return {
     roomId: state.roomId,
     settings: normalizeRoomSettings(state.settings),
-    scene: state.scene,
+    scene: {
+      ...state.scene,
+      mapMarkups: pruneMapMarkups(state.scene.mapMarkups ?? []),
+    },
     actors: state.actors,
     combat: state.combat,
     combatUndo: state.combatUndo,
