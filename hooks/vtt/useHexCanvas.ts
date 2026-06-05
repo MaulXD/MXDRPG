@@ -27,6 +27,7 @@ import { isTargetMode, type TokenActionMode } from "@/lib/vtt/action-mode";
 import type { MoveCheck } from "@/lib/vtt/movement";
 import type { TargetCombatPreview } from "@/lib/combat/hit-chance";
 import type { TokenHpDisplay } from "@/lib/vtt/token-hp-display";
+import type { ActiveTokenCastFx } from "@/lib/vtt/token-cast-fx";
 import type { BattleScene } from "@/lib/vtt/types";
 
 export type HexCanvasDrawState = {
@@ -54,6 +55,8 @@ export type HexCanvasDrawState = {
   attackTargetPreview: TargetCombatPreview | null;
   hoverTurnMoveTokenId: string | null;
   tokenFlash: { tokenId: string; kind: TokenFlashKind } | null;
+  tokenCastFx?: ActiveTokenCastFx[];
+  castFxNowMs?: number;
   visibleHexSet: Set<string> | null;
   pings: BattlePing[];
   mapImage: HTMLImageElement | null;
@@ -91,7 +94,8 @@ export function useHexCanvas(
       Boolean(s.hoverTurnMoveTokenId) ||
       s.turnMovePreview ||
       (s.pathCells?.length ?? 0) >= 2 ||
-      (s.pings?.length ?? 0) > 0
+      (s.pings?.length ?? 0) > 0 ||
+      (s.tokenCastFx?.length ?? 0) > 0
     );
   }, []);
 
@@ -163,6 +167,8 @@ export function useHexCanvas(
       hoverTurnMoveTokenId: s.hoverTurnMoveTokenId,
       tokenAnimTimeSec: tokenAnimTimeSecRef.current,
       tokenFlash: s.tokenFlash,
+      tokenCastFx: s.tokenCastFx,
+      castFxNowMs: s.castFxNowMs,
       tokenPositionOverride,
       tokenHpDisplay: s.tokenHpDisplay ?? new Map(),
     });
@@ -214,6 +220,7 @@ export function useHexCanvas(
     state.attackableIds,
     state.pathCells,
     state.pings,
+    state.tokenCastFx,
     needsCanvasAnimation,
   ]);
 

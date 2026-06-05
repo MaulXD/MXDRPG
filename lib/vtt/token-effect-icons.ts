@@ -45,7 +45,7 @@ export const EFFECT_ICON_PATHS: Record<TokenEffectIconId, string> = {
   feint: "M5 4.5c0-1.1 1.3-2 3-2s3 .9 3 2-1.3 2-3 2-3-.9-3-2z M3 12c1.5-2 3.5-3 5-3s3.5 1 5 3M6 7h.01M10 7h.01",
   mark: "M8 3.5a4.5 4.5 0 1 0 0 9 4.5 4.5 0 0 0 0-9z M8 6v4M6 8h4",
   skull:
-    "M8 2.5c2.2 0 4 1.6 4 3.6 0 1.1-.5 2.1-1.2 2.8L12 11.5v1H4v-1l1.2-2.6C4.5 8.2 4 7.2 4 6.1 4 4.1 5.8 2.5 8 2.5z M6 12.5h1v1.5H6z M9 12.5h1v1.5H9z M6.5 14.5h3",
+    "M8 2.5a5 5 0 0 1 0 10 5 5 0 0 1 0-10z M5.8 7.2a1.1 1.1 0 1 0 0-2.2 1.1 1.1 0 0 0 0 2.2z M10.2 7.2a1.1 1.1 0 1 0 0-2.2 1.1 1.1 0 0 0 0 2.2z M6 10.8h4",
 };
 
 export const CONDITION_ICON: Record<string, TokenEffectIconId> = {
