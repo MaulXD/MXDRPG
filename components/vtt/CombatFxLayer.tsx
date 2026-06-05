@@ -6,6 +6,10 @@ import { axialToPixel } from "@/lib/vtt/hex-math";
 import { canvasCenter, worldToScreen, type BattlefieldView } from "@/lib/vtt/battlefield-view";
 import type { ChatMessage } from "@/lib/room/chat";
 import { DiceMiniature } from "@/components/vtt/DiceMiniature";
+import {
+  resolveCastFxFromCombat,
+  type TokenCastFxKind,
+} from "@/lib/vtt/token-cast-fx";
 
 export type TokenCombatFlash = "hit" | "miss" | "crit" | null;
 
@@ -27,6 +31,8 @@ export type CombatFxState = {
   saveSuccess?: boolean;
   damageTotal: number | null;
   isHeal?: boolean;
+  castFxKind?: TokenCastFxKind | null;
+  castFxTargetId?: string | null;
 };
 
 type Props = {
@@ -35,6 +41,7 @@ type Props = {
   fx: CombatFxState | null;
   onDone: () => void;
   onTokenFlash?: (tokenId: string | null, flash: TokenCombatFlash) => void;
+  onTokenCastFx?: (tokenId: string, kind: TokenCastFxKind) => void;
   view?: BattlefieldView;
 };
 
@@ -60,6 +67,8 @@ export function combatFxFromMessage(
   const isHeal =
     c.actionKind === "ability" &&
     (c.weaponName.toLowerCase().includes("cura") || c.detail.toLowerCase().includes("cura"));
+  const castResolved = resolveCastFxFromCombat(msg);
+  const castFxKind = castResolved?.kind ?? null;
   if (c.resolution === "save") {
     return {
       id: msg.id,
@@ -73,6 +82,8 @@ export function combatFxFromMessage(
       saveSuccess: c.saveSuccess,
       damageTotal: c.damageTotal,
       isHeal,
+      castFxKind,
+      castFxTargetId: castResolved?.tokenId ?? c.defenderTokenId,
     };
   }
   const actionKind: CombatFxState["actionKind"] =
@@ -92,6 +103,8 @@ export function combatFxFromMessage(
     ...(c.criticalFail != null ? { criticalFail: c.criticalFail } : {}),
     damageTotal: c.damageTotal,
     isHeal,
+    castFxKind,
+    castFxTargetId: castResolved?.tokenId ?? c.defenderTokenId,
   };
 }
 
@@ -101,6 +114,7 @@ export function CombatFxLayer({
   fx,
   onDone,
   onTokenFlash,
+  onTokenCastFx,
   view = { scale: 1, panX: 0, panY: 0 },
 }: Props) {
   const reducedMotion = useReducedMotion();
@@ -110,9 +124,12 @@ export function CombatFxLayer({
   const fxRef = useRef(fx);
   const onDoneRef = useRef(onDone);
   const onTokenFlashRef = useRef(onTokenFlash);
+  const onTokenCastFxRef = useRef(onTokenCastFx);
+  const castFxTriggeredRef = useRef(false);
   fxRef.current = fx;
   onDoneRef.current = onDone;
   onTokenFlashRef.current = onTokenFlash;
+  onTokenCastFxRef.current = onTokenCastFx;
 
   const timings = useMemo(
     () =>
@@ -130,6 +147,7 @@ export function CombatFxLayer({
 
     setPhase("slash");
     setSlashProgress(reducedMotion ? 1 : 0);
+    castFxTriggeredRef.current = false;
     onTokenFlashRef.current?.(null, null);
     let rollTick: ReturnType<typeof setInterval> | null = null;
     const timeouts: ReturnType<typeof setTimeout>[] = [];
@@ -166,6 +184,26 @@ export function CombatFxLayer({
                   ? "hit"
                   : "miss";
             onTokenFlashRef.current?.(data.defenderTokenId, flash);
+          }
+          if (
+            !castFxTriggeredRef.current &&
+            data.castFxKind &&
+            data.castFxTargetId
+          ) {
+            const shouldPlay =
+              data.castFxKind === "slash"
+                ? Boolean(data.hit)
+                : data.castFxKind === "buff"
+                  ? true
+                  : data.castFxKind === "heal"
+                    ? data.isHeal || (data.damageTotal != null && data.damageTotal > 0)
+                    : data.castFxKind === "fire"
+                      ? data.hit !== false || data.saveTotal != null
+                      : false;
+            if (shouldPlay) {
+              castFxTriggeredRef.current = true;
+              onTokenCastFxRef.current?.(data.castFxTargetId, data.castFxKind);
+            }
           }
         }, timings.roll)
       );
@@ -222,13 +260,19 @@ export function CombatFxLayer({
         : "ERROU";
 
   const slashColor =
-    fx.actionKind === "spell"
-      ? "rgba(120,180,255,0.9)"
-      : fx.actionKind === "ability"
-        ? "rgba(184,255,60,0.85)"
-        : fx.critical
-          ? "rgba(232,160,32,0.95)"
-          : "rgba(200,80,60,0.9)";
+    fx.castFxKind === "heal"
+      ? "rgba(100, 220, 140, 0.9)"
+      : fx.castFxKind === "fire"
+        ? "rgba(255, 120, 40, 0.95)"
+        : fx.castFxKind === "buff"
+          ? "rgba(201, 169, 98, 0.9)"
+          : fx.actionKind === "spell"
+            ? "rgba(120,180,255,0.9)"
+            : fx.actionKind === "ability"
+              ? "rgba(184,255,60,0.85)"
+              : fx.critical
+                ? "rgba(232,160,32,0.95)"
+                : "rgba(200,80,60,0.9)";
 
   const isChargeLike =
     fx.actionKind === "ability" && phase === "slash" && slashProgress > 0.2;
