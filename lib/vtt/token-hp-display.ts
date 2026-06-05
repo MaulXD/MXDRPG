@@ -223,12 +223,12 @@ export function drawTokenDefeatedSkull(
   ctx.restore();
 }
 
-/** Nome + HP sobre o token (pill preta, números coloridos). */
+/** HP numérico acima do token — sem fundo, só texto com sombra. */
 export function drawTokenHpLabel(
   ctx: CanvasRenderingContext2D,
   x: number,
   y: number,
-  contentR: number,
+  tokenR: number,
   token: BattleToken,
   color: string
 ): void {
@@ -236,36 +236,38 @@ export function drawTokenHpLabel(
 
   const defeated = isTokenDefeated(token);
   const hpText = defeated ? "Morto" : `${token.vida}/${token.vidaMax}`;
-  const stackY = y + contentR * 0.38;
+  const hpY = y - tokenR - 12;
 
   ctx.save();
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
-
-  ctx.font = "600 11px Lora, Georgia, serif";
-  ctx.fillStyle = "rgba(255, 255, 255, 0.95)";
-  ctx.shadowColor = "rgba(0,0,0,0.9)";
-  ctx.shadowBlur = 4;
-  ctx.fillText(token.name, x, stackY - 11);
-  ctx.shadowBlur = 0;
-
   ctx.font = defeated
     ? "700 10px Source Sans 3, Segoe UI, sans-serif"
-    : "700 italic 10px Source Sans 3, Segoe UI, sans-serif";
-  const tw = ctx.measureText(hpText).width + 12;
-  const bh = 14;
-  const bx = x - tw / 2;
-  const byBox = stackY - bh / 2 + 2;
+    : "700 11px Source Sans 3, Segoe UI, sans-serif";
+  ctx.fillStyle = defeated ? "rgb(160, 160, 160)" : color;
+  ctx.shadowColor = "rgba(0,0,0,0.88)";
+  ctx.shadowBlur = 5;
+  ctx.fillText(hpText, x, hpY);
+  ctx.restore();
+}
 
-  ctx.fillStyle = "rgba(0, 0, 0, 0.88)";
-  ctx.strokeStyle = defeated ? "rgba(196, 48, 42, 0.85)" : "rgba(0,0,0,0.95)";
-  ctx.lineWidth = 1;
-  ctx.beginPath();
-  ctx.roundRect(bx, byBox, tw, bh, 3);
-  ctx.fill();
-  ctx.stroke();
+/** Nome abaixo do token. */
+export function drawTokenNameLabel(
+  ctx: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  tokenR: number,
+  name: string
+): void {
+  if (!name.trim()) return;
 
-  ctx.fillStyle = defeated ? "rgb(140, 140, 140)" : color;
-  ctx.fillText(hpText, x, byBox + bh / 2 + 0.5);
+  ctx.save();
+  ctx.textAlign = "center";
+  ctx.textBaseline = "top";
+  ctx.font = "600 11px Lora, Georgia, serif";
+  ctx.fillStyle = "rgba(255, 255, 255, 0.95)";
+  ctx.shadowColor = "rgba(0,0,0,0.88)";
+  ctx.shadowBlur = 5;
+  ctx.fillText(name, x, y + tokenR + 6);
   ctx.restore();
 }
