@@ -7,6 +7,7 @@
 import { formatSaveChatDetail, resolveSaveSpell } from "@/lib/combat/spell";
 import { prepareCombatToken, syncActorPaFromToken } from "@/lib/combat/combat-token-pa";
 import { applyPaSpend } from "@/lib/combat/pa-turn";
+import { markActionRechargeUsed } from "@/lib/combat/recharge";
 import type { CombatActionRequest } from "@/lib/combat/types";
 import type { ChatMessage } from "../chat";
 import { activeTokenId } from "../combat";
@@ -14,6 +15,7 @@ import { getRoom, persistRoom, toSnapshot } from "../internal/registry";
 import type { RoomSnapshot } from "../types";
 import { syncCombatOrderWithTokens } from "../combat-order";
 import { appendDefeatChatMessage, shouldAnnounceDefeat } from "../combat-chat-events";
+import { maybeRecordCombatUndo } from "../combat-undo";
 import { appendRoomChatMessage } from "./chat";
 import { executeRoomAbility } from "./combat-ability";
 
@@ -69,6 +71,7 @@ export async function executeRoomAttack(
   const turn = {
     activeTokenId: activeTokenId(room.combat),
     bypassTurn: opts.bypassTurn,
+    combatRound: room.combat.round,
   };
 
   const defenderActor =
@@ -84,7 +87,19 @@ export async function executeRoomAttack(
       return { ok: false, error: e instanceof Error ? e.message : "Magia inválida" };
     }
 
-    const spentAttacker = applyPaSpend(attacker, saveResult.paCost);
+    maybeRecordCombatUndo(room, {
+      tokenId: attackerTokenId,
+      tokenName: attacker.name,
+      kind: "attack",
+      summary: action.label ?? action.name,
+      bypassTurn: opts.bypassTurn,
+    });
+
+    const spentAttacker = markActionRechargeUsed(
+      applyPaSpend(attacker, saveResult.paCost),
+      action,
+      room.combat.round
+    );
     room.scene = {
       ...room.scene,
       tokens: room.scene.tokens.map((t) => {
@@ -155,13 +170,21 @@ export async function executeRoomAttack(
     return { ok: false, error: e instanceof Error ? e.message : "Ataque inválido" };
   }
 
+  maybeRecordCombatUndo(room, {
+    tokenId: attackerTokenId,
+    tokenName: attacker.name,
+    kind: "attack",
+    summary: action.label,
+    bypassTurn: opts.bypassTurn,
+  });
+
   const attackResults = Array.isArray(results) ? results : [results];
   const paCost = attackResults.reduce((sum, r) => sum + r.paCost, 0);
   const last = attackResults[attackResults.length - 1];
   const finalHp = last.defenderHpAfter;
   const finalAttackerHp =
     last.attackerHpAfter ?? attacker.vida ?? null;
-  const spentAttacker = applyPaSpend(attacker, paCost);
+  const spentAttacker = markActionRechargeUsed(applyPaSpend(attacker, paCost), action, room.combat.round);
 
   room.scene = {
     ...room.scene,

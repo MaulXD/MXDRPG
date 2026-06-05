@@ -1,5 +1,6 @@
 import type { CompendiumEntry } from "@/lib/compendium/types";
 import { PA_DEFAULT_ACTION_COST } from "@/lib/combat/pa-economy";
+import { parseRecharge } from "@/lib/combat/recharge";
 import type { AbilityEffect, CombatActionOption } from "@/lib/combat/types";
 
 const ABILITY_BY_ID: Record<string, { effect: AbilityEffect; extras?: Partial<CombatActionOption> }> = {
@@ -127,6 +128,7 @@ export function abilityFromEntry(entry: CompendiumEntry): CombatActionOption | n
   const tactical = entry.system.tactical as
     | { alcanceHex?: { value?: number }; custoPontosAcao?: { value?: number } }
     | undefined;
+  const abilityMeta = entry.system.ability as { recarga?: string } | undefined;
   const effect = abilityEffectFor(entry);
   if (!effect) return null;
 
@@ -163,6 +165,7 @@ export function abilityFromEntry(entry: CompendiumEntry): CombatActionOption | n
     damageAttribute: extras.damageAttribute,
     bonusDamageFormula: extras.bonusDamageFormula,
     saveAttribute: extras.saveAttribute,
+    recharge: parseRecharge(abilityMeta?.recarga) ?? undefined,
     label: `${entry.name} · ${targetLabel} · PA ${paCost}`,
   };
 }

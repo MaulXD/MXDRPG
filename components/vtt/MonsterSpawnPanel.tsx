@@ -4,6 +4,7 @@ import { useMemo, useRef, useState } from "react";
 import type { Axial } from "@/lib/vtt/hex-math";
 import type { RoomSnapshot } from "@/lib/room/types";
 import { listMonsterTemplates, scaleMonsterTemplate } from "@/lib/vtt/monsters";
+import { CREATURE_SIZE_HEX_LABEL, CREATURE_SIZE_PT } from "@/lib/vtt/monster-sizes";
 import type { MonsterSpawnVariant } from "@/lib/vtt/monster-scaling";
 import { clearActiveSpawnDragPayload, writeMonsterSpawnDrag } from "@/lib/vtt/spawn-drag";
 import { spawnRoomMonster } from "@/hooks/useRoomSync";
@@ -146,7 +147,8 @@ export function MonsterSpawnPanel({ roomId, spawnAxial, onSpawned }: Props) {
               <span className="vtt-spawn-drag-card-body">
                 <strong>{m.name}</strong>
                 <span>
-                  nv{m.ameaca} · {m.tier} · CA {m.defesa} · {m.vidaMax} HP
+                  nv{m.ameaca} · {CREATURE_SIZE_PT[m.creatureSize]} ({CREATURE_SIZE_HEX_LABEL[m.creatureSize]}) · CA{" "}
+                  {m.defesa} · {m.vidaMax} HP
                 </span>
               </span>
             </div>
@@ -167,8 +169,8 @@ export function MonsterSpawnPanel({ roomId, spawnAxial, onSpawned }: Props) {
 
       {selected && preview ? (
         <p className="vtt-spawn-meta">
-          Preview: {preview.name} · ameaça {preview.ameaca} · {preview.vidaMax} HP · PA{" "}
-          {preview.paMax} · CA {preview.defesa}
+          Preview: {preview.name} · {CREATURE_SIZE_PT[preview.creatureSize]} ({CREATURE_SIZE_HEX_LABEL[preview.creatureSize]}) · ameaça{" "}
+          {preview.ameaca} · {preview.vidaMax} HP · PA {preview.paMax} · CA {preview.defesa}
         </p>
       ) : null}
 

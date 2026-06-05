@@ -32,9 +32,9 @@ const DEFAULT_LAYOUTS: Record<MesaWindowId, Omit<FoundryWindowLayout, "open" | "
   initiative: { x: 52, y: 500, width: 280, height: 360 },
   chat: { x: 52, y: 48, width: 340, height: 340 },
   dice: { x: 52, y: 400, width: 300, height: 260 },
-  ficha: { x: 400, y: 48, width: 320, height: 300 },
+  ficha: { x: 400, y: 48, width: 360, height: 320 },
   spawn: { x: 400, y: 360, width: 320, height: 380 },
-  character: { x: 100, y: 28, width: 920, height: 640 },
+  character: { x: 72, y: 40, width: 960, height: 680 },
 };
 
 const DEFAULT_OPEN: MesaWindowId[] = ["actors", "initiative"];
@@ -82,7 +82,7 @@ function loadRegistry(roomId?: string): Registry {
     for (const id of Object.keys(DEFAULT_LAYOUTS) as MesaWindowId[]) {
       const saved = parsed[id];
       if (!saved) continue;
-      base[id] = {
+      const merged: FoundryWindowLayout = {
         ...base[id]!,
         ...saved,
         x: typeof saved.x === "number" ? saved.x : base[id]!.x,
@@ -93,6 +93,11 @@ function loadRegistry(roomId?: string): Registry {
         minimized: Boolean(saved.minimized),
         z: typeof saved.z === "number" ? saved.z : base[id]!.z,
       };
+      if (id === "character") {
+        if (merged.width < 640) merged.width = DEFAULT_LAYOUTS.character.width;
+        if (merged.height < 400) merged.height = DEFAULT_LAYOUTS.character.height;
+      }
+      base[id] = merged;
     }
     return base;
   } catch {

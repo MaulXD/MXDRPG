@@ -52,6 +52,8 @@ export function useCombatTurn({ combat, canBypassTurn }: TurnOpts) {
 
     bypassTurn: canBypassTurn,
 
+    combatRound: combat?.round ?? 1,
+
     isMyTurn: (tokenId: string) => !activeId || activeId === tokenId || canBypassTurn,
 
   };

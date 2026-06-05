@@ -37,6 +37,7 @@ import { combineRollModes, type RollMode } from "@/lib/combat/d20";
 import { toggleTokenCondition } from "@/lib/combat/conditions";
 import { effectivePaCost } from "@/lib/combat/pa-economy";
 import { checkCanSpendPa } from "@/lib/combat/pa-turn";
+import { rechargeBlockReason } from "@/lib/combat/recharge";
 
 
 
@@ -978,6 +979,9 @@ export function canUseAbility(
     return { ok: false, reason: "Aguarde seu turno na iniciativa" };
 
   }
+
+  const rechargeReason = rechargeBlockReason(token, action, turn?.combatRound ?? 1);
+  if (rechargeReason) return { ok: false, reason: rechargeReason };
 
   const paNeed = effectivePaCost(actor ?? null, action);
   const paCheck = checkCanSpendPa(token, paNeed);

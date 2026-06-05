@@ -126,7 +126,65 @@ export function clearActiveActorSpawnDragPayload(): void {
   activeActorSpawnDragPayload = null;
 }
 
+export const GM_CREATION_SPAWN_DRAG_MIME = "application/x-eldarin-gm-creation-spawn";
+const GM_CREATION_PLAIN_PREFIX = "eldarin-gm-creation:";
+
+export type GmCreationSpawnDragPayload = { creationId: string };
+
+let activeGmCreationSpawnDragPayload: GmCreationSpawnDragPayload | null = null;
+
+export function setActiveGmCreationSpawnDragPayload(
+  payload: GmCreationSpawnDragPayload | null
+): void {
+  activeGmCreationSpawnDragPayload = payload;
+}
+
+export function writeGmCreationSpawnDrag(
+  dt: DataTransfer,
+  payload: GmCreationSpawnDragPayload
+): void {
+  const json = JSON.stringify(payload);
+  setActiveGmCreationSpawnDragPayload(payload);
+  dt.setData(GM_CREATION_SPAWN_DRAG_MIME, json);
+  dt.setData("text/plain", `${GM_CREATION_PLAIN_PREFIX}${json}`);
+  dt.effectAllowed = "copy";
+}
+
+export function readGmCreationSpawnDrag(dt: DataTransfer): GmCreationSpawnDragPayload | null {
+  const rawMime = dt.getData(GM_CREATION_SPAWN_DRAG_MIME);
+  if (rawMime) {
+    try {
+      const parsed = JSON.parse(rawMime) as GmCreationSpawnDragPayload;
+      if (parsed?.creationId) return parsed;
+    } catch {
+      /* ignore */
+    }
+  }
+  const plain = dt.getData("text/plain");
+  if (plain.startsWith(GM_CREATION_PLAIN_PREFIX)) {
+    try {
+      const parsed = JSON.parse(plain.slice(GM_CREATION_PLAIN_PREFIX.length)) as GmCreationSpawnDragPayload;
+      if (parsed?.creationId) return parsed;
+    } catch {
+      /* ignore */
+    }
+  }
+  return activeGmCreationSpawnDragPayload;
+}
+
+export function isGmCreationSpawnDrag(dt: DataTransfer): boolean {
+  if (activeGmCreationSpawnDragPayload) return true;
+  const types = Array.from(dt.types);
+  if (types.includes(GM_CREATION_SPAWN_DRAG_MIME)) return true;
+  const plain = dt.getData("text/plain");
+  return plain.startsWith(GM_CREATION_PLAIN_PREFIX);
+}
+
+export function clearActiveGmCreationSpawnDragPayload(): void {
+  activeGmCreationSpawnDragPayload = null;
+}
+
 /** Monstro ou personagem sendo arrastado para o tabuleiro. */
 export function isBoardSpawnDrag(dt: DataTransfer): boolean {
-  return isMonsterSpawnDrag(dt) || isActorSpawnDrag(dt);
+  return isMonsterSpawnDrag(dt) || isActorSpawnDrag(dt) || isGmCreationSpawnDrag(dt);
 }

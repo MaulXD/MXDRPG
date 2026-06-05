@@ -142,9 +142,9 @@ export function CharacterSheetPopup({
 
       className="foundry-window--character"
 
-      minWidth={360}
+      minWidth={520}
 
-      minHeight={280}
+      minHeight={400}
 
     >
 

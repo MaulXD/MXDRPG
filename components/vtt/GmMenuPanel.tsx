@@ -4,6 +4,7 @@ import type { BattleScene } from "@/lib/vtt/types";
 import type { Axial } from "@/lib/vtt/hex-math";
 import type { RoomSnapshot } from "@/lib/room/types";
 import type { SessionUser } from "@/lib/auth/types";
+import { GmCreationsPanel } from "@/components/vtt/GmCreationsPanel";
 import { MapScenePanel } from "@/components/vtt/MapScenePanel";
 import { RoomSettingsPanel } from "@/components/vtt/RoomSettingsPanel";
 
@@ -50,6 +51,14 @@ export function GmMenuPanel({
         roomName={scene.name}
         inviteCode={inviteCode ?? "—"}
         settings={snapshot.settings}
+        onUpdated={onSceneUpdated}
+      />
+
+      <GmCreationsPanel
+        roomId={roomId}
+        creations={snapshot.gmCreations ?? snapshot.settings.gmCreations ?? {}}
+        roomActors={roomActors}
+        spawnAxial={spawnAxial}
         onUpdated={onSceneUpdated}
       />
 

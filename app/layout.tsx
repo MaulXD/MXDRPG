@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Cinzel, Lora } from "next/font/google";
+import { Cinzel, Lora, Source_Sans_3 } from "next/font/google";
 import { AuthProvider } from "@/components/auth/AuthProvider";
 import { isClerkEnabled } from "@/lib/auth/clerk-config";
 import { SiteShell } from "@/components/SiteShell";
@@ -14,6 +14,13 @@ const lora = Lora({
   subsets: ["latin"],
   variable: "--font-body",
   display: "swap",
+});
+
+const sourceSans = Source_Sans_3({
+  subsets: ["latin"],
+  variable: "--font-ui",
+  display: "swap",
+  weight: ["400", "500", "600", "700"],
 });
 
 const cinzel = Cinzel({
@@ -33,7 +40,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   const clerkOn = isClerkEnabled();
 
   return (
-    <html lang="pt-BR" className={`${lora.variable} ${cinzel.variable}`} suppressHydrationWarning>
+    <html
+      lang="pt-BR"
+      className={`${lora.variable} ${cinzel.variable} ${sourceSans.variable}`}
+      suppressHydrationWarning
+    >
       <head>
         <ThemeScript />
       </head>
