@@ -1,5 +1,5 @@
 import * as dbRooms from "@/lib/db/rooms";
-import { getCharacter } from "@/lib/character/characters";
+import { getCharacterFromRegistry } from "@/lib/character/character-registry";
 import { getEntry } from "@/lib/compendium/registry";
 import { DEMO_SCENE } from "@/lib/vtt/demo-scene";
 import { welcomeChat } from "../chat";
@@ -72,7 +72,7 @@ function refreshDemoActorsIfStale(room: RoomState): void {
 
   for (const actorId of DEMO_ACTOR_IDS) {
     const adv = room.actors[actorId];
-    const template = getCharacter(actorId);
+    const template = getCharacterFromRegistry(actorId);
     if (!template) continue;
 
     if (!adv) {
