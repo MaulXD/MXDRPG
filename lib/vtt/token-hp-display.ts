@@ -24,15 +24,15 @@ function lerpRgb(
   return `rgb(${r},${g},${bl})`;
 }
 
-/** Verde claro → amarelo → vermelho → preto conforme a vida cai. */
+/** Verde musgo → amarelo-oliva → vermelho → preto (sem neon). */
 export function hpBarColor(ratio: number): string {
   const t = Math.max(0, Math.min(1, ratio));
-  if (t <= 0) return "#0a0a0a";
-  if (t <= 0.2) return lerpRgb([10, 8, 8], [120, 24, 24], t / 0.2);
-  if (t <= 0.45) return lerpRgb([120, 24, 24], [210, 72, 32], (t - 0.2) / 0.25);
-  if (t <= 0.65) return lerpRgb([210, 72, 32], [200, 168, 48], (t - 0.45) / 0.2);
-  if (t <= 0.85) return lerpRgb([200, 168, 48], [120, 200, 96], (t - 0.65) / 0.2);
-  return lerpRgb([120, 200, 96], [168, 240, 152], (t - 0.85) / 0.15);
+  if (t <= 0) return "#141210";
+  if (t <= 0.2) return lerpRgb([20, 16, 14], [110, 38, 32], t / 0.2);
+  if (t <= 0.45) return lerpRgb([110, 38, 32], [168, 88, 36], (t - 0.2) / 0.25);
+  if (t <= 0.65) return lerpRgb([168, 88, 36], [156, 132, 48], (t - 0.45) / 0.2);
+  if (t <= 0.85) return lerpRgb([156, 132, 48], [72, 108, 62], (t - 0.65) / 0.2);
+  return lerpRgb([72, 108, 62], [88, 124, 76], (t - 0.85) / 0.15);
 }
 
 export function hpRatio(token: BattleToken): number {
@@ -85,7 +85,7 @@ export function resolveTokenHpDisplay(
   return { bar: false, numeric: false };
 }
 
-/** Arco semicircular ao redor do token (parte superior). */
+/** Anel interno completo ao redor do token (vida preenche no sentido horário a partir da base). */
 export function drawTokenHpArc(
   ctx: CanvasRenderingContext2D,
   x: number,
@@ -94,42 +94,46 @@ export function drawTokenHpArc(
   ratio: number,
   color: string
 ): void {
-  const ringR = tokenR + 5;
-  const lineWidth = 4.5;
-  const startA = Math.PI * 1.12;
-  const endA = Math.PI * 1.88;
-  const sweep = endA - startA;
+  const lineWidth = 4;
+  const ringR = Math.max(tokenR * 0.78, tokenR - 7);
   const clamped = Math.max(0, Math.min(1, ratio));
-  const fillEnd = startA + sweep * clamped;
+  const startA = Math.PI / 2;
+  const sweep = Math.PI * 2 * clamped;
+  const fillEnd = startA + sweep;
 
   ctx.save();
-  ctx.lineCap = "round";
+  ctx.lineCap = "butt";
 
   ctx.beginPath();
-  ctx.arc(x, y, ringR, startA, endA);
-  ctx.strokeStyle = "rgba(0,0,0,0.65)";
+  ctx.arc(x, y, ringR, 0, Math.PI * 2);
+  ctx.strokeStyle = "rgba(0,0,0,0.92)";
   ctx.lineWidth = lineWidth + 2.5;
   ctx.stroke();
 
   ctx.beginPath();
-  ctx.arc(x, y, ringR, startA, endA);
-  ctx.strokeStyle = "rgba(22,22,22,0.9)";
+  ctx.arc(x, y, ringR, 0, Math.PI * 2);
+  ctx.strokeStyle = "rgba(28,24,20,0.96)";
   ctx.lineWidth = lineWidth;
   ctx.stroke();
 
-  if (clamped > 0.001) {
+  if (clamped > 0.002) {
     ctx.beginPath();
     ctx.arc(x, y, ringR, startA, fillEnd);
     ctx.strokeStyle = color;
     ctx.lineWidth = lineWidth;
-    ctx.shadowColor = color;
-    ctx.shadowBlur = 6;
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.arc(x, y, ringR, startA, fillEnd);
+    ctx.strokeStyle = "rgba(0,0,0,0.35)";
+    ctx.lineWidth = lineWidth - 1.5;
     ctx.stroke();
   }
 
   ctx.restore();
 }
 
+/** Valores de HP abaixo do token, com moldura sólida. */
 export function drawTokenHpLabel(
   ctx: CanvasRenderingContext2D,
   x: number,
@@ -141,22 +145,32 @@ export function drawTokenHpLabel(
   if (token.vidaMax == null || token.vida == null) return;
 
   const label = `${token.vida}/${token.vidaMax}`;
-  const by = y - tokenR - 18;
+  const by = y + tokenR + 14;
 
   ctx.save();
-  ctx.font = "700 10px Lora, Georgia, serif";
+  ctx.font = "700 10px Source Sans 3, Segoe UI, sans-serif";
   ctx.textAlign = "center";
-  const tw = ctx.measureText(label).width + 12;
-  ctx.fillStyle = "rgba(6, 8, 6, 0.88)";
-  ctx.strokeStyle = "rgba(0,0,0,0.5)";
-  ctx.lineWidth = 1;
+  ctx.textBaseline = "middle";
+  const tw = ctx.measureText(label).width + 14;
+  const bh = 15;
+  const bx = x - tw / 2;
+  const byBox = by - bh / 2;
+
+  ctx.fillStyle = "rgba(10, 10, 8, 0.94)";
+  ctx.strokeStyle = "rgba(0,0,0,0.9)";
+  ctx.lineWidth = 1.5;
   ctx.beginPath();
-  ctx.roundRect(x - tw / 2, by - 9, tw, 14, 4);
+  ctx.roundRect(bx, byBox, tw, bh, 3);
   ctx.fill();
   ctx.stroke();
+
+  ctx.strokeStyle = "rgba(48,44,38,0.9)";
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.roundRect(bx + 0.5, byBox + 0.5, tw - 1, bh - 1, 2);
+  ctx.stroke();
+
   ctx.fillStyle = color;
-  ctx.shadowColor = "rgba(0,0,0,0.85)";
-  ctx.shadowBlur = 4;
-  ctx.fillText(label, x, by + 1);
+  ctx.fillText(label, x, by + 0.5);
   ctx.restore();
 }
