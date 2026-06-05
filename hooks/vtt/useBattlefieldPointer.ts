@@ -7,7 +7,12 @@ import { areaNeedsDirection, canCastAreaAt } from "@/lib/combat/area-spell";
 import type { CombatActionOption } from "@/lib/combat/types";
 import { isMoveMode, isTargetMode } from "@/lib/vtt/action-mode";
 import type { TokenActionMode } from "@/lib/vtt/action-mode";
-import { canvasCenter, screenToWorld, type BattlefieldView } from "@/lib/vtt/battlefield-view";
+import {
+  canvasCenter,
+  screenToWorld,
+  worldToScreen,
+  type BattlefieldView,
+} from "@/lib/vtt/battlefield-view";
 import { tokenRadius } from "@/lib/vtt/token-canvas";
 import type { BattleScene, BattleToken } from "@/lib/vtt/types";
 
@@ -29,6 +34,7 @@ type Params = {
   setHoverAxial: (a: Axial | null) => void;
   onHoverAxialChange?: (a: Axial | null) => void;
   onHoverTargetChange?: (tokenId: string | null) => void;
+  onHoverTokenChange?: (tokenId: string | null) => void;
   showMovement: boolean;
   isAreaSpellMode: boolean;
   needsAreaDirection: boolean;
@@ -86,6 +92,7 @@ export function useBattlefieldPointer({
   viewRef,
   onActionRingRequest,
   canOpenActionRing,
+  onHoverTokenChange,
 }: Params) {
   const clickStartRef = useRef<{ x: number; y: number } | null>(null);
   const gmDragRef = useRef<{
@@ -130,6 +137,32 @@ export function useBattlefieldPointer({
       return null;
     },
     [boardCoords, scene, tokenDrawPosition]
+  );
+
+  const tokenAtAxial = useCallback(
+    (axial: Axial): BattleToken | null => {
+      for (const token of scene.tokens) {
+        const pos = tokenDrawPosition?.(token) ?? token.axial;
+        if (pos.q === axial.q && pos.r === axial.r) return token;
+      }
+      return null;
+    },
+    [scene.tokens, tokenDrawPosition]
+  );
+
+  const tokenScreenCenter = useCallback(
+    (token: BattleToken): { x: number; y: number } | null => {
+      const canvas = canvasRef.current;
+      if (!canvas) return null;
+      const c = boardCoords(0, 0);
+      if (!c) return null;
+      const pos = tokenDrawPosition?.(token) ?? token.axial;
+      const { x, y } = axialToPixel(pos.q, pos.r, scene.hexSize, c.ox, c.oy);
+      const screen = worldToScreen(x, y, c.w, c.h, viewRef.current);
+      const rect = canvas.getBoundingClientRect();
+      return { x: rect.left + screen.x, y: rect.top + screen.y };
+    },
+    [canvasRef, boardCoords, tokenDrawPosition, scene.hexSize, viewRef]
   );
 
   const pointerPos = useCallback(
@@ -228,6 +261,8 @@ export function useBattlefieldPointer({
       reportHoverTarget(px, py);
 
       const hoverToken = tokenAtPoint(px, py);
+      onHoverTokenChange?.(hoverToken?.id ?? null);
+
       const canvas = canvasRef.current;
       if (canvas) {
         if (
@@ -239,6 +274,8 @@ export function useBattlefieldPointer({
           canvas.style.cursor = "crosshair";
         } else if (showMovement || areaMode) {
           canvas.style.cursor = "cell";
+        } else if (hoverToken && canOpenActionRing?.(hoverToken)) {
+          canvas.style.cursor = "pointer";
         } else {
           canvas.style.cursor = "default";
         }
@@ -251,6 +288,7 @@ export function useBattlefieldPointer({
       onHoverAxialChange,
       reportHoverTarget,
       tokenAtPoint,
+      onHoverTokenChange,
       selectedId,
       attackableIds,
       actionMode,
@@ -260,6 +298,7 @@ export function useBattlefieldPointer({
       canGmReposition,
       onGmReposition,
       onGmDragPreview,
+      canOpenActionRing,
     ]
   );
 
@@ -378,7 +417,8 @@ export function useBattlefieldPointer({
     setHoverAxial(null);
     onHoverAxialChange?.(null);
     onHoverTargetChange?.(null);
-  }, [setHoverAxial, onHoverAxialChange, onHoverTargetChange]);
+    onHoverTokenChange?.(null);
+  }, [setHoverAxial, onHoverAxialChange, onHoverTargetChange, onHoverTokenChange]);
 
   const onContextMenu = useCallback(
     (e: React.MouseEvent<HTMLCanvasElement>) => {
@@ -386,15 +426,23 @@ export function useBattlefieldPointer({
       if (!rect) return;
       const px = e.clientX - rect.left;
       const py = e.clientY - rect.top;
-      const hit = tokenAtPoint(px, py);
+      let hit = tokenAtPoint(px, py);
+      if (!hit) {
+        const axial = axialAtScreen(px, py);
+        if (axial) hit = tokenAtAxial(axial);
+      }
       if (!hit || !canOpenActionRing?.(hit)) return;
       e.preventDefault();
       if (hit.id !== selectedId) setSelectedId(hit.id);
-      onActionRingRequest?.(hit, e.clientX, e.clientY);
+      const center = tokenScreenCenter(hit);
+      onActionRingRequest?.(hit, center?.x ?? e.clientX, center?.y ?? e.clientY);
     },
     [
       canvasRef,
       tokenAtPoint,
+      axialAtScreen,
+      tokenAtAxial,
+      tokenScreenCenter,
       canOpenActionRing,
       selectedId,
       setSelectedId,

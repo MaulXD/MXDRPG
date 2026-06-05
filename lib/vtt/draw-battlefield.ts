@@ -1,6 +1,6 @@
 import type { Axial } from "@/lib/vtt/hex-math";
 import { axialToPixel, hexCorners } from "@/lib/vtt/hex-math";
-import { hexToMeters, type MoveCheck } from "@/lib/vtt/movement";
+import { hexToMeters, walkRemaining, type MoveCheck } from "@/lib/vtt/movement";
 import { readThemeColor } from "@/lib/theme";
 import type { PortraitFocus } from "@/lib/media/portrait-focus";
 import { DEFAULT_PORTRAIT_FOCUS } from "@/lib/media/portrait-focus";
@@ -71,6 +71,7 @@ type GridDrawParams = {
   hexSize: number;
   layout: CanvasLayout;
   showMovement: boolean;
+  turnMovePreview?: boolean;
   walkSet: Set<string>;
   paidWalkSet: Set<string>;
   rangeSet: Set<string>;
@@ -102,8 +103,13 @@ export function drawHexGridLayer(ctx: CanvasRenderingContext2D, p: GridDrawParam
     let lineWidth = 1.5;
 
     if (p.showMovement && p.walkSet.has(key) && !p.paidWalkSet.has(key)) {
-      fill = readThemeColor("--vtt-hex-walk-fill", "rgba(90,115,82,0.28)");
-      stroke = readThemeColor("--vtt-hex-walk-stroke", "rgba(120,150,95,0.75)");
+      if (p.turnMovePreview) {
+        fill = readThemeColor("--vtt-hex-turn-walk-fill", "rgba(90,115,82,0.18)");
+        stroke = readThemeColor("--vtt-hex-turn-walk-stroke", "rgba(120,150,95,0.5)");
+      } else {
+        fill = readThemeColor("--vtt-hex-walk-fill", "rgba(90,115,82,0.28)");
+        stroke = readThemeColor("--vtt-hex-walk-stroke", "rgba(120,150,95,0.75)");
+      }
     }
     if (p.showMovement && p.paidWalkSet.has(key)) {
       fill = readThemeColor("--vtt-hex-walk-paid-fill", "rgba(70,130,120,0.32)");
@@ -237,6 +243,7 @@ type TokenDrawParams = {
   turnActiveId: string | null;
   attackableIds: Set<string>;
   hoverAttackTargetId: string | null;
+  hoverTurnMoveTokenId: string | null;
   tokenAnimTimeSec: number;
   tokenFlash: { tokenId: string; kind: TokenFlashKind } | null;
   /** Posição visual (pode ser fracionária durante animação) */
@@ -298,6 +305,34 @@ export function drawTokensLayer(ctx: CanvasRenderingContext2D, p: TokenDrawParam
       } else {
         drawAttackableHint(ctx, x, y, r, p.tokenAnimTimeSec);
       }
+    }
+
+    if (token.id === p.hoverTurnMoveTokenId) {
+      const walk = walkRemaining(token);
+      const label = `${walk} hex`;
+      const sub = hexToMeters(walk) + " m";
+      const bx = x;
+      const by = y - r - 28;
+      ctx.save();
+      ctx.font = "600 10px Lora, Georgia, serif";
+      ctx.textAlign = "center";
+      const tw = Math.max(ctx.measureText(label).width, ctx.measureText(sub).width) + 14;
+      ctx.fillStyle = "rgba(8, 10, 8, 0.82)";
+      ctx.strokeStyle = "rgba(120, 150, 95, 0.75)";
+      ctx.lineWidth = 1;
+      const rx = bx - tw / 2;
+      const ry = by - 10;
+      const rh = 22;
+      ctx.beginPath();
+      ctx.roundRect(rx, ry, tw, rh, 5);
+      ctx.fill();
+      ctx.stroke();
+      ctx.fillStyle = readThemeColor("--vtt-hex-walk-stroke", "rgba(160,200,140,0.95)");
+      ctx.fillText(label, bx, ry + 9);
+      ctx.font = "500 8px Lora, Georgia, serif";
+      ctx.fillStyle = "rgba(232, 226, 214, 0.65)";
+      ctx.fillText(sub, bx, ry + 18);
+      ctx.restore();
     }
 
     if (token.vidaMax != null && token.vida != null) {

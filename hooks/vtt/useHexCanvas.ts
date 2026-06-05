@@ -31,6 +31,7 @@ export type HexCanvasDrawState = {
   scene: BattleScene;
   gridCells: Axial[];
   showMovement: boolean;
+  turnMovePreview: boolean;
   walkSet: Set<string>;
   paidWalkSet: Set<string>;
   rangeSet: Set<string>;
@@ -48,6 +49,7 @@ export type HexCanvasDrawState = {
   turnActiveId: string | null;
   attackableIds: Set<string>;
   hoverAttackTargetId: string | null;
+  hoverTurnMoveTokenId: string | null;
   tokenFlash: { tokenId: string; kind: TokenFlashKind } | null;
   visibleHexSet: Set<string> | null;
   pings: BattlePing[];
@@ -82,6 +84,8 @@ export function useHexCanvas(
       Boolean(s.turnActiveId) ||
       s.attackableIds.size > 0 ||
       Boolean(s.hoverAttackTargetId) ||
+      Boolean(s.hoverTurnMoveTokenId) ||
+      s.turnMovePreview ||
       (s.pathCells?.length ?? 0) >= 2 ||
       (s.pings?.length ?? 0) > 0
     );
@@ -118,6 +122,7 @@ export function useHexCanvas(
       hexSize: s.scene.hexSize,
       layout,
       showMovement: s.showMovement,
+      turnMovePreview: s.turnMovePreview,
       walkSet: s.walkSet,
       paidWalkSet: s.paidWalkSet,
       rangeSet: s.rangeSet,
@@ -150,6 +155,7 @@ export function useHexCanvas(
       turnActiveId: s.turnActiveId,
       attackableIds: s.attackableIds,
       hoverAttackTargetId: s.hoverAttackTargetId,
+      hoverTurnMoveTokenId: s.hoverTurnMoveTokenId,
       tokenAnimTimeSec: tokenAnimTimeSecRef.current,
       tokenFlash: s.tokenFlash,
       tokenPositionOverride,
@@ -197,6 +203,8 @@ export function useHexCanvas(
   }, [
     state.turnActiveId,
     state.hoverAttackTargetId,
+    state.hoverTurnMoveTokenId,
+    state.turnMovePreview,
     state.attackableIds,
     state.pathCells,
     state.pings,

@@ -147,6 +147,7 @@ export function HexBattlefield({
   const [selectedCombatAction, setSelectedCombatAction] = useState<CombatActionOption | null>(null);
   const [hoverAxial, setHoverAxial] = useState<Axial | null>(null);
   const [hoverTargetId, setHoverTargetId] = useState<string | null>(null);
+  const [hoverTokenId, setHoverTokenId] = useState<string | null>(null);
   const [areaCenter, setAreaCenter] = useState<Axial | null>(null);
   const [combatFx, setCombatFx] = useState<CombatFxState | null>(null);
   const [tokenFlash, setTokenFlash] = useState<{
@@ -216,6 +217,28 @@ export function HexBattlefield({
   const turnActiveId = snapshot?.combat ? activeTokenId(snapshot.combat) : null;
   const turn = useCombatTurn({ combat: snapshot?.combat, canBypassTurn: canControlCombat });
 
+  const tokenControl =
+    canControlToken ?? ((t: BattleToken) => canControlCombat || Boolean(t.linked));
+
+  const canOperateToken = useCallback(
+    (t: BattleToken) => {
+      if (t.monsterEntryId) return canControlCombat;
+      return canControlCombat || tokenControl(t);
+    },
+    [canControlCombat, tokenControl]
+  );
+
+  const canPreviewTurnMove = useCallback(
+    (t: BattleToken) => {
+      const track = snapshot?.combat;
+      if (!track?.order.length) return false;
+      const activeId = activeTokenId(track);
+      if (!activeId || t.id !== activeId) return false;
+      return canOperateToken(t);
+    },
+    [snapshot?.combat, canOperateToken]
+  );
+
   const selected = listTokens.find((t) => t.id === selectedId) ?? null;
   const selectedActor =
     selected?.linked && selected.actorId ? snapshot?.actors[selected.actorId] ?? null : null;
@@ -270,6 +293,12 @@ export function HexBattlefield({
     viewRef: battlefieldView.viewRef,
   });
 
+  const hoverTurnToken = listTokens.find((t) => t.id === hoverTokenId) ?? null;
+  const hoverTurnActor =
+    hoverTurnToken?.linked && hoverTurnToken.actorId
+      ? snapshot?.actors[hoverTurnToken.actorId] ?? null
+      : null;
+
   const highlights = useBattlefieldHighlights({
     scene: displayScene,
     actorRacas,
@@ -278,6 +307,9 @@ export function HexBattlefield({
     actionMode,
     activeCombatAction,
     hoverAxial,
+    hoverTurnToken,
+    hoverTurnActor,
+    canPreviewTurnMove,
     areaCenter,
     areaDirection: null,
     turn,
@@ -288,6 +320,7 @@ export function HexBattlefield({
       scene: displayScene,
       gridCells: highlights.gridCells,
       showMovement: highlights.showMovement,
+      turnMovePreview: highlights.turnMovePreview,
       walkSet: highlights.walkSet,
       paidWalkSet: highlights.paidWalkSet,
       rangeSet: highlights.rangeSet,
@@ -305,6 +338,7 @@ export function HexBattlefield({
       turnActiveId,
       attackableIds: highlights.attackableIds,
       hoverAttackTargetId: hoverTargetId,
+      hoverTurnMoveTokenId: highlights.turnMovePreview ? hoverTokenId : null,
       tokenFlash,
       visibleHexSet,
       pings: displayPings,
@@ -321,6 +355,7 @@ export function HexBattlefield({
       selectedId,
       turnActiveId,
       hoverTargetId,
+      hoverTokenId,
       tokenFlash,
       visibleHexSet,
       displayPings,
@@ -673,28 +708,6 @@ export function HexBattlefield({
     [roomId, canControlCombat, displayScene.fogEnabled, syncRoom]
   );
 
-  const tokenControl =
-    canControlToken ?? (() => canControlCombat || Boolean(selected?.linked));
-
-  const canOperateToken = useCallback(
-    (t: BattleToken) => {
-      if (t.monsterEntryId) return canControlCombat;
-      return canControlCombat || tokenControl(t);
-    },
-    [canControlCombat, tokenControl]
-  );
-
-  const canOpenActionRing = useCallback(
-    (t: BattleToken) => {
-      const track = snapshot?.combat;
-      if (!track?.order.length) return false;
-      const activeId = activeTokenId(track);
-      if (!activeId || t.id !== activeId) return false;
-      return canOperateToken(t);
-    },
-    [snapshot?.combat, canOperateToken]
-  );
-
   const pointer = useBattlefieldPointer({
     canvasRef,
     scene: displayScene,
@@ -719,6 +732,7 @@ export function HexBattlefield({
     onGmReposition: (id, a) => void onGmReposition(id, a),
     onGmDragPreview,
     onHoverTargetChange: setHoverTargetId,
+    onHoverTokenChange: setHoverTokenId,
     onAttack: (id) => void attackToken(id),
     onMove: (a) => void moveSelectedTo(a),
     onAreaSpell: (c, d) => void castAreaSpell(c, d),
@@ -731,7 +745,7 @@ export function HexBattlefield({
       setActionRingAt({ x: clientX, y: clientY });
       setActionErr(null);
     },
-    canOpenActionRing,
+    canOpenActionRing: canPreviewTurnMove,
   });
 
   const canViewTokenPaFn =
@@ -949,7 +963,7 @@ export function HexBattlefield({
           }}
           onContextMenu={pointer.onContextMenu}
         />
-        {actionRingAt && selected && canOpenActionRing(selected) ? (
+        {actionRingAt && selected && canPreviewTurnMove(selected) ? (
           <TokenActionRing
             x={actionRingAt.x}
             y={actionRingAt.y}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo, type CSSProperties } from "react";
 import type { BattleToken } from "@/lib/vtt/types";
 import type { RoomActor } from "@/lib/room/types";
 import type { CombatTrack } from "@/lib/room/combat";
@@ -36,7 +36,7 @@ type Props = {
   onRoomSync: () => void;
 };
 
-const RING_RADIUS = 78;
+const RING_RADIUS = 82;
 
 export function TokenActionRing({
   x,
@@ -181,11 +181,13 @@ export function TokenActionRing({
         onClick={(e) => e.stopPropagation()}
         onContextMenu={(e) => e.preventDefault()}
       >
+        <span className="token-action-ring__track" aria-hidden />
+
         <button
           type="button"
           className="token-action-ring__center"
           onClick={() => pick("idle")}
-          title="Fechar"
+          title="Fechar (Esc)"
         >
           <span className="token-action-ring__center-name">{token.name}</span>
           <span className="token-action-ring__center-hint">PA {token.pa ?? 0}</span>
@@ -201,7 +203,14 @@ export function TokenActionRing({
               type="button"
               role="menuitem"
               className="token-action-ring__slot"
-              style={{ transform: `translate(calc(-50% + ${left}px), calc(-50% + ${top}px))` }}
+              style={
+                {
+                  "--tar-i": i,
+                  "--tar-x": `${left}px`,
+                  "--tar-y": `${top}px`,
+                  transform: `translate(calc(-50% + ${left}px), calc(-50% + ${top}px))`,
+                } as CSSProperties
+              }
               disabled={slot.disabled}
               title={slot.title ?? ACTION_MODE_LABEL[slot.mode]}
               onClick={() => pick(slot.mode)}
