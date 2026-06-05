@@ -1,6 +1,7 @@
 import { canManageRoom } from "@/lib/auth/room-access";
 import type { SessionUser } from "@/lib/auth/types";
 import {
+  applyGmCombatOrder,
   deferTokenToEndOfOrder,
   gmResetTokenPaInRoom,
   restoreNaturalCombatOrder,
@@ -14,6 +15,8 @@ export type GmCombatAction =
   | { action: "reset-pa"; tokenId: string }
   | { action: "defer-turn"; tokenId: string }
   | { action: "restore-order" }
+  | { action: "set-order"; order: string[]; activeTokenId?: string }
+  | { action: "set-active"; tokenId: string }
   | { action: "revert"; undoId: string };
 
 function assertGm(
@@ -90,6 +93,38 @@ export async function executeGmCombatAction(
         ...author,
         kind: "system",
         text: "Mestre restaurou a ordem natural de iniciativa.",
+      });
+      break;
+    }
+
+    case "set-order": {
+      if (!Array.isArray(body.order) || body.order.length === 0) {
+        return { ok: false, error: "Ordem inválida" };
+      }
+      room.combat = applyGmCombatOrder(room.combat, room, body.order, {
+        activeTokenId: body.activeTokenId,
+      });
+      appendRoomChatMessage(room, {
+        ...author,
+        kind: "system",
+        text: "Mestre reordenou a fila de combate.",
+      });
+      break;
+    }
+
+    case "set-active": {
+      const tokenId = body.tokenId?.trim();
+      if (!tokenId) return { ok: false, error: "Token inválido" };
+      const token = room.scene.tokens.find((t) => t.id === tokenId);
+      if (!token) return { ok: false, error: "Token não encontrado" };
+      const idx = room.combat.order.indexOf(tokenId);
+      if (idx < 0) return { ok: false, error: "Token fora da ordem de combate" };
+
+      room.combat = { ...room.combat, activeIndex: idx };
+      appendRoomChatMessage(room, {
+        ...author,
+        kind: "system",
+        text: `Mestre definiu ${token.name} como turno ativo.`,
       });
       break;
     }

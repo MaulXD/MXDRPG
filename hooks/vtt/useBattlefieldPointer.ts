@@ -19,6 +19,8 @@ import {
   tokenOccupiesAxial,
   tokenPixelCenter,
 } from "@/lib/vtt/creature-size";
+import type { DungeonEditorTool } from "@/components/vtt/DungeonEditorPanel";
+import { dungeonObjectAt } from "@/lib/vtt/dungeon-layer";
 import type { BattleScene, BattleToken } from "@/lib/vtt/types";
 
 type TurnCtx = {
@@ -63,6 +65,13 @@ type Params = {
   /** Clique direito no token da vez → action ring */
   onActionRingRequest?: (token: BattleToken, clientX: number, clientY: number) => void;
   canOpenActionRing?: (token: BattleToken) => boolean;
+  dungeonEditor?: {
+    active: boolean;
+    tool: DungeonEditorTool;
+    selectedObjectId: string | null;
+    onSelectObject: (id: string | null) => void;
+    onHexEdit: (axial: Axial, dragObjectId?: string) => void;
+  };
 };
 
 export function useBattlefieldPointer({
@@ -99,10 +108,17 @@ export function useBattlefieldPointer({
   onActionRingRequest,
   canOpenActionRing,
   onHoverTokenChange,
+  dungeonEditor,
 }: Params) {
   const clickStartRef = useRef<{ x: number; y: number } | null>(null);
   const gmDragRef = useRef<{
     tokenId: string;
+    startX: number;
+    startY: number;
+    dragging: boolean;
+  } | null>(null);
+  const dungeonDragRef = useRef<{
+    objectId: string;
     startX: number;
     startY: number;
     dragging: boolean;
@@ -201,7 +217,8 @@ export function useBattlefieldPointer({
         if (
           canGmReposition &&
           actionMode === "idle" &&
-          onGmReposition
+          onGmReposition &&
+          !dungeonEditor?.active
         ) {
           gmDragRef.current = {
             tokenId: hit.id,
@@ -222,6 +239,22 @@ export function useBattlefieldPointer({
 
       const axial = axialAtScreen(px, py);
       if (!axial) return;
+
+      if (dungeonEditor?.active && dungeonEditor.tool === "move") {
+        const obj = dungeonObjectAt(scene, axial);
+        if (obj) {
+          dungeonEditor.onSelectObject(obj.id);
+          dungeonDragRef.current = {
+            objectId: obj.id,
+            startX: px,
+            startY: py,
+            dragging: false,
+          };
+          e.currentTarget.setPointerCapture(e.pointerId);
+          return;
+        }
+      }
+
       if (canControlCombat && actionMode === "idle" && !selectedId) {
         setHoverAxial(axial);
         onHoverAxialChange?.(axial);
@@ -240,7 +273,8 @@ export function useBattlefieldPointer({
       actionMode,
       setHoverAxial,
       onHoverAxialChange,
-      setSelectedId,
+      dungeonEditor,
+      scene,
     ]
   );
 
@@ -250,8 +284,21 @@ export function useBattlefieldPointer({
       const axial = axialAtScreen(px, py);
       if (!axial) return;
 
+      const dng = dungeonDragRef.current;
+      if (dng && dungeonEditor?.active) {
+        if (!dng.dragging && Math.hypot(px - dng.startX, py - dng.startY) > 8) {
+          dng.dragging = true;
+        }
+        if (dng.dragging) {
+          setHoverAxial(axial);
+          onHoverAxialChange?.(axial);
+          if (canvasRef.current) canvasRef.current.style.cursor = "grabbing";
+          return;
+        }
+      }
+
       const gm = gmDragRef.current;
-      if (gm && canGmReposition && onGmReposition) {
+      if (gm && canGmReposition && onGmReposition && !dungeonEditor?.active) {
         if (!gm.dragging && Math.hypot(px - gm.startX, py - gm.startY) > 8) {
           gm.dragging = true;
         }
@@ -280,6 +327,8 @@ export function useBattlefieldPointer({
           attackableIds.has(hoverToken.id)
         ) {
           canvas.style.cursor = "crosshair";
+        } else if (dungeonEditor?.active) {
+          canvas.style.cursor = dungeonEditor.tool === "erase" ? "not-allowed" : "crosshair";
         } else if (showMovement || areaMode) {
           canvas.style.cursor = "cell";
         } else if (hoverToken && canOpenActionRing?.(hoverToken)) {
@@ -307,16 +356,28 @@ export function useBattlefieldPointer({
       onGmReposition,
       onGmDragPreview,
       canOpenActionRing,
+      dungeonEditor,
     ]
   );
 
   const onPointerUp = useCallback(
     (e: React.PointerEvent<HTMLCanvasElement>) => {
+      const dng = dungeonDragRef.current;
+      dungeonDragRef.current = null;
       const gm = gmDragRef.current;
       gmDragRef.current = null;
       const { px, py } = pointerPos(e);
       const axial = axialAtScreen(px, py);
       if (!axial) return;
+
+      if (dungeonEditor?.active) {
+        const start = clickStartRef.current;
+        clickStartRef.current = null;
+        if (!start || Math.hypot(px - start.x, py - start.y) <= 8 || dng) {
+          dungeonEditor.onHexEdit(axial, dng?.objectId);
+        }
+        return;
+      }
 
       if (gm?.dragging && canGmReposition && onGmReposition) {
         onGmDragPreview?.(gm.tokenId, null);
@@ -411,11 +472,13 @@ export function useBattlefieldPointer({
       canGmReposition,
       onGmReposition,
       onGmDragPreview,
+      dungeonEditor,
     ]
   );
 
   const onPointerLeave = useCallback(() => {
     gmDragRef.current = null;
+    dungeonDragRef.current = null;
     setHoverAxial(null);
     onHoverAxialChange?.(null);
     onHoverTargetChange?.(null);

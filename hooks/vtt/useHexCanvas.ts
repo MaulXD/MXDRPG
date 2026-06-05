@@ -20,6 +20,7 @@ import {
   drawTokensLayer,
   prepareBattlefieldCanvas,
 } from "@/lib/vtt/draw-battlefield";
+import { drawDungeonLayer } from "@/lib/vtt/draw-dungeon-layer";
 import { drawFogLayer, drawMapImageLayer, drawPingLayer } from "@/lib/vtt/draw-map-overlay";
 import type { BattlePing } from "@/lib/vtt/types";
 import type { TokenFlashKind } from "@/lib/vtt/draw-battlefield";
@@ -61,6 +62,9 @@ export type HexCanvasDrawState = {
   pings: BattlePing[];
   mapImage: HTMLImageElement | null;
   tokenHpDisplay: Map<string, TokenHpDisplay>;
+  dungeonEditorActive?: boolean;
+  dungeonEditorTool?: "wall" | "object" | null;
+  selectedDungeonObjectId?: string | null;
 };
 
 export type TokenMoveAnimRef = RefObject<{
@@ -144,6 +148,16 @@ export function useHexCanvas(
       spawnDropHover: s.spawnDropHover,
       pathCells: s.pathCells,
       pathDashPhase: pathDashPhaseRef.current,
+      visibleHexSet: s.visibleHexSet,
+    });
+
+    drawDungeonLayer(ctx, s.scene, s.scene.hexSize, layout, {
+      hoverAxial: s.dungeonEditorActive ? s.hoverAxial : null,
+      editorPreviewKind:
+        s.dungeonEditorActive && (s.dungeonEditorTool === "wall" || s.dungeonEditorTool === "object")
+          ? s.dungeonEditorTool
+          : null,
+      selectedObjectId: s.selectedDungeonObjectId ?? null,
       visibleHexSet: s.visibleHexSet,
     });
 

@@ -61,6 +61,10 @@ import {
 import { BattlefieldActionHud } from "@/components/vtt/BattlefieldActionHud";
 import { EndTurnBar } from "@/components/vtt/EndTurnBar";
 import { TurnOrderPanel } from "@/components/vtt/TurnOrderPanel";
+import {
+  applyDungeonHexEdit,
+  type DungeonEditorTool,
+} from "@/components/vtt/DungeonEditorPanel";
 import { useCombatTurn } from "@/hooks/useCombatActions";
 import { useTokenImages } from "@/hooks/vtt/useTokenImages";
 import { usePortraitFocusByToken } from "@/hooks/vtt/usePortraitFocusByToken";
@@ -178,6 +182,9 @@ export function HexBattlefield({
   const seenCombatRef = useRef<Set<string>>(new Set());
   const [mapImage, setMapImage] = useState<HTMLImageElement | null>(null);
   const [mapImgTick, setMapImgTick] = useState(0);
+  const [dungeonEditorActive, setDungeonEditorActive] = useState(false);
+  const [dungeonTool, setDungeonTool] = useState<DungeonEditorTool>("wall");
+  const [selectedDungeonObjectId, setSelectedDungeonObjectId] = useState<string | null>(null);
 
   const displayScene = snapshot?.scene ?? scene;
   const displayPings = snapshot?.pings ?? [];
@@ -438,6 +445,10 @@ export function HexBattlefield({
       pings: displayPings,
       mapImage,
       tokenHpDisplay,
+      dungeonEditorActive: canControlCombat && dungeonEditorActive,
+      dungeonEditorTool:
+        dungeonTool === "wall" || dungeonTool === "object" ? dungeonTool : null,
+      selectedDungeonObjectId,
     }),
     [
       displayScene,
@@ -459,6 +470,9 @@ export function HexBattlefield({
       displayPings,
       mapImage,
       tokenHpDisplay,
+      dungeonEditorActive,
+      dungeonTool,
+      selectedDungeonObjectId,
     ]
   );
 
@@ -667,6 +681,7 @@ export function HexBattlefield({
         tokens: displayScene.tokens,
         gridRadius: displayScene.gridRadius,
         actorRacas,
+        dungeonObjects: displayScene.dungeonObjects,
       };
       return previewMove(selected, hoverAxial, highlights.moveMode, movePaOpts, moveCtx);
     }
@@ -795,6 +810,7 @@ export function HexBattlefield({
         tokens: displayScene.tokens,
         gridRadius: displayScene.gridRadius,
         actorRacas,
+        dungeonObjects: displayScene.dungeonObjects,
       };
       const movePaOpts = selectedActor?.identity
         ? { freeBasicMovePa: paTurnRulesForActor(selectedActor).freeBasicMovePa }
@@ -888,6 +904,42 @@ export function HexBattlefield({
     [roomId, selected?.color, syncRoom]
   );
 
+  const onDungeonHexEdit = useCallback(
+    async (axial: Axial, dragObjectId?: string) => {
+      if (!canControlCombat || !dungeonEditorActive) return;
+      setActionErr(null);
+      try {
+        const result = await applyDungeonHexEdit(
+          roomId,
+          displayScene,
+          dungeonTool,
+          axial,
+          dragObjectId ?? selectedDungeonObjectId
+        );
+        if (result.error) {
+          setActionErr(result.error);
+        }
+        if (result.selectedId !== undefined) {
+          setSelectedDungeonObjectId(result.selectedId);
+        }
+        if (result.snapshot) {
+          syncRoom(result.snapshot);
+        }
+      } catch (e) {
+        setActionErr(e instanceof Error ? e.message : "Falha ao editar mapa");
+      }
+    },
+    [
+      canControlCombat,
+      dungeonEditorActive,
+      roomId,
+      displayScene,
+      dungeonTool,
+      selectedDungeonObjectId,
+      syncRoom,
+    ]
+  );
+
   const onRevealHex = useCallback(
     async (axial: Axial) => {
       if (!canControlCombat || !displayScene.fogEnabled) return;
@@ -940,6 +992,15 @@ export function HexBattlefield({
       setActionErr(null);
     },
     canOpenActionRing: canPreviewTurnMove,
+    dungeonEditor: canControlCombat
+      ? {
+          active: dungeonEditorActive,
+          tool: dungeonTool,
+          selectedObjectId: selectedDungeonObjectId,
+          onSelectObject: setSelectedDungeonObjectId,
+          onHexEdit: (a, dragId) => void onDungeonHexEdit(a, dragId),
+        }
+      : undefined,
   });
 
   const canViewTokenPaFn =
@@ -1006,6 +1067,12 @@ export function HexBattlefield({
         canEdit={canEdit}
         adventureId={adventureIdProp}
         onSceneUpdated={(snap) => syncRoom(snap)}
+        dungeonEditorActive={dungeonEditorActive}
+        dungeonTool={dungeonTool}
+        selectedDungeonObjectId={selectedDungeonObjectId}
+        onDungeonEditorActiveChange={setDungeonEditorActive}
+        onDungeonToolChange={setDungeonTool}
+        onSelectedDungeonObjectChange={setSelectedDungeonObjectId}
       />
     ) : null;
 
@@ -1142,6 +1209,9 @@ export function HexBattlefield({
           onZoomIn={battlefieldView.zoomIn}
           onZoomOut={battlefieldView.zoomOut}
           onReset={battlefieldView.resetView}
+          showDungeonEditor={canControlCombat}
+          dungeonEditorActive={dungeonEditorActive}
+          onToggleDungeonEditor={() => setDungeonEditorActive((v) => !v)}
         />
         <canvas
           ref={canvasRef}

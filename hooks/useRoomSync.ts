@@ -5,6 +5,7 @@ import type { IdentityPatch } from "@/lib/character/identity";
 import type { LevelUpChoices } from "@/lib/character/level-up";
 import type { CharacterSheet } from "@/lib/character/types";
 import type { RoomActor, RoomSnapshot } from "@/lib/room/types";
+import type { DungeonObject } from "@/lib/vtt/types";
 
 const FETCH_TIMEOUT_MS = 12_000;
 
@@ -232,6 +233,8 @@ export type GmCombatAction =
   | { action: "reset-pa"; tokenId: string }
   | { action: "defer-turn"; tokenId: string }
   | { action: "restore-order" }
+  | { action: "set-order"; order: string[]; activeTokenId?: string }
+  | { action: "set-active"; tokenId: string }
   | { action: "revert"; undoId: string };
 
 export async function postGmCombatAction(roomId: string, body: GmCombatAction) {
@@ -514,6 +517,7 @@ export type ScenePatchBody = {
   mapImageOffsetY?: number;
   fogEnabled?: boolean;
   revealedHexes?: string[];
+  dungeonObjects?: DungeonObject[];
 };
 
 export type RoomSettingsPatchBody = {

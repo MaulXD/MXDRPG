@@ -15,9 +15,9 @@ import {
 } from "@/lib/combat/pa-turn";
 import type { BattleToken } from "@/lib/vtt/types";
 import { activeTokenId, nextTurn, rollInitiative } from "../combat";
+import { applyGmCombatOrder } from "../combat-gm";
 import {
   getActiveBattleToken,
-  isDefeatedToken,
   shouldAutoSkipTurn,
   syncCombatOrderWithTokens,
 } from "../combat-order";
@@ -249,23 +249,7 @@ export async function setRoomCombatOrder(
   const room = await getRoom(roomId);
   if (!room) return null;
 
-  const ids = new Set(room.scene.tokens.map((t) => t.id));
-  const valid = order.filter((id) => ids.has(id));
-  for (const t of room.scene.tokens) {
-    if (isDefeatedToken(t)) continue;
-    if (!valid.includes(t.id)) valid.push(t.id);
-  }
-
-  const filtered = valid.filter((id) => {
-    const t = room.scene.tokens.find((tok) => tok.id === id);
-    return t != null && !isDefeatedToken(t);
-  });
-
-  room.combat = {
-    ...room.combat,
-    order: filtered,
-    activeIndex: Math.min(room.combat.activeIndex, Math.max(0, filtered.length - 1)),
-  };
+  room.combat = applyGmCombatOrder(room.combat, room, order);
 
   return toSnapshot(await persistRoom(roomId, room));
 }
