@@ -2701,6 +2701,31 @@
   color: rgba(158, 212, 255, 0.85);
 }
 
+.vtt-dungeon-layer-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+
+.vtt-dungeon-layer-tab {
+  flex: 1;
+  min-width: 5.5rem;
+  font-size: 0.65rem;
+  font-weight: 600;
+  padding: 0.35rem 0.45rem;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.28);
+  color: rgba(232, 226, 214, 0.72);
+  cursor: pointer;
+}
+
+.vtt-dungeon-layer-tab--on {
+  border-color: rgba(201, 169, 98, 0.55);
+  color: #c9a962;
+  background: rgba(201, 169, 98, 0.12);
+}
+
 .vtt-dungeon-tools {
   display: flex;
   flex-wrap: wrap;
@@ -2747,6 +2772,12 @@
   display: flex;
   flex-wrap: wrap;
   gap: 0.4rem;
+}
+
+.vtt-dungeon-floor-status {
+  margin: 0;
+  font-size: 0.68rem;
+  color: rgba(140, 200, 140, 0.9);
 }
 
 .vtt-settings-fieldset {

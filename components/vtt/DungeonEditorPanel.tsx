@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { BattleScene, DungeonObjectKind } from "@/lib/vtt/types";
 import type { RoomSnapshot } from "@/lib/room/types";
 import { patchRoomScene } from "@/hooks/useRoomSync";
@@ -14,12 +14,17 @@ import {
 
 export type DungeonEditorTool = "wall" | "object" | "erase" | "move";
 
+/** Camada ativa no editor: piso (imagem), objetos (paredes), tokens (só leitura). */
+export type DungeonEditLayer = "floor" | "objects" | "tokens";
+
 type Props = {
   roomId: string;
   scene: BattleScene;
+  layer: DungeonEditLayer;
   active: boolean;
   tool: DungeonEditorTool;
   selectedObjectId: string | null;
+  onLayerChange: (layer: DungeonEditLayer) => void;
   onActiveChange: (active: boolean) => void;
   onToolChange: (tool: DungeonEditorTool) => void;
   onSelectedObjectChange: (id: string | null) => void;
@@ -29,9 +34,11 @@ type Props = {
 export function DungeonEditorPanel({
   roomId,
   scene,
+  layer,
   active,
   tool,
   selectedObjectId,
+  onLayerChange,
   onActiveChange,
   onToolChange,
   onSelectedObjectChange,
@@ -46,6 +53,21 @@ export function DungeonEditorPanel({
   const [msg, setMsg] = useState<string | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
 
+  useEffect(() => {
+    setUrl(scene.mapImageUrl ?? "");
+    setScale(String(scene.mapImageScale ?? 1));
+    setOffX(String(scene.mapImageOffsetX ?? 0));
+    setOffY(String(scene.mapImageOffsetY ?? 0));
+    setFog(Boolean(scene.fogEnabled));
+  }, [
+    scene.mapImageUrl,
+    scene.mapImageScale,
+    scene.mapImageOffsetX,
+    scene.mapImageOffsetY,
+    scene.fogEnabled,
+  ]);
+
+  const hasFloorImage = Boolean(scene.mapImageUrl?.trim());
   const objectCount = dungeonObjectsOf(scene).length;
   const walls = dungeonObjectsOf(scene).filter((o) => o.kind === "wall").length;
   const objects = dungeonObjectsOf(scene).filter((o) => o.kind === "object").length;
@@ -114,62 +136,98 @@ export function DungeonEditorPanel({
     setMsg("Fog resetada.");
   }
 
+  const layerTabs: { id: DungeonEditLayer; label: string; hint: string }[] = [
+    { id: "floor", label: "1 · Piso", hint: "Imagem de fundo abaixo do grid." },
+    { id: "objects", label: "2 · Objetos", hint: "Paredes e props — bloqueiam tokens." },
+    { id: "tokens", label: "3 · Tokens", hint: "Personagens no mapa — arraste no tabuleiro." },
+  ];
+
   return (
     <div className="vtt-dungeon-panel">
       <div className="vtt-dungeon-panel-head">
         <p className="vtt-eyebrow" style={{ margin: 0 }}>
           Editor de masmorras
         </p>
-        <button
-          type="button"
-          className={`vtt-dungeon-toggle${active ? " vtt-dungeon-toggle--on" : ""}`}
-          disabled={busy}
-          onClick={() => onActiveChange(!active)}
-        >
-          {active ? "Editando mapa" : "Ativar editor"}
-        </button>
+        {layer === "objects" ? (
+          <button
+            type="button"
+            className={`vtt-dungeon-toggle${active ? " vtt-dungeon-toggle--on" : ""}`}
+            disabled={busy}
+            onClick={() => onActiveChange(!active)}
+          >
+            {active ? "Pintando hex" : "Editar no mapa"}
+          </button>
+        ) : null}
       </div>
 
-      <p className="vtt-combat-hint">
-        <strong>3 camadas:</strong> piso (imagem) → objetos/paredes (bloqueiam tokens) → tokens
-        (jogadores).
-      </p>
+      <div className="vtt-dungeon-layer-tabs">
+        {layerTabs.map((tab) => (
+          <button
+            key={tab.id}
+            type="button"
+            className={`vtt-dungeon-layer-tab${layer === tab.id ? " vtt-dungeon-layer-tab--on" : ""}`}
+            disabled={busy}
+            onClick={() => onLayerChange(tab.id)}
+          >
+            {tab.label}
+          </button>
+        ))}
+      </div>
 
-      {active ? (
+      <p className="vtt-combat-hint">{layerTabs.find((t) => t.id === layer)?.hint}</p>
+
+      {layer === "objects" && active ? (
         <p className="vtt-dungeon-active-hint">
           Clique no hex para {tool === "erase" ? "apagar" : tool === "move" ? "mover/selecionar" : "colocar"}{" "}
           {tool === "wall" ? "parede" : tool === "object" ? "objeto" : ""}.
         </p>
       ) : null}
 
-      <div className="vtt-dungeon-tools">
-        {(
-          [
-            ["wall", "Parede"],
-            ["object", "Objeto"],
-            ["erase", "Apagar"],
-            ["move", "Mover"],
-          ] as const
-        ).map(([id, label]) => (
-          <button
-            key={id}
-            type="button"
-            className={`vtt-dungeon-tool${tool === id ? " vtt-dungeon-tool--on" : ""}`}
-            disabled={!active || busy}
-            onClick={() => onToolChange(id)}
-          >
-            {label}
-          </button>
-        ))}
-      </div>
+      {layer === "objects" ? (
+        <>
+          <div className="vtt-dungeon-tools">
+            {(
+              [
+                ["wall", "Parede"],
+                ["object", "Objeto"],
+                ["erase", "Apagar"],
+                ["move", "Mover"],
+              ] as const
+            ).map(([id, label]) => (
+              <button
+                key={id}
+                type="button"
+                className={`vtt-dungeon-tool${tool === id ? " vtt-dungeon-tool--on" : ""}`}
+                disabled={!active || busy}
+                onClick={() => onToolChange(id)}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
 
-      <p className="vtt-dungeon-stats">
-        {walls} paredes · {objects} objetos
-        {selectedObjectId ? " · 1 selecionado" : ""}
-      </p>
+          <p className="vtt-dungeon-stats">
+            {walls} paredes · {objects} objetos
+            {selectedObjectId ? " · 1 selecionado" : ""}
+          </p>
+        </>
+      ) : null}
 
+      {layer === "tokens" ? (
+        <p className="vtt-combat-hint">
+          A camada de tokens é editada no mapa: arraste personagens, invoque monstros e use a ordem de
+          turno. Cada token tem ID e ficha próprios.
+        </p>
+      ) : null}
+
+      {layer === "floor" ? (
       <div className="vtt-dungeon-layer">
-        <p className="vtt-eyebrow">Camada — Piso</p>
+        <p className="vtt-eyebrow">Imagem de piso</p>
+        {hasFloorImage ? (
+          <p className="vtt-dungeon-floor-status">Fundo ativo no hex — ajuste escala/offset se precisar.</p>
+        ) : (
+          <p className="vtt-combat-hint">Suba uma imagem ou cole uma URL para usar como fundo do tabuleiro.</p>
+        )}
         <input
           ref={fileRef}
           type="file"
@@ -229,9 +287,11 @@ export function DungeonEditorPanel({
           Aplicar piso
         </button>
       </div>
+      ) : null}
 
+      {layer === "objects" ? (
       <div className="vtt-dungeon-layer">
-        <p className="vtt-eyebrow">Camada — Objetos &amp; fog</p>
+        <p className="vtt-eyebrow">Fog of war</p>
         <label className="vtt-check">
           <input type="checkbox" checked={fog} onChange={(e) => setFog(e.target.checked)} />
           Fog of war ativa
@@ -250,6 +310,7 @@ export function DungeonEditorPanel({
           ) : null}
         </div>
       </div>
+      ) : null}
 
       {msg ? <p className="vtt-combat-hint">{msg}</p> : null}
     </div>

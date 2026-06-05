@@ -43,6 +43,14 @@ export function canManageRoom(
   return isRoomOwner(room, user.id);
 }
 
+/** Editar piso, objetos e fog — só o mestre da mesa (não jogadores da demo). */
+export function canEditRoomScene(
+  room: Pick<RoomState, "roomId" | "ownerId">,
+  user: SessionUser | null | undefined
+): boolean {
+  return canManageRoom(room, user);
+}
+
 /** Ver mapa + chat leitura (demo, membro, admin, ou código convite na URL). */
 export function canViewRoom(
   room: RoomState,

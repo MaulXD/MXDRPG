@@ -19,7 +19,7 @@ import {
   tokenOccupiesAxial,
   tokenPixelCenter,
 } from "@/lib/vtt/creature-size";
-import type { DungeonEditorTool } from "@/components/vtt/DungeonEditorPanel";
+import type { DungeonEditLayer, DungeonEditorTool } from "@/components/vtt/DungeonEditorPanel";
 import { dungeonObjectAt } from "@/lib/vtt/dungeon-layer";
 import type { BattleScene, BattleToken } from "@/lib/vtt/types";
 
@@ -66,6 +66,7 @@ type Params = {
   onActionRingRequest?: (token: BattleToken, clientX: number, clientY: number) => void;
   canOpenActionRing?: (token: BattleToken) => boolean;
   dungeonEditor?: {
+    layer: DungeonEditLayer;
     active: boolean;
     tool: DungeonEditorTool;
     selectedObjectId: string | null;
@@ -240,7 +241,11 @@ export function useBattlefieldPointer({
       const axial = axialAtScreen(px, py);
       if (!axial) return;
 
-      if (dungeonEditor?.active && dungeonEditor.tool === "move") {
+      if (
+        dungeonEditor?.active &&
+        dungeonEditor.layer === "objects" &&
+        dungeonEditor.tool === "move"
+      ) {
         const obj = dungeonObjectAt(scene, axial);
         if (obj) {
           dungeonEditor.onSelectObject(obj.id);
@@ -285,7 +290,7 @@ export function useBattlefieldPointer({
       if (!axial) return;
 
       const dng = dungeonDragRef.current;
-      if (dng && dungeonEditor?.active) {
+      if (dng && dungeonEditor?.active && dungeonEditor.layer === "objects") {
         if (!dng.dragging && Math.hypot(px - dng.startX, py - dng.startY) > 8) {
           dng.dragging = true;
         }
@@ -327,7 +332,7 @@ export function useBattlefieldPointer({
           attackableIds.has(hoverToken.id)
         ) {
           canvas.style.cursor = "crosshair";
-        } else if (dungeonEditor?.active) {
+        } else if (dungeonEditor?.active && dungeonEditor.layer === "objects") {
           canvas.style.cursor = dungeonEditor.tool === "erase" ? "not-allowed" : "crosshair";
         } else if (showMovement || areaMode) {
           canvas.style.cursor = "cell";
@@ -370,7 +375,7 @@ export function useBattlefieldPointer({
       const axial = axialAtScreen(px, py);
       if (!axial) return;
 
-      if (dungeonEditor?.active) {
+      if (dungeonEditor?.active && dungeonEditor.layer === "objects") {
         const start = clickStartRef.current;
         clickStartRef.current = null;
         if (!start || Math.hypot(px - start.x, py - start.y) <= 8 || dng) {

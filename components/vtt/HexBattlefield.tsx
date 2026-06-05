@@ -63,6 +63,7 @@ import { EndTurnBar } from "@/components/vtt/EndTurnBar";
 import { TurnOrderPanel } from "@/components/vtt/TurnOrderPanel";
 import {
   applyDungeonHexEdit,
+  type DungeonEditLayer,
   type DungeonEditorTool,
 } from "@/components/vtt/DungeonEditorPanel";
 import { useCombatTurn } from "@/hooks/useCombatActions";
@@ -182,6 +183,7 @@ export function HexBattlefield({
   const seenCombatRef = useRef<Set<string>>(new Set());
   const [mapImage, setMapImage] = useState<HTMLImageElement | null>(null);
   const [mapImgTick, setMapImgTick] = useState(0);
+  const [dungeonLayer, setDungeonLayer] = useState<DungeonEditLayer>("floor");
   const [dungeonEditorActive, setDungeonEditorActive] = useState(false);
   const [dungeonTool, setDungeonTool] = useState<DungeonEditorTool>("wall");
   const [selectedDungeonObjectId, setSelectedDungeonObjectId] = useState<string | null>(null);
@@ -196,7 +198,9 @@ export function HexBattlefield({
       return;
     }
     const img = new Image();
-    img.crossOrigin = "anonymous";
+    if (/^https?:\/\//i.test(url)) {
+      img.crossOrigin = "anonymous";
+    }
     img.onload = () => {
       setMapImage(img);
       setMapImgTick((n) => n + 1);
@@ -281,6 +285,8 @@ export function HexBattlefield({
     () => (session ? canManageRoom({ ownerId: roomOwnerId }, session) : false),
     [session, roomOwnerId]
   );
+
+  const dungeonMapEditing = isRoomGm && dungeonEditorActive && dungeonLayer === "objects";
 
   const roomSettings = normalizeRoomSettings(snapshot?.settings);
 
@@ -445,7 +451,7 @@ export function HexBattlefield({
       pings: displayPings,
       mapImage,
       tokenHpDisplay,
-      dungeonEditorActive: canControlCombat && dungeonEditorActive,
+      dungeonEditorActive: dungeonMapEditing,
       dungeonEditorTool:
         dungeonTool === "wall" || dungeonTool === "object" ? dungeonTool : null,
       selectedDungeonObjectId,
@@ -470,7 +476,7 @@ export function HexBattlefield({
       displayPings,
       mapImage,
       tokenHpDisplay,
-      dungeonEditorActive,
+      dungeonMapEditing,
       dungeonTool,
       selectedDungeonObjectId,
     ]
@@ -906,7 +912,7 @@ export function HexBattlefield({
 
   const onDungeonHexEdit = useCallback(
     async (axial: Axial, dragObjectId?: string) => {
-      if (!canControlCombat || !dungeonEditorActive) return;
+      if (!dungeonMapEditing) return;
       setActionErr(null);
       try {
         const result = await applyDungeonHexEdit(
@@ -930,8 +936,7 @@ export function HexBattlefield({
       }
     },
     [
-      canControlCombat,
-      dungeonEditorActive,
+      dungeonMapEditing,
       roomId,
       displayScene,
       dungeonTool,
@@ -992,8 +997,9 @@ export function HexBattlefield({
       setActionErr(null);
     },
     canOpenActionRing: canPreviewTurnMove,
-    dungeonEditor: canControlCombat
+    dungeonEditor: isRoomGm
       ? {
+          layer: dungeonLayer,
           active: dungeonEditorActive,
           tool: dungeonTool,
           selectedObjectId: selectedDungeonObjectId,
@@ -1067,9 +1073,15 @@ export function HexBattlefield({
         canEdit={canEdit}
         adventureId={adventureIdProp}
         onSceneUpdated={(snap) => syncRoom(snap)}
+        canEditScene={isRoomGm}
+        dungeonLayer={dungeonLayer}
         dungeonEditorActive={dungeonEditorActive}
         dungeonTool={dungeonTool}
         selectedDungeonObjectId={selectedDungeonObjectId}
+        onDungeonLayerChange={(layer) => {
+          setDungeonLayer(layer);
+          if (layer !== "objects") setDungeonEditorActive(false);
+        }}
         onDungeonEditorActiveChange={setDungeonEditorActive}
         onDungeonToolChange={setDungeonTool}
         onSelectedDungeonObjectChange={setSelectedDungeonObjectId}
@@ -1209,9 +1221,12 @@ export function HexBattlefield({
           onZoomIn={battlefieldView.zoomIn}
           onZoomOut={battlefieldView.zoomOut}
           onReset={battlefieldView.resetView}
-          showDungeonEditor={canControlCombat}
-          dungeonEditorActive={dungeonEditorActive}
-          onToggleDungeonEditor={() => setDungeonEditorActive((v) => !v)}
+          showDungeonEditor={isRoomGm}
+          dungeonEditorActive={dungeonMapEditing}
+          onToggleDungeonEditor={() => {
+            setDungeonLayer("objects");
+            setDungeonEditorActive((v) => !v);
+          }}
         />
         <canvas
           ref={canvasRef}

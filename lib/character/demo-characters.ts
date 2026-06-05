@@ -139,8 +139,8 @@ export const DEMO_CHARACTERS: CharacterSheet[] = [
     biography:
       "Barda de apoio — Inspiração de Batalha, Canção de Cura e Curar Ferimentos para testar vantagem, cura e buffs na mesa.",
     identity: {
-      nivel: 3,
-      xpTotal: 600,
+      nivel: 6,
+      xpTotal: 1500,
       raca: "Humano",
       classe: "Bardo",
       subclasse: "Sommelier de Masmorra",
@@ -157,11 +157,11 @@ export const DEMO_CHARACTERS: CharacterSheet[] = [
     },
     culinary: computeCulinary("Bardo", "Humano"),
     resources: {
-      vida: { value: 22, max: 22 },
+      vida: { value: 34, max: 34 },
       pontosAcao: { value: 5, max: 5 },
     },
     movement: { walk: 4, run: 6 },
-    tactical: { defesa: 12, iniciativa: 2 },
+    tactical: { defesa: 13, iniciativa: 2 },
     inventory: [
       {
         instanceId: "inv-bd-1",
