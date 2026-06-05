@@ -33,6 +33,9 @@ type Params = {
   actionMode: TokenActionMode;
   activeCombatAction: CombatActionOption | null;
   hoverAxial: Axial | null;
+  hoverTurnToken: BattleToken | null;
+  hoverTurnActor: CharacterSheet | null;
+  canPreviewTurnMove?: (token: BattleToken) => boolean;
   areaCenter: Axial | null;
   areaDirection: number | null;
   turn: TurnCtx;
@@ -46,12 +49,28 @@ export function useBattlefieldHighlights({
   actionMode,
   activeCombatAction,
   hoverAxial,
+  hoverTurnToken,
+  hoverTurnActor,
+  canPreviewTurnMove,
   areaCenter,
   areaDirection,
   turn,
 }: Params) {
   const moveMode: "walk" | "run" = actionMode === "move-run" ? "run" : "walk";
-  const showMovement = Boolean(selected && isMoveMode(actionMode));
+  const turnMovePreview = Boolean(
+    actionMode === "idle" &&
+      hoverTurnToken &&
+      canPreviewTurnMove?.(hoverTurnToken)
+  );
+  const moveHighlightToken = isMoveMode(actionMode)
+    ? selected
+    : turnMovePreview
+      ? hoverTurnToken
+      : null;
+  const showMovement = Boolean(
+    moveHighlightToken && (isMoveMode(actionMode) || turnMovePreview)
+  );
+  const effectiveMoveMode: "walk" | "run" = turnMovePreview ? "walk" : moveMode;
   const isAreaSpellMode = Boolean(
     selected &&
       actionMode === "spell" &&
@@ -71,43 +90,59 @@ export function useBattlefieldHighlights({
 
   const moveCtx = useMemo(
     () =>
-      selected
+      moveHighlightToken
         ? { tokens: scene.tokens, gridRadius: scene.gridRadius, actorRacas }
         : null,
-    [selected, scene.tokens, scene.gridRadius, actorRacas]
+    [moveHighlightToken, scene.tokens, scene.gridRadius, actorRacas]
   );
+
+  const highlightActor = turnMovePreview ? hoverTurnActor : selectedActor;
 
   const rangeSet = useMemo(() => {
-    if (!selected || !showMovement) return new Set<string>();
-    const cells = reachableMovementHexes(selected, moveMode, scene, actorRacas);
+    if (!moveHighlightToken || !showMovement || turnMovePreview) return new Set<string>();
+    const cells = reachableMovementHexes(moveHighlightToken, effectiveMoveMode, scene, actorRacas);
     return new Set(cells.map(axialKey));
-  }, [selected, showMovement, moveMode, scene, actorRacas]);
+  }, [moveHighlightToken, showMovement, turnMovePreview, effectiveMoveMode, scene, actorRacas]);
 
   const walkSet = useMemo(() => {
-    if (!selected || !showMovement) return new Set<string>();
-    const cells = reachableMovementHexes(selected, "walk", scene, actorRacas);
+    if (!moveHighlightToken || !showMovement) return new Set<string>();
+    const cells = reachableMovementHexes(moveHighlightToken, "walk", scene, actorRacas);
     return new Set(cells.map(axialKey));
-  }, [selected, showMovement, scene, actorRacas]);
+  }, [moveHighlightToken, showMovement, scene, actorRacas]);
 
-  const movePaOpts = useMemo(
+  const movePaOptsHighlight = useMemo(
     () =>
-      selectedActor
-        ? { freeBasicMovePa: paTurnRulesForActor(selectedActor).freeBasicMovePa }
+      highlightActor
+        ? { freeBasicMovePa: paTurnRulesForActor(highlightActor).freeBasicMovePa }
         : undefined,
-    [selectedActor]
+    [highlightActor]
   );
 
-  /** Hexes alcançáveis em caminhada que ainda gastam PA (faixas do livro). */
   const paidWalkSet = useMemo(() => {
-    if (!selected || !showMovement || !moveCtx) return new Set<string>();
+    if (!moveHighlightToken || !showMovement || !moveCtx || turnMovePreview) {
+      return new Set<string>();
+    }
     const set = new Set<string>();
     for (const key of walkSet) {
       const [q, r] = key.split(",").map(Number);
-      const check = canMoveToken(selected, { q, r }, "walk", moveCtx, movePaOpts);
+      const check = canMoveToken(
+        moveHighlightToken,
+        { q, r },
+        "walk",
+        moveCtx,
+        movePaOptsHighlight
+      );
       if (check.ok && check.paCost > 0) set.add(key);
     }
     return set;
-  }, [selected, showMovement, walkSet, moveCtx, movePaOpts]);
+  }, [
+    moveHighlightToken,
+    showMovement,
+    walkSet,
+    moveCtx,
+    movePaOptsHighlight,
+    turnMovePreview,
+  ]);
 
   const attackRangeSet = useMemo(() => {
     if (!selected || !activeCombatAction || !isTargetMode(actionMode)) return new Set<string>();
@@ -168,9 +203,24 @@ export function useBattlefieldHighlights({
   ]);
 
   const hoverMovePreview: MoveCheck | null = useMemo(() => {
-    if (!selected || !hoverAxial || !showMovement || !moveCtx) return null;
-    return canMoveToken(selected, hoverAxial, moveMode, moveCtx, movePaOpts);
-  }, [selected, hoverAxial, showMovement, moveMode, moveCtx, movePaOpts]);
+    if (!moveHighlightToken || !hoverAxial || !showMovement || !moveCtx) return null;
+    if (turnMovePreview) return null;
+    return canMoveToken(
+      moveHighlightToken,
+      hoverAxial,
+      effectiveMoveMode,
+      moveCtx,
+      movePaOptsHighlight
+    );
+  }, [
+    moveHighlightToken,
+    hoverAxial,
+    showMovement,
+    turnMovePreview,
+    effectiveMoveMode,
+    moveCtx,
+    movePaOptsHighlight,
+  ]);
 
   const hoverPathCells: Axial[] = useMemo(() => {
     if (!hoverMovePreview?.ok || !hoverMovePreview.path?.length) return [];
@@ -204,8 +254,9 @@ export function useBattlefieldHighlights({
     hoverPathCells,
     attackableIds,
     showMovement,
+    turnMovePreview,
     isAreaSpellMode,
     needsAreaDirection,
-    moveMode,
+    moveMode: effectiveMoveMode,
   };
 }

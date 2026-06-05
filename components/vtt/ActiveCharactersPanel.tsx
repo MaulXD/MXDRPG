@@ -109,8 +109,8 @@ export function ActiveCharactersPanel({
           {canUseToken && combat?.order.length ? (
             <p className="vtt-combat-hint vtt-action-ring-hint">
               {selected.id === activeTokenId(combat)
-                ? "Clique direito no token no mapa para o anel de ações."
-                : "Aguarde seu turno na iniciativa (painel ⏱)."}
+                  ? "Clique direito no personagem ou hex dele para o anel de ações. Passe o mouse para ver o alcance."
+                  : "Aguarde seu turno na iniciativa (painel ⏱)."}
             </p>
           ) : canUseToken ? (
             <p className="vtt-combat-hint">Inicie o combate (rolar iniciativa) para usar ações.</p>
