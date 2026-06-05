@@ -6,7 +6,7 @@ import type { CharacterSheet as CharacterSheetData, InventoryItem } from "@/lib/
 import { formatXpProgress } from "@/lib/character/xp";
 import { loadInventory, newInstanceId, saveInventory } from "@/lib/character/inventory-storage";
 import type { CompendiumEntry, CompendiumPackId } from "@/lib/compendium/types";
-import { entrySummary } from "@/lib/compendium/format";
+import { entryBookRef, entryDescriptionHtml, entrySummary, stripHtml } from "@/lib/compendium/format";
 import { getEntry } from "@/lib/compendium/registry";
 import { patchRoomActor, useRoomSync } from "@/hooks/useRoomSync";
 import { CharacterSheetCover } from "@/components/character/CharacterSheetCover";
@@ -265,6 +265,7 @@ export function CharacterSheet({
                 quantity={ref.quantity}
                 canEdit={canEdit}
                 selected={selectedInvId === ref.instanceId}
+                showDetail={tab === "habilidades" || tab === "inventário" || tab === "magias"}
                 onSelect={() => setSelectedInvId(ref.instanceId)}
                 onRemove={() => removeItem(ref.instanceId)}
               />
@@ -646,6 +647,7 @@ function InventoryRow({
   quantity,
   canEdit,
   selected = false,
+  showDetail = false,
   onSelect,
   onRemove,
 }: {
@@ -653,15 +655,19 @@ function InventoryRow({
   quantity: number;
   canEdit: boolean;
   selected?: boolean;
+  showDetail?: boolean;
   onSelect?: () => void;
   onRemove: () => void;
 }) {
   const color = TYPE_COLOR[entry.type] ?? "#00f5ff";
   const tags = entrySummary(entry.system, entry.type);
+  const descriptionHtml = entryDescriptionHtml(entry.system);
+  const descriptionText = stripHtml(descriptionHtml);
+  const { catalogId, bookRef } = entryBookRef(entry.system);
 
   return (
     <li
-      className={`inv-row${selected ? " inv-row--selected" : ""}`}
+      className={`inv-row${selected ? " inv-row--selected" : ""}${showDetail ? " inv-row--detail" : ""}`}
       role={canEdit ? "button" : undefined}
       tabIndex={canEdit ? 0 : undefined}
       onClick={canEdit ? onSelect : undefined}
@@ -679,9 +685,19 @@ function InventoryRow({
       <div className="inv-icon" style={{ background: `${color}22`, color }}>
         {entry.name.charAt(0)}
       </div>
-      <div>
+      <div className="inv-row__body">
         <h4>{entry.name}</h4>
-        <p>{tags.slice(0, 3).join(" · ")}</p>
+        <p className="inv-row__tags">{tags.slice(0, 4).join(" · ")}</p>
+        {showDetail && descriptionText ? (
+          <p className="inv-row__desc">{descriptionText}</p>
+        ) : null}
+        {showDetail && (catalogId || bookRef) ? (
+          <p className="inv-row__ref">
+            {catalogId ? <span className="inv-row__ref-id">{catalogId}</span> : null}
+            {catalogId && bookRef ? " · " : null}
+            {bookRef ? <span className="inv-row__ref-book">{bookRef}</span> : null}
+          </p>
+        ) : null}
       </div>
       <span className="inv-type">{entry.type}</span>
       {quantity > 1 ? <span className="inv-type">×{quantity}</span> : null}

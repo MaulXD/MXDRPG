@@ -2,6 +2,22 @@ export function stripHtml(html: string): string {
   return html.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
 }
 
+export type EntryBookRef = {
+  catalogId?: string;
+  bookRef?: string;
+};
+
+export function entryDescriptionHtml(system: Record<string, unknown>): string {
+  return String(system.description ?? "").trim();
+}
+
+/** Referência canônica (ID do livro + opcional capítulo). */
+export function entryBookRef(system: Record<string, unknown>): EntryBookRef {
+  const catalogId = system.catalogId != null ? String(system.catalogId) : undefined;
+  const bookRef = system.bookRef != null ? String(system.bookRef) : undefined;
+  return { catalogId, bookRef };
+}
+
 export function slugId(name: string): string {
   return name
     .normalize("NFD")

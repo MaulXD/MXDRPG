@@ -5,7 +5,8 @@
     "type": "habilidade",
     "system": {
       "catalogId": "HAB-investida-hexagonal",
-      "description": "<p>Movimento 2 hex sem provocar.</p>",
+      "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
+      "description": "<p>Desloca em linha reta até 2 hex sem provocar ataques de oportunidade durante o movimento.</p>",
       "tactical": {
         "alcanceHex": {
           "value": 2,
@@ -28,7 +29,8 @@
     "type": "habilidade",
     "system": {
       "catalogId": "HAB-golpe-flanqueador",
-      "description": "<p>Ataque cac com vantagem se flanqueio.</p>",
+      "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
+      "description": "<p>Gasta 2 PA: próximo ataque corpo a corpo com vantagem se você flanquear o alvo.</p>",
       "tactical": {
         "alcanceHex": {
           "value": 1,
@@ -51,7 +53,8 @@
     "type": "habilidade",
     "system": {
       "catalogId": "HAB-postura-defensiva",
-      "description": "<p>+2 defesa até próximo turno.</p>",
+      "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
+      "description": "<p>+2 defesa até o início do seu próximo turno.</p>",
       "tactical": {
         "alcanceHex": {
           "value": 0,
@@ -74,7 +77,8 @@
     "type": "habilidade",
     "system": {
       "catalogId": "HAB-reflexos-de-masmorra",
-      "description": "<p>Reação: desloca 1 hex.</p>",
+      "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
+      "description": "<p>Reação a um ataque: desloca 1 hex imediatamente (não provoca oportunidades).</p>",
       "tactical": {
         "alcanceHex": {
           "value": 1,
@@ -97,7 +101,8 @@
     "type": "habilidade",
     "system": {
       "catalogId": "HAB-olhar-do-cacador",
-      "description": "<p>Marca alvo; +2 próximo ataque à distância.</p>",
+      "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
+      "description": "<p>Marca um alvo visível a até 5 hex; seu próximo ataque à distância contra ele ganha +2.</p>",
       "tactical": {
         "alcanceHex": {
           "value": 5,
@@ -120,7 +125,8 @@
     "type": "habilidade",
     "system": {
       "catalogId": "HAB-investida-do-guerreiro",
-      "description": "<p>Corrida em linha reta.</p>",
+      "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
+      "description": "<p>Corrida em linha reta até 2 hex; ideal terminar adjacente a um inimigo para atacar no mesmo turno.</p>",
       "tactical": {
         "alcanceHex": {
           "value": 2,
@@ -143,7 +149,8 @@
     "type": "habilidade",
     "system": {
       "catalogId": "HAB-golpe-devastador",
-      "description": "<p>+2 no próximo ataque corpo a corpo.</p>",
+      "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
+      "description": "<p>Próximo ataque corpo a corpo recebe +2 no teste de ataque.</p>",
       "tactical": {
         "alcanceHex": {
           "value": 1,
@@ -166,7 +173,8 @@
     "type": "habilidade",
     "system": {
       "catalogId": "HAB-esquiva-tatica",
-      "description": "<p>+2 defesa até seu próximo turno.</p>",
+      "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
+      "description": "<p>+2 defesa até o início do seu próximo turno.</p>",
       "tactical": {
         "alcanceHex": {
           "value": 0,
@@ -189,7 +197,8 @@
     "type": "habilidade",
     "system": {
       "catalogId": "HAB-tiro-certeiro",
-      "description": "<p>Próximo ataque à distância com vantagem.</p>",
+      "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
+      "description": "<p>Próximo ataque à distância contra alvo visível é feito com vantagem.</p>",
       "tactical": {
         "alcanceHex": {
           "value": 5,
@@ -212,7 +221,8 @@
     "type": "habilidade",
     "system": {
       "catalogId": "HAB-emboscada",
-      "description": "<p>Ataque furtivo adjacente.</p>",
+      "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
+      "description": "<p>Ataque furtivo adjacente; vantagem se o alvo não viu você no início do turno.</p>",
       "tactical": {
         "alcanceHex": {
           "value": 1,
@@ -235,7 +245,8 @@
     "type": "habilidade",
     "system": {
       "catalogId": "HAB-finta",
-      "description": "<p>Alvo tem desvantagem no próximo ataque contra ele.</p>",
+      "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
+      "description": "<p>Alvo marcado tem desvantagem no próximo ataque contra você.</p>",
       "tactical": {
         "alcanceHex": {
           "value": 1,
@@ -258,7 +269,8 @@
     "type": "habilidade",
     "system": {
       "catalogId": "HAB-passo-das-sombras",
-      "description": "<p>Teleporte curto 2 hex (movimento).</p>",
+      "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
+      "description": "<p>Teleporte curto de até 2 hex; conta como movimento.</p>",
       "tactical": {
         "alcanceHex": {
           "value": 2,
@@ -281,7 +293,8 @@
     "type": "habilidade",
     "system": {
       "catalogId": "HAB-raio-arcano",
-      "description": "<p>Truque ofensivo 1d10+INT.</p>",
+      "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
+      "description": "<p>Truque ofensivo: 1d10+INT de dano mágico em um alvo a até 6 hex.</p>",
       "tactical": {
         "alcanceHex": {
           "value": 6,
@@ -304,7 +317,8 @@
     "type": "habilidade",
     "system": {
       "catalogId": "HAB-escudo-magico",
-      "description": "<p>+3 defesa 1 rodada.</p>",
+      "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
+      "description": "<p>+3 defesa até o início do seu próximo turno.</p>",
       "tactical": {
         "alcanceHex": {
           "value": 0,
@@ -327,7 +341,8 @@
     "type": "habilidade",
     "system": {
       "catalogId": "HAB-canalizar-energia",
-      "description": "<p>Ataque sagrado +2d6 radiante.</p>",
+      "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
+      "description": "<p>Ataque corpo a corpo sagrado: +2 no ataque e +2d6 radiante no dano.</p>",
       "tactical": {
         "alcanceHex": {
           "value": 1,
@@ -350,7 +365,8 @@
     "type": "habilidade",
     "system": {
       "catalogId": "HAB-furia-controlada",
-      "description": "<p>Resistência contundente 1 turno.</p>",
+      "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
+      "description": "<p>Resistência a dano contundente até o fim do seu próximo turno.</p>",
       "tactical": {
         "alcanceHex": {
           "value": 0,
@@ -373,7 +389,8 @@
     "type": "habilidade",
     "system": {
       "catalogId": "HAB-investida-barbara",
-      "description": "<p>Corre 3 hex em linha.</p>",
+      "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
+      "description": "<p>Corre até 3 hex em linha reta sem provocar oportunidades.</p>",
       "tactical": {
         "alcanceHex": {
           "value": 3,
@@ -396,7 +413,8 @@
     "type": "habilidade",
     "system": {
       "catalogId": "HAB-inspiracao-de-batalha",
-      "description": "<p>Aliado ganha vantagem no próximo ataque.</p>",
+      "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
+      "description": "<p>Aliado visível a até 4 hex ganha vantagem no próximo ataque.</p>",
       "tactical": {
         "alcanceHex": {
           "value": 4,
@@ -419,7 +437,8 @@
     "type": "habilidade",
     "system": {
       "catalogId": "HAB-cancao-de-cura",
-      "description": "<p>Aliado recupera 1d6 HP.</p>",
+      "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
+      "description": "<p>Aliado adjacente recupera 1d6 HP.</p>",
       "tactical": {
         "alcanceHex": {
           "value": 1,
@@ -442,7 +461,8 @@
     "type": "habilidade",
     "system": {
       "catalogId": "HAB-forma-selvagem",
-      "description": "<p>Prepara transformação (movimento).</p>",
+      "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
+      "description": "<p>Prepara transformação biomágica (2 PA; Mestre valida a forma).</p>",
       "tactical": {
         "alcanceHex": {
           "value": 0,
@@ -455,7 +475,7 @@
       },
       "ability": {
         "tipo": "ativa",
-        "recarga": "1/turno"
+        "recarga": ""
       }
     }
   },
@@ -465,7 +485,8 @@
     "type": "habilidade",
     "system": {
       "catalogId": "HAB-raizes-prendentes",
-      "description": "<p>Restringe alvo 1 turno.</p>",
+      "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
+      "description": "<p>Restringe alvo 1 turno (save FOR); raízes no hex do alvo.</p>",
       "tactical": {
         "alcanceHex": {
           "value": 4,
@@ -488,7 +509,8 @@
     "type": "habilidade",
     "system": {
       "catalogId": "HAB-disparo-de-artilheiro",
-      "description": "<p>Projétil 2d8.</p>",
+      "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
+      "description": "<p>Projétil concentrado: 2d8 de dano à distância.</p>",
       "tactical": {
         "alcanceHex": {
           "value": 6,
@@ -511,7 +533,8 @@
     "type": "habilidade",
     "system": {
       "catalogId": "HAB-barreira-de-cobre",
-      "description": "<p>+2 defesa contra magia.</p>",
+      "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
+      "description": "<p>+2 defesa contra efeitos mágicos até seu próximo turno.</p>",
       "tactical": {
         "alcanceHex": {
           "value": 0,

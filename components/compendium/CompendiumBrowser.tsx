@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import type { UserRole } from "@/lib/auth/types";
 import type { CompendiumEntry, CompendiumPackId, CompendiumPackMeta } from "@/lib/compendium/types";
-import { entrySummary, stripHtml } from "@/lib/compendium/format";
+import { entryBookRef, entrySummary, stripHtml } from "@/lib/compendium/format";
 import "./compendium.css";
 
 type Props = {
@@ -231,11 +231,19 @@ function CompendiumDetail({
 }) {
   const tags = entrySummary(entry.system, entry.type);
   const html = String(entry.system.description ?? "");
+  const { catalogId, bookRef } = entryBookRef(entry.system);
 
   return (
     <article className={`comp-detail comp-detail--${layout}`}>
       <p className="eyebrow">Detalhe</p>
       <h3>{entry.name}</h3>
+      {catalogId || bookRef ? (
+        <p className="comp-detail-ref" style={{ fontSize: "0.78rem", color: "var(--text-dim)", margin: "0 0 0.65rem" }}>
+          {catalogId ? <code>{catalogId}</code> : null}
+          {catalogId && bookRef ? " · " : null}
+          {bookRef ? <em>{bookRef}</em> : null}
+        </p>
+      ) : null}
       <div className="comp-tags" style={{ marginBottom: "1rem" }}>
         <span className="comp-tag">{entry.type}</span>
         {tags.map((t) => (
