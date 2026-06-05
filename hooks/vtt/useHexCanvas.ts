@@ -21,7 +21,10 @@ import {
   prepareBattlefieldCanvas,
 } from "@/lib/vtt/draw-battlefield";
 import { drawDungeonLayer } from "@/lib/vtt/draw-dungeon-layer";
+import { drawMapMarkupLayer } from "@/lib/vtt/draw-map-markup";
 import { drawFogLayer, drawMapImageLayer, drawPingLayer } from "@/lib/vtt/draw-map-overlay";
+import { pruneMapMarkups } from "@/lib/vtt/map-markup";
+import type { MapMarkup } from "@/lib/vtt/types";
 import type { BattlePing } from "@/lib/vtt/types";
 import type { TokenFlashKind } from "@/lib/vtt/draw-battlefield";
 import { isTargetMode, type TokenActionMode } from "@/lib/vtt/action-mode";
@@ -65,6 +68,9 @@ export type HexCanvasDrawState = {
   dungeonEditorActive?: boolean;
   dungeonEditorTool?: "wall" | "object" | null;
   selectedDungeonObjectId?: string | null;
+  mapMarkups?: MapMarkup[];
+  markupPreview?: MapMarkup | null;
+  selectedMarkupId?: string | null;
 };
 
 export type TokenMoveAnimRef = RefObject<{
@@ -99,6 +105,8 @@ export function useHexCanvas(
       s.turnMovePreview ||
       (s.pathCells?.length ?? 0) >= 2 ||
       (s.pings?.length ?? 0) > 0 ||
+      (pruneMapMarkups(s.mapMarkups ?? []).length ?? 0) > 0 ||
+      Boolean(s.markupPreview) ||
       (s.tokenCastFx?.length ?? 0) > 0
     );
   }, []);
@@ -162,6 +170,14 @@ export function useHexCanvas(
     });
 
     drawFogLayer(ctx, s.gridCells, s.scene, s.scene.hexSize, layout, s.visibleHexSet);
+
+    const markups = pruneMapMarkups(s.mapMarkups ?? s.scene.mapMarkups ?? []);
+    if (markups.length > 0 || s.markupPreview) {
+      drawMapMarkupLayer(ctx, markups, {
+        preview: s.markupPreview ?? null,
+        selectedId: s.selectedMarkupId ?? null,
+      });
+    }
 
     const moveAnim = moveAnimRef?.current;
     const tokenPositionOverride = moveAnim
@@ -234,6 +250,9 @@ export function useHexCanvas(
     state.attackableIds,
     state.pathCells,
     state.pings,
+    state.mapMarkups,
+    state.markupPreview,
+    state.selectedMarkupId,
     state.tokenCastFx,
     needsCanvasAnimation,
   ]);

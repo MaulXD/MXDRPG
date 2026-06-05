@@ -474,6 +474,136 @@
   z-index: 50;
 }
 
+/* Lousa do mapa */
+.whiteboard-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  padding: 0.5rem 0.25rem 0.75rem;
+}
+
+.whiteboard-panel__lead {
+  margin: 0;
+  font-size: 0.78rem;
+  line-height: 1.4;
+}
+
+.whiteboard-panel__toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.82rem;
+  color: var(--mesa-text);
+  cursor: pointer;
+}
+
+.whiteboard-panel__section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.whiteboard-panel__label {
+  font-family: var(--font-display, Georgia), serif;
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--mesa-text-dim);
+}
+
+.whiteboard-panel__tools {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.3rem;
+}
+
+.whiteboard-panel__tool {
+  padding: 0.35rem 0.2rem;
+  font-size: 0.68rem;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(0, 0, 0, 0.2);
+  color: var(--mesa-text-dim);
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+}
+
+.whiteboard-panel__tool:hover {
+  color: var(--mesa-text);
+  border-color: var(--mesa-accent-border);
+}
+
+.whiteboard-panel__tool--active {
+  color: var(--mesa-accent);
+  border-color: var(--mesa-accent-border);
+  background: var(--mesa-accent-soft);
+}
+
+.whiteboard-panel__colors {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.whiteboard-panel__swatch {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  padding: 0;
+}
+
+.whiteboard-panel__swatch--active {
+  border-color: var(--mesa-accent);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.4);
+}
+
+.whiteboard-panel__widths,
+.whiteboard-panel__durability {
+  display: flex;
+  gap: 0.35rem;
+}
+
+.whiteboard-panel__width,
+.whiteboard-panel__dur-btn {
+  flex: 1;
+  padding: 0.35rem 0.4rem;
+  font-size: 0.72rem;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(0, 0, 0, 0.2);
+  color: var(--mesa-text-dim);
+  cursor: pointer;
+}
+
+.whiteboard-panel__width--active,
+.whiteboard-panel__dur-btn--active {
+  color: var(--mesa-accent);
+  border-color: var(--mesa-accent-border);
+  background: var(--mesa-accent-soft);
+}
+
+.whiteboard-panel__stats {
+  margin: 0;
+  font-size: 0.75rem;
+}
+
+.whiteboard-panel__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.whiteboard-panel__msg {
+  margin: 0;
+  color: var(--mesa-accent);
+}
+
+.foundry-dock-panel--whiteboard .foundry-dock-panel__head {
+  border-bottom-color: rgba(122, 163, 201, 0.25);
+}
+
 @media (max-width: 768px) {
   .foundry-icon-bar {
     width: 60px;

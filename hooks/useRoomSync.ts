@@ -519,6 +519,7 @@ export type ScenePatchBody = {
   fogEnabled?: boolean;
   revealedHexes?: string[];
   dungeonObjects?: DungeonObject[];
+  mapMarkups?: import("@/lib/vtt/types").MapMarkup[];
 };
 
 export type RoomSettingsPatchBody = {

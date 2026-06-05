@@ -22,6 +22,7 @@ import {
   validateTalentChoice,
   type CharacterTalent,
 } from "@/lib/character/subclass-tracks";
+import { applyPerLevelBonuses, perLevelGainLines } from "@/lib/character/per-level-gains";
 import { syncSubclassTalentsToInventory } from "@/lib/character/subclass-vtt";
 import {
   canAdvanceLevel,
@@ -162,14 +163,15 @@ export function previewLevelUp(actor: CharacterSheet, choices?: LevelUpChoices):
 
   const oldPa = paMaxFor(actor.identity.nivel, actor.resources.pontosAcao.max);
   const newPa = paMaxFor(next, actor.resources.pontosAcao.max);
-  if (newPa > oldPa) lines.push(`+1 PA máximo (${newPa})`);
+  if (newPa > oldPa) lines.push(`PA por turno: ${newPa}`);
 
   for (const f of classLevelFeatures(actor.identity.classe, next)) {
     lines.push(f);
   }
 
-  const racial = racialMilestone(actor.identity.raca, next, actor.identity.linhagem);
-  if (racial) lines.push(`Marco racial: ${racial}`);
+  for (const line of perLevelGainLines(actor, next)) {
+    if (!lines.includes(line)) lines.push(line);
+  }
 
   const sub = choices?.subclasse ?? actor.identity.subclasse;
   const track = getSubclassTrack(sub);
@@ -260,5 +262,5 @@ export function applyLevelUp(actor: CharacterSheet, choices: LevelUpChoices = {}
     },
   };
 
-  return syncSubclassTalentsToInventory(leveled);
+  return syncSubclassTalentsToInventory(applyPerLevelBonuses(leveled, nivel));
 }

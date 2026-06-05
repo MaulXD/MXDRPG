@@ -6,6 +6,7 @@ export type MesaWindowId =
   | "actors"
   | "gm"
   | "dungeon"
+  | "whiteboard"
   | "tokens"
   | "initiative"
   | "chat"
@@ -24,6 +25,7 @@ export const FOUNDRY_DOCK_PANEL_IDS: MesaWindowId[] = [
   "spawn",
   "gm",
   "dungeon",
+  "whiteboard",
 ];
 
 export type FoundryWindowLayout = {
@@ -42,6 +44,7 @@ const DEFAULT_LAYOUTS: Record<MesaWindowId, Omit<FoundryWindowLayout, "open" | "
   actors: { x: 52, y: 48, width: 280, height: 440 },
   gm: { x: 52, y: 48, width: 300, height: 480 },
   dungeon: { x: 52, y: 48, width: 300, height: 520 },
+  whiteboard: { x: 52, y: 48, width: 280, height: 480 },
   tokens: { x: 52, y: 48, width: 300, height: 480 },
   initiative: { x: 52, y: 500, width: 280, height: 360 },
   chat: { x: 52, y: 48, width: 340, height: 340 },

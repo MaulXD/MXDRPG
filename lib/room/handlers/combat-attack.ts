@@ -1,4 +1,6 @@
 ﻿import {
+  attackerAfterAttack,
+  buildAttackModifiers,
   formatAttackChatDetail,
   listTokenCombatActions,
   resolveCombatAction,
@@ -186,12 +188,20 @@ export async function executeRoomAttack(
   const finalAttackerHp =
     last.attackerHpAfter ?? attacker.vida ?? null;
   const spentAttacker = markActionRechargeUsed(applyPaSpend(attacker, paCost), action, room.combat.round);
+  const built = buildAttackModifiers(attacker, defender, action);
+  const buffCleanup = attackerAfterAttack(
+    attacker,
+    action,
+    built.consumeAttackerMark,
+    built.consumeDefenderFinta,
+    last.hit
+  );
 
   room.scene = {
     ...room.scene,
     tokens: room.scene.tokens.map((t) => {
       if (t.id === attackerTokenId) {
-        const patch: typeof t = { ...t, ...spentAttacker, id: t.id };
+        const patch: typeof t = { ...t, ...spentAttacker, ...buffCleanup, id: t.id };
         if (finalAttackerHp != null && t.vidaMax != null) patch.vida = finalAttackerHp;
         return patch;
       }
