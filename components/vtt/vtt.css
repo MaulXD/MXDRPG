@@ -2760,6 +2760,59 @@
   border-radius: 8px;
   border: 1px solid rgba(201, 169, 98, 0.28);
   background: rgba(8, 10, 14, 0.5);
+  scroll-margin-top: 1rem;
+}
+
+.vtt-dungeon-panel--open {
+  border-color: rgba(201, 169, 98, 0.55);
+  box-shadow: 0 0 0 1px rgba(201, 169, 98, 0.15);
+}
+
+.vtt-dungeon-floor-pointer {
+  margin: 0;
+  padding: 0.45rem 0.55rem;
+  border-radius: 6px;
+  font-size: 0.68rem;
+  line-height: 1.4;
+  color: rgba(232, 226, 214, 0.82);
+  background: rgba(201, 169, 98, 0.08);
+  border: 1px dashed rgba(201, 169, 98, 0.35);
+}
+
+.vtt-dungeon-floor-link {
+  font: inherit;
+  font-weight: 700;
+  color: #c9a962;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.vtt-dungeon-floor-link:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.vtt-dungeon-layer--floor {
+  padding: 0.55rem;
+  border-radius: 8px;
+  background: rgba(201, 169, 98, 0.06);
+  border: 1px solid rgba(201, 169, 98, 0.22);
+}
+
+.vtt-dungeon-floor-callout {
+  margin: 0;
+  font-size: 0.72rem;
+  line-height: 1.45;
+  color: rgba(232, 226, 214, 0.88);
+}
+
+.vtt-btn--floor-upload {
+  font-weight: 700;
+  border-color: rgba(201, 169, 98, 0.55) !important;
+  background: rgba(201, 169, 98, 0.18) !important;
 }
 
 .vtt-dungeon-panel-head {

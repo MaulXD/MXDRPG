@@ -26,6 +26,7 @@ type Props = {
   adventureId?: string;
   onSceneUpdated: (snap: RoomSnapshot) => void;
   dungeonLayer?: DungeonEditLayer;
+  dungeonModeOpen?: boolean;
   dungeonEditorActive?: boolean;
   dungeonTool?: DungeonEditorTool;
   selectedDungeonObjectId?: string | null;
@@ -48,6 +49,7 @@ export function GmMenuPanel({
   adventureId,
   onSceneUpdated,
   dungeonLayer = "floor",
+  dungeonModeOpen = false,
   dungeonEditorActive = false,
   dungeonTool = "wall",
   selectedDungeonObjectId = null,
@@ -66,7 +68,8 @@ export function GmMenuPanel({
       <h2 className="vtt-title">{scene.name}</h2>
       <p className="vtt-hint">
         Arraste tokens no mapa. <strong>Delete</strong> remove o token. <strong>🏰</strong> abre o
-        editor de masmorras (piso, paredes, objetos). Ctrl+clique revela névoa. Alt+clique: ping.
+        editor — aba <strong>1 · Piso</strong> para subir o fundo; <strong>2 · Objetos</strong> para
+        paredes. Ctrl+clique revela névoa. Alt+clique: ping.
       </p>
 
       <RoomSettingsPanel
@@ -93,9 +96,11 @@ export function GmMenuPanel({
 
       {canEditScene ? (
         <DungeonEditorPanel
+          id="vtt-dungeon-editor"
           roomId={roomId}
           scene={scene}
           layer={dungeonLayer}
+          modeOpen={dungeonModeOpen}
           active={dungeonEditorActive}
           tool={dungeonTool}
           selectedObjectId={selectedDungeonObjectId}

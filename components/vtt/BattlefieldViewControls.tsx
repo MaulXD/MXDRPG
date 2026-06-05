@@ -62,8 +62,8 @@ export function BattlefieldViewControls({
           type="button"
           className={`vtt-view-btn vtt-view-btn--dungeon${dungeonEditorActive ? " vtt-view-btn--dungeon-on" : ""}`}
           onClick={onToggleDungeonEditor}
-          title="Editor de masmorras — piso, paredes e objetos"
-          aria-label="Editor de masmorras"
+          title="Modo masmorra — abre o painel na aba Piso para subir o fundo; Objetos para paredes"
+          aria-label="Modo masmorra"
         >
           🏰
         </button>
