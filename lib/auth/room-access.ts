@@ -1,5 +1,8 @@
 import { canEditCharacter } from "@/lib/character/demo-characters";
-import { characterBelongsToAdventure } from "@/lib/character/adventure-bind";
+import {
+  characterBelongsToAdventure,
+  resolveAdventureId,
+} from "@/lib/character/adventure-bind";
 import type { CharacterSheet } from "@/lib/character/types";
 import type { SessionUser } from "@/lib/auth/types";
 import type { RoomState } from "@/lib/room/types";
@@ -116,16 +119,32 @@ export function canSpawnMonstersInRoom(
   return canManageRoom(room, user);
 }
 
+type RoomAuthContext = Pick<RoomState, "roomId"> & { adventureId?: string };
+
+/** Vínculo de aventura para checagem na mesa (preenche legado sem adventureId). */
+export function actorForRoomAuth(
+  room: RoomAuthContext,
+  actor: Pick<CharacterSheet, "id" | "ownerId" | "adventureId" | "campaignRoomId">
+): Pick<CharacterSheet, "id" | "ownerId" | "adventureId" | "campaignRoomId"> {
+  const roomAdventureId = room.adventureId ?? room.roomId;
+  return {
+    ...actor,
+    adventureId: resolveAdventureId(actor) ?? roomAdventureId,
+    campaignRoomId: actor.campaignRoomId ?? room.roomId,
+  };
+}
+
 /** Editar ficha na mesa (level-up, identidade, retrato) — alinhado a `canParticipateInRoom`. */
 export function canEditRoomActor(
-  room: Pick<RoomState, "roomId">,
+  room: RoomAuthContext,
   actor: Pick<CharacterSheet, "id" | "ownerId" | "adventureId" | "campaignRoomId">,
   user: SessionUser | null | undefined
 ): boolean {
   if (!canParticipateInRoom(room as RoomState, user)) return false;
-  const adventureId = (room as RoomState).adventureId ?? room.roomId;
-  if (!characterBelongsToAdventure(actor, adventureId)) return false;
-  if (user) return canEditCharacter(actor as CharacterSheet, user.id, user.role);
+  const adventureId = room.adventureId ?? room.roomId;
+  const authActor = actorForRoomAuth(room, actor);
+  if (!characterBelongsToAdventure(authActor, adventureId)) return false;
+  if (user) return canEditCharacter(authActor as CharacterSheet, user.id, user.role);
   return room.roomId === "demo" && actor.id === DEMO_PLAYABLE_ACTOR_ID;
 }
 

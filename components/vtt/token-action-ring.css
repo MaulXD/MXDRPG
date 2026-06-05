@@ -1,0 +1,109 @@
+.token-action-ring-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 240;
+  background: transparent;
+}
+
+.token-action-ring {
+  position: fixed;
+  width: 0;
+  height: 0;
+  z-index: 241;
+  pointer-events: none;
+}
+
+.token-action-ring__center,
+.token-action-ring__slot {
+  pointer-events: auto;
+}
+
+.token-action-ring__center {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform: translate(-50%, -50%);
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  border: 2px solid var(--accent);
+  background: rgba(12, 10, 8, 0.94);
+  color: var(--text);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.1rem;
+  padding: 0.35rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+}
+
+.token-action-ring__center:hover {
+  background: rgba(201, 169, 98, 0.15);
+}
+
+.token-action-ring__center-name {
+  font-family: var(--font-display);
+  font-size: 0.62rem;
+  font-weight: 700;
+  line-height: 1.1;
+  text-align: center;
+  max-width: 64px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.token-action-ring__center-hint {
+  font-size: 0.58rem;
+  color: var(--accent-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.token-action-ring__slot {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 1px solid var(--glass-border-bright);
+  background: rgba(18, 16, 14, 0.92);
+  color: var(--text);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.05rem;
+  padding: 0.2rem;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+  transition:
+    transform 0.12s var(--ease-out),
+    border-color 0.12s,
+    background 0.12s;
+}
+
+.token-action-ring__slot:hover:not(:disabled) {
+  border-color: var(--accent);
+  background: rgba(201, 169, 98, 0.18);
+  z-index: 2;
+}
+
+.token-action-ring__slot:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.token-action-ring__glyph {
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+.token-action-ring__label {
+  font-size: 0.52rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  line-height: 1;
+}

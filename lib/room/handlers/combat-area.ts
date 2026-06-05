@@ -8,6 +8,7 @@ import type { Axial } from "@/lib/vtt/hex-math";
 import type { ChatMessage } from "../chat";
 import { activeTokenId } from "../combat";
 import { getRoom, persistRoom, toSnapshot } from "../internal/registry";
+import { syncCombatOrderWithTokens } from "../combat-order";
 import { appendDefeatChatMessage, shouldAnnounceDefeat } from "../combat-chat-events";
 import { appendRoomChatMessage } from "./chat";
 import type { AttackExecuteResult } from "./combat-attack";
@@ -203,5 +204,6 @@ export async function executeRoomAreaSpell(
     });
   }
 
+  syncCombatOrderWithTokens(room);
   return { ok: true, snapshot: toSnapshot(await persistRoom(roomId, room)) };
 }

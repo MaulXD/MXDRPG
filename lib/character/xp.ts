@@ -43,3 +43,12 @@ export function formatXpProgress(level: number, xpTotal: number): string {
   const next = xpTotalForLevel(level + 1);
   return `${xpTotal} / ${next} XP`;
 }
+
+/** 0–1 para barra de XP no nível atual */
+export function xpProgressRatio(level: number, xpTotal: number): number {
+  if (level >= MAX_LEVEL) return 1;
+  const prev = xpTotalForLevel(level);
+  const next = xpTotalForLevel(level + 1);
+  if (next <= prev) return 0;
+  return Math.min(1, Math.max(0, (xpTotal - prev) / (next - prev)));
+}

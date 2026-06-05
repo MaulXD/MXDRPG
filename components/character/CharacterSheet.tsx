@@ -20,7 +20,18 @@ import { LevelUpWizard } from "@/components/character/LevelUpWizard";
 import { SubclassTrackPanel } from "@/components/character/SubclassTrackPanel";
 import { CombatLoadoutPanel } from "@/components/character/CombatLoadoutPanel";
 import { LootEconomyPanel } from "@/components/character/LootEconomyPanel";
+import { CharacterSheetPopupHero } from "@/components/character/CharacterSheetPopupHero";
+import {
+  ATTRIBUTE_LABELS,
+  attributeMod,
+  CULINARY_LABELS,
+  proficiencyBonus,
+  type AttributeKey,
+  type CulinaryKey,
+} from "@/lib/character/rules";
+import { portraitFocusToImgStyle, sanitizePortraitFocus } from "@/lib/media/portrait-focus";
 import "./sheet.css";
+import "./sheet-popup.css";
 
 type Tab = "inventário" | "tesouro" | "habilidades" | "magias";
 
@@ -30,6 +41,8 @@ type Props = {
   compendium: Record<CompendiumPackId, CompendiumEntry[]>;
   roomId?: string;
   embedded?: boolean;
+  /** Pop-up na mesa (layout estilo VTT) vs página inteira */
+  variant?: "page" | "popup";
 };
 
 const PLAYER_PACKS: CompendiumPackId[] = ["armas", "habilidades", "magias", "equipamentos"];
@@ -47,6 +60,7 @@ export function CharacterSheet({
   compendium,
   roomId = "demo",
   embedded = false,
+  variant = "page",
 }: Props) {
   const [tab, setTab] = useState<Tab>("inventário");
   const [inventory, setInventory] = useState<InventoryItem[]>(character.inventory);
@@ -113,27 +127,260 @@ export function CharacterSheet({
   }
 
   const { identity, resources, movement, tactical } = live;
+  const isPopup = variant === "popup";
+  const hpPct =
+    resources.vida.max > 0
+      ? Math.round((resources.vida.value / resources.vida.max) * 100)
+      : 0;
+  const paPct =
+    resources.pontosAcao.max > 0
+      ? Math.round((resources.pontosAcao.value / resources.pontosAcao.max) * 100)
+      : 0;
+  const prof = proficiencyBonus(identity.nivel);
+  const portraitFocus = sanitizePortraitFocus(live.portraitFocus);
 
-  return (
-    <div className={`sheet-shell ${embedded ? "sheet-embedded" : ""}`}>
-      <CharacterSheetCover
-        name={live.name}
-        identity={identity}
-        portraitUrl={live.portraitUrl}
-        portraitFocus={live.portraitFocus}
-      />
+  const tabPanel = (
+    <>
+      <div className="sheet-tabs">
+        <button
+          type="button"
+          className={`sheet-tab ${tab === "inventário" ? "active" : ""}`}
+          onClick={() => setTab("inventário")}
+        >
+          Inventário
+        </button>
+        <button
+          type="button"
+          className={`sheet-tab ${tab === "tesouro" ? "active" : ""}`}
+          onClick={() => setTab("tesouro")}
+        >
+          Tesouro
+        </button>
+        <button
+          type="button"
+          className={`sheet-tab ${tab === "habilidades" ? "active" : ""}`}
+          onClick={() => setTab("habilidades")}
+        >
+          Habilidades
+        </button>
+        <button
+          type="button"
+          className={`sheet-tab ${tab === "magias" ? "active" : ""}`}
+          onClick={() => setTab("magias")}
+        >
+          Magias
+        </button>
+      </div>
 
-      <aside className="sheet-sidebar glass">
+      <div className="sheet-toolbar">
+        <h2 style={{ margin: 0, fontSize: "1.1rem", fontFamily: "var(--font-display)" }}>
+          {tab === "inventário"
+            ? "Inventário"
+            : tab === "tesouro"
+              ? "Tesouro e riquezas"
+              : tab === "habilidades"
+                ? "Habilidades"
+                : "Magias"}
+        </h2>
+        {canEdit && tab !== "tesouro" ? (
+          <button type="button" className="btn" onClick={() => setPickerOpen(true)}>
+            + Compêndio
+          </button>
+        ) : null}
+      </div>
+
+      {tab === "tesouro" ? (
+        <LootEconomyPanel
+          characterId={character.id}
+          seed={live.lootEconomy ?? character.lootEconomy}
+          canEdit={canEdit}
+        />
+      ) : filtered.length === 0 ? (
+        <div className="inv-empty">
+          {tab === "inventário"
+            ? "Nenhum item no inventário."
+            : tab === "habilidades"
+              ? "Nenhuma habilidade — use + Compêndio ou suba de nível na trilha de subclasse."
+              : "Nenhuma magia preparada — adicione pelo compêndio."}
+          {canEdit ? " Use + Compêndio para adicionar." : null}
+        </div>
+      ) : (
+        <ul className="inv-list">
+          {filtered.map(({ ref, entry }) => (
+            <InventoryRow
+              key={ref.instanceId}
+              entry={entry}
+              quantity={ref.quantity}
+              canEdit={canEdit}
+              onRemove={() => removeItem(ref.instanceId)}
+            />
+          ))}
+        </ul>
+      )}
+    </>
+  );
+
+  const sidebarTools = (
+    <>
+      {inRoom ? (
+        <div className={isPopup ? "sheet-popup-live" : "sheet-live"}>
+          <span className="sheet-live-dot" aria-hidden />
+          Sync mesa · rev {snapshot?.revision ?? 0}
+        </div>
+      ) : null}
+
+      {!isPopup ? (
+        <p className="sheet-meta" style={{ fontSize: "0.8rem", color: "var(--text-muted)", marginTop: 0 }}>
+          {formatXpProgress(identity.nivel, identity.xpTotal ?? 0)}
+        </p>
+      ) : null}
+
+      {canEdit ? (
+        <LevelUpWizard
+          actor={live}
+          roomId={roomId}
+          canEdit={canEdit}
+          onDone={refresh}
+          onApplied={(patch) => {
+            if (!snapshot) return;
+            applySnapshot({
+              ...snapshot,
+              actors: { ...snapshot.actors, [patch.actor.id]: patch.actor },
+              scene: patch.scene,
+              revision: patch.revision,
+            });
+          }}
+        />
+      ) : null}
+
+      {canEdit && inRoom && !isPopup ? (
+        <PortraitFields
+          roomId={roomId}
+          actorId={character.id}
+          portraitUrl={live.portraitUrl}
+          portraitFocus={live.portraitFocus}
+          tokenImageUrl={live.tokenImageUrl}
+          canEdit={canEdit}
+          onSaved={refresh}
+        />
+      ) : null}
+
+      {isPopup && canEdit && inRoom ? (
+        <Link
+          href={`/personagem/${character.id}`}
+          className="btn btn-ghost"
+          style={{ width: "100%", fontSize: "0.8rem" }}
+        >
+          Editar retrato e identidade ↗
+        </Link>
+      ) : null}
+
+      {canEdit && !inRoom ? (
+        <CharacterPortraitFields
+          characterId={character.id}
+          portraitUrl={live.portraitUrl ?? character.portraitUrl}
+          portraitFocus={live.portraitFocus ?? character.portraitFocus}
+          tokenImageUrl={live.tokenImageUrl ?? character.tokenImageUrl}
+          canEdit={canEdit}
+        />
+      ) : null}
+
+      {!isPopup && identity.talentos && identity.talentos.length > 0 ? (
+        <ul className="sheet-rules-notes" style={{ marginBottom: "0.75rem" }}>
+          {identity.talentos.map((t) => (
+            <li key={`${t.level}-${t.id}`}>
+              Nv {t.level}: {t.name}
+            </li>
+          ))}
+        </ul>
+      ) : null}
+
+      <SubclassTrackPanel actor={live} popup={isPopup} />
+
+      {inRoom ? (
+        <CombatLoadoutPanel
+          actor={live}
+          roomId={roomId}
+          canEdit={canEdit}
+          onSaved={refresh}
+        />
+      ) : null}
+
+      {canEdit && inRoom ? (
+        <CharacterIdentityEditor
+          actor={live}
+          roomId={roomId}
+          canEdit={canEdit}
+          onSaved={refresh}
+        />
+      ) : null}
+
+      {!isPopup ? (
+        <>
+          <CharacterStatsGrid actor={live} />
+          <div className="sheet-stat-grid">
+            <div className="sheet-stat">
+              <label>Vida</label>
+              <strong>
+                {resources.vida.value}/{resources.vida.max}
+              </strong>
+            </div>
+            <div className="sheet-stat">
+              <label>PA</label>
+              <strong>
+                {resources.pontosAcao.value}/{resources.pontosAcao.max}
+              </strong>
+            </div>
+            <div className="sheet-stat">
+              <label>Defesa</label>
+              <strong>{tactical.defesa}</strong>
+            </div>
+            <div className="sheet-stat">
+              <label>Movimento</label>
+              <strong>
+                {movement.walk}/{movement.run}
+              </strong>
+            </div>
+          </div>
+        </>
+      ) : null}
+
+      {!embedded && !isPopup ? (
+        <Link href={`/mesa/${roomId}`} className="btn btn-ghost" style={{ width: "100%", marginBottom: "0.75rem" }}>
+          Ver na mesa
+        </Link>
+      ) : null}
+
+      {character.biography ? (
+        <p style={{ fontSize: "0.82rem", color: "var(--text-muted)", lineHeight: 1.55 }}>
+          {character.biography}
+        </p>
+      ) : null}
+    </>
+  );
+
+  const culinaryKeys = Object.keys(CULINARY_LABELS) as CulinaryKey[];
+
+  if (isPopup) {
+    const popupRightAside = (
+      <>
         {inRoom ? (
-          <div className="sheet-live">
+          <div className="sheet-popup-live">
             <span className="sheet-live-dot" aria-hidden />
             Sync mesa · rev {snapshot?.revision ?? 0}
           </div>
         ) : null}
 
-        <p className="sheet-meta" style={{ fontSize: "0.8rem", color: "var(--text-muted)", marginTop: 0 }}>
-          {formatXpProgress(identity.nivel, identity.xpTotal ?? 0)}
-        </p>
+        <div className="sheet-popup-pills">
+          {identity.raca ? <span className="sheet-popup-pill">{identity.raca}</span> : null}
+          {identity.classe ? <span className="sheet-popup-pill">{identity.classe}</span> : null}
+          {identity.subclasse ? (
+            <span className="sheet-popup-pill sheet-popup-pill--accent">{identity.subclasse}</span>
+          ) : null}
+          {identity.antecedente ? (
+            <span className="sheet-popup-pill">{identity.antecedente}</span>
+          ) : null}
+        </div>
 
         {canEdit ? (
           <LevelUpWizard
@@ -154,38 +401,16 @@ export function CharacterSheet({
         ) : null}
 
         {canEdit && inRoom ? (
-          <PortraitFields
-            roomId={roomId}
-            actorId={character.id}
-            portraitUrl={live.portraitUrl}
-            portraitFocus={live.portraitFocus}
-            tokenImageUrl={live.tokenImageUrl}
-            canEdit={canEdit}
-            onSaved={refresh}
-          />
+          <Link
+            href={`/personagem/${character.id}`}
+            className="btn btn-ghost"
+            style={{ width: "100%", fontSize: "0.78rem" }}
+          >
+            Editar retrato e identidade ↗
+          </Link>
         ) : null}
 
-        {canEdit && !inRoom ? (
-          <CharacterPortraitFields
-            characterId={character.id}
-            portraitUrl={live.portraitUrl ?? character.portraitUrl}
-            portraitFocus={live.portraitFocus ?? character.portraitFocus}
-            tokenImageUrl={live.tokenImageUrl ?? character.tokenImageUrl}
-            canEdit={canEdit}
-          />
-        ) : null}
-
-        {identity.talentos && identity.talentos.length > 0 ? (
-          <ul className="sheet-rules-notes" style={{ marginBottom: "0.75rem" }}>
-            {identity.talentos.map((t) => (
-              <li key={`${t.level}-${t.id}`}>
-                Nv {t.level}: {t.name}
-              </li>
-            ))}
-          </ul>
-        ) : null}
-
-        <SubclassTrackPanel actor={live} />
+        <SubclassTrackPanel actor={live} popup />
 
         {inRoom ? (
           <CombatLoadoutPanel
@@ -204,125 +429,143 @@ export function CharacterSheet({
             onSaved={refresh}
           />
         ) : null}
+      </>
+    );
 
-        <CharacterStatsGrid actor={live} />
+    return (
+      <div className="sheet-shell sheet-shell--popup">
+        <CharacterSheetPopupHero
+          name={live.name}
+          identity={identity}
+          portraitUrl={live.portraitUrl}
+          portraitFocus={live.portraitFocus}
+        />
 
-        <div className="sheet-stat-grid">
-          <div className="sheet-stat">
-            <label>Vida</label>
-            <strong>
-              {resources.vida.value}/{resources.vida.max}
-            </strong>
-          </div>
-          <div className="sheet-stat">
-            <label>PA</label>
-            <strong>
-              {resources.pontosAcao.value}/{resources.pontosAcao.max}
-            </strong>
-          </div>
-          <div className="sheet-stat">
-            <label>Defesa</label>
-            <strong>{tactical.defesa}</strong>
-          </div>
-          <div className="sheet-stat">
-            <label>Movimento</label>
-            <strong>
-              {movement.walk}/{movement.run}
-            </strong>
-          </div>
+        <div className="sheet-popup-attrs">
+          {(Object.keys(ATTRIBUTE_LABELS) as AttributeKey[]).map((k) => (
+            <div className="sheet-popup-attr" key={k}>
+              <label>{ATTRIBUTE_LABELS[k]}</label>
+              <strong>
+                {attributeMod(live.attributes[k]) >= 0 ? "+" : ""}
+                {attributeMod(live.attributes[k])}
+              </strong>
+              <span>{live.attributes[k]}</span>
+            </div>
+          ))}
         </div>
 
-        {!embedded ? (
-          <Link href={`/mesa/${roomId}`} className="btn btn-ghost" style={{ width: "100%", marginBottom: "0.75rem" }}>
-            Ver na mesa
-          </Link>
-        ) : null}
+        <div className="sheet-popup-body">
+          <aside className="sheet-popup-left">
+            <div className="sheet-popup-portrait">
+              {live.portraitUrl ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={live.portraitUrl}
+                  alt=""
+                  style={portraitFocus ? portraitFocusToImgStyle(portraitFocus) : undefined}
+                />
+              ) : (
+                <span className="sheet-popup-portrait__fallback">
+                  {live.name.trim().slice(0, 2).toUpperCase() || "?"}
+                </span>
+              )}
+            </div>
 
-        {character.biography ? (
-          <p style={{ fontSize: "0.82rem", color: "var(--text-muted)", lineHeight: 1.55 }}>
-            {character.biography}
-          </p>
-        ) : null}
-      </aside>
+            <div className="sheet-popup-diamond" aria-label="Combate">
+              <span className="sheet-popup-diamond__top">
+                <em>Defesa</em>
+                <strong>{tactical.defesa}</strong>
+              </span>
+              <span className="sheet-popup-diamond__left">
+                <em>Inic.</em>
+                <strong>
+                  {tactical.iniciativa >= 0 ? "+" : ""}
+                  {tactical.iniciativa}
+                </strong>
+              </span>
+              <span className="sheet-popup-diamond__right">
+                <em>Mov.</em>
+                <strong>
+                  {movement.walk}/{movement.run}
+                </strong>
+              </span>
+              <span className="sheet-popup-diamond__bottom">
+                <em>Prof.</em>
+                <strong>+{prof}</strong>
+              </span>
+            </div>
 
-      <section className="sheet-panel glass sheet-main">
-        <div className="sheet-tabs">
-          <button
-            type="button"
-            className={`sheet-tab ${tab === "inventário" ? "active" : ""}`}
-            onClick={() => setTab("inventário")}
-          >
-            Inventário
-          </button>
-          <button
-            type="button"
-            className={`sheet-tab ${tab === "tesouro" ? "active" : ""}`}
-            onClick={() => setTab("tesouro")}
-          >
-            Tesouro
-          </button>
-          <button
-            type="button"
-            className={`sheet-tab ${tab === "habilidades" ? "active" : ""}`}
-            onClick={() => setTab("habilidades")}
-          >
-            Habilidades
-          </button>
-          <button
-            type="button"
-            className={`sheet-tab ${tab === "magias" ? "active" : ""}`}
-            onClick={() => setTab("magias")}
-          >
-            Magias
-          </button>
+            <div className="sheet-popup-resource">
+              <div className="sheet-popup-resource__head">
+                <span>Vida</span>
+                <strong>
+                  {resources.vida.value}/{resources.vida.max}
+                </strong>
+              </div>
+              <div className="sheet-popup-bar">
+                <span className="sheet-popup-bar-fill--hp" style={{ width: `${hpPct}%` }} />
+              </div>
+            </div>
+
+            <div className="sheet-popup-resource">
+              <div className="sheet-popup-resource__head">
+                <span>Pontos de ação</span>
+                <strong>
+                  {resources.pontosAcao.value}/{resources.pontosAcao.max}
+                </strong>
+              </div>
+              <div className="sheet-popup-bar">
+                <span className="sheet-popup-bar-fill--pa" style={{ width: `${paPct}%` }} />
+              </div>
+            </div>
+          </aside>
+
+          <section className="sheet-popup-center sheet-panel">
+            <h3 className="sheet-popup-section-title">Culinária</h3>
+            <ul className="sheet-popup-skill-list">
+              {culinaryKeys.map((k) => (
+                <li className="sheet-popup-skill" key={k}>
+                  <span className="sheet-popup-skill__abbr">CUL</span>
+                  <span className="sheet-popup-skill__name">{CULINARY_LABELS[k]}</span>
+                  <span className="sheet-popup-skill__bonus">
+                    {live.culinary[k] >= 0 ? "+" : ""}
+                    {live.culinary[k]}
+                  </span>
+                </li>
+              ))}
+            </ul>
+            {tabPanel}
+          </section>
+
+          <aside className="sheet-popup-right">{popupRightAside}</aside>
         </div>
 
-        <div className="sheet-toolbar">
-          <h2 style={{ margin: 0, fontSize: "1.1rem", fontFamily: "var(--font-display)" }}>
-            {tab === "inventário"
-              ? "Inventário"
-              : tab === "tesouro"
-                ? "Tesouro e riquezas"
-                : tab === "habilidades"
-                  ? "Habilidades"
-                  : "Magias"}
-          </h2>
-          {canEdit && tab !== "tesouro" ? (
-            <button type="button" className="btn" onClick={() => setPickerOpen(true)}>
-              + Compêndio
-            </button>
-          ) : null}
-        </div>
-
-        {tab === "tesouro" ? (
-          <LootEconomyPanel
-            characterId={character.id}
-            seed={live.lootEconomy ?? character.lootEconomy}
-            canEdit={canEdit}
+        {pickerOpen ? (
+          <CompendiumPicker
+            pack={pickerPack}
+            packs={PLAYER_PACKS}
+            compendium={compendium}
+            onPickPack={setPickerPack}
+            onPick={addFromCompendium}
+            onClose={() => setPickerOpen(false)}
           />
-        ) : filtered.length === 0 ? (
-          <div className="inv-empty">
-            {tab === "inventário"
-              ? "Nenhum item no inventário."
-              : tab === "habilidades"
-                ? "Nenhuma habilidade — use + Compêndio ou suba de nível na trilha de subclasse."
-                : "Nenhuma magia preparada — adicione pelo compêndio."}
-            {canEdit ? " Use + Compêndio para adicionar." : null}
-          </div>
-        ) : (
-          <ul className="inv-list">
-            {filtered.map(({ ref, entry }) => (
-              <InventoryRow
-                key={ref.instanceId}
-                entry={entry}
-                quantity={ref.quantity}
-                canEdit={canEdit}
-                onRemove={() => removeItem(ref.instanceId)}
-              />
-            ))}
-          </ul>
-        )}
-      </section>
+        ) : null}
+      </div>
+    );
+  }
+
+  return (
+    <div className={`sheet-shell ${embedded ? "sheet-embedded" : ""}`}>
+      <CharacterSheetCover
+        name={live.name}
+        identity={identity}
+        portraitUrl={live.portraitUrl}
+        portraitFocus={live.portraitFocus}
+      />
+
+      <aside className="sheet-sidebar glass">{sidebarTools}</aside>
+
+      <section className="sheet-panel glass sheet-main">{tabPanel}</section>
 
       {pickerOpen ? (
         <CompendiumPicker

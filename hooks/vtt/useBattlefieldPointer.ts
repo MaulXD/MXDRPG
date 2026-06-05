@@ -48,6 +48,9 @@ type Params = {
   onRevealHex?: (axial: Axial) => void;
   fogEnabled?: boolean;
   viewRef: RefObject<BattlefieldView>;
+  /** Clique direito no token da vez → action ring */
+  onActionRingRequest?: (token: BattleToken, clientX: number, clientY: number) => void;
+  canOpenActionRing?: (token: BattleToken) => boolean;
 };
 
 export function useBattlefieldPointer({
@@ -81,6 +84,8 @@ export function useBattlefieldPointer({
   onRevealHex,
   fogEnabled = false,
   viewRef,
+  onActionRingRequest,
+  canOpenActionRing,
 }: Params) {
   const clickStartRef = useRef<{ x: number; y: number } | null>(null);
   const gmDragRef = useRef<{
@@ -375,5 +380,27 @@ export function useBattlefieldPointer({
     onHoverTargetChange?.(null);
   }, [setHoverAxial, onHoverAxialChange, onHoverTargetChange]);
 
-  return { onPointerDown, onPointerMove, onPointerUp, onPointerLeave };
+  const onContextMenu = useCallback(
+    (e: React.MouseEvent<HTMLCanvasElement>) => {
+      const rect = canvasRef.current?.getBoundingClientRect();
+      if (!rect) return;
+      const px = e.clientX - rect.left;
+      const py = e.clientY - rect.top;
+      const hit = tokenAtPoint(px, py);
+      if (!hit || !canOpenActionRing?.(hit)) return;
+      e.preventDefault();
+      if (hit.id !== selectedId) setSelectedId(hit.id);
+      onActionRingRequest?.(hit, e.clientX, e.clientY);
+    },
+    [
+      canvasRef,
+      tokenAtPoint,
+      canOpenActionRing,
+      selectedId,
+      setSelectedId,
+      onActionRingRequest,
+    ]
+  );
+
+  return { onPointerDown, onPointerMove, onPointerUp, onPointerLeave, onContextMenu };
 }
