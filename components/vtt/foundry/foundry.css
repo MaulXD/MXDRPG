@@ -3,13 +3,26 @@
 .mesa-workspace--foundry {
   --mesa-rail-bg: linear-gradient(180deg, #121820 0%, #0c1018 100%);
   --mesa-dock-bg: #101620;
+  --mesa-stage-bg: #0a0e14;
+  --mesa-surface: #141a24;
+  --mesa-surface-inset: #0d121a;
   --mesa-accent: #7aa3c9;
   --mesa-accent-soft: rgba(122, 163, 201, 0.18);
   --mesa-accent-border: rgba(122, 163, 201, 0.38);
   --mesa-gm-accent: #c9927a;
   --mesa-gm-soft: rgba(160, 110, 90, 0.2);
-  --mesa-text-dim: rgba(200, 210, 224, 0.55);
-  --mesa-text: rgba(232, 236, 244, 0.92);
+  --mesa-text-dim: rgba(200, 210, 224, 0.62);
+  --mesa-text: rgba(232, 236, 244, 0.94);
+  /* Propaga tema ardósia/azul para componentes VTT legados */
+  --glass: rgba(16, 22, 32, 0.92);
+  --glass-strong: rgba(12, 18, 28, 0.96);
+  --glass-border: rgba(122, 163, 201, 0.22);
+  --glass-border-bright: rgba(122, 163, 201, 0.42);
+  --surface: var(--mesa-surface);
+  --surface-inset: var(--mesa-surface-inset);
+  --accent: var(--mesa-accent);
+  --accent-primary: var(--mesa-accent);
+  --text-muted: var(--mesa-text-dim);
 }
 
 .foundry-mesa {
@@ -21,7 +34,7 @@
   flex-direction: row;
   overflow: hidden;
   border-radius: var(--radius);
-  background: #0a0e14;
+  background: var(--mesa-stage-bg);
 }
 
 .foundry-sidebar {
@@ -39,7 +52,7 @@
 }
 
 .foundry-sidebar--dock-open .foundry-sidebar__dock {
-  width: min(268px, 34vw);
+  width: clamp(300px, 36vw, 420px);
 }
 
 .foundry-sidebar__dock {
@@ -104,20 +117,20 @@
 /* Barra de ícones */
 .foundry-icon-bar {
   flex-shrink: 0;
-  width: 68px;
+  width: clamp(80px, 7vw, 92px);
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  gap: 0.15rem;
-  padding: 0.45rem 0.28rem 0.6rem;
+  gap: 0.2rem;
+  padding: 0.55rem 0.35rem 0.75rem;
   background: rgba(8, 12, 18, 0.65);
 }
 
 .foundry-icon-bar__section-title {
-  margin: 0.1rem 0 0.2rem;
-  padding: 0 0.1rem;
+  margin: 0.15rem 0 0.25rem;
+  padding: 0 0.15rem;
   font-family: var(--font-display);
-  font-size: 0.48rem;
+  font-size: 0.58rem;
   font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -151,8 +164,8 @@
 
 .foundry-icon-bar__btn {
   width: 100%;
-  min-height: 48px;
-  padding: 0.28rem 0.15rem 0.32rem;
+  min-height: 58px;
+  padding: 0.35rem 0.2rem 0.38rem;
   border: 1px solid transparent;
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.03);
@@ -195,8 +208,8 @@
 }
 
 .foundry-icon-bar__icon {
-  width: 1.1rem;
-  height: 1.1rem;
+  width: 1.35rem;
+  height: 1.35rem;
   display: block;
   flex-shrink: 0;
   opacity: 0.9;
@@ -208,7 +221,7 @@
 
 .foundry-icon-bar__label {
   font-family: var(--font-display);
-  font-size: 0.5rem;
+  font-size: 0.62rem;
   font-weight: 600;
   line-height: 1.1;
   letter-spacing: 0.03em;
@@ -245,7 +258,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 0.5rem;
-  padding: 0.55rem 0.65rem;
+  padding: 0.7rem 0.85rem;
   background: var(--mesa-accent-soft);
   border-bottom: 1px solid var(--mesa-accent-border);
   flex-shrink: 0;
@@ -254,7 +267,7 @@
 .foundry-dock-panel__title {
   margin: 0;
   font-family: var(--font-display);
-  font-size: 0.68rem;
+  font-size: 0.82rem;
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -267,8 +280,8 @@
 }
 
 .foundry-dock-panel__btn {
-  width: 26px;
-  height: 26px;
+  width: 30px;
+  height: 30px;
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 6px;
   background: rgba(0, 0, 0, 0.28);
@@ -279,8 +292,8 @@
 }
 
 .foundry-dock-panel__btn:hover {
-  color: var(--text);
-  border-color: rgba(212, 183, 106, 0.35);
+  color: var(--mesa-text);
+  border-color: var(--mesa-accent-border);
 }
 
 .foundry-dock-panel__btn--close:hover {
@@ -299,8 +312,11 @@
 .foundry-dock-panel--gm .mesa-panel-scroll,
 .foundry-dock-panel--dungeon .mesa-panel-scroll,
 .foundry-dock-panel--initiative .mesa-panel-scroll,
-.foundry-dock-panel--spawn .mesa-panel-scroll {
-  padding: 0.65rem 0.7rem 0.85rem;
+.foundry-dock-panel--spawn .mesa-panel-scroll,
+.foundry-dock-panel--whiteboard .mesa-panel-scroll {
+  padding: 0.85rem 0.95rem 1rem;
+  font-size: 0.9rem;
+  line-height: 1.45;
 }
 
 .foundry-dock-panel--actors .vtt-sidebar,
@@ -317,9 +333,9 @@
 }
 
 .foundry-dock-panel--chat .room-chat,
-.foundry-dock-panel--dice .dice-roller,
-.foundry-dock-panel--ficha .mesa-sheet-rail-hint {
-  padding: 0.65rem 0.7rem 0.85rem;
+.foundry-dock-panel--dice .dice-roller {
+  padding: 0.85rem 0.95rem 1rem;
+  font-size: 0.9rem;
 }
 
 .foundry-dock-panel--dungeon .vtt-dungeon-panel {
@@ -338,12 +354,12 @@
   min-width: 200px;
   min-height: 80px;
   border-radius: 10px;
-  border: 1px solid var(--glass-border-bright);
-  background: rgba(16, 13, 10, 0.94);
+  border: 1px solid var(--mesa-accent-border);
+  background: rgba(14, 20, 30, 0.96);
   backdrop-filter: blur(12px);
   box-shadow:
     0 14px 36px rgba(0, 0, 0, 0.5),
-    0 0 0 1px rgba(212, 183, 106, 0.1);
+    0 0 0 1px rgba(122, 163, 201, 0.12);
   overflow: hidden;
 }
 
@@ -357,9 +373,9 @@
   align-items: center;
   justify-content: space-between;
   gap: 0.5rem;
-  padding: 0.35rem 0.45rem 0.35rem 0.65rem;
-  background: rgba(212, 183, 106, 0.12);
-  border-bottom: 1px solid var(--glass-border);
+  padding: 0.45rem 0.55rem 0.45rem 0.75rem;
+  background: var(--mesa-accent-soft);
+  border-bottom: 1px solid var(--mesa-accent-border);
   cursor: grab;
   user-select: none;
   flex-shrink: 0;
@@ -370,12 +386,12 @@
 }
 
 .foundry-window__title {
-  font-family: var(--font-ui);
-  font-size: 0.72rem;
+  font-family: var(--font-display);
+  font-size: 0.82rem;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--accent);
+  color: var(--mesa-accent);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -425,11 +441,11 @@
   width: 14px;
   height: 14px;
   cursor: nwse-resize;
-  background: linear-gradient(135deg, transparent 50%, rgba(201, 169, 98, 0.35) 50%);
+  background: linear-gradient(135deg, transparent 50%, rgba(122, 163, 201, 0.4) 50%);
 }
 
 .foundry-window--character .foundry-window__body {
-  background: #1a1714;
+  background: var(--mesa-surface);
   display: flex;
   flex-direction: column;
   min-height: 0;
@@ -474,18 +490,130 @@
   z-index: 50;
 }
 
+/* Mapa e HUD — tema ardósia/azul em toda a mesa */
+.mesa-workspace--foundry .foundry-mesa__stage {
+  background: var(--mesa-stage-bg);
+}
+
+.mesa-workspace--foundry .vtt-canvas-wrap {
+  height: 100%;
+  min-height: 0;
+  border-radius: 0;
+  border: none;
+  background: var(--mesa-surface-inset);
+  box-shadow: inset 0 0 0 1px var(--mesa-accent-border);
+}
+
+.mesa-workspace--foundry .vtt-view-controls {
+  background: var(--glass-strong);
+  border-color: var(--mesa-accent-border);
+  border-radius: 8px;
+  padding: 0.45rem 0.55rem;
+  gap: 0.4rem;
+}
+
+.mesa-workspace--foundry .vtt-view-btn {
+  min-width: 2.1rem;
+  min-height: 2.1rem;
+  font-size: 0.95rem;
+  border-color: var(--mesa-accent-border);
+  background: rgba(0, 0, 0, 0.25);
+  color: var(--mesa-text-dim);
+}
+
+.mesa-workspace--foundry .vtt-view-btn:hover:not(:disabled) {
+  color: var(--mesa-text);
+  border-color: var(--mesa-accent);
+  background: var(--mesa-accent-soft);
+}
+
+.mesa-workspace--foundry .vtt-view-zoom-label,
+.mesa-workspace--foundry .vtt-view-hint {
+  font-size: 0.82rem;
+  color: var(--mesa-text-dim);
+}
+
+.mesa-workspace--foundry .vtt-combat-hint,
+.mesa-workspace--foundry .vtt-eyebrow,
+.mesa-workspace--foundry .vtt-subtitle {
+  color: var(--mesa-text-dim);
+}
+
+.mesa-workspace--foundry .vtt-sidebar,
+.mesa-workspace--foundry .vtt-dungeon-panel,
+.mesa-workspace--foundry .combat-action-bar,
+.mesa-workspace--foundry .token-action-panel {
+  background: transparent;
+  border-color: var(--mesa-accent-border);
+  color: var(--mesa-text);
+}
+
+.mesa-workspace--foundry .btn,
+.mesa-workspace--foundry .vtt-sidebar .btn {
+  font-size: 0.88rem;
+  min-height: 2.25rem;
+  padding: 0.45rem 0.75rem;
+}
+
+.mesa-workspace--foundry .vtt-token-row,
+.mesa-workspace--foundry .vtt-turn-row,
+.mesa-workspace--foundry .spawn-entry {
+  border-color: var(--mesa-accent-border);
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.mesa-workspace--foundry .vtt-token-row:hover,
+.mesa-workspace--foundry .vtt-turn-row:hover {
+  border-color: var(--mesa-accent);
+  background: var(--mesa-accent-soft);
+}
+
+.mesa-workspace--foundry input,
+.mesa-workspace--foundry select,
+.mesa-workspace--foundry textarea {
+  background: var(--mesa-surface-inset);
+  border-color: var(--mesa-accent-border);
+  color: var(--mesa-text);
+  font-size: 0.9rem;
+}
+
+.mesa-workspace--foundry .foundry-dock-panel__body .vtt-eyebrow {
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  color: var(--mesa-accent);
+}
+
+.mesa-workspace--foundry .vtt-end-turn-bar,
+.mesa-workspace--foundry .battlefield-action-hud,
+.mesa-workspace--foundry .token-action-ring,
+.mesa-workspace--foundry .vtt-help-trigger {
+  background: var(--glass-strong);
+  border-color: var(--mesa-accent-border);
+  color: var(--mesa-text);
+}
+
+.mesa-workspace--foundry .vtt-end-turn-label,
+.mesa-workspace--foundry .vtt-end-turn-active {
+  color: var(--mesa-text);
+}
+
+.mesa-workspace--foundry .vtt-end-turn-hint {
+  color: var(--mesa-text-dim);
+}
+
 /* Lousa do mapa */
 .whiteboard-panel {
   display: flex;
   flex-direction: column;
-  gap: 0.65rem;
-  padding: 0.5rem 0.25rem 0.75rem;
+  gap: 0.85rem;
+  padding: 0.25rem 0.15rem 0.5rem;
 }
 
 .whiteboard-panel__lead {
   margin: 0;
-  font-size: 0.78rem;
-  line-height: 1.4;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: var(--mesa-text-dim);
 }
 
 .whiteboard-panel__toggle {
@@ -505,7 +633,7 @@
 
 .whiteboard-panel__label {
   font-family: var(--font-display, Georgia), serif;
-  font-size: 0.68rem;
+  font-size: 0.78rem;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--mesa-text-dim);
@@ -513,13 +641,14 @@
 
 .whiteboard-panel__tools {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 0.3rem;
+  grid-template-columns: repeat(auto-fit, minmax(4.5rem, 1fr));
+  gap: 0.45rem;
 }
 
 .whiteboard-panel__tool {
-  padding: 0.35rem 0.2rem;
-  font-size: 0.68rem;
+  padding: 0.5rem 0.35rem;
+  font-size: 0.8rem;
+  min-height: 2.4rem;
   border-radius: 6px;
   border: 1px solid rgba(255, 255, 255, 0.08);
   background: rgba(0, 0, 0, 0.2);
@@ -546,8 +675,8 @@
 }
 
 .whiteboard-panel__swatch {
-  width: 22px;
-  height: 22px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   border: 2px solid transparent;
   cursor: pointer;
@@ -568,8 +697,9 @@
 .whiteboard-panel__width,
 .whiteboard-panel__dur-btn {
   flex: 1;
-  padding: 0.35rem 0.4rem;
-  font-size: 0.72rem;
+  padding: 0.5rem 0.55rem;
+  font-size: 0.82rem;
+  min-height: 2.35rem;
   border-radius: 6px;
   border: 1px solid rgba(255, 255, 255, 0.08);
   background: rgba(0, 0, 0, 0.2);
@@ -586,7 +716,7 @@
 
 .whiteboard-panel__stats {
   margin: 0;
-  font-size: 0.75rem;
+  font-size: 0.85rem;
 }
 
 .whiteboard-panel__actions {
@@ -604,16 +734,26 @@
   border-bottom-color: rgba(122, 163, 201, 0.25);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
+  .foundry-sidebar--dock-open .foundry-sidebar__dock {
+    width: min(320px, 52vw);
+  }
+}
+
+@media (max-width: 640px) {
   .foundry-icon-bar {
-    width: 60px;
+    width: 72px;
   }
 
   .foundry-icon-bar__btn {
-    min-height: 44px;
+    min-height: 52px;
+  }
+
+  .foundry-icon-bar__label {
+    font-size: 0.55rem;
   }
 
   .foundry-sidebar--dock-open .foundry-sidebar__dock {
-    width: min(240px, 48vw);
+    width: min(280px, 58vw);
   }
 }

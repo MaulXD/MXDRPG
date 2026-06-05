@@ -13,7 +13,7 @@ import type { CompendiumEntry, CompendiumPackId, CompendiumPackMeta } from "@/li
 import type { BattleScene } from "@/lib/vtt/types";
 import type { Axial } from "@/lib/vtt/hex-math";
 import { useCombatTurnFlow } from "@/hooks/vtt/useCombatTurnFlow";
-import { useFoundryWindows } from "@/hooks/vtt/useFoundryWindows";
+import { useFoundryWindows, type MesaWindowId } from "@/hooks/vtt/useFoundryWindows";
 import { useRoomSync } from "@/hooks/useRoomSync";
 import { VttToastProvider } from "@/components/vtt/VttToast";
 import { FoundryDockPanel } from "@/components/vtt/foundry/FoundryDockPanel";
@@ -121,6 +121,26 @@ export function MesaWorkspace({
   const win = windows.get;
   const dockOpen = windows.isDockOpen();
 
+  const isPanelActive = useCallback(
+    (id: MesaWindowId) => {
+      if (id === "ficha") return Boolean(sheetPopupActorId) && win("character").open;
+      return windows.isActive(id);
+    },
+    [sheetPopupActorId, win, windows]
+  );
+
+  const handlePanelToggle = useCallback(
+    (id: MesaWindowId) => {
+      if (id === "ficha") {
+        if (sheetPopupActorId) closeSheet();
+        else openSheet(defaultActorId);
+        return;
+      }
+      windows.toggle(id);
+    },
+    [sheetPopupActorId, closeSheet, openSheet, defaultActorId, windows]
+  );
+
   return (
     <VttToastProvider>
       <MesaWorkspaceCombatFlow
@@ -150,8 +170,8 @@ export function MesaWorkspace({
 
         <div className="foundry-mesa">
           <MesaFoundrySidebar
-            isActive={windows.isActive}
-            onToggle={windows.toggle}
+            isActive={isPanelActive}
+            onToggle={handlePanelToggle}
             showGm={canControlCombat}
             dockOpen={dockOpen}
           >
@@ -185,32 +205,6 @@ export function MesaWorkspace({
                   Visitantes não rolam dados no chat.
                 </p>
               )}
-            </FoundryDockPanel>
-
-            <FoundryDockPanel
-              title="Ficha do personagem"
-              open={win("ficha").open}
-              minimized={win("ficha").minimized}
-              className="foundry-dock-panel--ficha"
-              onClose={() => windows.close("ficha")}
-              onMinimize={() =>
-                win("ficha").minimized ? windows.restore("ficha") : windows.minimize("ficha")
-              }
-            >
-              <div className="mesa-sheet-rail-hint">
-                <p className="vtt-combat-hint">
-                  Selecione um token e use <strong>Abrir ficha</strong>, ou o botão abaixo. Para
-                  colocar PCs no mapa, use o painel <strong>Tokens</strong>.
-                </p>
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  style={{ width: "100%", marginTop: "0.5rem" }}
-                  onClick={() => openSheet(defaultActorId)}
-                >
-                  Abrir minha ficha
-                </button>
-              </div>
             </FoundryDockPanel>
 
             {canControlCombat ? (
