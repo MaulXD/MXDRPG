@@ -53,6 +53,11 @@ import {
   type ActionPreview,
 } from "@/lib/combat/action-preview";
 import { estimateTargetCombatPreview } from "@/lib/combat/hit-chance";
+import {
+  castFxDuration,
+  type ActiveTokenCastFx,
+  type TokenCastFxKind,
+} from "@/lib/vtt/token-cast-fx";
 import { BattlefieldActionHud } from "@/components/vtt/BattlefieldActionHud";
 import { EndTurnBar } from "@/components/vtt/EndTurnBar";
 import { TurnOrderPanel } from "@/components/vtt/TurnOrderPanel";
@@ -164,6 +169,8 @@ export function HexBattlefield({
     tokenId: string;
     kind: NonNullable<TokenCombatFlash>;
   } | null>(null);
+  const [tokenCastFx, setTokenCastFx] = useState<ActiveTokenCastFx[]>([]);
+  const [castFxTick, setCastFxTick] = useState(0);
   const [actionErr, setActionErr] = useState<string | null>(null);
   const [channelExtraPa, setChannelExtraPa] = useState(0);
   const [actionRingAt, setActionRingAt] = useState<{ x: number; y: number } | null>(null);
@@ -425,6 +432,8 @@ export function HexBattlefield({
       attackTargetPreview,
       hoverTurnMoveTokenId: highlights.turnMovePreview ? hoverTokenId : null,
       tokenFlash,
+      tokenCastFx,
+      castFxNowMs: Date.now(),
       visibleHexSet,
       pings: displayPings,
       mapImage,
@@ -444,6 +453,8 @@ export function HexBattlefield({
       attackTargetPreview,
       hoverTokenId,
       tokenFlash,
+      tokenCastFx,
+      castFxTick,
       visibleHexSet,
       displayPings,
       mapImage,
@@ -584,6 +595,34 @@ export function HexBattlefield({
     if (tokenId && kind) setTokenFlash({ tokenId, kind });
     else setTokenFlash(null);
   }, []);
+
+  const onTokenCastFx = useCallback((tokenId: string, kind: TokenCastFxKind) => {
+    const startedAt = Date.now();
+    setTokenCastFx((prev) => [
+      ...prev.filter((fx) => !(fx.tokenId === tokenId && fx.kind === kind)),
+      {
+        id: `castfx-${tokenId}-${startedAt}`,
+        tokenId,
+        kind,
+        startedAt,
+        durationMs: castFxDuration(kind),
+      },
+    ]);
+    setCastFxTick((n) => n + 1);
+  }, []);
+
+  useEffect(() => {
+    if (!tokenCastFx.length) return;
+    const id = window.setInterval(() => {
+      const now = Date.now();
+      setTokenCastFx((prev) => {
+        const next = prev.filter((fx) => now - fx.startedAt < fx.durationMs);
+        return next.length === prev.length ? prev : next;
+      });
+      setCastFxTick((n) => n + 1);
+    }, 50);
+    return () => window.clearInterval(id);
+  }, [tokenCastFx.length]);
 
   const tokenDrawPosition = useCallback(
     (token: import("@/lib/vtt/types").BattleToken) => {
@@ -1152,6 +1191,7 @@ export function HexBattlefield({
           fx={combatFx}
           view={battlefieldView.view}
           onTokenFlash={onCombatTokenFlash}
+          onTokenCastFx={onTokenCastFx}
           onDone={onCombatFxDone}
         />
       </div>

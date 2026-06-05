@@ -36,6 +36,10 @@ import {
   isTokenDefeated,
   type TokenHpDisplay,
 } from "@/lib/vtt/token-hp-display";
+import {
+  drawTokenCastFx,
+  type ActiveTokenCastFx,
+} from "@/lib/vtt/token-cast-fx";
 import { isTargetMode, type TokenActionMode } from "@/lib/vtt/action-mode";
 import type { BattleScene, BattleToken } from "@/lib/vtt/types";
 export type TokenFlashKind = "hit" | "miss" | "crit";
@@ -265,6 +269,8 @@ type TokenDrawParams = {
   hoverTurnMoveTokenId: string | null;
   tokenAnimTimeSec: number;
   tokenFlash: { tokenId: string; kind: TokenFlashKind } | null;
+  tokenCastFx?: ActiveTokenCastFx[];
+  castFxNowMs?: number;
   /** Posição visual (pode ser fracionária durante animação) */
   tokenPositionOverride?: Map<string, { q: number; r: number }>;
   tokenHpDisplay?: Map<string, TokenHpDisplay>;
@@ -335,6 +341,12 @@ export function drawTokensLayer(ctx: CanvasRenderingContext2D, p: TokenDrawParam
 
     if (defeated) {
       drawTokenDefeatedSkull(ctx, x, y, r);
+    }
+
+    const castFxList = p.tokenCastFx?.filter((fx) => fx.tokenId === token.id) ?? [];
+    const nowMs = p.castFxNowMs ?? Date.now();
+    for (const fx of castFxList) {
+      drawTokenCastFx(ctx, x, y, r, fx.kind, nowMs - fx.startedAt, fx.durationMs);
     }
 
     if (p.tokenFlash?.tokenId === token.id) {
