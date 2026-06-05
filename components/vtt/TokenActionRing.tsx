@@ -9,16 +9,22 @@ import {
   listTokenCombatActions,
   resolveCombatAction,
 } from "@/lib/combat/attack";
+import { effectivePaCost, totalAttackPaCost } from "@/lib/combat/pa-economy";
 import { ACTION_MODE_LABEL, type TokenActionMode } from "@/lib/vtt/action-mode";
+import { movementPaCost, movementPaBandsForToken } from "@/lib/vtt/movement-pa";
 import { useCombatTurn } from "@/hooks/useCombatActions";
 import { patchRoomActor } from "@/hooks/useRoomSync";
 import "./token-action-ring.css";
 
+type SlotTone = "walk" | "run" | "attack" | "spell" | "ability";
+
 type RingSlot = {
   id: string;
   mode: TokenActionMode;
+  tone: SlotTone;
   label: string;
   glyph: string;
+  paLabel: string;
   disabled?: boolean;
   title?: string;
 };
@@ -36,7 +42,27 @@ type Props = {
   onRoomSync: () => void;
 };
 
-const RING_RADIUS = 82;
+const RING_RADIUS = 123;
+
+function nextHexPaLabel(token: BattleToken): string {
+  const bands = movementPaBandsForToken(token);
+  const spent = token.movementSpentHex ?? 0;
+  const cost = movementPaCost(spent, 1, bands);
+  return cost === 0 ? "0 PA" : `${cost} PA`;
+}
+
+function combatActionPaLabel(actor: RoomActor | null, action: CombatActionOption | undefined): string {
+  if (!action) return "—";
+  if (action.channelMaxExtraPa) {
+    const base = effectivePaCost(actor, action);
+    return `${base}+ PA`;
+  }
+  if (actor && action.kind === "weapon") {
+    const total = totalAttackPaCost(actor, action);
+    return `${total} PA`;
+  }
+  return `${effectivePaCost(actor, action)} PA`;
+}
 
 export function TokenActionRing({
   x,
@@ -65,55 +91,74 @@ export function TokenActionRing({
   const turnBlocked =
     Boolean(turn.activeTokenId && turn.activeTokenId !== token.id && !turn.bypassTurn);
 
+  const movePa = useMemo(() => nextHexPaLabel(token), [token]);
+
   const slots: RingSlot[] = useMemo(() => {
-    const list: RingSlot[] = [
+    const weapon = weapons[0];
+    const spell = spells[0];
+    const ability = abilities[0];
+
+    return [
       {
         id: "move-walk",
         mode: "move-walk",
+        tone: "walk",
         label: "Mover",
         glyph: "👣",
+        paLabel: movePa,
         disabled: turnBlocked,
+        title: "Próximo hex · caminhada",
       },
       {
         id: "move-run",
         mode: "move-run",
+        tone: "run",
         label: "Correr",
         glyph: "💨",
+        paLabel: movePa,
         disabled: turnBlocked,
+        title: "Próximo hex · corrida",
       },
       {
         id: "attack",
         mode: "attack",
+        tone: "attack",
         label: "Atacar",
         glyph: "⚔",
+        paLabel: combatActionPaLabel(actor, weapon),
         disabled: turnBlocked || weapons.length === 0,
-        title: weapons[0]?.label,
+        title: weapon?.label ?? weapon?.name,
       },
       {
         id: "spell",
         mode: "spell",
+        tone: "spell",
         label: "Magia",
         glyph: "✦",
+        paLabel: combatActionPaLabel(actor, spell),
         disabled: turnBlocked || spells.length === 0,
-        title: spells[0]?.label,
+        title: spell?.label ?? spell?.name,
       },
       {
         id: "ability",
         mode: "ability",
+        tone: "ability",
         label: "Habilidade",
         glyph: "◆",
+        paLabel: combatActionPaLabel(actor, ability),
         disabled: turnBlocked || abilities.length === 0,
-        title: abilities[0]?.label,
+        title: ability?.label ?? ability?.name,
       },
       {
         id: "idle",
         mode: "idle",
+        tone: "walk",
         label: "Cancelar",
         glyph: "✕",
+        paLabel: "",
       },
     ];
-    return list;
-  }, [turnBlocked, weapons, spells, abilities]);
+  }, [turnBlocked, weapons, spells, abilities, actor, movePa]);
 
   const saveLoadout = useCallback(
     async (packId: "armas" | "magias" | "habilidades", entryId: string) => {
@@ -190,7 +235,7 @@ export function TokenActionRing({
           title="Fechar (Esc)"
         >
           <span className="token-action-ring__center-name">{token.name}</span>
-          <span className="token-action-ring__center-hint">PA {token.pa ?? 0}</span>
+          <span className="token-action-ring__center-hint">{token.pa ?? 0} PA</span>
         </button>
 
         {visibleSlots.map((slot, i) => {
@@ -202,7 +247,7 @@ export function TokenActionRing({
               key={slot.id}
               type="button"
               role="menuitem"
-              className="token-action-ring__slot"
+              className={`token-action-ring__slot token-action-ring__slot--${slot.tone}`}
               style={
                 {
                   "--tar-i": i,
@@ -212,13 +257,18 @@ export function TokenActionRing({
                 } as CSSProperties
               }
               disabled={slot.disabled}
-              title={slot.title ?? ACTION_MODE_LABEL[slot.mode]}
+              title={
+                slot.title
+                  ? `${slot.title} · ${slot.paLabel}`
+                  : `${ACTION_MODE_LABEL[slot.mode]} · ${slot.paLabel}`
+              }
               onClick={() => pick(slot.mode)}
             >
               <span className="token-action-ring__glyph" aria-hidden>
                 {slot.glyph}
               </span>
               <span className="token-action-ring__label">{slot.label}</span>
+              <span className="token-action-ring__pa">{slot.paLabel}</span>
             </button>
           );
         })}
