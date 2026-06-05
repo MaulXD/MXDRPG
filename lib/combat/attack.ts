@@ -431,24 +431,16 @@ export function buildAttackModifiers(
   action: CombatActionOption
 ): { modifier: AttackModifier; consumeAttackerMark: boolean; consumeDefenderFinta: boolean } {
   let attackBonus = attacker.nextAttackBonus ?? 0;
-  let rollMode: RollMode = "normal";
   const labels: string[] = [];
 
   if (attackBonus) labels.push(`+${attackBonus}`);
-  if (attacker.allyAttackAdvantage) {
-    rollMode = "advantage";
-    labels.push("inspiração");
-  }
-  if (attacker.rangedAttackAdvantage && action.rangeHex > 1) {
-    rollMode = combineRollModes(rollMode, "advantage");
-    labels.push("tiro certeiro");
-  }
+  if (attacker.allyAttackAdvantage) labels.push("inspiração");
+  if (attacker.rangedAttackAdvantage && action.rangeHex > 1) labels.push("tiro certeiro");
 
   const mark: AttackMark | undefined = attacker.attackMark;
   let consumeAttackerMark = false;
   if (mark && mark.targetId === defender.id) {
     if (mark.attackerDisadvantage) {
-      rollMode = "disadvantage";
       labels.push("finta");
       consumeAttackerMark = true;
     } else {
@@ -456,19 +448,16 @@ export function buildAttackModifiers(
         /* mark stays */
       } else {
         if (mark.bonus) attackBonus += mark.bonus;
-        if (mark.advantage || mark.bonus) {
-          rollMode = combineRollModes(rollMode, "advantage");
-        }
+        if (mark.advantage || mark.bonus) labels.push("marca");
         if (mark.bonus) labels.push(`marca +${mark.bonus}`);
         consumeAttackerMark = true;
       }
     }
   }
 
-  let consumeDefenderFinta = false;
+  const consumeDefenderFinta = false;
   if (attacker.attackMark?.attackerDisadvantage) {
-    rollMode = combineRollModes(rollMode, "disadvantage");
-    labels.push("finta");
+    if (!labels.includes("finta")) labels.push("finta");
     consumeAttackerMark = true;
   }
 
@@ -480,7 +469,6 @@ export function buildAttackModifiers(
     modifier: {
       attackBonus: attackBonus || undefined,
       label: labels.length ? labels.join(", ") : undefined,
-      rollMode: rollMode !== "normal" ? rollMode : undefined,
     },
     consumeAttackerMark,
     consumeDefenderFinta,
@@ -606,7 +594,7 @@ function resolveMonsterAttack(
   const extraBonus = merged?.attackBonus ?? 0;
 
   const rollMode = combineRollModes(
-    attackRollMode(attackerToken, defenderToken, []),
+    attackRollMode(attackerToken, defenderToken, allTokens, { action }),
     merged?.rollMode ?? "normal"
   );
   const naturalRoll = rollD20(rollMode);
@@ -727,7 +715,7 @@ export function resolveAttack(
   const merged = mergeModifiers(built.modifier, modifier);
   const extraBonus = merged?.attackBonus ?? 0;
   const rollMode = combineRollModes(
-    attackRollMode(attackerToken, defenderToken, allTokens),
+    attackRollMode(attackerToken, defenderToken, allTokens, { action: resolved }),
     merged?.rollMode ?? "normal"
   );
   const naturalRoll = rollD20(rollMode);

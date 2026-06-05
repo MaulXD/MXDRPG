@@ -1,3 +1,12 @@
+import type { TargetCombatPreview } from "@/lib/combat/hit-chance";
+
+/** 0.8 = anéis 20% mais lentos que a velocidade base. */
+const TOKEN_RING_ANIM_SPEED = 0.8;
+
+function ringAnimTime(timeSec: number): number {
+  return timeSec * TOKEN_RING_ANIM_SPEED;
+}
+
 /** Anel dourado girando — turno ativo no hex. */
 export function drawTurnActiveIndicator(
   ctx: CanvasRenderingContext2D,
@@ -6,13 +15,14 @@ export function drawTurnActiveIndicator(
   r: number,
   timeSec: number
 ): void {
-  const pulse = 0.5 + 0.5 * Math.sin(timeSec * 2.8);
+  const t = ringAnimTime(timeSec);
+  const pulse = 0.5 + 0.5 * Math.sin(t * 2.8);
   const ringR = r + 8;
 
   ctx.save();
 
   ctx.setLineDash([10, 7]);
-  ctx.lineDashOffset = -timeSec * 42;
+  ctx.lineDashOffset = -t * 42;
   ctx.beginPath();
   ctx.arc(x, y, ringR, 0, Math.PI * 2);
   ctx.strokeStyle = `rgba(201, 169, 98, ${0.72 + pulse * 0.22})`;
@@ -20,7 +30,7 @@ export function drawTurnActiveIndicator(
   ctx.stroke();
 
   ctx.setLineDash([4, 11]);
-  ctx.lineDashOffset = timeSec * 28;
+  ctx.lineDashOffset = t * 28;
   ctx.beginPath();
   ctx.arc(x, y, ringR - 2, 0, Math.PI * 2);
   ctx.strokeStyle = `rgba(255, 220, 140, ${0.38 + pulse * 0.15})`;
@@ -39,16 +49,86 @@ export function drawAttackableHint(
   r: number,
   timeSec: number
 ): void {
-  const pulse = 0.5 + 0.5 * Math.sin(timeSec * 3.5);
+  const t = ringAnimTime(timeSec);
+  const pulse = 0.5 + 0.5 * Math.sin(t * 3.5);
   ctx.save();
   ctx.setLineDash([4, 8]);
-  ctx.lineDashOffset = timeSec * 28;
+  ctx.lineDashOffset = t * 28;
   ctx.beginPath();
   ctx.arc(x, y, r + 9 + pulse * 4, 0, Math.PI * 2);
   ctx.strokeStyle = `rgba(196, 68, 68, ${0.35 + pulse * 0.3})`;
   ctx.lineWidth = 1.75;
   ctx.stroke();
   ctx.setLineDash([]);
+  ctx.restore();
+}
+
+/** Rótulo de chance / vantagem sobre o alvo mirado. */
+export function drawTargetCombatPreviewLabel(
+  ctx: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  r: number,
+  preview: TargetCombatPreview
+): void {
+  const main =
+    preview.kind === "save"
+      ? `${preview.saveFailPercent ?? 0}% falha`
+      : `${preview.hitChancePercent ?? 0}% acerto`;
+  const sub = preview.rollModeText || (preview.kind === "save" ? `CD ${preview.dc}` : `CA ${preview.ac}`);
+
+  const by = y - r - 34;
+  ctx.save();
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+
+  const mainFont = "700 11px Source Sans 3, Segoe UI, sans-serif";
+  const subFont = "600 9px Source Sans 3, Segoe UI, sans-serif";
+  ctx.font = mainFont;
+  const tw = Math.max(ctx.measureText(main).width, ctx.measureText(sub).width) + 16;
+  const bh = preview.rollModeText ? 30 : 22;
+  const bx = x - tw / 2;
+  const byBox = by - bh / 2;
+
+  const border =
+    preview.rollMode === "advantage"
+      ? "rgba(88, 140, 76, 0.95)"
+      : preview.rollMode === "disadvantage"
+        ? "rgba(200, 120, 48, 0.95)"
+        : "rgba(0, 0, 0, 0.88)";
+
+  ctx.fillStyle = "rgba(8, 8, 6, 0.92)";
+  ctx.strokeStyle = border;
+  ctx.lineWidth = 1.75;
+  ctx.beginPath();
+  ctx.roundRect(bx, byBox, tw, bh, 4);
+  ctx.fill();
+  ctx.stroke();
+
+  ctx.font = mainFont;
+  ctx.fillStyle =
+    preview.rollMode === "advantage"
+      ? "rgb(136, 196, 124)"
+      : preview.rollMode === "disadvantage"
+        ? "rgb(232, 168, 88)"
+        : "rgb(232, 226, 214)";
+  ctx.fillText(main, x, byBox + (preview.rollModeText ? 9 : 11));
+
+  if (preview.rollModeText) {
+    ctx.font = subFont;
+    ctx.fillStyle =
+      preview.rollMode === "advantage"
+        ? "rgb(120, 180, 108)"
+        : preview.rollMode === "disadvantage"
+          ? "rgb(220, 150, 70)"
+          : "rgba(232, 226, 214, 0.75)";
+    ctx.fillText(preview.rollModeText, x, byBox + 21);
+  } else {
+    ctx.font = subFont;
+    ctx.fillStyle = "rgba(232, 226, 214, 0.7)";
+    ctx.fillText(sub, x, byBox + 18);
+  }
+
   ctx.restore();
 }
 
@@ -60,8 +140,9 @@ export function drawAttackTargetFocus(
   r: number,
   timeSec: number
 ): void {
-  const pulse = 0.5 + 0.5 * Math.sin(timeSec * 5.5);
-  const expand = (timeSec % 1.1) / 1.1;
+  const t = ringAnimTime(timeSec);
+  const pulse = 0.5 + 0.5 * Math.sin(t * 5.5);
+  const expand = (t % 1.1) / 1.1;
 
   ctx.save();
   ctx.strokeStyle = `rgba(255, 90, 80, ${0.75 + pulse * 0.25})`;
