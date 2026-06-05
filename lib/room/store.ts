@@ -12,8 +12,10 @@ export {
   spawnRoomMonster,
   repositionRoomToken,
   placeRoomActorOnHex,
+  removeRoomToken,
   type MoveExecuteResult,
   type SpawnExecuteResult,
+  type RemoveTokenResult,
 } from "./handlers/tokens";
 export {
   rollRoomInitiative,

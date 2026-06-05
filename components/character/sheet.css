@@ -217,6 +217,16 @@
   gap: 0.5rem;
 }
 
+.inv-row--selected {
+  border-color: rgba(201, 169, 98, 0.55);
+  background: rgba(201, 169, 98, 0.1);
+  box-shadow: 0 0 0 1px rgba(201, 169, 98, 0.2);
+}
+
+.inv-row[role="button"] {
+  cursor: pointer;
+}
+
 .inv-row {
   display: grid;
   grid-template-columns: auto 1fr auto auto;
