@@ -19,6 +19,9 @@ export const MONSTER_PA_BOSS = 9;
 /** Custo padrão de ataque (arma), magia de combate e habilidade (livro Cap. 3.1). */
 export const PA_DEFAULT_ACTION_COST = 2;
 
+/** Piso após reduções de talento/classe — evita magias ofensivas a 0 PA. */
+export const PA_MIN_COST_AFTER_REDUCTION = 1;
+
 /** @deprecated Alias — use `PA_RECOVERY_PER_TURN`. */
 export const PA_BASE = PA_RECOVERY_PER_TURN;
 
@@ -209,7 +212,8 @@ export function effectivePaCost(
     if (action.rangeHex > 1) cost = Math.max(0, cost - 1);
   }
 
-  return Math.max(0, cost - reduce);
+  const floor = action.paCost <= 0 ? 0 : PA_MIN_COST_AFTER_REDUCTION;
+  return Math.max(floor, cost - reduce);
 }
 
 export function totalAttackPaCost(actor: CharacterSheet | null, action: CombatActionOption): number {

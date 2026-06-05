@@ -30,6 +30,7 @@ import {
   mergeBonusIntoDamage,
   normalizeWeaponSpecial,
 } from "@/lib/combat/equipment-effects";
+import { resolveSpellPaCost } from "@/lib/combat/pa-balance";
 import {
   effectivePaCost,
   totalAttackPaCost,
@@ -177,7 +178,9 @@ function actionFromEntry(
   if (packId === "magias" && !weapon?.dano?.formula && !isSaveSpell && !isAreaSpell) return null;
 
   const rangeHex = tactical?.alcanceHex?.value ?? 1;
-  const paCost = tactical?.custoPontosAcao?.value ?? PA_DEFAULT_ACTION_COST;
+  const rawPa = tactical?.custoPontosAcao?.value ?? PA_DEFAULT_ACTION_COST;
+  const paCost =
+    packId === "magias" ? resolveSpellPaCost(entry.id, rawPa) : rawPa;
   const kind: CombatActionKind = packId === "magias" ? "spell" : "weapon";
   const resolution: CombatResolution = isSaveSpell ? "save" : "attack";
   const areaSize =

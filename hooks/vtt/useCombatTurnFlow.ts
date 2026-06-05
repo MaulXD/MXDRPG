@@ -7,6 +7,7 @@ import { hasCondition } from "@/lib/combat/conditions";
 import type { RoomSnapshot } from "@/lib/room/types";
 import type { SessionUser } from "@/lib/auth/types";
 import { canAdvanceCombatTurn } from "@/lib/auth/combat-turn-access";
+import { canManageRoom } from "@/lib/auth/room-access";
 import { nextCombatTurn } from "@/hooks/useRoomSync";
 import { useVttToast } from "@/components/vtt/VttToast";
 
@@ -78,6 +79,7 @@ export function useCombatTurnFlow({
     };
 
     if (!canAdvanceCombatTurn(turnRoom, session, combat)) return;
+    if (canManageRoom(turnRoom, session)) return;
     if (hasCondition(token, "atordoado")) return;
 
     const spendable = tokenSpendablePa(token);

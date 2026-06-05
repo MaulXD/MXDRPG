@@ -1,4 +1,8 @@
 import type { CombatActionOption } from "@/lib/combat/types";
+import {
+  normalizeMonsterActionPa,
+  PA_OFFENSIVE_ACTION_COST,
+} from "@/lib/combat/pa-balance";
 import { getMonsterTemplate } from "@/lib/vtt/monsters";
 
 function mod(score: number): number {
@@ -11,6 +15,7 @@ function generatedMonsterActions(
 ): CombatActionOption[] {
   const forMod = mod(t.forca);
   const dexMod = mod(t.agilidade);
+  const pa = PA_OFFENSIVE_ACTION_COST;
   const actions: CombatActionOption[] = [];
 
   const biteDmg = t.tier === "boss" ? "2d8" : t.tier === "mini" ? "1d10" : "1d6";
@@ -26,8 +31,8 @@ function generatedMonsterActions(
     damageType: "perfurante",
     attackBonus: t.ameaca >= 4 ? 2 : t.ameaca >= 2 ? 1 : 0,
     rangeHex: 1,
-    paCost: 1,
-    label: `Mordida · 1 hex · PA 1`,
+    paCost: pa,
+    label: `Mordida · 1 hex · PA ${pa}`,
   });
 
   if (t.tier !== "mob" || t.ameaca >= 2) {
@@ -41,8 +46,8 @@ function generatedMonsterActions(
       damageType: "cortante",
       attackBonus: dexMod,
       rangeHex: 1,
-      paCost: 1,
-      label: `Garras · 1 hex · PA 1`,
+      paCost: pa,
+      label: `Garras · 1 hex · PA ${pa}`,
     });
   }
 
@@ -57,8 +62,8 @@ function generatedMonsterActions(
       damageType: "mágico",
       attackBonus: t.ameaca,
       rangeHex: t.tier === "boss" ? 6 : 4,
-      paCost: 2,
-      label: `Ataque especial · ${t.tier === "boss" ? 6 : 4} hex · PA 2`,
+      paCost: pa,
+      label: `Ataque especial · ${t.tier === "boss" ? 6 : 4} hex · PA ${pa}`,
     });
   } else if (t.ameaca >= 2) {
     actions.push({
@@ -71,8 +76,8 @@ function generatedMonsterActions(
       damageType: "contundente",
       attackBonus: forMod,
       rangeHex: 2,
-      paCost: 1,
-      label: `Investida · 2 hex · PA 1`,
+      paCost: pa,
+      label: `Investida · 2 hex · PA ${pa}`,
     });
   }
 
@@ -83,12 +88,13 @@ export function monsterCombatActions(entryId: string): CombatActionOption[] {
   const t = getMonsterTemplate(entryId);
   if (!t) return [];
 
-  if (t.actions.length > 0) {
-    return t.actions.map((a) => ({
-      ...a,
-      label: a.label ?? `${a.name} · ${a.rangeHex ?? 1} hex · PA ${a.paCost}`,
-    }));
-  }
+  const raw =
+    t.actions.length > 0
+      ? t.actions.map((a) => ({
+          ...a,
+          label: a.label ?? `${a.name} · ${a.rangeHex ?? 1} hex · PA ${a.paCost}`,
+        }))
+      : generatedMonsterActions(entryId, t);
 
-  return generatedMonsterActions(entryId, t);
+  return raw.map(normalizeMonsterActionPa);
 }
