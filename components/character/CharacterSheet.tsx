@@ -294,6 +294,8 @@ export function CharacterSheet({
           actorId={character.id}
           portraitUrl={live.portraitUrl}
           portraitFocus={live.portraitFocus}
+          coverFocus={live.coverFocus}
+          tokenFocus={live.tokenFocus}
           tokenImageUrl={live.tokenImageUrl}
           canEdit={canEdit}
           onSaved={refresh}
@@ -315,6 +317,8 @@ export function CharacterSheet({
           characterId={character.id}
           portraitUrl={live.portraitUrl ?? character.portraitUrl}
           portraitFocus={live.portraitFocus ?? character.portraitFocus}
+          coverFocus={live.coverFocus ?? character.coverFocus}
+          tokenFocus={live.tokenFocus ?? character.tokenFocus}
           tokenImageUrl={live.tokenImageUrl ?? character.tokenImageUrl}
           canEdit={canEdit}
         />
@@ -596,6 +600,7 @@ export function CharacterSheet({
         identity={identity}
         portraitUrl={live.portraitUrl}
         portraitFocus={live.portraitFocus}
+        coverFocus={live.coverFocus}
       />
 
       <aside className="sheet-sidebar glass">{sidebarTools}</aside>

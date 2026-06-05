@@ -40,7 +40,16 @@ export async function PATCH(request: Request, { params }: Params) {
   }
 
   const patch = (await request.json()) as Partial<
-    Pick<CharacterSheet, "name" | "biography" | "portraitUrl" | "tokenImageUrl" | "portraitFocus">
+    Pick<
+      CharacterSheet,
+      | "name"
+      | "biography"
+      | "portraitUrl"
+      | "tokenImageUrl"
+      | "portraitFocus"
+      | "coverFocus"
+      | "tokenFocus"
+    >
   >;
 
   const merged = normalizeCharacter({
@@ -53,6 +62,8 @@ export async function PATCH(request: Request, { params }: Params) {
       patch.tokenImageUrl !== undefined ? patch.tokenImageUrl : existing.tokenImageUrl,
     portraitFocus:
       patch.portraitFocus !== undefined ? patch.portraitFocus : existing.portraitFocus,
+    coverFocus: patch.coverFocus !== undefined ? patch.coverFocus : existing.coverFocus,
+    tokenFocus: patch.tokenFocus !== undefined ? patch.tokenFocus : existing.tokenFocus,
   });
 
   const saved = await saveCharacter(merged);

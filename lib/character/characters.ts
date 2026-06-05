@@ -111,6 +111,9 @@ export async function createCharacterFromWizard(
   const sheet = buildCharacterFromWizard(userId, draft, undefined, adventureId);
   const saved = await saveCharacter(sheet);
 
+  const { attachCharacterToDemoRoom } = await import("@/lib/room/demo-character-sync");
+  await attachCharacterToDemoRoom(saved);
+
   if (adventureId) {
     const adv = await getAdventure(adventureId);
     if (adv) await syncAdventureActorsForRoom(adv.primaryRoomId);

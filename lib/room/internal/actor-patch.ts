@@ -16,6 +16,12 @@ export function sanitizeActorPatch(
   if ("portraitFocus" in patch) {
     out.portraitFocus = sanitizePortraitFocus(patch.portraitFocus);
   }
+  if ("coverFocus" in patch) {
+    out.coverFocus = sanitizePortraitFocus(patch.coverFocus);
+  }
+  if ("tokenFocus" in patch) {
+    out.tokenFocus = sanitizePortraitFocus(patch.tokenFocus);
+  }
   if ("name" in patch && typeof patch.name === "string" && patch.name.trim()) {
     out.name = patch.name.trim().slice(0, 80);
   }

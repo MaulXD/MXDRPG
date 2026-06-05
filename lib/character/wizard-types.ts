@@ -24,6 +24,8 @@ export type CharacterWizardDraft = {
   portraitUrl?: string | null;
   tokenImageUrl?: string | null;
   portraitFocus?: PortraitFocus | null;
+  coverFocus?: PortraitFocus | null;
+  tokenFocus?: PortraitFocus | null;
 };
 
 export const EMPTY_WIZARD_DRAFT: CharacterWizardDraft = {
@@ -44,4 +46,6 @@ export const EMPTY_WIZARD_DRAFT: CharacterWizardDraft = {
   portraitUrl: null,
   tokenImageUrl: null,
   portraitFocus: null,
+  coverFocus: null,
+  tokenFocus: null,
 };

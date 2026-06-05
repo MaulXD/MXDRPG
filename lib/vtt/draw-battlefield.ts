@@ -327,7 +327,7 @@ export function drawTokensLayer(ctx: CanvasRenderingContext2D, p: TokenDrawParam
       const color = hpBarColor(ratio);
       drawTokenHpSegments(ctx, x, y, hpLayout, ratio, color);
       if (hpVis.numeric) {
-        drawTokenHpLabel(ctx, x, y, r, token, color);
+        drawTokenHpLabel(ctx, x, y, hpLayout.contentR, token, color);
       }
     }
 
@@ -398,14 +398,18 @@ export function drawTokensLayer(ctx: CanvasRenderingContext2D, p: TokenDrawParam
       ctx.restore();
     }
 
-    ctx.save();
-    ctx.fillStyle = readThemeColor("--vtt-token-text", "#e8e0d4");
-    ctx.font = "600 12px Lora, Georgia, serif";
-    ctx.textAlign = "center";
-    ctx.shadowColor = "rgba(0,0,0,0.85)";
-    ctx.shadowBlur = 5;
-    ctx.fillText(token.name, x, y + r + 14);
-    ctx.restore();
+    const hpVisName = p.tokenHpDisplay?.get(token.id);
+    const hpOnToken = hpVisName?.numeric && token.vidaMax != null && token.vida != null;
+    if (!hpOnToken) {
+      ctx.save();
+      ctx.fillStyle = readThemeColor("--vtt-token-text", "#e8e0d4");
+      ctx.font = "600 12px Lora, Georgia, serif";
+      ctx.textAlign = "center";
+      ctx.shadowColor = "rgba(0,0,0,0.85)";
+      ctx.shadowBlur = 5;
+      ctx.fillText(token.name, x, y + r + 14);
+      ctx.restore();
+    }
 
     drawTokenEffectBadges(ctx, x, y, r, token);
   }

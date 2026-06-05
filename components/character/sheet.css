@@ -598,6 +598,29 @@
   margin-top: 0.5rem;
 }
 
+.sheet-portrait-focus-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin: 0.65rem 0 0.35rem;
+}
+
+.sheet-portrait-focus-tab {
+  padding: 0.35rem 0.65rem;
+  border-radius: 6px;
+  border: 1px solid var(--glass-border);
+  background: rgba(0, 0, 0, 0.35);
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  cursor: pointer;
+}
+
+.sheet-portrait-focus-tab.is-active {
+  border-color: rgba(184, 255, 60, 0.55);
+  color: var(--neon-lime);
+  background: rgba(184, 255, 60, 0.08);
+}
+
 .sheet-portrait-hint {
   font-size: 0.65rem;
   color: var(--text-dim);

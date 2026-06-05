@@ -5,7 +5,7 @@ import { normalizeTokenPaFields } from "@/lib/combat/pa-token-state";
 import { defaultMovementFields } from "@/lib/vtt/movement";
 import { creatureSizeOf } from "@/lib/vtt/creature-size";
 import { collectPlayerActorIds, playerColorForActor } from "@/lib/vtt/token-colors";
-import { DEFAULT_PORTRAIT_FOCUS, sanitizePortraitFocus } from "@/lib/media/portrait-focus";
+import { DEFAULT_PORTRAIT_FOCUS, resolveTokenFocus } from "@/lib/media/portrait-focus";
 import { DEMO_SCENE } from "@/lib/vtt/demo-scene";
 import type { BattleScene, BattleToken } from "@/lib/vtt/types";
 import { emptyCombat } from "./combat";
@@ -27,7 +27,7 @@ export function syncLinkedTokens(
     const actor = actors[token.actorId];
     if (!actor) return token;
 
-    const focus = sanitizePortraitFocus(actor.portraitFocus) ?? DEFAULT_PORTRAIT_FOCUS;
+    const focus = resolveTokenFocus(actor) ?? DEFAULT_PORTRAIT_FOCUS;
     const playerColor = playerColorForActor(token.actorId, playerIds);
     const paMax = paMaxForActor(actor);
     const paSource =
