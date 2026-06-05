@@ -100,7 +100,7 @@ export function previewAttackOnTarget(
   );
 
   if (action.kind === "ability") {
-    const use = canUseAbility(attacker, action, turn);
+    const use = canUseAbility(attacker, action, turn, actor);
     const pa = effectivePaCost(actor, action);
     const paChip = unifiedPaChipForAction(attacker, actor, action, channelExtraPa);
     if (!use.ok) {

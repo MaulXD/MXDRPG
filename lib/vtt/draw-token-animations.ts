@@ -63,7 +63,7 @@ export function drawAttackableHint(
   ctx.restore();
 }
 
-/** Rótulo de chance / vantagem sobre o alvo mirado. */
+/** Rótulo de chance / vantagem acima do alvo mirado (sem caixa — evita sobrepor HP). */
 export function drawTargetCombatPreviewLabel(
   ctx: CanvasRenderingContext2D,
   x: number,
@@ -73,61 +73,49 @@ export function drawTargetCombatPreviewLabel(
 ): void {
   const main =
     preview.kind === "save"
-      ? `${preview.saveFailPercent ?? 0}% falha`
+      ? `${preview.saveFailPercent ?? 0}% falha no teste`
       : `${preview.hitChancePercent ?? 0}% acerto`;
-  const sub = preview.rollModeText || (preview.kind === "save" ? `CD ${preview.dc}` : `CA ${preview.ac}`);
+  const detail =
+    preview.kind === "save"
+      ? `CD ${preview.dc ?? "?"}`
+      : `CA ${preview.ac}`;
+  const modeLine = preview.rollModeText?.trim() || null;
 
-  const by = y - r - 34;
-  ctx.save();
-  ctx.textAlign = "center";
-  ctx.textBaseline = "middle";
-
-  const mainFont = "700 11px Source Sans 3, Segoe UI, sans-serif";
-  const subFont = "600 9px Source Sans 3, Segoe UI, sans-serif";
-  ctx.font = mainFont;
-  const tw = Math.max(ctx.measureText(main).width, ctx.measureText(sub).width) + 16;
-  const bh = preview.rollModeText ? 30 : 22;
-  const bx = x - tw / 2;
-  const byBox = by - bh / 2;
-
-  const border =
-    preview.rollMode === "advantage"
-      ? "rgba(88, 140, 76, 0.95)"
-      : preview.rollMode === "disadvantage"
-        ? "rgba(200, 120, 48, 0.95)"
-        : "rgba(0, 0, 0, 0.88)";
-
-  ctx.fillStyle = "rgba(8, 8, 6, 0.92)";
-  ctx.strokeStyle = border;
-  ctx.lineWidth = 1.75;
-  ctx.beginPath();
-  ctx.roundRect(bx, byBox, tw, bh, 4);
-  ctx.fill();
-  ctx.stroke();
-
-  ctx.font = mainFont;
-  ctx.fillStyle =
+  const accent =
     preview.rollMode === "advantage"
       ? "rgb(136, 196, 124)"
       : preview.rollMode === "disadvantage"
         ? "rgb(232, 168, 88)"
         : "rgb(232, 226, 214)";
-  ctx.fillText(main, x, byBox + (preview.rollModeText ? 9 : 11));
 
-  if (preview.rollModeText) {
-    ctx.font = subFont;
+  ctx.save();
+  ctx.textAlign = "center";
+  ctx.textBaseline = "top";
+  ctx.shadowColor = "rgba(0,0,0,0.9)";
+  ctx.shadowBlur = 5;
+
+  let topY = y - r - (modeLine ? 38 : 26);
+
+  ctx.font = "700 11px Source Sans 3, Segoe UI, sans-serif";
+  ctx.fillStyle = accent;
+  ctx.fillText(main, x, topY);
+  topY += 13;
+
+  if (modeLine) {
+    ctx.font = "600 9px Source Sans 3, Segoe UI, sans-serif";
     ctx.fillStyle =
       preview.rollMode === "advantage"
         ? "rgb(120, 180, 108)"
         : preview.rollMode === "disadvantage"
           ? "rgb(220, 150, 70)"
-          : "rgba(232, 226, 214, 0.75)";
-    ctx.fillText(preview.rollModeText, x, byBox + 21);
-  } else {
-    ctx.font = subFont;
-    ctx.fillStyle = "rgba(232, 226, 214, 0.7)";
-    ctx.fillText(sub, x, byBox + 18);
+          : "rgba(232, 226, 214, 0.82)";
+    ctx.fillText(modeLine, x, topY);
+    topY += 12;
   }
+
+  ctx.font = "600 10px Source Sans 3, Segoe UI, sans-serif";
+  ctx.fillStyle = "rgba(232, 226, 214, 0.88)";
+  ctx.fillText(detail, x, topY);
 
   ctx.restore();
 }

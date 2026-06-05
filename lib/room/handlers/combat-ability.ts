@@ -196,13 +196,13 @@ export async function executeRoomAbility(
   };
 
   if (action.selfTarget) {
-    const check = canUseAbility(attacker, action, turn);
+    const check = canUseAbility(attacker, action, turn, actor);
     if (!check.ok) return { ok: false, error: check.reason ?? "Habilidade inválida" };
   } else {
     if (!defenderTokenId) return { ok: false, error: "Alvo obrigatório" };
     const defender = room.scene.tokens.find((t) => t.id === defenderTokenId);
     if (!defender) return { ok: false, error: "Alvo não encontrado" };
-    const targetCheck = canAbilityTarget(attacker, defender, action, turn);
+    const targetCheck = canAbilityTarget(attacker, defender, action, turn, actor);
     if (!targetCheck.ok) return { ok: false, error: targetCheck.reason ?? "Alvo inválido" };
   }
 
