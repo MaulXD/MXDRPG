@@ -28,8 +28,8 @@
   position: absolute;
   left: 0;
   top: 0;
-  width: 168px;
-  height: 168px;
+  width: 252px;
+  height: 252px;
   transform: translate(-50%, -50%);
   border-radius: 50%;
   border: 1px dashed rgba(201, 169, 98, 0.22);
@@ -59,8 +59,8 @@
   left: 0;
   top: 0;
   transform: translate(-50%, -50%);
-  width: 76px;
-  height: 76px;
+  width: 114px;
+  height: 114px;
   border-radius: 50%;
   border: 2px solid rgba(201, 169, 98, 0.65);
   background: radial-gradient(circle at 35% 30%, rgba(32, 28, 24, 0.98), rgba(10, 9, 8, 0.96));
@@ -70,11 +70,11 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 0.12rem;
-  padding: 0.35rem;
+  gap: 0.18rem;
+  padding: 0.5rem;
   box-shadow:
-    0 10px 28px rgba(0, 0, 0, 0.5),
-    0 0 20px rgba(201, 169, 98, 0.12);
+    0 12px 32px rgba(0, 0, 0, 0.5),
+    0 0 24px rgba(201, 169, 98, 0.12);
   animation: tar-center-in 0.32s cubic-bezier(0.22, 1, 0.36, 1) both;
   transition:
     border-color 0.15s,
@@ -101,40 +101,47 @@
 
 .token-action-ring__center-name {
   font-family: var(--font-display);
-  font-size: 0.64rem;
+  font-size: 0.82rem;
   font-weight: 700;
   line-height: 1.1;
   text-align: center;
-  max-width: 68px;
+  max-width: 100px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .token-action-ring__center-hint {
-  font-size: 0.58rem;
+  font-size: 0.72rem;
   color: var(--accent-muted);
   font-variant-numeric: tabular-nums;
+  font-weight: 600;
 }
 
 .token-action-ring__slot {
   position: absolute;
   left: 0;
   top: 0;
-  width: 58px;
-  height: 58px;
+  width: 87px;
+  height: 87px;
   border-radius: 50%;
-  border: 1px solid rgba(201, 169, 98, 0.28);
-  background: radial-gradient(circle at 30% 25%, rgba(24, 22, 18, 0.95), rgba(12, 10, 8, 0.92));
+  border: 2px solid var(--tar-border, rgba(201, 169, 98, 0.35));
+  background: radial-gradient(
+    circle at 30% 25%,
+    var(--tar-bg-top, rgba(24, 22, 18, 0.95)),
+    var(--tar-bg-bottom, rgba(12, 10, 8, 0.92))
+  );
   color: var(--text);
   cursor: pointer;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 0.06rem;
-  padding: 0.22rem;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.42);
+  gap: 0.1rem;
+  padding: 0.3rem;
+  box-shadow:
+    0 10px 24px rgba(0, 0, 0, 0.42),
+    0 0 12px var(--tar-glow, transparent);
   opacity: 0;
   animation: tar-slot-in 0.36s cubic-bezier(0.22, 1, 0.36, 1) both;
   animation-delay: calc(0.04s + var(--tar-i, 0) * 0.045s);
@@ -143,6 +150,46 @@
     background 0.12s,
     transform 0.12s var(--ease-out),
     box-shadow 0.12s;
+}
+
+.token-action-ring__slot--walk {
+  --tar-border: rgba(107, 158, 90, 0.65);
+  --tar-bg-top: rgba(42, 62, 36, 0.92);
+  --tar-bg-bottom: rgba(18, 28, 16, 0.94);
+  --tar-glow: rgba(107, 158, 90, 0.22);
+  --tar-pa: #8fd478;
+}
+
+.token-action-ring__slot--run {
+  --tar-border: rgba(201, 169, 98, 0.7);
+  --tar-bg-top: rgba(72, 58, 28, 0.92);
+  --tar-bg-bottom: rgba(32, 24, 12, 0.94);
+  --tar-glow: rgba(201, 169, 98, 0.25);
+  --tar-pa: #e8c878;
+}
+
+.token-action-ring__slot--attack {
+  --tar-border: rgba(196, 92, 72, 0.7);
+  --tar-bg-top: rgba(72, 28, 24, 0.92);
+  --tar-bg-bottom: rgba(28, 12, 10, 0.94);
+  --tar-glow: rgba(196, 92, 72, 0.28);
+  --tar-pa: #f0a090;
+}
+
+.token-action-ring__slot--spell {
+  --tar-border: rgba(139, 111, 212, 0.72);
+  --tar-bg-top: rgba(48, 32, 72, 0.92);
+  --tar-bg-bottom: rgba(20, 14, 32, 0.94);
+  --tar-glow: rgba(139, 111, 212, 0.3);
+  --tar-pa: #c4a8ff;
+}
+
+.token-action-ring__slot--ability {
+  --tar-border: rgba(72, 168, 198, 0.72);
+  --tar-bg-top: rgba(24, 52, 62, 0.92);
+  --tar-bg-bottom: rgba(12, 24, 30, 0.94);
+  --tar-glow: rgba(72, 168, 198, 0.28);
+  --tar-pa: #88d8f0;
 }
 
 @keyframes tar-slot-in {
@@ -157,32 +204,41 @@
 }
 
 .token-action-ring__slot:hover:not(:disabled) {
-  border-color: var(--accent);
-  background: radial-gradient(circle at 30% 25%, rgba(56, 46, 32, 0.96), rgba(18, 14, 10, 0.94));
+  transform: translate(calc(-50% + var(--tar-x, 0px)), calc(-50% + var(--tar-y, 0px))) scale(1.06);
   box-shadow:
-    0 10px 22px rgba(0, 0, 0, 0.45),
-    0 0 14px rgba(201, 169, 98, 0.2);
+    0 12px 28px rgba(0, 0, 0, 0.48),
+    0 0 18px var(--tar-glow, rgba(201, 169, 98, 0.2));
   z-index: 2;
 }
 
 .token-action-ring__slot:disabled {
   opacity: 0.32;
   cursor: not-allowed;
-  filter: grayscale(0.35);
+  filter: grayscale(0.45);
 }
 
 .token-action-ring__glyph {
-  font-size: 1.15rem;
+  font-size: 1.55rem;
   line-height: 1;
-  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.4));
+  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.45));
 }
 
 .token-action-ring__label {
-  font-size: 0.5rem;
-  letter-spacing: 0.06em;
+  font-size: 0.58rem;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
-  color: var(--text-muted);
+  color: rgba(232, 226, 214, 0.82);
   line-height: 1;
+  font-weight: 600;
+}
+
+.token-action-ring__pa {
+  font-size: 0.62rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--tar-pa, var(--accent-muted));
+  line-height: 1;
+  letter-spacing: 0.02em;
 }
 
 @media (prefers-reduced-motion: reduce) {
