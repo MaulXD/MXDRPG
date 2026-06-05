@@ -187,6 +187,7 @@ export function HexBattlefield({
   const [mapImage, setMapImage] = useState<HTMLImageElement | null>(null);
   const [mapImgTick, setMapImgTick] = useState(0);
   const [dungeonLayer, setDungeonLayer] = useState<DungeonEditLayer>("floor");
+  const [dungeonModeOpen, setDungeonModeOpen] = useState(false);
   const [dungeonEditorActive, setDungeonEditorActive] = useState(false);
   const [dungeonTool, setDungeonTool] = useState<DungeonEditorTool>("wall");
   const [selectedDungeonObjectId, setSelectedDungeonObjectId] = useState<string | null>(null);
@@ -1112,6 +1113,7 @@ export function HexBattlefield({
         onSceneUpdated={(snap) => syncRoom(snap)}
         canEditScene={isRoomGm}
         dungeonLayer={dungeonLayer}
+        dungeonModeOpen={dungeonModeOpen}
         dungeonEditorActive={dungeonEditorActive}
         dungeonTool={dungeonTool}
         selectedDungeonObjectId={selectedDungeonObjectId}
@@ -1260,10 +1262,22 @@ export function HexBattlefield({
           onZoomOut={battlefieldView.zoomOut}
           onReset={battlefieldView.resetView}
           showDungeonEditor={isRoomGm}
-          dungeonEditorActive={dungeonMapEditing}
+          dungeonEditorActive={dungeonModeOpen || dungeonMapEditing}
           onToggleDungeonEditor={() => {
-            setDungeonLayer("objects");
-            setDungeonEditorActive((v) => !v);
+            setDungeonModeOpen((open) => {
+              if (!open) {
+                setDungeonLayer("floor");
+                setDungeonEditorActive(false);
+                requestAnimationFrame(() => {
+                  document
+                    .getElementById("vtt-dungeon-editor")
+                    ?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+                });
+              } else {
+                setDungeonEditorActive(false);
+              }
+              return !open;
+            });
           }}
         />
         <canvas

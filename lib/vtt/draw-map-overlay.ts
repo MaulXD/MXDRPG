@@ -1,5 +1,5 @@
 import type { Axial } from "@/lib/vtt/hex-math";
-import { axialToPixel, hexCorners } from "@/lib/vtt/hex-math";
+import { axialToPixel, hexCorners, hexDrawRadius } from "@/lib/vtt/hex-math";
 import { isHexVisibleToPlayer } from "@/lib/vtt/fog-of-war";
 import type { BattlePing } from "@/lib/vtt/types";
 import type { BattleScene } from "@/lib/vtt/types";
@@ -46,7 +46,7 @@ export function drawFogLayer(
     }
     const { x, y } = axialToPixel(cell.q, cell.r, hexSize, ox, oy);
     ctx.beginPath();
-    const corners = hexCorners(x, y, hexSize - 1);
+    const corners = hexCorners(x, y, hexDrawRadius(hexSize));
     ctx.moveTo(corners[0].x, corners[0].y);
     for (let i = 1; i < corners.length; i++) ctx.lineTo(corners[i].x, corners[i].y);
     ctx.closePath();

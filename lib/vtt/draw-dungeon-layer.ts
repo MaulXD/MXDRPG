@@ -1,5 +1,5 @@
 import type { Axial } from "@/lib/vtt/hex-math";
-import { axialToPixel, hexCorners } from "@/lib/vtt/hex-math";
+import { axialToPixel, hexCorners, hexDrawRadius } from "@/lib/vtt/hex-math";
 import { dungeonObjectsOf } from "@/lib/vtt/dungeon-layer";
 import type { CanvasLayout } from "@/lib/vtt/draw-battlefield";
 import type { BattleScene, DungeonObject } from "@/lib/vtt/types";
@@ -24,7 +24,7 @@ function drawHexCell(
 ): void {
   const { x, y } = axialToPixel(cell.q, cell.r, hexSize, ox, oy);
   ctx.beginPath();
-  const corners = hexCorners(x, y, hexSize - 2);
+  const corners = hexCorners(x, y, hexDrawRadius(hexSize));
   ctx.moveTo(corners[0].x, corners[0].y);
   for (let i = 1; i < corners.length; i++) ctx.lineTo(corners[i].x, corners[i].y);
   ctx.closePath();

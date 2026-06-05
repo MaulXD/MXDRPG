@@ -18,9 +18,12 @@ export type DungeonEditorTool = "wall" | "object" | "erase" | "move";
 export type DungeonEditLayer = "floor" | "objects" | "tokens";
 
 type Props = {
+  id?: string;
   roomId: string;
   scene: BattleScene;
   layer: DungeonEditLayer;
+  /** Modo masmorra aberto pelo botão 🏰 no mapa */
+  modeOpen?: boolean;
   active: boolean;
   tool: DungeonEditorTool;
   selectedObjectId: string | null;
@@ -32,9 +35,11 @@ type Props = {
 };
 
 export function DungeonEditorPanel({
+  id,
   roomId,
   scene,
   layer,
+  modeOpen = false,
   active,
   tool,
   selectedObjectId,
@@ -143,7 +148,10 @@ export function DungeonEditorPanel({
   ];
 
   return (
-    <div className="vtt-dungeon-panel">
+    <div
+      id={id}
+      className={`vtt-dungeon-panel${modeOpen ? " vtt-dungeon-panel--open" : ""}`}
+    >
       <div className="vtt-dungeon-panel-head">
         <p className="vtt-eyebrow" style={{ margin: 0 }}>
           Editor de masmorras
@@ -175,6 +183,12 @@ export function DungeonEditorPanel({
       </div>
 
       <p className="vtt-combat-hint">{layerTabs.find((t) => t.id === layer)?.hint}</p>
+
+      {layer !== "floor" ? (
+        <p className="vtt-dungeon-floor-pointer">
+          Fundo do mapa: aba <button type="button" className="vtt-dungeon-floor-link" disabled={busy} onClick={() => onLayerChange("floor")}>1 · Piso</button> → <strong>Subir imagem</strong>
+        </p>
+      ) : null}
 
       {layer === "objects" && active ? (
         <p className="vtt-dungeon-active-hint">
@@ -221,12 +235,14 @@ export function DungeonEditorPanel({
       ) : null}
 
       {layer === "floor" ? (
-      <div className="vtt-dungeon-layer">
-        <p className="vtt-eyebrow">Imagem de piso</p>
+      <div className="vtt-dungeon-layer vtt-dungeon-layer--floor">
+        <p className="vtt-eyebrow">Camada 1 — imagem de piso (fundo)</p>
         {hasFloorImage ? (
-          <p className="vtt-dungeon-floor-status">Fundo ativo no hex — ajuste escala/offset se precisar.</p>
+          <p className="vtt-dungeon-floor-status">✓ Fundo ativo abaixo do grid — ajuste escala/offset se precisar.</p>
         ) : (
-          <p className="vtt-combat-hint">Suba uma imagem ou cole uma URL para usar como fundo do tabuleiro.</p>
+          <p className="vtt-dungeon-floor-callout">
+            Envie um mapa (JPG/PNG/WebP) ou cole uma URL. A imagem fica <em>atrás</em> dos hexágonos.
+          </p>
         )}
         <input
           ref={fileRef}
@@ -242,11 +258,11 @@ export function DungeonEditorPanel({
         <div className="vtt-dungeon-floor-actions">
           <button
             type="button"
-            className="vtt-btn"
+            className="vtt-btn vtt-btn--floor-upload"
             disabled={busy}
             onClick={() => fileRef.current?.click()}
           >
-            Subir imagem
+            ↑ Subir imagem de fundo
           </button>
           <button
             type="button"
