@@ -17,17 +17,23 @@ import {
   drawTokenIdentityRings,
   drawTokenPlaceholder,
 } from "@/lib/vtt/token-canvas";
+import type { TargetCombatPreview } from "@/lib/combat/hit-chance";
 import {
   drawAttackableHint,
   drawAttackTargetFocus,
+  drawTargetCombatPreviewLabel,
   drawTurnActiveIndicator,
 } from "@/lib/vtt/draw-token-animations";
 import { drawTokenEffectBadges } from "@/lib/vtt/draw-token-effects";
 import {
-  drawTokenHpArc,
+  drawTokenDefeatedOverlay,
+  drawTokenDefeatedSkull,
   drawTokenHpLabel,
+  drawTokenHpSegments,
   hpBarColor,
   hpRatio,
+  hpRingLayout,
+  isTokenDefeated,
   type TokenHpDisplay,
 } from "@/lib/vtt/token-hp-display";
 import { isTargetMode, type TokenActionMode } from "@/lib/vtt/action-mode";
@@ -255,6 +261,7 @@ type TokenDrawParams = {
   turnActiveId: string | null;
   attackableIds: Set<string>;
   hoverAttackTargetId: string | null;
+  attackTargetPreview: TargetCombatPreview | null;
   hoverTurnMoveTokenId: string | null;
   tokenAnimTimeSec: number;
   tokenFlash: { tokenId: string; kind: TokenFlashKind } | null;
@@ -276,6 +283,7 @@ export function drawTokensLayer(ctx: CanvasRenderingContext2D, p: TokenDrawParam
 
     if (creatureSize !== "small" && creatureSize !== "medium") {
       ctx.save();
+      const isLargeTriangle = creatureSize === "large";
       for (const hex of occupiedHexes(pos, creatureSize)) {
         const { x: hx, y: hy } = axialToPixel(hex.q, hex.r, size, layout.ox, layout.oy);
         const corners = hexCorners(hx, hy, size * 0.92);
@@ -283,10 +291,10 @@ export function drawTokensLayer(ctx: CanvasRenderingContext2D, p: TokenDrawParam
         ctx.moveTo(corners[0].x, corners[0].y);
         for (let i = 1; i < corners.length; i++) ctx.lineTo(corners[i].x, corners[i].y);
         ctx.closePath();
-        ctx.fillStyle = "rgba(255,255,255,0.04)";
+        ctx.fillStyle = isLargeTriangle ? "rgba(255,255,255,0.07)" : "rgba(255,255,255,0.04)";
         ctx.fill();
-        ctx.strokeStyle = "rgba(201,169,98,0.22)";
-        ctx.lineWidth = 1;
+        ctx.strokeStyle = isLargeTriangle ? "rgba(201,169,98,0.38)" : "rgba(201,169,98,0.22)";
+        ctx.lineWidth = isLargeTriangle ? 1.35 : 1;
         ctx.stroke();
       }
       ctx.restore();
@@ -294,6 +302,8 @@ export function drawTokensLayer(ctx: CanvasRenderingContext2D, p: TokenDrawParam
     const img = p.images.get(token.id);
     const focus = p.focusByTokenId.get(token.id) ?? DEFAULT_PORTRAIT_FOCUS;
     const ringStyle = resolveTokenRing(token, playerActorIds);
+    const hpLayout = hpRingLayout(r);
+    const defeated = isTokenDefeated(token);
 
     if (token.id === p.turnActiveId) {
       drawTurnActiveIndicator(ctx, x, y, r, p.tokenAnimTimeSec);
@@ -302,21 +312,29 @@ export function drawTokensLayer(ctx: CanvasRenderingContext2D, p: TokenDrawParam
     drawTokenDropShadow(ctx, x, y, r);
 
     if (img?.complete && img.naturalWidth > 0) {
-      drawCircularTokenImage(ctx, img, x, y, r, focus);
+      drawCircularTokenImage(ctx, img, x, y, hpLayout.contentR, focus);
     } else {
-      drawTokenPlaceholder(ctx, x, y, r, token.color, token.name);
+      drawTokenPlaceholder(ctx, x, y, hpLayout.contentR, token.color, token.name);
     }
 
-    drawTokenIdentityRings(ctx, x, y, r, ringStyle);
+    if (defeated) {
+      drawTokenDefeatedOverlay(ctx, x, y, hpLayout.contentR);
+    }
 
     const hpVis = p.tokenHpDisplay?.get(token.id);
     if (hpVis?.bar && token.vidaMax != null && token.vida != null) {
       const ratio = hpRatio(token);
       const color = hpBarColor(ratio);
-      drawTokenHpArc(ctx, x, y, r, ratio, color);
+      drawTokenHpSegments(ctx, x, y, hpLayout, ratio, color);
       if (hpVis.numeric) {
         drawTokenHpLabel(ctx, x, y, r, token, color);
       }
+    }
+
+    drawTokenIdentityRings(ctx, x, y, hpLayout.identityBase, ringStyle);
+
+    if (defeated) {
+      drawTokenDefeatedSkull(ctx, x, y, r);
     }
 
     if (p.tokenFlash?.tokenId === token.id) {
@@ -344,6 +362,9 @@ export function drawTokensLayer(ctx: CanvasRenderingContext2D, p: TokenDrawParam
     if (p.attackableIds.has(token.id)) {
       if (token.id === p.hoverAttackTargetId) {
         drawAttackTargetFocus(ctx, x, y, r, p.tokenAnimTimeSec);
+        if (p.attackTargetPreview) {
+          drawTargetCombatPreviewLabel(ctx, x, y, r, p.attackTargetPreview);
+        }
       } else {
         drawAttackableHint(ctx, x, y, r, p.tokenAnimTimeSec);
       }

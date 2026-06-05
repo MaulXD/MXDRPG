@@ -51,14 +51,14 @@ function axialDiskRadius(size: CreatureSize): number {
   }
 }
 
-/** Grande: linha de 3 hex (centro + opostos). */
+/** Grande: cluster triangular de 3 hex (âncora + dois vizinhos adjacentes entre si). */
 function largeOccupiedHexes(anchor: Axial): Axial[] {
-  const forward = HEX_DIRECTIONS[0];
-  const back = HEX_DIRECTIONS[3];
+  const a = HEX_DIRECTIONS[0];
+  const b = HEX_DIRECTIONS[1];
   return [
     anchor,
-    { q: anchor.q + forward.q, r: anchor.r + forward.r },
-    { q: anchor.q + back.q, r: anchor.r + back.r },
+    { q: anchor.q + a.q, r: anchor.r + a.r },
+    { q: anchor.q + b.q, r: anchor.r + b.r },
   ];
 }
 
@@ -136,7 +136,7 @@ export function tokenAxialDistance(
 export const TOKEN_RADIUS_RATIO_BY_SIZE: Record<CreatureSize, number> = {
   small: 0.38,
   medium: 0.48,
-  large: 1.02,
+  large: 0.92,
   huge: 1.48,
   gargantuan: 2.42,
   colossal: 3.35,

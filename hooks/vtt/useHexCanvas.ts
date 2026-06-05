@@ -25,6 +25,7 @@ import type { BattlePing } from "@/lib/vtt/types";
 import type { TokenFlashKind } from "@/lib/vtt/draw-battlefield";
 import { isTargetMode, type TokenActionMode } from "@/lib/vtt/action-mode";
 import type { MoveCheck } from "@/lib/vtt/movement";
+import type { TargetCombatPreview } from "@/lib/combat/hit-chance";
 import type { TokenHpDisplay } from "@/lib/vtt/token-hp-display";
 import type { BattleScene } from "@/lib/vtt/types";
 
@@ -50,6 +51,7 @@ export type HexCanvasDrawState = {
   turnActiveId: string | null;
   attackableIds: Set<string>;
   hoverAttackTargetId: string | null;
+  attackTargetPreview: TargetCombatPreview | null;
   hoverTurnMoveTokenId: string | null;
   tokenFlash: { tokenId: string; kind: TokenFlashKind } | null;
   visibleHexSet: Set<string> | null;
@@ -157,6 +159,7 @@ export function useHexCanvas(
       turnActiveId: s.turnActiveId,
       attackableIds: s.attackableIds,
       hoverAttackTargetId: s.hoverAttackTargetId,
+      attackTargetPreview: s.attackTargetPreview,
       hoverTurnMoveTokenId: s.hoverTurnMoveTokenId,
       tokenAnimTimeSec: tokenAnimTimeSecRef.current,
       tokenFlash: s.tokenFlash,

@@ -2,12 +2,15 @@ import { canManageRoom } from "@/lib/auth/room-access";
 import type { SessionUser } from "@/lib/auth/types";
 import { isMonsterToken } from "@/lib/room/settings";
 import type { RoomActor } from "@/lib/room/types";
+import { strokeEffectIcon } from "@/lib/vtt/token-effect-icons";
 import type { BattleToken } from "@/lib/vtt/types";
 
 export type TokenHpDisplay = {
   bar: boolean;
   numeric: boolean;
 };
+
+export const HP_SEGMENT_COUNT = 10;
 
 function lerp(a: number, b: number, t: number): number {
   return a + (b - a) * t;
@@ -24,21 +27,36 @@ function lerpRgb(
   return `rgb(${r},${g},${bl})`;
 }
 
-/** Verde musgo → amarelo-oliva → vermelho → preto (sem neon). */
+/** Verde (cheio) → vermelho (crítico). */
 export function hpBarColor(ratio: number): string {
   const t = Math.max(0, Math.min(1, ratio));
-  if (t <= 0) return "#141210";
-  if (t <= 0.2) return lerpRgb([20, 16, 14], [110, 38, 32], t / 0.2);
-  if (t <= 0.45) return lerpRgb([110, 38, 32], [168, 88, 36], (t - 0.2) / 0.25);
-  if (t <= 0.65) return lerpRgb([168, 88, 36], [156, 132, 48], (t - 0.45) / 0.2);
-  if (t <= 0.85) return lerpRgb([156, 132, 48], [72, 108, 62], (t - 0.65) / 0.2);
-  return lerpRgb([72, 108, 62], [88, 124, 76], (t - 0.85) / 0.15);
+  if (t <= 0) return "rgb(48, 42, 40)";
+  return lerpRgb([196, 48, 42], [72, 168, 88], t);
 }
 
 export function hpRatio(token: BattleToken): number {
   if (token.vidaMax == null || token.vidaMax <= 0) return 1;
   const v = token.vida ?? token.vidaMax;
   return Math.max(0, Math.min(1, v / token.vidaMax));
+}
+
+export function isTokenDefeated(token: BattleToken): boolean {
+  if (token.vidaMax == null) return false;
+  return (token.vida ?? 0) <= 0;
+}
+
+/** Raio do retrato + anel de vida segmentado + base do anel de identidade. */
+export function hpRingLayout(tokenR: number): {
+  width: number;
+  contentR: number;
+  trackR: number;
+  identityBase: number;
+} {
+  const width = Math.max(4.5, tokenR * 0.14);
+  const contentR = Math.max(tokenR * 0.5, tokenR - width - 2.5);
+  const trackR = tokenR - width / 2;
+  const identityBase = tokenR + width / 2 + 1.5;
+  return { width, contentR, trackR, identityBase };
 }
 
 function isPlayerCharacterToken(token: BattleToken): boolean {
@@ -72,64 +90,116 @@ export function resolveTokenHpDisplay(
   }
 
   if (isMonsterToken(token)) {
-    if (opts.showMonsterHpToPlayers) {
-      return { bar: true, numeric: opts.hovered };
+    if (opts.showMonsterHpToPlayers || isTokenDefeated(token)) {
+      return { bar: true, numeric: opts.hovered || isTokenDefeated(token) };
     }
     return { bar: false, numeric: false };
   }
 
-  if (isPlayerCharacterToken(token) && opts.hovered) {
+  if (isPlayerCharacterToken(token) && (opts.hovered || isTokenDefeated(token))) {
     return { bar: true, numeric: true };
   }
 
   return { bar: false, numeric: false };
 }
 
-/** Anel interno completo ao redor do token (vida preenche no sentido horário a partir da base). */
-export function drawTokenHpArc(
+/** Anel segmentado (10 partes) na borda do token — referência UI gamificada. */
+export function drawTokenHpSegments(
   ctx: CanvasRenderingContext2D,
   x: number,
   y: number,
-  tokenR: number,
+  layout: ReturnType<typeof hpRingLayout>,
   ratio: number,
   color: string
 ): void {
-  const lineWidth = 4;
-  const ringR = Math.max(tokenR * 0.78, tokenR - 7);
   const clamped = Math.max(0, Math.min(1, ratio));
-  const startA = Math.PI / 2;
-  const sweep = Math.PI * 2 * clamped;
-  const fillEnd = startA + sweep;
+  const filled = Math.round(clamped * HP_SEGMENT_COUNT);
+  const segAngle = (Math.PI * 2) / HP_SEGMENT_COUNT;
+  const gap = 0.1;
+  const emptyColor = "rgba(36, 34, 32, 0.92)";
+  const startBase = -Math.PI / 2;
 
   ctx.save();
   ctx.lineCap = "butt";
 
-  ctx.beginPath();
-  ctx.arc(x, y, ringR, 0, Math.PI * 2);
-  ctx.strokeStyle = "rgba(0,0,0,0.92)";
-  ctx.lineWidth = lineWidth + 2.5;
-  ctx.stroke();
+  for (let i = 0; i < HP_SEGMENT_COUNT; i++) {
+    const a0 = startBase + i * segAngle + gap / 2;
+    const a1 = a0 + segAngle - gap;
+    const isFilled = i < filled;
 
-  ctx.beginPath();
-  ctx.arc(x, y, ringR, 0, Math.PI * 2);
-  ctx.strokeStyle = "rgba(28,24,20,0.96)";
-  ctx.lineWidth = lineWidth;
-  ctx.stroke();
-
-  if (clamped > 0.002) {
     ctx.beginPath();
-    ctx.arc(x, y, ringR, startA, fillEnd);
-    ctx.strokeStyle = color;
-    ctx.lineWidth = lineWidth;
+    ctx.arc(x, y, layout.trackR, a0, a1);
+    ctx.strokeStyle = "rgba(0,0,0,0.85)";
+    ctx.lineWidth = layout.width + 2;
     ctx.stroke();
 
     ctx.beginPath();
-    ctx.arc(x, y, ringR, startA, fillEnd);
-    ctx.strokeStyle = "rgba(0,0,0,0.35)";
-    ctx.lineWidth = lineWidth - 1.5;
+    ctx.arc(x, y, layout.trackR, a0, a1);
+    ctx.strokeStyle = isFilled ? color : emptyColor;
+    ctx.lineWidth = layout.width;
     ctx.stroke();
+
+    if (isFilled) {
+      ctx.save();
+      ctx.shadowColor = color;
+      ctx.shadowBlur = 4;
+      ctx.beginPath();
+      ctx.arc(x, y, layout.trackR, a0, a1);
+      ctx.strokeStyle = color;
+      ctx.lineWidth = layout.width - 0.5;
+      ctx.stroke();
+      ctx.restore();
+    }
   }
 
+  ctx.restore();
+}
+
+/** Escurece o retrato de token derrotado. */
+export function drawTokenDefeatedOverlay(
+  ctx: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  contentR: number
+): void {
+  ctx.save();
+  ctx.beginPath();
+  ctx.arc(x, y, contentR, 0, Math.PI * 2);
+  ctx.fillStyle = "rgba(0, 0, 0, 0.58)";
+  ctx.fill();
+  ctx.beginPath();
+  ctx.arc(x, y, contentR, 0, Math.PI * 2);
+  ctx.strokeStyle = "rgba(80, 72, 68, 0.75)";
+  ctx.lineWidth = 1.5;
+  ctx.stroke();
+  ctx.restore();
+}
+
+/** Caveira ao lado do token — status Morto. */
+export function drawTokenDefeatedSkull(
+  ctx: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  tokenR: number
+): void {
+  const size = 22;
+  const cx = x + tokenR + 12;
+  const cy = y - tokenR * 0.15;
+  const half = size / 2;
+
+  ctx.save();
+  ctx.shadowColor = "rgba(0,0,0,0.8)";
+  ctx.shadowBlur = 5;
+  ctx.fillStyle = "rgba(18, 14, 12, 0.94)";
+  ctx.strokeStyle = "rgba(196, 48, 42, 0.9)";
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.roundRect(cx - half, cy - half, size, size, 5);
+  ctx.fill();
+  ctx.stroke();
+  ctx.shadowColor = "transparent";
+
+  strokeEffectIcon(ctx, cx, cy, 14, "skull", "rgb(232, 210, 200)", 2);
   ctx.restore();
 }
 
@@ -144,7 +214,7 @@ export function drawTokenHpLabel(
 ): void {
   if (token.vidaMax == null || token.vida == null) return;
 
-  const label = `${token.vida}/${token.vidaMax}`;
+  const label = isTokenDefeated(token) ? "Morto" : `${token.vida}/${token.vidaMax}`;
   const by = y + tokenR + 14;
 
   ctx.save();
@@ -157,20 +227,14 @@ export function drawTokenHpLabel(
   const byBox = by - bh / 2;
 
   ctx.fillStyle = "rgba(10, 10, 8, 0.94)";
-  ctx.strokeStyle = "rgba(0,0,0,0.9)";
+  ctx.strokeStyle = isTokenDefeated(token) ? "rgba(196, 48, 42, 0.85)" : "rgba(0,0,0,0.9)";
   ctx.lineWidth = 1.5;
   ctx.beginPath();
   ctx.roundRect(bx, byBox, tw, bh, 3);
   ctx.fill();
   ctx.stroke();
 
-  ctx.strokeStyle = "rgba(48,44,38,0.9)";
-  ctx.lineWidth = 1;
-  ctx.beginPath();
-  ctx.roundRect(bx + 0.5, byBox + 0.5, tw - 1, bh - 1, 2);
-  ctx.stroke();
-
-  ctx.fillStyle = color;
+  ctx.fillStyle = isTokenDefeated(token) ? "rgb(220, 120, 100)" : color;
   ctx.fillText(label, x, by + 0.5);
   ctx.restore();
 }
