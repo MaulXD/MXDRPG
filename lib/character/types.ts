@@ -58,8 +58,12 @@ export type CharacterSheet = {
   biography: string;
   /** Retrato na ficha (Foundry: Actor artwork) */
   portraitUrl?: string | null;
-  /** Ponto focal do retrato/token (0–1) */
+  /** Ponto focal do retrato (0–1) */
   portraitFocus?: import("@/lib/media/portrait-focus").PortraitFocus | null;
+  /** Enquadramento da capa larga (fallback: portraitFocus) */
+  coverFocus?: import("@/lib/media/portrait-focus").PortraitFocus | null;
+  /** Enquadramento do token na mesa (fallback: portraitFocus) */
+  tokenFocus?: import("@/lib/media/portrait-focus").PortraitFocus | null;
   /** Gerado automaticamente do retrato + foco */
   tokenImageUrl?: string | null;
   identity: CharacterIdentity;

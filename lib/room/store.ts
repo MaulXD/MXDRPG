@@ -28,6 +28,7 @@ export { executeRoomAttack, type AttackExecuteResult } from "./handlers/combat-a
 export { executeRoomAbility, type AbilityExecuteResult } from "./handlers/combat-ability";
 export { executeRoomAreaSpell } from "./handlers/combat-area";
 export { executeGmCombatAction, type GmCombatAction } from "./handlers/combat-gm";
+export { executeGmActorProgress, type GmActorProgressAction } from "./handlers/gm-actor-progress";
 export { addRoomPing } from "./handlers/ping";
 export { patchRoomScene, revealRoomHex, type ScenePatch } from "./handlers/scene";
 export { patchRoomSettings, type RoomSettingsPatch } from "./handlers/settings";

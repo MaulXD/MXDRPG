@@ -71,6 +71,8 @@ export function buildCharacterFromWizard(
     portraitUrl: safeDraft.portraitUrl ?? null,
     tokenImageUrl: safeDraft.tokenImageUrl ?? null,
     portraitFocus: safeDraft.portraitFocus ?? null,
+    coverFocus: safeDraft.coverFocus ?? safeDraft.portraitFocus ?? null,
+    tokenFocus: safeDraft.tokenFocus ?? safeDraft.portraitFocus ?? null,
     identity: {
       nivel: 1,
       xpTotal: xpTotalForLevel(1),

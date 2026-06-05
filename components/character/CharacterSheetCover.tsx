@@ -1,6 +1,6 @@
 import {
   portraitFocusToImgStyle,
-  sanitizePortraitFocus,
+  resolveCoverFocus,
   type PortraitFocus,
 } from "@/lib/media/portrait-focus";
 import type { CharacterIdentity } from "@/lib/character/types";
@@ -11,6 +11,7 @@ type Props = {
   identity: CharacterIdentity;
   portraitUrl?: string | null;
   portraitFocus?: PortraitFocus | null;
+  coverFocus?: PortraitFocus | null;
 };
 
 function initials(name: string): string {
@@ -20,8 +21,8 @@ function initials(name: string): string {
   return `${parts[0][0] ?? ""}${parts[parts.length - 1][0] ?? ""}`.toUpperCase();
 }
 
-export function CharacterSheetCover({ name, identity, portraitUrl, portraitFocus }: Props) {
-  const focus = sanitizePortraitFocus(portraitFocus);
+export function CharacterSheetCover({ name, identity, portraitUrl, portraitFocus, coverFocus }: Props) {
+  const focus = resolveCoverFocus({ portraitFocus, coverFocus });
   const meta = [
     `Nv ${identity.nivel}`,
     identity.raca,

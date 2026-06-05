@@ -8,12 +8,12 @@ import {
   validateWizardDraft,
 } from "@/lib/character/build-from-wizard";
 import {
-  ANTECEDENTE_OPTIONS,
   EMPTY_WIZARD_DRAFT,
   type CharacterWizardDraft,
 } from "@/lib/character/wizard-types";
 import {
   ATTR_ORDER,
+  POINT_BUY_MAX_BEFORE_RACIAL,
   POINT_BUY_POOL,
   attributesAfterRacial,
   canDecreasePointBuy,
@@ -24,6 +24,9 @@ import {
   totalPointBuyCost,
   validatePointBuy,
 } from "@/lib/character/point-buy";
+import { ANTECEDENTE_META } from "@/lib/character/wizard-meta";
+import { buildWizardPreview } from "@/lib/character/wizard-preview";
+import { listSubclassOptions } from "@/lib/character/level-up-ui";
 import {
   ATTRIBUTE_LABELS,
   CLASS_LIST,
@@ -93,6 +96,11 @@ export function CharacterCreationWizard({
   );
 
   const previewHp = hpMaxFor(draft.classe, 1, attributeMod(finalAttrs.constituicao));
+  const previewLines = useMemo(() => buildWizardPreview(draft), [draft]);
+  const subclassTracks = useMemo(
+    () => listSubclassOptions(draft.classe),
+    [draft.classe]
+  );
 
   useEffect(() => {
     if (step !== 3 || !isUnsetPointBuy(draft.pointBuy)) return;
@@ -113,7 +121,7 @@ export function CharacterCreationWizard({
         ...d,
         pointBuy: {
           ...d.pointBuy,
-          [key]: Math.max(8, Math.min(15, cur + delta)),
+          [key]: Math.max(8, Math.min(POINT_BUY_MAX_BEFORE_RACIAL, cur + delta)),
         },
       };
     });
@@ -249,6 +257,7 @@ export function CharacterCreationWizard({
         ))}
       </nav>
 
+      <div className="char-wizard-body">
       <div className="glass char-wizard-panel">
         {step === 0 ? (
           <>
@@ -302,20 +311,31 @@ export function CharacterCreationWizard({
               ))}
             </div>
             {draft.raca === "Meio-Humano" ? (
-              <label>
-                Linhagem
-                <select
-                  value={draft.linhagem ?? ""}
-                  onChange={(e) => patch({ linhagem: e.target.value || null })}
-                >
-                  <option value="">— escolher —</option>
+              <>
+                <p className="char-wizard-meta" style={{ marginBottom: "0.5rem" }}>
+                  Escolha a linhagem — define bônus de atributo e traço permanente.
+                </p>
+                <div className="char-wizard-pick-grid" role="listbox" aria-label="Linhagem">
                   {(raceDef?.linhagens ?? []).map((l) => (
-                    <option key={l.id} value={l.id}>
-                      {l.id}
-                    </option>
+                    <button
+                      key={l.id}
+                      type="button"
+                      role="option"
+                      aria-selected={draft.linhagem === l.id}
+                      className={`char-wizard-pick ${draft.linhagem === l.id ? "char-wizard-pick--on" : ""}`}
+                      onClick={() => patch({ linhagem: l.id })}
+                    >
+                      <strong>{l.id}</strong>
+                      <span>{l.trait}</span>
+                      <span>
+                        {Object.entries(l.attributeBonus)
+                          .map(([k, v]) => `${ATTRIBUTE_LABELS[k as keyof typeof ATTRIBUTE_LABELS]} +${v}`)
+                          .join(" · ")}
+                      </span>
+                    </button>
                   ))}
-                </select>
-              </label>
+                </div>
+              </>
             ) : null}
             {raceDef ? (
               <ul className="char-wizard-notes">
@@ -354,11 +374,34 @@ export function CharacterCreationWizard({
               ))}
             </div>
             {classDef ? (
-              <ul className="char-wizard-notes">
-                <li>{classDef.proficiencies}</li>
-                <li>{classDef.dietBonus}</li>
-                <li>Subclasse (Dieta Marcial) no nível 2 — na ficha depois.</li>
-              </ul>
+              <>
+                <ul className="char-wizard-notes">
+                  <li>
+                    <strong>Proficiências:</strong> {classDef.proficiencies}
+                  </li>
+                  <li>
+                    <strong>Dieta base:</strong> {classDef.dietBonus}
+                  </li>
+                  <li>
+                    <strong>Nível 2:</strong> escolha uma Dieta Marcial (subclasse) — trilhas abaixo.
+                  </li>
+                </ul>
+                {subclassTracks.length ? (
+                  <div className="char-wizard-tracks">
+                    <p className="char-wizard-meta">Caminhos disponíveis no nível 2</p>
+                    {subclassTracks.map((t) => (
+                      <article key={t.id} className="char-wizard-track">
+                        <strong>{t.subclass}</strong>
+                        <span>{t.specialty}</span>
+                        <span>Dieta: {t.diet}</span>
+                        <small>
+                          Talentos nv 4, 8, 12, 16 · ascensão nv 20
+                        </small>
+                      </article>
+                    ))}
+                  </div>
+                ) : null}
+              </>
             ) : null}
           </>
         ) : null}
@@ -434,19 +477,25 @@ export function CharacterCreationWizard({
         {step === 4 ? (
           <>
             <h2>Antecedente</h2>
-            <label>
-              Antecedente
-              <select
-                value={draft.antecedente}
-                onChange={(e) => patch({ antecedente: e.target.value })}
-              >
-                {ANTECEDENTE_OPTIONS.map((a) => (
-                  <option key={a} value={a}>
-                    {a}
-                  </option>
-                ))}
-              </select>
-            </label>
+            <p className="char-wizard-meta">
+              O antecedente define perícias, equipamento e contatos iniciais na ficha.
+            </p>
+            <div className="char-wizard-pick-grid char-wizard-pick-grid--wide" role="listbox" aria-label="Antecedente">
+              {ANTECEDENTE_META.map((a) => (
+                <button
+                  key={a.id}
+                  type="button"
+                  role="option"
+                  aria-selected={draft.antecedente === a.id}
+                  className={`char-wizard-pick ${draft.antecedente === a.id ? "char-wizard-pick--on" : ""}`}
+                  onClick={() => patch({ antecedente: a.id })}
+                >
+                  <strong>{a.title}</strong>
+                  <span>{a.summary}</span>
+                  <span>Você ganha: {a.gains.join(" · ")}</span>
+                </button>
+              ))}
+            </div>
           </>
         ) : null}
 
@@ -457,6 +506,8 @@ export function CharacterCreationWizard({
               portraitUrl={draft.portraitUrl ?? null}
               tokenImageUrl={draft.tokenImageUrl ?? null}
               portraitFocus={draft.portraitFocus ?? null}
+              coverFocus={draft.coverFocus ?? null}
+              tokenFocus={draft.tokenFocus ?? null}
               onChange={(p) => patch(p)}
               onPendingChange={setPortraitPending}
             />
@@ -485,17 +536,17 @@ export function CharacterCreationWizard({
               <dt>Retrato</dt>
               <dd>{draft.portraitUrl ? "Sim" : "Depois"}</dd>
             </dl>
-            {classDef ? (
-              <ul className="char-wizard-notes">
-                <li>{classDef.proficiencies}</li>
-                <li>{classDef.dietBonus}</li>
-                {raceDef?.traits.slice(0, 2).map((t) => (
-                  <li key={t}>{t}</li>
-                ))}
-              </ul>
-            ) : null}
+            <dl className="char-wizard-preview-list">
+              {previewLines.map((line) => (
+                <div key={line.label} className="char-wizard-preview-row">
+                  <dt>{line.label}</dt>
+                  <dd>{line.value}</dd>
+                </div>
+              ))}
+            </dl>
             <p className="char-wizard-meta">
-              Fichas restantes nesta conta: {slotsLeft}
+              Ao criar, a ficha fica na sua conta e na mesa demo para testar. Fichas restantes:{" "}
+              {slotsLeft}
             </p>
           </>
         ) : null}
@@ -518,6 +569,32 @@ export function CharacterCreationWizard({
             </button>
           )}
         </div>
+      </div>
+
+      <aside className="glass char-wizard-preview" aria-label="Prévia da ficha">
+        <p className="char-wizard-meta" style={{ marginTop: 0 }}>
+          O que você terá
+        </p>
+        <h3 className="char-wizard-preview-title">
+          {draft.name.trim() || "Sem nome"}
+        </h3>
+        <p className="char-wizard-preview-sub">
+          {draft.raca}
+          {draft.linhagem ? ` · ${draft.linhagem}` : ""} · {draft.classe} · {draft.antecedente}
+        </p>
+        <dl className="char-wizard-preview-list">
+          <div className="char-wizard-preview-row">
+            <dt>Vida</dt>
+            <dd>{previewHp}</dd>
+          </div>
+          {previewLines.map((line) => (
+            <div key={line.label} className="char-wizard-preview-row">
+              <dt>{line.label}</dt>
+              <dd>{line.value}</dd>
+            </div>
+          ))}
+        </dl>
+      </aside>
       </div>
     </div>
   );

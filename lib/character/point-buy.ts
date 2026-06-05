@@ -4,7 +4,7 @@ import { getRace } from "@/lib/character/rules";
 /** Eldarin Cap. 10 — compra de pontos (base 8, pool 27). */
 export const POINT_BUY_POOL = 27;
 export const POINT_BUY_MIN = 8;
-export const POINT_BUY_MAX_BEFORE_RACIAL = 15;
+export const POINT_BUY_MAX_BEFORE_RACIAL = 16;
 
 const COST_TABLE: Record<number, number> = {
   8: 0,
@@ -15,6 +15,7 @@ const COST_TABLE: Record<number, number> = {
   13: 5,
   14: 7,
   15: 9,
+  16: 11,
 };
 
 export const ATTR_ORDER: AttributeKey[] = [
@@ -25,6 +26,18 @@ export const ATTR_ORDER: AttributeKey[] = [
   "sabedoria",
   "carisma",
 ];
+
+const CLASS_ATTR_PRIORITY: Record<string, AttributeKey[]> = {
+  Mago: ["inteligencia", "constituicao", "destreza", "sabedoria", "carisma", "forca"],
+  Artífice: ["inteligencia", "constituicao", "destreza", "sabedoria", "carisma", "forca"],
+  Clérigo: ["sabedoria", "constituicao", "carisma", "forca", "destreza", "inteligencia"],
+  Druida: ["sabedoria", "constituicao", "inteligencia", "destreza", "carisma", "forca"],
+  Ladino: ["destreza", "carisma", "constituicao", "inteligencia", "sabedoria", "forca"],
+  Bardo: ["carisma", "destreza", "constituicao", "sabedoria", "inteligencia", "forca"],
+  Patrulheiro: ["destreza", "sabedoria", "constituicao", "forca", "inteligencia", "carisma"],
+  Bárbaro: ["forca", "constituicao", "destreza", "sabedoria", "carisma", "inteligencia"],
+  Guerreiro: ["forca", "constituicao", "destreza", "sabedoria", "carisma", "inteligencia"],
+};
 
 export function pointBuyCost(score: number): number {
   return COST_TABLE[score] ?? 99;
@@ -49,67 +62,32 @@ export function defaultPointBuyScores(): Record<AttributeKey, number> {
   };
 }
 
-/** Distribuição sugerida (27 pts) por classe — Eldarin point-buy. */
-export function suggestedPointBuyForClass(classe: string): Record<AttributeKey, number> {
-  switch (classe) {
-    case "Mago":
-    case "Artífice":
-      return {
-        forca: 8,
-        destreza: 13,
-        constituicao: 14,
-        inteligencia: 15,
-        sabedoria: 12,
-        carisma: 10,
-      };
-    case "Clérigo":
-    case "Druida":
-      return {
-        forca: 8,
-        destreza: 12,
-        constituicao: 14,
-        inteligencia: 10,
-        sabedoria: 15,
-        carisma: 13,
-      };
-    case "Ladino":
-    case "Bardo":
-      return {
-        forca: 8,
-        destreza: 15,
-        constituicao: 12,
-        inteligencia: 10,
-        sabedoria: 10,
-        carisma: 14,
-      };
-    case "Patrulheiro":
-      return {
-        forca: 10,
-        destreza: 15,
-        constituicao: 14,
-        inteligencia: 10,
-        sabedoria: 12,
-        carisma: 8,
-      };
-    case "Bárbaro":
-      return {
-        forca: 15,
-        destreza: 12,
-        constituicao: 14,
-        inteligencia: 8,
-        sabedoria: 10,
-        carisma: 10,
-      };
-    default:
-      return {
-        forca: 15,
-        destreza: 14,
-        constituicao: 14,
-        inteligencia: 8,
-        sabedoria: 12,
-        carisma: 8,
-      };
+/** Gasta os 27 pontos seguindo prioridade da classe. */
+export function spendFullPointBuy(priorities: AttributeKey[]): Record<AttributeKey, number> {
+  const scores = defaultPointBuyScores();
+  let safety = 0;
+  while (totalPointBuyCost(scores) < POINT_BUY_POOL && safety < 500) {
+    safety++;
+    let improved = false;
+    const order = [...priorities, ...ATTR_ORDER];
+    for (const key of order) {
+      if (!canIncreasePointBuy(scores, key)) continue;
+      const inc = pointBuyIncreaseCost(scores, key);
+      if (totalPointBuyCost(scores) + inc <= POINT_BUY_POOL) {
+        scores[key] = (scores[key] ?? POINT_BUY_MIN) + 1;
+        improved = true;
+        if (totalPointBuyCost(scores) === POINT_BUY_POOL) break;
+      }
+    }
+    if (!improved) break;
   }
+  return scores;
+}
+
+/** Distribuição sugerida (27 pts) por classe — sempre gasta o pool inteiro. */
+export function suggestedPointBuyForClass(classe: string): Record<AttributeKey, number> {
+  const priorities = CLASS_ATTR_PRIORITY[classe] ?? CLASS_ATTR_PRIORITY.Guerreiro;
+  return spendFullPointBuy(priorities);
 }
 
 export function isUnsetPointBuy(scores: Record<AttributeKey, number>): boolean {

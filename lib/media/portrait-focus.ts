@@ -42,6 +42,18 @@ export function focusToObjectPosition(focus: PortraitFocus): string {
   return `${Math.round(f.x * 100)}% ${Math.round(f.y * 100)}%`;
 }
 
+export function resolveCoverFocus(
+  actor: { portraitFocus?: PortraitFocus | null; coverFocus?: PortraitFocus | null }
+): PortraitFocus | null {
+  return sanitizePortraitFocus(actor.coverFocus) ?? sanitizePortraitFocus(actor.portraitFocus);
+}
+
+export function resolveTokenFocus(
+  actor: { portraitFocus?: PortraitFocus | null; tokenFocus?: PortraitFocus | null }
+): PortraitFocus | null {
+  return sanitizePortraitFocus(actor.tokenFocus) ?? sanitizePortraitFocus(actor.portraitFocus);
+}
+
 export function portraitFocusToImgStyle(focus: PortraitFocus): CSSProperties {
   const f = normalizePortraitFocus(focus);
   const scale = f.scale ?? 1;

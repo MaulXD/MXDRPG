@@ -158,7 +158,14 @@ export async function patchRoomActor(
   patch: Partial<
     Pick<
       CharacterSheet,
-      "portraitUrl" | "tokenImageUrl" | "portraitFocus" | "name" | "biography" | "combatLoadout"
+      | "portraitUrl"
+      | "tokenImageUrl"
+      | "portraitFocus"
+      | "coverFocus"
+      | "tokenFocus"
+      | "name"
+      | "biography"
+      | "combatLoadout"
     >
   > & {
     identityPatch?: IdentityPatch;
@@ -572,6 +579,25 @@ export async function postRoomChat(
   if (!res.ok) {
     const err = (await res.json()) as { error?: string };
     throw new Error(err.error ?? "Falha ao enviar");
+  }
+  return res.json() as Promise<RoomSnapshot>;
+}
+
+export async function gmActorProgress(
+  roomId: string,
+  body:
+    | { action: "grant-xp"; actorId: string; amount: number }
+    | { action: "set-level"; actorId: string; level: number }
+): Promise<RoomSnapshot> {
+  const res = await fetch(`/api/room/${roomId}/gm/actor-progress`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    credentials: "same-origin",
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) {
+    const err = (await res.json()) as { error?: string };
+    throw new Error(err.error ?? "Falha ao ajustar progresso");
   }
   return res.json() as Promise<RoomSnapshot>;
 }
