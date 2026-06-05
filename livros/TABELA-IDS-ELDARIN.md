@@ -1,4 +1,4 @@
-# TABELA DE IDs — Eldarin v4.0
+﻿# TABELA DE IDs — Eldarin v4.0
 
 > Registro unificado de identificadores para mesa, VTT (`data/compendiums/`) e documentação.  
 > **Regenerar:** `python scripts/gen-tabela-ids.py`
@@ -376,7 +376,7 @@
 | OBJ-G15 | Bolha de Ar Fossilizada |
 | OBJ-G16 | Pedra de Ancora Gravitacional |
 | OBJ-G17 | Runa de Purificacao Fria |
-| OBJ-G18 | Bancada de Trinchar Improvisada |
+| OBJ-G18 | Bancada de Extração Improvisada |
 | OBJ-G19 | Sino de Alarme Enferrujado |
 | OBJ-G20 | Tunel com Broto de Veia nativo |
 | OBJ-B01-01 | Paralelepipedo Esfregadio |
@@ -877,9 +877,9 @@
 | equipamentos-poc-10 | Poção de Resistência ao Fogo | equipamento |
 | equipamentos-poc-11 | Poção de Resistência ao Gelo | equipamento |
 | equipamentos-poc-12 | Poção de Resistência ao Ácido | equipamento |
-| equipamentos-poc-13 | Elixir de Trinchar | equipamento |
-| equipamentos-poc-14 | Elixir de Harmonização | equipamento |
-| equipamentos-poc-15 | Tônico de Estômago de Ferro | equipamento |
+| equipamentos-poc-13 | Elixir de Extração | equipamento |
+| equipamentos-poc-14 | Elixir de Forrageio | equipamento |
+| equipamentos-poc-15 | Tônico de Fortitude | equipamento |
 | equipamentos-poc-16 | Soro de Mutação Estável | equipamento |
 | equipamentos-poc-17 | Destilado de Wyvern | equipamento |
 | equipamentos-poc-18 | Essência de Gelo Aromático | equipamento |
@@ -901,7 +901,7 @@
 | equipamentos-mun-10 | Virote Pesado (10) | equipamento |
 | equipamentos-mun-11 | Virote Perfurante (10) | equipamento |
 | equipamentos-mun-12 | Agulha de Zarabatana (10) | equipamento |
-| equipamentos-kit-de-trinchar | Kit de Trinchar | equipamento |
+| equipamentos-kit-de-trinchar | Kit de Extração | equipamento |
 | equipamentos-tocha-de-masmorra | Tocha de Masmorra | equipamento |
 | equipamentos-corda-de-seda-de-aranha | Corda de Seda de Aranha | equipamento |
 | equipamentos-kit-de-brasas-mágicas | Kit de Brasas Mágicas (6) | equipamento |

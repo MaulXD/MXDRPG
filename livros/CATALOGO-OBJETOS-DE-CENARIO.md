@@ -1,4 +1,4 @@
-# CATALOGO DE OBJETOS DE CENARIO — Eldarin v4.0
+﻿# CATALOGO DE OBJETOS DE CENARIO — Eldarin v4.0
 
 > Objetos para **VTT, mapa impresso ou teatro da mente**. Cada um tem **tipo**, **mecanica** e ligacao a **sobrevivencia** (flora P## / fauna cod. / bioma).  
 > Regras de empilhamento: `REGRAS-ECOLOGIA-DE-SOBREVIVENCIA.md`.
@@ -14,7 +14,7 @@
 | OBJ-G01 | Tunel Estreito (1,5m) | CH | Deslocamento -3m; combaté corpo a corpo com Vantagem para quem bloqueia | — |
 | OBJ-G02 | Ponte de Corda Podre | IN | DES CD 12 ao correr; falha = queda | Broto de Veia (#03): +2 no teste |
 | OBJ-G03 | Fogueira de Masmorra | PR | Descanso curto seguro; fumaca: +2 vs esporos 6h num raio de 3m | Coccao +1 proxima refeicao |
-| OBJ-G04 | Carcaca Esqueletica Antiga | RE | 1 Trinchar (CD 8); 1d4 racao seca OU pista de bioma | Raiz Valdrun (#33): osso sem -2 |
+| OBJ-G04 | Carcaca Esqueletica Antiga | RE | 1 Extração (CD 8); 1d4 racao seca OU pista de bioma | Raiz Valdrun (#33): osso sem -2 |
 | OBJ-G05 | Cristal de Eco | PE | Sabedoria CD 11 ou ouve emocao alheia 1 min | Capim Eco (#26): imune surpresa incorporeo |
 | OBJ-G06 | Altarete Quebrado | PR | Clérigo: +1 em ritual Pao; outros: SAB CD 10 medo leve | Erva-Sino (#04): +2 acordar |
 | OBJ-G07 | Deposito de Sal Branco | RE | 3 usos: preserva carne 48h ou +2 Estômago vs podridao | Folha Salmour (#05): sinergia gases |
@@ -28,7 +28,7 @@
 | OBJ-G15 | Bolha de Ar Fossilizada | RE | 1 uso: 10 min oxigenio puro (2 criaturas Medias) | **Nao substitui** Guelras; combo com #12 |
 | OBJ-G16 | Pedra de Ancora Gravitacional | IN | 3m raio: imune empurrar/voo forcado | Folha Abismo (#29): pressao |
 | OBJ-G17 | Runa de Purificacao Fria | PE | 1d8 radiante em mortos-vivos que tocam | Erva-Sino (#04) |
-| OBJ-G18 | Bancada de Trinchar Improvisada | PR | +2 Trinchar se limpa 10 min antes | Broto Veia (#03) |
+| OBJ-G18 | Bancada de Extração Improvisada | PR | +2 Extração se limpa 10 min antes | Broto Veia (#03) |
 | OBJ-G19 | Sino de Alarme Enferrujado | IN | Acao: alerta 60m; atrai predadores | — |
 | OBJ-G20 | Tunel com Broto de Veia nativo | RE | Coleta automatica 1x P03 se SAB CD 10 | P03 |
 
@@ -108,7 +108,7 @@
 |----|------|------|----------|---------------|
 | OBJ-B06-01 | Parede-Espelho | ME | Percepção passiva metade; 1d4 cortante ao tocar | Flor Espelho (#10) |
 | OBJ-B06-02 | Reflexo Falso (ilusao) | PE | INT CD 13 ou ataca aliado 1 vez | Assim. 045 Doppelganger |
-| OBJ-B06-03 | Cristal Vivo (veio) | RE | Coleta: P28 1x com Trinchar CD 14 | Cristal-Mel (#28) |
+| OBJ-B06-03 | Cristal Vivo (veio) | RE | Coleta: P28 1x com Extração CD 14 | Cristal-Mel (#28) |
 | OBJ-B06-04 | Camara de Luz Cegante | TE | Sem #10: Desvantagem ataques distancia 1 combaté | — |
 
 ---
@@ -179,7 +179,7 @@
 | OBJ-B12-01 | Teia Estrutural (parede) | CH | Terreno dificil; preso FOR CD 14 | Polen Matriarca (#36) |
 | OBJ-B12-02 | Ovo de Aranha (carruagem) | PR | Ruido alto: eclosao 1d4 filhotes | — |
 | OBJ-B12-03 | Casulo de Proteina | RE | 1 refeicao Comum se abrir CD 10 | Mel Xilema (#20) |
-| OBJ-B12-04 | Flor Narcotica (teia) | RE | P22 com Harmonização CD 12 | P22 |
+| OBJ-B12-04 | Flor Narcotica (teia) | RE | P22 com Forrageio CD 12 | P22 |
 | OBJ-B12-05 | Camada 2 — Bolsa Central | CH | So voo/planagem ou SAB CD 15 teia-viva | #35 Musgo Estelar |
 | OBJ-B12-06 | Nicho de Brasas (NPC) | RE | 1 Kit Brasas Magicas escondido | Calor de Panela |
 
@@ -278,7 +278,7 @@ Tipo **RE** = saqueavel (não e só decoracao). Ver `CATALOGO-TESOUROS-MINERAIS-
 
 | ID | Nome | Bioma | Saque |
 |----|------|-------|-------|
-| OBJ-R01 | Veio de Ferro Vulcanico | 4 | 3× MIN-01 (Trinchar pedra CD 12) |
+| OBJ-R01 | Veio de Ferro Vulcanico | 4 | 3× MIN-01 (Extração pedra CD 12) |
 | OBJ-R02 | Cranio-Gema Enterrado | 7 | TES-11 + 2× MIN-03 |
 | OBJ-R03 | Banco de Perolas Turvas | 2 | 2d4× MIN-10 |
 | OBJ-R04 | Estante-Tesouro (Arquivos) | 11 | TES-12 + ESP-19; armadilha INT CD 14 |

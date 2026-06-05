@@ -1,3 +1,4 @@
+import { migrateSubclassName } from "@/lib/character/legacy-names";
 import type { CharacterAttributes, CharacterSheet, CharacterIdentity } from "@/lib/character/types";
 import { parseCharacterTalents } from "@/lib/character/subclass-tracks";
 import { computeCulinary, hpMaxFor, attributeMod } from "@/lib/character/rules";
@@ -36,7 +37,7 @@ export function normalizeIdentity(identity: Partial<CharacterIdentity> & { nivel
     xpTotal: identity.xpTotal ?? defaultXpForLevel(identity.nivel),
     raca: identity.raca ?? "Humano",
     classe: identity.classe ?? "Guerreiro",
-    subclasse: identity.subclasse ?? null,
+    subclasse: migrateSubclassName(identity.subclasse ?? null) ?? null,
     linhagem: identity.linhagem ?? null,
     antecedente: identity.antecedente ?? "Explorador",
     talentos: parseCharacterTalents(identity.talentos),

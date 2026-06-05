@@ -1,4 +1,4 @@
-# CATÁLOGO — ARMAS, ARMADURAS, FORJA, MUNIÇÃO E POÇÕES — Eldarin v4.0
+﻿# CATÁLOGO — ARMAS, ARMADURAS, FORJA, MUNIÇÃO E POÇÕES — Eldarin v4.0
 
 > IDs canônicos · encantamento **+1 / +2 / +3** · forja mágica (Artífice) · VTT: `python scripts/gen-equipment-compendium.py`  
 > Índice geral: `TABELA-IDS-ELDARIN.md`
@@ -183,9 +183,9 @@ Cada linha em **+0 a +3** (80 entradas VTT). Encantamento soma **CA mágica** (n
 | POC-10 | Resistência ao Fogo | Res. fogo 1h |
 | POC-11 | Resistência ao Gelo | Res. gelo 1h |
 | POC-12 | Resistência ao Ácido | Res. ácido 1h |
-| POC-13 | Elixir de Trinchar | +2 Trinchar 8h |
-| POC-14 | Elixir de Harmonização | +2 Harmon 8h |
-| POC-15 | Tônico de Estômago de Ferro | Imune podridao leve 24h |
+| POC-13 | Elixir de Extração | +2 Extração 8h |
+| POC-14 | Elixir de Forrageio | +2 Harmon 8h |
+| POC-15 | Tônico de Fortitude | Imune podridao leve 24h |
 | POC-16 | Soro de Mutação Estavel | 1 mutação leve 8h |
 | POC-17 | Destilado de Wyvern | Arma +1d6 veneno, 5 ataques |
 | POC-18 | Essência de Gelo Aromático | Preserva ingrediente 72h |

@@ -447,7 +447,7 @@ export function CharacterCreationWizard({
                   </li>
                   <li>
                     <WizardHoverTip text={subclassTrackIntroTooltip()}>
-                      <strong>Nível 2:</strong> escolha uma Dieta Marcial (subclasse) — trilhas abaixo.
+                      <strong>Nível 2:</strong> escolha um Caminho de Assimilação (subclasse) — trilhas abaixo.
                     </WizardHoverTip>
                   </li>
                 </ul>

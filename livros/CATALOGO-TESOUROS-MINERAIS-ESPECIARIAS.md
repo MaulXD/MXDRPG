@@ -1,6 +1,6 @@
-# CATÁLOGO — MINERIOS, ESPECIARIAS E TESOUROS — Eldarin v4.0
+﻿# CATÁLOGO — MINERIOS, ESPECIARIAS E TESOUROS — Eldarin v4.0
 
-> Saque **alem** de ingredientes culinários (Trinchar). Valores em **po** (peças de ouro de Valdremor).  
+> Saque **alem** de ingredientes culinários (Extração). Valores em **po** (peças de ouro de Valdremor).  
 > Objetos de cenário: `CATALOGO-OBJETOS-DE-CENARIO.md` (tipo **RE**). Regras de mesa: Livro do Jogador **Cap. 5.6**.
 
 ---
@@ -9,15 +9,15 @@
 
 | Fonte | Teste / ação | Resultado |
 |-------|--------------|-----------|
-| **Monstro** | Trinchar **bem-sucedido** (CD da ficha) | Ingredientes (ficha) + **1 saque** da tabela 001–060 |
-| **Monstro (extra)** | Trinchar **5+ acima da CD** | +1 item (especiaria OU minério) |
+| **Monstro** | Extração **bem-sucedido** (CD da ficha) | Ingredientes (ficha) + **1 saque** da tabela 001–060 |
+| **Monstro (extra)** | Extração **5+ acima da CD** | +1 item (especiaria OU minério) |
 | **Cenario (RE)** | Interagir com OBJ-R / deposito | Item fixo ou rolagem do bioma |
 | **Forrageio economico** | SAB ou INT + prof. Natureza CD 12, 1x/descanso curto no bioma | 1d6: 1 nada · 2 especiaria · 3 minério · 4 2d6x10 po · 5 tesouro menor · 6 raro |
 | **Covil / boss** | Sala marcada | 2d6 x (10 x nivel medio do andar) po + 1 tesouro |
 
 **Ladino:** Vantagem em forrageio economico e em detectar OBJ-R (Percepção).
 
-**Artífice / Valdrun:** minérios rendem **+2** em craft; especiarias **+1 Harmonização** ao usar na receita.
+**Artífice / Valdrun:** minérios rendem **+2** em craft; especiarias **+1 Forrageio** ao usar na receita.
 
 ---
 
@@ -30,7 +30,7 @@
 | **Raro** | 100–250 po | 400–900 po |
 | **Lendário** | 300–600 po | 1 000+ po |
 
-**Uso culinário:** especiaria em Prato Estruturado = **+1 Harmonização** (não cumula com Prato Perfeito). 1 especiaria por prato.
+**Uso culinário:** especiaria em Prato Estruturado = **+1 Forrageio** (não cumula com Prato Perfeito). 1 especiaria por prato.
 
 **Uso craft:** 3 unidades do mesmo minério Comum = 1 item orgânico +0 (Artífice CD 12) ou +1 arma temporária 24h.
 
@@ -41,7 +41,7 @@
 | ID | Nome | Raridade | Venda | Uso / nota |
 |----|------|----------|-------|------------|
 | ESP-01 | Sal de Veia | Comum | 8 po | +1 Coccao sopas; Mar, Pantano |
-| ESP-02 | Casca de Grimwald | Comum | 10 po | +1 Harmonização; Cidadela, florestas |
+| ESP-02 | Casca de Grimwald | Comum | 10 po | +1 Forrageio; Cidadela, florestas |
 | ESP-03 | Po Draconico Fino | Incomum | 45 po | Resistência fogo 1h se comido cru |
 | ESP-04 | Gelo Aromático | Incomum | 40 po | Preserva carne 72h |
 | ESP-05 | Musgo Seco de Cinza | Comum | 12 po | +1 Estômago vs toxina leve |
@@ -62,7 +62,7 @@
 | ESP-20 | Cristal Triturado | Raro | 130 po | Labirinto; visao ilusao 12h |
 | ESP-21 | Seda em Po | Incomum | 45 po | +2 em testes de corda/teia |
 | ESP-22 | Resina Quente | Comum | 15 po | Matriz Extrusao; cola craft |
-| ESP-23 | Incenso de Valdrun | Comum | 12 po | Ritual forja; +1 Trinchar osso |
+| ESP-23 | Incenso de Valdrun | Comum | 12 po | Ritual forja; +1 Extração osso |
 | ESP-24 | Eco de Lagrimas | Raro | 180 po | Espiritos; imune medo 1 combaté |
 | ESP-25 | Resina de Embalsamo | Incomum | 60 po | Mumia; preserva ingrediente 7d |
 | ESP-26 | Essência Doppel | Raro | 200 po | Copia aroma; +2 Enganação 8h |
@@ -139,7 +139,7 @@
 
 ## Saque por espécime (001–060)
 
-Apos Trinchar com sucesso, cada criatura concede **1 linha** abaixo (alem dos ingredientes da ficha). Se o grupo não Trinchar, pode rolar **1d4** moedas = metade do valor em po apenas.
+Apos Extração com sucesso, cada criatura concede **1 linha** abaixo (alem dos ingredientes da ficha). Se o grupo não Extração, pode rolar **1d4** moedas = metade do valor em po apenas.
 
 | Cod | Espécime | Especiaria | Minério | Tesouro / moedas |
 |-----|----------|------------|---------|------------------|

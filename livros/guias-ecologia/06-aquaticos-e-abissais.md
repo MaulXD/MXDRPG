@@ -1,4 +1,4 @@
-# Guia de Ecologia — Aquáticos e Abissais
+﻿# Guia de Ecologia — Aquáticos e Abissais
 **Eldarin v4.0 · Folheto de mesa**
 
 ---
@@ -32,7 +32,7 @@ Adaptados a **pressão**, escuridão e corrente. Predadores de emboscada (tubar�
 | Linha lateral (órgão) | 17 | Radar na assimilacao |
 | Tinta | 10 | Arma de área culinária |
 
-Extração **em terra**: 1h após morte; **submersa**: kit selado ou penalidade −4 Trinchar.
+Extração **em terra**: 1h após morte; **submersa**: kit selado ou penalidade −4 Extração.
 
 ---
 
@@ -53,7 +53,7 @@ Extração **em terra**: 1h após morte; **submersa**: kit selado ou penalidade 
 
 ## Cozinha
 
-- Peixe abissal: **Cocção** moderada — cru = Estômago de Ferro CD 13.  
+- Peixe abissal: **Cocção** moderada — cru = Fortitude CD 13.  
 - Caldo de linha lateral: buff de Percepção (Mestre: vantagem em investigação 2h).
 
 **Espécimes:** Sapo-engolidor, tubarão-cego, serpente do abismo, kraken menor, sereia (ética narrativa).
