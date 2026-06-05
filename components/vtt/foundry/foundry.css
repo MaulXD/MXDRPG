@@ -64,7 +64,7 @@
   align-items: center;
   gap: 0.35rem;
   padding: 0.5rem 0.25rem;
-  background: linear-gradient(90deg, rgba(8, 7, 6, 0.88), rgba(8, 7, 6, 0.55));
+  background: linear-gradient(90deg, rgba(10, 8, 6, 0.92), rgba(10, 8, 6, 0.62));
   border-right: 1px solid var(--glass-border);
   backdrop-filter: blur(6px);
 }
@@ -129,9 +129,16 @@
   background: rgba(120, 60, 50, 0.2);
 }
 
-.foundry-icon-bar__glyph {
-  font-size: 1.05rem;
-  line-height: 1;
+.foundry-icon-bar__icon {
+  width: 1.15rem;
+  height: 1.15rem;
+  display: block;
+  flex-shrink: 0;
+  opacity: 0.88;
+}
+
+.foundry-icon-bar__btn--active .foundry-icon-bar__icon {
+  opacity: 1;
 }
 
 /* Janela flutuante */
@@ -144,11 +151,11 @@
   min-height: 80px;
   border-radius: 10px;
   border: 1px solid var(--glass-border-bright);
-  background: rgba(14, 12, 10, 0.92);
-  backdrop-filter: blur(10px);
+  background: rgba(16, 13, 10, 0.94);
+  backdrop-filter: blur(12px);
   box-shadow:
-    0 12px 32px rgba(0, 0, 0, 0.45),
-    0 0 0 1px rgba(201, 169, 98, 0.08);
+    0 14px 36px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(212, 183, 106, 0.1);
   overflow: hidden;
 }
 
@@ -163,7 +170,7 @@
   justify-content: space-between;
   gap: 0.5rem;
   padding: 0.35rem 0.45rem 0.35rem 0.65rem;
-  background: rgba(201, 169, 98, 0.1);
+  background: rgba(212, 183, 106, 0.12);
   border-bottom: 1px solid var(--glass-border);
   cursor: grab;
   user-select: none;
@@ -175,12 +182,12 @@
 }
 
 .foundry-window__title {
-  font-family: var(--font-display);
-  font-size: 0.68rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--accent-muted);
+  color: var(--accent);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

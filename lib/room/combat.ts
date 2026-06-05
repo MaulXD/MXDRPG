@@ -8,6 +8,10 @@ export type CombatTrack = {
   round: number;
   /** Avisos de turno para toast na UI (consumidos no próximo avanço). */
   notices?: string[];
+  /** Ordem da última iniciativa — restaurada pelo mestre. */
+  naturalOrder?: string[];
+  /** Mestre alterou a fila manualmente. */
+  orderOverridden?: boolean;
 };
 
 export function emptyCombat(tokens: BattleToken[]): CombatTrack {

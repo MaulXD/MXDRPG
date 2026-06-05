@@ -222,7 +222,7 @@ IDs no VTT: `data/character/pa-modifiers.json` (`passivePa`).
 | **Movimento** | Mesmas **faixas por hex** que personagens, usando `walk` e `run` do bloco do monstro (ex. walk 4, run 7: hex 1–2 → 1 PA; 3–5 livres; do 6º → PA de corrida) |
 | **Visibilidade** | Jogadores **nao veem** PA de monstros na mesa; o mestre ve e controla |
 
-O *Livro do Mestre* descreve ameaca e tier; o JSON `data/compendiums/monstros.json` e o VTT aplicam estes valores.
+O *Livro do Mestre* descreve ameaca e tier; o JSON `data/compendiums/monstros.json` e o VTT aplicam estes valores. **Tamanho no grid** (`tactical.tamanho`: `small` … `colossal`) vem de `data/monster-tamanhos.json` — alinhado ao SRD (goblin Pequeno, minotauro Grande, dragão ancião Imenso, etc.); ver **§3.1.3.1**.
 
 #### O que gasta PA
 
@@ -329,6 +329,23 @@ Na mesa, antes de conjurar escolha **+0, +1 ou +2 PA extras**. Cada PA extra adi
 - **1 hex = 1,5 m.** Referencia de deslocamento: ~**9 m** por turno ≈ **6 hex** de corrida maxima; caminhada tipica ≈ **4 hex** com faixas de PA (`Cap. 2.6`).
 - **Rota no mapa:** ao mover, o VTT traca um **caminho pelo grid** (nao linha reta atraves de obstaculos) e anima o token ao longo da rota; hex bloqueados por **tokens medios**; **Halfling**, **Gnomo** e criaturas **pequenas** (mob com deslocamento curto, ou `sharedHex` no token) podem **dividir o mesmo hex** com outra criatura pequena (ate 2 no bloco).
 - **Modo caminhada / corrida:** orcamento de hex e custo de PA conforme faixas `walk`/`run` da ficha; o alcance mostrado na mesa respeita bloqueios e rotas validas.
+
+#### 3.1.3.1 Tamanho de criaturas no grid (VTT)
+
+Cada token ocupa **um ou mais hex** conforme o tamanho corporal. A escala segue o **SRD / D&D 5e** (Pequeno a Colossal). No VTT, o campo `tactical.tamanho` em `data/compendiums/monstros.json` espelha `data/monster-tamanhos.json` (80 fichas **001–080** + aliases de spawn). Tabela completa por código: *Livro do Mestre*, apêndice **Tamanho no grid (001–080)**; cada ficha lista **Tamanho** nas estatísticas.
+
+| Tamanho (livro) | Categoria SRD | Hex ocupados | Exemplos no bestiário Eldarin |
+|-----------------|---------------|--------------|-------------------------------|
+| **Pequeno** | Small | **1** | Goblin, Goblin de Caverna |
+| **Médio** | Medium | **1** | Zumbi, Orc, Esqueleto, Vampiro, Slimes |
+| **Grande** | Large | **3** | Minotauro, Wyvern, Golem, Grifo, Elementais |
+| **Gigante** | Huge | **7** | Escorpião Gigante, Hidra, Ciclope, Dragão Jovem de Gelo, Treant Podre |
+| **Imenso** | Gargantuan | **19** | Dragão Ancião de Fogo, Kraken Menor, Verme Gigante de Pedra, Behemoth |
+| **Colossal** | Colossal+ | **37** | Variante Colossal na invocação (+1 degrau no tamanho base) |
+
+- **Grande** usa **3 hex em linha** (centro + dois opostos); demais tamanhos multi-hex usam **disco** ao redor do centro.
+- Invocação **Elite** não altera tamanho; **Colossal** sobe **um degrau** (ex. Grande → Gigante).
+- O token na mesa escala visualmente com o tamanho; bloqueio de movimento e alcance consideram **todos os hex** ocupados.
 
 ### 3.2 Ataques
 
@@ -1098,7 +1115,7 @@ Cada **espécime** do bestiário (Livro do Mestre, codigos **001–060**) possui
 
 Nomes de habilidade **podem repetir** entre espécimes diferentes (ex.: varios tem *Resistência Necrotica*), mas cada monstro sempre lista **seus** 8 numerados.
 
-### 6.2 Indice de espécimes (001–060)
+### 6.2 Indice de espécimes (001–080)
 
 | Cod | Espécime |
 |-----|----------|
@@ -1162,6 +1179,28 @@ Nomes de habilidade **podem repetir** entre espécimes diferentes (ex.: varios t
 | 058 | Pudim Negro |
 | 059 | Lagosta-Gigante Abissal |
 | 060 | Caranguejo-Eremita Colossal |
+| 061 | Aranha-Cavaleira |
+| 062 | Mosca-Carniça Colossal |
+| 063 | Besouro-Trovão |
+| 064 | Verme Gigante de Pedra |
+| 065 | Salamandra Gigante |
+| 066 | Behemoth de Pedra |
+| 067 | Fera da Sombra |
+| 068 | Medusa |
+| 069 | Fênix de Caverna |
+| 070 | Gigante de Pedra |
+| 071 | Bruxa da Masmorra |
+| 072 | Fera Seminal |
+| 073 | Carniçal Alado |
+| 074 | Balor |
+| 075 | Enxame de Ratos-Cadáveres |
+| 076 | Elemental de Terra |
+| 077 | Banshee |
+| 078 | Morcego-Tirano |
+| 079 | Ooze Ocular |
+| 080 | Tarrasque (Bebê) |
+
+**Espécimes 061–080:** bestiário estendido (Livro do Mestre); invocação no VTT, sem tabela de assimilação 8×1.
 
 **Variante Elite / Colossal:** use a tabela do **espécime base** (ex.: Zumbi Colossal = 001).
 

@@ -63,6 +63,8 @@ export function snapshotForViewer(
   user: SessionUser | null | undefined
 ): RoomSnapshot {
   const isGm = canManageRoom(room, user);
+  const combatUndo = isGm ? snapshot.combatUndo : undefined;
+  const gmCreations = isGm ? snapshot.gmCreations : undefined;
   const settings = normalizeRoomSettings(room.settings ?? snapshot.settings);
   const actorIds = user
     ? Object.entries(snapshot.actors)
@@ -104,13 +106,15 @@ export function snapshotForViewer(
     chat === snapshot.chat;
 
   if (tokensUnchanged && settings === snapshot.settings) {
-    return snapshot;
+    return { ...snapshot, combatUndo, gmCreations };
   }
 
   return {
     ...snapshot,
     settings,
     chat,
+    combatUndo,
+    gmCreations,
     scene: {
       ...snapshot.scene,
       tokens,

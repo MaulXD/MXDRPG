@@ -23,6 +23,7 @@ import type { BattleScene, BattleToken } from "@/lib/vtt/types";
 type TurnCtx = {
   activeTokenId: string | null;
   bypassTurn: boolean;
+  combatRound?: number;
 };
 
 type Params = {
@@ -82,7 +83,6 @@ export function useBattlefieldHighlights({
     isAreaSpellMode &&
       activeCombatAction?.areaShape &&
       areaNeedsDirection(activeCombatAction.areaShape) &&
-      areaCenter &&
       areaDirection == null
   );
 
@@ -151,32 +151,35 @@ export function useBattlefieldHighlights({
         hexesInRange(selected.axial, activeCombatAction.rangeHex).map((c) => `${c.q},${c.r}`)
       );
     }
-    if (isAreaSpellMode && needsAreaDirection) return new Set<string>();
+    if (isAreaSpellMode && needsAreaDirection && selected) {
+      return new Set([`${selected.axial.q},${selected.axial.r}`]);
+    }
     return new Set(
       hexesInRange(selected.axial, activeCombatAction.rangeHex)
         .filter((c) => axialDistance(selected.axial, c) > 0)
         .map((c) => `${c.q},${c.r}`)
     );
-  }, [selected, activeCombatAction, actionMode, isAreaSpellMode, needsAreaDirection]);
+  }, [selected, activeCombatAction, actionMode, isAreaSpellMode, needsAreaDirection, turn]);
 
   const areaDirectionSet = useMemo(() => {
-    if (!needsAreaDirection || !areaCenter) return new Set<string>();
-    return new Set(hexNeighbors(areaCenter).map((c) => `${c.q},${c.r}`));
-  }, [needsAreaDirection, areaCenter]);
+    if (!needsAreaDirection || !selected) return new Set<string>();
+    return new Set(hexNeighbors(selected.axial).map((c) => `${c.q},${c.r}`));
+  }, [needsAreaDirection, selected]);
 
   const previewDirection = useMemo(() => {
     if (areaDirection != null) return areaDirection;
-    if (!needsAreaDirection || !areaCenter || !hoverAxial) return null;
-    return hexDirection(areaCenter, hoverAxial);
-  }, [areaDirection, needsAreaDirection, areaCenter, hoverAxial]);
+    if (!needsAreaDirection || !selected || !hoverAxial) return null;
+    return hexDirection(selected.axial, hoverAxial);
+  }, [areaDirection, needsAreaDirection, selected, hoverAxial]);
 
   const areaPreviewSet = useMemo(() => {
     if (!selected || !activeCombatAction || !isAreaSpellMode) return new Set<string>();
-    const previewCenter = needsAreaDirection ? areaCenter : hoverAxial;
+    const previewCenter = needsAreaDirection ? selected.axial : hoverAxial;
     if (!previewCenter) return new Set<string>();
     const check = canCastAreaAt(selected, previewCenter, activeCombatAction, {
       activeTokenId: turn.activeTokenId,
       bypassTurn: turn.bypassTurn,
+      combatRound: turn.combatRound,
     });
     if (!check.ok) return new Set<string>();
     if (needsAreaDirection && previewDirection == null) {

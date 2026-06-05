@@ -43,6 +43,7 @@ export async function syncAdventureActorsForRoom(roomId: string): Promise<RoomSt
   let changed = false;
 
   for (const [actorId, actor] of Object.entries(room.actors)) {
+    if (actor.gmAuthored) continue;
     if (!isAdventureBoundCharacter(actor)) continue;
     const actorAdv = resolveAdventureId(actor);
     if (actorAdv !== adventureId) {

@@ -7,10 +7,12 @@ import { useState } from "react";
 import type { BattleToken } from "@/lib/vtt/types";
 
 import type { CombatTrack } from "@/lib/room/combat";
+import type { CombatUndoEntry } from "@/lib/room/types";
 
-import { nextCombatTurn, rollInitiative } from "@/hooks/useRoomSync";
+import { nextCombatTurn, postGmCombatAction, rollInitiative } from "@/hooks/useRoomSync";
 
 import { collectPlayerActorIds, resolveTokenRing } from "@/lib/vtt/token-colors";
+import { hpBarColor, hpRatio } from "@/lib/vtt/token-hp-display";
 
 import { TokenEffectsRow } from "@/components/vtt/TokenEffectsRow";
 
@@ -39,6 +41,9 @@ type Props = {
   hoverAttackTargetId?: string | null;
 
   onHoverAttackTargetChange?: (tokenId: string | null) => void;
+
+  /** Pilha de desfazer — só mestre. */
+  combatUndo?: CombatUndoEntry[];
 
 };
 
@@ -76,9 +81,13 @@ export function TurnOrderPanel({
 
   onHoverAttackTargetChange,
 
+  combatUndo = [],
+
 }: Props) {
 
   const [busy, setBusy] = useState(false);
+  const [gmBusy, setGmBusy] = useState<string | null>(null);
+  const [gmError, setGmError] = useState<string | null>(null);
 
 
 
@@ -120,7 +129,24 @@ export function TurnOrderPanel({
 
   }
 
+  async function runGmAction(key: string, body: Parameters<typeof postGmCombatAction>[1]) {
+    setGmBusy(key);
+    setGmError(null);
+    try {
+      await postGmCombatAction(roomId, body);
+      onUpdate();
+    } catch (e) {
+      setGmError(e instanceof Error ? e.message : "Falha");
+    } finally {
+      setGmBusy(null);
+    }
+  }
 
+  const undoByToken = new Map<string, CombatUndoEntry>();
+  for (let i = combatUndo.length - 1; i >= 0; i--) {
+    const entry = combatUndo[i]!;
+    if (!undoByToken.has(entry.tokenId)) undoByToken.set(entry.tokenId, entry);
+  }
 
   return (
 
@@ -176,7 +202,21 @@ export function TurnOrderPanel({
 
         </div>
 
+        {canControl && combat.orderOverridden ? (
+          <div className="vtt-turn-gm-banner">
+            <span>Ordem alterada pelo mestre</span>
+            <button
+              type="button"
+              className="btn btn-ghost vtt-turn-gm-btn"
+              disabled={gmBusy != null}
+              onClick={() => void runGmAction("restore", { action: "restore-order" })}
+            >
+              {gmBusy === "restore" ? "…" : "↩ Ordem natural"}
+            </button>
+          </div>
+        ) : null}
 
+        {gmError ? <p className="vtt-turn-gm-error">{gmError}</p> : null}
 
         <ol className="vtt-turn-list">
 
@@ -311,7 +351,7 @@ export function TurnOrderPanel({
 
                           className="vtt-turn-hp-fill"
 
-                          style={{ width: `${hp}%`, background: token.color }}
+                          style={{ width: `${hp}%`, background: hpBarColor(hpRatio(token)) }}
 
                         />
 
@@ -343,6 +383,53 @@ export function TurnOrderPanel({
 
                   </span>
 
+                ) : null}
+
+                {canControl && !defeated ? (
+                  <div className="vtt-turn-gm-actions">
+                    <button
+                      type="button"
+                      className="vtt-turn-gm-chip"
+                      title="Restaurar PA deste token"
+                      disabled={gmBusy != null}
+                      onClick={() =>
+                        void runGmAction(`pa-${id}`, { action: "reset-pa", tokenId: id })
+                      }
+                    >
+                      {gmBusy === `pa-${id}` ? "…" : "PA"}
+                    </button>
+                    <button
+                      type="button"
+                      className="vtt-turn-gm-chip"
+                      title={
+                        active
+                          ? "Adiar para o fim desta rodada"
+                          : "Jogar ao fim desta rodada"
+                      }
+                      disabled={gmBusy != null}
+                      onClick={() =>
+                        void runGmAction(`defer-${id}`, { action: "defer-turn", tokenId: id })
+                      }
+                    >
+                      {gmBusy === `defer-${id}` ? "…" : "Fim"}
+                    </button>
+                    {undoByToken.get(id) ? (
+                      <button
+                        type="button"
+                        className="vtt-turn-gm-chip vtt-turn-gm-chip--undo"
+                        title={`Desfazer: ${undoByToken.get(id)!.summary}`}
+                        disabled={gmBusy != null}
+                        onClick={() =>
+                          void runGmAction(`undo-${id}`, {
+                            action: "revert",
+                            undoId: undoByToken.get(id)!.id,
+                          })
+                        }
+                      >
+                        {gmBusy === `undo-${id}` ? "…" : "↩"}
+                      </button>
+                    ) : null}
+                  </div>
                 ) : null}
 
               </li>

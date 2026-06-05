@@ -194,7 +194,13 @@ export function previewAreaCast(
     action.name,
     paChip,
     [
-      { text: `Centro q${center.q} r${center.r}`, tone: "ok" },
+      {
+        text:
+          action.areaShape && (action.areaShape === "cone" || action.areaShape === "line")
+            ? `Origem: conjurador q${caster.axial.q} r${caster.axial.r}`
+            : `Centro q${center.q} r${center.r}`,
+        tone: "ok",
+      },
       {
         text: check.ok ? "Solte para conjurar" : (check.reason ?? "Inválido"),
         tone: check.ok && paCheck.ok ? "ok" : "err",
@@ -214,7 +220,12 @@ export function previewAreaDirectionStep(
   return withPaChip(
     "Direção da área",
     paChip,
-    [{ text: `Clique o hex para onde aponta o ${shape === "cone" ? "cone" : "raio"}`, tone: "ok" }],
+    [
+      {
+        text: `Clique o hex vizinho ao conjurador — direção do ${shape === "cone" ? "cone" : "raio"}`,
+        tone: "ok",
+      },
+    ],
     true
   );
 }

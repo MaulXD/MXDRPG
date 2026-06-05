@@ -1,6 +1,7 @@
 import type { AttributeKey } from "@/lib/character/rules";
 import type { CompendiumPackId } from "@/lib/compendium/types";
 import type { SpellAreaShape } from "@/lib/combat/area-spell";
+import type { RechargeSpec } from "@/lib/combat/recharge";
 import type { TokenCondition } from "@/lib/combat/conditions";
 import type { EquipmentSpecial } from "@/lib/combat/equipment-effects";
 
@@ -65,12 +66,15 @@ export type CombatActionOption = {
   /** Magia canalizável — até N PA extras na mesma conjuração */
   channelMaxExtraPa?: number;
   channelBonusPerPa?: string;
+  /** Recarga do compêndio (1/turno, 1/combate, …) */
+  recharge?: RechargeSpec;
 };
 
 export type CombatTurnOptions = {
   activeTokenId?: string | null;
   /** Mestre/admin pode agir fora do turno */
   bypassTurn?: boolean;
+  combatRound?: number;
 };
 
 export type CombatActionRequest = {

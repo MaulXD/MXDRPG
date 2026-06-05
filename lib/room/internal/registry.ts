@@ -5,6 +5,7 @@ import { DEMO_SCENE } from "@/lib/vtt/demo-scene";
 import { welcomeChat } from "../chat";
 import { emptyCombat } from "../combat";
 import { prunePings } from "@/lib/vtt/ping";
+import { getRoomGmCreations } from "../gm-creations";
 import { normalizeRoomSettings } from "../settings";
 import { createDemoRoom, syncLinkedTokens } from "../sync";
 import type { RoomSnapshot, RoomState } from "../types";
@@ -28,6 +29,8 @@ export function toSnapshot(state: RoomState): RoomSnapshot {
     scene: state.scene,
     actors: state.actors,
     combat: state.combat,
+    combatUndo: state.combatUndo,
+    gmCreations: getRoomGmCreations(state),
     chat: state.chat,
     pings: prunePings(state.pings ?? []),
     revision: state.revision,

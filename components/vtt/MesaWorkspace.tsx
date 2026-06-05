@@ -6,6 +6,8 @@ import {
   canControlToken as canControlTokenCheck,
   canViewTokenPa,
 } from "@/lib/auth/combat-turn-access";
+import { canBypassCombatTurn } from "@/lib/auth/room-access";
+import { normalizeRoomSettings } from "@/lib/room/settings";
 import type { SessionUser } from "@/lib/auth/types";
 import type { CompendiumEntry, CompendiumPackId, CompendiumPackMeta } from "@/lib/compendium/types";
 import type { BattleScene } from "@/lib/vtt/types";
@@ -102,6 +104,16 @@ export function MesaWorkspace({
     return canAdvanceCombatTurn(turnRoom, session, snapshot.combat);
   }, [snapshot?.combat, session, turnRoom]);
 
+  const canBypassTurn = useMemo(() => {
+    return canBypassCombatTurn(
+      {
+        ownerId: roomOwnerId,
+        settings: normalizeRoomSettings(snapshot?.settings),
+      },
+      session
+    );
+  }, [roomOwnerId, snapshot?.settings, session]);
+
   const win = windows.get;
 
   return (
@@ -132,7 +144,9 @@ export function MesaWorkspace({
             scene={scene}
             canEdit={canEdit}
             canControlCombat={canControlCombat}
+            canBypassTurn={canBypassTurn}
             canEndTurn={canEndTurn}
+            roomOwnerId={roomOwnerId}
             canControlToken={canControlToken}
             canViewTokenPa={canViewTokenPaCb}
             roomId={roomId}

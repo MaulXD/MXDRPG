@@ -1,12 +1,14 @@
 ﻿import { formatAttackChatDetail, resolveCombatAction } from "@/lib/combat/attack";
 import { prepareCombatToken, syncActorPaFromToken } from "@/lib/combat/combat-token-pa";
 import { applyPaSpend } from "@/lib/combat/pa-turn";
+import { markActionRechargeUsed } from "@/lib/combat/recharge";
 import { formatAreaSpellChatDetail, resolveAreaSpell } from "@/lib/combat/area-spell";
 import { formatSaveChatDetail } from "@/lib/combat/spell";
 import type { CombatActionRequest } from "@/lib/combat/types";
 import type { Axial } from "@/lib/vtt/hex-math";
 import type { ChatMessage } from "../chat";
 import { activeTokenId } from "../combat";
+import { maybeRecordCombatUndo } from "../combat-undo";
 import { getRoom, persistRoom, toSnapshot } from "../internal/registry";
 import { syncCombatOrderWithTokens } from "../combat-order";
 import { appendDefeatChatMessage, shouldAnnounceDefeat } from "../combat-chat-events";
@@ -49,6 +51,7 @@ export async function executeRoomAreaSpell(
   const turn = {
     activeTokenId: activeTokenId(room.combat),
     bypassTurn: opts.bypassTurn,
+    combatRound: room.combat.round,
   };
 
   let areaResult;
@@ -68,6 +71,14 @@ export async function executeRoomAreaSpell(
     return { ok: false, error: e instanceof Error ? e.message : "Magia de área inválida" };
   }
 
+  maybeRecordCombatUndo(room, {
+    tokenId: casterTokenId,
+    tokenName: caster.name,
+    kind: "area",
+    summary: action.label ?? action.name,
+    bypassTurn: opts.bypassTurn,
+  });
+
   const hpByToken = new Map<string, number>();
   for (const hit of areaResult.hits) {
     if (hit.kind === "attack") {
@@ -77,7 +88,11 @@ export async function executeRoomAreaSpell(
     }
   }
 
-  const spentCaster = applyPaSpend(caster, areaResult.paCost);
+  const spentCaster = markActionRechargeUsed(
+    applyPaSpend(caster, areaResult.paCost),
+    action,
+    room.combat.round
+  );
   room.scene = {
     ...room.scene,
     tokens: room.scene.tokens.map((t) => {

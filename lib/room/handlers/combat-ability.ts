@@ -9,6 +9,7 @@ import { abilityFromEntry } from "@/lib/combat/compendium-actions";
 import { monsterCombatActions } from "@/lib/vtt/monster-actions";
 import { prepareCombatToken, syncActorPaFromToken } from "@/lib/combat/combat-token-pa";
 import { applyPaSpend } from "@/lib/combat/pa-turn";
+import { markActionRechargeUsed } from "@/lib/combat/recharge";
 import { getEntry } from "@/lib/compendium/registry";
 import { formatAttackChatDetail } from "@/lib/combat/attack";
 import { formatSaveChatDetail } from "@/lib/combat/spell";
@@ -17,6 +18,7 @@ import type { CharacterSheet } from "@/lib/character/types";
 import type { BattleToken } from "@/lib/vtt/types";
 import type { ChatMessage } from "../chat";
 import { activeTokenId } from "../combat";
+import { maybeRecordCombatUndo } from "../combat-undo";
 import { getRoom, persistRoom, toSnapshot } from "../internal/registry";
 import type { RoomSnapshot, RoomState } from "../types";
 import { syncCombatOrderWithTokens } from "../combat-order";
@@ -53,13 +55,19 @@ function applyAbilityToRoom(
   attackerTokenId: string,
   defenderTokenId: string | null,
   resolved: AbilityResolution,
-  actionName: string
+  action: import("@/lib/combat/types").CombatActionOption
 ): void {
   const attackerBefore = room.scene.tokens.find((t) => t.id === attackerTokenId);
-  const spent =
-    attackerBefore && resolved.paCost > 0
-      ? applyPaSpend(attackerBefore, resolved.paCost)
-      : attackerBefore;
+  let spent = attackerBefore;
+  if (attackerBefore && resolved.paCost > 0) {
+    spent = markActionRechargeUsed(
+      applyPaSpend(attackerBefore, resolved.paCost),
+      action,
+      room.combat.round
+    );
+  } else if (attackerBefore && action.recharge) {
+    spent = markActionRechargeUsed(attackerBefore, action, room.combat.round);
+  }
 
   if (spent && attackerBefore?.linked) {
     syncActorPaFromToken(room, { ...attackerBefore, ...spent });
@@ -183,6 +191,7 @@ export async function executeRoomAbility(
   const turn = {
     activeTokenId: activeTokenId(room.combat),
     bypassTurn: opts.bypassTurn,
+    combatRound: room.combat.round,
   };
 
   if (action.selfTarget) {
@@ -221,7 +230,15 @@ export async function executeRoomAbility(
     return { ok: false, error: e instanceof Error ? e.message : "Habilidade inválida" };
   }
 
-  applyAbilityToRoom(room, attackerTokenId, defenderTokenId, resolved, action.name);
+  maybeRecordCombatUndo(room, {
+    tokenId: attackerTokenId,
+    tokenName: attacker.name,
+    kind: "ability",
+    summary: action.name,
+    bypassTurn: opts.bypassTurn,
+  });
+
+  applyAbilityToRoom(room, attackerTokenId, defenderTokenId, resolved, action);
 
   const defId = defenderTokenId ?? attackerTokenId;
   if (resolved.kind === "attack" || resolved.kind === "spell_strike") {

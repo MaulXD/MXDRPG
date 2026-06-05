@@ -31,6 +31,10 @@ export type BattleToken = {
   initiative?: number;
   /** Compêndio monstros — token NPC */
   monsterEntryId?: string;
+  /** Template customizado do mestre (criatura) */
+  gmCreationId?: string;
+  gmCreatureStats?: { forca: number; agilidade: number; ameaca: number };
+  gmActions?: import("@/lib/combat/types").CombatActionOption[];
   /** mob · mini · boss — anel na mesa */
   monsterTier?: import("@/lib/vtt/monsters").MonsterTier;
   /** Elite ou Colossal na invocação */
@@ -70,6 +74,8 @@ export type BattleToken = {
   rangedAttackAdvantage?: boolean;
   /** Condições Eldarin Cap. 3.4 */
   conditions?: import("@/lib/combat/conditions").TokenCondition[];
+  /** Recargas de magias/habilidades — chave packId:entryId */
+  actionRecharge?: Record<string, import("@/lib/combat/recharge").ActionRechargeState>;
 };
 
 export type BattlePing = {

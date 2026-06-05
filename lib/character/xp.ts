@@ -39,9 +39,13 @@ export function canAdvanceLevel(level: number, xpTotal: number): boolean {
 }
 
 export function formatXpProgress(level: number, xpTotal: number): string {
-  if (level >= MAX_LEVEL) return `${xpTotal} XP · max`;
+  if (level >= MAX_LEVEL) return `${xpTotal} XP · máx`;
+  const prev = xpTotalForLevel(level);
   const next = xpTotalForLevel(level + 1);
-  return `${xpTotal} / ${next} XP`;
+  const band = next - prev;
+  const progress = Math.max(0, xpTotal - prev);
+  if (xpTotal >= next) return `↑ nv ${level + 1}`;
+  return `${progress} / ${band} XP`;
 }
 
 /** 0–1 para barra de XP no nível atual */

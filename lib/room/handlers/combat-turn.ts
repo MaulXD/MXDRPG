@@ -20,6 +20,7 @@ import {
   shouldAutoSkipTurn,
   syncCombatOrderWithTokens,
 } from "../combat-order";
+import { clearCombatRecharges, clearPerTurnRecharges } from "@/lib/combat/recharge";
 import { resetAllTokenMovement } from "../internal/token-reset";
 import { getRoom, persistRoom, toSnapshot } from "../internal/registry";
 import type { RoomSnapshot, RoomState } from "../types";
@@ -55,10 +56,10 @@ function refreshActiveTokenPa(room: RoomState, mode: "full" | "regen" = "regen")
   const tokens = [...room.scene.tokens];
   const refreshed =
     mode === "full" ? startTurnPaFull(token, rules) : refreshPaAtTurnStart(token, rules);
-  tokens[idx] = {
+  tokens[idx] = clearPerTurnRecharges({
     ...token,
     ...normalizeTokenPaFields(refreshed, paMax),
-  };
+  });
 
   if (actor && token.linked && token.actorId) {
     room.actors[token.actorId] = {
@@ -159,13 +160,23 @@ export async function rollRoomInitiative(roomId: string): Promise<RoomSnapshot |
   if (!room) return null;
 
   const { order, scores } = rollInitiative(room);
-  room.combat = { order, activeIndex: 0, round: 1, notices: [] };
+  room.combat = {
+    order,
+    activeIndex: 0,
+    round: 1,
+    notices: [],
+    naturalOrder: order,
+    orderOverridden: false,
+  };
+  room.combatUndo = [];
   room.scene = {
     ...room.scene,
-    tokens: room.scene.tokens.map((t) => ({
-      ...t,
-      initiative: scores[t.id] ?? t.initiative,
-    })),
+    tokens: clearCombatRecharges(
+      room.scene.tokens.map((t) => ({
+        ...t,
+        initiative: scores[t.id] ?? t.initiative,
+      }))
+    ),
   };
   syncCombatOrderWithTokens(room);
   resetAllTokenMovement(room);

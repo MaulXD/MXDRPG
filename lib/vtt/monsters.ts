@@ -5,7 +5,9 @@ import type { Axial } from "@/lib/vtt/hex-math";
 import { defaultMovementFields } from "@/lib/vtt/movement";
 import type { CombatActionOption } from "@/lib/combat/types";
 import type { BattleToken } from "@/lib/vtt/types";
-import { bumpCreatureSize, inferMonsterCreatureSize } from "@/lib/vtt/creature-size";
+import { bumpCreatureSize } from "@/lib/vtt/creature-size";
+import type { CreatureSize } from "@/lib/vtt/creature-size";
+import { parseCreatureSize, resolveMonsterCreatureSize } from "@/lib/vtt/monster-sizes";
 import { MONSTER_PA_MIN, normalizeMonsterPa } from "@/lib/vtt/monster-pa";
 import {
   applyMonsterSpawnScaling,
@@ -34,6 +36,7 @@ export type MonsterTemplate = {
   forca: number;
   agilidade: number;
   actions: CombatActionOption[];
+  creatureSize: CreatureSize;
 };
 
 type MonsterSystem = {
@@ -48,6 +51,7 @@ type MonsterSystem = {
     defesa?: { value?: number };
     ameaca?: { value?: number };
     tier?: string;
+    tamanho?: string;
   };
   actions?: CombatActionOption[];
 };
@@ -94,6 +98,9 @@ function parseMonster(raw: CompendiumEntryRaw, index: number): MonsterTemplate {
     forca: attrs.forca?.value ?? 10,
     agilidade: attrs.agilidade?.value ?? 10,
     actions: (sys.actions as CombatActionOption[] | undefined) ?? [],
+    creatureSize:
+      parseCreatureSize(tactical.tamanho) ??
+      resolveMonsterCreatureSize(entryId, raw.name, { walk: movement.walk?.value, tier }),
   };
 }
 
@@ -147,11 +154,7 @@ export function createMonsterToken(
     monsterVariant: spawnMeta?.variant && spawnMeta.variant !== "normal" ? spawnMeta.variant : undefined,
     ...defaultMovementFields({ walk: template.walk, run: template.run }),
     creatureSize: (() => {
-      let size = inferMonsterCreatureSize(template.name, {
-        walk: template.walk,
-        tier: template.tier,
-        variant: spawnMeta?.variant,
-      });
+      let size = template.creatureSize;
       if (spawnMeta?.variant === "colossal") size = bumpCreatureSize(size, 1);
       return size;
     })(),

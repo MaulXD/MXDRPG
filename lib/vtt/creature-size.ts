@@ -1,6 +1,7 @@
 import type { Axial } from "@/lib/vtt/hex-math";
 import { HEX_DIRECTIONS, axialDistance, axialToPixel, hexesInRange } from "@/lib/vtt/hex-math";
 import type { BattleToken } from "@/lib/vtt/types";
+import { resolveMonsterCreatureSize } from "@/lib/vtt/monster-sizes";
 import type { MonsterSpawnVariant } from "@/lib/vtt/monster-scaling";
 
 /** Tamanho corporal no grid hex (Livro do Jogador — VTT). */
@@ -66,21 +67,16 @@ export function occupiedHexes(anchor: Axial, size: CreatureSize): Axial[] {
   return hexesInRange(anchor, axialDiskRadius(size));
 }
 
+/** @deprecated Use resolveMonsterCreatureSize com entryId */
 export function inferMonsterCreatureSize(
   name: string,
-  opts?: { walk?: number; tier?: string; variant?: MonsterSpawnVariant }
+  opts?: { walk?: number; tier?: string; variant?: MonsterSpawnVariant; entryId?: string }
 ): CreatureSize {
-  const lower = name.toLowerCase();
-  if (lower.includes("colossal") || opts?.variant === "colossal") return "colossal";
-  if (lower.includes("gigante") || lower.includes("gigant")) return "huge";
-  if (
-    /\bgrande\b/.test(lower) ||
-    lower.includes("minotauro") ||
-    lower.includes("golem") ||
-    lower.includes("wyvern")
-  ) {
-    return "large";
+  if (opts?.entryId) {
+    return resolveMonsterCreatureSize(opts.entryId, name, opts);
   }
+  const lower = name.toLowerCase();
+  if (lower.includes("goblin")) return "small";
   if (opts?.tier === "mob" && (opts.walk ?? 99) <= 3) return "small";
   return "medium";
 }
@@ -97,7 +93,7 @@ export function creatureSizeOf(token: BattleToken, actorRaca?: string | null): C
   if (token.sharedHex) return "small";
   if (actorRaca && SMALL_RACES.has(actorRaca)) return "small";
   if (token.monsterEntryId) {
-    return inferMonsterCreatureSize(token.name, {
+    return resolveMonsterCreatureSize(token.monsterEntryId, token.name, {
       walk: token.walk,
       tier: token.monsterTier,
       variant: token.monsterVariant,

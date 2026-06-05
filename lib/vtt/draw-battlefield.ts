@@ -23,6 +23,13 @@ import {
   drawTurnActiveIndicator,
 } from "@/lib/vtt/draw-token-animations";
 import { drawTokenEffectBadges } from "@/lib/vtt/draw-token-effects";
+import {
+  drawTokenHpArc,
+  drawTokenHpLabel,
+  hpBarColor,
+  hpRatio,
+  type TokenHpDisplay,
+} from "@/lib/vtt/token-hp-display";
 import { isTargetMode, type TokenActionMode } from "@/lib/vtt/action-mode";
 import type { BattleScene, BattleToken } from "@/lib/vtt/types";
 export type TokenFlashKind = "hit" | "miss" | "crit";
@@ -253,6 +260,7 @@ type TokenDrawParams = {
   tokenFlash: { tokenId: string; kind: TokenFlashKind } | null;
   /** Posição visual (pode ser fracionária durante animação) */
   tokenPositionOverride?: Map<string, { q: number; r: number }>;
+  tokenHpDisplay?: Map<string, TokenHpDisplay>;
 };
 
 export function drawTokensLayer(ctx: CanvasRenderingContext2D, p: TokenDrawParams): void {
@@ -300,6 +308,16 @@ export function drawTokensLayer(ctx: CanvasRenderingContext2D, p: TokenDrawParam
     }
 
     drawTokenIdentityRings(ctx, x, y, r, ringStyle);
+
+    const hpVis = p.tokenHpDisplay?.get(token.id);
+    if (hpVis?.bar && token.vidaMax != null && token.vida != null) {
+      const ratio = hpRatio(token);
+      const color = hpBarColor(ratio);
+      drawTokenHpArc(ctx, x, y, r, ratio, color);
+      if (hpVis.numeric) {
+        drawTokenHpLabel(ctx, x, y, r, token, color);
+      }
+    }
 
     if (p.tokenFlash?.tokenId === token.id) {
       const flashColor =
@@ -357,19 +375,6 @@ export function drawTokensLayer(ctx: CanvasRenderingContext2D, p: TokenDrawParam
       ctx.fillStyle = "rgba(232, 226, 214, 0.65)";
       ctx.fillText(sub, bx, ry + 18);
       ctx.restore();
-    }
-
-    if (token.vidaMax != null && token.vida != null) {
-      const barW = size * 0.85;
-      const barH = 5;
-      const bx = x - barW / 2;
-      const by = y - r - 12;
-      ctx.fillStyle = "rgba(0,0,0,0.5)";
-      ctx.fillRect(bx - 1, by - 1, barW + 2, barH + 2);
-      ctx.fillStyle = "rgba(40,40,40,0.8)";
-      ctx.fillRect(bx, by, barW, barH);
-      ctx.fillStyle = readThemeColor("--vtt-hp-bar", "#5a7352");
-      ctx.fillRect(bx, by, barW * (token.vida / token.vidaMax), barH);
     }
 
     ctx.save();

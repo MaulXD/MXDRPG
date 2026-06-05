@@ -6,9 +6,13 @@
  * lib/vtt/monster-scaling.ts (spawn), não duplicam entradas aqui.
  * Cap. XII groupLevelDelta também é runtime no painel de invocação.
  */
-import { writeFileSync } from "fs";
+import { readFileSync, writeFileSync } from "fs";
 import { join, dirname } from "path";
 import { fileURLToPath } from "url";
+
+const MONSTER_TAMANHOS = JSON.parse(
+  readFileSync(join(dirname(fileURLToPath(import.meta.url)), "..", "data", "monster-tamanhos.json"), "utf8")
+);
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const OUT = join(__dirname, "..", "data", "compendiums");
@@ -105,8 +109,10 @@ function mob(
 ) {
   const paMin = 6;
   const paMax = Math.max(paMin, pa);
+  const entryId = `monstros-${slug(name)}`;
+  const tamanho = MONSTER_TAMANHOS[entryId] ?? "medium";
   return {
-    id: `monstros-${slug(name)}`,
+    id: entryId,
     name,
     type: "npc",
     system: {
@@ -120,7 +126,7 @@ function mob(
         pontosAcao: { value: paMax, max: paMax },
       },
       movement: { hex: { walk: { value: move.walk }, run: { value: move.run } } },
-      tactical: { defesa: { value: ca }, ameaca: { value: nivel }, tier },
+      tactical: { defesa: { value: ca }, ameaca: { value: nivel }, tier, tamanho },
       actions: monsterActions(name, nivel, tier, attrs),
     },
   };
@@ -198,14 +204,34 @@ const MONSTERS = [
   mob("Verme Gigante de Pedra", 10, 142, 18, "boss", { forca: 22, agilidade: 6 }, { walk: 4, run: 6 }),
   mob("Salamandra Gigante", 6, 65, 13, "mini", { forca: 15, agilidade: 12 }),
   mob("Behemoth de Pedra", 14, 230, 19, "boss", { forca: 24, agilidade: 6 }, { walk: 4, run: 6 }),
-  // aliases mesa spawn
-  mob("Goblin", 1, 7, 13, "mob", { forca: 8, agilidade: 14 }, { walk: 4, run: 6 }, 3, "Alias de Goblin de Caverna para spawn rápido."),
-  mob("Esqueleto de Guarda", 2, 22, 14, "mob", { forca: 12, agilidade: 10 }),
-  mob("Slime de Masmorra", 2, 30, 11, "mob", { forca: 14, agilidade: 6 }, { walk: 2, run: 3 }),
+  mob("Fera da Sombra", 8, 78, 14, "mini", { forca: 12, agilidade: 16 }),
+  mob("Medusa", 7, 75, 15, "mini", { forca: 14, agilidade: 14 }),
+  mob("Fênix de Caverna", 13, 152, 16, "boss", { forca: 16, agilidade: 18 }, { walk: 5, run: 10 }),
+  mob("Gigante de Pedra", 12, 126, 17, "boss", { forca: 23, agilidade: 8 }, { walk: 4, run: 6 }),
+  mob("Bruxa da Masmorra", 8, 82, 17, "mini", { forca: 12, agilidade: 14 }),
+  mob("Fera Seminal", 11, 108, 13, "boss", { forca: 16, agilidade: 12 }),
+  mob("Carniçal Alado", 9, 104, 15, "mini", { forca: 15, agilidade: 16 }, { walk: 5, run: 10 }),
+  mob("Balor", 19, 262, 19, "boss", { forca: 26, agilidade: 14 }, { walk: 5, run: 8 }, 5),
+  mob("Enxame de Ratos-Cadáveres", 2, 24, 10, "mob", { forca: 10, agilidade: 14 }, { walk: 4, run: 6 }),
+  mob("Elemental de Terra", 8, 126, 17, "mini", { forca: 20, agilidade: 8 }, { walk: 3, run: 5 }),
+  mob("Banshee", 8, 58, 12, "mini", { forca: 8, agilidade: 14 }),
+  mob("Morcego-Tirano", 5, 65, 12, "mini", { forca: 16, agilidade: 14 }, { walk: 5, run: 10 }),
+  mob("Ooze Ocular", 6, 72, 13, "mini", { forca: 12, agilidade: 10 }, { walk: 2, run: 4 }),
+  mob("Tarrasque (Bebê)", 20, 676, 25, "boss", { forca: 30, agilidade: 10 }, { walk: 6, run: 10 }, 5),
+  // aliases mesa spawn (sem codigo 001–080)
+  { ...mob("Goblin", 1, 7, 13, "mob", { forca: 8, agilidade: 14 }, { walk: 4, run: 6 }, 3, "Alias de Goblin de Caverna para spawn rápido."), spawnAlias: true },
+  { ...mob("Esqueleto de Guarda", 2, 22, 14, "mob", { forca: 12, agilidade: 10 }), spawnAlias: true },
+  { ...mob("Slime de Masmorra", 2, 30, 11, "mob", { forca: 14, agilidade: 6 }, { walk: 2, run: 3 }), spawnAlias: true },
 ];
 
-for (let i = 0; i < MONSTERS.length; i++) {
-  MONSTERS[i].system.catalogId = monCod(i + 1);
+let catalogSeq = 0;
+for (const entry of MONSTERS) {
+  if (entry.spawnAlias) {
+    entry.system.catalogId = `MON-SPAWN-${slug(entry.name)}`;
+    continue;
+  }
+  catalogSeq += 1;
+  entry.system.catalogId = monCod(catalogSeq);
 }
 
 function spell(

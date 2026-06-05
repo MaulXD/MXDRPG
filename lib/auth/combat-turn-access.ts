@@ -12,6 +12,22 @@ export type CombatTurnRoom = {
   actors: Record<string, RoomActor>;
 };
 
+/** Mestre vê HP de qualquer criatura; jogadores só veem PCs linkados (e aliados no hover na UI). */
+export function canViewTokenHp(
+  room: CombatTurnRoom,
+  user: SessionUser | null,
+  token: BattleToken,
+  opts?: { showMonsterHpToPlayers?: boolean }
+): boolean {
+  if (canManageRoom(room, user)) return true;
+  if (token.vidaMax == null) return false;
+  if (token.monsterEntryId && !token.linked) {
+    return Boolean(opts?.showMonsterHpToPlayers);
+  }
+  if (token.linked && !token.monsterEntryId) return true;
+  return false;
+}
+
 /** Mestre vê todos os PA; jogadores só veem PA de fichas linkadas (nunca monstros). */
 export function canViewTokenPa(
   room: CombatTurnRoom,
