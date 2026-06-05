@@ -26,6 +26,7 @@ import { TokenActionRing } from "@/components/vtt/TokenActionRing";
 import { SpellChannelControl } from "@/components/vtt/SpellChannelControl";
 import { MonsterSpawnPanel } from "@/components/vtt/MonsterSpawnPanel";
 import { BattlefieldViewControls } from "@/components/vtt/BattlefieldViewControls";
+import { VttHelpButton } from "@/components/vtt/VttHelpButton";
 import { MesaDockPanel } from "@/components/vtt/MesaDockPanel";
 import { FoundryWindow } from "@/components/vtt/foundry/FoundryWindow";
 import type { FoundryWindowLayout } from "@/hooks/vtt/useFoundryWindows";
@@ -77,6 +78,8 @@ import { useMonsterSpawnDrop } from "@/hooks/vtt/useMonsterSpawnDrop";
 import { paTurnRulesForActor } from "@/lib/combat/pa-economy";
 import { canMoveToken, type MovementPathContext } from "@/lib/vtt/movement";
 import { animateTokenAlongPath } from "@/lib/vtt/token-move-animation";
+import { axialToPixel } from "@/lib/vtt/hex-math";
+import { canvasCenter, worldToScreen } from "@/lib/vtt/battlefield-view";
 import "./vtt.css";
 
 type Props = {
@@ -751,6 +754,40 @@ export function HexBattlefield({
     snapshot?.actors,
   ]);
 
+  const actionPreviewAnchor = useMemo(() => {
+    if (
+      !hoverTargetId ||
+      !activeCombatAction ||
+      !isTargetMode(actionMode) ||
+      highlights.isAreaSpellMode
+    ) {
+      return null;
+    }
+    const wrap = wrapRef.current;
+    if (!wrap) return null;
+    const defender = displayScene.tokens.find((t) => t.id === hoverTargetId);
+    if (!defender) return null;
+    const w = wrap.clientWidth;
+    const h = wrap.clientHeight;
+    const { ox, oy } = canvasCenter(w, h);
+    const world = axialToPixel(
+      defender.axial.q,
+      defender.axial.r,
+      displayScene.hexSize,
+      ox,
+      oy
+    );
+    return worldToScreen(world.x, world.y, w, h, battlefieldView.view);
+  }, [
+    hoverTargetId,
+    activeCombatAction,
+    actionMode,
+    highlights.isAreaSpellMode,
+    displayScene.tokens,
+    displayScene.hexSize,
+    battlefieldView.view,
+  ]);
+
   const fireSelfAbility = useCallback(
     async (action: CombatActionOption, token = selected) => {
       if (!token || !action.selfTarget || action.kind !== "ability") return;
@@ -1214,6 +1251,7 @@ export function HexBattlefield({
         onWheel={battlefieldView.onWheel}
         {...spawnDropHandlers}
       >
+        <VttHelpButton />
         <BattlefieldViewControls
           zoomPercent={battlefieldView.zoomPercent}
           canZoomIn={battlefieldView.canZoomIn}
@@ -1296,7 +1334,7 @@ export function HexBattlefield({
             onUpdate={refresh}
           />
         ) : null}
-        <BattlefieldActionHud preview={actionPreview} />
+        <BattlefieldActionHud preview={actionPreview} anchor={actionPreviewAnchor} />
         <CombatFxLayer
           wrapRef={wrapRef}
           hexSize={scene.hexSize}

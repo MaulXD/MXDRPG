@@ -8,7 +8,7 @@ import { loadInventory, newInstanceId, saveInventory } from "@/lib/character/inv
 import type { CompendiumEntry, CompendiumPackId } from "@/lib/compendium/types";
 import { entrySummary } from "@/lib/compendium/format";
 import { getEntry } from "@/lib/compendium/registry";
-import { useRoomSync } from "@/hooks/useRoomSync";
+import { patchRoomActor, useRoomSync } from "@/hooks/useRoomSync";
 import { CharacterSheetCover } from "@/components/character/CharacterSheetCover";
 import { CharacterPortraitFields } from "@/components/character/CharacterPortraitFields";
 import { PortraitFields } from "@/components/character/PortraitFields";
@@ -80,8 +80,28 @@ export function CharacterSheet({
     (items: InventoryItem[]) => {
       setInventory(items);
       saveInventory(character.id, items);
+      void (async () => {
+        try {
+          if (inRoom) {
+            await patchRoomActor(roomId, character.id, { inventory: items });
+            await refresh();
+          } else {
+            const res = await fetch(`/api/characters/${character.id}`, {
+              method: "PATCH",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ inventory: items }),
+            });
+            if (!res.ok) {
+              const err = (await res.json().catch(() => ({}))) as { error?: string };
+              throw new Error(err.error ?? "Falha ao salvar inventário");
+            }
+          }
+        } catch (e) {
+          console.error("[ficha] inventário não persistiu:", e);
+        }
+      })();
     },
-    [character.id]
+    [character.id, inRoom, roomId, refresh]
   );
 
   const resolved = useMemo(() => {

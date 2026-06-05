@@ -77,7 +77,7 @@ export async function syncAdventureActorsForRoom(roomId: string): Promise<RoomSt
 }
 
 export async function persistActorToAdventureSheet(actor: RoomActor): Promise<void> {
-  if (!isAdventureBoundCharacter(actor)) return;
+  if (actor.gmAuthored) return;
   const { revision: _r, ...sheet } = actor;
   await saveCharacter(sheet);
 }
