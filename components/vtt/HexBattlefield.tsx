@@ -1,6 +1,14 @@
 ﻿"use client";
 
-import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
 import { createPortal } from "react-dom";
 import type { Axial } from "@/lib/vtt/hex-math";
 import type { BattleScene, BattleToken, MapMarkup, MapMarkupDurability } from "@/lib/vtt/types";
@@ -43,7 +51,7 @@ import { BattlefieldViewControls } from "@/components/vtt/BattlefieldViewControl
 import { VttHelpButton } from "@/components/vtt/VttHelpButton";
 import { MesaDockPanel } from "@/components/vtt/MesaDockPanel";
 import { FoundryWindow } from "@/components/vtt/foundry/FoundryWindow";
-import type { FoundryWindowLayout } from "@/hooks/vtt/useFoundryWindows";
+import type { FoundryWindowLayout, MesaWindowId } from "@/hooks/vtt/useFoundryWindows";
 import type { MesaPanelLayout } from "@/lib/vtt/mesa-panel-layout";
 import { effectiveMesaPanelWidth } from "@/lib/vtt/mesa-panel-layout";
 import {
@@ -137,11 +145,16 @@ type Props = {
   onInitiativeWindowMinimize?: () => void;
   onInitiativeWindowFocus?: () => void;
   dungeonWindowLayout?: FoundryWindowLayout;
+  onDungeonWindowLayoutChange?: (patch: Partial<FoundryWindowLayout>) => void;
   onDungeonWindowClose?: () => void;
   onDungeonWindowMinimize?: () => void;
+  onDungeonWindowFocus?: () => void;
   whiteboardWindowLayout?: FoundryWindowLayout;
+  onWhiteboardWindowLayoutChange?: (patch: Partial<FoundryWindowLayout>) => void;
   onWhiteboardWindowClose?: () => void;
   onWhiteboardWindowMinimize?: () => void;
+  onWhiteboardWindowFocus?: () => void;
+  isWindowFloating?: (id: MesaWindowId) => boolean;
 };
 
 export function HexBattlefield({
@@ -184,11 +197,16 @@ export function HexBattlefield({
   onInitiativeWindowMinimize,
   onInitiativeWindowFocus,
   dungeonWindowLayout,
+  onDungeonWindowLayoutChange,
   onDungeonWindowClose,
   onDungeonWindowMinimize,
+  onDungeonWindowFocus,
   whiteboardWindowLayout,
+  onWhiteboardWindowLayoutChange,
   onWhiteboardWindowClose,
   onWhiteboardWindowMinimize,
+  onWhiteboardWindowFocus,
+  isWindowFloating,
 }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
@@ -1316,103 +1334,200 @@ export function HexBattlefield({
   }, [dockRoot, hudRoot, resolveDockRoot, resolveHudRoot]);
 
   const dockTarget = dockRoot;
+  const float = (id: MesaWindowId) => Boolean(isWindowFloating?.(id));
 
-  const actorsDock =
+  const portalPanel = (node: ReactNode, floating: boolean) => {
+    if (!node) return null;
+    const target = floating ? hudRoot : dockTarget;
+    return target ? createPortal(node, target) : node;
+  };
+
+  const actorsBody = (
+    <div className="mesa-panel-scroll mesa-panel-scroll--rail">{actorsPanel}</div>
+  );
+
+  const actorsUi =
     foundryLayout && actorsWindowLayout ? (
-      <FoundryDockPanel
-        title="Personagens"
-        open={actorsWindowLayout.open}
-        minimized={actorsWindowLayout.minimized}
-        className="foundry-dock-panel--actors"
-        onClose={onActorsWindowClose ?? (() => {})}
-        onMinimize={onActorsWindowMinimize}
-      >
-        <div className="mesa-panel-scroll mesa-panel-scroll--rail">{actorsPanel}</div>
-      </FoundryDockPanel>
+      float("actors") ? (
+        <FoundryWindow
+          title="Personagens"
+          layout={actorsWindowLayout}
+          className="foundry-window--actors"
+          onLayoutChange={onActorsWindowLayoutChange ?? (() => {})}
+          onClose={onActorsWindowClose ?? (() => {})}
+          onMinimize={onActorsWindowMinimize ?? (() => {})}
+          onFocus={onActorsWindowFocus ?? (() => {})}
+        >
+          {actorsBody}
+        </FoundryWindow>
+      ) : (
+        <FoundryDockPanel
+          title="Personagens"
+          open={actorsWindowLayout.open}
+          minimized={actorsWindowLayout.minimized}
+          className="foundry-dock-panel--actors"
+          onClose={onActorsWindowClose ?? (() => {})}
+          onMinimize={onActorsWindowMinimize}
+        >
+          {actorsBody}
+        </FoundryDockPanel>
+      )
     ) : null;
 
-  const actorsPortal =
-    actorsDock && dockTarget ? createPortal(actorsDock, dockTarget) : actorsDock;
+  const actorsPortal = portalPanel(actorsUi, float("actors"));
 
-  const gmDock =
+  const gmBody = (
+    <div className="mesa-panel-scroll mesa-panel-scroll--rail">{gmToolsPanel}</div>
+  );
+
+  const gmUi =
     foundryLayout && canControlCombat && gmWindowLayout && gmToolsPanel ? (
-      <FoundryDockPanel
-        title="Ferramentas do mestre"
-        open={gmWindowLayout.open}
-        minimized={gmWindowLayout.minimized}
-        className="foundry-dock-panel--gm"
-        onClose={onGmWindowClose ?? (() => {})}
-        onMinimize={onGmWindowMinimize}
-      >
-        <div className="mesa-panel-scroll mesa-panel-scroll--rail">{gmToolsPanel}</div>
-      </FoundryDockPanel>
+      float("gm") ? (
+        <FoundryWindow
+          title="Ferramentas do mestre"
+          layout={gmWindowLayout}
+          className="foundry-window--gm"
+          onLayoutChange={onGmWindowLayoutChange ?? (() => {})}
+          onClose={onGmWindowClose ?? (() => {})}
+          onMinimize={onGmWindowMinimize ?? (() => {})}
+          onFocus={onGmWindowFocus ?? (() => {})}
+        >
+          {gmBody}
+        </FoundryWindow>
+      ) : (
+        <FoundryDockPanel
+          title="Ferramentas do mestre"
+          open={gmWindowLayout.open}
+          minimized={gmWindowLayout.minimized}
+          className="foundry-dock-panel--gm"
+          onClose={onGmWindowClose ?? (() => {})}
+          onMinimize={onGmWindowMinimize}
+        >
+          {gmBody}
+        </FoundryDockPanel>
+      )
     ) : null;
 
-  const gmPortal = gmDock && dockTarget ? createPortal(gmDock, dockTarget) : gmDock;
+  const gmPortal = portalPanel(gmUi, float("gm"));
 
-  const dungeonDock =
+  const dungeonBody = (
+    <div className="mesa-panel-scroll mesa-panel-scroll--rail">{dungeonPanel}</div>
+  );
+
+  const dungeonUi =
     foundryLayout && dungeonWindowLayout && dungeonPanel ? (
-      <FoundryDockPanel
-        title="Editor de mapa"
-        open={dungeonWindowLayout.open}
-        minimized={dungeonWindowLayout.minimized}
-        className="foundry-dock-panel--dungeon"
-        onClose={onDungeonWindowClose ?? (() => {})}
-        onMinimize={onDungeonWindowMinimize}
-      >
-        <div className="mesa-panel-scroll mesa-panel-scroll--rail">{dungeonPanel}</div>
-      </FoundryDockPanel>
+      float("dungeon") ? (
+        <FoundryWindow
+          title="Editor de mapa"
+          layout={dungeonWindowLayout}
+          className="foundry-window--dungeon"
+          minHeight={240}
+          onLayoutChange={onDungeonWindowLayoutChange ?? (() => {})}
+          onClose={onDungeonWindowClose ?? (() => {})}
+          onMinimize={onDungeonWindowMinimize ?? (() => {})}
+          onFocus={onDungeonWindowFocus ?? (() => {})}
+        >
+          {dungeonBody}
+        </FoundryWindow>
+      ) : (
+        <FoundryDockPanel
+          title="Editor de mapa"
+          open={dungeonWindowLayout.open}
+          minimized={dungeonWindowLayout.minimized}
+          className="foundry-dock-panel--dungeon"
+          onClose={onDungeonWindowClose ?? (() => {})}
+          onMinimize={onDungeonWindowMinimize}
+        >
+          {dungeonBody}
+        </FoundryDockPanel>
+      )
     ) : null;
 
-  const dungeonPortal =
-    dungeonDock && dockTarget ? createPortal(dungeonDock, dockTarget) : dungeonDock;
+  const dungeonPortal = portalPanel(dungeonUi, float("dungeon"));
 
-  const whiteboardDock =
+  const whiteboardBody = (
+    <div className="mesa-panel-scroll mesa-panel-scroll--rail">{whiteboardPanel}</div>
+  );
+
+  const whiteboardUi =
     foundryLayout && whiteboardWindowLayout && whiteboardPanel ? (
-      <FoundryDockPanel
-        title="Lousa do mapa"
-        open={whiteboardWindowLayout.open}
-        minimized={whiteboardWindowLayout.minimized}
-        className="foundry-dock-panel--whiteboard"
-        onClose={onWhiteboardWindowClose ?? (() => {})}
-        onMinimize={onWhiteboardWindowMinimize}
-      >
-        <div className="mesa-panel-scroll mesa-panel-scroll--rail">{whiteboardPanel}</div>
-      </FoundryDockPanel>
+      float("whiteboard") ? (
+        <FoundryWindow
+          title="Lousa do mapa"
+          layout={whiteboardWindowLayout}
+          className="foundry-window--whiteboard"
+          minHeight={200}
+          onLayoutChange={onWhiteboardWindowLayoutChange ?? (() => {})}
+          onClose={onWhiteboardWindowClose ?? (() => {})}
+          onMinimize={onWhiteboardWindowMinimize ?? (() => {})}
+          onFocus={onWhiteboardWindowFocus ?? (() => {})}
+        >
+          {whiteboardBody}
+        </FoundryWindow>
+      ) : (
+        <FoundryDockPanel
+          title="Lousa do mapa"
+          open={whiteboardWindowLayout.open}
+          minimized={whiteboardWindowLayout.minimized}
+          className="foundry-dock-panel--whiteboard"
+          onClose={onWhiteboardWindowClose ?? (() => {})}
+          onMinimize={onWhiteboardWindowMinimize}
+        >
+          {whiteboardBody}
+        </FoundryDockPanel>
+      )
     ) : null;
 
-  const whiteboardPortal =
-    whiteboardDock && dockTarget ? createPortal(whiteboardDock, dockTarget) : whiteboardDock;
+  const whiteboardPortal = portalPanel(whiteboardUi, float("whiteboard"));
 
-  const initiativeDock =
+  const initiativeUi =
     foundryLayout && initiativeWindowLayout && combat ? (
-      <FoundryDockPanel
-        title="Ordem de turno"
-        open={initiativeWindowLayout.open}
-        minimized={initiativeWindowLayout.minimized}
-        className="foundry-dock-panel--initiative"
-        onClose={onInitiativeWindowClose ?? (() => {})}
-        onMinimize={onInitiativeWindowMinimize}
-      >
-        <div className="mesa-panel-scroll mesa-panel-scroll--rail">
-          <TurnOrderPanel
-            roomId={roomId}
-            combat={combat}
-            tokens={listTokens}
-            canControl={canControlCombat}
-            canEndTurn={canEndTurnProp}
-            combatUndo={snapshot?.combatUndo}
-            onUpdate={refresh}
-            attackableIds={highlights.attackableIds}
-            hoverAttackTargetId={hoverTargetId}
-            onHoverAttackTargetChange={setHoverTargetId}
-          />
-        </div>
-      </FoundryDockPanel>
+      (() => {
+        const initiativeBody = (
+          <div className="mesa-panel-scroll mesa-panel-scroll--rail">
+            <TurnOrderPanel
+              roomId={roomId}
+              combat={combat}
+              tokens={listTokens}
+              canControl={canControlCombat}
+              canEndTurn={canEndTurnProp}
+              combatUndo={snapshot?.combatUndo}
+              onUpdate={refresh}
+              attackableIds={highlights.attackableIds}
+              hoverAttackTargetId={hoverTargetId}
+              onHoverAttackTargetChange={setHoverTargetId}
+            />
+          </div>
+        );
+        return float("initiative") ? (
+          <FoundryWindow
+            title="Ordem de turno"
+            layout={initiativeWindowLayout}
+            className="foundry-window--initiative"
+            minHeight={200}
+            onLayoutChange={onInitiativeWindowLayoutChange ?? (() => {})}
+            onClose={onInitiativeWindowClose ?? (() => {})}
+            onMinimize={onInitiativeWindowMinimize ?? (() => {})}
+            onFocus={onInitiativeWindowFocus ?? (() => {})}
+          >
+            {initiativeBody}
+          </FoundryWindow>
+        ) : (
+          <FoundryDockPanel
+            title="Ordem de turno"
+            open={initiativeWindowLayout.open}
+            minimized={initiativeWindowLayout.minimized}
+            className="foundry-dock-panel--initiative"
+            onClose={onInitiativeWindowClose ?? (() => {})}
+            onMinimize={onInitiativeWindowMinimize}
+          >
+            {initiativeBody}
+          </FoundryDockPanel>
+        );
+      })()
     ) : null;
 
-  const initiativePortal =
-    initiativeDock && dockTarget ? createPortal(initiativeDock, dockTarget) : initiativeDock;
+  const initiativePortal = portalPanel(initiativeUi, float("initiative"));
 
   return (
     <div

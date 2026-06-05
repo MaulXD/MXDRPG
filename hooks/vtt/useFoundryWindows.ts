@@ -59,6 +59,23 @@ function storageKey(roomId?: string): string {
   return `eldarin-foundry-windows${roomId ? `-${roomId}` : ""}`;
 }
 
+function floatingStorageKey(roomId?: string): string {
+  return `eldarin-foundry-floating${roomId ? `-${roomId}` : ""}`;
+}
+
+type FloatingMap = Partial<Record<MesaWindowId, boolean>>;
+
+function loadFloating(roomId?: string): FloatingMap {
+  if (typeof window === "undefined") return {};
+  try {
+    const raw = localStorage.getItem(floatingStorageKey(roomId));
+    if (!raw) return {};
+    return JSON.parse(raw) as FloatingMap;
+  } catch {
+    return {};
+  }
+}
+
 function defaultEntry(id: MesaWindowId, z: number): FoundryWindowLayout {
   return {
     ...DEFAULT_LAYOUTS[id],
@@ -123,10 +140,12 @@ function loadRegistry(roomId?: string): Registry {
 
 export function useFoundryWindows(roomId?: string) {
   const [registry, setRegistry] = useState<Registry>(buildDefaultRegistry);
+  const [floating, setFloating] = useState<FloatingMap>({});
   const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
     setRegistry(loadRegistry(roomId));
+    setFloating(loadFloating(roomId));
     setHydrated(true);
   }, [roomId]);
 
@@ -138,6 +157,15 @@ export function useFoundryWindows(roomId?: string) {
       /* quota */
     }
   }, [registry, roomId, hydrated]);
+
+  useEffect(() => {
+    if (!hydrated) return;
+    try {
+      localStorage.setItem(floatingStorageKey(roomId), JSON.stringify(floating));
+    } catch {
+      /* quota */
+    }
+  }, [floating, roomId, hydrated]);
 
   const get = useCallback(
     (id: MesaWindowId): FoundryWindowLayout => {
@@ -153,27 +181,61 @@ export function useFoundryWindows(roomId?: string) {
     });
   }, []);
 
-  const toggle = useCallback((id: MesaWindowId) => {
+  const isFloating = useCallback(
+    (id: MesaWindowId) => Boolean(floating[id]),
+    [floating]
+  );
+
+  const openAsPopup = useCallback((id: MesaWindowId) => {
+    setFloating((prev) => ({ ...prev, [id]: true }));
     setRegistry((prev) => {
       const cur = prev[id] ?? defaultEntry(id, 10);
-      const closing = cur.open && !cur.minimized;
-      const next: Registry = { ...prev };
+      const popupCount = (Object.keys(prev) as MesaWindowId[]).filter(
+        (wid) => wid !== id && prev[wid]?.open
+      ).length;
+      const offset = popupCount * 28;
+      const z = maxZ(prev) + 1;
+      const base = DEFAULT_LAYOUTS[id];
+      return {
+        ...prev,
+        [id]: {
+          ...cur,
+          open: true,
+          minimized: false,
+          z,
+          x: base.x + offset,
+          y: base.y + offset,
+        },
+      };
+    });
+  }, []);
 
-      if (FOUNDRY_DOCK_PANEL_IDS.includes(id) && !closing) {
-        for (const dockId of FOUNDRY_DOCK_PANEL_IDS) {
-          if (dockId === id) continue;
-          const other = next[dockId] ?? defaultEntry(dockId, 10);
-          next[dockId] = { ...other, open: false, minimized: false };
+  const toggle = useCallback((id: MesaWindowId) => {
+    setFloating((floatPrev) => {
+      const nextFloating: FloatingMap = { ...floatPrev, [id]: false };
+      setRegistry((prev) => {
+        const cur = prev[id] ?? defaultEntry(id, 10);
+        const closing = cur.open && !cur.minimized;
+        const next: Registry = { ...prev };
+
+        if (FOUNDRY_DOCK_PANEL_IDS.includes(id) && !closing) {
+          for (const dockId of FOUNDRY_DOCK_PANEL_IDS) {
+            if (dockId === id) continue;
+            if (floatPrev[dockId]) continue;
+            const other = next[dockId] ?? defaultEntry(dockId, 10);
+            next[dockId] = { ...other, open: false, minimized: false };
+          }
         }
-      }
 
-      if (closing) {
-        next[id] = { ...cur, open: false, minimized: false };
-      } else {
-        const z = maxZ(prev) + 1;
-        next[id] = { ...cur, open: true, minimized: false, z };
-      }
-      return next;
+        if (closing) {
+          next[id] = { ...cur, open: false, minimized: false };
+        } else {
+          const z = maxZ(prev) + 1;
+          next[id] = { ...cur, open: true, minimized: false, z };
+        }
+        return next;
+      });
+      return nextFloating;
     });
   }, []);
 
@@ -227,20 +289,22 @@ export function useFoundryWindows(roomId?: string) {
   const isDockOpen = useCallback(() => {
     return FOUNDRY_DOCK_PANEL_IDS.some((id) => {
       const w = registry[id];
-      return Boolean(w?.open);
+      return Boolean(w?.open && !floating[id]);
     });
-  }, [registry]);
+  }, [registry, floating]);
 
   return {
     get,
     patch,
     toggle,
     open,
+    openAsPopup,
     close,
     minimize,
     restore,
     focus,
     isActive,
+    isFloating,
     isDockOpen,
     hydrated,
   };

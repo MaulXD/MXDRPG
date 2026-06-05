@@ -1,28 +1,11 @@
 /* Shell Foundry — barra esquerda + dock + mapa (tema ardósia / azul frio) */
 
+/* Variáveis herdadas de .vtt-chrome[data-vtt-mesa] (mesa-theme.css) */
 .mesa-workspace--foundry {
-  --mesa-rail-bg: linear-gradient(180deg, #121820 0%, #0c1018 100%);
-  --mesa-dock-bg: #101620;
-  --mesa-stage-bg: #0a0e14;
-  --mesa-surface: #141a24;
-  --mesa-surface-inset: #0d121a;
-  --mesa-accent: #7aa3c9;
-  --mesa-accent-soft: rgba(122, 163, 201, 0.18);
-  --mesa-accent-border: rgba(122, 163, 201, 0.38);
-  --mesa-gm-accent: #c9927a;
-  --mesa-gm-soft: rgba(160, 110, 90, 0.2);
-  --mesa-text-dim: rgba(200, 210, 224, 0.62);
-  --mesa-text: rgba(232, 236, 244, 0.94);
-  /* Propaga tema ardósia/azul para componentes VTT legados */
-  --glass: rgba(16, 22, 32, 0.92);
-  --glass-strong: rgba(12, 18, 28, 0.96);
-  --glass-border: rgba(122, 163, 201, 0.22);
-  --glass-border-bright: rgba(122, 163, 201, 0.42);
-  --surface: var(--mesa-surface);
-  --surface-inset: var(--mesa-surface-inset);
-  --accent: var(--mesa-accent);
-  --accent-primary: var(--mesa-accent);
-  --text-muted: var(--mesa-text-dim);
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
 }
 
 .foundry-mesa {
@@ -444,6 +427,20 @@
   background: linear-gradient(135deg, transparent 50%, rgba(122, 163, 201, 0.4) 50%);
 }
 
+.foundry-window--chat .foundry-window__body,
+.foundry-window--dice .foundry-window__body,
+.foundry-window--spawn .foundry-window__body,
+.foundry-window--actors .foundry-window__body,
+.foundry-window--initiative .foundry-window__body,
+.foundry-window--gm .foundry-window__body,
+.foundry-window--dungeon .foundry-window__body,
+.foundry-window--whiteboard .foundry-window__body {
+  background: var(--mesa-dock-bg);
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
 .foundry-window--character .foundry-window__body {
   background: var(--mesa-surface);
   display: flex;
@@ -476,13 +473,6 @@
   padding: 0.35rem 0.5rem;
   border-bottom: 1px solid var(--glass-border);
   flex-shrink: 0;
-}
-
-.mesa-workspace--foundry {
-  flex: 1;
-  min-height: 0;
-  display: flex;
-  flex-direction: column;
 }
 
 .mesa-workspace--foundry .mesa-sync-err {

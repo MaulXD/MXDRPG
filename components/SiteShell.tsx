@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import "@/components/vtt/mesa-theme.css";
 
 type Props = {
   children: React.ReactNode;
@@ -16,7 +17,7 @@ export function SiteShell({ children, header, footer }: Props) {
 
   if (isVtt) {
     return (
-      <div className="vtt-chrome">
+      <div className="vtt-chrome" data-vtt-mesa="foundry">
         <header className="vtt-topbar glass">
           <Link href="/" className="site-logo neon-title">
             ELDARIN
