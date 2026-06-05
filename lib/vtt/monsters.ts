@@ -8,6 +8,7 @@ import type { BattleToken } from "@/lib/vtt/types";
 import { bumpCreatureSize } from "@/lib/vtt/creature-size";
 import type { CreatureSize } from "@/lib/vtt/creature-size";
 import { parseCreatureSize, resolveMonsterCreatureSize } from "@/lib/vtt/monster-sizes";
+import { normalizeMonsterActionPa } from "@/lib/combat/pa-balance";
 import { MONSTER_PA_MIN, normalizeMonsterPa } from "@/lib/vtt/monster-pa";
 import {
   applyMonsterSpawnScaling,
@@ -97,7 +98,9 @@ function parseMonster(raw: CompendiumEntryRaw, index: number): MonsterTemplate {
     ameaca,
     forca: attrs.forca?.value ?? 10,
     agilidade: attrs.agilidade?.value ?? 10,
-    actions: (sys.actions as CombatActionOption[] | undefined) ?? [],
+    actions: ((sys.actions as CombatActionOption[] | undefined) ?? []).map(
+      normalizeMonsterActionPa
+    ),
     creatureSize:
       parseCreatureSize(tactical.tamanho) ??
       resolveMonsterCreatureSize(entryId, raw.name, { walk: movement.walk?.value, tier }),
@@ -141,7 +144,7 @@ export function createMonsterToken(
     color,
     walk: template.walk,
     run: template.run,
-    pa: template.pa,
+    pa: 0,
     paMax: template.paMax,
     ownerRole: "mestre",
     linked: false,

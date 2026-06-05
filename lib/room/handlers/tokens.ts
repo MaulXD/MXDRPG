@@ -81,9 +81,10 @@ export async function moveRoomToken(
     actorRacas[id] = actor.identity.raca;
   }
   const actor = token.linked && token.actorId ? room.actors[token.actorId] : null;
-  const movePaOpts = actor
-    ? { freeBasicMovePa: paTurnRulesForActor(actor).freeBasicMovePa }
-    : undefined;
+  const movePaOpts = {
+    ...(actor ? { freeBasicMovePa: paTurnRulesForActor(actor).freeBasicMovePa } : {}),
+    ...(opts.bypassTurn ? { gmBypass: true as const } : {}),
+  };
   const check = canMoveToken(
     token,
     target,
@@ -108,16 +109,18 @@ export async function moveRoomToken(
   let moved: BattleToken = {
     ...token,
     axial: target,
-    movementSpentHex: check.nextSpent,
+    movementSpentHex: opts.bypassTurn ? token.movementSpentHex ?? 0 : check.nextSpent,
   };
-  if (check.paCost > 0) {
-    moved = applyPaSpend(moved, check.paCost);
-  }
-  if (
-    movePaOpts?.freeBasicMovePa &&
-    (check.rawPaCost ?? check.paCost) > check.paCost
-  ) {
-    moved = { ...moved, peaoFreeMoveUsed: true };
+  if (!opts.bypassTurn) {
+    if (check.paCost > 0) {
+      moved = applyPaSpend(moved, check.paCost);
+    }
+    if (
+      movePaOpts.freeBasicMovePa &&
+      (check.rawPaCost ?? check.paCost) > check.paCost
+    ) {
+      moved = { ...moved, peaoFreeMoveUsed: true };
+    }
   }
 
   const tokens = [...room.scene.tokens];

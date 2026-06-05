@@ -56,8 +56,8 @@
           "damageType": "perfurante",
           "attackBonus": 1,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Mordida · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Mordida · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -69,8 +69,8 @@
           "damageType": "cortante",
           "attackBonus": -1,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Garras · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Garras · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -82,8 +82,8 @@
           "damageType": "contundente",
           "attackBonus": 1,
           "rangeHex": 2,
-          "paCost": 1,
-          "label": "Investida · 2 hex · PA 1"
+          "paCost": 2,
+          "label": "Investida · 2 hex · PA 2"
         }
       ],
       "catalogId": "MON-001"
@@ -146,8 +146,8 @@
           "damageType": "perfurante",
           "attackBonus": 1,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Mordida · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Mordida · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -159,8 +159,8 @@
           "damageType": "cortante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Garras · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Garras · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -172,8 +172,8 @@
           "damageType": "contundente",
           "attackBonus": 0,
           "rangeHex": 2,
-          "paCost": 1,
-          "label": "Investida · 2 hex · PA 1"
+          "paCost": 2,
+          "label": "Investida · 2 hex · PA 2"
         }
       ],
       "catalogId": "MON-002"
@@ -236,8 +236,8 @@
           "damageType": "perfurante",
           "attackBonus": 1,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Mordida · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Mordida · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -249,8 +249,8 @@
           "damageType": "cortante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Garras · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Garras · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -262,8 +262,8 @@
           "damageType": "contundente",
           "attackBonus": 1,
           "rangeHex": 2,
-          "paCost": 1,
-          "label": "Investida · 2 hex · PA 1"
+          "paCost": 2,
+          "label": "Investida · 2 hex · PA 2"
         }
       ],
       "catalogId": "MON-003"
@@ -326,8 +326,8 @@
           "damageType": "perfurante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Mordida · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Mordida · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -339,8 +339,8 @@
           "damageType": "cortante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Garras · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Garras · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -416,8 +416,8 @@
           "damageType": "perfurante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Mordida · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Mordida · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -429,8 +429,8 @@
           "damageType": "cortante",
           "attackBonus": 3,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Garras · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Garras · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -506,8 +506,8 @@
           "damageType": "perfurante",
           "attackBonus": 1,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Mordida · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Mordida · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -519,8 +519,8 @@
           "damageType": "cortante",
           "attackBonus": 3,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Garras · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Garras · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -532,8 +532,8 @@
           "damageType": "contundente",
           "attackBonus": -2,
           "rangeHex": 2,
-          "paCost": 1,
-          "label": "Investida · 2 hex · PA 1"
+          "paCost": 2,
+          "label": "Investida · 2 hex · PA 2"
         }
       ],
       "catalogId": "MON-006"
@@ -596,8 +596,8 @@
           "damageType": "perfurante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Mordida · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Mordida · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -609,8 +609,8 @@
           "damageType": "cortante",
           "attackBonus": 4,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Garras · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Garras · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -686,8 +686,8 @@
           "damageType": "perfurante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Mordida · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Mordida · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -699,8 +699,8 @@
           "damageType": "cortante",
           "attackBonus": 1,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Garras · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Garras · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -776,8 +776,8 @@
           "damageType": "perfurante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Mordida · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Mordida · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -789,8 +789,8 @@
           "damageType": "cortante",
           "attackBonus": 0,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Garras · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Garras · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -866,8 +866,8 @@
           "damageType": "perfurante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Mordida · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Mordida · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -879,8 +879,8 @@
           "damageType": "cortante",
           "attackBonus": 1,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Garras · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Garras · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -956,8 +956,8 @@
           "damageType": "perfurante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Mordida · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Mordida · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -969,8 +969,8 @@
           "damageType": "cortante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Garras · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Garras · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -1046,8 +1046,8 @@
           "damageType": "perfurante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Mordida · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Mordida · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -1059,8 +1059,8 @@
           "damageType": "cortante",
           "attackBonus": 1,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Garras · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Garras · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -1136,8 +1136,8 @@
           "damageType": "perfurante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Mordida · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Mordida · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -1149,8 +1149,8 @@
           "damageType": "cortante",
           "attackBonus": 0,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Garras · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Garras · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -1226,8 +1226,8 @@
           "damageType": "perfurante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Mordida · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Mordida · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -1239,8 +1239,8 @@
           "damageType": "cortante",
           "attackBonus": 1,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Garras · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Garras · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -1316,8 +1316,8 @@
           "damageType": "perfurante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Mordida · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Mordida · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -1329,8 +1329,8 @@
           "damageType": "cortante",
           "attackBonus": -1,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Garras · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Garras · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -1406,8 +1406,8 @@
           "damageType": "perfurante",
           "attackBonus": 0,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Mordida · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Mordida · 1 hex · PA 2"
         }
       ],
       "catalogId": "MON-016"
@@ -1470,8 +1470,8 @@
           "damageType": "perfurante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Mordida · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Mordida · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -1483,8 +1483,8 @@
           "damageType": "cortante",
           "attackBonus": -1,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Garras · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Garras · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -1560,8 +1560,8 @@
           "damageType": "perfurante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Mordida · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Mordida · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -1573,8 +1573,8 @@
           "damageType": "cortante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Garras · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Garras · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -1650,8 +1650,8 @@
           "damageType": "perfurante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Mordida · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Mordida · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -1663,8 +1663,8 @@
           "damageType": "cortante",
           "attackBonus": 0,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Garras · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Garras · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -1740,8 +1740,8 @@
           "damageType": "perfurante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Mordida · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Mordida · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -1753,8 +1753,8 @@
           "damageType": "cortante",
           "attackBonus": -1,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Garras · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Garras · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -1830,8 +1830,8 @@
           "damageType": "perfurante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Mordida · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Mordida · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -1843,8 +1843,8 @@
           "damageType": "cortante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Garras · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Garras · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -1920,8 +1920,8 @@
           "damageType": "perfurante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Mordida · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Mordida · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -1933,8 +1933,8 @@
           "damageType": "cortante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Garras · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Garras · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -2010,8 +2010,8 @@
           "damageType": "perfurante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Mordida · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Mordida · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -2023,8 +2023,8 @@
           "damageType": "cortante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Garras · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Garras · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -2100,8 +2100,8 @@
           "damageType": "perfurante",
           "attackBonus": 1,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Mordida · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Mordida · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -2113,8 +2113,8 @@
           "damageType": "cortante",
           "attackBonus": 3,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Garras · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Garras · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -2126,8 +2126,8 @@
           "damageType": "contundente",
           "attackBonus": 1,
           "rangeHex": 2,
-          "paCost": 1,
-          "label": "Investida · 2 hex · PA 1"
+          "paCost": 2,
+          "label": "Investida · 2 hex · PA 2"
         }
       ],
       "catalogId": "MON-024"
@@ -2190,8 +2190,8 @@
           "damageType": "perfurante",
           "attackBonus": 1,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Mordida · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Mordida · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -2203,8 +2203,8 @@
           "damageType": "cortante",
           "attackBonus": 1,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Garras · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Garras · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -2216,8 +2216,8 @@
           "damageType": "contundente",
           "attackBonus": 2,
           "rangeHex": 2,
-          "paCost": 1,
-          "label": "Investida · 2 hex · PA 1"
+          "paCost": 2,
+          "label": "Investida · 2 hex · PA 2"
         }
       ],
       "catalogId": "MON-025"
@@ -2280,8 +2280,8 @@
           "damageType": "perfurante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Mordida · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Mordida · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -2293,8 +2293,8 @@
           "damageType": "cortante",
           "attackBonus": 1,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Garras · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Garras · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -2370,8 +2370,8 @@
           "damageType": "perfurante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Mordida · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Mordida · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -2383,8 +2383,8 @@
           "damageType": "cortante",
           "attackBonus": 1,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Garras · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Garras · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -2460,8 +2460,8 @@
           "damageType": "perfurante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Mordida · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Mordida · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -2473,8 +2473,8 @@
           "damageType": "cortante",
           "attackBonus": 0,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Garras · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Garras · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -2550,8 +2550,8 @@
           "damageType": "perfurante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Mordida · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Mordida · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -2563,8 +2563,8 @@
           "damageType": "cortante",
           "attackBonus": 0,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Garras · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Garras · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -2640,8 +2640,8 @@
           "damageType": "perfurante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Mordida · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Mordida · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -2653,8 +2653,8 @@
           "damageType": "cortante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Garras · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Garras · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -2730,8 +2730,8 @@
           "damageType": "perfurante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Mordida · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Mordida · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -2743,8 +2743,8 @@
           "damageType": "cortante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Garras · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Garras · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -2820,8 +2820,8 @@
           "damageType": "perfurante",
           "attackBonus": 0,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Mordida · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Mordida · 1 hex · PA 2"
         }
       ],
       "catalogId": "MON-032"
@@ -2884,8 +2884,8 @@
           "damageType": "perfurante",
           "attackBonus": 1,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Mordida · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Mordida · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -2897,8 +2897,8 @@
           "damageType": "cortante",
           "attackBonus": 1,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Garras · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Garras · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -2910,8 +2910,8 @@
           "damageType": "contundente",
           "attackBonus": 1,
           "rangeHex": 2,
-          "paCost": 1,
-          "label": "Investida · 2 hex · PA 1"
+          "paCost": 2,
+          "label": "Investida · 2 hex · PA 2"
         }
       ],
       "catalogId": "MON-033"
@@ -2974,8 +2974,8 @@
           "damageType": "perfurante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Mordida · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Mordida · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -2987,8 +2987,8 @@
           "damageType": "cortante",
           "attackBonus": 0,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Garras · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Garras · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -3064,8 +3064,8 @@
           "damageType": "perfurante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Mordida · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Mordida · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -3077,8 +3077,8 @@
           "damageType": "cortante",
           "attackBonus": -1,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Garras · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Garras · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -3154,8 +3154,8 @@
           "damageType": "perfurante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Mordida · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Mordida · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -3167,8 +3167,8 @@
           "damageType": "cortante",
           "attackBonus": -1,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Garras · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Garras · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -3244,8 +3244,8 @@
           "damageType": "perfurante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Mordida · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Mordida · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -3257,8 +3257,8 @@
           "damageType": "cortante",
           "attackBonus": -2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Garras · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Garras · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -3334,8 +3334,8 @@
           "damageType": "perfurante",
           "attackBonus": 1,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Mordida · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Mordida · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -3347,8 +3347,8 @@
           "damageType": "cortante",
           "attackBonus": -2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Garras · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Garras · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -3360,8 +3360,8 @@
           "damageType": "contundente",
           "attackBonus": 1,
           "rangeHex": 2,
-          "paCost": 1,
-          "label": "Investida · 2 hex · PA 1"
+          "paCost": 2,
+          "label": "Investida · 2 hex · PA 2"
         }
       ],
       "catalogId": "MON-038"
@@ -3424,8 +3424,8 @@
           "damageType": "perfurante",
           "attackBonus": 1,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Mordida · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Mordida · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -3437,8 +3437,8 @@
           "damageType": "cortante",
           "attackBonus": -1,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Garras · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Garras · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -3450,8 +3450,8 @@
           "damageType": "contundente",
           "attackBonus": 0,
           "rangeHex": 2,
-          "paCost": 1,
-          "label": "Investida · 2 hex · PA 1"
+          "paCost": 2,
+          "label": "Investida · 2 hex · PA 2"
         }
       ],
       "catalogId": "MON-039"
@@ -3514,8 +3514,8 @@
           "damageType": "perfurante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Mordida · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Mordida · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -3527,8 +3527,8 @@
           "damageType": "cortante",
           "attackBonus": 3,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Garras · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Garras · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -3604,8 +3604,8 @@
           "damageType": "perfurante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Mordida · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Mordida · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -3617,8 +3617,8 @@
           "damageType": "cortante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Garras · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Garras · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -3694,8 +3694,8 @@
           "damageType": "perfurante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Mordida · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Mordida · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -3707,8 +3707,8 @@
           "damageType": "cortante",
           "attackBonus": 0,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Garras · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Garras · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -3784,8 +3784,8 @@
           "damageType": "perfurante",
           "attackBonus": 1,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Mordida · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Mordida · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -3797,8 +3797,8 @@
           "damageType": "cortante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Garras · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Garras · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -3810,8 +3810,8 @@
           "damageType": "contundente",
           "attackBonus": 2,
           "rangeHex": 2,
-          "paCost": 1,
-          "label": "Investida · 2 hex · PA 1"
+          "paCost": 2,
+          "label": "Investida · 2 hex · PA 2"
         }
       ],
       "catalogId": "MON-043"
@@ -3874,8 +3874,8 @@
           "damageType": "perfurante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Mordida · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Mordida · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -3887,8 +3887,8 @@
           "damageType": "cortante",
           "attackBonus": 0,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Garras · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Garras · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -3964,8 +3964,8 @@
           "damageType": "perfurante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Mordida · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Mordida · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -3977,8 +3977,8 @@
           "damageType": "cortante",
           "attackBonus": 3,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Garras · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Garras · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -4054,8 +4054,8 @@
           "damageType": "perfurante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Mordida · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Mordida · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -4067,8 +4067,8 @@
           "damageType": "cortante",
           "attackBonus": 1,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Garras · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Garras · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -4144,8 +4144,8 @@
           "damageType": "perfurante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Mordida · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Mordida · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -4157,8 +4157,8 @@
           "damageType": "cortante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Garras · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Garras · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -4234,8 +4234,8 @@
           "damageType": "perfurante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Mordida · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Mordida · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -4247,8 +4247,8 @@
           "damageType": "cortante",
           "attackBonus": 4,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Garras · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Garras · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -4324,8 +4324,8 @@
           "damageType": "perfurante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Mordida · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Mordida · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -4337,8 +4337,8 @@
           "damageType": "cortante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Garras · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Garras · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -4414,8 +4414,8 @@
           "damageType": "perfurante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Mordida · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Mordida · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -4427,8 +4427,8 @@
           "damageType": "cortante",
           "attackBonus": 0,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Garras · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Garras · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -4504,8 +4504,8 @@
           "damageType": "perfurante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Mordida · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Mordida · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -4517,8 +4517,8 @@
           "damageType": "cortante",
           "attackBonus": 0,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Garras · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Garras · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -4594,8 +4594,8 @@
           "damageType": "perfurante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Mordida · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Mordida · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -4607,8 +4607,8 @@
           "damageType": "cortante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Garras · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Garras · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -4684,8 +4684,8 @@
           "damageType": "perfurante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Mordida · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Mordida · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -4697,8 +4697,8 @@
           "damageType": "cortante",
           "attackBonus": -1,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Garras · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Garras · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -4774,8 +4774,8 @@
           "damageType": "perfurante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Mordida · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Mordida · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -4787,8 +4787,8 @@
           "damageType": "cortante",
           "attackBonus": -1,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Garras · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Garras · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -4864,8 +4864,8 @@
           "damageType": "perfurante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Mordida · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Mordida · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -4877,8 +4877,8 @@
           "damageType": "cortante",
           "attackBonus": 3,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Garras · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Garras · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -4954,8 +4954,8 @@
           "damageType": "perfurante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Mordida · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Mordida · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -4967,8 +4967,8 @@
           "damageType": "cortante",
           "attackBonus": -2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Garras · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Garras · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -5044,8 +5044,8 @@
           "damageType": "perfurante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Mordida · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Mordida · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -5057,8 +5057,8 @@
           "damageType": "cortante",
           "attackBonus": 0,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Garras · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Garras · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -5134,8 +5134,8 @@
           "damageType": "perfurante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Mordida · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Mordida · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -5147,8 +5147,8 @@
           "damageType": "cortante",
           "attackBonus": -2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Garras · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Garras · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -5224,8 +5224,8 @@
           "damageType": "perfurante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Mordida · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Mordida · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -5237,8 +5237,8 @@
           "damageType": "cortante",
           "attackBonus": 0,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Garras · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Garras · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -5314,8 +5314,8 @@
           "damageType": "perfurante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Mordida · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Mordida · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -5327,8 +5327,8 @@
           "damageType": "cortante",
           "attackBonus": -1,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Garras · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Garras · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -5404,8 +5404,8 @@
           "damageType": "perfurante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Mordida · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Mordida · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -5417,8 +5417,8 @@
           "damageType": "cortante",
           "attackBonus": 4,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Garras · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Garras · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -5494,8 +5494,8 @@
           "damageType": "perfurante",
           "attackBonus": 1,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Mordida · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Mordida · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -5507,8 +5507,8 @@
           "damageType": "cortante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Garras · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Garras · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -5520,8 +5520,8 @@
           "damageType": "contundente",
           "attackBonus": -1,
           "rangeHex": 2,
-          "paCost": 1,
-          "label": "Investida · 2 hex · PA 1"
+          "paCost": 2,
+          "label": "Investida · 2 hex · PA 2"
         }
       ],
       "catalogId": "MON-062"
@@ -5584,8 +5584,8 @@
           "damageType": "perfurante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Mordida · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Mordida · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -5597,8 +5597,8 @@
           "damageType": "cortante",
           "attackBonus": 1,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Garras · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Garras · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -5674,8 +5674,8 @@
           "damageType": "perfurante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Mordida · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Mordida · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -5687,8 +5687,8 @@
           "damageType": "cortante",
           "attackBonus": -2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Garras · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Garras · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -5764,8 +5764,8 @@
           "damageType": "perfurante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Mordida · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Mordida · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -5777,8 +5777,8 @@
           "damageType": "cortante",
           "attackBonus": 1,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Garras · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Garras · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -5854,8 +5854,8 @@
           "damageType": "perfurante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Mordida · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Mordida · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -5867,8 +5867,8 @@
           "damageType": "cortante",
           "attackBonus": -2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Garras · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Garras · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -5944,8 +5944,8 @@
           "damageType": "perfurante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Mordida · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Mordida · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -5957,8 +5957,8 @@
           "damageType": "cortante",
           "attackBonus": 3,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Garras · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Garras · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -6034,8 +6034,8 @@
           "damageType": "perfurante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Mordida · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Mordida · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -6047,8 +6047,8 @@
           "damageType": "cortante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Garras · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Garras · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -6124,8 +6124,8 @@
           "damageType": "perfurante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Mordida · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Mordida · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -6137,8 +6137,8 @@
           "damageType": "cortante",
           "attackBonus": 4,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Garras · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Garras · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -6214,8 +6214,8 @@
           "damageType": "perfurante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Mordida · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Mordida · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -6227,8 +6227,8 @@
           "damageType": "cortante",
           "attackBonus": -1,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Garras · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Garras · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -6304,8 +6304,8 @@
           "damageType": "perfurante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Mordida · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Mordida · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -6317,8 +6317,8 @@
           "damageType": "cortante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Garras · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Garras · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -6394,8 +6394,8 @@
           "damageType": "perfurante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Mordida · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Mordida · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -6407,8 +6407,8 @@
           "damageType": "cortante",
           "attackBonus": 1,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Garras · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Garras · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -6484,8 +6484,8 @@
           "damageType": "perfurante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Mordida · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Mordida · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -6497,8 +6497,8 @@
           "damageType": "cortante",
           "attackBonus": 3,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Garras · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Garras · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -6574,8 +6574,8 @@
           "damageType": "perfurante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Mordida · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Mordida · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -6587,8 +6587,8 @@
           "damageType": "cortante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Garras · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Garras · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -6664,8 +6664,8 @@
           "damageType": "perfurante",
           "attackBonus": 1,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Mordida · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Mordida · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -6677,8 +6677,8 @@
           "damageType": "cortante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Garras · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Garras · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -6690,8 +6690,8 @@
           "damageType": "contundente",
           "attackBonus": 0,
           "rangeHex": 2,
-          "paCost": 1,
-          "label": "Investida · 2 hex · PA 1"
+          "paCost": 2,
+          "label": "Investida · 2 hex · PA 2"
         }
       ],
       "catalogId": "MON-075"
@@ -6754,8 +6754,8 @@
           "damageType": "perfurante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Mordida · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Mordida · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -6767,8 +6767,8 @@
           "damageType": "cortante",
           "attackBonus": -1,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Garras · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Garras · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -6844,8 +6844,8 @@
           "damageType": "perfurante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Mordida · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Mordida · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -6857,8 +6857,8 @@
           "damageType": "cortante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Garras · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Garras · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -6934,8 +6934,8 @@
           "damageType": "perfurante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Mordida · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Mordida · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -6947,8 +6947,8 @@
           "damageType": "cortante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Garras · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Garras · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -7024,8 +7024,8 @@
           "damageType": "perfurante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Mordida · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Mordida · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -7037,8 +7037,8 @@
           "damageType": "cortante",
           "attackBonus": 0,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Garras · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Garras · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -7114,8 +7114,8 @@
           "damageType": "perfurante",
           "attackBonus": 2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Mordida · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Mordida · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -7127,8 +7127,8 @@
           "damageType": "cortante",
           "attackBonus": 0,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Garras · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Garras · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -7204,8 +7204,8 @@
           "damageType": "perfurante",
           "attackBonus": 0,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Mordida · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Mordida · 1 hex · PA 2"
         }
       ],
       "catalogId": "MON-SPAWN-goblin"
@@ -7269,8 +7269,8 @@
           "damageType": "perfurante",
           "attackBonus": 1,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Mordida · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Mordida · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -7282,8 +7282,8 @@
           "damageType": "cortante",
           "attackBonus": 0,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Garras · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Garras · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -7295,8 +7295,8 @@
           "damageType": "contundente",
           "attackBonus": 1,
           "rangeHex": 2,
-          "paCost": 1,
-          "label": "Investida · 2 hex · PA 1"
+          "paCost": 2,
+          "label": "Investida · 2 hex · PA 2"
         }
       ],
       "catalogId": "MON-SPAWN-esqueleto-de-guarda"
@@ -7360,8 +7360,8 @@
           "damageType": "perfurante",
           "attackBonus": 1,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Mordida · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Mordida · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -7373,8 +7373,8 @@
           "damageType": "cortante",
           "attackBonus": -2,
           "rangeHex": 1,
-          "paCost": 1,
-          "label": "Garras · 1 hex · PA 1"
+          "paCost": 2,
+          "label": "Garras · 1 hex · PA 2"
         },
         {
           "packId": "unarmed",
@@ -7386,8 +7386,8 @@
           "damageType": "contundente",
           "attackBonus": 2,
           "rangeHex": 2,
-          "paCost": 1,
-          "label": "Investida · 2 hex · PA 1"
+          "paCost": 2,
+          "label": "Investida · 2 hex · PA 2"
         }
       ],
       "catalogId": "MON-SPAWN-slime-de-masmorra"

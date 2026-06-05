@@ -35,8 +35,8 @@ function monsterActions(name, nivel, tier, attrs) {
       damageType: "perfurante",
       attackBonus: nivel >= 4 ? 2 : nivel >= 2 ? 1 : 0,
       rangeHex: 1,
-      paCost: 1,
-      label: "Mordida · 1 hex · PA 1",
+      paCost: 2,
+      label: "Mordida · 1 hex · PA 2",
     },
   ];
   if (tier !== "mob" || nivel >= 2) {
@@ -50,8 +50,8 @@ function monsterActions(name, nivel, tier, attrs) {
       damageType: "cortante",
       attackBonus: mod(attrs.agilidade),
       rangeHex: 1,
-      paCost: 1,
-      label: "Garras · 1 hex · PA 1",
+      paCost: 2,
+      label: "Garras · 1 hex · PA 2",
     });
   }
   if (nivel >= 4) {
@@ -79,8 +79,8 @@ function monsterActions(name, nivel, tier, attrs) {
       damageType: "contundente",
       attackBonus: forMod,
       rangeHex: 2,
-      paCost: 1,
-      label: "Investida · 2 hex · PA 1",
+      paCost: 2,
+      label: "Investida · 2 hex · PA 2",
     });
   }
   return actions;
