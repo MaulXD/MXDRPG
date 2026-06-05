@@ -12,7 +12,9 @@ import {
   postRoomPing,
   revealRoomHex,
   repositionRoomToken,
+  deleteRoomToken,
 } from "@/hooks/useRoomSync";
+import { useVttToast } from "@/components/vtt/VttToast";
 import { filterTokensForFog, visibleHexSetForPlayer } from "@/lib/vtt/fog-of-war";
 import { ActiveCharactersPanel } from "@/components/vtt/ActiveCharactersPanel";
 import { GmMenuPanel } from "@/components/vtt/GmMenuPanel";
@@ -157,6 +159,7 @@ export function HexBattlefield({
   const [actionErr, setActionErr] = useState<string | null>(null);
   const [channelExtraPa, setChannelExtraPa] = useState(0);
   const [actionRingAt, setActionRingAt] = useState<{ x: number; y: number } | null>(null);
+  const toast = useVttToast();
   const seenCombatRef = useRef<Set<string>>(new Set());
   const [mapImage, setMapImage] = useState<HTMLImageElement | null>(null);
   const [mapImgTick, setMapImgTick] = useState(0);
@@ -412,8 +415,40 @@ export function HexBattlefield({
     setActionRingAt(null);
   }, [selectedId, snapshot?.combat?.activeIndex, snapshot?.combat?.round]);
 
+  const removeSelectedToken = useCallback(async () => {
+    if (!canControlCombat || !selectedId || !selected) return;
+    setActionErr(null);
+    try {
+      const snap = await deleteRoomToken(roomId, selectedId);
+      syncRoom(snap);
+      const nextId = snap.scene.tokens[0]?.id ?? null;
+      setSelectedId(nextId);
+      setActionRingAt(null);
+      toast.push(`${selected.name} removido do mapa`, "success");
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : "Falha ao remover token";
+      setActionErr(msg);
+      toast.push(msg, "warn");
+    }
+  }, [canControlCombat, selectedId, selected, roomId, syncRoom, toast]);
+
   useEffect(() => {
+    function isTypingTarget(target: EventTarget | null): boolean {
+      if (!(target instanceof HTMLElement)) return false;
+      return Boolean(target.closest("input, textarea, select, [contenteditable='true']"));
+    }
+
     function onKey(e: KeyboardEvent) {
+      if (isTypingTarget(e.target)) return;
+
+      if (e.key === "Delete") {
+        if (canControlCombat && selectedId && actionMode === "idle" && !actionRingAt) {
+          e.preventDefault();
+          void removeSelectedToken();
+        }
+        return;
+      }
+
       if (e.key !== "Escape") return;
       if (actionRingAt) {
         setActionRingAt(null);
@@ -429,7 +464,13 @@ export function HexBattlefield({
     }
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [actionRingAt, actionMode]);
+  }, [
+    actionRingAt,
+    actionMode,
+    canControlCombat,
+    selectedId,
+    removeSelectedToken,
+  ]);
 
   const triggerCombatFx = useCallback(
     (msg: ChatMessage) => {

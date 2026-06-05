@@ -251,3 +251,48 @@ export async function placeRoomActorOnHex(
   const updated = await persistRoom(roomId, room);
   return { ok: true, snapshot: toSnapshot(updated), tokenId: token.id };
 }
+
+export type RemoveTokenResult =
+  | { ok: true; snapshot: RoomSnapshot }
+  | { ok: false; error: string };
+
+/** Mestre: remove token do mapa (ficha do ator permanece na aventura). */
+export async function removeRoomToken(
+  roomId: string,
+  tokenId: string
+): Promise<RemoveTokenResult> {
+  const room = await getRoom(roomId);
+  if (!room) return { ok: false, error: "Sala não encontrada" };
+
+  const idx = room.scene.tokens.findIndex((t) => t.id === tokenId);
+  if (idx < 0) return { ok: false, error: "Token não encontrado" };
+
+  room.scene = {
+    ...room.scene,
+    tokens: room.scene.tokens.filter((t) => t.id !== tokenId),
+  };
+
+  if (room.combat?.order?.length) {
+    const prevOrder = room.combat.order;
+    const removedIndex = prevOrder.indexOf(tokenId);
+    const order = prevOrder.filter((id) => id !== tokenId);
+    let activeIndex = room.combat.activeIndex;
+
+    if (removedIndex >= 0 && removedIndex < activeIndex) {
+      activeIndex = Math.max(0, activeIndex - 1);
+    } else if (removedIndex === activeIndex) {
+      activeIndex = Math.min(activeIndex, Math.max(0, order.length - 1));
+    } else if (activeIndex >= order.length) {
+      activeIndex = Math.max(0, order.length - 1);
+    }
+
+    room.combat = {
+      ...room.combat,
+      order,
+      activeIndex,
+    };
+  }
+
+  const updated = await persistRoom(roomId, room);
+  return { ok: true, snapshot: toSnapshot(updated) };
+}

@@ -66,6 +66,7 @@ export function CharacterSheet({
   const [inventory, setInventory] = useState<InventoryItem[]>(character.inventory);
   const [pickerOpen, setPickerOpen] = useState(false);
   const [pickerPack, setPickerPack] = useState<CompendiumPackId>("armas");
+  const [selectedInvId, setSelectedInvId] = useState<string | null>(null);
 
   const { snapshot, refresh, applySnapshot } = useRoomSync(roomId);
   const live = snapshot?.actors[character.id] ?? character;
@@ -124,7 +125,32 @@ export function CharacterSheet({
 
   function removeItem(instanceId: string) {
     persist(inventory.filter((i) => i.instanceId !== instanceId));
+    setSelectedInvId((cur) => (cur === instanceId ? null : cur));
   }
+
+  useEffect(() => {
+    setSelectedInvId(null);
+  }, [tab, character.id]);
+
+  useEffect(() => {
+    function isTypingTarget(target: EventTarget | null): boolean {
+      if (!(target instanceof HTMLElement)) return false;
+      return Boolean(target.closest("input, textarea, select, [contenteditable='true']"));
+    }
+
+    function onKey(e: KeyboardEvent) {
+      if (e.key !== "Delete" || !canEdit || tab === "tesouro" || pickerOpen) return;
+      if (isTypingTarget(e.target)) return;
+      if (!selectedInvId) return;
+      const row = filtered.find((r) => r.ref.instanceId === selectedInvId);
+      if (!row) return;
+      e.preventDefault();
+      removeItem(selectedInvId);
+    }
+
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [canEdit, tab, pickerOpen, selectedInvId, filtered, inventory]);
 
   const { identity, resources, movement, tactical } = live;
   const isPopup = variant === "popup";
@@ -205,17 +231,26 @@ export function CharacterSheet({
           {canEdit ? " Use + Compêndio para adicionar." : null}
         </div>
       ) : (
-        <ul className="inv-list">
-          {filtered.map(({ ref, entry }) => (
-            <InventoryRow
-              key={ref.instanceId}
-              entry={entry}
-              quantity={ref.quantity}
-              canEdit={canEdit}
-              onRemove={() => removeItem(ref.instanceId)}
-            />
-          ))}
-        </ul>
+        <>
+          {canEdit && filtered.length > 0 ? (
+            <p className="vtt-combat-hint" style={{ marginBottom: "0.45rem" }}>
+              Clique em um item e pressione <strong>Delete</strong> para remover.
+            </p>
+          ) : null}
+          <ul className="inv-list">
+            {filtered.map(({ ref, entry }) => (
+              <InventoryRow
+                key={ref.instanceId}
+                entry={entry}
+                quantity={ref.quantity}
+                canEdit={canEdit}
+                selected={selectedInvId === ref.instanceId}
+                onSelect={() => setSelectedInvId(ref.instanceId)}
+                onRemove={() => removeItem(ref.instanceId)}
+              />
+            ))}
+          </ul>
+        </>
       )}
     </>
   );
@@ -585,18 +620,37 @@ function InventoryRow({
   entry,
   quantity,
   canEdit,
+  selected = false,
+  onSelect,
   onRemove,
 }: {
   entry: CompendiumEntry;
   quantity: number;
   canEdit: boolean;
+  selected?: boolean;
+  onSelect?: () => void;
   onRemove: () => void;
 }) {
   const color = TYPE_COLOR[entry.type] ?? "#00f5ff";
   const tags = entrySummary(entry.system, entry.type);
 
   return (
-    <li className="inv-row">
+    <li
+      className={`inv-row${selected ? " inv-row--selected" : ""}`}
+      role={canEdit ? "button" : undefined}
+      tabIndex={canEdit ? 0 : undefined}
+      onClick={canEdit ? onSelect : undefined}
+      onKeyDown={
+        canEdit
+          ? (e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                onSelect?.();
+              }
+            }
+          : undefined
+      }
+    >
       <div className="inv-icon" style={{ background: `${color}22`, color }}>
         {entry.name.charAt(0)}
       </div>
@@ -607,7 +661,14 @@ function InventoryRow({
       <span className="inv-type">{entry.type}</span>
       {quantity > 1 ? <span className="inv-type">×{quantity}</span> : null}
       {canEdit ? (
-        <button type="button" className="inv-remove" onClick={onRemove}>
+        <button
+          type="button"
+          className="inv-remove"
+          onClick={(e) => {
+            e.stopPropagation();
+            onRemove();
+          }}
+        >
           Remover
         </button>
       ) : null}

@@ -332,6 +332,18 @@ export async function spawnRoomMonster(
   return res.json() as Promise<RoomSnapshot>;
 }
 
+export async function deleteRoomToken(roomId: string, tokenId: string) {
+  const res = await fetch(`/api/room/${roomId}/tokens/${tokenId}`, {
+    method: "DELETE",
+    credentials: "same-origin",
+  });
+  if (!res.ok) {
+    const err = (await res.json()) as { error?: string };
+    throw new Error(err.error ?? "Falha ao remover token");
+  }
+  return res.json() as Promise<RoomSnapshot>;
+}
+
 export async function repositionRoomToken(
   roomId: string,
   tokenId: string,
