@@ -52,6 +52,7 @@ import {
   previewMove,
   type ActionPreview,
 } from "@/lib/combat/action-preview";
+import { estimateTargetCombatPreview } from "@/lib/combat/hit-chance";
 import { BattlefieldActionHud } from "@/components/vtt/BattlefieldActionHud";
 import { EndTurnBar } from "@/components/vtt/EndTurnBar";
 import { TurnOrderPanel } from "@/components/vtt/TurnOrderPanel";
@@ -363,6 +364,41 @@ export function HexBattlefield({
     turn,
   });
 
+  const attackTargetPreview = useMemo(() => {
+    if (
+      !selected ||
+      !activeCombatAction ||
+      !hoverTargetId ||
+      !isTargetMode(actionMode) ||
+      highlights.isAreaSpellMode
+    ) {
+      return null;
+    }
+    const defender = displayScene.tokens.find((t) => t.id === hoverTargetId);
+    if (!defender) return null;
+    const defenderActor =
+      defender.linked && defender.actorId
+        ? snapshot?.actors[defender.actorId] ?? null
+        : null;
+    return estimateTargetCombatPreview(
+      selected,
+      defender,
+      selectedActor,
+      defenderActor,
+      activeCombatAction,
+      displayScene.tokens
+    );
+  }, [
+    selected,
+    activeCombatAction,
+    hoverTargetId,
+    actionMode,
+    highlights.isAreaSpellMode,
+    displayScene.tokens,
+    selectedActor,
+    snapshot?.actors,
+  ]);
+
   const canvasState: HexCanvasDrawState = useMemo(
     () => ({
       scene: displayScene,
@@ -386,6 +422,7 @@ export function HexBattlefield({
       turnActiveId,
       attackableIds: highlights.attackableIds,
       hoverAttackTargetId: hoverTargetId,
+      attackTargetPreview,
       hoverTurnMoveTokenId: highlights.turnMovePreview ? hoverTokenId : null,
       tokenFlash,
       visibleHexSet,
@@ -404,6 +441,7 @@ export function HexBattlefield({
       selectedId,
       turnActiveId,
       hoverTargetId,
+      attackTargetPreview,
       hoverTokenId,
       tokenFlash,
       visibleHexSet,
@@ -621,6 +659,10 @@ export function HexBattlefield({
     ) {
       const defender = displayScene.tokens.find((t) => t.id === hoverTargetId);
       if (defender) {
+        const defenderActor =
+          defender.linked && defender.actorId
+            ? snapshot?.actors[defender.actorId] ?? null
+            : null;
         return previewAttackOnTarget(
           selected,
           defender,
@@ -628,7 +670,8 @@ export function HexBattlefield({
           activeCombatAction,
           displayScene.tokens,
           turn,
-          channelExtraPa
+          channelExtraPa,
+          defenderActor
         );
       }
     }
@@ -645,6 +688,7 @@ export function HexBattlefield({
     displayScene,
     turn,
     channelExtraPa,
+    snapshot?.actors,
   ]);
 
   const attackToken = useCallback(

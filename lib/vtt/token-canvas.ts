@@ -124,12 +124,12 @@ export function drawTokenIdentityRings(
   ctx: CanvasRenderingContext2D,
   cx: number,
   cy: number,
-  radius: number,
+  baseRadius: number,
   style: TokenRingStyle
 ): void {
   for (const ring of style.rings) {
     ctx.beginPath();
-    ctx.arc(cx, cy, radius + ring.radiusOffset, 0, Math.PI * 2);
+    ctx.arc(cx, cy, baseRadius + ring.radiusOffset, 0, Math.PI * 2);
     ctx.strokeStyle = ring.color;
     ctx.lineWidth = ring.width;
     ctx.stroke();

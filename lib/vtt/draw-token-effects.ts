@@ -51,7 +51,7 @@ export function drawTokenEffectBadges(
   token: BattleToken,
   max = 6
 ): void {
-  const chips = listTokenEffectChips(token);
+  const chips = listTokenEffectChips(token).filter((c) => c.id !== "morto");
   if (chips.length === 0) return;
 
   const shown = chips.slice(0, max);

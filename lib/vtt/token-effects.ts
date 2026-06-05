@@ -1,5 +1,6 @@
 import type { TokenCondition } from "@/lib/combat/conditions";
 import { tokenConditions } from "@/lib/combat/conditions";
+import { isTokenDefeated } from "@/lib/vtt/token-hp-display";
 import type { TokenEffectIconId } from "@/lib/vtt/token-effect-icons";
 import { CONDITION_ICON } from "@/lib/vtt/token-effect-icons";
 import type { BattleToken } from "@/lib/vtt/types";
@@ -122,6 +123,12 @@ function debuffChip(
 /** Condições + buffs temporários do token (Cap. 3.4 + habilidades da mesa). */
 export function listTokenEffectChips(token: BattleToken): TokenEffectChip[] {
   const out: TokenEffectChip[] = [];
+
+  if (isTokenDefeated(token)) {
+    out.push(
+      debuffChip("morto", "Morto", "Mt", "skull", "Derrotado — fora de combate")
+    );
+  }
 
   for (const c of tokenConditions(token)) {
     const meta = CONDITION_META[c];
