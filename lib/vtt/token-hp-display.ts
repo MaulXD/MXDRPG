@@ -242,8 +242,8 @@ export function drawTokenHpLabel(
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
   ctx.font = defeated
-    ? "700 10px Source Sans 3, Segoe UI, sans-serif"
-    : "700 11px Source Sans 3, Segoe UI, sans-serif";
+    ? "900 11px Source Sans 3, Segoe UI, sans-serif"
+    : "900 12px Source Sans 3, Segoe UI, sans-serif";
   ctx.fillStyle = defeated ? "rgb(160, 160, 160)" : color;
   ctx.shadowColor = "rgba(0,0,0,0.88)";
   ctx.shadowBlur = 5;

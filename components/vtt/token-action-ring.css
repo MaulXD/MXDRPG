@@ -301,11 +301,60 @@
   line-height: 1;
 }
 
+.token-action-ring__detail {
+  position: absolute;
+  left: 50%;
+  top: calc(50% + var(--tar-detail-offset, 140px));
+  transform: translateX(-50%);
+  pointer-events: auto;
+  width: min(300px, 88vw);
+  max-height: min(240px, 38vh);
+  overflow-y: auto;
+  padding: 0.55rem 0.7rem;
+  z-index: 4;
+  border-radius: 10px;
+  border: 1px solid rgba(201, 169, 98, 0.35);
+  background: rgba(10, 12, 18, 0.94);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+  animation: tar-detail-in 0.2s var(--ease-out) both;
+}
+
+.token-action-ring__detail--hint {
+  padding: 0.65rem 0.8rem;
+}
+
+.token-action-ring__detail-hint {
+  margin: 0;
+  font-size: 0.74rem;
+  line-height: 1.45;
+  color: rgba(232, 226, 214, 0.88);
+  text-align: center;
+}
+
+.combat-action-detail--ring {
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+}
+
+@keyframes tar-detail-in {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .token-action-ring-backdrop,
   .token-action-ring__track,
   .token-action-ring__center,
-  .token-action-ring__slot {
+  .token-action-ring__slot,
+  .token-action-ring__detail {
     animation: none;
     opacity: 1;
   }

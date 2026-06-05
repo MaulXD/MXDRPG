@@ -1,7 +1,40 @@
 import { applyIdentityPatch, type IdentityPatch } from "@/lib/character/identity";
-import type { CharacterSheet } from "@/lib/character/types";
+import type { CharacterSheet, InventoryItem } from "@/lib/character/types";
+import type { CompendiumPackId } from "@/lib/compendium/types";
 import { validateImageDataUrl } from "@/lib/media/image-data-url";
 import { sanitizePortraitFocus } from "@/lib/media/portrait-focus";
+
+const INVENTORY_PACKS = new Set<CompendiumPackId>([
+  "armas",
+  "habilidades",
+  "magias",
+  "equipamentos",
+]);
+
+function sanitizeInventory(raw: unknown): InventoryItem[] | undefined {
+  if (!Array.isArray(raw)) return undefined;
+  const out: InventoryItem[] = [];
+  for (const item of raw) {
+    if (!item || typeof item !== "object") continue;
+    const row = item as Partial<InventoryItem>;
+    if (
+      typeof row.instanceId !== "string" ||
+      typeof row.entryId !== "string" ||
+      typeof row.packId !== "string" ||
+      !INVENTORY_PACKS.has(row.packId as CompendiumPackId)
+    ) {
+      continue;
+    }
+    const quantity = Math.max(1, Math.floor(Number(row.quantity) || 1));
+    out.push({
+      instanceId: row.instanceId.slice(0, 80),
+      packId: row.packId as CompendiumPackId,
+      entryId: row.entryId.slice(0, 120),
+      quantity,
+    });
+  }
+  return out;
+}
 
 export function sanitizeActorPatch(
   patch: Partial<CharacterSheet> & { identityPatch?: IdentityPatch }
@@ -40,6 +73,10 @@ export function sanitizeActorPatch(
     ) {
       out.combatLoadout = { packId: loadout.packId, entryId: loadout.entryId.slice(0, 120) };
     }
+  }
+  if ("inventory" in patch) {
+    const inventory = sanitizeInventory(patch.inventory);
+    if (inventory) out.inventory = inventory;
   }
   return out;
 }

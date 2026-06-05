@@ -94,7 +94,7 @@ function seeded(seed: number): number {
   return x - Math.floor(x);
 }
 
-/** Partículas de cura — brilhos verdes com + por ~3s. */
+/** Cura — apenas sinais + verdes no centro do token (~3s). */
 function drawHealCastFx(
   ctx: CanvasRenderingContext2D,
   x: number,
@@ -105,32 +105,34 @@ function drawHealCastFx(
   const fade = t < 0.85 ? 1 : 1 - (t - 0.85) / 0.15;
   ctx.save();
   ctx.globalAlpha = fade;
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
 
-  for (let i = 0; i < 10; i++) {
-    const phase = (t * 1.4 + i * 0.11) % 1;
+  const pulse = 1 + Math.sin(t * Math.PI * 5) * 0.12;
+  const centerSize = Math.round(20 * pulse);
+  ctx.font = `900 ${centerSize}px Source Sans 3, system-ui, sans-serif`;
+  ctx.shadowColor = "rgba(40, 180, 90, 0.75)";
+  ctx.shadowBlur = 10;
+  ctx.fillStyle = `rgba(140, 255, 170, ${0.82 + (1 - t) * 0.18})`;
+  ctx.fillText("+", x, y);
+  ctx.shadowBlur = 0;
+
+  for (let i = 0; i < 9; i++) {
+    const phase = (t * 1.3 + i * 0.11) % 1;
     const angle = seeded(i * 3.7) * Math.PI * 2;
-    const dist = r * (0.35 + phase * 0.75);
-    const px = x + Math.cos(angle) * dist;
-    const py = y - r * 0.2 - phase * r * 1.1;
-    const size = 3 + seeded(i) * 4;
+    const spread = r * 0.35 * (1 - phase * 0.65);
+    const px = x + Math.cos(angle) * spread;
+    const py = y - phase * r * 1.15;
+    const size = Math.round(10 + seeded(i + 2) * 7);
 
-    ctx.beginPath();
-    ctx.arc(px, py, size, 0, Math.PI * 2);
-    ctx.fillStyle = `rgba(80, 220, 120, ${0.35 + (1 - phase) * 0.45})`;
-    ctx.fill();
-
-    if (i % 2 === 0) {
-      ctx.font = `bold ${9 + seeded(i + 2) * 4}px system-ui, sans-serif`;
-      ctx.fillStyle = `rgba(184, 255, 140, ${0.5 + (1 - phase) * 0.5})`;
-      ctx.textAlign = "center";
-      ctx.textBaseline = "middle";
-      ctx.fillText("+", px, py - 1);
-    }
+    ctx.font = `800 ${size}px Source Sans 3, system-ui, sans-serif`;
+    ctx.fillStyle = `rgba(160, 255, 185, ${(1 - phase) * 0.9})`;
+    ctx.fillText("+", px, py);
   }
 
   ctx.beginPath();
   ctx.arc(x, y, r + 4, 0, Math.PI * 2);
-  ctx.strokeStyle = `rgba(100, 230, 140, ${0.25 + Math.sin(t * Math.PI * 4) * 0.12})`;
+  ctx.strokeStyle = `rgba(100, 230, 140, ${0.22 + Math.sin(t * Math.PI * 4) * 0.1})`;
   ctx.lineWidth = 2;
   ctx.stroke();
   ctx.restore();

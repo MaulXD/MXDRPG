@@ -245,7 +245,6 @@ export function CombatFxLayer({
   const toWorld = axialToPixel(fx.defenderAxial.q, fx.defenderAxial.r, hexSize, ox, oy);
   const from = worldToScreen(fromWorld.x, fromWorld.y, w, h, view);
   const to = worldToScreen(toWorld.x, toWorld.y, w, h, view);
-  const { x, y } = to;
 
   const resultLabel = fx.saveTotal != null
     ? fx.saveSuccess
@@ -310,8 +309,8 @@ export function CombatFxLayer({
         <div
           className="combat-fx-dice"
           style={{
-            left: worldToScreen(ox, oy, w, h, view).x,
-            top: worldToScreen(ox, oy, w, h, view).y - 40,
+            left: to.x,
+            top: to.y,
           }}
         >
           <DiceMiniature
@@ -343,14 +342,14 @@ export function CombatFxLayer({
       {phase === "damage" && fx.damageTotal != null ? (
         <div
           className={`combat-fx-damage ${fx.critical ? "crit" : ""} ${fx.isHeal ? "heal" : ""}`}
-          style={{ left: x, top: y - 20 }}
+          style={{ left: to.x, top: to.y }}
         >
           {fx.isHeal ? `+${fx.damageTotal}` : `−${fx.damageTotal}`}
         </div>
       ) : null}
 
       {phase === "result" && fx.hit === false && !fx.criticalFail && fx.saveTotal == null ? (
-        <div className="combat-fx-miss" style={{ left: x, top: y - 16 }}>
+        <div className="combat-fx-miss" style={{ left: to.x, top: to.y }}>
           Errou
         </div>
       ) : null}

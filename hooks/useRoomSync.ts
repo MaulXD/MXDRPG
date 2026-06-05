@@ -167,6 +167,7 @@ export async function patchRoomActor(
       | "name"
       | "biography"
       | "combatLoadout"
+      | "inventory"
     >
   > & {
     identityPatch?: IdentityPatch;

@@ -63,7 +63,9 @@ export function drawAttackableHint(
   ctx.restore();
 }
 
-/** Rótulo de chance / vantagem acima do alvo mirado (sem caixa — evita sobrepor HP). */
+type PreviewLine = { text: string; font: string; color: string };
+
+/** Painel de chance / vantagem centralizado no token mirado. */
 export function drawTargetCombatPreviewLabel(
   ctx: CanvasRenderingContext2D,
   x: number,
@@ -88,34 +90,68 @@ export function drawTargetCombatPreviewLabel(
         ? "rgb(232, 168, 88)"
         : "rgb(232, 226, 214)";
 
+  const accentBorder =
+    preview.rollMode === "advantage"
+      ? "rgba(136, 196, 124, 0.72)"
+      : preview.rollMode === "disadvantage"
+        ? "rgba(232, 168, 88, 0.72)"
+        : "rgba(196, 68, 68, 0.65)";
+
+  const lines: PreviewLine[] = [
+    { text: main, font: "700 11px Source Sans 3, Segoe UI, sans-serif", color: accent },
+  ];
+  if (modeLine) {
+    lines.push({
+      text: modeLine,
+      font: "600 9px Source Sans 3, Segoe UI, sans-serif",
+      color:
+        preview.rollMode === "advantage"
+          ? "rgb(120, 180, 108)"
+          : preview.rollMode === "disadvantage"
+            ? "rgb(220, 150, 70)"
+            : "rgba(232, 226, 214, 0.88)",
+    });
+  }
+  lines.push({
+    text: detail,
+    font: "600 10px Source Sans 3, Segoe UI, sans-serif",
+    color: "rgba(232, 226, 214, 0.92)",
+  });
+
+  const padX = 10;
+  const padY = 6;
+  const lineH = 13;
+
   ctx.save();
   ctx.textAlign = "center";
   ctx.textBaseline = "top";
-  ctx.shadowColor = "rgba(0,0,0,0.9)";
-  ctx.shadowBlur = 5;
 
-  let topY = y - r - (modeLine ? 38 : 26);
-
-  ctx.font = "700 11px Source Sans 3, Segoe UI, sans-serif";
-  ctx.fillStyle = accent;
-  ctx.fillText(main, x, topY);
-  topY += 13;
-
-  if (modeLine) {
-    ctx.font = "600 9px Source Sans 3, Segoe UI, sans-serif";
-    ctx.fillStyle =
-      preview.rollMode === "advantage"
-        ? "rgb(120, 180, 108)"
-        : preview.rollMode === "disadvantage"
-          ? "rgb(220, 150, 70)"
-          : "rgba(232, 226, 214, 0.82)";
-    ctx.fillText(modeLine, x, topY);
-    topY += 12;
+  let maxW = 0;
+  for (const line of lines) {
+    ctx.font = line.font;
+    maxW = Math.max(maxW, ctx.measureText(line.text).width);
   }
 
-  ctx.font = "600 10px Source Sans 3, Segoe UI, sans-serif";
-  ctx.fillStyle = "rgba(232, 226, 214, 0.88)";
-  ctx.fillText(detail, x, topY);
+  const boxW = maxW + padX * 2;
+  const boxH = padY * 2 + lines.length * lineH;
+  const boxX = x - boxW / 2;
+  const boxY = y - boxH / 2;
+
+  ctx.fillStyle = "rgba(8, 10, 12, 0.88)";
+  ctx.strokeStyle = accentBorder;
+  ctx.lineWidth = 1.25;
+  ctx.beginPath();
+  ctx.roundRect(boxX, boxY, boxW, boxH, 6);
+  ctx.fill();
+  ctx.stroke();
+
+  let textY = boxY + padY;
+  for (const line of lines) {
+    ctx.font = line.font;
+    ctx.fillStyle = line.color;
+    ctx.fillText(line.text, x, textY);
+    textY += lineH;
+  }
 
   ctx.restore();
 }

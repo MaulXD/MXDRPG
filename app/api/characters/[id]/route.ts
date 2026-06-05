@@ -3,6 +3,7 @@ import { canEditCharacter, resolveCharacter, saveCharacter } from "@/lib/charact
 import { getSession } from "@/lib/auth/session";
 import type { CharacterSheet } from "@/lib/character/types";
 import { normalizeCharacter } from "@/lib/character/normalize";
+import { sanitizeActorPatch } from "@/lib/room/internal/actor-patch";
 
 type Params = { params: Promise<{ id: string }> };
 
@@ -49,21 +50,17 @@ export async function PATCH(request: Request, { params }: Params) {
       | "portraitFocus"
       | "coverFocus"
       | "tokenFocus"
+      | "inventory"
     >
   >;
 
+  const safe = sanitizeActorPatch(patch);
   const merged = normalizeCharacter({
     ...existing,
+    ...safe,
     name: patch.name !== undefined ? String(patch.name).trim().slice(0, 80) : existing.name,
     biography:
       patch.biography !== undefined ? String(patch.biography).slice(0, 2000) : existing.biography,
-    portraitUrl: patch.portraitUrl !== undefined ? patch.portraitUrl : existing.portraitUrl,
-    tokenImageUrl:
-      patch.tokenImageUrl !== undefined ? patch.tokenImageUrl : existing.tokenImageUrl,
-    portraitFocus:
-      patch.portraitFocus !== undefined ? patch.portraitFocus : existing.portraitFocus,
-    coverFocus: patch.coverFocus !== undefined ? patch.coverFocus : existing.coverFocus,
-    tokenFocus: patch.tokenFocus !== undefined ? patch.tokenFocus : existing.tokenFocus,
   });
 
   const saved = await saveCharacter(merged);
