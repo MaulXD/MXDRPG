@@ -7,12 +7,14 @@ import { pixelToAxial } from "@/lib/vtt/hex-math";
 import type { RoomSnapshot } from "@/lib/room/types";
 import {
   clearActiveActorSpawnDragPayload,
+  clearActiveGmCreationSpawnDragPayload,
   clearActiveSpawnDragPayload,
   isBoardSpawnDrag,
   readActorSpawnDrag,
+  readGmCreationSpawnDrag,
   readMonsterSpawnDrag,
 } from "@/lib/vtt/spawn-drag";
-import { placeRoomActorOnHex, spawnRoomMonster } from "@/hooks/useRoomSync";
+import { placeRoomActorOnHex, spawnGmCreation, spawnRoomMonster } from "@/hooks/useRoomSync";
 import type { BattleScene } from "@/lib/vtt/types";
 
 type Params = {
@@ -118,13 +120,16 @@ export function useMonsterSpawnDrop({
       setSpawnDragActive(false);
       clearActiveSpawnDragPayload();
       clearActiveActorSpawnDragPayload();
-      const monsterPayload = readMonsterSpawnDrag(e.dataTransfer);
-      const actorPayload = allowActorDrop ? readActorSpawnDrag(e.dataTransfer) : null;
+      clearActiveGmCreationSpawnDragPayload();
+      const gmPayload = readGmCreationSpawnDrag(e.dataTransfer);
+      const monsterPayload = gmPayload ? null : readMonsterSpawnDrag(e.dataTransfer);
+      const actorPayload =
+        gmPayload || !allowActorDrop ? null : readActorSpawnDrag(e.dataTransfer);
       const axial = axialFromEvent(e.clientX, e.clientY);
       reportHover(null);
-      if ((!monsterPayload && !actorPayload) || !axial) {
-        if (!monsterPayload && !actorPayload) {
-          onError?.("Solte no mapa (arraste da lista Invocar ou Personagens).");
+      if ((!monsterPayload && !actorPayload && !gmPayload) || !axial) {
+        if (!monsterPayload && !actorPayload && !gmPayload) {
+          onError?.("Solte no mapa (arraste da lista Invocar, Personagens ou Minhas fichas).");
         } else {
           onError?.("Hex inválido — solte sobre o tabuleiro.");
         }
@@ -134,12 +139,14 @@ export function useMonsterSpawnDrop({
 
       busyRef.current = true;
       try {
-        const snapshot = actorPayload
-          ? await placeRoomActorOnHex(roomId, actorPayload.actorId, axial.q, axial.r)
-          : await spawnRoomMonster(roomId, monsterPayload!.entryId, axial.q, axial.r, {
-              variant: monsterPayload!.variant,
-              groupLevelDelta: monsterPayload!.groupLevelDelta || undefined,
-            });
+        const snapshot = gmPayload
+          ? await spawnGmCreation(roomId, gmPayload.creationId, axial.q, axial.r)
+          : actorPayload
+            ? await placeRoomActorOnHex(roomId, actorPayload.actorId, axial.q, axial.r)
+            : await spawnRoomMonster(roomId, monsterPayload!.entryId, axial.q, axial.r, {
+                variant: monsterPayload!.variant,
+                groupLevelDelta: monsterPayload!.groupLevelDelta || undefined,
+              });
         onSpawned(snapshot);
       } catch (err) {
         onError?.(err instanceof Error ? err.message : "Falha ao colocar no mapa");

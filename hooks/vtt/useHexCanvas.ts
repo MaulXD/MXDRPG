@@ -25,6 +25,7 @@ import type { BattlePing } from "@/lib/vtt/types";
 import type { TokenFlashKind } from "@/lib/vtt/draw-battlefield";
 import { isTargetMode, type TokenActionMode } from "@/lib/vtt/action-mode";
 import type { MoveCheck } from "@/lib/vtt/movement";
+import type { TokenHpDisplay } from "@/lib/vtt/token-hp-display";
 import type { BattleScene } from "@/lib/vtt/types";
 
 export type HexCanvasDrawState = {
@@ -54,6 +55,7 @@ export type HexCanvasDrawState = {
   visibleHexSet: Set<string> | null;
   pings: BattlePing[];
   mapImage: HTMLImageElement | null;
+  tokenHpDisplay: Map<string, TokenHpDisplay>;
 };
 
 export type TokenMoveAnimRef = RefObject<{
@@ -159,6 +161,7 @@ export function useHexCanvas(
       tokenAnimTimeSec: tokenAnimTimeSecRef.current,
       tokenFlash: s.tokenFlash,
       tokenPositionOverride,
+      tokenHpDisplay: s.tokenHpDisplay ?? new Map(),
     });
 
     if (s.pings.length > 0) {

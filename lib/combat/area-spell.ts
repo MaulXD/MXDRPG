@@ -16,6 +16,7 @@ import {
   totalChannelPaCost,
 } from "@/lib/combat/spell-channel";
 import { checkCanSpendPa } from "@/lib/combat/pa-turn";
+import { rechargeBlockReason } from "@/lib/combat/recharge";
 import { resolveSaveSpell, type SaveSpellResolution } from "@/lib/combat/spell";
 
 export type SpellAreaShape = AreaShape;
@@ -71,14 +72,25 @@ export function canCastAreaAt(
   if (turn?.activeTokenId && caster.id !== turn.activeTokenId && !turn.bypassTurn) {
     return { ok: false, reason: "Aguarde seu turno na iniciativa" };
   }
+  const rechargeReason = rechargeBlockReason(caster, action, turn?.combatRound ?? 1);
+  if (rechargeReason) return { ok: false, reason: rechargeReason };
+
+  const shape = action.areaShape ?? "burst";
+  const directed = areaNeedsDirection(shape);
+  const origin = directed ? caster.axial : center;
+
   const extra = clampChannelExtraPa(action, channelExtraPa);
   const paNeed = actor ? totalChannelPaCost(actor, action, extra) : action.paCost + extra;
   const paCheck = checkCanSpendPa(caster, paNeed);
   if (!paCheck.ok) return { ok: false, reason: paCheck.reason };
-  const dist = axialDistance(caster.axial, center);
-  if (dist > action.rangeHex) {
-    return { ok: false, reason: `Centro fora de alcance (${dist}/${action.rangeHex} hex)` };
+
+  if (!directed) {
+    const dist = axialDistance(caster.axial, center);
+    if (dist > action.rangeHex) {
+      return { ok: false, reason: `Centro fora de alcance (${dist}/${action.rangeHex} hex)` };
+    }
   }
+
   return { ok: true };
 }
 
@@ -114,11 +126,14 @@ export function resolveAreaSpell(
   if (!check.ok) throw new Error(check.reason ?? "Área inválida");
 
   const shape = resolved.areaShape ?? "burst";
-  if (areaNeedsDirection(shape) && areaDirection == null) {
-    throw new Error("Escolha a direção da área (hex vizinho ao centro)");
+  const directed = areaNeedsDirection(shape);
+  const areaOrigin = directed ? caster.axial : center;
+
+  if (directed && areaDirection == null) {
+    throw new Error("Escolha a direção da área (hex vizinho ao conjurador)");
   }
   const areaHexes = computeSpellAreaHexes(
-    center,
+    areaOrigin,
     shape,
     resolved.areaRadiusHex ?? 1,
     resolved.areaHexCount,
@@ -175,7 +190,7 @@ export function resolveAreaSpell(
 
   return {
     casterTokenId: caster.id,
-    center,
+    center: areaOrigin,
     areaHexes,
     actionName: resolved.name,
     paCost: totalChannelPaCost(actor, action, extra),

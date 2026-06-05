@@ -5,6 +5,7 @@ import {
 } from "@/lib/character/adventure-bind";
 import type { CharacterSheet } from "@/lib/character/types";
 import type { SessionUser } from "@/lib/auth/types";
+import { normalizeRoomSettings, type RoomSettings } from "@/lib/room/settings";
 import type { RoomState } from "@/lib/room/types";
 
 /** PCs jogáveis na mesa demo sem login (visitante). */
@@ -94,12 +95,15 @@ export function canChatInRoom(
   return canParticipateInRoom(room, user);
 }
 
-/** Ignorar iniciativa em ataque/movimento (mestre na sala; demo: qualquer participante). */
+/** Ignorar iniciativa — só o mestre (ou admin), se habilitado nas configurações da mesa. */
 export function canBypassCombatTurn(
-  room: Pick<RoomState, "roomId" | "ownerId">,
+  room: Pick<RoomState, "ownerId"> & { settings?: RoomSettings | null },
   user: SessionUser | null | undefined
 ): boolean {
-  return canSpawnMonstersInRoom(room, user);
+  if (!normalizeRoomSettings(room.settings).gmBypassInitiative) return false;
+  if (!user) return false;
+  if (user.role === "admin") return true;
+  return canManageRoom(room, user);
 }
 
 /** Reposicionar token livremente no mapa (mestre / demo GM). */

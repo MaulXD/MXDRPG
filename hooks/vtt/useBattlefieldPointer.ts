@@ -24,6 +24,7 @@ import type { BattleScene, BattleToken } from "@/lib/vtt/types";
 type TurnCtx = {
   activeTokenId: string | null;
   bypassTurn: boolean;
+  combatRound?: number;
 };
 
 type Params = {
@@ -364,25 +365,19 @@ export function useBattlefieldPointer({
         const turnCtx = {
           activeTokenId: turn.activeTokenId,
           bypassTurn: turn.bypassTurn,
+          combatRound: turn.combatRound,
         };
         const shape = activeCombatAction.areaShape ?? "burst";
 
-        if (needsAreaDirection && areaCenter) {
-          const dir = hexDirection(areaCenter, axial);
+        if (areaNeedsDirection(shape)) {
+          const dir = hexDirection(selected.axial, axial);
           if (dir == null) {
-            onAreaSpellError("Clique num hex vizinho ao centro para definir a direção");
+            onAreaSpellError("Clique num hex vizinho ao conjurador para definir a direção");
             return;
           }
-          const check = canCastAreaAt(selected, areaCenter, activeCombatAction, turnCtx);
-          if (check.ok) onAreaSpell(areaCenter, dir);
+          const check = canCastAreaAt(selected, selected.axial, activeCombatAction, turnCtx);
+          if (check.ok) onAreaSpell(selected.axial, dir);
           else onAreaSpellError(check.reason ?? "Área inválida");
-          return;
-        }
-
-        if (areaNeedsDirection(shape)) {
-          const check = canCastAreaAt(selected, axial, activeCombatAction, turnCtx);
-          if (check.ok) setAreaCenter(axial);
-          else onAreaSpellError(check.reason ?? "Centro de área inválido");
           return;
         }
 

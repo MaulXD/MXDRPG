@@ -10,6 +10,8 @@ import {
   resolveCombatAction,
 } from "@/lib/combat/attack";
 import { effectivePaCost, totalAttackPaCost } from "@/lib/combat/pa-economy";
+import { isActionOnRecharge } from "@/lib/combat/recharge";
+import { totalChannelPaCost } from "@/lib/combat/spell-channel";
 import type { TokenActionMode } from "@/lib/vtt/action-mode";
 import { movementPaCost, movementPaBandsForToken } from "@/lib/vtt/movement-pa";
 import { useCombatTurn } from "@/hooks/useCombatActions";
@@ -29,6 +31,7 @@ type DisplaySlot = {
   disabled?: boolean;
   title?: string;
   longLabel?: boolean;
+  rechargeHint?: string;
   onClick: () => void;
 };
 
@@ -46,7 +49,17 @@ type Props = {
   onRoomSync: () => void;
 };
 
-const RING_RADIUS = 123;
+const RING_RADIUS_BASE = 123;
+
+function ringLayout(slotCount: number): { radius: number; track: number; slotScale: number } {
+  if (slotCount <= 5) {
+    return { radius: RING_RADIUS_BASE, track: 252, slotScale: 1 };
+  }
+  if (slotCount <= 8) {
+    return { radius: Math.round(RING_RADIUS_BASE * 1.18), track: 296, slotScale: 1.04 };
+  }
+  return { radius: Math.round(RING_RADIUS_BASE * 1.36), track: 340, slotScale: 1.08 };
+}
 
 function nextHexPaLabel(token: BattleToken): string {
   const bands = movementPaBandsForToken(token);
@@ -64,6 +77,9 @@ function combatActionPaLabel(actor: RoomActor | null, action: CombatActionOption
   if (actor && action.kind === "weapon") {
     const total = totalAttackPaCost(actor, action);
     return `${total} PA`;
+  }
+  if (actor && (action.kind === "spell" || action.kind === "ability")) {
+    return `${totalChannelPaCost(actor, action, 0)} PA`;
   }
   return `${effectivePaCost(actor, action)} PA`;
 }
@@ -126,13 +142,14 @@ export function TokenActionRing({
   const pickCombatAction = useCallback(
     (mode: "spell" | "ability", action: CombatActionOption) => {
       if (turnBlocked) return;
+      if (isActionOnRecharge(token, action, combat?.round ?? 1).blocked) return;
       if (actor) {
         void saveLoadout(mode === "spell" ? "magias" : "habilidades", action.entryId);
       }
       onPickMode(mode, action);
       onClose();
     },
-    [turnBlocked, actor, saveLoadout, onPickMode, onClose]
+    [turnBlocked, token, combat?.round, actor, saveLoadout, onPickMode, onClose]
   );
 
   const pickMain = useCallback(
@@ -168,31 +185,50 @@ export function TokenActionRing({
     [turnBlocked, weapons, spells, abilities, actor, saveLoadout, onPickMode, onClose]
   );
 
-  const displaySlots: DisplaySlot[] = useMemo(() => {
-    if (ringView === "spell") {
-      return spells.map((action) => ({
-        id: `spell-${action.entryId}`,
-        tone: "spell" as const,
+  const combatRound = combat?.round ?? 1;
+
+  const slotForAction = useCallback(
+    (
+      action: CombatActionOption,
+      tone: "spell" | "ability",
+      glyph: string,
+      pick: () => void
+    ): DisplaySlot => {
+      const cd = isActionOnRecharge(token, action, combatRound);
+      const rechargeTitle = action.recharge?.label;
+      return {
+        id: `${tone}-${action.entryId}`,
+        tone,
         label: truncateRingLabel(action.label || action.name),
-        glyph: "✦",
+        glyph,
         paLabel: combatActionPaLabel(actor, action),
         longLabel: true,
-        title: action.label || action.name,
-        onClick: () => pickCombatAction("spell", action),
-      }));
+        disabled: turnBlocked || cd.blocked,
+        rechargeHint: cd.blocked ? cd.hint : undefined,
+        title: [
+          action.label || action.name,
+          rechargeTitle ? `Recarga: ${rechargeTitle}` : null,
+          cd.blocked && cd.hint ? `Disponível: ${cd.hint}` : null,
+        ]
+          .filter(Boolean)
+          .join(" · "),
+        onClick: pick,
+      };
+    },
+    [token, combatRound, actor, turnBlocked]
+  );
+
+  const displaySlots: DisplaySlot[] = useMemo(() => {
+    if (ringView === "spell") {
+      return spells.map((action) =>
+        slotForAction(action, "spell", "✦", () => pickCombatAction("spell", action))
+      );
     }
 
     if (ringView === "ability") {
-      return abilities.map((action) => ({
-        id: `ability-${action.entryId}`,
-        tone: "ability" as const,
-        label: truncateRingLabel(action.label || action.name),
-        glyph: "◆",
-        paLabel: combatActionPaLabel(actor, action),
-        longLabel: true,
-        title: action.label || action.name,
-        onClick: () => pickCombatAction("ability", action),
-      }));
+      return abilities.map((action) =>
+        slotForAction(action, "ability", "◆", () => pickCombatAction("ability", action))
+      );
     }
 
     const weapon = weapons[0];
@@ -267,7 +303,11 @@ export function TokenActionRing({
     turnBlocked,
     pickMain,
     pickCombatAction,
+    slotForAction,
+    combatRound,
   ]);
+
+  const layout = ringLayout(displaySlots.length);
 
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
@@ -314,7 +354,18 @@ export function TokenActionRing({
         onClick={(e) => e.stopPropagation()}
         onContextMenu={(e) => e.preventDefault()}
       >
-        <span key={ringKey} className="token-action-ring__track" aria-hidden />
+        <span
+          key={ringKey}
+          className="token-action-ring__track"
+          style={
+            {
+              width: layout.track,
+              height: layout.track,
+              "--tar-track": `${layout.track}px`,
+            } as CSSProperties
+          }
+          aria-hidden
+        />
 
         <button
           type="button"
@@ -348,20 +399,23 @@ export function TokenActionRing({
 
         {displaySlots.map((slot, i) => {
           const angle = slice * i - Math.PI / 2;
-          const left = Math.cos(angle) * RING_RADIUS;
-          const top = Math.sin(angle) * RING_RADIUS;
+          const left = Math.cos(angle) * layout.radius;
+          const top = Math.sin(angle) * layout.radius;
           return (
             <button
               key={`${ringKey}-${slot.id}`}
               type="button"
               role="menuitem"
-              className={`token-action-ring__slot token-action-ring__slot--${slot.tone}`}
+              className={`token-action-ring__slot token-action-ring__slot--${slot.tone}${
+                slot.rechargeHint ? " token-action-ring__slot--cooldown" : ""
+              }`}
               style={
                 {
                   "--tar-i": i,
                   "--tar-x": `${left}px`,
                   "--tar-y": `${top}px`,
-                  transform: `translate(calc(-50% + ${left}px), calc(-50% + ${top}px))`,
+                  "--tar-slot-scale": layout.slotScale,
+                  transform: `translate(calc(-50% + ${left}px), calc(-50% + ${top}px)) scale(${layout.slotScale})`,
                 } as CSSProperties
               }
               disabled={slot.disabled}
@@ -383,6 +437,14 @@ export function TokenActionRing({
                 {slot.label}
               </span>
               <span className="token-action-ring__pa">{slot.paLabel}</span>
+              {slot.rechargeHint ? (
+                <span className="token-action-ring__cd" title={`Recarga · ${slot.rechargeHint}`}>
+                  <span className="token-action-ring__cd-icon" aria-hidden>
+                    ⏳
+                  </span>
+                  {slot.rechargeHint}
+                </span>
+              ) : null}
             </button>
           );
         })}

@@ -36,6 +36,7 @@ import {
   weaponAttackCount,
 } from "@/lib/combat/pa-economy";
 import { checkCanSpendPa } from "@/lib/combat/pa-turn";
+import { parseRecharge, rechargeBlockReason } from "@/lib/combat/recharge";
 import {
   actionWithChannel,
   clampChannelExtraPa,
@@ -156,6 +157,7 @@ function actionFromEntry(
         nivel?: number;
         save?: { attribute?: string; cd?: number };
         channel?: { maxExtraPa?: number; bonusPerPa?: string };
+        recarga?: string;
         area?: {
           shape?: string;
           radiusHex?: number;
@@ -190,6 +192,7 @@ function actionFromEntry(
       : undefined;
 
   const channel = parseSpellChannel(spell?.channel);
+  const recharge = parseRecharge(spell?.recarga);
 
   return {
     packId,
@@ -209,6 +212,7 @@ function actionFromEntry(
     areaHexCount: areaShape === "wall" ? areaHexCount ?? 3 : undefined,
     channelMaxExtraPa: channel?.maxExtraPa,
     channelBonusPerPa: channel?.bonusPerPa,
+    recharge: recharge ?? undefined,
     equipmentSpecials:
       packId === "armas" ? normalizeWeaponSpecial(weapon?.special) : undefined,
     label: `${entry.name} · ${rangeHex} hex · PA ${paCost}${channel ? " · canalizável" : ""}${isSaveSpell ? " · teste" : ""}${areaShape !== "single" ? ` · área ${areaShape}` : ""}`,
@@ -300,6 +304,9 @@ export function listTokenCombatActions(
   let all: CombatActionOption[];
   if (actor) {
     all = listCombatActions(actor);
+  } else if (token.gmCreationId) {
+    const custom = token.gmActions ?? [];
+    all = custom.length ? [...custom, MONSTER_UNARMED] : [MONSTER_UNARMED];
   } else if (token.monsterEntryId) {
     const monsterActions = monsterCombatActions(token.monsterEntryId);
     all = monsterActions.length ? [...monsterActions, MONSTER_UNARMED] : [MONSTER_UNARMED];
@@ -534,6 +541,9 @@ export function canAttackTarget(
     return { ok: false, reason: "Aguarde seu turno na iniciativa" };
   }
 
+  const rechargeReason = rechargeBlockReason(attacker, action, turn?.combatRound ?? 1);
+  if (rechargeReason) return { ok: false, reason: rechargeReason };
+
   const act = canTokenAct(attacker);
   if (!act.ok) return act;
 
@@ -576,11 +586,16 @@ function resolveMonsterAttack(
   const template = attackerToken.monsterEntryId
     ? getMonsterTemplate(attackerToken.monsterEntryId)
     : null;
+  const gmStats = attackerToken.gmCreatureStats;
   const fixedMod = template
     ? action.rangeHex > 1
       ? Math.floor((template.agilidade - 10) / 2)
       : Math.floor((template.forca - 10) / 2)
-    : 0;
+    : gmStats
+      ? action.rangeHex > 1
+        ? Math.floor((gmStats.agilidade - 10) / 2)
+        : Math.floor((gmStats.forca - 10) / 2)
+      : 0;
 
   const built = buildAttackModifiers(attackerToken, defenderToken, action);
   const goblinMod = goblinMonsterAttackModifier(attackerToken, defenderToken, allTokens);

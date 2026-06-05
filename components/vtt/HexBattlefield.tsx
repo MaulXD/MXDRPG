@@ -15,7 +15,10 @@ import {
   deleteRoomToken,
 } from "@/hooks/useRoomSync";
 import { useVttToast } from "@/components/vtt/VttToast";
+import { canManageRoom } from "@/lib/auth/room-access";
+import { normalizeRoomSettings } from "@/lib/room/settings";
 import { filterTokensForFog, visibleHexSetForPlayer } from "@/lib/vtt/fog-of-war";
+import { resolveTokenHpDisplay } from "@/lib/vtt/token-hp-display";
 import { ActiveCharactersPanel } from "@/components/vtt/ActiveCharactersPanel";
 import { GmMenuPanel } from "@/components/vtt/GmMenuPanel";
 import type { RoomSnapshot } from "@/lib/room/types";
@@ -69,10 +72,12 @@ type Props = {
   scene: BattleScene;
   canEdit: boolean;
   canControlCombat?: boolean;
+  canBypassTurn?: boolean;
   canEndTurn?: boolean;
   canControlToken?: (token: import("@/lib/vtt/types").BattleToken) => boolean;
   canViewTokenPa?: (token: import("@/lib/vtt/types").BattleToken) => boolean;
   roomId?: string;
+  roomOwnerId?: string;
   adventureId?: string;
   inviteCode?: string | null;
   snapshot?: RoomSnapshot | null;
@@ -108,10 +113,12 @@ export function HexBattlefield({
   scene: initial,
   canEdit,
   canControlCombat = false,
+  canBypassTurn: canBypassTurnProp = false,
   canEndTurn: canEndTurnProp = false,
   canControlToken,
   canViewTokenPa,
   roomId = "demo",
+  roomOwnerId = "",
   adventureId: adventureIdProp,
   inviteCode = null,
   snapshot = null,
@@ -218,7 +225,7 @@ export function HexBattlefield({
   const { imagesRef, imgTick } = useTokenImages(displayScene.tokens);
   const refresh = onRefresh ?? (() => {});
   const turnActiveId = snapshot?.combat ? activeTokenId(snapshot.combat) : null;
-  const turn = useCombatTurn({ combat: snapshot?.combat, canBypassTurn: canControlCombat });
+  const turn = useCombatTurn({ combat: snapshot?.combat, canBypassTurn: canBypassTurnProp });
 
   const tokenControl =
     canControlToken ?? ((t: BattleToken) => canControlCombat || Boolean(t.linked));
@@ -254,6 +261,44 @@ export function HexBattlefield({
   }, [selectedCombatAction, selectedActor, selected]);
 
   const focusByTokenId = usePortraitFocusByToken(displayScene.tokens, snapshot?.actors);
+
+  const isRoomGm = useMemo(
+    () => (session ? canManageRoom({ ownerId: roomOwnerId }, session) : false),
+    [session, roomOwnerId]
+  );
+
+  const roomSettings = normalizeRoomSettings(snapshot?.settings);
+
+  const tokenHpDisplay = useMemo(() => {
+    const map = new Map<
+      string,
+      ReturnType<typeof resolveTokenHpDisplay>
+    >();
+    const hoveredId = hoverTokenId ?? hoverTargetId;
+    for (const token of displayScene.tokens) {
+      map.set(
+        token.id,
+        resolveTokenHpDisplay(token, {
+          isRoomGm,
+          showMonsterHpToPlayers: roomSettings.showMonsterHpToPlayers,
+          hovered: hoveredId === token.id,
+          session: session ?? null,
+          roomActors,
+          roomOwnerId,
+        })
+      );
+    }
+    return map;
+  }, [
+    displayScene.tokens,
+    isRoomGm,
+    roomSettings.showMonsterHpToPlayers,
+    hoverTokenId,
+    hoverTargetId,
+    session,
+    roomActors,
+    roomOwnerId,
+  ]);
 
   const actorRacas = useMemo(() => {
     const out: Record<string, string | undefined> = {};
@@ -346,6 +391,7 @@ export function HexBattlefield({
       visibleHexSet,
       pings: displayPings,
       mapImage,
+      tokenHpDisplay,
     }),
     [
       displayScene,
@@ -363,6 +409,7 @@ export function HexBattlefield({
       visibleHexSet,
       displayPings,
       mapImage,
+      tokenHpDisplay,
     ]
   );
 
@@ -553,7 +600,7 @@ export function HexBattlefield({
       }
     }
     if (highlights.isAreaSpellMode && activeCombatAction && hoverAxial) {
-      const center = highlights.needsAreaDirection ? areaCenter : hoverAxial;
+      const center = highlights.needsAreaDirection ? selected.axial : hoverAxial;
       if (center) {
         return previewAreaCast(
           selected,
@@ -942,6 +989,7 @@ export function HexBattlefield({
             tokens={listTokens}
             canControl={canControlCombat}
             canEndTurn={canEndTurnProp}
+            combatUndo={snapshot?.combatUndo}
             onUpdate={refresh}
             attackableIds={highlights.attackableIds}
             hoverAttackTargetId={hoverTargetId}
@@ -1018,7 +1066,7 @@ export function HexBattlefield({
             allTokens={snapshot?.scene.tokens ?? []}
             actor={selectedActor}
             combat={snapshot?.combat}
-            canBypassTurn={canControlCombat}
+            canBypassTurn={canBypassTurnProp}
             roomId={roomId}
             onPickMode={(mode, action) => {
               setActionMode(mode);

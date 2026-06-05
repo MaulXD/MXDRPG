@@ -221,6 +221,26 @@ export async function nextCombatTurn(roomId: string) {
   return res.json() as Promise<RoomSnapshot>;
 }
 
+export type GmCombatAction =
+  | { action: "reset-pa"; tokenId: string }
+  | { action: "defer-turn"; tokenId: string }
+  | { action: "restore-order" }
+  | { action: "revert"; undoId: string };
+
+export async function postGmCombatAction(roomId: string, body: GmCombatAction) {
+  const res = await fetch(`/api/room/${roomId}/combat/gm`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    credentials: "same-origin",
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) {
+    const err = (await res.json().catch(() => ({}))) as { error?: string };
+    throw new Error(err.error ?? "Falha no controle do mestre");
+  }
+  return res.json() as Promise<RoomSnapshot>;
+}
+
 export async function postRoomAttack(
   roomId: string,
   attackerTokenId: string,
@@ -363,6 +383,85 @@ export async function repositionRoomToken(
   return res.json() as Promise<RoomSnapshot>;
 }
 
+export async function createGmCreation(
+  roomId: string,
+  body: {
+    mode?: "blank" | "monster" | "actor";
+    name?: string;
+    creationKind?: "creature" | "npc";
+    monsterEntryId?: string;
+    actorId?: string;
+  }
+) {
+  const res = await fetch(`/api/room/${roomId}/gm/creations`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    credentials: "same-origin",
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) {
+    const err = (await res.json()) as { error?: string };
+    throw new Error(err.error ?? "Falha ao criar template");
+  }
+  return res.json() as Promise<{
+    creation: import("@/lib/room/gm-creations").GmCreation;
+    snapshot: RoomSnapshot;
+  }>;
+}
+
+export async function updateGmCreation(
+  roomId: string,
+  creationId: string,
+  patch: Record<string, unknown>
+) {
+  const res = await fetch(`/api/room/${roomId}/gm/creations/${creationId}`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    credentials: "same-origin",
+    body: JSON.stringify(patch),
+  });
+  if (!res.ok) {
+    const err = (await res.json()) as { error?: string };
+    throw new Error(err.error ?? "Falha ao salvar template");
+  }
+  return res.json() as Promise<{
+    creation: import("@/lib/room/gm-creations").GmCreation;
+    snapshot: RoomSnapshot;
+  }>;
+}
+
+export async function deleteGmCreation(roomId: string, creationId: string) {
+  const res = await fetch(`/api/room/${roomId}/gm/creations/${creationId}`, {
+    method: "DELETE",
+    credentials: "same-origin",
+  });
+  if (!res.ok) {
+    const err = (await res.json()) as { error?: string };
+    throw new Error(err.error ?? "Falha ao excluir template");
+  }
+  const data = (await res.json()) as { snapshot: RoomSnapshot };
+  return data.snapshot;
+}
+
+export async function spawnGmCreation(
+  roomId: string,
+  creationId: string,
+  q: number,
+  r: number
+) {
+  const res = await fetch(`/api/room/${roomId}/tokens/spawn-gm`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    credentials: "same-origin",
+    body: JSON.stringify({ creationId, q, r }),
+  });
+  if (!res.ok) {
+    const err = (await res.json()) as { error?: string };
+    throw new Error(err.error ?? "Falha ao colocar na mesa");
+  }
+  return res.json() as Promise<RoomSnapshot>;
+}
+
 export async function placeRoomActorOnHex(
   roomId: string,
   actorId: string,
@@ -415,6 +514,7 @@ export type RoomSettingsPatchBody = {
   showMonsterHpToPlayers?: boolean;
   showMonsterHpInChat?: boolean;
   allowPlayerPing?: boolean;
+  gmBypassInitiative?: boolean;
 };
 
 export async function patchRoomSettings(roomId: string, patch: RoomSettingsPatchBody) {

@@ -11,6 +11,7 @@ import type { BattleToken } from "@/lib/vtt/types";
 import { activeTokenId } from "../combat";
 import { revealAxial } from "@/lib/vtt/fog-of-war";
 import { characterBelongsToAdventure } from "@/lib/character/adventure-bind";
+import { maybeRecordCombatUndo } from "../combat-undo";
 import { getRoom, persistRoom, toSnapshot } from "../internal/registry";
 import type { RoomSnapshot } from "../types";
 
@@ -95,6 +96,14 @@ export async function moveRoomToken(
     movePaOpts
   );
   if (!check.ok) return { ok: false, error: check.reason ?? "Movimento inválido" };
+
+  maybeRecordCombatUndo(room, {
+    tokenId: token.id,
+    tokenName: token.name,
+    kind: "move",
+    summary: `Movimento (${mode === "run" ? "corrida" : "caminhada"})`,
+    bypassTurn: opts.bypassTurn,
+  });
 
   let moved: BattleToken = {
     ...token,

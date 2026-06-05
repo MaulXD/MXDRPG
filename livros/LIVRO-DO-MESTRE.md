@@ -507,7 +507,9 @@ Todos os monstros são classificados em **Nível 1 a 20**, divididos em cinco fa
 
 Cada monstro possui uma **versão Elite** desbloqueada quando encontrado nos andares mais profundos (biomas de Nível 10+).
 
-**Assimilação (Jogador):** cada ficha numerada (**001–060**) tem **8 habilidades** proprias em `ASSIMILACAO-POR-ESPECIME.md` / Livro do Jogador Cap. 6.2. O codigo do titulo da ficha (ex.: `## 024 —`) e o indice de assimilação.
+**Assimilação (Jogador):** fichas **001–060** tem **8 habilidades** proprias em `ASSIMILACAO-POR-ESPECIME.md` / Livro do Jogador Cap. 6.2. Fichas **061–080** sao bestiario estendido (invocacao VTT; sem tabela 8×1). O codigo do titulo (ex.: `## 024 —`) e o indice de assimilação quando aplicavel.
+
+**Tamanho no grid:** cada ficha traz **Tamanho** nas estatisticas; tabela resumo **001–080** no apendice *Tamanho no grid* (final deste livro). Valores canonicos: `data/monster-tamanhos.json`.
 
 **Flora de masmorra:** 40 especies em Livro do Jogador **Cap. 5B** — Druidas e ecossistema; monstros **Consumidores** listados por planta.
 
@@ -518,6 +520,7 @@ Cada monstro possui uma **versão Elite** desbloqueada quando encontrado nos and
 - **HP:** Pontos de vida totais
 - **CA:** Classe de Armadura (10 = sem proteção; 20+ = praticamente impenetrável)
 - **Dano:** Dado de dano por ataque base
+- **Tamanho:** Categoria corporal no grid hexagonal (Pequeno a Colossal; ver Livro do Jogador §3.1.3.1)
 - **Resistências:** Tipos de dano que o monstro sofre metade
 - **Imunidades:** Tipos de dano que não surtem efeito
 - **Nível de Extração:** Dificuldade de Trinchar (Fácil / Médio / Difícil / Especialista)
@@ -550,6 +553,7 @@ Os zumbis de masmorra não são criados por necromantes — eles nascem espontan
 | CA | 8 |
 | Dano | 1d6 (pancada) |
 | Movimento | 6m/turno |
+| Tamanho | Médio · 1 hex |
 | Resistências | Necrótico |
 | Imunidades | Veneno, Exaustão |
 | Nível de Extração | Fácil |
@@ -591,6 +595,7 @@ Diferentes dos zumbis, esqueletos são frequentemente *construídos*, não acide
 | CA | 13 (ossos densos + armadura fragmentada) |
 | Dano | 1d8 (espada enferrujada) ou 1d6 (arco de osso) |
 | Movimento | 9m/turno |
+| Tamanho | Médio · 1 hex |
 | Resistências | Perfurante |
 | Imunidades | Veneno, Exaustão, Necrótico |
 | Nível de Extração | Médio |
@@ -633,6 +638,7 @@ Ghouls são a prova de que a morte pode piorar. Criados de aventureiros que prat
 | CA | 12 |
 | Dano | 1d6+2 (garras) + 1d4 (mordida paralisante) |
 | Movimento | 9m/turno |
+| Tamanho | Médio · 1 hex |
 | Resistências | Necrótico |
 | Imunidades | Veneno, Exaustão |
 | Nível de Extração | Médio |
@@ -674,6 +680,7 @@ Espectros são emoções — especificamente, emoções tão intensas no momento
 | CA | 12 (imaterial) |
 | Dano | 2d6 necrótico (toque de vida) |
 | Movimento | 12m/turno (voo) |
+| Tamanho | Médio · 1 hex |
 | Resistências | Ácido, Fogo, Relâmpago, Trovão, Contundente, Cortante, Perfurante (não-mágico) |
 | Imunidades | Frio, Necrótico, Veneno |
 | Nível de Extração | Especialista (requer recipiente mágico) |
@@ -715,6 +722,7 @@ Um Lich não morre — ele *decide* não morrer. O processo de lichificação é
 | CA | 17 (mantos de proteção arcana) |
 | Dano | 4d8+8 necrótico (toque paralisante) ou 8d6 (Relâmpago) |
 | Movimento | 9m/turno (voo 9m) |
+| Tamanho | Médio · 1 hex |
 | Resistências | Frio, Relâmpago, Necrótico |
 | Imunidades | Veneno, Psíquico, Exaustão, Paralisado, Assustado |
 | Nível de Extração | Especialista |
@@ -760,6 +768,7 @@ Assombrações são mais perigosas que espectros porque têm *intenção*. Onde 
 | CA | 13 |
 | Dano | 2d8+3 psíquico |
 | Movimento | 9m/turno (voo) |
+| Tamanho | Médio · 1 hex |
 | Resistências | Ácido, Fogo, Relâmpago, não-mágico |
 | Imunidades | Frio, Necrótico, Veneno |
 | Nível de Extração | Especialista |
@@ -796,6 +805,7 @@ Os vampiros das masmorras são diferentes dos lendários da superfície. Sem ace
 | CA | 16 |
 | Dano | 1d8+5 (garras) + 2d6+4 necrótico e dreno (mordida) |
 | Movimento | 9m/turno (escalar 9m, voar 9m) |
+| Tamanho | Médio · 1 hex |
 | Resistências | Necrótico, não-mágico (cortante, contundente, perfurante) |
 | Imunidades | Veneno |
 | Nível de Extração | Difícil |
@@ -841,6 +851,7 @@ Guerreiros que fizeram juramentos que não puderam cumprir na vida ficam presos 
 | CA | 18 (armadura espectral) |
 | Dano | 2d8+4 (espada longa espectral) |
 | Movimento | 9m/turno |
+| Tamanho | Médio · 1 hex |
 | Resistências | Necrótico, não-mágico |
 | Imunidades | Veneno, Exaustão |
 | Nível de Extração | Especialista (a armadura é o ingrediente) |
@@ -878,6 +889,7 @@ As múmias das masmorras não vêm de pirâmides do deserto — elas são o resu
 | CA | 11 |
 | Dano | 2d6+3 (golpe) + Maldição da Múmia |
 | Movimento | 6m/turno |
+| Tamanho | Médio · 1 hex |
 | Resistências | Contundente, Perfurante, Cortante (não-mágico) |
 | Imunidades | Veneno, Psíquico, Exaustão, Necrótico |
 | Nível de Extração | Difícil |
@@ -922,6 +934,7 @@ Dragonetes são dragões que nunca cresceram — seja por condições adversas d
 | Dano | 1d8+3 (garras) + 1d6 (mordida) |
 | Baforada | 3d6 fogo (cone 3m, recarga 5-6) |
 | Movimento | 9m/turno (voar 12m) |
+| Tamanho | Grande · 3 hex |
 | Resistências | Fogo |
 | Imunidades | — |
 | Nível de Extração | Médio |
@@ -959,6 +972,7 @@ Wyverns são frequentemente confundidos com dragões, mas a diferença é fundam
 | CA | 13 |
 | Dano | 2d6+4 (mordida) + 2d6+4 (garras) + 2d8+4 veneno (ferrão) |
 | Movimento | 6m/turno (voar 18m) |
+| Tamanho | Grande · 3 hex |
 | Resistências | — |
 | Imunidades | — |
 | Nível de Extração | Difícil |
@@ -1003,6 +1017,7 @@ Dragões verdadeiros — com quatro patas, asas próprias e inteligência compar
 | Dano | 2d10+7 (mordida) + 2d6+7 (garras) + 1d12+7 (cauda) |
 | Baforada | 10d8 frio (cone 15m, recarga 5-6) |
 | Movimento | 12m/turno (voar 24m, nadar 12m) |
+| Tamanho | Gigante · 7 hex |
 | Resistências | — |
 | Imunidades | Frio |
 | Nível de Extração | Especialista |
@@ -1044,6 +1059,7 @@ Drakes são o ramo mais terrestre dos dracônicos — sem asas funcionais, com p
 | CA | 17 (carapaça de pedra) |
 | Dano | 2d6+4 (mordida) + 1d8+4 (cauda de pedra) |
 | Movimento | 9m/turno (escavar 6m) |
+| Tamanho | Grande · 3 hex |
 | Resistências | Perfurante, Cortante |
 | Imunidades | Petrificação |
 | Nível de Extração | Difícil |
@@ -1081,6 +1097,7 @@ Um Dragão Ancião de Fogo tem mais de 800 anos. Nessa idade, um dragão de fogo
 | Dano | 3d10+10 (mordida) + 3d6+10 (garras) + 2d12+10 (cauda) |
 | Baforada | 26d6 fogo (cone 18m, recarga 5-6) |
 | Movimento | 12m/turno (voar 24m) |
+| Tamanho | Imenso · 19 hex |
 | Resistências | — |
 | Imunidades | Fogo |
 | Nível de Extração | Especialista (Evento de Grupo obrigatório) |
@@ -1127,6 +1144,7 @@ Golems de pedra são os guardas mais comuns de câmaras de tesouro antigas. Escu
 | CA | 17 |
 | Dano | 3d8+6 (soco de pedra) |
 | Movimento | 9m/turno |
+| Tamanho | Grande · 3 hex |
 | Resistências | — |
 | Imunidades | Veneno, Psíquico, Feitiços de Encantamento/Ilusão, Perfurante/Cortante (não-mágico) |
 | Nível de Extração | Especialista (Artífice necessário) |
@@ -1161,6 +1179,7 @@ Não é um fantasma dentro de uma armadura — é a armadura que *é* a criatura
 | CA | 18 |
 | Dano | 1d8+3 (espada) |
 | Movimento | 6m/turno |
+| Tamanho | Médio · 1 hex |
 | Resistências | — |
 | Imunidades | Veneno, Psíquico, Feitiços de Encantamento, Exaustão |
 | Nível de Extração | Médio (Artífice ajuda) |
@@ -1194,6 +1213,7 @@ Uma evolução terrível do Golem de Pedra, forjado especificamente para as Forn
 | CA | 20 |
 | Dano | 3d10+8 (soco de ferro) + 2d6 fogo automático em adjacência |
 | Movimento | 6m/turno |
+| Tamanho | Grande · 3 hex |
 | Resistências | Fogo, Contundente, Cortante, Perfurante (não-mágico) |
 | Imunidades | Veneno, Psíquico, Fogo Extremo |
 | Nível de Extração | Especialista |
@@ -1231,6 +1251,7 @@ Poucos aventureiros sabem que alguns autômatos não foram programados para comb
 | CA | 16 |
 | Dano | 2d8+4 (lâminas integradas) ou Magia variável |
 | Movimento | 9m/turno (levitar 9m) |
+| Tamanho | Grande · 3 hex |
 | Resistências | Psíquico |
 | Imunidades | Veneno, Exaustão |
 | Nível de Extração | Especialista |
@@ -1273,6 +1294,7 @@ Minotauros dentro de masmorras não são aberrações criadas por maldições di
 | CA | 14 |
 | Dano | 2d8+5 (machado) + 2d8 (chifrada) |
 | Movimento | 12m/turno |
+| Tamanho | Grande · 3 hex |
 | Resistências | — |
 | Imunidades | — |
 | Nível de Extração | Fácil |
@@ -1309,6 +1331,7 @@ O Basilisco é tanto uma bênção quanto uma maldição para caçadores de masm
 | CA | 15 |
 | Dano | 2d6+3 (mordida petrificante) |
 | Movimento | 6m/turno |
+| Tamanho | Grande · 3 hex |
 | Resistências | — |
 | Imunidades | Petrificação |
 | Nível de Extração | Médio |
@@ -1346,6 +1369,7 @@ Manticoras são o pesadelo de qualquer expedição que subestime o alcance. Com 
 | CA | 14 |
 | Dano | 2d6+5 (garras) + 2d8+5 (mordida) + 1d8+5 fogo por espinho (até 3/turno, alcance 45m) |
 | Movimento | 9m/turno (voar 15m) |
+| Tamanho | Grande · 3 hex |
 | Resistências | — |
 | Imunidades | — |
 | Nível de Extração | Difícil |
@@ -1381,6 +1405,7 @@ Grifos são considerados pelos aventureiros experientes o indicador mais confiá
 | CA | 12 |
 | Dano | 2d8+4 (garras dianteiras) + 1d6+4 (mordida) |
 | Movimento | 9m/turno (voar 24m) |
+| Tamanho | Grande · 3 hex |
 | Resistências | — |
 | Imunidades | — |
 | Nível de Extração | Médio |
@@ -1416,6 +1441,7 @@ A Cocatriz parece um cruzamento absurdo de galo com dragão — e é exatamente 
 | CA | 11 |
 | Dano | 1d4+1 (bico petrificante) |
 | Movimento | 6m/turno (voar 12m) |
+| Tamanho | Médio · 1 hex |
 | Resistências | — |
 | Imunidades | Petrificação |
 | Nível de Extração | Fácil |
@@ -1457,6 +1483,7 @@ A Aranha Tecerrochas é o predador mais comum das masmorras de nível médio. Do
 | CA | 13 |
 | Dano | 1d8+3 (mordida envenenada) |
 | Movimento | 9m/turno (trepar 9m) |
+| Tamanho | Grande · 3 hex |
 | Resistências | — |
 | Imunidades | — |
 | Nível de Extração | Médio |
@@ -1499,6 +1526,7 @@ Escorpiões gigantes nas masmorras chegam ao tamanho de cavalos. Caçam instinti
 | CA | 15 |
 | Dano | 1d8+3 (garras, agarramento automático) + 1d10+3 veneno (ferrão) |
 | Movimento | 9m/turno |
+| Tamanho | Gigante · 7 hex |
 | Resistências | Perfurante |
 | Imunidades | — |
 | Nível de Extração | Médio (exoesqueleto requer martelo) |
@@ -1535,6 +1563,7 @@ A Centopeia Cáustica tem 4 metros de comprimento e secreta ácido de poros ao l
 | CA | 13 |
 | Dano | 2d6+2 (mordida) + 2d4 ácido contínuo em contato |
 | Movimento | 9m/turno (trepar 9m) |
+| Tamanho | Grande · 3 hex |
 | Resistências | Ácido |
 | Imunidades | — |
 | Nível de Extração | Difícil (ácido contamina tudo) |
@@ -1571,6 +1600,7 @@ O Besouro-Diamante não é tão valioso quanto o nome sugere — mas é mais út
 | CA | 17 (exoesqueleto de diamante) |
 | Dano | 1d4 (mandíbulas) |
 | Movimento | 6m/turno |
+| Tamanho | Grande · 3 hex |
 | Resistências | Perfurante, Cortante |
 | Imunidades | — |
 | Nível de Extração | Fácil |
@@ -1609,6 +1639,7 @@ O Sapo-Engolidor chegaa 3 metros de comprimento e 1,5m de altura. Sua estratégi
 | CA | 11 |
 | Dano | 2d6+4 (língua — puxão + Agarrado) ou 3d8+4 (mordida engolimento) |
 | Movimento | 6m/turno (nadar 9m, saltar 6m) |
+| Tamanho | Grande · 3 hex |
 | Resistências | — |
 | Imunidades | — |
 | Nível de Extração | Médio |
@@ -1645,6 +1676,7 @@ Os Krakens Menores das masmorras são descendentes de Krakens verdadeiros que fi
 | CA | 16 |
 | Dano | 3d6+5 por tentáculo (agarramento automático) + 2d8+5 (mordida) |
 | Movimento | 3m/turno (nadar 18m) |
+| Tamanho | Imenso · 19 hex |
 | Resistências | Relâmpago |
 | Imunidades | — |
 | Nível de Extração | Difícil |
@@ -1683,6 +1715,7 @@ Cobras de 8 metros que habitam os rios e lagos subterrâneos, especializadas em 
 | CA | 13 |
 | Dano | 1d8+4 (mordida venenosa) + 2d8+4/turno (constrição) |
 | Movimento | 9m/turno (nadar 12m) |
+| Tamanho | Gigante · 7 hex |
 | Resistências | — |
 | Imunidades | — |
 | Nível de Extração | Médio |
@@ -1720,6 +1753,7 @@ Sem olhos — órgãos atrofiados após gerações sem luz — o Tubarão-Cego u
 | CA | 13 |
 | Dano | 2d8+4 (mordida) |
 | Movimento | 3m/turno em terra (nadar 18m) |
+| Tamanho | Grande · 3 hex |
 | Resistências | — |
 | Imunidades | Visão de Ilusão, Cegueira |
 | Nível de Extração | Médio |
@@ -1761,6 +1795,7 @@ Goblins de caverna são os habitantes mais abundantes das masmorras de baixo ní
 | CA | 13 |
 | Dano | 1d6+1 (facão enferrujado) ou 1d4 (arco pequeno) |
 | Movimento | 9m/turno |
+| Tamanho | Pequeno · 1 hex |
 | Resistências | — |
 | Imunidades | — |
 | Nível de Extração | Fácil |
@@ -1798,6 +1833,7 @@ Hobgoblins são o que acontece quando goblins evoluem militarmente. Maiores, mai
 | CA | 18 (armadura de placas) |
 | Dano | 2d6+2 (espada longa) |
 | Movimento | 9m/turno |
+| Tamanho | Médio · 1 hex |
 | Resistências | — |
 | Imunidades | — |
 | Nível de Extração | Médio |
@@ -1833,6 +1869,7 @@ Orcs de masmorra são maiores e mais selvagens que seus primos da superfície. A
 | CA | 13 |
 | Dano | 1d12+3 (machado grande) |
 | Movimento | 9m/turno |
+| Tamanho | Médio · 1 hex |
 | Resistências | — |
 | Imunidades | — |
 | Nível de Extração | Fácil |
@@ -1873,6 +1910,7 @@ Micônidos são cogumelos que se tornaram conscientes através de um processo ma
 | CA | 8 |
 | Dano | 2d6+2 (soco de hifa) + Esporos (área) |
 | Movimento | 3m/turno |
+| Tamanho | Gigante · 7 hex |
 | Resistências | Fogo |
 | Imunidades | Veneno, Psíquico, Exaustão |
 | Nível de Extração | Médio |
@@ -1909,6 +1947,7 @@ Treants da masmorra são árvores que foram animadas pela energia necrótica dos
 | CA | 16 |
 | Dano | 3d6+5 (galho) + 2d6 necrótico em área (gás) |
 | Movimento | 6m/turno |
+| Tamanho | Gigante · 7 hex |
 | Resistências | Contundente, Perfurante |
 | Imunidades | Necrótico, Exaustão |
 | Nível de Extração | Difícil |
@@ -1944,6 +1983,7 @@ Diferente das plantas carnívoras da superfície, essas plantas da masmorra evol
 | CA | 10 |
 | Dano | 2d6+3 (gavinha agarrante) + 4d6 ácido/turno (estômago) |
 | Movimento | 3m/turno |
+| Tamanho | Gigante · 7 hex |
 | Resistências | — |
 | Imunidades | Veneno, Exaustão |
 | Nível de Extração | Médio |
@@ -1985,6 +2025,7 @@ O Slime Ácido é o mais simples dos amorfos — uma massa de gel ácido com con
 | CA | 8 |
 | Dano | 2d6 ácido (contato) |
 | Movimento | 3m/turno |
+| Tamanho | Médio · 1 hex |
 | Resistências | Ácido |
 | Imunidades | Fogo (aquece mas não mata), Cortante, Perfurante |
 | Nível de Extração | Especialista (recipiente de vidro grosso) |
@@ -2020,6 +2061,7 @@ O Slime de Cristal é uma evolução do Slime Ácido que passou gerações habit
 | CA | 11 |
 | Dano | 2d6 cortante (cristais) + 1d6 ácido (contato) |
 | Movimento | 6m/turno |
+| Tamanho | Médio · 1 hex |
 | Resistências | Cortante, Ácido |
 | Imunidades | Perfurante |
 | Nível de Extração | Especialista |
@@ -2055,6 +2097,7 @@ Elementais de fogo não são criaturas do plano material — são manifestaçõe
 | CA | 13 |
 | Dano | 2d6+5 fogo (toque) + 2d8 fogo automático em adjacência |
 | Movimento | 12m/turno |
+| Tamanho | Grande · 3 hex |
 | Resistências | — |
 | Imunidades | Fogo, Veneno, Exaustão |
 | Nível de Extração | Especialista (captura elemental) |
@@ -2090,6 +2133,7 @@ Primos glaciais dos Elementais de Fogo, os Elementais de Gelo habitam a Prisão 
 | CA | 15 |
 | Dano | 2d8+5 frio (soco) + Lança de Gelo 3d6 frio (alcance 18m) |
 | Movimento | 6m/turno |
+| Tamanho | Grande · 3 hex |
 | Resistências | — |
 | Imunidades | Frio, Veneno, Exaustão |
 | Nível de Extração | Especialista |
@@ -2131,6 +2175,7 @@ Yetis das profundezas da masmorra evoluíram para ambientes sem luz, desenvolven
 | CA | 12 |
 | Dano | 2d6+5 (garras) + 1d8+5 (abraço congelante) |
 | Movimento | 12m/turno |
+| Tamanho | Grande · 3 hex |
 | Resistências | Frio |
 | Imunidades | — |
 | Nível de Extração | Médio |
@@ -2168,6 +2213,7 @@ Lobos do inverno são caçadores em matilha que coordenam com inteligência pró
 | CA | 13 |
 | Dano | 2d6+4 (mordida) + Sopro de Gelo |
 | Movimento | 15m/turno |
+| Tamanho | Grande · 3 hex |
 | Resistências | Frio |
 | Imunidades | — |
 | Nível de Extração | Fácil |
@@ -2206,6 +2252,7 @@ O Mímico clássico — disfarçado de baú de tesouro, esperando pacientemente 
 | CA | 12 |
 | Dano | 3d6+3 (mordida ácida) + Adesivo |
 | Movimento | 9m/turno |
+| Tamanho | Médio · 1 hex |
 | Resistências | Ácido |
 | Imunidades | — |
 | Nível de Extração | Difícil |
@@ -2244,6 +2291,7 @@ Doppelgangers são a evolução inteligente dos Mímicos — em vez de imitar ob
 | CA | 14 |
 | Dano | 2d6+3 (golpes ou arma copiada) |
 | Movimento | 9m/turno |
+| Tamanho | Médio · 1 hex |
 | Resistências | — |
 | Imunidades | — |
 | Nível de Extração | Difícil |
@@ -2285,6 +2333,7 @@ A Hidra das Cavernas adaptou-se ao submundo com 5 cabeças iniciais e a capacida
 | CA | 15 |
 | Dano | 2d6+5 por mordida (5 ataques, cada com efeito diferente) |
 | Movimento | 9m/turno (nadar 9m) |
+| Tamanho | Gigante · 7 hex |
 | Resistências | — |
 | Imunidades | — |
 | Nível de Extração | Especialista (Cauterizar cotos primeiro) |
@@ -2328,6 +2377,7 @@ Uma Quimera não é criada — ela emerge. Em pontos de alta confluência de mag
 | Dano | 2d6+5 (garras de leão) + 2d6+5 (mordida de dragão) + 2d6+5 (chifres de cabra) |
 | Baforada | 7d8 fogo (cone 9m, recarga 5-6) |
 | Movimento | 9m/turno (voar 18m) |
+| Tamanho | Grande · 3 hex |
 | Resistências | — |
 | Imunidades | — |
 | Nível de Extração | Difícil |
@@ -2364,6 +2414,7 @@ O Abatedouro Celestial não é chamado assim por acaso. Entidades divinas — an
 | CA | 19 |
 | Dano | 3d8+6 sagrado/necrótico (espada flamejante) + 2d10 radiante (toque) |
 | Movimento | 9m/turno (voar 18m) |
+| Tamanho | Grande · 3 hex |
 | Resistências | Radiante, Necrótico |
 | Imunidades | Veneno, Exaustão, Encantamento |
 | Nível de Extração | Especialista |
@@ -2402,6 +2453,7 @@ Gárgulas são criaturas que existem no limiar entre construto e besta — anima
 | CA | 15 |
 | Dano | 1d6+3 (garras) + 1d6+3 (mordida) |
 | Movimento | 9m/turno (voar 15m) |
+| Tamanho | Médio · 1 hex |
 | Resistências | Cortante, Perfurante |
 | Imunidades | Veneno, Psíquico, Exaustão |
 | Nível de Extração | Difícil (Artífice recomendado) |
@@ -2437,6 +2489,7 @@ A Aberração Tentacular é o que acontece quando a masmorra produz vida própri
 | CA | 15 |
 | Dano | 2d6+4 psíquico (tentáculo mental) |
 | Movimento | 6m/turno (levitar) |
+| Tamanho | Grande · 3 hex |
 | Resistências | Psíquico |
 | Imunidades | Veneno, Exaustão |
 | Nível de Extração | Especialista |
@@ -2472,6 +2525,7 @@ Uma fusão improvável de Basilisco e ambiente vulcânico — o Basilisco de Mag
 | CA | 17 (escamas de obsidiana) |
 | Dano | 2d6+4 (mordida ígnea) |
 | Movimento | 6m/turno |
+| Tamanho | Grande · 3 hex |
 | Resistências | Fogo, Perfurante |
 | Imunidades | Petrificação, Fogo Extremo |
 | Nível de Extração | Especialista |
@@ -2509,6 +2563,7 @@ As Sereias das masmorras perderam a beleza — a falta de luz e a pressão das p
 | CA | 12 |
 | Dano | 2d6+3 (garras) + Canto Encantador |
 | Movimento | 6m/turno (nadar 18m) |
+| Tamanho | Médio · 1 hex |
 | Resistências | Frio |
 | Imunidades | — |
 | Nível de Extração | Difícil (questões éticas à parte) |
@@ -2543,6 +2598,7 @@ Trolls de Pedra são maiores que trolls comuns, mais lentos e com regeneração 
 | CA | 15 |
 | Dano | 1d6+5 (garras, 2 ataques) + 1d10+5 (mordida) |
 | Movimento | 9m/turno |
+| Tamanho | Grande · 3 hex |
 | Resistências | — |
 | Imunidades | — |
 | Nível de Extração | Médio |
@@ -2581,6 +2637,7 @@ Ciclopes nas masmorras são seres melancólicos. Inteligentes o suficiente para 
 | CA | 14 |
 | Dano | 2d10+7 (clava) |
 | Movimento | 12m/turno |
+| Tamanho | Gigante · 7 hex |
 | Resistências | — |
 | Imunidades | — |
 | Nível de Extração | Médio |
@@ -2616,6 +2673,7 @@ Harpias de caverna perderam o canto encantador de suas primas da superfície —
 | CA | 11 |
 | Dano | 2d6 (garras) + 1d6 (mordida) |
 | Movimento | 6m/turno (voar 12m) |
+| Tamanho | Médio · 1 hex |
 | Resistências | — |
 | Imunidades | — |
 | Nível de Extração | Fácil |
@@ -2639,9 +2697,9 @@ Harpias de caverna perderam o canto encantador de suas primas da superfície —
 ## 056 — ROPER (TENTÁCULO-PEDRA)
 056**Tipo:** Aberração Mineral | **Nível:** 5 | **XP:** 500 | **Faixa:** Intermediário
 **Lore:** Parece uma estalactite até abrir o olho único e os tentáculos. Espera décadas pelo alvo certo.
-| HP | CA | Dano | Biomas |
-|----|-----|------|--------|
-| 93 | 20 | 4d6+4 (tentáculos agarrantes) + 1d8+4 (mordida) | Labirinto Prismático, Cavernas de Vidro Fosco, Cemitério de Colossos, Arquipélago Magnético |
+| HP | CA | Dano | Tamanho | Biomas |
+|----|-----|------|---------|--------|
+| 93 | 20 | 4d6+4 (tentáculos agarrantes) + 1d8+4 (mordida) | Grande | Labirinto Prismático, Cavernas de Vidro Fosco, Cemitério de Colossos, Arquipélago Magnético |
 **Habilidades:** *Camuflagem Total (imóvel)* • *4 Tentáculos simultâneos* (agarram e puxam para a boca — Força CD 15) • *Drenagem de Força*: agarrado perde 2 pontos de Força/turno.
 **Ingredientes:** Tentáculo de Roper (Médio — elástico, 4m de alcance natural) • Olho de Roper (Difícil — visão no escuro absoluta, 60m).
 
@@ -2660,9 +2718,9 @@ Harpias de caverna perderam o canto encantador de suas primas da superfície —
 ## 057 — ABOLETH
 057**Tipo:** Aberração Aquática Ancestral | **Nível:** 16 | **XP:** 1600 | **Faixa:** Elite
 **Lore:** Criaturas que existem há mais tempo que os deuses. Memória coletiva de todas as vidas que já consumiram. Escravizam psiquicamente.
-| HP | CA | Dano | Biomas |
-|----|-----|------|--------|
-| 195 | 17 | 2d6+6 (tentáculo) × 3 ataques + Escravização Mental | Mar de Prata Cega, Pântano da Decomposição |
+| HP | CA | Dano | Tamanho | Biomas |
+|----|-----|------|---------|--------|
+| 195 | 17 | 2d6+6 (tentáculo) × 3 ataques + Escravização Mental | Grande | Mar de Prata Cega, Pântano da Decomposição |
 **Habilidades:** *Escravização* (CD 19 Sabedoria — falha: servidão permanente) • *Memória Ancestral* (sabe tudo que qualquer criatura já escravizada sabia) • *Muco Transformador* (contato transforma pele em muco — precisa de água para sobreviver).
 **Ingredientes:** Tentáculo de Aboleth (Especialista) — Muco Transformador (Especialista — usado pelo Mago Fermentador para criar a única poção que transforma raça temporáriamente).
 
@@ -2681,9 +2739,9 @@ Harpias de caverna perderam o canto encantador de suas primas da superfície —
 ## 058 — PUDIM NEGRO
 058**Tipo:** Amorfo Extremo | **Nível:** 7 | **XP:** 700 | **Faixa:** Intermediário
 **Lore:** Uma massa de protoplasma ácido negro que dissolve metais, pedra e carne com igual eficiência. Não tem intenção — apenas fome. Pode se dividir indefinidamente.
-| HP | CA | Dano | Biomas |
-|----|-----|------|--------|
-| 85 | 7 | 3d8 ácido (englobamento) | Pântano da Decomposição, Engrenagens Esquecidas, Deserto de Carne e Tendões |
+| HP | CA | Dano | Tamanho | Biomas |
+|----|-----|------|---------|--------|
+| 85 | 7 | 3d8 ácido (englobamento) | Grande | Pântano da Decomposição, Engrenagens Esquecidas, Deserto de Carne e Tendões |
 **Habilidades:** *Corrosão de Metal* (dissolve armaduras em 3 turnos de contato) • *Divisão por Arma Cortante* (cada golpe cria novo Pudim menor) • *Amorfismo* (passa por qualquer abertura maior que 1cm).
 **Ingredientes:** Ácido de Pudim Negro (Especialista — o mais forte disponível) • Núcleo de Pudim (Difícil — gel concentrado que, consumido, concede imunidade total a ácidos por 24h e Corpo de Lodo).
 
@@ -2702,9 +2760,9 @@ Harpias de caverna perderam o canto encantador de suas primas da superfície —
 ## 059 — LAGOSTA-GIGANTE ABISSAL
 059**Tipo:** Crustáceo Aquático | **Nível:** 4 | **XP:** 400 | **Faixa:** Comum
 **Lore:** Do tamanho de um pônei, habita o fundo do Mar de Prata Cega. Completamente inofensiva a distância — mas as garras são letais.
-| HP | CA | Dano | Biomas |
-|----|-----|------|--------|
-| 52 | 16 | 2d8+3 (pinça) × 2 | Mar de Prata Cega, Pântano da Decomposição |
+| HP | CA | Dano | Tamanho | Biomas |
+|----|-----|------|---------|--------|
+| 52 | 16 | 2d8+3 (pinça) × 2 | Grande | Mar de Prata Cega, Pântano da Decomposição |
 **Habilidades:** *Pinça Esmagadora* (agarramento automático, Força CD 14 para escapar, dano contínuo de esmagamento) • *Exoesqueleto Reforçado* (primeiros 5 de dano ignorados).
 **Ingredientes:** Carne de Lagosta Abissal (Fácil — a mais deliciosa dos aquáticos, textura de lagosta premium) • Carapaça de Lagosta (Médio — material de armadura natural excelente) • Antena Sensorial (Difícil — Radar de Linha Lateral por 8h).
 
@@ -2723,9 +2781,9 @@ Harpias de caverna perderam o canto encantador de suas primas da superfície —
 ## 060 — CARANGUEJO-EREMITA COLOSSAL
 060**Tipo:** Crustáceo Aquático Adaptado | **Nível:** 7 | **XP:** 700 | **Faixa:** Intermediário
 **Lore:** Usa cascos de galeões naufragados como concha. Os aventureiros frequentemente exploram o "navio abandonado" sem perceber que está se movendo.
-| HP | CA | Dano | Biomas |
-|----|-----|------|--------|
-| 88 | 18 (carapaça + casco de navio) | 2d10+5 (garra) + 1d8+5 (segunda garra) | Mar de Prata Cega |
+| HP | CA | Dano | Tamanho | Biomas |
+|----|-----|------|---------|--------|
+| 88 | 18 (carapaça + casco de navio) | 2d10+5 (garra) + 1d8+5 (segunda garra) | Imenso | Mar de Prata Cega |
 **Habilidades:** *Concha Improvisada* (+5 CA do casco, pode ser destruída separadamente com 40 HP) • *Investida Lateral* (move 6m e ataca, empurrando tudo no caminho).
 **Ingredientes:** Carne de Caranguejo (Médio) — Prato Gourmet de Caranguejo Eremita concede Resistência Abissal e Pele Escorregadia por 12h.
 
@@ -2736,12 +2794,14 @@ Harpias de caverna perderam o canto encantador de suas primas da superfície —
 **Comportamento na mesa:**
 - **Padrão:** ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).
 - **Moral:** não foge; persegue o alvo mais próximo até 0 HP (mente ausente).
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.## 061 — ARANHA-CAVALEIRA (JINOBAKE)
+- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.
+
+## 061 — ARANHA-CAVALEIRA (JINOBAKE)
 **Tipo:** Aracnídeo de Élite | **Nível:** 9 | **XP:** 900 | **Faixa:** Perigoso
 **Lore:** Aranhas que evoluíram para montar outras criaturas — literalmente. Uma Aranha-Cavaleira controla sua montaria com enzimas injetadas no sistema nervoso. Monta desde lobos até pequenos drakes.
-| HP | CA | Dano | Biomas |
-|----|-----|------|--------|
-| 105 | 14 | 2d8+4 (mordida venenosa) + Montaria | Ninho Crepuscular, Floresta de Fios de Prata, Estômago Botânico |
+| HP | CA | Dano | Tamanho | Biomas |
+|----|-----|------|---------|--------|
+| 105 | 14 | 2d8+4 (mordida venenosa) + Montaria | Grande | Ninho Crepuscular, Floresta de Fios de Prata, Estômago Botânico |
 **Habilidades:** *Controle de Montaria* (qualquer criatura injetada torna-se montaria por 24h) • *Teia de Velocidade* (teia a 18m, velocidade tripla ao se deslocar por ela) • *Veneno Neurológico* (CD 16 Constituição — falha: perde controle do próprio corpo por 2 turnos).
 **Ingredientes:** Glândula de Controle (Especialista — a enzima de controle de montaria, processada, concede controle temporário de criaturas menores que o usuário) • Carne de Cavaleira (Difícil).
 
@@ -2752,12 +2812,14 @@ Harpias de caverna perderam o canto encantador de suas primas da superfície —
 **Comportamento na mesa:**
 - **Padrão:** ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).
 - **Moral:** não foge; persegue o alvo mais próximo até 0 HP (mente ausente).
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.## 062 — MOSCA-CARNIÇA COLOSSAL
+- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.
+
+## 062 — MOSCA-CARNIÇA COLOSSAL
 **Tipo:** Insetóide Necrófago | **Nível:** 2 | **XP:** 200 | **Faixa:** Comum
 **Lore:** Do tamanho de um gato gordo, a Mosca-Carniça é o sistema de limpeza da masmorra. Onde há mortos, há centenas delas em minutos. Inofensiva individualmente, aterrorizante em enxame.
-| HP | CA | Dano | Biomas |
-|----|-----|------|--------|
-| 8 | 11 | 1d4 (mordida) + Doença | Cemitério de Colossos, Deserto de Carne e Tendões, Pântano da Decomposição, Estômago Botânico |
+| HP | CA | Dano | Tamanho | Biomas |
+|----|-----|------|---------|--------|
+| 8 | 11 | 1d4 (mordida) + Doença | Grande | Cemitério de Colossos, Deserto de Carne e Tendões, Pântano da Decomposição, Estômago Botânico |
 **Habilidades:** *Enxame* (grupos de 10+ atuam como uma entidade com HP somado e ataque de área) • *Vetor de Doença* (mordida força CD 11 Constituição ou contrai febre — -2 em todas as rolagens por 24h).
 **Ingredientes:** Larvas de Mosca-Carniça (Fácil — altamente nutritivas, sem gosto) • Glândula Digestiva (Difícil — dissolve qualquer material orgânico, incluso ingredientes estragados, limpando-os).
 
@@ -2768,12 +2830,14 @@ Harpias de caverna perderam o canto encantador de suas primas da superfície —
 **Comportamento na mesa:**
 - **Padrão:** ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).
 - **Moral:** não foge; persegue o alvo mais próximo até 0 HP (mente ausente).
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.## 063 — BESOURO-TROVÃO
+- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.
+
+## 063 — BESOURO-TROVÃO
 **Tipo:** Insetóide Elemental | **Nível:** 5 | **XP:** 500 | **Faixa:** Intermediário
 **Lore:** Absorve energia elétrica do Arquipélago Magnético e a libera em descargas de defesa. O zumbido dos seus élitros a 50 metros é aviso suficiente para recuar.
-| HP | CA | Dano | Biomas |
-|----|-----|------|--------|
-| 45 | 15 | 1d10 (chifres) + 2d8 elétrico (descarga) | Arquipélago Magnético, Engrenagens Esquecidas |
+| HP | CA | Dano | Tamanho | Biomas |
+|----|-----|------|---------|--------|
+| 45 | 15 | 1d10 (chifres) + 2d8 elétrico (descarga) | Grande | Arquipélago Magnético, Engrenagens Esquecidas |
 **Habilidades:** *Descarga Elétrica* (área 3m ao redor, 2d8 relâmpago, recarga 5-6) • *Zumbido Ensurdecedor* (CD 12 Constituição ou Ensurdecido próximo) • *Imune a Relâmpago*.
 **Ingredientes:** Élitros Condutores (Médio — o Artífice cria baterias naturais que armazenam energia elétrica) • Carne Elétrica (Médio — tingling na língua, concede Bioeletricidade por 8h).
 
@@ -2784,12 +2848,14 @@ Harpias de caverna perderam o canto encantador de suas primas da superfície —
 **Comportamento na mesa:**
 - **Padrão:** ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).
 - **Moral:** não foge; persegue o alvo mais próximo até 0 HP (mente ausente).
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.## 064 — VERME GIGANTE DE PEDRA
+- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.
+
+## 064 — VERME GIGANTE DE PEDRA
 **Tipo:** Verme Escavador | **Nível:** 10 | **XP:** 1000 | **Faixa:** Perigoso
 **Lore:** 20 metros de comprimento, escava por pedra como se fosse areia. As galerias que cria tornam-se os corredores da masmorra ao longo de décadas. A mandíbula tritura rocha e carne com igual facilidade.
-| HP | CA | Dano | Biomas |
-|----|-----|------|--------|
-| 142 | 18 | 3d8+8 (mordida triturante) + Engolimento | Jardim de Cinzas Petrificadas, Engrenagens Esquecidas, Arquipélago Magnético, Cemitério de Colossos |
+| HP | CA | Dano | Tamanho | Biomas |
+|----|-----|------|---------|--------|
+| 142 | 18 | 3d8+8 (mordida triturante) + Engolimento | Imenso | Jardim de Cinzas Petrificadas, Engrenagens Esquecidas, Arquipélago Magnético, Cemitério de Colossos |
 **Habilidades:** *Tremor* (detectado a 60m pela vibração do solo) • *Emergência* (surge do chão — todos os adjacentes CD 15 Destreza ou caem Prostrados) • *Engolimento* (alvos mordidos com acerto superior a 20: CD 14 Força ou engolido — 4d8 ácido/turno dentro).
 **Ingredientes:** Carne de Verme (Difícil — exige remoção das glândulas ácidas primeiro) • Dente Triturante (Médio — ferramenta de escavação natural; o Artífice cria broca de mineração) • Ácido de Verme (Especialista — dissolve pedra em minutos).
 
@@ -2800,12 +2866,14 @@ Harpias de caverna perderam o canto encantador de suas primas da superfície —
 **Comportamento na mesa:**
 - **Padrão:** ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).
 - **Moral:** não foge; persegue o alvo mais próximo até 0 HP (mente ausente).
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.## 065 — SALAMANDRA GIGANTE
+- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.
+
+## 065 — SALAMANDRA GIGANTE
 **Tipo:** Anfíbio Vulcânico | **Nível:** 6 | **XP:** 600 | **Faixa:** Intermediário
 **Lore:** Não confundir com Salamandras de Magma elementais. Esta é uma criatura biológica adaptada ao calor — pele rugosa que suporta temperatura de 300°C, respiração de vapor. Habita as bordas de rios de magma onde temperaturas são "apenas" extremas.
-| HP | CA | Dano | Biomas |
-|----|-----|------|--------|
-| 65 | 13 | 2d6+3 (mordida fervente) + 1d6 fogo passivo em adjacência | Fornalhas Douradas, Estômago Botânico (ácido quente) |
+| HP | CA | Dano | Tamanho | Biomas |
+|----|-----|------|---------|--------|
+| 65 | 13 | 2d6+3 (mordida fervente) + 1d6 fogo passivo em adjacência | Grande | Fornalhas Douradas, Estômago Botânico (ácido quente) |
 **Resistências:** Fogo. **Imunidades:** Calor extremo.
 **Habilidades:** *Pele Ígnea* (criaturas que a agarrem tomam 1d6 fogo/turno) • *Escorregadia* (Vantagem para escapar de qualquer agarramento).
 **Ingredientes:** Carne de Salamandra (Médio — mais quente que carne comum, "aquece de dentro") • Glândula Térmica (Difícil — mantém qualquer recipiente na temperatura perfeita indefinidamente) • Pele Resistente (Médio — não pega fogo, usado para proteção de equipamentos).
@@ -2817,12 +2885,14 @@ Harpias de caverna perderam o canto encantador de suas primas da superfície —
 **Comportamento na mesa:**
 - **Padrão:** ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).
 - **Moral:** não foge; persegue o alvo mais próximo até 0 HP (mente ausente).
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.## 066 — BEHEMOTH DE PEDRA
+- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.
+
+## 066 — BEHEMOTH DE PEDRA
 **Tipo:** Besta Colossal | **Nível:** 14 | **XP:** 1400 | **Faixa:** Elite
 **Lore:** Uma criatura de proporções absurdas — 15 metros de altura — que se move por andares inteiros como se fossem corredores normais. Herbívoro. O problema é que "herbívoro" em masmorras significa que come cogumelos gigantes e qualquer outra planta, mas esmagará qualquer coisa no caminho sem perceber.
-| HP | CA | Dano | Biomas |
-|----|-----|------|--------|
-| 230 | 19 | 4d12+10 (pisão de área) + 2d10+10 (golpe de cauda) | Cemitério de Colossos, Jardim de Cinzas Petrificadas |
+| HP | CA | Dano | Tamanho | Biomas |
+|----|-----|------|---------|--------|
+| 230 | 19 | 4d12+10 (pisão de área) + 2d10+10 (golpe de cauda) | Imenso | Cemitério de Colossos, Jardim de Cinzas Petrificadas |
 **Habilidades:** *Tremor de Pisão* (área 6m ao redor, CD 17 Destreza ou Prostrado e 4d10 dano) • *Pele de Pedra* (ataques cortantes e perfurantes causam metade do dano) • *Destruição de Estrutura* (destrói paredes e suportes ao passar — pode criar colapsos).
 **Ingredientes (Banquete Lendário):** Carne de Behemoth (Difícil — toneladas disponíveis, alimenta o grupo por semanas) • Osso Colossal (não comestível — material de construção; o Artífice cria uma Fortaleza de Osso portátil) • Couro Pétreo (Médio — armadura natural +3 CA).
 **Mutação Permanente:** +15 HP Máximo + Pele de Pedra (resistência a cortante/perfurante permanente).
@@ -2834,12 +2904,14 @@ Harpias de caverna perderam o canto encantador de suas primas da superfície —
 **Comportamento na mesa:**
 - **Padrão:** ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).
 - **Moral:** não foge por HP; pode sacrificar lacaios.
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.## 067 — FERA DA SOMBRA
+- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.
+
+## 067 — FERA DA SOMBRA
 **Tipo:** Elemental das Sombras | **Nível:** 8 | **XP:** 800 | **Faixa:** Intermediário
 **Lore:** Manifestação de escuridão acumulada nos cantos dos andares mais profundos onde a luz nunca chegou. Não tem forma definida mas prefere parecer um felino. Drena a luz ao redor como se respirasse.
-| HP | CA | Dano | Biomas |
-|----|-----|------|--------|
-| 78 | 14 | 2d6+4 necrótico (mordida de sombra) | Arquivos Soterrados, Cemitério de Colossos, Fosso das Emoções Ecoantes, Ninho Crepuscular |
+| HP | CA | Dano | Tamanho | Biomas |
+|----|-----|------|---------|--------|
+| 78 | 14 | 2d6+4 necrótico (mordida de sombra) | Médio | Arquivos Soterrados, Cemitério de Colossos, Fosso das Emoções Ecoantes, Ninho Crepuscular |
 **Resistências:** Ácido, Frio, Fogo, Relâmpago, não-mágico. **Imunidades:** Necrótico, Veneno.
 **Habilidades:** *Vulnerabilidade à Luz* (dano dobrado de radiante; recua de qualquer luz brilhante) • *Passo de Sombra* (teleporta entre áreas de escuridão que consiga ver) • *Criar Escuridão* (a área de 3m ao redor é escuridão mágica — luz mundana não funciona).
 **Ingredientes:** Essência de Sombra (Especialista — capturada em frasco de obsidiana) • Consumida, concede Passo Intangível e Corpo Translúcido por 12h.
@@ -2851,12 +2923,14 @@ Harpias de caverna perderam o canto encantador de suas primas da superfície —
 **Comportamento na mesa:**
 - **Padrão:** ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).
 - **Moral:** não foge; persegue o alvo mais próximo até 0 HP (mente ausente).
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.## 068 — MEDUSA
+- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.
+
+## 068 — MEDUSA
 **Tipo:** Humanoide Mágico Petrificante | **Nível:** 7 | **XP:** 700 | **Faixa:** Intermediário
 **Lore:** As Medusas das masmorras são descendentes de criaturas amaldiçoadas por deuses já esquecidos. Vivem em câmaras decoradas com estátuas — suas vítimas anteriores. Algumas chegam a um nível perturbador de conforto com as estátuas, tratando-as como companhia.
-| HP | CA | Dano | Biomas |
-|----|-----|------|--------|
-| 75 | 15 | 1d6+2 (serpentes da cabeça, venenosas) + Olhar | Jardim de Cinzas Petrificadas, Cidadela Pálida, Labirinto Prismático |
+| HP | CA | Dano | Tamanho | Biomas |
+|----|-----|------|---------|--------|
+| 75 | 15 | 1d6+2 (serpentes da cabeça, venenosas) + Olhar | Médio | Jardim de Cinzas Petrificadas, Cidadela Pálida, Labirinto Prismático |
 **Habilidades:** *Olhar Petrificante* (CD 14 Constituição, Restringido → Petrificado) • *Serpentes Venenosas* (mordida + CD 14 Constituição ou Envenenado por 1h) • *Reflexo Perigoso* (se vir reflexo do próprio olhar, CD 14 ou petrifica a si mesma).
 **Ingredientes:** Serpentes da Medusa (Difícil — veneno para setas) • Sangue de Medusa (Especialista — o sangue do lado direito cura a petrificação; do lado esquerdo causa) • Carne de Medusa (Difícil — Prato Gourmet concede imunidade à petrificação e Olhos de Dragão por 12h).
 
@@ -2867,12 +2941,14 @@ Harpias de caverna perderam o canto encantador de suas primas da superfície —
 **Comportamento na mesa:**
 - **Padrão:** ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).
 - **Moral:** não foge; persegue o alvo mais próximo até 0 HP (mente ausente).
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.## 069 — FÊNIX DE CAVERNA
+- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.
+
+## 069 — FÊNIX DE CAVERNA
 **Tipo:** Ave Elemental de Fogo | **Nível:** 13 | **XP:** 1300 | **Faixa:** Elite
 **Lore:** Uma fênix adaptada à escuridão — plumagem negra com brasas internas que brilham através das penas. Morre e renasce dentro de seu ninho. A caça de uma Fênix exige destruir o ninho simultaneamente à criatura, senão ela renasce em 1d4 horas.
-| HP | CA | Dano | Biomas |
-|----|-----|------|--------|
-| 152 | 16 | 2d10+6 fogo (bico e garras) + 3d8 fogo passivo em adjacência | Fornalhas Douradas, Abismo Invertido |
+| HP | CA | Dano | Tamanho | Biomas |
+|----|-----|------|---------|--------|
+| 152 | 16 | 2d10+6 fogo (bico e garras) + 3d8 fogo passivo em adjacência | Grande | Fornalhas Douradas, Abismo Invertido |
 **Resistências:** Frio, Relâmpago. **Imunidades:** Fogo.
 **Habilidades:** *Renascimento* (ao morrer, renasce em 1d4 horas no ninho com HP cheio — a não ser que o ninho seja destruído) • *Chamas Curativas* (aliados em suas chamas têm opção de curar 3d8 ou tomar 3d8 de dano — escolha do alvo) • *Tempestade de Penas* (lança penas flamejantes em área de 6m).
 **Ingredientes (Banquete Lendário — ninho deve ser destruído primeiro):** Pena de Fênix (Médio — arde eternamente, usada como tocha perfeita) • Lágrima de Fênix (Especialista — cura qualquer ferimento, mesmo membros perdidos) • Coração de Fênix (Especialista — Mutação Permanente: Renascimento — cada personagem pode morrer e ressurgir com 1 HP uma vez por campanha).
@@ -2884,12 +2960,14 @@ Harpias de caverna perderam o canto encantador de suas primas da superfície —
 **Comportamento na mesa:**
 - **Padrão:** ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).
 - **Moral:** não foge por HP; pode sacrificar lacaios.
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.## 070 — GIGANTE DE PEDRA
+- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.
+
+## 070 — GIGANTE DE PEDRA
 **Tipo:** Gigante Elemental | **Nível:** 12 | **XP:** 1200 | **Faixa:** Perigoso
 **Lore:** Escultores por natureza, os Gigantes de Pedra constroem impérios subterrâneos de arte que nenhum aventureiro sobreviveu para relatar completamente. Hostis a invasores de suas galerias, mas respeitam a força — um grupo que derrota um Gigante de Pedra em combaté honesto pode às vezes negociar com os sobreviventes.
-| HP | CA | Dano | Biomas |
-|----|-----|------|--------|
-| 126 | 17 | 3d8+8 (clava de pedra) + 4d10+8 (arremesso de pedra, 60m) | Cemitério de Colossos, Arquipélago Magnético, Jardim de Cinzas Petrificadas |
+| HP | CA | Dano | Tamanho | Biomas |
+|----|-----|------|---------|--------|
+| 126 | 17 | 3d8+8 (clava de pedra) + 4d10+8 (arremesso de pedra, 60m) | Gigante | Cemitério de Colossos, Arquipélago Magnético, Jardim de Cinzas Petrificadas |
 **Habilidades:** *Arremesso Poderoso* (alcance 60m, alvo testa Força CD 17 ou é derrubado) • *Pele de Granito* (resistência a perfurante e cortante não-mágico) • *Rejeição de Rochas* (pode devolver projéteis como reação).
 **Ingredientes:** Carne de Gigante (Médio — nutritivíssima, alimenta 20 pessoas em uma refeição) • Pedra-Coração (Especialista — o núcleo de pedra no peito do Gigante; o Artífice cria uma Forja de Gigante — forja qualquer material mundano ou mágico).
 
@@ -2900,12 +2978,14 @@ Harpias de caverna perderam o canto encantador de suas primas da superfície —
 **Comportamento na mesa:**
 - **Padrão:** ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).
 - **Moral:** não foge; persegue o alvo mais próximo até 0 HP (mente ausente).
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.## 071 — BRUXA DA MASMORRA (HAG)
+- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.
+
+## 071 — BRUXA DA MASMORRA (HAG)
 **Tipo:** Humanoide Mágico Corrompido | **Nível:** 8 | **XP:** 800 | **Faixa:** Intermediário
 **Lore:** Bruxas são o que acontece com magas que passaram décadas dentro das masmorras, absorvendo energia. Não são criadas por maldição — são o produto de uma escolha. A corrupção é gradual: primeiro a pele endurece, depois os dentes escurecem, depois os olhos mudam de cor. Ao final, algo que ainda pensa como maga mas tem corpo de criatura. Elas negociam, mentem e raramente atacam diretamente — preferem usar outros.
-| HP | CA | Dano | Biomas |
-|----|-----|------|--------|
-| 82 | 17 | 3d8+3 (garras) ou Magia variável | Arquivos Soterrados, Cidadela Pálida, Fosso das Emoções Ecoantes |
+| HP | CA | Dano | Tamanho | Biomas |
+|----|-----|------|---------|--------|
+| 82 | 17 | 3d8+3 (garras) ou Magia variável | Médio | Arquivos Soterrados, Cidadela Pálida, Fosso das Emoções Ecoantes |
 **Habilidades:** *Magia Arcana* (acesso a feitiços de até nível 5) • *Disfarce Ilusorio* (parece humana à vontade) • *Olho Maligno* (ação; CD 15 Sabedoria ou Assustado / Envenenado / Adormecido — escolha da bruxa).
 **Ingredientes:** Coração de Bruxa (Especialista — a fonte de toda a magia dela; o Mago pode usar como componente para qualquer ritual que normalmente exigiria décadas de prática) • Sangue de Bruxa (Difícil — concede Leitura de Mente e acesso a um feitiço aleatório de nível 3 por 24h).
 
@@ -2916,12 +2996,14 @@ Harpias de caverna perderam o canto encantador de suas primas da superfície —
 **Comportamento na mesa:**
 - **Padrão:** ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).
 - **Moral:** não foge; persegue o alvo mais próximo até 0 HP (mente ausente).
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.## 072 — FERA SEMINAL (DESTIVORE)
+- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.
+
+## 072 — FERA SEMINAL (DESTIVORE)
 **Tipo:** Aberração Alimentar | **Nível:** 11 | **XP:** 1100 | **Faixa:** Perigoso
 **Lore:** Uma criatura que se alimenta da própria essência do que os aventureiros comeram. Detecta mutações biomágicas ativas e ataca diretamente os órgãos que as produzem.
-| HP | CA | Dano | Biomas |
-|----|-----|------|--------|
-| 108 | 13 | 2d10+5 (mordida de anulação) | Deserto de Carne e Tendões, Pântano da Decomposição, Matriz de Extrusão |
+| HP | CA | Dano | Tamanho | Biomas |
+|----|-----|------|---------|--------|
+| 108 | 13 | 2d10+5 (mordida de anulação) | Grande | Deserto de Carne e Tendões, Pântano da Decomposição, Matriz de Extrusão |
 **Habilidades:** *Anulação Biomágica* (mordida remove uma mutação biomágica ativa do alvo) • *Detecção de Magia Alimentar* (sabe quais mutações o grupo tem ativas — caça o mais poderoso primeiro) • *Absorção de Efeito* (ao remover uma mutação, ganha aquele efeito por 1 turno).
 **Ingredientes:** Estômago de Anulação (Especialista — extremamente raro; processado, cria uma cápsula que pode remover qualquer maldição ou efeito negativo permanente de um personagem).
 
@@ -2932,12 +3014,14 @@ Harpias de caverna perderam o canto encantador de suas primas da superfície —
 **Comportamento na mesa:**
 - **Padrão:** ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).
 - **Moral:** não foge; persegue o alvo mais próximo até 0 HP (mente ausente).
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.## 073 — CARNIÇAL ALADO (VROCK)
+- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.
+
+## 073 — CARNIÇAL ALADO (VROCK)
 **Tipo:** Demônio Menor | **Nível:** 9 | **XP:** 900 | **Faixa:** Perigoso
 **Lore:** Não é nativo da masmorra — veio de outro plano e ficou preso. Demônio com corpo de abutre humanoide, penas negras e cheiro de enxofre. Caótico e destrutivo por natureza, mas com inteligência suficiente para ser imprevisível.
-| HP | CA | Dano | Biomas |
-|----|-----|------|--------|
-| 104 | 15 | 2d6+5 (garras) + 1d6+5 (bico) | Abatedouro Celestial, Cemitério de Colossos, Abismo Invertido |
+| HP | CA | Dano | Tamanho | Biomas |
+|----|-----|------|---------|--------|
+| 104 | 15 | 2d6+5 (garras) + 1d6+5 (bico) | Grande | Abatedouro Celestial, Cemitério de Colossos, Abismo Invertido |
 **Resistências:** Fogo, Relâmpago, Frio, não-mágico. **Imunidades:** Veneno.
 **Habilidades:** *Esporos Demônicos* (nuvem de área que, em 1 minuto, imobiliza criaturas com crescimento de fungos — 5d10 de dano se não tratado) • *Grito Ensurdecedor* (CD 14 Constituição, Atordoado 1 turno) • *Resiliente ao Plano* (ressurge no plano de origem se morto, a não ser que seja morto com arma sagrada ou bênção ativa).
 **Ingredientes:** Pena de Vrock (Médio — material resistente a fogo e relâmpago) • Bico de Vrock (Difícil — ferramenta de corte que funciona em qualquer material) • Esporos (Especialista — extremamente perigosos sem processamento).
@@ -2949,12 +3033,14 @@ Harpias de caverna perderam o canto encantador de suas primas da superfície —
 **Comportamento na mesa:**
 - **Padrão:** ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).
 - **Moral:** não foge; persegue o alvo mais próximo até 0 HP (mente ausente).
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.## 074 — BALOR (ARQUIDEMÔNIO)
+- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.
+
+## 074 — BALOR (ARQUIDEMÔNIO)
 **Tipo:** Demônio Maior | **Nível:** 19 | **XP:** 1900 | **Faixa:** Lendário
 **Lore:** Os Balors são generais do Abismo — criaturas de poder colossal que raramente chegam ao plano material. Quando chegam à masmorra, é porque foram convocados por algo poderoso o suficiente para abrir uma fenda planar, e então abandonados. Um Balor de masmorra é uma catástrofe ambulante de 6 metros de altura com asas flamejantes e uma espada que queima em vorpal.
-| HP | CA | Dano | Biomas |
-|----|-----|------|--------|
-| 262 | 19 | 3d6+12 fogo (espada vorpal) + 2d8+12 relâmpago (chicote de relâmpago) | Abatedouro Celestial, Fornalhas Douradas |
+| HP | CA | Dano | Tamanho | Biomas |
+|----|-----|------|---------|--------|
+| 262 | 19 | 3d6+12 fogo (espada vorpal) + 2d8+12 relâmpago (chicote de relâmpago) | Gigante | Abatedouro Celestial, Fornalhas Douradas |
 **Resistências:** Frio, Relâmpago, Fogo. **Imunidades:** Veneno, Fogo Extremo, Não-mágico.
 **Habilidades:** *Resistência Lendária (3/dia)* • *Ações Lendárias (3)* • *Explosão da Morte* (ao morrer, explode — 20d6 fogo em raio 9m) • *Aura Flamejante* (criaturas adjacentes tomam 2d8 fogo automaticamente) • *Teleporte* (como ação bônus, 30m).
 **Ingredientes (Banquete Lendário — requer purificação prévia do Sacerdote):** Núcleo Demoníaco (Especialista — fonte de poder planar do Balor; o Artífice usa para criar um Portal Portátil de uso único) • Espada Vorpal de Fogo (Ferramenta Lendária — arma +4, decapita automaticamente em acerto crítico, causa 3d6 fogo extra).
@@ -2967,12 +3053,14 @@ Harpias de caverna perderam o canto encantador de suas primas da superfície —
 **Comportamento na mesa:**
 - **Padrão:** ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).
 - **Moral:** não foge por HP; pode sacrificar lacaios.
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.## 075 — ENXAME DE RATOS-CADÁVERES
+- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.
+
+## 075 — ENXAME DE RATOS-CADÁVERES
 **Tipo:** Morto-Vivo Enxame | **Nível:** 2 | **XP:** 200 | **Faixa:** Comum
 **Lore:** Ratos normais que morreram em massa e foram animados coletivamente por energia necrótica — um único "organismo" de centenas de corpos. Movem-se em ondas, passam por qualquer abertura, corroem equipamentos com dentes e unhas.
-| HP | CA | Dano | Biomas |
-|----|-----|------|--------|
-| 24 | 10 | 2d6 (mordidas múltiplas em área de ocupação) | Cemitério de Colossos, Estômago Botânico, Cidadela Pálida, Arquivos Soterrados |
+| HP | CA | Dano | Tamanho | Biomas |
+|----|-----|------|---------|--------|
+| 24 | 10 | 2d6 (mordidas múltiplas em área de ocupação) | Médio | Cemitério de Colossos, Estômago Botânico, Cidadela Pálida, Arquivos Soterrados |
 **Resistências:** Contundente, Cortante, Perfurante. **Imunidades:** Veneno, Exaustão.
 **Habilidades:** *Ocupação de Área* (qualquer criatura que comece o turno no espaço do enxame toma 2d6 automaticamente) • *Infiltração* (passa por qualquer abertura maior que 3cm) • *Resistente a Ataques Focados* (ataques de área causam dano normal, ataques individuais causam 1 de dano máximo).
 **Ingredientes:** Ossinhos de Rato-Cadáver (Fácil — em grande quantidade) • Pó de Osso Necrótico (Médio — ingrediente de pó que o Mago Fermentador usa em refeições de resistência necrótica).
@@ -2985,12 +3073,14 @@ Harpias de caverna perderam o canto encantador de suas primas da superfície —
 - **Padrão:** ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).
 - **Moral:** não foge; persegue o alvo mais próximo até 0 HP (mente ausente).
 - **Pós-morte:** ver habilidades (levante/toxina) — 1 rodada de risco ao grupo.
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.## 076 — ELEMENTAL DE TERRA
+- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.
+
+## 076 — ELEMENTAL DE TERRA
 **Tipo:** Elemental Primordial | **Nível:** 8 | **XP:** 800 | **Faixa:** Intermediário
 **Lore:** Manifestação do Plano da Terra no ambiente da masmorra, frequentemente confundido com Golems de Pedra. A diferença: Golems são criados, Elementais emergem. O Elemental de Terra é a própria rocha tornando-se consciente e irritada com os seres de carne que a perfuram.
-| HP | CA | Dano | Biomas |
-|----|-----|------|--------|
-| 126 | 17 | 2d8+8 (socos de pedra) × 2 | Jardim de Cinzas Petrificadas, Arquipélago Magnético, Cemitério de Colossos |
+| HP | CA | Dano | Tamanho | Biomas |
+|----|-----|------|---------|--------|
+| 126 | 17 | 2d8+8 (socos de pedra) × 2 | Grande | Jardim de Cinzas Petrificadas, Arquipélago Magnético, Cemitério de Colossos |
 **Resistências:** Não-mágico (cortante, perfurante, contundente). **Imunidades:** Veneno, Exaustão.
 **Habilidades:** *Imersão na Terra* (move-se através de pedra sem deixar rastro — velocidade normal) • *Tremor* (ação, CD 15 Destreza ou Prostrado em área de 6m) • *Absorção de Terra* (recupera 10 HP por turno em contato com pedra natural).
 **Ingredientes:** Núcleo de Terra Primordial (Especialista) • O Círculo do Solo Vivo usa como ingrediente central — consumido, concede resistência permanente a contundente (funciona uma vez por personagem, sendo Elemental de Terra).
@@ -3002,12 +3092,14 @@ Harpias de caverna perderam o canto encantador de suas primas da superfície —
 **Comportamento na mesa:**
 - **Padrão:** ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).
 - **Moral:** não foge; persegue o alvo mais próximo até 0 HP (mente ausente).
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.## 077 — BANSHEE
+- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.
+
+## 077 — BANSHEE
 **Tipo:** Morto-Vivo Espiritual Feminino | **Nível:** 8 | **XP:** 800 | **Faixa:** Intermediário
 **Lore:** A Banshee é criada especificamente de mulheres de beleza extraordinária que morreram de amor não correspondido ou traição. O grito delas não é ataque — é um gemido de dor genuíno que simplesmente mata. Habitam ruínas de câmaras que pertenceram a elas em vida, ainda decoradas como eram.
-| HP | CA | Dano | Biomas |
-|----|-----|------|--------|
-| 58 | 12 | 3d6 psíquico (toque corrupto) | Cidadela Pálida, Fosso das Emoções Ecoantes, Arquivos Soterrados |
+| HP | CA | Dano | Tamanho | Biomas |
+|----|-----|------|---------|--------|
+| 58 | 12 | 3d6 psíquico (toque corrupto) | Médio | Cidadela Pálida, Fosso das Emoções Ecoantes, Arquivos Soterrados |
 **Resistências:** Ácido, Fogo, Relâmpago, não-mágico. **Imunidades:** Frio, Necrótico, Veneno.
 **Habilidades:** *Grito de Banshee* (uma vez/dia: CD 13 Constituição para toda criatura viva dentro de 30m que possa ouvi-la — falha: cai a 0 HP instantaneamente; sucesso: toma 3d6 psíquico) • *Detectar Vida* (sabe quantas criaturas vivas estão num raio de 5km).
 **Ingredientes:** Eco de Dor (Especialista — o "cristal" de emoção da Banshee) • Processado, permite ao Degustador de Sombras usar o Grito de Banshee como habilidade uma vez por semana.
@@ -3020,12 +3112,14 @@ Harpias de caverna perderam o canto encantador de suas primas da superfície —
 - **Padrão:** ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).
 - **Moral:** não foge; persegue o alvo mais próximo até 0 HP (mente ausente).
 - **Pós-morte:** ver habilidades (levante/toxina) — 1 rodada de risco ao grupo.
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.## 078 — MORCEGO-TIRANO
+- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.
+
+## 078 — MORCEGO-TIRANO
 **Tipo:** Besta Alada Predadora | **Nível:** 5 | **XP:** 500 | **Faixa:** Intermediário
 **Lore:** Do tamanho de um cavalo de batalha, com envergadura de 8 metros. Os Morcegos-Tirano dominam o Abismo Invertido, caçando em grupos de 3 a 6 e usando ecolocalização para mapear o ambiente com precisão de centímetros. A caverna tem mapa tridimensional perfeito na mente deles.
-| HP | CA | Dano | Biomas |
-|----|-----|------|--------|
-| 65 | 12 | 2d6+3 (mordida) + 1d8+3 (garras) | Abismo Invertido, Ninho Crepuscular, Cidadela Pálida |
+| HP | CA | Dano | Tamanho | Biomas |
+|----|-----|------|---------|--------|
+| 65 | 12 | 2d6+3 (mordida) + 1d8+3 (garras) | Grande | Abismo Invertido, Ninho Crepuscular, Cidadela Pálida |
 **Habilidades:** *Ecolocalização* (não pode ser enganado por ilusões visuais ou escuridão, detecta movimento em 36m) • *Mergulho* (dano dobrado ao cair pelo menos 9m).
 **Ingredientes:** Carne de Morcego-Tirano (Médio) • Prato Gourmet concede Ossos Ocos, Visão de Rapina e Ecolocalização (equivalente a Pena-Bússola) por 12h. Membrana de Asa (Médio — material para cloaks de planagem).
 
@@ -3036,12 +3130,14 @@ Harpias de caverna perderam o canto encantador de suas primas da superfície —
 **Comportamento na mesa:**
 - **Padrão:** ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).
 - **Moral:** não foge; persegue o alvo mais próximo até 0 HP (mente ausente).
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.## 079 — OOZE OCULAR (OLHO FLUTUANTE)
+- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.
+
+## 079 — OOZE OCULAR (OLHO FLUTUANTE)
 **Tipo:** Aberração Ocular | **Nível:** 6 | **XP:** 600 | **Faixa:** Intermediário
 **Lore:** Uma massa gelatinosa central com dezenas de olhos em hastes que surgem de toda a superfície. Cada olho têm um poder mágico diferente. A criatura processa o mundo através de múltiplas perspectivas simultâneas — literalmente vê em todas as direções ao mesmo tempo.
-| HP | CA | Dano | Biomas |
-|----|-----|------|--------|
-| 72 | 13 | 1d8+3 mordida + Raios oculares | Arquivos Soterrados, Labirinto Prismático, Fosso das Emoções Ecoantes, Matriz de Extrusão |
+| HP | CA | Dano | Tamanho | Biomas |
+|----|-----|------|---------|--------|
+| 72 | 13 | 1d8+3 mordida + Raios oculares | Grande | Arquivos Soterrados, Labirinto Prismático, Fosso das Emoções Ecoantes, Matriz de Extrusão |
 **Habilidades:** *Visão Antímágica* (cone de 9m do olho central — nenhuma magia funciona dentro do cone) • *Raios Oculares* (até 3/turno; cada olho tem efeito diferente: Sono, Petrificação, Desintegração, Encantamento, Medo) • *Visão 360°* (não pode ser surpreendido, sem flanqueamento).
 **Ingredientes:** Olho Central (Especialista — o órgão antimágico) • Processado, cria lente que, quando olhada, anula a próxima magia que atingir o usuário (1 uso). Olhos Secundários (Difícil — cada um tem aplicação diferente; o Biólogo Alquímico cria poções específicas por olho).
 
@@ -3052,15 +3148,103 @@ Harpias de caverna perderam o canto encantador de suas primas da superfície —
 **Comportamento na mesa:**
 - **Padrão:** ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).
 - **Moral:** não foge; persegue o alvo mais próximo até 0 HP (mente ausente).
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.## 080 — TARRASQUE (BEBÊ)
+- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.
+
+## 080 — TARRASQUE (BEBÊ)
 **Tipo:** Besta Titânica | **Nível:** 20 | **XP:** 2000 | **Faixa:** Lendário
 **Lore:** O Tarrasque adulto é uma calamidade civilizacional — invulnerável, regenerativo, devastador. O "bebê" que ocasionalmente aparece na Masmorra 11 tem "apenas" 8 metros de altura e é jovem demais para ter regeneração completa. Ainda assim, é o maior desafio concebível para qualquer grupo. Sua carne é a mais densamente mágica de qualquer ser vivo — mas isso é secundário quando você está tentando sobreviver ao encontro.
-| HP | CA | Dano | Biomas |
-|----|-----|------|--------|
-| 676 | 25 | 4d12+19 (mordida) + 4d8+19 (garras × 2) + 4d10+19 (chifres) + 4d12+19 (cauda) | Masmorra 11 — Andar 4 exclusivo |
+| HP | CA | Dano | Tamanho | Biomas |
+|----|-----|------|---------|--------|
+| 676 | 25 | 4d12+19 (mordida) + 4d8+19 (garras × 2) + 4d10+19 (chifres) + 4d12+19 (cauda) | Imenso | Masmorra 11 — Andar 4 exclusivo |
 **Resistências:** Fogo, Relâmpago, Frio, Ácido, Trovão. **Imunidades:** Veneno, Exaustão, Assustado.
 **Habilidades:** *Resistência Lendária (5/dia)* • *Ações Lendárias (5/turno)* • *Carapaça Mágica* (imune a magias de nível 6 ou inferior — magias mais altas são refletidas de volta) • *Regeneração Parcial* (recupera 30 HP/turno — ataques de fogo e ácido suprimem por 1 turno) • *Investida Demolidora* (move 30m em linha reta, empurrando tudo no caminho — estruturas menores são destruídas).
 **Ingredientes (Banquete Lendário — o maior da campanha):** Todos os ingredientes de todos os outros tipos disponíveis em quantidades imensas + Coração Titânico (Mutação Permanente definitiva: +20 HP Máximo, Resistência a todos os elementos, e uma habilidade lendária exclusiva escolhida por cada jogador baseada em sua classe).
+
+## APÊNDICE — TAMANHO NO GRID (001–080)
+
+| Cod | Espécime | Tamanho | Hex |
+|-----|----------|---------|-----|
+| 001 | Zumbi de Masmorra | Médio | 1 hex |
+| 002 | Esqueleto Armado | Médio | 1 hex |
+| 003 | Ghoul | Médio | 1 hex |
+| 004 | Espectro | Médio | 1 hex |
+| 005 | Lich (Arquiliche) | Médio | 1 hex |
+| 006 | Assombração | Médio | 1 hex |
+| 007 | Vampiro | Médio | 1 hex |
+| 008 | Cavaleiro Espectral | Médio | 1 hex |
+| 009 | Múmia | Médio | 1 hex |
+| 010 | Dragonete de Magma | Grande | 3 hex |
+| 011 | Wyvern | Grande | 3 hex |
+| 012 | Dragão Jovem de Gelo | Gigante | 7 hex |
+| 013 | Drake de Pedra | Grande | 3 hex |
+| 014 | Dragão Ancião de Fogo | Imenso | 19 hex |
+| 015 | Golem de Pedra | Grande | 3 hex |
+| 016 | Armadura Animada | Médio | 1 hex |
+| 017 | Golem de Ferro Vulcânico | Grande | 3 hex |
+| 018 | Autômato de Gênio | Grande | 3 hex |
+| 019 | Minotauro | Grande | 3 hex |
+| 020 | Basilisco | Grande | 3 hex |
+| 021 | Manticora | Grande | 3 hex |
+| 022 | Grifo | Grande | 3 hex |
+| 023 | Cocatriz | Médio | 1 hex |
+| 024 | Aranha Tecerrochas | Grande | 3 hex |
+| 025 | Escorpião Gigante | Gigante | 7 hex |
+| 026 | Centopeia Cáustica | Grande | 3 hex |
+| 027 | Besouro-Diamante | Grande | 3 hex |
+| 028 | Sapo-Engolidor | Grande | 3 hex |
+| 029 | Kraken Menor | Imenso | 19 hex |
+| 030 | Serpente-do-Abismo | Gigante | 7 hex |
+| 031 | Tubarão-Cego | Grande | 3 hex |
+| 032 | Goblin de Caverna | Pequeno | 1 hex |
+| 033 | Hobgoblin Guerreiro | Médio | 1 hex |
+| 034 | Orc de Masmorra | Médio | 1 hex |
+| 035 | Cogumelo-Rei | Gigante | 7 hex |
+| 036 | Treant Podre | Gigante | 7 hex |
+| 037 | Planta Carnívora Gigante | Gigante | 7 hex |
+| 038 | Slime Ácido | Médio | 1 hex |
+| 039 | Slime de Cristal | Médio | 1 hex |
+| 040 | Elemental de Fogo | Grande | 3 hex |
+| 041 | Elemental de Gelo | Grande | 3 hex |
+| 042 | Yeti das Profundezas | Grande | 3 hex |
+| 043 | Lobo do Inverno | Grande | 3 hex |
+| 044 | Mímico de Baú | Médio | 1 hex |
+| 045 | Doppelganger | Médio | 1 hex |
+| 046 | Hidra das Cavernas | Gigante | 7 hex |
+| 047 | Quimera | Grande | 3 hex |
+| 048 | Anjo Caído | Grande | 3 hex |
+| 049 | Gárgula de Cristal | Médio | 1 hex |
+| 050 | Aberração Tentacular | Grande | 3 hex |
+| 051 | Basilisco de Magma | Grande | 3 hex |
+| 052 | Sereia das Profundezas | Médio | 1 hex |
+| 053 | Troll de Pedra | Grande | 3 hex |
+| 054 | Ciclope | Gigante | 7 hex |
+| 055 | Harpia de Caverna | Médio | 1 hex |
+| 056 | Roper | Grande | 3 hex |
+| 057 | Aboleth | Grande | 3 hex |
+| 058 | Pudim Negro | Grande | 3 hex |
+| 059 | Lagosta-Gigante Abissal | Grande | 3 hex |
+| 060 | Caranguejo-Eremita Colossal | Imenso | 19 hex |
+| 061 | Aranha-Cavaleira | Grande | 3 hex |
+| 062 | Mosca-Carniça Colossal | Grande | 3 hex |
+| 063 | Besouro-Trovão | Grande | 3 hex |
+| 064 | Verme Gigante de Pedra | Imenso | 19 hex |
+| 065 | Salamandra Gigante | Grande | 3 hex |
+| 066 | Behemoth de Pedra | Imenso | 19 hex |
+| 067 | Fera da Sombra | Médio | 1 hex |
+| 068 | Medusa | Médio | 1 hex |
+| 069 | Fênix de Caverna | Grande | 3 hex |
+| 070 | Gigante de Pedra | Gigante | 7 hex |
+| 071 | Bruxa da Masmorra | Médio | 1 hex |
+| 072 | Fera Seminal | Grande | 3 hex |
+| 073 | Carniçal Alado | Grande | 3 hex |
+| 074 | Balor | Gigante | 7 hex |
+| 075 | Enxame de Ratos-Cadáveres | Médio | 1 hex |
+| 076 | Elemental de Terra | Grande | 3 hex |
+| 077 | Banshee | Médio | 1 hex |
+| 078 | Morcego-Tirano | Grande | 3 hex |
+| 079 | Ooze Ocular | Grande | 3 hex |
+| 080 | Tarrasque (Bebê) | Imenso | 19 hex |
+
 
 ---
 
