@@ -17,6 +17,7 @@ import { useFoundryWindows, type MesaWindowId } from "@/hooks/vtt/useFoundryWind
 import { useRoomSync } from "@/hooks/useRoomSync";
 import { VttToastProvider } from "@/components/vtt/VttToast";
 import { FoundryDockPanel } from "@/components/vtt/foundry/FoundryDockPanel";
+import { FoundryWindow } from "@/components/vtt/foundry/FoundryWindow";
 import { MesaFoundrySidebar } from "@/components/vtt/foundry/MesaFoundrySidebar";
 import { HexBattlefield } from "@/components/vtt/HexBattlefield";
 import { CharacterSheetPopup } from "@/components/vtt/CharacterSheetPopup";
@@ -141,6 +142,23 @@ export function MesaWorkspace({
     [sheetPopupActorId, closeSheet, openSheet, defaultActorId, windows]
   );
 
+  const handleOpenPopup = useCallback(
+    (id: MesaWindowId) => {
+      if (id === "ficha") {
+        openSheet(defaultActorId);
+        return;
+      }
+      const layout = win(id);
+      if (windows.isFloating(id) && layout.open) {
+        if (layout.minimized) windows.restore(id);
+        else windows.focus(id);
+        return;
+      }
+      windows.openAsPopup(id);
+    },
+    [defaultActorId, openSheet, win, windows]
+  );
+
   return (
     <VttToastProvider>
       <MesaWorkspaceCombatFlow
@@ -172,42 +190,47 @@ export function MesaWorkspace({
           <MesaFoundrySidebar
             isActive={isPanelActive}
             onToggle={handlePanelToggle}
+            onOpenPopup={handleOpenPopup}
             showGm={canControlCombat}
             dockOpen={dockOpen}
           >
-            <FoundryDockPanel
-              title="Chat"
-              open={win("chat").open}
-              minimized={win("chat").minimized}
-              className="foundry-dock-panel--chat"
-              onClose={() => windows.close("chat")}
-              onMinimize={() =>
-                win("chat").minimized ? windows.restore("chat") : windows.minimize("chat")
-              }
-            >
-              <RoomChat roomId={roomId} messages={chat} onUpdate={refresh} readOnly={!canChat} />
-            </FoundryDockPanel>
+            {!windows.isFloating("chat") ? (
+              <FoundryDockPanel
+                title="Chat"
+                open={win("chat").open}
+                minimized={win("chat").minimized}
+                className="foundry-dock-panel--chat"
+                onClose={() => windows.close("chat")}
+                onMinimize={() =>
+                  win("chat").minimized ? windows.restore("chat") : windows.minimize("chat")
+                }
+              >
+                <RoomChat roomId={roomId} messages={chat} onUpdate={refresh} readOnly={!canChat} />
+              </FoundryDockPanel>
+            ) : null}
 
-            <FoundryDockPanel
-              title="Rolador de dados"
-              open={win("dice").open}
-              minimized={win("dice").minimized}
-              className="foundry-dock-panel--dice"
-              onClose={() => windows.close("dice")}
-              onMinimize={() =>
-                win("dice").minimized ? windows.restore("dice") : windows.minimize("dice")
-              }
-            >
-              {canChat ? (
-                <DiceRoller roomId={roomId} onUpdate={refresh} />
-              ) : (
-                <p className="vtt-combat-hint" style={{ padding: "1rem" }}>
-                  Visitantes não rolam dados no chat.
-                </p>
-              )}
-            </FoundryDockPanel>
+            {!windows.isFloating("dice") ? (
+              <FoundryDockPanel
+                title="Rolador de dados"
+                open={win("dice").open}
+                minimized={win("dice").minimized}
+                className="foundry-dock-panel--dice"
+                onClose={() => windows.close("dice")}
+                onMinimize={() =>
+                  win("dice").minimized ? windows.restore("dice") : windows.minimize("dice")
+                }
+              >
+                {canChat ? (
+                  <DiceRoller roomId={roomId} onUpdate={refresh} />
+                ) : (
+                  <p className="vtt-combat-hint" style={{ padding: "1rem" }}>
+                    Visitantes não rolam dados no chat.
+                  </p>
+                )}
+              </FoundryDockPanel>
+            ) : null}
 
-            {canControlCombat ? (
+            {canControlCombat && !windows.isFloating("spawn") ? (
               <FoundryDockPanel
                 title="Invocar monstros"
                 open={win("spawn").open}
@@ -267,17 +290,21 @@ export function MesaWorkspace({
               }
               onGmWindowFocus={() => windows.focus("gm")}
               dungeonWindowLayout={win("dungeon")}
+              onDungeonWindowLayoutChange={(patch) => windows.patch("dungeon", patch)}
               onDungeonWindowClose={() => windows.close("dungeon")}
               onDungeonWindowMinimize={() =>
                 win("dungeon").minimized ? windows.restore("dungeon") : windows.minimize("dungeon")
               }
+              onDungeonWindowFocus={() => windows.focus("dungeon")}
               whiteboardWindowLayout={win("whiteboard")}
+              onWhiteboardWindowLayoutChange={(patch) => windows.patch("whiteboard", patch)}
               onWhiteboardWindowClose={() => windows.close("whiteboard")}
               onWhiteboardWindowMinimize={() =>
                 win("whiteboard").minimized
                   ? windows.restore("whiteboard")
                   : windows.minimize("whiteboard")
               }
+              onWhiteboardWindowFocus={() => windows.focus("whiteboard")}
               initiativeWindowLayout={win("initiative")}
               onInitiativeWindowLayoutChange={(patch) => windows.patch("initiative", patch)}
               onInitiativeWindowClose={() => windows.close("initiative")}
@@ -287,11 +314,73 @@ export function MesaWorkspace({
                   : windows.minimize("initiative")
               }
               onInitiativeWindowFocus={() => windows.focus("initiative")}
+              isWindowFloating={windows.isFloating}
             />
           </div>
 
           <div id="foundry-mesa-hud" className="foundry-mesa__hud">
             <div id="foundry-mesa-windows" className="foundry-mesa__windows">
+              {windows.isFloating("chat") ? (
+                <FoundryWindow
+                  title="Chat"
+                  layout={win("chat")}
+                  className="foundry-window--chat"
+                  onLayoutChange={(patch) => windows.patch("chat", patch)}
+                  onFocus={() => windows.focus("chat")}
+                  onMinimize={() =>
+                    win("chat").minimized ? windows.restore("chat") : windows.minimize("chat")
+                  }
+                  onClose={() => windows.close("chat")}
+                >
+                  <RoomChat roomId={roomId} messages={chat} onUpdate={refresh} readOnly={!canChat} />
+                </FoundryWindow>
+              ) : null}
+
+              {windows.isFloating("dice") ? (
+                <FoundryWindow
+                  title="Rolador de dados"
+                  layout={win("dice")}
+                  className="foundry-window--dice"
+                  onLayoutChange={(patch) => windows.patch("dice", patch)}
+                  onFocus={() => windows.focus("dice")}
+                  onMinimize={() =>
+                    win("dice").minimized ? windows.restore("dice") : windows.minimize("dice")
+                  }
+                  onClose={() => windows.close("dice")}
+                >
+                  {canChat ? (
+                    <DiceRoller roomId={roomId} onUpdate={refresh} />
+                  ) : (
+                    <p className="vtt-combat-hint" style={{ padding: "1rem" }}>
+                      Visitantes não rolam dados no chat.
+                    </p>
+                  )}
+                </FoundryWindow>
+              ) : null}
+
+              {canControlCombat && windows.isFloating("spawn") ? (
+                <FoundryWindow
+                  title="Invocar monstros"
+                  layout={win("spawn")}
+                  className="foundry-window--spawn"
+                  minHeight={200}
+                  onLayoutChange={(patch) => windows.patch("spawn", patch)}
+                  onFocus={() => windows.focus("spawn")}
+                  onMinimize={() =>
+                    win("spawn").minimized ? windows.restore("spawn") : windows.minimize("spawn")
+                  }
+                  onClose={() => windows.close("spawn")}
+                >
+                  <div className="mesa-panel-scroll mesa-panel-scroll--rail">
+                    <MonsterSpawnPanel
+                      roomId={roomId}
+                      spawnAxial={spawnAxial}
+                      onSpawned={(snap) => applySnapshot(snap)}
+                    />
+                  </div>
+                </FoundryWindow>
+              ) : null}
+
               {sheetPopupActorId && snapshot ? (
                 <CharacterSheetPopup
                   actorId={sheetPopupActorId}

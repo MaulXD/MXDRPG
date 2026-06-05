@@ -15,6 +15,7 @@ type IconDef = {
 type Props = {
   isActive: (id: MesaWindowId) => boolean;
   onToggle: (id: MesaWindowId) => void;
+  onOpenPopup?: (id: MesaWindowId) => void;
   showGm?: boolean;
 };
 
@@ -22,11 +23,13 @@ function IconButton({
   icon,
   active,
   onToggle,
+  onOpenPopup,
   gm,
 }: {
   icon: IconDef;
   active: boolean;
   onToggle: (id: MesaWindowId) => void;
+  onOpenPopup?: (id: MesaWindowId) => void;
   gm?: boolean;
 }) {
   return (
@@ -34,6 +37,12 @@ function IconButton({
       type="button"
       className={`foundry-icon-bar__btn${active ? " foundry-icon-bar__btn--active" : ""}${gm ? " foundry-icon-bar__btn--gm" : ""}`}
       onClick={() => onToggle(icon.id)}
+      onContextMenu={(e) => {
+        if (!onOpenPopup) return;
+        e.preventDefault();
+        onOpenPopup(icon.id);
+      }}
+      title={onOpenPopup ? `${icon.label} — clique direito: janela flutuante` : icon.label}
       aria-label={icon.label}
       aria-pressed={active}
     >
@@ -43,7 +52,7 @@ function IconButton({
   );
 }
 
-export function MesaIconBar({ isActive, onToggle, showGm = false }: Props) {
+export function MesaIconBar({ isActive, onToggle, onOpenPopup, showGm = false }: Props) {
   const icons: IconDef[] = [
     { id: "actors", label: "Tokens", icon: "actors", section: "play" },
     { id: "initiative", label: "Turno", icon: "initiative", section: "play" },
@@ -69,6 +78,7 @@ export function MesaIconBar({ isActive, onToggle, showGm = false }: Props) {
             icon={icon}
             active={isActive(icon.id)}
             onToggle={onToggle}
+            onOpenPopup={onOpenPopup}
           />
         ))}
       </div>
@@ -86,6 +96,7 @@ export function MesaIconBar({ isActive, onToggle, showGm = false }: Props) {
                 icon={icon}
                 active={isActive(icon.id)}
                 onToggle={onToggle}
+                onOpenPopup={onOpenPopup}
                 gm
               />
             ))}
