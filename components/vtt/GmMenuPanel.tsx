@@ -8,6 +8,7 @@ import { GmActorProgressPanel } from "@/components/vtt/GmActorProgressPanel";
 import { GmCreationsPanel } from "@/components/vtt/GmCreationsPanel";
 import {
   DungeonEditorPanel,
+  type DungeonEditLayer,
   type DungeonEditorTool,
 } from "@/components/vtt/DungeonEditorPanel";
 import { RoomSettingsPanel } from "@/components/vtt/RoomSettingsPanel";
@@ -21,11 +22,14 @@ type Props = {
   roomActors: RoomSnapshot["actors"];
   spawnAxial: Axial | null;
   canEdit: boolean;
+  canEditScene?: boolean;
   adventureId?: string;
   onSceneUpdated: (snap: RoomSnapshot) => void;
+  dungeonLayer?: DungeonEditLayer;
   dungeonEditorActive?: boolean;
   dungeonTool?: DungeonEditorTool;
   selectedDungeonObjectId?: string | null;
+  onDungeonLayerChange?: (layer: DungeonEditLayer) => void;
   onDungeonEditorActiveChange?: (active: boolean) => void;
   onDungeonToolChange?: (tool: DungeonEditorTool) => void;
   onSelectedDungeonObjectChange?: (id: string | null) => void;
@@ -40,11 +44,14 @@ export function GmMenuPanel({
   roomActors,
   spawnAxial,
   canEdit,
+  canEditScene = false,
   adventureId,
   onSceneUpdated,
+  dungeonLayer = "floor",
   dungeonEditorActive = false,
   dungeonTool = "wall",
   selectedDungeonObjectId = null,
+  onDungeonLayerChange,
   onDungeonEditorActiveChange,
   onDungeonToolChange,
   onSelectedDungeonObjectChange,
@@ -84,17 +91,25 @@ export function GmMenuPanel({
         onUpdated={onSceneUpdated}
       />
 
-      <DungeonEditorPanel
-        roomId={roomId}
-        scene={scene}
-        active={dungeonEditorActive}
-        tool={dungeonTool}
-        selectedObjectId={selectedDungeonObjectId}
-        onActiveChange={onDungeonEditorActiveChange ?? (() => {})}
-        onToolChange={onDungeonToolChange ?? (() => {})}
-        onSelectedObjectChange={onSelectedDungeonObjectChange ?? (() => {})}
-        onUpdated={onSceneUpdated}
-      />
+      {canEditScene ? (
+        <DungeonEditorPanel
+          roomId={roomId}
+          scene={scene}
+          layer={dungeonLayer}
+          active={dungeonEditorActive}
+          tool={dungeonTool}
+          selectedObjectId={selectedDungeonObjectId}
+          onLayerChange={onDungeonLayerChange ?? (() => {})}
+          onActiveChange={onDungeonEditorActiveChange ?? (() => {})}
+          onToolChange={onDungeonToolChange ?? (() => {})}
+          onSelectedObjectChange={onSelectedDungeonObjectChange ?? (() => {})}
+          onUpdated={onSceneUpdated}
+        />
+      ) : (
+        <p className="vtt-combat-hint">
+          O editor de masmorras (3 camadas) está disponível só para o mestre da mesa.
+        </p>
+      )}
 
     </aside>
   );

@@ -1,4 +1,4 @@
-import { canManageRoom } from "@/lib/auth/room-access";
+import { canEditRoomScene } from "@/lib/auth/room-access";
 import type { SessionUser } from "@/lib/auth/types";
 import { sanitizeDungeonObjects } from "@/lib/vtt/dungeon-layer";
 import { revealAxial } from "@/lib/vtt/fog-of-war";
@@ -27,7 +27,7 @@ export async function patchRoomScene(
 ): Promise<RoomSnapshot | null> {
   const room = await getRoom(roomId);
   if (!room) return null;
-  if (!canManageRoom(room, user)) return null;
+  if (!canEditRoomScene(room, user)) return null;
 
   const next = { ...room.scene, ...patch };
   if (patch.dungeonObjects !== undefined) {
@@ -46,7 +46,7 @@ export async function revealRoomHex(
 ): Promise<RoomSnapshot | null> {
   const room = await getRoom(roomId);
   if (!room) return null;
-  if (!canManageRoom(room, user)) return null;
+  if (!canEditRoomScene(room, user)) return null;
   if (!inGrid({ q, r }, room.scene.gridRadius)) return null;
 
   room.scene = revealAxial(room.scene, { q, r });

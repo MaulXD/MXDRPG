@@ -2,6 +2,11 @@ import * as dbRooms from "@/lib/db/rooms";
 import { getCharacterFromRegistry } from "@/lib/character/character-registry";
 import { getEntry } from "@/lib/compendium/registry";
 import { DEMO_SCENE } from "@/lib/vtt/demo-scene";
+import {
+  alignDemoPcTokenIds,
+  repairCombatOrderTokenIds,
+  repairDuplicateTokenIds,
+} from "@/lib/vtt/token-integrity";
 import { welcomeChat } from "../chat";
 import { emptyCombat } from "../combat";
 import { prunePings } from "@/lib/vtt/ping";
@@ -110,6 +115,24 @@ function refreshDemoActorsIfStale(room: RoomState): void {
   }
 
   mergeDemoSceneTokens(room, fresh.scene);
+
+  let repairedScene = repairDuplicateTokenIds(room.scene);
+  const alignedScene = alignDemoPcTokenIds(repairedScene, fresh.scene);
+  if (alignedScene !== room.scene) {
+    room.scene = alignedScene;
+    changed = true;
+  } else if (repairedScene !== room.scene) {
+    room.scene = repairedScene;
+    changed = true;
+  }
+
+  if (room.combat?.order?.length) {
+    const fixedOrder = repairCombatOrderTokenIds(room.combat.order, room.scene.tokens);
+    if (fixedOrder.join(",") !== room.combat.order.join(",")) {
+      room.combat = { ...room.combat, order: fixedOrder };
+      changed = true;
+    }
+  }
 
   if (changed) {
     room.scene = syncLinkedTokens(room.scene, room.actors);
