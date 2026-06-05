@@ -42,8 +42,8 @@ export function GmMenuPanel({
       </p>
       <h2 className="vtt-title">{scene.name}</h2>
       <p className="vtt-hint">
-        Arraste tokens no mapa. Ctrl+clique revela hex com névoa. Alt+clique: ping. Invocar monstros
-        no painel ☠.
+        Arraste tokens no mapa. <strong>Delete</strong> remove o token selecionado. Ctrl+clique
+        revela hex com névoa. Alt+clique: ping. Invocar monstros no painel ☠.
       </p>
 
       <RoomSettingsPanel

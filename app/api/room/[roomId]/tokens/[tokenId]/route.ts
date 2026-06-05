@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server";
 import type { BattleToken } from "@/lib/vtt/types";
-import { canMoveToken } from "@/lib/auth/authorize-room";
+import { canMoveToken, requireRoomSpawn } from "@/lib/auth/authorize-room";
 import { getSession } from "@/lib/auth/session";
-import { getRoom, getRoomSnapshot, updateRoomToken } from "@/lib/room/store";
+import { snapshotForViewer } from "@/lib/room/snapshot-for-viewer";
+import { getRoom, getRoomSnapshot, removeRoomToken, updateRoomToken } from "@/lib/room/store";
 
 type Params = { params: Promise<{ roomId: string; tokenId: string }> };
 
@@ -38,4 +39,19 @@ export async function PATCH(req: Request, { params }: Params) {
     token: snapshot.scene.tokens.find((t) => t.id === tokenId),
     revision: snapshot.revision,
   });
+}
+
+export async function DELETE(_req: Request, { params }: Params) {
+  const { roomId, tokenId } = await params;
+  const auth = await requireRoomSpawn(roomId);
+  if ("error" in auth) {
+    return NextResponse.json({ error: auth.error }, { status: auth.status });
+  }
+
+  const result = await removeRoomToken(roomId, tokenId);
+  if (!result.ok) {
+    return NextResponse.json({ error: result.error }, { status: 400 });
+  }
+
+  return NextResponse.json(snapshotForViewer(result.snapshot, auth.room, auth.user));
 }
