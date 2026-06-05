@@ -1,5 +1,5 @@
 import type { Axial } from "@/lib/vtt/hex-math";
-import { axialToPixel, hexCorners } from "@/lib/vtt/hex-math";
+import { axialToPixel, hexCorners, hexDrawRadius } from "@/lib/vtt/hex-math";
 import { hexToMeters, walkRemaining, type MoveCheck } from "@/lib/vtt/movement";
 import { readThemeColor } from "@/lib/theme";
 import type { PortraitFocus } from "@/lib/media/portrait-focus";
@@ -186,7 +186,7 @@ export function drawHexGridLayer(ctx: CanvasRenderingContext2D, p: GridDrawParam
     }
 
     ctx.beginPath();
-    const corners = hexCorners(x, y, hexSize - 2);
+    const corners = hexCorners(x, y, hexDrawRadius(hexSize));
     ctx.moveTo(corners[0].x, corners[0].y);
     for (let i = 1; i < corners.length; i++) ctx.lineTo(corners[i].x, corners[i].y);
     ctx.closePath();
