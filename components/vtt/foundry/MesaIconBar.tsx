@@ -8,7 +8,7 @@ type IconDef = {
   id: MesaWindowId;
   label: string;
   icon: MesaRailIconName;
-  section: "mesa" | "gm";
+  section: "play" | "gm";
   show?: boolean;
 };
 
@@ -18,54 +18,75 @@ type Props = {
   showGm?: boolean;
 };
 
+function IconButton({
+  icon,
+  active,
+  onToggle,
+  gm,
+}: {
+  icon: IconDef;
+  active: boolean;
+  onToggle: (id: MesaWindowId) => void;
+  gm?: boolean;
+}) {
+  return (
+    <button
+      type="button"
+      className={`foundry-icon-bar__btn${active ? " foundry-icon-bar__btn--active" : ""}${gm ? " foundry-icon-bar__btn--gm" : ""}`}
+      onClick={() => onToggle(icon.id)}
+      aria-label={icon.label}
+      aria-pressed={active}
+    >
+      <MesaRailIcon name={icon.icon} />
+      <span className="foundry-icon-bar__label">{icon.label}</span>
+    </button>
+  );
+}
+
 export function MesaIconBar({ isActive, onToggle, showGm = false }: Props) {
   const icons: IconDef[] = [
-    { id: "actors", label: "Personagens", icon: "actors", section: "mesa" },
-    { id: "initiative", label: "Ordem de turnos", icon: "initiative", section: "mesa" },
-    { id: "chat", label: "Chat", icon: "chat", section: "mesa" },
-    { id: "dice", label: "Dados", icon: "dice", section: "mesa" },
-    { id: "ficha", label: "Ficha", icon: "ficha", section: "mesa" },
-    { id: "gm", label: "Menu do mestre", icon: "gm", section: "gm", show: showGm },
-    { id: "spawn", label: "Invocar monstros", icon: "spawn", section: "gm", show: showGm },
+    { id: "actors", label: "Tokens", icon: "actors", section: "play" },
+    { id: "initiative", label: "Turno", icon: "initiative", section: "play" },
+    { id: "ficha", label: "Ficha", icon: "ficha", section: "play" },
+    { id: "chat", label: "Chat", icon: "chat", section: "play" },
+    { id: "dice", label: "Dados", icon: "dice", section: "play" },
+    { id: "dungeon", label: "Mapa", icon: "dungeon", section: "gm", show: showGm },
+    { id: "gm", label: "Mestre", icon: "gm", section: "gm", show: showGm },
+    { id: "spawn", label: "Invocar", icon: "spawn", section: "gm", show: showGm },
   ];
 
-  const mesaIcons = icons.filter((i) => i.section === "mesa" && i.show !== false);
+  const playIcons = icons.filter((i) => i.section === "play" && i.show !== false);
   const gmIcons = icons.filter((i) => i.section === "gm" && i.show !== false);
 
   return (
-    <nav className="foundry-icon-bar" aria-label="Painéis da mesa">
-      <div className="foundry-icon-bar__section" aria-label="Mesa">
-        {mesaIcons.map((icon) => (
-          <button
+    <nav className="foundry-icon-bar" aria-label="Atalhos dos painéis">
+      <p className="foundry-icon-bar__section-title">Jogo</p>
+      <div className="foundry-icon-bar__section">
+        {playIcons.map((icon) => (
+          <IconButton
             key={icon.id}
-            type="button"
-            className={`foundry-icon-bar__btn${isActive(icon.id) ? " foundry-icon-bar__btn--active" : ""}`}
-            onClick={() => onToggle(icon.id)}
-            title={icon.label}
-            aria-label={icon.label}
-            aria-pressed={isActive(icon.id)}
-          >
-            <MesaRailIcon name={icon.icon} />
-          </button>
+            icon={icon}
+            active={isActive(icon.id)}
+            onToggle={onToggle}
+          />
         ))}
       </div>
 
       {gmIcons.length > 0 ? (
         <>
           <div className="foundry-icon-bar__divider" role="separator" aria-hidden />
-          <div className="foundry-icon-bar__section foundry-icon-bar__section--gm" aria-label="Mestre">
+          <p className="foundry-icon-bar__section-title foundry-icon-bar__section-title--gm">
+            Mestre
+          </p>
+          <div className="foundry-icon-bar__section foundry-icon-bar__section--gm">
             {gmIcons.map((icon) => (
-              <button
+              <IconButton
                 key={icon.id}
-                type="button"
-                className={`foundry-icon-bar__btn foundry-icon-bar__btn--gm${isActive(icon.id) ? " foundry-icon-bar__btn--active" : ""}`}
-                onClick={() => onToggle(icon.id)}
-                title={icon.label}
-                aria-label={icon.label}
-                aria-pressed={isActive(icon.id)}
-              >
-                <MesaRailIcon name={icon.icon} />
-              </button>
+                icon={icon}
+                active={isActive(icon.id)}
+                onToggle={onToggle}
+                gm
+              />
             ))}
           </div>
         </>
