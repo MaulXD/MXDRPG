@@ -22,7 +22,8 @@ import { maybeRecordCombatUndo } from "../combat-undo";
 import { getRoom, persistRoom, toSnapshot } from "../internal/registry";
 import type { RoomSnapshot, RoomState } from "../types";
 import { syncCombatOrderWithTokens } from "../combat-order";
-import { appendDefeatChatMessage, shouldAnnounceDefeat } from "../combat-chat-events";
+import { shouldAnnounceDefeat } from "../combat-chat-events";
+import { recordMonsterDefeat } from "../combat-xp";
 import { appendRoomChatMessage } from "./chat";
 
 export type AbilityExecuteResult =
@@ -267,7 +268,7 @@ export async function executeRoomAbility(
       },
     });
     if (defender && shouldAnnounceDefeat(result.defenderHpBefore, result.defenderHpAfter)) {
-      appendDefeatChatMessage(room, author, {
+      await recordMonsterDefeat(room, author, {
         defenderTokenId: defender.id,
         defenderName: defender.name,
         attackerTokenId,
@@ -299,7 +300,7 @@ export async function executeRoomAbility(
       },
     });
     if (defender && shouldAnnounceDefeat(save.defenderHpBefore, save.defenderHpAfter)) {
-      appendDefeatChatMessage(room, author, {
+      await recordMonsterDefeat(room, author, {
         defenderTokenId: defender.id,
         defenderName: defender.name,
         attackerTokenId,

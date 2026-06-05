@@ -11,7 +11,8 @@ import { activeTokenId } from "../combat";
 import { maybeRecordCombatUndo } from "../combat-undo";
 import { getRoom, persistRoom, toSnapshot } from "../internal/registry";
 import { syncCombatOrderWithTokens } from "../combat-order";
-import { appendDefeatChatMessage, shouldAnnounceDefeat } from "../combat-chat-events";
+import { shouldAnnounceDefeat } from "../combat-chat-events";
+import { recordMonsterDefeat } from "../combat-xp";
 import { appendRoomChatMessage } from "./chat";
 import type { AttackExecuteResult } from "./combat-attack";
 
@@ -211,7 +212,7 @@ export async function executeRoomAreaSpell(
     defeated.add(hit.tokenId);
     const target = room.scene.tokens.find((t) => t.id === hit.tokenId);
     if (!target) continue;
-    appendDefeatChatMessage(room, author, {
+    await recordMonsterDefeat(room, author, {
       defenderTokenId: hit.tokenId,
       defenderName: target.name,
       attackerTokenId: caster.id,
