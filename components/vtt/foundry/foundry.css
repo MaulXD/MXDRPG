@@ -1,4 +1,16 @@
-/* Shell Foundry — barra esquerda + dock + mapa */
+/* Shell Foundry — barra esquerda + dock + mapa (tema ardósia / azul frio) */
+
+.mesa-workspace--foundry {
+  --mesa-rail-bg: linear-gradient(180deg, #121820 0%, #0c1018 100%);
+  --mesa-dock-bg: #101620;
+  --mesa-accent: #7aa3c9;
+  --mesa-accent-soft: rgba(122, 163, 201, 0.18);
+  --mesa-accent-border: rgba(122, 163, 201, 0.38);
+  --mesa-gm-accent: #c9927a;
+  --mesa-gm-soft: rgba(160, 110, 90, 0.2);
+  --mesa-text-dim: rgba(200, 210, 224, 0.55);
+  --mesa-text: rgba(232, 236, 244, 0.92);
+}
 
 .foundry-mesa {
   position: relative;
@@ -9,7 +21,7 @@
   flex-direction: row;
   overflow: hidden;
   border-radius: var(--radius);
-  background: var(--bg-deep);
+  background: #0a0e14;
 }
 
 .foundry-sidebar {
@@ -21,13 +33,13 @@
   height: 100%;
   min-height: 0;
   pointer-events: auto;
-  background: linear-gradient(180deg, rgba(14, 12, 10, 0.98), rgba(8, 7, 6, 0.96));
-  border-right: 1px solid rgba(212, 183, 106, 0.14);
-  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.35);
+  background: var(--mesa-rail-bg);
+  border-right: 1px solid var(--mesa-accent-border);
+  box-shadow: 4px 0 20px rgba(0, 0, 0, 0.4);
 }
 
 .foundry-sidebar--dock-open .foundry-sidebar__dock {
-  width: min(320px, 38vw);
+  width: min(268px, 34vw);
 }
 
 .foundry-sidebar__dock {
@@ -92,28 +104,29 @@
 /* Barra de ícones */
 .foundry-icon-bar {
   flex-shrink: 0;
-  width: 84px;
+  width: 68px;
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  gap: 0.2rem;
-  padding: 0.55rem 0.35rem 0.75rem;
-  background: rgba(6, 5, 4, 0.55);
+  gap: 0.15rem;
+  padding: 0.45rem 0.28rem 0.6rem;
+  background: rgba(8, 12, 18, 0.65);
 }
 
 .foundry-icon-bar__section-title {
-  margin: 0.15rem 0 0.25rem;
-  padding: 0 0.15rem;
-  font-size: 0.52rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
+  margin: 0.1rem 0 0.2rem;
+  padding: 0 0.1rem;
+  font-family: var(--font-display);
+  font-size: 0.48rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   text-align: center;
-  color: rgba(232, 226, 214, 0.38);
+  color: var(--mesa-text-dim);
 }
 
 .foundry-icon-bar__section-title--gm {
-  color: rgba(200, 140, 110, 0.55);
+  color: rgba(201, 146, 122, 0.55);
 }
 
 .foundry-icon-bar__section {
@@ -138,12 +151,12 @@
 
 .foundry-icon-bar__btn {
   width: 100%;
-  min-height: 58px;
-  padding: 0.35rem 0.2rem 0.4rem;
+  min-height: 48px;
+  padding: 0.28rem 0.15rem 0.32rem;
   border: 1px solid transparent;
-  border-radius: 10px;
+  border-radius: 8px;
   background: rgba(255, 255, 255, 0.03);
-  color: rgba(232, 226, 214, 0.62);
+  color: var(--mesa-text-dim);
   cursor: pointer;
   display: flex;
   flex-direction: column;
@@ -158,15 +171,15 @@
 }
 
 .foundry-icon-bar__btn:hover {
-  color: rgba(245, 240, 230, 0.95);
-  border-color: rgba(212, 183, 106, 0.28);
-  background: rgba(212, 183, 106, 0.1);
+  color: var(--mesa-text);
+  border-color: var(--mesa-accent-border);
+  background: var(--mesa-accent-soft);
 }
 
 .foundry-icon-bar__btn--active {
-  color: #f0e6c8;
-  border-color: rgba(212, 183, 106, 0.5);
-  background: linear-gradient(180deg, rgba(212, 183, 106, 0.22), rgba(212, 183, 106, 0.08));
+  color: #dce8f4;
+  border-color: var(--mesa-accent-border);
+  background: linear-gradient(180deg, rgba(122, 163, 201, 0.28), rgba(122, 163, 201, 0.1));
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 
@@ -176,14 +189,14 @@
 
 .foundry-icon-bar__btn--gm:hover,
 .foundry-icon-bar__btn--gm.foundry-icon-bar__btn--active {
-  color: #f5d4c0;
-  border-color: rgba(200, 120, 90, 0.45);
-  background: linear-gradient(180deg, rgba(140, 70, 55, 0.28), rgba(80, 40, 32, 0.15));
+  color: #f0d4c4;
+  border-color: rgba(201, 146, 122, 0.45);
+  background: linear-gradient(180deg, var(--mesa-gm-soft), rgba(80, 48, 38, 0.12));
 }
 
 .foundry-icon-bar__icon {
-  width: 1.25rem;
-  height: 1.25rem;
+  width: 1.1rem;
+  height: 1.1rem;
   display: block;
   flex-shrink: 0;
   opacity: 0.9;
@@ -194,10 +207,11 @@
 }
 
 .foundry-icon-bar__label {
-  font-size: 0.56rem;
+  font-family: var(--font-display);
+  font-size: 0.5rem;
   font-weight: 600;
   line-height: 1.1;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.03em;
   text-align: center;
   max-width: 100%;
   overflow: hidden;
@@ -217,7 +231,7 @@
   flex-direction: column;
   min-height: 0;
   min-width: 0;
-  background: rgba(12, 10, 8, 0.97);
+  background: var(--mesa-dock-bg);
 }
 
 .foundry-dock-panel--minimized {
@@ -232,19 +246,19 @@
   justify-content: space-between;
   gap: 0.5rem;
   padding: 0.55rem 0.65rem;
-  background: rgba(212, 183, 106, 0.1);
-  border-bottom: 1px solid rgba(212, 183, 106, 0.18);
+  background: var(--mesa-accent-soft);
+  border-bottom: 1px solid var(--mesa-accent-border);
   flex-shrink: 0;
 }
 
 .foundry-dock-panel__title {
   margin: 0;
-  font-family: var(--font-ui);
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.07em;
+  font-family: var(--font-display);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: #d4b76a;
+  color: var(--mesa-accent);
 }
 
 .foundry-dock-panel__actions {
@@ -462,14 +476,14 @@
 
 @media (max-width: 768px) {
   .foundry-icon-bar {
-    width: 72px;
+    width: 60px;
   }
 
   .foundry-icon-bar__btn {
-    min-height: 52px;
+    min-height: 44px;
   }
 
   .foundry-sidebar--dock-open .foundry-sidebar__dock {
-    width: min(280px, 52vw);
+    width: min(240px, 48vw);
   }
 }

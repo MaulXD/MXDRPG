@@ -51,7 +51,7 @@ const DEFAULT_LAYOUTS: Record<MesaWindowId, Omit<FoundryWindowLayout, "open" | "
   character: { x: 72, y: 40, width: 960, height: 680 },
 };
 
-const DEFAULT_OPEN: MesaWindowId[] = ["actors", "initiative"];
+const DEFAULT_OPEN: MesaWindowId[] = ["initiative"];
 
 function storageKey(roomId?: string): string {
   return `eldarin-foundry-windows${roomId ? `-${roomId}` : ""}`;
