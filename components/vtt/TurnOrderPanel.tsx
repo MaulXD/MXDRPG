@@ -12,7 +12,6 @@ import { nextCombatTurn, rollInitiative } from "@/hooks/useRoomSync";
 
 import { collectPlayerActorIds, resolveTokenRing } from "@/lib/vtt/token-colors";
 
-import { EndTurnConfirmDialog } from "@/components/vtt/EndTurnConfirmDialog";
 import { TokenEffectsRow } from "@/components/vtt/TokenEffectsRow";
 
 
@@ -79,8 +78,6 @@ export function TurnOrderPanel({
 
 }: Props) {
 
-  const [confirmOpen, setConfirmOpen] = useState(false);
-
   const [busy, setBusy] = useState(false);
 
 
@@ -112,8 +109,6 @@ export function TurnOrderPanel({
     try {
 
       await nextCombatTurn(roomId);
-
-      setConfirmOpen(false);
 
       onUpdate();
 
@@ -169,7 +164,7 @@ export function TurnOrderPanel({
 
               disabled={busy}
 
-              onClick={() => setConfirmOpen(true)}
+              onClick={() => void handleNext()}
 
             >
 
@@ -361,26 +356,6 @@ export function TurnOrderPanel({
       </div>
 
 
-
-      <EndTurnConfirmDialog
-
-        open={confirmOpen}
-
-        token={activeToken ?? null}
-
-        round={combat.round}
-
-        busy={busy}
-
-        onConfirm={() => void handleNext()}
-
-        onCancel={() => {
-
-          if (!busy) setConfirmOpen(false);
-
-        }}
-
-      />
 
     </>
 

@@ -102,6 +102,17 @@ export function planEndOfTurnPaBank(
   };
 }
 
+/** Toast ao iniciar turno com PA restituídos. */
+export function formatTurnStartPaNotice(tokenName: string, pa: number): string {
+  const label = pa === 1 ? "1 PA" : `${pa} PA`;
+  return `${tokenName}: ${label} restituídos neste turno.`;
+}
+
+/** Toast quando atordoado pula turno. */
+export function formatStunSkipNotice(tokenName: string): string {
+  return `${tokenName} está atordoado — turno passado sem guardar PA.`;
+}
+
 export function formatEndTurnPaBankMessage(plan: EndTurnPaBankPlan, rules?: PaTurnRules): string {
   const recovery = rules?.recoveryPerTurn ?? PA_RECOVERY_PER_TURN;
   const cap = plan.poolCap ?? accumulationCap(rules);

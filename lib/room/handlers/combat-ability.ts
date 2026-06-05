@@ -19,6 +19,7 @@ import type { ChatMessage } from "../chat";
 import { activeTokenId } from "../combat";
 import { getRoom, persistRoom, toSnapshot } from "../internal/registry";
 import type { RoomSnapshot, RoomState } from "../types";
+import { syncCombatOrderWithTokens } from "../combat-order";
 import { appendDefeatChatMessage, shouldAnnounceDefeat } from "../combat-chat-events";
 import { appendRoomChatMessage } from "./chat";
 
@@ -316,5 +317,6 @@ export async function executeRoomAbility(
     });
   }
 
+  syncCombatOrderWithTokens(room);
   return { ok: true, snapshot: toSnapshot(await persistRoom(roomId, room)) };
 }

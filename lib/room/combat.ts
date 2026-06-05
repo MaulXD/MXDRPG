@@ -6,6 +6,8 @@ export type CombatTrack = {
   order: string[];
   activeIndex: number;
   round: number;
+  /** Avisos de turno para toast na UI (consumidos no próximo avanço). */
+  notices?: string[];
 };
 
 export function emptyCombat(tokens: BattleToken[]): CombatTrack {
@@ -13,6 +15,7 @@ export function emptyCombat(tokens: BattleToken[]): CombatTrack {
     order: tokens.map((t) => t.id),
     activeIndex: 0,
     round: 1,
+    notices: [],
   };
 }
 

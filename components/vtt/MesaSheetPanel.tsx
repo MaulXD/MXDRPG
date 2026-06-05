@@ -21,7 +21,7 @@ export function MesaSheetPanel({ actorId, roomId, actors, session, compendium }:
   if (!seed) {
     return <p className="inv-empty">Personagem não encontrado.</p>;
   }
-  const canEdit = canEditRoomActor({ roomId }, seed, session);
+  const canEdit = canEditRoomActor({ roomId }, { ...seed, ...live }, session);
   const inventory = live.inventory?.length ? live.inventory : seed.inventory;
 
   return (

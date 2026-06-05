@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { canEditRoomActor } from "@/lib/auth/room-access";
+import { actorForRoomAuth, canEditRoomActor } from "@/lib/auth/room-access";
 import { getSession } from "@/lib/auth/session";
 import { resolveCharacter } from "@/lib/character/characters";
 import { getRoom, getRoomActor, updateRoomActor } from "@/lib/room/store";
@@ -28,7 +28,10 @@ export async function PATCH(req: Request, { params }: Params) {
     return NextResponse.json({ error: "Personagem inválido" }, { status: 404 });
   }
 
-  if (!canEditRoomActor(room, seed, session?.user ?? null)) {
+  const live = await getRoomActor(roomId, actorId);
+  const actorForAuth = actorForRoomAuth(room, { ...seed, ...live });
+
+  if (!canEditRoomActor(room, actorForAuth, session?.user ?? null)) {
     return NextResponse.json({ error: "Sem permissão para editar esta ficha" }, { status: 403 });
   }
 
