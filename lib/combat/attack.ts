@@ -458,7 +458,7 @@ export function buildAttackModifiers(
     }
   }
 
-  const consumeDefenderFinta = false;
+  const consumeDefenderFinta = Boolean(attacker.attackMark?.attackerDisadvantage);
   if (attacker.attackMark?.attackerDisadvantage) {
     if (!labels.includes("finta")) labels.push("finta");
     consumeAttackerMark = true;
@@ -511,6 +511,22 @@ function defenderHp(token: BattleToken): number {
   return token.vida ?? 0;
 }
 
+function isFriendlyTarget(attacker: BattleToken, defender: BattleToken): boolean {
+  if (attacker.id === defender.id) return false;
+  if (attacker.monsterEntryId) return Boolean(defender.monsterEntryId);
+  return !defender.monsterEntryId;
+}
+
+function isHostileTarget(attacker: BattleToken, defender: BattleToken): boolean {
+  if (attacker.monsterEntryId) return !defender.monsterEntryId;
+  return Boolean(defender.monsterEntryId);
+}
+
+function isHealingSpell(action: CombatActionOption): boolean {
+  const dt = (action.damageType ?? "").toLowerCase();
+  return dt.includes("cura") || action.abilityEffect === "heal_touch";
+}
+
 export function canAttackTarget(
   attacker: BattleToken,
   defender: BattleToken,
@@ -555,6 +571,19 @@ export function canAttackTarget(
   if (defender.vidaMax != null && defenderHp(defender) <= 0) {
     return { ok: false, reason: "Alvo já derrotado" };
   }
+
+  if (action.kind === "spell") {
+    if (isHealingSpell(action)) {
+      if (!isFriendlyTarget(attacker, defender)) {
+        return { ok: false, reason: "Selecione um aliado para curar" };
+      }
+    } else if (!isHostileTarget(attacker, defender)) {
+      return { ok: false, reason: "Magia ofensiva — selecione um inimigo" };
+    }
+  } else if (action.kind === "weapon" && !isHostileTarget(attacker, defender)) {
+    return { ok: false, reason: "Alvo hostil inválido" };
+  }
+
   return { ok: true };
 }
 

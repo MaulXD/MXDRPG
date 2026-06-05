@@ -97,6 +97,25 @@ export type DungeonObject = {
   r: number;
 };
 
+export type MapMarkupKind = "freehand" | "line" | "rect" | "circle" | "arrow" | "text";
+
+export type MapMarkupDurability = "temporary" | "permanent";
+
+/** Marcação desenhada na lousa do mapa (coordenadas do tabuleiro). */
+export type MapMarkup = {
+  id: string;
+  kind: MapMarkupKind;
+  durability: MapMarkupDurability;
+  color: string;
+  width: number;
+  points: { x: number; y: number }[];
+  text?: string;
+  author: string;
+  createdAt: number;
+  /** Só para temporárias — removida automaticamente após este instante */
+  expiresAt?: number;
+};
+
 export type BattleScene = {
   id: string;
   name: string;
@@ -115,4 +134,6 @@ export type BattleScene = {
   revealedHexes?: string[];
   /** Camada de objetos/paredes — mestre edita; tokens não podem ocupar esses hexes */
   dungeonObjects?: DungeonObject[];
+  /** Lousa — desenhos e anotações sobre o mapa */
+  mapMarkups?: MapMarkup[];
 };

@@ -277,6 +277,13 @@ export function MesaWorkspace({
               onDungeonWindowMinimize={() =>
                 win("dungeon").minimized ? windows.restore("dungeon") : windows.minimize("dungeon")
               }
+              whiteboardWindowLayout={win("whiteboard")}
+              onWhiteboardWindowClose={() => windows.close("whiteboard")}
+              onWhiteboardWindowMinimize={() =>
+                win("whiteboard").minimized
+                  ? windows.restore("whiteboard")
+                  : windows.minimize("whiteboard")
+              }
               initiativeWindowLayout={win("initiative")}
               onInitiativeWindowLayoutChange={(patch) => windows.patch("initiative", patch)}
               onInitiativeWindowClose={() => windows.close("initiative")}

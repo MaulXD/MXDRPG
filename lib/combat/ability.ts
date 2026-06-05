@@ -165,7 +165,7 @@ export function isAllyToken(attacker: BattleToken, other: BattleToken): boolean 
 
   if (attacker.monsterEntryId) return Boolean(other.monsterEntryId);
 
-  return Boolean(other.linked && other.actorId && !other.monsterEntryId);
+  return !other.monsterEntryId;
 
 }
 
@@ -728,7 +728,9 @@ export function resolveAbilityRestrain(
 
   const save = resolveSaveSpell(attacker, defender, actor, defenderActor, action, turn);
 
-  const conditions = toggleTokenCondition(defender, "restringido");
+  const restrained = !save.save.success;
+
+  const conditions = restrained ? toggleTokenCondition(defender, "restringido") : defender.conditions;
 
   return {
 
@@ -738,13 +740,17 @@ export function resolveAbilityRestrain(
 
       ...save,
 
-      summary: `${save.summary} — ${defender.name} fica restringido.`,
+      summary: restrained
+
+        ? `${save.summary} — ${defender.name} fica restringido.`
+
+        : `${save.summary} — ${defender.name} resiste às raízes.`,
 
     },
 
     paCost: effectivePaCost(actor, action),
 
-    defenderUpdate: { conditions },
+    defenderUpdate: restrained ? { conditions } : undefined,
 
   };
 
@@ -1025,7 +1031,7 @@ export function canAbilityTarget(
 
     if (!isAllyToken(attacker, defender)) {
 
-      return { ok: false, reason: "Selecione um aliado linkado" };
+      return { ok: false, reason: "Selecione um aliado" };
 
     }
 
