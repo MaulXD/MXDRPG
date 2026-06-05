@@ -415,39 +415,44 @@ const SPELLS = [
   spell("Doce Confuso", 1, "Encantamento", 6, 1, "Save CON ou amedrontado.", { save: "constituicao" }),
 ];
 
-const ABILITIES = [
-  ["Investida Hexagonal", 2, 1, "charge", "Movimento 2 hex sem provocar."],
-  ["Golpe Flanqueador", 1, 2, "melee_attack_bonus", "Ataque cac com vantagem se flanqueio."],
-  ["Postura Defensiva", 0, 1, "defense_buff", "+2 defesa até próximo turno."],
-  ["Reflexos de Masmorra", 1, 1, "reacao", "Reação: desloca 1 hex."],
-  ["Olhar do Caçador", 5, 1, "mark", "Marca alvo; +2 próximo ataque à distância."],
-  ["Investida do Guerreiro", 2, 1, "charge", "Corrida em linha reta."],
-  ["Golpe Devastador", 1, 2, "melee_attack_bonus", "+2 no próximo ataque corpo a corpo."],
-  ["Esquiva Tática", 0, 1, "defense_buff", "+2 defesa até seu próximo turno."],
-  ["Tiro Certeiro", 5, 1, "mark", "Próximo ataque à distância com vantagem."],
-  ["Emboscada", 1, 2, "melee_attack_bonus", "Ataque furtivo adjacente."],
-  ["Finta", 1, 1, "mark", "Alvo tem desvantagem no próximo ataque contra ele."],
-  ["Passo das Sombras", 2, 1, "charge", "Teleporte curto 2 hex (movimento)."],
-  ["Raio Arcano", 6, 1, "spell", "Truque ofensivo 1d10+INT."],
-  ["Escudo Mágico", 0, 1, "defense_buff", "+3 defesa 1 rodada."],
-  ["Canalizar Energia", 1, 2, "melee_attack_bonus", "Ataque sagrado +2d6 radiante."],
-  ["Fúria Controlada", 0, 1, "defense_buff", "Resistência contundente 1 turno."],
-  ["Investida Bárbara", 3, 1, "charge", "Corre 3 hex em linha."],
-  ["Inspiração de Batalha", 4, 1, "mark", "Aliado ganha vantagem no próximo ataque."],
-  ["Canção de Cura", 1, 1, "buff", "Aliado recupera 1d6 HP."],
-  ["Forma Selvagem", 0, 2, "charge", "Prepara transformação (movimento)."],
-  ["Raízes Prendentes", 4, 2, "spell", "Restringe alvo 1 turno."],
-  ["Disparo de Artilheiro", 6, 1, "spell", "Projétil 2d8."],
-  ["Barreira de Cobre", 0, 1, "defense_buff", "+2 defesa contra magia."],
-].map(([name, range, pa, tipo, desc]) => ({
+const BOOK_HAB = "CATALOGO-HABILIDADES-TATICAS.md";
+
+const ABILITY_CATALOG = [
+  ["Investida Hexagonal", 2, 1, "ativa", "1/turno", "Desloca em linha reta até 2 hex sem provocar ataques de oportunidade durante o movimento."],
+  ["Golpe Flanqueador", 1, 2, "ativa", "", "Gasta 2 PA: próximo ataque corpo a corpo com vantagem se você flanquear o alvo."],
+  ["Postura Defensiva", 0, 1, "ativa", "", "+2 defesa até o início do seu próximo turno."],
+  ["Reflexos de Masmorra", 1, 1, "reacao", "", "Reação a um ataque: desloca 1 hex imediatamente (não provoca oportunidades)."],
+  ["Olhar do Caçador", 5, 1, "ativa", "", "Marca um alvo visível a até 5 hex; seu próximo ataque à distância contra ele ganha +2."],
+  ["Investida do Guerreiro", 2, 1, "ativa", "1/turno", "Corrida em linha reta até 2 hex; ideal terminar adjacente a um inimigo para atacar no mesmo turno."],
+  ["Golpe Devastador", 1, 2, "ativa", "", "Próximo ataque corpo a corpo recebe +2 no teste de ataque."],
+  ["Esquiva Tática", 0, 1, "ativa", "", "+2 defesa até o início do seu próximo turno."],
+  ["Tiro Certeiro", 5, 1, "ativa", "", "Próximo ataque à distância contra alvo visível é feito com vantagem."],
+  ["Emboscada", 1, 2, "ativa", "", "Ataque furtivo adjacente; vantagem se o alvo não viu você no início do turno."],
+  ["Finta", 1, 1, "ativa", "", "Alvo marcado tem desvantagem no próximo ataque contra você."],
+  ["Passo das Sombras", 2, 1, "ativa", "1/turno", "Teleporte curto de até 2 hex; conta como movimento."],
+  ["Raio Arcano", 6, 1, "ativa", "", "Truque ofensivo: 1d10+INT de dano mágico em um alvo a até 6 hex."],
+  ["Escudo Mágico", 0, 1, "ativa", "", "+3 defesa até o início do seu próximo turno."],
+  ["Canalizar Energia", 1, 2, "ativa", "", "Ataque corpo a corpo sagrado: +2 no ataque e +2d6 radiante no dano."],
+  ["Fúria Controlada", 0, 1, "ativa", "", "Resistência a dano contundente até o fim do seu próximo turno."],
+  ["Investida Bárbara", 3, 1, "ativa", "1/turno", "Corre até 3 hex em linha reta sem provocar oportunidades."],
+  ["Inspiração de Batalha", 4, 1, "ativa", "", "Aliado visível a até 4 hex ganha vantagem no próximo ataque."],
+  ["Canção de Cura", 1, 1, "ativa", "", "Aliado adjacente recupera 1d6 HP."],
+  ["Forma Selvagem", 0, 2, "ativa", "", "Prepara transformação biomágica (2 PA; Mestre valida a forma)."],
+  ["Raízes Prendentes", 4, 2, "ativa", "", "Restringe alvo 1 turno (save FOR); raízes no hex do alvo."],
+  ["Disparo de Artilheiro", 6, 1, "ativa", "", "Projétil concentrado: 2d8 de dano à distância."],
+  ["Barreira de Cobre", 0, 1, "ativa", "", "+2 defesa contra efeitos mágicos até seu próximo turno."],
+];
+
+const ABILITIES = ABILITY_CATALOG.map(([name, range, pa, tipo, recarga, desc]) => ({
   id: `habilidades-${slug(name)}`,
   name,
   type: "habilidade",
   system: {
     catalogId: `HAB-${slug(name)}`,
+    bookRef: BOOK_HAB,
     description: `<p>${desc}</p>`,
     tactical: { alcanceHex: { value: range, min: 0 }, custoPontosAcao: { value: pa, min: 0 } },
-    ability: { tipo: tipo === "reacao" ? "reacao" : "ativa", recarga: tipo === "charge" ? "1/turno" : "" },
+    ability: { tipo, recarga },
   },
 }));
 

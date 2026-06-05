@@ -21,7 +21,6 @@ export const FOUNDRY_DOCK_PANEL_IDS: MesaWindowId[] = [
   "initiative",
   "chat",
   "dice",
-  "ficha",
   "spawn",
   "gm",
   "dungeon",

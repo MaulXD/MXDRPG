@@ -18,6 +18,19 @@
 
 **Empilhamento:** encantamento **não** acumula com segunda arma; armadura mágica substitui bônus anterior no mesmo slot.
 
+### Texto na ficha (VTT)
+
+Cada entrada do compêndio inclui **descrição de uso** gerada por `scripts/gen-equipment-compendium.py`:
+
+| Variante | Arma (texto na ficha) | Armadura (texto na ficha) |
+|----------|----------------------|---------------------------|
+| **+0** | Dano, alcance hex, PA 1, efeito base (se houver) | Categoria, CA base, nota especial (se houver) |
+| **+1** | Herda efeitos de +0 · **+1 ataque e +1 dano** | Herda nota de +0 · **+1 CA mágica** |
+| **+2** | Herda efeitos · **+2 ataque e +2 dano** | **+2 CA mágica** |
+| **+3** | Herda efeitos · **+3 ataque e +3 dano** (+ propriedade menor, Mestre) | **+3 CA mágica** (+ resistência menor, Mestre) |
+
+**Referência na ficha:** `catalogId` (ex.: `WPN-S02`, `ARM-01-E2`) e `bookRef` apontando para este catálogo.
+
 ---
 
 ## Arcos longos (9) — ARC-L01 a ARC-L09

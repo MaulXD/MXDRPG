@@ -238,6 +238,44 @@
   border: 1px solid var(--glass-border);
 }
 
+.inv-row--detail {
+  align-items: start;
+  padding: 0.85rem 1rem 0.95rem;
+}
+
+.inv-row__body {
+  min-width: 0;
+}
+
+.inv-row__tags {
+  margin: 0.15rem 0 0;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.inv-row__desc {
+  margin: 0.45rem 0 0;
+  font-size: 0.84rem;
+  line-height: 1.45;
+  color: rgba(232, 226, 214, 0.82);
+}
+
+.inv-row__ref {
+  margin: 0.35rem 0 0;
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  line-height: 1.35;
+}
+
+.inv-row__ref-id {
+  font-family: var(--font-mono, ui-monospace, monospace);
+  color: rgba(122, 163, 201, 0.9);
+}
+
+.inv-row__ref-book {
+  font-style: italic;
+}
+
 .inv-icon {
   width: 36px;
   height: 36px;
