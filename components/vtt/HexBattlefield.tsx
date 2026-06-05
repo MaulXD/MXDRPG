@@ -20,7 +20,9 @@ import { normalizeRoomSettings } from "@/lib/room/settings";
 import { filterTokensForFog, visibleHexSetForPlayer } from "@/lib/vtt/fog-of-war";
 import { resolveTokenHpDisplay } from "@/lib/vtt/token-hp-display";
 import { ActiveCharactersPanel } from "@/components/vtt/ActiveCharactersPanel";
-import { GmMenuPanel } from "@/components/vtt/GmMenuPanel";
+import { GmToolsPanel } from "@/components/vtt/GmToolsPanel";
+import { DungeonEditorPanel } from "@/components/vtt/DungeonEditorPanel";
+import { FoundryDockPanel } from "@/components/vtt/foundry/FoundryDockPanel";
 import type { RoomSnapshot } from "@/lib/room/types";
 import { TokenActionRing } from "@/components/vtt/TokenActionRing";
 import { SpellChannelControl } from "@/components/vtt/SpellChannelControl";
@@ -99,6 +101,7 @@ type Props = {
   onApplySnapshot?: (snap: RoomSnapshot) => void;
   onOpenSheet?: (actorId?: string) => void;
   onHoverAxialChange?: (axial: Axial | null) => void;
+  onOpenDungeonPanel?: () => void;
   showSpawnInSidebar?: boolean;
   session?: import("@/lib/auth/types").SessionUser | null;
   roomActors?: Record<string, import("@/lib/room/types").RoomActor>;
@@ -121,6 +124,9 @@ type Props = {
   onInitiativeWindowClose?: () => void;
   onInitiativeWindowMinimize?: () => void;
   onInitiativeWindowFocus?: () => void;
+  dungeonWindowLayout?: FoundryWindowLayout;
+  onDungeonWindowClose?: () => void;
+  onDungeonWindowMinimize?: () => void;
 };
 
 export function HexBattlefield({
@@ -140,6 +146,7 @@ export function HexBattlefield({
   onApplySnapshot,
   onOpenSheet,
   onHoverAxialChange,
+  onOpenDungeonPanel,
   showSpawnInSidebar = true,
   session = null,
   roomActors = {},
@@ -161,6 +168,9 @@ export function HexBattlefield({
   onInitiativeWindowClose,
   onInitiativeWindowMinimize,
   onInitiativeWindowFocus,
+  dungeonWindowLayout,
+  onDungeonWindowClose,
+  onDungeonWindowMinimize,
 }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
@@ -1098,113 +1108,132 @@ export function HexBattlefield({
     />
   );
 
-  const gmPanel =
+  const gmToolsPanel =
     canControlCombat && snapshot ? (
-      <GmMenuPanel
+      <GmToolsPanel
         roomId={roomId}
         scene={displayScene}
         snapshot={snapshot}
         inviteCode={inviteCode}
-        session={session}
         roomActors={roomActors}
         spawnAxial={hoverAxial}
-        canEdit={canEdit}
-        adventureId={adventureIdProp}
         onSceneUpdated={(snap) => syncRoom(snap)}
-        canEditScene={isRoomGm}
-        dungeonLayer={dungeonLayer}
-        dungeonModeOpen={dungeonModeOpen}
-        dungeonEditorActive={dungeonEditorActive}
-        dungeonTool={dungeonTool}
-        selectedDungeonObjectId={selectedDungeonObjectId}
-        onDungeonLayerChange={(layer) => {
+      />
+    ) : null;
+
+  const dungeonPanel =
+    isRoomGm && snapshot ? (
+      <DungeonEditorPanel
+        id="vtt-dungeon-editor"
+        roomId={roomId}
+        scene={displayScene}
+        layer={dungeonLayer}
+        modeOpen={dungeonModeOpen}
+        active={dungeonEditorActive}
+        tool={dungeonTool}
+        selectedObjectId={selectedDungeonObjectId}
+        onLayerChange={(layer) => {
           setDungeonLayer(layer);
           if (layer !== "objects") setDungeonEditorActive(false);
         }}
-        onDungeonEditorActiveChange={setDungeonEditorActive}
-        onDungeonToolChange={setDungeonTool}
-        onSelectedDungeonObjectChange={setSelectedDungeonObjectId}
+        onActiveChange={setDungeonEditorActive}
+        onToolChange={setDungeonTool}
+        onSelectedObjectChange={setSelectedDungeonObjectId}
+        onUpdated={(snap) => syncRoom(snap)}
       />
     ) : null;
 
   const legacySidebar = (
     <>
       {actorsPanel}
-      {gmPanel}
+      {gmToolsPanel}
+      {dungeonPanel}
       {canControlCombat && showSpawnInSidebar ? (
         <MonsterSpawnPanel roomId={roomId} spawnAxial={hoverAxial} onSpawned={(snap) => syncRoom(snap)} />
       ) : null}
     </>
   );
 
+  const [dockRoot, setDockRoot] = useState<HTMLElement | null>(null);
   const [hudRoot, setHudRoot] = useState<HTMLElement | null>(null);
+  const resolveDockRoot = useCallback(() => document.getElementById("foundry-sidebar-dock"), []);
   const resolveHudRoot = useCallback(() => document.getElementById("foundry-mesa-windows"), []);
 
   useLayoutEffect(() => {
+    setDockRoot(resolveDockRoot());
     setHudRoot(resolveHudRoot());
-  }, [resolveHudRoot]);
+  }, [resolveDockRoot, resolveHudRoot]);
 
   useEffect(() => {
-    if (hudRoot) return;
-    const id = window.requestAnimationFrame(() => setHudRoot(resolveHudRoot()));
+    if (dockRoot && hudRoot) return;
+    const id = window.requestAnimationFrame(() => {
+      setDockRoot(resolveDockRoot());
+      setHudRoot(resolveHudRoot());
+    });
     return () => window.cancelAnimationFrame(id);
-  }, [hudRoot, resolveHudRoot]);
+  }, [dockRoot, hudRoot, resolveDockRoot, resolveHudRoot]);
 
-  const actorsWindow =
-    foundryLayout && actorsWindowLayout && onActorsWindowLayoutChange ? (
-      <FoundryWindow
+  const dockTarget = dockRoot;
+
+  const actorsDock =
+    foundryLayout && actorsWindowLayout ? (
+      <FoundryDockPanel
         title="Personagens"
-        layout={actorsWindowLayout}
-        className="foundry-window--actors"
-        onLayoutChange={onActorsWindowLayoutChange}
+        open={actorsWindowLayout.open}
+        minimized={actorsWindowLayout.minimized}
+        className="foundry-dock-panel--actors"
         onClose={onActorsWindowClose ?? (() => {})}
-        onMinimize={onActorsWindowMinimize ?? (() => {})}
-        onFocus={onActorsWindowFocus ?? (() => {})}
-        minHeight={200}
+        onMinimize={onActorsWindowMinimize}
       >
         <div className="mesa-panel-scroll mesa-panel-scroll--rail">{actorsPanel}</div>
-      </FoundryWindow>
+      </FoundryDockPanel>
     ) : null;
 
   const actorsPortal =
-    actorsWindow && hudRoot ? createPortal(actorsWindow, hudRoot) : actorsWindow;
+    actorsDock && dockTarget ? createPortal(actorsDock, dockTarget) : actorsDock;
 
-  const gmWindow =
-    foundryLayout &&
-    canControlCombat &&
-    gmWindowLayout &&
-    onGmWindowLayoutChange &&
-    gmPanel ? (
-      <FoundryWindow
-        title="Menu do mestre"
-        layout={gmWindowLayout}
-        className="foundry-window--gm"
-        onLayoutChange={onGmWindowLayoutChange}
+  const gmDock =
+    foundryLayout && canControlCombat && gmWindowLayout && gmToolsPanel ? (
+      <FoundryDockPanel
+        title="Ferramentas do mestre"
+        open={gmWindowLayout.open}
+        minimized={gmWindowLayout.minimized}
+        className="foundry-dock-panel--gm"
         onClose={onGmWindowClose ?? (() => {})}
-        onMinimize={onGmWindowMinimize ?? (() => {})}
-        onFocus={onGmWindowFocus ?? (() => {})}
-        minHeight={220}
+        onMinimize={onGmWindowMinimize}
       >
-        <div className="mesa-panel-scroll mesa-panel-scroll--rail">{gmPanel}</div>
-      </FoundryWindow>
+        <div className="mesa-panel-scroll mesa-panel-scroll--rail">{gmToolsPanel}</div>
+      </FoundryDockPanel>
     ) : null;
 
-  const gmPortal = gmWindow && hudRoot ? createPortal(gmWindow, hudRoot) : gmWindow;
+  const gmPortal = gmDock && dockTarget ? createPortal(gmDock, dockTarget) : gmDock;
 
-  const initiativeWindow =
-    foundryLayout &&
-    initiativeWindowLayout &&
-    onInitiativeWindowLayoutChange &&
-    combat ? (
-      <FoundryWindow
-        title="Iniciativa"
-        layout={initiativeWindowLayout}
-        className="foundry-window--initiative"
-        onLayoutChange={onInitiativeWindowLayoutChange}
+  const dungeonDock =
+    foundryLayout && dungeonWindowLayout && dungeonPanel ? (
+      <FoundryDockPanel
+        title="Editor de mapa"
+        open={dungeonWindowLayout.open}
+        minimized={dungeonWindowLayout.minimized}
+        className="foundry-dock-panel--dungeon"
+        onClose={onDungeonWindowClose ?? (() => {})}
+        onMinimize={onDungeonWindowMinimize}
+      >
+        <div className="mesa-panel-scroll mesa-panel-scroll--rail">{dungeonPanel}</div>
+      </FoundryDockPanel>
+    ) : null;
+
+  const dungeonPortal =
+    dungeonDock && dockTarget ? createPortal(dungeonDock, dockTarget) : dungeonDock;
+
+  const initiativeDock =
+    foundryLayout && initiativeWindowLayout && combat ? (
+      <FoundryDockPanel
+        title="Ordem de turno"
+        open={initiativeWindowLayout.open}
+        minimized={initiativeWindowLayout.minimized}
+        className="foundry-dock-panel--initiative"
         onClose={onInitiativeWindowClose ?? (() => {})}
-        onMinimize={onInitiativeWindowMinimize ?? (() => {})}
-        onFocus={onInitiativeWindowFocus ?? (() => {})}
-        minHeight={220}
+        onMinimize={onInitiativeWindowMinimize}
       >
         <div className="mesa-panel-scroll mesa-panel-scroll--rail">
           <TurnOrderPanel
@@ -1220,11 +1249,11 @@ export function HexBattlefield({
             onHoverAttackTargetChange={setHoverTargetId}
           />
         </div>
-      </FoundryWindow>
+      </FoundryDockPanel>
     ) : null;
 
   const initiativePortal =
-    initiativeWindow && hudRoot ? createPortal(initiativeWindow, hudRoot) : initiativeWindow;
+    initiativeDock && dockTarget ? createPortal(initiativeDock, dockTarget) : initiativeDock;
 
   return (
     <div
@@ -1233,6 +1262,7 @@ export function HexBattlefield({
     >
       {foundryLayout ? actorsPortal : null}
       {foundryLayout ? gmPortal : null}
+      {foundryLayout ? dungeonPortal : null}
       {foundryLayout ? initiativePortal : null}
       {!foundryLayout && leftPanel && onLeftPanelChange ? (
         <MesaDockPanel
@@ -1268,11 +1298,7 @@ export function HexBattlefield({
               if (!open) {
                 setDungeonLayer("floor");
                 setDungeonEditorActive(false);
-                requestAnimationFrame(() => {
-                  document
-                    .getElementById("vtt-dungeon-editor")
-                    ?.scrollIntoView({ behavior: "smooth", block: "nearest" });
-                });
+                onOpenDungeonPanel?.();
               } else {
                 setDungeonEditorActive(false);
               }

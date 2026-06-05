@@ -1,18 +1,59 @@
-/* Shell Foundry — mapa no fundo, janelas flutuantes */
+/* Shell Foundry — barra esquerda + dock + mapa */
 
 .foundry-mesa {
   position: relative;
   flex: 1;
   min-height: 0;
   min-width: 0;
+  display: flex;
+  flex-direction: row;
   overflow: hidden;
   border-radius: var(--radius);
   background: var(--bg-deep);
 }
 
+.foundry-sidebar {
+  position: relative;
+  z-index: 30;
+  display: flex;
+  flex-direction: row;
+  flex-shrink: 0;
+  height: 100%;
+  min-height: 0;
+  pointer-events: auto;
+  background: linear-gradient(180deg, rgba(14, 12, 10, 0.98), rgba(8, 7, 6, 0.96));
+  border-right: 1px solid rgba(212, 183, 106, 0.14);
+  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.35);
+}
+
+.foundry-sidebar--dock-open .foundry-sidebar__dock {
+  width: min(320px, 38vw);
+}
+
+.foundry-sidebar__dock {
+  width: 0;
+  min-width: 0;
+  overflow: hidden;
+  transition: width 0.22s var(--ease-out);
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  border-left: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.foundry-sidebar__dock--collapsed {
+  pointer-events: none;
+}
+
+.foundry-sidebar__dock:not(.foundry-sidebar__dock--collapsed) {
+  pointer-events: auto;
+}
+
 .foundry-mesa__stage {
-  position: absolute;
-  inset: 0;
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
   z-index: 0;
 }
 
@@ -43,62 +84,72 @@
   overflow: visible;
 }
 
-.foundry-mesa__windows > .foundry-window {
+.foundry-mesa__windows > .foundry-window,
+.foundry-mesa__windows > .foundry-sheet-popup {
   pointer-events: auto;
 }
 
+/* Barra de ícones */
 .foundry-icon-bar {
-  pointer-events: auto;
-}
-
-/* Barra de ícones (esquerda) */
-.foundry-icon-bar {
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  z-index: 60;
-  width: 44px;
+  flex-shrink: 0;
+  width: 84px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 0.35rem;
-  padding: 0.5rem 0.25rem;
-  background: linear-gradient(90deg, rgba(10, 8, 6, 0.92), rgba(10, 8, 6, 0.62));
-  border-right: 1px solid var(--glass-border);
-  backdrop-filter: blur(6px);
+  align-items: stretch;
+  gap: 0.2rem;
+  padding: 0.55rem 0.35rem 0.75rem;
+  background: rgba(6, 5, 4, 0.55);
+}
+
+.foundry-icon-bar__section-title {
+  margin: 0.15rem 0 0.25rem;
+  padding: 0 0.15rem;
+  font-size: 0.52rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-align: center;
+  color: rgba(232, 226, 214, 0.38);
+}
+
+.foundry-icon-bar__section-title--gm {
+  color: rgba(200, 140, 110, 0.55);
 }
 
 .foundry-icon-bar__section {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 0.35rem;
+  align-items: stretch;
+  gap: 0.3rem;
   width: 100%;
 }
 
 .foundry-icon-bar__section--gm {
-  margin-top: auto;
+  margin-top: 0.1rem;
 }
 
 .foundry-icon-bar__divider {
-  width: 28px;
+  width: 70%;
   height: 1px;
-  background: var(--glass-border);
-  margin: 0.15rem 0;
+  background: rgba(255, 255, 255, 0.08);
+  margin: 0.35rem auto;
   flex-shrink: 0;
 }
 
 .foundry-icon-bar__btn {
-  width: 36px;
-  height: 36px;
+  width: 100%;
+  min-height: 58px;
+  padding: 0.35rem 0.2rem 0.4rem;
   border: 1px solid transparent;
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.04);
-  color: var(--text-muted);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.03);
+  color: rgba(232, 226, 214, 0.62);
   cursor: pointer;
-  display: grid;
-  place-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.28rem;
   transition:
     background 0.15s,
     border-color 0.15s,
@@ -107,41 +158,164 @@
 }
 
 .foundry-icon-bar__btn:hover {
-  color: var(--text);
-  border-color: var(--glass-border);
-  background: rgba(201, 169, 98, 0.12);
+  color: rgba(245, 240, 230, 0.95);
+  border-color: rgba(212, 183, 106, 0.28);
+  background: rgba(212, 183, 106, 0.1);
 }
 
 .foundry-icon-bar__btn--active {
-  color: var(--accent);
-  border-color: rgba(201, 169, 98, 0.45);
-  background: rgba(201, 169, 98, 0.18);
-  box-shadow: 0 0 0 1px rgba(201, 169, 98, 0.15);
+  color: #f0e6c8;
+  border-color: rgba(212, 183, 106, 0.5);
+  background: linear-gradient(180deg, rgba(212, 183, 106, 0.22), rgba(212, 183, 106, 0.08));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 
 .foundry-icon-bar__btn--gm {
-  border-color: rgba(140, 90, 90, 0.25);
+  border-color: rgba(160, 100, 80, 0.2);
 }
 
 .foundry-icon-bar__btn--gm:hover,
 .foundry-icon-bar__btn--gm.foundry-icon-bar__btn--active {
-  border-color: rgba(180, 110, 90, 0.5);
-  background: rgba(120, 60, 50, 0.2);
+  color: #f5d4c0;
+  border-color: rgba(200, 120, 90, 0.45);
+  background: linear-gradient(180deg, rgba(140, 70, 55, 0.28), rgba(80, 40, 32, 0.15));
 }
 
 .foundry-icon-bar__icon {
-  width: 1.15rem;
-  height: 1.15rem;
+  width: 1.25rem;
+  height: 1.25rem;
   display: block;
   flex-shrink: 0;
-  opacity: 0.88;
+  opacity: 0.9;
 }
 
 .foundry-icon-bar__btn--active .foundry-icon-bar__icon {
   opacity: 1;
 }
 
-/* Janela flutuante */
+.foundry-icon-bar__label {
+  font-size: 0.56rem;
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+  text-align: center;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Painel dock (coluna de conteúdo) */
+.foundry-sidebar__dock {
+  position: relative;
+}
+
+.foundry-dock-panel {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  min-width: 0;
+  background: rgba(12, 10, 8, 0.97);
+}
+
+.foundry-dock-panel--minimized {
+  position: relative;
+  inset: auto;
+  flex: 0 0 auto;
+}
+
+.foundry-dock-panel__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.55rem 0.65rem;
+  background: rgba(212, 183, 106, 0.1);
+  border-bottom: 1px solid rgba(212, 183, 106, 0.18);
+  flex-shrink: 0;
+}
+
+.foundry-dock-panel__title {
+  margin: 0;
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: #d4b76a;
+}
+
+.foundry-dock-panel__actions {
+  display: flex;
+  gap: 0.2rem;
+}
+
+.foundry-dock-panel__btn {
+  width: 26px;
+  height: 26px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.28);
+  color: rgba(232, 226, 214, 0.65);
+  font-size: 0.95rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.foundry-dock-panel__btn:hover {
+  color: var(--text);
+  border-color: rgba(212, 183, 106, 0.35);
+}
+
+.foundry-dock-panel__btn--close:hover {
+  color: #e88;
+  border-color: rgba(200, 80, 80, 0.45);
+}
+
+.foundry-dock-panel__body {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+
+.foundry-dock-panel--actors .mesa-panel-scroll,
+.foundry-dock-panel--gm .mesa-panel-scroll,
+.foundry-dock-panel--dungeon .mesa-panel-scroll,
+.foundry-dock-panel--initiative .mesa-panel-scroll,
+.foundry-dock-panel--spawn .mesa-panel-scroll {
+  padding: 0.65rem 0.7rem 0.85rem;
+}
+
+.foundry-dock-panel--actors .vtt-sidebar,
+.foundry-dock-panel--gm .vtt-sidebar {
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  padding: 0;
+  min-height: 0;
+}
+
+.foundry-dock-panel--initiative .vtt-turn-list {
+  max-height: none;
+}
+
+.foundry-dock-panel--chat .room-chat,
+.foundry-dock-panel--dice .dice-roller,
+.foundry-dock-panel--ficha .mesa-sheet-rail-hint {
+  padding: 0.65rem 0.7rem 0.85rem;
+}
+
+.foundry-dock-panel--dungeon .vtt-dungeon-panel {
+  margin: 0;
+  border: none;
+  background: transparent;
+  padding: 0;
+}
+
+/* Janela flutuante (ficha expandida) */
 .foundry-window {
   position: absolute;
   display: flex;
@@ -240,36 +414,6 @@
   background: linear-gradient(135deg, transparent 50%, rgba(201, 169, 98, 0.35) 50%);
 }
 
-.foundry-window--actors .mesa-panel-scroll,
-.foundry-window--gm .mesa-panel-scroll,
-.foundry-window--tokens .vtt-sidebar {
-  padding: 0.65rem 0.7rem 0.85rem;
-}
-
-.foundry-window--actors .vtt-sidebar,
-.foundry-window--gm .vtt-sidebar {
-  border: none;
-  border-radius: 0;
-  background: transparent;
-  padding: 0;
-  min-height: 0;
-}
-
-.foundry-window--initiative .mesa-panel-scroll {
-  padding: 0.65rem 0.7rem 0.85rem;
-}
-
-.foundry-window--initiative .vtt-turn-list {
-  max-height: none;
-}
-
-.foundry-window--chat .room-chat,
-.foundry-window--dice .dice-roller,
-.foundry-window--ficha .mesa-sheet-rail-hint,
-.foundry-window--spawn .mesa-panel-scroll {
-  padding: 0.65rem 0.7rem 0.85rem;
-}
-
 .foundry-window--character .foundry-window__body {
   background: #1a1714;
   display: flex;
@@ -316,19 +460,16 @@
   z-index: 50;
 }
 
-
 @media (max-width: 768px) {
   .foundry-icon-bar {
-    width: 40px;
+    width: 72px;
   }
 
   .foundry-icon-bar__btn {
-    width: 32px;
-    height: 32px;
+    min-height: 52px;
   }
 
-  .foundry-window {
-    max-width: calc(100vw - 52px);
-    max-height: calc(100dvh - 120px);
+  .foundry-sidebar--dock-open .foundry-sidebar__dock {
+    width: min(280px, 52vw);
   }
 }
