@@ -1,0 +1,325 @@
+/**
+ * Tema mesa Eldarin — ardósia + azul frio.
+ * Aplicado em `.vtt-chrome[data-vtt-mesa="foundry"]` (página /mesa/[id]).
+ * Variáveis propagam para topbar, mapa (canvas), HUD, painéis e ficha popup.
+ */
+
+.vtt-chrome[data-vtt-mesa="foundry"] {
+  color-scheme: dark;
+
+  /* Superfícies da página */
+  --bg-deep: #0a0e14;
+  --bg-mid: #101620;
+  --bg-elevated: #161e2a;
+  --surface: #141a24;
+  --surface-raised: #1a2230;
+  --surface-inset: #0d121a;
+
+  --glass: rgba(16, 22, 32, 0.94);
+  --glass-strong: rgba(10, 14, 20, 0.98);
+  --glass-border: rgba(122, 163, 201, 0.22);
+  --glass-border-bright: rgba(122, 163, 201, 0.45);
+
+  --accent: #7aa3c9;
+  --accent-muted: #5a7f9e;
+  --accent-primary: #7aa3c9;
+  --accent-gold: #7aa3c9;
+  --accent-secondary: #c9927a;
+  --accent-success: #6b9e5a;
+  --accent-warn: #d4a030;
+  --accent-info: #6aafc8;
+
+  --text: rgba(232, 236, 244, 0.94);
+  --text-strong: #f0f4fa;
+  --text-muted: rgba(200, 210, 224, 0.68);
+  --text-dim: rgba(160, 175, 195, 0.55);
+
+  /* Tokens mesa (alias usados no Foundry) */
+  --mesa-rail-bg: linear-gradient(180deg, #121820 0%, #0c1018 100%);
+  --mesa-dock-bg: #101620;
+  --mesa-stage-bg: #0a0e14;
+  --mesa-surface: #141a24;
+  --mesa-surface-inset: #0d121a;
+  --mesa-accent: #7aa3c9;
+  --mesa-accent-soft: rgba(122, 163, 201, 0.18);
+  --mesa-accent-border: rgba(122, 163, 201, 0.38);
+  --mesa-gm-accent: #c9927a;
+  --mesa-gm-soft: rgba(160, 110, 90, 0.2);
+  --mesa-text: rgba(232, 236, 244, 0.94);
+  --mesa-text-dim: rgba(200, 210, 224, 0.62);
+
+  /* Mapa hex — azul ardósia (lidos por readThemeColor no canvas) */
+  --vtt-canvas-bg-0: #121820;
+  --vtt-canvas-bg-1: #0a0e14;
+  --vtt-hex-fill: rgba(122, 163, 201, 0.09);
+  --vtt-hex-stroke: rgba(122, 163, 201, 0.34);
+  --vtt-hex-walk-fill: rgba(72, 110, 95, 0.26);
+  --vtt-hex-walk-stroke: rgba(100, 155, 130, 0.72);
+  --vtt-hex-walk-paid-fill: rgba(55, 120, 130, 0.3);
+  --vtt-hex-walk-paid-stroke: rgba(90, 175, 185, 0.82);
+  --vtt-hex-run-fill: rgba(90, 130, 175, 0.22);
+  --vtt-hex-run-stroke: rgba(122, 163, 201, 0.68);
+  --vtt-hex-hover-fill: rgba(122, 163, 201, 0.2);
+  --vtt-hex-hover-stroke: #7aa3c9;
+  --vtt-token-turn-glow: rgba(122, 163, 201, 0.5);
+  --vtt-token-ring-turn: #5a8ab8;
+  --vtt-token-ring-selected: #8eb8dc;
+  --vtt-token-text: #e8ecf4;
+  --vtt-token-subtext: #9aa8bc;
+  --vtt-path-stroke: rgba(122, 163, 201, 0.9);
+  --vtt-path-glow: rgba(90, 140, 180, 0.35);
+  --vtt-hp-bar: #5c8260;
+
+  background: var(--bg-deep);
+  color: var(--text);
+}
+
+/* Topbar e chrome */
+.vtt-chrome[data-vtt-mesa="foundry"] .vtt-topbar {
+  background: var(--glass-strong);
+  border-bottom-color: var(--mesa-accent-border);
+}
+
+.vtt-chrome[data-vtt-mesa="foundry"] .vtt-nav a:hover {
+  color: var(--mesa-accent);
+  background: var(--mesa-accent-soft);
+}
+
+.vtt-chrome[data-vtt-mesa="foundry"] .neon-title {
+  color: var(--mesa-accent);
+}
+
+.vtt-chrome[data-vtt-mesa="foundry"] .btn-secondary:hover {
+  background: var(--mesa-accent-soft);
+  border-color: var(--mesa-accent-border);
+}
+
+.vtt-chrome[data-vtt-mesa="foundry"] .glass-panel {
+  background: var(--surface-raised);
+  border-color: var(--mesa-accent-border);
+}
+
+/* Convite / prompts */
+.vtt-chrome[data-vtt-mesa="foundry"] .room-invite-bar {
+  background: rgba(0, 0, 0, 0.28);
+  border-color: var(--mesa-accent-border);
+}
+
+.vtt-chrome[data-vtt-mesa="foundry"] .room-invite-code {
+  color: var(--mesa-accent);
+  background: var(--mesa-accent-soft);
+  border-color: var(--mesa-accent-border);
+}
+
+/* Painéis VTT — substitui dourado hardcoded por azul */
+.vtt-chrome[data-vtt-mesa="foundry"] .vtt-sidebar,
+.vtt-chrome[data-vtt-mesa="foundry"] .vtt-action-panel,
+.vtt-chrome[data-vtt-mesa="foundry"] .vtt-dungeon-panel,
+.vtt-chrome[data-vtt-mesa="foundry"] .glass-panel {
+  border-color: var(--mesa-accent-border);
+}
+
+.vtt-chrome[data-vtt-mesa="foundry"] .vtt-eyebrow {
+  color: var(--mesa-accent);
+}
+
+.vtt-chrome[data-vtt-mesa="foundry"] .vtt-help-trigger {
+  border-color: var(--mesa-accent-border);
+  color: var(--mesa-accent);
+  background: var(--glass-strong);
+}
+
+.vtt-chrome[data-vtt-mesa="foundry"] .vtt-help-trigger:hover {
+  background: var(--mesa-accent-soft);
+}
+
+.vtt-chrome[data-vtt-mesa="foundry"] .vtt-action-hud {
+  background: var(--glass-strong);
+  border-color: var(--mesa-accent-border);
+}
+
+.vtt-chrome[data-vtt-mesa="foundry"] .vtt-action-hud-title {
+  color: var(--mesa-accent);
+}
+
+.vtt-chrome[data-vtt-mesa="foundry"] .vtt-action-hud-lines .tone-warn {
+  color: #a8c8e8;
+}
+
+.vtt-chrome[data-vtt-mesa="foundry"] .vtt-end-turn-bar {
+  background: var(--glass-strong);
+  border-color: var(--mesa-accent-border);
+}
+
+.vtt-chrome[data-vtt-mesa="foundry"] .vtt-end-turn-active strong {
+  color: var(--mesa-accent);
+}
+
+.vtt-chrome[data-vtt-mesa="foundry"] .vtt-turn-row--active,
+.vtt-chrome[data-vtt-mesa="foundry"] .vtt-turn-row.is-active {
+  border-color: var(--mesa-accent-border);
+  background: var(--mesa-accent-soft);
+  box-shadow: inset 3px 0 0 var(--mesa-accent);
+}
+
+.vtt-chrome[data-vtt-mesa="foundry"] .vtt-token-row:hover,
+.vtt-chrome[data-vtt-mesa="foundry"] .vtt-turn-row:hover {
+  border-color: var(--mesa-accent);
+  background: var(--mesa-accent-soft);
+}
+
+.vtt-chrome[data-vtt-mesa="foundry"] .vtt-token-list button.active {
+  border-color: var(--mesa-accent-border);
+  background: var(--mesa-accent-soft);
+}
+
+.vtt-chrome[data-vtt-mesa="foundry"] .neon-chip.active {
+  border-color: var(--mesa-accent);
+  color: var(--mesa-accent);
+}
+
+.vtt-chrome[data-vtt-mesa="foundry"] .vtt-channel-float {
+  border-color: var(--mesa-accent-border);
+  background: var(--glass-strong);
+}
+
+.vtt-chrome[data-vtt-mesa="foundry"] .vtt-modal-panel {
+  border-color: var(--mesa-accent-border);
+  background: var(--glass-strong);
+}
+
+.vtt-chrome[data-vtt-mesa="foundry"] .vtt-canvas-wrap--spawn-drop {
+  outline-color: var(--mesa-accent);
+}
+
+/* Rolagem */
+.vtt-chrome[data-vtt-mesa="foundry"] .mesa-panel-scroll,
+.vtt-chrome[data-vtt-mesa="foundry"] .foundry-dock-panel__body,
+.vtt-chrome[data-vtt-mesa="foundry"] .foundry-window__body {
+  scrollbar-color: rgba(122, 163, 201, 0.45) rgba(0, 0, 0, 0.25);
+}
+
+/* Token action ring */
+.vtt-chrome[data-vtt-mesa="foundry"] .token-action-ring__track {
+  border-color: rgba(122, 163, 201, 0.28);
+  box-shadow: 0 0 0 1px rgba(122, 163, 201, 0.1);
+}
+
+.vtt-chrome[data-vtt-mesa="foundry"] .token-action-ring__slot-btn {
+  border-color: rgba(122, 163, 201, 0.35);
+  background: rgba(14, 20, 30, 0.92);
+}
+
+.vtt-chrome[data-vtt-mesa="foundry"] .token-action-ring__slot-btn:hover {
+  border-color: var(--mesa-accent);
+  background: var(--mesa-accent-soft);
+}
+
+/* Toast */
+.vtt-chrome[data-vtt-mesa="foundry"] .vtt-toast {
+  background: rgba(12, 18, 28, 0.94);
+  border-color: var(--mesa-accent-border);
+}
+
+/* Ficha popup na mesa */
+.vtt-chrome[data-vtt-mesa="foundry"] .sheet-shell--popup {
+  background: var(--mesa-surface);
+  border-color: var(--mesa-accent-border);
+}
+
+.vtt-chrome[data-vtt-mesa="foundry"] .sheet-popup-right,
+.vtt-chrome[data-vtt-mesa="foundry"] .sheet-popup-left {
+  background: var(--mesa-surface-inset);
+}
+
+.vtt-chrome[data-vtt-mesa="foundry"] .sheet-popup-center {
+  background: var(--mesa-surface);
+}
+
+.vtt-chrome[data-vtt-mesa="foundry"] .sheet-popup-skill__abbr,
+.vtt-chrome[data-vtt-mesa="foundry"] .sheet-popup-skill__bonus,
+.vtt-chrome[data-vtt-mesa="foundry"] .sheet-popup-pill--accent {
+  color: var(--mesa-accent);
+  border-color: var(--mesa-accent-border);
+}
+
+.vtt-chrome[data-vtt-mesa="foundry"] .inv-row--selected {
+  border-color: var(--mesa-accent-border);
+  background: var(--mesa-accent-soft);
+  box-shadow: 0 0 0 1px rgba(122, 163, 201, 0.2);
+}
+
+.vtt-chrome[data-vtt-mesa="foundry"] .sheet-tab.active {
+  color: var(--mesa-accent);
+  border-color: var(--mesa-accent-border);
+}
+
+/* Level-up na ficha (mesa) */
+.vtt-chrome[data-vtt-mesa="foundry"] .level-up-wizard .lu-step--active {
+  border-color: var(--mesa-accent-border);
+  background: var(--mesa-accent-soft);
+}
+
+/* Iniciativa / turno */
+.vtt-chrome[data-vtt-mesa="foundry"] .vtt-turn-list li.active,
+.vtt-chrome[data-vtt-mesa="foundry"] .vtt-turn-list li.vtt-turn-active {
+  border-color: var(--mesa-accent-border);
+  background: var(--mesa-accent-soft);
+  box-shadow: inset 3px 0 0 var(--mesa-accent);
+}
+
+.vtt-chrome[data-vtt-mesa="foundry"] .vtt-turn-list li.vtt-turn-drag-over {
+  border-color: var(--mesa-accent-border);
+  background: var(--mesa-accent-soft);
+}
+
+.vtt-chrome[data-vtt-mesa="foundry"] .vtt-turn-gm-banner {
+  border-color: var(--mesa-accent-border);
+  background: var(--mesa-accent-soft);
+}
+
+.vtt-chrome[data-vtt-mesa="foundry"] .vtt-turn-gm-chip--active,
+.vtt-chrome[data-vtt-mesa="foundry"] .vtt-turn-gm-chip:hover:not(:disabled) {
+  border-color: var(--mesa-accent-border);
+  color: var(--mesa-accent);
+}
+
+.vtt-chrome[data-vtt-mesa="foundry"] .vtt-turn-round {
+  color: var(--mesa-accent);
+}
+
+.vtt-chrome[data-vtt-mesa="foundry"] .vtt-turn-next-btn {
+  border-color: var(--mesa-accent-border);
+}
+
+/* Chat, dados, picker */
+.vtt-chrome[data-vtt-mesa="foundry"] .room-chat,
+.vtt-chrome[data-vtt-mesa="foundry"] .dice-roller,
+.vtt-chrome[data-vtt-mesa="foundry"] .picker-modal {
+  border-color: var(--mesa-accent-border);
+  background: var(--glass);
+}
+
+.vtt-chrome[data-vtt-mesa="foundry"] .picker-modal .sheet-tab.active {
+  color: var(--mesa-accent);
+  border-color: var(--mesa-accent-border);
+}
+
+/* Combate / spawn / dungeon */
+.vtt-chrome[data-vtt-mesa="foundry"] .vtt-combat-actions .btn--primary,
+.vtt-chrome[data-vtt-mesa="foundry"] .vtt-spawn-entry--highlight {
+  border-color: var(--mesa-accent-border);
+  background: var(--mesa-accent-soft);
+}
+
+.vtt-chrome[data-vtt-mesa="foundry"] .vtt-dungeon-tool--active {
+  border-color: var(--mesa-accent);
+  color: var(--mesa-accent);
+  background: var(--mesa-accent-soft);
+}
+
+.vtt-chrome[data-vtt-mesa="foundry"] .vtt-view-btn--dungeon-on {
+  border-color: var(--mesa-accent);
+  color: var(--mesa-accent);
+  background: var(--mesa-accent-soft);
+}
