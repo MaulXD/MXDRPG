@@ -27,13 +27,19 @@ export function syncCombatOrderWithTokens(room: RoomState): void {
     }
   }
 
-  let activeIndex = room.combat.activeIndex;
-  const prevActiveId = prevOrder[activeIndex];
+  if (!aliveOrder.length) {
+    room.combat = { ...room.combat, order: [], activeIndex: 0 };
+    return;
+  }
+
+  const prevActiveId = prevOrder[room.combat.activeIndex] ?? null;
+  let activeIndex = 0;
   if (prevActiveId) {
     const idx = aliveOrder.indexOf(prevActiveId);
-    activeIndex = idx >= 0 ? idx : Math.min(activeIndex, Math.max(0, aliveOrder.length - 1));
+    activeIndex =
+      idx >= 0 ? idx : Math.min(room.combat.activeIndex, aliveOrder.length - 1);
   } else {
-    activeIndex = Math.min(activeIndex, Math.max(0, aliveOrder.length - 1));
+    activeIndex = Math.min(room.combat.activeIndex, aliveOrder.length - 1);
   }
 
   room.combat = {

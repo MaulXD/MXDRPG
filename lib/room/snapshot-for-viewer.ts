@@ -7,6 +7,7 @@ import {
   normalizeRoomSettings,
   redactMonsterHp,
 } from "@/lib/room/settings";
+import { filterDungeonObjectsForFog } from "@/lib/vtt/dungeon-layer";
 import { filterTokensForFog, visibleHexSetForPlayer } from "@/lib/vtt/fog-of-war";
 import type { BattleToken } from "@/lib/vtt/types";
 import type { ChatMessage } from "./chat";
@@ -109,6 +110,11 @@ export function snapshotForViewer(
     return { ...snapshot, combatUndo, gmCreations };
   }
 
+  const dungeonObjects =
+    fogVisible != null
+      ? filterDungeonObjectsForFog(snapshot.scene, fogVisible)
+      : snapshot.scene.dungeonObjects;
+
   return {
     ...snapshot,
     settings,
@@ -118,6 +124,7 @@ export function snapshotForViewer(
     scene: {
       ...snapshot.scene,
       tokens,
+      dungeonObjects,
       revealedHexes: isGm ? snapshot.scene.revealedHexes : snapshot.scene.revealedHexes,
     },
   };

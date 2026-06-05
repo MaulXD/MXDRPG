@@ -572,6 +572,12 @@
   cursor: not-allowed;
 }
 
+.vtt-view-btn--dungeon-on {
+  border-color: rgba(120, 200, 255, 0.65);
+  color: #9ed4ff;
+  background: rgba(40, 72, 96, 0.55);
+}
+
 .vtt-view-btn--reset {
   font-size: 0.95rem;
 }
@@ -1019,6 +1025,43 @@
   background: var(--surface);
   transition: border-color 0.15s, background 0.15s;
   contain: layout style;
+}
+
+.vtt-turn-list--gm li {
+  grid-template-columns: 1.1rem 1.25rem 48px minmax(0, 1fr) auto;
+}
+
+.vtt-turn-gm-hint {
+  margin: 0.35rem 0 0.45rem;
+  font-size: 0.65rem;
+  color: rgba(232, 226, 214, 0.55);
+}
+
+.vtt-turn-drag-handle {
+  cursor: grab;
+  user-select: none;
+  font-size: 0.85rem;
+  line-height: 1;
+  color: rgba(201, 169, 98, 0.55);
+  text-align: center;
+}
+
+.vtt-turn-draggable:active .vtt-turn-drag-handle {
+  cursor: grabbing;
+}
+
+.vtt-turn-drag-spacer {
+  width: 1.1rem;
+}
+
+.vtt-turn-list li.vtt-turn-drag-over {
+  border-color: rgba(201, 169, 98, 0.55);
+  background: rgba(201, 169, 98, 0.1);
+}
+
+.vtt-turn-gm-chip--active {
+  border-color: rgba(201, 169, 98, 0.45);
+  color: #c9a962;
 }
 
 .vtt-turn-gm-banner {
@@ -2612,6 +2655,95 @@
 }
 
 .vtt-map-panel-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.vtt-dungeon-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  margin: 0.75rem 0;
+  padding: 0.65rem 0.75rem;
+  border-radius: 8px;
+  border: 1px solid rgba(201, 169, 98, 0.28);
+  background: rgba(8, 10, 14, 0.5);
+}
+
+.vtt-dungeon-panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.vtt-dungeon-toggle {
+  font-size: 0.68rem;
+  font-weight: 600;
+  padding: 0.28rem 0.55rem;
+  border-radius: 99px;
+  border: 1px solid rgba(201, 169, 98, 0.35);
+  background: rgba(0, 0, 0, 0.3);
+  color: rgba(232, 226, 214, 0.75);
+  cursor: pointer;
+}
+
+.vtt-dungeon-toggle--on {
+  border-color: rgba(120, 200, 255, 0.55);
+  background: rgba(40, 72, 96, 0.45);
+  color: #9ed4ff;
+}
+
+.vtt-dungeon-active-hint {
+  margin: 0;
+  font-size: 0.68rem;
+  color: rgba(158, 212, 255, 0.85);
+}
+
+.vtt-dungeon-tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.vtt-dungeon-tool {
+  font-size: 0.68rem;
+  font-weight: 600;
+  padding: 0.28rem 0.5rem;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(0, 0, 0, 0.28);
+  color: rgba(232, 226, 214, 0.78);
+  cursor: pointer;
+}
+
+.vtt-dungeon-tool--on {
+  border-color: rgba(201, 169, 98, 0.55);
+  color: #c9a962;
+  background: rgba(201, 169, 98, 0.12);
+}
+
+.vtt-dungeon-tool:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.vtt-dungeon-stats {
+  margin: 0;
+  font-size: 0.65rem;
+  color: rgba(232, 226, 214, 0.5);
+}
+
+.vtt-dungeon-layer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  padding-top: 0.35rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.vtt-dungeon-floor-actions {
   display: flex;
   flex-wrap: wrap;
   gap: 0.4rem;

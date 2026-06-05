@@ -13,6 +13,7 @@ const INPUT_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif"];
 
 const PORTRAIT_MAX_EDGE = 1024;
 const TOKEN_MAX_EDGE = 512;
+const MAP_MAX_EDGE = 1920;
 
 export type PortraitFocusSet = {
   portraitFocus: PortraitFocus;
@@ -155,6 +156,50 @@ export async function buildPortraitBundleFromDataUrl(
 ): Promise<PortraitBundle> {
   const img = await loadImageFromDataUrl(portraitDataUrl);
   return buildPortraitBundleFromImage(img, focuses);
+}
+
+function encodeWebpFit(img: HTMLImageElement, maxEdge: number): string {
+  const longest = Math.max(img.naturalWidth, img.naturalHeight);
+  const scale = longest > maxEdge ? maxEdge / longest : 1;
+  const width = Math.max(1, Math.round(img.naturalWidth * scale));
+  const height = Math.max(1, Math.round(img.naturalHeight * scale));
+
+  const canvas = document.createElement("canvas");
+  canvas.width = width;
+  canvas.height = height;
+  const ctx = canvas.getContext("2d");
+  if (!ctx) throw new Error("Canvas indisponível neste navegador");
+  ctx.drawImage(img, 0, 0, width, height);
+
+  let edge = maxEdge;
+  while (edge >= 320) {
+    for (let quality = 0.88; quality >= 0.45; quality -= 0.08) {
+      const dataUrl = canvasToWebp(canvas, quality);
+      if (dataUrl && dataUrl.length <= MAX_DATA_URL_CHARS) {
+        const valid = validateImageDataUrl(dataUrl);
+        if (valid) return valid;
+      }
+    }
+    edge = Math.floor(edge * 0.75);
+    const nextScale = (edge / maxEdge) * scale;
+    canvas.width = Math.max(1, Math.round(img.naturalWidth * nextScale));
+    canvas.height = Math.max(1, Math.round(img.naturalHeight * nextScale));
+    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+  }
+
+  throw new Error("Mapa grande demais mesmo após compressão WebP.");
+}
+
+/** Imagem de piso do hex — WebP data URL para `mapImageUrl`. */
+export async function buildMapImageFromFile(file: File): Promise<string> {
+  if (!INPUT_TYPES.includes(file.type)) {
+    throw new Error("Formato inválido. Use JPEG, PNG, WebP ou GIF.");
+  }
+  if (file.size > MAX_INPUT_BYTES) {
+    throw new Error("Arquivo grande demais (máx ~8 MB antes da compressão).");
+  }
+  const img = await loadImageFromFile(file);
+  return encodeWebpFit(img, MAP_MAX_EDGE);
 }
 
 export async function buildPortraitBundleFromImage(

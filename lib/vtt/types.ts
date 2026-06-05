@@ -87,13 +87,23 @@ export type BattlePing = {
   at: number;
 };
 
+/** Parede ou objeto na camada de masmorra — bloqueia tokens. */
+export type DungeonObjectKind = "wall" | "object";
+
+export type DungeonObject = {
+  id: string;
+  kind: DungeonObjectKind;
+  q: number;
+  r: number;
+};
+
 export type BattleScene = {
   id: string;
   name: string;
   gridRadius: number;
   hexSize: number;
   tokens: BattleToken[];
-  /** URL da imagem de mapa (fundo do hex) */
+  /** Camada de piso — URL da imagem de fundo abaixo do grid */
   mapImageUrl?: string | null;
   /** Escala do mapa (1 = automático ao grid) */
   mapImageScale?: number;
@@ -103,4 +113,6 @@ export type BattleScene = {
   fogEnabled?: boolean;
   /** Chaves "q,r" reveladas permanentemente */
   revealedHexes?: string[];
+  /** Camada de objetos/paredes — mestre edita; tokens não podem ocupar esses hexes */
+  dungeonObjects?: DungeonObject[];
 };
