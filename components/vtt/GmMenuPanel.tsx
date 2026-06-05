@@ -6,7 +6,6 @@ import type { RoomSnapshot } from "@/lib/room/types";
 import type { SessionUser } from "@/lib/auth/types";
 import { MapScenePanel } from "@/components/vtt/MapScenePanel";
 import { RoomSettingsPanel } from "@/components/vtt/RoomSettingsPanel";
-import { PlayerSpawnPanel } from "@/components/vtt/PlayerSpawnPanel";
 
 type Props = {
   roomId: string;
@@ -43,7 +42,7 @@ export function GmMenuPanel({
       <h2 className="vtt-title">{scene.name}</h2>
       <p className="vtt-hint">
         Arraste tokens no mapa. <strong>Delete</strong> remove o token selecionado. Ctrl+clique
-        revela hex com névoa. Alt+clique: ping. Invocar monstros no painel ☠.
+        revela hex com névoa. Alt+clique: ping. Personagens no painel 👥 · monstros em ☠.
       </p>
 
       <RoomSettingsPanel
@@ -56,18 +55,6 @@ export function GmMenuPanel({
 
       <MapScenePanel roomId={roomId} scene={scene} onUpdated={onSceneUpdated} />
 
-      {canEdit && Object.keys(roomActors).length > 0 ? (
-        <PlayerSpawnPanel
-          roomId={roomId}
-          actors={roomActors}
-          session={session}
-          tokens={scene.tokens}
-          spawnAxial={spawnAxial}
-          onPlaced={onSceneUpdated}
-          adventureId={adventureId ?? roomId}
-          showCreateLink={roomId !== "demo" && canEdit}
-        />
-      ) : null}
     </aside>
   );
 }

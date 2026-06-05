@@ -13,7 +13,12 @@ import {
   worldToScreen,
   type BattlefieldView,
 } from "@/lib/vtt/battlefield-view";
-import { tokenRadius } from "@/lib/vtt/token-canvas";
+import {
+  creatureSizeOf,
+  tokenDrawRadius,
+  tokenOccupiesAxial,
+  tokenPixelCenter,
+} from "@/lib/vtt/creature-size";
 import type { BattleScene, BattleToken } from "@/lib/vtt/types";
 
 type TurnCtx = {
@@ -128,11 +133,12 @@ export function useBattlefieldPointer({
     (px: number, py: number): BattleToken | null => {
       const c = boardCoords(px, py);
       if (!c) return null;
-      const hitR = tokenRadius(scene.hexSize) + 4;
       for (const token of scene.tokens) {
         const pos = tokenDrawPosition?.(token) ?? token.axial;
-        const { x, y } = axialToPixel(pos.q, pos.r, scene.hexSize, c.ox, c.oy);
-        if (Math.hypot(c.world.x - x, c.world.y - y) < hitR) return token;
+        const size = creatureSizeOf(token);
+        const r = tokenDrawRadius(scene.hexSize, size) + 4;
+        const { x, y } = tokenPixelCenter(pos, size, scene.hexSize, c.ox, c.oy);
+        if (Math.hypot(c.world.x - x, c.world.y - y) < r) return token;
       }
       return null;
     },
@@ -143,7 +149,7 @@ export function useBattlefieldPointer({
     (axial: Axial): BattleToken | null => {
       for (const token of scene.tokens) {
         const pos = tokenDrawPosition?.(token) ?? token.axial;
-        if (pos.q === axial.q && pos.r === axial.r) return token;
+        if (tokenOccupiesAxial({ ...token, axial: pos }, axial)) return token;
       }
       return null;
     },
@@ -157,7 +163,8 @@ export function useBattlefieldPointer({
       const c = boardCoords(0, 0);
       if (!c) return null;
       const pos = tokenDrawPosition?.(token) ?? token.axial;
-      const { x, y } = axialToPixel(pos.q, pos.r, scene.hexSize, c.ox, c.oy);
+      const size = creatureSizeOf(token);
+      const { x, y } = tokenPixelCenter(pos, size, scene.hexSize, c.ox, c.oy);
       const screen = worldToScreen(x, y, c.w, c.h, viewRef.current);
       const rect = canvas.getBoundingClientRect();
       return { x: rect.left + screen.x, y: rect.top + screen.y };

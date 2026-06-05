@@ -51,31 +51,49 @@ function shouldPersistToDb(roomId: string): boolean {
   return dbRooms.dbEnabled() && roomId !== "demo";
 }
 
+const DEMO_ACTOR_IDS = ["pc-aventureiro", "pc-aventureira-maga"] as const;
+
+function mergeDemoSceneTokens(room: RoomState, freshScene: RoomState["scene"]): void {
+  const existingIds = new Set(room.scene.tokens.map((t) => t.id));
+  const added = freshScene.tokens.filter((t) => !existingIds.has(t.id));
+  if (added.length === 0) return;
+  room.scene = { ...room.scene, tokens: [...room.scene.tokens, ...added] };
+}
+
 /** Inventário demo antigo (ids slug) quebrava listagem de armas na UI. */
 function refreshDemoActorsIfStale(room: RoomState): void {
   if (room.roomId !== "demo") return;
-  const adv = room.actors["pc-aventureiro"];
-  if (!adv) return;
 
-  const brokenWeapon = adv.inventory.some(
-    (i) =>
-      (i.packId === "armas" || i.packId === "magias") &&
-      i.quantity > 0 &&
-      !getEntry(i.packId, i.entryId)
-  );
-  if (brokenWeapon) {
-    const fresh = createDemoRoom();
-    room.actors = { ...room.actors, "pc-aventureiro": fresh.actors["pc-aventureiro"] };
-    room.scene = syncLinkedTokens(room.scene, room.actors);
-    return;
-  }
+  const fresh = createDemoRoom();
+  let changed = false;
 
-  const template = getCharacter("pc-aventureiro");
-  if (template) {
+  for (const actorId of DEMO_ACTOR_IDS) {
+    const adv = room.actors[actorId];
+    const template = getCharacter(actorId);
+    if (!template) continue;
+
+    if (!adv) {
+      room.actors[actorId] = fresh.actors[actorId];
+      changed = true;
+      continue;
+    }
+
+    const brokenEntry = adv.inventory.some(
+      (i) =>
+        (i.packId === "armas" || i.packId === "magias" || i.packId === "habilidades") &&
+        i.quantity > 0 &&
+        !getEntry(i.packId, i.entryId)
+    );
+    if (brokenEntry) {
+      room.actors[actorId] = fresh.actors[actorId];
+      changed = true;
+      continue;
+    }
+
     const xpStale = adv.identity.xpTotal !== template.identity.xpTotal;
     const nivelStale = adv.identity.nivel !== template.identity.nivel;
     if (xpStale || nivelStale) {
-      room.actors["pc-aventureiro"] = {
+      room.actors[actorId] = {
         ...adv,
         identity: {
           ...adv.identity,
@@ -84,21 +102,28 @@ function refreshDemoActorsIfStale(room: RoomState): void {
         },
         revision: adv.revision + 1,
       };
-      room.scene = syncLinkedTokens(room.scene, room.actors);
+      changed = true;
     }
   }
 
-  const freshGoblin = DEMO_SCENE.tokens.find((t) => t.monsterEntryId === "monstros-goblin");
-  if (!freshGoblin?.vidaMax) return;
-  room.scene = {
-    ...room.scene,
-    tokens: room.scene.tokens.map((t) => {
-      if (t.monsterEntryId !== "monstros-goblin") return t;
-      const vidaMax = freshGoblin.vidaMax!;
-      const vida = Math.min(t.vida ?? vidaMax, vidaMax);
-      return { ...t, vidaMax, vida, defesa: freshGoblin.defesa ?? t.defesa };
-    }),
-  };
+  mergeDemoSceneTokens(room, fresh.scene);
+
+  if (changed) {
+    room.scene = syncLinkedTokens(room.scene, room.actors);
+  }
+
+  for (const seed of DEMO_SCENE.tokens) {
+    if (!seed.monsterEntryId || seed.vidaMax == null) continue;
+    room.scene = {
+      ...room.scene,
+      tokens: room.scene.tokens.map((t) => {
+        if (t.monsterEntryId !== seed.monsterEntryId || t.id !== seed.id) return t;
+        const vidaMax = seed.vidaMax!;
+        const vida = Math.min(t.vida ?? vidaMax, vidaMax);
+        return { ...t, vidaMax, vida, defesa: seed.defesa ?? t.defesa };
+      }),
+    };
+  }
 }
 
 export async function persistRoom(roomId: string, state: RoomState): Promise<RoomState> {

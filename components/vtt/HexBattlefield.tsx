@@ -817,6 +817,11 @@ export function HexBattlefield({
   const actorsPanel = (
     <ActiveCharactersPanel
       tokens={listTokens}
+      allSceneTokens={displayScene.tokens}
+      roomActors={roomActors}
+      session={session}
+      adventureId={adventureIdProp ?? roomId}
+      spawnAxial={hoverAxial}
       selectedId={selectedId}
       onSelect={setSelectedId}
       selected={selected}
@@ -829,6 +834,7 @@ export function HexBattlefield({
       actionErr={actionErr}
       roomId={roomId}
       onOpenSheet={onOpenSheet}
+      onPlaced={(snap) => syncRoom(snap)}
       onUpdate={refresh}
       fogHint={fogListHint}
     />
@@ -876,7 +882,7 @@ export function HexBattlefield({
   const actorsWindow =
     foundryLayout && actorsWindowLayout && onActorsWindowLayoutChange ? (
       <FoundryWindow
-        title="Personagens ativos"
+        title="Personagens"
         layout={actorsWindowLayout}
         className="foundry-window--actors"
         onLayoutChange={onActorsWindowLayoutChange}
@@ -1009,6 +1015,7 @@ export function HexBattlefield({
             x={actionRingAt.x}
             y={actionRingAt.y}
             token={selected}
+            allTokens={snapshot?.scene.tokens ?? []}
             actor={selectedActor}
             combat={snapshot?.combat}
             canBypassTurn={canControlCombat}

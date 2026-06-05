@@ -5,6 +5,7 @@ import type { Axial } from "@/lib/vtt/hex-math";
 import { defaultMovementFields } from "@/lib/vtt/movement";
 import type { CombatActionOption } from "@/lib/combat/types";
 import type { BattleToken } from "@/lib/vtt/types";
+import { bumpCreatureSize, inferMonsterCreatureSize } from "@/lib/vtt/creature-size";
 import { MONSTER_PA_MIN, normalizeMonsterPa } from "@/lib/vtt/monster-pa";
 import {
   applyMonsterSpawnScaling,
@@ -145,8 +146,15 @@ export function createMonsterToken(
     monsterTier: template.tier,
     monsterVariant: spawnMeta?.variant && spawnMeta.variant !== "normal" ? spawnMeta.variant : undefined,
     ...defaultMovementFields({ walk: template.walk, run: template.run }),
-    footprint:
-      template.tier === "mob" && template.walk <= 3 ? "small" : "medium",
+    creatureSize: (() => {
+      let size = inferMonsterCreatureSize(template.name, {
+        walk: template.walk,
+        tier: template.tier,
+        variant: spawnMeta?.variant,
+      });
+      if (spawnMeta?.variant === "colossal") size = bumpCreatureSize(size, 1);
+      return size;
+    })(),
   };
 }
 

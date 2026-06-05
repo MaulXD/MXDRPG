@@ -229,12 +229,7 @@ export function MesaWorkspace({
             <div className="mesa-sheet-rail-hint">
               <p className="vtt-combat-hint">
                 Clique em um token com ficha e use <strong>Abrir ficha</strong>, ou abaixo.
-                {canControlCombat ? (
-                  <>
-                    {" "}
-                    Colocar personagens no mapa: painel <strong>⚙ Menu do mestre</strong>.
-                  </>
-                ) : null}
+                Colocar personagens no mapa: painel <strong>👥 Personagens</strong> (arrastar para o hex).
               </p>
               <button
                 type="button"

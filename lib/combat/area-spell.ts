@@ -5,6 +5,7 @@ import {
   computeAreaHexes,
   type AreaShape,
 } from "@/lib/vtt/hex-area";
+import { tokenOccupiesAxial } from "@/lib/vtt/creature-size";
 import type { BattleToken } from "@/lib/vtt/types";
 import type { CharacterSheet } from "@/lib/character/types";
 import type { CombatActionOption, CombatTurnOptions } from "@/lib/combat/types";
@@ -53,8 +54,7 @@ export function computeSpellAreaHexes(
 }
 
 export function tokensInArea(tokens: BattleToken[], area: Axial[]): BattleToken[] {
-  const keys = new Set(area.map((a) => `${a.q},${a.r}`));
-  return tokens.filter((t) => keys.has(`${t.axial.q},${t.axial.r}`));
+  return tokens.filter((t) => area.some((hex) => tokenOccupiesAxial(t, hex)));
 }
 
 export function canCastAreaAt(

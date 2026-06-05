@@ -6,11 +6,16 @@ import type { PortraitFocus } from "@/lib/media/portrait-focus";
 import { DEFAULT_PORTRAIT_FOCUS } from "@/lib/media/portrait-focus";
 import { collectPlayerActorIds, resolveTokenRing } from "@/lib/vtt/token-colors";
 import {
+  creatureSizeOf,
+  occupiedHexes,
+  tokenDrawRadius,
+  tokenPixelCenter,
+} from "@/lib/vtt/creature-size";
+import {
   drawCircularTokenImage,
   drawTokenDropShadow,
   drawTokenIdentityRings,
   drawTokenPlaceholder,
-  tokenRadius,
 } from "@/lib/vtt/token-canvas";
 import {
   drawAttackableHint,
@@ -257,8 +262,27 @@ export function drawTokensLayer(ctx: CanvasRenderingContext2D, p: TokenDrawParam
 
   for (const token of scene.tokens) {
     const pos = p.tokenPositionOverride?.get(token.id) ?? token.axial;
-    const { x, y } = axialToPixel(pos.q, pos.r, size, layout.ox, layout.oy);
-    const r = tokenRadius(size);
+    const creatureSize = creatureSizeOf(token);
+    const { x, y } = tokenPixelCenter(pos, creatureSize, size, layout.ox, layout.oy);
+    const r = tokenDrawRadius(size, creatureSize);
+
+    if (creatureSize !== "small" && creatureSize !== "medium") {
+      ctx.save();
+      for (const hex of occupiedHexes(pos, creatureSize)) {
+        const { x: hx, y: hy } = axialToPixel(hex.q, hex.r, size, layout.ox, layout.oy);
+        const corners = hexCorners(hx, hy, size * 0.92);
+        ctx.beginPath();
+        ctx.moveTo(corners[0].x, corners[0].y);
+        for (let i = 1; i < corners.length; i++) ctx.lineTo(corners[i].x, corners[i].y);
+        ctx.closePath();
+        ctx.fillStyle = "rgba(255,255,255,0.04)";
+        ctx.fill();
+        ctx.strokeStyle = "rgba(201,169,98,0.22)";
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      }
+      ctx.restore();
+    }
     const img = p.images.get(token.id);
     const focus = p.focusByTokenId.get(token.id) ?? DEFAULT_PORTRAIT_FOCUS;
     const ringStyle = resolveTokenRing(token, playerActorIds);
