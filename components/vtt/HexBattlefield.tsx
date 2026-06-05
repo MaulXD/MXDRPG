@@ -1,8 +1,9 @@
 ﻿"use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import type { Axial } from "@/lib/vtt/hex-math";
-import type { BattleScene } from "@/lib/vtt/types";
+import type { BattleScene, BattleToken } from "@/lib/vtt/types";
 import {
   moveRoomTokenBudget,
   postRoomAttack,
@@ -12,20 +13,19 @@ import {
   revealRoomHex,
   repositionRoomToken,
 } from "@/hooks/useRoomSync";
-import { visibleHexSetForPlayer } from "@/lib/vtt/fog-of-war";
-import { MapScenePanel } from "@/components/vtt/MapScenePanel";
-import { RoomSettingsPanel } from "@/components/vtt/RoomSettingsPanel";
-import { PlayerSpawnPanel } from "@/components/vtt/PlayerSpawnPanel";
+import { filterTokensForFog, visibleHexSetForPlayer } from "@/lib/vtt/fog-of-war";
+import { ActiveCharactersPanel } from "@/components/vtt/ActiveCharactersPanel";
+import { GmMenuPanel } from "@/components/vtt/GmMenuPanel";
 import type { RoomSnapshot } from "@/lib/room/types";
-import { TurnOrderPanel } from "@/components/vtt/TurnOrderPanel";
-import { TokenActionPanel } from "@/components/vtt/TokenActionPanel";
+import { TokenActionRing } from "@/components/vtt/TokenActionRing";
+import { SpellChannelControl } from "@/components/vtt/SpellChannelControl";
 import { MonsterSpawnPanel } from "@/components/vtt/MonsterSpawnPanel";
-import { TokenConditionsPanel } from "@/components/vtt/TokenConditionsPanel";
 import { BattlefieldViewControls } from "@/components/vtt/BattlefieldViewControls";
 import { MesaDockPanel } from "@/components/vtt/MesaDockPanel";
+import { FoundryWindow } from "@/components/vtt/foundry/FoundryWindow";
+import type { FoundryWindowLayout } from "@/hooks/vtt/useFoundryWindows";
 import type { MesaPanelLayout } from "@/lib/vtt/mesa-panel-layout";
 import { effectiveMesaPanelWidth } from "@/lib/vtt/mesa-panel-layout";
-import { TokenEffectsRow } from "@/components/vtt/TokenEffectsRow";
 import {
   CombatFxLayer,
   combatFxFromMessage,
@@ -39,11 +39,7 @@ import {
   resolveCombatAction,
 } from "@/lib/combat/attack";
 import type { CombatActionOption } from "@/lib/combat/types";
-import {
-  isMoveMode,
-  isTargetMode,
-  type TokenActionMode,
-} from "@/lib/vtt/action-mode";
+import { isMoveMode, isTargetMode, type TokenActionMode } from "@/lib/vtt/action-mode";
 import {
   previewAreaCast,
   previewAreaDirectionStep,
@@ -52,8 +48,8 @@ import {
   type ActionPreview,
 } from "@/lib/combat/action-preview";
 import { BattlefieldActionHud } from "@/components/vtt/BattlefieldActionHud";
-import { PaDotMeter } from "@/components/vtt/PaDotMeter";
 import { EndTurnBar } from "@/components/vtt/EndTurnBar";
+import { TurnOrderPanel } from "@/components/vtt/TurnOrderPanel";
 import { useCombatTurn } from "@/hooks/useCombatActions";
 import { useTokenImages } from "@/hooks/vtt/useTokenImages";
 import { usePortraitFocusByToken } from "@/hooks/vtt/usePortraitFocusByToken";
@@ -87,6 +83,23 @@ type Props = {
   roomActors?: Record<string, import("@/lib/room/types").RoomActor>;
   leftPanel?: MesaPanelLayout;
   onLeftPanelChange?: (patch: Partial<MesaPanelLayout>) => void;
+  /** Mapa em tela cheia; tokens em janela flutuante (Foundry). */
+  foundryLayout?: boolean;
+  actorsWindowLayout?: FoundryWindowLayout;
+  onActorsWindowLayoutChange?: (patch: Partial<FoundryWindowLayout>) => void;
+  onActorsWindowClose?: () => void;
+  onActorsWindowMinimize?: () => void;
+  onActorsWindowFocus?: () => void;
+  gmWindowLayout?: FoundryWindowLayout;
+  onGmWindowLayoutChange?: (patch: Partial<FoundryWindowLayout>) => void;
+  onGmWindowClose?: () => void;
+  onGmWindowMinimize?: () => void;
+  onGmWindowFocus?: () => void;
+  initiativeWindowLayout?: FoundryWindowLayout;
+  onInitiativeWindowLayoutChange?: (patch: Partial<FoundryWindowLayout>) => void;
+  onInitiativeWindowClose?: () => void;
+  onInitiativeWindowMinimize?: () => void;
+  onInitiativeWindowFocus?: () => void;
 };
 
 export function HexBattlefield({
@@ -109,6 +122,22 @@ export function HexBattlefield({
   roomActors = {},
   leftPanel,
   onLeftPanelChange,
+  foundryLayout = false,
+  actorsWindowLayout,
+  onActorsWindowLayoutChange,
+  onActorsWindowClose,
+  onActorsWindowMinimize,
+  onActorsWindowFocus,
+  gmWindowLayout,
+  onGmWindowLayoutChange,
+  onGmWindowClose,
+  onGmWindowMinimize,
+  onGmWindowFocus,
+  initiativeWindowLayout,
+  onInitiativeWindowLayoutChange,
+  onInitiativeWindowClose,
+  onInitiativeWindowMinimize,
+  onInitiativeWindowFocus,
 }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
@@ -126,6 +155,7 @@ export function HexBattlefield({
   } | null>(null);
   const [actionErr, setActionErr] = useState<string | null>(null);
   const [channelExtraPa, setChannelExtraPa] = useState(0);
+  const [actionRingAt, setActionRingAt] = useState<{ x: number; y: number } | null>(null);
   const seenCombatRef = useRef<Set<string>>(new Set());
   const [mapImage, setMapImage] = useState<HTMLImageElement | null>(null);
   const [mapImgTick, setMapImgTick] = useState(0);
@@ -149,25 +179,44 @@ export function HexBattlefield({
     img.src = url;
   }, [displayScene.mapImageUrl]);
 
+  const playerActorIds = useMemo(
+    () =>
+      session?.id
+        ? Object.entries(roomActors)
+            .filter(([, a]) => a.ownerId === session.id)
+            .map(([id]) => id)
+        : [],
+    [roomActors, session?.id]
+  );
+
   const visibleHexSet = useMemo(() => {
     if (canControlCombat) return null;
-    const actorIds = session?.id
-      ? Object.entries(roomActors)
-          .filter(([, a]) => a.ownerId === session.id)
-          .map(([id]) => id)
-      : [];
     return visibleHexSetForPlayer(displayScene, displayScene.tokens, {
       userId: session?.id,
-      actorIds,
+      actorIds: playerActorIds,
     });
-  }, [canControlCombat, displayScene, roomActors, session?.id]);
+  }, [canControlCombat, displayScene, playerActorIds, session?.id]);
+
+  const listTokens = useMemo(() => {
+    if (canControlCombat) return displayScene.tokens;
+    return filterTokensForFog(displayScene.tokens, displayScene, visibleHexSet, {
+      userId: session?.id,
+      actorIds: playerActorIds,
+    });
+  }, [canControlCombat, displayScene, visibleHexSet, session?.id, playerActorIds]);
+
+  useEffect(() => {
+    if (!selectedId) return;
+    if (listTokens.some((t) => t.id === selectedId)) return;
+    setSelectedId(listTokens[0]?.id ?? null);
+  }, [listTokens, selectedId]);
 
   const { imagesRef, imgTick } = useTokenImages(displayScene.tokens);
   const refresh = onRefresh ?? (() => {});
   const turnActiveId = snapshot?.combat ? activeTokenId(snapshot.combat) : null;
   const turn = useCombatTurn({ combat: snapshot?.combat, canBypassTurn: canControlCombat });
 
-  const selected = displayScene.tokens.find((t) => t.id === selectedId) ?? null;
+  const selected = listTokens.find((t) => t.id === selectedId) ?? null;
   const selectedActor =
     selected?.linked && selected.actorId ? snapshot?.actors[selected.actorId] ?? null : null;
 
@@ -323,6 +372,29 @@ export function HexBattlefield({
     setAreaCenter(null);
     setChannelExtraPa(0);
   }, [actionMode, selectedCombatAction?.entryId]);
+
+  useEffect(() => {
+    setActionRingAt(null);
+  }, [selectedId, snapshot?.combat?.activeIndex, snapshot?.combat?.round]);
+
+  useEffect(() => {
+    function onKey(e: KeyboardEvent) {
+      if (e.key !== "Escape") return;
+      if (actionRingAt) {
+        setActionRingAt(null);
+        return;
+      }
+      if (actionMode !== "idle") {
+        setActionMode("idle");
+        setSelectedCombatAction(null);
+        setChannelExtraPa(0);
+        setActionErr(null);
+        setAreaCenter(null);
+      }
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [actionRingAt, actionMode]);
 
   const triggerCombatFx = useCallback(
     (msg: ChatMessage) => {
@@ -601,6 +673,28 @@ export function HexBattlefield({
     [roomId, canControlCombat, displayScene.fogEnabled, syncRoom]
   );
 
+  const tokenControl =
+    canControlToken ?? (() => canControlCombat || Boolean(selected?.linked));
+
+  const canOperateToken = useCallback(
+    (t: BattleToken) => {
+      if (t.monsterEntryId) return canControlCombat;
+      return canControlCombat || tokenControl(t);
+    },
+    [canControlCombat, tokenControl]
+  );
+
+  const canOpenActionRing = useCallback(
+    (t: BattleToken) => {
+      const track = snapshot?.combat;
+      if (!track?.order.length) return false;
+      const activeId = activeTokenId(track);
+      if (!activeId || t.id !== activeId) return false;
+      return canOperateToken(t);
+    },
+    [snapshot?.combat, canOperateToken]
+  );
+
   const pointer = useBattlefieldPointer({
     canvasRef,
     scene: displayScene,
@@ -633,10 +727,12 @@ export function HexBattlefield({
     onRevealHex: canControlCombat ? (a) => void onRevealHex(a) : undefined,
     fogEnabled: Boolean(displayScene.fogEnabled),
     viewRef: battlefieldView.viewRef,
+    onActionRingRequest: (_token, clientX, clientY) => {
+      setActionRingAt({ x: clientX, y: clientY });
+      setActionErr(null);
+    },
+    canOpenActionRing,
   });
-
-  const tokenControl =
-    canControlToken ?? (() => canControlCombat || Boolean(selected?.linked));
 
   const canViewTokenPaFn =
     canViewTokenPa ?? (() => canControlCombat || Boolean(selected?.linked));
@@ -656,200 +752,167 @@ export function HexBattlefield({
     !activeCombatAction.selfTarget &&
     !highlights.isAreaSpellMode;
 
-  const leftW = leftPanel ? effectiveMesaPanelWidth(leftPanel) : undefined;
-  const shellStyle = leftW != null ? { gridTemplateColumns: `${leftW}px minmax(0, 1fr)` } : undefined;
+  const leftW =
+    !foundryLayout && leftPanel ? effectiveMesaPanelWidth(leftPanel) : undefined;
+  const shellStyle =
+    leftW != null ? { gridTemplateColumns: `${leftW}px minmax(0, 1fr)` } : undefined;
 
-  const sidebar = (
-      <aside className="vtt-sidebar">
-        <p className="vtt-eyebrow">Mesa ao vivo</p>
-        {snapshot ? (
-          <p className="vtt-sync-live">
-            <span className="vtt-sync-dot" aria-hidden />
-            Sync · rev {snapshot.revision}
-          </p>
-        ) : null}
-        <h2 className="vtt-title">{displayScene.name}</h2>
-        <p className="vtt-hint">
-          Token → ação → alvo ou hex. Alt+clique: ping. Mestre: arraste token; Ctrl+clique revela hex
-          com fog.
-        </p>
+  const fogListHint = Boolean(displayScene.fogEnabled && !canControlCombat);
 
-        {canControlCombat && snapshot ? (
-          <RoomSettingsPanel
-            roomId={roomId}
-            roomName={displayScene.name}
-            inviteCode={inviteCode ?? "—"}
-            settings={snapshot.settings}
-            onUpdated={(snap) => syncRoom(snap)}
-          />
-        ) : null}
+  const actorsPanel = (
+    <ActiveCharactersPanel
+      tokens={listTokens}
+      selectedId={selectedId}
+      onSelect={setSelectedId}
+      selected={selected}
+      combat={combat}
+      canViewTokenPa={canViewTokenPaFn}
+      canUseToken={Boolean(canUseToken)}
+      canControlCombat={canControlCombat}
+      showMovementLegend={Boolean(selected && highlights.showMovement)}
+      actionMode={actionMode}
+      actionErr={actionErr}
+      roomId={roomId}
+      onOpenSheet={onOpenSheet}
+      onUpdate={refresh}
+      fogHint={fogListHint}
+    />
+  );
 
-        {canControlCombat ? (
-          <MapScenePanel roomId={roomId} scene={displayScene} onUpdated={(snap) => syncRoom(snap)} />
-        ) : null}
+  const gmPanel =
+    canControlCombat && snapshot ? (
+      <GmMenuPanel
+        roomId={roomId}
+        scene={displayScene}
+        snapshot={snapshot}
+        inviteCode={inviteCode}
+        session={session}
+        roomActors={roomActors}
+        spawnAxial={hoverAxial}
+        canEdit={canEdit}
+        adventureId={adventureIdProp}
+        onSceneUpdated={(snap) => syncRoom(snap)}
+      />
+    ) : null;
 
-        {canEdit && Object.keys(roomActors).length > 0 ? (
-          <PlayerSpawnPanel
-            roomId={roomId}
-            actors={roomActors}
-            session={session}
-            tokens={displayScene.tokens}
-            spawnAxial={hoverAxial}
-            onPlaced={(snap) => syncRoom(snap)}
-            adventureId={adventureIdProp ?? roomId}
-            showCreateLink={roomId !== "demo" && canEdit}
-          />
-        ) : null}
+  const legacySidebar = (
+    <>
+      {actorsPanel}
+      {gmPanel}
+      {canControlCombat && showSpawnInSidebar ? (
+        <MonsterSpawnPanel roomId={roomId} spawnAxial={hoverAxial} onSpawned={(snap) => syncRoom(snap)} />
+      ) : null}
+    </>
+  );
 
-        {canControlCombat && showSpawnInSidebar ? (
-          <MonsterSpawnPanel roomId={roomId} spawnAxial={hoverAxial} onSpawned={(snap) => syncRoom(snap)} />
-        ) : null}
+  const [hudRoot, setHudRoot] = useState<HTMLElement | null>(null);
+  const resolveHudRoot = useCallback(() => document.getElementById("foundry-mesa-windows"), []);
 
-        {selected && highlights.showMovement ? (
-          <p className="vtt-move-legend vtt-combat-hint">
-            <span className="vtt-move-legend-swatch vtt-move-legend-swatch--free" /> sem PA extra
-            <span className="vtt-move-legend-swatch vtt-move-legend-swatch--paid" /> caminhada +PA
-            <span className="vtt-move-legend-swatch vtt-move-legend-swatch--run" /> só corrida
-          </p>
-        ) : null}
+  useLayoutEffect(() => {
+    setHudRoot(resolveHudRoot());
+  }, [resolveHudRoot]);
 
-        {selected && (
-          <div className="vtt-token-panel">
-            <strong style={{ color: selected.color }}>{selected.name}</strong>
-            {selected.linked ? (
-              <p className="vtt-linked-badge">
-                Ficha linkada
-                {onOpenSheet ? (
-                  <>
-                    {" "}
-                    ·{" "}
-                    <button
-                      type="button"
-                      className="vtt-inline-link"
-                      onClick={() => onOpenSheet(selected.actorId ?? "pc-aventureiro")}
-                    >
-                      Abrir ficha →
-                    </button>
-                  </>
-                ) : null}
-              </p>
-            ) : selected.monsterEntryId ? (
-              <p className="vtt-linked-badge">Monstro · {selected.monsterEntryId}</p>
-            ) : null}
-            {selected.vidaMax != null ? (
-              <p>
-                Vida {selected.vida}/{selected.vidaMax}
-              </p>
-            ) : null}
-            {selected.defesa != null ? (
-              <p>
-                Defesa {selected.defesa}
-                {selected.defesaBonus ? ` (+${selected.defesaBonus} buff)` : ""}
-              </p>
-            ) : null}
-            <TokenEffectsRow token={selected} variant="full" className="vtt-effect-chips--sidebar" />
-            {canViewTokenPaFn(selected) ? (
-              <PaDotMeter
-                current={selected.pa}
-                max={selected.paMax}
-                banked={selected.bankedPa}
-                spentThisTurn={selected.paSpentThisTurn}
-              />
-            ) : (
-              <p className="vtt-combat-hint">PA do monstro — só o mestre vê.</p>
-            )}
+  useEffect(() => {
+    if (hudRoot) return;
+    const id = window.requestAnimationFrame(() => setHudRoot(resolveHudRoot()));
+    return () => window.cancelAnimationFrame(id);
+  }, [hudRoot, resolveHudRoot]);
 
-            {canUseToken ? (
-              <TokenActionPanel
-                roomId={roomId}
-                token={selected}
-                tokens={displayScene.tokens}
-                actor={selectedActor}
-                combat={snapshot?.combat}
-                canBypassTurn={canControlCombat}
-                actionMode={actionMode}
-                onActionModeChange={setActionMode}
-                selectedAction={selectedCombatAction}
-                onSelectedActionChange={setSelectedCombatAction}
-                channelExtraPa={channelExtraPa}
-                onChannelExtraPaChange={setChannelExtraPa}
-                onAttackResult={triggerCombatFx}
-                onRoomSync={syncRoom}
-              />
-            ) : (
-              <p className="vtt-combat-hint">Token sem stats de combate.</p>
-            )}
-            {actionErr ? <p className="dice-err">{actionErr}</p> : null}
+  const actorsWindow =
+    foundryLayout && actorsWindowLayout && onActorsWindowLayoutChange ? (
+      <FoundryWindow
+        title="Personagens ativos"
+        layout={actorsWindowLayout}
+        className="foundry-window--actors"
+        onLayoutChange={onActorsWindowLayoutChange}
+        onClose={onActorsWindowClose ?? (() => {})}
+        onMinimize={onActorsWindowMinimize ?? (() => {})}
+        onFocus={onActorsWindowFocus ?? (() => {})}
+        minHeight={200}
+      >
+        <div className="mesa-panel-scroll mesa-panel-scroll--rail">{actorsPanel}</div>
+      </FoundryWindow>
+    ) : null;
 
-            {canControlCombat ? (
-              <TokenConditionsPanel
-                roomId={roomId}
-                token={selected}
-                canEdit={canControlCombat}
-                onUpdate={refresh}
-              />
-            ) : null}
-          </div>
-        )}
+  const actorsPortal =
+    actorsWindow && hudRoot ? createPortal(actorsWindow, hudRoot) : actorsWindow;
 
-        {combat ? (
+  const gmWindow =
+    foundryLayout &&
+    canControlCombat &&
+    gmWindowLayout &&
+    onGmWindowLayoutChange &&
+    gmPanel ? (
+      <FoundryWindow
+        title="Menu do mestre"
+        layout={gmWindowLayout}
+        className="foundry-window--gm"
+        onLayoutChange={onGmWindowLayoutChange}
+        onClose={onGmWindowClose ?? (() => {})}
+        onMinimize={onGmWindowMinimize ?? (() => {})}
+        onFocus={onGmWindowFocus ?? (() => {})}
+        minHeight={220}
+      >
+        <div className="mesa-panel-scroll mesa-panel-scroll--rail">{gmPanel}</div>
+      </FoundryWindow>
+    ) : null;
+
+  const gmPortal = gmWindow && hudRoot ? createPortal(gmWindow, hudRoot) : gmWindow;
+
+  const initiativeWindow =
+    foundryLayout &&
+    initiativeWindowLayout &&
+    onInitiativeWindowLayoutChange &&
+    combat ? (
+      <FoundryWindow
+        title="Iniciativa"
+        layout={initiativeWindowLayout}
+        className="foundry-window--initiative"
+        onLayoutChange={onInitiativeWindowLayoutChange}
+        onClose={onInitiativeWindowClose ?? (() => {})}
+        onMinimize={onInitiativeWindowMinimize ?? (() => {})}
+        onFocus={onInitiativeWindowFocus ?? (() => {})}
+        minHeight={220}
+      >
+        <div className="mesa-panel-scroll mesa-panel-scroll--rail">
           <TurnOrderPanel
             roomId={roomId}
             combat={combat}
-            tokens={displayScene.tokens}
+            tokens={listTokens}
             canControl={canControlCombat}
-            canEndTurn={canEndTurn}
+            canEndTurn={canEndTurnProp}
             onUpdate={refresh}
             attackableIds={highlights.attackableIds}
             hoverAttackTargetId={hoverTargetId}
             onHoverAttackTargetChange={setHoverTargetId}
           />
-        ) : null}
+        </div>
+      </FoundryWindow>
+    ) : null;
 
-        <ul className="vtt-token-list">
-          {displayScene.tokens.map((t) => (
-            <li key={t.id}>
-              <button
-                type="button"
-                className={t.id === selectedId ? "active" : ""}
-                onClick={() => setSelectedId(t.id)}
-              >
-                <span className="token-dot" style={{ background: t.color }} />
-                <span className="vtt-token-list-label">
-                  <span className="vtt-token-list-name">{t.name}</span>
-                  {canViewTokenPaFn(t) ? (
-                    <PaDotMeter
-                      current={t.pa}
-                      max={t.paMax}
-                      banked={t.bankedPa}
-                      showLabel={false}
-                      size="sm"
-                      compact
-                    />
-                  ) : null}
-                  <TokenEffectsRow token={t} className="vtt-effect-chips--list" max={4} />
-                </span>
-              </button>
-            </li>
-          ))}
-        </ul>
-      </aside>
-  );
+  const initiativePortal =
+    initiativeWindow && hudRoot ? createPortal(initiativeWindow, hudRoot) : initiativeWindow;
 
   return (
-    <div className="vtt-shell" style={shellStyle}>
-      {leftPanel && onLeftPanelChange ? (
+    <div
+      className={`vtt-shell${foundryLayout ? " vtt-shell--foundry" : ""}`}
+      style={shellStyle}
+    >
+      {foundryLayout ? actorsPortal : null}
+      {foundryLayout ? gmPortal : null}
+      {foundryLayout ? initiativePortal : null}
+      {!foundryLayout && leftPanel && onLeftPanelChange ? (
         <MesaDockPanel
           side="left"
-          label="Tokens"
+          label="Personagens"
           layout={leftPanel}
           onLayoutChange={onLeftPanelChange}
         >
-          {sidebar}
+          {legacySidebar}
         </MesaDockPanel>
-      ) : (
-        sidebar
-      )}
+      ) : !foundryLayout ? (
+        legacySidebar
+      ) : null}
 
       <div
         ref={wrapRef}
@@ -884,7 +947,40 @@ export function HexBattlefield({
             battlefieldView.endPan(e);
             pointer.onPointerLeave();
           }}
+          onContextMenu={pointer.onContextMenu}
         />
+        {actionRingAt && selected && canOpenActionRing(selected) ? (
+          <TokenActionRing
+            x={actionRingAt.x}
+            y={actionRingAt.y}
+            token={selected}
+            actor={selectedActor}
+            combat={snapshot?.combat}
+            canBypassTurn={canControlCombat}
+            roomId={roomId}
+            onPickMode={(mode, action) => {
+              setActionMode(mode);
+              setSelectedCombatAction(action);
+              if (mode !== "spell") setChannelExtraPa(0);
+            }}
+            onClose={() => setActionRingAt(null)}
+            onRoomSync={() => refresh()}
+          />
+        ) : null}
+        {actionMode === "spell" &&
+        selectedCombatAction?.channelMaxExtraPa &&
+        selected &&
+        canUseToken ? (
+          <div className="vtt-channel-float glass-panel">
+            <SpellChannelControl
+              action={selectedCombatAction}
+              token={selected}
+              actor={selectedActor}
+              value={channelExtraPa}
+              onChange={setChannelExtraPa}
+            />
+          </div>
+        ) : null}
         {combat ? (
           <EndTurnBar
             roomId={roomId}
