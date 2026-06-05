@@ -165,7 +165,7 @@ export function LevelUpWizard({ actor, roomId, canEdit, onDone, onApplied }: Pro
                 compact
               />
             ) : (
-              <p className="lu-hint">No nv 2 você escolhe a subclasse (Dieta Marcial) e desbloqueia a trilha.</p>
+              <p className="lu-hint">No nv 2 você escolhe o Caminho de Assimilação (subclasse) e desbloqueia a trilha.</p>
             )}
           </>
         );
@@ -174,7 +174,7 @@ export function LevelUpWizard({ actor, roomId, canEdit, onDone, onApplied }: Pro
         return (
           <>
             <p className="lu-hint">
-              Escolha sua <strong>Dieta Marcial</strong> (subclasse). Cada cartão mostra a trilha de
+              Escolha seu <strong>Caminho de Assimilação</strong> (subclasse). Cada cartão mostra a trilha de
               talentos nv 4 → 8 → 12 → 16 → ascensão 20.
             </p>
             <div className="lu-subclass-grid">

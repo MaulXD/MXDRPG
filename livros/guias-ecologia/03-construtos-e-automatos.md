@@ -1,4 +1,4 @@
-# Guia de Ecologia — Construtos e Autômatos
+﻿# Guia de Ecologia — Construtos e Autômatos
 **Eldarin v4.0 · Folheto de mesa**
 
 > Não há tabela oficial no Cap. 6 — use esta **tabela opcional de mesa** ou recompense com **itens** em vez de mutações.
@@ -27,7 +27,7 @@ Engrenagens Esquecidas, Fornalhas (golems vulcânicos), Arquivos (autômatos gua
 | Núcleo de mana | 17–20 | Ferramentas especializadas |
 | Fluido arcânico | 14 | Frasco selado |
 
-**Sem sangue:** testes de **Harmonização** para “sintonizar” núcleo antes de cozinhar pó / caldo de metal (transmutação).
+**Sem sangue:** testes de **Forrageio** para “sintonizar” núcleo antes de cozinhar pó / caldo de metal (transmutação).
 
 ---
 

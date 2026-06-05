@@ -10,6 +10,7 @@ import {
   paMaxFor,
   proficiencyBonus,
   racialMilestone,
+  SUBCLASS_PATH_LABEL,
   TALENT_LEVELS,
 } from "@/lib/character/rules";
 import {
@@ -102,7 +103,7 @@ export function validateLevelUpChoices(
 
   for (const r of reqs) {
     if (r.kind === "subclasse" && !choices.subclasse && !actor.identity.subclasse) {
-      return "Escolha uma subclasse (Dieta Marcial).";
+      return `Escolha um ${SUBCLASS_PATH_LABEL} (subclasse).`;
     }
     if (r.kind === "asi") {
       const total = Object.values(choices.asi ?? {}).reduce((s, v) => s + (v ?? 0), 0);
@@ -175,7 +176,7 @@ export function previewLevelUp(actor: CharacterSheet, choices?: LevelUpChoices):
 
   const sub = choices?.subclasse ?? actor.identity.subclasse;
   const track = getSubclassTrack(sub);
-  if (next === 2 && track) lines.push(`Dieta Marcial: ${track.diet}`);
+  if (next === 2 && track) lines.push(`${SUBCLASS_PATH_LABEL}: ${track.diet}`);
 
   if (choices?.talentoId && track) {
     const t = track.talents.find((x) => x.id === choices.talentoId);

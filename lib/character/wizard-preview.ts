@@ -29,7 +29,7 @@ export function buildWizardPreview(draft: CharacterWizardDraft): WizardPreviewLi
 
   if (cls) {
     lines.push({ label: "Proficiências", value: cls.proficiencies });
-    lines.push({ label: "Bônus de dieta", value: cls.dietBonus });
+    lines.push({ label: "Bônus passivo de sobrevivência", value: cls.dietBonus });
     lines.push({
       label: "Subclasse (nv 2)",
       value: tracks.length

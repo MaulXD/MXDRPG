@@ -1,4 +1,4 @@
-# Guia de Ecologia — Glaciais, Mímicos e Metamorfos
+﻿# Guia de Ecologia — Glaciais, Mímicos e Metamorfos
 **Eldarin v4.0 · Folheto de mesa**
 
 > Dois grupos num folheto: **frio** (predação direta) e **engano** (predação por disfarce).
@@ -21,7 +21,7 @@ Yetis, lobos do inverno, elementais de gelo — **termorregulação invertida**,
 | Pelo cristalizado | 12 | Capa térmica |
 | Fragmento de gelo primordial | 20 | Boss / elite |
 
-**Cocção:** fogo obrigatório — falha = gororoba + CD 13 Estômago de Ferro.
+**Cocção:** fogo obrigatório — falha = gororoba + CD 13 Fortitude.
 
 ## Assimilação — Glaciais
 
@@ -57,7 +57,7 @@ Yetis, lobos do inverno, elementais de gelo — **termorregulação invertida**,
 | Alvo | CD | Loot |
 |------|-----|------|
 | Mímico morto | 14 | Gel/adhesivo, “carne” elástica |
-| Doppelganger | 17 | Carne que muda sabor (Harmonização 18) |
+| Doppelganger | 17 | Carne que muda sabor (Forrageio 18) |
 | Gárgula | 16 | Cristal vivo |
 
 ## Assimilação — Mímicos e Metamorfos
@@ -77,7 +77,7 @@ Yetis, lobos do inverno, elementais de gelo — **termorregulação invertida**,
 
 ## Cozinha (ambos)
 
-- Glacial + vulcânico no mesmo dia = Mestre pode exigir **Harmonização CD 15** (choque térmico).  
+- Glacial + vulcânico no mesmo dia = Mestre pode exigir **Forrageio CD 15** (choque térmico).  
 - Prato de mímico: grupo ganha camuflagem — ótimo para infiltração, péssimo em taverna (medo).
 
 ## Gancho

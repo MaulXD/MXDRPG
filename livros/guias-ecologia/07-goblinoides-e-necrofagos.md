@@ -1,4 +1,4 @@
-# Guia de Ecologia — Goblinóides e Necrofagos
+﻿# Guia de Ecologia — Goblinóides e Necrofagos
 **Eldarin v4.0 · Folheto de mesa**
 
 ---
@@ -23,7 +23,7 @@ Estômago Botânico (goblins fúngicos), Cemitério de Colossos, Engrenagens, Fl
 |--------|-----|--------------|
 | Goblin / orc caçado | 10–14 | Carne controversa — penalidade social em Valdremor se vendida abertamente |
 | Ghoul | 14 | Mesma linha que mortos-vivos |
-| “Carne limpa” de humanoide | 17+ | Harmonização CD 16 |
+| “Carne limpa” de humanoide | 17+ | Forrageio CD 16 |
 
 Alguns grupos **recusam** cozinhar humanoides — regra de mesa, não de sistema.
 
@@ -33,7 +33,7 @@ Alguns grupos **recusam** cozinhar humanoides — regra de mesa, não de sistema
 
 | # | Habilidade | Efeito |
 |---|-----------|--------|
-| 1 | Estômago de Ferro | Imune penalidade comida estragada/podre |
+| 1 | Fortitude | Imune penalidade comida estragada/podre |
 | 2 | Instinto de Horda | +2 dano se aliado ataca mesmo alvo |
 | 3 | Faro para Ouro | Detecta metais/tesouro através de parede 10m |
 | 4 | Adrenalina Covarde | Velocidade dobra ao fugir de inimigo mais forte |

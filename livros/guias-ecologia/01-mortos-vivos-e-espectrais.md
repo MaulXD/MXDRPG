@@ -1,4 +1,4 @@
-# Guia de Ecologia — Mortos-vivos e Espectrais
+﻿# Guia de Ecologia — Mortos-vivos e Espectrais
 **Eldarin v4.0 · Folheto de mesa (não completo)**
 
 ---
@@ -31,7 +31,7 @@
 
 ## Extração e riscos
 
-| Nível extração | CD Trinchar | Risco |
+| Nível extração | CD Extração | Risco |
 |----------------|-------------|-------|
 | Fácil | 10 | Carne podre; Podridão de Masmorra em crítico |
 | Médio | 14 | Medula, fêmur — precisa tempo |
@@ -39,20 +39,20 @@
 
 **Tabu social:** carne de morto-vivo é **tabu** — ingredientes são **essências, ossos, medula**, não “bife de zumbi” sem preparo especial.
 
-**Estômago de Ferro:** CD **16+** para ingredientes amaldiçoados; gororoba necrótica = debuffs severos.
+**Fortitude:** CD **16+** para ingredientes amaldiçoados; gororoba necrótica = debuffs severos.
 
 ---
 
 ## Cozinha
 
-- **Harmonização alta** neutraliza toxina de decomposição.  
+- **Forrageio alta** neutraliza toxina de decomposição.  
 - **Cocção longa** (caldo 8h+) para fêmur milenar.  
-- Pratos necróticos favorecem **Clérigo (trilha Necromântica)**, **Mago Fermentador**, **Corsário de Cripta** (Ladino).
+- Pratos necróticos favorecem **Clérigo (trilha Necromântica)**, **Mago Alquímico**, **Corsário de Cripta** (Ladino).
 
 ---
 
 ## Assimilação — Espirituais e Amaldiçoados
-*(Corpóreos: use esta tabela se o prato usar ectoplasma / essência; senão combine com goblinoides “Estômago de Ferro” ou tabela do Mestre.)*
+*(Corpóreos: use esta tabela se o prato usar ectoplasma / essência; senão combine com goblinoides “Fortitude” ou tabela do Mestre.)*
 
 | # | Habilidade | Efeito |
 |---|-----------|--------|
@@ -73,7 +73,7 @@
 |------|------:|----------|-------------------|
 | Zumbi de masmorra | 1 | Fácil | Medula podre, dente |
 | Esqueleto armado | 2 | Médio | Fêmur milenar, cristal de mana ósseo (30%) |
-| Ghoul | 3 | Médio | Carne necrofágica (Harmonização CD 14) |
+| Ghoul | 3 | Médio | Carne necrofágica (Forrageio CD 14) |
 | Espectro | 5+ | Especialista + recipiente | Ectoplasma puro |
 
 **Elite:** versões nos andares profundos (bioma 10+) — dobrar cautela em Podridão em área.

@@ -22,7 +22,7 @@ export type CharacterIdentity = {
   xpTotal: number;
   raca: string;
   classe: string;
-  /** Dieta Marcial — escolhida no nv 2 */
+  /** Caminho de Assimilação (subclasse) — escolhido no nv 2 */
   subclasse?: string | null;
   /** Meio-Humano: linhagem permanente */
   linhagem?: string | null;

@@ -17,12 +17,12 @@
       },
       "resources": {
         "vida": {
-          "value": 22,
-          "max": 22
+          "value": 26,
+          "max": 26
         },
         "pontosAcao": {
-          "value": 6,
-          "max": 6
+          "value": 7,
+          "max": 7
         }
       },
       "movement": {
@@ -107,12 +107,12 @@
       },
       "resources": {
         "vida": {
-          "value": 18,
-          "max": 18
+          "value": 20,
+          "max": 20
         },
         "pontosAcao": {
-          "value": 6,
-          "max": 6
+          "value": 7,
+          "max": 7
         }
       },
       "movement": {
@@ -197,12 +197,12 @@
       },
       "resources": {
         "vida": {
-          "value": 36,
-          "max": 36
+          "value": 38,
+          "max": 38
         },
         "pontosAcao": {
-          "value": 6,
-          "max": 6
+          "value": 7,
+          "max": 7
         }
       },
       "movement": {
