@@ -1,5 +1,6 @@
 "use client";
 
+import "./sheet.css";
 import { useEffect, useRef, useState } from "react";
 import { PortraitFocusEditor } from "@/components/character/PortraitFocusEditor";
 import { IMAGE_UPLOAD_HINT } from "@/lib/media/image-data-url";

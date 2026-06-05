@@ -10,12 +10,14 @@ import { isAdventureMember } from "@/lib/auth/adventure-access";
 import { getAdventure } from "@/lib/adventure/store";
 import { syncAdventureActorsForRoom } from "@/lib/room/adventure-actors";
 import {
-  DEMO_CHARACTERS,
-  getCharacter,
-  canEditCharacter,
-} from "./demo-characters";
+  characterRegistry,
+  getCharacterFromRegistry,
+  listCharactersFromRegistry,
+  upsertCharacterRegistry,
+} from "./character-registry";
+import { canEditCharacter } from "./demo-characters";
 
-export { getCharacter, canEditCharacter };
+export { canEditCharacter };
 export { MAX_CHARACTERS_PER_USER_PER_ADVENTURE } from "./adventure-bind";
 
 declare global {
@@ -26,7 +28,7 @@ declare global {
 async function ensureDbCharactersSeeded(): Promise<void> {
   if (!dbEnabled() || globalThis.__eldarinDbCharactersSeeded) return;
   const { upsertCharacter } = await import("@/lib/db/characters");
-  for (const sheet of DEMO_CHARACTERS) {
+  for (const sheet of characterRegistry().values()) {
     await upsertCharacter(sheet);
   }
   globalThis.__eldarinDbCharactersSeeded = true;
@@ -39,18 +41,27 @@ export async function resolveCharacter(id: string): Promise<CharacterSheet | nul
     const fromDb = await fetchCharacter(id);
     if (fromDb) return fromDb;
   }
-  return getCharacter(id);
+  return getCharacterFromRegistry(id);
 }
 
 export async function listCharactersForUser(userId: string): Promise<CharacterSheet[]> {
+  const local = listCharactersFromRegistry(userId);
+
   if (dbEnabled()) {
     await ensureDbCharactersSeeded();
     const { listCharactersByOwner } = await import("@/lib/db/characters");
-    return listCharactersByOwner(userId);
+    const fromDb = await listCharactersByOwner(userId);
+    const byId = new Map<string, CharacterSheet>();
+    for (const sheet of fromDb) byId.set(sheet.id, sheet);
+    for (const sheet of local) {
+      if (sheet.ownerId === userId && !byId.has(sheet.id)) {
+        byId.set(sheet.id, sheet);
+      }
+    }
+    return [...byId.values()];
   }
-  return DEMO_CHARACTERS.filter((c) => c.ownerId === userId).map((c) =>
-    normalizeCharacter({ ...c })
-  );
+
+  return local;
 }
 
 export async function listCharactersForUserInAdventure(
@@ -71,11 +82,7 @@ export async function countCharactersForUserInAdventure(
 export const MAX_CHARACTERS_PER_USER = 10;
 
 export async function saveCharacter(sheet: CharacterSheet): Promise<CharacterSheet> {
-  const normalized = normalizeCharacter(sheet);
-  const idx = DEMO_CHARACTERS.findIndex((c) => c.id === normalized.id);
-  if (idx >= 0) DEMO_CHARACTERS[idx] = normalized;
-  else DEMO_CHARACTERS.push(normalized);
-
+  const normalized = upsertCharacterRegistry(sheet);
   if (dbEnabled()) {
     const { upsertCharacter } = await import("@/lib/db/characters");
     await upsertCharacter(normalized);

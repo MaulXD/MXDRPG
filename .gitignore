@@ -8,6 +8,7 @@ next-env.d.ts
 
 # Runtime user registry (seed stays in git)
 data/users/registry.json
+data/characters/registry.json
 
 # Legacy web/ (app na raiz)
 web/node_modules/
