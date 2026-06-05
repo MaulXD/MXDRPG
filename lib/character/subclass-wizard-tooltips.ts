@@ -7,13 +7,13 @@ type TrackDetail = { dietDetail: string; talents: Record<string, TalentDetail> }
 const DETAILS = detailsData.details as Record<string, TrackDetail>;
 
 export function subclassSpecialtyTooltip(specialty: string): string {
-  return `Especialidade: ${specialty}. Refeições Comum ou melhor com ingredientes desse tipo ativam a Dieta Marcial (nv. 2). Outras refeições mantêm só o bônus de dieta base da classe.`;
+  return `Especialidade: ${specialty}. Assimilar espécimes desse tipo ativa o passivo do Caminho de Assimilação (nv. 2). Outros espécimes mantêm só o bônus passivo da classe.`;
 }
 
 export function subclassDietTooltip(track: SubclassTrack): string {
   const detail = DETAILS[track.id]?.dietDetail;
   const body = detail ?? track.diet;
-  return `Dieta Marcial (nv. 2, após Refeição Comum+): ${body}`;
+  return `Caminho de Assimilação (nv. 2, passivo): ${body}`;
 }
 
 export function subclassTalentTooltip(
@@ -42,5 +42,5 @@ export function subclassTalentTooltip(
 }
 
 export function subclassTrackIntroTooltip(): string {
-  return "No nv. 2 escolha uma subclasse. Ganha a Dieta Marcial passiva. Nos nv. 4, 8, 12 e 16 escolhe 1 talento da trilha (cada um exige o anterior). No nv. 20 recebe a Ascensão.";
+  return "No nv. 2 escolha um Caminho de Assimilação (subclasse). Ganha o passivo de sobrevivência do caminho. Nos nv. 4, 8, 12 e 16 escolhe 1 talento de combate da trilha. No nv. 20 recebe a Ascensão.";
 }

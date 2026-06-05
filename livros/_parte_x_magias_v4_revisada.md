@@ -1,4 +1,4 @@
-# PARTE X — MAGIAS DE ELDARIN
+﻿# PARTE X — MAGIAS DE ELDARIN
 
 ---
 
@@ -71,7 +71,7 @@ Algumas magias da lista geral possuem **variante** anotada no Cap. 19 (ex.: Piro
 Chama pequena e controlável na ponta dos dedos; temperatura precisa. Uso culinário: dispensa fogareiro ou lenha.
 
 **Lâmina de Espirito** — Transmutação | Acao Bonus | Pessoal | 1 minuto | Mago, Bardo, Artífice
-Lâmina eterea (1d4 forca). +2 em testes de Trinchar com ela.
+Lâmina eterea (1d4 forca). +2 em testes de Extração com ela.
 
 **Detectar Veneno** — Adivinhacao | Acao | Pessoal | 10 minutos | Mago, Clérigo, Bardo, Druida, Artífice
 Em raio de 3m, detecta toxinas em comida, bebida ou ingrediente (aura avermelhada).
@@ -80,14 +80,14 @@ Em raio de 3m, detecta toxinas em comida, bebida ou ingrediente (aura avermelhad
 Criatura a 0 HP para de fazer falhas de morte; não cura HP.
 
 **Maos Firmes** — Transmutação | Acao | Toque | 1 hora | Mago, Druida, Artífice
-Alvo (você ou aliado) ganha +2 em Trinchar e não sofre -2 por falta de treinamento nesta hora.
+Alvo (você ou aliado) ganha +2 em Extração e não sofre -2 por falta de treinamento nesta hora.
 
 ---
 
 ### NIVEL 1
 
 **Extracao Amplificada** — Biomancia | 1 minuto | Toque | Instantanea | Mago, Druida, Artífice
-Monstro morto rende dobro de ingredientes; testes de Trinchar na proxima 1h tem +4.
+Monstro morto rende dobro de ingredientes; testes de Extração na proxima 1h tem +4.
 
 **Maos Gelidas** — Evocacao | Acao | 4,5m | Instantanea | Mago
 Cone 4,5m: 2d6 frio (CON CD ou dobro). Congela ingredientes.
@@ -127,7 +127,7 @@ Esfera 1m: 4d6 ácido (DES CD); -1 CA em armadura atingida.
 Converte ingrediente em equivalente de mesma raridade (ex.: goblin -> grifo).
 
 **Inspiracao Culinaria** — Encantamento | Acao Bonus | 9m | 1 hora | Bardo
-+3 em Coccao e Harmonização; Prato Perfeito durante efeito da +1d6 HP temp por nivel do Bardo ao grupo.
++3 em Coccao e Forrageio; Prato Perfeito durante efeito da +1d6 HP temp por nivel do Bardo ao grupo.
 
 **Preservação Perfeita** — Transmutação | Acao | Toque | 30 dias | Mago, Clérigo, Druida, Artífice
 Ingrediente preservado 30 dias sem perder propriedades biomágicas.
@@ -146,7 +146,7 @@ Som ou imagem estática em cubo 1,5m; não causa dano.
 ### NIVEL 3
 
 **Animação de Mortos** — Necromancia | 1 minuto | 3m | 24 horas | Mago, Clérigo
-Anima até 2 cadaveres Medios ou menores; podem Trinchar com proficiencia = metade do nivel do conjurador. Em espaco de nivel 5: 4 Medios ou 2 Grandes.
+Anima até 2 cadaveres Medios ou menores; podem Extração com proficiencia = metade do nivel do conjurador. Em espaco de nivel 5: 4 Medios ou 2 Grandes.
 
 **Injecao Biomágica** — Biomancia | Acao | Toque | 12 horas | Mago, Artífice
 Uma habilidade de assimilação do ingrediente usado, 12h, sem refeicao (ingrediente consumido).
@@ -269,31 +269,31 @@ Estes efeitos **não entram** na contagem de 60 feiticos:
 
 | Subclasse | Bonus |
 |-----------|--------|
-| **Piromante de Forno** | Conhece truque `Chama de Fogareiro` extra; feiticos de fogo +1d6 vs criaturas de gelo/agua; sem componentes de fogo |
+| **Piromante das Brasas** | Conhece truque `Chama de Fogareiro` extra; feiticos de fogo +1d6 vs criaturas de gelo/agua; sem componentes de fogo |
 | **Sacerdote da Purificacao** | `Purificar Veneno` 3x/dia sem gastar espaco de nivel 1 |
-| **Mago Confeiteiro** | 1 magia de Encantamento nv. 1–3 por dia sem gastar espaco (escolhida ao preparar) |
+| **Mago dos Encantos** | 1 magia de Encantamento nv. 1–3 por dia sem gastar espaco (escolhida ao preparar) |
 | **Clérigo do Pao da Vida** | Ritual `Pao da Manha` (R, 10 min): paes = nivel do Clérigo; quem come ao amanhecer ganha HP temp = nivel x3 |
-| **Sommelier de Masmorra** | Ao usar Inspiracao de Bardo em quem prepara refeicao, alvo ganha +1d6 em Coccao/Harmonização por 1h |
-| **Alquimista de Caldos** | 1x/descanso longo: expelir caldo (cone 4,5m 4d6 ácido ou nuvem 3m DES CD 13 Envenenado) após refeicao Gourmet própria |
+| **Estratega de Masmorra** | Ao usar Inspiracao de Bardo em quem prepara refeicao, alvo ganha +1d6 em Coccao/Forrageio por 1h |
+| **Alquimista Ácido** | 1x/descanso longo: expelir caldo (cone 4,5m 4d6 ácido ou nuvem 3m DES CD 13 Envenenado) após refeicao Gourmet própria |
 
 ### 19.2 Variantes (mesmo espaco que magia base)
 
 | Subclasse | Base | Variante |
 |-----------|------|----------|
-| **Piromante de Forno** | `Bola de Fogo` (nv. 3) | **Forno Arcano:** mesma área e dano; aliados na área sofrem metade ou nenhum dano (escolha do conjurador); não incendeia comida do grupo |
+| **Piromante das Brasas** | `Bola de Fogo` (nv. 3) | **Forno Arcano:** mesma área e dano; aliados na área sofrem metade ou nenhum dano (escolha do conjurador); não incendeia comida do grupo |
 
 ### 19.3 Magias exclusivas (8 — contam no total de 60)
 
-**Piromante de Forno — Maos Ardentes** — Evocacao | Acao | Toque | Instantanea | Nivel 1
+**Piromante das Brasas — Maos Ardentes** — Evocacao | Acao | Toque | Instantanea | Nivel 1
 Toque: 3d6 fogo (DES CD ou metade). Ingrediente tocado e selado e assado por dentro em 1 rodada.
 
 **Criomante de Conservacao — Gelo de Conservação** — Transmutação | Acao | Toque | 8 horas | Nivel 2
 Ingrediente fica em estase de gelo seco: propriedades biomágicas preservadas 8h sem recipiente; +2 CA temp ao conjurador enquanto segura o ingrediente.
 
-**Mago Fermentador — Envelhecer Matéria** — Transmutação | Truque | Toque | Instantanea
+**Mago Alquímico — Envelhecer Matéria** — Transmutação | Truque | Toque | Instantanea
 Objeto orgânico inanimado envelhece visualmente (fermentacao aparente); não altera propriedades mágicas até conjurar `Fermentação Acelerada`.
 
-**Mago Fermentador — Fermentação Acelerada** — Transmutação | 10 minutos | Toque | Instantanea | Nivel 2
+**Mago Alquímico — Fermentação Acelerada** — Transmutação | 10 minutos | Toque | Instantanea | Nivel 2
 Ingrediente fermenta em 1 minuto com efeito de 1 ano de cura natural; remove doenças leves não mágicas em quem consumir.
 
 **Sacerdote da Purificacao — Purificacao Abencada** — Abjuracao | Acao | Toque | Instantanea | Nivel 4
@@ -303,7 +303,7 @@ Remove maldicao, veneno ou corrupcao mágica em criatura ou ingrediente.
 Nuvem 1,5m: criaturas CON CD ou Envenenado 1 rodada; ingredientes necrofagos na nuvem ganham +1 na rolagem de assimilação.
 
 **Druida, Circulo da Decomposicao — Grande Decomposicao** — Transmutação | Acao | 9m | Instantanea | Nivel 5
-Organico em cubo 3m vira fertilizante seguro; decompoe carcaca para extracao automatica (como Trinchar CD 14 bem-sucedido).
+Organico em cubo 3m vira fertilizante seguro; decompoe carcaca para extracao automatica (como Extração CD 14 bem-sucedido).
 
 **Bardo Confeiteiro — Doce Confuso** — Encantamento | Acao | 18m | Instantanea | Nivel 1
 Um humanoide CON CD ou Amedrontado e Desvantagem em Percepção por 1 minuto (sabor de panico).

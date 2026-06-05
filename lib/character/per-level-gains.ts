@@ -35,12 +35,12 @@ export function perLevelGainLines(actor: CharacterSheet, newLevel: number): stri
   const skill = CULINARY_ROTATION[(newLevel - 1) % CULINARY_ROTATION.length]!;
   const skillLabel =
     skill === "trinchar"
-      ? "Trinchar"
+      ? "Extração"
       : skill === "harmonizacao"
-        ? "Harmonização"
+        ? "Forrageio"
         : skill === "coccao"
-          ? "Coccão"
-          : "Estômago de Ferro";
+          ? "Fabricação"
+          : "Fortitude";
   lines.push(`Progressão: +1 ${skillLabel}`);
 
   if (newLevel % 3 === 0) {

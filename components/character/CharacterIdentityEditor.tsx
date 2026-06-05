@@ -130,7 +130,7 @@ export function CharacterIdentityEditor({ actor, roomId, canEdit, onSaved }: Pro
           </label>
 
           <label>
-            Subclasse (Dieta Marcial)
+            Caminho de Assimilação (subclasse)
             <select value={subclasse} onChange={(e) => setSubclasse(e.target.value)}>
               <option value="">— nv 2 —</option>
               {(classDef?.subclasses ?? []).map((s) => (

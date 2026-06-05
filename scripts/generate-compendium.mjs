@@ -138,9 +138,9 @@ function monCod(n) {
 
 /** 001–060 + extras (ordem = LIVRO-DO-JOGADOR §6.2) */
 const MONSTERS = [
-  mob("Zumbi de Masmorra", 2, 22, 10, "mob", { forca: 13, agilidade: 8 }, { walk: 3, run: 5 }),
-  mob("Esqueleto Armado", 2, 18, 13, "mob", { forca: 10, agilidade: 14 }),
-  mob("Ghoul", 3, 36, 12, "mob", { forca: 13, agilidade: 15 }),
+  mob("Zumbi de Masmorra", 2, 26, 10, "mob", { forca: 13, agilidade: 8 }, { walk: 3, run: 5 }, 7),
+  mob("Esqueleto Armado", 2, 20, 13, "mob", { forca: 10, agilidade: 14 }, { walk: 4, run: 6 }, 7),
+  mob("Ghoul", 3, 38, 12, "mob", { forca: 13, agilidade: 15 }, { walk: 4, run: 6 }, 7),
   mob("Espectro", 4, 28, 14, "mini", { forca: 8, agilidade: 14 }),
   mob("Lich (Arquiliche)", 18, 285, 17, "boss", { forca: 11, agilidade: 16 }, { walk: 4, run: 6 }, 4),
   mob("Assombração", 3, 45, 13, "mob", { forca: 6, agilidade: 16 }),

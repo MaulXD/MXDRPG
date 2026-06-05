@@ -80,7 +80,7 @@ export function buildTalentTreeNodes(
     {
       key: "diet",
       level: 2,
-      label: "Dieta Marcial",
+      label: "Caminho de Assimilação",
       kind: "diet",
       state:
         actorLevel >= 2 ? "owned" : pickingLevel === 2 ? "selectable" : "future",
