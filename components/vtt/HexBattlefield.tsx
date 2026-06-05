@@ -730,6 +730,29 @@ export function HexBattlefield({
     snapshot?.actors,
   ]);
 
+  const fireSelfAbility = useCallback(
+    async (action: CombatActionOption, token = selected) => {
+      if (!token || !action.selfTarget || action.kind !== "ability") return;
+      setActionErr(null);
+      try {
+        const snap = await postRoomAbility(roomId, token.id, null, {
+          actionEntryId: action.entryId,
+          bypassTurn: turn.bypassTurn,
+        });
+        const combatMsgs = snap.chat.filter((m) => m.kind === "combat");
+        const last = combatMsgs[combatMsgs.length - 1];
+        if (last?.kind === "combat") triggerCombatFx(last);
+        setActionMode("idle");
+        setSelectedCombatAction(null);
+        setActionRingAt(null);
+        syncRoom(snap);
+      } catch (e) {
+        setActionErr(e instanceof Error ? e.message : "Falha na habilidade");
+      }
+    },
+    [selected, roomId, turn.bypassTurn, syncRoom, triggerCombatFx]
+  );
+
   const attackToken = useCallback(
     async (defenderId: string) => {
       if (!selected || !activeCombatAction) return;
@@ -1152,6 +1175,10 @@ export function HexBattlefield({
             canBypassTurn={canBypassTurnProp}
             roomId={roomId}
             onPickMode={(mode, action) => {
+              if (action?.selfTarget && action.kind === "ability") {
+                void fireSelfAbility(action);
+                return;
+              }
               setActionMode(mode);
               setSelectedCombatAction(action);
               if (mode !== "spell") setChannelExtraPa(0);
