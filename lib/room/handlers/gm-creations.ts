@@ -13,6 +13,7 @@ import {
 import { createPlayerTokenFromActor } from "@/lib/vtt/player-token";
 import type { Axial } from "@/lib/vtt/hex-math";
 import type { CharacterSheet } from "@/lib/character/types";
+import { canAnchorTokenAt } from "@/lib/vtt/dungeon-layer";
 import { getRoom, persistRoom, toSnapshot } from "../internal/registry";
 import type { RoomSnapshot } from "../types";
 import type { SpawnExecuteResult } from "./tokens";
@@ -97,6 +98,10 @@ export async function spawnRoomGmCreation(
 
   const creation = getRoomGmCreations(room)[creationId];
   if (!creation) return { ok: false, error: "Template não encontrado" };
+
+  if (!canAnchorTokenAt(room.scene, axial)) {
+    return { ok: false, error: "Hex bloqueado ou ocupado" };
+  }
 
   if (creation.kind === "creature") {
     const token = createCreatureTokenFromGmCreation(creation, axial);

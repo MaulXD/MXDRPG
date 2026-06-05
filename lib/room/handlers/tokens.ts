@@ -5,10 +5,10 @@ import type { Axial } from "@/lib/vtt/hex-math";
 import { canMoveToken, type MoveMode } from "@/lib/vtt/movement";
 import { createMonsterTokenFromEntryId } from "@/lib/vtt/monsters";
 import { createPlayerTokenFromActor } from "@/lib/vtt/player-token";
-import { axialDistance } from "@/lib/vtt/hex-math";
 import type { MonsterSpawnOptions } from "@/lib/vtt/monster-scaling";
 import type { BattleToken } from "@/lib/vtt/types";
 import { activeTokenId } from "../combat";
+import { canAnchorTokenAt } from "@/lib/vtt/dungeon-layer";
 import { revealAxial } from "@/lib/vtt/fog-of-war";
 import { characterBelongsToAdventure } from "@/lib/character/adventure-bind";
 import { maybeRecordCombatUndo } from "../combat-undo";
@@ -93,6 +93,7 @@ export async function moveRoomToken(
       tokens: room.scene.tokens,
       gridRadius: room.scene.gridRadius,
       actorRacas,
+      dungeonObjects: room.scene.dungeonObjects,
     },
     movePaOpts
   );
@@ -151,6 +152,10 @@ export async function spawnRoomMonster(
   const token = createMonsterTokenFromEntryId(monsterEntryId, axial, options);
   if (!token) return { ok: false, error: "Monstro não encontrado no compêndio" };
 
+  if (!canAnchorTokenAt(room.scene, axial)) {
+    return { ok: false, error: "Hex bloqueado ou ocupado" };
+  }
+
   room.scene = {
     ...room.scene,
     tokens: [...room.scene.tokens, token],
@@ -167,21 +172,6 @@ export async function spawnRoomMonster(
   return { ok: true, snapshot: toSnapshot(updated), tokenId: token.id };
 }
 
-function hexOccupied(
-  tokens: BattleToken[],
-  axial: Axial,
-  exceptTokenId?: string
-): boolean {
-  return tokens.some(
-    (t) =>
-      t.id !== exceptTokenId && t.axial.q === axial.q && t.axial.r === axial.r
-  );
-}
-
-function hexInGrid(axial: Axial, gridRadius: number): boolean {
-  return axialDistance({ q: 0, r: 0 }, axial) <= gridRadius;
-}
-
 /** Mestre: move token para qualquer hex livre, sem PA nem turno. */
 export async function repositionRoomToken(
   roomId: string,
@@ -194,11 +184,8 @@ export async function repositionRoomToken(
   const idx = room.scene.tokens.findIndex((t) => t.id === tokenId);
   if (idx < 0) return { ok: false, error: "Token não encontrado" };
 
-  if (!hexInGrid(target, room.scene.gridRadius)) {
-    return { ok: false, error: "Fora do tabuleiro" };
-  }
-  if (hexOccupied(room.scene.tokens, target, tokenId)) {
-    return { ok: false, error: "Hex ocupado" };
+  if (!canAnchorTokenAt(room.scene, target, tokenId)) {
+    return { ok: false, error: "Hex bloqueado, fora do tabuleiro ou ocupado" };
   }
 
   const tokens = [...room.scene.tokens];
@@ -225,16 +212,12 @@ export async function placeRoomActorOnHex(
     return { ok: false, error: "Esta ficha pertence a outra aventura" };
   }
 
-  if (!hexInGrid(target, room.scene.gridRadius)) {
-    return { ok: false, error: "Fora do tabuleiro" };
-  }
-
   const existing = room.scene.tokens.find(
     (t) => t.linked && t.actorId === actorId
   );
   if (existing) {
-    if (hexOccupied(room.scene.tokens, target, existing.id)) {
-      return { ok: false, error: "Hex ocupado" };
+    if (!canAnchorTokenAt(room.scene, target, existing.id)) {
+      return { ok: false, error: "Hex bloqueado, fora do tabuleiro ou ocupado" };
     }
     const tokens = room.scene.tokens.map((t) =>
       t.id === existing.id ? { ...t, axial: target } : t
@@ -244,8 +227,8 @@ export async function placeRoomActorOnHex(
     return { ok: true, snapshot: toSnapshot(updated), tokenId: existing.id };
   }
 
-  if (hexOccupied(room.scene.tokens, target)) {
-    return { ok: false, error: "Hex ocupado" };
+  if (!canAnchorTokenAt(room.scene, target)) {
+    return { ok: false, error: "Hex bloqueado, fora do tabuleiro ou ocupado" };
   }
 
   const token = createPlayerTokenFromActor(actor, target);

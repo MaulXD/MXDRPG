@@ -17,6 +17,46 @@ function paRulesForToken(room: RoomState, token: BattleToken) {
   return paTurnRulesForMonster(token.monsterTier);
 }
 
+/** Aplica ordem manual do mestre preservando o token ativo e a ordem natural. */
+export function applyGmCombatOrder(
+  combat: CombatTrack,
+  room: RoomState,
+  newOrder: string[],
+  opts?: { activeTokenId?: string }
+): CombatTrack {
+  const byId = new Map(room.scene.tokens.map((t) => [t.id, t]));
+
+  const filtered = newOrder.filter((id) => {
+    const t = byId.get(id);
+    return t != null && !isDefeatedToken(t);
+  });
+
+  for (const t of room.scene.tokens) {
+    if (isDefeatedToken(t)) continue;
+    if (!filtered.includes(t.id)) filtered.push(t.id);
+  }
+
+  const naturalOrder = combat.naturalOrder ?? [...combat.order];
+  const activeId =
+    opts?.activeTokenId?.trim() ||
+    combat.order[combat.activeIndex] ||
+    null;
+
+  let activeIndex = 0;
+  if (activeId) {
+    const idx = filtered.indexOf(activeId);
+    activeIndex = idx >= 0 ? idx : 0;
+  }
+
+  return {
+    ...combat,
+    order: filtered,
+    activeIndex,
+    naturalOrder,
+    orderOverridden: true,
+  };
+}
+
 /** Move token para o fim da ordem (jogada extra nesta rodada). */
 export function deferTokenToEndOfOrder(combat: CombatTrack, tokenId: string): CombatTrack {
   const order = [...combat.order];

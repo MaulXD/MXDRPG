@@ -1,5 +1,6 @@
 import { canManageRoom } from "@/lib/auth/room-access";
 import type { SessionUser } from "@/lib/auth/types";
+import { sanitizeDungeonObjects } from "@/lib/vtt/dungeon-layer";
 import { revealAxial } from "@/lib/vtt/fog-of-war";
 import { inGrid } from "@/lib/vtt/token-occupancy";
 import { getRoom, persistRoom, toSnapshot } from "../internal/registry";
@@ -15,6 +16,7 @@ export type ScenePatch = Partial<
     | "mapImageOffsetY"
     | "fogEnabled"
     | "revealedHexes"
+    | "dungeonObjects"
   >
 >;
 
@@ -27,10 +29,11 @@ export async function patchRoomScene(
   if (!room) return null;
   if (!canManageRoom(room, user)) return null;
 
-  room.scene = {
-    ...room.scene,
-    ...patch,
-  };
+  const next = { ...room.scene, ...patch };
+  if (patch.dungeonObjects !== undefined) {
+    next.dungeonObjects = sanitizeDungeonObjects(next);
+  }
+  room.scene = next;
   const updated = await persistRoom(roomId, room);
   return toSnapshot(updated);
 }

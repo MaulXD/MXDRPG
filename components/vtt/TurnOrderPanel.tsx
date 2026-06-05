@@ -59,6 +59,28 @@ function hpPercent(token: BattleToken): number {
 
 }
 
+function isDefeated(token: BattleToken): boolean {
+  if (token.vidaMax == null) return false;
+  return (token.vida ?? 0) <= 0;
+}
+
+function livingOrderIds(order: string[], tokenMap: Map<string, BattleToken>): string[] {
+  return order.filter((id) => {
+    const t = tokenMap.get(id);
+    return t != null && !isDefeated(t);
+  });
+}
+
+function reorderIds(order: string[], fromId: string, toId: string): string[] {
+  const from = order.indexOf(fromId);
+  const to = order.indexOf(toId);
+  if (from < 0 || to < 0 || from === to) return order;
+  const next = [...order];
+  next.splice(from, 1);
+  next.splice(to, 0, fromId);
+  return next;
+}
+
 
 
 export function TurnOrderPanel({
@@ -88,10 +110,11 @@ export function TurnOrderPanel({
   const [busy, setBusy] = useState(false);
   const [gmBusy, setGmBusy] = useState<string | null>(null);
   const [gmError, setGmError] = useState<string | null>(null);
-
-
+  const [dragId, setDragId] = useState<string | null>(null);
+  const [dragOverId, setDragOverId] = useState<string | null>(null);
 
   const tokenMap = new Map(tokens.map((t) => [t.id, t]));
+  const displayOrder = livingOrderIds(combat.order, tokenMap);
 
   const activeId = combat.order[combat.activeIndex] ?? null;
 
@@ -140,6 +163,13 @@ export function TurnOrderPanel({
     } finally {
       setGmBusy(null);
     }
+  }
+
+  async function handleReorder(fromId: string, toId: string) {
+    if (fromId === toId) return;
+    const base = livingOrderIds(combat.order, tokenMap);
+    const order = reorderIds(base, fromId, toId);
+    await runGmAction("reorder", { action: "set-order", order });
   }
 
   const undoByToken = new Map<string, CombatUndoEntry>();
@@ -202,6 +232,10 @@ export function TurnOrderPanel({
 
         </div>
 
+        {canControl ? (
+          <p className="vtt-turn-gm-hint">Arraste ≡ para reordenar a fila manualmente.</p>
+        ) : null}
+
         {canControl && combat.orderOverridden ? (
           <div className="vtt-turn-gm-banner">
             <span>Ordem alterada pelo mestre</span>
@@ -218,9 +252,9 @@ export function TurnOrderPanel({
 
         {gmError ? <p className="vtt-turn-gm-error">{gmError}</p> : null}
 
-        <ol className="vtt-turn-list">
+        <ol className={`vtt-turn-list${canControl ? " vtt-turn-list--gm" : ""}`}>
 
-          {combat.order.map((id, index) => {
+          {displayOrder.map((id, index) => {
 
             const token = tokenMap.get(id);
 
@@ -234,7 +268,8 @@ export function TurnOrderPanel({
 
             const hp = hpPercent(token);
 
-            const defeated = token.vidaMax != null && (token.vida ?? 0) <= 0;
+            const defeated = isDefeated(token);
+            const draggable = canControl && !defeated;
 
             const attackable = Boolean(attackableIds?.has(id));
 
@@ -247,6 +282,10 @@ export function TurnOrderPanel({
               defeated ? "defeated" : "",
 
               attackFocus ? "vtt-turn-attack-focus" : attackable ? "vtt-turn-attackable" : "",
+
+              draggable ? "vtt-turn-draggable" : "",
+
+              dragOverId === id && dragId !== id ? "vtt-turn-drag-over" : "",
 
             ]
 
@@ -275,6 +314,31 @@ export function TurnOrderPanel({
               <li
                 key={id}
                 className={rowClass || undefined}
+                draggable={draggable}
+                onDragStart={(e) => {
+                  if (!draggable) return;
+                  setDragId(id);
+                  setDragOverId(id);
+                  e.dataTransfer.effectAllowed = "move";
+                  e.dataTransfer.setData("text/plain", id);
+                }}
+                onDragOver={(e) => {
+                  if (!draggable || !dragId || dragId === id) return;
+                  e.preventDefault();
+                  e.dataTransfer.dropEffect = "move";
+                  setDragOverId(id);
+                }}
+                onDrop={(e) => {
+                  e.preventDefault();
+                  if (!dragId || dragId === id) return;
+                  void handleReorder(dragId, id);
+                  setDragId(null);
+                  setDragOverId(null);
+                }}
+                onDragEnd={() => {
+                  setDragId(null);
+                  setDragOverId(null);
+                }}
                 onMouseEnter={() => {
                   if (attackable) onHoverAttackTargetChange?.(id);
                 }}
@@ -282,6 +346,14 @@ export function TurnOrderPanel({
                   if (attackable) onHoverAttackTargetChange?.(null);
                 }}
               >
+
+                {draggable ? (
+                  <span className="vtt-turn-drag-handle" aria-hidden title="Arrastar para reordenar">
+                    ≡
+                  </span>
+                ) : (
+                  <span className="vtt-turn-drag-spacer" aria-hidden />
+                )}
 
                 <span className="vtt-turn-rank" aria-hidden>
 
@@ -387,6 +459,19 @@ export function TurnOrderPanel({
 
                 {canControl && !defeated ? (
                   <div className="vtt-turn-gm-actions">
+                    {!active ? (
+                      <button
+                        type="button"
+                        className="vtt-turn-gm-chip vtt-turn-gm-chip--active"
+                        title="Definir como turno ativo"
+                        disabled={gmBusy != null}
+                        onClick={() =>
+                          void runGmAction(`active-${id}`, { action: "set-active", tokenId: id })
+                        }
+                      >
+                        {gmBusy === `active-${id}` ? "…" : "▶"}
+                      </button>
+                    ) : null}
                     <button
                       type="button"
                       className="vtt-turn-gm-chip"

@@ -4,7 +4,7 @@ import { useState } from "react";
 import { postRoomChat } from "@/hooks/useRoomSync";
 import { DiceMiniature } from "@/components/vtt/DiceMiniature";
 
-const QUICK = ["1d20", "1d12", "1d10", "1d8", "1d6", "1d4", "2d6", "1d20+3"];
+const QUICK = ["1d20", "1d12", "1d10", "1d8", "1d6", "1d4", "2d6"];
 
 type Props = {
   roomId: string;
@@ -80,7 +80,7 @@ export function DiceRoller({ roomId, onUpdate }: Props) {
           type="text"
           value={formula}
           onChange={(e) => setFormula(e.target.value)}
-          placeholder="1d20+3"
+          placeholder="1d20"
           spellCheck={false}
         />
         <button type="submit" className="btn" disabled={busy}>
