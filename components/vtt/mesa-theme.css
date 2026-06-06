@@ -266,9 +266,23 @@
   border-color: var(--mesa-accent-border);
 }
 
-.vtt-chrome[data-vtt-mesa="foundry"] .sheet-popup-right,
-.vtt-chrome[data-vtt-mesa="foundry"] .sheet-popup-left {
+.vtt-chrome[data-vtt-mesa="foundry"] .sheet-popup-top {
   background: var(--mesa-surface-inset);
+  border-bottom-color: var(--mesa-accent-border);
+}
+
+.vtt-chrome[data-vtt-mesa="foundry"] .sheet-popup-identity__eyebrow,
+.vtt-chrome[data-vtt-mesa="foundry"] .sheet-popup-identity__ring,
+.vtt-chrome[data-vtt-mesa="foundry"] .sheet-popup-attr strong,
+.vtt-chrome[data-vtt-mesa="foundry"] .sheet-popup-skill__abbr,
+.vtt-chrome[data-vtt-mesa="foundry"] .sheet-popup-skill__bonus,
+.vtt-chrome[data-vtt-mesa="foundry"] .sheet-popup-section-title {
+  color: var(--mesa-accent);
+}
+
+.vtt-chrome[data-vtt-mesa="foundry"] .sheet-popup-identity__ring {
+  border-color: var(--mesa-accent);
+  box-shadow: 0 0 0 3px var(--mesa-accent-soft);
 }
 
 .vtt-chrome[data-vtt-mesa="foundry"] .sheet-popup-center {

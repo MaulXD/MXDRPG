@@ -223,7 +223,7 @@ export function drawTokenDefeatedSkull(
   ctx.restore();
 }
 
-/** HP numérico acima do token — sem fundo, só texto com sombra. */
+/** HP numérico em negrito, acima do token. */
 export function drawTokenHpLabel(
   ctx: CanvasRenderingContext2D,
   x: number,
@@ -236,17 +236,18 @@ export function drawTokenHpLabel(
 
   const defeated = isTokenDefeated(token);
   const hpText = defeated ? "Morto" : `${token.vida}/${token.vidaMax}`;
-  const hpY = y - tokenR - 12;
+  const fontSize = Math.max(13, Math.round(tokenR * 0.42));
+  const hpY = y - tokenR - fontSize * 0.85;
 
   ctx.save();
   ctx.textAlign = "center";
-  ctx.textBaseline = "middle";
-  ctx.font = defeated
-    ? "900 11px Source Sans 3, Segoe UI, sans-serif"
-    : "900 12px Source Sans 3, Segoe UI, sans-serif";
-  ctx.fillStyle = defeated ? "rgb(160, 160, 160)" : color;
-  ctx.shadowColor = "rgba(0,0,0,0.88)";
-  ctx.shadowBlur = 5;
+  ctx.textBaseline = "bottom";
+  ctx.font = `bold ${fontSize}px Source Sans 3, Segoe UI, sans-serif`;
+  ctx.lineJoin = "round";
+  ctx.lineWidth = Math.max(2.5, fontSize * 0.2);
+  ctx.strokeStyle = "rgba(0, 0, 0, 0.9)";
+  ctx.fillStyle = defeated ? "rgb(190, 190, 190)" : color;
+  ctx.strokeText(hpText, x, hpY);
   ctx.fillText(hpText, x, hpY);
   ctx.restore();
 }
