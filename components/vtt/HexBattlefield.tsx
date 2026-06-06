@@ -89,6 +89,9 @@ import {
   type TokenCastFxKind,
 } from "@/lib/vtt/token-cast-fx";
 import { BattlefieldActionHud } from "@/components/vtt/BattlefieldActionHud";
+import { CharacterCombatHud } from "@/components/vtt/CharacterCombatHud";
+import { TokenHoverMiniHud } from "@/components/vtt/TokenHoverMiniHud";
+import { TokenStatusModal } from "@/components/vtt/TokenStatusModal";
 import { EndTurnBar } from "@/components/vtt/EndTurnBar";
 import { TurnOrderPanel } from "@/components/vtt/TurnOrderPanel";
 import {
@@ -97,6 +100,7 @@ import {
   type DungeonEditorTool,
 } from "@/components/vtt/DungeonEditorPanel";
 import { useCombatTurn } from "@/hooks/useCombatActions";
+import { useCombatHudVisible } from "@/hooks/vtt/useCombatHudVisible";
 import { useTokenImages } from "@/hooks/vtt/useTokenImages";
 import { usePortraitFocusByToken } from "@/hooks/vtt/usePortraitFocusByToken";
 import { useBattlefieldHighlights } from "@/hooks/vtt/useBattlefieldHighlights";
@@ -173,6 +177,8 @@ type Props = {
   onWhiteboardWindowMinimize?: () => void;
   onWhiteboardWindowFocus?: () => void;
   isWindowFloating?: (id: MesaWindowId) => boolean;
+  /** Registra abertura do modal Status (ícone na barra Foundry). */
+  onRegisterOpenStatus?: (open: () => void) => void;
 };
 
 export function HexBattlefield({
@@ -227,6 +233,7 @@ export function HexBattlefield({
   onWhiteboardWindowMinimize,
   onWhiteboardWindowFocus,
   isWindowFloating,
+  onRegisterOpenStatus,
 }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
@@ -250,6 +257,8 @@ export function HexBattlefield({
   const [actionRingAt, setActionRingAt] = useState<{ x: number; y: number } | null>(null);
   const [friendlyFireTargetId, setFriendlyFireTargetId] = useState<string | null>(null);
   const [friendlyFireBusy, setFriendlyFireBusy] = useState(false);
+  const [statusOpen, setStatusOpen] = useState(false);
+  const { visible: hudVisible, setHudVisible } = useCombatHudVisible(roomId);
   const toast = useVttToast();
   const seenCombatRef = useRef<Set<string>>(new Set());
   const combatChatSeededRef = useRef(false);
@@ -1574,6 +1583,50 @@ export function HexBattlefield({
   const combat = snapshot?.combat;
   const canEndTurn = canEndTurnProp;
 
+  const playerToken = useMemo(() => {
+    if (!session) return null;
+    return (
+      displayScene.tokens.find(
+        (t) => t.linked && t.actorId && roomActors[t.actorId]?.ownerId === session.id
+      ) ?? null
+    );
+  }, [displayScene.tokens, roomActors, session]);
+
+  const hudToken = isRoomGm && turnActiveToken ? turnActiveToken : playerToken;
+  const hudIsControlled = Boolean(playerToken && hudToken && playerToken.id === hudToken.id);
+
+  const statusToken = isRoomGm
+    ? selected ?? turnActiveToken ?? playerToken
+    : playerToken;
+
+  const openStatusModal = useCallback(() => {
+    if (statusToken) setStatusOpen(true);
+  }, [statusToken]);
+
+  useEffect(() => {
+    onRegisterOpenStatus?.(openStatusModal);
+  }, [onRegisterOpenStatus, openStatusModal]);
+
+  const hoverMiniHudAnchor = useMemo(() => {
+    if (!hoverTokenId) return null;
+    const wrap = wrapRef.current;
+    if (!wrap) return null;
+    const token = displayScene.tokens.find((t) => t.id === hoverTokenId);
+    if (!token) return null;
+    const w = wrap.clientWidth;
+    const h = wrap.clientHeight;
+    const { ox, oy } = canvasCenter(w, h);
+    const world = axialToPixel(token.axial.q, token.axial.r, displayScene.hexSize, ox, oy);
+    const screen = worldToScreen(world.x, world.y, w, h, battlefieldView.view);
+    const tokenR = hexDrawRadius(displayScene.hexSize) * (battlefieldView.view.scale ?? 1);
+    return { x: screen.x, y: screen.y - tokenR - 8 };
+  }, [hoverTokenId, displayScene.tokens, displayScene.hexSize, battlefieldView.view]);
+
+  const hoverMiniHudToken =
+    hoverTokenId != null
+      ? displayScene.tokens.find((t) => t.id === hoverTokenId) ?? null
+      : null;
+
   const attackTargetCursor =
     actionMode === "attack" &&
     isTargetMode(actionMode) &&
@@ -1612,6 +1665,7 @@ export function HexBattlefield({
       onPlaced={(snap) => syncRoom(snap)}
       onUpdate={refresh}
       fogHint={fogListHint}
+      onOpenStatus={openStatusModal}
     />
   );
 
@@ -2055,7 +2109,7 @@ export function HexBattlefield({
             <span className="vtt-turn-of-banner__round">Rodada {combat.round}</span>
           </div>
         ) : null}
-        {combat ? (
+        {combat && (!hudToken || !hudVisible) ? (
           <EndTurnBar
             roomId={roomId}
             combat={combat}
@@ -2066,7 +2120,49 @@ export function HexBattlefield({
             onUpdate={refresh}
           />
         ) : null}
+        {hudToken && hudVisible ? (
+          <CharacterCombatHud
+            token={hudToken}
+            combat={combat}
+            isGmView={isRoomGm && !hudIsControlled}
+            isControlled={hudIsControlled}
+            canViewPa={canViewTokenPaFn(hudToken)}
+            canEndTurn={canEndTurn || canControlCombat}
+            roomId={roomId}
+            onOpenStatus={openStatusModal}
+            onOpenSheet={onOpenSheet}
+            onSnapshot={syncRoom}
+            onUpdate={refresh}
+            onHide={() => setHudVisible(false)}
+          />
+        ) : hudToken ? (
+          <button
+            type="button"
+            className="vtt-combat-hud-restore btn btn-ghost"
+            onClick={() => setHudVisible(true)}
+          >
+            Mostrar HUD · {hudToken.name}
+          </button>
+        ) : null}
+        {hoverMiniHudToken && hoverMiniHudAnchor ? (
+          <TokenHoverMiniHud
+            token={hoverMiniHudToken}
+            combat={combat}
+            anchor={hoverMiniHudAnchor}
+            isGm={isRoomGm}
+            viewerToken={playerToken}
+          />
+        ) : null}
         <BattlefieldActionHud preview={actionPreview} anchor={actionPreviewAnchor} />
+        <TokenStatusModal
+          open={statusOpen}
+          token={statusToken}
+          roomId={roomId}
+          combat={combat}
+          canApplyConditions={isRoomGm}
+          onClose={() => setStatusOpen(false)}
+          onUpdate={refresh}
+        />
         <CombatFxLayer
           wrapRef={wrapRef}
           hexSize={scene.hexSize}

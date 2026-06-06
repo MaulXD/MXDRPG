@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import { postGmCombatAction } from "@/hooks/useRoomSync";
+import { useMemo } from "react";
 import type { BattleToken } from "@/lib/vtt/types";
 import type { Axial } from "@/lib/vtt/hex-math";
 import type { RoomActor, RoomSnapshot } from "@/lib/room/types";
@@ -11,7 +10,6 @@ import type { SessionUser } from "@/lib/auth/types";
 import { ACTION_MODE_LABEL, type TokenActionMode } from "@/lib/vtt/action-mode";
 import { PaDotMeter } from "@/components/vtt/PaDotMeter";
 import { TokenEffectsRow } from "@/components/vtt/TokenEffectsRow";
-import { TokenStatusModal } from "@/components/vtt/TokenStatusModal";
 import { PlayerSpawnPanel } from "@/components/vtt/PlayerSpawnPanel";
 
 type Props = {
@@ -38,6 +36,7 @@ type Props = {
   onPlaced: (snapshot: RoomSnapshot) => void;
   onUpdate: () => void;
   fogHint?: boolean;
+  onOpenStatus?: () => void;
 };
 
 export function ActiveCharactersPanel({
@@ -63,34 +62,9 @@ export function ActiveCharactersPanel({
   onPlaced,
   onUpdate,
   fogHint = false,
+  onOpenStatus,
 }: Props) {
   const canCreateInAdventure = roomId !== "demo" && Boolean(session);
-  const [statusOpen, setStatusOpen] = useState(false);
-  const [hpBusy, setHpBusy] = useState(false);
-  const [hpValue, setHpValue] = useState("");
-  const [hpMax, setHpMax] = useState("");
-
-  useEffect(() => {
-    if (!selected?.vidaMax) return;
-    setHpValue(String(selected.vida ?? 0));
-    setHpMax(String(selected.vidaMax));
-  }, [selected?.id, selected?.vida, selected?.vidaMax]);
-
-  async function applyGmHp() {
-    if (!selected || hpBusy) return;
-    setHpBusy(true);
-    try {
-      const snap = await postGmCombatAction(roomId, {
-        action: "set-hp",
-        tokenId: selected.id,
-        value: Number(hpValue),
-        max: Number(hpMax),
-      });
-      onPlaced(snap);
-    } finally {
-      setHpBusy(false);
-    }
-  }
 
   const playerToken = useMemo(() => {
     if (!session) return null;
@@ -113,6 +87,21 @@ export function ActiveCharactersPanel({
 
   return (
     <aside className="vtt-sidebar vtt-sidebar--actors">
+      <div className="vtt-sidebar-status-row vtt-sidebar-status-row--top">
+        <p className="vtt-eyebrow" style={{ margin: 0 }}>
+          Status
+        </p>
+        <button
+          type="button"
+          className="btn btn-ghost vtt-status-open-btn"
+          disabled={statusButtonDisabled}
+          title={statusButtonHint}
+          onClick={() => onOpenStatus?.()}
+        >
+          Abrir
+        </button>
+      </div>
+
       <PlayerSpawnPanel
         roomId={roomId}
         adventureId={adventureId}
@@ -126,20 +115,7 @@ export function ActiveCharactersPanel({
         showCreateLink={canCreateInAdventure}
       />
 
-      <div className="vtt-sidebar-status-row">
-        <p className="vtt-eyebrow" style={{ margin: 0 }}>
-          No mapa
-        </p>
-        <button
-          type="button"
-          className="btn btn-ghost vtt-status-open-btn"
-          disabled={statusButtonDisabled}
-          title={statusButtonHint}
-          onClick={() => setStatusOpen(true)}
-        >
-          Status
-        </button>
-      </div>
+      <p className="vtt-eyebrow vtt-sidebar-map-label">No mapa</p>
       {fogHint ? (
         <p className="vtt-combat-hint vtt-fog-list-hint">
           Só aparecem jogadores e criaturas no seu campo de visão.
@@ -154,106 +130,19 @@ export function ActiveCharactersPanel({
         </p>
       ) : null}
 
-      {selected ? (
-        <div className="vtt-token-panel">
-          <strong style={{ color: selected.color }}>{selected.name}</strong>
-          {selected.linked ? (
-            <p className="vtt-linked-badge">
-              Ficha linkada
-              {onOpenSheet ? (
-                <>
-                  {" "}
-                  ·{" "}
-                  <button
-                    type="button"
-                    className="vtt-inline-link"
-                    onClick={() => onOpenSheet(selected.actorId ?? "pc-thrain-ferroescudo")}
-                  >
-                    Abrir ficha →
-                  </button>
-                </>
-              ) : null}
-            </p>
-          ) : selected.monsterEntryId ? (
-            <p className="vtt-linked-badge">Monstro · {selected.monsterEntryId}</p>
-          ) : null}
-          {selected.vidaMax != null ? (
-            canControlCombat ? (
-              <div className="vtt-gm-hp-row">
-                <label className="vtt-field vtt-field--inline">
-                  Vida
-                  <input
-                    type="number"
-                    min={0}
-                    value={hpValue}
-                    onChange={(e) => setHpValue(e.target.value)}
-                    disabled={hpBusy}
-                  />
-                </label>
-                <span className="vtt-gm-hp-sep">/</span>
-                <label className="vtt-field vtt-field--inline">
-                  Máx.
-                  <input
-                    type="number"
-                    min={1}
-                    value={hpMax}
-                    onChange={(e) => setHpMax(e.target.value)}
-                    disabled={hpBusy}
-                  />
-                </label>
-                <button
-                  type="button"
-                  className="btn btn-ghost"
-                  disabled={hpBusy}
-                  onClick={() => void applyGmHp()}
-                >
-                  {hpBusy ? "…" : "OK"}
-                </button>
-              </div>
-            ) : (
-              <p>
-                Vida {selected.vida}/{selected.vidaMax}
-              </p>
-            )
-          ) : null}
-          {selected.defesa != null ? (
-            <p>
-              Defesa {selected.defesa}
-              {selected.defesaBonus ? ` (+${selected.defesaBonus} buff)` : ""}
-            </p>
-          ) : null}
-          {canViewTokenPa(selected) ? (
-            <PaDotMeter
-              current={selected.pa}
-              max={selected.paMax}
-              banked={selected.bankedPa}
-              spentThisTurn={selected.paSpentThisTurn}
-            />
-          ) : (
-            <p className="vtt-combat-hint">PA do monstro — só o mestre vê.</p>
-          )}
-
-          {canUseToken && combat?.order.length ? (
-            <p className="vtt-combat-hint vtt-action-ring-hint">
-              {selected.id === activeTokenId(combat)
-                ? "Clique direito no personagem ou hex dele para o anel de ações. Passe o mouse para ver o alcance."
-                : "Aguarde seu turno na iniciativa (painel ⏱)."}
-            </p>
-          ) : canUseToken ? (
-            <p className="vtt-combat-hint">Inicie o combate (rolar iniciativa) para usar ações.</p>
-          ) : (
-            <p className="vtt-combat-hint">Token sem stats de combate.</p>
-          )}
-          {actionMode !== "idle" ? (
-            <p className="vtt-combat-hint">
-              Modo: <strong>{ACTION_MODE_LABEL[actionMode]}</strong> — use o mapa ou Esc para cancelar.
-            </p>
-          ) : null}
-          {actionErr ? <p className="dice-err">{actionErr}</p> : null}
-        </div>
-      ) : (
-        <p className="vtt-combat-hint">Selecione um personagem na lista ou no mapa.</p>
-      )}
+      {canUseToken && selected && combat?.order.length ? (
+        <p className="vtt-combat-hint vtt-action-ring-hint">
+          {selected.id === activeTokenId(combat)
+            ? "Clique direito no token para o anel de ações."
+            : "Aguarde seu turno — use a HUD embaixo ou o painel ⏱."}
+        </p>
+      ) : null}
+      {actionMode !== "idle" ? (
+        <p className="vtt-combat-hint">
+          Modo: <strong>{ACTION_MODE_LABEL[actionMode]}</strong> — Esc cancela.
+        </p>
+      ) : null}
+      {actionErr ? <p className="dice-err">{actionErr}</p> : null}
 
       {tokens.length === 0 ? (
         <p className="vtt-combat-hint">Nenhum personagem visível no momento.</p>
@@ -287,15 +176,6 @@ export function ActiveCharactersPanel({
         </ul>
       )}
 
-      <TokenStatusModal
-        open={statusOpen}
-        token={statusToken}
-        roomId={roomId}
-        combat={combat}
-        canApplyConditions={canApplyConditions}
-        onClose={() => setStatusOpen(false)}
-        onUpdate={onUpdate}
-      />
     </aside>
   );
 }
