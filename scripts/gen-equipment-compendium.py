@@ -93,6 +93,37 @@ MUN_DESC = {
 }
 
 
+def weapon_flavor(canon_id: str, name: str) -> str:
+    if canon_id.startswith("ARC-L"):
+        return "Arco longo de precisão — ideal para corredores amplos e alvos distantes."
+    if canon_id.startswith("ARC-C"):
+        return "Arco curto e ágil — favorito de patrulheiros em passagens estreitas."
+    if canon_id.startswith("BST-"):
+        return "Besta mecânica — perfura armaduras leves com virotes pesados."
+    if canon_id.startswith("WPN-S"):
+        return "Lâmina balanceada para duelos corpo a corpo nas masmorras."
+    if canon_id.startswith("WPN-P"):
+        return "Haste ou lança — mantém inimigos à distância no hex adjacente."
+    if canon_id.startswith("ORG-"):
+        return "Arma orgânica forjada de partes de monstro — propriedades únicas na mesa."
+    if "machado" in name.lower() or "cutelo" in name.lower():
+        return "Corte pesado — quebra guardas e carapaças com força bruta."
+    if "adaga" in name.lower() or "punhal" in name.lower():
+        return "Lâmina leve — perfeita para fintas e ataques de oportunidade."
+    return f"Arma de forja Eldarin — {name.split(' de ')[-1] if ' de ' in name else 'modelo padrão'}."
+
+
+def armor_flavor(canon_id: str, name: str, categoria: str) -> str:
+    cat = CATEGORY_PT.get(categoria, categoria)
+    if categoria == "pesada":
+        return f"Armadura {cat} — proteção máxima, penaliza furtividade."
+    if categoria == "media":
+        return f"Armadura {cat} — equilíbrio entre mobilidade e defesa."
+    if categoria == "organica":
+        return f"Armadura {cat} — placas vivas ou quitina, adapta-se ao bioma."
+    return f"Armadura {cat} — leve o suficiente para escaramuças longas."
+
+
 def slug(s: str) -> str:
     import unicodedata
 
@@ -120,6 +151,7 @@ def weapon_entry(
         entry_id += f"-mais-{enchant}"
     parts = [
         f"<strong>{display}</strong> ({canon_id}).",
+        weapon_flavor(canon_id, name),
         f"Dano {formula} {tipo}, alcance {alcance} hex, 1 PA por ataque.",
         f"Ataque {bonus + enchant:+d}.",
     ]
@@ -171,7 +203,8 @@ def armor_entry(
         entry_id += f"-mais-{enchant}"
     parts = [
         f"<strong>{display}</strong> ({canon_id}).",
-        f"Armadura {CATEGORY_PT.get(categoria, categoria)}, CA base {ca_base}.",
+        armor_flavor(canon_id, name, categoria),
+        f"CA base {ca_base}.",
     ]
     armor_sys: dict = {"categoria": categoria, "caBase": ca_base}
     note = ARMOR_SPECIAL_DESC.get(canon_id)
@@ -299,6 +332,14 @@ def main() -> int:
     for cid, name, wtype in MUNICAO:
         equip.append(ammo_entry(cid, name, wtype))
 
+    LEGACY_UTIL_DESC = {
+        "Kit de Trinchar": "Ferramentas para desmontar carcaças e extrair componentes com segurança.",
+        "Tocha de Masmorra": "Ilumina 6 m; 1 h de luz estável em corredores úmidos.",
+        "Corda de Seda de Aranha": "Resiste a ácido leve; ideal para rapel e amarras silenciosas.",
+        "Kit de Brasas Mágicas (6)": "Brasas que acendem sem fumaça — útil onde fogo aberto é perigoso.",
+        "Forja Portátil do Artífice": "Kit compacto para reparos e aprimoramentos em campo.",
+    }
+
     # utilitários legado
     legacy_util = [
         ("equipamentos-kit-de-trinchar", "Kit de Trinchar", 0),
@@ -316,7 +357,8 @@ def main() -> int:
                     "name": name,
                     "type": "equipamento",
                     "system": {
-                        "description": f"<p>{name}</p>",
+                        "description": f"<p><strong>{name}</strong>. {LEGACY_UTIL_DESC.get(name, 'Equipamento de aventura.')}</p>",
+                        "bookRef": BOOK_EQUIP,
                         "catalogId": canon_id,
                         "gear": {"peso": 2, "equipado": False},
                         **({"tactical": {"bonusDefesa": {"value": bonus}}} if bonus else {}),

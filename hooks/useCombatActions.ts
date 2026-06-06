@@ -26,6 +26,8 @@ import { canAbilityTarget, canUseAbility } from "@/lib/combat/ability";
 
 import type { CombatActionOption } from "@/lib/combat/types";
 
+import { isAreaSpellAction } from "@/lib/combat/area-spell";
+
 import { patchRoomActor, postRoomAttack, postRoomAbility } from "@/hooks/useRoomSync";
 
 import type { ChatMessage } from "@/lib/room/chat";
@@ -102,6 +104,7 @@ export function useCombatActions(
   const attackableIds = useMemo(() => {
 
     if (!attacker || !action) return new Set<string>();
+    if (isAreaSpellAction(action)) return new Set<string>();
 
     const ids = new Set<string>();
 
@@ -193,7 +196,9 @@ export function usePerformAttack() {
 
       onAttackResult: (msg: ChatMessage) => void,
 
-      onUpdate: () => void
+      onUpdate: () => void,
+
+      channelExtraPa = 0
 
     ) => {
 
@@ -218,6 +223,8 @@ export function usePerformAttack() {
           actionEntryId: packId ? action.entryId : undefined,
 
           bypassTurn,
+
+          ...(action.channelMaxExtraPa && channelExtraPa > 0 ? { channelExtraPa } : {}),
 
         });
 

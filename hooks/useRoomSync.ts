@@ -34,6 +34,12 @@ export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
   const sseReadyRef = useRef(false);
 
   const applySnapshot = useCallback((data: RoomSnapshot) => {
+    if (data.revision < revisionRef.current) return;
+    if (data.revision === revisionRef.current) {
+      setSyncError(null);
+      setLoading(false);
+      return;
+    }
     revisionRef.current = data.revision;
     setSnapshot(data);
     setSyncError(null);
@@ -334,6 +340,7 @@ export async function postRoomAreaSpell(
   const res = await fetch(`/api/room/${roomId}/combat/area`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
+    credentials: "same-origin",
     body: JSON.stringify({ casterTokenId, centerQ, centerR, ...opts }),
   });
   if (!res.ok) {

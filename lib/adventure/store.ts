@@ -3,6 +3,11 @@ import "server-only";
 import * as dbAdventures from "@/lib/db/adventures";
 import { dbEnabled } from "@/lib/db/enabled";
 import { resolveInviteCodeForCreate } from "@/lib/adventure/invite-code";
+import {
+  canRestoreAdventure,
+  isAdventureJoinable,
+  shouldPurgeAdventure,
+} from "./lifecycle";
 import type { Adventure, AdventureListItem } from "./types";
 import {
   createRoomForAdventure,
@@ -51,17 +56,26 @@ function ensureDemoAdventure(): Adventure {
   return demo;
 }
 
+async function purgeAdventureIfExpired(adv: Adventure): Promise<Adventure | null> {
+  if (!shouldPurgeAdventure(adv)) return adv;
+  adventures().delete(adv.adventureId);
+  if (dbEnabled() && adv.adventureId !== "demo") {
+    await dbAdventures.deleteAdventurePermanent(adv.adventureId);
+  }
+  return null;
+}
+
 export async function getAdventure(adventureId: string): Promise<Adventure | null> {
   if (adventureId === "demo") return ensureDemoAdventure();
 
   const cached = adventures().get(adventureId);
-  if (cached) return cached;
+  if (cached) return purgeAdventureIfExpired(cached);
 
   if (dbEnabled()) {
     const fromDb = await dbAdventures.fetchAdventure(adventureId);
     if (fromDb) {
       adventures().set(adventureId, fromDb);
-      return fromDb;
+      return purgeAdventureIfExpired(fromDb);
     }
   }
 
@@ -161,12 +175,14 @@ export async function joinAdventureByInvite(
   if (dbEnabled()) {
     const fromDb = await dbAdventures.fetchAdventureByInvite(code);
     if (fromDb) {
+      if (!isAdventureJoinable(fromDb)) return null;
       return joinAdventureRecord(fromDb, userId);
     }
   }
 
   for (const adv of adventures().values()) {
     if (adv.inviteCode.toUpperCase() === code) {
+      if (!isAdventureJoinable(adv)) return null;
       return joinAdventureRecord(adv, userId);
     }
   }
@@ -193,6 +209,19 @@ async function joinAdventureRecord(adventure: Adventure, userId: string): Promis
   return adventure;
 }
 
+function toListItem(adv: Adventure, userId: string): AdventureListItem {
+  return {
+    adventureId: adv.adventureId,
+    name: adv.name,
+    ownerId: adv.ownerId,
+    inviteCode: adv.inviteCode,
+    primaryRoomId: adv.primaryRoomId,
+    isOwner: adv.ownerId === userId,
+    updatedAt: adv.updatedAt,
+    deletedAt: adv.deletedAt ?? null,
+  };
+}
+
 export async function listAdventuresForUser(userId: string): Promise<AdventureListItem[]> {
   const seen = new Set<string>();
   const out: AdventureListItem[] = [];
@@ -200,25 +229,19 @@ export async function listAdventuresForUser(userId: string): Promise<AdventureLi
   if (dbEnabled()) {
     const fromDb = await dbAdventures.listAdventuresForOwnerOrMember(userId);
     for (const item of fromDb) {
-      seen.add(item.adventureId);
-      out.push(item);
       const full = await getAdventure(item.adventureId);
-      if (full) adventures().set(full.adventureId, full);
+      if (!full) continue;
+      adventures().set(full.adventureId, full);
+      seen.add(full.adventureId);
+      out.push(toListItem(full, userId));
     }
   }
 
   for (const adv of adventures().values()) {
     if (adv.ownerId !== userId && !adv.memberIds.includes(userId)) continue;
     if (seen.has(adv.adventureId)) continue;
-    out.push({
-      adventureId: adv.adventureId,
-      name: adv.name,
-      ownerId: adv.ownerId,
-      inviteCode: adv.inviteCode,
-      primaryRoomId: adv.primaryRoomId,
-      isOwner: adv.ownerId === userId,
-      updatedAt: adv.updatedAt,
-    });
+    if (shouldPurgeAdventure(adv)) continue;
+    out.push(toListItem(adv, userId));
     seen.add(adv.adventureId);
   }
 
@@ -236,6 +259,47 @@ export async function listAdventuresForUser(userId: string): Promise<AdventureLi
   }
 
   return out.sort((a, b) => b.updatedAt - a.updatedAt);
+}
+
+export type AdventureMutationResult =
+  | { ok: true; adventure: Adventure }
+  | { ok: false; error: string };
+
+export async function softDeleteAdventure(
+  adventureId: string,
+  ownerId: string
+): Promise<AdventureMutationResult> {
+  if (adventureId === "demo") return { ok: false, error: "A demo não pode ser excluída" };
+  const adv = await getAdventure(adventureId);
+  if (!adv) return { ok: false, error: "Mesa não encontrada" };
+  if (adv.ownerId !== ownerId) return { ok: false, error: "Só o mestre pode excluir a mesa" };
+  if (adv.deletedAt) return { ok: false, error: "Mesa já está na lixeira" };
+
+  adv.deletedAt = Date.now();
+  adv.updatedAt = Date.now();
+  adventures().set(adventureId, adv);
+  if (dbEnabled()) await dbAdventures.saveAdventure(adv);
+  return { ok: true, adventure: adv };
+}
+
+export async function restoreAdventure(
+  adventureId: string,
+  ownerId: string
+): Promise<AdventureMutationResult> {
+  const adv = await getAdventure(adventureId);
+  if (!adv) return { ok: false, error: "Mesa não encontrada ou prazo de restauração expirou" };
+  if (adv.ownerId !== ownerId) return { ok: false, error: "Só o mestre pode restaurar" };
+  if (!adv.deletedAt) return { ok: false, error: "Mesa não está excluída" };
+  if (!canRestoreAdventure(adv)) {
+    await purgeAdventureIfExpired(adv);
+    return { ok: false, error: "Prazo de 30 dias para restaurar expirou" };
+  }
+
+  adv.deletedAt = null;
+  adv.updatedAt = Date.now();
+  adventures().set(adventureId, adv);
+  if (dbEnabled()) await dbAdventures.saveAdventure(adv);
+  return { ok: true, adventure: adv };
 }
 
 export async function updateAdventureMeta(

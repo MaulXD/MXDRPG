@@ -4,7 +4,7 @@ import { getSession } from "@/lib/auth/session";
 
 export default async function MesaIndexPage() {
   const session = await getSession();
-  if (session) redirect("/painel");
+  if (session) redirect("/eldarin");
 
   return (
     <div className="page-wrap">

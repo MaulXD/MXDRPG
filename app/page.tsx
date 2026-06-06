@@ -36,11 +36,11 @@ export default function HomePage() {
               identidade visual única — direto no navegador.
             </p>
             <div className="hero-actions">
-              <Link href="/mesa/demo" className="btn">
-                Jogar demo ao vivo
+              <Link href="/entrar" className="btn">
+                Entrar e jogar
               </Link>
-              <Link href="/entrar" className="btn btn-secondary">
-                Entrar na plataforma
+              <Link href="/mesa/demo" className="btn btn-secondary">
+                Demo ao vivo
               </Link>
             </div>
           </div>

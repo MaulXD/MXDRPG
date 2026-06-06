@@ -2,7 +2,6 @@
 
 import { WizardHoverTip } from "@/components/character/wizard/WizardHoverTip";
 import {
-  subclassDietTooltip,
   subclassSpecialtyTooltip,
   subclassTalentTooltip,
 } from "@/lib/character/subclass-wizard-tooltips";
@@ -20,12 +19,7 @@ export function SubclassTrackCard({ track }: Props) {
     <article className="char-wizard-track">
       <strong>{track.subclass}</strong>
       <WizardHoverTip text={subclassSpecialtyTooltip(track.specialty)}>
-        <span className="char-wizard-track__line">{track.specialty}</span>
-      </WizardHoverTip>
-      <WizardHoverTip text={subclassDietTooltip(track)}>
-        <span className="char-wizard-track__line char-wizard-track__diet">
-          Dieta nv. 2: {track.diet}
-        </span>
+        <span className="char-wizard-track__line">Nv 2 — {track.specialty}</span>
       </WizardHoverTip>
       <ul className="char-wizard-track__talents">
         {windowTalents.map((t) => (

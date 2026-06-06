@@ -434,6 +434,7 @@ export function HexBattlefield({
 
   const moveAnimRef = useRef<{ tokenId: string; q: number; r: number } | null>(null);
   const moveBusyRef = useRef(false);
+  const appliedSceneRevisionRef = useRef(0);
   const combatFxIdRef = useRef<string | null>(null);
 
   const syncRoom = useCallback(
@@ -507,6 +508,7 @@ export function HexBattlefield({
     canPreviewTurnMove,
     areaCenter,
     areaDirection: null,
+    channelExtraPa,
     turn,
   });
 
@@ -675,7 +677,13 @@ export function HexBattlefield({
   }, [snapshot?.chat, snapshot?.scene.tokens]);
 
   useEffect(() => {
-    if (!snapshot || moveBusyRef.current) return;
+    appliedSceneRevisionRef.current = 0;
+  }, [roomId]);
+
+  useEffect(() => {
+    if (!snapshot) return;
+    if (snapshot.revision <= appliedSceneRevisionRef.current) return;
+    appliedSceneRevisionRef.current = snapshot.revision;
     setScene(snapshot.scene);
   }, [snapshot]);
 
@@ -694,7 +702,11 @@ export function HexBattlefield({
 
   useEffect(() => {
     setActionRingAt(null);
-  }, [selectedId, snapshot?.combat?.activeIndex, snapshot?.combat?.round]);
+    if (!turn.bypassTurn) {
+      setActionMode("idle");
+      setSelectedCombatAction(null);
+    }
+  }, [selectedId, snapshot?.combat?.activeIndex, snapshot?.combat?.round, turn.bypassTurn]);
 
   const removeSelectedToken = useCallback(async () => {
     if (!canControlCombat || !selectedId || !selected) return;
@@ -845,9 +857,12 @@ export function HexBattlefield({
   const actionPreview: ActionPreview | null = useMemo(() => {
     if (!selected) return null;
     if (highlights.showMovement && hoverAxial) {
-      const movePaOpts = selectedActor
-        ? { freeBasicMovePa: paTurnRulesForActor(selectedActor).freeBasicMovePa }
-        : undefined;
+      const movePaOpts = {
+        ...(selectedActor
+          ? { freeBasicMovePa: paTurnRulesForActor(selectedActor).freeBasicMovePa }
+          : {}),
+        ...(turn.bypassTurn ? { gmBypass: true as const } : {}),
+      };
       const moveCtx: MovementPathContext = {
         tokens: displayScene.tokens,
         gridRadius: displayScene.gridRadius,
@@ -976,6 +991,10 @@ export function HexBattlefield({
   const attackToken = useCallback(
     async (defenderId: string) => {
       if (!selected || !activeCombatAction) return;
+      if (activeCombatAction.areaShape && activeCombatAction.areaShape !== "single") {
+        setActionErr("Magia de área: clique o centro da área no mapa (não um alvo único).");
+        return;
+      }
       setActionErr(null);
       try {
         let snap: RoomSnapshot;
@@ -1011,15 +1030,22 @@ export function HexBattlefield({
   const moveSelectedTo = useCallback(
     async (axial: Axial) => {
       if (!selected || !isMoveMode(actionMode) || moveBusyRef.current) return;
+      if (turn.activeTokenId && selected.id !== turn.activeTokenId && !turn.bypassTurn) {
+        setActionErr("Aguarde seu turno na iniciativa");
+        return;
+      }
       const moveCtx: MovementPathContext = {
         tokens: displayScene.tokens,
         gridRadius: displayScene.gridRadius,
         actorRacas,
         dungeonObjects: displayScene.dungeonObjects,
       };
-      const movePaOpts = selectedActor?.identity
-        ? { freeBasicMovePa: paTurnRulesForActor(selectedActor).freeBasicMovePa }
-        : undefined;
+      const movePaOpts = {
+        ...(selectedActor?.identity
+          ? { freeBasicMovePa: paTurnRulesForActor(selectedActor).freeBasicMovePa }
+          : {}),
+        ...(turn.bypassTurn ? { gmBypass: true as const } : {}),
+      };
       const check = canMoveToken(selected, axial, highlights.moveMode, moveCtx, movePaOpts);
       if (!check.ok) {
         setActionErr(check.reason ?? "Movimento inválido");
@@ -1027,12 +1053,9 @@ export function HexBattlefield({
       }
       setActionErr(null);
       moveBusyRef.current = true;
-      const path = check.path ?? [selected.axial, axial];
+      const origin = selected.axial;
+      const path = check.path ?? [origin, axial];
       try {
-        await animateTokenAlongPath(path, (step) => {
-          moveAnimRef.current = { tokenId: selected.id, q: step.q, r: step.r };
-          redraw();
-        });
         const snap = await moveRoomTokenBudget(
           roomId,
           selected.id,
@@ -1041,8 +1064,14 @@ export function HexBattlefield({
           highlights.moveMode,
           turn.bypassTurn
         );
-        moveAnimRef.current = null;
         syncRoom(snap);
+        moveAnimRef.current = { tokenId: selected.id, q: origin.q, r: origin.r };
+        redraw();
+        await animateTokenAlongPath(path, (step) => {
+          moveAnimRef.current = { tokenId: selected.id, q: step.q, r: step.r };
+          redraw();
+        });
+        moveAnimRef.current = null;
         redraw();
       } catch (e) {
         setActionErr(e instanceof Error ? e.message : "Movimento inválido");
@@ -1054,14 +1083,17 @@ export function HexBattlefield({
     },
     [
       selected,
+      selectedActor,
       actionMode,
       roomId,
       highlights.moveMode,
+      turn.activeTokenId,
       turn.bypassTurn,
       syncRoom,
       redraw,
       displayScene.tokens,
       displayScene.gridRadius,
+      displayScene.dungeonObjects,
       actorRacas,
     ]
   );
@@ -1244,6 +1276,8 @@ export function HexBattlefield({
     areaCenter,
     setAreaCenter,
     selected,
+    selectedActor,
+    channelExtraPa,
     turn,
     canControlCombat,
     canGmReposition: canControlCombat,

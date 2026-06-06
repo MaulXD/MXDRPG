@@ -544,7 +544,7 @@ export function classLevelFeatures(classId: string, level: number): string[] {
   const cls = getClass(classId);
   if (!cls) return [];
   const out: string[] = [];
-  if (level === 1) out.push(`Dieta base: ${cls.dietBonus}`);
+  if (level === 1) out.push(`Proficiências: ${cls.proficiencies}`);
   if (level === 2) out.push("Escolhe Caminho de Assimilação (subclasse)");
   if (classId === "Guerreiro") {
     if (level === 5 || level === 11 || level === 17) {

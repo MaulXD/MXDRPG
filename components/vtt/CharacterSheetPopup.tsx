@@ -19,6 +19,7 @@ import type { FoundryWindowLayout } from "@/hooks/vtt/useFoundryWindows";
 import type { RoomActor } from "@/lib/room/types";
 
 import { FoundryWindow } from "@/components/vtt/foundry/FoundryWindow";
+import { MedievalFrame } from "@/components/ui/MedievalFrame";
 
 import "@/components/character/sheet-popup.css";
 
@@ -170,19 +171,15 @@ export function CharacterSheetPopup({
 
         </div>
 
-        <CharacterSheet
-
-          character={{ ...seed, ...live, inventory }}
-
-          canEdit={canEdit}
-
-          compendium={compendium}
-
-          roomId={roomId}
-
-          variant="popup"
-
-        />
+        <MedievalFrame variant="gothic" compact flush className="mf--sheet-page">
+          <CharacterSheet
+            character={{ ...seed, ...live, inventory }}
+            canEdit={canEdit}
+            compendium={compendium}
+            roomId={roomId}
+            variant="popup"
+          />
+        </MedievalFrame>
 
       </div>
 

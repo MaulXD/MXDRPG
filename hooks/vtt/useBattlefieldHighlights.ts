@@ -39,6 +39,7 @@ type Params = {
   canPreviewTurnMove?: (token: BattleToken) => boolean;
   areaCenter: Axial | null;
   areaDirection: number | null;
+  channelExtraPa?: number;
   turn: TurnCtx;
 };
 
@@ -55,6 +56,7 @@ export function useBattlefieldHighlights({
   canPreviewTurnMove,
   areaCenter,
   areaDirection,
+  channelExtraPa = 0,
   turn,
 }: Params) {
   const moveMode: "walk" | "run" = actionMode === "move-run" ? "run" : "walk";
@@ -68,8 +70,16 @@ export function useBattlefieldHighlights({
     : turnMovePreview
       ? hoverTurnToken
       : null;
+  const canActMoveNow = Boolean(
+    moveHighlightToken &&
+      (!turn.activeTokenId ||
+        turn.activeTokenId === moveHighlightToken.id ||
+        turn.bypassTurn)
+  );
   const showMovement = Boolean(
-    moveHighlightToken && (isMoveMode(actionMode) || turnMovePreview)
+    moveHighlightToken &&
+      canActMoveNow &&
+      (isMoveMode(actionMode) || turnMovePreview)
   );
   const effectiveMoveMode: "walk" | "run" = turnMovePreview ? "walk" : moveMode;
   const isAreaSpellMode = Boolean(
@@ -91,9 +101,14 @@ export function useBattlefieldHighlights({
   const moveCtx = useMemo(
     () =>
       moveHighlightToken
-        ? { tokens: scene.tokens, gridRadius: scene.gridRadius, actorRacas }
+        ? {
+            tokens: scene.tokens,
+            gridRadius: scene.gridRadius,
+            actorRacas,
+            dungeonObjects: scene.dungeonObjects,
+          }
         : null,
-    [moveHighlightToken, scene.tokens, scene.gridRadius, actorRacas]
+    [moveHighlightToken, scene.tokens, scene.gridRadius, scene.dungeonObjects, actorRacas]
   );
 
   const highlightActor = turnMovePreview ? hoverTurnActor : selectedActor;
@@ -111,24 +126,30 @@ export function useBattlefieldHighlights({
   }, [moveHighlightToken, showMovement, scene, actorRacas]);
 
   const movePaOptsHighlight = useMemo(
-    () =>
-      highlightActor
+    () => ({
+      ...(highlightActor
         ? { freeBasicMovePa: paTurnRulesForActor(highlightActor).freeBasicMovePa }
-        : undefined,
-    [highlightActor]
+        : {}),
+      ...(turn.bypassTurn ? { gmBypass: true as const } : {}),
+    }),
+    [highlightActor, turn.bypassTurn]
   );
 
   const paidWalkSet = useMemo(() => {
     if (!moveHighlightToken || !showMovement || !moveCtx || turnMovePreview) {
       return new Set<string>();
     }
+    const hexKeys =
+      effectiveMoveMode === "run"
+        ? new Set([...walkSet, ...rangeSet])
+        : walkSet;
     const set = new Set<string>();
-    for (const key of walkSet) {
+    for (const key of hexKeys) {
       const [q, r] = key.split(",").map(Number);
       const check = canMoveToken(
         moveHighlightToken,
         { q, r },
-        "walk",
+        effectiveMoveMode,
         moveCtx,
         movePaOptsHighlight
       );
@@ -139,9 +160,11 @@ export function useBattlefieldHighlights({
     moveHighlightToken,
     showMovement,
     walkSet,
+    rangeSet,
     moveCtx,
     movePaOptsHighlight,
     turnMovePreview,
+    effectiveMoveMode,
   ]);
 
   const attackRangeSet = useMemo(() => {
@@ -176,11 +199,18 @@ export function useBattlefieldHighlights({
     if (!selected || !activeCombatAction || !isAreaSpellMode) return new Set<string>();
     const previewCenter = needsAreaDirection ? selected.axial : hoverAxial;
     if (!previewCenter) return new Set<string>();
-    const check = canCastAreaAt(selected, previewCenter, activeCombatAction, {
-      activeTokenId: turn.activeTokenId,
-      bypassTurn: turn.bypassTurn,
-      combatRound: turn.combatRound,
-    });
+    const check = canCastAreaAt(
+      selected,
+      previewCenter,
+      activeCombatAction,
+      {
+        activeTokenId: turn.activeTokenId,
+        bypassTurn: turn.bypassTurn,
+        combatRound: turn.combatRound,
+      },
+      selectedActor,
+      channelExtraPa
+    );
     if (!check.ok) return new Set<string>();
     if (needsAreaDirection && previewDirection == null) {
       return new Set([`${previewCenter.q},${previewCenter.r}`]);
@@ -203,6 +233,8 @@ export function useBattlefieldHighlights({
     previewDirection,
     needsAreaDirection,
     turn,
+    selectedActor,
+    channelExtraPa,
   ]);
 
   const hoverMovePreview: MoveCheck | null = useMemo(() => {
@@ -231,6 +263,7 @@ export function useBattlefieldHighlights({
 
   const attackableIds = useMemo(() => {
     if (!selected || !activeCombatAction || !isTargetMode(actionMode)) return new Set<string>();
+    if (isAreaSpellMode) return new Set<string>();
     if (activeCombatAction.selfTarget) return new Set<string>();
     const ids = new Set<string>();
     for (const t of scene.tokens) {
@@ -242,7 +275,7 @@ export function useBattlefieldHighlights({
       if (check.ok) ids.add(t.id);
     }
     return ids;
-  }, [selected, selectedActor, scene.tokens, activeCombatAction, actionMode, turn]);
+  }, [selected, selectedActor, scene.tokens, activeCombatAction, actionMode, isAreaSpellMode, turn]);
 
   return {
     gridCells,

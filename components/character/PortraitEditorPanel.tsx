@@ -7,7 +7,6 @@ import { IMAGE_UPLOAD_HINT } from "@/lib/media/image-data-url";
 import {
   DEFAULT_PORTRAIT_FOCUS,
   portraitFocusToImgStyle,
-  resolveCoverFocus,
   resolveTokenFocus,
   sanitizePortraitFocus,
   type PortraitFocus,
@@ -20,7 +19,7 @@ import {
 
 export type PortraitEditorBundle = PortraitBundle;
 
-type FocusSlot = "cover" | "portrait" | "token";
+type FocusSlot = "portrait" | "token";
 
 type Props = {
   portraitUrl: string | null;
@@ -38,7 +37,6 @@ type Props = {
 };
 
 const SLOT_LABELS: Record<FocusSlot, string> = {
-  cover: "Capa",
   portrait: "Retrato",
   token: "Token",
 };
@@ -54,7 +52,6 @@ export function PortraitEditorPanel({
   portraitUrl,
   tokenImageUrl,
   portraitFocus,
-  coverFocus,
   tokenFocus,
   canEdit,
   tokenRingColor = "var(--accent)",
@@ -70,9 +67,6 @@ export function PortraitEditorPanel({
   const [msg, setMsg] = useState<string | null>(null);
   const [draftSrc, setDraftSrc] = useState<string | null>(null);
   const [editingSlot, setEditingSlot] = useState<FocusSlot>("portrait");
-  const [focusCover, setFocusCover] = useState<PortraitFocus>(() =>
-    initialFocus(coverFocus, portraitFocus)
-  );
   const [focusPortrait, setFocusPortrait] = useState<PortraitFocus>(() =>
     initialFocus(portraitFocus)
   );
@@ -82,26 +76,22 @@ export function PortraitEditorPanel({
 
   useEffect(() => {
     if (draftSrc) return;
-    setFocusCover(initialFocus(coverFocus, portraitFocus));
     setFocusPortrait(initialFocus(portraitFocus));
     setFocusToken(initialFocus(tokenFocus, portraitFocus));
-  }, [portraitFocus, coverFocus, tokenFocus, draftSrc]);
+  }, [portraitFocus, tokenFocus, draftSrc]);
 
   useEffect(() => {
     onDraftChange?.(Boolean(draftSrc));
   }, [draftSrc, onDraftChange]);
 
   const previewSrc = draftSrc ?? portraitUrl;
-  const coverStyle = portraitFocusToImgStyle(focusCover);
   const portraitStyle = portraitFocusToImgStyle(focusPortrait);
   const tokenStyle = portraitFocusToImgStyle(focusToken);
 
-  const activeFocus =
-    editingSlot === "cover" ? focusCover : editingSlot === "token" ? focusToken : focusPortrait;
+  const activeFocus = editingSlot === "token" ? focusToken : focusPortrait;
 
   function setActiveFocus(next: PortraitFocus) {
-    if (editingSlot === "cover") setFocusCover(next);
-    else if (editingSlot === "token") setFocusToken(next);
+    if (editingSlot === "token") setFocusToken(next);
     else setFocusPortrait(next);
   }
 
@@ -112,11 +102,10 @@ export function PortraitEditorPanel({
       pendingFileRef.current = file;
       if (draftSrc?.startsWith("blob:")) URL.revokeObjectURL(draftSrc);
       setDraftSrc(URL.createObjectURL(file));
-      setFocusCover(DEFAULT_PORTRAIT_FOCUS);
       setFocusPortrait(DEFAULT_PORTRAIT_FOCUS);
       setFocusToken(DEFAULT_PORTRAIT_FOCUS);
       setEditingSlot("portrait");
-      setMsg("Ajuste capa, retrato e token separadamente, depois salve.");
+      setMsg("Ajuste retrato e token, depois salve.");
     } catch (e) {
       setMsg(e instanceof Error ? e.message : "Erro ao ler arquivo");
     } finally {
@@ -132,17 +121,15 @@ export function PortraitEditorPanel({
     try {
       const bundle = await buildPortraitBundle(file, {
         portraitFocus: focusPortrait,
-        coverFocus: focusCover,
         tokenFocus: focusToken,
       });
       await onPersist(bundle);
       pendingFileRef.current = null;
       if (draftSrc?.startsWith("blob:")) URL.revokeObjectURL(draftSrc);
       setDraftSrc(null);
-      setFocusCover(bundle.coverFocus);
       setFocusPortrait(bundle.portraitFocus);
       setFocusToken(bundle.tokenFocus);
-      setMsg("Imagens salvas com enquadramento individual.");
+      setMsg("Retrato e token salvos.");
     } catch (e) {
       setMsg(e instanceof Error ? e.message : "Erro ao salvar");
     } finally {
@@ -157,11 +144,9 @@ export function PortraitEditorPanel({
     try {
       const bundle = await buildPortraitBundleFromDataUrl(portraitUrl, {
         portraitFocus: focusPortrait,
-        coverFocus: focusCover,
         tokenFocus: focusToken,
       });
       await onPersist(bundle);
-      setFocusCover(bundle.coverFocus);
       setFocusPortrait(bundle.portraitFocus);
       setFocusToken(bundle.tokenFocus);
       setMsg("Enquadramento atualizado.");
@@ -179,11 +164,10 @@ export function PortraitEditorPanel({
       if (draftSrc?.startsWith("blob:")) URL.revokeObjectURL(draftSrc);
       pendingFileRef.current = null;
       setDraftSrc(null);
-      setFocusCover(DEFAULT_PORTRAIT_FOCUS);
       setFocusPortrait(DEFAULT_PORTRAIT_FOCUS);
       setFocusToken(DEFAULT_PORTRAIT_FOCUS);
       await onClear();
-      setMsg("Retrato removido.");
+      setMsg("Imagens removidas.");
     } catch (e) {
       setMsg(e instanceof Error ? e.message : "Erro ao remover");
     } finally {
@@ -191,61 +175,61 @@ export function PortraitEditorPanel({
     }
   }
 
-  const persistedCover = resolveCoverFocus({ portraitFocus, coverFocus });
   const persistedToken = resolveTokenFocus({ portraitFocus, tokenFocus });
+  const tokenPreviewSrc = draftSrc ?? tokenImageUrl ?? portraitUrl;
 
   return (
     <div className="sheet-portraits">
-      <p className="eyebrow" style={{ marginBottom: "0.5rem" }}>
-        Retrato e token
-      </p>
+      <p className="eyebrow sheet-portraits__title">Retrato e token</p>
 
-      <div className="sheet-portrait-grid">
-        <div className="sheet-portrait-slot sheet-portrait-slot--wide">
-          <div className={`sheet-portrait-cover-preview ${previewSrc ? "has-image" : ""}`}>
-            {previewSrc ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={previewSrc}
-                alt="Prévia da capa"
-                className="sheet-portrait-img-cover"
-                style={draftSrc ? coverStyle : persistedCover ? portraitFocusToImgStyle(persistedCover) : coverStyle}
-              />
-            ) : (
-              <span className="sheet-portrait-cover-empty">Capa</span>
-            )}
-          </div>
-          <strong>Capa da ficha</strong>
-        </div>
-
-        <div className="sheet-portrait-slot">
+      <div className="sheet-portrait-duo">
+        <button
+          type="button"
+          className={`sheet-portrait-duo__card ${editingSlot === "portrait" ? "is-active" : ""}`}
+          onClick={() => canEdit && previewSrc && setEditingSlot("portrait")}
+          disabled={!canEdit || !previewSrc}
+          aria-pressed={editingSlot === "portrait"}
+        >
           <div className={`sheet-portrait-frame ${previewSrc ? "has-image" : ""}`}>
             {previewSrc ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img
                 src={previewSrc}
-                alt="Retrato"
-                className="sheet-portrait-img-cover"
-                style={draftSrc ? portraitStyle : portraitFocus ? portraitFocusToImgStyle(portraitFocus) : portraitStyle}
+                alt=""
+                className="sheet-portrait-img"
+                style={
+                  draftSrc
+                    ? portraitStyle
+                    : portraitFocus
+                      ? portraitFocusToImgStyle(portraitFocus)
+                      : portraitStyle
+                }
               />
             ) : (
-              <span>?</span>
+              <span className="sheet-portrait-frame__empty">?</span>
             )}
           </div>
           <strong>Retrato</strong>
-        </div>
+          <span>Ficha e perfil</span>
+        </button>
 
-        <div className="sheet-portrait-slot sheet-token-preview">
+        <button
+          type="button"
+          className={`sheet-portrait-duo__card sheet-portrait-duo__card--token ${editingSlot === "token" ? "is-active" : ""}`}
+          onClick={() => canEdit && previewSrc && setEditingSlot("token")}
+          disabled={!canEdit || !previewSrc}
+          aria-pressed={editingSlot === "token"}
+        >
           <div
             className="sheet-token-preview-ring"
             style={{ boxShadow: `0 0 0 4px ${tokenRingColor}` }}
           >
-            {(draftSrc ? null : tokenImageUrl) || previewSrc ? (
+            {tokenPreviewSrc ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img
-                src={draftSrc ?? tokenImageUrl ?? portraitUrl ?? ""}
-                alt="Token"
-                className="sheet-portrait-img-cover"
+                src={tokenPreviewSrc}
+                alt=""
+                className="sheet-portrait-img"
                 style={
                   draftSrc
                     ? tokenStyle
@@ -255,16 +239,17 @@ export function PortraitEditorPanel({
                 }
               />
             ) : (
-              <span style={{ background: tokenRingColor }} />
+              <span className="sheet-token-preview-ring__empty" style={{ background: tokenRingColor }} />
             )}
           </div>
-          <strong>Token na mesa</strong>
-        </div>
+          <strong>Token</strong>
+          <span>Mapa hex</span>
+        </button>
       </div>
 
       {canEdit && previewSrc ? (
         <div className="sheet-portrait-focus-tabs" role="tablist" aria-label="Ajustar enquadramento">
-          {(["cover", "portrait", "token"] as FocusSlot[]).map((slot) => (
+          {(["portrait", "token"] as FocusSlot[]).map((slot) => (
             <button
               key={slot}
               type="button"
@@ -291,7 +276,7 @@ export function PortraitEditorPanel({
           </button>
           {previewSrc ? (
             <button type="button" className="inv-remove" disabled={busy} onClick={clearPortrait}>
-              Remover imagem
+              Remover
             </button>
           ) : null}
         </div>
@@ -316,10 +301,10 @@ export function PortraitEditorPanel({
             focus={activeFocus}
             onFocusChange={setActiveFocus}
             disabled={busy}
+            previewMode={editingSlot}
           />
           <p className="sheet-portrait-hint" style={{ marginTop: "0.35rem" }}>
-            Editando: <strong>{SLOT_LABELS[editingSlot]}</strong> — cada slot tem zoom e posição
-            independentes.
+            Editando: <strong>{SLOT_LABELS[editingSlot]}</strong>
           </p>
           <div className="sheet-portrait-actions">
             {draftSrc ? (

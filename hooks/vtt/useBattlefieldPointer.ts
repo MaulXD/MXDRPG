@@ -5,6 +5,7 @@ import type { Axial } from "@/lib/vtt/hex-math";
 import { axialToPixel, hexDirection, pixelToAxial } from "@/lib/vtt/hex-math";
 import { areaNeedsDirection, canCastAreaAt } from "@/lib/combat/area-spell";
 import type { CombatActionOption } from "@/lib/combat/types";
+import type { CharacterSheet } from "@/lib/character/types";
 import { isMoveMode, isTargetMode } from "@/lib/vtt/action-mode";
 import type { TokenActionMode } from "@/lib/vtt/action-mode";
 import {
@@ -50,6 +51,8 @@ type Params = {
   areaCenter: Axial | null;
   setAreaCenter: (a: Axial | null) => void;
   selected: BattleToken | null;
+  selectedActor?: CharacterSheet | null;
+  channelExtraPa?: number;
   turn: TurnCtx;
   canControlCombat: boolean;
   canGmReposition?: boolean;
@@ -116,6 +119,8 @@ export function useBattlefieldPointer({
   areaCenter,
   setAreaCenter,
   selected,
+  selectedActor = null,
+  channelExtraPa = 0,
   turn,
   canControlCombat,
   canGmReposition = false,
@@ -579,6 +584,7 @@ export function useBattlefieldPointer({
       if (canvas) {
         if (
           isTargetMode(actionMode) &&
+          !areaMode &&
           hoverToken &&
           selectedId &&
           attackableIds.has(hoverToken.id)
@@ -718,7 +724,49 @@ export function useBattlefieldPointer({
 
       const hit = tokenAtPoint(px, py);
 
+      const castAreaAtHex = (targetAxial: Axial): boolean => {
+        if (!selectedId || !areaMode || !activeCombatAction || !selected) return false;
+        const turnCtx = {
+          activeTokenId: turn.activeTokenId,
+          bypassTurn: turn.bypassTurn,
+          combatRound: turn.combatRound,
+        };
+        const shape = activeCombatAction.areaShape ?? "burst";
+
+        if (areaNeedsDirection(shape)) {
+          const dir = hexDirection(selected.axial, targetAxial);
+          if (dir == null) {
+            onAreaSpellError("Clique num hex vizinho ao conjurador para definir a direção");
+            return true;
+          }
+          const check = canCastAreaAt(
+            selected,
+            selected.axial,
+            activeCombatAction,
+            turnCtx,
+            selectedActor,
+            channelExtraPa
+          );
+          if (check.ok) onAreaSpell(selected.axial, dir);
+          else onAreaSpellError(check.reason ?? "Área inválida");
+          return true;
+        }
+
+        const check = canCastAreaAt(
+          selected,
+          targetAxial,
+          activeCombatAction,
+          turnCtx,
+          selectedActor,
+          channelExtraPa
+        );
+        if (check.ok) onAreaSpell(targetAxial);
+        else onAreaSpellError(check.reason ?? "Centro de área inválido");
+        return true;
+      };
+
       if (hit) {
+        if (castAreaAtHex(axial)) return;
         if (
           isTargetMode(actionMode) &&
           selectedId &&
@@ -747,30 +795,7 @@ export function useBattlefieldPointer({
         return;
       }
 
-      if (selectedId && areaMode && activeCombatAction && selected) {
-        const turnCtx = {
-          activeTokenId: turn.activeTokenId,
-          bypassTurn: turn.bypassTurn,
-          combatRound: turn.combatRound,
-        };
-        const shape = activeCombatAction.areaShape ?? "burst";
-
-        if (areaNeedsDirection(shape)) {
-          const dir = hexDirection(selected.axial, axial);
-          if (dir == null) {
-            onAreaSpellError("Clique num hex vizinho ao conjurador para definir a direção");
-            return;
-          }
-          const check = canCastAreaAt(selected, selected.axial, activeCombatAction, turnCtx);
-          if (check.ok) onAreaSpell(selected.axial, dir);
-          else onAreaSpellError(check.reason ?? "Área inválida");
-          return;
-        }
-
-        const check = canCastAreaAt(selected, axial, activeCombatAction, turnCtx);
-        if (check.ok) onAreaSpell(axial);
-        else onAreaSpellError(check.reason ?? "Centro de área inválido");
-      }
+      castAreaAtHex(axial);
     },
     [
       pointerPos,

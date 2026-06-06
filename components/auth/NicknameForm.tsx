@@ -27,7 +27,7 @@ export function NicknameForm() {
       return;
     }
 
-    router.push("/painel");
+    router.push("/rpg");
     router.refresh();
   }
 

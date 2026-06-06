@@ -62,26 +62,24 @@ export function ActiveCharactersPanel({
   onUpdate,
   fogHint = false,
 }: Props) {
-  const hasRoster = Object.keys(roomActors).length > 0;
+  const canCreateInAdventure = roomId !== "demo" && Boolean(session);
 
   return (
     <aside className="vtt-sidebar vtt-sidebar--actors">
-      {hasRoster ? (
-        <PlayerSpawnPanel
-          roomId={roomId}
-          adventureId={adventureId}
-          actors={roomActors}
-          session={session}
-          tokens={allSceneTokens}
-          spawnAxial={spawnAxial}
-          onPlaced={onPlaced}
-          showAllActors={canControlCombat}
-          canPullBack={canControlCombat}
-          showCreateLink={roomId !== "demo" && canControlCombat}
-        />
-      ) : null}
+      <PlayerSpawnPanel
+        roomId={roomId}
+        adventureId={adventureId}
+        actors={roomActors}
+        session={session}
+        tokens={allSceneTokens}
+        spawnAxial={spawnAxial}
+        onPlaced={onPlaced}
+        showAllActors={canControlCombat}
+        canPullBack={canControlCombat}
+        showCreateLink={canCreateInAdventure}
+      />
 
-      <p className="vtt-eyebrow" style={{ marginTop: hasRoster ? "0.75rem" : 0 }}>
+      <p className="vtt-eyebrow" style={{ marginTop: "0.75rem" }}>
         No mapa
       </p>
       {fogHint ? (

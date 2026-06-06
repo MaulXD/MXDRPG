@@ -35,13 +35,23 @@ async function ensureDbCharactersSeeded(): Promise<void> {
 }
 
 export async function resolveCharacter(id: string): Promise<CharacterSheet | null> {
+  const fromRegistry = getCharacterFromRegistry(id);
+
   if (dbEnabled()) {
     await ensureDbCharactersSeeded();
-    const { fetchCharacter } = await import("@/lib/db/characters");
-    const fromDb = await fetchCharacter(id);
-    if (fromDb) return fromDb;
+    try {
+      const { fetchCharacter } = await import("@/lib/db/characters");
+      const fromDb = await fetchCharacter(id);
+      if (fromDb) return fromDb;
+    } catch (e) {
+      console.warn(
+        "[eldarin] Postgres fetchCharacter falhou — usando registry:",
+        e instanceof Error ? e.message : e
+      );
+    }
   }
-  return getCharacterFromRegistry(id);
+
+  return fromRegistry;
 }
 
 export async function listCharactersForUser(userId: string): Promise<CharacterSheet[]> {
@@ -83,23 +93,36 @@ export const MAX_CHARACTERS_PER_USER = 10;
 
 export async function saveCharacter(sheet: CharacterSheet): Promise<CharacterSheet> {
   const normalized = normalizeCharacter(sheet);
-  characterRegistry().set(normalized.id, normalized);
+  const saved = upsertCharacterRegistry(normalized);
 
   if (dbEnabled()) {
-    const { upsertCharacter } = await import("@/lib/db/characters");
-    await upsertCharacter(normalized);
-    upsertCharacterRegistry(normalized);
-    return normalized;
+    try {
+      const { upsertCharacter } = await import("@/lib/db/characters");
+      await upsertCharacter(saved);
+    } catch (e) {
+      console.error(
+        "[eldarin] Postgres upsertCharacter falhou (ficha salva em registry local):",
+        e instanceof Error ? e.message : e
+      );
+      throw new Error(
+        "Não foi possível gravar a ficha no banco. Rode npm run db:migrate ou verifique DATABASE_URL."
+      );
+    }
   }
 
-  return upsertCharacterRegistry(normalized);
+  const verified = await resolveCharacter(saved.id);
+  if (!verified) {
+    throw new Error("Ficha criada mas não encontrada ao salvar — tente novamente");
+  }
+
+  return saved;
 }
 
 export async function createCharacterFromWizard(
   userId: string,
   draft: import("./wizard-types").CharacterWizardDraft,
   opts?: { adventureId?: string | null; roomId?: string | null }
-): Promise<CharacterSheet> {
+): Promise<{ sheet: CharacterSheet; mesaRoomId: string | null }> {
   const existing = await listCharactersForUser(userId);
   if (existing.length >= MAX_CHARACTERS_PER_USER) {
     throw new Error(`Limite de ${MAX_CHARACTERS_PER_USER} fichas por conta`);
@@ -126,12 +149,16 @@ export async function createCharacterFromWizard(
   const { attachCharacterToDemoRoom } = await import("@/lib/room/demo-character-sync");
   await attachCharacterToDemoRoom(saved);
 
+  let mesaRoomId: string | null = null;
   if (adventureId) {
     const adv = await getAdventure(adventureId);
-    if (adv) await syncAdventureActorsForRoom(adv.primaryRoomId);
+    if (adv) {
+      mesaRoomId = adv.primaryRoomId;
+      await syncAdventureActorsForRoom(adv.primaryRoomId);
+    }
   }
 
-  return saved;
+  return { sheet: saved, mesaRoomId };
 }
 
 export async function createCharacter(

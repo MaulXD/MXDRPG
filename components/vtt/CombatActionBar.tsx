@@ -6,6 +6,7 @@ import type { RoomActor } from "@/lib/room/types";
 import type { CombatTrack } from "@/lib/room/combat";
 import { axialDistance } from "@/lib/vtt/hex-math";
 import { canAttackTarget } from "@/lib/combat/attack";
+import { isAreaSpellAction } from "@/lib/combat/area-spell";
 import { canAbilityTarget, canUseAbility } from "@/lib/combat/ability";
 import {
   useCombatActions,
@@ -45,8 +46,10 @@ export function CombatActionBar({
   );
   const { busy, err, performAttack, performAbility, saveLoadout } = usePerformAttack();
 
+  const isAreaSpell = Boolean(action && isAreaSpellAction(action));
+
   const targets = useMemo(() => {
-    if (!action || action.selfTarget) return [];
+    if (!action || action.selfTarget || isAreaSpellAction(action)) return [];
     return tokens
       .filter((t) => t.id !== attacker.id)
       .map((t) => {
@@ -165,6 +168,12 @@ export function CombatActionBar({
 
       {turnHint ? <p className="vtt-combat-turn-hint">{turnHint}</p> : null}
 
+      {isAreaSpell ? (
+        <p className="vtt-combat-hint">
+          Magia de área ({action.areaShape}) — selecione o centro ou a direção no mapa hexagonal.
+        </p>
+      ) : null}
+
       {action.selfTarget ? (
         <button
           type="button"
@@ -174,7 +183,7 @@ export function CombatActionBar({
         >
           {busy === "self" ? "Ativando…" : `${actionIcon} Usar ${action.name}`}
         </button>
-      ) : !targets.length ? (
+      ) : isAreaSpell ? null : !targets.length ? (
         <p className="vtt-combat-hint">Nenhum alvo no alcance ({action.rangeHex} hex).</p>
       ) : (
         <ul className="vtt-combat-targets">
@@ -207,7 +216,9 @@ export function CombatActionBar({
         </ul>
       )}
 
-      <p className="vtt-combat-click-hint">Ou clique no token inimigo destacado no mapa.</p>
+      {!isAreaSpell ? (
+        <p className="vtt-combat-click-hint">Ou clique no token inimigo destacado no mapa.</p>
+      ) : null}
       {err ? <p className="dice-err">{err}</p> : null}
     </div>
   );

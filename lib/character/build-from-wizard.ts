@@ -40,6 +40,7 @@ export function validateWizardDraft(draft: CharacterWizardDraft): string | null 
   const pb = validatePointBuy(draft.pointBuy);
   if (pb) return pb;
   if (!draft.antecedente.trim()) return "Escolha um antecedente";
+  if (!draft.religiao?.trim()) return "Escolha uma devotion (ou Sem Deus)";
   return null;
 }
 
@@ -81,6 +82,7 @@ export function buildCharacterFromWizard(
       subclasse: null,
       linhagem: safeDraft.raca === "Meio-Humano" ? safeDraft.linhagem : null,
       antecedente: safeDraft.antecedente,
+      religiao: safeDraft.religiao,
       talentos: [],
     },
     attributes,

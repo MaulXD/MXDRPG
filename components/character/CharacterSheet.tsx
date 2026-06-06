@@ -6,7 +6,9 @@ import type { CharacterSheet as CharacterSheetData, InventoryItem } from "@/lib/
 import { formatXpProgress } from "@/lib/character/xp";
 import { loadInventory, newInstanceId, saveInventory } from "@/lib/character/inventory-storage";
 import type { CompendiumEntry, CompendiumPackId } from "@/lib/compendium/types";
+import { CompendiumIcon } from "@/components/compendium/CompendiumIcon";
 import { entryBookRef, entryDescriptionHtml, entrySummary, stripHtml } from "@/lib/compendium/format";
+import { compendiumTypeColor } from "@/lib/compendium/icons";
 import { getEntry } from "@/lib/compendium/registry";
 import { patchRoomActor, useRoomSync } from "@/hooks/useRoomSync";
 import { CharacterSheetCover } from "@/components/character/CharacterSheetCover";
@@ -17,6 +19,12 @@ import {
   CharacterStatsGrid,
 } from "@/components/character/CharacterIdentityEditor";
 import { LevelUpWizard } from "@/components/character/LevelUpWizard";
+import { FutureLevelsPanel } from "@/components/character/FutureLevelsPanel";
+import { CharacterReligionEditor } from "@/components/character/CharacterReligionEditor";
+import { ReligionSheetPanel } from "@/components/character/ReligionSheetPanel";
+import { WizardHoverTip } from "@/components/character/wizard/WizardHoverTip";
+import { religionDisplayName } from "@/lib/character/pantheon";
+import { religionBonusTooltip } from "@/lib/character/religion-tooltips";
 import { SubclassTrackPanel } from "@/components/character/SubclassTrackPanel";
 import { CombatLoadoutPanel } from "@/components/character/CombatLoadoutPanel";
 import { LootEconomyPanel } from "@/components/character/LootEconomyPanel";
@@ -24,10 +32,8 @@ import { CharacterSheetPopupHero } from "@/components/character/CharacterSheetPo
 import {
   ATTRIBUTE_LABELS,
   attributeMod,
-  CULINARY_LABELS,
   proficiencyBonus,
   type AttributeKey,
-  type CulinaryKey,
 } from "@/lib/character/rules";
 import { portraitFocusToImgStyle, sanitizePortraitFocus } from "@/lib/media/portrait-focus";
 import "./sheet.css";
@@ -46,13 +52,6 @@ type Props = {
 };
 
 const PLAYER_PACKS: CompendiumPackId[] = ["armas", "habilidades", "magias", "equipamentos"];
-
-const TYPE_COLOR: Record<string, string> = {
-  arma: "#ffc14d",
-  habilidade: "#b8ff3c",
-  magia: "#8b5cf6",
-  equipamento: "#94a3be",
-};
 
 export function CharacterSheet({
   character,
@@ -360,6 +359,17 @@ export function CharacterSheet({
       ) : null}
 
       <SubclassTrackPanel actor={live} popup={isPopup} />
+      <section className="sheet-section">
+        <h2 className="sheet-section__title">Devotion</h2>
+        <ReligionSheetPanel religiao={live.identity.religiao} />
+        {canEdit && !inRoom ? (
+          <CharacterReligionEditor
+            characterId={character.id}
+            religiao={live.identity.religiao ?? "sem-deus"}
+          />
+        ) : null}
+      </section>
+      <FutureLevelsPanel actor={live} compact={isPopup} />
 
       {inRoom ? (
         <CombatLoadoutPanel
@@ -423,8 +433,6 @@ export function CharacterSheet({
     </>
   );
 
-  const culinaryKeys = Object.keys(CULINARY_LABELS) as CulinaryKey[];
-
   if (isPopup) {
     const popupRightAside = (
       <>
@@ -444,7 +452,16 @@ export function CharacterSheet({
           {identity.antecedente ? (
             <span className="sheet-popup-pill">{identity.antecedente}</span>
           ) : null}
+          {identity.religiao ? (
+            <WizardHoverTip text={religionBonusTooltip(identity.religiao)}>
+              <span className="sheet-popup-pill sheet-popup-pill--faith">
+                {religionDisplayName(identity.religiao)}
+              </span>
+            </WizardHoverTip>
+          ) : null}
         </div>
+
+        <ReligionSheetPanel religiao={identity.religiao} compact />
 
         {canEdit ? (
           <LevelUpWizard
@@ -475,6 +492,7 @@ export function CharacterSheet({
         ) : null}
 
         <SubclassTrackPanel actor={live} popup />
+        <FutureLevelsPanel actor={live} compact />
 
         {inRoom ? (
           <CombatLoadoutPanel
@@ -572,19 +590,6 @@ export function CharacterSheet({
 
         <div className="sheet-popup-body">
           <section className="sheet-popup-center sheet-panel">
-            <h3 className="sheet-popup-section-title">Culinária</h3>
-            <ul className="sheet-popup-skill-list">
-              {culinaryKeys.map((k) => (
-                <li className="sheet-popup-skill" key={k}>
-                  <span className="sheet-popup-skill__abbr">CUL</span>
-                  <span className="sheet-popup-skill__name">{CULINARY_LABELS[k]}</span>
-                  <span className="sheet-popup-skill__bonus">
-                    {live.culinary[k] >= 0 ? "+" : ""}
-                    {live.culinary[k]}
-                  </span>
-                </li>
-              ))}
-            </ul>
             {tabPanel}
             {canEdit || inRoom ? (
               <details className="sheet-popup-advanced">
@@ -616,7 +621,6 @@ export function CharacterSheet({
         identity={identity}
         portraitUrl={live.portraitUrl}
         portraitFocus={live.portraitFocus}
-        coverFocus={live.coverFocus}
       />
 
       <aside className="sheet-sidebar glass">{sidebarTools}</aside>
@@ -654,7 +658,7 @@ function InventoryRow({
   onSelect?: () => void;
   onRemove: () => void;
 }) {
-  const color = TYPE_COLOR[entry.type] ?? "#00f5ff";
+  const color = compendiumTypeColor(entry.type);
   const tags = entrySummary(entry.system, entry.type);
   const descriptionHtml = entryDescriptionHtml(entry.system);
   const descriptionText = stripHtml(descriptionHtml);
@@ -677,9 +681,7 @@ function InventoryRow({
           : undefined
       }
     >
-      <div className="inv-icon" style={{ background: `${color}22`, color }}>
-        {entry.name.charAt(0)}
-      </div>
+      <CompendiumIcon entry={entry} color={color} className="inv-icon" />
       <div className="inv-row__body">
         <h4>{entry.name}</h4>
         <p className="inv-row__tags">{tags.slice(0, 4).join(" · ")}</p>
@@ -762,7 +764,10 @@ function CompendiumPicker({
           {entries.map((entry) => (
             <li key={entry.id}>
               <button type="button" className="picker-item" onClick={() => onPick(entry)}>
-                <span>{entry.name}</span>
+                <span className="picker-item__main">
+                  <CompendiumIcon entry={entry} color={compendiumTypeColor(entry.type)} className="inv-icon" />
+                  <span>{entry.name}</span>
+                </span>
                 <span className="inv-type">{entry.type}</span>
               </button>
             </li>
