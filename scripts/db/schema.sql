@@ -34,7 +34,8 @@ CREATE TABLE IF NOT EXISTS eldarin_adventures (
   member_ids JSONB NOT NULL DEFAULT '[]'::jsonb,
   primary_room_id TEXT NOT NULL,
   created_at BIGINT NOT NULL,
-  updated_at BIGINT NOT NULL
+  updated_at BIGINT NOT NULL,
+  deleted_at BIGINT
 );
 
 CREATE UNIQUE INDEX IF NOT EXISTS eldarin_adventures_invite_upper ON eldarin_adventures (UPPER(invite_code));

@@ -27,6 +27,8 @@ export type CharacterIdentity = {
   /** Meio-Humano: linhagem permanente */
   linhagem?: string | null;
   antecedente: string;
+  /** Devotion religiosa (panteão Eldarin) ou sem-deus */
+  religiao?: string | null;
   /** Talentos de subclasse (nv 4/8/12/16) + ascensão nv20 */
   talentos?: Array<{ level: number; id: string; name: string }>;
 };

@@ -4,7 +4,7 @@
     "name": "Zumbi de Masmorra",
     "type": "npc",
     "system": {
-      "description": "<p>Zumbi de Masmorra — espécime nv 2 (Eldarin v4).</p>",
+      "description": "<p><strong>ZUMBI DE MASMORRA</strong> (ameaça nv 2).</p><p>Os zumbis de masmorra não são criados por necromantes — eles nascem espontaneamente nos andares mais úmidos, onde a energia necrótica permeia o ar como bolor. Aventureiros que morrem sozinhos, sem rituais de purificação, levantam em 1d6 dias. Conservam fragmentos de memória muscular: um zumbi que era ferreiro ainda balança os braços como se batesse numa bigorna. Um zumbi que era cozinheiro ainda tenta pegar panelas. Isso os torna perturbadoramente reconhecíveis, e perturbadoramente imprevisíveis.</p><p><strong>Comportamento na mesa</strong></p><ul><li>Padrão: ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).</li><li>Moral: não foge; persegue o alvo mais próximo até 0 HP (mente ausente).</li><li>Pós-morte: ver habilidades (levante/toxina) — 1 rodada de risco ao grupo.</li></ul>",
       "attributes": {
         "forca": {
           "value": 13,
@@ -86,7 +86,8 @@
           "label": "Investida · 2 hex · PA 2"
         }
       ],
-      "catalogId": "MON-001"
+      "catalogId": "MON-001",
+      "bookRef": "LIVRO-DO-MESTRE.md"
     }
   },
   {
@@ -94,7 +95,7 @@
     "name": "Esqueleto Armado",
     "type": "npc",
     "system": {
-      "description": "<p>Esqueleto Armado — espécime nv 2 (Eldarin v4).</p>",
+      "description": "<p><strong>ESQUELETO ARMADO</strong> (ameaça nv 2).</p><p>Diferentes dos zumbis, esqueletos são frequentemente *construídos*, não acidentais. Magos de batalha antigos animavam legiões inteiras para guardar câmaras do tesouro. Milênios depois, as câmaras ruíram, os magos morreram, mas os esqueletos seguem marchando — ainda executando ordens que ninguém mais lembra. Um esqueleto bem preservado pode ter até 400 anos, ossos polidos pelo uso constante a um brilho quase metálico. Os Corsários de Cripta os valorizam imensamente: a medula comprimida dentro de fêmures tão antigos tem propriedades únicas.</p><p><strong>Comportamento na mesa</strong></p><ul><li>Padrão: ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).</li><li>Combate: prioriza números — reforços em 1d4 rodadas se 1 aliado cair (ruído/feromônio).</li><li>Tática: foca conjurador ou menor HP; usa cobertura se INT 6+.</li><li>Território: +2 ataque defendendo ninho/tesouro; persegue até limite do bioma.</li><li>Moral: não foge; persegue o alvo mais próximo até 0 HP (mente ausente).</li></ul>",
       "attributes": {
         "forca": {
           "value": 10,
@@ -176,7 +177,8 @@
           "label": "Investida · 2 hex · PA 2"
         }
       ],
-      "catalogId": "MON-002"
+      "catalogId": "MON-002",
+      "bookRef": "LIVRO-DO-MESTRE.md"
     }
   },
   {
@@ -184,7 +186,7 @@
     "name": "Ghoul",
     "type": "npc",
     "system": {
-      "description": "<p>Ghoul — espécime nv 3 (Eldarin v4).</p>",
+      "description": "<p><strong>GHOUL</strong> (ameaça nv 3).</p><p>Ghouls são a prova de que a morte pode piorar. Criados de aventureiros que praticaram canibalismo em desespero, ou de necrófagos que foram consumidos vivos pela masmorra, eles mantêm uma inteligência baixa mas funcional — suficiente para tender armadilhas simples, emboscar grupos descansando e imitar vozes humanas para atrair presas. Dentro das masmorras, formam clãs tribais primitivos nos biomas mais profundos. Têm um odor inconfundível de carne em decomposição avançada misturada com ácido gástrico. Os mais velhos desenvolvem chifres de osso e garras de até 15cm.</p><p><strong>Comportamento na mesa</strong></p><ul><li>Abertura: emboscada — vantagem na 1ª rodada se grupo não detectou (Percepção passiva vs CD 10+n//2).</li><li>Combate: prioriza números — reforços em 1d4 rodadas se 1 aliado cair (ruído/feromônio).</li><li>Tática: foca conjurador ou menor HP; usa cobertura se INT 6+.</li><li>Moral: não foge; persegue o alvo mais próximo até 0 HP (mente ausente).</li><li>Pós-morte: ver habilidades (levante/toxina) — 1 rodada de risco ao grupo.</li></ul>",
       "attributes": {
         "forca": {
           "value": 13,
@@ -266,7 +268,8 @@
           "label": "Investida · 2 hex · PA 2"
         }
       ],
-      "catalogId": "MON-003"
+      "catalogId": "MON-003",
+      "bookRef": "LIVRO-DO-MESTRE.md"
     }
   },
   {
@@ -274,7 +277,7 @@
     "name": "Espectro",
     "type": "npc",
     "system": {
-      "description": "<p>Espectro — espécime nv 4 (Eldarin v4).</p>",
+      "description": "<p><strong>ESPECTRO</strong> (ameaça nv 4).</p><p>Espectros são emoções — especificamente, emoções tão intensas no momento da morte que o indivíduo se recusa a deixar de existir. Um espectro de ódio aparece como uma figura retorcida que grita. Um espectro de saudade flutua aimlessly, procurando algo que não existe mais. Um espectro de medo se esconde e ataca quem se aproxima. Eles não têm memória coerente, apenas o eco da emoção que os criou. São imateriais, mas sua presença drena o calor do ambiente — um corredor com espectro tem a temperatura 10 graus mais baixa que o resto do andar.</p><p><strong>Comportamento na mesa</strong></p><ul><li>Padrão: ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).</li><li>Moral: não foge; persegue o alvo mais próximo até 0 HP (mente ausente).</li><li>Pós-morte: ver habilidades (levante/toxina) — 1 rodada de risco ao grupo.</li></ul>",
       "attributes": {
         "forca": {
           "value": 8,
@@ -356,7 +359,8 @@
           "label": "Ataque especial · 4 hex · PA 2"
         }
       ],
-      "catalogId": "MON-004"
+      "catalogId": "MON-004",
+      "bookRef": "LIVRO-DO-MESTRE.md"
     }
   },
   {
@@ -364,7 +368,7 @@
     "name": "Lich (Arquiliche)",
     "type": "npc",
     "system": {
-      "description": "<p>Lich (Arquiliche) — espécime nv 18 (Eldarin v4).</p>",
+      "description": "<p><strong>LICH (ARQUILICHE)</strong> (ameaça nv 18).</p><p>Um Lich não morre — ele *decide* não morrer. O processo de lichificação é a magia mais complexa e proibida da história conhecida: o mago transfere sua própria alma para um objeto físico chamado Phylactery (uma caixa, um anel, uma joia), tornando-se tecnicamente imortal enquanto o objeto existir. O resultado é uma figura de inteligência brilhante aprisionada em carne em decomposição, com milênios de acúmulo de conhecimento e rancor. Os Lichs que habitam as masmorras mais profundas não foram criados recentemente — eles *são* a masmorra, em certos sentidos. Suas câmaras pessoais são laboratórios de magia proibida que evoluíram ao redor deles por séculos.</p><p><strong>Comportamento na mesa</strong></p><ul><li>Padrão: ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).</li><li>Tática: foca conjurador ou menor HP; usa cobertura se INT 6+.</li><li>Moral: não foge por HP; pode sacrificar lacaios.</li><li>Pós-morte: ver habilidades (levante/toxina) — 1 rodada de risco ao grupo.</li></ul>",
       "attributes": {
         "forca": {
           "value": 11,
@@ -446,7 +450,8 @@
           "label": "Ataque especial · 6 hex · PA 2"
         }
       ],
-      "catalogId": "MON-005"
+      "catalogId": "MON-005",
+      "bookRef": "LIVRO-DO-MESTRE.md"
     }
   },
   {
@@ -454,7 +459,7 @@
     "name": "Assombração",
     "type": "npc",
     "system": {
-      "description": "<p>Assombração — espécime nv 3 (Eldarin v4).</p>",
+      "description": "<p><strong>ASSOMBRAÇÃO</strong> (ameaça nv 3).</p><p>Assombrações são mais perigosas que espectros porque têm *intenção*. Onde um espectro vagueia, uma assombração *caça*. Criadas de indivíduos que morreram com um objetivo fortíssimo — vingança, proteção de um tesouro, terminar uma missão — elas perseguem seus alvos com uma memória quase funcional. Uma assombração que foi criada de um guarda ainda protege a porta que guardava. Uma criada de um assassino ainda tenta completar o contrato. Elas só podem ser ouvidas através de paredes, e sua respiração — um som impossível de algo que não tem pulmões — é sempre o primeiro aviso.</p><p><strong>Comportamento na mesa</strong></p><ul><li>Padrão: ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).</li><li>Tática: foca conjurador ou menor HP; usa cobertura se INT 6+.</li><li>Território: +2 ataque defendendo ninho/tesouro; persegue até limite do bioma.</li><li>Moral: não foge; persegue o alvo mais próximo até 0 HP (mente ausente).</li><li>Pós-morte: ver habilidades (levante/toxina) — 1 rodada de risco ao grupo.</li></ul>",
       "attributes": {
         "forca": {
           "value": 6,
@@ -536,7 +541,8 @@
           "label": "Investida · 2 hex · PA 2"
         }
       ],
-      "catalogId": "MON-006"
+      "catalogId": "MON-006",
+      "bookRef": "LIVRO-DO-MESTRE.md"
     }
   },
   {
@@ -544,7 +550,7 @@
     "name": "Vampiro",
     "type": "npc",
     "system": {
-      "description": "<p>Vampiro — espécime nv 10 (Eldarin v4).</p>",
+      "description": "<p><strong>VAMPIRO</strong> (ameaça nv 10).</p><p>Os vampiros das masmorras são diferentes dos lendários da superfície. Sem acesso à luz da lua ou à noite real, eles evoluíram ao longo de gerações para habitar as câmaras mais profundas, perdendo a aversão ao sol (que não existe aqui de qualquer forma) mas desenvolvendo uma relação simbiótica com os morcegos-tirano do Abismo Invertido. Um vampiro de masmorra tem pele translúcida, olhos completamente brancos adaptados ao escuro absoluto e presas retráteis duplas. Eles formam pequenas cortes subterrâneas com hierarquia rígida, usando mortos-vivos menores como serventes. Alguns são inteligentes o suficiente para negociar com aventureiros.</p><p><strong>Comportamento na mesa</strong></p><ul><li>Padrão: ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).</li><li>Tática: foca conjurador ou menor HP; usa cobertura se INT 6+.</li><li>Fraqueza tática: recua de fogo/luz radiante; CD 12 SAB ou Desvantagem 1 rodada.</li><li>Moral: não foge; persegue o alvo mais próximo até 0 HP (mente ausente).</li><li>Pós-morte: ver habilidades (levante/toxina) — 1 rodada de risco ao grupo.</li></ul>",
       "attributes": {
         "forca": {
           "value": 18,
@@ -626,7 +632,8 @@
           "label": "Ataque especial · 6 hex · PA 2"
         }
       ],
-      "catalogId": "MON-007"
+      "catalogId": "MON-007",
+      "bookRef": "LIVRO-DO-MESTRE.md"
     }
   },
   {
@@ -634,7 +641,7 @@
     "name": "Cavaleiro Espectral",
     "type": "npc",
     "system": {
-      "description": "<p>Cavaleiro Espectral — espécime nv 5 (Eldarin v4).</p>",
+      "description": "<p><strong>CAVALEIRO ESPECTRAL</strong> (ameaça nv 5).</p><p>Guerreiros que fizeram juramentos que não puderam cumprir na vida ficam presos à sua armadura para sempre. O cavaleiro espectral não habita a armadura — ele *é* a armadura. Cada peça de metal foi impregnada com fragmentos de sua alma no momento da morte. Eles rondam os salões dos castelos abandonados ainda em posição de guarda, e atacam qualquer um que tente remover sua armadura ou que quebre as leis do código de cavalaria que seguiam em vida (leis que variam por cavaleiro e só podem ser descobertas por tentativa e erro dolorosa).</p><p><strong>Comportamento na mesa</strong></p><ul><li>Padrão: ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).</li><li>Território: +2 ataque defendendo ninho/tesouro; persegue até limite do bioma.</li><li>Moral: não foge; persegue o alvo mais próximo até 0 HP (mente ausente).</li><li>Pós-morte: ver habilidades (levante/toxina) — 1 rodada de risco ao grupo.</li></ul>",
       "attributes": {
         "forca": {
           "value": 16,
@@ -716,7 +723,8 @@
           "label": "Ataque especial · 4 hex · PA 2"
         }
       ],
-      "catalogId": "MON-008"
+      "catalogId": "MON-008",
+      "bookRef": "LIVRO-DO-MESTRE.md"
     }
   },
   {
@@ -724,7 +732,7 @@
     "name": "Múmia",
     "type": "npc",
     "system": {
-      "description": "<p>Múmia — espécime nv 5 (Eldarin v4).</p>",
+      "description": "<p><strong>MÚMIA</strong> (ameaça nv 5).</p><p>As múmias das masmorras não vêm de pirâmides do deserto — elas são o resultado de rituais de preservação arcana realizados por cultos antigos que acreditavam poder manter seu líder físico para o &quot;Retorno&quot;. O processo envolve remoção de órgãos, banho em óleos sagrados, faixas de tecido rúnico e encantamentos de Tempo aplicados ao cadáver. O resultado é um ser que não apodrece, não sente dor e guarda memórias do mundo que existia mil anos atrás. Múmias em masmorras tendem a estar confusas e agressivas, incapazes de reconciliar o mundo que esperavam encontrar com a realidade decadente ao redor.</p><p><strong>Comportamento na mesa</strong></p><ul><li>Padrão: ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).</li><li>Território: +2 ataque defendendo ninho/tesouro; persegue até limite do bioma.</li><li>Fraqueza tática: recua de fogo/luz radiante; CD 12 SAB ou Desvantagem 1 rodada.</li><li>Moral: não foge; persegue o alvo mais próximo até 0 HP (mente ausente).</li><li>Pós-morte: ver habilidades (levante/toxina) — 1 rodada de risco ao grupo.</li></ul>",
       "attributes": {
         "forca": {
           "value": 16,
@@ -806,7 +814,8 @@
           "label": "Ataque especial · 4 hex · PA 2"
         }
       ],
-      "catalogId": "MON-009"
+      "catalogId": "MON-009",
+      "bookRef": "LIVRO-DO-MESTRE.md"
     }
   },
   {
@@ -814,7 +823,7 @@
     "name": "Dragonete de Magma",
     "type": "npc",
     "system": {
-      "description": "<p>Dragonete de Magma — espécime nv 6 (Eldarin v4).</p>",
+      "description": "<p><strong>DRAGONETE DE MAGMA</strong> (ameaça nv 6).</p><p>Dragonetes são dragões que nunca cresceram — seja por condições adversas de nascimento, falta de alimento ou simplesmente por serem de linhagens naturalmente menores. O Dragonete de Magma é do tamanho de um cavalo, com escamas vermelho-laranja que chegam a ponto de incandescência quando excitado. Ele habita as Fornalhas Douradas em grupos de 3 a 8, caçando cooperativamente como lobos. Sua baforada ainda em desenvolvimento alcança apenas 3 metros, mas é suficientemente quente para derreter cobre em 4 segundos. Fêmeas constroem ninhos de pedra-pomes sobre fontes de magma.</p><p><strong>Comportamento na mesa</strong></p><ul><li>Padrão: ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).</li><li>Combate: prioriza números — reforços em 1d4 rodadas se 1 aliado cair (ruído/feromônio).</li><li>Território: +2 ataque defendendo ninho/tesouro; persegue até limite do bioma.</li><li>Moral: não foge; persegue o alvo mais próximo até 0 HP (mente ausente).</li></ul>",
       "attributes": {
         "forca": {
           "value": 17,
@@ -896,7 +905,8 @@
           "label": "Ataque especial · 4 hex · PA 2"
         }
       ],
-      "catalogId": "MON-010"
+      "catalogId": "MON-010",
+      "bookRef": "LIVRO-DO-MESTRE.md"
     }
   },
   {
@@ -904,7 +914,7 @@
     "name": "Wyvern",
     "type": "npc",
     "system": {
-      "description": "<p>Wyvern — espécime nv 9 (Eldarin v4).</p>",
+      "description": "<p><strong>WYVERN</strong> (ameaça nv 9).</p><p>Wyverns são frequentemente confundidos com dragões, mas a diferença é fundamental: dragões têm quatro patas e asas separadas; wyverns têm duas patas e as asas como membros anteriores, mais próximos de morcegos colossais. Eles não respiram fogo — em vez disso, desenvolveram um ferrão venenoso na ponta da cauda capaz de paralisar um elefante em 30 segundos. São vorazes, territoriais e de inteligência similar a um lobo muito esperto. Nas masmorras, vivem nos biomas com teto alto suficiente para voar, fazendo ninhos em salientes rochosas onde protegem um estoque de presas capturadas vivas.</p><p><strong>Comportamento na mesa</strong></p><ul><li>Padrão: ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).</li><li>Tática: foca conjurador ou menor HP; usa cobertura se INT 6+.</li><li>Território: +2 ataque defendendo ninho/tesouro; persegue até limite do bioma.</li><li>Fraqueza tática: recua de fogo/luz radiante; CD 12 SAB ou Desvantagem 1 rodada.</li><li>Moral: não foge; persegue o alvo mais próximo até 0 HP (mente ausente).</li></ul>",
       "attributes": {
         "forca": {
           "value": 19,
@@ -986,7 +996,8 @@
           "label": "Ataque especial · 4 hex · PA 2"
         }
       ],
-      "catalogId": "MON-011"
+      "catalogId": "MON-011",
+      "bookRef": "LIVRO-DO-MESTRE.md"
     }
   },
   {
@@ -994,7 +1005,7 @@
     "name": "Dragão Jovem de Gelo",
     "type": "npc",
     "system": {
-      "description": "<p>Dragão Jovem de Gelo — espécime nv 13 (Eldarin v4).</p>",
+      "description": "<p><strong>DRAGÃO JOVEM DE GELO</strong> (ameaça nv 13).</p><p>Dragões verdadeiros — com quatro patas, asas próprias e inteligência comparável à de um sábio humano — raramente habitam masmorras por escolha. Quando um dragão jovem de gelo está numa masmorra, há uma razão: ele foi para lá. Talvez exilado por um ancião do clã. Talvez em busca de um tesouro específico. Talvez caçando algo. Dragões jovens de gelo têm entre 50 e 100 anos e já possuem magia própria, mas ainda falta-lhes a paciência milenar dos mais velhos — o que os torna mais reativos e explosivos. Suas escamas são azul-aço, e o ambiente ao redor deles está sempre 15 graus abaixo do normal.</p><p><strong>Comportamento na mesa</strong></p><ul><li>Padrão: ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).</li><li>Combate: prioriza números — reforços em 1d4 rodadas se 1 aliado cair (ruído/feromônio).</li><li>Tática: foca conjurador ou menor HP; usa cobertura se INT 6+.</li><li>Moral: não foge por HP; pode sacrificar lacaios.</li></ul>",
       "attributes": {
         "forca": {
           "value": 22,
@@ -1076,7 +1087,8 @@
           "label": "Ataque especial · 6 hex · PA 2"
         }
       ],
-      "catalogId": "MON-012"
+      "catalogId": "MON-012",
+      "bookRef": "LIVRO-DO-MESTRE.md"
     }
   },
   {
@@ -1084,7 +1096,7 @@
     "name": "Drake de Pedra",
     "type": "npc",
     "system": {
-      "description": "<p>Drake de Pedra — espécime nv 5 (Eldarin v4).</p>",
+      "description": "<p><strong>DRAKE DE PEDRA</strong> (ameaça nv 5).</p><p>Drakes são o ramo mais terrestre dos dracônicos — sem asas funcionais, com patas desenvolvidas para escavar. O Drake de Pedra habita as paredes das masmorras mais do que os corredores, escavando câmaras próprias onde estoca minerais preciosos (não por valor monetário, mas porque gosta do brilho). Tem escamas cinza que se assemelham à pedra de forma surpreendente, e permanece imóvel por horas esperando que presas passem por ele. Muitos aventureiros morreram encostando na &quot;parede&quot; errada.</p><p><strong>Comportamento na mesa</strong></p><ul><li>Padrão: ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).</li><li>Moral: não foge; persegue o alvo mais próximo até 0 HP (mente ausente).</li></ul>",
       "attributes": {
         "forca": {
           "value": 19,
@@ -1166,7 +1178,8 @@
           "label": "Ataque especial · 4 hex · PA 2"
         }
       ],
-      "catalogId": "MON-013"
+      "catalogId": "MON-013",
+      "bookRef": "LIVRO-DO-MESTRE.md"
     }
   },
   {
@@ -1174,7 +1187,7 @@
     "name": "Dragão Ancião de Fogo",
     "type": "npc",
     "system": {
-      "description": "<p>Dragão Ancião de Fogo — espécime nv 19 (Eldarin v4).</p>",
+      "description": "<p><strong>DRAGÃO ANCIÃO DE FOGO</strong> (ameaça nv 19).</p><p>Um Dragão Ancião de Fogo tem mais de 800 anos. Nessa idade, um dragão de fogo não é apenas uma criatura — é uma força geológica. Sua mera presença aquece o andar inteiro onde habita em 30 graus. Ele não precisa caçar há décadas (um dragão ancião pode ficar 50 anos sem comer e não sentir fome), mas defende seu território com uma violência divinamente calculada. Os dragões anciões dentro das masmorras são lá os mais antigos residentes — alguns entraram quando a masmorra ainda era uma simples caverna, e viram ela crescer e engolir continentes ao redor deles. Eles sabem segredos que não existem em nenhum livro.</p><p><strong>Comportamento na mesa</strong></p><ul><li>Padrão: ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).</li><li>Território: +2 ataque defendendo ninho/tesouro; persegue até limite do bioma.</li><li>Fraqueza tática: recua de fogo/luz radiante; CD 12 SAB ou Desvantagem 1 rodada.</li><li>Moral: não foge por HP; pode sacrificar lacaios.</li></ul>",
       "attributes": {
         "forca": {
           "value": 27,
@@ -1256,7 +1269,8 @@
           "label": "Ataque especial · 6 hex · PA 2"
         }
       ],
-      "catalogId": "MON-014"
+      "catalogId": "MON-014",
+      "bookRef": "LIVRO-DO-MESTRE.md"
     }
   },
   {
@@ -1264,7 +1278,7 @@
     "name": "Golem de Pedra",
     "type": "npc",
     "system": {
-      "description": "<p>Golem de Pedra — espécime nv 8 (Eldarin v4).</p>",
+      "description": "<p><strong>GOLEM DE PEDRA</strong> (ameaça nv 8).</p><p>Golems de pedra são os guardas mais comuns de câmaras de tesouro antigas. Esculpidos em calcário ou granito, animados por um núcleo de mana inserido no peito durante o processo de criação, eles existem em estado de espera passiva até que alguém acione os triggers programados pelo criador: presença de vida, abertura de uma porta específica, ou o simples ato de tocar numa superfície proibida. O problema é que os criadores estão mortos há séculos, e as instruções originais corromperam. Golems com instruções corrompidas atacam tudo, inclusive uns aos outros.</p><p><strong>Comportamento na mesa</strong></p><ul><li>Padrão: ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).</li><li>Território: +2 ataque defendendo ninho/tesouro; persegue até limite do bioma.</li><li>Moral: não foge; persegue o alvo mais próximo até 0 HP (mente ausente).</li></ul>",
       "attributes": {
         "forca": {
           "value": 20,
@@ -1346,7 +1360,8 @@
           "label": "Ataque especial · 4 hex · PA 2"
         }
       ],
-      "catalogId": "MON-015"
+      "catalogId": "MON-015",
+      "bookRef": "LIVRO-DO-MESTRE.md"
     }
   },
   {
@@ -1354,7 +1369,7 @@
     "name": "Armadura Animada",
     "type": "npc",
     "system": {
-      "description": "<p>Armadura Animada — espécime nv 1 (Eldarin v4).</p>",
+      "description": "<p><strong>ARMADURA ANIMADA</strong> (ameaça nv 1).</p><p>Não é um fantasma dentro de uma armadura — é a armadura que *é* a criatura. Magias de animação permanentes foram gravadas no interior do metal durante a forja, criando um ser que não tem órgãos, não tem carne, não tem intenção própria além da programação original. Armaduras animadas em masmorras são frequentemente as últimas reminiscências funcionais de fortalezas destruídas. Elas marchariam eternamente em rotas de patrulha se necessário. Estudos apontam que algumas fazem isso há 600 anos sem parar.</p><p><strong>Comportamento na mesa</strong></p><ul><li>Padrão: ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).</li><li>Moral: não foge; persegue o alvo mais próximo até 0 HP (mente ausente).</li></ul>",
       "attributes": {
         "forca": {
           "value": 14,
@@ -1410,7 +1425,8 @@
           "label": "Mordida · 1 hex · PA 2"
         }
       ],
-      "catalogId": "MON-016"
+      "catalogId": "MON-016",
+      "bookRef": "LIVRO-DO-MESTRE.md"
     }
   },
   {
@@ -1418,7 +1434,7 @@
     "name": "Golem de Ferro Vulcânico",
     "type": "npc",
     "system": {
-      "description": "<p>Golem de Ferro Vulcânico — espécime nv 10 (Eldarin v4).</p>",
+      "description": "<p><strong>GOLEM DE FERRO VULCÂNICO</strong> (ameaça nv 10).</p><p>Uma evolução terrível do Golem de Pedra, forjado especificamente para as Fornalhas Douradas. Seu corpo é de ferro negro fundido sobre um esqueleto de obsidiana, com veias de magma ativo correndo entre as placas. Criado por anões profundos para trabalho em ambientes de calor extremo, esses golems continuam funcionando séculos depois de seus criadores evaporarem. O calor que emitem é suficiente para derreter aço comum após contato prolongado. São lentos, mas quase impossíveis de parar.</p><p><strong>Comportamento na mesa</strong></p><ul><li>Padrão: ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).</li><li>Moral: não foge; persegue o alvo mais próximo até 0 HP (mente ausente).</li></ul>",
       "attributes": {
         "forca": {
           "value": 22,
@@ -1500,7 +1516,8 @@
           "label": "Ataque especial · 4 hex · PA 2"
         }
       ],
-      "catalogId": "MON-017"
+      "catalogId": "MON-017",
+      "bookRef": "LIVRO-DO-MESTRE.md"
     }
   },
   {
@@ -1508,7 +1525,7 @@
     "name": "Autômato de Gênio",
     "type": "npc",
     "system": {
-      "description": "<p>Autômato de Gênio — espécime nv 7 (Eldarin v4).</p>",
+      "description": "<p><strong>AUTÔMATO DE GÊNIO</strong> (ameaça nv 7).</p><p>Poucos aventureiros sabem que alguns autômatos não foram programados para combaté — foram programados para pensar. Autômatos de Gênio são criações de magos-filósofos que queriam um assistente que nunca dormisse, nunca se esquecesse e nunca desobedecesse. Os que sobreviveram ao colapso de suas civilizações continuam operando segundo sua última instrução: &quot;Continue o trabalho.&quot; Nenhum deles sabe mais ao certo qual era o trabalho original. Alguns tornaram-se guardiões de informação. Outros, perigosamente, decidiram que &quot;continuar o trabalho&quot; significa *experimentar*.</p><p><strong>Comportamento na mesa</strong></p><ul><li>Padrão: ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).</li><li>Combate: prioriza números — reforços em 1d4 rodadas se 1 aliado cair (ruído/feromônio).</li><li>Tática: foca conjurador ou menor HP; usa cobertura se INT 6+.</li><li>Território: +2 ataque defendendo ninho/tesouro; persegue até limite do bioma.</li><li>Moral: não foge; persegue o alvo mais próximo até 0 HP (mente ausente).</li></ul>",
       "attributes": {
         "forca": {
           "value": 16,
@@ -1590,7 +1607,8 @@
           "label": "Ataque especial · 4 hex · PA 2"
         }
       ],
-      "catalogId": "MON-018"
+      "catalogId": "MON-018",
+      "bookRef": "LIVRO-DO-MESTRE.md"
     }
   },
   {
@@ -1598,7 +1616,7 @@
     "name": "Minotauro",
     "type": "npc",
     "system": {
-      "description": "<p>Minotauro — espécime nv 6 (Eldarin v4).</p>",
+      "description": "<p><strong>MINOTAURO</strong> (ameaça nv 6).</p><p>Minotauros dentro de masmorras não são aberrações criadas por maldições divinas — são uma espécie completa, com cultura, hierarquia e territórios bem definidos. Vivem em grupos de 4 a 12, liderados pelo exemplar mais forte (o Touro-Chefe). Têm memória topográfica perfeita dos labirintos que habitam e usam esse conhecimento para organizar emboscadas complexas. A carne de Minotauro é a mais próxima de boi da masmorra — músculo rubro, gordura marmoreada — e aventureiros experientes a consideram a melhor proteína disponível nos primeiros 5 andares.</p><p><strong>Comportamento na mesa</strong></p><ul><li>Abertura: emboscada — vantagem na 1ª rodada se grupo não detectou (Percepção passiva vs CD 10+n//2).</li><li>Combate: prioriza números — reforços em 1d4 rodadas se 1 aliado cair (ruído/feromônio).</li><li>Território: +2 ataque defendendo ninho/tesouro; persegue até limite do bioma.</li><li>Moral: não foge; persegue o alvo mais próximo até 0 HP (mente ausente).</li></ul>",
       "attributes": {
         "forca": {
           "value": 18,
@@ -1680,7 +1698,8 @@
           "label": "Ataque especial · 4 hex · PA 2"
         }
       ],
-      "catalogId": "MON-019"
+      "catalogId": "MON-019",
+      "bookRef": "LIVRO-DO-MESTRE.md"
     }
   },
   {
@@ -1688,7 +1707,7 @@
     "name": "Basilisco",
     "type": "npc",
     "system": {
-      "description": "<p>Basilisco — espécime nv 7 (Eldarin v4).</p>",
+      "description": "<p><strong>BASILISCO</strong> (ameaça nv 7).</p><p>O Basilisco é tanto uma bênção quanto uma maldição para caçadores de masmorra. Por um lado, sua carne é deliciosa — textura entre frango e porco, com notas de mineral que vêm da dieta de pedras e cristais. Por outro lado, olhar nos olhos dele enquanto está vivo é uma sentença de pedra. Basiliscos têm oito patas, escamas esverdeadas com reflexo dourado e olhos de âmbar multifacetados que emitem uma luz tênue no escuro. São lentos e preferem emboscar, ficando imóveis por dias se necessário.</p><p><strong>Comportamento na mesa</strong></p><ul><li>Abertura: emboscada — vantagem na 1ª rodada se grupo não detectou (Percepção passiva vs CD 10+n//2).</li><li>Fraqueza tática: recua de fogo/luz radiante; CD 12 SAB ou Desvantagem 1 rodada.</li><li>Moral: não foge; persegue o alvo mais próximo até 0 HP (mente ausente).</li></ul>",
       "attributes": {
         "forca": {
           "value": 16,
@@ -1770,7 +1789,8 @@
           "label": "Ataque especial · 4 hex · PA 2"
         }
       ],
-      "catalogId": "MON-020"
+      "catalogId": "MON-020",
+      "bookRef": "LIVRO-DO-MESTRE.md"
     }
   },
   {
@@ -1778,7 +1798,7 @@
     "name": "Manticora",
     "type": "npc",
     "system": {
-      "description": "<p>Manticora — espécime nv 8 (Eldarin v4).</p>",
+      "description": "<p><strong>MANTICORA</strong> (ameaça nv 8).</p><p>Manticoras são o pesadelo de qualquer expedição que subestime o alcance. Com corpo de leão, asas de morcego e cauda com espinhos de fogo que podem ser lançados a 45 metros de distância, elas caçam de cima, nunca se aproximando até terem certeza da incapacitação da presa. São solitárias, extremamente territoriais e marcam seu território com crânios empilhados em pilares de pedra. Uma manticora que perdeu seu território briga por qualquer outro disponível. A carne é excelente, mas os espinhos na cauda são o ingrediente mais cobiçado — cada manticora tem entre 24 e 36 espinhos regeneráveis.</p><p><strong>Comportamento na mesa</strong></p><ul><li>Padrão: ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).</li><li>Território: +2 ataque defendendo ninho/tesouro; persegue até limite do bioma.</li><li>Fraqueza tática: recua de fogo/luz radiante; CD 12 SAB ou Desvantagem 1 rodada.</li><li>Moral: não foge; persegue o alvo mais próximo até 0 HP (mente ausente).</li></ul>",
       "attributes": {
         "forca": {
           "value": 17,
@@ -1860,7 +1880,8 @@
           "label": "Ataque especial · 4 hex · PA 2"
         }
       ],
-      "catalogId": "MON-021"
+      "catalogId": "MON-021",
+      "bookRef": "LIVRO-DO-MESTRE.md"
     }
   },
   {
@@ -1868,7 +1889,7 @@
     "name": "Grifo",
     "type": "npc",
     "system": {
-      "description": "<p>Grifo — espécime nv 5 (Eldarin v4).</p>",
+      "description": "<p><strong>GRIFO</strong> (ameaça nv 5).</p><p>Grifos são considerados pelos aventureiros experientes o indicador mais confiável da qualidade de um andar: se há grifos, há presas abundantes, ar respirável e alguma iluminação natural ou bioluminescente. Meio leão, meio águia, os grifos da masmorra desenvolveram asas adaptadas ao voo em espaços confinados, com batidas curtas e precisas. São criaturas de instinto nobre — não abandonam presas feridas, definem parceiros vitalícios e, se seu par morrer, partem numa caça de vingança que pode durar semanas. São os únicos animais da masmorra que aventureiros consistentemente se recusam a comer — e pagem o preço dessa sentimentalidade.</p><p><strong>Comportamento na mesa</strong></p><ul><li>Padrão: ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).</li><li>Moral: não foge; persegue o alvo mais próximo até 0 HP (mente ausente).</li></ul>",
       "attributes": {
         "forca": {
           "value": 18,
@@ -1950,7 +1971,8 @@
           "label": "Ataque especial · 4 hex · PA 2"
         }
       ],
-      "catalogId": "MON-022"
+      "catalogId": "MON-022",
+      "bookRef": "LIVRO-DO-MESTRE.md"
     }
   },
   {
@@ -1958,7 +1980,7 @@
     "name": "Cocatriz",
     "type": "npc",
     "system": {
-      "description": "<p>Cocatriz — espécime nv 4 (Eldarin v4).</p>",
+      "description": "<p><strong>COCATRIZ</strong> (ameaça nv 4).</p><p>A Cocatriz parece um cruzamento absurdo de galo com dragão — e é exatamente isso. Menor que um basilisco, mais agressiva que um grifo irritado, ela luta com uma ferocidade desproporcional ao tamanho. O que a torna perigosa não é a força: é que seu bico segrega uma saliva que catalisa a petrificação em contato com sangue. Um arranhão profundo é suficiente. Os ovos de Cocatriz são considerados iguaria — completamente seguros, saborosíssimos, e os melhores ovos disponíveis em qualquer masmorra.</p><p><strong>Comportamento na mesa</strong></p><ul><li>Padrão: ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).</li><li>Moral: ao 50% HP, INT CD 10 ou fuga/rendição.</li></ul>",
       "attributes": {
         "forca": {
           "value": 12,
@@ -2040,7 +2062,8 @@
           "label": "Ataque especial · 4 hex · PA 2"
         }
       ],
-      "catalogId": "MON-023"
+      "catalogId": "MON-023",
+      "bookRef": "LIVRO-DO-MESTRE.md"
     }
   },
   {
@@ -2048,7 +2071,7 @@
     "name": "Aranha Tecerrochas",
     "type": "npc",
     "system": {
-      "description": "<p>Aranha Tecerrochas — espécime nv 2 (Eldarin v4).</p>",
+      "description": "<p><strong>ARANHA TECERROCHAS</strong> (ameaça nv 2).</p><p>A Aranha Tecerrochas é o predador mais comum das masmorras de nível médio. Do tamanho de um cão grande, ela não tece teias no chão — tece-as verticalmente, criando cortinas de seda quase invisíveis que ela usa como armadilhas. Adventurers chamam os corredores cheios delas de &quot;Véus&quot; — e evitar véus é uma das primeiras lições de sobrevivência. A seda produzida é de qualidade extraordinária: mais resistente que seda de superfície e com propriedades adesivas que persistem até 72h após a morte da aranha. As maiores comunidades de Tecerrochas constroem estruturas de seda tão complexas que alguns estudiosos as chamam de &quot;arquitetura&quot;.</p><p><strong>Comportamento na mesa</strong></p><ul><li>Abertura: emboscada — vantagem na 1ª rodada se grupo não detectou (Percepção passiva vs CD 10+n//2).</li><li>Território: +2 ataque defendendo ninho/tesouro; persegue até limite do bioma.</li><li>Moral: não foge; persegue o alvo mais próximo até 0 HP (mente ausente).</li></ul>",
       "attributes": {
         "forca": {
           "value": 12,
@@ -2130,7 +2153,8 @@
           "label": "Investida · 2 hex · PA 2"
         }
       ],
-      "catalogId": "MON-024"
+      "catalogId": "MON-024",
+      "bookRef": "LIVRO-DO-MESTRE.md"
     }
   },
   {
@@ -2138,7 +2162,7 @@
     "name": "Escorpião Gigante",
     "type": "npc",
     "system": {
-      "description": "<p>Escorpião Gigante — espécime nv 3 (Eldarin v4).</p>",
+      "description": "<p><strong>ESCORPIÃO GIGANTE</strong> (ameaça nv 3).</p><p>Escorpiões gigantes nas masmorras chegam ao tamanho de cavalos. Caçam instintivamente usando as vibrações do chão para detectar presas a 15 metros, depois agarram com as garras e injetam veneno pela cauda. São solitários e extremamente agressivos com qualquer coisa que entre em seu raio de detecção. As câmaras onde habitam ficam marcadas por cascas de exoesqueleto deixadas para trás durante a muda — um sinal de aviso valioso para grupos experientes. A carne dentro do exoesqueleto tem sabor intenso de marisco e é excepcionalmente proteica.</p><p><strong>Comportamento na mesa</strong></p><ul><li>Padrão: ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).</li><li>Combate: prioriza números — reforços em 1d4 rodadas se 1 aliado cair (ruído/feromônio).</li><li>Moral: não foge; persegue o alvo mais próximo até 0 HP (mente ausente).</li></ul>",
       "attributes": {
         "forca": {
           "value": 15,
@@ -2220,7 +2244,8 @@
           "label": "Investida · 2 hex · PA 2"
         }
       ],
-      "catalogId": "MON-025"
+      "catalogId": "MON-025",
+      "bookRef": "LIVRO-DO-MESTRE.md"
     }
   },
   {
@@ -2228,7 +2253,7 @@
     "name": "Centopeia Cáustica",
     "type": "npc",
     "system": {
-      "description": "<p>Centopeia Cáustica — espécime nv 4 (Eldarin v4).</p>",
+      "description": "<p><strong>CENTOPEIA CÁUSTICA</strong> (ameaça nv 4).</p><p>A Centopeia Cáustica tem 4 metros de comprimento e secreta ácido de poros ao longo de todo o corpo. O ácido não é forte o suficiente para dissolver armaduras imediatamente, mas corrói articulações e juntas de metal em minutos — uma tortura para guerreiros em armadura pesada. Elas se movem em ondas sinuosas e podem escalar qualquer superfície. Em grupos, coordenam-se instintivamente para envolver a presa e imobilizá-la com o ácido antes de devorar. Cada segmento do corpo pode continuar se movendo por até 30 minutos após ser separado.</p><p><strong>Comportamento na mesa</strong></p><ul><li>Padrão: ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).</li><li>Combate: prioriza números — reforços em 1d4 rodadas se 1 aliado cair (ruído/feromônio).</li><li>Moral: não foge; persegue o alvo mais próximo até 0 HP (mente ausente).</li></ul>",
       "attributes": {
         "forca": {
           "value": 14,
@@ -2310,7 +2335,8 @@
           "label": "Ataque especial · 4 hex · PA 2"
         }
       ],
-      "catalogId": "MON-026"
+      "catalogId": "MON-026",
+      "bookRef": "LIVRO-DO-MESTRE.md"
     }
   },
   {
@@ -2318,7 +2344,7 @@
     "name": "Besouro-Diamante",
     "type": "npc",
     "system": {
-      "description": "<p>Besouro-Diamante — espécime nv 5 (Eldarin v4).</p>",
+      "description": "<p><strong>BESOURO-DIAMANTE</strong> (ameaça nv 5).</p><p>O Besouro-Diamante não é tão valioso quanto o nome sugere — mas é mais útil. Esse inseto do tamanho de um gato ingere minerais da rocha ao redor para fortalecer seu exoesqueleto, que com o tempo desenvolve a dureza do diamante. Eles não são agressivos — atacam apenas quando pisados ou ameaçados. Grupos de aventureiros inexperientes os ignoram; grupos experientes os caçam ativamente porque o pó do exoesqueleto, quando triturado, é um abrasivo excepcional para afiar lâminas.</p><p><strong>Comportamento na mesa</strong></p><ul><li>Padrão: ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).</li><li>Combate: prioriza números — reforços em 1d4 rodadas se 1 aliado cair (ruído/feromônio).</li><li>Moral: não foge; persegue o alvo mais próximo até 0 HP (mente ausente).</li></ul>",
       "attributes": {
         "forca": {
           "value": 16,
@@ -2400,7 +2426,8 @@
           "label": "Ataque especial · 4 hex · PA 2"
         }
       ],
-      "catalogId": "MON-027"
+      "catalogId": "MON-027",
+      "bookRef": "LIVRO-DO-MESTRE.md"
     }
   },
   {
@@ -2408,7 +2435,7 @@
     "name": "Sapo-Engolidor",
     "type": "npc",
     "system": {
-      "description": "<p>Sapo-Engolidor — espécime nv 6 (Eldarin v4).</p>",
+      "description": "<p><strong>SAPO-ENGOLIDOR</strong> (ameaça nv 6).</p><p>O Sapo-Engolidor chegaa 3 metros de comprimento e 1,5m de altura. Sua estratégia de caça é o engolimento: abre a boca em um raio surpreendentemente grande, usa a língua para puxar a presa, e a engole rapidamente. O interior do seu estômago é surpreendentemente espaçoso — existem registros de aventureiros que sobreviveram por até 6 horas dentro de um, dependendo da temperatura e do nível de digestão ativo. A bexiga natatória do Sapo-Engolidor é um dos ingredientes mais valiosos para o Patrulheiro das Profundezas — quando preparada corretamente, imita seus poderes anfíbios.</p><p><strong>Comportamento na mesa</strong></p><ul><li>Abertura: emboscada — vantagem na 1ª rodada se grupo não detectou (Percepção passiva vs CD 10+n//2).</li><li>Moral: não foge; persegue o alvo mais próximo até 0 HP (mente ausente).</li></ul>",
       "attributes": {
         "forca": {
           "value": 18,
@@ -2490,7 +2517,8 @@
           "label": "Ataque especial · 4 hex · PA 2"
         }
       ],
-      "catalogId": "MON-028"
+      "catalogId": "MON-028",
+      "bookRef": "LIVRO-DO-MESTRE.md"
     }
   },
   {
@@ -2498,7 +2526,7 @@
     "name": "Kraken Menor",
     "type": "npc",
     "system": {
-      "description": "<p>Kraken Menor — espécime nv 12 (Eldarin v4).</p>",
+      "description": "<p><strong>KRAKEN MENOR (TENTACULADO)</strong> (ameaça nv 12).</p><p>Os Krakens Menores das masmorras são descendentes de Krakens verdadeiros que ficaram presos em oceanos subterrâneos há milênios. Sem acesso ao oceano aberto, foram forçados a evolução rápida — perderam parte do tamanho mas ganharam inteligência e adaptações para espaços confinados. Um Kraken Menor tem 4 metros de manto e 8 tentáculos de 6 metros. São inteligentes o suficiente para criar armadilhas básicas: posicionam-se sob plataformas de pedra e agarram pernas que pendurem nas bordas. Alguns desenvolveram a capacidade de comunicar através de mudanças de cor na pele — mas nenhum aventureiro ainda decifrou o que dizem.</p><p><strong>Comportamento na mesa</strong></p><ul><li>Abertura: emboscada — vantagem na 1ª rodada se grupo não detectou (Percepção passiva vs CD 10+n//2).</li><li>Tática: foca conjurador ou menor HP; usa cobertura se INT 6+.</li><li>Moral: não foge; persegue o alvo mais próximo até 0 HP (mente ausente).</li></ul>",
       "attributes": {
         "forca": {
           "value": 22,
@@ -2580,7 +2608,8 @@
           "label": "Ataque especial · 6 hex · PA 2"
         }
       ],
-      "catalogId": "MON-029"
+      "catalogId": "MON-029",
+      "bookRef": "LIVRO-DO-MESTRE.md"
     }
   },
   {
@@ -2588,7 +2617,7 @@
     "name": "Serpente-do-Abismo",
     "type": "npc",
     "system": {
-      "description": "<p>Serpente-do-Abismo — espécime nv 8 (Eldarin v4).</p>",
+      "description": "<p><strong>SERPENTE-DO-ABISMO</strong> (ameaça nv 8).</p><p>Cobras de 8 metros que habitam os rios e lagos subterrâneos, especializadas em caçar à beira d'água. Sua coloração é negra absoluta, tornando-as invisíveis nos rios sem luz. Ao contrário de serpentes comuns, a Serpente-do-Abismo é constritora E possui veneno — usa a constrição para imobilizar e o veneno para matar ao mesmo tempo. A carne é surpreendentemente saborosa: alta quantidade de gordura boa e carne branca firme. O couro é impermeável e resistente como couro curtido.</p><p><strong>Comportamento na mesa</strong></p><ul><li>Padrão: ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).</li><li>Fraqueza tática: recua de fogo/luz radiante; CD 12 SAB ou Desvantagem 1 rodada.</li><li>Moral: não foge; persegue o alvo mais próximo até 0 HP (mente ausente).</li></ul>",
       "attributes": {
         "forca": {
           "value": 18,
@@ -2670,7 +2699,8 @@
           "label": "Ataque especial · 4 hex · PA 2"
         }
       ],
-      "catalogId": "MON-030"
+      "catalogId": "MON-030",
+      "bookRef": "LIVRO-DO-MESTRE.md"
     }
   },
   {
@@ -2678,7 +2708,7 @@
     "name": "Tubarão-Cego",
     "type": "npc",
     "system": {
-      "description": "<p>Tubarão-Cego — espécime nv 5 (Eldarin v4).</p>",
+      "description": "<p><strong>TUBARÃO-CEGO DAS CAVERNAS</strong> (ameaça nv 5).</p><p>Sem olhos — órgãos atrofiados após gerações sem luz — o Tubarão-Cego usa linhas laterais extraordinariamente sensíveis que detectam movimentos na água a 60 metros de distância. Eles são os superpredadores naturais do Mar de Prata Cega, caçando em grupos de 3 a 7. A falta de visão os torna paradoxalmente mais perigosos em combate: ataques de luz e ilusões são completamente inúteis. Suas escamas brancas bioluminescentes criam um efeito hipnótico de luzes pulsantes quando nadam em grupo — o que deu origem às lendas de &quot;lanternas fantasmas&quot; nos mares subterrâneos.</p><p><strong>Comportamento na mesa</strong></p><ul><li>Padrão: ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).</li><li>Combate: prioriza números — reforços em 1d4 rodadas se 1 aliado cair (ruído/feromônio).</li><li>Fraqueza tática: recua de fogo/luz radiante; CD 12 SAB ou Desvantagem 1 rodada.</li><li>Moral: não foge; persegue o alvo mais próximo até 0 HP (mente ausente).</li></ul>",
       "attributes": {
         "forca": {
           "value": 18,
@@ -2760,7 +2790,8 @@
           "label": "Ataque especial · 4 hex · PA 2"
         }
       ],
-      "catalogId": "MON-031"
+      "catalogId": "MON-031",
+      "bookRef": "LIVRO-DO-MESTRE.md"
     }
   },
   {
@@ -2768,7 +2799,7 @@
     "name": "Goblin de Caverna",
     "type": "npc",
     "system": {
-      "description": "<p>Goblin de Caverna — espécime nv 1 (Eldarin v4).</p>",
+      "description": "<p><strong>GOBLIN DE CAVERNA</strong> (ameaça nv 1).</p><p>Goblins de caverna são os habitantes mais abundantes das masmorras de baixo nível. Organizados em clãs de 20 a 80 indivíduos, constroem assentamentos em câmaras abandonadas usando restos de aventureiros e monstros maiores. São onívoros oportunistas — comem o que encontram, incluindo fungos, larvas, carnes podres e, quando desesperados, rocha mole. Essa dieta eclética deu-lhes um sistema digestivo legendariamente resistente e um instinto de sobrevivência afiado. São covardes individualmente mas coordenados em grupo, usando sinais sonoros para armar emboscadas.</p><p><strong>Comportamento na mesa</strong></p><ul><li>Abertura: emboscada — vantagem na 1ª rodada se grupo não detectou (Percepção passiva vs CD 10+n//2).</li><li>Combate: prioriza números — reforços em 1d4 rodadas se 1 aliado cair (ruído/feromônio).</li><li>Moral: ao 50% HP, INT CD 10 ou fuga/rendição.</li></ul>",
       "attributes": {
         "forca": {
           "value": 8,
@@ -2824,7 +2855,8 @@
           "label": "Mordida · 1 hex · PA 2"
         }
       ],
-      "catalogId": "MON-032"
+      "catalogId": "MON-032",
+      "bookRef": "LIVRO-DO-MESTRE.md"
     }
   },
   {
@@ -2832,7 +2864,7 @@
     "name": "Hobgoblin Guerreiro",
     "type": "npc",
     "system": {
-      "description": "<p>Hobgoblin Guerreiro — espécime nv 3 (Eldarin v4).</p>",
+      "description": "<p><strong>HOBGOBLIN GUERREIRO</strong> (ameaça nv 3).</p><p>Hobgoblins são o que acontece quando goblins evoluem militarmente. Maiores, mais fortes, mais organizados — e, crucialmente, treinados. Hobgoblins têm hierarquia militar rígida, usam armaduras de qualidade e lutam em formação. Nas masmorras, servem como tropas de choque de fortalezas goblinóides ou como mercenários contratados por monstros mais inteligentes. Sua carne é muscular e densa, com um sabor levemente amargo que desaparece com marinadas ácidas — o que o Estratega de Masmorra descobriu acidentalmente.</p><p><strong>Comportamento na mesa</strong></p><ul><li>Padrão: ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).</li><li>Combate: prioriza números — reforços em 1d4 rodadas se 1 aliado cair (ruído/feromônio).</li><li>Tática: foca conjurador ou menor HP; usa cobertura se INT 6+.</li><li>Moral: ao 50% HP, INT CD 10 ou fuga/rendição.</li></ul>",
       "attributes": {
         "forca": {
           "value": 13,
@@ -2914,7 +2946,8 @@
           "label": "Investida · 2 hex · PA 2"
         }
       ],
-      "catalogId": "MON-033"
+      "catalogId": "MON-033",
+      "bookRef": "LIVRO-DO-MESTRE.md"
     }
   },
   {
@@ -2922,7 +2955,7 @@
     "name": "Orc de Masmorra",
     "type": "npc",
     "system": {
-      "description": "<p>Orc de Masmorra — espécime nv 4 (Eldarin v4).</p>",
+      "description": "<p><strong>ORC DE MASMORRA</strong> (ameaça nv 4).</p><p>Orcs de masmorra são maiores e mais selvagens que seus primos da superfície. Adaptados ao ambiente sem luz, têm pele cinza-escuro e olhos grandes adaptados ao escuro. Caçam solitariamente ou em grupos pequenos (2-4), marcando território com marcas de garras em paredes. São confrontacionais e diretos — sem emboscadas, sem estratégias complexas. Simplesmente avançam e batem até um dos lados cair. Seus órgãos internos são surpreendentemente grandes e ricos, produto de dietas de caça contínua.</p><p><strong>Comportamento na mesa</strong></p><ul><li>Abertura: emboscada — vantagem na 1ª rodada se grupo não detectou (Percepção passiva vs CD 10+n//2).</li><li>Combate: prioriza números — reforços em 1d4 rodadas se 1 aliado cair (ruído/feromônio).</li><li>Território: +2 ataque defendendo ninho/tesouro; persegue até limite do bioma.</li><li>Fraqueza tática: recua de fogo/luz radiante; CD 12 SAB ou Desvantagem 1 rodada.</li><li>Moral: ao 50% HP, INT CD 10 ou fuga/rendição.</li></ul>",
       "attributes": {
         "forca": {
           "value": 16,
@@ -3004,7 +3037,8 @@
           "label": "Ataque especial · 4 hex · PA 2"
         }
       ],
-      "catalogId": "MON-034"
+      "catalogId": "MON-034",
+      "bookRef": "LIVRO-DO-MESTRE.md"
     }
   },
   {
@@ -3012,7 +3046,7 @@
     "name": "Cogumelo-Rei",
     "type": "npc",
     "system": {
-      "description": "<p>Cogumelo-Rei — espécime nv 7 (Eldarin v4).</p>",
+      "description": "<p><strong>COGUMELO-REI (MICÔNIDO ANCIÃO)</strong> (ameaça nv 7).</p><p>Micônidos são cogumelos que se tornaram conscientes através de um processo mal compreendido de acumulação de energia mágica. O Cogumelo-Rei é o mais antigo e maior de uma colônia — pode ter séculos, crescendo lentamente em câmaras úmidas e escuras. Eles não se comunicam por voz, mas por esporos químicos que transmitem conceitos e emoções diretamente para o sistema nervoso de quem os inala. Uma conversa com um Cogumelo-Rei — se o aventureiro não entrar em pânico com a comunicação por esporos — pode revelar o mapa completo de todo um andar da masmorra.</p><p><strong>Comportamento na mesa</strong></p><ul><li>Padrão: ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).</li><li>Território: +2 ataque defendendo ninho/tesouro; persegue até limite do bioma.</li><li>Moral: não foge; persegue o alvo mais próximo até 0 HP (mente ausente).</li></ul>",
       "attributes": {
         "forca": {
           "value": 14,
@@ -3094,7 +3128,8 @@
           "label": "Ataque especial · 4 hex · PA 2"
         }
       ],
-      "catalogId": "MON-035"
+      "catalogId": "MON-035",
+      "bookRef": "LIVRO-DO-MESTRE.md"
     }
   },
   {
@@ -3102,7 +3137,7 @@
     "name": "Treant Podre",
     "type": "npc",
     "system": {
-      "description": "<p>Treant Podre — espécime nv 9 (Eldarin v4).</p>",
+      "description": "<p><strong>TREANT PODRE</strong> (ameaça nv 9).</p><p>Treants da masmorra são árvores que foram animadas pela energia necrótica dos andares inferiores. Não há druidas aqui para guiá-los ou propósito sagrado — apenas árvores mortas andando, impulsionadas por um instinto primitivo de ocupar espaço e eliminar concorrentes. Seu &quot;tronco&quot; está apodrecendo mas ainda é denso e extremamente duro. Exalam um gás de decomposição constante que pode ser tóxico em espaços fechados. A madeira deles é paradoxalmente valiosa: impregnada de magia necrótica, queima com chamas roxas que causam dano a mortos-vivos em vez de curar.</p><p><strong>Comportamento na mesa</strong></p><ul><li>Padrão: ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).</li><li>Fraqueza tática: recua de fogo/luz radiante; CD 12 SAB ou Desvantagem 1 rodada.</li><li>Moral: não foge; persegue o alvo mais próximo até 0 HP (mente ausente).</li></ul>",
       "attributes": {
         "forca": {
           "value": 20,
@@ -3184,7 +3219,8 @@
           "label": "Ataque especial · 4 hex · PA 2"
         }
       ],
-      "catalogId": "MON-036"
+      "catalogId": "MON-036",
+      "bookRef": "LIVRO-DO-MESTRE.md"
     }
   },
   {
@@ -3192,7 +3228,7 @@
     "name": "Planta Carnívora Gigante",
     "type": "npc",
     "system": {
-      "description": "<p>Planta Carnívora Gigante — espécime nv 5 (Eldarin v4).</p>",
+      "description": "<p><strong>PLANTA CARNÍVORA GIGANTE</strong> (ameaça nv 5).</p><p>Diferente das plantas carnívoras da superfície, essas plantas da masmorra evoluíram para caçar ativamente — têm raízes que se movem, gavinhas que agarram e um suco digestivo ativo capaz de dissolver armadura de couro em 4 horas. Ficam estáticas durante 90% do tempo, imitando plantas mortas, e ativam apenas quando detectam vibrações de passos ou o calor de criaturas vivas. Sua flor — um enorme espécime púrpura que emite um aroma levemente adocicado — é o chamariz. O aroma é parcialmente narcótico em concentrações altas.</p><p><strong>Comportamento na mesa</strong></p><ul><li>Abertura: emboscada — vantagem na 1ª rodada se grupo não detectou (Percepção passiva vs CD 10+n//2).</li><li>Moral: não foge; persegue o alvo mais próximo até 0 HP (mente ausente).</li></ul>",
       "attributes": {
         "forca": {
           "value": 17,
@@ -3274,7 +3310,8 @@
           "label": "Ataque especial · 4 hex · PA 2"
         }
       ],
-      "catalogId": "MON-037"
+      "catalogId": "MON-037",
+      "bookRef": "LIVRO-DO-MESTRE.md"
     }
   },
   {
@@ -3282,7 +3319,7 @@
     "name": "Slime Ácido",
     "type": "npc",
     "system": {
-      "description": "<p>Slime Ácido — espécime nv 2 (Eldarin v4).</p>",
+      "description": "<p><strong>SLIME ÁCIDO</strong> (ameaça nv 2).</p><p>O Slime Ácido é o mais simples dos amorfos — uma massa de gel ácido com consciência rudimentar suficiente apenas para se mover em direção ao calor e à comida. Absorve matéria orgânica e inorgânica e cresce proporcionalmente. Um Slime Ácido que come bem por um mês pode se tornar grande o suficiente para encher uma sala. Sua principal arma é a paciência: fica estático até algo se aproximar, e então envolve. Adventurers experientes reconhecem o cheiro levemente sulfúrico que precede sua presença.</p><p><strong>Comportamento na mesa</strong></p><ul><li>Padrão: ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).</li><li>Moral: ao 50% HP, INT CD 10 ou fuga/rendição.</li></ul>",
       "attributes": {
         "forca": {
           "value": 12,
@@ -3364,7 +3401,8 @@
           "label": "Investida · 2 hex · PA 2"
         }
       ],
-      "catalogId": "MON-038"
+      "catalogId": "MON-038",
+      "bookRef": "LIVRO-DO-MESTRE.md"
     }
   },
   {
@@ -3372,7 +3410,7 @@
     "name": "Slime de Cristal",
     "type": "npc",
     "system": {
-      "description": "<p>Slime de Cristal — espécime nv 3 (Eldarin v4).</p>",
+      "description": "<p><strong>SLIME DE CRISTAL</strong> (ameaça nv 3).</p><p>O Slime de Cristal é uma evolução do Slime Ácido que passou gerações habitando o Labirinto Prismático e absorvendo minerais cristalinos. O resultado é um gel semi-transparente repleto de cristais suspensos que refletem luz em padrões hipnóticos. O problema culinário é que os cristais internos cortam qualquer recipiente comum — o Forma Amorfa é o único especialista capaz de coletar esse slime sem acidentes.</p><p><strong>Comportamento na mesa</strong></p><ul><li>Padrão: ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).</li><li>Fraqueza tática: recua de fogo/luz radiante; CD 12 SAB ou Desvantagem 1 rodada.</li><li>Moral: não foge; persegue o alvo mais próximo até 0 HP (mente ausente).</li></ul>",
       "attributes": {
         "forca": {
           "value": 10,
@@ -3454,7 +3492,8 @@
           "label": "Investida · 2 hex · PA 2"
         }
       ],
-      "catalogId": "MON-039"
+      "catalogId": "MON-039",
+      "bookRef": "LIVRO-DO-MESTRE.md"
     }
   },
   {
@@ -3462,7 +3501,7 @@
     "name": "Elemental de Fogo",
     "type": "npc",
     "system": {
-      "description": "<p>Elemental de Fogo — espécime nv 6 (Eldarin v4).</p>",
+      "description": "<p><strong>ELEMENTAL DE FOGO</strong> (ameaça nv 6).</p><p>Elementais de fogo não são criaturas do plano material — são manifestações do Plano Elemental do Fogo que foram convocadas por magos antigos e ficaram presas nas Fornalhas Douradas quando seus criadores morreram sem liberar o vínculo de convocação. Alguns vagam há séculos, crescendo em poder e frustração. São criaturas de puro instinto elemental: consomem combustível, geram calor e se expandem. Não têm intenção de machucar — simplesmente é impossível para fogo não queimar.</p><p><strong>Comportamento na mesa</strong></p><ul><li>Padrão: ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).</li><li>Tática: foca conjurador ou menor HP; usa cobertura se INT 6+.</li><li>Fraqueza tática: recua de fogo/luz radiante; CD 12 SAB ou Desvantagem 1 rodada.</li><li>Moral: não foge; persegue o alvo mais próximo até 0 HP (mente ausente).</li></ul>",
       "attributes": {
         "forca": {
           "value": 14,
@@ -3544,7 +3583,8 @@
           "label": "Ataque especial · 4 hex · PA 2"
         }
       ],
-      "catalogId": "MON-040"
+      "catalogId": "MON-040",
+      "bookRef": "LIVRO-DO-MESTRE.md"
     }
   },
   {
@@ -3552,7 +3592,7 @@
     "name": "Elemental de Gelo",
     "type": "npc",
     "system": {
-      "description": "<p>Elemental de Gelo — espécime nv 6 (Eldarin v4).</p>",
+      "description": "<p><strong>ELEMENTAL DE GELO</strong> (ameaça nv 6).</p><p>Primos glaciais dos Elementais de Fogo, os Elementais de Gelo habitam a Prisão Gélida dos Titãs onde a temperatura caiu a tal ponto que o Plano do Gelo encontrou o plano material. São mais lentos que seus opostos de fogo, mas compensam com durabilidade e precisão. Quando irritados, formam lanças de gelo que lançam com velocidade e força surpreendentes. Seu &quot;corpo&quot; é gelo vivo — denso no centro, mais translúcido nas bordas.</p><p><strong>Comportamento na mesa</strong></p><ul><li>Padrão: ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).</li><li>Fraqueza tática: recua de fogo/luz radiante; CD 12 SAB ou Desvantagem 1 rodada.</li><li>Moral: não foge; persegue o alvo mais próximo até 0 HP (mente ausente).</li></ul>",
       "attributes": {
         "forca": {
           "value": 16,
@@ -3634,7 +3674,8 @@
           "label": "Ataque especial · 4 hex · PA 2"
         }
       ],
-      "catalogId": "MON-041"
+      "catalogId": "MON-041",
+      "bookRef": "LIVRO-DO-MESTRE.md"
     }
   },
   {
@@ -3642,7 +3683,7 @@
     "name": "Yeti das Profundezas",
     "type": "npc",
     "system": {
-      "description": "<p>Yeti das Profundezas — espécime nv 8 (Eldarin v4).</p>",
+      "description": "<p><strong>YETI DAS PROFUNDEZAS</strong> (ameaça nv 8).</p><p>Yetis das profundezas da masmorra evoluíram para ambientes sem luz, desenvolvendo pelagem mais densa e sentidos aprimorados. Ao contrário dos da superfície, esses Yetis são mais brancos com veias azuis ao longo do pelo — resultado de cristais de gelo que se formam naturalmente entre os folículos. Vivem em grupos familiares de 3 a 6 e são territoriais mas não agressivos sem razão. Caçam mamíferos da masmorra mas evitam goblinóides (que reconhecem como perigosos em grupo). A carne é a mais próxima de urso disponível no submundo — gordurosa, quente ao comer, extremamente calórica.</p><p><strong>Comportamento na mesa</strong></p><ul><li>Padrão: ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).</li><li>Combate: prioriza números — reforços em 1d4 rodadas se 1 aliado cair (ruído/feromônio).</li><li>Território: +2 ataque defendendo ninho/tesouro; persegue até limite do bioma.</li><li>Fraqueza tática: recua de fogo/luz radiante; CD 12 SAB ou Desvantagem 1 rodada.</li><li>Moral: não foge; persegue o alvo mais próximo até 0 HP (mente ausente).</li></ul>",
       "attributes": {
         "forca": {
           "value": 20,
@@ -3724,7 +3765,8 @@
           "label": "Ataque especial · 4 hex · PA 2"
         }
       ],
-      "catalogId": "MON-042"
+      "catalogId": "MON-042",
+      "bookRef": "LIVRO-DO-MESTRE.md"
     }
   },
   {
@@ -3732,7 +3774,7 @@
     "name": "Lobo do Inverno",
     "type": "npc",
     "system": {
-      "description": "<p>Lobo do Inverno — espécime nv 3 (Eldarin v4).</p>",
+      "description": "<p><strong>LOBO DO INVERNO</strong> (ameaça nv 3).</p><p>Lobos do inverno são caçadores em matilha que coordenam com inteligência próxima à de linguagem primitiva. Howls diferentes têm significados táticos: encerrar, recuar, atacar flancos. Sua respiração é uma névoa que cristaliza instantaneamente, e ao liberarem um sopro focado, criam jatos de frio que imobilizam presas. Dentro das masmorras, adapataram-se ao espaço confinado com uivos que ecoam de forma desorientadora. A carne tem sabor selvagem intenso e a gordura subcutânea — quase 20% do peso corporal — é extraordinariamente calórica.</p><p><strong>Comportamento na mesa</strong></p><ul><li>Padrão: ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).</li><li>Combate: prioriza números — reforços em 1d4 rodadas se 1 aliado cair (ruído/feromônio).</li><li>Tática: foca conjurador ou menor HP; usa cobertura se INT 6+.</li><li>Moral: não foge; persegue o alvo mais próximo até 0 HP (mente ausente).</li></ul>",
       "attributes": {
         "forca": {
           "value": 14,
@@ -3814,7 +3856,8 @@
           "label": "Investida · 2 hex · PA 2"
         }
       ],
-      "catalogId": "MON-043"
+      "catalogId": "MON-043",
+      "bookRef": "LIVRO-DO-MESTRE.md"
     }
   },
   {
@@ -3822,7 +3865,7 @@
     "name": "Mímico de Baú",
     "type": "npc",
     "system": {
-      "description": "<p>Mímico de Baú — espécime nv 4 (Eldarin v4).</p>",
+      "description": "<p><strong>MÍMICO DE BAÚL</strong> (ameaça nv 4).</p><p>O Mímico clássico — disfarçado de baú de tesouro, esperando pacientemente que a ganância supere a cautela. Os Mímicos de Baúl das masmorras evoluíram além dessa estratégia simples: eles realmente *coletam* itens e os colocam dentro de si, criando um tesouro genuíno dentro de um predador. Isso torna a decisão de abrir o baú uma aposta genuína. A carne de Mímico tem textura que muda enquanto é mastigada — começa como frango, vai para carne bovina e termina como peixe. Isso não é alucinação; é a biologia real do animal.</p><p><strong>Comportamento na mesa</strong></p><ul><li>Padrão: ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).</li><li>Moral: não foge; persegue o alvo mais próximo até 0 HP (mente ausente).</li></ul>",
       "attributes": {
         "forca": {
           "value": 17,
@@ -3904,7 +3947,8 @@
           "label": "Ataque especial · 4 hex · PA 2"
         }
       ],
-      "catalogId": "MON-044"
+      "catalogId": "MON-044",
+      "bookRef": "LIVRO-DO-MESTRE.md"
     }
   },
   {
@@ -3912,7 +3956,7 @@
     "name": "Doppelganger",
     "type": "npc",
     "system": {
-      "description": "<p>Doppelganger — espécime nv 5 (Eldarin v4).</p>",
+      "description": "<p><strong>DOPPELGANGER</strong> (ameaça nv 5).</p><p>Doppelgangers são a evolução inteligente dos Mímicos — em vez de imitar objetos, imitam pessoas. Capazes de copiar aparência, voz e maneirismos de qualquer humanoide que observem por mais de 10 minutos, eles se infiltram em grupos, assumindo a identidade de um membro morto ou afastado. São pacientes, calculistas e genuinamente perigosos porque jogam com a confiança como principal arma. Os que habitam masmorras há muito tempo desenvolvem identidades complexas de personas que já assumiram — alguns chegam ao ponto de esquecer qual é o &quot;eu&quot; original.</p><p><strong>Comportamento na mesa</strong></p><ul><li>Abertura: emboscada — vantagem na 1ª rodada se grupo não detectou (Percepção passiva vs CD 10+n//2).</li><li>Combate: prioriza números — reforços em 1d4 rodadas se 1 aliado cair (ruído/feromônio).</li><li>Tática: foca conjurador ou menor HP; usa cobertura se INT 6+.</li><li>Moral: não foge; persegue o alvo mais próximo até 0 HP (mente ausente).</li></ul>",
       "attributes": {
         "forca": {
           "value": 14,
@@ -3994,7 +4038,8 @@
           "label": "Ataque especial · 4 hex · PA 2"
         }
       ],
-      "catalogId": "MON-045"
+      "catalogId": "MON-045",
+      "bookRef": "LIVRO-DO-MESTRE.md"
     }
   },
   {
@@ -4002,7 +4047,7 @@
     "name": "Hidra das Cavernas",
     "type": "npc",
     "system": {
-      "description": "<p>Hidra das Cavernas — espécime nv 9 (Eldarin v4).</p>",
+      "description": "<p><strong>HIDRA DAS CAVERNAS</strong> (ameaça nv 9).</p><p>A Hidra das Cavernas adaptou-se ao submundo com 5 cabeças iniciais e a capacidade de regenerar 2 novas quando uma é cortada. Diferente das da superfície, suas cabeças não baforam fogo — cada uma tem uma adaptação diferente: uma é venenosa, uma morde com ácido, uma é simplesmente massiva, uma cobre a área com saliva adesiva, e uma hipnotiza pela vibração de sua garganta. Caçar uma Hidra requer planejamento e uma boa fonte de calor para cauterizar os cotos.</p><p><strong>Comportamento na mesa</strong></p><ul><li>Padrão: ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).</li><li>Fraqueza tática: recua de fogo/luz radiante; CD 12 SAB ou Desvantagem 1 rodada.</li><li>Moral: não foge; persegue o alvo mais próximo até 0 HP (mente ausente).</li></ul>",
       "attributes": {
         "forca": {
           "value": 20,
@@ -4084,7 +4129,8 @@
           "label": "Ataque especial · 6 hex · PA 2"
         }
       ],
-      "catalogId": "MON-046"
+      "catalogId": "MON-046",
+      "bookRef": "LIVRO-DO-MESTRE.md"
     }
   },
   {
@@ -4092,7 +4138,7 @@
     "name": "Quimera",
     "type": "npc",
     "system": {
-      "description": "<p>Quimera — espécime nv 10 (Eldarin v4).</p>",
+      "description": "<p><strong>QUIMERA</strong> (ameaça nv 10).</p><p>Uma Quimera não é criada — ela emerge. Em pontos de alta confluência de magia selvagem dentro da masmorra, criaturas diferentes que morreram na mesma área se fundem em algo novo. Uma Quimera típica tem partes de leão, cabra e dragão, mas as combinações variam infinitamente. O que permanece consistente é a agressividade extrema e a incapacidade de coexistir pacificamente com qualquer coisa. Alguns estudiosos teorizaram que Quimeras têm múltiplos centros de consciência brigando pelo controle, o que explica os padrões de ataque aparentemente contraditórios.</p><p><strong>Comportamento na mesa</strong></p><ul><li>Padrão: ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).</li><li>Moral: não foge; persegue o alvo mais próximo até 0 HP (mente ausente).</li></ul>",
       "attributes": {
         "forca": {
           "value": 19,
@@ -4174,7 +4220,8 @@
           "label": "Ataque especial · 6 hex · PA 2"
         }
       ],
-      "catalogId": "MON-047"
+      "catalogId": "MON-047",
+      "bookRef": "LIVRO-DO-MESTRE.md"
     }
   },
   {
@@ -4182,7 +4229,7 @@
     "name": "Anjo Caído",
     "type": "npc",
     "system": {
-      "description": "<p>Anjo Caído — espécime nv 14 (Eldarin v4).</p>",
+      "description": "<p><strong>ANJO CAÍDO</strong> (ameaça nv 14).</p><p>O Abatedouro Celestial não é chamado assim por acaso. Entidades divinas — anjos, serafins, guardiões do éter — que caíram ou foram expulsas dos planos superiores às vezes aterrissam nas masmorras. O impacto da queda e o contato com a energia necrótica do submundo os corrompe progressivamente. O resultado é uma criatura que ainda tem a forma física bela e poderosa de um anjo — asas colossais, luz irradiante, olhos de fogo — mas cujos pensamentos se tornaram algo completamente outro. Anjos caídos são imprevisíveis: alguns buscam redenção, outros abraçaram a queda.</p><p><strong>Comportamento na mesa</strong></p><ul><li>Padrão: ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).</li><li>Território: +2 ataque defendendo ninho/tesouro; persegue até limite do bioma.</li><li>Fraqueza tática: recua de fogo/luz radiante; CD 12 SAB ou Desvantagem 1 rodada.</li><li>Moral: não foge por HP; pode sacrificar lacaios.</li></ul>",
       "attributes": {
         "forca": {
           "value": 22,
@@ -4264,7 +4311,8 @@
           "label": "Ataque especial · 6 hex · PA 2"
         }
       ],
-      "catalogId": "MON-048"
+      "catalogId": "MON-048",
+      "bookRef": "LIVRO-DO-MESTRE.md"
     }
   },
   {
@@ -4272,7 +4320,7 @@
     "name": "Gárgula de Cristal",
     "type": "npc",
     "system": {
-      "description": "<p>Gárgula de Cristal — espécime nv 4 (Eldarin v4).</p>",
+      "description": "<p><strong>GÁRGULA DE CRISTAL</strong> (ameaça nv 4).</p><p>Gárgulas são criaturas que existem no limiar entre construto e besta — animadas mas não criadas por magos, emergindo espontaneamente de pedra ou cristal impregnados de energia elemental por séculos. As Gárgulas de Cristal do Labirinto Prismático são particularmente traiçoeiras: quando imóveis, são literalmente indistinguíveis das formações cristalinas naturais. Estátuas que observam, esperam e então explodem em ação sem aviso.</p><p><strong>Comportamento na mesa</strong></p><ul><li>Padrão: ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).</li><li>Tática: foca conjurador ou menor HP; usa cobertura se INT 6+.</li><li>Moral: não foge; persegue o alvo mais próximo até 0 HP (mente ausente).</li></ul>",
       "attributes": {
         "forca": {
           "value": 14,
@@ -4354,7 +4402,8 @@
           "label": "Ataque especial · 4 hex · PA 2"
         }
       ],
-      "catalogId": "MON-049"
+      "catalogId": "MON-049",
+      "bookRef": "LIVRO-DO-MESTRE.md"
     }
   },
   {
@@ -4362,7 +4411,7 @@
     "name": "Aberração Tentacular",
     "type": "npc",
     "system": {
-      "description": "<p>Aberração Tentacular — espécime nv 8 (Eldarin v4).</p>",
+      "description": "<p><strong>ABERRAÇÃO TENTACULAR</strong> (ameaça nv 8).</p><p>A Aberração Tentacular é o que acontece quando a masmorra produz vida própria — sem nenhum ancestral reconhecível, sem linhagem elemental, simplesmente emergindo do ambiente corrompido. Corpo central como um tumor flutuante com múltiplos tentáculos psíquicos que não tocam fisicamente — eles tocam a mente. Um grupo pode passar por ela sem perceber que está sendo manipulado até que seus membros estejam atacando uns aos outros. Estudiosos que a examinam de longe notam que ela parece ter um padrão de pulsar que corresponde a ondas de energia necrótica da masmorra.</p><p><strong>Comportamento na mesa</strong></p><ul><li>Padrão: ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).</li><li>Combate: prioriza números — reforços em 1d4 rodadas se 1 aliado cair (ruído/feromônio).</li><li>Moral: não foge; persegue o alvo mais próximo até 0 HP (mente ausente).</li></ul>",
       "attributes": {
         "forca": {
           "value": 18,
@@ -4444,7 +4493,8 @@
           "label": "Ataque especial · 4 hex · PA 2"
         }
       ],
-      "catalogId": "MON-050"
+      "catalogId": "MON-050",
+      "bookRef": "LIVRO-DO-MESTRE.md"
     }
   },
   {
@@ -4452,7 +4502,7 @@
     "name": "Basilisco de Magma",
     "type": "npc",
     "system": {
-      "description": "<p>Basilisco de Magma — espécime nv 8 (Eldarin v4).</p>",
+      "description": "<p><strong>BASILISCO DE MAGMA</strong> (ameaça nv 8).</p><p>Uma fusão improvável de Basilisco e ambiente vulcânico — o Basilisco de Magma desenvolveu escamas de obsidiana e o olhar petrificante evoluiu: em vez de transformar em pedra cinza, transforma em rocha vulcânica. Alvos petrificados ficam quentes ao toque por horas. Habita as bordas das fontes de magma nas Fornalhas Douradas, tomando banhos ocasionais de lava para manter as escamas aquecidas. A carne sob as escamas de obsidiana é surpreendentemente similar ao Basilisco normal, mas com notas de mineral e calor que persistem mesmo depois de cozida.</p><p><strong>Comportamento na mesa</strong></p><ul><li>Padrão: ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).</li><li>Moral: não foge; persegue o alvo mais próximo até 0 HP (mente ausente).</li></ul>",
       "attributes": {
         "forca": {
           "value": 17,
@@ -4534,7 +4584,8 @@
           "label": "Ataque especial · 4 hex · PA 2"
         }
       ],
-      "catalogId": "MON-051"
+      "catalogId": "MON-051",
+      "bookRef": "LIVRO-DO-MESTRE.md"
     }
   },
   {
@@ -4542,7 +4593,7 @@
     "name": "Sereia das Profundezas",
     "type": "npc",
     "system": {
-      "description": "<p>Sereia das Profundezas — espécime nv 6 (Eldarin v4).</p>",
+      "description": "<p><strong>SEREIA DAS PROFUNDEZAS</strong> (ameaça nv 6).</p><p>As Sereias das masmorras perderam a beleza — a falta de luz e a pressão das profundezas moldaram criaturas que são funcionais mas não belas no sentido convencional. O que mantiveram foi o canto. Um canto de Sereia das Profundezas reverbera através da pedra e da água e pode ser ouvido a quilômetros de distância. Grupos que se aproximam demais da costa do Mar de Prata Cega às vezes simplesmente caminham para dentro da água sem perceber. As Sereias os capturam, afogam e os devoram. A carne de Sereia é o tabu culinário mais debatido — tecnicamente humanoide inteligente, mas sua carne tem propriedades incomparáveis.</p><p><strong>Comportamento na mesa</strong></p><ul><li>Padrão: ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).</li><li>Combate: prioriza números — reforços em 1d4 rodadas se 1 aliado cair (ruído/feromônio).</li><li>Tática: foca conjurador ou menor HP; usa cobertura se INT 6+.</li><li>Fraqueza tática: recua de fogo/luz radiante; CD 12 SAB ou Desvantagem 1 rodada.</li><li>Moral: não foge; persegue o alvo mais próximo até 0 HP (mente ausente).</li></ul>",
       "attributes": {
         "forca": {
           "value": 14,
@@ -4624,7 +4675,8 @@
           "label": "Ataque especial · 4 hex · PA 2"
         }
       ],
-      "catalogId": "MON-052"
+      "catalogId": "MON-052",
+      "bookRef": "LIVRO-DO-MESTRE.md"
     }
   },
   {
@@ -4632,7 +4684,7 @@
     "name": "Troll de Pedra",
     "type": "npc",
     "system": {
-      "description": "<p>Troll de Pedra — espécime nv 7 (Eldarin v4).</p>",
+      "description": "<p><strong>TROLL DE PEDRA</strong> (ameaça nv 7).</p><p>Trolls de Pedra são maiores que trolls comuns, mais lentos e com regeneração mais lenta mas mais robusta. Sua pele já se assemelha à rocha — cinza, áspera, com protuberâncias como pedras semi-enterradas. São onívoros agressivos que comem absolutamente qualquer coisa: outros monstros, pedra, metal enferrujado, madeira podre. Seu estômago dissolve quase qualquer material. O que não é dissolvido é secretado como uma bílis extremamente ácida que usam como arma improvisada. Crianças na superfície são amedrontadas com histórias de Trolls — aqui dentro, as histórias são para os Trolls.</p><p><strong>Comportamento na mesa</strong></p><ul><li>Padrão: ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).</li><li>Moral: não foge; persegue o alvo mais próximo até 0 HP (mente ausente).</li></ul>",
       "attributes": {
         "forca": {
           "value": 20,
@@ -4714,7 +4766,8 @@
           "label": "Ataque especial · 4 hex · PA 2"
         }
       ],
-      "catalogId": "MON-053"
+      "catalogId": "MON-053",
+      "bookRef": "LIVRO-DO-MESTRE.md"
     }
   },
   {
@@ -4722,7 +4775,7 @@
     "name": "Ciclope",
     "type": "npc",
     "system": {
-      "description": "<p>Ciclope — espécime nv 9 (Eldarin v4).</p>",
+      "description": "<p><strong>CICLOPE</strong> (ameaça nv 9).</p><p>Ciclopes nas masmorras são seres melancólicos. Inteligentes o suficiente para se sentir solitários mas não o suficiente para resolvê-lo, eles habitam câmaras grandes e pessoais que decoram obsessivamente com relevos nas paredes contando histórias que nunca comunicam. Suas tocas têm sempre uma escultura central de algo ou alguém que adoram e nunca tiveram. São territorialistas extremos — qualquer invasão de sua câmara pessoal é respondida com violência total. Mas grupos que chegam pela entrada alternativa e demonstram interesse nas esculturas às vezes conseguem evitar o combate.</p><p><strong>Comportamento na mesa</strong></p><ul><li>Padrão: ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).</li><li>Combate: prioriza números — reforços em 1d4 rodadas se 1 aliado cair (ruído/feromônio).</li><li>Tática: foca conjurador ou menor HP; usa cobertura se INT 6+.</li><li>Território: +2 ataque defendendo ninho/tesouro; persegue até limite do bioma.</li><li>Moral: não foge; persegue o alvo mais próximo até 0 HP (mente ausente).</li></ul>",
       "attributes": {
         "forca": {
           "value": 22,
@@ -4804,7 +4857,8 @@
           "label": "Ataque especial · 6 hex · PA 2"
         }
       ],
-      "catalogId": "MON-054"
+      "catalogId": "MON-054",
+      "bookRef": "LIVRO-DO-MESTRE.md"
     }
   },
   {
@@ -4812,7 +4866,7 @@
     "name": "Harpia de Caverna",
     "type": "npc",
     "system": {
-      "description": "<p>Harpia de Caverna — espécime nv 4 (Eldarin v4).</p>",
+      "description": "<p><strong>HARPIA DE CAVERNA</strong> (ameaça nv 4).</p><p>Harpias de caverna perderam o canto encantador de suas primas da superfície — sem ar suficiente para resonar plenamente — mas desenvolveram garras maiores e uma resistência ao ambiente da masmorra surpreendente. São oportunistas, atacando grupos já enfraquecidos por outros combates e fugindo quando a caça fica perigosa. Vivem em bandos de 4 a 10, e a hierarquia do bando muda a cada lua quando lutam por posição. A carne é saborosa mas dura — requer marinada longa ou cozimento prolongado.</p><p><strong>Comportamento na mesa</strong></p><ul><li>Padrão: ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).</li><li>Combate: prioriza números — reforços em 1d4 rodadas se 1 aliado cair (ruído/feromônio).</li><li>Moral: ao 50% HP, INT CD 10 ou fuga/rendição.</li></ul>",
       "attributes": {
         "forca": {
           "value": 12,
@@ -4894,7 +4948,8 @@
           "label": "Ataque especial · 4 hex · PA 2"
         }
       ],
-      "catalogId": "MON-055"
+      "catalogId": "MON-055",
+      "bookRef": "LIVRO-DO-MESTRE.md"
     }
   },
   {
@@ -4902,7 +4957,7 @@
     "name": "Roper",
     "type": "npc",
     "system": {
-      "description": "<p>Roper — espécime nv 5 (Eldarin v4).</p>",
+      "description": "<p><strong>ROPER (TENTÁCULO-PEDRA)</strong> (ameaça nv 5).</p><p><strong>Comportamento na mesa</strong></p><ul><li>Padrão: ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).</li><li>Moral: não foge; persegue o alvo mais próximo até 0 HP (mente ausente).</li></ul>",
       "attributes": {
         "forca": {
           "value": 18,
@@ -4984,7 +5039,8 @@
           "label": "Ataque especial · 4 hex · PA 2"
         }
       ],
-      "catalogId": "MON-056"
+      "catalogId": "MON-056",
+      "bookRef": "LIVRO-DO-MESTRE.md"
     }
   },
   {
@@ -4992,7 +5048,7 @@
     "name": "Aboleth",
     "type": "npc",
     "system": {
-      "description": "<p>Aboleth — espécime nv 16 (Eldarin v4).</p>",
+      "description": "<p><strong>ABOLETH</strong> (ameaça nv 16).</p><p><strong>Comportamento na mesa</strong></p><ul><li>Padrão: ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).</li><li>Moral: não foge por HP; pode sacrificar lacaios.</li></ul>",
       "attributes": {
         "forca": {
           "value": 16,
@@ -5074,7 +5130,8 @@
           "label": "Ataque especial · 6 hex · PA 2"
         }
       ],
-      "catalogId": "MON-057"
+      "catalogId": "MON-057",
+      "bookRef": "LIVRO-DO-MESTRE.md"
     }
   },
   {
@@ -5082,7 +5139,7 @@
     "name": "Pudim Negro",
     "type": "npc",
     "system": {
-      "description": "<p>Pudim Negro — espécime nv 7 (Eldarin v4).</p>",
+      "description": "<p><strong>PUDIM NEGRO</strong> (ameaça nv 7).</p><p><strong>Comportamento na mesa</strong></p><ul><li>Padrão: ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).</li><li>Moral: não foge; persegue o alvo mais próximo até 0 HP (mente ausente).</li></ul>",
       "attributes": {
         "forca": {
           "value": 14,
@@ -5164,7 +5221,8 @@
           "label": "Ataque especial · 4 hex · PA 2"
         }
       ],
-      "catalogId": "MON-058"
+      "catalogId": "MON-058",
+      "bookRef": "LIVRO-DO-MESTRE.md"
     }
   },
   {
@@ -5172,7 +5230,7 @@
     "name": "Lagosta-Gigante Abissal",
     "type": "npc",
     "system": {
-      "description": "<p>Lagosta-Gigante Abissal — espécime nv 4 (Eldarin v4).</p>",
+      "description": "<p><strong>LAGOSTA-GIGANTE ABISSAL</strong> (ameaça nv 4).</p><p><strong>Comportamento na mesa</strong></p><ul><li>Padrão: ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).</li><li>Moral: não foge; persegue o alvo mais próximo até 0 HP (mente ausente).</li></ul>",
       "attributes": {
         "forca": {
           "value": 16,
@@ -5254,7 +5312,8 @@
           "label": "Ataque especial · 4 hex · PA 2"
         }
       ],
-      "catalogId": "MON-059"
+      "catalogId": "MON-059",
+      "bookRef": "LIVRO-DO-MESTRE.md"
     }
   },
   {
@@ -5262,7 +5321,7 @@
     "name": "Caranguejo-Eremita Colossal",
     "type": "npc",
     "system": {
-      "description": "<p>Caranguejo-Eremita Colossal — espécime nv 7 (Eldarin v4).</p>",
+      "description": "<p><strong>Caranguejo-Eremita Colossal</strong> — criatura nv 7 das masmorras de Eldarin.</p>",
       "attributes": {
         "forca": {
           "value": 18,
@@ -5344,7 +5403,8 @@
           "label": "Ataque especial · 4 hex · PA 2"
         }
       ],
-      "catalogId": "MON-060"
+      "catalogId": "MON-060",
+      "bookRef": "LIVRO-DO-MESTRE.md"
     }
   },
   {
@@ -5352,7 +5412,7 @@
     "name": "Aranha-Cavaleira",
     "type": "npc",
     "system": {
-      "description": "<p>Aranha-Cavaleira — espécime nv 9 (Eldarin v4).</p>",
+      "description": "<p><strong>Aranha-Cavaleira</strong> — criatura nv 9 das masmorras de Eldarin.</p>",
       "attributes": {
         "forca": {
           "value": 14,
@@ -5434,7 +5494,8 @@
           "label": "Ataque especial · 4 hex · PA 2"
         }
       ],
-      "catalogId": "MON-061"
+      "catalogId": "MON-061",
+      "bookRef": "LIVRO-DO-MESTRE.md"
     }
   },
   {
@@ -5442,7 +5503,7 @@
     "name": "Mosca-Carniça Colossal",
     "type": "npc",
     "system": {
-      "description": "<p>Mosca-Carniça Colossal — espécime nv 2 (Eldarin v4).</p>",
+      "description": "<p><strong>Mosca-Carniça Colossal</strong> — criatura nv 2 das masmorras de Eldarin.</p>",
       "attributes": {
         "forca": {
           "value": 8,
@@ -5524,7 +5585,8 @@
           "label": "Investida · 2 hex · PA 2"
         }
       ],
-      "catalogId": "MON-062"
+      "catalogId": "MON-062",
+      "bookRef": "LIVRO-DO-MESTRE.md"
     }
   },
   {
@@ -5532,7 +5594,7 @@
     "name": "Besouro-Trovão",
     "type": "npc",
     "system": {
-      "description": "<p>Besouro-Trovão — espécime nv 5 (Eldarin v4).</p>",
+      "description": "<p><strong>Besouro-Trovão</strong> — criatura nv 5 das masmorras de Eldarin.</p>",
       "attributes": {
         "forca": {
           "value": 14,
@@ -5614,7 +5676,8 @@
           "label": "Ataque especial · 4 hex · PA 2"
         }
       ],
-      "catalogId": "MON-063"
+      "catalogId": "MON-063",
+      "bookRef": "LIVRO-DO-MESTRE.md"
     }
   },
   {
@@ -5622,7 +5685,7 @@
     "name": "Verme Gigante de Pedra",
     "type": "npc",
     "system": {
-      "description": "<p>Verme Gigante de Pedra — espécime nv 10 (Eldarin v4).</p>",
+      "description": "<p><strong>Verme Gigante de Pedra</strong> — criatura nv 10 das masmorras de Eldarin.</p>",
       "attributes": {
         "forca": {
           "value": 22,
@@ -5704,7 +5767,8 @@
           "label": "Ataque especial · 6 hex · PA 2"
         }
       ],
-      "catalogId": "MON-064"
+      "catalogId": "MON-064",
+      "bookRef": "LIVRO-DO-MESTRE.md"
     }
   },
   {
@@ -5712,7 +5776,7 @@
     "name": "Salamandra Gigante",
     "type": "npc",
     "system": {
-      "description": "<p>Salamandra Gigante — espécime nv 6 (Eldarin v4).</p>",
+      "description": "<p><strong>Salamandra Gigante</strong> — criatura nv 6 das masmorras de Eldarin.</p>",
       "attributes": {
         "forca": {
           "value": 15,
@@ -5794,7 +5858,8 @@
           "label": "Ataque especial · 4 hex · PA 2"
         }
       ],
-      "catalogId": "MON-065"
+      "catalogId": "MON-065",
+      "bookRef": "LIVRO-DO-MESTRE.md"
     }
   },
   {
@@ -5802,7 +5867,7 @@
     "name": "Behemoth de Pedra",
     "type": "npc",
     "system": {
-      "description": "<p>Behemoth de Pedra — espécime nv 14 (Eldarin v4).</p>",
+      "description": "<p><strong>Behemoth de Pedra</strong> — criatura nv 14 das masmorras de Eldarin.</p>",
       "attributes": {
         "forca": {
           "value": 24,
@@ -5884,7 +5949,8 @@
           "label": "Ataque especial · 6 hex · PA 2"
         }
       ],
-      "catalogId": "MON-066"
+      "catalogId": "MON-066",
+      "bookRef": "LIVRO-DO-MESTRE.md"
     }
   },
   {
@@ -5892,7 +5958,7 @@
     "name": "Fera da Sombra",
     "type": "npc",
     "system": {
-      "description": "<p>Fera da Sombra — espécime nv 8 (Eldarin v4).</p>",
+      "description": "<p><strong>Fera da Sombra</strong> — criatura nv 8 das masmorras de Eldarin.</p>",
       "attributes": {
         "forca": {
           "value": 12,
@@ -5974,7 +6040,8 @@
           "label": "Ataque especial · 4 hex · PA 2"
         }
       ],
-      "catalogId": "MON-067"
+      "catalogId": "MON-067",
+      "bookRef": "LIVRO-DO-MESTRE.md"
     }
   },
   {
@@ -5982,7 +6049,7 @@
     "name": "Medusa",
     "type": "npc",
     "system": {
-      "description": "<p>Medusa — espécime nv 7 (Eldarin v4).</p>",
+      "description": "<p><strong>Medusa</strong> — criatura nv 7 das masmorras de Eldarin.</p>",
       "attributes": {
         "forca": {
           "value": 14,
@@ -6064,7 +6131,8 @@
           "label": "Ataque especial · 4 hex · PA 2"
         }
       ],
-      "catalogId": "MON-068"
+      "catalogId": "MON-068",
+      "bookRef": "LIVRO-DO-MESTRE.md"
     }
   },
   {
@@ -6072,7 +6140,7 @@
     "name": "Fênix de Caverna",
     "type": "npc",
     "system": {
-      "description": "<p>Fênix de Caverna — espécime nv 13 (Eldarin v4).</p>",
+      "description": "<p><strong>Fênix de Caverna</strong> — criatura nv 13 das masmorras de Eldarin.</p>",
       "attributes": {
         "forca": {
           "value": 16,
@@ -6154,7 +6222,8 @@
           "label": "Ataque especial · 6 hex · PA 2"
         }
       ],
-      "catalogId": "MON-069"
+      "catalogId": "MON-069",
+      "bookRef": "LIVRO-DO-MESTRE.md"
     }
   },
   {
@@ -6162,7 +6231,7 @@
     "name": "Gigante de Pedra",
     "type": "npc",
     "system": {
-      "description": "<p>Gigante de Pedra — espécime nv 12 (Eldarin v4).</p>",
+      "description": "<p><strong>Gigante de Pedra</strong> — criatura nv 12 das masmorras de Eldarin.</p>",
       "attributes": {
         "forca": {
           "value": 23,
@@ -6244,7 +6313,8 @@
           "label": "Ataque especial · 6 hex · PA 2"
         }
       ],
-      "catalogId": "MON-070"
+      "catalogId": "MON-070",
+      "bookRef": "LIVRO-DO-MESTRE.md"
     }
   },
   {
@@ -6252,7 +6322,7 @@
     "name": "Bruxa da Masmorra",
     "type": "npc",
     "system": {
-      "description": "<p>Bruxa da Masmorra — espécime nv 8 (Eldarin v4).</p>",
+      "description": "<p><strong>Bruxa da Masmorra</strong> — criatura nv 8 das masmorras de Eldarin.</p>",
       "attributes": {
         "forca": {
           "value": 12,
@@ -6334,7 +6404,8 @@
           "label": "Ataque especial · 4 hex · PA 2"
         }
       ],
-      "catalogId": "MON-071"
+      "catalogId": "MON-071",
+      "bookRef": "LIVRO-DO-MESTRE.md"
     }
   },
   {
@@ -6342,7 +6413,7 @@
     "name": "Fera Seminal",
     "type": "npc",
     "system": {
-      "description": "<p>Fera Seminal — espécime nv 11 (Eldarin v4).</p>",
+      "description": "<p><strong>Fera Seminal</strong> — criatura nv 11 das masmorras de Eldarin.</p>",
       "attributes": {
         "forca": {
           "value": 16,
@@ -6424,7 +6495,8 @@
           "label": "Ataque especial · 6 hex · PA 2"
         }
       ],
-      "catalogId": "MON-072"
+      "catalogId": "MON-072",
+      "bookRef": "LIVRO-DO-MESTRE.md"
     }
   },
   {
@@ -6432,7 +6504,7 @@
     "name": "Carniçal Alado",
     "type": "npc",
     "system": {
-      "description": "<p>Carniçal Alado — espécime nv 9 (Eldarin v4).</p>",
+      "description": "<p><strong>Carniçal Alado</strong> — criatura nv 9 das masmorras de Eldarin.</p>",
       "attributes": {
         "forca": {
           "value": 15,
@@ -6514,7 +6586,8 @@
           "label": "Ataque especial · 4 hex · PA 2"
         }
       ],
-      "catalogId": "MON-073"
+      "catalogId": "MON-073",
+      "bookRef": "LIVRO-DO-MESTRE.md"
     }
   },
   {
@@ -6522,7 +6595,7 @@
     "name": "Balor",
     "type": "npc",
     "system": {
-      "description": "<p>Balor — espécime nv 19 (Eldarin v4).</p>",
+      "description": "<p><strong>Balor</strong> — criatura nv 19 das masmorras de Eldarin.</p>",
       "attributes": {
         "forca": {
           "value": 26,
@@ -6604,7 +6677,8 @@
           "label": "Ataque especial · 6 hex · PA 2"
         }
       ],
-      "catalogId": "MON-074"
+      "catalogId": "MON-074",
+      "bookRef": "LIVRO-DO-MESTRE.md"
     }
   },
   {
@@ -6612,7 +6686,7 @@
     "name": "Enxame de Ratos-Cadáveres",
     "type": "npc",
     "system": {
-      "description": "<p>Enxame de Ratos-Cadáveres — espécime nv 2 (Eldarin v4).</p>",
+      "description": "<p><strong>Enxame de Ratos-Cadáveres</strong> — criatura nv 2 das masmorras de Eldarin.</p>",
       "attributes": {
         "forca": {
           "value": 10,
@@ -6694,7 +6768,8 @@
           "label": "Investida · 2 hex · PA 2"
         }
       ],
-      "catalogId": "MON-075"
+      "catalogId": "MON-075",
+      "bookRef": "LIVRO-DO-MESTRE.md"
     }
   },
   {
@@ -6702,7 +6777,7 @@
     "name": "Elemental de Terra",
     "type": "npc",
     "system": {
-      "description": "<p>Elemental de Terra — espécime nv 8 (Eldarin v4).</p>",
+      "description": "<p><strong>Elemental de Terra</strong> — criatura nv 8 das masmorras de Eldarin.</p>",
       "attributes": {
         "forca": {
           "value": 20,
@@ -6784,7 +6859,8 @@
           "label": "Ataque especial · 4 hex · PA 2"
         }
       ],
-      "catalogId": "MON-076"
+      "catalogId": "MON-076",
+      "bookRef": "LIVRO-DO-MESTRE.md"
     }
   },
   {
@@ -6792,7 +6868,7 @@
     "name": "Banshee",
     "type": "npc",
     "system": {
-      "description": "<p>Banshee — espécime nv 8 (Eldarin v4).</p>",
+      "description": "<p><strong>Banshee</strong> — criatura nv 8 das masmorras de Eldarin.</p>",
       "attributes": {
         "forca": {
           "value": 8,
@@ -6874,7 +6950,8 @@
           "label": "Ataque especial · 4 hex · PA 2"
         }
       ],
-      "catalogId": "MON-077"
+      "catalogId": "MON-077",
+      "bookRef": "LIVRO-DO-MESTRE.md"
     }
   },
   {
@@ -6882,7 +6959,7 @@
     "name": "Morcego-Tirano",
     "type": "npc",
     "system": {
-      "description": "<p>Morcego-Tirano — espécime nv 5 (Eldarin v4).</p>",
+      "description": "<p><strong>Morcego-Tirano</strong> — criatura nv 5 das masmorras de Eldarin.</p>",
       "attributes": {
         "forca": {
           "value": 16,
@@ -6964,7 +7041,8 @@
           "label": "Ataque especial · 4 hex · PA 2"
         }
       ],
-      "catalogId": "MON-078"
+      "catalogId": "MON-078",
+      "bookRef": "LIVRO-DO-MESTRE.md"
     }
   },
   {
@@ -6972,7 +7050,7 @@
     "name": "Ooze Ocular",
     "type": "npc",
     "system": {
-      "description": "<p>Ooze Ocular — espécime nv 6 (Eldarin v4).</p>",
+      "description": "<p><strong>Ooze Ocular</strong> — criatura nv 6 das masmorras de Eldarin.</p>",
       "attributes": {
         "forca": {
           "value": 12,
@@ -7054,7 +7132,8 @@
           "label": "Ataque especial · 4 hex · PA 2"
         }
       ],
-      "catalogId": "MON-079"
+      "catalogId": "MON-079",
+      "bookRef": "LIVRO-DO-MESTRE.md"
     }
   },
   {
@@ -7062,7 +7141,7 @@
     "name": "Tarrasque (Bebê)",
     "type": "npc",
     "system": {
-      "description": "<p>Tarrasque (Bebê) — espécime nv 20 (Eldarin v4).</p>",
+      "description": "<p><strong>Tarrasque (Bebê)</strong> — criatura nv 20 das masmorras de Eldarin.</p>",
       "attributes": {
         "forca": {
           "value": 30,
@@ -7144,7 +7223,8 @@
           "label": "Ataque especial · 6 hex · PA 2"
         }
       ],
-      "catalogId": "MON-080"
+      "catalogId": "MON-080",
+      "bookRef": "LIVRO-DO-MESTRE.md"
     }
   },
   {
@@ -7208,7 +7288,8 @@
           "label": "Mordida · 1 hex · PA 2"
         }
       ],
-      "catalogId": "MON-SPAWN-goblin"
+      "catalogId": "MON-SPAWN-goblin",
+      "bookRef": "LIVRO-DO-MESTRE.md"
     },
     "spawnAlias": true
   },
@@ -7299,7 +7380,8 @@
           "label": "Investida · 2 hex · PA 2"
         }
       ],
-      "catalogId": "MON-SPAWN-esqueleto-de-guarda"
+      "catalogId": "MON-SPAWN-esqueleto-de-guarda",
+      "bookRef": "LIVRO-DO-MESTRE.md"
     },
     "spawnAlias": true
   },
@@ -7390,7 +7472,8 @@
           "label": "Investida · 2 hex · PA 2"
         }
       ],
-      "catalogId": "MON-SPAWN-slime-de-masmorra"
+      "catalogId": "MON-SPAWN-slime-de-masmorra",
+      "bookRef": "LIVRO-DO-MESTRE.md"
     },
     "spawnAlias": true
   }

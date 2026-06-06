@@ -69,9 +69,9 @@ function racialDripPerk(raceId: string, level: number, linhagem?: string | null)
   const drips: Record<string, string[]> = {
     Humano: [
       "Versatilidade +1",
-      "Paladar refinado",
+      "Percepção apurada",
       "Resistência +1",
-      "Foco culinário",
+      "Foco tático",
       "Determinação crescente",
     ],
     Elfo: ["Harmonia +1", "Visão aguçada", "Transe leve", "Purificação menor"],
@@ -89,8 +89,8 @@ function racialDripPerk(raceId: string, level: number, linhagem?: string | null)
 function subclassDripPerk(specialty: string, level: number): string {
   const templates = [
     `Afinidade com ${specialty.toLowerCase()} — bônus situacional`,
-    "Domínio culinário do caminho",
-    "Refinamento da dieta marcial",
+    "Domínio tático do caminho",
+    "Refinamento da assimilação",
     "Técnica do especialista",
     "Instinto do caminho",
   ];

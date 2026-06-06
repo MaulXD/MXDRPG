@@ -1,4 +1,5 @@
 import { migrateSubclassName } from "@/lib/character/legacy-names";
+import { normalizeReligionId } from "@/lib/character/pantheon";
 import type { CharacterAttributes, CharacterSheet, CharacterIdentity } from "@/lib/character/types";
 import { parseCharacterTalents } from "@/lib/character/subclass-tracks";
 import { computeCulinary, hpMaxFor, attributeMod } from "@/lib/character/rules";
@@ -40,6 +41,7 @@ export function normalizeIdentity(identity: Partial<CharacterIdentity> & { nivel
     subclasse: migrateSubclassName(identity.subclasse ?? null) ?? null,
     linhagem: identity.linhagem ?? null,
     antecedente: identity.antecedente ?? "Explorador",
+    religiao: normalizeReligionId(identity.religiao),
     talentos: parseCharacterTalents(identity.talentos),
   };
 }

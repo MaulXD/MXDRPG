@@ -5,7 +5,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-chama-de-fogareiro",
-      "description": "<p>Chama controlável; uso culinário.</p>",
+      "description": "<p>Chama pequena e controlável na ponta dos dedos; temperatura precisa. Uso culinário: dispensa fogareiro ou lenha.</p><p><em>Evocacao | Acao | Toque | Ate ser apagada | Mago, Clérigo, Bardo, Druida, Artífice · nv 0 · 1 PA · 1 hex</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 1,
@@ -21,7 +21,8 @@
         "escola": "Evocação",
         "tempo": "1 ação",
         "alcance": "1 hex"
-      }
+      },
+      "bookRef": "_parte_x_magias_v4_revisada.md"
     }
   },
   {
@@ -30,7 +31,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-lamina-de-espirito",
-      "description": "<p>Lâmina etérea 1d4; +2 Trinchar.</p>",
+      "description": "<p>Lâmina etérea 1d4; +2 Trinchar.</p><p><em>Transmutação · nv 0</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 1,
@@ -55,7 +56,8 @@
         "ataque": {
           "bonus": 0
         }
-      }
+      },
+      "bookRef": "_parte_x_magias_v4_revisada.md"
     }
   },
   {
@@ -64,7 +66,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-detectar-veneno",
-      "description": "<p>Detecta toxinas em 3 hex.</p>",
+      "description": "<p>Em raio de 3m, detecta toxinas em comida, bebida ou ingrediente (aura avermelhada).</p><p><em>Adivinhacao | Acao | Pessoal | 10 minutos | Mago, Clérigo, Bardo, Druida, Artífice · nv 0 · 1 PA · 3 hex</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 3,
@@ -80,7 +82,8 @@
         "escola": "Adivinhação",
         "tempo": "1 ação",
         "alcance": "3 hex"
-      }
+      },
+      "bookRef": "_parte_x_magias_v4_revisada.md"
     }
   },
   {
@@ -89,7 +92,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-estabilizar",
-      "description": "<p>Criatura a 0 HP para de falhar morte.</p>",
+      "description": "<p>Criatura a 0 HP para de fazer falhas de morte; não cura HP.</p><p><em>Abjuracao | Acao | Toque | Instantanea | Clérigo, Druida · nv 0 · 1 PA · 1 hex</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 1,
@@ -105,7 +108,8 @@
         "escola": "Abjuração",
         "tempo": "1 ação",
         "alcance": "1 hex"
-      }
+      },
+      "bookRef": "_parte_x_magias_v4_revisada.md"
     }
   },
   {
@@ -114,7 +118,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-maos-firmes",
-      "description": "<p>+2 Trinchar por 1 hora.</p>",
+      "description": "<p>+2 Trinchar por 1 hora.</p><p><em>Transmutação · nv 0</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 1,
@@ -130,7 +134,8 @@
         "escola": "Transmutação",
         "tempo": "1 ação",
         "alcance": "1 hex"
-      }
+      },
+      "bookRef": "_parte_x_magias_v4_revisada.md"
     }
   },
   {
@@ -139,7 +144,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-extracao-amplificada",
-      "description": "<p>Dobra ingredientes; +4 Trinchar 1h.</p>",
+      "description": "<p>Dobra ingredientes; +4 Trinchar 1h.</p><p><em>Biomancia · nv 1</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 1,
@@ -155,7 +160,8 @@
         "escola": "Biomancia",
         "tempo": "1 minuto",
         "alcance": "1 hex"
-      }
+      },
+      "bookRef": "_parte_x_magias_v4_revisada.md"
     }
   },
   {
@@ -164,7 +170,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-maos-gelidas",
-      "description": "<p>Cone 2d6 frio; save CON. Canalizável.</p>",
+      "description": "<p>Cone 2d6 frio; save CON. Canalizável.</p><p><em>Evocação · nv 1</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 2,
@@ -200,7 +206,8 @@
         "ataque": {
           "bonus": 0
         }
-      }
+      },
+      "bookRef": "_parte_x_magias_v4_revisada.md"
     }
   },
   {
@@ -209,7 +216,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-crescimento-acelerado",
-      "description": "<p>Semente vira planta em 1h.</p>",
+      "description": "<p>Semente vira planta adulta em 1h com propriedades do bioma.</p><p><em>Transmutação (R) | 1 hora | Toque | Permanente | Druida, Clérigo · nv 1 · 1 PA · 1 hex</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 1,
@@ -225,7 +232,8 @@
         "escola": "Transmutação",
         "tempo": "1 hora",
         "alcance": "1 hex"
-      }
+      },
+      "bookRef": "_parte_x_magias_v4_revisada.md"
     }
   },
   {
@@ -234,7 +242,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-purificar-veneno",
-      "description": "<p>Remove envenenado ou toxina em ingrediente.</p>",
+      "description": "<p>Remove Envenenado em criatura ou torna ingrediente toxico seguro para processamento.</p><p><em>Abjuracao | Acao | Toque | Instantanea | Clérigo, Druida · nv 1 · 1 PA · 1 hex</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 1,
@@ -250,7 +258,8 @@
         "escola": "Abjuração",
         "tempo": "1 ação",
         "alcance": "1 hex"
-      }
+      },
+      "bookRef": "_parte_x_magias_v4_revisada.md"
     }
   },
   {
@@ -259,7 +268,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-identificar-ingrediente",
-      "description": "<p>Revela origem e propriedades biomágicas.</p>",
+      "description": "<p>Origem do monstro, propriedades biomágicas, preparo ideal e riscos.</p><p><em>Adivinhacao (R) | 1 minuto | Toque | Instantanea | Mago, Bardo, Artífice · nv 1 · 1 PA · 1 hex</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 1,
@@ -275,7 +284,8 @@
         "escola": "Adivinhação",
         "tempo": "1 minuto",
         "alcance": "1 hex"
-      }
+      },
+      "bookRef": "_parte_x_magias_v4_revisada.md"
     }
   },
   {
@@ -284,7 +294,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-armadura-arcana",
-      "description": "<p>CA 13 + INT por 8h.</p>",
+      "description": "<p>CA 13 + INT; não interfere com gestos de magia.</p><p><em>Abjuracao | Acao | Toque | 8 horas | Mago, Artífice · nv 1 · 1 PA · 1 hex</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 1,
@@ -300,7 +310,8 @@
         "escola": "Abjuração",
         "tempo": "1 ação",
         "alcance": "1 hex"
-      }
+      },
+      "bookRef": "_parte_x_magias_v4_revisada.md"
     }
   },
   {
@@ -309,7 +320,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-onda-de-trovao",
-      "description": "<p>Cubo 2d8 trovão; save CON. Canalizável.</p>",
+      "description": "<p>Cubo 2d8 trovão; save CON. Canalizável.</p><p><em>Evocação · nv 1</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 2,
@@ -345,7 +356,8 @@
         "ataque": {
           "bonus": 0
         }
-      }
+      },
+      "bookRef": "_parte_x_magias_v4_revisada.md"
     }
   },
   {
@@ -354,7 +366,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-curar-ferimentos",
-      "description": "<p>Cura 1d8 + mod conjuração.</p>",
+      "description": "<p>Cura 1d8 + mod. de atributo de conjuracao (SAB ou CAR). --- ### NIVEL 2</p><p><em>Abjuracao | Acao | Toque | Instantanea | Clérigo, Druida, Bardo · nv 1 · 1 PA · 1 hex</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 1,
@@ -370,7 +382,8 @@
         "escola": "Abjuração",
         "tempo": "1 ação",
         "alcance": "1 hex"
-      }
+      },
+      "bookRef": "_parte_x_magias_v4_revisada.md"
     }
   },
   {
@@ -379,7 +392,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-chama-de-vinha",
-      "description": "<p>Projétil 2d6 fogo. Canalizável.</p>",
+      "description": "<p>Projétil 2d6 fogo. Canalizável.</p><p><em>Evocação · nv 1</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 4,
@@ -408,7 +421,8 @@
         "ataque": {
           "bonus": 0
         }
-      }
+      },
+      "bookRef": "_parte_x_magias_v4_revisada.md"
     }
   },
   {
@@ -417,7 +431,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-sussurro-de-masmorra",
-      "description": "<p>Telepatia com aliado visível.</p>",
+      "description": "<p>Telepatia com aliado visível.</p><p><em>Adivinhação · nv 1</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 10,
@@ -433,7 +447,8 @@
         "escola": "Adivinhação",
         "tempo": "1 ação",
         "alcance": "10 hex"
-      }
+      },
+      "bookRef": "_parte_x_magias_v4_revisada.md"
     }
   },
   {
@@ -442,7 +457,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-aprimoramento-biomagico",
-      "description": "<p>+1 habilidade assimilacao na próxima refeição.</p>",
+      "description": "<p>+1 habilidade assimilacao na próxima refeição.</p><p><em>Biomancia · nv 2</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 1,
@@ -458,7 +473,8 @@
         "escola": "Biomancia",
         "tempo": "10 minutos",
         "alcance": "1 hex"
-      }
+      },
+      "bookRef": "_parte_x_magias_v4_revisada.md"
     }
   },
   {
@@ -467,7 +483,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-raios-de-enfraquecimento",
-      "description": "<p>3 raios; save CON ou desvantagem.</p>",
+      "description": "<p>Tres raios: CON CD ou Desvantagem em ataques e FOR por 1 minuto.</p><p><em>Necromancia | Acao | 18m | Concentracao até 1 minuto (C) | Mago, Clérigo · nv 2 · 1 PA · 6 hex</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 6,
@@ -486,7 +502,8 @@
         "save": {
           "attribute": "constituicao"
         }
-      }
+      },
+      "bookRef": "_parte_x_magias_v4_revisada.md"
     }
   },
   {
@@ -495,7 +512,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-esfera-acida-de-monstro",
-      "description": "<p>4d6 ácido; save DES. Canalizável.</p>",
+      "description": "<p>4d6 ácido; save DES. Canalizável.</p><p><em>Evocação · nv 2</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 6,
@@ -527,7 +544,8 @@
         "ataque": {
           "bonus": 0
         }
-      }
+      },
+      "bookRef": "_parte_x_magias_v4_revisada.md"
     }
   },
   {
@@ -536,7 +554,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-transmutacao-de-carne",
-      "description": "<p>Converte ingrediente em equivalente.</p>",
+      "description": "<p>Converte ingrediente em equivalente de mesma raridade (ex.: goblin -&gt; grifo).</p><p><em>Transmutação | 1 hora | Toque | Permanente | Mago, Gnomo, Artífice · nv 2 · 2 PA · 1 hex</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 1,
@@ -552,7 +570,8 @@
         "escola": "Transmutação",
         "tempo": "1 hora",
         "alcance": "1 hex"
-      }
+      },
+      "bookRef": "_parte_x_magias_v4_revisada.md"
     }
   },
   {
@@ -561,7 +580,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-inspiracao-culinaria",
-      "description": "<p>+3 Coccão/Harmonização 1h.</p>",
+      "description": "<p>+3 Coccão/Harmonização 1h.</p><p><em>Encantamento · nv 2</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 4,
@@ -577,7 +596,8 @@
         "escola": "Encantamento",
         "tempo": "1 ação",
         "alcance": "4 hex"
-      }
+      },
+      "bookRef": "_parte_x_magias_v4_revisada.md"
     }
   },
   {
@@ -586,7 +606,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-preservacao-perfeita",
-      "description": "<p>Ingrediente preservado 30 dias.</p>",
+      "description": "<p>Ingrediente preservado 30 dias sem perder propriedades biomágicas.</p><p><em>Transmutação | Acao | Toque | 30 dias | Mago, Clérigo, Druida, Artífice · nv 2 · 1 PA · 1 hex</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 1,
@@ -602,7 +622,8 @@
         "escola": "Transmutação",
         "tempo": "1 ação",
         "alcance": "1 hex"
-      }
+      },
+      "bookRef": "_parte_x_magias_v4_revisada.md"
     }
   },
   {
@@ -611,7 +632,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-forma-menor",
-      "description": "<p>Polimorfo em besta pequena.</p>",
+      "description": "<p>Transforma-se em besta Minuscula ou Pequena; mantem INT, SAB, CAR; sem magia na forma.</p><p><em>Transmutação | Acao | Pessoal | Concentracao até 1 hora (C) | Druida, Mago · nv 2 · 1 PA · 0 hex</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 0,
@@ -627,7 +648,8 @@
         "escola": "Transmutação",
         "tempo": "1 ação",
         "alcance": "0 hex"
-      }
+      },
+      "bookRef": "_parte_x_magias_v4_revisada.md"
     }
   },
   {
@@ -636,7 +658,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-escudo-arcano",
-      "description": "<p>Reação: +5 CA 1 rodada.</p>",
+      "description": "<p>Quando atingido ou alvo de magia: +5 CA até inicio do próximo turno (inclui contra a magia que disparou).</p><p><em>Abjuracao | Reacao | Pessoal | 1 rodada | Mago, Artífice · nv 2 · 1 PA · 0 hex</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 0,
@@ -652,7 +674,8 @@
         "escola": "Abjuração",
         "tempo": "reação",
         "alcance": "0 hex"
-      }
+      },
+      "bookRef": "_parte_x_magias_v4_revisada.md"
     }
   },
   {
@@ -661,7 +684,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-ilusao-menor",
-      "description": "<p>Som ou imagem estática.</p>",
+      "description": "<p>Som ou imagem estática em cubo 1,5m; não causa dano. --- ### NIVEL 3</p><p><em>Ilusao | Acao | 18m | 1 minuto | Mago, Bardo · nv 2 · 1 PA · 6 hex</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 6,
@@ -677,7 +700,8 @@
         "escola": "Ilusão",
         "tempo": "1 ação",
         "alcance": "6 hex"
-      }
+      },
+      "bookRef": "_parte_x_magias_v4_revisada.md"
     }
   },
   {
@@ -686,7 +710,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-muralha-hexagonal",
-      "description": "<p>Barreira em 3 hex.</p>",
+      "description": "<p>Barreira em 3 hex.</p><p><em>Abjuração · nv 2</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 3,
@@ -706,7 +730,8 @@
           "shape": "wall",
           "hexCount": 3
         }
-      }
+      },
+      "bookRef": "_parte_x_magias_v4_revisada.md"
     }
   },
   {
@@ -715,7 +740,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-animacao-de-mortos",
-      "description": "<p>Anima 2 cadáveres por 24h.</p>",
+      "description": "<p>Anima até 2 cadaveres Medios ou menores; podem Extração com proficiencia = metade do nivel do conjurador. Em espaco de nivel 5: 4 Medios ou 2 Grandes.</p><p><em>Necromancia | 1 minuto | 3m | 24 horas | Mago, Clérigo · nv 3 · 2 PA · 3 hex</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 3,
@@ -731,7 +756,8 @@
         "escola": "Necromancia",
         "tempo": "1 minuto",
         "alcance": "3 hex"
-      }
+      },
+      "bookRef": "_parte_x_magias_v4_revisada.md"
     }
   },
   {
@@ -740,7 +766,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-injecao-biomagica",
-      "description": "<p>Habilidade assimilacao 12h do ingrediente.</p>",
+      "description": "<p>Habilidade assimilacao 12h do ingrediente.</p><p><em>Biomancia · nv 3</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 1,
@@ -756,7 +782,8 @@
         "escola": "Biomancia",
         "tempo": "1 ação",
         "alcance": "1 hex"
-      }
+      },
+      "bookRef": "_parte_x_magias_v4_revisada.md"
     }
   },
   {
@@ -765,7 +792,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-bola-de-fogo",
-      "description": "<p>Raio 8d6 fogo; save DES. Canalizável.</p>",
+      "description": "<p>Raio 6m: 8d6 fogo (DES CD ou metade). *Variante Piromante: Cap. 19.*</p><p><em>Evocacao | Acao | 45m | Instantanea | Mago · nv 3 · 3 PA · 10 hex</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 10,
@@ -801,7 +828,8 @@
         "ataque": {
           "bonus": 0
         }
-      }
+      },
+      "bookRef": "_parte_x_magias_v4_revisada.md"
     }
   },
   {
@@ -810,7 +838,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-nova-hex",
-      "description": "<p>Explosão 3d6 fogo em área.</p>",
+      "description": "<p>Explosão 3d6 fogo em área.</p><p><em>Evocação · nv 3</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 5,
@@ -842,7 +870,8 @@
         "ataque": {
           "bonus": 0
         }
-      }
+      },
+      "bookRef": "_parte_x_magias_v4_revisada.md"
     }
   },
   {
@@ -851,7 +880,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-contagio-necrotico",
-      "description": "<p>Save CON ou envenenado prolongado.</p>",
+      "description": "<p>CON CD ou Envenenado; progressao por falhas/sucessos diarios.</p><p><em>Necromancia | Acao | Toque | 7 dias | Clérigo, Mago · nv 3 · 2 PA · 1 hex</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 1,
@@ -870,7 +899,8 @@
         "save": {
           "attribute": "constituicao"
         }
-      }
+      },
+      "bookRef": "_parte_x_magias_v4_revisada.md"
     }
   },
   {
@@ -879,7 +909,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-ventania",
-      "description": "<p>Linha 6 hex empurra; save FOR.</p>",
+      "description": "<p>STR CD ou empurrao 4,5m; apaga chamas e dispersa gases/esporos.</p><p><em>Evocacao | Acao | Pessoal (linha 18m) | Concentracao até 1 minuto (C) | Mago, Druida · nv 3 · 1 PA · 6 hex</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 6,
@@ -911,7 +941,8 @@
         "ataque": {
           "bonus": 0
         }
-      }
+      },
+      "bookRef": "_parte_x_magias_v4_revisada.md"
     }
   },
   {
@@ -920,7 +951,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-ler-mentes",
-      "description": "<p>Lê pensamentos superficiais.</p>",
+      "description": "<p>Pensamentos superficiais (SAB CD); INT 6+.</p><p><em>Adivinhacao | Acao | 9m | Concentracao até 1 minuto (C) | Mago, Bardo · nv 3 · 1 PA · 4 hex</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 4,
@@ -936,7 +967,8 @@
         "escola": "Adivinhação",
         "tempo": "1 ação",
         "alcance": "4 hex"
-      }
+      },
+      "bookRef": "_parte_x_magias_v4_revisada.md"
     }
   },
   {
@@ -945,7 +977,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-relampago",
-      "description": "<p>Raio 4d8 relâmpago; save DES. Canalizável.</p>",
+      "description": "<p>Um alvo: 4d8 relâmpago (DES CD ou metade). Em ingredientes aquaticos congelados: preserva 24h.</p><p><em>Evocacao | Acao | 36m | Instantanea | Mago, Druida · nv 3 · 2 PA · 8 hex</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 8,
@@ -981,7 +1013,8 @@
         "ataque": {
           "bonus": 0
         }
-      }
+      },
+      "bookRef": "_parte_x_magias_v4_revisada.md"
     }
   },
   {
@@ -990,7 +1023,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-sono",
-      "description": "<p>Até 5 alvos; save SAB.</p>",
+      "description": "<p>Ate 5 criaturas com menos de 90 HP: SAB CD ou Inconsciente (dano acorda). --- ### NIVEL 4</p><p><em>Encantamento | Acao | 18m | 1 minuto | Mago, Bardo, Clérigo · nv 3 · 1 PA · 6 hex</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 6,
@@ -1009,7 +1042,8 @@
         "save": {
           "attribute": "sabedoria"
         }
-      }
+      },
+      "bookRef": "_parte_x_magias_v4_revisada.md"
     }
   },
   {
@@ -1018,7 +1052,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-raio-do-limiar",
-      "description": "<p>4d8 necrótico; save CON. Canalizável.</p>",
+      "description": "<p>4d8 necrótico; save CON. Canalizável.</p><p><em>Necromancia · nv 3</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 6,
@@ -1050,7 +1084,8 @@
         "ataque": {
           "bonus": 0
         }
-      }
+      },
+      "bookRef": "_parte_x_magias_v4_revisada.md"
     }
   },
   {
@@ -1059,7 +1094,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-visao-do-ecossistema",
-      "description": "<p>Visão através de criatura do bioma.</p>",
+      "description": "<p>Visão através de criatura do bioma.</p><p><em>Adivinhação · nv 4</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 0,
@@ -1075,7 +1110,8 @@
         "escola": "Adivinhação",
         "tempo": "10 minutos",
         "alcance": "0 hex"
-      }
+      },
+      "bookRef": "_parte_x_magias_v4_revisada.md"
     }
   },
   {
@@ -1084,7 +1120,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-murcha",
-      "description": "<p>8d8 necrótico; save CON. Canalizável.</p>",
+      "description": "<p>8d8 necrótico (CON CD ou metade); conjurador cura metade do dano.</p><p><em>Necromancia | Acao | 4,5m | Instantanea | Mago, Clérigo · nv 4 · 3 PA · 2 hex</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 2,
@@ -1116,7 +1152,8 @@
         "ataque": {
           "bonus": 0
         }
-      }
+      },
+      "bookRef": "_parte_x_magias_v4_revisada.md"
     }
   },
   {
@@ -1125,7 +1162,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-mutacao-forcada",
-      "description": "<p>Mutação negativa aleatória 1h.</p>",
+      "description": "<p>Mutação negativa aleatória 1h.</p><p><em>Biomancia · nv 4</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 6,
@@ -1141,7 +1178,8 @@
         "escola": "Biomancia",
         "tempo": "1 ação",
         "alcance": "6 hex"
-      }
+      },
+      "bookRef": "_parte_x_magias_v4_revisada.md"
     }
   },
   {
@@ -1150,7 +1188,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-parede-de-fogo",
-      "description": "<p>Parede 5d8 fogo.</p>",
+      "description": "<p>Parede até 18m: 5d8 ao atravessar; 2d8 radiante a 3m por turno.</p><p><em>Evocacao | Acao | 36m | Concentracao até 1 minuto (C) | Mago, Druida · nv 4 · 1 PA · 8 hex</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 8,
@@ -1179,7 +1217,8 @@
         "ataque": {
           "bonus": 0
         }
-      }
+      },
+      "bookRef": "_parte_x_magias_v4_revisada.md"
     }
   },
   {
@@ -1188,7 +1227,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-preservacao-anual",
-      "description": "<p>Preserva ingrediente 1 ano.</p>",
+      "description": "<p>Como Preservação Perfeita, mas duração 1 ano (requer espaco de nivel 4).</p><p><em>Transmutação | Acao | Toque | 1 ano | Mago, Clérigo, Druida, Artífice · nv 4 · 1 PA · 1 hex</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 1,
@@ -1204,7 +1243,8 @@
         "escola": "Transmutação",
         "tempo": "1 ação",
         "alcance": "1 hex"
-      }
+      },
+      "bookRef": "_parte_x_magias_v4_revisada.md"
     }
   },
   {
@@ -1213,7 +1253,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-cura-em-massa",
-      "description": "<p>Até 6 alvos: 3d8 + mod.</p>",
+      "description": "<p>Ate 6 criaturas em raio de 3m: 3d8 + mod. de conjuracao. --- ### NIVEL 5</p><p><em>Abjuracao | Acao | 18m | Instantanea | Clérigo, Druida · nv 4 · 1 PA · 6 hex</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 6,
@@ -1229,7 +1269,8 @@
         "escola": "Abjuração",
         "tempo": "1 ação",
         "alcance": "6 hex"
-      }
+      },
+      "bookRef": "_parte_x_magias_v4_revisada.md"
     }
   },
   {
@@ -1238,7 +1279,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-ressurreicao-incompleta",
-      "description": "<p>Aliado volta com 1 HP.</p>",
+      "description": "<p>Aliado volta com 1 HP.</p><p><em>Necromancia · nv 5</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 1,
@@ -1254,7 +1295,8 @@
         "escola": "Necromancia",
         "tempo": "1 hora",
         "alcance": "1 hex"
-      }
+      },
+      "bookRef": "_parte_x_magias_v4_revisada.md"
     }
   },
   {
@@ -1263,7 +1305,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-grande-transmutacao-biomagica",
-      "description": "<p>Mutacao forte 7 dias (boss).</p>",
+      "description": "<p>Ingrediente de Boss concede mutação forte 7 dias (consumido).</p><p><em>Biomancia | 1 hora | Toque | 7 dias | Mago, Gnomo · nv 5 · 3 PA · 1 hex</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 1,
@@ -1279,7 +1321,8 @@
         "escola": "Biomancia",
         "tempo": "1 hora",
         "alcance": "1 hex"
-      }
+      },
+      "bookRef": "_parte_x_magias_v4_revisada.md"
     }
   },
   {
@@ -1288,7 +1331,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-cone-de-frio",
-      "description": "<p>8d8 frio em cone. Canalizável.</p>",
+      "description": "<p>8d8 frio (CON CD ou metade); mortos por frio preservam ingredientes 72h.</p><p><em>Evocacao | Acao | Pessoal (cone 18m) | Instantanea | Mago · nv 5 · 3 PA · 6 hex</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 6,
@@ -1324,7 +1367,8 @@
         "ataque": {
           "bonus": 0
         }
-      }
+      },
+      "bookRef": "_parte_x_magias_v4_revisada.md"
     }
   },
   {
@@ -1333,7 +1377,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-despertar",
-      "description": "<p>Planta ou besta ganha INT 10.</p>",
+      "description": "<p>Planta ou besta ganha INT 10 e linguagem.</p><p><em>Transmutação | 8 horas | Toque | Permanente | Druida · nv 5 · 3 PA · 1 hex</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 1,
@@ -1349,7 +1393,8 @@
         "escola": "Transmutação",
         "tempo": "8 horas",
         "alcance": "1 hex"
-      }
+      },
+      "bookRef": "_parte_x_magias_v4_revisada.md"
     }
   },
   {
@@ -1358,7 +1403,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-salto-dimensional",
-      "description": "<p>Teletransporte 6 hex.</p>",
+      "description": "<p>Teletransporte até 18m para ponto visivel.</p><p><em>Conjuracao | Acao Bonus | Pessoal | Instantanea | Mago, Bardo, Artífice · nv 5 · 1 PA · 6 hex</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 6,
@@ -1374,7 +1419,8 @@
         "escola": "Conjuração",
         "tempo": "ação bônus",
         "alcance": "6 hex"
-      }
+      },
+      "bookRef": "_parte_x_magias_v4_revisada.md"
     }
   },
   {
@@ -1383,7 +1429,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-restaurar-vigor",
-      "description": "<p>Remove 1 exaustão e doença leve.</p>",
+      "description": "<p>Remove 1 nivel de Exaustao e uma doenca ou maldicao leve. --- ### NIVEL 6</p><p><em>Abjuracao | 1 hora | Toque | Instantanea | Clérigo, Druida · nv 5 · 2 PA · 1 hex</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 1,
@@ -1399,7 +1445,8 @@
         "escola": "Abjuração",
         "tempo": "1 hora",
         "alcance": "1 hex"
-      }
+      },
+      "bookRef": "_parte_x_magias_v4_revisada.md"
     }
   },
   {
@@ -1408,7 +1455,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-causar-praga",
-      "description": "<p>10d6 veneno; save CON.</p>",
+      "description": "<p>CON CD ou 10d6 veneno/necrótico + Envenenado 1 minuto.</p><p><em>Necromancia | Acao | 18m | Concentracao até 1 minuto (C) | Clérigo, Mago · nv 6 · 1 PA · 6 hex</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 6,
@@ -1436,7 +1483,8 @@
         "ataque": {
           "bonus": 0
         }
-      }
+      },
+      "bookRef": "_parte_x_magias_v4_revisada.md"
     }
   },
   {
@@ -1445,7 +1493,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-desintegrar",
-      "description": "<p>10d6+40 força; save DES.</p>",
+      "description": "<p>10d6+40 força; save DES.</p><p><em>Transmutação · nv 6</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 6,
@@ -1473,7 +1521,8 @@
         "ataque": {
           "bonus": 0
         }
-      }
+      },
+      "bookRef": "_parte_x_magias_v4_revisada.md"
     }
   },
   {
@@ -1482,7 +1531,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-cadeia-de-relampago",
-      "description": "<p>10d8 relâmpago em cadeia. Canalizável.</p>",
+      "description": "<p>Primeiro alvo 10d8 relâmpago; salta até 3 alvos adicionais a 9m (metade do dano cada, DES CD). --- ### NIVEL 7</p><p><em>Evocacao | Acao | 45m | Instantanea | Mago, Druida · nv 6 · 3 PA · 10 hex</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 10,
@@ -1514,7 +1563,8 @@
         "ataque": {
           "bonus": 0
         }
-      }
+      },
+      "bookRef": "_parte_x_magias_v4_revisada.md"
     }
   },
   {
@@ -1523,7 +1573,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-forma-de-monstro",
-      "description": "<p>Polimorfo em monstro do bestiário.</p>",
+      "description": "<p>Polimorfo em monstro do bestiário.</p><p><em>Biomancia · nv 7</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 1,
@@ -1539,7 +1589,8 @@
         "escola": "Biomancia",
         "tempo": "1 ação",
         "alcance": "1 hex"
-      }
+      },
+      "bookRef": "_parte_x_magias_v4_revisada.md"
     }
   },
   {
@@ -1548,7 +1599,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-prisao-de-gelo",
-      "description": "<p>Restringido + 5d6 frio/turno.</p>",
+      "description": "<p>Restringido + 5d6 frio/turno.</p><p><em>Evocação · nv 7</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 6,
@@ -1573,7 +1624,8 @@
         "ataque": {
           "bonus": 0
         }
-      }
+      },
+      "bookRef": "_parte_x_magias_v4_revisada.md"
     }
   },
   {
@@ -1582,7 +1634,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-regeneracao-biomagica",
-      "description": "<p>4d8+15 HP no início de cada turno.</p>",
+      "description": "<p>Alvo recupera 4d8 + 15 HP no inicio de cada turno do conjurador; termina se alvo sofrer dano de fogo ou ácido.</p><p><em>Biomancia | Acao | Toque | Concentracao até 1 hora (C) | Clérigo, Druida, Mago · nv 7 · 1 PA · 1 hex</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 1,
@@ -1598,7 +1650,8 @@
         "escola": "Biomancia",
         "tempo": "1 ação",
         "alcance": "1 hex"
-      }
+      },
+      "bookRef": "_parte_x_magias_v4_revisada.md"
     }
   },
   {
@@ -1607,7 +1660,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-invisibilidade-maior",
-      "description": "<p>Até 6 aliados invisíveis.</p>",
+      "description": "<p>Ate 6 aliados invisiveis; termina ao atacar ou conjurar ofensivamente. --- ### NIVEL 8</p><p><em>Ilusao | Acao | Toque | Concentracao até 1 hora (C) | Mago, Bardo · nv 7 · 1 PA · 1 hex</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 1,
@@ -1623,7 +1676,8 @@
         "escola": "Ilusão",
         "tempo": "1 ação",
         "alcance": "1 hex"
-      }
+      },
+      "bookRef": "_parte_x_magias_v4_revisada.md"
     }
   },
   {
@@ -1632,7 +1686,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-terremoto",
-      "description": "<p>Área 30 hex; save DES prostrado.</p>",
+      "description": "<p>Raio 30m: DES CD ou Prostrado; risco de colapso na masmorra. --- ### NIVEL 9</p><p><em>Evocacao | Acao | 150m | Concentracao até 1 minuto (C) | Druida, Clérigo · nv 8 · 2 PA · 20 hex</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 20,
@@ -1664,7 +1718,8 @@
         "ataque": {
           "bonus": 0
         }
-      }
+      },
+      "bookRef": "_parte_x_magias_v4_revisada.md"
     }
   },
   {
@@ -1673,7 +1728,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-biomancia-suprema-transcendencia",
-      "description": "<p>Integra DNA de 3 bosses.</p>",
+      "description": "<p>Integra DNA de 3 Bosses; uma habilidade permanente de Banquete de cada (requer ingredientes).</p><p><em>Biomancia | 1 hora | Pessoal | Permanente | Mago (Biomancia), Gnomo (Nivel 20) · nv 9 · 3 PA · 0 hex</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 0,
@@ -1689,7 +1744,8 @@
         "escola": "Biomancia",
         "tempo": "1 hora",
         "alcance": "0 hex"
-      }
+      },
+      "bookRef": "_parte_x_magias_v4_revisada.md"
     }
   },
   {
@@ -1698,7 +1754,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-desejo-de-morte",
-      "description": "<p>Condição irrevogável de morte.</p>",
+      "description": "<p>Condicao irrevogavel mata alvo quando satisfeita; preço 4d10 necrótico por nivel do alvo. ---</p><p><em>Conjuracao / Necromancia | Acao | Pessoal | Especial | Clérigo do Limiar (Ascensao nv. 20) · nv 9 · 3 PA · 0 hex</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 0,
@@ -1714,7 +1770,8 @@
         "escola": "Necromancia",
         "tempo": "1 ação",
         "alcance": "0 hex"
-      }
+      },
+      "bookRef": "_parte_x_magias_v4_revisada.md"
     }
   },
   {
@@ -1723,7 +1780,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-maos-ardentes",
-      "description": "<p>Piromante: 3d6 fogo ao toque.</p>",
+      "description": "<p>Piromante: 3d6 fogo ao toque.</p><p><em>Evocação · nv 1</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 1,
@@ -1751,7 +1808,8 @@
         "ataque": {
           "bonus": 0
         }
-      }
+      },
+      "bookRef": "_parte_x_magias_v4_revisada.md"
     }
   },
   {
@@ -1760,7 +1818,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-gelo-de-conservacao",
-      "description": "<p>Criomante: estase de ingrediente 8h.</p>",
+      "description": "<p>Criomante: estase de ingrediente 8h.</p><p><em>Transmutação · nv 2</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 1,
@@ -1776,7 +1834,8 @@
         "escola": "Transmutação",
         "tempo": "1 ação",
         "alcance": "1 hex"
-      }
+      },
+      "bookRef": "_parte_x_magias_v4_revisada.md"
     }
   },
   {
@@ -1785,7 +1844,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-fermentacao-acelerada",
-      "description": "<p>Mago Fermentador: fermenta em 1 min.</p>",
+      "description": "<p>Mago Fermentador: fermenta em 1 min.</p><p><em>Transmutação · nv 2</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 1,
@@ -1801,7 +1860,8 @@
         "escola": "Transmutação",
         "tempo": "10 minutos",
         "alcance": "1 hex"
-      }
+      },
+      "bookRef": "_parte_x_magias_v4_revisada.md"
     }
   },
   {
@@ -1810,7 +1870,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-purificacao-abencoada",
-      "description": "<p>Remove maldição ou veneno.</p>",
+      "description": "<p>Remove maldição ou veneno.</p><p><em>Abjuração · nv 4</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 1,
@@ -1826,7 +1886,8 @@
         "escola": "Abjuração",
         "tempo": "1 ação",
         "alcance": "1 hex"
-      }
+      },
+      "bookRef": "_parte_x_magias_v4_revisada.md"
     }
   },
   {
@@ -1835,7 +1896,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-esporos-necroticos",
-      "description": "<p>Nuvem: save CON ou envenenado.</p>",
+      "description": "<p>Nuvem: save CON ou envenenado.</p><p><em>Necromancia · nv 0</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 2,
@@ -1867,7 +1928,8 @@
         "ataque": {
           "bonus": 0
         }
-      }
+      },
+      "bookRef": "_parte_x_magias_v4_revisada.md"
     }
   },
   {
@@ -1876,7 +1938,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-grande-decomposicao",
-      "description": "<p>Decompõe orgânico em cubo 3 hex.</p>",
+      "description": "<p>Decompõe orgânico em cubo 3 hex.</p><p><em>Transmutação · nv 5</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 4,
@@ -1896,7 +1958,8 @@
           "shape": "cube",
           "radiusHex": 1
         }
-      }
+      },
+      "bookRef": "_parte_x_magias_v4_revisada.md"
     }
   },
   {
@@ -1905,7 +1968,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-doce-confuso",
-      "description": "<p>Save CON ou amedrontado.</p>",
+      "description": "<p>Save CON ou amedrontado.</p><p><em>Encantamento · nv 1</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 6,
@@ -1924,7 +1987,8 @@
         "save": {
           "attribute": "constituicao"
         }
-      }
+      },
+      "bookRef": "_parte_x_magias_v4_revisada.md"
     }
   }
 ]

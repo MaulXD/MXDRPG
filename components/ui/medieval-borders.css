@@ -1,0 +1,411 @@
+/**
+ * Bordas medievais para páginas e painéis abertos.
+ * Uso: className="mf mf--parchment" ou <MedievalFrame variant="iron">
+ *
+ * Variantes: parchment | iron | gothic | royal | celtic | rune
+ */
+
+.mf {
+  --mf-accent: var(--accent);
+  --mf-accent-dim: color-mix(in srgb, var(--mf-accent) 45%, transparent);
+  --mf-accent-soft: color-mix(in srgb, var(--mf-accent) 12%, transparent);
+  --mf-bg: var(--surface-raised);
+  --mf-inset: clamp(10px, 2.2vw, 18px);
+  --mf-pad: clamp(1rem, 2.5vw, 1.65rem);
+  --mf-radius: 4px;
+
+  position: relative;
+  isolation: isolate;
+  min-width: 0;
+  padding: calc(var(--mf-pad) + var(--mf-inset));
+  background: var(--mf-bg);
+  border-radius: var(--mf-radius);
+  box-shadow: var(--shadow-soft);
+}
+
+.mf-body {
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+}
+
+/* Cantos decorativos (4 spans .mf-corner) */
+.mf-corner {
+  position: absolute;
+  width: clamp(22px, 5vw, 36px);
+  height: clamp(22px, 5vw, 36px);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.mf-corner--tl {
+  top: calc(var(--mf-inset) * 0.35);
+  left: calc(var(--mf-inset) * 0.35);
+}
+
+.mf-corner--tr {
+  top: calc(var(--mf-inset) * 0.35);
+  right: calc(var(--mf-inset) * 0.35);
+  transform: scaleX(-1);
+}
+
+.mf-corner--br {
+  bottom: calc(var(--mf-inset) * 0.35);
+  right: calc(var(--mf-inset) * 0.35);
+  transform: scale(-1, -1);
+}
+
+.mf-corner--bl {
+  bottom: calc(var(--mf-inset) * 0.35);
+  left: calc(var(--mf-inset) * 0.35);
+  transform: scaleY(-1);
+}
+
+.mf::before,
+.mf::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+.mf::before {
+  inset: calc(var(--mf-inset) * 0.5);
+  z-index: 0;
+}
+
+.mf::after {
+  inset: var(--mf-inset);
+  z-index: 0;
+}
+
+/* —— Pergaminho: dupla linha suave, cantos enrolados —— */
+.mf--parchment {
+  --mf-bg: color-mix(in srgb, var(--surface-raised) 92%, #e8dcc8 8%);
+  --mf-radius: 6px;
+}
+
+[data-theme="dark"] .mf--parchment {
+  --mf-bg: color-mix(in srgb, var(--surface-raised) 88%, #1a1814 12%);
+}
+
+.mf--parchment::before {
+  border: 2px solid var(--mf-accent-dim);
+  box-shadow: inset 0 0 24px var(--mf-accent-soft);
+}
+
+.mf--parchment::after {
+  border: 1px solid color-mix(in srgb, var(--mf-accent) 28%, transparent);
+  inset: calc(var(--mf-inset) + 4px);
+}
+
+.mf--parchment .mf-corner {
+  background:
+    radial-gradient(circle at 100% 100%, transparent 62%, var(--mf-accent-dim) 62%, var(--mf-accent-dim) 68%, transparent 68%),
+    radial-gradient(circle at 0 0, var(--mf-accent-soft) 0, transparent 55%);
+  border-radius: 0 0 100% 0;
+  opacity: 0.85;
+}
+
+/* —— Ferro: aro grosso, rebites nos cantos —— */
+.mf--iron {
+  --mf-radius: 2px;
+  --mf-accent: color-mix(in srgb, var(--accent) 70%, #2a3444);
+}
+
+.mf--iron::before {
+  border: 3px solid color-mix(in srgb, var(--mf-accent) 80%, #1a1e26);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--accent) 35%, transparent),
+    0 6px 20px rgba(0, 0, 0, 0.28);
+}
+
+.mf--iron::after {
+  border: 1px solid var(--mf-accent-dim);
+  inset: calc(var(--mf-inset) + 5px);
+}
+
+.mf--iron .mf-corner {
+  background: radial-gradient(circle at 50% 50%, #8a9aaa 0 18%, #3d4858 18% 38%, #1a2030 38% 100%);
+  border-radius: 50%;
+  width: clamp(10px, 2.2vw, 14px);
+  height: clamp(10px, 2.2vw, 14px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+/* —— Gótico: arco pontiagudo nos cantos —— */
+.mf--gothic {
+  --mf-radius: 0;
+}
+
+.mf--gothic::before {
+  border: 2px solid var(--mf-accent);
+  clip-path: polygon(
+    0 12px,
+    12px 0,
+    calc(100% - 12px) 0,
+    100% 12px,
+    100% calc(100% - 12px),
+    calc(100% - 12px) 100%,
+    12px 100%,
+    0 calc(100% - 12px)
+  );
+}
+
+.mf--gothic::after {
+  border: 1px solid var(--mf-accent-dim);
+  inset: calc(var(--mf-inset) + 6px);
+  clip-path: polygon(
+    0 8px,
+    8px 0,
+    calc(100% - 8px) 0,
+    100% 8px,
+    100% calc(100% - 8px),
+    calc(100% - 8px) 100%,
+    8px 100%,
+    0 calc(100% - 8px)
+  );
+}
+
+.mf--gothic .mf-corner {
+  width: clamp(18px, 4vw, 28px);
+  height: clamp(18px, 4vw, 28px);
+  background: linear-gradient(135deg, var(--mf-accent) 0 50%, transparent 50%);
+  opacity: 0.75;
+}
+
+.mf--gothic .mf-corner--tr {
+  background: linear-gradient(225deg, var(--mf-accent) 0 50%, transparent 50%);
+  transform: none;
+}
+
+.mf--gothic .mf-corner--br {
+  background: linear-gradient(315deg, var(--mf-accent) 0 50%, transparent 50%);
+  transform: none;
+}
+
+.mf--gothic .mf-corner--bl {
+  background: linear-gradient(45deg, var(--mf-accent) 0 50%, transparent 50%);
+  transform: none;
+}
+
+/* —— Real: filete dourado, losangos nos cantos —— */
+.mf--royal {
+  --mf-accent: var(--accent-secondary, var(--accent));
+  --mf-radius: 8px;
+}
+
+.mf--royal::before {
+  border: 2px solid var(--mf-accent);
+  box-shadow:
+    0 0 0 4px color-mix(in srgb, var(--mf-bg) 100%, transparent),
+    0 0 0 5px var(--mf-accent-dim);
+}
+
+.mf--royal::after {
+  border: 1px solid color-mix(in srgb, var(--mf-accent) 55%, transparent);
+  inset: calc(var(--mf-inset) + 7px);
+}
+
+.mf--royal .mf-corner {
+  width: clamp(14px, 3vw, 20px);
+  height: clamp(14px, 3vw, 20px);
+  background: var(--mf-accent);
+  transform: rotate(45deg);
+  border-radius: 1px;
+  box-shadow: 0 0 8px color-mix(in srgb, var(--mf-accent) 40%, transparent);
+}
+
+.mf--royal .mf-corner--tr,
+.mf--royal .mf-corner--br,
+.mf--royal .mf-corner--bl {
+  transform: rotate(45deg);
+}
+
+/* —— Celta: traço entrelaçado (padrão repetido) —— */
+.mf--celtic {
+  --mf-radius: 6px;
+}
+
+.mf--celtic::before {
+  border: 2px solid transparent;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      var(--mf-accent) 0,
+      var(--mf-accent) 8px,
+      transparent 8px,
+      transparent 14px
+    )
+    top / 100% 2px no-repeat,
+    repeating-linear-gradient(
+      90deg,
+      var(--mf-accent) 0,
+      var(--mf-accent) 8px,
+      transparent 8px,
+      transparent 14px
+    )
+    bottom / 100% 2px no-repeat,
+    repeating-linear-gradient(
+      0deg,
+      var(--mf-accent) 0,
+      var(--mf-accent) 8px,
+      transparent 8px,
+      transparent 14px
+    )
+    left / 2px 100% no-repeat,
+    repeating-linear-gradient(
+      0deg,
+      var(--mf-accent) 0,
+      var(--mf-accent) 8px,
+      transparent 8px,
+      transparent 14px
+    )
+    right / 2px 100% no-repeat;
+}
+
+.mf--celtic::after {
+  border: 1px solid var(--mf-accent-soft);
+  inset: calc(var(--mf-inset) + 4px);
+}
+
+.mf--celtic .mf-corner {
+  border: 2px solid var(--mf-accent);
+  border-radius: 50%;
+  background: transparent;
+  box-shadow:
+    inset 0 0 0 3px var(--mf-bg),
+    inset 0 0 0 4px var(--mf-accent-dim);
+}
+
+/* —— Runas: cantos em L angulares (escriba) —— */
+.mf--rune {
+  --mf-radius: 2px;
+  font-family: var(--font-body);
+}
+
+.mf--rune::before {
+  border: 1px solid var(--mf-accent-dim);
+}
+
+.mf--rune::after {
+  border: 2px solid var(--mf-accent);
+  inset: calc(var(--mf-inset) + 3px);
+}
+
+.mf--rune .mf-corner {
+  width: clamp(16px, 3.5vw, 24px);
+  height: clamp(16px, 3.5vw, 24px);
+  background:
+    linear-gradient(var(--mf-accent), var(--mf-accent)) left top / 100% 2px no-repeat,
+    linear-gradient(var(--mf-accent), var(--mf-accent)) left top / 2px 100% no-repeat;
+  opacity: 0.9;
+}
+
+.mf--rune .mf-corner--tr {
+  background:
+    linear-gradient(var(--mf-accent), var(--mf-accent)) right top / 100% 2px no-repeat,
+    linear-gradient(var(--mf-accent), var(--mf-accent)) right top / 2px 100% no-repeat;
+  transform: none;
+}
+
+.mf--rune .mf-corner--br {
+  background:
+    linear-gradient(var(--mf-accent), var(--mf-accent)) right bottom / 100% 2px no-repeat,
+    linear-gradient(var(--mf-accent), var(--mf-accent)) right bottom / 2px 100% no-repeat;
+  transform: none;
+}
+
+.mf--rune .mf-corner--bl {
+  background:
+    linear-gradient(var(--mf-accent), var(--mf-accent)) left bottom / 100% 2px no-repeat,
+    linear-gradient(var(--mf-accent), var(--mf-accent)) left bottom / 2px 100% no-repeat;
+  transform: none;
+}
+
+/* Tamanhos */
+.mf--compact {
+  --mf-inset: 8px;
+  --mf-pad: 0.85rem;
+}
+
+.mf--flush {
+  --mf-pad: 0;
+}
+
+.mf--page {
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+/* Painéis internos (glass-panel com moldura) */
+.glass-panel.mf,
+.mf.mf-panel {
+  background: var(--mf-bg);
+}
+
+/* Pop-up ficha */
+.sheet-popup-panel.mf {
+  border: none;
+  border-radius: var(--mf-radius);
+  overflow: visible;
+}
+
+.sheet-popup-panel.mf > .sheet-shell--popup,
+.sheet-popup-panel.mf .sheet-popup-chrome {
+  border-radius: calc(var(--mf-radius) - 2px);
+}
+
+/* Ficha página inteira */
+.mf--sheet-page {
+  --mf-pad: clamp(0.75rem, 2vw, 1.25rem);
+}
+
+.mf--sheet-page .sheet-shell {
+  gap: 1rem;
+}
+
+@media (max-width: 640px) {
+  .mf {
+    --mf-inset: 8px;
+    --mf-pad: 0.85rem;
+  }
+
+  .mf-corner {
+    opacity: 0.7;
+  }
+}
+
+/* Galeria de preview (página sistema) */
+.mf-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
+  gap: 1.25rem;
+  margin-top: 1rem;
+}
+
+.mf-gallery__item {
+  min-height: 140px;
+  display: flex;
+  flex-direction: column;
+}
+
+.mf-gallery__label {
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin: 0 0 0.5rem;
+}
+
+.mf-gallery__sample {
+  flex: 1;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  line-height: 1.45;
+  padding: 0.5rem;
+}

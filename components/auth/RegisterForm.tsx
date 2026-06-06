@@ -30,7 +30,7 @@ export function RegisterForm() {
       return;
     }
 
-    router.push(data.redirect ?? "/painel");
+    router.push(data.redirect ?? "/rpg");
     router.refresh();
   }
 

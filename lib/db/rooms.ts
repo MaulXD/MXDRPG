@@ -109,6 +109,7 @@ export async function saveRoom(state: RoomState): Promise<void> {
       settings = EXCLUDED.settings,
       revision = EXCLUDED.revision,
       updated_at = EXCLUDED.updated_at
+    WHERE eldarin_rooms.revision <= EXCLUDED.revision
   `,
     5000,
     "saveRoom"

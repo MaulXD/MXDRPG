@@ -1,5 +1,6 @@
 import { redirect, notFound } from "next/navigation";
 import { CharacterSheet } from "@/components/character/CharacterSheet";
+import { MedievalFrame } from "@/components/ui/MedievalFrame";
 import { canEditCharacter, resolveCharacter } from "@/lib/character/characters";
 import { getSession } from "@/lib/auth/session";
 import { getPackEntries } from "@/lib/compendium/registry";
@@ -25,12 +26,14 @@ export default async function PersonagemPage({ params }: Props) {
 
   return (
     <div className="page-wrap page-hero">
-      <CharacterSheet
-        character={character}
-        canEdit={canEdit}
-        compendium={compendium}
-        roomId={character.adventureId ?? "demo"}
-      />
+      <MedievalFrame variant="rune" page className="mf--sheet-page">
+        <CharacterSheet
+          character={character}
+          canEdit={canEdit}
+          compendium={compendium}
+          roomId={character.adventureId ?? "demo"}
+        />
+      </MedievalFrame>
     </div>
   );
 }

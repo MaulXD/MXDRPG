@@ -6,8 +6,8 @@ import { getSession } from "@/lib/auth/session";
 export default async function ApelidoPage() {
   const session = await getSession();
   if (!session) redirect("/entrar?redirect=/entrar/apelido");
-  if (session.user.nickname) redirect("/painel");
-  if (!dbEnabled()) redirect("/painel");
+  if (session.user.nickname) redirect("/rpg");
+  if (!dbEnabled()) redirect("/rpg");
 
   return (
     <div className="page-wrap" style={{ maxWidth: 420, paddingTop: "2rem" }}>

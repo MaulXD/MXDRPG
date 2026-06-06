@@ -297,6 +297,11 @@ export function TokenActionPanel({
 
     if (!activeAction || busy) return;
 
+    if (activeAction.areaShape && activeAction.areaShape !== "single") {
+      setErr("Magia de área: clique o centro da área no mapa.");
+      return;
+    }
+
     setBusy(true);
 
     setErr(null);
@@ -728,7 +733,7 @@ export function TokenActionPanel({
           {activeAction.areaHexCount != null ? ` · ${activeAction.areaHexCount} hex` : ""} — alcance{" "}
           {activeAction.rangeHex} hex no mapa.
           {areaNeedsDirection(activeAction.areaShape)
-            ? " 1º clique = centro · 2º = hex vizinho (direção)."
+            ? " Clique o hex vizinho ao conjurador para definir a direção."
             : " Clique o centro da área."}
         </p>
       ) : null}
@@ -769,7 +774,10 @@ export function TokenActionPanel({
 
 
 
-      {isTargetMode(actionMode) && activeAction && !activeAction.selfTarget ? (
+      {isTargetMode(actionMode) &&
+      activeAction &&
+      !activeAction.selfTarget &&
+      !(activeAction.areaShape && activeAction.areaShape !== "single") ? (
 
         <>
 

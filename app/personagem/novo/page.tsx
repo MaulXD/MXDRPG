@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { CharacterCreationWizard } from "@/components/character/wizard/CharacterCreationWizard";
+import { MedievalFrame } from "@/components/ui/MedievalFrame";
 import {
   listCharactersForUser,
   MAX_CHARACTERS_PER_USER,
@@ -30,15 +31,17 @@ export default async function NovoPersonagemPage() {
 
   return (
     <div className="page-wrap" style={{ paddingTop: "1.5rem", paddingBottom: "3rem" }}>
-      <header className="page-header" style={{ paddingBottom: "1rem" }}>
-        <p className="eyebrow">Criação de personagem</p>
-        <h1 className="display-lg">Nova ficha Eldarin</h1>
-        <p className="lead">
-          Ficha geral da conta (sem mesa fixa). Para campanha, crie o personagem dentro da mesa em
-          Configurar → ou pelo aviso ao entrar na sala.
-        </p>
-      </header>
-      <CharacterCreationWizard slotsLeft={slotsLeft} />
+      <MedievalFrame variant="celtic" page>
+        <header className="page-header" style={{ paddingBottom: "1rem" }}>
+          <p className="eyebrow">Criação de personagem</p>
+          <h1 className="display-lg">Nova ficha Eldarin</h1>
+          <p className="lead">
+            Sete passos guiados — nome, raça, classe, atributos e mais. Para campanha, crie dentro
+            da mesa pelo hub da aventura.
+          </p>
+        </header>
+        <CharacterCreationWizard slotsLeft={slotsLeft} />
+      </MedievalFrame>
     </div>
   );
 }
