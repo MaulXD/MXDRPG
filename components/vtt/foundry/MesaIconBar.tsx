@@ -17,6 +17,7 @@ type Props = {
   onToggle: (id: MesaWindowId) => void;
   onOpenPopup?: (id: MesaWindowId) => void;
   showGm?: boolean;
+  showInvite?: boolean;
 };
 
 function IconButton({
@@ -46,20 +47,28 @@ function IconButton({
       aria-label={icon.label}
       aria-pressed={active}
     >
-      <MesaRailIcon name={icon.icon} />
+      <span className="foundry-icon-bar__icon-wrap" aria-hidden>
+        <MesaRailIcon name={icon.icon} />
+      </span>
       <span className="foundry-icon-bar__label">{icon.label}</span>
     </button>
   );
 }
 
-export function MesaIconBar({ isActive, onToggle, onOpenPopup, showGm = false }: Props) {
+export function MesaIconBar({
+  isActive,
+  onToggle,
+  onOpenPopup,
+  showGm = false,
+  showInvite = false,
+}: Props) {
   const icons: IconDef[] = [
     { id: "actors", label: "Tokens", icon: "actors", section: "play" },
     { id: "initiative", label: "Turno", icon: "initiative", section: "play" },
     { id: "ficha", label: "Ficha", icon: "ficha", section: "play" },
     { id: "chat", label: "Chat", icon: "chat", section: "play" },
     { id: "dice", label: "Dados", icon: "dice", section: "play" },
-    { id: "whiteboard", label: "Lousa", icon: "whiteboard", section: "play" },
+    { id: "invite", label: "Convite", icon: "invite", section: "play", show: showInvite },
     { id: "dungeon", label: "Mapa", icon: "dungeon", section: "gm", show: showGm },
     { id: "gm", label: "Mestre", icon: "gm", section: "gm", show: showGm },
     { id: "spawn", label: "Invocar", icon: "spawn", section: "gm", show: showGm },

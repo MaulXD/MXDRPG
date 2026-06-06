@@ -4,6 +4,7 @@ import type { CharacterAttributes, CharacterSheet, CharacterIdentity } from "@/l
 import { parseCharacterTalents } from "@/lib/character/subclass-tracks";
 import { computeCulinary, hpMaxFor, attributeMod } from "@/lib/character/rules";
 import { paMaxForActor } from "@/lib/combat/pa-economy";
+import { resolveActorDefesa } from "@/lib/character/armor-defense";
 import { xpTotalForLevel } from "@/lib/character/xp";
 import { syncSubclassTalentsToInventory } from "@/lib/character/subclass-vtt";
 import { EMPTY_LOOT } from "@/lib/character/loot-storage";
@@ -76,7 +77,7 @@ export function normalizeCharacter(sheet: CharacterSheet): CharacterSheet {
       },
     },
     tactical: {
-      defesa: sheet.tactical?.defesa ?? 10 + desMod,
+      defesa: resolveActorDefesa({ ...sheet, identity, attributes }),
       iniciativa: sheet.tactical?.iniciativa ?? desMod,
     },
   };

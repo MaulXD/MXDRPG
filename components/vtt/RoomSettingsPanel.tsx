@@ -8,7 +8,6 @@ import { patchRoomSettings } from "@/hooks/useRoomSync";
 type Props = {
   roomId: string;
   roomName: string;
-  inviteCode: string;
   settings: RoomSettings;
   onUpdated: (snapshot: RoomSnapshot) => void;
 };
@@ -16,7 +15,6 @@ type Props = {
 export function RoomSettingsPanel({
   roomId,
   roomName,
-  inviteCode,
   settings,
   onUpdated,
 }: Props) {
@@ -61,7 +59,7 @@ export function RoomSettingsPanel({
     <div className="vtt-map-panel vtt-room-settings">
       <p className="vtt-eyebrow">Configuração da mesa</p>
       <p className="vtt-combat-hint" style={{ marginTop: 0 }}>
-        Você é o mestre desta sala. Jogadores convidados entram com o código abaixo.
+        Você é o mestre desta sala. O convite fica no painel <strong>Convite</strong> da barra lateral.
       </p>
 
       <label className="vtt-field">
@@ -73,10 +71,6 @@ export function RoomSettingsPanel({
           onChange={(e) => setName(e.target.value)}
         />
       </label>
-
-      <p className="vtt-combat-hint">
-        Código de convite: <code>{inviteCode}</code>
-      </p>
 
       <fieldset className="vtt-settings-fieldset">
         <legend className="vtt-eyebrow">Visibilidade para jogadores</legend>

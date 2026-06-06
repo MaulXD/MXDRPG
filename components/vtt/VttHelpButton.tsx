@@ -65,8 +65,8 @@ export function VttHelpButton() {
                 a câmera. Botões de zoom no canto inferior direito.
               </li>
               <li>
-                <strong>Ficha:</strong> abra seu personagem no painel lateral para inventário,
-                talentos e retrato.
+                <strong>Ficha:</strong> lista todos os personagens jogáveis — veja qualquer ficha;
+                só edite a sua. Use <em>Criar novo personagem</em> quando precisar.
               </li>
             </ol>
             <button type="button" className="btn vtt-help-panel__close" onClick={close}>

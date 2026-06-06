@@ -13,15 +13,18 @@ export type MesaWindowId =
   | "dice"
   | "ficha"
   | "spawn"
+  | "invite"
   | "character";
 
 /** Painéis fixos na coluna esquerda (um aberto por vez). */
 export const FOUNDRY_DOCK_PANEL_IDS: MesaWindowId[] = [
   "actors",
   "initiative",
+  "ficha",
   "chat",
   "dice",
   "spawn",
+  "invite",
   "gm",
   "dungeon",
   "whiteboard",
@@ -50,6 +53,7 @@ const DEFAULT_LAYOUTS: Record<MesaWindowId, Omit<FoundryWindowLayout, "open" | "
   dice: { x: 52, y: 400, width: 300, height: 260 },
   ficha: { x: 400, y: 48, width: 360, height: 320 },
   spawn: { x: 400, y: 360, width: 320, height: 380 },
+  invite: { x: 52, y: 48, width: 280, height: 280 },
   character: { x: 72, y: 40, width: 960, height: 680 },
 };
 

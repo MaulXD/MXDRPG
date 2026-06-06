@@ -22,6 +22,15 @@ import {
 } from "@/lib/vtt/creature-size";
 import type { DungeonEditLayer, DungeonEditorTool } from "@/components/vtt/DungeonEditorPanel";
 import { dungeonObjectAt } from "@/lib/vtt/dungeon-layer";
+import {
+  floorOffsetForAnchoredScale,
+  floorScaleFromHandleDrag,
+  hitTestFloorHandle,
+  pointInFloorRect,
+  type FloorResizeHandle,
+} from "@/lib/vtt/floor-edit";
+import { computeMapImageRect } from "@/lib/vtt/draw-map-overlay";
+import type { CanvasLayout } from "@/lib/vtt/draw-battlefield";
 import type { WhiteboardTool } from "@/lib/vtt/map-markup";
 import type { BattleScene, BattleToken, MapMarkup } from "@/lib/vtt/types";
 
@@ -55,8 +64,8 @@ type Params = {
   channelExtraPa?: number;
   turn: TurnCtx;
   canControlCombat: boolean;
-  canGmReposition?: boolean;
-  onGmReposition?: (tokenId: string, axial: Axial) => void;
+  canRepositionToken?: (token: BattleToken) => boolean;
+  onRepositionToken?: (tokenId: string, axial: Axial) => void;
   onGmDragPreview?: (tokenId: string, axial: Axial | null) => void;
   onAttack: (defenderId: string) => void;
   onMove: (axial: Axial) => void;
@@ -78,7 +87,10 @@ type Params = {
     onHexEdit: (axial: Axial, dragObjectId?: string) => void;
     floorOffsetX?: number;
     floorOffsetY?: number;
+    floorScale?: number;
+    mapImage?: HTMLImageElement | null;
     onFloorDrag?: (offsetX: number, offsetY: number) => void;
+    onFloorResize?: (scale: number, offsetX: number, offsetY: number) => void;
     onFloorDragEnd?: () => void;
   };
   whiteboard?: {
@@ -123,8 +135,8 @@ export function useBattlefieldPointer({
   channelExtraPa = 0,
   turn,
   canControlCombat,
-  canGmReposition = false,
-  onGmReposition,
+  canRepositionToken,
+  onRepositionToken,
   onGmDragPreview,
   onAttack,
   onMove,
@@ -161,6 +173,17 @@ export function useBattlefieldPointer({
     baseOffY: number;
     dragging: boolean;
   } | null>(null);
+  const floorResizeRef = useRef<{
+    pointerId: number;
+    startPx: number;
+    startPy: number;
+    handle: FloorResizeHandle;
+    startRect: { x: number; y: number; w: number; h: number };
+    startScale: number;
+    startOffX: number;
+    startOffY: number;
+    dragging: boolean;
+  } | null>(null);
   const wbDrawRef = useRef<{
     mode: "draw" | "move";
     startWx: number;
@@ -191,6 +214,13 @@ export function useBattlefieldPointer({
     },
     []
   );
+
+  const canvasLayout = useCallback((canvas: HTMLCanvasElement): CanvasLayout => {
+    const w = canvas.clientWidth;
+    const h = canvas.clientHeight;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    return { w, h, ox: w / 2, oy: h / 2, dpr };
+  }, []);
 
   const boardCoords = useCallback(
     (px: number, py: number) => {
@@ -372,27 +402,69 @@ export function useBattlefieldPointer({
       if (
         dungeonEditor?.active &&
         dungeonEditor.layer === "floor" &&
-        dungeonEditor.onFloorDrag
+        dungeonEditor.mapImage?.complete &&
+        dungeonEditor.mapImage.naturalWidth > 0
       ) {
-        floorDragRef.current = {
-          pointerId: e.pointerId,
-          startPx: px,
-          startPy: py,
-          baseOffX: dungeonEditor.floorOffsetX ?? 0,
-          baseOffY: dungeonEditor.floorOffsetY ?? 0,
-          dragging: false,
-        };
-        e.currentTarget.setPointerCapture(e.pointerId);
-        return;
+        const canvas = canvasRef.current;
+        if (canvas) {
+          const layout = canvasLayout(canvas);
+          const floorScene = {
+            ...scene,
+            mapImageScale: dungeonEditor.floorScale ?? scene.mapImageScale ?? 1,
+            mapImageOffsetX: dungeonEditor.floorOffsetX ?? scene.mapImageOffsetX ?? 0,
+            mapImageOffsetY: dungeonEditor.floorOffsetY ?? scene.mapImageOffsetY ?? 0,
+          };
+          const handle = hitTestFloorHandle(
+            px,
+            py,
+            dungeonEditor.mapImage,
+            floorScene,
+            layout,
+            viewRef.current
+          );
+          if (handle && dungeonEditor.onFloorResize) {
+            const startRect = computeMapImageRect(dungeonEditor.mapImage, floorScene, layout);
+            floorResizeRef.current = {
+              pointerId: e.pointerId,
+              startPx: px,
+              startPy: py,
+              handle,
+              startRect,
+              startScale: floorScene.mapImageScale ?? 1,
+              startOffX: floorScene.mapImageOffsetX ?? 0,
+              startOffY: floorScene.mapImageOffsetY ?? 0,
+              dragging: false,
+            };
+            e.currentTarget.setPointerCapture(e.pointerId);
+            return;
+          }
+          const world = worldAtScreen(px, py);
+          if (
+            world &&
+            dungeonEditor.onFloorDrag &&
+            pointInFloorRect(world.x, world.y, dungeonEditor.mapImage, floorScene, layout)
+          ) {
+            floorDragRef.current = {
+              pointerId: e.pointerId,
+              startPx: px,
+              startPy: py,
+              baseOffX: floorScene.mapImageOffsetX ?? 0,
+              baseOffY: floorScene.mapImageOffsetY ?? 0,
+              dragging: false,
+            };
+            e.currentTarget.setPointerCapture(e.pointerId);
+            return;
+          }
+        }
       }
 
       const hit = tokenAtPoint(px, py);
 
       if (hit) {
         if (
-          canGmReposition &&
+          canRepositionToken?.(hit) &&
           actionMode === "idle" &&
-          onGmReposition &&
+          onRepositionToken &&
           !dungeonEditor?.active &&
           !whiteboard?.active
         ) {
@@ -448,8 +520,8 @@ export function useBattlefieldPointer({
       setSelectedId,
       axialAtScreen,
       canControlCombat,
-      canGmReposition,
-      onGmReposition,
+      canRepositionToken,
+      onRepositionToken,
       actionMode,
       setHoverAxial,
       onHoverAxialChange,
@@ -525,6 +597,46 @@ export function useBattlefieldPointer({
 
       if (!axial) return;
 
+      const floorResize = floorResizeRef.current;
+      if (
+        floorResize &&
+        floorResize.pointerId === e.pointerId &&
+        dungeonEditor?.active &&
+        dungeonEditor.layer === "floor" &&
+        dungeonEditor.onFloorResize &&
+        dungeonEditor.mapImage?.complete
+      ) {
+        const world = worldAtScreen(px, py);
+        const canvas = canvasRef.current;
+        if (world && canvas) {
+          if (!floorResize.dragging && Math.hypot(px - floorResize.startPx, py - floorResize.startPy) > 2) {
+            floorResize.dragging = true;
+          }
+          const layout = canvasLayout(canvas);
+          const nextScale = floorScaleFromHandleDrag(
+            floorResize.handle,
+            world.x,
+            world.y,
+            floorResize.startRect,
+            floorResize.startScale
+          );
+          const { offsetX, offsetY } = floorOffsetForAnchoredScale(
+            floorResize.handle,
+            floorResize.startRect,
+            nextScale,
+            dungeonEditor.mapImage,
+            layout,
+            floorResize.startOffX,
+            floorResize.startOffY,
+            floorResize.startScale
+          );
+          floorResize.dragging = true;
+          dungeonEditor.onFloorResize(nextScale, offsetX, offsetY);
+          canvas.style.cursor = "grabbing";
+          return;
+        }
+      }
+
       const floor = floorDragRef.current;
       if (
         floor &&
@@ -560,7 +672,7 @@ export function useBattlefieldPointer({
       }
 
       const gm = gmDragRef.current;
-      if (gm && canGmReposition && onGmReposition && !dungeonEditor?.active && !whiteboard?.active) {
+      if (gm && onRepositionToken && !dungeonEditor?.active && !whiteboard?.active) {
         if (!gm.dragging && Math.hypot(px - gm.startX, py - gm.startY) > 8) {
           gm.dragging = true;
         }
@@ -600,9 +712,50 @@ export function useBattlefieldPointer({
         } else if (dungeonEditor?.active && dungeonEditor.layer === "objects") {
           canvas.style.cursor = dungeonEditor.tool === "erase" ? "not-allowed" : "crosshair";
         } else if (dungeonEditor?.active && dungeonEditor.layer === "floor") {
-          canvas.style.cursor = floorDragRef.current?.dragging ? "grabbing" : "grab";
+          if (floorResizeRef.current?.dragging || floorDragRef.current?.dragging) {
+            canvas.style.cursor = "grabbing";
+          } else if (
+            dungeonEditor.mapImage?.complete &&
+            dungeonEditor.mapImage.naturalWidth > 0
+          ) {
+            const layout = canvasLayout(canvas);
+            const floorScene = {
+              ...scene,
+              mapImageScale: dungeonEditor.floorScale ?? scene.mapImageScale ?? 1,
+              mapImageOffsetX: dungeonEditor.floorOffsetX ?? scene.mapImageOffsetX ?? 0,
+              mapImageOffsetY: dungeonEditor.floorOffsetY ?? scene.mapImageOffsetY ?? 0,
+            };
+            const handle = hitTestFloorHandle(
+              px,
+              py,
+              dungeonEditor.mapImage,
+              floorScene,
+              layout,
+              viewRef.current
+            );
+            if (handle) {
+              canvas.style.cursor =
+                handle === "nw" || handle === "se" ? "nwse-resize" : "nesw-resize";
+            } else {
+              const world = worldAtScreen(px, py);
+              const onImage =
+                world &&
+                pointInFloorRect(world.x, world.y, dungeonEditor.mapImage, floorScene, layout);
+              canvas.style.cursor = onImage ? "grab" : "default";
+            }
+          } else {
+            canvas.style.cursor = "default";
+          }
         } else if (showMovement || areaMode) {
           canvas.style.cursor = "cell";
+        } else if (
+          hoverToken &&
+          actionMode === "idle" &&
+          canRepositionToken?.(hoverToken) &&
+          !dungeonEditor?.active &&
+          !whiteboard?.active
+        ) {
+          canvas.style.cursor = "grab";
         } else if (hoverToken && canOpenActionRing?.(hoverToken)) {
           canvas.style.cursor = "pointer";
         } else {
@@ -624,10 +777,11 @@ export function useBattlefieldPointer({
       showMovement,
       areaMode,
       canvasRef,
-      canGmReposition,
-      onGmReposition,
+      canRepositionToken,
+      onRepositionToken,
       onGmDragPreview,
       canOpenActionRing,
+      canRepositionToken,
       dungeonEditor,
       whiteboard,
       worldAtScreen,
@@ -638,6 +792,8 @@ export function useBattlefieldPointer({
     (e: React.PointerEvent<HTMLCanvasElement>) => {
       const floor = floorDragRef.current;
       floorDragRef.current = null;
+      const floorResize = floorResizeRef.current;
+      floorResizeRef.current = null;
       const dng = dungeonDragRef.current;
       dungeonDragRef.current = null;
       const wb = wbDrawRef.current;
@@ -694,7 +850,11 @@ export function useBattlefieldPointer({
         return;
       }
 
-      if (floor?.dragging && dungeonEditor?.active && dungeonEditor.layer === "floor") {
+      if (
+        (floor?.dragging || floorResize?.dragging) &&
+        dungeonEditor?.active &&
+        dungeonEditor.layer === "floor"
+      ) {
         dungeonEditor.onFloorDragEnd?.();
         return;
       }
@@ -710,9 +870,9 @@ export function useBattlefieldPointer({
         return;
       }
 
-      if (gm?.dragging && canGmReposition && onGmReposition) {
+      if (gm?.dragging && onRepositionToken) {
         onGmDragPreview?.(gm.tokenId, null);
-        onGmReposition(gm.tokenId, axial);
+        onRepositionToken(gm.tokenId, axial);
         return;
       }
 
@@ -819,8 +979,8 @@ export function useBattlefieldPointer({
       needsAreaDirection,
       areaCenter,
       setAreaCenter,
-      canGmReposition,
-      onGmReposition,
+      canRepositionToken,
+      onRepositionToken,
       onGmDragPreview,
       dungeonEditor,
       whiteboard,

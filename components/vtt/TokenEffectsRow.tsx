@@ -44,7 +44,14 @@ export function TokenEffectsRow({
           title={chip.title}
           aria-label={chip.title}
         >
-          <TokenEffectIcon icon={chip.icon} size={variant === "full" ? 13 : 14} />
+          <span className="vtt-effect-chip-icon-wrap">
+            <TokenEffectIcon icon={chip.icon} size={variant === "full" ? 13 : 14} />
+            {chip.remaining ? (
+              <span className="vtt-effect-chip-badge" aria-hidden>
+                {chip.remaining}
+              </span>
+            ) : null}
+          </span>
           {variant === "full" ? <span className="vtt-effect-chip-label">{chip.label}</span> : null}
         </span>
       ))}

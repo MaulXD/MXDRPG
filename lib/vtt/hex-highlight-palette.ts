@@ -104,7 +104,12 @@ function readHexVar(tone: MapBackdropTone, key: PaletteKey): string {
     return readThemeColor(`--vtt-hex-${suffix}`, fallback);
   }
 
-  const tonePrefix = tone === "light" ? "--vtt-hex-on-light-" : "--vtt-hex-on-dark-";
+  const tonePrefix =
+    tone === "light"
+      ? "--vtt-hex-on-light-"
+      : tone === "green"
+        ? "--vtt-hex-on-green-"
+        : "--vtt-hex-on-dark-";
   const onMap = readThemeColor(`${tonePrefix}${suffix}`, "");
   if (onMap) return onMap;
 

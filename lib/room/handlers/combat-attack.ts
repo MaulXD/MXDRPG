@@ -267,6 +267,7 @@ export async function executeRoomAttack(
         detail: formatAttackChatDetail(result),
         attackIndex: result.attackIndex,
         attackCount: result.attackCount,
+        ...(result.actionKind === "spell" ? { spellDamageType: action.damageType } : {}),
       },
     });
   }

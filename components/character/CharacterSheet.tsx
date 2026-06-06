@@ -29,6 +29,11 @@ import { SubclassTrackPanel } from "@/components/character/SubclassTrackPanel";
 import { CombatLoadoutPanel } from "@/components/character/CombatLoadoutPanel";
 import { LootEconomyPanel } from "@/components/character/LootEconomyPanel";
 import { CharacterSheetPopupHero } from "@/components/character/CharacterSheetPopupHero";
+import { SheetPopupCombatStrip } from "@/components/character/SheetPopupCombatStrip";
+import { SheetPopupLoadoutBar } from "@/components/character/SheetPopupLoadoutBar";
+import { SheetPopupPortrait } from "@/components/character/SheetPopupPortrait";
+import { SheetPopupQuickBar } from "@/components/character/SheetPopupQuickBar";
+import { resolveActorDefesa } from "@/lib/character/armor-defense";
 import {
   ATTRIBUTE_LABELS,
   attributeMod,
@@ -179,6 +184,7 @@ export function CharacterSheet({
       : 0;
   const prof = proficiencyBonus(identity.nivel);
   const portraitFocus = sanitizePortraitFocus(live.portraitFocus);
+  const displayDefesa = resolveActorDefesa(live);
 
   const tabTitles: Record<Tab, string> = {
     inventário: "Inventário",
@@ -494,15 +500,6 @@ export function CharacterSheet({
         <SubclassTrackPanel actor={live} popup />
         <FutureLevelsPanel actor={live} compact />
 
-        {inRoom ? (
-          <CombatLoadoutPanel
-            actor={live}
-            roomId={roomId}
-            canEdit={canEdit}
-            onSaved={refresh}
-          />
-        ) : null}
-
         {canEdit && inRoom ? (
           <CharacterIdentityEditor
             actor={live}
@@ -517,61 +514,52 @@ export function CharacterSheet({
     return (
       <div className="sheet-shell sheet-shell--popup">
         <header className="sheet-popup-top">
-          <div className="sheet-popup-top__portrait">
-            {live.portraitUrl ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={live.portraitUrl}
-                alt=""
-                style={portraitFocus ? portraitFocusToImgStyle(portraitFocus) : undefined}
+          <div className="sheet-popup-top__portrait-col">
+            {inRoom ? (
+              <SheetPopupPortrait
+                actorId={character.id}
+                roomId={roomId}
+                name={live.name}
+                portraitUrl={live.portraitUrl}
+                tokenImageUrl={live.tokenImageUrl}
+                portraitFocus={live.portraitFocus}
+                tokenFocus={live.tokenFocus}
+                canEdit={canEdit}
+                onSaved={refresh}
               />
             ) : (
-              <span className="sheet-popup-top__portrait-fallback">
-                {live.name.trim().slice(0, 2).toUpperCase() || "?"}
-              </span>
+              <div className="sheet-popup-top__portrait sheet-popup-portrait is-readonly">
+                {live.portraitUrl ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={live.portraitUrl}
+                    alt=""
+                    style={portraitFocus ? portraitFocusToImgStyle(portraitFocus) : undefined}
+                  />
+                ) : (
+                  <span className="sheet-popup-portrait__placeholder">
+                    <span className="sheet-popup-top__portrait-fallback">
+                      {live.name.trim().slice(0, 2).toUpperCase() || "?"}
+                    </span>
+                  </span>
+                )}
+              </div>
             )}
+
+            <SheetPopupCombatStrip
+              defesa={displayDefesa}
+              iniciativa={tactical.iniciativa}
+              movimentoWalk={movement.walk}
+              movimentoRun={movement.run}
+              profBonus={prof}
+              hpValue={resources.vida.value}
+              hpMax={resources.vida.max}
+              hpPct={hpPct}
+            />
           </div>
 
           <div className="sheet-popup-top__identity">
             <CharacterSheetPopupHero name={live.name} identity={identity} />
-          </div>
-
-          <div className="sheet-popup-top__combat">
-            <div className="sheet-popup-diamond" aria-label="Combate">
-              <span className="sheet-popup-diamond__top">
-                <em>Defesa</em>
-                <strong>{tactical.defesa}</strong>
-              </span>
-              <span className="sheet-popup-diamond__left">
-                <em>Inic.</em>
-                <strong>
-                  {tactical.iniciativa >= 0 ? "+" : ""}
-                  {tactical.iniciativa}
-                </strong>
-              </span>
-              <span className="sheet-popup-diamond__right">
-                <em>Mov.</em>
-                <strong>
-                  {movement.walk}/{movement.run}
-                </strong>
-              </span>
-              <span className="sheet-popup-diamond__bottom">
-                <em>Prof.</em>
-                <strong>+{prof}</strong>
-              </span>
-            </div>
-
-            <div className="sheet-popup-resource sheet-popup-resource--hp">
-              <div className="sheet-popup-resource__head">
-                <span>Vida</span>
-                <strong>
-                  {resources.vida.value}/{resources.vida.max}
-                </strong>
-              </div>
-              <div className="sheet-popup-bar">
-                <span className="sheet-popup-bar-fill--hp" style={{ width: `${hpPct}%` }} />
-              </div>
-            </div>
           </div>
 
           <div className="sheet-popup-top__attrs" role="group" aria-label="Atributos">
@@ -587,6 +575,18 @@ export function CharacterSheet({
             ))}
           </div>
         </header>
+
+        <SheetPopupQuickBar actor={live} roomId={inRoom ? roomId : undefined} onRoll={refresh} />
+
+        {inRoom ? (
+          <SheetPopupLoadoutBar
+            actor={live}
+            inventory={inventory}
+            roomId={roomId}
+            canEdit={canEdit}
+            onSaved={refresh}
+          />
+        ) : null}
 
         <div className="sheet-popup-body">
           <section className="sheet-popup-center sheet-panel">

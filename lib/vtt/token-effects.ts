@@ -1,5 +1,12 @@
 import type { TokenCondition } from "@/lib/combat/conditions";
 import { tokenConditions } from "@/lib/combat/conditions";
+import {
+  formatTimedEffectBadge,
+  formatTimedEffectRemaining,
+  findTimedEffectForCondition,
+  findTimedEffectForField,
+  timedEffectsOf,
+} from "@/lib/combat/timed-effects";
 import { isTokenDefeated } from "@/lib/vtt/token-hp-display";
 import type { TokenEffectIconId } from "@/lib/vtt/token-effect-icons";
 import { CONDITION_ICON } from "@/lib/vtt/token-effect-icons";
@@ -16,6 +23,8 @@ export type TokenEffectChip = {
   title: string;
   color: string;
   bg: string;
+  /** Badge curto no ícone — ex. `3R`, `2T`, `→`. */
+  remaining?: string;
 };
 
 /** Fundo sólido + ícone claro (alto contraste no hex e na UI). */
@@ -81,15 +90,32 @@ export const ALL_TOKEN_CONDITIONS: TokenCondition[] = [
   "encantado",
 ];
 
+const FIELD_CHIP_ICONS: Partial<Record<keyof BattleToken, TokenEffectIconId>> = {
+  defesaBonus: "shield",
+  chargeReady: "charge",
+  nextAttackBonus: "atk-up",
+  allyAttackAdvantage: "inspire",
+  rangedAttackAdvantage: "aim",
+  reactionShiftReady: "react",
+  bonusDamageFormula: "flame",
+};
+
+function withRemaining(chip: TokenEffectChip, badge: string | null, detail: string | null): TokenEffectChip {
+  if (!badge && !detail) return chip;
+  const title = detail ? `${chip.title} · ${detail}` : chip.title;
+  return { ...chip, remaining: badge ?? undefined, title };
+}
+
 function buffChip(
   id: string,
   label: string,
   abbr: string,
   icon: TokenEffectIconId,
   title: string,
-  style?: { bg?: string; color?: string }
+  style?: { bg?: string; color?: string },
+  timed?: { badge: string | null; detail: string | null }
 ): TokenEffectChip {
-  return {
+  const chip: TokenEffectChip = {
     id,
     kind: "buff",
     label,
@@ -99,6 +125,7 @@ function buffChip(
     color: style?.color ?? BUFF_CHIP_STYLE.color,
     bg: style?.bg ?? BUFF_CHIP_STYLE.bg,
   };
+  return timed ? withRemaining(chip, timed.badge, timed.detail) : chip;
 }
 
 function debuffChip(
@@ -106,9 +133,10 @@ function debuffChip(
   label: string,
   abbr: string,
   icon: TokenEffectIconId,
-  title: string
+  title: string,
+  timed?: { badge: string | null; detail: string | null }
 ): TokenEffectChip {
-  return {
+  const chip: TokenEffectChip = {
     id,
     kind: "debuff",
     label,
@@ -118,11 +146,21 @@ function debuffChip(
     color: DEBUFF_CHIP_STYLE.color,
     bg: DEBUFF_CHIP_STYLE.bg,
   };
+  return timed ? withRemaining(chip, timed.badge, timed.detail) : chip;
+}
+
+function timedMeta(fx: ReturnType<typeof timedEffectsOf>[number] | undefined) {
+  if (!fx) return { badge: null, detail: null };
+  return {
+    badge: formatTimedEffectBadge(fx),
+    detail: formatTimedEffectRemaining(fx),
+  };
 }
 
 /** Condições + buffs temporários do token (Cap. 3.4 + habilidades da mesa). */
 export function listTokenEffectChips(token: BattleToken): TokenEffectChip[] {
   const out: TokenEffectChip[] = [];
+  const coveredFxIds = new Set<string>();
 
   if (isTokenDefeated(token)) {
     out.push(
@@ -133,32 +171,45 @@ export function listTokenEffectChips(token: BattleToken): TokenEffectChip[] {
   for (const c of tokenConditions(token)) {
     const meta = CONDITION_META[c];
     if (!meta) continue;
+    const fx = findTimedEffectForCondition(token, c);
+    if (fx) coveredFxIds.add(fx.id);
+    const timed = timedMeta(fx);
     out.push({
       id: `cond-${c}`,
-      kind: "condition",
+      kind: fx?.kind === "buff" ? "buff" : "condition",
       label: meta.label,
       abbr: meta.abbr,
       icon: CONDITION_ICON[c] ?? meta.icon,
-      title: meta.label,
+      title: timed.detail ? `${meta.label} · ${timed.detail}` : meta.label,
       color: meta.color,
       bg: meta.bg,
+      remaining: timed.badge ?? undefined,
     });
   }
 
   if (token.defesaBonus && token.defesaBonus > 0) {
+    const fx = findTimedEffectForField(token, "defesaBonus");
+    if (fx) coveredFxIds.add(fx.id);
     const src = token.defesaBuffSource ?? "Postura";
+    const timed = timedMeta(fx);
     out.push(
       buffChip(
         "def-buff",
         `+${token.defesaBonus} defesa`,
         `+${token.defesaBonus}`,
         "shield",
-        `${src}: +${token.defesaBonus} defesa`
+        timed.detail
+          ? `${src}: +${token.defesaBonus} defesa · ${timed.detail}`
+          : `${src}: +${token.defesaBonus} defesa`,
+        undefined,
+        timed
       )
     );
   }
 
   if (token.chargeReady) {
+    const fx = findTimedEffectForField(token, "chargeReady");
+    if (fx) coveredFxIds.add(fx.id);
     out.push(
       buffChip(
         "charge",
@@ -166,18 +217,31 @@ export function listTokenEffectChips(token: BattleToken): TokenEffectChip[] {
         "Inv",
         "charge",
         "Investida pronta — próximo ataque corpo a corpo",
-        { bg: "#5c4818", color: "#fff8e0" }
+        { bg: "#5c4818", color: "#fff8e0" },
+        timedMeta(fx)
       )
     );
   }
 
   if (token.chargeNote?.trim()) {
+    const fx = findTimedEffectForField(token, "chargeNote");
+    if (fx) coveredFxIds.add(fx.id);
     out.push(
-      buffChip("charge-note", token.chargeNote.trim(), "Mv", "move", token.chargeNote.trim())
+      buffChip(
+        "charge-note",
+        token.chargeNote.trim(),
+        "Mv",
+        "move",
+        token.chargeNote.trim(),
+        undefined,
+        timedMeta(fx)
+      )
     );
   }
 
   if (token.nextAttackBonus && token.nextAttackBonus > 0) {
+    const fx = findTimedEffectForField(token, "nextAttackBonus");
+    if (fx) coveredFxIds.add(fx.id);
     out.push(
       buffChip(
         "next-atk",
@@ -185,12 +249,15 @@ export function listTokenEffectChips(token: BattleToken): TokenEffectChip[] {
         `+${token.nextAttackBonus}`,
         "atk-up",
         `Próximo ataque +${token.nextAttackBonus}`,
-        { bg: "#5c4a14", color: "#fff4d0" }
+        { bg: "#5c4a14", color: "#fff4d0" },
+        timedMeta(fx)
       )
     );
   }
 
   if (token.allyAttackAdvantage) {
+    const fx = findTimedEffectForField(token, "allyAttackAdvantage");
+    if (fx) coveredFxIds.add(fx.id);
     out.push(
       buffChip(
         "ally-adv",
@@ -198,12 +265,15 @@ export function listTokenEffectChips(token: BattleToken): TokenEffectChip[] {
         "In",
         "inspire",
         "Próximo ataque com vantagem (aliado)",
-        { bg: "#2a5218", color: "#e8ffd0" }
+        { bg: "#2a5218", color: "#e8ffd0" },
+        timedMeta(fx)
       )
     );
   }
 
   if (token.rangedAttackAdvantage) {
+    const fx = findTimedEffectForField(token, "rangedAttackAdvantage");
+    if (fx) coveredFxIds.add(fx.id);
     out.push(
       buffChip(
         "ranged-adv",
@@ -211,18 +281,23 @@ export function listTokenEffectChips(token: BattleToken): TokenEffectChip[] {
         "Tc",
         "aim",
         "Próximo ataque à distância com vantagem",
-        { bg: "#3a2868", color: "#f0e8ff" }
+        { bg: "#3a2868", color: "#f0e8ff" },
+        timedMeta(fx)
       )
     );
   }
 
   if (token.reactionShiftReady) {
+    const fx = findTimedEffectForField(token, "reactionShiftReady");
+    if (fx) coveredFxIds.add(fx.id);
     out.push(
-      buffChip("react", "Reflexos", "Rf", "react", "Pode deslocar 1 hex como reação")
+      buffChip("react", "Reflexos", "Rf", "react", "Pode deslocar 1 hex como reação", undefined, timedMeta(fx))
     );
   }
 
   if (token.bonusDamageFormula?.trim()) {
+    const fx = findTimedEffectForField(token, "bonusDamageFormula");
+    if (fx) coveredFxIds.add(fx.id);
     out.push(
       buffChip(
         "bonus-dmg",
@@ -230,7 +305,8 @@ export function listTokenEffectChips(token: BattleToken): TokenEffectChip[] {
         "Cn",
         "flame",
         `Dano extra: ${token.bonusDamageFormula.trim()}`,
-        { bg: "#6b3010", color: "#ffe8d0" }
+        { bg: "#6b3010", color: "#ffe8d0" },
+        timedMeta(fx)
       )
     );
   }
@@ -251,6 +327,34 @@ export function listTokenEffectChips(token: BattleToken): TokenEffectChip[] {
         })
       );
     }
+  }
+
+  for (const fx of timedEffectsOf(token)) {
+    if (coveredFxIds.has(fx.id)) continue;
+    const icon =
+      (fx.condition ? CONDITION_ICON[fx.condition] : undefined) ??
+      (fx.clearFields?.[0] ? FIELD_CHIP_ICONS[fx.clearFields[0]] : undefined) ??
+      (fx.kind === "buff" ? "shield" : "feint");
+    const timed = timedMeta(fx);
+    const kind: TokenEffectKind =
+      fx.kind === "buff" ? "buff" : fx.kind === "debuff" ? "debuff" : "condition";
+    const style =
+      kind === "buff"
+        ? BUFF_CHIP_STYLE
+        : kind === "debuff"
+          ? DEBUFF_CHIP_STYLE
+          : { bg: "#3a3a48", color: "#f0f0f8" };
+    out.push({
+      id: `fx-${fx.id}`,
+      kind,
+      label: fx.label,
+      abbr: fx.label.slice(0, 2),
+      icon,
+      title: timed.detail ? `${fx.label} · ${timed.detail}` : fx.label,
+      color: style.color,
+      bg: style.bg,
+      remaining: timed.badge ?? undefined,
+    });
   }
 
   return out;

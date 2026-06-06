@@ -50,9 +50,6 @@ export function DungeonEditorPanel({
   onUpdated,
 }: Props) {
   const [url, setUrl] = useState(scene.mapImageUrl ?? "");
-  const [scale, setScale] = useState(String(scene.mapImageScale ?? 1));
-  const [offX, setOffX] = useState(String(scene.mapImageOffsetX ?? 0));
-  const [offY, setOffY] = useState(String(scene.mapImageOffsetY ?? 0));
   const [fog, setFog] = useState(Boolean(scene.fogEnabled));
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState<string | null>(null);
@@ -60,17 +57,8 @@ export function DungeonEditorPanel({
 
   useEffect(() => {
     setUrl(scene.mapImageUrl ?? "");
-    setScale(String(scene.mapImageScale ?? 1));
-    setOffX(String(scene.mapImageOffsetX ?? 0));
-    setOffY(String(scene.mapImageOffsetY ?? 0));
     setFog(Boolean(scene.fogEnabled));
-  }, [
-    scene.mapImageUrl,
-    scene.mapImageScale,
-    scene.mapImageOffsetX,
-    scene.mapImageOffsetY,
-    scene.fogEnabled,
-  ]);
+  }, [scene.mapImageUrl, scene.fogEnabled]);
 
   const hasFloorImage = Boolean(scene.mapImageUrl?.trim());
   const objectCount = dungeonObjectsOf(scene).length;
@@ -91,17 +79,6 @@ export function DungeonEditorPanel({
     }
   }
 
-  async function applyFloor() {
-    await saveScene({
-      mapImageUrl: url.trim() || null,
-      mapImageScale: Number(scale) || 1,
-      mapImageOffsetX: Number(offX) || 0,
-      mapImageOffsetY: Number(offY) || 0,
-      fogEnabled: fog,
-    });
-    setMsg("Piso atualizado.");
-  }
-
   async function onFloorFile(file: File) {
     setBusy(true);
     setMsg(null);
@@ -110,9 +87,9 @@ export function DungeonEditorPanel({
       setUrl(dataUrl);
       const snapshot = await patchRoomScene(roomId, {
         mapImageUrl: dataUrl,
-        mapImageScale: Number(scale) || 1,
-        mapImageOffsetX: Number(offX) || 0,
-        mapImageOffsetY: Number(offY) || 0,
+        mapImageScale: scene.mapImageScale ?? 1,
+        mapImageOffsetX: scene.mapImageOffsetX ?? 0,
+        mapImageOffsetY: scene.mapImageOffsetY ?? 0,
         fogEnabled: fog,
       });
       onUpdated(snapshot);
@@ -164,16 +141,6 @@ export function DungeonEditorPanel({
             onClick={() => onActiveChange(!active)}
           >
             {active ? "Pintando hex" : "Editar no mapa"}
-          </button>
-        ) : null}
-        {layer === "floor" && hasFloorImage ? (
-          <button
-            type="button"
-            className={`vtt-dungeon-toggle${active ? " vtt-dungeon-toggle--on" : ""}`}
-            disabled={busy}
-            onClick={() => onActiveChange(!active)}
-          >
-            {active ? "Ajustando no mapa" : "Ajustar no mapa"}
           </button>
         ) : null}
       </div>
@@ -249,7 +216,8 @@ export function DungeonEditorPanel({
         <p className="vtt-eyebrow">Camada 1 — imagem de piso (fundo)</p>
         {hasFloorImage ? (
           <p className="vtt-dungeon-floor-status">
-            ✓ Fundo ativo — use <strong>Ajustar no mapa</strong> para arrastar no canvas. Shift+scroll altera a escala.
+            ✓ Fundo ativo — no mapa, <strong>arraste</strong> a imagem para posicionar e use os{" "}
+            <strong>cantos dourados</strong> para redimensionar.
           </p>
         ) : (
           <p className="vtt-dungeon-floor-callout">
@@ -297,63 +265,18 @@ export function DungeonEditorPanel({
             onChange={(e) => setUrl(e.target.value)}
           />
         </label>
-        <label className="vtt-field">
-          <span>Escala ({Number(scale) || 1}×)</span>
-          <input
-            type="range"
-            min={0.25}
-            max={4}
-            step={0.05}
-            value={Number(scale) || 1}
-            onChange={(e) => setScale(e.target.value)}
-          />
-        </label>
-        <div className="vtt-map-panel-row">
-          <label className="vtt-field vtt-field--compact">
-            <span>Offset X</span>
-            <input type="number" step={10} value={offX} onChange={(e) => setOffX(e.target.value)} />
-          </label>
-          <label className="vtt-field vtt-field--compact">
-            <span>Offset Y</span>
-            <input type="number" step={10} value={offY} onChange={(e) => setOffY(e.target.value)} />
-          </label>
-        </div>
-        <div className="vtt-map-panel-row">
-          <button
-            type="button"
-            className="vtt-btn vtt-btn--ghost vtt-btn--compact"
-            disabled={busy}
-            onClick={() => setOffX(String((Number(offX) || 0) - 20))}
-          >
-            ← X
-          </button>
-          <button
-            type="button"
-            className="vtt-btn vtt-btn--ghost vtt-btn--compact"
-            disabled={busy}
-            onClick={() => setOffX(String((Number(offX) || 0) + 20))}
-          >
-            X →
-          </button>
-          <button
-            type="button"
-            className="vtt-btn vtt-btn--ghost vtt-btn--compact"
-            disabled={busy}
-            onClick={() => setOffY(String((Number(offY) || 0) - 20))}
-          >
-            ↑ Y
-          </button>
-          <button
-            type="button"
-            className="vtt-btn vtt-btn--ghost vtt-btn--compact"
-            disabled={busy}
-            onClick={() => setOffY(String((Number(offY) || 0) + 20))}
-          >
-            Y ↓
-          </button>
-        </div>
-        <button type="button" className="vtt-btn" disabled={busy} onClick={() => void applyFloor()}>
-          Aplicar piso
+        <button
+          type="button"
+          className="vtt-btn vtt-btn--ghost"
+          disabled={busy || !url.trim() || url.startsWith("data:")}
+          onClick={() =>
+            void saveScene({
+              mapImageUrl: url.trim() || null,
+              fogEnabled: fog,
+            })
+          }
+        >
+          Aplicar URL
         </button>
       </div>
       ) : null}

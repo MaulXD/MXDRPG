@@ -74,6 +74,19 @@ export function sanitizeActorPatch(
       out.combatLoadout = { packId: loadout.packId, entryId: loadout.entryId.slice(0, 120) };
     }
   }
+  if ("armorLoadout" in patch) {
+    const armor = patch.armorLoadout;
+    if (armor === null) {
+      out.armorLoadout = null;
+    } else if (
+      armor &&
+      typeof armor === "object" &&
+      armor.packId === "equipamentos" &&
+      typeof armor.entryId === "string"
+    ) {
+      out.armorLoadout = { packId: "equipamentos", entryId: armor.entryId.slice(0, 120) };
+    }
+  }
   if ("inventory" in patch) {
     const inventory = sanitizeInventory(patch.inventory);
     if (inventory) out.inventory = inventory;

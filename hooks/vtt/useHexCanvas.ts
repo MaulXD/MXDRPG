@@ -22,6 +22,7 @@ import {
 } from "@/lib/vtt/draw-battlefield";
 import { drawDungeonLayer } from "@/lib/vtt/draw-dungeon-layer";
 import { drawMapMarkupLayer } from "@/lib/vtt/draw-map-markup";
+import { drawFloorEditOverlay } from "@/lib/vtt/floor-edit";
 import { drawFogLayer, drawMapImageLayer, drawPingLayer } from "@/lib/vtt/draw-map-overlay";
 import { pruneMapMarkups } from "@/lib/vtt/map-markup";
 import type { MapMarkup } from "@/lib/vtt/types";
@@ -69,6 +70,7 @@ export type HexCanvasDrawState = {
   mapBackdropTone?: MapBackdropTone;
   tokenHpDisplay: Map<string, TokenHpDisplay>;
   dungeonEditorActive?: boolean;
+  floorEditActive?: boolean;
   dungeonEditorTool?: "wall" | "object" | null;
   selectedDungeonObjectId?: string | null;
   mapMarkups?: MapMarkup[];
@@ -139,6 +141,9 @@ export function useHexCanvas(
     const mapImg = s.mapImage;
     if (mapImg?.complete && mapImg.naturalWidth > 0) {
       drawMapImageLayer(ctx, mapImg, s.scene, layout);
+      if (s.floorEditActive) {
+        drawFloorEditOverlay(ctx, mapImg, s.scene, layout, view.scale);
+      }
     }
 
     const hexPalette = resolveHexPalette(s.mapBackdropTone ?? "none");

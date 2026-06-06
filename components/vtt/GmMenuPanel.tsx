@@ -75,7 +75,6 @@ export function GmMenuPanel({
       <RoomSettingsPanel
         roomId={roomId}
         roomName={scene.name}
-        inviteCode={inviteCode ?? "—"}
         settings={snapshot.settings}
         onUpdated={onSceneUpdated}
       />

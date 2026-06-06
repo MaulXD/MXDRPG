@@ -21,6 +21,7 @@ import { tokenAxialDistance } from "@/lib/vtt/creature-size";
 import { axialDistance } from "@/lib/vtt/hex-math";
 import { abilityFromEntry } from "@/lib/combat/compendium-actions";
 import { attackRollMode, canTokenAct } from "@/lib/combat/conditions";
+import { clearTimedEffectsForFields } from "@/lib/combat/timed-effects";
 import { combineRollModes, formatD20Detail, formatRollMode, rollD20, type RollMode } from "@/lib/combat/d20";
 import { isAreaSpellAction, parseAreaShape } from "@/lib/combat/area-spell";
 import { listSubclassCombatActions } from "@/lib/character/subclass-vtt";
@@ -494,6 +495,22 @@ export function attackerAfterAttack(
   if (consumeAttackerMark) patch.attackMark = undefined;
   if (attacker.chargeReady && action.rangeHex <= 1) patch.chargeReady = undefined;
   if (hit && attacker.bonusDamageFormula) patch.bonusDamageFormula = undefined;
+
+  const consumed: (keyof import("@/lib/vtt/types").BattleToken)[] = [];
+  if (patch.nextAttackBonus !== undefined) consumed.push("nextAttackBonus");
+  if (patch.allyAttackAdvantage !== undefined) consumed.push("allyAttackAdvantage");
+  if (patch.rangedAttackAdvantage !== undefined) consumed.push("rangedAttackAdvantage");
+  if (patch.chargeReady !== undefined) consumed.push("chargeReady", "chargeNote");
+  if (patch.bonusDamageFormula !== undefined) consumed.push("bonusDamageFormula");
+  if (patch.attackMark !== undefined) consumed.push("attackMark");
+
+  if (consumed.length) {
+    const cleared = clearTimedEffectsForFields(attacker, consumed);
+    if (cleared.timedEffects !== attacker.timedEffects) {
+      patch.timedEffects = cleared.timedEffects;
+    }
+  }
+
   return patch;
 }
 
