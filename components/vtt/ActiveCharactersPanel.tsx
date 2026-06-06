@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo, useState } from "react";
 import type { BattleToken } from "@/lib/vtt/types";
 import type { Axial } from "@/lib/vtt/hex-math";
 import type { RoomActor, RoomSnapshot } from "@/lib/room/types";
@@ -9,7 +10,7 @@ import type { SessionUser } from "@/lib/auth/types";
 import { ACTION_MODE_LABEL, type TokenActionMode } from "@/lib/vtt/action-mode";
 import { PaDotMeter } from "@/components/vtt/PaDotMeter";
 import { TokenEffectsRow } from "@/components/vtt/TokenEffectsRow";
-import { TokenConditionsPanel } from "@/components/vtt/TokenConditionsPanel";
+import { TokenStatusModal } from "@/components/vtt/TokenStatusModal";
 import { PlayerSpawnPanel } from "@/components/vtt/PlayerSpawnPanel";
 
 type Props = {
@@ -63,6 +64,26 @@ export function ActiveCharactersPanel({
   fogHint = false,
 }: Props) {
   const canCreateInAdventure = roomId !== "demo" && Boolean(session);
+  const [statusOpen, setStatusOpen] = useState(false);
+
+  const playerToken = useMemo(() => {
+    if (!session) return null;
+    return (
+      allSceneTokens.find(
+        (t) => t.linked && t.actorId && roomActors[t.actorId]?.ownerId === session.id
+      ) ?? null
+    );
+  }, [allSceneTokens, roomActors, session]);
+
+  const statusToken = canApplyConditions ? selected : playerToken;
+  const statusButtonDisabled = !statusToken;
+  const statusButtonHint = canApplyConditions
+    ? selected
+      ? `Status de ${selected.name}`
+      : "Selecione um personagem no mapa"
+    : playerToken
+      ? `Status de ${playerToken.name}`
+      : "Coloque sua ficha no mapa para ver status";
 
   return (
     <aside className="vtt-sidebar vtt-sidebar--actors">
@@ -79,9 +100,20 @@ export function ActiveCharactersPanel({
         showCreateLink={canCreateInAdventure}
       />
 
-      <p className="vtt-eyebrow" style={{ marginTop: "0.75rem" }}>
-        No mapa
-      </p>
+      <div className="vtt-sidebar-status-row">
+        <p className="vtt-eyebrow" style={{ margin: 0 }}>
+          No mapa
+        </p>
+        <button
+          type="button"
+          className="btn btn-ghost vtt-status-open-btn"
+          disabled={statusButtonDisabled}
+          title={statusButtonHint}
+          onClick={() => setStatusOpen(true)}
+        >
+          Status
+        </button>
+      </div>
       {fogHint ? (
         <p className="vtt-combat-hint vtt-fog-list-hint">
           Só aparecem jogadores e criaturas no seu campo de visão.
@@ -130,7 +162,6 @@ export function ActiveCharactersPanel({
               {selected.defesaBonus ? ` (+${selected.defesaBonus} buff)` : ""}
             </p>
           ) : null}
-          <TokenEffectsRow token={selected} variant="full" className="vtt-effect-chips--sidebar" />
           {canViewTokenPa(selected) ? (
             <PaDotMeter
               current={selected.pa}
@@ -159,17 +190,6 @@ export function ActiveCharactersPanel({
             </p>
           ) : null}
           {actionErr ? <p className="dice-err">{actionErr}</p> : null}
-
-          {canApplyConditions ? (
-            <TokenConditionsPanel
-              roomId={roomId}
-              token={selected}
-              canEdit
-              combatRound={combat?.round ?? 1}
-              combatActiveIndex={combat?.activeIndex ?? 0}
-              onUpdate={onUpdate}
-            />
-          ) : null}
         </div>
       ) : (
         <p className="vtt-combat-hint">Selecione um personagem na lista ou no mapa.</p>
@@ -206,6 +226,16 @@ export function ActiveCharactersPanel({
           ))}
         </ul>
       )}
+
+      <TokenStatusModal
+        open={statusOpen}
+        token={statusToken}
+        roomId={roomId}
+        combat={combat}
+        canApplyConditions={canApplyConditions}
+        onClose={() => setStatusOpen(false)}
+        onUpdate={onUpdate}
+      />
     </aside>
   );
 }

@@ -363,22 +363,44 @@ Cada token ocupa **um ou mais hex** conforme o tamanho corporal. A escala segue 
 
 ### 3.4 Condicoes
 
-| Condicao | Efeito |
-|----------|--------|
-| Agarrado | Velocidade 0. Pode se soltar com Força ou Acrobacia vs CD do agarrador. |
-| Amedrontado | Desvantagem em ataques e testes enquanto a fonte do medo estiver visivel. |
-| Atordoado | Incapaz de agir. Falha automatica em Força e DES. Ataques contra tem Vantagem. |
-| Cego | Desvantagem em ataques. Ataques contra tem Vantagem. |
-| Encantado | Nao pode atacar o encantador. Encantador tem Vantagem em interacoes sociais. |
-| Envenenado | Desvantagem em ataques e testes de atributo. |
-| Exausto | Penalidades crescentes de 1 a 6. Nivel 6 = morte. |
-| Incapacitado | Sem acoes nem reacoes. |
-| Invisivel | Ataques tem Vantagem. Ataques contra tem Desvantagem. |
-| Paralisado | Incapacitado, sem movimento. Acertos sao críticos automaticos. |
-| Petrificado | Transformado em pedra. Incapacitado, peso dobrado, resistência a todos os danos. |
-| Prostrado | Velocidade 0 exceto arrastando. Desvantagem em ataques. |
-| Restringido | Velocidade 0. Desvantagem em ataques e DES. Ataques contra tem Vantagem. |
-| Surdo | Falha automatica em Percepção por som. |
+| Condicao | Efeito | Duracao sugerida (mesa) |
+|----------|--------|-------------------------|
+| Agarrado | Velocidade 0. Pode se soltar com Força ou Acrobacia vs CD do agarrador. | Sem contador — ate escapar |
+| Amedrontado | Desvantagem em ataques e testes enquanto a fonte do medo estiver visivel. | 2 rodadas ou ate a fonte sumir |
+| Atordoado | Incapaz de agir. Falha automatica em Força e DES. Ataques contra tem Vantagem. | 1 turno |
+| Cego | Desvantagem em ataques. Ataques contra tem Vantagem. | 2 rodadas |
+| Encantado | Nao pode atacar o encantador. Encantador tem Vantagem em interacoes sociais. | 3 rodadas |
+| Envenenado | Desvantagem em ataques e testes de atributo. | 3 rodadas |
+| Exausto | Penalidades crescentes de 1 a 6. Nivel 6 = morte. | Sem contador — niveis ate descanso |
+| Incapacitado | Sem acoes nem reacoes. | 1–2 turnos (efeito da magia) |
+| Invisivel | Ataques tem Vantagem. Ataques contra tem Desvantagem. | 1 rodada ou ate atacar |
+| Paralisado | Incapacitado, sem movimento. Acertos sao críticos automaticos. | 1–2 turnos |
+| Petrificado | Transformado em pedra. Incapacitado, peso dobrado, resistência a todos os danos. | Sem contador — ate remoção |
+| Prostrado | Velocidade 0 exceto arrastando. Desvantagem em ataques. | Sem contador — ate levantar |
+| Restringido | Velocidade 0. Desvantagem em ataques e DES. Ataques contra tem Vantagem. | 2 rodadas |
+| Surdo | Falha automatica em Percepção por som. | 2 rodadas |
+
+Na mesa virtual, o Mestre pode aplicar condicoes com contador (1R, 2R, 1T, 2T) ou sem limite. O botao **Sug.** aplica a duracao sugerida da tabela.
+
+#### 3.4.1 Buffs e debuffs temporarios (mesa virtual)
+
+Efeitos de habilidades e posturas recebem duracao automatica na mesa. O contador aparece no icone de status e no tooltip.
+
+| Efeito | Regra | Duracao automatica |
+|--------|-------|-------------------|
+| Postura / +defesa | Bonus na Classe de Armadura | Ate o inicio do proximo turno de quem usou |
+| Golpe preparado / +ataque | Bonus no proximo teste de ataque | 1 turno (ou ate o ataque) |
+| Investida | Movimento em linha + bonus corpo a corpo | 1 turno (ou ate o ataque) |
+| Passo das sombras | Teleporte curto | 1 turno (ou ate usar o movimento) |
+| Forma selvagem | Transformacao no movimento | 1 turno |
+| Tiro certeiro | Vantagem no proximo ataque a distancia | 1 turno (ou ate o ataque) |
+| Inspiracao | Vantagem no proximo ataque do aliado | 1 turno (ou ate o ataque) |
+| Reflexos | Desloca 1 hex como reacao | 1 turno (ou ate usar) |
+| Marca / Marca do cacador | Bonus ou vantagem contra alvo marcado | 1 turno (ou ate atacar o alvo) |
+| Finta | Desvantagem no proximo ataque do alvo | 1 turno (ou ate o ataque) |
+| Dano extra (ex.: golpe divino) | Dado extra no proximo acerto | 1 turno (ou ate acertar) |
+
+**Turno (T)** = conta no fim do turno do personagem afetado. **Rodada (R)** = conta quando a rodada de combate avanca. **Ate prox. turno** = expira no inicio do proximo turno do dono do efeito.
 
 ### 3.5 Descanso e Recuperação
 
