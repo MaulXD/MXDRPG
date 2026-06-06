@@ -6,6 +6,12 @@ import type { CharacterSheet } from "@/lib/character/types";
 import { attributeMod, hpMaxFor } from "@/lib/character/rules";
 import { validateImageDataUrl } from "@/lib/media/image-data-url";
 import { xpTotalForLevel } from "@/lib/character/xp";
+import {
+  applyStarterKitToSheet,
+  findStarterKitOption,
+  getDefaultStarterKitId,
+  resolveStarterKitOption,
+} from "@/lib/character/starter-kits";
 
 const MAX_PORTRAIT_FIELD_CHARS = 900_000;
 
@@ -41,6 +47,9 @@ export function validateWizardDraft(draft: CharacterWizardDraft): string | null 
   if (pb) return pb;
   if (!draft.antecedente.trim()) return "Escolha um antecedente";
   if (!draft.religiao?.trim()) return "Escolha uma devotion (ou Sem Deus)";
+  if (!findStarterKitOption(draft.classe, draft.starterKitId)) {
+    return "Escolha um kit de equipamento inicial";
+  }
   return null;
 }
 
@@ -95,9 +104,17 @@ export function buildCharacterFromWizard(
     tactical: { defesa: 10 + desMod, iniciativa: desMod },
     inventory: [],
     combatLoadout: null,
+    armorLoadout: null,
   });
 
-  return applyIdentityPatch(shell, {
+  const withKit = applyStarterKitToSheet(shell, {
+    classe: safeDraft.classe,
+    raca: safeDraft.raca,
+    antecedente: safeDraft.antecedente,
+    starterKitId: safeDraft.starterKitId || getDefaultStarterKitId(safeDraft.classe),
+  });
+
+  return applyIdentityPatch(withKit, {
     raca: safeDraft.raca,
     classe: safeDraft.classe,
     linhagem: safeDraft.raca === "Meio-Humano" ? safeDraft.linhagem : null,

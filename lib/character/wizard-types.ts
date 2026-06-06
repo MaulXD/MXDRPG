@@ -1,4 +1,5 @@
 import type { AttributeKey } from "@/lib/character/rules";
+import { getDefaultStarterKitId } from "@/lib/character/starter-kits";
 import type { PortraitFocus } from "@/lib/media/portrait-focus";
 
 export const ANTECEDENTE_OPTIONS = [
@@ -20,6 +21,8 @@ export type CharacterWizardDraft = {
   linhagem: string | null;
   classe: string;
   antecedente: string;
+  /** Kit de arma/armadura escolhido no passo Equipamento. */
+  starterKitId: string;
   religiao: string;
   pointBuy: Record<AttributeKey, number>;
   portraitUrl?: string | null;
@@ -36,6 +39,7 @@ export const EMPTY_WIZARD_DRAFT: CharacterWizardDraft = {
   linhagem: null,
   classe: "Guerreiro",
   antecedente: "Explorador",
+  starterKitId: getDefaultStarterKitId("Guerreiro"),
   religiao: "sem-deus",
   pointBuy: {
     forca: 8,

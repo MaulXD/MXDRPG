@@ -169,7 +169,8 @@ export async function createCharacter(
   if (existing.length >= MAX_CHARACTERS_PER_USER) {
     throw new Error(`Limite de ${MAX_CHARACTERS_PER_USER} fichas por conta`);
   }
-  const sheet = normalizeCharacter({
+  const { applyStarterKitToSheet, getDefaultStarterKitId } = await import("./starter-kits");
+  const shell = normalizeCharacter({
     id: `pc-${Date.now().toString(36)}`,
     ownerId: userId,
     name: name.trim().slice(0, 80) || "Novo personagem",
@@ -179,7 +180,7 @@ export async function createCharacter(
       xpTotal: 0,
       raca: "Humano",
       classe: "Guerreiro",
-      antecedente: "Aventureiro",
+      antecedente: "Explorador",
       talentos: [],
     },
     attributes: {
@@ -200,6 +201,12 @@ export async function createCharacter(
     inventory: [],
     combatLoadout: null,
     armorLoadout: null,
+  });
+  const sheet = applyStarterKitToSheet(shell, {
+    classe: "Guerreiro",
+    raca: "Humano",
+    antecedente: "Explorador",
+    starterKitId: getDefaultStarterKitId("Guerreiro"),
   });
   return saveCharacter(sheet);
 }

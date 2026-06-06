@@ -18,6 +18,14 @@ function areaHexesFromCombat(c: NonNullable<ChatMessage["combat"]>): Axial[] {
   return c.areaHexList.map((h) => ({ q: h.q, r: h.r }));
 }
 
+export function isPlayableCombatFxMessage(msg: ChatMessage): boolean {
+  if (msg.kind !== "combat" || !msg.combat) return false;
+  const c = msg.combat;
+  if (c.resolution === "defeat") return false;
+  if (c.areaBatchId) return true;
+  return c.resolution === "attack" || c.resolution === "save";
+}
+
 function combatFxFromMessage(
   msg: ChatMessage,
   attackerAxial: Axial,
@@ -25,6 +33,7 @@ function combatFxFromMessage(
   opts?: { deferStateApply?: boolean }
 ): CombatFxState | null {
   if (msg.kind !== "combat" || !msg.combat) return null;
+  if (!isPlayableCombatFxMessage(msg)) return null;
   const c = msg.combat;
   const weaponName = c.weaponName ?? "";
   const detail = c.detail ?? "";
@@ -179,7 +188,7 @@ export function buildAreaFxSequence(
     const msg = hits[i];
     const defender = tokens.find((t) => t.id === msg.combat?.defenderTokenId);
     if (!defender || msg.kind !== "combat" || !msg.combat) continue;
-    const defer = opts?.deferStateApplyForToken?.(defender.id);
+    const defer = opts?.deferStateApplyForToken?.(defender.id) ?? true;
     const fx = combatFxFromMessage(msg, attackerAxial, defender.axial, { deferStateApply: defer });
     if (!fx) continue;
     out.push({
@@ -217,6 +226,10 @@ export function ingestNewCombatFx(
 
   for (const msg of chat) {
     if (msg.kind !== "combat" || !msg.combat || seen.has(msg.id)) continue;
+    if (msg.combat.resolution === "defeat") {
+      markSeen.push(msg.id);
+      continue;
+    }
     const batchId = msg.combat.areaBatchId;
     if (batchId) {
       const slot = batches.get(batchId) ?? { summary: null, hits: [], ids: [] };
@@ -244,10 +257,14 @@ export function ingestNewCombatFx(
 
   for (const msg of singles) {
     if (seen.has(msg.id)) continue;
+    if (!isPlayableCombatFxMessage(msg)) {
+      markSeen.push(msg.id);
+      continue;
+    }
     const defender = tokens.find((t) => t.id === msg.combat!.defenderTokenId);
     const attacker = tokens.find((t) => t.id === msg.combat!.attackerTokenId);
     if (!defender || !attacker) continue;
-    const defer = opts?.deferStateApplyForToken?.(defender.id);
+    const defer = opts?.deferStateApplyForToken?.(defender.id) ?? true;
     const fx = combatFxFromMessage(msg, attacker.axial, defender.axial, { deferStateApply: defer });
     if (!fx) continue;
     sequence.push(fx);
@@ -258,4 +275,4 @@ export function ingestNewCombatFx(
 }
 
 export { combatFxFromMessage };
-
+

@@ -7,7 +7,7 @@ import { useState } from "react";
 import type { BattleToken } from "@/lib/vtt/types";
 
 import type { CombatTrack } from "@/lib/room/combat";
-import type { CombatUndoEntry } from "@/lib/room/types";
+import type { CombatUndoEntry, RoomSnapshot } from "@/lib/room/types";
 
 import { nextCombatTurn, postGmCombatAction, rollInitiative } from "@/hooks/useRoomSync";
 
@@ -31,6 +31,9 @@ type Props = {
   canEndTurn?: boolean;
 
   onUpdate: () => void;
+
+  /** Aplica snapshot retornado pela API (turno/PA imediato). */
+  onSnapshot?: (snap: RoomSnapshot) => void;
 
   /** Tokens válidos no modo ataque (espelha o hex). */
 
@@ -96,6 +99,7 @@ export function TurnOrderPanel({
   canEndTurn = canControl,
 
   onUpdate,
+  onSnapshot,
 
   attackableIds,
 
@@ -125,38 +129,38 @@ export function TurnOrderPanel({
 
 
   async function handleRoll() {
-
-    await rollInitiative(roomId);
-
-    onUpdate();
-
+    setGmError(null);
+    try {
+      const snap = await rollInitiative(roomId);
+      onSnapshot?.(snap);
+      onUpdate();
+    } catch (e) {
+      setGmError(e instanceof Error ? e.message : "Falha ao rolar iniciativa");
+    }
   }
 
 
 
   async function handleNext() {
-
     setBusy(true);
-
+    setGmError(null);
     try {
-
-      await nextCombatTurn(roomId);
-
+      const snap = await nextCombatTurn(roomId);
+      onSnapshot?.(snap);
       onUpdate();
-
+    } catch (e) {
+      setGmError(e instanceof Error ? e.message : "Falha ao passar turno");
     } finally {
-
       setBusy(false);
-
     }
-
   }
 
   async function runGmAction(key: string, body: Parameters<typeof postGmCombatAction>[1]) {
     setGmBusy(key);
     setGmError(null);
     try {
-      await postGmCombatAction(roomId, body);
+      const snap = await postGmCombatAction(roomId, body);
+      onSnapshot?.(snap);
       onUpdate();
     } catch (e) {
       setGmError(e instanceof Error ? e.message : "Falha");
@@ -314,14 +318,6 @@ export function TurnOrderPanel({
               <li
                 key={id}
                 className={rowClass || undefined}
-                draggable={draggable}
-                onDragStart={(e) => {
-                  if (!draggable) return;
-                  setDragId(id);
-                  setDragOverId(id);
-                  e.dataTransfer.effectAllowed = "move";
-                  e.dataTransfer.setData("text/plain", id);
-                }}
                 onDragOver={(e) => {
                   if (!draggable || !dragId || dragId === id) return;
                   e.preventDefault();
@@ -335,10 +331,6 @@ export function TurnOrderPanel({
                   setDragId(null);
                   setDragOverId(null);
                 }}
-                onDragEnd={() => {
-                  setDragId(null);
-                  setDragOverId(null);
-                }}
                 onMouseEnter={() => {
                   if (attackable) onHoverAttackTargetChange?.(id);
                 }}
@@ -348,7 +340,22 @@ export function TurnOrderPanel({
               >
 
                 {draggable ? (
-                  <span className="vtt-turn-drag-handle" aria-hidden title="Arrastar para reordenar">
+                  <span
+                    className="vtt-turn-drag-handle"
+                    draggable
+                    aria-hidden
+                    title="Arrastar para reordenar"
+                    onDragStart={(e) => {
+                      setDragId(id);
+                      setDragOverId(id);
+                      e.dataTransfer.effectAllowed = "move";
+                      e.dataTransfer.setData("text/plain", id);
+                    }}
+                    onDragEnd={() => {
+                      setDragId(null);
+                      setDragOverId(null);
+                    }}
+                  >
                     ≡
                   </span>
                 ) : (
@@ -458,7 +465,10 @@ export function TurnOrderPanel({
                 ) : null}
 
                 {canControl && !defeated ? (
-                  <div className="vtt-turn-gm-actions">
+                  <div
+                    className="vtt-turn-gm-actions"
+                    onPointerDown={(e) => e.stopPropagation()}
+                  >
                     {!active ? (
                       <button
                         type="button"
