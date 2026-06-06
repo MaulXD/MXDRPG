@@ -4,6 +4,8 @@ import { applyConditionPaRules, applyPaSpend } from "@/lib/combat/pa-turn";
 import type { Axial } from "@/lib/vtt/hex-math";
 import { canMoveToken, type MoveMode } from "@/lib/vtt/movement";
 import { createMonsterTokenFromEntryId } from "@/lib/vtt/monsters";
+import { nextMonsterDisplayName } from "@/lib/vtt/monster-display-name";
+import { ensureCombatActiveHasPa } from "./combat-turn";
 import { createPlayerTokenFromActor } from "@/lib/vtt/player-token";
 import type { MonsterSpawnOptions } from "@/lib/vtt/monster-scaling";
 import type { BattleToken } from "@/lib/vtt/types";
@@ -152,6 +154,8 @@ export async function spawnRoomMonster(
   const token = createMonsterTokenFromEntryId(monsterEntryId, axial, options);
   if (!token) return { ok: false, error: "Monstro não encontrado no compêndio" };
 
+  token.name = nextMonsterDisplayName(room.scene.tokens, token.name);
+
   if (!canAnchorTokenAt(room.scene, axial)) {
     return { ok: false, error: "Hex bloqueado ou ocupado" };
   }
@@ -166,6 +170,7 @@ export async function spawnRoomMonster(
       ...room.combat,
       order: [...room.combat.order, token.id],
     };
+    ensureCombatActiveHasPa(room);
   }
 
   const updated = await persistRoom(roomId, room);

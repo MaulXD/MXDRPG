@@ -2,6 +2,7 @@ import { canManageRoom } from "@/lib/auth/room-access";
 import type { SessionUser } from "@/lib/auth/types";
 import { activeTokenId, type CombatTrack } from "@/lib/room/combat";
 import type { RoomActor } from "@/lib/room/types";
+import { isMonsterToken } from "@/lib/room/settings";
 import type { BattleScene, BattleToken } from "@/lib/vtt/types";
 
 export type CombatTurnRoom = {
@@ -21,7 +22,7 @@ export function canViewTokenHp(
 ): boolean {
   if (canManageRoom(room, user)) return true;
   if (token.vidaMax == null) return false;
-  if (token.monsterEntryId && !token.linked) {
+  if (isMonsterToken(token) && !token.linked) {
     return Boolean(opts?.showMonsterHpToPlayers);
   }
   if (token.linked && !token.monsterEntryId) return true;
@@ -35,7 +36,7 @@ export function canViewTokenPa(
   token: BattleToken
 ): boolean {
   if (canManageRoom(room, user)) return true;
-  if (token.monsterEntryId && !token.linked) return false;
+  if (isMonsterToken(token) && !token.linked) return false;
   if (token.linked && token.actorId) {
     if (room.roomId === "demo") return true;
     if (!user) return false;
@@ -52,7 +53,7 @@ export function canControlToken(
   if (room.roomId === "demo") return true;
   if (!user) return false;
   if (canManageRoom(room, user)) return true;
-  if (token.monsterEntryId) return false;
+  if (isMonsterToken(token)) return false;
   if (token.linked && token.actorId) {
     return room.actors[token.actorId]?.ownerId === user.id;
   }

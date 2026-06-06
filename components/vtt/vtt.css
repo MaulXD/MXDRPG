@@ -989,6 +989,50 @@
   letter-spacing: 0.04em;
 }
 
+.vtt-turn-of-banner {
+  position: absolute;
+  left: 50%;
+  top: 12px;
+  transform: translateX(-50%);
+  z-index: 6;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: min(520px, 92vw);
+  padding: 0.55rem 1.1rem;
+  border-radius: 999px;
+  border: 2px solid color-mix(in srgb, var(--accent-primary, #c9a962) 50%, transparent);
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--accent-primary, #c9a962) 22%, rgba(14, 16, 22, 0.95)) 0%,
+    rgba(10, 12, 18, 0.94) 100%
+  );
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45);
+  pointer-events: none;
+  text-align: center;
+}
+
+.vtt-turn-of-banner__label {
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.vtt-turn-of-banner__name {
+  font-size: 1.05rem;
+  font-family: var(--font-display);
+  color: var(--accent-primary, #e8d4a8);
+}
+
+.vtt-turn-of-banner__round {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-left: 0.15rem;
+}
+
 .vtt-end-turn-bar {
   position: absolute;
   right: 12px;
@@ -2581,25 +2625,32 @@
 
 .combat-action-detail {
   margin: 0.55rem 0 0;
-  padding: 0.55rem 0.65rem;
-  border-radius: 8px;
-  border: 1px solid color-mix(in srgb, var(--accent-primary, #c9a962) 28%, transparent);
-  background: color-mix(in srgb, var(--surface-raised, #1a1f2e) 88%, var(--accent-primary, #c9a962) 12%);
+  padding: 0.65rem 0.75rem;
+  border-radius: 10px;
+  border: 2px solid color-mix(in srgb, var(--accent-primary, #c9a962) 45%, transparent);
+  background: linear-gradient(
+    165deg,
+    color-mix(in srgb, var(--accent-primary, #c9a962) 16%, var(--surface-raised, #1a1f2e)) 0%,
+    color-mix(in srgb, var(--surface-raised, #1a1f2e) 92%, transparent) 100%
+  );
 }
 
 .combat-action-detail__title {
-  margin: 0 0 0.35rem;
-  font-size: 0.78rem;
+  margin: 0 0 0.4rem;
+  font-size: 0.86rem;
   font-weight: 600;
-  color: var(--text);
+  color: var(--accent-primary, #e8d4a8);
 }
 
 .combat-action-detail__list {
   margin: 0;
   padding: 0 0 0 1rem;
-  font-size: 0.7rem;
-  line-height: 1.45;
-  color: var(--text-muted);
+  font-size: 0.8rem;
+  line-height: 1.6;
+  color: rgba(232, 226, 214, 0.92);
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .combat-action-detail__list li + li {

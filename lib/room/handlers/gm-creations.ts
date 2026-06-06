@@ -11,6 +11,8 @@ import {
   type GmCreatureStats,
 } from "@/lib/room/gm-creations";
 import { createPlayerTokenFromActor } from "@/lib/vtt/player-token";
+import { nextMonsterDisplayName } from "@/lib/vtt/monster-display-name";
+import { ensureCombatActiveHasPa } from "./combat-turn";
 import type { Axial } from "@/lib/vtt/hex-math";
 import type { CharacterSheet } from "@/lib/character/types";
 import { canAnchorTokenAt } from "@/lib/vtt/dungeon-layer";
@@ -106,9 +108,15 @@ export async function spawnRoomGmCreation(
   if (creation.kind === "creature") {
     const token = createCreatureTokenFromGmCreation(creation, axial);
     if (!token) return { ok: false, error: "Criatura inválida" };
+    const baseName =
+      creation.source.type === "monster"
+        ? (creation.source.label ?? token.name.replace(/\s*\(custom\)\s*$/i, ""))
+        : token.name.replace(/\s*\(custom\)\s*$/i, "");
+    token.name = nextMonsterDisplayName(room.scene.tokens, baseName || "Monstro");
     room.scene = { ...room.scene, tokens: [...room.scene.tokens, token] };
     if (room.combat?.order) {
       room.combat = { ...room.combat, order: [...room.combat.order, token.id] };
+      ensureCombatActiveHasPa(room);
     }
     const updated = await persistRoom(roomId, room);
     return { ok: true, snapshot: toSnapshot(updated), tokenId: token.id };
