@@ -264,7 +264,8 @@ export function HexBattlefield({
     mapImageOffsetY?: number;
   } | null>(null);
 
-  const displayScene = snapshot?.scene ?? scene;
+  /** `scene` é a fonte de verdade do tabuleiro (sync imediato + SSE). */
+  const displayScene = scene;
   const canvasScene = useMemo(() => {
     if (!floorPreview) return displayScene;
     return { ...displayScene, ...floorPreview };
@@ -430,7 +431,7 @@ export function HexBattlefield({
     const out: Record<string, string | undefined> = {};
     if (!snapshot?.actors) return out;
     for (const [id, a] of Object.entries(snapshot.actors)) {
-      out[id] = a.identity.raca;
+      out[id] = a.identity?.raca;
     }
     return out;
   }, [snapshot?.actors]);
@@ -444,8 +445,11 @@ export function HexBattlefield({
 
   const syncRoom = useCallback(
     (snap?: RoomSnapshot) => {
-      if (snap) {
+      if (snap?.scene) {
         setScene(snap.scene);
+        if (onApplySnapshot) onApplySnapshot(snap);
+        else refresh();
+      } else if (snap) {
         if (onApplySnapshot) onApplySnapshot(snap);
         else refresh();
       } else {
@@ -1126,6 +1130,7 @@ export function HexBattlefield({
           highlights.moveMode,
           turn.bypassTurn
         );
+        if (!snap?.scene) throw new Error("Resposta inválida ao mover token");
         syncRoom(snap);
         moveAnimRef.current = { tokenId: selected.id, q: origin.q, r: origin.r };
         redraw();
@@ -1172,6 +1177,7 @@ export function HexBattlefield({
       setActionErr(null);
       try {
         const snap = await repositionRoomToken(roomId, tokenId, axial.q, axial.r);
+        if (!snap?.scene) throw new Error("Resposta inválida ao mover token");
         moveAnimRef.current = null;
         syncRoom(snap);
         redraw();
