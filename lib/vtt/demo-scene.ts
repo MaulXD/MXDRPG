@@ -63,7 +63,7 @@ export const DEMO_SCENE: BattleScene = {
     },
     {
       id: "t2",
-      name: "Goblin",
+      name: "Goblin 1",
       axial: { q: 1, r: 0 },
       color: "#8b4513",
       walk: 4,
@@ -82,7 +82,7 @@ export const DEMO_SCENE: BattleScene = {
     },
     {
       id: "t4",
-      name: "Goblin",
+      name: "Goblin 2",
       axial: { q: 3, r: 0 },
       color: "#8b4513",
       walk: 4,
@@ -101,7 +101,7 @@ export const DEMO_SCENE: BattleScene = {
     },
     {
       id: "t9",
-      name: "Goblin",
+      name: "Goblin 3",
       axial: { q: 2, r: -1 },
       color: "#8b4513",
       walk: 4,

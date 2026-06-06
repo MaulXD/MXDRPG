@@ -1838,6 +1838,22 @@
 
 }
 
+.sheet-shell--popup .sheet-level-box__xp-primary,
+.sheet-shell--popup .inv-row h4,
+.sheet-shell--popup .inv-section__title {
+  color: var(--sheet-text, #f0ece4);
+}
+
+.sheet-shell--popup .inv-row__desc,
+.sheet-shell--popup .inv-section__hint,
+.sheet-shell--popup .sheet-level-box__xp-secondary {
+  color: rgba(232, 226, 214, 0.86);
+}
+
+.sheet-shell--popup .inv-section {
+  border-color: color-mix(in srgb, var(--sheet-accent, #c9a962) 28%, transparent);
+}
+
 
 
 .sheet-popup-advanced__body .lu-tree {

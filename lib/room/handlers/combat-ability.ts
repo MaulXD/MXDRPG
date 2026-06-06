@@ -12,6 +12,7 @@ import { applyPaSpend } from "@/lib/combat/pa-turn";
 import { markActionRechargeUsed } from "@/lib/combat/recharge";
 import { enrichBuffsWithTimedEffects } from "@/lib/combat/timed-effects";
 import { getEntry } from "@/lib/compendium/registry";
+import { isMonsterToken } from "@/lib/room/settings";
 import { formatAttackChatDetail } from "@/lib/combat/attack";
 import { formatSaveChatDetail } from "@/lib/combat/spell";
 import type { CombatActionRequest } from "@/lib/combat/types";
@@ -188,7 +189,7 @@ export async function executeRoomAbility(
   if (attacker.linked && attacker.actorId && !actor) {
     return { ok: false, error: "Ficha não encontrada" };
   }
-  if (!actor && !attacker.monsterEntryId) {
+  if (!actor && !isMonsterToken(attacker)) {
     return { ok: false, error: "Habilidade requer ficha linkada ou monstro" };
   }
 

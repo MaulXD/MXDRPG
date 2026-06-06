@@ -54,7 +54,7 @@ export function EndTurnBar({
         <span className="vtt-end-turn-label">Rodada {combat.round}</span>
         {activeToken ? (
           <span className="vtt-end-turn-active">
-            Vez de <strong>{activeToken.name}</strong>
+            Turno de: <strong>{activeToken.name}</strong>
           </span>
         ) : null}
       </div>

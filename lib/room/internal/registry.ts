@@ -9,6 +9,7 @@ import {
 } from "@/lib/vtt/token-integrity";
 import { welcomeChat } from "../chat";
 import { emptyCombat } from "../combat";
+import { ensureCombatActiveHasPa } from "../handlers/combat-turn";
 import { pruneMapMarkups } from "@/lib/vtt/map-markup";
 import { prunePings } from "@/lib/vtt/ping";
 import { getRoomGmCreations } from "../gm-creations";
@@ -183,6 +184,7 @@ export async function getRoom(roomId: string): Promise<RoomState | null> {
   if (room) refreshDemoActorsIfStale(room);
   if (room && !room.combat) {
     room.combat = emptyCombat(room.scene.tokens);
+    ensureCombatActiveHasPa(room);
   }
   if (room && !room.chat?.length) {
     room.chat = [welcomeChat()];
