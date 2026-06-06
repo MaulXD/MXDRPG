@@ -32,6 +32,8 @@ import type { MoveCheck } from "@/lib/vtt/movement";
 import type { TargetCombatPreview } from "@/lib/combat/hit-chance";
 import type { TokenHpDisplay } from "@/lib/vtt/token-hp-display";
 import type { ActiveTokenCastFx } from "@/lib/vtt/token-cast-fx";
+import { resolveHexPalette } from "@/lib/vtt/hex-highlight-palette";
+import type { MapBackdropTone } from "@/lib/vtt/map-luminance";
 import type { BattleScene } from "@/lib/vtt/types";
 
 export type HexCanvasDrawState = {
@@ -64,6 +66,7 @@ export type HexCanvasDrawState = {
   visibleHexSet: Set<string> | null;
   pings: BattlePing[];
   mapImage: HTMLImageElement | null;
+  mapBackdropTone?: MapBackdropTone;
   tokenHpDisplay: Map<string, TokenHpDisplay>;
   dungeonEditorActive?: boolean;
   dungeonEditorTool?: "wall" | "object" | null;
@@ -137,6 +140,7 @@ export function useHexCanvas(
       drawMapImageLayer(ctx, mapImg, s.scene, layout);
     }
 
+    const hexPalette = resolveHexPalette(s.mapBackdropTone ?? "none");
     drawHexGridLayer(ctx, {
       gridCells: s.gridCells,
       hexSize: s.scene.hexSize,
@@ -157,6 +161,8 @@ export function useHexCanvas(
       pathCells: s.pathCells,
       pathDashPhase: pathDashPhaseRef.current,
       visibleHexSet: s.visibleHexSet,
+      mapBackdropTone: s.mapBackdropTone,
+      palette: hexPalette,
     });
 
     drawDungeonLayer(ctx, s.scene, s.scene.hexSize, layout, {

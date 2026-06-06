@@ -61,6 +61,45 @@
   --vtt-hex-run-stroke: rgba(122, 163, 201, 0.68);
   --vtt-hex-hover-fill: rgba(122, 163, 201, 0.2);
   --vtt-hex-hover-stroke: #7aa3c9;
+  --vtt-hex-turn-walk-fill: rgba(72, 110, 95, 0.14);
+  --vtt-hex-turn-walk-stroke: rgba(100, 155, 130, 0.44);
+
+  /* Grid sobre mapa escuro — traços claros */
+  --vtt-hex-on-dark-fill: rgba(255, 255, 255, 0.05);
+  --vtt-hex-on-dark-stroke: rgba(255, 255, 255, 0.28);
+  --vtt-hex-on-dark-walk-fill: rgba(130, 210, 150, 0.24);
+  --vtt-hex-on-dark-walk-stroke: rgba(170, 240, 185, 0.78);
+  --vtt-hex-on-dark-turn-walk-fill: rgba(130, 210, 150, 0.14);
+  --vtt-hex-on-dark-turn-walk-stroke: rgba(170, 240, 185, 0.48);
+  --vtt-hex-on-dark-walk-paid-fill: rgba(90, 200, 210, 0.28);
+  --vtt-hex-on-dark-walk-paid-stroke: rgba(130, 230, 240, 0.88);
+  --vtt-hex-on-dark-run-fill: rgba(255, 210, 90, 0.22);
+  --vtt-hex-on-dark-run-stroke: rgba(255, 230, 140, 0.78);
+  --vtt-hex-on-dark-hover-fill: rgba(255, 255, 255, 0.12);
+  --vtt-hex-on-dark-hover-stroke: rgba(255, 255, 255, 0.72);
+  --vtt-hex-on-dark-invalid-fill: rgba(255, 90, 80, 0.32);
+  --vtt-hex-on-dark-invalid-stroke: rgba(255, 140, 120, 0.95);
+  --vtt-hex-on-dark-path-stroke: rgba(255, 220, 120, 0.95);
+  --vtt-hex-on-dark-path-glow: rgba(255, 200, 80, 0.38);
+
+  /* Grid sobre mapa claro — traços escuros */
+  --vtt-hex-on-light-fill: rgba(0, 0, 0, 0.06);
+  --vtt-hex-on-light-stroke: rgba(0, 0, 0, 0.34);
+  --vtt-hex-on-light-walk-fill: rgba(30, 110, 70, 0.22);
+  --vtt-hex-on-light-walk-stroke: rgba(20, 90, 55, 0.82);
+  --vtt-hex-on-light-turn-walk-fill: rgba(30, 110, 70, 0.12);
+  --vtt-hex-on-light-turn-walk-stroke: rgba(20, 90, 55, 0.52);
+  --vtt-hex-on-light-walk-paid-fill: rgba(20, 120, 130, 0.26);
+  --vtt-hex-on-light-walk-paid-stroke: rgba(10, 100, 115, 0.88);
+  --vtt-hex-on-light-run-fill: rgba(160, 100, 20, 0.2);
+  --vtt-hex-on-light-run-stroke: rgba(130, 80, 10, 0.78);
+  --vtt-hex-on-light-hover-fill: rgba(0, 0, 0, 0.1);
+  --vtt-hex-on-light-hover-stroke: rgba(0, 0, 0, 0.72);
+  --vtt-hex-on-light-invalid-fill: rgba(180, 40, 30, 0.28);
+  --vtt-hex-on-light-invalid-stroke: rgba(140, 20, 15, 0.95);
+  --vtt-hex-on-light-path-stroke: rgba(30, 80, 160, 0.95);
+  --vtt-hex-on-light-path-glow: rgba(40, 100, 180, 0.32);
+
   --vtt-token-turn-glow: rgba(122, 163, 201, 0.5);
   --vtt-token-ring-turn: #5a8ab8;
   --vtt-token-ring-selected: #8eb8dc;
@@ -320,6 +359,31 @@
 
 .vtt-chrome[data-vtt-mesa="foundry"] .vtt-view-btn--dungeon-on {
   border-color: var(--mesa-accent);
+  color: var(--mesa-accent);
+  background: var(--mesa-accent-soft);
+}
+
+/* Editor de mapa — painel no dock/janela */
+.vtt-chrome[data-vtt-mesa="foundry"] .vtt-dungeon-layer-tab--on,
+.vtt-chrome[data-vtt-mesa="foundry"] .vtt-dungeon-tool--on {
+  border-color: var(--mesa-accent-border);
+  color: var(--mesa-accent);
+  background: var(--mesa-accent-soft);
+}
+
+.vtt-chrome[data-vtt-mesa="foundry"] .vtt-dungeon-layer--floor {
+  border-color: var(--mesa-accent-border);
+  background: var(--mesa-accent-soft);
+}
+
+.vtt-chrome[data-vtt-mesa="foundry"] .vtt-btn--floor-upload {
+  border-color: var(--mesa-accent-border) !important;
+  background: var(--mesa-accent-soft) !important;
+  color: var(--mesa-text);
+}
+
+.vtt-chrome[data-vtt-mesa="foundry"] .vtt-dungeon-toggle--on {
+  border-color: var(--mesa-accent-border);
   color: var(--mesa-accent);
   background: var(--mesa-accent-soft);
 }

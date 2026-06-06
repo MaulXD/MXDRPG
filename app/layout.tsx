@@ -9,6 +9,7 @@ import { ThemeScript } from "@/components/ThemeScript";
 import "./globals.css";
 import "@/components/home/home.css";
 import "@/components/vtt/vtt.css";
+import "@/components/vtt/mesa-theme.css";
 
 const lora = Lora({
   subsets: ["latin"],

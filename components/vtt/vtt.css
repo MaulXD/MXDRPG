@@ -16,7 +16,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
+  flex-wrap: wrap;
+  gap: 0.65rem 1rem;
   padding: 0.65rem 1.25rem;
   border-radius: 0;
   border-left: none;
@@ -51,7 +52,7 @@
 
 .vtt-nav a:hover {
   color: var(--accent);
-  background: rgba(201, 169, 98, 0.06);
+  background: var(--accent-soft, rgba(122, 163, 201, 0.12));
 }
 
 .vtt-main {
@@ -2697,43 +2698,67 @@
   outline-offset: -2px;
 }
 
-.vtt-map-panel {
+.vtt-field {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  margin: 0.75rem 0;
-  padding: 0.65rem 0.75rem;
-  border-radius: 8px;
-  border: 1px solid var(--border-subtle, rgba(201, 169, 98, 0.2));
-  background: rgba(8, 10, 14, 0.45);
-}
-
-.vtt-map-panel-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-
-.vtt-map-panel .vtt-field {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  font-size: 0.72rem;
+  gap: 0.35rem;
+  min-width: 0;
+  width: 100%;
+  font-size: 0.78rem;
   color: var(--text-dim);
 }
 
-.vtt-map-panel .vtt-field input {
-  padding: 0.35rem 0.5rem;
+.vtt-field > span {
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.vtt-field input,
+.vtt-field select,
+.vtt-field textarea {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  padding: 0.45rem 0.6rem;
   border-radius: 6px;
-  border: 1px solid rgba(201, 169, 98, 0.25);
-  background: rgba(4, 6, 10, 0.8);
-  color: var(--text, #e8e0d4);
+  border: 1px solid var(--glass-border);
+  background: var(--surface-inset);
+  color: var(--text);
+  font-size: 0.85rem;
+  font-family: inherit;
+}
+
+.vtt-field input[type="range"] {
+  padding: 0.25rem 0;
+  accent-color: var(--accent);
+}
+
+.vtt-map-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  margin: 0.75rem 0;
+  padding: 0.75rem 0.85rem;
+  border-radius: 8px;
+  border: 1px solid var(--glass-border);
+  background: rgba(8, 12, 18, 0.45);
+  min-width: 0;
+}
+
+.vtt-map-panel-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 6.5rem), 1fr));
+  gap: 0.5rem;
+  width: 100%;
+  min-width: 0;
+}
+
+.vtt-map-panel .vtt-field {
   font-size: 0.78rem;
 }
 
 .vtt-field--compact {
-  flex: 1;
-  min-width: 4.5rem;
+  min-width: 0;
 }
 
 .vtt-check {
@@ -2754,35 +2779,38 @@
 .vtt-dungeon-panel {
   display: flex;
   flex-direction: column;
-  gap: 0.55rem;
+  gap: 0.65rem;
   margin: 0.75rem 0;
-  padding: 0.65rem 0.75rem;
+  padding: 0.75rem 0.85rem;
   border-radius: 8px;
-  border: 1px solid rgba(201, 169, 98, 0.28);
-  background: rgba(8, 10, 14, 0.5);
+  border: 1px solid var(--glass-border);
+  background: rgba(8, 12, 18, 0.5);
   scroll-margin-top: 1rem;
+  min-width: 0;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .vtt-dungeon-panel--open {
-  border-color: rgba(201, 169, 98, 0.55);
-  box-shadow: 0 0 0 1px rgba(201, 169, 98, 0.15);
+  border-color: var(--glass-border-bright);
+  box-shadow: 0 0 0 1px rgba(122, 163, 201, 0.12);
 }
 
 .vtt-dungeon-floor-pointer {
   margin: 0;
-  padding: 0.45rem 0.55rem;
+  padding: 0.5rem 0.6rem;
   border-radius: 6px;
-  font-size: 0.68rem;
-  line-height: 1.4;
-  color: rgba(232, 226, 214, 0.82);
-  background: rgba(201, 169, 98, 0.08);
-  border: 1px dashed rgba(201, 169, 98, 0.35);
+  font-size: 0.75rem;
+  line-height: 1.45;
+  color: var(--text-muted);
+  background: var(--accent-soft);
+  border: 1px dashed var(--glass-border);
 }
 
 .vtt-dungeon-floor-link {
   font: inherit;
   font-weight: 700;
-  color: #c9a962;
+  color: var(--accent);
   background: none;
   border: none;
   padding: 0;
@@ -2796,101 +2824,108 @@
 }
 
 .vtt-dungeon-layer--floor {
-  padding: 0.55rem;
+  padding: 0.65rem 0.7rem;
   border-radius: 8px;
-  background: rgba(201, 169, 98, 0.06);
-  border: 1px solid rgba(201, 169, 98, 0.22);
+  background: var(--accent-soft);
+  border: 1px solid var(--glass-border);
+  min-width: 0;
 }
 
 .vtt-dungeon-floor-callout {
   margin: 0;
-  font-size: 0.72rem;
-  line-height: 1.45;
-  color: rgba(232, 226, 214, 0.88);
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: var(--text-muted);
 }
 
 .vtt-btn--floor-upload {
   font-weight: 700;
-  border-color: rgba(201, 169, 98, 0.55) !important;
-  background: rgba(201, 169, 98, 0.18) !important;
+  border-color: var(--glass-border-bright) !important;
+  background: var(--accent-soft) !important;
 }
 
 .vtt-dungeon-panel-head {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   gap: 0.5rem;
+  flex-wrap: wrap;
 }
 
 .vtt-dungeon-toggle {
-  font-size: 0.68rem;
+  font-size: 0.75rem;
   font-weight: 600;
-  padding: 0.28rem 0.55rem;
+  padding: 0.35rem 0.65rem;
   border-radius: 99px;
-  border: 1px solid rgba(201, 169, 98, 0.35);
-  background: rgba(0, 0, 0, 0.3);
-  color: rgba(232, 226, 214, 0.75);
+  border: 1px solid var(--glass-border);
+  background: rgba(0, 0, 0, 0.28);
+  color: var(--text-muted);
   cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .vtt-dungeon-toggle--on {
-  border-color: rgba(120, 200, 255, 0.55);
-  background: rgba(40, 72, 96, 0.45);
-  color: #9ed4ff;
+  border-color: var(--glass-border-bright);
+  background: var(--accent-soft);
+  color: var(--accent);
 }
 
 .vtt-dungeon-active-hint {
   margin: 0;
-  font-size: 0.68rem;
-  color: rgba(158, 212, 255, 0.85);
+  font-size: 0.75rem;
+  color: var(--accent);
 }
 
 .vtt-dungeon-layer-tabs {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.3rem;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.35rem;
+  width: 100%;
 }
 
 .vtt-dungeon-layer-tab {
-  flex: 1;
-  min-width: 5.5rem;
-  font-size: 0.65rem;
+  min-width: 0;
+  font-size: 0.72rem;
   font-weight: 600;
-  padding: 0.35rem 0.45rem;
+  padding: 0.45rem 0.4rem;
   border-radius: 6px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--glass-border);
   background: rgba(0, 0, 0, 0.28);
-  color: rgba(232, 226, 214, 0.72);
+  color: var(--text-muted);
   cursor: pointer;
+  text-align: center;
+  line-height: 1.2;
 }
 
 .vtt-dungeon-layer-tab--on {
-  border-color: rgba(201, 169, 98, 0.55);
-  color: #c9a962;
-  background: rgba(201, 169, 98, 0.12);
+  border-color: var(--glass-border-bright);
+  color: var(--accent);
+  background: var(--accent-soft);
 }
 
 .vtt-dungeon-tools {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.35rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 5.5rem), 1fr));
+  gap: 0.4rem;
 }
 
 .vtt-dungeon-tool {
-  font-size: 0.68rem;
+  font-size: 0.75rem;
   font-weight: 600;
-  padding: 0.28rem 0.5rem;
+  padding: 0.4rem 0.5rem;
   border-radius: 6px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid var(--glass-border);
   background: rgba(0, 0, 0, 0.28);
-  color: rgba(232, 226, 214, 0.78);
+  color: var(--text-muted);
   cursor: pointer;
+  min-height: 2.1rem;
 }
 
 .vtt-dungeon-tool--on {
-  border-color: rgba(201, 169, 98, 0.55);
-  color: #c9a962;
-  background: rgba(201, 169, 98, 0.12);
+  border-color: var(--glass-border-bright);
+  color: var(--accent);
+  background: var(--accent-soft);
 }
 
 .vtt-dungeon-tool:disabled {
@@ -2913,15 +2948,29 @@
 }
 
 .vtt-dungeon-floor-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 10rem), 1fr));
+  gap: 0.45rem;
+  width: 100%;
+}
+
+.vtt-dungeon-floor-actions .vtt-btn {
+  width: 100%;
+  min-height: 2.35rem;
+  font-size: 0.8rem;
 }
 
 .vtt-dungeon-floor-status {
   margin: 0;
-  font-size: 0.68rem;
-  color: rgba(140, 200, 140, 0.9);
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: var(--accent-success);
+}
+
+.vtt-btn--compact {
+  min-height: 2rem;
+  padding: 0.35rem 0.5rem !important;
+  font-size: 0.72rem !important;
 }
 
 .vtt-settings-fieldset {
@@ -2939,13 +2988,14 @@
 }
 
 .vtt-btn {
-  padding: 0.35rem 0.65rem;
+  padding: 0.4rem 0.7rem;
   border-radius: 6px;
-  border: 1px solid rgba(201, 169, 98, 0.45);
-  background: rgba(201, 169, 98, 0.12);
-  color: var(--text, #e8e0d4);
-  font-size: 0.75rem;
+  border: 1px solid var(--glass-border);
+  background: var(--accent-soft);
+  color: var(--text);
+  font-size: 0.8rem;
   cursor: pointer;
+  min-height: 2.1rem;
 }
 
 .vtt-btn:disabled {
@@ -3152,7 +3202,7 @@
 .comp-rail-list,
 .room-chat-log {
   scrollbar-width: thin;
-  scrollbar-color: rgba(201, 169, 98, 0.45) rgba(0, 0, 0, 0.2);
+  scrollbar-color: rgba(122, 163, 201, 0.45) rgba(0, 0, 0, 0.2);
 }
 
 .mesa-rail-panel::-webkit-scrollbar,
@@ -3169,7 +3219,7 @@
 .mesa-panel-scroll--rail::-webkit-scrollbar-thumb,
 .comp-rail-list::-webkit-scrollbar-thumb,
 .room-chat-log::-webkit-scrollbar-thumb {
-  background: rgba(201, 169, 98, 0.35);
+  background: rgba(122, 163, 201, 0.35);
   border-radius: 4px;
 }
 
@@ -3350,7 +3400,7 @@
 .vtt-condition-btn.active {
   border-color: var(--accent);
   color: var(--accent);
-  background: rgba(201, 169, 98, 0.1);
+  background: var(--accent-soft);
 }
 
 .vtt-gm-progress {
@@ -3388,5 +3438,31 @@
   flex: 1;
   min-width: 5.5rem;
   margin-bottom: 0;
+}
+
+@media (max-width: 720px) {
+  .vtt-topbar {
+    padding: 0.5rem 0.75rem;
+  }
+
+  .vtt-nav {
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+
+  .vtt-topbar-actions {
+    margin-left: auto;
+  }
+
+  .vtt-dungeon-layer-tabs {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 400px) {
+  .vtt-map-panel-row {
+    grid-template-columns: 1fr;
+  }
 }
 

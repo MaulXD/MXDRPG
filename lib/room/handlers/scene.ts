@@ -1,7 +1,7 @@
-import { canEditRoomScene } from "@/lib/auth/room-access";
+import { canEditMapMarkups, canEditRoomScene } from "@/lib/auth/room-access";
 import type { SessionUser } from "@/lib/auth/types";
 import { sanitizeDungeonObjects } from "@/lib/vtt/dungeon-layer";
-import { sanitizeMapMarkups } from "@/lib/vtt/map-markup";
+import { sanitizeMapMarkups, validatePlayerMarkupPatch } from "@/lib/vtt/map-markup";
 import { revealAxial } from "@/lib/vtt/fog-of-war";
 import { inGrid } from "@/lib/vtt/token-occupancy";
 import { getRoom, persistRoom, toSnapshot } from "../internal/registry";
@@ -29,7 +29,19 @@ export async function patchRoomScene(
 ): Promise<RoomSnapshot | null> {
   const room = await getRoom(roomId);
   if (!room) return null;
-  if (!canEditRoomScene(room, user)) return null;
+
+  const markupOnly =
+    patch.mapMarkups !== undefined &&
+    Object.keys(patch).every((k) => k === "mapMarkups");
+
+  if (markupOnly) {
+    if (!canEditMapMarkups(room, user)) return null;
+    if (!validatePlayerMarkupPatch(room.scene.mapMarkups ?? [], patch.mapMarkups!, user, room)) {
+      return null;
+    }
+  } else if (!canEditRoomScene(room, user)) {
+    return null;
+  }
 
   const next = { ...room.scene, ...patch };
   if (patch.dungeonObjects !== undefined) {

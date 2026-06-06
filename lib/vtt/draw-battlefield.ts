@@ -2,6 +2,11 @@ import type { Axial } from "@/lib/vtt/hex-math";
 import { axialToPixel, hexCorners, hexDrawRadius } from "@/lib/vtt/hex-math";
 import { hexToMeters, walkRemaining, type MoveCheck } from "@/lib/vtt/movement";
 import { readThemeColor } from "@/lib/theme";
+import {
+  resolveHexPalette,
+  type HexHighlightPalette,
+} from "@/lib/vtt/hex-highlight-palette";
+import type { MapBackdropTone } from "@/lib/vtt/map-luminance";
 import type { PortraitFocus } from "@/lib/media/portrait-focus";
 import { DEFAULT_PORTRAIT_FOCUS } from "@/lib/media/portrait-focus";
 import { collectPlayerActorIds, resolveTokenRing } from "@/lib/vtt/token-colors";
@@ -110,50 +115,54 @@ type GridDrawParams = {
   pathDashPhase: number;
   /** null = todos os hexes visíveis (mestre ou fog desligado) */
   visibleHexSet: Set<string> | null;
+  mapBackdropTone?: MapBackdropTone;
+  palette?: HexHighlightPalette;
 };
 
 export function drawHexGridLayer(ctx: CanvasRenderingContext2D, p: GridDrawParams): void {
   const { layout, hexSize } = p;
   const { ox, oy } = layout;
+  const pal =
+    p.palette ?? resolveHexPalette(p.mapBackdropTone ?? "none");
 
   for (const cell of p.gridCells) {
     const key = `${cell.q},${cell.r}`;
     if (p.visibleHexSet && !p.visibleHexSet.has(key)) continue;
 
     const { x, y } = axialToPixel(cell.q, cell.r, hexSize, ox, oy);
-    let fill = readThemeColor("--vtt-hex-fill", "rgba(180,155,110,0.07)");
-    let stroke = readThemeColor("--vtt-hex-stroke", "rgba(180,155,110,0.28)");
+    let fill = pal.fill;
+    let stroke = pal.stroke;
     let lineWidth = 1.5;
 
     if (p.showMovement && p.walkSet.has(key) && !p.paidWalkSet.has(key)) {
       if (p.turnMovePreview) {
-        fill = readThemeColor("--vtt-hex-turn-walk-fill", "rgba(90,115,82,0.18)");
-        stroke = readThemeColor("--vtt-hex-turn-walk-stroke", "rgba(120,150,95,0.5)");
+        fill = pal.turnWalkFill;
+        stroke = pal.turnWalkStroke;
       } else {
-        fill = readThemeColor("--vtt-hex-walk-fill", "rgba(90,115,82,0.28)");
-        stroke = readThemeColor("--vtt-hex-walk-stroke", "rgba(120,150,95,0.75)");
+        fill = pal.walkFill;
+        stroke = pal.walkStroke;
       }
     }
     if (p.showMovement && p.paidWalkSet.has(key)) {
-      fill = readThemeColor("--vtt-hex-walk-paid-fill", "rgba(70,130,120,0.32)");
-      stroke = readThemeColor("--vtt-hex-walk-paid-stroke", "rgba(100,180,165,0.85)");
+      fill = pal.walkPaidFill;
+      stroke = pal.walkPaidStroke;
     }
     if (p.showMovement && p.rangeSet.has(key) && !p.walkSet.has(key)) {
-      fill = readThemeColor("--vtt-hex-run-fill", "rgba(184,134,11,0.22)");
-      stroke = readThemeColor("--vtt-hex-run-stroke", "rgba(201,169,98,0.65)");
+      fill = pal.runFill;
+      stroke = pal.runStroke;
     }
     if (isTargetMode(p.actionMode) && p.attackRangeSet.has(key)) {
-      fill = readThemeColor("--vtt-hex-attack-fill", "rgba(139,69,19,0.2)");
-      stroke = readThemeColor("--vtt-hex-attack-stroke", "rgba(180,80,60,0.7)");
+      fill = pal.attackFill;
+      stroke = pal.attackStroke;
     }
     if (p.isAreaSpellMode && p.areaDirectionSet.has(key)) {
-      fill = readThemeColor("--vtt-hex-dir-fill", "rgba(80,140,200,0.3)");
-      stroke = readThemeColor("--vtt-hex-dir-stroke", "rgba(120,180,255,0.9)");
+      fill = pal.dirFill;
+      stroke = pal.dirStroke;
       lineWidth = 2;
     }
     if (p.isAreaSpellMode && p.areaPreviewSet.has(key)) {
-      fill = readThemeColor("--vtt-hex-area-fill", "rgba(120,60,180,0.35)");
-      stroke = readThemeColor("--vtt-hex-area-stroke", "rgba(180,120,255,0.85)");
+      fill = pal.areaFill;
+      stroke = pal.areaStroke;
     }
     if (
       p.isAreaSpellMode &&
@@ -161,8 +170,8 @@ export function drawHexGridLayer(ctx: CanvasRenderingContext2D, p: GridDrawParam
       p.hoverAxial?.r === cell.r &&
       p.areaPreviewSet.has(key)
     ) {
-      fill = readThemeColor("--vtt-hex-area-center-fill", "rgba(200,100,255,0.45)");
-      stroke = readThemeColor("--vtt-hex-area-center-stroke", "#e8c4ff");
+      fill = pal.areaCenterFill;
+      stroke = pal.areaCenterStroke;
       lineWidth = 2.5;
     }
     const isHover =
@@ -173,16 +182,16 @@ export function drawHexGridLayer(ctx: CanvasRenderingContext2D, p: GridDrawParam
       p.hoverMovePreview &&
       !p.hoverMovePreview.ok
     ) {
-      fill = readThemeColor("--vtt-hex-invalid-fill", "rgba(160,50,50,0.35)");
-      stroke = readThemeColor("--vtt-hex-invalid-stroke", "rgba(220,80,70,0.95)");
+      fill = pal.invalidFill;
+      stroke = pal.invalidStroke;
       lineWidth = 2.5;
     } else if (isHover && p.spawnDropHover) {
-      fill = readThemeColor("--vtt-hex-spawn-fill", "rgba(90, 115, 82, 0.38)");
-      stroke = readThemeColor("--vtt-hex-spawn-stroke", "rgba(184, 255, 60, 0.9)");
+      fill = pal.spawnFill;
+      stroke = pal.spawnStroke;
       lineWidth = 2.5;
     } else if (isHover) {
-      stroke = readThemeColor("--vtt-hex-hover-stroke", "#c9a962");
-      fill = readThemeColor("--vtt-hex-hover-fill", "rgba(201,169,98,0.18)");
+      stroke = pal.hoverStroke;
+      fill = pal.hoverFill;
     }
 
     ctx.beginPath();
@@ -197,7 +206,7 @@ export function drawHexGridLayer(ctx: CanvasRenderingContext2D, p: GridDrawParam
     ctx.stroke();
 
     if (isHover && p.showMovement && p.hoverMovePreview) {
-      ctx.fillStyle = readThemeColor("--vtt-token-text", "#e8e0d4");
+      ctx.fillStyle = pal.tokenText;
       ctx.font = "600 9px Lora, Georgia, serif";
       ctx.textAlign = "center";
       if (p.hoverMovePreview.ok && p.hoverMovePreview.dist > 0) {
@@ -206,10 +215,10 @@ export function drawHexGridLayer(ctx: CanvasRenderingContext2D, p: GridDrawParam
             ? `PA +${p.hoverMovePreview.paCost}`
             : "PA +0";
         ctx.fillText(`${p.hoverMovePreview.dist} hex · ${hexToMeters(p.hoverMovePreview.dist)} m`, x, y - 8);
-        ctx.fillStyle = readThemeColor("--vtt-hex-walk-paid-stroke", "rgba(100,180,165,0.95)");
+        ctx.fillStyle = pal.walkPaidStroke;
         ctx.fillText(pa, x, y + 4);
       } else if (!p.hoverMovePreview.ok) {
-        ctx.fillStyle = readThemeColor("--vtt-hex-invalid-stroke", "rgba(220,80,70,0.95)");
+        ctx.fillStyle = pal.invalidStroke;
         ctx.fillText(p.hoverMovePreview.reason ?? "Inválido", x, y + 4);
       }
     }
@@ -222,8 +231,10 @@ export function drawMovementPathLayer(ctx: CanvasRenderingContext2D, p: GridDraw
   if (!p.showMovement || p.pathCells.length < 2) return;
 
   const { hexSize, layout, pathDashPhase } = p;
-  const stroke = readThemeColor("--vtt-path-stroke", "rgba(201,169,98,0.92)");
-  const glow = readThemeColor("--vtt-path-glow", "rgba(120,180,95,0.35)");
+  const pal =
+    p.palette ?? resolveHexPalette(p.mapBackdropTone ?? "none");
+  const stroke = pal.pathStroke;
+  const glow = pal.pathGlow;
 
   const points = p.pathCells.map((cell) => {
     const { x, y } = axialToPixel(cell.q, cell.r, hexSize, layout.ox, layout.oy);

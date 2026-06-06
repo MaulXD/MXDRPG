@@ -59,8 +59,8 @@ export function MesaIconBar({ isActive, onToggle, onOpenPopup, showGm = false }:
     { id: "ficha", label: "Ficha", icon: "ficha", section: "play" },
     { id: "chat", label: "Chat", icon: "chat", section: "play" },
     { id: "dice", label: "Dados", icon: "dice", section: "play" },
+    { id: "whiteboard", label: "Lousa", icon: "whiteboard", section: "play" },
     { id: "dungeon", label: "Mapa", icon: "dungeon", section: "gm", show: showGm },
-    { id: "whiteboard", label: "Lousa", icon: "whiteboard", section: "gm", show: showGm },
     { id: "gm", label: "Mestre", icon: "gm", section: "gm", show: showGm },
     { id: "spawn", label: "Invocar", icon: "spawn", section: "gm", show: showGm },
   ];

@@ -59,9 +59,7 @@ export function CharacterSheetPopupHero({
         <h2 className="sheet-popup-hero__name">{name}</h2>
         <p className="sheet-popup-hero__class">{classLine}</p>
         <p className="sheet-popup-hero__meta">
-          {identity.raca}
-          {identity.linhagem ? ` (${identity.linhagem})` : ""}
-          {identity.antecedente ? ` · ${identity.antecedente}` : ""}
+          {[identity.raca, identity.antecedente].filter(Boolean).join(" · ")}
         </p>
       </div>
 

@@ -256,6 +256,7 @@ export function MesaWorkspace({
             <HexBattlefield
               scene={scene}
               canEdit={canEdit}
+              canUseWhiteboard={canEdit}
               canControlCombat={canControlCombat}
               canBypassTurn={canBypassTurn}
               canEndTurn={canEndTurn}
