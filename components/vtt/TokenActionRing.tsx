@@ -115,7 +115,7 @@ export function TokenActionRing({
   onRoomSync,
 }: Props) {
   const [ringView, setRingView] = useState<RingView>("main");
-  const [hoveredSlotId, setHoveredSlotId] = useState<string | null>(null);
+  const [hoveredInfoSlotId, setHoveredInfoSlotId] = useState<string | null>(null);
   const [pinnedInfoSlotId, setPinnedInfoSlotId] = useState<string | null>(null);
   const turn = useCombatTurn({ combat, canBypassTurn });
 
@@ -141,12 +141,12 @@ export function TokenActionRing({
 
   useEffect(() => {
     setRingView("main");
-    setHoveredSlotId(null);
+    setHoveredInfoSlotId(null);
     setPinnedInfoSlotId(null);
   }, [token.id]);
 
   useEffect(() => {
-    setHoveredSlotId(null);
+    setHoveredInfoSlotId(null);
     setPinnedInfoSlotId(null);
   }, [ringView]);
 
@@ -347,7 +347,7 @@ export function TokenActionRing({
 
   const layout = ringLayout(displaySlots.length);
 
-  const activeDetailSlotId = pinnedInfoSlotId ?? hoveredSlotId;
+  const activeDetailSlotId = pinnedInfoSlotId ?? hoveredInfoSlotId;
 
   const activeDetailSlot = useMemo(
     () => displaySlots.find((s) => s.id === activeDetailSlotId) ?? null,
@@ -360,7 +360,7 @@ export function TokenActionRing({
     e.stopPropagation();
     e.preventDefault();
     setPinnedInfoSlotId((prev) => (prev === slotId ? null : slotId));
-    setHoveredSlotId(slotId);
+    setHoveredInfoSlotId(slotId);
   }, []);
 
   useEffect(() => {
@@ -473,23 +473,28 @@ export function TokenActionRing({
                 } as CSSProperties
               }
               disabled={slot.disabled}
-              title={slot.title ?? `${slot.label} · ${slot.paLabel}`}
-              onMouseEnter={() => setHoveredSlotId(slot.id)}
-              onMouseLeave={() => {
-                if (pinnedInfoSlotId !== slot.id) setHoveredSlotId(null);
-              }}
-              onFocus={() => setHoveredSlotId(slot.id)}
+              title={`${slot.label} · ${slot.paLabel}`}
               onClick={slot.onClick}
             >
               {(slot.action || slot.detailHint) && !slot.disabled ? (
                 <button
                   type="button"
                   className={`token-action-ring__info${
-                    pinnedInfoSlotId === slot.id ? " token-action-ring__info--on" : ""
+                    pinnedInfoSlotId === slot.id || hoveredInfoSlotId === slot.id
+                      ? " token-action-ring__info--on"
+                      : ""
                   }`}
                   aria-label={`Informações: ${slot.label}`}
                   title="Ver descrição"
                   onMouseDown={(e) => e.stopPropagation()}
+                  onMouseEnter={() => setHoveredInfoSlotId(slot.id)}
+                  onMouseLeave={() => {
+                    if (pinnedInfoSlotId !== slot.id) setHoveredInfoSlotId(null);
+                  }}
+                  onFocus={() => setHoveredInfoSlotId(slot.id)}
+                  onBlur={() => {
+                    if (pinnedInfoSlotId !== slot.id) setHoveredInfoSlotId(null);
+                  }}
                   onClick={(e) => toggleInfoPin(slot.id, e)}
                 >
                   i
@@ -537,17 +542,6 @@ export function TokenActionRing({
             onClick={(e) => e.stopPropagation()}
           >
             <p className="token-action-ring__detail-hint">{activeDetailSlot.detailHint}</p>
-          </div>
-        ) : ringView !== "main" ? (
-          <div
-            className="token-action-ring__detail token-action-ring__detail--hint"
-            style={{ "--tar-detail-offset": `${detailOffset}px` } as CSSProperties}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <p className="token-action-ring__detail-hint">
-              Passe o mouse sobre {ringView === "spell" ? "uma magia" : "uma habilidade"} para ver a
-              descrição completa.
-            </p>
           </div>
         ) : null}
       </div>

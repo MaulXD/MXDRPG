@@ -2,44 +2,26 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { Axial } from "@/lib/vtt/hex-math";
-import { axialToPixel } from "@/lib/vtt/hex-math";
+import { axialToPixel, hexCorners, hexDrawRadius } from "@/lib/vtt/hex-math";
 import { canvasCenter, worldToScreen, type BattlefieldView } from "@/lib/vtt/battlefield-view";
-import type { ChatMessage } from "@/lib/room/chat";
+import type {
+  CombatFxPhase,
+  CombatFxState,
+  CombatFxTargetBurst,
+} from "@/lib/vtt/combat-fx-types";
 import { DiceMiniature } from "@/components/vtt/DiceMiniature";
-import {
-  resolveCastFxFromCombat,
-  type TokenCastFxKind,
-} from "@/lib/vtt/token-cast-fx";
+import type { TokenCastFxKind } from "@/lib/vtt/token-cast-fx";
+
+export type { CombatFxState, CombatFxTargetBurst } from "@/lib/vtt/combat-fx-types";
 
 export type TokenCombatFlash = "hit" | "miss" | "crit" | null;
-
-export type CombatFxState = {
-  id: string;
-  phase: "slash" | "roll" | "result" | "damage" | "done";
-  attackerAxial: Axial;
-  defenderAxial: Axial;
-  defenderTokenId?: string;
-  actionKind: "weapon" | "spell" | "unarmed" | "ability";
-  attackNatural?: number;
-  attackTotal?: number;
-  defenderAc?: number;
-  hit?: boolean;
-  critical?: boolean;
-  criticalFail?: boolean;
-  saveTotal?: number;
-  saveDc?: number;
-  saveSuccess?: boolean;
-  damageTotal: number | null;
-  isHeal?: boolean;
-  castFxKind?: TokenCastFxKind | null;
-  castFxTargetId?: string | null;
-};
 
 type Props = {
   wrapRef: React.RefObject<HTMLDivElement | null>;
   hexSize: number;
   fx: CombatFxState | null;
   onDone: () => void;
+  onApplyState?: () => void;
   onTokenFlash?: (tokenId: string | null, flash: TokenCombatFlash) => void;
   onTokenCastFx?: (tokenId: string, kind: TokenCastFxKind) => void;
   view?: BattlefieldView;
@@ -57,55 +39,36 @@ function useReducedMotion(): boolean {
   return reduced;
 }
 
-export function combatFxFromMessage(
-  msg: ChatMessage,
-  attackerAxial: Axial,
-  defenderAxial: Axial
-): CombatFxState | null {
-  if (msg.kind !== "combat" || !msg.combat) return null;
-  const c = msg.combat;
-  const isHeal =
-    c.actionKind === "ability" &&
-    (c.weaponName.toLowerCase().includes("cura") || c.detail.toLowerCase().includes("cura"));
-  const castResolved = resolveCastFxFromCombat(msg);
-  const castFxKind = castResolved?.kind ?? null;
-  if (c.resolution === "save") {
-    return {
-      id: msg.id,
-      phase: "slash",
-      attackerAxial,
-      defenderAxial,
-      defenderTokenId: c.defenderTokenId,
-      actionKind: "spell",
-      saveTotal: c.saveTotal,
-      saveDc: c.saveDc,
-      saveSuccess: c.saveSuccess,
-      damageTotal: c.damageTotal,
-      isHeal,
-      castFxKind,
-      castFxTargetId: castResolved?.tokenId ?? c.defenderTokenId,
-    };
+function hexPathPoints(
+  axial: Axial,
+  hexSize: number,
+  ox: number,
+  oy: number,
+  w: number,
+  h: number,
+  view: BattlefieldView
+): string {
+  const world = axialToPixel(axial.q, axial.r, hexSize, ox, oy);
+  const screen = worldToScreen(world.x, world.y, w, h, view);
+  const r = hexDrawRadius(hexSize) * (view.scale ?? 1);
+  const corners = hexCorners(screen.x, screen.y, r);
+  return corners.map((p, i) => `${i === 0 ? "M" : "L"}${p.x},${p.y}`).join(" ") + " Z";
+}
+
+function resultLabelFor(fx: CombatFxState): string {
+  if (fx.saveTotal != null) {
+    return fx.saveSuccess ? "TESTE OK" : "TESTE FALHOU";
   }
-  const actionKind: CombatFxState["actionKind"] =
-    c.actionKind === "ability" ? "ability" : c.actionKind;
-  return {
-    id: msg.id,
-    phase: "slash",
-    attackerAxial,
-    defenderAxial,
-    defenderTokenId: c.defenderTokenId,
-    actionKind,
-    ...(c.attackNatural != null ? { attackNatural: c.attackNatural } : {}),
-    ...(c.attackTotal != null ? { attackTotal: c.attackTotal } : {}),
-    ...(c.defenderAc != null ? { defenderAc: c.defenderAc } : {}),
-    ...(c.hit != null ? { hit: c.hit } : {}),
-    ...(c.critical != null ? { critical: c.critical } : {}),
-    ...(c.criticalFail != null ? { criticalFail: c.criticalFail } : {}),
-    damageTotal: c.damageTotal,
-    isHeal,
-    castFxKind,
-    castFxTargetId: castResolved?.tokenId ?? c.defenderTokenId,
-  };
+  if (fx.criticalFail) return "FALHA CRÍTICA";
+  if (fx.hit) return fx.critical ? "CRÍTICO!" : "ACERTO";
+  return "ERROU";
+}
+
+function flashForTarget(t: CombatFxTargetBurst): TokenCombatFlash {
+  if (t.critical) return "crit";
+  if (t.hit === false && t.saveTotal == null) return "miss";
+  if (t.hit || t.saveTotal != null) return "hit";
+  return "miss";
 }
 
 export function CombatFxLayer({
@@ -113,31 +76,55 @@ export function CombatFxLayer({
   hexSize,
   fx,
   onDone,
+  onApplyState,
   onTokenFlash,
   onTokenCastFx,
   view = { scale: 1, panX: 0, panY: 0 },
 }: Props) {
   const reducedMotion = useReducedMotion();
-  const [displayRoll, setDisplayRoll] = useState(1);
-  const [phase, setPhase] = useState<CombatFxState["phase"]>("slash");
-  const [slashProgress, setSlashProgress] = useState(0);
+  const [phase, setPhase] = useState<CombatFxPhase>("mark");
+  const [showDamage, setShowDamage] = useState(false);
   const fxRef = useRef(fx);
   const onDoneRef = useRef(onDone);
+  const onApplyStateRef = useRef(onApplyState);
   const onTokenFlashRef = useRef(onTokenFlash);
   const onTokenCastFxRef = useRef(onTokenCastFx);
   const castFxTriggeredRef = useRef(false);
+  const applyStateCalledRef = useRef(false);
   fxRef.current = fx;
   onDoneRef.current = onDone;
+  onApplyStateRef.current = onApplyState;
   onTokenFlashRef.current = onTokenFlash;
   onTokenCastFxRef.current = onTokenCastFx;
 
-  const timings = useMemo(
-    () =>
-      reducedMotion
-        ? { slash: 80, roll: 200, resultDelay: 120, damageDelay: 280, doneHit: 900, doneMiss: 600 }
-        : { slash: 420, roll: 900, resultDelay: 900, damageDelay: 700, doneHit: 4600, doneMiss: 2200 },
-    [reducedMotion]
-  );
+  const timings = useMemo(() => {
+    const mode = fx?.mode ?? "single";
+    if (reducedMotion) {
+      return {
+        mark: 120,
+        roll: mode === "area-target" ? 160 : 200,
+        applyStateDelay: 350,
+        resultHold: mode === "area-intro" ? 700 : mode === "area-target" ? 900 : 1200,
+        damageFade: 600,
+        simulFlash: 500,
+      };
+    }
+    return {
+      mark: mode === "area-intro" ? 500 : 280,
+      roll: mode === "area-target" ? 650 : 900,
+      applyStateDelay: mode === "area-target" ? 700 : 1000,
+      resultHold:
+        mode === "area-intro"
+          ? 1100
+          : mode === "area-target"
+            ? 1400
+            : mode === "area-simultaneous"
+              ? 900
+              : 6000,
+      damageFade: mode === "area-target" ? 1600 : 2800,
+      simulFlash: 450,
+    };
+  }, [fx?.mode, reducedMotion]);
 
   const fxId = fx?.id ?? null;
 
@@ -145,35 +132,58 @@ export function CombatFxLayer({
     const data = fxRef.current;
     if (!fxId || !data) return;
 
-    setPhase("slash");
-    setSlashProgress(reducedMotion ? 1 : 0);
+    setPhase(data.mode === "area-simultaneous" ? "mark" : "mark");
+    setShowDamage(false);
     castFxTriggeredRef.current = false;
+    applyStateCalledRef.current = false;
     onTokenFlashRef.current?.(null, null);
-    let rollTick: ReturnType<typeof setInterval> | null = null;
     const timeouts: ReturnType<typeof setTimeout>[] = [];
 
-    const slashAnim = reducedMotion
-      ? null
-      : setInterval(() => {
-          setSlashProgress((p) => Math.min(1, p + 0.12));
-        }, 40);
+    if (data.mode === "area-intro") {
+      timeouts.push(
+        setTimeout(() => {
+          setPhase("done");
+          onDoneRef.current();
+        }, timings.mark + timings.resultHold)
+      );
+      return () => {
+        for (const id of timeouts) clearTimeout(id);
+      };
+    }
+
+    if (data.mode === "area-simultaneous") {
+      const targets = data.areaTargets ?? [];
+      timeouts.push(
+        setTimeout(() => {
+          for (const t of targets) {
+            onTokenFlashRef.current?.(t.tokenId, flashForTarget(t));
+            if (data.castFxKind) {
+              onTokenCastFxRef.current?.(t.tokenId, data.castFxKind);
+            }
+          }
+          setShowDamage(true);
+          setPhase("damage");
+        }, timings.mark + timings.simulFlash)
+      );
+      timeouts.push(
+        setTimeout(() => {
+          setPhase("done");
+          onTokenFlashRef.current?.(null, null);
+          onDoneRef.current();
+        }, timings.mark + timings.simulFlash + timings.resultHold + timings.damageFade)
+      );
+      return () => {
+        for (const id of timeouts) clearTimeout(id);
+      };
+    }
 
     const t0 = setTimeout(() => {
-      if (slashAnim) clearInterval(slashAnim);
-      setSlashProgress(1);
-      setPhase("roll");
-      setDisplayRoll(Math.floor(Math.random() * 20) + 1);
-
-      if (!reducedMotion) {
-        rollTick = setInterval(() => {
-          setDisplayRoll(Math.floor(Math.random() * 20) + 1);
-        }, 70);
+      if (data.mode === "single" || data.mode === "area-target") {
+        setPhase("roll");
       }
 
       timeouts.push(
         setTimeout(() => {
-          if (rollTick) clearInterval(rollTick);
-          setDisplayRoll(data.attackNatural ?? data.saveTotal ?? 1);
           setPhase("result");
           if (data.defenderTokenId) {
             const flash: TokenCombatFlash = data.critical
@@ -205,16 +215,22 @@ export function CombatFxLayer({
               onTokenCastFxRef.current?.(data.castFxTargetId, data.castFxKind);
             }
           }
-        }, timings.roll)
+        }, timings.mark + timings.roll)
       );
 
       timeouts.push(
         setTimeout(() => {
-          const showDamage =
+          if (applyStateCalledRef.current) return;
+          applyStateCalledRef.current = true;
+          if (data.deferStateApply) onApplyStateRef.current?.();
+          const hasDamage =
             data.damageTotal != null &&
             (data.isHeal || data.hit !== false || data.saveTotal != null);
-          if (showDamage) setPhase("damage");
-        }, timings.roll + timings.damageDelay)
+          if (hasDamage) {
+            setShowDamage(true);
+            setPhase("damage");
+          }
+        }, timings.mark + timings.roll + timings.applyStateDelay)
       );
 
       timeouts.push(
@@ -222,14 +238,12 @@ export function CombatFxLayer({
           setPhase("done");
           onTokenFlashRef.current?.(null, null);
           onDoneRef.current();
-        }, data.hit || data.isHeal ? timings.doneHit : timings.doneMiss)
+        }, timings.mark + timings.roll + timings.resultHold + timings.damageFade)
       );
-    }, timings.slash);
+    }, timings.mark);
     timeouts.push(t0);
 
     return () => {
-      if (slashAnim) clearInterval(slashAnim);
-      if (rollTick) clearInterval(rollTick);
       for (const id of timeouts) clearTimeout(id);
     };
   }, [fxId, reducedMotion, timings]);
@@ -241,115 +255,169 @@ export function CombatFxLayer({
   const h = wrap?.clientHeight ?? 640;
   const { ox, oy } = canvasCenter(w, h);
 
-  const fromWorld = axialToPixel(fx.attackerAxial.q, fx.attackerAxial.r, hexSize, ox, oy);
-  const toWorld = axialToPixel(fx.defenderAxial.q, fx.defenderAxial.r, hexSize, ox, oy);
-  const from = worldToScreen(fromWorld.x, fromWorld.y, w, h, view);
-  const to = worldToScreen(toWorld.x, toWorld.y, w, h, view);
+  const markScreen = (axial: Axial) => {
+    const world = axialToPixel(axial.q, axial.r, hexSize, ox, oy);
+    return worldToScreen(world.x, world.y, w, h, view);
+  };
 
-  const resultLabel = fx.saveTotal != null
-    ? fx.saveSuccess
-      ? "TESTE OK"
-      : "TESTE FALHOU"
-    : fx.criticalFail
-      ? "FALHA CRÍTICA"
-      : fx.hit
-        ? fx.critical
-          ? "CRÍTICO!"
-          : "ACERTO"
-        : "ERROU";
+  const to = markScreen(fx.markAxial);
+  const panelAt = markScreen(fx.defenderAxial);
 
-  const slashColor =
+  const accent =
     fx.castFxKind === "heal"
-      ? "rgba(100, 220, 140, 0.9)"
+      ? "rgba(100, 220, 140, 0.95)"
       : fx.castFxKind === "fire"
         ? "rgba(255, 120, 40, 0.95)"
-        : fx.castFxKind === "buff"
-          ? "rgba(201, 169, 98, 0.9)"
-          : fx.actionKind === "spell"
-            ? "rgba(120,180,255,0.9)"
-            : fx.actionKind === "ability"
-              ? "rgba(184,255,60,0.85)"
-              : fx.critical
-                ? "rgba(232,160,32,0.95)"
-                : "rgba(200,80,60,0.9)";
+        : fx.actionKind === "spell"
+          ? "rgba(120,180,255,0.95)"
+          : fx.critical
+            ? "rgba(232,160,32,0.95)"
+            : "rgba(200,80,60,0.95)";
 
-  const isChargeLike =
-    fx.actionKind === "ability" && phase === "slash" && slashProgress > 0.2;
+  const areaFill = accent.replace(/[\d.]+\)$/, "0.2)");
+
+  const resultLabel = resultLabelFor(fx);
+  const showPanel =
+    fx.mode === "area-intro" ||
+    ((fx.mode === "single" || fx.mode === "area-target") &&
+      (phase === "roll" || phase === "result" || phase === "damage"));
+  const showResultText =
+    fx.mode === "area-intro" || phase === "result" || phase === "damage";
+  const showRoll = fx.mode !== "area-intro" && phase === "roll";
+
+  const areaHexPaths =
+    fx.areaHexes?.map((hex) => hexPathPoints(hex, hexSize, ox, oy, w, h, view)) ?? [];
 
   return (
     <div className={`combat-fx-layer ${reducedMotion ? "combat-fx-reduced" : ""}`} aria-live="polite">
-      {(phase === "slash" || phase === "roll" || phase === "result") && (
-        <svg className="combat-fx-slash-svg" width={w} height={h}>
-          <line
-            x1={from.x}
-            y1={from.y}
-            x2={from.x + (to.x - from.x) * slashProgress}
-            y2={from.y + (to.y - from.y) * slashProgress}
-            stroke={slashColor}
-            strokeWidth={fx.actionKind === "spell" ? 3 : isChargeLike ? 5 : 4}
-            strokeLinecap="round"
-            strokeDasharray={isChargeLike ? "8 6" : undefined}
-            className="combat-fx-slash-line"
+      <svg className="combat-fx-hex-svg" width={w} height={h}>
+        {areaHexPaths.map((d, i) => (
+          <path
+            key={`area-${i}`}
+            d={d}
+            className="combat-fx-area-hex"
+            fill={areaFill}
+            stroke={accent}
+            strokeWidth={fx.mode === "area-intro" ? 2.5 : 1.5}
           />
-          {phase === "slash" && slashProgress > 0.85 ? (
-            <circle
-              cx={to.x}
-              cy={to.y}
-              r={fx.critical ? 16 : 12}
+        ))}
+        <path
+          d={hexPathPoints(fx.markAxial, hexSize, ox, oy, w, h, view)}
+          className={`combat-fx-mark-hex${phase === "damage" ? " combat-fx-mark-hex--pulse" : ""}`}
+          fill="none"
+          stroke={accent}
+          strokeWidth={3}
+        />
+        {fx.mode === "area-simultaneous" &&
+          fx.areaTargets?.map((t) => (
+            <path
+              key={t.tokenId}
+              d={hexPathPoints(t.axial, hexSize, ox, oy, w, h, view)}
+              className="combat-fx-mark-hex combat-fx-mark-hex--target"
               fill="none"
-              stroke={slashColor}
+              stroke={accent}
               strokeWidth={2}
-              className="combat-fx-impact"
             />
-          ) : null}
-        </svg>
-      )}
+          ))}
+      </svg>
 
-      {(phase === "roll" || phase === "result") && (
+      {showPanel ? (
         <div
-          className="combat-fx-dice"
-          style={{
-            left: to.x,
-            top: to.y,
-          }}
+          className={`combat-fx-panel${showResultText ? " combat-fx-panel--revealed" : ""}${fx.mode === "area-intro" ? " combat-fx-panel--area" : ""}`}
+          style={{ left: panelAt.x, top: panelAt.y }}
         >
-          <DiceMiniature
-            formula="1d20"
-            value={
-              phase === "roll"
-                ? null
-                : (fx.attackNatural ?? fx.saveTotal ?? null)
-            }
-            rolling={phase === "roll"}
-            size="lg"
-          />
-          {phase === "result" ? (
-            <p
-              className={`combat-fx-result ${
-                fx.saveSuccess !== false && (fx.hit || fx.saveTotal != null) ? "hit" : "miss"
-              }`}
-            >
-              {fx.saveTotal != null
-                ? `${resultLabel} · ${fx.saveTotal} vs CD ${fx.saveDc}`
-                : `${resultLabel} · ${fx.attackTotal} vs CA ${fx.defenderAc}`}
-            </p>
-          ) : (
-            <p className="combat-fx-rolling">Rolando ataque…</p>
-          )}
-        </div>
-      )}
-
-      {phase === "damage" && fx.damageTotal != null ? (
-        <div
-          className={`combat-fx-damage ${fx.critical ? "crit" : ""} ${fx.isHeal ? "heal" : ""}`}
-          style={{ left: to.x, top: to.y }}
-        >
-          {fx.isHeal ? `+${fx.damageTotal}` : `−${fx.damageTotal}`}
+          <div className="combat-fx-panel-inner">
+            {fx.mode === "area-intro" ? (
+              <div className="combat-fx-panel-area">
+                <p className="combat-fx-area-title">{fx.spellName ?? "Magia de área"}</p>
+                <p className="combat-fx-area-damage-label">{fx.damageTypeLabel ?? "Dano"}</p>
+                {fx.spellDamageType ? (
+                  <p className="combat-fx-area-damage-type">{fx.spellDamageType}</p>
+                ) : null}
+                {fx.resolveDetail ? (
+                  <p className="combat-fx-area-detail">{fx.resolveDetail}</p>
+                ) : null}
+              </div>
+            ) : (
+              <>
+                {fx.mode === "area-target" && fx.cascadeIndex != null ? (
+                  <p className="combat-fx-cascade-tag">
+                    Alvo {fx.cascadeIndex}/{fx.cascadeTotal}
+                  </p>
+                ) : null}
+                <DiceMiniature
+                  formula="1d20"
+                  value={
+                    showRoll ? null : (fx.attackNatural ?? fx.saveTotal ?? null)
+                  }
+                  rolling={showRoll}
+                  size="lg"
+                />
+                {showResultText && !showRoll ? (
+                  <div className="combat-fx-panel-result">
+                    <p
+                      className={`combat-fx-result ${
+                        fx.saveSuccess !== false && (fx.hit || fx.saveTotal != null) ? "hit" : "miss"
+                      }`}
+                    >
+                      {resultLabel}
+                    </p>
+                    <p className="combat-fx-panel-vs">
+                      {fx.saveTotal != null
+                        ? `${fx.saveTotal} vs CD ${fx.saveDc}`
+                        : `${fx.attackTotal} vs CA ${fx.defenderAc}`}
+                    </p>
+                    {fx.spellDamageType ? (
+                      <p className="combat-fx-panel-dmg-type">{fx.spellDamageType}</p>
+                    ) : null}
+                    {fx.resolveDetail ? (
+                      <p className="combat-fx-panel-detail">{fx.resolveDetail}</p>
+                    ) : null}
+                  </div>
+                ) : showRoll ? (
+                  <p className="combat-fx-rolling">Rolando…</p>
+                ) : null}
+              </>
+            )}
+          </div>
         </div>
       ) : null}
 
-      {phase === "result" && fx.hit === false && !fx.criticalFail && fx.saveTotal == null ? (
-        <div className="combat-fx-miss" style={{ left: to.x, top: to.y }}>
+      {showDamage && fx.mode !== "area-simultaneous" && fx.damageTotal != null ? (
+        <div
+          className={`combat-fx-damage combat-fx-damage--hex ${fx.critical ? "crit" : ""} ${fx.isHeal ? "heal" : ""}`}
+          style={{ left: to.x, top: to.y + (showPanel ? 72 : 0) }}
+        >
+          <span className="combat-fx-damage-label">{fx.damageTypeLabel ?? "Dano"}</span>
+          <span className="combat-fx-damage-value">
+            {fx.isHeal ? `+${fx.damageTotal}` : `−${fx.damageTotal}`}
+          </span>
+        </div>
+      ) : null}
+
+      {fx.mode === "area-simultaneous" && showDamage
+        ? fx.areaTargets?.map((t) => {
+            if (t.damageTotal == null || t.damageTotal <= 0) return null;
+            const pos = markScreen(t.axial);
+            return (
+              <div
+                key={t.tokenId}
+                className={`combat-fx-damage combat-fx-damage--hex ${t.critical ? "crit" : ""}`}
+                style={{ left: pos.x, top: pos.y }}
+              >
+                <span className="combat-fx-damage-label">{fx.damageTypeLabel ?? "Dano"}</span>
+                <span className="combat-fx-damage-value">−{t.damageTotal}</span>
+              </div>
+            );
+          })
+        : null}
+
+      {showResultText &&
+      fx.hit === false &&
+      !fx.criticalFail &&
+      fx.saveTotal == null &&
+      fx.mode !== "area-intro" ? (
+        <div className="combat-fx-miss combat-fx-miss--hex" style={{ left: to.x, top: to.y + 88 }}>
           Errou
         </div>
       ) : null}

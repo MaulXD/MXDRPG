@@ -150,6 +150,11 @@ export function CharacterSheetPopup({
     >
 
       <div className="foundry-sheet-body">
+        {!canEdit ? (
+          <p className="foundry-sheet-readonly" role="status">
+            Somente leitura — ficha de outro jogador. Você pode ver atributos e status, mas não editar.
+          </p>
+        ) : null}
 
         <div className="foundry-sheet-toolbar">
 
@@ -171,7 +176,7 @@ export function CharacterSheetPopup({
 
         </div>
 
-        <MedievalFrame variant="gothic" compact flush className="mf--sheet-page">
+        <MedievalFrame variant="gothic" compact flush className="mf--sheet-page mf--foundry-fill">
           <CharacterSheet
             character={{ ...seed, ...live, inventory }}
             canEdit={canEdit}

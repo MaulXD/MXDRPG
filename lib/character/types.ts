@@ -80,4 +80,6 @@ export type CharacterSheet = {
   lootEconomy?: LootEconomy;
   /** Arma ou magia ofensiva selecionada na mesa */
   combatLoadout?: CombatLoadout | null;
+  /** Armadura equipada — afeta CA na ficha e no token */
+  armorLoadout?: { packId: "equipamentos"; entryId: string } | null;
 };

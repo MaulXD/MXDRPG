@@ -2,7 +2,13 @@
 import { prepareCombatToken, syncActorPaFromToken } from "@/lib/combat/combat-token-pa";
 import { applyPaSpend } from "@/lib/combat/pa-turn";
 import { markActionRechargeUsed } from "@/lib/combat/recharge";
-import { formatAreaSpellChatDetail, resolveAreaSpell } from "@/lib/combat/area-spell";
+import {
+  formatAreaSpellChatDetail,
+  resolveAreaSpell,
+  type AreaHit,
+} from "@/lib/combat/area-spell";
+import { resolveAreaCascadeMode, sortAreaHits } from "@/lib/combat/area-cascade";
+import { createChatId } from "../chat";
 import { formatSaveChatDetail } from "@/lib/combat/spell";
 import type { CombatActionRequest } from "@/lib/combat/types";
 import type { Axial } from "@/lib/vtt/hex-math";
@@ -127,31 +133,47 @@ export async function executeRoomAreaSpell(
     };
   }
 
+  const areaBatchId = createChatId();
+  const areaCascade = resolveAreaCascadeMode(action);
+  const sortedHits: AreaHit[] = sortAreaHits(
+    areaResult.hits,
+    room.scene.tokens,
+    areaResult.center,
+    caster,
+    areaCascade,
+    room.combat.order
+  );
+
   appendRoomChatMessage(room, {
     ...author,
     kind: "combat",
     text: areaResult.summary,
     combat: {
       attackerTokenId: caster.id,
-      defenderTokenId: areaResult.hits[0]?.tokenId ?? caster.id,
+      defenderTokenId: sortedHits[0]?.tokenId ?? caster.id,
       actionKind: "spell",
       weaponName: areaResult.actionName,
       resolution: action.resolution,
-      areaCenterQ: center.q,
-      areaCenterR: center.r,
+      areaCenterQ: areaResult.center.q,
+      areaCenterR: areaResult.center.r,
       areaHexCount: areaResult.areaHexes.length,
-      damageTotal: areaResult.hits.reduce((sum, h) => {
+      areaBatchId,
+      areaShape: action.areaShape,
+      areaCascade,
+      areaHexList: areaResult.areaHexes,
+      spellDamageType: action.damageType,
+      damageTotal: sortedHits.reduce((sum, h) => {
         if (h.kind === "attack") return sum + (h.result.damage?.total ?? 0);
         if (h.kind === "save") return sum + h.result.damage.total;
         return sum;
       }, 0),
       defenderHpBefore: 0,
       defenderHpAfter: 0,
-      detail: formatAreaSpellChatDetail(areaResult),
+      detail: formatAreaSpellChatDetail(areaResult, action.damageType),
     },
   });
 
-  for (const hit of areaResult.hits) {
+  for (const hit of sortedHits) {
     if (hit.kind === "save") {
       const r = hit.result;
       appendRoomChatMessage(room, {
@@ -163,6 +185,8 @@ export async function executeRoomAreaSpell(
           defenderTokenId: r.defenderTokenId,
           actionKind: "spell",
           weaponName: r.weaponName,
+          areaBatchId,
+          spellDamageType: action.damageType,
           resolution: "save",
           saveNatural: r.save.natural,
           saveTotal: r.save.total,
@@ -187,6 +211,8 @@ export async function executeRoomAreaSpell(
           defenderTokenId: r.defenderTokenId,
           actionKind: "spell",
           weaponName: r.weaponName,
+          areaBatchId,
+          spellDamageType: action.damageType,
           resolution: "attack",
           attackNatural: r.attack.natural,
           attackTotal: r.attack.total,
@@ -205,7 +231,7 @@ export async function executeRoomAreaSpell(
   }
 
   const defeated = new Set<string>();
-  for (const hit of areaResult.hits) {
+  for (const hit of sortedHits) {
     const r = hit.kind === "attack" ? hit.result : hit.kind === "save" ? hit.result : null;
     if (!r || defeated.has(hit.tokenId)) continue;
     if (!shouldAnnounceDefeat(r.defenderHpBefore, r.defenderHpAfter)) continue;

@@ -242,13 +242,52 @@ export function drawTokenHpLabel(
   ctx.save();
   ctx.textAlign = "center";
   ctx.textBaseline = "bottom";
-  ctx.font = `bold ${fontSize}px Source Sans 3, Segoe UI, sans-serif`;
+  ctx.font = `900 ${fontSize}px Source Sans 3, Segoe UI, sans-serif`;
   ctx.lineJoin = "round";
-  ctx.lineWidth = Math.max(2.5, fontSize * 0.2);
+  ctx.lineWidth = Math.max(3.5, fontSize * 0.28);
   ctx.strokeStyle = "rgba(0, 0, 0, 0.9)";
   ctx.fillStyle = defeated ? "rgb(190, 190, 190)" : color;
   ctx.strokeText(hpText, x, hpY);
   ctx.fillText(hpText, x, hpY);
+  ctx.restore();
+}
+
+/** Movimento restante — badge à esquerda do token, separado do HP acima. */
+export function drawTokenWalkRemainingBadge(
+  ctx: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  tokenR: number,
+  walkHex: number,
+  metersLabel: string
+): void {
+  const label = `${walkHex} hex`;
+  const padX = 8;
+  const boxH = 26;
+  const gap = 10;
+
+  ctx.save();
+  ctx.font = "600 10px Source Sans 3, Segoe UI, sans-serif";
+  const tw = Math.max(ctx.measureText(label).width, ctx.measureText(metersLabel).width) + padX * 2;
+  const rx = x - tokenR - gap - tw;
+  const ry = y - boxH / 2;
+
+  ctx.fillStyle = "rgba(8, 10, 8, 0.88)";
+  ctx.strokeStyle = "rgba(120, 150, 95, 0.8)";
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.roundRect(rx, ry, tw, boxH, 5);
+  ctx.fill();
+  ctx.stroke();
+
+  const bx = rx + tw / 2;
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillStyle = "rgba(168, 210, 148, 0.98)";
+  ctx.fillText(label, bx, ry + 9);
+  ctx.font = "500 8px Source Sans 3, Segoe UI, sans-serif";
+  ctx.fillStyle = "rgba(232, 226, 214, 0.72)";
+  ctx.fillText(metersLabel, bx, ry + 19);
   ctx.restore();
 }
 
@@ -262,13 +301,18 @@ export function drawTokenNameLabel(
 ): void {
   if (!name.trim()) return;
 
+  const fontSize = Math.max(11, Math.round(tokenR * 0.34));
+  const nameY = y + tokenR + 6;
+
   ctx.save();
   ctx.textAlign = "center";
   ctx.textBaseline = "top";
-  ctx.font = "600 11px Lora, Georgia, serif";
-  ctx.fillStyle = "rgba(255, 255, 255, 0.95)";
-  ctx.shadowColor = "rgba(0,0,0,0.88)";
-  ctx.shadowBlur = 5;
-  ctx.fillText(name, x, y + tokenR + 6);
+  ctx.font = `700 ${fontSize}px Lora, Georgia, serif`;
+  ctx.lineJoin = "round";
+  ctx.lineWidth = Math.max(2.5, fontSize * 0.22);
+  ctx.strokeStyle = "rgba(0, 0, 0, 0.92)";
+  ctx.fillStyle = "rgba(255, 255, 255, 0.96)";
+  ctx.strokeText(name, x, nameY);
+  ctx.fillText(name, x, nameY);
   ctx.restore();
 }

@@ -10,6 +10,7 @@ import { monsterCombatActions } from "@/lib/vtt/monster-actions";
 import { prepareCombatToken, syncActorPaFromToken } from "@/lib/combat/combat-token-pa";
 import { applyPaSpend } from "@/lib/combat/pa-turn";
 import { markActionRechargeUsed } from "@/lib/combat/recharge";
+import { enrichBuffsWithTimedEffects } from "@/lib/combat/timed-effects";
 import { getEntry } from "@/lib/compendium/registry";
 import { formatAttackChatDetail } from "@/lib/combat/attack";
 import { formatSaveChatDetail } from "@/lib/combat/spell";
@@ -74,16 +75,28 @@ function applyAbilityToRoom(
     syncActorPaFromToken(room, { ...attackerBefore, ...spent });
   }
 
+  const tickCtx = { round: room.combat.round, activeIndex: room.combat.activeIndex };
+
   room.scene = {
     ...room.scene,
     tokens: room.scene.tokens.map((t) => {
       if (t.id === attackerTokenId) {
         const base = spent ? { ...t, ...spent, id: t.id } : t;
         if (resolved.kind === "buff" || resolved.kind === "charge") {
-          return { ...base, ...resolved.attackerUpdate };
+          return enrichBuffsWithTimedEffects(
+            base,
+            resolved.attackerUpdate,
+            action.abilityEffect,
+            tickCtx
+          );
         }
         if ("attackerUpdate" in resolved && resolved.attackerUpdate) {
-          return { ...base, ...resolved.attackerUpdate };
+          return enrichBuffsWithTimedEffects(
+            base,
+            resolved.attackerUpdate,
+            action.abilityEffect,
+            tickCtx
+          );
         }
         return base;
       }
@@ -92,10 +105,10 @@ function applyAbilityToRoom(
           return { ...t, vida: resolved.defenderHpAfter };
         }
         if (resolved.kind === "mark" && resolved.defenderUpdate) {
-          return { ...t, ...resolved.defenderUpdate };
+          return enrichBuffsWithTimedEffects(t, resolved.defenderUpdate, action.abilityEffect, tickCtx);
         }
         if (resolved.kind === "ally_buff" && resolved.defenderUpdate) {
-          return { ...t, ...resolved.defenderUpdate };
+          return enrichBuffsWithTimedEffects(t, resolved.defenderUpdate, "ally_inspire", tickCtx);
         }
         if (resolved.kind === "spell_save" && resolved.defenderUpdate) {
           return { ...t, ...resolved.defenderUpdate, vida: resolved.save.defenderHpAfter };

@@ -203,19 +203,28 @@ export function resolveAreaSpell(
   };
 }
 
-export function formatAreaSpellChatDetail(res: AreaSpellResolution): string {
+export function formatAreaSpellChatDetail(
+  res: AreaSpellResolution,
+  damageType = "mágico"
+): string {
   const hexLabel = res.areaHexes.map((h) => `q${h.q}r${h.r}`).join(", ");
+  const tipo = damageType.trim() || "mágico";
   if (res.hits.length === 0) {
     return `Centro q${res.center.q}r${res.center.r} · ${hexLabel}`;
   }
   const lines = res.hits.map((h) => {
+    const target = h.tokenId;
     if (h.kind === "save") {
-      return `${h.result.weaponName}→${h.tokenId}: save ${h.result.save.total} vs CD ${h.result.save.dc} · ${h.result.damage.total} dmg`;
+      const r = h.result;
+      return `${target}: teste ${r.save.total} vs CD ${r.save.dc} (${r.save.success ? "ok" : "falhou"}) · ${r.damage.total} ${tipo}`;
     }
     if (h.kind === "attack") {
-      return `${h.result.weaponName}→${h.tokenId}: ${h.result.attack.total} vs CA ${h.result.defenderAc} · ${h.result.damage?.total ?? 0} dmg`;
+      const r = h.result;
+      const dmg = r.damage?.total ?? 0;
+      const tag = r.critical ? " CRÍTICO" : r.hit ? "" : " errou";
+      return `${target}: ${r.attack.total} vs CA ${r.defenderAc}${tag} · ${dmg} ${tipo}`;
     }
     return h.summary;
   });
-  return [`Centro q${res.center.q}r${res.center.r}`, ...lines].join(" · ");
+  return [`Área q${res.center.q}r${res.center.r} · ${res.areaHexes.length} hex`, ...lines].join(" · ");
 }

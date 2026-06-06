@@ -173,6 +173,7 @@ export async function patchRoomActor(
       | "name"
       | "biography"
       | "combatLoadout"
+      | "armorLoadout"
       | "inventory"
     >
   > & {

@@ -74,6 +74,8 @@ export type BattleToken = {
   rangedAttackAdvantage?: boolean;
   /** Condições Eldarin Cap. 3.4 */
   conditions?: import("@/lib/combat/conditions").TokenCondition[];
+  /** Buffs/debuffs/condições com contador de turno ou rodada */
+  timedEffects?: import("@/lib/combat/timed-effects").TimedEffect[];
   /** Recargas de magias/habilidades — chave packId:entryId */
   actionRecharge?: Record<string, import("@/lib/combat/recharge").ActionRechargeState>;
 };

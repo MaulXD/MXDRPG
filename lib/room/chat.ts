@@ -33,6 +33,11 @@ export type ChatMessage = {
     areaCenterQ?: number;
     areaCenterR?: number;
     areaHexCount?: number;
+    areaBatchId?: string;
+    areaShape?: string;
+    areaCascade?: "distance" | "initiative" | "simultaneous";
+    areaHexList?: { q: number; r: number }[];
+    spellDamageType?: string;
     damageTotal: number | null;
     defenderHpBefore: number;
     defenderHpAfter: number;

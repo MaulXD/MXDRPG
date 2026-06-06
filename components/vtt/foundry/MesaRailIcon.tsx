@@ -1,3 +1,5 @@
+import type { ReactNode } from "react";
+
 export type MesaRailIconName =
   | "actors"
   | "initiative"
@@ -7,77 +9,190 @@ export type MesaRailIconName =
   | "dungeon"
   | "whiteboard"
   | "gm"
-  | "spawn";
+  | "spawn"
+  | "invite";
 
 type Props = {
   name: MesaRailIconName;
   className?: string;
 };
 
-/** Ícones sólidos monocromáticos (herdam `color` do botão). */
-export function MesaRailIcon({ name, className = "foundry-icon-bar__icon" }: Props) {
-  const common = {
-    className,
-    viewBox: "0 0 24 24",
-    fill: "currentColor",
-    "aria-hidden": true as const,
-  };
+const S = {
+  stroke: "currentColor",
+  strokeWidth: 1.65,
+  strokeLinecap: "round" as const,
+  strokeLinejoin: "round" as const,
+};
 
+function RailSvg({
+  className = "foundry-icon-bar__icon",
+  children,
+}: {
+  className?: string;
+  children: ReactNode;
+}) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" aria-hidden>
+      {children}
+    </svg>
+  );
+}
+
+/** Ícones traçados no estilo VTT (Foundry / Roll20). */
+export function MesaRailIcon({ name, className = "foundry-icon-bar__icon" }: Props) {
   switch (name) {
     case "actors":
       return (
-        <svg {...common}>
-          <path d="M9 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm-7 9a6 6 0 0 1 12 0H2Zm11-3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm-.5 3.5h6.5a4.5 4.5 0 0 0-9 0Z" />
-        </svg>
+        <RailSvg className={className}>
+          <circle cx="9" cy="8.5" r="3.25" {...S} fill="color-mix(in srgb, currentColor 12%, transparent)" />
+          <circle cx="15.5" cy="10" r="2.75" {...S} fill="color-mix(in srgb, currentColor 8%, transparent)" />
+          <path
+            d="M5.5 18.5c0-2.6 2.2-4.5 5-4.5s5 1.9 5 4.5"
+            {...S}
+          />
+          <path
+            d="M14.5 17.5c1.4-.5 2.8-1.6 3.5-3.5"
+            {...S}
+            opacity="0.75"
+          />
+        </RailSvg>
       );
+
     case "initiative":
       return (
-        <svg {...common}>
-          <path d="M12 2a9 9 0 1 0 0 18 9 9 0 0 0 0-18Zm0 4a1 1 0 0 0-1 1v4.17l-2.59 2.59a1 1 0 1 0 1.41 1.41l2.88-2.88A1 1 0 0 0 13 12V7a1 1 0 0 0-1-1Z" />
-        </svg>
+        <RailSvg className={className}>
+          <circle cx="12" cy="12" r="8.25" {...S} />
+          <path d="M12 7v5.2l3.2 2" {...S} />
+          <path
+            d="M12 4.2v1.2M12 18.6v1.2M4.2 12h1.2M18.6 12h1.2"
+            {...S}
+            opacity="0.45"
+            strokeWidth="1.2"
+          />
+          <circle cx="12" cy="12" r="1.1" fill="currentColor" stroke="none" />
+        </RailSvg>
       );
+
     case "chat":
       return (
-        <svg {...common}>
-          <path d="M4 4.5A3.5 3.5 0 0 1 7.5 1h9A3.5 3.5 0 0 1 20 4.5v6A3.5 3.5 0 0 1 16.5 14H9.7L5.2 17.5A1 1 0 0 1 4 16.8V4.5Z" />
-        </svg>
+        <RailSvg className={className}>
+          <path
+            d="M5 5.5c0-1.4 1.1-2.5 2.5-2.5h9c1.4 0 2.5 1.1 2.5 2.5v6.2c0 1.4-1.1 2.5-2.5 2.5H11l-4.2 3.2V5.5z"
+            {...S}
+            fill="color-mix(in srgb, currentColor 10%, transparent)"
+          />
+          <path d="M8.2 9h7.6M8.2 11.8h5.2" {...S} opacity="0.85" />
+        </RailSvg>
       );
+
     case "dice":
       return (
-        <svg {...common}>
-          <path d="M6 4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2H6Zm2.5 3a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm7 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 10.5a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm-3.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm7 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z" />
-        </svg>
+        <RailSvg className={className}>
+          <path
+            d="M12 3.2 19.2 7.4v9.2L12 20.8 4.8 16.6V7.4L12 3.2z"
+            {...S}
+            fill="color-mix(in srgb, currentColor 11%, transparent)"
+          />
+          <path d="M12 3.2v17.6M4.8 7.4l7.2 4.2 7.2-4.2M4.8 16.6l7.2-4.2 7.2 4.2" {...S} opacity="0.55" />
+          <circle cx="12" cy="12" r="1.15" fill="currentColor" stroke="none" />
+        </RailSvg>
       );
+
     case "ficha":
       return (
-        <svg {...common}>
-          <path d="M7 2a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8.4a1 1 0 0 0-.3-.7L14.3 2.3A1 1 0 0 0 13.6 2H7Zm8 6h3.6L15 4.4V8ZM8 11h8v2H8v-2Zm0 4h5v2H8v-2Z" />
-        </svg>
+        <RailSvg className={className}>
+          <path
+            d="M8 3.5h6.8L18 6.7V20a1.5 1.5 0 0 1-1.5 1.5H7.5A1.5 1.5 0 0 1 6 20V5a1.5 1.5 0 0 1 1.5-1.5z"
+            {...S}
+            fill="color-mix(in srgb, currentColor 9%, transparent)"
+          />
+          <path d="M14.8 3.8V7H18" {...S} opacity="0.7" />
+          <circle cx="10.5" cy="11" r="1.6" {...S} />
+          <path d="M13.8 10.2h3.2M13.8 12.2h2.4M8.8 15h6.4M8.8 17.2h4.2" {...S} opacity="0.8" />
+        </RailSvg>
       );
+
     case "dungeon":
       return (
-        <svg {...common}>
-          <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3h11A2.5 2.5 0 0 1 20 5.5v13A2.5 2.5 0 0 1 17.5 21h-11A2.5 2.5 0 0 1 4 18.5v-13ZM8 7h8v2H8V7Zm0 4h5v2H8v-2Z" />
-        </svg>
+        <RailSvg className={className}>
+          <path
+            d="M4.5 8.5 12 4l7.5 4.5v9L12 22l-7.5-4.5v-9z"
+            {...S}
+            fill="color-mix(in srgb, currentColor 10%, transparent)"
+          />
+          <path d="M12 4v18M4.5 8.5 12 13l7.5-4.5M12 13v9" {...S} opacity="0.5" />
+          <path d="M9.5 11.5h5v2.2h-5z" {...S} />
+        </RailSvg>
       );
+
     case "whiteboard":
       return (
-        <svg {...common}>
-          <path d="M5 4.5A2.5 2.5 0 0 1 7.5 2h9A2.5 2.5 0 0 1 19 4.5v11A2.5 2.5 0 0 1 16.5 18h-9A2.5 2.5 0 0 1 5 15.5v-11ZM8 7.5l8 5-8 5v-10Z" />
-        </svg>
+        <RailSvg className={className}>
+          <rect
+            x="4"
+            y="5"
+            width="16"
+            height="12"
+            rx="2"
+            {...S}
+            fill="color-mix(in srgb, currentColor 8%, transparent)"
+          />
+          <path d="M8.5 14.5 11 11.5l2.2 2.2L16.5 10" {...S} />
+          <path d="M7 18.5h10" {...S} opacity="0.55" strokeWidth="2" />
+        </RailSvg>
       );
+
     case "gm":
       return (
-        <svg {...common}>
-          <path d="M12 8.5A3.5 3.5 0 1 0 12 15.5 3.5 3.5 0 0 0 12 8.5ZM3.9 13.2a1 1 0 0 1 .3-1.37l1.1-.76a7.04 7.04 0 0 1 0-2.14l-1.1-.76a1 1 0 0 1 1.07-1.7l1.3.45a7.04 7.04 0 0 1 1.85-1.07l.2-1.36a1 1 0 0 1 1.98 0l.2 1.36a7.04 7.04 0 0 1 1.85 1.07l1.3-.45a1 1 0 1 1 1.07 1.7l-1.1.76c.04.36.06.72.06 1.07s-.02.71-.06 1.07l1.1.76a1 1 0 1 1-1.07 1.7l-1.3-.45a7.04 7.04 0 0 1-1.85 1.07l-.2 1.36a1 1 0 0 1-1.98 0l-.2-1.36a7.04 7.04 0 0 1-1.85-1.07l-1.3.45a1 1 0 0 1-1.37-.33Z" />
-        </svg>
+        <RailSvg className={className}>
+          <path
+            d="M5.5 9.2c0-2.8 2.9-4.7 6.5-4.7s6.5 1.9 6.5 4.7c0 3.6-2.8 6.8-6.5 9.3C8.3 16 5.5 12.8 5.5 9.2z"
+            {...S}
+            fill="color-mix(in srgb, currentColor 12%, transparent)"
+          />
+          <path
+            d="M8.8 9.5c.6-1.2 1.6-1.9 3.2-1.9s2.6.7 3.2 1.9"
+            {...S}
+          />
+          <path d="M9.2 12.2h5.6" {...S} opacity="0.75" />
+          <path
+            d="M12 3.8v1.6M7.2 5.3l1.1 1.3M16.8 5.3l-1.1 1.3"
+            {...S}
+            opacity="0.55"
+            strokeWidth="1.3"
+          />
+        </RailSvg>
       );
+
     case "spawn":
       return (
-        <svg {...common}>
-          <path d="M12 2C8.5 2 6 4.8 6 8.2c0 2.1 1 3.9 2.5 5.1L7 18h10l-1.5-4.7C16.9 12.1 18 10.3 18 8.2 18 4.8 15.5 2 12 2Zm-2.2 6.5a1.2 1.2 0 1 1 0-2.4 1.2 1.2 0 0 1 0 2.4Zm4.4 0a1.2 1.2 0 1 1 0-2.4 1.2 1.2 0 0 1 0 2.4ZM8.5 14.5h7l.6 2h-8.2l.6-2Z" />
-        </svg>
+        <RailSvg className={className}>
+          <path
+            d="M12 4.5c-3.2 0-5.5 2.4-5.5 5.6 0 2.2 1.2 4.1 3 5.1L8 19.5h8l-1.5-4.3c1.8-1 3-2.9 3-5.1 0-3.2-2.3-5.6-5.5-5.6z"
+            {...S}
+            fill="color-mix(in srgb, currentColor 11%, transparent)"
+          />
+          <circle cx="9.8" cy="11" r="1" fill="currentColor" stroke="none" />
+          <circle cx="14.2" cy="11" r="1" fill="currentColor" stroke="none" />
+          <path d="M10.2 14.2c.8.7 1.8 1.1 2.8 1.1s2-.4 2.8-1.1" {...S} />
+          <path d="M9.5 7.8h5" {...S} opacity="0.45" />
+        </RailSvg>
       );
+
+    case "invite":
+      return (
+        <RailSvg className={className}>
+          <circle cx="7.5" cy="12" r="3.25" {...S} />
+          <circle cx="16.5" cy="12" r="3.25" {...S} />
+          <path d="M10.75 12h2.5" {...S} strokeWidth="2" />
+          <path
+            d="M4.5 19.5c0-2.4 1.4-4 3-4M19.5 19.5c0-2.4-1.4-4-3-4"
+            {...S}
+            opacity="0.65"
+          />
+        </RailSvg>
+      );
+
     default:
       return null;
   }
