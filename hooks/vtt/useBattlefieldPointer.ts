@@ -297,7 +297,9 @@ export function useBattlefieldPointer({
 
   const pointerPos = useCallback(
     (e: React.PointerEvent<HTMLCanvasElement>) => {
-      const rect = canvasRef.current!.getBoundingClientRect();
+      const canvas = canvasRef.current;
+      if (!canvas) return { px: 0, py: 0 };
+      const rect = canvas.getBoundingClientRect();
       return { px: e.clientX - rect.left, py: e.clientY - rect.top };
     },
     [canvasRef]
@@ -595,6 +597,22 @@ export function useBattlefieldPointer({
         }
       }
 
+      const gmEarly = gmDragRef.current;
+      if (gmEarly && onRepositionToken && !dungeonEditor?.active && !whiteboard?.active) {
+        if (!gmEarly.dragging && Math.hypot(px - gmEarly.startX, py - gmEarly.startY) > 8) {
+          gmEarly.dragging = true;
+        }
+        if (gmEarly.dragging) {
+          if (axial) {
+            setHoverAxial(axial);
+            onHoverAxialChange?.(axial);
+            onGmDragPreview?.(gmEarly.tokenId, axial);
+          }
+          if (canvasRef.current) canvasRef.current.style.cursor = "grabbing";
+          return;
+        }
+      }
+
       if (!axial) return;
 
       const floorResize = floorResizeRef.current;
@@ -666,20 +684,6 @@ export function useBattlefieldPointer({
         if (dng.dragging) {
           setHoverAxial(axial);
           onHoverAxialChange?.(axial);
-          if (canvasRef.current) canvasRef.current.style.cursor = "grabbing";
-          return;
-        }
-      }
-
-      const gm = gmDragRef.current;
-      if (gm && onRepositionToken && !dungeonEditor?.active && !whiteboard?.active) {
-        if (!gm.dragging && Math.hypot(px - gm.startX, py - gm.startY) > 8) {
-          gm.dragging = true;
-        }
-        if (gm.dragging) {
-          setHoverAxial(axial);
-          onHoverAxialChange?.(axial);
-          onGmDragPreview?.(gm.tokenId, axial);
           if (canvasRef.current) canvasRef.current.style.cursor = "grabbing";
           return;
         }
@@ -859,6 +863,12 @@ export function useBattlefieldPointer({
         return;
       }
 
+      if (gm?.dragging && onRepositionToken) {
+        onGmDragPreview?.(gm.tokenId, null);
+        if (axial) onRepositionToken(gm.tokenId, axial);
+        return;
+      }
+
       if (!axial) return;
 
       if (dungeonEditor?.active && dungeonEditor.layer === "objects") {
@@ -867,12 +877,6 @@ export function useBattlefieldPointer({
         if (!start || Math.hypot(px - start.x, py - start.y) <= 8 || dng) {
           dungeonEditor.onHexEdit(axial, dng?.objectId);
         }
-        return;
-      }
-
-      if (gm?.dragging && onRepositionToken) {
-        onGmDragPreview?.(gm.tokenId, null);
-        onRepositionToken(gm.tokenId, axial);
         return;
       }
 

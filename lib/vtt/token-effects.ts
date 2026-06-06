@@ -331,6 +331,7 @@ export function listTokenEffectChips(token: BattleToken): TokenEffectChip[] {
 
   for (const fx of timedEffectsOf(token)) {
     if (coveredFxIds.has(fx.id)) continue;
+    const label = typeof fx.label === "string" && fx.label.trim() ? fx.label.trim() : "Efeito";
     const icon =
       (fx.condition ? CONDITION_ICON[fx.condition] : undefined) ??
       (fx.clearFields?.[0] ? FIELD_CHIP_ICONS[fx.clearFields[0]] : undefined) ??
@@ -347,10 +348,10 @@ export function listTokenEffectChips(token: BattleToken): TokenEffectChip[] {
     out.push({
       id: `fx-${fx.id}`,
       kind,
-      label: fx.label,
-      abbr: fx.label.slice(0, 2),
+      label,
+      abbr: label.slice(0, 2),
       icon,
-      title: timed.detail ? `${fx.label} · ${timed.detail}` : fx.label,
+      title: timed.detail ? `${label} · ${timed.detail}` : label,
       color: style.color,
       bg: style.bg,
       remaining: timed.badge ?? undefined,
