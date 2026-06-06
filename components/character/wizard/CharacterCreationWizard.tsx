@@ -26,6 +26,7 @@ import {
   EMPTY_WIZARD_DRAFT,
   type CharacterWizardDraft,
 } from "@/lib/character/wizard-types";
+import { classAttributePriority } from "@/lib/character/class-scales";
 import {
   ATTR_ORDER,
   POINT_BUY_MAX_BEFORE_RACIAL,
@@ -521,7 +522,7 @@ export function CharacterCreationWizard({
                   aria-selected={draft.classe === c.id}
                   className={`char-wizard-pick ${draft.classe === c.id ? "char-wizard-pick--on" : ""}`}
                   onClick={() => {
-                    const pointBuy = isUnsetPointBuy(draft.pointBuy)
+                    const pointBuy = pbAutoApplied
                       ? suggestedPointBuyForClass(c.id)
                       : draft.pointBuy;
                     patch({
@@ -529,7 +530,6 @@ export function CharacterCreationWizard({
                       pointBuy,
                       starterKitId: getDefaultStarterKitId(c.id),
                     });
-                    setPbAutoApplied(isUnsetPointBuy(draft.pointBuy));
                   }}
                 >
                   <div style={{ display: "flex", width: "100%", alignItems: "flex-start" }}>
@@ -590,7 +590,11 @@ export function CharacterCreationWizard({
               </div>
               {pbAutoApplied && pbLeft === 0 ? (
                 <p className="char-wizard-meta" style={{ margin: 0 }}>
-                  Sugestão para <strong>{draft.classe}</strong> aplicada
+                  Sugestão para <strong>{draft.classe}</strong> aplicada — prioridade:{" "}
+                  {classAttributePriority(draft.classe)
+                    .slice(0, 3)
+                    .map((k) => ATTRIBUTE_LABELS[k])
+                    .join(" → ")}
                 </p>
               ) : null}
             </div>

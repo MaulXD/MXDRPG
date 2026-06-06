@@ -59,6 +59,7 @@ function combatFxFromMessage(
     resolveDetail: c.detail,
     spellDamageType: c.spellDamageType,
     damageTypeLabel: generalDamagePresetLabel(),
+    chatMessageIds: [msg.id],
   };
 
   if (c.resolution === "save") {
@@ -162,6 +163,7 @@ function buildSimultaneousBurst(
     areaTargets: targets,
     damageTotal: c.damageTotal,
     castFxKind: castResolved?.kind ?? "fire",
+    chatMessageIds: hits.map((m) => m.id),
   };
 }
 
@@ -204,6 +206,7 @@ export function buildAreaFxSequence(
       damageTypeLabel: generalDamagePresetLabel(),
       spellDamageType: summary.combat?.spellDamageType,
       areaHexes: areaHexesFromCombat(summary.combat!),
+      chatMessageIds: [msg.id],
     });
   }
 

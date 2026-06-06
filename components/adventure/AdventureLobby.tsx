@@ -39,7 +39,6 @@ export function AdventureLobby() {
   const router = useRouter();
   const [adventures, setAdventures] = useState<AdventureRow[]>([]);
   const [newName, setNewName] = useState("");
-  const [newInviteCode, setNewInviteCode] = useState("");
   const [joinCode, setJoinCode] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -72,10 +71,7 @@ export function AdventureLobby() {
     const res = await fetch("/api/adventures", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        name: newName,
-        inviteCode: newInviteCode.trim() || undefined,
-      }),
+      body: JSON.stringify({ name: newName }),
     });
     const data = await res.json();
     setLoading(false);
@@ -154,18 +150,9 @@ export function AdventureLobby() {
               required
               style={inputStyle}
             />
-            <input
-              value={newInviteCode}
-              onChange={(e) => setNewInviteCode(e.target.value.toUpperCase().replace(/\s+/g, ""))}
-              placeholder="Código de convite (ex.: 10 caracteres)"
-              minLength={4}
-              maxLength={16}
-              style={inputStyle}
-              aria-describedby="invite-hint-create"
-            />
-            <p id="invite-hint-create" style={{ margin: 0, fontSize: "0.8rem", color: "var(--text-muted)" }}>
-              4–16 letras e números (A–Z, 2–9). Deixe vazio para gerar um código de 10 caracteres
-              automaticamente.
+            <p style={{ margin: 0, fontSize: "0.8rem", color: "var(--text-muted)" }}>
+              Um código de convite de 10 caracteres é gerado automaticamente. Você copia e compartilha
+              na página da mesa (painel <strong>Convite</strong>).
             </p>
             <button type="submit" className="btn" disabled={loading}>
               Criar mesa

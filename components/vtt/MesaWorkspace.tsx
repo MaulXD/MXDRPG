@@ -1,6 +1,7 @@
 ﻿"use client";
 
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { isStagedCombatChatMessage } from "@/lib/combat/chat-display";
 import {
   canAdvanceCombatTurn,
   canControlToken as canControlTokenCheck,
@@ -63,10 +64,13 @@ export function MesaWorkspace({
   session,
   compendium,
   packs: _packs,
-  defaultActorId = "pc-aventureiro",
+  defaultActorId = "pc-thrain-ferroescudo",
 }: Props) {
   const [sheetPopupActorId, setSheetPopupActorId] = useState<string | null>(null);
   const [spawnAxial, setSpawnAxial] = useState<Axial | null>(null);
+  const [combatChatReveal, setCombatChatReveal] = useState<
+    Record<string, import("@/lib/combat/chat-display").CombatChatRevealPhase>
+  >({});
   const { snapshot, syncError, refresh, applySnapshot } = useRoomSync(roomId, { inviteCode });
   const windows = useFoundryWindows(roomId);
 
@@ -85,10 +89,53 @@ export function MesaWorkspace({
   }, [windows]);
 
   const openDungeonPanel = useCallback(() => {
-    windows.open("dungeon");
+    windows.openAsPopup("dungeon");
   }, [windows]);
 
   const chat = snapshot?.chat ?? [];
+
+  const combatChatSeenRef = useRef<Set<string>>(new Set());
+  const combatChatSeededRef = useRef(false);
+
+  const onCombatChatReveal = useCallback(
+    (messageIds: string[], phase: "roll" | "damage" | "done") => {
+      setCombatChatReveal((prev) => {
+        const next = { ...prev };
+        for (const id of messageIds) {
+          if (phase === "done") delete next[id];
+          else next[id] = phase;
+        }
+        return next;
+      });
+    },
+    []
+  );
+
+  useEffect(() => {
+    combatChatSeededRef.current = false;
+    combatChatSeenRef.current = new Set();
+    setCombatChatReveal({});
+  }, [roomId]);
+
+  useEffect(() => {
+    const msgs = snapshot?.chat ?? [];
+    if (!combatChatSeededRef.current) {
+      for (const m of msgs) {
+        if (isStagedCombatChatMessage(m)) combatChatSeenRef.current.add(m.id);
+      }
+      combatChatSeededRef.current = true;
+      return;
+    }
+    const freshIds: string[] = [];
+    for (const m of msgs) {
+      if (!isStagedCombatChatMessage(m)) continue;
+      if (!combatChatSeenRef.current.has(m.id)) {
+        freshIds.push(m.id);
+        combatChatSeenRef.current.add(m.id);
+      }
+    }
+    if (freshIds.length) onCombatChatReveal(freshIds, "roll");
+  }, [snapshot?.chat, onCombatChatReveal]);
 
   const turnRoom = useMemo(
     () => ({
@@ -193,28 +240,18 @@ export function MesaWorkspace({
     [windows]
   );
 
-  const handlePanelToggle = useCallback(
+  const handleOpenDock = useCallback(
     (id: MesaWindowId) => {
-      windows.toggle(id);
+      windows.openInDock(id);
     },
     [windows]
   );
 
   const handleOpenPopup = useCallback(
     (id: MesaWindowId) => {
-      if (id === "ficha") {
-        windows.openAsPopup("ficha");
-        return;
-      }
-      const layout = win(id);
-      if (windows.isFloating(id) && layout.open) {
-        if (layout.minimized) windows.restore(id);
-        else windows.focus(id);
-        return;
-      }
       windows.openAsPopup(id);
     },
-    [win, windows]
+    [windows]
   );
 
   return (
@@ -247,7 +284,7 @@ export function MesaWorkspace({
         <div className="foundry-mesa">
           <MesaFoundrySidebar
             isActive={isPanelActive}
-            onToggle={handlePanelToggle}
+            onOpenDock={handleOpenDock}
             onOpenPopup={handleOpenPopup}
             showGm={canControlCombat}
             showInvite={Boolean(canParticipate && roomInviteCode)}
@@ -264,7 +301,13 @@ export function MesaWorkspace({
                   win("chat").minimized ? windows.restore("chat") : windows.minimize("chat")
                 }
               >
-                <RoomChat roomId={roomId} messages={chat} onUpdate={refresh} readOnly={!canChat} />
+                <RoomChat
+                  roomId={roomId}
+                  messages={chat}
+                  combatReveal={combatChatReveal}
+                  onUpdate={refresh}
+                  readOnly={!canChat}
+                />
               </FoundryDockPanel>
             ) : null}
 
@@ -404,6 +447,7 @@ export function MesaWorkspace({
                 win("dungeon").minimized ? windows.restore("dungeon") : windows.minimize("dungeon")
               }
               onDungeonWindowFocus={() => windows.focus("dungeon")}
+              onCombatChatReveal={onCombatChatReveal}
               whiteboardWindowLayout={win("whiteboard")}
               onWhiteboardWindowLayoutChange={(patch) => windows.patch("whiteboard", patch)}
               onWhiteboardWindowClose={() => windows.close("whiteboard")}
@@ -440,7 +484,13 @@ export function MesaWorkspace({
                   }
                   onClose={() => windows.close("chat")}
                 >
-                  <RoomChat roomId={roomId} messages={chat} onUpdate={refresh} readOnly={!canChat} />
+                  <RoomChat
+                    roomId={roomId}
+                    messages={chat}
+                    combatReveal={combatChatReveal}
+                    onUpdate={refresh}
+                    readOnly={!canChat}
+                  />
                 </FoundryWindow>
               ) : null}
 

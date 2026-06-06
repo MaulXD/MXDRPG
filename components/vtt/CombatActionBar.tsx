@@ -4,8 +4,9 @@ import { useMemo } from "react";
 import type { BattleToken } from "@/lib/vtt/types";
 import type { RoomActor } from "@/lib/room/types";
 import type { CombatTrack } from "@/lib/room/combat";
-import { axialDistance } from "@/lib/vtt/hex-math";
+import { tokenAxialDistance } from "@/lib/vtt/creature-size";
 import { canAttackTarget } from "@/lib/combat/attack";
+import { attackerForCombatCheck } from "@/lib/combat/combat-token-pa";
 import { isAreaSpellAction } from "@/lib/combat/area-spell";
 import { canAbilityTarget, canUseAbility } from "@/lib/combat/ability";
 import {
@@ -50,23 +51,26 @@ export function CombatActionBar({
 
   const targets = useMemo(() => {
     if (!action || action.selfTarget || isAreaSpellAction(action)) return [];
+    const prepared = attackerForCombatCheck(attacker, actor, turn, {
+      combatHasOrder: turn.combatHasOrder,
+    });
     return tokens
-      .filter((t) => t.id !== attacker.id)
+      .filter((t) => t.id !== prepared.id)
       .map((t) => {
         const check =
           action.kind === "ability"
-            ? canAbilityTarget(attacker, t, action, {
+            ? canAbilityTarget(prepared, t, action, {
                 activeTokenId: turn.activeTokenId,
                 bypassTurn: turn.bypassTurn,
               }, actor)
-            : canAttackTarget(attacker, t, action, {
+            : canAttackTarget(prepared, t, action, {
                 activeTokenId: turn.activeTokenId,
                 bypassTurn: turn.bypassTurn,
               }, { actor });
-        return { token: t, dist: axialDistance(attacker.axial, t.axial), ...check };
+        return { token: t, dist: tokenAxialDistance(prepared, t), ...check };
       })
       .filter((t) => t.dist <= action.rangeHex);
-  }, [attacker, tokens, action, turn, actor]);
+  }, [attacker, actor, tokens, action, turn]);
 
   if (!actor || !action) {
     return <p className="vtt-combat-hint">Token sem ficha linkada — não pode atacar.</p>;
@@ -91,7 +95,7 @@ export function CombatActionBar({
     } else {
       await performAttack(
         roomId,
-        attacker.id,
+        attacker,
         defenderId,
         action!,
         turn.bypassTurn,

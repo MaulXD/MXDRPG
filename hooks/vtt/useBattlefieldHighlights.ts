@@ -10,6 +10,7 @@ import {
 } from "@/lib/combat/area-spell";
 import { canAbilityTarget } from "@/lib/combat/ability";
 import { canAttackTarget } from "@/lib/combat/attack";
+import { attackerForCombatCheck } from "@/lib/combat/combat-token-pa";
 import type { CombatActionOption } from "@/lib/combat/types";
 import type { CharacterSheet } from "@/lib/character/types";
 import { isMoveMode, isTargetMode, type TokenActionMode } from "@/lib/vtt/action-mode";
@@ -41,6 +42,7 @@ type Params = {
   areaDirection: number | null;
   channelExtraPa?: number;
   turn: TurnCtx;
+  combatHasOrder?: boolean;
 };
 
 export function useBattlefieldHighlights({
@@ -58,6 +60,7 @@ export function useBattlefieldHighlights({
   areaDirection,
   channelExtraPa = 0,
   turn,
+  combatHasOrder = true,
 }: Params) {
   const moveMode: "walk" | "run" = actionMode === "move-run" ? "run" : "walk";
   const turnMovePreview = Boolean(
@@ -265,17 +268,29 @@ export function useBattlefieldHighlights({
     if (!selected || !activeCombatAction || !isTargetMode(actionMode)) return new Set<string>();
     if (isAreaSpellMode) return new Set<string>();
     if (activeCombatAction.selfTarget) return new Set<string>();
+    const attacker = attackerForCombatCheck(selected, selectedActor, turn, {
+      combatHasOrder,
+    });
     const ids = new Set<string>();
     for (const t of scene.tokens) {
       if (t.id === selected.id) continue;
       const check =
         activeCombatAction.kind === "ability"
-          ? canAbilityTarget(selected, t, activeCombatAction, turn, selectedActor)
-          : canAttackTarget(selected, t, activeCombatAction, turn, { actor: selectedActor });
+          ? canAbilityTarget(attacker, t, activeCombatAction, turn, selectedActor)
+          : canAttackTarget(attacker, t, activeCombatAction, turn, { actor: selectedActor });
       if (check.ok) ids.add(t.id);
     }
     return ids;
-  }, [selected, selectedActor, scene.tokens, activeCombatAction, actionMode, isAreaSpellMode, turn]);
+  }, [
+    selected,
+    selectedActor,
+    scene.tokens,
+    activeCombatAction,
+    actionMode,
+    isAreaSpellMode,
+    turn,
+    combatHasOrder,
+  ]);
 
   return {
     gridCells,

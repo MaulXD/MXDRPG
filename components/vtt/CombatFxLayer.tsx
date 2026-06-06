@@ -10,6 +10,7 @@ import type {
   CombatFxTargetBurst,
 } from "@/lib/vtt/combat-fx-types";
 import { DiceMiniature } from "@/components/vtt/DiceMiniature";
+import { splitCombatChatDetail } from "@/lib/combat/chat-display";
 import type { TokenCastFxKind } from "@/lib/vtt/token-cast-fx";
 
 export type { CombatFxState, CombatFxTargetBurst } from "@/lib/vtt/combat-fx-types";
@@ -24,6 +25,7 @@ type Props = {
   onApplyState?: () => void;
   onTokenFlash?: (tokenId: string | null, flash: TokenCombatFlash) => void;
   onTokenCastFx?: (tokenId: string, kind: TokenCastFxKind) => void;
+  onChatReveal?: (messageIds: string[], phase: "roll" | "damage" | "done") => void;
   view?: BattlefieldView;
 };
 
@@ -79,6 +81,7 @@ export function CombatFxLayer({
   onApplyState,
   onTokenFlash,
   onTokenCastFx,
+  onChatReveal,
   view = { scale: 1, panX: 0, panY: 0 },
 }: Props) {
   const reducedMotion = useReducedMotion();
@@ -89,6 +92,7 @@ export function CombatFxLayer({
   const onApplyStateRef = useRef(onApplyState);
   const onTokenFlashRef = useRef(onTokenFlash);
   const onTokenCastFxRef = useRef(onTokenCastFx);
+  const onChatRevealRef = useRef(onChatReveal);
   const castFxTriggeredRef = useRef(false);
   const applyStateCalledRef = useRef(false);
   fxRef.current = fx;
@@ -96,6 +100,13 @@ export function CombatFxLayer({
   onApplyStateRef.current = onApplyState;
   onTokenFlashRef.current = onTokenFlash;
   onTokenCastFxRef.current = onTokenCastFx;
+  onChatRevealRef.current = onChatReveal;
+
+  const revealChat = (phase: "roll" | "damage" | "done") => {
+    const ids = fxRef.current?.chatMessageIds;
+    if (!ids?.length) return;
+    onChatRevealRef.current?.(ids, phase);
+  };
 
   const timings = useMemo(() => {
     const mode = fx?.mode ?? "single";
@@ -140,6 +151,9 @@ export function CombatFxLayer({
     castFxTriggeredRef.current = false;
     applyStateCalledRef.current = false;
     onTokenFlashRef.current?.(null, null);
+    if (data.chatMessageIds?.length) {
+      revealChat("roll");
+    }
     const timeouts: ReturnType<typeof setTimeout>[] = [];
 
     if (data.mode === "area-intro") {
@@ -158,6 +172,17 @@ export function CombatFxLayer({
       const targets = data.areaTargets ?? [];
       timeouts.push(
         setTimeout(() => {
+          revealChat("roll");
+          setPhase("roll");
+        }, timings.mark)
+      );
+      timeouts.push(
+        setTimeout(() => {
+          setPhase("result");
+        }, timings.mark + timings.roll)
+      );
+      timeouts.push(
+        setTimeout(() => {
           for (const t of targets) {
             onTokenFlashRef.current?.(t.tokenId, flashForTarget(t));
             if (data.castFxKind) {
@@ -168,9 +193,10 @@ export function CombatFxLayer({
             applyStateCalledRef.current = true;
             onApplyStateRef.current?.();
           }
+          revealChat("damage");
           setShowDamage(true);
           setPhase("damage");
-        }, timings.mark + timings.simulFlash)
+        }, timings.mark + timings.roll + timings.resultPause + timings.simulFlash)
       );
       timeouts.push(
         setTimeout(() => {
@@ -181,7 +207,18 @@ export function CombatFxLayer({
           setPhase("done");
           onTokenFlashRef.current?.(null, null);
           onDoneRef.current();
-        }, timings.mark + timings.simulFlash + timings.resultHold + timings.damageFade)
+        },
+          timings.mark +
+            timings.roll +
+            timings.resultPause +
+            timings.simulFlash +
+            timings.resultHold +
+            timings.damageFade)
+      );
+      timeouts.push(
+        setTimeout(() => {
+          revealChat("done");
+        }, timings.mark + timings.roll + timings.resultPause + timings.simulFlash + timings.resultHold + timings.damageFade)
       );
       return () => {
         for (const id of timeouts) clearTimeout(id);
@@ -230,30 +267,55 @@ export function CombatFxLayer({
       }
     };
 
-    if (data.mode === "area-target") {
+    const runRollResultDamageSequence = (markMs: number) => {
+      timeouts.push(
+        setTimeout(() => {
+          revealChat("roll");
+          setPhase("roll");
+        }, markMs)
+      );
+      timeouts.push(
+        setTimeout(() => {
+          setPhase("result");
+        }, markMs + timings.roll)
+      );
       timeouts.push(
         setTimeout(() => {
           playTokenFx();
-        }, timings.areaTargetMark + timings.areaTargetFx)
+        }, markMs + timings.roll + timings.resultPause + timings.tokenFxDelay)
       );
       timeouts.push(
         setTimeout(() => {
           applyDamagePhase();
-        }, timings.areaTargetMark + timings.areaTargetFx + timings.areaTargetDamage)
+          revealChat("damage");
+        }, markMs + timings.roll + timings.resultPause + timings.tokenFxDelay + timings.applyStateDelay)
       );
       timeouts.push(
         setTimeout(() => {
+          revealChat("done");
           setPhase("done");
           onTokenFlashRef.current?.(null, null);
           onDoneRef.current();
-        }, timings.areaTargetMark + timings.areaTargetFx + timings.areaTargetDamage + timings.resultHold)
+        },
+          markMs +
+            timings.roll +
+            timings.resultPause +
+            timings.tokenFxDelay +
+            timings.applyStateDelay +
+            timings.resultHold +
+            timings.damageFade)
       );
+    };
+
+    if (data.mode === "area-target") {
+      runRollResultDamageSequence(timings.areaTargetMark);
       return () => {
         for (const id of timeouts) clearTimeout(id);
       };
     }
 
     const t0 = setTimeout(() => {
+      revealChat("roll");
       setPhase("roll");
 
       timeouts.push(
@@ -271,11 +333,13 @@ export function CombatFxLayer({
       timeouts.push(
         setTimeout(() => {
           applyDamagePhase();
+          revealChat("damage");
         }, timings.mark + timings.roll + timings.resultPause + timings.tokenFxDelay + timings.applyStateDelay)
       );
 
       timeouts.push(
         setTimeout(() => {
+          revealChat("done");
           setPhase("done");
           onTokenFlashRef.current?.(null, null);
           onDoneRef.current();
@@ -325,17 +389,28 @@ export function CombatFxLayer({
   const areaFill = accent.replace(/[\d.]+\)$/, "0.2)");
 
   const resultLabel = resultLabelFor(fx);
-  const showDicePanel = fx.mode === "single";
+  const showDicePanel = fx.mode === "single" || fx.mode === "area-target";
   const showPanel =
     fx.mode === "area-intro" ||
     (showDicePanel && (phase === "roll" || phase === "result" || phase === "damage"));
   const showResultText =
     fx.mode === "area-intro" || (showDicePanel && (phase === "result" || phase === "damage"));
   const showRoll = showDicePanel && phase === "roll";
-  const showResolveDetail =
+  const detailParts = fx.resolveDetail
+    ? splitCombatChatDetail(
+        fx.resolveDetail,
+        fx.saveTotal != null ? "save" : "attack"
+      )
+    : { roll: "", damage: null };
+  const showRollDetail =
+    showDicePanel &&
+    phase === "result" &&
+    Boolean(detailParts.roll) &&
+    (fx.hit === true || fx.hit === false || fx.saveTotal != null);
+  const showDamageDetail =
     showDicePanel &&
     phase === "damage" &&
-    Boolean(fx.resolveDetail) &&
+    Boolean(detailParts.damage) &&
     (fx.hit === true || fx.saveTotal != null);
 
   const areaHexPaths =
@@ -420,8 +495,13 @@ export function CombatFxLayer({
                     {fx.spellDamageType ? (
                       <p className="combat-fx-panel-dmg-type">{fx.spellDamageType}</p>
                     ) : null}
-                    {showResolveDetail ? (
-                      <p className="combat-fx-panel-detail">{fx.resolveDetail}</p>
+                    {showRollDetail ? (
+                      <p className="combat-fx-panel-detail">{detailParts.roll}</p>
+                    ) : null}
+                    {showDamageDetail ? (
+                      <p className="combat-fx-panel-detail combat-fx-panel-detail--damage">
+                        {detailParts.damage}
+                      </p>
                     ) : null}
                   </div>
                 ) : showRoll ? (

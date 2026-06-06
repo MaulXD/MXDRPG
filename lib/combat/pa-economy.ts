@@ -129,7 +129,8 @@ export function paTurnRulesForMonster(tier?: MonsterTier): PaTurnRules {
   const recovery = tier === "boss" ? MONSTER_PA_BOSS : MONSTER_PA_DEFAULT;
   return {
     recoveryPerTurn: recovery,
-    accumulationCap: recovery,
+    /** Monstros não acumulam PA entre turnos — sobra é descartada ao passar a vez. */
+    accumulationCap: 0,
     turnStartPa: recovery,
   };
 }

@@ -383,6 +383,12 @@
         "tempo": "1 ação",
         "alcance": "1 hex"
       },
+      "weapon": {
+        "dano": {
+          "formula": "1d8",
+          "tipo": "cura"
+        }
+      },
       "bookRef": "_parte_x_magias_v4_revisada.md"
     }
   },

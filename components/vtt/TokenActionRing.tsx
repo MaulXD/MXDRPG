@@ -6,6 +6,7 @@ import {
   useMemo,
   useState,
   type CSSProperties,
+  type FocusEvent,
   type MouseEvent,
 } from "react";
 import type { BattleToken } from "@/lib/vtt/types";
@@ -61,6 +62,9 @@ type Props = {
 };
 
 const RING_RADIUS_BASE = 152;
+const INFO_DETAIL_GAP = 14;
+const INFO_DETAIL_MARGIN = 10;
+const INFO_DETAIL_MAX_W = 420;
 
 function ringLayout(slotCount: number): { radius: number; track: number; slotScale: number } {
   if (slotCount <= 5) {
@@ -95,6 +99,20 @@ function combatActionPaLabel(actor: RoomActor | null, action: CombatActionOption
   return `${effectivePaCost(actor, action)} PA`;
 }
 
+function computeInfoDetailPlacement(pointer: { x: number; y: number }): {
+  left: number;
+  top: number;
+  flipLeft: boolean;
+} {
+  const panelW = Math.min(INFO_DETAIL_MAX_W, window.innerWidth * 0.94);
+  const flipLeft = pointer.x + INFO_DETAIL_GAP + panelW > window.innerWidth - INFO_DETAIL_MARGIN;
+  return {
+    left: flipLeft ? pointer.x - INFO_DETAIL_GAP : pointer.x + INFO_DETAIL_GAP,
+    top: pointer.y,
+    flipLeft,
+  };
+}
+
 function truncateRingLabel(name: string, max = 11): string {
   const trimmed = name.trim();
   if (trimmed.length <= max) return trimmed;
@@ -117,6 +135,7 @@ export function TokenActionRing({
   const [ringView, setRingView] = useState<RingView>("main");
   const [hoveredInfoSlotId, setHoveredInfoSlotId] = useState<string | null>(null);
   const [pinnedInfoSlotId, setPinnedInfoSlotId] = useState<string | null>(null);
+  const [infoPointer, setInfoPointer] = useState<{ x: number; y: number } | null>(null);
   const turn = useCombatTurn({ combat, canBypassTurn });
 
   const weapons = useMemo(
@@ -142,12 +161,14 @@ export function TokenActionRing({
   useEffect(() => {
     setRingView("main");
     setHoveredInfoSlotId(null);
+    setInfoPointer(null);
     setPinnedInfoSlotId(null);
   }, [token.id]);
 
   useEffect(() => {
     setHoveredInfoSlotId(null);
     setPinnedInfoSlotId(null);
+    setInfoPointer(null);
   }, [ringView]);
 
   const saveLoadout = useCallback(
@@ -189,10 +210,7 @@ export function TokenActionRing({
 
       let action: CombatActionOption | null = null;
       if (mode === "attack") {
-        action = weapons[0] ?? null;
-        if (actor && action && action.packId === "armas") {
-          void saveLoadout("armas", action.entryId);
-        }
+        action = actor ? resolveCombatAction(actor) : (weapons[0] ?? null);
       } else if (mode === "idle") {
         action = null;
       } else if (actor) {
@@ -354,14 +372,27 @@ export function TokenActionRing({
     [displaySlots, activeDetailSlotId]
   );
 
-  const detailOffset = layout.radius + 88;
+  const detailPlacement = useMemo(
+    () => (infoPointer ? computeInfoDetailPlacement(infoPointer) : null),
+    [infoPointer]
+  );
+
+  const syncInfoPointer = useCallback((e: MouseEvent | FocusEvent<HTMLButtonElement>) => {
+    if ("clientX" in e && e.clientX > 0) {
+      setInfoPointer({ x: e.clientX, y: e.clientY });
+      return;
+    }
+    const rect = e.currentTarget.getBoundingClientRect();
+    setInfoPointer({ x: rect.right, y: rect.top + rect.height / 2 });
+  }, []);
 
   const toggleInfoPin = useCallback((slotId: string, e: MouseEvent) => {
     e.stopPropagation();
     e.preventDefault();
+    syncInfoPointer(e);
     setPinnedInfoSlotId((prev) => (prev === slotId ? null : slotId));
     setHoveredInfoSlotId(slotId);
-  }, []);
+  }, [syncInfoPointer]);
 
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
@@ -487,13 +518,30 @@ export function TokenActionRing({
                   aria-label={`Informações: ${slot.label}`}
                   title="Ver descrição"
                   onMouseDown={(e) => e.stopPropagation()}
-                  onMouseEnter={() => setHoveredInfoSlotId(slot.id)}
-                  onMouseLeave={() => {
-                    if (pinnedInfoSlotId !== slot.id) setHoveredInfoSlotId(null);
+                  onMouseEnter={(e) => {
+                    syncInfoPointer(e);
+                    setHoveredInfoSlotId(slot.id);
                   }}
-                  onFocus={() => setHoveredInfoSlotId(slot.id)}
+                  onMouseMove={(e) => {
+                    if (hoveredInfoSlotId === slot.id || pinnedInfoSlotId === slot.id) {
+                      syncInfoPointer(e);
+                    }
+                  }}
+                  onMouseLeave={() => {
+                    if (pinnedInfoSlotId !== slot.id) {
+                      setHoveredInfoSlotId(null);
+                      setInfoPointer(null);
+                    }
+                  }}
+                  onFocus={(e) => {
+                    syncInfoPointer(e);
+                    setHoveredInfoSlotId(slot.id);
+                  }}
                   onBlur={() => {
-                    if (pinnedInfoSlotId !== slot.id) setHoveredInfoSlotId(null);
+                    if (pinnedInfoSlotId !== slot.id) {
+                      setHoveredInfoSlotId(null);
+                      setInfoPointer(null);
+                    }
                   }}
                   onClick={(e) => toggleInfoPin(slot.id, e)}
                 >
@@ -523,10 +571,20 @@ export function TokenActionRing({
           );
         })}
 
-        {activeDetailSlot?.action ? (
+      </div>
+
+      {activeDetailSlot && detailPlacement ? (
+        activeDetailSlot.action ? (
           <div
-            className="token-action-ring__detail"
-            style={{ "--tar-detail-offset": `${detailOffset}px` } as CSSProperties}
+            className={`token-action-ring__detail token-action-ring__detail--cursor${
+              detailPlacement.flipLeft ? " token-action-ring__detail--cursor-left" : ""
+            }`}
+            style={
+              {
+                left: detailPlacement.left,
+                top: detailPlacement.top,
+              } as CSSProperties
+            }
             onClick={(e) => e.stopPropagation()}
           >
             <CombatActionDetail
@@ -535,16 +593,23 @@ export function TokenActionRing({
               className="combat-action-detail--ring"
             />
           </div>
-        ) : activeDetailSlot?.detailHint ? (
+        ) : activeDetailSlot.detailHint ? (
           <div
-            className="token-action-ring__detail token-action-ring__detail--hint"
-            style={{ "--tar-detail-offset": `${detailOffset}px` } as CSSProperties}
+            className={`token-action-ring__detail token-action-ring__detail--hint token-action-ring__detail--cursor${
+              detailPlacement.flipLeft ? " token-action-ring__detail--cursor-left" : ""
+            }`}
+            style={
+              {
+                left: detailPlacement.left,
+                top: detailPlacement.top,
+              } as CSSProperties
+            }
             onClick={(e) => e.stopPropagation()}
           >
             <p className="token-action-ring__detail-hint">{activeDetailSlot.detailHint}</p>
           </div>
-        ) : null}
-      </div>
+        ) : null
+      ) : null}
     </div>
   );
 }

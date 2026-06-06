@@ -5,6 +5,7 @@ import type { BattleToken } from "@/lib/vtt/types";
 import type { PaTurnRules } from "@/lib/combat/pa-economy";
 import { PA_ACCUMULATION_CAP_DEFAULT, PA_RECOVERY_PER_TURN } from "@/lib/combat/pa-economy";
 import { formatEndTurnPaBankMessage, planEndOfTurnPaBank } from "@/lib/combat/pa-turn";
+import { isMonsterToken } from "@/lib/room/settings";
 
 type Props = {
   open: boolean;
@@ -47,9 +48,12 @@ export function EndTurnConfirmDialog({
           accumulationCap: PA_ACCUMULATION_CAP_DEFAULT,
         }
       : undefined);
-  const bankPlan = token && rules ? planEndOfTurnPaBank(token, rules) : null;
+  const bankPlan =
+    token && rules && !isMonsterToken(token) ? planEndOfTurnPaBank(token, rules) : null;
   const bankMessage =
-    bankPlan && rules ? formatEndTurnPaBankMessage(bankPlan, rules) : null;
+    bankPlan && rules && bankPlan.saved > 0
+      ? formatEndTurnPaBankMessage(bankPlan, rules)
+      : null;
 
   return (
     <div

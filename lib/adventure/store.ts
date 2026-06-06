@@ -105,14 +105,13 @@ export type CreateAdventureResult =
 
 export async function createAdventure(
   ownerId: string,
-  name: string,
-  options?: { inviteCode?: string | null }
+  name: string
 ): Promise<CreateAdventureResult> {
   const adventureId = slugAdventureId(name);
   const label = name.trim().slice(0, 80) || "Nova aventura";
   const now = Date.now();
 
-  const resolved = await resolveInviteCodeForCreate(options?.inviteCode);
+  const resolved = await resolveInviteCodeForCreate();
   if ("error" in resolved) {
     return { ok: false, error: resolved.error };
   }

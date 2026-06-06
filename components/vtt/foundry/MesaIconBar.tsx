@@ -14,8 +14,10 @@ type IconDef = {
 
 type Props = {
   isActive: (id: MesaWindowId) => boolean;
-  onToggle: (id: MesaWindowId) => void;
-  onOpenPopup?: (id: MesaWindowId) => void;
+  /** Clique direito — painel na barra lateral. */
+  onOpenDock: (id: MesaWindowId) => void;
+  /** Clique esquerdo — janela flutuante. */
+  onOpenPopup: (id: MesaWindowId) => void;
   showGm?: boolean;
   showInvite?: boolean;
 };
@@ -23,27 +25,26 @@ type Props = {
 function IconButton({
   icon,
   active,
-  onToggle,
+  onOpenDock,
   onOpenPopup,
   gm,
 }: {
   icon: IconDef;
   active: boolean;
-  onToggle: (id: MesaWindowId) => void;
-  onOpenPopup?: (id: MesaWindowId) => void;
+  onOpenDock: (id: MesaWindowId) => void;
+  onOpenPopup: (id: MesaWindowId) => void;
   gm?: boolean;
 }) {
   return (
     <button
       type="button"
       className={`foundry-icon-bar__btn${active ? " foundry-icon-bar__btn--active" : ""}${gm ? " foundry-icon-bar__btn--gm" : ""}`}
-      onClick={() => onToggle(icon.id)}
+      onClick={() => onOpenPopup(icon.id)}
       onContextMenu={(e) => {
-        if (!onOpenPopup) return;
         e.preventDefault();
-        onOpenPopup(icon.id);
+        onOpenDock(icon.id);
       }}
-      title={onOpenPopup ? `${icon.label} — clique direito: janela flutuante` : icon.label}
+      title={`${icon.label} — clique: janela flutuante · clique direito: barra lateral`}
       aria-label={icon.label}
       aria-pressed={active}
     >
@@ -57,7 +58,7 @@ function IconButton({
 
 export function MesaIconBar({
   isActive,
-  onToggle,
+  onOpenDock,
   onOpenPopup,
   showGm = false,
   showInvite = false,
@@ -86,7 +87,7 @@ export function MesaIconBar({
             key={icon.id}
             icon={icon}
             active={isActive(icon.id)}
-            onToggle={onToggle}
+            onOpenDock={onOpenDock}
             onOpenPopup={onOpenPopup}
           />
         ))}
@@ -104,7 +105,7 @@ export function MesaIconBar({
                 key={icon.id}
                 icon={icon}
                 active={isActive(icon.id)}
-                onToggle={onToggle}
+                onOpenDock={onOpenDock}
                 onOpenPopup={onOpenPopup}
                 gm
               />

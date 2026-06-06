@@ -157,6 +157,66 @@ export function IconUser({ className, size = defaultSize }: IconProps) {
   );
 }
 
+export function IconBackpack({ className, size = defaultSize }: IconProps) {
+  return (
+    <svg className={className} width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden>
+      <path
+        d="M8.5 10V8.5a3.5 3.5 0 117 0V10"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+      />
+      <path
+        d="M6 10h12a2 2 0 012 2v7a2 2 0 01-2 2H6a2 2 0 01-2-2v-7a2 2 0 012-2z"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        fill="color-mix(in srgb, currentColor 10%, transparent)"
+      />
+      <path d="M9.5 14h5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+export function IconCoins({ className, size = defaultSize }: IconProps) {
+  return (
+    <svg className={className} width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden>
+      <ellipse cx="9" cy="10" rx="5" ry="2.2" stroke="currentColor" strokeWidth="1.5" />
+      <path
+        d="M4 10v4.5c0 1.2 2.2 2.2 5 2.2s5-1 5-2.2V10"
+        stroke="currentColor"
+        strokeWidth="1.5"
+      />
+      <ellipse cx="15" cy="13" rx="5" ry="2.2" stroke="currentColor" strokeWidth="1.5" />
+      <path
+        d="M10 13v4c0 1.2 2.2 2.2 5 2.2s5-1 5-2.2v-4"
+        stroke="currentColor"
+        strokeWidth="1.5"
+      />
+    </svg>
+  );
+}
+
+export function IconWand({ className, size = defaultSize }: IconProps) {
+  return (
+    <svg className={className} width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden>
+      <path
+        d="M4 20l10-10M14 6l4-4M16 4l4 4"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M6.5 17.5l1.5 1.5M9 15l1 1M11.5 12.5l1 1"
+        stroke="currentColor"
+        strokeWidth="1.2"
+        strokeLinecap="round"
+        opacity="0.55"
+      />
+    </svg>
+  );
+}
+
 export function IconCamera({ className, size = defaultSize }: IconProps) {
   return (
     <svg className={className} width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden>

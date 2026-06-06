@@ -10,15 +10,25 @@ import {
 import { postRoomChat } from "@/hooks/useRoomSync";
 import { DiceMiniature } from "@/components/vtt/DiceMiniature";
 import { hpBarColor } from "@/lib/vtt/token-hp-display";
+import {
+  combatChatDamageSummary,
+  combatChatNaturalDie,
+  combatChatRollSummary,
+  isStagedCombatChatMessage,
+  shouldShowCombatDamageInChat,
+  splitCombatChatDetail,
+  type CombatChatRevealPhase,
+} from "@/lib/combat/chat-display";
 
 type Props = {
   roomId: string;
   messages: ChatMessage[];
+  combatReveal?: Record<string, CombatChatRevealPhase>;
   onUpdate: () => void;
   readOnly?: boolean;
 };
 
-export function RoomChat({ roomId, messages, onUpdate, readOnly = false }: Props) {
+export function RoomChat({ roomId, messages, combatReveal = {}, onUpdate, readOnly = false }: Props) {
   const [text, setText] = useState("");
   const [busy, setBusy] = useState(false);
   const listRef = useRef<HTMLDivElement>(null);
@@ -45,7 +55,7 @@ export function RoomChat({ roomId, messages, onUpdate, readOnly = false }: Props
     <div className="room-chat room-chat--rail">
       <div ref={listRef} className="room-chat-log">
         {messages.map((m) => (
-          <ChatEvent key={m.id} message={m} />
+          <ChatEvent key={m.id} message={m} revealPhase={combatReveal[m.id]} />
         ))}
       </div>
       {readOnly ? (
@@ -76,7 +86,13 @@ export function RoomChat({ roomId, messages, onUpdate, readOnly = false }: Props
   );
 }
 
-function ChatEvent({ message }: { message: ChatMessage }) {
+function ChatEvent({
+  message,
+  revealPhase,
+}: {
+  message: ChatMessage;
+  revealPhase?: CombatChatRevealPhase;
+}) {
   const time = new Date(message.at).toLocaleTimeString("pt-BR", {
     hour: "2-digit",
     minute: "2-digit",
@@ -120,10 +136,22 @@ function ChatEvent({ message }: { message: ChatMessage }) {
     const tone = combatEventTone(message.combat);
     const icon = combatEventIcon(tone);
     const c = message.combat;
+    const staged = isStagedCombatChatMessage(message);
+    const showDamage = shouldShowCombatDamageInChat(message, revealPhase);
+    const naturalDie = combatChatNaturalDie(message);
+    const summary = staged && !showDamage ? combatChatRollSummary(message) : combatChatDamageSummary(message);
+    const detailParts = c.detail
+      ? splitCombatChatDetail(c.detail, c.resolution === "save" ? "save" : "attack")
+      : { roll: "", damage: null };
+    const detail =
+      staged && !showDamage
+        ? detailParts.roll || null
+        : c.detail || null;
     const hpMax = Math.max(c.defenderHpBefore, c.defenderHpAfter, 1);
     const hpPct = Math.round((c.defenderHpAfter / hpMax) * 100);
     const hpFillColor = hpBarColor(c.defenderHpAfter / hpMax);
     const showHpBar =
+      showDamage &&
       tone !== "defeat" &&
       tone !== "info" &&
       c.defenderHpBefore > 0 &&
@@ -132,7 +160,11 @@ function ChatEvent({ message }: { message: ChatMessage }) {
     return (
       <article className={`room-chat-event room-chat-event--combat room-chat-event--${tone}`}>
         <div className="room-chat-event-icon" aria-hidden>
-          {icon}
+          {naturalDie != null && staged ? (
+            <DiceMiniature formula="1d20" value={naturalDie} size="sm" />
+          ) : (
+            icon
+          )}
         </div>
         <div className="room-chat-event-body">
           <header className="room-chat-event-headline">
@@ -141,8 +173,8 @@ function ChatEvent({ message }: { message: ChatMessage }) {
               <span className="room-chat-author">{message.authorName}</span>
             ) : null}
           </header>
-          <p className="room-chat-combat-summary">{message.text}</p>
-          {c.attackerHeal && c.attackerHeal > 0 ? (
+          <p className="room-chat-combat-summary">{summary}</p>
+          {showDamage && c.attackerHeal && c.attackerHeal > 0 ? (
             <p className="room-chat-combat-heal">+{c.attackerHeal} HP (arma)</p>
           ) : null}
           {showHpBar ? (
@@ -156,7 +188,7 @@ function ChatEvent({ message }: { message: ChatMessage }) {
               </span>
             </div>
           ) : null}
-          {c.detail ? <p className="room-chat-combat-detail">{c.detail}</p> : null}
+          {detail ? <p className="room-chat-combat-detail">{detail}</p> : null}
         </div>
       </article>
     );

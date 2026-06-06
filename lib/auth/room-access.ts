@@ -9,7 +9,12 @@ import { normalizeRoomSettings, type RoomSettings } from "@/lib/room/settings";
 import type { RoomState } from "@/lib/room/types";
 
 /** PCs jogáveis na mesa demo sem login (visitante). */
-export const DEMO_PLAYABLE_ACTOR_IDS = ["pc-aventureiro", "pc-aventureira-maga"] as const;
+export const DEMO_PLAYABLE_ACTOR_IDS = [
+  "pc-thrain-ferroescudo",
+  "pc-lyanna-umbral",
+  "pc-maelis-purificador",
+  "pc-pippin-sussurro",
+] as const;
 /** @deprecated Use DEMO_PLAYABLE_ACTOR_IDS */
 export const DEMO_PLAYABLE_ACTOR_ID = DEMO_PLAYABLE_ACTOR_IDS[0];
 

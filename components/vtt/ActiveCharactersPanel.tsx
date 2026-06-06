@@ -1,6 +1,7 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { postGmCombatAction } from "@/hooks/useRoomSync";
 import type { BattleToken } from "@/lib/vtt/types";
 import type { Axial } from "@/lib/vtt/hex-math";
 import type { RoomActor, RoomSnapshot } from "@/lib/room/types";
@@ -65,6 +66,31 @@ export function ActiveCharactersPanel({
 }: Props) {
   const canCreateInAdventure = roomId !== "demo" && Boolean(session);
   const [statusOpen, setStatusOpen] = useState(false);
+  const [hpBusy, setHpBusy] = useState(false);
+  const [hpValue, setHpValue] = useState("");
+  const [hpMax, setHpMax] = useState("");
+
+  useEffect(() => {
+    if (!selected?.vidaMax) return;
+    setHpValue(String(selected.vida ?? 0));
+    setHpMax(String(selected.vidaMax));
+  }, [selected?.id, selected?.vida, selected?.vidaMax]);
+
+  async function applyGmHp() {
+    if (!selected || hpBusy) return;
+    setHpBusy(true);
+    try {
+      const snap = await postGmCombatAction(roomId, {
+        action: "set-hp",
+        tokenId: selected.id,
+        value: Number(hpValue),
+        max: Number(hpMax),
+      });
+      onPlaced(snap);
+    } finally {
+      setHpBusy(false);
+    }
+  }
 
   const playerToken = useMemo(() => {
     if (!session) return null;
@@ -141,7 +167,7 @@ export function ActiveCharactersPanel({
                   <button
                     type="button"
                     className="vtt-inline-link"
-                    onClick={() => onOpenSheet(selected.actorId ?? "pc-aventureiro")}
+                    onClick={() => onOpenSheet(selected.actorId ?? "pc-thrain-ferroescudo")}
                   >
                     Abrir ficha →
                   </button>
@@ -152,9 +178,43 @@ export function ActiveCharactersPanel({
             <p className="vtt-linked-badge">Monstro · {selected.monsterEntryId}</p>
           ) : null}
           {selected.vidaMax != null ? (
-            <p>
-              Vida {selected.vida}/{selected.vidaMax}
-            </p>
+            canControlCombat ? (
+              <div className="vtt-gm-hp-row">
+                <label className="vtt-field vtt-field--inline">
+                  Vida
+                  <input
+                    type="number"
+                    min={0}
+                    value={hpValue}
+                    onChange={(e) => setHpValue(e.target.value)}
+                    disabled={hpBusy}
+                  />
+                </label>
+                <span className="vtt-gm-hp-sep">/</span>
+                <label className="vtt-field vtt-field--inline">
+                  Máx.
+                  <input
+                    type="number"
+                    min={1}
+                    value={hpMax}
+                    onChange={(e) => setHpMax(e.target.value)}
+                    disabled={hpBusy}
+                  />
+                </label>
+                <button
+                  type="button"
+                  className="btn btn-ghost"
+                  disabled={hpBusy}
+                  onClick={() => void applyGmHp()}
+                >
+                  {hpBusy ? "…" : "OK"}
+                </button>
+              </div>
+            ) : (
+              <p>
+                Vida {selected.vida}/{selected.vidaMax}
+              </p>
+            )
           ) : null}
           {selected.defesa != null ? (
             <p>

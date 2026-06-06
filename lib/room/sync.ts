@@ -88,15 +88,17 @@ function ensureMovementFields(token: BattleToken): BattleToken {
 }
 
 export function createDemoRoom(): RoomState {
-  const aventureiro = getCharacter("pc-aventureiro");
-  const maga = getCharacter("pc-aventureira-maga");
-  const bardo = getCharacter("pc-bardo-suporte");
-  if (!aventureiro || !maga || !bardo) throw new Error("Demo character missing");
+  const thrain = getCharacter("pc-thrain-ferroescudo");
+  const lyanna = getCharacter("pc-lyanna-umbral");
+  const maelis = getCharacter("pc-maelis-purificador");
+  const pippin = getCharacter("pc-pippin-sussurro");
+  if (!thrain || !lyanna || !maelis || !pippin) throw new Error("Demo character missing");
 
   const actors: Record<string, RoomActor> = {
-    [aventureiro.id]: { ...normalizeCharacter(aventureiro), revision: 1 },
-    [maga.id]: { ...normalizeCharacter(maga), revision: 1 },
-    [bardo.id]: { ...normalizeCharacter(bardo), revision: 1 },
+    [thrain.id]: { ...normalizeCharacter(thrain), revision: 1 },
+    [lyanna.id]: { ...normalizeCharacter(lyanna), revision: 1 },
+    [maelis.id]: { ...normalizeCharacter(maelis), revision: 1 },
+    [pippin.id]: { ...normalizeCharacter(pippin), revision: 1 },
   };
 
   const scene = syncLinkedTokens(DEMO_SCENE, actors);

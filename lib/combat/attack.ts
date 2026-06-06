@@ -16,6 +16,7 @@ import {
   isGoblinMonster,
 } from "@/lib/vtt/goblin-combat";
 import { monsterCombatActions } from "@/lib/vtt/monster-actions";
+import { isMonsterToken } from "@/lib/room/settings";
 import type { BattleToken } from "@/lib/vtt/types";
 import { tokenAxialDistance } from "@/lib/vtt/creature-size";
 import { axialDistance } from "@/lib/vtt/hex-math";
@@ -143,6 +144,12 @@ function parseSaveAttribute(raw: string | undefined): AttributeKey | undefined {
   return map[raw.toLowerCase()] ?? undefined;
 }
 
+function parseHealFormulaFromDescription(description: string): string | null {
+  const plain = description.replace(/<[^>]+>/g, " ");
+  const m = plain.match(/Cura\s+(\d+d\d+)/i);
+  return m?.[1] ?? null;
+}
+
 function actionFromEntry(
   entry: CompendiumEntry,
   packId: "armas" | "magias"
@@ -176,7 +183,18 @@ function actionFromEntry(
   const areaShape = parseAreaShape(spell?.area?.shape);
   const isAreaSpell = packId === "magias" && areaShape !== "single";
   const isSaveSpell = packId === "magias" && Boolean(saveAttr) && Boolean(weapon?.dano?.formula);
-  if (packId === "magias" && !weapon?.dano?.formula && !isSaveSpell && !isAreaSpell) return null;
+  const desc =
+    typeof entry.system.description === "string" ? entry.system.description : "";
+  const healFormula =
+    (weapon?.dano?.tipo ?? "").toLowerCase().includes("cura") && weapon?.dano?.formula
+      ? weapon.dano.formula
+      : packId === "magias" && !weapon?.dano?.formula
+        ? parseHealFormulaFromDescription(desc)
+        : null;
+  const isHealSpell = Boolean(healFormula);
+  if (packId === "magias" && !weapon?.dano?.formula && !isSaveSpell && !isAreaSpell && !isHealSpell) {
+    return null;
+  }
 
   const rangeHex = tactical?.alcanceHex?.value ?? 1;
   const rawPa = tactical?.custoPontosAcao?.value ?? PA_DEFAULT_ACTION_COST;
@@ -184,6 +202,11 @@ function actionFromEntry(
     packId === "magias" ? resolveSpellPaCost(entry.id, rawPa) : rawPa;
   const kind: CombatActionKind = packId === "magias" ? "spell" : "weapon";
   const resolution: CombatResolution = isSaveSpell ? "save" : "attack";
+  const damageFormula =
+    weapon?.dano?.formula ?? healFormula ?? (isHealSpell ? "1d8" : "1d4");
+  const damageType =
+    weapon?.dano?.tipo ??
+    (isHealSpell ? "cura" : kind === "spell" ? "mágico" : "contundente");
   const areaSize =
     spell?.area?.lengthHex ?? spell?.area?.radiusHex ?? (areaShape === "wall" ? undefined : 2);
   const areaHexCount = spell?.area?.hexCount;
@@ -204,8 +227,8 @@ function actionFromEntry(
     name: entry.name,
     kind,
     resolution,
-    damageFormula: weapon?.dano?.formula ?? "1d4",
-    damageType: weapon?.dano?.tipo ?? (kind === "spell" ? "mágico" : "contundente"),
+    damageFormula,
+    damageType,
     attackBonus: weapon?.ataque?.bonus ?? 0,
     rangeHex,
     paCost,
@@ -324,6 +347,62 @@ export function listTokenCombatActions(
   return all.filter((a) => a.kind === filter);
 }
 
+export function resolveRoomAttackAction(
+  attacker: BattleToken,
+  actor: CharacterSheet | null,
+  opts: CombatActionRequest
+): CombatActionOption {
+  if (actor) return resolveCombatAction(actor, opts);
+
+  const actions = listTokenCombatActions(attacker, null);
+  if (opts.packId && opts.entryId) {
+    const byPack = actions.find(
+      (a) => a.packId === opts.packId && a.entryId === opts.entryId
+    );
+    if (byPack) return byPack;
+    throw new Error(`Ação "${opts.entryId}" não está disponível no combate`);
+  }
+  if (opts.entryId) {
+    const byEntry = actions.find((a) => a.entryId === opts.entryId);
+    if (byEntry) return byEntry;
+    throw new Error(`Ação "${opts.entryId}" não está disponível no combate`);
+  }
+  const fallback = actions[0];
+  if (!fallback) throw new Error("Atacante sem ações de combate");
+  return fallback;
+}
+
+export function combatAttackRequestOpts(
+  action: CombatActionOption,
+  attacker: BattleToken,
+  opts?: {
+    bypassTurn?: boolean;
+    channelExtraPa?: number;
+  }
+): {
+  actionPack?: "armas" | "magias" | "habilidades";
+  actionEntryId?: string;
+  bypassTurn?: boolean;
+  channelExtraPa?: number;
+} {
+  const packId =
+    action.packId === "armas" ||
+    action.packId === "magias" ||
+    action.packId === "habilidades"
+      ? action.packId
+      : undefined;
+  const needsEntryId =
+    Boolean(packId) || isMonsterToken(attacker) || Boolean(attacker.gmCreationId);
+  return {
+    actionPack: packId,
+    actionEntryId: needsEntryId ? action.entryId : undefined,
+    bypassTurn: opts?.bypassTurn,
+    ...(action.channelMaxExtraPa && opts?.channelExtraPa
+      ? { channelExtraPa: opts.channelExtraPa }
+      : {}),
+  };
+}
+
 export function defaultCombatLoadout(actor: CharacterSheet): CombatLoadout | null {
   const first = listCombatActions(actor).find(
     (a) => a.packId !== "unarmed" && a.kind !== "ability"
@@ -348,6 +427,7 @@ export function resolveCombatAction(
   if (packId && entryId) {
     const found = actions.find((a) => a.packId === packId && a.entryId === entryId);
     if (found) return found;
+    throw new Error(`Ação "${entryId}" não está disponível no combate`);
   }
 
   const fallback = actions.find((a) => a.kind === "weapon" || a.kind === "spell") ?? actions[0];
@@ -538,14 +618,21 @@ function isFriendlyTarget(attacker: BattleToken, defender: BattleToken): boolean
   return !isMonsterSide(defender);
 }
 
-function isHostileTarget(attacker: BattleToken, defender: BattleToken): boolean {
-  if (isMonsterSide(attacker)) return !isMonsterSide(defender);
-  return isMonsterSide(defender);
-}
-
 function isHealingSpell(action: CombatActionOption): boolean {
   const dt = (action.damageType ?? "").toLowerCase();
   return dt.includes("cura") || action.abilityEffect === "heal_touch";
+}
+
+/** Jogador (não criatura) atacando aliado com ação ofensiva — exige confirmação na UI. */
+export function needsFriendlyFireConfirm(
+  attacker: BattleToken,
+  defender: BattleToken,
+  action: CombatActionOption
+): boolean {
+  if (isMonsterToken(attacker)) return false;
+  if (action.selfTarget || action.allyTarget) return false;
+  if (action.kind === "spell" && isHealingSpell(action)) return false;
+  return isFriendlyTarget(attacker, defender);
 }
 
 export function canAttackTarget(
@@ -596,16 +683,10 @@ export function canAttackTarget(
     return { ok: false, reason: "Alvo já derrotado" };
   }
 
-  if (action.kind === "spell") {
-    if (isHealingSpell(action)) {
-      if (!isFriendlyTarget(attacker, defender)) {
-        return { ok: false, reason: "Selecione um aliado para curar" };
-      }
-    } else if (!isHostileTarget(attacker, defender)) {
-      return { ok: false, reason: "Magia ofensiva — selecione um inimigo" };
+  if (action.kind === "spell" && isHealingSpell(action)) {
+    if (!isFriendlyTarget(attacker, defender)) {
+      return { ok: false, reason: "Selecione um aliado para curar" };
     }
-  } else if (action.kind === "weapon" && !isHostileTarget(attacker, defender)) {
-    return { ok: false, reason: "Alvo hostil inválido" };
   }
 
   return { ok: true };
@@ -764,6 +845,48 @@ export function resolveAttack(
   });
   if (!check.ok) throw new Error(check.reason ?? "Ataque inválido");
 
+  if (isHealingSpell(resolved)) {
+    const castKey = spellcastingAttribute(actor.identity.classe);
+    const castMod = attributeMod(actor.attributes[castKey]);
+    const healRoll = rollActionDamage(resolved.damageFormula, castMod, false);
+    const hpBefore = defenderHp(defenderToken);
+    const hpMax = defenderToken.vidaMax ?? hpBefore;
+    const hpAfter = Math.min(hpMax, hpBefore + healRoll.total);
+    const attr = attributeLabel(castKey);
+    const paCost = effectivePaCost(actor, action, {
+      attackIndex: opts?.attackIndex ?? 1,
+      attackCount: opts?.attackCount ?? 1,
+    });
+    const summary = `${actor.name} cura ${defenderToken.name} com ${resolved.name}: +${healRoll.total} HP (${healRoll.rolls.join("+")}${healRoll.attributeMod ? `+${healRoll.attributeMod}` : ""} ${attr}) — ${hpBefore}→${hpAfter}`;
+
+    return {
+      attackerTokenId: attackerToken.id,
+      defenderTokenId: defenderToken.id,
+      actionKind: "spell",
+      weaponName: resolved.name,
+      rangeHex: resolved.rangeHex,
+      paCost,
+      defenderAc: effectiveDefenderAc(defenderToken),
+      attack: {
+        natural: 20,
+        attributeMod: castMod,
+        profBonus: 0,
+        weaponBonus: 0,
+        total: 0,
+        attributeLabel: attr,
+        rollMode: "normal",
+        d20Detail: "toque",
+      },
+      hit: true,
+      critical: false,
+      criticalFail: false,
+      damage: healRoll,
+      defenderHpBefore: hpBefore,
+      defenderHpAfter: hpAfter,
+      summary,
+    };
+  }
+
   const attrKey = attackAttribute(actor, resolved);
   const attrMod = attributeMod(actor.attributes[attrKey]);
   const prof = isProficient(actor, action) ? proficiencyBonus(actor.identity.nivel) : 0;
@@ -891,6 +1014,15 @@ export function resolveMultiAttack(
     if (res.attackerHpAfter != null) {
       attackerToken = { ...attackerToken, vida: res.attackerHpAfter };
     }
+    const built = buildAttackModifiers(attackerToken, currentDefender, action);
+    const buffCleanup = attackerAfterAttack(
+      attackerToken,
+      action,
+      built.consumeAttackerMark,
+      built.consumeDefenderFinta,
+      res.hit
+    );
+    attackerToken = { ...attackerToken, ...buffCleanup };
     if ((currentDefender.vida ?? 0) <= 0) break;
   }
 
@@ -905,7 +1037,7 @@ export function resolveTokenAttack(
   turn?: CombatTurnOptions,
   modifier?: AttackModifier,
   allTokens: BattleToken[] = [],
-  opts?: { channelExtraPa?: number }
+  opts?: { channelExtraPa?: number; skipPaCheck?: boolean }
 ): AttackResolution | AttackResolution[] {
   if (!actor) {
     return resolveMonsterAttack(
@@ -922,6 +1054,7 @@ export function resolveTokenAttack(
   }
   return resolveAttack(attackerToken, defenderToken, actor, action, turn, modifier, allTokens, {
     channelExtraPa: opts?.channelExtraPa,
+    skipPaCheck: opts?.skipPaCheck,
   });
 }
 
@@ -935,8 +1068,10 @@ export function formatAttackChatDetail(res: AttackResolution): string {
     `CA ${res.defenderAc}`,
   ];
   if (res.hit && res.damage) {
+    const heal = res.summary.includes(" cura ");
+    const dmgLabel = heal ? "Cura" : "Dano";
     parts.push(
-      `Dano ${res.damage.rolls.join("+")}${res.damage.attributeMod ? `+${res.damage.attributeMod}` : ""} = ${res.damage.total}`
+      `${dmgLabel} ${res.damage.rolls.join("+")}${res.damage.attributeMod ? `+${res.damage.attributeMod}` : ""} = ${res.damage.total}`
     );
     parts.push(`HP ${res.defenderHpBefore}→${res.defenderHpAfter}`);
   }
