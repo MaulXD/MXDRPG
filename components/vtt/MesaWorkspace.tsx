@@ -254,6 +254,8 @@ export function MesaWorkspace({
     [windows]
   );
 
+  const openStatusRef = useRef<() => void>(() => {});
+
   return (
     <VttToastProvider>
       <MesaWorkspaceCombatFlow
@@ -289,6 +291,7 @@ export function MesaWorkspace({
             showGm={canControlCombat}
             showInvite={Boolean(canParticipate && roomInviteCode)}
             dockOpen={dockOpen}
+            onOpenStatus={() => openStatusRef.current()}
           >
             {!windows.isFloating("chat") ? (
               <FoundryDockPanel
@@ -467,6 +470,9 @@ export function MesaWorkspace({
               }
               onInitiativeWindowFocus={() => windows.focus("initiative")}
               isWindowFloating={windows.isFloating}
+              onRegisterOpenStatus={(open) => {
+                openStatusRef.current = open;
+              }}
             />
           </div>
 

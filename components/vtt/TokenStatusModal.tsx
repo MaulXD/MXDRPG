@@ -5,6 +5,8 @@ import type { BattleToken } from "@/lib/vtt/types";
 import type { CombatTrack } from "@/lib/room/combat";
 import { TokenStatusList } from "@/components/vtt/TokenStatusList";
 import { TokenConditionsPanel } from "@/components/vtt/TokenConditionsPanel";
+import { PaHudMeter } from "@/components/vtt/PaHudMeter";
+import { hpBarColor, hpRatio } from "@/lib/vtt/token-hp-display";
 
 type Props = {
   open: boolean;
@@ -59,6 +61,29 @@ export function TokenStatusModal({
         <p className="vtt-modal-lead">
           <strong style={{ color: token.color }}>{token.name}</strong>
         </p>
+
+        {token.vidaMax != null ? (
+          <div className="vtt-status-modal-vitals">
+            <div className="vtt-status-modal-hp">
+              <div className="vtt-combat-hud__hp-track" aria-hidden>
+                <div
+                  className="vtt-combat-hud__hp-fill"
+                  style={{
+                    width: `${Math.round(hpRatio(token) * 100)}%`,
+                    background: hpBarColor(hpRatio(token)),
+                  }}
+                />
+              </div>
+              <span>
+                {token.vida ?? 0}/{token.vidaMax} HP
+              </span>
+            </div>
+            {token.defesa != null ? (
+              <span className="vtt-status-modal-stat">CA {token.defesa}</span>
+            ) : null}
+            <PaHudMeter token={token} />
+          </div>
+        ) : null}
 
         <p className="vtt-eyebrow">Ativos agora</p>
         <TokenStatusList token={token} />
