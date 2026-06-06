@@ -149,11 +149,52 @@ export function CharacterSheet({
       .filter(Boolean) as Array<{ ref: InventoryItem; entry: CompendiumEntry }>;
   }, [inventory]);
 
+  const tabCounts = useMemo(
+    () => ({
+      inventário: resolved.filter(
+        (r) => r.entry.type !== "magia" && r.entry.type !== "habilidade"
+      ).length,
+      habilidades: resolved.filter((r) => r.entry.type === "habilidade").length,
+      magias: resolved.filter((r) => r.entry.type === "magia").length,
+    }),
+    [resolved]
+  );
+
   const filtered = useMemo(() => {
     if (tab === "habilidades") return resolved.filter((r) => r.entry.type === "habilidade");
     if (tab === "magias") return resolved.filter((r) => r.entry.type === "magia");
-    return resolved;
+    return resolved.filter((r) => r.entry.type !== "magia" && r.entry.type !== "habilidade");
   }, [resolved, tab]);
+
+  const inventorySections = useMemo(() => {
+    if (tab !== "inventário") return [];
+    const sections: Array<{
+      id: string;
+      label: string;
+      hint?: string;
+      items: Array<{ ref: InventoryItem; entry: CompendiumEntry }>;
+    }> = [];
+    const weapons = filtered.filter((r) => r.entry.type === "arma");
+    const gear = filtered.filter((r) => r.entry.type === "equipamento");
+    const other = filtered.filter(
+      (r) => r.entry.type !== "arma" && r.entry.type !== "equipamento"
+    );
+    if (weapons.length) {
+      sections.push({ id: "armas", label: "Armas", hint: "Corpo a corpo e à distância", items: weapons });
+    }
+    if (gear.length) {
+      sections.push({
+        id: "equipamentos",
+        label: "Armaduras e equipamento",
+        hint: "Vestíveis e utilitários de masmorra",
+        items: gear,
+      });
+    }
+    if (other.length) {
+      sections.push({ id: "outros", label: "Outros itens", items: other });
+    }
+    return sections;
+  }, [filtered, tab]);
 
 
   function addFromCompendium(entry: CompendiumEntry) {
@@ -233,6 +274,9 @@ export function CharacterSheet({
           onClick={() => setTab("inventário")}
         >
           Inventário
+          {tabCounts.inventário > 0 ? (
+            <span className="sheet-tab__count">{tabCounts.inventário}</span>
+          ) : null}
         </button>
         <button
           type="button"
@@ -247,6 +291,9 @@ export function CharacterSheet({
           onClick={() => setTab("habilidades")}
         >
           Habilidades
+          {tabCounts.habilidades > 0 ? (
+            <span className="sheet-tab__count">{tabCounts.habilidades}</span>
+          ) : null}
         </button>
         <button
           type="button"
@@ -254,6 +301,9 @@ export function CharacterSheet({
           onClick={() => setTab("magias")}
         >
           Magias
+          {tabCounts.magias > 0 ? (
+            <span className="sheet-tab__count">{tabCounts.magias}</span>
+          ) : null}
         </button>
       </div>
 
@@ -284,7 +334,7 @@ export function CharacterSheet({
       ) : filtered.length === 0 ? (
         <div className="inv-empty">
           {tab === "inventário"
-            ? "Nenhum item no inventário."
+            ? "Nenhuma arma ou equipamento — magias e habilidades ficam nas abas próprias."
             : tab === "habilidades"
               ? "Nenhuma habilidade — use + Compêndio ou suba de nível na trilha de subclasse."
               : "Nenhuma magia preparada — adicione pelo compêndio."}
@@ -293,24 +343,54 @@ export function CharacterSheet({
       ) : (
         <>
           {canEdit && filtered.length > 0 ? (
-            <p className="vtt-combat-hint" style={{ marginBottom: "0.45rem" }}>
+            <p className="inv-hint">
               Clique em um item e pressione <strong>Delete</strong> para remover.
             </p>
           ) : null}
-          <ul className="inv-list">
-            {filtered.map(({ ref, entry }) => (
-              <InventoryRow
-                key={ref.instanceId}
-                entry={entry}
-                quantity={ref.quantity}
-                canEdit={canEdit}
-                selected={selectedInvId === ref.instanceId}
-                showDetail={tab === "habilidades" || tab === "inventário" || tab === "magias"}
-                onSelect={() => setSelectedInvId(ref.instanceId)}
-                onRemove={() => removeItem(ref.instanceId)}
-              />
-            ))}
-          </ul>
+          {tab === "inventário" ? (
+            <div className="inv-sections">
+              {inventorySections.map((section) => (
+                <section key={section.id} className="inv-section">
+                  <header className="inv-section__head">
+                    <h3 className="inv-section__title">{section.label}</h3>
+                    {section.hint ? (
+                      <p className="inv-section__hint">{section.hint}</p>
+                    ) : null}
+                    <span className="inv-section__count">{section.items.length}</span>
+                  </header>
+                  <ul className="inv-list">
+                    {section.items.map(({ ref, entry }) => (
+                      <InventoryRow
+                        key={ref.instanceId}
+                        entry={entry}
+                        quantity={ref.quantity}
+                        canEdit={canEdit}
+                        selected={selectedInvId === ref.instanceId}
+                        showDetail
+                        onSelect={() => setSelectedInvId(ref.instanceId)}
+                        onRemove={() => removeItem(ref.instanceId)}
+                      />
+                    ))}
+                  </ul>
+                </section>
+              ))}
+            </div>
+          ) : (
+            <ul className="inv-list">
+              {filtered.map(({ ref, entry }) => (
+                <InventoryRow
+                  key={ref.instanceId}
+                  entry={entry}
+                  quantity={ref.quantity}
+                  canEdit={canEdit}
+                  selected={selectedInvId === ref.instanceId}
+                  showDetail
+                  onSelect={() => setSelectedInvId(ref.instanceId)}
+                  onRemove={() => removeItem(ref.instanceId)}
+                />
+              ))}
+            </ul>
+          )}
         </>
       )}
     </>

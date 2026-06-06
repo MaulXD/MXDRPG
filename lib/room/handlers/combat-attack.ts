@@ -19,6 +19,7 @@ import { syncCombatOrderWithTokens } from "../combat-order";
 import { shouldAnnounceDefeat } from "../combat-chat-events";
 import { recordMonsterDefeat } from "../combat-xp";
 import { maybeRecordCombatUndo } from "../combat-undo";
+import { isMonsterToken } from "@/lib/room/settings";
 import { appendRoomChatMessage } from "./chat";
 import { executeRoomAbility } from "./combat-ability";
 
@@ -50,7 +51,7 @@ export async function executeRoomAttack(
   }
 
   if (!attacker.linked || !attacker.actorId) {
-    if (!attacker.monsterEntryId) {
+    if (!isMonsterToken(attacker)) {
       return { ok: false, error: "Atacante sem ficha ou monstro" };
     }
   }

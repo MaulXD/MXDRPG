@@ -284,9 +284,14 @@ export function createCreatureTokenFromGmCreation(
     tokenId ?? `m-gm-${slugId(creation.name) || "creature"}-${Date.now().toString(36).slice(-5)}`;
   const color = MONSTER_COLORS[stats.ameaca % MONSTER_COLORS.length];
 
+  const baseLabel =
+    creation.source.type === "monster"
+      ? (creation.source.label ?? creation.name.replace(/\s*\(custom\)\s*$/i, ""))
+      : creation.name.replace(/\s*\(custom\)\s*$/i, "");
+
   return {
     id,
-    name: creation.name,
+    name: baseLabel || "Criatura",
     axial,
     color,
     walk: stats.walk,
@@ -300,6 +305,8 @@ export function createCreatureTokenFromGmCreation(
     vidaMax: stats.vidaMax,
     defesa: stats.defesa,
     gmCreationId: creation.id,
+    monsterEntryId:
+      creation.source.type === "monster" ? creation.source.id : undefined,
     monsterTier: stats.tier,
     gmCreatureStats: {
       forca: stats.forca,

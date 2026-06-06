@@ -65,8 +65,8 @@
 
 .lu-header-meta {
   margin: 0.2rem 0 0;
-  font-size: 0.78rem;
-  color: var(--text-muted);
+  font-size: 0.82rem;
+  color: rgba(232, 226, 214, 0.78);
 }
 
 .lu-close {
@@ -90,10 +90,10 @@
   padding: 0.28rem 0.65rem;
   border-radius: var(--radius-pill, 999px);
   border: 1px solid transparent;
-  font-size: 0.68rem;
+  font-size: 0.72rem;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: var(--text-dim);
+  color: rgba(232, 226, 214, 0.62);
 }
 
 .lu-step-pill--active {
@@ -130,7 +130,7 @@
 .lu-aside {
   padding: 1rem;
   border-left: 1px solid var(--glass-border);
-  background: rgba(0, 0, 0, 0.25);
+  background: color-mix(in srgb, var(--accent-primary, #c9a962) 6%, rgba(0, 0, 0, 0.32));
   overflow-y: auto;
   min-height: 0;
 }
@@ -145,10 +145,10 @@
 
 .lu-aside-title {
   margin: 0 0 0.65rem;
-  font-size: 0.7rem;
+  font-size: 0.72rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--text-dim);
+  color: rgba(232, 226, 214, 0.7);
 }
 
 .lu-bonus-group {
@@ -165,9 +165,9 @@
 .lu-bonus-group ul {
   margin: 0;
   padding-left: 1rem;
-  font-size: 0.72rem;
-  color: var(--text-muted);
-  line-height: 1.45;
+  font-size: 0.8rem;
+  color: rgba(232, 226, 214, 0.85);
+  line-height: 1.55;
 }
 
 .lu-footer {
@@ -192,9 +192,9 @@
 }
 
 .lu-hint {
-  font-size: 0.78rem;
-  color: var(--text-muted);
-  line-height: 1.5;
+  font-size: 0.84rem;
+  color: rgba(232, 226, 214, 0.88);
+  line-height: 1.58;
   margin: 0 0 0.85rem;
 }
 
@@ -235,9 +235,9 @@
 
 .lu-subclass-card p {
   margin: 0;
-  font-size: 0.68rem;
-  color: var(--text-muted);
-  line-height: 1.4;
+  font-size: 0.76rem;
+  color: rgba(232, 226, 214, 0.82);
+  line-height: 1.48;
 }
 
 /* ASI */
@@ -443,8 +443,8 @@ button.lu-tree-node {
 .lu-confirm-list li {
   padding: 0.45rem 0;
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-  font-size: 0.8rem;
-  color: var(--text-muted);
+  font-size: 0.84rem;
+  color: rgba(232, 226, 214, 0.85);
 }
 
 .lu-confirm-list strong {

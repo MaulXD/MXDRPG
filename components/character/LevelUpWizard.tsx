@@ -17,7 +17,12 @@ import {
 } from "@/lib/character/level-up-ui";
 import { ATTRIBUTE_LABELS, type AttributeKey } from "@/lib/character/rules";
 import { parseCharacterTalents } from "@/lib/character/subclass-tracks";
-import { formatXpProgress, xpToNextLevel } from "@/lib/character/xp";
+import {
+  formatXpProgress,
+  formatXpProgressDetail,
+  xpProgressRatio,
+  xpToNextLevel,
+} from "@/lib/character/xp";
 import { levelUpRoomActor, type LevelUpRoomResponse } from "@/hooks/useRoomSync";
 import { TalentTreeGraph } from "@/components/character/TalentTreeGraph";
 import "./level-up.css";
@@ -144,6 +149,8 @@ export function LevelUpWizard({ actor, roomId, canEdit, onDone, onApplied }: Pro
   }
 
   const ready = canLevelUp(actor);
+  const xpDetail = formatXpProgressDetail(actor.identity.nivel, actor.identity.xpTotal ?? 0);
+  const xpPct = Math.round(xpProgressRatio(actor.identity.nivel, actor.identity.xpTotal ?? 0) * 100);
 
   function renderStep() {
     if (!currentStep) return null;
@@ -318,25 +325,43 @@ export function LevelUpWizard({ actor, roomId, canEdit, onDone, onApplied }: Pro
   }
 
   return (
-    <div className="sheet-level-box">
-      <p className="sheet-xp-line">{formatXpProgress(actor.identity.nivel, actor.identity.xpTotal)}</p>
+    <div className={`sheet-level-box${ready ? " sheet-level-box--ready" : ""}`}>
+      <div className="sheet-level-box__head">
+        <div className="sheet-level-box__badge" aria-hidden>
+          {actor.identity.nivel}
+        </div>
+        <div className="sheet-level-box__meta">
+          <p className="sheet-level-box__title">Progressão de nível</p>
+          <p className="sheet-level-box__xp-primary">{xpDetail.primary}</p>
+          <p className="sheet-level-box__xp-secondary">{xpDetail.secondary}</p>
+        </div>
+      </div>
+
+      {actor.identity.nivel < 20 ? (
+        <div className="sheet-level-box__bar" role="progressbar" aria-valuenow={xpPct} aria-valuemin={0} aria-valuemax={100}>
+          <div className="sheet-level-box__bar-fill" style={{ width: `${xpPct}%` }} />
+          <span className="sheet-level-box__bar-label">{xpDetail.barLabel}</span>
+        </div>
+      ) : null}
 
       <div className="lu-trigger-row">
         <button
           type="button"
-          className={`btn ${ready ? "btn--level-ready" : ""}`}
+          className={`btn sheet-level-box__cta ${ready ? "btn--level-ready" : ""}`}
           disabled={!ready}
           onClick={() => setOpen(true)}
         >
-          {ready ? "Subir de nível" : "Subir nível…"}
+          {ready ? `Subir para nível ${nextLevel}` : "Aguardando XP"}
         </button>
-        {!ready ? (
-          <span className="sheet-xp-line" style={{ margin: 0 }}>
-            {actor.identity.nivel >= 20
-              ? "Nível máximo"
-              : `Faltam ${xpToNextLevel(actor.identity.nivel, actor.identity.xpTotal ?? 0)} XP`}
+        {ready ? (
+          <span className="sheet-level-box__ready-tag">Pronto para subir</span>
+        ) : actor.identity.nivel >= 20 ? (
+          <span className="sheet-level-box__ready-tag">Nível máximo</span>
+        ) : (
+          <span className="sheet-level-box__xp-remaining">
+            Faltam {xpToNextLevel(actor.identity.nivel, actor.identity.xpTotal ?? 0).toLocaleString("pt-BR")} XP
           </span>
-        ) : null}
+        )}
       </div>
 
       {open ? (
@@ -351,7 +376,7 @@ export function LevelUpWizard({ actor, roomId, canEdit, onDone, onApplied }: Pro
             <header className="lu-header">
               <div>
                 <h2 id="lu-title">
-                  Level up — {actor.name}
+                  Subir de nível — {actor.name}
                 </h2>
                 <p className="lu-header-meta">
                   {actor.identity.classe} · Nv {actor.identity.nivel} → {nextLevel}

@@ -253,6 +253,15 @@ export async function rollRoomInitiative(roomId: string): Promise<RoomSnapshot |
   return toSnapshot(await persistRoom(roomId, room));
 }
 
+/** Garante PA no token ativo quando a ordem existe mas ninguém rolou iniciativa ainda. */
+export function ensureCombatActiveHasPa(room: RoomState): void {
+  if (!room.combat?.order.length) return;
+  const active = getActiveBattleToken(room);
+  if (!active) return;
+  if ((active.pa ?? 0) > 0) return;
+  refreshActiveTokenPa(room, "full");
+}
+
 export async function advanceRoomTurn(roomId: string): Promise<RoomSnapshot | null> {
   const room = await getRoom(roomId);
   if (!room) return null;

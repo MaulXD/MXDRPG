@@ -206,7 +206,14 @@ export function TurnOrderPanel({
 
           {canControl ? (
 
-            <button type="button" className="btn btn-ghost" onClick={handleRoll}>
+            <button
+              type="button"
+              className="btn btn-ghost"
+              onClick={(e) => {
+                e.stopPropagation();
+                void handleRoll();
+              }}
+            >
 
               Rolar iniciativa
 
@@ -214,7 +221,7 @@ export function TurnOrderPanel({
 
           ) : null}
 
-          {canEndTurn ? (
+          {canEndTurn || canControl ? (
 
             <button
 
@@ -222,9 +229,12 @@ export function TurnOrderPanel({
 
               className="btn vtt-turn-next-btn"
 
-              disabled={busy}
+              disabled={busy || !combat.order.length}
 
-              onClick={() => void handleNext()}
+              onClick={(e) => {
+                e.stopPropagation();
+                void handleNext();
+              }}
 
             >
 
@@ -475,9 +485,10 @@ export function TurnOrderPanel({
                         className="vtt-turn-gm-chip vtt-turn-gm-chip--active"
                         title="Definir como turno ativo"
                         disabled={gmBusy != null}
-                        onClick={() =>
-                          void runGmAction(`active-${id}`, { action: "set-active", tokenId: id })
-                        }
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          void runGmAction(`active-${id}`, { action: "set-active", tokenId: id });
+                        }}
                       >
                         {gmBusy === `active-${id}` ? "…" : "▶"}
                       </button>
@@ -487,9 +498,10 @@ export function TurnOrderPanel({
                       className="vtt-turn-gm-chip"
                       title="Restaurar PA deste token"
                       disabled={gmBusy != null}
-                      onClick={() =>
-                        void runGmAction(`pa-${id}`, { action: "reset-pa", tokenId: id })
-                      }
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        void runGmAction(`pa-${id}`, { action: "reset-pa", tokenId: id });
+                      }}
                     >
                       {gmBusy === `pa-${id}` ? "…" : "PA"}
                     </button>
@@ -502,9 +514,10 @@ export function TurnOrderPanel({
                           : "Jogar ao fim desta rodada"
                       }
                       disabled={gmBusy != null}
-                      onClick={() =>
-                        void runGmAction(`defer-${id}`, { action: "defer-turn", tokenId: id })
-                      }
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        void runGmAction(`defer-${id}`, { action: "defer-turn", tokenId: id });
+                      }}
                     >
                       {gmBusy === `defer-${id}` ? "…" : "Fim"}
                     </button>

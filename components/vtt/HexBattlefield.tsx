@@ -65,6 +65,7 @@ import type { CombatFxState } from "@/lib/vtt/combat-fx-types";
 import { ingestNewCombatFx, isPlayableCombatFxMessage } from "@/lib/vtt/combat-fx-sequence";
 import type { ChatMessage } from "@/lib/room/chat";
 import { activeTokenId } from "@/lib/room/combat";
+import { isMonsterToken } from "@/lib/room/settings";
 import {
   listTokenCombatActions,
   resolveCombatAction,
@@ -340,7 +341,7 @@ export function HexBattlefield({
 
   const canOperateToken = useCallback(
     (t: BattleToken) => {
-      if (t.monsterEntryId) return canControlCombat;
+      if (isMonsterToken(t)) return canControlCombat;
       return canControlCombat || tokenControl(t);
     },
     [canControlCombat, tokenControl]
@@ -1447,8 +1448,12 @@ export function HexBattlefield({
 
   const canUseToken =
     selected &&
-    ((selected.monsterEntryId && canControlCombat) ||
-      (!selected.monsterEntryId && (canControlCombat || tokenControl(selected))));
+    ((isMonsterToken(selected) && canControlCombat) ||
+      (!isMonsterToken(selected) && (canControlCombat || tokenControl(selected))));
+
+  const turnActiveToken = turnActiveId
+    ? displayScene.tokens.find((t) => t.id === turnActiveId) ?? null
+    : null;
 
   const combat = snapshot?.combat;
   const canEndTurn = canEndTurnProp;
@@ -1926,12 +1931,19 @@ export function HexBattlefield({
             />
           </div>
         ) : null}
+        {combat?.order.length && turnActiveToken ? (
+          <div className="vtt-turn-of-banner" role="status" aria-live="polite">
+            <span className="vtt-turn-of-banner__label">Turno de:</span>
+            <strong className="vtt-turn-of-banner__name">{turnActiveToken.name}</strong>
+            <span className="vtt-turn-of-banner__round">Rodada {combat.round}</span>
+          </div>
+        ) : null}
         {combat ? (
           <EndTurnBar
             roomId={roomId}
             combat={combat}
             tokens={displayScene.tokens}
-            canEndTurn={canEndTurn}
+            canEndTurn={canEndTurn || canControlCombat}
             isGm={canControlCombat}
             onSnapshot={syncRoom}
             onUpdate={refresh}

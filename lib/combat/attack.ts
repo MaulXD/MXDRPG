@@ -528,15 +528,19 @@ function defenderHp(token: BattleToken): number {
   return token.vida ?? 0;
 }
 
+function isMonsterSide(token: BattleToken): boolean {
+  return Boolean(token.monsterEntryId || token.gmCreationId);
+}
+
 function isFriendlyTarget(attacker: BattleToken, defender: BattleToken): boolean {
   if (attacker.id === defender.id) return false;
-  if (attacker.monsterEntryId) return Boolean(defender.monsterEntryId);
-  return !defender.monsterEntryId;
+  if (isMonsterSide(attacker)) return isMonsterSide(defender);
+  return !isMonsterSide(defender);
 }
 
 function isHostileTarget(attacker: BattleToken, defender: BattleToken): boolean {
-  if (attacker.monsterEntryId) return !defender.monsterEntryId;
-  return Boolean(defender.monsterEntryId);
+  if (isMonsterSide(attacker)) return !isMonsterSide(defender);
+  return isMonsterSide(defender);
 }
 
 function isHealingSpell(action: CombatActionOption): boolean {
