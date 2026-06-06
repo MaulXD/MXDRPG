@@ -1,259 +1,261 @@
-import { generalDamagePresetLabel } from "@/lib/combat/area-cascade";
-import type { CombatFxState, CombatFxTargetBurst } from "@/lib/vtt/combat-fx-types";
-import type { ChatMessage } from "@/lib/room/chat";
-import type { Axial } from "@/lib/vtt/hex-math";
-import type { BattleToken } from "@/lib/vtt/types";
-import { resolveCastFxFromCombat } from "@/lib/vtt/token-cast-fx";
-
-function axialFromCombat(c: NonNullable<ChatMessage["combat"]>): Axial | null {
-  if (c.areaCenterQ == null || c.areaCenterR == null) return null;
-  return { q: c.areaCenterQ, r: c.areaCenterR };
-}
-
-function areaHexesFromCombat(c: NonNullable<ChatMessage["combat"]>): Axial[] {
-  if (!c.areaHexList?.length) {
-    const center = axialFromCombat(c);
-    return center ? [center] : [];
-  }
-  return c.areaHexList.map((h) => ({ q: h.q, r: h.r }));
-}
-
-function combatFxFromMessage(
-  msg: ChatMessage,
-  attackerAxial: Axial,
-  defenderAxial: Axial,
-  opts?: { deferStateApply?: boolean }
-): CombatFxState | null {
-  if (msg.kind !== "combat" || !msg.combat) return null;
-  const c = msg.combat;
-  const isHeal =
-    c.actionKind === "ability" &&
-    (c.weaponName.toLowerCase().includes("cura") || c.detail.toLowerCase().includes("cura"));
-  const castResolved = resolveCastFxFromCombat(msg);
-  const castFxKind = castResolved?.kind ?? null;
-
-  const base = {
-    id: msg.id,
-    mode: "single" as const,
-    phase: "mark" as const,
-    markAxial: defenderAxial,
-    defenderAxial,
-    attackerAxial,
-    defenderTokenId: c.defenderTokenId,
-    damageTotal: c.damageTotal,
-    isHeal,
-    castFxKind,
-    castFxTargetId: castResolved?.tokenId ?? c.defenderTokenId,
-    deferStateApply: opts?.deferStateApply,
-    resolveDetail: c.detail,
-    spellDamageType: c.spellDamageType,
-    damageTypeLabel: generalDamagePresetLabel(),
-  };
-
-  if (c.resolution === "save") {
-    return {
-      ...base,
-      actionKind: "spell",
-      saveTotal: c.saveTotal,
-      saveDc: c.saveDc,
-      saveSuccess: c.saveSuccess,
-    };
-  }
-
-  const actionKind: CombatFxState["actionKind"] =
-    c.actionKind === "ability" ? "ability" : c.actionKind;
-
-  return {
-    ...base,
-    actionKind,
-    ...(c.attackNatural != null ? { attackNatural: c.attackNatural } : {}),
-    ...(c.attackTotal != null ? { attackTotal: c.attackTotal } : {}),
-    ...(c.defenderAc != null ? { defenderAc: c.defenderAc } : {}),
-    ...(c.hit != null ? { hit: c.hit } : {}),
-    ...(c.critical != null ? { critical: c.critical } : {}),
-    ...(c.criticalFail != null ? { criticalFail: c.criticalFail } : {}),
-  };
-}
-
-function buildAreaIntro(summary: ChatMessage, attackerAxial: Axial): CombatFxState | null {
-  const c = summary.combat;
-  if (!c || c.areaCenterQ == null || c.areaCenterR == null) return null;
-  const center = { q: c.areaCenterQ, r: c.areaCenterR };
-  const castResolved = resolveCastFxFromCombat(summary);
-  return {
-    id: `${summary.id}-intro`,
-    mode: "area-intro",
-    phase: "mark",
-    markAxial: center,
-    defenderAxial: center,
-    attackerAxial,
-    actionKind: "spell",
-    spellName: c.weaponName,
-    resolveDetail: c.detail,
-    damageTypeLabel: generalDamagePresetLabel(),
-    spellDamageType: c.spellDamageType,
-    areaHexes: areaHexesFromCombat(c),
-    areaCascade: c.areaCascade,
-    damageTotal: c.damageTotal,
-    castFxKind: castResolved?.kind ?? "fire",
-    castFxTargetId: castResolved?.tokenId ?? c.defenderTokenId,
-  };
-}
-
-function buildSimultaneousBurst(
-  summary: ChatMessage,
-  hits: ChatMessage[],
-  tokens: BattleToken[],
-  attackerAxial: Axial
-): CombatFxState | null {
-  const c = summary.combat;
-  if (!c || c.areaCenterQ == null || c.areaCenterR == null) return null;
-  const center = { q: c.areaCenterQ, r: c.areaCenterR };
-  const targets: CombatFxTargetBurst[] = [];
-
-  for (const msg of hits) {
-    if (msg.kind !== "combat" || !msg.combat) continue;
-    const hc = msg.combat;
-    const token = tokens.find((t) => t.id === hc.defenderTokenId);
-    if (!token) continue;
-    targets.push({
-      tokenId: token.id,
-      axial: token.axial,
-      attackNatural: hc.attackNatural,
-      attackTotal: hc.attackTotal,
-      defenderAc: hc.defenderAc,
-      saveTotal: hc.saveTotal,
-      saveDc: hc.saveDc,
-      saveSuccess: hc.saveSuccess,
-      hit: hc.hit,
-      critical: hc.critical,
-      damageTotal: hc.damageTotal,
-      detail: hc.detail,
-    });
-  }
-
-  const castResolved = resolveCastFxFromCombat(summary);
-
-  return {
-    id: `${summary.id}-simul`,
-    mode: "area-simultaneous",
-    phase: "mark",
-    markAxial: center,
-    defenderAxial: center,
-    attackerAxial,
-    actionKind: "spell",
-    spellName: c.weaponName,
-    resolveDetail: c.detail,
-    damageTypeLabel: generalDamagePresetLabel(),
-    spellDamageType: c.spellDamageType,
-    areaHexes: areaHexesFromCombat(c),
-    areaCascade: "simultaneous",
-    areaTargets: targets,
-    damageTotal: c.damageTotal,
-    castFxKind: castResolved?.kind ?? "fire",
-  };
-}
-
-export function buildAreaFxSequence(
-  summary: ChatMessage,
-  hits: ChatMessage[],
-  tokens: BattleToken[],
-  attackerAxial: Axial,
-  opts?: { deferStateApplyForToken?: (tokenId: string) => boolean }
-): CombatFxState[] {
-  const cascade = summary.combat?.areaCascade ?? "distance";
-  const intro = buildAreaIntro(summary, attackerAxial);
-  const out: CombatFxState[] = intro ? [intro] : [];
-
-  if (hits.length === 0) return out;
-
-  if (cascade === "simultaneous") {
-    const burst = buildSimultaneousBurst(summary, hits, tokens, attackerAxial);
-    if (burst) out.push(burst);
-    return out;
-  }
-
-  for (let i = 0; i < hits.length; i++) {
-    const msg = hits[i];
-    const defender = tokens.find((t) => t.id === msg.combat?.defenderTokenId);
-    if (!defender || msg.kind !== "combat" || !msg.combat) continue;
-    const defer = opts?.deferStateApplyForToken?.(defender.id);
-    const fx = combatFxFromMessage(msg, attackerAxial, defender.axial, { deferStateApply: defer });
-    if (!fx) continue;
-    out.push({
-      ...fx,
-      id: msg.id,
-      mode: "area-target",
-      phase: "mark",
-      markAxial: defender.axial,
-      cascadeIndex: i + 1,
-      cascadeTotal: hits.length,
-      spellName: summary.combat?.weaponName,
-      resolveDetail: msg.combat.detail,
-      damageTypeLabel: generalDamagePresetLabel(),
-      spellDamageType: summary.combat?.spellDamageType,
-      areaHexes: areaHexesFromCombat(summary.combat!),
-    });
-  }
-
-  return out;
-}
-
-type BatchSlot = { summary: ChatMessage | null; hits: ChatMessage[]; ids: string[] };
-
-export function ingestNewCombatFx(
-  chat: ChatMessage[],
-  seen: Set<string>,
-  tokens: BattleToken[],
-  opts?: { deferStateApplyForToken?: (tokenId: string) => boolean }
-): { sequence: CombatFxState[]; markSeen: string[] } {
-  const markSeen: string[] = [];
-  const sequence: CombatFxState[] = [];
-
-  const batches = new Map<string, BatchSlot>();
-  const singles: ChatMessage[] = [];
-
-  for (const msg of chat) {
-    if (msg.kind !== "combat" || !msg.combat || seen.has(msg.id)) continue;
-    const batchId = msg.combat.areaBatchId;
-    if (batchId) {
-      const slot = batches.get(batchId) ?? { summary: null, hits: [], ids: [] };
-      slot.ids.push(msg.id);
-      if (msg.combat.areaCenterQ != null && msg.combat.areaCenterR != null) {
-        slot.summary = msg;
-      } else {
-        slot.hits.push(msg);
-      }
-      batches.set(batchId, slot);
-      continue;
-    }
-    singles.push(msg);
-  }
-
-  for (const [, batch] of batches) {
-    if (!batch.summary) continue;
-    const attacker = tokens.find((t) => t.id === batch.summary!.combat!.attackerTokenId);
-    if (!attacker) continue;
-    const built = buildAreaFxSequence(batch.summary, batch.hits, tokens, attacker.axial, opts);
-    if (!built.length) continue;
-    sequence.push(...built);
-    markSeen.push(...batch.ids);
-  }
-
-  for (const msg of singles) {
-    if (seen.has(msg.id)) continue;
-    const defender = tokens.find((t) => t.id === msg.combat!.defenderTokenId);
-    const attacker = tokens.find((t) => t.id === msg.combat!.attackerTokenId);
-    if (!defender || !attacker) continue;
-    const defer = opts?.deferStateApplyForToken?.(defender.id);
-    const fx = combatFxFromMessage(msg, attacker.axial, defender.axial, { deferStateApply: defer });
-    if (!fx) continue;
-    sequence.push(fx);
-    markSeen.push(msg.id);
-  }
-
-  return { sequence, markSeen };
-}
-
-export { combatFxFromMessage };
+import { generalDamagePresetLabel } from "@/lib/combat/area-cascade";
+import type { CombatFxState, CombatFxTargetBurst } from "@/lib/vtt/combat-fx-types";
+import type { ChatMessage } from "@/lib/room/chat";
+import type { Axial } from "@/lib/vtt/hex-math";
+import type { BattleToken } from "@/lib/vtt/types";
+import { resolveCastFxFromCombat } from "@/lib/vtt/token-cast-fx";
+
+function axialFromCombat(c: NonNullable<ChatMessage["combat"]>): Axial | null {
+  if (c.areaCenterQ == null || c.areaCenterR == null) return null;
+  return { q: c.areaCenterQ, r: c.areaCenterR };
+}
+
+function areaHexesFromCombat(c: NonNullable<ChatMessage["combat"]>): Axial[] {
+  if (!c.areaHexList?.length) {
+    const center = axialFromCombat(c);
+    return center ? [center] : [];
+  }
+  return c.areaHexList.map((h) => ({ q: h.q, r: h.r }));
+}
+
+function combatFxFromMessage(
+  msg: ChatMessage,
+  attackerAxial: Axial,
+  defenderAxial: Axial,
+  opts?: { deferStateApply?: boolean }
+): CombatFxState | null {
+  if (msg.kind !== "combat" || !msg.combat) return null;
+  const c = msg.combat;
+  const weaponName = c.weaponName ?? "";
+  const detail = c.detail ?? "";
+  const isHeal =
+    c.actionKind === "ability" &&
+    (weaponName.toLowerCase().includes("cura") || detail.toLowerCase().includes("cura"));
+  const castResolved = resolveCastFxFromCombat(msg);
+  const castFxKind = castResolved?.kind ?? null;
+
+  const base = {
+    id: msg.id,
+    mode: "single" as const,
+    phase: "mark" as const,
+    markAxial: defenderAxial,
+    defenderAxial,
+    attackerAxial,
+    defenderTokenId: c.defenderTokenId,
+    damageTotal: c.damageTotal,
+    isHeal,
+    castFxKind,
+    castFxTargetId: castResolved?.tokenId ?? c.defenderTokenId,
+    deferStateApply: opts?.deferStateApply,
+    resolveDetail: c.detail,
+    spellDamageType: c.spellDamageType,
+    damageTypeLabel: generalDamagePresetLabel(),
+  };
+
+  if (c.resolution === "save") {
+    return {
+      ...base,
+      actionKind: "spell",
+      saveTotal: c.saveTotal,
+      saveDc: c.saveDc,
+      saveSuccess: c.saveSuccess,
+    };
+  }
+
+  const actionKind: CombatFxState["actionKind"] =
+    c.actionKind === "ability" ? "ability" : c.actionKind;
+
+  return {
+    ...base,
+    actionKind,
+    ...(c.attackNatural != null ? { attackNatural: c.attackNatural } : {}),
+    ...(c.attackTotal != null ? { attackTotal: c.attackTotal } : {}),
+    ...(c.defenderAc != null ? { defenderAc: c.defenderAc } : {}),
+    ...(c.hit != null ? { hit: c.hit } : {}),
+    ...(c.critical != null ? { critical: c.critical } : {}),
+    ...(c.criticalFail != null ? { criticalFail: c.criticalFail } : {}),
+  };
+}
+
+function buildAreaIntro(summary: ChatMessage, attackerAxial: Axial): CombatFxState | null {
+  const c = summary.combat;
+  if (!c || c.areaCenterQ == null || c.areaCenterR == null) return null;
+  const center = { q: c.areaCenterQ, r: c.areaCenterR };
+  const castResolved = resolveCastFxFromCombat(summary);
+  return {
+    id: `${summary.id}-intro`,
+    mode: "area-intro",
+    phase: "mark",
+    markAxial: center,
+    defenderAxial: center,
+    attackerAxial,
+    actionKind: "spell",
+    spellName: c.weaponName,
+    resolveDetail: c.detail,
+    damageTypeLabel: generalDamagePresetLabel(),
+    spellDamageType: c.spellDamageType,
+    areaHexes: areaHexesFromCombat(c),
+    areaCascade: c.areaCascade,
+    damageTotal: c.damageTotal,
+    castFxKind: castResolved?.kind ?? "fire",
+    castFxTargetId: castResolved?.tokenId ?? c.defenderTokenId,
+  };
+}
+
+function buildSimultaneousBurst(
+  summary: ChatMessage,
+  hits: ChatMessage[],
+  tokens: BattleToken[],
+  attackerAxial: Axial
+): CombatFxState | null {
+  const c = summary.combat;
+  if (!c || c.areaCenterQ == null || c.areaCenterR == null) return null;
+  const center = { q: c.areaCenterQ, r: c.areaCenterR };
+  const targets: CombatFxTargetBurst[] = [];
+
+  for (const msg of hits) {
+    if (msg.kind !== "combat" || !msg.combat) continue;
+    const hc = msg.combat;
+    const token = tokens.find((t) => t.id === hc.defenderTokenId);
+    if (!token) continue;
+    targets.push({
+      tokenId: token.id,
+      axial: token.axial,
+      attackNatural: hc.attackNatural,
+      attackTotal: hc.attackTotal,
+      defenderAc: hc.defenderAc,
+      saveTotal: hc.saveTotal,
+      saveDc: hc.saveDc,
+      saveSuccess: hc.saveSuccess,
+      hit: hc.hit,
+      critical: hc.critical,
+      damageTotal: hc.damageTotal,
+      detail: hc.detail,
+    });
+  }
+
+  const castResolved = resolveCastFxFromCombat(summary);
+
+  return {
+    id: `${summary.id}-simul`,
+    mode: "area-simultaneous",
+    phase: "mark",
+    markAxial: center,
+    defenderAxial: center,
+    attackerAxial,
+    actionKind: "spell",
+    spellName: c.weaponName,
+    resolveDetail: c.detail,
+    damageTypeLabel: generalDamagePresetLabel(),
+    spellDamageType: c.spellDamageType,
+    areaHexes: areaHexesFromCombat(c),
+    areaCascade: "simultaneous",
+    areaTargets: targets,
+    damageTotal: c.damageTotal,
+    castFxKind: castResolved?.kind ?? "fire",
+  };
+}
+
+export function buildAreaFxSequence(
+  summary: ChatMessage,
+  hits: ChatMessage[],
+  tokens: BattleToken[],
+  attackerAxial: Axial,
+  opts?: { deferStateApplyForToken?: (tokenId: string) => boolean }
+): CombatFxState[] {
+  const cascade = summary.combat?.areaCascade ?? "distance";
+  const intro = buildAreaIntro(summary, attackerAxial);
+  const out: CombatFxState[] = intro ? [intro] : [];
+
+  if (hits.length === 0) return out;
+
+  if (cascade === "simultaneous") {
+    const burst = buildSimultaneousBurst(summary, hits, tokens, attackerAxial);
+    if (burst) out.push(burst);
+    return out;
+  }
+
+  for (let i = 0; i < hits.length; i++) {
+    const msg = hits[i];
+    const defender = tokens.find((t) => t.id === msg.combat?.defenderTokenId);
+    if (!defender || msg.kind !== "combat" || !msg.combat) continue;
+    const defer = opts?.deferStateApplyForToken?.(defender.id);
+    const fx = combatFxFromMessage(msg, attackerAxial, defender.axial, { deferStateApply: defer });
+    if (!fx) continue;
+    out.push({
+      ...fx,
+      id: msg.id,
+      mode: "area-target",
+      phase: "mark",
+      markAxial: defender.axial,
+      cascadeIndex: i + 1,
+      cascadeTotal: hits.length,
+      spellName: summary.combat?.weaponName,
+      resolveDetail: msg.combat.detail,
+      damageTypeLabel: generalDamagePresetLabel(),
+      spellDamageType: summary.combat?.spellDamageType,
+      areaHexes: areaHexesFromCombat(summary.combat!),
+    });
+  }
+
+  return out;
+}
+
+type BatchSlot = { summary: ChatMessage | null; hits: ChatMessage[]; ids: string[] };
+
+export function ingestNewCombatFx(
+  chat: ChatMessage[],
+  seen: Set<string>,
+  tokens: BattleToken[],
+  opts?: { deferStateApplyForToken?: (tokenId: string) => boolean }
+): { sequence: CombatFxState[]; markSeen: string[] } {
+  const markSeen: string[] = [];
+  const sequence: CombatFxState[] = [];
+
+  const batches = new Map<string, BatchSlot>();
+  const singles: ChatMessage[] = [];
+
+  for (const msg of chat) {
+    if (msg.kind !== "combat" || !msg.combat || seen.has(msg.id)) continue;
+    const batchId = msg.combat.areaBatchId;
+    if (batchId) {
+      const slot = batches.get(batchId) ?? { summary: null, hits: [], ids: [] };
+      slot.ids.push(msg.id);
+      if (msg.combat.areaCenterQ != null && msg.combat.areaCenterR != null) {
+        slot.summary = msg;
+      } else {
+        slot.hits.push(msg);
+      }
+      batches.set(batchId, slot);
+      continue;
+    }
+    singles.push(msg);
+  }
+
+  for (const [, batch] of batches) {
+    if (!batch.summary) continue;
+    const attacker = tokens.find((t) => t.id === batch.summary!.combat!.attackerTokenId);
+    if (!attacker) continue;
+    const built = buildAreaFxSequence(batch.summary, batch.hits, tokens, attacker.axial, opts);
+    if (!built.length) continue;
+    sequence.push(...built);
+    markSeen.push(...batch.ids);
+  }
+
+  for (const msg of singles) {
+    if (seen.has(msg.id)) continue;
+    const defender = tokens.find((t) => t.id === msg.combat!.defenderTokenId);
+    const attacker = tokens.find((t) => t.id === msg.combat!.attackerTokenId);
+    if (!defender || !attacker) continue;
+    const defer = opts?.deferStateApplyForToken?.(defender.id);
+    const fx = combatFxFromMessage(msg, attacker.axial, defender.axial, { deferStateApply: defer });
+    if (!fx) continue;
+    sequence.push(fx);
+    markSeen.push(msg.id);
+  }
+
+  return { sequence, markSeen };
+}
+
+export { combatFxFromMessage };
 

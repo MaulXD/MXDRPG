@@ -35,11 +35,6 @@ export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
 
   const applySnapshot = useCallback((data: RoomSnapshot) => {
     if (data.revision < revisionRef.current) return;
-    if (data.revision === revisionRef.current) {
-      setSyncError(null);
-      setLoading(false);
-      return;
-    }
     revisionRef.current = data.revision;
     setSnapshot(data);
     setSyncError(null);
