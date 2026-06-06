@@ -42,7 +42,7 @@ type Registry = Partial<Record<MesaWindowId, FoundryWindowLayout>>;
 const DEFAULT_LAYOUTS: Record<MesaWindowId, Omit<FoundryWindowLayout, "open" | "minimized" | "z">> = {
   actors: { x: 52, y: 48, width: 280, height: 440 },
   gm: { x: 52, y: 48, width: 300, height: 480 },
-  dungeon: { x: 52, y: 48, width: 300, height: 520 },
+  dungeon: { x: 52, y: 48, width: 360, height: 540 },
   whiteboard: { x: 52, y: 48, width: 280, height: 480 },
   tokens: { x: 52, y: 48, width: 300, height: 480 },
   initiative: { x: 52, y: 500, width: 280, height: 360 },

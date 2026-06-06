@@ -1,7 +1,7 @@
 .hex-preview-glow {
   position: absolute;
   inset: 12%;
-  background: radial-gradient(circle, rgba(201, 169, 98, 0.15), transparent 65%);
+  background: radial-gradient(circle, rgba(122, 163, 201, 0.15), transparent 65%);
   filter: blur(32px);
   pointer-events: none;
 }

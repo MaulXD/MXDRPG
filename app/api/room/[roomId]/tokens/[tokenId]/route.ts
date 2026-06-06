@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import type { BattleToken } from "@/lib/vtt/types";
 import { canMoveToken, requireRoomSpawn } from "@/lib/auth/authorize-room";
+import { canApplyTokenConditions } from "@/lib/auth/room-access";
 import { getSession } from "@/lib/auth/session";
 import { snapshotForViewer } from "@/lib/room/snapshot-for-viewer";
 import { getRoom, getRoomSnapshot, removeRoomToken, updateRoomToken } from "@/lib/room/store";
@@ -24,6 +25,15 @@ export async function PATCH(req: Request, { params }: Params) {
   const body = (await req.json()) as Partial<BattleToken>;
 
   const room = await getRoom(roomId);
+  if (body.conditions !== undefined) {
+    if (!room || !session || !canApplyTokenConditions(room, session.user)) {
+      return NextResponse.json(
+        { error: "Só o mestre pode aplicar condições de status" },
+        { status: 403 }
+      );
+    }
+  }
+
   if (session && room) {
     if (!canMoveToken(room, session.user, token)) {
       return NextResponse.json({ error: "Sem permissão" }, { status: 403 });

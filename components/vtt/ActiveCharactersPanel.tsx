@@ -26,6 +26,8 @@ type Props = {
   canViewTokenPa: (token: BattleToken) => boolean;
   canUseToken: boolean;
   canControlCombat: boolean;
+  /** Aplicar condições (Cap. 3.4) — só mestre */
+  canApplyConditions?: boolean;
   showMovementLegend: boolean;
   actionMode: TokenActionMode;
   actionErr: string | null;
@@ -50,6 +52,7 @@ export function ActiveCharactersPanel({
   canViewTokenPa,
   canUseToken,
   canControlCombat,
+  canApplyConditions = false,
   showMovementLegend,
   actionMode,
   actionErr,
@@ -159,11 +162,11 @@ export function ActiveCharactersPanel({
           ) : null}
           {actionErr ? <p className="dice-err">{actionErr}</p> : null}
 
-          {canControlCombat ? (
+          {canApplyConditions ? (
             <TokenConditionsPanel
               roomId={roomId}
               token={selected}
-              canEdit={canControlCombat}
+              canEdit
               onUpdate={onUpdate}
             />
           ) : null}

@@ -43,12 +43,53 @@ export function canManageRoom(
   return isRoomOwner(room, user.id);
 }
 
+/** Aplicar/remover condições de status (Cap. 3.4) — só o mestre da mesa. */
+export function canApplyTokenConditions(
+  room: Pick<RoomState, "ownerId">,
+  user: SessionUser | null | undefined
+): boolean {
+  return canManageRoom(room, user);
+}
+
 /** Editar piso, objetos e fog — só o mestre da mesa (não jogadores da demo). */
 export function canEditRoomScene(
   room: Pick<RoomState, "roomId" | "ownerId">,
   user: SessionUser | null | undefined
 ): boolean {
   return canManageRoom(room, user);
+}
+
+/** Identificador estável do autor numa marcação da lousa. */
+export function mapMarkupAuthorId(user: SessionUser | null | undefined): string {
+  if (!user) return "visitante";
+  return user.id;
+}
+
+/** Desenhar na lousa — qualquer participante da mesa (estilo Roll20). */
+export function canEditMapMarkups(
+  room: RoomState,
+  user: SessionUser | null | undefined
+): boolean {
+  return canParticipateInRoom(room, user);
+}
+
+/** Limpar toda a lousa ou marcações permanentes alheias — só mestre. */
+export function canManageAllMapMarkups(
+  room: Pick<RoomState, "ownerId">,
+  user: SessionUser | null | undefined
+): boolean {
+  return canManageRoom(room, user);
+}
+
+export function canDeleteMapMarkup(
+  markup: { author: string },
+  room: Pick<RoomState, "ownerId">,
+  user: SessionUser | null | undefined
+): boolean {
+  if (canManageRoom(room, user)) return true;
+  if (!user) return false;
+  const mine = mapMarkupAuthorId(user);
+  return markup.author === mine || markup.author === user.name || markup.author === user.email;
 }
 
 /** Ver mapa + chat leitura (demo, membro, admin, ou código convite na URL). */

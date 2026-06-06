@@ -178,12 +178,15 @@ export function CharacterSheet({
     resources.vida.max > 0
       ? Math.round((resources.vida.value / resources.vida.max) * 100)
       : 0;
-  const paPct =
-    resources.pontosAcao.max > 0
-      ? Math.round((resources.pontosAcao.value / resources.pontosAcao.max) * 100)
-      : 0;
   const prof = proficiencyBonus(identity.nivel);
   const portraitFocus = sanitizePortraitFocus(live.portraitFocus);
+
+  const tabTitles: Record<Tab, string> = {
+    inventário: "Inventário",
+    tesouro: "Tesouro e riquezas",
+    habilidades: "Habilidades",
+    magias: "Magias",
+  };
 
   const tabPanel = (
     <>
@@ -219,14 +222,15 @@ export function CharacterSheet({
       </div>
 
       <div className="sheet-toolbar">
-        <h2 style={{ margin: 0, fontSize: "1.1rem", fontFamily: "var(--font-display)" }}>
-          {tab === "inventário"
-            ? "Inventário"
-            : tab === "tesouro"
-              ? "Tesouro e riquezas"
-              : tab === "habilidades"
-                ? "Habilidades"
-                : "Magias"}
+        <h2
+          className={isPopup ? "sheet-popup-panel-title" : undefined}
+          style={
+            isPopup
+              ? undefined
+              : { margin: 0, fontSize: "1.1rem", fontFamily: "var(--font-display)" }
+          }
+        >
+          {tabTitles[tab]}
         </h2>
         {canEdit && tab !== "tesouro" ? (
           <button type="button" className="btn" onClick={() => setPickerOpen(true)}>
@@ -555,7 +559,7 @@ export function CharacterSheet({
               </span>
             </div>
 
-            <div className="sheet-popup-resource">
+            <div className="sheet-popup-resource sheet-popup-resource--hp">
               <div className="sheet-popup-resource__head">
                 <span>Vida</span>
                 <strong>
@@ -564,18 +568,6 @@ export function CharacterSheet({
               </div>
               <div className="sheet-popup-bar">
                 <span className="sheet-popup-bar-fill--hp" style={{ width: `${hpPct}%` }} />
-              </div>
-            </div>
-
-            <div className="sheet-popup-resource">
-              <div className="sheet-popup-resource__head">
-                <span>Pontos de ação</span>
-                <strong>
-                  {resources.pontosAcao.value}/{resources.pontosAcao.max}
-                </strong>
-              </div>
-              <div className="sheet-popup-bar">
-                <span className="sheet-popup-bar-fill--pa" style={{ width: `${paPct}%` }} />
               </div>
             </div>
           </aside>
@@ -595,9 +587,13 @@ export function CharacterSheet({
               ))}
             </ul>
             {tabPanel}
+            {canEdit || inRoom ? (
+              <details className="sheet-popup-advanced">
+                <summary>Gestão do personagem</summary>
+                <div className="sheet-popup-advanced__body">{popupRightAside}</div>
+              </details>
+            ) : null}
           </section>
-
-          <aside className="sheet-popup-right">{popupRightAside}</aside>
         </div>
 
         {pickerOpen ? (

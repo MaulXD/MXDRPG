@@ -1,0 +1,201 @@
+/* Lousa — barra de desenho estilo Roll20 */
+
+.drawing-toolbar {
+  position: absolute;
+  left: 0.65rem;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 12;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 0.45rem;
+  border-radius: 10px;
+  border: 1px solid var(--mesa-accent-border, var(--glass-border));
+  background: rgba(10, 14, 22, 0.92);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.45);
+  pointer-events: auto;
+  max-width: min(3.25rem, 14vw);
+}
+
+.drawing-toolbar--off {
+  opacity: 0.72;
+}
+
+.drawing-toolbar__toggle {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 8px;
+  border: 1px solid var(--glass-border);
+  background: rgba(0, 0, 0, 0.3);
+  color: var(--text-muted);
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition:
+    border-color 0.15s,
+    background 0.15s,
+    color 0.15s;
+}
+
+.drawing-toolbar__toggle--on {
+  border-color: var(--mesa-accent-border, var(--glass-border-bright));
+  background: var(--mesa-accent-soft, var(--accent-soft));
+  color: var(--mesa-accent, var(--accent));
+}
+
+.drawing-toolbar__tools {
+  display: flex;
+  flex-direction: column;
+  gap: 0.28rem;
+}
+
+.drawing-toolbar__tool {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-muted);
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition:
+    border-color 0.12s,
+    background 0.12s,
+    color 0.12s;
+}
+
+.drawing-toolbar__tool:hover:not(:disabled) {
+  border-color: var(--glass-border);
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.drawing-toolbar__tool--active {
+  border-color: var(--mesa-accent-border, var(--glass-border-bright));
+  color: var(--mesa-accent, var(--accent));
+  background: var(--mesa-accent-soft, var(--accent-soft));
+}
+
+.drawing-toolbar__tool:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.drawing-toolbar__sub {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding-top: 0.35rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.drawing-toolbar__colors {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.22rem;
+  justify-content: center;
+  max-width: 2.6rem;
+}
+
+.drawing-toolbar__swatch {
+  width: 1.15rem;
+  height: 1.15rem;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  padding: 0;
+  cursor: pointer;
+}
+
+.drawing-toolbar__swatch--active {
+  border-color: var(--mesa-accent, var(--accent));
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.45);
+}
+
+.drawing-toolbar__widths {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.drawing-toolbar__width {
+  height: 1.65rem;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.25);
+  color: var(--text-dim);
+  font-size: 0.62rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.drawing-toolbar__width--active {
+  border-color: var(--mesa-accent-border, var(--glass-border-bright));
+  color: var(--mesa-accent, var(--accent));
+  background: var(--mesa-accent-soft, var(--accent-soft));
+}
+
+.drawing-toolbar__clear {
+  width: 100%;
+  min-height: 1.85rem;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(0, 0, 0, 0.28);
+  color: var(--text-muted);
+  font-size: 0.62rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0.2rem;
+  line-height: 1.2;
+}
+
+.drawing-toolbar__clear:hover:not(:disabled) {
+  color: var(--text);
+  border-color: var(--glass-border);
+}
+
+.drawing-toolbar__hint {
+  margin: 0;
+  font-size: 0.62rem;
+  line-height: 1.35;
+  color: var(--text-dim);
+  text-align: center;
+  max-width: 2.8rem;
+}
+
+@media (max-width: 640px) {
+  .drawing-toolbar {
+    left: 0.35rem;
+    top: auto;
+    bottom: 3.5rem;
+    transform: none;
+    flex-direction: row;
+    flex-wrap: wrap;
+    max-width: calc(100% - 0.75rem);
+    padding: 0.35rem;
+  }
+
+  .drawing-toolbar__tools {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .drawing-toolbar__sub {
+    flex-direction: row;
+    align-items: center;
+    border-top: none;
+    border-left: 1px solid rgba(255, 255, 255, 0.08);
+    padding-top: 0;
+    padding-left: 0.35rem;
+  }
+
+  .drawing-toolbar__hint {
+    display: none;
+  }
+}

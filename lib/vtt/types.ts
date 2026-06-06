@@ -97,7 +97,14 @@ export type DungeonObject = {
   r: number;
 };
 
-export type MapMarkupKind = "freehand" | "line" | "rect" | "circle" | "arrow" | "text";
+export type MapMarkupKind =
+  | "freehand"
+  | "line"
+  | "rect"
+  | "circle"
+  | "arrow"
+  | "polygon"
+  | "text";
 
 export type MapMarkupDurability = "temporary" | "permanent";
 

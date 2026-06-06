@@ -207,7 +207,6 @@ export function useBattlefieldHighlights({
 
   const hoverMovePreview: MoveCheck | null = useMemo(() => {
     if (!moveHighlightToken || !hoverAxial || !showMovement || !moveCtx) return null;
-    if (turnMovePreview) return null;
     return canMoveToken(
       moveHighlightToken,
       hoverAxial,
