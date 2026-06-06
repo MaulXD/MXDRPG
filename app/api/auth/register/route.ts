@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { portalPathForRole } from "@/lib/auth/roles";
+import { postAuthRedirect } from "@/lib/auth/post-auth-redirect";
 import { createSession } from "@/lib/auth/session";
 import { registerUser } from "@/lib/auth/user-store";
 
@@ -8,6 +8,7 @@ export async function POST(request: Request) {
   const email = String(body.email ?? "").trim();
   const name = String(body.name ?? "").trim();
   const password = String(body.password ?? "");
+  const redirect = String(body.redirect ?? "").trim() || undefined;
 
   const nickname = String(body.nickname ?? "").trim() || undefined;
   const result = await registerUser(email, name, password, nickname);
@@ -19,6 +20,8 @@ export async function POST(request: Request) {
 
   return NextResponse.json({
     ok: true,
-    redirect: portalPathForRole(result.user.role),
+    user: result.user,
+    canCreateMesa: true,
+    redirect: postAuthRedirect(result.user, redirect),
   });
 }
