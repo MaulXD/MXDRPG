@@ -7,14 +7,21 @@ import { isArmorEntry } from "@/lib/character/armor-defense";
 import { listCombatActions } from "@/lib/combat/attack";
 import type { CharacterSheet, InventoryItem } from "@/lib/character/types";
 import type { CompendiumEntry } from "@/lib/compendium/types";
-import { patchRoomActor } from "@/hooks/useRoomSync";
+import type { CombatLoadout } from "@/lib/combat/types";
+
+export type LoadoutPatch = {
+  combatLoadout?: CombatLoadout | null;
+  armorLoadout?: { packId: "equipamentos"; entryId: string } | null;
+};
 
 type Props = {
   actor: CharacterSheet;
   inventory: InventoryItem[];
-  roomId: string;
   canEdit: boolean;
   onSaved: () => void;
+  savePatch: (patch: LoadoutPatch) => Promise<void>;
+  /** Rótulo do painel — padrão "Em uso na mesa". */
+  eyebrow?: string;
 };
 
 function resolveInventory(
@@ -29,7 +36,14 @@ function resolveInventory(
     .filter(Boolean) as Array<{ ref: InventoryItem; entry: CompendiumEntry }>;
 }
 
-export function SheetPopupLoadoutBar({ actor, inventory, roomId, canEdit, onSaved }: Props) {
+export function SheetPopupLoadoutBar({
+  actor,
+  inventory,
+  canEdit,
+  onSaved,
+  savePatch,
+  eyebrow = "Em uso na mesa",
+}: Props) {
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
 
@@ -67,12 +81,12 @@ export function SheetPopupLoadoutBar({ actor, inventory, roomId, canEdit, onSave
     : "";
   const armorKey = actor.armorLoadout?.entryId ?? "";
 
-  async function save(patch: Parameters<typeof patchRoomActor>[2]) {
+  async function save(patch: LoadoutPatch) {
     if (!canEdit || busy) return;
     setBusy(true);
     setErr(null);
     try {
-      await patchRoomActor(roomId, actor.id, patch);
+      await savePatch(patch);
       onSaved();
     } catch (e) {
       setErr(e instanceof Error ? e.message : "Não foi possível salvar equipamento.");
@@ -84,14 +98,14 @@ export function SheetPopupLoadoutBar({ actor, inventory, roomId, canEdit, onSave
   if (!weapons.length && !armors.length) {
     return (
       <section className="sheet-popup-loadout sheet-popup-loadout--empty">
-        <p>Adicione armas e armaduras ao inventário para equipar na mesa.</p>
+        <p>Adicione armas e armaduras ao inventário para equipar.</p>
       </section>
     );
   }
 
   return (
     <section className="sheet-popup-loadout" aria-label="Equipamento ativo">
-      <p className="sheet-popup-loadout__eyebrow">Em uso na mesa</p>
+      <p className="sheet-popup-loadout__eyebrow">{eyebrow}</p>
       <div className="sheet-popup-loadout__grid">
         <label className="sheet-popup-loadout__field">
           <span className="sheet-popup-loadout__label">

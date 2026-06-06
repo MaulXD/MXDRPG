@@ -463,8 +463,27 @@
   min-height: 0;
 }
 
+/* Ordem de turno — rolagem única na janela/dock; sem lista encaixotada */
+.foundry-window--initiative .mesa-panel-scroll--rail,
+.foundry-dock-panel--initiative .mesa-panel-scroll--rail {
+  flex: 0 1 auto;
+  height: auto;
+  overflow: visible;
+}
+
+.foundry-window--initiative .vtt-turn-list,
 .foundry-dock-panel--initiative .vtt-turn-list {
   max-height: none;
+  overflow: visible;
+}
+
+.foundry-window--initiative .vtt-turn-track,
+.foundry-dock-panel--initiative .vtt-turn-track {
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  border-radius: 0;
 }
 
 .foundry-dock-panel--chat .room-chat,
@@ -598,36 +617,30 @@
   display: flex;
   flex-direction: column;
   min-height: 0;
-  overflow: hidden;
-}
-
-.foundry-window--character .foundry-sheet-body {
-  container-type: size;
-  container-name: foundry-sheet;
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  min-height: 0;
-  min-width: 0;
-  height: 100%;
-  width: 100%;
-  overflow: hidden;
+  overflow: auto;
   overscroll-behavior: contain;
 }
 
-.foundry-window--character .foundry-sheet-body > .mf {
-  flex: 1;
-  min-height: 0;
+.foundry-window--character .foundry-sheet-body {
+  container-type: inline-size;
+  container-name: foundry-sheet;
+  display: flex;
+  flex-direction: column;
+  flex: 0 1 auto;
   min-width: 0;
   width: 100%;
 }
 
-/* Moldura + ficha preenchem a janela redimensionável */
-.foundry-window--character .mf.mf--sheet-page {
-  flex: 1;
-  min-height: 0;
+.foundry-window--character .foundry-sheet-body > .mf {
+  flex: 0 1 auto;
+  min-width: 0;
   width: 100%;
-  height: 100%;
+}
+
+/* Moldura + ficha — altura natural; rolagem única na janela */
+.foundry-window--character .mf.mf--sheet-page {
+  flex: 0 1 auto;
+  width: 100%;
   display: flex;
   flex-direction: column;
   margin: 0;
@@ -637,21 +650,20 @@
 }
 
 .foundry-window--character .mf.mf--sheet-page > .mf-body {
-  flex: 1;
-  min-height: 0;
+  flex: 0 1 auto;
   width: 100%;
   display: flex;
   flex-direction: column;
 }
 
 .foundry-window--character .sheet-shell--popup {
-  flex: 1;
-  min-height: 0; /* sobrescreve min-height: min-content da ficha popup */
+  flex: 0 1 auto;
   width: 100%;
-  height: 100%;
+  min-height: min-content;
   display: flex;
   flex-direction: column;
-  container-type: size;
+  overflow: visible;
+  container-type: inline-size;
 }
 
 .foundry-window--character .sheet-popup-top {
@@ -660,17 +672,11 @@
 }
 
 .foundry-window--character .sheet-popup-body {
-  flex: 1;
-  min-height: 0;
+  flex: 0 1 auto;
   width: 100%;
-  overflow: auto;
-  display: flex;
-  flex-direction: column;
 }
 
 .foundry-window--character .sheet-popup-center {
-  flex: 1;
-  min-height: 0;
   width: 100%;
 }
 

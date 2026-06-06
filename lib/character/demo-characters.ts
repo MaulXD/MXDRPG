@@ -70,8 +70,15 @@ export const DEMO_CHARACTERS: CharacterSheet[] = [
         entryId: "equipamentos-kit-de-trinchar",
         quantity: 1,
       },
+      {
+        instanceId: "inv-seed-7",
+        packId: "equipamentos",
+        entryId: "equipamentos-arm-01",
+        quantity: 1,
+      },
     ],
     combatLoadout: { packId: "armas", entryId: "armas-wpn-s01" },
+    armorLoadout: { packId: "equipamentos", entryId: "equipamentos-arm-01" },
     lootEconomy: {
       po: 48,
       especiarias: { "ESP-12": 1, "ESP-07": 2 },
@@ -187,8 +194,15 @@ export const DEMO_CHARACTERS: CharacterSheet[] = [
         entryId: "habilidades-tiro-certeiro",
         quantity: 1,
       },
+      {
+        instanceId: "inv-bd-5",
+        packId: "equipamentos",
+        entryId: "equipamentos-arm-01",
+        quantity: 1,
+      },
     ],
     combatLoadout: { packId: "habilidades", entryId: "habilidades-inspiracao-de-batalha" },
+    armorLoadout: { packId: "equipamentos", entryId: "equipamentos-arm-01" },
     lootEconomy: {
       po: 35,
       especiarias: {},

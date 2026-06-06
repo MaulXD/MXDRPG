@@ -1297,10 +1297,13 @@
 
 .vtt-turn-gm-actions {
   grid-column: 1 / -1;
+  grid-row: 2;
   display: flex;
   flex-wrap: wrap;
   gap: 0.28rem;
   padding-top: 0.1rem;
+  position: relative;
+  z-index: 1;
 }
 
 .vtt-turn-gm-chip {

@@ -1787,15 +1787,38 @@ Some os bônus da classe com quaisquer bônus raciais.
 
 ### Passo 7 — Equipamento Inicial
 
-Cada personagem comeca com:
-- Armas e armaduras de acordo com as proficiencias da classe
-- Kit de Culinaria Basico: 1 faca de trinchar, 1 panela de ferro, 1 kit de acender fogo, 3 doses de sal de masmorra
-- 50 po para compras adicionais
+No **criador de personagem** (passo *Equipamento*), escolha **um kit** entre as opções da sua classe. Cada kit traz arma(s), armadura (quando aplicável) e truques iniciais para conjuradores — tudo já **equipado** na ficha (arma/ação ativa e armadura vestida), de modo que a **CA** e as ações de combate já consideram o equipamento.
 
-Itens especiais por raca:
-- Anao: Um kit de ferramentas de Extração completo (normalmente 150 po)
-- Gnomo: Um laboratorio portátil de destilacao (normalmente 200 po)
-- Forjado de Osso: Ferramentas de manutencao (1 conjunto, normalmente 100 po)
+**Todo personagem nível 1 também recebe:**
+- Kit de trinchar, tocha de masmorra e corda de seda de aranha
+- **50 PO** para compras na masmorra
+
+**Bônus por raça** (somam ao inventário):
+- **Anão:** kit de trinchar extra
+- **Gnomo:** kit de brasas mágicas
+- **Forjado de Osso:** corda de seda de aranha extra
+
+**Bônus por antecedente** (somam ao inventário):
+- **Explorador:** corda de seda de aranha extra
+- **Criminoso:** adaga extra
+- **Soldado:** gladius extra
+- **Eremita:** magia *Estabilizar* no grimório
+
+#### Kits por classe (escolha 1)
+
+| Classe | Opções |
+|--------|--------|
+| **Guerreiro** | Lâmina leve + couro curtido · Espada longa + cota de malha · Arco longo + couro acolchoado |
+| **Patrulheiro** | Arco curto + couro · Gladius + gibão de peles · Rapieira + meia-armadura |
+| **Ladino** | Rapieira + couro · Adagas gêmeas + couro acolchoado · Arco curto (sem armadura pesada) |
+| **Mago** | Adaga + *Lâmina de Espírito* e *Chama de Fogareiro* · Besta leve + couro (*Raio do Limiar* no grimório) · Adaga + *Onda de Trovão* e *Escudo Arcano* |
+| **Clérigo** | Maça + meia-armadura + cura · Besta + couro + *Curar Ferimentos* · Azagaia + brigandina |
+| **Bárbaro** | Machado grande + gibão · Gladius + couro batido · Maça + couro curtido |
+| **Bardo** | Rapieira + couro + *Inspiração Culinária* · Adaga + couro acolchoado + *Sussurro de Masmorra* · Arco curto + *Ilusão Menor* |
+| **Druida** | Cimitarra + gibão + *Crescimento Acelerado* · Azagaia + escamas de dragonete + *Purificar Veneno* · Adaga + couro de troll + *Estabilizar* |
+| **Artífice** | Maça + couro + kit de brasas + *Chama de Fogareiro* · Besta + meia-armadura + *Armadura Arcana* · Adaga + brigandina + *Detectar Veneno* |
+
+Na mesa virtual, troque arma ou armadura pelo painel **Em uso** na ficha; a CA é recalculada automaticamente ao equipar.
 
 ### Passo 8 — Background
 

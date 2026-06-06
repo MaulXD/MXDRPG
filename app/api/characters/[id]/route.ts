@@ -53,6 +53,8 @@ export async function PATCH(request: Request, { params }: Params) {
       | "coverFocus"
       | "tokenFocus"
       | "inventory"
+      | "combatLoadout"
+      | "armorLoadout"
     >
   > & { religiao?: string };
 

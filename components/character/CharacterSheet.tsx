@@ -30,7 +30,10 @@ import { CombatLoadoutPanel } from "@/components/character/CombatLoadoutPanel";
 import { LootEconomyPanel } from "@/components/character/LootEconomyPanel";
 import { CharacterSheetPopupHero } from "@/components/character/CharacterSheetPopupHero";
 import { SheetPopupCombatStrip } from "@/components/character/SheetPopupCombatStrip";
-import { SheetPopupLoadoutBar } from "@/components/character/SheetPopupLoadoutBar";
+import {
+  SheetPopupLoadoutBar,
+  type LoadoutPatch,
+} from "@/components/character/SheetPopupLoadoutBar";
 import { SheetPopupPortrait } from "@/components/character/SheetPopupPortrait";
 import { SheetPopupQuickBar } from "@/components/character/SheetPopupQuickBar";
 import { resolveActorDefesa } from "@/lib/character/armor-defense";
@@ -71,10 +74,16 @@ export function CharacterSheet({
   const [pickerOpen, setPickerOpen] = useState(false);
   const [pickerPack, setPickerPack] = useState<CompendiumPackId>("armas");
   const [selectedInvId, setSelectedInvId] = useState<string | null>(null);
+  const [localSheet, setLocalSheet] = useState<CharacterSheetData | null>(null);
 
   const { snapshot, refresh, applySnapshot } = useRoomSync(roomId);
-  const live = snapshot?.actors[character.id] ?? character;
+  const sheetBase = localSheet ?? character;
+  const live = snapshot?.actors[character.id] ?? sheetBase;
   const inRoom = Boolean(snapshot?.actors[character.id]);
+
+  useEffect(() => {
+    setLocalSheet(null);
+  }, [character.id, character.combatLoadout, character.armorLoadout, character.tactical?.defesa]);
 
   useEffect(() => {
     setInventory(loadInventory(character.id, character.inventory));
@@ -104,6 +113,28 @@ export function CharacterSheet({
           console.error("[ficha] inventário não persistiu:", e);
         }
       })();
+    },
+    [character.id, inRoom, roomId, refresh]
+  );
+
+  const saveLoadoutPatch = useCallback(
+    async (patch: LoadoutPatch) => {
+      if (inRoom) {
+        await patchRoomActor(roomId, character.id, patch);
+        await refresh();
+        return;
+      }
+      const res = await fetch(`/api/characters/${character.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(patch),
+      });
+      if (!res.ok) {
+        const err = (await res.json().catch(() => ({}))) as { error?: string };
+        throw new Error(err.error ?? "Falha ao salvar equipamento");
+      }
+      const data = (await res.json()) as { character?: CharacterSheetData };
+      if (data.character) setLocalSheet(data.character);
     },
     [character.id, inRoom, roomId, refresh]
   );
@@ -365,6 +396,18 @@ export function CharacterSheet({
       ) : null}
 
       <SubclassTrackPanel actor={live} popup={isPopup} />
+
+      {canEdit ? (
+        <SheetPopupLoadoutBar
+          actor={live}
+          inventory={inventory}
+          canEdit={canEdit}
+          onSaved={inRoom ? refresh : () => undefined}
+          savePatch={saveLoadoutPatch}
+          eyebrow={inRoom ? "Em uso na mesa" : "Equipamento ativo"}
+        />
+      ) : null}
+
       <section className="sheet-section">
         <h2 className="sheet-section__title">Devotion</h2>
         <ReligionSheetPanel religiao={live.identity.religiao} />
@@ -413,7 +456,7 @@ export function CharacterSheet({
             </div>
             <div className="sheet-stat">
               <label>Defesa</label>
-              <strong>{tactical.defesa}</strong>
+              <strong>{displayDefesa}</strong>
             </div>
             <div className="sheet-stat">
               <label>Movimento</label>
@@ -578,13 +621,14 @@ export function CharacterSheet({
 
         <SheetPopupQuickBar actor={live} roomId={inRoom ? roomId : undefined} onRoll={refresh} />
 
-        {inRoom ? (
+        {canEdit ? (
           <SheetPopupLoadoutBar
             actor={live}
             inventory={inventory}
-            roomId={roomId}
             canEdit={canEdit}
-            onSaved={refresh}
+            onSaved={inRoom ? refresh : () => undefined}
+            savePatch={saveLoadoutPatch}
+            eyebrow={inRoom ? "Em uso na mesa" : "Equipamento ativo"}
           />
         ) : null}
 

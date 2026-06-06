@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState, type KeyboardEvent } from "react"
 import { useRouter } from "next/navigation";
 import { SubclassTrackCard } from "@/components/character/wizard/SubclassTrackCard";
 import { WizardHoverTip } from "@/components/character/wizard/WizardHoverTip";
+import { WizardEquipmentStep } from "@/components/character/wizard/WizardEquipmentStep";
 import { WizardPortraitStep } from "@/components/character/wizard/WizardPortraitStep";
 import { ReligionPickGrid } from "@/components/character/ReligionPickGrid";
 import { religionDisplayName } from "@/lib/character/pantheon";
@@ -46,6 +47,11 @@ import {
   racialTraitDescription,
 } from "@/lib/character/wizard-tooltips";
 import { buildWizardPreview } from "@/lib/character/wizard-preview";
+import {
+  findStarterKitOption,
+  getDefaultStarterKitId,
+  resolveStarterKitOption,
+} from "@/lib/character/starter-kits";
 import { listSubclassOptions } from "@/lib/character/level-up-ui";
 import {
   ATTRIBUTE_LABELS,
@@ -65,6 +71,7 @@ const STEPS = [
   "Classe",
   "Atributos",
   "Antecedente",
+  "Equipamento",
   "Religião",
   "Retrato",
   "Revisão",
@@ -75,7 +82,8 @@ const STEP_HINTS: Record<(typeof STEPS)[number], string> = {
   Raça: "Escolha uma carta; passe o mouse nos traços para ver detalhes.",
   Classe: "Define vida, proficiências e caminhos no nível 2.",
   Atributos: "27 pontos no total — use a sugestão da classe ou ajuste com +/−.",
-  Antecedente: "Equipamento e contatos iniciais entram automaticamente na ficha.",
+  Antecedente: "História e ganhos do antecedente — itens extras somam ao kit de equipamento.",
+  Equipamento: "Escolha arma e armadura dentro das proficiências da classe; a CA já considera o kit.",
   Religião: "Cartas com bônus ao passar o mouse — Sem Deus também tem vantagens próprias.",
   Retrato: "Opcional agora — uma imagem vira retrato e token na mesa.",
   Revisão: "Confira tudo e crie — você pode editar depois na ficha.",
@@ -212,6 +220,12 @@ export function CharacterCreationWizard({
       return null;
     }
     if (index === 5) {
+      if (!findStarterKitOption(draft.classe, draft.starterKitId)) {
+        return "Escolha um kit de equipamento";
+      }
+      return null;
+    }
+    if (index === 6) {
       if (!draft.religiao) return "Escolha devotion ou Sem Deus";
       return null;
     }
@@ -228,10 +242,11 @@ export function CharacterCreationWizard({
     if (v.includes("pontos") || v.includes("Atributo")) return 3;
     if (v.includes("linhagem") || v.includes("raça")) return 1;
     if (v.includes("antecedente")) return 4;
-    if (v.includes("devotion") || v.includes("religi")) return 5;
+    if (v.includes("equipamento") || v.includes("kit")) return 5;
+    if (v.includes("devotion") || v.includes("religi")) return 6;
     if (v.includes("classe")) return 2;
     if (v.includes("Nome")) return 0;
-    return 7;
+    return 8;
   }
 
   function goToStep(index: number) {
@@ -509,7 +524,11 @@ export function CharacterCreationWizard({
                     const pointBuy = isUnsetPointBuy(draft.pointBuy)
                       ? suggestedPointBuyForClass(c.id)
                       : draft.pointBuy;
-                    patch({ classe: c.id, pointBuy });
+                    patch({
+                      classe: c.id,
+                      pointBuy,
+                      starterKitId: getDefaultStarterKitId(c.id),
+                    });
                     setPbAutoApplied(isUnsetPointBuy(draft.pointBuy));
                   }}
                 >
@@ -674,7 +693,19 @@ export function CharacterCreationWizard({
 
         {step === 5 ? (
           <>
-            <StepHead index={5} title="Religião e devotion" hint={STEP_HINTS.Religião} />
+            <StepHead index={5} title="Equipamento inicial" hint={STEP_HINTS.Equipamento} />
+            <WizardEquipmentStep
+              classe={draft.classe}
+              attributes={finalAttrs}
+              starterKitId={draft.starterKitId}
+              onChange={(kitId) => patch({ starterKitId: kitId })}
+            />
+          </>
+        ) : null}
+
+        {step === 6 ? (
+          <>
+            <StepHead index={6} title="Religião e devotion" hint={STEP_HINTS.Religião} />
             <ReligionPickGrid
               value={draft.religiao}
               onChange={(id) => patch({ religiao: id })}
@@ -682,9 +713,9 @@ export function CharacterCreationWizard({
           </>
         ) : null}
 
-        {step === 6 ? (
+        {step === 7 ? (
           <>
-            <StepHead index={6} title="Retrato e token" hint={STEP_HINTS.Retrato} />
+            <StepHead index={7} title="Retrato e token" hint={STEP_HINTS.Retrato} />
             <WizardPortraitStep
               portraitUrl={draft.portraitUrl ?? null}
               tokenImageUrl={draft.tokenImageUrl ?? null}
@@ -695,9 +726,9 @@ export function CharacterCreationWizard({
           </>
         ) : null}
 
-        {step === 7 ? (
+        {step === 8 ? (
           <>
-            <StepHead index={7} title="Revisão" hint={STEP_HINTS.Revisão} />
+            <StepHead index={8} title="Revisão" hint={STEP_HINTS.Revisão} />
             <div className="char-wizard-review-grid">
               <dl className="char-wizard-review-card">
                 <dt>Nome</dt>
@@ -719,6 +750,10 @@ export function CharacterCreationWizard({
               <dl className="char-wizard-review-card">
                 <dt>Antecedente</dt>
                 <dd>{draft.antecedente}</dd>
+              </dl>
+              <dl className="char-wizard-review-card">
+                <dt>Equipamento</dt>
+                <dd>{resolveStarterKitOption(draft.classe, draft.starterKitId)?.label ?? "—"}</dd>
               </dl>
               <dl className="char-wizard-review-card">
                 <dt>Devotion</dt>
