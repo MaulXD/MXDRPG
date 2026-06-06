@@ -31,13 +31,19 @@ export function AuthTabs({ redirect = "", clerkEnabled = false }: Props) {
         </button>
       </div>
       {clerkEnabled && tab === "login" ? <ClerkSignInLinks /> : null}
-      {tab === "login" ? <LoginForm redirect={redirect} /> : <RegisterForm />}
+      {tab === "login" ? <LoginForm redirect={redirect} /> : <RegisterForm redirect={redirect} />}
       <p style={{ marginTop: "1rem", fontSize: "0.8rem", color: "var(--text-muted)" }}>
         <a href="/privacidade">Política de privacidade</a>
         {clerkEnabled ? (
           <>
             {" "}
-            · <a href="/sign-in">Login Clerk (página)</a>
+            · <a href="/sign-in">Login Clerk</a>
+            {tab === "register" ? (
+              <>
+                {" "}
+                · <a href="/sign-up">Cadastro Clerk</a>
+              </>
+            ) : null}
           </>
         ) : null}
       </p>

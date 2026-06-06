@@ -2,12 +2,20 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { DEFAULT_POST_AUTH_PATH } from "@/lib/auth/post-auth-redirect";
 
-export function NicknameForm() {
+type Props = { redirect?: string };
+
+export function NicknameForm({ redirect = "" }: Props) {
   const router = useRouter();
   const [nickname, setNickname] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const dest =
+    redirect && redirect.startsWith("/") && !redirect.startsWith("//")
+      ? redirect
+      : DEFAULT_POST_AUTH_PATH;
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -27,12 +35,16 @@ export function NicknameForm() {
       return;
     }
 
-    router.push("/rpg");
+    router.push(dest);
     router.refresh();
   }
 
   return (
     <form onSubmit={submit} style={{ display: "flex", flexDirection: "column", gap: "0.85rem" }}>
+      <p style={{ margin: 0, fontSize: "0.82rem", color: "var(--text-muted)", lineHeight: 1.55 }}>
+        Depois do apelido você vai para <strong>suas mesas</strong> e pode criar uma nova com código de
+        convite.
+      </p>
       <label style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}>
         Apelido (3–24 caracteres)
         <input
@@ -50,7 +62,7 @@ export function NicknameForm() {
       </label>
       {error && <p style={{ color: "#ff6b8a", margin: 0, fontSize: "0.85rem" }}>{error}</p>}
       <button type="submit" className="btn" disabled={loading}>
-        {loading ? "Salvando…" : "Continuar"}
+        {loading ? "Salvando…" : "Continuar para mesas"}
       </button>
     </form>
   );
