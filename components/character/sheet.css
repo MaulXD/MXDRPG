@@ -527,6 +527,15 @@
   border-color: var(--glass-border-bright);
 }
 
+.sheet-portrait-frame .portrait-focus-frame--duo,
+.sheet-token-preview-ring .portrait-focus-frame--duo {
+  margin: 0;
+  width: 100% !important;
+  height: 100% !important;
+  border: none;
+  box-shadow: none;
+}
+
 .sheet-portrait-frame img,
 .sheet-portrait-img {
   display: block;
@@ -595,7 +604,6 @@
 
 .portrait-focus-frame--preview {
   margin: 0;
-  cursor: default;
 }
 
 @media (max-width: 420px) {
@@ -631,30 +639,47 @@
   margin: 0.5rem auto;
   border-radius: 50%;
   overflow: hidden;
-  cursor: grab;
   border: 2px solid var(--glass-border-bright);
   background: #111;
   touch-action: none;
+  flex-shrink: 0;
 }
 
-.portrait-focus-frame:active {
+.portrait-focus-frame--interactive {
+  cursor: grab;
+}
+
+.portrait-focus-frame--interactive:active {
   cursor: grabbing;
 }
 
 .portrait-focus-img {
-  width: 140%;
-  height: 140%;
-  object-fit: cover;
-  margin: -20%;
-  max-width: none;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
 }
 
 .portrait-focus-ring {
   position: absolute;
   inset: 0;
-  border-radius: 50%;
+  border-radius: inherit;
   box-shadow: inset 0 0 0 3px rgba(201, 169, 98, 0.85);
   pointer-events: none;
+}
+
+.portrait-focus-frame--square {
+  border-radius: 10px;
+}
+
+.portrait-focus-fill {
+  position: absolute;
+  inset: 0;
+}
+
+.portrait-focus-fill .portrait-focus-frame {
+  margin: 0;
+  width: 100% !important;
+  height: 100% !important;
 }
 
 .portrait-focus-sliders {

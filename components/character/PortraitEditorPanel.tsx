@@ -3,11 +3,11 @@
 import "./sheet.css";
 import { useEffect, useRef, useState } from "react";
 import { PortraitFocusEditor } from "@/components/character/PortraitFocusEditor";
+import { PortraitFocusFrame } from "@/components/character/PortraitFocusFrame";
+import { useImageNaturalSize } from "@/hooks/useImageNaturalSize";
 import { IMAGE_UPLOAD_HINT } from "@/lib/media/image-data-url";
 import {
   DEFAULT_PORTRAIT_FOCUS,
-  portraitFocusToImgStyle,
-  resolveTokenFocus,
   sanitizePortraitFocus,
   type PortraitFocus,
 } from "@/lib/media/portrait-focus";
@@ -85,8 +85,8 @@ export function PortraitEditorPanel({
   }, [draftSrc, onDraftChange]);
 
   const previewSrc = draftSrc ?? portraitUrl;
-  const portraitStyle = portraitFocusToImgStyle(focusPortrait);
-  const tokenStyle = portraitFocusToImgStyle(focusToken);
+  const imgSize = useImageNaturalSize(draftSrc ? previewSrc : null);
+  const DUO_PREVIEW = 72;
 
   const activeFocus = editingSlot === "token" ? focusToken : focusPortrait;
 
@@ -175,7 +175,6 @@ export function PortraitEditorPanel({
     }
   }
 
-  const persistedToken = resolveTokenFocus({ portraitFocus, tokenFocus });
   const tokenPreviewSrc = draftSrc ?? tokenImageUrl ?? portraitUrl;
 
   return (
@@ -192,19 +191,19 @@ export function PortraitEditorPanel({
         >
           <div className={`sheet-portrait-frame ${previewSrc ? "has-image" : ""}`}>
             {previewSrc ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={previewSrc}
-                alt=""
-                className="sheet-portrait-img"
-                style={
-                  draftSrc
-                    ? portraitStyle
-                    : portraitFocus
-                      ? portraitFocusToImgStyle(portraitFocus)
-                      : portraitStyle
-                }
-              />
+              draftSrc && imgSize.w > 0 ? (
+                <PortraitFocusFrame
+                  imageSrc={previewSrc}
+                  focus={focusPortrait}
+                  size={DUO_PREVIEW}
+                  imgW={imgSize.w}
+                  imgH={imgSize.h}
+                  className="portrait-focus-frame--duo"
+                />
+              ) : (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={previewSrc} alt="" className="sheet-portrait-img" />
+              )
             ) : (
               <span className="sheet-portrait-frame__empty">?</span>
             )}
@@ -225,19 +224,19 @@ export function PortraitEditorPanel({
             style={{ boxShadow: `0 0 0 4px ${tokenRingColor}` }}
           >
             {tokenPreviewSrc ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={tokenPreviewSrc}
-                alt=""
-                className="sheet-portrait-img"
-                style={
-                  draftSrc
-                    ? tokenStyle
-                    : persistedToken
-                      ? portraitFocusToImgStyle(persistedToken)
-                      : tokenStyle
-                }
-              />
+              draftSrc && imgSize.w > 0 ? (
+                <PortraitFocusFrame
+                  imageSrc={previewSrc!}
+                  focus={focusToken}
+                  size={DUO_PREVIEW}
+                  imgW={imgSize.w}
+                  imgH={imgSize.h}
+                  className="portrait-focus-frame--duo"
+                />
+              ) : (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={tokenPreviewSrc} alt="" className="sheet-portrait-img" />
+              )
             ) : (
               <span className="sheet-token-preview-ring__empty" style={{ background: tokenRingColor }} />
             )}
