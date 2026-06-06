@@ -340,13 +340,14 @@ export function drawTokensLayer(ctx: CanvasRenderingContext2D, p: TokenDrawParam
     }
 
     const hpVis = p.tokenHpDisplay?.get(token.id);
+    let hpLabelColor: string | null = null;
     if (hpVis?.bar && token.vidaMax != null && token.vida != null) {
       const ratio = hpRatio(token);
       const color = hpBarColor(ratio);
       drawTokenHpSegments(ctx, x, y, hpLayout, ratio, color);
-      if (hpVis.numeric) {
-        drawTokenHpLabel(ctx, x, y, r, token, color);
-      }
+      hpLabelColor = color;
+    } else if (hpVis?.numeric && token.vidaMax != null && token.vida != null) {
+      hpLabelColor = hpBarColor(hpRatio(token));
     }
 
     drawTokenIdentityRings(ctx, x, y, hpLayout.identityBase, ringStyle);
@@ -425,5 +426,9 @@ export function drawTokensLayer(ctx: CanvasRenderingContext2D, p: TokenDrawParam
     drawTokenNameLabel(ctx, x, y, r, token.name);
 
     drawTokenEffectBadges(ctx, x, y, r, token);
+
+    if (hpLabelColor) {
+      drawTokenHpLabel(ctx, x, y, r, token, hpLabelColor);
+    }
   }
 }
