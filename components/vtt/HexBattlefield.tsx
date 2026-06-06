@@ -349,13 +349,17 @@ export function HexBattlefield({
 
   const canPreviewTurnMove = useCallback(
     (t: BattleToken) => {
+      if (!canOperateToken(t)) return false;
       const track = snapshot?.combat;
-      if (!track?.order.length) return false;
+      if (!track?.order.length) {
+        return canControlCombat && isMonsterToken(t);
+      }
+      if (canControlCombat && (turn.bypassTurn || isMonsterToken(t))) return true;
       const activeId = activeTokenId(track);
       if (!activeId || t.id !== activeId) return false;
-      return canOperateToken(t);
+      return true;
     },
-    [snapshot?.combat, canOperateToken]
+    [snapshot?.combat, canOperateToken, canControlCombat, turn.bypassTurn]
   );
 
   const selected = listTokens.find((t) => t.id === selectedId) ?? null;
@@ -745,6 +749,16 @@ export function HexBattlefield({
     setTokenFlash(null);
   }, [roomId]);
 
+  const flushPendingSceneSnapshot = useCallback(() => {
+    if (moveAnimRef.current || moveBusyRef.current) return;
+    const snap = pendingCombatSnapRef.current;
+    if (!snap) return;
+    pendingCombatSnapRef.current = null;
+    if (snap.revision <= appliedSceneRevisionRef.current) return;
+    appliedSceneRevisionRef.current = snap.revision;
+    setScene(snap.scene);
+  }, []);
+
   useEffect(() => {
     if (!snapshot) return;
     if (snapshot.revision <= appliedSceneRevisionRef.current) return;
@@ -752,7 +766,13 @@ export function HexBattlefield({
     const pendingFx = snapshot.chat.some(
       (m) => isPlayableCombatFxMessage(m) && !seenCombatRef.current.has(m.id)
     );
-    if (pendingFx || combatFx !== null || combatFxQueueRef.current.length > 0) {
+    if (
+      pendingFx ||
+      combatFx !== null ||
+      combatFxQueueRef.current.length > 0 ||
+      moveAnimRef.current ||
+      moveBusyRef.current
+    ) {
       pendingCombatSnapRef.current = snapshot;
       return;
     }
@@ -1147,10 +1167,12 @@ export function HexBattlefield({
         });
         moveAnimRef.current = null;
         redraw();
+        flushPendingSceneSnapshot();
       } catch (e) {
         setActionErr(e instanceof Error ? e.message : "Movimento inválido");
         moveAnimRef.current = null;
         redraw();
+        flushPendingSceneSnapshot();
       } finally {
         moveBusyRef.current = false;
       }
@@ -1165,6 +1187,7 @@ export function HexBattlefield({
       turn.bypassTurn,
       syncRoom,
       redraw,
+      flushPendingSceneSnapshot,
       displayScene.tokens,
       displayScene.gridRadius,
       displayScene.dungeonObjects,
@@ -1175,7 +1198,7 @@ export function HexBattlefield({
   const canRepositionToken = useCallback(
     (token: BattleToken) =>
       canControlCombat ||
-      (Boolean(canControlToken?.(token)) && !token.monsterEntryId),
+      (Boolean(canControlToken?.(token)) && !isMonsterToken(token)),
     [canControlCombat, canControlToken]
   );
 
@@ -1186,15 +1209,19 @@ export function HexBattlefield({
         const snap = await repositionRoomToken(roomId, tokenId, axial.q, axial.r);
         if (!snap?.scene) throw new Error("Resposta inválida ao mover token");
         moveAnimRef.current = null;
+        pendingCombatSnapRef.current = null;
+        appliedSceneRevisionRef.current = snap.revision;
+        setScene(snap.scene);
         syncRoom(snap);
         redraw();
       } catch (e) {
         setActionErr(e instanceof Error ? e.message : "Falha ao mover token");
         moveAnimRef.current = null;
         redraw();
+        flushPendingSceneSnapshot();
       }
     },
-    [roomId, syncRoom, redraw]
+    [roomId, syncRoom, redraw, flushPendingSceneSnapshot]
   );
 
   const onGmDragPreview = useCallback(
@@ -1203,10 +1230,11 @@ export function HexBattlefield({
         moveAnimRef.current = { tokenId, q: axial.q, r: axial.r };
       } else {
         moveAnimRef.current = null;
+        flushPendingSceneSnapshot();
       }
       redraw();
     },
-    [redraw]
+    [redraw, flushPendingSceneSnapshot]
   );
 
   const onMapPing = useCallback(
