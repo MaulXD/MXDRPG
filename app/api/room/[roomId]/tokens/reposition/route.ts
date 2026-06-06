@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { assertTokenControl, requireRoomMember } from "@/lib/auth/authorize-room";
 import { canManageRoom } from "@/lib/auth/room-access";
+import { isMonsterToken } from "@/lib/room/settings";
 import { snapshotForViewer } from "@/lib/room/snapshot-for-viewer";
 import { repositionRoomToken } from "@/lib/room/store";
 
@@ -30,10 +31,7 @@ export async function POST(req: Request, { params }: Params) {
   if (controlErr) {
     return NextResponse.json({ error: controlErr.error }, { status: controlErr.status });
   }
-  if (
-    token?.monsterEntryId &&
-    !canManageRoom(auth.room, auth.user)
-  ) {
+  if (token && isMonsterToken(token) && !canManageRoom(auth.room, auth.user)) {
     return NextResponse.json({ error: "Só o mestre pode mover monstros" }, { status: 403 });
   }
 

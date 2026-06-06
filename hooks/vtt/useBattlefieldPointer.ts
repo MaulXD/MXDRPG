@@ -476,6 +476,7 @@ export function useBattlefieldPointer({
             startY: py,
             dragging: false,
           };
+          onGmDragPreview?.(hit.id, hit.axial);
           e.currentTarget.setPointerCapture(e.pointerId);
           if (hit.id !== selectedId) setSelectedId(hit.id);
           return;
@@ -524,6 +525,7 @@ export function useBattlefieldPointer({
       canControlCombat,
       canRepositionToken,
       onRepositionToken,
+      onGmDragPreview,
       actionMode,
       setHoverAxial,
       onHoverAxialChange,
@@ -867,6 +869,9 @@ export function useBattlefieldPointer({
         onGmDragPreview?.(gm.tokenId, null);
         if (axial) onRepositionToken(gm.tokenId, axial);
         return;
+      }
+      if (gm) {
+        onGmDragPreview?.(gm.tokenId, null);
       }
 
       if (!axial) return;
