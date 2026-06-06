@@ -1,3 +1,6 @@
+import type { SessionUser } from "@/lib/auth/types";
+import { canManageAllMapMarkups, mapMarkupAuthorId } from "@/lib/auth/room-access";
+import type { RoomState } from "@/lib/room/types";
 import type { MapMarkup, MapMarkupDurability, MapMarkupKind } from "@/lib/vtt/types";
 
 export const TEMP_MARKUP_DURATION_MS = 30 * 60 * 1000;
@@ -16,7 +19,14 @@ export const MARKUP_COLORS = [
 
 export const MARKUP_WIDTHS = [2, 4, 6] as const;
 
-export type WhiteboardTool = "pen" | "line" | "rect" | "circle" | "arrow" | "text" | "move" | "erase";
+/** Ferramentas da lousa (modelo Roll20: seleção, traço livre, formas, linha/polígono, texto). */
+export type WhiteboardTool =
+  | "select"
+  | "pen"
+  | "shape"
+  | "line"
+  | "polygon"
+  | "text";
 
 export function newMapMarkupId(): string {
   return `mk-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 7)}`;
@@ -47,7 +57,15 @@ function clampPoints(points: { x: number; y: number }[]): { x: number; y: number
 
 export function sanitizeMapMarkups(raw: unknown): MapMarkup[] {
   if (!Array.isArray(raw)) return [];
-  const kinds: MapMarkupKind[] = ["freehand", "line", "rect", "circle", "arrow", "text"];
+  const kinds: MapMarkupKind[] = [
+    "freehand",
+    "line",
+    "rect",
+    "circle",
+    "arrow",
+    "polygon",
+    "text",
+  ];
   const out: MapMarkup[] = [];
   for (const item of raw) {
     if (!item || typeof item !== "object") continue;
@@ -183,6 +201,20 @@ export function hitTestMapMarkup(
       if (wx >= minX && wx <= maxX && wy >= minY && wy <= maxY) return m;
       continue;
     }
+    if (m.kind === "polygon" && m.points.length >= 2) {
+      const poly = m.points;
+      for (let j = 1; j < poly.length; j++) {
+        const a = poly[j - 1]!;
+        const b = poly[j]!;
+        if (distPointSegment(wx, wy, a.x, a.y, b.x, b.y) <= tol) return m;
+      }
+      if (poly.length >= 3) {
+        const a = poly[poly.length - 1]!;
+        const b = poly[0]!;
+        if (distPointSegment(wx, wy, a.x, a.y, b.x, b.y) <= tol) return m;
+      }
+      continue;
+    }
     if (m.kind === "text" && m.points[0]) {
       const p = m.points[0];
       const w = Math.max(40, (m.text?.length ?? 4) * 7);
@@ -204,6 +236,37 @@ export function hitTestMapMarkup(
     }
   }
   return null;
+}
+
+/** Valida alteração da lousa por jogador (não pode apagar permanente alheio). */
+export function validatePlayerMarkupPatch(
+  before: MapMarkup[],
+  after: MapMarkup[],
+  user: SessionUser | null,
+  room: Pick<RoomState, "ownerId">
+): boolean {
+  if (canManageAllMapMarkups(room, user)) return true;
+  const author = mapMarkupAuthorId(user);
+  const prev = pruneMapMarkups(before);
+  const next = sanitizeMapMarkups(after);
+
+  for (const old of prev) {
+    const still = next.find((m) => m.id === old.id);
+    if (!still) {
+      if (old.author !== author && old.author !== user?.name && old.author !== user?.email) {
+        return false;
+      }
+      if (old.durability === "permanent" && old.author !== author) return false;
+    }
+  }
+
+  for (const m of next) {
+    const existed = prev.find((p) => p.id === m.id);
+    if (!existed && m.author !== author) return false;
+    if (existed && existed.author !== author && m.author !== author) return false;
+  }
+
+  return true;
 }
 
 export function markupOpacity(markup: MapMarkup, now = Date.now()): number {

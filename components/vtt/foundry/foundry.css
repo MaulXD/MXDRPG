@@ -747,3 +747,46 @@
     width: min(280px, 58vw);
   }
 }
+
+/* Janelas flutuantes — não ultrapassar a tela */
+.foundry-window {
+  max-width: calc(100vw - 1.25rem);
+  max-height: calc(100dvh - 1.25rem);
+}
+
+.foundry-window--dungeon .foundry-window__body,
+.foundry-dock-panel--dungeon .foundry-dock-panel__body {
+  min-width: 0;
+}
+
+.foundry-window--dungeon .mesa-panel-scroll--rail,
+.foundry-dock-panel--dungeon .mesa-panel-scroll--rail {
+  padding: 0.8rem 0.9rem 1rem;
+  font-size: 0.88rem;
+}
+
+.foundry-window--dungeon .vtt-combat-hint,
+.foundry-dock-panel--dungeon .vtt-combat-hint {
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+@media (max-width: 480px) {
+  .foundry-sidebar--dock-open .foundry-sidebar__dock {
+    position: absolute;
+    left: clamp(72px, 18vw, 92px);
+    top: 0;
+    bottom: 0;
+    width: min(300px, calc(100vw - clamp(72px, 18vw, 92px) - 0.5rem));
+    z-index: 40;
+    box-shadow: 8px 0 24px rgba(0, 0, 0, 0.45);
+  }
+
+  .vtt-dungeon-layer-tabs {
+    grid-template-columns: 1fr;
+  }
+
+  .vtt-dungeon-floor-actions {
+    grid-template-columns: 1fr;
+  }
+}

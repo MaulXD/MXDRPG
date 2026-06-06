@@ -34,13 +34,19 @@ import {
   type WhiteboardTool,
 } from "@/lib/vtt/map-markup";
 import { useVttToast } from "@/components/vtt/VttToast";
-import { canManageRoom } from "@/lib/auth/room-access";
+import {
+  canDeleteMapMarkup,
+  canManageAllMapMarkups,
+  canManageRoom,
+  mapMarkupAuthorId,
+} from "@/lib/auth/room-access";
 import { normalizeRoomSettings } from "@/lib/room/settings";
 import { filterTokensForFog, visibleHexSetForPlayer } from "@/lib/vtt/fog-of-war";
 import { resolveTokenHpDisplay } from "@/lib/vtt/token-hp-display";
 import { ActiveCharactersPanel } from "@/components/vtt/ActiveCharactersPanel";
 import { GmToolsPanel } from "@/components/vtt/GmToolsPanel";
 import { DungeonEditorPanel } from "@/components/vtt/DungeonEditorPanel";
+import { DrawingToolbar } from "@/components/vtt/DrawingToolbar";
 import { WhiteboardPanel } from "@/components/vtt/WhiteboardPanel";
 import { FoundryDockPanel } from "@/components/vtt/foundry/FoundryDockPanel";
 import type { RoomSnapshot } from "@/lib/room/types";
@@ -94,7 +100,10 @@ import { useTokenImages } from "@/hooks/vtt/useTokenImages";
 import { usePortraitFocusByToken } from "@/hooks/vtt/usePortraitFocusByToken";
 import { useBattlefieldHighlights } from "@/hooks/vtt/useBattlefieldHighlights";
 import { useBattlefieldView } from "@/hooks/vtt/useBattlefieldView";
+import { useCanvasWrapSize } from "@/hooks/vtt/useCanvasWrapSize";
 import { useHexCanvas, type HexCanvasDrawState } from "@/hooks/vtt/useHexCanvas";
+import { buildDisplayHexGrid } from "@/lib/vtt/hex-grid";
+import { mapBackdropTone, sampleImageLuminance } from "@/lib/vtt/map-luminance";
 import { useBattlefieldPointer } from "@/hooks/vtt/useBattlefieldPointer";
 import { useMonsterSpawnDrop } from "@/hooks/vtt/useMonsterSpawnDrop";
 import { paTurnRulesForActor } from "@/lib/combat/pa-economy";
@@ -108,6 +117,8 @@ type Props = {
   scene: BattleScene;
   canEdit: boolean;
   canControlCombat?: boolean;
+  /** Desenhar na lousa — jogadores e mestre */
+  canUseWhiteboard?: boolean;
   canBypassTurn?: boolean;
   canEndTurn?: boolean;
   canControlToken?: (token: import("@/lib/vtt/types").BattleToken) => boolean;
@@ -161,6 +172,7 @@ export function HexBattlefield({
   scene: initial,
   canEdit,
   canControlCombat = false,
+  canUseWhiteboard = false,
   canBypassTurn: canBypassTurnProp = false,
   canEndTurn: canEndTurnProp = false,
   canControlToken,
@@ -238,14 +250,23 @@ export function HexBattlefield({
   const [dungeonTool, setDungeonTool] = useState<DungeonEditorTool>("wall");
   const [selectedDungeonObjectId, setSelectedDungeonObjectId] = useState<string | null>(null);
   const [whiteboardActive, setWhiteboardActive] = useState(false);
-  const [whiteboardTool, setWhiteboardTool] = useState<WhiteboardTool>("pen");
+  const [whiteboardTool, setWhiteboardTool] = useState<WhiteboardTool>("select");
   const [markupColor, setMarkupColor] = useState("#3498db");
   const [markupWidth, setMarkupWidth] = useState(4);
   const [markupDurability, setMarkupDurability] = useState<MapMarkupDurability>("temporary");
   const [markupPreview, setMarkupPreview] = useState<MapMarkup | null>(null);
   const [selectedMarkupId, setSelectedMarkupId] = useState<string | null>(null);
+  const [floorPreview, setFloorPreview] = useState<{
+    mapImageScale?: number;
+    mapImageOffsetX?: number;
+    mapImageOffsetY?: number;
+  } | null>(null);
 
   const displayScene = snapshot?.scene ?? scene;
+  const canvasScene = useMemo(() => {
+    if (!floorPreview) return displayScene;
+    return { ...displayScene, ...floorPreview };
+  }, [displayScene, floorPreview]);
   const displayMarkups = useMemo(
     () => pruneMapMarkups(mapMarkupsOf(displayScene)),
     [displayScene]
@@ -351,7 +372,23 @@ export function HexBattlefield({
     [session, roomOwnerId]
   );
 
+  const canManageMarkups = useMemo(
+    () => (session ? canManageAllMapMarkups({ ownerId: roomOwnerId }, session) : roomId === "demo"),
+    [session, roomOwnerId, roomId]
+  );
+
   const dungeonMapEditing = isRoomGm && dungeonEditorActive && dungeonLayer === "objects";
+  const floorMapEditing =
+    isRoomGm && dungeonEditorActive && dungeonLayer === "floor" && !whiteboardActive;
+
+  useEffect(() => {
+    if (!floorPreview) return;
+    setFloorPreview(null);
+  }, [
+    displayScene.mapImageScale,
+    displayScene.mapImageOffsetX,
+    displayScene.mapImageOffsetY,
+  ]);
 
   const roomSettings = normalizeRoomSettings(snapshot?.settings);
 
@@ -413,6 +450,30 @@ export function HexBattlefield({
   );
 
   const battlefieldView = useBattlefieldView({ wrapRef, canvasRef });
+  const canvasWrapSize = useCanvasWrapSize(wrapRef);
+
+  const displayGridCells = useMemo(
+    () =>
+      buildDisplayHexGrid(
+        canvasScene.gridRadius,
+        canvasWrapSize.w,
+        canvasWrapSize.h,
+        canvasScene.hexSize,
+        battlefieldView.view.scale
+      ),
+    [
+      canvasScene.gridRadius,
+      canvasScene.hexSize,
+      canvasWrapSize.w,
+      canvasWrapSize.h,
+      battlefieldView.view.scale,
+    ]
+  );
+
+  const mapBackdropToneValue = useMemo(() => {
+    if (!mapImage?.complete || mapImage.naturalWidth < 1) return "none" as const;
+    return mapBackdropTone(true, sampleImageLuminance(mapImage));
+  }, [mapImage, mapImgTick]);
 
   const { spawnDragActive, spawnDropHandlers } = useMonsterSpawnDrop({
     wrapRef,
@@ -484,10 +545,40 @@ export function HexBattlefield({
     snapshot?.actors,
   ]);
 
+  const onFloorDrag = useCallback((offsetX: number, offsetY: number) => {
+    setFloorPreview((prev) => ({
+      mapImageScale: prev?.mapImageScale ?? canvasScene.mapImageScale ?? 1,
+      mapImageOffsetX: offsetX,
+      mapImageOffsetY: offsetY,
+    }));
+  }, [canvasScene.mapImageScale]);
+
+  const floorPreviewRef = useRef(floorPreview);
+  floorPreviewRef.current = floorPreview;
+
+  const commitFloorPreview = useCallback(async () => {
+    const preview = floorPreviewRef.current;
+    if (!preview) return;
+    try {
+      const snap = await patchRoomScene(roomId, {
+        mapImageScale: preview.mapImageScale ?? displayScene.mapImageScale ?? 1,
+        mapImageOffsetX: preview.mapImageOffsetX ?? displayScene.mapImageOffsetX ?? 0,
+        mapImageOffsetY: preview.mapImageOffsetY ?? displayScene.mapImageOffsetY ?? 0,
+      });
+      if (snap) syncRoom(snap);
+    } catch (e) {
+      setActionErr(e instanceof Error ? e.message : "Erro ao salvar piso");
+    }
+  }, [displayScene.mapImageScale, displayScene.mapImageOffsetX, displayScene.mapImageOffsetY, roomId, syncRoom]);
+
+  const onFloorDragEnd = useCallback(() => {
+    void commitFloorPreview();
+  }, [commitFloorPreview]);
+
   const canvasState: HexCanvasDrawState = useMemo(
     () => ({
-      scene: displayScene,
-      gridCells: highlights.gridCells,
+      scene: canvasScene,
+      gridCells: displayGridCells,
       showMovement: highlights.showMovement,
       turnMovePreview: highlights.turnMovePreview,
       walkSet: highlights.walkSet,
@@ -515,6 +606,7 @@ export function HexBattlefield({
       visibleHexSet,
       pings: displayPings,
       mapImage,
+      mapBackdropTone: mapBackdropToneValue,
       tokenHpDisplay,
       dungeonEditorActive: dungeonMapEditing,
       dungeonEditorTool:
@@ -525,7 +617,9 @@ export function HexBattlefield({
       selectedMarkupId,
     }),
     [
-      displayScene,
+      canvasScene,
+      displayGridCells,
+      mapBackdropToneValue,
       displayMarkups,
       markupPreview,
       selectedMarkupId,
@@ -1081,14 +1175,14 @@ export function HexBattlefield({
     (kind: MapMarkup["kind"], points: { x: number; y: number }[], text?: string) =>
       createMapMarkup({
         kind,
-        durability: markupDurability,
+        durability: canManageMarkups ? markupDurability : "temporary",
         color: markupColor,
         width: markupWidth,
         points,
         text,
-        author: session?.name ?? session?.email ?? "mestre",
+        author: mapMarkupAuthorId(session),
       }),
-    [markupColor, markupDurability, markupWidth, session?.email, session?.name]
+    [markupColor, markupDurability, markupWidth, session, canManageMarkups]
   );
 
   const onMarkupCommit = useCallback(
@@ -1107,10 +1201,18 @@ export function HexBattlefield({
 
   const onMarkupErase = useCallback(
     (id: string) => {
+      const target = mapMarkupsOf(displayScene).find((m) => m.id === id);
+      if (
+        target &&
+        !canDeleteMapMarkup(target, { ownerId: roomOwnerId }, session)
+      ) {
+        setActionErr("Só pode apagar os seus próprios desenhos.");
+        return;
+      }
       void persistMapMarkups(removeMapMarkup(mapMarkupsOf(displayScene), id));
       setSelectedMarkupId((cur) => (cur === id ? null : cur));
     },
-    [displayScene, persistMapMarkups]
+    [displayScene, persistMapMarkups, roomOwnerId, session]
   );
 
   const onMarkupTextRequest = useCallback(
@@ -1170,9 +1272,13 @@ export function HexBattlefield({
           selectedObjectId: selectedDungeonObjectId,
           onSelectObject: setSelectedDungeonObjectId,
           onHexEdit: (a, dragId) => void onDungeonHexEdit(a, dragId),
+          floorOffsetX: canvasScene.mapImageOffsetX ?? 0,
+          floorOffsetY: canvasScene.mapImageOffsetY ?? 0,
+          onFloorDrag: floorMapEditing ? onFloorDrag : undefined,
+          onFloorDragEnd: floorMapEditing ? () => void onFloorDragEnd() : undefined,
         }
       : undefined,
-    whiteboard: isRoomGm
+    whiteboard: canUseWhiteboard
       ? {
           active: whiteboardActive,
           tool: whiteboardTool,
@@ -1189,6 +1295,30 @@ export function HexBattlefield({
         }
       : undefined,
   });
+
+  useEffect(() => {
+    if (!whiteboardActive) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Delete" || e.key === "Backspace") {
+        const t = e.target as HTMLElement | null;
+        if (t?.closest("input, textarea, select, [contenteditable]")) return;
+        if (!selectedMarkupId) return;
+        e.preventDefault();
+        onMarkupErase(selectedMarkupId);
+      }
+      if (e.key === "Escape") {
+        pointer.cancelWhiteboardDraft();
+        setSelectedMarkupId(null);
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [whiteboardActive, selectedMarkupId, onMarkupErase, pointer.cancelWhiteboardDraft]);
+
+  const clearSessionMarkups = useCallback(() => {
+    const next = mapMarkupsOf(displayScene).filter((m) => m.durability !== "temporary");
+    void persistMapMarkups(next);
+  }, [displayScene, persistMapMarkups]);
 
   const canViewTokenPaFn =
     canViewTokenPa ?? (() => canControlCombat || Boolean(selected?.linked));
@@ -1230,6 +1360,7 @@ export function HexBattlefield({
       canViewTokenPa={canViewTokenPaFn}
       canUseToken={Boolean(canUseToken)}
       canControlCombat={canControlCombat}
+      canApplyConditions={isRoomGm}
       showMovementLegend={Boolean(selected && highlights.showMovement)}
       actionMode={actionMode}
       actionErr={actionErr}
@@ -1255,7 +1386,7 @@ export function HexBattlefield({
     ) : null;
 
   const whiteboardPanel =
-    isRoomGm && snapshot ? (
+    canUseWhiteboard && snapshot ? (
       <WhiteboardPanel
         roomId={roomId}
         scene={displayScene}
@@ -1266,6 +1397,7 @@ export function HexBattlefield({
         durability={markupDurability}
         markupCount={displayMarkups.length}
         tempCount={tempMarkupCount}
+        canManageAll={canManageMarkups}
         onActiveChange={(active) => {
           setWhiteboardActive(active);
           if (active) {
@@ -1276,7 +1408,10 @@ export function HexBattlefield({
         onToolChange={setWhiteboardTool}
         onColorChange={setMarkupColor}
         onWidthChange={setMarkupWidth}
-        onDurabilityChange={setMarkupDurability}
+        onDurabilityChange={(d) => {
+          if (d === "permanent" && !canManageMarkups) return;
+          setMarkupDurability(d);
+        }}
         onUpdated={(snap) => syncRoom(snap)}
       />
     ) : null;
@@ -1294,7 +1429,11 @@ export function HexBattlefield({
         selectedObjectId={selectedDungeonObjectId}
         onLayerChange={(layer) => {
           setDungeonLayer(layer);
-          if (layer !== "objects") setDungeonEditorActive(false);
+          if (layer === "floor" && displayScene.mapImageUrl?.trim()) {
+            setDungeonEditorActive(true);
+          } else if (layer !== "objects") {
+            setDungeonEditorActive(false);
+          }
         }}
         onActiveChange={setDungeonEditorActive}
         onToolChange={setDungeonTool}
@@ -1421,7 +1560,8 @@ export function HexBattlefield({
           title="Editor de mapa"
           layout={dungeonWindowLayout}
           className="foundry-window--dungeon"
-          minHeight={240}
+          minWidth={280}
+          minHeight={280}
           onLayoutChange={onDungeonWindowLayoutChange ?? (() => {})}
           onClose={onDungeonWindowClose ?? (() => {})}
           onMinimize={onDungeonWindowMinimize ?? (() => {})}
@@ -1555,10 +1695,45 @@ export function HexBattlefield({
       <div
         ref={wrapRef}
         className={`vtt-canvas-wrap${attackTargetCursor ? " vtt-canvas-wrap--attack-target" : ""}${spawnDragActive ? " vtt-canvas-wrap--spawn-drop" : ""}${battlefieldView.isPanning ? " vtt-canvas-wrap--panning" : ""}`}
-        onWheel={battlefieldView.onWheel}
+        onWheel={(e) => {
+          if (floorMapEditing && e.shiftKey) {
+            e.preventDefault();
+            const base = floorPreview?.mapImageScale ?? canvasScene.mapImageScale ?? 1;
+            const delta = e.deltaY < 0 ? 0.05 : -0.05;
+            const next = Math.min(4, Math.max(0.25, base + delta));
+            setFloorPreview((prev) => ({
+              mapImageOffsetX: prev?.mapImageOffsetX ?? canvasScene.mapImageOffsetX ?? 0,
+              mapImageOffsetY: prev?.mapImageOffsetY ?? canvasScene.mapImageOffsetY ?? 0,
+              mapImageScale: next,
+            }));
+            window.setTimeout(() => void commitFloorPreview(), 400);
+            return;
+          }
+          battlefieldView.onWheel(e);
+        }}
         {...spawnDropHandlers}
       >
         <VttHelpButton />
+        {canUseWhiteboard ? (
+          <DrawingToolbar
+            active={whiteboardActive}
+            tool={whiteboardTool}
+            color={markupColor}
+            width={markupWidth}
+            canManageAll={canManageMarkups}
+            onActiveChange={(active) => {
+              setWhiteboardActive(active);
+              if (active) {
+                setDungeonEditorActive(false);
+                setMarkupPreview(null);
+              }
+            }}
+            onToolChange={setWhiteboardTool}
+            onColorChange={setMarkupColor}
+            onWidthChange={setMarkupWidth}
+            onClearSession={clearSessionMarkups}
+          />
+        ) : null}
         <BattlefieldViewControls
           zoomPercent={battlefieldView.zoomPercent}
           canZoomIn={battlefieldView.canZoomIn}

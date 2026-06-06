@@ -1,6 +1,13 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState, type CSSProperties } from "react";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+  type CSSProperties,
+  type MouseEvent,
+} from "react";
 import type { BattleToken } from "@/lib/vtt/types";
 import type { RoomActor } from "@/lib/room/types";
 import type { CombatTrack } from "@/lib/room/combat";
@@ -53,16 +60,16 @@ type Props = {
   onRoomSync: () => void;
 };
 
-const RING_RADIUS_BASE = 123;
+const RING_RADIUS_BASE = 152;
 
 function ringLayout(slotCount: number): { radius: number; track: number; slotScale: number } {
   if (slotCount <= 5) {
-    return { radius: RING_RADIUS_BASE, track: 252, slotScale: 1 };
+    return { radius: RING_RADIUS_BASE, track: 312, slotScale: 1 };
   }
   if (slotCount <= 8) {
-    return { radius: Math.round(RING_RADIUS_BASE * 1.18), track: 296, slotScale: 1.04 };
+    return { radius: Math.round(RING_RADIUS_BASE * 1.16), track: 360, slotScale: 1.04 };
   }
-  return { radius: Math.round(RING_RADIUS_BASE * 1.36), track: 340, slotScale: 1.08 };
+  return { radius: Math.round(RING_RADIUS_BASE * 1.32), track: 408, slotScale: 1.08 };
 }
 
 function nextHexPaLabel(token: BattleToken): string {
@@ -109,6 +116,7 @@ export function TokenActionRing({
 }: Props) {
   const [ringView, setRingView] = useState<RingView>("main");
   const [hoveredSlotId, setHoveredSlotId] = useState<string | null>(null);
+  const [pinnedInfoSlotId, setPinnedInfoSlotId] = useState<string | null>(null);
   const turn = useCombatTurn({ combat, canBypassTurn });
 
   const weapons = useMemo(
@@ -134,10 +142,12 @@ export function TokenActionRing({
   useEffect(() => {
     setRingView("main");
     setHoveredSlotId(null);
+    setPinnedInfoSlotId(null);
   }, [token.id]);
 
   useEffect(() => {
     setHoveredSlotId(null);
+    setPinnedInfoSlotId(null);
   }, [ringView]);
 
   const saveLoadout = useCallback(
@@ -337,12 +347,21 @@ export function TokenActionRing({
 
   const layout = ringLayout(displaySlots.length);
 
-  const hoveredSlot = useMemo(
-    () => displaySlots.find((s) => s.id === hoveredSlotId) ?? null,
-    [displaySlots, hoveredSlotId]
+  const activeDetailSlotId = pinnedInfoSlotId ?? hoveredSlotId;
+
+  const activeDetailSlot = useMemo(
+    () => displaySlots.find((s) => s.id === activeDetailSlotId) ?? null,
+    [displaySlots, activeDetailSlotId]
   );
 
-  const detailOffset = layout.radius + 72;
+  const detailOffset = layout.radius + 88;
+
+  const toggleInfoPin = useCallback((slotId: string, e: MouseEvent) => {
+    e.stopPropagation();
+    e.preventDefault();
+    setPinnedInfoSlotId((prev) => (prev === slotId ? null : slotId));
+    setHoveredSlotId(slotId);
+  }, []);
 
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
@@ -456,9 +475,26 @@ export function TokenActionRing({
               disabled={slot.disabled}
               title={slot.title ?? `${slot.label} · ${slot.paLabel}`}
               onMouseEnter={() => setHoveredSlotId(slot.id)}
+              onMouseLeave={() => {
+                if (pinnedInfoSlotId !== slot.id) setHoveredSlotId(null);
+              }}
               onFocus={() => setHoveredSlotId(slot.id)}
               onClick={slot.onClick}
             >
+              {(slot.action || slot.detailHint) && !slot.disabled ? (
+                <button
+                  type="button"
+                  className={`token-action-ring__info${
+                    pinnedInfoSlotId === slot.id ? " token-action-ring__info--on" : ""
+                  }`}
+                  aria-label={`Informações: ${slot.label}`}
+                  title="Ver descrição"
+                  onMouseDown={(e) => e.stopPropagation()}
+                  onClick={(e) => toggleInfoPin(slot.id, e)}
+                >
+                  i
+                </button>
+              ) : null}
               <span className="token-action-ring__glyph" aria-hidden>
                 {slot.glyph}
               </span>
@@ -482,25 +518,25 @@ export function TokenActionRing({
           );
         })}
 
-        {hoveredSlot?.action ? (
+        {activeDetailSlot?.action ? (
           <div
             className="token-action-ring__detail"
             style={{ "--tar-detail-offset": `${detailOffset}px` } as CSSProperties}
             onClick={(e) => e.stopPropagation()}
           >
             <CombatActionDetail
-              action={hoveredSlot.action}
+              action={activeDetailSlot.action}
               actor={actor}
               className="combat-action-detail--ring"
             />
           </div>
-        ) : hoveredSlot?.detailHint ? (
+        ) : activeDetailSlot?.detailHint ? (
           <div
             className="token-action-ring__detail token-action-ring__detail--hint"
             style={{ "--tar-detail-offset": `${detailOffset}px` } as CSSProperties}
             onClick={(e) => e.stopPropagation()}
           >
-            <p className="token-action-ring__detail-hint">{hoveredSlot.detailHint}</p>
+            <p className="token-action-ring__detail-hint">{activeDetailSlot.detailHint}</p>
           </div>
         ) : ringView !== "main" ? (
           <div

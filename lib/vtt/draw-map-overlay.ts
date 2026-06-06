@@ -5,26 +5,36 @@ import type { BattlePing } from "@/lib/vtt/types";
 import type { BattleScene } from "@/lib/vtt/types";
 import type { CanvasLayout } from "@/lib/vtt/draw-battlefield";
 
+export function computeMapImageRect(
+  img: HTMLImageElement,
+  scene: BattleScene,
+  layout: CanvasLayout
+): { x: number; y: number; w: number; h: number } {
+  const scale = scene.mapImageScale ?? 1;
+  const offX = scene.mapImageOffsetX ?? 0;
+  const offY = scene.mapImageOffsetY ?? 0;
+  const fit =
+    Math.max(layout.w / img.naturalWidth, layout.h / img.naturalHeight) * scale;
+  const w = img.naturalWidth * fit;
+  const h = img.naturalHeight * fit;
+  return {
+    x: layout.ox - w / 2 + offX,
+    y: layout.oy - h / 2 + offY,
+    w,
+    h,
+  };
+}
+
 export function drawMapImageLayer(
   ctx: CanvasRenderingContext2D,
   img: HTMLImageElement,
   scene: BattleScene,
   layout: CanvasLayout
 ): void {
-  const { ox, oy } = layout;
-  const scale = scene.mapImageScale ?? 1;
-  const offX = scene.mapImageOffsetX ?? 0;
-  const offY = scene.mapImageOffsetY ?? 0;
-  const gridR = scene.gridRadius;
-  const hexSize = scene.hexSize;
-  const gridW = gridR * hexSize * Math.sqrt(3) * 2.2;
-  const gridH = gridR * hexSize * 1.85 * 2.2;
-  const fit = Math.max(gridW / img.naturalWidth, gridH / img.naturalHeight) * scale;
-  const w = img.naturalWidth * fit;
-  const h = img.naturalHeight * fit;
+  const rect = computeMapImageRect(img, scene, layout);
   ctx.save();
   ctx.globalAlpha = 0.92;
-  ctx.drawImage(img, ox - w / 2 + offX, oy - h / 2 + offY, w, h);
+  ctx.drawImage(img, rect.x, rect.y, rect.w, rect.h);
   ctx.restore();
 }
 

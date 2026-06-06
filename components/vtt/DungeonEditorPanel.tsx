@@ -166,6 +166,16 @@ export function DungeonEditorPanel({
             {active ? "Pintando hex" : "Editar no mapa"}
           </button>
         ) : null}
+        {layer === "floor" && hasFloorImage ? (
+          <button
+            type="button"
+            className={`vtt-dungeon-toggle${active ? " vtt-dungeon-toggle--on" : ""}`}
+            disabled={busy}
+            onClick={() => onActiveChange(!active)}
+          >
+            {active ? "Ajustando no mapa" : "Ajustar no mapa"}
+          </button>
+        ) : null}
       </div>
 
       <div className="vtt-dungeon-layer-tabs">
@@ -238,7 +248,9 @@ export function DungeonEditorPanel({
       <div className="vtt-dungeon-layer vtt-dungeon-layer--floor">
         <p className="vtt-eyebrow">Camada 1 — imagem de piso (fundo)</p>
         {hasFloorImage ? (
-          <p className="vtt-dungeon-floor-status">✓ Fundo ativo abaixo do grid — ajuste escala/offset se precisar.</p>
+          <p className="vtt-dungeon-floor-status">
+            ✓ Fundo ativo — use <strong>Ajustar no mapa</strong> para arrastar no canvas. Shift+scroll altera a escala.
+          </p>
         ) : (
           <p className="vtt-dungeon-floor-callout">
             Envie um mapa (JPG/PNG/WebP) ou cole uma URL. A imagem fica <em>atrás</em> dos hexágonos.
@@ -285,11 +297,18 @@ export function DungeonEditorPanel({
             onChange={(e) => setUrl(e.target.value)}
           />
         </label>
+        <label className="vtt-field">
+          <span>Escala ({Number(scale) || 1}×)</span>
+          <input
+            type="range"
+            min={0.25}
+            max={4}
+            step={0.05}
+            value={Number(scale) || 1}
+            onChange={(e) => setScale(e.target.value)}
+          />
+        </label>
         <div className="vtt-map-panel-row">
-          <label className="vtt-field vtt-field--compact">
-            <span>Escala</span>
-            <input type="number" min={0.25} max={4} step={0.05} value={scale} onChange={(e) => setScale(e.target.value)} />
-          </label>
           <label className="vtt-field vtt-field--compact">
             <span>Offset X</span>
             <input type="number" step={10} value={offX} onChange={(e) => setOffX(e.target.value)} />
@@ -298,6 +317,40 @@ export function DungeonEditorPanel({
             <span>Offset Y</span>
             <input type="number" step={10} value={offY} onChange={(e) => setOffY(e.target.value)} />
           </label>
+        </div>
+        <div className="vtt-map-panel-row">
+          <button
+            type="button"
+            className="vtt-btn vtt-btn--ghost vtt-btn--compact"
+            disabled={busy}
+            onClick={() => setOffX(String((Number(offX) || 0) - 20))}
+          >
+            ← X
+          </button>
+          <button
+            type="button"
+            className="vtt-btn vtt-btn--ghost vtt-btn--compact"
+            disabled={busy}
+            onClick={() => setOffX(String((Number(offX) || 0) + 20))}
+          >
+            X →
+          </button>
+          <button
+            type="button"
+            className="vtt-btn vtt-btn--ghost vtt-btn--compact"
+            disabled={busy}
+            onClick={() => setOffY(String((Number(offY) || 0) - 20))}
+          >
+            ↑ Y
+          </button>
+          <button
+            type="button"
+            className="vtt-btn vtt-btn--ghost vtt-btn--compact"
+            disabled={busy}
+            onClick={() => setOffY(String((Number(offY) || 0) + 20))}
+          >
+            Y ↓
+          </button>
         </div>
         <button type="button" className="vtt-btn" disabled={busy} onClick={() => void applyFloor()}>
           Aplicar piso
