@@ -47,10 +47,15 @@ export async function POST(request: Request) {
     roomId?: string;
   };
   try {
-    const sheet = await createCharacterFromWizard(session.user.id, body, {
+    const { sheet, mesaRoomId } = await createCharacterFromWizard(session.user.id, body, {
       adventureId: body.adventureId ?? body.roomId ?? null,
     });
-    return NextResponse.json({ ok: true, character: { id: sheet.id, name: sheet.name } });
+    return NextResponse.json({
+      ok: true,
+      character: { id: sheet.id, name: sheet.name },
+      adventureId: sheet.adventureId ?? body.adventureId ?? body.roomId ?? null,
+      mesaRoomId,
+    });
   } catch (e) {
     return NextResponse.json(
       { error: e instanceof Error ? e.message : "Falha ao criar ficha" },

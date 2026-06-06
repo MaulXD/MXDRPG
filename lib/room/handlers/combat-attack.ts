@@ -71,6 +71,10 @@ export async function executeRoomAttack(
     return executeRoomAbility(roomId, attackerTokenId, defenderTokenId, author, opts);
   }
 
+  if (action.areaShape && action.areaShape !== "single") {
+    return { ok: false, error: "Magia de área deve ser conjurada no mapa (centro da área)" };
+  }
+
   const turn = {
     activeTokenId: activeTokenId(room.combat),
     bypassTurn: opts.bypassTurn,

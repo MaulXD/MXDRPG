@@ -4,7 +4,9 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import type { UserRole } from "@/lib/auth/types";
 import type { CompendiumEntry, CompendiumPackId, CompendiumPackMeta } from "@/lib/compendium/types";
+import { CompendiumIcon } from "@/components/compendium/CompendiumIcon";
 import { entryBookRef, entrySummary, stripHtml } from "@/lib/compendium/format";
+import { compendiumTypeColor } from "@/lib/compendium/icons";
 import "./compendium.css";
 
 type Props = {
@@ -13,15 +15,6 @@ type Props = {
   role: UserRole | null;
   /** Painel estreito da mesa (layout em lista, sem grid largo) */
   variant?: "page" | "rail";
-};
-
-const TYPE_COLOR: Record<string, string> = {
-  arma: "#ffc14d",
-  habilidade: "#b8ff3c",
-  magia: "#8b5cf6",
-  equipamento: "#94a3be",
-  npc: "#ff4d6d",
-  character: "#00f5ff",
 };
 
 export function CompendiumBrowser({ packs, data, role, variant = "page" }: Props) {
@@ -195,7 +188,7 @@ function CompendiumCard({
   layout?: "page" | "rail";
 }) {
   const tags = entrySummary(entry.system, entry.type);
-  const color = TYPE_COLOR[entry.type] ?? "#00f5ff";
+  const color = compendiumTypeColor(entry.type);
   const tagLimit = layout === "rail" ? 4 : 3;
 
   return (
@@ -204,9 +197,7 @@ function CompendiumCard({
       className={`comp-card comp-card--${layout} ${active ? "active" : ""}`}
       onClick={onSelect}
     >
-      <div className="comp-icon" style={{ background: `${color}22`, color }}>
-        {entry.name.charAt(0)}
-      </div>
+      <CompendiumIcon entry={entry} color={color} className="comp-icon" />
       <div className="comp-card-body">
         <h3>{entry.name}</h3>
         <div className="comp-card-tags">
@@ -233,10 +224,15 @@ function CompendiumDetail({
   const html = String(entry.system.description ?? "");
   const { catalogId, bookRef } = entryBookRef(entry.system);
 
+  const color = compendiumTypeColor(entry.type);
+
   return (
     <article className={`comp-detail comp-detail--${layout}`}>
       <p className="eyebrow">Detalhe</p>
-      <h3>{entry.name}</h3>
+      <div className="comp-detail-head">
+        <CompendiumIcon entry={entry} color={color} className="comp-icon comp-detail-icon" />
+        <h3>{entry.name}</h3>
+      </div>
       {catalogId || bookRef ? (
         <p className="comp-detail-ref" style={{ fontSize: "0.78rem", color: "var(--text-dim)", margin: "0 0 0.65rem" }}>
           {catalogId ? <code>{catalogId}</code> : null}

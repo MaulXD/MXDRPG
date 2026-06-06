@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { canEditCharacter, resolveCharacter, saveCharacter } from "@/lib/character/characters";
 import { getSession } from "@/lib/auth/session";
 import type { CharacterSheet } from "@/lib/character/types";
+import { applyIdentityPatch } from "@/lib/character/identity";
+import { normalizeReligionId } from "@/lib/character/pantheon";
 import { normalizeCharacter } from "@/lib/character/normalize";
 import { sanitizeActorPatch } from "@/lib/room/internal/actor-patch";
 
@@ -52,16 +54,20 @@ export async function PATCH(request: Request, { params }: Params) {
       | "tokenFocus"
       | "inventory"
     >
-  >;
+  > & { religiao?: string };
 
   const safe = sanitizeActorPatch(patch);
-  const merged = normalizeCharacter({
+  let merged = normalizeCharacter({
     ...existing,
     ...safe,
     name: patch.name !== undefined ? String(patch.name).trim().slice(0, 80) : existing.name,
     biography:
       patch.biography !== undefined ? String(patch.biography).slice(0, 2000) : existing.biography,
   });
+
+  if (patch.religiao !== undefined) {
+    merged = applyIdentityPatch(merged, { religiao: normalizeReligionId(patch.religiao) });
+  }
 
   const saved = await saveCharacter(merged);
   return NextResponse.json({ ok: true, character: saved });

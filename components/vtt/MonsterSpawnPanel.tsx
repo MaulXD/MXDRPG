@@ -7,6 +7,8 @@ import { listMonsterTemplates, scaleMonsterTemplate } from "@/lib/vtt/monsters";
 import { CREATURE_SIZE_HEX_LABEL, CREATURE_SIZE_PT } from "@/lib/vtt/monster-sizes";
 import type { MonsterSpawnVariant } from "@/lib/vtt/monster-scaling";
 import { clearActiveSpawnDragPayload, writeMonsterSpawnDrag } from "@/lib/vtt/spawn-drag";
+import { CompendiumIcon } from "@/components/compendium/CompendiumIcon";
+import { compendiumTypeColor } from "@/lib/compendium/icons";
 import { spawnRoomMonster } from "@/hooks/useRoomSync";
 
 type Props = {
@@ -144,6 +146,11 @@ export function MonsterSpawnPanel({ roomId, spawnAxial, onSpawned }: Props) {
               <span className="vtt-spawn-drag-grip" aria-hidden>
                 ⠿
               </span>
+              <CompendiumIcon
+                entry={{ id: m.entryId, name: m.name, type: "npc", system: {} }}
+                color={compendiumTypeColor("npc")}
+                className="vtt-spawn-drag-avatar inv-icon"
+              />
               <span className="vtt-spawn-drag-card-body">
                 <strong>{m.name}</strong>
                 <span>

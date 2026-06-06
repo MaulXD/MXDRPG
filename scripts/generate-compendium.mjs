@@ -16,6 +16,80 @@ const MONSTER_TAMANHOS = JSON.parse(
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const OUT = join(__dirname, "..", "data", "compendiums");
+const LM_PATH = join(__dirname, "..", "livros", "LIVRO-DO-MESTRE.md");
+const SPELL_BOOK = join(__dirname, "..", "livros", "_parte_x_magias_v4_revisada.md");
+
+function escapeHtml(s) {
+  return s
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+/** Extrai Lore + Comportamento de LIVRO-DO-MESTRE §001–080 */
+function parseMonsterLoreBook() {
+  const md = readFileSync(LM_PATH, "utf8");
+  const map = {};
+  const chunks = md.split(/\n## (\d{3}) — /);
+  for (let i = 1; i < chunks.length; i += 2) {
+    const num = chunks[i];
+    const body = chunks[i + 1] ?? "";
+    const title = body.split("\n")[0]?.trim() ?? "";
+    const loreMatch = body.match(/\*\*Lore:\*\*\s*\n([\s\S]*?)(?=\n\*\*Comportamento|\n\| Estatística|\n\*\*Habilidades)/);
+    const behaviorMatch = body.match(
+      /\*\*Comportamento na mesa:\*\*\s*\n([\s\S]*?)(?=\n\| Estatística|\n\*\*Habilidades|\n---)/
+    );
+    const lore = loreMatch?.[1]?.replace(/\s+/g, " ").trim() ?? "";
+    const behaviorRaw = behaviorMatch?.[1] ?? "";
+    const behavior = behaviorRaw
+      .split("\n")
+      .map((l) => l.replace(/^\s*-\s*\*\*([^*]+):\*\*\s*/, "$1: ").replace(/^\s*-\s*/, "").trim())
+      .filter((l) => l && !l.startsWith("|"))
+      .filter((l) => !/^culinária:/i.test(l));
+    if (title || lore) map[num] = { title, lore, behavior };
+  }
+  return map;
+}
+
+function buildMonsterDescription(entry, loreEntry, nivel) {
+  if (!loreEntry?.lore && !loreEntry?.behavior?.length) {
+    return `<p><strong>${escapeHtml(entry.name)}</strong> — criatura nv ${nivel} das masmorras de Eldarin.</p>`;
+  }
+  let html = `<p><strong>${escapeHtml(loreEntry.title || entry.name)}</strong> (ameaça nv ${nivel}).</p>`;
+  if (loreEntry.lore) html += `<p>${escapeHtml(loreEntry.lore)}</p>`;
+  if (loreEntry.behavior?.length) {
+    html += `<p><strong>Comportamento na mesa</strong></p><ul>`;
+    for (const b of loreEntry.behavior.slice(0, 5)) {
+      html += `<li>${escapeHtml(b)}</li>`;
+    }
+    html += `</ul>`;
+  }
+  return html;
+}
+
+/** Descrições do grimório (Cap. 18) */
+function parseSpellLoreBook() {
+  const md = readFileSync(SPELL_BOOK, "utf8");
+  const start = md.indexOf("## CAPÍTULO 18");
+  const slice = start >= 0 ? md.slice(start) : md;
+  const map = {};
+  const re = /\*\*([^*]+)\*\* — ([^\n]+)\n([\s\S]*?)(?=\n\*\*|\n## |\n---\s*$|$)/g;
+  let m;
+  while ((m = re.exec(slice)) !== null) {
+    const name = m[1].trim();
+    const meta = m[2].trim();
+    const desc = m[3]
+      .replace(/\n+/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+    if (name && desc && !name.startsWith("NIVEL")) map[name] = { meta, desc };
+  }
+  return map;
+}
+
+const MONSTER_LORE = parseMonsterLoreBook();
+const SPELL_LORE = parseSpellLoreBook();
 
 function mod(n) {
   return Math.floor((n - 10) / 2);
@@ -228,10 +302,16 @@ let catalogSeq = 0;
 for (const entry of MONSTERS) {
   if (entry.spawnAlias) {
     entry.system.catalogId = `MON-SPAWN-${slug(entry.name)}`;
+    entry.system.bookRef = "LIVRO-DO-MESTRE.md";
     continue;
   }
   catalogSeq += 1;
   entry.system.catalogId = monCod(catalogSeq);
+  entry.system.bookRef = "LIVRO-DO-MESTRE.md";
+  const loreKey = String(catalogSeq).padStart(3, "0");
+  const loreEntry = MONSTER_LORE[loreKey];
+  const nivel = entry.system.tactical?.ameaca?.value ?? catalogSeq;
+  entry.system.description = buildMonsterDescription(entry, loreEntry, nivel);
 }
 
 function spell(
@@ -455,6 +535,28 @@ const ABILITIES = ABILITY_CATALOG.map(([name, range, pa, tipo, recarga, desc]) =
     ability: { tipo, recarga },
   },
 }));
+
+for (const s of SPELLS) {
+  const lore = SPELL_LORE[s.name];
+  if (lore) {
+    const escola = s.system.spell?.escola ?? "";
+    const nv = s.system.spell?.nivel ?? 0;
+    const pa = s.system.tactical?.custoPontosAcao?.value ?? 1;
+    const hex = s.system.tactical?.alcanceHex?.value ?? 0;
+    s.system.description = `<p>${escapeHtml(lore.desc)}</p><p><em>${escapeHtml(lore.meta)} · nv ${nv} · ${pa} PA · ${hex} hex</em></p>`;
+    s.system.bookRef = "_parte_x_magias_v4_revisada.md";
+  } else {
+    const escola = s.system.spell?.escola ?? "Magia";
+    const nv = s.system.spell?.nivel ?? 0;
+    const base = stripHtmlTag(s.system.description);
+    s.system.description = `<p>${escapeHtml(base)}</p><p><em>${escola} · nv ${nv}</em></p>`;
+    s.system.bookRef = "_parte_x_magias_v4_revisada.md";
+  }
+}
+
+function stripHtmlTag(html) {
+  return String(html).replace(/<[^>]+>/g, "").trim();
+}
 
 writeFileSync(join(OUT, "monstros.json"), JSON.stringify(MONSTERS, null, 2) + "\n");
 writeFileSync(join(OUT, "magias.json"), JSON.stringify(SPELLS, null, 2) + "\n");

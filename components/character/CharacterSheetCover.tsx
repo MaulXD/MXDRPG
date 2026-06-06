@@ -1,9 +1,9 @@
 import {
   portraitFocusToImgStyle,
-  resolveCoverFocus,
   type PortraitFocus,
 } from "@/lib/media/portrait-focus";
 import type { CharacterIdentity } from "@/lib/character/types";
+import { religionDisplayName } from "@/lib/character/pantheon";
 import { proficiencyBonus } from "@/lib/character/rules";
 
 type Props = {
@@ -11,7 +11,6 @@ type Props = {
   identity: CharacterIdentity;
   portraitUrl?: string | null;
   portraitFocus?: PortraitFocus | null;
-  coverFocus?: PortraitFocus | null;
 };
 
 function initials(name: string): string {
@@ -21,8 +20,7 @@ function initials(name: string): string {
   return `${parts[0][0] ?? ""}${parts[parts.length - 1][0] ?? ""}`.toUpperCase();
 }
 
-export function CharacterSheetCover({ name, identity, portraitUrl, portraitFocus, coverFocus }: Props) {
-  const focus = resolveCoverFocus({ portraitFocus, coverFocus });
+export function CharacterSheetCover({ name, identity, portraitUrl, portraitFocus }: Props) {
   const meta = [
     `Nv ${identity.nivel}`,
     identity.raca,
@@ -33,30 +31,33 @@ export function CharacterSheetCover({ name, identity, portraitUrl, portraitFocus
     .filter(Boolean)
     .join(" · ");
 
-  const sub = `${identity.antecedente} · Prof +${proficiencyBonus(identity.nivel)}`;
+  const sub = [
+    identity.antecedente,
+    identity.religiao ? religionDisplayName(identity.religiao) : null,
+    `Prof +${proficiencyBonus(identity.nivel)}`,
+  ]
+    .filter(Boolean)
+    .join(" · ");
 
   return (
-    <header className="sheet-cover">
-      <div className="sheet-cover-strip" aria-hidden={!portraitUrl}>
+    <header className="sheet-header">
+      <div className="sheet-header__portrait" aria-hidden={!portraitUrl}>
         {portraitUrl ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
             src={portraitUrl}
             alt=""
-            className="sheet-cover-strip-img"
-            style={focus ? portraitFocusToImgStyle(focus) : undefined}
+            style={portraitFocus ? portraitFocusToImgStyle(portraitFocus) : undefined}
           />
         ) : (
-          <div className="sheet-cover-strip-fallback">
-            <span className="sheet-cover-initials">{initials(name)}</span>
-          </div>
+          <span className="sheet-header__portrait-fallback">{initials(name)}</span>
         )}
       </div>
-      <div className="sheet-cover-info">
-        <p className="eyebrow sheet-cover-eyebrow">Personagem</p>
-        <h1 className="sheet-cover-name">{name}</h1>
-        <p className="sheet-cover-meta">{meta}</p>
-        <p className="sheet-cover-meta sheet-cover-meta-sub">{sub}</p>
+      <div className="sheet-header__info">
+        <p className="eyebrow sheet-header__eyebrow">Personagem</p>
+        <h1 className="sheet-header__name">{name}</h1>
+        <p className="sheet-header__meta">{meta}</p>
+        <p className="sheet-header__meta sheet-header__meta-sub">{sub}</p>
       </div>
     </header>
   );

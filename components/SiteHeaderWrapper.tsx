@@ -7,7 +7,6 @@ const links = [
   { href: "/", label: "Início" },
   { href: "/sistema", label: "Sistema" },
   { href: "/biblioteca", label: "Compêndios" },
-  { href: "/mesa", label: "Mesa" },
 ];
 
 export async function SiteHeaderWrapper() {

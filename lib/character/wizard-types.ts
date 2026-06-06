@@ -20,6 +20,7 @@ export type CharacterWizardDraft = {
   linhagem: string | null;
   classe: string;
   antecedente: string;
+  religiao: string;
   pointBuy: Record<AttributeKey, number>;
   portraitUrl?: string | null;
   tokenImageUrl?: string | null;
@@ -35,6 +36,7 @@ export const EMPTY_WIZARD_DRAFT: CharacterWizardDraft = {
   linhagem: null,
   classe: "Guerreiro",
   antecedente: "Explorador",
+  religiao: "sem-deus",
   pointBuy: {
     forca: 8,
     destreza: 8,

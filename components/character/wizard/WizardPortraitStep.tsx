@@ -24,7 +24,6 @@ export function WizardPortraitStep({
   portraitUrl,
   tokenImageUrl,
   portraitFocus,
-  coverFocus,
   tokenFocus,
   onChange,
   onPendingChange,
@@ -37,16 +36,15 @@ export function WizardPortraitStep({
 
   return (
     <div className="wizard-portrait">
-      <p style={{ color: "var(--text-muted)", marginTop: 0 }}>
-        Opcional. Ajuste capa, retrato e token separadamente — cada um com zoom e posição
-        independentes.
+      <p className="char-wizard-meta" style={{ marginTop: 0, marginBottom: "1rem" }}>
+        Envie uma imagem ou pule este passo — o retrato aparece na ficha e o token no mapa hex.
+        Ajuste cada enquadramento separadamente quando quiser.
       </p>
 
       <PortraitEditorPanel
         portraitUrl={portraitUrl}
         tokenImageUrl={tokenImageUrl}
         portraitFocus={portraitFocus}
-        coverFocus={coverFocus}
         tokenFocus={tokenFocus}
         canEdit
         saveNewLabel="Aplicar retrato + token"

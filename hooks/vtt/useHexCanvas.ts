@@ -110,9 +110,10 @@ export function useHexCanvas(
       (s.pings?.length ?? 0) > 0 ||
       (pruneMapMarkups(s.mapMarkups ?? []).length ?? 0) > 0 ||
       Boolean(s.markupPreview) ||
-      (s.tokenCastFx?.length ?? 0) > 0
+      (s.tokenCastFx?.length ?? 0) > 0 ||
+      Boolean(moveAnimRef?.current)
     );
-  }, []);
+  }, [moveAnimRef]);
 
   useEffect(() => {
     const onTheme = () => setThemeTick((n) => n + 1);

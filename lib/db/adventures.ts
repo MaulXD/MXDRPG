@@ -12,6 +12,7 @@ type AdventureRow = {
   primary_room_id: string;
   created_at: number;
   updated_at: number;
+  deleted_at: number | null;
 };
 
 function rowToAdventure(row: AdventureRow): Adventure {
@@ -25,6 +26,7 @@ function rowToAdventure(row: AdventureRow): Adventure {
     primaryRoomId: row.primary_room_id,
     createdAt: Number(row.created_at),
     updatedAt: Number(row.updated_at),
+    deletedAt: row.deleted_at != null ? Number(row.deleted_at) : null,
   };
 }
 
@@ -39,6 +41,7 @@ function adventureToRow(a: Adventure): AdventureRow {
     primary_room_id: a.primaryRoomId,
     created_at: a.createdAt,
     updated_at: a.updatedAt,
+    deleted_at: a.deletedAt != null ? a.deletedAt : null,
   };
 }
 
@@ -50,7 +53,7 @@ export async function fetchAdventure(adventureId: string): Promise<Adventure | n
     rows = await withDbTimeout(
       sql<AdventureRow[]>`
         SELECT adventure_id, owner_id, name, synopsis, invite_code, member_ids,
-               primary_room_id, created_at, updated_at
+               primary_room_id, created_at, updated_at, deleted_at
         FROM eldarin_adventures WHERE adventure_id = ${adventureId} LIMIT 1
       `,
       5000,
@@ -90,7 +93,7 @@ export async function fetchAdventureByInvite(inviteCode: string): Promise<Advent
     rows = await withDbTimeout(
       sql<AdventureRow[]>`
         SELECT adventure_id, owner_id, name, synopsis, invite_code, member_ids,
-               primary_room_id, created_at, updated_at
+               primary_room_id, created_at, updated_at, deleted_at
         FROM eldarin_adventures WHERE UPPER(invite_code) = ${code} LIMIT 1
       `,
       5000,
@@ -111,11 +114,11 @@ export async function saveAdventure(adventure: Adventure): Promise<void> {
     sql`
     INSERT INTO eldarin_adventures (
       adventure_id, owner_id, name, synopsis, invite_code, member_ids,
-      primary_room_id, created_at, updated_at
+      primary_room_id, created_at, updated_at, deleted_at
     ) VALUES (
       ${row.adventure_id}, ${row.owner_id}, ${row.name}, ${row.synopsis},
       ${row.invite_code}, ${sql.json(row.member_ids)}, ${row.primary_room_id},
-      ${row.created_at}, ${row.updated_at}
+      ${row.created_at}, ${row.updated_at}, ${row.deleted_at}
     )
     ON CONFLICT (adventure_id) DO UPDATE SET
       owner_id = EXCLUDED.owner_id,
@@ -124,7 +127,8 @@ export async function saveAdventure(adventure: Adventure): Promise<void> {
       invite_code = EXCLUDED.invite_code,
       member_ids = EXCLUDED.member_ids,
       primary_room_id = EXCLUDED.primary_room_id,
-      updated_at = EXCLUDED.updated_at
+      updated_at = EXCLUDED.updated_at,
+      deleted_at = EXCLUDED.deleted_at
   `,
     5000,
     "saveAdventure"
@@ -141,7 +145,7 @@ export async function listAdventuresForOwnerOrMember(
     rows = await withDbTimeout(
       sql<AdventureRow[]>`
         SELECT adventure_id, owner_id, name, synopsis, invite_code, member_ids,
-               primary_room_id, created_at, updated_at
+               primary_room_id, created_at, updated_at, deleted_at
         FROM eldarin_adventures
         WHERE owner_id = ${userId}
            OR member_ids @> ${sql.json([userId])}::jsonb
@@ -161,5 +165,16 @@ export async function listAdventuresForOwnerOrMember(
     primaryRoomId: r.primary_room_id,
     isOwner: r.owner_id === userId,
     updatedAt: Number(r.updated_at),
+    deletedAt: r.deleted_at != null ? Number(r.deleted_at) : null,
   }));
+}
+
+export async function deleteAdventurePermanent(adventureId: string): Promise<void> {
+  const sql = getSql();
+  if (!sql) return;
+  await withDbTimeout(
+    sql`DELETE FROM eldarin_adventures WHERE adventure_id = ${adventureId}`,
+    5000,
+    "deleteAdventurePermanent"
+  );
 }

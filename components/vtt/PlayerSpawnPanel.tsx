@@ -138,17 +138,20 @@ export function PlayerSpawnPanel({
     dragGhostRef.current = null;
   }
 
+  const createHref = `/aventura/${adventureId}/personagem/novo`;
+
   if (roster.length === 0) {
     return (
       <div className="vtt-spawn-panel vtt-spawn-panel--players">
-        <p className="vtt-combat-hint">Nenhum personagem disponível nesta aventura.</p>
-        {showCreateLink && roomId !== "demo" ? (
+        <p className="vtt-eyebrow">Personagens</p>
+        <p className="vtt-combat-hint">Nenhum personagem nesta mesa ainda.</p>
+        {showCreateLink ? (
           <Link
-            href={`/aventura/${adventureId}/personagem/novo`}
+            href={createHref}
             className="btn btn-secondary"
             style={{ marginTop: "0.5rem", fontSize: "0.8rem", display: "inline-block" }}
           >
-            Criar ficha para esta mesa
+            Criar personagem
           </Link>
         ) : null}
       </div>
@@ -157,10 +160,10 @@ export function PlayerSpawnPanel({
 
   return (
     <div className="vtt-spawn-panel vtt-spawn-panel--players">
-      <p className="vtt-eyebrow">Personagens da aventura</p>
+      <p className="vtt-eyebrow">Personagens</p>
       <p className="vtt-combat-hint vtt-spawn-drag-hint">
-        Arraste para um hex no mapa para colocar ou reposicionar. Quem está fora do tabuleiro pode
-        ser puxado de volta assim.
+        Exiba os existentes abaixo ou crie um novo. Arraste para o mapa para colocar ou
+        reposicionar.
       </p>
 
       <ul className="vtt-spawn-drag-list" role="list">
@@ -229,13 +232,13 @@ export function PlayerSpawnPanel({
 
       {msg ? <p className="sheet-inline-msg">{msg}</p> : null}
 
-      {showCreateLink && roomId !== "demo" ? (
+      {showCreateLink ? (
         <Link
-          href={`/aventura/${adventureId}/personagem/novo`}
+          href={createHref}
           className="btn btn-secondary"
           style={{ marginTop: "0.5rem", fontSize: "0.8rem", display: "inline-block", width: "100%" }}
         >
-          Criar nova ficha
+          Criar personagem
         </Link>
       ) : null}
     </div>

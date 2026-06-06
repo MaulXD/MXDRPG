@@ -176,7 +176,7 @@ export function previewLevelUp(actor: CharacterSheet, choices?: LevelUpChoices):
 
   const sub = choices?.subclasse ?? actor.identity.subclasse;
   const track = getSubclassTrack(sub);
-  if (next === 2 && track) lines.push(`${SUBCLASS_PATH_LABEL}: ${track.diet}`);
+  if (next === 2 && track) lines.push(`${SUBCLASS_PATH_LABEL}: ${track.specialty}`);
 
   if (choices?.talentoId && track) {
     const t = track.talents.find((x) => x.id === choices.talentoId);

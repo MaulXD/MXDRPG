@@ -16,11 +16,20 @@ type Props = {
   focus: PortraitFocus;
   onFocusChange: (focus: PortraitFocus) => void;
   disabled?: boolean;
+  /** Qual prévia destacar no editor */
+  previewMode?: "portrait" | "token";
 };
 
 const FRAME = 200;
+const TOKEN_PREVIEW = 96;
 
-export function PortraitFocusEditor({ imageSrc, focus, onFocusChange, disabled }: Props) {
+export function PortraitFocusEditor({
+  imageSrc,
+  focus,
+  onFocusChange,
+  disabled,
+  previewMode = "portrait",
+}: Props) {
   const dragRef = useRef<{ px: number; py: number; fx: number; fy: number } | null>(null);
   const normalized = normalizePortraitFocus(focus);
   const imgStyle = portraitFocusToImgStyle(normalized);
@@ -60,29 +69,30 @@ export function PortraitFocusEditor({ imageSrc, focus, onFocusChange, disabled }
   return (
     <div className="portrait-focus-editor">
       <p className="sheet-portrait-hint">
-        Arraste para posicionar, use os controles para zoom e veja como fica na capa da ficha e no
-        token.
+        Arraste na área circular para posicionar. Use os controles para zoom fino.
       </p>
 
-      <div className="portrait-focus-previews">
-        <div className="portrait-focus-preview-slot">
-          <span className="portrait-focus-preview-label">Capa da ficha</span>
-          <div className="portrait-focus-preview-cover">
+      <div className="portrait-focus-previews portrait-focus-previews--duo">
+        <div
+          className={`portrait-focus-preview-slot ${previewMode === "portrait" ? "is-active" : ""}`}
+        >
+          <span className="portrait-focus-preview-label">Retrato</span>
+          <div
+            className="portrait-focus-frame portrait-focus-frame--main portrait-focus-frame--preview"
+            style={{ width: TOKEN_PREVIEW, height: TOKEN_PREVIEW }}
+          >
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={imageSrc} alt="" className="sheet-portrait-img-cover" style={imgStyle} />
+            <img src={imageSrc} alt="" className="portrait-focus-img" style={imgStyle} draggable={false} />
+            <span className="portrait-focus-ring" aria-hidden />
           </div>
         </div>
-        <div className="portrait-focus-preview-slot">
-          <span className="portrait-focus-preview-label">Token na mesa</span>
+        <div
+          className={`portrait-focus-preview-slot ${previewMode === "token" ? "is-active" : ""}`}
+        >
+          <span className="portrait-focus-preview-label">Token</span>
           <div
-            className="portrait-focus-frame portrait-focus-frame--token"
-            style={{ width: 88, height: 88 }}
-            onPointerDown={onPointerDown}
-            onPointerMove={onPointerMove}
-            onPointerUp={onPointerUp}
-            onPointerCancel={onPointerUp}
-            role="application"
-            aria-label="Ajustar enquadramento arrastando"
+            className="portrait-focus-frame portrait-focus-frame--token portrait-focus-frame--preview"
+            style={{ width: TOKEN_PREVIEW, height: TOKEN_PREVIEW }}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
@@ -105,7 +115,7 @@ export function PortraitFocusEditor({ imageSrc, focus, onFocusChange, disabled }
         onPointerUp={onPointerUp}
         onPointerCancel={onPointerUp}
         role="application"
-        aria-label="Área principal de ajuste do retrato"
+        aria-label="Ajustar enquadramento arrastando"
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img

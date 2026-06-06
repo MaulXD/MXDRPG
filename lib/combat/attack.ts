@@ -22,7 +22,7 @@ import { axialDistance } from "@/lib/vtt/hex-math";
 import { abilityFromEntry } from "@/lib/combat/compendium-actions";
 import { attackRollMode, canTokenAct } from "@/lib/combat/conditions";
 import { combineRollModes, formatD20Detail, formatRollMode, rollD20, type RollMode } from "@/lib/combat/d20";
-import { parseAreaShape } from "@/lib/combat/area-spell";
+import { isAreaSpellAction, parseAreaShape } from "@/lib/combat/area-spell";
 import { listSubclassCombatActions } from "@/lib/character/subclass-vtt";
 import {
   appendHealToSummary,
@@ -541,6 +541,9 @@ export function canAttackTarget(
 ): { ok: boolean; reason?: string } {
   if (action.kind === "ability" && action.selfTarget) {
     return { ok: false, reason: "Use botão de habilidade" };
+  }
+  if (isAreaSpellAction(action)) {
+    return { ok: false, reason: "Magia de área — clique o centro no mapa" };
   }
   if (attacker.id === defender.id) return { ok: false, reason: "Alvo inválido" };
 

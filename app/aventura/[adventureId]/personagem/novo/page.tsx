@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { CharacterCreationWizard } from "@/components/character/wizard/CharacterCreationWizard";
+import { MedievalFrame } from "@/components/ui/MedievalFrame";
 import { isAdventureMember } from "@/lib/auth/adventure-access";
 import { getAdventure } from "@/lib/adventure/store";
 import {
@@ -72,18 +73,21 @@ export default async function AventuraNovoPersonagemPage({ params }: Props) {
 
   return (
     <div className="page-wrap" style={{ paddingTop: "1.5rem", paddingBottom: "3rem" }}>
-      <header className="page-header" style={{ paddingBottom: "1rem" }}>
-        <p className="eyebrow">Aventura · {adventure.name}</p>
-        <h1 className="display-lg">Novo personagem</h1>
-        <p className="lead">
-          Esta ficha pertence só a esta aventura — mesa, registros e progresso ficam aqui.
-        </p>
-      </header>
-      <CharacterCreationWizard
-        slotsLeft={slotsLeft}
-        adventureId={adventureId}
-        adventureName={adventure.name}
-      />
+      <MedievalFrame variant="celtic" page>
+        <header className="page-header" style={{ paddingBottom: "1rem" }}>
+          <p className="eyebrow">Aventura · {adventure.name}</p>
+          <h1 className="display-lg">Novo personagem</h1>
+          <p className="lead">
+            Ficha exclusiva desta campanha — mesa, registros e progresso ficam aqui. Retrato é
+            opcional; você pode pular e adicionar depois.
+          </p>
+        </header>
+        <CharacterCreationWizard
+          slotsLeft={slotsLeft}
+          adventureId={adventureId}
+          adventureName={adventure.name}
+        />
+      </MedievalFrame>
     </div>
   );
 }

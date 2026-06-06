@@ -7,6 +7,7 @@ import {
   getRace,
   hpMaxFor,
 } from "@/lib/character/rules";
+import { religionDisplayName } from "@/lib/character/pantheon";
 import { antecedenteMeta } from "@/lib/character/wizard-meta";
 import { listSubclassOptions } from "@/lib/character/level-up-ui";
 
@@ -29,7 +30,7 @@ export function buildWizardPreview(draft: CharacterWizardDraft): WizardPreviewLi
 
   if (cls) {
     lines.push({ label: "Proficiências", value: cls.proficiencies });
-    lines.push({ label: "Bônus passivo de sobrevivência", value: cls.dietBonus });
+    lines.push({ label: "Atributo principal", value: cls.primary });
     lines.push({
       label: "Subclasse (nv 2)",
       value: tracks.length
@@ -55,6 +56,10 @@ export function buildWizardPreview(draft: CharacterWizardDraft): WizardPreviewLi
 
   if (ant) {
     lines.push({ label: "Antecedente", value: ant.gains.join(" · ") });
+  }
+
+  if (draft.religiao) {
+    lines.push({ label: "Devotion", value: religionDisplayName(draft.religiao) });
   }
 
   return lines;

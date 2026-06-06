@@ -5,8 +5,18 @@ import { getRoom, rooms, toSnapshot } from "../internal/registry";
 import type { RoomListItem, RoomSnapshot, RoomState } from "../types";
 
 export async function getRoomSnapshot(roomId: string): Promise<RoomSnapshot | null> {
-  const room = await getRoom(roomId);
-  return room ? toSnapshot(room) : null;
+  let room = await getRoom(roomId);
+  if (!room) return null;
+
+  if (dbRooms.dbEnabled() && roomId !== "demo") {
+    const fromDb = await dbRooms.fetchRoom(roomId);
+    if (fromDb && fromDb.revision > room.revision) {
+      rooms().set(roomId, fromDb);
+      room = fromDb;
+    }
+  }
+
+  return toSnapshot(room);
 }
 
 /** Cria aventura + mesa (1:1). Preferir `createAdventure` na API. */

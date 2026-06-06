@@ -7,7 +7,6 @@ import { describeIdentity } from "@/lib/character/identity";
 import {
   ATTRIBUTE_LABELS,
   CLASS_LIST,
-  CULINARY_LABELS,
   RACE_LIST,
   attributeMod,
   proficiencyBonus,
@@ -15,6 +14,7 @@ import {
 } from "@/lib/character/rules";
 import { formatXpProgress } from "@/lib/character/xp";
 import { getSubclassTrack } from "@/lib/character/subclass-tracks";
+import { ReligionPickGrid } from "@/components/character/ReligionPickGrid";
 import { patchRoomActor } from "@/hooks/useRoomSync";
 
 type Props = {
@@ -36,13 +36,21 @@ export function CharacterIdentityEditor({ actor, roomId, canEdit, onSaved }: Pro
   const [subclasse, setSubclasse] = useState(actor.identity.subclasse ?? "");
   const [linhagem, setLinhagem] = useState(actor.identity.linhagem ?? "");
   const [antecedente, setAntecedente] = useState(actor.identity.antecedente);
+  const [religiao, setReligiao] = useState(actor.identity.religiao ?? "sem-deus");
   const [attrs, setAttrs] = useState({ ...actor.attributes });
 
   const classDef = CLASS_LIST.find((c) => c.id === classe);
   const raceDef = RACE_LIST.find((r) => r.id === raca);
   const linhagens = raceDef?.linhagens ?? [];
 
-  const notes = useMemo(() => describeIdentity({ ...actor, identity: { ...actor.identity, raca, classe, subclasse, linhagem } }), [actor, raca, classe, subclasse, linhagem]);
+  const notes = useMemo(
+    () =>
+      describeIdentity({
+        ...actor,
+        identity: { ...actor.identity, raca, classe, subclasse, linhagem, antecedente, religiao },
+      }),
+    [actor, raca, classe, subclasse, linhagem, antecedente, religiao]
+  );
 
   const previewTrack = useMemo(() => getSubclassTrack(subclasse || null), [subclasse]);
   const subclassWillResetTalents =
@@ -72,6 +80,7 @@ export function CharacterIdentityEditor({ actor, roomId, canEdit, onSaved }: Pro
       subclasse: subclasse || null,
       linhagem: raca === "Meio-Humano" ? linhagem || null : null,
       antecedente,
+      religiao,
       attributes: attrs,
     });
   }
@@ -145,7 +154,6 @@ export function CharacterIdentityEditor({ actor, roomId, canEdit, onSaved }: Pro
             <div className="sheet-track sheet-track-preview">
               <p className="eyebrow">Preview trilha — {previewTrack.subclass}</p>
               <p className="sheet-track-meta">{previewTrack.specialty}</p>
-              <p className="sheet-track-meta">Dieta nv2: {previewTrack.diet}</p>
               <ol className="sheet-track-list">
                 {previewTrack.talents.map((t) => (
                   <li key={t.id} className="sheet-track-item">
@@ -165,6 +173,11 @@ export function CharacterIdentityEditor({ actor, roomId, canEdit, onSaved }: Pro
               Trocar subclasse remove talentos já escolhidos nesta trilha.
             </p>
           ) : null}
+
+          <div className="sheet-identity-religion">
+            <p className="eyebrow">Devotion religiosa</p>
+            <ReligionPickGrid value={religiao} onChange={setReligiao} compact disabled={busy} />
+          </div>
 
           <label>
             Antecedente
@@ -214,36 +227,21 @@ export function CharacterIdentityEditor({ actor, roomId, canEdit, onSaved }: Pro
 
 export function CharacterStatsGrid({ actor }: { actor: CharacterSheet }) {
   const mod = attributeMod;
-  const cul = actor.culinary;
 
   return (
-    <>
-      <div className="sheet-stat-grid sheet-stat-grid-3">
-        {(Object.keys(ATTRIBUTE_LABELS) as AttributeKey[]).map((k) => (
-          <div className="sheet-stat" key={k}>
-            <label>{ATTRIBUTE_LABELS[k]}</label>
-            <strong>
-              {actor.attributes[k]}{" "}
-              <span className="sheet-mod">
-                ({mod(actor.attributes[k]) >= 0 ? "+" : ""}
-                {mod(actor.attributes[k])})
-              </span>
-            </strong>
-          </div>
-        ))}
-      </div>
-
-      <div className="sheet-culinary">
-        <p className="eyebrow">Culinária</p>
-        <div className="sheet-stat-grid">
-          {(Object.keys(CULINARY_LABELS) as (keyof typeof CULINARY_LABELS)[]).map((k) => (
-            <div className="sheet-stat" key={k}>
-              <label>{CULINARY_LABELS[k]}</label>
-              <strong>+{cul[k]}</strong>
-            </div>
-          ))}
+    <div className="sheet-stat-grid sheet-stat-grid-3">
+      {(Object.keys(ATTRIBUTE_LABELS) as AttributeKey[]).map((k) => (
+        <div className="sheet-stat" key={k}>
+          <label>{ATTRIBUTE_LABELS[k]}</label>
+          <strong>
+            {actor.attributes[k]}{" "}
+            <span className="sheet-mod">
+              ({mod(actor.attributes[k]) >= 0 ? "+" : ""}
+              {mod(actor.attributes[k])})
+            </span>
+          </strong>
         </div>
-      </div>
-    </>
+      ))}
+    </div>
   );
 }

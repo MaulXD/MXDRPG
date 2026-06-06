@@ -4,7 +4,7 @@
     "name": "Couro Curtido",
     "type": "equipamento",
     "system": {
-      "description": "<p><strong>Couro Curtido</strong> (ARM-01). Armadura Leve, CA base 11.</p>",
+      "description": "<p><strong>Couro Curtido</strong> (ARM-01). Armadura Leve — leve o suficiente para escaramuças longas. CA base 11.</p>",
       "catalogId": "ARM-01",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 0,
@@ -28,7 +28,7 @@
     "name": "Couro Curtido +1",
     "type": "equipamento",
     "system": {
-      "description": "<p><strong>Couro Curtido +1</strong> (ARM-01). Armadura Leve, CA base 11. Aprimoramento +1: soma +1 de CA mágica.</p>",
+      "description": "<p><strong>Couro Curtido +1</strong> (ARM-01). Armadura Leve — leve o suficiente para escaramuças longas. CA base 11. Aprimoramento +1: soma +1 de CA mágica.</p>",
       "catalogId": "ARM-01-E1",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 1,
@@ -52,7 +52,7 @@
     "name": "Couro Curtido +2",
     "type": "equipamento",
     "system": {
-      "description": "<p><strong>Couro Curtido +2</strong> (ARM-01). Armadura Leve, CA base 11. Aprimoramento +2: soma +2 de CA mágica.</p>",
+      "description": "<p><strong>Couro Curtido +2</strong> (ARM-01). Armadura Leve — leve o suficiente para escaramuças longas. CA base 11. Aprimoramento +2: soma +2 de CA mágica.</p>",
       "catalogId": "ARM-01-E2",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 2,
@@ -76,7 +76,7 @@
     "name": "Couro Curtido +3",
     "type": "equipamento",
     "system": {
-      "description": "<p><strong>Couro Curtido +3</strong> (ARM-01). Armadura Leve, CA base 11. Aprimoramento +3: soma +3 de CA mágica; pode ganhar resistência menor (Mestre).</p>",
+      "description": "<p><strong>Couro Curtido +3</strong> (ARM-01). Armadura Leve — leve o suficiente para escaramuças longas. CA base 11. Aprimoramento +3: soma +3 de CA mágica; pode ganhar resistência menor (Mestre).</p>",
       "catalogId": "ARM-01-E3",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 3,
@@ -100,7 +100,7 @@
     "name": "Couro Acolchoado",
     "type": "equipamento",
     "system": {
-      "description": "<p><strong>Couro Acolchoado</strong> (ARM-02). Armadura Leve, CA base 12.</p>",
+      "description": "<p><strong>Couro Acolchoado</strong> (ARM-02). Armadura Leve — leve o suficiente para escaramuças longas. CA base 12.</p>",
       "catalogId": "ARM-02",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 0,
@@ -124,7 +124,7 @@
     "name": "Couro Acolchoado +1",
     "type": "equipamento",
     "system": {
-      "description": "<p><strong>Couro Acolchoado +1</strong> (ARM-02). Armadura Leve, CA base 12. Aprimoramento +1: soma +1 de CA mágica.</p>",
+      "description": "<p><strong>Couro Acolchoado +1</strong> (ARM-02). Armadura Leve — leve o suficiente para escaramuças longas. CA base 12. Aprimoramento +1: soma +1 de CA mágica.</p>",
       "catalogId": "ARM-02-E1",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 1,
@@ -148,7 +148,7 @@
     "name": "Couro Acolchoado +2",
     "type": "equipamento",
     "system": {
-      "description": "<p><strong>Couro Acolchoado +2</strong> (ARM-02). Armadura Leve, CA base 12. Aprimoramento +2: soma +2 de CA mágica.</p>",
+      "description": "<p><strong>Couro Acolchoado +2</strong> (ARM-02). Armadura Leve — leve o suficiente para escaramuças longas. CA base 12. Aprimoramento +2: soma +2 de CA mágica.</p>",
       "catalogId": "ARM-02-E2",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 2,
@@ -172,7 +172,7 @@
     "name": "Couro Acolchoado +3",
     "type": "equipamento",
     "system": {
-      "description": "<p><strong>Couro Acolchoado +3</strong> (ARM-02). Armadura Leve, CA base 12. Aprimoramento +3: soma +3 de CA mágica; pode ganhar resistência menor (Mestre).</p>",
+      "description": "<p><strong>Couro Acolchoado +3</strong> (ARM-02). Armadura Leve — leve o suficiente para escaramuças longas. CA base 12. Aprimoramento +3: soma +3 de CA mágica; pode ganhar resistência menor (Mestre).</p>",
       "catalogId": "ARM-02-E3",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 3,
@@ -196,7 +196,7 @@
     "name": "Gibão de Peles",
     "type": "equipamento",
     "system": {
-      "description": "<p><strong>Gibão de Peles</strong> (ARM-03). Armadura Leve, CA base 11.</p>",
+      "description": "<p><strong>Gibão de Peles</strong> (ARM-03). Armadura Leve — leve o suficiente para escaramuças longas. CA base 11.</p>",
       "catalogId": "ARM-03",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 0,
@@ -220,7 +220,7 @@
     "name": "Gibão de Peles +1",
     "type": "equipamento",
     "system": {
-      "description": "<p><strong>Gibão de Peles +1</strong> (ARM-03). Armadura Leve, CA base 11. Aprimoramento +1: soma +1 de CA mágica.</p>",
+      "description": "<p><strong>Gibão de Peles +1</strong> (ARM-03). Armadura Leve — leve o suficiente para escaramuças longas. CA base 11. Aprimoramento +1: soma +1 de CA mágica.</p>",
       "catalogId": "ARM-03-E1",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 1,
@@ -244,7 +244,7 @@
     "name": "Gibão de Peles +2",
     "type": "equipamento",
     "system": {
-      "description": "<p><strong>Gibão de Peles +2</strong> (ARM-03). Armadura Leve, CA base 11. Aprimoramento +2: soma +2 de CA mágica.</p>",
+      "description": "<p><strong>Gibão de Peles +2</strong> (ARM-03). Armadura Leve — leve o suficiente para escaramuças longas. CA base 11. Aprimoramento +2: soma +2 de CA mágica.</p>",
       "catalogId": "ARM-03-E2",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 2,
@@ -268,7 +268,7 @@
     "name": "Gibão de Peles +3",
     "type": "equipamento",
     "system": {
-      "description": "<p><strong>Gibão de Peles +3</strong> (ARM-03). Armadura Leve, CA base 11. Aprimoramento +3: soma +3 de CA mágica; pode ganhar resistência menor (Mestre).</p>",
+      "description": "<p><strong>Gibão de Peles +3</strong> (ARM-03). Armadura Leve — leve o suficiente para escaramuças longas. CA base 11. Aprimoramento +3: soma +3 de CA mágica; pode ganhar resistência menor (Mestre).</p>",
       "catalogId": "ARM-03-E3",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 3,
@@ -292,7 +292,7 @@
     "name": "Couro Batido",
     "type": "equipamento",
     "system": {
-      "description": "<p><strong>Couro Batido</strong> (ARM-04). Armadura Leve, CA base 12.</p>",
+      "description": "<p><strong>Couro Batido</strong> (ARM-04). Armadura Leve — leve o suficiente para escaramuças longas. CA base 12.</p>",
       "catalogId": "ARM-04",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 0,
@@ -316,7 +316,7 @@
     "name": "Couro Batido +1",
     "type": "equipamento",
     "system": {
-      "description": "<p><strong>Couro Batido +1</strong> (ARM-04). Armadura Leve, CA base 12. Aprimoramento +1: soma +1 de CA mágica.</p>",
+      "description": "<p><strong>Couro Batido +1</strong> (ARM-04). Armadura Leve — leve o suficiente para escaramuças longas. CA base 12. Aprimoramento +1: soma +1 de CA mágica.</p>",
       "catalogId": "ARM-04-E1",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 1,
@@ -340,7 +340,7 @@
     "name": "Couro Batido +2",
     "type": "equipamento",
     "system": {
-      "description": "<p><strong>Couro Batido +2</strong> (ARM-04). Armadura Leve, CA base 12. Aprimoramento +2: soma +2 de CA mágica.</p>",
+      "description": "<p><strong>Couro Batido +2</strong> (ARM-04). Armadura Leve — leve o suficiente para escaramuças longas. CA base 12. Aprimoramento +2: soma +2 de CA mágica.</p>",
       "catalogId": "ARM-04-E2",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 2,
@@ -364,7 +364,7 @@
     "name": "Couro Batido +3",
     "type": "equipamento",
     "system": {
-      "description": "<p><strong>Couro Batido +3</strong> (ARM-04). Armadura Leve, CA base 12. Aprimoramento +3: soma +3 de CA mágica; pode ganhar resistência menor (Mestre).</p>",
+      "description": "<p><strong>Couro Batido +3</strong> (ARM-04). Armadura Leve — leve o suficiente para escaramuças longas. CA base 12. Aprimoramento +3: soma +3 de CA mágica; pode ganhar resistência menor (Mestre).</p>",
       "catalogId": "ARM-04-E3",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 3,
@@ -388,7 +388,7 @@
     "name": "Cota de Malha",
     "type": "equipamento",
     "system": {
-      "description": "<p><strong>Cota de Malha</strong> (ARM-05). Armadura Média, CA base 13.</p>",
+      "description": "<p><strong>Cota de Malha</strong> (ARM-05). Armadura Média — equilíbrio entre mobilidade e defesa. CA base 13.</p>",
       "catalogId": "ARM-05",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 0,
@@ -412,7 +412,7 @@
     "name": "Cota de Malha +1",
     "type": "equipamento",
     "system": {
-      "description": "<p><strong>Cota de Malha +1</strong> (ARM-05). Armadura Média, CA base 13. Aprimoramento +1: soma +1 de CA mágica.</p>",
+      "description": "<p><strong>Cota de Malha +1</strong> (ARM-05). Armadura Média — equilíbrio entre mobilidade e defesa. CA base 13. Aprimoramento +1: soma +1 de CA mágica.</p>",
       "catalogId": "ARM-05-E1",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 1,
@@ -436,7 +436,7 @@
     "name": "Cota de Malha +2",
     "type": "equipamento",
     "system": {
-      "description": "<p><strong>Cota de Malha +2</strong> (ARM-05). Armadura Média, CA base 13. Aprimoramento +2: soma +2 de CA mágica.</p>",
+      "description": "<p><strong>Cota de Malha +2</strong> (ARM-05). Armadura Média — equilíbrio entre mobilidade e defesa. CA base 13. Aprimoramento +2: soma +2 de CA mágica.</p>",
       "catalogId": "ARM-05-E2",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 2,
@@ -460,7 +460,7 @@
     "name": "Cota de Malha +3",
     "type": "equipamento",
     "system": {
-      "description": "<p><strong>Cota de Malha +3</strong> (ARM-05). Armadura Média, CA base 13. Aprimoramento +3: soma +3 de CA mágica; pode ganhar resistência menor (Mestre).</p>",
+      "description": "<p><strong>Cota de Malha +3</strong> (ARM-05). Armadura Média — equilíbrio entre mobilidade e defesa. CA base 13. Aprimoramento +3: soma +3 de CA mágica; pode ganhar resistência menor (Mestre).</p>",
       "catalogId": "ARM-05-E3",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 3,
@@ -484,7 +484,7 @@
     "name": "Cota de Anéis",
     "type": "equipamento",
     "system": {
-      "description": "<p><strong>Cota de Anéis</strong> (ARM-06). Armadura Média, CA base 14.</p>",
+      "description": "<p><strong>Cota de Anéis</strong> (ARM-06). Armadura Média — equilíbrio entre mobilidade e defesa. CA base 14.</p>",
       "catalogId": "ARM-06",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 0,
@@ -508,7 +508,7 @@
     "name": "Cota de Anéis +1",
     "type": "equipamento",
     "system": {
-      "description": "<p><strong>Cota de Anéis +1</strong> (ARM-06). Armadura Média, CA base 14. Aprimoramento +1: soma +1 de CA mágica.</p>",
+      "description": "<p><strong>Cota de Anéis +1</strong> (ARM-06). Armadura Média — equilíbrio entre mobilidade e defesa. CA base 14. Aprimoramento +1: soma +1 de CA mágica.</p>",
       "catalogId": "ARM-06-E1",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 1,
@@ -532,7 +532,7 @@
     "name": "Cota de Anéis +2",
     "type": "equipamento",
     "system": {
-      "description": "<p><strong>Cota de Anéis +2</strong> (ARM-06). Armadura Média, CA base 14. Aprimoramento +2: soma +2 de CA mágica.</p>",
+      "description": "<p><strong>Cota de Anéis +2</strong> (ARM-06). Armadura Média — equilíbrio entre mobilidade e defesa. CA base 14. Aprimoramento +2: soma +2 de CA mágica.</p>",
       "catalogId": "ARM-06-E2",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 2,
@@ -556,7 +556,7 @@
     "name": "Cota de Anéis +3",
     "type": "equipamento",
     "system": {
-      "description": "<p><strong>Cota de Anéis +3</strong> (ARM-06). Armadura Média, CA base 14. Aprimoramento +3: soma +3 de CA mágica; pode ganhar resistência menor (Mestre).</p>",
+      "description": "<p><strong>Cota de Anéis +3</strong> (ARM-06). Armadura Média — equilíbrio entre mobilidade e defesa. CA base 14. Aprimoramento +3: soma +3 de CA mágica; pode ganhar resistência menor (Mestre).</p>",
       "catalogId": "ARM-06-E3",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 3,
@@ -580,7 +580,7 @@
     "name": "Meia-armadura",
     "type": "equipamento",
     "system": {
-      "description": "<p><strong>Meia-armadura</strong> (ARM-07). Armadura Média, CA base 14.</p>",
+      "description": "<p><strong>Meia-armadura</strong> (ARM-07). Armadura Média — equilíbrio entre mobilidade e defesa. CA base 14.</p>",
       "catalogId": "ARM-07",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 0,
@@ -604,7 +604,7 @@
     "name": "Meia-armadura +1",
     "type": "equipamento",
     "system": {
-      "description": "<p><strong>Meia-armadura +1</strong> (ARM-07). Armadura Média, CA base 14. Aprimoramento +1: soma +1 de CA mágica.</p>",
+      "description": "<p><strong>Meia-armadura +1</strong> (ARM-07). Armadura Média — equilíbrio entre mobilidade e defesa. CA base 14. Aprimoramento +1: soma +1 de CA mágica.</p>",
       "catalogId": "ARM-07-E1",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 1,
@@ -628,7 +628,7 @@
     "name": "Meia-armadura +2",
     "type": "equipamento",
     "system": {
-      "description": "<p><strong>Meia-armadura +2</strong> (ARM-07). Armadura Média, CA base 14. Aprimoramento +2: soma +2 de CA mágica.</p>",
+      "description": "<p><strong>Meia-armadura +2</strong> (ARM-07). Armadura Média — equilíbrio entre mobilidade e defesa. CA base 14. Aprimoramento +2: soma +2 de CA mágica.</p>",
       "catalogId": "ARM-07-E2",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 2,
@@ -652,7 +652,7 @@
     "name": "Meia-armadura +3",
     "type": "equipamento",
     "system": {
-      "description": "<p><strong>Meia-armadura +3</strong> (ARM-07). Armadura Média, CA base 14. Aprimoramento +3: soma +3 de CA mágica; pode ganhar resistência menor (Mestre).</p>",
+      "description": "<p><strong>Meia-armadura +3</strong> (ARM-07). Armadura Média — equilíbrio entre mobilidade e defesa. CA base 14. Aprimoramento +3: soma +3 de CA mágica; pode ganhar resistência menor (Mestre).</p>",
       "catalogId": "ARM-07-E3",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 3,
@@ -676,7 +676,7 @@
     "name": "Cota de Escamas",
     "type": "equipamento",
     "system": {
-      "description": "<p><strong>Cota de Escamas</strong> (ARM-08). Armadura Média, CA base 14.</p>",
+      "description": "<p><strong>Cota de Escamas</strong> (ARM-08). Armadura Média — equilíbrio entre mobilidade e defesa. CA base 14.</p>",
       "catalogId": "ARM-08",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 0,
@@ -700,7 +700,7 @@
     "name": "Cota de Escamas +1",
     "type": "equipamento",
     "system": {
-      "description": "<p><strong>Cota de Escamas +1</strong> (ARM-08). Armadura Média, CA base 14. Aprimoramento +1: soma +1 de CA mágica.</p>",
+      "description": "<p><strong>Cota de Escamas +1</strong> (ARM-08). Armadura Média — equilíbrio entre mobilidade e defesa. CA base 14. Aprimoramento +1: soma +1 de CA mágica.</p>",
       "catalogId": "ARM-08-E1",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 1,
@@ -724,7 +724,7 @@
     "name": "Cota de Escamas +2",
     "type": "equipamento",
     "system": {
-      "description": "<p><strong>Cota de Escamas +2</strong> (ARM-08). Armadura Média, CA base 14. Aprimoramento +2: soma +2 de CA mágica.</p>",
+      "description": "<p><strong>Cota de Escamas +2</strong> (ARM-08). Armadura Média — equilíbrio entre mobilidade e defesa. CA base 14. Aprimoramento +2: soma +2 de CA mágica.</p>",
       "catalogId": "ARM-08-E2",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 2,
@@ -748,7 +748,7 @@
     "name": "Cota de Escamas +3",
     "type": "equipamento",
     "system": {
-      "description": "<p><strong>Cota de Escamas +3</strong> (ARM-08). Armadura Média, CA base 14. Aprimoramento +3: soma +3 de CA mágica; pode ganhar resistência menor (Mestre).</p>",
+      "description": "<p><strong>Cota de Escamas +3</strong> (ARM-08). Armadura Média — equilíbrio entre mobilidade e defesa. CA base 14. Aprimoramento +3: soma +3 de CA mágica; pode ganhar resistência menor (Mestre).</p>",
       "catalogId": "ARM-08-E3",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 3,
@@ -772,7 +772,7 @@
     "name": "Brigandina",
     "type": "equipamento",
     "system": {
-      "description": "<p><strong>Brigandina</strong> (ARM-09). Armadura Média, CA base 14.</p>",
+      "description": "<p><strong>Brigandina</strong> (ARM-09). Armadura Média — equilíbrio entre mobilidade e defesa. CA base 14.</p>",
       "catalogId": "ARM-09",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 0,
@@ -796,7 +796,7 @@
     "name": "Brigandina +1",
     "type": "equipamento",
     "system": {
-      "description": "<p><strong>Brigandina +1</strong> (ARM-09). Armadura Média, CA base 14. Aprimoramento +1: soma +1 de CA mágica.</p>",
+      "description": "<p><strong>Brigandina +1</strong> (ARM-09). Armadura Média — equilíbrio entre mobilidade e defesa. CA base 14. Aprimoramento +1: soma +1 de CA mágica.</p>",
       "catalogId": "ARM-09-E1",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 1,
@@ -820,7 +820,7 @@
     "name": "Brigandina +2",
     "type": "equipamento",
     "system": {
-      "description": "<p><strong>Brigandina +2</strong> (ARM-09). Armadura Média, CA base 14. Aprimoramento +2: soma +2 de CA mágica.</p>",
+      "description": "<p><strong>Brigandina +2</strong> (ARM-09). Armadura Média — equilíbrio entre mobilidade e defesa. CA base 14. Aprimoramento +2: soma +2 de CA mágica.</p>",
       "catalogId": "ARM-09-E2",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 2,
@@ -844,7 +844,7 @@
     "name": "Brigandina +3",
     "type": "equipamento",
     "system": {
-      "description": "<p><strong>Brigandina +3</strong> (ARM-09). Armadura Média, CA base 14. Aprimoramento +3: soma +3 de CA mágica; pode ganhar resistência menor (Mestre).</p>",
+      "description": "<p><strong>Brigandina +3</strong> (ARM-09). Armadura Média — equilíbrio entre mobilidade e defesa. CA base 14. Aprimoramento +3: soma +3 de CA mágica; pode ganhar resistência menor (Mestre).</p>",
       "catalogId": "ARM-09-E3",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 3,
@@ -868,7 +868,7 @@
     "name": "Gibão de Placas",
     "type": "equipamento",
     "system": {
-      "description": "<p><strong>Gibão de Placas</strong> (ARM-10). Armadura Média, CA base 15.</p>",
+      "description": "<p><strong>Gibão de Placas</strong> (ARM-10). Armadura Média — equilíbrio entre mobilidade e defesa. CA base 15.</p>",
       "catalogId": "ARM-10",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 0,
@@ -892,7 +892,7 @@
     "name": "Gibão de Placas +1",
     "type": "equipamento",
     "system": {
-      "description": "<p><strong>Gibão de Placas +1</strong> (ARM-10). Armadura Média, CA base 15. Aprimoramento +1: soma +1 de CA mágica.</p>",
+      "description": "<p><strong>Gibão de Placas +1</strong> (ARM-10). Armadura Média — equilíbrio entre mobilidade e defesa. CA base 15. Aprimoramento +1: soma +1 de CA mágica.</p>",
       "catalogId": "ARM-10-E1",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 1,
@@ -916,7 +916,7 @@
     "name": "Gibão de Placas +2",
     "type": "equipamento",
     "system": {
-      "description": "<p><strong>Gibão de Placas +2</strong> (ARM-10). Armadura Média, CA base 15. Aprimoramento +2: soma +2 de CA mágica.</p>",
+      "description": "<p><strong>Gibão de Placas +2</strong> (ARM-10). Armadura Média — equilíbrio entre mobilidade e defesa. CA base 15. Aprimoramento +2: soma +2 de CA mágica.</p>",
       "catalogId": "ARM-10-E2",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 2,
@@ -940,7 +940,7 @@
     "name": "Gibão de Placas +3",
     "type": "equipamento",
     "system": {
-      "description": "<p><strong>Gibão de Placas +3</strong> (ARM-10). Armadura Média, CA base 15. Aprimoramento +3: soma +3 de CA mágica; pode ganhar resistência menor (Mestre).</p>",
+      "description": "<p><strong>Gibão de Placas +3</strong> (ARM-10). Armadura Média — equilíbrio entre mobilidade e defesa. CA base 15. Aprimoramento +3: soma +3 de CA mágica; pode ganhar resistência menor (Mestre).</p>",
       "catalogId": "ARM-10-E3",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 3,
@@ -964,7 +964,7 @@
     "name": "Placas Parciais",
     "type": "equipamento",
     "system": {
-      "description": "<p><strong>Placas Parciais</strong> (ARM-11). Armadura Pesada, CA base 15.</p>",
+      "description": "<p><strong>Placas Parciais</strong> (ARM-11). Armadura Pesada — proteção máxima, penaliza furtividade. CA base 15.</p>",
       "catalogId": "ARM-11",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 0,
@@ -988,7 +988,7 @@
     "name": "Placas Parciais +1",
     "type": "equipamento",
     "system": {
-      "description": "<p><strong>Placas Parciais +1</strong> (ARM-11). Armadura Pesada, CA base 15. Aprimoramento +1: soma +1 de CA mágica.</p>",
+      "description": "<p><strong>Placas Parciais +1</strong> (ARM-11). Armadura Pesada — proteção máxima, penaliza furtividade. CA base 15. Aprimoramento +1: soma +1 de CA mágica.</p>",
       "catalogId": "ARM-11-E1",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 1,
@@ -1012,7 +1012,7 @@
     "name": "Placas Parciais +2",
     "type": "equipamento",
     "system": {
-      "description": "<p><strong>Placas Parciais +2</strong> (ARM-11). Armadura Pesada, CA base 15. Aprimoramento +2: soma +2 de CA mágica.</p>",
+      "description": "<p><strong>Placas Parciais +2</strong> (ARM-11). Armadura Pesada — proteção máxima, penaliza furtividade. CA base 15. Aprimoramento +2: soma +2 de CA mágica.</p>",
       "catalogId": "ARM-11-E2",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 2,
@@ -1036,7 +1036,7 @@
     "name": "Placas Parciais +3",
     "type": "equipamento",
     "system": {
-      "description": "<p><strong>Placas Parciais +3</strong> (ARM-11). Armadura Pesada, CA base 15. Aprimoramento +3: soma +3 de CA mágica; pode ganhar resistência menor (Mestre).</p>",
+      "description": "<p><strong>Placas Parciais +3</strong> (ARM-11). Armadura Pesada — proteção máxima, penaliza furtividade. CA base 15. Aprimoramento +3: soma +3 de CA mágica; pode ganhar resistência menor (Mestre).</p>",
       "catalogId": "ARM-11-E3",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 3,
@@ -1060,7 +1060,7 @@
     "name": "Placas Completas",
     "type": "equipamento",
     "system": {
-      "description": "<p><strong>Placas Completas</strong> (ARM-12). Armadura Pesada, CA base 16.</p>",
+      "description": "<p><strong>Placas Completas</strong> (ARM-12). Armadura Pesada — proteção máxima, penaliza furtividade. CA base 16.</p>",
       "catalogId": "ARM-12",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 0,
@@ -1084,7 +1084,7 @@
     "name": "Placas Completas +1",
     "type": "equipamento",
     "system": {
-      "description": "<p><strong>Placas Completas +1</strong> (ARM-12). Armadura Pesada, CA base 16. Aprimoramento +1: soma +1 de CA mágica.</p>",
+      "description": "<p><strong>Placas Completas +1</strong> (ARM-12). Armadura Pesada — proteção máxima, penaliza furtividade. CA base 16. Aprimoramento +1: soma +1 de CA mágica.</p>",
       "catalogId": "ARM-12-E1",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 1,
@@ -1108,7 +1108,7 @@
     "name": "Placas Completas +2",
     "type": "equipamento",
     "system": {
-      "description": "<p><strong>Placas Completas +2</strong> (ARM-12). Armadura Pesada, CA base 16. Aprimoramento +2: soma +2 de CA mágica.</p>",
+      "description": "<p><strong>Placas Completas +2</strong> (ARM-12). Armadura Pesada — proteção máxima, penaliza furtividade. CA base 16. Aprimoramento +2: soma +2 de CA mágica.</p>",
       "catalogId": "ARM-12-E2",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 2,
@@ -1132,7 +1132,7 @@
     "name": "Placas Completas +3",
     "type": "equipamento",
     "system": {
-      "description": "<p><strong>Placas Completas +3</strong> (ARM-12). Armadura Pesada, CA base 16. Aprimoramento +3: soma +3 de CA mágica; pode ganhar resistência menor (Mestre).</p>",
+      "description": "<p><strong>Placas Completas +3</strong> (ARM-12). Armadura Pesada — proteção máxima, penaliza furtividade. CA base 16. Aprimoramento +3: soma +3 de CA mágica; pode ganhar resistência menor (Mestre).</p>",
       "catalogId": "ARM-12-E3",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 3,
@@ -1156,7 +1156,7 @@
     "name": "Cota de Malha Pesada",
     "type": "equipamento",
     "system": {
-      "description": "<p><strong>Cota de Malha Pesada</strong> (ARM-13). Armadura Pesada, CA base 16.</p>",
+      "description": "<p><strong>Cota de Malha Pesada</strong> (ARM-13). Armadura Pesada — proteção máxima, penaliza furtividade. CA base 16.</p>",
       "catalogId": "ARM-13",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 0,
@@ -1180,7 +1180,7 @@
     "name": "Cota de Malha Pesada +1",
     "type": "equipamento",
     "system": {
-      "description": "<p><strong>Cota de Malha Pesada +1</strong> (ARM-13). Armadura Pesada, CA base 16. Aprimoramento +1: soma +1 de CA mágica.</p>",
+      "description": "<p><strong>Cota de Malha Pesada +1</strong> (ARM-13). Armadura Pesada — proteção máxima, penaliza furtividade. CA base 16. Aprimoramento +1: soma +1 de CA mágica.</p>",
       "catalogId": "ARM-13-E1",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 1,
@@ -1204,7 +1204,7 @@
     "name": "Cota de Malha Pesada +2",
     "type": "equipamento",
     "system": {
-      "description": "<p><strong>Cota de Malha Pesada +2</strong> (ARM-13). Armadura Pesada, CA base 16. Aprimoramento +2: soma +2 de CA mágica.</p>",
+      "description": "<p><strong>Cota de Malha Pesada +2</strong> (ARM-13). Armadura Pesada — proteção máxima, penaliza furtividade. CA base 16. Aprimoramento +2: soma +2 de CA mágica.</p>",
       "catalogId": "ARM-13-E2",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 2,
@@ -1228,7 +1228,7 @@
     "name": "Cota de Malha Pesada +3",
     "type": "equipamento",
     "system": {
-      "description": "<p><strong>Cota de Malha Pesada +3</strong> (ARM-13). Armadura Pesada, CA base 16. Aprimoramento +3: soma +3 de CA mágica; pode ganhar resistência menor (Mestre).</p>",
+      "description": "<p><strong>Cota de Malha Pesada +3</strong> (ARM-13). Armadura Pesada — proteção máxima, penaliza furtividade. CA base 16. Aprimoramento +3: soma +3 de CA mágica; pode ganhar resistência menor (Mestre).</p>",
       "catalogId": "ARM-13-E3",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 3,
@@ -1252,7 +1252,7 @@
     "name": "Escamas de Dragonete",
     "type": "equipamento",
     "system": {
-      "description": "<p><strong>Escamas de Dragonete</strong> (ARM-14). Armadura Orgânica, CA base 14. Resistência narrativa a petrificação..</p>",
+      "description": "<p><strong>Escamas de Dragonete</strong> (ARM-14). Armadura Orgânica — placas vivas ou quitina, adapta-se ao bioma. CA base 14. Resistência narrativa a petrificação..</p>",
       "catalogId": "ARM-14",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 0,
@@ -1282,7 +1282,7 @@
     "name": "Escamas de Dragonete +1",
     "type": "equipamento",
     "system": {
-      "description": "<p><strong>Escamas de Dragonete +1</strong> (ARM-14). Armadura Orgânica, CA base 14. Aprimoramento +1: soma +1 de CA mágica.</p>",
+      "description": "<p><strong>Escamas de Dragonete +1</strong> (ARM-14). Armadura Orgânica — placas vivas ou quitina, adapta-se ao bioma. CA base 14. Aprimoramento +1: soma +1 de CA mágica.</p>",
       "catalogId": "ARM-14-E1",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 1,
@@ -1306,7 +1306,7 @@
     "name": "Escamas de Dragonete +2",
     "type": "equipamento",
     "system": {
-      "description": "<p><strong>Escamas de Dragonete +2</strong> (ARM-14). Armadura Orgânica, CA base 14. Aprimoramento +2: soma +2 de CA mágica.</p>",
+      "description": "<p><strong>Escamas de Dragonete +2</strong> (ARM-14). Armadura Orgânica — placas vivas ou quitina, adapta-se ao bioma. CA base 14. Aprimoramento +2: soma +2 de CA mágica.</p>",
       "catalogId": "ARM-14-E2",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 2,
@@ -1330,7 +1330,7 @@
     "name": "Escamas de Dragonete +3",
     "type": "equipamento",
     "system": {
-      "description": "<p><strong>Escamas de Dragonete +3</strong> (ARM-14). Armadura Orgânica, CA base 14. Aprimoramento +3: soma +3 de CA mágica; pode ganhar resistência menor (Mestre).</p>",
+      "description": "<p><strong>Escamas de Dragonete +3</strong> (ARM-14). Armadura Orgânica — placas vivas ou quitina, adapta-se ao bioma. CA base 14. Aprimoramento +3: soma +3 de CA mágica; pode ganhar resistência menor (Mestre).</p>",
       "catalogId": "ARM-14-E3",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 3,
@@ -1354,7 +1354,7 @@
     "name": "Couro de Troll",
     "type": "equipamento",
     "system": {
-      "description": "<p><strong>Couro de Troll</strong> (ARM-15). Armadura Orgânica, CA base 13. Regenera 1 CA em descansó curto (Mestre)..</p>",
+      "description": "<p><strong>Couro de Troll</strong> (ARM-15). Armadura Orgânica — placas vivas ou quitina, adapta-se ao bioma. CA base 13. Regenera 1 CA em descansó curto (Mestre)..</p>",
       "catalogId": "ARM-15",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 0,
@@ -1384,7 +1384,7 @@
     "name": "Couro de Troll +1",
     "type": "equipamento",
     "system": {
-      "description": "<p><strong>Couro de Troll +1</strong> (ARM-15). Armadura Orgânica, CA base 13. Aprimoramento +1: soma +1 de CA mágica.</p>",
+      "description": "<p><strong>Couro de Troll +1</strong> (ARM-15). Armadura Orgânica — placas vivas ou quitina, adapta-se ao bioma. CA base 13. Aprimoramento +1: soma +1 de CA mágica.</p>",
       "catalogId": "ARM-15-E1",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 1,
@@ -1408,7 +1408,7 @@
     "name": "Couro de Troll +2",
     "type": "equipamento",
     "system": {
-      "description": "<p><strong>Couro de Troll +2</strong> (ARM-15). Armadura Orgânica, CA base 13. Aprimoramento +2: soma +2 de CA mágica.</p>",
+      "description": "<p><strong>Couro de Troll +2</strong> (ARM-15). Armadura Orgânica — placas vivas ou quitina, adapta-se ao bioma. CA base 13. Aprimoramento +2: soma +2 de CA mágica.</p>",
       "catalogId": "ARM-15-E2",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 2,
@@ -1432,7 +1432,7 @@
     "name": "Couro de Troll +3",
     "type": "equipamento",
     "system": {
-      "description": "<p><strong>Couro de Troll +3</strong> (ARM-15). Armadura Orgânica, CA base 13. Aprimoramento +3: soma +3 de CA mágica; pode ganhar resistência menor (Mestre).</p>",
+      "description": "<p><strong>Couro de Troll +3</strong> (ARM-15). Armadura Orgânica — placas vivas ou quitina, adapta-se ao bioma. CA base 13. Aprimoramento +3: soma +3 de CA mágica; pode ganhar resistência menor (Mestre).</p>",
       "catalogId": "ARM-15-E3",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 3,
@@ -1456,7 +1456,7 @@
     "name": "Carapaça de Escorpião",
     "type": "equipamento",
     "system": {
-      "description": "<p><strong>Carapaça de Escorpião</strong> (ARM-16). Armadura Orgânica, CA base 17. Resistência a perfurante (Mestre)..</p>",
+      "description": "<p><strong>Carapaça de Escorpião</strong> (ARM-16). Armadura Orgânica — placas vivas ou quitina, adapta-se ao bioma. CA base 17. Resistência a perfurante (Mestre)..</p>",
       "catalogId": "ARM-16",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 0,
@@ -1486,7 +1486,7 @@
     "name": "Carapaça de Escorpião +1",
     "type": "equipamento",
     "system": {
-      "description": "<p><strong>Carapaça de Escorpião +1</strong> (ARM-16). Armadura Orgânica, CA base 17. Aprimoramento +1: soma +1 de CA mágica.</p>",
+      "description": "<p><strong>Carapaça de Escorpião +1</strong> (ARM-16). Armadura Orgânica — placas vivas ou quitina, adapta-se ao bioma. CA base 17. Aprimoramento +1: soma +1 de CA mágica.</p>",
       "catalogId": "ARM-16-E1",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 1,
@@ -1510,7 +1510,7 @@
     "name": "Carapaça de Escorpião +2",
     "type": "equipamento",
     "system": {
-      "description": "<p><strong>Carapaça de Escorpião +2</strong> (ARM-16). Armadura Orgânica, CA base 17. Aprimoramento +2: soma +2 de CA mágica.</p>",
+      "description": "<p><strong>Carapaça de Escorpião +2</strong> (ARM-16). Armadura Orgânica — placas vivas ou quitina, adapta-se ao bioma. CA base 17. Aprimoramento +2: soma +2 de CA mágica.</p>",
       "catalogId": "ARM-16-E2",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 2,
@@ -1534,7 +1534,7 @@
     "name": "Carapaça de Escorpião +3",
     "type": "equipamento",
     "system": {
-      "description": "<p><strong>Carapaça de Escorpião +3</strong> (ARM-16). Armadura Orgânica, CA base 17. Aprimoramento +3: soma +3 de CA mágica; pode ganhar resistência menor (Mestre).</p>",
+      "description": "<p><strong>Carapaça de Escorpião +3</strong> (ARM-16). Armadura Orgânica — placas vivas ou quitina, adapta-se ao bioma. CA base 17. Aprimoramento +3: soma +3 de CA mágica; pode ganhar resistência menor (Mestre).</p>",
       "catalogId": "ARM-16-E3",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 3,
@@ -1558,7 +1558,7 @@
     "name": "Cota de Basilisco",
     "type": "equipamento",
     "system": {
-      "description": "<p><strong>Cota de Basilisco</strong> (ARM-17). Armadura Orgânica, CA base 16.</p>",
+      "description": "<p><strong>Cota de Basilisco</strong> (ARM-17). Armadura Orgânica — placas vivas ou quitina, adapta-se ao bioma. CA base 16.</p>",
       "catalogId": "ARM-17",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 0,
@@ -1582,7 +1582,7 @@
     "name": "Cota de Basilisco +1",
     "type": "equipamento",
     "system": {
-      "description": "<p><strong>Cota de Basilisco +1</strong> (ARM-17). Armadura Orgânica, CA base 16. Aprimoramento +1: soma +1 de CA mágica.</p>",
+      "description": "<p><strong>Cota de Basilisco +1</strong> (ARM-17). Armadura Orgânica — placas vivas ou quitina, adapta-se ao bioma. CA base 16. Aprimoramento +1: soma +1 de CA mágica.</p>",
       "catalogId": "ARM-17-E1",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 1,
@@ -1606,7 +1606,7 @@
     "name": "Cota de Basilisco +2",
     "type": "equipamento",
     "system": {
-      "description": "<p><strong>Cota de Basilisco +2</strong> (ARM-17). Armadura Orgânica, CA base 16. Aprimoramento +2: soma +2 de CA mágica.</p>",
+      "description": "<p><strong>Cota de Basilisco +2</strong> (ARM-17). Armadura Orgânica — placas vivas ou quitina, adapta-se ao bioma. CA base 16. Aprimoramento +2: soma +2 de CA mágica.</p>",
       "catalogId": "ARM-17-E2",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 2,
@@ -1630,7 +1630,7 @@
     "name": "Cota de Basilisco +3",
     "type": "equipamento",
     "system": {
-      "description": "<p><strong>Cota de Basilisco +3</strong> (ARM-17). Armadura Orgânica, CA base 16. Aprimoramento +3: soma +3 de CA mágica; pode ganhar resistência menor (Mestre).</p>",
+      "description": "<p><strong>Cota de Basilisco +3</strong> (ARM-17). Armadura Orgânica — placas vivas ou quitina, adapta-se ao bioma. CA base 16. Aprimoramento +3: soma +3 de CA mágica; pode ganhar resistência menor (Mestre).</p>",
       "catalogId": "ARM-17-E3",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 3,
@@ -1654,7 +1654,7 @@
     "name": "Placas de Golem",
     "type": "equipamento",
     "system": {
-      "description": "<p><strong>Placas de Golem</strong> (ARM-18). Armadura Orgânica, CA base 17.</p>",
+      "description": "<p><strong>Placas de Golem</strong> (ARM-18). Armadura Orgânica — placas vivas ou quitina, adapta-se ao bioma. CA base 17.</p>",
       "catalogId": "ARM-18",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 0,
@@ -1678,7 +1678,7 @@
     "name": "Placas de Golem +1",
     "type": "equipamento",
     "system": {
-      "description": "<p><strong>Placas de Golem +1</strong> (ARM-18). Armadura Orgânica, CA base 17. Aprimoramento +1: soma +1 de CA mágica.</p>",
+      "description": "<p><strong>Placas de Golem +1</strong> (ARM-18). Armadura Orgânica — placas vivas ou quitina, adapta-se ao bioma. CA base 17. Aprimoramento +1: soma +1 de CA mágica.</p>",
       "catalogId": "ARM-18-E1",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 1,
@@ -1702,7 +1702,7 @@
     "name": "Placas de Golem +2",
     "type": "equipamento",
     "system": {
-      "description": "<p><strong>Placas de Golem +2</strong> (ARM-18). Armadura Orgânica, CA base 17. Aprimoramento +2: soma +2 de CA mágica.</p>",
+      "description": "<p><strong>Placas de Golem +2</strong> (ARM-18). Armadura Orgânica — placas vivas ou quitina, adapta-se ao bioma. CA base 17. Aprimoramento +2: soma +2 de CA mágica.</p>",
       "catalogId": "ARM-18-E2",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 2,
@@ -1726,7 +1726,7 @@
     "name": "Placas de Golem +3",
     "type": "equipamento",
     "system": {
-      "description": "<p><strong>Placas de Golem +3</strong> (ARM-18). Armadura Orgânica, CA base 17. Aprimoramento +3: soma +3 de CA mágica; pode ganhar resistência menor (Mestre).</p>",
+      "description": "<p><strong>Placas de Golem +3</strong> (ARM-18). Armadura Orgânica — placas vivas ou quitina, adapta-se ao bioma. CA base 17. Aprimoramento +3: soma +3 de CA mágica; pode ganhar resistência menor (Mestre).</p>",
       "catalogId": "ARM-18-E3",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 3,
@@ -1750,7 +1750,7 @@
     "name": "Manto de Grimwald",
     "type": "equipamento",
     "system": {
-      "description": "<p><strong>Manto de Grimwald</strong> (ARM-19). Armadura Leve, CA base 11.</p>",
+      "description": "<p><strong>Manto de Grimwald</strong> (ARM-19). Armadura Leve — leve o suficiente para escaramuças longas. CA base 11.</p>",
       "catalogId": "ARM-19",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 0,
@@ -1774,7 +1774,7 @@
     "name": "Manto de Grimwald +1",
     "type": "equipamento",
     "system": {
-      "description": "<p><strong>Manto de Grimwald +1</strong> (ARM-19). Armadura Leve, CA base 11. Aprimoramento +1: soma +1 de CA mágica.</p>",
+      "description": "<p><strong>Manto de Grimwald +1</strong> (ARM-19). Armadura Leve — leve o suficiente para escaramuças longas. CA base 11. Aprimoramento +1: soma +1 de CA mágica.</p>",
       "catalogId": "ARM-19-E1",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 1,
@@ -1798,7 +1798,7 @@
     "name": "Manto de Grimwald +2",
     "type": "equipamento",
     "system": {
-      "description": "<p><strong>Manto de Grimwald +2</strong> (ARM-19). Armadura Leve, CA base 11. Aprimoramento +2: soma +2 de CA mágica.</p>",
+      "description": "<p><strong>Manto de Grimwald +2</strong> (ARM-19). Armadura Leve — leve o suficiente para escaramuças longas. CA base 11. Aprimoramento +2: soma +2 de CA mágica.</p>",
       "catalogId": "ARM-19-E2",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 2,
@@ -1822,7 +1822,7 @@
     "name": "Manto de Grimwald +3",
     "type": "equipamento",
     "system": {
-      "description": "<p><strong>Manto de Grimwald +3</strong> (ARM-19). Armadura Leve, CA base 11. Aprimoramento +3: soma +3 de CA mágica; pode ganhar resistência menor (Mestre).</p>",
+      "description": "<p><strong>Manto de Grimwald +3</strong> (ARM-19). Armadura Leve — leve o suficiente para escaramuças longas. CA base 11. Aprimoramento +3: soma +3 de CA mágica; pode ganhar resistência menor (Mestre).</p>",
       "catalogId": "ARM-19-E3",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 3,
@@ -1846,7 +1846,7 @@
     "name": "Arnês de Valdrun",
     "type": "equipamento",
     "system": {
-      "description": "<p><strong>Arnês de Valdrun</strong> (ARM-20). Armadura Média, CA base 14.</p>",
+      "description": "<p><strong>Arnês de Valdrun</strong> (ARM-20). Armadura Média — equilíbrio entre mobilidade e defesa. CA base 14.</p>",
       "catalogId": "ARM-20",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 0,
@@ -1870,7 +1870,7 @@
     "name": "Arnês de Valdrun +1",
     "type": "equipamento",
     "system": {
-      "description": "<p><strong>Arnês de Valdrun +1</strong> (ARM-20). Armadura Média, CA base 14. Aprimoramento +1: soma +1 de CA mágica.</p>",
+      "description": "<p><strong>Arnês de Valdrun +1</strong> (ARM-20). Armadura Média — equilíbrio entre mobilidade e defesa. CA base 14. Aprimoramento +1: soma +1 de CA mágica.</p>",
       "catalogId": "ARM-20-E1",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 1,
@@ -1894,7 +1894,7 @@
     "name": "Arnês de Valdrun +2",
     "type": "equipamento",
     "system": {
-      "description": "<p><strong>Arnês de Valdrun +2</strong> (ARM-20). Armadura Média, CA base 14. Aprimoramento +2: soma +2 de CA mágica.</p>",
+      "description": "<p><strong>Arnês de Valdrun +2</strong> (ARM-20). Armadura Média — equilíbrio entre mobilidade e defesa. CA base 14. Aprimoramento +2: soma +2 de CA mágica.</p>",
       "catalogId": "ARM-20-E2",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 2,
@@ -1918,7 +1918,7 @@
     "name": "Arnês de Valdrun +3",
     "type": "equipamento",
     "system": {
-      "description": "<p><strong>Arnês de Valdrun +3</strong> (ARM-20). Armadura Média, CA base 14. Aprimoramento +3: soma +3 de CA mágica; pode ganhar resistência menor (Mestre).</p>",
+      "description": "<p><strong>Arnês de Valdrun +3</strong> (ARM-20). Armadura Média — equilíbrio entre mobilidade e defesa. CA base 14. Aprimoramento +3: soma +3 de CA mágica; pode ganhar resistência menor (Mestre).</p>",
       "catalogId": "ARM-20-E3",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 3,
@@ -2506,7 +2506,8 @@
     "name": "Kit de Trinchar",
     "type": "equipamento",
     "system": {
-      "description": "<p>Kit de Trinchar</p>",
+      "description": "<p><strong>Kit de Trinchar</strong>. Ferramentas para desmontar carcaças e extrair componentes com segurança.</p>",
+      "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "catalogId": "UTL-kit-de-trinchar",
       "gear": {
         "peso": 2,
@@ -2519,7 +2520,8 @@
     "name": "Tocha de Masmorra",
     "type": "equipamento",
     "system": {
-      "description": "<p>Tocha de Masmorra</p>",
+      "description": "<p><strong>Tocha de Masmorra</strong>. Ilumina 6 m; 1 h de luz estável em corredores úmidos.</p>",
+      "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "catalogId": "UTL-tocha-de-masmorra",
       "gear": {
         "peso": 2,
@@ -2532,7 +2534,8 @@
     "name": "Corda de Seda de Aranha",
     "type": "equipamento",
     "system": {
-      "description": "<p>Corda de Seda de Aranha</p>",
+      "description": "<p><strong>Corda de Seda de Aranha</strong>. Resiste a ácido leve; ideal para rapel e amarras silenciosas.</p>",
+      "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "catalogId": "UTL-corda-de-seda-de-aranha",
       "gear": {
         "peso": 2,
@@ -2545,7 +2548,8 @@
     "name": "Kit de Brasas Mágicas (6)",
     "type": "equipamento",
     "system": {
-      "description": "<p>Kit de Brasas Mágicas (6)</p>",
+      "description": "<p><strong>Kit de Brasas Mágicas (6)</strong>. Brasas que acendem sem fumaça — útil onde fogo aberto é perigoso.</p>",
+      "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "catalogId": "UTL-kit-de-brasas-magicas",
       "gear": {
         "peso": 2,
@@ -2558,7 +2562,8 @@
     "name": "Forja Portátil do Artífice",
     "type": "equipamento",
     "system": {
-      "description": "<p>Forja Portátil do Artífice</p>",
+      "description": "<p><strong>Forja Portátil do Artífice</strong>. Kit compacto para reparos e aprimoramentos em campo.</p>",
+      "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "catalogId": "UTL-forja-portatil-do-artifice",
       "gear": {
         "peso": 2,

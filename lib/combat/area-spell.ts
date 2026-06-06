@@ -23,6 +23,10 @@ export type SpellAreaShape = AreaShape;
 
 export { areaNeedsDirection };
 
+export function isAreaSpellAction(action: CombatActionOption): boolean {
+  return Boolean(action.areaShape && action.areaShape !== "single");
+}
+
 export function parseAreaShape(raw: string | undefined): SpellAreaShape {
   if (
     raw === "burst" ||
