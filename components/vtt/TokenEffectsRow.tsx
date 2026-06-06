@@ -3,6 +3,7 @@
 import type { BattleToken } from "@/lib/vtt/types";
 import { listTokenEffectChips } from "@/lib/vtt/token-effects";
 import { TokenEffectIcon } from "@/components/vtt/TokenEffectIcon";
+import { effectTipAttrs } from "@/components/vtt/EffectHoverTip";
 
 type Props = {
   token: BattleToken;
@@ -34,14 +35,16 @@ export function TokenEffectsRow({
         <span
           key={chip.id}
           role="listitem"
-          className={`vtt-effect-chip vtt-effect-chip--${chip.kind}${variant === "compact" ? " vtt-effect-chip--icon" : ""}`}
+          {...effectTipAttrs(
+            chip.title,
+            `vtt-effect-chip vtt-effect-chip--${chip.kind}${variant === "compact" ? " vtt-effect-chip--icon" : ""}`
+          )}
           style={
             {
               "--chip-bg": chip.bg,
               "--chip-fg": chip.color,
             } as React.CSSProperties
           }
-          title={chip.title}
           aria-label={chip.title}
         >
           <span className="vtt-effect-chip-icon-wrap">

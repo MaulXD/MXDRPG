@@ -1,5 +1,7 @@
 import type { TokenCondition } from "@/lib/combat/conditions";
 import { toggleTokenCondition, tokenConditions } from "@/lib/combat/conditions";
+import { ABILITY_BUFF_DURATIONS } from "@/lib/combat/buff-durations";
+import type { AbilityEffect } from "@/lib/combat/types";
 import type { BattleToken } from "@/lib/vtt/types";
 
 export type TimedEffectKind = "buff" | "debuff" | "condition";
@@ -322,29 +324,59 @@ export function formatExpiredNotice(fx: TimedEffect, tokenName: string): string 
   return `${tokenName}: ${fx.label} expirou.`;
 }
 
+function chargeBuffLabel(effect: AbilityEffect | undefined): string {
+  if (effect === "wild_shape") return "Forma selvagem";
+  if (effect === "shadow_step") return "Passo das sombras";
+  return "Investida";
+}
+
+function chargeBuffFields(token: BattleToken): (keyof BattleToken)[] {
+  const fields: (keyof BattleToken)[] = ["chargeReady"];
+  if (token.chargeNote?.trim()) fields.push("chargeNote");
+  return fields;
+}
+
 /** Após aplicar `attackerUpdate` / `defenderUpdate`, registra contadores automáticos. */
 export function enrichBuffsWithTimedEffects(
   token: BattleToken,
   updates: Partial<BattleToken>,
-  abilityEffect: string | undefined,
+  abilityEffect: AbilityEffect | string | undefined,
   ctx: CombatTickContext
 ): BattleToken {
   let next: BattleToken = { ...token, ...updates };
+  const effect = abilityEffect as AbilityEffect | undefined;
 
-  if (abilityEffect === "defense_buff" && (next.defesaBonus ?? 0) > 0) {
+  if (effect === "defense_buff" && (next.defesaBonus ?? 0) > 0) {
     next = attachDefenseBuffDuration(next, next.defesaBuffSource ?? "Postura", ctx);
   }
-  if (abilityEffect === "ranged_advantage" && next.rangedAttackAdvantage) {
+  if (effect === "ranged_advantage" && next.rangedAttackAdvantage) {
     next = attachTurnLimitedBuff(next, "Tiro certeiro", ["rangedAttackAdvantage"], 1, ctx);
   }
   if (next.nextAttackBonus) {
     next = attachTurnLimitedBuff(next, "Golpe preparado", ["nextAttackBonus"], 1, ctx);
   }
-  if (next.chargeReady && abilityEffect === "wild_shape") {
-    next = attachTurnLimitedBuff(next, "Forma selvagem", ["chargeReady", "chargeNote"], 1, ctx);
+  if (next.chargeReady) {
+    next = attachTurnLimitedBuff(
+      next,
+      chargeBuffLabel(effect),
+      chargeBuffFields(next),
+      1,
+      ctx
+    );
+  }
+  if (next.reactionShiftReady) {
+    next = attachTurnLimitedBuff(next, "Reflexos", ["reactionShiftReady"], 1, ctx);
   }
   if (next.allyAttackAdvantage) {
     next = attachTurnLimitedBuff(next, "Inspiração", ["allyAttackAdvantage"], 1, ctx);
+  }
+  if (next.bonusDamageFormula?.trim()) {
+    const label = effect && ABILITY_BUFF_DURATIONS[effect]?.label ? "Canalização" : "Dano extra";
+    next = attachTurnLimitedBuff(next, label, ["bonusDamageFormula"], 1, ctx);
+  }
+  if (next.attackMark) {
+    const label = next.attackMark.attackerDisadvantage ? "Finta" : "Marca";
+    next = attachTurnLimitedBuff(next, label, ["attackMark"], 1, ctx);
   }
 
   return next;
