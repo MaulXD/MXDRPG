@@ -53,4 +53,6 @@ export type CombatFxState = {
   areaTargets?: CombatFxTargetBurst[];
   cascadeIndex?: number;
   cascadeTotal?: number;
+  /** IDs de mensagens do chat vinculadas a esta animação (revelação em fases). */
+  chatMessageIds?: string[];
 };

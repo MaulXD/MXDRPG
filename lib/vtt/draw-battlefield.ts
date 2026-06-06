@@ -133,7 +133,7 @@ export function drawHexGridLayer(ctx: CanvasRenderingContext2D, p: GridDrawParam
     const { x, y } = axialToPixel(cell.q, cell.r, hexSize, ox, oy);
     let fill = pal.fill;
     let stroke = pal.stroke;
-    let lineWidth = 1.5;
+    let lineWidth = 1;
 
     if (p.showMovement && p.walkSet.has(key) && !p.paidWalkSet.has(key)) {
       if (p.turnMovePreview) {
@@ -209,7 +209,7 @@ export function drawHexGridLayer(ctx: CanvasRenderingContext2D, p: GridDrawParam
 
     if (isMoveHighlight && fill !== pal.fill) {
       ctx.strokeStyle = "rgba(0, 0, 0, 0.72)";
-      ctx.lineWidth = lineWidth + 2.5;
+      ctx.lineWidth = lineWidth + 1.5;
       ctx.stroke();
     }
 

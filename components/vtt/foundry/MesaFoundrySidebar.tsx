@@ -6,8 +6,8 @@ import { MesaIconBar } from "@/components/vtt/foundry/MesaIconBar";
 
 type Props = {
   isActive: (id: MesaWindowId) => boolean;
-  onToggle: (id: MesaWindowId) => void;
-  onOpenPopup?: (id: MesaWindowId) => void;
+  onOpenDock: (id: MesaWindowId) => void;
+  onOpenPopup: (id: MesaWindowId) => void;
   showGm?: boolean;
   showInvite?: boolean;
   dockOpen: boolean;
@@ -16,7 +16,7 @@ type Props = {
 
 export function MesaFoundrySidebar({
   isActive,
-  onToggle,
+  onOpenDock,
   onOpenPopup,
   showGm = false,
   showInvite = false,
@@ -30,7 +30,7 @@ export function MesaFoundrySidebar({
     >
       <MesaIconBar
         isActive={isActive}
-        onToggle={onToggle}
+        onOpenDock={onOpenDock}
         onOpenPopup={onOpenPopup}
         showGm={showGm}
         showInvite={showInvite}

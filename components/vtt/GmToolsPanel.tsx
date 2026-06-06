@@ -3,9 +3,11 @@
 import type { BattleScene } from "@/lib/vtt/types";
 import type { Axial } from "@/lib/vtt/hex-math";
 import type { RoomSnapshot } from "@/lib/room/types";
+import { GmActionHistoryPanel } from "@/components/vtt/GmActionHistoryPanel";
 import { GmActorProgressPanel } from "@/components/vtt/GmActorProgressPanel";
 import { GmCreationsPanel } from "@/components/vtt/GmCreationsPanel";
 import { RoomSettingsPanel } from "@/components/vtt/RoomSettingsPanel";
+import type { CombatUndoEntry } from "@/lib/room/types";
 
 type Props = {
   roomId: string;
@@ -14,6 +16,7 @@ type Props = {
   inviteCode?: string | null;
   roomActors: RoomSnapshot["actors"];
   spawnAxial: Axial | null;
+  combatUndo?: CombatUndoEntry[];
   onSceneUpdated: (snap: RoomSnapshot) => void;
 };
 
@@ -25,6 +28,7 @@ export function GmToolsPanel({
   inviteCode = null,
   roomActors,
   spawnAxial,
+  combatUndo = [],
   onSceneUpdated,
 }: Props) {
   return (
@@ -48,6 +52,12 @@ export function GmToolsPanel({
       />
 
       <GmActorProgressPanel roomId={roomId} roomActors={roomActors} onUpdated={onSceneUpdated} />
+
+      <GmActionHistoryPanel
+        roomId={roomId}
+        combatUndo={combatUndo}
+        onUpdated={onSceneUpdated}
+      />
 
       <GmCreationsPanel
         roomId={roomId}

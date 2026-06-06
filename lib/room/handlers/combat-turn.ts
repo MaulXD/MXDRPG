@@ -14,6 +14,7 @@ import {
   startTurnPaFull,
 } from "@/lib/combat/pa-turn";
 import type { BattleToken } from "@/lib/vtt/types";
+import { isMonsterToken } from "../settings";
 import { activeTokenId, nextTurn, rollInitiative } from "../combat";
 import { applyGmCombatOrder } from "../combat-gm";
 import {
@@ -128,7 +129,12 @@ function bankEndingToken(room: RoomState, notices: string[]): void {
   tokens[idx] = ended;
   room.scene = { ...room.scene, tokens };
 
-  if (bankPlan && bankPlan.remaining > 0 && bankPlan.saved > 0) {
+  if (
+    !isMonsterToken(before) &&
+    bankPlan &&
+    bankPlan.remaining > 0 &&
+    bankPlan.saved > 0
+  ) {
     const savedLabel = bankPlan.saved === 1 ? "1 PA" : `${bankPlan.saved} PA`;
     notices.push(`${before.name}: ${savedLabel} guardados para o próximo turno.`);
   }

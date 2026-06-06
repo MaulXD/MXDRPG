@@ -337,16 +337,12 @@
 }
 
 .token-action-ring__detail {
-  position: absolute;
-  left: 50%;
-  top: calc(50% + var(--tar-detail-offset, 140px));
-  transform: translateX(-50%);
   pointer-events: auto;
   width: min(420px, 94vw);
   max-height: none;
   overflow: visible;
   padding: 0.9rem 1.05rem;
-  z-index: 4;
+  z-index: 242;
   border-radius: 12px;
   border: 2px solid color-mix(in srgb, var(--accent-primary, #c9a962) 55%, transparent);
   background: linear-gradient(
@@ -357,7 +353,17 @@
   box-shadow:
     0 14px 36px rgba(0, 0, 0, 0.55),
     inset 0 1px 0 rgba(255, 255, 255, 0.06);
-  animation: tar-detail-in 0.2s var(--ease-out) both;
+}
+
+.token-action-ring__detail--cursor {
+  position: fixed;
+  transform: translateY(-50%);
+  animation: tar-detail-in-right 0.2s var(--ease-out) both;
+}
+
+.token-action-ring__detail--cursor-left {
+  animation-name: tar-detail-in-left;
+  transform: translate(-100%, -50%);
 }
 
 .token-action-ring__detail--hint {
@@ -401,14 +407,25 @@
   margin-top: 0.35rem;
 }
 
-@keyframes tar-detail-in {
+@keyframes tar-detail-in-right {
   from {
     opacity: 0;
-    transform: translateX(-50%) translateY(6px);
+    transform: translateY(-50%) translateX(-6px);
   }
   to {
     opacity: 1;
-    transform: translateX(-50%) translateY(0);
+    transform: translateY(-50%) translateX(0);
+  }
+}
+
+@keyframes tar-detail-in-left {
+  from {
+    opacity: 0;
+    transform: translate(-100%, -50%) translateX(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-100%, -50%) translateX(0);
   }
 }
 

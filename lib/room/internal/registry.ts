@@ -64,7 +64,12 @@ function shouldPersistToDb(roomId: string): boolean {
   return dbRooms.dbEnabled() && roomId !== "demo";
 }
 
-const DEMO_ACTOR_IDS = ["pc-aventureiro", "pc-aventureira-maga", "pc-bardo-suporte"] as const;
+const DEMO_ACTOR_IDS = [
+  "pc-thrain-ferroescudo",
+  "pc-lyanna-umbral",
+  "pc-maelis-purificador",
+  "pc-pippin-sussurro",
+] as const;
 
 function mergeDemoSceneTokens(room: RoomState, freshScene: RoomState["scene"]): void {
   const existingIds = new Set(room.scene.tokens.map((t) => t.id));
@@ -184,6 +189,8 @@ export async function getRoom(roomId: string): Promise<RoomState | null> {
   if (room) refreshDemoActorsIfStale(room);
   if (room && !room.combat) {
     room.combat = emptyCombat(room.scene.tokens);
+  }
+  if (room?.combat?.order.length) {
     ensureCombatActiveHasPa(room);
   }
   if (room && !room.chat?.length) {

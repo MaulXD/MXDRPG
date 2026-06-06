@@ -65,7 +65,7 @@ export function drawAttackableHint(
 
 type PreviewLine = { text: string; font: string; color: string };
 
-/** Painel de chance / vantagem centralizado no token mirado. */
+/** Painel de chance / vantagem acima do token mirado. */
 export function drawTargetCombatPreviewLabel(
   ctx: CanvasRenderingContext2D,
   x: number,
@@ -135,7 +135,8 @@ export function drawTargetCombatPreviewLabel(
   const boxW = maxW + padX * 2;
   const boxH = padY * 2 + lines.length * lineH;
   const boxX = x - boxW / 2;
-  const boxY = y - boxH / 2;
+  const gap = 6;
+  const boxY = y - r - gap - boxH;
 
   ctx.fillStyle = "rgba(8, 10, 12, 0.88)";
   ctx.strokeStyle = accentBorder;

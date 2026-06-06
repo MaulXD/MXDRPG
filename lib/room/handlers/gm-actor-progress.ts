@@ -4,6 +4,8 @@ import { saveCharacter } from "@/lib/character/characters";
 import { MAX_LEVEL, xpTotalForLevel } from "@/lib/character/xp";
 import { canManageRoom } from "@/lib/auth/room-access";
 import type { SessionUser } from "@/lib/auth/types";
+import { syncCombatOrderWithTokens } from "../combat-order";
+import { syncLinkedTokens } from "../sync";
 import { appendRoomChatMessage } from "./chat";
 import { persistActorToAdventureSheet } from "../adventure-actors";
 import { getRoom, persistRoom, toSnapshot } from "../internal/registry";
@@ -11,7 +13,8 @@ import type { RoomActor, RoomSnapshot } from "../types";
 
 export type GmActorProgressAction =
   | { action: "grant-xp"; actorId: string; amount: number }
-  | { action: "set-level"; actorId: string; level: number };
+  | { action: "set-level"; actorId: string; level: number }
+  | { action: "set-hp"; actorId: string; value: number; max?: number };
 
 function assertGm(
   room: NonNullable<Awaited<ReturnType<typeof getRoom>>>,
@@ -19,7 +22,7 @@ function assertGm(
 ): string | null {
   if (room.roomId === "demo") return null;
   if (!user) return "Faça login";
-  if (!canManageRoom(room, user)) return "Só o mestre pode ajustar XP e nível";
+  if (!canManageRoom(room, user)) return "Só o mestre pode ajustar XP, nível e vida";
   return null;
 }
 
@@ -120,11 +123,40 @@ export async function executeGmActorProgress(
       });
       break;
     }
+    case "set-hp": {
+      const value = Math.floor(Number(body.value));
+      if (!Number.isFinite(value) || value < 0) {
+        return { ok: false, error: "Informe uma vida válida (0 ou mais)" };
+      }
+      const maxRaw = body.max != null ? Math.floor(Number(body.max)) : current.resources.vida.max;
+      if (!Number.isFinite(maxRaw) || maxRaw < 1) {
+        return { ok: false, error: "Vida máxima deve ser pelo menos 1" };
+      }
+      const hpMax = maxRaw;
+      const hpValue = Math.min(value, hpMax);
+      const prev = current.resources.vida;
+      next = {
+        ...current,
+        resources: {
+          ...current.resources,
+          vida: { max: hpMax, value: hpValue },
+        },
+        revision: current.revision + 1,
+      };
+      appendRoomChatMessage(room, {
+        ...author,
+        kind: "system",
+        text: `Mestre ajustou a vida de ${current.name}: ${prev.value}/${prev.max} → ${hpValue}/${hpMax}.`,
+      });
+      break;
+    }
     default:
       return { ok: false, error: "Ação inválida" };
   }
 
   room.actors[actorId] = next;
+  room.scene = syncLinkedTokens(room.scene, room.actors, { preserveCombatPa: true });
+  syncCombatOrderWithTokens(room);
   await persistActor(next);
   return { ok: true, snapshot: toSnapshot(await persistRoom(roomId, room)) };
 }

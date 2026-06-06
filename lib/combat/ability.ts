@@ -6,6 +6,7 @@ import type { CharacterSheet } from "@/lib/character/types";
 
 import { rollDice } from "@/lib/dice/roll";
 
+import { isMonsterToken } from "@/lib/room/settings";
 import type { BattleToken } from "@/lib/vtt/types";
 
 import { tokenAxialDistance } from "@/lib/vtt/creature-size";
@@ -160,25 +161,15 @@ export function listCombatAbilities(actor: CharacterSheet): CombatActionOption[]
 
 
 export function isAllyToken(attacker: BattleToken, other: BattleToken): boolean {
-
   if (other.id === attacker.id) return false;
-
-  if (attacker.monsterEntryId) return Boolean(other.monsterEntryId);
-
-  return !other.monsterEntryId;
-
+  if (isMonsterToken(attacker)) return isMonsterToken(other);
+  return !isMonsterToken(other);
 }
 
-
-
 export function isEnemyToken(attacker: BattleToken, other: BattleToken): boolean {
-
   if (other.id === attacker.id) return false;
-
-  if (attacker.monsterEntryId) return !other.monsterEntryId;
-
-  return Boolean(other.monsterEntryId || !other.linked);
-
+  if (isMonsterToken(attacker)) return !isMonsterToken(other);
+  return isMonsterToken(other) || !other.linked;
 }
 
 
@@ -692,7 +683,9 @@ export function resolveAbilitySpellStrike(
 
 
 
-  const raw = resolveTokenAttack(attacker, defender, spellAction, actor, turn);
+  const raw = resolveTokenAttack(attacker, defender, spellAction, actor, turn, undefined, [], {
+    skipPaCheck: true,
+  });
   const attack = (Array.isArray(raw) ? raw[0] : raw) as AttackResolution;
 
   if (attrMod && attack.hit && attack.damage) {
@@ -704,7 +697,7 @@ export function resolveAbilitySpellStrike(
     }
   }
 
-  return { kind: "spell_strike", attack, paCost: action.paCost };
+  return { kind: "spell_strike", attack, paCost: effectivePaCost(actor, action) };
 
 }
 
@@ -1047,16 +1040,8 @@ export function canAbilityTarget(
 
 
 
-  if (!isEnemyToken(attacker, defender)) {
-
-    return { ok: false, reason: "Alvo inválido" };
-
-  }
-
   if (defender.vidaMax != null && (defender.vida ?? 0) <= 0) {
-
     return { ok: false, reason: "Alvo já derrotado" };
-
   }
 
   return canUseAbility(attacker, action, turn, actor);

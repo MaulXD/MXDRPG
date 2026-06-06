@@ -1,6 +1,6 @@
 ﻿"use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react";
 import Link from "next/link";
 import type { CharacterSheet as CharacterSheetData, InventoryItem } from "@/lib/character/types";
 import { formatXpProgress } from "@/lib/character/xp";
@@ -36,6 +36,14 @@ import {
 } from "@/components/character/SheetPopupLoadoutBar";
 import { SheetPopupPortrait } from "@/components/character/SheetPopupPortrait";
 import { SheetPopupQuickBar } from "@/components/character/SheetPopupQuickBar";
+import {
+  IconArmor,
+  IconBackpack,
+  IconCoins,
+  IconLightning,
+  IconSword,
+  IconWand,
+} from "@/components/character/SheetPopupIcons";
 import { resolveActorDefesa } from "@/lib/character/armor-defense";
 import {
   ATTRIBUTE_LABELS,
@@ -265,46 +273,62 @@ export function CharacterSheet({
     magias: "Magias",
   };
 
+  const sheetTabs: Array<{
+    id: Tab;
+    label: string;
+    icon: ReactNode;
+    count?: number;
+  }> = [
+    {
+      id: "inventário",
+      label: "Inventário",
+      icon: <IconBackpack size={16} className="sheet-tab__icon" />,
+      count: tabCounts.inventário,
+    },
+    {
+      id: "tesouro",
+      label: "Tesouro",
+      icon: <IconCoins size={16} className="sheet-tab__icon" />,
+    },
+    {
+      id: "habilidades",
+      label: "Habilidades",
+      icon: <IconLightning size={16} className="sheet-tab__icon" />,
+      count: tabCounts.habilidades,
+    },
+    {
+      id: "magias",
+      label: "Magias",
+      icon: <IconWand size={16} className="sheet-tab__icon" />,
+      count: tabCounts.magias,
+    },
+  ];
+
+  const sectionIcons: Record<string, ReactNode> = {
+    armas: <IconSword size={18} className="inv-section__icon" />,
+    equipamentos: <IconArmor size={18} className="inv-section__icon" />,
+    outros: <IconBackpack size={18} className="inv-section__icon" />,
+  };
+
   const tabPanel = (
     <>
-      <div className="sheet-tabs">
-        <button
-          type="button"
-          className={`sheet-tab ${tab === "inventário" ? "active" : ""}`}
-          onClick={() => setTab("inventário")}
-        >
-          Inventário
-          {tabCounts.inventário > 0 ? (
-            <span className="sheet-tab__count">{tabCounts.inventário}</span>
-          ) : null}
-        </button>
-        <button
-          type="button"
-          className={`sheet-tab ${tab === "tesouro" ? "active" : ""}`}
-          onClick={() => setTab("tesouro")}
-        >
-          Tesouro
-        </button>
-        <button
-          type="button"
-          className={`sheet-tab ${tab === "habilidades" ? "active" : ""}`}
-          onClick={() => setTab("habilidades")}
-        >
-          Habilidades
-          {tabCounts.habilidades > 0 ? (
-            <span className="sheet-tab__count">{tabCounts.habilidades}</span>
-          ) : null}
-        </button>
-        <button
-          type="button"
-          className={`sheet-tab ${tab === "magias" ? "active" : ""}`}
-          onClick={() => setTab("magias")}
-        >
-          Magias
-          {tabCounts.magias > 0 ? (
-            <span className="sheet-tab__count">{tabCounts.magias}</span>
-          ) : null}
-        </button>
+      <div className="sheet-tabs" role="tablist" aria-label="Inventário e recursos">
+        {sheetTabs.map((t) => (
+          <button
+            key={t.id}
+            type="button"
+            role="tab"
+            aria-selected={tab === t.id}
+            className={`sheet-tab ${tab === t.id ? "active" : ""}`}
+            onClick={() => setTab(t.id)}
+          >
+            {t.icon}
+            <span className="sheet-tab__label">{t.label}</span>
+            {t.count && t.count > 0 ? (
+              <span className="sheet-tab__count">{t.count}</span>
+            ) : null}
+          </button>
+        ))}
       </div>
 
       <div className="sheet-toolbar">
@@ -352,6 +376,7 @@ export function CharacterSheet({
               {inventorySections.map((section) => (
                 <section key={section.id} className="inv-section">
                   <header className="inv-section__head">
+                    {sectionIcons[section.id] ?? null}
                     <h3 className="inv-section__title">{section.label}</h3>
                     {section.hint ? (
                       <p className="inv-section__hint">{section.hint}</p>
@@ -714,13 +739,13 @@ export function CharacterSheet({
 
         <div className="sheet-popup-body">
           <section className="sheet-popup-center sheet-panel">
-            {tabPanel}
             {canEdit || inRoom ? (
-              <details className="sheet-popup-advanced">
+              <details className="sheet-popup-advanced" open>
                 <summary>Gestão do personagem</summary>
                 <div className="sheet-popup-advanced__body">{popupRightAside}</div>
               </details>
             ) : null}
+            {tabPanel}
           </section>
         </div>
 

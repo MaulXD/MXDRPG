@@ -476,7 +476,6 @@ export function useBattlefieldPointer({
             startY: py,
             dragging: false,
           };
-          onGmDragPreview?.(hit.id, hit.axial);
           e.currentTarget.setPointerCapture(e.pointerId);
           if (hit.id !== selectedId) setSelectedId(hit.id);
           return;
@@ -866,8 +865,8 @@ export function useBattlefieldPointer({
       }
 
       if (gm?.dragging && onRepositionToken) {
-        onGmDragPreview?.(gm.tokenId, null);
         if (axial) onRepositionToken(gm.tokenId, axial);
+        else onGmDragPreview?.(gm.tokenId, null);
         return;
       }
       if (gm) {

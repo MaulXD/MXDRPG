@@ -4,8 +4,10 @@ import type { BattleScene } from "@/lib/vtt/types";
 import type { Axial } from "@/lib/vtt/hex-math";
 import type { RoomSnapshot } from "@/lib/room/types";
 import type { SessionUser } from "@/lib/auth/types";
+import { GmActionHistoryPanel } from "@/components/vtt/GmActionHistoryPanel";
 import { GmActorProgressPanel } from "@/components/vtt/GmActorProgressPanel";
 import { GmCreationsPanel } from "@/components/vtt/GmCreationsPanel";
+import type { CombatUndoEntry } from "@/lib/room/types";
 import {
   DungeonEditorPanel,
   type DungeonEditLayer,
@@ -34,6 +36,7 @@ type Props = {
   onDungeonEditorActiveChange?: (active: boolean) => void;
   onDungeonToolChange?: (tool: DungeonEditorTool) => void;
   onSelectedDungeonObjectChange?: (id: string | null) => void;
+  combatUndo?: CombatUndoEntry[];
 };
 
 export function GmMenuPanel({
@@ -57,6 +60,7 @@ export function GmMenuPanel({
   onDungeonEditorActiveChange,
   onDungeonToolChange,
   onSelectedDungeonObjectChange,
+  combatUndo = [],
 }: Props) {
   return (
     <aside className="vtt-sidebar vtt-sidebar--gm">
@@ -82,6 +86,12 @@ export function GmMenuPanel({
       <GmActorProgressPanel
         roomId={roomId}
         roomActors={roomActors}
+        onUpdated={onSceneUpdated}
+      />
+
+      <GmActionHistoryPanel
+        roomId={roomId}
+        combatUndo={combatUndo}
         onUpdated={onSceneUpdated}
       />
 

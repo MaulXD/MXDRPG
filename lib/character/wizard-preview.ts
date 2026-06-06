@@ -3,6 +3,7 @@ import { attributesAfterRacial } from "@/lib/character/point-buy";
 import {
   ATTRIBUTE_LABELS,
   attributeMod,
+  computeCulinary,
   getClass,
   getRace,
   hpMaxFor,
@@ -38,6 +39,16 @@ export function buildWizardPreview(draft: CharacterWizardDraft): WizardPreviewLi
   if (cls) {
     lines.push({ label: "Proficiências", value: cls.proficiencies });
     lines.push({ label: "Atributo principal", value: cls.primary });
+    const culinary = computeCulinary(draft.classe, draft.raca, draft.linhagem);
+    const culinaryLine = [
+      culinary.trinchar ? `Extração ${culinary.trinchar}` : null,
+      culinary.harmonizacao ? `Forrageio ${culinary.harmonizacao}` : null,
+      culinary.coccao ? `Fabricação ${culinary.coccao}` : null,
+      culinary.estomagoDeFerro ? `Fortitude ${culinary.estomagoDeFerro}` : null,
+    ]
+      .filter(Boolean)
+      .join(" · ");
+    if (culinaryLine) lines.push({ label: "Culinária inicial", value: culinaryLine });
     lines.push({
       label: "Subclasse (nv 2)",
       value: tracks.length

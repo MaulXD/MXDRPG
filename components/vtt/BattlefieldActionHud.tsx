@@ -4,7 +4,7 @@ import type { ActionPreview } from "@/lib/combat/action-preview";
 
 type Props = {
   preview: ActionPreview | null;
-  /** Centro do alvo em px (relativo ao wrap do canvas) — ataque/habilidade. */
+  /** Ponto de ancoragem acima do alvo em px (relativo ao wrap do canvas). */
   anchor?: { x: number; y: number } | null;
 };
 
@@ -18,7 +18,7 @@ export function BattlefieldActionHud({ preview, anchor }: Props) {
       className={`vtt-action-hud glass-panel${anchored ? " vtt-action-hud--anchored" : ""}`}
       style={
         anchored
-          ? { left: anchor.x, top: anchor.y, bottom: "auto", transform: "translate(-50%, -50%)" }
+          ? { left: anchor.x, top: anchor.y, bottom: "auto", transform: "translate(-50%, -100%)" }
           : undefined
       }
       role="status"

@@ -238,7 +238,8 @@ export type GmCombatAction =
   | { action: "restore-order" }
   | { action: "set-order"; order: string[]; activeTokenId?: string }
   | { action: "set-active"; tokenId: string }
-  | { action: "revert"; undoId: string };
+  | { action: "revert"; undoId: string }
+  | { action: "set-hp"; tokenId: string; value: number; max?: number };
 
 export async function postGmCombatAction(roomId: string, body: GmCombatAction) {
   const res = await fetch(`/api/room/${roomId}/combat/gm`, {
@@ -597,6 +598,7 @@ export async function gmActorProgress(
   body:
     | { action: "grant-xp"; actorId: string; amount: number }
     | { action: "set-level"; actorId: string; level: number }
+    | { action: "set-hp"; actorId: string; value: number; max?: number }
 ): Promise<RoomSnapshot> {
   const res = await fetch(`/api/room/${roomId}/gm/actor-progress`, {
     method: "POST",

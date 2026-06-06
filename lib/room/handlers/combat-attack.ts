@@ -2,12 +2,11 @@
   attackerAfterAttack,
   buildAttackModifiers,
   formatAttackChatDetail,
-  listTokenCombatActions,
-  resolveCombatAction,
+  resolveRoomAttackAction,
   resolveTokenAttack,
 } from "@/lib/combat/attack";
 import { formatSaveChatDetail, resolveSaveSpell } from "@/lib/combat/spell";
-import { prepareCombatToken, syncActorPaFromToken } from "@/lib/combat/combat-token-pa";
+import { ensureTokenCombatPa, syncActorPaFromToken } from "@/lib/combat/combat-token-pa";
 import { applyPaSpend } from "@/lib/combat/pa-turn";
 import { markActionRechargeUsed } from "@/lib/combat/recharge";
 import type { CombatActionRequest } from "@/lib/combat/types";
@@ -41,7 +40,7 @@ export async function executeRoomAttack(
   const defender = room.scene.tokens.find((t) => t.id === defenderTokenId);
   if (!attacker || !defender) return { ok: false, error: "Token não encontrado" };
 
-  attacker = prepareCombatToken(room, attacker);
+  attacker = ensureTokenCombatPa(room, attacker, { bypassTurn: opts.bypassTurn });
   const atkIdx = room.scene.tokens.findIndex((t) => t.id === attackerTokenId);
   if (atkIdx >= 0) {
     const tokens = [...room.scene.tokens];
@@ -62,11 +61,7 @@ export async function executeRoomAttack(
     return { ok: false, error: "Ficha do atacante não encontrada" };
   }
 
-  const action = actor
-    ? resolveCombatAction(actor, opts)
-    : (listTokenCombatActions(attacker, null).find(
-        (a) => opts.packId && a.packId === opts.packId && a.entryId === opts.entryId
-      ) ?? listTokenCombatActions(attacker, null)[0]);
+  const action = resolveRoomAttackAction(attacker, actor, opts);
 
   if (action.kind === "ability") {
     return executeRoomAbility(roomId, attackerTokenId, defenderTokenId, author, opts);
@@ -194,12 +189,13 @@ export async function executeRoomAttack(
     last.attackerHpAfter ?? attacker.vida ?? null;
   const spentAttacker = markActionRechargeUsed(applyPaSpend(attacker, paCost), action, room.combat.round);
   const built = buildAttackModifiers(attacker, defender, action);
+  const anyHit = attackResults.some((r) => r.hit);
   const buffCleanup = attackerAfterAttack(
     attacker,
     action,
     built.consumeAttackerMark,
     built.consumeDefenderFinta,
-    last.hit
+    anyHit
   );
 
   room.scene = {

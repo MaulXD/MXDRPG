@@ -12,15 +12,18 @@ import type { CombatTrack } from "@/lib/room/combat";
 
 import { activeTokenId } from "@/lib/room/combat";
 
-import { axialDistance } from "@/lib/vtt/hex-math";
+import { tokenAxialDistance } from "@/lib/vtt/creature-size";
 
 import {
   canAttackTarget,
+  combatAttackRequestOpts,
   listCombatActions,
   listTokenCombatActions,
   resolveCombatAction,
   warriorAttackCount,
 } from "@/lib/combat/attack";
+
+import { attackerForCombatCheck } from "@/lib/combat/combat-token-pa";
 
 import { canAbilityTarget, canUseAbility } from "@/lib/combat/ability";
 
@@ -55,6 +58,8 @@ export function useCombatTurn({ combat, canBypassTurn }: TurnOpts) {
     bypassTurn: canBypassTurn,
 
     combatRound: combat?.round ?? 1,
+
+    combatHasOrder: Boolean(combat?.order.length),
 
     isMyTurn: (tokenId: string) => !activeId || activeId === tokenId || canBypassTurn,
 
@@ -106,11 +111,15 @@ export function useCombatActions(
     if (!attacker || !action) return new Set<string>();
     if (isAreaSpellAction(action)) return new Set<string>();
 
+    const prepared = attackerForCombatCheck(attacker, actor, turn, {
+      combatHasOrder: turn.combatHasOrder,
+    });
+
     const ids = new Set<string>();
 
     for (const t of tokens) {
 
-      if (t.id === attacker.id) continue;
+      if (t.id === prepared.id) continue;
 
       const check =
 
@@ -120,7 +129,7 @@ export function useCombatActions(
 
           : action.kind === "ability"
 
-            ? canAbilityTarget(attacker, t, action, {
+            ? canAbilityTarget(prepared, t, action, {
 
                 activeTokenId: turn.activeTokenId,
 
@@ -128,7 +137,7 @@ export function useCombatActions(
 
               }, actor)
 
-            : canAttackTarget(attacker, t, action, {
+            : canAttackTarget(prepared, t, action, {
 
                 activeTokenId: turn.activeTokenId,
 
@@ -136,7 +145,7 @@ export function useCombatActions(
 
               }, { actor });
 
-      if (check.ok && axialDistance(attacker.axial, t.axial) <= action.rangeHex) {
+      if (check.ok && tokenAxialDistance(prepared, t) <= action.rangeHex) {
 
         ids.add(t.id);
 
@@ -146,7 +155,7 @@ export function useCombatActions(
 
     return ids;
 
-  }, [attacker, tokens, action, turn]);
+  }, [attacker, actor, tokens, action, turn]);
 
 
 
@@ -186,7 +195,7 @@ export function usePerformAttack() {
 
       roomId: string,
 
-      attackerId: string,
+      attacker: BattleToken,
 
       defenderId: string,
 
@@ -208,25 +217,15 @@ export function usePerformAttack() {
 
       try {
 
-        const packId =
-
-          action.packId === "armas" || action.packId === "magias" || action.packId === "habilidades"
-
-            ? action.packId
-
-            : undefined;
-
-        const snapshot = await postRoomAttack(roomId, attackerId, defenderId, {
-
-          actionPack: packId,
-
-          actionEntryId: packId ? action.entryId : undefined,
-
-          bypassTurn,
-
-          ...(action.channelMaxExtraPa && channelExtraPa > 0 ? { channelExtraPa } : {}),
-
-        });
+        const snapshot = await postRoomAttack(
+          roomId,
+          attacker.id,
+          defenderId,
+          combatAttackRequestOpts(action, attacker, {
+            bypassTurn,
+            channelExtraPa: action.channelMaxExtraPa && channelExtraPa > 0 ? channelExtraPa : undefined,
+          })
+        );
 
         const combatMsgs = snapshot.chat.filter((m) => m.kind === "combat");
 
