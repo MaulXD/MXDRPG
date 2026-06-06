@@ -2,12 +2,14 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { PortraitFocusEditor } from "@/components/character/PortraitFocusEditor";
+import { PortraitFocusFill } from "@/components/character/PortraitFocusFill";
+import { PortraitFocusFrame } from "@/components/character/PortraitFocusFrame";
 import { IconCamera, IconUser } from "@/components/character/SheetPopupIcons";
+import { useImageNaturalSize } from "@/hooks/useImageNaturalSize";
 import { patchRoomActor } from "@/hooks/useRoomSync";
 import { IMAGE_UPLOAD_HINT } from "@/lib/media/image-data-url";
 import {
   DEFAULT_PORTRAIT_FOCUS,
-  portraitFocusToImgStyle,
   sanitizePortraitFocus,
   type PortraitFocus,
 } from "@/lib/media/portrait-focus";
@@ -54,7 +56,7 @@ export function SheetPopupPortrait({
   );
 
   const previewSrc = draftSrc ?? portraitUrl;
-  const focus = sanitizePortraitFocus(portraitFocus);
+  const imgSize = useImageNaturalSize(draftSrc ? previewSrc : null);
   const ringColor = playerColorForActor(actorId, [actorId]);
 
   useEffect(() => {
@@ -152,12 +154,18 @@ export function SheetPopupPortrait({
         aria-label={previewSrc ? `Retrato de ${name}` : `Adicionar retrato de ${name}`}
       >
         {previewSrc ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={previewSrc}
-            alt=""
-            style={draftSrc ? portraitFocusToImgStyle(focusPortrait) : focus ? portraitFocusToImgStyle(focus) : undefined}
-          />
+          draftSrc && imgSize.w > 0 ? (
+            <PortraitFocusFill
+              imageSrc={previewSrc}
+              focus={focusPortrait}
+              imgW={imgSize.w}
+              imgH={imgSize.h}
+              shape="square"
+            />
+          ) : (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={previewSrc} alt="" />
+          )
         ) : (
           <span className="sheet-popup-portrait__placeholder">
             <IconUser size={42} />
@@ -198,9 +206,18 @@ export function SheetPopupPortrait({
               style={{ boxShadow: `0 0 0 3px ${ringColor}` }}
               title="Prévia do token na mesa"
             >
-              {previewSrc ? (
+              {previewSrc && imgSize.w > 0 ? (
+                <PortraitFocusFrame
+                  imageSrc={previewSrc}
+                  focus={focusToken}
+                  size={56}
+                  imgW={imgSize.w}
+                  imgH={imgSize.h}
+                  className="portrait-focus-frame--duo"
+                />
+              ) : previewSrc ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={previewSrc} alt="" style={portraitFocusToImgStyle(focusToken)} />
+                <img src={previewSrc} alt="" />
               ) : null}
             </div>
           </div>
