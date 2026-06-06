@@ -156,14 +156,16 @@ export function AdventureLobby() {
             />
             <input
               value={newInviteCode}
-              onChange={(e) => setNewInviteCode(e.target.value.toUpperCase())}
-              placeholder="Código de convite (opcional)"
+              onChange={(e) => setNewInviteCode(e.target.value.toUpperCase().replace(/\s+/g, ""))}
+              placeholder="Código de convite (ex.: 10 caracteres)"
+              minLength={4}
               maxLength={16}
               style={inputStyle}
               aria-describedby="invite-hint-create"
             />
             <p id="invite-hint-create" style={{ margin: 0, fontSize: "0.8rem", color: "var(--text-muted)" }}>
-              4–16 letras/números. Deixe vazio para gerar automaticamente.
+              4–16 letras e números (A–Z, 2–9). Deixe vazio para gerar um código de 10 caracteres
+              automaticamente.
             </p>
             <button type="submit" className="btn" disabled={loading}>
               Criar mesa
@@ -176,9 +178,11 @@ export function AdventureLobby() {
           <form onSubmit={joinAdventure} style={{ display: "flex", flexDirection: "column", gap: "0.65rem" }}>
             <input
               value={joinCode}
-              onChange={(e) => setJoinCode(e.target.value.toUpperCase())}
-              placeholder="Código do mestre"
+              onChange={(e) => setJoinCode(e.target.value.toUpperCase().replace(/\s+/g, ""))}
+              placeholder="Código do mestre (ex.: 10 caracteres)"
               required
+              minLength={4}
+              maxLength={16}
               style={inputStyle}
             />
             <button type="submit" className="btn btn-secondary" disabled={loading}>

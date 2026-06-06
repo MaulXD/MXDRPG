@@ -13,7 +13,8 @@ export default async function EntrarPage({ searchParams }: Props) {
         <p className="eyebrow">Conta Eldarin</p>
         <h1 className="display-lg">Entrar ou criar conta</h1>
         <p className="lead">
-          Uma conta para tudo — mestre só na mesa que você criar (como Roll20).
+          Uma conta para tudo — ao criar conta você pode abrir mesas como mestre e definir o código de
+          convite (até 10 caracteres) para os jogadores.
         </p>
       </header>
 

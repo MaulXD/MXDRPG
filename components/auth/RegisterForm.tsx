@@ -3,7 +3,9 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-export function RegisterForm() {
+type Props = { redirect?: string };
+
+export function RegisterForm({ redirect = "" }: Props) {
   const router = useRouter();
   const [name, setName] = useState("");
   const [nickname, setNickname] = useState("");
@@ -20,7 +22,13 @@ export function RegisterForm() {
     const res = await fetch("/api/auth/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, nickname: nickname.trim() || undefined, email, password }),
+      body: JSON.stringify({
+        name,
+        nickname: nickname.trim() || undefined,
+        email,
+        password,
+        redirect: redirect || undefined,
+      }),
     });
     const data = await res.json();
     setLoading(false);
@@ -36,6 +44,10 @@ export function RegisterForm() {
 
   return (
     <form onSubmit={submit} style={{ display: "flex", flexDirection: "column", gap: "0.85rem" }}>
+      <p style={{ margin: 0, fontSize: "0.82rem", color: "var(--text-muted)", lineHeight: 1.55 }}>
+        Conta nova pode <strong>criar mesas</strong> como mestre e definir um código de convite (até 10
+        caracteres) para jogadores entrarem.
+      </p>
       <label style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}>
         Nome
         <input
@@ -48,7 +60,7 @@ export function RegisterForm() {
         />
       </label>
       <label style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}>
-        Apelido (opcional)
+        Apelido (recomendado — login alternativo)
         <input
           type="text"
           value={nickname}
