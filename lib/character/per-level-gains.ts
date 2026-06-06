@@ -1,21 +1,14 @@
+import { culinaryLabel, culinarySkillForLevel } from "@/lib/character/class-scales";
 import type { CharacterSheet } from "@/lib/character/types";
-import type { CulinaryKey } from "@/lib/character/rules";
 import { racialMilestone, TALENT_LEVELS } from "@/lib/character/rules";
 import { getSubclassTrack } from "@/lib/character/subclass-tracks";
-
-const CULINARY_ROTATION: CulinaryKey[] = [
-  "trinchar",
-  "harmonizacao",
-  "coccao",
-  "estomagoDeFerro",
-];
 
 /** Pequeno bônus mecânico a cada nível (além de HP / talentos nv 4·8·12·16). */
 export function applyPerLevelBonuses(actor: CharacterSheet, newLevel: number): CharacterSheet {
   const culinary = { ...actor.culinary };
   const tactical = { ...actor.tactical };
 
-  const skill = CULINARY_ROTATION[(newLevel - 1) % CULINARY_ROTATION.length]!;
+  const skill = culinarySkillForLevel(actor.identity.classe, newLevel);
   culinary[skill] = (culinary[skill] ?? 0) + 1;
 
   if (newLevel % 3 === 0) {
@@ -32,16 +25,8 @@ export function applyPerLevelBonuses(actor: CharacterSheet, newLevel: number): C
 /** Texto exibido no preview de level-up para o nv alvo. */
 export function perLevelGainLines(actor: CharacterSheet, newLevel: number): string[] {
   const lines: string[] = [];
-  const skill = CULINARY_ROTATION[(newLevel - 1) % CULINARY_ROTATION.length]!;
-  const skillLabel =
-    skill === "trinchar"
-      ? "Extração"
-      : skill === "harmonizacao"
-        ? "Forrageio"
-        : skill === "coccao"
-          ? "Fabricação"
-          : "Fortitude";
-  lines.push(`Progressão: +1 ${skillLabel}`);
+  const skill = culinarySkillForLevel(actor.identity.classe, newLevel);
+  lines.push(`Progressão: +1 ${culinaryLabel(skill)}`);
 
   if (newLevel % 3 === 0) {
     lines.push("Progressão: +1 Iniciativa");

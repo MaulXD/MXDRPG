@@ -42,8 +42,8 @@ export function NicknameForm({ redirect = "" }: Props) {
   return (
     <form onSubmit={submit} style={{ display: "flex", flexDirection: "column", gap: "0.85rem" }}>
       <p style={{ margin: 0, fontSize: "0.82rem", color: "var(--text-muted)", lineHeight: 1.55 }}>
-        Depois do apelido você vai para <strong>suas mesas</strong> e pode criar uma nova com código de
-        convite.
+        Depois do apelido você vai para <strong>suas mesas</strong> — ao criar uma, o código de convite
+        é gerado automaticamente.
       </p>
       <label style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}>
         Apelido (3–24 caracteres)

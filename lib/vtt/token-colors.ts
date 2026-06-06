@@ -15,6 +15,7 @@ export const PLAYER_RING_PALETTE = [
 
 const MONSTER_RING_RED = "#c62828";
 const MONSTER_RING_BLACK = "#1a1a1a";
+const TOKEN_RING_WHITE = "#f5f5f5";
 
 export type TokenRingStyle = {
   kind: "player" | "monster" | "mini-boss" | "boss";
@@ -42,7 +43,10 @@ export function resolveTokenRing(
     const color = playerColorForActor(token.actorId, playerActorIds);
     return {
       kind: "player",
-      rings: [{ color, width: 3.5, radiusOffset: 2 }],
+      rings: [
+        { color: TOKEN_RING_WHITE, width: 3, radiusOffset: 3.5 },
+        { color, width: 2.5, radiusOffset: 1 },
+      ],
     };
   }
 
@@ -51,7 +55,8 @@ export function resolveTokenRing(
     return {
       kind: "boss",
       rings: [
-        { color: MONSTER_RING_RED, width: 4, radiusOffset: 3 },
+        { color: TOKEN_RING_WHITE, width: 2.5, radiusOffset: 4.5 },
+        { color: MONSTER_RING_RED, width: 4, radiusOffset: 2.5 },
         { color: MONSTER_RING_BLACK, width: 2.5, radiusOffset: 0 },
       ],
     };
@@ -60,7 +65,8 @@ export function resolveTokenRing(
     return {
       kind: "mini-boss",
       rings: [
-        { color: MONSTER_RING_RED, width: 3.5, radiusOffset: 2 },
+        { color: TOKEN_RING_WHITE, width: 2.5, radiusOffset: 4 },
+        { color: MONSTER_RING_RED, width: 3.5, radiusOffset: 1.5 },
         { color: MONSTER_RING_BLACK, width: 2, radiusOffset: 0 },
       ],
     };
@@ -68,7 +74,10 @@ export function resolveTokenRing(
 
   return {
     kind: "monster",
-    rings: [{ color: MONSTER_RING_RED, width: 3, radiusOffset: 2 }],
+    rings: [
+      { color: TOKEN_RING_WHITE, width: 2.5, radiusOffset: 3.5 },
+      { color: MONSTER_RING_RED, width: 3, radiusOffset: 1 },
+    ],
   };
 }
 

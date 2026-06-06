@@ -1,3 +1,4 @@
+import { classAttributePriority } from "@/lib/character/class-scales";
 import type { AttributeKey } from "@/lib/character/rules";
 import { getRace } from "@/lib/character/rules";
 
@@ -26,18 +27,6 @@ export const ATTR_ORDER: AttributeKey[] = [
   "sabedoria",
   "carisma",
 ];
-
-const CLASS_ATTR_PRIORITY: Record<string, AttributeKey[]> = {
-  Mago: ["inteligencia", "constituicao", "destreza", "sabedoria", "carisma", "forca"],
-  Artífice: ["inteligencia", "constituicao", "destreza", "sabedoria", "carisma", "forca"],
-  Clérigo: ["sabedoria", "constituicao", "carisma", "forca", "destreza", "inteligencia"],
-  Druida: ["sabedoria", "constituicao", "inteligencia", "destreza", "carisma", "forca"],
-  Ladino: ["destreza", "carisma", "constituicao", "inteligencia", "sabedoria", "forca"],
-  Bardo: ["carisma", "destreza", "constituicao", "sabedoria", "inteligencia", "forca"],
-  Patrulheiro: ["destreza", "sabedoria", "constituicao", "forca", "inteligencia", "carisma"],
-  Bárbaro: ["forca", "constituicao", "destreza", "sabedoria", "carisma", "inteligencia"],
-  Guerreiro: ["forca", "constituicao", "destreza", "sabedoria", "carisma", "inteligencia"],
-};
 
 export function pointBuyCost(score: number): number {
   return COST_TABLE[score] ?? 99;
@@ -84,10 +73,9 @@ export function spendFullPointBuy(priorities: AttributeKey[]): Record<AttributeK
   return scores;
 }
 
-/** Distribuição sugerida (27 pts) por classe — sempre gasta o pool inteiro. */
+/** Distribuição sugerida (27 pts) por classe — prioriza atributos primários da ficha. */
 export function suggestedPointBuyForClass(classe: string): Record<AttributeKey, number> {
-  const priorities = CLASS_ATTR_PRIORITY[classe] ?? CLASS_ATTR_PRIORITY.Guerreiro;
-  return spendFullPointBuy(priorities);
+  return spendFullPointBuy(classAttributePriority(classe));
 }
 
 export function isUnsetPointBuy(scores: Record<AttributeKey, number>): boolean {

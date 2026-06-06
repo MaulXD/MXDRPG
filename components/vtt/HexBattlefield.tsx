@@ -68,8 +68,11 @@ import { activeTokenId } from "@/lib/room/combat";
 import { isMonsterToken } from "@/lib/room/settings";
 import {
   listTokenCombatActions,
+  combatAttackRequestOpts,
+  needsFriendlyFireConfirm,
   resolveCombatAction,
 } from "@/lib/combat/attack";
+import { FriendlyFireConfirmDialog } from "@/components/vtt/FriendlyFireConfirmDialog";
 import type { CombatActionOption } from "@/lib/combat/types";
 import { isMoveMode, isTargetMode, type TokenActionMode } from "@/lib/vtt/action-mode";
 import {
@@ -111,7 +114,7 @@ import { useMonsterSpawnDrop } from "@/hooks/vtt/useMonsterSpawnDrop";
 import { paTurnRulesForActor } from "@/lib/combat/pa-economy";
 import { canMoveToken, type MovementPathContext } from "@/lib/vtt/movement";
 import { animateTokenAlongPath } from "@/lib/vtt/token-move-animation";
-import { axialToPixel } from "@/lib/vtt/hex-math";
+import { axialToPixel, hexDrawRadius } from "@/lib/vtt/hex-math";
 import { canvasCenter, worldToScreen } from "@/lib/vtt/battlefield-view";
 import "./vtt.css";
 
@@ -162,6 +165,8 @@ type Props = {
   onDungeonWindowClose?: () => void;
   onDungeonWindowMinimize?: () => void;
   onDungeonWindowFocus?: () => void;
+  /** Revelação em fases das mensagens de combate no chat (dado → dano). */
+  onCombatChatReveal?: (messageIds: string[], phase: "roll" | "damage" | "done") => void;
   whiteboardWindowLayout?: FoundryWindowLayout;
   onWhiteboardWindowLayoutChange?: (patch: Partial<FoundryWindowLayout>) => void;
   onWhiteboardWindowClose?: () => void;
@@ -215,6 +220,7 @@ export function HexBattlefield({
   onDungeonWindowClose,
   onDungeonWindowMinimize,
   onDungeonWindowFocus,
+  onCombatChatReveal,
   whiteboardWindowLayout,
   onWhiteboardWindowLayoutChange,
   onWhiteboardWindowClose,
@@ -242,6 +248,8 @@ export function HexBattlefield({
   const [actionErr, setActionErr] = useState<string | null>(null);
   const [channelExtraPa, setChannelExtraPa] = useState(0);
   const [actionRingAt, setActionRingAt] = useState<{ x: number; y: number } | null>(null);
+  const [friendlyFireTargetId, setFriendlyFireTargetId] = useState<string | null>(null);
+  const [friendlyFireBusy, setFriendlyFireBusy] = useState(false);
   const toast = useVttToast();
   const seenCombatRef = useRef<Set<string>>(new Set());
   const combatChatSeededRef = useRef(false);
@@ -443,6 +451,7 @@ export function HexBattlefield({
 
   const moveAnimRef = useRef<{ tokenId: string; q: number; r: number } | null>(null);
   const moveBusyRef = useRef(false);
+  const gmRepositionBusyRef = useRef(false);
   const appliedSceneRevisionRef = useRef(0);
   const combatFxIdRef = useRef<string | null>(null);
   const combatFxQueueRef = useRef<CombatFxState[]>([]);
@@ -534,6 +543,7 @@ export function HexBattlefield({
     areaDirection: null,
     channelExtraPa,
     turn,
+    combatHasOrder: Boolean(snapshot?.combat?.order.length),
   });
 
   const attackTargetPreview = useMemo(() => {
@@ -745,12 +755,38 @@ export function HexBattlefield({
     combatFxQueueRef.current = [];
     combatFxIdRef.current = null;
     pendingCombatSnapRef.current = null;
+    moveAnimRef.current = null;
+    moveBusyRef.current = false;
+    gmRepositionBusyRef.current = false;
     setCombatFx(null);
     setTokenFlash(null);
   }, [roomId]);
 
+  const mergeTokenCombatFields = useCallback(
+    (local: BattleToken, remote: BattleToken): BattleToken => ({
+      ...local,
+      pa: remote.pa,
+      paMax: remote.paMax,
+      bankedPa: remote.bankedPa,
+      paSpentThisTurn: remote.paSpentThisTurn,
+      vida: remote.vida,
+      vidaMax: remote.vidaMax,
+      defesa: remote.defesa,
+      defesaBonus: remote.defesaBonus,
+      conditions: remote.conditions,
+      timedEffects: remote.timedEffects,
+    }),
+    []
+  );
+
   const flushPendingSceneSnapshot = useCallback(() => {
-    if (moveAnimRef.current || moveBusyRef.current) return;
+    if (
+      moveAnimRef.current ||
+      moveBusyRef.current ||
+      gmRepositionBusyRef.current
+    ) {
+      return;
+    }
     const snap = pendingCombatSnapRef.current;
     if (!snap) return;
     pendingCombatSnapRef.current = null;
@@ -771,15 +807,23 @@ export function HexBattlefield({
       combatFx !== null ||
       combatFxQueueRef.current.length > 0 ||
       moveAnimRef.current ||
-      moveBusyRef.current
+      moveBusyRef.current ||
+      gmRepositionBusyRef.current
     ) {
       pendingCombatSnapRef.current = snapshot;
+      setScene((prev) => ({
+        ...prev,
+        tokens: prev.tokens.map((t) => {
+          const remote = snapshot.scene.tokens.find((r) => r.id === t.id);
+          return remote ? mergeTokenCombatFields(t, remote) : t;
+        }),
+      }));
       return;
     }
 
     appliedSceneRevisionRef.current = snapshot.revision;
     setScene(snapshot.scene);
-  }, [snapshot, combatFx]);
+  }, [snapshot, combatFx, mergeTokenCombatFields]);
 
   useEffect(() => {
     setActionMode("idle");
@@ -1045,7 +1089,10 @@ export function HexBattlefield({
       ox,
       oy
     );
-    return worldToScreen(world.x, world.y, w, h, battlefieldView.view);
+    const screen = worldToScreen(world.x, world.y, w, h, battlefieldView.view);
+    const tokenR = hexDrawRadius(displayScene.hexSize) * (battlefieldView.view.scale ?? 1);
+    const gap = 10;
+    return { x: screen.x, y: screen.y - tokenR - gap };
   }, [
     hoverTargetId,
     activeCombatAction,
@@ -1076,7 +1123,7 @@ export function HexBattlefield({
     [selected, roomId, turn.bypassTurn, syncRoom, playCombatFxFromSnap]
   );
 
-  const attackToken = useCallback(
+  const executeAttackOn = useCallback(
     async (defenderId: string) => {
       if (!selected || !activeCombatAction) return;
       if (activeCombatAction.areaShape && activeCombatAction.areaShape !== "single") {
@@ -1092,16 +1139,15 @@ export function HexBattlefield({
             bypassTurn: turn.bypassTurn,
           });
         } else {
-          const packId =
-            activeCombatAction.packId === "armas" || activeCombatAction.packId === "magias"
-              ? activeCombatAction.packId
-              : undefined;
-          snap = await postRoomAttack(roomId, selected.id, defenderId, {
-            actionPack: packId,
-            actionEntryId: packId ? activeCombatAction.entryId : undefined,
-            bypassTurn: turn.bypassTurn,
-            channelExtraPa,
-          });
+          snap = await postRoomAttack(
+            roomId,
+            selected.id,
+            defenderId,
+            combatAttackRequestOpts(activeCombatAction, selected, {
+              bypassTurn: turn.bypassTurn,
+              channelExtraPa,
+            })
+          );
         }
         playCombatFxFromSnap(snap, { deferSnap: true });
         setActionMode("idle");
@@ -1115,10 +1161,42 @@ export function HexBattlefield({
       roomId,
       turn.bypassTurn,
       channelExtraPa,
-      syncRoom,
       playCombatFxFromSnap,
     ]
   );
+
+  const attackToken = useCallback(
+    (defenderId: string) => {
+      if (!selected || !activeCombatAction) return;
+      const defender = displayScene.tokens.find((t) => t.id === defenderId);
+      if (!defender) return;
+      if (needsFriendlyFireConfirm(selected, defender, activeCombatAction)) {
+        setFriendlyFireTargetId(defenderId);
+        return;
+      }
+      void executeAttackOn(defenderId);
+    },
+    [selected, activeCombatAction, displayScene.tokens, executeAttackOn]
+  );
+
+  const friendlyFireDefender = useMemo(
+    () =>
+      friendlyFireTargetId
+        ? displayScene.tokens.find((t) => t.id === friendlyFireTargetId) ?? null
+        : null,
+    [friendlyFireTargetId, displayScene.tokens]
+  );
+
+  const confirmFriendlyFire = useCallback(async () => {
+    if (!friendlyFireTargetId) return;
+    setFriendlyFireBusy(true);
+    try {
+      await executeAttackOn(friendlyFireTargetId);
+      setFriendlyFireTargetId(null);
+    } finally {
+      setFriendlyFireBusy(false);
+    }
+  }, [friendlyFireTargetId, executeAttackOn]);
 
   const moveSelectedTo = useCallback(
     async (axial: Axial) => {
@@ -1205,30 +1283,40 @@ export function HexBattlefield({
   const onRepositionToken = useCallback(
     async (tokenId: string, axial: Axial) => {
       setActionErr(null);
+      moveAnimRef.current = null;
+      gmRepositionBusyRef.current = true;
+      setScene((prev) => ({
+        ...prev,
+        tokens: prev.tokens.map((t) =>
+          t.id === tokenId ? { ...t, axial } : t
+        ),
+      }));
+      redraw();
+
       try {
         const snap = await repositionRoomToken(roomId, tokenId, axial.q, axial.r);
         if (!snap?.scene) throw new Error("Resposta inválida ao mover token");
-        moveAnimRef.current = null;
         pendingCombatSnapRef.current = null;
         appliedSceneRevisionRef.current = snap.revision;
         setScene(snap.scene);
         syncRoom(snap);
-        redraw();
       } catch (e) {
         setActionErr(e instanceof Error ? e.message : "Falha ao mover token");
-        moveAnimRef.current = null;
-        redraw();
+        refresh();
+      } finally {
+        gmRepositionBusyRef.current = false;
         flushPendingSceneSnapshot();
+        redraw();
       }
     },
-    [roomId, syncRoom, redraw, flushPendingSceneSnapshot]
+    [roomId, syncRoom, redraw, flushPendingSceneSnapshot, refresh]
   );
 
   const onGmDragPreview = useCallback(
     (tokenId: string, axial: Axial | null) => {
       if (axial) {
         moveAnimRef.current = { tokenId, q: axial.q, r: axial.r };
-      } else {
+      } else if (!gmRepositionBusyRef.current) {
         moveAnimRef.current = null;
         flushPendingSceneSnapshot();
       }
@@ -1536,6 +1624,7 @@ export function HexBattlefield({
         inviteCode={inviteCode}
         roomActors={roomActors}
         spawnAxial={hoverAxial}
+        combatUndo={snapshot.combatUndo}
         onSceneUpdated={(snap) => syncRoom(snap)}
       />
     ) : null;
@@ -1986,7 +2075,18 @@ export function HexBattlefield({
           onApplyState={onCombatApplyState}
           onTokenFlash={onCombatTokenFlash}
           onTokenCastFx={onTokenCastFx}
+          onChatReveal={onCombatChatReveal}
           onDone={onCombatFxDone}
+        />
+        <FriendlyFireConfirmDialog
+          open={friendlyFireTargetId !== null}
+          attacker={selected}
+          defender={friendlyFireDefender}
+          busy={friendlyFireBusy}
+          onConfirm={() => void confirmFriendlyFire()}
+          onCancel={() => {
+            if (!friendlyFireBusy) setFriendlyFireTargetId(null);
+          }}
         />
       </div>
     </div>

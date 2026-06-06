@@ -1,12 +1,15 @@
 import { canManageRoom } from "@/lib/auth/room-access";
 import type { SessionUser } from "@/lib/auth/types";
+import { saveCharacter } from "@/lib/character/characters";
 import {
   applyGmCombatOrder,
   deferTokenToEndOfOrder,
   gmResetTokenPaInRoom,
   restoreNaturalCombatOrder,
 } from "../combat-gm";
+import { syncCombatOrderWithTokens } from "../combat-order";
 import { revertCombatUndo } from "../combat-undo";
+import { persistActorToAdventureSheet } from "../adventure-actors";
 import { appendRoomChatMessage } from "./chat";
 import { getRoom, persistRoom, toSnapshot } from "../internal/registry";
 import type { RoomSnapshot } from "../types";
@@ -17,7 +20,8 @@ export type GmCombatAction =
   | { action: "restore-order" }
   | { action: "set-order"; order: string[]; activeTokenId?: string }
   | { action: "set-active"; tokenId: string }
-  | { action: "revert"; undoId: string };
+  | { action: "revert"; undoId: string }
+  | { action: "set-hp"; tokenId: string; value: number; max?: number };
 
 function assertGm(
   room: NonNullable<Awaited<ReturnType<typeof getRoom>>>,
@@ -139,6 +143,55 @@ export async function executeGmCombatAction(
         ...author,
         kind: "system",
         text: `Mestre reverteu: ${entry.tokenName} — ${entry.summary}`,
+      });
+      break;
+    }
+
+    case "set-hp": {
+      const tokenId = body.tokenId?.trim();
+      if (!tokenId) return { ok: false, error: "Token inválido" };
+      const idx = room.scene.tokens.findIndex((t) => t.id === tokenId);
+      if (idx < 0) return { ok: false, error: "Token não encontrado" };
+
+      const value = Math.floor(Number(body.value));
+      if (!Number.isFinite(value) || value < 0) {
+        return { ok: false, error: "Informe uma vida válida (0 ou mais)" };
+      }
+
+      const tokens = [...room.scene.tokens];
+      const before = tokens[idx];
+      const hpMaxRaw = body.max != null ? Math.floor(Number(body.max)) : before.vidaMax;
+      if (hpMaxRaw != null && (!Number.isFinite(hpMaxRaw) || hpMaxRaw < 1)) {
+        return { ok: false, error: "Vida máxima deve ser pelo menos 1" };
+      }
+      const hpMax = hpMaxRaw ?? Math.max(value, before.vidaMax ?? value, 1);
+      const vida = Math.min(value, hpMax);
+      const prevHp = before.vida ?? hpMax;
+
+      tokens[idx] = { ...before, vida, vidaMax: hpMax };
+      room.scene = { ...room.scene, tokens };
+
+      if (before.linked && before.actorId && room.actors[before.actorId]) {
+        const actor = room.actors[before.actorId];
+        const nextActor = {
+          ...actor,
+          resources: {
+            ...actor.resources,
+            vida: { max: hpMax, value: vida },
+          },
+          revision: actor.revision + 1,
+        };
+        room.actors[before.actorId] = nextActor;
+        const { revision: _r, ...sheet } = nextActor;
+        await saveCharacter(sheet);
+        await persistActorToAdventureSheet(nextActor);
+      }
+
+      syncCombatOrderWithTokens(room);
+      appendRoomChatMessage(room, {
+        ...author,
+        kind: "system",
+        text: `Mestre ajustou a vida de ${before.name}: ${prevHp}/${before.vidaMax ?? hpMax} → ${vida}/${hpMax}.`,
       });
       break;
     }

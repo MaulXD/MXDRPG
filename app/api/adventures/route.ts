@@ -23,10 +23,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Nome da aventura obrigatório" }, { status: 400 });
   }
 
-  const inviteCodeRaw = body.inviteCode != null ? String(body.inviteCode) : undefined;
-  const result = await createAdventure(session.user.id, name, {
-    inviteCode: inviteCodeRaw,
-  });
+  const result = await createAdventure(session.user.id, name);
   if (!result.ok) {
     return NextResponse.json({ error: result.error }, { status: 400 });
   }

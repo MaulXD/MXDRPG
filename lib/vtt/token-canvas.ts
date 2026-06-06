@@ -38,10 +38,10 @@ export function drawTokenPlaceholder(
   ctx.save();
   ctx.beginPath();
   ctx.arc(cx, cy, radius, 0, Math.PI * 2);
-  const base = ctx.createRadialGradient(cx, cy - radius * 0.25, radius * 0.15, cx, cy, radius);
-  base.addColorStop(0, "rgba(255,255,255,0.22)");
-  base.addColorStop(0.55, color);
-  base.addColorStop(1, "rgba(0,0,0,0.35)");
+  const base = ctx.createRadialGradient(cx, cy - radius * 0.2, radius * 0.1, cx, cy, radius);
+  base.addColorStop(0, color);
+  base.addColorStop(0.72, color);
+  base.addColorStop(1, "rgba(0,0,0,0.28)");
   ctx.fillStyle = base;
   ctx.fill();
   ctx.restore();
