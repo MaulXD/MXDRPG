@@ -62,7 +62,7 @@ import type { MesaPanelLayout } from "@/lib/vtt/mesa-panel-layout";
 import { effectiveMesaPanelWidth } from "@/lib/vtt/mesa-panel-layout";
 import { CombatFxLayer, type TokenCombatFlash } from "@/components/vtt/CombatFxLayer";
 import type { CombatFxState } from "@/lib/vtt/combat-fx-types";
-import { ingestNewCombatFx } from "@/lib/vtt/combat-fx-sequence";
+import { ingestNewCombatFx, isPlayableCombatFxMessage } from "@/lib/vtt/combat-fx-sequence";
 import type { ChatMessage } from "@/lib/room/chat";
 import { activeTokenId } from "@/lib/room/combat";
 import {
@@ -446,10 +446,16 @@ export function HexBattlefield({
   const syncRoom = useCallback(
     (snap?: RoomSnapshot) => {
       if (snap?.scene) {
+        if (snap.revision > appliedSceneRevisionRef.current) {
+          appliedSceneRevisionRef.current = snap.revision;
+        }
         setScene(snap.scene);
         if (onApplySnapshot) onApplySnapshot(snap);
         else refresh();
       } else if (snap) {
+        if (snap.revision > appliedSceneRevisionRef.current) {
+          appliedSceneRevisionRef.current = snap.revision;
+        }
         if (onApplySnapshot) onApplySnapshot(snap);
         else refresh();
       } else {
@@ -686,15 +692,6 @@ export function HexBattlefield({
     if (floorPreview) redraw();
   }, [floorPreview, redraw]);
 
-  const isMonsterToken = useCallback(
-    (tokenId: string | null | undefined, tokens = displayScene.tokens) => {
-      if (!tokenId) return false;
-      const t = tokens.find((tok) => tok.id === tokenId);
-      return Boolean(t?.monsterEntryId);
-    },
-    [displayScene.tokens]
-  );
-
   const enqueueCombatFxFromChat = useCallback(
     (chat: ChatMessage[], tokens: BattleToken[]) => {
       const newMsgs = chat.filter(
@@ -702,7 +699,7 @@ export function HexBattlefield({
       );
       if (!newMsgs.length) return;
       const { sequence, markSeen } = ingestNewCombatFx(newMsgs, seenCombatRef.current, tokens, {
-        deferStateApplyForToken: (id) => isMonsterToken(id, tokens),
+        deferStateApplyForToken: () => true,
       });
       for (const id of markSeen) seenCombatRef.current.add(id);
       if (!sequence.length) return;
@@ -713,7 +710,7 @@ export function HexBattlefield({
         setCombatFx(next);
       }
     },
-    [combatFx, isMonsterToken]
+    [combatFx]
   );
 
   const playCombatFxFromSnap = useCallback(
@@ -750,9 +747,18 @@ export function HexBattlefield({
   useEffect(() => {
     if (!snapshot) return;
     if (snapshot.revision <= appliedSceneRevisionRef.current) return;
+
+    const pendingFx = snapshot.chat.some(
+      (m) => isPlayableCombatFxMessage(m) && !seenCombatRef.current.has(m.id)
+    );
+    if (pendingFx || combatFx !== null || combatFxQueueRef.current.length > 0) {
+      pendingCombatSnapRef.current = snapshot;
+      return;
+    }
+
     appliedSceneRevisionRef.current = snapshot.revision;
     setScene(snapshot.scene);
-  }, [snapshot]);
+  }, [snapshot, combatFx]);
 
   useEffect(() => {
     setActionMode("idle");
@@ -836,14 +842,19 @@ export function HexBattlefield({
     const snap = pendingCombatSnapRef.current;
     if (!snap) return;
     pendingCombatSnapRef.current = null;
+    appliedSceneRevisionRef.current = snap.revision;
+    setScene(snap.scene);
     syncRoom(snap);
   }, [syncRoom]);
 
   const onCombatFxDone = useCallback(() => {
     setTokenFlash(null);
     if (pendingCombatSnapRef.current) {
-      syncRoom(pendingCombatSnapRef.current);
+      const snap = pendingCombatSnapRef.current;
       pendingCombatSnapRef.current = null;
+      appliedSceneRevisionRef.current = snap.revision;
+      setScene(snap.scene);
+      syncRoom(snap);
     }
     const next = combatFxQueueRef.current.shift() ?? null;
     combatFxIdRef.current = next?.id ?? null;
@@ -903,10 +914,9 @@ export function HexBattlefield({
           areaDirection: direction,
           channelExtraPa,
         });
-        playCombatFxFromSnap(snap);
+        playCombatFxFromSnap(snap, { deferSnap: true });
         setActionMode("idle");
         setAreaCenter(null);
-        syncRoom(snap);
       } catch (e) {
         setActionErr(e instanceof Error ? e.message : "Falha na magia de área");
       }
@@ -1034,11 +1044,10 @@ export function HexBattlefield({
           actionEntryId: action.entryId,
           bypassTurn: turn.bypassTurn,
         });
-        playCombatFxFromSnap(snap);
+        playCombatFxFromSnap(snap, { deferSnap: true });
         setActionMode("idle");
         setSelectedCombatAction(null);
         setActionRingAt(null);
-        syncRoom(snap);
       } catch (e) {
         setActionErr(e instanceof Error ? e.message : "Falha na habilidade");
       }
@@ -1054,7 +1063,6 @@ export function HexBattlefield({
         return;
       }
       setActionErr(null);
-      const deferStateApply = isMonsterToken(defenderId);
       try {
         let snap: RoomSnapshot;
         if (activeCombatAction.kind === "ability") {
@@ -1074,9 +1082,8 @@ export function HexBattlefield({
             channelExtraPa,
           });
         }
-        playCombatFxFromSnap(snap, { deferSnap: deferStateApply });
+        playCombatFxFromSnap(snap, { deferSnap: true });
         setActionMode("idle");
-        if (!deferStateApply) syncRoom(snap);
       } catch (e) {
         setActionErr(e instanceof Error ? e.message : "Falha no ataque");
       }
@@ -1089,7 +1096,6 @@ export function HexBattlefield({
       channelExtraPa,
       syncRoom,
       playCombatFxFromSnap,
-      isMonsterToken,
     ]
   );
 
@@ -1750,6 +1756,7 @@ export function HexBattlefield({
               canControl={canControlCombat}
               canEndTurn={canEndTurnProp}
               combatUndo={snapshot?.combatUndo}
+              onSnapshot={syncRoom}
               onUpdate={refresh}
               attackableIds={highlights.attackableIds}
               hoverAttackTargetId={hoverTargetId}
@@ -1926,6 +1933,7 @@ export function HexBattlefield({
             tokens={displayScene.tokens}
             canEndTurn={canEndTurn}
             isGm={canControlCombat}
+            onSnapshot={syncRoom}
             onUpdate={refresh}
           />
         ) : null}

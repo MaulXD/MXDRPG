@@ -102,27 +102,30 @@ export function CombatFxLayer({
     if (reducedMotion) {
       return {
         mark: 120,
-        roll: mode === "area-target" ? 160 : 200,
-        applyStateDelay: 350,
-        resultHold: mode === "area-intro" ? 700 : mode === "area-target" ? 900 : 1200,
+        roll: 200,
+        resultPause: 220,
+        tokenFxDelay: 120,
+        applyStateDelay: 280,
+        resultHold: mode === "area-intro" ? 700 : 900,
         damageFade: 600,
         simulFlash: 500,
+        areaTargetMark: 160,
+        areaTargetFx: 120,
+        areaTargetDamage: 320,
       };
     }
     return {
       mark: mode === "area-intro" ? 500 : 280,
-      roll: mode === "area-target" ? 650 : 900,
-      applyStateDelay: mode === "area-target" ? 700 : 1000,
-      resultHold:
-        mode === "area-intro"
-          ? 1100
-          : mode === "area-target"
-            ? 1400
-            : mode === "area-simultaneous"
-              ? 900
-              : 6000,
-      damageFade: mode === "area-target" ? 1600 : 2800,
+      roll: 900,
+      resultPause: 650,
+      tokenFxDelay: 480,
+      applyStateDelay: 700,
+      resultHold: mode === "area-intro" ? 1100 : 2200,
+      damageFade: 1800,
       simulFlash: 450,
+      areaTargetMark: 320,
+      areaTargetFx: 300,
+      areaTargetDamage: 550,
     };
   }, [fx?.mode, reducedMotion]);
 
@@ -161,12 +164,20 @@ export function CombatFxLayer({
               onTokenCastFxRef.current?.(t.tokenId, data.castFxKind);
             }
           }
+          if (!applyStateCalledRef.current) {
+            applyStateCalledRef.current = true;
+            onApplyStateRef.current?.();
+          }
           setShowDamage(true);
           setPhase("damage");
         }, timings.mark + timings.simulFlash)
       );
       timeouts.push(
         setTimeout(() => {
+          if (!applyStateCalledRef.current) {
+            applyStateCalledRef.current = true;
+            onApplyStateRef.current?.();
+          }
           setPhase("done");
           onTokenFlashRef.current?.(null, null);
           onDoneRef.current();
@@ -177,60 +188,90 @@ export function CombatFxLayer({
       };
     }
 
-    const t0 = setTimeout(() => {
-      if (data.mode === "single" || data.mode === "area-target") {
-        setPhase("roll");
+    const playTokenFx = () => {
+      if (data.defenderTokenId) {
+        const flash: TokenCombatFlash = data.critical
+          ? "crit"
+          : data.hit === false && data.saveTotal == null
+            ? "miss"
+            : data.hit || data.saveTotal != null
+              ? "hit"
+              : "miss";
+        onTokenFlashRef.current?.(data.defenderTokenId, flash);
       }
+      if (!castFxTriggeredRef.current && data.castFxKind && data.castFxTargetId) {
+        const shouldPlay =
+          data.castFxKind === "slash"
+            ? Boolean(data.hit)
+            : data.castFxKind === "buff"
+              ? true
+              : data.castFxKind === "heal"
+                ? data.isHeal || (data.damageTotal != null && data.damageTotal > 0)
+                : data.castFxKind === "fire"
+                  ? data.hit !== false || data.saveTotal != null
+                  : false;
+        if (shouldPlay) {
+          castFxTriggeredRef.current = true;
+          onTokenCastFxRef.current?.(data.castFxTargetId, data.castFxKind);
+        }
+      }
+    };
+
+    const applyDamagePhase = () => {
+      if (applyStateCalledRef.current) return;
+      applyStateCalledRef.current = true;
+      onApplyStateRef.current?.();
+      const hasDamage =
+        data.damageTotal != null &&
+        (data.isHeal || data.hit !== false || data.saveTotal != null);
+      if (hasDamage) {
+        setShowDamage(true);
+        setPhase("damage");
+      }
+    };
+
+    if (data.mode === "area-target") {
+      timeouts.push(
+        setTimeout(() => {
+          playTokenFx();
+        }, timings.areaTargetMark + timings.areaTargetFx)
+      );
+      timeouts.push(
+        setTimeout(() => {
+          applyDamagePhase();
+        }, timings.areaTargetMark + timings.areaTargetFx + timings.areaTargetDamage)
+      );
+      timeouts.push(
+        setTimeout(() => {
+          setPhase("done");
+          onTokenFlashRef.current?.(null, null);
+          onDoneRef.current();
+        }, timings.areaTargetMark + timings.areaTargetFx + timings.areaTargetDamage + timings.resultHold)
+      );
+      return () => {
+        for (const id of timeouts) clearTimeout(id);
+      };
+    }
+
+    const t0 = setTimeout(() => {
+      setPhase("roll");
 
       timeouts.push(
         setTimeout(() => {
           setPhase("result");
-          if (data.defenderTokenId) {
-            const flash: TokenCombatFlash = data.critical
-              ? "crit"
-              : data.hit === false && data.saveTotal == null
-                ? "miss"
-                : data.hit || data.saveTotal != null
-                  ? "hit"
-                  : "miss";
-            onTokenFlashRef.current?.(data.defenderTokenId, flash);
-          }
-          if (
-            !castFxTriggeredRef.current &&
-            data.castFxKind &&
-            data.castFxTargetId
-          ) {
-            const shouldPlay =
-              data.castFxKind === "slash"
-                ? Boolean(data.hit)
-                : data.castFxKind === "buff"
-                  ? true
-                  : data.castFxKind === "heal"
-                    ? data.isHeal || (data.damageTotal != null && data.damageTotal > 0)
-                    : data.castFxKind === "fire"
-                      ? data.hit !== false || data.saveTotal != null
-                      : false;
-            if (shouldPlay) {
-              castFxTriggeredRef.current = true;
-              onTokenCastFxRef.current?.(data.castFxTargetId, data.castFxKind);
-            }
-          }
         }, timings.mark + timings.roll)
       );
 
       timeouts.push(
         setTimeout(() => {
-          if (applyStateCalledRef.current) return;
-          applyStateCalledRef.current = true;
-          if (data.deferStateApply) onApplyStateRef.current?.();
-          const hasDamage =
-            data.damageTotal != null &&
-            (data.isHeal || data.hit !== false || data.saveTotal != null);
-          if (hasDamage) {
-            setShowDamage(true);
-            setPhase("damage");
-          }
-        }, timings.mark + timings.roll + timings.applyStateDelay)
+          playTokenFx();
+        }, timings.mark + timings.roll + timings.resultPause + timings.tokenFxDelay)
+      );
+
+      timeouts.push(
+        setTimeout(() => {
+          applyDamagePhase();
+        }, timings.mark + timings.roll + timings.resultPause + timings.tokenFxDelay + timings.applyStateDelay)
       );
 
       timeouts.push(
@@ -238,7 +279,14 @@ export function CombatFxLayer({
           setPhase("done");
           onTokenFlashRef.current?.(null, null);
           onDoneRef.current();
-        }, timings.mark + timings.roll + timings.resultHold + timings.damageFade)
+        },
+          timings.mark +
+            timings.roll +
+            timings.resultPause +
+            timings.tokenFxDelay +
+            timings.applyStateDelay +
+            timings.resultHold +
+            timings.damageFade)
       );
     }, timings.mark);
     timeouts.push(t0);
@@ -277,13 +325,18 @@ export function CombatFxLayer({
   const areaFill = accent.replace(/[\d.]+\)$/, "0.2)");
 
   const resultLabel = resultLabelFor(fx);
+  const showDicePanel = fx.mode === "single";
   const showPanel =
     fx.mode === "area-intro" ||
-    ((fx.mode === "single" || fx.mode === "area-target") &&
-      (phase === "roll" || phase === "result" || phase === "damage"));
+    (showDicePanel && (phase === "roll" || phase === "result" || phase === "damage"));
   const showResultText =
-    fx.mode === "area-intro" || phase === "result" || phase === "damage";
-  const showRoll = fx.mode !== "area-intro" && phase === "roll";
+    fx.mode === "area-intro" || (showDicePanel && (phase === "result" || phase === "damage"));
+  const showRoll = showDicePanel && phase === "roll";
+  const showResolveDetail =
+    showDicePanel &&
+    phase === "damage" &&
+    Boolean(fx.resolveDetail) &&
+    (fx.hit === true || fx.saveTotal != null);
 
   const areaHexPaths =
     fx.areaHexes?.map((hex) => hexPathPoints(hex, hexSize, ox, oy, w, h, view)) ?? [];
@@ -340,11 +393,6 @@ export function CombatFxLayer({
               </div>
             ) : (
               <>
-                {fx.mode === "area-target" && fx.cascadeIndex != null ? (
-                  <p className="combat-fx-cascade-tag">
-                    Alvo {fx.cascadeIndex}/{fx.cascadeTotal}
-                  </p>
-                ) : null}
                 <DiceMiniature
                   formula="1d20"
                   value={
@@ -362,15 +410,17 @@ export function CombatFxLayer({
                     >
                       {resultLabel}
                     </p>
-                    <p className="combat-fx-panel-vs">
-                      {fx.saveTotal != null
-                        ? `${fx.saveTotal} vs CD ${fx.saveDc}`
-                        : `${fx.attackTotal} vs CA ${fx.defenderAc}`}
-                    </p>
+                    {fx.saveTotal != null || fx.attackTotal != null || fx.defenderAc != null ? (
+                      <p className="combat-fx-panel-vs">
+                        {fx.saveTotal != null
+                          ? `${fx.saveTotal} vs CD ${fx.saveDc ?? "—"}`
+                          : `${fx.attackTotal ?? "—"} vs CA ${fx.defenderAc ?? "—"}`}
+                      </p>
+                    ) : null}
                     {fx.spellDamageType ? (
                       <p className="combat-fx-panel-dmg-type">{fx.spellDamageType}</p>
                     ) : null}
-                    {fx.resolveDetail ? (
+                    {showResolveDetail ? (
                       <p className="combat-fx-panel-detail">{fx.resolveDetail}</p>
                     ) : null}
                   </div>
@@ -412,15 +462,6 @@ export function CombatFxLayer({
           })
         : null}
 
-      {showResultText &&
-      fx.hit === false &&
-      !fx.criticalFail &&
-      fx.saveTotal == null &&
-      fx.mode !== "area-intro" ? (
-        <div className="combat-fx-miss combat-fx-miss--hex" style={{ left: to.x, top: to.y + 88 }}>
-          Errou
-        </div>
-      ) : null}
     </div>
   );
 }
