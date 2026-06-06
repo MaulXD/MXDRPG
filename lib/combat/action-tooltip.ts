@@ -4,6 +4,7 @@ import { stripHtml } from "@/lib/compendium/format";
 import { getEntry } from "@/lib/compendium/registry";
 import type { CompendiumPackId } from "@/lib/compendium/types";
 import type { SpellAreaShape } from "@/lib/combat/area-spell";
+import { abilityEffectDurationHint } from "@/lib/combat/buff-durations";
 import { effectivePaCost, totalAttackPaCost } from "@/lib/combat/pa-economy";
 import type { AbilityEffect, CombatActionOption } from "@/lib/combat/types";
 
@@ -16,20 +17,28 @@ const AREA_LABELS: Record<SpellAreaShape, string> = {
   wall: "muralha",
 };
 
+function withDuration(effect: AbilityEffect, text: string): string {
+  const duration = abilityEffectDurationHint(effect);
+  return duration ? `${text} Duração: ${duration}.` : text;
+}
+
 const ABILITY_EFFECT_HINT: Record<AbilityEffect, string> = {
-  melee_attack_bonus: "Bônus no próximo ataque corpo a corpo.",
-  defense_buff: "Aumenta defesa até o fim do turno.",
-  charge: "Investida em linha reta com bônus no ataque corpo a corpo.",
-  shadow_step: "Deslocamento curto (teleporte) para hex visível.",
-  mark: "Marca o alvo — aliados podem ter vantagem contra ele.",
-  mark_disadvantage: "Finta: desvantagem no próximo ataque do alvo.",
+  melee_attack_bonus: withDuration("melee_attack_bonus", "Bônus no próximo ataque corpo a corpo."),
+  defense_buff: withDuration("defense_buff", "Aumenta defesa até o início do próximo turno."),
+  charge: withDuration("charge", "Investida em linha reta com bônus no ataque corpo a corpo."),
+  shadow_step: withDuration("shadow_step", "Deslocamento curto (teleporte) para hex visível."),
+  mark: withDuration("mark", "Marca o alvo — bônus ou vantagem no próximo ataque contra ele."),
+  mark_disadvantage: withDuration(
+    "mark_disadvantage",
+    "Finta: desvantagem no próximo ataque do alvo."
+  ),
   spell_strike: "Projétil ou raio — rolagem de ataque contra CA.",
   heal_touch: "Cura um aliado adjacente.",
   restrain: "Alvo faz teste de resistência ou fica impedido.",
-  reaction_shift: "Desloca 1 hex como reação (fora do turno).",
-  wild_shape: "Assume forma selvagem.",
-  ally_inspire: "Concede bônus temporários a um aliado.",
-  ranged_advantage: "Próximo ataque à distância com vantagem.",
+  reaction_shift: withDuration("reaction_shift", "Desloca 1 hex como reação (fora do turno)."),
+  wild_shape: withDuration("wild_shape", "Assume forma selvagem no próximo movimento."),
+  ally_inspire: withDuration("ally_inspire", "Concede bônus temporários a um aliado."),
+  ranged_advantage: withDuration("ranged_advantage", "Próximo ataque à distância com vantagem."),
 };
 
 function compendiumPack(

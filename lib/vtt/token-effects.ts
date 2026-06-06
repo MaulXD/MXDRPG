@@ -1,5 +1,6 @@
 import type { TokenCondition } from "@/lib/combat/conditions";
 import { tokenConditions } from "@/lib/combat/conditions";
+import { TOKEN_FIELD_BUFF_DURATIONS } from "@/lib/combat/buff-durations";
 import {
   formatTimedEffectBadge,
   formatTimedEffectRemaining,
@@ -12,6 +13,15 @@ import type { TokenEffectIconId } from "@/lib/vtt/token-effect-icons";
 import { CONDITION_ICON } from "@/lib/vtt/token-effect-icons";
 import type { BattleToken } from "@/lib/vtt/types";
 
+/** Tooltip: nome, descrição do efeito e duração restante (se houver). */
+export function formatEffectTooltip(
+  chip: Pick<TokenEffectChip, "label" | "description" | "durationLabel">
+): string {
+  const base = `${chip.label}: ${chip.description}`;
+  if (chip.durationLabel) return `${base} · Duração: ${chip.durationLabel}`;
+  return base;
+}
+
 export type TokenEffectKind = "condition" | "buff" | "debuff";
 
 export type TokenEffectChip = {
@@ -20,32 +30,54 @@ export type TokenEffectChip = {
   label: string;
   abbr: string;
   icon: TokenEffectIconId;
-  title: string;
+  /** Regra do efeito (Cap. 3.4 ou habilidade da mesa). */
+  description: string;
   color: string;
   bg: string;
   /** Badge curto no ícone — ex. `3R`, `2T`, `→`. */
   remaining?: string;
+  /** Texto de duração restante — ex. `2 turnos`. */
+  durationLabel?: string | null;
+  /** Tooltip completo (descrição + duração). */
+  title: string;
+};
+
+export type ConditionMeta = {
+  label: string;
+  abbr: string;
+  icon: TokenEffectIconId;
+  color: string;
+  bg: string;
+  description: string;
 };
 
 /** Fundo sólido + ícone claro (alto contraste no hex e na UI). */
-export const CONDITION_META: Record<
-  TokenCondition,
-  { label: string; abbr: string; icon: TokenEffectIconId; color: string; bg: string }
-> = {
+export const CONDITION_META: Record<TokenCondition, ConditionMeta> = {
   amedrontado: {
     label: "Amedrontado",
     abbr: "Am",
     icon: "fear",
     bg: "#4a2f6e",
     color: "#f5ecff",
+    description:
+      "Desvantagem em ataques e testes enquanto a fonte do medo estiver visível.",
   },
-  cego: { label: "Cego", abbr: "Ce", icon: "blind", bg: "#3a4458", color: "#f0f4fc" },
+  cego: {
+    label: "Cego",
+    abbr: "Ce",
+    icon: "blind",
+    bg: "#3a4458",
+    color: "#f0f4fc",
+    description: "Desvantagem em ataques. Ataques contra têm vantagem.",
+  },
   atordoado: {
     label: "Atordoado",
     abbr: "At",
     icon: "daze",
     bg: "#6b4a12",
     color: "#fff6d8",
+    description:
+      "Incapaz de agir. Falha automática em Força e Destreza. Ataques contra têm vantagem.",
   },
   envenenado: {
     label: "Envenenado",
@@ -53,6 +85,7 @@ export const CONDITION_META: Record<
     icon: "poison",
     bg: "#1f5c32",
     color: "#d8ffe0",
+    description: "Desvantagem em ataques e testes de atributo.",
   },
   prostrado: {
     label: "Prostrado",
@@ -60,6 +93,7 @@ export const CONDITION_META: Record<
     icon: "prone",
     bg: "#5c3a1e",
     color: "#ffe8cc",
+    description: "Velocidade 0 exceto arrastando. Desvantagem em ataques. Ataques contra têm vantagem.",
   },
   restringido: {
     label: "Restringido",
@@ -67,6 +101,8 @@ export const CONDITION_META: Record<
     icon: "restraint",
     bg: "#6b3228",
     color: "#ffe2d6",
+    description:
+      "Velocidade 0. Desvantagem em ataques e Destreza. Ataques contra têm vantagem.",
   },
   encantado: {
     label: "Encantado",
@@ -74,6 +110,8 @@ export const CONDITION_META: Record<
     icon: "charm",
     bg: "#5a2868",
     color: "#ffe8ff",
+    description:
+      "Não pode atacar o encantador. Encantador tem vantagem em interações sociais.",
   },
 };
 
@@ -100,10 +138,23 @@ const FIELD_CHIP_ICONS: Partial<Record<keyof BattleToken, TokenEffectIconId>> = 
   bonusDamageFormula: "flame",
 };
 
-function withRemaining(chip: TokenEffectChip, badge: string | null, detail: string | null): TokenEffectChip {
-  if (!badge && !detail) return chip;
-  const title = detail ? `${chip.title} · ${detail}` : chip.title;
-  return { ...chip, remaining: badge ?? undefined, title };
+type ChipDraft = Omit<TokenEffectChip, "title" | "durationLabel"> & {
+  durationLabel?: string | null;
+};
+
+function finalizeChip(
+  draft: ChipDraft,
+  timed?: { badge: string | null; detail: string | null }
+): TokenEffectChip {
+  const durationLabel = timed?.detail ?? draft.durationLabel ?? null;
+  const chip: TokenEffectChip = {
+    ...draft,
+    durationLabel,
+    remaining: timed?.badge ?? draft.remaining,
+    title: "",
+  };
+  chip.title = formatEffectTooltip(chip);
+  return chip;
 }
 
 function buffChip(
@@ -111,21 +162,23 @@ function buffChip(
   label: string,
   abbr: string,
   icon: TokenEffectIconId,
-  title: string,
+  description: string,
   style?: { bg?: string; color?: string },
   timed?: { badge: string | null; detail: string | null }
 ): TokenEffectChip {
-  const chip: TokenEffectChip = {
-    id,
-    kind: "buff",
-    label,
-    abbr,
-    icon,
-    title,
-    color: style?.color ?? BUFF_CHIP_STYLE.color,
-    bg: style?.bg ?? BUFF_CHIP_STYLE.bg,
-  };
-  return timed ? withRemaining(chip, timed.badge, timed.detail) : chip;
+  return finalizeChip(
+    {
+      id,
+      kind: "buff",
+      label,
+      abbr,
+      icon,
+      description,
+      color: style?.color ?? BUFF_CHIP_STYLE.color,
+      bg: style?.bg ?? BUFF_CHIP_STYLE.bg,
+    },
+    timed
+  );
 }
 
 function debuffChip(
@@ -133,20 +186,22 @@ function debuffChip(
   label: string,
   abbr: string,
   icon: TokenEffectIconId,
-  title: string,
+  description: string,
   timed?: { badge: string | null; detail: string | null }
 ): TokenEffectChip {
-  const chip: TokenEffectChip = {
-    id,
-    kind: "debuff",
-    label,
-    abbr,
-    icon,
-    title,
-    color: DEBUFF_CHIP_STYLE.color,
-    bg: DEBUFF_CHIP_STYLE.bg,
-  };
-  return timed ? withRemaining(chip, timed.badge, timed.detail) : chip;
+  return finalizeChip(
+    {
+      id,
+      kind: "debuff",
+      label,
+      abbr,
+      icon,
+      description,
+      color: DEBUFF_CHIP_STYLE.color,
+      bg: DEBUFF_CHIP_STYLE.bg,
+    },
+    timed
+  );
 }
 
 function timedMeta(fx: ReturnType<typeof timedEffectsOf>[number] | undefined) {
@@ -164,7 +219,13 @@ export function listTokenEffectChips(token: BattleToken): TokenEffectChip[] {
 
   if (isTokenDefeated(token)) {
     out.push(
-      debuffChip("morto", "Morto", "Mt", "skull", "Derrotado — fora de combate")
+      debuffChip(
+        "morto",
+        "Morto",
+        "Mt",
+        "skull",
+        "Derrotado — fora de combate e sem ações na iniciativa."
+      )
     );
   }
 
@@ -174,17 +235,21 @@ export function listTokenEffectChips(token: BattleToken): TokenEffectChip[] {
     const fx = findTimedEffectForCondition(token, c);
     if (fx) coveredFxIds.add(fx.id);
     const timed = timedMeta(fx);
-    out.push({
-      id: `cond-${c}`,
-      kind: fx?.kind === "buff" ? "buff" : "condition",
-      label: meta.label,
-      abbr: meta.abbr,
-      icon: CONDITION_ICON[c] ?? meta.icon,
-      title: timed.detail ? `${meta.label} · ${timed.detail}` : meta.label,
-      color: meta.color,
-      bg: meta.bg,
-      remaining: timed.badge ?? undefined,
-    });
+    out.push(
+      finalizeChip(
+        {
+          id: `cond-${c}`,
+          kind: fx?.kind === "buff" ? "buff" : "condition",
+          label: meta.label,
+          abbr: meta.abbr,
+          icon: CONDITION_ICON[c] ?? meta.icon,
+          description: meta.description,
+          color: meta.color,
+          bg: meta.bg,
+        },
+        timed
+      )
+    );
   }
 
   if (token.defesaBonus && token.defesaBonus > 0) {
@@ -198,9 +263,7 @@ export function listTokenEffectChips(token: BattleToken): TokenEffectChip[] {
         `+${token.defesaBonus} defesa`,
         `+${token.defesaBonus}`,
         "shield",
-        timed.detail
-          ? `${src}: +${token.defesaBonus} defesa · ${timed.detail}`
-          : `${src}: +${token.defesaBonus} defesa`,
+        `${src}: +${token.defesaBonus} na Classe de Armadura. Duração: até próx. turno.`,
         undefined,
         timed
       )
@@ -216,7 +279,7 @@ export function listTokenEffectChips(token: BattleToken): TokenEffectChip[] {
         "Investida",
         "Inv",
         "charge",
-        "Investida pronta — próximo ataque corpo a corpo",
+        "Investida preparada — bônus no próximo ataque corpo a corpo. Duração: 1 turno ou até usar.",
         { bg: "#5c4818", color: "#fff8e0" },
         timedMeta(fx)
       )
@@ -232,7 +295,7 @@ export function listTokenEffectChips(token: BattleToken): TokenEffectChip[] {
         token.chargeNote.trim(),
         "Mv",
         "move",
-        token.chargeNote.trim(),
+        `Movimento especial: ${token.chargeNote.trim()}.`,
         undefined,
         timedMeta(fx)
       )
@@ -248,7 +311,7 @@ export function listTokenEffectChips(token: BattleToken): TokenEffectChip[] {
         `+${token.nextAttackBonus} ataque`,
         `+${token.nextAttackBonus}`,
         "atk-up",
-        `Próximo ataque +${token.nextAttackBonus}`,
+        `Próximo ataque recebe +${token.nextAttackBonus} no teste de ataque. Duração: ${TOKEN_FIELD_BUFF_DURATIONS.nextAttackBonus?.label ?? "1 turno"}.`,
         { bg: "#5c4a14", color: "#fff4d0" },
         timedMeta(fx)
       )
@@ -264,7 +327,7 @@ export function listTokenEffectChips(token: BattleToken): TokenEffectChip[] {
         "Inspiração",
         "In",
         "inspire",
-        "Próximo ataque com vantagem (aliado)",
+        "Próximo ataque do aliado inspirado rola com vantagem. Duração: 1 turno.",
         { bg: "#2a5218", color: "#e8ffd0" },
         timedMeta(fx)
       )
@@ -280,7 +343,7 @@ export function listTokenEffectChips(token: BattleToken): TokenEffectChip[] {
         "Tiro certeiro",
         "Tc",
         "aim",
-        "Próximo ataque à distância com vantagem",
+        "Próximo ataque à distância rola com vantagem. Duração: 1 turno.",
         { bg: "#3a2868", color: "#f0e8ff" },
         timedMeta(fx)
       )
@@ -291,7 +354,15 @@ export function listTokenEffectChips(token: BattleToken): TokenEffectChip[] {
     const fx = findTimedEffectForField(token, "reactionShiftReady");
     if (fx) coveredFxIds.add(fx.id);
     out.push(
-      buffChip("react", "Reflexos", "Rf", "react", "Pode deslocar 1 hex como reação", undefined, timedMeta(fx))
+      buffChip(
+        "react",
+        "Reflexos",
+        "Rf",
+        "react",
+        "Pode deslocar 1 hex como reação sem gastar PA. Duração: 1 turno.",
+        undefined,
+        timedMeta(fx)
+      )
     );
   }
 
@@ -304,7 +375,7 @@ export function listTokenEffectChips(token: BattleToken): TokenEffectChip[] {
         token.bonusDamageFormula.trim(),
         "Cn",
         "flame",
-        `Dano extra: ${token.bonusDamageFormula.trim()}`,
+        `Próximo golpe causa dano extra (${token.bonusDamageFormula.trim()}). Duração: ${TOKEN_FIELD_BUFF_DURATIONS.bonusDamageFormula?.label ?? "1 turno"}.`,
         { bg: "#6b3010", color: "#ffe8d0" },
         timedMeta(fx)
       )
@@ -313,18 +384,35 @@ export function listTokenEffectChips(token: BattleToken): TokenEffectChip[] {
 
   const mark = token.attackMark;
   if (mark) {
+    const markFx = findTimedEffectForField(token, "attackMark");
+    if (markFx) coveredFxIds.add(markFx.id);
+    const markTimed = timedMeta(markFx);
+    const markDuration = TOKEN_FIELD_BUFF_DURATIONS.attackMark?.label ?? "1 turno";
     if (mark.attackerDisadvantage) {
-      out.push(debuffChip("finta", "Finta", "Fn", "feint", "Atacante com desvantagem (finta)"));
-    } else {
-      const parts: string[] = ["Marca"];
-      if (mark.bonus) parts.push(`+${mark.bonus}`);
-      if (mark.advantage) parts.push("vantagem");
-      if (mark.rangedOnly) parts.push("à distância");
       out.push(
-        buffChip("mark", parts.join(" "), "Mk", "mark", parts.join(" · "), {
+        debuffChip(
+          "finta",
+          "Finta",
+          "Fn",
+          "feint",
+          `Próximo ataque sofre desvantagem (Finta). Duração: ${markDuration}.`,
+          markTimed
+        )
+      );
+    } else {
+      const parts: string[] = [];
+      if (mark.bonus) parts.push(`+${mark.bonus} no ataque`);
+      if (mark.advantage) parts.push("vantagem no ataque");
+      if (mark.rangedOnly) parts.push("só à distância");
+      const desc =
+        parts.length > 0
+          ? `Marca ativa no alvo: ${parts.join(", ")}. Duração: ${markDuration}.`
+          : `Marca ativa no alvo designado. Duração: ${markDuration}.`;
+      out.push(
+        buffChip("mark", "Marca", "Mk", "mark", desc, {
           bg: "#4a4020",
           color: "#fff6d8",
-        })
+        }, markTimed)
       );
     }
   }
@@ -345,17 +433,25 @@ export function listTokenEffectChips(token: BattleToken): TokenEffectChip[] {
         : kind === "debuff"
           ? DEBUFF_CHIP_STYLE
           : { bg: "#3a3a48", color: "#f0f0f8" };
-    out.push({
-      id: `fx-${fx.id}`,
-      kind,
-      label,
-      abbr: label.slice(0, 2),
-      icon,
-      title: timed.detail ? `${label} · ${timed.detail}` : label,
-      color: style.color,
-      bg: style.bg,
-      remaining: timed.badge ?? undefined,
-    });
+    const description =
+      fx.condition && CONDITION_META[fx.condition]
+        ? CONDITION_META[fx.condition].description
+        : `Efeito temporário da mesa (${kind === "buff" ? "buff" : kind === "debuff" ? "debuff" : "condição"}).`;
+    out.push(
+      finalizeChip(
+        {
+          id: `fx-${fx.id}`,
+          kind,
+          label,
+          abbr: label.slice(0, 2),
+          icon,
+          description,
+          color: style.color,
+          bg: style.bg,
+        },
+        timed
+      )
+    );
   }
 
   return out;

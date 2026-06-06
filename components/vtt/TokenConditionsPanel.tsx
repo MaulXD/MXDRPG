@@ -3,11 +3,13 @@
 import { useState } from "react";
 import type { BattleToken } from "@/lib/vtt/types";
 import type { TokenCondition } from "@/lib/combat/conditions";
+import { CONDITION_SUGGESTED_DURATIONS } from "@/lib/combat/buff-durations";
 import { toggleConditionWithDuration } from "@/lib/combat/timed-effects";
 import { patchRoomToken } from "@/hooks/useRoomSync";
 import { ALL_TOKEN_CONDITIONS, CONDITION_META } from "@/lib/vtt/token-effects";
+import { formatConditionCatalogTooltip } from "@/lib/vtt/status-display";
 import { TokenEffectIcon } from "@/components/vtt/TokenEffectIcon";
-import { TokenEffectsRow } from "@/components/vtt/TokenEffectsRow";
+import { EffectHoverTip } from "@/components/vtt/EffectHoverTip";
 
 type DurationChoice = { roundsLeft?: number; turnsLeft?: number };
 
@@ -59,35 +61,63 @@ export function TokenConditionsPanel({
 
   return (
     <div className="vtt-conditions-panel">
-      <TokenEffectsRow token={token} variant="full" className="vtt-effect-chips--panel" />
-      <p className="vtt-eyebrow">Condições (Cap. 3.4)</p>
+      <p className="vtt-eyebrow">Aplicar condições (Cap. 3.4)</p>
       <div className="vtt-conditions-grid">
         {ALL_TOKEN_CONDITIONS.map((c) => (
-          <button
+          <EffectHoverTip
             key={c}
-            type="button"
-            className={`btn btn-ghost vtt-condition-btn${active.includes(c) ? " active" : ""}${pending === c ? " pending" : ""}`}
-            onClick={() => {
-              if (active.includes(c)) {
-                void apply(c, null);
-                return;
-              }
-              setPending(pending === c ? null : c);
-            }}
-            title={CONDITION_META[c].label}
+            tip={formatConditionCatalogTooltip(c, token)}
+            className="vtt-condition-btn-wrap"
           >
-            <TokenEffectIcon icon={CONDITION_META[c].icon} size={16} />
-            <span>{CONDITION_META[c].label}</span>
-          </button>
+            <button
+              type="button"
+              className={`btn btn-ghost vtt-condition-btn${active.includes(c) ? " active" : ""}${pending === c ? " pending" : ""}`}
+              onClick={() => {
+                if (active.includes(c)) {
+                  void apply(c, null);
+                  return;
+                }
+                setPending(pending === c ? null : c);
+              }}
+            >
+              <TokenEffectIcon icon={CONDITION_META[c].icon} size={16} />
+              <span>{CONDITION_META[c].label}</span>
+            </button>
+          </EffectHoverTip>
         ))}
       </div>
 
       {pending ? (
         <div className="vtt-condition-duration">
-          <p className="vtt-condition-duration-label">
+          <p
+            className="vtt-condition-duration-label"
+            title={formatConditionCatalogTooltip(pending, token)}
+          >
             Duração — <strong>{CONDITION_META[pending].label}</strong>
+            <span className="vtt-condition-duration-desc">{CONDITION_META[pending].description}</span>
+            {CONDITION_SUGGESTED_DURATIONS[pending]?.note ? (
+              <span className="vtt-condition-duration-desc">
+                Sugestão: {CONDITION_SUGGESTED_DURATIONS[pending]?.note}
+              </span>
+            ) : null}
           </p>
           <div className="vtt-condition-duration-row">
+            {CONDITION_SUGGESTED_DURATIONS[pending]?.turnsLeft ||
+            CONDITION_SUGGESTED_DURATIONS[pending]?.roundsLeft ? (
+              <button
+                type="button"
+                className="btn btn-ghost vtt-duration-btn vtt-duration-btn--suggested"
+                title="Aplicar duração sugerida do livro"
+                onClick={() =>
+                  void apply(pending, {
+                    turnsLeft: CONDITION_SUGGESTED_DURATIONS[pending]?.turnsLeft,
+                    roundsLeft: CONDITION_SUGGESTED_DURATIONS[pending]?.roundsLeft,
+                  })
+                }
+              >
+                Sug.
+              </button>
+            ) : null}
             {DURATION_OPTIONS.map((opt) => (
               <button
                 key={opt.label}
