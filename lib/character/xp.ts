@@ -39,13 +39,43 @@ export function canAdvanceLevel(level: number, xpTotal: number): boolean {
 }
 
 export function formatXpProgress(level: number, xpTotal: number): string {
-  if (level >= MAX_LEVEL) return `${xpTotal} XP · máx`;
+  if (level >= MAX_LEVEL) return "Ascensão";
   const prev = xpTotalForLevel(level);
   const next = xpTotalForLevel(level + 1);
   const band = next - prev;
   const progress = Math.max(0, xpTotal - prev);
   if (xpTotal >= next) return `↑ nv ${level + 1}`;
   return `${progress} / ${band} XP`;
+}
+
+/** Texto rico para bloco de nível/XP na ficha popup */
+export function formatXpProgressDetail(
+  level: number,
+  xpTotal: number
+): { primary: string; secondary: string; barLabel: string } {
+  if (level >= MAX_LEVEL) {
+    return {
+      primary: "Ascensão",
+      secondary: `${xpTotal.toLocaleString("pt-BR")} XP acumulados`,
+      barLabel: "Capstone nv. 20",
+    };
+  }
+  const remaining = xpToNextLevel(level, xpTotal);
+  const prev = xpTotalForLevel(level);
+  const band = xpTotalForLevel(level + 1) - prev;
+  const progress = Math.max(0, xpTotal - prev);
+  if (remaining === 0) {
+    return {
+      primary: `${progress} / ${band} XP`,
+      secondary: `Pronto para subir ao nv. ${level + 1}`,
+      barLabel: `↑ nv ${level + 1}`,
+    };
+  }
+  return {
+    primary: `${progress} / ${band} XP`,
+    secondary: `Faltam ${remaining.toLocaleString("pt-BR")} XP para o nv. ${level + 1}`,
+    barLabel: `${xpTotal.toLocaleString("pt-BR")} XP total`,
+  };
 }
 
 /** 0–1 para barra de XP no nível atual */

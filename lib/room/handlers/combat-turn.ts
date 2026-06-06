@@ -22,6 +22,11 @@ import {
   syncCombatOrderWithTokens,
 } from "../combat-order";
 import { clearCombatRecharges, clearPerTurnRecharges } from "@/lib/combat/recharge";
+import {
+  formatExpiredNotice,
+  tickAllTimedEffectsOnNewRound,
+  tickTokenTimedEffectsOnTurnEnd,
+} from "@/lib/combat/timed-effects";
 import { resetAllTokenMovement } from "../internal/token-reset";
 import { getRoom, persistRoom, toSnapshot } from "../internal/registry";
 import type { RoomSnapshot, RoomState } from "../types";
@@ -105,6 +110,12 @@ function bankEndingToken(room: RoomState, notices: string[]): void {
   if (idx < 0) return;
 
   const tokens = [...room.scene.tokens];
+  const tickEnd = tickTokenTimedEffectsOnTurnEnd(tokens[idx]);
+  for (const fx of tickEnd.expired) {
+    notices.push(formatExpiredNotice(fx, tokens[idx].name));
+  }
+  tokens[idx] = tickEnd.token;
+
   const before = tokens[idx];
   const rules = paRulesForToken(room, before);
   const paMax = rules.recoveryPerTurn;
@@ -139,9 +150,18 @@ function bankEndingToken(room: RoomState, notices: string[]): void {
   }
 }
 
-function stepToNextCombatant(room: RoomState): void {
+function stepToNextCombatant(room: RoomState, notices: string[]): void {
+  const prevRound = room.combat.round;
   room.combat = nextTurn(room.combat);
-  resetAllTokenMovement(room);
+  if (room.combat.round > prevRound) {
+    const tick = tickAllTimedEffectsOnNewRound(room.scene.tokens);
+    room.scene = { ...room.scene, tokens: tick.tokens };
+    for (const { tokenId, fx } of tick.expired) {
+      const name = room.scene.tokens.find((t) => t.id === tokenId)?.name ?? "Token";
+      notices.push(formatExpiredNotice(fx, name));
+    }
+  }
+  resetAllTokenMovement(room, notices);
 }
 
 function applyTurnPaTransition(room: RoomState): string[] {
@@ -149,7 +169,7 @@ function applyTurnPaTransition(room: RoomState): string[] {
   syncCombatOrderWithTokens(room);
 
   bankEndingToken(room, notices);
-  stepToNextCombatant(room);
+  stepToNextCombatant(room, notices);
   syncCombatOrderWithTokens(room);
 
   const maxSkips = Math.max(1, room.combat.order.length + 1);
@@ -161,7 +181,7 @@ function applyTurnPaTransition(room: RoomState): string[] {
       if (active.conditions?.includes("atordoado")) {
         notices.push(formatStunSkipNotice(active.name));
       }
-      stepToNextCombatant(room);
+      stepToNextCombatant(room, notices);
       syncCombatOrderWithTokens(room);
       continue;
     }
@@ -201,7 +221,8 @@ export async function rollRoomInitiative(roomId: string): Promise<RoomSnapshot |
     ),
   };
   syncCombatOrderWithTokens(room);
-  resetAllTokenMovement(room);
+  const initNotices: string[] = [];
+  resetAllTokenMovement(room, initNotices);
   zeroAllTokenPaPools(room);
 
   const notices: string[] = [];
@@ -214,7 +235,7 @@ export async function rollRoomInitiative(roomId: string): Promise<RoomSnapshot |
       if (active.conditions?.includes("atordoado")) {
         notices.push(formatStunSkipNotice(active.name));
       }
-      stepToNextCombatant(room);
+      stepToNextCombatant(room, notices);
       syncCombatOrderWithTokens(room);
       continue;
     }

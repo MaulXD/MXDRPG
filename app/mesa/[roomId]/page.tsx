@@ -2,7 +2,6 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { MesaWorkspace } from "@/components/vtt/MesaWorkspace";
 import { RoomCharacterPrompt } from "@/components/vtt/RoomCharacterPrompt";
-import { RoomInviteBar } from "@/components/vtt/RoomInviteBar";
 import {
   canManageRoom,
   canParticipateInRoom,
@@ -125,15 +124,6 @@ export default async function MesaRoomPage({ params, searchParams }: Props) {
         </div>
       ) : null}
 
-      {isRoomGm ? (
-        <RoomInviteBar
-          adventureId={room.adventureId ?? roomId}
-          roomId={roomId}
-          inviteCode={room.inviteCode}
-          roomName={room.name}
-        />
-      ) : null}
-
       <RoomCharacterPrompt
         adventureId={room.adventureId ?? roomId}
         roomId={roomId}
@@ -153,6 +143,9 @@ export default async function MesaRoomPage({ params, searchParams }: Props) {
         canControlCombat={canControlCombat}
         canChat={canParticipate}
         inviteCode={inviteCode}
+        roomInviteCode={canParticipate ? room.inviteCode : null}
+        roomName={room.name}
+        isRoomOwner={isRoomGm}
         session={session?.user ?? null}
         compendium={compendium}
         packs={packs}

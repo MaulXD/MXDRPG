@@ -25,6 +25,8 @@ export type MonsterTemplate = {
   entryId: string;
   name: string;
   description: string;
+  /** IDs BIO-## quando definidos no compêndio; senão inferidos na UI. */
+  biomas?: string[];
   tier: MonsterTier;
   vida: number;
   vidaMax: number;
@@ -53,6 +55,7 @@ type MonsterSystem = {
     ameaca?: { value?: number };
     tier?: string;
     tamanho?: string;
+    biomas?: string[];
   };
   actions?: CombatActionOption[];
 };
@@ -87,6 +90,7 @@ function parseMonster(raw: CompendiumEntryRaw, index: number): MonsterTemplate {
     entryId,
     name: raw.name,
     description: sys.description ?? "",
+    biomas: tactical.biomas?.length ? tactical.biomas : undefined,
     tier,
     vida: resources.vida?.value ?? resources.vida?.max ?? 10,
     vidaMax: resources.vida?.max ?? resources.vida?.value ?? 10,
@@ -118,7 +122,9 @@ export function getMonsterTemplate(entryId: string): MonsterTemplate | null {
 }
 
 export function listMonsterTemplates(): MonsterTemplate[] {
-  return TEMPLATES;
+  return [...TEMPLATES].sort(
+    (a, b) => a.ameaca - b.ameaca || a.name.localeCompare(b.name, "pt-BR")
+  );
 }
 
 export function scaleMonsterTemplate(

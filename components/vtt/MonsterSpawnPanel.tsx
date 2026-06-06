@@ -1,6 +1,6 @@
 ﻿"use client";
 
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { Axial } from "@/lib/vtt/hex-math";
 import type { RoomSnapshot } from "@/lib/room/types";
 import { listMonsterTemplates, scaleMonsterTemplate } from "@/lib/vtt/monsters";
@@ -10,6 +10,12 @@ import { clearActiveSpawnDragPayload, writeMonsterSpawnDrag } from "@/lib/vtt/sp
 import { CompendiumIcon } from "@/components/compendium/CompendiumIcon";
 import { compendiumTypeColor } from "@/lib/compendium/icons";
 import { spawnRoomMonster } from "@/hooks/useRoomSync";
+import {
+  DUNGEON_BIOMES,
+  biomeDisplayName,
+  resolveMonsterBiomes,
+  type DungeonBiomeId,
+} from "@/lib/vtt/monster-biomes";
 
 type Props = {
   roomId: string;
@@ -25,6 +31,7 @@ const VARIANT_LABEL: Record<MonsterSpawnVariant, string> = {
 
 export function MonsterSpawnPanel({ roomId, spawnAxial, onSpawned }: Props) {
   const monsters = listMonsterTemplates();
+  const [biomeFilter, setBiomeFilter] = useState<"all" | DungeonBiomeId>("all");
   const [entryId, setEntryId] = useState(monsters[0]?.entryId ?? "");
   const [variant, setVariant] = useState<MonsterSpawnVariant>("normal");
   const [groupLevelDelta, setGroupLevelDelta] = useState(0);
@@ -86,7 +93,27 @@ export function MonsterSpawnPanel({ roomId, spawnAxial, onSpawned }: Props) {
     clearActiveSpawnDragPayload();
   }
 
-  const selected = monsters.find((m) => m.entryId === entryId);
+  const monstersWithBiomes = useMemo(
+    () =>
+      monsters.map((m) => ({
+        ...m,
+        biomes: resolveMonsterBiomes(m),
+      })),
+    [monsters]
+  );
+
+  const filteredMonsters = useMemo(() => {
+    if (biomeFilter === "all") return monstersWithBiomes;
+    return monstersWithBiomes.filter((m) => m.biomes.includes(biomeFilter));
+  }, [monstersWithBiomes, biomeFilter]);
+
+  useEffect(() => {
+    if (!filteredMonsters.some((m) => m.entryId === entryId)) {
+      setEntryId(filteredMonsters[0]?.entryId ?? "");
+    }
+  }, [filteredMonsters, entryId]);
+
+  const selected = monstersWithBiomes.find((m) => m.entryId === entryId);
 
   return (
     <div className="vtt-spawn-panel">
@@ -121,11 +148,29 @@ export function MonsterSpawnPanel({ roomId, spawnAxial, onSpawned }: Props) {
         </select>
       </label>
 
+      <label className="vtt-combat-select">
+        Bioma
+        <select
+          value={biomeFilter}
+          onChange={(e) => setBiomeFilter(e.target.value as "all" | DungeonBiomeId)}
+        >
+          <option value="all">Todos os biomas</option>
+          {DUNGEON_BIOMES.map((b) => (
+            <option key={b.id} value={b.id}>
+              {b.name}
+            </option>
+          ))}
+        </select>
+      </label>
+
       <p className="vtt-eyebrow" style={{ marginTop: "0.5rem" }}>
-        Bestiário — arrastar
+        Bestiário — nv crescente · arrastar
       </p>
+      {filteredMonsters.length === 0 ? (
+        <p className="vtt-combat-hint">Nenhum monstro neste bioma — tente &quot;Todos&quot;.</p>
+      ) : null}
       <ul className="vtt-spawn-drag-list" role="list">
-        {monsters.map((m) => (
+        {filteredMonsters.map((m) => (
           <li key={m.entryId}>
             <div
               role="button"
@@ -156,6 +201,9 @@ export function MonsterSpawnPanel({ roomId, spawnAxial, onSpawned }: Props) {
                 <span>
                   nv{m.ameaca} · {CREATURE_SIZE_PT[m.creatureSize]} ({CREATURE_SIZE_HEX_LABEL[m.creatureSize]}) · CA{" "}
                   {m.defesa} · {m.vidaMax} HP
+                  {m.biomes.length
+                    ? ` · ${m.biomes.slice(0, 2).map(biomeDisplayName).join(", ")}${m.biomes.length > 2 ? "…" : ""}`
+                    : ""}
                 </span>
               </span>
             </div>
@@ -166,9 +214,9 @@ export function MonsterSpawnPanel({ roomId, spawnAxial, onSpawned }: Props) {
       <label className="vtt-combat-select">
         Seleção rápida
         <select value={entryId} onChange={(e) => setEntryId(e.target.value)}>
-          {monsters.map((m) => (
+          {filteredMonsters.map((m) => (
             <option key={m.entryId} value={m.entryId}>
-              {m.name} · nv{m.ameaca}
+              nv{m.ameaca} — {m.name}
             </option>
           ))}
         </select>

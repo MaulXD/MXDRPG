@@ -35,6 +35,7 @@ import {
   drawTokenDefeatedSkull,
   drawTokenHpLabel,
   drawTokenNameLabel,
+  drawTokenWalkRemainingBadge,
   drawTokenHpSegments,
   hpBarColor,
   hpRatio,
@@ -199,8 +200,19 @@ export function drawHexGridLayer(ctx: CanvasRenderingContext2D, p: GridDrawParam
     ctx.moveTo(corners[0].x, corners[0].y);
     for (let i = 1; i < corners.length; i++) ctx.lineTo(corners[i].x, corners[i].y);
     ctx.closePath();
+    const isMoveHighlight =
+      p.showMovement &&
+      (p.walkSet.has(key) || p.paidWalkSet.has(key) || p.rangeSet.has(key));
+
     ctx.fillStyle = fill;
     ctx.fill();
+
+    if (isMoveHighlight && fill !== pal.fill) {
+      ctx.strokeStyle = "rgba(0, 0, 0, 0.72)";
+      ctx.lineWidth = lineWidth + 2.5;
+      ctx.stroke();
+    }
+
     ctx.strokeStyle = stroke;
     ctx.lineWidth = lineWidth;
     ctx.stroke();
@@ -395,40 +407,17 @@ export function drawTokensLayer(ctx: CanvasRenderingContext2D, p: TokenDrawParam
       }
     }
 
+    if (hpLabelColor) {
+      drawTokenHpLabel(ctx, x, y, r, token, hpLabelColor);
+    }
+
     if (token.id === p.hoverTurnMoveTokenId) {
       const walk = walkRemaining(token);
-      const label = `${walk} hex`;
-      const sub = hexToMeters(walk) + " m";
-      const bx = x;
-      const by = y - r - 28;
-      ctx.save();
-      ctx.font = "600 10px Lora, Georgia, serif";
-      ctx.textAlign = "center";
-      const tw = Math.max(ctx.measureText(label).width, ctx.measureText(sub).width) + 14;
-      ctx.fillStyle = "rgba(8, 10, 8, 0.82)";
-      ctx.strokeStyle = "rgba(120, 150, 95, 0.75)";
-      ctx.lineWidth = 1;
-      const rx = bx - tw / 2;
-      const ry = by - 10;
-      const rh = 22;
-      ctx.beginPath();
-      ctx.roundRect(rx, ry, tw, rh, 5);
-      ctx.fill();
-      ctx.stroke();
-      ctx.fillStyle = readThemeColor("--vtt-hex-walk-stroke", "rgba(160,200,140,0.95)");
-      ctx.fillText(label, bx, ry + 9);
-      ctx.font = "500 8px Lora, Georgia, serif";
-      ctx.fillStyle = "rgba(232, 226, 214, 0.65)";
-      ctx.fillText(sub, bx, ry + 18);
-      ctx.restore();
+      drawTokenWalkRemainingBadge(ctx, x, y, r, walk, hexToMeters(walk) + " m");
     }
 
     drawTokenNameLabel(ctx, x, y, r, token.name);
 
     drawTokenEffectBadges(ctx, x, y, r, token);
-
-    if (hpLabelColor) {
-      drawTokenHpLabel(ctx, x, y, r, token, hpLabelColor);
-    }
   }
 }

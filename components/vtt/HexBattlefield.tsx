@@ -60,12 +60,9 @@ import { FoundryWindow } from "@/components/vtt/foundry/FoundryWindow";
 import type { FoundryWindowLayout, MesaWindowId } from "@/hooks/vtt/useFoundryWindows";
 import type { MesaPanelLayout } from "@/lib/vtt/mesa-panel-layout";
 import { effectiveMesaPanelWidth } from "@/lib/vtt/mesa-panel-layout";
-import {
-  CombatFxLayer,
-  combatFxFromMessage,
-  type CombatFxState,
-  type TokenCombatFlash,
-} from "@/components/vtt/CombatFxLayer";
+import { CombatFxLayer, type TokenCombatFlash } from "@/components/vtt/CombatFxLayer";
+import type { CombatFxState } from "@/lib/vtt/combat-fx-types";
+import { ingestNewCombatFx } from "@/lib/vtt/combat-fx-sequence";
 import type { ChatMessage } from "@/lib/room/chat";
 import { activeTokenId } from "@/lib/room/combat";
 import {
@@ -103,7 +100,11 @@ import { useBattlefieldView } from "@/hooks/vtt/useBattlefieldView";
 import { useCanvasWrapSize } from "@/hooks/vtt/useCanvasWrapSize";
 import { useHexCanvas, type HexCanvasDrawState } from "@/hooks/vtt/useHexCanvas";
 import { buildDisplayHexGrid } from "@/lib/vtt/hex-grid";
-import { mapBackdropTone, sampleImageLuminance } from "@/lib/vtt/map-luminance";
+import {
+  mapBackdropTone,
+  sampleImageGreenDominance,
+  sampleImageLuminance,
+} from "@/lib/vtt/map-luminance";
 import { useBattlefieldPointer } from "@/hooks/vtt/useBattlefieldPointer";
 import { useMonsterSpawnDrop } from "@/hooks/vtt/useMonsterSpawnDrop";
 import { paTurnRulesForActor } from "@/lib/combat/pa-economy";
@@ -242,6 +243,7 @@ export function HexBattlefield({
   const [actionRingAt, setActionRingAt] = useState<{ x: number; y: number } | null>(null);
   const toast = useVttToast();
   const seenCombatRef = useRef<Set<string>>(new Set());
+  const combatChatSeededRef = useRef(false);
   const [mapImage, setMapImage] = useState<HTMLImageElement | null>(null);
   const [mapImgTick, setMapImgTick] = useState(0);
   const [dungeonLayer, setDungeonLayer] = useState<DungeonEditLayer>("floor");
@@ -378,8 +380,9 @@ export function HexBattlefield({
   );
 
   const dungeonMapEditing = isRoomGm && dungeonEditorActive && dungeonLayer === "objects";
+  const hasFloorImage = Boolean(displayScene.mapImageUrl?.trim());
   const floorMapEditing =
-    isRoomGm && dungeonEditorActive && dungeonLayer === "floor" && !whiteboardActive;
+    isRoomGm && dungeonModeOpen && dungeonLayer === "floor" && hasFloorImage && !whiteboardActive;
 
   useEffect(() => {
     if (!floorPreview) return;
@@ -436,6 +439,8 @@ export function HexBattlefield({
   const moveBusyRef = useRef(false);
   const appliedSceneRevisionRef = useRef(0);
   const combatFxIdRef = useRef<string | null>(null);
+  const combatFxQueueRef = useRef<CombatFxState[]>([]);
+  const pendingCombatSnapRef = useRef<RoomSnapshot | null>(null);
 
   const syncRoom = useCallback(
     (snap?: RoomSnapshot) => {
@@ -473,7 +478,11 @@ export function HexBattlefield({
 
   const mapBackdropToneValue = useMemo(() => {
     if (!mapImage?.complete || mapImage.naturalWidth < 1) return "none" as const;
-    return mapBackdropTone(true, sampleImageLuminance(mapImage));
+    return mapBackdropTone(
+      true,
+      sampleImageLuminance(mapImage),
+      sampleImageGreenDominance(mapImage)
+    );
   }, [mapImage, mapImgTick]);
 
   const { spawnDragActive, spawnDropHandlers } = useMonsterSpawnDrop({
@@ -555,6 +564,14 @@ export function HexBattlefield({
     }));
   }, [canvasScene.mapImageScale]);
 
+  const onFloorResize = useCallback((scale: number, offsetX: number, offsetY: number) => {
+    setFloorPreview({
+      mapImageScale: scale,
+      mapImageOffsetX: offsetX,
+      mapImageOffsetY: offsetY,
+    });
+  }, []);
+
   const floorPreviewRef = useRef(floorPreview);
   floorPreviewRef.current = floorPreview;
 
@@ -611,6 +628,7 @@ export function HexBattlefield({
       mapBackdropTone: mapBackdropToneValue,
       tokenHpDisplay,
       dungeonEditorActive: dungeonMapEditing,
+      floorEditActive: floorMapEditing,
       dungeonEditorTool:
         dungeonTool === "wall" || dungeonTool === "object" ? dungeonTool : null,
       selectedDungeonObjectId,
@@ -644,6 +662,7 @@ export function HexBattlefield({
       mapImage,
       tokenHpDisplay,
       dungeonMapEditing,
+      floorMapEditing,
       dungeonTool,
       selectedDungeonObjectId,
     ]
@@ -660,24 +679,68 @@ export function HexBattlefield({
   );
 
   useEffect(() => {
-    if (!snapshot?.chat) return;
-    for (const msg of snapshot.chat) {
-      if (msg.kind !== "combat" || !msg.combat || seenCombatRef.current.has(msg.id)) continue;
-      if (combatFxIdRef.current === msg.id) continue;
-      seenCombatRef.current.add(msg.id);
-      const defender = snapshot.scene.tokens.find((t) => t.id === msg.combat!.defenderTokenId);
-      const attacker = snapshot.scene.tokens.find((t) => t.id === msg.combat!.attackerTokenId);
-      if (!defender || !attacker) continue;
-      const fx = combatFxFromMessage(msg, attacker.axial, defender.axial);
-      if (fx) {
-        combatFxIdRef.current = fx.id;
-        setCombatFx(fx);
+    if (floorPreview) redraw();
+  }, [floorPreview, redraw]);
+
+  const isMonsterToken = useCallback(
+    (tokenId: string | null | undefined, tokens = displayScene.tokens) => {
+      if (!tokenId) return false;
+      const t = tokens.find((tok) => tok.id === tokenId);
+      return Boolean(t?.monsterEntryId);
+    },
+    [displayScene.tokens]
+  );
+
+  const enqueueCombatFxFromChat = useCallback(
+    (chat: ChatMessage[], tokens: BattleToken[]) => {
+      const newMsgs = chat.filter(
+        (m) => m.kind === "combat" && m.combat && !seenCombatRef.current.has(m.id)
+      );
+      if (!newMsgs.length) return;
+      const { sequence, markSeen } = ingestNewCombatFx(newMsgs, seenCombatRef.current, tokens, {
+        deferStateApplyForToken: (id) => isMonsterToken(id, tokens),
+      });
+      for (const id of markSeen) seenCombatRef.current.add(id);
+      if (!sequence.length) return;
+      combatFxQueueRef.current.push(...sequence);
+      if (!combatFx) {
+        const next = combatFxQueueRef.current.shift() ?? null;
+        combatFxIdRef.current = next?.id ?? null;
+        setCombatFx(next);
       }
+    },
+    [combatFx, isMonsterToken]
+  );
+
+  const playCombatFxFromSnap = useCallback(
+    (snap: RoomSnapshot, opts?: { deferSnap?: boolean }) => {
+      if (opts?.deferSnap) pendingCombatSnapRef.current = snap;
+      enqueueCombatFxFromChat(snap.chat, snap.scene.tokens);
+    },
+    [enqueueCombatFxFromChat]
+  );
+
+  useEffect(() => {
+    if (!snapshot?.chat) return;
+    if (!combatChatSeededRef.current) {
+      for (const msg of snapshot.chat) {
+        if (msg.kind === "combat" && msg.combat) seenCombatRef.current.add(msg.id);
+      }
+      combatChatSeededRef.current = true;
+      return;
     }
-  }, [snapshot?.chat, snapshot?.scene.tokens]);
+    enqueueCombatFxFromChat(snapshot.chat, snapshot.scene.tokens);
+  }, [snapshot?.chat, snapshot?.scene.tokens, enqueueCombatFxFromChat]);
 
   useEffect(() => {
     appliedSceneRevisionRef.current = 0;
+    combatChatSeededRef.current = false;
+    seenCombatRef.current = new Set();
+    combatFxQueueRef.current = [];
+    combatFxIdRef.current = null;
+    pendingCombatSnapRef.current = null;
+    setCombatFx(null);
+    setTokenFlash(null);
   }, [roomId]);
 
   useEffect(() => {
@@ -765,28 +828,23 @@ export function HexBattlefield({
     removeSelectedToken,
   ]);
 
-  const triggerCombatFx = useCallback(
-    (msg: ChatMessage) => {
-      if (msg.kind !== "combat" || !msg.combat) return;
-      if (seenCombatRef.current.has(msg.id) && combatFxIdRef.current === msg.id) return;
-      seenCombatRef.current.add(msg.id);
-      const defender = displayScene.tokens.find((t) => t.id === msg.combat!.defenderTokenId);
-      const attacker = displayScene.tokens.find((t) => t.id === msg.combat!.attackerTokenId);
-      if (!defender || !attacker) return;
-      const fx = combatFxFromMessage(msg, attacker.axial, defender.axial);
-      if (fx) {
-        combatFxIdRef.current = fx.id;
-        setCombatFx(fx);
-      }
-    },
-    [displayScene.tokens]
-  );
+  const onCombatApplyState = useCallback(() => {
+    const snap = pendingCombatSnapRef.current;
+    if (!snap) return;
+    pendingCombatSnapRef.current = null;
+    syncRoom(snap);
+  }, [syncRoom]);
 
   const onCombatFxDone = useCallback(() => {
-    combatFxIdRef.current = null;
-    setCombatFx(null);
     setTokenFlash(null);
-  }, []);
+    if (pendingCombatSnapRef.current) {
+      syncRoom(pendingCombatSnapRef.current);
+      pendingCombatSnapRef.current = null;
+    }
+    const next = combatFxQueueRef.current.shift() ?? null;
+    combatFxIdRef.current = next?.id ?? null;
+    setCombatFx(next);
+  }, [syncRoom]);
 
   const onCombatTokenFlash = useCallback((tokenId: string | null, kind: import("@/lib/vtt/draw-battlefield").TokenFlashKind | null) => {
     if (tokenId && kind) setTokenFlash({ tokenId, kind });
@@ -841,9 +899,7 @@ export function HexBattlefield({
           areaDirection: direction,
           channelExtraPa,
         });
-        const combatMsgs = snap.chat.filter((m) => m.kind === "combat");
-        const last = combatMsgs[combatMsgs.length - 1];
-        if (last?.kind === "combat") triggerCombatFx(last);
+        playCombatFxFromSnap(snap);
         setActionMode("idle");
         setAreaCenter(null);
         syncRoom(snap);
@@ -851,7 +907,7 @@ export function HexBattlefield({
         setActionErr(e instanceof Error ? e.message : "Falha na magia de área");
       }
     },
-    [selected, activeCombatAction, roomId, turn.bypassTurn, channelExtraPa, syncRoom, triggerCombatFx]
+    [selected, activeCombatAction, roomId, turn.bypassTurn, channelExtraPa, syncRoom, playCombatFxFromSnap]
   );
 
   const actionPreview: ActionPreview | null = useMemo(() => {
@@ -974,9 +1030,7 @@ export function HexBattlefield({
           actionEntryId: action.entryId,
           bypassTurn: turn.bypassTurn,
         });
-        const combatMsgs = snap.chat.filter((m) => m.kind === "combat");
-        const last = combatMsgs[combatMsgs.length - 1];
-        if (last?.kind === "combat") triggerCombatFx(last);
+        playCombatFxFromSnap(snap);
         setActionMode("idle");
         setSelectedCombatAction(null);
         setActionRingAt(null);
@@ -985,7 +1039,7 @@ export function HexBattlefield({
         setActionErr(e instanceof Error ? e.message : "Falha na habilidade");
       }
     },
-    [selected, roomId, turn.bypassTurn, syncRoom, triggerCombatFx]
+    [selected, roomId, turn.bypassTurn, syncRoom, playCombatFxFromSnap]
   );
 
   const attackToken = useCallback(
@@ -996,6 +1050,7 @@ export function HexBattlefield({
         return;
       }
       setActionErr(null);
+      const deferStateApply = isMonsterToken(defenderId);
       try {
         let snap: RoomSnapshot;
         if (activeCombatAction.kind === "ability") {
@@ -1015,16 +1070,23 @@ export function HexBattlefield({
             channelExtraPa,
           });
         }
-        const combatMsgs = snap.chat.filter((m) => m.kind === "combat");
-        const last = combatMsgs[combatMsgs.length - 1];
-        if (last?.kind === "combat") triggerCombatFx(last);
+        playCombatFxFromSnap(snap, { deferSnap: deferStateApply });
         setActionMode("idle");
-        syncRoom(snap);
+        if (!deferStateApply) syncRoom(snap);
       } catch (e) {
         setActionErr(e instanceof Error ? e.message : "Falha no ataque");
       }
     },
-    [selected, activeCombatAction, roomId, turn.bypassTurn, channelExtraPa, syncRoom, triggerCombatFx]
+    [
+      selected,
+      activeCombatAction,
+      roomId,
+      turn.bypassTurn,
+      channelExtraPa,
+      syncRoom,
+      playCombatFxFromSnap,
+      isMonsterToken,
+    ]
   );
 
   const moveSelectedTo = useCallback(
@@ -1098,7 +1160,14 @@ export function HexBattlefield({
     ]
   );
 
-  const onGmReposition = useCallback(
+  const canRepositionToken = useCallback(
+    (token: BattleToken) =>
+      canControlCombat ||
+      (Boolean(canControlToken?.(token)) && !token.monsterEntryId),
+    [canControlCombat, canControlToken]
+  );
+
+  const onRepositionToken = useCallback(
     async (tokenId: string, axial: Axial) => {
       setActionErr(null);
       try {
@@ -1280,8 +1349,8 @@ export function HexBattlefield({
     channelExtraPa,
     turn,
     canControlCombat,
-    canGmReposition: canControlCombat,
-    onGmReposition: (id, a) => void onGmReposition(id, a),
+    canRepositionToken,
+    onRepositionToken: (id, a) => void onRepositionToken(id, a),
     onGmDragPreview,
     onHoverTargetChange: setHoverTargetId,
     onHoverTokenChange: setHoverTokenId,
@@ -1301,14 +1370,21 @@ export function HexBattlefield({
     dungeonEditor: isRoomGm
       ? {
           layer: dungeonLayer,
-          active: dungeonEditorActive && !whiteboardActive,
+          active:
+            !whiteboardActive &&
+            (dungeonLayer === "floor"
+              ? floorMapEditing
+              : dungeonEditorActive),
           tool: dungeonTool,
           selectedObjectId: selectedDungeonObjectId,
           onSelectObject: setSelectedDungeonObjectId,
           onHexEdit: (a, dragId) => void onDungeonHexEdit(a, dragId),
           floorOffsetX: canvasScene.mapImageOffsetX ?? 0,
           floorOffsetY: canvasScene.mapImageOffsetY ?? 0,
+          floorScale: canvasScene.mapImageScale ?? 1,
+          mapImage: mapImage,
           onFloorDrag: floorMapEditing ? onFloorDrag : undefined,
+          onFloorResize: floorMapEditing ? onFloorResize : undefined,
           onFloorDragEnd: floorMapEditing ? () => void onFloorDragEnd() : undefined,
         }
       : undefined,
@@ -1463,9 +1539,11 @@ export function HexBattlefield({
         selectedObjectId={selectedDungeonObjectId}
         onLayerChange={(layer) => {
           setDungeonLayer(layer);
-          if (layer === "floor" && displayScene.mapImageUrl?.trim()) {
+          if (layer === "floor" && hasFloorImage) {
             setDungeonEditorActive(true);
-          } else if (layer !== "objects") {
+          } else if (layer === "objects") {
+            setDungeonEditorActive(false);
+          } else if (layer !== "floor") {
             setDungeonEditorActive(false);
           }
         }}
@@ -1730,19 +1808,6 @@ export function HexBattlefield({
         ref={wrapRef}
         className={`vtt-canvas-wrap${attackTargetCursor ? " vtt-canvas-wrap--attack-target" : ""}${spawnDragActive ? " vtt-canvas-wrap--spawn-drop" : ""}${battlefieldView.isPanning ? " vtt-canvas-wrap--panning" : ""}`}
         onWheel={(e) => {
-          if (floorMapEditing && e.shiftKey) {
-            e.preventDefault();
-            const base = floorPreview?.mapImageScale ?? canvasScene.mapImageScale ?? 1;
-            const delta = e.deltaY < 0 ? 0.05 : -0.05;
-            const next = Math.min(4, Math.max(0.25, base + delta));
-            setFloorPreview((prev) => ({
-              mapImageOffsetX: prev?.mapImageOffsetX ?? canvasScene.mapImageOffsetX ?? 0,
-              mapImageOffsetY: prev?.mapImageOffsetY ?? canvasScene.mapImageOffsetY ?? 0,
-              mapImageScale: next,
-            }));
-            window.setTimeout(() => void commitFloorPreview(), 400);
-            return;
-          }
           battlefieldView.onWheel(e);
         }}
         {...spawnDropHandlers}
@@ -1781,7 +1846,7 @@ export function HexBattlefield({
             setDungeonModeOpen((open) => {
               if (!open) {
                 setDungeonLayer("floor");
-                setDungeonEditorActive(false);
+                setDungeonEditorActive(hasFloorImage);
                 onOpenDungeonPanel?.();
               } else {
                 setDungeonEditorActive(false);
@@ -1864,6 +1929,7 @@ export function HexBattlefield({
           hexSize={scene.hexSize}
           fx={combatFx}
           view={battlefieldView.view}
+          onApplyState={onCombatApplyState}
           onTokenFlash={onCombatTokenFlash}
           onTokenCastFx={onTokenCastFx}
           onDone={onCombatFxDone}

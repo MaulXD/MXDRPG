@@ -199,6 +199,7 @@ export async function createCharacter(
     tactical: { defesa: 11, iniciativa: 0 },
     inventory: [],
     combatLoadout: null,
+    armorLoadout: null,
   });
   return saveCharacter(sheet);
 }

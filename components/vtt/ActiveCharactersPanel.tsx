@@ -165,6 +165,8 @@ export function ActiveCharactersPanel({
               roomId={roomId}
               token={selected}
               canEdit
+              combatRound={combat?.round ?? 1}
+              combatActiveIndex={combat?.activeIndex ?? 0}
               onUpdate={onUpdate}
             />
           ) : null}

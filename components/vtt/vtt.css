@@ -159,6 +159,120 @@
   color: var(--text-dim);
 }
 
+/* Painel quadrado — barra lateral · Compartilhar mesa */
+.room-invite-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  width: 100%;
+  max-width: 260px;
+  aspect-ratio: 1;
+  margin: 0 auto;
+  padding: 0.85rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--glass-border);
+  background: linear-gradient(165deg, rgba(12, 16, 24, 0.92), rgba(6, 8, 12, 0.88));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.room-invite-panel__eyebrow {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.room-invite-panel__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--text);
+}
+
+.room-invite-panel__hint {
+  margin: 0;
+  font-size: 0.72rem;
+  line-height: 1.35;
+  color: var(--text-dim);
+}
+
+.room-invite-panel__label {
+  display: block;
+  margin-bottom: 0.2rem;
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.room-invite-panel__code-block {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.35rem 0.5rem;
+  align-items: center;
+}
+
+.room-invite-panel__code-block .room-invite-panel__label {
+  grid-column: 1 / -1;
+}
+
+.room-invite-panel__code {
+  padding: 0.35rem 0.5rem;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-align: center;
+  color: var(--accent);
+  background: rgba(201, 169, 98, 0.12);
+  border: 1px solid rgba(201, 169, 98, 0.28);
+  border-radius: 6px;
+}
+
+.room-invite-panel__link-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-height: 0;
+}
+
+.room-invite-panel__link {
+  width: 100%;
+  padding: 0.3rem 0.45rem;
+  font-size: 0.62rem;
+  border-radius: 4px;
+  border: 1px solid var(--glass-border);
+  background: rgba(0, 0, 0, 0.35);
+  color: var(--text-dim);
+}
+
+.room-invite-panel__configure {
+  margin-top: auto;
+  text-align: center;
+  text-decoration: none;
+  font-size: 0.72rem !important;
+}
+
+.mesa-panel-scroll--invite {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.65rem;
+  min-height: 0;
+}
+
+.foundry-dock-panel--invite .foundry-dock-panel__body,
+.foundry-window--invite .foundry-window__body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 @media (max-width: 900px) {
   .room-invite-bar {
     flex-direction: column;
@@ -3049,6 +3163,45 @@
   font-style: italic;
 }
 
+.combat-fx-hex-svg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.combat-fx-mark-hex {
+  animation: combat-hex-mark-pulse 1.4s ease-in-out infinite;
+}
+
+.combat-fx-mark-hex--target {
+  animation: combat-hex-mark-flash 0.45s ease-out 1;
+}
+
+.combat-fx-mark-hex--pulse {
+  stroke-width: 4;
+}
+
+.combat-fx-area-hex {
+  animation: combat-area-hex-breathe 1.1s ease-in-out infinite;
+}
+
+@keyframes combat-hex-mark-pulse {
+  0%, 100% { stroke-opacity: 0.75; stroke-width: 2.5; }
+  50% { stroke-opacity: 1; stroke-width: 3.5; }
+}
+
+@keyframes combat-hex-mark-flash {
+  0% { stroke-opacity: 0.2; }
+  40% { stroke-opacity: 1; }
+  100% { stroke-opacity: 0.85; }
+}
+
+@keyframes combat-area-hex-breathe {
+  0%, 100% { fill-opacity: 0.14; }
+  50% { fill-opacity: 0.28; }
+}
+
 .combat-fx-slash-svg {
   position: absolute;
   inset: 0;
@@ -3076,19 +3229,136 @@
   z-index: 4;
 }
 
-.combat-fx-dice {
+.combat-fx-panel {
   position: absolute;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -58%);
+  z-index: 6;
+  min-width: 11.5rem;
+  padding: 0.85rem 1rem 0.95rem;
   text-align: center;
-  filter: drop-shadow(0 10px 28px rgba(0, 0, 0, 0.55));
+  background: rgba(10, 12, 18, 0.94);
+  border: 1px solid rgba(201, 169, 98, 0.38);
+  border-radius: 14px;
+  box-shadow:
+    0 16px 48px rgba(0, 0, 0, 0.65),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(10px);
+  animation: combat-fx-panel-in 0.28s ease-out;
+}
+
+.combat-fx-panel--revealed {
+  border-color: rgba(201, 169, 98, 0.55);
+}
+
+.combat-fx-panel--area {
+  min-width: 14rem;
+  max-width: 22rem;
+}
+
+.combat-fx-area-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 0.92rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.combat-fx-area-damage-label {
+  margin: 0.35rem 0 0;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent-secondary);
+}
+
+.combat-fx-area-damage-type {
+  margin: 0.15rem 0 0;
+  font-size: 0.68rem;
+  color: var(--text-dim);
+}
+
+.combat-fx-area-detail {
+  margin: 0.45rem 0 0;
+  font-size: 0.62rem;
+  line-height: 1.35;
+  color: var(--text-muted);
+  text-align: left;
+  max-height: 4.5rem;
+  overflow-y: auto;
+}
+
+.combat-fx-cascade-tag {
+  margin: 0 0 0.25rem;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+}
+
+.combat-fx-panel-dmg-type,
+.combat-fx-panel-detail {
+  margin: 0.2rem 0 0;
+  font-size: 0.6rem;
+  line-height: 1.3;
+  color: var(--text-muted);
+}
+
+.combat-fx-damage-label {
+  display: block;
+  font-size: 0.55rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.85;
+  margin-bottom: 0.1rem;
+}
+
+.combat-fx-damage-value {
+  display: block;
+  line-height: 1;
+}
+
+.combat-fx-panel-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.combat-fx-panel-result {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  width: 100%;
+}
+
+.combat-fx-panel-vs {
+  margin: 0;
+  font-size: 0.72rem;
+  font-family: var(--font-display);
+  letter-spacing: 0.05em;
+  color: var(--text-dim);
+}
+
+@keyframes combat-fx-panel-in {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -52%) scale(0.92);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -58%) scale(1);
+  }
 }
 
 .combat-fx-rolling,
 .combat-fx-result {
-  margin: 0.45rem 0 0;
-  font-size: 0.78rem;
+  margin: 0.2rem 0 0;
+  font-size: 0.88rem;
   font-family: var(--font-display);
-  letter-spacing: 0.04em;
+  letter-spacing: 0.06em;
+  font-weight: 700;
 }
 
 .combat-fx-result.hit {
@@ -3103,22 +3373,33 @@
   position: absolute;
   transform: translate(-50%, -50%);
   font-family: var(--font-display);
-  font-size: 1.65rem;
-  font-weight: 700;
-  color: #c44;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.65);
-  animation: combat-damage-float 3s ease-out forwards;
+  font-weight: 800;
+  color: #e85a5a;
+  text-shadow:
+    0 0 18px rgba(232, 90, 90, 0.55),
+    0 4px 14px rgba(0, 0, 0, 0.75);
+  animation: combat-damage-float 2.8s ease-out forwards;
+  pointer-events: none;
+  z-index: 7;
+}
+
+.combat-fx-damage--hex {
+  font-size: 3.4rem;
+  line-height: 1;
+  letter-spacing: -0.02em;
 }
 
 .combat-fx-damage.crit {
-  font-size: 2rem;
-  color: #e8a020;
+  font-size: 4.25rem;
+  color: #ffb020;
+  text-shadow:
+    0 0 22px rgba(255, 176, 32, 0.65),
+    0 4px 16px rgba(0, 0, 0, 0.8);
 }
 
 .combat-fx-damage.heal {
   color: var(--accent-success);
-  font-size: 2rem;
-  font-weight: 900;
+  font-size: 3.6rem;
   letter-spacing: 0.02em;
 }
 
@@ -3152,13 +3433,22 @@
   font-size: 0.85rem;
   color: var(--text-dim);
   animation: combat-damage-float 2s ease-out forwards;
+  pointer-events: none;
+  z-index: 7;
+}
+
+.combat-fx-miss--hex {
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
 }
 
 @keyframes combat-damage-float {
-  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.85); }
-  12% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-  70% { opacity: 1; transform: translate(-50%, -58%) scale(1); }
-  100% { opacity: 0; transform: translate(-50%, -72%) scale(1.05); }
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.7); }
+  10% { opacity: 1; transform: translate(-50%, -50%) scale(1.12); }
+  18% { opacity: 1; transform: translate(-50%, -52%) scale(1); }
+  65% { opacity: 1; transform: translate(-50%, -62%) scale(1.02); }
+  100% { opacity: 0; transform: translate(-50%, -78%) scale(1.08); }
 }
 
 .room-chat-input {
@@ -3363,6 +3653,30 @@
   padding: 0.14rem;
 }
 
+.vtt-effect-chip-icon-wrap {
+  position: relative;
+  display: inline-flex;
+  flex-shrink: 0;
+}
+
+.vtt-effect-chip-badge {
+  position: absolute;
+  right: -5px;
+  bottom: -4px;
+  min-width: 0.95rem;
+  padding: 0 0.18rem;
+  border-radius: 3px;
+  font-size: 0.48rem;
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: 0.02em;
+  color: #1a1408;
+  background: #ffe8a8;
+  border: 1px solid rgba(0, 0, 0, 0.45);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
+  pointer-events: none;
+}
+
 .vtt-effect-icon {
   flex-shrink: 0;
   display: block;
@@ -3406,6 +3720,45 @@
   border-color: var(--accent);
   color: var(--accent);
   background: var(--accent-soft);
+}
+
+.vtt-condition-btn.pending {
+  border-color: var(--accent-secondary);
+  box-shadow: 0 0 0 1px var(--accent-secondary);
+}
+
+.vtt-condition-duration {
+  margin-top: 0.45rem;
+  padding: 0.45rem 0.5rem;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.22);
+  border: 1px solid var(--border);
+}
+
+.vtt-condition-duration-label {
+  margin: 0 0 0.35rem;
+  font-size: 0.68rem;
+  color: var(--text-dim);
+}
+
+.vtt-condition-duration-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.28rem;
+}
+
+.vtt-duration-btn {
+  min-width: 2rem;
+  padding: 0.2rem 0.45rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  font-family: var(--font-display);
+  letter-spacing: 0.04em;
+}
+
+.vtt-duration-btn--cancel {
+  margin-left: auto;
+  opacity: 0.75;
 }
 
 .vtt-gm-progress {

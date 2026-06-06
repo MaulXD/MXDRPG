@@ -100,6 +100,34 @@
   --vtt-hex-on-light-path-stroke: rgba(30, 80, 160, 0.95);
   --vtt-hex-on-light-path-glow: rgba(40, 100, 180, 0.32);
 
+  /* Mapas com fundo verde — evita hex “verde no verde” */
+  --vtt-hex-on-green-fill: rgba(0, 0, 0, 0.08);
+  --vtt-hex-on-green-stroke: rgba(0, 0, 0, 0.55);
+  --vtt-hex-on-green-walk-fill: rgba(255, 252, 235, 0.58);
+  --vtt-hex-on-green-walk-stroke: rgba(0, 0, 0, 0.92);
+  --vtt-hex-on-green-turn-walk-fill: rgba(255, 252, 235, 0.38);
+  --vtt-hex-on-green-turn-walk-stroke: rgba(0, 0, 0, 0.72);
+  --vtt-hex-on-green-walk-paid-fill: rgba(200, 245, 255, 0.55);
+  --vtt-hex-on-green-walk-paid-stroke: rgba(0, 60, 90, 0.95);
+  --vtt-hex-on-green-run-fill: rgba(255, 196, 72, 0.52);
+  --vtt-hex-on-green-run-stroke: rgba(90, 45, 0, 0.95);
+  --vtt-hex-on-green-attack-fill: rgba(255, 210, 180, 0.45);
+  --vtt-hex-on-green-attack-stroke: rgba(120, 30, 10, 0.9);
+  --vtt-hex-on-green-dir-fill: rgba(220, 210, 255, 0.5);
+  --vtt-hex-on-green-dir-stroke: rgba(50, 20, 110, 0.92);
+  --vtt-hex-on-green-area-fill: rgba(240, 200, 255, 0.48);
+  --vtt-hex-on-green-area-stroke: rgba(80, 20, 120, 0.9);
+  --vtt-hex-on-green-area-center-fill: rgba(255, 230, 255, 0.62);
+  --vtt-hex-on-green-area-center-stroke: rgba(40, 0, 80, 0.95);
+  --vtt-hex-on-green-invalid-fill: rgba(255, 120, 100, 0.55);
+  --vtt-hex-on-green-invalid-stroke: rgba(100, 10, 0, 0.98);
+  --vtt-hex-on-green-spawn-fill: rgba(255, 252, 220, 0.55);
+  --vtt-hex-on-green-spawn-stroke: rgba(0, 0, 0, 0.9);
+  --vtt-hex-on-green-hover-fill: rgba(255, 255, 255, 0.28);
+  --vtt-hex-on-green-hover-stroke: rgba(0, 0, 0, 0.88);
+  --vtt-hex-on-green-path-stroke: rgba(0, 0, 0, 0.9);
+  --vtt-hex-on-green-path-glow: rgba(255, 255, 255, 0.35);
+
   --vtt-token-turn-glow: rgba(122, 163, 201, 0.5);
   --vtt-token-ring-turn: #5a8ab8;
   --vtt-token-ring-selected: #8eb8dc;

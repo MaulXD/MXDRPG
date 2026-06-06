@@ -6,7 +6,7 @@ import {
   canControlToken as canControlTokenCheck,
   canViewTokenPa,
 } from "@/lib/auth/combat-turn-access";
-import { canBypassCombatTurn } from "@/lib/auth/room-access";
+import { canBypassCombatTurn, canParticipateInRoom } from "@/lib/auth/room-access";
 import { normalizeRoomSettings } from "@/lib/room/settings";
 import type { SessionUser } from "@/lib/auth/types";
 import type { CompendiumEntry, CompendiumPackId, CompendiumPackMeta } from "@/lib/compendium/types";
@@ -21,9 +21,11 @@ import { FoundryWindow } from "@/components/vtt/foundry/FoundryWindow";
 import { MesaFoundrySidebar } from "@/components/vtt/foundry/MesaFoundrySidebar";
 import { HexBattlefield } from "@/components/vtt/HexBattlefield";
 import { CharacterSheetPopup } from "@/components/vtt/CharacterSheetPopup";
+import { PlayableCharactersPanel } from "@/components/vtt/PlayableCharactersPanel";
 import { RoomChat } from "@/components/vtt/RoomChat";
 import { DiceRoller } from "@/components/vtt/DiceRoller";
 import { MonsterSpawnPanel } from "@/components/vtt/MonsterSpawnPanel";
+import { RoomInvitePanel } from "@/components/vtt/RoomInvitePanel";
 import "@/components/vtt/foundry/foundry.css";
 
 type Props = {
@@ -36,6 +38,9 @@ type Props = {
   canControlCombat: boolean;
   canChat?: boolean;
   inviteCode?: string | null;
+  roomInviteCode?: string | null;
+  roomName?: string;
+  isRoomOwner?: boolean;
   session: SessionUser | null;
   compendium: Record<CompendiumPackId, CompendiumEntry[]>;
   packs: CompendiumPackMeta[];
@@ -52,6 +57,9 @@ export function MesaWorkspace({
   canControlCombat,
   canChat = true,
   inviteCode = null,
+  roomInviteCode = null,
+  roomName,
+  isRoomOwner = false,
   session,
   compendium,
   packs: _packs,
@@ -109,6 +117,64 @@ export function MesaWorkspace({
     return canAdvanceCombatTurn(turnRoom, session, snapshot.combat);
   }, [snapshot?.combat, session, turnRoom]);
 
+  const canParticipate = useMemo(
+    () =>
+      canParticipateInRoom(
+        {
+          roomId,
+          adventureId,
+          ownerId: roomOwnerId,
+          memberIds,
+          name: roomName ?? "",
+          inviteCode: roomInviteCode ?? "",
+          settings: normalizeRoomSettings(snapshot?.settings),
+          scene: snapshot?.scene ?? scene,
+          actors: snapshot?.actors ?? {},
+          combat: snapshot?.combat ?? { round: 1, order: [], activeIndex: 0 },
+          chat: [],
+          pings: [],
+          revision: 0,
+          updatedAt: 0,
+        },
+        session
+      ),
+    [
+      roomId,
+      adventureId,
+      roomOwnerId,
+      memberIds,
+      roomName,
+      roomInviteCode,
+      snapshot,
+      scene,
+      session,
+    ]
+  );
+
+  const canCreateCharacter = useMemo(
+    () =>
+      canParticipateInRoom(
+        {
+          roomId,
+          adventureId,
+          ownerId: roomOwnerId,
+          memberIds,
+          name: "",
+          inviteCode: inviteCode ?? "",
+          settings: normalizeRoomSettings(snapshot?.settings),
+          scene: snapshot?.scene ?? scene,
+          actors: snapshot?.actors ?? {},
+          combat: snapshot?.combat ?? { round: 1, order: [], activeIndex: 0 },
+          chat: [],
+          pings: [],
+          revision: 0,
+          updatedAt: 0,
+        },
+        session
+      ),
+    [roomId, adventureId, roomOwnerId, memberIds, inviteCode, snapshot, scene, session]
+  );
+
   const canBypassTurn = useMemo(() => {
     return canBypassCombatTurn(
       {
@@ -123,29 +189,21 @@ export function MesaWorkspace({
   const dockOpen = windows.isDockOpen();
 
   const isPanelActive = useCallback(
-    (id: MesaWindowId) => {
-      if (id === "ficha") return Boolean(sheetPopupActorId) && win("character").open;
-      return windows.isActive(id);
-    },
-    [sheetPopupActorId, win, windows]
+    (id: MesaWindowId) => windows.isActive(id),
+    [windows]
   );
 
   const handlePanelToggle = useCallback(
     (id: MesaWindowId) => {
-      if (id === "ficha") {
-        if (sheetPopupActorId) closeSheet();
-        else openSheet(defaultActorId);
-        return;
-      }
       windows.toggle(id);
     },
-    [sheetPopupActorId, closeSheet, openSheet, defaultActorId, windows]
+    [windows]
   );
 
   const handleOpenPopup = useCallback(
     (id: MesaWindowId) => {
       if (id === "ficha") {
-        openSheet(defaultActorId);
+        windows.openAsPopup("ficha");
         return;
       }
       const layout = win(id);
@@ -156,7 +214,7 @@ export function MesaWorkspace({
       }
       windows.openAsPopup(id);
     },
-    [defaultActorId, openSheet, win, windows]
+    [win, windows]
   );
 
   return (
@@ -192,6 +250,7 @@ export function MesaWorkspace({
             onToggle={handlePanelToggle}
             onOpenPopup={handleOpenPopup}
             showGm={canControlCombat}
+            showInvite={Boolean(canParticipate && roomInviteCode)}
             dockOpen={dockOpen}
           >
             {!windows.isFloating("chat") ? (
@@ -206,6 +265,54 @@ export function MesaWorkspace({
                 }
               >
                 <RoomChat roomId={roomId} messages={chat} onUpdate={refresh} readOnly={!canChat} />
+              </FoundryDockPanel>
+            ) : null}
+
+            {!windows.isFloating("ficha") ? (
+              <FoundryDockPanel
+                title="Personagens jogáveis"
+                open={win("ficha").open}
+                minimized={win("ficha").minimized}
+                className="foundry-dock-panel--ficha"
+                onClose={() => windows.close("ficha")}
+                onMinimize={() =>
+                  win("ficha").minimized ? windows.restore("ficha") : windows.minimize("ficha")
+                }
+              >
+                <div className="mesa-panel-scroll mesa-panel-scroll--rail">
+                  <PlayableCharactersPanel
+                    roomId={roomId}
+                    adventureId={adventureId}
+                    actors={snapshot?.actors ?? {}}
+                    session={session}
+                    selectedActorId={sheetPopupActorId}
+                    canCreateCharacter={canCreateCharacter}
+                    onOpenSheet={openSheet}
+                  />
+                </div>
+              </FoundryDockPanel>
+            ) : null}
+
+            {canParticipate && roomInviteCode && !windows.isFloating("invite") ? (
+              <FoundryDockPanel
+                title="Compartilhar mesa"
+                open={win("invite").open}
+                minimized={win("invite").minimized}
+                className="foundry-dock-panel--invite"
+                onClose={() => windows.close("invite")}
+                onMinimize={() =>
+                  win("invite").minimized ? windows.restore("invite") : windows.minimize("invite")
+                }
+              >
+                <div className="mesa-panel-scroll mesa-panel-scroll--invite">
+                  <RoomInvitePanel
+                    adventureId={adventureId}
+                    roomId={roomId}
+                    inviteCode={roomInviteCode}
+                    roomName={roomName ?? snapshot?.scene.name ?? "Mesa"}
+                    showConfigure={isRoomOwner}
+                  />
+                </div>
               </FoundryDockPanel>
             ) : null}
 
@@ -337,6 +444,33 @@ export function MesaWorkspace({
                 </FoundryWindow>
               ) : null}
 
+              {windows.isFloating("ficha") ? (
+                <FoundryWindow
+                  title="Personagens jogáveis"
+                  layout={win("ficha")}
+                  className="foundry-window--ficha"
+                  minHeight={280}
+                  onLayoutChange={(patch) => windows.patch("ficha", patch)}
+                  onFocus={() => windows.focus("ficha")}
+                  onMinimize={() =>
+                    win("ficha").minimized ? windows.restore("ficha") : windows.minimize("ficha")
+                  }
+                  onClose={() => windows.close("ficha")}
+                >
+                  <div className="mesa-panel-scroll mesa-panel-scroll--rail">
+                    <PlayableCharactersPanel
+                      roomId={roomId}
+                      adventureId={adventureId}
+                      actors={snapshot?.actors ?? {}}
+                      session={session}
+                      selectedActorId={sheetPopupActorId}
+                      canCreateCharacter={canCreateCharacter}
+                      onOpenSheet={openSheet}
+                    />
+                  </div>
+                </FoundryWindow>
+              ) : null}
+
               {windows.isFloating("dice") ? (
                 <FoundryWindow
                   title="Rolador de dados"
@@ -356,6 +490,32 @@ export function MesaWorkspace({
                       Visitantes não rolam dados no chat.
                     </p>
                   )}
+                </FoundryWindow>
+              ) : null}
+
+              {canParticipate && roomInviteCode && windows.isFloating("invite") ? (
+                <FoundryWindow
+                  title="Compartilhar mesa"
+                  layout={win("invite")}
+                  className="foundry-window--invite"
+                  minWidth={260}
+                  minHeight={260}
+                  onLayoutChange={(patch) => windows.patch("invite", patch)}
+                  onFocus={() => windows.focus("invite")}
+                  onMinimize={() =>
+                    win("invite").minimized ? windows.restore("invite") : windows.minimize("invite")
+                  }
+                  onClose={() => windows.close("invite")}
+                >
+                  <div className="mesa-panel-scroll mesa-panel-scroll--invite">
+                    <RoomInvitePanel
+                      adventureId={adventureId}
+                      roomId={roomId}
+                      inviteCode={roomInviteCode}
+                      roomName={roomName ?? snapshot?.scene.name ?? "Mesa"}
+                      showConfigure={isRoomOwner}
+                    />
+                  </div>
                 </FoundryWindow>
               ) : null}
 

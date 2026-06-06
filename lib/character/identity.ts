@@ -9,6 +9,7 @@ import {
   hpMaxFor,
   paMaxFor,
 } from "@/lib/character/rules";
+import { resolveActorDefesa } from "@/lib/character/armor-defense";
 import { normalizeCharacter } from "@/lib/character/normalize";
 import { religionDisplayName } from "@/lib/character/pantheon";
 import { parseCharacterTalents } from "@/lib/character/subclass-tracks";
@@ -69,7 +70,7 @@ export function applyIdentityPatch(actor: CharacterSheet, patch: IdentityPatch):
     culinary.estomagoDeFerro += 2;
   }
 
-  return normalizeCharacter({
+  const merged = {
     ...actor,
     identity,
     attributes,
@@ -85,10 +86,11 @@ export function applyIdentityPatch(actor: CharacterSheet, patch: IdentityPatch):
       },
     },
     tactical: {
-      defesa: 10 + desMod,
+      defesa: resolveActorDefesa({ ...actor, identity, attributes }),
       iniciativa: desMod,
     },
-  });
+  };
+  return normalizeCharacter(merged);
 }
 
 export function describeIdentity(actor: CharacterSheet): string[] {
