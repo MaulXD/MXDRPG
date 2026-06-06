@@ -498,43 +498,27 @@ export function CharacterSheet({
 
     return (
       <div className="sheet-shell sheet-shell--popup">
-        <CharacterSheetPopupHero
-          name={live.name}
-          identity={identity}
-          portraitUrl={live.portraitUrl}
-          portraitFocus={live.portraitFocus}
-        />
+        <header className="sheet-popup-top">
+          <div className="sheet-popup-top__portrait">
+            {live.portraitUrl ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={live.portraitUrl}
+                alt=""
+                style={portraitFocus ? portraitFocusToImgStyle(portraitFocus) : undefined}
+              />
+            ) : (
+              <span className="sheet-popup-top__portrait-fallback">
+                {live.name.trim().slice(0, 2).toUpperCase() || "?"}
+              </span>
+            )}
+          </div>
 
-        <div className="sheet-popup-attrs">
-          {(Object.keys(ATTRIBUTE_LABELS) as AttributeKey[]).map((k) => (
-            <div className="sheet-popup-attr" key={k}>
-              <label>{ATTRIBUTE_LABELS[k]}</label>
-              <strong>
-                {attributeMod(live.attributes[k]) >= 0 ? "+" : ""}
-                {attributeMod(live.attributes[k])}
-              </strong>
-              <span>{live.attributes[k]}</span>
-            </div>
-          ))}
-        </div>
+          <div className="sheet-popup-top__identity">
+            <CharacterSheetPopupHero name={live.name} identity={identity} />
+          </div>
 
-        <div className="sheet-popup-body">
-          <aside className="sheet-popup-left">
-            <div className="sheet-popup-portrait">
-              {live.portraitUrl ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={live.portraitUrl}
-                  alt=""
-                  style={portraitFocus ? portraitFocusToImgStyle(portraitFocus) : undefined}
-                />
-              ) : (
-                <span className="sheet-popup-portrait__fallback">
-                  {live.name.trim().slice(0, 2).toUpperCase() || "?"}
-                </span>
-              )}
-            </div>
-
+          <div className="sheet-popup-top__combat">
             <div className="sheet-popup-diamond" aria-label="Combate">
               <span className="sheet-popup-diamond__top">
                 <em>Defesa</em>
@@ -570,8 +554,23 @@ export function CharacterSheet({
                 <span className="sheet-popup-bar-fill--hp" style={{ width: `${hpPct}%` }} />
               </div>
             </div>
-          </aside>
+          </div>
 
+          <div className="sheet-popup-top__attrs" role="group" aria-label="Atributos">
+            {(Object.keys(ATTRIBUTE_LABELS) as AttributeKey[]).map((k) => (
+              <div className="sheet-popup-attr" key={k}>
+                <label>{ATTRIBUTE_LABELS[k]}</label>
+                <strong>
+                  {attributeMod(live.attributes[k]) >= 0 ? "+" : ""}
+                  {attributeMod(live.attributes[k])}
+                </strong>
+                <span>{live.attributes[k]}</span>
+              </div>
+            ))}
+          </div>
+        </header>
+
+        <div className="sheet-popup-body">
           <section className="sheet-popup-center sheet-panel">
             <h3 className="sheet-popup-section-title">Culinária</h3>
             <ul className="sheet-popup-skill-list">

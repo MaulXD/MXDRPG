@@ -218,6 +218,26 @@
 
 .sheet-shell--popup {
 
+  --sheet-bg: #121921;
+
+  --sheet-surface: #161e2a;
+
+  --sheet-inset: #0f141c;
+
+  --sheet-border: rgba(122, 163, 201, 0.22);
+
+  --sheet-border-bright: rgba(122, 163, 201, 0.42);
+
+  --sheet-accent: #7aa3c9;
+
+  --sheet-accent-soft: rgba(122, 163, 201, 0.14);
+
+  --sheet-text: #e8ecf4;
+
+  --sheet-text-muted: rgba(200, 210, 224, 0.62);
+
+  --sheet-hp: #6b9e5a;
+
   display: flex;
 
   flex-direction: column;
@@ -232,9 +252,9 @@
 
   overflow: hidden;
 
-  color: #e8eef4;
+  color: var(--sheet-text);
 
-  background: #121921;
+  background: var(--sheet-bg);
 
   container-type: inline-size;
 
@@ -252,7 +272,355 @@
 
 
 
-/* Cabeçalho dramático */
+/* Topo da ficha — retrato | identidade / combate | atributos */
+
+.sheet-popup-top {
+
+  display: grid;
+
+  grid-template-columns: minmax(108px, 148px) minmax(0, 1fr);
+
+  grid-template-areas:
+
+    "portrait identity"
+
+    "combat attrs";
+
+  gap: 0.55rem 0.75rem;
+
+  padding: 0.75rem 0.85rem;
+
+  background: var(--sheet-inset);
+
+  border-bottom: 1px solid var(--sheet-border);
+
+}
+
+
+
+.sheet-popup-top__portrait {
+
+  grid-area: portrait;
+
+  width: 100%;
+
+  aspect-ratio: 1;
+
+  max-width: 148px;
+
+  border-radius: 10px;
+
+  overflow: hidden;
+
+  border: 2px solid var(--sheet-border-bright);
+
+  background: var(--sheet-surface);
+
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+
+}
+
+
+
+.sheet-popup-top__portrait img {
+
+  width: 100%;
+
+  height: 100%;
+
+  object-fit: cover;
+
+  display: block;
+
+}
+
+
+
+.sheet-popup-top__portrait-fallback {
+
+  width: 100%;
+
+  height: 100%;
+
+  display: grid;
+
+  place-items: center;
+
+  font-family: var(--font-display);
+
+  font-size: clamp(1.75rem, 8vw, 2.5rem);
+
+  font-weight: 700;
+
+  color: var(--sheet-accent);
+
+  opacity: 0.55;
+
+}
+
+
+
+.sheet-popup-top__identity {
+
+  grid-area: identity;
+
+  min-width: 0;
+
+}
+
+
+
+.sheet-popup-top__combat {
+
+  grid-area: combat;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 0.45rem;
+
+  min-width: 0;
+
+}
+
+
+
+.sheet-popup-top__combat .sheet-popup-diamond {
+
+  width: 100%;
+
+  max-width: 148px;
+
+  height: 118px;
+
+  margin: 0 auto;
+
+}
+
+
+
+.sheet-popup-top__combat .sheet-popup-resource {
+
+  width: 100%;
+
+  max-width: 148px;
+
+  margin: 0 auto;
+
+}
+
+
+
+.sheet-popup-top__attrs {
+
+  grid-area: attrs;
+
+  display: grid;
+
+  grid-template-columns: repeat(6, 1fr);
+
+  gap: 0.3rem;
+
+  align-content: center;
+
+  min-width: 0;
+
+}
+
+
+
+.sheet-popup-identity {
+
+  display: flex;
+
+  align-items: flex-start;
+
+  justify-content: space-between;
+
+  gap: 0.65rem;
+
+  height: 100%;
+
+  min-height: 108px;
+
+}
+
+
+
+.sheet-popup-identity__main {
+
+  flex: 1;
+
+  min-width: 0;
+
+}
+
+
+
+.sheet-popup-identity__eyebrow {
+
+  margin: 0;
+
+  font-size: 0.62rem;
+
+  letter-spacing: 0.14em;
+
+  text-transform: uppercase;
+
+  color: var(--sheet-accent);
+
+  opacity: 0.85;
+
+}
+
+
+
+.sheet-popup-identity__name {
+
+  margin: 0.12rem 0 0;
+
+  font-family: var(--font-display);
+
+  font-size: clamp(1.2rem, 2.6vw, 1.65rem);
+
+  font-weight: 700;
+
+  line-height: 1.1;
+
+  color: var(--sheet-text);
+
+}
+
+
+
+.sheet-popup-identity__class {
+
+  margin: 0.18rem 0 0;
+
+  font-size: 0.78rem;
+
+  color: var(--sheet-text);
+
+  opacity: 0.9;
+
+}
+
+
+
+.sheet-popup-identity__meta {
+
+  margin: 0.15rem 0 0;
+
+  font-size: 0.72rem;
+
+  color: var(--sheet-text-muted);
+
+}
+
+
+
+.sheet-popup-identity__level {
+
+  flex-shrink: 0;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  gap: 0.3rem;
+
+}
+
+
+
+.sheet-popup-identity__ring {
+
+  width: 48px;
+
+  height: 48px;
+
+  border-radius: 50%;
+
+  border: 2px solid var(--sheet-accent);
+
+  display: grid;
+
+  place-items: center;
+
+  font-family: var(--font-display);
+
+  font-size: 1.25rem;
+
+  font-weight: 700;
+
+  color: var(--sheet-accent);
+
+  background: rgba(10, 14, 22, 0.75);
+
+  box-shadow: 0 0 0 3px var(--sheet-accent-soft);
+
+}
+
+
+
+.sheet-popup-identity__xp {
+
+  width: 88px;
+
+  text-align: center;
+
+}
+
+
+
+.sheet-popup-identity__xp-track {
+
+  height: 4px;
+
+  border-radius: 99px;
+
+  background: rgba(0, 0, 0, 0.35);
+
+  overflow: hidden;
+
+  border: 1px solid var(--sheet-border);
+
+}
+
+
+
+.sheet-popup-identity__xp-track > span {
+
+  display: block;
+
+  height: 100%;
+
+  background: linear-gradient(90deg, #4a6a8a, var(--sheet-accent));
+
+}
+
+
+
+.sheet-popup-identity__xp-text {
+
+  display: block;
+
+  margin-top: 0.18rem;
+
+  font-size: 0.58rem;
+
+  color: var(--sheet-text-muted);
+
+  font-variant-numeric: tabular-nums;
+
+}
+
+
+
+/* Legado — removido do layout */
 
 .sheet-popup-hero {
 
@@ -548,49 +916,17 @@
 
 
 
-/* Faixa de atributos */
-
-.sheet-popup-attrs {
-
-  display: grid;
-
-  grid-template-columns: repeat(6, 1fr);
-
-  gap: 0.3rem;
-
-  padding: 0.5rem 0.85rem;
-
-  background: #161d28;
-
-  border-bottom: 1px solid rgba(122, 163, 201, 0.12);
-
-}
-
-
-
-@media (max-width: 640px) {
-
-  .sheet-popup-attrs {
-
-    grid-template-columns: repeat(3, 1fr);
-
-  }
-
-}
-
-
-
 .sheet-popup-attr {
 
   text-align: center;
 
-  padding: 0.35rem 0.25rem;
+  padding: 0.35rem 0.2rem;
 
   border-radius: 6px;
 
   background: rgba(0, 0, 0, 0.28);
 
-  border: 1px solid rgba(201, 169, 98, 0.18);
+  border: 1px solid var(--sheet-border);
 
 }
 
@@ -604,7 +940,7 @@
 
   letter-spacing: 0.1em;
 
-  color: rgba(232, 226, 214, 0.45);
+  color: var(--sheet-text-muted);
 
   margin-bottom: 0.05rem;
 
@@ -618,7 +954,7 @@
 
   font-size: 0.95rem;
 
-  color: #c9a962;
+  color: var(--sheet-accent);
 
   font-weight: 700;
 
@@ -632,7 +968,7 @@
 
   font-size: 0.65rem;
 
-  color: rgba(232, 226, 214, 0.5);
+  color: var(--sheet-text-muted);
 
 }
 
@@ -652,7 +988,7 @@
 
   align-items: stretch;
 
-  background: #121921;
+  background: var(--sheet-bg);
 
   width: 100%;
 
@@ -764,7 +1100,7 @@
 
   place-items: center;
 
-  background: radial-gradient(circle at center, rgba(201, 169, 98, 0.08), transparent 70%);
+  background: radial-gradient(circle at center, var(--sheet-accent-soft), transparent 70%);
 
 }
 
@@ -778,7 +1114,7 @@
 
   inset: 12px;
 
-  border: 1px solid rgba(201, 169, 98, 0.25);
+  border: 1px solid var(--sheet-border-bright);
 
   transform: rotate(45deg);
 
@@ -814,7 +1150,7 @@
 
   font-style: normal;
 
-  color: rgba(232, 226, 214, 0.45);
+  color: var(--sheet-text-muted);
 
   letter-spacing: 0.04em;
 
@@ -826,7 +1162,7 @@
 
   font-size: 1rem;
 
-  color: #f5f0e6;
+  color: var(--sheet-text);
 
   font-weight: 700;
 
@@ -904,7 +1240,7 @@
 
   font-size: 0.62rem;
 
-  color: rgba(232, 226, 214, 0.55);
+  color: var(--sheet-text-muted);
 
   margin-bottom: 0.2rem;
 
@@ -916,7 +1252,7 @@
 
   font-size: 0.78rem;
 
-  color: #e8e2d6;
+  color: var(--sheet-text);
 
   font-variant-numeric: tabular-nums;
 
@@ -946,7 +1282,7 @@
 
   height: 100%;
 
-  background: linear-gradient(90deg, #3d5c38, #6b9e5a);
+  background: linear-gradient(90deg, #3d5c48, var(--sheet-hp));
 
 }
 
@@ -1006,7 +1342,7 @@
 
   text-transform: uppercase;
 
-  color: rgba(201, 169, 98, 0.85);
+  color: var(--sheet-accent);
 
 }
 
@@ -1072,7 +1408,9 @@
 
   font-weight: 700;
 
-  color: rgba(201, 169, 98, 0.7);
+  color: var(--sheet-accent);
+
+  opacity: 0.8;
 
   letter-spacing: 0.06em;
 
@@ -1082,7 +1420,7 @@
 
 .sheet-popup-skill__name {
 
-  color: rgba(232, 226, 214, 0.85);
+  color: var(--sheet-text);
 
   min-width: 0;
 
@@ -1098,7 +1436,7 @@
 
   font-weight: 700;
 
-  color: #c9a962;
+  color: var(--sheet-accent);
 
   font-variant-numeric: tabular-nums;
 
@@ -1130,7 +1468,7 @@
 
   text-transform: uppercase;
 
-  color: #e8eef4;
+  color: var(--sheet-text);
 
 }
 
@@ -1138,7 +1476,7 @@
 
 .sheet-popup-center .sheet-toolbar h2 {
 
-  color: #e8eef4;
+  color: var(--sheet-text);
 
 }
 
@@ -1518,139 +1856,49 @@
 
 .sheet-shell--popup .sheet-tab.active {
 
-  color: #c9a962;
+  color: var(--sheet-accent);
 
-  border-color: rgba(201, 169, 98, 0.45);
+  border-color: var(--sheet-border-bright);
 
-}
-
-
-
-/* Responsivo ao tamanho da janela (Foundry) — container queries */
-
-@container sheet-popup (min-width: 720px) {
-
-  .sheet-popup-body {
-
-    grid-template-columns: minmax(168px, 200px) minmax(0, 1fr);
-
-    align-items: stretch;
-
-  }
-
-
-
-  .sheet-popup-left {
-
-    display: flex;
-
-    flex-direction: column;
-
-    align-items: center;
-
-    gap: 0.55rem;
-
-    padding: 0.75rem 0.65rem;
-
-    border-right: 1px solid rgba(122, 163, 201, 0.12);
-
-    border-bottom: none;
-
-    min-height: 100%;
-
-  }
-
-
-
-  .sheet-popup-portrait {
-
-    grid-row: auto;
-
-    width: 148px;
-
-    height: 148px;
-
-    flex-shrink: 0;
-
-  }
-
-
-
-  .sheet-popup-diamond {
-
-    grid-column: auto;
-
-    width: 148px;
-
-    max-width: none;
-
-    height: 148px;
-
-    justify-self: center;
-
-    flex-shrink: 0;
-
-  }
-
-
-
-  .sheet-popup-resource--hp {
-
-    margin-top: auto;
-
-    width: 100%;
-
-    max-width: 180px;
-
-  }
+  background: var(--sheet-accent-soft);
 
 }
 
 
 
-@container sheet-popup (max-width: 480px) {
+/* Responsivo — topo da ficha */
 
-  .sheet-popup-hero {
+@container sheet-popup (max-width: 560px) {
+
+  .sheet-popup-top {
 
     grid-template-columns: 1fr;
 
-    gap: 0.5rem;
+    grid-template-areas:
 
-    min-height: auto;
+      "portrait"
 
-    padding-bottom: 0.65rem;
+      "identity"
 
-  }
+      "attrs"
 
-
-
-  .sheet-popup-hero__level {
-
-    flex-direction: row;
-
-    align-items: center;
-
-    padding-left: 0;
-
-    gap: 0.65rem;
+      "combat";
 
   }
 
 
 
-  .sheet-popup-hero__xp {
+  .sheet-popup-top__portrait {
 
-    flex: 1;
+    max-width: 120px;
 
-    width: auto;
-
-    text-align: left;
+    margin: 0 auto;
 
   }
 
 
 
-  .sheet-popup-attrs {
+  .sheet-popup-top__attrs {
 
     grid-template-columns: repeat(3, 1fr);
 
@@ -1658,53 +1906,21 @@
 
 
 
-  .sheet-popup-left {
+  .sheet-popup-identity {
 
-    grid-template-columns: 88px 1fr;
-
-    grid-template-rows: auto auto auto;
+    min-height: 0;
 
   }
 
-
-
-  .sheet-popup-portrait {
-
-    grid-row: 1;
-
-    width: 88px;
-
-    height: 88px;
-
-  }
+}
 
 
 
-  .sheet-popup-diamond {
+@container sheet-popup (max-width: 400px) {
 
-    grid-column: 2;
-
-    grid-row: 1;
-
-    height: 96px;
-
-    max-width: none;
-
-  }
-
-
-
-  .sheet-popup-attrs {
+  .sheet-popup-top__attrs {
 
     grid-template-columns: repeat(2, 1fr);
-
-  }
-
-
-
-  .sheet-popup-hero__name {
-
-    font-size: 1.2rem;
 
   }
 
