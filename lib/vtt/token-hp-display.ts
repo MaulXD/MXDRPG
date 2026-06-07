@@ -68,16 +68,16 @@ export function isTokenDefeated(token: BattleToken): boolean {
 
 const HP_BAR_GRAPHITE = "rgb(58, 58, 60)";
 
-/** Raio do anel de HP na borda do retrato (inset mínimo). */
+/** Raio do anel interno de HP (centro do traço). */
 export function tokenOuterBorderR(tokenR: number, ringStyle: TokenRingStyle): number {
   void ringStyle;
-  return tokenR - 0.35;
+  return tokenR * 0.9;
 }
 
 /** @deprecated Use tokenOuterBorderR */
 export const tokenOuterBorderHexR = tokenOuterBorderR;
 
-/** Barra de vida no anel circular externo do token. */
+/** Anel de vida circular por dentro do token; retrato encaixa no interior. */
 export function hpRingLayout(tokenR: number, ringStyle: TokenRingStyle): {
   width: number;
   contentR: number;
@@ -86,12 +86,12 @@ export function hpRingLayout(tokenR: number, ringStyle: TokenRingStyle): {
   identityBase: number;
   outerRingOffset: number;
 } {
-  const width = Math.max(2.5, tokenR * 0.052);
+  const width = Math.max(2.5, tokenR * 0.048);
   const identityBase = tokenR;
   const outerRingOffset = Math.min(...ringStyle.rings.map((ring) => ring.radiusOffset));
-  const borderR = tokenR - 0.35;
-  const contentRFull = Math.max(4, tokenR);
-  const contentR = Math.max(4, tokenR - width * 0.5);
+  const borderR = Math.max(tokenR * 0.9, tokenR - width * 2.2);
+  const contentRFull = Math.max(4, borderR - width * 0.55 - 0.5);
+  const contentR = contentRFull;
   return { width, contentR, contentRFull, borderR, identityBase, outerRingOffset };
 }
 
@@ -121,10 +121,6 @@ export function resolveTokenHpDisplay(
       ? canManageRoom({ ownerId: opts.roomOwnerId }, opts.session)
       : false);
 
-  if (!opts.hovered) {
-    return { bar: false, numeric: false };
-  }
-
   if (isGm) {
     return { bar: true, numeric: false };
   }
@@ -145,7 +141,7 @@ export function resolveTokenHpDisplay(
 
 const HP_RING_START = -Math.PI / 2;
 
-/** Anel circular como barra de vida (preenchimento horário a partir do topo). */
+/** Anel circular interno como barra de vida (preenchimento horário a partir do topo). */
 export function drawTokenHpSegments(
   ctx: CanvasRenderingContext2D,
   x: number,

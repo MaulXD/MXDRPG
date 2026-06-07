@@ -315,7 +315,7 @@ export function drawTokensLayer(ctx: CanvasRenderingContext2D, p: TokenDrawParam
     const hpLayout = hpRingLayout(r, ringStyle);
     const hpVis = p.tokenHpDisplay?.get(token.id);
     const showHpBar = Boolean(hpVis?.bar && token.vidaMax != null && token.vida != null);
-    const portraitR = hpLayout.contentRFull;
+    const portraitR = showHpBar ? hpLayout.contentRFull : r;
     const defeated = isTokenDefeated(token);
 
     if (token.id === p.turnActiveId) {
@@ -334,15 +334,12 @@ export function drawTokensLayer(ctx: CanvasRenderingContext2D, p: TokenDrawParam
       drawTokenDefeatedOverlay(ctx, x, y, portraitR);
     }
 
+    drawTokenIdentityRings(ctx, x, y, hpLayout.identityBase, ringStyle);
+
     if (showHpBar) {
       const ratio = hpRatio(token);
       drawTokenHpSegments(ctx, x, y, hpLayout, ratio, hpBarColor(ratio));
     }
-
-    drawTokenIdentityRings(ctx, x, y, hpLayout.identityBase, ringStyle, {
-      skipOutermostRing: showHpBar,
-      outerRingOffset: hpLayout.outerRingOffset,
-    });
 
     if (defeated) {
       drawTokenDefeatedSkull(ctx, x, y, r);
