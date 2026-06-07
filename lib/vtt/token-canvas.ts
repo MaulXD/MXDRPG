@@ -10,21 +10,6 @@ export function tokenRadius(hexSize: number, size: CreatureSize = "medium"): num
   return tokenDrawRadius(hexSize, size);
 }
 
-export function drawTokenDropShadow(
-  ctx: CanvasRenderingContext2D,
-  cx: number,
-  cy: number,
-  radius: number
-): void {
-  ctx.save();
-  ctx.globalAlpha = 0.5;
-  ctx.beginPath();
-  ctx.ellipse(cx, cy + radius * 0.82, radius * 0.9, radius * 0.26, 0, 0, Math.PI * 2);
-  ctx.fillStyle = "rgba(0,0,0,0.55)";
-  ctx.fill();
-  ctx.restore();
-}
-
 /** Placeholder quando a imagem ainda não carregou */
 export function drawTokenPlaceholder(
   ctx: CanvasRenderingContext2D,
@@ -51,8 +36,6 @@ export function drawTokenPlaceholder(
   ctx.font = `700 ${Math.round(radius * 1.05)}px Lora, Georgia, serif`;
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
-  ctx.shadowColor = "rgba(0,0,0,0.45)";
-  ctx.shadowBlur = 4;
   ctx.fillText(initial, cx, cy + 1);
   ctx.restore();
 }
@@ -84,33 +67,6 @@ export function drawCircularTokenImage(
   ctx.arc(cx, cy, radius, 0, Math.PI * 2);
   ctx.clip();
   ctx.drawImage(img, sx, sy, sw, sh, cx - radius, cy - radius, diameter, diameter);
-  ctx.restore();
-
-  drawTokenImageVignette(ctx, cx, cy, radius);
-
-  ctx.beginPath();
-  ctx.arc(cx, cy, radius, 0, Math.PI * 2);
-  ctx.strokeStyle = "rgba(0, 0, 0, 0.32)";
-  ctx.lineWidth = 1;
-  ctx.stroke();
-}
-
-function drawTokenImageVignette(
-  ctx: CanvasRenderingContext2D,
-  cx: number,
-  cy: number,
-  radius: number
-): void {
-  ctx.save();
-  ctx.beginPath();
-  ctx.arc(cx, cy, radius, 0, Math.PI * 2);
-  ctx.clip();
-  const g = ctx.createRadialGradient(cx, cy, radius * 0.25, cx, cy, radius);
-  g.addColorStop(0, "rgba(0,0,0,0)");
-  g.addColorStop(0.82, "rgba(0,0,0,0)");
-  g.addColorStop(1, "rgba(0,0,0,0.2)");
-  ctx.fillStyle = g;
-  ctx.fillRect(cx - radius, cy - radius, radius * 2, radius * 2);
   ctx.restore();
 }
 

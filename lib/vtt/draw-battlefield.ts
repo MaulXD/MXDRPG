@@ -9,7 +9,7 @@ import {
 import type { MapBackdropTone } from "@/lib/vtt/map-luminance";
 import type { PortraitFocus } from "@/lib/media/portrait-focus";
 import { DEFAULT_PORTRAIT_FOCUS } from "@/lib/media/portrait-focus";
-import { collectPlayerActorIds, resolveTokenRing } from "@/lib/vtt/token-colors";
+import { collectPlayerActorIds, resolveTokenRing, tokenPortraitInset } from "@/lib/vtt/token-colors";
 import {
   creatureSizeOf,
   occupiedHexes,
@@ -18,7 +18,6 @@ import {
 } from "@/lib/vtt/creature-size";
 import {
   drawCircularTokenImage,
-  drawTokenDropShadow,
   drawTokenIdentityRings,
   drawTokenPlaceholder,
 } from "@/lib/vtt/token-canvas";
@@ -315,14 +314,14 @@ export function drawTokensLayer(ctx: CanvasRenderingContext2D, p: TokenDrawParam
     const hpLayout = hpRingLayout(r, ringStyle);
     const hpVis = p.tokenHpDisplay?.get(token.id);
     const showHpBar = Boolean(hpVis?.bar && token.vidaMax != null && token.vida != null);
-    const portraitR = showHpBar ? hpLayout.contentRFull : r;
+    const ringInset = tokenPortraitInset(ringStyle);
+    const portraitR = showHpBar ? hpLayout.contentRFull : Math.max(4, r - ringInset);
+    const identityR = showHpBar ? hpLayout.identityBase : portraitR;
     const defeated = isTokenDefeated(token);
 
     if (token.id === p.turnActiveId) {
       drawTurnActiveIndicator(ctx, x, y, r, p.tokenAnimTimeSec);
     }
-
-    drawTokenDropShadow(ctx, x, y, r);
 
     if (img?.complete && img.naturalWidth > 0) {
       drawCircularTokenImage(ctx, img, x, y, portraitR, focus);
@@ -334,7 +333,7 @@ export function drawTokensLayer(ctx: CanvasRenderingContext2D, p: TokenDrawParam
       drawTokenDefeatedOverlay(ctx, x, y, portraitR);
     }
 
-    drawTokenIdentityRings(ctx, x, y, hpLayout.identityBase, ringStyle);
+    drawTokenIdentityRings(ctx, x, y, identityR, ringStyle);
 
     if (showHpBar) {
       const ratio = hpRatio(token);

@@ -77,7 +77,7 @@ export function tokenOuterBorderR(tokenR: number, ringStyle: TokenRingStyle): nu
 /** @deprecated Use tokenOuterBorderR */
 export const tokenOuterBorderHexR = tokenOuterBorderR;
 
-/** Anel de vida circular por dentro do token; retrato encaixa no interior. */
+/** Anel de vida no limite inscrito; retrato ocupa o interior com o máximo de área possível. */
 export function hpRingLayout(tokenR: number, ringStyle: TokenRingStyle): {
   width: number;
   contentR: number;
@@ -86,13 +86,12 @@ export function hpRingLayout(tokenR: number, ringStyle: TokenRingStyle): {
   identityBase: number;
   outerRingOffset: number;
 } {
-  const width = Math.max(2.5, tokenR * 0.048);
-  const identityBase = tokenR;
+  const width = Math.max(2, tokenR * 0.055);
   const outerRingOffset = Math.min(...ringStyle.rings.map((ring) => ring.radiusOffset));
-  const borderR = Math.max(tokenR * 0.9, tokenR - width * 2.2);
-  const contentRFull = Math.max(4, borderR - width * 0.55 - 0.5);
-  const contentR = contentRFull;
-  return { width, contentR, contentRFull, borderR, identityBase, outerRingOffset };
+  const borderR = tokenR - width * 0.5;
+  const contentRFull = Math.max(4, borderR - width * 0.5 - 0.25);
+  const identityBase = contentRFull;
+  return { width, contentR: contentRFull, contentRFull, borderR, identityBase, outerRingOffset };
 }
 
 function isPlayerCharacterToken(token: BattleToken): boolean {
