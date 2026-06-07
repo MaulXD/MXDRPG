@@ -27,6 +27,7 @@ import { patchRoomActor } from "@/hooks/useRoomSync";
 import { formatCombatActionTooltip } from "@/lib/combat/action-tooltip";
 import { collectPlayerActorIds, primaryTokenRingColor } from "@/lib/vtt/token-colors";
 import { CombatActionDetail } from "@/components/vtt/CombatActionDetail";
+import { computeCursorDetailPlacement } from "@/lib/vtt/cursor-detail-placement";
 import "./token-action-ring.css";
 
 type SlotTone = "walk" | "run" | "attack" | "spell" | "ability";
@@ -62,10 +63,6 @@ type Props = {
 };
 
 const RING_RADIUS_BASE = 152;
-const INFO_DETAIL_GAP = 14;
-const INFO_DETAIL_MARGIN = 10;
-const INFO_DETAIL_MAX_W = 420;
-
 function ringLayout(slotCount: number): { radius: number; track: number; slotScale: number } {
   if (slotCount <= 5) {
     return { radius: RING_RADIUS_BASE, track: 312, slotScale: 1 };
@@ -97,20 +94,6 @@ function combatActionPaLabel(actor: RoomActor | null, action: CombatActionOption
     return `${totalChannelPaCost(actor, action, 0)} PA`;
   }
   return `${effectivePaCost(actor, action)} PA`;
-}
-
-function computeInfoDetailPlacement(pointer: { x: number; y: number }): {
-  left: number;
-  top: number;
-  flipLeft: boolean;
-} {
-  const panelW = Math.min(INFO_DETAIL_MAX_W, window.innerWidth * 0.94);
-  const flipLeft = pointer.x + INFO_DETAIL_GAP + panelW > window.innerWidth - INFO_DETAIL_MARGIN;
-  return {
-    left: flipLeft ? pointer.x - INFO_DETAIL_GAP : pointer.x + INFO_DETAIL_GAP,
-    top: pointer.y,
-    flipLeft,
-  };
 }
 
 function truncateRingLabel(name: string, max = 11): string {
@@ -373,7 +356,7 @@ export function TokenActionRing({
   );
 
   const detailPlacement = useMemo(
-    () => (infoPointer ? computeInfoDetailPlacement(infoPointer) : null),
+    () => (infoPointer ? computeCursorDetailPlacement(infoPointer) : null),
     [infoPointer]
   );
 
@@ -516,7 +499,6 @@ export function TokenActionRing({
                       : ""
                   }`}
                   aria-label={`Informações: ${slot.label}`}
-                  title="Ver descrição"
                   onMouseDown={(e) => e.stopPropagation()}
                   onMouseEnter={(e) => {
                     syncInfoPointer(e);

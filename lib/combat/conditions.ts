@@ -73,6 +73,10 @@ export function tokenBuffAttackRollMode(
     modes.push("advantage");
     sources.push("tiro certeiro");
   }
+  if (attacker.weakened) {
+    modes.push("disadvantage");
+    sources.push("enfraquecido");
+  }
   if (attacker.attackMark?.attackerDisadvantage) {
     modes.push("disadvantage");
     sources.push("finta");
@@ -156,6 +160,10 @@ export function saveRollModeDetail(defender: BattleToken): AttackRollModeDetail 
       const label = CONDITION_SAVE_DISADV_LABEL[c];
       if (label) sources.push(label);
     }
+  }
+  if (defender.weakened) {
+    modes.push("disadvantage");
+    sources.push("enfraquecido");
   }
   return { mode: combineRollModes(...modes), sources };
 }

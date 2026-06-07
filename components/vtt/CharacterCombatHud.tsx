@@ -94,7 +94,7 @@ export function CharacterCombatHud({
       <button
         type="button"
         className="vtt-combat-hud__hide"
-        title="Ocultar HUD (pode reabrir pelo botão na barra)"
+        title="Ocultar HUD"
         aria-label="Ocultar HUD"
         onClick={onHide}
       >
