@@ -1,6 +1,6 @@
-# Design atual do Eldarin — v2
+# Design atual do Eldarin — v3
 
-Documentação de como o sistema visual do site e da mesa VTT funciona hoje — paleta, tipografia, layouts, componentes e convenções CSS.
+Documentação de como o sistema visual do site e da mesa VTT funciona hoje — paleta, tipografia, layouts, componentes, fluxos de combate e convenções CSS.
 
 > Complementa [UX-MESA-E-RAIL.md](./UX-MESA-E-RAIL.md) e [PARIDADE-FOUNDRY.md](./PARIDADE-FOUNDRY.md).
 
@@ -136,12 +136,33 @@ Cantos decorativos SVG (`.mf-corner`) + corpo `.mf-body`. Sem emojis decorativos
 ┌──────────────────────────────────────────────────────────────────┐
 │ vtt-topbar: ELDARIN | Mesas · Compêndios · Minhas mesas | sol    │
 ├──────────┬─────────────────────────────────────────────────────┤
-│ Icon bar │  Mapa hex (stage)                                    │
+│ Icon bar │  Mapa hex (stage — foundry-mesa__stage)              │
 │ + dock   │  · MapToolbar (esquerda)                             │
-│ opcional │  · CharacterCombatHud (baixo centro)                 │
+│ (altura  │  · TurnHandoffOverlay (anúncio de turno)              │
+│  100%)   │  · Toasts (#foundry-mesa-toasts, acima do HUD)       │
+│          │  · CharacterCombatHud (baixo centro, z-index 7)      │
 │          │  · Janelas flutuantes (#foundry-mesa-windows)        │
 └──────────┴─────────────────────────────────────────────────────┘
 ```
+
+### Sidebar e dock
+
+- **Icon bar** fixa à esquerda (`foundry-icon-bar`); ícones SVG + rótulo curto.
+- **Dock** (`foundry-sidebar__dock`) expande com `width: clamp(248px, 28vw, 340px)` quando um painel está aberto.
+- Painéis dock (`FoundryDockPanel`) usam `position: absolute; inset: 0` na coluna e **preenchem a altura** (`flex: 1` na cadeia `__body` → `mesa-panel-scroll--rail`).
+- Ordem de turno no dock: lista compacta com scroll interno (`vtt-turn-list--compact`), rodapé de navegação fixo embaixo.
+- Janelas flutuantes reutilizam o mesmo conteúdo via portal em `#foundry-mesa-windows`.
+
+### Camadas z-index (mesa)
+
+| Camada | z-index | Elemento |
+|--------|---------|----------|
+| Mapa / canvas | 0 | `.vtt-canvas-wrap` |
+| Toolbar / hints | 5–6 | `MapToolbar`, `vtt-turn-handoff` |
+| HUD de combate | 7 | `.vtt-combat-hud` |
+| Toasts de turno/PA | 12 | `.foundry-mesa__toasts` |
+| Sidebar | 30 | `.foundry-sidebar` |
+| Janelas Foundry | 20+ | `.foundry-window` |
 
 ---
 
@@ -267,14 +288,51 @@ Pill do modificador:
 
 ### Especificações visuais
 
-- **Borda do HUD:** `clip-path` chanfrado nos cantos superiores; borda `1px solid var(--border-accent)` no estado normal, dourada/azul reforçada no turno ativo (`.vtt-combat-hud--your-turn`)
+- **Fundo do HUD:** chanfrado via `::before` (não clipa o conteúdo); borda `1px solid var(--border-accent)`; no turno ativo (`.vtt-combat-hud--your-turn::before`) borda `--accent-primary` reforçada
 - **Nome:** Cinzel 14px 700, `--text`
 - **PV:** `{atual}/{max}` — Cinzel 13px 600, cor por `hpBarColor()` (verde/amarelo/vermelho)
 - **Barra HP:** altura 5px, fundo `var(--bg-deep)`, borda `1px solid var(--border)`, fill colorido
 - **CA:** ícone SVG de escudo com número centralizado (Cinzel 14px 700) — sem emoji
-- **PA:** label "PA" em Source Sans 3 10px + dots quadrados chanfrados (preenchido: `--accent-primary` azul, vazio: `--surface`)
-- **Botão "Passar Turno":** Cinzel uppercase, `clip-path` chanfrado, borda `--accent`, fundo `--bg-deep`
-- **Retrato:** borda na cor do token; inicial em Cinzel se sem imagem
+- **PA:** `PaHudMeter` — label "PA" + dots (`PaDotMeter`); preenchido `--accent-primary`, vazio `--surface`
+- **Botão "Passar Turno":** Cinzel uppercase, borda `--accent`, fundo `--bg-deep`
+- **Retrato (72×72, 58×58 mobile):** `PortraitFocusFill` com `tokenFocus` / `portraitFocus` da ficha; borda na cor do token; fallback para iniciais em Cinzel
+
+### Retratos e persistência
+
+- **Fonte de verdade:** `actor.tokenImageUrl` → `actor.portraitUrl` → `token.imageUrl` (ver `lib/room/portrait-sync.ts`).
+- **Sync ao salvar mesa:** `syncLinkedTokens` + `backfillActorPortraitsFromTokens` em `bumpRoom` evitam perder imagem ao passar turno.
+- **Cliente:** `mergeScenePreservingPortraits` no `HexBattlefield` preserva `imageUrl` entre snapshots parciais de combate.
+- **Enquadramento:** mesmo motor da ficha (`PortraitFocusFill` / `computeFocusImgLayout`); HUD usa `shape="square"`.
+
+---
+
+## 7b. Fluxos visuais de combate
+
+### Anúncio de turno (`TurnHandoffOverlay`)
+
+Disparado quando `activeIndex` ou rodada mudam (não na carga inicial da mesa).
+
+```
+┌────────────────────────────────────────┐
+│ ░░░░░░░░░ overlay 36% preto ░░░░░░░░░ │
+│                                        │
+│         Vez de “Nome do Personagem”    │  ← Cinzel, --accent-primary no nome
+│                                        │
+│ ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ │
+│         [ HUD permanece visível ]      │  z-index 7, abaixo do overlay (6)
+└────────────────────────────────────────┘
+```
+
+- Duração: ~2s visível + fade 420ms
+- Classes: `.vtt-turn-handoff`, `.vtt-turn-handoff__veil`, `.vtt-turn-handoff__text`
+- Substitui o banner fixo "Turno de:" no topo do mapa
+
+### Toasts de PA/turno (`VttToast`)
+
+- Renderizados em `#foundry-mesa-toasts` dentro do stage (portal), não no `body`
+- Posição: `bottom: var(--vtt-toast-lift)` — calculado dinamicamente acima do `.vtt-combat-hud`
+- Variantes: `info`, `warn` (atordoado), `success` (PA restituídos/guardados)
+- Máximo 5 toasts empilhados; auto-dismiss 5,2s
 
 ---
 
@@ -304,23 +362,45 @@ Pill do modificador:
 
 ---
 
-## 10. Mapa de arquivos CSS
+## 10. Mapa de arquivos
+
+### CSS
 
 ```
 app/globals.css                              ← tokens globais, tema claro/escuro, botões
-components/vtt/vtt.css                       ← combate, HUD, sidebars, efeitos
+components/vtt/vtt.css                       ← combate, HUD, turn handoff, sidebars
 components/vtt/mesa-theme.css                ← override mesa Foundry + canvas
-components/vtt/foundry/foundry.css           ← rail, dock, janelas
+components/vtt/foundry/foundry.css           ← rail, dock (altura 100%), janelas
 components/vtt/whiteboard.css                ← MapToolbar
 components/vtt/token-action-ring.css
-components/vtt/vtt-toast.css
+components/vtt/vtt-toast.css                 ← toasts acima do HUD no stage
 components/vtt/bug-report.css
-components/character/sheet.css
+components/character/sheet.css               ← PortraitFocusFill (ficha)
 components/character/sheet-popup.css
 components/character/wizard/wizard.css
 components/compendium/compendium.css
 components/ui/medieval-borders.css
 components/home/home.css
+```
+
+### Componentes visuais-chave (mesa)
+
+| Componente | Arquivo | Função |
+|------------|---------|--------|
+| `MesaWorkspace` | `components/vtt/MesaWorkspace.tsx` | Shell Foundry, dock, toasts anchor |
+| `CharacterCombatHud` | `components/vtt/CharacterCombatHud.tsx` | HUD inferior com retrato focado |
+| `TurnHandoffOverlay` | `components/vtt/TurnHandoffOverlay.tsx` | Overlay "Vez de …" ao passar turno |
+| `VttToast` | `components/vtt/VttToast.tsx` | Toasts PA/turno acima do HUD |
+| `FoundryDockPanel` | `components/vtt/foundry/FoundryDockPanel.tsx` | Painel lateral fixo |
+| `PortraitFocusFill` | `components/character/PortraitFocusFill.tsx` | Enquadramento de retrato |
+
+### Lógica de sync (retratos)
+
+```
+lib/room/portrait-sync.ts      ← merge/preserve imageUrl
+lib/room/sync.ts               ← syncLinkedTokens
+lib/room/internal/registry.ts  ← bumpRoom + backfill
+lib/room/adventure-actors.ts   ← merge retratos ao sync ficha DB
 ```
 
 ---
@@ -330,7 +410,19 @@ components/home/home.css
 - UX rail legado: [UX-MESA-E-RAIL.md](./UX-MESA-E-RAIL.md)
 - Painéis Foundry: [PARIDADE-FOUNDRY.md](./PARIDADE-FOUNDRY.md)
 - Regras de produto: [PRD-ELDARIN-VTT.md](./PRD-ELDARIN-VTT.md)
+- Combate e PA: [VTT-ACOES-PA-AREAS.md](./VTT-ACOES-PA-AREAS.md)
+- UX combate: [P5-COMBAT-UX.md](./P5-COMBAT-UX.md)
 
 ---
 
-*Última revisão: junho 2026 — v2: contraste corrigido, emojis removidos, spec de atributos opção C, ficha layout Foundry, tokens hexagonais, convenções de legibilidade.*
+## 12. Changelog visual
+
+| Versão | Data | Mudanças |
+|--------|------|----------|
+| v3 | jun/2026 | Dock preenche altura; toasts acima do HUD; overlay de turno; retratos persistentes; HUD com PortraitFocusFill e fundo em `::before` |
+| v2 | jun/2026 | Contraste WCAG, sem emojis, atributos opção C, tokens hex, ficha Foundry |
+| v1 | — | Paleta ardósia/azul, shell Foundry inicial |
+
+---
+
+*Última revisão: junho 2026 — v3.*
