@@ -16,8 +16,6 @@ import {
 
 import {
 
-  countCharactersForUserInAdventure,
-
   listCharactersForUserInAdventure,
 
   MAX_CHARACTERS_PER_USER_PER_ADVENTURE,
@@ -177,9 +175,19 @@ export default async function AventuraHubPage({ params, searchParams }: Props) {
 
   const room = await getRoom(adventure.primaryRoomId);
 
-  const myChars = await listCharactersForUserInAdventure(session.user.id, adventureId);
+  let myChars: Awaited<ReturnType<typeof listCharactersForUserInAdventure>> = [];
 
-  const charCount = await countCharactersForUserInAdventure(session.user.id, adventureId);
+  try {
+
+    myChars = await listCharactersForUserInAdventure(session.user.id, adventureId);
+
+  } catch (e) {
+
+    console.error("[aventura] falha ao listar fichas:", e);
+
+  }
+
+  const charCount = myChars.length;
 
   const canCreateChar = charCount < MAX_CHARACTERS_PER_USER_PER_ADVENTURE;
 
@@ -369,7 +377,7 @@ export default async function AventuraHubPage({ params, searchParams }: Props) {
 
                       {" "}
 
-                      · nv {a.identity.nivel} {a.identity.classe}
+                      · nv {a.identity?.nivel ?? "?"} {a.identity?.classe ?? ""}
 
                     </span>
 
@@ -451,7 +459,7 @@ export default async function AventuraHubPage({ params, searchParams }: Props) {
 
                   {" "}
 
-                  · nv {c.identity.nivel} {c.identity.classe}
+                  · nv {c.identity?.nivel ?? "?"} {c.identity?.classe ?? ""}
 
                 </span>
 
