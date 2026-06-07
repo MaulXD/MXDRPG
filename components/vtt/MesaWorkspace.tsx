@@ -478,6 +478,7 @@ export function MesaWorkspace({
                 openStatusRef.current = open;
               }}
             />
+            <div id="foundry-mesa-toasts" className="foundry-mesa__toasts" aria-live="polite" />
           </div>
 
           <div id="foundry-mesa-hud" className="foundry-mesa__hud">
