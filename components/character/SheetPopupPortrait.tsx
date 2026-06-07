@@ -211,7 +211,14 @@ export function SheetPopupPortrait({
       />
 
       {open && canEdit ? (
-        <div className="sheet-popup-portrait-editor" role="dialog" aria-label="Editor de retrato">
+        <>
+          <button
+            type="button"
+            className="sheet-popup-portrait-backdrop"
+            aria-label="Fechar editor de retrato"
+            onClick={() => setOpen(false)}
+          />
+          <div className="sheet-popup-portrait-editor" role="dialog" aria-label="Editor de retrato">
           <div className="sheet-popup-portrait-editor__head">
             <strong>Retrato e token</strong>
             <button type="button" className="sheet-popup-portrait-editor__close" onClick={() => setOpen(false)}>
@@ -248,7 +255,8 @@ export function SheetPopupPortrait({
             )}
           </div>
           {msg ? <p className="sheet-popup-portrait-editor__msg">{msg}</p> : null}
-        </div>
+          </div>
+        </>
       ) : null}
     </div>
   );
