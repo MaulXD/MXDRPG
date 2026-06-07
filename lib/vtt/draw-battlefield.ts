@@ -33,7 +33,6 @@ import { drawTokenEffectBadges } from "@/lib/vtt/draw-token-effects";
 import {
   drawTokenDefeatedOverlay,
   drawTokenDefeatedSkull,
-  drawTokenHpLabel,
   drawTokenNameLabel,
   drawTokenWalkRemainingBadge,
   drawTokenHpSegments,
@@ -217,23 +216,6 @@ export function drawHexGridLayer(ctx: CanvasRenderingContext2D, p: GridDrawParam
     ctx.lineWidth = lineWidth;
     ctx.stroke();
 
-    if (isHover && p.showMovement && p.hoverMovePreview) {
-      ctx.fillStyle = pal.tokenText;
-      ctx.font = "600 9px Lora, Georgia, serif";
-      ctx.textAlign = "center";
-      if (p.hoverMovePreview.ok && p.hoverMovePreview.dist > 0) {
-        const pa =
-          p.hoverMovePreview.paCost > 0
-            ? `PA +${p.hoverMovePreview.paCost}`
-            : "PA +0";
-        ctx.fillText(`${p.hoverMovePreview.dist} hex · ${hexToMeters(p.hoverMovePreview.dist)} m`, x, y - 8);
-        ctx.fillStyle = pal.walkPaidStroke;
-        ctx.fillText(pa, x, y + 4);
-      } else if (!p.hoverMovePreview.ok) {
-        ctx.fillStyle = pal.invalidStroke;
-        ctx.fillText(p.hoverMovePreview.reason ?? "Inválido", x, y + 4);
-      }
-    }
   }
 
   drawMovementPathLayer(ctx, p);
@@ -333,6 +315,9 @@ export function drawTokensLayer(ctx: CanvasRenderingContext2D, p: TokenDrawParam
     const focus = p.focusByTokenId.get(token.id) ?? DEFAULT_PORTRAIT_FOCUS;
     const ringStyle = resolveTokenRing(token, playerActorIds);
     const hpLayout = hpRingLayout(r);
+    const hpVis = p.tokenHpDisplay?.get(token.id);
+    const showHpBar = Boolean(hpVis?.bar && token.vidaMax != null && token.vida != null);
+    const portraitR = showHpBar ? hpLayout.contentR : hpLayout.contentRFull;
     const defeated = isTokenDefeated(token);
 
     if (token.id === p.turnActiveId) {
@@ -342,24 +327,18 @@ export function drawTokensLayer(ctx: CanvasRenderingContext2D, p: TokenDrawParam
     drawTokenDropShadow(ctx, x, y, r);
 
     if (img?.complete && img.naturalWidth > 0) {
-      drawCircularTokenImage(ctx, img, x, y, hpLayout.contentR, focus);
+      drawCircularTokenImage(ctx, img, x, y, portraitR, focus);
     } else {
-      drawTokenPlaceholder(ctx, x, y, hpLayout.contentR, token.color, token.name);
+      drawTokenPlaceholder(ctx, x, y, portraitR, token.color, token.name);
     }
 
     if (defeated) {
-      drawTokenDefeatedOverlay(ctx, x, y, hpLayout.contentR);
+      drawTokenDefeatedOverlay(ctx, x, y, portraitR);
     }
 
-    const hpVis = p.tokenHpDisplay?.get(token.id);
-    let hpLabelColor: string | null = null;
-    if (hpVis?.bar && token.vidaMax != null && token.vida != null) {
+    if (showHpBar) {
       const ratio = hpRatio(token);
-      const color = hpBarColor(ratio);
-      drawTokenHpSegments(ctx, x, y, hpLayout, ratio, color);
-      hpLabelColor = color;
-    } else if (hpVis?.numeric && token.vidaMax != null && token.vida != null) {
-      hpLabelColor = hpBarColor(hpRatio(token));
+      drawTokenHpSegments(ctx, x, y, hpLayout, ratio, hpBarColor(ratio));
     }
 
     drawTokenIdentityRings(ctx, x, y, hpLayout.identityBase, ringStyle);
@@ -390,9 +369,9 @@ export function drawTokensLayer(ctx: CanvasRenderingContext2D, p: TokenDrawParam
 
     if (token.id === p.selectedId) {
       ctx.beginPath();
-      ctx.arc(x, y, r + 4, 0, Math.PI * 2);
+      ctx.arc(x, y, r + 2, 0, Math.PI * 2);
       ctx.strokeStyle = readThemeColor("--vtt-token-ring-selected", "#c9a962");
-      ctx.lineWidth = 2.5;
+      ctx.lineWidth = 2;
       ctx.stroke();
     }
 
@@ -405,10 +384,6 @@ export function drawTokensLayer(ctx: CanvasRenderingContext2D, p: TokenDrawParam
       } else {
         drawAttackableHint(ctx, x, y, r, p.tokenAnimTimeSec);
       }
-    }
-
-    if (hpLabelColor) {
-      drawTokenHpLabel(ctx, x, y, r, token, hpLabelColor);
     }
 
     if (token.id === p.hoverTurnMoveTokenId) {

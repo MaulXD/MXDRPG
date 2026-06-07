@@ -106,15 +106,27 @@ export function CombatActionBar({
   }
 
   async function useSelfAbility() {
-    await performAbility(
-      roomId,
-      attacker.id,
-      null,
-      action!,
-      turn.bypassTurn,
-      onAttackResult,
-      onUpdate
-    );
+    if (action!.kind === "ability") {
+      await performAbility(
+        roomId,
+        attacker.id,
+        null,
+        action!,
+        turn.bypassTurn,
+        onAttackResult,
+        onUpdate
+      );
+    } else {
+      await performAttack(
+        roomId,
+        attacker,
+        attacker.id,
+        action!,
+        turn.bypassTurn,
+        onAttackResult,
+        onUpdate
+      );
+    }
   }
 
   async function onActionChange(value: string) {

@@ -35,7 +35,7 @@
 }
 
 .foundry-sidebar--dock-open .foundry-sidebar__dock {
-  width: clamp(300px, 36vw, 420px);
+  width: clamp(248px, 28vw, 340px);
 }
 
 .foundry-sidebar__dock {
@@ -449,9 +449,9 @@
 .foundry-dock-panel--initiative .mesa-panel-scroll,
 .foundry-dock-panel--spawn .mesa-panel-scroll,
 .foundry-dock-panel--whiteboard .mesa-panel-scroll {
-  padding: 0.85rem 0.95rem 1rem;
-  font-size: 0.9rem;
-  line-height: 1.45;
+  padding: 0.65rem 0.7rem 0.85rem;
+  font-size: 0.85rem;
+  line-height: 1.4;
 }
 
 .foundry-dock-panel--actors .vtt-sidebar,
@@ -484,6 +484,48 @@
   border: none;
   background: transparent;
   border-radius: 0;
+}
+
+.foundry-window--initiative,
+.foundry-dock-panel--initiative {
+  max-width: min(210px, 92vw);
+}
+
+.foundry-dock-panel--initiative .mesa-panel-scroll {
+  padding: 0.35rem 0.4rem 0.5rem;
+}
+
+.foundry-window--initiative .foundry-window__body {
+  padding: 0.35rem 0.4rem 0.45rem;
+}
+
+.foundry-window--initiative .vtt-turn-track--compact,
+.foundry-dock-panel--initiative .vtt-turn-track--compact {
+  flex: 1;
+  min-height: 0;
+}
+
+.foundry-window--initiative .vtt-turn-head,
+.foundry-dock-panel--initiative .vtt-turn-head {
+  margin-bottom: 0.45rem;
+}
+
+.foundry-window--initiative .vtt-turn-gm-banner,
+.foundry-dock-panel--initiative .vtt-turn-gm-banner {
+  flex-wrap: wrap;
+  font-size: 0.62rem;
+  padding: 0.32rem 0.42rem;
+}
+
+.foundry-window--initiative .vtt-effect-chips--turn,
+.foundry-dock-panel--initiative .vtt-effect-chips--turn {
+  gap: 0.15rem;
+}
+
+.foundry-window--initiative .vtt-effect-chips--turn .vtt-effect-chip,
+.foundry-dock-panel--initiative .vtt-effect-chips--turn .vtt-effect-chip {
+  font-size: 0.55rem;
+  padding: 0.08rem 0.28rem;
 }
 
 .foundry-dock-panel--chat .room-chat,
@@ -596,6 +638,11 @@
   height: 14px;
   cursor: nwse-resize;
   background: linear-gradient(135deg, transparent 50%, rgba(122, 163, 201, 0.4) 50%);
+}
+
+.foundry-window--status .foundry-window__body {
+  padding: 0.65rem 0.75rem 0.85rem;
+  background: var(--mesa-dock-bg);
 }
 
 .foundry-window--chat .foundry-window__body,

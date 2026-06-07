@@ -9,7 +9,8 @@ import {
   computeSpellAreaHexes,
 } from "@/lib/combat/area-spell";
 import { canAbilityTarget } from "@/lib/combat/ability";
-import { canAttackTarget } from "@/lib/combat/attack";
+import { canAttackTarget, isHealingSpell } from "@/lib/combat/attack";
+import { tokensInArea } from "@/lib/combat/area-spell";
 import { attackerForCombatCheck } from "@/lib/combat/combat-token-pa";
 import type { CombatActionOption } from "@/lib/combat/types";
 import type { CharacterSheet } from "@/lib/character/types";
@@ -264,9 +265,32 @@ export function useBattlefieldHighlights({
     return hoverMovePreview.path;
   }, [hoverMovePreview]);
 
+  const areaTargetIds = useMemo(() => {
+    if (!selected || !activeCombatAction || !isAreaSpellMode) return new Set<string>();
+    if (areaPreviewSet.size === 0) return new Set<string>();
+    const hexes: Axial[] = [];
+    for (const key of areaPreviewSet) {
+      const [q, r] = key.split(",").map(Number);
+      hexes.push({ q, r });
+    }
+    const areaHeal = isHealingSpell(activeCombatAction);
+    return new Set(
+      tokensInArea(scene.tokens, hexes, actorRacas)
+        .filter((t) => areaHeal || t.id !== selected.id)
+        .map((t) => t.id)
+    );
+  }, [
+    selected,
+    activeCombatAction,
+    isAreaSpellMode,
+    areaPreviewSet,
+    scene.tokens,
+    actorRacas,
+  ]);
+
   const attackableIds = useMemo(() => {
     if (!selected || !activeCombatAction || !isTargetMode(actionMode)) return new Set<string>();
-    if (isAreaSpellMode) return new Set<string>();
+    if (isAreaSpellMode) return areaTargetIds;
     if (activeCombatAction.selfTarget) return new Set<string>();
     const attacker = attackerForCombatCheck(selected, selectedActor, turn, {
       combatHasOrder,
@@ -290,6 +314,7 @@ export function useBattlefieldHighlights({
     isAreaSpellMode,
     turn,
     combatHasOrder,
+    areaTargetIds,
   ]);
 
   return {
@@ -303,6 +328,7 @@ export function useBattlefieldHighlights({
     hoverMovePreview,
     hoverPathCells,
     attackableIds,
+    areaTargetIds,
     showMovement,
     turnMovePreview,
     isAreaSpellMode,

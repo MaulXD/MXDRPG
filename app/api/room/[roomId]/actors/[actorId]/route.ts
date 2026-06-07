@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { actorForRoomAuth, canEditRoomActor } from "@/lib/auth/room-access";
+import { canEditRoomActorPortrait, isPortraitOnlyPatch } from "@/lib/auth/portrait-access";
 import { getSession } from "@/lib/auth/session";
 import { resolveCharacter } from "@/lib/character/characters";
 import { getRoom, getRoomActor, updateRoomActor } from "@/lib/room/store";
@@ -31,11 +32,14 @@ export async function PATCH(req: Request, { params }: Params) {
   const live = await getRoomActor(roomId, actorId);
   const actorForAuth = actorForRoomAuth(room, { ...seed, ...live });
 
-  if (!canEditRoomActor(room, actorForAuth, session?.user ?? null)) {
+  const body = (await req.json()) as Record<string, unknown>;
+  const user = session?.user ?? null;
+  const canEdit = canEditRoomActor(room, actorForAuth, user);
+  const canPortrait =
+    isPortraitOnlyPatch(body) && canEditRoomActorPortrait(room, actorForAuth, user);
+  if (!canEdit && !canPortrait) {
     return NextResponse.json({ error: "Sem permissão para editar esta ficha" }, { status: 403 });
   }
-
-  const body = (await req.json()) as Record<string, unknown>;
   const snapshot = await updateRoomActor(roomId, actorId, body);
   if (!snapshot) {
     return NextResponse.json({ error: "Sala ou personagem não encontrado" }, { status: 404 });

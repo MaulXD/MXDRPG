@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import type { BattleToken } from "@/lib/vtt/types";
-import { canMoveToken, requireRoomSpawn } from "@/lib/auth/authorize-room";
+import { canMoveToken } from "@/lib/auth/authorize-room";
+import { canRemoveTokenFromBoard } from "@/lib/auth/room-access";
 import { canApplyTokenConditions } from "@/lib/auth/room-access";
 import { getSession } from "@/lib/auth/session";
 import { snapshotForViewer } from "@/lib/room/snapshot-for-viewer";
@@ -53,9 +54,22 @@ export async function PATCH(req: Request, { params }: Params) {
 
 export async function DELETE(_req: Request, { params }: Params) {
   const { roomId, tokenId } = await params;
-  const auth = await requireRoomSpawn(roomId);
-  if ("error" in auth) {
-    return NextResponse.json({ error: auth.error }, { status: auth.status });
+  const session = await getSession();
+  const room = await getRoom(roomId);
+  if (!room) {
+    return NextResponse.json({ error: "Sala não encontrada" }, { status: 404 });
+  }
+
+  const token = room.scene.tokens.find((t) => t.id === tokenId);
+  if (!token) {
+    return NextResponse.json({ error: "Token não encontrado" }, { status: 404 });
+  }
+
+  if (!canRemoveTokenFromBoard(room, session?.user ?? null, token)) {
+    return NextResponse.json(
+      { error: "Sem permissão para retirar este token do mapa" },
+      { status: 403 }
+    );
   }
 
   const result = await removeRoomToken(roomId, tokenId);
@@ -63,5 +77,7 @@ export async function DELETE(_req: Request, { params }: Params) {
     return NextResponse.json({ error: result.error }, { status: 400 });
   }
 
-  return NextResponse.json(snapshotForViewer(result.snapshot, auth.room, auth.user));
+  return NextResponse.json(
+    snapshotForViewer(result.snapshot, room, session?.user ?? null)
+  );
 }

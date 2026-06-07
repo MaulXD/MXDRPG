@@ -4,8 +4,8 @@ import type { CreatureSize } from "@/lib/vtt/creature-size";
 import { tokenDrawRadius } from "@/lib/vtt/creature-size";
 import type { TokenRingStyle } from "@/lib/vtt/token-colors";
 
-/** Raio do token Médio em relação ao hex */
-export const TOKEN_RADIUS_RATIO = 0.48;
+/** Raio do token Médio em relação ao hex (círculo inscrito com margem mínima). */
+export const TOKEN_RADIUS_RATIO = 0.84;
 
 export function tokenRadius(hexSize: number, size: CreatureSize = "medium"): number {
   return tokenDrawRadius(hexSize, size);
@@ -91,13 +91,8 @@ export function drawCircularTokenImage(
 
   ctx.beginPath();
   ctx.arc(cx, cy, radius, 0, Math.PI * 2);
-  ctx.strokeStyle = "rgba(255,255,255,0.12)";
+  ctx.strokeStyle = "rgba(0, 0, 0, 0.32)";
   ctx.lineWidth = 1;
-  ctx.stroke();
-  ctx.beginPath();
-  ctx.arc(cx, cy, radius, 0, Math.PI * 2);
-  ctx.strokeStyle = "rgba(0,0,0,0.4)";
-  ctx.lineWidth = 1.5;
   ctx.stroke();
 }
 
@@ -113,8 +108,8 @@ function drawTokenImageVignette(
   ctx.clip();
   const g = ctx.createRadialGradient(cx, cy, radius * 0.25, cx, cy, radius);
   g.addColorStop(0, "rgba(0,0,0,0)");
-  g.addColorStop(0.75, "rgba(0,0,0,0)");
-  g.addColorStop(1, "rgba(0,0,0,0.42)");
+  g.addColorStop(0.82, "rgba(0,0,0,0)");
+  g.addColorStop(1, "rgba(0,0,0,0.2)");
   ctx.fillStyle = g;
   ctx.fillRect(cx - radius, cy - radius, radius * 2, radius * 2);
   ctx.restore();

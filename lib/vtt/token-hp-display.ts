@@ -5,8 +5,10 @@ import type { RoomActor } from "@/lib/room/types";
 import { strokeEffectIcon } from "@/lib/vtt/token-effect-icons";
 import type { BattleToken } from "@/lib/vtt/types";
 
+/** `bar` = anel segmentado no token; valores numéricos ficam no mini-HUD / painéis. */
 export type TokenHpDisplay = {
   bar: boolean;
+  /** @deprecated Não desenhar HP numérico no canvas — use mini-HUD. */
   numeric: boolean;
 };
 
@@ -67,18 +69,20 @@ export function isTokenDefeated(token: BattleToken): boolean {
 
 const HP_BAR_GRAPHITE = "rgb(58, 58, 60)";
 
-/** Barra fina colada na borda do token + raio do retrato interno. */
+/** Barra fina na borda externa; retrato ocupa o máximo do interior do hex. */
 export function hpRingLayout(tokenR: number): {
   width: number;
   contentR: number;
+  contentRFull: number;
   trackR: number;
   identityBase: number;
 } {
-  const width = Math.max(2.5, tokenR * 0.055);
+  const width = Math.max(2, tokenR * 0.036);
   const trackR = tokenR - width / 2;
-  const contentR = Math.max(tokenR * 0.82, trackR - width / 2 - 0.5);
-  const identityBase = tokenR + 1.5;
-  return { width, contentR, trackR, identityBase };
+  const contentR = Math.max(4, trackR - width / 2 - 0.2);
+  const contentRFull = Math.max(4, tokenR - 0.5);
+  const identityBase = tokenR + 0.5;
+  return { width, contentR, contentRFull, trackR, identityBase };
 }
 
 function isPlayerCharacterToken(token: BattleToken): boolean {
@@ -108,18 +112,18 @@ export function resolveTokenHpDisplay(
       : false);
 
   if (isGm) {
-    return { bar: true, numeric: true };
+    return { bar: true, numeric: false };
   }
 
   if (isMonsterToken(token)) {
     if (opts.showMonsterHpToPlayers || isTokenDefeated(token)) {
-      return { bar: true, numeric: opts.hovered || isTokenDefeated(token) };
+      return { bar: true, numeric: false };
     }
     return { bar: false, numeric: false };
   }
 
   if (isPlayerCharacterToken(token) && (opts.hovered || isTokenDefeated(token))) {
-    return { bar: true, numeric: true };
+    return { bar: true, numeric: false };
   }
 
   return { bar: false, numeric: false };
@@ -163,13 +167,7 @@ export function drawTokenHpSegments(
   ctx.beginPath();
   ctx.arc(x, y, outerR, 0, Math.PI * 2);
   ctx.strokeStyle = HP_BAR_GRAPHITE;
-  ctx.lineWidth = 1;
-  ctx.stroke();
-
-  ctx.beginPath();
-  ctx.arc(x, y, innerR, 0, Math.PI * 2);
-  ctx.strokeStyle = HP_BAR_GRAPHITE;
-  ctx.lineWidth = 1;
+  ctx.lineWidth = 0.75;
   ctx.stroke();
 
   ctx.restore();

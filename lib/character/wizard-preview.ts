@@ -12,7 +12,10 @@ import { religionDisplayName } from "@/lib/character/pantheon";
 import { antecedenteMeta } from "@/lib/character/wizard-meta";
 import { listSubclassOptions } from "@/lib/character/level-up-ui";
 import {
-  previewStarterDefesa,
+  describeStarterEquipment,
+  findMatchingStarterKitId,
+  getDefaultStarterEquipment,
+  previewEquipmentDefesa,
   resolveStarterKitOption,
   STARTING_PO,
 } from "@/lib/character/starter-kits";
@@ -27,8 +30,8 @@ export function buildWizardPreview(draft: CharacterWizardDraft): WizardPreviewLi
   const hp = hpMaxFor(draft.classe, 1, conMod);
   const ant = antecedenteMeta(draft.antecedente);
   const tracks = cls ? listSubclassOptions(draft.classe) : [];
-  const kit = resolveStarterKitOption(draft.classe, draft.starterKitId);
-  const defesa = kit ? previewStarterDefesa(attrs, kit) : 10 + attributeMod(attrs.destreza);
+  const equipment = draft.starterEquipment ?? getDefaultStarterEquipment(draft.classe);
+  const defesa = previewEquipmentDefesa(attrs, equipment);
 
   const lines: WizardPreviewLine[] = [
     { label: "Vida nv 1", value: String(hp) },
@@ -76,9 +79,14 @@ export function buildWizardPreview(draft: CharacterWizardDraft): WizardPreviewLi
     lines.push({ label: "Antecedente", value: ant.gains.join(" · ") });
   }
 
-  if (kit) {
-    lines.push({ label: "Kit inicial", value: kit.label });
-  }
+  const matchedKitId = findMatchingStarterKitId(draft.classe, equipment);
+  const preset = matchedKitId
+    ? resolveStarterKitOption(draft.classe, matchedKitId)
+    : null;
+  lines.push({
+    label: "Equipamento",
+    value: preset ? `${preset.label}` : describeStarterEquipment(equipment),
+  });
   lines.push({ label: "Tesouro", value: `${STARTING_PO} PO` });
 
   if (draft.religiao) {

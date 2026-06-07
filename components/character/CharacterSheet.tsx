@@ -60,6 +60,8 @@ type Tab = "inventário" | "tesouro" | "habilidades" | "magias";
 type Props = {
   character: CharacterSheetData;
   canEdit: boolean;
+  /** Retrato/token — pode ser true para o mestre mesmo com ficha somente leitura */
+  canEditPortrait?: boolean;
   compendium: Record<CompendiumPackId, CompendiumEntry[]>;
   roomId?: string;
   embedded?: boolean;
@@ -72,11 +74,13 @@ const PLAYER_PACKS: CompendiumPackId[] = ["armas", "habilidades", "magias", "equ
 export function CharacterSheet({
   character,
   canEdit,
+  canEditPortrait: canEditPortraitProp,
   compendium,
   roomId = "demo",
   embedded = false,
   variant = "page",
 }: Props) {
+  const canEditPortrait = canEditPortraitProp ?? canEdit;
   const [tab, setTab] = useState<Tab>("inventário");
   const [inventory, setInventory] = useState<InventoryItem[]>(character.inventory);
   const [pickerOpen, setPickerOpen] = useState(false);
@@ -454,7 +458,7 @@ export function CharacterSheet({
         />
       ) : null}
 
-      {canEdit && inRoom && !isPopup ? (
+      {canEditPortrait && inRoom && !isPopup ? (
         <PortraitFields
           roomId={roomId}
           actorId={character.id}
@@ -463,7 +467,7 @@ export function CharacterSheet({
           coverFocus={live.coverFocus}
           tokenFocus={live.tokenFocus}
           tokenImageUrl={live.tokenImageUrl}
-          canEdit={canEdit}
+          canEdit={canEditPortrait}
           onSaved={refresh}
         />
       ) : null}
@@ -478,7 +482,7 @@ export function CharacterSheet({
         </Link>
       ) : null}
 
-      {canEdit && !inRoom ? (
+      {canEditPortrait && !inRoom ? (
         <CharacterPortraitFields
           characterId={character.id}
           portraitUrl={live.portraitUrl ?? character.portraitUrl}
@@ -486,7 +490,7 @@ export function CharacterSheet({
           coverFocus={live.coverFocus ?? character.coverFocus}
           tokenFocus={live.tokenFocus ?? character.tokenFocus}
           tokenImageUrl={live.tokenImageUrl ?? character.tokenImageUrl}
-          canEdit={canEdit}
+          canEdit={canEditPortrait}
         />
       ) : null}
 
@@ -672,7 +676,7 @@ export function CharacterSheet({
                 tokenImageUrl={live.tokenImageUrl}
                 portraitFocus={live.portraitFocus}
                 tokenFocus={live.tokenFocus}
-                canEdit={canEdit}
+                canEdit={canEditPortrait}
                 onSaved={refresh}
               />
             ) : (

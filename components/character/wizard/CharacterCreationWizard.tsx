@@ -26,7 +26,6 @@ import {
   EMPTY_WIZARD_DRAFT,
   type CharacterWizardDraft,
 } from "@/lib/character/wizard-types";
-import { classAttributePriority } from "@/lib/character/class-scales";
 import {
   ATTR_ORDER,
   POINT_BUY_MAX_BEFORE_RACIAL,
@@ -34,9 +33,11 @@ import {
   attributesAfterRacial,
   canDecreasePointBuy,
   canIncreasePointBuy,
-  isUnsetPointBuy,
+  defaultPointBuyScores,
+  getRacialBonuses,
   pointBuyCost,
-  suggestedPointBuyForClass,
+  raceAwarePointBuyPriority,
+  suggestedPointBuyForClassAndRace,
   totalPointBuyCost,
   validatePointBuy,
 } from "@/lib/character/point-buy";
@@ -49,9 +50,12 @@ import {
 } from "@/lib/character/wizard-tooltips";
 import { buildWizardPreview } from "@/lib/character/wizard-preview";
 import {
-  findStarterKitOption,
+  describeStarterEquipment,
+  findMatchingStarterKitId,
+  getDefaultStarterEquipment,
   getDefaultStarterKitId,
   resolveStarterKitOption,
+  validateStarterEquipment,
 } from "@/lib/character/starter-kits";
 import { listSubclassOptions } from "@/lib/character/level-up-ui";
 import {
@@ -105,12 +109,7 @@ type Props = {
   roomName?: string | null;
 };
 
-function ensurePointBuyIfUnset(
-  draft: CharacterWizardDraft
-): CharacterWizardDraft {
-  if (!isUnsetPointBuy(draft.pointBuy)) return draft;
-  return { ...draft, pointBuy: suggestedPointBuyForClass(draft.classe) };
-}
+type PointBuyMode = "suggested" | "custom" | "baseline";
 
 function pickInitial(label: string): string {
   const t = label.trim();
@@ -150,11 +149,15 @@ export function CharacterCreationWizard({
   const [step, setStep] = useState(0);
   const [draft, setDraft] = useState<CharacterWizardDraft>({
     ...EMPTY_WIZARD_DRAFT,
-    pointBuy: suggestedPointBuyForClass(EMPTY_WIZARD_DRAFT.classe),
+    pointBuy: suggestedPointBuyForClassAndRace(
+      EMPTY_WIZARD_DRAFT.classe,
+      EMPTY_WIZARD_DRAFT.raca,
+      EMPTY_WIZARD_DRAFT.linhagem
+    ),
   });
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
-  const [pbAutoApplied, setPbAutoApplied] = useState(true);
+  const [pointBuyMode, setPointBuyMode] = useState<PointBuyMode>("suggested");
   const nameInputRef = useRef<HTMLInputElement>(null);
 
   const raceDef = getRace(draft.raca);
@@ -175,10 +178,17 @@ export function CharacterCreationWizard({
   );
 
   useEffect(() => {
-    if (step !== 3 || !isUnsetPointBuy(draft.pointBuy)) return;
-    setDraft((d) => ensurePointBuyIfUnset(d));
-    setPbAutoApplied(true);
-  }, [step, draft.pointBuy, draft.classe]);
+    if (pointBuyMode !== "suggested") return;
+    setDraft((d) => ({
+      ...d,
+      pointBuy: suggestedPointBuyForClassAndRace(d.classe, d.raca, d.linhagem),
+    }));
+  }, [pointBuyMode, draft.classe, draft.raca, draft.linhagem]);
+
+  const racialBonuses = useMemo(
+    () => getRacialBonuses(draft.raca, draft.linhagem),
+    [draft.raca, draft.linhagem]
+  );
 
   useEffect(() => {
     if (step === 0) nameInputRef.current?.focus();
@@ -201,7 +211,7 @@ export function CharacterCreationWizard({
         },
       };
     });
-    setPbAutoApplied(false);
+    setPointBuyMode("custom");
   }
 
   function stepError(index: number): string | null {
@@ -221,10 +231,7 @@ export function CharacterCreationWizard({
       return null;
     }
     if (index === 5) {
-      if (!findStarterKitOption(draft.classe, draft.starterKitId)) {
-        return "Escolha um kit de equipamento";
-      }
-      return null;
+      return validateStarterEquipment(draft.classe, draft.starterEquipment);
     }
     if (index === 6) {
       if (!draft.religiao) return "Escolha devotion ou Sem Deus";
@@ -263,12 +270,7 @@ export function CharacterCreationWizard({
       return;
     }
     setErr(null);
-    const nextStep = Math.min(step + 1, STEPS.length - 1);
-    if (nextStep === 3) {
-      setDraft((d) => ensurePointBuyIfUnset(d));
-      setPbAutoApplied(isUnsetPointBuy(draft.pointBuy));
-    }
-    setStep(nextStep);
+    setStep(Math.min(step + 1, STEPS.length - 1));
   }
 
   function back() {
@@ -522,13 +524,10 @@ export function CharacterCreationWizard({
                   aria-selected={draft.classe === c.id}
                   className={`char-wizard-pick ${draft.classe === c.id ? "char-wizard-pick--on" : ""}`}
                   onClick={() => {
-                    const pointBuy = pbAutoApplied
-                      ? suggestedPointBuyForClass(c.id)
-                      : draft.pointBuy;
                     patch({
                       classe: c.id,
-                      pointBuy,
                       starterKitId: getDefaultStarterKitId(c.id),
+                      starterEquipment: getDefaultStarterEquipment(c.id),
                     });
                   }}
                 >
@@ -588,13 +587,18 @@ export function CharacterCreationWizard({
                   <span style={{ width: `${poolPct}%` }} />
                 </div>
               </div>
-              {pbAutoApplied && pbLeft === 0 ? (
+              {pointBuyMode === "suggested" && pbLeft === 0 ? (
                 <p className="char-wizard-meta" style={{ margin: 0 }}>
-                  Sugestão para <strong>{draft.classe}</strong> aplicada — prioridade:{" "}
-                  {classAttributePriority(draft.classe)
+                  Sugestão para <strong>{draft.classe}</strong> ({draft.raca}
+                  {draft.linhagem ? ` · ${draft.linhagem}` : ""}) — prioridade:{" "}
+                  {raceAwarePointBuyPriority(draft.classe, draft.raca, draft.linhagem)
                     .slice(0, 3)
                     .map((k) => ATTRIBUTE_LABELS[k])
                     .join(" → ")}
+                </p>
+              ) : pointBuyMode === "baseline" ? (
+                <p className="char-wizard-meta" style={{ margin: 0 }}>
+                  Baseline 8 em tudo — distribua os <strong>27 pontos</strong> (antes dos bônus raciais).
                 </p>
               ) : null}
             </div>
@@ -602,10 +606,7 @@ export function CharacterCreationWizard({
               <button
                 type="button"
                 className="btn btn-secondary"
-                onClick={() => {
-                  patch({ pointBuy: suggestedPointBuyForClass(draft.classe) });
-                  setPbAutoApplied(true);
-                }}
+                onClick={() => setPointBuyMode("suggested")}
               >
                 Sugestão para {draft.classe}
               </button>
@@ -613,8 +614,8 @@ export function CharacterCreationWizard({
                 type="button"
                 className="btn btn-ghost"
                 onClick={() => {
-                  patch({ pointBuy: { ...EMPTY_WIZARD_DRAFT.pointBuy } });
-                  setPbAutoApplied(false);
+                  setPointBuyMode("baseline");
+                  patch({ pointBuy: defaultPointBuyScores() });
                 }}
               >
                 Resetar (8 em tudo)
@@ -622,17 +623,29 @@ export function CharacterCreationWizard({
             </div>
             <div className="char-wizard-attr-grid">
               {ATTR_ORDER.map((key) => {
-                const mod = attributeMod(finalAttrs[key]);
+                const base = draft.pointBuy[key];
+                const racial = racialBonuses[key] ?? 0;
+                const final = finalAttrs[key];
+                const mod = attributeMod(final);
                 return (
                   <div key={key} className="char-wizard-attr-card">
                     <span className="char-wizard-attr-card__label">{ATTRIBUTE_LABELS[key]}</span>
-                    <span className="char-wizard-attr-card__score">{draft.pointBuy[key]}</span>
+                    <span className="char-wizard-attr-card__score">{base}</span>
                     <span className="char-wizard-attr-card__mod">
-                      {mod >= 0 ? "+" : ""}
-                      {mod} → {finalAttrs[key]}
+                      {racial > 0 ? (
+                        <>
+                          +{racial} raça → <strong>{final}</strong> (mod {mod >= 0 ? "+" : ""}
+                          {mod})
+                        </>
+                      ) : (
+                        <>
+                          mod {mod >= 0 ? "+" : ""}
+                          {mod} → {final}
+                        </>
+                      )}
                     </span>
                     <span className="char-wizard-attr-card__cost">
-                      custo {pointBuyCost(draft.pointBuy[key])}
+                      custo {pointBuyCost(base)}
                     </span>
                     <div className="char-wizard-attr-card__controls">
                       <button
@@ -702,7 +715,8 @@ export function CharacterCreationWizard({
               classe={draft.classe}
               attributes={finalAttrs}
               starterKitId={draft.starterKitId}
-              onChange={(kitId) => patch({ starterKitId: kitId })}
+              equipment={draft.starterEquipment}
+              onChange={(p) => patch(p)}
             />
           </>
         ) : null}
@@ -757,7 +771,16 @@ export function CharacterCreationWizard({
               </dl>
               <dl className="char-wizard-review-card">
                 <dt>Equipamento</dt>
-                <dd>{resolveStarterKitOption(draft.classe, draft.starterKitId)?.label ?? "—"}</dd>
+                <dd>
+                  {(() => {
+                    const kitId = findMatchingStarterKitId(draft.classe, draft.starterEquipment);
+                    const preset = kitId
+                      ? resolveStarterKitOption(draft.classe, kitId)
+                      : null;
+                    if (preset) return `${preset.label} — ${describeStarterEquipment(draft.starterEquipment)}`;
+                    return describeStarterEquipment(draft.starterEquipment);
+                  })()}
+                </dd>
               </dl>
               <dl className="char-wizard-review-card">
                 <dt>Devotion</dt>

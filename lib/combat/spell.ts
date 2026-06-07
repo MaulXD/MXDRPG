@@ -122,7 +122,10 @@ export function resolveSaveSpell(
   const success = saveTotal >= dc;
 
   const hpBefore = defenderHp(defenderToken);
-  const damage = rollSaveDamage(resolved.damageFormula, success);
+  const damage =
+    resolved.damageFormula === "0"
+      ? { formula: "0", rolls: [], attributeMod: 0, total: 0, doubled: false }
+      : rollSaveDamage(resolved.damageFormula, success);
   const hpAfter = Math.max(0, hpBefore - damage.total);
 
   const attr = attributeLabel(saveKey);

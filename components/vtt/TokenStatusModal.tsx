@@ -1,12 +1,12 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import type { BattleToken } from "@/lib/vtt/types";
 import type { CombatTrack } from "@/lib/room/combat";
-import { TokenStatusList } from "@/components/vtt/TokenStatusList";
-import { TokenConditionsPanel } from "@/components/vtt/TokenConditionsPanel";
-import { PaHudMeter } from "@/components/vtt/PaHudMeter";
-import { hpBarColor, hpRatio } from "@/lib/vtt/token-hp-display";
+import { TokenStatusBody } from "@/components/vtt/TokenStatusBody";
+import { FoundryWindow } from "@/components/vtt/foundry/FoundryWindow";
+import type { FoundryWindowLayout } from "@/hooks/vtt/useFoundryWindows";
 
 type Props = {
   open: boolean;
@@ -18,6 +18,40 @@ type Props = {
   onUpdate: () => void;
 };
 
+function storageKey(roomId: string): string {
+  return `eldarin-status-window-${roomId}`;
+}
+
+function defaultLayout(): FoundryWindowLayout {
+  const w = typeof window !== "undefined" ? window.innerWidth : 1200;
+  const h = typeof window !== "undefined" ? window.innerHeight : 800;
+  return {
+    open: false,
+    minimized: false,
+    x: Math.max(48, Math.round(w / 2 - 200)),
+    y: Math.max(4, Math.round(h * 0.1)),
+    width: 400,
+    height: Math.min(560, Math.round(h * 0.72)),
+    z: 88,
+  };
+}
+
+function loadLayout(roomId: string): FoundryWindowLayout {
+  if (typeof window === "undefined") return defaultLayout();
+  try {
+    const raw = sessionStorage.getItem(storageKey(roomId));
+    if (!raw) return defaultLayout();
+    const parsed = JSON.parse(raw) as Partial<FoundryWindowLayout>;
+    return { ...defaultLayout(), ...parsed, open: false };
+  } catch {
+    return defaultLayout();
+  }
+}
+
+function resolvePortalRoot(): HTMLElement {
+  return document.getElementById("foundry-mesa-windows") ?? document.body;
+}
+
 export function TokenStatusModal({
   open,
   token,
@@ -27,11 +61,43 @@ export function TokenStatusModal({
   onClose,
   onUpdate,
 }: Props) {
-  const closeRef = useRef<HTMLButtonElement>(null);
+  const [layout, setLayout] = useState<FoundryWindowLayout>(() => loadLayout(roomId));
+  const zCounter = useRef(layout.z);
+
+  useEffect(() => {
+    setLayout(loadLayout(roomId));
+  }, [roomId]);
 
   useEffect(() => {
     if (!open) return;
-    closeRef.current?.focus();
+    zCounter.current += 1;
+    setLayout((prev) => ({ ...prev, z: zCounter.current }));
+  }, [open, token?.id]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    try {
+      const { open: _o, minimized, x, y, width, height, z } = layout;
+      sessionStorage.setItem(
+        storageKey(roomId),
+        JSON.stringify({ minimized, x, y, width, height, z })
+      );
+    } catch {
+      /* ignore quota */
+    }
+  }, [layout.minimized, layout.x, layout.y, layout.width, layout.height, layout.z, roomId]);
+
+  const patchLayout = useCallback((patch: Partial<FoundryWindowLayout>) => {
+    setLayout((prev) => ({ ...prev, ...patch }));
+  }, []);
+
+  const focusWindow = useCallback(() => {
+    zCounter.current += 1;
+    setLayout((prev) => ({ ...prev, z: zCounter.current }));
+  }, []);
+
+  useEffect(() => {
+    if (!open) return;
     function onKey(e: KeyboardEvent) {
       if (e.key === "Escape") onClose();
     }
@@ -39,80 +105,30 @@ export function TokenStatusModal({
     return () => window.removeEventListener("keydown", onKey);
   }, [open, onClose]);
 
-  if (!open || !token) return null;
+  if (!open || !token || typeof document === "undefined") return null;
 
-  return (
-    <div
-      className="vtt-modal-backdrop"
-      role="presentation"
-      onClick={(e) => {
-        if (e.target === e.currentTarget) onClose();
-      }}
+  const windowLayout: FoundryWindowLayout = { ...layout, open: true };
+
+  return createPortal(
+    <FoundryWindow
+      title={`Status · ${token.name}`}
+      layout={windowLayout}
+      onLayoutChange={patchLayout}
+      onClose={onClose}
+      onMinimize={() => patchLayout({ minimized: !layout.minimized })}
+      onFocus={focusWindow}
+      className="foundry-window--status"
+      minWidth={280}
+      minHeight={220}
     >
-      <div
-        className="vtt-modal-panel glass vtt-status-modal"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="token-status-title"
-      >
-        <h3 id="token-status-title" className="vtt-modal-title">
-          Status
-        </h3>
-        <p className="vtt-modal-lead">
-          <strong style={{ color: token.color }}>{token.name}</strong>
-        </p>
-
-        {token.vidaMax != null ? (
-          <div className="vtt-status-modal-vitals">
-            <div className="vtt-status-modal-hp">
-              <div className="vtt-combat-hud__hp-track" aria-hidden>
-                <div
-                  className="vtt-combat-hud__hp-fill"
-                  style={{
-                    width: `${Math.round(hpRatio(token) * 100)}%`,
-                    background: hpBarColor(hpRatio(token)),
-                  }}
-                />
-              </div>
-              <span>
-                {token.vida ?? 0}/{token.vidaMax} HP
-              </span>
-            </div>
-            {token.defesa != null ? (
-              <span className="vtt-status-modal-stat">CA {token.defesa}</span>
-            ) : null}
-            <PaHudMeter token={token} />
-          </div>
-        ) : null}
-
-        <p className="vtt-eyebrow">Ativos agora</p>
-        <TokenStatusList token={token} />
-        <p className="vtt-combat-hint vtt-status-hover-hint">
-          Passe o mouse sobre um status para ver a descrição do efeito e a duração restante.
-        </p>
-
-        {canApplyConditions ? (
-          <TokenConditionsPanel
-            roomId={roomId}
-            token={token}
-            canEdit
-            combatRound={combat?.round ?? 1}
-            combatActiveIndex={combat?.activeIndex ?? 0}
-            onUpdate={onUpdate}
-          />
-        ) : (
-          <p className="vtt-combat-hint vtt-status-player-hint">
-            Condições são aplicadas pelo mestre na mesa. Aqui você só consulta os efeitos ativos no
-            seu personagem.
-          </p>
-        )}
-
-        <div className="vtt-modal-actions">
-          <button ref={closeRef} type="button" className="btn btn-ghost" onClick={onClose}>
-            Fechar
-          </button>
-        </div>
-      </div>
-    </div>
+      <TokenStatusBody
+        token={token}
+        roomId={roomId}
+        combat={combat}
+        canApplyConditions={canApplyConditions}
+        onUpdate={onUpdate}
+      />
+    </FoundryWindow>,
+    resolvePortalRoot()
   );
 }

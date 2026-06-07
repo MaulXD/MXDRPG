@@ -439,6 +439,21 @@ Efeitos de habilidades e posturas recebem duracao automatica na mesa. O contador
 
 ---
 
+## COMO LER AS HABILIDADES RACIAIS
+
+Cada traço racial segue o mesmo formato usado nas classes (ex.: **Fúria** do Bárbaro): **como ativar**, **quanto dura**, **o que muda nos números** e **como isso muda o combate ou a expedição**.
+
+| Campo | Significado |
+|-------|-------------|
+| **Gatilho** | Quando a habilidade pode ser usada (passivo, reação, ação/ação bônus, 1×/dia, etc.). |
+| **Duração** | Turnos, minutos, horas ou permanente. |
+| **Efeito** | Bônus, resistências, Vantagem, dano extra, imunidades. |
+| **Na mesa** | Papel tático — tank, scout, suporte, economia de PA, culinária, etc. |
+
+**Nota:** **Fúria** é habilidade de **classe** (Bárbaro, nv. 1). **Herança Bestial** e o **Instinto** de cada linhagem são o equivalente racial dos Meio-Humanos — estado temporário de combate, não confundir com Fúria (salvo **Fúria Bestial** da Linhagem do Urso no nv. 16, descrita abaixo).
+
+---
+
 ## HUMANO
 
 **Lore:** O mais abundante e o mais ignorado. Humanos chegam as masmorras por todas as razoes possiveis — ganancia, fuga, missao divina, curiosidade cientifica ou simplesmente porque estavam no lugar errado na hora errada. O que os define não e forca nem magia, mas a velocidade com que aprendem e a teimosia com que sobrevivem.
@@ -446,10 +461,14 @@ Efeitos de habilidades e posturas recebem duracao automatica na mesa. O contador
 **Atributos:** +1 em todos os seis atributos.
 
 **Habilidades Raciais:**
-- Adaptabilidade: Uma vez por descanso longo, ganha Vantagem em qualquer teste antes de rolar.
-- Paladar Versatil: Escolhe qual atributo culinário recebe o bônus de "primeira vez com novo monstro".
-- Resistência Mundana: +2 permanente em Fortitude.
-- Determinacao: Uma vez por dia, ao ser reduzido a 0 HP, fica a 1 HP em vez disso.
+
+**Adaptabilidade:** *Gatilho:* antes de rolar qualquer teste de atributo ou perícia. *Recarga:* 1× por descanso longo. *Efeito:* Vantagem naquele teste. *Na mesa:* “Carta na manga” — salva testes críticos de Percepção, Furtividade ou resistência sem depender de magia; humano compensa falta de especialização racial com flexibilidade.
+
+**Paladar Versátil:** *Gatilho:* na criação do personagem (fixo). *Efeito:* escolhe qual atributo culinário (Forrageio, Coccão, Harmonização, etc.) recebe o bônus de **primeira vez com monstro novo** da campanha. *Na mesa:* define o arquétipo culinário do humano (scout de ingredientes, cozinheiro ou harmonizador) sem mudar raça.
+
+**Resistência Mundana:** *Passivo permanente.* *Efeito:* +2 em Fortitude (testes de resistência física e Estômago de Ferro). *Na mesa:* aguenta venenos leves, exaustão de marcha e refeições ruins melhor que raças “frágeis”; combina bem com classes que investem em CON.
+
+**Determinação:** *Gatilho:* quando dano ou efeito reduziria você a 0 HP. *Recarga:* 1× por dia. *Efeito:* fica com 1 HP em vez de cair inconsciente (não evita morte instantânea narrativa). *Na mesa:* uma “última perna” por sessão — ideal para tanques ou líderes que precisam sobreviver um golpe decisivo; no nv. 12 vira 2×/dia (Determinação Humana).
 
 **Progressao Racial:**
 
@@ -470,10 +489,14 @@ Efeitos de habilidades e posturas recebem duracao automatica na mesa. O contador
 **Atributos:** +2 DES, +1 INT
 
 **Habilidades Raciais:**
-- Visao Arcana: Visao no escuro até 18m. Detecta campos magicos ativos (armadilhas, auras) num raio de 5m.
-- Instinto de Forrageio: +3 permanente em Forrageio.
-- Sono Elfico: Descanso Longo em apenas 4h de meditacao.
-- Resistência a Encantamentos: Vantagem em teste de resistências contra Charme e Medo.
+
+**Visão Arcana:** *Passivo.* *Efeito:* visão no escuro 18 m; detecta campos mágicos ativos (armadilhas, auras, itens encantados) num raio de 5 m sem teste. *Na mesa:* batedor e desarmador natural em masmorras escuras; reduz surpresas de armadilhas mágicas e economiza tempo de exploração.
+
+**Instinto de Forrageio:** *Passivo permanente.* *Efeito:* +3 em Forrageio. *Na mesa:* elfo é o melhor coletor/harmonizador de ingredientes — encontra partes melhores, falha menos em identificação de flora/fauna mágica e alimenta o sistema de culinária biomágica do grupo.
+
+**Sono Élfico:** *Passivo.* *Efeito:* descanso longo em 4 h de meditação (em vez de 8 h). *Na mesa:* vigias noturnos eficientes — metade do grupo pode descansar enquanto o outro explora; em expedições longas, recupera slots e HP mais rápido que o restante.
+
+**Resistência a Encantamentos:** *Passivo.* *Efeito:* Vantagem em testes de resistência contra Charme e Medo. *Na mesa:* tanque mental contra feiticeiros e horrores; menos chance de perder turnos ou fugir do combate por controle mental.
 
 **Progressao Racial:**
 
@@ -494,10 +517,14 @@ Efeitos de habilidades e posturas recebem duracao automatica na mesa. O contador
 **Atributos:** +2 CON, +1 FOR
 
 **Habilidades Raciais:**
-- Resistência Ana: Vantagem em teste de resistências contra veneno. Resistência a dano de veneno.
-- Visao de Escuro: 18m de visao perfeita no escuro.
-- Mestria de Ferramentas: Proficiencia automatica em todas as ferramentas de Extração, incluindo Especialista. +2 permanente em Extração.
-- Instinto de Forja: Ao criar Ferramentas Orgânicas de Boss, rola duas vezes e usa o melhor resultado.
+
+**Resistência Anã:** *Passivo.* *Efeito:* Vantagem em testes contra veneno; resistência a dano de veneno (metade do dano). *Na mesa:* front-liner em masmorras tóxicas — aguenta mordidas venenosas e armadilhas de gás sem derreter.
+
+**Visão de Escuro:** *Passivo.* *Efeito:* visão perfeita no escuro até 18 m. *Na mesa:* igual ao elfo em exploração subterrânea; não depende de tocha (menos furtividade quebrada).
+
+**Mestria de Ferramentas:** *Passivo permanente.* *Efeito:* proficiência em todas as ferramentas de Extração (incl. Especialista); +2 em Extração. *Na mesa:* desossa monstros com eficiência — mais loot culinário, ferramentas orgânicas e materiais de craft para o grupo.
+
+**Instinto de Forja:** *Gatilho:* ao criar Ferramenta Orgânica de Boss. *Efeito:* rola duas vezes o resultado e usa o melhor. *Na mesa:* anão “farm” equipamento lendário com menos frustracao; sinergia direta com Artífice e economia de masmorra.
 
 **Progressao Racial:**
 
@@ -518,12 +545,18 @@ Efeitos de habilidades e posturas recebem duracao automatica na mesa. O contador
 **Atributos:** +2 DES, +1 SAB
 
 **Habilidades Raciais:**
-- Sorte Inata: Uma vez por descanso longo, quando rolar 1 natural, pode rolar o dado novamente e usar o segundo resultado.
-- Bravura Halfling: Vantagem em teste de resistências contra Medo. Halflings não fogem de combaté involuntariamente por efeitos de medo.
-- Furtividade Natural: Pode tentar se esconder mesmo quando coberto apenas por uma criatura de tamanho Medio ou maior.
-- Sensores Agucados: +3 em Percepção passiva. Detecta criaturas ocultas e armadilhas a 1,5m automaticamente.
-- Paladar de Especialista: Ao provar qualquer ingrediente cru, imediatamente sabe se e seguro, toxico leve, toxico severo ou letal.
-- Corpo Pequeno: Tamanho Pequeno. Desvantagem em armas pesadas.
+
+**Sorte Inata:** *Gatilho:* ao rolar **1 natural** em qualquer d20. *Recarga:* 1× por descanso longo (2× no nv. 4; sem limite no nv. 20). *Efeito:* rerrola e **deve** usar o segundo resultado. *Na mesa:* evita falhas catastróficas em ataque, furtividade ou armadilha — halfling é o “salva-rolagem” do grupo.
+
+**Bravura Halfling:** *Passivo.* *Efeito:* Vantagem contra Medo; não foge de combate por medo involuntário. *Na mesa:* suporte estável em encontros de horror; não abandona a linha de frente por efeito mental.
+
+**Furtividade Natural:** *Passivo.* *Efeito:* pode tentar se esconder mesmo coberto só por criatura Média ou maior. *Na mesa:* scout em combate aberto — esconde-se atrás do guerreiro e ataca à distância ou prepara emboscada.
+
+**Sensores Aguçados:** *Passivo.* *Efeito:* +3 em Percepção passiva; detecta criaturas ocultas e armadilhas a 1,5 m automaticamente. *Na mesa:* “radar de armadilha” na vanguarda; reduz dano surpresa e economiza testes ativos de Percepção.
+
+**Paladar de Especialista:** *Gatilho:* ao provar ingrediente cru. *Efeito:* sabe instantaneamente se é seguro, tóxico leve, severo ou letal. *Na mesa:* testador de comida da expedição — evita envenenamento do grupo antes da culinária formal.
+
+**Corpo Pequeno:** *Passivo.* *Efeito:* tamanho Pequeno; Desvantagem em armas pesadas. *Na mesa:* mais difícil de acertar (em regras que consideram tamanho), melhor em túneis estreitos; troca dano bruto por mobilidade e sorte.
 
 **Progressao Racial:**
 
@@ -548,12 +581,18 @@ Efeitos de habilidades e posturas recebem duracao automatica na mesa. O contador
 **Atributos:** +2 INT, +1 SAB
 
 **Habilidades Raciais:**
-- Mente Alquimica: +4 permanente em Forrageio para identificar e combinar propriedades de ingredientes.
-- Pocioneiro Nato: Ao criar qualquer poção usando ingredientes de monstros, o resultado e sempre uma categoria acima do normal.
-- Identificacao Instantanea: Pode identificar qualquer substancia, veneno, poção ou ingrediente com um teste de Arcana CD 10.
-- Laboratorio Portátil: Pode processar qualquer ingrediente bruto em componente alquimico estavel em 10 minutos.
-- Resistência Magica: Vantagem em teste de resistências contra magias e efeitos magicos.
-- Tamanho Pequeno: Mesmo beneficio do Halfling em espacos apertados.
+
+**Mente Alquímica:** *Passivo permanente.* *Efeito:* +4 em Forrageio para identificar e combinar propriedades de ingredientes. *Na mesa:* gnomo maximiza valor de cada monstro morto — descobre sinergias de poção e mutação que outras raças perdem.
+
+**Pocioneiro Nato:** *Gatilho:* ao criar poção com ingredientes de monstro. *Efeito:* resultado sempre **uma categoria acima** do normal (Comum → Incomum, etc.). *Na mesa:* farm de consumíveis superior; grupo depende do gnomo para buffs pré-boss.
+
+**Identificação Instantânea:** *Ação.* *Efeito:* identifica substância, veneno, poção ou ingrediente com Arcana CD 10. *Na mesa:* loot seguro — não bebe frasco desconhecido às cegas; acelera triagem após combate.
+
+**Laboratório Portátil:** *Passivo.* *Efeito:* processa ingrediente bruto em componente alquímico estável em 10 min. *Na mesa:* crafting em campo entre andares; menos deterioração de partes raras.
+
+**Resistência Mágica:** *Passivo.* *Efeito:* Vantagem em testes contra magias e efeitos mágicos. *Na mesa:* sobrevive melhor a rajadas de mago inimigo; pode ficar na retaguarda exposta sem derreter.
+
+**Tamanho Pequeno:** *Passivo.* *Efeito:* mesmo benefício do Halfling em espaços apertados. *Na mesa:* exploração em galerias estreitas; combina com furtividade e posicionamento.
 
 **Progressao Racial:**
 
@@ -580,9 +619,14 @@ Efeitos de habilidades e posturas recebem duracao automatica na mesa. O contador
 **Atributos Comuns:** +1 CON (resistência hibrida), +1 em dois atributos definidos pela linhagem.
 
 **Habilidades Comuns a Todos os Meio-Humanos:**
-- Heranca Bestial: Uma vez por dia, como ação bonus, acessa o instinto animal por 1 minuto.
-- Olfato Agucado: Detecta criaturas ocultas ou camufladas pelo cheiro num raio de 9m.
-- Corpo Resistente: Resistência a uma condicao definida pela linhagem.
+
+**Herança Bestial:** *Gatilho:* ação bônus. *Recarga:* 1× por dia. *Duração:* 1 minuto (10 rodadas). *Efeito:* ativa o **Instinto** da linhagem (lista abaixo em cada linhagem) — bônus de combate temporários que transformam o personagem em predador. *Na mesa:* botão de “modo combate” racial, comparável em cadência à **Fúria** do Bárbaro, mas com efeitos únicos por animal; use no burst de dano ou para reposicionar (velocidade, voo, visão).
+
+**Olfato Aguçado:** *Passivo.* *Efeito:* detecta criaturas ocultas ou camufladas pelo cheiro num raio de 9 m (sem teste). *Na mesa:* counter de invisibilidade e emboscada; sinergia com Ladino e atiradores que precisam revelar alvos.
+
+**Corpo Resistente:** *Passivo.* *Efeito:* resistência ou imunidade a uma condição definida pela linhagem (Prostrado, Paralisia, lentidão, etc.). *Na mesa:* define qual controle inimigo você ignora — escolha de linhagem é escolha de matchup.
+
+**Instinto (durante Herança Bestial):** cada linhagem lista um efeito extra enquanto Herança Bestial estiver ativa. Trate como upgrade do estado — não é habilidade separada com recarga própria.
 
 ### Linhagem do Gato
 
@@ -590,7 +634,17 @@ Efeitos de habilidades e posturas recebem duracao automatica na mesa. O contador
 
 Atributos: +2 DES, +1 SAB. Tracos Fisicos: Pupilas verticais, orelhas levemente pontudas, reflexo pupilar no escuro.
 
-Habilidades: Aterrissagem Felina (imune a dano de queda de até 18m, sempre cai de pe), Visao Noturna (18m perfeita no escuro), Reflexos de Predador (+3 em Iniciativa, nunca surpreendido), Instinto (velocidade +6m, pode mover pelo teto e paredes por 1 minuto), Resistência (imune a Prostrado involuntario).
+**Habilidades da linhagem:**
+
+**Aterrissagem Felina:** *Passivo.* *Efeito:* imune a dano de queda até 18 m; sempre cai de pé. *Na mesa:* mobilidade vertical — salta de galerias superiores, reposiciona sem gastar PA em escalada; ideal assassino/arqueiro.
+
+**Visão Noturna:** *Passivo.* *Efeito:* visão perfeita no escuro 18 m. *Na mesa:* combate e exploração noturna sem penalidade.
+
+**Reflexos de Predador:** *Passivo.* *Efeito:* +3 Iniciativa; nunca surpreendido em combate. *Na mesa:* age primeiro, prepara emboscada ou foge antes do cerco fechar.
+
+**Instinto (Herança Bestial):** *Durante 1 min.* *Efeito:* velocidade +6 m; pode se mover por tetos e paredes. *Na mesa:* flanqueamento tridimensional — ignora linha de bloqueio no chão; Ladino/Guerreiro ágil devastador.
+
+**Resistência:** *Passivo.* *Efeito:* imune a Prostrado involuntário. *Na mesa:* não cai de derrubar/golpe de impacto inimigo.
 
 | Nivel | Bonus |
 |-------|-------|
@@ -606,7 +660,17 @@ Habilidades: Aterrissagem Felina (imune a dano de queda de até 18m, sempre cai 
 
 Atributos: +2 DES, +1 INT. Tracos Fisicos: Pupilas elipticas douradas, lingua ligeiramente bifurcada, escamas finas imperceptiveis no pescoco e ombros.
 
-Habilidades: Visao Termica (enxerga criaturas de sangue quente até 9m atraves de paredes), Flexibilidade Ossea (passa por aberturas de 15cm, imune a agarramento), Veneno Natural (mordida +1d4 venenoso, CD 12 CON ou Envenenado 1h), Instinto (visao termica 18m atravessa paredes), Resistência (Vantagem contra Paralisia e Petrificação).
+**Habilidades da linhagem:**
+
+**Visão Térmica:** *Passivo.* *Efeito:* enxerga criaturas de sangue quente até 9 m através de paredes finas. *Na mesa:* detecta emboscadas atrás de porta/parede; marca alvos para o grupo sem abrir passagem.
+
+**Flexibilidade Óssea:** *Passivo.* *Efeito:* passa por aberturas de 15 cm; imune a agarramento. *Na mesa:* infiltração extrema e escape de grapple — não fica preso no tanque inimigo.
+
+**Veneno Natural:** *Ação bônus (mordida).* *Efeito:* +1d4 veneno; CD 12 CON ou Envenenado 1 h (CD sobe com marcos). *Na mesa:* DPS gradual e debuff em alvo único; combina com agarramento da Constrição (nv. 8).
+
+**Instinto (Herança Bestial):** *Durante 1 min.* *Efeito:* visão térmica 18 m atravessa paredes. *Na mesa:* wallhack tático — coordena ataques à distância e magias de área sem visão direta.
+
+**Resistência:** *Passivo.* *Efeito:* Vantagem contra Paralisia e Petrificação. *Na mesa:* counter de medusas, gorgons e magias de imobilização.
 
 | Nivel | Bonus |
 |-------|-------|
@@ -622,14 +686,26 @@ Habilidades: Visao Termica (enxerga criaturas de sangue quente até 9m atraves d
 
 Atributos: +2 FOR, +2 CON (substituem o +1 CON base). Tracos Fisicos: Constituicao visivelmente mais larga, pelos mais grossos, unhas espessas.
 
-Habilidades: Abraco de Urso (dano 2d6+FOR em agarramento, CD 16 para escapar), Destrocar (ataque adicional contundente que ignora 5 pontos de CA), Constituicao Brutal (+3 HP por nivel), Instinto (FOR +4, agarramentos irresistiveis para criaturas de tamanho igual ou menor), Resistência a dano contundente.
+**Habilidades da linhagem:**
+
+**Abraço de Urso:** *Gatilho:* ao iniciar agarramento. *Efeito:* 2d6+FOR de dano; CD 16 para escapar. *Na mesa:* lockdown de alvo prioritário — segura caster ou atirador enquanto aliados focam.
+
+**Destroçar:** *Gatilho:* ataque adicional em alvo agarrado ou adjacente. *Efeito:* golpe contundente que **ignora 5 de CA**. *Na mesa:* quebra armadura pesada e monstros com CA alta; sinergia com Bárbaro/Gladiador.
+
+**Constituição Brutal:** *Passivo permanente.* *Efeito:* +3 HP por nível. *Na mesa:* tanque natural — maior pool que outras linhagens; aguenta foco de elite.
+
+**Instinto (Herança Bestial):** *Durante 1 min.* *Efeito:* FOR +4; agarramentos irresistíveis contra criaturas de tamanho igual ou menor. *Na mesa:* modo “boss grab” — remove inimigo médio do combate por rodadas inteiras.
+
+**Resistência:** *Passivo.* *Efeito:* resistência a dano contundente. *Na mesa:* mitiga socos, quedas e ataques de ogros.
+
+**Fúria Bestial (nv. 16):** *Gatilho:* ao ativar Herança Bestial (não gasta uso extra). *Duração:* enquanto Herança Bestial durar. *Efeito:* +2 dano em ataques corpo a corpo de Força, Vantagem em testes de FOR e CON, resistência a cortante/contundente/perfurante — **mesmo pacote mecânico da Fúria do Bárbaro**, mas só durante Herança Bestial. *Na mesa:* burst de tanque-dps; Urso nv. 16 é a única linhagem com “Fúria” racial explícita.
 
 | Nivel | Bonus |
 |-------|-------|
 | 4 | Pele Grossa — +1 CA natural permanente |
 | 8 | Rugido de Intimidacao — acao, CD 14 SAB em área de 6m ou Amedrontado por 1 minuto |
 | 12 | Hibernação Rápida — descanso longo em 4 horas, recupera HP adicionais iguais ao dobro do nivel |
-| 16 | Corpo Inabalavel — imune a ser Prostrado ou Empurrado involuntariamente |
+| 16 | Fúria Bestial — durante Herança Bestial: +2 dano melee FOR, Vantagem em FOR/CON, resistência física (como Fúria do Bárbaro) |
 | 20 | Força de Titan — durante Heranca Bestial, FOR temporáriamente 26 (+8), conta como Enorme para agarramento |
 
 ### Linhagem do Tigre
@@ -638,7 +714,17 @@ Habilidades: Abraco de Urso (dano 2d6+FOR em agarramento, CD 16 para escapar), D
 
 Atributos: +2 DES, +2 FOR (substituem o +1 CON base). Tracos Fisicos: Listras tigradas sutis, musculatura incrivelmente densa, dentes caninos levemente mais longos.
 
-Habilidades: Mordida de Tigre (ação bônus: 2d8+FOR + agarramento automatico), Explosao Muscular (dobro de velocidade uma vez por turno), Velocidade Felina (velocidade base 12m), Instinto (velocidade 18m, ataques adicionais como ação bonus, mordida causa dano triplo no primeiro ataque), Resistência (Vantagem contra lentidão e reducao de velocidade).
+**Habilidades da linhagem:**
+
+**Mordida de Tigre:** *Ação bônus.* *Efeito:* 2d8+FOR perfurante + agarramento automático. *Na mesa:* abertura de combo — morde e segura; alimenta Rip and Tear (nv. 12) e Investida (nv. 8).
+
+**Explosão Muscular:** *Gatilho:* 1× por turno. *Efeito:* dobra deslocamento naquele turno. *Na mesa:* reposicionamento explosivo para flanco ou retirada; gasta pouco PA se movimento for separado de ataque.
+
+**Velocidade Felina:** *Passivo.* *Efeito:* deslocamento base 12 m (em vez de 9 m). *Na mesa:* sempre na melhor posição de flanco; ativa Investida Fulminante com menos PA.
+
+**Instinto (Herança Bestial):** *Durante 1 min.* *Efeito:* velocidade 18 m; 1 ataque extra como ação bônus por turno; primeira mordida causa **dano triplo**. *Na mesa:* assassino de alvo único — alpha strike no início do estado; parecido com Fúria + Ataque Extra, mas 1×/dia.
+
+**Resistência:** *Passivo.* *Efeito:* Vantagem contra lentidão e redução de velocidade. *Na mesa:* ignora terreno difícil mágico e web; mantém pressão no alvo.
 
 | Nivel | Bonus |
 |-------|-------|
@@ -654,7 +740,17 @@ Habilidades: Mordida de Tigre (ação bônus: 2d8+FOR + agarramento automatico),
 
 Atributos: +2 DES, +1 SAB. Tracos Fisicos: Olhos dourados ou ambar com pupilas precisas, ossos levemente mais leves, cabelos rigidos com textura proxima a penas.
 
-Habilidades: Visao de Aguia (enxerga a 1,5km de distancia, sem penalidade em ataques a distancia por alcance ou nebliia leve), Planar Livremente (cai no máximo 3m por turno ao planar, velocidade horizontal 12m/turno), Percepção Predatoria (+4 em Percepção, detecta movimento a 300m), Instinto (asas completas emergem — voo de 15m/turno com ataques aereos em Vantagem), Resistência (imune a Cegueira por ventos ou particulas).
+**Habilidades da linhagem:**
+
+**Visão de Águia:** *Passivo.* *Efeito:* enxerga até 1,5 km; sem penalidade em ataques à distância por alcance ou névoa leve. *Na mesa:* atirador supremo em masmorras abertas — sniper de boss antes do combate corpo a corpo.
+
+**Planar Livremente:** *Passivo.* *Efeito:* ao cair, desce no máximo 3 m por turno; deslocamento horizontal 12 m/turno enquanto plana. *Na mesa:* mobilidade aérea parcial antes do nv. 8; evita dano de queda e reposiciona sobre obstáculos.
+
+**Percepção Predatória:** *Passivo.* *Efeito:* +4 Percepção; detecta movimento a 300 m. *Na mesa:* batedor de expedição — avisa emboscadas longe; economiza PA de movimento exploratório.
+
+**Instinto (Herança Bestial):** *Durante 1 min.* *Efeito:* asas completas; voo 15 m/turno; ataques aéreos em Vantagem. *Na mesa:* bypass de linha de frente — foca casters traseiros; counter de melee sem provocar oportunidade (nv. 16 Tigre é melhor em chão, Águia no ar).
+
+**Resistência:** *Passivo.* *Efeito:* imune a Cegueira por ventos ou partículas. *Na mesa:* combate em ambientes com fumaça, areia ou pó sem perder precisão.
 
 | Nivel | Bonus |
 |-------|-------|
@@ -670,7 +766,17 @@ Habilidades: Visao de Aguia (enxerga a 1,5km de distancia, sem penalidade em ata
 
 Atributos: +1 FOR, +1 DES, +1 SAB. Tracos Fisicos: Olhos palidos (ambar, cinza ou azul-gelo), cabelos densos, audicao visivelmente agucada.
 
-Habilidades: Rastreamento Infalivel (rastreia qualquer criatura pelo cheiro das ultimas 24h sem teste), Uivo Tatico (aliados ganham +2 em ataques no próximo turno e sabem a posicao do inimigo mais próximo), Tática de Matilha (Vantagem em ataques se aliado adjacente ao alvo), Instinto (detecta os 3 alvos mais fracos automaticamente, dano +2d6 contra eles), Resistência (imune a se perder em qualquer ambiente).
+**Habilidades da linhagem:**
+
+**Rastreamento Infalível:** *Passivo.* *Efeito:* rastreia qualquer criatura pelo cheiro das últimas 24 h sem teste. *Na mesa:* perseguição narrativa e mecânica — não perde alvo fugitivo no mesmo andar (reforçado no nv. 16).
+
+**Uivo Tático:** *Ação.* *Recarga:* conforme Mestre (tipicamente 1×/combate). *Efeito:* aliados +2 em ataques no próximo turno e conhecem posição do inimigo mais próximo. *Na mesa:* buff de grupo pré-alpha — coordena foco sem magia.
+
+**Tática de Matilha:** *Passivo.* *Efeito:* Vantagem em ataques se aliado adjacente ao mesmo alvo. *Na mesa:* incentiva formação de flanco; sinergia com Guerreiro na linha de frente.
+
+**Instinto (Herança Bestial):** *Durante 1 min.* *Efeito:* identifica automaticamente os 3 alvos com menor HP; +2d6 dano contra eles. *Na mesa:* executor de limpeza — elimina adds feridos e acelera fim de combate.
+
+**Resistência:** *Passivo.* *Efeito:* imune a se perder em qualquer ambiente. *Na mesa:* navegação infalível — grupo não perde tempo em labirintos (exploração).
 
 | Nivel | Bonus |
 |-------|-------|
@@ -686,7 +792,19 @@ Habilidades: Rastreamento Infalivel (rastreia qualquer criatura pelo cheiro das 
 
 Atributos: +2 FOR, +1 CON. Tracos Fisicos: Dentes levemente mais duros, pele com textura aspera ao toque, membrana nictitante raramente visivel.
 
-Habilidades: Faro de Sangue (detecta criaturas com HP abaixo de 50% num raio de 30m, atraves de paredes), Frenesi Sanguinario (+2 em ataques e +1d8 no dano contra alvos com HP abaixo de 50%), Natacao Perfeita (velocidade de nado 15m, respira debaixo d'agua indefinidamente, sem penalidade em combaté aquatico), Mordida Dilacerante (ação bônus: 2d8+FOR perfurante; em crítico, hemorragia severa 3d6/turno até cauterizado), Instinto (Frenesi ativa em criaturas abaixo de 75% HP, mordida dano dobrado), Resistência (imune a debuffs em ambientes aquaticos).
+**Habilidades da linhagem:**
+
+**Faro de Sangue:** *Passivo.* *Efeito:* detecta criaturas com HP < 50% num raio de 30 m, através de paredes. *Na mesa:* radar de execução — sabe quando boss entra em fase fraca; prioriza alvos sem Percepção ativa.
+
+**Frenesi Sanguinário:** *Passivo.* *Efeito:* +2 em ataques e +1d8 dano contra alvos com HP < 50%. *Na mesa:* DPS que escala no fim do combate — deixa boss para outros e limpa adds feridos.
+
+**Natação Perfeita:** *Passivo.* *Efeito:* nado 15 m; respiração subaquática indefinida; sem penalidade em combate aquático. *Na mesa:* dono de cenários inundados — única linhagem que não sofre em água.
+
+**Mordida Dilacerante:** *Ação bônus.* *Efeito:* 2d8+FOR perfurante; em crítico, hemorragia 3d6/turno até cauterizar. *Na mesa:* bleed stack em alvo único; pressão constante de PA inimigo em cura.
+
+**Instinto (Herança Bestial):** *Durante 1 min.* *Efeito:* Frenesi ativa em alvos < 75% HP; mordida causa **dano dobrado**. *Na mesa:* modo caçador — ative quando boss já foi erosionado; burst de finalização.
+
+**Resistência:** *Passivo.* *Efeito:* imune a debuffs em ambientes aquáticos. *Na mesa:* ignora lentidão, frio e pressão subaquática mágica.
 
 | Nivel | Bonus |
 |-------|-------|
@@ -702,7 +820,19 @@ Habilidades: Faro de Sangue (detecta criaturas com HP abaixo de 50% num raio de 
 
 Atributos: +2 INT, +1 CAR. Tracos Fisicos: Cabelos invariavelmente negros com reflexo azulado, olhos escuros que refletem luz de forma incomum, movimentos de cabeca levemente angulares.
 
-Habilidades: Memoria Absoluta (lembra perfeitamente de tudo que viu ou ouviu, detecta automaticamente inconsistencias em informacoes), Presenca Enigmatica (+3 em Persuasao e Intimidacao quando possui informação que o alvo não sabe que ele tem), Voo de Corvo (transforma-se em corvo por 10 minutos 1x/descanso curto), Colecionador de Segredos (ao passar 1 minuto observando um local sem ser detectado, descobre automaticamente o segredo mais relevante), Instinto (mente em velocidade surreal — Vantagem em todos os testes de INT e SAB por 1 minuto), Resistência (imune a Encantamento).
+**Habilidades da linhagem:**
+
+**Memória Absoluta:** *Passivo.* *Efeito:* lembra perfeitamente tudo que viu ou ouviu; detecta inconsistências em informações automaticamente. *Na mesa:* investigação e lore — não esquece pistas; counter de NPCs mentirosos.
+
+**Presença Enigmática:** *Passivo.* *Efeito:* +3 Persuasão e Intimidação quando possui informação que o alvo ignora que você tem. *Na mesa:* face social do grupo — negociação, interrogatório e blefe informado.
+
+**Voo de Corvo:** *Ação.* *Recarga:* 1× por descanso curto. *Duração:* 10 min em forma de corvo. *Na mesa:* reconhecimento seguro — espiona sala sem combate; mensagens (rede nv. 8).
+
+**Colecionador de Segredos:** *Gatilho:* 1 min observando local sem ser detectado. *Efeito:* revela o segredo mais relevante (Mestre). *Na mesa:* bypass de dungeon puzzle — acha alavanca, baú ou emboscada antes de gastar PA.
+
+**Instinto (Herança Bestial):** *Durante 1 min.* *Efeito:* Vantagem em **todos** os testes de INT e SAB. *Na mesa:* modo analista — magias, Arcana, Percepção e investigação em combate (ex.: identificar fraqueza nv. 12).
+
+**Resistência:** *Passivo.* *Efeito:* imune a Encantamento. *Na mesa:* tanque mental absoluto contra controle social.
 
 | Nivel | Bonus |
 |-------|-------|
@@ -725,25 +855,30 @@ Um Forjado de Osso e feito de peças de monstros diferentes — cada exemplar e 
 **Atributos:** +2 CON, +1 FOR ou INT (escolha)
 
 **Habilidades Raciais:**
-- Construto Vivo: Nao precisa respirar, comer ou dormir. Imune a Veneno e doenças. Nao pode ser Encantado.
-- Nucleo de Alma: Ao chegar a 0 HP, entra em modo de emergencia — fica Incapacitado mas estavel por 1d4 horas, após o que o Nucleo reinicia o sistema com 1 HP. Se o Nucleo for destruido, o Forjado morre permanentemente.
-- Composicao de Monstros: Ao criar o Forjado, escolhe-se 2 partes de monstros (ver tabela abaixo).
-- Manutenção: Em vez de Descanso Longo, precisa de manutencao por um Artífice (1 hora). Sem manutencao em 48h, sofre -1 em todos os testes cumulativamente.
-- Sem Bonus Culinarios Passivos: Pode consumir ingredientes de monstros, mas precisa instalar componentes no proprio corpo (1 hora) para ativar mutacoes. As mutacoes duram 48h em vez de 24h.
+
+**Construto Vivo:** *Passivo.* *Efeito:* não precisa respirar, comer ou dormir; imune a Veneno e doenças; imune a Encantado. *Na mesa:* vigia eterno, exploração em gás/água sem penalidade; ignora controle mental — tanque confiável contra feiticeiros.
+
+**Núcleo de Alma:** *Gatilho:* ao chegar a 0 HP. *Duração:* Incapacitado mas estável 1d4 h (1d4 **turnos** em combate no nv. 8). *Efeito:* depois reinicia com 1 HP. *Destruição do Núcleo (narrativo):* morte permanente. *Na mesa:* “segunda vida” — não cai no chão como morte instantânea; grupo tem janela para proteger corpo; diferente de Determinação (1 HP imediato).
+
+**Composição de Monstros:** *Gatilho:* criação do personagem (2 partes; +1 no nv. 4 e 14). *Efeito:* cada parte concede bônus passivo da tabela abaixo. *Na mesa:* customização total — mesmo “raça” pode ser tanque (Dragão+Troll), scout (Basilisco+Grifo) ou vampírico (Dente de Vampiro).
+
+**Manutenção:** *Gatilho:* em vez de descanso longo. *Efeito:* 1 h com Artífice restaura como descanso longo. *Penalidade:* sem manutenção 48 h, −1 em todos os testes (cumulativo). *Na mesa:* dependência de grupo/PNJ — fraco em expedições isoladas; forte em base com artífice.
+
+**Sem Bônus Culinários Passivos:** *Passivo.* *Efeito:* mutações exigem instalar componente no corpo (1 h; 10 min no nv. 10); duração 48 h (12 h no nv. 16). *Na mesa:* culinária mais lenta que orgânicos, mas mutações duram mais — planejamento pré-combate.
 
 **Tabela de Partes de Monstros:**
 
-| Parte | Habilidade |
-|-------|-----------|
-| Osso de Dragão | +2 CA natural |
-| Mandibula de Wyvern | Mordida 2d6 perfurante + veneno (CD 13) |
-| Garra de Grifo | Escalar superficies sem teste |
-| Costela de Troll | Regeneração de 3 HP/turno |
-| Cranio de Basilisco | Olhos de Dragão (ve auras mágicas e criaturas invisiveis) |
-| Espinha de Hidra | +10 HP máximo; ao chegar a 0 HP, testa CON CD 14 para ficar a 1 HP |
-| Fêmur de Gigante | Tamanho conta como Grande para fins de agarramento |
-| Escama de Elemental | Resistência a um elemento (escolha ao criar) |
-| Dente de Vampiro | Ataques corpo-a-corpo curam 2 HP por acerto |
+| Parte | Habilidade | Na mesa |
+|-------|-----------|---------|
+| Osso de Dragão | +2 CA natural | Tanque — reduz hits que passam; stack com armadura. |
+| Mandíbula de Wyvern | Mordida 2d6 perfurante + veneno (CD 13) | DPS corpo a corpo + debuff; ação bônus de mordida. |
+| Garra de Grifo | Escalar superfícies sem teste | Mobilidade 3D; ignora custo de escalada em PA. |
+| Costela de Troll | Regeneração 3 HP/turno | Sustain em combates longos; sinergia com foco inimigo. |
+| Crânio de Basilisco | Vê auras mágicas e invisíveis | Counter invisibilidade; revela armadilhas mágicas. |
+| Espinha de Hidra | +10 HP máx.; em 0 HP, CON CD 14 → 1 HP | Pool extra + terceira camada de sobrevivência. |
+| Fêmur de Gigante | Conta como Grande para agarramento | Controle de campo — agarra humanoides Médios. |
+| Escama de Elemental | Resistência a um elemento (escolha) | Matchup elemental — fogo, gelo, etc. |
+| Dente de Vampiro | Ataques corpo a corpo curam 2 HP/acerto | Sustain ofensivo — menos dependência de cura. |
 
 **Progressao Racial:**
 
