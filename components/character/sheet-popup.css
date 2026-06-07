@@ -210,7 +210,7 @@
 
   overscroll-behavior: contain;
 
-  background: var(--sheet-bg);
+  background: #121921;
 
 }
 
@@ -227,31 +227,25 @@
 
 .sheet-shell--popup {
 
-  --sheet-bg: #1a1510;
+  --sheet-bg: #121921;
 
-  --sheet-surface: #120e08;
+  --sheet-surface: #161e2a;
 
-  --sheet-inset: #100c08;
+  --sheet-inset: #0f141c;
 
-  --sheet-border: #3a2a0e;
+  --sheet-border: rgba(122, 163, 201, 0.22);
 
-  --sheet-border-bright: #6b4f1e;
+  --sheet-border-bright: rgba(122, 163, 201, 0.42);
 
-  --sheet-accent: #c89030;
+  --sheet-accent: #7aa3c9;
 
-  --sheet-accent-soft: rgba(200, 144, 48, 0.14);
+  --sheet-accent-soft: rgba(122, 163, 201, 0.14);
 
-  --sheet-text: #c8b88a;
+  --sheet-text: #e8ecf4;
 
-  --sheet-text-muted: #8a7848;
+  --sheet-text-muted: rgba(200, 210, 224, 0.62);
 
-  --sheet-heading: #f5ead0;
-
-  --sheet-hp: #5aaa40;
-
-  --sheet-pa: #3870b0;
-
-  --sheet-body-font: var(--font-body), Georgia, serif;
+  --sheet-hp: #6b9e5a;
 
   display: flex;
 
@@ -267,23 +261,9 @@
 
   overflow: hidden;
 
-  position: relative;
-
   color: var(--sheet-text);
 
-  font-family: var(--sheet-body-font);
-
   background: var(--sheet-bg);
-
-  border: 3px solid var(--sheet-border-bright);
-
-  box-shadow:
-
-    inset 0 0 0 1px #3a2a0e,
-
-    inset 0 0 0 4px #0e0a06,
-
-    inset 0 0 40px rgba(0, 0, 0, 0.6);
 
   container-type: inline-size;
 
@@ -2344,316 +2324,6 @@
   margin: 0.35rem 0 0;
   font-size: 0.72rem;
   color: #c86a6a;
-}
-
-/* —— Tema Foundry (pergaminho escuro + ouro) —— */
-.sheet-popup-oc {
-  position: absolute;
-  width: 36px;
-  height: 36px;
-  z-index: 12;
-  pointer-events: none;
-}
-
-.sheet-popup-oc svg {
-  width: 100%;
-  height: 100%;
-  display: block;
-}
-
-.sheet-popup-oc--tl {
-  top: 2px;
-  left: 2px;
-}
-
-.sheet-popup-oc--tr {
-  top: 2px;
-  right: 2px;
-  transform: scaleX(-1);
-}
-
-.sheet-popup-oc--bl {
-  bottom: 2px;
-  left: 2px;
-  transform: scaleY(-1);
-}
-
-.sheet-popup-oc--br {
-  bottom: 2px;
-  right: 2px;
-  transform: scale(-1);
-}
-
-.sheet-shell--popup .sheet-popup-top {
-  position: relative;
-  padding-top: 0.85rem;
-  background: #120e08;
-  border-bottom: 2px solid var(--sheet-border);
-  overflow: hidden;
-}
-
-.sheet-shell--popup .sheet-popup-top::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, #1a1006 0%, #3c2408 45%, #100c04 100%);
-  opacity: 0.72;
-  z-index: 0;
-  pointer-events: none;
-}
-
-.sheet-shell--popup .sheet-popup-top::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to right, rgba(26, 21, 16, 0.92) 0%, transparent 42%);
-  z-index: 0;
-  pointer-events: none;
-}
-
-.sheet-shell--popup .sheet-popup-top > * {
-  position: relative;
-  z-index: 1;
-}
-
-.sheet-shell--popup .sheet-popup-identity__eyebrow {
-  color: #7a5a28;
-  letter-spacing: 0.2em;
-}
-
-.sheet-shell--popup .sheet-popup-identity__name {
-  color: var(--sheet-heading);
-  text-shadow: 0 2px 12px rgba(0, 0, 0, 1), 0 0 30px rgba(180, 100, 20, 0.3);
-}
-
-.sheet-shell--popup .sheet-popup-identity__class {
-  font-style: italic;
-  color: #8a7848;
-}
-
-.sheet-shell--popup .sheet-popup-identity__meta {
-  font-style: italic;
-}
-
-.sheet-shell--popup .sheet-popup-identity__hex {
-  position: relative;
-  width: 52px;
-  height: 52px;
-  display: grid;
-  place-items: center;
-}
-
-.sheet-shell--popup .sheet-popup-identity__hex svg {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-}
-
-.sheet-shell--popup .sheet-popup-identity__hex-num {
-  position: relative;
-  z-index: 1;
-  font-family: var(--font-display);
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: #f5d878;
-}
-
-.sheet-shell--popup .sheet-popup-identity__ring {
-  display: none;
-}
-
-.sheet-shell--popup .sheet-popup-identity__xp-track {
-  background: #0e0a04;
-  border: 1px solid var(--sheet-border);
-  border-radius: 0;
-}
-
-.sheet-shell--popup .sheet-popup-identity__xp-track > span {
-  background: linear-gradient(to right, #7a5010, #c89030);
-}
-
-.sheet-shell--popup .sheet-popup-identity__xp-primary,
-.sheet-shell--popup .sheet-popup-identity__xp-text {
-  font-family: var(--font-display);
-  font-size: 0.58rem;
-  color: #5a4020;
-  letter-spacing: 0.08em;
-}
-
-.sheet-shell--popup .sheet-popup-top__attrs {
-  background: #120e08;
-  border-top: 1px solid #2a1e0a;
-  border-bottom: 2px solid var(--sheet-border);
-  padding: 0.35rem 0;
-}
-
-.sheet-shell--popup .sheet-popup-attr {
-  border-right: 1px solid #2a1e0a;
-  padding: 0.45rem 0.2rem 0.35rem;
-}
-
-.sheet-shell--popup .sheet-popup-attr:last-child {
-  border-right: none;
-}
-
-.sheet-shell--popup .sheet-attr-cell__label {
-  color: #6a5030;
-}
-
-.sheet-shell--popup .sheet-attr-cell__base {
-  font-size: 1.125rem;
-  color: var(--sheet-heading);
-}
-
-.sheet-shell--popup .sheet-attr-cell__mod--pos {
-  color: #5a9050;
-  background: transparent;
-  border: none;
-  padding: 0;
-  font-size: 0.65rem;
-}
-
-.sheet-shell--popup .sheet-attr-cell__mod--neg {
-  color: #9a4030;
-  background: transparent;
-  border: none;
-  padding: 0;
-  font-size: 0.65rem;
-}
-
-.sheet-shell--popup .sheet-attr-cell__mod--zero {
-  color: #4a3820;
-  background: transparent;
-  border: none;
-  padding: 0;
-  font-size: 0.65rem;
-}
-
-.sheet-shell--popup .sheet-attr-cell__divider {
-  display: none;
-}
-
-.sheet-shell--popup .sheet-popup-portrait-wrap {
-  position: relative;
-}
-
-.sheet-shell--popup .sheet-popup-portrait-wrap::before,
-.sheet-shell--popup .sheet-popup-portrait-wrap::after,
-.sheet-shell--popup .sheet-popup-portrait-wrap .sheet-popup-portrait::before,
-.sheet-shell--popup .sheet-popup-portrait-wrap .sheet-popup-portrait::after {
-  content: "";
-  position: absolute;
-  width: 14px;
-  height: 14px;
-  z-index: 4;
-  pointer-events: none;
-  background:
-    linear-gradient(#c89030, #c89030) top left / 100% 2px no-repeat,
-    linear-gradient(#c89030, #c89030) top left / 2px 100% no-repeat;
-}
-
-.sheet-shell--popup .sheet-popup-portrait-wrap::before {
-  top: 0;
-  left: 0;
-}
-
-.sheet-shell--popup .sheet-popup-portrait-wrap::after {
-  top: 0;
-  right: 0;
-  transform: scaleX(-1);
-}
-
-.sheet-shell--popup .sheet-popup-portrait,
-.sheet-shell--popup .sheet-popup-top__portrait.sheet-popup-portrait {
-  max-width: 158px;
-  aspect-ratio: 158 / 178;
-  border-radius: 0;
-  border: 2px solid var(--sheet-border-bright);
-  background: #100c08;
-  clip-path: polygon(
-    0 16px,
-    16px 0,
-    calc(100% - 16px) 0,
-    100% 16px,
-    100% calc(100% - 16px),
-    calc(100% - 16px) 100%,
-    16px 100%,
-    0 calc(100% - 16px)
-  );
-  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.7);
-}
-
-.sheet-shell--popup .sheet-popup-portrait__hover {
-  clip-path: polygon(
-    0 16px,
-    16px 0,
-    calc(100% - 16px) 0,
-    100% 16px,
-    100% calc(100% - 16px),
-    calc(100% - 16px) 100%,
-    16px 100%,
-    0 calc(100% - 16px)
-  );
-  background: rgba(0, 0, 0, 0.6);
-  color: #d4b870;
-  font-family: var(--font-display);
-}
-
-.sheet-shell--popup .section-divider {
-  background: #100c08;
-  border-color: #1e1608;
-}
-
-.sheet-shell--popup .section-divider__title {
-  color: #6a5030;
-}
-
-.sheet-shell--popup .sheet-tabs .sheet-tab {
-  font-family: var(--font-display);
-  background: #0e0a06;
-  border-color: #1e1408;
-  color: #4a3820;
-  border-radius: 0;
-}
-
-.sheet-shell--popup .sheet-tabs .sheet-tab.is-active,
-.sheet-shell--popup .sheet-tabs .sheet-tab[aria-selected="true"] {
-  color: #d4a850;
-  background: #140e08;
-  box-shadow: inset 0 -2px 0 #c89030;
-}
-
-.sheet-shell--popup .sheet-popup-panel {
-  border-radius: 0;
-  border-color: var(--sheet-border-bright);
-  background: var(--sheet-bg);
-}
-
-.sheet-shell--popup .sheet-popup-body,
-.sheet-shell--popup .sheet-panel {
-  background: var(--sheet-bg);
-  border-color: var(--sheet-border);
-}
-
-.sheet-shell--popup .sheet-popup-pill {
-  font-family: var(--font-display);
-  font-size: 0.5rem;
-  letter-spacing: 0.07em;
-  border-radius: 1px;
-}
-
-.sheet-shell--popup .sheet-popup-resource--hp .sheet-popup-bar > span {
-  background: linear-gradient(to right, #2a6820, var(--sheet-hp));
-}
-
-.page-wrap--sheet-popup {
-  background: #0e0a06;
-}
-
-.page-wrap--sheet-popup .mf--sheet-page {
-  border-color: var(--sheet-border-bright);
-  background: transparent;
 }
 
 
