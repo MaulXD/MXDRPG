@@ -53,6 +53,7 @@ export async function PATCH(request: Request, { params }: Params) {
       | "inventory"
       | "combatLoadout"
       | "armorLoadout"
+      | "lootEconomy"
     >
   > & { religiao?: string };
 

@@ -117,6 +117,9 @@ export function useCombatTurnFlow({
         });
     }, 1400);
 
-    return () => window.clearTimeout(timer);
+    return () => {
+      window.clearTimeout(timer);
+      autoPassBusy.current = false;
+    };
   }, [snapshot, canEndTurn, roomId, roomCtx, session, toast, onSnapshot, onRefresh]);
 }

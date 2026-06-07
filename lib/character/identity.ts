@@ -87,7 +87,7 @@ export function applyIdentityPatch(actor: CharacterSheet, patch: IdentityPatch):
     },
     tactical: {
       defesa: resolveActorDefesa({ ...actor, identity, attributes }),
-      iniciativa: desMod,
+      iniciativa: actor.tactical?.iniciativa ?? desMod,
     },
   };
   return normalizeCharacter(merged);
