@@ -8,6 +8,7 @@ import { SiteFooter } from "@/components/SiteFooter";
 import { ThemeScript } from "@/components/ThemeScript";
 import "./globals.css";
 import "@/components/ui/medieval-borders.css";
+import "@/components/ui/eldarin-frame.css";
 import "@/components/home/home.css";
 import "@/components/vtt/vtt.css";
 import "@/components/vtt/mesa-theme.css";

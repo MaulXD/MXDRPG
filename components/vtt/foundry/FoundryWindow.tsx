@@ -2,6 +2,7 @@
 
 import { useCallback, useRef, type ReactNode } from "react";
 import type { FoundryWindowLayout } from "@/hooks/vtt/useFoundryWindows";
+import { EldarinCorners } from "@/components/ui/EldarinCorners";
 import "./foundry.css";
 
 type Props = {
@@ -121,6 +122,7 @@ export function FoundryWindow({
       role="dialog"
       aria-label={title}
     >
+      <EldarinCorners />
       <div
         className="foundry-window__header"
         onPointerDown={onHeaderPointerDown}
