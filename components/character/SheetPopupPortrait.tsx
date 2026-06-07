@@ -2,8 +2,8 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { PortraitFocusEditor } from "@/components/character/PortraitFocusEditor";
-import { PortraitFocusFill } from "@/components/character/PortraitFocusFill";
-import { IconCamera, IconUser } from "@/components/character/SheetPopupIcons";
+import { IconCamera } from "@/components/character/SheetPopupIcons";
+import { Portrait } from "@/components/vtt/Portrait";
 import { useImageNaturalSize } from "@/hooks/useImageNaturalSize";
 import { patchRoomActor } from "@/hooks/useRoomSync";
 import { IMAGE_UPLOAD_HINT } from "@/lib/media/image-data-url";
@@ -56,7 +56,7 @@ export function SheetPopupPortrait({
   const [editingSlot, setEditingSlot] = useState<"portrait" | "token">("portrait");
 
   const previewSrc = draftSrc ?? portraitUrl;
-  const imgSize = useImageNaturalSize(draftSrc ? previewSrc : null);
+  const imgSize = useImageNaturalSize(previewSrc);
   const ringColor = playerColorForActor(actorId, [actorId]);
 
   useEffect(() => {
@@ -153,24 +153,16 @@ export function SheetPopupPortrait({
         }}
         aria-label={previewSrc ? `Retrato de ${name}` : `Adicionar retrato de ${name}`}
       >
-        {previewSrc ? (
-          draftSrc && imgSize.w > 0 ? (
-            <PortraitFocusFill
-              imageSrc={previewSrc}
-              focus={focusPortrait}
-              imgW={imgSize.w}
-              imgH={imgSize.h}
-              shape="square"
-            />
-          ) : (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={previewSrc} alt="" />
-          )
-        ) : (
-          <span className="sheet-popup-portrait__placeholder">
-            <IconUser size={42} />
-          </span>
-        )}
+        <Portrait
+          tier="hero"
+          imageSrc={previewSrc}
+          initials={previewSrc ? undefined : "?"}
+          alt={name}
+          focus={focusPortrait}
+          imgW={previewSrc && imgSize.w > 0 ? imgSize.w : 0}
+          imgH={previewSrc && imgSize.w > 0 ? imgSize.h : 0}
+          className="portrait--sheet-popup"
+        />
         {canEdit ? (
           <span className="sheet-popup-portrait__hover" aria-hidden>
             <IconCamera size={22} />
