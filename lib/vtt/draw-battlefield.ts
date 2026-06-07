@@ -314,7 +314,7 @@ export function drawTokensLayer(ctx: CanvasRenderingContext2D, p: TokenDrawParam
     const img = p.images.get(token.id);
     const focus = p.focusByTokenId.get(token.id) ?? DEFAULT_PORTRAIT_FOCUS;
     const ringStyle = resolveTokenRing(token, playerActorIds);
-    const hpLayout = hpRingLayout(r);
+    const hpLayout = hpRingLayout(r, ringStyle);
     const hpVis = p.tokenHpDisplay?.get(token.id);
     const showHpBar = Boolean(hpVis?.bar && token.vidaMax != null && token.vida != null);
     const portraitR = hpLayout.contentRFull;
@@ -341,7 +341,10 @@ export function drawTokensLayer(ctx: CanvasRenderingContext2D, p: TokenDrawParam
       drawTokenHpSegments(ctx, x, y, hpLayout, ratio, hpBarColor(ratio));
     }
 
-    drawTokenIdentityRings(ctx, x, y, hpLayout.identityBase, ringStyle);
+    drawTokenIdentityRings(ctx, x, y, hpLayout.identityBase, ringStyle, {
+      skipOutermostRing: showHpBar,
+      outerRingOffset: hpLayout.outerRingOffset,
+    });
 
     if (defeated) {
       drawTokenDefeatedSkull(ctx, x, y, r);

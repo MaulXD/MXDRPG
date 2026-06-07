@@ -3,6 +3,7 @@ import type { SessionUser } from "@/lib/auth/types";
 import { isMonsterToken } from "@/lib/room/settings";
 import type { RoomActor } from "@/lib/room/types";
 import { hexCorners } from "@/lib/vtt/hex-math";
+import type { TokenRingStyle } from "@/lib/vtt/token-colors";
 import { strokeEffectIcon } from "@/lib/vtt/token-effect-icons";
 import type { BattleToken } from "@/lib/vtt/types";
 
@@ -68,22 +69,29 @@ export function isTokenDefeated(token: BattleToken): boolean {
 
 const HP_BAR_GRAPHITE = "rgb(58, 58, 60)";
 
-/** Barra fina no hex interno; retrato ocupa o máximo do interior. */
-export function hpRingLayout(tokenR: number): {
+/** Raio do anel externo de identidade (centro do traço da borda). */
+export function tokenOuterBorderHexR(tokenR: number, ringStyle: TokenRingStyle): number {
+  const identityBase = tokenR + 0.5;
+  const maxOffset = Math.max(0, ...ringStyle.rings.map((ring) => ring.radiusOffset));
+  return identityBase + maxOffset;
+}
+
+/** Barra de vida na borda hexagonal do token (anel externo); retrato circular no interior. */
+export function hpRingLayout(tokenR: number, ringStyle: TokenRingStyle): {
   width: number;
   contentR: number;
   contentRFull: number;
-  trackR: number;
+  borderHexR: number;
   identityBase: number;
-  hexR: number;
+  outerRingOffset: number;
 } {
-  const width = Math.max(1.5, tokenR * 0.032);
+  const width = Math.max(3, tokenR * 0.058);
   const identityBase = tokenR + 0.5;
-  const hexR = Math.max(tokenR * 0.92, identityBase - 1.1);
-  const trackR = hexR - width * 0.35;
-  const contentR = Math.max(4, trackR - width - 0.15);
+  const outerRingOffset = Math.max(0, ...ringStyle.rings.map((ring) => ring.radiusOffset));
+  const borderHexR = identityBase + outerRingOffset;
   const contentRFull = Math.max(4, tokenR - 0.35);
-  return { width, contentR, contentRFull, trackR, identityBase, hexR };
+  const contentR = Math.max(4, identityBase - width * 0.45);
+  return { width, contentR, contentRFull, borderHexR, identityBase, outerRingOffset };
 }
 
 function isPlayerCharacterToken(token: BattleToken): boolean {
@@ -186,7 +194,7 @@ function traceHexEdgesPartial(
   }
 }
 
-/** Barra fina completando o hex por dentro (preenchimento horário a partir do topo). */
+/** Borda hex do token como barra de vida (preenchimento horário a partir do topo). */
 export function drawTokenHpSegments(
   ctx: CanvasRenderingContext2D,
   x: number,
@@ -199,7 +207,7 @@ export function drawTokenHpSegments(
   const defeated = clamped <= 0;
   const emptyColor = "rgba(32, 30, 28, 0.95)";
   const deadColor = "rgb(8, 8, 8)";
-  const edges = hexEdgesClockwiseFromTop(x, y, layout.hexR);
+  const edges = hexEdgesClockwiseFromTop(x, y, layout.borderHexR);
   const edgeLen = edges[0] ? edgeLength(edges[0].from, edges[0].to) : 0;
   const perimeter = edgeLen * 6;
   const fillDist = defeated ? 0 : perimeter * clamped;
