@@ -1,6 +1,11 @@
 import type { Axial } from "@/lib/vtt/hex-math";
 import { axialDistance } from "@/lib/vtt/hex-math";
-import { axialKey } from "@/lib/vtt/token-occupancy";
+import { creatureSizeOf, occupiedHexes, type CreatureSize } from "@/lib/vtt/creature-size";
+import {
+  axialKey,
+  buildOccupancy,
+  canEnterHex,
+} from "@/lib/vtt/token-occupancy";
 import type { BattleScene, BattleToken, DungeonObject, DungeonObjectKind } from "@/lib/vtt/types";
 
 export function newDungeonObjectId(): string {
@@ -49,16 +54,47 @@ export function tokenOccupiesAxialSimple(
   );
 }
 
-/** Tokens não podem entrar nem ser posicionados em hexes bloqueados. */
+type AnchorTokenOpts = {
+  exceptTokenId?: string;
+  /** Token sendo posicionado (spawn) — ainda não está em `scene.tokens`. */
+  token?: BattleToken;
+  moverSize?: CreatureSize;
+  actorRacas?: Record<string, string | undefined>;
+};
+
+/** Tokens não podem entrar nem ser posicionados em hexes bloqueados ou ocupados. */
 export function canAnchorTokenAt(
   scene: Pick<BattleScene, "dungeonObjects" | "gridRadius" | "tokens">,
   axial: Axial,
-  exceptTokenId?: string
+  exceptTokenIdOrOpts?: string | AnchorTokenOpts,
+  legacyOpts?: AnchorTokenOpts
 ): boolean {
-  if (!hexInDungeonGrid(axial, scene.gridRadius)) return false;
-  if (isHexBlocked(scene, axial)) return false;
-  if (tokenOccupiesAxialSimple(scene.tokens, axial, exceptTokenId)) return false;
-  return true;
+  const opts: AnchorTokenOpts =
+    typeof exceptTokenIdOrOpts === "string"
+      ? { exceptTokenId: exceptTokenIdOrOpts, ...legacyOpts }
+      : (exceptTokenIdOrOpts ?? {});
+
+  const exceptTokenId = opts.exceptTokenId ?? null;
+  const actorRacas = opts.actorRacas ?? {};
+  const mover =
+    opts.token ??
+    (exceptTokenId ? scene.tokens.find((t) => t.id === exceptTokenId) : undefined);
+  const moverRaca = mover?.actorId ? actorRacas[mover.actorId] : undefined;
+  const moverSize =
+    opts.moverSize ?? (mover ? creatureSizeOf(mover, moverRaca) : "medium");
+
+  const sizeOf = (t: BattleToken): CreatureSize => {
+    const raca = t.actorId ? actorRacas[t.actorId] : undefined;
+    return creatureSizeOf(t, raca);
+  };
+  const occupancy = buildOccupancy(scene.tokens, exceptTokenId, sizeOf, actorRacas);
+
+  for (const hex of occupiedHexes(axial, moverSize)) {
+    if (!hexInDungeonGrid(hex, scene.gridRadius)) return false;
+    if (isHexBlocked(scene, hex)) return false;
+  }
+
+  return canEnterHex(axial, moverSize, occupancy, scene.gridRadius);
 }
 
 export function canPlaceDungeonObjectAt(

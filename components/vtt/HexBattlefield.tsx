@@ -134,6 +134,8 @@ type Props = {
   scene: BattleScene;
   canEdit: boolean;
   canControlCombat?: boolean;
+  /** Arrastar token livremente (sem PA/turno) — só mestre. */
+  canRepositionTokens?: boolean;
   /** Desenhar na lousa — jogadores e mestre */
   canUseWhiteboard?: boolean;
   canBypassTurn?: boolean;
@@ -193,6 +195,7 @@ export function HexBattlefield({
   scene: initial,
   canEdit,
   canControlCombat = false,
+  canRepositionTokens = false,
   canUseWhiteboard = false,
   canBypassTurn: canBypassTurnProp = false,
   canEndTurn: canEndTurnProp = false,
@@ -1405,10 +1408,8 @@ export function HexBattlefield({
   );
 
   const canRepositionToken = useCallback(
-    (token: BattleToken) =>
-      canControlCombat ||
-      (Boolean(canControlToken?.(token)) && !isMonsterToken(token)),
-    [canControlCombat, canControlToken]
+    (_token: BattleToken) => canRepositionTokens,
+    [canRepositionTokens]
   );
 
   const onRepositionToken = useCallback(

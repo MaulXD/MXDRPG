@@ -2,6 +2,7 @@
 
 import { useCallback, useRef, type ReactNode } from "react";
 import type { FoundryWindowLayout } from "@/hooks/vtt/useFoundryWindows";
+import { clampDragPosition } from "@/lib/vtt/foundry-window-placement";
 import "./foundry.css";
 
 type Props = {
@@ -59,10 +60,13 @@ export function FoundryWindow({
       if (!dragRef.current) return;
       const dx = e.clientX - dragRef.current.startX;
       const dy = e.clientY - dragRef.current.startY;
-      onLayoutChange({
-        x: Math.max(48, dragRef.current.origX + dx),
-        y: Math.max(4, dragRef.current.origY + dy),
-      });
+      const next = clampDragPosition(
+        dragRef.current.origX + dx,
+        dragRef.current.origY + dy,
+        layout.width,
+        layout.minimized ? 40 : layout.height
+      );
+      onLayoutChange(next);
     },
     [onLayoutChange]
   );

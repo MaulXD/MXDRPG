@@ -3,7 +3,9 @@
   left: 50%;
   bottom: var(--vtt-toast-lift, 1.25rem);
   transform: translateX(-50%);
+  z-index: 24;
   max-width: min(92%, 520px);
+  flex-direction: column-reverse;
 }
 
 .vtt-toast-stack {

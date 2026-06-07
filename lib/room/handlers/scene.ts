@@ -4,6 +4,7 @@ import { sanitizeDungeonObjects } from "@/lib/vtt/dungeon-layer";
 import { sanitizeMapMarkups, validatePlayerMarkupPatch } from "@/lib/vtt/map-markup";
 import { revealAxial } from "@/lib/vtt/fog-of-war";
 import { inGrid } from "@/lib/vtt/token-occupancy";
+import { normalizeImageDataUrl } from "@/lib/media/image-normalize";
 import { getRoom, persistRoom, toSnapshot } from "../internal/registry";
 import type { RoomSnapshot } from "../types";
 import type { BattleScene } from "@/lib/vtt/types";
@@ -43,7 +44,13 @@ export async function patchRoomScene(
     return null;
   }
 
-  const next = { ...room.scene, ...patch };
+  const safePatch = { ...patch };
+  if (typeof safePatch.mapImageUrl === "string" && safePatch.mapImageUrl.startsWith("data:image/")) {
+    safePatch.mapImageUrl =
+      (await normalizeImageDataUrl(safePatch.mapImageUrl, { maxEdge: 1920 })) ?? undefined;
+  }
+
+  const next = { ...room.scene, ...safePatch };
   if (patch.dungeonObjects !== undefined) {
     next.dungeonObjects = sanitizeDungeonObjects(next);
   }
