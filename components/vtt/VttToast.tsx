@@ -29,46 +29,71 @@ const VttToastContext = createContext<VttToastContextValue | null>(null);
 
 let toastSeq = 0;
 
-function useMesaToastLift() {
+/** Ancora o stack logo acima do HUD de combate (dentro do stage). */
+export function syncMesaToastPosition(): void {
+  const anchor = document.getElementById("foundry-mesa-toasts");
+  const stage = anchor?.closest(".foundry-mesa__stage");
+  if (!anchor || !stage) return;
+
+  const hud =
+    stage.querySelector<HTMLElement>(".vtt-hud-wrapper") ??
+    stage.querySelector<HTMLElement>(".vtt-combat-hud-restore");
+
+  if (!hud || hud.offsetHeight === 0) {
+    anchor.dataset.toastAnchor = "fallback";
+    anchor.style.removeProperty("--vtt-toast-top");
+    anchor.style.setProperty("--vtt-toast-lift", "1.25rem");
+    return;
+  }
+
+  const stageRect = stage.getBoundingClientRect();
+  const hudRect = hud.getBoundingClientRect();
+  const gap = 12;
+  const anchorY = hudRect.top - stageRect.top - gap;
+
+  anchor.dataset.toastAnchor = "hud";
+  anchor.style.setProperty("--vtt-toast-top", `${Math.max(8, anchorY)}px`);
+  anchor.style.removeProperty("--vtt-toast-lift");
+}
+
+function useMesaToastLift(itemCount: number) {
   useEffect(() => {
     const anchor = document.getElementById("foundry-mesa-toasts");
     const stage = anchor?.closest(".foundry-mesa__stage");
     if (!anchor || !stage) return;
 
-    const sync = () => {
-      const hud =
-        stage.querySelector<HTMLElement>(".vtt-hud-wrapper") ??
-        stage.querySelector<HTMLElement>(".vtt-combat-hud-restore") ??
-        stage.querySelector<HTMLElement>(".vtt-combat-hud");
-      if (!hud || hud.offsetHeight === 0) {
-        anchor.style.setProperty("--vtt-toast-lift", "1.25rem");
-        return;
-      }
-      const stageRect = stage.getBoundingClientRect();
-      const hudRect = hud.getBoundingClientRect();
-      const gap = 14;
-      const lift = Math.max(28, stageRect.bottom - hudRect.top + gap);
-      anchor.style.setProperty("--vtt-toast-lift", `${lift}px`);
-    };
+    const sync = () => syncMesaToastPosition();
 
     sync();
     const ro = new ResizeObserver(sync);
     ro.observe(stage);
+
     const mo = new MutationObserver(sync);
     mo.observe(stage, { childList: true, subtree: true, attributes: true });
+
+    window.addEventListener("resize", sync);
+    window.addEventListener("scroll", sync, true);
 
     return () => {
       ro.disconnect();
       mo.disconnect();
+      window.removeEventListener("resize", sync);
+      window.removeEventListener("scroll", sync, true);
     };
   }, []);
+
+  useEffect(() => {
+    syncMesaToastPosition();
+    const id = requestAnimationFrame(syncMesaToastPosition);
+    return () => cancelAnimationFrame(id);
+  }, [itemCount]);
 }
 
 export function VttToastProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<VttToastItem[]>([]);
   const [toastHost, setToastHost] = useState<HTMLElement | null>(null);
 
-  useMesaToastLift();
+  useMesaToastLift(items.length);
 
   useEffect(() => {
     setToastHost(document.getElementById("foundry-mesa-toasts"));
@@ -78,11 +103,15 @@ export function VttToastProvider({ children }: { children: ReactNode }) {
     setItems((prev) => prev.filter((t) => t.id !== id));
   }, []);
 
-  const push = useCallback((message: string, variant: VttToastVariant = "info") => {
-    const id = `toast-${++toastSeq}`;
-    setItems((prev) => [...prev.slice(-4), { id, message, variant }]);
-    window.setTimeout(() => dismiss(id), 5200);
-  }, [dismiss]);
+  const push = useCallback(
+    (message: string, variant: VttToastVariant = "info") => {
+      const id = `toast-${++toastSeq}`;
+      setItems((prev) => [...prev.slice(-4), { id, message, variant }]);
+      requestAnimationFrame(syncMesaToastPosition);
+      window.setTimeout(() => dismiss(id), 5200);
+    },
+    [dismiss]
+  );
 
   const pushMany = useCallback(
     (messages: string[], variant: VttToastVariant = "info") => {
@@ -108,7 +137,7 @@ export function VttToastProvider({ children }: { children: ReactNode }) {
   return (
     <VttToastContext.Provider value={value}>
       {children}
-      {toastHost ? createPortal(stack, toastHost) : stack}
+      {toastHost ? createPortal(stack, toastHost) : null}
     </VttToastContext.Provider>
   );
 }
