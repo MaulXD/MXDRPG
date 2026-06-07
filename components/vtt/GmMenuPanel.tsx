@@ -71,7 +71,7 @@ export function GmMenuPanel({
       </p>
       <h2 className="vtt-title">{scene.name}</h2>
       <p className="vtt-hint">
-        Arraste tokens no mapa. <strong>Delete</strong> remove o token. <strong>🏰</strong> abre o
+        Arraste tokens no mapa. <strong>Delete</strong> remove o token. O <strong>Editor de mapa</strong> abre o
         editor — aba <strong>1 · Piso</strong> para subir o fundo; <strong>2 · Objetos</strong> para
         paredes. Ctrl+clique revela névoa. Alt+clique: ping.
       </p>

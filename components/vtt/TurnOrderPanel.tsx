@@ -15,6 +15,11 @@ import { collectPlayerActorIds, resolveTokenRing } from "@/lib/vtt/token-colors"
 import { hpBarColor, hpRatio } from "@/lib/vtt/token-hp-display";
 
 import { TokenEffectsRow } from "@/components/vtt/TokenEffectsRow";
+import {
+  TurnOrderRollIcon,
+  TurnOrderSettingsIcon,
+  TurnOrderTargetIcon,
+} from "@/components/vtt/TurnOrderIcons";
 
 
 
@@ -285,7 +290,7 @@ export function TurnOrderPanel({
                   void handleRoll();
                 }}
               >
-                ⇅
+                <TurnOrderRollIcon />
               </button>
             ) : null}
             <span className="vtt-turn-compact-round">R{combat.round}</span>
@@ -353,7 +358,7 @@ export function TurnOrderPanel({
           <p className={`vtt-combat-hint vtt-turn-empty${compact ? " vtt-turn-empty--compact" : ""}`}>
             {canControl
               ? compact
-                ? "Rolar iniciativa (⇅) para começar."
+                ? "Rolar iniciativa para começar."
                 : "Nenhum combatente na fila — use Rolar iniciativa para começar."
               : "Aguardando o mestre rolar a iniciativa."}
           </p>
@@ -542,7 +547,7 @@ export function TurnOrderPanel({
                           </span>
                         ) : attackable ? (
                           <span className="vtt-turn-target-hint" title="Alvo válido">
-                            ◎
+                            <TurnOrderTargetIcon />
                           </span>
                         ) : null}
                       </div>
@@ -610,7 +615,7 @@ export function TurnOrderPanel({
                     setSettingsOpen((o) => !o);
                   }}
                 >
-                  ⚙
+                  <TurnOrderSettingsIcon />
                 </button>
                 {settingsOpen ? (
                   <div className="vtt-turn-compact-settings-menu" role="menu">

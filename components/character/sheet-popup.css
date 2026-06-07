@@ -934,55 +934,13 @@
 
   text-align: center;
 
-  padding: 0.35rem 0.2rem;
+  padding: 0.4rem 0.25rem;
 
   border-radius: 6px;
 
-  background: rgba(0, 0, 0, 0.28);
+  background: var(--surface-raised);
 
-  border: 1px solid var(--sheet-border);
-
-}
-
-
-
-.sheet-popup-attr label {
-
-  display: block;
-
-  font-size: 0.58rem;
-
-  letter-spacing: 0.1em;
-
-  color: var(--sheet-text-muted);
-
-  margin-bottom: 0.05rem;
-
-}
-
-
-
-.sheet-popup-attr strong {
-
-  display: block;
-
-  font-size: 0.95rem;
-
-  color: var(--sheet-accent);
-
-  font-weight: 700;
-
-}
-
-
-
-.sheet-popup-attr span {
-
-  display: block;
-
-  font-size: 0.65rem;
-
-  color: var(--sheet-text-muted);
+  border: 1px solid var(--border);
 
 }
 

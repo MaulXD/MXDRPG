@@ -391,7 +391,7 @@ export function drawTokensLayer(ctx: CanvasRenderingContext2D, p: TokenDrawParam
       drawTokenWalkRemainingBadge(ctx, x, y, r, walk, hexToMeters(walk) + " m");
     }
 
-    drawTokenNameLabel(ctx, x, y, r, token.name);
+    drawTokenNameLabel(ctx, x, y, r, token.name, token.color);
 
     drawTokenEffectBadges(ctx, x, y, r, token);
   }

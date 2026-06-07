@@ -715,16 +715,20 @@ export function CharacterSheet({
           </div>
 
           <div className="sheet-popup-top__attrs" role="group" aria-label="Atributos">
-            {(Object.keys(ATTRIBUTE_LABELS) as AttributeKey[]).map((k) => (
-              <div className="sheet-popup-attr" key={k}>
-                <label>{ATTRIBUTE_LABELS[k]}</label>
-                <strong>
-                  {attributeMod(live.attributes[k]) >= 0 ? "+" : ""}
-                  {attributeMod(live.attributes[k])}
-                </strong>
-                <span>{live.attributes[k]}</span>
-              </div>
-            ))}
+            {(Object.keys(ATTRIBUTE_LABELS) as AttributeKey[]).map((k) => {
+              const m = attributeMod(live.attributes[k]);
+              const sign = m > 0 ? "pos" : m < 0 ? "neg" : "zero";
+              return (
+                <div className="sheet-popup-attr sheet-attr-cell" key={k}>
+                  <label className="sheet-attr-cell__label">{ATTRIBUTE_LABELS[k]}</label>
+                  <strong className="sheet-attr-cell__base">{live.attributes[k]}</strong>
+                  <span className="sheet-attr-cell__divider" aria-hidden />
+                  <span className={`sheet-attr-cell__mod sheet-attr-cell__mod--${sign}`}>
+                    {m >= 0 ? `+${m}` : m}
+                  </span>
+                </div>
+              );
+            })}
           </div>
         </header>
 

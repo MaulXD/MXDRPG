@@ -108,7 +108,7 @@ export function VttHelpButton() {
                 <li>
                   <strong>Mapa</strong> — editor de cenário: subir imagem de fundo (piso), ajustar
                   escala/posição e colocar paredes/objetos que bloqueiam movimento. Atalho rápido:{" "}
-                  botão <strong>🏰</strong> no canto inferior direito do mapa.
+                  botão <strong>Editor de mapa</strong> na barra de ferramentas à esquerda.
                 </li>
                 <li>
                   <strong>Mestre</strong> — configurações da sala (HP de monstros visível, bypass de
@@ -189,10 +189,10 @@ export function VttHelpButton() {
             <HelpSection title="Mapa, câmera e ferramentas (estilo Roll20)">
               <ul className="vtt-help-panel__list">
                 <li>
-                  Barra vertical à <strong>esquerda do mapa</strong>: <strong>↖ Interagir</strong>{" "}
-                  (padrão), <strong>◎ Ping</strong>, <strong>📏 Régua</strong>,{" "}
-                  <strong>◐ Névoa</strong> (mestre, com névoa ativa), <strong>✎ Desenho</strong> e
-                  zoom <strong>− / + / ⊙</strong>.
+                  Barra vertical à <strong>esquerda do mapa</strong>: <strong>Interagir</strong>{" "}
+                  (padrão), <strong>Ping</strong>, <strong>Régua</strong>,{" "}
+                  <strong>Névoa</strong> (mestre, com névoa ativa), <strong>Desenho</strong> e
+                  controles de <strong>zoom</strong>.
                 </li>
                 <li>
                   <strong>Scroll do mouse</strong> — zoom. <strong>Alt + arrastar</strong> — mover a
@@ -216,7 +216,7 @@ export function VttHelpButton() {
                   opções extras. <kbd>Del</kbd> apaga desenho selecionado.
                 </li>
                 <li>
-                  <strong>Mestre:</strong> botão <strong>🏰</strong> abre o editor de mapa; arraste
+                  <strong>Mestre:</strong> botão <strong>Editor de mapa</strong> abre o construtor de cenário; arraste
                   tokens livremente para reposicionar.
                 </li>
               </ul>

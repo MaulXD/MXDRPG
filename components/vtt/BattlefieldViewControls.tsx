@@ -1,5 +1,7 @@
 "use client";
 
+import { MapToolbarIcon } from "@/components/vtt/MapToolbarIcon";
+
 type Props = {
   zoomPercent: number;
   canZoomIn: boolean;
@@ -65,7 +67,7 @@ export function BattlefieldViewControls({
           title="Modo masmorra — Piso: subir e ajustar fundo no mapa; Objetos: paredes"
           aria-label="Modo masmorra"
         >
-          🏰
+          <MapToolbarIcon name="dungeon" />
         </button>
       ) : null}
       <span className="vtt-view-hint">Scroll · Alt+arrastar</span>
