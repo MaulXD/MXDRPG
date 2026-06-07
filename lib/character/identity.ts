@@ -101,6 +101,7 @@ export function describeIdentity(actor: CharacterSheet): string[] {
   if (cls) {
     lines.push(`${cls.id}: d${cls.hpDie} · ${cls.primary}`);
     lines.push(`Proficiências: ${cls.proficiencies}`);
+    lines.push(`Bônus passivo: ${cls.dietBonus}`);
   }
   if (race) {
     lines.push(`Raça: ${race.traits.slice(0, 3).join(", ")}`);

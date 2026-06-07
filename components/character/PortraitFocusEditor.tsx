@@ -1,5 +1,6 @@
 ﻿"use client";
 
+import type { CSSProperties } from "react";
 import { PortraitFocusFrame } from "@/components/character/PortraitFocusFrame";
 import { useImageNaturalSize } from "@/hooks/useImageNaturalSize";
 import {
@@ -17,6 +18,11 @@ type Props = {
   disabled?: boolean;
   /** Qual prévia destacar no editor */
   previewMode?: "portrait" | "token";
+  onPreviewModeChange?: (mode: "portrait" | "token") => void;
+  /** Focos separados para as miniaturas (quando omitido, usa `focus` em ambas). */
+  portraitFocus?: PortraitFocus;
+  tokenFocus?: PortraitFocus;
+  tokenRingColor?: string;
 };
 
 const FRAME = 200;
@@ -28,63 +34,81 @@ export function PortraitFocusEditor({
   onFocusChange,
   disabled,
   previewMode = "portrait",
+  onPreviewModeChange,
+  portraitFocus,
+  tokenFocus,
+  tokenRingColor,
 }: Props) {
   const normalized = normalizePortraitFocus(focus);
+  const portraitPreview = normalizePortraitFocus(portraitFocus ?? focus);
+  const tokenPreview = normalizePortraitFocus(tokenFocus ?? focus);
   const scale = normalized.scale ?? 1;
   const { w: imgW, h: imgH } = useImageNaturalSize(imageSrc);
 
+  function pickSlot(slot: "portrait" | "token") {
+    if (disabled) return;
+    onPreviewModeChange?.(slot);
+  }
+
   return (
     <div className="portrait-focus-editor">
-      <p className="sheet-portrait-hint">
-        Arraste dentro de qualquer círculo para posicionar. Use o controle de zoom abaixo.
+      <p className="sheet-portrait-hint portrait-focus-editor__hint">
+        Arraste no círculo grande para posicionar. Clique em Retrato ou Token para alternar o alvo.
       </p>
 
       <div className="portrait-focus-previews portrait-focus-previews--duo">
-        <div
-          className={`portrait-focus-preview-slot ${previewMode === "portrait" ? "is-active" : ""}`}
+        <button
+          type="button"
+          className={`portrait-focus-preview-slot${previewMode === "portrait" ? " is-active" : ""}`}
+          onClick={() => pickSlot("portrait")}
+          disabled={disabled}
+          aria-pressed={previewMode === "portrait"}
         >
           <span className="portrait-focus-preview-label">Retrato</span>
           <PortraitFocusFrame
             imageSrc={imageSrc}
-            focus={normalized}
-            onFocusChange={onFocusChange}
+            focus={portraitPreview}
             size={TOKEN_PREVIEW}
             imgW={imgW}
             imgH={imgH}
-            disabled={disabled}
-            className="portrait-focus-frame--main portrait-focus-frame--preview portrait-focus-frame--interactive"
-            label="Ajustar retrato"
+            className="portrait-focus-frame--preview"
+            label="Prévia do retrato"
           />
-        </div>
-        <div
-          className={`portrait-focus-preview-slot ${previewMode === "token" ? "is-active" : ""}`}
+        </button>
+        <button
+          type="button"
+          className={`portrait-focus-preview-slot portrait-focus-preview-slot--token${previewMode === "token" ? " is-active" : ""}`}
+          onClick={() => pickSlot("token")}
+          disabled={disabled}
+          aria-pressed={previewMode === "token"}
+          style={tokenRingColor ? ({ "--token-ring": tokenRingColor } as CSSProperties) : undefined}
         >
           <span className="portrait-focus-preview-label">Token</span>
           <PortraitFocusFrame
             imageSrc={imageSrc}
-            focus={normalized}
-            onFocusChange={onFocusChange}
+            focus={tokenPreview}
             size={TOKEN_PREVIEW}
             imgW={imgW}
             imgH={imgH}
-            disabled={disabled}
-            className="portrait-focus-frame--token portrait-focus-frame--preview portrait-focus-frame--interactive"
-            label="Ajustar token"
+            className="portrait-focus-frame--preview portrait-focus-frame--token-ring"
+            label="Prévia do token"
           />
-        </div>
+        </button>
       </div>
 
-      <PortraitFocusFrame
-        imageSrc={imageSrc}
-        focus={normalized}
-        onFocusChange={onFocusChange}
-        size={FRAME}
-        imgW={imgW}
-        imgH={imgH}
-        disabled={disabled}
-        className="portrait-focus-frame--main portrait-focus-frame--interactive"
-        label="Ajustar enquadramento"
-      />
+      <div className="portrait-focus-editor__stage">
+        <PortraitFocusFrame
+          imageSrc={imageSrc}
+          focus={normalized}
+          onFocusChange={onFocusChange}
+          size={FRAME}
+          imgW={imgW}
+          imgH={imgH}
+          disabled={disabled}
+          className="portrait-focus-frame--stage portrait-focus-frame--interactive"
+          label="Ajustar enquadramento"
+        />
+      </div>
 
       <div className="portrait-focus-sliders">
         <label>

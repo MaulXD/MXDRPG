@@ -25,6 +25,8 @@ export type WizardIconKind =
   | "class-bardo"
   | "class-druida"
   | "class-artifice"
+  | "class-paladino"
+  | "class-bruxo"
   | "fallback";
 
 export const WIZARD_ICON_PATHS: Record<WizardIconKind, string> = {
@@ -58,6 +60,8 @@ export const WIZARD_ICON_PATHS: Record<WizardIconKind, string> = {
   "class-bardo": "M9 18V8l8-2v10 M9 14h8",
   "class-druida": "M12 20V9 M8 12c0-4 2-7 4-8 2 1 4 4 4 8z M16 12c0-4-2-7-4-8-2 1-4 4-4 8z",
   "class-artifice": "M12 8a4 4 0 100 8 4 4 0 000-8z M12 2v2 M12 20v2 M4 12H2 M22 12h-2",
+  "class-paladino": "M12 3l-2 4h4l-2-4z M12 7v14 M8 11h8 M10 8h4",
+  "class-bruxo": "M4 12s4-6 8-6 8 6 8 6-4 6-8 6-8-6-8-6z M12 12a2 2 0 100 4 2 2 0 000-4z",
   fallback: "M8 8h8v8H8z",
 };
 
@@ -81,6 +85,8 @@ export const CLASS_ICON_COLOR: Record<ClassId, string> = {
   Bardo: "#e88ca0",
   Druida: "#4a8a5a",
   Artífice: "#5a9ec9",
+  Paladino: "#e8c040",
+  Bruxo: "#6b2d8a",
 };
 
 const LINEAGE_ICON: Record<string, WizardIconKind> = {
@@ -114,6 +120,8 @@ const CLASS_ICON: Record<ClassId, WizardIconKind> = {
   Bardo: "class-bardo",
   Druida: "class-druida",
   Artífice: "class-artifice",
+  Paladino: "class-paladino",
+  Bruxo: "class-bruxo",
 };
 
 export function resolveRaceIcon(raceId: string): WizardIconKind {
@@ -176,6 +184,8 @@ export function wizardIconLabel(kind: WizardIconKind): string {
     "class-bardo": "Bardo",
     "class-druida": "Druida",
     "class-artifice": "Artífice",
+    "class-paladino": "Paladino",
+    "class-bruxo": "Bruxo",
     fallback: "Opção",
   };
   return labels[kind];

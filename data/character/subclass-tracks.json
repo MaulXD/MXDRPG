@@ -1672,6 +1672,270 @@
           "requires": null
         }
       ]
+    },
+    {
+      "id": "jurado-do-sol",
+      "classId": "Paladino",
+      "subclass": "Jurado do Sol",
+      "specialty": "Celestiais e Luminosos",
+      "diet": "Assimilação solar: resistência radiante, visão 18m e +2 em saves vs medo por 8h",
+      "talents": [
+        {
+          "level": 4,
+          "id": "luz-penitente",
+          "name": "Luz Penitente",
+          "kind": "talent",
+          "requires": null
+        },
+        {
+          "level": 8,
+          "id": "escudo-solar",
+          "name": "Escudo Solar",
+          "kind": "talent",
+          "requires": "luz-penitente"
+        },
+        {
+          "level": 12,
+          "id": "julgamento-ardente",
+          "name": "Julgamento Ardente",
+          "kind": "talent",
+          "requires": "escudo-solar"
+        },
+        {
+          "level": 16,
+          "id": "coroa-de-fogo",
+          "name": "Coroa de Fogo",
+          "kind": "talent",
+          "requires": "julgamento-ardente"
+        },
+        {
+          "level": 20,
+          "id": "avatar-do-amanhecer",
+          "name": "Avatar do Amanhecer",
+          "kind": "ascension",
+          "requires": null
+        }
+      ]
+    },
+    {
+      "id": "cavaleiro-do-limiar",
+      "classId": "Paladino",
+      "subclass": "Cavaleiro do Limiar",
+      "specialty": "Mortos-Vivos Sagrados",
+      "diet": "Assimilação liminar sagrada: resistência necrótico; mortos-vivos têm desvantagem para escolhê-lo como alvo",
+      "talents": [
+        {
+          "level": 4,
+          "id": "lamina-dos-sepulcros",
+          "name": "Lâmina dos Sepulcros",
+          "kind": "talent",
+          "requires": null
+        },
+        {
+          "level": 8,
+          "id": "voto-de-caca",
+          "name": "Voto de Caça",
+          "kind": "talent",
+          "requires": "lamina-dos-sepulcros"
+        },
+        {
+          "level": 12,
+          "id": "marca-do-limiar",
+          "name": "Marca do Limiar",
+          "kind": "talent",
+          "requires": "voto-de-caca"
+        },
+        {
+          "level": 16,
+          "id": "processao-silenciosa",
+          "name": "Processão Silenciosa",
+          "kind": "talent",
+          "requires": "marca-do-limiar"
+        },
+        {
+          "level": 20,
+          "id": "cavaleiro-espectral",
+          "name": "Cavaleiro Espectral",
+          "kind": "ascension",
+          "requires": null
+        }
+      ]
+    },
+    {
+      "id": "guardiao-da-gorge",
+      "classId": "Paladino",
+      "subclass": "Guardião da Gorge",
+      "specialty": "Bestas Sagradas e Quimeras",
+      "diet": "Assimilação quimérica: +2 CON e aliados adjacentes +1 CA por 8h",
+      "talents": [
+        {
+          "level": 4,
+          "id": "mordida-do-voto",
+          "name": "Mordida do Voto",
+          "kind": "talent",
+          "requires": null
+        },
+        {
+          "level": 8,
+          "id": "fera-interior",
+          "name": "Fera Interior",
+          "kind": "talent",
+          "requires": "mordida-do-voto"
+        },
+        {
+          "level": 12,
+          "id": "carga-do-juramento",
+          "name": "Carga do Juramento",
+          "kind": "talent",
+          "requires": "fera-interior"
+        },
+        {
+          "level": 16,
+          "id": "pele-de-quimera",
+          "name": "Pele de Quimera",
+          "kind": "talent",
+          "requires": "carga-do-juramento"
+        },
+        {
+          "level": 20,
+          "id": "forma-do-guardiao",
+          "name": "Forma do Guardião",
+          "kind": "ascension",
+          "requires": null
+        }
+      ]
+    },
+    {
+      "id": "filho-da-voragem",
+      "classId": "Bruxo",
+      "subclass": "Filho da Voragem",
+      "specialty": "Aberrações e Tentáculos",
+      "diet": "Assimilação aberrante: resistência psíquico e +3m alcance em magias de controle por 8h",
+      "talents": [
+        {
+          "level": 4,
+          "id": "toque-da-voragem",
+          "name": "Toque da Voragem",
+          "kind": "talent",
+          "requires": null
+        },
+        {
+          "level": 8,
+          "id": "olhar-entre-dimensoes",
+          "name": "Olhar Entre Dimensões",
+          "kind": "talent",
+          "requires": "toque-da-voragem"
+        },
+        {
+          "level": 12,
+          "id": "agarrao-do-pacto",
+          "name": "Agarrão do Pacto",
+          "kind": "talent",
+          "requires": "olhar-entre-dimensoes"
+        },
+        {
+          "level": 16,
+          "id": "mente-partida",
+          "name": "Mente Partida",
+          "kind": "talent",
+          "requires": "agarrao-do-pacto"
+        },
+        {
+          "level": 20,
+          "id": "boca-do-abismo",
+          "name": "Boca do Abismo",
+          "kind": "ascension",
+          "requires": null
+        }
+      ]
+    },
+    {
+      "id": "herdeiro-do-sangue",
+      "classId": "Bruxo",
+      "subclass": "Herdeiro do Sangue",
+      "specialty": "Diabos e Sangue Amaldiçoado",
+      "diet": "Assimilação infernal: resistência fogo; ao reduzir inimigo a 0 HP recupera HP temp = CAR",
+      "talents": [
+        {
+          "level": 4,
+          "id": "contrato-ardente",
+          "name": "Contrato Ardente",
+          "kind": "talent",
+          "requires": null
+        },
+        {
+          "level": 8,
+          "id": "sangue-do-patrono",
+          "name": "Sangue do Patrono",
+          "kind": "talent",
+          "requires": "contrato-ardente"
+        },
+        {
+          "level": 12,
+          "id": "pacto-de-ferro",
+          "name": "Pacto de Ferro",
+          "kind": "talent",
+          "requires": "sangue-do-patrono"
+        },
+        {
+          "level": 16,
+          "id": "correntes-infernais",
+          "name": "Correntes Infernais",
+          "kind": "talent",
+          "requires": "pacto-de-ferro"
+        },
+        {
+          "level": 20,
+          "id": "tirano-do-sangue",
+          "name": "Tirano do Sangue",
+          "kind": "ascension",
+          "requires": null
+        }
+      ]
+    },
+    {
+      "id": "voz-das-profundezas",
+      "classId": "Bruxo",
+      "subclass": "Voz das Profundezas",
+      "specialty": "Aquáticos Antigos e Lodo",
+      "diet": "Assimilação abissal: respiração aquática e magias de encantamento +1 CD por 8h",
+      "talents": [
+        {
+          "level": 4,
+          "id": "sussurro-salino",
+          "name": "Sussurro Salino",
+          "kind": "talent",
+          "requires": null
+        },
+        {
+          "level": 8,
+          "id": "corrente-mental",
+          "name": "Corrente Mental",
+          "kind": "talent",
+          "requires": "sussurro-salino"
+        },
+        {
+          "level": 12,
+          "id": "manto-de-bruma",
+          "name": "Manto de Bruma",
+          "kind": "talent",
+          "requires": "corrente-mental"
+        },
+        {
+          "level": 16,
+          "id": "puxao-abissal",
+          "name": "Puxão Abissal",
+          "kind": "talent",
+          "requires": "manto-de-bruma"
+        },
+        {
+          "level": 20,
+          "id": "hino-das-profundezas",
+          "name": "Hino das Profundezas",
+          "kind": "ascension",
+          "requires": null
+        }
+      ]
     }
   ]
 }

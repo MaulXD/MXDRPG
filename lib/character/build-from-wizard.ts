@@ -3,7 +3,7 @@ import { normalizeCharacter } from "@/lib/character/normalize";
 import { attributesAfterRacial, validatePointBuy } from "@/lib/character/point-buy";
 import type { CharacterWizardDraft } from "@/lib/character/wizard-types";
 import type { CharacterSheet } from "@/lib/character/types";
-import { attributeMod, hpMaxFor } from "@/lib/character/rules";
+import { attributeMod, getClass, hpMaxFor } from "@/lib/character/rules";
 import { validateImageDataUrl } from "@/lib/media/image-data-url";
 import { xpTotalForLevel } from "@/lib/character/xp";
 import {
@@ -45,6 +45,7 @@ export function validateWizardDraft(draft: CharacterWizardDraft): string | null 
   if (name.length > 80) return "Nome muito longo (máx 80)";
   if (!draft.raca) return "Escolha uma raça";
   if (!draft.classe) return "Escolha uma classe";
+  if (!getClass(draft.classe)) return "Classe inválida";
   if (draft.raca === "Meio-Humano" && !draft.linhagem?.trim()) {
     return "Meio-Humano exige linhagem";
   }

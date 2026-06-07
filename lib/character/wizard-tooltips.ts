@@ -1,4 +1,25 @@
+import { classLevelFeatures, getClass, type ClassId } from "@/lib/character/rules";
+
 /** Descrições mecânicas para tooltips no wizard de criação (livro Cap. raças). */
+
+const CLASS_SURVIVAL_EXTRA: Partial<Record<ClassId, string>> = {
+  Paladino:
+    "Juramento selado com comida consagrada. Imposição de Mãos e Golpe Sagrado (nv. 2) canalizam radiância; quebrar o voto cancela bônus até absolvição.",
+  Bruxo:
+    "Pacto com entidade faminta do Vazio — assinado com um prato ritual. Poucos slots de magia, recarga em descanso curto; patrono define o tipo do Raio do Pacto.",
+};
+
+export function classSurvivalPassiveTooltip(classId: string): string | undefined {
+  const cls = getClass(classId);
+  if (!cls) return undefined;
+  const extra = CLASS_SURVIVAL_EXTRA[classId as ClassId];
+  return extra ? `${cls.dietBonus} ${extra}` : cls.dietBonus;
+}
+
+/** Habilidades de classe relevantes já no nv. 1 (preview no wizard). */
+export function classFeaturesAtLevelOne(classId: string): string[] {
+  return classLevelFeatures(classId, 1);
+}
 
 export const RACIAL_TRAIT_DESCRIPTIONS: Record<string, string> = {
   Adaptabilidade:

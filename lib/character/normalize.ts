@@ -6,7 +6,7 @@ import { computeCulinary, hpMaxFor, attributeMod } from "@/lib/character/rules";
 import { paMaxForActor } from "@/lib/combat/pa-economy";
 import { resolveActorDefesa } from "@/lib/character/armor-defense";
 import { xpTotalForLevel } from "@/lib/character/xp";
-import { syncSubclassTalentsToInventory } from "@/lib/character/subclass-vtt";
+import { syncCombatAbilitiesToInventory } from "@/lib/character/combat-inventory-sync";
 import { EMPTY_LOOT } from "@/lib/character/loot-storage";
 
 const DEFAULT_ATTRS: CharacterAttributes = {
@@ -81,5 +81,5 @@ export function normalizeCharacter(sheet: CharacterSheet): CharacterSheet {
       iniciativa: sheet.tactical?.iniciativa ?? desMod,
     },
   };
-  return syncSubclassTalentsToInventory(base);
+  return syncCombatAbilitiesToInventory(base);
 }

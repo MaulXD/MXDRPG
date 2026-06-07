@@ -441,11 +441,27 @@
   gap: 0.35rem;
 }
 
+.char-wizard-attr-card--focus {
+  border-color: color-mix(in srgb, var(--accent) 35%, var(--glass-border));
+  background: color-mix(in srgb, var(--accent-soft) 40%, transparent);
+}
+
 .char-wizard-attr-card__label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
   font-size: 0.72rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--text-muted);
+}
+
+.char-wizard-attr-card__focus {
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 0;
+  text-transform: none;
 }
 
 .char-wizard-attr-card__score {

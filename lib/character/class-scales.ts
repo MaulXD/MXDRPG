@@ -1,5 +1,5 @@
 import type { AttributeKey, ClassId, CulinaryKey } from "@/lib/character/rules";
-import { getClass } from "@/lib/character/rules";
+import { ATTRIBUTE_LABELS, getClass } from "@/lib/character/rules";
 
 const ATTR_ORDER: AttributeKey[] = [
   "forca",
@@ -58,18 +58,59 @@ export function parsePrimaryAttributes(primary: string): AttributeKey[] {
   return out;
 }
 
-/** Prioridade de compra de pontos derivada dos atributos primários da classe. */
+/**
+ * Foco de atributos por classe (Cap. 4 + HP/CA do Cap. 2).
+ * Ordem = prioridade na sugestão de point-buy (27 pts).
+ */
+const CLASS_ATTRIBUTE_FOCUS: Partial<Record<ClassId, AttributeKey[]>> = {
+  Guerreiro: ["forca", "constituicao", "destreza"],
+  Patrulheiro: ["destreza", "sabedoria", "constituicao"],
+  Ladino: ["destreza", "constituicao", "inteligencia"],
+  Mago: ["inteligencia", "constituicao", "destreza"],
+  Clérigo: ["sabedoria", "carisma", "constituicao"],
+  Bárbaro: ["forca", "constituicao", "destreza"],
+  Bardo: ["carisma", "destreza", "constituicao"],
+  Druida: ["sabedoria", "constituicao", "destreza"],
+  Artífice: ["inteligencia", "destreza", "constituicao"],
+  Paladino: ["forca", "constituicao", "carisma"],
+  Bruxo: ["carisma", "constituicao", "destreza"],
+};
+
+/** Prioridade de compra de pontos — foco explícito da classe ou fallback do texto `primary`. */
 export function classAttributePriority(classId: string): AttributeKey[] {
+  const explicit = CLASS_ATTRIBUTE_FOCUS[classId as ClassId];
+  if (explicit?.length) {
+    const seen = new Set<AttributeKey>();
+    const ordered: AttributeKey[] = [];
+    for (const key of [...explicit, ...ATTR_ORDER]) {
+      if (seen.has(key)) continue;
+      seen.add(key);
+      ordered.push(key);
+    }
+    return ordered;
+  }
+
   const cls = getClass(classId);
   const primaries = cls ? parsePrimaryAttributes(cls.primary) : [];
   const tail: AttributeKey[] = [];
-
-  if (!primaries.includes("constituicao")) {
-    tail.push("constituicao");
-  }
-
+  if (!primaries.includes("constituicao")) tail.push("constituicao");
   const remaining = ATTR_ORDER.filter((a) => !primaries.includes(a) && !tail.includes(a));
   return [...primaries, ...tail, ...remaining];
+}
+
+/** Posição do atributo no foco da classe (1 = principal). `null` se fora do top 3. */
+export function classAttributeFocusRank(classId: string, key: AttributeKey): number | null {
+  const idx = classAttributePriority(classId).indexOf(key);
+  if (idx < 0 || idx > 2) return null;
+  return idx + 1;
+}
+
+/** Resumo legível do foco (ex. "Força · Constituição · Carisma"). */
+export function classAttributeFocusSummary(classId: string, top = 3): string {
+  return classAttributePriority(classId)
+    .slice(0, top)
+    .map((k) => ATTRIBUTE_LABELS[k])
+    .join(" · ");
 }
 
 /**

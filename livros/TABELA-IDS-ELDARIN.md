@@ -232,6 +232,8 @@
 | CLA-bardo | Bardo |
 | CLA-druida | Druida |
 | CLA-artífice | Artífice |
+| CLA-paladino | Paladino |
+| CLA-bruxo | Bruxo |
 | RAC-humano | Humano |
 | RAC-elfo | Elfo |
 | RAC-anao | Anao |

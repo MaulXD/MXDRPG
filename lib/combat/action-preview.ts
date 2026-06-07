@@ -124,12 +124,7 @@ export function previewAttackOnTarget(
       text: target.ok ? (target.reason ?? "Alvo válido") : (target.reason ?? "Alvo inválido"),
       tone: target.ok && paCheck.ok ? "ok" : "err",
     });
-    return withPaChip(
-      `${action.name} → ${defender.name}`,
-      paChip,
-      lines,
-      Boolean(target.ok && paCheck.ok)
-    );
+    return withPaChip(action.name, paChip, lines, Boolean(target.ok && paCheck.ok));
   }
 
   const check = canAttackTarget(attacker, defender, action, turn, { actor, channelExtraPa });
@@ -188,12 +183,7 @@ export function previewAttackOnTarget(
     lines.push({ text: paCheck.reason ?? "PA insuficiente", tone: "err" });
   }
 
-  return withPaChip(
-    `${action.name} → ${defender.name}`,
-    paChip,
-    lines,
-    Boolean(check.ok && paCheck.ok)
-  );
+  return withPaChip(action.name, paChip, lines, Boolean(check.ok && paCheck.ok));
 }
 
 export function previewAreaCast(

@@ -95,10 +95,18 @@ export function MapToolbar({
   const pickMapTool = (mode: MapToolMode) => {
     if (mode === "ping" && !canPing) return;
     if (mode === "fog" && !showFogTool) return;
+    if (mapToolMode === mode && mode !== "token") {
+      onMapToolModeChange("token");
+      return;
+    }
     onMapToolModeChange(mode);
   };
 
   const pickDrawTool = (tool: WhiteboardTool) => {
+    if (mapToolMode === "draw" && drawTool === tool) {
+      onMapToolModeChange("token");
+      return;
+    }
     onMapToolModeChange("draw");
     onDrawToolChange(tool);
   };

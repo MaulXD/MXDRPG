@@ -84,7 +84,6 @@ import {
   previewMove,
   type ActionPreview,
 } from "@/lib/combat/action-preview";
-import { estimateTargetCombatPreview } from "@/lib/combat/hit-chance";
 import {
   castFxDuration,
   type ActiveTokenCastFx,
@@ -584,41 +583,6 @@ export function HexBattlefield({
     combatHasOrder: Boolean(snapshot?.combat?.order.length),
   });
 
-  const attackTargetPreview = useMemo(() => {
-    if (
-      !selected ||
-      !activeCombatAction ||
-      !hoverTargetId ||
-      !isTargetMode(actionMode) ||
-      highlights.isAreaSpellMode
-    ) {
-      return null;
-    }
-    const defender = displayScene.tokens.find((t) => t.id === hoverTargetId);
-    if (!defender) return null;
-    const defenderActor =
-      defender.linked && defender.actorId
-        ? snapshot?.actors[defender.actorId] ?? null
-        : null;
-    return estimateTargetCombatPreview(
-      selected,
-      defender,
-      selectedActor,
-      defenderActor,
-      activeCombatAction,
-      displayScene.tokens
-    );
-  }, [
-    selected,
-    activeCombatAction,
-    hoverTargetId,
-    actionMode,
-    highlights.isAreaSpellMode,
-    displayScene.tokens,
-    selectedActor,
-    snapshot?.actors,
-  ]);
-
   const moveHoverHint = useMemo(() => {
     if (!highlights.showMovement || !hoverAxial) return null;
     const preview = highlights.hoverMovePreview;
@@ -697,8 +661,8 @@ export function HexBattlefield({
       spellPickedTargetIds:
         spellTargetIds.length > 0 ? new Set(spellTargetIds) : undefined,
       hoverAttackTargetId: hoverTargetId,
-      attackTargetPreview,
       hoverTurnMoveTokenId: highlights.turnMovePreview ? hoverTokenId : null,
+      hoverTokenId,
       tokenFlash,
       tokenCastFx,
       castFxNowMs: Date.now(),
@@ -734,7 +698,6 @@ export function HexBattlefield({
       selectedId,
       turnActiveId,
       hoverTargetId,
-      attackTargetPreview,
       hoverTokenId,
       tokenFlash,
       tokenCastFx,
@@ -832,6 +795,7 @@ export function HexBattlefield({
       defesa: remote.defesa,
       defesaBonus: remote.defesaBonus,
       weakened: remote.weakened,
+      nameplateMode: remote.nameplateMode,
       conditions: remote.conditions,
       timedEffects: remote.timedEffects,
     }),
@@ -1791,12 +1755,17 @@ export function HexBattlefield({
 
   const openStatus = useCallback(
     (explicit?: BattleToken | null) => {
+      if (!explicit && statusOpen) {
+        setStatusOpen(false);
+        setModalStatusToken(null);
+        return;
+      }
       const token = resolveStatusToken(explicit);
       if (!token) return;
       setModalStatusToken(token);
       setStatusOpen(true);
     },
-    [resolveStatusToken]
+    [resolveStatusToken, statusOpen]
   );
 
   useEffect(() => {
@@ -1822,6 +1791,19 @@ export function HexBattlefield({
     hoverTokenId != null
       ? displayScene.tokens.find((t) => t.id === hoverTokenId) ?? null
       : null;
+
+  const targetingHoverTarget =
+    hoverTargetId &&
+    isTargetMode(actionMode) &&
+    activeCombatAction &&
+    !activeCombatAction.selfTarget &&
+    !highlights.isAreaSpellMode
+      ? displayScene.tokens.find((t) => t.id === hoverTargetId) ?? null
+      : null;
+
+  const showHoverMiniHud =
+    Boolean(hoverMiniHudToken && hoverMiniHudAnchor) &&
+    !(targetingHoverTarget && hoverMiniHudToken?.id === targetingHoverTarget.id);
 
   const attackTargetCursor =
     actionMode === "attack" &&
@@ -2333,6 +2315,7 @@ export function HexBattlefield({
             isControlled={hudIsControlled}
             canViewPa={canViewTokenPaFn(hudToken)}
             canEndTurn={canEndTurn || canControlCombat}
+            canControlCombat={canControlCombat}
             roomId={roomId}
             onOpenSheet={onOpenSheet}
             onSnapshot={syncRoom}
@@ -2342,7 +2325,7 @@ export function HexBattlefield({
         ) : hudToken ? (
           <CombatHudRestoreButton token={hudToken} onShow={() => setHudVisible(true)} />
         ) : null}
-        {hoverMiniHudToken && hoverMiniHudAnchor ? (
+        {showHoverMiniHud && hoverMiniHudToken && hoverMiniHudAnchor ? (
           <TokenHoverMiniHud
             token={hoverMiniHudToken}
             combat={combat}
@@ -2351,7 +2334,13 @@ export function HexBattlefield({
             viewerToken={playerToken}
           />
         ) : null}
-        <BattlefieldActionHud preview={actionPreview} anchor={actionPreviewAnchor} />
+        <BattlefieldActionHud
+          preview={actionPreview}
+          anchor={actionPreviewAnchor}
+          targetToken={targetingHoverTarget}
+          isGm={isRoomGm}
+          viewerToken={playerToken}
+        />
         <TokenStatusModal
           open={statusOpen}
           token={modalStatusToken}

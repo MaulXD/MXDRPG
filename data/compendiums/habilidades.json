@@ -550,5 +550,653 @@
         "recarga": ""
       }
     }
+  },
+  {
+    "id": "habilidades-imposicao-de-maos",
+    "name": "Imposição de Mãos",
+    "type": "habilidade",
+    "system": {
+      "catalogId": "HAB-imposicao-de-maos",
+      "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
+      "description": "<p>Aliado adjacente recupera 1d8+CAR HP, ou 2d8 radiante vs morto-vivo.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "ability": {
+        "tipo": "ativa",
+        "recarga": ""
+      }
+    }
+  },
+  {
+    "id": "habilidades-golpe-sagrado",
+    "name": "Golpe Sagrado",
+    "type": "habilidade",
+    "system": {
+      "catalogId": "HAB-golpe-sagrado",
+      "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
+      "description": "<p>Próximo ataque corpo a corpo +2d8 radiante (PA extra).</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "ability": {
+        "tipo": "ativa",
+        "recarga": ""
+      }
+    }
+  },
+  {
+    "id": "habilidades-raio-do-pacto",
+    "name": "Raio do Pacto",
+    "type": "habilidade",
+    "system": {
+      "catalogId": "HAB-raio-do-pacto",
+      "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
+      "description": "<p>Truque: 1d10+CAR de dano mágico em um alvo a até 6 hex.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 6,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "ability": {
+        "tipo": "ativa",
+        "recarga": ""
+      }
+    }
+  },
+  {
+    "id": "habilidades-raio-do-pacto-psiquico",
+    "name": "Raio do Pacto Psíquico",
+    "type": "habilidade",
+    "system": {
+      "catalogId": "HAB-raio-do-pacto-psiquico",
+      "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
+      "description": "<p>Raio psíquico 1d10+CAR; empurra 1,5m em acerto (FOR CD 13).</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 6,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "ability": {
+        "tipo": "ativa",
+        "recarga": ""
+      }
+    }
+  },
+  {
+    "id": "habilidades-raio-do-pacto-ardente",
+    "name": "Raio do Pacto Ardente",
+    "type": "habilidade",
+    "system": {
+      "catalogId": "HAB-raio-do-pacto-ardente",
+      "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
+      "description": "<p>Raio de fogo 1d10+CAR; marca Sangue no acerto (+2d6 fogo depois).</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 6,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "ability": {
+        "tipo": "ativa",
+        "recarga": ""
+      }
+    }
+  },
+  {
+    "id": "habilidades-raio-do-pacto-salino",
+    "name": "Raio do Pacto Salino",
+    "type": "habilidade",
+    "system": {
+      "catalogId": "HAB-raio-do-pacto-salino",
+      "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
+      "description": "<p>Raio de frio 1d10+CAR.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 6,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "ability": {
+        "tipo": "ativa",
+        "recarga": ""
+      }
+    }
+  },
+  {
+    "id": "habilidades-luz-penitente",
+    "name": "Luz Penitente",
+    "type": "habilidade",
+    "system": {
+      "catalogId": "HAB-luz-penitente",
+      "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
+      "description": "<p>Flash radiante 3m: mortos-vivos sofrem 2d8 radiante (sem save).</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 2,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "ability": {
+        "tipo": "ativa",
+        "recarga": "1/descanso curto"
+      }
+    }
+  },
+  {
+    "id": "habilidades-escudo-solar",
+    "name": "Escudo Solar",
+    "type": "habilidade",
+    "system": {
+      "catalogId": "HAB-escudo-solar",
+      "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
+      "description": "<p>Reação: aliado adjacente reduz dano sofrido em 1d10+CAR (mín. 1).</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "ability": {
+        "tipo": "reacao",
+        "recarga": ""
+      }
+    }
+  },
+  {
+    "id": "habilidades-julgamento-ardente",
+    "name": "Julgamento Ardente",
+    "type": "habilidade",
+    "system": {
+      "catalogId": "HAB-julgamento-ardente",
+      "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
+      "description": "<p>Marca inimigo visível 9m; Golpe Sagrado contra ele não gasta PA extra 1×/turno.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 9,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "ability": {
+        "tipo": "ativa",
+        "recarga": "1/descanso curto"
+      }
+    }
+  },
+  {
+    "id": "habilidades-coroa-de-fogo",
+    "name": "Coroa de Fogo",
+    "type": "habilidade",
+    "system": {
+      "catalogId": "HAB-coroa-de-fogo",
+      "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
+      "description": "<p>Explosão solar 4,5m: 4d8 radiante (DES CD 15 metade); aliados imunes.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 3,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "ability": {
+        "tipo": "ativa",
+        "recarga": "1/combate"
+      }
+    }
+  },
+  {
+    "id": "habilidades-lamina-dos-sepulcros",
+    "name": "Lâmina dos Sepulcros",
+    "type": "habilidade",
+    "system": {
+      "catalogId": "HAB-lamina-dos-sepulcros",
+      "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
+      "description": "<p>Próximo ataque vs morto-vivo +1d8 radiante ou necrótico.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "ability": {
+        "tipo": "ativa",
+        "recarga": ""
+      }
+    }
+  },
+  {
+    "id": "habilidades-voto-de-caca",
+    "name": "Voto de Caça",
+    "type": "habilidade",
+    "system": {
+      "catalogId": "HAB-voto-de-caca",
+      "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
+      "description": "<p>Marca tipo de morto-vivo declarado; +3 dano e vantagem em Percepção vs esse tipo.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 9,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "ability": {
+        "tipo": "ativa",
+        "recarga": ""
+      }
+    }
+  },
+  {
+    "id": "habilidades-marca-do-limiar",
+    "name": "Marca do Limiar",
+    "type": "habilidade",
+    "system": {
+      "catalogId": "HAB-marca-do-limiar",
+      "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
+      "description": "<p>Marca liminar: próximo morto-vivo que atacar aliado marcado sofre 2d8 necrótico.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 6,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "ability": {
+        "tipo": "ativa",
+        "recarga": ""
+      }
+    }
+  },
+  {
+    "id": "habilidades-processao-silenciosa",
+    "name": "Processão Silenciosa",
+    "type": "habilidade",
+    "system": {
+      "catalogId": "HAB-processao-silenciosa",
+      "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
+      "description": "<p>Forma espectral 10 min: atravessa portas, +10 Furtividade vs mortos-vivos.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 2,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "ability": {
+        "tipo": "ativa",
+        "recarga": "1/descanso longo"
+      }
+    }
+  },
+  {
+    "id": "habilidades-mordida-do-voto",
+    "name": "Mordida do Voto",
+    "type": "habilidade",
+    "system": {
+      "catalogId": "HAB-mordida-do-voto",
+      "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
+      "description": "<p>Ação bônus: +2 FOR e +3m movimento por 1 minuto; oportunidades têm desvantagem.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "ability": {
+        "tipo": "ativa",
+        "recarga": ""
+      }
+    }
+  },
+  {
+    "id": "habilidades-fera-interior",
+    "name": "Fera Interior",
+    "type": "habilidade",
+    "system": {
+      "catalogId": "HAB-fera-interior",
+      "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
+      "description": "<p>Primeiro ataque corpo a corpo do turno +1d8 perfurante.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "ability": {
+        "tipo": "ativa",
+        "recarga": ""
+      }
+    }
+  },
+  {
+    "id": "habilidades-carga-do-juramento",
+    "name": "Carga do Juramento",
+    "type": "habilidade",
+    "system": {
+      "catalogId": "HAB-carga-do-juramento",
+      "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
+      "description": "<p>Investida 12m: vantagem no primeiro ataque; derruba em acerto (FOR CD 14).</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 6,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "ability": {
+        "tipo": "ativa",
+        "recarga": "1/descanso curto"
+      }
+    }
+  },
+  {
+    "id": "habilidades-pele-de-quimera",
+    "name": "Pele de Quimera",
+    "type": "habilidade",
+    "system": {
+      "catalogId": "HAB-pele-de-quimera",
+      "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
+      "description": "<p>Retalho 2d6+FOR (tipo da quimera); usos = CON/descanso curto.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "ability": {
+        "tipo": "reacao",
+        "recarga": ""
+      }
+    }
+  },
+  {
+    "id": "habilidades-olhar-entre-dimensoes",
+    "name": "Olhar Entre Dimensões",
+    "type": "habilidade",
+    "system": {
+      "catalogId": "HAB-olhar-entre-dimensoes",
+      "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
+      "description": "<p>Reação: 2d6 psíquico a quem faz aliado falhar save mental.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 6,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "ability": {
+        "tipo": "reacao",
+        "recarga": ""
+      }
+    }
+  },
+  {
+    "id": "habilidades-agarrao-do-pacto",
+    "name": "Agarrão do Pacto",
+    "type": "habilidade",
+    "system": {
+      "catalogId": "HAB-agarrao-do-pacto",
+      "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
+      "description": "<p>Tentáculos 9m: até 2 alvos Restringidos (FOR CD 15).</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 5,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "ability": {
+        "tipo": "ativa",
+        "recarga": "1/combate"
+      }
+    }
+  },
+  {
+    "id": "habilidades-mente-partida",
+    "name": "Mente Partida",
+    "type": "habilidade",
+    "system": {
+      "catalogId": "HAB-mente-partida",
+      "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
+      "description": "<p>Confusão 1 min (INT CD 16); aberrações INT ≤ 8 falham automaticamente.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 6,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "ability": {
+        "tipo": "ativa",
+        "recarga": "1/descanso longo"
+      }
+    }
+  },
+  {
+    "id": "habilidades-sangue-do-patrono",
+    "name": "Sangue do Patrono",
+    "type": "habilidade",
+    "system": {
+      "catalogId": "HAB-sangue-do-patrono",
+      "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
+      "description": "<p>Sacrifica 1d8 HP para recuperar 1 slot de Pacto.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 0,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "ability": {
+        "tipo": "ativa",
+        "recarga": ""
+      }
+    }
+  },
+  {
+    "id": "habilidades-pacto-de-ferro",
+    "name": "Pacto de Ferro",
+    "type": "habilidade",
+    "system": {
+      "catalogId": "HAB-pacto-de-ferro",
+      "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
+      "description": "<p>Correntes 3d8 fogo + Restringir alvo (FOR CD 15).</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 5,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "ability": {
+        "tipo": "ativa",
+        "recarga": "1/combate"
+      }
+    }
+  },
+  {
+    "id": "habilidades-correntes-infernais",
+    "name": "Correntes Infernais",
+    "type": "habilidade",
+    "system": {
+      "catalogId": "HAB-correntes-infernais",
+      "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
+      "description": "<p>Selo de sangue 3m: 3d6 fogo a quem entrar; fogo ignora resistência.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 3,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "ability": {
+        "tipo": "ativa",
+        "recarga": ""
+      }
+    }
+  },
+  {
+    "id": "habilidades-corrente-mental",
+    "name": "Corrente Mental",
+    "type": "habilidade",
+    "system": {
+      "catalogId": "HAB-corrente-mental",
+      "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
+      "description": "<p>Eco mental: repete encantamento nv.1 sem slot.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 6,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "ability": {
+        "tipo": "ativa",
+        "recarga": "1/descanso curto"
+      }
+    }
+  },
+  {
+    "id": "habilidades-manto-de-bruma",
+    "name": "Manto de Bruma",
+    "type": "habilidade",
+    "system": {
+      "catalogId": "HAB-manto-de-bruma",
+      "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
+      "description": "<p>Névoa 6m 1 min: aliados furtivos; inimigos −2 em ataques à distância.</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 3,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "ability": {
+        "tipo": "ativa",
+        "recarga": ""
+      }
+    }
+  },
+  {
+    "id": "habilidades-puxao-abissal",
+    "name": "Puxão Abissal",
+    "type": "habilidade",
+    "system": {
+      "catalogId": "HAB-puxao-abissal",
+      "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
+      "description": "<p>Puxa alvo 9m e 2d8 frio (FOR CD 15).</p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 5,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "ability": {
+        "tipo": "ativa",
+        "recarga": "1/combate"
+      }
+    }
   }
 ]

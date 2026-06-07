@@ -25,6 +25,8 @@ export type BattleToken = {
   vida?: number;
   vidaMax?: number;
   defesa?: number;
+  /** Nome no mapa: hover (padrão) ou sempre visível */
+  nameplateMode?: "hover" | "always";
   /** Imagem circular no hex — sync do Actor.tokenImageUrl */
   imageUrl?: string | null;
   /** Iniciativa rolada (ordem de combate) */

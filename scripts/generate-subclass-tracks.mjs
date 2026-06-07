@@ -44,6 +44,12 @@ const raw = [
   ["Artífice", "Engenheiro de Explosivos", "Inflamáveis", "Assimilação inflamável: bombas +2d6 fogo", 4, "Fogareiro Portátil", 8, "Bomba de Glândula", 12, "Caldeira a Pressão", 16, "Motor de Vapor Menor", 20, "Inferno Controlado"],
   ["Artífice", "Biólogo de Masmorra", "Ácidos e Venenos", "Assimilação tóxica: imune veneno, +1d6 ácido", 4, "Seringa Básica", 8, "Catalisador", 12, "Laboratório de Campo", 16, "Mutágeno de Batalha", 20, "Mutação Direcionada"],
   ["Artífice", "Construtor de Armadilhas", "Caça e Extração", "Assimilação de caça: vantagem em INT para armadilhas", 4, "Armadilha Biológica", 8, "Extração Perfeita", 12, "Rede de Campo", 16, "Engenho de Caça", 20, "Arquiteto da Masmorra"],
+  ["Paladino", "Jurado do Sol", "Celestiais e Luminosos", "Assimilação solar: resistência radiante, visão 18m e +2 em saves vs medo por 8h", 4, "Luz Penitente", 8, "Escudo Solar", 12, "Julgamento Ardente", 16, "Coroa de Fogo", 20, "Avatar do Amanhecer"],
+  ["Paladino", "Cavaleiro do Limiar", "Mortos-Vivos Sagrados", "Assimilação liminar sagrada: resistência necrótico; mortos-vivos têm desvantagem para escolhê-lo como alvo", 4, "Lâmina dos Sepulcros", 8, "Voto de Caça", 12, "Marca do Limiar", 16, "Processão Silenciosa", 20, "Cavaleiro Espectral"],
+  ["Paladino", "Guardião da Gorge", "Bestas Sagradas e Quimeras", "Assimilação quimérica: +2 CON e aliados adjacentes +1 CA por 8h", 4, "Mordida do Voto", 8, "Fera Interior", 12, "Carga do Juramento", 16, "Pele de Quimera", 20, "Forma do Guardião"],
+  ["Bruxo", "Filho da Voragem", "Aberrações e Tentáculos", "Assimilação aberrante: resistência psíquico e +3m alcance em magias de controle por 8h", 4, "Toque da Voragem", 8, "Olhar Entre Dimensões", 12, "Agarrão do Pacto", 16, "Mente Partida", 20, "Boca do Abismo"],
+  ["Bruxo", "Herdeiro do Sangue", "Diabos e Sangue Amaldiçoado", "Assimilação infernal: resistência fogo; ao reduzir inimigo a 0 HP recupera HP temp = CAR", 4, "Contrato Ardente", 8, "Sangue do Patrono", 12, "Pacto de Ferro", 16, "Correntes Infernais", 20, "Tirano do Sangue"],
+  ["Bruxo", "Voz das Profundezas", "Aquáticos Antigos e Lodo", "Assimilação abissal: respiração aquática e magias de encantamento +1 CD por 8h", 4, "Sussurro Salino", 8, "Corrente Mental", 12, "Manto de Bruma", 16, "Puxão Abissal", 20, "Hino das Profundezas"],
 ];
 
 function slug(s) {
