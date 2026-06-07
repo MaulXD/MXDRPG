@@ -1,6 +1,4 @@
-import { canManageRoom } from "@/lib/auth/room-access";
 import type { SessionUser } from "@/lib/auth/types";
-import { isMonsterToken } from "@/lib/room/settings";
 import type { RoomActor } from "@/lib/room/types";
 import type { TokenRingStyle } from "@/lib/vtt/token-colors";
 import { strokeEffectIcon } from "@/lib/vtt/token-effect-icons";
@@ -94,14 +92,10 @@ export function hpRingLayout(tokenR: number, ringStyle: TokenRingStyle): {
   return { width, contentR: contentRFull, contentRFull, borderR, identityBase, outerRingOffset };
 }
 
-function isPlayerCharacterToken(token: BattleToken): boolean {
-  return Boolean(token.linked && !token.monsterEntryId);
-}
-
-/** Quem pode ver barra / valores de HP no mapa. */
+/** HP no mapa — desativado no token; use mini-HUD / painéis. */
 export function resolveTokenHpDisplay(
-  token: BattleToken,
-  opts: {
+  _token: BattleToken,
+  _opts: {
     isRoomGm: boolean;
     showMonsterHpToPlayers: boolean;
     hovered: boolean;
@@ -110,31 +104,6 @@ export function resolveTokenHpDisplay(
     roomOwnerId: string;
   }
 ): TokenHpDisplay {
-  if (token.vidaMax == null || token.vida == null) {
-    return { bar: false, numeric: false };
-  }
-
-  const isGm =
-    opts.isRoomGm ||
-    (opts.session
-      ? canManageRoom({ ownerId: opts.roomOwnerId }, opts.session)
-      : false);
-
-  if (isGm) {
-    return { bar: true, numeric: false };
-  }
-
-  if (isMonsterToken(token)) {
-    if (opts.showMonsterHpToPlayers) {
-      return { bar: true, numeric: false };
-    }
-    return { bar: false, numeric: false };
-  }
-
-  if (isPlayerCharacterToken(token)) {
-    return { bar: true, numeric: false };
-  }
-
   return { bar: false, numeric: false };
 }
 

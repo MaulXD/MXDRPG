@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { EldarinCorners } from "@/components/ui/EldarinCorners";
 
 export const MEDIEVAL_FRAME_VARIANTS = [
   "parchment",
@@ -27,7 +28,7 @@ function frameClass(
   variant: MedievalFrameVariant,
   opts: { compact?: boolean; flush?: boolean; page?: boolean; className?: string }
 ): string {
-  const parts = ["mf", `mf--${variant}`];
+  const parts = ["mf", "eldarin-frame", `mf--${variant}`];
   if (opts.compact) parts.push("mf--compact");
   if (opts.flush) parts.push("mf--flush");
   if (opts.page) parts.push("mf--page");
@@ -45,10 +46,7 @@ export function MedievalFrame({
 }: Props) {
   return (
     <div className={frameClass(variant, { compact, flush, page, className })}>
-      <span className="mf-corner mf-corner--tl" aria-hidden />
-      <span className="mf-corner mf-corner--tr" aria-hidden />
-      <span className="mf-corner mf-corner--br" aria-hidden />
-      <span className="mf-corner mf-corner--bl" aria-hidden />
+      <EldarinCorners className="mf-corner" />
       <div className="mf-body">{children}</div>
     </div>
   );
