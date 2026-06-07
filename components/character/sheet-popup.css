@@ -1991,14 +1991,6 @@
   object-fit: cover;
 }
 
-.sheet-popup-portrait .portrait-focus-frame {
-  border: none;
-}
-
-.sheet-popup-portrait .portrait-focus-ring {
-  display: none;
-}
-
 .sheet-popup-portrait.is-empty,
 .sheet-popup-portrait.is-readonly .sheet-popup-portrait__placeholder {
   display: grid;
@@ -2176,18 +2168,6 @@
   line-height: 1.3;
   text-align: center;
   color: var(--sheet-accent);
-}
-
-.sheet-popup-identity__levelup {
-  width: 100%;
-  margin-top: 0.22rem;
-}
-
-.sheet-popup-identity__levelup .sheet-level-compact__btn {
-  width: 100%;
-  padding: 0.18rem 0.3rem;
-  font-size: 0.56rem;
-  border-radius: 5px;
 }
 
 /* —— Ações rápidas —— */

@@ -1,6 +1,5 @@
 "use client";
 
-import type { ReactNode } from "react";
 import type { CharacterIdentity } from "@/lib/character/types";
 import { formatXpProgressDetail, xpProgressRatio, MAX_LEVEL } from "@/lib/character/xp";
 import { getAscension, getSubclassTrack } from "@/lib/character/subclass-tracks";
@@ -8,12 +7,10 @@ import { getAscension, getSubclassTrack } from "@/lib/character/subclass-tracks"
 type Props = {
   name: string;
   identity: CharacterIdentity;
-  /** Botão compacto de subir de nível (junto ao XP). */
-  levelUpSlot?: ReactNode;
 };
 
 /** Identidade no topo da ficha (nome, classe, nível). */
-export function CharacterSheetPopupHero({ name, identity, levelUpSlot }: Props) {
+export function CharacterSheetPopupHero({ name, identity }: Props) {
   const nivel = identity.nivel;
   const xpTotal = identity.xpTotal ?? 0;
   const xpPct = Math.round(xpProgressRatio(nivel, xpTotal) * 100);
@@ -55,7 +52,6 @@ export function CharacterSheetPopupHero({ name, identity, levelUpSlot }: Props) 
               Ascensão — {ascension.name}
             </span>
           ) : null}
-          {levelUpSlot ? <div className="sheet-popup-identity__levelup">{levelUpSlot}</div> : null}
         </div>
       </div>
     </div>
