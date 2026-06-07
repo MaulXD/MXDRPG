@@ -289,13 +289,12 @@ export function TokenActionPanel({
 
     if (!activeAction?.selfTarget) return false;
 
-    return canUseAbility(token, activeAction, {
-
-      activeTokenId: turn.activeTokenId,
-
-      bypassTurn: turn.bypassTurn,
-
-    }, actor).ok;
+    return canUseAbility(
+      token,
+      activeAction,
+      { activeTokenId: turn.activeTokenId, bypassTurn: turn.bypassTurn },
+      actor
+    ).ok;
 
   }, [token, activeAction, turn, actor]);
 
@@ -371,22 +370,24 @@ export function TokenActionPanel({
 
 
   async function executeSelfAbility() {
-
     if (!activeAction?.selfTarget || busy) return;
 
     setBusy(true);
-
     setErr(null);
 
     try {
-
-      const snapshot = await postRoomAbility(roomId, token.id, null, {
-
-        actionEntryId: activeAction.entryId,
-
-        bypassTurn: turn.bypassTurn,
-
-      });
+      const snapshot =
+        activeAction.kind === "ability"
+          ? await postRoomAbility(roomId, token.id, null, {
+              actionEntryId: activeAction.entryId,
+              bypassTurn: turn.bypassTurn,
+            })
+          : await postRoomAttack(
+              roomId,
+              token.id,
+              token.id,
+              combatAttackRequestOpts(activeAction, token, { bypassTurn: turn.bypassTurn })
+            );
 
       const combatMsgs = snapshot.chat.filter((m) => m.kind === "combat");
 

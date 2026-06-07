@@ -61,6 +61,11 @@ export async function executeRoomAreaSpell(
     combatRound: room.combat.round,
   };
 
+  const actorRacas: Record<string, string | undefined> = {};
+  for (const [actorId, sheet] of Object.entries(room.actors)) {
+    actorRacas[actorId] = sheet.identity?.raca;
+  }
+
   let areaResult;
   try {
     areaResult = resolveAreaSpell(
@@ -72,7 +77,8 @@ export async function executeRoomAreaSpell(
       room.actors,
       turn,
       opts.areaDirection,
-      opts.channelExtraPa ?? 0
+      opts.channelExtraPa ?? 0,
+      actorRacas
     );
   } catch (e) {
     return { ok: false, error: e instanceof Error ? e.message : "Magia de área inválida" };
@@ -105,7 +111,7 @@ export async function executeRoomAreaSpell(
     tokens: room.scene.tokens.map((t) => {
       if (t.id === casterTokenId) return { ...t, ...spentCaster, id: t.id };
       const hp = hpByToken.get(t.id);
-      if (hp != null && t.vidaMax != null) return { ...t, vida: hp };
+      if (hp != null) return { ...t, vida: hp };
       return t;
     }),
   };

@@ -43,7 +43,7 @@ export function hitTestFloorHandle(
   scene: BattleScene,
   layout: CanvasLayout,
   view: BattlefieldView,
-  hitRadius = 14
+  hitRadius = 18
 ): FloorResizeHandle | null {
   const rect = computeMapImageRect(img, scene, layout);
   const { w: cw, h: ch } = layout;
@@ -109,40 +109,43 @@ export function floorOffsetForAnchoredScale(
   layout: CanvasLayout,
   startOffX: number,
   startOffY: number,
-  startScale: number
+  _startScale: number
 ): { offsetX: number; offsetY: number } {
   const { x, y, w, h } = startRect;
-  const fitBase =
-    Math.max(layout.w / img.naturalWidth, layout.h / img.naturalHeight) * startScale;
   const fitNext =
     Math.max(layout.w / img.naturalWidth, layout.h / img.naturalHeight) * newScale;
   const wNext = img.naturalWidth * fitNext;
   const hNext = img.naturalHeight * fitNext;
 
-  let anchorX = x;
-  let anchorY = y;
-  if (handle === "se") {
-    anchorX = x;
-    anchorY = y;
-  } else if (handle === "nw") {
-    anchorX = x + w;
-    anchorY = y + h;
-  } else if (handle === "ne") {
-    anchorX = x;
-    anchorY = y + h;
-  } else {
-    anchorX = x + w;
-    anchorY = y;
+  /** Canto oposto ao handle — permanece fixo no mundo ao redimensionar. */
+  let newX: number;
+  let newY: number;
+  switch (handle) {
+    case "se":
+      newX = x;
+      newY = y;
+      break;
+    case "nw":
+      newX = x + w - wNext;
+      newY = y + h - hNext;
+      break;
+    case "ne":
+      newX = x;
+      newY = y + h - hNext;
+      break;
+    case "sw":
+      newX = x + w - wNext;
+      newY = y;
+      break;
   }
 
-  const offX = anchorX - (layout.ox - wNext / 2);
-  const offY = anchorY - (layout.oy - hNext / 2);
+  const offX = newX - (layout.ox - wNext / 2);
+  const offY = newY - (layout.oy - hNext / 2);
 
   if (!Number.isFinite(offX) || !Number.isFinite(offY)) {
     return { offsetX: startOffX, offsetY: startOffY };
   }
 
-  void fitBase;
   return { offsetX: offX, offsetY: offY };
 }
 

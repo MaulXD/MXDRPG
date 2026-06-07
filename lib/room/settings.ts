@@ -36,7 +36,8 @@ export function normalizeRoomSettings(raw?: Partial<RoomSettings> | null): RoomS
 }
 
 export function isMonsterToken(token: BattleToken): boolean {
-  return Boolean(token.monsterEntryId || token.gmCreationId);
+  if (token.linked) return false;
+  return Boolean(token.monsterEntryId || token.gmCreationId || token.gmCreatureStats);
 }
 
 /** Remove HP numérico do token (para snapshot de jogadores). */

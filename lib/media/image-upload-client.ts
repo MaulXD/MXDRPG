@@ -14,6 +14,7 @@ const INPUT_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif"];
 const PORTRAIT_MAX_EDGE = 1024;
 const TOKEN_MAX_EDGE = 512;
 const MAP_MAX_EDGE = 1920;
+const BUG_SCREENSHOT_MAX_EDGE = 1280;
 
 export type PortraitFocusSet = {
   portraitFocus: PortraitFocus;
@@ -188,6 +189,18 @@ function encodeWebpFit(img: HTMLImageElement, maxEdge: number): string {
   }
 
   throw new Error("Mapa grande demais mesmo após compressão WebP.");
+}
+
+/** Captura de tela para report de bug — WebP comprimido. */
+export async function buildBugScreenshotFromFile(file: File): Promise<string> {
+  if (!INPUT_TYPES.includes(file.type)) {
+    throw new Error("Formato inválido. Use JPEG, PNG, WebP ou GIF.");
+  }
+  if (file.size > MAX_INPUT_BYTES) {
+    throw new Error("Arquivo grande demais (máx ~8 MB antes da compressão).");
+  }
+  const img = await loadImageFromFile(file);
+  return encodeWebpFit(img, BUG_SCREENSHOT_MAX_EDGE);
 }
 
 /** Imagem de piso do hex — WebP data URL para `mapImageUrl`. */

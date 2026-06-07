@@ -23,7 +23,9 @@ import {
 import { drawDungeonLayer } from "@/lib/vtt/draw-dungeon-layer";
 import { drawMapMarkupLayer } from "@/lib/vtt/draw-map-markup";
 import { drawFloorEditOverlay } from "@/lib/vtt/floor-edit";
+import { drawMeasureLayer } from "@/lib/vtt/draw-measure";
 import { drawFogLayer, drawMapImageLayer, drawPingLayer } from "@/lib/vtt/draw-map-overlay";
+import type { MeasurePreview } from "@/lib/vtt/map-toolbar";
 import { pruneMapMarkups } from "@/lib/vtt/map-markup";
 import type { MapMarkup } from "@/lib/vtt/types";
 import type { BattlePing } from "@/lib/vtt/types";
@@ -76,6 +78,7 @@ export type HexCanvasDrawState = {
   mapMarkups?: MapMarkup[];
   markupPreview?: MapMarkup | null;
   selectedMarkupId?: string | null;
+  measurePreview?: MeasurePreview | null;
 };
 
 export type TokenMoveAnimRef = RefObject<{
@@ -112,6 +115,7 @@ export function useHexCanvas(
       (s.pings?.length ?? 0) > 0 ||
       (pruneMapMarkups(s.mapMarkups ?? []).length ?? 0) > 0 ||
       Boolean(s.markupPreview) ||
+      Boolean(s.measurePreview) ||
       (s.tokenCastFx?.length ?? 0) > 0 ||
       Boolean(moveAnimRef?.current)
     );
@@ -189,6 +193,10 @@ export function useHexCanvas(
         preview: s.markupPreview ?? null,
         selectedId: s.selectedMarkupId ?? null,
       });
+    }
+
+    if (s.measurePreview) {
+      drawMeasureLayer(ctx, s.measurePreview);
     }
 
     const moveAnim = moveAnimRef?.current;

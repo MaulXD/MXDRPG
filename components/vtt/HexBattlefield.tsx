@@ -46,14 +46,14 @@ import { resolveTokenHpDisplay } from "@/lib/vtt/token-hp-display";
 import { ActiveCharactersPanel } from "@/components/vtt/ActiveCharactersPanel";
 import { GmToolsPanel } from "@/components/vtt/GmToolsPanel";
 import { DungeonEditorPanel } from "@/components/vtt/DungeonEditorPanel";
-import { DrawingToolbar } from "@/components/vtt/DrawingToolbar";
+import { MapToolbar } from "@/components/vtt/MapToolbar";
 import { WhiteboardPanel } from "@/components/vtt/WhiteboardPanel";
 import { FoundryDockPanel } from "@/components/vtt/foundry/FoundryDockPanel";
 import type { RoomSnapshot } from "@/lib/room/types";
 import { TokenActionRing } from "@/components/vtt/TokenActionRing";
 import { SpellChannelControl } from "@/components/vtt/SpellChannelControl";
 import { MonsterSpawnPanel } from "@/components/vtt/MonsterSpawnPanel";
-import { BattlefieldViewControls } from "@/components/vtt/BattlefieldViewControls";
+import type { MapToolMode, MeasurePreview } from "@/lib/vtt/map-toolbar";
 import { VttHelpButton } from "@/components/vtt/VttHelpButton";
 import { MesaDockPanel } from "@/components/vtt/MesaDockPanel";
 import { FoundryWindow } from "@/components/vtt/foundry/FoundryWindow";
@@ -116,7 +116,7 @@ import {
 import { useBattlefieldPointer } from "@/hooks/vtt/useBattlefieldPointer";
 import { useMonsterSpawnDrop } from "@/hooks/vtt/useMonsterSpawnDrop";
 import { paTurnRulesForActor } from "@/lib/combat/pa-economy";
-import { canMoveToken, type MovementPathContext } from "@/lib/vtt/movement";
+import { canMoveToken, hexToMeters, type MovementPathContext } from "@/lib/vtt/movement";
 import { animateTokenAlongPath } from "@/lib/vtt/token-move-animation";
 import { axialToPixel, hexDrawRadius } from "@/lib/vtt/hex-math";
 import { canvasCenter, worldToScreen } from "@/lib/vtt/battlefield-view";
@@ -258,6 +258,7 @@ export function HexBattlefield({
   const [friendlyFireTargetId, setFriendlyFireTargetId] = useState<string | null>(null);
   const [friendlyFireBusy, setFriendlyFireBusy] = useState(false);
   const [statusOpen, setStatusOpen] = useState(false);
+  const [modalStatusToken, setModalStatusToken] = useState<BattleToken | null>(null);
   const { visible: hudVisible, setHudVisible } = useCombatHudVisible(roomId);
   const toast = useVttToast();
   const seenCombatRef = useRef<Set<string>>(new Set());
@@ -269,6 +270,8 @@ export function HexBattlefield({
   const [dungeonEditorActive, setDungeonEditorActive] = useState(false);
   const [dungeonTool, setDungeonTool] = useState<DungeonEditorTool>("wall");
   const [selectedDungeonObjectId, setSelectedDungeonObjectId] = useState<string | null>(null);
+  const [mapToolMode, setMapToolMode] = useState<MapToolMode>("token");
+  const [measurePreview, setMeasurePreview] = useState<MeasurePreview | null>(null);
   const [whiteboardActive, setWhiteboardActive] = useState(false);
   const [whiteboardTool, setWhiteboardTool] = useState<WhiteboardTool>("select");
   const [markupColor, setMarkupColor] = useState("#3498db");
@@ -364,19 +367,39 @@ export function HexBattlefield({
     [canControlCombat, tokenControl]
   );
 
-  const canPreviewTurnMove = useCallback(
-    (t: BattleToken) => {
-      if (!canOperateToken(t)) return false;
+  const actionRingBlockReason = useCallback(
+    (t: BattleToken): string | null => {
+      if (!canOperateToken(t)) return null;
       const track = snapshot?.combat;
       if (!track?.order.length) {
-        return canControlCombat && isMonsterToken(t);
+        if (canControlCombat && isMonsterToken(t)) return null;
+        return "Aguarde o mestre rolar a iniciativa para usar ações.";
       }
-      if (canControlCombat && (turn.bypassTurn || isMonsterToken(t))) return true;
+      if (canControlCombat && (turn.bypassTurn || isMonsterToken(t))) return null;
       const activeId = activeTokenId(track);
-      if (!activeId || t.id !== activeId) return false;
-      return true;
+      if (!activeId) return "Aguarde a iniciativa.";
+      if (t.id !== activeId) {
+        const active = displayScene.tokens.find((tok) => tok.id === activeId);
+        return active
+          ? `Não é a vez de ${t.name} — turno de ${active.name}.`
+          : `Não é a vez de ${t.name}.`;
+      }
+      return null;
     },
-    [snapshot?.combat, canOperateToken, canControlCombat, turn.bypassTurn]
+    [snapshot?.combat, canOperateToken, canControlCombat, turn.bypassTurn, displayScene.tokens]
+  );
+
+  const canPreviewTurnMove = useCallback(
+    (t: BattleToken) => actionRingBlockReason(t) == null,
+    [actionRingBlockReason]
+  );
+
+  const onActionRingBlocked = useCallback(
+    (t: BattleToken) => {
+      const reason = actionRingBlockReason(t);
+      if (reason) toast.push(reason, "warn");
+    },
+    [actionRingBlockReason, toast]
   );
 
   const selected = listTokens.find((t) => t.id === selectedId) ?? null;
@@ -524,6 +547,7 @@ export function HexBattlefield({
     scene: displayScene,
     roomId,
     enabled: canControlCombat,
+    allowActorDrop: canEdit,
     onSpawned: syncRoom,
     setHoverAxial,
     onHoverAxialChange,
@@ -590,6 +614,21 @@ export function HexBattlefield({
     snapshot?.actors,
   ]);
 
+  const moveHoverHint = useMemo(() => {
+    if (!highlights.showMovement || !hoverAxial) return null;
+    const preview = highlights.hoverMovePreview;
+    if (!preview) return null;
+    if (!preview.ok) {
+      return { kind: "error" as const, text: preview.reason ?? "Movimento inválido" };
+    }
+    if (preview.dist <= 0) return null;
+    const pa = preview.paCost > 0 ? `PA +${preview.paCost}` : "PA +0";
+    return {
+      kind: "ok" as const,
+      text: `${preview.dist} hex · ${hexToMeters(preview.dist)} m · ${pa}`,
+    };
+  }, [highlights.showMovement, highlights.hoverMovePreview, hoverAxial]);
+
   const onFloorDrag = useCallback((offsetX: number, offsetY: number) => {
     setFloorPreview((prev) => ({
       mapImageScale: prev?.mapImageScale ?? canvasScene.mapImageScale ?? 1,
@@ -644,7 +683,7 @@ export function HexBattlefield({
       areaDirectionSet: highlights.areaDirectionSet,
       hoverAxial,
       hoverMovePreview: highlights.hoverMovePreview,
-      spawnDropHover: spawnDragActive && canControlCombat,
+      spawnDropHover: spawnDragActive && (canControlCombat || canEdit),
       pathCells: highlights.hoverPathCells ?? [],
       focusByTokenId,
       selectedId,
@@ -669,6 +708,7 @@ export function HexBattlefield({
       mapMarkups: displayMarkups,
       markupPreview,
       selectedMarkupId,
+      measurePreview,
     }),
     [
       canvasScene,
@@ -677,6 +717,7 @@ export function HexBattlefield({
       displayMarkups,
       markupPreview,
       selectedMarkupId,
+      measurePreview,
       highlights,
       actionMode,
       hoverAxial,
@@ -1114,22 +1155,30 @@ export function HexBattlefield({
 
   const fireSelfAbility = useCallback(
     async (action: CombatActionOption, token = selected) => {
-      if (!token || !action.selfTarget || action.kind !== "ability") return;
+      if (!token || !action.selfTarget) return;
       setActionErr(null);
       try {
-        const snap = await postRoomAbility(roomId, token.id, null, {
-          actionEntryId: action.entryId,
-          bypassTurn: turn.bypassTurn,
-        });
+        const snap =
+          action.kind === "ability"
+            ? await postRoomAbility(roomId, token.id, null, {
+                actionEntryId: action.entryId,
+                bypassTurn: turn.bypassTurn,
+              })
+            : await postRoomAttack(
+                roomId,
+                token.id,
+                token.id,
+                combatAttackRequestOpts(action, token, { bypassTurn: turn.bypassTurn })
+              );
         playCombatFxFromSnap(snap, { deferSnap: true });
         setActionMode("idle");
         setSelectedCombatAction(null);
         setActionRingAt(null);
       } catch (e) {
-        setActionErr(e instanceof Error ? e.message : "Falha na habilidade");
+        setActionErr(e instanceof Error ? e.message : "Falha na ação");
       }
     },
-    [selected, roomId, turn.bypassTurn, syncRoom, playCombatFxFromSnap]
+    [selected, roomId, turn.bypassTurn, playCombatFxFromSnap]
   );
 
   const executeAttackOn = useCallback(
@@ -1505,6 +1554,7 @@ export function HexBattlefield({
       setActionErr(null);
     },
     canOpenActionRing: canPreviewTurnMove,
+    onActionRingBlocked,
     dungeonEditor: isRoomGm
       ? {
           layer: dungeonLayer,
@@ -1542,7 +1592,29 @@ export function HexBattlefield({
           onTextRequest: onMarkupTextRequest,
         }
       : undefined,
+    mapTools: {
+      mode: mapToolMode,
+      onMeasurePreview: setMeasurePreview,
+    },
   });
+
+  const handleMapToolModeChange = useCallback(
+    (mode: MapToolMode) => {
+      setMapToolMode(mode);
+      if (mode === "draw") {
+        setWhiteboardActive(true);
+        setDungeonEditorActive(false);
+        setMarkupPreview(null);
+      } else {
+        setWhiteboardActive(false);
+        setSelectedMarkupId(null);
+        setMarkupPreview(null);
+        pointer.cancelWhiteboardDraft();
+      }
+      if (mode !== "measure") setMeasurePreview(null);
+    },
+    [pointer.cancelWhiteboardDraft]
+  );
 
   useEffect(() => {
     if (!whiteboardActive) return;
@@ -1557,11 +1629,19 @@ export function HexBattlefield({
       if (e.key === "Escape") {
         pointer.cancelWhiteboardDraft();
         setSelectedMarkupId(null);
+        setMeasurePreview(null);
+        if (mapToolMode !== "token") setMapToolMode("token");
       }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [whiteboardActive, selectedMarkupId, onMarkupErase, pointer.cancelWhiteboardDraft]);
+  }, [
+    whiteboardActive,
+    selectedMarkupId,
+    mapToolMode,
+    onMarkupErase,
+    pointer.cancelWhiteboardDraft,
+  ]);
 
   const clearSessionMarkups = useCallback(() => {
     const next = mapMarkupsOf(displayScene).filter((m) => m.durability !== "temporary");
@@ -1595,17 +1675,28 @@ export function HexBattlefield({
   const hudToken = isRoomGm && turnActiveToken ? turnActiveToken : playerToken;
   const hudIsControlled = Boolean(playerToken && hudToken && playerToken.id === hudToken.id);
 
-  const statusToken = isRoomGm
-    ? selected ?? turnActiveToken ?? playerToken
-    : playerToken;
+  const resolveStatusToken = useCallback(
+    (explicit?: BattleToken | null) => {
+      if (explicit) return explicit;
+      if (isRoomGm) return selected ?? turnActiveToken ?? playerToken;
+      return playerToken;
+    },
+    [isRoomGm, selected, turnActiveToken, playerToken]
+  );
 
-  const openStatusModal = useCallback(() => {
-    if (statusToken) setStatusOpen(true);
-  }, [statusToken]);
+  const openStatus = useCallback(
+    (explicit?: BattleToken | null) => {
+      const token = resolveStatusToken(explicit);
+      if (!token) return;
+      setModalStatusToken(token);
+      setStatusOpen(true);
+    },
+    [resolveStatusToken]
+  );
 
   useEffect(() => {
-    onRegisterOpenStatus?.(openStatusModal);
-  }, [onRegisterOpenStatus, openStatusModal]);
+    onRegisterOpenStatus?.(() => openStatus());
+  }, [onRegisterOpenStatus, openStatus]);
 
   const hoverMiniHudAnchor = useMemo(() => {
     if (!hoverTokenId) return null;
@@ -1665,7 +1756,7 @@ export function HexBattlefield({
       onPlaced={(snap) => syncRoom(snap)}
       onUpdate={refresh}
       fogHint={fogListHint}
-      onOpenStatus={openStatusModal}
+      onOpenStatus={openStatus}
     />
   );
 
@@ -1698,9 +1789,14 @@ export function HexBattlefield({
         canManageAll={canManageMarkups}
         onActiveChange={(active) => {
           setWhiteboardActive(active);
+          setMapToolMode(active ? "draw" : "token");
           if (active) {
             setDungeonEditorActive(false);
             setMarkupPreview(null);
+          } else {
+            setSelectedMarkupId(null);
+            setMeasurePreview(null);
+            pointer.cancelWhiteboardDraft();
           }
         }}
         onToolChange={setWhiteboardTool}
@@ -1926,6 +2022,7 @@ export function HexBattlefield({
         const initiativeBody = (
           <div className="mesa-panel-scroll mesa-panel-scroll--rail">
             <TurnOrderPanel
+              compact
               roomId={roomId}
               combat={combat}
               tokens={listTokens}
@@ -1945,7 +2042,7 @@ export function HexBattlefield({
             title="Ordem de turno"
             layout={initiativeWindowLayout}
             className="foundry-window--initiative"
-            minHeight={200}
+            minHeight={140}
             onLayoutChange={onInitiativeWindowLayoutChange ?? (() => {})}
             onClose={onInitiativeWindowClose ?? (() => {})}
             onMinimize={onInitiativeWindowMinimize ?? (() => {})}
@@ -2002,36 +2099,30 @@ export function HexBattlefield({
         {...spawnDropHandlers}
       >
         <VttHelpButton />
-        {canUseWhiteboard ? (
-          <DrawingToolbar
-            active={whiteboardActive}
-            tool={whiteboardTool}
-            color={markupColor}
-            width={markupWidth}
-            canManageAll={canManageMarkups}
-            onActiveChange={(active) => {
-              setWhiteboardActive(active);
-              if (active) {
-                setDungeonEditorActive(false);
-                setMarkupPreview(null);
-              }
-            }}
-            onToolChange={setWhiteboardTool}
-            onColorChange={setMarkupColor}
-            onWidthChange={setMarkupWidth}
-            onClearSession={clearSessionMarkups}
-          />
-        ) : null}
-        <BattlefieldViewControls
+        <MapToolbar
+          mapToolMode={mapToolMode}
+          onMapToolModeChange={handleMapToolModeChange}
+          drawTool={whiteboardTool}
+          onDrawToolChange={setWhiteboardTool}
+          color={markupColor}
+          width={markupWidth}
+          onColorChange={setMarkupColor}
+          onWidthChange={setMarkupWidth}
+          canUseDraw={canUseWhiteboard}
+          canManageAll={canManageMarkups}
+          canPing={isRoomGm || roomSettings.allowPlayerPing}
+          showFogTool={isRoomGm && Boolean(displayScene.fogEnabled)}
+          onClearSession={canUseWhiteboard ? clearSessionMarkups : undefined}
           zoomPercent={battlefieldView.zoomPercent}
           canZoomIn={battlefieldView.canZoomIn}
           canZoomOut={battlefieldView.canZoomOut}
           onZoomIn={battlefieldView.zoomIn}
           onZoomOut={battlefieldView.zoomOut}
-          onReset={battlefieldView.resetView}
+          onResetView={battlefieldView.resetView}
           showDungeonEditor={isRoomGm}
           dungeonEditorActive={dungeonModeOpen || dungeonMapEditing}
           onToggleDungeonEditor={() => {
+            handleMapToolModeChange("token");
             setDungeonModeOpen((open) => {
               if (!open) {
                 setDungeonLayer("floor");
@@ -2065,6 +2156,15 @@ export function HexBattlefield({
           }}
           onContextMenu={pointer.onContextMenu}
         />
+        {moveHoverHint ? (
+          <div
+            className={`vtt-move-hover-hint${moveHoverHint.kind === "error" ? " vtt-move-hover-hint--err" : ""}`}
+            role="status"
+            aria-live="polite"
+          >
+            {moveHoverHint.text}
+          </div>
+        ) : null}
         {actionRingAt && selected && canPreviewTurnMove(selected) ? (
           <TokenActionRing
             x={actionRingAt.x}
@@ -2076,7 +2176,7 @@ export function HexBattlefield({
             canBypassTurn={canBypassTurnProp}
             roomId={roomId}
             onPickMode={(mode, action) => {
-              if (action?.selfTarget && action.kind === "ability") {
+              if (action?.selfTarget) {
                 void fireSelfAbility(action);
                 return;
               }
@@ -2129,7 +2229,6 @@ export function HexBattlefield({
             canViewPa={canViewTokenPaFn(hudToken)}
             canEndTurn={canEndTurn || canControlCombat}
             roomId={roomId}
-            onOpenStatus={openStatusModal}
             onOpenSheet={onOpenSheet}
             onSnapshot={syncRoom}
             onUpdate={refresh}
@@ -2156,11 +2255,14 @@ export function HexBattlefield({
         <BattlefieldActionHud preview={actionPreview} anchor={actionPreviewAnchor} />
         <TokenStatusModal
           open={statusOpen}
-          token={statusToken}
+          token={modalStatusToken}
           roomId={roomId}
           combat={combat}
           canApplyConditions={isRoomGm}
-          onClose={() => setStatusOpen(false)}
+          onClose={() => {
+            setStatusOpen(false);
+            setModalStatusToken(null);
+          }}
           onUpdate={refresh}
         />
         <CombatFxLayer

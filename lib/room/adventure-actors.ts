@@ -1,10 +1,10 @@
 import {
   listCharactersForUserInAdventure,
+  resolveCharacter,
   saveCharacter,
 } from "@/lib/character/characters";
 import {
   characterBelongsToAdventure,
-  isAdventureBoundCharacter,
   resolveAdventureId,
 } from "@/lib/character/adventure-bind";
 import { normalizeCharacter } from "@/lib/character/normalize";
@@ -14,6 +14,17 @@ import type { RoomActor, RoomState } from "./types";
 
 function participantIds(room: RoomState): string[] {
   return [...new Set([room.ownerId, ...room.memberIds])];
+}
+
+/** Ator ainda pertence a esta mesa/aventura (tolerante a legado sem adventureId). */
+export function actorBelongsToRoom(room: RoomState, actor: RoomActor): boolean {
+  if (actor.gmAuthored) return true;
+  const adventureId = room.adventureId ?? room.roomId;
+  const effectiveAdv = resolveAdventureId(actor) ?? adventureId;
+  return characterBelongsToAdventure(
+    { adventureId: effectiveAdv, campaignRoomId: actor.campaignRoomId ?? room.roomId },
+    adventureId
+  );
 }
 
 function toRoomActor(sheet: CharacterSheet, prev?: RoomActor): RoomActor {
@@ -43,26 +54,22 @@ export async function syncAdventureActorsForRoom(roomId: string): Promise<RoomSt
   let changed = false;
 
   for (const [actorId, actor] of Object.entries(room.actors)) {
-    if (actor.gmAuthored) continue;
-    if (!isAdventureBoundCharacter(actor)) continue;
-    const actorAdv = resolveAdventureId(actor);
-    if (actorAdv !== adventureId) {
-      delete room.actors[actorId];
-      room.scene = {
-        ...room.scene,
-        tokens: room.scene.tokens.filter((t) => t.actorId !== actorId),
+    if (actorBelongsToRoom(room, actor)) continue;
+    delete room.actors[actorId];
+    room.scene = {
+      ...room.scene,
+      tokens: room.scene.tokens.filter((t) => t.actorId !== actorId),
+    };
+    if (room.combat?.order) {
+      room.combat = {
+        ...room.combat,
+        order: room.combat.order.filter((id) => {
+          const tok = room.scene.tokens.find((t) => t.id === id);
+          return tok?.actorId !== actorId;
+        }),
       };
-      if (room.combat?.order) {
-        room.combat = {
-          ...room.combat,
-          order: room.combat.order.filter((id) => {
-            const tok = room.scene.tokens.find((t) => t.id === id);
-            return tok?.actorId !== actorId;
-          }),
-        };
-      }
-      changed = true;
     }
+    changed = true;
   }
 
   for (const userId of participantIds(room)) {
@@ -80,6 +87,21 @@ export async function persistActorToAdventureSheet(actor: RoomActor): Promise<vo
   if (actor.gmAuthored) return;
   const { revision: _r, ...sheet } = actor;
   await saveCharacter(sheet);
+}
+
+/** Reanexa ficha do banco se sumiu da mesa (ex.: após retirar token do mapa). */
+export async function ensureAdventureActorInRoom(
+  roomId: string,
+  actorId: string
+): Promise<RoomState | null> {
+  const room = await getRoom(roomId);
+  if (!room || room.actors[actorId]) return room;
+
+  const sheet = await resolveCharacter(actorId);
+  if (!sheet) return room;
+  if (!attachCharacterToRoomState(room, sheet)) return room;
+
+  return persistRoom(roomId, room);
 }
 
 /** @deprecated use syncAdventureActorsForRoom */

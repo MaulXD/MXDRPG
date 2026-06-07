@@ -21,6 +21,7 @@ import { maybeRecordCombatUndo } from "../combat-undo";
 import { isMonsterToken } from "@/lib/room/settings";
 import { appendRoomChatMessage } from "./chat";
 import { executeRoomAbility } from "./combat-ability";
+import { executeRoomSpellUtility, isSpellUtilityAction } from "./combat-spell-utility";
 
 export type AttackExecuteResult =
   | { ok: true; snapshot: RoomSnapshot }
@@ -67,6 +68,10 @@ export async function executeRoomAttack(
     return executeRoomAbility(roomId, attackerTokenId, defenderTokenId, author, opts);
   }
 
+  if (isSpellUtilityAction(action)) {
+    return executeRoomSpellUtility(roomId, attackerTokenId, defenderTokenId, author, opts);
+  }
+
   if (action.areaShape && action.areaShape !== "single") {
     return { ok: false, error: "Magia de área deve ser conjurada no mapa (centro da área)" };
   }
@@ -107,7 +112,7 @@ export async function executeRoomAttack(
       ...room.scene,
       tokens: room.scene.tokens.map((t) => {
         if (t.id === attackerTokenId) return { ...t, ...spentAttacker, id: t.id };
-        if (t.id === defenderTokenId && t.vidaMax != null) {
+        if (t.id === defenderTokenId) {
           return { ...t, vida: saveResult.defenderHpAfter };
         }
         return t;
@@ -206,7 +211,7 @@ export async function executeRoomAttack(
         if (finalAttackerHp != null && t.vidaMax != null) patch.vida = finalAttackerHp;
         return patch;
       }
-      if (t.id === defenderTokenId && t.vidaMax != null) return { ...t, vida: finalHp };
+      if (t.id === defenderTokenId) return { ...t, vida: finalHp };
       return t;
     }),
   };

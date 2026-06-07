@@ -28,6 +28,24 @@ export type StarterKitOption = {
   armorLoadout: { packId: "equipamentos"; entryId: string } | null;
 };
 
+/** Escolha manual de equipamento no wizard (arma, armadura, magias e extras). */
+export type StarterEquipmentDraft = {
+  combatLoadout: CombatLoadout | null;
+  /** Arma física extra no inventário (ex.: adaga quando o foco de combate é magia). */
+  sideWeaponEntryId: string | null;
+  armorEntryId: string | null;
+  spellEntryIds: string[];
+  extraEntryIds: string[];
+};
+
+export type StarterEquipmentPools = {
+  combatOptions: CombatLoadout[];
+  sideWeaponEntryIds: string[];
+  armorEntryIds: string[];
+  spellEntryIds: string[];
+  extraEntryIds: string[];
+};
+
 /** Itens de sobrevivência e culinária — todo personagem nv 1. */
 const UNIVERSAL_STARTER: StarterItemRef[] = [
   { packId: "equipamentos", entryId: "equipamentos-kit-de-trinchar", quantity: 1 },
@@ -388,6 +406,212 @@ export function getDefaultStarterKitId(classe: string): string {
   return getStarterOptionsForClass(classe)[0]?.id ?? "guerreiro-lamina";
 }
 
+const UNIVERSAL_ENTRY_IDS = new Set(UNIVERSAL_STARTER.map((u) => u.entryId));
+
+function combatLoadoutKey(loadout: CombatLoadout | null): string {
+  if (!loadout) return "";
+  return `${loadout.packId}:${loadout.entryId}`;
+}
+
+function sameCombatLoadout(a: CombatLoadout | null, b: CombatLoadout | null): boolean {
+  return combatLoadoutKey(a) === combatLoadoutKey(b);
+}
+
+function sortedUnique(ids: string[]): string[] {
+  return [...new Set(ids)].sort();
+}
+
+export function loadoutDraftFromKit(kit: StarterKitOption): StarterEquipmentDraft {
+  const spellEntryIds: string[] = [];
+  const extraEntryIds: string[] = [];
+  let sideWeaponEntryId: string | null = null;
+
+  for (const item of kit.items) {
+    if (item.packId === "magias") {
+      spellEntryIds.push(item.entryId);
+    } else if (item.packId === "armas") {
+      const isPrimary =
+        kit.combatLoadout?.packId === "armas" &&
+        kit.combatLoadout.entryId === item.entryId;
+      if (!isPrimary && !sideWeaponEntryId) {
+        sideWeaponEntryId = item.entryId;
+      }
+    } else if (
+      item.packId === "equipamentos" &&
+      item.entryId !== kit.armorLoadout?.entryId &&
+      !UNIVERSAL_ENTRY_IDS.has(item.entryId)
+    ) {
+      extraEntryIds.push(item.entryId);
+    }
+  }
+
+  return {
+    combatLoadout: kit.combatLoadout,
+    sideWeaponEntryId,
+    armorEntryId: kit.armorLoadout?.entryId ?? null,
+    spellEntryIds: sortedUnique(spellEntryIds),
+    extraEntryIds: sortedUnique(extraEntryIds),
+  };
+}
+
+export function getDefaultStarterEquipment(classe: string): StarterEquipmentDraft {
+  const kit = getStarterOptionsForClass(classe)[0];
+  return kit ? loadoutDraftFromKit(kit) : emptyStarterEquipment();
+}
+
+export function emptyStarterEquipment(): StarterEquipmentDraft {
+  return {
+    combatLoadout: null,
+    sideWeaponEntryId: null,
+    armorEntryId: null,
+    spellEntryIds: [],
+    extraEntryIds: [],
+  };
+}
+
+export function getStarterEquipmentPools(classe: string): StarterEquipmentPools {
+  const combatMap = new Map<string, CombatLoadout>();
+  const sideWeaponEntryIds = new Set<string>();
+  const armorEntryIds = new Set<string>();
+  const spellEntryIds = new Set<string>();
+  const extraEntryIds = new Set<string>();
+
+  for (const kit of getStarterOptionsForClass(classe)) {
+    if (kit.combatLoadout) {
+      combatMap.set(combatLoadoutKey(kit.combatLoadout), kit.combatLoadout);
+    }
+    if (kit.armorLoadout?.entryId) {
+      armorEntryIds.add(kit.armorLoadout.entryId);
+    }
+    for (const item of kit.items) {
+      if (item.packId === "magias") spellEntryIds.add(item.entryId);
+      else if (item.packId === "armas") {
+        const isPrimary =
+          kit.combatLoadout?.packId === "armas" &&
+          kit.combatLoadout.entryId === item.entryId;
+        if (!isPrimary) sideWeaponEntryIds.add(item.entryId);
+      } else if (
+        item.packId === "equipamentos" &&
+        item.entryId !== kit.armorLoadout?.entryId &&
+        !UNIVERSAL_ENTRY_IDS.has(item.entryId)
+      ) {
+        extraEntryIds.add(item.entryId);
+      }
+    }
+  }
+
+  return {
+    combatOptions: [...combatMap.values()],
+    sideWeaponEntryIds: [...sideWeaponEntryIds].sort(),
+    armorEntryIds: [...armorEntryIds].sort(),
+    spellEntryIds: [...spellEntryIds].sort(),
+    extraEntryIds: [...extraEntryIds].sort(),
+  };
+}
+
+export function equipmentMatchesKit(
+  equipment: StarterEquipmentDraft,
+  kit: StarterKitOption
+): boolean {
+  const fromKit = loadoutDraftFromKit(kit);
+  return (
+    sameCombatLoadout(equipment.combatLoadout, fromKit.combatLoadout) &&
+    equipment.sideWeaponEntryId === fromKit.sideWeaponEntryId &&
+    equipment.armorEntryId === fromKit.armorEntryId &&
+    sortedUnique(equipment.spellEntryIds).join() === sortedUnique(fromKit.spellEntryIds).join() &&
+    sortedUnique(equipment.extraEntryIds).join() === sortedUnique(fromKit.extraEntryIds).join()
+  );
+}
+
+export function findMatchingStarterKitId(
+  classe: string,
+  equipment: StarterEquipmentDraft
+): string | null {
+  for (const kit of getStarterOptionsForClass(classe)) {
+    if (equipmentMatchesKit(equipment, kit)) return kit.id;
+  }
+  return null;
+}
+
+export function sanitizeStarterEquipmentForClass(
+  classe: string,
+  equipment: StarterEquipmentDraft
+): StarterEquipmentDraft {
+  const pools = getStarterEquipmentPools(classe);
+  const combatKeys = new Set(pools.combatOptions.map(combatLoadoutKey));
+  const combatLoadout =
+    equipment.combatLoadout && combatKeys.has(combatLoadoutKey(equipment.combatLoadout))
+      ? equipment.combatLoadout
+      : (pools.combatOptions[0] ?? null);
+
+  const armorEntryId =
+    equipment.armorEntryId && pools.armorEntryIds.includes(equipment.armorEntryId)
+      ? equipment.armorEntryId
+      : null;
+
+  const sideWeaponEntryId =
+    equipment.sideWeaponEntryId &&
+    pools.sideWeaponEntryIds.includes(equipment.sideWeaponEntryId)
+      ? equipment.sideWeaponEntryId
+      : null;
+
+  const spellSet = new Set(pools.spellEntryIds);
+  const extraSet = new Set(pools.extraEntryIds);
+
+  let spellEntryIds = equipment.spellEntryIds.filter((id) => spellSet.has(id));
+  const extraEntryIds = equipment.extraEntryIds.filter((id) => extraSet.has(id));
+
+  if (
+    combatLoadout?.packId === "magias" &&
+    spellSet.has(combatLoadout.entryId) &&
+    !spellEntryIds.includes(combatLoadout.entryId)
+  ) {
+    spellEntryIds = sortedUnique([...spellEntryIds, combatLoadout.entryId]);
+  }
+
+  return {
+    combatLoadout,
+    sideWeaponEntryId,
+    armorEntryId,
+    spellEntryIds: sortedUnique(spellEntryIds),
+    extraEntryIds: sortedUnique(extraEntryIds),
+  };
+}
+
+export function validateStarterEquipment(
+  classe: string,
+  equipment: StarterEquipmentDraft
+): string | null {
+  const pools = getStarterEquipmentPools(classe);
+  if (!equipment.combatLoadout && pools.combatOptions.length > 0) {
+    return "Escolha uma arma ou magia principal";
+  }
+  if (
+    equipment.combatLoadout &&
+    !pools.combatOptions.some((o) => sameCombatLoadout(o, equipment.combatLoadout))
+  ) {
+    return "Arma ou magia principal inválida para esta classe";
+  }
+  if (equipment.armorEntryId && !pools.armorEntryIds.includes(equipment.armorEntryId)) {
+    return "Armadura inválida para esta classe";
+  }
+  if (
+    equipment.sideWeaponEntryId &&
+    !pools.sideWeaponEntryIds.includes(equipment.sideWeaponEntryId)
+  ) {
+    return "Arma reserva inválida para esta classe";
+  }
+  const spellSet = new Set(pools.spellEntryIds);
+  if (equipment.spellEntryIds.some((id) => !spellSet.has(id))) {
+    return "Magia inicial inválida para esta classe";
+  }
+  const extraSet = new Set(pools.extraEntryIds);
+  if (equipment.extraEntryIds.some((id) => !extraSet.has(id))) {
+    return "Item extra inválido para esta classe";
+  }
+  return null;
+}
+
 /** Busca exata — sem fallback (validação do wizard). */
 export function findStarterKitOption(classe: string, kitId: string): StarterKitOption | null {
   const options = getStarterOptionsForClass(classe);
@@ -422,11 +646,44 @@ function mergeStarterItems(refs: StarterItemRef[]): InventoryItem[] {
   return [...merged.values()];
 }
 
+function refsFromEquipmentDraft(equipment: StarterEquipmentDraft): StarterItemRef[] {
+  const refs: StarterItemRef[] = [];
+  if (equipment.combatLoadout?.packId === "armas") {
+    refs.push({
+      packId: equipment.combatLoadout.packId,
+      entryId: equipment.combatLoadout.entryId,
+    });
+  }
+  if (
+    equipment.sideWeaponEntryId &&
+    equipment.combatLoadout?.packId !== "armas"
+  ) {
+    refs.push({ packId: "armas", entryId: equipment.sideWeaponEntryId });
+  } else if (
+    equipment.sideWeaponEntryId &&
+    equipment.combatLoadout?.packId === "armas" &&
+    equipment.sideWeaponEntryId !== equipment.combatLoadout.entryId
+  ) {
+    refs.push({ packId: "armas", entryId: equipment.sideWeaponEntryId });
+  }
+  if (equipment.armorEntryId) {
+    refs.push({ packId: "equipamentos", entryId: equipment.armorEntryId });
+  }
+  for (const entryId of equipment.spellEntryIds) {
+    refs.push({ packId: "magias", entryId });
+  }
+  for (const entryId of equipment.extraEntryIds) {
+    refs.push({ packId: "equipamentos", entryId });
+  }
+  return refs;
+}
+
 export function buildStarterInventory(opts: {
   classe: string;
   raca: string;
   antecedente: string;
   starterKitId: string;
+  equipment?: StarterEquipmentDraft;
 }): {
   inventory: InventoryItem[];
   combatLoadout: CombatLoadout | null;
@@ -434,26 +691,23 @@ export function buildStarterInventory(opts: {
   lootEconomy: LootEconomy;
 } {
   const kit = resolveStarterKitOption(opts.classe, opts.starterKitId);
-  if (!kit) {
-    return {
-      inventory: mergeStarterItems(UNIVERSAL_STARTER),
-      combatLoadout: null,
-      armorLoadout: null,
-      lootEconomy: { po: STARTING_PO, especiarias: {}, minerios: {}, tesouros: {} },
-    };
-  }
+  const equipment =
+    opts.equipment ??
+    (kit ? loadoutDraftFromKit(kit) : sanitizeStarterEquipmentForClass(opts.classe, emptyStarterEquipment()));
 
   const refs: StarterItemRef[] = [
     ...UNIVERSAL_STARTER,
-    ...kit.items,
+    ...refsFromEquipmentDraft(equipment),
     ...(RACE_STARTER[opts.raca] ?? []),
     ...(ANTECEDENTE_STARTER[opts.antecedente] ?? []),
   ];
 
   return {
     inventory: mergeStarterItems(refs),
-    combatLoadout: kit.combatLoadout,
-    armorLoadout: kit.armorLoadout,
+    combatLoadout: equipment.combatLoadout,
+    armorLoadout: equipment.armorEntryId
+      ? { packId: "equipamentos", entryId: equipment.armorEntryId }
+      : null,
     lootEconomy: { po: STARTING_PO, especiarias: {}, minerios: {}, tesouros: {} },
   };
 }
@@ -462,10 +716,44 @@ export function previewStarterDefesa(
   attributes: CharacterAttributes,
   kit: StarterKitOption
 ): number {
+  return previewEquipmentDefesa(attributes, loadoutDraftFromKit(kit));
+}
+
+export function previewEquipmentDefesa(
+  attributes: CharacterAttributes,
+  equipment: StarterEquipmentDraft
+): number {
   const desMod = attributeMod(attributes.destreza);
-  if (!kit.armorLoadout?.entryId) return 10 + desMod;
-  const entry = getEntry("equipamentos", kit.armorLoadout.entryId);
+  if (!equipment.armorEntryId) return 10 + desMod;
+  const entry = getEntry("equipamentos", equipment.armorEntryId);
   return computeDefesaFromArmor(desMod, entry);
+}
+
+export function describeStarterEquipment(equipment: StarterEquipmentDraft): string {
+  const parts: string[] = [];
+  if (equipment.combatLoadout) {
+    const entry = getEntry(equipment.combatLoadout.packId, equipment.combatLoadout.entryId);
+    parts.push(entry?.name ?? "Combate");
+  }
+  if (equipment.sideWeaponEntryId) {
+    const entry = getEntry("armas", equipment.sideWeaponEntryId);
+    if (entry) parts.push(entry.name);
+  }
+  if (equipment.armorEntryId) {
+    const entry = getEntry("equipamentos", equipment.armorEntryId);
+    parts.push(entry?.name ?? "Armadura");
+  } else {
+    parts.push("Sem armadura");
+  }
+  for (const spellId of equipment.spellEntryIds) {
+    const entry = getEntry("magias", spellId);
+    if (entry) parts.push(entry.name);
+  }
+  for (const extraId of equipment.extraEntryIds) {
+    const entry = getEntry("equipamentos", extraId);
+    if (entry) parts.push(entry.name);
+  }
+  return parts.join(" · ");
 }
 
 export function describeStarterKit(kit: StarterKitOption): string {
@@ -484,6 +772,7 @@ export function applyStarterKitToSheet(
     raca: string;
     antecedente: string;
     starterKitId: string;
+    equipment?: StarterEquipmentDraft;
   }
 ): CharacterSheet {
   const built = buildStarterInventory(opts);

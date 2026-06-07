@@ -86,6 +86,7 @@ export function CombatFxLayer({
 }: Props) {
   const reducedMotion = useReducedMotion();
   const [phase, setPhase] = useState<CombatFxPhase>("mark");
+  const [panelVisible, setPanelVisible] = useState(true);
   const [showDamage, setShowDamage] = useState(false);
   const fxRef = useRef(fx);
   const onDoneRef = useRef(onDone);
@@ -114,29 +115,19 @@ export function CombatFxLayer({
       return {
         mark: 120,
         roll: 200,
-        resultPause: 220,
-        tokenFxDelay: 120,
-        applyStateDelay: 280,
-        resultHold: mode === "area-intro" ? 700 : 900,
-        damageFade: 600,
-        simulFlash: 500,
+        resultPanelHold: mode === "area-intro" ? 480 : 620,
+        postPanelDelay: 500,
+        damageFade: 480,
         areaTargetMark: 160,
-        areaTargetFx: 120,
-        areaTargetDamage: 320,
       };
     }
     return {
-      mark: mode === "area-intro" ? 500 : 280,
-      roll: 900,
-      resultPause: 650,
-      tokenFxDelay: 480,
-      applyStateDelay: 700,
-      resultHold: mode === "area-intro" ? 1100 : 2200,
-      damageFade: 1800,
-      simulFlash: 450,
-      areaTargetMark: 320,
-      areaTargetFx: 300,
-      areaTargetDamage: 550,
+      mark: mode === "area-intro" ? 380 : 280,
+      roll: 800,
+      resultPanelHold: mode === "area-intro" ? 900 : 1400,
+      postPanelDelay: 500,
+      damageFade: 1030,
+      areaTargetMark: 280,
     };
   }, [fx?.mode, reducedMotion]);
 
@@ -147,6 +138,7 @@ export function CombatFxLayer({
     if (!fxId || !data) return;
 
     setPhase(data.mode === "area-simultaneous" ? "mark" : "mark");
+    setPanelVisible(true);
     setShowDamage(false);
     castFxTriggeredRef.current = false;
     applyStateCalledRef.current = false;
@@ -161,15 +153,42 @@ export function CombatFxLayer({
         setTimeout(() => {
           setPhase("done");
           onDoneRef.current();
-        }, timings.mark + timings.resultHold)
+        }, timings.mark + timings.resultPanelHold)
       );
       return () => {
         for (const id of timeouts) clearTimeout(id);
       };
     }
 
+    const schedulePostPanelDamage = (
+      panelEndMs: number,
+      onPanelHide: () => void,
+      onDamage: () => void
+    ) => {
+      timeouts.push(
+        setTimeout(() => {
+          setPanelVisible(false);
+          onPanelHide();
+        }, panelEndMs)
+      );
+      timeouts.push(
+        setTimeout(() => {
+          onDamage();
+        }, panelEndMs + timings.postPanelDelay)
+      );
+      timeouts.push(
+        setTimeout(() => {
+          revealChat("done");
+          setPhase("done");
+          onTokenFlashRef.current?.(null, null);
+          onDoneRef.current();
+        }, panelEndMs + timings.postPanelDelay + timings.damageFade)
+      );
+    };
+
     if (data.mode === "area-simultaneous") {
       const targets = data.areaTargets ?? [];
+      const panelEnd = timings.mark + timings.roll + timings.resultPanelHold;
       timeouts.push(
         setTimeout(() => {
           revealChat("roll");
@@ -181,14 +200,17 @@ export function CombatFxLayer({
           setPhase("result");
         }, timings.mark + timings.roll)
       );
-      timeouts.push(
-        setTimeout(() => {
+      schedulePostPanelDamage(
+        panelEnd,
+        () => {
           for (const t of targets) {
             onTokenFlashRef.current?.(t.tokenId, flashForTarget(t));
             if (data.castFxKind) {
               onTokenCastFxRef.current?.(t.tokenId, data.castFxKind);
             }
           }
+        },
+        () => {
           if (!applyStateCalledRef.current) {
             applyStateCalledRef.current = true;
             onApplyStateRef.current?.();
@@ -196,29 +218,7 @@ export function CombatFxLayer({
           revealChat("damage");
           setShowDamage(true);
           setPhase("damage");
-        }, timings.mark + timings.roll + timings.resultPause + timings.simulFlash)
-      );
-      timeouts.push(
-        setTimeout(() => {
-          if (!applyStateCalledRef.current) {
-            applyStateCalledRef.current = true;
-            onApplyStateRef.current?.();
-          }
-          setPhase("done");
-          onTokenFlashRef.current?.(null, null);
-          onDoneRef.current();
-        },
-          timings.mark +
-            timings.roll +
-            timings.resultPause +
-            timings.simulFlash +
-            timings.resultHold +
-            timings.damageFade)
-      );
-      timeouts.push(
-        setTimeout(() => {
-          revealChat("done");
-        }, timings.mark + timings.roll + timings.resultPause + timings.simulFlash + timings.resultHold + timings.damageFade)
+        }
       );
       return () => {
         for (const id of timeouts) clearTimeout(id);
@@ -268,6 +268,7 @@ export function CombatFxLayer({
     };
 
     const runRollResultDamageSequence = (markMs: number) => {
+      const panelEnd = markMs + timings.roll + timings.resultPanelHold;
       timeouts.push(
         setTimeout(() => {
           revealChat("roll");
@@ -279,31 +280,15 @@ export function CombatFxLayer({
           setPhase("result");
         }, markMs + timings.roll)
       );
-      timeouts.push(
-        setTimeout(() => {
+      schedulePostPanelDamage(
+        panelEnd,
+        () => {
           playTokenFx();
-        }, markMs + timings.roll + timings.resultPause + timings.tokenFxDelay)
-      );
-      timeouts.push(
-        setTimeout(() => {
+        },
+        () => {
           applyDamagePhase();
           revealChat("damage");
-        }, markMs + timings.roll + timings.resultPause + timings.tokenFxDelay + timings.applyStateDelay)
-      );
-      timeouts.push(
-        setTimeout(() => {
-          revealChat("done");
-          setPhase("done");
-          onTokenFlashRef.current?.(null, null);
-          onDoneRef.current();
-        },
-          markMs +
-            timings.roll +
-            timings.resultPause +
-            timings.tokenFxDelay +
-            timings.applyStateDelay +
-            timings.resultHold +
-            timings.damageFade)
+        }
       );
     };
 
@@ -315,44 +300,8 @@ export function CombatFxLayer({
     }
 
     const t0 = setTimeout(() => {
-      revealChat("roll");
-      setPhase("roll");
-
-      timeouts.push(
-        setTimeout(() => {
-          setPhase("result");
-        }, timings.mark + timings.roll)
-      );
-
-      timeouts.push(
-        setTimeout(() => {
-          playTokenFx();
-        }, timings.mark + timings.roll + timings.resultPause + timings.tokenFxDelay)
-      );
-
-      timeouts.push(
-        setTimeout(() => {
-          applyDamagePhase();
-          revealChat("damage");
-        }, timings.mark + timings.roll + timings.resultPause + timings.tokenFxDelay + timings.applyStateDelay)
-      );
-
-      timeouts.push(
-        setTimeout(() => {
-          revealChat("done");
-          setPhase("done");
-          onTokenFlashRef.current?.(null, null);
-          onDoneRef.current();
-        },
-          timings.mark +
-            timings.roll +
-            timings.resultPause +
-            timings.tokenFxDelay +
-            timings.applyStateDelay +
-            timings.resultHold +
-            timings.damageFade)
-      );
-    }, timings.mark);
+      runRollResultDamageSequence(timings.mark);
+    }, 0);
     timeouts.push(t0);
 
     return () => {
@@ -392,9 +341,9 @@ export function CombatFxLayer({
   const showDicePanel = fx.mode === "single" || fx.mode === "area-target";
   const showPanel =
     fx.mode === "area-intro" ||
-    (showDicePanel && (phase === "roll" || phase === "result" || phase === "damage"));
+    (showDicePanel && panelVisible && (phase === "roll" || phase === "result"));
   const showResultText =
-    fx.mode === "area-intro" || (showDicePanel && (phase === "result" || phase === "damage"));
+    fx.mode === "area-intro" || (showDicePanel && panelVisible && phase === "result");
   const showRoll = showDicePanel && phase === "roll";
   const detailParts = fx.resolveDetail
     ? splitCombatChatDetail(
@@ -407,11 +356,6 @@ export function CombatFxLayer({
     phase === "result" &&
     Boolean(detailParts.roll) &&
     (fx.hit === true || fx.hit === false || fx.saveTotal != null);
-  const showDamageDetail =
-    showDicePanel &&
-    phase === "damage" &&
-    Boolean(detailParts.damage) &&
-    (fx.hit === true || fx.saveTotal != null);
 
   const areaHexPaths =
     fx.areaHexes?.map((hex) => hexPathPoints(hex, hexSize, ox, oy, w, h, view)) ?? [];
@@ -498,11 +442,6 @@ export function CombatFxLayer({
                     {showRollDetail ? (
                       <p className="combat-fx-panel-detail">{detailParts.roll}</p>
                     ) : null}
-                    {showDamageDetail ? (
-                      <p className="combat-fx-panel-detail combat-fx-panel-detail--damage">
-                        {detailParts.damage}
-                      </p>
-                    ) : null}
                   </div>
                 ) : showRoll ? (
                   <p className="combat-fx-rolling">Rolando…</p>
@@ -516,7 +455,7 @@ export function CombatFxLayer({
       {showDamage && fx.mode !== "area-simultaneous" && fx.damageTotal != null ? (
         <div
           className={`combat-fx-damage combat-fx-damage--hex ${fx.critical ? "crit" : ""} ${fx.isHeal ? "heal" : ""}`}
-          style={{ left: to.x, top: to.y + (showPanel ? 72 : 0) }}
+          style={{ left: to.x, top: to.y }}
         >
           <span className="combat-fx-damage-label">{fx.damageTypeLabel ?? "Dano"}</span>
           <span className="combat-fx-damage-value">

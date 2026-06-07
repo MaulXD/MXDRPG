@@ -186,27 +186,38 @@ export function VttHelpButton() {
               </ul>
             </HelpSection>
 
-            <HelpSection title="Mapa, câmera e desenho">
+            <HelpSection title="Mapa, câmera e ferramentas (estilo Roll20)">
               <ul className="vtt-help-panel__list">
                 <li>
+                  Barra vertical à <strong>esquerda do mapa</strong>: <strong>↖ Interagir</strong>{" "}
+                  (padrão), <strong>◎ Ping</strong>, <strong>📏 Régua</strong>,{" "}
+                  <strong>◐ Névoa</strong> (mestre, com névoa ativa), <strong>✎ Desenho</strong> e
+                  zoom <strong>− / + / ⊙</strong>.
+                </li>
+                <li>
                   <strong>Scroll do mouse</strong> — zoom. <strong>Alt + arrastar</strong> — mover a
-                  câmera. Botões <strong>− / + / ⊙</strong> no canto inferior direito.
+                  câmera (em qualquer modo).
                 </li>
                 <li>
-                  <strong>Alt + clique</strong> no mapa — ping (todos veem), se permitido nas
-                  configurações.
+                  Modo <strong>Ping</strong> ou <strong>Alt + clique</strong> — marca posição para o
+                  grupo (se permitido nas configurações).
                 </li>
                 <li>
-                  Com névoa de guerra ativa: <strong>Ctrl + clique</strong> revela hex (mestre).
+                  Modo <strong>Régua</strong> — arraste no mapa para medir distância em hex e metros.
+                  <kbd>Esc</kbd> limpa a medição.
+                </li>
+                <li>
+                  Modo <strong>Névoa</strong> ou <strong>Ctrl + clique</strong> — revela hex (mestre).
                   Jogadores só veem tokens dentro do campo de visão.
                 </li>
                 <li>
-                  Barra <strong>✎ Lousa</strong> (acima do mapa) — desenhar linhas, formas e texto
-                  sobre o tabuleiro (marcadores temporários ou permanentes, conforme permissão).
+                  Modo <strong>Desenho</strong> — traço livre, linha, seta, formas, polígono e texto
+                  (temporário ou permanente). Painel <strong>Lousa</strong> na barra lateral para
+                  opções extras. <kbd>Del</kbd> apaga desenho selecionado.
                 </li>
                 <li>
-                  <strong>Mestre:</strong> arraste tokens livremente para reposicionar; jogadores
-                  movem só a própria ficha no turno (ou conforme regras da mesa).
+                  <strong>Mestre:</strong> botão <strong>🏰</strong> abre o editor de mapa; arraste
+                  tokens livremente para reposicionar.
                 </li>
               </ul>
             </HelpSection>
@@ -230,7 +241,7 @@ export function VttHelpButton() {
             <HelpSection title="Atalhos úteis">
               <ul className="vtt-help-panel__list">
                 <li>
-                  <kbd>Esc</kbd> — cancela modo de ataque, movimento ou magia de área.
+                  <kbd>Esc</kbd> — cancela ataque/movimento/magia, régua ou volta ao modo Interagir.
                 </li>
                 <li>
                   <kbd>Delete</kbd> — mestre remove o token selecionado do mapa.

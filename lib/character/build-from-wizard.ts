@@ -8,9 +8,10 @@ import { validateImageDataUrl } from "@/lib/media/image-data-url";
 import { xpTotalForLevel } from "@/lib/character/xp";
 import {
   applyStarterKitToSheet,
-  findStarterKitOption,
+  getDefaultStarterEquipment,
   getDefaultStarterKitId,
-  resolveStarterKitOption,
+  sanitizeStarterEquipmentForClass,
+  validateStarterEquipment,
 } from "@/lib/character/starter-kits";
 
 const MAX_PORTRAIT_FIELD_CHARS = 900_000;
@@ -31,6 +32,10 @@ export function sanitizeWizardDraftForSave(
     ...draft,
     portraitUrl,
     tokenImageUrl,
+    starterEquipment: sanitizeStarterEquipmentForClass(
+      draft.classe,
+      draft.starterEquipment ?? getDefaultStarterEquipment(draft.classe)
+    ),
   };
 }
 
@@ -47,9 +52,11 @@ export function validateWizardDraft(draft: CharacterWizardDraft): string | null 
   if (pb) return pb;
   if (!draft.antecedente.trim()) return "Escolha um antecedente";
   if (!draft.religiao?.trim()) return "Escolha uma devotion (ou Sem Deus)";
-  if (!findStarterKitOption(draft.classe, draft.starterKitId)) {
-    return "Escolha um kit de equipamento inicial";
-  }
+  const equipErr = validateStarterEquipment(
+    draft.classe,
+    draft.starterEquipment ?? getDefaultStarterEquipment(draft.classe)
+  );
+  if (equipErr) return equipErr;
   return null;
 }
 
@@ -112,6 +119,7 @@ export function buildCharacterFromWizard(
     raca: safeDraft.raca,
     antecedente: safeDraft.antecedente,
     starterKitId: safeDraft.starterKitId || getDefaultStarterKitId(safeDraft.classe),
+    equipment: safeDraft.starterEquipment,
   });
 
   return applyIdentityPatch(withKit, {

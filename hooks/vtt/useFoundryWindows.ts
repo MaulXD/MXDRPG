@@ -43,12 +43,12 @@ export type FoundryWindowLayout = {
 type Registry = Partial<Record<MesaWindowId, FoundryWindowLayout>>;
 
 const DEFAULT_LAYOUTS: Record<MesaWindowId, Omit<FoundryWindowLayout, "open" | "minimized" | "z">> = {
-  actors: { x: 52, y: 48, width: 280, height: 440 },
+  actors: { x: 52, y: 48, width: 248, height: 420 },
   gm: { x: 52, y: 48, width: 300, height: 480 },
   dungeon: { x: 52, y: 48, width: 360, height: 540 },
   whiteboard: { x: 52, y: 48, width: 280, height: 480 },
   tokens: { x: 52, y: 48, width: 300, height: 480 },
-  initiative: { x: 52, y: 500, width: 280, height: 360 },
+  initiative: { x: 52, y: 500, width: 196, height: 300 },
   chat: { x: 52, y: 48, width: 340, height: 340 },
   dice: { x: 52, y: 400, width: 300, height: 260 },
   ficha: { x: 400, y: 48, width: 360, height: 320 },

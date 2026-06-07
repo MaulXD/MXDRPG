@@ -1,6 +1,7 @@
 import type { AttributeKey } from "@/lib/character/rules";
 import type { CompendiumPackId } from "@/lib/compendium/types";
 import type { SpellAreaShape } from "@/lib/combat/area-spell";
+import type { SpellEffectKind } from "@/lib/combat/spell-parse";
 import type { RechargeSpec } from "@/lib/combat/recharge";
 import type { TokenCondition } from "@/lib/combat/conditions";
 import type { EquipmentSpecial } from "@/lib/combat/equipment-effects";
@@ -68,6 +69,8 @@ export type CombatActionOption = {
   channelBonusPerPa?: string;
   /** Recarga do compêndio (1/turno, 1/combate, …) */
   recharge?: RechargeSpec;
+  /** Efeito utilitário / cura / debuff de magia */
+  spellEffect?: SpellEffectKind;
 };
 
 export type CombatTurnOptions = {

@@ -133,9 +133,10 @@ export function tokenAxialDistance(
   return min === Infinity ? axialDistance(a.axial, b.axial) : min;
 }
 
+/** Círculo inscrito no hex pointy-top ≈ hexSize × √3/2; usamos ~0.84 para margem mínima. */
 export const TOKEN_RADIUS_RATIO_BY_SIZE: Record<CreatureSize, number> = {
-  small: 0.38,
-  medium: 0.48,
+  small: 0.84,
+  medium: 0.84,
   large: 0.92,
   huge: 1.48,
   gargantuan: 2.42,

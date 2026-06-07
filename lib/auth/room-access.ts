@@ -160,6 +160,20 @@ export function canBypassCombatTurn(
   return canManageRoom(room, user);
 }
 
+/** Retirar token do mapa — mestre (qualquer token) ou dono da ficha linkada. */
+export function canRemoveTokenFromBoard(
+  room: RoomState,
+  user: SessionUser | null | undefined,
+  token: import("@/lib/vtt/types").BattleToken
+): boolean {
+  if (canSpawnMonstersInRoom(room, user)) return true;
+  if (!user || !canParticipateInRoom(room, user)) return false;
+  if (!token.linked || !token.actorId) return false;
+  const actor = room.actors[token.actorId];
+  if (!actor) return false;
+  return canEditRoomActor(room, actor, user);
+}
+
 /** Reposicionar token livremente no mapa (mestre / demo GM). */
 export function canRepositionTokensInRoom(
   room: Pick<RoomState, "roomId" | "ownerId">,
@@ -192,6 +206,20 @@ export function actorForRoomAuth(
     adventureId: resolveAdventureId(actor) ?? roomAdventureId,
     campaignRoomId: actor.campaignRoomId ?? room.roomId,
   };
+}
+
+/** Colocar ou mover token de personagem no mapa — dono da ficha ou mestre da mesa. */
+export function canPlaceRoomActorOnBoard(
+  room: Pick<RoomState, "roomId" | "ownerId"> & { adventureId?: string },
+  actor: Pick<CharacterSheet, "id" | "ownerId" | "adventureId" | "campaignRoomId">,
+  user: SessionUser | null | undefined
+): boolean {
+  if (canEditRoomActor(room, actor, user)) return true;
+  if (!user || !canParticipateInRoom(room as RoomState, user)) return false;
+  const adventureId = room.adventureId ?? room.roomId;
+  const authActor = actorForRoomAuth(room, actor);
+  if (!characterBelongsToAdventure(authActor, adventureId)) return false;
+  return canManageRoom(room, user);
 }
 
 /** Editar ficha na mesa (level-up, identidade, retrato) — alinhado a `canParticipateInRoom`. */

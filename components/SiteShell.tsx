@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { BugReportButton } from "@/components/BugReportButton";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import "@/components/vtt/mesa-theme.css";
 
@@ -32,6 +33,7 @@ export function SiteShell({ children, header, footer }: Props) {
           </div>
         </header>
         <main className="vtt-main">{children}</main>
+        <BugReportButton variant="vtt" />
       </div>
     );
   }
@@ -41,6 +43,7 @@ export function SiteShell({ children, header, footer }: Props) {
       {header}
       <main>{children}</main>
       {footer}
+      <BugReportButton variant="site" />
     </>
   );
 }

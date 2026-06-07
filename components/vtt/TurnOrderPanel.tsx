@@ -2,7 +2,7 @@
 
 
 
-import { useState } from "react";
+import { useState, type DragEvent } from "react";
 
 import type { BattleToken } from "@/lib/vtt/types";
 
@@ -47,6 +47,9 @@ type Props = {
 
   /** Pilha de desfazer — só mestre. */
   combatUndo?: CombatUndoEntry[];
+
+  /** Layout estilo Roll20 — avatar + iniciativa, controles no rodapé. */
+  compact?: boolean;
 
 };
 
@@ -109,6 +112,8 @@ export function TurnOrderPanel({
 
   combatUndo = [],
 
+  compact = false,
+
 }: Props) {
 
   const [busy, setBusy] = useState(false);
@@ -116,6 +121,8 @@ export function TurnOrderPanel({
   const [gmError, setGmError] = useState<string | null>(null);
   const [dragId, setDragId] = useState<string | null>(null);
   const [dragOverId, setDragOverId] = useState<string | null>(null);
+  const [hoverRowId, setHoverRowId] = useState<string | null>(null);
+  const [settingsOpen, setSettingsOpen] = useState(false);
 
   const tokenMap = new Map(tokens.map((t) => [t.id, t]));
   const displayOrder = livingOrderIds(combat.order, tokenMap);
@@ -155,6 +162,22 @@ export function TurnOrderPanel({
     }
   }
 
+  function handlePrev() {
+    if (!activeId || displayOrder.length < 2) return;
+    const idx = displayOrder.indexOf(activeId);
+    const prevId =
+      idx <= 0 ? displayOrder[displayOrder.length - 1]! : displayOrder[idx - 1]!;
+    void runGmAction("prev", { action: "set-active", tokenId: prevId });
+  }
+
+  function rowTitle(token: BattleToken, active: boolean): string {
+    const parts = [token.name];
+    if (token.initiative != null) parts.push(`Iniciativa ${token.initiative}`);
+    if (token.vidaMax != null) parts.push(`${token.vida ?? 0}/${token.vidaMax} PV`);
+    if (active) parts.push("Turno atual");
+    return parts.join(" · ");
+  }
+
   async function runGmAction(key: string, body: Parameters<typeof postGmCombatAction>[1]) {
     setGmBusy(key);
     setGmError(null);
@@ -182,91 +205,169 @@ export function TurnOrderPanel({
     if (!undoByToken.has(entry.tokenId)) undoByToken.set(entry.tokenId, entry);
   }
 
-  return (
-
-    <>
-
-      <div className="vtt-turn-track">
-
-        <div className="vtt-turn-head">
-
-          <p className="vtt-eyebrow" style={{ margin: 0 }}>
-
-            Ordem de combate
-
-          </p>
-
-          <span className="vtt-turn-round">Rodada {combat.round}</span>
-
-        </div>
-
-
-
-        <div className="vtt-turn-controls">
-
-          {canControl ? (
-
-            <button
-              type="button"
-              className="btn btn-ghost"
-              onClick={(e) => {
-                e.stopPropagation();
-                void handleRoll();
-              }}
-            >
-
-              Rolar iniciativa
-
-            </button>
-
-          ) : null}
-
-          {canEndTurn || canControl ? (
-
-            <button
-
-              type="button"
-
-              className="btn vtt-turn-next-btn"
-
-              disabled={busy || !combat.order.length}
-
-              onClick={(e) => {
-                e.stopPropagation();
-                void handleNext();
-              }}
-
-            >
-
-              Passar turno
-
-            </button>
-
-          ) : null}
-
-        </div>
-
-        {canControl ? (
-          <p className="vtt-turn-gm-hint">Arraste ≡ para reordenar a fila manualmente.</p>
+  const gmChips = (id: string, token: BattleToken, active: boolean, defeated: boolean) =>
+    canControl && !defeated ? (
+      <div className="vtt-turn-gm-actions" onPointerDown={(e) => e.stopPropagation()}>
+        {!active ? (
+          <button
+            type="button"
+            className="vtt-turn-gm-chip vtt-turn-gm-chip--active"
+            title="Definir como turno ativo"
+            disabled={gmBusy != null}
+            onClick={(e) => {
+              e.stopPropagation();
+              void runGmAction(`active-${id}`, { action: "set-active", tokenId: id });
+            }}
+          >
+            {gmBusy === `active-${id}` ? "…" : "▶"}
+          </button>
         ) : null}
+        <button
+          type="button"
+          className="vtt-turn-gm-chip"
+          title="Restaurar PA deste token"
+          disabled={gmBusy != null}
+          onClick={(e) => {
+            e.stopPropagation();
+            void runGmAction(`pa-${id}`, { action: "reset-pa", tokenId: id });
+          }}
+        >
+          {gmBusy === `pa-${id}` ? "…" : "PA"}
+        </button>
+        <button
+          type="button"
+          className="vtt-turn-gm-chip"
+          title={active ? "Adiar para o fim desta rodada" : "Jogar ao fim desta rodada"}
+          disabled={gmBusy != null}
+          onClick={(e) => {
+            e.stopPropagation();
+            void runGmAction(`defer-${id}`, { action: "defer-turn", tokenId: id });
+          }}
+        >
+          {gmBusy === `defer-${id}` ? "…" : "Fim"}
+        </button>
+        {undoByToken.get(id) ? (
+          <button
+            type="button"
+            className="vtt-turn-gm-chip vtt-turn-gm-chip--undo"
+            title={`Desfazer: ${undoByToken.get(id)!.summary}`}
+            disabled={gmBusy != null}
+            onClick={() =>
+              void runGmAction(`undo-${id}`, {
+                action: "revert",
+                undoId: undoByToken.get(id)!.id,
+              })
+            }
+          >
+            {gmBusy === `undo-${id}` ? "…" : "↩"}
+          </button>
+        ) : null}
+      </div>
+    ) : null;
+
+  return (
+    <>
+      <div
+        className={`vtt-turn-track${compact ? " vtt-turn-track--compact" : ""}`}
+      >
+        {compact ? (
+          <div className="vtt-turn-compact-head">
+            <span className="vtt-turn-compact-count">
+              Contar: <strong>{displayOrder.length}</strong>
+            </span>
+            {canControl ? (
+              <button
+                type="button"
+                className="vtt-turn-compact-icon-btn"
+                title="Rolar iniciativa"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  void handleRoll();
+                }}
+              >
+                ⇅
+              </button>
+            ) : null}
+            <span className="vtt-turn-compact-round">R{combat.round}</span>
+          </div>
+        ) : (
+          <>
+            <div className="vtt-turn-head">
+              <p className="vtt-eyebrow" style={{ margin: 0 }}>
+                Ordem de combate
+              </p>
+              <span className="vtt-turn-round">Rodada {combat.round}</span>
+            </div>
+            <div className="vtt-turn-controls">
+              {canControl ? (
+                <button
+                  type="button"
+                  className="btn btn-ghost"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    void handleRoll();
+                  }}
+                >
+                  Rolar iniciativa
+                </button>
+              ) : null}
+              {canEndTurn || canControl ? (
+                <button
+                  type="button"
+                  className="btn vtt-turn-next-btn"
+                  disabled={busy || !combat.order.length}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    void handleNext();
+                  }}
+                >
+                  Passar turno
+                </button>
+              ) : null}
+            </div>
+            {canControl ? (
+              <p className="vtt-turn-gm-hint">Arraste ≡ para reordenar a fila manualmente.</p>
+            ) : null}
+          </>
+        )}
 
         {canControl && combat.orderOverridden ? (
-          <div className="vtt-turn-gm-banner">
-            <span>Ordem alterada pelo mestre</span>
-            <button
-              type="button"
-              className="btn btn-ghost vtt-turn-gm-btn"
-              disabled={gmBusy != null}
-              onClick={() => void runGmAction("restore", { action: "restore-order" })}
-            >
-              {gmBusy === "restore" ? "…" : "↩ Ordem natural"}
-            </button>
+          <div className={`vtt-turn-gm-banner${compact ? " vtt-turn-gm-banner--compact" : ""}`}>
+            <span>Ordem manual</span>
+            {!compact ? (
+              <button
+                type="button"
+                className="btn btn-ghost vtt-turn-gm-btn"
+                disabled={gmBusy != null}
+                onClick={() => void runGmAction("restore", { action: "restore-order" })}
+              >
+                {gmBusy === "restore" ? "…" : "↩ Ordem natural"}
+              </button>
+            ) : null}
           </div>
         ) : null}
 
         {gmError ? <p className="vtt-turn-gm-error">{gmError}</p> : null}
 
-        <ol className={`vtt-turn-list${canControl ? " vtt-turn-list--gm" : ""}`}>
+        {displayOrder.length === 0 ? (
+          <p className={`vtt-combat-hint vtt-turn-empty${compact ? " vtt-turn-empty--compact" : ""}`}>
+            {canControl
+              ? compact
+                ? "Rolar iniciativa (⇅) para começar."
+                : "Nenhum combatente na fila — use Rolar iniciativa para começar."
+              : "Aguardando o mestre rolar a iniciativa."}
+          </p>
+        ) : null}
+
+        <ol
+          className={[
+            "vtt-turn-list",
+            canControl && !compact ? "vtt-turn-list--gm" : "",
+            compact ? "vtt-turn-list--compact" : "",
+          ]
+            .filter(Boolean)
+            .join(" ")}
+        >
 
           {displayOrder.map((id, index) => {
 
@@ -323,11 +424,54 @@ export function TurnOrderPanel({
 
 
 
-            return (
+            const avatarNode = (
+              <span
+                className={`vtt-turn-avatar-slot${active && !compact ? " vtt-turn-avatar-slot--active" : ""}`}
+              >
+                <span
+                  className={avatarClass}
+                  style={{
+                    ...(ringShadow && !active ? { boxShadow: ringShadow } : {}),
+                    borderColor: token.color,
+                  }}
+                >
+                  {token.imageUrl ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={token.imageUrl} alt="" />
+                  ) : (
+                    <span
+                      className="vtt-turn-initial"
+                      style={{ background: `${token.color}33`, color: token.color }}
+                    >
+                      {token.name.slice(0, 1).toUpperCase()}
+                    </span>
+                  )}
+                </span>
+              </span>
+            );
 
+            const dragProps = draggable
+              ? {
+                  draggable: true as const,
+                  onDragStart: (e: DragEvent) => {
+                    setDragId(id);
+                    setDragOverId(id);
+                    e.dataTransfer.effectAllowed = "move";
+                    e.dataTransfer.setData("text/plain", id);
+                  },
+                  onDragEnd: () => {
+                    setDragId(null);
+                    setDragOverId(null);
+                  },
+                }
+              : {};
+
+            return (
               <li
                 key={id}
                 className={rowClass || undefined}
+                title={compact ? rowTitle(token, active) : undefined}
+                {...dragProps}
                 onDragOver={(e) => {
                   if (!draggable || !dragId || dragId === id) return;
                   e.preventDefault();
@@ -342,218 +486,184 @@ export function TurnOrderPanel({
                   setDragOverId(null);
                 }}
                 onMouseEnter={() => {
+                  setHoverRowId(id);
                   if (attackable) onHoverAttackTargetChange?.(id);
                 }}
                 onMouseLeave={() => {
+                  setHoverRowId((cur) => (cur === id ? null : cur));
                   if (attackable) onHoverAttackTargetChange?.(null);
                 }}
               >
-
-                {draggable ? (
-                  <span
-                    className="vtt-turn-drag-handle"
-                    draggable
-                    aria-hidden
-                    title="Arrastar para reordenar"
-                    onDragStart={(e) => {
-                      setDragId(id);
-                      setDragOverId(id);
-                      e.dataTransfer.effectAllowed = "move";
-                      e.dataTransfer.setData("text/plain", id);
-                    }}
-                    onDragEnd={() => {
-                      setDragId(null);
-                      setDragOverId(null);
-                    }}
-                  >
-                    ≡
-                  </span>
-                ) : (
-                  <span className="vtt-turn-drag-spacer" aria-hidden />
-                )}
-
-                <span className="vtt-turn-rank" aria-hidden>
-
-                  {index + 1}
-
-                </span>
-
-                <span
-                  className={`vtt-turn-avatar-slot${active ? " vtt-turn-avatar-slot--active" : ""}`}
-                >
-                  <span
-                    className={avatarClass}
-                    style={{
-                      ...(ringShadow && !active ? { boxShadow: ringShadow } : {}),
-                      borderColor: token.color,
-                    }}
-                  >
-                    {token.imageUrl ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img src={token.imageUrl} alt="" />
-                    ) : (
-                      <span
-                        className="vtt-turn-initial"
-                        style={{ background: `${token.color}33`, color: token.color }}
-                      >
-                        {token.name.slice(0, 1).toUpperCase()}
-                      </span>
-                    )}
-                  </span>
-                </span>
-
-                <div className="vtt-turn-info">
-
-                  <div className="vtt-turn-name-row">
-
-                    <strong className="vtt-turn-name">{token.name}</strong>
-
-                    {active ? <span className="vtt-turn-now">Agora</span> : null}
-
-                    {attackFocus ? (
-
-                      <span className="vtt-turn-target-badge" title="Alvo do ataque">
-
-                        Alvo
-
-                      </span>
-
-                    ) : attackable ? (
-
-                      <span className="vtt-turn-target-hint" title="Alvo válido">
-
-                        ◎
-
-                      </span>
-
+                {compact ? (
+                  <>
+                    {avatarNode}
+                    <span className="vtt-turn-compact-init" aria-label="Iniciativa">
+                      {token.initiative ?? "—"}
+                    </span>
+                    {canControl && hoverRowId === id ? (
+                      <div className="vtt-turn-compact-hover-gm">{gmChips(id, token, active, defeated)}</div>
                     ) : null}
-
-                  </div>
-
-                  {token.vidaMax != null ? (
-
-                    <div className="vtt-turn-hp">
-
-                      <div className="vtt-turn-hp-track">
-
-                        <div
-
-                          className="vtt-turn-hp-fill"
-
-                          style={{ width: `${hp}%`, background: hpBarColor(hpRatio(token)) }}
-
-                        />
-
-                      </div>
-
-                      <small>
-
-                        {token.vida}/{token.vidaMax}
-
-                      </small>
-
-                    </div>
-
-                  ) : (
-
-                    <small className="vtt-turn-no-hp">—</small>
-
-                  )}
-
-                  <TokenEffectsRow token={token} className="vtt-effect-chips--turn" max={6} />
-
-                </div>
-
-                {token.initiative != null ? (
-
-                  <span className="vtt-turn-init" title="Iniciativa">
-
-                    {token.initiative}
-
-                  </span>
-
-                ) : null}
-
-                {canControl && !defeated ? (
-                  <div
-                    className="vtt-turn-gm-actions"
-                    onPointerDown={(e) => e.stopPropagation()}
-                  >
-                    {!active ? (
-                      <button
-                        type="button"
-                        className="vtt-turn-gm-chip vtt-turn-gm-chip--active"
-                        title="Definir como turno ativo"
-                        disabled={gmBusy != null}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          void runGmAction(`active-${id}`, { action: "set-active", tokenId: id });
+                  </>
+                ) : (
+                  <>
+                    {draggable ? (
+                      <span
+                        className="vtt-turn-drag-handle"
+                        draggable
+                        aria-hidden
+                        title="Arrastar para reordenar"
+                        onDragStart={(e) => {
+                          setDragId(id);
+                          setDragOverId(id);
+                          e.dataTransfer.effectAllowed = "move";
+                          e.dataTransfer.setData("text/plain", id);
+                        }}
+                        onDragEnd={() => {
+                          setDragId(null);
+                          setDragOverId(null);
                         }}
                       >
-                        {gmBusy === `active-${id}` ? "…" : "▶"}
-                      </button>
-                    ) : null}
-                    <button
-                      type="button"
-                      className="vtt-turn-gm-chip"
-                      title="Restaurar PA deste token"
-                      disabled={gmBusy != null}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        void runGmAction(`pa-${id}`, { action: "reset-pa", tokenId: id });
-                      }}
-                    >
-                      {gmBusy === `pa-${id}` ? "…" : "PA"}
-                    </button>
-                    <button
-                      type="button"
-                      className="vtt-turn-gm-chip"
-                      title={
-                        active
-                          ? "Adiar para o fim desta rodada"
-                          : "Jogar ao fim desta rodada"
-                      }
-                      disabled={gmBusy != null}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        void runGmAction(`defer-${id}`, { action: "defer-turn", tokenId: id });
-                      }}
-                    >
-                      {gmBusy === `defer-${id}` ? "…" : "Fim"}
-                    </button>
-                    {undoByToken.get(id) ? (
-                      <button
-                        type="button"
-                        className="vtt-turn-gm-chip vtt-turn-gm-chip--undo"
-                        title={`Desfazer: ${undoByToken.get(id)!.summary}`}
-                        disabled={gmBusy != null}
-                        onClick={() =>
-                          void runGmAction(`undo-${id}`, {
-                            action: "revert",
-                            undoId: undoByToken.get(id)!.id,
-                          })
-                        }
-                      >
-                        {gmBusy === `undo-${id}` ? "…" : "↩"}
-                      </button>
-                    ) : null}
-                  </div>
-                ) : null}
-
+                        ≡
+                      </span>
+                    ) : (
+                      <span className="vtt-turn-drag-spacer" aria-hidden />
+                    )}
+                    <span className="vtt-turn-rank" aria-hidden>
+                      {index + 1}
+                    </span>
+                    {avatarNode}
+                    <div className="vtt-turn-info">
+                      <div className="vtt-turn-name-row">
+                        <strong className="vtt-turn-name">{token.name}</strong>
+                        {active ? <span className="vtt-turn-now">Agora</span> : null}
+                        {attackFocus ? (
+                          <span className="vtt-turn-target-badge" title="Alvo do ataque">
+                            Alvo
+                          </span>
+                        ) : attackable ? (
+                          <span className="vtt-turn-target-hint" title="Alvo válido">
+                            ◎
+                          </span>
+                        ) : null}
+                      </div>
+                      {token.vidaMax != null ? (
+                        <div className="vtt-turn-hp">
+                          <div className="vtt-turn-hp-track">
+                            <div
+                              className="vtt-turn-hp-fill"
+                              style={{ width: `${hp}%`, background: hpBarColor(hpRatio(token)) }}
+                            />
+                          </div>
+                          <small>
+                            {token.vida}/{token.vidaMax}
+                          </small>
+                        </div>
+                      ) : (
+                        <small className="vtt-turn-no-hp">—</small>
+                      )}
+                      <TokenEffectsRow token={token} className="vtt-effect-chips--turn" max={3} />
+                    </div>
+                    <div className="vtt-turn-side">
+                      {token.initiative != null ? (
+                        <span className="vtt-turn-init" title="Iniciativa">
+                          {token.initiative}
+                        </span>
+                      ) : null}
+                      {gmChips(id, token, active, defeated)}
+                    </div>
+                  </>
+                )}
               </li>
-
             );
 
           })}
 
         </ol>
 
+        {compact && (canControl || canEndTurn) ? (
+          <div className="vtt-turn-compact-foot">
+            {canControl ? (
+              <button
+                type="button"
+                className="vtt-turn-compact-foot-btn"
+                title="Turno anterior"
+                disabled={gmBusy != null || displayOrder.length < 2}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handlePrev();
+                }}
+              >
+                ‹
+              </button>
+            ) : (
+              <span className="vtt-turn-compact-foot-spacer" aria-hidden />
+            )}
+            {canControl ? (
+              <div className="vtt-turn-compact-settings">
+                <button
+                  type="button"
+                  className="vtt-turn-compact-foot-btn"
+                  title="Opções do mestre"
+                  aria-expanded={settingsOpen}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setSettingsOpen((o) => !o);
+                  }}
+                >
+                  ⚙
+                </button>
+                {settingsOpen ? (
+                  <div className="vtt-turn-compact-settings-menu" role="menu">
+                    <button
+                      type="button"
+                      role="menuitem"
+                      onClick={() => {
+                        setSettingsOpen(false);
+                        void handleRoll();
+                      }}
+                    >
+                      Rolar iniciativa
+                    </button>
+                    {combat.orderOverridden ? (
+                      <button
+                        type="button"
+                        role="menuitem"
+                        disabled={gmBusy != null}
+                        onClick={() => {
+                          setSettingsOpen(false);
+                          void runGmAction("restore", { action: "restore-order" });
+                        }}
+                      >
+                        Ordem natural
+                      </button>
+                    ) : null}
+                    <p className="vtt-turn-compact-settings-hint">
+                      Arraste uma linha para reordenar.
+                    </p>
+                  </div>
+                ) : null}
+              </div>
+            ) : (
+              <span className="vtt-turn-compact-foot-spacer" aria-hidden />
+            )}
+            {canEndTurn || canControl ? (
+              <button
+                type="button"
+                className="vtt-turn-compact-foot-btn vtt-turn-compact-foot-btn--next"
+                title="Passar turno"
+                disabled={busy || !combat.order.length}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  void handleNext();
+                }}
+              >
+                {busy ? "…" : "›"}
+              </button>
+            ) : null}
+          </div>
+        ) : null}
       </div>
-
-
-
     </>
-
   );
 
 }

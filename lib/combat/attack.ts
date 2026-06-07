@@ -25,6 +25,7 @@ import { attackRollMode, canTokenAct } from "@/lib/combat/conditions";
 import { clearTimedEffectsForFields } from "@/lib/combat/timed-effects";
 import { combineRollModes, formatD20Detail, formatRollMode, rollD20, type RollMode } from "@/lib/combat/d20";
 import { isAreaSpellAction, parseAreaShape } from "@/lib/combat/area-spell";
+import { buildMagiaCombatAction } from "@/lib/combat/spell-parse";
 import { listSubclassCombatActions } from "@/lib/character/subclass-vtt";
 import {
   appendHealToSummary,
@@ -154,6 +155,8 @@ function actionFromEntry(
   entry: CompendiumEntry,
   packId: "armas" | "magias"
 ): CombatActionOption | null {
+  if (packId === "magias") return buildMagiaCombatAction(entry);
+
   const weapon = entry.system.weapon as
     | {
         dano?: { formula?: string; tipo?: string };
@@ -161,88 +164,29 @@ function actionFromEntry(
         special?: unknown;
       }
     | undefined;
-  const spell = entry.system.spell as
-    | {
-        nivel?: number;
-        save?: { attribute?: string; cd?: number };
-        channel?: { maxExtraPa?: number; bonusPerPa?: string };
-        recarga?: string;
-        area?: {
-          shape?: string;
-          radiusHex?: number;
-          hexCount?: number;
-          lengthHex?: number;
-        };
-      }
-    | undefined;
   const tactical = entry.system.tactical as
     | { alcanceHex?: { value?: number }; custoPontosAcao?: { value?: number } }
     | undefined;
 
-  const saveAttr = parseSaveAttribute(spell?.save?.attribute);
-  const areaShape = parseAreaShape(spell?.area?.shape);
-  const isAreaSpell = packId === "magias" && areaShape !== "single";
-  const isSaveSpell = packId === "magias" && Boolean(saveAttr) && Boolean(weapon?.dano?.formula);
-  const desc =
-    typeof entry.system.description === "string" ? entry.system.description : "";
-  const healFormula =
-    (weapon?.dano?.tipo ?? "").toLowerCase().includes("cura") && weapon?.dano?.formula
-      ? weapon.dano.formula
-      : packId === "magias" && !weapon?.dano?.formula
-        ? parseHealFormulaFromDescription(desc)
-        : null;
-  const isHealSpell = Boolean(healFormula);
-  if (packId === "magias" && !weapon?.dano?.formula && !isSaveSpell && !isAreaSpell && !isHealSpell) {
-    return null;
-  }
-
   const rangeHex = tactical?.alcanceHex?.value ?? 1;
   const rawPa = tactical?.custoPontosAcao?.value ?? PA_DEFAULT_ACTION_COST;
-  const paCost =
-    packId === "magias" ? resolveSpellPaCost(entry.id, rawPa) : rawPa;
-  const kind: CombatActionKind = packId === "magias" ? "spell" : "weapon";
-  const resolution: CombatResolution = isSaveSpell ? "save" : "attack";
-  const damageFormula =
-    weapon?.dano?.formula ?? healFormula ?? (isHealSpell ? "1d8" : "1d4");
-  const damageType =
-    weapon?.dano?.tipo ??
-    (isHealSpell ? "cura" : kind === "spell" ? "mágico" : "contundente");
-  const areaSize =
-    spell?.area?.lengthHex ?? spell?.area?.radiusHex ?? (areaShape === "wall" ? undefined : 2);
-  const areaHexCount = spell?.area?.hexCount;
-  const areaRadiusHex =
-    areaShape === "burst" ||
-    areaShape === "cube" ||
-    areaShape === "cone" ||
-    areaShape === "line"
-      ? (areaSize ?? 2)
-      : undefined;
-
-  const channel = parseSpellChannel(spell?.channel);
-  const recharge = parseRecharge(spell?.recarga);
+  const paCost = rawPa;
+  const damageFormula = weapon?.dano?.formula ?? "1d4";
+  const damageType = weapon?.dano?.tipo ?? "contundente";
 
   return {
     packId,
     entryId: entry.id,
     name: entry.name,
-    kind,
-    resolution,
+    kind: "weapon",
+    resolution: "attack",
     damageFormula,
     damageType,
     attackBonus: weapon?.ataque?.bonus ?? 0,
     rangeHex,
     paCost,
-    saveAttribute: saveAttr,
-    saveDc: spell?.save?.cd,
-    areaShape: packId === "magias" && areaShape !== "single" ? areaShape : undefined,
-    areaRadiusHex,
-    areaHexCount: areaShape === "wall" ? areaHexCount ?? 3 : undefined,
-    channelMaxExtraPa: channel?.maxExtraPa,
-    channelBonusPerPa: channel?.bonusPerPa,
-    recharge: recharge ?? undefined,
-    equipmentSpecials:
-      packId === "armas" ? normalizeWeaponSpecial(weapon?.special) : undefined,
-    label: `${entry.name} · ${rangeHex} hex · PA ${paCost}${channel ? " · canalizável" : ""}${isSaveSpell ? " · teste" : ""}${areaShape !== "single" ? ` · área ${areaShape}` : ""}`,
+    equipmentSpecials: normalizeWeaponSpecial(weapon?.special),
+    label: `${entry.name} · ${rangeHex} hex · PA ${paCost}`,
   };
 }
 
@@ -618,9 +562,13 @@ function isFriendlyTarget(attacker: BattleToken, defender: BattleToken): boolean
   return !isMonsterSide(defender);
 }
 
-function isHealingSpell(action: CombatActionOption): boolean {
+export function isHealingSpell(action: CombatActionOption): boolean {
   const dt = (action.damageType ?? "").toLowerCase();
-  return dt.includes("cura") || action.abilityEffect === "heal_touch";
+  return (
+    dt.includes("cura") ||
+    action.abilityEffect === "heal_touch" ||
+    action.spellEffect === "heal"
+  );
 }
 
 /** Jogador (não criatura) atacando aliado com ação ofensiva — exige confirmação na UI. */
@@ -647,8 +595,8 @@ export function canAttackTarget(
     channelExtraPa?: number;
   }
 ): { ok: boolean; reason?: string } {
-  if (action.kind === "ability" && action.selfTarget) {
-    return { ok: false, reason: "Use botão de habilidade" };
+  if ((action.kind === "ability" || action.kind === "spell") && action.selfTarget) {
+    return { ok: false, reason: "Use o anel de ações (alvo próprio)" };
   }
   if (isAreaSpellAction(action)) {
     return { ok: false, reason: "Magia de área — clique o centro no mapa" };
