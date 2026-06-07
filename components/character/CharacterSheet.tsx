@@ -2,7 +2,6 @@
 
 import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import type { CharacterSheet as CharacterSheetData, InventoryItem } from "@/lib/character/types";
 import { formatXpProgress } from "@/lib/character/xp";
 import { loadInventory, newInstanceId, saveInventory } from "@/lib/character/inventory-storage";
@@ -36,7 +35,6 @@ import {
   type LoadoutPatch,
 } from "@/components/character/SheetPopupLoadoutBar";
 import { SheetPopupPortrait } from "@/components/character/SheetPopupPortrait";
-import { SheetPopupOrnaments } from "@/components/character/SheetPopupOrnaments";
 import { SheetPopupQuickBar } from "@/components/character/SheetPopupQuickBar";
 import {
   IconArmor,
@@ -84,7 +82,6 @@ export function CharacterSheet({
   embedded = false,
   variant = "page",
 }: Props) {
-  const router = useRouter();
   const canEditPortrait = canEditPortraitProp ?? canEdit;
   const [tab, setTab] = useState<Tab>("inventário");
   const [inventory, setInventory] = useState<InventoryItem[]>(character.inventory);
@@ -155,11 +152,6 @@ export function CharacterSheet({
     },
     [character.id, inRoom, roomId, refresh]
   );
-
-  const onPortraitSaved = useCallback(() => {
-    if (inRoom) void refresh();
-    else router.refresh();
-  }, [inRoom, refresh, router]);
 
   const resolved = useMemo(() => {
     return inventory
@@ -660,20 +652,19 @@ export function CharacterSheet({
 
     return (
       <div className="sheet-shell sheet-shell--popup">
-        <SheetPopupOrnaments />
         <header className="sheet-popup-top">
           <div className="sheet-popup-top__portrait-col">
-            {canEditPortrait ? (
+            {inRoom ? (
               <SheetPopupPortrait
                 actorId={character.id}
-                roomId={inRoom ? roomId : undefined}
+                roomId={roomId}
                 name={live.name}
                 portraitUrl={live.portraitUrl}
                 tokenImageUrl={live.tokenImageUrl}
                 portraitFocus={live.portraitFocus}
                 tokenFocus={live.tokenFocus}
                 canEdit={canEditPortrait}
-                onSaved={onPortraitSaved}
+                onSaved={refresh}
               />
             ) : (
               <div className="sheet-popup-top__portrait sheet-popup-portrait is-readonly">

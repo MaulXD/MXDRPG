@@ -340,6 +340,11 @@ export function drawTokensLayer(ctx: CanvasRenderingContext2D, p: TokenDrawParam
       drawTokenHpSegments(ctx, x, y, hpLayout, ratio, hpBarColor(ratio));
     }
 
+    drawTokenIdentityRings(ctx, x, y, hpLayout.identityBase, ringStyle, {
+      skipOutermostRing: showHpBar,
+      outerRingOffset: hpLayout.outerRingOffset,
+    });
+
     if (defeated) {
       drawTokenDefeatedSkull(ctx, x, y, r);
     }

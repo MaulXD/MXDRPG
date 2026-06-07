@@ -20,8 +20,7 @@ import { playerColorForActor } from "@/lib/vtt/token-colors";
 
 type Props = {
   actorId: string;
-  /** Quando definido, também grava no ator da mesa ao vivo. */
-  roomId?: string;
+  roomId: string;
   name: string;
   portraitUrl?: string | null;
   tokenImageUrl?: string | null;
@@ -75,27 +74,9 @@ export function SheetPopupPortrait({
       portraitUrl: string;
       tokenImageUrl: string;
       portraitFocus: PortraitFocus;
-      coverFocus?: PortraitFocus;
       tokenFocus: PortraitFocus;
     }) => {
-      if (roomId) {
-        await patchRoomActor(roomId, actorId, bundle);
-      }
-      const res = await fetch(`/api/characters/${actorId}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          portraitUrl: bundle.portraitUrl,
-          tokenImageUrl: bundle.tokenImageUrl,
-          portraitFocus: bundle.portraitFocus,
-          coverFocus: bundle.coverFocus ?? bundle.portraitFocus,
-          tokenFocus: bundle.tokenFocus,
-        }),
-      });
-      if (!res.ok) {
-        const err = (await res.json().catch(() => ({}))) as { error?: string };
-        throw new Error(err.error ?? "Falha ao salvar retrato na ficha");
-      }
+      await patchRoomActor(roomId, actorId, bundle);
       onSaved();
     },
     [actorId, onSaved, roomId]
