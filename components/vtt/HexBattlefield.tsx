@@ -661,7 +661,6 @@ export function HexBattlefield({
       spellPickedTargetIds:
         spellTargetIds.length > 0 ? new Set(spellTargetIds) : undefined,
       hoverAttackTargetId: hoverTargetId,
-      hoverTurnMoveTokenId: highlights.turnMovePreview ? hoverTokenId : null,
       hoverTokenId,
       tokenFlash,
       tokenCastFx,
@@ -2332,6 +2331,7 @@ export function HexBattlefield({
             anchor={hoverMiniHudAnchor}
             isGm={isRoomGm}
             viewerToken={playerToken}
+            showMovement={highlights.turnMovePreview}
           />
         ) : null}
         <BattlefieldActionHud

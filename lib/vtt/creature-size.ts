@@ -133,17 +133,31 @@ export function tokenAxialDistance(
   return min === Infinity ? axialDistance(a.axial, b.axial) : min;
 }
 
-/** Círculo inscrito no hex pointy-top ≈ hexSize × √3/2; usamos ~0.84 para margem mínima. */
+/** hexSize = centro → vértice; círculo inscrito (centro → aresta) = hexSize × √3/2. */
+export const HEX_INSCRIBED_RATIO = Math.sqrt(3) / 2;
+
+/** Legado — raio médio inscrito com folga mínima anti-alias. */
+export const TOKEN_RADIUS_RATIO = HEX_INSCRIBED_RATIO - 0.01;
+
+/** Multi-hex: raio visual em múltiplos de hexSize (pequeno/médio usam inscrito). */
 export const TOKEN_RADIUS_RATIO_BY_SIZE: Record<CreatureSize, number> = {
-  small: 0.84,
-  medium: 0.84,
-  large: 0.92,
-  huge: 1.48,
-  gargantuan: 2.42,
-  colossal: 3.35,
+  small: HEX_INSCRIBED_RATIO,
+  medium: HEX_INSCRIBED_RATIO,
+  large: 0.95,
+  huge: 1.55,
+  gargantuan: 2.52,
+  colossal: 3.48,
 };
 
+export function hexInscribedRadius(hexSize: number): number {
+  return hexSize * HEX_INSCRIBED_RATIO;
+}
+
 export function tokenDrawRadius(hexSize: number, size: CreatureSize): number {
+  const edgePad = Math.max(0.35, hexSize * 0.008);
+  if (size === "small" || size === "medium") {
+    return hexInscribedRadius(hexSize) - edgePad;
+  }
   return hexSize * TOKEN_RADIUS_RATIO_BY_SIZE[size];
 }
 

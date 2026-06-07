@@ -2,12 +2,11 @@ import { canManageRoom } from "@/lib/auth/room-access";
 import type { SessionUser } from "@/lib/auth/types";
 import { isMonsterToken } from "@/lib/room/settings";
 import type { RoomActor } from "@/lib/room/types";
-import { hexCorners } from "@/lib/vtt/hex-math";
 import type { TokenRingStyle } from "@/lib/vtt/token-colors";
 import { strokeEffectIcon } from "@/lib/vtt/token-effect-icons";
 import type { BattleToken } from "@/lib/vtt/types";
 
-/** `bar` = anel de vida no hex do token; valores numéricos ficam no mini-HUD / painéis. */
+/** `bar` = anel de vida circular no token; valores numéricos ficam no mini-HUD / painéis. */
 export type TokenHpDisplay = {
   bar: boolean;
   /** @deprecated Não desenhar HP numérico no canvas — use mini-HUD. */
@@ -69,29 +68,31 @@ export function isTokenDefeated(token: BattleToken): boolean {
 
 const HP_BAR_GRAPHITE = "rgb(58, 58, 60)";
 
-/** Raio do anel externo de identidade (centro do traço da borda). */
-export function tokenOuterBorderHexR(tokenR: number, ringStyle: TokenRingStyle): number {
-  const identityBase = tokenR + 0.5;
-  const maxOffset = Math.max(0, ...ringStyle.rings.map((ring) => ring.radiusOffset));
-  return identityBase + maxOffset;
+/** Raio do anel de HP na borda do retrato (inset mínimo). */
+export function tokenOuterBorderR(tokenR: number, ringStyle: TokenRingStyle): number {
+  void ringStyle;
+  return tokenR - 0.35;
 }
 
-/** Barra de vida na borda hexagonal do token (anel externo); retrato circular no interior. */
+/** @deprecated Use tokenOuterBorderR */
+export const tokenOuterBorderHexR = tokenOuterBorderR;
+
+/** Barra de vida no anel circular externo do token. */
 export function hpRingLayout(tokenR: number, ringStyle: TokenRingStyle): {
   width: number;
   contentR: number;
   contentRFull: number;
-  borderHexR: number;
+  borderR: number;
   identityBase: number;
   outerRingOffset: number;
 } {
-  const width = Math.max(3, tokenR * 0.058);
-  const identityBase = tokenR + 0.5;
-  const outerRingOffset = Math.max(0, ...ringStyle.rings.map((ring) => ring.radiusOffset));
-  const borderHexR = identityBase + outerRingOffset;
-  const contentRFull = Math.max(4, tokenR - 0.35);
-  const contentR = Math.max(4, identityBase - width * 0.45);
-  return { width, contentR, contentRFull, borderHexR, identityBase, outerRingOffset };
+  const width = Math.max(2.5, tokenR * 0.052);
+  const identityBase = tokenR;
+  const outerRingOffset = Math.min(...ringStyle.rings.map((ring) => ring.radiusOffset));
+  const borderR = tokenR - 0.35;
+  const contentRFull = Math.max(4, tokenR);
+  const contentR = Math.max(4, tokenR - width * 0.5);
+  return { width, contentR, contentRFull, borderR, identityBase, outerRingOffset };
 }
 
 function isPlayerCharacterToken(token: BattleToken): boolean {
@@ -142,59 +143,9 @@ export function resolveTokenHpDisplay(
   return { bar: false, numeric: false };
 }
 
-type HexPoint = { x: number; y: number };
+const HP_RING_START = -Math.PI / 2;
 
-/** Vértice superior do hex (pointy-top), depois sentido horário. */
-function hexEdgesClockwiseFromTop(cx: number, cy: number, hexR: number): Array<{ from: HexPoint; to: HexPoint }> {
-  const corners = hexCorners(cx, cy, hexR);
-  const order = [5, 0, 1, 2, 3, 4];
-  const edges: Array<{ from: HexPoint; to: HexPoint }> = [];
-  for (let i = 0; i < order.length; i++) {
-    const from = corners[order[i]!]!;
-    const to = corners[order[(i + 1) % order.length]!]!;
-    edges.push({ from, to });
-  }
-  return edges;
-}
-
-function edgeLength(a: HexPoint, b: HexPoint): number {
-  return Math.hypot(b.x - a.x, b.y - a.y);
-}
-
-function traceHexEdges(ctx: CanvasRenderingContext2D, edges: Array<{ from: HexPoint; to: HexPoint }>): void {
-  const first = edges[0]?.from;
-  if (!first) return;
-  ctx.moveTo(first.x, first.y);
-  for (const edge of edges) {
-    ctx.lineTo(edge.to.x, edge.to.y);
-  }
-  ctx.closePath();
-}
-
-function traceHexEdgesPartial(
-  ctx: CanvasRenderingContext2D,
-  edges: Array<{ from: HexPoint; to: HexPoint }>,
-  distance: number
-): void {
-  const first = edges[0]?.from;
-  if (!first || distance <= 0) return;
-
-  let remaining = distance;
-  ctx.moveTo(first.x, first.y);
-  for (const edge of edges) {
-    const len = edgeLength(edge.from, edge.to);
-    if (remaining >= len) {
-      ctx.lineTo(edge.to.x, edge.to.y);
-      remaining -= len;
-    } else {
-      const t = remaining / len;
-      ctx.lineTo(edge.from.x + (edge.to.x - edge.from.x) * t, edge.from.y + (edge.to.y - edge.from.y) * t);
-      return;
-    }
-  }
-}
-
-/** Borda hex do token como barra de vida (preenchimento horário a partir do topo). */
+/** Anel circular como barra de vida (preenchimento horário a partir do topo). */
 export function drawTokenHpSegments(
   ctx: CanvasRenderingContext2D,
   x: number,
@@ -207,30 +158,26 @@ export function drawTokenHpSegments(
   const defeated = clamped <= 0;
   const emptyColor = "rgba(32, 30, 28, 0.95)";
   const deadColor = "rgb(8, 8, 8)";
-  const edges = hexEdgesClockwiseFromTop(x, y, layout.borderHexR);
-  const edgeLen = edges[0] ? edgeLength(edges[0].from, edges[0].to) : 0;
-  const perimeter = edgeLen * 6;
-  const fillDist = defeated ? 0 : perimeter * clamped;
+  const r = layout.borderR;
 
   ctx.save();
-  ctx.lineJoin = "round";
-  ctx.lineCap = "butt";
+  ctx.lineCap = "round";
 
   ctx.beginPath();
-  traceHexEdges(ctx, edges);
+  ctx.arc(x, y, r, 0, Math.PI * 2);
   ctx.strokeStyle = defeated ? deadColor : emptyColor;
   ctx.lineWidth = layout.width;
   ctx.stroke();
 
   ctx.beginPath();
-  traceHexEdges(ctx, edges);
+  ctx.arc(x, y, r, 0, Math.PI * 2);
   ctx.strokeStyle = HP_BAR_GRAPHITE;
   ctx.lineWidth = 0.75;
   ctx.stroke();
 
-  if (fillDist > 0.5) {
+  if (!defeated && clamped > 0.001) {
     ctx.beginPath();
-    traceHexEdgesPartial(ctx, edges, fillDist);
+    ctx.arc(x, y, r, HP_RING_START, HP_RING_START + Math.PI * 2 * clamped);
     ctx.strokeStyle = color;
     ctx.lineWidth = layout.width;
     ctx.stroke();

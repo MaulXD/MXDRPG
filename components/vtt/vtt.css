@@ -5446,6 +5446,15 @@
   color: #d47e7e;
 }
 
+.vtt-mini-hud__move {
+  display: block;
+  margin-bottom: 0.18rem;
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: #a8d294;
+  font-variant-numeric: tabular-nums;
+}
+
 .vtt-mini-hud__turn {
   font-size: 0.65rem;
   color: var(--text-muted);
