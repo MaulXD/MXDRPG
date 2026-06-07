@@ -36,6 +36,7 @@ import {
   type LoadoutPatch,
 } from "@/components/character/SheetPopupLoadoutBar";
 import { SheetPopupPortrait } from "@/components/character/SheetPopupPortrait";
+import { SheetPopupOrnaments } from "@/components/character/SheetPopupOrnaments";
 import { SheetPopupQuickBar } from "@/components/character/SheetPopupQuickBar";
 import {
   IconArmor,
@@ -658,7 +659,8 @@ export function CharacterSheet({
     );
 
     return (
-      <div className="sheet-shell sheet-shell--popup">
+      <div className="sheet-shell sheet-shell--popup eldarin-frame">
+        <SheetPopupOrnaments />
         <header className="sheet-popup-top">
           <div className="sheet-popup-top__portrait-col">
             {canEditPortrait ? (

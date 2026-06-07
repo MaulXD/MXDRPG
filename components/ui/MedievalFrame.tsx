@@ -28,7 +28,7 @@ function frameClass(
   variant: MedievalFrameVariant,
   opts: { compact?: boolean; flush?: boolean; page?: boolean; className?: string }
 ): string {
-  const parts = ["mf", `mf--${variant}`];
+  const parts = ["mf", "eldarin-frame", `mf--${variant}`];
   if (opts.compact) parts.push("mf--compact");
   if (opts.flush) parts.push("mf--flush");
   if (opts.page) parts.push("mf--page");
