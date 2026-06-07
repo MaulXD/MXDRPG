@@ -63,7 +63,7 @@ export function MapScenePanel({ roomId, scene, onUpdated }: Props) {
         />
       </label>
       <p className="vtt-combat-hint">
-        Posição e escala do fundo são ajustadas na mesa: aba <strong>1 · Piso</strong> do editor 🏰 e
+        Posição e escala do fundo são ajustadas na mesa: aba <strong>1 · Piso</strong> do editor de mapa e
         arraste/redimensione direto no mapa.
       </p>
       <label className="vtt-check">

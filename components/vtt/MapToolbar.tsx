@@ -6,6 +6,7 @@ import {
   type WhiteboardTool,
 } from "@/lib/vtt/map-markup";
 import type { MapToolMode } from "@/lib/vtt/map-toolbar";
+import { MapToolbarIcon } from "@/components/vtt/MapToolbarIcon";
 import "./whiteboard.css";
 
 type Props = {
@@ -36,27 +37,26 @@ type Props = {
 
 type ToolBtn = {
   id: MapToolMode | WhiteboardTool;
-  glyph: string;
   label: string;
   title: string;
   section: "map" | "draw";
 };
 
 const MAP_TOOLS: ToolBtn[] = [
-  { id: "token", glyph: "↖", label: "Interagir", title: "Selecionar tokens e jogar (padrão)", section: "map" },
-  { id: "ping", glyph: "◎", label: "Ping", title: "Clique no mapa para marcar posição para o grupo", section: "map" },
-  { id: "measure", glyph: "📏", label: "Régua", title: "Arraste no mapa para medir distância em hex e metros", section: "map" },
-  { id: "fog", glyph: "◐", label: "Névoa", title: "Clique para revelar hex (mestre)", section: "map" },
+  { id: "token", label: "Interagir", title: "Selecionar tokens e jogar (padrão)", section: "map" },
+  { id: "ping", label: "Ping", title: "Clique no mapa para marcar posição para o grupo", section: "map" },
+  { id: "measure", label: "Régua", title: "Arraste no mapa para medir distância em hex e metros", section: "map" },
+  { id: "fog", label: "Névoa", title: "Clique para revelar hex (mestre)", section: "map" },
 ];
 
 const DRAW_TOOLS: ToolBtn[] = [
-  { id: "select", glyph: "⬚", label: "Selecionar", title: "Selecionar e mover desenho (Del apaga)", section: "draw" },
-  { id: "pen", glyph: "✎", label: "Livre", title: "Traço livre", section: "draw" },
-  { id: "line", glyph: "／", label: "Linha", title: "Segmento reto", section: "draw" },
-  { id: "arrow", glyph: "➤", label: "Seta", title: "Seta indicativa", section: "draw" },
-  { id: "shape", glyph: "▢", label: "Forma", title: "Retângulo · Alt = círculo", section: "draw" },
-  { id: "polygon", glyph: "⬡", label: "Polígono", title: "Clique vértices · fecha no 1º ponto", section: "draw" },
-  { id: "text", glyph: "T", label: "Texto", title: "Clique para rotular", section: "draw" },
+  { id: "select", label: "Selecionar", title: "Selecionar e mover desenho (Del apaga)", section: "draw" },
+  { id: "pen", label: "Livre", title: "Traço livre", section: "draw" },
+  { id: "line", label: "Linha", title: "Segmento reto", section: "draw" },
+  { id: "arrow", label: "Seta", title: "Seta indicativa", section: "draw" },
+  { id: "shape", label: "Forma", title: "Retângulo · Alt = círculo", section: "draw" },
+  { id: "polygon", label: "Polígono", title: "Clique vértices · fecha no 1º ponto", section: "draw" },
+  { id: "text", label: "Texto", title: "Clique para rotular", section: "draw" },
 ];
 
 function drawHint(tool: WhiteboardTool): string {
@@ -133,7 +133,7 @@ export function MapToolbar({
               disabled={busy || (mode === "ping" && !canPing)}
               onClick={() => pickMapTool(mode)}
             >
-              {t.glyph}
+              <MapToolbarIcon name={mode} />
             </button>
           );
         })}
@@ -158,7 +158,7 @@ export function MapToolbar({
                   disabled={busy}
                   onClick={() => pickDrawTool(tool)}
                 >
-                  {t.glyph}
+                  <MapToolbarIcon name={tool} />
                 </button>
               );
             })}
@@ -219,7 +219,7 @@ export function MapToolbar({
             aria-pressed={dungeonEditorActive}
             onClick={onToggleDungeonEditor}
           >
-            🏰
+            <MapToolbarIcon name="dungeon" />
           </button>
           <div className="map-toolbar__divider" aria-hidden />
         </>
@@ -235,7 +235,7 @@ export function MapToolbar({
           title="Diminuir zoom"
           aria-label="Diminuir zoom"
         >
-          −
+          <MapToolbarIcon name="zoom-out" />
         </button>
         <span className="map-toolbar__zoom-label">{zoomPercent}%</span>
         <button
@@ -246,7 +246,7 @@ export function MapToolbar({
           title="Aumentar zoom"
           aria-label="Aumentar zoom"
         >
-          +
+          <MapToolbarIcon name="zoom-in" />
         </button>
         <button
           type="button"
@@ -255,7 +255,7 @@ export function MapToolbar({
           title="Centralizar e resetar zoom"
           aria-label="Resetar vista"
         >
-          ⊙
+          <MapToolbarIcon name="reset-view" />
         </button>
       </div>
       <p className="map-toolbar__foot-hint">Scroll zoom · Alt+arrastar pano</p>

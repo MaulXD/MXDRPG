@@ -2,6 +2,7 @@ import type { PortraitFocus } from "@/lib/media/portrait-focus";
 import { DEFAULT_PORTRAIT_FOCUS } from "@/lib/media/portrait-focus";
 import type { CreatureSize } from "@/lib/vtt/creature-size";
 import { tokenDrawRadius } from "@/lib/vtt/creature-size";
+import { hexCorners } from "@/lib/vtt/hex-math";
 import type { TokenRingStyle } from "@/lib/vtt/token-colors";
 
 /** Raio do token Médio em relação ao hex (círculo inscrito com margem mínima). */
@@ -115,6 +116,20 @@ function drawTokenImageVignette(
   ctx.restore();
 }
 
+function strokeHexRing(
+  ctx: CanvasRenderingContext2D,
+  cx: number,
+  cy: number,
+  radius: number
+): void {
+  const corners = hexCorners(cx, cy, radius);
+  ctx.beginPath();
+  ctx.moveTo(corners[0].x, corners[0].y);
+  for (let i = 1; i < corners.length; i++) ctx.lineTo(corners[i].x, corners[i].y);
+  ctx.closePath();
+  ctx.stroke();
+}
+
 export function drawTokenIdentityRings(
   ctx: CanvasRenderingContext2D,
   cx: number,
@@ -122,11 +137,12 @@ export function drawTokenIdentityRings(
   baseRadius: number,
   style: TokenRingStyle
 ): void {
+  ctx.save();
+  ctx.lineJoin = "round";
   for (const ring of style.rings) {
-    ctx.beginPath();
-    ctx.arc(cx, cy, baseRadius + ring.radiusOffset, 0, Math.PI * 2);
     ctx.strokeStyle = ring.color;
     ctx.lineWidth = ring.width;
-    ctx.stroke();
+    strokeHexRing(ctx, cx, cy, baseRadius + ring.radiusOffset);
   }
+  ctx.restore();
 }

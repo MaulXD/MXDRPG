@@ -234,13 +234,13 @@ export function drawTokenHpLabel(
 
   const defeated = isTokenDefeated(token);
   const hpText = defeated ? "Morto" : `${token.vida}/${token.vidaMax}`;
-  const fontSize = Math.max(13, Math.round(tokenR * 0.42));
+  const fontSize = Math.max(9, Math.round(tokenR * 0.28));
   const hpY = y - tokenR - fontSize * 0.85;
 
   ctx.save();
   ctx.textAlign = "center";
   ctx.textBaseline = "bottom";
-  ctx.font = `900 ${fontSize}px Source Sans 3, Segoe UI, sans-serif`;
+  ctx.font = `700 ${fontSize}px Cinzel, Times New Roman, serif`;
   ctx.lineJoin = "round";
   ctx.lineWidth = Math.max(3.5, fontSize * 0.28);
   ctx.strokeStyle = "rgba(0, 0, 0, 0.9)";
@@ -289,28 +289,44 @@ export function drawTokenWalkRemainingBadge(
   ctx.restore();
 }
 
-/** Nome abaixo do token. */
+/** Nameplate rômbico abaixo do token (Cinzel 9px). */
 export function drawTokenNameLabel(
   ctx: CanvasRenderingContext2D,
   x: number,
   y: number,
   tokenR: number,
-  name: string
+  name: string,
+  plateColor = "#141a24"
 ): void {
   if (!name.trim()) return;
 
-  const fontSize = Math.max(11, Math.round(tokenR * 0.34));
-  const nameY = y + tokenR + 6;
+  const fontSize = Math.max(9, Math.round(tokenR * 0.26));
+  const padX = 6;
+  const plateH = fontSize + 8;
 
   ctx.save();
+  ctx.font = `700 ${fontSize}px Cinzel, Times New Roman, serif`;
+  const textW = ctx.measureText(name).width;
+  const plateW = textW + padX * 2;
+  const centerY = y + tokenR + plateH * 0.55 + 4;
+
+  ctx.beginPath();
+  ctx.moveTo(x, centerY - plateH / 2);
+  ctx.lineTo(x + plateW / 2, centerY);
+  ctx.lineTo(x, centerY + plateH / 2);
+  ctx.lineTo(x - plateW / 2, centerY);
+  ctx.closePath();
+  ctx.fillStyle = plateColor;
+  ctx.globalAlpha = 0.92;
+  ctx.fill();
+  ctx.globalAlpha = 1;
+  ctx.strokeStyle = "rgba(0, 0, 0, 0.55)";
+  ctx.lineWidth = 1;
+  ctx.stroke();
+
   ctx.textAlign = "center";
-  ctx.textBaseline = "top";
-  ctx.font = `700 ${fontSize}px Lora, Georgia, serif`;
-  ctx.lineJoin = "round";
-  ctx.lineWidth = Math.max(2.5, fontSize * 0.22);
-  ctx.strokeStyle = "rgba(0, 0, 0, 0.92)";
-  ctx.fillStyle = "rgba(255, 255, 255, 0.96)";
-  ctx.strokeText(name, x, nameY);
-  ctx.fillText(name, x, nameY);
+  ctx.textBaseline = "middle";
+  ctx.fillStyle = "#e8ecf4";
+  ctx.fillText(name, x, centerY);
   ctx.restore();
 }
