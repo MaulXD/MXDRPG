@@ -719,6 +719,26 @@
   color: rgba(232, 226, 214, 0.78);
 }
 
+.sheet-xp-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-bottom: 0.65rem;
+}
+
+.sheet-level-compact__btn {
+  width: auto;
+  min-width: 0;
+  padding: 0.2rem 0.55rem;
+  font-size: 0.68rem;
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1.2;
+  border-radius: 6px;
+}
+
 .sheet-live {
   display: inline-flex;
   align-items: center;
