@@ -270,6 +270,7 @@ type TokenDrawParams = {
   selectedId: string | null;
   turnActiveId: string | null;
   attackableIds: Set<string>;
+  spellPickedTargetIds?: Set<string>;
   hoverAttackTargetId: string | null;
   attackTargetPreview: TargetCombatPreview | null;
   hoverTurnMoveTokenId: string | null;
@@ -373,6 +374,16 @@ export function drawTokensLayer(ctx: CanvasRenderingContext2D, p: TokenDrawParam
       ctx.strokeStyle = readThemeColor("--vtt-token-ring-selected", "#c9a962");
       ctx.lineWidth = 2;
       ctx.stroke();
+    }
+
+    if (p.spellPickedTargetIds?.has(token.id)) {
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(x, y, r + 4, 0, Math.PI * 2);
+      ctx.strokeStyle = "rgba(122, 163, 201, 0.92)";
+      ctx.lineWidth = 2.5;
+      ctx.stroke();
+      ctx.restore();
     }
 
     if (p.attackableIds.has(token.id)) {

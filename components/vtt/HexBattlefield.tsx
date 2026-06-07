@@ -73,6 +73,8 @@ import {
   resolveCombatAction,
 } from "@/lib/combat/attack";
 import { FriendlyFireConfirmDialog } from "@/components/vtt/FriendlyFireConfirmDialog";
+import { SpellTargetConfirmBar } from "@/components/vtt/SpellTargetConfirmBar";
+import { isMultiTargetSpell, spellTargetCount } from "@/lib/combat/spell-target-count";
 import type { CombatActionOption } from "@/lib/combat/types";
 import { isMoveMode, isTargetMode, type TokenActionMode } from "@/lib/vtt/action-mode";
 import {
@@ -90,6 +92,7 @@ import {
 } from "@/lib/vtt/token-cast-fx";
 import { BattlefieldActionHud } from "@/components/vtt/BattlefieldActionHud";
 import { CharacterCombatHud } from "@/components/vtt/CharacterCombatHud";
+import { CombatHudRestoreButton } from "@/components/vtt/CombatHudRestoreButton";
 import { TokenHoverMiniHud } from "@/components/vtt/TokenHoverMiniHud";
 import { TokenStatusModal } from "@/components/vtt/TokenStatusModal";
 import { EndTurnBar } from "@/components/vtt/EndTurnBar";
@@ -257,6 +260,8 @@ export function HexBattlefield({
   const [actionRingAt, setActionRingAt] = useState<{ x: number; y: number } | null>(null);
   const [friendlyFireTargetId, setFriendlyFireTargetId] = useState<string | null>(null);
   const [friendlyFireBusy, setFriendlyFireBusy] = useState(false);
+  const [spellTargetIds, setSpellTargetIds] = useState<string[]>([]);
+  const [spellTargetBusy, setSpellTargetBusy] = useState(false);
   const [statusOpen, setStatusOpen] = useState(false);
   const [modalStatusToken, setModalStatusToken] = useState<BattleToken | null>(null);
   const { visible: hudVisible, setHudVisible } = useCombatHudVisible(roomId);
@@ -689,6 +694,8 @@ export function HexBattlefield({
       selectedId,
       turnActiveId,
       attackableIds: highlights.attackableIds,
+      spellPickedTargetIds:
+        spellTargetIds.length > 0 ? new Set(spellTargetIds) : undefined,
       hoverAttackTargetId: hoverTargetId,
       attackTargetPreview,
       hoverTurnMoveTokenId: highlights.turnMovePreview ? hoverTokenId : null,
@@ -740,6 +747,7 @@ export function HexBattlefield({
       floorMapEditing,
       dungeonTool,
       selectedDungeonObjectId,
+      spellTargetIds,
     ]
   );
 
@@ -823,6 +831,7 @@ export function HexBattlefield({
       vidaMax: remote.vidaMax,
       defesa: remote.defesa,
       defesaBonus: remote.defesaBonus,
+      weakened: remote.weakened,
       conditions: remote.conditions,
       timedEffects: remote.timedEffects,
     }),
@@ -886,6 +895,7 @@ export function HexBattlefield({
   useEffect(() => {
     setAreaCenter(null);
     setChannelExtraPa(0);
+    setSpellTargetIds([]);
   }, [actionMode, selectedCombatAction?.entryId]);
 
   useEffect(() => {
@@ -941,6 +951,7 @@ export function HexBattlefield({
         setChannelExtraPa(0);
         setActionErr(null);
         setAreaCenter(null);
+        setSpellTargetIds([]);
       }
     }
     window.addEventListener("keydown", onKey);
@@ -1181,6 +1192,69 @@ export function HexBattlefield({
     [selected, roomId, turn.bypassTurn, playCombatFxFromSnap]
   );
 
+  const executeMultiTargetCast = useCallback(
+    async (targetIds: string[]) => {
+      if (!selected || !activeCombatAction || targetIds.length === 0) return;
+      setSpellTargetBusy(true);
+      setActionErr(null);
+      try {
+        const snap = await postRoomAttack(
+          roomId,
+          selected.id,
+          targetIds[0]!,
+          {
+            ...combatAttackRequestOpts(activeCombatAction, selected, {
+              bypassTurn: turn.bypassTurn,
+              channelExtraPa,
+            }),
+            defenderTokenIds: targetIds,
+          }
+        );
+        playCombatFxFromSnap(snap, { deferSnap: true });
+        setSpellTargetIds([]);
+        setActionMode("idle");
+        setSelectedCombatAction(null);
+      } catch (e) {
+        setActionErr(e instanceof Error ? e.message : "Falha na magia");
+      } finally {
+        setSpellTargetBusy(false);
+      }
+    },
+    [
+      selected,
+      activeCombatAction,
+      roomId,
+      turn.bypassTurn,
+      channelExtraPa,
+      playCombatFxFromSnap,
+    ]
+  );
+
+  const tryAddSpellTarget = useCallback(
+    async (defenderId: string) => {
+      if (!selected || !activeCombatAction || !isMultiTargetSpell(activeCombatAction)) return;
+      const max = spellTargetCount(activeCombatAction);
+
+      if (spellTargetIds.includes(defenderId)) {
+        setSpellTargetIds((prev) => prev.filter((id) => id !== defenderId));
+        return;
+      }
+      if (spellTargetIds.length >= max) {
+        setActionErr(`Esta magia permite no máximo ${max} alvo(s).`);
+        return;
+      }
+
+      const next = [...spellTargetIds, defenderId];
+      setSpellTargetIds(next);
+      setActionErr(null);
+
+      if (next.length >= max) {
+        await executeMultiTargetCast(next);
+      }
+    },
+    [selected, activeCombatAction, spellTargetIds, executeMultiTargetCast]
+  );
+
   const executeAttackOn = useCallback(
     async (defenderId: string) => {
       if (!selected || !activeCombatAction) return;
@@ -1209,6 +1283,8 @@ export function HexBattlefield({
         }
         playCombatFxFromSnap(snap, { deferSnap: true });
         setActionMode("idle");
+        setSelectedCombatAction(null);
+        setSpellTargetIds([]);
       } catch (e) {
         setActionErr(e instanceof Error ? e.message : "Falha no ataque");
       }
@@ -1228,13 +1304,30 @@ export function HexBattlefield({
       if (!selected || !activeCombatAction) return;
       const defender = displayScene.tokens.find((t) => t.id === defenderId);
       if (!defender) return;
+
+      if (isMultiTargetSpell(activeCombatAction) && isTargetMode(actionMode)) {
+        if (needsFriendlyFireConfirm(selected, defender, activeCombatAction)) {
+          setFriendlyFireTargetId(defenderId);
+          return;
+        }
+        void tryAddSpellTarget(defenderId);
+        return;
+      }
+
       if (needsFriendlyFireConfirm(selected, defender, activeCombatAction)) {
         setFriendlyFireTargetId(defenderId);
         return;
       }
       void executeAttackOn(defenderId);
     },
-    [selected, activeCombatAction, displayScene.tokens, executeAttackOn]
+    [
+      selected,
+      activeCombatAction,
+      actionMode,
+      displayScene.tokens,
+      executeAttackOn,
+      tryAddSpellTarget,
+    ]
   );
 
   const friendlyFireDefender = useMemo(
@@ -1249,12 +1342,22 @@ export function HexBattlefield({
     if (!friendlyFireTargetId) return;
     setFriendlyFireBusy(true);
     try {
-      await executeAttackOn(friendlyFireTargetId);
+      if (isMultiTargetSpell(activeCombatAction) && isTargetMode(actionMode)) {
+        await tryAddSpellTarget(friendlyFireTargetId);
+      } else {
+        await executeAttackOn(friendlyFireTargetId);
+      }
       setFriendlyFireTargetId(null);
     } finally {
       setFriendlyFireBusy(false);
     }
-  }, [friendlyFireTargetId, executeAttackOn]);
+  }, [
+    friendlyFireTargetId,
+    activeCombatAction,
+    actionMode,
+    executeAttackOn,
+    tryAddSpellTarget,
+  ]);
 
   const moveSelectedTo = useCallback(
     async (axial: Axial) => {
@@ -1672,7 +1775,9 @@ export function HexBattlefield({
     );
   }, [displayScene.tokens, roomActors, session]);
 
-  const hudToken = isRoomGm && turnActiveToken ? turnActiveToken : playerToken;
+  const hudToken = isRoomGm
+    ? (selected ?? turnActiveToken ?? playerToken)
+    : playerToken;
   const hudIsControlled = Boolean(playerToken && hudToken && playerToken.id === hudToken.id);
 
   const resolveStatusToken = useCallback(
@@ -2235,13 +2340,7 @@ export function HexBattlefield({
             onHide={() => setHudVisible(false)}
           />
         ) : hudToken ? (
-          <button
-            type="button"
-            className="vtt-combat-hud-restore btn btn-ghost"
-            onClick={() => setHudVisible(true)}
-          >
-            Mostrar HUD · {hudToken.name}
-          </button>
+          <CombatHudRestoreButton token={hudToken} onShow={() => setHudVisible(true)} />
         ) : null}
         {hoverMiniHudToken && hoverMiniHudAnchor ? (
           <TokenHoverMiniHud
@@ -2286,6 +2385,21 @@ export function HexBattlefield({
             if (!friendlyFireBusy) setFriendlyFireTargetId(null);
           }}
         />
+        {isMultiTargetSpell(activeCombatAction) && isTargetMode(actionMode) ? (
+          <SpellTargetConfirmBar
+            spellName={activeCombatAction!.name}
+            picked={spellTargetIds.length}
+            max={spellTargetCount(activeCombatAction!)}
+            busy={spellTargetBusy}
+            onConfirm={() => void executeMultiTargetCast(spellTargetIds)}
+            onCancel={() => {
+              setSpellTargetIds([]);
+              setActionMode("idle");
+              setSelectedCombatAction(null);
+              setActionErr(null);
+            }}
+          />
+        ) : null}
       </div>
     </div>
   );

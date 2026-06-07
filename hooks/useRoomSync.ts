@@ -264,13 +264,19 @@ export async function postRoomAttack(
     actionEntryId?: string;
     bypassTurn?: boolean;
     channelExtraPa?: number;
+    defenderTokenIds?: string[];
   } = {}
 ) {
   const res = await fetch(`/api/room/${roomId}/combat/attack`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     credentials: "same-origin",
-    body: JSON.stringify({ attackerTokenId, defenderTokenId, ...opts }),
+    body: JSON.stringify({
+      attackerTokenId,
+      defenderTokenId,
+      defenderTokenIds: opts.defenderTokenIds,
+      ...opts,
+    }),
   });
   if (!res.ok) {
     const err = (await res.json()) as { error?: string };

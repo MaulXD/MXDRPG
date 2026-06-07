@@ -6,6 +6,7 @@ import { canEditRoomActor } from "@/lib/auth/room-access";
 import type { CompendiumEntry, CompendiumPackId } from "@/lib/compendium/types";
 import type { SessionUser } from "@/lib/auth/types";
 import type { RoomActor } from "@/lib/room/types";
+import "@/components/character/sheet-popup.css";
 
 type Props = {
   actorId: string;
@@ -31,7 +32,7 @@ export function MesaSheetPanel({ actorId, roomId, actors, session, compendium }:
         canEdit={canEdit}
         compendium={compendium}
         roomId={roomId}
-        embedded
+        variant="popup"
       />
     </div>
   );

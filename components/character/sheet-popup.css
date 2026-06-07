@@ -216,6 +216,15 @@
 
 
 
+.page-wrap--sheet-popup {
+  max-width: min(1180px, 100%);
+  margin-inline: auto;
+}
+
+.page-wrap--sheet-popup .mf--sheet-page {
+  width: 100%;
+}
+
 .sheet-shell--popup {
 
   --sheet-bg: #121921;

@@ -6,6 +6,7 @@ import { canEditCharacterPortrait } from "@/lib/auth/portrait-access-server";
 import { getSession } from "@/lib/auth/session";
 import { getPackEntries } from "@/lib/compendium/registry";
 import type { CompendiumPackId } from "@/lib/compendium/types";
+import "@/components/character/sheet-popup.css";
 
 type Props = { params: Promise<{ id: string }> };
 
@@ -27,14 +28,15 @@ export default async function PersonagemPage({ params }: Props) {
   ) as Record<CompendiumPackId, ReturnType<typeof getPackEntries>>;
 
   return (
-    <div className="page-wrap page-hero">
-      <MedievalFrame variant="rune" page className="mf--sheet-page">
+    <div className="page-wrap page-hero page-wrap--sheet-popup">
+      <MedievalFrame variant="gothic" page className="mf--sheet-page">
         <CharacterSheet
           character={character}
           canEdit={canEdit}
           canEditPortrait={canEditPortrait}
           compendium={compendium}
-          roomId={character.adventureId ?? "demo"}
+          roomId={character.adventureId ?? character.campaignRoomId ?? "demo"}
+          variant="popup"
         />
       </MedievalFrame>
     </div>

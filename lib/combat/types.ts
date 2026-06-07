@@ -62,6 +62,8 @@ export type CombatActionOption = {
   areaShape?: SpellAreaShape;
   areaRadiusHex?: number;
   areaHexCount?: number;
+  /** Alvos individuais (ex.: 3 raios) — seleção múltipla na mesa */
+  targetCount?: number;
   /** Propriedades mágicas / orgânicas (Cap. 14.8) */
   equipmentSpecials?: EquipmentSpecial[];
   /** Magia canalizável — até N PA extras na mesma conjuração */
@@ -92,6 +94,8 @@ export type CombatActionRequest = {
   areaDirection?: number;
   /** PA extras de canalização (0–2) */
   channelExtraPa?: number;
+  /** Vários alvos da mesma conjuração */
+  defenderTokenIds?: string[];
 };
 
 export type AttackModifier = {
