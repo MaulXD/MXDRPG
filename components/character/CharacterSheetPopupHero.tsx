@@ -25,7 +25,7 @@ export function CharacterSheetPopupHero({ name, identity, levelUpSlot }: Props) 
   return (
     <div className="sheet-popup-identity">
       <div className="sheet-popup-identity__main">
-        <p className="sheet-popup-identity__eyebrow">Ficha de personagem</p>
+        <p className="sheet-popup-identity__eyebrow">Personagem</p>
         <h2 className="sheet-popup-identity__name">{name}</h2>
         {classLine ? <p className="sheet-popup-identity__class">{classLine}</p> : null}
         <p className="sheet-popup-identity__meta">
@@ -34,8 +34,22 @@ export function CharacterSheetPopupHero({ name, identity, levelUpSlot }: Props) 
       </div>
 
       <div className="sheet-popup-identity__level" aria-label={`Nível ${nivel}`}>
-        <div className="sheet-popup-identity__ring">
-          <span>{nivel}</span>
+        <div className="sheet-popup-identity__hex">
+          <svg viewBox="0 0 52 52" fill="none" aria-hidden>
+            <polygon
+              points="26,2 50,14 50,38 26,50 2,38 2,14"
+              fill="#100c06"
+              stroke="#c89030"
+              strokeWidth="2.5"
+            />
+            <polygon
+              points="26,7 45,18 45,34 26,45 7,34 7,18"
+              fill="none"
+              stroke="#5a3a0e"
+              strokeWidth="1"
+            />
+          </svg>
+          <span className="sheet-popup-identity__hex-num">{nivel}</span>
         </div>
         <div className="sheet-popup-identity__xp">
           <p className="sheet-popup-identity__xp-primary">{xpDetail.primary}</p>
