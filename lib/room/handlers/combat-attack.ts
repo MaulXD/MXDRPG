@@ -1,11 +1,16 @@
 ﻿import {
   attackerAfterAttack,
   buildAttackModifiers,
+  canAttackTarget,
   formatAttackChatDetail,
   resolveRoomAttackAction,
   resolveTokenAttack,
 } from "@/lib/combat/attack";
-import { formatSaveChatDetail, resolveSaveSpell } from "@/lib/combat/spell";
+import { defenderPatchAfterSaveSpell } from "@/lib/combat/spell-debuffs";
+import { formatSaveChatDetail, resolveSaveSpell, type SaveSpellResolution } from "@/lib/combat/spell";
+import { spellTargetCount } from "@/lib/combat/spell-target-count";
+import type { AttackResolution } from "@/lib/combat/attack";
+import type { BattleToken } from "@/lib/vtt/types";
 import { ensureTokenCombatPa, syncActorPaFromToken } from "@/lib/combat/combat-token-pa";
 import { applyPaSpend } from "@/lib/combat/pa-turn";
 import { markActionRechargeUsed } from "@/lib/combat/recharge";
@@ -34,6 +39,11 @@ export async function executeRoomAttack(
   author: { authorId: string; authorName: string; authorRole: ChatMessage["authorRole"] },
   opts: CombatActionRequest & { bypassTurn?: boolean } = {}
 ): Promise<AttackExecuteResult> {
+  const multiIds = opts.defenderTokenIds?.map((id) => id.trim()).filter(Boolean);
+  if (multiIds && multiIds.length > 0) {
+    return executeRoomMultiTargetAttack(roomId, attackerTokenId, multiIds, author, opts);
+  }
+
   const room = await getRoom(roomId);
   if (!room) return { ok: false, error: "Sala não encontrada" };
 
@@ -108,12 +118,22 @@ export async function executeRoomAttack(
       action,
       room.combat.round
     );
+    const debuffPatch = defenderPatchAfterSaveSpell(defender, action, saveResult.save, {
+      round: room.combat.round,
+      activeIndex: room.combat.activeIndex,
+    });
+
     room.scene = {
       ...room.scene,
       tokens: room.scene.tokens.map((t) => {
         if (t.id === attackerTokenId) return { ...t, ...spentAttacker, id: t.id };
         if (t.id === defenderTokenId) {
-          return { ...t, vida: saveResult.defenderHpAfter };
+          return {
+            ...t,
+            vida: saveResult.defenderHpAfter,
+            ...(debuffPatch ?? {}),
+            id: t.id,
+          };
         }
         return t;
       }),
@@ -281,6 +301,291 @@ export async function executeRoomAttack(
       attackerTokenId,
       hpBefore: last.defenderHpBefore,
     });
+  }
+
+  syncCombatOrderWithTokens(room);
+  return { ok: true, snapshot: toSnapshot(await persistRoom(roomId, room)) };
+}
+
+async function executeRoomMultiTargetAttack(
+  roomId: string,
+  attackerTokenId: string,
+  defenderTokenIds: string[],
+  author: { authorId: string; authorName: string; authorRole: ChatMessage["authorRole"] },
+  opts: CombatActionRequest & { bypassTurn?: boolean } = {}
+): Promise<AttackExecuteResult> {
+  const uniqueIds = [...new Set(defenderTokenIds)];
+  if (uniqueIds.length === 0) {
+    return { ok: false, error: "Selecione pelo menos um alvo" };
+  }
+
+  const room = await getRoom(roomId);
+  if (!room) return { ok: false, error: "Sala não encontrada" };
+
+  let attacker = room.scene.tokens.find((t) => t.id === attackerTokenId);
+  if (!attacker) return { ok: false, error: "Conjurador não encontrado" };
+
+  attacker = ensureTokenCombatPa(room, attacker, { bypassTurn: opts.bypassTurn });
+  const atkIdx = room.scene.tokens.findIndex((t) => t.id === attackerTokenId);
+  if (atkIdx >= 0) {
+    const tokens = [...room.scene.tokens];
+    tokens[atkIdx] = attacker;
+    room.scene = { ...room.scene, tokens };
+    syncActorPaFromToken(room, attacker);
+  }
+
+  if (!attacker.linked || !attacker.actorId) {
+    if (!isMonsterToken(attacker)) {
+      return { ok: false, error: "Conjurador sem ficha linkada" };
+    }
+  }
+
+  const actor =
+    attacker.linked && attacker.actorId ? room.actors[attacker.actorId] ?? null : null;
+  if (attacker.linked && attacker.actorId && !actor) {
+    return { ok: false, error: "Ficha do conjurador não encontrada" };
+  }
+
+  const action = resolveRoomAttackAction(attacker, actor, opts);
+  if (action.kind !== "spell") {
+    return { ok: false, error: "Seleção múltipla só se aplica a magias" };
+  }
+  if (action.areaShape && action.areaShape !== "single") {
+    return { ok: false, error: "Magia de área deve ser conjurada no mapa" };
+  }
+
+  const maxTargets = spellTargetCount(action);
+  if (uniqueIds.length > maxTargets) {
+    return { ok: false, error: `Esta magia permite no máximo ${maxTargets} alvo(s)` };
+  }
+
+  const defenders: BattleToken[] = [];
+  for (const id of uniqueIds) {
+    const d = room.scene.tokens.find((t) => t.id === id);
+    if (!d) return { ok: false, error: "Alvo não encontrado" };
+    defenders.push(d);
+  }
+
+  const turn = {
+    activeTokenId: activeTokenId(room.combat),
+    bypassTurn: opts.bypassTurn,
+    combatRound: room.combat.round,
+  };
+
+  const paCheck = canAttackTarget(attacker, defenders[0]!, action, turn, {
+    actor,
+    channelExtraPa: opts.channelExtraPa,
+  });
+  if (!paCheck.ok) return { ok: false, error: paCheck.reason ?? "Magia inválida" };
+
+  for (let i = 1; i < defenders.length; i++) {
+    const check = canAttackTarget(attacker, defenders[i]!, action, turn, {
+      actor,
+      channelExtraPa: opts.channelExtraPa,
+      skipPaCheck: true,
+    });
+    if (!check.ok) return { ok: false, error: check.reason ?? "Alvo inválido" };
+  }
+
+  maybeRecordCombatUndo(room, {
+    tokenId: attackerTokenId,
+    tokenName: attacker.name,
+    kind: "attack",
+    summary: action.label ?? action.name,
+    bypassTurn: opts.bypassTurn,
+  });
+
+  const hpByToken = new Map<string, number>();
+  const debuffByToken = new Map<string, Partial<BattleToken>>();
+  const saveResults: SaveSpellResolution[] = [];
+  const attackResults: AttackResolution[] = [];
+
+  try {
+    if (action.resolution === "save" && actor) {
+      for (let i = 0; i < defenders.length; i++) {
+        const defender = defenders[i]!;
+        const defenderActor =
+          defender.linked && defender.actorId ? room.actors[defender.actorId] ?? null : null;
+        const res = resolveSaveSpell(attacker, defender, actor, defenderActor, action, turn, {
+          channelExtraPa: opts.channelExtraPa,
+          skipPaCheck: true,
+        });
+        if (i === 0) {
+          res.summary = `${res.summary} (${defenders.length}/${maxTargets} alvo(s))`;
+        } else {
+          res.summary = `[${i + 1}/${defenders.length}] ${res.summary}`;
+        }
+        saveResults.push(res);
+        hpByToken.set(defender.id, res.defenderHpAfter);
+        const debuffPatch = defenderPatchAfterSaveSpell(defender, action, res.save, {
+          round: room.combat.round,
+          activeIndex: room.combat.activeIndex,
+        });
+        if (debuffPatch) debuffByToken.set(defender.id, debuffPatch);
+      }
+    } else {
+      for (let i = 0; i < defenders.length; i++) {
+        const defender = defenders[i]!;
+        const raw = resolveTokenAttack(attacker, defender, action, actor, turn, undefined, room.scene.tokens, {
+          channelExtraPa: opts.channelExtraPa,
+          skipPaCheck: true,
+        });
+        const batch = Array.isArray(raw) ? raw : [raw];
+        for (const res of batch) {
+          const tagged = { ...res };
+          if (defenders.length > 1) {
+            tagged.summary = `[${i + 1}/${defenders.length}] ${tagged.summary}`;
+          }
+          attackResults.push(tagged);
+          hpByToken.set(defender.id, tagged.defenderHpAfter);
+          if (tagged.attackerHpAfter != null) {
+            attacker = { ...attacker, vida: tagged.attackerHpAfter };
+          }
+        }
+      }
+    }
+  } catch (e) {
+    return { ok: false, error: e instanceof Error ? e.message : "Magia inválida" };
+  }
+
+  const paCost = saveResults[0]?.paCost ?? attackResults[0]?.paCost ?? action.paCost;
+
+  let spentAttacker = markActionRechargeUsed(
+    applyPaSpend(attacker, paCost),
+    action,
+    room.combat.round
+  );
+
+  if (attackResults.length > 0) {
+    const lastDefender = defenders[defenders.length - 1]!;
+    const built = buildAttackModifiers(attacker, lastDefender, action);
+    const anyHit = attackResults.some((r) => r.hit);
+    const buffCleanup = attackerAfterAttack(
+      attacker,
+      action,
+      built.consumeAttackerMark,
+      built.consumeDefenderFinta,
+      anyHit
+    );
+    spentAttacker = { ...spentAttacker, ...buffCleanup };
+  }
+
+  room.scene = {
+    ...room.scene,
+    tokens: room.scene.tokens.map((t) => {
+      if (t.id === attackerTokenId) return { ...t, ...spentAttacker, id: t.id };
+      const hp = hpByToken.get(t.id);
+      const debuff = debuffByToken.get(t.id);
+      if (hp != null || debuff) {
+        return { ...t, ...(debuff ?? {}), ...(hp != null ? { vida: hp } : {}), id: t.id };
+      }
+      return t;
+    }),
+  };
+
+  syncActorPaFromToken(room, spentAttacker);
+
+  for (const defender of defenders) {
+    const hp = hpByToken.get(defender.id);
+    if (hp == null) continue;
+    if (defender.linked && defender.actorId && room.actors[defender.actorId]) {
+      const d = room.actors[defender.actorId];
+      room.actors[defender.actorId] = {
+        ...d,
+        resources: {
+          ...d.resources,
+          vida: { ...d.resources.vida, value: hp },
+        },
+        revision: d.revision + 1,
+      };
+    }
+  }
+
+  if (attacker.actorId && room.actors[attacker.actorId] && spentAttacker.vida != null) {
+    const a = room.actors[attacker.actorId];
+    room.actors[attacker.actorId] = {
+      ...a,
+      resources: {
+        ...a.resources,
+        vida: { ...a.resources.vida, value: spentAttacker.vida },
+      },
+      revision: a.revision + 1,
+    };
+  }
+
+  for (const res of saveResults) {
+    appendRoomChatMessage(room, {
+      ...author,
+      kind: "combat",
+      text: res.summary,
+      combat: {
+        attackerTokenId: res.attackerTokenId,
+        defenderTokenId: res.defenderTokenId,
+        actionKind: "spell",
+        weaponName: res.weaponName,
+        resolution: "save",
+        saveNatural: res.save.natural,
+        saveTotal: res.save.total,
+        saveDc: res.save.dc,
+        saveSuccess: res.save.success,
+        saveAttribute: res.save.attributeLabel,
+        saveRollMode: res.save.rollMode,
+        damageTotal: res.damage.total,
+        defenderHpBefore: res.defenderHpBefore,
+        defenderHpAfter: res.defenderHpAfter,
+        detail: formatSaveChatDetail(res),
+      },
+    });
+
+    if (shouldAnnounceDefeat(res.defenderHpBefore, res.defenderHpAfter)) {
+      const def = defenders.find((d) => d.id === res.defenderTokenId);
+      await recordMonsterDefeat(room, author, {
+        defenderTokenId: res.defenderTokenId,
+        defenderName: def?.name ?? "Alvo",
+        attackerTokenId,
+        hpBefore: res.defenderHpBefore,
+      });
+    }
+  }
+
+  for (const result of attackResults) {
+    appendRoomChatMessage(room, {
+      ...author,
+      kind: "combat",
+      text: result.summary,
+      combat: {
+        attackerTokenId: result.attackerTokenId,
+        defenderTokenId: result.defenderTokenId,
+        actionKind: result.actionKind,
+        weaponName: result.weaponName,
+        resolution: "attack",
+        attackNatural: result.attack.natural,
+        attackTotal: result.attack.total,
+        attackRollMode: result.attack.rollMode,
+        defenderAc: result.defenderAc,
+        hit: result.hit,
+        critical: result.critical,
+        criticalFail: result.criticalFail,
+        damageTotal: result.damage?.total ?? null,
+        defenderHpBefore: result.defenderHpBefore,
+        defenderHpAfter: result.defenderHpAfter,
+        attackerHpBefore: result.attackerHpBefore,
+        attackerHpAfter: result.attackerHpAfter,
+        attackerHeal: result.attackerHeal,
+        detail: formatAttackChatDetail(result),
+        ...(result.actionKind === "spell" ? { spellDamageType: action.damageType } : {}),
+      },
+    });
+
+    if (shouldAnnounceDefeat(result.defenderHpBefore, result.defenderHpAfter)) {
+      const def = defenders.find((d) => d.id === result.defenderTokenId);
+      await recordMonsterDefeat(room, author, {
+        defenderTokenId: result.defenderTokenId,
+        defenderName: def?.name ?? "Alvo",
+        attackerTokenId,
+        hpBefore: result.defenderHpBefore,
+      });
+    }
   }
 
   syncCombatOrderWithTokens(room);

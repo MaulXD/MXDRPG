@@ -11,8 +11,8 @@ function drawRemainingBadge(
 ): void {
   const bw = Math.max(13, text.length * 5.5 + 5);
   const bh = 10;
-  const bx = cx + 7;
-  const by = cy + 7;
+  const bx = cx + 5;
+  const by = cy + 6;
 
   ctx.save();
   ctx.fillStyle = "rgba(0,0,0,0.82)";
@@ -90,8 +90,8 @@ export function drawTokenEffectBadges(
   if (chips.length === 0) return;
 
   const shown = chips.slice(0, max);
-  const stackX = x + tokenRadius + 10;
-  const step = 19;
+  const stackX = x + tokenRadius + 12;
+  const step = 22;
   const startY = y - ((shown.length - 1) * step) / 2;
 
   ctx.save();

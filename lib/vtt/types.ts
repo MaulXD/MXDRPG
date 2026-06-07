@@ -72,6 +72,8 @@ export type BattleToken = {
   bonusDamageFormula?: string;
   /** Próximo ataque à distância com vantagem (Tiro Certeiro) */
   rangedAttackAdvantage?: boolean;
+  /** Raios de Enfraquecimento etc. — desvantagem em ataques e testes de FOR */
+  weakened?: boolean;
   /** Condições Eldarin Cap. 3.4 */
   conditions?: import("@/lib/combat/conditions").TokenCondition[];
   /** Buffs/debuffs/condições com contador de turno ou rodada */

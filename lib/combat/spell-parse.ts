@@ -5,6 +5,7 @@ import { PA_DEFAULT_ACTION_COST } from "@/lib/combat/pa-economy";
 import { resolveSpellPaCost } from "@/lib/combat/pa-balance";
 import { parseRecharge } from "@/lib/combat/recharge";
 import { parseSpellChannel } from "@/lib/combat/spell-channel";
+import { parseSpellTargetCount } from "@/lib/combat/spell-target-count";
 import type { CombatActionOption } from "@/lib/combat/types";
 
 const SAVE_ATTR_MAP: Record<string, AttributeKey> = {
@@ -149,6 +150,7 @@ export function buildMagiaCombatAction(entry: CompendiumEntry): CombatActionOpti
           hexCount?: number;
           lengthHex?: number;
         };
+        targets?: number;
       }
     | undefined;
   const tactical = entry.system.tactical as
@@ -211,6 +213,7 @@ export function buildMagiaCombatAction(entry: CompendiumEntry): CombatActionOpti
 
   const channel = parseSpellChannel(spell?.channel);
   const recharge = parseRecharge(spell?.recarga);
+  const targetCount = parseSpellTargetCount(desc, spell);
 
   const tags: string[] = [];
   if (isSaveSpell) tags.push("teste");
@@ -219,6 +222,7 @@ export function buildMagiaCombatAction(entry: CompendiumEntry): CombatActionOpti
   if (selfTarget) tags.push("self");
   if (allyTarget) tags.push("aliado");
   if (channel) tags.push("canalizável");
+  if (targetCount > 1) tags.push(`${targetCount} alvos`);
 
   return {
     packId: "magias",
@@ -249,6 +253,7 @@ export function buildMagiaCombatAction(entry: CompendiumEntry): CombatActionOpti
     allyTarget: allyTarget || undefined,
     spellEffect,
     defesaBuffAmount,
+    targetCount: targetCount > 1 ? targetCount : undefined,
     label: `${entry.name} · ${selfTarget ? "self" : allyTarget ? "aliado" : `${rangeHex} hex`} · PA ${paCost}${tags.length ? ` · ${tags.join(", ")}` : ""}`,
   };
 }
