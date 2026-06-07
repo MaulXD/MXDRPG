@@ -13,46 +13,14 @@ export type TokenHpDisplay = {
   numeric: boolean;
 };
 
-function lerp(a: number, b: number, t: number): number {
-  return a + (b - a) * t;
-}
+/** HP sempre verde (v4) — sem variação por threshold. */
+const HP_COLOR_V4: [number, number, number] = [107, 158, 90];
 
-function lerpRgb(
-  a: [number, number, number],
-  b: [number, number, number],
-  t: number
-): string {
-  const r = Math.round(lerp(a[0], b[0], t));
-  const g = Math.round(lerp(a[1], b[1], t));
-  const bl = Math.round(lerp(a[2], b[2], t));
-  return `rgb(${r},${g},${bl})`;
-}
-
-const HP_COLOR_GREEN: [number, number, number] = [72, 168, 88];
-const HP_COLOR_YELLOW: [number, number, number] = [228, 196, 48];
-const HP_COLOR_ORANGE: [number, number, number] = [240, 140, 42];
-const HP_COLOR_RED: [number, number, number] = [196, 48, 42];
-const HP_COLOR_BLACK: [number, number, number] = [8, 8, 8];
-
-/** Cheio verde → 50% amarelo → laranja → vermelho (low) → preto em 0. */
 export function hpBarColor(ratio: number): string {
   const t = Math.max(0, Math.min(1, ratio));
   if (t <= 0) return "rgb(8, 8, 8)";
-
-  if (t >= 0.5) {
-    const u = (t - 0.5) / 0.5;
-    return lerpRgb(HP_COLOR_YELLOW, HP_COLOR_GREEN, u);
-  }
-  if (t >= 0.25) {
-    const u = (t - 0.25) / 0.25;
-    return lerpRgb(HP_COLOR_ORANGE, HP_COLOR_YELLOW, u);
-  }
-  if (t > 0.08) {
-    const u = (t - 0.08) / 0.17;
-    return lerpRgb(HP_COLOR_RED, HP_COLOR_ORANGE, u);
-  }
-  const u = t / 0.08;
-  return lerpRgb(HP_COLOR_BLACK, HP_COLOR_RED, u);
+  const [r, g, b] = HP_COLOR_V4;
+  return `rgb(${r},${g},${b})`;
 }
 
 export function hpRatio(token: BattleToken): number {

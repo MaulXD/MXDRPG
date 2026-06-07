@@ -46,7 +46,11 @@ export async function POST(req: Request, { params }: Params) {
     return NextResponse.json({ error: "Sem permissão" }, { status: 403 });
   }
 
-  if (session && !canMoveToken(room, session.user, token)) {
+  if (!session) {
+    return NextResponse.json({ error: "Faça login para mover tokens" }, { status: 401 });
+  }
+
+  if (!canMoveToken(room, session.user, token)) {
     return NextResponse.json({ error: "Sem permissão neste token" }, { status: 403 });
   }
 

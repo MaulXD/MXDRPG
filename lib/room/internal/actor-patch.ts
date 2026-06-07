@@ -1,7 +1,7 @@
 import { applyIdentityPatch, type IdentityPatch } from "@/lib/character/identity";
-import type { CharacterSheet, InventoryItem } from "@/lib/character/types";
+import type { CharacterSheet, InventoryItem, LootEconomy } from "@/lib/character/types";
 import type { CompendiumPackId } from "@/lib/compendium/types";
-import { validateImageDataUrl } from "@/lib/media/image-data-url";
+import { normalizeImageDataUrl } from "@/lib/media/image-normalize";
 import { sanitizePortraitFocus } from "@/lib/media/portrait-focus";
 
 const INVENTORY_PACKS = new Set<CompendiumPackId>([
@@ -10,6 +10,28 @@ const INVENTORY_PACKS = new Set<CompendiumPackId>([
   "magias",
   "equipamentos",
 ]);
+
+function sanitizeLootStacks(raw: unknown): Record<string, number> {
+  if (!raw || typeof raw !== "object") return {};
+  const out: Record<string, number> = {};
+  for (const [k, v] of Object.entries(raw as Record<string, unknown>)) {
+    if (typeof k === "string" && k.length <= 20 && typeof v === "number" && v > 0) {
+      out[k] = Math.floor(v);
+    }
+  }
+  return out;
+}
+
+function sanitizeLootEconomy(raw: unknown): LootEconomy | undefined {
+  if (!raw || typeof raw !== "object") return undefined;
+  const r = raw as Record<string, unknown>;
+  return {
+    po: Math.max(0, Math.floor(Number(r.po) || 0)),
+    especiarias: sanitizeLootStacks(r.especiarias),
+    minerios: sanitizeLootStacks(r.minerios),
+    tesouros: sanitizeLootStacks(r.tesouros),
+  };
+}
 
 function sanitizeInventory(raw: unknown): InventoryItem[] | undefined {
   if (!Array.isArray(raw)) return undefined;
@@ -36,15 +58,15 @@ function sanitizeInventory(raw: unknown): InventoryItem[] | undefined {
   return out;
 }
 
-export function sanitizeActorPatch(
+export async function sanitizeActorPatch(
   patch: Partial<CharacterSheet> & { identityPatch?: IdentityPatch }
-): Partial<CharacterSheet> {
+): Promise<Partial<CharacterSheet>> {
   const out: Partial<CharacterSheet> = {};
   if ("portraitUrl" in patch) {
-    out.portraitUrl = validateImageDataUrl(patch.portraitUrl);
+    out.portraitUrl = await normalizeImageDataUrl(patch.portraitUrl, { maxEdge: 1024 });
   }
   if ("tokenImageUrl" in patch) {
-    out.tokenImageUrl = validateImageDataUrl(patch.tokenImageUrl);
+    out.tokenImageUrl = await normalizeImageDataUrl(patch.tokenImageUrl, { maxEdge: 512 });
   }
   if ("portraitFocus" in patch) {
     out.portraitFocus = sanitizePortraitFocus(patch.portraitFocus);
@@ -90,6 +112,10 @@ export function sanitizeActorPatch(
   if ("inventory" in patch) {
     const inventory = sanitizeInventory(patch.inventory);
     if (inventory) out.inventory = inventory;
+  }
+  if ("lootEconomy" in patch) {
+    const loot = sanitizeLootEconomy(patch.lootEconomy);
+    if (loot) out.lootEconomy = loot;
   }
   return out;
 }

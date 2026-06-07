@@ -101,13 +101,12 @@ export async function spawnRoomGmCreation(
   const creation = getRoomGmCreations(room)[creationId];
   if (!creation) return { ok: false, error: "Template não encontrado" };
 
-  if (!canAnchorTokenAt(room.scene, axial)) {
-    return { ok: false, error: "Hex bloqueado ou ocupado" };
-  }
-
   if (creation.kind === "creature") {
     const token = createCreatureTokenFromGmCreation(creation, axial);
     if (!token) return { ok: false, error: "Criatura inválida" };
+    if (!canAnchorTokenAt(room.scene, axial, { token })) {
+      return { ok: false, error: "Hex bloqueado ou ocupado" };
+    }
     const baseName =
       creation.source.type === "monster"
         ? (creation.source.label ?? token.name.replace(/\s*\(custom\)\s*$/i, ""))
@@ -127,6 +126,9 @@ export async function spawnRoomGmCreation(
 
   room.actors[instance.id] = instance;
   const token = createPlayerTokenFromActor(instance, axial);
+  if (!canAnchorTokenAt(room.scene, axial, { token })) {
+    return { ok: false, error: "Hex bloqueado ou ocupado" };
+  }
   token.ownerRole = "mestre";
   room.scene = { ...room.scene, tokens: [...room.scene.tokens, token] };
   if (room.combat?.order) {

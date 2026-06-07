@@ -98,7 +98,7 @@ export default async function MesaRoomPage({ params, searchParams }: Props) {
 
   const canEdit = canParticipate;
   const isDemoRoom = roomId === "demo";
-  const canControlCombat = isRoomGm || (isDemoRoom && canParticipate);
+  const canControlCombat = isRoomGm;
   const defaultActorId =
     session?.user &&
     (Object.values(room.actors).find((a) => a.ownerId === session.user.id)?.id ??

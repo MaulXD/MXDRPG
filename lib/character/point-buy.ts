@@ -109,25 +109,28 @@ export function raceAwarePointBuyPriority(
   });
 }
 
-/** Gasta os 27 pontos seguindo prioridade da classe. */
+/**
+ * Gasta os 27 pontos em ordem de prioridade: esgota o atributo principal (até 15)
+ * antes de investir no próximo. Evita distribuição “plana” 12/13 em tudo.
+ */
 export function spendFullPointBuy(priorities: AttributeKey[]): Record<AttributeKey, number> {
   const scores = defaultPointBuyScores();
-  let safety = 0;
-  while (totalPointBuyCost(scores) < POINT_BUY_POOL && safety < 500) {
-    safety++;
-    let improved = false;
-    const order = [...priorities, ...ATTR_ORDER];
-    for (const key of order) {
-      if (!canIncreasePointBuy(scores, key)) continue;
-      const inc = pointBuyIncreaseCost(scores, key);
-      if (totalPointBuyCost(scores) + inc <= POINT_BUY_POOL) {
-        scores[key] = (scores[key] ?? POINT_BUY_MIN) + 1;
-        improved = true;
-        if (totalPointBuyCost(scores) === POINT_BUY_POOL) break;
-      }
-    }
-    if (!improved) break;
+  const seen = new Set<AttributeKey>();
+  const order: AttributeKey[] = [];
+  for (const key of [...priorities, ...ATTR_ORDER]) {
+    if (seen.has(key)) continue;
+    seen.add(key);
+    order.push(key);
   }
+
+  for (const key of order) {
+    while (canIncreasePointBuy(scores, key)) {
+      scores[key] = (scores[key] ?? POINT_BUY_MIN) + 1;
+      if (totalPointBuyCost(scores) >= POINT_BUY_POOL) break;
+    }
+    if (totalPointBuyCost(scores) >= POINT_BUY_POOL) break;
+  }
+
   return scores;
 }
 

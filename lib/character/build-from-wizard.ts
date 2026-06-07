@@ -1,10 +1,10 @@
 import { applyIdentityPatch } from "@/lib/character/identity";
 import { normalizeCharacter } from "@/lib/character/normalize";
 import { attributesAfterRacial, validatePointBuy } from "@/lib/character/point-buy";
-import type { CharacterWizardDraft } from "@/lib/character/wizard-types";
 import type { CharacterSheet } from "@/lib/character/types";
 import { attributeMod, getClass, hpMaxFor } from "@/lib/character/rules";
 import { validateImageDataUrl } from "@/lib/media/image-data-url";
+import type { CharacterWizardDraft } from "@/lib/character/wizard-types";
 import { xpTotalForLevel } from "@/lib/character/xp";
 import {
   applyStarterKitToSheet,

@@ -8,7 +8,7 @@ export async function getRoomSnapshot(roomId: string): Promise<RoomSnapshot | nu
   let room = await getRoom(roomId);
   if (!room) return null;
 
-  if (dbRooms.dbEnabled() && roomId !== "demo") {
+  if (dbRooms.dbEnabled()) {
     const fromDb = await dbRooms.fetchRoom(roomId);
     if (fromDb && fromDb.revision > room.revision) {
       rooms().set(roomId, fromDb);
@@ -56,7 +56,7 @@ export async function joinRoomByInviteLegacy(
         fromDb.revision += 1;
       }
       rooms().set(fromDb.roomId, fromDb);
-      if (fromDb.roomId !== "demo") await dbRooms.saveRoom(fromDb);
+      await dbRooms.saveRoom(fromDb);
       return syncAdventureActorsForRoom(fromDb.roomId);
     }
   }
@@ -67,7 +67,7 @@ export async function joinRoomByInviteLegacy(
       room.memberIds.push(userId);
       room.updatedAt = Date.now();
       room.revision += 1;
-      if (dbRooms.dbEnabled() && room.roomId !== "demo") {
+      if (dbRooms.dbEnabled()) {
         await dbRooms.saveRoom(room);
       }
     }

@@ -1,4 +1,4 @@
-import { canManageRoom } from "@/lib/auth/room-access";
+import { canManageRoom, DEMO_PLAYABLE_ACTOR_IDS } from "@/lib/auth/room-access";
 import type { SessionUser } from "@/lib/auth/types";
 import { activeTokenId, type CombatTrack } from "@/lib/room/combat";
 import type { RoomActor } from "@/lib/room/types";
@@ -50,7 +50,17 @@ export function canControlToken(
   user: SessionUser | null,
   token: BattleToken
 ): boolean {
-  if (room.roomId === "demo") return true;
+  if (room.roomId === "demo") {
+    if (!user) return false;
+    if (canManageRoom(room, user)) return true;
+    if (isMonsterToken(token)) return false;
+    if (token.linked && token.actorId) {
+      return DEMO_PLAYABLE_ACTOR_IDS.includes(
+        token.actorId as (typeof DEMO_PLAYABLE_ACTOR_IDS)[number]
+      );
+    }
+    return false;
+  }
   if (!user) return false;
   if (canManageRoom(room, user)) return true;
   if (isMonsterToken(token)) return false;
@@ -67,7 +77,6 @@ export function canAdvanceCombatTurn(
   combat: CombatTrack
 ): boolean {
   if (!combat.order.length) return false;
-  if (room.roomId === "demo") return true;
   if (!user) return false;
   if (canManageRoom(room, user)) return true;
   const activeId = activeTokenId(combat);

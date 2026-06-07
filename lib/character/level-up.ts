@@ -13,6 +13,7 @@ import {
   SUBCLASS_PATH_LABEL,
   TALENT_LEVELS,
 } from "@/lib/character/rules";
+import { resolveActorDefesa } from "@/lib/character/armor-defense";
 import {
   ASCENSION_LEVEL,
   getAscension,
@@ -258,8 +259,10 @@ export function applyLevelUp(actor: CharacterSheet, choices: LevelUpChoices = {}
       pontosAcao: { value: paMax, max: paMax },
     },
     tactical: {
-      defesa: 10 + attributeMod(attributes.destreza),
-      iniciativa: attributeMod(attributes.destreza),
+      defesa: actor.armorLoadout?.entryId
+        ? resolveActorDefesa({ ...actor, attributes })
+        : 10 + attributeMod(attributes.destreza),
+      iniciativa: actor.tactical.iniciativa ?? attributeMod(attributes.destreza),
     },
   };
 
