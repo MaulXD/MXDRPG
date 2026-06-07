@@ -125,6 +125,7 @@ export function MapToolbar({
       onClick={(e) => e.stopPropagation()}
       onPointerDown={(e) => e.stopPropagation()}
     >
+      <p className="map-toolbar__foot-hint">Scroll zoom · Alt+arrastar pano</p>
       <p className="map-toolbar__section-label">Mapa</p>
       <div className="map-toolbar__group" role="group" aria-label="Ferramentas de mapa">
         {mapTools.map((t) => {
@@ -266,7 +267,6 @@ export function MapToolbar({
           <MapToolbarIcon name="reset-view" />
         </button>
       </div>
-      <p className="map-toolbar__foot-hint">Scroll zoom · Alt+arrastar pano</p>
     </div>
   );
 }

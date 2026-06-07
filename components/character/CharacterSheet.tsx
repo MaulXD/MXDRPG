@@ -51,7 +51,10 @@ import {
   proficiencyBonus,
   type AttributeKey,
 } from "@/lib/character/rules";
-import { portraitFocusToImgStyle, sanitizePortraitFocus } from "@/lib/media/portrait-focus";
+import { OrnamentCard } from "@/components/ui/OrnamentCard";
+import { SectionDivider } from "@/components/ui/SectionDivider";
+import { Portrait } from "@/components/vtt/Portrait";
+import { sanitizePortraitFocus } from "@/lib/media/portrait-focus";
 import "./sheet.css";
 import "./sheet-popup.css";
 
@@ -381,12 +384,12 @@ export function CharacterSheet({
                 <section key={section.id} className="inv-section">
                   <header className="inv-section__head">
                     {sectionIcons[section.id] ?? null}
-                    <h3 className="inv-section__title">{section.label}</h3>
-                    {section.hint ? (
-                      <p className="inv-section__hint">{section.hint}</p>
-                    ) : null}
                     <span className="inv-section__count">{section.items.length}</span>
                   </header>
+                  <SectionDivider title={section.label} />
+                  {section.hint ? (
+                    <p className="inv-section__hint">{section.hint}</p>
+                  ) : null}
                   <ul className="inv-list">
                     {section.items.map(({ ref, entry }) => (
                       <InventoryRow
@@ -518,7 +521,7 @@ export function CharacterSheet({
       ) : null}
 
       <section className="sheet-section">
-        <h2 className="sheet-section__title">Devotion</h2>
+        <SectionDivider title="Devotion" />
         <ReligionSheetPanel religiao={live.identity.religiao} />
         {canEdit && !inRoom ? (
           <CharacterReligionEditor
@@ -551,7 +554,7 @@ export function CharacterSheet({
         <>
           <CharacterStatsGrid actor={live} />
           <div className="sheet-stat-grid">
-            <div className="sheet-stat">
+            <div className="sheet-stat sheet-stat--hp">
               <label>Vida</label>
               <strong>
                 {resources.vida.value}/{resources.vida.max}
@@ -665,7 +668,7 @@ export function CharacterSheet({
 
     return (
       <div className="sheet-shell sheet-shell--popup">
-        <header className="sheet-popup-top">
+        <OrnamentCard className="sheet-popup-top">
           <div className="sheet-popup-top__portrait-col">
             {inRoom ? (
               <SheetPopupPortrait
@@ -680,22 +683,18 @@ export function CharacterSheet({
                 onSaved={refresh}
               />
             ) : (
-              <div className="sheet-popup-top__portrait sheet-popup-portrait is-readonly">
-                {live.portraitUrl ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={live.portraitUrl}
-                    alt=""
-                    style={portraitFocus ? portraitFocusToImgStyle(portraitFocus) : undefined}
-                  />
-                ) : (
-                  <span className="sheet-popup-portrait__placeholder">
-                    <span className="sheet-popup-top__portrait-fallback">
-                      {live.name.trim().slice(0, 2).toUpperCase() || "?"}
-                    </span>
-                  </span>
-                )}
-              </div>
+              <Portrait
+                tier="hero"
+                imageSrc={live.portraitUrl}
+                initials={
+                  live.portraitUrl
+                    ? undefined
+                    : live.name.trim().slice(0, 2).toUpperCase() || "?"
+                }
+                alt={live.name}
+                focus={portraitFocus ?? undefined}
+                className="portrait--sheet-popup"
+              />
             )}
 
             <SheetPopupCombatStrip
@@ -730,7 +729,7 @@ export function CharacterSheet({
               );
             })}
           </div>
-        </header>
+        </OrnamentCard>
 
         <SheetPopupQuickBar actor={live} roomId={inRoom ? roomId : undefined} onRoll={refresh} />
 
@@ -746,7 +745,7 @@ export function CharacterSheet({
         ) : null}
 
         <div className="sheet-popup-body">
-          <section className="sheet-popup-center sheet-panel">
+          <OrnamentCard className="sheet-popup-center sheet-panel">
             {canEdit || inRoom ? (
               <details className="sheet-popup-advanced" open>
                 <summary>Gestão do personagem</summary>
@@ -754,7 +753,7 @@ export function CharacterSheet({
               </details>
             ) : null}
             {tabPanel}
-          </section>
+          </OrnamentCard>
         </div>
 
         {pickerOpen ? (
@@ -780,9 +779,9 @@ export function CharacterSheet({
         portraitFocus={live.portraitFocus}
       />
 
-      <aside className="sheet-sidebar glass">{sidebarTools}</aside>
+      <OrnamentCard className="sheet-sidebar">{sidebarTools}</OrnamentCard>
 
-      <section className="sheet-panel glass sheet-main">{tabPanel}</section>
+      <OrnamentCard className="sheet-panel sheet-main">{tabPanel}</OrnamentCard>
 
       {pickerOpen ? (
         <CompendiumPicker

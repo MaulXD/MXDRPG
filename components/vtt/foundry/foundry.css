@@ -55,6 +55,8 @@
 
 .foundry-sidebar__dock:not(.foundry-sidebar__dock--collapsed) {
   pointer-events: auto;
+  flex: 1;
+  height: 100%;
 }
 
 .foundry-mesa__stage {
@@ -63,6 +65,15 @@
   min-width: 0;
   min-height: 0;
   z-index: 0;
+  overflow: visible;
+}
+
+.foundry-mesa__toasts {
+  position: absolute;
+  inset: 0;
+  z-index: 12;
+  pointer-events: none;
+  overflow: visible;
 }
 
 .foundry-mesa__stage .vtt-shell--foundry {
@@ -439,8 +450,20 @@
 .foundry-dock-panel__body {
   flex: 1;
   min-height: 0;
-  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
   overscroll-behavior: contain;
+}
+
+.foundry-dock-panel__body > .mesa-panel-scroll--rail,
+.foundry-dock-panel__body > .mesa-panel-scroll--invite,
+.foundry-dock-panel__body > .room-chat,
+.foundry-dock-panel__body > .dice-roller {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
 }
 
 .foundry-dock-panel--actors .mesa-panel-scroll,
@@ -463,18 +486,29 @@
   min-height: 0;
 }
 
-/* Ordem de turno — rolagem única na janela/dock; sem lista encaixotada */
-.foundry-window--initiative .mesa-panel-scroll--rail,
-.foundry-dock-panel--initiative .mesa-panel-scroll--rail {
+/* Ordem de turno — janela flutuante: rolagem única; dock: preenche coluna */
+.foundry-window--initiative .mesa-panel-scroll--rail {
   flex: 0 1 auto;
   height: auto;
   overflow: visible;
 }
 
-.foundry-window--initiative .vtt-turn-list,
-.foundry-dock-panel--initiative .vtt-turn-list {
+.foundry-dock-panel--initiative .mesa-panel-scroll--rail {
+  flex: 1 1 auto;
+  min-height: 0;
+  height: auto;
+  overflow: hidden;
+}
+
+.foundry-window--initiative .vtt-turn-list {
   max-height: none;
   overflow: visible;
+}
+
+.foundry-dock-panel--initiative .vtt-turn-list--compact {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
 }
 
 .foundry-window--initiative .vtt-turn-track,
@@ -486,9 +520,13 @@
   border-radius: 0;
 }
 
-.foundry-window--initiative,
-.foundry-dock-panel--initiative {
+.foundry-window--initiative {
   max-width: min(210px, 92vw);
+}
+
+.foundry-dock-panel--initiative {
+  width: 100%;
+  max-width: none;
 }
 
 .foundry-dock-panel--initiative .mesa-panel-scroll {

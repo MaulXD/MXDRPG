@@ -65,6 +65,12 @@ import type { CombatFxState } from "@/lib/vtt/combat-fx-types";
 import { ingestNewCombatFx, isPlayableCombatFxMessage } from "@/lib/vtt/combat-fx-sequence";
 import type { ChatMessage } from "@/lib/room/chat";
 import { activeTokenId } from "@/lib/room/combat";
+import { TurnHandoffOverlay } from "@/components/vtt/TurnHandoffOverlay";
+import {
+  firstPortraitDataUrl,
+  mergeScenePreservingPortraits,
+  mergeTokenPortraitFields,
+} from "@/lib/room/portrait-sync";
 import { isMonsterToken } from "@/lib/room/settings";
 import {
   listTokenCombatActions,
@@ -128,6 +134,8 @@ type Props = {
   scene: BattleScene;
   canEdit: boolean;
   canControlCombat?: boolean;
+  /** Arrastar token livremente (sem PA/turno) — só mestre. */
+  canRepositionTokens?: boolean;
   /** Desenhar na lousa — jogadores e mestre */
   canUseWhiteboard?: boolean;
   canBypassTurn?: boolean;
@@ -187,6 +195,7 @@ export function HexBattlefield({
   scene: initial,
   canEdit,
   canControlCombat = false,
+  canRepositionTokens = false,
   canUseWhiteboard = false,
   canBypassTurn: canBypassTurnProp = false,
   canEndTurn: canEndTurnProp = false,
@@ -499,7 +508,7 @@ export function HexBattlefield({
         if (snap.revision > appliedSceneRevisionRef.current) {
           appliedSceneRevisionRef.current = snap.revision;
         }
-        setScene(snap.scene);
+        setScene((prev) => mergeScenePreservingPortraits(prev, snap.scene));
         if (onApplySnapshot) onApplySnapshot(snap);
         else refresh();
       } else if (snap) {
@@ -797,6 +806,7 @@ export function HexBattlefield({
       nameplateMode: remote.nameplateMode,
       conditions: remote.conditions,
       timedEffects: remote.timedEffects,
+      ...mergeTokenPortraitFields(local, remote),
     }),
     []
   );
@@ -814,7 +824,7 @@ export function HexBattlefield({
     pendingCombatSnapRef.current = null;
     if (snap.revision <= appliedSceneRevisionRef.current) return;
     appliedSceneRevisionRef.current = snap.revision;
-    setScene(snap.scene);
+    setScene((prev) => mergeScenePreservingPortraits(prev, snap.scene));
   }, []);
 
   useEffect(() => {
@@ -844,7 +854,7 @@ export function HexBattlefield({
     }
 
     appliedSceneRevisionRef.current = snapshot.revision;
-    setScene(snapshot.scene);
+    setScene((prev) => mergeScenePreservingPortraits(prev, snapshot.scene));
   }, [snapshot, combatFx, mergeTokenCombatFields]);
 
   useEffect(() => {
@@ -932,7 +942,7 @@ export function HexBattlefield({
     if (!snap) return;
     pendingCombatSnapRef.current = null;
     appliedSceneRevisionRef.current = snap.revision;
-    setScene(snap.scene);
+    setScene((prev) => mergeScenePreservingPortraits(prev, snap.scene));
     syncRoom(snap);
   }, [syncRoom]);
 
@@ -942,7 +952,7 @@ export function HexBattlefield({
       const snap = pendingCombatSnapRef.current;
       pendingCombatSnapRef.current = null;
       appliedSceneRevisionRef.current = snap.revision;
-      setScene(snap.scene);
+      setScene((prev) => mergeScenePreservingPortraits(prev, snap.scene));
       syncRoom(snap);
     }
     const next = combatFxQueueRef.current.shift() ?? null;
@@ -1398,10 +1408,8 @@ export function HexBattlefield({
   );
 
   const canRepositionToken = useCallback(
-    (token: BattleToken) =>
-      canControlCombat ||
-      (Boolean(canControlToken?.(token)) && !isMonsterToken(token)),
-    [canControlCombat, canControlToken]
+    (_token: BattleToken) => canRepositionTokens,
+    [canRepositionTokens]
   );
 
   const onRepositionToken = useCallback(
@@ -1422,7 +1430,7 @@ export function HexBattlefield({
         if (!snap?.scene) throw new Error("Resposta inválida ao mover token");
         pendingCombatSnapRef.current = null;
         appliedSceneRevisionRef.current = snap.revision;
-        setScene(snap.scene);
+        setScene((prev) => mergeScenePreservingPortraits(prev, snap.scene));
         syncRoom(snap);
       } catch (e) {
         setActionErr(e instanceof Error ? e.message : "Falha ao mover token");
@@ -1742,6 +1750,12 @@ export function HexBattlefield({
     ? (selected ?? turnActiveToken ?? playerToken)
     : playerToken;
   const hudIsControlled = Boolean(playerToken && hudToken && playerToken.id === hudToken.id);
+  const hudPortraitFallback = hudToken?.actorId
+    ? firstPortraitDataUrl(
+        roomActors[hudToken.actorId]?.tokenImageUrl,
+        roomActors[hudToken.actorId]?.portraitUrl
+      )
+    : null;
 
   const resolveStatusToken = useCallback(
     (explicit?: BattleToken | null) => {
@@ -2179,6 +2193,7 @@ export function HexBattlefield({
       <div
         ref={wrapRef}
         className={`vtt-canvas-wrap${attackTargetCursor ? " vtt-canvas-wrap--attack-target" : ""}${spawnDragActive ? " vtt-canvas-wrap--spawn-drop" : ""}${battlefieldView.isPanning ? " vtt-canvas-wrap--panning" : ""}`}
+        onContextMenu={(e) => e.preventDefault()}
         onWheel={(e) => {
           battlefieldView.onWheel(e);
         }}
@@ -2288,13 +2303,7 @@ export function HexBattlefield({
             />
           </div>
         ) : null}
-        {combat?.order.length && turnActiveToken ? (
-          <div className="vtt-turn-of-banner" role="status" aria-live="polite">
-            <span className="vtt-turn-of-banner__label">Turno de:</span>
-            <strong className="vtt-turn-of-banner__name">{turnActiveToken.name}</strong>
-            <span className="vtt-turn-of-banner__round">Rodada {combat.round}</span>
-          </div>
-        ) : null}
+        <TurnHandoffOverlay combat={combat} tokens={displayScene.tokens} />
         {combat && (!hudToken || !hudVisible) ? (
           <EndTurnBar
             roomId={roomId}
@@ -2320,6 +2329,8 @@ export function HexBattlefield({
             onSnapshot={syncRoom}
             onUpdate={refresh}
             onHide={() => setHudVisible(false)}
+            portraitFallback={hudPortraitFallback}
+            portraitFocus={hudToken ? focusByTokenId.get(hudToken.id) : undefined}
           />
         ) : hudToken ? (
           <CombatHudRestoreButton token={hudToken} onShow={() => setHudVisible(true)} />

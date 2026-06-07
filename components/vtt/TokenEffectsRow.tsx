@@ -10,9 +10,17 @@ type Props = {
   token: BattleToken;
   /** compact = ícone; full = ícone + nome */
   variant?: "compact" | "full";
+  /** hud-v4 = chips Eldarin v4 com tooltip inline */
+  surface?: "default" | "hud-v4";
   className?: string;
   max?: number;
 };
+
+function chipVariant(kind: TokenEffectChip["kind"]): "danger" | "success" | "warn" | "info" {
+  if (kind === "buff") return "success";
+  if (kind === "debuff") return "warn";
+  return "danger";
+}
 
 function EffectChipDetail({ chip }: { chip: TokenEffectChip }) {
   return (
@@ -29,6 +37,7 @@ function EffectChipDetail({ chip }: { chip: TokenEffectChip }) {
 export function TokenEffectsRow({
   token,
   variant = "compact",
+  surface = "default",
   className = "",
   max = 8,
 }: Props) {
@@ -45,6 +54,38 @@ export function TokenEffectsRow({
   const shown = chips.slice(0, max);
   const extra = chips.length - shown.length;
   const activeChip = shown.find((c) => c.id === hoveredId) ?? null;
+
+  if (surface === "hud-v4") {
+    return (
+      <div className="vtt-hud-effects-row" role="list" aria-label="Condições e buffs">
+        {shown.map((chip) => (
+          <div
+            key={chip.id}
+            role="listitem"
+            className={`condition-chip condition-chip--${chipVariant(chip.kind)}`}
+            aria-label={chip.title}
+          >
+            <TokenEffectIcon icon={chip.icon} size={12} className="condition-chip__icon" />
+            <span className="condition-chip__label">{chip.label}</span>
+            <div className="condition-chip__tooltip">
+              <div className="condition-chip__tooltip-name">{chip.label}</div>
+              <div className="condition-chip__tooltip-desc">{chip.description}</div>
+              {chip.durationLabel ? (
+                <div className="condition-chip__tooltip-turns">
+                  Duração: {chip.durationLabel}
+                </div>
+              ) : null}
+            </div>
+          </div>
+        ))}
+        {extra > 0 ? (
+          <span className="condition-chip condition-chip--info" title={`+${extra} efeitos`}>
+            <span className="condition-chip__label">+{extra}</span>
+          </span>
+        ) : null}
+      </div>
+    );
+  }
 
   return (
     <>

@@ -2,7 +2,12 @@ import { canControlToken, canAdvanceCombatTurn } from "@/lib/auth/combat-turn-ac
 import { getRoom } from "@/lib/room/store";
 import type { RoomState } from "@/lib/room/types";
 import type { BattleToken } from "@/lib/vtt/types";
-import { canAccessRoom, canManageRoom, canSpawnMonstersInRoom } from "@/lib/auth/room-access";
+import {
+  canAccessRoom,
+  canManageRoom,
+  canRepositionTokensInRoom,
+  canSpawnMonstersInRoom,
+} from "@/lib/auth/room-access";
 
 export { canControlToken, canAdvanceCombatTurn } from "@/lib/auth/combat-turn-access";
 import { getSession } from "@/lib/auth/session";
@@ -69,7 +74,6 @@ export function assertTokenControl(
   token: BattleToken | undefined
 ): TokenControlFail | null {
   if (!token) return { status: 404, error: "Token não encontrado" };
-  if (room.roomId === "demo") return null;
   if (!user) return { status: 401, error: "Faça login" };
   if (!canAccessRoom(room, user)) return { status: 403, error: "Você não participa desta mesa" };
   if (!canControlToken(room, user, token)) {
@@ -80,4 +84,11 @@ export function assertTokenControl(
 
 export function chatRoleForUser(room: RoomState, user: SessionUser): "mestre" | "jogador" {
   return canManageRoom(room, user) ? "mestre" : "jogador";
+}
+
+export function canRepositionToken(
+  room: RoomState,
+  user: SessionUser | null | undefined
+): boolean {
+  return canRepositionTokensInRoom(room, user);
 }

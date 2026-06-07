@@ -48,7 +48,7 @@ export async function joinRoomMembers(roomId: string, userId: string): Promise<v
     room.updatedAt = Date.now();
     room.revision += 1;
     rooms().set(roomId, room);
-    if (dbRooms.dbEnabled() && roomId !== "demo") {
+    if (dbRooms.dbEnabled()) {
       await dbRooms.saveRoom(room);
     }
   }
@@ -73,7 +73,7 @@ export async function syncAdventureMembersToRoom(adventure: Adventure): Promise<
     room.updatedAt = Date.now();
   }
   rooms().set(room.roomId, room);
-  if (dbRooms.dbEnabled() && room.roomId !== "demo") {
+  if (dbRooms.dbEnabled()) {
     await dbRooms.saveRoom(room);
   }
 }

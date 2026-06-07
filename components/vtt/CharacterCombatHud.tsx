@@ -5,11 +5,21 @@ import type { CombatTrack } from "@/lib/room/combat";
 import { activeTokenId } from "@/lib/room/combat";
 import type { RoomSnapshot } from "@/lib/room/types";
 import type { BattleToken } from "@/lib/vtt/types";
-import { hpBarColor, hpRatio } from "@/lib/vtt/token-hp-display";
+import { hpRatio } from "@/lib/vtt/token-hp-display";
 import { listTokenEffectChips } from "@/lib/vtt/token-effects";
 import { nextCombatTurn } from "@/hooks/useRoomSync";
+import { useImageNaturalSize } from "@/hooks/useImageNaturalSize";
 import { PaHudMeter } from "@/components/vtt/PaHudMeter";
 import { TokenEffectsRow } from "@/components/vtt/TokenEffectsRow";
+import { firstPortraitDataUrl } from "@/lib/room/portrait-sync";
+import {
+  DEFAULT_PORTRAIT_FOCUS,
+  sanitizePortraitFocus,
+  type PortraitFocus,
+} from "@/lib/media/portrait-focus";
+import { resolvePortraitFrameTier } from "@/lib/vtt/portrait-frame";
+import { Portrait } from "@/components/vtt/Portrait";
+import { HudCorners } from "@/components/vtt/HudCorners";
 
 type Props = {
   token: BattleToken;
@@ -18,28 +28,31 @@ type Props = {
   isControlled: boolean;
   canViewPa: boolean;
   canEndTurn: boolean;
-  /** Mestre pode passar turno mesmo com outro token no HUD. */
   canControlCombat?: boolean;
   roomId: string;
   onOpenSheet?: (actorId?: string) => void;
   onSnapshot?: (snap: RoomSnapshot) => void;
   onUpdate: () => void;
   onHide: () => void;
+  portraitFallback?: string | null;
+  portraitFocus?: PortraitFocus | null;
 };
 
-function AcShield({ value, bonus }: { value: number; bonus?: number }) {
+function HudCaShield({ value }: { value: number }) {
   return (
-    <div className="vtt-combat-hud__ac" title={`Classe de armadura ${value}`}>
-      <svg className="vtt-combat-hud__ac-icon" viewBox="0 0 32 36" aria-hidden>
-        <path
-          d="M16 2 L30 8.5 V17.5 C30 25.5 24 31.5 16 34 C8 31.5 2 25.5 2 17.5 V8.5 Z"
-          fill="rgba(8, 12, 18, 0.75)"
-          stroke="rgba(201, 169, 98, 0.55)"
-          strokeWidth="1.5"
-        />
-      </svg>
-      <span className="vtt-combat-hud__ac-value">{value}</span>
-      {bonus ? <span className="vtt-combat-hud__ac-bonus">+{bonus}</span> : null}
+    <div className="hud-ca" title={`Classe de armadura ${value}`}>
+      <div className="hud-ca-shield">
+        <svg viewBox="0 0 32 36" fill="none" aria-hidden>
+          <path
+            d="M16 2 L30 8.5 V17.5 C30 25.5 24 31.5 16 34 C8 31.5 2 25.5 2 17.5 V8.5 Z"
+            fill="rgba(8, 12, 18, 0.75)"
+            stroke="rgba(201, 169, 98, 0.55)"
+            strokeWidth="1.5"
+          />
+        </svg>
+        <span className="hud-ca-value">{value}</span>
+      </div>
+      <span className="hud-ca-label">CA</span>
     </div>
   );
 }
@@ -57,6 +70,8 @@ export function CharacterCombatHud({
   onSnapshot,
   onUpdate,
   onHide,
+  portraitFallback = null,
+  portraitFocus = null,
 }: Props) {
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
@@ -65,8 +80,14 @@ export function CharacterCombatHud({
   const isYourTurn = Boolean(activeId && token.id === activeId && isControlled);
   const ratio = hpRatio(token);
   const hpPct = Math.round(ratio * 100);
-  const barColor = hpBarColor(ratio);
   const hasStatusEffects = listTokenEffectChips(token).length > 0;
+  const portraitSrc = firstPortraitDataUrl(token.imageUrl, portraitFallback);
+  const imgSize = useImageNaturalSize(portraitSrc);
+  const focus =
+    sanitizePortraitFocus(portraitFocus) ??
+    sanitizePortraitFocus(token.imageFocus) ??
+    DEFAULT_PORTRAIT_FOCUS;
+  const frameTier = resolvePortraitFrameTier(token);
 
   const showEndTurn =
     canEndTurn &&
@@ -88,118 +109,126 @@ export function CharacterCombatHud({
     }
   }
 
+  const hudClass = [
+    "vtt-combat-hud",
+    isYourTurn ? "vtt-combat-hud--your-turn" : "",
+    isGmView ? "vtt-combat-hud--gm" : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
+
   return (
-    <div
-      className={`vtt-combat-hud glass-panel${isYourTurn ? " vtt-combat-hud--your-turn" : ""}${isGmView ? " vtt-combat-hud--gm" : ""}`}
-      role="region"
-      aria-label={`HUD de ${token.name}`}
-    >
+    <div className="vtt-hud-wrapper" role="region" aria-label={`HUD de ${token.name}`}>
       {hasStatusEffects ? (
-        <div className="vtt-combat-hud__status-bar" aria-label="Efeitos ativos">
-          <TokenEffectsRow token={token} className="vtt-effect-chips--hud-bar" max={14} />
+        <div className="vtt-hud-effects" aria-label="Efeitos ativos">
+          <TokenEffectsRow token={token} surface="hud-v4" max={14} />
         </div>
       ) : null}
 
-      <div className="vtt-combat-hud__body">
-        <div
-          className="vtt-combat-hud__portrait"
-          style={{ borderColor: token.color, boxShadow: `0 0 14px ${token.color}44` }}
-        >
-          {token.imageUrl ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={token.imageUrl} alt="" className="vtt-combat-hud__portrait-img" />
-          ) : (
-            <span className="vtt-combat-hud__portrait-fallback" style={{ color: token.color }}>
-              {token.name.slice(0, 1).toUpperCase()}
-            </span>
-          )}
+      <div className={hudClass}>
+        <HudCorners emphasized={isYourTurn} />
+
+        <div className="hud-portrait-wrap">
+          <Portrait
+            tier={frameTier}
+            imageSrc={portraitSrc}
+            initials={portraitSrc ? undefined : token.name.slice(0, 1).toUpperCase()}
+            alt={token.name}
+            focus={focus}
+            imgW={imgSize.w}
+            imgH={imgSize.h}
+            size="hud"
+          />
         </div>
 
-        <div className="vtt-combat-hud__core">
-          <div className="vtt-combat-hud__name-row">
-            <div className="vtt-combat-hud__name-wrap">
-              <strong className="vtt-combat-hud__name">{token.name}</strong>
-              {isYourTurn ? (
-                <span className="vtt-combat-hud__turn-pill">Seu turno</span>
-              ) : isGmView && activeId === token.id ? (
-                <span className="vtt-combat-hud__turn-pill vtt-combat-hud__turn-pill--gm">
-                  Turno ativo
-                </span>
-              ) : combat?.round ? (
-                <span className="vtt-combat-hud__round-inline">R{combat.round}</span>
-              ) : null}
-            </div>
+        <div className="hud-divider" aria-hidden />
+
+        <div className="hud-body">
+          <div className="hud-name-row">
+            <span className="hud-name" title={token.name}>
+              {token.name}
+            </span>
             {token.vidaMax != null ? (
-              <span className="vtt-combat-hud__hp-text" style={{ color: barColor }}>
-                {token.vida ?? 0}/{token.vidaMax}
+              <span className="hud-hp">
+                {token.vida ?? 0} <span className="hud-hp-sep">/</span> {token.vidaMax}
               </span>
             ) : null}
           </div>
 
+          {isYourTurn ? (
+            <span className="hud-turn-badge">Seu turno</span>
+          ) : isGmView && activeId === token.id ? (
+            <span className="hud-turn-badge hud-turn-badge--gm">Turno ativo</span>
+          ) : combat?.round ? (
+            <span className="hud-round">R{combat.round}</span>
+          ) : null}
+
           {token.vidaMax != null ? (
-            <div className="vtt-combat-hud__hp-track" aria-hidden>
-              <div
-                className="vtt-combat-hud__hp-fill"
-                style={{ width: `${hpPct}%`, background: barColor }}
-              />
+            <div className="hud-hp-track" aria-hidden>
+              <div className="hud-hp-fill" style={{ width: `${hpPct}%` }} />
             </div>
           ) : null}
 
-          <div className="vtt-combat-hud__resources">
-            {token.defesa != null ? (
-              <AcShield value={token.defesa} bonus={token.defesaBonus} />
-            ) : null}
+          <div className="hud-stats">
+            {token.defesa != null ? <HudCaShield value={token.defesa} /> : null}
             {canViewPa ? <PaHudMeter token={token} variant="hud" /> : null}
           </div>
         </div>
 
-        <div className="vtt-combat-hud__actions">
-          <div className="vtt-combat-hud__actions-head">
-            {token.linked && onOpenSheet ? (
-              <button
-                type="button"
-                className="vtt-combat-hud__btn-sheet"
-                onClick={() => onOpenSheet(token.actorId)}
-              >
-                Ficha
-              </button>
-            ) : null}
+        <div className="hud-actions">
+          {token.linked && onOpenSheet ? (
             <button
               type="button"
-              className="vtt-combat-hud__hide"
-              title="Ocultar HUD"
-              aria-label="Ocultar HUD"
-              onClick={onHide}
+              className="hud-btn"
+              onClick={() => onOpenSheet(token.actorId)}
             >
-              <svg className="vtt-combat-hud__hide-icon" viewBox="0 0 24 24" fill="none" aria-hidden>
-                <path
-                  d="M2 12s3.5-7 10-7 10 7 10 7-1.2 2.2-3.2 3.8"
-                  stroke="currentColor"
-                  strokeWidth="1.75"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"
-                  stroke="currentColor"
-                  strokeWidth="1.75"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path d="m3 3 18 18" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" />
+              <svg viewBox="0 0 16 16" fill="none" aria-hidden>
+                <rect x="2" y="1.5" width="12" height="13" rx="1" stroke="currentColor" strokeWidth="1.2" />
+                <line x1="5" y1="5" x2="11" y2="5" stroke="currentColor" strokeWidth="1" />
+                <line x1="5" y1="8" x2="11" y2="8" stroke="currentColor" strokeWidth="1" />
+                <line x1="5" y1="11" x2="9" y2="11" stroke="currentColor" strokeWidth="1" />
               </svg>
+              <span className="hud-btn-label">Ficha</span>
             </button>
-          </div>
+          ) : null}
           {showEndTurn ? (
             <button
               type="button"
-              className="vtt-combat-hud__end-turn"
+              className="hud-btn hud-btn--pass"
               disabled={busy}
               onClick={() => void handleEndTurn()}
             >
-              {busy ? "…" : "Passar turno"}
+              <svg viewBox="0 0 16 16" fill="none" aria-hidden>
+                <polyline
+                  points="3,8 7,12 13,4"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+              <span className="hud-btn-label">{busy ? "…" : "Passar"}</span>
             </button>
           ) : null}
+          <button
+            type="button"
+            className="hud-btn hud-btn--hide"
+            title="Ocultar HUD"
+            aria-label="Ocultar HUD"
+            onClick={onHide}
+          >
+            <svg viewBox="0 0 16 16" fill="none" aria-hidden>
+              <path
+                d="M1.5 8s2-4.5 6.5-4.5S14.5 8 14.5 8"
+                stroke="currentColor"
+                strokeWidth="1.3"
+                strokeLinecap="round"
+              />
+              <circle cx="8" cy="8" r="2" stroke="currentColor" strokeWidth="1.3" />
+              <line x1="2" y1="2" x2="14" y2="14" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
+            </svg>
+            <span className="hud-btn-label">Ocultar</span>
+          </button>
         </div>
       </div>
 
