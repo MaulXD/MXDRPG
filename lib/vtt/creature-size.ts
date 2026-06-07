@@ -153,8 +153,9 @@ export function hexInscribedRadius(hexSize: number): number {
   return hexSize * HEX_INSCRIBED_RATIO;
 }
 
+/** Raio máximo do token — círculo inscrito no hex (centro → aresta), sem ultrapassar. */
 export function tokenDrawRadius(hexSize: number, size: CreatureSize): number {
-  const edgePad = Math.max(0.35, hexSize * 0.008);
+  const edgePad = Math.max(0.5, hexSize * 0.004);
   if (size === "small" || size === "medium") {
     return hexInscribedRadius(hexSize) - edgePad;
   }
