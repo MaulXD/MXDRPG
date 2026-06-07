@@ -1,11 +1,27 @@
 .foundry-mesa__toasts .vtt-toast-stack {
   position: absolute;
   left: 50%;
-  bottom: var(--vtt-toast-lift, 1.25rem);
-  transform: translateX(-50%);
   z-index: 24;
   max-width: min(92%, 520px);
-  flex-direction: column-reverse;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.45rem;
+  pointer-events: none;
+}
+
+/* Com HUD visível: stack inteiro fica acima do wrapper */
+.foundry-mesa__toasts[data-toast-anchor="hud"] .vtt-toast-stack {
+  top: var(--vtt-toast-top, 50%);
+  bottom: auto;
+  transform: translate(-50%, -100%);
+}
+
+/* Sem HUD: canto inferior do stage */
+.foundry-mesa__toasts[data-toast-anchor="fallback"] .vtt-toast-stack {
+  top: auto;
+  bottom: var(--vtt-toast-lift, 1.25rem);
+  transform: translateX(-50%);
 }
 
 .vtt-toast-stack {
