@@ -80,17 +80,13 @@
 
   flex-direction: column;
 
-  border-radius: 12px;
+  border-radius: 0;
 
-  border: 1px solid var(--glass-border-bright);
+  border: none;
 
   background: var(--bg-elevated);
 
-  box-shadow:
-
-    0 24px 56px rgba(0, 0, 0, 0.28),
-
-    0 0 0 1px rgba(201, 169, 98, 0.14);
+  box-shadow: 0 24px 56px rgba(0, 0, 0, 0.28);
 
   overflow: hidden;
 
@@ -1851,7 +1847,10 @@
 
 
 
+.sheet-shell--popup .btn,
 .sheet-shell--popup .btn-ghost {
+
+  border-radius: 0;
 
   color: rgba(232, 226, 214, 0.75);
 

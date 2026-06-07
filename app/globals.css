@@ -46,9 +46,9 @@
   --text-muted: #9aaabf;
   --text-dim: #5a6a80;
 
-  --radius: 8px;
-  --radius-lg: 12px;
-  --radius-pill: 6px;
+  --radius: 0;
+  --radius-lg: 0;
+  --radius-pill: 0;
 
   --font-body: "Lora", "Palatino Linotype", "Book Antiqua", Georgia, serif;
   --font-display: "Cinzel", "Times New Roman", serif;
@@ -300,8 +300,8 @@ a {
   justify-content: center;
   gap: 0.5rem;
   padding: 0.7rem 1.35rem;
-  border-radius: var(--radius-pill);
-  border: 1px solid var(--glass-border-bright);
+  border-radius: 0;
+  border: 1px solid var(--eldarin-frame-border, var(--glass-border-bright));
   background: linear-gradient(180deg, var(--surface-raised) 0%, var(--surface) 100%);
   color: var(--text);
   font-family: var(--font-display);
@@ -361,8 +361,8 @@ a {
   align-items: center;
   gap: 0.35rem;
   padding: 0.4rem 0.75rem;
-  border-radius: var(--radius-pill);
-  border: 1px solid var(--glass-border);
+  border-radius: 0;
+  border: 1px solid var(--eldarin-frame-border, var(--glass-border));
   background: var(--surface);
   color: var(--text-muted);
   font-family: var(--font-body);
