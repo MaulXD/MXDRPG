@@ -51,9 +51,7 @@ import {
   proficiencyBonus,
   type AttributeKey,
 } from "@/lib/character/rules";
-import { PortraitFocusFill } from "@/components/character/PortraitFocusFill";
-import { DEFAULT_PORTRAIT_FOCUS, sanitizePortraitFocus } from "@/lib/media/portrait-focus";
-import { useImageNaturalSize } from "@/hooks/useImageNaturalSize";
+import { portraitFocusToImgStyle, sanitizePortraitFocus } from "@/lib/media/portrait-focus";
 import "./sheet.css";
 import "./sheet-popup.css";
 
@@ -269,8 +267,7 @@ export function CharacterSheet({
       ? Math.round((resources.vida.value / resources.vida.max) * 100)
       : 0;
   const prof = proficiencyBonus(identity.nivel);
-  const portraitFocus = sanitizePortraitFocus(live.portraitFocus) ?? DEFAULT_PORTRAIT_FOCUS;
-  const popupPortraitSize = useImageNaturalSize(isPopup ? live.portraitUrl : null);
+  const portraitFocus = sanitizePortraitFocus(live.portraitFocus);
   const displayDefesa = resolveActorDefesa(live);
 
   const tabTitles: Record<Tab, string> = {
@@ -438,29 +435,27 @@ export function CharacterSheet({
       ) : null}
 
       {!isPopup ? (
-        <div className="sheet-xp-row">
-          <p className="sheet-meta" style={{ fontSize: "0.8rem", color: "var(--text-muted)", marginTop: 0 }}>
-            {formatXpProgress(identity.nivel, identity.xpTotal ?? 0)}
-          </p>
-          {canEdit ? (
-            <LevelUpWizard
-              actor={live}
-              roomId={roomId}
-              canEdit={canEdit}
-              variant="compact"
-              onDone={refresh}
-              onApplied={(patch) => {
-                if (!snapshot) return;
-                applySnapshot({
-                  ...snapshot,
-                  actors: { ...snapshot.actors, [patch.actor.id]: patch.actor },
-                  scene: patch.scene,
-                  revision: patch.revision,
-                });
-              }}
-            />
-          ) : null}
-        </div>
+        <p className="sheet-meta" style={{ fontSize: "0.8rem", color: "var(--text-muted)", marginTop: 0 }}>
+          {formatXpProgress(identity.nivel, identity.xpTotal ?? 0)}
+        </p>
+      ) : null}
+
+      {canEdit ? (
+        <LevelUpWizard
+          actor={live}
+          roomId={roomId}
+          canEdit={canEdit}
+          onDone={refresh}
+          onApplied={(patch) => {
+            if (!snapshot) return;
+            applySnapshot({
+              ...snapshot,
+              actors: { ...snapshot.actors, [patch.actor.id]: patch.actor },
+              scene: patch.scene,
+              revision: patch.revision,
+            });
+          }}
+        />
       ) : null}
 
       {canEditPortrait && inRoom && !isPopup ? (
@@ -626,6 +621,24 @@ export function CharacterSheet({
 
         <ReligionSheetPanel religiao={identity.religiao} compact />
 
+        {canEdit ? (
+          <LevelUpWizard
+            actor={live}
+            roomId={roomId}
+            canEdit={canEdit}
+            onDone={refresh}
+            onApplied={(patch) => {
+              if (!snapshot) return;
+              applySnapshot({
+                ...snapshot,
+                actors: { ...snapshot.actors, [patch.actor.id]: patch.actor },
+                scene: patch.scene,
+                revision: patch.revision,
+              });
+            }}
+          />
+        ) : null}
+
         {canEdit && inRoom ? (
           <Link
             href={`/personagem/${character.id}`}
@@ -669,18 +682,12 @@ export function CharacterSheet({
             ) : (
               <div className="sheet-popup-top__portrait sheet-popup-portrait is-readonly">
                 {live.portraitUrl ? (
-                  popupPortraitSize.w > 0 ? (
-                    <PortraitFocusFill
-                      imageSrc={live.portraitUrl}
-                      focus={portraitFocus}
-                      imgW={popupPortraitSize.w}
-                      imgH={popupPortraitSize.h}
-                      shape="square"
-                    />
-                  ) : (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img src={live.portraitUrl} alt="" />
-                  )
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={live.portraitUrl}
+                    alt=""
+                    style={portraitFocus ? portraitFocusToImgStyle(portraitFocus) : undefined}
+                  />
                 ) : (
                   <span className="sheet-popup-portrait__placeholder">
                     <span className="sheet-popup-top__portrait-fallback">
@@ -704,30 +711,7 @@ export function CharacterSheet({
           </div>
 
           <div className="sheet-popup-top__identity">
-            <CharacterSheetPopupHero
-              name={live.name}
-              identity={identity}
-              levelUpSlot={
-                canEdit ? (
-                  <LevelUpWizard
-                    actor={live}
-                    roomId={roomId}
-                    canEdit={canEdit}
-                    variant="compact"
-                    onDone={refresh}
-                    onApplied={(patch) => {
-                      if (!snapshot) return;
-                      applySnapshot({
-                        ...snapshot,
-                        actors: { ...snapshot.actors, [patch.actor.id]: patch.actor },
-                        scene: patch.scene,
-                        revision: patch.revision,
-                      });
-                    }}
-                  />
-                ) : null
-              }
-            />
+            <CharacterSheetPopupHero name={live.name} identity={identity} />
           </div>
 
           <div className="sheet-popup-top__attrs" role="group" aria-label="Atributos">

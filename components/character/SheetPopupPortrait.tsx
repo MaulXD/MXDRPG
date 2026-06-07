@@ -56,7 +56,7 @@ export function SheetPopupPortrait({
   const [editingSlot, setEditingSlot] = useState<"portrait" | "token">("portrait");
 
   const previewSrc = draftSrc ?? portraitUrl;
-  const imgSize = useImageNaturalSize(previewSrc);
+  const imgSize = useImageNaturalSize(draftSrc ? previewSrc : null);
   const ringColor = playerColorForActor(actorId, [actorId]);
 
   useEffect(() => {
@@ -154,7 +154,7 @@ export function SheetPopupPortrait({
         aria-label={previewSrc ? `Retrato de ${name}` : `Adicionar retrato de ${name}`}
       >
         {previewSrc ? (
-          imgSize.w > 0 ? (
+          draftSrc && imgSize.w > 0 ? (
             <PortraitFocusFill
               imageSrc={previewSrc}
               focus={focusPortrait}
