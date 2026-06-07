@@ -2,6 +2,7 @@ import { redirect, notFound } from "next/navigation";
 import { CharacterSheet } from "@/components/character/CharacterSheet";
 import { MedievalFrame } from "@/components/ui/MedievalFrame";
 import { canEditCharacter, resolveCharacter } from "@/lib/character/characters";
+import { canEditCharacterPortrait } from "@/lib/auth/portrait-access-server";
 import { getSession } from "@/lib/auth/session";
 import { getPackEntries } from "@/lib/compendium/registry";
 import type { CompendiumPackId } from "@/lib/compendium/types";
@@ -19,6 +20,7 @@ export default async function PersonagemPage({ params }: Props) {
   if (!character) notFound();
 
   const canEdit = canEditCharacter(character, session.user.id, session.user.role);
+  const canEditPortrait = canEdit || (await canEditCharacterPortrait(character, session.user));
 
   const compendium = Object.fromEntries(
     PLAYER_PACKS.map((p) => [p, getPackEntries(p, { role: session.user.role })])
@@ -30,6 +32,7 @@ export default async function PersonagemPage({ params }: Props) {
         <CharacterSheet
           character={character}
           canEdit={canEdit}
+          canEditPortrait={canEditPortrait}
           compendium={compendium}
           roomId={character.adventureId ?? "demo"}
         />

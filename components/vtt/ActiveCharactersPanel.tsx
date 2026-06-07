@@ -36,7 +36,7 @@ type Props = {
   onPlaced: (snapshot: RoomSnapshot) => void;
   onUpdate: () => void;
   fogHint?: boolean;
-  onOpenStatus?: () => void;
+  onOpenStatus?: (token: BattleToken) => void;
 };
 
 export function ActiveCharactersPanel({
@@ -75,12 +75,20 @@ export function ActiveCharactersPanel({
     );
   }, [allSceneTokens, roomActors, session]);
 
-  const statusToken = canApplyConditions ? selected : playerToken;
+  const turnActiveToken = useMemo(() => {
+    const id = combat ? activeTokenId(combat) : null;
+    if (!id) return null;
+    return allSceneTokens.find((t) => t.id === id) ?? null;
+  }, [combat, allSceneTokens]);
+
+  const statusToken = canApplyConditions
+    ? selected ?? turnActiveToken ?? playerToken
+    : playerToken;
   const statusButtonDisabled = !statusToken;
   const statusButtonHint = canApplyConditions
-    ? selected
-      ? `Status de ${selected.name}`
-      : "Selecione um personagem no mapa"
+    ? statusToken
+      ? `Status de ${statusToken.name}`
+      : "Selecione um token no mapa ou inicie a iniciativa"
     : playerToken
       ? `Status de ${playerToken.name}`
       : "Coloque sua ficha no mapa para ver status";
@@ -96,7 +104,7 @@ export function ActiveCharactersPanel({
           className="btn btn-ghost vtt-status-open-btn"
           disabled={statusButtonDisabled}
           title={statusButtonHint}
-          onClick={() => onOpenStatus?.()}
+          onClick={() => statusToken && onOpenStatus?.(statusToken)}
         >
           Abrir
         </button>
@@ -112,6 +120,7 @@ export function ActiveCharactersPanel({
         onPlaced={onPlaced}
         showAllActors={canControlCombat}
         canPullBack={canControlCombat}
+        allowOwnerPullBack
         showCreateLink={canCreateInAdventure}
       />
 

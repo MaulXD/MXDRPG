@@ -36,6 +36,7 @@ const TOOL_ROWS: { id: WhiteboardTool; label: string; hint: string }[] = [
   { id: "pen", label: "Traço livre", hint: "Como quadro branco — arraste no mapa" },
   { id: "shape", label: "Formas", hint: "Arraste retângulo; segure Alt ao arrastar para círculo (Roll20)" },
   { id: "line", label: "Linha", hint: "Segmento entre dois pontos" },
+  { id: "arrow", label: "Seta", hint: "Seta indicativa entre dois pontos" },
   { id: "polygon", label: "Polígono", hint: "Clique cada vértice; clique perto do início para fechar" },
   { id: "text", label: "Texto", hint: "Clique no mapa e digite o rótulo" },
 ];

@@ -160,18 +160,12 @@ export function useCombatActions(
 
 
   const selfAbilityOk = useMemo(() => {
-
     if (!attacker || !action || !action.selfTarget) return false;
-
     return canUseAbility(attacker, action, {
-
       activeTokenId: turn.activeTokenId,
-
       bypassTurn: turn.bypassTurn,
-
-    }).ok;
-
-  }, [attacker, action, turn]);
+    }, actor).ok;
+  }, [attacker, action, turn, actor]);
 
 
 

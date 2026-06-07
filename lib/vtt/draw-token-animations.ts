@@ -17,7 +17,7 @@ export function drawTurnActiveIndicator(
 ): void {
   const t = ringAnimTime(timeSec);
   const pulse = 0.5 + 0.5 * Math.sin(t * 2.8);
-  const ringR = r + 8;
+  const ringR = r + 2.5;
 
   ctx.save();
 
@@ -55,7 +55,7 @@ export function drawAttackableHint(
   ctx.setLineDash([4, 8]);
   ctx.lineDashOffset = t * 28;
   ctx.beginPath();
-  ctx.arc(x, y, r + 9 + pulse * 4, 0, Math.PI * 2);
+  ctx.arc(x, y, r + 3 + pulse * 2, 0, Math.PI * 2);
   ctx.strokeStyle = `rgba(196, 68, 68, ${0.35 + pulse * 0.3})`;
   ctx.lineWidth = 1.75;
   ctx.stroke();

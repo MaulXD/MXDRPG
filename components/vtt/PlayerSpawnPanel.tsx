@@ -21,6 +21,8 @@ type Props = {
   onPlaced: (snapshot: RoomSnapshot) => void;
   showCreateLink?: boolean;
   canPullBack?: boolean;
+  /** Dono da ficha pode retirar o próprio token (além do mestre). */
+  allowOwnerPullBack?: boolean;
   /** Mestre vê todos os personagens da aventura */
   showAllActors?: boolean;
 };
@@ -68,6 +70,7 @@ export function PlayerSpawnPanel({
   onPlaced,
   showCreateLink = false,
   canPullBack = false,
+  allowOwnerPullBack = true,
   showAllActors = false,
 }: Props) {
   const dragGhostRef = useRef<HTMLElement | null>(null);
@@ -91,6 +94,13 @@ export function PlayerSpawnPanel({
 
   function tokenOnBoard(actorId: string) {
     return tokens.find((t) => t.linked && t.actorId === actorId);
+  }
+
+  function mayPullBack(actor: RoomActor): boolean {
+    if (!tokenOnBoard(actor.id)) return false;
+    if (canPullBack) return true;
+    if (!allowOwnerPullBack || !session) return false;
+    return canEditRoomActor({ roomId, adventureId }, actor, session);
   }
 
   async function placeAt(actorId: string, axial: Axial) {
@@ -175,7 +185,7 @@ export function PlayerSpawnPanel({
           const busy = busyId === actor.id;
 
           return (
-            <li key={actor.id}>
+            <li key={actor.id} className="vtt-spawn-drag-row">
               <div
                 role="button"
                 tabIndex={0}
@@ -201,22 +211,21 @@ export function PlayerSpawnPanel({
                 <span className="vtt-spawn-drag-card-body">
                   <strong>{actor.name}</strong>
                   <span>
-                    Nv {actor.identity.nivel} · {actor.identity.classe}
-                    {onBoard
-                      ? ` · no mapa (q${onBoard.axial.q}, r${onBoard.axial.r})`
-                      : " · fora do mapa"}
+                    Nv{actor.identity.nivel} {actor.identity.classe}
+                    {onBoard ? ` · q${onBoard.axial.q}r${onBoard.axial.r}` : " · fora"}
                   </span>
                 </span>
               </div>
-              {canPullBack && onBoard ? (
+              {mayPullBack(actor) && onBoard ? (
                 <button
                   type="button"
                   className="vtt-spawn-pull-back"
                   disabled={busy}
                   onClick={() => void pullBack(actor.id, onBoard.id)}
                   title="Retirar do mapa (ficha permanece na aventura)"
+                  aria-label={`Retirar ${actor.name} do mapa`}
                 >
-                  Retirar do mapa
+                  ↩
                 </button>
               ) : null}
             </li>

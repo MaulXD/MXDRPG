@@ -25,6 +25,7 @@ export type WhiteboardTool =
   | "pen"
   | "shape"
   | "line"
+  | "arrow"
   | "polygon"
   | "text";
 

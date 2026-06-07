@@ -5,11 +5,17 @@ import {
   computeAreaHexes,
   type AreaShape,
 } from "@/lib/vtt/hex-area";
-import { tokenOccupiesAxial } from "@/lib/vtt/creature-size";
+import { tokenOccupiedHexes } from "@/lib/vtt/creature-size";
+import { axialKey } from "@/lib/vtt/token-occupancy";
 import type { BattleToken } from "@/lib/vtt/types";
 import type { CharacterSheet } from "@/lib/character/types";
 import type { CombatActionOption, CombatTurnOptions } from "@/lib/combat/types";
-import { canAttackTarget, resolveAttack, type AttackResolution } from "@/lib/combat/attack";
+import {
+  canAttackTarget,
+  isHealingSpell,
+  resolveAttack,
+  type AttackResolution,
+} from "@/lib/combat/attack";
 import {
   actionWithChannel,
   clampChannelExtraPa,
@@ -58,8 +64,42 @@ export function computeSpellAreaHexes(
   });
 }
 
-export function tokensInArea(tokens: BattleToken[], area: Axial[]): BattleToken[] {
-  return tokens.filter((t) => area.some((hex) => tokenOccupiesAxial(t, hex)));
+function actorRacaOf(
+  token: BattleToken,
+  actorRacas?: Record<string, string | undefined>
+): string | undefined {
+  return token.actorId ? actorRacas?.[token.actorId] : undefined;
+}
+
+/** Qualquer sobreposição entre footprint do token e hex da área conta como alvo. */
+export function tokensInArea(
+  tokens: BattleToken[],
+  area: Axial[],
+  actorRacas?: Record<string, string | undefined>
+): BattleToken[] {
+  const areaKeys = new Set(area.map(axialKey));
+  const seen = new Set<string>();
+  const out: BattleToken[] = [];
+  for (const t of tokens) {
+    if (seen.has(t.id)) continue;
+    const hexes = tokenOccupiedHexes(t, actorRacaOf(t, actorRacas));
+    if (hexes.some((h) => areaKeys.has(axialKey(h)))) {
+      seen.add(t.id);
+      out.push(t);
+    }
+  }
+  return out;
+}
+
+function isAreaHealAlly(
+  caster: BattleToken,
+  target: BattleToken
+): boolean {
+  if (target.id === caster.id) return true;
+  const casterMonster = Boolean(caster.monsterEntryId || caster.gmCreationId);
+  const targetMonster = Boolean(target.monsterEntryId || target.gmCreationId);
+  if (casterMonster) return targetMonster;
+  return !targetMonster;
 }
 
 export function canCastAreaAt(
@@ -122,7 +162,8 @@ export function resolveAreaSpell(
   actors: Record<string, CharacterSheet>,
   turn?: CombatTurnOptions,
   areaDirection?: number | null,
-  channelExtraPa = 0
+  channelExtraPa = 0,
+  actorRacas?: Record<string, string | undefined>
 ): AreaSpellResolution {
   const extra = clampChannelExtraPa(action, channelExtraPa);
   const resolved = actionWithChannel(action, extra);
@@ -157,11 +198,17 @@ export function resolveAreaSpell(
     };
   }
 
-  const targets = tokensInArea(allTokens, areaHexes).filter((t) => t.id !== caster.id);
+  const isAreaHeal = isHealingSpell(resolved);
+  let targets = tokensInArea(allTokens, areaHexes, actorRacas);
+  if (isAreaHeal) {
+    targets = targets.filter((t) => isAreaHealAlly(caster, t));
+  } else {
+    targets = targets.filter((t) => t.id !== caster.id);
+  }
   const hits: AreaHit[] = [];
 
   for (const target of targets) {
-    if ((target.vida ?? 0) <= 0 && target.vidaMax != null) continue;
+    if (!isAreaHeal && (target.vida ?? 0) <= 0 && target.vidaMax != null) continue;
 
     if (resolved.resolution === "save") {
       const defenderActor = target.linked && target.actorId ? actors[target.actorId] ?? null : null;
@@ -180,17 +227,18 @@ export function resolveAreaSpell(
     }
   }
 
-  const totalDmg = hits.reduce((sum, h) => {
+  const totalEffect = hits.reduce((sum, h) => {
     if (h.kind === "attack") return sum + (h.result.damage?.total ?? 0);
     if (h.kind === "save") return sum + h.result.damage.total;
     return sum;
   }, 0);
 
   const channelTag = extra > 0 ? ` [canalizado +${extra} PA]` : "";
+  const effectLabel = isAreaHeal ? "cura total" : "dano total";
   const summary =
     hits.length === 0
       ? `${actor.name} conjura ${resolved.name}${channelTag} — nenhum alvo na área.`
-      : `${actor.name} conjura ${resolved.name}${channelTag} (${areaHexes.length} hex) — ${hits.length} alvo(s), ${totalDmg} dano total.`;
+      : `${actor.name} conjura ${resolved.name}${channelTag} (${areaHexes.length} hex) — ${hits.length} alvo(s), ${totalEffect} ${effectLabel}.`;
 
   return {
     casterTokenId: caster.id,

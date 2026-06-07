@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { canEditRoomActor } from "@/lib/auth/room-access";
+import { canPlaceRoomActorOnBoard } from "@/lib/auth/room-access";
 import { getSession } from "@/lib/auth/session";
 import { snapshotForViewer } from "@/lib/room/snapshot-for-viewer";
 import { getRoom, placeRoomActorOnHex } from "@/lib/room/store";
@@ -31,7 +31,7 @@ export async function POST(req: Request, { params }: Params) {
     return NextResponse.json({ error: "Personagem não encontrado na aventura" }, { status: 404 });
   }
 
-  if (!canEditRoomActor(room, actor, session?.user ?? null)) {
+  if (!canPlaceRoomActorOnBoard(room, actor, session?.user ?? null)) {
     return NextResponse.json({ error: "Sem permissão para posicionar este personagem" }, { status: 403 });
   }
 

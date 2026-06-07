@@ -9,6 +9,7 @@ import { CharacterSheet } from "@/components/character/CharacterSheet";
 import { getCharacter } from "@/lib/character/demo-characters";
 
 import { canEditRoomActor } from "@/lib/auth/room-access";
+import { canEditRoomActorPortrait } from "@/lib/auth/portrait-access";
 
 import type { CompendiumEntry, CompendiumPackId } from "@/lib/compendium/types";
 
@@ -32,6 +33,8 @@ type Props = {
   roomId: string;
 
   adventureId: string;
+
+  roomOwnerId: string;
 
   actors: Record<string, RoomActor>;
 
@@ -60,6 +63,8 @@ export function CharacterSheetPopup({
   roomId,
 
   adventureId,
+
+  roomOwnerId,
 
   actors,
 
@@ -119,7 +124,9 @@ export function CharacterSheetPopup({
 
   const merged = { ...seed, ...live };
 
-  const canEdit = canEditRoomActor({ roomId, adventureId }, merged, session);
+  const roomCtx = { roomId, adventureId, ownerId: roomOwnerId };
+  const canEdit = canEditRoomActor(roomCtx, merged, session);
+  const canEditPortrait = canEditRoomActorPortrait(roomCtx, merged, session);
 
   const inventory = live?.inventory?.length ? live.inventory : seed.inventory;
 
@@ -150,9 +157,13 @@ export function CharacterSheetPopup({
     >
 
       <div className="foundry-sheet-body">
-        {!canEdit ? (
+        {!canEdit && !canEditPortrait ? (
           <p className="foundry-sheet-readonly" role="status">
             Somente leitura — ficha de outro jogador. Você pode ver atributos e status, mas não editar.
+          </p>
+        ) : !canEdit && canEditPortrait ? (
+          <p className="foundry-sheet-readonly foundry-sheet-readonly--portrait" role="status">
+            Mestre: você pode atualizar o retrato e o token deste personagem.
           </p>
         ) : null}
 
@@ -180,6 +191,7 @@ export function CharacterSheetPopup({
           <CharacterSheet
             character={{ ...seed, ...live, inventory }}
             canEdit={canEdit}
+            canEditPortrait={canEditPortrait}
             compendium={compendium}
             roomId={roomId}
             variant="popup"

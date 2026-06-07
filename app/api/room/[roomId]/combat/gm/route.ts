@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { canParticipateInRoom } from "@/lib/auth/room-access";
+import { requireRoomManage } from "@/lib/auth/authorize-room";
 import { getSession } from "@/lib/auth/session";
 import { snapshotForViewer } from "@/lib/room/snapshot-for-viewer";
 import { executeGmCombatAction, getRoom, type GmCombatAction } from "@/lib/room/store";
@@ -16,11 +16,9 @@ export async function POST(req: Request, { params }: Params) {
   }
 
   if (room.roomId !== "demo") {
-    if (!session?.user) {
-      return NextResponse.json({ error: "Faça login" }, { status: 401 });
-    }
-    if (!canParticipateInRoom(room, session.user)) {
-      return NextResponse.json({ error: "Sem permissão" }, { status: 403 });
+    const auth = await requireRoomManage(roomId);
+    if ("error" in auth) {
+      return NextResponse.json({ error: auth.error }, { status: auth.status });
     }
   }
 

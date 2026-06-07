@@ -44,8 +44,8 @@ export function resolveTokenRing(
     return {
       kind: "player",
       rings: [
-        { color: TOKEN_RING_WHITE, width: 3, radiusOffset: 3.5 },
-        { color, width: 2.5, radiusOffset: 1 },
+        { color: TOKEN_RING_WHITE, width: 2, radiusOffset: 2 },
+        { color, width: 2, radiusOffset: 0 },
       ],
     };
   }
@@ -55,9 +55,9 @@ export function resolveTokenRing(
     return {
       kind: "boss",
       rings: [
-        { color: TOKEN_RING_WHITE, width: 2.5, radiusOffset: 4.5 },
-        { color: MONSTER_RING_RED, width: 4, radiusOffset: 2.5 },
-        { color: MONSTER_RING_BLACK, width: 2.5, radiusOffset: 0 },
+        { color: TOKEN_RING_WHITE, width: 2, radiusOffset: 3 },
+        { color: MONSTER_RING_RED, width: 2.5, radiusOffset: 1.5 },
+        { color: MONSTER_RING_BLACK, width: 2, radiusOffset: 0 },
       ],
     };
   }
@@ -65,9 +65,9 @@ export function resolveTokenRing(
     return {
       kind: "mini-boss",
       rings: [
-        { color: TOKEN_RING_WHITE, width: 2.5, radiusOffset: 4 },
-        { color: MONSTER_RING_RED, width: 3.5, radiusOffset: 1.5 },
-        { color: MONSTER_RING_BLACK, width: 2, radiusOffset: 0 },
+        { color: TOKEN_RING_WHITE, width: 2, radiusOffset: 2.5 },
+        { color: MONSTER_RING_RED, width: 2.5, radiusOffset: 1 },
+        { color: MONSTER_RING_BLACK, width: 1.75, radiusOffset: 0 },
       ],
     };
   }
@@ -75,8 +75,8 @@ export function resolveTokenRing(
   return {
     kind: "monster",
     rings: [
-      { color: TOKEN_RING_WHITE, width: 2.5, radiusOffset: 3.5 },
-      { color: MONSTER_RING_RED, width: 3, radiusOffset: 1 },
+      { color: TOKEN_RING_WHITE, width: 2, radiusOffset: 2 },
+      { color: MONSTER_RING_RED, width: 2.5, radiusOffset: 0 },
     ],
   };
 }

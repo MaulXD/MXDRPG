@@ -6,6 +6,7 @@ import { activeTokenId } from "@/lib/room/combat";
 import type { RoomSnapshot } from "@/lib/room/types";
 import type { BattleToken } from "@/lib/vtt/types";
 import { hpBarColor, hpRatio } from "@/lib/vtt/token-hp-display";
+import { listTokenEffectChips } from "@/lib/vtt/token-effects";
 import { nextCombatTurn } from "@/hooks/useRoomSync";
 import { PaHudMeter } from "@/components/vtt/PaHudMeter";
 import { TokenEffectsRow } from "@/components/vtt/TokenEffectsRow";
@@ -18,12 +19,28 @@ type Props = {
   canViewPa: boolean;
   canEndTurn: boolean;
   roomId: string;
-  onOpenStatus: () => void;
   onOpenSheet?: (actorId?: string) => void;
   onSnapshot?: (snap: RoomSnapshot) => void;
   onUpdate: () => void;
   onHide: () => void;
 };
+
+function AcShield({ value, bonus }: { value: number; bonus?: number }) {
+  return (
+    <div className="vtt-combat-hud__ac" title={`Classe de armadura ${value}`}>
+      <svg className="vtt-combat-hud__ac-icon" viewBox="0 0 32 36" aria-hidden>
+        <path
+          d="M16 2 L30 8.5 V17.5 C30 25.5 24 31.5 16 34 C8 31.5 2 25.5 2 17.5 V8.5 Z"
+          fill="rgba(8, 12, 18, 0.75)"
+          stroke="rgba(201, 169, 98, 0.55)"
+          strokeWidth="1.5"
+        />
+      </svg>
+      <span className="vtt-combat-hud__ac-value">{value}</span>
+      {bonus ? <span className="vtt-combat-hud__ac-bonus">+{bonus}</span> : null}
+    </div>
+  );
+}
 
 export function CharacterCombatHud({
   token,
@@ -33,7 +50,6 @@ export function CharacterCombatHud({
   canViewPa,
   canEndTurn,
   roomId,
-  onOpenStatus,
   onOpenSheet,
   onSnapshot,
   onUpdate,
@@ -47,6 +63,13 @@ export function CharacterCombatHud({
   const ratio = hpRatio(token);
   const hpPct = Math.round(ratio * 100);
   const barColor = hpBarColor(ratio);
+  const hasStatusEffects = listTokenEffectChips(token).length > 0;
+
+  const showEndTurn =
+    canEndTurn &&
+    combat?.order.length &&
+    activeId === token.id &&
+    (isYourTurn || isGmView);
 
   async function handleEndTurn() {
     setBusy(true);
@@ -66,90 +89,111 @@ export function CharacterCombatHud({
     <div
       className={`vtt-combat-hud glass-panel${isYourTurn ? " vtt-combat-hud--your-turn" : ""}${isGmView ? " vtt-combat-hud--gm" : ""}`}
       role="region"
-      aria-label={`Status de ${token.name}`}
+      aria-label={`HUD de ${token.name}`}
     >
       <button
         type="button"
         className="vtt-combat-hud__hide"
         title="Ocultar HUD (pode reabrir pelo botão na barra)"
+        aria-label="Ocultar HUD"
         onClick={onHide}
       >
-        Ocultar
+        <svg className="vtt-combat-hud__hide-icon" viewBox="0 0 24 24" fill="none" aria-hidden>
+          <path
+            d="M2 12s3.5-7 10-7 10 7 10 7-1.2 2.2-3.2 3.8"
+            stroke="currentColor"
+            strokeWidth="1.75"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <path
+            d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"
+            stroke="currentColor"
+            strokeWidth="1.75"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <path d="m3 3 18 18" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" />
+        </svg>
       </button>
+
+      {hasStatusEffects ? (
+        <div className="vtt-combat-hud__status-bar" aria-label="Efeitos ativos">
+          <TokenEffectsRow token={token} className="vtt-effect-chips--hud-bar" max={14} />
+        </div>
+      ) : null}
 
       <div className="vtt-combat-hud__body">
         <div
           className="vtt-combat-hud__portrait"
-          style={{ borderColor: token.color, boxShadow: `0 0 12px ${token.color}55` }}
-          aria-hidden
+          style={{ borderColor: token.color, boxShadow: `0 0 14px ${token.color}44` }}
         >
-          <span style={{ color: token.color }}>{token.name.slice(0, 1)}</span>
+          {token.imageUrl ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={token.imageUrl} alt="" className="vtt-combat-hud__portrait-img" />
+          ) : (
+            <span className="vtt-combat-hud__portrait-fallback" style={{ color: token.color }}>
+              {token.name.slice(0, 1).toUpperCase()}
+            </span>
+          )}
         </div>
 
-        <div className="vtt-combat-hud__main">
-          <div className="vtt-combat-hud__head">
-            <strong className="vtt-combat-hud__name" style={{ color: token.color }}>
-              {token.name}
-            </strong>
-            {isYourTurn ? (
-              <span className="vtt-combat-hud__turn-pill">Seu turno</span>
-            ) : isGmView && activeId === token.id ? (
-              <span className="vtt-combat-hud__turn-pill vtt-combat-hud__turn-pill--gm">
-                Turno ativo
+        <div className="vtt-combat-hud__core">
+          <div className="vtt-combat-hud__name-row">
+            <div className="vtt-combat-hud__name-wrap">
+              <strong className="vtt-combat-hud__name" style={{ color: token.color }}>
+                {token.name}
+              </strong>
+              {isYourTurn ? (
+                <span className="vtt-combat-hud__turn-pill">Seu turno</span>
+              ) : isGmView && activeId === token.id ? (
+                <span className="vtt-combat-hud__turn-pill vtt-combat-hud__turn-pill--gm">
+                  Turno ativo
+                </span>
+              ) : combat?.round ? (
+                <span className="vtt-combat-hud__round-inline">R{combat.round}</span>
+              ) : null}
+            </div>
+            {token.vidaMax != null ? (
+              <span className="vtt-combat-hud__hp-text">
+                {token.vida ?? 0}/{token.vidaMax}
               </span>
-            ) : null}
-            {combat?.round ? (
-              <span className="vtt-combat-hud__round">R{combat.round}</span>
             ) : null}
           </div>
 
           {token.vidaMax != null ? (
-            <div className="vtt-combat-hud__hp">
-              <div className="vtt-combat-hud__hp-track" aria-hidden>
-                <div
-                  className="vtt-combat-hud__hp-fill"
-                  style={{ width: `${hpPct}%`, background: barColor }}
-                />
-              </div>
-              <span className="vtt-combat-hud__hp-text">
-                {token.vida ?? 0}/{token.vidaMax}
-              </span>
+            <div className="vtt-combat-hud__hp-track" aria-hidden>
+              <div
+                className="vtt-combat-hud__hp-fill"
+                style={{ width: `${hpPct}%`, background: barColor }}
+              />
             </div>
           ) : null}
 
-          <div className="vtt-combat-hud__stats">
+          <div className="vtt-combat-hud__resources">
             {token.defesa != null ? (
-              <span className="vtt-combat-hud__stat">
-                CA <strong>{token.defesa}</strong>
-                {token.defesaBonus ? ` +${token.defesaBonus}` : ""}
-              </span>
+              <AcShield value={token.defesa} bonus={token.defesaBonus} />
             ) : null}
-            {canViewPa ? <PaHudMeter token={token} /> : null}
+            {canViewPa ? <PaHudMeter token={token} variant="hud" /> : null}
           </div>
-
-          <TokenEffectsRow token={token} className="vtt-combat-hud__effects" max={4} />
         </div>
 
         <div className="vtt-combat-hud__actions">
-          <button type="button" className="btn btn-ghost vtt-combat-hud__btn" onClick={onOpenStatus}>
-            Status
-          </button>
           {token.linked && onOpenSheet ? (
             <button
               type="button"
-              className="btn btn-ghost vtt-combat-hud__btn"
+              className="vtt-combat-hud__btn-sheet"
               onClick={() => onOpenSheet(token.actorId)}
             >
               Ficha
             </button>
-          ) : null}
-          {canEndTurn &&
-          combat?.order.length &&
-          activeId === token.id &&
-          (isYourTurn || isGmView) ? (
+          ) : (
+            <span className="vtt-combat-hud__actions-spacer" aria-hidden />
+          )}
+          {showEndTurn ? (
             <button
               type="button"
-              className="btn vtt-combat-hud__end-turn"
+              className="vtt-combat-hud__end-turn"
               disabled={busy}
               onClick={() => void handleEndTurn()}
             >

@@ -13,6 +13,7 @@ import { activeTokenId } from "../combat";
 import { canAnchorTokenAt } from "@/lib/vtt/dungeon-layer";
 import { revealAxial } from "@/lib/vtt/fog-of-war";
 import { characterBelongsToAdventure } from "@/lib/character/adventure-bind";
+import { ensureAdventureActorInRoom } from "@/lib/room/adventure-actors";
 import { maybeRecordCombatUndo } from "../combat-undo";
 import { getRoom, persistRoom, toSnapshot } from "../internal/registry";
 import type { RoomSnapshot } from "../types";
@@ -267,6 +268,10 @@ export async function removeRoomToken(
   const idx = room.scene.tokens.findIndex((t) => t.id === tokenId);
   if (idx < 0) return { ok: false, error: "Token não encontrado" };
 
+  const removed = room.scene.tokens[idx];
+  const preserveActorId =
+    removed.linked && removed.actorId ? removed.actorId : null;
+
   room.scene = {
     ...room.scene,
     tokens: room.scene.tokens.filter((t) => t.id !== tokenId),
@@ -293,6 +298,12 @@ export async function removeRoomToken(
     };
   }
 
-  const updated = await persistRoom(roomId, room);
+  let updated = await persistRoom(roomId, room);
+
+  if (preserveActorId && !updated.actors[preserveActorId]) {
+    const repaired = await ensureAdventureActorInRoom(roomId, preserveActorId);
+    if (repaired) updated = repaired;
+  }
+
   return { ok: true, snapshot: toSnapshot(updated) };
 }

@@ -366,6 +366,11 @@
 }
 
 /* Iniciativa / turno */
+.vtt-chrome[data-vtt-mesa="foundry"] .vtt-turn-list--compact li.active,
+.vtt-chrome[data-vtt-mesa="foundry"] .vtt-turn-list--compact li.vtt-turn-active {
+  background: rgba(76, 140, 74, 0.32);
+}
+
 .vtt-chrome[data-vtt-mesa="foundry"] .vtt-turn-list li.active,
 .vtt-chrome[data-vtt-mesa="foundry"] .vtt-turn-list li.vtt-turn-active {
   border-color: var(--mesa-accent-border);

@@ -603,6 +603,7 @@ export function MesaWorkspace({
                   actorId={sheetPopupActorId}
                   roomId={roomId}
                   adventureId={adventureId}
+                  roomOwnerId={roomOwnerId}
                   actors={snapshot.actors}
                   session={session}
                   compendium={compendium}
