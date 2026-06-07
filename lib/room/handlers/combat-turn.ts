@@ -5,13 +5,16 @@ import {
 } from "@/lib/combat/pa-economy";
 import { normalizeTokenPaFields } from "@/lib/combat/pa-token-state";
 import {
+  accumulationCap,
   bankPaAtEndOfTurn,
   clearCombatPaPool,
+  formatEndTurnPaDiscardNotice,
   formatStunSkipNotice,
-  formatTurnStartPaNotice,
+  formatTurnStartCombatNotice,
   planEndOfTurnPaBank,
   refreshPaAtTurnStart,
   startTurnPaFull,
+  tokenBankedPa,
 } from "@/lib/combat/pa-turn";
 import type { BattleToken } from "@/lib/vtt/types";
 import { isMonsterToken } from "../settings";
@@ -132,11 +135,15 @@ function bankEndingToken(room: RoomState, notices: string[]): void {
   if (
     !isMonsterToken(before) &&
     bankPlan &&
-    bankPlan.remaining > 0 &&
-    bankPlan.saved > 0
+    bankPlan.discarded > 0
   ) {
-    const savedLabel = bankPlan.saved === 1 ? "1 PA" : `${bankPlan.saved} PA`;
-    notices.push(`${before.name}: ${savedLabel} guardados para o próximo turno.`);
+    notices.push(
+      formatEndTurnPaDiscardNotice(
+        before.name,
+        bankPlan.discarded,
+        bankPlan.poolCap ?? accumulationCap(rules)
+      )
+    );
   }
 
   if (ended.linked && ended.actorId && room.actors[ended.actorId]) {
@@ -154,6 +161,47 @@ function bankEndingToken(room: RoomState, notices: string[]): void {
       revision: a.revision + 1,
     };
   }
+}
+
+function pushTurnStartNotice(room: RoomState, notices: string[]): void {
+  const active = getActiveBattleToken(room);
+  if (!active) return;
+
+  const carryBefore = Math.max(0, active.pa ?? 0) + tokenBankedPa(active);
+  refreshActiveTokenPa(room);
+  const refreshed = getActiveBattleToken(room);
+  if (!refreshed) return;
+
+  const rules = paRulesForToken(room, refreshed);
+  notices.push(
+    formatTurnStartCombatNotice(
+      refreshed.name,
+      room.combat.round,
+      refreshed.pa ?? 0,
+      rules,
+      carryBefore
+    )
+  );
+}
+
+function pushTurnStartNoticeFull(room: RoomState, notices: string[]): void {
+  const active = getActiveBattleToken(room);
+  if (!active) return;
+
+  refreshActiveTokenPa(room, "full");
+  const refreshed = getActiveBattleToken(room);
+  if (!refreshed) return;
+
+  const rules = paRulesForToken(room, refreshed);
+  notices.push(
+    formatTurnStartCombatNotice(
+      refreshed.name,
+      room.combat.round,
+      refreshed.pa ?? 0,
+      rules,
+      0
+    )
+  );
 }
 
 function stepToNextCombatant(room: RoomState, notices: string[]): void {
@@ -192,11 +240,7 @@ function applyTurnPaTransition(room: RoomState): string[] {
       continue;
     }
 
-    refreshActiveTokenPa(room);
-    const refreshed = getActiveBattleToken(room);
-    if (refreshed) {
-      notices.push(formatTurnStartPaNotice(refreshed.name, refreshed.pa ?? 0));
-    }
+    pushTurnStartNotice(room, notices);
     break;
   }
 
@@ -246,11 +290,7 @@ export async function rollRoomInitiative(roomId: string): Promise<RoomSnapshot |
       continue;
     }
 
-    refreshActiveTokenPa(room, "full");
-    const refreshed = getActiveBattleToken(room);
-    if (refreshed) {
-      notices.push(formatTurnStartPaNotice(refreshed.name, refreshed.pa ?? 0));
-    }
+    pushTurnStartNoticeFull(room, notices);
     break;
   }
 

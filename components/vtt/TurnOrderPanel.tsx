@@ -16,6 +16,8 @@ import { hpBarColor, hpRatio } from "@/lib/vtt/token-hp-display";
 
 import { TokenEffectsRow } from "@/components/vtt/TokenEffectsRow";
 import {
+  TurnOrderChevronLeftIcon,
+  TurnOrderChevronRightIcon,
   TurnOrderRollIcon,
   TurnOrderSettingsIcon,
   TurnOrderTargetIcon,
@@ -126,8 +128,9 @@ export function TurnOrderPanel({
   const [gmError, setGmError] = useState<string | null>(null);
   const [dragId, setDragId] = useState<string | null>(null);
   const [dragOverId, setDragOverId] = useState<string | null>(null);
-  const [hoverRowId, setHoverRowId] = useState<string | null>(null);
   const [settingsOpen, setSettingsOpen] = useState(false);
+
+  const attackHoverEnabled = Boolean(attackableIds && attackableIds.size > 0);
 
   const tokenMap = new Map(tokens.map((t) => [t.id, t]));
   const displayOrder = livingOrderIds(combat.order, tokenMap);
@@ -277,23 +280,107 @@ export function TurnOrderPanel({
       >
         {compact ? (
           <div className="vtt-turn-compact-head">
-            <span className="vtt-turn-compact-count">
-              Contar: <strong>{displayOrder.length}</strong>
-            </span>
-            {canControl ? (
-              <button
-                type="button"
-                className="vtt-turn-compact-icon-btn"
-                title="Rolar iniciativa"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  void handleRoll();
-                }}
-              >
-                <TurnOrderRollIcon />
-              </button>
+            {canControl || canEndTurn ? (
+              <div className="vtt-turn-compact-nav">
+                {canControl ? (
+                  <button
+                    type="button"
+                    className="vtt-turn-compact-nav-btn"
+                    title="Turno anterior"
+                    disabled={gmBusy != null || displayOrder.length < 2}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handlePrev();
+                    }}
+                  >
+                    <TurnOrderChevronLeftIcon className="vtt-turn-compact-nav-icon" />
+                    <span>Anterior</span>
+                  </button>
+                ) : null}
+                {canEndTurn || canControl ? (
+                  <button
+                    type="button"
+                    className="vtt-turn-compact-nav-btn vtt-turn-compact-nav-btn--next"
+                    title="Próximo turno"
+                    disabled={busy || !combat.order.length}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      void handleNext();
+                    }}
+                  >
+                    <span>{busy ? "…" : "Próximo"}</span>
+                    {!busy ? (
+                      <TurnOrderChevronRightIcon className="vtt-turn-compact-nav-icon" />
+                    ) : null}
+                  </button>
+                ) : null}
+              </div>
             ) : null}
-            <span className="vtt-turn-compact-round">R{combat.round}</span>
+            <div className="vtt-turn-compact-meta">
+              <span className="vtt-turn-compact-count">
+                Contar: <strong>{displayOrder.length}</strong>
+              </span>
+              {canControl ? (
+                <div className="vtt-turn-compact-tools">
+                  <button
+                    type="button"
+                    className="vtt-turn-compact-icon-btn"
+                    title="Rolar iniciativa"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      void handleRoll();
+                    }}
+                  >
+                    <TurnOrderRollIcon />
+                  </button>
+                  <div className="vtt-turn-compact-settings">
+                    <button
+                      type="button"
+                      className="vtt-turn-compact-icon-btn"
+                      title="Opções do mestre"
+                      aria-expanded={settingsOpen}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSettingsOpen((o) => !o);
+                      }}
+                    >
+                      <TurnOrderSettingsIcon />
+                    </button>
+                    {settingsOpen ? (
+                      <div className="vtt-turn-compact-settings-menu" role="menu">
+                        <button
+                          type="button"
+                          role="menuitem"
+                          onClick={() => {
+                            setSettingsOpen(false);
+                            void handleRoll();
+                          }}
+                        >
+                          Rolar iniciativa
+                        </button>
+                        {combat.orderOverridden ? (
+                          <button
+                            type="button"
+                            role="menuitem"
+                            disabled={gmBusy != null}
+                            onClick={() => {
+                              setSettingsOpen(false);
+                              void runGmAction("restore", { action: "restore-order" });
+                            }}
+                          >
+                            Ordem natural
+                          </button>
+                        ) : null}
+                        <p className="vtt-turn-compact-settings-hint">
+                          Arraste uma linha para reordenar.
+                        </p>
+                      </div>
+                    ) : null}
+                  </div>
+                </div>
+              ) : null}
+              <span className="vtt-turn-compact-round">R{combat.round}</span>
+            </div>
           </div>
         ) : (
           <>
@@ -316,6 +403,19 @@ export function TurnOrderPanel({
                   Rolar iniciativa
                 </button>
               ) : null}
+              {canControl ? (
+                <button
+                  type="button"
+                  className="btn btn-ghost vtt-turn-nav-btn"
+                  disabled={gmBusy != null || displayOrder.length < 2}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handlePrev();
+                  }}
+                >
+                  Anterior
+                </button>
+              ) : null}
               {canEndTurn || canControl ? (
                 <button
                   type="button"
@@ -326,7 +426,7 @@ export function TurnOrderPanel({
                     void handleNext();
                   }}
                 >
-                  Passar turno
+                  {busy ? "…" : "Próximo"}
                 </button>
               ) : null}
             </div>
@@ -491,12 +591,10 @@ export function TurnOrderPanel({
                   setDragOverId(null);
                 }}
                 onMouseEnter={() => {
-                  setHoverRowId(id);
-                  if (attackable) onHoverAttackTargetChange?.(id);
+                  if (attackHoverEnabled && attackable) onHoverAttackTargetChange?.(id);
                 }}
                 onMouseLeave={() => {
-                  setHoverRowId((cur) => (cur === id ? null : cur));
-                  if (attackable) onHoverAttackTargetChange?.(null);
+                  if (attackHoverEnabled && attackable) onHoverAttackTargetChange?.(null);
                 }}
               >
                 {compact ? (
@@ -511,8 +609,10 @@ export function TurnOrderPanel({
                     <span className="vtt-turn-compact-init" aria-label="Iniciativa">
                       {token.initiative ?? "—"}
                     </span>
-                    {canControl && hoverRowId === id ? (
-                      <div className="vtt-turn-compact-hover-gm">{gmChips(id, token, active, defeated)}</div>
+                    {canControl ? (
+                      <div className="vtt-turn-compact-gm-overlay">
+                        {gmChips(id, token, active, defeated)}
+                      </div>
                     ) : null}
                   </>
                 ) : (
@@ -591,88 +691,6 @@ export function TurnOrderPanel({
 
         </ol>
 
-        {compact && (canControl || canEndTurn) ? (
-          <div className="vtt-turn-compact-foot">
-            {canControl ? (
-              <button
-                type="button"
-                className="vtt-turn-compact-foot-btn"
-                title="Turno anterior"
-                disabled={gmBusy != null || displayOrder.length < 2}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handlePrev();
-                }}
-              >
-                ‹
-              </button>
-            ) : (
-              <span className="vtt-turn-compact-foot-spacer" aria-hidden />
-            )}
-            {canControl ? (
-              <div className="vtt-turn-compact-settings">
-                <button
-                  type="button"
-                  className="vtt-turn-compact-foot-btn"
-                  title="Opções do mestre"
-                  aria-expanded={settingsOpen}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setSettingsOpen((o) => !o);
-                  }}
-                >
-                  <TurnOrderSettingsIcon />
-                </button>
-                {settingsOpen ? (
-                  <div className="vtt-turn-compact-settings-menu" role="menu">
-                    <button
-                      type="button"
-                      role="menuitem"
-                      onClick={() => {
-                        setSettingsOpen(false);
-                        void handleRoll();
-                      }}
-                    >
-                      Rolar iniciativa
-                    </button>
-                    {combat.orderOverridden ? (
-                      <button
-                        type="button"
-                        role="menuitem"
-                        disabled={gmBusy != null}
-                        onClick={() => {
-                          setSettingsOpen(false);
-                          void runGmAction("restore", { action: "restore-order" });
-                        }}
-                      >
-                        Ordem natural
-                      </button>
-                    ) : null}
-                    <p className="vtt-turn-compact-settings-hint">
-                      Arraste uma linha para reordenar.
-                    </p>
-                  </div>
-                ) : null}
-              </div>
-            ) : (
-              <span className="vtt-turn-compact-foot-spacer" aria-hidden />
-            )}
-            {canEndTurn || canControl ? (
-              <button
-                type="button"
-                className="vtt-turn-compact-foot-btn vtt-turn-compact-foot-btn--next"
-                title="Passar turno"
-                disabled={busy || !combat.order.length}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  void handleNext();
-                }}
-              >
-                {busy ? "…" : "›"}
-              </button>
-            ) : null}
-          </div>
-        ) : null}
       </div>
     </>
   );

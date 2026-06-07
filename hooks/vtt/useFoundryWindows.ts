@@ -1,20 +1,14 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import {
+  clampWindowLayout,
+  computePopupPosition,
+  type FoundryWindowLayout,
+  type MesaWindowId,
+} from "@/lib/vtt/foundry-window-placement";
 
-export type MesaWindowId =
-  | "actors"
-  | "gm"
-  | "dungeon"
-  | "whiteboard"
-  | "tokens"
-  | "initiative"
-  | "chat"
-  | "dice"
-  | "ficha"
-  | "spawn"
-  | "invite"
-  | "character";
+export type { FoundryWindowLayout, MesaWindowId };
 
 /** Painéis fixos na coluna esquerda (um aberto por vez). */
 export const FOUNDRY_DOCK_PANEL_IDS: MesaWindowId[] = [
@@ -29,16 +23,6 @@ export const FOUNDRY_DOCK_PANEL_IDS: MesaWindowId[] = [
   "dungeon",
   "whiteboard",
 ];
-
-export type FoundryWindowLayout = {
-  open: boolean;
-  minimized: boolean;
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-  z: number;
-};
 
 type Registry = Partial<Record<MesaWindowId, FoundryWindowLayout>>;
 
@@ -61,9 +45,6 @@ const DEFAULT_OPEN: MesaWindowId[] = ["initiative"];
 
 /** Painéis abertos por padrão como janela flutuante (não na barra lateral). */
 const DEFAULT_FLOATING: MesaWindowId[] = ["initiative"];
-
-const POPUP_CASCADE_STEP = 36;
-const POPUP_MARGIN = 48;
 
 function storageKey(roomId?: string): string {
   return `eldarin-foundry-windows${roomId ? `-${roomId}` : ""}`;
@@ -90,62 +71,6 @@ function loadFloating(roomId?: string): FloatingMap {
   } catch {
     return defaultFloatingMap();
   }
-}
-
-type PopupRect = { x: number; y: number; w: number; h: number };
-
-function rectsOverlap(a: PopupRect, b: PopupRect): boolean {
-  return a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y;
-}
-
-/** Posição em cascata que evita cobrir outras janelas flutuantes abertas. */
-function computePopupPosition(
-  id: MesaWindowId,
-  registry: Registry,
-  floating: FloatingMap
-): { x: number; y: number } {
-  const base = DEFAULT_LAYOUTS[id];
-  const cur = registry[id];
-  const w = cur?.width ?? base.width;
-  const h = cur?.height ?? base.height;
-  const maxX =
-    typeof window !== "undefined"
-      ? Math.max(POPUP_MARGIN, window.innerWidth - w - POPUP_MARGIN)
-      : 1600;
-  const maxY =
-    typeof window !== "undefined"
-      ? Math.max(8, window.innerHeight - h - POPUP_MARGIN)
-      : 900;
-
-  const obstacles: PopupRect[] = (Object.keys(registry) as MesaWindowId[])
-    .filter(
-      (wid) =>
-        wid !== id &&
-        floating[wid] &&
-        registry[wid]?.open &&
-        !registry[wid]?.minimized
-    )
-    .map((wid) => {
-      const win = registry[wid]!;
-      return { x: win.x, y: win.y, w: win.width, h: win.height };
-    });
-
-  for (let attempt = 0; attempt < 30; attempt++) {
-    const col = attempt % 6;
-    const row = Math.floor(attempt / 6);
-    const x = Math.min(base.x + col * POPUP_CASCADE_STEP, maxX);
-    const y = Math.min(base.y + row * POPUP_CASCADE_STEP, maxY);
-    const candidate: PopupRect = { x, y, w, h };
-    if (!obstacles.some((obs) => rectsOverlap(candidate, obs))) {
-      return { x, y };
-    }
-  }
-
-  const n = obstacles.length;
-  return {
-    x: Math.min(base.x + (n % 6) * POPUP_CASCADE_STEP, maxX),
-    y: Math.min(base.y + (n % 6) * POPUP_CASCADE_STEP, maxY),
-  };
 }
 
 function defaultEntry(id: MesaWindowId, z: number): FoundryWindowLayout {
@@ -222,6 +147,27 @@ export function useFoundryWindows(roomId?: string) {
   }, [roomId]);
 
   useEffect(() => {
+    if (!hydrated || typeof window === "undefined") return;
+    const id = window.requestAnimationFrame(() => {
+      setRegistry((prev) => {
+        let changed = false;
+        const next: Registry = { ...prev };
+        for (const wid of Object.keys(next) as MesaWindowId[]) {
+          const win = next[wid];
+          if (!win || !floating[wid]) continue;
+          const clamped = clampWindowLayout(win);
+          if (clamped.x !== win.x || clamped.y !== win.y) {
+            next[wid] = clamped;
+            changed = true;
+          }
+        }
+        return changed ? next : prev;
+      });
+    });
+    return () => window.cancelAnimationFrame(id);
+  }, [hydrated, floating, roomId]);
+
+  useEffect(() => {
     if (!hydrated) return;
     try {
       localStorage.setItem(storageKey(roomId), JSON.stringify(registry));
@@ -268,7 +214,11 @@ export function useFoundryWindows(roomId?: string) {
           return { ...prev, [id]: { ...cur, z } };
         }
         const nextFloating: FloatingMap = { ...floatPrev, [id]: true };
-        const pos = computePopupPosition(id, prev, nextFloating);
+        const size = {
+          width: cur.width ?? DEFAULT_LAYOUTS[id].width,
+          height: cur.height ?? DEFAULT_LAYOUTS[id].height,
+        };
+        const pos = computePopupPosition(id, prev, nextFloating, size);
         const z = maxZ(prev) + 1;
         return {
           ...prev,
@@ -330,10 +280,24 @@ export function useFoundryWindows(roomId?: string) {
   }, []);
 
   const restore = useCallback((id: MesaWindowId) => {
-    setRegistry((prev) => {
-      const cur = prev[id] ?? defaultEntry(id, 10);
-      const z = maxZ(prev) + 1;
-      return { ...prev, [id]: { ...cur, minimized: false, open: true, z } };
+    setFloating((floatPrev) => {
+      setRegistry((prev) => {
+        const cur = prev[id] ?? defaultEntry(id, 10);
+        const z = maxZ(prev) + 1;
+        if (floatPrev[id]) {
+          const size = {
+            width: cur.width ?? DEFAULT_LAYOUTS[id].width,
+            height: cur.height ?? DEFAULT_LAYOUTS[id].height,
+          };
+          const pos = computePopupPosition(id, prev, floatPrev, size);
+          return {
+            ...prev,
+            [id]: { ...cur, minimized: false, open: true, z, x: pos.x, y: pos.y },
+          };
+        }
+        return { ...prev, [id]: { ...cur, minimized: false, open: true, z } };
+      });
+      return floatPrev;
     });
   }, []);
 

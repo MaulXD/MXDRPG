@@ -496,6 +496,29 @@
 .card-corner--bl { bottom: -2px; left: -2px; }
 .card-corner--br { bottom: -2px; right: -2px; }
 
+.mesa-persistence-notice {
+  margin: 0 0 6px;
+  padding: 8px 12px;
+  border: 1px solid var(--accent-warn);
+  border-radius: 2px;
+  background: color-mix(in srgb, var(--accent-warn) 12%, var(--bg-deep));
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--text);
+}
+
+.mesa-persistence-notice p {
+  margin: 0;
+}
+
+.mesa-persistence-notice p + p {
+  margin-top: 6px;
+}
+
+.mesa-persistence-notice code {
+  font-size: 11px;
+}
+
 @media (max-width: 520px) {
   .vtt-hud-wrapper .vtt-combat-hud {
     flex-wrap: wrap;

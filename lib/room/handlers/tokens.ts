@@ -15,6 +15,7 @@ import { revealAxial } from "@/lib/vtt/fog-of-war";
 import { characterBelongsToAdventure } from "@/lib/character/adventure-bind";
 import { ensureAdventureActorInRoom } from "@/lib/room/adventure-actors";
 import { maybeRecordCombatUndo } from "../combat-undo";
+import { normalizeImageDataUrl } from "@/lib/media/image-normalize";
 import { getRoom, persistRoom, toSnapshot } from "../internal/registry";
 import type { RoomSnapshot } from "../types";
 
@@ -29,9 +30,15 @@ export async function updateRoomToken(
   const idx = room.scene.tokens.findIndex((t) => t.id === tokenId);
   if (idx < 0) return null;
 
+  const safePatch = { ...patch };
+  if ("imageUrl" in safePatch) {
+    safePatch.imageUrl =
+      (await normalizeImageDataUrl(safePatch.imageUrl, { maxEdge: 512 })) ?? undefined;
+  }
+
   const tokens = [...room.scene.tokens];
   const current = tokens[idx];
-  let next: BattleToken = applyConditionPaRules({ ...current, ...patch, id: current.id });
+  let next: BattleToken = applyConditionPaRules({ ...current, ...safePatch, id: current.id });
 
   if (next.linked && next.actorId) {
     const actor = room.actors[next.actorId];
@@ -157,7 +164,7 @@ export async function spawnRoomMonster(
 
   token.name = nextMonsterDisplayName(room.scene.tokens, token.name);
 
-  if (!canAnchorTokenAt(room.scene, axial)) {
+  if (!canAnchorTokenAt(room.scene, axial, { token })) {
     return { ok: false, error: "Hex bloqueado ou ocupado" };
   }
 
@@ -190,7 +197,8 @@ export async function repositionRoomToken(
   const idx = room.scene.tokens.findIndex((t) => t.id === tokenId);
   if (idx < 0) return { ok: false, error: "Token não encontrado" };
 
-  if (!canAnchorTokenAt(room.scene, target, tokenId)) {
+  const mover = room.scene.tokens[idx];
+  if (!canAnchorTokenAt(room.scene, target, { exceptTokenId: tokenId, token: mover })) {
     return { ok: false, error: "Hex bloqueado, fora do tabuleiro ou ocupado" };
   }
 
@@ -218,11 +226,18 @@ export async function placeRoomActorOnHex(
     return { ok: false, error: "Esta ficha pertence a outra aventura" };
   }
 
+  const actorRacas = { [actorId]: actor.identity.raca };
   const existing = room.scene.tokens.find(
     (t) => t.linked && t.actorId === actorId
   );
   if (existing) {
-    if (!canAnchorTokenAt(room.scene, target, existing.id)) {
+    if (
+      !canAnchorTokenAt(room.scene, target, {
+        exceptTokenId: existing.id,
+        token: existing,
+        actorRacas,
+      })
+    ) {
       return { ok: false, error: "Hex bloqueado, fora do tabuleiro ou ocupado" };
     }
     const tokens = room.scene.tokens.map((t) =>
@@ -233,11 +248,10 @@ export async function placeRoomActorOnHex(
     return { ok: true, snapshot: toSnapshot(updated), tokenId: existing.id };
   }
 
-  if (!canAnchorTokenAt(room.scene, target)) {
+  const token = createPlayerTokenFromActor(actor, target);
+  if (!canAnchorTokenAt(room.scene, target, { token, actorRacas })) {
     return { ok: false, error: "Hex bloqueado, fora do tabuleiro ou ocupado" };
   }
-
-  const token = createPlayerTokenFromActor(actor, target);
   room.scene = {
     ...room.scene,
     tokens: [...room.scene.tokens, token],

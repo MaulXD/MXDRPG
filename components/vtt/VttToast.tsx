@@ -37,14 +37,18 @@ function useMesaToastLift() {
 
     const sync = () => {
       const hud =
-        stage.querySelector<HTMLElement>(".vtt-combat-hud") ??
-        stage.querySelector<HTMLElement>(".vtt-combat-hud-restore");
+        stage.querySelector<HTMLElement>(".vtt-hud-wrapper") ??
+        stage.querySelector<HTMLElement>(".vtt-combat-hud-restore") ??
+        stage.querySelector<HTMLElement>(".vtt-combat-hud");
       if (!hud || hud.offsetHeight === 0) {
         anchor.style.setProperty("--vtt-toast-lift", "1.25rem");
         return;
       }
-      const bottom = Number.parseFloat(getComputedStyle(hud).bottom) || 14;
-      anchor.style.setProperty("--vtt-toast-lift", `${bottom + hud.offsetHeight + 12}px`);
+      const stageRect = stage.getBoundingClientRect();
+      const hudRect = hud.getBoundingClientRect();
+      const gap = 14;
+      const lift = Math.max(28, stageRect.bottom - hudRect.top + gap);
+      anchor.style.setProperty("--vtt-toast-lift", `${lift}px`);
     };
 
     sync();

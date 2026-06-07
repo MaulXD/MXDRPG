@@ -27,6 +27,7 @@ import { RoomChat } from "@/components/vtt/RoomChat";
 import { DiceRoller } from "@/components/vtt/DiceRoller";
 import { MonsterSpawnPanel } from "@/components/vtt/MonsterSpawnPanel";
 import { RoomInvitePanel } from "@/components/vtt/RoomInvitePanel";
+import { MesaPersistenceNotice } from "@/components/vtt/MesaPersistenceNotice";
 import "@/components/vtt/foundry/foundry.css";
 
 type Props = {
@@ -409,12 +410,14 @@ export function MesaWorkspace({
             ) : null}
           </MesaFoundrySidebar>
 
+          <MesaPersistenceNotice />
           <div className="foundry-mesa__stage">
             <HexBattlefield
               scene={scene}
               canEdit={canEdit}
               canUseWhiteboard={canEdit}
               canControlCombat={canControlCombat}
+              canRepositionTokens={canControlCombat}
               canBypassTurn={canBypassTurn}
               canEndTurn={canEndTurn}
               roomOwnerId={roomOwnerId}
@@ -479,10 +482,8 @@ export function MesaWorkspace({
               }}
             />
             <div id="foundry-mesa-toasts" className="foundry-mesa__toasts" aria-live="polite" />
-          </div>
-
-          <div id="foundry-mesa-hud" className="foundry-mesa__hud">
-            <div id="foundry-mesa-windows" className="foundry-mesa__windows">
+            <div id="foundry-mesa-hud" className="foundry-mesa__hud">
+              <div id="foundry-mesa-windows" className="foundry-mesa__windows">
               {windows.isFloating("chat") ? (
                 <FoundryWindow
                   title="Chat"
@@ -623,6 +624,7 @@ export function MesaWorkspace({
                   onClose={closeSheet}
                 />
               ) : null}
+              </div>
             </div>
           </div>
         </div>
