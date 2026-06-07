@@ -3,6 +3,8 @@
 Documentação de como o sistema visual do site e da mesa VTT funciona hoje — paleta, tipografia, layouts, componentes, fluxos de combate e convenções CSS.
 
 > Complementa [UX-MESA-E-RAIL.md](./UX-MESA-E-RAIL.md) e [PARIDADE-FOUNDRY.md](./PARIDADE-FOUNDRY.md).
+>
+> **v4 (molduras, HUD, chips, cards):** ver [DESIGN-ELDARIN-V4.md](./DESIGN-ELDARIN-V4.md).
 
 ---
 

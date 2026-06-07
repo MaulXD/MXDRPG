@@ -10,6 +10,7 @@ import "./globals.css";
 import "@/components/ui/medieval-borders.css";
 import "@/components/home/home.css";
 import "@/components/vtt/vtt.css";
+import "@/components/vtt/eldarin-v4.css";
 import "@/components/vtt/mesa-theme.css";
 
 const lora = Lora({
