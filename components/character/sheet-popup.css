@@ -313,7 +313,7 @@
 
     "portrait identity"
 
-    "attrs attrs";
+    "portrait attrs";
 
   gap: 0.55rem 0.75rem;
 
@@ -467,15 +467,11 @@
 
   grid-template-columns: repeat(6, 1fr);
 
-  gap: 0;
+  gap: 0.3rem;
 
   align-content: center;
 
   min-width: 0;
-
-  padding-left: calc(min(168px, 34vw) + 0.5rem);
-
-  box-sizing: border-box;
 
 }
 
@@ -973,11 +969,11 @@
 
   padding: 0.4rem 0.25rem;
 
-  border-radius: 0;
+  border-radius: 6px;
 
-  background: transparent;
+  background: var(--surface-raised);
 
-  border: none;
+  border: 1px solid var(--border);
 
 }
 
@@ -1892,9 +1888,23 @@
 
 
 /* Responsivo — janela larga (mesa Foundry) */
-@container foundry-sheet (min-width: 720px) {
+@container foundry-sheet (min-width: 640px) {
+  .sheet-popup-top {
+    grid-template-columns: minmax(120px, 168px) minmax(0, 1.25fr) minmax(0, 1fr);
+    grid-template-areas:
+      "portrait identity identity"
+      "portrait attrs attrs";
+  }
+}
+
+@container foundry-sheet (min-width: 920px) {
+  .sheet-popup-top {
+    grid-template-columns: minmax(132px, 180px) minmax(0, 1.5fr) minmax(260px, 1fr);
+    grid-template-areas: "portrait identity attrs";
+  }
+
   .sheet-popup-top__attrs {
-    padding-left: calc(min(182px, 22vw) + 0.65rem);
+    align-self: center;
   }
 
   .sheet-popup-stat-pills {
@@ -1903,9 +1913,12 @@
   }
 }
 
-@container sheet-popup (min-width: 720px) {
-  .sheet-popup-top__attrs {
-    padding-left: calc(min(182px, 22vw) + 0.65rem);
+@container sheet-popup (min-width: 640px) {
+  .sheet-popup-top {
+    grid-template-columns: minmax(120px, 168px) minmax(0, 1.25fr) minmax(0, 1fr);
+    grid-template-areas:
+      "portrait identity identity"
+      "portrait attrs attrs";
   }
 }
 
@@ -1944,8 +1957,6 @@
   .sheet-popup-top__attrs {
 
     grid-template-columns: repeat(3, 1fr);
-
-    padding-left: 0;
 
   }
 
@@ -2044,30 +2055,17 @@
   opacity: 1;
 }
 
-.sheet-popup-portrait-backdrop {
-  position: fixed;
-  inset: 0;
-  z-index: 280;
-  background: rgba(8, 6, 4, 0.62);
-  border: none;
-  padding: 0;
-  cursor: pointer;
-}
-
 .sheet-popup-portrait-editor {
-  position: fixed;
-  left: 50%;
-  top: 50%;
-  z-index: 290;
-  transform: translate(-50%, -50%);
-  width: min(320px, calc(100vw - 2rem));
-  max-height: min(88vh, 520px);
-  overflow: auto;
+  position: absolute;
+  left: 0;
+  top: calc(100% + 0.35rem);
+  z-index: 120;
+  width: min(300px, 92vw);
   padding: 0.7rem 0.8rem 0.8rem;
   border-radius: 10px;
   border: 1px solid var(--sheet-border-bright);
   background: var(--sheet-surface);
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.55);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
 }
 
 .sheet-popup-portrait-editor__head {
@@ -2391,7 +2389,7 @@
   padding-top: 0.85rem;
   background: #120e08;
   border-bottom: 2px solid var(--sheet-border);
-  overflow: visible;
+  overflow: hidden;
 }
 
 .sheet-shell--popup .sheet-popup-top::before {
@@ -2487,16 +2485,12 @@
   background: #120e08;
   border-top: 1px solid #2a1e0a;
   border-bottom: 2px solid var(--sheet-border);
-  padding-top: 0.35rem;
-  padding-bottom: 0.35rem;
+  padding: 0.35rem 0;
 }
 
 .sheet-shell--popup .sheet-popup-attr {
-  background: transparent;
-  border: none;
   border-right: 1px solid #2a1e0a;
   padding: 0.45rem 0.2rem 0.35rem;
-  border-radius: 0;
 }
 
 .sheet-shell--popup .sheet-popup-attr:last-child {
