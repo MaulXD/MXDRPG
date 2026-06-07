@@ -1129,13 +1129,13 @@ export function useBattlefieldPointer({
 
   const onContextMenu = useCallback(
     (e: React.MouseEvent<HTMLCanvasElement>) => {
+      e.preventDefault();
       const rect = canvasRef.current?.getBoundingClientRect();
       if (!rect) return;
       const px = e.clientX - rect.left;
       const py = e.clientY - rect.top;
 
       if (whiteboard?.active && whiteboard.tool === "polygon" && polygonRef.current?.vertices.length) {
-        e.preventDefault();
         finishPolygon(whiteboard, polygonRef.current.vertices.length >= 3);
         return;
       }
@@ -1150,7 +1150,6 @@ export function useBattlefieldPointer({
         onActionRingBlocked?.(hit);
         return;
       }
-      e.preventDefault();
       if (hit.id !== selectedId) setSelectedId(hit.id);
       const center = tokenScreenCenter(hit);
       onActionRingRequest?.(hit, center?.x ?? e.clientX, center?.y ?? e.clientY);

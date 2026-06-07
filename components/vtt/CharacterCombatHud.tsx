@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { PortraitFocusFill } from "@/components/character/PortraitFocusFill";
 import type { CombatTrack } from "@/lib/room/combat";
 import { activeTokenId } from "@/lib/room/combat";
 import type { RoomSnapshot } from "@/lib/room/types";
@@ -8,8 +9,15 @@ import type { BattleToken } from "@/lib/vtt/types";
 import { hpBarColor, hpRatio } from "@/lib/vtt/token-hp-display";
 import { listTokenEffectChips } from "@/lib/vtt/token-effects";
 import { nextCombatTurn } from "@/hooks/useRoomSync";
+import { useImageNaturalSize } from "@/hooks/useImageNaturalSize";
 import { PaHudMeter } from "@/components/vtt/PaHudMeter";
 import { TokenEffectsRow } from "@/components/vtt/TokenEffectsRow";
+import { firstPortraitDataUrl } from "@/lib/room/portrait-sync";
+import {
+  DEFAULT_PORTRAIT_FOCUS,
+  sanitizePortraitFocus,
+  type PortraitFocus,
+} from "@/lib/media/portrait-focus";
 
 type Props = {
   token: BattleToken;
@@ -25,6 +33,9 @@ type Props = {
   onSnapshot?: (snap: RoomSnapshot) => void;
   onUpdate: () => void;
   onHide: () => void;
+  /** Fallback quando o token perde imageUrl no sync de turno. */
+  portraitFallback?: string | null;
+  portraitFocus?: PortraitFocus | null;
 };
 
 function AcShield({ value, bonus }: { value: number; bonus?: number }) {
@@ -57,6 +68,8 @@ export function CharacterCombatHud({
   onSnapshot,
   onUpdate,
   onHide,
+  portraitFallback = null,
+  portraitFocus = null,
 }: Props) {
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
@@ -67,6 +80,12 @@ export function CharacterCombatHud({
   const hpPct = Math.round(ratio * 100);
   const barColor = hpBarColor(ratio);
   const hasStatusEffects = listTokenEffectChips(token).length > 0;
+  const portraitSrc = firstPortraitDataUrl(token.imageUrl, portraitFallback);
+  const imgSize = useImageNaturalSize(portraitSrc);
+  const focus =
+    sanitizePortraitFocus(portraitFocus) ??
+    sanitizePortraitFocus(token.imageFocus) ??
+    DEFAULT_PORTRAIT_FOCUS;
 
   const showEndTurn =
     canEndTurn &&
@@ -105,9 +124,17 @@ export function CharacterCombatHud({
           className="vtt-combat-hud__portrait"
           style={{ borderColor: token.color, boxShadow: `0 0 14px ${token.color}44` }}
         >
-          {token.imageUrl ? (
+          {portraitSrc && imgSize.w > 0 ? (
+            <PortraitFocusFill
+              imageSrc={portraitSrc}
+              focus={focus}
+              imgW={imgSize.w}
+              imgH={imgSize.h}
+              shape="square"
+            />
+          ) : portraitSrc ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={token.imageUrl} alt="" className="vtt-combat-hud__portrait-img" />
+            <img src={portraitSrc} alt="" className="vtt-combat-hud__portrait-img" />
           ) : (
             <span className="vtt-combat-hud__portrait-fallback" style={{ color: token.color }}>
               {token.name.slice(0, 1).toUpperCase()}
