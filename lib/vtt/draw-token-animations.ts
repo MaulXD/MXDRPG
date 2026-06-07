@@ -17,7 +17,7 @@ export function drawTurnActiveIndicator(
 ): void {
   const t = ringAnimTime(timeSec);
   const pulse = 0.5 + 0.5 * Math.sin(t * 2.8);
-  const ringR = r + 2.5;
+  const ringR = r + 1.25;
 
   ctx.save();
 

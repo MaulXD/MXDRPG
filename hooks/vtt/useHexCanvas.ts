@@ -62,7 +62,6 @@ export type HexCanvasDrawState = {
   attackableIds: Set<string>;
   spellPickedTargetIds?: Set<string>;
   hoverAttackTargetId: string | null;
-  hoverTurnMoveTokenId: string | null;
   hoverTokenId: string | null;
   tokenFlash: { tokenId: string; kind: TokenFlashKind } | null;
   tokenCastFx?: ActiveTokenCastFx[];
@@ -110,7 +109,6 @@ export function useHexCanvas(
       Boolean(s.turnActiveId) ||
       s.attackableIds.size > 0 ||
       Boolean(s.hoverAttackTargetId) ||
-      Boolean(s.hoverTurnMoveTokenId) ||
       s.turnMovePreview ||
       (s.pathCells?.length ?? 0) >= 2 ||
       (s.pings?.length ?? 0) > 0 ||
@@ -215,7 +213,6 @@ export function useHexCanvas(
       attackableIds: s.attackableIds,
       spellPickedTargetIds: s.spellPickedTargetIds,
       hoverAttackTargetId: s.hoverAttackTargetId,
-      hoverTurnMoveTokenId: s.hoverTurnMoveTokenId,
       hoverTokenId: s.hoverTokenId,
       tokenAnimTimeSec: tokenAnimTimeSecRef.current,
       tokenFlash: s.tokenFlash,
@@ -267,7 +264,6 @@ export function useHexCanvas(
   }, [
     state.turnActiveId,
     state.hoverAttackTargetId,
-    state.hoverTurnMoveTokenId,
     state.hoverTokenId,
     state.turnMovePreview,
     state.attackableIds,
