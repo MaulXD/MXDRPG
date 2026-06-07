@@ -27,28 +27,9 @@ export function actorBelongsToRoom(room: RoomState, actor: RoomActor): boolean {
   );
 }
 
-function mergePortraitFromRoom(sheet: CharacterSheet, prev?: RoomActor): CharacterSheet {
-  if (!prev) return sheet;
-  return {
-    ...sheet,
-    portraitUrl: sheet.portraitUrl ?? prev.portraitUrl ?? null,
-    tokenImageUrl: sheet.tokenImageUrl ?? prev.tokenImageUrl ?? null,
-    portraitFocus: sheet.portraitFocus ?? prev.portraitFocus ?? null,
-    coverFocus: sheet.coverFocus ?? prev.coverFocus ?? null,
-    tokenFocus: sheet.tokenFocus ?? prev.tokenFocus ?? null,
-  };
-}
-
-function portraitBackfillNeeded(sheet: CharacterSheet, prev?: RoomActor): boolean {
-  if (!prev) return false;
-  return Boolean(
-    (!sheet.portraitUrl && prev.portraitUrl) || (!sheet.tokenImageUrl && prev.tokenImageUrl)
-  );
-}
-
 function toRoomActor(sheet: CharacterSheet, prev?: RoomActor): RoomActor {
   return {
-    ...normalizeCharacter(mergePortraitFromRoom(sheet, prev)),
+    ...normalizeCharacter(sheet),
     revision: prev?.revision ?? 1,
   };
 }
@@ -71,7 +52,6 @@ export async function syncAdventureActorsForRoom(roomId: string): Promise<RoomSt
 
   const adventureId = room.adventureId ?? room.roomId;
   let changed = false;
-  const backfills: RoomActor[] = [];
 
   for (const [actorId, actor] of Object.entries(room.actors)) {
     if (actorBelongsToRoom(room, actor)) continue;
@@ -95,21 +75,12 @@ export async function syncAdventureActorsForRoom(roomId: string): Promise<RoomSt
   for (const userId of participantIds(room)) {
     const sheets = await listCharactersForUserInAdventure(userId, adventureId);
     for (const sheet of sheets) {
-      if (!characterBelongsToAdventure(sheet, adventureId)) continue;
-      const prev = room.actors[sheet.id];
-      const next = toRoomActor(sheet, prev);
-      room.actors[sheet.id] = next;
-      changed = true;
-      if (portraitBackfillNeeded(sheet, prev)) backfills.push(next);
+      if (attachCharacterToRoomState(room, sheet)) changed = true;
     }
   }
 
   if (!changed) return room;
-  const saved = await persistRoom(roomId, room);
-  for (const actor of backfills) {
-    await persistActorToAdventureSheet(actor);
-  }
-  return saved;
+  return persistRoom(roomId, room);
 }
 
 export async function persistActorToAdventureSheet(actor: RoomActor): Promise<void> {

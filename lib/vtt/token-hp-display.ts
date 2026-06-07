@@ -68,10 +68,10 @@ export function isTokenDefeated(token: BattleToken): boolean {
 
 const HP_BAR_GRAPHITE = "rgb(58, 58, 60)";
 
-/** Raio do anel interno de HP (centro do traço). */
+/** Raio do anel de HP na borda do retrato (inset mínimo). */
 export function tokenOuterBorderR(tokenR: number, ringStyle: TokenRingStyle): number {
   void ringStyle;
-  return tokenR * 0.9;
+  return tokenR - 0.35;
 }
 
 /** @deprecated Use tokenOuterBorderR */
@@ -120,6 +120,10 @@ export function resolveTokenHpDisplay(
       ? canManageRoom({ ownerId: opts.roomOwnerId }, opts.session)
       : false);
 
+  if (!opts.hovered) {
+    return { bar: false, numeric: false };
+  }
+
   if (isGm) {
     return { bar: true, numeric: false };
   }
@@ -140,7 +144,7 @@ export function resolveTokenHpDisplay(
 
 const HP_RING_START = -Math.PI / 2;
 
-/** Anel circular interno como barra de vida (preenchimento horário a partir do topo). */
+/** Anel circular como barra de vida (preenchimento horário a partir do topo). */
 export function drawTokenHpSegments(
   ctx: CanvasRenderingContext2D,
   x: number,
