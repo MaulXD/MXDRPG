@@ -501,7 +501,13 @@ export function TurnOrderPanel({
               >
                 {compact ? (
                   <>
-                    {avatarNode}
+                    <div className="vtt-turn-compact-main">
+                      {avatarNode}
+                      <div className="vtt-turn-compact-copy">
+                        <strong className="vtt-turn-compact-name">{token.name}</strong>
+                        {active ? <span className="vtt-turn-compact-now">Agora</span> : null}
+                      </div>
+                    </div>
                     <span className="vtt-turn-compact-init" aria-label="Iniciativa">
                       {token.initiative ?? "—"}
                     </span>
