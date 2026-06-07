@@ -141,9 +141,7 @@ export function CharacterCombatHud({
         <div className="vtt-combat-hud__core">
           <div className="vtt-combat-hud__name-row">
             <div className="vtt-combat-hud__name-wrap">
-              <strong className="vtt-combat-hud__name" style={{ color: token.color }}>
-                {token.name}
-              </strong>
+              <strong className="vtt-combat-hud__name">{token.name}</strong>
               {isYourTurn ? (
                 <span className="vtt-combat-hud__turn-pill">Seu turno</span>
               ) : isGmView && activeId === token.id ? (
@@ -155,7 +153,7 @@ export function CharacterCombatHud({
               ) : null}
             </div>
             {token.vidaMax != null ? (
-              <span className="vtt-combat-hud__hp-text">
+              <span className="vtt-combat-hud__hp-text" style={{ color: barColor }}>
                 {token.vida ?? 0}/{token.vidaMax}
               </span>
             ) : null}

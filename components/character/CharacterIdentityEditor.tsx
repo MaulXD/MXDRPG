@@ -225,23 +225,30 @@ export function CharacterIdentityEditor({ actor, roomId, canEdit, onSaved }: Pro
   );
 }
 
+function attrModSign(value: number): "pos" | "neg" | "zero" {
+  if (value > 0) return "pos";
+  if (value < 0) return "neg";
+  return "zero";
+}
+
 export function CharacterStatsGrid({ actor }: { actor: CharacterSheet }) {
   const mod = attributeMod;
 
   return (
     <div className="sheet-stat-grid sheet-stat-grid-3">
-      {(Object.keys(ATTRIBUTE_LABELS) as AttributeKey[]).map((k) => (
-        <div className="sheet-stat" key={k}>
-          <label>{ATTRIBUTE_LABELS[k]}</label>
-          <strong>
-            {actor.attributes[k]}{" "}
-            <span className="sheet-mod">
-              ({mod(actor.attributes[k]) >= 0 ? "+" : ""}
-              {mod(actor.attributes[k])})
+      {(Object.keys(ATTRIBUTE_LABELS) as AttributeKey[]).map((k) => {
+        const m = mod(actor.attributes[k]);
+        return (
+          <div className="sheet-stat sheet-attr-cell" key={k}>
+            <label className="sheet-attr-cell__label">{ATTRIBUTE_LABELS[k]}</label>
+            <strong className="sheet-attr-cell__base">{actor.attributes[k]}</strong>
+            <span className="sheet-attr-cell__divider" aria-hidden />
+            <span className={`sheet-attr-cell__mod sheet-attr-cell__mod--${attrModSign(m)}`}>
+              {m >= 0 ? `+${m}` : m}
             </span>
-          </strong>
-        </div>
-      ))}
+          </div>
+        );
+      })}
     </div>
   );
 }

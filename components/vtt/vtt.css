@@ -4433,7 +4433,7 @@
   }
 }
 
-/* —— Combat HUD (barra horizontal) —— */
+/* —— Combat HUD (barra horizontal, cantos chanfrados v2) —— */
 .vtt-combat-hud {
   position: absolute;
   left: 50%;
@@ -4442,22 +4442,29 @@
   z-index: 7;
   width: min(680px, calc(100% - 24px));
   padding: 0.5rem 0.75rem 0.65rem;
-  border-radius: 10px;
-  border: 1px solid color-mix(in srgb, var(--accent-gold, #c9a962) 38%, transparent);
+  border: 1px solid var(--border-accent);
+  clip-path: polygon(
+    0 10px,
+    10px 0,
+    calc(100% - 10px) 0,
+    100% 10px,
+    100% 100%,
+    0 100%
+  );
   background: linear-gradient(
     180deg,
-    rgba(18, 16, 14, 0.94) 0%,
-    rgba(8, 10, 14, 0.97) 100%
+    var(--surface-raised) 0%,
+    var(--bg-deep) 100%
   );
   box-shadow: 0 14px 40px rgba(0, 0, 0, 0.55);
   pointer-events: auto;
 }
 
 .vtt-combat-hud--your-turn {
-  border-color: color-mix(in srgb, var(--accent-gold, #c9a962) 62%, transparent);
+  border-color: var(--accent-primary);
   box-shadow:
     0 14px 40px rgba(0, 0, 0, 0.55),
-    0 0 0 1px rgba(201, 169, 98, 0.15),
+    0 0 0 1px color-mix(in srgb, var(--accent-primary) 35%, transparent),
     inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 
@@ -4593,10 +4600,11 @@
 
 .vtt-combat-hud__name {
   font-family: var(--font-display);
-  font-size: 0.92rem;
+  font-size: 14px;
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
+  color: var(--text);
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -4629,10 +4637,10 @@
 
 .vtt-combat-hud__hp-track {
   width: 100%;
-  height: 7px;
-  border-radius: 3px;
-  background: rgba(0, 0, 0, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  height: 5px;
+  border-radius: 2px;
+  background: var(--bg-deep);
+  border: 1px solid var(--border);
   overflow: hidden;
 }
 
@@ -4643,11 +4651,11 @@
 }
 
 .vtt-combat-hud__hp-text {
-  font-size: 0.82rem;
-  font-weight: 700;
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 600;
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
-  color: var(--text);
   flex-shrink: 0;
 }
 
@@ -4681,10 +4689,11 @@
   align-items: center;
   justify-content: center;
   padding-top: 0.2rem;
-  font-size: 0.82rem;
-  font-weight: 800;
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 700;
   font-variant-numeric: tabular-nums;
-  color: #f0ece4;
+  color: var(--text);
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85);
   pointer-events: none;
 }
@@ -4783,6 +4792,13 @@
   letter-spacing: 0.05em;
 }
 
+.vtt-turn-compact-icon,
+.vtt-turn-target-icon {
+  width: 0.95rem;
+  height: 0.95rem;
+  display: block;
+}
+
 .vtt-turn-compact-icon-btn,
 .vtt-turn-compact-foot-btn {
   display: inline-flex;
@@ -4792,9 +4808,9 @@
   height: 1.65rem;
   padding: 0;
   border-radius: 4px;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  background: rgba(0, 0, 0, 0.2);
-  color: rgba(232, 226, 214, 0.88);
+  border: 1px solid var(--border);
+  background: var(--surface-inset);
+  color: var(--text-muted);
   font-size: 0.82rem;
   line-height: 1;
   cursor: pointer;
@@ -4974,25 +4990,35 @@
 }
 
 .vtt-combat-hud__end-turn {
+  font-family: var(--font-display);
   font-size: 0.64rem;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   padding: 0.48rem 0.55rem;
   white-space: nowrap;
-  border-radius: 4px;
-  border: 1px solid rgba(100, 165, 210, 0.72);
-  background: rgba(4, 8, 14, 0.96);
-  color: #f0f6fc;
+  border: 1px solid var(--accent);
+  background: var(--bg-deep);
+  color: var(--text);
   cursor: pointer;
+  clip-path: polygon(
+    0 5px,
+    5px 0,
+    calc(100% - 5px) 0,
+    100% 5px,
+    100% calc(100% - 5px),
+    calc(100% - 5px) 100%,
+    5px 100%,
+    0 calc(100% - 5px)
+  );
   transition:
     border-color 0.15s ease,
     background 0.15s ease;
 }
 
 .vtt-combat-hud__end-turn:hover:not(:disabled) {
-  border-color: rgba(130, 195, 240, 0.9);
-  background: rgba(16, 32, 52, 0.98);
+  border-color: var(--border-accent);
+  background: var(--surface);
 }
 
 .vtt-combat-hud__end-turn:disabled {
@@ -5034,10 +5060,11 @@
 }
 
 .pa-hud-meter__label--hud {
-  font-size: 0.58rem;
-  font-weight: 600;
-  letter-spacing: 0.03em;
-  text-transform: none;
+  font-family: var(--font-ui);
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
   color: var(--text-muted);
   line-height: 1.2;
 }
@@ -5049,15 +5076,24 @@
 .pa-hud-meter__dot--hud {
   width: 9px;
   height: 9px;
-  border-radius: 50%;
-  background: transparent;
-  border: 1.5px solid rgba(255, 255, 255, 0.35);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  clip-path: polygon(
+    0 2px,
+    2px 0,
+    calc(100% - 2px) 0,
+    100% 2px,
+    100% calc(100% - 2px),
+    calc(100% - 2px) 100%,
+    2px 100%,
+    0 calc(100% - 2px)
+  );
 }
 
 .pa-hud-meter__dot--hud.pa-hud-meter__dot--on {
-  background: #6b9e5a;
-  border-color: #8bc47a;
-  box-shadow: 0 0 5px rgba(107, 158, 90, 0.5);
+  background: var(--accent-primary);
+  border-color: var(--border-accent);
+  box-shadow: 0 0 4px color-mix(in srgb, var(--accent-primary) 45%, transparent);
 }
 
 .pa-hud-meter__label {

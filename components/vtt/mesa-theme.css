@@ -12,8 +12,11 @@
   --bg-mid: #101620;
   --bg-elevated: #161e2a;
   --surface: #141a24;
-  --surface-raised: #1a2230;
+  --surface-raised: #1a2030;
   --surface-inset: #0d121a;
+
+  --border: #2a3a50;
+  --border-accent: #3a5a80;
 
   --glass: rgba(16, 22, 32, 0.94);
   --glass-strong: rgba(10, 14, 20, 0.98);
@@ -29,10 +32,10 @@
   --accent-warn: #d4a030;
   --accent-info: #6aafc8;
 
-  --text: rgba(232, 236, 244, 0.94);
+  --text: #e8ecf4;
   --text-strong: #f0f4fa;
-  --text-muted: rgba(200, 210, 224, 0.68);
-  --text-dim: rgba(160, 175, 195, 0.55);
+  --text-muted: #9aaabf;
+  --text-dim: #5a6a80;
 
   /* Tokens mesa (alias usados no Foundry) */
   --mesa-rail-bg: linear-gradient(180deg, #121820 0%, #0c1018 100%);
@@ -45,8 +48,8 @@
   --mesa-accent-border: rgba(122, 163, 201, 0.38);
   --mesa-gm-accent: #c9927a;
   --mesa-gm-soft: rgba(160, 110, 90, 0.2);
-  --mesa-text: rgba(232, 236, 244, 0.94);
-  --mesa-text-dim: rgba(200, 210, 224, 0.62);
+  --mesa-text: #e8ecf4;
+  --mesa-text-dim: #9aaabf;
 
   /* Mapa hex — azul ardósia (lidos por readThemeColor no canvas) */
   --vtt-canvas-bg-0: #121820;

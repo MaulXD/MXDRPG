@@ -51,9 +51,18 @@
   background: rgba(255, 255, 255, 0.1);
 }
 
+.map-toolbar__icon {
+  width: 1.15rem;
+  height: 1.15rem;
+  display: block;
+}
+
 .map-toolbar__btn {
   width: 2.5rem;
   height: 2.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 8px;
   border: 1px solid transparent;
   background: rgba(255, 255, 255, 0.04);

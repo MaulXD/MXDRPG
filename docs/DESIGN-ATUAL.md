@@ -1,8 +1,8 @@
-# Design atual do Eldarin
+# Design atual do Eldarin — v2
 
 Documentação de como o sistema visual do site e da mesa VTT funciona hoje — paleta, tipografia, layouts, componentes e convenções CSS.
 
-> Complementa [UX-MESA-E-RAIL.md](./UX-MESA-E-RAIL.md) (navegação do rail antigo) e [PARIDADE-FOUNDRY.md](./PARIDADE-FOUNDRY.md) (painéis estilo Foundry).
+> Complementa [UX-MESA-E-RAIL.md](./UX-MESA-E-RAIL.md) e [PARIDADE-FOUNDRY.md](./PARIDADE-FOUNDRY.md).
 
 ---
 
@@ -15,13 +15,14 @@ O Eldarin usa **dois shells de interface**:
 | **Site** | `/`, `/biblioteca`, `/entrar`, fichas fora da mesa… | Header + footer clássicos | Marketing, compêndio, criação de personagem, portais |
 | **Mesa VTT** | `/mesa/[roomId]` | `vtt-chrome` + layout Foundry | Jogo em tempo real: mapa hex, tokens, combate, chat |
 
-Ambos compartilham **tokens CSS globais** (`app/globals.css`), mas a mesa aplica um **tema próprio** (ardósia + azul frio) via `mesa-theme.css`.
+Ambos compartilham **tokens CSS globais** (`app/globals.css`), mas a mesa aplica um **tema próprio** via `mesa-theme.css`.
 
 Princípios visuais:
 
-- Fantasia medieval **sem exagero ornamentado** — legível, escuro por padrão, acentos frios (azul) na mesa e acentos quentes (pardo/ouro) no site claro.
-- Superfícies em camadas: `glass`, `glass-panel`, gradientes suaves, bordas semitransparentes.
-- Tipografia em três papéis: **títulos** (Cinzel), **corpo narrativo** (Lora), **UI** (Source Sans 3).
+- Fantasia medieval legível — escuro por padrão, acentos frios (azul) na mesa, acentos quentes (pardo/ouro) no site.
+- Superfícies em camadas: `glass`, `glass-panel`, bordas semitransparentes.
+- Tipografia em três papéis: **Cinzel** (títulos/valores de jogo), **Lora** (corpo narrativo), **Source Sans 3** (UI densa).
+- **Nunca usar emojis** em componentes de UI — apenas ícones SVG (`MesaRailIcon`, `TokenEffectIcon`, escudo CA, etc.).
 
 ---
 
@@ -30,41 +31,35 @@ Princípios visuais:
 ### Ativação
 
 - Atributo `data-theme="dark"` ou `data-theme="light"` no `<html>`.
-- `ThemeScript` + `ThemeToggle` (`lib/theme.ts`) persistem preferência em `localStorage` e disparam `eldarin-theme-change`.
-- Na mesa, o toggle fica na topbar VTT; no site, no header.
+- `ThemeScript` + `ThemeToggle` (`lib/theme.ts`) persistem em `localStorage`.
 
 ### Escuro (padrão)
 
 Paleta base **ardósia + azul frio**:
 
-| Token | Valor típico | Uso |
-|-------|--------------|-----|
+| Token | Valor | Uso |
+|-------|-------|-----|
 | `--bg-deep` | `#0a0e14` | Fundo da página / stage do mapa |
 | `--bg-mid` | `#101620` | Gradientes de fundo |
 | `--surface` | `#141a24` | Cards, painéis |
+| `--surface-raised` | `#1a2030` | Painéis elevados, células de atributo |
 | `--accent` / `--accent-primary` | `#7aa3c9` | Links, bordas ativas, destaque |
 | `--accent-secondary` | `#c9927a` | Acento mestre / warm |
 | `--accent-success` | `#6b9e5a` | PA, cura, positivo |
 | `--accent-warn` | `#d4a030` | Rodada, avisos |
 | `--accent-danger` | `#e07070` | Erro, ataque |
-| `--text` | `rgba(232, 236, 244, 0.94)` | Texto principal |
-| `--text-muted` | `rgba(200, 210, 224, 0.68)` | Hints, labels |
+| `--text` | `#e8ecf4` | Texto principal — **sem opacidade**, valor sólido |
+| `--text-muted` | `#9aaabf` | Hints, labels — **mínimo 4.5:1 de contraste sobre `--surface`** |
+| `--text-dim` | `#5a6a80` | Placeholders, info secundária muito discreta |
+| `--border` | `#2a3a50` | Bordas de células e divisores |
+| `--border-accent` | `#3a5a80` | Borda ativa / hover |
+
+> **Regra de contraste:** qualquer texto que o jogador precise ler durante o jogo deve ter contraste mínimo WCAG AA (4.5:1) sobre o fundo onde aparece. Usar `--text-muted` em fundos mais escuros que `--surface` exige verificação — preferir `--text` nesses casos.
 
 ### Claro
 
-Paleta **pergaminho + marrom**:
-
 - Fundos `#f4ead8` → `#faf6ee`, texto `#1e1810`, acento `#7a4f28`.
-- Variáveis `--vtt-hex-*` do canvas mudam para traços escuros sobre mapa claro.
-
-### Fundo global do site
-
-Camadas fixas no `body`:
-
-1. `.site-bg` — gradiente radial + linear.
-2. `.site-noise` — textura SVG fractalNoise (~3–5% opacidade).
-
-Na mesa VTT essas camadas ficam atrás do stage; o mapa usa `--mesa-stage-bg`.
+- `--text-muted` claro: `#6a5a44` (contraste verificado sobre `#f4ead8`).
 
 ---
 
@@ -72,17 +67,38 @@ Na mesa VTT essas camadas ficam atrás do stage; o mapa usa `--mesa-stage-bg`.
 
 Carregada em `app/layout.tsx` (Google Fonts):
 
-| Variável | Fonte | Uso |
-|----------|-------|-----|
-| `--font-display` | **Cinzel** | Logo, títulos, botões `.btn`, nomes de personagem no HUD |
-| `--font-body` | **Lora** | Prosa, fichas, textos longos |
-| `--font-ui` | **Source Sans 3** | `html/body` padrão, formulários, UI densa |
+| Variável | Fonte | Peso(s) | Uso |
+|----------|-------|---------|-----|
+| `--font-display` | **Cinzel** | 400, 600, 700 | Títulos, nomes de personagem, valores de atributo, botões `.btn` |
+| `--font-body` | **Lora** | 400, 400i | Prosa, fichas, textos de regra longos |
+| `--font-ui` | **Source Sans 3** | 400, 600 | Formulários, UI densa, labels de controle |
+
+### Hierarquia de tamanhos
+
+| Papel | Fonte | Tamanho | Peso | Cor recomendada |
+|-------|-------|---------|------|-----------------|
+| Nome de personagem (HUD/ficha) | Cinzel | 20–24px | 700 | `--text` |
+| Valor de atributo base | Cinzel | 26–28px | 700 | `--text` |
+| Modificador de atributo | Cinzel | 13px | 600 | positivo: `--accent-success` · negativo: `--accent-danger` · zero: `--text-dim` |
+| Label de atributo (FOR/DES…) | Cinzel | 8px | 600 | `--text-dim`, `letter-spacing: .16em` |
+| Valor de combate (CA, PA, PV) | Cinzel | 16–20px | 700 | `--text` |
+| Label de seção (separador) | Cinzel | 8px | 600 | `--text-muted`, `letter-spacing: .18em`, uppercase |
+| Nome de perícia / habilidade | Lora | 11–12px | 400i | `--text-muted` |
+| Bônus de perícia | Cinzel | 12px | 700 | `--text` |
+| Texto de regra / lore | Lora | 13–14px | 400 | `--text` |
+| Label de controle de UI | Source Sans 3 | 11–12px | 400 | `--text-muted` |
+
+### Regras de legibilidade
+
+- **Nunca usar opacidade em texto** que o jogador precisa ler durante sessão — usar valor de cor sólido.
+- Valor base do atributo (ex: `8`) deve ser tão legível quanto o modificador (`−1`) — não reduzir abaixo de 12px nem usar cor mais fraca que `--text-muted`.
+- Labels de 8px só são aceitáveis em contextos onde funcionam como **título de seção**, nunca como valor de jogo.
 
 Classes utilitárias em `globals.css`:
 
 - `.display-xl` / `.display-lg` — hero e seções.
 - `.eyebrow` — rótulo superior com traço decorativo (`letter-spacing` largo, uppercase).
-- `.neon-title` — logo **ELDARIN** (Cinzel, acento, tracking largo).
+- `.neon-title` — logo ELDARIN (Cinzel, acento, tracking largo).
 - `.lead` — parágrafo introdutório muted.
 
 ---
@@ -98,7 +114,7 @@ Classes utilitárias em `globals.css`:
 
 ### Botões
 
-- `.btn` — primário (gradiente surface, Cinzel, uppercase).
+- `.btn` — primário (gradiente surface, Cinzel, uppercase, sem emoji).
 - `.btn-ghost` — contorno leve, sem preenchimento forte.
 - Estados: hover com `translateY(-1px)` e borda `--accent`.
 
@@ -108,31 +124,17 @@ Classes utilitárias em `globals.css`:
 
 Variantes: `parchment`, `iron`, `gothic`, `royal`, `celtic`, `rune`.
 
-Cantos decorativos (`.mf-corner`) + corpo `.mf-body`. Usado em landing, lore, seções de destaque.
-
-### Header e footer
-
-- **Site:** `SiteHeaderWrapper` — nav Início · Sistema · Compêndios · Entrar/Portal.
-- **Mesa:** `SiteShell` detecta `/mesa/[id]` e troca para topbar reduzida (`vtt-topbar`).
+Cantos decorativos SVG (`.mf-corner`) + corpo `.mf-body`. Sem emojis decorativos — usar SVG inline ou `MesaRailIcon`.
 
 ---
 
 ## 5. Mesa VTT — shell Foundry
 
-### Detecção de contexto
-
-`SiteShell` (`components/SiteShell.tsx`):
-
-```tsx
-const isVtt = pathname.startsWith("/mesa/") && pathname !== "/mesa";
-// → <div className="vtt-chrome" data-vtt-mesa="foundry">
-```
-
 ### Estrutura visual
 
 ```
 ┌──────────────────────────────────────────────────────────────────┐
-│ vtt-topbar: ELDARIN | Mesas · Compêndios · Minhas mesas | ☀      │
+│ vtt-topbar: ELDARIN | Mesas · Compêndios · Minhas mesas | sol    │
 ├──────────┬─────────────────────────────────────────────────────┤
 │ Icon bar │  Mapa hex (stage)                                    │
 │ + dock   │  · MapToolbar (esquerda)                             │
@@ -141,208 +143,175 @@ const isVtt = pathname.startsWith("/mesa/") && pathname !== "/mesa";
 └──────────┴─────────────────────────────────────────────────────┘
 ```
 
-Arquivos principais:
-
-| Arquivo | Papel |
-|---------|-------|
-| `MesaWorkspace.tsx` | Orquestra sidebar, stage, HUD portal, janelas |
-| `foundry/foundry.css` | Layout rail, dock, janelas, scroll de painéis |
-| `mesa-theme.css` | Tokens `--mesa-*` e overrides do canvas |
-| `vtt.css` | Combate, HUD, tokens, efeitos, sidebars |
-| `hooks/vtt/useFoundryWindows.ts` | Posição/tamanho/abertura de cada painel |
-
-### Barra de ícones (`MesaIconBar`)
-
-Ícones verticais com **clique esquerdo = janela flutuante**, **clique direito = dock lateral**.
-
-Seções:
-
-- **Jogo:** Status, Tokens, Turno, Ficha, Chat, Dados, Lousa, Convite.
-- **Mestre:** Mapa, Mestre, Invocar.
-
-Ícones SVG em `MesaRailIcon.tsx`.
-
-### Painéis dock vs flutuantes
-
-- **Dock:** coluna ao lado da icon bar (`FoundryDockPanel`), largura `clamp(248px, 28vw, 340px)`.
-- **Flutuante:** `FoundryWindow` — arrastável, redimensionável, z-index gerenciado.
-- Estado salvo por sala em `sessionStorage` via `useFoundryWindows`.
-
-Classes de scroll: `.mesa-panel-scroll`, `.mesa-panel-scroll--rail`.
-
 ---
 
-## 6. Mapa hex e canvas
+## 6. Ficha de personagem — layout Foundry
 
-Renderização em **Canvas 2D** (`hooks/vtt/useHexCanvas.ts`, `lib/vtt/draw-battlefield.ts`).
-
-### Cores do grid
-
-Definidas em CSS, lidas em runtime por `readThemeColor()`:
-
-- `--vtt-hex-fill` / `--vtt-hex-stroke` — grid neutro.
-- `--vtt-hex-walk-*` — movimento no turno.
-- `--vtt-hex-walk-paid-*` — caminhada que gasta PA extra.
-- `--vtt-hex-attack-*` — alvos de ataque.
-- `--vtt-hex-area-*` — magias de área.
-- Paletas `--vtt-hex-on-dark-*` e `--vtt-hex-on-light-*` adaptam contraste ao **tom do mapa** (imagem de fundo escura ou clara).
-
-### Tokens no mapa
-
-- Círculo inscrito no hex (~**84%** do raio do hex para criaturas Médio/Pequeno).
-- Retrato em crop circular; anel fino de HP na borda quando visível.
-- Anéis de identidade (jogador = cor da mesa; monstro = vermelho/branco) **fora** do círculo da imagem.
-- Destaques: turno ativo (anel animado), seleção, alvo de ataque (pulso vermelho).
-
----
-
-## 7. Barra de ferramentas do mapa (`MapToolbar`)
-
-Barra **vertical à esquerda** do canvas (estilo Roll20), em `MapToolbar.tsx` + `whiteboard.css`.
-
-| Seção | Ferramentas |
-|-------|-------------|
-| **Mapa** | Interagir · Ping · Régua · Névoa (GM) |
-| **Desenho** | Selecionar · Livre · Linha · Seta · Forma · Polígono · Texto |
-| **Zoom** | − · % · + · ⊙ reset |
-| **Mestre** | 🏰 editor de mapa |
-
-Ao ativar Desenho, aparecem seletor de cor, espessura e “Limpar sessão”. Modo sincronizado com `mapToolMode` em `HexBattlefield`.
-
----
-
-## 8. HUD de combate (`CharacterCombatHud`)
-
-Painel horizontal **fixo no rodapé do stage** (`#foundry-mesa-hud`), visível quando o jogador (ou GM vendo turno ativo) mantém o HUD aberto.
-
-### Layout (modelo atual)
+### Estrutura de 3 colunas
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│ [ícones de status — só se houver efeitos; some se vazio]    │
-├────────┬──────────────────────────────────────┬────────────┤
-│Retrato │ NOME DO PERSONAGEM          21/56    │   FICHA    │
-│ 72px   │ [barra HP ─────────────────────]     │            │
-│        │ 🛡 CA 22   Pontos de Ação ●●●○○…     │ PASSAR     │
-│        │                                      │  TURNO     │
-└────────┴──────────────────────────────────────┴────────────┘
+┌─────────────────────────────────────────────────────────┐
+│ BANNER (100px) — bg da classe + nome + nível hex        │
+├──────────┬──────────────────────┬──────────────────────┤
+│ Avatar   │ Faixa de atributos   │                      │
+│ 158×178  │ FOR DES CON INT SAB  │                      │
+│ chanfrado│ CAR (6 células)      │                      │
+├──────────┼──────────────────────┼──────────────────────┤
+│ Status   │ Tabs: Perícias /     │ Saves                │
+│ Classe   │ Magias / Hab /       │ Resistências         │
+│ Devoção  │ Inventário / Tesouro │ Sentidos             │
+│ Tags     │                      │ Armadura / Armas     │
+│          │                      │ Idiomas              │
+│          │                      │ Magias rápidas       │
+└──────────┴──────────────────────┴──────────────────────┘
 ```
 
-Detalhes:
-
-- **Barra de status superior:** `TokenEffectsRow` com classe `vtt-effect-chips--hud-bar`; recolhe automaticamente quando não há buffs/condições.
-- **Retrato:** imagem do token ou inicial; borda na cor do token.
-- **PV:** números à direita do nome; barra fina em largura total; cores por `hpBarColor()`.
-- **CA:** escudo SVG com número centralizado.
-- **PA:** `PaHudMeter variant="hud"` — label “Pontos de Ação” + círculos preenchidos.
-- **Ficha:** abre popup da ficha (`CharacterSheetPopup`).
-- **Passar turno:** botão escuro, borda azul (`--accent` frio), só no turno ativo.
-- **Ocultar:** ícone de olho cortado no canto; botão “Mostrar HUD” restaura.
-
-Estado “seu turno”: borda dourada/azul reforçada (`.vtt-combat-hud--your-turn`).
-
----
-
-## 9. Ordem de turno (compacta)
-
-`TurnOrderPanel` com `compact` — janela estreita (~196px), estilo Roll20:
-
-- Cabeçalho: `Contar: N` · botão ⇅ (rolar iniciativa) · `R{rodada}`.
-- Lista: **avatar + iniciativa**; turno ativo com fundo verde.
-- Rodapé: ‹ turno anterior · ⚙ opções · › passar turno.
-- Hover na linha (GM): chips ▶ PA Fim ↩.
-
----
-
-## 10. Status, efeitos e tooltips
-
-### Chips de efeito
-
-`TokenEffectsRow` + `listTokenEffectChips()` (`lib/vtt/token-effects.ts`).
-
-Cada chip tem:
-
-- Ícone SVG (`TokenEffectIcon`) com fundo sólido de alto contraste.
-- Badge de duração (`3R`, `2T`…) quando aplicável.
-- Tooltip via `effectTipAttrs()` → atributo `data-tip`.
-
-Formato do tooltip (`formatEffectTooltip`):
+### Célula de atributo (opção C — padrão)
 
 ```
-{Nome}: {descrição da regra} · Duração: {tempo restante}
+┌─────────┐
+│  FOR    │  ← Cinzel 8px, --text-dim, letter-spacing .16em
+│         │
+│   8     │  ← Cinzel 28px 700, --text (valor base LEGÍVEL)
+│  ─────  │  ← divisor 1px --border
+│  −1     │  ← Cinzel 13px 600, pill colorida por sinal
+└─────────┘
 ```
 
-CSS (`.vtt-effect-tip-wrap[data-tip]:hover::after`): balão escuro acima do ícone, `max-width: 280px`, tipografia 0.72rem.
+Pill do modificador:
+- Negativo: fundo `#200a06`, borda `1px solid #5a1a0e`, cor `--accent-danger`
+- Positivo: fundo `#0a180a`, borda `1px solid #1a4a18`, cor `--accent-success`
+- Zero: fundo `--surface`, borda `--border`, cor `--text-dim`
+- Atributo primário da classe: valor base em `#d0c0ff` (mago/arcano) ou cor temática
 
-Onde aparecem:
+### Banner da ficha
 
-| Local | Classe |
-|-------|--------|
-| HUD (barra superior) | `vtt-effect-chips--hud-bar` |
-| Lista de tokens | `vtt-effect-chips--list` |
-| Ordem de turno (modo completo) | `vtt-effect-chips--turn` |
-| Modal Status | `TokenStatusList` (lista expandida) |
+- Altura: 100px, `background-size: cover`, `background-position: center top`
+- Fade para baixo: `linear-gradient(transparent, var(--bg-deep))`
+- Fade lateral esquerdo: cobre o avatar sem cortar o conteúdo
+- Seletor de tema: 4 pontos coloridos (border-radius 50%, borda dourada no ativo)
+- Temas por classe (gradientes CSS quando sem imagem):
+  - `pyromancer`: `#3a0c08 → #7a1a0a`
+  - `umbral`: `#080c22 → #141840`
+  - `druid`: `#081408 → #143c10`
+  - `warrior`: `#1a1006 → #3c2408`
+- Quando `bannerUrl` (URL de imagem) for fornecido, usa como `background-image`
+- Seletor emite `onBannerChange(theme)` para persistir no banco
 
-### Modal Status
+### Avatar
 
-`TokenStatusModal` — janela arrastável (`FoundryWindow`), sem bloquear o resto da UI. GM aplica condições em `TokenConditionsPanel`.
+- Dimensão: 158×178px, posição absolute sobre banner e coluna esquerda
+- `clip-path: polygon(0 16px, 16px 0, calc(100% - 16px) 0, 100% 16px, 100% calc(100% - 16px), calc(100% - 16px) 100%, 16px 100%, 0 calc(100% - 16px))`
+- Borda: `2px solid` na cor da classe (ex: `#6644aa` mago, `#aa4420` piromante)
+- Filetes dourados SVG nos 4 cantos da moldura
+- Overlay escuro no hover com texto "trocar imagem" (Cinzel, sem emoji)
+- Click abre `<input type="file" accept="image/*">`
+- Upload: `FileReader` → preview imediato; prop `onAvatarChange(file)` para persistência
+
+### Separadores de seção
+
+```css
+/* padrão: linha + losango + texto + losango + linha */
+.section-divider {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  background: var(--bg-deep);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.section-divider__line { flex: 1; height: 1px; background: var(--border-accent); }
+.section-divider__gem  { width: 5px; height: 5px; background: #8a6020; transform: rotate(45deg); }
+.section-divider__title {
+  font-family: var(--font-display);
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: .18em;
+  color: var(--text-muted);
+  white-space: nowrap;
+  text-transform: uppercase;
+}
+```
+
+### Bordas e moldura geral da ficha
+
+```css
+.character-sheet {
+  background: #1a1510;
+  border: 3px solid #6b4f1e;
+  box-shadow:
+    inset 0 0 0 1px #3a2a0e,
+    inset 0 0 0 4px #0e0a06,
+    inset 0 0 40px rgba(0,0,0,.5);
+}
+/* cantos ornamentais: SVG com filetes e ponto dourado, posição absolute */
+```
 
 ---
 
-## 11. Anel de ações e feedback de combate
+## 7. HUD de combate (`CharacterCombatHud`)
 
-- **TokenActionRing** — menu radial no clique direito do token (`token-action-ring.css`).
-- **BattlefieldActionHud** — preview de PA/custo ao mirar ação.
-- **CombatFxLayer** — números de dano, misses, etc. sobre o canvas.
-- **VttToast** — notificações discretas na mesa.
-
----
-
-## 12. Fichas e criação de personagem
-
-| Área | CSS principal | Notas |
-|------|---------------|-------|
-| Ficha popup na mesa | `sheet-popup.css` | Janela grande redimensionável |
-| Ficha página | `sheet.css` | Abas, inventário, atributos |
-| Wizard | `wizard.css` | Passos, presets de equipamento |
-| Level-up | `level-up.css` | Escolhas de subclasse |
-| Retrato / foco | `PortraitFocusEditor` | Preview circular do token |
-
-Fichas de outros jogadores abrem em **somente leitura**.
-
----
-
-## 13. Outras áreas do site
-
-| Rota / área | Estilo |
-|-------------|--------|
-| `/biblioteca` | `compendium.css` — browser de regras; variantes `--rail` para painéis estreitos |
-| `/mundo`, lore | `world-lore.css` + `MedievalFrame` |
-| `/entrar` | Formulários auth com `--font-ui` |
-| Home | `home.css` + `HexPreview` animado |
-| Bug report | `bug-report.css` — botão flutuante (site e VTT) |
-
----
-
-## 14. Convenções para novos componentes
-
-1. **Cores:** preferir variáveis CSS (`var(--accent)`) em vez de hex fixo; na mesa, respeitar `--mesa-*` quando dentro de `.vtt-chrome`.
-2. **Canvas:** novos highlights devem ganhar par `--vtt-hex-*` em `globals.css` + `mesa-theme.css` e ser lidos via `readThemeColor`.
-3. **Painéis na mesa:** usar `glass-panel` ou classes `foundry-dock-panel--*`; scroll com `mesa-panel-scroll`.
-4. **Tooltips de regras:** reutilizar `effectTipAttrs` / padrão `data-tip`.
-5. **Tipografia:** títulos de jogo em Cinzel; blocos de regra em Lora; controles densos em Source Sans.
-6. **Responsivo:** mesa prioriza desktop; `@media (max-width: 640px)` no HUD; dock estreito em telas médias.
-
----
-
-## 15. Mapa de arquivos CSS
+### Layout
 
 ```
-app/globals.css          ← tokens globais, tema claro/escuro, botões, site-bg
-components/vtt/vtt.css   ← combate, HUD, sidebars, efeitos, hex helpers UI
-components/vtt/mesa-theme.css   ← override mesa Foundry + canvas
-components/vtt/foundry/foundry.css   ← rail, dock, janelas
-components/vtt/whiteboard.css   ← MapToolbar
+┌─────────────────────────────────────────────────────────┐
+│ [chips de efeito — recolhe se vazio]                    │
+├────────┬──────────────────────────────────┬────────────┤
+│Retrato │ NOME DO PERSONAGEM      21/56    │   FICHA    │
+│ 72px   │ [barra HP ──────────────────]    │            │
+│        │ [escudo CA] 22   PA ■■■□□        │  PASSAR    │
+│        │                                  │   TURNO    │
+└────────┴──────────────────────────────────┴────────────┘
+```
+
+### Especificações visuais
+
+- **Borda do HUD:** `clip-path` chanfrado nos cantos superiores; borda `1px solid var(--border-accent)` no estado normal, dourada/azul reforçada no turno ativo (`.vtt-combat-hud--your-turn`)
+- **Nome:** Cinzel 14px 700, `--text`
+- **PV:** `{atual}/{max}` — Cinzel 13px 600, cor por `hpBarColor()` (verde/amarelo/vermelho)
+- **Barra HP:** altura 5px, fundo `var(--bg-deep)`, borda `1px solid var(--border)`, fill colorido
+- **CA:** ícone SVG de escudo com número centralizado (Cinzel 14px 700) — sem emoji
+- **PA:** label "PA" em Source Sans 3 10px + dots quadrados chanfrados (preenchido: `--accent-primary` azul, vazio: `--surface`)
+- **Botão "Passar Turno":** Cinzel uppercase, `clip-path` chanfrado, borda `--accent`, fundo `--bg-deep`
+- **Retrato:** borda na cor do token; inicial em Cinzel se sem imagem
+
+---
+
+## 8. Tokens no mapa
+
+- Moldura hexagonal SVG com duplo anel (jogador) ou triplo anel (inimigo grande)
+- Jogadores: cor da classe define o esquema do anel
+- Inimigos: anel vermelho — inimigos grandes recebem terceiro anel para peso visual
+- Nameplate: fita em `clip-path` rômbico embaixo do token, fundo na cor da facção
+- Texto do nameplate: Cinzel 9px, sem emoji
+- Anel de status: verde (na sala), vermelho pulsante (turno ativo), cinza (offline)
+- Valor de HP acima do token: Cinzel 9px, cor por `hpBarColor()`
+
+---
+
+## 9. Convenções para novos componentes
+
+1. **Cores:** sempre `var(--token)` — nunca hex fixo em componentes; na mesa, respeitar `--mesa-*` dentro de `.vtt-chrome`.
+2. **Emojis:** proibidos em qualquer componente de UI — usar SVG inline ou `MesaRailIcon`.
+3. **Contraste:** texto que o jogador lê durante sessão deve ter contraste mínimo 4.5:1 (WCAG AA) — verificar sempre que usar `--text-muted` sobre fundos escuros.
+4. **Atributos:** seguir spec "opção C" — valor base 28px Cinzel `--text`, pill de modificador colorida por sinal.
+5. **Canvas:** novos highlights devem ganhar par `--vtt-hex-*` em `globals.css` + `mesa-theme.css`, lidos via `readThemeColor`.
+6. **Painéis na mesa:** usar `glass-panel` ou classes `foundry-dock-panel--*`; scroll com `mesa-panel-scroll`.
+7. **Tooltips de regras:** reutilizar `effectTipAttrs` / padrão `data-tip`.
+8. **Tipografia:** Cinzel para títulos e valores de jogo; Lora para regras e lore; Source Sans 3 para controles densos.
+9. **Responsivo:** mesa prioriza desktop; `@media (max-width: 640px)` no HUD; dock estreito em telas médias.
+
+---
+
+## 10. Mapa de arquivos CSS
+
+```
+app/globals.css                              ← tokens globais, tema claro/escuro, botões
+components/vtt/vtt.css                       ← combate, HUD, sidebars, efeitos
+components/vtt/mesa-theme.css                ← override mesa Foundry + canvas
+components/vtt/foundry/foundry.css           ← rail, dock, janelas
+components/vtt/whiteboard.css                ← MapToolbar
 components/vtt/token-action-ring.css
 components/vtt/vtt-toast.css
 components/vtt/bug-report.css
@@ -356,13 +325,12 @@ components/home/home.css
 
 ---
 
-## 16. Referências rápidas
+## 11. Referências rápidas
 
 - UX rail legado: [UX-MESA-E-RAIL.md](./UX-MESA-E-RAIL.md)
 - Painéis Foundry: [PARIDADE-FOUNDRY.md](./PARIDADE-FOUNDRY.md)
 - Regras de produto: [PRD-ELDARIN-VTT.md](./PRD-ELDARIN-VTT.md)
-- Ajuda in-app na mesa: `VttHelpButton.tsx`
 
 ---
 
-*Última revisão: junho 2026 — reflete HUD horizontal, MapToolbar, ordem de turno compacta e tokens maximizados no hex.*
+*Última revisão: junho 2026 — v2: contraste corrigido, emojis removidos, spec de atributos opção C, ficha layout Foundry, tokens hexagonais, convenções de legibilidade.*

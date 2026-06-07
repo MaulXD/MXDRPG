@@ -32,7 +32,7 @@ export function PaHudMeter({
         className="pa-hud-meter pa-hud-meter--hud"
         aria-label={`${spendable} de ${accumulationCap} pontos de ação`}
       >
-        <span className="pa-hud-meter__label pa-hud-meter__label--hud">Pontos de Ação</span>
+        <span className="pa-hud-meter__label pa-hud-meter__label--hud">PA</span>
         <div className="pa-hud-meter__dots pa-hud-meter__dots--hud" aria-hidden>
           {Array.from({ length: dotTotal }, (_, i) => (
             <span
