@@ -135,11 +135,14 @@ export function drawTokenIdentityRings(
   cx: number,
   cy: number,
   baseRadius: number,
-  style: TokenRingStyle
+  style: TokenRingStyle,
+  opts?: { skipOutermostRing?: boolean; outerRingOffset?: number }
 ): void {
+  const outerOffset = opts?.outerRingOffset ?? Math.max(0, ...style.rings.map((r) => r.radiusOffset));
   ctx.save();
   ctx.lineJoin = "round";
   for (const ring of style.rings) {
+    if (opts?.skipOutermostRing && ring.radiusOffset >= outerOffset) continue;
     ctx.strokeStyle = ring.color;
     ctx.lineWidth = ring.width;
     strokeHexRing(ctx, cx, cy, baseRadius + ring.radiusOffset);
