@@ -4,10 +4,12 @@ import {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useState,
   type ReactNode,
 } from "react";
+import { createPortal } from "react-dom";
 import "./vtt-toast.css";
 
 export type VttToastVariant = "info" | "warn" | "success";
@@ -27,8 +29,46 @@ const VttToastContext = createContext<VttToastContextValue | null>(null);
 
 let toastSeq = 0;
 
+function useMesaToastLift() {
+  useEffect(() => {
+    const anchor = document.getElementById("foundry-mesa-toasts");
+    const stage = anchor?.closest(".foundry-mesa__stage");
+    if (!anchor || !stage) return;
+
+    const sync = () => {
+      const hud =
+        stage.querySelector<HTMLElement>(".vtt-combat-hud") ??
+        stage.querySelector<HTMLElement>(".vtt-combat-hud-restore");
+      if (!hud || hud.offsetHeight === 0) {
+        anchor.style.setProperty("--vtt-toast-lift", "1.25rem");
+        return;
+      }
+      const bottom = Number.parseFloat(getComputedStyle(hud).bottom) || 14;
+      anchor.style.setProperty("--vtt-toast-lift", `${bottom + hud.offsetHeight + 12}px`);
+    };
+
+    sync();
+    const ro = new ResizeObserver(sync);
+    ro.observe(stage);
+    const mo = new MutationObserver(sync);
+    mo.observe(stage, { childList: true, subtree: true, attributes: true });
+
+    return () => {
+      ro.disconnect();
+      mo.disconnect();
+    };
+  }, []);
+}
+
 export function VttToastProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<VttToastItem[]>([]);
+  const [toastHost, setToastHost] = useState<HTMLElement | null>(null);
+
+  useMesaToastLift();
+
+  useEffect(() => {
+    setToastHost(document.getElementById("foundry-mesa-toasts"));
+  }, []);
 
   const dismiss = useCallback((id: string) => {
     setItems((prev) => prev.filter((t) => t.id !== id));
@@ -51,16 +91,20 @@ export function VttToastProvider({ children }: { children: ReactNode }) {
 
   const value = useMemo(() => ({ push, pushMany }), [push, pushMany]);
 
+  const stack = (
+    <div className="vtt-toast-stack" aria-live="polite" aria-relevant="additions">
+      {items.map((t) => (
+        <div key={t.id} className={`vtt-toast vtt-toast--${t.variant}`} role="status">
+          {t.message}
+        </div>
+      ))}
+    </div>
+  );
+
   return (
     <VttToastContext.Provider value={value}>
       {children}
-      <div className="vtt-toast-stack" aria-live="polite" aria-relevant="additions">
-        {items.map((t) => (
-          <div key={t.id} className={`vtt-toast vtt-toast--${t.variant}`} role="status">
-            {t.message}
-          </div>
-        ))}
-      </div>
+      {toastHost ? createPortal(stack, toastHost) : stack}
     </VttToastContext.Provider>
   );
 }

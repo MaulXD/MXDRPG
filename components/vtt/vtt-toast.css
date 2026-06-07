@@ -1,3 +1,11 @@
+.foundry-mesa__toasts .vtt-toast-stack {
+  position: absolute;
+  left: 50%;
+  bottom: var(--vtt-toast-lift, 1.25rem);
+  transform: translateX(-50%);
+  max-width: min(92%, 520px);
+}
+
 .vtt-toast-stack {
   position: fixed;
   bottom: 1.25rem;
