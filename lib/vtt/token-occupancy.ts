@@ -59,12 +59,6 @@ export function inGrid(hex: Axial, gridRadius: number): boolean {
   return axialDistance({ q: 0, r: 0 }, hex) <= gridRadius;
 }
 
-function hexAllowsSmallEntry(occ: HexOccupants): boolean {
-  const hasLarge = occ.sizes.some((s) => s !== "small");
-  if (hasLarge) return false;
-  return occ.tokenIds.length < 2;
-}
-
 /** Pode ancorar o token neste hex (todos os hexes do corpo devem caber). */
 export function canEnterHex(
   anchor: Axial,
@@ -76,12 +70,7 @@ export function canEnterHex(
   for (const hex of body) {
     if (!inGrid(hex, gridRadius)) return false;
     const occ = occupancy.get(axialKey(hex));
-    if (!occ || occ.tokenIds.length === 0) continue;
-    if (moverSize === "small") {
-      if (!hexAllowsSmallEntry(occ)) return false;
-    } else {
-      return false;
-    }
+    if (occ && occ.tokenIds.length > 0) return false;
   }
   return true;
 }

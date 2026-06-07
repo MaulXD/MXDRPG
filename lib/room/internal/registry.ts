@@ -14,6 +14,7 @@ import { pruneMapMarkups } from "@/lib/vtt/map-markup";
 import { prunePings } from "@/lib/vtt/ping";
 import { getRoomGmCreations } from "../gm-creations";
 import { normalizeRoomSettings } from "../settings";
+import { backfillActorPortraitsFromTokens } from "../portrait-sync";
 import { createDemoRoom, syncLinkedTokens } from "../sync";
 import type { RoomSnapshot, RoomState } from "../types";
 
@@ -24,7 +25,7 @@ declare global {
 
 export function rooms(): Map<string, RoomState> {
   if (!globalThis.__eldarinRooms) {
-    globalThis.__eldarinRooms = new Map([["demo", createDemoRoom()]]);
+    globalThis.__eldarinRooms = new Map();
   }
   return globalThis.__eldarinRooms;
 }
@@ -49,11 +50,13 @@ export function toSnapshot(state: RoomState): RoomSnapshot {
 
 export function bumpRoom(state: RoomState): RoomState {
   const inCombat = Boolean(state.combat?.order?.length);
-  const scene = syncLinkedTokens(state.scene, state.actors, {
+  const backfill = backfillActorPortraitsFromTokens(state.actors, state.scene.tokens);
+  const base = backfill.changed ? { ...state, actors: backfill.actors } : state;
+  const scene = syncLinkedTokens(base.scene, base.actors, {
     preserveCombatPa: inCombat,
   });
   return {
-    ...state,
+    ...base,
     scene,
     revision: state.revision + 1,
     updatedAt: Date.now(),
@@ -184,6 +187,9 @@ export async function getRoom(roomId: string): Promise<RoomState | null> {
     const demo = createDemoRoom();
     map.set("demo", demo);
     room = demo;
+    if (shouldPersistToDb("demo")) {
+      await dbRooms.insertRoom(demo);
+    }
   }
 
   if (room) refreshDemoActorsIfStale(room);

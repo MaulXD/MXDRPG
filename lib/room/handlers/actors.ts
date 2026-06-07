@@ -18,7 +18,7 @@ export async function updateRoomActor(
   const current = room.actors[actorId];
   if (!current) return null;
 
-  const safe = sanitizeActorPatch(patch);
+  const safe = await sanitizeActorPatch(patch);
   const hasIdentity = Boolean(patch.identityPatch);
   if (!Object.keys(safe).length && !hasIdentity) return toSnapshot(room);
 

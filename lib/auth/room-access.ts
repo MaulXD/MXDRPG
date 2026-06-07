@@ -123,12 +123,12 @@ export function isRoomVisitor(
   return inviteMatches(room, inviteCode);
 }
 
-/** Editar tokens, combate, chat, dados — membro da mesa (demo: qualquer logado). */
+/** Editar tokens, combate, chat, dados — membro da mesa (demo: exige login). */
 export function canParticipateInRoom(
   room: RoomState,
   user: SessionUser | null | undefined
 ): boolean {
-  if (room.roomId === "demo") return true;
+  if (room.roomId === "demo") return Boolean(user);
   if (!user) return false;
   if (user.role === "admin") return true;
   return isRoomMember(room, user.id);
@@ -174,12 +174,12 @@ export function canRemoveTokenFromBoard(
   return canEditRoomActor(room, actor, user);
 }
 
-/** Reposicionar token livremente no mapa (mestre / demo GM). */
+/** Arrastar token livremente no mapa (sem PA nem turno) — só o mestre da mesa. */
 export function canRepositionTokensInRoom(
   room: Pick<RoomState, "roomId" | "ownerId">,
   user: SessionUser | null | undefined
 ): boolean {
-  return canBypassCombatTurn(room, user);
+  return canManageRoom(room, user);
 }
 
 /** Invocar monstros no tabuleiro (mesma regra que controle de combate na demo). */

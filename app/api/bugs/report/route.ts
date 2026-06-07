@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getSession } from "@/lib/auth/session";
 import { saveBugReport } from "@/lib/bugs/bug-report-store";
-import { validateImageDataUrl } from "@/lib/media/image-data-url";
+import { normalizeImageDataUrl } from "@/lib/media/image-normalize";
 
 const MIN_DESC = 10;
 const MAX_DESC = 4000;
@@ -33,7 +33,7 @@ export async function POST(request: Request) {
 
   let screenshotDataUrl: string | null = null;
   if (body.screenshotDataUrl != null && body.screenshotDataUrl !== "") {
-    screenshotDataUrl = validateImageDataUrl(body.screenshotDataUrl);
+    screenshotDataUrl = await normalizeImageDataUrl(body.screenshotDataUrl, { maxEdge: 1280 });
     if (!screenshotDataUrl) {
       return NextResponse.json({ error: "Imagem inválida ou grande demais" }, { status: 400 });
     }

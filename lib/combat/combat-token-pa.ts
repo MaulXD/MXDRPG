@@ -3,6 +3,7 @@ import {
   paMaxForActor,
   paTurnRulesForActor,
   paTurnRulesForMonster,
+  PA_RECOVERY_PER_TURN,
   type PaTurnRules,
 } from "@/lib/combat/pa-economy";
 import type { CombatTurnOptions } from "@/lib/combat/types";
@@ -21,7 +22,7 @@ export function paMaxForCombatToken(room: RoomState, token: BattleToken): number
   if (token.linked && token.actorId && room.actors[token.actorId]) {
     return paMaxForActor(room.actors[token.actorId]);
   }
-  return token.paMax;
+  return token.paMax ?? PA_RECOVERY_PER_TURN;
 }
 
 /** Pool + guardados prontos para validar/gastar PA em combate. */

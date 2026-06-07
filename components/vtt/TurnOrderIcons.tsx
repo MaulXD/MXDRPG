@@ -24,6 +24,22 @@ export function TurnOrderTargetIcon({ className = "vtt-turn-target-icon" }: { cl
   );
 }
 
+export function TurnOrderChevronLeftIcon({ className = "vtt-turn-compact-icon" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" aria-hidden>
+      <path d="M14.5 6 9.5 12l5 6" {...S} />
+    </svg>
+  );
+}
+
+export function TurnOrderChevronRightIcon({ className = "vtt-turn-compact-icon" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" aria-hidden>
+      <path d="M9.5 6 14.5 12l-5 6" {...S} />
+    </svg>
+  );
+}
+
 export function TurnOrderSettingsIcon({ className = "vtt-turn-compact-icon" }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" aria-hidden>

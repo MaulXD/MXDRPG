@@ -6,6 +6,7 @@ import { defaultMovementFields } from "@/lib/vtt/movement";
 import { creatureSizeOf } from "@/lib/vtt/creature-size";
 import { collectPlayerActorIds, playerColorForActor } from "@/lib/vtt/token-colors";
 import { DEFAULT_PORTRAIT_FOCUS, resolveTokenFocus } from "@/lib/media/portrait-focus";
+import { resolveLinkedTokenImageUrl } from "@/lib/room/portrait-sync";
 import { DEMO_SCENE } from "@/lib/vtt/demo-scene";
 import type { BattleScene, BattleToken } from "@/lib/vtt/types";
 import { emptyCombat } from "./combat";
@@ -72,7 +73,7 @@ export function syncLinkedTokens(
       nameplateMode: token.nameplateMode,
       conditions: token.conditions,
       timedEffects: token.timedEffects,
-      imageUrl: actor.tokenImageUrl ?? actor.portraitUrl ?? token.imageUrl ?? null,
+      imageUrl: resolveLinkedTokenImageUrl(token, actor),
       imageFocus: focus,
       movementWalkMax: actor.movement.walk,
       movementRunMax: actor.movement.run,

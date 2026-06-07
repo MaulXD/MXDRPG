@@ -27,17 +27,16 @@ export function PaHudMeter({
   const filled = Math.min(dotTotal, spendable);
 
   if (variant === "hud") {
+    const hudDots = PA_ACCUMULATION_CAP_DEFAULT;
+    const hudFilled = Math.min(hudDots, spendable);
     return (
-      <div
-        className="pa-hud-meter pa-hud-meter--hud"
-        aria-label={`${spendable} de ${accumulationCap} pontos de ação`}
-      >
-        <span className="pa-hud-meter__label pa-hud-meter__label--hud">PA</span>
-        <div className="pa-hud-meter__dots pa-hud-meter__dots--hud" aria-hidden>
-          {Array.from({ length: dotTotal }, (_, i) => (
-            <span
+      <div className="hud-pa" aria-label={`${spendable} de ${hudDots} pontos de ação`}>
+        <span className="hud-pa-label">PA</span>
+        <div className="hud-pa-dots" aria-hidden>
+          {Array.from({ length: hudDots }, (_, i) => (
+            <div
               key={i}
-              className={`pa-hud-meter__dot pa-hud-meter__dot--hud${i < filled ? " pa-hud-meter__dot--on" : ""}`}
+              className={`hud-pa-dot${i < hudFilled ? " hud-pa-dot--on" : ""}`}
             />
           ))}
         </div>

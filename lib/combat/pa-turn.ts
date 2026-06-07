@@ -113,10 +113,63 @@ export function planEndOfTurnPaBank(
   };
 }
 
-/** Toast ao iniciar turno com PA restituídos. */
+/** @deprecated Use `formatTurnStartCombatNotice`. */
 export function formatTurnStartPaNotice(tokenName: string, pa: number): string {
   const label = pa === 1 ? "1 PA" : `${pa} PA`;
   return `${tokenName}: ${label} restituídos neste turno.`;
+}
+
+/** Log de combate ao iniciar turno — foco em quem joga; PA só quando não é o padrão. */
+export function formatTurnStartCombatNotice(
+  tokenName: string,
+  round: number,
+  paAfter: number,
+  rules: PaTurnRules,
+  carryBefore: number
+): string {
+  const head = `Turno de ${tokenName} · R${round}`;
+
+  if (rules.turnStartPa != null) {
+    const label = paAfter === 1 ? "1 PA" : `${paAfter} PA`;
+    return `${head} — ${label} (talento)`;
+  }
+
+  const recovery = rules.recoveryPerTurn;
+  const carry = Math.max(0, carryBefore);
+
+  if (carry <= 0 && paAfter === recovery) {
+    return head;
+  }
+
+  if (carry > 0) {
+    const gained = paAfter - carry;
+    const paLabel = paAfter === 1 ? "1 PA" : `${paAfter} PA`;
+    if (gained > 0) {
+      const gainedLabel = gained === 1 ? "1 recuperado" : `${gained} recuperados`;
+      const carryLabel = carry === 1 ? "1 acumulado" : `${carry} acumulados`;
+      return `${head} — ${paLabel} (${carryLabel} + ${gainedLabel})`;
+    }
+    const carryLabel = carry === 1 ? "1 acumulado" : `${carry} acumulados`;
+    return `${head} — ${paLabel} (${carryLabel})`;
+  }
+
+  if (paAfter !== recovery) {
+    const label = paAfter === 1 ? "1 PA" : `${paAfter} PA`;
+    return `${head} — ${label}`;
+  }
+
+  return head;
+}
+
+/** PA descartados ao passar turno (só quando passa do teto). */
+export function formatEndTurnPaDiscardNotice(
+  tokenName: string,
+  discarded: number,
+  cap: number
+): string {
+  const waste =
+    discarded === 1 ? "1 PA perdido" : `${discarded} PA perdidos`;
+  return `${tokenName}: ${waste} (teto de acúmulo ${cap}).`;
 }
 
 /** Toast quando atordoado pula turno. */
@@ -222,7 +275,8 @@ export function checkCanSpendPa(token: BattleToken, cost: number): PaSpendCheck 
 }
 
 export function applyPaSpend(token: BattleToken, cost: number): BattleToken {
-  const prepared = materializeCombatPa(token, token.paMax);
+  const paMax = token.paMax ?? PA_RECOVERY_PER_TURN;
+  const prepared = materializeCombatPa(token, paMax);
   const check = checkCanSpendPa(prepared, cost);
   if (!check.ok) return token;
 
@@ -230,6 +284,7 @@ export function applyPaSpend(token: BattleToken, cost: number): BattleToken {
 
   return {
     ...token,
+    paMax,
     pa,
     bankedPa: 0,
     paSpentThisTurn: tokenPaSpentThisTurn(prepared) + cost,

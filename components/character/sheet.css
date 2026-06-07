@@ -31,44 +31,19 @@
   }
 }
 
-/* Cabeçalho compacto — retrato circular + identidade */
+/* Cabeçalho v4 — OrnamentCard + retrato com moldura gótica */
 .sheet-header {
+  grid-area: header;
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: 1rem;
   padding: 1rem 1.25rem;
-  border-radius: 16px;
-  border: 1px solid var(--glass-border-bright);
-  background: rgba(0, 0, 0, 0.35);
-  box-shadow: var(--shadow-glow);
   min-width: 0;
 }
 
-.sheet-header__portrait {
+.sheet-header__portrait-wrap {
   flex: 0 0 auto;
-  width: clamp(64px, 14vw, 88px);
-  height: clamp(64px, 14vw, 88px);
-  border-radius: 50%;
-  overflow: hidden;
-  border: 2px solid var(--glass-border-bright);
-  background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(0, 0, 0, 0.5));
-  display: grid;
-  place-items: center;
-}
-
-.sheet-header__portrait img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.sheet-header__portrait-fallback {
-  font-family: var(--font-display);
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: var(--accent);
 }
 
 .sheet-header__info {
@@ -156,6 +131,10 @@
 .sheet-stat strong {
   font-size: 1.1rem;
   color: var(--text);
+}
+
+.sheet-stat--hp strong {
+  color: var(--accent-success);
 }
 
 /* Célula de atributo — opção C (valor base + pill de modificador) */
@@ -332,20 +311,18 @@
 }
 
 .inv-section {
-  border-radius: 12px;
-  border: 1px solid color-mix(in srgb, var(--accent-primary, #c9a962) 22%, transparent);
-  background: color-mix(in srgb, var(--surface-raised, #1a1f2e) 90%, transparent);
+  border-radius: 2px;
+  border: 1px solid var(--border-accent);
+  background: var(--surface);
   overflow: hidden;
 }
 
 .inv-section__head {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  grid-template-rows: auto auto;
-  gap: 0.15rem 0.65rem;
-  padding: 0.65rem 0.85rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-  background: color-mix(in srgb, var(--accent-primary, #c9a962) 10%, rgba(0, 0, 0, 0.28));
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.65rem;
+  padding: 0.5rem 0.85rem 0;
 }
 
 .inv-section__icon {
