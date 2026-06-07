@@ -659,7 +659,7 @@ export function CharacterSheet({
     );
 
     return (
-      <div className="sheet-shell sheet-shell--popup eldarin-frame">
+      <div className="sheet-shell sheet-shell--popup">
         <SheetPopupOrnaments />
         <header className="sheet-popup-top">
           <div className="sheet-popup-top__portrait-col">

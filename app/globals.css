@@ -13,8 +13,8 @@
   --surface-raised: #1a2030;
   --surface-inset: #0d121a;
 
-  --border: #243447;
-  --border-accent: #2f4558;
+  --border: #2a3a50;
+  --border-accent: #3a5a80;
 
   --glass: rgba(16, 22, 32, 0.94);
   --glass-strong: rgba(10, 14, 20, 0.98);
@@ -278,19 +278,20 @@ a {
 
 .glass {
   position: relative;
-  isolation: isolate;
-  background-color: var(--glass);
-  border: none;
-  border-radius: 0;
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
   box-shadow: var(--shadow-soft);
 }
 
+.glass::before {
+  display: none;
+}
+
 .glass-panel {
-  position: relative;
-  isolation: isolate;
-  background-color: var(--surface-raised);
-  border: none;
-  border-radius: 0;
+  background: var(--surface-raised);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
 }
 
