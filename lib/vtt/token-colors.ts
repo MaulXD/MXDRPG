@@ -1,32 +1,31 @@
 import type { BattleToken } from "@/lib/vtt/types";
 import type { MonsterTier } from "@/lib/vtt/monsters";
+import {
+  resolvePortraitFrameTier,
+  type PortraitFrameTier,
+} from "@/lib/vtt/portrait-frame";
 
-/** Cores distintas por jogador na mesa */
-export const PLAYER_RING_PALETTE = [
-  "#4a90d9",
-  "#5a7352",
-  "#c9a962",
-  "#9b59b6",
-  "#e67e22",
-  "#1abc9c",
-  "#e74c3c",
-  "#3498db",
-] as const;
-
-const MONSTER_RING_RED = "#c62828";
-const MONSTER_RING_BLACK = "#1a1a1a";
 const TOKEN_RING_WHITE = "#f5f5f5";
 
+/** Cores de anel por tier v4 (DESIGN-ELDARIN-V4 §4.6) */
+const TIER_RING_COLORS: Record<PortraitFrameTier, string> = {
+  hero: "#d4a030",
+  monster: "#6a5040",
+  elite: "#7aa3c9",
+  miniboss: "#8060c0",
+  boss: "#c0392b",
+};
+
 export type TokenRingStyle = {
-  kind: "player" | "monster" | "mini-boss" | "boss";
+  kind: "player" | "monster" | "mini-boss" | "boss" | "elite";
   /** Anéis inset na borda do retrato; offset menor = mais externo. */
   rings: Array<{ color: string; width: number; radiusOffset: number }>;
 };
 
 export function playerColorForActor(actorId: string, actorIds: string[]): string {
-  const sorted = [...new Set(actorIds)].sort();
-  const index = Math.max(0, sorted.indexOf(actorId));
-  return PLAYER_RING_PALETTE[index % PLAYER_RING_PALETTE.length];
+  void actorId;
+  void actorIds;
+  return TIER_RING_COLORS.hero;
 }
 
 export function collectPlayerActorIds(tokens: BattleToken[]): string[] {
@@ -47,56 +46,63 @@ export function tokenPortraitInset(ringStyle: TokenRingStyle): number {
   return Math.max(0, outerWidth * 0.5 - minOffset);
 }
 
-export function resolveTokenRing(
-  token: BattleToken,
-  playerActorIds: string[]
-): TokenRingStyle {
-  if (token.linked && token.ownerRole === "jogador" && token.actorId) {
-    const color = playerColorForActor(token.actorId, playerActorIds);
+function tierRingStyle(tier: PortraitFrameTier): TokenRingStyle {
+  const color = TIER_RING_COLORS[tier];
+  const kind: TokenRingStyle["kind"] =
+    tier === "hero"
+      ? "player"
+      : tier === "boss"
+        ? "boss"
+        : tier === "miniboss"
+          ? "mini-boss"
+          : tier === "elite"
+            ? "elite"
+            : "monster";
+
+  if (tier === "boss") {
     return {
-      kind: "player",
+      kind,
       rings: [
         { color: TOKEN_RING_WHITE, width: 2, radiusOffset: 0.6 },
-        { color, width: 2, radiusOffset: 2.2 },
+        { color, width: 2.5, radiusOffset: 1.8 },
+        { color: "#1a1a1a", width: 2, radiusOffset: 3.2 },
       ],
     };
   }
 
-  const tier = token.monsterTier ?? "mob";
-  if (tier === "boss") {
+  if (tier === "miniboss") {
     return {
-      kind: "boss",
-      rings: [
-        { color: TOKEN_RING_WHITE, width: 2, radiusOffset: 0.6 },
-        { color: MONSTER_RING_RED, width: 2.5, radiusOffset: 1.8 },
-        { color: MONSTER_RING_BLACK, width: 2, radiusOffset: 3.2 },
-      ],
-    };
-  }
-  if (tier === "mini") {
-    return {
-      kind: "mini-boss",
+      kind,
       rings: [
         { color: TOKEN_RING_WHITE, width: 2, radiusOffset: 2.5 },
-        { color: MONSTER_RING_RED, width: 2.5, radiusOffset: 1 },
-        { color: MONSTER_RING_BLACK, width: 1.75, radiusOffset: 0 },
+        { color, width: 2.5, radiusOffset: 1 },
+        { color: "#2a2040", width: 1.75, radiusOffset: 0 },
       ],
     };
   }
 
   return {
-    kind: "monster",
+    kind,
     rings: [
       { color: TOKEN_RING_WHITE, width: 2, radiusOffset: 0.6 },
-      { color: MONSTER_RING_RED, width: 2.5, radiusOffset: 2.4 },
+      { color, width: 2.5, radiusOffset: 2.2 },
     ],
   };
 }
 
+export function resolveTokenRing(
+  token: BattleToken,
+  playerActorIds: string[]
+): TokenRingStyle {
+  void playerActorIds;
+  const tier = resolvePortraitFrameTier(token);
+  return tierRingStyle(tier);
+}
+
 /** Cor principal do anel de identidade (jogador ou monstro). */
 export function primaryTokenRingColor(token: BattleToken, playerActorIds: string[]): string {
-  const { rings } = resolveTokenRing(token, playerActorIds);
-  return rings[0]?.color ?? token.color;
+  const tier = resolvePortraitFrameTier(token);
+  return TIER_RING_COLORS[tier];
 }
 
 export function monsterTierLabel(tier: MonsterTier): string {
