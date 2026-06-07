@@ -27,11 +27,18 @@ declare global {
 
 async function ensureDbCharactersSeeded(): Promise<void> {
   if (!dbEnabled() || globalThis.__eldarinDbCharactersSeeded) return;
-  const { upsertCharacter } = await import("@/lib/db/characters");
-  for (const sheet of characterRegistry().values()) {
-    await upsertCharacter(sheet);
+  try {
+    const { upsertCharacter } = await import("@/lib/db/characters");
+    for (const sheet of characterRegistry().values()) {
+      await upsertCharacter(sheet);
+    }
+    globalThis.__eldarinDbCharactersSeeded = true;
+  } catch (e) {
+    console.warn(
+      "[eldarin] seed de fichas demo no Postgres falhou — continuando sem seed:",
+      e instanceof Error ? e.message : e
+    );
   }
-  globalThis.__eldarinDbCharactersSeeded = true;
 }
 
 export async function resolveCharacter(id: string): Promise<CharacterSheet | null> {

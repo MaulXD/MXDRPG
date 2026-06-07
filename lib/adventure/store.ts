@@ -14,6 +14,7 @@ import {
   joinRoomMembers,
   syncAdventureMembersToRoom,
 } from "@/lib/room/adventure-room";
+import { rooms } from "@/lib/room/internal/registry";
 import { getRoom } from "@/lib/room/store";
 
 declare global {
@@ -130,10 +131,22 @@ export async function createAdventure(
   };
 
   adventures().set(adventureId, adventure);
-  await createRoomForAdventure(adventure);
-
-  if (dbEnabled()) {
-    await dbAdventures.saveAdventure(adventure);
+  try {
+    await createRoomForAdventure(adventure);
+    if (dbEnabled()) {
+      await dbAdventures.saveAdventure(adventure);
+    }
+  } catch (e) {
+    adventures().delete(adventureId);
+    rooms().delete(adventureId);
+    const detail = e instanceof Error ? e.message : String(e);
+    console.error("[createAdventure] persistência falhou:", detail);
+    return {
+      ok: false,
+      error: dbEnabled()
+        ? "Não foi possível gravar a mesa no banco. Confira se as migrations foram aplicadas (npm run db:migrate)."
+        : "Não foi possível criar a mesa. Tente novamente.",
+    };
   }
 
   return { ok: true, adventure };

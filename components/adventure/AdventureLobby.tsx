@@ -68,36 +68,62 @@ export function AdventureLobby() {
     e.preventDefault();
     setLoading(true);
     setError("");
-    const res = await fetch("/api/adventures", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name: newName }),
-    });
-    const data = await res.json();
-    setLoading(false);
-    if (!res.ok) {
-      setError(data.error ?? "Erro ao criar");
-      return;
+    try {
+      const res = await fetch("/api/adventures", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: newName }),
+      });
+      const data = (await res.json().catch(() => ({}))) as {
+        error?: string;
+        adventure?: { adventureId?: string };
+      };
+      if (!res.ok) {
+        setError(data.error ?? "Erro ao criar mesa");
+        return;
+      }
+      const adventureId = data.adventure?.adventureId;
+      if (!adventureId) {
+        setError("Resposta inválida do servidor ao criar a mesa.");
+        return;
+      }
+      router.push(`/aventura/${adventureId}`);
+    } catch {
+      setError("Falha de conexão ao criar a mesa. Tente novamente.");
+    } finally {
+      setLoading(false);
     }
-    router.push(`/aventura/${data.adventure.adventureId}`);
   }
 
   async function joinAdventure(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
     setError("");
-    const res = await fetch("/api/adventures/join", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ inviteCode: joinCode }),
-    });
-    const data = await res.json();
-    setLoading(false);
-    if (!res.ok) {
-      setError(data.error ?? "Código inválido");
-      return;
+    try {
+      const res = await fetch("/api/adventures/join", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ inviteCode: joinCode }),
+      });
+      const data = (await res.json().catch(() => ({}))) as {
+        error?: string;
+        adventure?: { adventureId?: string };
+      };
+      if (!res.ok) {
+        setError(data.error ?? "Código inválido");
+        return;
+      }
+      const adventureId = data.adventure?.adventureId;
+      if (!adventureId) {
+        setError("Resposta inválida ao ingressar na mesa.");
+        return;
+      }
+      router.push(`/aventura/${adventureId}?vinculado=1`);
+    } catch {
+      setError("Falha de conexão ao ingressar na mesa. Tente novamente.");
+    } finally {
+      setLoading(false);
     }
-    router.push(`/aventura/${data.adventure.adventureId}?vinculado=1`);
   }
 
   async function deleteMesa(adventureId: string, name: string) {
