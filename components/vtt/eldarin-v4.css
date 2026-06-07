@@ -22,6 +22,14 @@
   justify-content: center;
   overflow: hidden;
   z-index: 0;
+  /* entalhes nos quatro lados — correspondem aos diamantes do SVG */
+  clip-path: polygon(
+    38% 0%, 50% 12%, 62% 0%,
+    100% 0%, 100% 38%, 88% 50%, 100% 62%,
+    100% 100%, 62% 100%, 50% 88%, 38% 100%,
+    0% 100%, 0% 62%, 12% 50%, 0% 38%,
+    0% 0%
+  );
 }
 
 .portrait--hud .portrait-inner {
