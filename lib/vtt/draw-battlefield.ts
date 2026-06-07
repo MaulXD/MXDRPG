@@ -1,6 +1,6 @@
 import type { Axial } from "@/lib/vtt/hex-math";
 import { axialToPixel, hexCorners, hexDrawRadius } from "@/lib/vtt/hex-math";
-import { hexToMeters, walkRemaining, type MoveCheck } from "@/lib/vtt/movement";
+import type { MoveCheck } from "@/lib/vtt/movement";
 import { readThemeColor } from "@/lib/theme";
 import {
   resolveHexPalette,
@@ -33,7 +33,6 @@ import {
   drawTokenDefeatedSkull,
   drawTokenNameLabel,
   shouldDrawTokenNameplate,
-  drawTokenWalkRemainingBadge,
   drawTokenHpSegments,
   hpBarColor,
   hpRatio,
@@ -271,7 +270,6 @@ type TokenDrawParams = {
   attackableIds: Set<string>;
   spellPickedTargetIds?: Set<string>;
   hoverAttackTargetId: string | null;
-  hoverTurnMoveTokenId: string | null;
   hoverTokenId: string | null;
   tokenAnimTimeSec: number;
   tokenFlash: { tokenId: string; kind: TokenFlashKind } | null;
@@ -394,11 +392,6 @@ export function drawTokensLayer(ctx: CanvasRenderingContext2D, p: TokenDrawParam
       } else {
         drawAttackableHint(ctx, x, y, r, p.tokenAnimTimeSec);
       }
-    }
-
-    if (token.id === p.hoverTurnMoveTokenId) {
-      const walk = walkRemaining(token);
-      drawTokenWalkRemainingBadge(ctx, x, y, r, walk, hexToMeters(walk) + " m");
     }
 
     if (shouldDrawTokenNameplate(token, p.hoverTokenId)) {

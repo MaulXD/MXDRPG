@@ -9,6 +9,7 @@ import {
   turnOrderHint,
   type MiniHudMode,
 } from "@/lib/vtt/combat-hud";
+import { hexToMeters, walkRemaining } from "@/lib/vtt/movement";
 import { hpBarColor, hpRatio } from "@/lib/vtt/token-hp-display";
 
 type Props = {
@@ -17,9 +18,18 @@ type Props = {
   anchor: { x: number; y: number };
   isGm: boolean;
   viewerToken: BattleToken | null;
+  /** Caminhada restante no turno (só no hover do token ativo). */
+  showMovement?: boolean;
 };
 
-export function TokenHoverMiniHud({ token, combat, anchor, isGm, viewerToken }: Props) {
+export function TokenHoverMiniHud({
+  token,
+  combat,
+  anchor,
+  isGm,
+  viewerToken,
+  showMovement = false,
+}: Props) {
   const mode: MiniHudMode = miniHudModeForViewer(token, { isGm, viewerToken });
   if (mode === "none") return null;
 
@@ -57,6 +67,12 @@ export function TokenHoverMiniHud({ token, combat, anchor, isGm, viewerToken }: 
         <p className="vtt-mini-hud__damage">
           Dano recebido: <strong>{damage}</strong> PV
         </p>
+      ) : null}
+
+      {showMovement ? (
+        <span className="vtt-mini-hud__move">
+          {walkRemaining(token)} hex · {hexToMeters(walkRemaining(token))} m
+        </span>
       ) : null}
 
       {turn ? (
