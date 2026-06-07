@@ -397,6 +397,8 @@ export function spellcastingAttribute(classId: string): AttributeKey {
     case "Druida":
       return "sabedoria";
     case "Bardo":
+    case "Paladino":
+    case "Bruxo":
       return "carisma";
     default:
       return "inteligencia";

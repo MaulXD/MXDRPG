@@ -3,7 +3,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { PortraitFocusEditor } from "@/components/character/PortraitFocusEditor";
 import { PortraitFocusFill } from "@/components/character/PortraitFocusFill";
-import { PortraitFocusFrame } from "@/components/character/PortraitFocusFrame";
 import { IconCamera, IconUser } from "@/components/character/SheetPopupIcons";
 import { useImageNaturalSize } from "@/hooks/useImageNaturalSize";
 import { patchRoomActor } from "@/hooks/useRoomSync";
@@ -54,6 +53,7 @@ export function SheetPopupPortrait({
   const [focusToken, setFocusToken] = useState<PortraitFocus>(() =>
     sanitizePortraitFocus(tokenFocus) ?? sanitizePortraitFocus(portraitFocus) ?? DEFAULT_PORTRAIT_FOCUS
   );
+  const [editingSlot, setEditingSlot] = useState<"portrait" | "token">("portrait");
 
   const previewSrc = draftSrc ?? portraitUrl;
   const imgSize = useImageNaturalSize(draftSrc ? previewSrc : null);
@@ -200,36 +200,19 @@ export function SheetPopupPortrait({
             </button>
           </div>
           <p className="sheet-popup-portrait-editor__hint">{IMAGE_UPLOAD_HINT}</p>
-          <div className="sheet-popup-portrait-editor__previews">
-            <div
-              className="sheet-popup-portrait-editor__token-ring"
-              style={{ boxShadow: `0 0 0 3px ${ringColor}` }}
-              title="Prévia do token na mesa"
-            >
-              {previewSrc && imgSize.w > 0 ? (
-                <PortraitFocusFrame
-                  imageSrc={previewSrc}
-                  focus={focusToken}
-                  size={56}
-                  imgW={imgSize.w}
-                  imgH={imgSize.h}
-                  className="portrait-focus-frame--duo"
-                />
-              ) : previewSrc ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img src={previewSrc} alt="" />
-              ) : null}
-            </div>
-          </div>
           <PortraitFocusEditor
             imageSrc={previewSrc ?? ""}
-            focus={focusPortrait}
+            focus={editingSlot === "token" ? focusToken : focusPortrait}
+            portraitFocus={focusPortrait}
+            tokenFocus={focusToken}
             onFocusChange={(next) => {
-              setFocusPortrait(next);
-              setFocusToken(next);
+              if (editingSlot === "token") setFocusToken(next);
+              else setFocusPortrait(next);
             }}
             disabled={busy}
-            previewMode="portrait"
+            previewMode={editingSlot}
+            onPreviewModeChange={setEditingSlot}
+            tokenRingColor={ringColor}
           />
           <div className="sheet-popup-portrait-editor__actions">
             <button type="button" className="btn btn-ghost" disabled={busy} onClick={() => fileRef.current?.click()}>

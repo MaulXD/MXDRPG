@@ -36,15 +36,20 @@ import {
   defaultPointBuyScores,
   getRacialBonuses,
   pointBuyCost,
-  raceAwarePointBuyPriority,
   suggestedPointBuyForClassAndRace,
   totalPointBuyCost,
   validatePointBuy,
 } from "@/lib/character/point-buy";
+import {
+  classAttributeFocusRank,
+  classAttributeFocusSummary,
+} from "@/lib/character/class-scales";
 import { ANTECEDENTE_META } from "@/lib/character/wizard-meta";
 import { subclassTrackIntroTooltip } from "@/lib/character/subclass-wizard-tooltips";
 import {
   antecedenteGainDescription,
+  classFeaturesAtLevelOne,
+  classSurvivalPassiveTooltip,
   linhagemTraitLines,
   racialTraitDescription,
 } from "@/lib/character/wizard-tooltips";
@@ -86,7 +91,8 @@ const STEP_HINTS: Record<(typeof STEPS)[number], string> = {
   Conceito: "Dê um nome memorável — a biografia pode ficar para depois.",
   Raça: "Escolha uma carta; passe o mouse nos traços para ver detalhes.",
   Classe: "Define vida, proficiências e caminhos no nível 2.",
-  Atributos: "27 pontos no total — use a sugestão da classe ou ajuste com +/−.",
+  Atributos:
+    "27 pontos no total — a sugestão prioriza o foco da classe (Cap. 4); ajuste livremente com +/−.",
   Antecedente: "História e ganhos do antecedente — itens extras somam ao kit de equipamento.",
   Equipamento: "Escolha arma e armadura dentro das proficiências da classe; a CA já considera o kit.",
   Religião: "Cartas com bônus ao passar o mouse — Sem Deus também tem vantagens próprias.",
@@ -159,6 +165,11 @@ export function CharacterCreationWizard({
   const [err, setErr] = useState<string | null>(null);
   const [pointBuyMode, setPointBuyMode] = useState<PointBuyMode>("suggested");
   const nameInputRef = useRef<HTMLInputElement>(null);
+  const pointBuyClassRaceRef = useRef({
+    classe: EMPTY_WIZARD_DRAFT.classe,
+    raca: EMPTY_WIZARD_DRAFT.raca,
+    linhagem: EMPTY_WIZARD_DRAFT.linhagem as string | null,
+  });
 
   const raceDef = getRace(draft.raca);
   const classDef = getClass(draft.classe);
@@ -178,12 +189,40 @@ export function CharacterCreationWizard({
   );
 
   useEffect(() => {
-    if (pointBuyMode !== "suggested") return;
+    const prev = pointBuyClassRaceRef.current;
+    const next = {
+      classe: draft.classe,
+      raca: draft.raca,
+      linhagem: draft.linhagem,
+    };
+    const classRaceChanged =
+      prev.classe !== next.classe ||
+      prev.raca !== next.raca ||
+      prev.linhagem !== next.linhagem;
+    pointBuyClassRaceRef.current = next;
+
+    if (pointBuyMode !== "suggested" || !classRaceChanged) return;
     setDraft((d) => ({
       ...d,
       pointBuy: suggestedPointBuyForClassAndRace(d.classe, d.raca, d.linhagem),
     }));
   }, [pointBuyMode, draft.classe, draft.raca, draft.linhagem]);
+
+  function applySuggestedPointBuy() {
+    setPointBuyMode("suggested");
+    setDraft((d) => ({
+      ...d,
+      pointBuy: suggestedPointBuyForClassAndRace(d.classe, d.raca, d.linhagem),
+    }));
+  }
+
+  function resetPointBuyBaseline() {
+    setPointBuyMode("baseline");
+    setDraft((d) => ({
+      ...d,
+      pointBuy: defaultPointBuyScores(),
+    }));
+  }
 
   const racialBonuses = useMemo(
     () => getRacialBonuses(draft.raca, draft.linhagem),
@@ -554,6 +593,18 @@ export function CharacterCreationWizard({
                     </WizardHoverTip>
                   </li>
                   <li>
+                    <WizardHoverTip text={classSurvivalPassiveTooltip(draft.classe)}>
+                      <strong>Bônus passivo (nv 1):</strong> {classDef.dietBonus}
+                    </WizardHoverTip>
+                  </li>
+                  {classFeaturesAtLevelOne(draft.classe)
+                    .filter((f) => !f.startsWith("Proficiências:"))
+                    .map((f) => (
+                      <li key={f}>
+                        <strong>Nv 1:</strong> {f}
+                      </li>
+                    ))}
+                  <li>
                     <WizardHoverTip text={subclassTrackIntroTooltip()}>
                       <strong>Nível 2:</strong> escolha um Caminho de Assimilação (subclasse) — trilhas abaixo.
                     </WizardHoverTip>
@@ -590,11 +641,11 @@ export function CharacterCreationWizard({
               {pointBuyMode === "suggested" && pbLeft === 0 ? (
                 <p className="char-wizard-meta" style={{ margin: 0 }}>
                   Sugestão para <strong>{draft.classe}</strong> ({draft.raca}
-                  {draft.linhagem ? ` · ${draft.linhagem}` : ""}) — prioridade:{" "}
-                  {raceAwarePointBuyPriority(draft.classe, draft.raca, draft.linhagem)
-                    .slice(0, 3)
-                    .map((k) => ATTRIBUTE_LABELS[k])
-                    .join(" → ")}
+                  {draft.linhagem ? ` · ${draft.linhagem}` : ""}) — foco:{" "}
+                  <strong>{classAttributeFocusSummary(draft.classe)}</strong>
+                  {draft.classe === "Guerreiro" ? (
+                    <> (padrão corpo a corpo; arqueiro pode inverter DES e FOR)</>
+                  ) : null}
                 </p>
               ) : pointBuyMode === "baseline" ? (
                 <p className="char-wizard-meta" style={{ margin: 0 }}>
@@ -606,17 +657,14 @@ export function CharacterCreationWizard({
               <button
                 type="button"
                 className="btn btn-secondary"
-                onClick={() => setPointBuyMode("suggested")}
+                onClick={applySuggestedPointBuy}
               >
                 Sugestão para {draft.classe}
               </button>
               <button
                 type="button"
                 className="btn btn-ghost"
-                onClick={() => {
-                  setPointBuyMode("baseline");
-                  patch({ pointBuy: defaultPointBuyScores() });
-                }}
+                onClick={resetPointBuyBaseline}
               >
                 Resetar (8 em tudo)
               </button>
@@ -627,9 +675,20 @@ export function CharacterCreationWizard({
                 const racial = racialBonuses[key] ?? 0;
                 const final = finalAttrs[key];
                 const mod = attributeMod(final);
+                const focusRank = classAttributeFocusRank(draft.classe, key);
                 return (
-                  <div key={key} className="char-wizard-attr-card">
-                    <span className="char-wizard-attr-card__label">{ATTRIBUTE_LABELS[key]}</span>
+                  <div
+                    key={key}
+                    className={`char-wizard-attr-card${focusRank ? " char-wizard-attr-card--focus" : ""}`}
+                  >
+                    <span className="char-wizard-attr-card__label">
+                      {ATTRIBUTE_LABELS[key]}
+                      {focusRank ? (
+                        <span className="char-wizard-attr-card__focus" title="Foco da classe">
+                          {focusRank === 1 ? "★" : focusRank}
+                        </span>
+                      ) : null}
+                    </span>
                     <span className="char-wizard-attr-card__score">{base}</span>
                     <span className="char-wizard-attr-card__mod">
                       {racial > 0 ? (
@@ -763,8 +822,20 @@ export function CharacterCreationWizard({
                 <dt>Classe</dt>
                 <dd>
                   {draft.classe} · nível 1
+                  {classDef ? (
+                    <>
+                      <br />
+                      <span className="char-wizard-meta">{classDef.dietBonus}</span>
+                    </>
+                  ) : null}
                 </dd>
               </dl>
+              {subclassTracks.length ? (
+                <dl className="char-wizard-review-card" style={{ gridColumn: "1 / -1" }}>
+                  <dt>Caminhos (nv 2)</dt>
+                  <dd>{subclassTracks.map((t) => t.subclass).join(" · ")}</dd>
+                </dl>
+              ) : null}
               <dl className="char-wizard-review-card">
                 <dt>Antecedente</dt>
                 <dd>{draft.antecedente}</dd>

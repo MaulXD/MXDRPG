@@ -48,12 +48,36 @@
     "forja-rapida": 1,
     "motor-de-vapor-menor": 1,
     "mutageno-de-batalha": 1,
-    "engenho-de-caca": 1
+    "engenho-de-caca": 1,
+    "escudo-solar": 1,
+    "julgamento-ardente": 1,
+    "coroa-de-fogo": 1,
+    "pele-de-quimera": 1,
+    "olhar-entre-dimensoes": 1,
+    "pacto-de-ferro": 1,
+    "corrente-mental": 1,
+    "mente-partida": 1
   },
   "classFeatures": [
     {
       "id": "afinidade-arcanica",
       "classIds": ["Mago", "Clérigo", "Druida", "Bardo", "Artífice"],
+      "minLevel": 5,
+      "kinds": ["spell"],
+      "amount": 1,
+      "minPaCost": 2
+    },
+    {
+      "id": "afinidade-divina",
+      "classIds": ["Paladino"],
+      "minLevel": 5,
+      "kinds": ["spell"],
+      "amount": 1,
+      "minPaCost": 2
+    },
+    {
+      "id": "afinidade-do-pacto",
+      "classIds": ["Bruxo"],
       "minLevel": 5,
       "kinds": ["spell"],
       "amount": 1,
@@ -103,6 +127,18 @@
     { "talentId": "armadilha-biologica", "kinds": ["ability"], "amount": 1 },
     { "talentId": "toque-fantasmal", "kinds": ["ability"], "amount": 1 },
     { "talentId": "passo-entre-sombras", "kinds": ["ability"], "amount": 1 },
-    { "talentId": "aplicacao-rapida", "kinds": ["weapon", "ability"], "amount": 1 }
+    { "talentId": "aplicacao-rapida", "kinds": ["weapon", "ability"], "amount": 1 },
+    { "talentId": "luz-penitente", "kinds": ["weapon", "ability"], "amount": 1, "damageTypes": ["radiante"] },
+    { "talentId": "lamina-dos-sepulcros", "kinds": ["weapon"], "amount": 1, "damageTypes": ["necrótico", "radiante"] },
+    { "talentId": "voto-de-caca", "kinds": ["weapon", "ability"], "amount": 1 },
+    { "talentId": "mordida-do-voto", "kinds": ["weapon", "ability"], "amount": 1 },
+    { "talentId": "carga-do-juramento", "kinds": ["weapon", "ability"], "amount": 1 },
+    { "talentId": "toque-da-voragem", "kinds": ["spell"], "amount": 1, "damageTypes": ["psíquico"] },
+    { "talentId": "contrato-ardente", "kinds": ["spell"], "amount": 1, "damageTypes": ["fogo"] },
+    { "talentId": "sangue-do-patrono", "kinds": ["spell", "ability"], "amount": 1 },
+    { "talentId": "sussurro-salino", "kinds": ["spell"], "amount": 1 },
+    { "talentId": "manto-de-bruma", "kinds": ["spell"], "amount": 1, "areaOnly": true },
+    { "talentId": "agarrão-do-pacto", "kinds": ["spell", "ability"], "amount": 1 },
+    { "talentId": "correntes-infernais", "kinds": ["spell"], "amount": 1, "areaOnly": true }
   ]
 }

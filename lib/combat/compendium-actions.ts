@@ -55,6 +55,143 @@ const ABILITY_BY_ID: Record<string, { effect: AbilityEffect; extras?: Partial<Co
       damageType: "mágico",
     },
   },
+  "habilidades-imposicao-de-maos": {
+    effect: "heal_touch",
+    extras: { allyTarget: true, damageFormula: "1d8", damageType: "cura" },
+  },
+  "habilidades-golpe-sagrado": {
+    effect: "melee_attack_bonus",
+    extras: { bonusDamageFormula: "2d8", damageType: "radiante", selfTarget: true },
+  },
+  "habilidades-raio-do-pacto": {
+    effect: "spell_strike",
+    extras: {
+      damageFormula: "1d10",
+      damageType: "mágico",
+      damageAttribute: "carisma",
+      resolution: "attack",
+    },
+  },
+  "habilidades-raio-do-pacto-psiquico": {
+    effect: "spell_strike",
+    extras: {
+      damageFormula: "1d10",
+      damageType: "psíquico",
+      damageAttribute: "carisma",
+      resolution: "attack",
+    },
+  },
+  "habilidades-raio-do-pacto-ardente": {
+    effect: "spell_strike",
+    extras: {
+      damageFormula: "1d10",
+      damageType: "fogo",
+      damageAttribute: "carisma",
+      resolution: "attack",
+    },
+  },
+  "habilidades-raio-do-pacto-salino": {
+    effect: "spell_strike",
+    extras: {
+      damageFormula: "1d10",
+      damageType: "frio",
+      damageAttribute: "carisma",
+      resolution: "attack",
+    },
+  },
+  "habilidades-luz-penitente": {
+    effect: "spell_strike",
+    extras: { damageFormula: "2d8", damageType: "radiante", resolution: "attack" },
+  },
+  "habilidades-escudo-solar": {
+    effect: "heal_touch",
+    extras: { allyTarget: true, damageFormula: "1d10", damageType: "cura" },
+  },
+  "habilidades-julgamento-ardente": { effect: "mark" },
+  "habilidades-coroa-de-fogo": {
+    effect: "spell_strike",
+    extras: {
+      damageFormula: "4d8",
+      damageType: "radiante",
+      resolution: "save",
+      saveAttribute: "destreza",
+    },
+  },
+  "habilidades-lamina-dos-sepulcros": {
+    effect: "melee_attack_bonus",
+    extras: { bonusDamageFormula: "1d8", damageType: "radiante", selfTarget: true },
+  },
+  "habilidades-voto-de-caca": { effect: "mark" },
+  "habilidades-marca-do-limiar": { effect: "mark_disadvantage" },
+  "habilidades-processao-silenciosa": { effect: "shadow_step" },
+  "habilidades-mordida-do-voto": {
+    effect: "melee_attack_bonus",
+    extras: { attackBonus: 2, selfTarget: true },
+  },
+  "habilidades-fera-interior": {
+    effect: "melee_attack_bonus",
+    extras: { bonusDamageFormula: "1d8", damageType: "perfurante", selfTarget: true },
+  },
+  "habilidades-carga-do-juramento": { effect: "charge" },
+  "habilidades-pele-de-quimera": {
+    effect: "melee_attack_bonus",
+    extras: { bonusDamageFormula: "2d6", damageType: "cortante", selfTarget: true },
+  },
+  "habilidades-olhar-entre-dimensoes": {
+    effect: "spell_strike",
+    extras: { damageFormula: "2d6", damageType: "psíquico", resolution: "attack" },
+  },
+  "habilidades-agarrao-do-pacto": {
+    effect: "restrain",
+    extras: {
+      damageFormula: "0",
+      resolution: "save",
+      saveAttribute: "forca",
+      damageType: "psíquico",
+    },
+  },
+  "habilidades-mente-partida": {
+    effect: "restrain",
+    extras: {
+      damageFormula: "0",
+      resolution: "save",
+      saveAttribute: "inteligencia",
+      damageType: "psíquico",
+    },
+  },
+  "habilidades-sangue-do-patrono": {
+    effect: "heal_touch",
+    extras: { selfTarget: true, damageFormula: "1d8", damageType: "cura" },
+  },
+  "habilidades-pacto-de-ferro": {
+    effect: "restrain",
+    extras: {
+      damageFormula: "3d8",
+      resolution: "save",
+      saveAttribute: "forca",
+      damageType: "fogo",
+    },
+  },
+  "habilidades-correntes-infernais": {
+    effect: "spell_strike",
+    extras: {
+      damageFormula: "3d6",
+      damageType: "fogo",
+      resolution: "save",
+      saveAttribute: "destreza",
+    },
+  },
+  "habilidades-corrente-mental": { effect: "ally_inspire", extras: { allyTarget: true } },
+  "habilidades-manto-de-bruma": { effect: "defense_buff", extras: { defesaBuffAmount: 2, selfTarget: true } },
+  "habilidades-puxao-abissal": {
+    effect: "restrain",
+    extras: {
+      damageFormula: "2d8",
+      resolution: "save",
+      saveAttribute: "forca",
+      damageType: "frio",
+    },
+  },
 };
 
 const NAME_EFFECT: Record<string, AbilityEffect> = {
@@ -81,6 +218,33 @@ const NAME_EFFECT: Record<string, AbilityEffect> = {
   "Raio Arcano": "spell_strike",
   "Disparo de Artilheiro": "spell_strike",
   "Raízes Prendentes": "restrain",
+  "Imposição de Mãos": "heal_touch",
+  "Golpe Sagrado": "melee_attack_bonus",
+  "Raio do Pacto": "spell_strike",
+  "Raio do Pacto Psíquico": "spell_strike",
+  "Raio do Pacto Ardente": "spell_strike",
+  "Raio do Pacto Salino": "spell_strike",
+  "Luz Penitente": "spell_strike",
+  "Escudo Solar": "heal_touch",
+  "Julgamento Ardente": "mark",
+  "Coroa de Fogo": "spell_strike",
+  "Lâmina dos Sepulcros": "melee_attack_bonus",
+  "Voto de Caça": "mark",
+  "Marca do Limiar": "mark_disadvantage",
+  "Processão Silenciosa": "shadow_step",
+  "Mordida do Voto": "melee_attack_bonus",
+  "Fera Interior": "melee_attack_bonus",
+  "Carga do Juramento": "charge",
+  "Pele de Quimera": "melee_attack_bonus",
+  "Olhar Entre Dimensões": "spell_strike",
+  "Agarrão do Pacto": "restrain",
+  "Mente Partida": "restrain",
+  "Sangue do Patrono": "heal_touch",
+  "Pacto de Ferro": "restrain",
+  "Correntes Infernais": "spell_strike",
+  "Corrente Mental": "ally_inspire",
+  "Manto de Bruma": "defense_buff",
+  "Puxão Abissal": "restrain",
 };
 
 export function abilityEffectFor(entry: CompendiumEntry): AbilityEffect | null {

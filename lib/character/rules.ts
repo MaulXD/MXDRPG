@@ -9,7 +9,9 @@ export type ClassId =
   | "Bárbaro"
   | "Bardo"
   | "Druida"
-  | "Artífice";
+  | "Artífice"
+  | "Paladino"
+  | "Bruxo";
 
 export type RaceId =
   | "Humano"
@@ -41,6 +43,8 @@ export const CLASS_CANON_ID: Record<ClassId, string> = {
   Bardo: "CLA-bardo",
   Druida: "CLA-druida",
   Artífice: "CLA-artífice",
+  Paladino: "CLA-paladino",
+  Bruxo: "CLA-bruxo",
 };
 
 export const RACE_CANON_ID: Record<RaceId, string> = {
@@ -251,6 +255,32 @@ export const CLASS_LIST: ClassDef[] = [
       "Biólogo de Masmorra",
       "Construtor de Armadilhas",
     ],
+  },
+  {
+    id: "Paladino",
+    canonId: CLASS_CANON_ID.Paladino,
+    hpDie: 10,
+    hpDieMax: 10,
+    hpDieAvg: 6,
+    primary: "Força e Carisma",
+    proficiencies: "Todas armaduras, escudos, armas simples e marciais",
+    culinary: { harmonizacao: 3, estomagoDeFerro: 3 },
+    dietBonus:
+      "Voto Alimentar — após Refeição Comum+, HP temporários = nível; aliados da mesma devoção adjacentes +1 em saves",
+    subclasses: ["Jurado do Sol", "Cavaleiro do Limiar", "Guardião da Gorge"],
+  },
+  {
+    id: "Bruxo",
+    canonId: CLASS_CANON_ID.Bruxo,
+    hpDie: 8,
+    hpDieMax: 8,
+    hpDieAvg: 5,
+    primary: "Carisma",
+    proficiencies: "Armaduras leves, armas simples",
+    culinary: { coccao: 4, harmonizacao: 2 },
+    dietBonus:
+      "Pacto Gastronômico — ingredientes do patrono restauram 1 slot de Pacto ao descanso curto",
+    subclasses: ["Filho da Voragem", "Herdeiro do Sangue", "Voz das Profundezas"],
   },
 ];
 
@@ -564,8 +594,31 @@ export function classLevelFeatures(classId: string, level: number): string[] {
   if (classId === "Bárbaro" && level === 1) out.push("Fúria — 2 usos");
   if (classId === "Bardo" && level >= 1) out.push("Inspiração de Bardo evolui com o nível");
   if (classId === "Druida" && level === 1) out.push("Forma Selvagem");
-  const casters = ["Mago", "Clérigo", "Druida", "Bardo", "Artífice"];
-  if (casters.includes(classId) && level === 5) {
+  if (classId === "Paladino") {
+    if (level === 1) {
+      out.push("Imposição de Mãos — cura 1d8+CAR ou 2d8 radiante vs morto-vivo");
+      out.push("Aura de Devoção — aliados em 3m +2 em saves vs medo e encantamento");
+    }
+    if (level === 2) out.push("Golpe Sagrado — +2d8 radiante (1 PA extra por golpe)");
+    if (level === 5) {
+      out.push("Afinidade Divina — magias 2+ PA custam 1 PA a menos");
+      out.push("Golpe Sagrado — 3d8 radiante");
+    }
+    if (level === 9) out.push("Golpe Sagrado — 4d8 radiante");
+    if (level === 13) out.push("Golpe Sagrado — 5d8 radiante");
+    if (level === 17) out.push("Golpe Sagrado — 6d8 radiante");
+    if (level === 20) out.push("Ascensão do Juramento — 1 resistência lendária/dia");
+  }
+  if (classId === "Bruxo") {
+    if (level === 1) out.push("Pacto Arcano — 2 truques, 2 slots nv.1 (recarga descanso curto)");
+    if (level === 2) out.push("Invocação do Pacto — escolhe 1 invocação");
+    if (level === 5) out.push("Afinidade do Pacto — magias 2+ PA custam 1 PA a menos");
+    if (level === 11) out.push("Pacto Reforçado — slots sobem de nível");
+    if (level === 17) out.push("Pacto Supremo — +1 slot de Pacto");
+    if (level === 20) out.push("Patrono Manifesto — 1 invocação extra ativa");
+  }
+  const casters = ["Mago", "Clérigo", "Druida", "Bardo", "Artífice", "Paladino", "Bruxo"];
+  if (casters.includes(classId) && level === 5 && classId !== "Paladino" && classId !== "Bruxo") {
     out.push("Afinidade Arcânica — magias 2+ PA custam 1 PA a menos");
   }
   if (TALENT_LEVELS.includes(level as (typeof TALENT_LEVELS)[number])) {

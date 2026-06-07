@@ -893,7 +893,19 @@
 }
 
 .portrait-focus-editor {
-  margin-top: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.55rem;
+  width: 100%;
+  margin-top: 0.35rem;
+}
+
+.portrait-focus-editor__hint {
+  width: 100%;
+  margin: 0;
+  text-align: center;
+  line-height: 1.45;
 }
 
 .portrait-focus-previews {
@@ -901,13 +913,43 @@
   grid-template-columns: 1fr auto;
   gap: 0.75rem;
   align-items: end;
-  margin-bottom: 0.65rem;
+  width: 100%;
 }
 
 .portrait-focus-previews--duo {
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  justify-items: center;
-  align-items: start;
+  gap: 0.65rem;
+  max-width: 220px;
+  margin: 0 auto;
+}
+
+.portrait-focus-preview-slot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  width: 100%;
+  min-width: 0;
+  padding: 0.35rem 0.25rem 0.4rem;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: transparent;
+  cursor: pointer;
+  color: inherit;
+  font: inherit;
+  text-align: center;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.portrait-focus-preview-slot:disabled {
+  cursor: default;
+  opacity: 0.65;
+}
+
+.portrait-focus-preview-slot.is-active {
+  border-color: rgba(201, 169, 98, 0.45);
+  background: rgba(201, 169, 98, 0.08);
 }
 
 .portrait-focus-preview-slot.is-active .portrait-focus-preview-label {
@@ -916,24 +958,39 @@
 
 .portrait-focus-preview-slot.is-active .portrait-focus-frame--preview {
   border-color: var(--accent);
-  box-shadow: 0 0 0 1px rgba(201, 169, 98, 0.35);
+}
+
+.portrait-focus-preview-slot--token .portrait-focus-frame--token-ring {
+  border-width: 3px;
+  border-color: var(--token-ring, var(--glass-border-bright));
+}
+
+.portrait-focus-frame--token-ring .portrait-focus-ring--overlay {
+  display: none;
 }
 
 .portrait-focus-frame--preview {
   margin: 0;
 }
 
+.portrait-focus-editor__stage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 0.15rem 0;
+}
+
+.portrait-focus-frame--stage {
+  margin: 0;
+}
+
 @media (max-width: 420px) {
   .portrait-focus-previews,
   .portrait-focus-previews--duo {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
+    max-width: none;
   }
-}
-
-.portrait-focus-preview-slot {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
 }
 
 .portrait-focus-preview-label {
@@ -944,7 +1001,7 @@
 }
 
 .portrait-focus-frame--main {
-  margin: 0 auto 0.5rem;
+  margin: 0;
 }
 
 .portrait-focus-frame--token {
@@ -953,13 +1010,14 @@
 
 .portrait-focus-frame {
   position: relative;
-  margin: 0.5rem auto;
+  margin: 0;
   border-radius: 50%;
   overflow: hidden;
   border: 2px solid var(--glass-border-bright);
   background: #111;
   touch-action: none;
   flex-shrink: 0;
+  box-sizing: border-box;
 }
 
 .portrait-focus-frame--interactive {
@@ -1004,6 +1062,9 @@
   flex-direction: column;
   gap: 0.4rem;
   font-size: 0.7rem;
+  width: 100%;
+  max-width: 280px;
+  margin: 0 auto;
 }
 
 .portrait-focus-sliders label {

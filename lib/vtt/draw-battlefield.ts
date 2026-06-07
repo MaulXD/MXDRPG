@@ -22,11 +22,9 @@ import {
   drawTokenIdentityRings,
   drawTokenPlaceholder,
 } from "@/lib/vtt/token-canvas";
-import type { TargetCombatPreview } from "@/lib/combat/hit-chance";
 import {
   drawAttackableHint,
   drawAttackTargetFocus,
-  drawTargetCombatPreviewLabel,
   drawTurnActiveIndicator,
 } from "@/lib/vtt/draw-token-animations";
 import { drawTokenEffectBadges } from "@/lib/vtt/draw-token-effects";
@@ -34,6 +32,7 @@ import {
   drawTokenDefeatedOverlay,
   drawTokenDefeatedSkull,
   drawTokenNameLabel,
+  shouldDrawTokenNameplate,
   drawTokenWalkRemainingBadge,
   drawTokenHpSegments,
   hpBarColor,
@@ -272,8 +271,8 @@ type TokenDrawParams = {
   attackableIds: Set<string>;
   spellPickedTargetIds?: Set<string>;
   hoverAttackTargetId: string | null;
-  attackTargetPreview: TargetCombatPreview | null;
   hoverTurnMoveTokenId: string | null;
+  hoverTokenId: string | null;
   tokenAnimTimeSec: number;
   tokenFlash: { tokenId: string; kind: TokenFlashKind } | null;
   tokenCastFx?: ActiveTokenCastFx[];
@@ -318,7 +317,7 @@ export function drawTokensLayer(ctx: CanvasRenderingContext2D, p: TokenDrawParam
     const hpLayout = hpRingLayout(r);
     const hpVis = p.tokenHpDisplay?.get(token.id);
     const showHpBar = Boolean(hpVis?.bar && token.vidaMax != null && token.vida != null);
-    const portraitR = showHpBar ? hpLayout.contentR : hpLayout.contentRFull;
+    const portraitR = hpLayout.contentRFull;
     const defeated = isTokenDefeated(token);
 
     if (token.id === p.turnActiveId) {
@@ -389,9 +388,6 @@ export function drawTokensLayer(ctx: CanvasRenderingContext2D, p: TokenDrawParam
     if (p.attackableIds.has(token.id)) {
       if (token.id === p.hoverAttackTargetId) {
         drawAttackTargetFocus(ctx, x, y, r, p.tokenAnimTimeSec);
-        if (p.attackTargetPreview) {
-          drawTargetCombatPreviewLabel(ctx, x, y, r, p.attackTargetPreview);
-        }
       } else {
         drawAttackableHint(ctx, x, y, r, p.tokenAnimTimeSec);
       }
@@ -402,7 +398,9 @@ export function drawTokensLayer(ctx: CanvasRenderingContext2D, p: TokenDrawParam
       drawTokenWalkRemainingBadge(ctx, x, y, r, walk, hexToMeters(walk) + " m");
     }
 
-    drawTokenNameLabel(ctx, x, y, r, token.name, token.color);
+    if (shouldDrawTokenNameplate(token, p.hoverTokenId)) {
+      drawTokenNameLabel(ctx, x, y, r, token.name);
+    }
 
     drawTokenEffectBadges(ctx, x, y, r, token);
   }

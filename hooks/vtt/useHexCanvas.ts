@@ -10,6 +10,7 @@ import {
 } from "react";
 import {
   applyBattlefieldViewTransform,
+  DEFAULT_BATTLEFIELD_VIEW,
   type BattlefieldView,
 } from "@/lib/vtt/battlefield-view";
 import type { Axial } from "@/lib/vtt/hex-math";
@@ -32,7 +33,6 @@ import type { BattlePing } from "@/lib/vtt/types";
 import type { TokenFlashKind } from "@/lib/vtt/draw-battlefield";
 import { isTargetMode, type TokenActionMode } from "@/lib/vtt/action-mode";
 import type { MoveCheck } from "@/lib/vtt/movement";
-import type { TargetCombatPreview } from "@/lib/combat/hit-chance";
 import type { TokenHpDisplay } from "@/lib/vtt/token-hp-display";
 import type { ActiveTokenCastFx } from "@/lib/vtt/token-cast-fx";
 import { resolveHexPalette } from "@/lib/vtt/hex-highlight-palette";
@@ -62,8 +62,8 @@ export type HexCanvasDrawState = {
   attackableIds: Set<string>;
   spellPickedTargetIds?: Set<string>;
   hoverAttackTargetId: string | null;
-  attackTargetPreview: TargetCombatPreview | null;
   hoverTurnMoveTokenId: string | null;
+  hoverTokenId: string | null;
   tokenFlash: { tokenId: string; kind: TokenFlashKind } | null;
   tokenCastFx?: ActiveTokenCastFx[];
   castFxNowMs?: number;
@@ -95,7 +95,7 @@ export function useHexCanvas(
   state: HexCanvasDrawState,
   imgTick: number,
   moveAnimRef?: TokenMoveAnimRef,
-  view: BattlefieldView = { scale: 1, panX: 0, panY: 0 }
+  view: BattlefieldView = DEFAULT_BATTLEFIELD_VIEW
 ) {
   const stateRef = useRef(state);
   stateRef.current = state;
@@ -215,8 +215,8 @@ export function useHexCanvas(
       attackableIds: s.attackableIds,
       spellPickedTargetIds: s.spellPickedTargetIds,
       hoverAttackTargetId: s.hoverAttackTargetId,
-      attackTargetPreview: s.attackTargetPreview,
       hoverTurnMoveTokenId: s.hoverTurnMoveTokenId,
+      hoverTokenId: s.hoverTokenId,
       tokenAnimTimeSec: tokenAnimTimeSecRef.current,
       tokenFlash: s.tokenFlash,
       tokenCastFx: s.tokenCastFx,
@@ -268,6 +268,7 @@ export function useHexCanvas(
     state.turnActiveId,
     state.hoverAttackTargetId,
     state.hoverTurnMoveTokenId,
+    state.hoverTokenId,
     state.turnMovePreview,
     state.attackableIds,
     state.pathCells,

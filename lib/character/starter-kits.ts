@@ -383,6 +383,88 @@ const CLASS_STARTER_KITS: Record<ClassId, StarterKitOption[]> = {
       armorLoadout: { packId: "equipamentos", entryId: "equipamentos-arm-10" },
     },
   ],
+  Paladino: [
+    {
+      id: "paladino-espada",
+      label: "Espada e cota",
+      summary: "Cavaleiro sagrado — espada longa, cota de malha e cura.",
+      items: [
+        { packId: "armas", entryId: "armas-wpn-s02" },
+        { packId: "equipamentos", entryId: "equipamentos-arm-05" },
+        { packId: "magias", entryId: "magias-curar-ferimentos" },
+        { packId: "magias", entryId: "magias-raio-do-limiar" },
+      ],
+      combatLoadout: { packId: "armas", entryId: "armas-wpn-s02" },
+      armorLoadout: { packId: "equipamentos", entryId: "equipamentos-arm-05" },
+    },
+    {
+      id: "paladino-maca",
+      label: "Maça e meia-armadura",
+      summary: "Templo guerreiro — maça, meia-armadura e escudo arcano.",
+      items: [
+        { packId: "armas", entryId: "armas-wpn-o05" },
+        { packId: "equipamentos", entryId: "equipamentos-arm-07" },
+        { packId: "magias", entryId: "magias-curar-ferimentos" },
+        { packId: "magias", entryId: "magias-escudo-arcano" },
+      ],
+      combatLoadout: { packId: "armas", entryId: "armas-wpn-o05" },
+      armorLoadout: { packId: "equipamentos", entryId: "equipamentos-arm-07" },
+    },
+    {
+      id: "paladino-gladius",
+      label: "Gladius e brigandina",
+      summary: "Voto móvel — gladius, brigandina e purificação.",
+      items: [
+        { packId: "armas", entryId: "armas-wpn-s08" },
+        { packId: "equipamentos", entryId: "equipamentos-arm-10" },
+        { packId: "magias", entryId: "magias-purificar-veneno" },
+        { packId: "magias", entryId: "magias-estabilizar" },
+      ],
+      combatLoadout: { packId: "armas", entryId: "armas-wpn-s08" },
+      armorLoadout: { packId: "equipamentos", entryId: "equipamentos-arm-10" },
+    },
+  ],
+  Bruxo: [
+    {
+      id: "bruxo-adaga",
+      label: "Adaga e couro",
+      summary: "Pacto arcano — adaga, couro, raio do limiar e sussurro.",
+      items: [
+        { packId: "armas", entryId: "armas-wpn-o01" },
+        { packId: "equipamentos", entryId: "equipamentos-arm-01" },
+        { packId: "magias", entryId: "magias-raio-do-limiar" },
+        { packId: "magias", entryId: "magias-sussurro-de-masmorra" },
+      ],
+      combatLoadout: { packId: "armas", entryId: "armas-wpn-o01" },
+      armorLoadout: { packId: "equipamentos", entryId: "equipamentos-arm-01" },
+    },
+    {
+      id: "bruxo-cajado",
+      label: "Cajado e couro acolchoado",
+      summary: "Canal do patrono — cajado, couro acolchoado e chamas.",
+      items: [
+        { packId: "armas", entryId: "armas-wpn-o03" },
+        { packId: "equipamentos", entryId: "equipamentos-arm-02" },
+        { packId: "magias", entryId: "magias-chama-de-fogareiro" },
+        { packId: "magias", entryId: "magias-ler-mentes" },
+      ],
+      combatLoadout: { packId: "armas", entryId: "armas-wpn-o03" },
+      armorLoadout: { packId: "equipamentos", entryId: "equipamentos-arm-02" },
+    },
+    {
+      id: "bruxo-bestia",
+      label: "Besta e couro",
+      summary: "Pacto à distância — besta leve, lâmina de espírito e ilusão.",
+      items: [
+        { packId: "armas", entryId: "armas-bst-01" },
+        { packId: "equipamentos", entryId: "equipamentos-arm-01" },
+        { packId: "magias", entryId: "magias-lamina-de-espirito" },
+        { packId: "magias", entryId: "magias-ilusao-menor" },
+      ],
+      combatLoadout: { packId: "armas", entryId: "armas-bst-01" },
+      armorLoadout: { packId: "equipamentos", entryId: "equipamentos-arm-01" },
+    },
+  ],
 };
 
 const RACE_STARTER: Record<string, StarterItemRef[]> = {
