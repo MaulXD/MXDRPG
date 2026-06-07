@@ -36,11 +36,6 @@ type Props = {
   onDraftChange?: (hasDraft: boolean) => void;
 };
 
-const SLOT_LABELS: Record<FocusSlot, string> = {
-  portrait: "Retrato",
-  token: "Token",
-};
-
 function initialFocus(
   primary: PortraitFocus | null | undefined,
   fallback?: PortraitFocus | null
@@ -246,23 +241,6 @@ export function PortraitEditorPanel({
         </button>
       </div>
 
-      {canEdit && previewSrc ? (
-        <div className="sheet-portrait-focus-tabs" role="tablist" aria-label="Ajustar enquadramento">
-          {(["portrait", "token"] as FocusSlot[]).map((slot) => (
-            <button
-              key={slot}
-              type="button"
-              role="tab"
-              aria-selected={editingSlot === slot}
-              className={`sheet-portrait-focus-tab ${editingSlot === slot ? "is-active" : ""}`}
-              onClick={() => setEditingSlot(slot)}
-            >
-              {SLOT_LABELS[slot]}
-            </button>
-          ))}
-        </div>
-      ) : null}
-
       {canEdit ? (
         <div className="sheet-portrait-toolbar">
           <button
@@ -298,13 +276,14 @@ export function PortraitEditorPanel({
           <PortraitFocusEditor
             imageSrc={previewSrc}
             focus={activeFocus}
+            portraitFocus={focusPortrait}
+            tokenFocus={focusToken}
             onFocusChange={setActiveFocus}
             disabled={busy}
             previewMode={editingSlot}
+            onPreviewModeChange={setEditingSlot}
+            tokenRingColor={tokenRingColor}
           />
-          <p className="sheet-portrait-hint" style={{ marginTop: "0.35rem" }}>
-            Editando: <strong>{SLOT_LABELS[editingSlot]}</strong>
-          </p>
           <div className="sheet-portrait-actions">
             {draftSrc ? (
               <button type="button" className="btn btn-primary" disabled={busy} onClick={saveDraft}>

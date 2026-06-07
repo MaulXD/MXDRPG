@@ -42,6 +42,7 @@ export function buildWizardPreview(draft: CharacterWizardDraft): WizardPreviewLi
   if (cls) {
     lines.push({ label: "Proficiências", value: cls.proficiencies });
     lines.push({ label: "Atributo principal", value: cls.primary });
+    lines.push({ label: "Bônus passivo (nv 1)", value: cls.dietBonus });
     const culinary = computeCulinary(draft.classe, draft.raca, draft.linhagem);
     const culinaryLine = [
       culinary.trinchar ? `Extração ${culinary.trinchar}` : null,

@@ -249,6 +249,10 @@ export function MesaWorkspace({
 
   const handleOpenPopup = useCallback(
     (id: MesaWindowId) => {
+      if (windows.isActive(id)) {
+        windows.close(id);
+        return;
+      }
       windows.openAsPopup(id);
     },
     [windows]

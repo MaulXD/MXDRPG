@@ -45,7 +45,7 @@ function IconButton({
         e.preventDefault();
         onOpenDock(icon.id);
       }}
-      title={`${icon.label} — clique: janela flutuante · clique direito: barra lateral`}
+      title={`${icon.label} — clique: abrir/fechar · clique direito: barra lateral`}
       aria-label={icon.label}
       aria-pressed={active}
     >

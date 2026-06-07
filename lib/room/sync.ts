@@ -69,6 +69,7 @@ export function syncLinkedTokens(
       bonusDamageFormula: token.bonusDamageFormula,
       rangedAttackAdvantage: token.rangedAttackAdvantage,
       weakened: token.weakened,
+      nameplateMode: token.nameplateMode,
       conditions: token.conditions,
       timedEffects: token.timedEffects,
       imageUrl: actor.tokenImageUrl ?? actor.portraitUrl ?? token.imageUrl ?? null,

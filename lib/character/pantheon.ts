@@ -65,7 +65,7 @@ export const RELIGION_LIST: ReligionDef[] = [
       "Digestão Sagrada: 1/descanso longo — comer ingrediente cru e rolar assimilação 1d8",
       "Ciclo da Vida: 25% de reviver com 1 HP se 3+ fiéis de Mira presentes ao morrer na masmorra",
     ],
-    favoredClasses: ["Druida", "Patrulheiro", "Clérigo"],
+    favoredClasses: ["Druida", "Patrulheiro", "Clérigo", "Bruxo"],
     sacredPlaces: ["Poço de Mira (Alto Serath)", "Salmour", "Ninho Caído"],
   },
   {
@@ -89,7 +89,7 @@ export const RELIGION_LIST: ReligionDef[] = [
       "Conhecimento e Carne: Prato Perfeito com espécie estudada = 2 assimilações garantidas",
     ],
     penalties: ["Extremistas perdem reputação em cidades puritanas"],
-    favoredClasses: ["Mago", "Artífice", "Bardo"],
+    favoredClasses: ["Mago", "Artífice", "Bardo", "Bruxo"],
     sacredPlaces: ["Universidade de Vesper", "Arquivo Vivo", "Moinho de Pergaminho"],
   },
   {
@@ -182,7 +182,7 @@ export const RELIGION_LIST: ReligionDef[] = [
       "Leitura do Véu: +2 em Arcanismo e História sobre fenômenos planares",
       "Presença Etérea: vantagem em Furtividade à noite ou em névoa",
     ],
-    favoredClasses: ["Mago", "Bardo", "Ladino"],
+    favoredClasses: ["Mago", "Bardo", "Ladino", "Bruxo"],
     sacredPlaces: ["Roda-Lua", "Boca Vazia (móvel)", "Alto Serath"],
   },
   {

@@ -24,7 +24,7 @@ import {
   type CharacterTalent,
 } from "@/lib/character/subclass-tracks";
 import { applyPerLevelBonuses, perLevelGainLines } from "@/lib/character/per-level-gains";
-import { syncSubclassTalentsToInventory } from "@/lib/character/subclass-vtt";
+import { syncCombatAbilitiesToInventory } from "@/lib/character/combat-inventory-sync";
 import {
   canAdvanceLevel,
   formatXpProgress,
@@ -263,5 +263,5 @@ export function applyLevelUp(actor: CharacterSheet, choices: LevelUpChoices = {}
     },
   };
 
-  return syncSubclassTalentsToInventory(applyPerLevelBonuses(leveled, nivel));
+  return syncCombatAbilitiesToInventory(applyPerLevelBonuses(leveled, nivel));
 }

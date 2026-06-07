@@ -18,6 +18,8 @@ type Props = {
   isControlled: boolean;
   canViewPa: boolean;
   canEndTurn: boolean;
+  /** Mestre pode passar turno mesmo com outro token no HUD. */
+  canControlCombat?: boolean;
   roomId: string;
   onOpenSheet?: (actorId?: string) => void;
   onSnapshot?: (snap: RoomSnapshot) => void;
@@ -49,6 +51,7 @@ export function CharacterCombatHud({
   isControlled,
   canViewPa,
   canEndTurn,
+  canControlCombat = false,
   roomId,
   onOpenSheet,
   onSnapshot,
@@ -67,9 +70,9 @@ export function CharacterCombatHud({
 
   const showEndTurn =
     canEndTurn &&
-    combat?.order.length &&
-    activeId === token.id &&
-    (isYourTurn || isGmView);
+    Boolean(combat?.order.length) &&
+    Boolean(activeId) &&
+    (canControlCombat || (activeId === token.id && isYourTurn));
 
   async function handleEndTurn() {
     setBusy(true);
@@ -91,32 +94,6 @@ export function CharacterCombatHud({
       role="region"
       aria-label={`HUD de ${token.name}`}
     >
-      <button
-        type="button"
-        className="vtt-combat-hud__hide"
-        title="Ocultar HUD"
-        aria-label="Ocultar HUD"
-        onClick={onHide}
-      >
-        <svg className="vtt-combat-hud__hide-icon" viewBox="0 0 24 24" fill="none" aria-hidden>
-          <path
-            d="M2 12s3.5-7 10-7 10 7 10 7-1.2 2.2-3.2 3.8"
-            stroke="currentColor"
-            strokeWidth="1.75"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-          <path
-            d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"
-            stroke="currentColor"
-            strokeWidth="1.75"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-          <path d="m3 3 18 18" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" />
-        </svg>
-      </button>
-
       {hasStatusEffects ? (
         <div className="vtt-combat-hud__status-bar" aria-label="Efeitos ativos">
           <TokenEffectsRow token={token} className="vtt-effect-chips--hud-bar" max={14} />
@@ -177,17 +154,42 @@ export function CharacterCombatHud({
         </div>
 
         <div className="vtt-combat-hud__actions">
-          {token.linked && onOpenSheet ? (
+          <div className="vtt-combat-hud__actions-head">
+            {token.linked && onOpenSheet ? (
+              <button
+                type="button"
+                className="vtt-combat-hud__btn-sheet"
+                onClick={() => onOpenSheet(token.actorId)}
+              >
+                Ficha
+              </button>
+            ) : null}
             <button
               type="button"
-              className="vtt-combat-hud__btn-sheet"
-              onClick={() => onOpenSheet(token.actorId)}
+              className="vtt-combat-hud__hide"
+              title="Ocultar HUD"
+              aria-label="Ocultar HUD"
+              onClick={onHide}
             >
-              Ficha
+              <svg className="vtt-combat-hud__hide-icon" viewBox="0 0 24 24" fill="none" aria-hidden>
+                <path
+                  d="M2 12s3.5-7 10-7 10 7 10 7-1.2 2.2-3.2 3.8"
+                  stroke="currentColor"
+                  strokeWidth="1.75"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"
+                  stroke="currentColor"
+                  strokeWidth="1.75"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <path d="m3 3 18 18" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" />
+              </svg>
             </button>
-          ) : (
-            <span className="vtt-combat-hud__actions-spacer" aria-hidden />
-          )}
+          </div>
           {showEndTurn ? (
             <button
               type="button"

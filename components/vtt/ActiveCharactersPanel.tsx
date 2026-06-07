@@ -11,7 +11,6 @@ import { ACTION_MODE_LABEL, type TokenActionMode } from "@/lib/vtt/action-mode";
 import { PaDotMeter } from "@/components/vtt/PaDotMeter";
 import { TokenEffectsRow } from "@/components/vtt/TokenEffectsRow";
 import { PlayerSpawnPanel } from "@/components/vtt/PlayerSpawnPanel";
-
 type Props = {
   tokens: BattleToken[];
   allSceneTokens: BattleToken[];

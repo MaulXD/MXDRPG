@@ -4,7 +4,7 @@
 
 ---
 
-## Indice — 34 Subclasses por Classe
+## Indice — 44 Subclasses por Classe
 
 | Classe | Subclasse |
 |--------|-----------|
@@ -46,6 +46,12 @@
 | | Engenheiro de Explosivos |
 | | Biologo Alquimico |
 | | Construtor de Armadilhas |
+| **Paladino** | Jurado do Sol |
+| | Cavaleiro do Limiar |
+| | Guardião da Gorge |
+| **Bruxo** | Filho da Voragem |
+| | Herdeiro do Sangue |
+| | Voz das Profundezas |
 
 ---
 
@@ -70,6 +76,8 @@
 - **Ladino:** Ataque Furtivo escala normalmente; talentos de subclasse podem modificar tipo de dano ou condições do furtivo.
 - **Bárbaro:** Furia e talentos de subclasse interagem onde indicado.
 - **Mago / Clérigo / Bardo / Druida / Artífice:** magias exclusivas de subclasse (Cap. 19) **somam-se** ao grimorio ou lista de preparacao e **não** substituem talentos de caminho. **VTT:** **Afinidade Arcânica** no nv. 5 (magias 2+ PA −1); talentos ±PA — **Livro do Jogador Cap. 12.0** e `data/character/pa-modifiers.json`.
+- **Paladino:** Golpe Sagrado escala com nivel; **Afinidade Divina** no nv. 5. Talentos de trilha modificam radiante, necrotico e suporte de aura.
+- **Bruxo:** slots de Pacto recarregam em descanso curto; **Afinidade do Pacto** no nv. 5. Invocações (Cap. 19.4) somam-se ao pacto; talentos reduzem PA de magias por patrono (psíquico, fogo, encantamento).
 
 ### Culinaria em masmorra (estilo expedicao)
 - Muitos talentos referem **Extração**, **Estudo de Anatomia**, **qualidade de ingrediente** e **refeicao de campo** — assumem o sistema de Parte V (Alimentacao e Culinaria Biomágica).
@@ -688,6 +696,106 @@
 **Nv 16 — Engenho de Caça (requer Rede de Campo):** 1/descanso longo: armadilha maior (6d8 dano tipo escolhido + condicao do ingrediente, FOR ou DES CD 16).
 
 **Nv 20 — Ascensao — Arquiteto da Masmorra:** 1/descanso longo: converte área 12m em "zona preparada" 1 hora — todas as armadilhas +2d6, Percepção inimiga CD 20, você e aliados Vantagem em Furtividade e INT para invencoes. Ao fim, recupera todos os ingredientes usados (metade porcoes, qualidade preservada).
+
+---
+
+## PALADINO
+
+### Jurado do Sol (Paladino)
+
+**Dieta nv.2:** Ao comer carne de origem celestial (celestiais corrompidos, quimeras luminosas, anjos caidos), ganha resistência radiante, visão perfeita 18m e +2 em saves contra medo por 8 horas.
+
+**Nv 4 — Luz Penitente:** Golpe Sagrado ignora resistência radiante do alvo. Imposição de Mãos cura +1d8 extra em aliados com menos de metade dos HP. 1/descanso curto: flash radiante 3m — mortos-vivos 2d8 radiante (sem save).
+
+**Nv 8 — Escudo Solar (requer Luz Penitente):** Reação quando aliado adjacente sofrer dano: reduz dano em 1d10 + CAR (minimo 1). Enquanto dieta ativa, você emite luz fraca 6m (inimigos furtivos −2 Furtividade).
+
+**Nv 12 — Julgamento Ardente (requer Escudo Solar):** 1/descanso curto: marca 1 inimigo visível (9m) por 1 minuto — seus Golpes Sagrados contra ele não gastam PA extra na primeira vez por turno. Mortos-vivos marcados têm Desvantagem em ataques contra você.
+
+**Nv 16 — Coroa de Fogo (requer Julgamento Ardente):** Aura de Devoção passa a 6m e concede resistência radiante a aliados dentro dela. 1/combate: explosão solar 4,5m, 4d8 radiante (DES CD 15 metade), aliados imunes.
+
+**Nv 20 — Ascensao — Avatar do Amanhecer:** 10 minutos, 1/descanso longo: voo 12m, imunidade radiante, Golpe Sagrado maximizado (rola maximo nos dados). Aliados na Aura curam 2d8 no inicio do turno deles. Ao terminar, deve comer porção celestial ou sofre Exaustao 1 até refeicao consagrada.
+
+---
+
+### Cavaleiro do Limiar (Paladino)
+
+**Dieta nv.2:** Ossos consagrados ou carne de morto-vivo sagrado concedem resistência necrótico; mortos-vivos têm Desvantagem para escolhê-lo como primeiro alvo até você ataca-los.
+
+**Nv 4 — Lâmina dos Sepulcros:** Ataques com arma contra mortos-vivos ganham +1d8 radiante ou necrótico (escolha ao acertar). Extração em carcaças de mortos-vivos rende 1 porção de osso Consagrado sem teste.
+
+**Nv 8 — Voto de Caça (requer Lâmina dos Sepulcros):** Declare voto contra 1 tipo de morto-vivo ao comer dieta (24h). +3 dano contra esse tipo e Vantagem em Percepção para detecta-los.
+
+**Nv 12 — Marca do Limiar (requer Voto de Caça):** Ao reduzir morto-vivo a 0 HP, impoe Marca do Limiar — proximo morto-vivo que atacar o mesmo aliado sofre 2d8 necrótico.
+
+**Nv 16 — Processão Silenciosa (requer Marca do Limiar):** 1/descanso longo: forma espectral 10 min (atravessa portas, +10 Furtividade vs mortos-vivos). Ataques ignoram imunidade necrótico (vira resistência).
+
+**Nv 20 — Ascensao — Cavaleiro Espectral:** 1 minuto, 1/descanso longo: resistência fisico, atravessa criaturas, +2d10 necrótico/radiante. Ergue 1 morto-vivo Medio como servo (HP = nivel × 5) por 10 min.
+
+---
+
+### Guardião da Gorge (Paladino)
+
+**Dieta nv.2:** Carne de besta sagrada ou quimera concede +2 CON e +1 CA a aliados adjacentes por 8 horas.
+
+**Nv 4 — Mordida do Voto:** Ação bonus: mordida ritual — +2 FOR e +3m movimento por 1 minuto. Ataques de oportunidade têm Desvantagem contra você enquanto corre.
+
+**Nv 8 — Fera Interior (requer Mordida do Voto):** Primeiro ataque corpo a corpo por turno +1d8 perfurante. Pode carregar aliado Caído adjacente sem metade de velocidade (1/combate).
+
+**Nv 12 — Carga do Juramento (requer Fera Interior):** 1/descanso curto: investida 12m — Vantagem no primeiro ataque; derruba em acerto (FOR CD 14). Aliados na linha +1 CA.
+
+**Nv 16 — Pele de Quimera (requer Carga do Juramento):** Resistência cortante com dieta. Reação: retalho 2d6 + FOR (tipo da quimera consumida). Usos: CON/descanso curto.
+
+**Nv 20 — Ascensao — Forma do Guardião:** 10 min: tamanho Grande, +4 CON, garras 2d8+FOR, investida 1/turno. Aliados adjacentes +2 CA e Vantagem vs medo.
+
+---
+
+## BRUXO
+
+### Filho da Voragem (Bruxo)
+
+**Dieta nv.2:** Carne aberrante concede resistência psíquico e +3m alcance em magias de controle por 8 horas.
+
+**Nv 4 — Toque da Voragem:** Raio do Pacto psíquico, empurra 1,5m (FOR CD 13). Magias de controle +1 CD com dieta.
+
+**Nv 8 — Olhar Entre Dimensões (requer Toque da Voragem):** Ver invisiveis 18m, 10 min/descanso curto. Reação: 2d6 psíquico a quem faz alvo falhar save mental.
+
+**Nv 12 — Agarrão do Pacto (requer Olhar Entre Dimensões):** Tentáculos 9m — 2 alvos Restringidos (FOR CD 15), 1/combate.
+
+**Nv 16 — Mente Partida (requer Agarrão do Pacto):** Confusao 1 min (INT CD 16), 1/descanso longo. Aberrações INT ≤ 8 falham automaticamente.
+
+**Nv 20 — Ascensao — Boca do Abismo:** Boca dimensional 6m, 4d10 psíquico/turno, teletransporte 9m, 1 minuto/descanso longo.
+
+---
+
+### Herdeiro do Sangue (Bruxo)
+
+**Dieta nv.2:** Sangue infernal — resistência fogo; ao matar, HP temp = CAR (1/turno).
+
+**Nv 4 — Contrato Ardente:** Raio fogo; marca Sangue +2d6 no proximo fogo contra alvo.
+
+**Nv 8 — Sangue do Patrono (requer Contrato Ardente):** Sacrifica 1d8 HP para recuperar 1 slot. Imune Sangramento com dieta.
+
+**Nv 12 — Pacto de Ferro (requer Sangue do Patrono):** Resistência necrótico/fogo. Correntes 3d8 fogo + Restringir, 1/combate.
+
+**Nv 16 — Correntes Infernais (requer Pacto de Ferro):** Fogo ignora resistência. Selo de sangue 3m, 3d6 fogo ao entrar.
+
+**Nv 20 — Ascensao — Tirano do Sangue:** Voo 12m, Raio em linha, recupera slot ao matar (1/turno), imune fogo/necrótico, 10 min.
+
+---
+
+### Voz das Profundezas (Bruxo)
+
+**Dieta nv.2:** Carne abissal — respiração aquática, +1 CD encantamento/ilusao por 8h.
+
+**Nv 4 — Sussurro Salino:** Raio frio; +1 rodada de concentracao em encantamentos (max +2).
+
+**Nv 8 — Corrente Mental (requer Sussurro Salino):** Telepatia 18m. Eco mental repete encantamento nv.1 sem slot, 1/descanso curto.
+
+**Nv 12 — Manto de Bruma (requer Corrente Mental):** Névoa 6m, 1 min — aliados furtivos, inimigos −2 ataques a distancia.
+
+**Nv 16 — Puxão Abissal (requer Manto de Bruma):** +2 CD controle em agua/névoa. Puxar 9m, 2d8 frio, 1/combate.
+
+**Nv 20 — Ascensao — Hino das Profundezas:** Canção 12m, Amedrontado/Lento, aliados +3 saves mentais, 1 minuto.
 
 ---
 

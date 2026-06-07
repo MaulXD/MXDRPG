@@ -2,17 +2,16 @@ import { canManageRoom } from "@/lib/auth/room-access";
 import type { SessionUser } from "@/lib/auth/types";
 import { isMonsterToken } from "@/lib/room/settings";
 import type { RoomActor } from "@/lib/room/types";
+import { hexCorners } from "@/lib/vtt/hex-math";
 import { strokeEffectIcon } from "@/lib/vtt/token-effect-icons";
 import type { BattleToken } from "@/lib/vtt/types";
 
-/** `bar` = anel segmentado no token; valores numéricos ficam no mini-HUD / painéis. */
+/** `bar` = anel de vida no hex do token; valores numéricos ficam no mini-HUD / painéis. */
 export type TokenHpDisplay = {
   bar: boolean;
   /** @deprecated Não desenhar HP numérico no canvas — use mini-HUD. */
   numeric: boolean;
 };
-
-export const HP_SEGMENT_COUNT = 10;
 
 function lerp(a: number, b: number, t: number): number {
   return a + (b - a) * t;
@@ -69,20 +68,22 @@ export function isTokenDefeated(token: BattleToken): boolean {
 
 const HP_BAR_GRAPHITE = "rgb(58, 58, 60)";
 
-/** Barra fina na borda externa; retrato ocupa o máximo do interior do hex. */
+/** Barra fina no hex interno; retrato ocupa o máximo do interior. */
 export function hpRingLayout(tokenR: number): {
   width: number;
   contentR: number;
   contentRFull: number;
   trackR: number;
   identityBase: number;
+  hexR: number;
 } {
-  const width = Math.max(2, tokenR * 0.036);
-  const trackR = tokenR - width / 2;
-  const contentR = Math.max(4, trackR - width / 2 - 0.2);
-  const contentRFull = Math.max(4, tokenR - 0.5);
+  const width = Math.max(1.5, tokenR * 0.032);
   const identityBase = tokenR + 0.5;
-  return { width, contentR, contentRFull, trackR, identityBase };
+  const hexR = Math.max(tokenR * 0.92, identityBase - 1.1);
+  const trackR = hexR - width * 0.35;
+  const contentR = Math.max(4, trackR - width - 0.15);
+  const contentRFull = Math.max(4, tokenR - 0.35);
+  return { width, contentR, contentRFull, trackR, identityBase, hexR };
 }
 
 function isPlayerCharacterToken(token: BattleToken): boolean {
@@ -111,25 +112,81 @@ export function resolveTokenHpDisplay(
       ? canManageRoom({ ownerId: opts.roomOwnerId }, opts.session)
       : false);
 
+  if (!opts.hovered) {
+    return { bar: false, numeric: false };
+  }
+
   if (isGm) {
     return { bar: true, numeric: false };
   }
 
   if (isMonsterToken(token)) {
-    if (opts.showMonsterHpToPlayers || isTokenDefeated(token)) {
+    if (opts.showMonsterHpToPlayers) {
       return { bar: true, numeric: false };
     }
     return { bar: false, numeric: false };
   }
 
-  if (isPlayerCharacterToken(token) && (opts.hovered || isTokenDefeated(token))) {
+  if (isPlayerCharacterToken(token)) {
     return { bar: true, numeric: false };
   }
 
   return { bar: false, numeric: false };
 }
 
-/** Anel segmentado fino na borda externa do token (1px borda grafite). */
+type HexPoint = { x: number; y: number };
+
+/** Vértice superior do hex (pointy-top), depois sentido horário. */
+function hexEdgesClockwiseFromTop(cx: number, cy: number, hexR: number): Array<{ from: HexPoint; to: HexPoint }> {
+  const corners = hexCorners(cx, cy, hexR);
+  const order = [5, 0, 1, 2, 3, 4];
+  const edges: Array<{ from: HexPoint; to: HexPoint }> = [];
+  for (let i = 0; i < order.length; i++) {
+    const from = corners[order[i]!]!;
+    const to = corners[order[(i + 1) % order.length]!]!;
+    edges.push({ from, to });
+  }
+  return edges;
+}
+
+function edgeLength(a: HexPoint, b: HexPoint): number {
+  return Math.hypot(b.x - a.x, b.y - a.y);
+}
+
+function traceHexEdges(ctx: CanvasRenderingContext2D, edges: Array<{ from: HexPoint; to: HexPoint }>): void {
+  const first = edges[0]?.from;
+  if (!first) return;
+  ctx.moveTo(first.x, first.y);
+  for (const edge of edges) {
+    ctx.lineTo(edge.to.x, edge.to.y);
+  }
+  ctx.closePath();
+}
+
+function traceHexEdgesPartial(
+  ctx: CanvasRenderingContext2D,
+  edges: Array<{ from: HexPoint; to: HexPoint }>,
+  distance: number
+): void {
+  const first = edges[0]?.from;
+  if (!first || distance <= 0) return;
+
+  let remaining = distance;
+  ctx.moveTo(first.x, first.y);
+  for (const edge of edges) {
+    const len = edgeLength(edge.from, edge.to);
+    if (remaining >= len) {
+      ctx.lineTo(edge.to.x, edge.to.y);
+      remaining -= len;
+    } else {
+      const t = remaining / len;
+      ctx.lineTo(edge.from.x + (edge.to.x - edge.from.x) * t, edge.from.y + (edge.to.y - edge.from.y) * t);
+      return;
+    }
+  }
+}
+
+/** Barra fina completando o hex por dentro (preenchimento horário a partir do topo). */
 export function drawTokenHpSegments(
   ctx: CanvasRenderingContext2D,
   x: number,
@@ -140,35 +197,36 @@ export function drawTokenHpSegments(
 ): void {
   const clamped = Math.max(0, Math.min(1, ratio));
   const defeated = clamped <= 0;
-  const filled = defeated ? 0 : Math.round(clamped * HP_SEGMENT_COUNT);
-  const segAngle = (Math.PI * 2) / HP_SEGMENT_COUNT;
-  const gap = 0.07;
   const emptyColor = "rgba(32, 30, 28, 0.95)";
   const deadColor = "rgb(8, 8, 8)";
-  const startBase = -Math.PI / 2;
-  const outerR = layout.trackR + layout.width / 2;
-  const innerR = layout.trackR - layout.width / 2;
+  const edges = hexEdgesClockwiseFromTop(x, y, layout.hexR);
+  const edgeLen = edges[0] ? edgeLength(edges[0].from, edges[0].to) : 0;
+  const perimeter = edgeLen * 6;
+  const fillDist = defeated ? 0 : perimeter * clamped;
 
   ctx.save();
+  ctx.lineJoin = "round";
   ctx.lineCap = "butt";
 
-  for (let i = 0; i < HP_SEGMENT_COUNT; i++) {
-    const a0 = startBase + i * segAngle + gap / 2;
-    const a1 = a0 + segAngle - gap;
-    const isFilled = !defeated && i < filled;
-
-    ctx.beginPath();
-    ctx.arc(x, y, layout.trackR, a0, a1);
-    ctx.strokeStyle = defeated ? deadColor : isFilled ? color : emptyColor;
-    ctx.lineWidth = layout.width;
-    ctx.stroke();
-  }
+  ctx.beginPath();
+  traceHexEdges(ctx, edges);
+  ctx.strokeStyle = defeated ? deadColor : emptyColor;
+  ctx.lineWidth = layout.width;
+  ctx.stroke();
 
   ctx.beginPath();
-  ctx.arc(x, y, outerR, 0, Math.PI * 2);
+  traceHexEdges(ctx, edges);
   ctx.strokeStyle = HP_BAR_GRAPHITE;
   ctx.lineWidth = 0.75;
   ctx.stroke();
+
+  if (fillDist > 0.5) {
+    ctx.beginPath();
+    traceHexEdgesPartial(ctx, edges, fillDist);
+    ctx.strokeStyle = color;
+    ctx.lineWidth = layout.width;
+    ctx.stroke();
+  }
 
   ctx.restore();
 }
@@ -289,44 +347,36 @@ export function drawTokenWalkRemainingBadge(
   ctx.restore();
 }
 
-/** Nameplate rômbico abaixo do token (Cinzel 9px). */
+export function shouldDrawTokenNameplate(
+  token: BattleToken,
+  hoverTokenId: string | null
+): boolean {
+  if (token.nameplateMode === "always") return true;
+  return token.id === hoverTokenId;
+}
+
+/** Nome abaixo do token — negrito com contorno preto. */
 export function drawTokenNameLabel(
   ctx: CanvasRenderingContext2D,
   x: number,
   y: number,
   tokenR: number,
-  name: string,
-  plateColor = "#141a24"
+  name: string
 ): void {
   if (!name.trim()) return;
 
-  const fontSize = Math.max(9, Math.round(tokenR * 0.26));
-  const padX = 6;
-  const plateH = fontSize + 8;
+  const fontSize = Math.max(11, Math.round(tokenR * 0.34));
+  const nameY = y + tokenR + 6;
 
   ctx.save();
-  ctx.font = `700 ${fontSize}px Cinzel, Times New Roman, serif`;
-  const textW = ctx.measureText(name).width;
-  const plateW = textW + padX * 2;
-  const centerY = y + tokenR + plateH * 0.55 + 4;
-
-  ctx.beginPath();
-  ctx.moveTo(x, centerY - plateH / 2);
-  ctx.lineTo(x + plateW / 2, centerY);
-  ctx.lineTo(x, centerY + plateH / 2);
-  ctx.lineTo(x - plateW / 2, centerY);
-  ctx.closePath();
-  ctx.fillStyle = plateColor;
-  ctx.globalAlpha = 0.92;
-  ctx.fill();
-  ctx.globalAlpha = 1;
-  ctx.strokeStyle = "rgba(0, 0, 0, 0.55)";
-  ctx.lineWidth = 1;
-  ctx.stroke();
-
   ctx.textAlign = "center";
-  ctx.textBaseline = "middle";
-  ctx.fillStyle = "#e8ecf4";
-  ctx.fillText(name, x, centerY);
+  ctx.textBaseline = "top";
+  ctx.font = `700 ${fontSize}px Lora, Georgia, serif`;
+  ctx.lineJoin = "round";
+  ctx.lineWidth = Math.max(2.5, fontSize * 0.22);
+  ctx.strokeStyle = "rgba(0, 0, 0, 0.92)";
+  ctx.fillStyle = "rgba(255, 255, 255, 0.96)";
+  ctx.strokeText(name, x, nameY);
+  ctx.fillText(name, x, nameY);
   ctx.restore();
 }

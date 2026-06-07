@@ -4,8 +4,11 @@ export type BattlefieldView = {
   panY: number;
 };
 
+/** Zoom inicial e ao resetar vista (20% mais próximo que 100%). */
+export const BATTLEFIELD_DEFAULT_SCALE = 1.2;
+
 export const DEFAULT_BATTLEFIELD_VIEW: BattlefieldView = {
-  scale: 1,
+  scale: BATTLEFIELD_DEFAULT_SCALE,
   panX: 0,
   panY: 0,
 };

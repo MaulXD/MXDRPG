@@ -129,7 +129,17 @@ export function CharacterIdentityEditor({ actor, roomId, canEdit, onSaved }: Pro
 
           <label>
             Classe
-            <select value={classe} onChange={(e) => setClasse(e.target.value)}>
+            <select
+              value={classe}
+              onChange={(e) => {
+                const next = e.target.value;
+                setClasse(next);
+                const nextDef = CLASS_LIST.find((c) => c.id === next);
+                if (subclasse && nextDef && !nextDef.subclasses.includes(subclasse)) {
+                  setSubclasse("");
+                }
+              }}
+            >
               {CLASS_LIST.map((c) => (
                 <option key={c.id} value={c.id}>
                   {c.id} (d{c.hpDie})
