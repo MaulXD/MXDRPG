@@ -5,6 +5,7 @@ import Link from "next/link";
 import type { UserRole } from "@/lib/auth/types";
 import type { CompendiumEntry, CompendiumPackId, CompendiumPackMeta } from "@/lib/compendium/types";
 import { CompendiumIcon } from "@/components/compendium/CompendiumIcon";
+import { OrnamentCard } from "@/components/ui/OrnamentCard";
 import { entryBookRef, entrySummary, stripHtml } from "@/lib/compendium/format";
 import { compendiumTypeColor } from "@/lib/compendium/icons";
 import "./compendium.css";
@@ -114,7 +115,7 @@ export function CompendiumBrowser({ packs, data, role, variant = "page" }: Props
 
   return (
     <div className="comp-shell comp-shell--page">
-      <aside className="comp-sidebar glass">
+      <OrnamentCard className="comp-sidebar">
         <p className="eyebrow">Compêndios</p>
         <ul className="comp-pack-list">
           {packs.map((p) => (
@@ -134,7 +135,7 @@ export function CompendiumBrowser({ packs, data, role, variant = "page" }: Props
             Monstros visíveis só para mestre.
           </p>
         ) : null}
-      </aside>
+      </OrnamentCard>
 
       <div className="comp-main">
         {activePack ? (
@@ -227,7 +228,7 @@ function CompendiumDetail({
   const color = compendiumTypeColor(entry.type);
 
   return (
-    <article className={`comp-detail comp-detail--${layout}`}>
+    <OrnamentCard variant="parchment" className={`comp-detail comp-detail--${layout}`}>
       <p className="eyebrow">Detalhe</p>
       <div className="comp-detail-head">
         <CompendiumIcon entry={entry} color={color} className="comp-icon comp-detail-icon" />
@@ -254,6 +255,6 @@ function CompendiumDetail({
           Fase 2: arrastar para ficha ou mesa.
         </p>
       ) : null}
-    </article>
+    </OrnamentCard>
   );
 }

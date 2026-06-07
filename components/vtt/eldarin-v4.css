@@ -519,6 +519,50 @@
   font-size: 11px;
 }
 
+/* —— Site v4: quinas em L em .glass / .glass-panel —— */
+.glass,
+.glass-panel {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--border-accent);
+  border-radius: 2px;
+  box-shadow: none;
+  backdrop-filter: none;
+  --v4-corner: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18' overflow='visible'%3E%3Cpolyline points='16,2 2,2 2,16' fill='none' stroke='%23d4a030' stroke-width='2' stroke-linecap='square'/%3E%3C/svg%3E");
+  --v4-corner-tr: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18' overflow='visible'%3E%3Cpolyline points='2,2 16,2 16,16' fill='none' stroke='%23d4a030' stroke-width='2' stroke-linecap='square'/%3E%3C/svg%3E");
+  --v4-corner-bl: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18' overflow='visible'%3E%3Cpolyline points='16,16 2,16 2,2' fill='none' stroke='%23d4a030' stroke-width='2' stroke-linecap='square'/%3E%3C/svg%3E");
+  --v4-corner-br: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18' overflow='visible'%3E%3Cpolyline points='2,16 16,16 16,2' fill='none' stroke='%23d4a030' stroke-width='2' stroke-linecap='square'/%3E%3C/svg%3E");
+  background-image: var(--v4-corner), var(--v4-corner-tr), var(--v4-corner-bl), var(--v4-corner-br);
+  background-size: 18px 18px;
+  background-position: top left, top right, bottom left, bottom right;
+  background-repeat: no-repeat;
+}
+
+[data-theme="light"] .glass,
+[data-theme="light"] .glass-panel {
+  --v4-corner: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18' overflow='visible'%3E%3Cpolyline points='16,2 2,2 2,16' fill='none' stroke='%238a6020' stroke-width='2' stroke-linecap='square'/%3E%3C/svg%3E");
+  --v4-corner-tr: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18' overflow='visible'%3E%3Cpolyline points='2,2 16,2 16,16' fill='none' stroke='%238a6020' stroke-width='2' stroke-linecap='square'/%3E%3C/svg%3E");
+  --v4-corner-bl: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18' overflow='visible'%3E%3Cpolyline points='16,16 2,16 2,2' fill='none' stroke='%238a6020' stroke-width='2' stroke-linecap='square'/%3E%3C/svg%3E");
+  --v4-corner-br: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18' overflow='visible'%3E%3Cpolyline points='2,16 16,16 16,2' fill='none' stroke='%238a6020' stroke-width='2' stroke-linecap='square'/%3E%3C/svg%3E");
+}
+
+/* Não duplicar quinas quando já há OrnamentCard */
+.ornament-card.glass,
+.ornament-card.glass-panel,
+.ornament-card {
+  background-image: none;
+}
+
+.portrait--sheet {
+  width: clamp(72px, 14vw, 88px);
+  height: clamp(72px, 14vw, 88px);
+}
+
+.portrait--sheet-popup {
+  width: min(148px, 100%);
+  height: min(148px, 100%);
+}
+
 @media (max-width: 520px) {
   .vtt-hud-wrapper .vtt-combat-hud {
     flex-wrap: wrap;

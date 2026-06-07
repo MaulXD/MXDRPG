@@ -4,7 +4,7 @@ Documentação de como o sistema visual do site e da mesa VTT funciona hoje — 
 
 > Complementa [UX-MESA-E-RAIL.md](./UX-MESA-E-RAIL.md) e [PARIDADE-FOUNDRY.md](./PARIDADE-FOUNDRY.md).
 >
-> **v4 (molduras, HUD, chips, cards):** ver [DESIGN-ELDARIN-V4.md](./DESIGN-ELDARIN-V4.md).
+> **v4 (molduras, HUD, chips, cards):** ver [DESIGN-ELDARIN-V4.md](./DESIGN-ELDARIN-V4.md). Rollout aplicado em mesa/HUD, fichas (`OrnamentCard`, `Portrait`, `SectionDivider`), compêndio (card pergaminho no detalhe), site (`.glass` / `.glass-panel` com quinas L) e tokens no mapa (anéis por tier v4, HP sempre verde).
 
 ---
 
@@ -12,10 +12,12 @@ Documentação de como o sistema visual do site e da mesa VTT funciona hoje — 
 
 O Eldarin usa **dois shells de interface**:
 
-| Contexto | Rota | Shell | Objetivo |
-|----------|------|-------|----------|
-| **Site** | `/`, `/biblioteca`, `/entrar`, fichas fora da mesa… | Header + footer clássicos | Marketing, compêndio, criação de personagem, portais |
-| **Mesa VTT** | `/mesa/[roomId]` | `vtt-chrome` + layout Foundry | Jogo em tempo real: mapa hex, tokens, combate, chat |
+
+| Contexto     | Rota                                                | Shell                         | Objetivo                                             |
+| ------------ | --------------------------------------------------- | ----------------------------- | ---------------------------------------------------- |
+| **Site**     | `/`, `/biblioteca`, `/entrar`, fichas fora da mesa… | Header + footer clássicos     | Marketing, compêndio, criação de personagem, portais |
+| **Mesa VTT** | `/mesa/[roomId]`                                    | `vtt-chrome` + layout Foundry | Jogo em tempo real: mapa hex, tokens, combate, chat  |
+
 
 Ambos compartilham **tokens CSS globais** (`app/globals.css`), mas a mesa aplica um **tema próprio** via `mesa-theme.css`.
 
@@ -39,22 +41,24 @@ Princípios visuais:
 
 Paleta base **ardósia + azul frio**:
 
-| Token | Valor | Uso |
-|-------|-------|-----|
-| `--bg-deep` | `#0a0e14` | Fundo da página / stage do mapa |
-| `--bg-mid` | `#101620` | Gradientes de fundo |
-| `--surface` | `#141a24` | Cards, painéis |
-| `--surface-raised` | `#1a2030` | Painéis elevados, células de atributo |
-| `--accent` / `--accent-primary` | `#7aa3c9` | Links, bordas ativas, destaque |
-| `--accent-secondary` | `#c9927a` | Acento mestre / warm |
-| `--accent-success` | `#6b9e5a` | PA, cura, positivo |
-| `--accent-warn` | `#d4a030` | Rodada, avisos |
-| `--accent-danger` | `#e07070` | Erro, ataque |
-| `--text` | `#e8ecf4` | Texto principal — **sem opacidade**, valor sólido |
-| `--text-muted` | `#9aaabf` | Hints, labels — **mínimo 4.5:1 de contraste sobre `--surface`** |
-| `--text-dim` | `#5a6a80` | Placeholders, info secundária muito discreta |
-| `--border` | `#2a3a50` | Bordas de células e divisores |
-| `--border-accent` | `#3a5a80` | Borda ativa / hover |
+
+| Token                           | Valor     | Uso                                                             |
+| ------------------------------- | --------- | --------------------------------------------------------------- |
+| `--bg-deep`                     | `#0a0e14` | Fundo da página / stage do mapa                                 |
+| `--bg-mid`                      | `#101620` | Gradientes de fundo                                             |
+| `--surface`                     | `#141a24` | Cards, painéis                                                  |
+| `--surface-raised`              | `#1a2030` | Painéis elevados, células de atributo                           |
+| `--accent` / `--accent-primary` | `#7aa3c9` | Links, bordas ativas, destaque                                  |
+| `--accent-secondary`            | `#c9927a` | Acento mestre / warm                                            |
+| `--accent-success`              | `#6b9e5a` | PA, cura, positivo                                              |
+| `--accent-warn`                 | `#d4a030` | Rodada, avisos                                                  |
+| `--accent-danger`               | `#e07070` | Erro, ataque                                                    |
+| `--text`                        | `#e8ecf4` | Texto principal — **sem opacidade**, valor sólido               |
+| `--text-muted`                  | `#9aaabf` | Hints, labels — **mínimo 4.5:1 de contraste sobre `--surface`** |
+| `--text-dim`                    | `#5a6a80` | Placeholders, info secundária muito discreta                    |
+| `--border`                      | `#2a3a50` | Bordas de células e divisores                                   |
+| `--border-accent`               | `#3a5a80` | Borda ativa / hover                                             |
+
 
 > **Regra de contraste:** qualquer texto que o jogador precise ler durante o jogo deve ter contraste mínimo WCAG AA (4.5:1) sobre o fundo onde aparece. Usar `--text-muted` em fundos mais escuros que `--surface` exige verificação — preferir `--text` nesses casos.
 
@@ -69,26 +73,30 @@ Paleta base **ardósia + azul frio**:
 
 Carregada em `app/layout.tsx` (Google Fonts):
 
-| Variável | Fonte | Peso(s) | Uso |
-|----------|-------|---------|-----|
-| `--font-display` | **Cinzel** | 400, 600, 700 | Títulos, nomes de personagem, valores de atributo, botões `.btn` |
-| `--font-body` | **Lora** | 400, 400i | Prosa, fichas, textos de regra longos |
-| `--font-ui` | **Source Sans 3** | 400, 600 | Formulários, UI densa, labels de controle |
+
+| Variável         | Fonte             | Peso(s)       | Uso                                                              |
+| ---------------- | ----------------- | ------------- | ---------------------------------------------------------------- |
+| `--font-display` | **Cinzel**        | 400, 600, 700 | Títulos, nomes de personagem, valores de atributo, botões `.btn` |
+| `--font-body`    | **Lora**          | 400, 400i     | Prosa, fichas, textos de regra longos                            |
+| `--font-ui`      | **Source Sans 3** | 400, 600      | Formulários, UI densa, labels de controle                        |
+
 
 ### Hierarquia de tamanhos
 
-| Papel | Fonte | Tamanho | Peso | Cor recomendada |
-|-------|-------|---------|------|-----------------|
-| Nome de personagem (HUD/ficha) | Cinzel | 20–24px | 700 | `--text` |
-| Valor de atributo base | Cinzel | 26–28px | 700 | `--text` |
-| Modificador de atributo | Cinzel | 13px | 600 | positivo: `--accent-success` · negativo: `--accent-danger` · zero: `--text-dim` |
-| Label de atributo (FOR/DES…) | Cinzel | 8px | 600 | `--text-dim`, `letter-spacing: .16em` |
-| Valor de combate (CA, PA, PV) | Cinzel | 16–20px | 700 | `--text` |
-| Label de seção (separador) | Cinzel | 8px | 600 | `--text-muted`, `letter-spacing: .18em`, uppercase |
-| Nome de perícia / habilidade | Lora | 11–12px | 400i | `--text-muted` |
-| Bônus de perícia | Cinzel | 12px | 700 | `--text` |
-| Texto de regra / lore | Lora | 13–14px | 400 | `--text` |
-| Label de controle de UI | Source Sans 3 | 11–12px | 400 | `--text-muted` |
+
+| Papel                          | Fonte         | Tamanho | Peso | Cor recomendada                                                                 |
+| ------------------------------ | ------------- | ------- | ---- | ------------------------------------------------------------------------------- |
+| Nome de personagem (HUD/ficha) | Cinzel        | 20–24px | 700  | `--text`                                                                        |
+| Valor de atributo base         | Cinzel        | 26–28px | 700  | `--text`                                                                        |
+| Modificador de atributo        | Cinzel        | 13px    | 600  | positivo: `--accent-success` · negativo: `--accent-danger` · zero: `--text-dim` |
+| Label de atributo (FOR/DES…)   | Cinzel        | 8px     | 600  | `--text-dim`, `letter-spacing: .16em`                                           |
+| Valor de combate (CA, PA, PV)  | Cinzel        | 16–20px | 700  | `--text`                                                                        |
+| Label de seção (separador)     | Cinzel        | 8px     | 600  | `--text-muted`, `letter-spacing: .18em`, uppercase                              |
+| Nome de perícia / habilidade   | Lora          | 11–12px | 400i | `--text-muted`                                                                  |
+| Bônus de perícia               | Cinzel        | 12px    | 700  | `--text`                                                                        |
+| Texto de regra / lore          | Lora          | 13–14px | 400  | `--text`                                                                        |
+| Label de controle de UI        | Source Sans 3 | 11–12px | 400  | `--text-muted`                                                                  |
+
 
 ### Regras de legibilidade
 
@@ -157,14 +165,16 @@ Cantos decorativos SVG (`.mf-corner`) + corpo `.mf-body`. Sem emojis decorativos
 
 ### Camadas z-index (mesa)
 
-| Camada | z-index | Elemento |
-|--------|---------|----------|
-| Mapa / canvas | 0 | `.vtt-canvas-wrap` |
-| Toolbar / hints | 5–6 | `MapToolbar`, `vtt-turn-handoff` |
-| HUD de combate | 7 | `.vtt-combat-hud` |
-| Toasts de turno/PA | 12 | `.foundry-mesa__toasts` |
-| Sidebar | 30 | `.foundry-sidebar` |
-| Janelas Foundry | 20+ | `.foundry-window` |
+
+| Camada             | z-index | Elemento                         |
+| ------------------ | ------- | -------------------------------- |
+| Mapa / canvas      | 0       | `.vtt-canvas-wrap`               |
+| Toolbar / hints    | 5–6     | `MapToolbar`, `vtt-turn-handoff` |
+| HUD de combate     | 7       | `.vtt-combat-hud`                |
+| Toasts de turno/PA | 12      | `.foundry-mesa__toasts`          |
+| Sidebar            | 30      | `.foundry-sidebar`               |
+| Janelas Foundry    | 20+     | `.foundry-window`                |
+
 
 ---
 
@@ -202,6 +212,7 @@ Cantos decorativos SVG (`.mf-corner`) + corpo `.mf-body`. Sem emojis decorativos
 ```
 
 Pill do modificador:
+
 - Negativo: fundo `#200a06`, borda `1px solid #5a1a0e`, cor `--accent-danger`
 - Positivo: fundo `#0a180a`, borda `1px solid #1a4a18`, cor `--accent-success`
 - Zero: fundo `--surface`, borda `--border`, cor `--text-dim`
@@ -352,12 +363,12 @@ Disparado quando `activeIndex` ou rodada mudam (não na carga inicial da mesa).
 
 ## 9. Convenções para novos componentes
 
-1. **Cores:** sempre `var(--token)` — nunca hex fixo em componentes; na mesa, respeitar `--mesa-*` dentro de `.vtt-chrome`.
+1. **Cores:** sempre `var(--token)` — nunca hex fixo em componentes; na mesa, respeitar `--mesa-`* dentro de `.vtt-chrome`.
 2. **Emojis:** proibidos em qualquer componente de UI — usar SVG inline ou `MesaRailIcon`.
 3. **Contraste:** texto que o jogador lê durante sessão deve ter contraste mínimo 4.5:1 (WCAG AA) — verificar sempre que usar `--text-muted` sobre fundos escuros.
 4. **Atributos:** seguir spec "opção C" — valor base 28px Cinzel `--text`, pill de modificador colorida por sinal.
-5. **Canvas:** novos highlights devem ganhar par `--vtt-hex-*` em `globals.css` + `mesa-theme.css`, lidos via `readThemeColor`.
-6. **Painéis na mesa:** usar `glass-panel` ou classes `foundry-dock-panel--*`; scroll com `mesa-panel-scroll`.
+5. **Canvas:** novos highlights devem ganhar par `--vtt-hex-`* em `globals.css` + `mesa-theme.css`, lidos via `readThemeColor`.
+6. **Painéis na mesa:** usar `glass-panel` ou classes `foundry-dock-panel--`*; scroll com `mesa-panel-scroll`.
 7. **Tooltips de regras:** reutilizar `effectTipAttrs` / padrão `data-tip`.
 8. **Tipografia:** Cinzel para títulos e valores de jogo; Lora para regras e lore; Source Sans 3 para controles densos.
 9. **Responsivo:** mesa prioriza desktop; `@media (max-width: 640px)` no HUD; dock estreito em telas médias.
@@ -387,14 +398,16 @@ components/home/home.css
 
 ### Componentes visuais-chave (mesa)
 
-| Componente | Arquivo | Função |
-|------------|---------|--------|
-| `MesaWorkspace` | `components/vtt/MesaWorkspace.tsx` | Shell Foundry, dock, toasts anchor |
-| `CharacterCombatHud` | `components/vtt/CharacterCombatHud.tsx` | HUD inferior com retrato focado |
-| `TurnHandoffOverlay` | `components/vtt/TurnHandoffOverlay.tsx` | Overlay "Vez de …" ao passar turno |
-| `VttToast` | `components/vtt/VttToast.tsx` | Toasts PA/turno acima do HUD |
-| `FoundryDockPanel` | `components/vtt/foundry/FoundryDockPanel.tsx` | Painel lateral fixo |
-| `PortraitFocusFill` | `components/character/PortraitFocusFill.tsx` | Enquadramento de retrato |
+
+| Componente           | Arquivo                                       | Função                             |
+| -------------------- | --------------------------------------------- | ---------------------------------- |
+| `MesaWorkspace`      | `components/vtt/MesaWorkspace.tsx`            | Shell Foundry, dock, toasts anchor |
+| `CharacterCombatHud` | `components/vtt/CharacterCombatHud.tsx`       | HUD inferior com retrato focado    |
+| `TurnHandoffOverlay` | `components/vtt/TurnHandoffOverlay.tsx`       | Overlay "Vez de …" ao passar turno |
+| `VttToast`           | `components/vtt/VttToast.tsx`                 | Toasts PA/turno acima do HUD       |
+| `FoundryDockPanel`   | `components/vtt/foundry/FoundryDockPanel.tsx` | Painel lateral fixo                |
+| `PortraitFocusFill`  | `components/character/PortraitFocusFill.tsx`  | Enquadramento de retrato           |
+
 
 ### Lógica de sync (retratos)
 
@@ -412,18 +425,20 @@ lib/room/adventure-actors.ts   ← merge retratos ao sync ficha DB
 - UX rail legado: [UX-MESA-E-RAIL.md](./UX-MESA-E-RAIL.md)
 - Painéis Foundry: [PARIDADE-FOUNDRY.md](./PARIDADE-FOUNDRY.md)
 - Regras de produto: [PRD-ELDARIN-VTT.md](./PRD-ELDARIN-VTT.md)
-- Combate e PA: [VTT-ACOES-PA-AREAS.md](./VTT-ACOES-PA-AREAS.md)
+- Combate e PA: [VTT-ACOES-PA-AREAS.mdei](./VTT-ACOES-PA-AREAS.md)
 - UX combate: [P5-COMBAT-UX.md](./P5-COMBAT-UX.md)
 
 ---
 
 ## 12. Changelog visual
 
-| Versão | Data | Mudanças |
-|--------|------|----------|
-| v3 | jun/2026 | Dock preenche altura; toasts acima do HUD; overlay de turno; retratos persistentes; HUD com PortraitFocusFill e fundo em `::before` |
-| v2 | jun/2026 | Contraste WCAG, sem emojis, atributos opção C, tokens hex, ficha Foundry |
-| v1 | — | Paleta ardósia/azul, shell Foundry inicial |
+
+| Versão | Data     | Mudanças                                                                                                                            |
+| ------ | -------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| v3     | jun/2026 | Dock preenche altura; toasts acima do HUD; overlay de turno; retratos persistentes; HUD com PortraitFocusFill e fundo em `::before` |
+| v2     | jun/2026 | Contraste WCAG, sem emojis, atributos opção C, tokens hex, ficha Foundry                                                            |
+| v1     | —        | Paleta ardósia/azul, shell Foundry inicial                                                                                          |
+
 
 ---
 
