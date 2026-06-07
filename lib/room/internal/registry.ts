@@ -25,7 +25,7 @@ declare global {
 
 export function rooms(): Map<string, RoomState> {
   if (!globalThis.__eldarinRooms) {
-    globalThis.__eldarinRooms = new Map([["demo", createDemoRoom()]]);
+    globalThis.__eldarinRooms = new Map();
   }
   return globalThis.__eldarinRooms;
 }
@@ -187,6 +187,9 @@ export async function getRoom(roomId: string): Promise<RoomState | null> {
     const demo = createDemoRoom();
     map.set("demo", demo);
     room = demo;
+    if (shouldPersistToDb("demo")) {
+      await dbRooms.insertRoom(demo);
+    }
   }
 
   if (room) refreshDemoActorsIfStale(room);

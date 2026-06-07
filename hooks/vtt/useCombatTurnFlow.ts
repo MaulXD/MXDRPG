@@ -51,7 +51,12 @@ export function useCombatTurnFlow({
     if (noticesKey !== prevNoticesKey.current && notices.length > 0) {
       prevNoticesKey.current = noticesKey;
       for (const n of notices) {
-        const variant = n.includes("atordoado") ? "warn" : "success";
+        const variant =
+          n.includes("atordoado") || n.includes("perdido") || n.includes("perdidos")
+            ? "warn"
+            : n.includes("expirou")
+              ? "info"
+              : "info";
         toast.push(n, variant);
       }
     }

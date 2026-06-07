@@ -16,6 +16,7 @@
     "db:migrate": "node scripts/db/migrate.mjs",
     "db:check": "node scripts/db/check.mjs",
     "db:setup": "node scripts/db/setup.mjs",
+    "db:migrate-images": "node scripts/db/migrate-images-to-webp.mjs",
     "smoke:p0": "node scripts/smoke/p0-health.mjs",
     "smoke:a1": "node scripts/smoke/a1-persistence.mjs",
     "test:a1": "node scripts/db/check.mjs && node scripts/smoke/a1-persistence.mjs",
@@ -30,6 +31,7 @@
     "postgres": "^3.4.7",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "sharp": "^0.34.5",
     "three": "^0.184.0"
   },
   "devDependencies": {

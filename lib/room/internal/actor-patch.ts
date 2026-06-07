@@ -1,7 +1,7 @@
 import { applyIdentityPatch, type IdentityPatch } from "@/lib/character/identity";
 import type { CharacterSheet, InventoryItem } from "@/lib/character/types";
 import type { CompendiumPackId } from "@/lib/compendium/types";
-import { validateImageDataUrl } from "@/lib/media/image-data-url";
+import { normalizeImageDataUrl } from "@/lib/media/image-normalize";
 import { sanitizePortraitFocus } from "@/lib/media/portrait-focus";
 
 const INVENTORY_PACKS = new Set<CompendiumPackId>([
@@ -36,15 +36,15 @@ function sanitizeInventory(raw: unknown): InventoryItem[] | undefined {
   return out;
 }
 
-export function sanitizeActorPatch(
+export async function sanitizeActorPatch(
   patch: Partial<CharacterSheet> & { identityPatch?: IdentityPatch }
-): Partial<CharacterSheet> {
+): Promise<Partial<CharacterSheet>> {
   const out: Partial<CharacterSheet> = {};
   if ("portraitUrl" in patch) {
-    out.portraitUrl = validateImageDataUrl(patch.portraitUrl);
+    out.portraitUrl = await normalizeImageDataUrl(patch.portraitUrl, { maxEdge: 1024 });
   }
   if ("tokenImageUrl" in patch) {
-    out.tokenImageUrl = validateImageDataUrl(patch.tokenImageUrl);
+    out.tokenImageUrl = await normalizeImageDataUrl(patch.tokenImageUrl, { maxEdge: 512 });
   }
   if ("portraitFocus" in patch) {
     out.portraitFocus = sanitizePortraitFocus(patch.portraitFocus);

@@ -150,7 +150,9 @@ export async function createCharacterFromWizard(
   }
 
   const { buildCharacterFromWizard } = await import("./build-from-wizard");
-  const sheet = buildCharacterFromWizard(userId, draft, undefined, adventureId);
+  const { normalizeWizardDraftImages } = await import("./normalize-wizard-images");
+  const normalizedDraft = await normalizeWizardDraftImages(draft);
+  const sheet = buildCharacterFromWizard(userId, normalizedDraft, undefined, adventureId);
   const saved = await saveCharacter(sheet);
 
   const { attachCharacterToDemoRoom } = await import("@/lib/room/demo-character-sync");

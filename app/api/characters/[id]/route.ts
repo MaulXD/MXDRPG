@@ -64,7 +64,7 @@ export async function PATCH(request: Request, { params }: Params) {
     return NextResponse.json({ error: "Sem permissão" }, { status: 403 });
   }
 
-  const safe = sanitizeActorPatch(patch);
+  const safe = await sanitizeActorPatch(patch);
   let merged = normalizeCharacter({
     ...existing,
     ...safe,
