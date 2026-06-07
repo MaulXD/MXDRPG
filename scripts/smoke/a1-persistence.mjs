@@ -115,13 +115,13 @@ async function smokeDbRoundtrip() {
     const t0 = Date.now();
     await sql`
       INSERT INTO eldarin_rooms (
-        room_id, owner_id, name, invite_code, member_ids,
-        scene, actors, combat, chat, revision, updated_at
+        room_id, adventure_id, owner_id, name, invite_code, member_ids,
+        scene, actors, combat, chat, settings, revision, updated_at
       ) VALUES (
-        ${roomId}, ${ownerId}, ${"Smoke A1"}, ${invite},
+        ${roomId}, ${roomId}, ${ownerId}, ${"Smoke A1"}, ${invite},
         ${sql.json([])},
         ${sql.json(sceneV1)}, ${sql.json({})}, ${sql.json(combatV1)},
-        ${sql.json([welcomeChat])}, ${1}, ${t0}
+        ${sql.json([welcomeChat])}, ${sql.json({})}, ${1}, ${t0}
       )
     `;
     ok(`INSERT sala ${roomId}`);
