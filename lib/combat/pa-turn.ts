@@ -275,7 +275,8 @@ export function checkCanSpendPa(token: BattleToken, cost: number): PaSpendCheck 
 }
 
 export function applyPaSpend(token: BattleToken, cost: number): BattleToken {
-  const prepared = materializeCombatPa(token, token.paMax);
+  const paMax = token.paMax ?? PA_RECOVERY_PER_TURN;
+  const prepared = materializeCombatPa(token, paMax);
   const check = checkCanSpendPa(prepared, cost);
   if (!check.ok) return token;
 
@@ -283,6 +284,7 @@ export function applyPaSpend(token: BattleToken, cost: number): BattleToken {
 
   return {
     ...token,
+    paMax,
     pa,
     bankedPa: 0,
     paSpentThisTurn: tokenPaSpentThisTurn(prepared) + cost,

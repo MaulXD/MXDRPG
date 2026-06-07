@@ -122,6 +122,11 @@ export function LootEconomyPanel({ characterId, seed, canEdit }: Props) {
     (next: LootEconomy) => {
       setLoot(next);
       saveLoot(characterId, next);
+      void fetch(`/api/characters/${characterId}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ lootEconomy: next }),
+      }).catch((e) => console.error("[loot] falha ao persistir no servidor:", e));
     },
     [characterId]
   );

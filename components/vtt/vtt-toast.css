@@ -24,7 +24,8 @@
   transform: translateX(-50%);
 }
 
-.vtt-toast-stack {
+/* Fora da mesa: posição fixa no viewport (fallback global) */
+:not(.foundry-mesa__toasts) > .vtt-toast-stack {
   position: fixed;
   bottom: 1.25rem;
   left: 50%;
