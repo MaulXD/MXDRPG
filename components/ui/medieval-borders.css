@@ -353,7 +353,7 @@
 
 .sheet-popup-panel.mf > .sheet-shell--popup,
 .sheet-popup-panel.mf .sheet-popup-chrome {
-  border-radius: 0;
+  border-radius: calc(var(--mf-radius) - 2px);
 }
 
 /* Ficha página inteira */
