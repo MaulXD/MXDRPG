@@ -293,7 +293,7 @@ export function AdventureLobby() {
         </p>
       ) : null}
 
-      <Link href="/mesa/demo" className="btn btn-secondary">
+      <Link href="/mesa/demo" prefetch={false} className="btn btn-secondary">
         Demo pública (sem conta)
       </Link>
     </div>

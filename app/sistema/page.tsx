@@ -108,7 +108,7 @@ export default function SistemaPage() {
       </div>
 
       <div style={{ marginTop: "2rem", display: "flex", flexWrap: "wrap", gap: "0.75rem" }}>
-        <Link href="/mesa/demo" className="btn">
+        <Link href="/mesa/demo" prefetch={false} className="btn">
           Mesa demo
         </Link>
         <Link href="/personagem/novo" className="btn btn-ghost">
