@@ -31,9 +31,9 @@ export function TurnHandoffOverlay({ combat, tokens }: Props) {
 
   /** Chave estável — não reexecutar o efeito a cada snapshot SSE (só quando o turno muda). */
   const turnKey = useMemo(() => {
-    if (!combat?.order.length) return null;
+    if (!combat?.order?.length) return null;
     return combatTurnKey(combat);
-  }, [combat?.round, combat?.activeIndex, combat?.order.length, combat?.order]);
+  }, [combat?.round, combat?.activeIndex, combat?.order?.length, combat?.order]);
 
   useEffect(() => {
     const clearTimers = () => {

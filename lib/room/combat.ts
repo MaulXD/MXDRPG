@@ -82,7 +82,7 @@ export function rollInitiative(room: RoomState): { order: string[]; scores: Reco
 }
 
 export function nextTurn(combat: CombatTrack): CombatTrack {
-  if (!combat.order.length) return combat;
+  if (!combat.order?.length) return combat;
   const nextIndex = (combat.activeIndex + 1) % combat.order.length;
   return {
     ...combat,
@@ -92,5 +92,5 @@ export function nextTurn(combat: CombatTrack): CombatTrack {
 }
 
 export function activeTokenId(combat: CombatTrack): string | null {
-  return combat.order[combat.activeIndex] ?? null;
+  return combat.order?.[combat.activeIndex] ?? null;
 }

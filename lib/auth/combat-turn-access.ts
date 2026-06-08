@@ -76,7 +76,7 @@ export function canAdvanceCombatTurn(
   user: SessionUser | null,
   combat: CombatTrack
 ): boolean {
-  if (!combat.order.length) return false;
+  if (!combat.order?.length) return false;
   if (!user) return false;
   if (canManageRoom(room, user)) return true;
   const activeId = activeTokenId(combat);
