@@ -39,7 +39,7 @@ export default function HomePage() {
               <Link href="/entrar" className="btn">
                 Entrar e jogar
               </Link>
-              <Link href="/mesa/demo" className="btn btn-secondary">
+              <Link href="/mesa/demo" prefetch={false} className="btn btn-secondary">
                 Demo ao vivo
               </Link>
             </div>
@@ -92,7 +92,7 @@ export default function HomePage() {
           <p className="lead" style={{ margin: "0 auto 1.5rem", textAlign: "center", maxWidth: "28rem" }}>
             Abra a mesa demo, arraste tokens e teste caminhada vs corrida em segundos.
           </p>
-          <Link href="/mesa/demo" className="btn">
+          <Link href="/mesa/demo" prefetch={false} className="btn">
             Abrir mesa hex
           </Link>
         </div>

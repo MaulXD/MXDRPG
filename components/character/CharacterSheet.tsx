@@ -10,6 +10,7 @@ import { CompendiumIcon } from "@/components/compendium/CompendiumIcon";
 import { entryBookRef, entryDescriptionHtml, entrySummary, stripHtml } from "@/lib/compendium/format";
 import { compendiumTypeColor } from "@/lib/compendium/icons";
 import { getEntry } from "@/lib/compendium/registry";
+import { useImageNaturalSize } from "@/hooks/useImageNaturalSize";
 import { patchRoomActor, useRoomSync } from "@/hooks/useRoomSync";
 import { CharacterSheetCover } from "@/components/character/CharacterSheetCover";
 import { CharacterPortraitFields } from "@/components/character/CharacterPortraitFields";
@@ -271,6 +272,9 @@ export function CharacterSheet({
       : 0;
   const prof = proficiencyBonus(identity.nivel);
   const portraitFocus = sanitizePortraitFocus(live.portraitFocus);
+  const offlinePopupPortraitSize = useImageNaturalSize(
+    isPopup && !inRoom ? live.portraitUrl : null
+  );
   const displayDefesa = resolveActorDefesa(live);
 
   const tabTitles: Record<Tab, string> = {
@@ -693,6 +697,8 @@ export function CharacterSheet({
                 }
                 alt={live.name}
                 focus={portraitFocus ?? undefined}
+                imgW={offlinePopupPortraitSize.w}
+                imgH={offlinePopupPortraitSize.h}
                 className="portrait--sheet-popup"
               />
             )}

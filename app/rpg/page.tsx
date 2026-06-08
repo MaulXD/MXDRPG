@@ -92,7 +92,10 @@ export default async function RpgSelectPage() {
         </div>
 
         <p style={{ marginTop: "1.25rem", fontSize: "0.85rem", color: "var(--text-muted)", marginBottom: 0 }}>
-          <Link href="/mesa/demo">Experimentar demo pública</Link> sem criar mesa.
+          <Link href="/mesa/demo" prefetch={false}>
+            Experimentar demo pública
+          </Link>{" "}
+          sem criar mesa.
         </p>
       </MedievalFrame>
     </div>
