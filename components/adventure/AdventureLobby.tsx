@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { adventureRestoreDeadline } from "@/lib/adventure/lifecycle";
 
 type AdventureRow = {
@@ -43,6 +43,7 @@ export function AdventureLobby() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [actionId, setActionId] = useState<string | null>(null);
+  const creatingRef = useRef(false);
 
   const load = useCallback(async () => {
     const res = await fetch("/api/adventures");
@@ -66,6 +67,8 @@ export function AdventureLobby() {
 
   async function createAdventure(e: React.FormEvent) {
     e.preventDefault();
+    if (creatingRef.current || loading) return;
+    creatingRef.current = true;
     setLoading(true);
     setError("");
     try {
@@ -91,6 +94,7 @@ export function AdventureLobby() {
     } catch {
       setError("Falha de conexão ao criar a mesa. Tente novamente.");
     } finally {
+      creatingRef.current = false;
       setLoading(false);
     }
   }

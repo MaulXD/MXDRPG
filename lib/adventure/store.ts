@@ -1,6 +1,7 @@
 import "server-only";
 
 import * as dbAdventures from "@/lib/db/adventures";
+import * as dbRooms from "@/lib/db/rooms";
 import { dbEnabled } from "@/lib/db/enabled";
 import { resolveInviteCodeForCreate } from "@/lib/adventure/invite-code";
 import {
@@ -27,6 +28,73 @@ function adventures(): Map<string, Adventure> {
     globalThis.__eldarinAdventures = new Map();
   }
   return globalThis.__eldarinAdventures;
+}
+
+const CREATE_IDEMPOTENCY_MS = 120_000;
+
+function normalizeAdventureName(name: string): string {
+  return name.trim().toLowerCase();
+}
+
+function dedupeAdventureListItems(items: AdventureListItem[]): AdventureListItem[] {
+  const byRoom = new Map<string, AdventureListItem>();
+  let demo: AdventureListItem | null = null;
+
+  for (const item of items) {
+    if (item.adventureId === "demo") {
+      demo = item;
+      continue;
+    }
+    const roomKey = item.primaryRoomId || item.adventureId;
+    const prev = byRoom.get(roomKey);
+    if (!prev || item.updatedAt >= prev.updatedAt) {
+      byRoom.set(roomKey, item);
+    }
+  }
+
+  const byOwnerName = new Map<string, AdventureListItem>();
+  for (const item of byRoom.values()) {
+    if (!item.isOwner) {
+      byOwnerName.set(`member:${item.adventureId}`, item);
+      continue;
+    }
+    const nameKey = `${item.ownerId}:${normalizeAdventureName(item.name)}`;
+    const prev = byOwnerName.get(nameKey);
+    if (!prev || item.updatedAt >= prev.updatedAt) {
+      byOwnerName.set(nameKey, item);
+    }
+  }
+
+  const out = [...byOwnerName.values()];
+  if (demo) out.push(demo);
+  return out;
+}
+
+async function findRecentOwnedAdventure(
+  ownerId: string,
+  name: string
+): Promise<Adventure | null> {
+  const label = name.trim().slice(0, 80) || "Nova aventura";
+  const target = normalizeAdventureName(label);
+  const cutoff = Date.now() - CREATE_IDEMPOTENCY_MS;
+
+  if (dbEnabled()) {
+    const fromDb = await dbAdventures.listAdventuresForOwnerOrMember(ownerId);
+    for (const item of fromDb) {
+      if (item.ownerId !== ownerId || item.deletedAt) continue;
+      if (normalizeAdventureName(item.name) !== target || item.updatedAt < cutoff) continue;
+      const full = await getAdventure(item.adventureId);
+      if (full && !full.deletedAt) return full;
+    }
+  }
+
+  for (const adv of adventures().values()) {
+    if (adv.ownerId !== ownerId || adv.deletedAt) continue;
+    if (normalizeAdventureName(adv.name) !== target || adv.updatedAt < cutoff) continue;
+    return adv;
+  }
+
+  return null;
 }
 
 function slugAdventureId(name: string): string {
@@ -108,8 +176,14 @@ export async function createAdventure(
   ownerId: string,
   name: string
 ): Promise<CreateAdventureResult> {
-  const adventureId = slugAdventureId(name);
   const label = name.trim().slice(0, 80) || "Nova aventura";
+
+  const recent = await findRecentOwnedAdventure(ownerId, label);
+  if (recent) {
+    return { ok: true, adventure: recent };
+  }
+
+  const adventureId = slugAdventureId(name);
   const now = Date.now();
 
   const resolved = await resolveInviteCodeForCreate();
@@ -139,6 +213,13 @@ export async function createAdventure(
   } catch (e) {
     adventures().delete(adventureId);
     rooms().delete(adventureId);
+    if (dbEnabled()) {
+      try {
+        await dbRooms.deleteRoom(adventureId);
+      } catch {
+        /* rollback best-effort */
+      }
+    }
     const detail = e instanceof Error ? e.message : String(e);
     console.error("[createAdventure] persistência falhou:", detail);
     return {
@@ -235,7 +316,8 @@ function toListItem(adv: Adventure, userId: string): AdventureListItem {
 }
 
 export async function listAdventuresForUser(userId: string): Promise<AdventureListItem[]> {
-  const seen = new Set<string>();
+  const seenIds = new Set<string>();
+  const seenRooms = new Set<string>();
   const out: AdventureListItem[] = [];
 
   if (dbEnabled()) {
@@ -244,17 +326,21 @@ export async function listAdventuresForUser(userId: string): Promise<AdventureLi
       const full = await getAdventure(item.adventureId);
       if (!full) continue;
       adventures().set(full.adventureId, full);
-      seen.add(full.adventureId);
+      seenIds.add(item.adventureId);
+      seenIds.add(full.adventureId);
+      seenRooms.add(full.primaryRoomId);
       out.push(toListItem(full, userId));
     }
   }
 
   for (const adv of adventures().values()) {
     if (adv.ownerId !== userId && !adv.memberIds.includes(userId)) continue;
-    if (seen.has(adv.adventureId)) continue;
+    if (seenIds.has(adv.adventureId)) continue;
+    if (seenRooms.has(adv.primaryRoomId)) continue;
     if (shouldPurgeAdventure(adv)) continue;
     out.push(toListItem(adv, userId));
-    seen.add(adv.adventureId);
+    seenIds.add(adv.adventureId);
+    seenRooms.add(adv.primaryRoomId);
   }
 
   if (!out.some((a) => a.adventureId === "demo")) {
@@ -270,7 +356,7 @@ export async function listAdventuresForUser(userId: string): Promise<AdventureLi
     });
   }
 
-  return out.sort((a, b) => b.updatedAt - a.updatedAt);
+  return dedupeAdventureListItems(out).sort((a, b) => b.updatedAt - a.updatedAt);
 }
 
 export type AdventureMutationResult =

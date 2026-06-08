@@ -168,23 +168,14 @@ export function CharacterSheetPopup({
         ) : null}
 
         <div className="foundry-sheet-toolbar">
-
           <Link
-
             href={`/personagem/${actorId}`}
-
             className="foundry-window__btn"
-
             title="Abrir ficha em página inteira"
-
             aria-label="Abrir em nova página"
-
           >
-
             ↗
-
           </Link>
-
         </div>
 
         <MedievalFrame variant="gothic" compact flush className="mf--sheet-page mf--foundry-fill">

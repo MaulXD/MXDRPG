@@ -64,7 +64,7 @@ import { CombatFxLayer, type TokenCombatFlash } from "@/components/vtt/CombatFxL
 import type { CombatFxState } from "@/lib/vtt/combat-fx-types";
 import { ingestNewCombatFx, isPlayableCombatFxMessage } from "@/lib/vtt/combat-fx-sequence";
 import type { ChatMessage } from "@/lib/room/chat";
-import { activeTokenId } from "@/lib/room/combat";
+import { activeTokenId, normalizeCombatTrack } from "@/lib/room/combat";
 import { TurnHandoffOverlay } from "@/components/vtt/TurnHandoffOverlay";
 import {
   firstPortraitDataUrl,
@@ -1764,7 +1764,9 @@ export function HexBattlefield({
     ? displayScene.tokens.find((t) => t.id === turnActiveId) ?? null
     : null;
 
-  const combat = snapshot?.combat;
+  const combat = snapshot?.combat
+    ? normalizeCombatTrack(snapshot.combat, displayScene.tokens)
+    : undefined;
   const canEndTurn = canEndTurnProp;
 
   const playerToken = useMemo(() => {

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import type { CombatTrack } from "@/lib/room/combat";
-import { activeTokenId } from "@/lib/room/combat";
+import { activeTokenId, normalizeCombatTrack } from "@/lib/room/combat";
 import type { BattleToken } from "@/lib/vtt/types";
 import { nextCombatTurn } from "@/hooks/useRoomSync";
 
@@ -28,9 +28,10 @@ export function EndTurnBar({
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
 
-  const activeId = activeTokenId(combat);
+  const track = normalizeCombatTrack(combat, tokens);
+  const activeId = activeTokenId(track);
   const activeToken = tokens.find((t) => t.id === activeId);
-  const hasOrder = combat.order.length > 0;
+  const hasOrder = track.order.length > 0;
 
   if (!canEndTurn || !hasOrder) return null;
 
@@ -51,7 +52,7 @@ export function EndTurnBar({
   return (
     <div className="vtt-end-turn-bar" role="region" aria-label="Passar turno">
       <div className="vtt-end-turn-copy">
-        <span className="vtt-end-turn-label">Rodada {combat.round}</span>
+        <span className="vtt-end-turn-label">Rodada {track.round}</span>
         {activeToken ? (
           <span className="vtt-end-turn-active">
             Turno de: <strong>{activeToken.name}</strong>
