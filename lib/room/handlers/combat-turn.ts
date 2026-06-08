@@ -275,7 +275,7 @@ export async function rollRoomInitiative(roomId: string): Promise<RoomSnapshot |
   resetAllTokenMovement(room, initNotices);
   zeroAllTokenPaPools(room);
 
-  const notices: string[] = [];
+  const notices: string[] = [...initNotices];
   const maxSkips = Math.max(1, room.combat.order.length + 1);
   for (let i = 0; i < maxSkips; i++) {
     const active = getActiveBattleToken(room);

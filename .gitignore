@@ -30,3 +30,6 @@ __pycache__/
 *.pyc
 
 public/uploads/
+
+# Previews locais de design (não versionar)
+preview-ficha.html
