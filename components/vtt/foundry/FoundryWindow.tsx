@@ -16,6 +16,8 @@ type Props = {
   className?: string;
   minWidth?: number;
   minHeight?: number;
+  /** Botões extras na barra (ex.: exportar PDF) — antes de recolher/fechar */
+  headerExtra?: ReactNode;
 };
 
 export function FoundryWindow({
@@ -29,6 +31,7 @@ export function FoundryWindow({
   className = "",
   minWidth = 220,
   minHeight = 120,
+  headerExtra,
 }: Props) {
   const dragRef = useRef<{ startX: number; startY: number; origX: number; origY: number } | null>(
     null
@@ -134,6 +137,7 @@ export function FoundryWindow({
       >
         <span className="foundry-window__title">{title}</span>
         <div className="foundry-window__actions">
+          {headerExtra}
           <button
             type="button"
             className="foundry-window__btn"

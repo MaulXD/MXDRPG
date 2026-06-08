@@ -39,6 +39,8 @@ import { firstPortraitDataUrl } from "@/lib/room/portrait-sync";
 import { LOOT_NAMES } from "@/lib/character/loot-catalog";
 import { EMPTY_LOOT, loadLoot } from "@/lib/character/loot-storage";
 import { sanitizePortraitFocus } from "@/lib/media/portrait-focus";
+import { MedievalFrame } from "@/components/ui/MedievalFrame";
+import "@/components/ui/medieval-borders.css";
 import "./sheet.css";
 import "./sheet-popup.css";
 import "./sheet-pdf-capture.css";
@@ -46,6 +48,7 @@ import "./sheet-pdf-capture.css";
 type Props = {
   character: CharacterSheet;
   inventory: InventoryItem[];
+  roomId?: string;
 };
 
 const SKILL_ICONS = {
@@ -108,7 +111,7 @@ function PdfInventoryRow({
   );
 }
 
-export function SheetPdfCapture({ character, inventory }: Props) {
+export function SheetPdfCapture({ character, inventory, roomId }: Props) {
   const { identity, resources, movement, tactical } = character;
   const prof = proficiencyBonus(identity.nivel);
   const defesa = resolveActorDefesa(character);
@@ -141,8 +144,13 @@ export function SheetPdfCapture({ character, inventory }: Props) {
 
   const noopSave = async () => undefined;
 
+  const mesaHint = roomId
+    ? "Toque nas ações rápidas para abrir a mesa e rolar (na sua vez)."
+    : "Toque nas ações rápidas para abrir a ficha e rolar na mesa (na sua vez).";
+
   return (
     <div className="sheet-pdf-capture">
+      <MedievalFrame variant="gothic" compact flush className="mf--sheet-page sheet-pdf-capture__frame">
       <div className="sheet-shell sheet-shell--popup">
         <OrnamentCard className="sheet-popup-top">
           <div className="sheet-popup-top__portrait-col">
@@ -332,8 +340,11 @@ export function SheetPdfCapture({ character, inventory }: Props) {
 
         <p className="sheet-pdf-capture__footer">
           Eldarin · Ficha de personagem · Gerado em {new Date().toLocaleString("pt-BR")}
+          <br />
+          <span className="sheet-pdf-capture__footer-links">{mesaHint}</span>
         </p>
       </div>
+      </MedievalFrame>
     </div>
   );
 }
