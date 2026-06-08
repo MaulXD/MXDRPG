@@ -46,7 +46,10 @@ export function PortraitFocusFill({
           imgH={imgH}
           className={shape === "square" ? "portrait-focus-frame--square" : undefined}
         />
-      ) : null}
+      ) : (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img src={imageSrc} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+      )}
     </div>
   );
 }
