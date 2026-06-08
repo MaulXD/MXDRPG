@@ -40,9 +40,15 @@ export function syncMesaToastPosition(): void {
     stage.querySelector<HTMLElement>(".vtt-combat-hud-restore");
 
   if (!hud || hud.offsetHeight === 0) {
-    anchor.dataset.toastAnchor = "fallback";
-    anchor.style.removeProperty("--vtt-toast-top");
-    anchor.style.setProperty("--vtt-toast-lift", "1.25rem");
+    if (anchor.dataset.toastAnchor !== "fallback") {
+      anchor.dataset.toastAnchor = "fallback";
+    }
+    if (anchor.style.getPropertyValue("--vtt-toast-top")) {
+      anchor.style.removeProperty("--vtt-toast-top");
+    }
+    if (anchor.style.getPropertyValue("--vtt-toast-lift") !== "1.25rem") {
+      anchor.style.setProperty("--vtt-toast-lift", "1.25rem");
+    }
     return;
   }
 
@@ -50,10 +56,17 @@ export function syncMesaToastPosition(): void {
   const hudRect = hud.getBoundingClientRect();
   const gap = 12;
   const anchorY = hudRect.top - stageRect.top - gap;
+  const top = `${Math.max(8, anchorY)}px`;
 
-  anchor.dataset.toastAnchor = "hud";
-  anchor.style.setProperty("--vtt-toast-top", `${Math.max(8, anchorY)}px`);
-  anchor.style.removeProperty("--vtt-toast-lift");
+  if (anchor.dataset.toastAnchor !== "hud") {
+    anchor.dataset.toastAnchor = "hud";
+  }
+  if (anchor.style.getPropertyValue("--vtt-toast-top") !== top) {
+    anchor.style.setProperty("--vtt-toast-top", top);
+  }
+  if (anchor.style.getPropertyValue("--vtt-toast-lift")) {
+    anchor.style.removeProperty("--vtt-toast-lift");
+  }
 }
 
 function useMesaToastLift(itemCount: number) {
@@ -62,14 +75,19 @@ function useMesaToastLift(itemCount: number) {
     const stage = anchor?.closest(".foundry-mesa__stage");
     if (!anchor || !stage) return;
 
-    const sync = () => syncMesaToastPosition();
+    let raf = 0;
+    const sync = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => syncMesaToastPosition());
+    };
 
     sync();
     const ro = new ResizeObserver(sync);
     ro.observe(stage);
 
+    // childList apenas — attributes dispara loop (sync altera style/dataset do anchor no stage)
     const mo = new MutationObserver(sync);
-    mo.observe(stage, { childList: true, subtree: true, attributes: true });
+    mo.observe(stage, { childList: true, subtree: true });
 
     window.addEventListener("resize", sync);
     window.addEventListener("scroll", sync, true);
@@ -125,7 +143,7 @@ export function VttToastProvider({ children }: { children: ReactNode }) {
   const value = useMemo(() => ({ push, pushMany }), [push, pushMany]);
 
   const stack = (
-    <div className="vtt-toast-stack" aria-live="polite" aria-relevant="additions">
+    <div className="vtt-toast-stack" aria-relevant="additions">
       {items.map((t) => (
         <div key={t.id} className={`vtt-toast vtt-toast--${t.variant}`} role="status">
           {t.message}

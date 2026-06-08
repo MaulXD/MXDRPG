@@ -10,6 +10,20 @@ export function safeRedirectPath(raw: string | undefined | null): string | null 
   return t;
 }
 
+/** Caminho da mesa, com código de convite opcional na query. */
+export function mesaRoomPath(roomId: string, inviteCode?: string | null): string {
+  const base = `/mesa/${roomId}`;
+  const code = inviteCode?.trim();
+  if (!code) return base;
+  return `${base}?invite=${encodeURIComponent(code)}`;
+}
+
+/** URL de login com destino pós-auth (inclui query no destino, ex. `?invite=`). */
+export function entrarPath(dest: string): string {
+  const safe = safeRedirectPath(dest) ?? DEFAULT_POST_AUTH_PATH;
+  return `/entrar?redirect=${encodeURIComponent(safe)}`;
+}
+
 /** Após autenticação: apelido (se Postgres) e depois mesas ou URL pedida. */
 export function postAuthRedirect(user: SessionUser, requested?: string | null): string {
   const dest = safeRedirectPath(requested) ?? DEFAULT_POST_AUTH_PATH;
