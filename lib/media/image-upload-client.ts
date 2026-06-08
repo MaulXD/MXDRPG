@@ -88,7 +88,7 @@ function drawCover(
   const f = normalizePortraitFocus(focus);
   const iw = img.naturalWidth;
   const ih = img.naturalHeight;
-  const zoom = f.scale ?? 1;
+  const zoom = Math.max(1, f.scale ?? 1);
   const scale = Math.max(width / iw, height / ih) * zoom;
   const sw = width / scale;
   const sh = height / scale;

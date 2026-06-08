@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   normalizePortraitFocus,
   type PortraitFocus,
@@ -14,6 +14,7 @@ type Props = {
   imageSrc: string;
   focus: PortraitFocus;
   onFocusChange?: (focus: PortraitFocus) => void;
+  /** Tamanho inicial / fallback antes do ResizeObserver medir o frame real */
   size: number;
   imgW: number;
   imgH: number;
@@ -33,13 +34,38 @@ export function PortraitFocusFrame({
   className = "",
   label,
 }: Props) {
+  const frameRef = useRef<HTMLDivElement>(null);
   const dragRef = useRef<{ px: number; py: number; fx: number; fy: number } | null>(null);
+  const [framePx, setFramePx] = useState({ w: size, h: size });
   const normalized = normalizePortraitFocus(focus);
   const interactive = Boolean(onFocusChange) && !disabled && imgW > 0 && imgH > 0;
 
+  useEffect(() => {
+    setFramePx({ w: size, h: size });
+  }, [size]);
+
+  useEffect(() => {
+    const el = frameRef.current;
+    if (!el) return;
+    const measure = () => {
+      const rect = el.getBoundingClientRect();
+      const w = Math.round(rect.width);
+      const h = Math.round(rect.height);
+      if (w > 0 && h > 0) setFramePx({ w, h });
+    };
+    measure();
+    const ro = new ResizeObserver(() => measure());
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [imageSrc, className]);
+
+  const frameW = framePx.w;
+  const frameH = framePx.h;
+  const dragDenom = Math.max(frameW, frameH, 1);
+
   const layout =
-    imgW > 0 && imgH > 0
-      ? computeFocusImgLayout(normalized, size, size, imgW, imgH)
+    imgW > 0 && imgH > 0 && frameW > 0 && frameH > 0
+      ? computeFocusImgLayout(normalized, frameW, frameH, imgW, imgH)
       : null;
 
   const onPointerDown = useCallback(
@@ -56,8 +82,8 @@ export function PortraitFocusFrame({
     (e: React.PointerEvent) => {
       const d = dragRef.current;
       if (!d || !onFocusChange) return;
-      const dx = (e.clientX - d.px) / size;
-      const dy = (e.clientY - d.py) / size;
+      const dx = (e.clientX - d.px) / dragDenom;
+      const dy = (e.clientY - d.py) / dragDenom;
       onFocusChange(
         normalizePortraitFocus({
           ...normalized,
@@ -66,7 +92,7 @@ export function PortraitFocusFrame({
         })
       );
     },
-    [normalized, onFocusChange, size]
+    [normalized, onFocusChange, dragDenom]
   );
 
   const onPointerUp = useCallback(() => {
@@ -75,6 +101,7 @@ export function PortraitFocusFrame({
 
   return (
     <div
+      ref={frameRef}
       className={`portrait-focus-frame ${className}`.trim()}
       style={{ width: size, height: size }}
       onPointerDown={onPointerDown}
@@ -91,6 +118,14 @@ export function PortraitFocusFrame({
           alt=""
           className="portrait-focus-img"
           style={focusLayoutToImgStyle(layout)}
+          draggable={false}
+        />
+      ) : imgW > 0 && imgH > 0 ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={imageSrc}
+          alt=""
+          className="portrait-focus-img portrait-focus-img--cover-fallback"
           draggable={false}
         />
       ) : null}
