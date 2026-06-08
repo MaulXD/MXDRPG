@@ -22,7 +22,6 @@ export function RoomSettingsPanel({
   const [showMonsterHp, setShowMonsterHp] = useState(settings.showMonsterHpToPlayers);
   const [showMonsterHpChat, setShowMonsterHpChat] = useState(settings.showMonsterHpInChat);
   const [allowPing, setAllowPing] = useState(settings.allowPlayerPing);
-  const [gmBypass, setGmBypass] = useState(settings.gmBypassInitiative);
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState<string | null>(null);
 
@@ -31,7 +30,6 @@ export function RoomSettingsPanel({
     setShowMonsterHp(settings.showMonsterHpToPlayers);
     setShowMonsterHpChat(settings.showMonsterHpInChat);
     setAllowPing(settings.allowPlayerPing);
-    setGmBypass(settings.gmBypassInitiative);
   }, [roomName, settings]);
 
   async function save() {
@@ -44,7 +42,7 @@ export function RoomSettingsPanel({
         showMonsterHpToPlayers: showMonsterHp,
         showMonsterHpInChat: showMonsterHpChat,
         allowPlayerPing: allowPing,
-        gmBypassInitiative: gmBypass,
+        gmBypassInitiative: false,
       });
       onUpdated(snapshot);
       setMsg("Configurações salvas.");
@@ -94,14 +92,10 @@ export function RoomSettingsPanel({
 
       <fieldset className="vtt-settings-fieldset">
         <legend className="vtt-eyebrow">Combate</legend>
-        <label className="vtt-check">
-          <input
-            type="checkbox"
-            checked={gmBypass}
-            onChange={(e) => setGmBypass(e.target.checked)}
-          />
-          Mestre controla turnos (age fora da iniciativa e move qualquer token)
-        </label>
+        <p className="vtt-combat-hint" style={{ margin: 0 }}>
+          Você pode rolar iniciativa, reordenar a fila e passar turnos. Mover, atacar e usar magia só na
+          vez de cada token (personagens e monstros).
+        </p>
       </fieldset>
 
       <fieldset className="vtt-settings-fieldset">
