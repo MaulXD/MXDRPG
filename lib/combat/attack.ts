@@ -40,6 +40,7 @@ import {
   weaponAttackCount,
 } from "@/lib/combat/pa-economy";
 import { checkCanSpendPa } from "@/lib/combat/pa-turn";
+import { canActOnCombatTurn, TURN_WAIT_MSG } from "@/lib/combat/turn-guard";
 import { parseRecharge, rechargeBlockReason } from "@/lib/combat/recharge";
 import {
   actionWithChannel,
@@ -605,8 +606,14 @@ export function canAttackTarget(
   }
   if (attacker.id === defender.id) return { ok: false, reason: "Alvo inválido" };
 
-  if (turn?.activeTokenId && attacker.id !== turn.activeTokenId && !turn.bypassTurn) {
-    return { ok: false, reason: "Aguarde seu turno na iniciativa" };
+  if (
+    !canActOnCombatTurn(attacker.id, {
+      activeTokenId: turn?.activeTokenId,
+      bypassTurn: turn?.bypassTurn,
+      combatHasOrder: turn?.combatHasOrder,
+    })
+  ) {
+    return { ok: false, reason: TURN_WAIT_MSG };
   }
 
   const rechargeReason = rechargeBlockReason(attacker, action, turn?.combatRound ?? 1);

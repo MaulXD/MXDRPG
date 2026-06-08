@@ -7,6 +7,7 @@ import { checkCanSpendPa } from "@/lib/combat/pa-turn";
 import { rechargeBlockReason } from "@/lib/combat/recharge";
 import { applyConditionWithDuration } from "@/lib/combat/timed-effects";
 import type { CombatActionOption, CombatTurnOptions } from "@/lib/combat/types";
+import { canActOnCombatTurn, TURN_WAIT_MSG } from "@/lib/combat/turn-guard";
 import { spellcastingAttribute } from "@/lib/combat/attack";
 import type { SpellEffectKind } from "@/lib/combat/spell-parse";
 
@@ -26,8 +27,14 @@ const DEBUFF_CONDITION: Partial<Record<string, import("@/lib/combat/conditions")
 };
 
 function assertTurn(token: BattleToken, turn?: CombatTurnOptions): void {
-  if (turn?.activeTokenId && token.id !== turn.activeTokenId && !turn.bypassTurn) {
-    throw new Error("Aguarde seu turno na iniciativa");
+  if (
+    !canActOnCombatTurn(token.id, {
+      activeTokenId: turn?.activeTokenId,
+      bypassTurn: turn?.bypassTurn,
+      combatHasOrder: turn?.combatHasOrder,
+    })
+  ) {
+    throw new Error(TURN_WAIT_MSG);
   }
 }
 

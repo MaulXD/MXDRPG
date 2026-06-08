@@ -5,6 +5,7 @@ import { getSession } from "@/lib/auth/session";
 import { snapshotForViewer } from "@/lib/room/snapshot-for-viewer";
 import { moveRoomToken, getRoom, getRoomSnapshot } from "@/lib/room/store";
 import { activeTokenId } from "@/lib/room/combat";
+import { effectiveBypassTurn } from "@/lib/combat/turn-guard";
 import type { MoveMode } from "@/lib/vtt/movement";
 
 type Params = { params: Promise<{ roomId: string }> };
@@ -64,7 +65,7 @@ export async function POST(req: Request, { params }: Params) {
     mode,
     {
       activeTokenId: activeTokenId(snapshotBefore.combat),
-      bypassTurn: Boolean(body.bypassTurn && canBypass),
+      bypassTurn: Boolean(body.bypassTurn && token && effectiveBypassTurn(token, canBypass)),
     }
   );
 
