@@ -64,7 +64,7 @@ export default async function MesaRoomPage({ params, searchParams }: Props) {
   if (
     session?.user &&
     roomId !== "demo" &&
-    (room.ownerId === session.user.id || room.memberIds.includes(session.user.id))
+    (room.ownerId === session.user.id || (room.memberIds ?? []).includes(session.user.id))
   ) {
     const advId = room.adventureId ?? roomId;
     if (room.ownerId !== session.user.id) {
@@ -138,6 +138,8 @@ export default async function MesaRoomPage({ params, searchParams }: Props) {
       <RoomCharacterPrompt
         adventureId={room.adventureId ?? roomId}
         roomId={roomId}
+        roomOwnerId={room.ownerId}
+        memberIds={room.memberIds ?? []}
         roomName={room.name}
         actors={room.actors}
         session={session?.user ?? null}
