@@ -155,15 +155,15 @@ export function canChatInRoom(
   return canParticipateInRoom(room, user);
 }
 
-/** Ignorar iniciativa — só o mestre (ou admin), se habilitado nas configurações da mesa. */
+/**
+ * Bypass de ações fora do turno — desativado.
+ * O mestre ainda gerencia a fila via `canAdvanceCombatTurn` (passar turno, iniciativa, reordenar).
+ */
 export function canBypassCombatTurn(
-  room: Pick<RoomState, "ownerId"> & { settings?: RoomSettings | null },
-  user: SessionUser | null | undefined
+  _room: Pick<RoomState, "ownerId"> & { settings?: RoomSettings | null },
+  _user: SessionUser | null | undefined
 ): boolean {
-  if (!normalizeRoomSettings(room.settings).gmBypassInitiative) return false;
-  if (!user) return false;
-  if (user.role === "admin") return true;
-  return canManageRoom(room, user);
+  return false;
 }
 
 /** Retirar token do mapa — mestre (qualquer token) ou dono da ficha linkada. */

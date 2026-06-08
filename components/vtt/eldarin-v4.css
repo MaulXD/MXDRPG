@@ -9,8 +9,10 @@
 }
 
 .portrait--hud {
-  width: 72px;
-  height: 72px;
+  /* 1:1 com viewBox 80×80 da moldura SVG — evita desalinhamento do entalhe */
+  width: 80px;
+  height: 80px;
+  overflow: visible;
 }
 
 .portrait-inner {
@@ -33,7 +35,7 @@
 }
 
 .portrait--hud .portrait-inner {
-  inset: 6px;
+  inset: 7px;
 }
 
 .portrait-inner img,
@@ -44,6 +46,12 @@
 
 .portrait-inner img {
   object-fit: cover;
+  object-position: center center;
+}
+
+.portrait--hud .portrait-inner .portrait-focus-frame {
+  position: relative;
+  overflow: hidden;
 }
 
 .portrait-inner .portrait-focus-fill {
@@ -153,17 +161,23 @@
 .hud-corner--br { bottom: -2px; right: -2px; }
 
 .hud-portrait-wrap {
-  padding: 8px 0 8px 8px;
+  box-sizing: border-box;
+  width: 104px;
+  min-width: 104px;
+  padding: 10px 12px;
   flex-shrink: 0;
   display: flex;
   align-items: center;
+  justify-content: center;
+  overflow: visible;
 }
 
 .hud-divider {
   width: 1px;
   background: var(--border-accent);
-  margin: 8px 0 8px 8px;
+  margin: 10px 0;
   flex-shrink: 0;
+  align-self: stretch;
 }
 
 .hud-body {
