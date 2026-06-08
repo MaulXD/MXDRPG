@@ -1464,30 +1464,25 @@
 .vtt-turn-handoff__veil {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.36);
+  background: rgba(0, 0, 0, 0.62);
 }
 
 .vtt-turn-handoff__text {
   position: relative;
   z-index: 1;
   margin: 0;
-  padding: 0 1.25rem;
+  padding: 0.65rem 1.5rem;
   max-width: min(92%, 640px);
   text-align: center;
-  font-size: clamp(1.2rem, 3.2vw, 1.85rem);
-  font-weight: 500;
-  letter-spacing: 0.02em;
-  color: rgba(240, 236, 228, 0.92);
-  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.65);
-  line-height: 1.35;
-}
-
-.vtt-turn-handoff__name {
   font-family: var(--font-display);
-  font-size: clamp(1.45rem, 4.5vw, 2.35rem);
-  font-weight: 700;
-  color: var(--accent-primary, #e8d4a8);
-  letter-spacing: 0.03em;
+  font-size: clamp(1.25rem, 3.4vw, 1.9rem);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: #fff;
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.75);
+  line-height: 1.35;
+  background: rgba(0, 0, 0, 0.45);
+  border-radius: 8px;
 }
 
 @keyframes vtt-turn-handoff-in {
@@ -1946,7 +1941,7 @@
   box-sizing: border-box;
   pointer-events: none;
   z-index: 2;
-  animation: vtt-turn-ring-spin 11s linear infinite;
+  animation: vtt-turn-ring-spin 18s linear infinite;
 }
 
 .vtt-turn-avatar--active {
@@ -5114,8 +5109,8 @@
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
   gap: 0.4rem;
-  padding: 0.28rem 0.42rem;
-  min-height: 2.35rem;
+  padding: 0.22rem 0.42rem;
+  min-height: 2rem;
   border-radius: 0;
   border: none;
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
@@ -5146,13 +5141,20 @@
   justify-content: flex-start;
 }
 
+.vtt-turn-list--compact .vtt-turn-avatar-slot--active::before {
+  width: 28px;
+  height: 28px;
+  margin: -14px 0 0 -14px;
+  border-color: rgba(120, 190, 110, 0.92);
+}
+
 .vtt-turn-list--compact .vtt-turn-avatar {
   width: 26px;
   height: 26px;
 }
 
 .vtt-turn-list--compact .vtt-turn-avatar--active {
-  box-shadow: 0 0 0 2px rgba(120, 190, 110, 0.9);
+  box-shadow: 0 0 0 1.5px rgba(120, 190, 110, 0.55);
 }
 
 .vtt-turn-compact-main {
@@ -5163,11 +5165,15 @@
 }
 
 .vtt-turn-compact-copy {
-  display: flex;
-  flex-direction: column;
-  gap: 0.08rem;
   min-width: 0;
   flex: 1;
+}
+
+.vtt-turn-compact-name-row {
+  display: flex;
+  align-items: center;
+  gap: 0.28rem;
+  min-width: 0;
 }
 
 .vtt-turn-compact-name {
@@ -5178,6 +5184,8 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  flex: 0 1 auto;
+  min-width: 0;
 }
 
 .vtt-turn-list--compact li.defeated .vtt-turn-compact-name {
@@ -5192,6 +5200,24 @@
   text-transform: uppercase;
   color: #8fd4a0;
   line-height: 1;
+  flex-shrink: 0;
+}
+
+.vtt-turn-list--compact .vtt-turn-gm-actions {
+  flex-wrap: nowrap;
+  max-width: none;
+  flex-shrink: 0;
+  gap: 0.1rem;
+}
+
+.vtt-turn-list--compact .vtt-turn-gm-chip {
+  padding: 0.05rem 0.2rem;
+  font-size: 0.5rem;
+  line-height: 1.15;
+}
+
+.vtt-turn-list--compact .vtt-turn-gm-chip--active {
+  padding: 0.05rem 0.18rem;
 }
 
 .vtt-turn-compact-init {
@@ -5551,12 +5577,15 @@
 
 .vtt-mini-hud {
   position: absolute;
-  z-index: 8;
-  min-width: 120px;
-  max-width: 200px;
-  padding: 0.4rem 0.55rem;
+  z-index: 12;
+  min-width: 140px;
+  max-width: 220px;
+  padding: 0.45rem 0.6rem;
   border-radius: 8px;
   pointer-events: none;
+  background: rgba(8, 10, 14, 0.88);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.55);
 }
 
 .vtt-mini-hud--active {
@@ -5565,7 +5594,9 @@
 
 .vtt-mini-hud__name {
   display: block;
-  font-size: 0.78rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #fff;
   margin-bottom: 0.25rem;
 }
 
@@ -5589,14 +5620,20 @@
   height: 100%;
 }
 
-.vtt-mini-hud__damage {
-  margin: 0 0 0.2rem;
-  font-size: 0.72rem;
-  color: var(--text-muted);
+.vtt-mini-hud__hp--obscured .vtt-mini-hud__hp-track {
+  background: rgba(0, 0, 0, 0.5);
 }
 
-.vtt-mini-hud__damage strong {
-  color: #d47e7e;
+.vtt-mini-hud__hp-fill--obscured {
+  width: 100% !important;
+  opacity: 0.88;
+}
+
+.vtt-mini-hud__hp-obscured {
+  color: #c4b5fd;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
 }
 
 .vtt-mini-hud__move {

@@ -8,6 +8,7 @@ import {
 import {
   computeFocusImgLayout,
   focusLayoutToImgStyle,
+  type FocusFitMode,
 } from "@/lib/media/portrait-focus-layout";
 
 type Props = {
@@ -21,6 +22,8 @@ type Props = {
   disabled?: boolean;
   className?: string;
   label?: string;
+  /** contain = retrato; cover = token (preenche sem letterbox) */
+  fitMode?: FocusFitMode;
 };
 
 export function PortraitFocusFrame({
@@ -33,6 +36,7 @@ export function PortraitFocusFrame({
   disabled,
   className = "",
   label,
+  fitMode = "contain",
 }: Props) {
   const frameRef = useRef<HTMLDivElement>(null);
   const dragRef = useRef<{ px: number; py: number; fx: number; fy: number } | null>(null);
@@ -65,7 +69,7 @@ export function PortraitFocusFrame({
 
   const layout =
     imgW > 0 && imgH > 0 && frameW > 0 && frameH > 0
-      ? computeFocusImgLayout(normalized, frameW, frameH, imgW, imgH)
+      ? computeFocusImgLayout(normalized, frameW, frameH, imgW, imgH, fitMode)
       : null;
 
   const onPointerDown = useCallback(

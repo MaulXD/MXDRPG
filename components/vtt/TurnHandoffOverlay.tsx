@@ -87,7 +87,7 @@ export function TurnHandoffOverlay({ combat, tokens }: Props) {
     >
       <div className="vtt-turn-handoff__veil" aria-hidden />
       <p className="vtt-turn-handoff__text">
-        Vez de <strong className="vtt-turn-handoff__name">“{name}”</strong>
+        Vez de {name}
       </p>
     </div>
   );

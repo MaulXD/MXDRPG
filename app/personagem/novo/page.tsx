@@ -6,11 +6,12 @@ import {
   listCharactersForUser,
   MAX_CHARACTERS_PER_USER,
 } from "@/lib/character/characters";
+import { signInPath } from "@/lib/auth/post-auth-redirect";
 import { getSession } from "@/lib/auth/session";
 
 export default async function NovoPersonagemPage() {
   const session = await getSession();
-  if (!session) redirect("/entrar?redirect=/personagem/novo");
+  if (!session) redirect(signInPath("/personagem/novo"));
 
   const characters = await listCharactersForUser(session.user.id);
   const slotsLeft = MAX_CHARACTERS_PER_USER - characters.length;

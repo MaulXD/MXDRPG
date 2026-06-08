@@ -102,10 +102,17 @@ export function useHexCanvas(
   const [themeTick, setThemeTick] = useState(0);
   const pathDashPhaseRef = useRef(0);
   const tokenAnimTimeSecRef = useRef(0);
+  const tokenHoverScaleRef = useRef(1);
+  const lastAnimFrameMsRef = useRef(0);
   const frameAnimRef = useRef<number | null>(null);
 
+  const TOKEN_HOVER_SCALE = 1.05;
+
   const needsCanvasAnimation = useCallback((s: HexCanvasDrawState) => {
+    const hoverTarget = s.hoverTokenId ? TOKEN_HOVER_SCALE : 1;
+    if (Math.abs(tokenHoverScaleRef.current - hoverTarget) > 0.004) return true;
     return (
+      Boolean(s.hoverTokenId) ||
       Boolean(s.turnActiveId) ||
       s.attackableIds.size > 0 ||
       Boolean(s.hoverAttackTargetId) ||
@@ -214,6 +221,7 @@ export function useHexCanvas(
       spellPickedTargetIds: s.spellPickedTargetIds,
       hoverAttackTargetId: s.hoverAttackTargetId,
       hoverTokenId: s.hoverTokenId,
+      tokenHoverScale: tokenHoverScaleRef.current,
       tokenAnimTimeSec: tokenAnimTimeSecRef.current,
       tokenFlash: s.tokenFlash,
       tokenCastFx: s.tokenCastFx,
@@ -249,8 +257,14 @@ export function useHexCanvas(
 
     const loop = (t: number) => {
       const sec = t / 1000;
+      const prev = lastAnimFrameMsRef.current || t;
+      const dt = Math.min(0.05, (t - prev) / 1000);
+      lastAnimFrameMsRef.current = t;
       pathDashPhaseRef.current = sec % 1;
       tokenAnimTimeSecRef.current = sec;
+      const hoverTarget = stateRef.current.hoverTokenId ? TOKEN_HOVER_SCALE : 1;
+      tokenHoverScaleRef.current +=
+        (hoverTarget - tokenHoverScaleRef.current) * Math.min(1, dt * 14);
       drawRef.current();
       if (needsCanvasAnimation(stateRef.current)) {
         frameAnimRef.current = requestAnimationFrame(loop);

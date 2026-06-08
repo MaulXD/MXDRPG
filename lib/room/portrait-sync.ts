@@ -1,6 +1,13 @@
 import type { CharacterSheet } from "@/lib/character/types";
+import {
+  DEFAULT_PORTRAIT_FOCUS,
+  resolveTokenFocus,
+  type PortraitFocus,
+} from "@/lib/media/portrait-focus";
 import type { BattleScene, BattleToken } from "@/lib/vtt/types";
 import type { RoomActor } from "./types";
+
+type PortraitActor = Pick<CharacterSheet | RoomActor, "portraitUrl" | "tokenImageUrl" | "portraitFocus" | "tokenFocus">;
 
 export function firstPortraitDataUrl(
   ...candidates: (string | null | undefined)[]
@@ -11,11 +18,24 @@ export function firstPortraitDataUrl(
   return null;
 }
 
+/** URL do token no mapa — prioriza WebP já enquadrado (sem reaplicar zoom). */
+export function resolveActorTokenImageUrl(actor: PortraitActor): string | null {
+  return firstPortraitDataUrl(actor.tokenImageUrl, actor.portraitUrl);
+}
+
 export function resolveLinkedTokenImageUrl(
   token: BattleToken,
   actor: CharacterSheet | RoomActor
 ): string | null {
   return firstPortraitDataUrl(actor.tokenImageUrl, actor.portraitUrl, token.imageUrl);
+}
+
+/** Foco no hex/HUD: padrão quando a imagem do token já foi recortada no upload. */
+export function resolveLinkedTokenImageFocus(actor: PortraitActor): PortraitFocus {
+  if (typeof actor.tokenImageUrl === "string" && actor.tokenImageUrl.length > 0) {
+    return DEFAULT_PORTRAIT_FOCUS;
+  }
+  return resolveTokenFocus(actor) ?? DEFAULT_PORTRAIT_FOCUS;
 }
 
 export function mergeTokenPortraitFields(

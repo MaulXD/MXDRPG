@@ -3,6 +3,7 @@ import { CharacterSheet } from "@/components/character/CharacterSheet";
 import { MedievalFrame } from "@/components/ui/MedievalFrame";
 import { canEditCharacter, resolveCharacter } from "@/lib/character/characters";
 import { canEditCharacterPortrait } from "@/lib/auth/portrait-access-server";
+import { signInPath } from "@/lib/auth/post-auth-redirect";
 import { getSession } from "@/lib/auth/session";
 import { getPackEntries } from "@/lib/compendium/registry";
 import type { CompendiumPackId } from "@/lib/compendium/types";
@@ -15,7 +16,7 @@ const PLAYER_PACKS: CompendiumPackId[] = ["armas", "habilidades", "magias", "equ
 export default async function PersonagemPage({ params }: Props) {
   const { id } = await params;
   const session = await getSession();
-  if (!session) redirect(`/entrar?redirect=/personagem/${id}`);
+  if (!session) redirect(signInPath(`/personagem/${id}`));
 
   const character = await resolveCharacter(id);
   if (!character) notFound();

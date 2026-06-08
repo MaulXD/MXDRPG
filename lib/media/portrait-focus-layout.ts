@@ -8,8 +8,11 @@ export type FocusImgLayout = {
   height: number;
 };
 
+export type FocusFitMode = "contain" | "cover";
+
 /**
- * scale 1 = imagem inteira visível (fit + letterbox se preciso).
+ * contain: scale 1 = imagem inteira visível (letterbox se preciso).
+ * cover: scale 1 = preenche o quadro (recorte se preciso).
  * scale > 1 = zoom a partir desse enquadramento.
  */
 export function computeFocusImgLayout(
@@ -17,13 +20,17 @@ export function computeFocusImgLayout(
   frameW: number,
   frameH: number,
   imgW: number,
-  imgH: number
+  imgH: number,
+  fitMode: FocusFitMode = "contain"
 ): FocusImgLayout {
   const f = normalizePortraitFocus(focus);
   const zoom = Math.max(1, f.scale ?? 1);
-  const containScale = Math.min(frameW / imgW, frameH / imgH);
-  const width = imgW * containScale * zoom;
-  const height = imgH * containScale * zoom;
+  const baseScale =
+    fitMode === "cover"
+      ? Math.max(frameW / imgW, frameH / imgH)
+      : Math.min(frameW / imgW, frameH / imgH);
+  const width = imgW * baseScale * zoom;
+  const height = imgH * baseScale * zoom;
 
   const maxPanX = Math.max(0, width - frameW);
   const maxPanY = Math.max(0, height - frameH);

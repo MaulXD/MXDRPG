@@ -48,17 +48,14 @@ export async function getLegacyCookieSession(): Promise<SessionPayload | null> {
 }
 
 export async function getSession(): Promise<SessionPayload | null> {
-  if (isClerkEnabled()) {
-    const clerkUser = await resolveClerkSessionUser();
-    if (clerkUser) {
-      return { user: clerkUser, issuedAt: Date.now() };
-    }
+  if (!isClerkEnabled()) return null;
+
+  const clerkUser = await resolveClerkSessionUser();
+  if (clerkUser) {
+    return { user: clerkUser, issuedAt: Date.now() };
   }
 
-  const store = await cookies();
-  const raw = store.get(SESSION_COOKIE)?.value;
-  if (!raw) return null;
-  return decode(raw);
+  return null;
 }
 
 export async function requireSession(): Promise<SessionUser> {

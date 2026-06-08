@@ -41,6 +41,7 @@ export function Portrait({
             imgW={imgW}
             imgH={imgH}
             shape="square"
+            fitMode={size === "hud" ? "cover" : "contain"}
           />
         ) : imageSrc ? (
           // eslint-disable-next-line @next/next/no-img-element

@@ -2,6 +2,7 @@
 
 import { ClerkProvider } from "@clerk/nextjs";
 import type { ReactNode } from "react";
+import { clerkSocialOnlyAppearance } from "@/lib/auth/clerk-appearance";
 
 type Props = {
   children: ReactNode;
@@ -10,5 +11,5 @@ type Props = {
 
 export function AuthProvider({ children, enabled }: Props) {
   if (!enabled) return children;
-  return <ClerkProvider>{children}</ClerkProvider>;
+  return <ClerkProvider appearance={clerkSocialOnlyAppearance}>{children}</ClerkProvider>;
 }

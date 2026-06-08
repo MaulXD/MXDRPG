@@ -496,14 +496,13 @@ export function HexBattlefield({
       string,
       ReturnType<typeof resolveTokenHpDisplay>
     >();
-    const hoveredId = hoverTokenId ?? hoverTargetId;
     for (const token of displayScene.tokens) {
       map.set(
         token.id,
         resolveTokenHpDisplay(token, {
           isRoomGm,
           showMonsterHpToPlayers: roomSettings.showMonsterHpToPlayers,
-          hovered: hoveredId === token.id,
+          hovered: false,
           session: session ?? null,
           roomActors,
           roomOwnerId,
@@ -515,8 +514,6 @@ export function HexBattlefield({
     displayScene.tokens,
     isRoomGm,
     roomSettings.showMonsterHpToPlayers,
-    hoverTokenId,
-    hoverTargetId,
     session,
     roomActors,
     roomOwnerId,
@@ -2027,22 +2024,29 @@ export function HexBattlefield({
 
   const [dockRoot, setDockRoot] = useState<HTMLElement | null>(null);
   const [hudRoot, setHudRoot] = useState<HTMLElement | null>(null);
+  const [hudOverlayRoot, setHudOverlayRoot] = useState<HTMLElement | null>(null);
   const resolveDockRoot = useCallback(() => document.getElementById("foundry-sidebar-dock"), []);
   const resolveHudRoot = useCallback(() => document.getElementById("foundry-mesa-windows"), []);
+  const resolveHudOverlayRoot = useCallback(
+    () => (foundryLayout ? document.getElementById("foundry-mesa-hud") : null),
+    [foundryLayout]
+  );
 
   useLayoutEffect(() => {
     setDockRoot(resolveDockRoot());
     setHudRoot(resolveHudRoot());
-  }, [resolveDockRoot, resolveHudRoot]);
+    setHudOverlayRoot(resolveHudOverlayRoot());
+  }, [resolveDockRoot, resolveHudRoot, resolveHudOverlayRoot]);
 
   useEffect(() => {
-    if (dockRoot && hudRoot) return;
+    if (dockRoot && hudRoot && (!foundryLayout || hudOverlayRoot)) return;
     const id = window.requestAnimationFrame(() => {
       setDockRoot(resolveDockRoot());
       setHudRoot(resolveHudRoot());
+      setHudOverlayRoot(resolveHudOverlayRoot());
     });
     return () => window.cancelAnimationFrame(id);
-  }, [dockRoot, hudRoot, resolveDockRoot, resolveHudRoot]);
+  }, [dockRoot, hudRoot, hudOverlayRoot, foundryLayout, resolveDockRoot, resolveHudRoot, resolveHudOverlayRoot]);
 
   const dockTarget = dockRoot;
   const float = (id: MesaWindowId) => Boolean(isWindowFloating?.(id));
@@ -2446,42 +2450,60 @@ export function HexBattlefield({
             onUpdate={refresh}
           />
         ) : null}
-        {hudToken && hudVisible ? (
-          <CharacterCombatHud
-            token={hudToken}
-            combat={combat}
-            isGmView={isRoomGm && !hudIsControlled}
-            isControlled={hudIsControlled}
-            canViewPa={canViewTokenPaFn(hudToken)}
-            canEndTurn={canEndTurn || canControlCombat}
-            canControlCombat={canControlCombat}
-            roomId={roomId}
-            onOpenSheet={onOpenSheet}
-            onSnapshot={syncRoom}
-            onUpdate={refresh}
-            onHide={() => setHudVisible(false)}
-            portraitFallback={hudPortraitFallback}
-            portraitFocus={hudToken ? focusByTokenId.get(hudToken.id) : undefined}
-          />
-        ) : hudToken ? (
-          <CombatHudRestoreButton token={hudToken} onShow={() => setHudVisible(true)} />
-        ) : null}
-        {showHoverMiniHud && hoverMiniHudToken && hoverMiniHudAnchor ? (
-          <TokenHoverMiniHud
-            token={hoverMiniHudToken}
-            combat={combat}
-            anchor={hoverMiniHudAnchor}
-            isGm={isRoomGm}
-            viewerToken={playerToken}
-            showMovement={highlights.turnMovePreview}
-          />
-        ) : null}
+        {(() => {
+          if (!hudToken) return null;
+          const layer =
+            hudVisible ? (
+              <CharacterCombatHud
+                token={hudToken}
+                combat={combat}
+                isGmView={isRoomGm && !hudIsControlled}
+                isControlled={hudIsControlled}
+                canViewPa={canViewTokenPaFn(hudToken)}
+                canEndTurn={canEndTurn || canControlCombat}
+                canControlCombat={canControlCombat}
+                roomId={roomId}
+                onOpenSheet={onOpenSheet}
+                onSnapshot={syncRoom}
+                onUpdate={refresh}
+                onHide={() => setHudVisible(false)}
+                portraitFallback={hudPortraitFallback}
+                portraitFocus={focusByTokenId.get(hudToken.id)}
+              />
+            ) : (
+              <CombatHudRestoreButton token={hudToken} onShow={() => setHudVisible(true)} />
+            );
+          if (foundryLayout && hudOverlayRoot) {
+            return createPortal(layer, hudOverlayRoot);
+          }
+          return layer;
+        })()}
+        {showHoverMiniHud && hoverMiniHudToken && hoverMiniHudAnchor
+          ? (() => {
+              const miniHud = (
+                <TokenHoverMiniHud
+                  token={hoverMiniHudToken}
+                  combat={combat}
+                  anchor={hoverMiniHudAnchor}
+                  isGm={isRoomGm}
+                  viewerToken={playerToken}
+                  showMonsterHpToPlayers={roomSettings.showMonsterHpToPlayers}
+                  showMovement={highlights.turnMovePreview}
+                />
+              );
+              if (foundryLayout && hudOverlayRoot) {
+                return createPortal(miniHud, hudOverlayRoot);
+              }
+              return miniHud;
+            })()
+          : null}
         <BattlefieldActionHud
           preview={actionPreview}
           anchor={actionPreviewAnchor}
           targetToken={targetingHoverTarget}
           isGm={isRoomGm}
           viewerToken={playerToken}
+          showMonsterHpToPlayers={roomSettings.showMonsterHpToPlayers}
         />
         <CombatFxLayer
           wrapRef={wrapRef}

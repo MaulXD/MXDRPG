@@ -4,7 +4,10 @@ import type { Axial } from "@/lib/vtt/hex-math";
 import { defaultMovementFields } from "@/lib/vtt/movement";
 import { creatureSizeOf } from "@/lib/vtt/creature-size";
 import { playerColorForActor } from "@/lib/vtt/token-colors";
-import { DEFAULT_PORTRAIT_FOCUS, resolveTokenFocus } from "@/lib/media/portrait-focus";
+import {
+  resolveActorTokenImageUrl,
+  resolveLinkedTokenImageFocus,
+} from "@/lib/room/portrait-sync";
 import type { BattleToken } from "@/lib/vtt/types";
 
 export function createPlayerTokenFromActor(
@@ -16,7 +19,8 @@ export function createPlayerTokenFromActor(
   const paMax = paMaxForActor(actor);
   /** Pool preenchido no início do turno em combate — evita carry fantasma ao spawnar. */
   const pa = 0;
-  const focus = resolveTokenFocus(actor) ?? DEFAULT_PORTRAIT_FOCUS;
+  const imageUrl = resolveActorTokenImageUrl(actor);
+  const focus = resolveLinkedTokenImageFocus(actor);
 
   return {
     id,
@@ -36,7 +40,7 @@ export function createPlayerTokenFromActor(
     vida: actor.resources.vida.value,
     vidaMax: actor.resources.vida.max,
     defesa: actor.tactical.defesa,
-    imageUrl: actor.tokenImageUrl ?? actor.portraitUrl ?? null,
+    imageUrl,
     imageFocus: focus,
     movementWalkMax: actor.movement.walk,
     movementRunMax: actor.movement.run,

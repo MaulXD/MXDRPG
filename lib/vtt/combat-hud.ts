@@ -5,14 +5,9 @@ import { activeTokenId } from "@/lib/room/combat";
 import type { BattleToken } from "@/lib/vtt/types";
 import { hpRatio } from "@/lib/vtt/token-hp-display";
 
-export type MiniHudMode = "full" | "damage" | "none";
+export type MiniHudMode = "full" | "obscured" | "name";
 
-/** Dano acumulado no monstro (PV máx − atual), sem revelar vida restante. */
-export function monsterDamageTaken(token: BattleToken): number {
-  if (token.vidaMax == null || token.vidaMax <= 0) return 0;
-  const current = token.vida ?? token.vidaMax;
-  return Math.max(0, token.vidaMax - current);
-}
+const OBSCURED_HP_COLOR = "#8b5cf6";
 
 export function turnOrderHint(
   combat: CombatTrack | null | undefined,
@@ -28,22 +23,39 @@ export function turnOrderHint(
   return { label: `${idx + 1}º na ordem`, isActive: false };
 }
 
+function isHostileCreature(token: BattleToken): boolean {
+  return isMonsterToken(token) || Boolean(token.monsterEntryId || token.gmCreationId);
+}
+
+export function obscuredHpBarColor(): string {
+  return OBSCURED_HP_COLOR;
+}
+
 export function miniHudModeForViewer(
   hovered: BattleToken,
   opts: {
     isGm: boolean;
     viewerToken: BattleToken | null;
+    showMonsterHpToPlayers?: boolean;
   }
 ): MiniHudMode {
-  if (opts.isGm) return "full";
-  const viewer = opts.viewerToken;
-  if (!viewer) return "none";
-  if (viewer.id === hovered.id) return "full";
-  if (isAllyToken(viewer, hovered)) return "full";
-  if (isMonsterToken(hovered) || hovered.monsterEntryId || hovered.gmCreationId) {
-    return "damage";
+  const showMonsterHp = opts.showMonsterHpToPlayers ?? false;
+
+  if (opts.isGm) {
+    return hovered.vidaMax != null && hovered.vida != null ? "full" : "name";
   }
-  return "none";
+
+  const viewer = opts.viewerToken;
+  if (viewer && (viewer.id === hovered.id || isAllyToken(viewer, hovered))) {
+    return hovered.vidaMax != null ? "full" : "name";
+  }
+
+  if (isHostileCreature(hovered)) {
+    if (showMonsterHp && hovered.vidaMax != null) return "full";
+    return "obscured";
+  }
+
+  return "name";
 }
 
 export function hpBarPercent(token: BattleToken): number {
