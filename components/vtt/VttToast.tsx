@@ -125,7 +125,7 @@ export function VttToastProvider({ children }: { children: ReactNode }) {
   const value = useMemo(() => ({ push, pushMany }), [push, pushMany]);
 
   const stack = (
-    <div className="vtt-toast-stack" aria-live="polite" aria-relevant="additions">
+    <div className="vtt-toast-stack" aria-relevant="additions">
       {items.map((t) => (
         <div key={t.id} className={`vtt-toast vtt-toast--${t.variant}`} role="status">
           {t.message}
