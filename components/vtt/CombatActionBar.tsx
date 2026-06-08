@@ -41,6 +41,12 @@ export function CombatActionBar({
 }: Props) {
   const turn = useCombatTurn({ combat, canBypassTurn });
   const attackerBypass = effectiveBypassTurn(attacker, canBypassTurn);
+  const attackerTurn = {
+    activeTokenId: turn.activeTokenId,
+    bypassTurn: attackerBypass,
+    combatHasOrder: turn.combatHasOrder,
+    combatRound: turn.combatRound,
+  };
   const { actor, actions, action, extraAttacks, selfAbilityOk } = useCombatActions(
     attacker,
     tokens,
@@ -53,7 +59,7 @@ export function CombatActionBar({
 
   const targets = useMemo(() => {
     if (!action || action.selfTarget || isAreaSpellAction(action)) return [];
-    const prepared = attackerForCombatCheck(attacker, actor, turn, {
+    const prepared = attackerForCombatCheck(attacker, actor, attackerTurn, {
       combatHasOrder: turn.combatHasOrder,
     });
     return tokens
@@ -61,14 +67,8 @@ export function CombatActionBar({
       .map((t) => {
         const check =
           action.kind === "ability"
-            ? canAbilityTarget(prepared, t, action, {
-                activeTokenId: turn.activeTokenId,
-                bypassTurn: turn.bypassTurn,
-              }, actor)
-            : canAttackTarget(prepared, t, action, {
-                activeTokenId: turn.activeTokenId,
-                bypassTurn: turn.bypassTurn,
-              }, { actor });
+            ? canAbilityTarget(prepared, t, action, attackerTurn, actor)
+            : canAttackTarget(prepared, t, action, attackerTurn, { actor });
         return { token: t, dist: tokenAxialDistance(prepared, t), ...check };
       })
       .filter((t) => t.dist <= action.rangeHex);
