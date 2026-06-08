@@ -11,6 +11,8 @@ export type StoredUser = {
   nickname?: string | null;
   name: string;
   passwordHash: string | null;
+  cpfPrefixHash?: string | null;
+  birthDate?: string | null;
   role: UserRole;
   createdAt: number;
 };
@@ -26,9 +28,23 @@ type UserRow = {
   nickname: string | null;
   name: string;
   password_hash: string | null;
+  cpf_prefix_hash: string | null;
+  birth_date: string | Date | null;
   role: string;
   created_at: number;
 };
+
+function formatBirthDate(value: string | Date | null | undefined): string | null {
+  if (value == null) return null;
+  if (value instanceof Date) {
+    const y = value.getFullYear();
+    const m = String(value.getMonth() + 1).padStart(2, "0");
+    const d = String(value.getDate()).padStart(2, "0");
+    return `${y}-${m}-${d}`;
+  }
+  const raw = String(value).slice(0, 10);
+  return /^\d{4}-\d{2}-\d{2}$/.test(raw) ? raw : null;
+}
 
 function rowToStored(r: UserRow): StoredUser {
   return {
@@ -38,6 +54,8 @@ function rowToStored(r: UserRow): StoredUser {
     nickname: r.nickname,
     name: r.name,
     passwordHash: r.password_hash,
+    cpfPrefixHash: r.cpf_prefix_hash,
+    birthDate: formatBirthDate(r.birth_date),
     role: normalizeUserRole(r.role),
     createdAt: Number(r.created_at),
   };
@@ -58,7 +76,7 @@ export async function fetchUserByEmail(email: string): Promise<StoredUser | null
   if (!sql) return null;
   const key = slugEmail(email);
   const rows = await sql<UserRow[]>`
-    SELECT id, clerk_id, email, nickname, name, password_hash, role, created_at
+    SELECT id, clerk_id, email, nickname, name, password_hash, cpf_prefix_hash, birth_date, role, created_at
     FROM eldarin_users WHERE LOWER(email) = ${key} LIMIT 1
   `;
   const r = rows[0];
@@ -70,7 +88,7 @@ export async function fetchUserByNickname(nickname: string): Promise<StoredUser 
   if (!sql) return null;
   const key = normalizeNickname(nickname);
   const rows = await sql<UserRow[]>`
-    SELECT id, clerk_id, email, nickname, name, password_hash, role, created_at
+    SELECT id, clerk_id, email, nickname, name, password_hash, cpf_prefix_hash, birth_date, role, created_at
     FROM eldarin_users WHERE LOWER(nickname) = ${key} LIMIT 1
   `;
   const r = rows[0];
@@ -81,7 +99,7 @@ export async function fetchUserByClerkId(clerkId: string): Promise<StoredUser | 
   const sql = getSql();
   if (!sql) return null;
   const rows = await sql<UserRow[]>`
-    SELECT id, clerk_id, email, nickname, name, password_hash, role, created_at
+    SELECT id, clerk_id, email, nickname, name, password_hash, cpf_prefix_hash, birth_date, role, created_at
     FROM eldarin_users WHERE clerk_id = ${clerkId} LIMIT 1
   `;
   const r = rows[0];
@@ -92,7 +110,7 @@ export async function fetchUserById(id: string): Promise<SessionUser | null> {
   const sql = getSql();
   if (!sql) return null;
   const rows = await sql<UserRow[]>`
-    SELECT id, clerk_id, email, nickname, name, password_hash, role, created_at
+    SELECT id, clerk_id, email, nickname, name, password_hash, cpf_prefix_hash, birth_date, role, created_at
     FROM eldarin_users WHERE id = ${id} LIMIT 1
   `;
   const r = rows[0];
@@ -245,7 +263,7 @@ export async function completeUserPasswordRegistration(
   if (password.length < 6) throw new Error("Senha deve ter pelo menos 6 caracteres");
 
   const existing = await sql<UserRow[]>`
-    SELECT id, clerk_id, email, nickname, name, password_hash, role, created_at
+    SELECT id, clerk_id, email, nickname, name, password_hash, cpf_prefix_hash, birth_date, role, created_at
     FROM eldarin_users WHERE id = ${userId} LIMIT 1
   `;
   const row = existing[0];
@@ -271,7 +289,47 @@ export async function completeUserPasswordRegistration(
   `;
 
   const updated = await sql<UserRow[]>`
-    SELECT id, clerk_id, email, nickname, name, password_hash, role, created_at
+    SELECT id, clerk_id, email, nickname, name, password_hash, cpf_prefix_hash, birth_date, role, created_at
+    FROM eldarin_users WHERE id = ${userId} LIMIT 1
+  `;
+  return rowToStored(updated[0]!);
+}
+
+export async function updateUserProfile(
+  userId: string,
+  opts: { name?: string; nickname?: string | null }
+): Promise<StoredUser> {
+  const sql = getSql();
+  if (!sql) throw new Error("DATABASE_URL não configurada");
+
+  const existing = await sql<UserRow[]>`
+    SELECT id, clerk_id, email, nickname, name, password_hash, cpf_prefix_hash, birth_date, role, created_at
+    FROM eldarin_users WHERE id = ${userId} LIMIT 1
+  `;
+  const row = existing[0];
+  if (!row) throw new Error("Conta não encontrada");
+
+  let nick = row.nickname;
+  if (opts.nickname !== undefined) {
+    if (opts.nickname?.trim()) {
+      const v = validateNickname(opts.nickname);
+      if (!v.ok) throw new Error(v.error);
+      const taken = await fetchUserByNickname(v.nickname);
+      if (taken && taken.id !== userId) throw new Error("Este apelido já está em uso");
+      nick = v.nickname;
+    } else {
+      nick = null;
+    }
+  }
+
+  const name = opts.name?.trim().slice(0, 80) || row.name;
+
+  await sql`
+    UPDATE eldarin_users SET name = ${name}, nickname = ${nick} WHERE id = ${userId}
+  `;
+
+  const updated = await sql<UserRow[]>`
+    SELECT id, clerk_id, email, nickname, name, password_hash, cpf_prefix_hash, birth_date, role, created_at
     FROM eldarin_users WHERE id = ${userId} LIMIT 1
   `;
   return rowToStored(updated[0]!);

@@ -29,7 +29,7 @@ export async function SiteHeaderWrapper() {
             {roleMeta(session.user.role).label}
           </Link>
         ) : (
-          <Link href="/entrar" className="btn nav-cta">
+          <Link href="/sign-in" className="btn nav-cta">
             Entrar
           </Link>
         )}

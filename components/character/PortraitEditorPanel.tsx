@@ -226,6 +226,7 @@ export function PortraitEditorPanel({
                   size={DUO_PREVIEW}
                   imgW={imgSize.w}
                   imgH={imgSize.h}
+                  fitMode="cover"
                   className="portrait-focus-frame--duo"
                 />
               ) : (

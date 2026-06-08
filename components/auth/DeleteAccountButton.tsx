@@ -24,7 +24,7 @@ export function DeleteAccountButton() {
       return;
     }
     const data = await res.json();
-    router.push(data.redirect ?? "/entrar");
+    router.push(data.redirect ?? "/sign-in");
     router.refresh();
   }
 

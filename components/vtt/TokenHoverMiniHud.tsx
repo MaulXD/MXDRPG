@@ -5,9 +5,8 @@ import type { BattleToken } from "@/lib/vtt/types";
 import {
   hpBarPercent,
   miniHudModeForViewer,
-  monsterDamageTaken,
+  obscuredHpBarColor,
   turnOrderHint,
-  type MiniHudMode,
 } from "@/lib/vtt/combat-hud";
 import { hexToMeters, walkRemaining } from "@/lib/vtt/movement";
 import { hpBarColor, hpRatio } from "@/lib/vtt/token-hp-display";
@@ -18,6 +17,7 @@ type Props = {
   anchor: { x: number; y: number };
   isGm: boolean;
   viewerToken: BattleToken | null;
+  showMonsterHpToPlayers?: boolean;
   /** Caminhada restante no turno (só no hover do token ativo). */
   showMovement?: boolean;
 };
@@ -28,14 +28,12 @@ export function TokenHoverMiniHud({
   anchor,
   isGm,
   viewerToken,
+  showMonsterHpToPlayers = false,
   showMovement = false,
 }: Props) {
-  const mode: MiniHudMode = miniHudModeForViewer(token, { isGm, viewerToken });
-  if (mode === "none") return null;
-
+  const mode = miniHudModeForViewer(token, { isGm, viewerToken, showMonsterHpToPlayers });
   const turn = turnOrderHint(combat, token.id);
   const ratio = hpRatio(token);
-  const damage = monsterDamageTaken(token);
 
   return (
     <div
@@ -47,9 +45,7 @@ export function TokenHoverMiniHud({
       }}
       role="tooltip"
     >
-      <strong className="vtt-mini-hud__name" style={{ color: token.color }}>
-        {token.name}
-      </strong>
+      <strong className="vtt-mini-hud__name">{token.name}</strong>
 
       {mode === "full" && token.vidaMax != null ? (
         <div className="vtt-mini-hud__hp">
@@ -63,10 +59,16 @@ export function TokenHoverMiniHud({
             {token.vida ?? 0}/{token.vidaMax}
           </span>
         </div>
-      ) : mode === "damage" ? (
-        <p className="vtt-mini-hud__damage">
-          Dano recebido: <strong>{damage}</strong> PV
-        </p>
+      ) : mode === "obscured" ? (
+        <div className="vtt-mini-hud__hp vtt-mini-hud__hp--obscured">
+          <div className="vtt-mini-hud__hp-track" aria-hidden>
+            <div
+              className="vtt-mini-hud__hp-fill vtt-mini-hud__hp-fill--obscured"
+              style={{ background: obscuredHpBarColor() }}
+            />
+          </div>
+          <span className="vtt-mini-hud__hp-obscured">??/??</span>
+        </div>
       ) : null}
 
       {showMovement ? (

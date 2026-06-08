@@ -4,7 +4,7 @@ import type { ActionPreview } from "@/lib/combat/action-preview";
 import {
   hpBarPercent,
   miniHudModeForViewer,
-  monsterDamageTaken,
+  obscuredHpBarColor,
   type MiniHudMode,
 } from "@/lib/vtt/combat-hud";
 import { hpBarColor, hpRatio } from "@/lib/vtt/token-hp-display";
@@ -18,6 +18,7 @@ type Props = {
   targetToken?: BattleToken | null;
   isGm?: boolean;
   viewerToken?: BattleToken | null;
+  showMonsterHpToPlayers?: boolean;
 };
 
 function TargetVitals({
@@ -28,13 +29,10 @@ function TargetVitals({
   mode: MiniHudMode;
 }) {
   const ratio = hpRatio(token);
-  const damage = monsterDamageTaken(token);
 
   return (
     <>
-      <strong className="vtt-action-hud__target-name" style={{ color: token.color }}>
-        {token.name}
-      </strong>
+      <strong className="vtt-action-hud__target-name">{token.name}</strong>
       {mode === "full" && token.vidaMax != null ? (
         <div className="vtt-action-hud__target-hp">
           <div className="vtt-action-hud__target-hp-track" aria-hidden>
@@ -47,10 +45,16 @@ function TargetVitals({
             {token.vida ?? 0}/{token.vidaMax}
           </span>
         </div>
-      ) : mode === "damage" ? (
-        <p className="vtt-action-hud__target-damage">
-          Dano recebido: <strong>{damage}</strong> PV
-        </p>
+      ) : mode === "obscured" ? (
+        <div className="vtt-action-hud__target-hp vtt-action-hud__target-hp--obscured">
+          <div className="vtt-action-hud__target-hp-track" aria-hidden>
+            <div
+              className="vtt-action-hud__target-hp-fill vtt-mini-hud__hp-fill--obscured"
+              style={{ background: obscuredHpBarColor() }}
+            />
+          </div>
+          <span className="vtt-mini-hud__hp-obscured">??/??</span>
+        </div>
       ) : null}
     </>
   );
@@ -62,14 +66,15 @@ export function BattlefieldActionHud({
   targetToken,
   isGm = false,
   viewerToken = null,
+  showMonsterHpToPlayers = false,
 }: Props) {
   if (!preview) return null;
 
   const anchored = anchor != null;
   const targetMode =
     targetToken && anchored
-      ? miniHudModeForViewer(targetToken, { isGm, viewerToken })
-      : "none";
+      ? miniHudModeForViewer(targetToken, { isGm, viewerToken, showMonsterHpToPlayers })
+      : null;
 
   return (
     <div
@@ -85,9 +90,7 @@ export function BattlefieldActionHud({
       <p className={`vtt-action-hud-pa${preview.ok ? "" : " vtt-action-hud-pa--err"}`}>
         {preview.paChip}
       </p>
-      {targetToken && targetMode !== "none" ? (
-        <TargetVitals token={targetToken} mode={targetMode} />
-      ) : null}
+      {targetToken && targetMode ? <TargetVitals token={targetToken} mode={targetMode} /> : null}
       <strong className="vtt-action-hud-title">{preview.title}</strong>
       <ul className="vtt-action-hud-lines">
         {preview.lines.map((line, i) => (

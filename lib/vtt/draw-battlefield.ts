@@ -270,6 +270,8 @@ type TokenDrawParams = {
   spellPickedTargetIds?: Set<string>;
   hoverAttackTargetId: string | null;
   hoverTokenId: string | null;
+  /** 1 → 1.05 animado no token sob o cursor */
+  tokenHoverScale?: number;
   tokenAnimTimeSec: number;
   tokenFlash: { tokenId: string; kind: TokenFlashKind } | null;
   tokenCastFx?: ActiveTokenCastFx[];
@@ -279,18 +281,28 @@ type TokenDrawParams = {
   tokenHpDisplay?: Map<string, TokenHpDisplay>;
 };
 
-export function drawTokensLayer(ctx: CanvasRenderingContext2D, p: TokenDrawParams): void {
-  const { scene, layout } = p;
-  const playerActorIds = collectPlayerActorIds(scene.tokens);
-  const size = scene.hexSize;
-
-  for (const token of scene.tokens) {
+function drawSingleToken(
+  ctx: CanvasRenderingContext2D,
+  p: TokenDrawParams,
+  token: BattleScene["tokens"][number],
+  playerActorIds: string[],
+  size: number,
+  hoverScale: number
+): void {
+  const { layout } = p;
     const pos = p.tokenPositionOverride?.get(token.id) ?? token.axial;
     const creatureSize = creatureSizeOf(token);
-    const { x, y } = tokenPixelCenter(pos, creatureSize, size, layout.ox, layout.oy);
-    const r = tokenDrawRadius(size, creatureSize);
+  const { x, y } = tokenPixelCenter(pos, creatureSize, size, layout.ox, layout.oy);
+  const r = tokenDrawRadius(size, creatureSize);
 
-    if (creatureSize !== "small" && creatureSize !== "medium") {
+  ctx.save();
+  if (hoverScale !== 1) {
+    ctx.translate(x, y);
+    ctx.scale(hoverScale, hoverScale);
+    ctx.translate(-x, -y);
+  }
+
+  if (creatureSize !== "small" && creatureSize !== "medium") {
       ctx.save();
       const isLargeTriangle = creatureSize === "large";
       for (const hex of occupiedHexes(pos, creatureSize)) {
@@ -395,10 +407,30 @@ export function drawTokensLayer(ctx: CanvasRenderingContext2D, p: TokenDrawParam
       }
     }
 
-    if (shouldDrawTokenNameplate(token, p.hoverTokenId)) {
+    if (shouldDrawTokenNameplate(token)) {
       drawTokenNameLabel(ctx, x, y, r, token.name);
     }
 
-    drawTokenEffectBadges(ctx, x, y, r, token);
+  drawTokenEffectBadges(ctx, x, y, r, token);
+  ctx.restore();
+}
+
+export function drawTokensLayer(ctx: CanvasRenderingContext2D, p: TokenDrawParams): void {
+  const { scene, layout } = p;
+  const playerActorIds = collectPlayerActorIds(scene.tokens);
+  const size = scene.hexSize;
+  const hoverId = p.hoverTokenId;
+  const hoverScale = p.tokenHoverScale ?? 1;
+
+  for (const token of scene.tokens) {
+    if (token.id === hoverId) continue;
+    drawSingleToken(ctx, p, token, playerActorIds, size, 1);
+  }
+
+  if (hoverId) {
+    const hovered = scene.tokens.find((t) => t.id === hoverId);
+    if (hovered) {
+      drawSingleToken(ctx, p, hovered, playerActorIds, size, hoverScale);
+    }
   }
 }

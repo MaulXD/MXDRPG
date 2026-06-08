@@ -96,6 +96,49 @@
   overflow: visible;
 }
 
+/* HUD de combate — filho direto do overlay do stage (evita corte pelo canvas) */
+.foundry-mesa__hud > .vtt-hud-wrapper,
+.foundry-mesa__hud > .vtt-combat-hud-restore {
+  position: absolute;
+  left: 50%;
+  bottom: max(14px, env(safe-area-inset-bottom, 0px));
+  transform: translateX(-50%);
+  z-index: 8;
+  pointer-events: auto;
+}
+
+.foundry-mesa__hud > .vtt-hud-wrapper {
+  width: min(680px, calc(100% - 24px));
+}
+
+.foundry-mesa__hud > .vtt-combat-hud-restore {
+  min-width: min(320px, calc(100% - 24px));
+  max-width: min(680px, calc(100% - 24px));
+}
+
+.foundry-mesa__hud > .vtt-combat-hud-restore:hover {
+  transform: translateX(-50%) translateY(-2px);
+}
+
+.foundry-mesa__hud > .vtt-mini-hud {
+  position: absolute;
+  z-index: 9;
+  pointer-events: none;
+}
+
+@media (max-width: 1100px) {
+  .foundry-mesa__hud > .vtt-combat-hud-restore {
+    left: 50%;
+    right: auto;
+    max-width: min(320px, calc(100% - 24px));
+    transform: translateX(-50%);
+  }
+
+  .foundry-mesa__hud > .vtt-combat-hud-restore:hover {
+    transform: translateX(-50%) translateY(-2px);
+  }
+}
+
 .foundry-mesa__windows {
   position: absolute;
   inset: 0;

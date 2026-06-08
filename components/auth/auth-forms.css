@@ -97,6 +97,24 @@
   gap: 0.5rem;
   flex-wrap: wrap;
   align-items: center;
+  padding-bottom: 0.25rem;
+}
+
+.auth-card {
+  overflow: visible;
+}
+
+/* Reforço: esconder login por e-mail no Clerk */
+.clerk-social-only .cl-dividerRow,
+.clerk-social-only .cl-dividerText,
+.clerk-social-only .cl-formFieldRow,
+.clerk-social-only .cl-formButtonPrimary,
+.clerk-social-only .cl-footerAction,
+.clerk-social-only .cl-footer,
+.clerk-social-only .cl-alternativeMethodsBlockButton,
+.clerk-social-only .cl-identityPreview,
+.clerk-social-only .cl-backRow {
+  display: none !important;
 }
 
 .auth-form__clear {

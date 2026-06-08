@@ -10,6 +10,7 @@ import {
   MAX_CHARACTERS_PER_USER,
   MAX_CHARACTERS_PER_USER_PER_ADVENTURE,
 } from "@/lib/character/characters";
+import { signInPath } from "@/lib/auth/post-auth-redirect";
 import { getSession } from "@/lib/auth/session";
 
 type Props = { params: Promise<{ adventureId: string }> };
@@ -17,7 +18,7 @@ type Props = { params: Promise<{ adventureId: string }> };
 export default async function AventuraNovoPersonagemPage({ params }: Props) {
   const { adventureId } = await params;
   const session = await getSession();
-  if (!session) redirect(`/entrar?redirect=/aventura/${adventureId}/personagem/novo`);
+  if (!session) redirect(signInPath(`/aventura/${adventureId}/personagem/novo`));
 
   const adventure = await getAdventure(adventureId);
   if (!adventure) {

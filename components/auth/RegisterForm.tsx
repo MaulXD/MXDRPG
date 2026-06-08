@@ -62,6 +62,8 @@ export function RegisterForm({ redirect = "" }: Props) {
 
     if (data.completedSocialAccount) {
       setNotice("Senha definida com sucesso. Redirecionando…");
+    } else if (data.existingAccountLogin) {
+      setNotice("Conta já existia — você entrou com sucesso. Redirecionando…");
     }
 
     router.push(data.redirect ?? "/rpg");

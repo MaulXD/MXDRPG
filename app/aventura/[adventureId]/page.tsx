@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 
 import { canManageAdventure, isAdventureMember } from "@/lib/auth/adventure-access";
 
+import { signInPath } from "@/lib/auth/post-auth-redirect";
 import { getSession } from "@/lib/auth/session";
 
 import {
@@ -65,7 +66,7 @@ export default async function AventuraHubPage({ params, searchParams }: Props) {
 
   const session = await getSession();
 
-  if (!session) redirect(`/entrar?redirect=/aventura/${adventureId}`);
+  if (!session) redirect(signInPath(`/aventura/${adventureId}`));
 
 
 
