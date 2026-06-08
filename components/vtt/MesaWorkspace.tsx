@@ -259,8 +259,6 @@ export function MesaWorkspace({
     [windows]
   );
 
-  const openStatusRef = useRef<() => void>(() => {});
-
   return (
     <VttToastProvider>
       <MesaWorkspaceCombatFlow
@@ -296,7 +294,6 @@ export function MesaWorkspace({
             showGm={canControlCombat}
             showInvite={Boolean(canParticipate && roomInviteCode)}
             dockOpen={dockOpen}
-            onOpenStatus={() => openStatusRef.current()}
           >
             {!windows.isFloating("chat") ? (
               <FoundryDockPanel
@@ -411,7 +408,10 @@ export function MesaWorkspace({
           </MesaFoundrySidebar>
 
           <MesaPersistenceNotice />
-          <div className="foundry-mesa__stage">
+          <div
+            className="foundry-mesa__stage"
+            onContextMenuCapture={(e) => e.preventDefault()}
+          >
             <HexBattlefield
               scene={scene}
               canEdit={canEdit}
@@ -476,10 +476,15 @@ export function MesaWorkspace({
                   : windows.minimize("initiative")
               }
               onInitiativeWindowFocus={() => windows.focus("initiative")}
+              statusWindowLayout={win("status")}
+              onStatusWindowLayoutChange={(patch) => windows.patch("status", patch)}
+              onStatusWindowClose={() => windows.close("status")}
+              onStatusWindowMinimize={() =>
+                win("status").minimized ? windows.restore("status") : windows.minimize("status")
+              }
+              onStatusWindowFocus={() => windows.focus("status")}
+              onStatusDockOpen={() => windows.openInDock("status")}
               isWindowFloating={windows.isFloating}
-              onRegisterOpenStatus={(open) => {
-                openStatusRef.current = open;
-              }}
             />
             <div id="foundry-mesa-toasts" className="foundry-mesa__toasts" aria-live="polite" />
             <div id="foundry-mesa-hud" className="foundry-mesa__hud">

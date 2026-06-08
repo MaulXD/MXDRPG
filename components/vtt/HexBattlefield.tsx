@@ -99,7 +99,7 @@ import { BattlefieldActionHud } from "@/components/vtt/BattlefieldActionHud";
 import { CharacterCombatHud } from "@/components/vtt/CharacterCombatHud";
 import { CombatHudRestoreButton } from "@/components/vtt/CombatHudRestoreButton";
 import { TokenHoverMiniHud } from "@/components/vtt/TokenHoverMiniHud";
-import { TokenStatusModal } from "@/components/vtt/TokenStatusModal";
+import { TokenStatusBody } from "@/components/vtt/TokenStatusBody";
 import { EndTurnBar } from "@/components/vtt/EndTurnBar";
 import { TurnOrderPanel } from "@/components/vtt/TurnOrderPanel";
 import {
@@ -108,6 +108,11 @@ import {
   type DungeonEditorTool,
 } from "@/components/vtt/DungeonEditorPanel";
 import { useCombatTurn } from "@/hooks/useCombatActions";
+import {
+  canActOnCombatTurn,
+  effectiveBypassTurn,
+  TURN_WAIT_MSG,
+} from "@/lib/combat/turn-guard";
 import { useCombatHudVisible } from "@/hooks/vtt/useCombatHudVisible";
 import { useTokenImages } from "@/hooks/vtt/useTokenImages";
 import { usePortraitFocusByToken } from "@/hooks/vtt/usePortraitFocusByToken";
@@ -186,9 +191,14 @@ type Props = {
   onWhiteboardWindowClose?: () => void;
   onWhiteboardWindowMinimize?: () => void;
   onWhiteboardWindowFocus?: () => void;
+  statusWindowLayout?: FoundryWindowLayout;
+  onStatusWindowLayoutChange?: (patch: Partial<FoundryWindowLayout>) => void;
+  onStatusWindowClose?: () => void;
+  onStatusWindowMinimize?: () => void;
+  onStatusWindowFocus?: () => void;
+  /** Abre o painel Status na barra lateral (Foundry). */
+  onStatusDockOpen?: () => void;
   isWindowFloating?: (id: MesaWindowId) => boolean;
-  /** Registra abertura do modal Status (ícone na barra Foundry). */
-  onRegisterOpenStatus?: (open: () => void) => void;
 };
 
 export function HexBattlefield({
@@ -243,8 +253,13 @@ export function HexBattlefield({
   onWhiteboardWindowClose,
   onWhiteboardWindowMinimize,
   onWhiteboardWindowFocus,
+  statusWindowLayout,
+  onStatusWindowLayoutChange,
+  onStatusWindowClose,
+  onStatusWindowMinimize,
+  onStatusWindowFocus,
+  onStatusDockOpen,
   isWindowFloating,
-  onRegisterOpenStatus,
 }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
@@ -270,7 +285,6 @@ export function HexBattlefield({
   const [friendlyFireBusy, setFriendlyFireBusy] = useState(false);
   const [spellTargetIds, setSpellTargetIds] = useState<string[]>([]);
   const [spellTargetBusy, setSpellTargetBusy] = useState(false);
-  const [statusOpen, setStatusOpen] = useState(false);
   const [modalStatusToken, setModalStatusToken] = useState<BattleToken | null>(null);
   const { visible: hudVisible, setHudVisible } = useCombatHudVisible(roomId);
   const toast = useVttToast();
@@ -368,6 +382,10 @@ export function HexBattlefield({
   const refresh = onRefresh ?? (() => {});
   const turnActiveId = snapshot?.combat ? activeTokenId(snapshot.combat) : null;
   const turn = useCombatTurn({ combat: snapshot?.combat, canBypassTurn: canBypassTurnProp });
+  const tokenBypass = useCallback(
+    (t: BattleToken) => effectiveBypassTurn(t, canBypassTurnProp),
+    [canBypassTurnProp]
+  );
 
   const tokenControl =
     canControlToken ?? ((t: BattleToken) => canControlCombat || Boolean(t.linked));
@@ -1766,24 +1784,43 @@ export function HexBattlefield({
     [isRoomGm, selected, turnActiveToken, playerToken]
   );
 
+  const handleStatusClose = useCallback(() => {
+    setModalStatusToken(null);
+    onStatusWindowClose?.();
+  }, [onStatusWindowClose]);
+
   const openStatus = useCallback(
     (explicit?: BattleToken | null) => {
-      if (!explicit && statusOpen) {
-        setStatusOpen(false);
-        setModalStatusToken(null);
-        return;
-      }
       const token = resolveStatusToken(explicit);
       if (!token) return;
+      if (
+        !explicit &&
+        statusWindowLayout?.open &&
+        modalStatusToken?.id === token.id
+      ) {
+        handleStatusClose();
+        return;
+      }
       setModalStatusToken(token);
-      setStatusOpen(true);
+      if (foundryLayout) {
+        onStatusDockOpen?.();
+      }
     },
-    [resolveStatusToken, statusOpen]
+    [
+      resolveStatusToken,
+      statusWindowLayout?.open,
+      modalStatusToken?.id,
+      handleStatusClose,
+      foundryLayout,
+      onStatusDockOpen,
+    ]
   );
 
   useEffect(() => {
-    onRegisterOpenStatus?.(() => openStatus());
-  }, [onRegisterOpenStatus, openStatus]);
+    if (!foundryLayout || !statusWindowLayout?.open || modalStatusToken) return;
+    const token = resolveStatusToken();
+    if (token) setModalStatusToken(token);
+  }, [foundryLayout, statusWindowLayout?.open, modalStatusToken, resolveStatusToken]);
 
   const hoverMiniHudAnchor = useMemo(() => {
     if (!hoverTokenId) return null;
@@ -2167,6 +2204,59 @@ export function HexBattlefield({
 
   const initiativePortal = portalPanel(initiativeUi, float("initiative"));
 
+  const statusTitle = modalStatusToken ? `Status · ${modalStatusToken.name}` : "Status";
+
+  const statusBody = modalStatusToken ? (
+    <div className="mesa-panel-scroll mesa-panel-scroll--rail">
+      <TokenStatusBody
+        token={modalStatusToken}
+        roomId={roomId}
+        combat={combat}
+        canApplyConditions={isRoomGm}
+        onUpdate={refresh}
+        compact
+      />
+    </div>
+  ) : (
+    <p className="vtt-combat-hint" style={{ padding: "1rem" }}>
+      {isRoomGm
+        ? "Selecione um token no mapa ou inicie a iniciativa."
+        : "Coloque sua ficha no mapa para ver status."}
+    </p>
+  );
+
+  const statusUi =
+    foundryLayout && statusWindowLayout ? (
+      float("status") ? (
+        <FoundryWindow
+          title={statusTitle}
+          layout={statusWindowLayout}
+          className="foundry-window--status"
+          minWidth={280}
+          minHeight={220}
+          onLayoutChange={onStatusWindowLayoutChange ?? (() => {})}
+          onClose={handleStatusClose}
+          onMinimize={onStatusWindowMinimize ?? (() => {})}
+          onFocus={onStatusWindowFocus ?? (() => {})}
+        >
+          {statusBody}
+        </FoundryWindow>
+      ) : (
+        <FoundryDockPanel
+          title={statusTitle}
+          open={statusWindowLayout.open}
+          minimized={statusWindowLayout.minimized}
+          className="foundry-dock-panel--status"
+          onClose={handleStatusClose}
+          onMinimize={onStatusWindowMinimize}
+        >
+          {statusBody}
+        </FoundryDockPanel>
+      )
+    ) : null;
+
+  const statusPortal = portalPanel(statusUi, float("status"));
+
   return (
     <div
       className={`vtt-shell${foundryLayout ? " vtt-shell--foundry" : ""}`}
@@ -2177,6 +2267,7 @@ export function HexBattlefield({
       {foundryLayout ? dungeonPortal : null}
       {foundryLayout ? whiteboardPortal : null}
       {foundryLayout ? initiativePortal : null}
+      {foundryLayout ? statusPortal : null}
       {!foundryLayout && leftPanel && onLeftPanelChange ? (
         <MesaDockPanel
           side="left"
@@ -2194,6 +2285,7 @@ export function HexBattlefield({
         ref={wrapRef}
         className={`vtt-canvas-wrap${attackTargetCursor ? " vtt-canvas-wrap--attack-target" : ""}${spawnDragActive ? " vtt-canvas-wrap--spawn-drop" : ""}${battlefieldView.isPanning ? " vtt-canvas-wrap--panning" : ""}`}
         onContextMenu={(e) => e.preventDefault()}
+        onContextMenuCapture={(e) => e.preventDefault()}
         onWheel={(e) => {
           battlefieldView.onWheel(e);
         }}
@@ -2351,18 +2443,6 @@ export function HexBattlefield({
           targetToken={targetingHoverTarget}
           isGm={isRoomGm}
           viewerToken={playerToken}
-        />
-        <TokenStatusModal
-          open={statusOpen}
-          token={modalStatusToken}
-          roomId={roomId}
-          combat={combat}
-          canApplyConditions={isRoomGm}
-          onClose={() => {
-            setStatusOpen(false);
-            setModalStatusToken(null);
-          }}
-          onUpdate={refresh}
         />
         <CombatFxLayer
           wrapRef={wrapRef}

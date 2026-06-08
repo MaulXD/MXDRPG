@@ -14,6 +14,7 @@ import {
   useCombatTurn,
   usePerformAttack,
 } from "@/hooks/useCombatActions";
+import { effectiveBypassTurn } from "@/lib/combat/turn-guard";
 import type { ChatMessage } from "@/lib/room/chat";
 import { CombatActionDetail } from "@/components/vtt/CombatActionDetail";
 
@@ -39,6 +40,7 @@ export function CombatActionBar({
   onUpdate,
 }: Props) {
   const turn = useCombatTurn({ combat, canBypassTurn });
+  const attackerBypass = effectiveBypassTurn(attacker, canBypassTurn);
   const { actor, actions, action, extraAttacks, selfAbilityOk } = useCombatActions(
     attacker,
     tokens,
@@ -88,7 +90,7 @@ export function CombatActionBar({
         attacker.id,
         defenderId,
         action!,
-        turn.bypassTurn,
+        attackerBypass,
         onAttackResult,
         onUpdate
       );
@@ -98,7 +100,7 @@ export function CombatActionBar({
         attacker,
         defenderId,
         action!,
-        turn.bypassTurn,
+        attackerBypass,
         onAttackResult,
         onUpdate
       );
@@ -112,7 +114,7 @@ export function CombatActionBar({
         attacker.id,
         null,
         action!,
-        turn.bypassTurn,
+        attackerBypass,
         onAttackResult,
         onUpdate
       );
@@ -122,7 +124,7 @@ export function CombatActionBar({
         attacker,
         attacker.id,
         action!,
-        turn.bypassTurn,
+        attackerBypass,
         onAttackResult,
         onUpdate
       );
@@ -136,12 +138,11 @@ export function CombatActionBar({
     await saveLoadout(roomId, attacker.actorId, packId, entryId, onUpdate);
   }
 
-  const turnHint =
-    turn.activeTokenId && turn.activeTokenId !== attacker.id && !turn.bypassTurn
-      ? "Não é seu turno — aguarde iniciativa."
-      : turn.activeTokenId === attacker.id
-        ? "Seu turno — clique inimigo no mapa ou use botão."
-        : null;
+  const turnHint = turn.isTurnBlockedForToken(attacker)
+    ? "Não é seu turno — aguarde iniciativa."
+    : turn.activeTokenId === attacker.id
+      ? "Seu turno — clique inimigo no mapa ou use botão."
+      : null;
 
   const actionIcon =
     action.kind === "spell" ? "✦" : action.kind === "ability" ? "◆" : "⚔";

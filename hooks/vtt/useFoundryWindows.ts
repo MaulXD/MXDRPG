@@ -22,6 +22,7 @@ export const FOUNDRY_DOCK_PANEL_IDS: MesaWindowId[] = [
   "gm",
   "dungeon",
   "whiteboard",
+  "status",
 ];
 
 type Registry = Partial<Record<MesaWindowId, FoundryWindowLayout>>;
@@ -39,6 +40,7 @@ const DEFAULT_LAYOUTS: Record<MesaWindowId, Omit<FoundryWindowLayout, "open" | "
   spawn: { x: 400, y: 360, width: 320, height: 380 },
   invite: { x: 52, y: 48, width: 280, height: 280 },
   character: { x: 72, y: 40, width: 960, height: 680 },
+  status: { x: 52, y: 48, width: 400, height: 520 },
 };
 
 const DEFAULT_OPEN: MesaWindowId[] = ["initiative"];
