@@ -1,5 +1,6 @@
 import { SignIn } from "@clerk/nextjs";
 import { clerkSocialOnlyAppearance } from "@/lib/auth/clerk-appearance";
+import { hasClerkPublishableKey } from "@/lib/auth/clerk-config";
 import {
   DEFAULT_POST_AUTH_PATH,
   safeRedirectPath,
@@ -8,6 +9,18 @@ import {
 type Props = { searchParams: Promise<{ redirect?: string }> };
 
 export default async function SignInPage({ searchParams }: Props) {
+  if (!hasClerkPublishableKey()) {
+    return (
+      <div className="page-wrap" style={{ maxWidth: 480, paddingTop: "2rem" }}>
+        <h1 className="display-lg">Entrar</h1>
+        <p className="lead">
+          Login social não está configurado neste ambiente. Defina{" "}
+          <code>NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY</code> e <code>CLERK_SECRET_KEY</code> na Vercel.
+        </p>
+      </div>
+    );
+  }
+
   const params = await searchParams;
   const afterAuth = safeRedirectPath(params.redirect) ?? DEFAULT_POST_AUTH_PATH;
   const signUpUrl = `/sign-up?redirect=${encodeURIComponent(afterAuth)}`;

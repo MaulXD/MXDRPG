@@ -1,8 +1,8 @@
 import { clerkMiddleware } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
-import { isClerkEnabled } from "@/lib/auth/clerk-config";
+import { hasClerkPublishableKey } from "@/lib/auth/clerk-config";
 
-export default isClerkEnabled()
+export default hasClerkPublishableKey()
   ? clerkMiddleware()
   : () => NextResponse.next();
 
