@@ -1,15 +1,35 @@
 "use client";
 
 import type { CharacterIdentity } from "@/lib/character/types";
+import { religionDisplayName } from "@/lib/character/pantheon";
 import { formatXpProgressDetail, xpProgressRatio, MAX_LEVEL } from "@/lib/character/xp";
 import { getAscension, getSubclassTrack } from "@/lib/character/subclass-tracks";
+import { SheetHoverTip } from "@/components/character/SheetHoverTip";
+import {
+  backgroundChipTip,
+  classChipTip,
+  deityChipTip,
+  raceChipTip,
+  subclassChipTip,
+  type SheetTipContent,
+} from "@/lib/character/sheet-tooltips";
 
 type Props = {
   name: string;
   identity: CharacterIdentity;
 };
 
-/** Identidade no topo da ficha (nome, classe, nível). */
+function IdentityChip({ label, tip }: { label: string; tip: SheetTipContent }) {
+  return (
+    <SheetHoverTip tip={tip}>
+      <span className="sheet-popup-identity__chip" tabIndex={0}>
+        {label}
+      </span>
+    </SheetHoverTip>
+  );
+}
+
+/** Identidade no topo da ficha (nome, chips, nível). */
 export function CharacterSheetPopupHero({ name, identity }: Props) {
   const nivel = identity.nivel;
   const xpTotal = identity.xpTotal ?? 0;
@@ -17,17 +37,49 @@ export function CharacterSheetPopupHero({ name, identity }: Props) {
   const xpDetail = formatXpProgressDetail(nivel, xpTotal);
   const track = getSubclassTrack(identity.subclasse ?? null);
   const ascension = track ? getAscension(track) : null;
-  const classLine = [identity.classe, identity.subclasse].filter(Boolean).join(" · ");
+
+  const raceLabel =
+    identity.raca === "Meio-Humano" && identity.linhagem
+      ? `${identity.raca} · ${identity.linhagem.replace("Linhagem do ", "")}`
+      : identity.raca;
+
+  const chips: { key: string; label: string; tip: SheetTipContent }[] = [
+    { key: "race", label: raceLabel, tip: raceChipTip(identity) },
+    { key: "class", label: identity.classe, tip: classChipTip(identity.classe) },
+  ];
+
+  if (identity.subclasse) {
+    chips.push({
+      key: "subclass",
+      label: identity.subclasse,
+      tip: subclassChipTip(identity.classe, identity.subclasse, nivel),
+    });
+  }
+
+  if (identity.antecedente) {
+    chips.push({
+      key: "background",
+      label: identity.antecedente,
+      tip: backgroundChipTip(identity.antecedente),
+    });
+  }
+
+  chips.push({
+    key: "deity",
+    label: identity.religiao ? religionDisplayName(identity.religiao) : "Sem Deus",
+    tip: deityChipTip(identity.religiao),
+  });
 
   return (
     <div className="sheet-popup-identity">
       <div className="sheet-popup-identity__main">
         <p className="sheet-popup-identity__eyebrow">Ficha de personagem</p>
         <h2 className="sheet-popup-identity__name">{name}</h2>
-        {classLine ? <p className="sheet-popup-identity__class">{classLine}</p> : null}
-        <p className="sheet-popup-identity__meta">
-          {[identity.raca, identity.antecedente].filter(Boolean).join(" · ")}
-        </p>
+        <div className="sheet-popup-identity__chips" role="list" aria-label="Identidade">
+          {chips.map((chip) => (
+            <IdentityChip key={chip.key} label={chip.label} tip={chip.tip} />
+          ))}
+        </div>
       </div>
 
       <div className="sheet-popup-identity__level" aria-label={`Nível ${nivel}`}>
@@ -48,9 +100,11 @@ export function CharacterSheetPopupHero({ name, identity }: Props) {
           </div>
           <span className="sheet-popup-identity__xp-text">{xpDetail.secondary}</span>
           {nivel >= MAX_LEVEL && ascension ? (
-            <span className="sheet-popup-identity__ascension" title={ascension.name}>
-              Ascensão — {ascension.name}
-            </span>
+            <SheetHoverTip tip={{ title: ascension.name, lines: ["Ascensão nv. 20 — capstone da subclasse."] }}>
+              <span className="sheet-popup-identity__ascension" tabIndex={0}>
+                Ascensão — {ascension.name}
+              </span>
+            </SheetHoverTip>
           ) : null}
         </div>
       </div>
