@@ -120,6 +120,16 @@ export async function insertRoom(state: RoomState): Promise<void> {
   await saveRoom(state);
 }
 
+export async function deleteRoom(roomId: string): Promise<void> {
+  const sql = getSql();
+  if (!sql) return;
+  await withDbTimeout(
+    sql`DELETE FROM eldarin_rooms WHERE room_id = ${roomId}`,
+    5000,
+    "deleteRoom"
+  );
+}
+
 export async function fetchRoomByInvite(inviteCode: string): Promise<RoomState | null> {
   const sql = getSql();
   if (!sql) return null;

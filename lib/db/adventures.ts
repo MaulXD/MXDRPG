@@ -45,6 +45,27 @@ function adventureToRow(a: Adventure): AdventureRow {
   };
 }
 
+export async function fetchAdventureByPrimaryRoom(roomId: string): Promise<Adventure | null> {
+  const sql = getSql();
+  if (!sql) return null;
+  let rows: AdventureRow[];
+  try {
+    rows = await withDbTimeout(
+      sql<AdventureRow[]>`
+        SELECT adventure_id, owner_id, name, synopsis, invite_code, member_ids,
+               primary_room_id, created_at, updated_at, deleted_at
+        FROM eldarin_adventures WHERE primary_room_id = ${roomId} LIMIT 1
+      `,
+      5000,
+      "fetchAdventureByPrimaryRoom"
+    );
+  } catch {
+    return null;
+  }
+  const row = rows[0];
+  return row ? rowToAdventure(row) : null;
+}
+
 export async function fetchAdventure(adventureId: string): Promise<Adventure | null> {
   const sql = getSql();
   if (!sql) return null;

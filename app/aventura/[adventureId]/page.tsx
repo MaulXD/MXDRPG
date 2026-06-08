@@ -173,7 +173,12 @@ export default async function AventuraHubPage({ params, searchParams }: Props) {
 
 
 
-  const room = await getRoom(adventure.primaryRoomId);
+  let room = await getRoom(adventure.primaryRoomId);
+  if (!room && adventure.primaryRoomId) {
+    const { getAdventure: reloadAdv } = await import("@/lib/adventure/store");
+    const fresh = await reloadAdv(adventureId);
+    if (fresh) room = await getRoom(fresh.primaryRoomId);
+  }
 
   let myChars: Awaited<ReturnType<typeof listCharactersForUserInAdventure>> = [];
 

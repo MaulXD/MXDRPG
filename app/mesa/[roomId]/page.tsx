@@ -33,11 +33,17 @@ export default async function MesaRoomPage({ params, searchParams }: Props) {
 
   if (!room) {
     return (
-      <div className="page-wrap">
+      <div className="page-wrap" style={{ maxWidth: 520, paddingTop: "2rem" }}>
         <p>
-          Sala <code>{roomId}</code> não existe.
+          Sala <code>{roomId}</code> não foi encontrada. Pode ter sido criada em outro ambiente ou a
+          gravação falhou ao criar a aventura.
         </p>
-        <Link href="/painel">Voltar ao painel</Link>
+        <p style={{ color: "var(--text-muted)", fontSize: "0.9rem" }}>
+          Tente abrir de novo em <Link href="/eldarin">Suas mesas</Link> ou recrie a mesa na aventura.
+        </p>
+        <Link href="/eldarin" className="btn" style={{ marginTop: "1rem" }}>
+          Ir para Suas mesas
+        </Link>
       </div>
     );
   }
@@ -64,8 +70,12 @@ export default async function MesaRoomPage({ params, searchParams }: Props) {
     if (room.ownerId !== session.user.id) {
       await bindPlayerToAdventure(advId, session.user.id);
     }
-    const synced = await syncAdventureActorsForRoom(roomId);
-    if (synced) room = synced;
+    try {
+      const synced = await syncAdventureActorsForRoom(roomId);
+      if (synced) room = synced;
+    } catch (e) {
+      console.error("[mesa] sync fichas da aventura:", e);
+    }
   }
 
   if (!canViewRoom(room, session?.user ?? null, inviteCode)) {

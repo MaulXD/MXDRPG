@@ -1,0 +1,157 @@
+/* Layout A4 para exportação PDF da ficha */
+.sheet-pdf-doc {
+  width: 210mm;
+  max-width: 794px;
+  margin: 0;
+  padding: 10mm 9mm 12mm;
+  box-sizing: border-box;
+  background: #faf6ee;
+  color: #1a1410;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 9pt;
+  line-height: 1.35;
+}
+
+.sheet-pdf-doc__brand {
+  margin: 0 0 0.35em;
+  font-size: 7pt;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #5c4a32;
+  text-align: center;
+}
+
+.sheet-pdf-doc__title {
+  margin: 0 0 0.65em;
+  padding-bottom: 0.35em;
+  border-bottom: 2px solid #b8922e;
+  font-size: 16pt;
+  text-align: center;
+  font-weight: 700;
+}
+
+.sheet-pdf-doc__hero {
+  display: grid;
+  grid-template-columns: 88px 1fr;
+  gap: 10px;
+  margin-bottom: 0.75em;
+  align-items: start;
+}
+
+.sheet-pdf-doc__portrait {
+  width: 88px;
+  height: 110px;
+  object-fit: cover;
+  border: 1px solid #b8922e;
+  border-radius: 4px;
+  background: #e8dfd0;
+}
+
+.sheet-pdf-doc__portrait--empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18pt;
+  font-weight: 700;
+  color: #7a6a52;
+}
+
+.sheet-pdf-doc__identity p {
+  margin: 0.15em 0;
+}
+
+.sheet-pdf-doc__identity strong {
+  color: #2c3d2e;
+}
+
+.sheet-pdf-doc h2 {
+  margin: 0.85em 0 0.35em;
+  padding: 0.2em 0.45em;
+  font-size: 9pt;
+  background: #3d5c40;
+  color: #f0e6d4;
+  page-break-after: avoid;
+  break-after: avoid;
+}
+
+.sheet-pdf-doc h3 {
+  margin: 0.5em 0 0.2em;
+  font-size: 8.5pt;
+  color: #3d5c40;
+}
+
+.sheet-pdf-doc table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0.25em 0 0.5em;
+  font-size: 8pt;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+.sheet-pdf-doc th,
+.sheet-pdf-doc td {
+  border: 1px solid #c4b59a;
+  padding: 0.2em 0.35em;
+  text-align: left;
+  vertical-align: top;
+}
+
+.sheet-pdf-doc thead th {
+  background: #2c3d2e;
+  color: #f0e6d4;
+  font-weight: 600;
+}
+
+.sheet-pdf-doc__grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.sheet-pdf-doc__item {
+  margin: 0.2em 0;
+  padding: 0.25em 0.4em;
+  border-left: 2px solid #b8922e;
+  background: rgba(255, 255, 255, 0.45);
+}
+
+.sheet-pdf-doc__item h4 {
+  margin: 0 0 0.1em;
+  font-size: 8.5pt;
+}
+
+.sheet-pdf-doc__item p {
+  margin: 0;
+  font-size: 7.5pt;
+  color: #4a4035;
+}
+
+.sheet-pdf-doc__muted {
+  color: #6a5c48;
+  font-size: 7.5pt;
+}
+
+.sheet-pdf-doc__bio {
+  margin: 0.35em 0 0;
+  font-style: italic;
+  font-size: 8pt;
+}
+
+.sheet-pdf-export-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.78rem;
+}
+
+.sheet-pdf-export-btn--toolbar {
+  min-height: 2rem;
+  padding: 0.25rem 0.65rem;
+}
+
+.sheet-popup-export {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 0.5rem;
+}
