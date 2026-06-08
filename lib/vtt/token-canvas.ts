@@ -1,5 +1,4 @@
-import type { PortraitFocus } from "@/lib/media/portrait-focus";
-import { DEFAULT_PORTRAIT_FOCUS } from "@/lib/media/portrait-focus";
+import { DEFAULT_PORTRAIT_FOCUS, normalizePortraitFocus, type PortraitFocus } from "@/lib/media/portrait-focus";
 import type { CreatureSize } from "@/lib/vtt/creature-size";
 import { TOKEN_RADIUS_RATIO, tokenDrawRadius } from "@/lib/vtt/creature-size";
 import type { TokenRingStyle } from "@/lib/vtt/token-colors";
@@ -40,7 +39,7 @@ export function drawTokenPlaceholder(
   ctx.restore();
 }
 
-/** Desenha imagem em círculo com crop “cover” no ponto focal */
+/** Desenha imagem em círculo — scale 1 = imagem inteira; >1 = zoom com pan */
 export function drawCircularTokenImage(
   ctx: CanvasRenderingContext2D,
   img: HTMLImageElement,
@@ -53,12 +52,13 @@ export function drawCircularTokenImage(
   const ih = img.naturalHeight;
   if (iw <= 0 || ih <= 0) return;
 
+  const f = normalizePortraitFocus(focus);
   const diameter = radius * 2;
-  const scale = Math.max(diameter / iw, diameter / ih);
-  const sw = diameter / scale;
-  const sh = diameter / scale;
-  const sx = Math.max(0, Math.min(iw - sw, (iw - sw) * focus.x));
-  const sy = Math.max(0, Math.min(ih - sh, (ih - sh) * focus.y));
+  const zoom = Math.max(1, f.scale ?? 1);
+  const containScale = Math.min(diameter / iw, diameter / ih);
+  const scale = containScale * zoom;
+  const dw = iw * scale;
+  const dh = ih * scale;
 
   ctx.save();
   ctx.imageSmoothingEnabled = true;
@@ -66,7 +66,17 @@ export function drawCircularTokenImage(
   ctx.beginPath();
   ctx.arc(cx, cy, radius, 0, Math.PI * 2);
   ctx.clip();
-  ctx.drawImage(img, sx, sy, sw, sh, cx - radius, cy - radius, diameter, diameter);
+
+  if (zoom <= 1.001) {
+    ctx.drawImage(img, 0, 0, iw, ih, cx - dw / 2, cy - dh / 2, dw, dh);
+  } else {
+    const sw = diameter / scale;
+    const sh = diameter / scale;
+    const sx = Math.max(0, Math.min(iw - sw, (iw - sw) * f.x));
+    const sy = Math.max(0, Math.min(ih - sh, (ih - sh) * f.y));
+    ctx.drawImage(img, sx, sy, sw, sh, cx - radius, cy - radius, diameter, diameter);
+  }
+
   ctx.restore();
 }
 

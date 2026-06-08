@@ -5,16 +5,16 @@ export type PortraitFocus = {
   x: number;
   /** 0–1, ponto focal vertical */
   y: number;
-  /** Zoom no enquadramento (1 = padrão) */
+  /** 1 = imagem inteira visível; >1 = aproximar a partir daí */
   scale?: number;
 };
 
-/** Nunca menor que 1 — evita faixas vazias fora do cover. */
+/** Zoom 100% = enquadramento padrão (imagem inteira dentro do círculo). */
 export const PORTRAIT_FOCUS_SCALE_MIN = 1;
 export const PORTRAIT_FOCUS_SCALE_MAX = 2.5;
 
-/** Ponto focal padrão (rostos em retrato vertical) */
-export const DEFAULT_PORTRAIT_FOCUS: PortraitFocus = { x: 0.5, y: 0.38, scale: 1 };
+/** Centro — com scale 1 mostra o máximo da imagem (fit). */
+export const DEFAULT_PORTRAIT_FOCUS: PortraitFocus = { x: 0.5, y: 0.5, scale: 1 };
 
 export function normalizePortraitFocus(focus: PortraitFocus): PortraitFocus {
   const scale =
