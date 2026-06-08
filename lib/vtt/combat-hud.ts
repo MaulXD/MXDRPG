@@ -18,7 +18,7 @@ export function turnOrderHint(
   combat: CombatTrack | null | undefined,
   tokenId: string
 ): { label: string; isActive: boolean } | null {
-  if (!combat?.order.length) return null;
+  if (!combat?.order?.length) return null;
   const idx = combat.order.indexOf(tokenId);
   if (idx < 0) return null;
   const active = activeTokenId(combat);

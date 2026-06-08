@@ -316,6 +316,13 @@ export function HexBattlefield({
 
   /** `scene` é a fonte de verdade do tabuleiro (sync imediato + SSE). */
   const displayScene = scene;
+  const combat = useMemo(
+    () =>
+      snapshot?.combat
+        ? normalizeCombatTrack(snapshot.combat, displayScene.tokens)
+        : undefined,
+    [snapshot?.combat, displayScene.tokens]
+  );
   const canvasScene = useMemo(() => {
     if (!floorPreview) return displayScene;
     return { ...displayScene, ...floorPreview };
@@ -382,8 +389,8 @@ export function HexBattlefield({
 
   const { imagesRef, imgTick } = useTokenImages(displayScene.tokens);
   const refresh = onRefresh ?? (() => {});
-  const turnActiveId = snapshot?.combat ? activeTokenId(snapshot.combat) : null;
-  const turn = useCombatTurn({ combat: snapshot?.combat, canBypassTurn: canBypassTurnProp });
+  const turnActiveId = combat ? activeTokenId(combat) : null;
+  const turn = useCombatTurn({ combat, canBypassTurn: canBypassTurnProp });
   const tokenBypass = useCallback(
     (t: BattleToken) => effectiveBypassTurn(t, canBypassTurnProp),
     [canBypassTurnProp]
@@ -403,8 +410,8 @@ export function HexBattlefield({
   const actionRingBlockReason = useCallback(
     (t: BattleToken): string | null => {
       if (!canOperateToken(t)) return null;
-      const track = snapshot?.combat;
-      if (!track?.order.length) {
+      const track = combat;
+      if (!track?.order?.length) {
         if (canControlCombat && isMonsterToken(t)) return null;
         return "Aguarde o mestre rolar a iniciativa para usar ações.";
       }
@@ -419,7 +426,7 @@ export function HexBattlefield({
       }
       return null;
     },
-    [snapshot?.combat, canOperateToken, canControlCombat, tokenBypass, displayScene.tokens]
+    [combat, canOperateToken, canControlCombat, tokenBypass, displayScene.tokens]
   );
 
   const canPreviewTurnMove = useCallback(
@@ -609,7 +616,7 @@ export function HexBattlefield({
     areaDirection: null,
     channelExtraPa,
     turn,
-    combatHasOrder: Boolean(snapshot?.combat?.order.length),
+    combatHasOrder: Boolean(combat?.order?.length),
   });
 
   const moveHoverHint = useMemo(() => {
@@ -1764,9 +1771,6 @@ export function HexBattlefield({
     ? displayScene.tokens.find((t) => t.id === turnActiveId) ?? null
     : null;
 
-  const combat = snapshot?.combat
-    ? normalizeCombatTrack(snapshot.combat, displayScene.tokens)
-    : undefined;
   const canEndTurn = canEndTurnProp;
 
   const playerToken = useMemo(() => {
@@ -2379,7 +2383,7 @@ export function HexBattlefield({
             token={selected}
             allTokens={snapshot?.scene.tokens ?? []}
             actor={selectedActor}
-            combat={snapshot?.combat}
+            combat={combat}
             canBypassTurn={canBypassTurnProp}
             roomId={roomId}
             onPickMode={(mode, action) => {

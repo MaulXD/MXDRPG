@@ -54,7 +54,7 @@ type TurnOpts = {
 export function useCombatTurn({ combat, canBypassTurn }: TurnOpts) {
 
   const activeId = combat ? activeTokenId(combat) : null;
-  const combatHasOrder = Boolean(combat?.order.length);
+  const combatHasOrder = Boolean(combat?.order?.length);
 
   const turnOpts = (token: BattleToken) => ({
     activeTokenId: activeId,

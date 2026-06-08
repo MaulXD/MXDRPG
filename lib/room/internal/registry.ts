@@ -218,7 +218,7 @@ export async function getRoom(roomId: string): Promise<RoomState | null> {
     }
     room.combat = normalizeCombatTrack(room.combat, room.scene.tokens);
   }
-  if (room?.combat?.order.length) {
+  if (room?.combat?.order?.length) {
     ensureCombatActiveHasPa(room);
   }
   if (room && !room.chat?.length) {
