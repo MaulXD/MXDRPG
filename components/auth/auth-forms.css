@@ -100,6 +100,18 @@
   padding-bottom: 0.25rem;
 }
 
+.auth-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  align-items: stretch;
+}
+
+.auth-tabs__btn {
+  flex: 1;
+  min-width: 0;
+}
+
 .auth-card {
   overflow: visible;
 }

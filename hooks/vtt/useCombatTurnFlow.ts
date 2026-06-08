@@ -47,7 +47,8 @@ export function useCombatTurnFlow({
     if (!snapshot?.combat) return;
 
     const notices = snapshot.combat.notices ?? [];
-    const noticesKey = `${snapshot.revision}:${notices.join("|")}`;
+    const activeId = activeTokenId(snapshot.combat);
+    const noticesKey = `${snapshot.combat.round}:${snapshot.combat.activeIndex}:${activeId ?? ""}:${notices.join("|")}`;
     if (noticesKey !== prevNoticesKey.current && notices.length > 0) {
       prevNoticesKey.current = noticesKey;
       for (const n of notices) {

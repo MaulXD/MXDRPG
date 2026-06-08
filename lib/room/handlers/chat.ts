@@ -1,3 +1,4 @@
+import { recordPlayerBestiaryFromCombat } from "@/lib/bestiary/record";
 import { createChatId, type ChatMessage } from "../chat";
 import { getRoom, persistRoom, toSnapshot } from "../internal/registry";
 import type { RoomSnapshot, RoomState } from "../types";
@@ -19,6 +20,13 @@ export function appendRoomChatMessage(
   };
 
   room.chat = [...(room.chat ?? []), msg].slice(-200);
+
+  if (msg.kind === "combat" && msg.combat) {
+    void recordPlayerBestiaryFromCombat(room, msg).catch((err) => {
+      console.error("[bestiary] record failed", err);
+    });
+  }
+
   return msg;
 }
 

@@ -33,6 +33,7 @@ import { computeMapImageRect } from "@/lib/vtt/draw-map-overlay";
 import type { CanvasLayout } from "@/lib/vtt/draw-battlefield";
 import type { WhiteboardTool } from "@/lib/vtt/map-markup";
 import type { MapToolMode, MeasurePreview } from "@/lib/vtt/map-toolbar";
+import { isMonsterToken } from "@/lib/room/settings";
 import type { BattleScene, BattleToken, MapMarkup } from "@/lib/vtt/types";
 import { effectiveBypassTurn } from "@/lib/combat/turn-guard";
 
@@ -83,6 +84,8 @@ type Params = {
   canOpenActionRing?: (token: BattleToken) => boolean;
   /** Clique direito num token que não pode abrir o anel (ex.: fora do turno). */
   onActionRingBlocked?: (token: BattleToken) => void;
+  /** Jogador: abrir registro de combate do monstro. */
+  onOpenMonsterKnowledge?: (token: BattleToken) => void;
   dungeonEditor?: {
     layer: DungeonEditLayer;
     active: boolean;
@@ -158,6 +161,7 @@ export function useBattlefieldPointer({
   onActionRingRequest,
   canOpenActionRing,
   onActionRingBlocked,
+  onOpenMonsterKnowledge,
   onHoverTokenChange,
   dungeonEditor,
   whiteboard,
@@ -549,6 +553,18 @@ export function useBattlefieldPointer({
           if (hit.id !== selectedId) setSelectedId(hit.id);
           return;
         }
+        if (
+          !canControlCombat &&
+          isMonsterToken(hit) &&
+          actionMode === "idle" &&
+          onOpenMonsterKnowledge &&
+          !dungeonEditor?.active &&
+          !whiteboard?.active
+        ) {
+          onOpenMonsterKnowledge(hit);
+          return;
+        }
+
         if (hit.id !== selectedId) {
           if (selectedId && attackableIds.has(hit.id)) return;
           setSelectedId(hit.id);
@@ -601,6 +617,9 @@ export function useBattlefieldPointer({
       whiteboard,
       worldAtScreen,
       scene,
+      canControlCombat,
+      actionMode,
+      onOpenMonsterKnowledge,
     ]
   );
 
@@ -1119,7 +1138,9 @@ export function useBattlefieldPointer({
   );
 
   const onPointerLeave = useCallback(() => {
+    const gm = gmDragRef.current;
     gmDragRef.current = null;
+    if (gm) onGmDragPreview?.(gm.tokenId, null);
     dungeonDragRef.current = null;
     wbDrawRef.current = null;
     measureDragRef.current = null;
@@ -1128,7 +1149,7 @@ export function useBattlefieldPointer({
     onHoverAxialChange?.(null);
     onHoverTargetChange?.(null);
     onHoverTokenChange?.(null);
-  }, [setHoverAxial, onHoverAxialChange, onHoverTargetChange, onHoverTokenChange]);
+  }, [setHoverAxial, onHoverAxialChange, onHoverTargetChange, onHoverTokenChange, onGmDragPreview]);
 
   const onContextMenu = useCallback(
     (e: React.MouseEvent<HTMLCanvasElement>) => {

@@ -46,6 +46,8 @@ type Params = {
   channelExtraPa?: number;
   turn: TurnCtx;
   combatHasOrder?: boolean;
+  /** Mestre arrastando token livremente — sem preview de PA/movimento de turno. */
+  gmRepositionActive?: boolean;
 };
 
 export function useBattlefieldHighlights({
@@ -64,10 +66,12 @@ export function useBattlefieldHighlights({
   channelExtraPa = 0,
   turn,
   combatHasOrder = true,
+  gmRepositionActive = false,
 }: Params) {
   const moveMode: "walk" | "run" = actionMode === "move-run" ? "run" : "walk";
   const turnMovePreview = Boolean(
-    actionMode === "idle" &&
+    !gmRepositionActive &&
+      actionMode === "idle" &&
       hoverTurnToken &&
       canPreviewTurnMove?.(hoverTurnToken)
   );
