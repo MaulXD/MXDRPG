@@ -239,7 +239,7 @@ export function TokenActionPanel({
       token,
       actor,
       tokenTurn,
-      { combatHasOrder: Boolean(combat?.order.length) }
+      { combatHasOrder: Boolean(combat?.order?.length) }
     );
 
     return tokens
@@ -270,7 +270,7 @@ export function TokenActionPanel({
 
       .filter((x) => x.dist <= activeAction.rangeHex);
 
-  }, [token, tokens, activeAction, turn, actor, combat?.order.length]);
+  }, [token, tokens, activeAction, turn, actor, combat?.order?.length]);
 
 
 

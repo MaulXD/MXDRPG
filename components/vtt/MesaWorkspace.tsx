@@ -161,7 +161,7 @@ export function MesaWorkspace({
   );
 
   const canEndTurn = useMemo(() => {
-    if (!snapshot?.combat?.order.length) return false;
+    if (!snapshot?.combat?.order?.length) return false;
     return canAdvanceCombatTurn(turnRoom, session, snapshot.combat);
   }, [snapshot?.combat, session, turnRoom]);
 

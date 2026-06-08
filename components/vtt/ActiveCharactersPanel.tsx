@@ -138,7 +138,7 @@ export function ActiveCharactersPanel({
         </p>
       ) : null}
 
-      {canUseToken && selected && combat?.order.length ? (
+      {canUseToken && selected && combat?.order?.length ? (
         <p className="vtt-combat-hint vtt-action-ring-hint">
           {selected.id === activeTokenId(combat)
             ? "Clique direito no token para o anel de ações."

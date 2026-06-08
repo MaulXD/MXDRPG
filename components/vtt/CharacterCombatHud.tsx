@@ -91,7 +91,7 @@ export function CharacterCombatHud({
 
   const showEndTurn =
     canEndTurn &&
-    Boolean(combat?.order.length) &&
+    Boolean(combat?.order?.length) &&
     Boolean(activeId) &&
     (canControlCombat || (activeId === token.id && isYourTurn));
 
