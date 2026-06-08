@@ -59,6 +59,7 @@ export async function executeRoomAreaSpell(
     activeTokenId: activeTokenId(room.combat),
     bypassTurn: opts.bypassTurn,
     combatRound: room.combat.round,
+    combatHasOrder: Boolean(room.combat?.order?.length),
   };
 
   const actorRacas: Record<string, string | undefined> = {};

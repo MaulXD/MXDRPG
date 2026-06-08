@@ -26,6 +26,10 @@ import {
 import { attackerForCombatCheck } from "@/lib/combat/combat-token-pa";
 
 import { canAbilityTarget, canUseAbility } from "@/lib/combat/ability";
+import {
+  canActOnCombatTurn,
+  effectiveBypassTurn,
+} from "@/lib/combat/turn-guard";
 
 import type { CombatActionOption } from "@/lib/combat/types";
 
@@ -50,6 +54,13 @@ type TurnOpts = {
 export function useCombatTurn({ combat, canBypassTurn }: TurnOpts) {
 
   const activeId = combat ? activeTokenId(combat) : null;
+  const combatHasOrder = Boolean(combat?.order.length);
+
+  const turnOpts = (token: BattleToken) => ({
+    activeTokenId: activeId,
+    bypassTurn: effectiveBypassTurn(token, canBypassTurn),
+    combatHasOrder,
+  });
 
   return {
 
@@ -59,9 +70,12 @@ export function useCombatTurn({ combat, canBypassTurn }: TurnOpts) {
 
     combatRound: combat?.round ?? 1,
 
-    combatHasOrder: Boolean(combat?.order.length),
+    combatHasOrder,
 
-    isMyTurn: (tokenId: string) => !activeId || activeId === tokenId || canBypassTurn,
+    isMyTurn: (token: BattleToken) => canActOnCombatTurn(token.id, turnOpts(token)),
+
+    isTurnBlockedForToken: (token: BattleToken) =>
+      !canActOnCombatTurn(token.id, turnOpts(token)),
 
   };
 
@@ -82,6 +96,13 @@ export function useCombatActions(
 ) {
 
   const actor = attacker?.linked && attacker.actorId ? actors[attacker.actorId] ?? null : null;
+  const attackerBypass = attacker ? effectiveBypassTurn(attacker, turn.bypassTurn) : false;
+  const attackerTurn = {
+    activeTokenId: turn.activeTokenId,
+    bypassTurn: attackerBypass,
+    combatHasOrder: turn.combatHasOrder,
+    combatRound: turn.combatRound,
+  };
 
   const actions = useMemo(() => {
     if (!attacker) return [];
@@ -111,7 +132,7 @@ export function useCombatActions(
     if (!attacker || !action) return new Set<string>();
     if (isAreaSpellAction(action)) return new Set<string>();
 
-    const prepared = attackerForCombatCheck(attacker, actor, turn, {
+    const prepared = attackerForCombatCheck(attacker, actor, attackerTurn, {
       combatHasOrder: turn.combatHasOrder,
     });
 
@@ -129,21 +150,9 @@ export function useCombatActions(
 
           : action.kind === "ability"
 
-            ? canAbilityTarget(prepared, t, action, {
+            ? canAbilityTarget(prepared, t, action, attackerTurn, actor)
 
-                activeTokenId: turn.activeTokenId,
-
-                bypassTurn: turn.bypassTurn,
-
-              }, actor)
-
-            : canAttackTarget(prepared, t, action, {
-
-                activeTokenId: turn.activeTokenId,
-
-                bypassTurn: turn.bypassTurn,
-
-              }, { actor });
+            : canAttackTarget(prepared, t, action, attackerTurn, { actor });
 
       if (check.ok && tokenAxialDistance(prepared, t) <= action.rangeHex) {
 
@@ -161,10 +170,7 @@ export function useCombatActions(
 
   const selfAbilityOk = useMemo(() => {
     if (!attacker || !action || !action.selfTarget) return false;
-    return canUseAbility(attacker, action, {
-      activeTokenId: turn.activeTokenId,
-      bypassTurn: turn.bypassTurn,
-    }, actor).ok;
+    return canUseAbility(attacker, action, attackerTurn, actor).ok;
   }, [attacker, action, turn, actor]);
 
 

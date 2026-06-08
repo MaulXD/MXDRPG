@@ -64,6 +64,7 @@ export async function executeRoomSpellUtility(
     activeTokenId: activeTokenId(room.combat),
     bypassTurn: opts.bypassTurn,
     combatRound: room.combat.round,
+    combatHasOrder: Boolean(room.combat?.order?.length),
   };
 
   let result;

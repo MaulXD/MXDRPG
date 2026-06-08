@@ -10,6 +10,7 @@ import { createPlayerTokenFromActor } from "@/lib/vtt/player-token";
 import type { MonsterSpawnOptions } from "@/lib/vtt/monster-scaling";
 import type { BattleToken } from "@/lib/vtt/types";
 import { activeTokenId } from "../combat";
+import { canActOnCombatTurn, TURN_WAIT_MSG } from "@/lib/combat/turn-guard";
 import { canAnchorTokenAt } from "@/lib/vtt/dungeon-layer";
 import { revealAxial } from "@/lib/vtt/fog-of-war";
 import { characterBelongsToAdventure } from "@/lib/character/adventure-bind";
@@ -82,8 +83,15 @@ export async function moveRoomToken(
 
   let token = prepareCombatToken(room, room.scene.tokens[idx]);
   const activeId = opts.activeTokenId ?? activeTokenId(room.combat);
-  if (activeId && token.id !== activeId && !opts.bypassTurn) {
-    return { ok: false, error: "Aguarde seu turno na iniciativa" };
+  const combatHasOrder = Boolean(room.combat?.order?.length);
+  if (
+    !canActOnCombatTurn(token.id, {
+      activeTokenId: activeId,
+      bypassTurn: opts.bypassTurn,
+      combatHasOrder,
+    })
+  ) {
+    return { ok: false, error: TURN_WAIT_MSG };
   }
 
   const actorRacas: Record<string, string | undefined> = {};
