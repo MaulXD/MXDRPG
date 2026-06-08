@@ -74,6 +74,8 @@ type Props = {
   embedded?: boolean;
   /** Pop-up na mesa (layout estilo VTT) vs página inteira */
   variant?: "page" | "popup";
+  /** Oculta botão inline (export fica na barra da janela Foundry) */
+  hidePdfExport?: boolean;
 };
 
 const PLAYER_PACKS: CompendiumPackId[] = ["armas", "habilidades", "magias", "equipamentos"];
@@ -86,6 +88,7 @@ export function CharacterSheet({
   roomId = "demo",
   embedded = false,
   variant = "page",
+  hidePdfExport = false,
 }: Props) {
   const canEditPortrait = canEditPortraitProp ?? canEdit;
   const [tab, setTab] = useState<Tab>("inventário");
@@ -289,6 +292,26 @@ export function CharacterSheet({
     isPopup && !inRoom ? popupPortraitSrc : null
   );
   const displayDefesa = resolveActorDefesa(live);
+
+  const onMesaPage =
+    typeof window !== "undefined" && window.location.pathname.startsWith("/mesa/");
+
+  const scrollToQuickBar = useCallback((actorId: string) => {
+    if (actorId !== character.id) return;
+    document
+      .querySelector(".sheet-popup-quickbar")
+      ?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }, [character.id]);
+
+  useSheetPdfDeepLink({
+    enabled: isPopup && !onMesaPage,
+    roomId: inRoom ? roomId : undefined,
+    combat: snapshot?.combat,
+    tokens: snapshot?.scene.tokens,
+    actors: snapshot?.actors,
+    openSheet: scrollToQuickBar,
+    onRolled: refresh,
+  });
 
   const tabTitles: Record<Tab, string> = {
     inventário: "Inventário",
@@ -685,9 +708,16 @@ export function CharacterSheet({
 
     return (
       <div className="sheet-shell sheet-shell--popup">
-        <div className="sheet-popup-export">
-          <SheetPdfExportButton character={live} inventory={inventory} />
-        </div>
+        {!hidePdfExport ? (
+          <div className="sheet-popup-export">
+            <SheetPdfExportButton
+              character={live}
+              inventory={inventory}
+              characterId={character.id}
+              roomId={inRoom ? roomId : undefined}
+            />
+          </div>
+        ) : null}
         <OrnamentCard className="sheet-popup-top">
           <div className="sheet-popup-top__portrait-col">
             {inRoom ? (

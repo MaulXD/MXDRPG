@@ -19,6 +19,7 @@ import type { FoundryWindowLayout } from "@/hooks/vtt/useFoundryWindows";
 
 import type { RoomActor } from "@/lib/room/types";
 
+import { SheetPdfExportButton } from "@/components/character/SheetPdfExportButton";
 import { FoundryWindow } from "@/components/vtt/foundry/FoundryWindow";
 import { MedievalFrame } from "@/components/ui/MedievalFrame";
 
@@ -129,8 +130,7 @@ export function CharacterSheetPopup({
   const canEditPortrait = canEditRoomActorPortrait(roomCtx, merged, session);
 
   const inventory = live?.inventory?.length ? live.inventory : seed.inventory;
-
-
+  const sheetCharacter = { ...seed, ...live, inventory };
 
   return (
 
@@ -153,6 +153,16 @@ export function CharacterSheetPopup({
       minWidth={520}
 
       minHeight={400}
+
+      headerExtra={
+        <SheetPdfExportButton
+          character={sheetCharacter}
+          inventory={inventory}
+          characterId={actorId}
+          roomId={roomId}
+          variant="chrome"
+        />
+      }
 
     >
 
@@ -180,12 +190,13 @@ export function CharacterSheetPopup({
 
         <MedievalFrame variant="gothic" compact flush className="mf--sheet-page mf--foundry-fill">
           <CharacterSheet
-            character={{ ...seed, ...live, inventory }}
+            character={sheetCharacter}
             canEdit={canEdit}
             canEditPortrait={canEditPortrait}
             compendium={compendium}
             roomId={roomId}
             variant="popup"
+            hidePdfExport
           />
         </MedievalFrame>
 

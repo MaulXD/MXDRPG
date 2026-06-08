@@ -13,6 +13,8 @@ type Props = {
   roomId?: string;
   className?: string;
   compact?: boolean;
+  /** Botão quadrado na barra da janela Foundry (minimizar/fechar) */
+  variant?: "default" | "chrome";
 };
 
 export function SheetPdfExportButton({
@@ -22,11 +24,13 @@ export function SheetPdfExportButton({
   roomId,
   className,
   compact,
+  variant = "default",
 }: Props) {
   const hostRef = useRef<HTMLDivElement>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const resolvedCharacterId = characterId ?? character.id;
+  const isChrome = variant === "chrome";
 
   const exportPdf = useCallback(async () => {
     if (busy || !hostRef.current) return;
@@ -50,34 +54,28 @@ export function SheetPdfExportButton({
   }, [busy, character.name, resolvedCharacterId, roomId]);
 
   const offscreen = (
-    <div
-      ref={hostRef}
-      aria-hidden
-      className="sheet-pdf-capture-host"
-      style={{
-        position: "fixed",
-        left: "-10000px",
-        top: 0,
-        zIndex: -1,
-        pointerEvents: "none",
-      }}
-    >
-      <SheetPdfCapture character={character} inventory={inventory} />
+    <div ref={hostRef} aria-hidden className="sheet-pdf-capture-host">
+      <SheetPdfCapture character={character} inventory={inventory} roomId={roomId} />
     </div>
   );
+
+  const btnClass = isChrome
+    ? `foundry-window__btn foundry-window__btn--pdf${busy ? " is-busy" : ""}${className ? ` ${className}` : ""}`
+    : `btn btn-secondary sheet-pdf-export-btn${compact ? " sheet-pdf-export-btn--toolbar" : ""}${className ? ` ${className}` : ""}`;
 
   return (
     <>
       <button
         type="button"
-        className={`btn btn-secondary sheet-pdf-export-btn${compact ? " sheet-pdf-export-btn--toolbar" : ""}${className ? ` ${className}` : ""}`}
+        className={btnClass}
         onClick={() => void exportPdf()}
         disabled={busy}
-        title="Baixar ficha em PDF"
+        title="Baixar ficha em PDF (ações rápidas com link para a mesa)"
+        aria-label="Exportar ficha em PDF"
       >
-        {busy ? "Gerando PDF…" : compact ? "PDF" : "Exportar PDF"}
+        {busy ? "…" : isChrome ? "PDF" : compact ? "PDF" : "Exportar PDF"}
       </button>
-      {error ? (
+      {error && !isChrome ? (
         <span className="sheet-pdf-doc__muted" role="alert" style={{ marginLeft: "0.5rem" }}>
           {error}
         </span>
