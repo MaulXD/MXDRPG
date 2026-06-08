@@ -568,7 +568,8 @@
 
 .portrait--sheet-popup {
   width: min(148px, 100%);
-  height: min(148px, 100%);
+  aspect-ratio: 1;
+  height: auto;
 }
 
 @media (max-width: 520px) {
