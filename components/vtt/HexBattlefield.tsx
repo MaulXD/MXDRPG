@@ -406,7 +406,7 @@ export function HexBattlefield({
         if (canControlCombat && isMonsterToken(t)) return null;
         return "Aguarde o mestre rolar a iniciativa para usar ações.";
       }
-      if (canControlCombat && (turn.bypassTurn || isMonsterToken(t))) return null;
+      if (canControlCombat && (tokenBypass(t) || isMonsterToken(t))) return null;
       const activeId = activeTokenId(track);
       if (!activeId) return "Aguarde a iniciativa.";
       if (t.id !== activeId) {
@@ -417,7 +417,7 @@ export function HexBattlefield({
       }
       return null;
     },
-    [snapshot?.combat, canOperateToken, canControlCombat, turn.bypassTurn, displayScene.tokens]
+    [snapshot?.combat, canOperateToken, canControlCombat, tokenBypass, displayScene.tokens]
   );
 
   const canPreviewTurnMove = useCallback(
@@ -889,13 +889,15 @@ export function HexBattlefield({
     setSpellTargetIds([]);
   }, [actionMode, selectedCombatAction?.entryId]);
 
+  const selectedBypass = selected ? tokenBypass(selected) : false;
+
   useEffect(() => {
     setActionRingAt(null);
-    if (!turn.bypassTurn) {
+    if (!selectedBypass) {
       setActionMode("idle");
       setSelectedCombatAction(null);
     }
-  }, [selectedId, snapshot?.combat?.activeIndex, snapshot?.combat?.round, turn.bypassTurn]);
+  }, [selectedId, snapshot?.combat?.activeIndex, snapshot?.combat?.round, selectedBypass]);
 
   const removeSelectedToken = useCallback(async () => {
     if (!canControlCombat || !selectedId || !selected) return;
@@ -1027,7 +1029,7 @@ export function HexBattlefield({
       try {
         const snap = await postRoomAreaSpell(roomId, selected.id, center.q, center.r, {
           actionEntryId: activeCombatAction.entryId,
-          bypassTurn: turn.bypassTurn,
+          bypassTurn: selectedBypass,
           areaDirection: direction,
           channelExtraPa,
         });
@@ -1038,7 +1040,7 @@ export function HexBattlefield({
         setActionErr(e instanceof Error ? e.message : "Falha na magia de área");
       }
     },
-    [selected, activeCombatAction, roomId, turn.bypassTurn, channelExtraPa, syncRoom, playCombatFxFromSnap]
+    [selected, selectedBypass, activeCombatAction, roomId, channelExtraPa, syncRoom, playCombatFxFromSnap]
   );
 
   const actionPreview: ActionPreview | null = useMemo(() => {
@@ -1048,7 +1050,7 @@ export function HexBattlefield({
         ...(selectedActor
           ? { freeBasicMovePa: paTurnRulesForActor(selectedActor).freeBasicMovePa }
           : {}),
-        ...(turn.bypassTurn ? { gmBypass: true as const } : {}),
+        ...(selectedBypass ? { gmBypass: true as const } : {}),
       };
       const moveCtx: MovementPathContext = {
         tokens: displayScene.tokens,
@@ -1160,17 +1162,18 @@ export function HexBattlefield({
       if (!token || !action.selfTarget) return;
       setActionErr(null);
       try {
+        const bypass = tokenBypass(token);
         const snap =
           action.kind === "ability"
             ? await postRoomAbility(roomId, token.id, null, {
                 actionEntryId: action.entryId,
-                bypassTurn: turn.bypassTurn,
+                bypassTurn: bypass,
               })
             : await postRoomAttack(
                 roomId,
                 token.id,
                 token.id,
-                combatAttackRequestOpts(action, token, { bypassTurn: turn.bypassTurn })
+                combatAttackRequestOpts(action, token, { bypassTurn: bypass })
               );
         playCombatFxFromSnap(snap, { deferSnap: true });
         setActionMode("idle");
@@ -1180,7 +1183,7 @@ export function HexBattlefield({
         setActionErr(e instanceof Error ? e.message : "Falha na ação");
       }
     },
-    [selected, roomId, turn.bypassTurn, playCombatFxFromSnap]
+    [selected, roomId, tokenBypass, playCombatFxFromSnap]
   );
 
   const executeMultiTargetCast = useCallback(
@@ -1195,7 +1198,7 @@ export function HexBattlefield({
           targetIds[0]!,
           {
             ...combatAttackRequestOpts(activeCombatAction, selected, {
-              bypassTurn: turn.bypassTurn,
+              bypassTurn: selectedBypass,
               channelExtraPa,
             }),
             defenderTokenIds: targetIds,
@@ -1213,9 +1216,9 @@ export function HexBattlefield({
     },
     [
       selected,
+      selectedBypass,
       activeCombatAction,
       roomId,
-      turn.bypassTurn,
       channelExtraPa,
       playCombatFxFromSnap,
     ]
@@ -1259,7 +1262,7 @@ export function HexBattlefield({
         if (activeCombatAction.kind === "ability") {
           snap = await postRoomAbility(roomId, selected.id, defenderId, {
             actionEntryId: activeCombatAction.entryId,
-            bypassTurn: turn.bypassTurn,
+            bypassTurn: selectedBypass,
           });
         } else {
           snap = await postRoomAttack(
@@ -1267,7 +1270,7 @@ export function HexBattlefield({
             selected.id,
             defenderId,
             combatAttackRequestOpts(activeCombatAction, selected, {
-              bypassTurn: turn.bypassTurn,
+              bypassTurn: selectedBypass,
               channelExtraPa,
             })
           );
@@ -1282,9 +1285,9 @@ export function HexBattlefield({
     },
     [
       selected,
+      selectedBypass,
       activeCombatAction,
       roomId,
-      turn.bypassTurn,
       channelExtraPa,
       playCombatFxFromSnap,
     ]
@@ -1353,8 +1356,14 @@ export function HexBattlefield({
   const moveSelectedTo = useCallback(
     async (axial: Axial) => {
       if (!selected || !isMoveMode(actionMode) || moveBusyRef.current) return;
-      if (turn.activeTokenId && selected.id !== turn.activeTokenId && !turn.bypassTurn) {
-        setActionErr("Aguarde seu turno na iniciativa");
+      if (
+        !canActOnCombatTurn(selected.id, {
+          activeTokenId: turn.activeTokenId,
+          bypassTurn: selectedBypass,
+          combatHasOrder: turn.combatHasOrder,
+        })
+      ) {
+        setActionErr(TURN_WAIT_MSG);
         return;
       }
       const moveCtx: MovementPathContext = {
@@ -1367,7 +1376,7 @@ export function HexBattlefield({
         ...(selectedActor?.identity
           ? { freeBasicMovePa: paTurnRulesForActor(selectedActor).freeBasicMovePa }
           : {}),
-        ...(turn.bypassTurn ? { gmBypass: true as const } : {}),
+        ...(selectedBypass ? { gmBypass: true as const } : {}),
       };
       const check = canMoveToken(selected, axial, highlights.moveMode, moveCtx, movePaOpts);
       if (!check.ok) {
@@ -1385,7 +1394,7 @@ export function HexBattlefield({
           axial.q,
           axial.r,
           highlights.moveMode,
-          turn.bypassTurn
+          selectedBypass
         );
         if (!snap?.scene) throw new Error("Resposta inválida ao mover token");
         syncRoom(snap);
@@ -1414,7 +1423,8 @@ export function HexBattlefield({
       roomId,
       highlights.moveMode,
       turn.activeTokenId,
-      turn.bypassTurn,
+      turn.combatHasOrder,
+      selectedBypass,
       syncRoom,
       redraw,
       flushPendingSceneSnapshot,
@@ -1817,10 +1827,10 @@ export function HexBattlefield({
   );
 
   useEffect(() => {
-    if (!foundryLayout || !statusWindowLayout?.open || modalStatusToken) return;
+    if (!foundryLayout || !statusWindowLayout?.open) return;
     const token = resolveStatusToken();
     if (token) setModalStatusToken(token);
-  }, [foundryLayout, statusWindowLayout?.open, modalStatusToken, resolveStatusToken]);
+  }, [foundryLayout, statusWindowLayout?.open, resolveStatusToken]);
 
   const hoverMiniHudAnchor = useMemo(() => {
     if (!hoverTokenId) return null;
