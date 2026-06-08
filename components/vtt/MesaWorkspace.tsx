@@ -168,59 +168,21 @@ export function MesaWorkspace({
   const canParticipate = useMemo(
     () =>
       canParticipateInRoom(
-        {
-          roomId,
-          adventureId,
-          ownerId: roomOwnerId,
-          memberIds,
-          name: roomName ?? "",
-          inviteCode: roomInviteCode ?? "",
-          settings: normalizeRoomSettings(snapshot?.settings),
-          scene: snapshot?.scene ?? scene,
-          actors: snapshot?.actors ?? {},
-          combat: snapshot?.combat ?? { round: 1, order: [], activeIndex: 0 },
-          chat: [],
-          pings: [],
-          revision: 0,
-          updatedAt: 0,
-        },
+        { roomId, ownerId: roomOwnerId, memberIds },
         session
       ),
     [
       roomId,
-      adventureId,
       roomOwnerId,
       memberIds,
-      roomName,
-      roomInviteCode,
-      snapshot,
-      scene,
       session,
     ]
   );
 
   const canCreateCharacter = useMemo(
     () =>
-      canParticipateInRoom(
-        {
-          roomId,
-          adventureId,
-          ownerId: roomOwnerId,
-          memberIds,
-          name: "",
-          inviteCode: inviteCode ?? "",
-          settings: normalizeRoomSettings(snapshot?.settings),
-          scene: snapshot?.scene ?? scene,
-          actors: snapshot?.actors ?? {},
-          combat: snapshot?.combat ?? { round: 1, order: [], activeIndex: 0 },
-          chat: [],
-          pings: [],
-          revision: 0,
-          updatedAt: 0,
-        },
-        session
-      ),
-    [roomId, adventureId, roomOwnerId, memberIds, inviteCode, snapshot, scene, session]
+      canParticipateInRoom({ roomId, ownerId: roomOwnerId, memberIds }, session),
+    [roomId, roomOwnerId, memberIds, session]
   );
 
   const canBypassTurn = useMemo(() => {
