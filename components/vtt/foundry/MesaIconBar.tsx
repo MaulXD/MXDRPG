@@ -70,7 +70,6 @@ export function MesaIconBar({
     { id: "ficha", label: "Ficha", icon: "ficha", section: "play" },
     { id: "chat", label: "Chat", icon: "chat", section: "play" },
     { id: "dice", label: "Dados", icon: "dice", section: "play" },
-    { id: "whiteboard", label: "Lousa", icon: "whiteboard", section: "play" },
     { id: "invite", label: "Convite", icon: "invite", section: "play", show: showInvite },
     { id: "dungeon", label: "Mapa", icon: "dungeon", section: "gm", show: showGm },
     { id: "gm", label: "Mestre", icon: "gm", section: "gm", show: showGm },

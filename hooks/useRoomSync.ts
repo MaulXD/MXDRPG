@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { IdentityPatch } from "@/lib/character/identity";
 import type { LevelUpChoices } from "@/lib/character/level-up";
 import type { CharacterSheet } from "@/lib/character/types";
+import { normalizeCombatTrack } from "@/lib/room/combat";
 import type { RoomActor, RoomSnapshot } from "@/lib/room/types";
 import type { DungeonObject } from "@/lib/vtt/types";
 
@@ -36,7 +37,12 @@ export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
   const applySnapshot = useCallback((data: RoomSnapshot) => {
     if (data.revision < revisionRef.current) return;
     revisionRef.current = data.revision;
-    setSnapshot(data);
+    const tokens = Array.isArray(data.scene?.tokens) ? data.scene.tokens : [];
+    setSnapshot({
+      ...data,
+      scene: { ...data.scene, tokens },
+      combat: normalizeCombatTrack(data.combat, tokens),
+    });
     setSyncError(null);
     setLoading(false);
   }, []);

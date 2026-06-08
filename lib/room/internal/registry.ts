@@ -1,3 +1,4 @@
+import * as dbAdventures from "@/lib/db/adventures";
 import * as dbRooms from "@/lib/db/rooms";
 import { getCharacterFromRegistry } from "@/lib/character/character-registry";
 import { getEntry } from "@/lib/compendium/registry";
@@ -176,12 +177,28 @@ export async function persistRoom(roomId: string, state: RoomState): Promise<Roo
   return updated;
 }
 
+async function backfillRoomFromAdventure(roomId: string): Promise<RoomState | null> {
+  if (!shouldPersistToDb(roomId)) return null;
+  let adventure = await dbAdventures.fetchAdventure(roomId);
+  if (!adventure) adventure = await dbAdventures.fetchAdventureByPrimaryRoom(roomId);
+  if (!adventure || adventure.deletedAt) return null;
+  try {
+    const { createRoomForAdventure } = await import("../adventure-room");
+    await createRoomForAdventure(adventure);
+    return dbRooms.fetchRoom(adventure.primaryRoomId);
+  } catch (e) {
+    console.error("[getRoom] backfill da mesa falhou:", roomId, e);
+    return null;
+  }
+}
+
 export async function getRoom(roomId: string): Promise<RoomState | null> {
   const map = rooms();
   let room = map.get(roomId) ?? null;
 
   if (!room && shouldPersistToDb(roomId)) {
     room = await dbRooms.fetchRoom(roomId);
+    if (!room) room = await backfillRoomFromAdventure(roomId);
     if (room) map.set(roomId, room);
   }
 

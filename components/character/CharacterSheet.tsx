@@ -53,6 +53,7 @@ import {
   proficiencyBonus,
   type AttributeKey,
 } from "@/lib/character/rules";
+import { SheetPdfExportButton } from "@/components/character/SheetPdfExportButton";
 import { OrnamentCard } from "@/components/ui/OrnamentCard";
 import { SectionDivider } from "@/components/ui/SectionDivider";
 import { Portrait } from "@/components/vtt/Portrait";
@@ -683,6 +684,9 @@ export function CharacterSheet({
 
     return (
       <div className="sheet-shell sheet-shell--popup">
+        <div className="sheet-popup-export">
+          <SheetPdfExportButton character={live} inventory={inventory} />
+        </div>
         <OrnamentCard className="sheet-popup-top">
           <div className="sheet-popup-top__portrait-col">
             {inRoom ? (
