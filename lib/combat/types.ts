@@ -80,6 +80,7 @@ export type CombatTurnOptions = {
   /** Mestre/admin pode agir fora do turno */
   bypassTurn?: boolean;
   combatRound?: number;
+  combatHasOrder?: boolean;
 };
 
 export type CombatActionRequest = {

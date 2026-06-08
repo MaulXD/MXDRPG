@@ -207,6 +207,7 @@ export async function executeRoomAbility(
     activeTokenId: activeTokenId(room.combat),
     bypassTurn: opts.bypassTurn,
     combatRound: room.combat.round,
+    combatHasOrder: Boolean(room.combat?.order?.length),
   };
 
   if (action.selfTarget) {

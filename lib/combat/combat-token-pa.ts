@@ -14,6 +14,7 @@ import {
   tokenSpendablePa,
 } from "@/lib/combat/pa-turn";
 import { activeTokenId } from "@/lib/room/combat";
+import { canActOnCombatTurn } from "@/lib/combat/turn-guard";
 import { isMonsterToken } from "@/lib/room/settings";
 import type { RoomState } from "@/lib/room/types";
 import type { BattleToken } from "@/lib/vtt/types";
@@ -45,12 +46,15 @@ function mayRefreshCombatPa(
   turn?: CombatTurnOptions,
   opts?: { combatHasOrder?: boolean }
 ): boolean {
-  if (turn?.bypassTurn) return true;
-  if (turn?.activeTokenId && token.id === turn.activeTokenId) return true;
-  if (!turn?.activeTokenId && opts?.combatHasOrder === false && isMonsterToken(token)) {
-    return true;
+  const combatHasOrder = opts?.combatHasOrder ?? turn?.combatHasOrder;
+  if (!combatHasOrder) {
+    return isMonsterToken(token);
   }
-  return false;
+  return canActOnCombatTurn(token.id, {
+    activeTokenId: turn?.activeTokenId,
+    bypassTurn: turn?.bypassTurn,
+    combatHasOrder: true,
+  });
 }
 
 /** Normaliza PA do atacante antes de validar ataque (UI + servidor). */
@@ -89,6 +93,7 @@ export function ensureTokenCombatPa(
     {
       activeTokenId: activeTokenId(room.combat),
       bypassTurn: opts?.bypassTurn,
+      combatHasOrder: hasOrder,
     },
     { combatHasOrder: hasOrder }
   );

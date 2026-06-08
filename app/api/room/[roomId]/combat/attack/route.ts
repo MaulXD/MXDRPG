@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { assertTokenControl, chatRoleForUser } from "@/lib/auth/authorize-room";
 import { canBypassCombatTurn } from "@/lib/auth/room-access";
+import { effectiveBypassTurn } from "@/lib/combat/turn-guard";
 import { getSession } from "@/lib/auth/session";
 import { snapshotForViewer } from "@/lib/room/snapshot-for-viewer";
 import { executeRoomAttack, getRoom } from "@/lib/room/store";
@@ -72,7 +73,7 @@ export async function POST(req: Request, { params }: Params) {
   }
 
   const canBypass = canBypassCombatTurn(room, session?.user ?? null);
-  const bypassTurn = Boolean(body.bypassTurn && canBypass);
+  const bypassTurn = Boolean(body.bypassTurn && attacker && effectiveBypassTurn(attacker, canBypass));
 
   const result = await executeRoomAttack(
     roomId,

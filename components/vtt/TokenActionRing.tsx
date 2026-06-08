@@ -131,8 +131,7 @@ export function TokenActionRing({
     [token, actor]
   );
 
-  const turnBlocked =
-    Boolean(turn.activeTokenId && turn.activeTokenId !== token.id && !turn.bypassTurn);
+  const turnBlocked = turn.isTurnBlockedForToken(token);
 
   const movePa = useMemo(() => nextHexPaLabel(token), [token]);
 

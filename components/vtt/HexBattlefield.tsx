@@ -99,7 +99,7 @@ import { BattlefieldActionHud } from "@/components/vtt/BattlefieldActionHud";
 import { CharacterCombatHud } from "@/components/vtt/CharacterCombatHud";
 import { CombatHudRestoreButton } from "@/components/vtt/CombatHudRestoreButton";
 import { TokenHoverMiniHud } from "@/components/vtt/TokenHoverMiniHud";
-import { TokenStatusModal } from "@/components/vtt/TokenStatusModal";
+import { TokenStatusBody } from "@/components/vtt/TokenStatusBody";
 import { EndTurnBar } from "@/components/vtt/EndTurnBar";
 import { TurnOrderPanel } from "@/components/vtt/TurnOrderPanel";
 import {
@@ -108,6 +108,11 @@ import {
   type DungeonEditorTool,
 } from "@/components/vtt/DungeonEditorPanel";
 import { useCombatTurn } from "@/hooks/useCombatActions";
+import {
+  canActOnCombatTurn,
+  effectiveBypassTurn,
+  TURN_WAIT_MSG,
+} from "@/lib/combat/turn-guard";
 import { useCombatHudVisible } from "@/hooks/vtt/useCombatHudVisible";
 import { useTokenImages } from "@/hooks/vtt/useTokenImages";
 import { usePortraitFocusByToken } from "@/hooks/vtt/usePortraitFocusByToken";
@@ -186,9 +191,14 @@ type Props = {
   onWhiteboardWindowClose?: () => void;
   onWhiteboardWindowMinimize?: () => void;
   onWhiteboardWindowFocus?: () => void;
+  statusWindowLayout?: FoundryWindowLayout;
+  onStatusWindowLayoutChange?: (patch: Partial<FoundryWindowLayout>) => void;
+  onStatusWindowClose?: () => void;
+  onStatusWindowMinimize?: () => void;
+  onStatusWindowFocus?: () => void;
+  /** Abre o painel Status na barra lateral (Foundry). */
+  onStatusDockOpen?: () => void;
   isWindowFloating?: (id: MesaWindowId) => boolean;
-  /** Registra abertura do modal Status (ícone na barra Foundry). */
-  onRegisterOpenStatus?: (open: () => void) => void;
 };
 
 export function HexBattlefield({
@@ -243,8 +253,13 @@ export function HexBattlefield({
   onWhiteboardWindowClose,
   onWhiteboardWindowMinimize,
   onWhiteboardWindowFocus,
+  statusWindowLayout,
+  onStatusWindowLayoutChange,
+  onStatusWindowClose,
+  onStatusWindowMinimize,
+  onStatusWindowFocus,
+  onStatusDockOpen,
   isWindowFloating,
-  onRegisterOpenStatus,
 }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
@@ -270,7 +285,6 @@ export function HexBattlefield({
   const [friendlyFireBusy, setFriendlyFireBusy] = useState(false);
   const [spellTargetIds, setSpellTargetIds] = useState<string[]>([]);
   const [spellTargetBusy, setSpellTargetBusy] = useState(false);
-  const [statusOpen, setStatusOpen] = useState(false);
   const [modalStatusToken, setModalStatusToken] = useState<BattleToken | null>(null);
   const { visible: hudVisible, setHudVisible } = useCombatHudVisible(roomId);
   const toast = useVttToast();
@@ -368,6 +382,10 @@ export function HexBattlefield({
   const refresh = onRefresh ?? (() => {});
   const turnActiveId = snapshot?.combat ? activeTokenId(snapshot.combat) : null;
   const turn = useCombatTurn({ combat: snapshot?.combat, canBypassTurn: canBypassTurnProp });
+  const tokenBypass = useCallback(
+    (t: BattleToken) => effectiveBypassTurn(t, canBypassTurnProp),
+    [canBypassTurnProp]
+  );
 
   const tokenControl =
     canControlToken ?? ((t: BattleToken) => canControlCombat || Boolean(t.linked));
@@ -388,7 +406,7 @@ export function HexBattlefield({
         if (canControlCombat && isMonsterToken(t)) return null;
         return "Aguarde o mestre rolar a iniciativa para usar ações.";
       }
-      if (canControlCombat && (turn.bypassTurn || isMonsterToken(t))) return null;
+      if (canControlCombat && (tokenBypass(t) || isMonsterToken(t))) return null;
       const activeId = activeTokenId(track);
       if (!activeId) return "Aguarde a iniciativa.";
       if (t.id !== activeId) {
@@ -399,7 +417,7 @@ export function HexBattlefield({
       }
       return null;
     },
-    [snapshot?.combat, canOperateToken, canControlCombat, turn.bypassTurn, displayScene.tokens]
+    [snapshot?.combat, canOperateToken, canControlCombat, tokenBypass, displayScene.tokens]
   );
 
   const canPreviewTurnMove = useCallback(
@@ -871,13 +889,15 @@ export function HexBattlefield({
     setSpellTargetIds([]);
   }, [actionMode, selectedCombatAction?.entryId]);
 
+  const selectedBypass = selected ? tokenBypass(selected) : false;
+
   useEffect(() => {
     setActionRingAt(null);
-    if (!turn.bypassTurn) {
+    if (!selectedBypass) {
       setActionMode("idle");
       setSelectedCombatAction(null);
     }
-  }, [selectedId, snapshot?.combat?.activeIndex, snapshot?.combat?.round, turn.bypassTurn]);
+  }, [selectedId, snapshot?.combat?.activeIndex, snapshot?.combat?.round, selectedBypass]);
 
   const removeSelectedToken = useCallback(async () => {
     if (!canControlCombat || !selectedId || !selected) return;
@@ -1009,7 +1029,7 @@ export function HexBattlefield({
       try {
         const snap = await postRoomAreaSpell(roomId, selected.id, center.q, center.r, {
           actionEntryId: activeCombatAction.entryId,
-          bypassTurn: turn.bypassTurn,
+          bypassTurn: selectedBypass,
           areaDirection: direction,
           channelExtraPa,
         });
@@ -1020,7 +1040,7 @@ export function HexBattlefield({
         setActionErr(e instanceof Error ? e.message : "Falha na magia de área");
       }
     },
-    [selected, activeCombatAction, roomId, turn.bypassTurn, channelExtraPa, syncRoom, playCombatFxFromSnap]
+    [selected, selectedBypass, activeCombatAction, roomId, channelExtraPa, syncRoom, playCombatFxFromSnap]
   );
 
   const actionPreview: ActionPreview | null = useMemo(() => {
@@ -1030,7 +1050,7 @@ export function HexBattlefield({
         ...(selectedActor
           ? { freeBasicMovePa: paTurnRulesForActor(selectedActor).freeBasicMovePa }
           : {}),
-        ...(turn.bypassTurn ? { gmBypass: true as const } : {}),
+        ...(selectedBypass ? { gmBypass: true as const } : {}),
       };
       const moveCtx: MovementPathContext = {
         tokens: displayScene.tokens,
@@ -1142,17 +1162,18 @@ export function HexBattlefield({
       if (!token || !action.selfTarget) return;
       setActionErr(null);
       try {
+        const bypass = tokenBypass(token);
         const snap =
           action.kind === "ability"
             ? await postRoomAbility(roomId, token.id, null, {
                 actionEntryId: action.entryId,
-                bypassTurn: turn.bypassTurn,
+                bypassTurn: bypass,
               })
             : await postRoomAttack(
                 roomId,
                 token.id,
                 token.id,
-                combatAttackRequestOpts(action, token, { bypassTurn: turn.bypassTurn })
+                combatAttackRequestOpts(action, token, { bypassTurn: bypass })
               );
         playCombatFxFromSnap(snap, { deferSnap: true });
         setActionMode("idle");
@@ -1162,7 +1183,7 @@ export function HexBattlefield({
         setActionErr(e instanceof Error ? e.message : "Falha na ação");
       }
     },
-    [selected, roomId, turn.bypassTurn, playCombatFxFromSnap]
+    [selected, roomId, tokenBypass, playCombatFxFromSnap]
   );
 
   const executeMultiTargetCast = useCallback(
@@ -1177,7 +1198,7 @@ export function HexBattlefield({
           targetIds[0]!,
           {
             ...combatAttackRequestOpts(activeCombatAction, selected, {
-              bypassTurn: turn.bypassTurn,
+              bypassTurn: selectedBypass,
               channelExtraPa,
             }),
             defenderTokenIds: targetIds,
@@ -1195,9 +1216,9 @@ export function HexBattlefield({
     },
     [
       selected,
+      selectedBypass,
       activeCombatAction,
       roomId,
-      turn.bypassTurn,
       channelExtraPa,
       playCombatFxFromSnap,
     ]
@@ -1241,7 +1262,7 @@ export function HexBattlefield({
         if (activeCombatAction.kind === "ability") {
           snap = await postRoomAbility(roomId, selected.id, defenderId, {
             actionEntryId: activeCombatAction.entryId,
-            bypassTurn: turn.bypassTurn,
+            bypassTurn: selectedBypass,
           });
         } else {
           snap = await postRoomAttack(
@@ -1249,7 +1270,7 @@ export function HexBattlefield({
             selected.id,
             defenderId,
             combatAttackRequestOpts(activeCombatAction, selected, {
-              bypassTurn: turn.bypassTurn,
+              bypassTurn: selectedBypass,
               channelExtraPa,
             })
           );
@@ -1264,9 +1285,9 @@ export function HexBattlefield({
     },
     [
       selected,
+      selectedBypass,
       activeCombatAction,
       roomId,
-      turn.bypassTurn,
       channelExtraPa,
       playCombatFxFromSnap,
     ]
@@ -1335,8 +1356,14 @@ export function HexBattlefield({
   const moveSelectedTo = useCallback(
     async (axial: Axial) => {
       if (!selected || !isMoveMode(actionMode) || moveBusyRef.current) return;
-      if (turn.activeTokenId && selected.id !== turn.activeTokenId && !turn.bypassTurn) {
-        setActionErr("Aguarde seu turno na iniciativa");
+      if (
+        !canActOnCombatTurn(selected.id, {
+          activeTokenId: turn.activeTokenId,
+          bypassTurn: selectedBypass,
+          combatHasOrder: turn.combatHasOrder,
+        })
+      ) {
+        setActionErr(TURN_WAIT_MSG);
         return;
       }
       const moveCtx: MovementPathContext = {
@@ -1349,7 +1376,7 @@ export function HexBattlefield({
         ...(selectedActor?.identity
           ? { freeBasicMovePa: paTurnRulesForActor(selectedActor).freeBasicMovePa }
           : {}),
-        ...(turn.bypassTurn ? { gmBypass: true as const } : {}),
+        ...(selectedBypass ? { gmBypass: true as const } : {}),
       };
       const check = canMoveToken(selected, axial, highlights.moveMode, moveCtx, movePaOpts);
       if (!check.ok) {
@@ -1367,7 +1394,7 @@ export function HexBattlefield({
           axial.q,
           axial.r,
           highlights.moveMode,
-          turn.bypassTurn
+          selectedBypass
         );
         if (!snap?.scene) throw new Error("Resposta inválida ao mover token");
         syncRoom(snap);
@@ -1396,7 +1423,8 @@ export function HexBattlefield({
       roomId,
       highlights.moveMode,
       turn.activeTokenId,
-      turn.bypassTurn,
+      turn.combatHasOrder,
+      selectedBypass,
       syncRoom,
       redraw,
       flushPendingSceneSnapshot,
@@ -1766,24 +1794,43 @@ export function HexBattlefield({
     [isRoomGm, selected, turnActiveToken, playerToken]
   );
 
+  const handleStatusClose = useCallback(() => {
+    setModalStatusToken(null);
+    onStatusWindowClose?.();
+  }, [onStatusWindowClose]);
+
   const openStatus = useCallback(
     (explicit?: BattleToken | null) => {
-      if (!explicit && statusOpen) {
-        setStatusOpen(false);
-        setModalStatusToken(null);
-        return;
-      }
       const token = resolveStatusToken(explicit);
       if (!token) return;
+      if (
+        !explicit &&
+        statusWindowLayout?.open &&
+        modalStatusToken?.id === token.id
+      ) {
+        handleStatusClose();
+        return;
+      }
       setModalStatusToken(token);
-      setStatusOpen(true);
+      if (foundryLayout) {
+        onStatusDockOpen?.();
+      }
     },
-    [resolveStatusToken, statusOpen]
+    [
+      resolveStatusToken,
+      statusWindowLayout?.open,
+      modalStatusToken?.id,
+      handleStatusClose,
+      foundryLayout,
+      onStatusDockOpen,
+    ]
   );
 
   useEffect(() => {
-    onRegisterOpenStatus?.(() => openStatus());
-  }, [onRegisterOpenStatus, openStatus]);
+    if (!foundryLayout || !statusWindowLayout?.open) return;
+    const token = resolveStatusToken();
+    if (token) setModalStatusToken(token);
+  }, [foundryLayout, statusWindowLayout?.open, resolveStatusToken]);
 
   const hoverMiniHudAnchor = useMemo(() => {
     if (!hoverTokenId) return null;
@@ -2167,6 +2214,59 @@ export function HexBattlefield({
 
   const initiativePortal = portalPanel(initiativeUi, float("initiative"));
 
+  const statusTitle = modalStatusToken ? `Status · ${modalStatusToken.name}` : "Status";
+
+  const statusBody = modalStatusToken ? (
+    <div className="mesa-panel-scroll mesa-panel-scroll--rail">
+      <TokenStatusBody
+        token={modalStatusToken}
+        roomId={roomId}
+        combat={combat}
+        canApplyConditions={isRoomGm}
+        onUpdate={refresh}
+        compact
+      />
+    </div>
+  ) : (
+    <p className="vtt-combat-hint" style={{ padding: "1rem" }}>
+      {isRoomGm
+        ? "Selecione um token no mapa ou inicie a iniciativa."
+        : "Coloque sua ficha no mapa para ver status."}
+    </p>
+  );
+
+  const statusUi =
+    foundryLayout && statusWindowLayout ? (
+      float("status") ? (
+        <FoundryWindow
+          title={statusTitle}
+          layout={statusWindowLayout}
+          className="foundry-window--status"
+          minWidth={280}
+          minHeight={220}
+          onLayoutChange={onStatusWindowLayoutChange ?? (() => {})}
+          onClose={handleStatusClose}
+          onMinimize={onStatusWindowMinimize ?? (() => {})}
+          onFocus={onStatusWindowFocus ?? (() => {})}
+        >
+          {statusBody}
+        </FoundryWindow>
+      ) : (
+        <FoundryDockPanel
+          title={statusTitle}
+          open={statusWindowLayout.open}
+          minimized={statusWindowLayout.minimized}
+          className="foundry-dock-panel--status"
+          onClose={handleStatusClose}
+          onMinimize={onStatusWindowMinimize}
+        >
+          {statusBody}
+        </FoundryDockPanel>
+      )
+    ) : null;
+
+  const statusPortal = portalPanel(statusUi, float("status"));
+
   return (
     <div
       className={`vtt-shell${foundryLayout ? " vtt-shell--foundry" : ""}`}
@@ -2177,6 +2277,7 @@ export function HexBattlefield({
       {foundryLayout ? dungeonPortal : null}
       {foundryLayout ? whiteboardPortal : null}
       {foundryLayout ? initiativePortal : null}
+      {foundryLayout ? statusPortal : null}
       {!foundryLayout && leftPanel && onLeftPanelChange ? (
         <MesaDockPanel
           side="left"
@@ -2194,6 +2295,7 @@ export function HexBattlefield({
         ref={wrapRef}
         className={`vtt-canvas-wrap${attackTargetCursor ? " vtt-canvas-wrap--attack-target" : ""}${spawnDragActive ? " vtt-canvas-wrap--spawn-drop" : ""}${battlefieldView.isPanning ? " vtt-canvas-wrap--panning" : ""}`}
         onContextMenu={(e) => e.preventDefault()}
+        onContextMenuCapture={(e) => e.preventDefault()}
         onWheel={(e) => {
           battlefieldView.onWheel(e);
         }}
@@ -2351,18 +2453,6 @@ export function HexBattlefield({
           targetToken={targetingHoverTarget}
           isGm={isRoomGm}
           viewerToken={playerToken}
-        />
-        <TokenStatusModal
-          open={statusOpen}
-          token={modalStatusToken}
-          roomId={roomId}
-          combat={combat}
-          canApplyConditions={isRoomGm}
-          onClose={() => {
-            setStatusOpen(false);
-            setModalStatusToken(null);
-          }}
-          onUpdate={refresh}
         />
         <CombatFxLayer
           wrapRef={wrapRef}
