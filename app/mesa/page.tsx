@@ -12,7 +12,7 @@ export default async function MesaIndexPage() {
         conta.
       </p>
       <div style={{ display: "flex", flexWrap: "wrap", gap: "0.75rem", marginTop: "1rem" }}>
-        <Link href="/mesa/demo" className="btn">
+        <Link href="/mesa/demo" prefetch={false} className="btn">
           Mesa demo (pública)
         </Link>
         {session ? (
