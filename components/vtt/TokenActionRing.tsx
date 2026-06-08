@@ -23,6 +23,7 @@ import { totalChannelPaCost } from "@/lib/combat/spell-channel";
 import type { TokenActionMode } from "@/lib/vtt/action-mode";
 import { movementPaCost, movementPaBandsForToken } from "@/lib/vtt/movement-pa";
 import { useCombatTurn } from "@/hooks/useCombatActions";
+import { effectiveBypassTurn } from "@/lib/combat/turn-guard";
 import { patchRoomActor } from "@/hooks/useRoomSync";
 import { formatCombatActionTooltip } from "@/lib/combat/action-tooltip";
 import { collectPlayerActorIds, primaryTokenRingColor } from "@/lib/vtt/token-colors";
@@ -131,8 +132,7 @@ export function TokenActionRing({
     [token, actor]
   );
 
-  const turnBlocked =
-    Boolean(turn.activeTokenId && turn.activeTokenId !== token.id && !turn.bypassTurn);
+  const turnBlocked = turn.isTurnBlockedForToken(token);
 
   const movePa = useMemo(() => nextHexPaLabel(token), [token]);
 

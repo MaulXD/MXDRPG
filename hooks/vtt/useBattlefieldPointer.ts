@@ -34,11 +34,13 @@ import type { CanvasLayout } from "@/lib/vtt/draw-battlefield";
 import type { WhiteboardTool } from "@/lib/vtt/map-markup";
 import type { MapToolMode, MeasurePreview } from "@/lib/vtt/map-toolbar";
 import type { BattleScene, BattleToken, MapMarkup } from "@/lib/vtt/types";
+import { effectiveBypassTurn } from "@/lib/combat/turn-guard";
 
 type TurnCtx = {
   activeTokenId: string | null;
   bypassTurn: boolean;
   combatRound?: number;
+  combatHasOrder?: boolean;
 };
 
 type Params = {
@@ -1004,8 +1006,9 @@ export function useBattlefieldPointer({
         if (!selectedId || !areaMode || !activeCombatAction || !selected) return false;
         const turnCtx = {
           activeTokenId: turn.activeTokenId,
-          bypassTurn: turn.bypassTurn,
+          bypassTurn: effectiveBypassTurn(selected, turn.bypassTurn),
           combatRound: turn.combatRound,
+          combatHasOrder: turn.combatHasOrder,
         };
         const shape = activeCombatAction.areaShape ?? "burst";
 
