@@ -10,6 +10,7 @@ import {
   isRoomMember,
   isRoomVisitor,
 } from "@/lib/auth/room-access";
+import { entrarPath, mesaRoomPath } from "@/lib/auth/post-auth-redirect";
 import { getSession } from "@/lib/auth/session";
 import { getPackEntries, getVisiblePacks } from "@/lib/compendium/registry";
 import type { CompendiumPackId } from "@/lib/compendium/types";
@@ -72,7 +73,7 @@ export default async function MesaRoomPage({ params, searchParams }: Props) {
       <div className="page-wrap">
         <p>Esta mesa é privada. Peça o código ou link de convite ao mestre.</p>
         {!session ? (
-          <Link href={`/entrar?redirect=/mesa/${roomId}`} className="btn" style={{ marginTop: "1rem" }}>
+          <Link href={entrarPath(mesaRoomPath(roomId, inviteCode))} className="btn" style={{ marginTop: "1rem" }}>
             Entrar para participar
           </Link>
         ) : (
@@ -117,7 +118,7 @@ export default async function MesaRoomPage({ params, searchParams }: Props) {
           }}
         >
           Modo <strong>visitante</strong> na demo — pode jogar o Aventureiro; sem chat.{" "}
-          <Link href={`/entrar?redirect=/mesa/${roomId}${inviteCode ? `?invite=${inviteCode}` : ""}`}>
+          <Link href={entrarPath(mesaRoomPath(roomId, inviteCode))} className="text-link">
             Entrar na conta
           </Link>{" "}
           para jogar.

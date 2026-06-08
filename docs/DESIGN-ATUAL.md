@@ -425,7 +425,7 @@ lib/room/adventure-actors.ts   ← merge retratos ao sync ficha DB
 - UX rail legado: [UX-MESA-E-RAIL.md](./UX-MESA-E-RAIL.md)
 - Painéis Foundry: [PARIDADE-FOUNDRY.md](./PARIDADE-FOUNDRY.md)
 - Regras de produto: [PRD-ELDARIN-VTT.md](./PRD-ELDARIN-VTT.md)
-- Combate e PA: [VTT-ACOES-PA-AREAS.mdei](./VTT-ACOES-PA-AREAS.md)
+- Combate e PA: [VTT-ACOES-PA-AREAS.md](./VTT-ACOES-PA-AREAS.md)
 - UX combate: [P5-COMBAT-UX.md](./P5-COMBAT-UX.md)
 
 ---
