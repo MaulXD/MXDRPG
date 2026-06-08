@@ -18,6 +18,7 @@ import { axialDistance, hexDirection, HEX_DIRECTIONS } from "@/lib/vtt/hex-math"
 import { abilityFromEntry } from "@/lib/combat/compendium-actions";
 
 import type { CombatActionOption, CombatTurnOptions } from "@/lib/combat/types";
+import { canActOnCombatTurn, TURN_WAIT_MSG } from "@/lib/combat/turn-guard";
 
 import {
 
@@ -238,10 +239,14 @@ function assertTurnAndPa(
 
 ): void {
 
-  if (turn?.activeTokenId && token.id !== turn.activeTokenId && !turn.bypassTurn) {
-
-    throw new Error("Aguarde seu turno na iniciativa");
-
+  if (
+    !canActOnCombatTurn(token.id, {
+      activeTokenId: turn?.activeTokenId,
+      bypassTurn: turn?.bypassTurn,
+      combatHasOrder: turn?.combatHasOrder,
+    })
+  ) {
+    throw new Error(TURN_WAIT_MSG);
   }
 
   const paNeed = effectivePaCost(actor, action);
@@ -973,10 +978,14 @@ export function canUseAbility(
 
 ): { ok: boolean; reason?: string } {
 
-  if (turn?.activeTokenId && token.id !== turn.activeTokenId && !turn.bypassTurn) {
-
-    return { ok: false, reason: "Aguarde seu turno na iniciativa" };
-
+  if (
+    !canActOnCombatTurn(token.id, {
+      activeTokenId: turn?.activeTokenId,
+      bypassTurn: turn?.bypassTurn,
+      combatHasOrder: turn?.combatHasOrder,
+    })
+  ) {
+    return { ok: false, reason: TURN_WAIT_MSG };
   }
 
   const rechargeReason = rechargeBlockReason(token, action, turn?.combatRound ?? 1);

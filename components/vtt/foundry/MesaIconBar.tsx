@@ -20,7 +20,6 @@ type Props = {
   onOpenPopup: (id: MesaWindowId) => void;
   showGm?: boolean;
   showInvite?: boolean;
-  onOpenStatus?: () => void;
 };
 
 function IconButton({
@@ -63,9 +62,9 @@ export function MesaIconBar({
   onOpenPopup,
   showGm = false,
   showInvite = false,
-  onOpenStatus,
 }: Props) {
   const icons: IconDef[] = [
+    { id: "status", label: "Status", icon: "status", section: "play" },
     { id: "actors", label: "Tokens", icon: "actors", section: "play" },
     { id: "initiative", label: "Turno", icon: "initiative", section: "play" },
     { id: "ficha", label: "Ficha", icon: "ficha", section: "play" },
@@ -85,20 +84,6 @@ export function MesaIconBar({
     <nav className="foundry-icon-bar" aria-label="Atalhos dos painéis">
       <p className="foundry-icon-bar__section-title">Jogo</p>
       <div className="foundry-icon-bar__section">
-        {onOpenStatus ? (
-          <button
-            type="button"
-            className="foundry-icon-bar__btn foundry-icon-bar__btn--status"
-            onClick={onOpenStatus}
-            title="Status — buffs, condições e efeitos ativos"
-            aria-label="Status"
-          >
-            <span className="foundry-icon-bar__icon-wrap" aria-hidden>
-              <MesaRailIcon name="status" />
-            </span>
-            <span className="foundry-icon-bar__label">Status</span>
-          </button>
-        ) : null}
         {playIcons.map((icon) => (
           <IconButton
             key={icon.id}

@@ -10,6 +10,7 @@ import { axialKey } from "@/lib/vtt/token-occupancy";
 import type { BattleToken } from "@/lib/vtt/types";
 import type { CharacterSheet } from "@/lib/character/types";
 import type { CombatActionOption, CombatTurnOptions } from "@/lib/combat/types";
+import { canActOnCombatTurn, TURN_WAIT_MSG } from "@/lib/combat/turn-guard";
 import {
   canAttackTarget,
   isHealingSpell,
@@ -113,8 +114,14 @@ export function canCastAreaAt(
   if (action.areaShape === "single" || !action.areaShape) {
     return { ok: false, reason: "Magia não é de área" };
   }
-  if (turn?.activeTokenId && caster.id !== turn.activeTokenId && !turn.bypassTurn) {
-    return { ok: false, reason: "Aguarde seu turno na iniciativa" };
+  if (
+    !canActOnCombatTurn(caster.id, {
+      activeTokenId: turn?.activeTokenId,
+      bypassTurn: turn?.bypassTurn,
+      combatHasOrder: turn?.combatHasOrder,
+    })
+  ) {
+    return { ok: false, reason: TURN_WAIT_MSG };
   }
   const rechargeReason = rechargeBlockReason(caster, action, turn?.combatRound ?? 1);
   if (rechargeReason) return { ok: false, reason: rechargeReason };

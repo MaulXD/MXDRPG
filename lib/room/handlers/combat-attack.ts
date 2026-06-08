@@ -90,6 +90,7 @@ export async function executeRoomAttack(
     activeTokenId: activeTokenId(room.combat),
     bypassTurn: opts.bypassTurn,
     combatRound: room.combat.round,
+    combatHasOrder: Boolean(room.combat?.order?.length),
   };
 
   const defenderActor =
@@ -370,6 +371,7 @@ async function executeRoomMultiTargetAttack(
     activeTokenId: activeTokenId(room.combat),
     bypassTurn: opts.bypassTurn,
     combatRound: room.combat.round,
+    combatHasOrder: Boolean(room.combat?.order?.length),
   };
 
   const paCheck = canAttackTarget(attacker, defenders[0]!, action, turn, {
