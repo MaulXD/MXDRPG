@@ -28,15 +28,21 @@ export function inviteMatches(room: RoomState, code: string | null | undefined):
 }
 
 /** Criador da mesa = “mestre” só nesta sala (modelo Roll20) */
-export function isRoomOwner(room: Pick<RoomState, "ownerId">, userId: string | undefined): boolean {
-  if (!userId) return false;
+export function isRoomOwner(
+  room: { ownerId?: string | null },
+  userId: string | undefined
+): boolean {
+  if (!userId || !room.ownerId) return false;
   return room.ownerId === userId;
 }
 
-export function isRoomMember(room: RoomState, userId: string | undefined): boolean {
+export function isRoomMember(
+  room: Pick<RoomState, "roomId"> & { ownerId?: string; memberIds?: string[] },
+  userId: string | undefined
+): boolean {
   if (!userId) return false;
   if (isRoomOwner(room, userId)) return true;
-  return room.memberIds.includes(userId);
+  return (room.memberIds ?? []).includes(userId);
 }
 
 export function canManageRoom(
@@ -125,7 +131,7 @@ export function isRoomVisitor(
 
 /** Editar tokens, combate, chat, dados — membro da mesa (demo: exige login). */
 export function canParticipateInRoom(
-  room: RoomState,
+  room: Pick<RoomState, "roomId"> & { ownerId?: string; memberIds?: string[] },
   user: SessionUser | null | undefined
 ): boolean {
   if (room.roomId === "demo") return Boolean(user);
@@ -193,7 +199,11 @@ export function canSpawnMonstersInRoom(
   return canManageRoom(room, user);
 }
 
-type RoomAuthContext = Pick<RoomState, "roomId"> & { adventureId?: string };
+type RoomAuthContext = Pick<RoomState, "roomId"> & {
+  adventureId?: string;
+  ownerId?: string;
+  memberIds?: string[];
+};
 
 /** Vínculo de aventura para checagem na mesa (preenche legado sem adventureId). */
 export function actorForRoomAuth(
@@ -215,7 +225,7 @@ export function canPlaceRoomActorOnBoard(
   user: SessionUser | null | undefined
 ): boolean {
   if (canEditRoomActor(room, actor, user)) return true;
-  if (!user || !canParticipateInRoom(room as RoomState, user)) return false;
+  if (!user || !canParticipateInRoom(room, user)) return false;
   const adventureId = room.adventureId ?? room.roomId;
   const authActor = actorForRoomAuth(room, actor);
   if (!characterBelongsToAdventure(authActor, adventureId)) return false;
@@ -228,7 +238,7 @@ export function canEditRoomActor(
   actor: Pick<CharacterSheet, "id" | "ownerId" | "adventureId" | "campaignRoomId">,
   user: SessionUser | null | undefined
 ): boolean {
-  if (!canParticipateInRoom(room as RoomState, user)) return false;
+  if (!canParticipateInRoom(room, user)) return false;
   const adventureId = room.adventureId ?? room.roomId;
   const authActor = actorForRoomAuth(room, actor);
   if (!characterBelongsToAdventure(authActor, adventureId)) return false;

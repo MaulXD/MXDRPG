@@ -104,7 +104,7 @@ export function MonsterSpawnPanel({ roomId, spawnAxial, onSpawned }: Props) {
 
   const filteredMonsters = useMemo(() => {
     if (biomeFilter === "all") return monstersWithBiomes;
-    return monstersWithBiomes.filter((m) => m.biomes.includes(biomeFilter));
+    return monstersWithBiomes.filter((m) => (m.biomes ?? []).includes(biomeFilter));
   }, [monstersWithBiomes, biomeFilter]);
 
   useEffect(() => {

@@ -8,6 +8,8 @@ import { canEditRoomActor } from "@/lib/auth/room-access";
 type Props = {
   adventureId: string;
   roomId: string;
+  roomOwnerId: string;
+  memberIds: string[];
   roomName: string;
   actors: Record<string, RoomActor>;
   session: SessionUser | null;
@@ -17,6 +19,8 @@ type Props = {
 export function RoomCharacterPrompt({
   adventureId,
   roomId,
+  roomOwnerId,
+  memberIds,
   roomName,
   actors,
   session,
@@ -25,7 +29,7 @@ export function RoomCharacterPrompt({
   if (roomId === "demo" || isVisitor || !session) return null;
 
   const mine = Object.values(actors).filter((a) =>
-    canEditRoomActor({ roomId }, a, session)
+    canEditRoomActor({ roomId, adventureId, ownerId: roomOwnerId, memberIds }, a, session)
   );
 
   if (mine.length > 0) return null;
