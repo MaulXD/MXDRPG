@@ -22,6 +22,7 @@ export async function POST(request: Request) {
     ok: true,
     user: result.user,
     canCreateMesa: true,
+    completedSocialAccount: result.completedSocialAccount ?? false,
     redirect: postAuthRedirect(result.user, redirect),
   });
 }

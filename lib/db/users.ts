@@ -235,6 +235,48 @@ export async function setUserNickname(userId: string, nickname: string): Promise
   return (await fetchUserById(userId))!;
 }
 
+export async function completeUserPasswordRegistration(
+  userId: string,
+  password: string,
+  opts?: { name?: string; nickname?: string | null }
+): Promise<StoredUser> {
+  const sql = getSql();
+  if (!sql) throw new Error("DATABASE_URL não configurada");
+  if (password.length < 6) throw new Error("Senha deve ter pelo menos 6 caracteres");
+
+  const existing = await sql<UserRow[]>`
+    SELECT id, clerk_id, email, nickname, name, password_hash, role, created_at
+    FROM eldarin_users WHERE id = ${userId} LIMIT 1
+  `;
+  const row = existing[0];
+  if (!row) throw new Error("Conta não encontrada");
+  if (row.password_hash) throw new Error("Esta conta já possui senha — faça login");
+
+  let nick = row.nickname;
+  if (opts?.nickname?.trim()) {
+    const v = validateNickname(opts.nickname);
+    if (!v.ok) throw new Error(v.error);
+    const taken = await fetchUserByNickname(v.nickname);
+    if (taken && taken.id !== userId) throw new Error("Este apelido já está em uso");
+    nick = v.nickname;
+  }
+
+  const name = opts?.name?.trim().slice(0, 80) || row.name;
+  const passwordHash = hashPassword(password);
+
+  await sql`
+    UPDATE eldarin_users
+    SET password_hash = ${passwordHash}, name = ${name}, nickname = ${nick}
+    WHERE id = ${userId}
+  `;
+
+  const updated = await sql<UserRow[]>`
+    SELECT id, clerk_id, email, nickname, name, password_hash, role, created_at
+    FROM eldarin_users WHERE id = ${userId} LIMIT 1
+  `;
+  return rowToStored(updated[0]!);
+}
+
 export async function deleteUserAccount(userId: string): Promise<void> {
   const sql = getSql();
   if (!sql) throw new Error("DATABASE_URL não configurada");

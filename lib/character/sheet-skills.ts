@@ -85,6 +85,13 @@ export type SheetQuickSkill = {
   trained: boolean;
 };
 
+export const RELIGIAO_SKILL: SheetSkillDef = {
+  id: "religiao",
+  label: "Religião",
+  short: "Relig.",
+  attr: "inteligencia",
+};
+
 export function buildSheetQuickSkills(actor: CharacterSheet): SheetQuickSkill[] {
   return SHEET_QUICK_SKILLS.map((def) => {
     const mod = sheetSkillModifier(actor, def);
@@ -97,4 +104,33 @@ export function buildSheetQuickSkills(actor: CharacterSheet): SheetQuickSkill[] 
       trained: isSkillTrained(actor, def),
     };
   });
+}
+
+export function buildSheetReligionSkill(actor: CharacterSheet): SheetQuickSkill {
+  const mod = sheetSkillModifier(actor, RELIGIAO_SKILL);
+  return {
+    def: RELIGIAO_SKILL,
+    mod,
+    display: formatSkillMod(mod),
+    rollFormula: skillRollFormula(mod),
+    trained: isSkillTrained(actor, RELIGIAO_SKILL),
+  };
+}
+
+export function resolveSheetSkillRoll(
+  actor: CharacterSheet,
+  skillId: SheetSkillId
+): SheetQuickSkill | null {
+  if (skillId === "religiao") return buildSheetReligionSkill(actor);
+  const def = SHEET_QUICK_SKILLS.find((s) => s.id === skillId);
+  if (!def) return null;
+  const mod = sheetSkillModifier(actor, def);
+  return {
+    def,
+    mod,
+    display: formatSkillMod(mod),
+    rollFormula: skillRollFormula(mod),
+    passive: def.passive ? passiveScore(mod) : undefined,
+    trained: isSkillTrained(actor, def),
+  };
 }

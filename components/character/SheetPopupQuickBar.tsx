@@ -9,7 +9,7 @@ import {
 } from "@/components/character/SheetPopupIcons";
 import { SheetHoverTip } from "@/components/character/SheetHoverTip";
 import { religionDisplayName } from "@/lib/character/pantheon";
-import { buildSheetQuickSkills, type SheetQuickSkill } from "@/lib/character/sheet-skills";
+import { buildSheetQuickSkills, buildSheetReligionSkill, type SheetQuickSkill } from "@/lib/character/sheet-skills";
 import { deityChipTip, skillQuickActionTip } from "@/lib/character/sheet-tooltips";
 import type { CharacterSheet } from "@/lib/character/types";
 import { postRoomChat } from "@/hooks/useRoomSync";
@@ -50,6 +50,8 @@ export function SheetPopupQuickBar({ actor, roomId, onRoll }: Props) {
     }
   }
 
+  const religionSkill = buildSheetReligionSkill(actor);
+
   return (
     <section className="sheet-popup-quickbar" aria-label="Perícias e ações rápidas">
       <p className="sheet-popup-quickbar__eyebrow">Ações rápidas</p>
@@ -77,17 +79,19 @@ export function SheetPopupQuickBar({ actor, roomId, onRoll }: Props) {
         })}
 
         <SheetHoverTip tip={religionTip}>
-          <div
-            className="sheet-popup-quickbtn sheet-popup-quickbtn--religion"
-            aria-label="Devotion"
-            tabIndex={0}
+          <button
+            type="button"
+            className={`sheet-popup-quickbtn sheet-popup-quickbtn--religion ${religionSkill.trained ? "is-trained" : ""}`}
+            disabled={!roomId || busy === "religiao"}
+            onClick={() => void rollSkill(religionSkill)}
+            aria-label="Religião"
           >
             <IconTemple size={17} className="sheet-popup-quickbtn__icon" />
             <span className="sheet-popup-quickbtn__label">Religião</span>
             <strong className="sheet-popup-quickbtn__mod sheet-popup-quickbtn__mod--text">
               {religionName}
             </strong>
-          </div>
+          </button>
         </SheetHoverTip>
       </div>
     </section>

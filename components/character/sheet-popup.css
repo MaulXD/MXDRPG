@@ -2095,6 +2095,9 @@
 .sheet-popup-portrait-wrap {
   position: relative;
   width: 100%;
+  max-width: 148px;
+  margin: 0 auto;
+  aspect-ratio: 1;
 }
 
 .sheet-popup-portrait-wrap .sheet-popup-portrait,
@@ -2104,8 +2107,8 @@
   align-items: center;
   justify-content: center;
   width: 100%;
-  max-width: 148px;
-  aspect-ratio: 1;
+  height: 100%;
+  max-width: none;
   min-height: 0;
   border: none;
   border-radius: 0;
@@ -2115,9 +2118,14 @@
   cursor: pointer;
 }
 
-.sheet-popup-portrait-wrap .portrait--sheet-popup {
+.sheet-popup-portrait-wrap .portrait--sheet-popup,
+.sheet-popup-portrait-wrap .sheet-popup-portrait {
   width: 100%;
   height: 100%;
+}
+
+.sheet-popup-portrait-wrap .portrait {
+  width: 100%;
   max-width: none;
 }
 

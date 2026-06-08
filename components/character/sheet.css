@@ -44,6 +44,9 @@
 
 .sheet-header__portrait-wrap {
   flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .sheet-header__info {
@@ -804,16 +807,16 @@
 }
 
 .sheet-portrait-frame {
+  position: relative;
   width: 72px;
   height: 72px;
   border-radius: 50%;
   border: 2px dashed var(--glass-border);
-  display: grid;
-  place-items: center;
   overflow: hidden;
   background: rgba(0, 0, 0, 0.3);
   color: var(--text-dim);
   font-size: 1.25rem;
+  flex-shrink: 0;
 }
 
 .sheet-portrait-frame.has-image {
@@ -823,10 +826,13 @@
 
 .sheet-portrait-frame .portrait-focus-frame--duo,
 .sheet-token-preview-ring .portrait-focus-frame--duo {
+  position: absolute;
+  inset: 0;
   margin: 0;
   width: 100% !important;
   height: 100% !important;
   border: none;
+  border-radius: 50%;
   box-shadow: none;
 }
 
@@ -852,13 +858,13 @@
 }
 
 .sheet-token-preview-ring {
+  position: relative;
   width: 72px;
   height: 72px;
   border-radius: 50%;
   overflow: hidden;
-  display: grid;
-  place-items: center;
   background: rgba(0, 0, 0, 0.35);
+  flex-shrink: 0;
 }
 
 .sheet-token-preview-ring img,

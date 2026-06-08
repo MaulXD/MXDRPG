@@ -48,7 +48,7 @@ function IconButton({
       aria-label={icon.label}
       aria-pressed={active}
     >
-      <span className="foundry-icon-bar__icon-wrap" aria-hidden>
+      <span className="foundry-icon-bar__icon-wrap" data-rail-icon={icon.icon} aria-hidden>
         <MesaRailIcon name={icon.icon} />
       </span>
       <span className="foundry-icon-bar__label">{icon.label}</span>
