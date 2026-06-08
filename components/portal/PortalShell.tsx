@@ -31,7 +31,7 @@ export function PortalShell({ user, children }: Props) {
           <Link href="/painel" className="btn btn-secondary btn-sm">
             Mesas
           </Link>
-          <Link href="/mesa/demo" className="btn btn-secondary btn-sm">
+          <Link href="/mesa/demo" prefetch={false} className="btn btn-secondary btn-sm">
             VTT demo
           </Link>
           <LogoutButton />
