@@ -264,7 +264,9 @@ export function HexBattlefield({
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
   const [scene, setScene] = useState(initial);
-  const [selectedId, setSelectedId] = useState<string | null>(initial.tokens[0]?.id ?? null);
+  const [selectedId, setSelectedId] = useState<string | null>(
+    initial.tokens?.[0]?.id ?? null
+  );
   const [actionMode, setActionMode] = useState<TokenActionMode>("idle");
   const [selectedCombatAction, setSelectedCombatAction] = useState<CombatActionOption | null>(null);
   const [hoverAxial, setHoverAxial] = useState<Axial | null>(null);

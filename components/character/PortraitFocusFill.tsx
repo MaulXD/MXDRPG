@@ -37,7 +37,7 @@ export function PortraitFocusFill({
 
   return (
     <div ref={ref} className={`portrait-focus-fill ${className}`.trim()}>
-      {size > 0 && imgW > 0 ? (
+      {size > 0 && imgW > 0 && imgH > 0 ? (
         <PortraitFocusFrame
           imageSrc={imageSrc}
           focus={focus}

@@ -12,6 +12,7 @@ import { compendiumTypeColor } from "@/lib/compendium/icons";
 import { getEntry } from "@/lib/compendium/registry";
 import { useImageNaturalSize } from "@/hooks/useImageNaturalSize";
 import { patchRoomActor, useRoomSync } from "@/hooks/useRoomSync";
+import { firstPortraitDataUrl } from "@/lib/room/portrait-sync";
 import { CharacterSheetCover } from "@/components/character/CharacterSheetCover";
 import { CharacterPortraitFields } from "@/components/character/CharacterPortraitFields";
 import { PortraitFields } from "@/components/character/PortraitFields";
@@ -272,8 +273,18 @@ export function CharacterSheet({
       : 0;
   const prof = proficiencyBonus(identity.nivel);
   const portraitFocus = sanitizePortraitFocus(live.portraitFocus);
+  const linkedToken = snapshot?.scene.tokens.find(
+    (t) => t.linked && t.actorId === character.id
+  );
+  const popupPortraitSrc = firstPortraitDataUrl(
+    live.portraitUrl,
+    live.tokenImageUrl,
+    character.portraitUrl,
+    character.tokenImageUrl,
+    linkedToken?.imageUrl
+  );
   const offlinePopupPortraitSize = useImageNaturalSize(
-    isPopup && !inRoom ? live.portraitUrl : null
+    isPopup && !inRoom ? popupPortraitSrc : null
   );
   const displayDefesa = resolveActorDefesa(live);
 
@@ -679,19 +690,19 @@ export function CharacterSheet({
                 actorId={character.id}
                 roomId={roomId}
                 name={live.name}
-                portraitUrl={live.portraitUrl}
-                tokenImageUrl={live.tokenImageUrl}
-                portraitFocus={live.portraitFocus}
-                tokenFocus={live.tokenFocus}
+                portraitUrl={popupPortraitSrc}
+                tokenImageUrl={live.tokenImageUrl ?? character.tokenImageUrl}
+                portraitFocus={live.portraitFocus ?? character.portraitFocus}
+                tokenFocus={live.tokenFocus ?? character.tokenFocus}
                 canEdit={canEditPortrait}
                 onSaved={refresh}
               />
             ) : (
               <Portrait
                 tier="hero"
-                imageSrc={live.portraitUrl}
+                imageSrc={popupPortraitSrc}
                 initials={
-                  live.portraitUrl
+                  popupPortraitSrc
                     ? undefined
                     : live.name.trim().slice(0, 2).toUpperCase() || "?"
                 }

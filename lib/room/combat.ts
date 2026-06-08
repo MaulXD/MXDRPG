@@ -14,12 +14,42 @@ export type CombatTrack = {
   orderOverridden?: boolean;
 };
 
-export function emptyCombat(tokens: BattleToken[]): CombatTrack {
+export function emptyCombat(tokens: BattleToken[] = []): CombatTrack {
   return {
     order: tokens.map((t) => t.id),
     activeIndex: 0,
     round: 1,
     notices: [],
+  };
+}
+
+/** Garante `order` e índices válidos — evita crash na UI quando o JSON do banco veio incompleto. */
+export function normalizeCombatTrack(
+  combat: Partial<CombatTrack> | null | undefined,
+  tokens: BattleToken[] = []
+): CombatTrack {
+  if (!combat || !Array.isArray(combat.order)) {
+    return emptyCombat(tokens);
+  }
+  const order = combat.order.filter((id): id is string => typeof id === "string" && id.length > 0);
+  if (!order.length) {
+    return {
+      ...emptyCombat(tokens),
+      round: Math.max(1, combat.round ?? 1),
+      notices: Array.isArray(combat.notices) ? combat.notices : [],
+      naturalOrder: combat.naturalOrder,
+      orderOverridden: combat.orderOverridden,
+    };
+  }
+  const maxIdx = order.length - 1;
+  const activeIndex = Math.min(Math.max(0, combat.activeIndex ?? 0), maxIdx);
+  return {
+    order,
+    activeIndex,
+    round: Math.max(1, combat.round ?? 1),
+    notices: Array.isArray(combat.notices) ? combat.notices : [],
+    naturalOrder: combat.naturalOrder,
+    orderOverridden: combat.orderOverridden,
   };
 }
 

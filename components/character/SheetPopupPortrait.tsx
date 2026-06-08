@@ -16,6 +16,7 @@ import {
   buildPortraitBundle,
   buildPortraitBundleFromDataUrl,
 } from "@/lib/media/image-upload-client";
+import { firstPortraitDataUrl } from "@/lib/room/portrait-sync";
 import { playerColorForActor } from "@/lib/vtt/token-colors";
 
 type Props = {
@@ -55,7 +56,7 @@ export function SheetPopupPortrait({
   );
   const [editingSlot, setEditingSlot] = useState<"portrait" | "token">("portrait");
 
-  const previewSrc = draftSrc ?? portraitUrl;
+  const previewSrc = draftSrc ?? firstPortraitDataUrl(portraitUrl, tokenImageUrl);
   const imgSize = useImageNaturalSize(previewSrc);
   const ringColor = playerColorForActor(actorId, [actorId]);
 
