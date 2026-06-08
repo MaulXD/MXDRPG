@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Cinzel, Lora, Source_Sans_3 } from "next/font/google";
 import { AuthProvider } from "@/components/auth/AuthProvider";
-import { isClerkEnabled } from "@/lib/auth/clerk-config";
 import { SiteShell } from "@/components/SiteShell";
 import { SiteHeaderWrapper } from "@/components/SiteHeaderWrapper";
 import { SiteFooter } from "@/components/SiteFooter";
@@ -40,8 +39,6 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  const clerkOn = isClerkEnabled();
-
   return (
     <html
       lang="pt-BR"
@@ -52,7 +49,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ThemeScript />
       </head>
       <body>
-        <AuthProvider enabled={clerkOn}>
+        <AuthProvider>
           <div className="site-bg" aria-hidden />
           <div className="site-noise" aria-hidden />
           <SiteShell header={<SiteHeaderWrapper />} footer={<SiteFooter />}>
