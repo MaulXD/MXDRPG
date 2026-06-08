@@ -9,7 +9,8 @@ export type PortraitFocus = {
   scale?: number;
 };
 
-export const PORTRAIT_FOCUS_SCALE_MIN = 0.75;
+/** Nunca menor que 1 — evita faixas vazias fora do cover. */
+export const PORTRAIT_FOCUS_SCALE_MIN = 1;
 export const PORTRAIT_FOCUS_SCALE_MAX = 2.5;
 
 /** Ponto focal padrão (rostos em retrato vertical) */

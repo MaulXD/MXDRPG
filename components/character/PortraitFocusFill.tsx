@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
 import { PortraitFocusFrame } from "@/components/character/PortraitFocusFrame";
 import type { PortraitFocus } from "@/lib/media/portrait-focus";
 
@@ -13,6 +12,8 @@ type Props = {
   className?: string;
 };
 
+const FALLBACK_SIZE = 80;
+
 export function PortraitFocusFill({
   imageSrc,
   focus,
@@ -21,37 +22,22 @@ export function PortraitFocusFill({
   shape = "circle",
   className = "",
 }: Props) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [size, setSize] = useState(0);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const measure = (entry?: ResizeObserverEntry) => {
-      const rect = entry?.contentRect ?? el.getBoundingClientRect();
-      const dim = Math.round(Math.min(rect.width, rect.height));
-      if (dim > 0) setSize(dim);
-    };
-    measure();
-    const ro = new ResizeObserver(([entry]) => measure(entry));
-    ro.observe(el);
-    return () => ro.disconnect();
-  }, [imageSrc]);
+  const canLayout = imgW > 0 && imgH > 0;
 
   return (
-    <div ref={ref} className={`portrait-focus-fill ${className}`.trim()}>
-      {size > 0 && imgW > 0 && imgH > 0 ? (
+    <div className={`portrait-focus-fill ${className}`.trim()}>
+      {canLayout ? (
         <PortraitFocusFrame
           imageSrc={imageSrc}
           focus={focus}
-          size={size}
+          size={FALLBACK_SIZE}
           imgW={imgW}
           imgH={imgH}
           className={shape === "square" ? "portrait-focus-frame--square" : undefined}
         />
       ) : (
         // eslint-disable-next-line @next/next/no-img-element
-        <img src={imageSrc} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+        <img src={imageSrc} alt="" className="portrait-focus-img--cover-fallback" />
       )}
     </div>
   );
