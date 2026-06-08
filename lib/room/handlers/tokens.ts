@@ -214,6 +214,10 @@ export async function repositionRoomToken(
   tokens[idx] = { ...tokens[idx], axial: target };
   room.scene = { ...room.scene, tokens };
 
+  if (room.combat?.notices?.length) {
+    room.combat = { ...room.combat, notices: [] };
+  }
+
   const updated = await persistRoom(roomId, room);
   return { ok: true, snapshot: toSnapshot(updated) };
 }

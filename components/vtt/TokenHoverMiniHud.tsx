@@ -20,6 +20,9 @@ type Props = {
   showMonsterHpToPlayers?: boolean;
   /** Caminhada restante no turno (só no hover do token ativo). */
   showMovement?: boolean;
+  /** Jogador: abrir bestiário individual do monstro. */
+  showMonsterInfoAction?: boolean;
+  onMonsterInfo?: () => void;
 };
 
 export function TokenHoverMiniHud({
@@ -30,6 +33,8 @@ export function TokenHoverMiniHud({
   viewerToken,
   showMonsterHpToPlayers = false,
   showMovement = false,
+  showMonsterInfoAction = false,
+  onMonsterInfo,
 }: Props) {
   const mode = miniHudModeForViewer(token, { isGm, viewerToken, showMonsterHpToPlayers });
   const turn = turnOrderHint(combat, token.id);
@@ -75,6 +80,19 @@ export function TokenHoverMiniHud({
         <span className="vtt-mini-hud__move">
           {walkRemaining(token)} hex · {hexToMeters(walkRemaining(token))} m
         </span>
+      ) : null}
+
+      {showMonsterInfoAction && onMonsterInfo ? (
+        <button
+          type="button"
+          className="vtt-mini-hud__info-btn"
+          onClick={(e) => {
+            e.stopPropagation();
+            onMonsterInfo();
+          }}
+        >
+          Exibir informações
+        </button>
       ) : null}
 
       {turn ? (

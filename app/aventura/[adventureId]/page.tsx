@@ -269,7 +269,7 @@ export default async function AventuraHubPage({ params, searchParams }: Props) {
 
           ou{" "}
 
-          <Link href={`/mesa/${mesaId}`} className="btn" style={{ marginTop: "0.5rem", display: "inline-block", fontSize: "0.85rem" }}>
+          <Link href={`/mesa/${mesaId}`} className="btn btn-sm" style={{ marginTop: "0.5rem" }}>
 
             Entrar na sala HEX
 

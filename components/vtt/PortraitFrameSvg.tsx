@@ -16,39 +16,15 @@ export function PortraitFrameSvg({ tier, className = "" }: Props) {
           <rect x="4" y="4" width="72" height="72" stroke="#8a6020" strokeWidth="0.5" />
           <rect x="7" y="7" width="66" height="66" stroke="#d4a030" strokeWidth="1.2" />
           <rect x="10" y="10" width="60" height="60" stroke="#8a6020" strokeWidth="0.5" />
-          <path d="M7,20 L7,7 L20,7" fill="none" stroke="#d4a030" strokeWidth="2.5" strokeLinecap="square" />
-          <path d="M7,7 Q7,16 16,16 Q16,7 7,7Z" fill="#d4a030" opacity="0.25" />
-          <path d="M7,7 Q7,16 16,16 Q16,7 7,7Z" fill="none" stroke="#d4a030" strokeWidth="1" />
-          <circle cx="7" cy="7" r="2.5" fill="#d4a030" />
-          <path d="M73,20 L73,7 L60,7" fill="none" stroke="#d4a030" strokeWidth="2.5" strokeLinecap="square" />
-          <path d="M73,7 Q73,16 64,16 Q64,7 73,7Z" fill="#d4a030" opacity="0.25" />
-          <path d="M73,7 Q73,16 64,16 Q64,7 73,7Z" fill="none" stroke="#d4a030" strokeWidth="1" />
-          <circle cx="73" cy="7" r="2.5" fill="#d4a030" />
-          <path d="M7,60 L7,73 L20,73" fill="none" stroke="#d4a030" strokeWidth="2.5" strokeLinecap="square" />
-          <path d="M7,73 Q7,64 16,64 Q16,73 7,73Z" fill="#d4a030" opacity="0.25" />
-          <path d="M7,73 Q7,64 16,64 Q16,73 7,73Z" fill="none" stroke="#d4a030" strokeWidth="1" />
-          <circle cx="7" cy="73" r="2.5" fill="#d4a030" />
-          <path d="M73,60 L73,73 L60,73" fill="none" stroke="#d4a030" strokeWidth="2.5" strokeLinecap="square" />
-          <path d="M73,73 Q73,64 64,64 Q64,73 73,73Z" fill="#d4a030" opacity="0.25" />
-          <path d="M73,73 Q73,64 64,64 Q64,73 73,73Z" fill="none" stroke="#d4a030" strokeWidth="1" />
-          <circle cx="73" cy="73" r="2.5" fill="#d4a030" />
-          {/* Entalhes: diamante do exterior até a ponta interna (y=15/x=15) */}
-          <polygon points="40,0 48,7 40,15 32,7" fill="#c49028" opacity="0.65" />
-          <polygon points="40,0 44,4 40,7 36,4" fill="#ffd060" />
-          <polygon points="40,80 48,73 40,65 32,73" fill="#c49028" opacity="0.65" />
-          <polygon points="40,80 44,76 40,73 36,76" fill="#ffd060" />
-          <polygon points="0,40 7,48 15,40 7,32" fill="#c49028" opacity="0.65" />
-          <polygon points="0,40 4,44 7,40 4,36" fill="#ffd060" />
-          <polygon points="80,40 73,48 65,40 73,32" fill="#c49028" opacity="0.65" />
-          <polygon points="80,40 76,44 73,40 76,36" fill="#ffd060" />
-          <line x1="28" y1="7" x2="28" y2="5.5" stroke="#d4a030" strokeWidth="0.8" opacity=".6" />
-          <line x1="52" y1="7" x2="52" y2="5.5" stroke="#d4a030" strokeWidth="0.8" opacity=".6" />
-          <line x1="28" y1="73" x2="28" y2="74.5" stroke="#d4a030" strokeWidth="0.8" opacity=".6" />
-          <line x1="52" y1="73" x2="52" y2="74.5" stroke="#d4a030" strokeWidth="0.8" opacity=".6" />
-          <line x1="7" y1="28" x2="5.5" y2="28" stroke="#d4a030" strokeWidth="0.8" opacity=".6" />
-          <line x1="7" y1="52" x2="5.5" y2="52" stroke="#d4a030" strokeWidth="0.8" opacity=".6" />
-          <line x1="73" y1="28" x2="74.5" y2="28" stroke="#d4a030" strokeWidth="0.8" opacity=".6" />
-          <line x1="73" y1="52" x2="74.5" y2="52" stroke="#d4a030" strokeWidth="0.8" opacity=".6" />
+          {/* cantos: triângulo lança (âmbar) — mais limpo que a gótica */}
+          <polygon points="7,7 20,7 7,20" fill="#1a1408" stroke="#d4a030" strokeWidth="1" />
+          <polygon points="7,7 16,7 7,16" fill="#d4a030" opacity="0.9" />
+          <polygon points="73,7 60,7 73,20" fill="#1a1408" stroke="#d4a030" strokeWidth="1" />
+          <polygon points="73,7 64,7 73,16" fill="#d4a030" opacity="0.9" />
+          <polygon points="7,73 20,73 7,60" fill="#1a1408" stroke="#d4a030" strokeWidth="1" />
+          <polygon points="7,73 16,73 7,64" fill="#d4a030" opacity="0.9" />
+          <polygon points="73,73 60,73 73,60" fill="#1a1408" stroke="#d4a030" strokeWidth="1" />
+          <polygon points="73,73 64,73 73,64" fill="#d4a030" opacity="0.9" />
         </svg>
       );
     case "monster":

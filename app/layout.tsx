@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Cinzel, Lora, Source_Sans_3 } from "next/font/google";
 import { AuthProvider } from "@/components/auth/AuthProvider";
+import { hasClerkPublishableKey } from "@/lib/auth/clerk-config";
 import { SiteShell } from "@/components/SiteShell";
 import { SiteHeaderWrapper } from "@/components/SiteHeaderWrapper";
 import { SiteFooter } from "@/components/SiteFooter";
@@ -39,6 +40,10 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const clerkPublishableKey = hasClerkPublishableKey()
+    ? process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY!.trim()
+    : "";
+
   return (
     <html
       lang="pt-BR"
@@ -49,7 +54,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ThemeScript />
       </head>
       <body>
-        <AuthProvider>
+        <AuthProvider publishableKey={clerkPublishableKey}>
           <div className="site-bg" aria-hidden />
           <div className="site-noise" aria-hidden />
           <SiteShell header={<SiteHeaderWrapper />} footer={<SiteFooter />}>

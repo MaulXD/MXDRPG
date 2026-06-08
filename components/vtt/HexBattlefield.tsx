@@ -98,6 +98,7 @@ import {
 import { BattlefieldActionHud } from "@/components/vtt/BattlefieldActionHud";
 import { CharacterCombatHud } from "@/components/vtt/CharacterCombatHud";
 import { CombatHudRestoreButton } from "@/components/vtt/CombatHudRestoreButton";
+import { MonsterKnowledgePanel } from "@/components/vtt/MonsterKnowledgePanel";
 import { TokenHoverMiniHud } from "@/components/vtt/TokenHoverMiniHud";
 import { TokenStatusBody } from "@/components/vtt/TokenStatusBody";
 import { EndTurnBar } from "@/components/vtt/EndTurnBar";
@@ -272,6 +273,8 @@ export function HexBattlefield({
   const [hoverAxial, setHoverAxial] = useState<Axial | null>(null);
   const [hoverTargetId, setHoverTargetId] = useState<string | null>(null);
   const [hoverTokenId, setHoverTokenId] = useState<string | null>(null);
+  const [gmDragTokenId, setGmDragTokenId] = useState<string | null>(null);
+  const [monsterKnowledgeToken, setMonsterKnowledgeToken] = useState<BattleToken | null>(null);
   const [areaCenter, setAreaCenter] = useState<Axial | null>(null);
   const [combatFx, setCombatFx] = useState<CombatFxState | null>(null);
   const [tokenFlash, setTokenFlash] = useState<{
@@ -470,6 +473,18 @@ export function HexBattlefield({
     [session, roomOwnerId]
   );
 
+  const openMonsterKnowledge = useCallback(
+    (token: BattleToken) => {
+      if (isRoomGm || !isMonsterToken(token)) return;
+      setMonsterKnowledgeToken(token);
+    },
+    [isRoomGm]
+  );
+
+  const closeMonsterKnowledge = useCallback(() => {
+    setMonsterKnowledgeToken(null);
+  }, []);
+
   const canManageMarkups = useMemo(
     () => (session ? canManageAllMapMarkups({ ownerId: roomOwnerId }, session) : roomId === "demo"),
     [session, roomOwnerId, roomId]
@@ -624,10 +639,11 @@ export function HexBattlefield({
     channelExtraPa,
     turn,
     combatHasOrder: Boolean(combat?.order?.length),
+    gmRepositionActive: Boolean(gmDragTokenId),
   });
 
   const moveHoverHint = useMemo(() => {
-    if (!highlights.showMovement || !hoverAxial) return null;
+    if (gmDragTokenId || !highlights.showMovement || !hoverAxial) return null;
     const preview = highlights.hoverMovePreview;
     if (!preview) return null;
     if (!preview.ok) {
@@ -639,7 +655,7 @@ export function HexBattlefield({
       kind: "ok" as const,
       text: `${preview.dist} hex · ${hexToMeters(preview.dist)} m · ${pa}`,
     };
-  }, [highlights.showMovement, highlights.hoverMovePreview, hoverAxial]);
+  }, [gmDragTokenId, highlights.showMovement, highlights.hoverMovePreview, hoverAxial]);
 
   const onFloorDrag = useCallback((offsetX: number, offsetY: number) => {
     setFloorPreview((prev) => ({
@@ -1488,6 +1504,7 @@ export function HexBattlefield({
         refresh();
       } finally {
         gmRepositionBusyRef.current = false;
+        setGmDragTokenId(null);
         flushPendingSceneSnapshot();
         redraw();
       }
@@ -1498,8 +1515,10 @@ export function HexBattlefield({
   const onGmDragPreview = useCallback(
     (tokenId: string, axial: Axial | null) => {
       if (axial) {
+        setGmDragTokenId(tokenId);
         moveAnimRef.current = { tokenId, q: axial.q, r: axial.r };
       } else if (!gmRepositionBusyRef.current) {
+        setGmDragTokenId(null);
         moveAnimRef.current = null;
         flushPendingSceneSnapshot();
       }
@@ -1684,6 +1703,7 @@ export function HexBattlefield({
     },
     canOpenActionRing: canPreviewTurnMove,
     onActionRingBlocked,
+    onOpenMonsterKnowledge: openMonsterKnowledge,
     dungeonEditor: isRoomGm
       ? {
           layer: dungeonLayer,
@@ -2489,6 +2509,8 @@ export function HexBattlefield({
                   viewerToken={playerToken}
                   showMonsterHpToPlayers={roomSettings.showMonsterHpToPlayers}
                   showMovement={highlights.turnMovePreview}
+                  showMonsterInfoAction={!isRoomGm && isMonsterToken(hoverMiniHudToken)}
+                  onMonsterInfo={() => openMonsterKnowledge(hoverMiniHudToken)}
                 />
               );
               if (foundryLayout && hudOverlayRoot) {
@@ -2497,6 +2519,16 @@ export function HexBattlefield({
               return miniHud;
             })()
           : null}
+        {monsterKnowledgeToken && roomId ? (
+          <div className="vtt-monster-knowledge-wrap">
+            <MonsterKnowledgePanel
+              token={monsterKnowledgeToken}
+              adventureId={adventureIdProp ?? roomId}
+              roomId={roomId}
+              onClose={closeMonsterKnowledge}
+            />
+          </div>
+        ) : null}
         <BattlefieldActionHud
           preview={actionPreview}
           anchor={actionPreviewAnchor}
