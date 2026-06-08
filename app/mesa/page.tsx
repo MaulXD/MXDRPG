@@ -20,14 +20,14 @@ export default async function MesaIndexPage() {
             Suas mesas
           </Link>
         ) : (
-          <Link href="/entrar" className="btn btn-secondary">
+          <Link href="/sign-in" className="btn btn-secondary">
             Criar conta
           </Link>
         )}
       </div>
       {!session ? (
         <p style={{ marginTop: "1rem", fontSize: "0.85rem", color: "var(--text-muted)" }}>
-          Já tem conta? <Link href="/entrar">Entrar</Link>
+          Já tem conta? <Link href="/sign-in">Entrar</Link>
         </p>
       ) : null}
     </div>

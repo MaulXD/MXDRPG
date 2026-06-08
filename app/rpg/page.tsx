@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { MedievalFrame } from "@/components/ui/MedievalFrame";
+import { signInPath } from "@/lib/auth/post-auth-redirect";
 import { getSession } from "@/lib/auth/session";
 
 const systems = [
@@ -32,7 +33,7 @@ const systems = [
 
 export default async function RpgSelectPage() {
   const session = await getSession();
-  if (!session) redirect("/entrar?redirect=/rpg");
+  if (!session) redirect(signInPath("/rpg"));
 
   return (
     <div className="page-wrap" style={{ maxWidth: 880, paddingTop: "2rem", paddingBottom: "3rem" }}>

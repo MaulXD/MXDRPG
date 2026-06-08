@@ -14,7 +14,7 @@ export function SiteFooter() {
         <Link href="/mesa/demo" prefetch={false}>
           Mesa demo
         </Link>
-        <Link href="/entrar">Entrar</Link>
+        <Link href="/sign-in">Entrar</Link>
         <Link href="/privacidade">Privacidade</Link>
       </nav>
     </footer>

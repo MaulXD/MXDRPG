@@ -28,6 +28,7 @@ import { DiceRoller } from "@/components/vtt/DiceRoller";
 import { MonsterSpawnPanel } from "@/components/vtt/MonsterSpawnPanel";
 import { RoomInvitePanel } from "@/components/vtt/RoomInvitePanel";
 import { MesaPersistenceNotice } from "@/components/vtt/MesaPersistenceNotice";
+import { useSheetPdfDeepLink } from "@/hooks/useSheetPdfDeepLink";
 import "@/components/vtt/foundry/foundry.css";
 
 type Props = {
@@ -194,6 +195,16 @@ export function MesaWorkspace({
       session
     );
   }, [roomOwnerId, snapshot?.settings, session]);
+
+  useSheetPdfDeepLink({
+    roomId,
+    combat: snapshot?.combat,
+    tokens: snapshot?.scene.tokens ?? scene.tokens,
+    actors: snapshot?.actors,
+    bypassTurn: canBypassTurn,
+    openSheet,
+    onRolled: refresh,
+  });
 
   const win = windows.get;
   const dockOpen = windows.isDockOpen();

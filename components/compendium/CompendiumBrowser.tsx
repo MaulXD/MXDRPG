@@ -47,7 +47,7 @@ export function CompendiumBrowser({ packs, data, role, variant = "page" }: Props
     return (
       <div className="comp-locked">
         <p>Nenhum compêndio disponível.</p>
-        <Link href="/entrar">Entrar como mestre</Link>
+        <Link href="/sign-in">Entrar como mestre</Link>
       </div>
     );
   }

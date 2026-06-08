@@ -8,6 +8,8 @@ CREATE TABLE IF NOT EXISTS eldarin_users (
   nickname TEXT,
   name TEXT NOT NULL,
   password_hash TEXT,
+  cpf_prefix_hash TEXT,
+  birth_date DATE,
   role TEXT NOT NULL DEFAULT 'member',
   created_at BIGINT NOT NULL
 );

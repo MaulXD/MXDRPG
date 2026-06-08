@@ -90,6 +90,7 @@ export function PortraitFocusEditor({
             size={TOKEN_PREVIEW}
             imgW={imgW}
             imgH={imgH}
+            fitMode="cover"
             className="portrait-focus-frame--preview portrait-focus-frame--token-ring"
             label="Prévia do token"
           />
@@ -104,6 +105,7 @@ export function PortraitFocusEditor({
           size={FRAME}
           imgW={imgW}
           imgH={imgH}
+          fitMode={previewMode === "token" ? "cover" : "contain"}
           disabled={disabled}
           className="portrait-focus-frame--stage portrait-focus-frame--interactive"
           label="Ajustar enquadramento"

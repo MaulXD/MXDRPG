@@ -269,12 +269,8 @@ export function drawTokenWalkRemainingBadge(
   ctx.restore();
 }
 
-export function shouldDrawTokenNameplate(
-  token: BattleToken,
-  hoverTokenId: string | null
-): boolean {
-  if (token.nameplateMode === "always") return true;
-  return token.id === hoverTokenId;
+export function shouldDrawTokenNameplate(token: BattleToken): boolean {
+  return token.nameplateMode === "always";
 }
 
 /** Nome abaixo do token — negrito com contorno preto. */

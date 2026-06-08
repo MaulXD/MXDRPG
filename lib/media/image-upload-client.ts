@@ -78,9 +78,7 @@ function canvasToWebp(canvas: HTMLCanvasElement, quality: number): string | null
   }
 }
 
-const PORTRAIT_FRAME_BG = "#0f141c";
-
-/** scale 1 = imagem inteira no quadro; >1 = recorte com pan. */
+/** Token quadrado — scale 1 = preenche o quadro; >1 = zoom com pan. */
 function drawFramedImage(
   ctx: CanvasRenderingContext2D,
   img: HTMLImageElement,
@@ -92,21 +90,8 @@ function drawFramedImage(
   const iw = img.naturalWidth;
   const ih = img.naturalHeight;
   const zoom = Math.max(1, f.scale ?? 1);
-  const containScale = Math.min(width / iw, height / ih);
-  const scale = containScale * zoom;
-  const dw = iw * scale;
-  const dh = ih * scale;
-
-  ctx.fillStyle = PORTRAIT_FRAME_BG;
-  ctx.fillRect(0, 0, width, height);
-
-  if (zoom <= 1.001) {
-    const dx = (width - dw) / 2;
-    const dy = (height - dh) / 2;
-    ctx.drawImage(img, 0, 0, iw, ih, dx, dy, dw, dh);
-    return;
-  }
-
+  const coverScale = Math.max(width / iw, height / ih);
+  const scale = coverScale * zoom;
   const sw = width / scale;
   const sh = height / scale;
   const sx = Math.max(0, Math.min(iw - sw, (iw - sw) * f.x));

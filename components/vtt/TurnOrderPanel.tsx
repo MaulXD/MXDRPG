@@ -532,7 +532,7 @@ export function TurnOrderPanel({
 
             const avatarNode = (
               <span
-                className={`vtt-turn-avatar-slot${active && !compact ? " vtt-turn-avatar-slot--active" : ""}`}
+                className={`vtt-turn-avatar-slot${active ? " vtt-turn-avatar-slot--active" : ""}`}
               >
                 <span
                   className={avatarClass}
@@ -603,18 +603,16 @@ export function TurnOrderPanel({
                     <div className="vtt-turn-compact-main">
                       {avatarNode}
                       <div className="vtt-turn-compact-copy">
-                        <strong className="vtt-turn-compact-name">{token.name}</strong>
-                        {active ? <span className="vtt-turn-compact-now">Agora</span> : null}
+                        <div className="vtt-turn-compact-name-row">
+                          <strong className="vtt-turn-compact-name">{token.name}</strong>
+                          {active ? <span className="vtt-turn-compact-now">Agora</span> : null}
+                          {canControl ? gmChips(id, token, active, defeated) : null}
+                        </div>
                       </div>
                     </div>
                     <span className="vtt-turn-compact-init" aria-label="Iniciativa">
                       {token.initiative ?? "—"}
                     </span>
-                    {canControl ? (
-                      <div className="vtt-turn-compact-gm-overlay">
-                        {gmChips(id, token, active, defeated)}
-                      </div>
-                    ) : null}
                   </>
                 ) : (
                   <>

@@ -8,6 +8,7 @@ import {
   fetchUserById,
   fetchUserByNickname,
   insertUser,
+  updateUserProfile,
   upsertSeedUser,
   type StoredUser,
 } from "@/lib/db/users";
@@ -148,8 +149,60 @@ export async function authenticateUser(
 }
 
 export type RegisterResult =
-  | { ok: true; user: SessionUser; completedSocialAccount?: boolean }
+  | {
+      ok: true;
+      user: SessionUser;
+      completedSocialAccount?: boolean;
+      existingAccountLogin?: boolean;
+    }
   | { ok: false; error: string };
+
+function existingAccountError(existing: StoredUser): string {
+  if (existing.clerkId) {
+    return "Este e-mail já tem conta. Vá em Entrar com a senha correta ou use Google/Discord acima.";
+  }
+  return "Este e-mail já tem conta. A senha não confere — vá em Entrar e use sua senha atual.";
+}
+
+async function loginExistingWithPassword(
+  existing: StoredUser,
+  password: string,
+  displayName: string,
+  nickname?: string
+): Promise<RegisterResult> {
+  if (!existing.passwordHash) {
+    return { ok: false, error: existingAccountError(existing) };
+  }
+  if (!verifyPassword(password, existing.passwordHash)) {
+    return { ok: false, error: existingAccountError(existing) };
+  }
+
+  if (dbEnabled()) {
+    try {
+      const user = await updateUserProfile(existing.id, {
+        name: displayName,
+        nickname: nickname?.trim() ? nickname : undefined,
+      });
+      return { ok: true, user: toSessionUser(user), existingAccountLogin: true };
+    } catch (e) {
+      return { ok: true, user: toSessionUser(existing), existingAccountLogin: true };
+    }
+  }
+
+  let nick = existing.nickname ?? null;
+  if (nickname?.trim()) {
+    const v = validateNickname(nickname);
+    if (v.ok) nick = v.nickname;
+  }
+  const updated: StoredUser = {
+    ...existing,
+    name: displayName,
+    nickname: nick,
+  };
+  registry().set(slugEmail(existing.email), updated);
+  savePersisted(registry().values());
+  return { ok: true, user: toSessionUser(updated), existingAccountLogin: true };
+}
 
 export async function registerUser(
   email: string,
@@ -184,10 +237,7 @@ export async function registerUser(
           return { ok: false, error: e instanceof Error ? e.message : "Cadastro inválido" };
         }
       }
-      return {
-        ok: false,
-        error: "Este e-mail já está cadastrado. Vá em Entrar e use sua senha.",
-      };
+      return loginExistingWithPassword(existing, password, displayName, nickname);
     }
     try {
       const user = await insertUser(key, displayName, password, "member", nickname);
@@ -219,10 +269,7 @@ export async function registerUser(
       savePersisted(registry().values());
       return { ok: true, user: toSessionUser(updated), completedSocialAccount: true };
     }
-    return {
-      ok: false,
-      error: "Este e-mail já está cadastrado. Vá em Entrar e use sua senha.",
-    };
+    return loginExistingWithPassword(existingLocal, password, displayName, nickname);
   }
 
   let nick: string | null = null;

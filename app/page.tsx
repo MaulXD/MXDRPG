@@ -36,7 +36,7 @@ export default function HomePage() {
               identidade visual única — direto no navegador.
             </p>
             <div className="hero-actions">
-              <Link href="/entrar" className="btn">
+              <Link href="/sign-in" className="btn">
                 Entrar e jogar
               </Link>
               <Link href="/mesa/demo" prefetch={false} className="btn btn-secondary">
