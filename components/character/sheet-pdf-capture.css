@@ -1,15 +1,31 @@
 .sheet-pdf-capture-host {
+  position: fixed;
+  left: -10000px;
+  top: 0;
   width: 920px;
-  background: #121921;
+  z-index: -1;
+  pointer-events: none;
+  visibility: hidden;
 }
 
 .sheet-pdf-capture {
   width: 920px;
+  background: #121921;
+}
+
+.sheet-pdf-capture__frame.mf {
+  --mf-bg: #121921;
+  --mf-accent: #7aa3c9;
+  --mf-pad: 0.65rem;
+  --mf-inset: 10px;
+  width: 100%;
+  margin: 0;
+  background: #121921;
 }
 
 .sheet-pdf-capture .sheet-shell--popup {
-  width: 920px;
-  max-width: 920px;
+  width: 100%;
+  max-width: 100%;
 }
 
 .sheet-pdf-capture .sheet-popup-export,
@@ -25,6 +41,7 @@
 
 .sheet-pdf-capture .sheet-pdf-link {
   cursor: pointer;
+  position: relative;
 }
 
 .sheet-pdf-capture__footer {
@@ -34,4 +51,9 @@
   font-size: 0.68rem;
   color: rgba(200, 210, 224, 0.55);
   text-align: center;
+  line-height: 1.5;
+}
+
+.sheet-pdf-capture__footer-links {
+  color: rgba(122, 163, 201, 0.85);
 }

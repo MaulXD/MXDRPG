@@ -711,6 +711,23 @@
   border-color: rgba(200, 80, 80, 0.45);
 }
 
+.foundry-window__btn--pdf {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--accent);
+}
+
+.foundry-window__btn--pdf:hover:not(:disabled) {
+  color: var(--text);
+  border-color: color-mix(in srgb, var(--accent) 55%, var(--glass-border-bright));
+  background: color-mix(in srgb, var(--accent) 12%, rgba(0, 0, 0, 0.35));
+}
+
+.foundry-window__btn--pdf:disabled {
+  opacity: 0.45;
+}
+
 .foundry-window__body {
   flex: 1;
   min-height: 0;

@@ -32,13 +32,29 @@ type PdfLinkRect = {
   h: number;
 };
 
-function collectPdfLinks(
-  root: HTMLElement,
-  opts: SheetPdfExportOptions
-): PdfLinkRect[] {
-  const rootRect = root.getBoundingClientRect();
-  const rootW = root.scrollWidth || rootRect.width;
-  const rootH = root.scrollHeight || rootRect.height;
+function resolveCaptureBackground(root: HTMLElement): string {
+  const shell = root.querySelector(".sheet-shell--popup") as HTMLElement | null;
+  const frame = root.querySelector(".mf") as HTMLElement | null;
+  const target = shell ?? frame ?? root;
+  const bg = getComputedStyle(target).backgroundColor;
+  if (bg && bg !== "rgba(0, 0, 0, 0)" && bg !== "transparent") return bg;
+  return "#121921";
+}
+
+function rectInRoot(node: HTMLElement, root: HTMLElement) {
+  const n = node.getBoundingClientRect();
+  const r = root.getBoundingClientRect();
+  return {
+    left: n.left - r.left,
+    top: n.top - r.top,
+    width: n.width,
+    height: n.height,
+  };
+}
+
+function collectPdfLinks(root: HTMLElement, opts: SheetPdfExportOptions): PdfLinkRect[] {
+  const rootW = root.scrollWidth || root.offsetWidth;
+  const rootH = root.scrollHeight || root.offsetHeight;
   if (rootW <= 0 || rootH <= 0) return [];
 
   const links: PdfLinkRect[] = [];
@@ -61,13 +77,18 @@ function collectPdfLinks(
       skill,
     });
 
-    const rect = node.getBoundingClientRect();
+    const rect = rectInRoot(node, root);
+    if (rect.width < 4 || rect.height < 4) continue;
+
+    const padX = rect.width * 0.04;
+    const padY = rect.height * 0.06;
+
     links.push({
       url,
-      x: ((rect.left - rootRect.left) / rootW) * 100,
-      y: ((rect.top - rootRect.top) / rootH) * 100,
-      w: (rect.width / rootW) * 100,
-      h: (rect.height / rootH) * 100,
+      x: ((rect.left - padX) / rootW) * 100,
+      y: ((rect.top - padY) / rootH) * 100,
+      w: ((rect.width + padX * 2) / rootW) * 100,
+      h: ((rect.height + padY * 2) / rootH) * 100,
     });
   }
 
@@ -81,18 +102,37 @@ function addLinksToPdf(
   imgHeight: number,
   pageHeight: number
 ): void {
+  const totalPages = pdf.getNumberOfPages();
+
   for (const link of links) {
     const absX = (link.x / 100) * imgWidth;
     const absY = (link.y / 100) * imgHeight;
-    const absW = (link.w / 100) * imgWidth;
-    const absH = (link.h / 100) * imgHeight;
+    const absW = Math.max(2, (link.w / 100) * imgWidth);
+    const absH = Math.max(2, (link.h / 100) * imgHeight);
 
-    const pageIndex = Math.floor(absY / pageHeight);
+    const pageIndex = Math.max(0, Math.floor(absY / pageHeight));
     const yOnPage = absY - pageIndex * pageHeight;
 
-    if (pageIndex > 0) pdf.setPage(pageIndex + 1);
-    pdf.link(absX, yOnPage, absW, absH, { url: link.url });
+    if (pageIndex >= totalPages) continue;
+
+    pdf.setPage(pageIndex + 1);
+
+    try {
+      pdf.link(absX, yOnPage, absW, absH, { url: link.url });
+    } catch {
+      /* fallback abaixo */
+    }
+
+    pdf.setTextColor(255, 255, 255);
+    pdf.setFontSize(0.01);
+    try {
+      pdf.textWithLink(" ", absX + absW / 2, yOnPage + absH / 2, { url: link.url });
+    } catch {
+      /* ignora */
+    }
   }
+
+  pdf.setPage(1);
 }
 
 export async function waitForSheetPdfCapture(root: HTMLElement): Promise<void> {
@@ -105,7 +145,7 @@ export async function waitForSheetPdfCapture(root: HTMLElement): Promise<void> {
     imgs.map(
       (img) =>
         new Promise<void>((resolve) => {
-          if (img.complete) {
+          if (img.complete && img.naturalWidth > 0) {
             resolve();
             return;
           }
@@ -115,7 +155,45 @@ export async function waitForSheetPdfCapture(root: HTMLElement): Promise<void> {
     )
   );
 
-  await new Promise((r) => setTimeout(r, 120));
+  await new Promise<void>((resolve) => {
+    requestAnimationFrame(() => requestAnimationFrame(() => resolve()));
+  });
+  await new Promise((r) => setTimeout(r, 180));
+}
+
+export async function prepareSheetPdfCaptureHost(host: HTMLElement | null): Promise<() => void> {
+  if (!host) return () => undefined;
+
+  const prev = {
+    position: host.style.position,
+    left: host.style.left,
+    top: host.style.top,
+    width: host.style.width,
+    visibility: host.style.visibility,
+    opacity: host.style.opacity,
+    zIndex: host.style.zIndex,
+    pointerEvents: host.style.pointerEvents,
+  };
+
+  host.style.position = "fixed";
+  host.style.left = "0";
+  host.style.top = "0";
+  host.style.width = "920px";
+  host.style.visibility = "hidden";
+  host.style.opacity = "0";
+  host.style.zIndex = "-9999";
+  host.style.pointerEvents = "none";
+
+  return () => {
+    host.style.position = prev.position;
+    host.style.left = prev.left;
+    host.style.top = prev.top;
+    host.style.width = prev.width;
+    host.style.visibility = prev.visibility;
+    host.style.opacity = prev.opacity;
+    host.style.zIndex = prev.zIndex;
+    host.style.pointerEvents = prev.pointerEvents;
+  };
 }
 
 export async function exportSheetPdf(
@@ -128,44 +206,51 @@ export async function exportSheetPdf(
     import("jspdf"),
   ]);
 
-  await waitForSheetPdfCapture(root);
+  const host = root.closest(".sheet-pdf-capture-host") as HTMLElement | null;
+  const restoreHost = await prepareSheetPdfCaptureHost(host);
 
-  const canvas = await html2canvas(root, {
-    scale: 2,
-    useCORS: true,
-    allowTaint: false,
-    logging: false,
-    backgroundColor: "#121921",
-    windowWidth: root.scrollWidth,
-    windowHeight: root.scrollHeight,
-  });
+  try {
+    await waitForSheetPdfCapture(root);
 
-  const imgData = canvas.toDataURL("image/jpeg", 0.92);
-  const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
-  const pageWidth = pdf.internal.pageSize.getWidth();
-  const pageHeight = pdf.internal.pageSize.getHeight();
-  const imgWidth = pageWidth;
-  const imgHeight = (canvas.height * imgWidth) / canvas.width;
+    const backgroundColor = resolveCaptureBackground(root);
+    const links = opts ? collectPdfLinks(root, opts) : [];
 
-  const links = opts ? collectPdfLinks(root, opts) : [];
+    const canvas = await html2canvas(root, {
+      scale: 2,
+      useCORS: true,
+      allowTaint: false,
+      logging: false,
+      backgroundColor,
+      windowWidth: root.scrollWidth,
+      windowHeight: root.scrollHeight,
+    });
 
-  let heightLeft = imgHeight;
-  let position = 0;
+    const imgData = canvas.toDataURL("image/png");
+    const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
+    const imgWidth = pageWidth;
+    const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
-  pdf.addImage(imgData, "JPEG", 0, position, imgWidth, imgHeight);
-  heightLeft -= pageHeight;
+    let heightLeft = imgHeight;
+    let position = 0;
 
-  while (heightLeft > 0) {
-    position = heightLeft - imgHeight;
-    pdf.addPage();
-    pdf.addImage(imgData, "JPEG", 0, position, imgWidth, imgHeight);
+    pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
     heightLeft -= pageHeight;
-  }
 
-  if (links.length) {
-    pdf.setPage(1);
-    addLinksToPdf(pdf, links, imgWidth, imgHeight, pageHeight);
-  }
+    while (heightLeft > 0) {
+      position = heightLeft - imgHeight;
+      pdf.addPage();
+      pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+    }
 
-  pdf.save(filename);
+    if (links.length) {
+      addLinksToPdf(pdf, links, imgWidth, imgHeight, pageHeight);
+    }
+
+    pdf.save(filename);
+  } finally {
+    restoreHost();
+  }
 }
