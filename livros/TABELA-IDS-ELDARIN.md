@@ -1,4 +1,4 @@
-﻿# TABELA DE IDs — Eldarin v4.0
+# TABELA DE IDs — Eldarin v4.0
 
 > Registro unificado de identificadores para mesa, VTT (`data/compendiums/`) e documentação.  
 > **Regenerar:** `python scripts/gen-tabela-ids.py`
@@ -113,6 +113,26 @@
 | 058 | MON-058 | Pudim Negro | `monstros-pudim-negro` | ASSIM-058-1 … 8 |
 | 059 | MON-059 | Lagosta-Gigante Abissal | `monstros-lagosta-gigante-abissal` | ASSIM-059-1 … 8 |
 | 060 | MON-060 | Caranguejo-Eremita Colossal | `monstros-caranguejo-eremita-colossal` | ASSIM-060-1 … 8 |
+| 061 | MON-061 | Aranha-Cavaleira | `monstros-aranha-cavaleira` | ASSIM-061-1 … 8 |
+| 062 | MON-062 | Mosca-Carniça Colossal | `monstros-mosca-carnica-colossal` | ASSIM-062-1 … 8 |
+| 063 | MON-063 | Besouro-Trovão | `monstros-besouro-trovao` | ASSIM-063-1 … 8 |
+| 064 | MON-064 | Verme Gigante de Pedra | `monstros-verme-gigante-de-pedra` | ASSIM-064-1 … 8 |
+| 065 | MON-065 | Salamandra Gigante | `monstros-salamandra-gigante` | ASSIM-065-1 … 8 |
+| 066 | MON-066 | Behemoth de Pedra | `monstros-behemoth-de-pedra` | ASSIM-066-1 … 8 |
+| 067 | MON-067 | Fera da Sombra | `monstros-fera-da-sombra` | ASSIM-067-1 … 8 |
+| 068 | MON-068 | Medusa | `monstros-medusa` | ASSIM-068-1 … 8 |
+| 069 | MON-069 | Fênix de Caverna | `monstros-fenix-de-caverna` | ASSIM-069-1 … 8 |
+| 070 | MON-070 | Gigante de Pedra | `monstros-gigante-de-pedra` | ASSIM-070-1 … 8 |
+| 071 | MON-071 | Bruxa da Masmorra | `monstros-bruxa-da-masmorra` | ASSIM-071-1 … 8 |
+| 072 | MON-072 | Fera Seminal | `monstros-fera-seminal` | ASSIM-072-1 … 8 |
+| 073 | MON-073 | Carniçal Alado | `monstros-carnical-alado` | ASSIM-073-1 … 8 |
+| 074 | MON-074 | Balor | `monstros-balor` | ASSIM-074-1 … 8 |
+| 075 | MON-075 | Enxame de Ratos-Cadáveres | `monstros-enxame-de-ratos-cadaveres` | ASSIM-075-1 … 8 |
+| 076 | MON-076 | Elemental de Terra | `monstros-elemental-de-terra` | ASSIM-076-1 … 8 |
+| 077 | MON-077 | Banshee | `monstros-banshee` | ASSIM-077-1 … 8 |
+| 078 | MON-078 | Morcego-Tirano | `monstros-morcego-tirano` | ASSIM-078-1 … 8 |
+| 079 | MON-079 | Ooze Ocular | `monstros-ooze-ocular` | ASSIM-079-1 … 8 |
+| 080 | MON-080 | Tarrasque (Bebê) | `monstros-tarrasque-bebe` | ASSIM-080-1 … 8 |
 
 ---
 
@@ -120,6 +140,26 @@
 
 | ID | MON | Nome |
 | --- | --- | --- |
+| 061 | MON-061 | ARANHA-CAVALEIRA (JINOBAKE) |
+| 062 | MON-062 | MOSCA-CARNIÇA COLOSSAL |
+| 063 | MON-063 | BESOURO-TROVÃO |
+| 064 | MON-064 | VERME GIGANTE DE PEDRA |
+| 065 | MON-065 | SALAMANDRA GIGANTE |
+| 066 | MON-066 | BEHEMOTH DE PEDRA |
+| 067 | MON-067 | FERA DA SOMBRA |
+| 068 | MON-068 | MEDUSA |
+| 069 | MON-069 | FÊNIX DE CAVERNA |
+| 070 | MON-070 | GIGANTE DE PEDRA |
+| 071 | MON-071 | BRUXA DA MASMORRA (HAG) |
+| 072 | MON-072 | FERA SEMINAL (DESTIVORE) |
+| 073 | MON-073 | CARNIÇAL ALADO (VROCK) |
+| 074 | MON-074 | BALOR (ARQUIDEMÔNIO) |
+| 075 | MON-075 | ENXAME DE RATOS-CADÁVERES |
+| 076 | MON-076 | ELEMENTAL DE TERRA |
+| 077 | MON-077 | BANSHEE |
+| 078 | MON-078 | MORCEGO-TIRANO |
+| 079 | MON-079 | OOZE OCULAR (OLHO FLUTUANTE) |
+| 080 | MON-080 | TARRASQUE (BEBÊ) |
 
 
 ---
@@ -232,8 +272,6 @@
 | CLA-bardo | Bardo |
 | CLA-druida | Druida |
 | CLA-artífice | Artífice |
-| CLA-paladino | Paladino |
-| CLA-bruxo | Bruxo |
 | RAC-humano | Humano |
 | RAC-elfo | Elfo |
 | RAC-anao | Anao |
@@ -680,7 +718,7 @@
 
 ---
 
-## Compêndio VTT — Habilidades (23)
+## Compêndio VTT — Habilidades (50)
 
 | entryId | Nome | tipo |
 | --- | --- | --- |
@@ -707,6 +745,33 @@
 | habilidades-raizes-prendentes | Raízes Prendentes | habilidade |
 | habilidades-disparo-de-artilheiro | Disparo de Artilheiro | habilidade |
 | habilidades-barreira-de-cobre | Barreira de Cobre | habilidade |
+| habilidades-imposicao-de-maos | Imposição de Mãos | habilidade |
+| habilidades-golpe-sagrado | Golpe Sagrado | habilidade |
+| habilidades-raio-do-pacto | Raio do Pacto | habilidade |
+| habilidades-raio-do-pacto-psiquico | Raio do Pacto Psíquico | habilidade |
+| habilidades-raio-do-pacto-ardente | Raio do Pacto Ardente | habilidade |
+| habilidades-raio-do-pacto-salino | Raio do Pacto Salino | habilidade |
+| habilidades-luz-penitente | Luz Penitente | habilidade |
+| habilidades-escudo-solar | Escudo Solar | habilidade |
+| habilidades-julgamento-ardente | Julgamento Ardente | habilidade |
+| habilidades-coroa-de-fogo | Coroa de Fogo | habilidade |
+| habilidades-lamina-dos-sepulcros | Lâmina dos Sepulcros | habilidade |
+| habilidades-voto-de-caca | Voto de Caça | habilidade |
+| habilidades-marca-do-limiar | Marca do Limiar | habilidade |
+| habilidades-processao-silenciosa | Processão Silenciosa | habilidade |
+| habilidades-mordida-do-voto | Mordida do Voto | habilidade |
+| habilidades-fera-interior | Fera Interior | habilidade |
+| habilidades-carga-do-juramento | Carga do Juramento | habilidade |
+| habilidades-pele-de-quimera | Pele de Quimera | habilidade |
+| habilidades-olhar-entre-dimensoes | Olhar Entre Dimensões | habilidade |
+| habilidades-agarrao-do-pacto | Agarrão do Pacto | habilidade |
+| habilidades-mente-partida | Mente Partida | habilidade |
+| habilidades-sangue-do-patrono | Sangue do Patrono | habilidade |
+| habilidades-pacto-de-ferro | Pacto de Ferro | habilidade |
+| habilidades-correntes-infernais | Correntes Infernais | habilidade |
+| habilidades-corrente-mental | Corrente Mental | habilidade |
+| habilidades-manto-de-bruma | Manto de Bruma | habilidade |
+| habilidades-puxao-abissal | Puxão Abissal | habilidade |
 
 
 ---
@@ -879,9 +944,9 @@
 | equipamentos-poc-10 | Poção de Resistência ao Fogo | equipamento |
 | equipamentos-poc-11 | Poção de Resistência ao Gelo | equipamento |
 | equipamentos-poc-12 | Poção de Resistência ao Ácido | equipamento |
-| equipamentos-poc-13 | Elixir de Extração | equipamento |
-| equipamentos-poc-14 | Elixir de Forrageio | equipamento |
-| equipamentos-poc-15 | Tônico de Fortitude | equipamento |
+| equipamentos-poc-13 | Elixir de Trinchar | equipamento |
+| equipamentos-poc-14 | Elixir de Harmonização | equipamento |
+| equipamentos-poc-15 | Tônico de Estômago de Ferro | equipamento |
 | equipamentos-poc-16 | Soro de Mutação Estável | equipamento |
 | equipamentos-poc-17 | Destilado de Wyvern | equipamento |
 | equipamentos-poc-18 | Essência de Gelo Aromático | equipamento |
@@ -903,7 +968,7 @@
 | equipamentos-mun-10 | Virote Pesado (10) | equipamento |
 | equipamentos-mun-11 | Virote Perfurante (10) | equipamento |
 | equipamentos-mun-12 | Agulha de Zarabatana (10) | equipamento |
-| equipamentos-kit-de-trinchar | Kit de Extração | equipamento |
+| equipamentos-kit-de-trinchar | Kit de Trinchar | equipamento |
 | equipamentos-tocha-de-masmorra | Tocha de Masmorra | equipamento |
 | equipamentos-corda-de-seda-de-aranha | Corda de Seda de Aranha | equipamento |
 | equipamentos-kit-de-brasas-mágicas | Kit de Brasas Mágicas (6) | equipamento |
@@ -912,7 +977,7 @@
 
 ---
 
-## Compêndio VTT — Monstros (VTT) (69)
+## Compêndio VTT — Monstros (VTT) (83)
 
 | entryId | Nome | tipo |
 | --- | --- | --- |
@@ -982,6 +1047,20 @@
 | monstros-verme-gigante-de-pedra | Verme Gigante de Pedra | npc |
 | monstros-salamandra-gigante | Salamandra Gigante | npc |
 | monstros-behemoth-de-pedra | Behemoth de Pedra | npc |
+| monstros-fera-da-sombra | Fera da Sombra | npc |
+| monstros-medusa | Medusa | npc |
+| monstros-fenix-de-caverna | Fênix de Caverna | npc |
+| monstros-gigante-de-pedra | Gigante de Pedra | npc |
+| monstros-bruxa-da-masmorra | Bruxa da Masmorra | npc |
+| monstros-fera-seminal | Fera Seminal | npc |
+| monstros-carnical-alado | Carniçal Alado | npc |
+| monstros-balor | Balor | npc |
+| monstros-enxame-de-ratos-cadaveres | Enxame de Ratos-Cadáveres | npc |
+| monstros-elemental-de-terra | Elemental de Terra | npc |
+| monstros-banshee | Banshee | npc |
+| monstros-morcego-tirano | Morcego-Tirano | npc |
+| monstros-ooze-ocular | Ooze Ocular | npc |
+| monstros-tarrasque-bebe | Tarrasque (Bebê) | npc |
 | monstros-goblin | Goblin | npc |
 | monstros-esqueleto-de-guarda | Esqueleto de Guarda | npc |
 | monstros-slime-de-masmorra | Slime de Masmorra | npc |
