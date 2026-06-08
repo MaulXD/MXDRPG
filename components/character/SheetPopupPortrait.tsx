@@ -159,8 +159,8 @@ export function SheetPopupPortrait({
           initials={previewSrc ? undefined : "?"}
           alt={name}
           focus={focusPortrait}
-          imgW={previewSrc && imgSize.w > 0 ? imgSize.w : 0}
-          imgH={previewSrc && imgSize.w > 0 ? imgSize.h : 0}
+          imgW={imgSize.w > 0 ? imgSize.w : undefined}
+          imgH={imgSize.h > 0 ? imgSize.h : undefined}
           className="portrait--sheet-popup"
         />
         {canEdit ? (

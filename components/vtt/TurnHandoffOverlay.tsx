@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { BattleToken } from "@/lib/vtt/types";
 import type { CombatTrack } from "@/lib/room/combat";
 import { activeTokenId } from "@/lib/room/combat";
@@ -24,6 +24,16 @@ export function TurnHandoffOverlay({ combat, tokens }: Props) {
   const [name, setName] = useState("");
   const prevKey = useRef<string | null>(null);
   const timers = useRef<number[]>([]);
+  const tokensRef = useRef(tokens);
+  const combatRef = useRef(combat);
+  tokensRef.current = tokens;
+  combatRef.current = combat;
+
+  /** Chave estável — não reexecutar o efeito a cada snapshot SSE (só quando o turno muda). */
+  const turnKey = useMemo(() => {
+    if (!combat?.order.length) return null;
+    return combatTurnKey(combat);
+  }, [combat?.round, combat?.activeIndex, combat?.order.length, combat?.order]);
 
   useEffect(() => {
     const clearTimers = () => {
@@ -31,24 +41,23 @@ export function TurnHandoffOverlay({ combat, tokens }: Props) {
       timers.current = [];
     };
 
-    if (!combat?.order.length) {
+    if (turnKey === null) {
       prevKey.current = null;
       clearTimers();
       setPhase("hidden");
       return;
     }
 
-    const key = combatTurnKey(combat);
     if (prevKey.current === null) {
-      prevKey.current = key;
+      prevKey.current = turnKey;
       return;
     }
 
-    if (key === prevKey.current) return;
-    prevKey.current = key;
+    if (turnKey === prevKey.current) return;
+    prevKey.current = turnKey;
 
-    const activeId = activeTokenId(combat);
-    const token = tokens.find((t) => t.id === activeId);
+    const activeId = combatRef.current ? activeTokenId(combatRef.current) : null;
+    const token = activeId ? tokensRef.current.find((t) => t.id === activeId) : undefined;
     setName(token?.name ?? "—");
     setPhase("visible");
     clearTimers();
@@ -65,7 +74,7 @@ export function TurnHandoffOverlay({ combat, tokens }: Props) {
     );
 
     return clearTimers;
-  }, [combat, tokens]);
+  }, [turnKey]);
 
   if (phase === "hidden") return null;
 
