@@ -3,6 +3,7 @@ import path from "path";
 import { dbEnabled } from "@/lib/db/enabled";
 import { normalizeNickname, validateNickname } from "@/lib/auth/nickname";
 import {
+  completeUserPasswordRegistration,
   fetchUserByEmail,
   fetchUserById,
   fetchUserByNickname,
@@ -98,29 +99,56 @@ function findLocalUser(login: string): StoredUser | undefined {
   return undefined;
 }
 
-export async function authenticateUser(
-  login: string,
-  password: string
-): Promise<SessionUser | null> {
+export type LoginResult =
+  | { ok: true; user: SessionUser }
+  | { ok: false; error: string };
+
+async function resolveUserForLogin(login: string): Promise<StoredUser | null | undefined> {
   const trimmed = login.trim();
+  if (!trimmed) return null;
   const byEmail = trimmed.includes("@");
 
   if (dbEnabled()) {
     await ensureDbUsersSeeded();
-    const found = byEmail
-      ? await fetchUserByEmail(trimmed)
-      : await fetchUserByNickname(trimmed);
-    if (!found?.passwordHash || !verifyPassword(password, found.passwordHash)) return null;
-    return toSessionUser(found);
+    return byEmail ? await fetchUserByEmail(trimmed) : await fetchUserByNickname(trimmed);
   }
 
-  const found = findLocalUser(trimmed);
-  if (!found?.passwordHash || !verifyPassword(password, found.passwordHash)) return null;
-  return toSessionUser(found);
+  return findLocalUser(trimmed) ?? null;
+}
+
+export async function loginUser(login: string, password: string): Promise<LoginResult> {
+  const trimmed = login.trim();
+  if (!trimmed) return { ok: false, error: "Informe e-mail, apelido ou usuário" };
+  if (!password) return { ok: false, error: "Informe sua senha" };
+
+  const found = await resolveUserForLogin(trimmed);
+  if (!found) return { ok: false, error: "Credenciais inválidas" };
+
+  if (!found.passwordHash) {
+    return {
+      ok: false,
+      error:
+        "Esta conta foi criada com Google/Discord. Use o login social acima ou vá em Criar conta com o mesmo e-mail para definir uma senha.",
+    };
+  }
+
+  if (!verifyPassword(password, found.passwordHash)) {
+    return { ok: false, error: "Credenciais inválidas" };
+  }
+
+  return { ok: true, user: toSessionUser(found) };
+}
+
+export async function authenticateUser(
+  login: string,
+  password: string
+): Promise<SessionUser | null> {
+  const result = await loginUser(login, password);
+  return result.ok ? result.user : null;
 }
 
 export type RegisterResult =
-  | { ok: true; user: SessionUser }
+  | { ok: true; user: SessionUser; completedSocialAccount?: boolean }
   | { ok: false; error: string };
 
 export async function registerUser(
@@ -145,7 +173,21 @@ export async function registerUser(
     await ensureDbUsersSeeded();
     const existing = await fetchUserByEmail(key);
     if (existing) {
-      return { ok: false, error: "Este e-mail já está cadastrado" };
+      if (!existing.passwordHash) {
+        try {
+          const user = await completeUserPasswordRegistration(existing.id, password, {
+            name: displayName,
+            nickname,
+          });
+          return { ok: true, user: toSessionUser(user), completedSocialAccount: true };
+        } catch (e) {
+          return { ok: false, error: e instanceof Error ? e.message : "Cadastro inválido" };
+        }
+      }
+      return {
+        ok: false,
+        error: "Este e-mail já está cadastrado. Vá em Entrar e use sua senha.",
+      };
     }
     try {
       const user = await insertUser(key, displayName, password, "member", nickname);
@@ -155,8 +197,32 @@ export async function registerUser(
     }
   }
 
-  if (registry().has(key)) {
-    return { ok: false, error: "Este e-mail já está cadastrado" };
+  const existingLocal = registry().get(key);
+  if (existingLocal) {
+    if (!existingLocal.passwordHash) {
+      let nick: string | null = existingLocal.nickname ?? null;
+      if (nickname?.trim()) {
+        const v = validateNickname(nickname);
+        if (!v.ok) return { ok: false, error: v.error };
+        nick = v.nickname;
+        if (findLocalUser(nick) && findLocalUser(nick)?.id !== existingLocal.id) {
+          return { ok: false, error: "Este apelido já está em uso" };
+        }
+      }
+      const updated: StoredUser = {
+        ...existingLocal,
+        name: displayName,
+        nickname: nick,
+        passwordHash: hashPassword(password),
+      };
+      registry().set(key, updated);
+      savePersisted(registry().values());
+      return { ok: true, user: toSessionUser(updated), completedSocialAccount: true };
+    }
+    return {
+      ok: false,
+      error: "Este e-mail já está cadastrado. Vá em Entrar e use sua senha.",
+    };
   }
 
   let nick: string | null = null;

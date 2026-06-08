@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { PasswordInput } from "@/components/auth/PasswordInput";
+import "./auth-forms.css";
 
 type Props = { redirect?: string };
 
@@ -11,17 +13,37 @@ export function RegisterForm({ redirect = "" }: Props) {
   const [nickname, setNickname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [passwordConfirm, setPasswordConfirm] = useState("");
   const [error, setError] = useState("");
+  const [notice, setNotice] = useState("");
   const [loading, setLoading] = useState(false);
+
+  function clearFields() {
+    setName("");
+    setNickname("");
+    setEmail("");
+    setPassword("");
+    setPasswordConfirm("");
+    setError("");
+    setNotice("");
+  }
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
     setError("");
+    setNotice("");
+
+    if (password !== passwordConfirm) {
+      setLoading(false);
+      setError("As senhas não coincidem — confira o que digitou.");
+      return;
+    }
 
     const res = await fetch("/api/auth/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
+      credentials: "same-origin",
       body: JSON.stringify({
         name,
         nickname: nickname.trim() || undefined,
@@ -38,29 +60,35 @@ export function RegisterForm({ redirect = "" }: Props) {
       return;
     }
 
+    if (data.completedSocialAccount) {
+      setNotice("Senha definida com sucesso. Redirecionando…");
+    }
+
     router.push(data.redirect ?? "/rpg");
     router.refresh();
   }
 
   return (
-    <form onSubmit={submit} style={{ display: "flex", flexDirection: "column", gap: "0.85rem" }}>
-      <p style={{ margin: 0, fontSize: "0.82rem", color: "var(--text-muted)", lineHeight: 1.55 }}>
+    <form className="auth-form" onSubmit={submit} autoComplete="on">
+      <p className="auth-form__intro">
         Conta nova pode <strong>criar mesas</strong> como mestre — o código de convite é gerado
-        automaticamente para jogadores entrarem.
+        automaticamente para jogadores entrarem. Se você entrou antes com Google/Discord, use o
+        mesmo e-mail aqui para <strong>definir uma senha</strong>.
       </p>
-      <label style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}>
-        Nome
+      <label className="auth-field">
+        <span className="auth-field__label">Nome</span>
         <input
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
           required
-          style={inputStyle}
+          autoComplete="name"
+          className="auth-field__input"
           placeholder="Seu nome na mesa"
         />
       </label>
-      <label style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}>
-        Apelido (recomendado — login alternativo)
+      <label className="auth-field">
+        <span className="auth-field__label">Apelido (recomendado — login alternativo)</span>
         <input
           type="text"
           value={nickname}
@@ -68,49 +96,50 @@ export function RegisterForm({ redirect = "" }: Props) {
           minLength={3}
           maxLength={24}
           pattern="[a-zA-Z0-9_-]*"
-          style={inputStyle}
+          autoComplete="nickname"
+          className="auth-field__input"
           placeholder="ex: meu_apelido"
         />
       </label>
-      <label style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}>
-        E-mail
+      <label className="auth-field">
+        <span className="auth-field__label">E-mail</span>
         <input
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
-          style={inputStyle}
+          autoComplete="email"
+          className="auth-field__input"
+          placeholder="seu@email.com"
         />
       </label>
-      <label style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}>
-        Senha (mín. 6)
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-          minLength={6}
-          style={inputStyle}
-        />
-      </label>
-      {error && <p style={{ color: "#ff6b8a", margin: 0, fontSize: "0.85rem" }}>{error}</p>}
-      <button type="submit" className="btn" disabled={loading}>
-        {loading ? "Criando conta…" : "Criar conta"}
-      </button>
+      <PasswordInput
+        label="Senha (mín. 6 caracteres)"
+        value={password}
+        onChange={setPassword}
+        autoComplete="new-password"
+        minLength={6}
+        placeholder="Crie uma senha"
+        hint="Use Ver para conferir antes de criar a conta."
+      />
+      <PasswordInput
+        label="Confirmar senha"
+        value={passwordConfirm}
+        onChange={setPasswordConfirm}
+        autoComplete="new-password"
+        minLength={6}
+        placeholder="Repita a senha"
+      />
+      {error ? <p className="auth-form__error" role="alert">{error}</p> : null}
+      {notice ? <p className="auth-form__success" role="status">{notice}</p> : null}
+      <div className="auth-form__actions">
+        <button type="submit" className="btn" disabled={loading}>
+          {loading ? "Criando conta…" : "Criar conta"}
+        </button>
+        <button type="button" className="auth-form__clear" onClick={clearFields}>
+          Limpar campos
+        </button>
+      </div>
     </form>
   );
 }
-
-const inputStyle: React.CSSProperties = {
-  display: "block",
-  width: "100%",
-  marginTop: "0.35rem",
-  padding: "0.65rem 0.85rem",
-  borderRadius: 10,
-  border: "1px solid var(--glass-border)",
-  background: "rgba(0,0,0,0.4)",
-  color: "var(--text)",
-  fontFamily: "var(--font-body)",
-  fontSize: "0.95rem",
-  outline: "none",
-};

@@ -2,26 +2,33 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { PasswordInput } from "@/components/auth/PasswordInput";
+import "./auth-forms.css";
 
 const QUICK = [
   { login: "jogador", label: "Jogador" },
   { login: "mestre", label: "Mestre" },
 ] as const;
 
-const DEMO_PASSWORD = "123";
-
 type Props = { redirect?: string };
 
 export function LoginForm({ redirect = "" }: Props) {
   const router = useRouter();
   const [login, setLogin] = useState("");
-  const [password, setPassword] = useState(DEMO_PASSWORD);
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   function fillDemo(user: string) {
     setLogin(user);
-    setPassword(DEMO_PASSWORD);
+    setPassword("123");
+    setError("");
+  }
+
+  function clearFields() {
+    setLogin("");
+    setPassword("");
+    setError("");
   }
 
   async function submit(e: React.FormEvent) {
@@ -32,6 +39,7 @@ export function LoginForm({ redirect = "" }: Props) {
     const res = await fetch("/api/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
+      credentials: "same-origin",
       body: JSON.stringify({ login, password, redirect }),
     });
 
@@ -48,34 +56,35 @@ export function LoginForm({ redirect = "" }: Props) {
   }
 
   return (
-    <form onSubmit={submit} style={{ display: "flex", flexDirection: "column", gap: "0.85rem" }}>
-      <label style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}>
-        Usuário
+    <form className="auth-form" onSubmit={submit} autoComplete="on">
+      <label className="auth-field">
+        <span className="auth-field__label">E-mail, apelido ou usuário</span>
         <input
           type="text"
           value={login}
           onChange={(e) => setLogin(e.target.value)}
           required
           autoComplete="username"
-          style={inputStyle}
-          placeholder="mestre ou jogador"
+          className="auth-field__input"
+          placeholder="seu@email.com ou apelido"
         />
       </label>
-      <label style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}>
-        Senha
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-          autoComplete="current-password"
-          style={inputStyle}
-        />
-      </label>
-      {error && <p style={{ color: "#ff6b8a", margin: 0, fontSize: "0.85rem" }}>{error}</p>}
-      <button type="submit" className="btn" disabled={loading}>
-        {loading ? "Entrando…" : "Entrar"}
-      </button>
+      <PasswordInput
+        label="Senha"
+        value={password}
+        onChange={setPassword}
+        autoComplete="current-password"
+        placeholder="Sua senha"
+      />
+      {error ? <p className="auth-form__error" role="alert">{error}</p> : null}
+      <div className="auth-form__actions">
+        <button type="submit" className="btn" disabled={loading}>
+          {loading ? "Entrando…" : "Entrar"}
+        </button>
+        <button type="button" className="auth-form__clear" onClick={clearFields}>
+          Limpar campos
+        </button>
+      </div>
       <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
         {QUICK.map((q) => (
           <button
@@ -85,24 +94,10 @@ export function LoginForm({ redirect = "" }: Props) {
             style={{ fontSize: "0.75rem", padding: "0.35rem 0.65rem" }}
             onClick={() => fillDemo(q.login)}
           >
-            {q.label}
+            Demo {q.label}
           </button>
         ))}
       </div>
     </form>
   );
 }
-
-const inputStyle: React.CSSProperties = {
-  display: "block",
-  width: "100%",
-  marginTop: "0.35rem",
-  padding: "0.65rem 0.85rem",
-  borderRadius: 10,
-  border: "1px solid var(--glass-border)",
-  background: "rgba(0,0,0,0.4)",
-  color: "var(--text)",
-  fontFamily: "var(--font-body)",
-  fontSize: "0.95rem",
-  outline: "none",
-};

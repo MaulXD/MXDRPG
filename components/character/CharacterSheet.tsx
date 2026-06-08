@@ -54,6 +54,7 @@ import {
   type AttributeKey,
 } from "@/lib/character/rules";
 import { SheetPdfExportButton } from "@/components/character/SheetPdfExportButton";
+import { useSheetPdfDeepLink } from "@/hooks/useSheetPdfDeepLink";
 import { OrnamentCard } from "@/components/ui/OrnamentCard";
 import { SectionDivider } from "@/components/ui/SectionDivider";
 import { Portrait } from "@/components/vtt/Portrait";

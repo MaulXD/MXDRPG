@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import "./auth-forms.css";
 import { ClerkSignInLinks } from "@/components/auth/ClerkSignInLinks";
 import { LoginForm } from "@/components/auth/LoginForm";
 import { RegisterForm } from "@/components/auth/RegisterForm";
@@ -30,6 +31,12 @@ export function AuthTabs({ redirect = "", clerkEnabled = false }: Props) {
           Criar conta
         </button>
       </div>
+      {clerkEnabled ? (
+        <p className="auth-form__intro" style={{ marginBottom: "0.25rem" }}>
+          Login com e-mail/senha abaixo funciona junto com Google/Discord. Conta social sem senha?
+          Use <strong>Criar conta</strong> com o mesmo e-mail para definir uma.
+        </p>
+      ) : null}
       {clerkEnabled && tab === "login" ? <ClerkSignInLinks /> : null}
       {tab === "login" ? <LoginForm redirect={redirect} /> : <RegisterForm redirect={redirect} />}
       <p style={{ marginTop: "1rem", fontSize: "0.8rem", color: "var(--text-muted)" }}>

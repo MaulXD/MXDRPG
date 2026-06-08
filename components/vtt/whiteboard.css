@@ -51,10 +51,73 @@
   background: rgba(255, 255, 255, 0.1);
 }
 
+.map-toolbar__btn[data-tool-icon] .map-toolbar__icon {
+  color: var(--tool-icon-color, currentColor);
+}
+
+.map-toolbar__btn[data-tool-icon="token"] {
+  --tool-icon-color: #6a9fd8;
+}
+
+.map-toolbar__btn[data-tool-icon="ping"] {
+  --tool-icon-color: #e85d5d;
+}
+
+.map-toolbar__btn[data-tool-icon="measure"] {
+  --tool-icon-color: #e8c050;
+}
+
+.map-toolbar__btn[data-tool-icon="fog"] {
+  --tool-icon-color: #9a8ec8;
+}
+
+.map-toolbar__btn[data-tool-icon="select"] {
+  --tool-icon-color: #5ec8e8;
+}
+
+.map-toolbar__btn[data-tool-icon="pen"] {
+  --tool-icon-color: #5ecf8a;
+}
+
+.map-toolbar__btn[data-tool-icon="line"] {
+  --tool-icon-color: #a8c8e8;
+}
+
+.map-toolbar__btn[data-tool-icon="arrow"] {
+  --tool-icon-color: #e8a050;
+}
+
+.map-toolbar__btn[data-tool-icon="shape"] {
+  --tool-icon-color: #d88ec8;
+}
+
+.map-toolbar__btn[data-tool-icon="polygon"] {
+  --tool-icon-color: #d4a030;
+}
+
+.map-toolbar__btn[data-tool-icon="text"] {
+  --tool-icon-color: #e8dcc0;
+}
+
+.map-toolbar__btn[data-tool-icon="dungeon"] {
+  --tool-icon-color: #c9927a;
+}
+
+.map-toolbar__btn[data-tool-icon="zoom-in"],
+.map-toolbar__btn[data-tool-icon="zoom-out"] {
+  --tool-icon-color: #a8b8c8;
+}
+
+.map-toolbar__btn[data-tool-icon="reset-view"] {
+  --tool-icon-color: #7aa3c9;
+}
+
 .map-toolbar__icon {
   width: 1.15rem;
   height: 1.15rem;
   display: block;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.3));
+  transition: filter 0.12s;
 }
 
 .map-toolbar__btn {
@@ -84,14 +147,21 @@
 
 .map-toolbar__btn:hover:not(:disabled) {
   border-color: var(--glass-border);
-  color: var(--text);
   background: rgba(255, 255, 255, 0.08);
 }
 
+.map-toolbar__btn:hover:not(:disabled)[data-tool-icon] .map-toolbar__icon {
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.35))
+    drop-shadow(0 0 5px color-mix(in srgb, var(--tool-icon-color) 40%, transparent));
+}
+
 .map-toolbar__btn--active {
-  border-color: var(--mesa-accent-border, var(--glass-border-bright));
-  color: var(--mesa-accent, var(--accent));
-  background: var(--mesa-accent-soft, var(--accent-soft));
+  border-color: color-mix(in srgb, var(--tool-icon-color, var(--mesa-accent)) 45%, transparent);
+  background: color-mix(in srgb, var(--tool-icon-color, var(--mesa-accent)) 14%, rgba(0, 0, 0, 0.2));
+}
+
+.map-toolbar__btn--active[data-tool-icon] .map-toolbar__icon {
+  filter: drop-shadow(0 0 6px color-mix(in srgb, var(--tool-icon-color) 50%, transparent));
 }
 
 .map-toolbar__btn:disabled {
