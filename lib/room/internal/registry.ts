@@ -8,7 +8,7 @@ import {
   repairDuplicateTokenIds,
 } from "@/lib/vtt/token-integrity";
 import { welcomeChat } from "../chat";
-import { emptyCombat } from "../combat";
+import { normalizeCombatTrack } from "../combat";
 import { ensureCombatActiveHasPa } from "../handlers/combat-turn";
 import { pruneMapMarkups } from "@/lib/vtt/map-markup";
 import { prunePings } from "@/lib/vtt/ping";
@@ -31,15 +31,17 @@ export function rooms(): Map<string, RoomState> {
 }
 
 export function toSnapshot(state: RoomState): RoomSnapshot {
+  const tokens = Array.isArray(state.scene.tokens) ? state.scene.tokens : [];
   return {
     roomId: state.roomId,
     settings: normalizeRoomSettings(state.settings),
     scene: {
       ...state.scene,
+      tokens,
       mapMarkups: pruneMapMarkups(state.scene.mapMarkups ?? []),
     },
     actors: state.actors,
-    combat: state.combat,
+    combat: normalizeCombatTrack(state.combat, tokens),
     combatUndo: state.combatUndo,
     gmCreations: getRoomGmCreations(state),
     chat: state.chat,
@@ -193,8 +195,11 @@ export async function getRoom(roomId: string): Promise<RoomState | null> {
   }
 
   if (room) refreshDemoActorsIfStale(room);
-  if (room && !room.combat) {
-    room.combat = emptyCombat(room.scene.tokens);
+  if (room) {
+    if (!Array.isArray(room.scene.tokens)) {
+      room.scene = { ...room.scene, tokens: [] };
+    }
+    room.combat = normalizeCombatTrack(room.combat, room.scene.tokens);
   }
   if (room?.combat?.order.length) {
     ensureCombatActiveHasPa(room);

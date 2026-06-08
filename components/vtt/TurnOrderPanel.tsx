@@ -6,7 +6,7 @@ import { useState, type DragEvent } from "react";
 
 import type { BattleToken } from "@/lib/vtt/types";
 
-import type { CombatTrack } from "@/lib/room/combat";
+import { normalizeCombatTrack, type CombatTrack } from "@/lib/room/combat";
 import type { CombatUndoEntry, RoomSnapshot } from "@/lib/room/types";
 
 import { nextCombatTurn, postGmCombatAction, rollInitiative } from "@/hooks/useRoomSync";
@@ -122,6 +122,7 @@ export function TurnOrderPanel({
   compact = false,
 
 }: Props) {
+  const track = normalizeCombatTrack(combat, tokens);
 
   const [busy, setBusy] = useState(false);
   const [gmBusy, setGmBusy] = useState<string | null>(null);
@@ -133,9 +134,9 @@ export function TurnOrderPanel({
   const attackHoverEnabled = Boolean(attackableIds && attackableIds.size > 0);
 
   const tokenMap = new Map(tokens.map((t) => [t.id, t]));
-  const displayOrder = livingOrderIds(combat.order, tokenMap);
+  const displayOrder = livingOrderIds(track.order, tokenMap);
 
-  const activeId = combat.order[combat.activeIndex] ?? null;
+  const activeId = track.order[track.activeIndex] ?? null;
 
   const activeToken = activeId ? tokenMap.get(activeId) : null;
 
@@ -202,7 +203,7 @@ export function TurnOrderPanel({
 
   async function handleReorder(fromId: string, toId: string) {
     if (fromId === toId) return;
-    const base = livingOrderIds(combat.order, tokenMap);
+    const base = livingOrderIds(track.order, tokenMap);
     const order = reorderIds(base, fromId, toId);
     await runGmAction("reorder", { action: "set-order", order });
   }
@@ -302,7 +303,7 @@ export function TurnOrderPanel({
                     type="button"
                     className="vtt-turn-compact-nav-btn vtt-turn-compact-nav-btn--next"
                     title="Próximo turno"
-                    disabled={busy || !combat.order.length}
+                    disabled={busy || !track.order.length}
                     onClick={(e) => {
                       e.stopPropagation();
                       void handleNext();
@@ -358,7 +359,7 @@ export function TurnOrderPanel({
                         >
                           Rolar iniciativa
                         </button>
-                        {combat.orderOverridden ? (
+                        {track.orderOverridden ? (
                           <button
                             type="button"
                             role="menuitem"
@@ -379,7 +380,7 @@ export function TurnOrderPanel({
                   </div>
                 </div>
               ) : null}
-              <span className="vtt-turn-compact-round">R{combat.round}</span>
+              <span className="vtt-turn-compact-round">R{track.round}</span>
             </div>
           </div>
         ) : (
@@ -388,7 +389,7 @@ export function TurnOrderPanel({
               <p className="vtt-eyebrow" style={{ margin: 0 }}>
                 Ordem de combate
               </p>
-              <span className="vtt-turn-round">Rodada {combat.round}</span>
+              <span className="vtt-turn-round">Rodada {track.round}</span>
             </div>
             <div className="vtt-turn-controls">
               {canControl ? (
@@ -420,7 +421,7 @@ export function TurnOrderPanel({
                 <button
                   type="button"
                   className="btn vtt-turn-next-btn"
-                  disabled={busy || !combat.order.length}
+                  disabled={busy || !track.order.length}
                   onClick={(e) => {
                     e.stopPropagation();
                     void handleNext();
@@ -436,7 +437,7 @@ export function TurnOrderPanel({
           </>
         )}
 
-        {canControl && combat.orderOverridden ? (
+        {canControl && track.orderOverridden ? (
           <div className={`vtt-turn-gm-banner${compact ? " vtt-turn-gm-banner--compact" : ""}`}>
             <span>Ordem manual</span>
             {!compact ? (
