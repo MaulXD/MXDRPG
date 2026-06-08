@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Eldarin">
+  <rect width="32" height="32" rx="6" fill="#0a0e14"/>
+  <path
+    fill="none"
+    stroke="#7aa3c9"
+    stroke-width="1.5"
+    d="M16 5 L26 10.5 V21.5 L16 27 L6 21.5 V10.5 Z"
+  />
+  <text
+    x="16"
+    y="21"
+    text-anchor="middle"
+    fill="#c9927a"
+    font-family="Georgia, 'Times New Roman', serif"
+    font-size="13"
+    font-weight="700"
+  >E</text>
+</svg>
