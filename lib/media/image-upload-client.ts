@@ -78,7 +78,10 @@ function canvasToWebp(canvas: HTMLCanvasElement, quality: number): string | null
   }
 }
 
-function drawCover(
+const PORTRAIT_FRAME_BG = "#0f141c";
+
+/** scale 1 = imagem inteira no quadro; >1 = recorte com pan. */
+function drawFramedImage(
   ctx: CanvasRenderingContext2D,
   img: HTMLImageElement,
   width: number,
@@ -89,7 +92,21 @@ function drawCover(
   const iw = img.naturalWidth;
   const ih = img.naturalHeight;
   const zoom = Math.max(1, f.scale ?? 1);
-  const scale = Math.max(width / iw, height / ih) * zoom;
+  const containScale = Math.min(width / iw, height / ih);
+  const scale = containScale * zoom;
+  const dw = iw * scale;
+  const dh = ih * scale;
+
+  ctx.fillStyle = PORTRAIT_FRAME_BG;
+  ctx.fillRect(0, 0, width, height);
+
+  if (zoom <= 1.001) {
+    const dx = (width - dw) / 2;
+    const dy = (height - dh) / 2;
+    ctx.drawImage(img, 0, 0, iw, ih, dx, dy, dw, dh);
+    return;
+  }
+
   const sw = width / scale;
   const sh = height / scale;
   const sx = Math.max(0, Math.min(iw - sw, (iw - sw) * f.x));
@@ -97,23 +114,18 @@ function drawCover(
   ctx.drawImage(img, sx, sy, sw, sh, 0, 0, width, height);
 }
 
-function encodeWebpCover(
+function encodeWebpFramedSquare(
   img: HTMLImageElement,
   maxEdge: number,
   focus: PortraitFocus
 ): string {
-  const longest = Math.max(img.naturalWidth, img.naturalHeight);
-  const scale = longest > maxEdge ? maxEdge / longest : 1;
-  const width = Math.max(1, Math.round(img.naturalWidth * scale));
-  const height = Math.max(1, Math.round(img.naturalHeight * scale));
-
   const canvas = document.createElement("canvas");
-  canvas.width = width;
-  canvas.height = height;
+  canvas.width = maxEdge;
+  canvas.height = maxEdge;
   const ctx = canvas.getContext("2d");
   if (!ctx) throw new Error("Canvas indisponível neste navegador");
 
-  drawCover(ctx, img, width, height, focus);
+  drawFramedImage(ctx, img, maxEdge, maxEdge, focus);
 
   let edge = maxEdge;
   while (edge >= 256) {
@@ -125,10 +137,9 @@ function encodeWebpCover(
       }
     }
     edge = Math.floor(edge * 0.75);
-    const nextScale = (edge / maxEdge) * scale;
-    canvas.width = Math.max(1, Math.round(img.naturalWidth * nextScale));
-    canvas.height = Math.max(1, Math.round(img.naturalHeight * nextScale));
-    drawCover(ctx, img, canvas.width, canvas.height, focus);
+    canvas.width = edge;
+    canvas.height = edge;
+    drawFramedImage(ctx, img, edge, edge, focus);
   }
 
   throw new Error("Imagem grande demais mesmo após compressão WebP.");
@@ -220,8 +231,8 @@ export async function buildPortraitBundleFromImage(
   focuses: PortraitFocus | PortraitFocusSet
 ): Promise<PortraitBundle> {
   const set = normalizeFocusSet(focuses);
-  const portraitUrl = encodeWebpCover(img, PORTRAIT_MAX_EDGE, set.portraitFocus);
-  const tokenImageUrl = encodeWebpCover(img, TOKEN_MAX_EDGE, set.tokenFocus);
+  const portraitUrl = encodeWebpFit(img, PORTRAIT_MAX_EDGE);
+  const tokenImageUrl = encodeWebpFramedSquare(img, TOKEN_MAX_EDGE, set.tokenFocus);
   return {
     portraitUrl,
     tokenImageUrl,

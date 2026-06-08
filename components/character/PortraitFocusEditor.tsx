@@ -53,7 +53,7 @@ export function PortraitFocusEditor({
   return (
     <div className="portrait-focus-editor">
       <p className="sheet-portrait-hint portrait-focus-editor__hint">
-        Arraste no círculo grande para posicionar. Clique em Retrato ou Token para alternar o alvo.
+        Zoom 100% mostra a imagem inteira. Arraste para reposicionar ao aproximar. Clique em Retrato ou Token para alternar o alvo.
       </p>
 
       <div className="portrait-focus-previews portrait-focus-previews--duo">
@@ -135,7 +135,7 @@ export function PortraitFocusEditor({
           disabled={disabled}
           onClick={() => onFocusChange(DEFAULT_PORTRAIT_FOCUS)}
         >
-          Restaurar enquadramento
+          Restaurar enquadramento (imagem inteira)
         </button>
       </div>
     </div>
