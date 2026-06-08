@@ -8,7 +8,10 @@ export type FocusImgLayout = {
   height: number;
 };
 
-/** Mesma matemática de `drawCover` em image-upload-client.ts — sempre cobre o frame inteiro. */
+/**
+ * scale 1 = imagem inteira visível (fit + letterbox se preciso).
+ * scale > 1 = zoom a partir desse enquadramento.
+ */
 export function computeFocusImgLayout(
   focus: PortraitFocus,
   frameW: number,
@@ -18,26 +21,17 @@ export function computeFocusImgLayout(
 ): FocusImgLayout {
   const f = normalizePortraitFocus(focus);
   const zoom = Math.max(1, f.scale ?? 1);
-  const coverScale = Math.max(frameW / imgW, frameH / imgH);
-  let scale = coverScale * zoom;
-  let width = imgW * scale;
-  let height = imgH * scale;
-
-  // Garante cover mesmo com zoom legado ou arredondamento
-  const boost = Math.max(1, frameW / width, frameH / height);
-  if (boost > 1) {
-    width *= boost;
-    height *= boost;
-  }
+  const containScale = Math.min(frameW / imgW, frameH / imgH);
+  const width = imgW * containScale * zoom;
+  const height = imgH * containScale * zoom;
 
   const maxPanX = Math.max(0, width - frameW);
   const maxPanY = Math.max(0, height - frameH);
-  return {
-    left: -maxPanX * f.x,
-    top: -maxPanY * f.y,
-    width,
-    height,
-  };
+
+  const left = width <= frameW ? (frameW - width) / 2 : -maxPanX * f.x;
+  const top = height <= frameH ? (frameH - height) / 2 : -maxPanY * f.y;
+
+  return { left, top, width, height };
 }
 
 export function focusLayoutToImgStyle(layout: FocusImgLayout): CSSProperties {
