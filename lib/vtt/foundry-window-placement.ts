@@ -10,7 +10,8 @@ export type MesaWindowId =
   | "ficha"
   | "spawn"
   | "invite"
-  | "character";
+  | "character"
+  | "status";
 
 export type FoundryWindowLayout = {
   open: boolean;
