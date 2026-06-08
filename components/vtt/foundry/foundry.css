@@ -678,7 +678,8 @@
   background: linear-gradient(135deg, transparent 50%, rgba(122, 163, 201, 0.4) 50%);
 }
 
-.foundry-window--status .foundry-window__body {
+.foundry-window--status .foundry-window__body,
+.foundry-dock-panel--status .foundry-dock-panel__body {
   padding: 0.65rem 0.75rem 0.85rem;
   background: var(--mesa-dock-bg);
 }
