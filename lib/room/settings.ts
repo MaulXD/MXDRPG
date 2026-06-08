@@ -9,7 +9,7 @@ export type RoomSettings = {
   showMonsterHpInChat: boolean;
   /** Jogadores podem enviar ping no mapa (Alt+clique). */
   allowPlayerPing: boolean;
-  /** Mestre age fora da iniciativa e controla qualquer token na vez. */
+  /** @deprecated Sempre falso — ações só na vez de cada token. Mantido no schema do banco. */
   gmBypassInitiative: boolean;
   /** Fichas criadas pelo mestre (templates editáveis, não são PCs de jogador). */
   gmCreations?: Record<string, GmCreation>;
@@ -19,7 +19,7 @@ export const DEFAULT_ROOM_SETTINGS: RoomSettings = {
   showMonsterHpToPlayers: false,
   showMonsterHpInChat: false,
   allowPlayerPing: true,
-  gmBypassInitiative: true,
+  gmBypassInitiative: false,
 };
 
 export function normalizeRoomSettings(raw?: Partial<RoomSettings> | null): RoomSettings {
@@ -29,8 +29,7 @@ export function normalizeRoomSettings(raw?: Partial<RoomSettings> | null): RoomS
     showMonsterHpInChat:
       raw?.showMonsterHpInChat ?? DEFAULT_ROOM_SETTINGS.showMonsterHpInChat,
     allowPlayerPing: raw?.allowPlayerPing ?? DEFAULT_ROOM_SETTINGS.allowPlayerPing,
-    gmBypassInitiative:
-      raw?.gmBypassInitiative ?? DEFAULT_ROOM_SETTINGS.gmBypassInitiative,
+    gmBypassInitiative: false,
     gmCreations: raw?.gmCreations,
   };
 }

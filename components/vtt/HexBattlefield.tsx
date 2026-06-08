@@ -409,24 +409,34 @@ export function HexBattlefield({
 
   const actionRingBlockReason = useCallback(
     (t: BattleToken): string | null => {
-      if (!canOperateToken(t)) return null;
+      if (!canOperateToken(t)) {
+        return "Você não controla este personagem.";
+      }
       const track = combat;
       if (!track?.order?.length) {
-        if (canControlCombat && isMonsterToken(t)) return null;
         return "Aguarde o mestre rolar a iniciativa para usar ações.";
       }
-      if (canControlCombat && (tokenBypass(t) || isMonsterToken(t))) return null;
       const activeId = activeTokenId(track);
-      if (!activeId) return "Aguarde a iniciativa.";
-      if (t.id !== activeId) {
+      if (
+        !canActOnCombatTurn(t.id, {
+          combat: track,
+          activeTokenId: activeId,
+          bypassTurn: false,
+          combatHasOrder: true,
+        })
+      ) {
+        if (!activeId) return "Aguarde a iniciativa.";
         const active = displayScene.tokens.find((tok) => tok.id === activeId);
-        return active
-          ? `Não é a vez de ${t.name} — turno de ${active.name}.`
-          : `Não é a vez de ${t.name}.`;
+        if (active) {
+          return canControlCombat
+            ? `Ações só na vez de cada token — agora é ${active.name}. Passe o turno ou use a ordem de iniciativa.`
+            : `Não é a vez de ${t.name} — turno de ${active.name}.`;
+        }
+        return TURN_WAIT_MSG;
       }
       return null;
     },
-    [combat, canOperateToken, canControlCombat, tokenBypass, displayScene.tokens]
+    [combat, canOperateToken, canControlCombat, displayScene.tokens]
   );
 
   const canPreviewTurnMove = useCallback(
@@ -902,11 +912,18 @@ export function HexBattlefield({
 
   useEffect(() => {
     setActionRingAt(null);
-    if (!selectedBypass) {
-      setActionMode("idle");
-      setSelectedCombatAction(null);
+    setActionMode("idle");
+    setSelectedCombatAction(null);
+    setChannelExtraPa(0);
+    setAreaCenter(null);
+    setSpellTargetIds([]);
+  }, [selectedId, snapshot?.combat?.activeIndex, snapshot?.combat?.round]);
+
+  useEffect(() => {
+    if (actionRingAt && selected && !canPreviewTurnMove(selected)) {
+      setActionRingAt(null);
     }
-  }, [selectedId, snapshot?.combat?.activeIndex, snapshot?.combat?.round, selectedBypass]);
+  }, [actionRingAt, selected, canPreviewTurnMove]);
 
   const removeSelectedToken = useCallback(async () => {
     if (!canControlCombat || !selectedId || !selected) return;
@@ -1660,7 +1677,11 @@ export function HexBattlefield({
     onRevealHex: canControlCombat ? (a) => void onRevealHex(a) : undefined,
     fogEnabled: Boolean(displayScene.fogEnabled),
     viewRef: battlefieldView.viewRef,
-    onActionRingRequest: (_token, clientX, clientY) => {
+    onActionRingRequest: (token, clientX, clientY) => {
+      if (!canPreviewTurnMove(token)) {
+        onActionRingBlocked(token);
+        return;
+      }
       setActionRingAt({ x: clientX, y: clientY });
       setActionErr(null);
     },

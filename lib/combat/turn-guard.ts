@@ -7,15 +7,17 @@ export function combatHasInitiative(combat?: CombatTrack | null): boolean {
   return Boolean(combat?.order?.length);
 }
 
-/** GM bypass applies only to non-linked tokens (monsters/NPCs). */
-export function gmBypassAppliesToToken(token: BattleToken, canBypass: boolean): boolean {
-  if (!canBypass) return false;
-  if (token.linked === true) return false;
-  return true;
+/**
+ * Bypass de ações fora do turno — desativado.
+ * Gerenciar turnos (rolar iniciativa, passar, reordenar) usa `canAdvanceCombatTurn`, não este flag.
+ */
+export function gmBypassAppliesToToken(_token: BattleToken, _canBypass: boolean): boolean {
+  return false;
 }
 
-export function effectiveBypassTurn(token: BattleToken, canBypass: boolean): boolean {
-  return canBypass && gmBypassAppliesToToken(token, canBypass);
+/** Sempre falso: PCs e monstros só executam ações (mover, atacar, magia) na sua vez. */
+export function effectiveBypassTurn(_token: BattleToken, _canBypass: boolean): boolean {
+  return false;
 }
 
 export function canActOnCombatTurn(
