@@ -107,7 +107,7 @@ export default function SistemaPage() {
         </article>
       </div>
 
-      <div style={{ marginTop: "2rem", display: "flex", flexWrap: "wrap", gap: "0.75rem" }}>
+      <div className="action-row" style={{ marginTop: "2rem" }}>
         <Link href="/mesa/demo" prefetch={false} className="btn">
           Mesa demo
         </Link>

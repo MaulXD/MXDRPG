@@ -9,6 +9,7 @@ import {
   attachCharacterToRoomState,
   persistActorToAdventureSheet,
 } from "./adventure-actors";
+import { recordPlayerBestiaryKill } from "@/lib/bestiary/record";
 import { appendDefeatChatMessage } from "./combat-chat-events";
 import type { ChatMessage } from "./chat";
 import { appendRoomChatMessage } from "./handlers/chat";
@@ -134,6 +135,13 @@ export async function recordMonsterDefeat(
 
   const award = await distributeMonsterXp(room, token);
   if (!award) return;
+
+  const participantActors = award.actorIds
+    .map((id) => room.actors[id])
+    .filter((a): a is RoomActor => Boolean(a));
+  await recordPlayerBestiaryKill(room, token, participantActors).catch((err) => {
+    console.error("[bestiary] kill record failed", err);
+  });
 
   for (const id of award.actorIds) {
     await persistActorToAdventureSheet(room.actors[id]);

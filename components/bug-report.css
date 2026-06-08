@@ -3,14 +3,18 @@
   z-index: 9000;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 0.35rem;
-  padding: 0.5rem 0.75rem;
+  min-height: var(--control-h-sm);
+  padding: 0.45rem 0.75rem;
   border-radius: 999px;
   border: 1px solid color-mix(in srgb, var(--accent-danger, #e07070) 40%, var(--glass-border));
   background: color-mix(in srgb, var(--surface, #12141a) 88%, transparent);
   color: var(--text);
   font-size: 0.78rem;
   font-weight: 600;
+  line-height: 1;
+  box-sizing: border-box;
   cursor: pointer;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
   transition: transform 0.15s var(--ease-out), border-color 0.15s, box-shadow 0.15s;
@@ -162,6 +166,7 @@
 .bug-report-modal__actions {
   display: flex;
   justify-content: flex-end;
+  align-items: center;
   gap: 0.5rem;
   flex-wrap: wrap;
   margin-top: 0.25rem;

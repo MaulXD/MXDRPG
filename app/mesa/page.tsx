@@ -11,7 +11,7 @@ export default async function MesaIndexPage() {
         Grade hexagonal, tokens, PA e combaté Eldarin no navegador. Experimente a demo pública ou crie sua mesa com
         conta.
       </p>
-      <div style={{ display: "flex", flexWrap: "wrap", gap: "0.75rem", marginTop: "1rem" }}>
+      <div className="action-row" style={{ marginTop: "1rem" }}>
         <Link href="/mesa/demo" prefetch={false} className="btn">
           Mesa demo (pública)
         </Link>

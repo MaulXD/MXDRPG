@@ -1,5 +1,4 @@
-import { SignIn } from "@clerk/nextjs";
-import { clerkSocialOnlyAppearance } from "@/lib/auth/clerk-appearance";
+import { ClerkSignInPanel } from "@/components/auth/ClerkSignInPanel";
 import { hasClerkPublishableKey } from "@/lib/auth/clerk-config";
 import {
   DEFAULT_POST_AUTH_PATH,
@@ -38,13 +37,7 @@ export default async function SignInPage({ searchParams }: Props) {
         className="glass auth-card clerk-social-only"
         style={{ padding: "1.25rem 1.5rem 2rem", display: "flex", justifyContent: "center" }}
       >
-        <SignIn
-          routing="path"
-          path="/sign-in"
-          signUpUrl={signUpUrl}
-          forceRedirectUrl={afterAuth}
-          appearance={clerkSocialOnlyAppearance}
-        />
+        <ClerkSignInPanel signUpUrl={signUpUrl} forceRedirectUrl={afterAuth} />
       </div>
     </div>
   );

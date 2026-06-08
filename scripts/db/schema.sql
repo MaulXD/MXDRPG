@@ -62,3 +62,15 @@ CREATE TABLE IF NOT EXISTS eldarin_rooms (
 CREATE UNIQUE INDEX IF NOT EXISTS eldarin_rooms_invite_upper ON eldarin_rooms (UPPER(invite_code));
 CREATE INDEX IF NOT EXISTS eldarin_rooms_owner ON eldarin_rooms (owner_id);
 CREATE INDEX IF NOT EXISTS eldarin_rooms_updated ON eldarin_rooms (updated_at DESC);
+
+CREATE TABLE IF NOT EXISTS eldarin_player_bestiary (
+  user_id TEXT NOT NULL,
+  adventure_id TEXT NOT NULL,
+  type_key TEXT NOT NULL,
+  data JSONB NOT NULL,
+  updated_at BIGINT NOT NULL,
+  PRIMARY KEY (user_id, adventure_id, type_key)
+);
+
+CREATE INDEX IF NOT EXISTS eldarin_player_bestiary_adventure
+  ON eldarin_player_bestiary (adventure_id, user_id);

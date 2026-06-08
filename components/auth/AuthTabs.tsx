@@ -13,19 +13,17 @@ export function AuthTabs({ redirect = "", clerkEnabled = false }: Props) {
 
   return (
     <div>
-      <div style={{ display: "flex", gap: "0.5rem", marginBottom: "1rem" }}>
+      <div className="auth-tabs">
         <button
           type="button"
-          className={tab === "login" ? "btn" : "btn btn-secondary"}
-          style={{ flex: 1 }}
+          className={`auth-tabs__btn ${tab === "login" ? "btn" : "btn btn-secondary"}`}
           onClick={() => setTab("login")}
         >
           Entrar
         </button>
         <button
           type="button"
-          className={tab === "register" ? "btn" : "btn btn-secondary"}
-          style={{ flex: 1 }}
+          className={`auth-tabs__btn ${tab === "register" ? "btn" : "btn btn-secondary"}`}
           onClick={() => setTab("register")}
         >
           Criar conta

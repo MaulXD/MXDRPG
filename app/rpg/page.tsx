@@ -71,7 +71,7 @@ export default async function RpgSelectPage() {
               <p style={{ margin: 0, color: "var(--text-muted)", fontSize: "0.9rem" }}>
                 {sys.tagline}
               </p>
-              <span className="btn" style={{ marginTop: "1rem", display: "inline-block", fontSize: "0.85rem" }}>
+              <span className="btn btn-sm" style={{ marginTop: "1rem" }}>
                 Entrar em Eldarin →
               </span>
             </Link>
