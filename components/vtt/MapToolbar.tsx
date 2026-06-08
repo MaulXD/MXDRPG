@@ -135,6 +135,7 @@ export function MapToolbar({
             <button
               key={t.id}
               type="button"
+              data-tool-icon={mode}
               className={`map-toolbar__btn${active ? " map-toolbar__btn--active" : ""}`}
               title={t.title}
               aria-label={t.label}
@@ -160,6 +161,7 @@ export function MapToolbar({
                 <button
                   key={t.id}
                   type="button"
+                  data-tool-icon={tool}
                   className={`map-toolbar__btn${active ? " map-toolbar__btn--active" : ""}`}
                   title={t.title}
                   aria-label={t.label}
@@ -222,6 +224,7 @@ export function MapToolbar({
         <>
           <button
             type="button"
+            data-tool-icon="dungeon"
             className={`map-toolbar__btn map-toolbar__btn--wide${dungeonEditorActive ? " map-toolbar__btn--active" : ""}`}
             title="Editor de mapa — piso, paredes e objetos"
             aria-label="Editor de masmorra"
@@ -238,6 +241,7 @@ export function MapToolbar({
       <div className="map-toolbar__zoom" role="group" aria-label="Zoom">
         <button
           type="button"
+          data-tool-icon="zoom-out"
           className="map-toolbar__btn"
           onClick={onZoomOut}
           disabled={!canZoomOut}
@@ -249,6 +253,7 @@ export function MapToolbar({
         <span className="map-toolbar__zoom-label">{zoomPercent}%</span>
         <button
           type="button"
+          data-tool-icon="zoom-in"
           className="map-toolbar__btn"
           onClick={onZoomIn}
           disabled={!canZoomIn}
@@ -259,6 +264,7 @@ export function MapToolbar({
         </button>
         <button
           type="button"
+          data-tool-icon="reset-view"
           className="map-toolbar__btn"
           onClick={onResetView}
           title="Centralizar e resetar zoom"

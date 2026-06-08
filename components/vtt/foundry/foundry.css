@@ -247,16 +247,66 @@
     0 0 10px rgba(201, 146, 122, 0.15);
 }
 
+.foundry-icon-bar__icon-wrap[data-rail-icon] .foundry-icon-bar__icon {
+  color: var(--rail-icon-color, currentColor);
+}
+
+.foundry-icon-bar__icon-wrap[data-rail-icon="status"] {
+  --rail-icon-color: #e8b84a;
+}
+
+.foundry-icon-bar__icon-wrap[data-rail-icon="actors"] {
+  --rail-icon-color: #5ec4d4;
+}
+
+.foundry-icon-bar__icon-wrap[data-rail-icon="initiative"] {
+  --rail-icon-color: #7aa3c9;
+}
+
+.foundry-icon-bar__icon-wrap[data-rail-icon="ficha"] {
+  --rail-icon-color: #d4c4a0;
+}
+
+.foundry-icon-bar__icon-wrap[data-rail-icon="chat"] {
+  --rail-icon-color: #6ecf8a;
+}
+
+.foundry-icon-bar__icon-wrap[data-rail-icon="dice"] {
+  --rail-icon-color: #b08ee8;
+}
+
+.foundry-icon-bar__icon-wrap[data-rail-icon="invite"] {
+  --rail-icon-color: #e8927a;
+}
+
+.foundry-icon-bar__icon-wrap[data-rail-icon="dungeon"] {
+  --rail-icon-color: #c9927a;
+}
+
+.foundry-icon-bar__icon-wrap[data-rail-icon="gm"] {
+  --rail-icon-color: #d46a6a;
+}
+
+.foundry-icon-bar__icon-wrap[data-rail-icon="spawn"] {
+  --rail-icon-color: #e8a050;
+}
+
 .foundry-icon-bar__icon {
   width: 1.42rem;
   height: 1.42rem;
   display: block;
   flex-shrink: 0;
   filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.35));
+  transition: filter 0.18s;
 }
 
-.foundry-icon-bar__btn--active .foundry-icon-bar__icon {
-  filter: drop-shadow(0 0 6px rgba(122, 163, 201, 0.35));
+.foundry-icon-bar__btn:hover .foundry-icon-bar__icon-wrap[data-rail-icon] .foundry-icon-bar__icon {
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.4))
+    drop-shadow(0 0 6px color-mix(in srgb, var(--rail-icon-color) 45%, transparent));
+}
+
+.foundry-icon-bar__btn--active .foundry-icon-bar__icon-wrap[data-rail-icon] .foundry-icon-bar__icon {
+  filter: drop-shadow(0 0 8px color-mix(in srgb, var(--rail-icon-color) 55%, transparent));
 }
 
 /* Lista de personagens jogáveis (painel Ficha) */

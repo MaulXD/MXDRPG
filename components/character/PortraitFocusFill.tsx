@@ -27,13 +27,16 @@ export function PortraitFocusFill({
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    const ro = new ResizeObserver(([entry]) => {
-      const w = entry?.contentRect.width ?? 0;
-      if (w > 0) setSize(Math.round(w));
-    });
+    const measure = (entry?: ResizeObserverEntry) => {
+      const rect = entry?.contentRect ?? el.getBoundingClientRect();
+      const dim = Math.round(Math.min(rect.width, rect.height));
+      if (dim > 0) setSize(dim);
+    };
+    measure();
+    const ro = new ResizeObserver(([entry]) => measure(entry));
     ro.observe(el);
     return () => ro.disconnect();
-  }, []);
+  }, [imageSrc]);
 
   return (
     <div ref={ref} className={`portrait-focus-fill ${className}`.trim()}>

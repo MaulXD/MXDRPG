@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { authenticateUser } from "@/lib/auth/user-store";
+import { loginUser } from "@/lib/auth/user-store";
 import { portalPathForRole } from "@/lib/auth/roles";
 import { postAuthRedirect } from "@/lib/auth/post-auth-redirect";
 import { createSession } from "@/lib/auth/session";
@@ -10,17 +10,17 @@ export async function POST(request: Request) {
   const password = String(body.password ?? "");
   const redirect = String(body.redirect ?? "").trim() || undefined;
 
-  const user = await authenticateUser(login, password);
-  if (!user) {
-    return NextResponse.json({ error: "Credenciais inválidas" }, { status: 401 });
+  const result = await loginUser(login, password);
+  if (!result.ok) {
+    return NextResponse.json({ error: result.error }, { status: 401 });
   }
 
-  await createSession(user);
+  await createSession(result.user);
 
   const target =
-    user.role === "admin" && !redirect
-      ? portalPathForRole(user.role)
-      : postAuthRedirect(user, redirect);
+    result.user.role === "admin" && !redirect
+      ? portalPathForRole(result.user.role)
+      : postAuthRedirect(result.user, redirect);
 
-  return NextResponse.json({ ok: true, role: user.role, redirect: target });
+  return NextResponse.json({ ok: true, role: result.user.role, redirect: target });
 }
