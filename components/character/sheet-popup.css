@@ -545,6 +545,105 @@
 
 }
 
+.sheet-popup-identity__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin-top: 0.35rem;
+}
+
+.sheet-popup-identity__chip {
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
+  padding: 0.14rem 0.45rem;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--sheet-accent) 35%, var(--sheet-border));
+  background: color-mix(in srgb, var(--sheet-accent-soft) 55%, var(--sheet-surface));
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--sheet-text);
+  cursor: help;
+  outline: none;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.sheet-popup-identity__chip:hover,
+.sheet-popup-identity__chip:focus-visible {
+  border-color: var(--sheet-accent);
+  background: var(--sheet-accent-soft);
+}
+
+.sheet-hover-tip {
+  position: relative;
+  display: inline-flex;
+  max-width: 100%;
+}
+
+.sheet-hover-tip__bubble {
+  position: absolute;
+  z-index: 120;
+  left: 50%;
+  bottom: calc(100% + 8px);
+  transform: translateX(-50%);
+  min-width: 210px;
+  max-width: min(320px, 92vw);
+  padding: 0.55rem 0.65rem;
+  border-radius: 9px;
+  border: 1px solid var(--sheet-border-bright);
+  background: rgba(10, 14, 22, 0.97);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.5);
+  font-size: 0.72rem;
+  line-height: 1.45;
+  color: var(--sheet-text-muted);
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.15s ease, visibility 0.15s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 0.18rem;
+  text-align: left;
+  font-weight: 400;
+}
+
+.sheet-hover-tip__title {
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: var(--sheet-text);
+  font-family: var(--font-display);
+}
+
+.sheet-hover-tip__line {
+  display: block;
+}
+
+.sheet-hover-tip__spacer {
+  display: block;
+  height: 0.25rem;
+}
+
+.sheet-hover-tip:hover .sheet-hover-tip__bubble,
+.sheet-hover-tip:focus-within .sheet-hover-tip__bubble {
+  opacity: 1;
+  visibility: visible;
+}
+
+.sheet-popup-quickbar .sheet-hover-tip {
+  max-width: none;
+}
+
+.sheet-popup-identity__ascension {
+  cursor: help;
+  outline: none;
+}
+
+.sheet-popup-identity__ascension:focus-visible {
+  outline: 1px solid var(--sheet-accent);
+  outline-offset: 2px;
+}
+
 
 
 .sheet-popup-identity__level {
@@ -1621,13 +1720,23 @@
 
   flex-wrap: wrap;
 
-  gap: 0.3rem;
+  justify-content: center;
+
+  align-items: center;
+
+  gap: 0.35rem;
+
+  width: 100%;
 
 }
 
 
 
 .sheet-popup-pill {
+
+  display: inline-flex;
+
+  align-items: center;
 
   font-size: 0.62rem;
 
@@ -1641,7 +1750,21 @@
 
   color: rgba(232, 226, 214, 0.7);
 
-  line-height: 1.3;
+  line-height: 1;
+
+  white-space: nowrap;
+
+}
+
+
+
+.sheet-popup-pills .wizard-hover-tip {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  border-bottom: none;
 
 }
 
@@ -2192,9 +2315,14 @@
   color: var(--sheet-text-muted);
 }
 
+.sheet-popup-quickbar__eyebrow {
+  text-align: center;
+}
+
 .sheet-popup-quickbar__row {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 0.35rem;
 }
 
@@ -2231,7 +2359,6 @@
 .sheet-popup-quickbtn--religion {
   cursor: default;
   min-width: min(9rem, 100%);
-  flex: 1;
 }
 
 .sheet-popup-quickbtn__icon {

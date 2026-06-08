@@ -21,11 +21,13 @@ import { reachableMovementHexes } from "@/lib/vtt/movement-path";
 import { paTurnRulesForActor } from "@/lib/combat/pa-economy";
 import { canMoveToken, type MoveCheck } from "@/lib/vtt/movement";
 import type { BattleScene, BattleToken } from "@/lib/vtt/types";
+import { canActOnCombatTurn, effectiveBypassTurn } from "@/lib/combat/turn-guard";
 
 type TurnCtx = {
   activeTokenId: string | null;
   bypassTurn: boolean;
   combatRound?: number;
+  combatHasOrder?: boolean;
 };
 
 type Params = {
@@ -76,9 +78,11 @@ export function useBattlefieldHighlights({
       : null;
   const canActMoveNow = Boolean(
     moveHighlightToken &&
-      (!turn.activeTokenId ||
-        turn.activeTokenId === moveHighlightToken.id ||
-        turn.bypassTurn)
+      canActOnCombatTurn(moveHighlightToken.id, {
+        activeTokenId: turn.activeTokenId,
+        bypassTurn: effectiveBypassTurn(moveHighlightToken, turn.bypassTurn),
+        combatHasOrder: turn.combatHasOrder,
+      })
   );
   const showMovement = Boolean(
     moveHighlightToken &&
@@ -129,15 +133,17 @@ export function useBattlefieldHighlights({
     return new Set(cells.map(axialKey));
   }, [moveHighlightToken, showMovement, scene, actorRacas]);
 
-  const movePaOptsHighlight = useMemo(
-    () => ({
+  const movePaOptsHighlight = useMemo(() => {
+    const moveBypass = moveHighlightToken
+      ? effectiveBypassTurn(moveHighlightToken, turn.bypassTurn)
+      : false;
+    return {
       ...(highlightActor
         ? { freeBasicMovePa: paTurnRulesForActor(highlightActor).freeBasicMovePa }
         : {}),
-      ...(turn.bypassTurn ? { gmBypass: true as const } : {}),
-    }),
-    [highlightActor, turn.bypassTurn]
-  );
+      ...(moveBypass ? { gmBypass: true as const } : {}),
+    };
+  }, [highlightActor, moveHighlightToken, turn.bypassTurn]);
 
   const paidWalkSet = useMemo(() => {
     if (!moveHighlightToken || !showMovement || !moveCtx || turnMovePreview) {
@@ -209,8 +215,9 @@ export function useBattlefieldHighlights({
       activeCombatAction,
       {
         activeTokenId: turn.activeTokenId,
-        bypassTurn: turn.bypassTurn,
+        bypassTurn: effectiveBypassTurn(selected, turn.bypassTurn),
         combatRound: turn.combatRound,
+        combatHasOrder: turn.combatHasOrder,
       },
       selectedActor,
       channelExtraPa
@@ -292,7 +299,13 @@ export function useBattlefieldHighlights({
     if (!selected || !activeCombatAction || !isTargetMode(actionMode)) return new Set<string>();
     if (isAreaSpellMode) return areaTargetIds;
     if (activeCombatAction.selfTarget) return new Set<string>();
-    const attacker = attackerForCombatCheck(selected, selectedActor, turn, {
+    const selectedTurn = {
+      activeTokenId: turn.activeTokenId,
+      bypassTurn: effectiveBypassTurn(selected, turn.bypassTurn),
+      combatRound: turn.combatRound,
+      combatHasOrder: turn.combatHasOrder ?? combatHasOrder,
+    };
+    const attacker = attackerForCombatCheck(selected, selectedActor, selectedTurn, {
       combatHasOrder,
     });
     const ids = new Set<string>();
@@ -300,8 +313,8 @@ export function useBattlefieldHighlights({
       if (t.id === selected.id) continue;
       const check =
         activeCombatAction.kind === "ability"
-          ? canAbilityTarget(attacker, t, activeCombatAction, turn, selectedActor)
-          : canAttackTarget(attacker, t, activeCombatAction, turn, { actor: selectedActor });
+          ? canAbilityTarget(attacker, t, activeCombatAction, selectedTurn, selectedActor)
+          : canAttackTarget(attacker, t, activeCombatAction, selectedTurn, { actor: selectedActor });
       if (check.ok) ids.add(t.id);
     }
     return ids;

@@ -31,6 +31,7 @@ import { attackerForCombatCheck } from "@/lib/combat/combat-token-pa";
 import { FriendlyFireConfirmDialog } from "@/components/vtt/FriendlyFireConfirmDialog";
 
 import { canAbilityTarget, canUseAbility } from "@/lib/combat/ability";
+import { effectiveBypassTurn } from "@/lib/combat/turn-guard";
 
 import type { CombatActionOption } from "@/lib/combat/types";
 import { areaNeedsDirection } from "@/lib/combat/area-spell";
@@ -153,8 +154,13 @@ export function TokenActionPanel({
   const [friendlyFireTargetId, setFriendlyFireTargetId] = useState<string | null>(null);
 
   const turn = useCombatTurn({ combat, canBypassTurn });
-
-
+  const tokenBypass = effectiveBypassTurn(token, canBypassTurn);
+  const tokenTurn = {
+    activeTokenId: turn.activeTokenId,
+    bypassTurn: tokenBypass,
+    combatHasOrder: turn.combatHasOrder,
+    combatRound: turn.combatRound,
+  };
 
   const weapons = useMemo(
 
@@ -221,9 +227,7 @@ export function TokenActionPanel({
 
 
 
-  const turnBlocked =
-
-    turn.activeTokenId && turn.activeTokenId !== token.id && !turn.bypassTurn;
+  const turnBlocked = turn.isTurnBlockedForToken(token);
 
 
 
@@ -234,10 +238,7 @@ export function TokenActionPanel({
     const attacker = attackerForCombatCheck(
       token,
       actor,
-      {
-        activeTokenId: turn.activeTokenId,
-        bypassTurn: turn.bypassTurn,
-      },
+      tokenTurn,
       { combatHasOrder: Boolean(combat?.order.length) }
     );
 
@@ -251,21 +252,9 @@ export function TokenActionPanel({
 
           activeAction.kind === "ability"
 
-            ? canAbilityTarget(attacker, t, activeAction, {
+            ? canAbilityTarget(attacker, t, activeAction, tokenTurn, actor)
 
-                activeTokenId: turn.activeTokenId,
-
-                bypassTurn: turn.bypassTurn,
-
-              }, actor)
-
-            : canAttackTarget(attacker, t, activeAction, {
-
-                activeTokenId: turn.activeTokenId,
-
-                bypassTurn: turn.bypassTurn,
-
-              }, { actor });
+            : canAttackTarget(attacker, t, activeAction, tokenTurn, { actor });
 
         return {
 
@@ -289,12 +278,7 @@ export function TokenActionPanel({
 
     if (!activeAction?.selfTarget) return false;
 
-    return canUseAbility(
-      token,
-      activeAction,
-      { activeTokenId: turn.activeTokenId, bypassTurn: turn.bypassTurn },
-      actor
-    ).ok;
+    return canUseAbility(token, activeAction, tokenTurn, actor).ok;
 
   }, [token, activeAction, turn, actor]);
 
@@ -329,7 +313,7 @@ export function TokenActionPanel({
       if (activeAction.kind === "ability") {
         snapshot = await postRoomAbility(roomId, token.id, defenderId, {
           actionEntryId: activeAction.entryId,
-          bypassTurn: turn.bypassTurn,
+          bypassTurn: tokenBypass,
         });
       } else {
         snapshot = await postRoomAttack(
@@ -337,7 +321,7 @@ export function TokenActionPanel({
           token.id,
           defenderId,
           combatAttackRequestOpts(activeAction, token, {
-            bypassTurn: turn.bypassTurn,
+            bypassTurn: tokenBypass,
             channelExtraPa: activeAction.channelMaxExtraPa ? channelExtraPa : undefined,
           })
         );
@@ -380,13 +364,13 @@ export function TokenActionPanel({
         activeAction.kind === "ability"
           ? await postRoomAbility(roomId, token.id, null, {
               actionEntryId: activeAction.entryId,
-              bypassTurn: turn.bypassTurn,
+              bypassTurn: tokenBypass,
             })
           : await postRoomAttack(
               roomId,
               token.id,
               token.id,
-              combatAttackRequestOpts(activeAction, token, { bypassTurn: turn.bypassTurn })
+              combatAttackRequestOpts(activeAction, token, { bypassTurn: tokenBypass })
             );
 
       const combatMsgs = snapshot.chat.filter((m) => m.kind === "combat");
