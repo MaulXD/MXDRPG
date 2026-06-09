@@ -142,6 +142,7 @@
 .foundry-mesa__windows {
   position: absolute;
   inset: 0;
+  z-index: 30;
   pointer-events: none;
   overflow: visible;
 }
@@ -726,6 +727,13 @@
   overflow: visible;
 }
 
+.foundry-window--chromeless.foundry-window--character-sheet {
+  height: auto;
+  max-height: var(--foundry-window-max-h, 680px);
+  min-height: min(var(--foundry-window-max-h, 680px), 400px);
+  pointer-events: auto;
+}
+
 .foundry-window--chromeless.foundry-window--character-sheet .sheet-shell--ddb {
   box-shadow:
     0 12px 40px rgba(0, 0, 0, 0.45),
@@ -901,6 +909,19 @@
   overscroll-behavior: contain;
 }
 
+.foundry-window--character.foundry-window--chromeless.foundry-window--character-sheet
+  .foundry-window__body {
+  flex: 0 1 auto;
+  overflow: visible;
+  overscroll-behavior: auto;
+}
+
+.foundry-window--character.foundry-window--chromeless.foundry-window--character-sheet
+  .foundry-sheet-body--ddb {
+  flex: 0 1 auto;
+  overflow: visible;
+}
+
 .foundry-window--character .foundry-sheet-body {
   container-type: inline-size;
   container-name: foundry-sheet;
@@ -952,7 +973,7 @@
 }
 
 .foundry-window--character .sheet-shell--ddb .sheet-ddb-body {
-  min-height: 300px;
+  min-height: 280px;
 }
 
 .foundry-window--character .sheet-popup-top {

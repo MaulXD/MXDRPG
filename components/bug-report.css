@@ -1,6 +1,6 @@
 .bug-report-fab {
   position: fixed;
-  z-index: 9000;
+  z-index: 28;
   display: inline-flex;
   align-items: center;
   justify-content: center;

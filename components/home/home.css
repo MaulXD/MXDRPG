@@ -1,3 +1,11 @@
+.page-hero--landing {
+  background:
+    radial-gradient(ellipse 60% 40% at 50% 60%, var(--landing-hero-glow) 0%, transparent 70%),
+    var(--bg-deep);
+  border-radius: var(--radius-lg);
+  margin-top: 0.5rem;
+}
+
 .landing-hero {
   display: flex;
   flex-direction: column;
@@ -41,10 +49,39 @@
 .hex-preview-glow {
   position: absolute;
   inset: 12%;
-  background: radial-gradient(circle, rgba(122, 163, 201, 0.15), transparent 65%);
+  background: radial-gradient(circle, rgba(74, 128, 160, 0.2), transparent 65%);
   filter: blur(32px);
   pointer-events: none;
 }
+
+/* Cards de feature — ícone por semântica */
+.feature-card--vtt .feature-icon {
+  color: var(--landing-accent-vtt);
+  border-color: rgba(74, 128, 160, 0.35);
+}
+
+.feature-card--grid .feature-icon {
+  color: var(--landing-accent-grid);
+  border-color: rgba(200, 140, 26, 0.35);
+}
+
+.feature-card--visual .feature-icon {
+  color: var(--landing-accent-visual);
+  border-color: rgba(212, 196, 160, 0.35);
+}
+
+.feature-card--papeis .feature-icon {
+  color: var(--landing-accent-roles);
+  border-color: rgba(139, 58, 34, 0.35);
+}
+
+.cta-band--landing {
+  background: var(--landing-cta-surface);
+  border-top: 1px solid rgba(184, 146, 46, 0.3);
+  border-bottom: 1px solid rgba(184, 146, 46, 0.3);
+  border-left: 3px solid var(--landing-accent-roles);
+}
+
 
 .hex-preview-svg {
   width: 100%;

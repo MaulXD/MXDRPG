@@ -127,7 +127,7 @@ function loadRegistry(roomId?: string): Registry {
         z: typeof saved.z === "number" ? saved.z : base[id]!.z,
       };
       if (id === "character") {
-        if (merged.width < 640) merged.width = DEFAULT_LAYOUTS.character.width;
+        if (merged.width < 760) merged.width = DEFAULT_LAYOUTS.character.width;
         if (merged.height < 400) merged.height = DEFAULT_LAYOUTS.character.height;
       }
       base[id] = merged;

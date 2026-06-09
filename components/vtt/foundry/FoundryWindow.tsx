@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useRef, type ReactNode } from "react";
+import { useCallback, useRef, type CSSProperties, type ReactNode } from "react";
 import type { FoundryWindowLayout } from "@/hooks/vtt/useFoundryWindows";
 import { useFoundryWindowDrag } from "@/hooks/vtt/useFoundryWindowDrag";
 import "./foundry.css";
@@ -20,6 +20,8 @@ type Props = {
   headerExtra?: ReactNode;
   /** Sem barra Foundry — chrome fica no conteúdo (ex.: ficha DDB) */
   chromeless?: boolean;
+  /** Altura natural do conteúdo; layout.height vira max-height (ficha DDB) */
+  contentSized?: boolean;
 };
 
 export function FoundryWindow({
@@ -35,6 +37,7 @@ export function FoundryWindow({
   minHeight = 120,
   headerExtra,
   chromeless = false,
+  contentSized = false,
 }: Props) {
   const headerDrag = useFoundryWindowDrag(layout, onLayoutChange, onFocus);
   const resizeRef = useRef<{
@@ -88,16 +91,23 @@ export function FoundryWindow({
     .filter(Boolean)
     .join(" ");
 
+  const sizedChromeless = chromeless && contentSized && !layout.minimized;
+  const windowStyle: CSSProperties = {
+    left: layout.x,
+    top: layout.y,
+    width: layout.width,
+    height: layout.minimized ? undefined : sizedChromeless ? undefined : layout.height,
+    maxHeight: sizedChromeless ? layout.height : undefined,
+    zIndex: layout.z,
+    ...(sizedChromeless
+      ? { "--foundry-window-max-h": `${layout.height}px` }
+      : {}),
+  };
+
   return (
     <div
       className={windowClass}
-      style={{
-        left: layout.x,
-        top: layout.y,
-        width: layout.width,
-        height: layout.minimized ? undefined : layout.height,
-        zIndex: layout.z,
-      }}
+      style={windowStyle}
       onPointerDown={onFocus}
       role="dialog"
       aria-label={title}
