@@ -22,11 +22,21 @@
 .sheet-shell--popup.sheet-shell--ddb {
   display: flex;
   flex-direction: column;
+  flex: 1;
   width: 100%;
   min-width: 0;
+  min-height: 0;
   background: #e8e2d6;
   color: var(--ddb-ink);
-  overflow: visible;
+  overflow: hidden;
+  --sheet-bg: #e8e2d6;
+  --sheet-surface: var(--ddb-panel);
+  --sheet-inset: #f0ebe2;
+  --sheet-border: var(--ddb-panel-border);
+  --sheet-border-bright: var(--ddb-panel-border);
+  --sheet-accent: var(--ddb-gold);
+  --sheet-text: var(--ddb-ink);
+  --sheet-text-muted: var(--ddb-muted);
 }
 
 .sheet-shell--ddb > .sheet-ddb-toolbar {
@@ -251,6 +261,8 @@
   gap: 0.5rem;
   padding: 0.5rem 0.55rem;
   min-height: 280px;
+  width: 100%;
+  box-sizing: border-box;
   align-items: start;
 }
 
@@ -582,6 +594,39 @@
   padding: 0.35rem 0.55rem 0.55rem;
   border-top: 1px solid var(--ddb-panel-border);
   background: #f0ebe2;
+  width: 100%;
+  box-sizing: border-box;
+  flex-shrink: 0;
+}
+
+.sheet-shell--ddb .sheet-popup-panel-title {
+  margin: 0;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: var(--ddb-muted);
+}
+
+.sheet-shell--ddb .inv-empty {
+  padding: 1rem 0.75rem;
+  text-align: left;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  color: var(--ddb-muted);
+  border: 1px dashed var(--ddb-panel-border);
+  border-radius: 8px;
+  background: var(--ddb-panel);
+}
+
+.sheet-shell--ddb .inv-row,
+.sheet-shell--ddb .inv-section__hint,
+.sheet-shell--ddb .inv-hint {
+  color: var(--ddb-muted);
+}
+
+.sheet-shell--ddb .inv-row h4,
+.sheet-shell--ddb .inv-row__tags {
+  color: var(--ddb-ink);
 }
 
 .sheet-ddb-drawer-inner {

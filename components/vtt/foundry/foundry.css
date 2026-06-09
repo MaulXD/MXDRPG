@@ -728,9 +728,9 @@
 }
 
 .foundry-window--chromeless.foundry-window--character-sheet {
-  height: auto;
-  max-height: var(--foundry-window-max-h, 680px);
-  min-height: min(var(--foundry-window-max-h, 680px), 400px);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
   pointer-events: auto;
 }
 
@@ -911,15 +911,20 @@
 
 .foundry-window--character.foundry-window--chromeless.foundry-window--character-sheet
   .foundry-window__body {
-  flex: 0 1 auto;
-  overflow: visible;
-  overscroll-behavior: auto;
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
 }
 
 .foundry-window--character.foundry-window--chromeless.foundry-window--character-sheet
   .foundry-sheet-body--ddb {
-  flex: 0 1 auto;
-  overflow: visible;
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 .foundry-window--character .foundry-sheet-body {

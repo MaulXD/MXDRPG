@@ -1,13 +1,12 @@
 .sheet-pdf-capture-host {
   position: fixed;
-  left: -12000px;
+  left: -10000px;
   top: 0;
   width: 794px;
+  max-height: 100vh;
+  overflow: hidden;
   z-index: -1;
   pointer-events: none;
-  overflow: visible;
-  visibility: visible;
-  opacity: 1;
 }
 
 .sheet-pdf-capture {
