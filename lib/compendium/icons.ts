@@ -1,13 +1,14 @@
 import type { CompendiumEntry, ItemType } from "@/lib/compendium/types";
 
+/** Cores v5 — docs/DESIGN-ELDARIN-V5-CORES.md (border-left / ícone, não background) */
 export const COMPENDIUM_TYPE_COLOR: Record<string, string> = {
-  arma: "#ffc14d",
-  habilidade: "#b8ff3c",
-  magia: "#8b5cf6",
-  equipamento: "#94a3be",
-  efeito: "#5ec4e6",
-  npc: "#ff4d6d",
-  character: "#00f5ff",
+  arma: "#8b3a22",
+  habilidade: "#6e4800",
+  magia: "#1a3d5c",
+  equipamento: "#4a3820",
+  efeito: "#2a4a2c",
+  npc: "#5e1a0e",
+  character: "#5e1a0e",
 };
 
 export type CompendiumIconKind =
@@ -170,7 +171,7 @@ export function resolveCompendiumIconKind(entry: EntryLike): CompendiumIconKind 
 }
 
 export function compendiumTypeColor(type: string): string {
-  return COMPENDIUM_TYPE_COLOR[type] ?? "#00f5ff";
+  return COMPENDIUM_TYPE_COLOR[type] ?? "#4a3820";
 }
 
 /** URL de imagem explícita no JSON (`img`) ou caminho absoluto. */
