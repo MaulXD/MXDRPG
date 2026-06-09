@@ -10,7 +10,8 @@ import {
   type ReligionDef,
 } from "@/lib/character/pantheon";
 import { religionCardTooltip, religionLoreSnippet } from "@/lib/character/religion-tooltips";
-import { religionGlyph, religionIconColor } from "@/lib/character/wizard-religion-icons";
+import { ReligionDeityIcon } from "@/components/character/ReligionDeityIcon";
+import { religionIconColor } from "@/lib/character/wizard-religion-icons";
 
 type Props = {
   value: string | null;
@@ -35,8 +36,6 @@ function ReligionCard({
   const tip = religionCardTooltip(r);
   const lore = religionLoreSnippet(r.id);
   const color = religionIconColor(r.id);
-  const glyph = religionGlyph(r.id);
-
   return (
     <button
       type="button"
@@ -46,13 +45,13 @@ function ReligionCard({
       className={`char-wizard-pick ${selected ? "char-wizard-pick--on" : ""}${compact ? " char-wizard-pick--compact" : ""}`}
       onClick={onPick}
     >
-      <div style={{ display: "flex", width: "100%", alignItems: "flex-start" }}>
+      <div className="char-wizard-pick__head">
         <span
-          className="char-wizard-pick__icon"
+          className="char-wizard-pick__icon char-wizard-pick__icon--svg"
           style={{ color, borderColor: `${color}55`, background: `${color}18` }}
           aria-hidden
         >
-          {glyph}
+          <ReligionDeityIcon religionId={r.id} size={20} />
         </span>
         <span className="char-wizard-pick__check" aria-hidden>
           ✓

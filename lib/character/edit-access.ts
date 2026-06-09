@@ -9,8 +9,19 @@ export type CharacterEditAccessOptions = {
   grant?: SheetEditGrant | null;
 };
 
-/** Dono pode editar ficha livre fora de campanha; em campanha exige concessão aprovada. */
+/** Dono edita a própria ficha; outros só com admin. */
 export function canEditCharacterWithGrant(
+  character: CharacterSheet,
+  userId: string,
+  role: "admin" | "member",
+  _options?: CharacterEditAccessOptions
+): boolean {
+  if (role === "admin") return true;
+  return character.ownerId === userId;
+}
+
+/** Reconstrução (wizard) em campanha exige concessão aprovada do mestre. */
+export function canStructuralSheetEditWithGrant(
   character: CharacterSheet,
   userId: string,
   role: "admin" | "member",
@@ -18,10 +29,8 @@ export function canEditCharacterWithGrant(
 ): boolean {
   if (role === "admin") return true;
   if (character.ownerId !== userId) return false;
-  if (isAdventureBoundCharacter(character)) {
-    return isActiveSheetEditGrant(options?.grant);
-  }
-  return true;
+  if (!isAdventureBoundCharacter(character)) return true;
+  return isActiveSheetEditGrant(options?.grant);
 }
 
 export function grantFromRequest(

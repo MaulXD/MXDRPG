@@ -25,8 +25,6 @@ import { FutureLevelsPanel } from "@/components/character/FutureLevelsPanel";
 import { CharacterReligionEditor } from "@/components/character/CharacterReligionEditor";
 import { ReligionSheetPanel } from "@/components/character/ReligionSheetPanel";
 import { WizardHoverTip } from "@/components/character/wizard/WizardHoverTip";
-import { religionDisplayName } from "@/lib/character/pantheon";
-import { religionBonusTooltip } from "@/lib/character/religion-tooltips";
 import { SubclassTrackPanel } from "@/components/character/SubclassTrackPanel";
 import { CombatLoadoutPanel } from "@/components/character/CombatLoadoutPanel";
 import { LootEconomyPanel } from "@/components/character/LootEconomyPanel";
@@ -694,13 +692,6 @@ export function CharacterSheet({
           {identity.antecedente ? (
             <span className="sheet-popup-pill">{identity.antecedente}</span>
           ) : null}
-          {identity.religiao ? (
-            <WizardHoverTip text={religionBonusTooltip(identity.religiao)}>
-              <span className="sheet-popup-pill sheet-popup-pill--faith">
-                {religionDisplayName(identity.religiao)}
-              </span>
-            </WizardHoverTip>
-          ) : null}
         </div>
 
         <ReligionSheetPanel religiao={identity.religiao} compact />
@@ -743,6 +734,22 @@ export function CharacterSheet({
             canEdit={canEdit}
             onSaved={refresh}
           />
+        ) : null}
+
+        {canEdit && adventureId ? (
+          <details className="sheet-structural-edit">
+            <summary>Reconstruir ficha (aprovação do mestre)</summary>
+            <p className="vtt-combat-hint sheet-structural-edit__hint">
+              Para refazer raça/classe ou só o último nível, envie uma solicitação — o dia a dia da ficha
+              continua editável por você.
+            </p>
+            <SheetEditRequestButton
+              characterId={character.id}
+              adventureId={adventureId}
+              roomId={inRoom ? roomId : undefined}
+              variant="inline"
+            />
+          </details>
         ) : null}
       </>
     );

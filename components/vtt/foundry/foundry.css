@@ -1047,9 +1047,9 @@
   position: absolute;
   top: calc(100% + 0.35rem);
   right: 0;
-  min-width: 160px;
+  min-width: 3.25rem;
   max-width: min(92vw, 280px);
-  padding: 0.65rem 0.55rem;
+  padding: 0.65rem 0.5rem;
   border-radius: var(--radius);
   overflow: visible;
 }
@@ -1071,30 +1071,35 @@
 .mesa-online-menu__list {
   list-style: none;
   margin: 0;
-  padding: 0.1rem 0.25rem;
+  padding: 0.15rem 0.2rem;
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
-  max-height: min(50vh, 320px);
-  overflow-y: auto;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.45rem;
+  overflow: visible;
 }
 
 .mesa-online-menu__item {
   position: relative;
   padding: 0;
   border-radius: 50%;
+  flex-shrink: 0;
 }
 
-.mesa-online-menu__avatar-wrap {
-  position: relative;
+.mesa-online-menu__avatar-btn {
   display: block;
+  padding: 0;
+  margin: 0;
+  border: none;
+  background: transparent;
+  border-radius: 50%;
+  cursor: default;
+  line-height: 0;
 }
 
-.mesa-online-menu__avatar-wrap:hover .mesa-online-menu__hover-card,
-.mesa-online-menu__avatar-wrap:focus-within .mesa-online-menu__hover-card {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(-50%) translateX(0);
+.mesa-online-menu__item--gm .mesa-online-menu__avatar {
+  border-color: rgba(201, 169, 98, 0.65);
+  box-shadow: 0 0 0 2px rgba(201, 169, 98, 0.22);
 }
 
 .mesa-online-menu__item--self .mesa-online-menu__avatar {
@@ -1128,26 +1133,25 @@
 }
 
 .mesa-online-menu__hover-card {
-  position: absolute;
-  right: calc(100% + 0.45rem);
-  top: 50%;
-  z-index: 30;
   min-width: 148px;
-  max-width: 200px;
+  max-width: 220px;
   padding: 0.5rem 0.6rem;
   border-radius: 8px;
   display: flex;
   flex-direction: column;
   gap: 0.4rem;
-  opacity: 0;
-  visibility: hidden;
   pointer-events: none;
-  transform: translateY(-50%) translateX(4px);
-  transition:
-    opacity 0.15s ease,
-    visibility 0.15s ease,
-    transform 0.15s ease;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
+  z-index: 1305;
+}
+
+.mesa-online-menu__hover-card--cursor {
+  position: fixed;
+  transform: translateY(-50%);
+}
+
+.mesa-online-menu__hover-card--cursor-left {
+  transform: translate(-100%, -50%);
 }
 
 .mesa-online-menu__hover-row {
@@ -1162,6 +1166,17 @@
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--text-muted);
+}
+
+.mesa-online-menu__hover-role {
+  font-size: 0.82rem;
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--text-primary);
+}
+
+.mesa-online-menu__hover-role--gm {
+  color: rgb(214, 188, 130);
 }
 
 .mesa-online-menu__hover-sheet {

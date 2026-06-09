@@ -2,7 +2,11 @@ import { redirect, notFound } from "next/navigation";
 import { CharacterCreationWizard } from "@/components/character/wizard/CharacterCreationWizard";
 import { SheetEditLastLevelFlow } from "@/components/character/SheetEditLastLevelFlow";
 import { MedievalFrame } from "@/components/ui/MedievalFrame";
-import { canEditCharacterWithGrant, grantFromRequest, resolveCharacter } from "@/lib/character/characters";
+import {
+  canStructuralSheetEditWithGrant,
+  grantFromRequest,
+  resolveCharacter,
+} from "@/lib/character/characters";
 import { prepareCharacterForLastLevelReedit } from "@/lib/character/rebuild-from-wizard";
 import { getSheetEditRequest } from "@/lib/character/sheet-edit-request-store";
 import { signInPath } from "@/lib/auth/post-auth-redirect";
@@ -37,7 +41,7 @@ export default async function PersonagemEditarPage({ params, searchParams }: Pro
   }
 
   const grant = grantFromRequest(editRequest);
-  if (!canEditCharacterWithGrant(character, session.user.id, session.user.role, { grant })) {
+  if (!canStructuralSheetEditWithGrant(character, session.user.id, session.user.role, { grant })) {
     redirect(`/personagem/${id}`);
   }
 

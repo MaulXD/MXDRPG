@@ -12,7 +12,7 @@ import type { CombatUndoEntry, RoomSnapshot } from "@/lib/room/types";
 import { nextCombatTurn, postGmCombatAction, rollInitiative } from "@/hooks/useRoomSync";
 
 import { collectPlayerActorIds, resolveTokenRing } from "@/lib/vtt/token-colors";
-import { hpBarColor, hpRatio } from "@/lib/vtt/token-hp-display";
+import { hpBarColor, hpRatio, isTokenDefeated } from "@/lib/vtt/token-hp-display";
 
 import { TokenEffectsRow } from "@/components/vtt/TokenEffectsRow";
 import {
@@ -63,24 +63,16 @@ type Props = {
 
 
 function hpPercent(token: BattleToken): number {
-
+  if (isTokenDefeated(token)) return 0;
   if (token.vidaMax == null || token.vidaMax <= 0) return 100;
-
   const v = token.vida ?? token.vidaMax;
-
   return Math.round((v / token.vidaMax) * 100);
-
-}
-
-function isDefeated(token: BattleToken): boolean {
-  if (token.vidaMax == null) return false;
-  return (token.vida ?? 0) <= 0;
 }
 
 function livingOrderIds(order: string[], tokenMap: Map<string, BattleToken>): string[] {
   return order.filter((id) => {
     const t = tokenMap.get(id);
-    return t != null && !isDefeated(t);
+    return t != null && !isTokenDefeated(t);
   });
 }
 
@@ -489,7 +481,7 @@ export function TurnOrderPanel({
 
             const hp = hpPercent(token);
 
-            const defeated = isDefeated(token);
+            const defeated = isTokenDefeated(token);
             const draggable = canControl && !defeated;
 
             const attackable = Boolean(attackableIds?.has(id));

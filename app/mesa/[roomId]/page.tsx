@@ -2,7 +2,6 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { MesaWorkspace } from "@/components/vtt/MesaWorkspace";
 import { MesaVisitorNotice } from "@/components/vtt/MesaVisitorNotice";
-import { RoomCharacterPrompt } from "@/components/vtt/RoomCharacterPrompt";
 import {
   canManageRoom,
   canParticipateInRoom,
@@ -151,17 +150,6 @@ export default async function MesaRoomPage({ params, searchParams }: Props) {
   return (
     <div className="vtt-page vtt-page--mesa">
       {visitor ? <MesaVisitorNotice roomId={roomId} inviteCode={inviteCode} /> : null}
-
-      <RoomCharacterPrompt
-        adventureId={room.adventureId ?? roomId}
-        roomId={roomId}
-        roomOwnerId={room.ownerId}
-        memberIds={room.memberIds ?? []}
-        roomName={room.name}
-        actors={room.actors}
-        session={session?.user ?? null}
-        isVisitor={visitor}
-      />
 
       <MesaWorkspace
         roomId={roomId}

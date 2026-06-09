@@ -92,12 +92,25 @@ export function IconSearch({ className, size = defaultSize }: IconProps) {
   );
 }
 
-export function IconTemple({ className, size = defaultSize }: IconProps) {
+/** Perícia Religião (conhecimento) — não confundir com devotion/deus. */
+export function IconBook({ className, size = defaultSize }: IconProps) {
   return (
     <svg className={className} width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden>
-      <path d="M12 3L4 9h16L12 3z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
-      <path d="M6 9v10h12V9" stroke="currentColor" strokeWidth="1.5" />
-      <path d="M9 14h6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      <path
+        d="M5 5.5h6.5a2 2 0 012 2V20H5V5.5z"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinejoin="round"
+        fill="color-mix(in srgb, currentColor 10%, transparent)"
+      />
+      <path
+        d="M11.5 7.5H18a2 2 0 012 2V20h-8.5V7.5z"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinejoin="round"
+        fill="color-mix(in srgb, currentColor 8%, transparent)"
+      />
+      <path d="M8 9h2M14 11h2" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
     </svg>
   );
 }
