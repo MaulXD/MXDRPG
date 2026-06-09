@@ -319,7 +319,7 @@
 }
 
 /* Ficha popup na mesa */
-.vtt-chrome[data-vtt-mesa="foundry"] .sheet-shell--popup {
+.vtt-chrome[data-vtt-mesa="foundry"] .sheet-shell--popup:not(.sheet-shell--ddb) {
   background: var(--mesa-surface);
   border-color: var(--mesa-accent-border);
 }

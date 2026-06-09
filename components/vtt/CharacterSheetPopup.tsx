@@ -137,7 +137,6 @@ export function CharacterSheetPopup({
       minWidth={720}
       minHeight={400}
       chromeless
-      contentSized
     >
       <div className="foundry-sheet-body foundry-sheet-body--ddb">
         <CharacterSheet

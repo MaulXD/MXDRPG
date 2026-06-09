@@ -135,7 +135,7 @@ export function SheetPdfExportButton({
           {error}
         </span>
       ) : null}
-      {typeof document !== "undefined" ? createPortal(offscreen, document.body) : null}
+      {busy && typeof document !== "undefined" ? createPortal(offscreen, document.body) : null}
     </>
   );
 }
