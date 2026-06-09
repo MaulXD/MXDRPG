@@ -26,7 +26,7 @@ type SyncOpts = {
   onMemberOnline?: (event: RoomMemberOnlineEvent) => void;
 };
 
-const PRESENCE_HEARTBEAT_MS = 25_000;
+const PRESENCE_HEARTBEAT_MS = 15_000;
 
 function roomQuery(roomId: string, inviteCode?: string | null): string {
   const q = new URLSearchParams();

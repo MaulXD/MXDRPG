@@ -24,7 +24,7 @@ async function presenceResponse(
     if (!user || !(await canTrackRoomPresence(auth.room, user))) {
       return NextResponse.json({ error: "Participantes logados apenas" }, { status: 403 });
     }
-    touchRoomPresence(roomId, touch.userId, touch.label);
+    await touchRoomPresence(roomId, touch.userId, touch.label);
   }
 
   const online = await buildEnrichedRoomPresence(auth.room);

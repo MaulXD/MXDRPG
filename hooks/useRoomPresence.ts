@@ -13,14 +13,14 @@ export type RoomPresenceMember = {
   isOwner: boolean;
 };
 
-const PRESENCE_POLL_MS = 20_000;
+const PRESENCE_POLL_MS = 10_000;
 
 type Opts = {
   roomId: string;
   inviteCode?: string | null;
   enabled?: boolean;
   /** Usuário logado na mesa — envia heartbeat e aparece na lista */
-  presenceUser?: { id: string; name: string } | null;
+  presenceUser?: { id: string; name: string; avatarUrl?: string | null } | null;
   isRoomOwner?: boolean;
   onMemberOnline?: (event: RoomMemberOnlineEvent) => void;
 };
@@ -115,7 +115,7 @@ export function useRoomPresence({
       {
         userId: presenceUser.id,
         displayName: presenceUser.name.trim() || "Jogador",
-        avatarUrl: null,
+        avatarUrl: presenceUser.avatarUrl ?? null,
         characterPortraitUrl: null,
         role: isRoomOwner ? ("gm" as const) : ("player" as const),
         characterName: null,
