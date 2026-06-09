@@ -3,6 +3,7 @@ import { Cinzel, Lora, Source_Sans_3 } from "next/font/google";
 import { AuthProvider } from "@/components/auth/AuthProvider";
 import { FriendsChatProvider } from "@/components/friends/FriendsChatProvider";
 import { hasClerkPublishableKey } from "@/lib/auth/clerk-config";
+import { getSession } from "@/lib/auth/session";
 import { SiteShell } from "@/components/SiteShell";
 import { SiteHeaderWrapper } from "@/components/SiteHeaderWrapper";
 import { SiteFooter } from "@/components/SiteFooter";
@@ -43,10 +44,11 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const clerkPublishableKey = hasClerkPublishableKey()
     ? process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY!.trim()
     : "";
+  const session = await getSession();
 
   return (
     <html
@@ -59,7 +61,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body>
         <AuthProvider publishableKey={clerkPublishableKey}>
-          <FriendsChatProvider>
+          <FriendsChatProvider initialUserId={session?.user.id ?? null}>
             <div className="site-bg" aria-hidden />
             <div className="site-noise" aria-hidden />
             <SiteShell header={<SiteHeaderWrapper />} footer={<SiteFooter />}>

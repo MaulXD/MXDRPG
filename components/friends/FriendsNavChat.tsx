@@ -7,7 +7,8 @@ import "./friends.css";
 /** Botão na navbar — abre a janela flutuante global de mensagens. */
 export function FriendsNavChat() {
   const chat = useFriendsChat();
-  if (!chat?.ready || !chat.selfUserId) return null;
+  if (!chat) return null;
+  if (chat.ready && !chat.selfUserId) return null;
 
   const messageBadge = chat.unreadCount > 0 ? chat.unreadCount : 0;
   const requestBadge = chat.requestCount > 0 ? chat.requestCount : 0;
@@ -23,12 +24,16 @@ export function FriendsNavChat() {
           ? `${inviteBadge} convite${inviteBadge === 1 ? "" : "s"} de mesa`
           : "";
 
+  const pending = !chat.ready;
+
   return (
     <button
       type="button"
-      className={`nav-link friends-nav-chat__toggle${chat.open ? " is-open" : ""}`}
+      className={`nav-link friends-nav-chat__toggle${chat.open ? " is-open" : ""}${pending ? " is-pending" : ""}`}
       aria-expanded={chat.open}
       aria-haspopup="dialog"
+      aria-busy={pending}
+      disabled={pending}
       onClick={chat.toggle}
     >
       <span className="friends-nav-chat__icon-wrap">
