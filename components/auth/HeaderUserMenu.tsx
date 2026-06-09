@@ -1,5 +1,6 @@
 "use client";
 
+import "@/components/ui/user-avatar.css";
 import Link from "next/link";
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
@@ -21,15 +22,9 @@ function userLabel(user: SessionUser): string {
 export function HeaderUserMenu({ user: initialUser, onSignOut }: Props) {
   const [user, setUser] = useState<SessionUser | null>(initialUser ?? null);
   const [open, setOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
   const [panelPos, setPanelPos] = useState({ top: 0, right: 0 });
   const triggerRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
   useEffect(() => {
     if (initialUser) {
       setUser(initialUser);
@@ -70,7 +65,7 @@ export function HeaderUserMenu({ user: initialUser, onSignOut }: Props) {
 
   useEffect(() => {
     if (!open) return;
-    function onDocPointer(e: PointerEvent) {
+    function onDocClick(e: MouseEvent) {
       const target = e.target as Node;
       if (triggerRef.current?.contains(target)) return;
       if (panelRef.current?.contains(target)) return;
@@ -79,13 +74,24 @@ export function HeaderUserMenu({ user: initialUser, onSignOut }: Props) {
     function onKey(e: KeyboardEvent) {
       if (e.key === "Escape") setOpen(false);
     }
-    document.addEventListener("pointerdown", onDocPointer);
+    const timer = window.setTimeout(() => {
+      document.addEventListener("click", onDocClick, true);
+    }, 0);
     document.addEventListener("keydown", onKey);
     return () => {
-      document.removeEventListener("pointerdown", onDocPointer);
+      window.clearTimeout(timer);
+      document.removeEventListener("click", onDocClick, true);
       document.removeEventListener("keydown", onKey);
     };
   }, [open]);
+
+  const toggleMenu = useCallback(() => {
+    setOpen((wasOpen) => {
+      if (wasOpen) return false;
+      updatePanelPosition();
+      return true;
+    });
+  }, [updatePanelPosition]);
 
   const signOut = useCallback(async () => {
     setOpen(false);
@@ -101,11 +107,10 @@ export function HeaderUserMenu({ user: initialUser, onSignOut }: Props) {
 
   const label = userLabel(user);
 
-  const panel =
-    open && mounted ? (
+  const panel = open ? (
       <div
         ref={panelRef}
-        className="header-user-menu__panel header-user-menu__panel--portal glass"
+        className="header-user-menu__panel header-user-menu__panel--portal"
         role="menu"
         style={{ top: panelPos.top, right: panelPos.right }}
       >
@@ -139,7 +144,7 @@ export function HeaderUserMenu({ user: initialUser, onSignOut }: Props) {
           aria-expanded={open}
           aria-haspopup="menu"
           title={label}
-          onClick={() => setOpen((v) => !v)}
+          onClick={toggleMenu}
         >
           <UserAvatar
             url={user.avatarUrl}
