@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { cloneElement, isValidElement, type ReactNode } from "react";
 import { usePathname } from "next/navigation";
 
 type Props = {
@@ -9,8 +10,19 @@ type Props = {
   className?: string;
   /** Só marca ativo na URL exata (ex.: Início `/`). */
   exact?: boolean;
-  icon?: React.ReactNode;
+  icon?: ReactNode;
 };
+
+function renderNavIcon(icon: ReactNode): ReactNode {
+  if (!icon) return null;
+  if (isValidElement<{ className?: string }>(icon)) {
+    const prev = icon.props.className ?? "";
+    return cloneElement(icon, {
+      className: `nav-link__icon${prev ? ` ${prev}` : ""}`,
+    });
+  }
+  return <span className="nav-link__icon">{icon}</span>;
+}
 
 function isActive(pathname: string, href: string, exact?: boolean): boolean {
   if (exact) return pathname === href;
@@ -34,7 +46,7 @@ export function AnimatedNavLink({
       className={`${className}${active ? " nav-link--active" : ""}`}
       aria-current={active ? "page" : undefined}
     >
-      {icon ? <span className="nav-link__icon">{icon}</span> : null}
+      {renderNavIcon(icon)}
       <span className="nav-link__label">{children}</span>
     </Link>
   );

@@ -5,6 +5,7 @@ import { AnimatedNavLink } from "@/components/AnimatedNavLink";
 import { BugReportButton } from "@/components/BugReportButton";
 import { EldarinLogo } from "@/components/brand/EldarinLogo";
 import { FriendsNavChat } from "@/components/friends/FriendsNavChat";
+import { IconBook, IconHex, IconStar } from "@/components/ui/EldarinIcons";
 import "@/components/vtt/mesa-theme.css";
 
 type Props = {
@@ -23,9 +24,15 @@ export function SiteShell({ children, header, footer }: Props) {
         <header className="vtt-topbar glass">
           <EldarinLogo variant="header" />
           <nav className="vtt-nav">
-            <AnimatedNavLink href="/mesa">Mesas</AnimatedNavLink>
-            <AnimatedNavLink href="/biblioteca">Compêndios</AnimatedNavLink>
-            <AnimatedNavLink href="/eldarin">Minhas mesas</AnimatedNavLink>
+            <AnimatedNavLink href="/mesa" icon={<IconHex size={18} />}>
+              Mesas
+            </AnimatedNavLink>
+            <AnimatedNavLink href="/biblioteca" icon={<IconBook size={18} />}>
+              Compêndios
+            </AnimatedNavLink>
+            <AnimatedNavLink href="/eldarin" icon={<IconStar size={18} />}>
+              Minhas mesas
+            </AnimatedNavLink>
             <FriendsNavChat />
           </nav>
         </header>

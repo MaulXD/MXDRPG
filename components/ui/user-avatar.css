@@ -28,7 +28,6 @@
 }
 
 .header-user-menu {
-  position: relative;
   margin-left: 0.35rem;
 }
 
@@ -53,14 +52,16 @@
 }
 
 .header-user-menu__panel {
-  position: absolute;
-  top: calc(100% + 0.45rem);
-  right: 0;
-  z-index: 420;
   min-width: 10.5rem;
   padding: 0.35rem;
   border-radius: var(--radius-md, 12px);
   box-shadow: 0 12px 36px rgba(0, 0, 0, 0.4);
+}
+
+/* Portal em document.body — fora da navbar (evita overflow/z-index da barra) */
+.header-user-menu__panel--portal {
+  position: fixed;
+  z-index: 10450;
 }
 
 .header-user-menu__label {

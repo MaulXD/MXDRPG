@@ -2,9 +2,9 @@ import Image from "next/image";
 import Link from "next/link";
 import "./eldarin-logo.css";
 
-export const BRAND_FAVICON = "/brand/favicon.png";
-export const BRAND_NAVBAR = "/brand/navbar.png";
-export const BRAND_LANDING = "/brand/landing.png";
+export const BRAND_FAVICON = "/brand/favicon.webp";
+export const BRAND_NAVBAR = "/brand/navbar.webp";
+export const BRAND_LANDING = "/brand/landing.webp";
 
 export type EldarinLogoVariant = "header" | "full" | "mark";
 
@@ -40,8 +40,8 @@ export function EldarinLogo({
       <Image
         src={BRAND_NAVBAR}
         alt={alt}
-        width={26}
-        height={38}
+        width={480}
+        height={702}
         className="eldarin-logo__navbar"
         priority
       />
@@ -51,8 +51,8 @@ export function EldarinLogo({
           src={BRAND_FAVICON}
           alt={showName ? "" : alt}
           aria-hidden={showName ? true : undefined}
-          width={size}
-          height={size}
+          width={512}
+          height={512}
           className="eldarin-logo__icon"
           priority={variant === "full"}
         />
