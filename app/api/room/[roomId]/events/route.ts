@@ -51,16 +51,17 @@ export async function GET(request: Request, { params }: Params) {
       };
 
       if (tracksPresence && user) {
-        touchRoomPresence(roomId, user.id, presenceLabel);
+        void touchRoomPresence(roomId, user.id, presenceLabel).then(() => flushPresence());
+      } else {
+        flushPresence();
       }
-      flushPresence();
 
       push({ type: "connected", revision: auth.room.revision });
 
       const interval = setInterval(async () => {
         try {
           if (tracksPresence && user) {
-            touchRoomPresence(roomId, user.id, presenceLabel);
+            await touchRoomPresence(roomId, user.id, presenceLabel);
           }
           flushPresence();
 

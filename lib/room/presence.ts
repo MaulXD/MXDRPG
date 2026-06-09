@@ -77,12 +77,24 @@ function displayName(name: string): string {
   return t || "Jogador";
 }
 
+function mergePresenceLists(
+  ...lists: { userId: string; displayName: string }[][]
+): { userId: string; displayName: string }[] {
+  const map = new Map<string, string>();
+  for (const list of lists) {
+    for (const entry of list) {
+      map.set(entry.userId, entry.displayName);
+    }
+  }
+  return [...map.entries()].map(([userId, displayName]) => ({ userId, displayName }));
+}
+
 /** Marca jogador online; emite evento na primeira vez (ou após TTL). */
-export function touchRoomPresence(
+export async function touchRoomPresence(
   roomId: string,
   userId: string,
   name: string
-): QueuedPresenceEvent | null {
+): Promise<QueuedPresenceEvent | null> {
   if (!roomId || !userId) return null;
 
   const now = Date.now();
@@ -99,8 +111,12 @@ export function touchRoomPresence(
   map.set(userId, { displayName: label, lastSeen: now });
 
   if (dbEnabled()) {
-    void touchRoomPresenceDb(roomId, userId, label);
-    void pruneRoomPresenceDb(roomId);
+    try {
+      await touchRoomPresenceDb(roomId, userId, label);
+      void pruneRoomPresenceDb(roomId);
+    } catch (err) {
+      console.error("[presence] touchRoomPresenceDb failed:", err);
+    }
   }
 
   if (wasOnline) return null;
@@ -142,17 +158,17 @@ function listRoomPresenceMemory(roomId: string): { userId: string; displayName: 
   return out;
 }
 
-/** Lista quem está online na mesa (Postgres quando disponível). */
+/** Lista quem está online na mesa (união Postgres + memória da instância). */
 export async function listRoomPresence(
   roomId: string
 ): Promise<{ userId: string; displayName: string }[]> {
-  if (dbEnabled()) {
-    try {
-      const dbList = await listRoomPresenceDb(roomId);
-      if (dbList.length) return dbList;
-    } catch {
-      /* fallback memória */
-    }
+  const memory = listRoomPresenceMemory(roomId);
+  if (!dbEnabled()) return memory;
+
+  try {
+    const dbList = await listRoomPresenceDb(roomId);
+    return mergePresenceLists(memory, dbList);
+  } catch {
+    return memory;
   }
-  return listRoomPresenceMemory(roomId);
 }

@@ -10,7 +10,7 @@ type Props = {
 };
 
 function memberPhotoUrl(member: RoomPresenceMember): string | null {
-  return member.characterPortraitUrl ?? member.avatarUrl ?? null;
+  return member.avatarUrl ?? member.characterPortraitUrl ?? null;
 }
 
 function memberLabel(member: RoomPresenceMember): string {

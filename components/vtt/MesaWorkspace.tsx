@@ -92,7 +92,11 @@ export function MesaWorkspace({
   const memberOnlineRef = useRef<((event: RoomMemberOnlineEvent) => void) | null>(null);
   const presenceUser =
     session && canParticipateInRoom({ roomId, ownerId: roomOwnerId, memberIds }, session)
-      ? { id: session.id, name: session.nickname?.trim() || session.name }
+      ? {
+          id: session.id,
+          name: session.nickname?.trim() || session.name,
+          avatarUrl: session.avatarUrl ?? session.oauthAvatarUrl ?? null,
+        }
       : null;
   const {
     online: presenceOnline,
