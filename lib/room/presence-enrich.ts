@@ -1,10 +1,12 @@
 import "server-only";
 
 import { normalizeUserRole } from "@/lib/auth/roles";
+import { ensureDbMigrations } from "@/lib/db/ensure-migrations";
 import { resolveUserAvatarUrl } from "@/lib/db/user-avatar";
 import { getSql } from "@/lib/db/client";
 import { dbEnabled } from "@/lib/db/enabled";
-import { fetchClerkIdForUser } from "@/lib/db/users";
+import { fetchClerkIdForUser, fetchUserByClerkId, fetchUserById } from "@/lib/db/users";
+import { dedupePresenceByUser } from "@/lib/room/presence-identity";
 import { resolveActorTokenImageUrl } from "@/lib/room/portrait-sync";
 import { listRoomPresence } from "@/lib/room/presence";
 import type { RoomActor, RoomState } from "@/lib/room/types";
@@ -24,9 +26,9 @@ type UserPresenceRow = {
   nickname: string | null;
   name: string;
   role: string | null;
-  avatar_url: string | null;
-  oauth_avatar_url: string | null;
-  avatar_source: string | null;
+  avatar_url?: string | null;
+  oauth_avatar_url?: string | null;
+  avatar_source?: string | null;
 };
 
 function displayNameFromRow(row: UserPresenceRow): string {
@@ -66,18 +68,71 @@ async function fetchUserPresenceRows(userIds: string[]): Promise<Map<string, Use
   const out = new Map<string, UserPresenceRow>();
   if (!userIds.length || !dbEnabled()) return out;
 
+  await ensureDbMigrations();
   const sql = getSql();
   if (!sql) return out;
 
-  const rows = await sql<UserPresenceRow[]>`
-    SELECT id, nickname, name, role, avatar_url, oauth_avatar_url, avatar_source
-    FROM eldarin_users
-    WHERE id = ANY(${userIds})
-  `;
+  const fullSelect =
+    "id, nickname, name, role, avatar_url, oauth_avatar_url, avatar_source";
+  const baseSelect = "id, nickname, name, role";
+
+  let rows: UserPresenceRow[] = [];
+  try {
+    rows = await sql<UserPresenceRow[]>`
+      SELECT ${sql.unsafe(fullSelect)}
+      FROM eldarin_users
+      WHERE id = ANY(${userIds})
+    `;
+  } catch {
+    rows = await sql<UserPresenceRow[]>`
+      SELECT ${sql.unsafe(baseSelect)}
+      FROM eldarin_users
+      WHERE id = ANY(${userIds})
+    `;
+  }
+
   for (const row of rows) {
     out.set(row.id, row);
   }
   return out;
+}
+
+async function profileForUserId(
+  userId: string,
+  profiles: Map<string, UserPresenceRow>
+): Promise<UserPresenceRow | null> {
+  const direct = profiles.get(userId);
+  if (direct) return direct;
+
+  if (userId.startsWith("clerk-")) {
+    const stored = await fetchUserByClerkId(userId.slice("clerk-".length));
+    if (stored) {
+      return {
+        id: stored.id,
+        nickname: stored.nickname ?? null,
+        name: stored.name,
+        role: stored.role,
+        avatar_url: stored.avatarUrl ?? null,
+        oauth_avatar_url: stored.oauthAvatarUrl ?? null,
+        avatar_source: stored.avatarSource ?? null,
+      };
+    }
+  }
+
+  const sessionUser = await fetchUserById(userId);
+  if (sessionUser) {
+    return {
+      id: sessionUser.id,
+      nickname: sessionUser.nickname ?? null,
+      name: sessionUser.name,
+      role: sessionUser.role,
+      avatar_url: sessionUser.avatarUrl ?? null,
+      oauth_avatar_url: sessionUser.oauthAvatarUrl ?? null,
+      avatar_source: sessionUser.avatarSource ?? null,
+    };
+  }
+
+  return null;
 }
 
 async function isPresenceGmUser(
@@ -96,12 +151,17 @@ async function isPresenceGmUser(
     const ownerClerk = await fetchClerkIdForUser(room.ownerId);
     if (ownerClerk && userId === `clerk-${ownerClerk}`) return true;
   }
+  if (userId.startsWith("usr_") && room.ownerId.startsWith("usr_")) {
+    const userClerk = await fetchClerkIdForUser(userId);
+    const ownerClerk = await fetchClerkIdForUser(room.ownerId);
+    if (userClerk && ownerClerk && userClerk === ownerClerk) return true;
+  }
   return false;
 }
 
 /** Lista presença online enriquecida com avatar, papel e ficha ativa no mapa. */
 export async function buildEnrichedRoomPresence(room: RoomState): Promise<RoomPresenceMember[]> {
-  const raw = await listRoomPresence(room.roomId);
+  const raw = await dedupePresenceByUser(await listRoomPresence(room.roomId));
   if (!raw.length) return [];
 
   const userIds = raw.map((e) => e.userId);
@@ -109,12 +169,13 @@ export async function buildEnrichedRoomPresence(room: RoomState): Promise<RoomPr
 
   const members: RoomPresenceMember[] = [];
   for (const entry of raw) {
-    const profile = profiles.get(entry.userId);
-    const isOwner = await isPresenceGmUser(entry.userId, room, profile?.role);
+    const profile = await profileForUserId(entry.userId, profiles);
+    const userId = profile?.id ?? entry.userId;
+    const isOwner = await isPresenceGmUser(userId, room, profile?.role);
     const displayName = profile ? displayNameFromRow(profile) : entry.displayName;
-    const character = characterForUser(entry.userId, room);
+    const character = characterForUser(userId, room);
     members.push({
-      userId: entry.userId,
+      userId,
       displayName,
       avatarUrl: profile
         ? resolveUserAvatarUrl({
