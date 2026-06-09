@@ -1,6 +1,8 @@
 import { cookies } from "next/headers";
 import { resolveClerkSessionUser } from "@/lib/auth/clerk-sync";
 import { isClerkEnabled } from "@/lib/auth/clerk-config";
+import { ensureDbMigrations } from "@/lib/db/ensure-migrations";
+import { dbEnabled } from "@/lib/db/enabled";
 import { normalizeUserRole } from "./roles";
 import type { SessionPayload, SessionUser, UserRole } from "./types";
 
@@ -49,6 +51,14 @@ export async function getLegacyCookieSession(): Promise<SessionPayload | null> {
 
 export async function getSession(): Promise<SessionPayload | null> {
   if (!isClerkEnabled()) return null;
+
+  if (dbEnabled()) {
+    try {
+      await ensureDbMigrations();
+    } catch {
+      /* queries podem falhar; clerk-sync usa sessão efêmera */
+    }
+  }
 
   const clerkUser = await resolveClerkSessionUser();
   if (clerkUser) {
