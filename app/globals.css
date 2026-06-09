@@ -91,6 +91,14 @@
   --parchment: var(--content-bg);
   --parchment-deep: var(--content-bg-elevated);
 
+  /* landing — acentos semânticos (marketing) */
+  --landing-accent-vtt: #4a80a0;
+  --landing-accent-grid: #c88c1a;
+  --landing-accent-visual: #d4c4a0;
+  --landing-accent-roles: var(--type-weapon);
+  --landing-cta-surface: #1a1814;
+  --landing-hero-glow: rgba(80, 30, 50, 0.25);
+
   --radius: 8px;
   --radius-lg: 12px;
   --radius-pill: 6px;
@@ -311,10 +319,10 @@ button.btn {
 }
 
 .btn-secondary {
-  border-color: var(--glass-border);
+  border-color: rgba(184, 146, 46, 0.45);
   background: transparent;
   box-shadow: none;
-  color: var(--text-muted);
+  color: var(--text);
 }
 
 .btn-secondary:hover {
@@ -380,6 +388,9 @@ button.btn {
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
+  background: rgba(17, 17, 16, 0.92);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(184, 146, 46, 0.18);
 }
 
 .site-logo {
@@ -602,6 +613,30 @@ button.btn {
   margin-bottom: 0.5rem;
 }
 
+.roadmap-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.roadmap-list li {
+  padding: 0.35rem 0 0.35rem 1rem;
+  line-height: 1.55;
+}
+
+.roadmap-list--live li {
+  color: var(--text);
+  border-left: 2px solid var(--chrome-accent);
+}
+
+.roadmap-list--pending li {
+  color: var(--text-muted);
+  border-left: 2px solid var(--chrome-border);
+}
+
 .site-footer {
   width: min(1120px, calc(100% - 2rem));
   margin: 0 auto 2rem;
@@ -782,14 +817,17 @@ select optgroup {
 }
 
 .btn-primary {
-  border-color: var(--accent);
-  background: linear-gradient(180deg, rgba(122, 163, 201, 0.28) 0%, rgba(122, 163, 201, 0.1) 100%);
-  color: var(--text-strong);
+  border: none;
+  background: var(--chrome-accent);
+  color: var(--chrome-bg);
+  box-shadow: 0 2px 14px rgba(184, 146, 46, 0.28);
 }
 
 .btn-primary:hover {
-  background: linear-gradient(180deg, rgba(122, 163, 201, 0.38) 0%, rgba(122, 163, 201, 0.16) 100%);
-  border-color: var(--accent);
+  background: var(--chrome-accent-hover);
+  border: none;
+  color: var(--chrome-bg);
+  box-shadow: 0 4px 18px rgba(184, 146, 46, 0.35);
 }
 
 .vtt-token-panel {

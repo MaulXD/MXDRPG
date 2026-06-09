@@ -23,6 +23,9 @@ export function useFoundryWindowDrag(
   const onPointerDown = useCallback(
     (e: React.PointerEvent<HTMLElement>) => {
       if (e.button !== 0) return;
+      const target = e.target as HTMLElement;
+      if (target.closest("button, a, input, textarea, select, [data-no-drag]")) return;
+      e.preventDefault();
       onFocus();
       dragRef.current = {
         startX: e.clientX,
@@ -30,32 +33,39 @@ export function useFoundryWindowDrag(
         origX: layout.x,
         origY: layout.y,
       };
-      e.currentTarget.setPointerCapture(e.pointerId);
+
+      const onMove = (ev: PointerEvent) => {
+        if (!dragRef.current) return;
+        const dx = ev.clientX - dragRef.current.startX;
+        const dy = ev.clientY - dragRef.current.startY;
+        onLayoutChange(
+          clampDragPosition(
+            dragRef.current.origX + dx,
+            dragRef.current.origY + dy,
+            layout.width,
+            layout.minimized ? 40 : layout.height
+          )
+        );
+      };
+
+      const onUp = () => {
+        dragRef.current = null;
+        window.removeEventListener("pointermove", onMove);
+        window.removeEventListener("pointerup", onUp);
+        window.removeEventListener("pointercancel", onUp);
+      };
+
+      window.addEventListener("pointermove", onMove);
+      window.addEventListener("pointerup", onUp);
+      window.addEventListener("pointercancel", onUp);
     },
-    [layout.x, layout.y, onFocus]
+    [layout.height, layout.minimized, layout.width, layout.x, layout.y, onFocus, onLayoutChange]
   );
 
-  const onPointerMove = useCallback(
-    (e: React.PointerEvent<HTMLElement>) => {
-      if (!dragRef.current) return;
-      const dx = e.clientX - dragRef.current.startX;
-      const dy = e.clientY - dragRef.current.startY;
-      const next = clampDragPosition(
-        dragRef.current.origX + dx,
-        dragRef.current.origY + dy,
-        layout.width,
-        layout.minimized ? 40 : layout.height
-      );
-      onLayoutChange(next);
-    },
-    [layout.height, layout.minimized, layout.width, onLayoutChange]
-  );
+  const onPointerMove = useCallback(() => undefined, []);
 
-  const endDrag = useCallback((e: React.PointerEvent<HTMLElement>) => {
+  const endDrag = useCallback(() => {
     dragRef.current = null;
-    if (e.currentTarget.hasPointerCapture(e.pointerId)) {
-      e.currentTarget.releasePointerCapture(e.pointerId);
-    }
   }, []);
 
   return {

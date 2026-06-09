@@ -61,17 +61,19 @@ export function SheetPopupDdbView({
       : 0;
 
   const classLine = [identity.classe, nivel ? `Nv ${nivel}` : null].filter(Boolean).join(" · ");
+  const dragHandle = toolbarDrag
+    ? {
+        onPointerDown: toolbarDrag.onPointerDown,
+        onPointerMove: toolbarDrag.onPointerMove,
+        onPointerUp: toolbarDrag.onPointerUp,
+        onPointerCancel: toolbarDrag.onPointerCancel,
+      }
+    : undefined;
 
   return (
     <div className="sheet-shell sheet-shell--popup sheet-shell--ddb">
       {toolbar || toolbarLeading || toolbarTrailing ? (
-        <div
-          className="sheet-ddb-toolbar"
-          onPointerDown={toolbarDrag?.onPointerDown}
-          onPointerMove={toolbarDrag?.onPointerMove}
-          onPointerUp={toolbarDrag?.onPointerUp}
-          onPointerCancel={toolbarDrag?.onPointerCancel}
-        >
+        <div className="sheet-ddb-toolbar" {...dragHandle}>
           {toolbarLeading ? (
             <div className="sheet-ddb-toolbar__leading">{toolbarLeading}</div>
           ) : (
@@ -79,22 +81,19 @@ export function SheetPopupDdbView({
               ⠿
             </span>
           )}
-          <div
-            className="sheet-ddb-toolbar__actions"
-            onPointerDown={(e) => e.stopPropagation()}
-          >
+          <div className="sheet-ddb-toolbar__actions" data-no-drag>
             {toolbar}
             {toolbarTrailing}
           </div>
         </div>
       ) : null}
 
-      <header className="sheet-ddb-header">
+      <header className="sheet-ddb-header" {...dragHandle}>
         <div className="sheet-ddb-header__main">
           <h2 className="sheet-ddb-header__name">{character.name}</h2>
           <p className="sheet-ddb-header__class">{classLine.toUpperCase()}</p>
         </div>
-        <div className="sheet-ddb-header__meta">
+        <div className="sheet-ddb-header__meta" data-no-drag>
           <div className="sheet-ddb-header__level" aria-label={`Nível ${nivel}`}>
             {nivel}
           </div>

@@ -134,9 +134,10 @@ export function CharacterSheetPopup({
       onMinimize={onMinimize}
       onFocus={onFocus}
       className="foundry-window--character foundry-window--character-sheet"
-      minWidth={680}
+      minWidth={720}
       minHeight={400}
       chromeless
+      contentSized
     >
       <div className="foundry-sheet-body foundry-sheet-body--ddb">
         <CharacterSheet

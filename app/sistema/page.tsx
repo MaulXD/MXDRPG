@@ -75,7 +75,7 @@ export default function SistemaPage() {
 
       <section className="glass" style={{ padding: "1.25rem 1.5rem", marginBottom: "1.5rem" }}>
         <h2 style={{ marginTop: 0, fontSize: "1.1rem" }}>Jogável agora</h2>
-        <ul style={{ margin: 0, paddingLeft: "1.2rem", lineHeight: 1.6 }}>
+        <ul className="roadmap-list roadmap-list--live">
           {LIVE.map((item) => (
             <li key={item}>{item}</li>
           ))}
@@ -84,7 +84,7 @@ export default function SistemaPage() {
 
       <section className="glass" style={{ padding: "1.25rem 1.5rem", marginBottom: "1.5rem" }}>
         <h2 style={{ marginTop: 0, fontSize: "1.1rem" }}>Em seguida</h2>
-        <ul style={{ margin: 0, paddingLeft: "1.2rem", lineHeight: 1.6, color: "var(--text-muted)" }}>
+        <ul className="roadmap-list roadmap-list--pending">
           {NEXT.map((item) => (
             <li key={item}>{item}</li>
           ))}
