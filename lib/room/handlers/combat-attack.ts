@@ -232,7 +232,14 @@ export async function executeRoomAttack(
         if (finalAttackerHp != null && t.vidaMax != null) patch.vida = finalAttackerHp;
         return patch;
       }
-      if (t.id === defenderTokenId) return { ...t, vida: finalHp };
+      if (t.id === defenderTokenId) {
+        const tempAfter = last.defenderTempHpAfter;
+        return {
+          ...t,
+          vida: finalHp,
+          vidaTemp: tempAfter != null && tempAfter > 0 ? tempAfter : undefined,
+        };
+      }
       return t;
     }),
   };
@@ -257,7 +264,14 @@ export async function executeRoomAttack(
       ...d,
       resources: {
         ...d.resources,
-        vida: { ...d.resources.vida, value: finalHp },
+        vida: {
+          ...d.resources.vida,
+          value: finalHp,
+          temp:
+            last.defenderTempHpAfter != null && last.defenderTempHpAfter > 0
+              ? last.defenderTempHpAfter
+              : undefined,
+        },
       },
       revision: d.revision + 1,
     };

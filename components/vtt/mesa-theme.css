@@ -54,8 +54,8 @@
   /* Mapa hex — azul ardósia (lidos por readThemeColor no canvas) */
   --vtt-canvas-bg-0: #121820;
   --vtt-canvas-bg-1: #0a0e14;
-  --vtt-hex-fill: rgba(122, 163, 201, 0.06);
-  --vtt-hex-stroke: rgba(122, 163, 201, 0.22);
+  --vtt-hex-fill: rgba(122, 163, 201, 0.04);
+  --vtt-hex-stroke: rgba(130, 132, 138, 0.58);
   --vtt-hex-walk-fill: rgba(72, 110, 95, 0.58);
   --vtt-hex-walk-stroke: rgba(100, 155, 130, 0.72);
   --vtt-hex-walk-paid-fill: rgba(55, 120, 130, 0.62);
@@ -75,9 +75,9 @@
   --vtt-hex-area-center-fill: rgba(200, 100, 255, 0.68);
   --vtt-hex-area-center-stroke: #e8c4ff;
 
-  /* Grid sobre mapa escuro — traços claros */
-  --vtt-hex-on-dark-fill: rgba(255, 255, 255, 0.04);
-  --vtt-hex-on-dark-stroke: rgba(255, 255, 255, 0.18);
+  /* Grid sobre mapa escuro — grafite claro (contraste) */
+  --vtt-hex-on-dark-fill: rgba(255, 255, 255, 0.03);
+  --vtt-hex-on-dark-stroke: rgba(210, 212, 218, 0.52);
   --vtt-hex-on-dark-walk-fill: rgba(130, 210, 150, 0.55);
   --vtt-hex-on-dark-walk-stroke: rgba(170, 240, 185, 0.78);
   --vtt-hex-on-dark-turn-walk-fill: rgba(130, 210, 150, 0.4);
@@ -101,9 +101,9 @@
   --vtt-hex-on-dark-path-stroke: rgba(255, 220, 120, 0.95);
   --vtt-hex-on-dark-path-glow: rgba(255, 200, 80, 0.38);
 
-  /* Grid sobre mapa claro — traços escuros */
-  --vtt-hex-on-light-fill: rgba(0, 0, 0, 0.05);
-  --vtt-hex-on-light-stroke: rgba(0, 0, 0, 0.22);
+  /* Grid sobre mapa claro — grafite escuro (contraste) */
+  --vtt-hex-on-light-fill: rgba(0, 0, 0, 0.04);
+  --vtt-hex-on-light-stroke: rgba(58, 60, 66, 0.68);
   --vtt-hex-on-light-walk-fill: rgba(30, 110, 70, 0.52);
   --vtt-hex-on-light-walk-stroke: rgba(20, 90, 55, 0.82);
   --vtt-hex-on-light-turn-walk-fill: rgba(30, 110, 70, 0.38);
@@ -127,9 +127,9 @@
   --vtt-hex-on-light-path-stroke: rgba(30, 80, 160, 0.95);
   --vtt-hex-on-light-path-glow: rgba(40, 100, 180, 0.32);
 
-  /* Mapas com fundo verde — evita hex “verde no verde” */
-  --vtt-hex-on-green-fill: rgba(0, 0, 0, 0.06);
-  --vtt-hex-on-green-stroke: rgba(0, 0, 0, 0.38);
+  /* Mapas com fundo verde — grafite escuro para não sumir no terreno */
+  --vtt-hex-on-green-fill: rgba(0, 0, 0, 0.05);
+  --vtt-hex-on-green-stroke: rgba(58, 60, 66, 0.72);
   --vtt-hex-on-green-walk-fill: rgba(255, 252, 235, 0.72);
   --vtt-hex-on-green-walk-stroke: rgba(0, 0, 0, 0.92);
   --vtt-hex-on-green-turn-walk-fill: rgba(255, 252, 235, 0.55);

@@ -20,6 +20,7 @@ import { isMonsterToken } from "@/lib/room/settings";
 import type { BattleToken } from "@/lib/vtt/types";
 import { tokenAxialDistance } from "@/lib/vtt/creature-size";
 import { axialDistance } from "@/lib/vtt/hex-math";
+import { applyDamageWithTempHp } from "@/lib/combat/hp-temp";
 import { abilityFromEntry } from "@/lib/combat/compendium-actions";
 import { attackRollMode, canTokenAct } from "@/lib/combat/conditions";
 import { clearTimedEffectsForFields } from "@/lib/combat/timed-effects";
@@ -98,6 +99,8 @@ export type AttackResolution = {
   damage: DamageBreakdown | null;
   defenderHpBefore: number;
   defenderHpAfter: number;
+  defenderTempHpBefore?: number;
+  defenderTempHpAfter?: number;
   attackerHpBefore?: number;
   attackerHpAfter?: number;
   attackerHeal?: number;
@@ -202,17 +205,21 @@ function applyHitSpecialsToResolution(
   hit: boolean,
   critical: boolean,
   damage: DamageBreakdown | null,
-  hpBefore: number
+  hpBefore: number,
+  tempBefore: number
 ): AttackResolution {
   const specials = action.equipmentSpecials ?? [];
   if (!specials.length) return res;
 
   const fx = applyEquipmentOnHitEffects(specials, hit, critical);
   let hpAfter = res.defenderHpAfter;
+  let tempAfter = res.defenderTempHpAfter ?? tempBefore;
   let dmg = damage;
   if (hit && dmg && fx.bonusDamage > 0) {
     dmg = mergeBonusIntoDamage(dmg, fx.bonusDamage, fx.notes);
-    hpAfter = Math.max(0, hpBefore - dmg.total);
+    const damaged = applyDamageWithTempHp(hpBefore, tempBefore, dmg.total);
+    hpAfter = damaged.hp;
+    tempAfter = damaged.tempHp;
   }
 
   const atkHpBefore = attackerHp(attackerToken);
@@ -229,6 +236,7 @@ function applyHitSpecialsToResolution(
     ...res,
     damage: dmg,
     defenderHpAfter: hpAfter,
+    defenderTempHpAfter: tempAfter,
     attackerHpBefore: atkHpBefore,
     attackerHpAfter: atkHpAfter,
     attackerHeal: fx.attackerHeal || undefined,
@@ -574,6 +582,26 @@ export function isHealingSpell(action: CombatActionOption): boolean {
   );
 }
 
+/** PA do próximo ataque — 2º golpe no turno não reaproveita desconto do 1º (ex. Corte Limpo). */
+export function paNeedForCombatAction(
+  attacker: BattleToken,
+  actor: CharacterSheet | null,
+  action: CombatActionOption,
+  channelExtraPa = 0
+): number {
+  if (!actor) return action.paCost + channelExtraPa;
+  if (action.channelMaxExtraPa != null) {
+    return totalChannelPaCost(actor, action, channelExtraPa);
+  }
+  if (action.kind === "weapon") {
+    const count = weaponAttackCount(actor, action);
+    if (count > 1) return totalAttackPaCost(actor, action);
+    const attackIndex = (attacker.paSpentThisTurn ?? 0) > 0 ? 2 : 1;
+    return effectivePaCost(actor, action, { attackIndex, attackCount: count });
+  }
+  return effectivePaCost(actor, action);
+}
+
 /** Jogador (não criatura) atacando aliado com ação ofensiva — exige confirmação na UI. */
 export function needsFriendlyFireConfirm(
   attacker: BattleToken,
@@ -628,11 +656,7 @@ export function canAttackTarget(
   }
   if (!opts?.skipPaCheck) {
     const channelExtra = opts?.channelExtraPa ?? 0;
-    const paNeed = opts?.actor
-      ? action.channelMaxExtraPa
-        ? totalChannelPaCost(opts.actor, action, channelExtra)
-        : totalAttackPaCost(opts.actor, action)
-      : action.paCost + channelExtra;
+    const paNeed = paNeedForCombatAction(attacker, opts?.actor ?? null, action, channelExtra);
     const paCheck = checkCanSpendPa(attacker, paNeed);
     if (!paCheck.ok) return { ok: false, reason: paCheck.reason };
   }
@@ -700,8 +724,10 @@ function resolveMonsterAttack(
   const hit = critical || (!criticalFail && attackTotal >= ac);
 
   const hpBefore = defenderHp(defenderToken);
+  const tempBefore = defenderToken.vidaTemp ?? 0;
   let damage: DamageBreakdown | null = null;
   let hpAfter = hpBefore;
+  let tempAfter = tempBefore;
 
   if (hit) {
     damage = rollActionDamage(
@@ -721,7 +747,9 @@ function resolveMonsterAttack(
         total: damage.total + sneak.total,
       };
     }
-    hpAfter = Math.max(0, hpBefore - damage.total);
+    const damaged = applyDamageWithTempHp(hpBefore, tempBefore, damage.total);
+    hpAfter = damaged.hp;
+    tempAfter = damaged.tempHp;
   }
 
   let baseRes: AttackResolution = {
@@ -748,6 +776,8 @@ function resolveMonsterAttack(
     damage,
     defenderHpBefore: hpBefore,
     defenderHpAfter: hpAfter,
+    defenderTempHpBefore: tempBefore,
+    defenderTempHpAfter: tempAfter,
     summary: "",
   };
 
@@ -772,7 +802,8 @@ function resolveMonsterAttack(
     hit,
     critical,
     damage,
-    hpBefore
+    hpBefore,
+    tempBefore
   );
 }
 
@@ -864,8 +895,10 @@ export function resolveAttack(
   const hit = critical || (!criticalFail && attackTotal >= ac);
 
   const hpBefore = defenderHp(defenderToken);
+  const tempBefore = defenderToken.vidaTemp ?? 0;
   let damage: DamageBreakdown | null = null;
   let hpAfter = hpBefore;
+  let tempAfter = tempBefore;
 
   if (hit) {
     const dmgMod = resolved.kind === "spell" ? 0 : attrMod;
@@ -875,7 +908,9 @@ export function resolveAttack(
       damage.rolls.push(...extra.rolls);
       damage.total += extra.total;
     }
-    hpAfter = Math.max(0, hpBefore - damage.total);
+    const damaged = applyDamageWithTempHp(hpBefore, tempBefore, damage.total);
+    hpAfter = damaged.hp;
+    tempAfter = damaged.tempHp;
   }
 
   const attr = attributeLabel(attrKey);
@@ -925,6 +960,8 @@ export function resolveAttack(
     damage,
     defenderHpBefore: hpBefore,
     defenderHpAfter: hpAfter,
+    defenderTempHpBefore: tempBefore,
+    defenderTempHpAfter: tempAfter,
     summary,
   };
 
@@ -935,7 +972,8 @@ export function resolveAttack(
     hit,
     critical,
     damage,
-    hpBefore
+    hpBefore,
+    tempBefore
   );
 }
 

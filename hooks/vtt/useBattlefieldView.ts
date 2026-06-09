@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useRef, useState, type RefObject } from "react";
+import { useCallback, useEffect, useRef, useState, type RefObject } from "react";
 import {
   BATTLEFIELD_SCALE_MAX,
   BATTLEFIELD_SCALE_MIN,
@@ -18,6 +18,13 @@ function canvasSize(canvas: HTMLCanvasElement | null, wrap: HTMLElement | null) 
   const w = canvas?.clientWidth ?? wrap?.clientWidth ?? 0;
   const h = canvas?.clientHeight ?? wrap?.clientHeight ?? 0;
   return { w, h };
+}
+
+const ARROW_PAN_STEP_PX = 48;
+
+function isTypingTarget(target: EventTarget | null): boolean {
+  if (!(target instanceof HTMLElement)) return false;
+  return Boolean(target.closest("input, textarea, select, [contenteditable='true']"));
 }
 
 export function useBattlefieldView({ wrapRef, canvasRef }: Params) {
@@ -60,8 +67,23 @@ export function useBattlefieldView({ wrapRef, canvasRef }: Params) {
   const zoomIn = useCallback(() => zoomBy(1.15), [zoomBy]);
   const zoomOut = useCallback(() => zoomBy(1 / 1.15), [zoomBy]);
 
+  const panBy = useCallback(
+    (dx: number, dy: number) => {
+      if (dx === 0 && dy === 0) return;
+      bumpView({
+        ...viewRef.current,
+        panX: viewRef.current.panX + dx,
+        panY: viewRef.current.panY + dy,
+      });
+    },
+    [bumpView]
+  );
+
   const onWheel = useCallback(
     (e: React.WheelEvent) => {
+      const target = e.target;
+      if (target instanceof HTMLElement && target.closest(".vtt-help-backdrop")) return;
+
       const canvas = canvasRef.current;
       const wrap = wrapRef.current;
       if (!canvas || !wrap) return;
@@ -129,6 +151,38 @@ export function useBattlefieldView({ wrapRef, canvasRef }: Params) {
     return true;
   }, []);
 
+  useEffect(() => {
+    function onKeyDown(e: KeyboardEvent) {
+      if (isTypingTarget(e.target)) return;
+      if (e.altKey || e.ctrlKey || e.metaKey) return;
+
+      let dx = 0;
+      let dy = 0;
+      switch (e.key) {
+        case "ArrowLeft":
+          dx = ARROW_PAN_STEP_PX;
+          break;
+        case "ArrowRight":
+          dx = -ARROW_PAN_STEP_PX;
+          break;
+        case "ArrowUp":
+          dy = ARROW_PAN_STEP_PX;
+          break;
+        case "ArrowDown":
+          dy = -ARROW_PAN_STEP_PX;
+          break;
+        default:
+          return;
+      }
+
+      e.preventDefault();
+      panBy(dx, dy);
+    }
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [panBy]);
+
   const zoomPercent = Math.round(view.scale * 100);
 
   return {
@@ -139,6 +193,7 @@ export function useBattlefieldView({ wrapRef, canvasRef }: Params) {
     zoomIn,
     zoomOut,
     resetView,
+    panBy,
     onWheel,
     onPointerDown,
     onPointerMove,

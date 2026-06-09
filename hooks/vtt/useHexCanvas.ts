@@ -109,7 +109,7 @@ export function useHexCanvas(
   const lastAnimFrameMsRef = useRef(0);
   const frameAnimRef = useRef<number | null>(null);
 
-  const TOKEN_HOVER_SCALE = 1.05;
+  const TOKEN_HOVER_SCALE = 1.1;
 
   const needsCanvasAnimation = useCallback((s: HexCanvasDrawState) => {
     const hoverTarget = s.hoverTokenId ? TOKEN_HOVER_SCALE : 1;

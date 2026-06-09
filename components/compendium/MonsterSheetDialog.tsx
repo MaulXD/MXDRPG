@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { MonsterCompendiumSheet } from "@/components/compendium/MonsterCompendiumSheet";
 
 type Props = {
@@ -9,6 +10,12 @@ type Props = {
 };
 
 export function MonsterSheetDialog({ entryId, onClose }: Props) {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   useEffect(() => {
     if (!entryId) return;
     const onKey = (e: KeyboardEvent) => {
@@ -18,9 +25,9 @@ export function MonsterSheetDialog({ entryId, onClose }: Props) {
     return () => document.removeEventListener("keydown", onKey);
   }, [entryId, onClose]);
 
-  if (!entryId) return null;
+  if (!mounted || !entryId) return null;
 
-  return (
+  return createPortal(
     <div
       className="monster-sheet-backdrop"
       role="presentation"
@@ -35,6 +42,7 @@ export function MonsterSheetDialog({ entryId, onClose }: Props) {
       >
         <MonsterCompendiumSheet entryId={entryId} onClose={onClose} variant="dialog" />
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }

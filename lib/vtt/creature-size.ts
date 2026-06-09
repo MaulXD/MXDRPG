@@ -1,5 +1,12 @@
 import type { Axial } from "@/lib/vtt/hex-math";
-import { HEX_DIRECTIONS, axialDistance, axialToPixel, hexesInRange } from "@/lib/vtt/hex-math";
+import {
+  HEX_DIRECTIONS,
+  axialDistance,
+  axialToPixel,
+  hexCorners,
+  hexNeighbors,
+  hexesInRange,
+} from "@/lib/vtt/hex-math";
 import type { BattleToken } from "@/lib/vtt/types";
 import { resolveMonsterCreatureSize } from "@/lib/vtt/monster-sizes";
 import type { MonsterSpawnVariant } from "@/lib/vtt/monster-scaling";
@@ -15,11 +22,11 @@ export type CreatureSize =
 
 const SMALL_RACES = new Set(["Halfling", "Gnomo"]);
 
-/** Hexes ocupados por tamanho (Médio 1 · Grande 3 · Gigante 7 · …). */
+/** Hexes ocupados por tamanho (Médio 1 · Grande 4 · Gigante 7 · …). */
 export const SIZE_HEX_COUNT: Record<CreatureSize, number> = {
   small: 1,
   medium: 1,
-  large: 3,
+  large: 4,
   huge: 7,
   gargantuan: 19,
   colossal: 37,
@@ -51,15 +58,50 @@ function axialDiskRadius(size: CreatureSize): number {
   }
 }
 
-/** Grande: cluster triangular de 3 hex (âncora + dois vizinhos adjacentes entre si). */
+/** Grande: losango compacto de 4 hex (âncora + três vizinhos que fecham o bloco). */
 function largeOccupiedHexes(anchor: Axial): Axial[] {
-  const a = HEX_DIRECTIONS[0];
-  const b = HEX_DIRECTIONS[1];
+  const e = HEX_DIRECTIONS[0];
+  const ne = HEX_DIRECTIONS[1];
+  const se = HEX_DIRECTIONS[5];
   return [
     anchor,
-    { q: anchor.q + a.q, r: anchor.r + a.r },
-    { q: anchor.q + b.q, r: anchor.r + b.r },
+    { q: anchor.q + e.q, r: anchor.r + e.r },
+    { q: anchor.q + se.q, r: anchor.r + se.r },
+    { q: anchor.q + ne.q, r: anchor.r + ne.r },
   ];
+}
+
+/** Raio máximo do disco do token centrado no footprint, sem ultrapassar a área ocupada. */
+function footprintInscribedRadius(hexSize: number, hexes: Axial[]): number {
+  if (hexes.length === 0) return hexInscribedRadius(hexSize);
+
+  let sx = 0;
+  let sy = 0;
+  for (const h of hexes) {
+    const p = axialToPixel(h.q, h.r, hexSize, 0, 0);
+    sx += p.x;
+    sy += p.y;
+  }
+  const cx = sx / hexes.length;
+  const cy = sy / hexes.length;
+  const keys = new Set(hexes.map((h) => `${h.q},${h.r}`));
+  const drawHexR = hexSize * 0.92;
+
+  let minBoundaryDist = Infinity;
+  for (const h of hexes) {
+    const { x: hx, y: hy } = axialToPixel(h.q, h.r, hexSize, 0, 0);
+    const corners = hexCorners(hx, hy, drawHexR);
+    for (let d = 0; d < 6; d++) {
+      const neighbor = hexNeighbors(h)[d];
+      if (keys.has(`${neighbor.q},${neighbor.r}`)) continue;
+      for (const cornerIdx of [(d + 4) % 6, (d + 5) % 6]) {
+        const c = corners[cornerIdx];
+        minBoundaryDist = Math.min(minBoundaryDist, Math.hypot(c.x - cx, c.y - cy));
+      }
+    }
+  }
+
+  return Math.max(4, minBoundaryDist);
 }
 
 export function occupiedHexes(anchor: Axial, size: CreatureSize): Axial[] {
@@ -143,7 +185,7 @@ export const TOKEN_RADIUS_RATIO = HEX_INSCRIBED_RATIO - 0.01;
 export const TOKEN_RADIUS_RATIO_BY_SIZE: Record<CreatureSize, number> = {
   small: HEX_INSCRIBED_RATIO,
   medium: HEX_INSCRIBED_RATIO,
-  large: 0.95,
+  large: 0.465,
   huge: 1.55,
   gargantuan: 2.52,
   colossal: 3.48,
@@ -159,7 +201,10 @@ export function tokenDrawRadius(hexSize: number, size: CreatureSize): number {
   if (size === "small" || size === "medium") {
     return hexInscribedRadius(hexSize) - edgePad;
   }
-  return hexSize * TOKEN_RADIUS_RATIO_BY_SIZE[size];
+  if (size === "large") {
+    return footprintInscribedRadius(hexSize, largeOccupiedHexes({ q: 0, r: 0 })) - edgePad;
+  }
+  return hexSize * TOKEN_RADIUS_RATIO_BY_SIZE[size] - edgePad;
 }
 
 export function tokenPixelCenter(

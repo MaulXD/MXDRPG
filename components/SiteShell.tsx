@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { AnimatedNavLink } from "@/components/AnimatedNavLink";
 import { BugReportButton } from "@/components/BugReportButton";
-import { ThemeToggle } from "@/components/ThemeToggle";
 import "@/components/vtt/mesa-theme.css";
 
 type Props = {
@@ -24,15 +24,14 @@ export function SiteShell({ children, header, footer }: Props) {
             ELDARIN
           </Link>
           <nav className="vtt-nav">
-            <Link href="/mesa">Mesas</Link>
-            <Link href="/biblioteca">Compêndios</Link>
-            <Link href="/eldarin">Minhas mesas</Link>
+            <AnimatedNavLink href="/mesa">Mesas</AnimatedNavLink>
+            <AnimatedNavLink href="/biblioteca">Compêndios</AnimatedNavLink>
+            <AnimatedNavLink href="/eldarin">Minhas mesas</AnimatedNavLink>
           </nav>
-          <div className="vtt-topbar-actions">
-            <ThemeToggle />
-          </div>
         </header>
-        <main className="vtt-main">{children}</main>
+        <main key={pathname} className="vtt-main page-enter">
+          {children}
+        </main>
         <BugReportButton variant="vtt" />
       </div>
     );
@@ -41,7 +40,9 @@ export function SiteShell({ children, header, footer }: Props) {
   return (
     <>
       {header}
-      <main>{children}</main>
+      <main key={pathname} className="page-enter">
+        {children}
+      </main>
       {footer}
       <BugReportButton variant="site" />
     </>

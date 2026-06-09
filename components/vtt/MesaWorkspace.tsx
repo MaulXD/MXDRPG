@@ -26,6 +26,7 @@ import { FoundryDockPanel } from "@/components/vtt/foundry/FoundryDockPanel";
 import { FoundryWindow } from "@/components/vtt/foundry/FoundryWindow";
 import { MesaFoundrySidebar } from "@/components/vtt/foundry/MesaFoundrySidebar";
 import { HexBattlefield } from "@/components/vtt/HexBattlefield";
+import { MonsterSheetPopup } from "@/components/compendium/MonsterSheetPopup";
 import { CharacterSheetPopup } from "@/components/vtt/CharacterSheetPopup";
 import { PlayableCharactersPanel } from "@/components/vtt/PlayableCharactersPanel";
 import { RoomChat } from "@/components/vtt/RoomChat";
@@ -85,6 +86,7 @@ export function MesaWorkspace({
   );
 
   const [sheetPopupActorId, setSheetPopupActorId] = useState<string | null>(null);
+  const [monsterSheetEntryId, setMonsterSheetEntryId] = useState<string | null>(null);
   const [spawnAxial, setSpawnAxial] = useState<Axial | null>(null);
   const [combatChatReveal, setCombatChatReveal] = useState<
     Record<string, import("@/lib/combat/chat-display").CombatChatRevealPhase>
@@ -141,6 +143,22 @@ export function MesaWorkspace({
   const closeSheet = useCallback(() => {
     setSheetPopupActorId(null);
     windows.close("character");
+  }, [windows]);
+
+  const openMonsterSheet = useCallback(
+    (entryId: string) => {
+      const id = entryId.trim();
+      if (!id) return;
+      setMonsterSheetEntryId(id);
+      windows.openAsPopup("monsterSheet");
+      windows.focus("monsterSheet");
+    },
+    [windows]
+  );
+
+  const closeMonsterSheet = useCallback(() => {
+    setMonsterSheetEntryId(null);
+    windows.close("monsterSheet");
   }, [windows]);
 
   const openDungeonPanel = useCallback(() => {
@@ -363,7 +381,9 @@ export function MesaWorkspace({
                     session={session}
                     selectedActorId={sheetPopupActorId}
                     canCreateCharacter={canCreateCharacter}
+                    isRoomGm={effectiveIsGm}
                     onOpenSheet={openSheet}
+                    onCharactersChanged={refresh}
                   />
                 </div>
               </FoundryDockPanel>
@@ -429,6 +449,7 @@ export function MesaWorkspace({
                     roomId={roomId}
                     spawnAxial={spawnAxial}
                     onSpawned={(snap) => applySnapshot(snap)}
+                    onOpenMonsterSheet={openMonsterSheet}
                   />
                 </div>
               </FoundryDockPanel>
@@ -460,6 +481,7 @@ export function MesaWorkspace({
               canControlCombat={effectiveCanControlCombat}
               canRepositionTokens={effectiveCanControlCombat}
               isRoomGm={effectiveIsGm}
+              simulatePlayerView={playAsPlayer}
               canBypassTurn={canBypassTurn}
               canEndTurn={canEndTurn}
               roomOwnerId={roomOwnerId}
@@ -475,6 +497,7 @@ export function MesaWorkspace({
               onRefresh={refresh}
               onApplySnapshot={applySnapshot}
               onOpenSheet={openSheet}
+              onOpenMonsterSheet={openMonsterSheet}
               onHoverAxialChange={setSpawnAxial}
               onOpenDungeonPanel={openDungeonPanel}
               showSpawnInSidebar={false}
@@ -575,7 +598,9 @@ export function MesaWorkspace({
                       session={session}
                       selectedActorId={sheetPopupActorId}
                       canCreateCharacter={canCreateCharacter}
+                      isRoomGm={effectiveIsGm}
                       onOpenSheet={openSheet}
+                      onCharactersChanged={refresh}
                     />
                   </div>
                 </FoundryWindow>
@@ -647,9 +672,26 @@ export function MesaWorkspace({
                       roomId={roomId}
                       spawnAxial={spawnAxial}
                       onSpawned={(snap) => applySnapshot(snap)}
+                      onOpenMonsterSheet={openMonsterSheet}
                     />
                   </div>
                 </FoundryWindow>
+              ) : null}
+
+              {monsterSheetEntryId ? (
+                <MonsterSheetPopup
+                  entryId={monsterSheetEntryId}
+                  onEntryChange={setMonsterSheetEntryId}
+                  layout={win("monsterSheet")}
+                  onLayoutChange={(patch) => windows.patch("monsterSheet", patch)}
+                  onFocus={() => windows.focus("monsterSheet")}
+                  onMinimize={() =>
+                    win("monsterSheet").minimized
+                      ? windows.restore("monsterSheet")
+                      : windows.minimize("monsterSheet")
+                  }
+                  onClose={closeMonsterSheet}
+                />
               ) : null}
 
               {sheetPopupActorId && snapshot ? (

@@ -119,6 +119,13 @@ type GridDrawParams = {
   palette?: HexHighlightPalette;
 };
 
+/** Halo oposto ao traço principal — melhora leitura do grid sobre imagens de cenário. */
+function baseHexContrastStroke(tone: MapBackdropTone): string {
+  if (tone === "dark") return "rgba(0, 0, 0, 0.42)";
+  if (tone === "light" || tone === "green") return "rgba(255, 255, 255, 0.38)";
+  return "rgba(0, 0, 0, 0.32)";
+}
+
 export function drawHexGridLayer(ctx: CanvasRenderingContext2D, p: GridDrawParams): void {
   const { layout, hexSize } = p;
   const { ox, oy } = layout;
@@ -206,14 +213,22 @@ export function drawHexGridLayer(ctx: CanvasRenderingContext2D, p: GridDrawParam
     ctx.fillStyle = fill;
     ctx.fill();
 
+    const isBaseHex = fill === pal.fill && stroke === pal.stroke && lineWidth === 1;
+
     if (isMoveHighlight && fill !== pal.fill) {
       ctx.strokeStyle = "rgba(0, 0, 0, 0.72)";
       ctx.lineWidth = lineWidth + 1.5;
       ctx.stroke();
     }
 
+    if (isBaseHex) {
+      ctx.strokeStyle = baseHexContrastStroke(p.mapBackdropTone ?? "none");
+      ctx.lineWidth = lineWidth + 1.4;
+      ctx.stroke();
+    }
+
     ctx.strokeStyle = stroke;
-    ctx.lineWidth = lineWidth;
+    ctx.lineWidth = isBaseHex ? 1.25 : lineWidth;
     ctx.stroke();
 
   }
@@ -273,7 +288,7 @@ type TokenDrawParams = {
   spellPickedTargetIds?: Set<string>;
   hoverAttackTargetId: string | null;
   hoverTokenId: string | null;
-  /** 1 → 1.05 animado no token sob o cursor */
+  /** 1 → 1.1 animado no token sob o cursor */
   tokenHoverScale?: number;
   tokenAnimTimeSec: number;
   tokenFlash: { tokenId: string; kind: TokenFlashKind } | null;
@@ -310,7 +325,7 @@ function drawSingleToken(
 
   if (creatureSize !== "small" && creatureSize !== "medium") {
       ctx.save();
-      const isLargeTriangle = creatureSize === "large";
+      const isLargeFootprint = creatureSize === "large";
       for (const hex of occupiedHexes(pos, creatureSize)) {
         const { x: hx, y: hy } = axialToPixel(hex.q, hex.r, size, layout.ox, layout.oy);
         const corners = hexCorners(hx, hy, size * 0.92);
@@ -318,10 +333,10 @@ function drawSingleToken(
         ctx.moveTo(corners[0].x, corners[0].y);
         for (let i = 1; i < corners.length; i++) ctx.lineTo(corners[i].x, corners[i].y);
         ctx.closePath();
-        ctx.fillStyle = isLargeTriangle ? "rgba(255,255,255,0.07)" : "rgba(255,255,255,0.04)";
+        ctx.fillStyle = isLargeFootprint ? "rgba(255,255,255,0.07)" : "rgba(255,255,255,0.04)";
         ctx.fill();
-        ctx.strokeStyle = isLargeTriangle ? "rgba(201,169,98,0.38)" : "rgba(201,169,98,0.22)";
-        ctx.lineWidth = isLargeTriangle ? 1.35 : 1;
+        ctx.strokeStyle = isLargeFootprint ? "rgba(201,169,98,0.38)" : "rgba(201,169,98,0.22)";
+        ctx.lineWidth = isLargeFootprint ? 1.35 : 1;
         ctx.stroke();
       }
       ctx.restore();
@@ -333,8 +348,8 @@ function drawSingleToken(
     const hpVis = p.tokenHpDisplay?.get(token.id);
     const showHpBar = Boolean(hpVis?.bar && token.vidaMax != null && token.vida != null);
     const ringInset = tokenPortraitInset(ringStyle);
-    const portraitR = showHpBar ? hpLayout.contentRFull : Math.max(4, r - ringInset);
-    const identityR = showHpBar ? hpLayout.identityBase : portraitR;
+    const identityR = showHpBar ? hpLayout.identityBase : Math.max(4, r - ringInset);
+    const portraitR = showHpBar ? hpLayout.contentRFull : r;
     const defeated = isTokenDefeated(token);
 
     if (token.id === p.turnActiveId) {

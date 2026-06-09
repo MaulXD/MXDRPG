@@ -13,11 +13,14 @@ function memberPhotoUrl(member: RoomPresenceMember): string | null {
   return member.avatarUrl ?? member.characterPortraitUrl ?? null;
 }
 
-function memberLabel(member: RoomPresenceMember): string {
-  const user = member.displayName.trim() || "Jogador";
-  const character = member.characterName?.trim();
-  if (character) return `${character} (${user})`;
-  return user;
+function playerDisplayName(member: RoomPresenceMember): string {
+  return member.displayName.trim() || "Jogador";
+}
+
+function characterDisplayName(member: RoomPresenceMember): string {
+  const name = member.characterName?.trim();
+  if (name) return name;
+  return member.role === "gm" ? "Mestre" : "—";
 }
 
 function MemberAvatar({ member }: { member: RoomPresenceMember }) {
@@ -71,33 +74,39 @@ export function MesaOnlineMenu({ online, loading = false, selfUserId }: Props) {
             </p>
           ) : (
             <ul className="mesa-online-menu__list">
-              {online.map((member) => (
-                <li
-                  key={member.userId}
-                  className={`mesa-online-menu__item${member.userId === selfUserId ? " mesa-online-menu__item--self" : ""}`}
-                  role="option"
-                  aria-selected={member.userId === selfUserId}
-                >
-                  <span className="mesa-online-menu__avatar">
-                    <MemberAvatar member={member} />
-                  </span>
-                  <span className="mesa-online-menu__meta">
-                    <span className="mesa-online-menu__name-row">
-                      <strong className="mesa-online-menu__name" title={memberLabel(member)}>
-                        {memberLabel(member)}
-                      </strong>
-                      {member.userId === selfUserId ? (
-                        <span className="mesa-online-menu__you">você</span>
-                      ) : null}
-                      <span
-                        className={`mesa-online-menu__role mesa-online-menu__role--${member.role}`}
-                      >
-                        {member.role === "gm" ? "Mestre" : "Jogador"}
+              {online.map((member) => {
+                const isSelf = member.userId === selfUserId;
+                const sheetName = characterDisplayName(member);
+                const playerName = playerDisplayName(member);
+                return (
+                  <li
+                    key={member.userId}
+                    className={`mesa-online-menu__item${isSelf ? " mesa-online-menu__item--self" : ""}`}
+                    role="option"
+                    aria-selected={isSelf}
+                    aria-label={`${sheetName}, jogador ${playerName}${isSelf ? ", você" : ""}`}
+                  >
+                    <div className="mesa-online-menu__avatar-wrap">
+                      <span className="mesa-online-menu__avatar">
+                        <MemberAvatar member={member} />
                       </span>
-                    </span>
-                  </span>
-                </li>
-              ))}
+                      <div className="mesa-online-menu__hover-card glass-panel" role="tooltip">
+                        <div className="mesa-online-menu__hover-row">
+                          <span className="mesa-online-menu__hover-eyebrow">Nome da ficha</span>
+                          <strong className="mesa-online-menu__hover-sheet">{sheetName}</strong>
+                        </div>
+                        <div className="mesa-online-menu__hover-row">
+                          <span className="mesa-online-menu__hover-eyebrow">Nome do jogador</span>
+                          <span className="mesa-online-menu__hover-player">
+                            {playerName}
+                            {isSelf ? <em className="mesa-online-menu__you"> você</em> : null}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                );
+              })}
             </ul>
           )}
         </div>

@@ -3,7 +3,7 @@ import { hasClerkPublishableKey } from "@/lib/auth/clerk-config";
 import { getSession } from "@/lib/auth/session";
 import { portalPathForRole, roleMeta } from "@/lib/auth/roles";
 import Link from "next/link";
-import { ThemeToggle } from "@/components/ThemeToggle";
+import { AnimatedNavLink } from "@/components/AnimatedNavLink";
 
 const links = [
   { href: "/", label: "Início" },
@@ -22,11 +22,10 @@ export async function SiteHeaderWrapper() {
       </Link>
       <nav className="site-nav">
         {links.map((l) => (
-          <Link key={l.href} href={l.href} className="nav-link">
+          <AnimatedNavLink key={l.href} href={l.href} exact={l.href === "/"}>
             {l.label}
-          </Link>
+          </AnimatedNavLink>
         ))}
-        <ThemeToggle />
         {clerkEnabled ? (
           <ClerkHeaderAuth session={session} />
         ) : session ? (

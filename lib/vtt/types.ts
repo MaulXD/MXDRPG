@@ -24,6 +24,8 @@ export type BattleToken = {
   nivel?: number;
   vida?: number;
   vidaMax?: number;
+  /** Vida temporária (absorve dano antes da vida normal). */
+  vidaTemp?: number;
   defesa?: number;
   /** Nome no mapa: hover (padrão) ou sempre visível */
   nameplateMode?: "hover" | "always";
@@ -43,7 +45,7 @@ export type BattleToken = {
   monsterVariant?: import("@/lib/vtt/monster-scaling").MonsterSpawnVariant;
   /** Foco da imagem no token (sync da ficha) */
   imageFocus?: import("@/lib/media/portrait-focus").PortraitFocus;
-  /** Tamanho corporal — Médio 1 hex · Grande 3 · Gigante 7 · … */
+  /** Tamanho corporal — Médio 1 hex · Grande 4 · Gigante 7 · … */
   creatureSize?: import("@/lib/vtt/creature-size").CreatureSize;
   /** @deprecated use creatureSize */
   footprint?: "medium" | "small";

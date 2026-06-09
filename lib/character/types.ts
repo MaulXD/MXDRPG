@@ -7,7 +7,7 @@ export type CharacterAttributes = Record<AttributeKey, number>;
 export type CharacterCulinary = Record<CulinaryKey, number>;
 
 export type CharacterResources = {
-  vida: { value: number; max: number };
+  vida: { value: number; max: number; temp?: number };
   pontosAcao: { value: number; max: number };
 };
 

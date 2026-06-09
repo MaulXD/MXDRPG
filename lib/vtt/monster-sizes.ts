@@ -18,7 +18,7 @@ export const CREATURE_SIZE_PT: Record<CreatureSize, string> = {
 export const CREATURE_SIZE_HEX_LABEL: Record<CreatureSize, string> = {
   small: "1 hex",
   medium: "1 hex",
-  large: "3 hex",
+  large: "4 hex",
   huge: "7 hex",
   gargantuan: "19 hex",
   colossal: "37 hex",

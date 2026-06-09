@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { deleteCharacterSheet } from "@/lib/character/lifecycle";
 import { canEditCharacter, resolveCharacter, saveCharacter } from "@/lib/character/characters";
 import { isPortraitOnlyPatch } from "@/lib/auth/portrait-access";
 import { canEditCharacterPortrait } from "@/lib/auth/portrait-access-server";
@@ -80,4 +81,28 @@ export async function PATCH(request: Request, { params }: Params) {
 
   const saved = await saveCharacter(merged);
   return NextResponse.json({ ok: true, character: saved });
+}
+
+export async function DELETE(request: Request, { params }: Params) {
+  const session = await getSession();
+  if (!session) {
+    return NextResponse.json({ error: "Faça login" }, { status: 401 });
+  }
+
+  const { id } = await params;
+  const body = (await request.json().catch(() => ({}))) as {
+    confirmName?: string;
+    roomId?: string;
+  };
+
+  const result = await deleteCharacterSheet(id, session.user, {
+    confirmName: body.confirmName ?? "",
+    roomId: body.roomId,
+  });
+
+  if (!result.ok) {
+    return NextResponse.json({ error: result.error }, { status: result.status ?? 400 });
+  }
+
+  return NextResponse.json({ ok: true, roomId: result.roomId });
 }

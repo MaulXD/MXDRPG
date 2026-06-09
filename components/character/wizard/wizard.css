@@ -737,12 +737,6 @@
   font-weight: 400;
 }
 
-[data-theme="light"] .wizard-hover-tip__bubble {
-  background: var(--surface-raised);
-  box-shadow: 0 8px 22px rgba(42, 32, 18, 0.14);
-  border-color: color-mix(in srgb, var(--glass-border) 85%, #8a6020);
-}
-
 .wizard-hover-tip:hover .wizard-hover-tip__bubble,
 .wizard-hover-tip:focus-visible .wizard-hover-tip__bubble {
   opacity: 1;
