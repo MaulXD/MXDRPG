@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useCallback, useState } from "react";
+import { SendMesaInvitePicker } from "@/components/friends/SendMesaInvitePicker";
 import { roomInviteUrl } from "@/lib/auth/room-access";
 
 type Props = {
@@ -70,6 +71,8 @@ export function RoomInvitePanel({
           {copied === "link" ? "Copiado" : "Copiar"}
         </button>
       </label>
+
+      <SendMesaInvitePicker adventureId={adventureId} />
 
       {showConfigure ? (
         <Link href={`/aventura/${adventureId}/configurar`} className="vtt-btn vtt-btn--ghost room-invite-panel__configure">
