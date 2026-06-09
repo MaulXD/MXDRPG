@@ -4,7 +4,7 @@
     "name": "Arco Longo de Vinha",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Arco Longo de Vinha</strong> (ARC-L01). Arco longo de precisão — ideal para corredores amplos e alvos distantes. Dano 1d8 perfurante, alcance 5 hex, 1 PA por ataque. Ataque +0.</p>",
+      "description": "<p><strong>Arco Longo de Vinha</strong> (ARC-L01). Arco longo de precisão — ideal para corredores amplos e alvos distantes. Dano 1d8 perfurante, alcance 5 hex, 2 PA por ataque. Ataque +0.</p>",
       "catalogId": "ARC-L01",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 0,
@@ -14,7 +14,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -34,7 +34,7 @@
     "name": "Arco Longo de Vinha +1",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Arco Longo de Vinha +1</strong> (ARC-L01). Arco longo de precisão — ideal para corredores amplos e alvos distantes. Dano 1d8 perfurante, alcance 5 hex, 1 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
+      "description": "<p><strong>Arco Longo de Vinha +1</strong> (ARC-L01). Arco longo de precisão — ideal para corredores amplos e alvos distantes. Dano 1d8 perfurante, alcance 5 hex, 2 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
       "catalogId": "ARC-L01-E1",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 1,
@@ -44,7 +44,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -64,7 +64,7 @@
     "name": "Arco Longo de Vinha +2",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Arco Longo de Vinha +2</strong> (ARC-L01). Arco longo de precisão — ideal para corredores amplos e alvos distantes. Dano 1d8 perfurante, alcance 5 hex, 1 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
+      "description": "<p><strong>Arco Longo de Vinha +2</strong> (ARC-L01). Arco longo de precisão — ideal para corredores amplos e alvos distantes. Dano 1d8 perfurante, alcance 5 hex, 2 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
       "catalogId": "ARC-L01-E2",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 2,
@@ -74,7 +74,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -94,7 +94,7 @@
     "name": "Arco Longo de Vinha +3",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Arco Longo de Vinha +3</strong> (ARC-L01). Arco longo de precisão — ideal para corredores amplos e alvos distantes. Dano 1d8 perfurante, alcance 5 hex, 1 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
+      "description": "<p><strong>Arco Longo de Vinha +3</strong> (ARC-L01). Arco longo de precisão — ideal para corredores amplos e alvos distantes. Dano 1d8 perfurante, alcance 5 hex, 2 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
       "catalogId": "ARC-L01-E3",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 3,
@@ -104,7 +104,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -131,7 +131,7 @@
     "name": "Arco Longo de Teixo",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Arco Longo de Teixo</strong> (ARC-L02). Arco longo de precisão — ideal para corredores amplos e alvos distantes. Dano 1d8 perfurante, alcance 5 hex, 1 PA por ataque. Ataque +0.</p>",
+      "description": "<p><strong>Arco Longo de Teixo</strong> (ARC-L02). Arco longo de precisão — ideal para corredores amplos e alvos distantes. Dano 1d8 perfurante, alcance 5 hex, 2 PA por ataque. Ataque +0.</p>",
       "catalogId": "ARC-L02",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 0,
@@ -141,7 +141,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -161,7 +161,7 @@
     "name": "Arco Longo de Teixo +1",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Arco Longo de Teixo +1</strong> (ARC-L02). Arco longo de precisão — ideal para corredores amplos e alvos distantes. Dano 1d8 perfurante, alcance 5 hex, 1 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
+      "description": "<p><strong>Arco Longo de Teixo +1</strong> (ARC-L02). Arco longo de precisão — ideal para corredores amplos e alvos distantes. Dano 1d8 perfurante, alcance 5 hex, 2 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
       "catalogId": "ARC-L02-E1",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 1,
@@ -171,7 +171,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -191,7 +191,7 @@
     "name": "Arco Longo de Teixo +2",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Arco Longo de Teixo +2</strong> (ARC-L02). Arco longo de precisão — ideal para corredores amplos e alvos distantes. Dano 1d8 perfurante, alcance 5 hex, 1 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
+      "description": "<p><strong>Arco Longo de Teixo +2</strong> (ARC-L02). Arco longo de precisão — ideal para corredores amplos e alvos distantes. Dano 1d8 perfurante, alcance 5 hex, 2 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
       "catalogId": "ARC-L02-E2",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 2,
@@ -201,7 +201,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -221,7 +221,7 @@
     "name": "Arco Longo de Teixo +3",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Arco Longo de Teixo +3</strong> (ARC-L02). Arco longo de precisão — ideal para corredores amplos e alvos distantes. Dano 1d8 perfurante, alcance 5 hex, 1 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
+      "description": "<p><strong>Arco Longo de Teixo +3</strong> (ARC-L02). Arco longo de precisão — ideal para corredores amplos e alvos distantes. Dano 1d8 perfurante, alcance 5 hex, 2 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
       "catalogId": "ARC-L02-E3",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 3,
@@ -231,7 +231,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -258,7 +258,7 @@
     "name": "Arco Longo de Grimwald",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Arco Longo de Grimwald</strong> (ARC-L03). Arco longo de precisão — ideal para corredores amplos e alvos distantes. Dano 1d8 perfurante, alcance 6 hex, 1 PA por ataque. Ataque +0.</p>",
+      "description": "<p><strong>Arco Longo de Grimwald</strong> (ARC-L03). Arco longo de precisão — ideal para corredores amplos e alvos distantes. Dano 1d8 perfurante, alcance 6 hex, 2 PA por ataque. Ataque +0.</p>",
       "catalogId": "ARC-L03",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 0,
@@ -268,7 +268,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -288,7 +288,7 @@
     "name": "Arco Longo de Grimwald +1",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Arco Longo de Grimwald +1</strong> (ARC-L03). Arco longo de precisão — ideal para corredores amplos e alvos distantes. Dano 1d8 perfurante, alcance 6 hex, 1 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
+      "description": "<p><strong>Arco Longo de Grimwald +1</strong> (ARC-L03). Arco longo de precisão — ideal para corredores amplos e alvos distantes. Dano 1d8 perfurante, alcance 6 hex, 2 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
       "catalogId": "ARC-L03-E1",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 1,
@@ -298,7 +298,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -318,7 +318,7 @@
     "name": "Arco Longo de Grimwald +2",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Arco Longo de Grimwald +2</strong> (ARC-L03). Arco longo de precisão — ideal para corredores amplos e alvos distantes. Dano 1d8 perfurante, alcance 6 hex, 1 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
+      "description": "<p><strong>Arco Longo de Grimwald +2</strong> (ARC-L03). Arco longo de precisão — ideal para corredores amplos e alvos distantes. Dano 1d8 perfurante, alcance 6 hex, 2 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
       "catalogId": "ARC-L03-E2",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 2,
@@ -328,7 +328,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -348,7 +348,7 @@
     "name": "Arco Longo de Grimwald +3",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Arco Longo de Grimwald +3</strong> (ARC-L03). Arco longo de precisão — ideal para corredores amplos e alvos distantes. Dano 1d8 perfurante, alcance 6 hex, 1 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
+      "description": "<p><strong>Arco Longo de Grimwald +3</strong> (ARC-L03). Arco longo de precisão — ideal para corredores amplos e alvos distantes. Dano 1d8 perfurante, alcance 6 hex, 2 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
       "catalogId": "ARC-L03-E3",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 3,
@@ -358,7 +358,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -385,7 +385,7 @@
     "name": "Arco Longo de Prata",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Arco Longo de Prata</strong> (ARC-L04). Arco longo de precisão — ideal para corredores amplos e alvos distantes. Dano 1d8 perfurante, alcance 6 hex, 1 PA por ataque. Ataque +0.</p>",
+      "description": "<p><strong>Arco Longo de Prata</strong> (ARC-L04). Arco longo de precisão — ideal para corredores amplos e alvos distantes. Dano 1d8 perfurante, alcance 6 hex, 2 PA por ataque. Ataque +0.</p>",
       "catalogId": "ARC-L04",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 0,
@@ -395,7 +395,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -415,7 +415,7 @@
     "name": "Arco Longo de Prata +1",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Arco Longo de Prata +1</strong> (ARC-L04). Arco longo de precisão — ideal para corredores amplos e alvos distantes. Dano 1d8 perfurante, alcance 6 hex, 1 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
+      "description": "<p><strong>Arco Longo de Prata +1</strong> (ARC-L04). Arco longo de precisão — ideal para corredores amplos e alvos distantes. Dano 1d8 perfurante, alcance 6 hex, 2 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
       "catalogId": "ARC-L04-E1",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 1,
@@ -425,7 +425,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -445,7 +445,7 @@
     "name": "Arco Longo de Prata +2",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Arco Longo de Prata +2</strong> (ARC-L04). Arco longo de precisão — ideal para corredores amplos e alvos distantes. Dano 1d8 perfurante, alcance 6 hex, 1 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
+      "description": "<p><strong>Arco Longo de Prata +2</strong> (ARC-L04). Arco longo de precisão — ideal para corredores amplos e alvos distantes. Dano 1d8 perfurante, alcance 6 hex, 2 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
       "catalogId": "ARC-L04-E2",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 2,
@@ -455,7 +455,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -475,7 +475,7 @@
     "name": "Arco Longo de Prata +3",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Arco Longo de Prata +3</strong> (ARC-L04). Arco longo de precisão — ideal para corredores amplos e alvos distantes. Dano 1d8 perfurante, alcance 6 hex, 1 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
+      "description": "<p><strong>Arco Longo de Prata +3</strong> (ARC-L04). Arco longo de precisão — ideal para corredores amplos e alvos distantes. Dano 1d8 perfurante, alcance 6 hex, 2 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
       "catalogId": "ARC-L04-E3",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 3,
@@ -485,7 +485,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -512,7 +512,7 @@
     "name": "Arco Longo de Cripta",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Arco Longo de Cripta</strong> (ARC-L05). Arco longo de precisão — ideal para corredores amplos e alvos distantes. Dano 1d8 perfurante, alcance 5 hex, 1 PA por ataque. Ataque +0.</p>",
+      "description": "<p><strong>Arco Longo de Cripta</strong> (ARC-L05). Arco longo de precisão — ideal para corredores amplos e alvos distantes. Dano 1d8 perfurante, alcance 5 hex, 2 PA por ataque. Ataque +0.</p>",
       "catalogId": "ARC-L05",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 0,
@@ -522,7 +522,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -542,7 +542,7 @@
     "name": "Arco Longo de Cripta +1",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Arco Longo de Cripta +1</strong> (ARC-L05). Arco longo de precisão — ideal para corredores amplos e alvos distantes. Dano 1d8 perfurante, alcance 5 hex, 1 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
+      "description": "<p><strong>Arco Longo de Cripta +1</strong> (ARC-L05). Arco longo de precisão — ideal para corredores amplos e alvos distantes. Dano 1d8 perfurante, alcance 5 hex, 2 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
       "catalogId": "ARC-L05-E1",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 1,
@@ -552,7 +552,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -572,7 +572,7 @@
     "name": "Arco Longo de Cripta +2",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Arco Longo de Cripta +2</strong> (ARC-L05). Arco longo de precisão — ideal para corredores amplos e alvos distantes. Dano 1d8 perfurante, alcance 5 hex, 1 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
+      "description": "<p><strong>Arco Longo de Cripta +2</strong> (ARC-L05). Arco longo de precisão — ideal para corredores amplos e alvos distantes. Dano 1d8 perfurante, alcance 5 hex, 2 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
       "catalogId": "ARC-L05-E2",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 2,
@@ -582,7 +582,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -602,7 +602,7 @@
     "name": "Arco Longo de Cripta +3",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Arco Longo de Cripta +3</strong> (ARC-L05). Arco longo de precisão — ideal para corredores amplos e alvos distantes. Dano 1d8 perfurante, alcance 5 hex, 1 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
+      "description": "<p><strong>Arco Longo de Cripta +3</strong> (ARC-L05). Arco longo de precisão — ideal para corredores amplos e alvos distantes. Dano 1d8 perfurante, alcance 5 hex, 2 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
       "catalogId": "ARC-L05-E3",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 3,
@@ -612,7 +612,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -639,7 +639,7 @@
     "name": "Arco Longo de Osso de Grifo",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Arco Longo de Osso de Grifo</strong> (ARC-L06). Arco longo de precisão — ideal para corredores amplos e alvos distantes. Dano 1d10 perfurante, alcance 6 hex, 1 PA por ataque. Ataque +0. Efeito: Veneno.</p>",
+      "description": "<p><strong>Arco Longo de Osso de Grifo</strong> (ARC-L06). Arco longo de precisão — ideal para corredores amplos e alvos distantes. Dano 1d10 perfurante, alcance 6 hex, 2 PA por ataque. Ataque +0. Efeito: Veneno.</p>",
       "catalogId": "ARC-L06",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 0,
@@ -649,7 +649,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -677,7 +677,7 @@
     "name": "Arco Longo de Osso de Grifo +1",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Arco Longo de Osso de Grifo +1</strong> (ARC-L06). Arco longo de precisão — ideal para corredores amplos e alvos distantes. Dano 1d10 perfurante, alcance 6 hex, 1 PA por ataque. Ataque +1. Efeito: Veneno. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
+      "description": "<p><strong>Arco Longo de Osso de Grifo +1</strong> (ARC-L06). Arco longo de precisão — ideal para corredores amplos e alvos distantes. Dano 1d10 perfurante, alcance 6 hex, 2 PA por ataque. Ataque +1. Efeito: Veneno. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
       "catalogId": "ARC-L06-E1",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 1,
@@ -687,7 +687,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -715,7 +715,7 @@
     "name": "Arco Longo de Osso de Grifo +2",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Arco Longo de Osso de Grifo +2</strong> (ARC-L06). Arco longo de precisão — ideal para corredores amplos e alvos distantes. Dano 1d10 perfurante, alcance 6 hex, 1 PA por ataque. Ataque +2. Efeito: Veneno. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
+      "description": "<p><strong>Arco Longo de Osso de Grifo +2</strong> (ARC-L06). Arco longo de precisão — ideal para corredores amplos e alvos distantes. Dano 1d10 perfurante, alcance 6 hex, 2 PA por ataque. Ataque +2. Efeito: Veneno. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
       "catalogId": "ARC-L06-E2",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 2,
@@ -725,7 +725,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -753,7 +753,7 @@
     "name": "Arco Longo de Osso de Grifo +3",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Arco Longo de Osso de Grifo +3</strong> (ARC-L06). Arco longo de precisão — ideal para corredores amplos e alvos distantes. Dano 1d10 perfurante, alcance 6 hex, 1 PA por ataque. Ataque +3. Efeito: Veneno. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
+      "description": "<p><strong>Arco Longo de Osso de Grifo +3</strong> (ARC-L06). Arco longo de precisão — ideal para corredores amplos e alvos distantes. Dano 1d10 perfurante, alcance 6 hex, 2 PA por ataque. Ataque +3. Efeito: Veneno. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
       "catalogId": "ARC-L06-E3",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 3,
@@ -763,7 +763,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -791,7 +791,7 @@
     "name": "Arco Longo de Dragão",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Arco Longo de Dragão</strong> (ARC-L07). Arco longo de precisão — ideal para corredores amplos e alvos distantes. Dano 1d10 perfurante, alcance 5 hex, 1 PA por ataque. Ataque +0.</p>",
+      "description": "<p><strong>Arco Longo de Dragão</strong> (ARC-L07). Arco longo de precisão — ideal para corredores amplos e alvos distantes. Dano 1d10 perfurante, alcance 5 hex, 2 PA por ataque. Ataque +0.</p>",
       "catalogId": "ARC-L07",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 0,
@@ -801,7 +801,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -821,7 +821,7 @@
     "name": "Arco Longo de Dragão +1",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Arco Longo de Dragão +1</strong> (ARC-L07). Arco longo de precisão — ideal para corredores amplos e alvos distantes. Dano 1d10 perfurante, alcance 5 hex, 1 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
+      "description": "<p><strong>Arco Longo de Dragão +1</strong> (ARC-L07). Arco longo de precisão — ideal para corredores amplos e alvos distantes. Dano 1d10 perfurante, alcance 5 hex, 2 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
       "catalogId": "ARC-L07-E1",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 1,
@@ -831,7 +831,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -851,7 +851,7 @@
     "name": "Arco Longo de Dragão +2",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Arco Longo de Dragão +2</strong> (ARC-L07). Arco longo de precisão — ideal para corredores amplos e alvos distantes. Dano 1d10 perfurante, alcance 5 hex, 1 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
+      "description": "<p><strong>Arco Longo de Dragão +2</strong> (ARC-L07). Arco longo de precisão — ideal para corredores amplos e alvos distantes. Dano 1d10 perfurante, alcance 5 hex, 2 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
       "catalogId": "ARC-L07-E2",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 2,
@@ -861,7 +861,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -881,7 +881,7 @@
     "name": "Arco Longo de Dragão +3",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Arco Longo de Dragão +3</strong> (ARC-L07). Arco longo de precisão — ideal para corredores amplos e alvos distantes. Dano 1d10 perfurante, alcance 5 hex, 1 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
+      "description": "<p><strong>Arco Longo de Dragão +3</strong> (ARC-L07). Arco longo de precisão — ideal para corredores amplos e alvos distantes. Dano 1d10 perfurante, alcance 5 hex, 2 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
       "catalogId": "ARC-L07-E3",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 3,
@@ -891,7 +891,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -918,7 +918,7 @@
     "name": "Arco Longo de Abismo",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Arco Longo de Abismo</strong> (ARC-L08). Arco longo de precisão — ideal para corredores amplos e alvos distantes. Dano 1d8 perfurante, alcance 7 hex, 1 PA por ataque. Ataque +0.</p>",
+      "description": "<p><strong>Arco Longo de Abismo</strong> (ARC-L08). Arco longo de precisão — ideal para corredores amplos e alvos distantes. Dano 1d8 perfurante, alcance 7 hex, 2 PA por ataque. Ataque +0.</p>",
       "catalogId": "ARC-L08",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 0,
@@ -928,7 +928,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -948,7 +948,7 @@
     "name": "Arco Longo de Abismo +1",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Arco Longo de Abismo +1</strong> (ARC-L08). Arco longo de precisão — ideal para corredores amplos e alvos distantes. Dano 1d8 perfurante, alcance 7 hex, 1 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
+      "description": "<p><strong>Arco Longo de Abismo +1</strong> (ARC-L08). Arco longo de precisão — ideal para corredores amplos e alvos distantes. Dano 1d8 perfurante, alcance 7 hex, 2 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
       "catalogId": "ARC-L08-E1",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 1,
@@ -958,7 +958,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -978,7 +978,7 @@
     "name": "Arco Longo de Abismo +2",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Arco Longo de Abismo +2</strong> (ARC-L08). Arco longo de precisão — ideal para corredores amplos e alvos distantes. Dano 1d8 perfurante, alcance 7 hex, 1 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
+      "description": "<p><strong>Arco Longo de Abismo +2</strong> (ARC-L08). Arco longo de precisão — ideal para corredores amplos e alvos distantes. Dano 1d8 perfurante, alcance 7 hex, 2 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
       "catalogId": "ARC-L08-E2",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 2,
@@ -988,7 +988,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -1008,7 +1008,7 @@
     "name": "Arco Longo de Abismo +3",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Arco Longo de Abismo +3</strong> (ARC-L08). Arco longo de precisão — ideal para corredores amplos e alvos distantes. Dano 1d8 perfurante, alcance 7 hex, 1 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
+      "description": "<p><strong>Arco Longo de Abismo +3</strong> (ARC-L08). Arco longo de precisão — ideal para corredores amplos e alvos distantes. Dano 1d8 perfurante, alcance 7 hex, 2 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
       "catalogId": "ARC-L08-E3",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 3,
@@ -1018,7 +1018,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -1045,7 +1045,7 @@
     "name": "Arco Longo de Valdrun",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Arco Longo de Valdrun</strong> (ARC-L09). Arco longo de precisão — ideal para corredores amplos e alvos distantes. Dano 1d10 perfurante, alcance 6 hex, 1 PA por ataque. Ataque +0.</p>",
+      "description": "<p><strong>Arco Longo de Valdrun</strong> (ARC-L09). Arco longo de precisão — ideal para corredores amplos e alvos distantes. Dano 1d10 perfurante, alcance 6 hex, 2 PA por ataque. Ataque +0.</p>",
       "catalogId": "ARC-L09",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 0,
@@ -1055,7 +1055,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -1075,7 +1075,7 @@
     "name": "Arco Longo de Valdrun +1",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Arco Longo de Valdrun +1</strong> (ARC-L09). Arco longo de precisão — ideal para corredores amplos e alvos distantes. Dano 1d10 perfurante, alcance 6 hex, 1 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
+      "description": "<p><strong>Arco Longo de Valdrun +1</strong> (ARC-L09). Arco longo de precisão — ideal para corredores amplos e alvos distantes. Dano 1d10 perfurante, alcance 6 hex, 2 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
       "catalogId": "ARC-L09-E1",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 1,
@@ -1085,7 +1085,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -1105,7 +1105,7 @@
     "name": "Arco Longo de Valdrun +2",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Arco Longo de Valdrun +2</strong> (ARC-L09). Arco longo de precisão — ideal para corredores amplos e alvos distantes. Dano 1d10 perfurante, alcance 6 hex, 1 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
+      "description": "<p><strong>Arco Longo de Valdrun +2</strong> (ARC-L09). Arco longo de precisão — ideal para corredores amplos e alvos distantes. Dano 1d10 perfurante, alcance 6 hex, 2 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
       "catalogId": "ARC-L09-E2",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 2,
@@ -1115,7 +1115,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -1135,7 +1135,7 @@
     "name": "Arco Longo de Valdrun +3",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Arco Longo de Valdrun +3</strong> (ARC-L09). Arco longo de precisão — ideal para corredores amplos e alvos distantes. Dano 1d10 perfurante, alcance 6 hex, 1 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
+      "description": "<p><strong>Arco Longo de Valdrun +3</strong> (ARC-L09). Arco longo de precisão — ideal para corredores amplos e alvos distantes. Dano 1d10 perfurante, alcance 6 hex, 2 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
       "catalogId": "ARC-L09-E3",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 3,
@@ -1145,7 +1145,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -1172,7 +1172,7 @@
     "name": "Arco Curto de Caçador",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Arco Curto de Caçador</strong> (ARC-C01). Arco curto e ágil — favorito de patrulheiros em passagens estreitas. Dano 1d6 perfurante, alcance 4 hex, 1 PA por ataque. Ataque +0.</p>",
+      "description": "<p><strong>Arco Curto de Caçador</strong> (ARC-C01). Arco curto e ágil — favorito de patrulheiros em passagens estreitas. Dano 1d6 perfurante, alcance 4 hex, 2 PA por ataque. Ataque +0.</p>",
       "catalogId": "ARC-C01",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 0,
@@ -1182,7 +1182,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -1202,7 +1202,7 @@
     "name": "Arco Curto de Caçador +1",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Arco Curto de Caçador +1</strong> (ARC-C01). Arco curto e ágil — favorito de patrulheiros em passagens estreitas. Dano 1d6 perfurante, alcance 4 hex, 1 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
+      "description": "<p><strong>Arco Curto de Caçador +1</strong> (ARC-C01). Arco curto e ágil — favorito de patrulheiros em passagens estreitas. Dano 1d6 perfurante, alcance 4 hex, 2 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
       "catalogId": "ARC-C01-E1",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 1,
@@ -1212,7 +1212,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -1232,7 +1232,7 @@
     "name": "Arco Curto de Caçador +2",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Arco Curto de Caçador +2</strong> (ARC-C01). Arco curto e ágil — favorito de patrulheiros em passagens estreitas. Dano 1d6 perfurante, alcance 4 hex, 1 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
+      "description": "<p><strong>Arco Curto de Caçador +2</strong> (ARC-C01). Arco curto e ágil — favorito de patrulheiros em passagens estreitas. Dano 1d6 perfurante, alcance 4 hex, 2 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
       "catalogId": "ARC-C01-E2",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 2,
@@ -1242,7 +1242,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -1262,7 +1262,7 @@
     "name": "Arco Curto de Caçador +3",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Arco Curto de Caçador +3</strong> (ARC-C01). Arco curto e ágil — favorito de patrulheiros em passagens estreitas. Dano 1d6 perfurante, alcance 4 hex, 1 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
+      "description": "<p><strong>Arco Curto de Caçador +3</strong> (ARC-C01). Arco curto e ágil — favorito de patrulheiros em passagens estreitas. Dano 1d6 perfurante, alcance 4 hex, 2 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
       "catalogId": "ARC-C01-E3",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 3,
@@ -1272,7 +1272,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -1299,7 +1299,7 @@
     "name": "Arco Curto de Teixo",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Arco Curto de Teixo</strong> (ARC-C02). Arco curto e ágil — favorito de patrulheiros em passagens estreitas. Dano 1d6 perfurante, alcance 4 hex, 1 PA por ataque. Ataque +0.</p>",
+      "description": "<p><strong>Arco Curto de Teixo</strong> (ARC-C02). Arco curto e ágil — favorito de patrulheiros em passagens estreitas. Dano 1d6 perfurante, alcance 4 hex, 2 PA por ataque. Ataque +0.</p>",
       "catalogId": "ARC-C02",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 0,
@@ -1309,7 +1309,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -1329,7 +1329,7 @@
     "name": "Arco Curto de Teixo +1",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Arco Curto de Teixo +1</strong> (ARC-C02). Arco curto e ágil — favorito de patrulheiros em passagens estreitas. Dano 1d6 perfurante, alcance 4 hex, 1 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
+      "description": "<p><strong>Arco Curto de Teixo +1</strong> (ARC-C02). Arco curto e ágil — favorito de patrulheiros em passagens estreitas. Dano 1d6 perfurante, alcance 4 hex, 2 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
       "catalogId": "ARC-C02-E1",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 1,
@@ -1339,7 +1339,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -1359,7 +1359,7 @@
     "name": "Arco Curto de Teixo +2",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Arco Curto de Teixo +2</strong> (ARC-C02). Arco curto e ágil — favorito de patrulheiros em passagens estreitas. Dano 1d6 perfurante, alcance 4 hex, 1 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
+      "description": "<p><strong>Arco Curto de Teixo +2</strong> (ARC-C02). Arco curto e ágil — favorito de patrulheiros em passagens estreitas. Dano 1d6 perfurante, alcance 4 hex, 2 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
       "catalogId": "ARC-C02-E2",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 2,
@@ -1369,7 +1369,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -1389,7 +1389,7 @@
     "name": "Arco Curto de Teixo +3",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Arco Curto de Teixo +3</strong> (ARC-C02). Arco curto e ágil — favorito de patrulheiros em passagens estreitas. Dano 1d6 perfurante, alcance 4 hex, 1 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
+      "description": "<p><strong>Arco Curto de Teixo +3</strong> (ARC-C02). Arco curto e ágil — favorito de patrulheiros em passagens estreitas. Dano 1d6 perfurante, alcance 4 hex, 2 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
       "catalogId": "ARC-C02-E3",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 3,
@@ -1399,7 +1399,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -1426,7 +1426,7 @@
     "name": "Arco Curto de Goblin",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Arco Curto de Goblin</strong> (ARC-C03). Arco curto e ágil — favorito de patrulheiros em passagens estreitas. Dano 1d6 perfurante, alcance 3 hex, 1 PA por ataque. Ataque +0.</p>",
+      "description": "<p><strong>Arco Curto de Goblin</strong> (ARC-C03). Arco curto e ágil — favorito de patrulheiros em passagens estreitas. Dano 1d6 perfurante, alcance 3 hex, 2 PA por ataque. Ataque +0.</p>",
       "catalogId": "ARC-C03",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 0,
@@ -1436,7 +1436,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -1456,7 +1456,7 @@
     "name": "Arco Curto de Goblin +1",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Arco Curto de Goblin +1</strong> (ARC-C03). Arco curto e ágil — favorito de patrulheiros em passagens estreitas. Dano 1d6 perfurante, alcance 3 hex, 1 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
+      "description": "<p><strong>Arco Curto de Goblin +1</strong> (ARC-C03). Arco curto e ágil — favorito de patrulheiros em passagens estreitas. Dano 1d6 perfurante, alcance 3 hex, 2 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
       "catalogId": "ARC-C03-E1",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 1,
@@ -1466,7 +1466,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -1486,7 +1486,7 @@
     "name": "Arco Curto de Goblin +2",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Arco Curto de Goblin +2</strong> (ARC-C03). Arco curto e ágil — favorito de patrulheiros em passagens estreitas. Dano 1d6 perfurante, alcance 3 hex, 1 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
+      "description": "<p><strong>Arco Curto de Goblin +2</strong> (ARC-C03). Arco curto e ágil — favorito de patrulheiros em passagens estreitas. Dano 1d6 perfurante, alcance 3 hex, 2 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
       "catalogId": "ARC-C03-E2",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 2,
@@ -1496,7 +1496,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -1516,7 +1516,7 @@
     "name": "Arco Curto de Goblin +3",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Arco Curto de Goblin +3</strong> (ARC-C03). Arco curto e ágil — favorito de patrulheiros em passagens estreitas. Dano 1d6 perfurante, alcance 3 hex, 1 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
+      "description": "<p><strong>Arco Curto de Goblin +3</strong> (ARC-C03). Arco curto e ágil — favorito de patrulheiros em passagens estreitas. Dano 1d6 perfurante, alcance 3 hex, 2 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
       "catalogId": "ARC-C03-E3",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 3,
@@ -1526,7 +1526,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -1553,7 +1553,7 @@
     "name": "Arco Curto de Cripta",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Arco Curto de Cripta</strong> (ARC-C04). Arco curto e ágil — favorito de patrulheiros em passagens estreitas. Dano 1d6 perfurante, alcance 4 hex, 1 PA por ataque. Ataque +0.</p>",
+      "description": "<p><strong>Arco Curto de Cripta</strong> (ARC-C04). Arco curto e ágil — favorito de patrulheiros em passagens estreitas. Dano 1d6 perfurante, alcance 4 hex, 2 PA por ataque. Ataque +0.</p>",
       "catalogId": "ARC-C04",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 0,
@@ -1563,7 +1563,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -1583,7 +1583,7 @@
     "name": "Arco Curto de Cripta +1",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Arco Curto de Cripta +1</strong> (ARC-C04). Arco curto e ágil — favorito de patrulheiros em passagens estreitas. Dano 1d6 perfurante, alcance 4 hex, 1 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
+      "description": "<p><strong>Arco Curto de Cripta +1</strong> (ARC-C04). Arco curto e ágil — favorito de patrulheiros em passagens estreitas. Dano 1d6 perfurante, alcance 4 hex, 2 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
       "catalogId": "ARC-C04-E1",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 1,
@@ -1593,7 +1593,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -1613,7 +1613,7 @@
     "name": "Arco Curto de Cripta +2",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Arco Curto de Cripta +2</strong> (ARC-C04). Arco curto e ágil — favorito de patrulheiros em passagens estreitas. Dano 1d6 perfurante, alcance 4 hex, 1 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
+      "description": "<p><strong>Arco Curto de Cripta +2</strong> (ARC-C04). Arco curto e ágil — favorito de patrulheiros em passagens estreitas. Dano 1d6 perfurante, alcance 4 hex, 2 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
       "catalogId": "ARC-C04-E2",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 2,
@@ -1623,7 +1623,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -1643,7 +1643,7 @@
     "name": "Arco Curto de Cripta +3",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Arco Curto de Cripta +3</strong> (ARC-C04). Arco curto e ágil — favorito de patrulheiros em passagens estreitas. Dano 1d6 perfurante, alcance 4 hex, 1 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
+      "description": "<p><strong>Arco Curto de Cripta +3</strong> (ARC-C04). Arco curto e ágil — favorito de patrulheiros em passagens estreitas. Dano 1d6 perfurante, alcance 4 hex, 2 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
       "catalogId": "ARC-C04-E3",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 3,
@@ -1653,7 +1653,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -1680,7 +1680,7 @@
     "name": "Arco Curto de Costela",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Arco Curto de Costela</strong> (ARC-C05). Arco curto e ágil — favorito de patrulheiros em passagens estreitas. Dano 1d8 perfurante, alcance 4 hex, 1 PA por ataque. Ataque +0. Efeito: Veneno.</p>",
+      "description": "<p><strong>Arco Curto de Costela</strong> (ARC-C05). Arco curto e ágil — favorito de patrulheiros em passagens estreitas. Dano 1d8 perfurante, alcance 4 hex, 2 PA por ataque. Ataque +0. Efeito: Veneno.</p>",
       "catalogId": "ARC-C05",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 0,
@@ -1690,7 +1690,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -1718,7 +1718,7 @@
     "name": "Arco Curto de Costela +1",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Arco Curto de Costela +1</strong> (ARC-C05). Arco curto e ágil — favorito de patrulheiros em passagens estreitas. Dano 1d8 perfurante, alcance 4 hex, 1 PA por ataque. Ataque +1. Efeito: Veneno. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
+      "description": "<p><strong>Arco Curto de Costela +1</strong> (ARC-C05). Arco curto e ágil — favorito de patrulheiros em passagens estreitas. Dano 1d8 perfurante, alcance 4 hex, 2 PA por ataque. Ataque +1. Efeito: Veneno. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
       "catalogId": "ARC-C05-E1",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 1,
@@ -1728,7 +1728,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -1756,7 +1756,7 @@
     "name": "Arco Curto de Costela +2",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Arco Curto de Costela +2</strong> (ARC-C05). Arco curto e ágil — favorito de patrulheiros em passagens estreitas. Dano 1d8 perfurante, alcance 4 hex, 1 PA por ataque. Ataque +2. Efeito: Veneno. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
+      "description": "<p><strong>Arco Curto de Costela +2</strong> (ARC-C05). Arco curto e ágil — favorito de patrulheiros em passagens estreitas. Dano 1d8 perfurante, alcance 4 hex, 2 PA por ataque. Ataque +2. Efeito: Veneno. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
       "catalogId": "ARC-C05-E2",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 2,
@@ -1766,7 +1766,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -1794,7 +1794,7 @@
     "name": "Arco Curto de Costela +3",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Arco Curto de Costela +3</strong> (ARC-C05). Arco curto e ágil — favorito de patrulheiros em passagens estreitas. Dano 1d8 perfurante, alcance 4 hex, 1 PA por ataque. Ataque +3. Efeito: Veneno. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
+      "description": "<p><strong>Arco Curto de Costela +3</strong> (ARC-C05). Arco curto e ágil — favorito de patrulheiros em passagens estreitas. Dano 1d8 perfurante, alcance 4 hex, 2 PA por ataque. Ataque +3. Efeito: Veneno. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
       "catalogId": "ARC-C05-E3",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 3,
@@ -1804,7 +1804,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -1832,7 +1832,7 @@
     "name": "Arco Curto de Matriarca",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Arco Curto de Matriarca</strong> (ARC-C06). Arco curto e ágil — favorito de patrulheiros em passagens estreitas. Dano 1d6 perfurante, alcance 5 hex, 1 PA por ataque. Ataque +0.</p>",
+      "description": "<p><strong>Arco Curto de Matriarca</strong> (ARC-C06). Arco curto e ágil — favorito de patrulheiros em passagens estreitas. Dano 1d6 perfurante, alcance 5 hex, 2 PA por ataque. Ataque +0.</p>",
       "catalogId": "ARC-C06",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 0,
@@ -1842,7 +1842,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -1862,7 +1862,7 @@
     "name": "Arco Curto de Matriarca +1",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Arco Curto de Matriarca +1</strong> (ARC-C06). Arco curto e ágil — favorito de patrulheiros em passagens estreitas. Dano 1d6 perfurante, alcance 5 hex, 1 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
+      "description": "<p><strong>Arco Curto de Matriarca +1</strong> (ARC-C06). Arco curto e ágil — favorito de patrulheiros em passagens estreitas. Dano 1d6 perfurante, alcance 5 hex, 2 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
       "catalogId": "ARC-C06-E1",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 1,
@@ -1872,7 +1872,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -1892,7 +1892,7 @@
     "name": "Arco Curto de Matriarca +2",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Arco Curto de Matriarca +2</strong> (ARC-C06). Arco curto e ágil — favorito de patrulheiros em passagens estreitas. Dano 1d6 perfurante, alcance 5 hex, 1 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
+      "description": "<p><strong>Arco Curto de Matriarca +2</strong> (ARC-C06). Arco curto e ágil — favorito de patrulheiros em passagens estreitas. Dano 1d6 perfurante, alcance 5 hex, 2 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
       "catalogId": "ARC-C06-E2",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 2,
@@ -1902,7 +1902,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -1922,7 +1922,7 @@
     "name": "Arco Curto de Matriarca +3",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Arco Curto de Matriarca +3</strong> (ARC-C06). Arco curto e ágil — favorito de patrulheiros em passagens estreitas. Dano 1d6 perfurante, alcance 5 hex, 1 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
+      "description": "<p><strong>Arco Curto de Matriarca +3</strong> (ARC-C06). Arco curto e ágil — favorito de patrulheiros em passagens estreitas. Dano 1d6 perfurante, alcance 5 hex, 2 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
       "catalogId": "ARC-C06-E3",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 3,
@@ -1932,7 +1932,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -1959,7 +1959,7 @@
     "name": "Arco Curto de Ninho",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Arco Curto de Ninho</strong> (ARC-C07). Arco curto e ágil — favorito de patrulheiros em passagens estreitas. Dano 1d6 perfurante, alcance 4 hex, 1 PA por ataque. Ataque +0.</p>",
+      "description": "<p><strong>Arco Curto de Ninho</strong> (ARC-C07). Arco curto e ágil — favorito de patrulheiros em passagens estreitas. Dano 1d6 perfurante, alcance 4 hex, 2 PA por ataque. Ataque +0.</p>",
       "catalogId": "ARC-C07",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 0,
@@ -1969,7 +1969,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -1989,7 +1989,7 @@
     "name": "Arco Curto de Ninho +1",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Arco Curto de Ninho +1</strong> (ARC-C07). Arco curto e ágil — favorito de patrulheiros em passagens estreitas. Dano 1d6 perfurante, alcance 4 hex, 1 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
+      "description": "<p><strong>Arco Curto de Ninho +1</strong> (ARC-C07). Arco curto e ágil — favorito de patrulheiros em passagens estreitas. Dano 1d6 perfurante, alcance 4 hex, 2 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
       "catalogId": "ARC-C07-E1",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 1,
@@ -1999,7 +1999,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -2019,7 +2019,7 @@
     "name": "Arco Curto de Ninho +2",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Arco Curto de Ninho +2</strong> (ARC-C07). Arco curto e ágil — favorito de patrulheiros em passagens estreitas. Dano 1d6 perfurante, alcance 4 hex, 1 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
+      "description": "<p><strong>Arco Curto de Ninho +2</strong> (ARC-C07). Arco curto e ágil — favorito de patrulheiros em passagens estreitas. Dano 1d6 perfurante, alcance 4 hex, 2 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
       "catalogId": "ARC-C07-E2",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 2,
@@ -2029,7 +2029,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -2049,7 +2049,7 @@
     "name": "Arco Curto de Ninho +3",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Arco Curto de Ninho +3</strong> (ARC-C07). Arco curto e ágil — favorito de patrulheiros em passagens estreitas. Dano 1d6 perfurante, alcance 4 hex, 1 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
+      "description": "<p><strong>Arco Curto de Ninho +3</strong> (ARC-C07). Arco curto e ágil — favorito de patrulheiros em passagens estreitas. Dano 1d6 perfurante, alcance 4 hex, 2 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
       "catalogId": "ARC-C07-E3",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 3,
@@ -2059,7 +2059,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -2086,7 +2086,7 @@
     "name": "Arco Curto de Marfim",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Arco Curto de Marfim</strong> (ARC-C08). Arco curto e ágil — favorito de patrulheiros em passagens estreitas. Dano 1d6 perfurante, alcance 4 hex, 1 PA por ataque. Ataque +0.</p>",
+      "description": "<p><strong>Arco Curto de Marfim</strong> (ARC-C08). Arco curto e ágil — favorito de patrulheiros em passagens estreitas. Dano 1d6 perfurante, alcance 4 hex, 2 PA por ataque. Ataque +0.</p>",
       "catalogId": "ARC-C08",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 0,
@@ -2096,7 +2096,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -2116,7 +2116,7 @@
     "name": "Arco Curto de Marfim +1",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Arco Curto de Marfim +1</strong> (ARC-C08). Arco curto e ágil — favorito de patrulheiros em passagens estreitas. Dano 1d6 perfurante, alcance 4 hex, 1 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
+      "description": "<p><strong>Arco Curto de Marfim +1</strong> (ARC-C08). Arco curto e ágil — favorito de patrulheiros em passagens estreitas. Dano 1d6 perfurante, alcance 4 hex, 2 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
       "catalogId": "ARC-C08-E1",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 1,
@@ -2126,7 +2126,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -2146,7 +2146,7 @@
     "name": "Arco Curto de Marfim +2",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Arco Curto de Marfim +2</strong> (ARC-C08). Arco curto e ágil — favorito de patrulheiros em passagens estreitas. Dano 1d6 perfurante, alcance 4 hex, 1 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
+      "description": "<p><strong>Arco Curto de Marfim +2</strong> (ARC-C08). Arco curto e ágil — favorito de patrulheiros em passagens estreitas. Dano 1d6 perfurante, alcance 4 hex, 2 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
       "catalogId": "ARC-C08-E2",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 2,
@@ -2156,7 +2156,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -2176,7 +2176,7 @@
     "name": "Arco Curto de Marfim +3",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Arco Curto de Marfim +3</strong> (ARC-C08). Arco curto e ágil — favorito de patrulheiros em passagens estreitas. Dano 1d6 perfurante, alcance 4 hex, 1 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
+      "description": "<p><strong>Arco Curto de Marfim +3</strong> (ARC-C08). Arco curto e ágil — favorito de patrulheiros em passagens estreitas. Dano 1d6 perfurante, alcance 4 hex, 2 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
       "catalogId": "ARC-C08-E3",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 3,
@@ -2186,7 +2186,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -2213,7 +2213,7 @@
     "name": "Arco Curto de Valdrun",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Arco Curto de Valdrun</strong> (ARC-C09). Arco curto e ágil — favorito de patrulheiros em passagens estreitas. Dano 1d8 perfurante, alcance 5 hex, 1 PA por ataque. Ataque +0.</p>",
+      "description": "<p><strong>Arco Curto de Valdrun</strong> (ARC-C09). Arco curto e ágil — favorito de patrulheiros em passagens estreitas. Dano 1d8 perfurante, alcance 5 hex, 2 PA por ataque. Ataque +0.</p>",
       "catalogId": "ARC-C09",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 0,
@@ -2223,7 +2223,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -2243,7 +2243,7 @@
     "name": "Arco Curto de Valdrun +1",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Arco Curto de Valdrun +1</strong> (ARC-C09). Arco curto e ágil — favorito de patrulheiros em passagens estreitas. Dano 1d8 perfurante, alcance 5 hex, 1 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
+      "description": "<p><strong>Arco Curto de Valdrun +1</strong> (ARC-C09). Arco curto e ágil — favorito de patrulheiros em passagens estreitas. Dano 1d8 perfurante, alcance 5 hex, 2 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
       "catalogId": "ARC-C09-E1",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 1,
@@ -2253,7 +2253,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -2273,7 +2273,7 @@
     "name": "Arco Curto de Valdrun +2",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Arco Curto de Valdrun +2</strong> (ARC-C09). Arco curto e ágil — favorito de patrulheiros em passagens estreitas. Dano 1d8 perfurante, alcance 5 hex, 1 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
+      "description": "<p><strong>Arco Curto de Valdrun +2</strong> (ARC-C09). Arco curto e ágil — favorito de patrulheiros em passagens estreitas. Dano 1d8 perfurante, alcance 5 hex, 2 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
       "catalogId": "ARC-C09-E2",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 2,
@@ -2283,7 +2283,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -2303,7 +2303,7 @@
     "name": "Arco Curto de Valdrun +3",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Arco Curto de Valdrun +3</strong> (ARC-C09). Arco curto e ágil — favorito de patrulheiros em passagens estreitas. Dano 1d8 perfurante, alcance 5 hex, 1 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
+      "description": "<p><strong>Arco Curto de Valdrun +3</strong> (ARC-C09). Arco curto e ágil — favorito de patrulheiros em passagens estreitas. Dano 1d8 perfurante, alcance 5 hex, 2 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
       "catalogId": "ARC-C09-E3",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 3,
@@ -2313,7 +2313,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -2340,7 +2340,7 @@
     "name": "Besta Leve",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Besta Leve</strong> (BST-01). Besta mecânica — perfura armaduras leves com virotes pesados. Dano 1d8 perfurante, alcance 6 hex, 1 PA por ataque. Ataque +0.</p>",
+      "description": "<p><strong>Besta Leve</strong> (BST-01). Besta mecânica — perfura armaduras leves com virotes pesados. Dano 1d8 perfurante, alcance 6 hex, 2 PA por ataque. Ataque +0.</p>",
       "catalogId": "BST-01",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 0,
@@ -2350,7 +2350,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -2370,7 +2370,7 @@
     "name": "Besta Leve +1",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Besta Leve +1</strong> (BST-01). Besta mecânica — perfura armaduras leves com virotes pesados. Dano 1d8 perfurante, alcance 6 hex, 1 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
+      "description": "<p><strong>Besta Leve +1</strong> (BST-01). Besta mecânica — perfura armaduras leves com virotes pesados. Dano 1d8 perfurante, alcance 6 hex, 2 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
       "catalogId": "BST-01-E1",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 1,
@@ -2380,7 +2380,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -2400,7 +2400,7 @@
     "name": "Besta Leve +2",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Besta Leve +2</strong> (BST-01). Besta mecânica — perfura armaduras leves com virotes pesados. Dano 1d8 perfurante, alcance 6 hex, 1 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
+      "description": "<p><strong>Besta Leve +2</strong> (BST-01). Besta mecânica — perfura armaduras leves com virotes pesados. Dano 1d8 perfurante, alcance 6 hex, 2 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
       "catalogId": "BST-01-E2",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 2,
@@ -2410,7 +2410,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -2430,7 +2430,7 @@
     "name": "Besta Leve +3",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Besta Leve +3</strong> (BST-01). Besta mecânica — perfura armaduras leves com virotes pesados. Dano 1d8 perfurante, alcance 6 hex, 1 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
+      "description": "<p><strong>Besta Leve +3</strong> (BST-01). Besta mecânica — perfura armaduras leves com virotes pesados. Dano 1d8 perfurante, alcance 6 hex, 2 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
       "catalogId": "BST-01-E3",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 3,
@@ -2440,7 +2440,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -2467,7 +2467,7 @@
     "name": "Besta de Mão",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Besta de Mão</strong> (BST-02). Besta mecânica — perfura armaduras leves com virotes pesados. Dano 1d6 perfurante, alcance 3 hex, 1 PA por ataque. Ataque +0.</p>",
+      "description": "<p><strong>Besta de Mão</strong> (BST-02). Besta mecânica — perfura armaduras leves com virotes pesados. Dano 1d6 perfurante, alcance 3 hex, 2 PA por ataque. Ataque +0.</p>",
       "catalogId": "BST-02",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 0,
@@ -2477,7 +2477,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -2497,7 +2497,7 @@
     "name": "Besta de Mão +1",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Besta de Mão +1</strong> (BST-02). Besta mecânica — perfura armaduras leves com virotes pesados. Dano 1d6 perfurante, alcance 3 hex, 1 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
+      "description": "<p><strong>Besta de Mão +1</strong> (BST-02). Besta mecânica — perfura armaduras leves com virotes pesados. Dano 1d6 perfurante, alcance 3 hex, 2 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
       "catalogId": "BST-02-E1",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 1,
@@ -2507,7 +2507,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -2527,7 +2527,7 @@
     "name": "Besta de Mão +2",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Besta de Mão +2</strong> (BST-02). Besta mecânica — perfura armaduras leves com virotes pesados. Dano 1d6 perfurante, alcance 3 hex, 1 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
+      "description": "<p><strong>Besta de Mão +2</strong> (BST-02). Besta mecânica — perfura armaduras leves com virotes pesados. Dano 1d6 perfurante, alcance 3 hex, 2 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
       "catalogId": "BST-02-E2",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 2,
@@ -2537,7 +2537,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -2557,7 +2557,7 @@
     "name": "Besta de Mão +3",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Besta de Mão +3</strong> (BST-02). Besta mecânica — perfura armaduras leves com virotes pesados. Dano 1d6 perfurante, alcance 3 hex, 1 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
+      "description": "<p><strong>Besta de Mão +3</strong> (BST-02). Besta mecânica — perfura armaduras leves com virotes pesados. Dano 1d6 perfurante, alcance 3 hex, 2 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
       "catalogId": "BST-02-E3",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 3,
@@ -2567,7 +2567,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -2594,7 +2594,7 @@
     "name": "Besta Pesada",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Besta Pesada</strong> (BST-03). Besta mecânica — perfura armaduras leves com virotes pesados. Dano 1d10 perfurante, alcance 5 hex, 1 PA por ataque. Ataque +0. Efeito: Ferrão.</p>",
+      "description": "<p><strong>Besta Pesada</strong> (BST-03). Besta mecânica — perfura armaduras leves com virotes pesados. Dano 1d10 perfurante, alcance 5 hex, 2 PA por ataque. Ataque +0. Efeito: Ferrão.</p>",
       "catalogId": "BST-03",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 0,
@@ -2604,7 +2604,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -2632,7 +2632,7 @@
     "name": "Besta Pesada +1",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Besta Pesada +1</strong> (BST-03). Besta mecânica — perfura armaduras leves com virotes pesados. Dano 1d10 perfurante, alcance 5 hex, 1 PA por ataque. Ataque +1. Efeito: Ferrão. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
+      "description": "<p><strong>Besta Pesada +1</strong> (BST-03). Besta mecânica — perfura armaduras leves com virotes pesados. Dano 1d10 perfurante, alcance 5 hex, 2 PA por ataque. Ataque +1. Efeito: Ferrão. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
       "catalogId": "BST-03-E1",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 1,
@@ -2642,7 +2642,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -2670,7 +2670,7 @@
     "name": "Besta Pesada +2",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Besta Pesada +2</strong> (BST-03). Besta mecânica — perfura armaduras leves com virotes pesados. Dano 1d10 perfurante, alcance 5 hex, 1 PA por ataque. Ataque +2. Efeito: Ferrão. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
+      "description": "<p><strong>Besta Pesada +2</strong> (BST-03). Besta mecânica — perfura armaduras leves com virotes pesados. Dano 1d10 perfurante, alcance 5 hex, 2 PA por ataque. Ataque +2. Efeito: Ferrão. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
       "catalogId": "BST-03-E2",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 2,
@@ -2680,7 +2680,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -2708,7 +2708,7 @@
     "name": "Besta Pesada +3",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Besta Pesada +3</strong> (BST-03). Besta mecânica — perfura armaduras leves com virotes pesados. Dano 1d10 perfurante, alcance 5 hex, 1 PA por ataque. Ataque +3. Efeito: Ferrão. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
+      "description": "<p><strong>Besta Pesada +3</strong> (BST-03). Besta mecânica — perfura armaduras leves com virotes pesados. Dano 1d10 perfurante, alcance 5 hex, 2 PA por ataque. Ataque +3. Efeito: Ferrão. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
       "catalogId": "BST-03-E3",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 3,
@@ -2718,7 +2718,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -2746,7 +2746,7 @@
     "name": "Besta de Repetição",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Besta de Repetição</strong> (BST-04). Besta mecânica — perfura armaduras leves com virotes pesados. Dano 1d8 perfurante, alcance 5 hex, 1 PA por ataque. Ataque +0.</p>",
+      "description": "<p><strong>Besta de Repetição</strong> (BST-04). Besta mecânica — perfura armaduras leves com virotes pesados. Dano 1d8 perfurante, alcance 5 hex, 2 PA por ataque. Ataque +0.</p>",
       "catalogId": "BST-04",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 0,
@@ -2756,7 +2756,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -2776,7 +2776,7 @@
     "name": "Besta de Repetição +1",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Besta de Repetição +1</strong> (BST-04). Besta mecânica — perfura armaduras leves com virotes pesados. Dano 1d8 perfurante, alcance 5 hex, 1 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
+      "description": "<p><strong>Besta de Repetição +1</strong> (BST-04). Besta mecânica — perfura armaduras leves com virotes pesados. Dano 1d8 perfurante, alcance 5 hex, 2 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
       "catalogId": "BST-04-E1",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 1,
@@ -2786,7 +2786,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -2806,7 +2806,7 @@
     "name": "Besta de Repetição +2",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Besta de Repetição +2</strong> (BST-04). Besta mecânica — perfura armaduras leves com virotes pesados. Dano 1d8 perfurante, alcance 5 hex, 1 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
+      "description": "<p><strong>Besta de Repetição +2</strong> (BST-04). Besta mecânica — perfura armaduras leves com virotes pesados. Dano 1d8 perfurante, alcance 5 hex, 2 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
       "catalogId": "BST-04-E2",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 2,
@@ -2816,7 +2816,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -2836,7 +2836,7 @@
     "name": "Besta de Repetição +3",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Besta de Repetição +3</strong> (BST-04). Besta mecânica — perfura armaduras leves com virotes pesados. Dano 1d8 perfurante, alcance 5 hex, 1 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
+      "description": "<p><strong>Besta de Repetição +3</strong> (BST-04). Besta mecânica — perfura armaduras leves com virotes pesados. Dano 1d8 perfurante, alcance 5 hex, 2 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
       "catalogId": "BST-04-E3",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 3,
@@ -2846,7 +2846,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -2873,7 +2873,7 @@
     "name": "Besta de Assalto",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Besta de Assalto</strong> (BST-05). Besta mecânica — perfura armaduras leves com virotes pesados. Dano 1d10 perfurante, alcance 4 hex, 1 PA por ataque. Ataque +0.</p>",
+      "description": "<p><strong>Besta de Assalto</strong> (BST-05). Besta mecânica — perfura armaduras leves com virotes pesados. Dano 1d10 perfurante, alcance 4 hex, 2 PA por ataque. Ataque +0.</p>",
       "catalogId": "BST-05",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 0,
@@ -2883,7 +2883,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -2903,7 +2903,7 @@
     "name": "Besta de Assalto +1",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Besta de Assalto +1</strong> (BST-05). Besta mecânica — perfura armaduras leves com virotes pesados. Dano 1d10 perfurante, alcance 4 hex, 1 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
+      "description": "<p><strong>Besta de Assalto +1</strong> (BST-05). Besta mecânica — perfura armaduras leves com virotes pesados. Dano 1d10 perfurante, alcance 4 hex, 2 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
       "catalogId": "BST-05-E1",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 1,
@@ -2913,7 +2913,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -2933,7 +2933,7 @@
     "name": "Besta de Assalto +2",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Besta de Assalto +2</strong> (BST-05). Besta mecânica — perfura armaduras leves com virotes pesados. Dano 1d10 perfurante, alcance 4 hex, 1 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
+      "description": "<p><strong>Besta de Assalto +2</strong> (BST-05). Besta mecânica — perfura armaduras leves com virotes pesados. Dano 1d10 perfurante, alcance 4 hex, 2 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
       "catalogId": "BST-05-E2",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 2,
@@ -2943,7 +2943,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -2963,7 +2963,7 @@
     "name": "Besta de Assalto +3",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Besta de Assalto +3</strong> (BST-05). Besta mecânica — perfura armaduras leves com virotes pesados. Dano 1d10 perfurante, alcance 4 hex, 1 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
+      "description": "<p><strong>Besta de Assalto +3</strong> (BST-05). Besta mecânica — perfura armaduras leves com virotes pesados. Dano 1d10 perfurante, alcance 4 hex, 2 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
       "catalogId": "BST-05-E3",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 3,
@@ -2973,7 +2973,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -3000,7 +3000,7 @@
     "name": "Besta de Caverna",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Besta de Caverna</strong> (BST-06). Besta mecânica — perfura armaduras leves com virotes pesados. Dano 1d8 perfurante, alcance 4 hex, 1 PA por ataque. Ataque +0.</p>",
+      "description": "<p><strong>Besta de Caverna</strong> (BST-06). Besta mecânica — perfura armaduras leves com virotes pesados. Dano 1d8 perfurante, alcance 4 hex, 2 PA por ataque. Ataque +0.</p>",
       "catalogId": "BST-06",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 0,
@@ -3010,7 +3010,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -3030,7 +3030,7 @@
     "name": "Besta de Caverna +1",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Besta de Caverna +1</strong> (BST-06). Besta mecânica — perfura armaduras leves com virotes pesados. Dano 1d8 perfurante, alcance 4 hex, 1 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
+      "description": "<p><strong>Besta de Caverna +1</strong> (BST-06). Besta mecânica — perfura armaduras leves com virotes pesados. Dano 1d8 perfurante, alcance 4 hex, 2 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
       "catalogId": "BST-06-E1",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 1,
@@ -3040,7 +3040,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -3060,7 +3060,7 @@
     "name": "Besta de Caverna +2",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Besta de Caverna +2</strong> (BST-06). Besta mecânica — perfura armaduras leves com virotes pesados. Dano 1d8 perfurante, alcance 4 hex, 1 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
+      "description": "<p><strong>Besta de Caverna +2</strong> (BST-06). Besta mecânica — perfura armaduras leves com virotes pesados. Dano 1d8 perfurante, alcance 4 hex, 2 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
       "catalogId": "BST-06-E2",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 2,
@@ -3070,7 +3070,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -3090,7 +3090,7 @@
     "name": "Besta de Caverna +3",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Besta de Caverna +3</strong> (BST-06). Besta mecânica — perfura armaduras leves com virotes pesados. Dano 1d8 perfurante, alcance 4 hex, 1 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
+      "description": "<p><strong>Besta de Caverna +3</strong> (BST-06). Besta mecânica — perfura armaduras leves com virotes pesados. Dano 1d8 perfurante, alcance 4 hex, 2 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
       "catalogId": "BST-06-E3",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 3,
@@ -3100,7 +3100,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -3127,7 +3127,7 @@
     "name": "Besta de Alcance",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Besta de Alcance</strong> (BST-07). Besta mecânica — perfura armaduras leves com virotes pesados. Dano 1d10 perfurante, alcance 7 hex, 1 PA por ataque. Ataque +0.</p>",
+      "description": "<p><strong>Besta de Alcance</strong> (BST-07). Besta mecânica — perfura armaduras leves com virotes pesados. Dano 1d10 perfurante, alcance 7 hex, 2 PA por ataque. Ataque +0.</p>",
       "catalogId": "BST-07",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 0,
@@ -3137,7 +3137,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -3157,7 +3157,7 @@
     "name": "Besta de Alcance +1",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Besta de Alcance +1</strong> (BST-07). Besta mecânica — perfura armaduras leves com virotes pesados. Dano 1d10 perfurante, alcance 7 hex, 1 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
+      "description": "<p><strong>Besta de Alcance +1</strong> (BST-07). Besta mecânica — perfura armaduras leves com virotes pesados. Dano 1d10 perfurante, alcance 7 hex, 2 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
       "catalogId": "BST-07-E1",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 1,
@@ -3167,7 +3167,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -3187,7 +3187,7 @@
     "name": "Besta de Alcance +2",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Besta de Alcance +2</strong> (BST-07). Besta mecânica — perfura armaduras leves com virotes pesados. Dano 1d10 perfurante, alcance 7 hex, 1 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
+      "description": "<p><strong>Besta de Alcance +2</strong> (BST-07). Besta mecânica — perfura armaduras leves com virotes pesados. Dano 1d10 perfurante, alcance 7 hex, 2 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
       "catalogId": "BST-07-E2",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 2,
@@ -3197,7 +3197,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -3217,7 +3217,7 @@
     "name": "Besta de Alcance +3",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Besta de Alcance +3</strong> (BST-07). Besta mecânica — perfura armaduras leves com virotes pesados. Dano 1d10 perfurante, alcance 7 hex, 1 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
+      "description": "<p><strong>Besta de Alcance +3</strong> (BST-07). Besta mecânica — perfura armaduras leves com virotes pesados. Dano 1d10 perfurante, alcance 7 hex, 2 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
       "catalogId": "BST-07-E3",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 3,
@@ -3227,7 +3227,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -3254,7 +3254,7 @@
     "name": "Besta de Engenharia",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Besta de Engenharia</strong> (BST-08). Besta mecânica — perfura armaduras leves com virotes pesados. Dano 1d10 perfurante, alcance 6 hex, 1 PA por ataque. Ataque +0.</p>",
+      "description": "<p><strong>Besta de Engenharia</strong> (BST-08). Besta mecânica — perfura armaduras leves com virotes pesados. Dano 1d10 perfurante, alcance 6 hex, 2 PA por ataque. Ataque +0.</p>",
       "catalogId": "BST-08",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 0,
@@ -3264,7 +3264,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -3284,7 +3284,7 @@
     "name": "Besta de Engenharia +1",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Besta de Engenharia +1</strong> (BST-08). Besta mecânica — perfura armaduras leves com virotes pesados. Dano 1d10 perfurante, alcance 6 hex, 1 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
+      "description": "<p><strong>Besta de Engenharia +1</strong> (BST-08). Besta mecânica — perfura armaduras leves com virotes pesados. Dano 1d10 perfurante, alcance 6 hex, 2 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
       "catalogId": "BST-08-E1",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 1,
@@ -3294,7 +3294,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -3314,7 +3314,7 @@
     "name": "Besta de Engenharia +2",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Besta de Engenharia +2</strong> (BST-08). Besta mecânica — perfura armaduras leves com virotes pesados. Dano 1d10 perfurante, alcance 6 hex, 1 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
+      "description": "<p><strong>Besta de Engenharia +2</strong> (BST-08). Besta mecânica — perfura armaduras leves com virotes pesados. Dano 1d10 perfurante, alcance 6 hex, 2 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
       "catalogId": "BST-08-E2",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 2,
@@ -3324,7 +3324,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -3344,7 +3344,7 @@
     "name": "Besta de Engenharia +3",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Besta de Engenharia +3</strong> (BST-08). Besta mecânica — perfura armaduras leves com virotes pesados. Dano 1d10 perfurante, alcance 6 hex, 1 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
+      "description": "<p><strong>Besta de Engenharia +3</strong> (BST-08). Besta mecânica — perfura armaduras leves com virotes pesados. Dano 1d10 perfurante, alcance 6 hex, 2 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
       "catalogId": "BST-08-E3",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 3,
@@ -3354,7 +3354,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -3381,7 +3381,7 @@
     "name": "Lâmina de Vinha",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Lâmina de Vinha</strong> (WPN-S01). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 1d6 perfurante, alcance 1 hex, 1 PA por ataque. Ataque +0. Efeito: Vampírico.</p>",
+      "description": "<p><strong>Lâmina de Vinha</strong> (WPN-S01). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 1d6 perfurante, alcance 1 hex, 2 PA por ataque. Ataque +0. Efeito: Vampírico.</p>",
       "catalogId": "WPN-S01",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 0,
@@ -3391,7 +3391,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -3418,7 +3418,7 @@
     "name": "Lâmina de Vinha +1",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Lâmina de Vinha +1</strong> (WPN-S01). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 1d6 perfurante, alcance 1 hex, 1 PA por ataque. Ataque +1. Efeito: Vampírico. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
+      "description": "<p><strong>Lâmina de Vinha +1</strong> (WPN-S01). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 1d6 perfurante, alcance 1 hex, 2 PA por ataque. Ataque +1. Efeito: Vampírico. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
       "catalogId": "WPN-S01-E1",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 1,
@@ -3428,7 +3428,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -3455,7 +3455,7 @@
     "name": "Lâmina de Vinha +2",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Lâmina de Vinha +2</strong> (WPN-S01). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 1d6 perfurante, alcance 1 hex, 1 PA por ataque. Ataque +2. Efeito: Vampírico. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
+      "description": "<p><strong>Lâmina de Vinha +2</strong> (WPN-S01). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 1d6 perfurante, alcance 1 hex, 2 PA por ataque. Ataque +2. Efeito: Vampírico. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
       "catalogId": "WPN-S01-E2",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 2,
@@ -3465,7 +3465,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -3492,7 +3492,7 @@
     "name": "Lâmina de Vinha +3",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Lâmina de Vinha +3</strong> (WPN-S01). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 1d6 perfurante, alcance 1 hex, 1 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
+      "description": "<p><strong>Lâmina de Vinha +3</strong> (WPN-S01). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 1d6 perfurante, alcance 1 hex, 2 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
       "catalogId": "WPN-S01-E3",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 3,
@@ -3502,7 +3502,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -3529,7 +3529,7 @@
     "name": "Espada Longa",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Espada Longa</strong> (WPN-S02). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 1d8 cortante, alcance 1 hex, 1 PA por ataque. Ataque +0.</p>",
+      "description": "<p><strong>Espada Longa</strong> (WPN-S02). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 1d8 cortante, alcance 1 hex, 2 PA por ataque. Ataque +0.</p>",
       "catalogId": "WPN-S02",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 0,
@@ -3539,7 +3539,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -3559,7 +3559,7 @@
     "name": "Espada Longa +1",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Espada Longa +1</strong> (WPN-S02). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 1d8 cortante, alcance 1 hex, 1 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
+      "description": "<p><strong>Espada Longa +1</strong> (WPN-S02). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 1d8 cortante, alcance 1 hex, 2 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
       "catalogId": "WPN-S02-E1",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 1,
@@ -3569,7 +3569,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -3589,7 +3589,7 @@
     "name": "Espada Longa +2",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Espada Longa +2</strong> (WPN-S02). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 1d8 cortante, alcance 1 hex, 1 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
+      "description": "<p><strong>Espada Longa +2</strong> (WPN-S02). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 1d8 cortante, alcance 1 hex, 2 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
       "catalogId": "WPN-S02-E2",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 2,
@@ -3599,7 +3599,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -3619,7 +3619,7 @@
     "name": "Espada Longa +3",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Espada Longa +3</strong> (WPN-S02). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 1d8 cortante, alcance 1 hex, 1 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
+      "description": "<p><strong>Espada Longa +3</strong> (WPN-S02). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 1d8 cortante, alcance 1 hex, 2 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
       "catalogId": "WPN-S02-E3",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 3,
@@ -3629,7 +3629,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -3656,7 +3656,7 @@
     "name": "Espada Bastarda",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Espada Bastarda</strong> (WPN-S03). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 1d10 cortante, alcance 1 hex, 1 PA por ataque. Ataque +0.</p>",
+      "description": "<p><strong>Espada Bastarda</strong> (WPN-S03). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 1d10 cortante, alcance 1 hex, 2 PA por ataque. Ataque +0.</p>",
       "catalogId": "WPN-S03",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 0,
@@ -3666,7 +3666,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -3686,7 +3686,7 @@
     "name": "Espada Bastarda +1",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Espada Bastarda +1</strong> (WPN-S03). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 1d10 cortante, alcance 1 hex, 1 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
+      "description": "<p><strong>Espada Bastarda +1</strong> (WPN-S03). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 1d10 cortante, alcance 1 hex, 2 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
       "catalogId": "WPN-S03-E1",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 1,
@@ -3696,7 +3696,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -3716,7 +3716,7 @@
     "name": "Espada Bastarda +2",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Espada Bastarda +2</strong> (WPN-S03). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 1d10 cortante, alcance 1 hex, 1 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
+      "description": "<p><strong>Espada Bastarda +2</strong> (WPN-S03). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 1d10 cortante, alcance 1 hex, 2 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
       "catalogId": "WPN-S03-E2",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 2,
@@ -3726,7 +3726,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -3746,7 +3746,7 @@
     "name": "Espada Bastarda +3",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Espada Bastarda +3</strong> (WPN-S03). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 1d10 cortante, alcance 1 hex, 1 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
+      "description": "<p><strong>Espada Bastarda +3</strong> (WPN-S03). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 1d10 cortante, alcance 1 hex, 2 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
       "catalogId": "WPN-S03-E3",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 3,
@@ -3756,7 +3756,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -3783,7 +3783,7 @@
     "name": "Montante",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Montante</strong> (WPN-S04). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 2d6 cortante, alcance 1 hex, 1 PA por ataque. Ataque +0.</p>",
+      "description": "<p><strong>Montante</strong> (WPN-S04). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 2d6 cortante, alcance 1 hex, 2 PA por ataque. Ataque +0.</p>",
       "catalogId": "WPN-S04",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 0,
@@ -3793,7 +3793,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -3813,7 +3813,7 @@
     "name": "Montante +1",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Montante +1</strong> (WPN-S04). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 2d6 cortante, alcance 1 hex, 1 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
+      "description": "<p><strong>Montante +1</strong> (WPN-S04). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 2d6 cortante, alcance 1 hex, 2 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
       "catalogId": "WPN-S04-E1",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 1,
@@ -3823,7 +3823,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -3843,7 +3843,7 @@
     "name": "Montante +2",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Montante +2</strong> (WPN-S04). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 2d6 cortante, alcance 1 hex, 1 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
+      "description": "<p><strong>Montante +2</strong> (WPN-S04). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 2d6 cortante, alcance 1 hex, 2 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
       "catalogId": "WPN-S04-E2",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 2,
@@ -3853,7 +3853,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -3873,7 +3873,7 @@
     "name": "Montante +3",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Montante +3</strong> (WPN-S04). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 2d6 cortante, alcance 1 hex, 1 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
+      "description": "<p><strong>Montante +3</strong> (WPN-S04). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 2d6 cortante, alcance 1 hex, 2 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
       "catalogId": "WPN-S04-E3",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 3,
@@ -3883,7 +3883,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -3910,7 +3910,7 @@
     "name": "Rapieira",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Rapieira</strong> (WPN-S05). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 1d8 perfurante, alcance 1 hex, 1 PA por ataque. Ataque +0.</p>",
+      "description": "<p><strong>Rapieira</strong> (WPN-S05). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 1d8 perfurante, alcance 1 hex, 2 PA por ataque. Ataque +0.</p>",
       "catalogId": "WPN-S05",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 0,
@@ -3920,7 +3920,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -3940,7 +3940,7 @@
     "name": "Rapieira +1",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Rapieira +1</strong> (WPN-S05). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 1d8 perfurante, alcance 1 hex, 1 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
+      "description": "<p><strong>Rapieira +1</strong> (WPN-S05). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 1d8 perfurante, alcance 1 hex, 2 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
       "catalogId": "WPN-S05-E1",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 1,
@@ -3950,7 +3950,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -3970,7 +3970,7 @@
     "name": "Rapieira +2",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Rapieira +2</strong> (WPN-S05). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 1d8 perfurante, alcance 1 hex, 1 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
+      "description": "<p><strong>Rapieira +2</strong> (WPN-S05). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 1d8 perfurante, alcance 1 hex, 2 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
       "catalogId": "WPN-S05-E2",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 2,
@@ -3980,7 +3980,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -4000,7 +4000,7 @@
     "name": "Rapieira +3",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Rapieira +3</strong> (WPN-S05). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 1d8 perfurante, alcance 1 hex, 1 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
+      "description": "<p><strong>Rapieira +3</strong> (WPN-S05). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 1d8 perfurante, alcance 1 hex, 2 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
       "catalogId": "WPN-S05-E3",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 3,
@@ -4010,7 +4010,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -4037,7 +4037,7 @@
     "name": "Sabre de Cavalaria",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Sabre de Cavalaria</strong> (WPN-S06). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 1d6 cortante, alcance 1 hex, 1 PA por ataque. Ataque +0.</p>",
+      "description": "<p><strong>Sabre de Cavalaria</strong> (WPN-S06). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 1d6 cortante, alcance 1 hex, 2 PA por ataque. Ataque +0.</p>",
       "catalogId": "WPN-S06",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 0,
@@ -4047,7 +4047,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -4067,7 +4067,7 @@
     "name": "Sabre de Cavalaria +1",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Sabre de Cavalaria +1</strong> (WPN-S06). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 1d6 cortante, alcance 1 hex, 1 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
+      "description": "<p><strong>Sabre de Cavalaria +1</strong> (WPN-S06). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 1d6 cortante, alcance 1 hex, 2 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
       "catalogId": "WPN-S06-E1",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 1,
@@ -4077,7 +4077,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -4097,7 +4097,7 @@
     "name": "Sabre de Cavalaria +2",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Sabre de Cavalaria +2</strong> (WPN-S06). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 1d6 cortante, alcance 1 hex, 1 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
+      "description": "<p><strong>Sabre de Cavalaria +2</strong> (WPN-S06). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 1d6 cortante, alcance 1 hex, 2 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
       "catalogId": "WPN-S06-E2",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 2,
@@ -4107,7 +4107,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -4127,7 +4127,7 @@
     "name": "Sabre de Cavalaria +3",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Sabre de Cavalaria +3</strong> (WPN-S06). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 1d6 cortante, alcance 1 hex, 1 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
+      "description": "<p><strong>Sabre de Cavalaria +3</strong> (WPN-S06). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 1d6 cortante, alcance 1 hex, 2 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
       "catalogId": "WPN-S06-E3",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 3,
@@ -4137,7 +4137,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -4164,7 +4164,7 @@
     "name": "Cimitarra de Grimwald",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Cimitarra de Grimwald</strong> (WPN-S07). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 1d6 cortante, alcance 1 hex, 1 PA por ataque. Ataque +0. Efeito: Veneno leve.</p>",
+      "description": "<p><strong>Cimitarra de Grimwald</strong> (WPN-S07). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 1d6 cortante, alcance 1 hex, 2 PA por ataque. Ataque +0. Efeito: Veneno leve.</p>",
       "catalogId": "WPN-S07",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 0,
@@ -4174,7 +4174,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -4202,7 +4202,7 @@
     "name": "Cimitarra de Grimwald +1",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Cimitarra de Grimwald +1</strong> (WPN-S07). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 1d6 cortante, alcance 1 hex, 1 PA por ataque. Ataque +1. Efeito: Veneno leve. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
+      "description": "<p><strong>Cimitarra de Grimwald +1</strong> (WPN-S07). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 1d6 cortante, alcance 1 hex, 2 PA por ataque. Ataque +1. Efeito: Veneno leve. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
       "catalogId": "WPN-S07-E1",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 1,
@@ -4212,7 +4212,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -4240,7 +4240,7 @@
     "name": "Cimitarra de Grimwald +2",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Cimitarra de Grimwald +2</strong> (WPN-S07). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 1d6 cortante, alcance 1 hex, 1 PA por ataque. Ataque +2. Efeito: Veneno leve. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
+      "description": "<p><strong>Cimitarra de Grimwald +2</strong> (WPN-S07). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 1d6 cortante, alcance 1 hex, 2 PA por ataque. Ataque +2. Efeito: Veneno leve. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
       "catalogId": "WPN-S07-E2",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 2,
@@ -4250,7 +4250,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -4278,7 +4278,7 @@
     "name": "Cimitarra de Grimwald +3",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Cimitarra de Grimwald +3</strong> (WPN-S07). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 1d6 cortante, alcance 1 hex, 1 PA por ataque. Ataque +3. Efeito: Veneno leve. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
+      "description": "<p><strong>Cimitarra de Grimwald +3</strong> (WPN-S07). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 1d6 cortante, alcance 1 hex, 2 PA por ataque. Ataque +3. Efeito: Veneno leve. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
       "catalogId": "WPN-S07-E3",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 3,
@@ -4288,7 +4288,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -4316,7 +4316,7 @@
     "name": "Gladius de Masmorra",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Gladius de Masmorra</strong> (WPN-S08). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 1d6 perfurante, alcance 1 hex, 1 PA por ataque. Ataque +0.</p>",
+      "description": "<p><strong>Gladius de Masmorra</strong> (WPN-S08). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 1d6 perfurante, alcance 1 hex, 2 PA por ataque. Ataque +0.</p>",
       "catalogId": "WPN-S08",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 0,
@@ -4326,7 +4326,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -4346,7 +4346,7 @@
     "name": "Gladius de Masmorra +1",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Gladius de Masmorra +1</strong> (WPN-S08). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 1d6 perfurante, alcance 1 hex, 1 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
+      "description": "<p><strong>Gladius de Masmorra +1</strong> (WPN-S08). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 1d6 perfurante, alcance 1 hex, 2 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
       "catalogId": "WPN-S08-E1",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 1,
@@ -4356,7 +4356,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -4376,7 +4376,7 @@
     "name": "Gladius de Masmorra +2",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Gladius de Masmorra +2</strong> (WPN-S08). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 1d6 perfurante, alcance 1 hex, 1 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
+      "description": "<p><strong>Gladius de Masmorra +2</strong> (WPN-S08). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 1d6 perfurante, alcance 1 hex, 2 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
       "catalogId": "WPN-S08-E2",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 2,
@@ -4386,7 +4386,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -4406,7 +4406,7 @@
     "name": "Gladius de Masmorra +3",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Gladius de Masmorra +3</strong> (WPN-S08). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 1d6 perfurante, alcance 1 hex, 1 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
+      "description": "<p><strong>Gladius de Masmorra +3</strong> (WPN-S08). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 1d6 perfurante, alcance 1 hex, 2 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
       "catalogId": "WPN-S08-E3",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 3,
@@ -4416,7 +4416,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -4443,7 +4443,7 @@
     "name": "Claymore de Valdrun",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Claymore de Valdrun</strong> (WPN-S09). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 2d6 cortante, alcance 1 hex, 1 PA por ataque. Ataque +0.</p>",
+      "description": "<p><strong>Claymore de Valdrun</strong> (WPN-S09). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 2d6 cortante, alcance 1 hex, 2 PA por ataque. Ataque +0.</p>",
       "catalogId": "WPN-S09",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 0,
@@ -4453,7 +4453,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -4473,7 +4473,7 @@
     "name": "Claymore de Valdrun +1",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Claymore de Valdrun +1</strong> (WPN-S09). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 2d6 cortante, alcance 1 hex, 1 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
+      "description": "<p><strong>Claymore de Valdrun +1</strong> (WPN-S09). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 2d6 cortante, alcance 1 hex, 2 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
       "catalogId": "WPN-S09-E1",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 1,
@@ -4483,7 +4483,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -4503,7 +4503,7 @@
     "name": "Claymore de Valdrun +2",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Claymore de Valdrun +2</strong> (WPN-S09). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 2d6 cortante, alcance 1 hex, 1 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
+      "description": "<p><strong>Claymore de Valdrun +2</strong> (WPN-S09). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 2d6 cortante, alcance 1 hex, 2 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
       "catalogId": "WPN-S09-E2",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 2,
@@ -4513,7 +4513,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -4533,7 +4533,7 @@
     "name": "Claymore de Valdrun +3",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Claymore de Valdrun +3</strong> (WPN-S09). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 2d6 cortante, alcance 1 hex, 1 PA por ataque. Ataque +3. Efeito: Sede de sangue. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
+      "description": "<p><strong>Claymore de Valdrun +3</strong> (WPN-S09). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 2d6 cortante, alcance 1 hex, 2 PA por ataque. Ataque +3. Efeito: Sede de sangue. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
       "catalogId": "WPN-S09-E3",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 3,
@@ -4543,7 +4543,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -4570,7 +4570,7 @@
     "name": "Espada de Cripta",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Espada de Cripta</strong> (WPN-S10). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 1d8 perfurante, alcance 1 hex, 1 PA por ataque. Ataque +0. Efeito: Sede de sangue.</p>",
+      "description": "<p><strong>Espada de Cripta</strong> (WPN-S10). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 1d8 perfurante, alcance 1 hex, 2 PA por ataque. Ataque +0. Efeito: Sede de sangue.</p>",
       "catalogId": "WPN-S10",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 0,
@@ -4580,7 +4580,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -4607,7 +4607,7 @@
     "name": "Espada de Cripta +1",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Espada de Cripta +1</strong> (WPN-S10). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 1d8 perfurante, alcance 1 hex, 1 PA por ataque. Ataque +1. Efeito: Sede de sangue. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
+      "description": "<p><strong>Espada de Cripta +1</strong> (WPN-S10). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 1d8 perfurante, alcance 1 hex, 2 PA por ataque. Ataque +1. Efeito: Sede de sangue. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
       "catalogId": "WPN-S10-E1",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 1,
@@ -4617,7 +4617,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -4644,7 +4644,7 @@
     "name": "Espada de Cripta +2",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Espada de Cripta +2</strong> (WPN-S10). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 1d8 perfurante, alcance 1 hex, 1 PA por ataque. Ataque +2. Efeito: Sede de sangue. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
+      "description": "<p><strong>Espada de Cripta +2</strong> (WPN-S10). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 1d8 perfurante, alcance 1 hex, 2 PA por ataque. Ataque +2. Efeito: Sede de sangue. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
       "catalogId": "WPN-S10-E2",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 2,
@@ -4654,7 +4654,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -4681,7 +4681,7 @@
     "name": "Espada de Cripta +3",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Espada de Cripta +3</strong> (WPN-S10). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 1d8 perfurante, alcance 1 hex, 1 PA por ataque. Ataque +3. Efeito: Sede de sangue. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
+      "description": "<p><strong>Espada de Cripta +3</strong> (WPN-S10). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 1d8 perfurante, alcance 1 hex, 2 PA por ataque. Ataque +3. Efeito: Sede de sangue. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
       "catalogId": "WPN-S10-E3",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 3,
@@ -4691,7 +4691,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -4718,7 +4718,7 @@
     "name": "Lâmina de Teixo",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Lâmina de Teixo</strong> (WPN-S11). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 1d8 cortante, alcance 1 hex, 1 PA por ataque. Ataque +0.</p>",
+      "description": "<p><strong>Lâmina de Teixo</strong> (WPN-S11). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 1d8 cortante, alcance 1 hex, 2 PA por ataque. Ataque +0.</p>",
       "catalogId": "WPN-S11",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 0,
@@ -4728,7 +4728,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -4748,7 +4748,7 @@
     "name": "Lâmina de Teixo +1",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Lâmina de Teixo +1</strong> (WPN-S11). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 1d8 cortante, alcance 1 hex, 1 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
+      "description": "<p><strong>Lâmina de Teixo +1</strong> (WPN-S11). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 1d8 cortante, alcance 1 hex, 2 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
       "catalogId": "WPN-S11-E1",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 1,
@@ -4758,7 +4758,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -4778,7 +4778,7 @@
     "name": "Lâmina de Teixo +2",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Lâmina de Teixo +2</strong> (WPN-S11). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 1d8 cortante, alcance 1 hex, 1 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
+      "description": "<p><strong>Lâmina de Teixo +2</strong> (WPN-S11). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 1d8 cortante, alcance 1 hex, 2 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
       "catalogId": "WPN-S11-E2",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 2,
@@ -4788,7 +4788,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -4808,7 +4808,7 @@
     "name": "Lâmina de Teixo +3",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Lâmina de Teixo +3</strong> (WPN-S11). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 1d8 cortante, alcance 1 hex, 1 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
+      "description": "<p><strong>Lâmina de Teixo +3</strong> (WPN-S11). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 1d8 cortante, alcance 1 hex, 2 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
       "catalogId": "WPN-S11-E3",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 3,
@@ -4818,7 +4818,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -4845,7 +4845,7 @@
     "name": "Espada de Prata",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Espada de Prata</strong> (WPN-S12). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 1d8 perfurante, alcance 1 hex, 1 PA por ataque. Ataque +0. Efeito: Corte prateado.</p>",
+      "description": "<p><strong>Espada de Prata</strong> (WPN-S12). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 1d8 perfurante, alcance 1 hex, 2 PA por ataque. Ataque +0. Efeito: Corte prateado.</p>",
       "catalogId": "WPN-S12",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 0,
@@ -4855,7 +4855,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -4883,7 +4883,7 @@
     "name": "Espada de Prata +1",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Espada de Prata +1</strong> (WPN-S12). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 1d8 perfurante, alcance 1 hex, 1 PA por ataque. Ataque +1. Efeito: Corte prateado. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
+      "description": "<p><strong>Espada de Prata +1</strong> (WPN-S12). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 1d8 perfurante, alcance 1 hex, 2 PA por ataque. Ataque +1. Efeito: Corte prateado. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
       "catalogId": "WPN-S12-E1",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 1,
@@ -4893,7 +4893,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -4921,7 +4921,7 @@
     "name": "Espada de Prata +2",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Espada de Prata +2</strong> (WPN-S12). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 1d8 perfurante, alcance 1 hex, 1 PA por ataque. Ataque +2. Efeito: Corte prateado. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
+      "description": "<p><strong>Espada de Prata +2</strong> (WPN-S12). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 1d8 perfurante, alcance 1 hex, 2 PA por ataque. Ataque +2. Efeito: Corte prateado. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
       "catalogId": "WPN-S12-E2",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 2,
@@ -4931,7 +4931,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -4959,7 +4959,7 @@
     "name": "Espada de Prata +3",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Espada de Prata +3</strong> (WPN-S12). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 1d8 perfurante, alcance 1 hex, 1 PA por ataque. Ataque +3. Efeito: Corte prateado. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
+      "description": "<p><strong>Espada de Prata +3</strong> (WPN-S12). Lâmina balanceada para duelos corpo a corpo nas masmorras. Dano 1d8 perfurante, alcance 1 hex, 2 PA por ataque. Ataque +3. Efeito: Corte prateado. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
       "catalogId": "WPN-S12-E3",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 3,
@@ -4969,7 +4969,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -4997,7 +4997,7 @@
     "name": "Lança Curta",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Lança Curta</strong> (WPN-P01). Haste ou lança — mantém inimigos à distância no hex adjacente. Dano 1d6 perfurante, alcance 1 hex, 1 PA por ataque. Ataque +0.</p>",
+      "description": "<p><strong>Lança Curta</strong> (WPN-P01). Haste ou lança — mantém inimigos à distância no hex adjacente. Dano 1d6 perfurante, alcance 1 hex, 2 PA por ataque. Ataque +0.</p>",
       "catalogId": "WPN-P01",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 0,
@@ -5007,7 +5007,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -5027,7 +5027,7 @@
     "name": "Lança Curta +1",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Lança Curta +1</strong> (WPN-P01). Haste ou lança — mantém inimigos à distância no hex adjacente. Dano 1d6 perfurante, alcance 1 hex, 1 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
+      "description": "<p><strong>Lança Curta +1</strong> (WPN-P01). Haste ou lança — mantém inimigos à distância no hex adjacente. Dano 1d6 perfurante, alcance 1 hex, 2 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
       "catalogId": "WPN-P01-E1",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 1,
@@ -5037,7 +5037,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -5057,7 +5057,7 @@
     "name": "Lança Curta +2",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Lança Curta +2</strong> (WPN-P01). Haste ou lança — mantém inimigos à distância no hex adjacente. Dano 1d6 perfurante, alcance 1 hex, 1 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
+      "description": "<p><strong>Lança Curta +2</strong> (WPN-P01). Haste ou lança — mantém inimigos à distância no hex adjacente. Dano 1d6 perfurante, alcance 1 hex, 2 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
       "catalogId": "WPN-P01-E2",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 2,
@@ -5067,7 +5067,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -5087,7 +5087,7 @@
     "name": "Lança Curta +3",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Lança Curta +3</strong> (WPN-P01). Haste ou lança — mantém inimigos à distância no hex adjacente. Dano 1d6 perfurante, alcance 1 hex, 1 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
+      "description": "<p><strong>Lança Curta +3</strong> (WPN-P01). Haste ou lança — mantém inimigos à distância no hex adjacente. Dano 1d6 perfurante, alcance 1 hex, 2 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
       "catalogId": "WPN-P01-E3",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 3,
@@ -5097,7 +5097,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -5124,7 +5124,7 @@
     "name": "Lança Longa",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Lança Longa</strong> (WPN-P02). Haste ou lança — mantém inimigos à distância no hex adjacente. Dano 1d10 perfurante, alcance 2 hex, 1 PA por ataque. Ataque +0.</p>",
+      "description": "<p><strong>Lança Longa</strong> (WPN-P02). Haste ou lança — mantém inimigos à distância no hex adjacente. Dano 1d10 perfurante, alcance 2 hex, 2 PA por ataque. Ataque +0.</p>",
       "catalogId": "WPN-P02",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 0,
@@ -5134,7 +5134,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -5154,7 +5154,7 @@
     "name": "Lança Longa +1",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Lança Longa +1</strong> (WPN-P02). Haste ou lança — mantém inimigos à distância no hex adjacente. Dano 1d10 perfurante, alcance 2 hex, 1 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
+      "description": "<p><strong>Lança Longa +1</strong> (WPN-P02). Haste ou lança — mantém inimigos à distância no hex adjacente. Dano 1d10 perfurante, alcance 2 hex, 2 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
       "catalogId": "WPN-P02-E1",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 1,
@@ -5164,7 +5164,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -5184,7 +5184,7 @@
     "name": "Lança Longa +2",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Lança Longa +2</strong> (WPN-P02). Haste ou lança — mantém inimigos à distância no hex adjacente. Dano 1d10 perfurante, alcance 2 hex, 1 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
+      "description": "<p><strong>Lança Longa +2</strong> (WPN-P02). Haste ou lança — mantém inimigos à distância no hex adjacente. Dano 1d10 perfurante, alcance 2 hex, 2 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
       "catalogId": "WPN-P02-E2",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 2,
@@ -5194,7 +5194,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -5214,7 +5214,7 @@
     "name": "Lança Longa +3",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Lança Longa +3</strong> (WPN-P02). Haste ou lança — mantém inimigos à distância no hex adjacente. Dano 1d10 perfurante, alcance 2 hex, 1 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
+      "description": "<p><strong>Lança Longa +3</strong> (WPN-P02). Haste ou lança — mantém inimigos à distância no hex adjacente. Dano 1d10 perfurante, alcance 2 hex, 2 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
       "catalogId": "WPN-P02-E3",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 3,
@@ -5224,7 +5224,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -5251,7 +5251,7 @@
     "name": "Pique de Falange",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Pique de Falange</strong> (WPN-P03). Haste ou lança — mantém inimigos à distância no hex adjacente. Dano 1d10 perfurante, alcance 2 hex, 1 PA por ataque. Ataque +0.</p>",
+      "description": "<p><strong>Pique de Falange</strong> (WPN-P03). Haste ou lança — mantém inimigos à distância no hex adjacente. Dano 1d10 perfurante, alcance 2 hex, 2 PA por ataque. Ataque +0.</p>",
       "catalogId": "WPN-P03",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 0,
@@ -5261,7 +5261,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -5281,7 +5281,7 @@
     "name": "Pique de Falange +1",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Pique de Falange +1</strong> (WPN-P03). Haste ou lança — mantém inimigos à distância no hex adjacente. Dano 1d10 perfurante, alcance 2 hex, 1 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
+      "description": "<p><strong>Pique de Falange +1</strong> (WPN-P03). Haste ou lança — mantém inimigos à distância no hex adjacente. Dano 1d10 perfurante, alcance 2 hex, 2 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
       "catalogId": "WPN-P03-E1",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 1,
@@ -5291,7 +5291,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -5311,7 +5311,7 @@
     "name": "Pique de Falange +2",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Pique de Falange +2</strong> (WPN-P03). Haste ou lança — mantém inimigos à distância no hex adjacente. Dano 1d10 perfurante, alcance 2 hex, 1 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
+      "description": "<p><strong>Pique de Falange +2</strong> (WPN-P03). Haste ou lança — mantém inimigos à distância no hex adjacente. Dano 1d10 perfurante, alcance 2 hex, 2 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
       "catalogId": "WPN-P03-E2",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 2,
@@ -5321,7 +5321,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -5341,7 +5341,7 @@
     "name": "Pique de Falange +3",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Pique de Falange +3</strong> (WPN-P03). Haste ou lança — mantém inimigos à distância no hex adjacente. Dano 1d10 perfurante, alcance 2 hex, 1 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
+      "description": "<p><strong>Pique de Falange +3</strong> (WPN-P03). Haste ou lança — mantém inimigos à distância no hex adjacente. Dano 1d10 perfurante, alcance 2 hex, 2 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
       "catalogId": "WPN-P03-E3",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 3,
@@ -5351,7 +5351,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -5378,7 +5378,7 @@
     "name": "Azagaia",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Azagaia</strong> (WPN-P04). Haste ou lança — mantém inimigos à distância no hex adjacente. Dano 1d6 perfurante, alcance 3 hex, 1 PA por ataque. Ataque +0.</p>",
+      "description": "<p><strong>Azagaia</strong> (WPN-P04). Haste ou lança — mantém inimigos à distância no hex adjacente. Dano 1d6 perfurante, alcance 3 hex, 2 PA por ataque. Ataque +0.</p>",
       "catalogId": "WPN-P04",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 0,
@@ -5388,7 +5388,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -5408,7 +5408,7 @@
     "name": "Azagaia +1",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Azagaia +1</strong> (WPN-P04). Haste ou lança — mantém inimigos à distância no hex adjacente. Dano 1d6 perfurante, alcance 3 hex, 1 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
+      "description": "<p><strong>Azagaia +1</strong> (WPN-P04). Haste ou lança — mantém inimigos à distância no hex adjacente. Dano 1d6 perfurante, alcance 3 hex, 2 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
       "catalogId": "WPN-P04-E1",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 1,
@@ -5418,7 +5418,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -5438,7 +5438,7 @@
     "name": "Azagaia +2",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Azagaia +2</strong> (WPN-P04). Haste ou lança — mantém inimigos à distância no hex adjacente. Dano 1d6 perfurante, alcance 3 hex, 1 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
+      "description": "<p><strong>Azagaia +2</strong> (WPN-P04). Haste ou lança — mantém inimigos à distância no hex adjacente. Dano 1d6 perfurante, alcance 3 hex, 2 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
       "catalogId": "WPN-P04-E2",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 2,
@@ -5448,7 +5448,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -5468,7 +5468,7 @@
     "name": "Azagaia +3",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Azagaia +3</strong> (WPN-P04). Haste ou lança — mantém inimigos à distância no hex adjacente. Dano 1d6 perfurante, alcance 3 hex, 1 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
+      "description": "<p><strong>Azagaia +3</strong> (WPN-P04). Haste ou lança — mantém inimigos à distância no hex adjacente. Dano 1d6 perfurante, alcance 3 hex, 2 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
       "catalogId": "WPN-P04-E3",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 3,
@@ -5478,7 +5478,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -5505,7 +5505,7 @@
     "name": "Tridente",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Tridente</strong> (WPN-P05). Haste ou lança — mantém inimigos à distância no hex adjacente. Dano 1d6 perfurante, alcance 1 hex, 1 PA por ataque. Ataque +0. Efeito: Veneno leve.</p>",
+      "description": "<p><strong>Tridente</strong> (WPN-P05). Haste ou lança — mantém inimigos à distância no hex adjacente. Dano 1d6 perfurante, alcance 1 hex, 2 PA por ataque. Ataque +0. Efeito: Veneno leve.</p>",
       "catalogId": "WPN-P05",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 0,
@@ -5515,7 +5515,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -5543,7 +5543,7 @@
     "name": "Tridente +1",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Tridente +1</strong> (WPN-P05). Haste ou lança — mantém inimigos à distância no hex adjacente. Dano 1d6 perfurante, alcance 1 hex, 1 PA por ataque. Ataque +1. Efeito: Veneno leve. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
+      "description": "<p><strong>Tridente +1</strong> (WPN-P05). Haste ou lança — mantém inimigos à distância no hex adjacente. Dano 1d6 perfurante, alcance 1 hex, 2 PA por ataque. Ataque +1. Efeito: Veneno leve. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
       "catalogId": "WPN-P05-E1",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 1,
@@ -5553,7 +5553,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -5581,7 +5581,7 @@
     "name": "Tridente +2",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Tridente +2</strong> (WPN-P05). Haste ou lança — mantém inimigos à distância no hex adjacente. Dano 1d6 perfurante, alcance 1 hex, 1 PA por ataque. Ataque +2. Efeito: Veneno leve. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
+      "description": "<p><strong>Tridente +2</strong> (WPN-P05). Haste ou lança — mantém inimigos à distância no hex adjacente. Dano 1d6 perfurante, alcance 1 hex, 2 PA por ataque. Ataque +2. Efeito: Veneno leve. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
       "catalogId": "WPN-P05-E2",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 2,
@@ -5591,7 +5591,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -5619,7 +5619,7 @@
     "name": "Tridente +3",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Tridente +3</strong> (WPN-P05). Haste ou lança — mantém inimigos à distância no hex adjacente. Dano 1d6 perfurante, alcance 1 hex, 1 PA por ataque. Ataque +3. Efeito: Veneno leve. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
+      "description": "<p><strong>Tridente +3</strong> (WPN-P05). Haste ou lança — mantém inimigos à distância no hex adjacente. Dano 1d6 perfurante, alcance 1 hex, 2 PA por ataque. Ataque +3. Efeito: Veneno leve. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
       "catalogId": "WPN-P05-E3",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 3,
@@ -5629,7 +5629,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -5657,7 +5657,7 @@
     "name": "Alabarda",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Alabarda</strong> (WPN-P06). Haste ou lança — mantém inimigos à distância no hex adjacente. Dano 1d10 cortante, alcance 2 hex, 1 PA por ataque. Ataque +0.</p>",
+      "description": "<p><strong>Alabarda</strong> (WPN-P06). Haste ou lança — mantém inimigos à distância no hex adjacente. Dano 1d10 cortante, alcance 2 hex, 2 PA por ataque. Ataque +0.</p>",
       "catalogId": "WPN-P06",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 0,
@@ -5667,7 +5667,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -5687,7 +5687,7 @@
     "name": "Alabarda +1",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Alabarda +1</strong> (WPN-P06). Haste ou lança — mantém inimigos à distância no hex adjacente. Dano 1d10 cortante, alcance 2 hex, 1 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
+      "description": "<p><strong>Alabarda +1</strong> (WPN-P06). Haste ou lança — mantém inimigos à distância no hex adjacente. Dano 1d10 cortante, alcance 2 hex, 2 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
       "catalogId": "WPN-P06-E1",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 1,
@@ -5697,7 +5697,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -5717,7 +5717,7 @@
     "name": "Alabarda +2",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Alabarda +2</strong> (WPN-P06). Haste ou lança — mantém inimigos à distância no hex adjacente. Dano 1d10 cortante, alcance 2 hex, 1 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
+      "description": "<p><strong>Alabarda +2</strong> (WPN-P06). Haste ou lança — mantém inimigos à distância no hex adjacente. Dano 1d10 cortante, alcance 2 hex, 2 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
       "catalogId": "WPN-P06-E2",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 2,
@@ -5727,7 +5727,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -5747,7 +5747,7 @@
     "name": "Alabarda +3",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Alabarda +3</strong> (WPN-P06). Haste ou lança — mantém inimigos à distância no hex adjacente. Dano 1d10 cortante, alcance 2 hex, 1 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
+      "description": "<p><strong>Alabarda +3</strong> (WPN-P06). Haste ou lança — mantém inimigos à distância no hex adjacente. Dano 1d10 cortante, alcance 2 hex, 2 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
       "catalogId": "WPN-P06-E3",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 3,
@@ -5757,7 +5757,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -5784,7 +5784,7 @@
     "name": "Lança de Cavalaria",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Lança de Cavalaria</strong> (WPN-P07). Haste ou lança — mantém inimigos à distância no hex adjacente. Dano 1d8 perfurante, alcance 2 hex, 1 PA por ataque. Ataque +0.</p>",
+      "description": "<p><strong>Lança de Cavalaria</strong> (WPN-P07). Haste ou lança — mantém inimigos à distância no hex adjacente. Dano 1d8 perfurante, alcance 2 hex, 2 PA por ataque. Ataque +0.</p>",
       "catalogId": "WPN-P07",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 0,
@@ -5794,7 +5794,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -5814,7 +5814,7 @@
     "name": "Lança de Cavalaria +1",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Lança de Cavalaria +1</strong> (WPN-P07). Haste ou lança — mantém inimigos à distância no hex adjacente. Dano 1d8 perfurante, alcance 2 hex, 1 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
+      "description": "<p><strong>Lança de Cavalaria +1</strong> (WPN-P07). Haste ou lança — mantém inimigos à distância no hex adjacente. Dano 1d8 perfurante, alcance 2 hex, 2 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
       "catalogId": "WPN-P07-E1",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 1,
@@ -5824,7 +5824,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -5844,7 +5844,7 @@
     "name": "Lança de Cavalaria +2",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Lança de Cavalaria +2</strong> (WPN-P07). Haste ou lança — mantém inimigos à distância no hex adjacente. Dano 1d8 perfurante, alcance 2 hex, 1 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
+      "description": "<p><strong>Lança de Cavalaria +2</strong> (WPN-P07). Haste ou lança — mantém inimigos à distância no hex adjacente. Dano 1d8 perfurante, alcance 2 hex, 2 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
       "catalogId": "WPN-P07-E2",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 2,
@@ -5854,7 +5854,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -5874,7 +5874,7 @@
     "name": "Lança de Cavalaria +3",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Lança de Cavalaria +3</strong> (WPN-P07). Haste ou lança — mantém inimigos à distância no hex adjacente. Dano 1d8 perfurante, alcance 2 hex, 1 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
+      "description": "<p><strong>Lança de Cavalaria +3</strong> (WPN-P07). Haste ou lança — mantém inimigos à distância no hex adjacente. Dano 1d8 perfurante, alcance 2 hex, 2 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
       "catalogId": "WPN-P07-E3",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 3,
@@ -5884,7 +5884,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -5911,7 +5911,7 @@
     "name": "Javelin de Caça",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Javelin de Caça</strong> (WPN-P08). Haste ou lança — mantém inimigos à distância no hex adjacente. Dano 1d6 perfurante, alcance 3 hex, 1 PA por ataque. Ataque +0.</p>",
+      "description": "<p><strong>Javelin de Caça</strong> (WPN-P08). Haste ou lança — mantém inimigos à distância no hex adjacente. Dano 1d6 perfurante, alcance 3 hex, 2 PA por ataque. Ataque +0.</p>",
       "catalogId": "WPN-P08",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 0,
@@ -5921,7 +5921,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -5941,7 +5941,7 @@
     "name": "Javelin de Caça +1",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Javelin de Caça +1</strong> (WPN-P08). Haste ou lança — mantém inimigos à distância no hex adjacente. Dano 1d6 perfurante, alcance 3 hex, 1 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
+      "description": "<p><strong>Javelin de Caça +1</strong> (WPN-P08). Haste ou lança — mantém inimigos à distância no hex adjacente. Dano 1d6 perfurante, alcance 3 hex, 2 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
       "catalogId": "WPN-P08-E1",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 1,
@@ -5951,7 +5951,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -5971,7 +5971,7 @@
     "name": "Javelin de Caça +2",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Javelin de Caça +2</strong> (WPN-P08). Haste ou lança — mantém inimigos à distância no hex adjacente. Dano 1d6 perfurante, alcance 3 hex, 1 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
+      "description": "<p><strong>Javelin de Caça +2</strong> (WPN-P08). Haste ou lança — mantém inimigos à distância no hex adjacente. Dano 1d6 perfurante, alcance 3 hex, 2 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
       "catalogId": "WPN-P08-E2",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 2,
@@ -5981,7 +5981,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -6001,7 +6001,7 @@
     "name": "Javelin de Caça +3",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Javelin de Caça +3</strong> (WPN-P08). Haste ou lança — mantém inimigos à distância no hex adjacente. Dano 1d6 perfurante, alcance 3 hex, 1 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
+      "description": "<p><strong>Javelin de Caça +3</strong> (WPN-P08). Haste ou lança — mantém inimigos à distância no hex adjacente. Dano 1d6 perfurante, alcance 3 hex, 2 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
       "catalogId": "WPN-P08-E3",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 3,
@@ -6011,7 +6011,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -6038,7 +6038,7 @@
     "name": "Lança de Teixo",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Lança de Teixo</strong> (WPN-P09). Haste ou lança — mantém inimigos à distância no hex adjacente. Dano 1d8 perfurante, alcance 2 hex, 1 PA por ataque. Ataque +0.</p>",
+      "description": "<p><strong>Lança de Teixo</strong> (WPN-P09). Haste ou lança — mantém inimigos à distância no hex adjacente. Dano 1d8 perfurante, alcance 2 hex, 2 PA por ataque. Ataque +0.</p>",
       "catalogId": "WPN-P09",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 0,
@@ -6048,7 +6048,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -6068,7 +6068,7 @@
     "name": "Lança de Teixo +1",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Lança de Teixo +1</strong> (WPN-P09). Haste ou lança — mantém inimigos à distância no hex adjacente. Dano 1d8 perfurante, alcance 2 hex, 1 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
+      "description": "<p><strong>Lança de Teixo +1</strong> (WPN-P09). Haste ou lança — mantém inimigos à distância no hex adjacente. Dano 1d8 perfurante, alcance 2 hex, 2 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
       "catalogId": "WPN-P09-E1",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 1,
@@ -6078,7 +6078,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -6098,7 +6098,7 @@
     "name": "Lança de Teixo +2",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Lança de Teixo +2</strong> (WPN-P09). Haste ou lança — mantém inimigos à distância no hex adjacente. Dano 1d8 perfurante, alcance 2 hex, 1 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
+      "description": "<p><strong>Lança de Teixo +2</strong> (WPN-P09). Haste ou lança — mantém inimigos à distância no hex adjacente. Dano 1d8 perfurante, alcance 2 hex, 2 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
       "catalogId": "WPN-P09-E2",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 2,
@@ -6108,7 +6108,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -6128,7 +6128,7 @@
     "name": "Lança de Teixo +3",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Lança de Teixo +3</strong> (WPN-P09). Haste ou lança — mantém inimigos à distância no hex adjacente. Dano 1d8 perfurante, alcance 2 hex, 1 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
+      "description": "<p><strong>Lança de Teixo +3</strong> (WPN-P09). Haste ou lança — mantém inimigos à distância no hex adjacente. Dano 1d8 perfurante, alcance 2 hex, 2 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
       "catalogId": "WPN-P09-E3",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 3,
@@ -6138,7 +6138,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -6165,7 +6165,7 @@
     "name": "Lança de Valdrun",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Lança de Valdrun</strong> (WPN-P10). Haste ou lança — mantém inimigos à distância no hex adjacente. Dano 1d10 perfurante, alcance 2 hex, 1 PA por ataque. Ataque +0.</p>",
+      "description": "<p><strong>Lança de Valdrun</strong> (WPN-P10). Haste ou lança — mantém inimigos à distância no hex adjacente. Dano 1d10 perfurante, alcance 2 hex, 2 PA por ataque. Ataque +0.</p>",
       "catalogId": "WPN-P10",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 0,
@@ -6175,7 +6175,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -6195,7 +6195,7 @@
     "name": "Lança de Valdrun +1",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Lança de Valdrun +1</strong> (WPN-P10). Haste ou lança — mantém inimigos à distância no hex adjacente. Dano 1d10 perfurante, alcance 2 hex, 1 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
+      "description": "<p><strong>Lança de Valdrun +1</strong> (WPN-P10). Haste ou lança — mantém inimigos à distância no hex adjacente. Dano 1d10 perfurante, alcance 2 hex, 2 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
       "catalogId": "WPN-P10-E1",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 1,
@@ -6205,7 +6205,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -6225,7 +6225,7 @@
     "name": "Lança de Valdrun +2",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Lança de Valdrun +2</strong> (WPN-P10). Haste ou lança — mantém inimigos à distância no hex adjacente. Dano 1d10 perfurante, alcance 2 hex, 1 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
+      "description": "<p><strong>Lança de Valdrun +2</strong> (WPN-P10). Haste ou lança — mantém inimigos à distância no hex adjacente. Dano 1d10 perfurante, alcance 2 hex, 2 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
       "catalogId": "WPN-P10-E2",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 2,
@@ -6235,7 +6235,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -6255,7 +6255,7 @@
     "name": "Lança de Valdrun +3",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Lança de Valdrun +3</strong> (WPN-P10). Haste ou lança — mantém inimigos à distância no hex adjacente. Dano 1d10 perfurante, alcance 2 hex, 1 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
+      "description": "<p><strong>Lança de Valdrun +3</strong> (WPN-P10). Haste ou lança — mantém inimigos à distância no hex adjacente. Dano 1d10 perfurante, alcance 2 hex, 2 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
       "catalogId": "WPN-P10-E3",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 3,
@@ -6265,7 +6265,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -6292,7 +6292,7 @@
     "name": "Adaga de Masmorra",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Adaga de Masmorra</strong> (WPN-O01). Lâmina leve — perfeita para fintas e ataques de oportunidade. Dano 1d4 perfurante, alcance 1 hex, 1 PA por ataque. Ataque +0.</p>",
+      "description": "<p><strong>Adaga de Masmorra</strong> (WPN-O01). Lâmina leve — perfeita para fintas e ataques de oportunidade. Dano 1d4 perfurante, alcance 1 hex, 2 PA por ataque. Ataque +0.</p>",
       "catalogId": "WPN-O01",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 0,
@@ -6302,7 +6302,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -6322,7 +6322,7 @@
     "name": "Adaga de Masmorra +1",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Adaga de Masmorra +1</strong> (WPN-O01). Lâmina leve — perfeita para fintas e ataques de oportunidade. Dano 1d4 perfurante, alcance 1 hex, 1 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
+      "description": "<p><strong>Adaga de Masmorra +1</strong> (WPN-O01). Lâmina leve — perfeita para fintas e ataques de oportunidade. Dano 1d4 perfurante, alcance 1 hex, 2 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
       "catalogId": "WPN-O01-E1",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 1,
@@ -6332,7 +6332,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -6352,7 +6352,7 @@
     "name": "Adaga de Masmorra +2",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Adaga de Masmorra +2</strong> (WPN-O01). Lâmina leve — perfeita para fintas e ataques de oportunidade. Dano 1d4 perfurante, alcance 1 hex, 1 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
+      "description": "<p><strong>Adaga de Masmorra +2</strong> (WPN-O01). Lâmina leve — perfeita para fintas e ataques de oportunidade. Dano 1d4 perfurante, alcance 1 hex, 2 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
       "catalogId": "WPN-O01-E2",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 2,
@@ -6362,7 +6362,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -6382,7 +6382,7 @@
     "name": "Adaga de Masmorra +3",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Adaga de Masmorra +3</strong> (WPN-O01). Lâmina leve — perfeita para fintas e ataques de oportunidade. Dano 1d4 perfurante, alcance 1 hex, 1 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
+      "description": "<p><strong>Adaga de Masmorra +3</strong> (WPN-O01). Lâmina leve — perfeita para fintas e ataques de oportunidade. Dano 1d4 perfurante, alcance 1 hex, 2 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
       "catalogId": "WPN-O01-E3",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 3,
@@ -6392,7 +6392,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -6419,7 +6419,7 @@
     "name": "Adagas Gêmeas",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Adagas Gêmeas</strong> (WPN-O02). Lâmina leve — perfeita para fintas e ataques de oportunidade. Dano 2d4 perfurante, alcance 1 hex, 1 PA por ataque. Ataque +0.</p>",
+      "description": "<p><strong>Adagas Gêmeas</strong> (WPN-O02). Lâmina leve — perfeita para fintas e ataques de oportunidade. Dano 2d4 perfurante, alcance 1 hex, 2 PA por ataque. Ataque +0.</p>",
       "catalogId": "WPN-O02",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 0,
@@ -6429,7 +6429,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -6449,7 +6449,7 @@
     "name": "Adagas Gêmeas +1",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Adagas Gêmeas +1</strong> (WPN-O02). Lâmina leve — perfeita para fintas e ataques de oportunidade. Dano 2d4 perfurante, alcance 1 hex, 1 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
+      "description": "<p><strong>Adagas Gêmeas +1</strong> (WPN-O02). Lâmina leve — perfeita para fintas e ataques de oportunidade. Dano 2d4 perfurante, alcance 1 hex, 2 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
       "catalogId": "WPN-O02-E1",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 1,
@@ -6459,7 +6459,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -6479,7 +6479,7 @@
     "name": "Adagas Gêmeas +2",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Adagas Gêmeas +2</strong> (WPN-O02). Lâmina leve — perfeita para fintas e ataques de oportunidade. Dano 2d4 perfurante, alcance 1 hex, 1 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
+      "description": "<p><strong>Adagas Gêmeas +2</strong> (WPN-O02). Lâmina leve — perfeita para fintas e ataques de oportunidade. Dano 2d4 perfurante, alcance 1 hex, 2 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
       "catalogId": "WPN-O02-E2",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 2,
@@ -6489,7 +6489,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -6509,7 +6509,7 @@
     "name": "Adagas Gêmeas +3",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Adagas Gêmeas +3</strong> (WPN-O02). Lâmina leve — perfeita para fintas e ataques de oportunidade. Dano 2d4 perfurante, alcance 1 hex, 1 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
+      "description": "<p><strong>Adagas Gêmeas +3</strong> (WPN-O02). Lâmina leve — perfeita para fintas e ataques de oportunidade. Dano 2d4 perfurante, alcance 1 hex, 2 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
       "catalogId": "WPN-O02-E3",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 3,
@@ -6519,7 +6519,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -6546,7 +6546,7 @@
     "name": "Machado de Batalha",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Machado de Batalha</strong> (WPN-O03). Corte pesado — quebra guardas e carapaças com força bruta. Dano 1d8 cortante, alcance 1 hex, 1 PA por ataque. Ataque +0.</p>",
+      "description": "<p><strong>Machado de Batalha</strong> (WPN-O03). Corte pesado — quebra guardas e carapaças com força bruta. Dano 1d8 cortante, alcance 1 hex, 2 PA por ataque. Ataque +0.</p>",
       "catalogId": "WPN-O03",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 0,
@@ -6556,7 +6556,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -6576,7 +6576,7 @@
     "name": "Machado de Batalha +1",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Machado de Batalha +1</strong> (WPN-O03). Corte pesado — quebra guardas e carapaças com força bruta. Dano 1d8 cortante, alcance 1 hex, 1 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
+      "description": "<p><strong>Machado de Batalha +1</strong> (WPN-O03). Corte pesado — quebra guardas e carapaças com força bruta. Dano 1d8 cortante, alcance 1 hex, 2 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
       "catalogId": "WPN-O03-E1",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 1,
@@ -6586,7 +6586,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -6606,7 +6606,7 @@
     "name": "Machado de Batalha +2",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Machado de Batalha +2</strong> (WPN-O03). Corte pesado — quebra guardas e carapaças com força bruta. Dano 1d8 cortante, alcance 1 hex, 1 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
+      "description": "<p><strong>Machado de Batalha +2</strong> (WPN-O03). Corte pesado — quebra guardas e carapaças com força bruta. Dano 1d8 cortante, alcance 1 hex, 2 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
       "catalogId": "WPN-O03-E2",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 2,
@@ -6616,7 +6616,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -6636,7 +6636,7 @@
     "name": "Machado de Batalha +3",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Machado de Batalha +3</strong> (WPN-O03). Corte pesado — quebra guardas e carapaças com força bruta. Dano 1d8 cortante, alcance 1 hex, 1 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
+      "description": "<p><strong>Machado de Batalha +3</strong> (WPN-O03). Corte pesado — quebra guardas e carapaças com força bruta. Dano 1d8 cortante, alcance 1 hex, 2 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
       "catalogId": "WPN-O03-E3",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 3,
@@ -6646,7 +6646,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -6673,7 +6673,7 @@
     "name": "Machado Grande",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Machado Grande</strong> (WPN-O04). Corte pesado — quebra guardas e carapaças com força bruta. Dano 1d12 cortante, alcance 1 hex, 1 PA por ataque. Ataque +0.</p>",
+      "description": "<p><strong>Machado Grande</strong> (WPN-O04). Corte pesado — quebra guardas e carapaças com força bruta. Dano 1d12 cortante, alcance 1 hex, 2 PA por ataque. Ataque +0.</p>",
       "catalogId": "WPN-O04",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 0,
@@ -6683,7 +6683,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -6703,7 +6703,7 @@
     "name": "Machado Grande +1",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Machado Grande +1</strong> (WPN-O04). Corte pesado — quebra guardas e carapaças com força bruta. Dano 1d12 cortante, alcance 1 hex, 1 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
+      "description": "<p><strong>Machado Grande +1</strong> (WPN-O04). Corte pesado — quebra guardas e carapaças com força bruta. Dano 1d12 cortante, alcance 1 hex, 2 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
       "catalogId": "WPN-O04-E1",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 1,
@@ -6713,7 +6713,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -6733,7 +6733,7 @@
     "name": "Machado Grande +2",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Machado Grande +2</strong> (WPN-O04). Corte pesado — quebra guardas e carapaças com força bruta. Dano 1d12 cortante, alcance 1 hex, 1 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
+      "description": "<p><strong>Machado Grande +2</strong> (WPN-O04). Corte pesado — quebra guardas e carapaças com força bruta. Dano 1d12 cortante, alcance 1 hex, 2 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
       "catalogId": "WPN-O04-E2",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 2,
@@ -6743,7 +6743,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -6763,7 +6763,7 @@
     "name": "Machado Grande +3",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Machado Grande +3</strong> (WPN-O04). Corte pesado — quebra guardas e carapaças com força bruta. Dano 1d12 cortante, alcance 1 hex, 1 PA por ataque. Ataque +3. Efeito: Esmagadora. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
+      "description": "<p><strong>Machado Grande +3</strong> (WPN-O04). Corte pesado — quebra guardas e carapaças com força bruta. Dano 1d12 cortante, alcance 1 hex, 2 PA por ataque. Ataque +3. Efeito: Esmagadora. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
       "catalogId": "WPN-O04-E3",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 3,
@@ -6773,7 +6773,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -6801,7 +6801,7 @@
     "name": "Maça de Guerra",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Maça de Guerra</strong> (WPN-O05). Arma de forja Eldarin — Guerra. Dano 2d6 contundente, alcance 1 hex, 1 PA por ataque. Ataque +0. Efeito: Esmagadora.</p>",
+      "description": "<p><strong>Maça de Guerra</strong> (WPN-O05). Arma de forja Eldarin — Guerra. Dano 2d6 contundente, alcance 1 hex, 2 PA por ataque. Ataque +0. Efeito: Esmagadora.</p>",
       "catalogId": "WPN-O05",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 0,
@@ -6811,7 +6811,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -6839,7 +6839,7 @@
     "name": "Maça de Guerra +1",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Maça de Guerra +1</strong> (WPN-O05). Arma de forja Eldarin — Guerra. Dano 2d6 contundente, alcance 1 hex, 1 PA por ataque. Ataque +1. Efeito: Esmagadora. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
+      "description": "<p><strong>Maça de Guerra +1</strong> (WPN-O05). Arma de forja Eldarin — Guerra. Dano 2d6 contundente, alcance 1 hex, 2 PA por ataque. Ataque +1. Efeito: Esmagadora. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
       "catalogId": "WPN-O05-E1",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 1,
@@ -6849,7 +6849,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -6877,7 +6877,7 @@
     "name": "Maça de Guerra +2",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Maça de Guerra +2</strong> (WPN-O05). Arma de forja Eldarin — Guerra. Dano 2d6 contundente, alcance 1 hex, 1 PA por ataque. Ataque +2. Efeito: Esmagadora. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
+      "description": "<p><strong>Maça de Guerra +2</strong> (WPN-O05). Arma de forja Eldarin — Guerra. Dano 2d6 contundente, alcance 1 hex, 2 PA por ataque. Ataque +2. Efeito: Esmagadora. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
       "catalogId": "WPN-O05-E2",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 2,
@@ -6887,7 +6887,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -6915,7 +6915,7 @@
     "name": "Maça de Guerra +3",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Maça de Guerra +3</strong> (WPN-O05). Arma de forja Eldarin — Guerra. Dano 2d6 contundente, alcance 1 hex, 1 PA por ataque. Ataque +3. Efeito: Esmagadora. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
+      "description": "<p><strong>Maça de Guerra +3</strong> (WPN-O05). Arma de forja Eldarin — Guerra. Dano 2d6 contundente, alcance 1 hex, 2 PA por ataque. Ataque +3. Efeito: Esmagadora. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
       "catalogId": "WPN-O05-E3",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 3,
@@ -6925,7 +6925,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -6953,7 +6953,7 @@
     "name": "Martelo de Guerra",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Martelo de Guerra</strong> (WPN-O06). Arma de forja Eldarin — Guerra. Dano 2d6 contundente, alcance 1 hex, 1 PA por ataque. Ataque +0.</p>",
+      "description": "<p><strong>Martelo de Guerra</strong> (WPN-O06). Arma de forja Eldarin — Guerra. Dano 2d6 contundente, alcance 1 hex, 2 PA por ataque. Ataque +0.</p>",
       "catalogId": "WPN-O06",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 0,
@@ -6963,7 +6963,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -6983,7 +6983,7 @@
     "name": "Martelo de Guerra +1",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Martelo de Guerra +1</strong> (WPN-O06). Arma de forja Eldarin — Guerra. Dano 2d6 contundente, alcance 1 hex, 1 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
+      "description": "<p><strong>Martelo de Guerra +1</strong> (WPN-O06). Arma de forja Eldarin — Guerra. Dano 2d6 contundente, alcance 1 hex, 2 PA por ataque. Ataque +1. Aprimoramento +1: soma +1 ao ataque e +1 ao dano.</p>",
       "catalogId": "WPN-O06-E1",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 1,
@@ -6993,7 +6993,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -7013,7 +7013,7 @@
     "name": "Martelo de Guerra +2",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Martelo de Guerra +2</strong> (WPN-O06). Arma de forja Eldarin — Guerra. Dano 2d6 contundente, alcance 1 hex, 1 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
+      "description": "<p><strong>Martelo de Guerra +2</strong> (WPN-O06). Arma de forja Eldarin — Guerra. Dano 2d6 contundente, alcance 1 hex, 2 PA por ataque. Ataque +2. Aprimoramento +2: soma +2 ao ataque e +2 ao dano.</p>",
       "catalogId": "WPN-O06-E2",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 2,
@@ -7023,7 +7023,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -7043,7 +7043,7 @@
     "name": "Martelo de Guerra +3",
     "type": "arma",
     "system": {
-      "description": "<p><strong>Martelo de Guerra +3</strong> (WPN-O06). Arma de forja Eldarin — Guerra. Dano 2d6 contundente, alcance 1 hex, 1 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
+      "description": "<p><strong>Martelo de Guerra +3</strong> (WPN-O06). Arma de forja Eldarin — Guerra. Dano 2d6 contundente, alcance 1 hex, 2 PA por ataque. Ataque +3. Efeito: Vampírico. Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).</p>",
       "catalogId": "WPN-O06-E3",
       "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
       "enchant": 3,
@@ -7053,7 +7053,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -7091,7 +7091,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -7130,7 +7130,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -7169,7 +7169,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -7208,7 +7208,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -7247,7 +7247,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -7286,7 +7286,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -7337,7 +7337,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -7368,7 +7368,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },

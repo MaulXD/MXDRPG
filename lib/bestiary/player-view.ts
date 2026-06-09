@@ -26,18 +26,24 @@ export function buildPlayerMonsterKnowledgeView(
   };
 }
 
+export function buildPlayerBestiaryEntryViews(
+  entries: PlayerBestiaryEntry[]
+): PlayerMonsterKnowledgeView[] {
+  return entries
+    .map((entry) =>
+      buildPlayerMonsterKnowledgeView(entry, entry.displayName, entry.typeKey)
+    )
+    .filter((v) => v.hasAnyKnowledge)
+    .sort((a, b) => a.displayName.localeCompare(b.displayName, "pt-BR"));
+}
+
 export function buildPlayerBestiaryGmView(opts: {
   playerUserId: string;
   playerName: string;
   characterName: string;
   entries: PlayerBestiaryEntry[];
 }): PlayerBestiaryGmView {
-  const views = opts.entries
-    .map((entry) =>
-      buildPlayerMonsterKnowledgeView(entry, entry.displayName, entry.typeKey)
-    )
-    .filter((v) => v.hasAnyKnowledge)
-    .sort((a, b) => a.displayName.localeCompare(b.displayName, "pt-BR"));
+  const views = buildPlayerBestiaryEntryViews(opts.entries);
 
   return {
     playerUserId: opts.playerUserId,

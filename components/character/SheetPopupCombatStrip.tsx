@@ -33,13 +33,14 @@ export function SheetPopupCombatStrip({
 
   return (
     <div className="sheet-popup-combat-strip">
-      <div className="sheet-popup-shield" title="Classe de Armadura (CA)">
-        <IconShield size={28} className="sheet-popup-shield__icon" />
-        <span className="sheet-popup-shield__value">{defesa}</span>
-        <span className="sheet-popup-shield__label">CA</span>
-      </div>
+      <div className="sheet-popup-combat-strip__main">
+        <div className="sheet-popup-shield" title="Classe de Armadura (CA)">
+          <IconShield size={32} className="sheet-popup-shield__icon" />
+          <span className="sheet-popup-shield__value">{defesa}</span>
+          <span className="sheet-popup-shield__label">CA</span>
+        </div>
 
-      <div className="sheet-popup-stat-pills" role="list" aria-label="Estatísticas de combate">
+        <div className="sheet-popup-stat-pills" role="list" aria-label="Estatísticas de combate">
         <div className="sheet-popup-stat-pill" role="listitem" title="Iniciativa — ordem no combate">
           <IconLightning size={16} />
           <span className="sheet-popup-stat-pill__label">Iniciativa</span>
@@ -64,6 +65,7 @@ export function SheetPopupCombatStrip({
           <IconStar size={16} />
           <span className="sheet-popup-stat-pill__label">Proficiência</span>
           <strong>+{profBonus}</strong>
+        </div>
         </div>
       </div>
 

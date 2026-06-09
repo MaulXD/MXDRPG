@@ -43,6 +43,7 @@ import {
 import { normalizeRoomSettings } from "@/lib/room/settings";
 import { filterTokensForFog, visibleHexSetForPlayer } from "@/lib/vtt/fog-of-war";
 import { resolveTokenHpDisplay } from "@/lib/vtt/token-hp-display";
+import { shouldIgnoreBattlefieldShortcut } from "@/lib/vtt/keyboard-guard";
 import { ActiveCharactersPanel } from "@/components/vtt/ActiveCharactersPanel";
 import { GmToolsPanel } from "@/components/vtt/GmToolsPanel";
 import { DungeonEditorPanel } from "@/components/vtt/DungeonEditorPanel";
@@ -1043,13 +1044,8 @@ export function HexBattlefield({
   }, [canControlCombat, selectedId, selected, roomId, syncRoom, toast]);
 
   useEffect(() => {
-    function isTypingTarget(target: EventTarget | null): boolean {
-      if (!(target instanceof HTMLElement)) return false;
-      return Boolean(target.closest("input, textarea, select, [contenteditable='true']"));
-    }
-
     function onKey(e: KeyboardEvent) {
-      if (isTypingTarget(e.target)) return;
+      if (shouldIgnoreBattlefieldShortcut(e.target)) return;
 
       if (e.key === "Delete") {
         if (canControlCombat && selectedId && actionMode === "idle" && !actionRingAt) {
@@ -1865,9 +1861,8 @@ export function HexBattlefield({
   useEffect(() => {
     if (!whiteboardActive) return;
     const onKey = (e: KeyboardEvent) => {
+      if (shouldIgnoreBattlefieldShortcut(e.target)) return;
       if (e.key === "Delete" || e.key === "Backspace") {
-        const t = e.target as HTMLElement | null;
-        if (t?.closest("input, textarea, select, [contenteditable]")) return;
         if (!selectedMarkupId) return;
         e.preventDefault();
         onMarkupErase(selectedMarkupId);

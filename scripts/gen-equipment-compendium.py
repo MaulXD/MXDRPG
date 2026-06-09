@@ -152,7 +152,7 @@ def weapon_entry(
     parts = [
         f"<strong>{display}</strong> ({canon_id}).",
         weapon_flavor(canon_id, name),
-        f"Dano {formula} {tipo}, alcance {alcance} hex, 1 PA por ataque.",
+        f"Dano {formula} {tipo}, alcance {alcance} hex, 2 PA por ataque.",
         f"Ataque {bonus + enchant:+d}.",
     ]
     special = weapon_special_for(canon_id, enchant)
@@ -182,7 +182,7 @@ def weapon_entry(
             "enchant": enchant,
             "tactical": {
                 "alcanceHex": {"value": alcance, "min": 0},
-                "custoPontosAcao": {"value": 1, "min": 0},
+                "custoPontosAcao": {"value": 2, "min": 0},
             },
             "weapon": weapon_sys,
         },
@@ -305,7 +305,7 @@ def main() -> int:
                     "organic": True,
                     "tactical": {
                         "alcanceHex": {"value": rng, "min": 0},
-                        "custoPontosAcao": {"value": 1, "min": 0},
+                        "custoPontosAcao": {"value": 2, "min": 0},
                     },
                     "weapon": weapon_sys,
                 },

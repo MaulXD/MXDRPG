@@ -1,6 +1,15 @@
 import { NextResponse } from "next/server";
 import { deleteCharacterSheet } from "@/lib/character/lifecycle";
-import { canEditCharacter, resolveCharacter, saveCharacter } from "@/lib/character/characters";
+import {
+  canEditCharacterWithGrant,
+  grantFromRequest,
+  resolveCharacter,
+  saveCharacter,
+} from "@/lib/character/characters";
+import {
+  consumeSheetEditGrant,
+  getSheetEditRequest,
+} from "@/lib/character/sheet-edit-request-store";
 import { isPortraitOnlyPatch } from "@/lib/auth/portrait-access";
 import { canEditCharacterPortrait } from "@/lib/auth/portrait-access-server";
 import { getSession } from "@/lib/auth/session";
@@ -23,7 +32,11 @@ export async function GET(_req: Request, { params }: Params) {
   if (!character) {
     return NextResponse.json({ error: "Ficha não encontrada" }, { status: 404 });
   }
-  if (!canEditCharacter(character, session.user.id, session.user.role)) {
+  const grantReq = await import("@/lib/character/sheet-edit-request-store").then((m) =>
+    m.getApprovedGrantForCharacter(id, session.user.id)
+  );
+  const grant = grantFromRequest(grantReq);
+  if (!canEditCharacterWithGrant(character, session.user.id, session.user.role, { grant })) {
     return NextResponse.json({ error: "Sem permissão" }, { status: 403 });
   }
 
@@ -58,7 +71,28 @@ export async function PATCH(request: Request, { params }: Params) {
     >
   > & { religiao?: string };
 
-  const canEdit = canEditCharacter(existing, session.user.id, session.user.role);
+  const requestId = new URL(request.url).searchParams.get("requestId")?.trim() || null;
+  let grant = null;
+  if (requestId) {
+    const editRequest = await getSheetEditRequest(requestId);
+    if (
+      editRequest &&
+      editRequest.characterId === id &&
+      editRequest.requesterUserId === session.user.id &&
+      editRequest.status === "approved"
+    ) {
+      grant = grantFromRequest(editRequest);
+    }
+  } else {
+    const approved = await import("@/lib/character/sheet-edit-request-store").then((m) =>
+      m.getApprovedGrantForCharacter(id, session.user.id)
+    );
+    grant = grantFromRequest(approved);
+  }
+
+  const canEdit = canEditCharacterWithGrant(existing, session.user.id, session.user.role, {
+    grant,
+  });
   const canPortrait =
     isPortraitOnlyPatch(patch as Record<string, unknown>) &&
     (await canEditCharacterPortrait(existing, session.user));
@@ -80,6 +114,11 @@ export async function PATCH(request: Request, { params }: Params) {
   }
 
   const saved = await saveCharacter(merged);
+
+  if (grant && requestId) {
+    await consumeSheetEditGrant(requestId);
+  }
+
   return NextResponse.json({ ok: true, character: saved });
 }
 

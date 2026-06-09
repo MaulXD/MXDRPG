@@ -20,6 +20,7 @@ import { useRoomSync, type RoomMemberOnlineEvent } from "@/hooks/useRoomSync";
 import { useRoomPresence } from "@/hooks/useRoomPresence";
 import { MesaPresenceAlerts } from "@/components/vtt/MesaPresenceAlerts";
 import { MesaOnlineMenu } from "@/components/vtt/MesaOnlineMenu";
+import { MesaEditRequestsBell } from "@/components/vtt/MesaEditRequestsBell";
 import { GmPlayerViewToggle } from "@/components/vtt/GmPlayerViewToggle";
 import { VttToastProvider } from "@/components/vtt/VttToast";
 import { FoundryDockPanel } from "@/components/vtt/foundry/FoundryDockPanel";
@@ -467,6 +468,9 @@ export function MesaWorkspace({
                   playAsPlayer={playAsPlayer}
                   onToggle={togglePlayAsPlayer}
                 />
+              ) : null}
+              {isActualGm ? (
+                <MesaEditRequestsBell adventureId={adventureId} roomId={roomId} />
               ) : null}
               <MesaOnlineMenu
                 online={presenceOnline}

@@ -396,6 +396,12 @@
 
   grid-area: identity;
 
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 0.5rem;
+
   min-width: 0;
 
 }
@@ -637,6 +643,7 @@
 
 .sheet-popup-quickbar .sheet-hover-tip {
   max-width: none;
+  flex: 0 0 auto;
 }
 
 .sheet-popup-identity__ascension {
@@ -1538,11 +1545,11 @@
 
 
 .sheet-popup-center .sheet-tabs {
-
   margin-bottom: 0.55rem;
-
   flex-wrap: wrap;
-
+  justify-content: center;
+  align-items: center;
+  width: 100%;
 }
 
 
@@ -2230,45 +2237,66 @@
 .sheet-popup-combat-strip {
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
+  gap: 0.45rem;
+  width: 100%;
+}
+
+.sheet-popup-combat-strip__main {
+  display: flex;
+  align-items: stretch;
+  gap: 0.5rem;
   width: 100%;
 }
 
 .sheet-popup-shield {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 0.35rem 0.5rem;
-  padding: 0.4rem 0.55rem;
-  border-radius: 9px;
-  border: 1px solid var(--sheet-border-bright);
-  background: linear-gradient(135deg, var(--sheet-accent-soft), transparent 70%);
+  justify-content: center;
+  gap: 0.12rem;
+  min-width: 4.25rem;
+  padding: 0.5rem 0.6rem;
+  border-radius: 10px;
+  border: 2px solid color-mix(in srgb, var(--sheet-accent) 50%, var(--sheet-border-bright));
+  background: color-mix(in srgb, var(--sheet-surface) 72%, var(--sheet-accent-soft));
+  box-shadow:
+    0 2px 12px rgba(0, 0, 0, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.07);
   color: var(--sheet-accent);
 }
 
 .sheet-popup-shield__icon {
-  grid-row: span 2;
+  opacity: 1;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.35));
 }
 
 .sheet-popup-shield__value {
   font-family: var(--font-display);
-  font-size: 1.35rem;
+  font-size: 1.85rem;
   font-weight: 700;
   line-height: 1;
   color: var(--sheet-text);
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.35);
 }
 
 .sheet-popup-shield__label {
-  font-size: 0.58rem;
-  letter-spacing: 0.12em;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--sheet-text-muted);
+  color: var(--sheet-accent);
 }
 
 .sheet-popup-stat-pills {
   display: flex;
-  flex-direction: column;
-  gap: 0.28rem;
+  flex: 1;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: stretch;
+  align-content: flex-start;
+  gap: 0.3rem;
+  min-width: 0;
 }
 
 .sheet-popup-stat-pill {
@@ -2276,10 +2304,12 @@
   grid-template-columns: auto 1fr auto;
   align-items: center;
   gap: 0.35rem;
-  padding: 0.28rem 0.45rem;
+  flex: 1 1 min(100%, 8.5rem);
+  min-width: min(100%, 7.5rem);
+  padding: 0.32rem 0.5rem;
   border-radius: 8px;
   border: 1px solid var(--sheet-border);
-  background: rgba(0, 0, 0, 0.18);
+  background: rgba(0, 0, 0, 0.22);
   color: var(--sheet-accent);
   font-size: 0.62rem;
 }
@@ -2295,7 +2325,8 @@
 }
 
 .sheet-popup-resource--inline {
-  margin-top: 0.1rem;
+  margin-top: 0;
+  width: 100%;
 }
 
 .sheet-popup-resource__title {
@@ -2324,6 +2355,11 @@
 
 /* —— Ações rápidas —— */
 .sheet-popup-quickbar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
   padding: 0.55rem 0.85rem;
   border-bottom: 1px solid var(--sheet-border);
   background: color-mix(in srgb, var(--sheet-inset) 88%, var(--sheet-accent-soft));
@@ -2339,6 +2375,7 @@
 }
 
 .sheet-popup-quickbar__eyebrow {
+  width: 100%;
   text-align: center;
 }
 
@@ -2346,7 +2383,12 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  align-items: center;
+  align-content: center;
   gap: 0.35rem;
+  width: 100%;
+  max-width: 100%;
+  margin-inline: auto;
 }
 
 .sheet-popup-quickbtn {
@@ -2460,6 +2502,87 @@
   margin: 0.35rem 0 0;
   font-size: 0.72rem;
   color: #c86a6a;
+}
+
+.sheet-popup-export {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.sheet-edit-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.55);
+}
+
+.sheet-edit-modal {
+  width: min(26rem, 100%);
+  padding: 1rem 1.1rem;
+  border-radius: 12px;
+}
+
+.sheet-edit-modal h3 {
+  margin: 0 0 0.35rem;
+  font-size: 1.05rem;
+}
+
+.sheet-edit-modal__hint {
+  margin: 0 0 0.75rem;
+  font-size: 0.85rem;
+  color: var(--text-muted, #9aa3b2);
+}
+
+.sheet-edit-modal__scopes {
+  border: none;
+  margin: 0 0 0.75rem;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.sheet-edit-modal__option {
+  display: flex;
+  gap: 0.55rem;
+  align-items: flex-start;
+  padding: 0.55rem 0.65rem;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+}
+
+.sheet-edit-modal__option:has(input:checked) {
+  border-color: rgba(201, 169, 98, 0.5);
+  background: rgba(201, 169, 98, 0.08);
+}
+
+.sheet-edit-modal__option strong {
+  display: block;
+  font-size: 0.88rem;
+}
+
+.sheet-edit-modal__option small {
+  display: block;
+  margin-top: 0.15rem;
+  font-size: 0.76rem;
+  color: var(--text-muted, #9aa3b2);
+}
+
+.sheet-edit-modal__msg {
+  margin: 0 0 0.65rem;
+  font-size: 0.84rem;
+}
+
+.sheet-edit-modal__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
 }
 
 

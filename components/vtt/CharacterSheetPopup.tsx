@@ -20,6 +20,9 @@ import type { FoundryWindowLayout } from "@/hooks/vtt/useFoundryWindows";
 import type { RoomActor } from "@/lib/room/types";
 
 import { SheetPdfExportButton } from "@/components/character/SheetPdfExportButton";
+import { SheetEditRequestButton } from "@/components/character/SheetEditRequestButton";
+import { PlayerEditRequestNotice } from "@/components/vtt/PlayerEditRequestNotice";
+import { isAdventureBoundCharacter } from "@/lib/character/adventure-bind";
 import { FoundryWindow } from "@/components/vtt/foundry/FoundryWindow";
 import { MedievalFrame } from "@/components/ui/MedievalFrame";
 
@@ -126,13 +129,17 @@ export function CharacterSheetPopup({
   const merged = { ...seed, ...live };
 
   const roomCtx = { roomId, adventureId, ownerId: roomOwnerId };
+  const isOwner = session?.id === merged.ownerId;
+  const campaignBound = isAdventureBoundCharacter(merged);
   const canEdit = canEditRoomActor(roomCtx, merged, session);
   const canEditPortrait = canEditRoomActorPortrait(roomCtx, merged, session);
+  const showEditRequest = isOwner && campaignBound && !canEdit;
 
   const inventory = live?.inventory?.length ? live.inventory : seed.inventory;
   const sheetCharacter = {
     ...seed,
     ...live,
+    adventureId: live?.adventureId ?? seed.adventureId ?? adventureId,
     inventory,
     combatLoadout: live?.combatLoadout ?? seed.combatLoadout ?? null,
     armorLoadout: live?.armorLoadout ?? seed.armorLoadout ?? null,
@@ -161,18 +168,31 @@ export function CharacterSheetPopup({
       minHeight={400}
 
       headerExtra={
-        <SheetPdfExportButton
-          character={sheetCharacter}
-          inventory={inventory}
-          characterId={actorId}
-          roomId={roomId}
-          variant="chrome"
-        />
+        <>
+          {showEditRequest ? (
+            <SheetEditRequestButton
+              characterId={actorId}
+              adventureId={adventureId}
+              roomId={roomId}
+              variant="chrome"
+            />
+          ) : null}
+          <SheetPdfExportButton
+            character={sheetCharacter}
+            inventory={inventory}
+            characterId={actorId}
+            roomId={roomId}
+            variant="chrome"
+          />
+        </>
       }
 
     >
 
       <div className="foundry-sheet-body">
+        {isOwner && campaignBound ? (
+          <PlayerEditRequestNotice characterId={actorId} adventureId={adventureId} />
+        ) : null}
         {!canEdit && !canEditPortrait ? (
           <p className="foundry-sheet-readonly" role="status">
             Somente leitura — ficha de outro jogador. Você pode ver atributos e status, mas não editar.
