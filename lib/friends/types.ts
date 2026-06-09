@@ -9,6 +9,20 @@ export type FriendSummary = {
   addedAt: number;
 };
 
+export type FriendRequestSummary = {
+  id: string;
+  fromUserId: string;
+  toUserId: string;
+  fromDisplayName: string;
+  fromNickname: string | null;
+  fromAvatarUrl: string | null;
+  toDisplayName: string;
+  toNickname: string | null;
+  toAvatarUrl: string | null;
+  createdAt: number;
+  direction: "incoming" | "outgoing";
+};
+
 export type MesaInviteSummary = {
   id: string;
   fromUserId: string;
