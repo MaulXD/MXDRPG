@@ -1,5 +1,7 @@
 "use client";
 
+import { IconPencil } from "@/components/ui/EldarinIcons";
+
 import { useState } from "react";
 import type { SheetEditScope } from "@/lib/character/sheet-edit-request";
 import { sheetEditScopeLabel } from "@/lib/character/sheet-edit-request";
@@ -69,7 +71,7 @@ export function SheetEditRequestButton({
           setMsg(null);
         }}
       >
-        ✎
+        <IconPencil size={16} />
       </button>
 
       {open ? (

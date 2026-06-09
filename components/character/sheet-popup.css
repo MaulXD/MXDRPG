@@ -217,12 +217,34 @@
 
 
 .page-wrap--sheet-popup {
+  width: 100%;
   max-width: min(1180px, 100%);
   margin-inline: auto;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.portal-page > .page-wrap--sheet-popup {
+  width: 100%;
 }
 
 .page-wrap--sheet-popup .mf--sheet-page {
   width: 100%;
+  box-sizing: border-box;
+}
+
+.page-wrap--sheet-popup .mf.mf--sheet-page {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.page-wrap--sheet-popup .mf--sheet-page > .mf-body {
+  width: 100%;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
 }
 
 .sheet-shell--popup {
@@ -279,6 +301,31 @@
 
 }
 
+.page-wrap--sheet-popup .sheet-shell--popup {
+  overflow: visible;
+  width: 100%;
+  max-width: 100%;
+  align-self: stretch;
+}
+
+.sheet-shell--popup > .ornament-card,
+.sheet-shell--popup > .sheet-popup-body,
+.sheet-shell--popup > .sheet-popup-quickbar,
+.sheet-shell--popup > .sheet-popup-loadout,
+.sheet-shell--popup > .sheet-popup-export {
+  width: 100%;
+  max-width: 100%;
+  align-self: stretch;
+  box-sizing: border-box;
+}
+
+.ornament-card.sheet-popup-top,
+.ornament-card.sheet-popup-center {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
 
 
 /* Topo da ficha — retrato | identidade / combate | atributos */
@@ -304,6 +351,9 @@
 
   margin-bottom: 0.5rem;
 
+  min-height: calc(var(--sheet-popup-portrait-size) + 5.5rem);
+
+  contain: layout style;
 }
 
 .sheet-popup-top__portrait-col {
@@ -318,9 +368,11 @@
 
   width: var(--sheet-popup-portrait-size);
 
-  flex-shrink: 0;
+  min-width: var(--sheet-popup-portrait-size);
 
-  min-width: 0;
+  min-height: var(--sheet-popup-portrait-size);
+
+  flex-shrink: 0;
 
 }
 
@@ -404,6 +456,8 @@
 
   min-width: 0;
 
+  align-self: start;
+
 }
 
 
@@ -472,15 +526,29 @@
 
   display: flex;
 
+  flex-direction: column;
+
+  gap: 0.35rem;
+
+  min-height: 0;
+
+  width: 100%;
+
+}
+
+
+
+.sheet-popup-identity__head {
+
+  display: flex;
+
+  flex-wrap: wrap;
+
   align-items: flex-start;
 
-  justify-content: space-between;
+  gap: 0.5rem 0.75rem;
 
-  gap: 0.65rem;
-
-  height: 100%;
-
-  min-height: 108px;
+  width: 100%;
 
 }
 
@@ -488,9 +556,11 @@
 
 .sheet-popup-identity__main {
 
-  flex: 1;
+  flex: 1 1 10rem;
 
   min-width: 0;
+
+  max-width: 100%;
 
 }
 
@@ -1995,6 +2065,17 @@
 
 }
 
+.sheet-shell--popup .btn:hover {
+  transform: none;
+}
+
+.sheet-shell--popup .btn-ghost:hover,
+.sheet-shell--popup .btn-ghost:focus-visible {
+  border-color: rgba(122, 163, 201, 0.45);
+  background: var(--accent-soft);
+  color: var(--sheet-accent);
+}
+
 
 
 .sheet-shell--popup .sheet-tab {
@@ -2119,7 +2200,7 @@
   height: var(--sheet-popup-portrait-size, 132px);
   max-width: none;
   flex-shrink: 0;
-  margin: 0 auto;
+  margin: 0;
   aspect-ratio: 1;
 }
 
@@ -2248,6 +2329,7 @@
   flex-direction: column;
   gap: 0.45rem;
   width: 100%;
+  min-height: 5.5rem;
 }
 
 .sheet-popup-combat-strip__main {
@@ -2255,6 +2337,7 @@
   align-items: stretch;
   gap: 0.5rem;
   width: 100%;
+  min-height: 4.25rem;
 }
 
 .sheet-popup-shield {
@@ -2500,7 +2583,23 @@
 .sheet-popup-export {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   gap: 0.35rem;
+  width: 100%;
+  margin-bottom: 0.5rem;
+}
+
+.sheet-popup-export .btn.btn-secondary {
+  border: 1px solid var(--glass-border);
+  box-shadow: none;
+}
+
+.sheet-popup-export .btn.btn-secondary:hover,
+.sheet-popup-export .btn.btn-secondary:focus-visible {
+  border: 1px solid var(--accent);
+  background: var(--accent-soft);
+  color: var(--text);
+  transform: none;
 }
 
 .sheet-edit-modal-backdrop {

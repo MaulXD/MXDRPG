@@ -7,7 +7,7 @@ import {
   type PortraitFocus,
 } from "@/lib/media/portrait-focus";
 
-const MAX_INPUT_BYTES = 8_000_000;
+export const MAX_INPUT_BYTES = 8_000_000;
 const MAX_DATA_URL_CHARS = 600_000 * 1.4;
 const INPUT_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif"];
 
@@ -209,6 +209,50 @@ export async function buildMapImageFromFile(file: File): Promise<string> {
   }
   const img = await loadImageFromFile(file);
   return encodeWebpFit(img, MAP_MAX_EDGE);
+}
+
+/** Lê arquivo de imagem (até ~8 MB) para data URL — servidor normaliza para WebP. */
+export async function readAvatarImageFile(file: File): Promise<string> {
+  if (!file.type.startsWith("image/")) {
+    throw new Error("Formato inválido. Escolha um arquivo de imagem.");
+  }
+  if (file.size > MAX_INPUT_BYTES) {
+    throw new Error("Arquivo grande demais (máx ~8 MB antes da compressão).");
+  }
+  return loadImageFromFile(file).then(
+    (img) =>
+      new Promise<string>((resolve, reject) => {
+        const canvas = document.createElement("canvas");
+        canvas.width = img.naturalWidth;
+        canvas.height = img.naturalHeight;
+        const ctx = canvas.getContext("2d");
+        if (!ctx) {
+          reject(new Error("Canvas indisponível neste navegador"));
+          return;
+        }
+        ctx.drawImage(img, 0, 0);
+        try {
+          const dataUrl = canvas.toDataURL(file.type === "image/png" ? "image/png" : "image/jpeg", 0.92);
+          if (!dataUrl.startsWith("data:image/")) {
+            reject(new Error("Falha ao ler imagem"));
+            return;
+          }
+          resolve(dataUrl);
+        } catch {
+          const reader = new FileReader();
+          reader.onload = () => {
+            const result = reader.result;
+            if (typeof result !== "string" || !result.startsWith("data:image/")) {
+              reject(new Error("Falha ao ler imagem"));
+              return;
+            }
+            resolve(result);
+          };
+          reader.onerror = () => reject(new Error("Falha ao ler imagem"));
+          reader.readAsDataURL(file);
+        }
+      })
+  );
 }
 
 export async function buildPortraitBundleFromImage(

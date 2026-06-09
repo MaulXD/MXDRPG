@@ -3,10 +3,13 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { RoomMemberOnlineEvent } from "@/hooks/useRoomSync";
 
+import type { PortraitFocus } from "@/lib/media/portrait-focus";
+
 export type RoomPresenceMember = {
   userId: string;
   displayName: string;
   avatarUrl: string | null;
+  avatarFocus?: PortraitFocus | null;
   characterPortraitUrl: string | null;
   role: "gm" | "player";
   characterName: string | null;

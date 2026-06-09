@@ -3,10 +3,10 @@
 import { useEffect, useRef, useState } from "react";
 import type { ChatMessage } from "@/lib/room/chat";
 import {
-  combatEventIcon,
   combatEventTone,
   parsePrimaryDie,
 } from "@/lib/room/chat-events";
+import { CombatEventIcon } from "@/components/ui/EldarinIcons";
 import { postRoomChat } from "@/hooks/useRoomSync";
 import { DiceMiniature } from "@/components/vtt/DiceMiniature";
 import { hpBarColor } from "@/lib/vtt/token-hp-display";
@@ -134,7 +134,6 @@ function ChatEvent({
 
   if (message.kind === "combat" && message.combat) {
     const tone = combatEventTone(message.combat);
-    const icon = combatEventIcon(tone);
     const c = message.combat;
     const staged = isStagedCombatChatMessage(message);
     const showDamage = shouldShowCombatDamageInChat(message, revealPhase);
@@ -163,7 +162,7 @@ function ChatEvent({
           {naturalDie != null && staged ? (
             <DiceMiniature formula="1d20" value={naturalDie} size="sm" />
           ) : (
-            icon
+            <CombatEventIcon tone={tone} size={18} />
           )}
         </div>
         <div className="room-chat-event-body">

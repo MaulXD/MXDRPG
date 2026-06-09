@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { IconMiss, IconSword } from "@/components/ui/EldarinIcons";
 import { MedievalFrame, MEDIEVAL_FRAME_VARIANTS, type MedievalFrameVariant } from "@/components/ui/MedievalFrame";
 
 const LIVE = [
@@ -92,14 +93,18 @@ export default function SistemaPage() {
 
       <div className="grid-2">
         <article className="glass feature-card">
-          <div className="feature-icon">⚔</div>
+          <div className="feature-icon">
+            <IconSword size={28} />
+          </div>
           <h3>Combate</h3>
           <p>
             Motor com PA (acúmulo, teto, stun), saves, áreas burst/wall/cone/line. HUD no canto do mapa.
           </p>
         </article>
         <article className="glass feature-card">
-          <div className="feature-icon">◇</div>
+          <div className="feature-icon">
+            <IconMiss size={28} />
+          </div>
           <h3>Dados</h3>
           <p>
             <code>npm run sync:data</code> gera monstros, magias e habilidades a partir do livro.

@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import { UserAvatar } from "@/components/ui/UserAvatar";
 import type { RoomPresenceMember } from "@/hooks/useRoomPresence";
 import { computeCursorDetailPlacement } from "@/lib/vtt/cursor-detail-placement";
 
@@ -44,14 +45,16 @@ function sortMembers(members: RoomPresenceMember[]): RoomPresenceMember[] {
 
 function MemberAvatar({ member }: { member: RoomPresenceMember }) {
   const photo = memberPhotoUrl(member);
-  const initial = (member.characterName ?? member.displayName).slice(0, 1).toUpperCase() || "?";
-  if (photo) {
-    return (
-      // eslint-disable-next-line @next/next/no-img-element
-      <img src={photo} alt="" className="mesa-online-menu__avatar-img" />
-    );
-  }
-  return <span className="mesa-online-menu__avatar-fallback">{initial}</span>;
+  const label = member.characterName ?? member.displayName;
+  return (
+    <UserAvatar
+      url={photo}
+      focus={member.avatarFocus}
+      label={label}
+      className="mesa-online-menu__avatar-wrap"
+      imgClassName="mesa-online-menu__avatar-img"
+    />
+  );
 }
 
 type HoverState = {

@@ -1,9 +1,9 @@
 "use client";
 
-import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AnimatedNavLink } from "@/components/AnimatedNavLink";
 import { BugReportButton } from "@/components/BugReportButton";
+import { EldarinLogo } from "@/components/brand/EldarinLogo";
 import "@/components/vtt/mesa-theme.css";
 
 type Props = {
@@ -20,9 +20,7 @@ export function SiteShell({ children, header, footer }: Props) {
     return (
       <div className="vtt-chrome" data-vtt-mesa="foundry">
         <header className="vtt-topbar glass">
-          <Link href="/" className="site-logo neon-title">
-            ELDARIN
-          </Link>
+          <EldarinLogo variant="header" />
           <nav className="vtt-nav">
             <AnimatedNavLink href="/mesa">Mesas</AnimatedNavLink>
             <AnimatedNavLink href="/biblioteca">Compêndios</AnimatedNavLink>

@@ -1,6 +1,11 @@
 import { validateImageDataUrl } from "@/lib/media/image-data-url";
+import { sanitizePortraitFocus, type PortraitFocus } from "@/lib/media/portrait-focus";
 
 export type AvatarSource = "oauth" | "custom";
+
+export function parseAvatarFocus(value: unknown): PortraitFocus | null {
+  return sanitizePortraitFocus(value);
+}
 
 export function normalizeAvatarSource(raw: unknown): AvatarSource {
   return raw === "custom" ? "custom" : "oauth";

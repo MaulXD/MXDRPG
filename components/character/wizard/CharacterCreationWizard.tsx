@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState, type KeyboardEvent } from "react";
+import { IconCheck, IconStar } from "@/components/ui/EldarinIcons";
 import { useRouter } from "next/navigation";
 import { SubclassTrackCard } from "@/components/character/wizard/SubclassTrackCard";
 import { WizardHoverTip } from "@/components/character/wizard/WizardHoverTip";
@@ -519,7 +520,7 @@ export function CharacterCreationWizard({
                   <div style={{ display: "flex", width: "100%", alignItems: "flex-start" }}>
                     <WizardPickIcon kind={resolveRaceIcon(r.id)} color={raceIconColor(r.id)} />
                     <span className="char-wizard-pick__check" aria-hidden>
-                      ✓
+                      <IconCheck size={14} />
                     </span>
                   </div>
                   <strong>{r.id}</strong>
@@ -552,7 +553,7 @@ export function CharacterCreationWizard({
                           color={lineageIconColor(l.id)}
                         />
                         <span className="char-wizard-pick__check" aria-hidden>
-                          ✓
+                          <IconCheck size={14} />
                         </span>
                       </div>
                       <strong>{l.id}</strong>
@@ -633,7 +634,7 @@ export function CharacterCreationWizard({
                   <div style={{ display: "flex", width: "100%", alignItems: "flex-start" }}>
                     <WizardPickIcon kind={resolveClassIcon(c.id)} color={classIconColor(c.id)} />
                     <span className="char-wizard-pick__check" aria-hidden>
-                      ✓
+                      <IconCheck size={14} />
                     </span>
                   </div>
                   <strong>{c.id}</strong>
@@ -745,7 +746,7 @@ export function CharacterCreationWizard({
                       {ATTRIBUTE_LABELS[key]}
                       {focusRank ? (
                         <span className="char-wizard-attr-card__focus" title="Foco da classe">
-                          {focusRank === 1 ? "★" : focusRank}
+                          {focusRank === 1 ? <IconStar size={12} /> : focusRank}
                         </span>
                       ) : null}
                     </span>
@@ -807,7 +808,7 @@ export function CharacterCreationWizard({
                   <div style={{ display: "flex", width: "100%", alignItems: "flex-start" }}>
                     <span className="char-wizard-pick__icon">{pickInitial(a.title)}</span>
                     <span className="char-wizard-pick__check" aria-hidden>
-                      ✓
+                      <IconCheck size={14} />
                     </span>
                   </div>
                   <strong>{a.title}</strong>

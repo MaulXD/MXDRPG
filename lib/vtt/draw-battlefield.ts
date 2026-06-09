@@ -111,6 +111,8 @@ type GridDrawParams = {
   hoverAxial: Axial | null;
   hoverMovePreview: MoveCheck | null;
   spawnDropHover: boolean;
+  /** Hexes do footprint ao arrastar spawn multi-hex (null = só hex sob cursor). */
+  spawnDropFootprintKeys?: Set<string> | null;
   pathCells: Axial[];
   pathDashPhase: number;
   /** null = todos os hexes visíveis (mestre ou fog desligado) */
@@ -181,10 +183,14 @@ export function drawHexGridLayer(ctx: CanvasRenderingContext2D, p: GridDrawParam
       stroke = pal.areaCenterStroke;
       lineWidth = 2.5;
     }
-    const isHover =
-      p.hoverAxial?.q === cell.q && p.hoverAxial?.r === cell.r;
+    const isHoverCell = p.hoverAxial?.q === cell.q && p.hoverAxial?.r === cell.r;
+    const isSpawnHover =
+      p.spawnDropHover &&
+      (p.spawnDropFootprintKeys != null
+        ? p.spawnDropFootprintKeys.has(key)
+        : isHoverCell);
     if (
-      isHover &&
+      isHoverCell &&
       p.showMovement &&
       p.hoverMovePreview &&
       !p.hoverMovePreview.ok
@@ -192,11 +198,11 @@ export function drawHexGridLayer(ctx: CanvasRenderingContext2D, p: GridDrawParam
       fill = pal.invalidFill;
       stroke = pal.invalidStroke;
       lineWidth = 2.5;
-    } else if (isHover && p.spawnDropHover) {
+    } else if (isSpawnHover) {
       fill = pal.spawnFill;
       stroke = pal.spawnStroke;
       lineWidth = 2.5;
-    } else if (isHover) {
+    } else if (isHoverCell) {
       stroke = pal.hoverStroke;
       fill = pal.hoverFill;
     }

@@ -168,10 +168,6 @@ export function SheetPdfCapture({ character, inventory = [], roomId }: Props) {
                 className="portrait--sheet-popup"
               />
             )}
-          </div>
-
-          <div className="sheet-popup-top__identity">
-            <CharacterSheetPopupHero name={character.name} identity={identity} />
             <SheetPopupCombatStrip
               defesa={defesa}
               iniciativa={tactical.iniciativa}
@@ -182,6 +178,10 @@ export function SheetPdfCapture({ character, inventory = [], roomId }: Props) {
               hpMax={resources.vida.max}
               hpPct={hpPct}
             />
+          </div>
+
+          <div className="sheet-popup-top__identity">
+            <CharacterSheetPopupHero name={character.name} identity={identity} />
           </div>
 
           <div className="sheet-popup-top__attrs" role="group" aria-label="Atributos">

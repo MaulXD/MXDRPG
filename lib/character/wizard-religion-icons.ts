@@ -44,21 +44,6 @@ const RELIGION_COLOR: Record<string, string> = {
   "sem-deus": "#94a3be",
 };
 
-const GLYPH: Record<ReligionIconKind, string> = {
-  forge: "⚒",
-  abyss: "◈",
-  eye: "◎",
-  tide: "⚓",
-  torch: "✦",
-  shield: "⛨",
-  veil: "☽",
-  flame: "🔥",
-  knife: "†",
-  swarm: "⁂",
-  cauldron: "⚗",
-  secular: "○",
-};
-
 export function resolveReligionIcon(id: string): ReligionIconKind {
   return RELIGION_ICON[id] ?? "secular";
 }
@@ -67,6 +52,3 @@ export function religionIconColor(id: string): string {
   return RELIGION_COLOR[id] ?? "#94a3be";
 }
 
-export function religionGlyph(id: string): string {
-  return GLYPH[resolveReligionIcon(id)];
-}

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { HomeFeatureIcon } from "@/components/ui/EldarinIcons";
 import { redirect } from "next/navigation";
 import { MedievalFrame } from "@/components/ui/MedievalFrame";
 import { signInPath } from "@/lib/auth/post-auth-redirect";
@@ -65,7 +66,7 @@ export default async function RpgSelectPage() {
               }}
             >
               <div className="feature-icon" style={{ color: sys.accent }}>
-                ⬡
+                <HomeFeatureIcon name="hex" size={28} />
               </div>
               <h3 style={{ margin: "0 0 0.35rem" }}>{sys.name}</h3>
               <p style={{ margin: 0, color: "var(--text-muted)", fontSize: "0.9rem" }}>
@@ -82,7 +83,9 @@ export default async function RpgSelectPage() {
               style={{ opacity: 0.55, cursor: "not-allowed" }}
               aria-disabled
             >
-              <div className="feature-icon">{sys.id === "sci-fi" ? "◎" : "◈"}</div>
+              <div className="feature-icon">
+                <HomeFeatureIcon name={sys.id === "sci-fi" ? "target" : "diamond"} size={28} />
+              </div>
               <h3 style={{ margin: "0 0 0.35rem" }}>{sys.name}</h3>
               <p style={{ margin: 0, color: "var(--text-muted)", fontSize: "0.9rem" }}>
                 {sys.tagline}

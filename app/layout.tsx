@@ -36,6 +36,10 @@ export const metadata: Metadata = {
   title: "Eldarin — VTT tático hexagonal",
   description:
     "Mesa virtual no navegador: combaté hex, PA, fichas medievais. Admin, Mestre e Jogador.",
+  icons: {
+    icon: "/brand/eldarin-dragao.png",
+    apple: "/brand/eldarin-dragao.png",
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

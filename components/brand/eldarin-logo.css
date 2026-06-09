@@ -1,0 +1,76 @@
+.eldarin-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  text-decoration: none;
+  color: inherit;
+  flex-shrink: 0;
+  line-height: 0;
+  transition: opacity 0.2s ease, filter 0.2s ease;
+}
+
+.eldarin-logo:hover {
+  opacity: 0.92;
+  filter: brightness(1.06);
+}
+
+.eldarin-logo--header {
+  min-height: 2rem;
+}
+
+.eldarin-logo__dragao,
+.eldarin-logo__mark-img {
+  display: block;
+  width: auto;
+  height: 1.75rem;
+  object-fit: contain;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+.eldarin-logo__tipografia {
+  display: block;
+  width: auto;
+  height: 1.35rem;
+  object-fit: contain;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+.eldarin-logo--full {
+  flex-direction: column;
+  gap: 0;
+  align-items: center;
+}
+
+.eldarin-logo__full-img {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: min(200px, 52vw);
+  object-fit: contain;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+.eldarin-logo--hero .eldarin-logo__full-img {
+  max-width: min(240px, 70vw);
+}
+
+.eldarin-logo--footer .eldarin-logo__full-img {
+  max-width: 140px;
+}
+
+.eldarin-logo--mark {
+  gap: 0;
+}
+
+@media (max-width: 520px) {
+  .eldarin-logo__tipografia {
+    height: 1.15rem;
+  }
+
+  .eldarin-logo__dragao {
+    height: 1.5rem;
+  }
+}
