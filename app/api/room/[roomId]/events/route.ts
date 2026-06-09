@@ -1,4 +1,6 @@
+import { canParticipateInRoom } from "@/lib/auth/room-access";
 import { requireRoomView } from "@/lib/auth/authorize-room-view";
+import { presenceEventsAfter, touchRoomPresence } from "@/lib/room/presence";
 import { getRoomRevision } from "@/lib/room/revision";
 
 export const runtime = "nodejs";
@@ -22,6 +24,12 @@ export async function GET(request: Request, { params }: Params) {
 
   let lastSent = since;
   let lastHeartbeat = Date.now();
+  const user = auth.user;
+  const presenceLabel = user?.nickname?.trim() || user?.name?.trim() || "Jogador";
+  const tracksPresence = Boolean(user && canParticipateInRoom(auth.room, user));
+
+  let lastPresenceEventId = 0;
+  const connectedAt = Date.now();
 
   const stream = new ReadableStream({
     start(controller) {
@@ -31,10 +39,28 @@ export async function GET(request: Request, { params }: Params) {
         controller.enqueue(encoder.encode(`data: ${JSON.stringify(payload)}\n\n`));
       };
 
+      const flushPresence = () => {
+        const { events, lastId } = presenceEventsAfter(roomId, lastPresenceEventId);
+        for (const ev of events) {
+          if (ev.at >= connectedAt) push(ev);
+        }
+        lastPresenceEventId = lastId;
+      };
+
+      if (tracksPresence && user) {
+        touchRoomPresence(roomId, user.id, presenceLabel);
+      }
+      flushPresence();
+
       push({ type: "connected", revision: auth.room.revision });
 
       const interval = setInterval(async () => {
         try {
+          if (tracksPresence && user) {
+            touchRoomPresence(roomId, user.id, presenceLabel);
+          }
+          flushPresence();
+
           const rev = await getRoomRevision(roomId);
           if (rev == null) {
             push({ type: "gone" });

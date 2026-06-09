@@ -10,12 +10,23 @@ import type { DungeonObject } from "@/lib/vtt/types";
 
 const FETCH_TIMEOUT_MS = 12_000;
 
+export type RoomMemberOnlineEvent = {
+  userId: string;
+  displayName: string;
+};
+
 type SyncOpts = {
   /** Código na URL (?invite=) — visitante assiste com SSE/GET */
   inviteCode?: string | null;
   /** Fallback poll se SSE falhar (ms) */
   pollIntervalMs?: number;
+  /** Jogador logado na mesa — heartbeat de presença */
+  presenceUser?: { id: string; name: string } | null;
+  /** Outro participante entrou online (via SSE) */
+  onMemberOnline?: (event: RoomMemberOnlineEvent) => void;
 };
+
+const PRESENCE_HEARTBEAT_MS = 25_000;
 
 function roomQuery(roomId: string, inviteCode?: string | null): string {
   const q = new URLSearchParams();
@@ -27,12 +38,16 @@ function roomQuery(roomId: string, inviteCode?: string | null): string {
 export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
   const inviteCode = opts.inviteCode ?? null;
   const pollIntervalMs = opts.pollIntervalMs ?? 4000;
+  const presenceUser = opts.presenceUser ?? null;
+  const onMemberOnline = opts.onMemberOnline;
   const [snapshot, setSnapshot] = useState<RoomSnapshot | null>(null);
   const [loading, setLoading] = useState(true);
   const [syncError, setSyncError] = useState<string | null>(null);
   const revisionRef = useRef(0);
   const query = useMemo(() => roomQuery(roomId, inviteCode), [roomId, inviteCode]);
   const sseReadyRef = useRef(false);
+  const onMemberOnlineRef = useRef(onMemberOnline);
+  onMemberOnlineRef.current = onMemberOnline;
 
   const applySnapshot = useCallback((data: RoomSnapshot) => {
     if (data.revision < revisionRef.current) return;
@@ -112,7 +127,12 @@ export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
 
       es.onmessage = (ev) => {
         try {
-          const data = JSON.parse(ev.data) as { type?: string; revision?: number };
+          const data = JSON.parse(ev.data) as {
+            type?: string;
+            revision?: number;
+            userId?: string;
+            displayName?: string;
+          };
           if (data.type === "revision" && typeof data.revision === "number") {
             if (data.revision > revisionRef.current) {
               void refresh();
@@ -122,6 +142,16 @@ export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
             if (data.revision > revisionRef.current) {
               void refresh();
             }
+          }
+          if (
+            data.type === "member_online" &&
+            typeof data.userId === "string" &&
+            typeof data.displayName === "string"
+          ) {
+            onMemberOnlineRef.current?.({
+              userId: data.userId,
+              displayName: data.displayName,
+            });
           }
         } catch {
           /* ignore parse */
@@ -142,6 +172,23 @@ export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
       if (pollId) clearInterval(pollId);
     };
   }, [roomId, inviteCode, refresh, pollIntervalMs, loading]);
+
+  useEffect(() => {
+    if (!presenceUser?.id) return;
+
+    const ping = () => {
+      void fetch(`/api/room/${roomId}/presence${query}`, {
+        method: "POST",
+        credentials: "same-origin",
+      }).catch(() => {
+        /* rede instável */
+      });
+    };
+
+    ping();
+    const id = setInterval(ping, PRESENCE_HEARTBEAT_MS);
+    return () => clearInterval(id);
+  }, [roomId, query, presenceUser?.id]);
 
   return { snapshot, loading, syncError, refresh, applySnapshot };
 }
@@ -543,6 +590,7 @@ export type RoomSettingsPatchBody = {
   showMonsterHpToPlayers?: boolean;
   showMonsterHpInChat?: boolean;
   allowPlayerPing?: boolean;
+  showUsernameOnTokenNameplate?: boolean;
   gmBypassInitiative?: boolean;
 };
 

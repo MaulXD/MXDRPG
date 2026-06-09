@@ -114,10 +114,13 @@
   width: clamp(72px, 14vw, 88px);
 }
 
-/* Ficha (popup na mesa) */
+/* Ficha (popup na mesa) — tamanho fixo evita “pulo” ao abrir a janela */
 .portrait--sheet-popup {
-  width: 100%;
-  max-width: 100%;
+  width: var(--sheet-popup-portrait-size, 132px);
+  height: var(--sheet-popup-portrait-size, 132px);
+  max-width: var(--sheet-popup-portrait-size, 132px);
+  flex: 0 0 var(--sheet-popup-portrait-size, 132px);
+  aspect-ratio: 1;
 }
 
 /* —— HUD wrapper —— */
@@ -132,6 +135,7 @@
   flex-direction: column;
   gap: 4px;
   pointer-events: auto;
+  overflow: visible;
 }
 
 .vtt-hud-effects {
@@ -162,6 +166,7 @@
   bottom: auto;
   box-shadow: 0 14px 40px rgba(0, 0, 0, 0.55);
   isolation: isolate;
+  overflow: visible;
 }
 
 .vtt-hud-wrapper .vtt-combat-hud::before {
@@ -172,19 +177,27 @@
   border-color: var(--accent-warn);
 }
 
-.hud-corner {
+/* Camada de cantos — fora do flex para não deslocar ornamentos */
+.vtt-hud-wrapper .vtt-combat-hud > .hud-corners-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+  overflow: visible;
+}
+
+.vtt-hud-wrapper .hud-corners-layer .hud-corner {
   position: absolute;
   width: 18px;
   height: 18px;
   overflow: visible;
   pointer-events: none;
-  z-index: 2;
 }
 
-.hud-corner--tl { top: -2px; left: -2px; }
-.hud-corner--tr { top: -2px; right: -2px; }
-.hud-corner--bl { bottom: -2px; left: -2px; }
-.hud-corner--br { bottom: -2px; right: -2px; }
+.vtt-hud-wrapper .hud-corners-layer .hud-corner--tl { top: -1px; left: -1px; }
+.vtt-hud-wrapper .hud-corners-layer .hud-corner--tr { top: -1px; right: -1px; }
+.vtt-hud-wrapper .hud-corners-layer .hud-corner--bl { bottom: -1px; left: -1px; }
+.vtt-hud-wrapper .hud-corners-layer .hud-corner--br { bottom: -1px; right: -1px; }
 
 .hud-portrait-wrap {
   box-sizing: border-box;

@@ -1,0 +1,286 @@
+.monster-sheet-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 320;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: rgba(8, 12, 18, 0.55);
+  backdrop-filter: blur(3px);
+}
+
+.monster-sheet-dialog {
+  width: min(720px, 96vw);
+  max-height: min(88vh, 820px);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--radius);
+}
+
+.monster-sheet {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  color: var(--text-primary);
+}
+
+.monster-sheet--dialog {
+  max-height: min(88vh, 820px);
+}
+
+.monster-sheet__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 1rem 1rem 0.65rem;
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.monster-sheet__identity {
+  display: flex;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+.monster-sheet__icon {
+  flex-shrink: 0;
+  width: 52px;
+  height: 52px;
+}
+
+.monster-sheet__titles {
+  min-width: 0;
+}
+
+.monster-sheet__name {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  line-height: 1.2;
+}
+
+.monster-sheet__ref {
+  margin: 0.25rem 0 0;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.monster-sheet__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-top: 0.45rem;
+}
+
+.monster-sheet__tag {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 0.12rem 0.4rem;
+  border-radius: 4px;
+  border: 1px solid var(--glass-border);
+  color: var(--accent);
+  background: rgba(201, 169, 98, 0.08);
+}
+
+.monster-sheet__close {
+  flex-shrink: 0;
+  width: 2rem;
+  height: 2rem;
+  border: 1px solid var(--glass-border);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-muted);
+  font-size: 1.25rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.monster-sheet__close:hover {
+  color: var(--text-primary);
+  border-color: var(--glass-border-bright);
+}
+
+.monster-sheet__tabs {
+  display: flex;
+  gap: 0.35rem;
+  padding: 0.55rem 1rem 0;
+}
+
+.monster-sheet__tab {
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-muted);
+  font-family: inherit;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.monster-sheet__tab--on {
+  color: var(--accent);
+  border-color: var(--glass-border-bright);
+  background: rgba(201, 169, 98, 0.1);
+}
+
+.monster-sheet__body {
+  overflow-y: auto;
+  padding: 0.75rem 1rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.monster-sheet__stats-card {
+  padding: 0.75rem 0.85rem;
+}
+
+.monster-sheet__vitals {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(5.5rem, 1fr));
+  gap: 0.5rem;
+}
+
+.monster-sheet__vital {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  padding: 0.45rem 0.5rem;
+  border-radius: 8px;
+  border: 1px solid var(--glass-border);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.monster-sheet__vital-label {
+  font-size: 0.62rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.monster-sheet__vital strong {
+  font-size: 1.05rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.monster-sheet__attrs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.65rem;
+}
+
+.monster-sheet__attr {
+  display: flex;
+  align-items: baseline;
+  gap: 0.35rem;
+  padding: 0.35rem 0.55rem;
+  border-radius: 8px;
+  border: 1px solid rgba(201, 169, 98, 0.25);
+  font-size: 0.82rem;
+}
+
+.monster-sheet__attr span {
+  color: var(--text-muted);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.monster-sheet__attr em {
+  color: var(--accent);
+  font-style: normal;
+  font-weight: 700;
+}
+
+.monster-sheet__biomes {
+  margin-top: 0.65rem;
+}
+
+.monster-sheet__section-label {
+  margin: 0 0 0.45rem;
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.monster-sheet__biomes-list {
+  margin: 0;
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+.monster-sheet__actions {
+  min-width: 0;
+}
+
+.monster-sheet__action-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.monster-sheet-action {
+  padding: 0.55rem 0.65rem;
+  border-radius: 8px;
+  border: 1px solid var(--glass-border);
+  background: rgba(8, 12, 18, 0.35);
+}
+
+.monster-sheet-action__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.monster-sheet-action__pa {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--accent);
+  white-space: nowrap;
+}
+
+.monster-sheet-action__label {
+  margin: 0.25rem 0 0;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.monster-sheet-action__lines {
+  margin: 0.4rem 0 0;
+  padding-left: 1.1rem;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: var(--text-muted);
+}
+
+.monster-sheet__lore {
+  overflow-y: auto;
+  padding: 0.75rem 1rem 1rem;
+  max-height: min(70vh, 640px);
+}
+
+.monster-sheet__muted {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.monster-sheet--empty {
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.comp-detail-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}

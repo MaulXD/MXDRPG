@@ -8,7 +8,9 @@ import { CompendiumIcon } from "@/components/compendium/CompendiumIcon";
 import { OrnamentCard } from "@/components/ui/OrnamentCard";
 import { entryBookRef, entrySummary, stripHtml } from "@/lib/compendium/format";
 import { compendiumTypeColor } from "@/lib/compendium/icons";
+import { MonsterSheetDialog } from "@/components/compendium/MonsterSheetDialog";
 import "./compendium.css";
+import "./monster-sheet.css";
 
 type Props = {
   packs: CompendiumPackMeta[];
@@ -22,6 +24,7 @@ export function CompendiumBrowser({ packs, data, role, variant = "page" }: Props
   const [packId, setPackId] = useState<CompendiumPackId>(packs[0]?.id ?? "armas");
   const [query, setQuery] = useState("");
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [monsterSheetId, setMonsterSheetId] = useState<string | null>(null);
 
   const activePack = packs.find((p) => p.id === packId) ?? packs[0];
 
@@ -102,13 +105,21 @@ export function CompendiumBrowser({ packs, data, role, variant = "page" }: Props
               )}
             </div>
 
-            {selected ? <CompendiumDetail entry={selected} layout="rail" /> : null}
+            {selected ? (
+              <CompendiumDetail
+                entry={selected}
+                layout="rail"
+                onOpenMonsterSheet={setMonsterSheetId}
+              />
+            ) : null}
           </>
         ) : null}
 
         {role === "admin" ? (
           <p className="comp-rail-admin-hint">Monstros visíveis só para mestre.</p>
         ) : null}
+
+        <MonsterSheetDialog entryId={monsterSheetId} onClose={() => setMonsterSheetId(null)} />
       </div>
     );
   }
@@ -169,10 +180,18 @@ export function CompendiumBrowser({ packs, data, role, variant = "page" }: Props
               ))}
             </div>
 
-            {selected ? <CompendiumDetail entry={selected} layout="page" /> : null}
+            {selected ? (
+              <CompendiumDetail
+                entry={selected}
+                layout="page"
+                onOpenMonsterSheet={setMonsterSheetId}
+              />
+            ) : null}
           </>
         ) : null}
       </div>
+
+      <MonsterSheetDialog entryId={monsterSheetId} onClose={() => setMonsterSheetId(null)} />
     </div>
   );
 }
@@ -217,9 +236,11 @@ function CompendiumCard({
 function CompendiumDetail({
   entry,
   layout = "page",
+  onOpenMonsterSheet,
 }: {
   entry: CompendiumEntry;
   layout?: "page" | "rail";
+  onOpenMonsterSheet?: (entryId: string) => void;
 }) {
   const tags = entrySummary(entry.system, entry.type);
   const html = String(entry.system.description ?? "");
@@ -250,7 +271,18 @@ function CompendiumDetail({
         ))}
       </div>
       <div className="comp-detail-body" dangerouslySetInnerHTML={{ __html: html }} />
-      {layout === "page" ? (
+      {entry.packId === "monstros" && onOpenMonsterSheet ? (
+        <div className="comp-detail-actions">
+          <button
+            type="button"
+            className="btn btn-primary"
+            onClick={() => onOpenMonsterSheet(entry.id)}
+          >
+            Ver ficha do monstro
+          </button>
+        </div>
+      ) : null}
+      {layout === "page" && entry.packId !== "monstros" ? (
         <p style={{ marginTop: "1rem", fontSize: "0.78rem", color: "var(--text-dim)" }}>
           Fase 2: arrastar para ficha ou mesa.
         </p>

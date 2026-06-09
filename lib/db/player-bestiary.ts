@@ -1,5 +1,9 @@
 import type { PlayerBestiaryEntry } from "@/lib/bestiary/types";
-import { bestiaryStoreKey, getBestiaryEntry, setBestiaryEntry } from "@/lib/bestiary/registry";
+import {
+  getBestiaryEntry,
+  listBestiaryEntriesForUser,
+  setBestiaryEntry,
+} from "@/lib/bestiary/registry";
 import { getSql } from "@/lib/db/client";
 import { dbEnabled } from "@/lib/db/enabled";
 
@@ -25,6 +29,31 @@ export async function loadPlayerBestiaryEntry(
   if (!row) return null;
   setBestiaryEntry(row.data, userId, adventureId);
   return row.data;
+}
+
+export async function listPlayerBestiaryEntries(
+  userId: string,
+  adventureId: string
+): Promise<PlayerBestiaryEntry[]> {
+  const byType = new Map<string, PlayerBestiaryEntry>();
+  for (const entry of listBestiaryEntriesForUser(userId, adventureId)) {
+    byType.set(entry.typeKey, entry);
+  }
+
+  const sql = getSql();
+  if (sql && dbEnabled()) {
+    const rows = await sql<{ data: PlayerBestiaryEntry }[]>`
+      SELECT data FROM eldarin_player_bestiary
+      WHERE user_id = ${userId} AND adventure_id = ${adventureId}
+      ORDER BY updated_at DESC
+    `;
+    for (const row of rows) {
+      byType.set(row.data.typeKey, row.data);
+      setBestiaryEntry(row.data, userId, adventureId);
+    }
+  }
+
+  return [...byType.values()].sort((a, b) => b.updatedAt - a.updatedAt);
 }
 
 export async function savePlayerBestiaryEntry(

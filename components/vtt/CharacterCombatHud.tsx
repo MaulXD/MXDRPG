@@ -126,7 +126,9 @@ export function CharacterCombatHud({
       ) : null}
 
       <div className={hudClass}>
-        <HudCorners emphasized={isYourTurn} />
+        <div className="hud-corners-layer" aria-hidden>
+          <HudCorners emphasized={isYourTurn} />
+        </div>
 
         <div className="hud-portrait-wrap">
           <Portrait

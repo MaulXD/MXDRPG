@@ -79,6 +79,9 @@ export type HexCanvasDrawState = {
   markupPreview?: MapMarkup | null;
   selectedMarkupId?: string | null;
   measurePreview?: MeasurePreview | null;
+  roomSettings?: Pick<import("@/lib/room/settings").RoomSettings, "showUsernameOnTokenNameplate">;
+  roomActors?: Record<string, import("@/lib/room/types").RoomActor>;
+  ownerDisplayNames?: Map<string, string>;
 };
 
 export type TokenMoveAnimRef = RefObject<{
@@ -228,6 +231,9 @@ export function useHexCanvas(
       castFxNowMs: s.castFxNowMs,
       tokenPositionOverride,
       tokenHpDisplay: s.tokenHpDisplay ?? new Map(),
+      roomSettings: s.roomSettings,
+      roomActors: s.roomActors,
+      ownerDisplayNames: s.ownerDisplayNames,
     });
 
     if (s.pings.length > 0) {

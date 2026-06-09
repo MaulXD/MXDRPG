@@ -87,6 +87,32 @@ function newGmId(): string {
   return `gm-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 7)}`;
 }
 
+function finiteInt(value: unknown, fallback: number): number {
+  const n = typeof value === "number" ? value : Number(value);
+  if (!Number.isFinite(n)) return fallback;
+  return Math.floor(n);
+}
+
+export function sanitizeCreatureStats(creature: GmCreatureStats): GmCreatureStats {
+  const vidaMax = Math.max(1, finiteInt(creature.vidaMax, 12));
+  const paMax = Math.max(1, finiteInt(creature.paMax, 2));
+  const pa = Math.max(1, Math.min(paMax, finiteInt(creature.pa, paMax)));
+  const vida = Math.max(1, Math.min(vidaMax, finiteInt(creature.vida, vidaMax)));
+  return {
+    ...creature,
+    vidaMax,
+    vida,
+    pa,
+    paMax,
+    defesa: Math.max(0, finiteInt(creature.defesa, 12)),
+    walk: Math.max(1, finiteInt(creature.walk, 4)),
+    run: Math.max(1, finiteInt(creature.run, 6)),
+    forca: Math.max(1, finiteInt(creature.forca, 10)),
+    agilidade: Math.max(1, finiteInt(creature.agilidade, 10)),
+    ameaca: Math.max(0, finiteInt(creature.ameaca, 1)),
+  };
+}
+
 function defaultCreatureStats(name: string): GmCreatureStats {
   return {
     tier: "mob",
@@ -204,7 +230,7 @@ export function buildGmCreation(
         updatedAt: now,
         createdBy: userId,
         source: { type: "blank" },
-        creature: defaultCreatureStats(name),
+        creature: sanitizeCreatureStats(defaultCreatureStats(name)),
       };
     }
     return {
@@ -234,7 +260,7 @@ export function buildGmCreation(
         id: template.entryId,
         label: template.name,
       },
-      creature: monsterToCreatureStats(template),
+      creature: sanitizeCreatureStats(monsterToCreatureStats(template)),
     };
   }
 
@@ -278,7 +304,7 @@ export function createCreatureTokenFromGmCreation(
   tokenId?: string
 ): BattleToken | null {
   if (creation.kind !== "creature" || !creation.creature) return null;
-  const stats = creation.creature;
+  const stats = sanitizeCreatureStats(creation.creature);
   const actions = gmCreationCombatActions(creation);
   const id =
     tokenId ?? `m-gm-${slugId(creation.name) || "creature"}-${Date.now().toString(36).slice(-5)}`;
@@ -355,7 +381,7 @@ export function patchGmCreation(
   };
   if (patch.name?.trim()) next.name = patch.name.trim();
   if (creation.kind === "creature" && creation.creature && patch.creature) {
-    next.creature = { ...creation.creature, ...patch.creature };
+    next.creature = sanitizeCreatureStats({ ...creation.creature, ...patch.creature });
   }
   if (creation.kind === "npc" && creation.npc && patch.npc) {
     next.npc = normalizeCharacter({ ...creation.npc, ...patch.npc, id: creation.npc.id });

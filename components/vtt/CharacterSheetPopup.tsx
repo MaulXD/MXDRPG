@@ -130,7 +130,13 @@ export function CharacterSheetPopup({
   const canEditPortrait = canEditRoomActorPortrait(roomCtx, merged, session);
 
   const inventory = live?.inventory?.length ? live.inventory : seed.inventory;
-  const sheetCharacter = { ...seed, ...live, inventory };
+  const sheetCharacter = {
+    ...seed,
+    ...live,
+    inventory,
+    combatLoadout: live?.combatLoadout ?? seed.combatLoadout ?? null,
+    armorLoadout: live?.armorLoadout ?? seed.armorLoadout ?? null,
+  };
 
   return (
 

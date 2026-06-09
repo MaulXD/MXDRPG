@@ -23,7 +23,8 @@ export default async function EldarinMesasPage() {
         <h1 className="display-lg">Suas mesas</h1>
         <p className="lead">
           Crie uma mesa como mestre ou entre com o código de convite. Mesas ingressadas ficam salvas
-          na sua conta — só o mestre pode excluir (com 30 dias para restaurar).
+          na sua conta — só o mestre pode excluir (com 30 dias para restaurar).{" "}
+          <Link href="/conta">Editar foto de perfil</Link>
         </p>
       </header>
 
