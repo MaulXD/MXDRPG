@@ -26,6 +26,8 @@ type Props = {
   toolbarLeading?: ReactNode;
   toolbarTrailing?: ReactNode;
   toolbarDrag?: FoundryWindowDragHandlers;
+  /** Página /personagem/:id — sem arraste, toolbar só com ações */
+  standalone?: boolean;
   loadout?: ReactNode;
   drawer: ReactNode;
   inRoom: boolean;
@@ -43,6 +45,7 @@ export function SheetPopupDdbView({
   toolbarLeading,
   toolbarTrailing,
   toolbarDrag,
+  standalone = false,
   loadout,
   drawer,
   inRoom,
@@ -61,21 +64,33 @@ export function SheetPopupDdbView({
       : 0;
 
   const classLine = [identity.classe, nivel ? `Nv ${nivel}` : null].filter(Boolean).join(" · ");
-  const dragHandle = toolbarDrag
-    ? {
-        onPointerDown: toolbarDrag.onPointerDown,
-        onPointerMove: toolbarDrag.onPointerMove,
-        onPointerUp: toolbarDrag.onPointerUp,
-        onPointerCancel: toolbarDrag.onPointerCancel,
-      }
-    : undefined;
+  const dragHandle =
+    !standalone && toolbarDrag
+      ? {
+          onPointerDown: toolbarDrag.onPointerDown,
+          onPointerMove: toolbarDrag.onPointerMove,
+          onPointerUp: toolbarDrag.onPointerUp,
+          onPointerCancel: toolbarDrag.onPointerCancel,
+        }
+      : undefined;
+
+  const shellClass = [
+    "sheet-shell",
+    "sheet-shell--popup",
+    "sheet-shell--ddb",
+    standalone ? "sheet-shell--ddb-standalone" : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
 
   return (
-    <div className="sheet-shell sheet-shell--popup sheet-shell--ddb">
+    <div className={shellClass}>
       {toolbar || toolbarLeading || toolbarTrailing ? (
         <div className="sheet-ddb-toolbar" {...dragHandle}>
           {toolbarLeading ? (
             <div className="sheet-ddb-toolbar__leading">{toolbarLeading}</div>
+          ) : standalone ? (
+            <span className="sheet-ddb-toolbar__label">Ficha de personagem</span>
           ) : (
             <span className="sheet-ddb-toolbar__drag-hint" aria-hidden>
               ⠿
