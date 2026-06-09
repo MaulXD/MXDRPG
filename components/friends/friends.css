@@ -44,6 +44,17 @@
   border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
+.friends-hub__invite--request {
+  border-color: rgba(122, 163, 201, 0.28);
+  background: rgba(122, 163, 201, 0.08);
+}
+
+.friends-hub__item--pending {
+  border-style: dashed;
+  border-color: rgba(255, 255, 255, 0.12);
+  opacity: 0.92;
+}
+
 .friends-hub__avatar {
   width: 36px;
   height: 36px;

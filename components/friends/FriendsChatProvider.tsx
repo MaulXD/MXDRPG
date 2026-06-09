@@ -26,6 +26,7 @@ type FriendsChatContextValue = {
   closeChat: () => void;
   selfUserId: string | null;
   inviteCount: number;
+  requestCount: number;
   unreadCount: number;
   refreshUnread: () => Promise<void>;
   ready: boolean;
@@ -102,6 +103,7 @@ export function FriendsChatProvider({ children }: { children: ReactNode }) {
   const [selfUserId, setSelfUserId] = useState<string | null>(null);
   const [friends, setFriends] = useState<FriendSummary[]>([]);
   const [inviteCount, setInviteCount] = useState(0);
+  const [requestCount, setRequestCount] = useState(0);
   const [unreadCount, setUnreadCount] = useState(0);
   const [loading, setLoading] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -128,6 +130,17 @@ export function FriendsChatProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
+  const refreshFriendRequests = useCallback(async () => {
+    try {
+      const res = await fetch("/api/friends/requests?countOnly=1", { cache: "no-store" });
+      if (!res.ok) return;
+      const data = (await res.json()) as { count?: number };
+      setRequestCount(Math.max(0, data.count ?? 0));
+    } catch {
+      /* ignore */
+    }
+  }, []);
+
   const loadSessionAndFriends = useCallback(async () => {
     setLoading(true);
     try {
@@ -145,11 +158,11 @@ export function FriendsChatProvider({ children }: { children: ReactNode }) {
         const data = (await friendsRes.json()) as { friends?: FriendSummary[] };
         setFriends(data.friends ?? []);
       }
-      await refreshInvites();
+      await Promise.all([refreshInvites(), refreshFriendRequests()]);
     } finally {
       setLoading(false);
     }
-  }, [refreshInvites]);
+  }, [refreshInvites, refreshFriendRequests]);
 
   useEffect(() => {
     setMounted(true);
@@ -165,14 +178,18 @@ export function FriendsChatProvider({ children }: { children: ReactNode }) {
       }
     })();
     void refreshInvites();
+    void refreshFriendRequests();
     void refreshUnread();
-    const inviteId = window.setInterval(() => void refreshInvites(), INVITE_POLL_MS);
+    const inviteId = window.setInterval(() => {
+      void refreshInvites();
+      void refreshFriendRequests();
+    }, INVITE_POLL_MS);
     const unreadId = window.setInterval(() => void refreshUnread(), UNREAD_POLL_MS);
     return () => {
       window.clearInterval(inviteId);
       window.clearInterval(unreadId);
     };
-  }, [refreshInvites, refreshUnread]);
+  }, [refreshInvites, refreshFriendRequests, refreshUnread]);
 
   useEffect(() => {
     if (!selfUserId) return;
@@ -202,11 +219,23 @@ export function FriendsChatProvider({ children }: { children: ReactNode }) {
       closeChat,
       selfUserId,
       inviteCount,
+      requestCount,
       unreadCount,
       refreshUnread,
       ready,
     }),
-    [open, toggle, openChat, closeChat, selfUserId, inviteCount, unreadCount, refreshUnread, ready]
+    [
+      open,
+      toggle,
+      openChat,
+      closeChat,
+      selfUserId,
+      inviteCount,
+      requestCount,
+      unreadCount,
+      refreshUnread,
+      ready,
+    ]
   );
 
   return (
