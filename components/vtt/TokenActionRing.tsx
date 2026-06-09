@@ -9,7 +9,19 @@ import {
   type CSSProperties,
   type FocusEvent,
   type MouseEvent,
+  type ReactNode,
 } from "react";
+import {
+  IconAbility,
+  IconChevronLeft,
+  IconHeart,
+  IconMenu,
+  IconMove,
+  IconRun,
+  IconSheet,
+  IconSpell,
+  IconSword,
+} from "@/components/ui/EldarinIcons";
 import type { BattleToken } from "@/lib/vtt/types";
 import type { RoomActor } from "@/lib/room/types";
 import type { CombatTrack } from "@/lib/room/combat";
@@ -38,7 +50,7 @@ type DisplaySlot = {
   id: string;
   tone: SlotTone;
   label: string;
-  glyph: string;
+  glyph: ReactNode;
   paLabel: string;
   disabled?: boolean;
   title?: string;
@@ -269,7 +281,7 @@ export function TokenActionRing({
     (
       action: CombatActionOption,
       tone: "spell" | "ability",
-      glyph: string,
+      glyph: ReactNode,
       pick: () => void
     ): DisplaySlot => {
       const cd = isActionOnRecharge(token, action, combatRound);
@@ -300,13 +312,13 @@ export function TokenActionRing({
   const displaySlots: DisplaySlot[] = useMemo(() => {
     if (ringView === "spell") {
       return spells.map((action) =>
-        slotForAction(action, "spell", "✦", () => pickCombatAction("spell", action))
+        slotForAction(action, "spell", <IconSpell size={16} />, () => pickCombatAction("spell", action))
       );
     }
 
     if (ringView === "ability") {
       return abilities.map((action) =>
-        slotForAction(action, "ability", "◆", () => pickCombatAction("ability", action))
+        slotForAction(action, "ability", <IconAbility size={16} />, () => pickCombatAction("ability", action))
       );
     }
 
@@ -319,7 +331,7 @@ export function TokenActionRing({
         id: "move-walk",
         tone: "walk",
         label: "Mover",
-        glyph: "⌁",
+        glyph: <IconMove size={16} />,
         paLabel: movePa,
         disabled: turnBlocked,
         title: "Próximo hex · caminhada",
@@ -330,7 +342,7 @@ export function TokenActionRing({
         id: "move-run",
         tone: "run",
         label: "Correr",
-        glyph: "»",
+        glyph: <IconRun size={16} />,
         paLabel: movePa,
         disabled: turnBlocked,
         title: "Próximo hex · corrida",
@@ -341,7 +353,7 @@ export function TokenActionRing({
         id: "attack",
         tone: "attack",
         label: "Atacar",
-        glyph: "⚔",
+        glyph: <IconSword size={16} />,
         paLabel: combatActionPaLabel(actor, weapon),
         disabled: turnBlocked || weapons.length === 0,
         title: weapon ? formatCombatActionTooltip(weapon, actor) : undefined,
@@ -352,7 +364,7 @@ export function TokenActionRing({
         id: "spell",
         tone: "spell",
         label: "Magia",
-        glyph: "✦",
+        glyph: <IconSpell size={16} />,
         paLabel: spells.length > 1 ? `${spells.length}×` : combatActionPaLabel(actor, spell),
         disabled: turnBlocked || spells.length === 0,
         title:
@@ -372,7 +384,7 @@ export function TokenActionRing({
         id: "ability",
         tone: "ability",
         label: "Habilidade",
-        glyph: "◆",
+        glyph: <IconAbility size={16} />,
         paLabel: abilities.length > 1 ? `${abilities.length}×` : combatActionPaLabel(actor, ability),
         disabled: turnBlocked || abilities.length === 0,
         title:
@@ -395,7 +407,7 @@ export function TokenActionRing({
         id: "sheet",
         tone: "sheet",
         label: "Ficha",
-        glyph: "▤",
+        glyph: <IconSheet size={16} />,
         paLabel: "—",
         title: "Abrir ficha deste token",
         onClick: () => {
@@ -410,7 +422,7 @@ export function TokenActionRing({
         id: "bestiary",
         tone: "bestiary",
         label: "Bestiário",
-        glyph: "☰",
+        glyph: <IconMenu size={16} />,
         paLabel: "—",
         title: "Bestiário individual do jogador (visão do mestre)",
         onClick: () => {
@@ -427,7 +439,7 @@ export function TokenActionRing({
         id: "hp",
         tone: "hp",
         label: "Vida",
-        glyph: "♥",
+        glyph: <IconHeart size={16} />,
         paLabel: temp > 0 ? `${hpNow}/${token.vidaMax} +${temp}` : `${hpNow}/${token.vidaMax}`,
         title: "Ajustar vida atual, máxima e temporária",
         onClick: () => {
@@ -587,7 +599,7 @@ export function TokenActionRing({
           ) : (
             <>
               <span className="token-action-ring__center-glyph" aria-hidden>
-                ←
+                <IconChevronLeft size={18} />
               </span>
               <span className="token-action-ring__center-name">Voltar</span>
               <span className="token-action-ring__center-hint">

@@ -219,7 +219,6 @@ export function useBattlefieldPointer({
     dragging: boolean;
     shapeCircle?: boolean;
   } | null>(null);
-  const polygonRef = useRef<{ vertices: { x: number; y: number }[] } | null>(null);
   const measureDragRef = useRef<{
     startWx: number;
     startWy: number;
@@ -228,23 +227,6 @@ export function useBattlefieldPointer({
     startAxial: Axial;
     dragging: boolean;
   } | null>(null);
-
-  const finishPolygon = useCallback(
-    (whiteboard: NonNullable<Params["whiteboard"]>, close: boolean) => {
-      const verts = polygonRef.current?.vertices ?? [];
-      if (verts.length < 2) {
-        polygonRef.current = null;
-        whiteboard.onPreview(null);
-        return;
-      }
-      const points = close && verts.length >= 3 ? verts : verts;
-      const kind = close && verts.length >= 3 ? "polygon" : "line";
-      whiteboard.onPreview(null);
-      whiteboard.onCommit(whiteboard.createMarkup(kind, points));
-      polygonRef.current = null;
-    },
-    []
-  );
 
   const canvasLayout = useCallback((canvas: HTMLCanvasElement): CanvasLayout => {
     const w = canvas.clientWidth;
@@ -377,30 +359,15 @@ export function useBattlefieldPointer({
           return;
         }
 
-        if (whiteboard.tool === "polygon") {
-          const CLOSE_TOL = 14 / Math.max(viewRef.current.scale, 0.5);
-          const verts = polygonRef.current?.vertices ?? [];
-          if (verts.length >= 3) {
-            const first = verts[0]!;
-            if (Math.hypot(world.x - first.x, world.y - first.y) <= CLOSE_TOL) {
-              finishPolygon(whiteboard, true);
-              return;
-            }
-          }
-          const nextVerts = [...verts, { x: world.x, y: world.y }];
-          polygonRef.current = { vertices: nextVerts };
-          const kind = nextVerts.length >= 3 ? "polygon" : "line";
-          whiteboard.onPreview(whiteboard.createMarkup(kind, nextVerts));
-          return;
-        }
-
         if (
           whiteboard.tool === "pen" ||
           whiteboard.tool === "line" ||
           whiteboard.tool === "arrow" ||
-          whiteboard.tool === "shape"
+          whiteboard.tool === "shape" ||
+          whiteboard.tool === "circle"
         ) {
-          const shapeCircle = whiteboard.tool === "shape" && e.altKey;
+          const shapeCircle =
+            whiteboard.tool === "circle" || (whiteboard.tool === "shape" && e.altKey);
           wbDrawRef.current = {
             mode: "draw",
             startWx: world.x,
@@ -667,20 +634,6 @@ export function useBattlefieldPointer({
       }
 
       const wb = wbDrawRef.current;
-      if (
-        whiteboard?.active &&
-        whiteboard.tool === "polygon" &&
-        polygonRef.current &&
-        world
-      ) {
-        const verts = polygonRef.current.vertices;
-        const ghost = [...verts, { x: world.x, y: world.y }];
-        const kind = verts.length >= 2 ? "polygon" : "line";
-        whiteboard.onPreview(whiteboard.createMarkup(kind, ghost));
-        if (canvasRef.current) canvasRef.current.style.cursor = "crosshair";
-        return;
-      }
-
       if (wb && whiteboard?.active && world) {
         if (!wb.dragging && Math.hypot(px - wb.startPx, py - wb.startPy) > 6) {
           wb.dragging = true;
@@ -698,7 +651,8 @@ export function useBattlefieldPointer({
         }
         if (wb.mode === "draw") {
           const shapeCircle =
-            whiteboard.tool === "shape" && (e.altKey || wb.shapeCircle);
+            whiteboard.tool === "circle" ||
+            (whiteboard.tool === "shape" && (e.altKey || wb.shapeCircle));
           wb.shapeCircle = shapeCircle;
           const kind =
             whiteboard.tool === "pen"
@@ -839,12 +793,7 @@ export function useBattlefieldPointer({
         ) {
           canvas.style.cursor = "crosshair";
         } else if (whiteboard?.active) {
-          canvas.style.cursor =
-            whiteboard.tool === "select"
-              ? "default"
-              : whiteboard.tool === "polygon"
-                ? "crosshair"
-                : "crosshair";
+          canvas.style.cursor = "crosshair";
         } else if (dungeonEditor?.active && dungeonEditor.layer === "objects") {
           canvas.style.cursor = dungeonEditor.tool === "erase" ? "not-allowed" : "crosshair";
         } else if (dungeonEditor?.active && dungeonEditor.layer === "floor") {
@@ -974,7 +923,8 @@ export function useBattlefieldPointer({
         }
         if (wb?.mode === "draw") {
           const shapeCircle =
-            whiteboard.tool === "shape" && (e.altKey || wb.shapeCircle);
+            whiteboard.tool === "circle" ||
+            (whiteboard.tool === "shape" && (e.altKey || wb.shapeCircle));
           const kind =
             whiteboard.tool === "pen"
               ? "freehand"
@@ -998,10 +948,6 @@ export function useBattlefieldPointer({
               whiteboard.onCommit(whiteboard.createMarkup(kind, points));
             }
           }
-          return;
-        }
-        if (whiteboard.tool === "text" && start && Math.hypot(px - start.x, py - start.y) <= 8) {
-          whiteboard.onTextRequest(world.x, world.y);
           return;
         }
         return;
@@ -1172,7 +1118,6 @@ export function useBattlefieldPointer({
     dungeonDragRef.current = null;
     wbDrawRef.current = null;
     measureDragRef.current = null;
-    polygonRef.current = null;
     setHoverAxial(null);
     onHoverAxialChange?.(null);
     onHoverTargetChange?.(null);
@@ -1194,11 +1139,6 @@ export function useBattlefieldPointer({
       if (!rect) return;
       const px = e.clientX - rect.left;
       const py = e.clientY - rect.top;
-
-      if (whiteboard?.active && whiteboard.tool === "polygon" && polygonRef.current?.vertices.length) {
-        finishPolygon(whiteboard, polygonRef.current.vertices.length >= 3);
-        return;
-      }
 
       let hit = tokenAtPoint(px, py);
       if (!hit) {
@@ -1241,13 +1181,11 @@ export function useBattlefieldPointer({
       onActionRingRequest,
       onOpenPlayerBestiary,
       whiteboard,
-      finishPolygon,
     ]
   );
 
   const cancelWhiteboardDraft = useCallback(() => {
     wbDrawRef.current = null;
-    polygonRef.current = null;
     clickStartRef.current = null;
     whiteboard?.onPreview(null);
   }, [whiteboard]);

@@ -2,27 +2,21 @@
 
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
+import { FriendsChat } from "@/components/friends/FriendsChat";
+import { UserAvatar } from "@/components/ui/UserAvatar";
 import type { FriendSummary, MesaInviteSummary } from "@/lib/friends/types";
+import type { PortraitFocus } from "@/lib/media/portrait-focus";
 import "./friends.css";
 
 function friendLabel(f: FriendSummary): string {
   return f.nickname ? `@${f.nickname}` : f.name;
 }
 
-function Avatar({ url, label }: { url: string | null; label: string }) {
-  const initial = label.slice(0, 1).toUpperCase() || "?";
-  if (url) {
-    return (
-      <span className="friends-hub__avatar">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={url} alt="" />
-      </span>
-    );
-  }
-  return <span className="friends-hub__avatar">{initial}</span>;
-}
+type Props = {
+  selfUserId: string;
+};
 
-export function FriendsHub() {
+export function FriendsHub({ selfUserId }: Props) {
   const [friends, setFriends] = useState<FriendSummary[]>([]);
   const [invites, setInvites] = useState<MesaInviteSummary[]>([]);
   const [nickname, setNickname] = useState("");
@@ -92,14 +86,14 @@ export function FriendsHub() {
   }
 
   return (
-    <div className="friends-hub">
+    <div className="friends-hub" id="amigos">
       {invites.length > 0 ? (
         <section>
           <h2 className="friends-hub__section-title">Convites de mesa</h2>
           <ul className="friends-hub__invites">
             {invites.map((inv) => (
               <li key={inv.id} className="friends-hub__invite">
-                <Avatar url={inv.fromAvatarUrl} label={inv.fromDisplayName} />
+                <UserAvatar url={inv.fromAvatarUrl} label={inv.fromDisplayName} className="friends-hub__avatar" />
                 <div className="friends-hub__meta">
                   <span className="friends-hub__name">{inv.roomName}</span>
                   <span className="friends-hub__sub">
@@ -150,13 +144,16 @@ export function FriendsHub() {
         {error ? <p className="friends-hub__err">{error}</p> : null}
         {okMsg ? <p className="friends-hub__ok">{okMsg}</p> : null}
 
-        {friends.length === 0 ? (
-          <p className="friends-hub__empty">Nenhum amigo ainda.</p>
-        ) : (
+        {friends.length > 0 ? (
           <ul className="friends-hub__list" style={{ marginTop: "0.75rem" }}>
             {friends.map((f) => (
               <li key={f.id} className="friends-hub__item">
-                <Avatar url={f.avatarUrl} label={friendLabel(f)} />
+                <UserAvatar
+                  url={f.avatarUrl}
+                  focus={f.avatarFocus as PortraitFocus | null}
+                  label={friendLabel(f)}
+                  className="friends-hub__avatar"
+                />
                 <div className="friends-hub__meta">
                   <span className="friends-hub__name">{friendLabel(f)}</span>
                   {f.nickname ? <span className="friends-hub__sub">{f.name}</span> : null}
@@ -171,7 +168,14 @@ export function FriendsHub() {
               </li>
             ))}
           </ul>
+        ) : (
+          <p className="friends-hub__empty">Nenhum amigo ainda.</p>
         )}
+      </section>
+
+      <section className="friends-hub__chat-section">
+        <h2 className="friends-hub__section-title">Mensagens</h2>
+        <FriendsChat friends={friends} selfUserId={selfUserId} onFriendsChange={load} />
       </section>
     </div>
   );

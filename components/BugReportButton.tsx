@@ -1,5 +1,7 @@
 "use client";
 
+import { IconBug } from "@/components/ui/EldarinIcons";
+
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { buildBugScreenshotFromFile } from "@/lib/media/image-upload-client";
@@ -219,7 +221,7 @@ export function BugReportButton({ variant = "site" }: Props) {
         aria-label="Reportar bug"
       >
         <span className="bug-report-fab__icon" aria-hidden>
-          🐛
+          <IconBug size={18} />
         </span>
         <span className="bug-report-fab__label">Bug</span>
       </button>

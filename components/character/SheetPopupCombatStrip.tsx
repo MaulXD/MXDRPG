@@ -41,31 +41,31 @@ export function SheetPopupCombatStrip({
         </div>
 
         <div className="sheet-popup-stat-pills" role="list" aria-label="Estatísticas de combate">
-        <div className="sheet-popup-stat-pill" role="listitem" title="Iniciativa — ordem no combate">
-          <IconLightning size={16} />
-          <span className="sheet-popup-stat-pill__label">Iniciativa</span>
-          <strong>{initLabel}</strong>
-        </div>
-        <div
-          className="sheet-popup-stat-pill"
-          role="listitem"
-          title="Movimento — caminhada / corrida em hexes por turno"
-        >
-          <IconBoot size={16} />
-          <span className="sheet-popup-stat-pill__label">Movimento</span>
-          <strong>
-            {movimentoWalk}/{movimentoRun}
-          </strong>
-        </div>
-        <div
-          className="sheet-popup-stat-pill"
-          role="listitem"
-          title="Proficiência — bônus em perícias treinadas e ataques"
-        >
-          <IconStar size={16} />
-          <span className="sheet-popup-stat-pill__label">Proficiência</span>
-          <strong>+{profBonus}</strong>
-        </div>
+          <div className="sheet-popup-stat-pill" role="listitem" title="Iniciativa — ordem no combate">
+            <IconLightning size={16} />
+            <span className="sheet-popup-stat-pill__label">Iniciativa</span>
+            <strong>{initLabel}</strong>
+          </div>
+          <div
+            className="sheet-popup-stat-pill"
+            role="listitem"
+            title="Movimento — caminhada / corrida em hexes por turno"
+          >
+            <IconBoot size={16} />
+            <span className="sheet-popup-stat-pill__label">Movimento</span>
+            <strong>
+              {movimentoWalk}/{movimentoRun}
+            </strong>
+          </div>
+          <div
+            className="sheet-popup-stat-pill"
+            role="listitem"
+            title="Proficiência — bônus em perícias treinadas e ataques"
+          >
+            <IconStar size={16} />
+            <span className="sheet-popup-stat-pill__label">Proficiência</span>
+            <strong>+{profBonus}</strong>
+          </div>
         </div>
       </div>
 

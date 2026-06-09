@@ -48,6 +48,7 @@ import { ActiveCharactersPanel } from "@/components/vtt/ActiveCharactersPanel";
 import { GmToolsPanel } from "@/components/vtt/GmToolsPanel";
 import { DungeonEditorPanel } from "@/components/vtt/DungeonEditorPanel";
 import { MapToolbar } from "@/components/vtt/MapToolbar";
+import { MapMarkupTextEditor } from "@/components/vtt/MapMarkupTextEditor";
 import { WhiteboardPanel } from "@/components/vtt/WhiteboardPanel";
 import { FoundryDockPanel } from "@/components/vtt/foundry/FoundryDockPanel";
 import type { RoomSnapshot } from "@/lib/room/types";
@@ -136,6 +137,9 @@ import {
 } from "@/lib/vtt/map-luminance";
 import { useBattlefieldPointer } from "@/hooks/vtt/useBattlefieldPointer";
 import { useMonsterSpawnDrop } from "@/hooks/vtt/useMonsterSpawnDrop";
+import { occupiedHexes } from "@/lib/vtt/creature-size";
+import { resolveMonsterCreatureSize } from "@/lib/vtt/monster-sizes";
+import { getActiveSpawnDragPayload } from "@/lib/vtt/spawn-drag";
 import { paTurnRulesForActor } from "@/lib/combat/pa-economy";
 import { canMoveToken, hexToMeters, type MovementPathContext } from "@/lib/vtt/movement";
 import { animateTokenAlongPath } from "@/lib/vtt/token-move-animation";
@@ -337,6 +341,7 @@ export function HexBattlefield({
   const [markupDurability, setMarkupDurability] = useState<MapMarkupDurability>("temporary");
   const [markupPreview, setMarkupPreview] = useState<MapMarkup | null>(null);
   const [selectedMarkupId, setSelectedMarkupId] = useState<string | null>(null);
+  const [markupTextDraft, setMarkupTextDraft] = useState<{ wx: number; wy: number } | null>(null);
   const [floorPreview, setFloorPreview] = useState<{
     mapImageScale?: number;
     mapImageOffsetX?: number;
@@ -699,6 +704,15 @@ export function HexBattlefield({
     viewRef: battlefieldView.viewRef,
   });
 
+  const spawnDropFootprintKeys = useMemo(() => {
+    if (!spawnDragActive || !hoverAxial) return null;
+    const payload = getActiveSpawnDragPayload();
+    if (!payload) return null;
+    const size = resolveMonsterCreatureSize(payload.entryId, "", { variant: payload.variant });
+    if (size === "small" || size === "medium") return null;
+    return new Set(occupiedHexes(hoverAxial, size).map((h) => `${h.q},${h.r}`));
+  }, [spawnDragActive, hoverAxial]);
+
   const hoverTurnToken = listTokens.find((t) => t.id === hoverTokenId) ?? null;
   const hoverTurnActor =
     hoverTurnToken?.linked && hoverTurnToken.actorId
@@ -794,6 +808,7 @@ export function HexBattlefield({
       hoverAxial,
       hoverMovePreview: highlights.hoverMovePreview,
       spawnDropHover: spawnDragActive && (canControlCombat || canEdit),
+      spawnDropFootprintKeys,
       pathCells: highlights.hoverPathCells ?? [],
       focusByTokenId,
       selectedId,
@@ -836,6 +851,7 @@ export function HexBattlefield({
       actionMode,
       hoverAxial,
       spawnDragActive,
+      spawnDropFootprintKeys,
       canControlCombat,
       focusByTokenId,
       selectedId,
@@ -1737,16 +1753,9 @@ export function HexBattlefield({
     [displayScene, persistMapMarkups, roomOwnerId, session]
   );
 
-  const onMarkupTextRequest = useCallback(
-    (wx: number, wy: number) => {
-      const text = window.prompt("Texto da marcação:");
-      if (!text?.trim()) return;
-      onMarkupCommit(
-        createWhiteboardMarkup("text", [{ x: wx, y: wy }], text.trim())
-      );
-    },
-    [createWhiteboardMarkup, onMarkupCommit]
-  );
+  const onMarkupTextRequest = useCallback((wx: number, wy: number) => {
+    setMarkupTextDraft({ wx, wy });
+  }, []);
 
   const pointer = useBattlefieldPointer({
     canvasRef,
@@ -1840,9 +1849,15 @@ export function HexBattlefield({
     },
   });
 
+  const handleDrawToolChange = useCallback((tool: WhiteboardTool) => {
+    setWhiteboardTool(tool);
+    if (tool !== "text") setMarkupTextDraft(null);
+  }, []);
+
   const handleMapToolModeChange = useCallback(
     (mode: MapToolMode) => {
       setMapToolMode(mode);
+      setMarkupTextDraft(null);
       if (mode === "draw") {
         setWhiteboardActive(true);
         setDungeonEditorActive(false);
@@ -1870,6 +1885,7 @@ export function HexBattlefield({
       if (e.key === "Escape") {
         pointer.cancelWhiteboardDraft();
         setSelectedMarkupId(null);
+        setMarkupTextDraft(null);
         setMeasurePreview(null);
         if (mapToolMode !== "token") setMapToolMode("token");
       }
@@ -2089,7 +2105,7 @@ export function HexBattlefield({
             pointer.cancelWhiteboardDraft();
           }
         }}
-        onToolChange={setWhiteboardTool}
+        onToolChange={handleDrawToolChange}
         onColorChange={setMarkupColor}
         onWidthChange={setMarkupWidth}
         onDurabilityChange={(d) => {
@@ -2461,7 +2477,7 @@ export function HexBattlefield({
           mapToolMode={mapToolMode}
           onMapToolModeChange={handleMapToolModeChange}
           drawTool={whiteboardTool}
-          onDrawToolChange={setWhiteboardTool}
+          onDrawToolChange={handleDrawToolChange}
           color={markupColor}
           width={markupWidth}
           onColorChange={setMarkupColor}
@@ -2522,6 +2538,27 @@ export function HexBattlefield({
           >
             {moveHoverHint.text}
           </div>
+        ) : null}
+        {markupTextDraft && canvasWrapSize.w > 0 && canvasWrapSize.h > 0 ? (
+          <MapMarkupTextEditor
+            wx={markupTextDraft.wx}
+            wy={markupTextDraft.wy}
+            wrapW={canvasWrapSize.w}
+            wrapH={canvasWrapSize.h}
+            view={battlefieldView.view}
+            color={markupColor}
+            onCommit={(text) => {
+              onMarkupCommit(
+                createWhiteboardMarkup(
+                  "text",
+                  [{ x: markupTextDraft.wx, y: markupTextDraft.wy }],
+                  text
+                )
+              );
+              setMarkupTextDraft(null);
+            }}
+            onCancel={() => setMarkupTextDraft(null)}
+          />
         ) : null}
         {actionRingAt && selected && canOpenActionRing(selected) ? (
           <TokenActionRing

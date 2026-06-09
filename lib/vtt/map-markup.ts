@@ -24,9 +24,9 @@ export type WhiteboardTool =
   | "select"
   | "pen"
   | "shape"
+  | "circle"
   | "line"
   | "arrow"
-  | "polygon"
   | "text";
 
 export function newMapMarkupId(): string {

@@ -1,5 +1,7 @@
 "use client";
 
+import { IconCheck, IconStar } from "@/components/ui/EldarinIcons";
+
 import type { CharacterTalent, SubclassTrack } from "@/lib/character/subclass-tracks";
 import { buildTalentTreeNodes, type TalentTreeNode } from "@/lib/character/level-up-ui";
 
@@ -64,15 +66,17 @@ export function TalentTreeGraph({
                 <span className="lu-tree-name">{node.label}</span>
                 {node.blurb ? <span className="lu-tree-blurb">{node.blurb}</span> : null}
                 <span className="lu-tree-badge" aria-hidden>
-                  {node.state === "owned"
-                    ? "✓"
-                    : node.state === "selectable"
-                      ? "Escolher"
-                      : node.state === "locked"
-                        ? "!"
-                        : node.kind === "ascension"
-                          ? "★"
-                          : "·"}
+                  {node.state === "owned" ? (
+                    <IconCheck size={12} />
+                  ) : node.state === "selectable" ? (
+                    "Escolher"
+                  ) : node.state === "locked" ? (
+                    "!"
+                  ) : node.kind === "ascension" ? (
+                    <IconStar size={12} />
+                  ) : (
+                    "·"
+                  )}
                 </span>
               </Tag>
             </li>

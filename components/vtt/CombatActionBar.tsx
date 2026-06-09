@@ -1,5 +1,7 @@
 "use client";
 
+import { ActionKindIcon } from "@/components/ui/EldarinIcons";
+
 import { useMemo } from "react";
 import type { BattleToken } from "@/lib/vtt/types";
 import type { RoomActor } from "@/lib/room/types";
@@ -144,8 +146,8 @@ export function CombatActionBar({
       ? "Seu turno — clique inimigo no mapa ou use botão."
       : null;
 
-  const actionIcon =
-    action.kind === "spell" ? "✦" : action.kind === "ability" ? "◆" : "⚔";
+  const actionKind =
+    action.kind === "spell" ? "spell" : action.kind === "ability" ? "ability" : "attack";
   const isSaveSpell = action.resolution === "save";
   const multiLabel =
     extraAttacks > 1 ? ` · ${extraAttacks} ataques` : "";
@@ -160,7 +162,7 @@ export function CombatActionBar({
           <select value={loadoutKey} onChange={(e) => onActionChange(e.target.value)} disabled={busy !== null}>
             {actions.map((a) => (
               <option key={`${a.packId}:${a.entryId}`} value={`${a.packId}:${a.entryId}`}>
-                {a.kind === "spell" ? "✦ " : a.kind === "ability" ? "◆ " : "⚔ "}
+                {a.kind === "spell" ? "Magia · " : a.kind === "ability" ? "Habilidade · " : "Ataque · "}
                 {a.label}
               </option>
             ))}
@@ -198,7 +200,13 @@ export function CombatActionBar({
           disabled={!selfAbilityOk || busy !== null}
           onClick={useSelfAbility}
         >
-          {busy === "self" ? "Ativando…" : `${actionIcon} Usar ${action.name}`}
+          {busy === "self" ? (
+            "Ativando…"
+          ) : (
+            <>
+              <ActionKindIcon kind={actionKind} size={14} /> Usar {action.name}
+            </>
+          )}
         </button>
       ) : isAreaSpell ? null : !targets.length ? (
         <p className="vtt-combat-hint">Nenhum alvo no alcance ({action.rangeHex} hex).</p>
@@ -212,17 +220,19 @@ export function CombatActionBar({
                 disabled={!ok || busy !== null}
                 onClick={() => attack(token.id)}
               >
-                {busy === token.id
-                  ? "Rolando…"
-                  : `${actionIcon} ${
-                      action.kind === "spell"
-                        ? isSaveSpell
-                          ? "Conjurar"
-                          : "Conjurar"
-                        : action.kind === "ability"
-                          ? "Usar"
-                          : "Atacar"
-                    } ${token.name}`}
+                {busy === token.id ? (
+                  "Rolando…"
+                ) : (
+                  <>
+                    <ActionKindIcon kind={actionKind} size={14} />{" "}
+                    {action.kind === "spell"
+                      ? "Conjurar"
+                      : action.kind === "ability"
+                        ? "Usar"
+                        : "Atacar"}{" "}
+                    {token.name}
+                  </>
+                )}
                 {token.defesa != null
                   ? ` (CA ${token.defesa}${token.defesaBonus ? `+${token.defesaBonus}` : ""})`
                   : ""}

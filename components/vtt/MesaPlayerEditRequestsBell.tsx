@@ -8,6 +8,7 @@ import {
   sheetEditStatusLabel,
   type SheetEditRequestStatus,
 } from "@/lib/character/sheet-edit-request";
+import { IconBell } from "@/components/ui/EldarinIcons";
 
 type Props = {
   adventureId: string;
@@ -63,7 +64,7 @@ export function MesaPlayerEditRequestsBell({ adventureId }: Props) {
         onClick={() => setOpen((v) => !v)}
       >
         <span className="mesa-edit-requests-bell__icon" aria-hidden>
-          🔔
+          <IconBell size={16} />
         </span>
         <span className="mesa-edit-requests-bell__badge">{requests.length}</span>
       </button>

@@ -1,5 +1,7 @@
 "use client";
 
+import { IconWarning } from "@/components/ui/EldarinIcons";
+
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import type { BattleToken } from "@/lib/vtt/types";
@@ -57,7 +59,7 @@ export function FriendlyFireConfirmDialog({
       >
         <div className="vtt-friendly-fire-modal__header">
           <span className="vtt-friendly-fire-modal__icon" aria-hidden>
-            ⚠
+            <IconWarning size={20} />
           </span>
           <h3 id="friendly-fire-title" className="vtt-friendly-fire-modal__title">
             Atacar um aliado?

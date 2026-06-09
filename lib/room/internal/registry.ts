@@ -10,7 +10,10 @@ import {
 } from "@/lib/vtt/token-integrity";
 import { welcomeChat } from "../chat";
 import { normalizeCombatTrack } from "../combat";
-import { ensureCombatActiveHasPa } from "../handlers/combat-turn";
+import {
+  ensureCombatActiveHasPa,
+  maybeAutoPassWhenActivePaZero,
+} from "../handlers/combat-turn";
 import { pruneMapMarkups } from "@/lib/vtt/map-markup";
 import { prunePings } from "@/lib/vtt/ping";
 import { getRoomGmCreations } from "../gm-creations";
@@ -169,6 +172,9 @@ function refreshDemoActorsIfStale(room: RoomState): void {
 }
 
 export async function persistRoom(roomId: string, state: RoomState): Promise<RoomState> {
+  if (state.combat?.order?.length) {
+    maybeAutoPassWhenActivePaZero(state);
+  }
   const updated = bumpRoom(state);
   rooms().set(roomId, updated);
   if (shouldPersistToDb(roomId)) {

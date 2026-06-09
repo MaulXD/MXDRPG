@@ -4,6 +4,7 @@ import {
   paTurnRulesForMonster,
 } from "@/lib/combat/pa-economy";
 import { normalizeTokenPaFields } from "@/lib/combat/pa-token-state";
+import { hasCondition } from "@/lib/combat/conditions";
 import {
   accumulationCap,
   bankPaAtEndOfTurn,
@@ -15,6 +16,7 @@ import {
   refreshPaAtTurnStart,
   startTurnPaFull,
   tokenBankedPa,
+  tokenSpendablePa,
 } from "@/lib/combat/pa-turn";
 import type { BattleToken } from "@/lib/vtt/types";
 import { isMonsterToken } from "../settings";
@@ -245,6 +247,26 @@ function applyTurnPaTransition(room: RoomState): string[] {
   }
 
   return notices;
+}
+
+/** Passa turno automaticamente quando o token ativo esgota PA gastáveis. */
+export function maybeAutoPassWhenActivePaZero(room: RoomState): boolean {
+  if (!room.combat?.order?.length) return false;
+
+  const active = getActiveBattleToken(room);
+  if (!active) return false;
+  if (hasCondition(active, "atordoado")) return false;
+  if (tokenSpendablePa(active) > 0) return false;
+
+  const transitionNotices = applyTurnPaTransition(room);
+  room.combat = {
+    ...room.combat,
+    notices: [
+      `PA esgotados — turno de ${active.name} passou automaticamente.`,
+      ...transitionNotices,
+    ],
+  };
+  return true;
 }
 
 export async function rollRoomInitiative(roomId: string): Promise<RoomSnapshot | null> {

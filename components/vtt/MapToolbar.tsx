@@ -54,14 +54,12 @@ const DRAW_TOOLS: ToolBtn[] = [
   { id: "pen", label: "Livre", title: "Traço livre", section: "draw" },
   { id: "line", label: "Linha", title: "Segmento reto", section: "draw" },
   { id: "arrow", label: "Seta", title: "Seta indicativa", section: "draw" },
-  { id: "shape", label: "Forma", title: "Retângulo · Alt = círculo", section: "draw" },
-  { id: "polygon", label: "Polígono", title: "Clique vértices · fecha no 1º ponto", section: "draw" },
+  { id: "shape", label: "Retângulo", title: "Arraste retângulo", section: "draw" },
+  { id: "circle", label: "Círculo", title: "Arraste círculo", section: "draw" },
   { id: "text", label: "Texto", title: "Clique para rotular", section: "draw" },
 ];
 
 function drawHint(tool: WhiteboardTool): string {
-  if (tool === "shape") return "Alt: círculo";
-  if (tool === "polygon") return "Fecha no 1º ponto";
   if (tool === "select") return "Del apaga";
   if (tool === "text") return "Clique no mapa";
   return "Arraste no mapa";
@@ -119,12 +117,11 @@ export function MapToolbar({
 
   return (
     <div
-      className="map-toolbar"
-      role="toolbar"
-      aria-label="Ferramentas do mapa"
+      className="map-toolbar-shell"
       onClick={(e) => e.stopPropagation()}
       onPointerDown={(e) => e.stopPropagation()}
     >
+      <div className="map-toolbar" role="toolbar" aria-label="Ferramentas do mapa">
       <p className="map-toolbar__foot-hint">Scroll zoom · Alt+arrastar pano</p>
       <p className="map-toolbar__section-label">Mapa</p>
       <div className="map-toolbar__group" role="group" aria-label="Ferramentas de mapa">
@@ -175,46 +172,6 @@ export function MapToolbar({
             })}
           </div>
 
-          {mapToolMode === "draw" ? (
-            <div className="map-toolbar__sub">
-              <div className="map-toolbar__colors" role="group" aria-label="Cor">
-                {MARKUP_COLORS.map((c) => (
-                  <button
-                    key={c}
-                    type="button"
-                    className={`map-toolbar__swatch${color === c ? " map-toolbar__swatch--active" : ""}`}
-                    style={{ background: c }}
-                    aria-label={`Cor ${c}`}
-                    onClick={() => onColorChange(c)}
-                  />
-                ))}
-              </div>
-              <div className="map-toolbar__widths" role="group" aria-label="Espessura">
-                {MARKUP_WIDTHS.map((w) => (
-                  <button
-                    key={w}
-                    type="button"
-                    className={`map-toolbar__width${width === w ? " map-toolbar__width--active" : ""}`}
-                    onClick={() => onWidthChange(w)}
-                  >
-                    {w}px
-                  </button>
-                ))}
-              </div>
-              {canManageAll && onClearSession ? (
-                <button
-                  type="button"
-                  className="map-toolbar__clear"
-                  disabled={busy}
-                  title="Remove desenhos temporários da sessão"
-                  onClick={onClearSession}
-                >
-                  Limpar sessão
-                </button>
-              ) : null}
-              <p className="map-toolbar__hint">{drawHint(drawTool)}</p>
-            </div>
-          ) : null}
         </>
       ) : null}
 
@@ -273,6 +230,48 @@ export function MapToolbar({
           <MapToolbarIcon name="reset-view" />
         </button>
       </div>
+      </div>
+
+      {canUseDraw && mapToolMode === "draw" ? (
+        <div className="map-toolbar__sub" role="group" aria-label="Opções de desenho">
+          <div className="map-toolbar__colors" role="group" aria-label="Cor">
+            {MARKUP_COLORS.map((c) => (
+              <button
+                key={c}
+                type="button"
+                className={`map-toolbar__swatch${color === c ? " map-toolbar__swatch--active" : ""}`}
+                style={{ background: c }}
+                aria-label={`Cor ${c}`}
+                onClick={() => onColorChange(c)}
+              />
+            ))}
+          </div>
+          <div className="map-toolbar__widths" role="group" aria-label="Espessura">
+            {MARKUP_WIDTHS.map((w) => (
+              <button
+                key={w}
+                type="button"
+                className={`map-toolbar__width${width === w ? " map-toolbar__width--active" : ""}`}
+                onClick={() => onWidthChange(w)}
+              >
+                {w}px
+              </button>
+            ))}
+          </div>
+          {canManageAll && onClearSession ? (
+            <button
+              type="button"
+              className="map-toolbar__clear"
+              disabled={busy}
+              title="Remove desenhos temporários da sessão"
+              onClick={onClearSession}
+            >
+              Limpar sessão
+            </button>
+          ) : null}
+          <p className="map-toolbar__hint">{drawHint(drawTool)}</p>
+        </div>
+      ) : null}
     </div>
   );
 }

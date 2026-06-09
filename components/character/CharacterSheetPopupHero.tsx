@@ -90,40 +90,42 @@ export function CharacterSheetPopupHero({ name, identity }: Props) {
 
   return (
     <div className="sheet-popup-identity">
-      <div className="sheet-popup-identity__main">
-        <p className="sheet-popup-identity__eyebrow">Ficha de personagem</p>
-        <h2 className="sheet-popup-identity__name">{name}</h2>
-        <div className="sheet-popup-identity__chips" role="list" aria-label="Identidade">
-          {chips.map((chip) => (
-            <IdentityChip key={chip.key} label={chip.label} tip={chip.tip} icon={chip.icon} />
-          ))}
-        </div>
-      </div>
-
-      <div className="sheet-popup-identity__level" aria-label={`Nível ${nivel}`}>
-        <div className="sheet-popup-identity__ring">
-          <span>{nivel}</span>
-        </div>
-        <div className="sheet-popup-identity__xp">
-          <p className="sheet-popup-identity__xp-primary">{xpDetail.primary}</p>
-          <div
-            className="sheet-popup-identity__xp-track"
-            role="progressbar"
-            aria-valuenow={nivel >= MAX_LEVEL ? 100 : xpPct}
-            aria-valuemin={0}
-            aria-valuemax={100}
-            aria-label={xpDetail.barLabel}
-          >
-            <span style={{ width: `${xpPct}%` }} />
+      <div className="sheet-popup-identity__head">
+        <div className="sheet-popup-identity__main">
+          <p className="sheet-popup-identity__eyebrow">Ficha de personagem</p>
+          <h2 className="sheet-popup-identity__name">{name}</h2>
+          <div className="sheet-popup-identity__chips" role="list" aria-label="Identidade">
+            {chips.map((chip) => (
+              <IdentityChip key={chip.key} label={chip.label} tip={chip.tip} icon={chip.icon} />
+            ))}
           </div>
-          <span className="sheet-popup-identity__xp-text">{xpDetail.secondary}</span>
-          {nivel >= MAX_LEVEL && ascension ? (
-            <SheetHoverTip tip={{ title: ascension.name, lines: ["Ascensão nv. 20 — capstone da subclasse."] }}>
-              <span className="sheet-popup-identity__ascension" tabIndex={0}>
-                Ascensão — {ascension.name}
-              </span>
-            </SheetHoverTip>
-          ) : null}
+        </div>
+
+        <div className="sheet-popup-identity__level" aria-label={`Nível ${nivel}`}>
+          <div className="sheet-popup-identity__ring">
+            <span>{nivel}</span>
+          </div>
+          <div className="sheet-popup-identity__xp">
+            <p className="sheet-popup-identity__xp-primary">{xpDetail.primary}</p>
+            <div
+              className="sheet-popup-identity__xp-track"
+              role="progressbar"
+              aria-valuenow={nivel >= MAX_LEVEL ? 100 : xpPct}
+              aria-valuemin={0}
+              aria-valuemax={100}
+              aria-label={xpDetail.barLabel}
+            >
+              <span style={{ width: `${xpPct}%` }} />
+            </div>
+            <span className="sheet-popup-identity__xp-text">{xpDetail.secondary}</span>
+            {nivel >= MAX_LEVEL && ascension ? (
+              <SheetHoverTip tip={{ title: ascension.name, lines: ["Ascensão nv. 20 — capstone da subclasse."] }}>
+                <span className="sheet-popup-identity__ascension" tabIndex={0}>
+                  Ascensão — {ascension.name}
+                </span>
+              </SheetHoverTip>
+            ) : null}
+          </div>
         </div>
       </div>
     </div>

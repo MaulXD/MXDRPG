@@ -1,5 +1,6 @@
 ﻿"use client";
 
+import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { isStagedCombatChatMessage } from "@/lib/combat/chat-display";
 import {
@@ -316,6 +317,7 @@ export function MesaWorkspace({
         snapshot={snapshot}
         session={session}
         canEndTurn={canEndTurn}
+        combatAccessOpts={combatAccessOpts}
         applySnapshot={applySnapshot}
         refresh={refresh}
       />
@@ -474,6 +476,9 @@ export function MesaWorkspace({
                 <MesaEditRequestsBell adventureId={adventureId} roomId={roomId} />
               ) : null}
               {session ? <MesaPlayerEditRequestsBell adventureId={adventureId} /> : null}
+              <Link href="/conta" className="mesa-stage-pill">
+                Perfil
+              </Link>
               <MesaOnlineMenu
                 online={presenceOnline}
                 loading={presenceLoading}
@@ -736,6 +741,7 @@ function MesaWorkspaceCombatFlow({
   snapshot,
   session,
   canEndTurn,
+  combatAccessOpts,
   applySnapshot,
   refresh,
 }: {
@@ -745,6 +751,7 @@ function MesaWorkspaceCombatFlow({
   snapshot: import("@/lib/room/types").RoomSnapshot | null;
   session: SessionUser | null;
   canEndTurn: boolean;
+  combatAccessOpts: import("@/lib/auth/combat-turn-access").CombatTurnAccessOpts;
   applySnapshot: (snap: import("@/lib/room/types").RoomSnapshot) => void;
   refresh: () => void;
 }) {
@@ -754,6 +761,7 @@ function MesaWorkspaceCombatFlow({
     snapshot,
     session,
     canEndTurn,
+    combatAccessOpts,
     onSnapshot: applySnapshot,
     onRefresh: refresh,
   });

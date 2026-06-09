@@ -5,6 +5,8 @@ import {
   MARKUP_WIDTHS,
   type WhiteboardTool,
 } from "@/lib/vtt/map-markup";
+import { MapToolbarIcon } from "@/components/vtt/MapToolbarIcon";
+import { IconCheck, IconPencil } from "@/components/ui/EldarinIcons";
 import "./whiteboard.css";
 
 type Props = {
@@ -21,13 +23,13 @@ type Props = {
   onClearSession?: () => void;
 };
 
-const TOOLS: { id: WhiteboardTool; label: string; glyph: string; title: string }[] = [
-  { id: "select", label: "Selecionar", glyph: "↖", title: "Selecionar e mover (Delete apaga)" },
-  { id: "pen", label: "Livre", glyph: "✎", title: "Traço livre" },
-  { id: "shape", label: "Forma", glyph: "▢", title: "Retângulo · Alt = círculo" },
-  { id: "line", label: "Linha", glyph: "／", title: "Segmento reto" },
-  { id: "polygon", label: "Polígono", glyph: "⬡", title: "Clique vértices · clique no início fecha" },
-  { id: "text", label: "Texto", glyph: "T", title: "Clique no mapa para rotular" },
+const TOOLS: { id: WhiteboardTool; label: string; title: string }[] = [
+  { id: "select", label: "Selecionar", title: "Selecionar e mover (Delete apaga)" },
+  { id: "pen", label: "Livre", title: "Traço livre" },
+  { id: "shape", label: "Retângulo", title: "Arraste retângulo" },
+  { id: "circle", label: "Círculo", title: "Arraste círculo" },
+  { id: "line", label: "Linha", title: "Segmento reto" },
+  { id: "text", label: "Texto", title: "Clique no mapa para rotular" },
 ];
 
 export function DrawingToolbar({
@@ -63,7 +65,7 @@ export function DrawingToolbar({
         aria-pressed={active}
         onClick={() => onActiveChange(!active)}
       >
-        {active ? "✓" : "✎"}
+        {active ? <IconCheck size={14} /> : <IconPencil size={14} />}
       </button>
 
       <div className="drawing-toolbar__tools" role="group" aria-label="Ferramentas">
@@ -78,7 +80,7 @@ export function DrawingToolbar({
             disabled={busy}
             onClick={() => pickTool(t.id)}
           >
-            {t.glyph}
+            <MapToolbarIcon name={t.id} />
           </button>
         ))}
       </div>
@@ -121,13 +123,11 @@ export function DrawingToolbar({
             </button>
           ) : null}
           <p className="drawing-toolbar__hint">
-            {tool === "shape"
-              ? "Alt: círculo"
-              : tool === "polygon"
-                ? "Fecha no 1º ponto"
-                : tool === "select"
-                  ? "Del apaga"
-                  : "Arraste no mapa"}
+            {tool === "select"
+              ? "Del apaga"
+              : tool === "text"
+                ? "Clique no mapa"
+                : "Arraste no mapa"}
           </p>
         </div>
       ) : null}

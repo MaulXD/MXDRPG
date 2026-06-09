@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { ClerkSignInPanel } from "@/components/auth/ClerkSignInPanel";
+import { EldarinLogo } from "@/components/brand/EldarinLogo";
 import { hasClerkPublishableKey } from "@/lib/auth/clerk-config";
 import {
   DEFAULT_POST_AUTH_PATH,
@@ -34,7 +35,10 @@ export default async function SignInPage({ searchParams }: Props) {
   return (
     <div className="page-wrap" style={{ maxWidth: 480, paddingTop: "2rem" }}>
       <header className="page-header" style={{ paddingBottom: "1.25rem" }}>
-        <p className="eyebrow">Conta Eldarin</p>
+        <EldarinLogo variant="full" href="/" className="eldarin-logo--hero" />
+        <p className="eyebrow" style={{ marginTop: "1rem" }}>
+          Conta Eldarin
+        </p>
         <h1 className="display-lg">Entrar</h1>
         <p className="lead" style={{ marginBottom: 0 }}>
           Use Google ou Discord — uma conta para mesas, fichas e convites.

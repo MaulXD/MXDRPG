@@ -139,9 +139,13 @@ function loadRegistry(roomId?: string): Registry {
 }
 
 export function useFoundryWindows(roomId?: string) {
-  const [registry, setRegistry] = useState<Registry>(buildDefaultRegistry);
-  const [floating, setFloating] = useState<FloatingMap>({});
-  const [hydrated, setHydrated] = useState(false);
+  const [registry, setRegistry] = useState<Registry>(() =>
+    typeof window !== "undefined" ? loadRegistry(roomId) : buildDefaultRegistry()
+  );
+  const [floating, setFloating] = useState<FloatingMap>(() =>
+    typeof window !== "undefined" ? loadFloating(roomId) : defaultFloatingMap()
+  );
+  const [hydrated, setHydrated] = useState(() => typeof window !== "undefined");
 
   useEffect(() => {
     setRegistry(loadRegistry(roomId));

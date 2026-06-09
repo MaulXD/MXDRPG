@@ -4,10 +4,13 @@ import { normalizeUserRole } from "@/lib/auth/roles";
 import type { SessionUser, UserRole } from "@/lib/auth/types";
 import {
   normalizeAvatarSource,
+  parseAvatarFocus,
   resolveUserAvatarUrl,
   sanitizeCustomAvatarUrl,
   type AvatarSource,
 } from "@/lib/db/user-avatar";
+import { normalizeImageDataUrl } from "@/lib/media/image-normalize";
+import { sanitizePortraitFocus, type PortraitFocus } from "@/lib/media/portrait-focus";
 import { getSql } from "@/lib/db/client";
 
 export type StoredUser = {
@@ -23,6 +26,7 @@ export type StoredUser = {
   avatarUrl?: string | null;
   oauthAvatarUrl?: string | null;
   avatarSource?: AvatarSource;
+  avatarFocus?: PortraitFocus | null;
   createdAt: number;
 };
 
@@ -43,11 +47,12 @@ type UserRow = {
   avatar_url: string | null;
   oauth_avatar_url: string | null;
   avatar_source: string | null;
+  avatar_focus: unknown;
   created_at: number;
 };
 
 const USER_SELECT =
-  "id, clerk_id, email, nickname, name, password_hash, cpf_prefix_hash, birth_date, role, avatar_url, oauth_avatar_url, avatar_source, created_at";
+  "id, clerk_id, email, nickname, name, password_hash, cpf_prefix_hash, birth_date, role, avatar_url, oauth_avatar_url, avatar_source, avatar_focus, created_at";
 
 function formatBirthDate(value: string | Date | null | undefined): string | null {
   if (value == null) return null;
@@ -76,6 +81,7 @@ function rowToStored(r: UserRow): StoredUser {
     avatarUrl: r.avatar_url,
     oauthAvatarUrl: r.oauth_avatar_url,
     avatarSource,
+    avatarFocus: parseAvatarFocus(r.avatar_focus),
     createdAt: Number(r.created_at),
   };
 }
@@ -98,6 +104,8 @@ function storedToSession(row: StoredUser | UserRow): SessionUser {
     avatarUrl,
     oauthAvatarUrl: "oauth_avatar_url" in row ? row.oauth_avatar_url : row.oauthAvatarUrl ?? null,
     avatarSource,
+    avatarFocus:
+      parseAvatarFocus("avatar_focus" in row ? row.avatar_focus : row.avatarFocus) ?? null,
   };
 }
 
@@ -256,7 +264,11 @@ export async function ensureUserFromClerk(input: {
 
 export async function updateUserAvatar(
   userId: string,
-  opts: { avatarSource: AvatarSource; avatarUrl?: string | null }
+  opts: {
+    avatarSource: AvatarSource;
+    avatarUrl?: string | null;
+    avatarFocus?: PortraitFocus | null;
+  }
 ): Promise<SessionUser> {
   const sql = getSql();
   if (!sql) throw new Error("DATABASE_URL não configurada");
@@ -270,19 +282,35 @@ export async function updateUserAvatar(
   if (!row) throw new Error("Conta não encontrada");
 
   let customUrl = row.avatar_url;
+  let avatarFocus = parseAvatarFocus(row.avatar_focus);
+
   if (avatarSource === "custom") {
     if (opts.avatarUrl !== undefined && opts.avatarUrl !== null && String(opts.avatarUrl).trim()) {
-      customUrl = sanitizeCustomAvatarUrl(opts.avatarUrl);
+      let incoming = String(opts.avatarUrl).trim();
+      if (incoming.startsWith("data:image/")) {
+        const normalized = await normalizeImageDataUrl(incoming);
+        if (!normalized) throw new Error("Imagem inválida ou grande demais após compressão");
+        incoming = normalized;
+      }
+      customUrl = sanitizeCustomAvatarUrl(incoming);
     }
     if (!customUrl) {
       throw new Error("Informe uma foto válida (URL ou upload)");
     }
+    if (opts.avatarFocus !== undefined) {
+      avatarFocus = opts.avatarFocus ? sanitizePortraitFocus(opts.avatarFocus) : null;
+    }
+  } else if (opts.avatarFocus !== undefined) {
+    avatarFocus = opts.avatarFocus ? sanitizePortraitFocus(opts.avatarFocus) : null;
   }
+
+  const focusJson = avatarFocus ? JSON.stringify(avatarFocus) : null;
 
   await sql`
     UPDATE eldarin_users
     SET avatar_source = ${avatarSource},
-        avatar_url = ${avatarSource === "custom" ? customUrl : row.avatar_url}
+        avatar_url = ${avatarSource === "custom" ? customUrl : row.avatar_url},
+        avatar_focus = ${focusJson}::jsonb
     WHERE id = ${userId}
   `;
 

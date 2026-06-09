@@ -38,7 +38,7 @@ export default async function EldarinMesasPage() {
 
       <div style={{ marginTop: "1.25rem" }}>
         <MedievalFrame variant="royal" page>
-          <FriendsHub />
+          <FriendsHub selfUserId={user.id} />
         </MedievalFrame>
       </div>
     </div>

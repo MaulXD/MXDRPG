@@ -1,5 +1,7 @@
 "use client";
 
+import { IconEye, IconMask } from "@/components/ui/EldarinIcons";
+
 type Props = {
   playAsPlayer: boolean;
   onToggle: () => void;
@@ -19,7 +21,7 @@ export function GmPlayerViewToggle({ playAsPlayer, onToggle }: Props) {
       }
     >
       <span className="gm-player-view-toggle__icon" aria-hidden>
-        {playAsPlayer ? "👁" : "🎭"}
+        {playAsPlayer ? <IconEye size={16} /> : <IconMask size={16} />}
       </span>
       <span className="gm-player-view-toggle__label">
         {playAsPlayer ? "Visão jogador" : "Visão mestre"}

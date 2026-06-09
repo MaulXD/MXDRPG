@@ -55,6 +55,7 @@ export async function addFriendByNickname(
       nickname: target.nickname ?? null,
       name: target.name,
       avatarUrl: resolveUserAvatarUrl(target),
+      avatarFocus: target.avatarFocus ?? null,
       addedAt: Date.now(),
     },
   };
@@ -74,6 +75,7 @@ export async function listFriends(userId: string): Promise<FriendSummary[]> {
       nickname: user.nickname ?? null,
       name: user.name,
       avatarUrl: resolveUserAvatarUrl(user),
+      avatarFocus: user.avatarFocus ?? null,
       addedAt: link.addedAt,
     });
   }

@@ -1,5 +1,7 @@
 "use client";
 
+import { IconCheck, IconSword } from "@/components/ui/EldarinIcons";
+
 import { useEffect, useMemo } from "react";
 import {
   describeStarterEquipment,
@@ -150,10 +152,10 @@ export function WizardEquipmentStep({
             >
               <div style={{ display: "flex", width: "100%", alignItems: "flex-start" }}>
                 <span className="char-wizard-pick__icon" aria-hidden>
-                  ⚔
+                  <IconSword size={18} />
                 </span>
                 <span className="char-wizard-pick__check" aria-hidden>
-                  ✓
+                  <IconCheck size={12} />
                 </span>
               </div>
               <strong>{kit.label}</strong>
