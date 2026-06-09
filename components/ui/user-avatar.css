@@ -40,6 +40,13 @@
   cursor: pointer;
   border-radius: 50%;
   line-height: 0;
+  pointer-events: auto;
+  position: relative;
+  z-index: 1;
+}
+
+.header-user-menu__trigger .user-avatar {
+  pointer-events: none;
 }
 
 .header-user-menu__trigger:hover .user-avatar--nav {
@@ -55,13 +62,16 @@
   min-width: 10.5rem;
   padding: 0.35rem;
   border-radius: var(--radius-md, 12px);
-  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.4);
+  background: var(--glass-strong, rgba(10, 14, 20, 0.98));
+  border: 1px solid var(--glass-border-bright);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.45);
 }
 
 /* Portal em document.body — fora da navbar (evita overflow/z-index da barra) */
 .header-user-menu__panel--portal {
-  position: fixed;
+  position: fixed !important;
   z-index: 10450;
+  pointer-events: auto;
 }
 
 .header-user-menu__label {
