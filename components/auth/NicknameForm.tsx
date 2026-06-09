@@ -1,5 +1,6 @@
 "use client";
 
+import "./avatar-profile.css";
 import { useRouter } from "next/navigation";
 import { useCallback, useState } from "react";
 

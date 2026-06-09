@@ -126,7 +126,7 @@ export function PortraitFocusFrame({
           style={focusLayoutToImgStyle(layout)}
           draggable={false}
         />
-      ) : imgW > 0 && imgH > 0 ? (
+      ) : imageSrc ? (
         // eslint-disable-next-line @next/next/no-img-element
         <img
           src={imageSrc}

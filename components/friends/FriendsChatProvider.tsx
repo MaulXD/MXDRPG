@@ -43,12 +43,14 @@ function FriendsChatFloatingWindow({
   inviteCount,
   loading,
   onClose,
+  onMessagesRead,
 }: {
   friends: FriendSummary[];
   selfUserId: string;
   inviteCount: number;
   loading: boolean;
   onClose: () => void;
+  onMessagesRead: () => Promise<void>;
 }) {
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
@@ -86,7 +88,7 @@ function FriendsChatFloatingWindow({
             friends={friends}
             selfUserId={selfUserId}
             variant="float"
-            onMessagesRead={refreshUnread}
+            onMessagesRead={onMessagesRead}
           />
         )}
       </div>
@@ -218,6 +220,7 @@ export function FriendsChatProvider({ children }: { children: ReactNode }) {
               inviteCount={inviteCount}
               loading={loading}
               onClose={closeChat}
+              onMessagesRead={refreshUnread}
             />,
             document.body
           )

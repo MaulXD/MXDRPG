@@ -14,13 +14,20 @@
   filter: brightness(1.06);
 }
 
+.eldarin-logo--header,
+.eldarin-logo--header:hover {
+  opacity: 1;
+  filter: none;
+  transform: none;
+  transition: none;
+}
+
 .eldarin-logo__icon {
   display: block;
-  width: auto;
+  width: 1.75rem;
   height: 1.75rem;
   object-fit: contain;
-  image-rendering: pixelated;
-  image-rendering: crisp-edges;
+  aspect-ratio: 1;
   flex-shrink: 0;
 }
 
@@ -34,16 +41,17 @@
 }
 
 .eldarin-logo--header {
-  min-height: 2rem;
+  align-items: center;
+  min-height: 0;
+  line-height: 0;
 }
 
 .eldarin-logo__navbar {
   display: block;
-  width: auto;
-  height: 2rem;
+  width: clamp(11rem, 32vw, 16rem);
+  height: auto;
   object-fit: contain;
-  image-rendering: pixelated;
-  image-rendering: crisp-edges;
+  object-position: left center;
   flex-shrink: 0;
 }
 
@@ -79,6 +87,7 @@
 }
 
 .eldarin-logo--mark .eldarin-logo__icon {
+  width: 2rem;
   height: 2rem;
 }
 
@@ -92,6 +101,6 @@
   }
 
   .eldarin-logo__navbar {
-    height: 1.65rem;
+    width: min(72vw, 13rem);
   }
 }

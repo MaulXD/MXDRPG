@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { WizardHoverTip } from "@/components/character/wizard/WizardHoverTip";
+import { SiteSelect } from "@/components/ui/SiteSelect";
 import {
   PLACE_KIND_LABEL,
   WORLD_PLACES,
@@ -99,25 +100,27 @@ export function WorldLoreBrowser() {
         </label>
         <label className="world-lore__filter">
           Região
-          <select value={region} onChange={(e) => setRegion(e.target.value)}>
-            <option value="all">Todas</option>
-            {WORLD_REGIONS.map((r) => (
-              <option key={r} value={r}>
-                {r}
-              </option>
-            ))}
-          </select>
+          <SiteSelect
+            value={region}
+            onChange={setRegion}
+            aria-label="Filtrar por região"
+            options={[
+              { value: "all", label: "Todas" },
+              ...WORLD_REGIONS.map((r) => ({ value: r, label: r })),
+            ]}
+          />
         </label>
         <label className="world-lore__filter">
           Tipo
-          <select value={kind} onChange={(e) => setKind(e.target.value as PlaceKind | "all")}>
-            <option value="all">Todos</option>
-            {KIND_ORDER.map((k) => (
-              <option key={k} value={k}>
-                {PLACE_KIND_LABEL[k]}
-              </option>
-            ))}
-          </select>
+          <SiteSelect
+            value={kind}
+            onChange={(v) => setKind(v as PlaceKind | "all")}
+            aria-label="Filtrar por tipo de lugar"
+            options={[
+              { value: "all", label: "Todos" },
+              ...KIND_ORDER.map((k) => ({ value: k, label: PLACE_KIND_LABEL[k] })),
+            ]}
+          />
         </label>
       </div>
 

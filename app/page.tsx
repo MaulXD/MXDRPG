@@ -36,10 +36,11 @@ export default function HomePage() {
             <Image
               src={BRAND_LANDING}
               alt="MXDRPG"
-              width={260}
-              height={380}
+              width={640}
+              height={935}
               className="landing-hero__logo"
               priority
+              sizes="(max-width: 768px) 92vw, 28rem"
             />
           </h1>
           <p className="eyebrow landing-hero__eyebrow">VTT proprietário</p>

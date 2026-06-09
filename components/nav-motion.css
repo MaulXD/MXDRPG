@@ -96,6 +96,10 @@
   background: var(--accent-soft, rgba(122, 163, 201, 0.12));
 }
 
+.vtt-nav .nav-link {
+  gap: 0.35rem;
+}
+
 .foundry-sidebar--dock-open .foundry-dock-panel {
   animation: ui-dock-enter 0.28s var(--ease-out) both;
 }

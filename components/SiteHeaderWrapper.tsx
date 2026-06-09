@@ -23,7 +23,7 @@ export async function SiteHeaderWrapper() {
           <ClerkHeaderAuth session={session} />
         ) : session ? (
           <>
-            <AnimatedNavLink href="/conta" icon={<IconUser size={16} />}>
+            <AnimatedNavLink href="/conta" icon={<IconUser size={18} />}>
               Perfil
             </AnimatedNavLink>
             <FriendsNavChat />
