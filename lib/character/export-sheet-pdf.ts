@@ -2,6 +2,8 @@
 
 import {
   inlineComputedStylesForHtml2Canvas,
+  injectPdfCaptureSafeStyles,
+  scrubElementInlineStyles,
   stripStylesheetsFromClone,
 } from "@/lib/media/html2canvas-sanitize";
 import {
@@ -165,24 +167,6 @@ export async function waitForSheetPdfCapture(root: HTMLElement): Promise<void> {
   await new Promise((r) => setTimeout(r, 180));
 }
 
-/** Estilos só com hex/rgba — reaplicados após remover folhas com color-mix(). */
-function injectPdfCaptureSafeStyles(doc: Document): void {
-  const style = doc.createElement("style");
-  style.textContent = `
-.sheet-pdf-capture-host { visibility: visible !important; opacity: 1 !important; }
-.sheet-pdf-capture { width: 920px; background: #121921; }
-.sheet-pdf-capture__frame.mf {
-  --mf-bg: #121921;
-  --mf-accent: #7aa3c9;
-  --mf-pad: 0.65rem;
-  --mf-inset: 10px;
-  background: #121921;
-}
-.sheet-pdf-capture .sheet-shell--popup { width: 100%; max-width: 100%; }
-`;
-  doc.head.appendChild(style);
-}
-
 function unhideCaptureTree(node: HTMLElement): void {
   let el: HTMLElement | null = node;
   while (el) {
@@ -255,36 +239,54 @@ export async function exportSheetPdf(
     const captureW = Math.max(root.scrollWidth, root.offsetWidth, 920);
     const captureH = Math.max(root.scrollHeight, root.offsetHeight, 400);
 
-    const canvas = await html2canvas(root, {
-      scale: 2,
-      useCORS: true,
-      allowTaint: true,
-      logging: false,
-      backgroundColor,
-      width: captureW,
-      height: captureH,
-      windowWidth: captureW,
-      windowHeight: captureH,
-      onclone: (clonedDoc, clonedRoot) => {
-        unhideCaptureTree(clonedRoot);
-        const clonedHost = clonedRoot.closest(".sheet-pdf-capture-host") as HTMLElement | null;
-        const liveHost = root.closest(".sheet-pdf-capture-host") as HTMLElement | null;
-        if (clonedHost && liveHost) {
-          clonedHost.style.position = "fixed";
-          clonedHost.style.left = "0";
-          clonedHost.style.top = "0";
-          clonedHost.style.width = "920px";
-          clonedHost.style.zIndex = "1";
-          unhideCaptureTree(clonedHost);
-          inlineComputedStylesForHtml2Canvas(liveHost, clonedHost);
-        }
-        clonedRoot.style.width = "920px";
-        clonedRoot.style.maxWidth = "920px";
-        inlineComputedStylesForHtml2Canvas(root, clonedRoot);
-        stripStylesheetsFromClone(clonedDoc);
-        injectPdfCaptureSafeStyles(clonedDoc);
-      },
-    });
+    const renderCapture = (scale: number) =>
+      html2canvas(root, {
+        scale,
+        useCORS: true,
+        allowTaint: true,
+        logging: false,
+        backgroundColor,
+        width: captureW,
+        height: captureH,
+        windowWidth: captureW,
+        windowHeight: captureH,
+        onclone: (clonedDoc, clonedRoot) => {
+          unhideCaptureTree(clonedRoot);
+          const clonedHost = clonedRoot.closest(".sheet-pdf-capture-host") as HTMLElement | null;
+          const liveHost = root.closest(".sheet-pdf-capture-host") as HTMLElement | null;
+          if (clonedHost && liveHost) {
+            clonedHost.style.position = "fixed";
+            clonedHost.style.left = "0";
+            clonedHost.style.top = "0";
+            clonedHost.style.width = "920px";
+            clonedHost.style.zIndex = "1";
+            unhideCaptureTree(clonedHost);
+            inlineComputedStylesForHtml2Canvas(liveHost, clonedHost);
+            scrubElementInlineStyles(clonedHost);
+          }
+          clonedRoot.style.width = "920px";
+          clonedRoot.style.maxWidth = "920px";
+          inlineComputedStylesForHtml2Canvas(root, clonedRoot);
+          scrubElementInlineStyles(clonedRoot);
+          stripStylesheetsFromClone(clonedDoc);
+          injectPdfCaptureSafeStyles(clonedDoc);
+        },
+      });
+
+    let canvas: HTMLCanvasElement;
+    try {
+      canvas = await renderCapture(2);
+    } catch (firstErr) {
+      const msg = firstErr instanceof Error ? firstErr.message : String(firstErr);
+      if (!/color|parse|unsupported/i.test(msg)) throw firstErr;
+      try {
+        canvas = await renderCapture(1);
+      } catch {
+        throw new Error(
+          "Falha ao rasterizar a ficha (cores/CSS). Recarregue a página e tente de novo."
+        );
+      }
+    }
 
     if (canvas.width < 8 || canvas.height < 8) {
       throw new Error("Captura da ficha vazia — recarregue a página e tente exportar de novo.");

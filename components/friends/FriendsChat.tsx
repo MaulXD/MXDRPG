@@ -24,9 +24,11 @@ type Props = {
   friends: FriendSummary[];
   selfUserId: string;
   onFriendsChange?: () => void;
+  /** Painel compacto na navbar global */
+  variant?: "default" | "nav";
 };
 
-export function FriendsChat({ friends, selfUserId, onFriendsChange }: Props) {
+export function FriendsChat({ friends, selfUserId, onFriendsChange, variant = "default" }: Props) {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [messages, setMessages] = useState<FriendMessage[]>([]);
   const [draft, setDraft] = useState("");
@@ -129,7 +131,7 @@ export function FriendsChat({ friends, selfUserId, onFriendsChange }: Props) {
   }
 
   return (
-    <div className="friends-chat">
+    <div className={`friends-chat${variant === "nav" ? " friends-chat--nav" : ""}`}>
       <aside className="friends-chat__list">
         <h3 className="friends-chat__list-title">Conversas</h3>
         {friends.length === 0 ? (
