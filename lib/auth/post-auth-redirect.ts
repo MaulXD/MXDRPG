@@ -37,3 +37,10 @@ export function postAuthRedirect(user: SessionUser, requested?: string | null): 
   }
   return dest;
 }
+
+/** Caminho do fluxo de apelido preservando destino final. */
+export function apelidoPathWithRedirect(dest: string): string {
+  const safe = safeRedirectPath(dest) ?? DEFAULT_POST_AUTH_PATH;
+  if (safe === DEFAULT_POST_AUTH_PATH) return "/entrar/apelido";
+  return `/entrar/apelido?redirect=${encodeURIComponent(safe)}`;
+}
