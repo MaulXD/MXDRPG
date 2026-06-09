@@ -1,5 +1,46 @@
 /* Ficha popup — layout estilo D&D Beyond (tema Eldarin) */
 
+.page-wrap--sheet-ddb {
+  width: 100%;
+  max-width: 820px;
+  margin-inline: auto;
+  padding: clamp(1rem, 3vw, 2rem) clamp(0.75rem, 2vw, 1.25rem) 2.5rem;
+  box-sizing: border-box;
+}
+
+.page-wrap--sheet-ddb .sheet-shell--ddb-standalone {
+  width: 100%;
+  max-width: 100%;
+  container-type: normal;
+  box-shadow:
+    0 12px 40px rgba(0, 0, 0, 0.45),
+    0 0 0 1px rgba(0, 0, 0, 0.1);
+}
+
+.portal-page > .page-wrap--sheet-ddb {
+  width: 100%;
+  max-width: 820px;
+  margin-inline: auto;
+}
+
+.sheet-shell--ddb-standalone .sheet-ddb-header,
+.sheet-shell--ddb-standalone .sheet-ddb-attrs,
+.sheet-shell--ddb-standalone .sheet-ddb-body,
+.sheet-shell--ddb-standalone .sheet-ddb-drawer {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.sheet-ddb-toolbar__label {
+  flex: 1;
+  min-width: 0;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(248, 242, 234, 0.55);
+}
+
 .sheet-shell--ddb {
   --ddb-header: #4a1520;
   --ddb-header-deep: #2d0c12;
