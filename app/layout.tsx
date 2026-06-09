@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Cinzel, Lora, Source_Sans_3 } from "next/font/google";
 import { AuthProvider } from "@/components/auth/AuthProvider";
+import { FriendsChatProvider } from "@/components/friends/FriendsChatProvider";
 import { hasClerkPublishableKey } from "@/lib/auth/clerk-config";
 import { SiteShell } from "@/components/SiteShell";
 import { SiteHeaderWrapper } from "@/components/SiteHeaderWrapper";
@@ -58,11 +59,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body>
         <AuthProvider publishableKey={clerkPublishableKey}>
-          <div className="site-bg" aria-hidden />
-          <div className="site-noise" aria-hidden />
-          <SiteShell header={<SiteHeaderWrapper />} footer={<SiteFooter />}>
-            {children}
-          </SiteShell>
+          <FriendsChatProvider>
+            <div className="site-bg" aria-hidden />
+            <div className="site-noise" aria-hidden />
+            <SiteShell header={<SiteHeaderWrapper />} footer={<SiteFooter />}>
+              {children}
+            </SiteShell>
+          </FriendsChatProvider>
         </AuthProvider>
       </body>
     </html>

@@ -84,7 +84,7 @@ export async function executeRoomSpellUtility(
   });
 
   const spentCaster = markActionRechargeUsed(
-    applyPaSpend(caster, result.paCost),
+    applyPaSpend(caster, result.paCost, { actionKind: "spell" }),
     action,
     room.combat.round
   );

@@ -16,6 +16,7 @@ import {
 import { activeTokenId } from "@/lib/room/combat";
 import { canActOnCombatTurn } from "@/lib/combat/turn-guard";
 import { isMonsterToken } from "@/lib/room/settings";
+import { tryOnKillPaBonus } from "@/lib/combat/pa-passive-effects";
 import type { RoomState } from "@/lib/room/types";
 import type { BattleToken } from "@/lib/vtt/types";
 
@@ -97,6 +98,27 @@ export function ensureTokenCombatPa(
     },
     { combatHasOrder: hasOrder }
   );
+}
+
+/** Carrasco e outros bônus de PA ao eliminar inimigo (Cap. 2.6). */
+export function applyOnKillPaBonusInRoom(
+  room: RoomState,
+  attackerTokenId: string
+): string | undefined {
+  const idx = room.scene.tokens.findIndex((t) => t.id === attackerTokenId);
+  if (idx < 0) return undefined;
+
+  const token = room.scene.tokens[idx]!;
+  const actor =
+    token.linked && token.actorId ? room.actors[token.actorId] ?? null : null;
+  const { token: next, notice } = tryOnKillPaBonus(token, actor);
+  if (next === token) return undefined;
+
+  const tokens = [...room.scene.tokens];
+  tokens[idx] = next;
+  room.scene = { ...room.scene, tokens };
+  syncActorPaFromToken(room, next);
+  return notice;
 }
 
 export function syncActorPaFromToken(room: RoomState, token: BattleToken): void {

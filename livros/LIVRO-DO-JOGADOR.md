@@ -211,7 +211,7 @@ Ex.: comeca com **5 PA**; move (**1 PA**) e ataca (**2 PA**) → sobram **2 PA**
 | **Adrenalina** (ativa) | **+2 PA** agora; proximo turno recupera **2 a menos** |
 | **Aceleracao** (buff) | Recuperacao **+1 PA**/turno enquanto durar |
 
-IDs no VTT: `data/character/pa-modifiers.json` (`passivePa`).
+IDs no VTT: `data/character/pa-modifiers.json` (`passivePa`, `onKillPa`).
 
 #### Monstros na mesa digital (VTT)
 
@@ -265,7 +265,7 @@ Regras completas, exemplos de turno e tabelas de talentos: **Cap. 3.1** e **Cap.
 | PA nao gastos (fim do turno) | **Permanecem no pool** (max. **9**); proximo turno **+5** recuperacao |
 | Atordoado | **Perde** todo PA acumulado |
 | Guerreiro nv. 5+ | Cada golpe de **Ataque Extra** custa **1 PA** (excecao; demais ataques com arma seguem o custo do item, em geral **2 PA**) |
-| Mago, Clérigo, Druida, Bardo, Artifice nv. 5+ | **Afinidade Arcanica** — magias com custo **2+ PA** custam **1 PA** a menos (min. 1) |
+| Mago, Clérigo, Druida, Bardo, Artifice nv. 5+ | **Afinidade Arcanica** — **1ª magia** do turno com custo **2+ PA**: **−1 PA** (min. 0) |
 | Monstros (VTT) | Custo por acao no compendio (muitas mordidas/garras **1 PA**); pool minimo **6 PA** |
 | Cantrips / utilitarios | Alguns truques sem dano de combate podem ter **1 PA** no compendio |
 
@@ -300,11 +300,16 @@ Dez magias de dano marcadas como **canalizáveis** no VTT (`spell.channel` no JS
 | Cone de Frio | 5 | 3 | até +2 PA |
 | Cadeia de Relâmpago | 6 | 3 | até +2 PA |
 
-Na mesa, antes de conjurar escolha **+0, +1 ou +2 PA extras**. Cada PA extra adiciona **+1d6** à fórmula de dano daquela conjuração. Os PA extras **não** são reduzidos por Afinidade Arcânica (só o custo base). Continua valendo o teto de **11 PA gastos** no turno.
+Na mesa, antes de conjurar escolha **+0, +1 ou +2 PA extras**. Cada PA extra adiciona **+1d6** à fórmula de dano daquela conjuração. Os PA extras **não** são reduzidos por Afinidade Arcânica nem por talentos (só o custo base). O gasto no turno **não tem teto fixo** (Cap. 2.6) — bonus de PA (Carrasco, etc.) podem permitir gastar mais no mesmo turno.
 
-**Empilhamento:** reducoes de talento e de classe **somam** antes do minimo 0 PA. Ex.: magia de fogo 2 PA com *Chama Controlada* (−1) e Afinidade Arcanica (−1) = **0 PA** naquele turno.
+**Empilhamento (na mesma ação):** reducoes de talento e de classe **somam** antes do minimo 0 PA — mas **somente na primeira ação elegível do turno** (ver abaixo). Ex.: na **primeira** magia de fogo do turno, Bola de Fogo 2 PA com *Chama Controlada* (−1) e Afinidade Arcanica (−1) = **0 PA**. Uma **segunda** magia no mesmo turno paga o custo integral do compendio.
 
-**Talentos** (Cap. 12.0) aumentam PA maximo ou reduzem custo de tipos especificos (arma, magia por elemento, magia de area, habilidade). A ficha deve registrar o talento pelo **nome**; no VTT o **id** da trilha (ex. `chama-controlada`) precisa constar em `talentos` para o calculo automatico.
+**Regra geral — 1× por turno:** qualquer **−1 PA** de talento ou de Afinidade Arcânica/Divina/Pacto aplica-se **no máximo uma vez por turno**, na **primeira** ação do tipo indicado:
+- **Arma:** só o **primeiro ataque com arma** do turno (dentro de Ataque Extra do Guerreiro, só o **primeiro golpe** da ação recebe desconto).
+- **Magia:** só a **primeira magia** do turno (canalização extra de PA não é reduzida).
+- **Habilidade:** só a **primeira habilidade** do turno.
+
+**Talentos** (Cap. 12.0) aumentam PA maximo ou reduzem custo conforme a tabela. A ficha deve registrar o talento pelo **nome**; no VTT o **id** da trilha (ex. `chama-controlada`) precisa constar em `talentos` para o calculo automatico.
 
 ### 3.1.2 Exemplos de turno (PA)
 
@@ -316,7 +321,8 @@ Na mesa, antes de conjurar escolha **+0, +1 ou +2 PA extras**. Cada PA extra adi
 
 **Mago nv. 5 (6 PA), *Chama Controlada* (nv. 4), Bola de Fogo (2 PA no compendio):**
 1. Correr alem da caminhada → 1 PA (restam 5 PA).
-2. Bola de Fogo → 2 − 1 (fogo) − 1 (Afinidade) = **0 PA** (restam 5 PA).
+2. Bola de Fogo (1ª magia do turno) → 2 − 1 (fogo) − 1 (Afinidade) = **0 PA** (restam 5 PA).
+3. Segunda magia no mesmo turno → custo integral (ex. Raio Arcano 2 PA).
 3. Magia Cantrip 1 PA → 1 PA (restam 4 PA).
 
 **Clérigo nv. 10 (7 PA), sem talentos de reducao:**
@@ -905,7 +911,7 @@ Um Forjado de Osso e feito de peças de monstros diferentes — cada exemplar e 
 
 Cada classe define o papel de combaté no Nivel 1 e o **Bônus Passivo de Sobrevivência** — a vantagem passiva que qualquer boa refeicao ativa, independente do tipo de monstro. No **Nivel 2**, o personagem escolhe sua **Subclasse (Caminho de Assimilação)**.
 
-**PA na mesa digital:** todas as classes comecam com **5 PA** (Cap. 2.6). **Guerreiro** paga **1 PA por golpe** de Ataque Extra a partir do nv. 5. **Mago, Clérigo, Druida, Bardo, Artifice, Paladino e Bruxo** ganham **Afinidade Arcanica/Divina/Pacto** no nv. 5 (magias 2+ PA −1). Demais classes usam o custo do compendio, modificados pelos talentos do Cap. 12.0.
+**PA na mesa digital:** todas as classes comecam com **5 PA** (Cap. 2.6). **Guerreiro** paga **1 PA por golpe** de Ataque Extra a partir do nv. 5. **Mago, Clérigo, Druida, Bardo, Artifice, Paladino e Bruxo** ganham **Afinidade Arcanica/Divina/Pacto** no nv. 5 (**primeira magia** do turno, 2+ PA −1). Demais classes usam o custo do compendio; talentos **−PA** do Cap. 12.0 valem **1× por turno** (Cap. 12.0).
 
 ---
 
@@ -2095,8 +2101,8 @@ Alem dos efeitos narrativos de cada talento (Cap. 12), muitos caminhos alteram a
 | Tipo de bonus | Quando aparece | Efeito |
 |---------------|--------------|--------|
 | **+1 PA maximo** | Em geral talentos de nv. **8** (alguns nv. 16) | Soma ao PA maximo da tabela do Cap. 2.6 |
-| **−1 PA no custo** | Talentos de nv. **4** (e alguns 8/12) | Reduz o custo da acao indicada (arma, magia, habilidade) |
-| **Afinidade Arcanica** | Mago, Clérigo, Druida, Bardo, Artifice **nv. 5** | Magias com custo 2+ PA: −1 PA (min. 1) — nao exige talento |
+| **−1 PA no custo** | Talentos de nv. **4** (e alguns 8/12) | Reduz o custo da **primeira** acao elegivel do turno (arma, magia ou habilidade — ver 12.0) |
+| **Afinidade Arcanica** | Mago, Clérigo, Druida, Bardo, Artifice **nv. 5** | **Primeira magia** do turno com custo 2+ PA: −1 PA (min. 1) — nao exige talento |
 
 **Tabela por subclasse:** Cap. **12.0**. O Mestre pode ignorar PA na mesa puramente narrativa (sem VTT); neste caso use acao / acao bonus / movimento do Cap. 3.1 classico.
 
@@ -2121,7 +2127,25 @@ Use a **faixa de andar** (Livro do Mestre, Cap. 21) e o **escalonamento** quando
 
 ### 12.0 Pontos de Acao e talentos de subclasse (VTT)
 
-Na mesa digital, talentos abaixo **somam-se** a **Afinidade Arcanica** (conjuradores nv. 5) e as regras do Cap. 3.1. **−1 PA** nunca reduz abaixo de **0**. Varias reducoes no **mesmo** conjuro **acumulam**.
+Referencia tecnica: `data/character/pa-modifiers.json` (v3 — `costReduceByKind`: `weapon` · `spell` · `ability` · `multi`).
+
+#### Regras gerais
+
+| Regra | Detalhe |
+|-------|---------|
+| **Piso de custo** | **−1 PA** nunca leva abaixo de **0**; magias ofensivas ficam no minimo **1 PA** apos reducao (salvo custo base 0). |
+| **1× por turno** | Cada redução vale na **primeira ação do tipo** no turno: **1º ataque com arma** · **1ª magia** · **1ª habilidade**. |
+| **Ataque Extra** | Segundo ataque com arma no turno = custo integral. Na **mesma** ação de Ataque Extra, só o **1º golpe** recebe desconto de talento de arma. |
+| **Empilhamento** | Na **mesma** ação elegível, talento + Afinidade **somam** (ex. 1ª magia de fogo: *Chama Controlada* + Afinidade). **2ª magia** no turno = custo integral. |
+| **Canalização** | PA extras de canalização **não** são reduzidos por talento nem Afinidade. |
+
+#### Afinidade de classe (nv. 5, sem talento)
+
+| Feature | Classes | Efeito |
+|---------|---------|--------|
+| **Afinidade Arcanica** | Mago, Clérigo, Druida, Bardo, Artifice | **1ª magia** do turno com custo **2+ PA**: **−1 PA** |
+| **Afinidade Divina** | Paladino | Idem |
+| **Afinidade do Pacto** | Bruxo | Idem |
 
 #### +1 PA maximo (talento)
 
@@ -2139,51 +2163,48 @@ Na mesa digital, talentos abaixo **somam-se** a **Afinidade Arcanica** (conjurad
 | Bruxo | *Olhar Entre Dimensoes*, *Corrente Mental* (8); *Pacto de Ferro*, *Mente Partida* (12/16) |
 | Ladino | — (reducoes de custo; ver abaixo) |
 
-#### −1 PA no custo (talento)
+#### −1 PA no custo — armas (`costReduceByKind.weapon`)
 
-| Classe | Talento | Aplica-se a |
-|--------|---------|-------------|
-| **Guerreiro** | *Corte Limpo* (4) | 1º golpe de **arma** no turno |
-| **Patrulheiro** | *Tiro de Precisao* (4) | Ataques a **distancia** (arma) |
-| **Ladino** | *Toque Fantasmal*, *Passo entre Sombras* (4/8) | **Habilidades** |
-| | *Aplicacao Rapida* (8) | **Arma** ou **habilidade** |
-| | *Arremesso Ritmico* (4) | Arma custo **2+ PA** |
-| **Bárbaro** | *Rush Doce* (8), *Mordida do Coracao* (4) | **Habilidades** |
-| **Mago** | *Chama Controlada*, *Combustao Arcana* | Magias **fogo** |
-| | *Gelar Ingrediente*, *Escudo de Geada* | Magias **frio** |
-| | *Fermentacao Acelerada* | Qualquer **magia** |
-| | *Nuvem Bacteriana*, *Brasas Persistentes*, *Nevoa de Caldeira* | Magias de **area** |
-| | *Caldo Corrosivo* | Magias **acido** / **veneno** |
-| | *Doce Encantador* | Qualquer **magia** |
-| | *Acucar Cristalizado* (12) | Magias custo **2+ PA** |
-| **Clérigo** | *Purificar Veneno*, *Pao da Manha* | **Magia** e **habilidade** |
-| | *Purificacao Abencoada*, *Golpe do Jejum* | **Magias** |
-| | *Mesa Abundante* | Magias de **area** |
-| | *Dominio do Limiar*, *Colheita de Alma* | Magias **necroticas** |
-| **Bardo** | *Harmonizacao de Tacas* | **Magia** e **habilidade** |
-| | *Menu de Expedicao*, *Fermento de Masmorra* | **Habilidades** |
-| | *Cancao Ebria*, *Nota Picante* | **Magias** |
-| | *Sinfonia de Ervas* | Magias de **area** |
-| **Druida** | *Esporos Necroticos* | **Necrotico** |
-| | *Toque de Bolor*, *Vinha Agarradora*, *Semente Guardia* | **Magias** |
-| | *Forma Aprimorada* | **Habilidades** (ex.: Forma Selvagem) |
-| | *Tremor Leve* | **Trovao** / **forca** |
-| **Artifice** | *Panela Viva* | **Habilidades** |
-| | *Fogareiro Portatil* | **Fogo** (magia/habilidade) |
-| | *Seringa Basica* | **Magia** e **habilidade** |
-| | *Bomba de Glandula* | Magias de **area** |
-| | *Laboratorio de Campo* (12) | Magias **2+ PA** |
-| | *Armadilha Biologica* | **Habilidades** |
-| **Paladino** | *Luz Penitente* (4) | **Arma** ou **habilidade** radiante |
-| | *Lamina dos Sepulcros* (4) | **Arma** (necrotico/radiante) |
-| | *Voto de Caca*, *Mordida do Voto*, *Carga do Juramento* | **Arma** ou **habilidade** |
-| **Bruxo** | *Toque da Voragem* (4) | Magias **psiquico** |
-| | *Contrato Ardente* (4) | Magias **fogo** |
-| | *Sussurro Salino* (4) | **Magias** |
-| | *Agarrão do Pacto*, *Correntes Infernais* | **Magia** e **habilidade** / **area** |
-| | *Manto de Bruma* (12) | Magias de **area** |
+| Classe | Talento | Filtro extra |
+|--------|---------|--------------|
+| Guerreiro | *Corte Limpo* (4) | 1º golpe da ação |
+| Patrulheiro | *Tiro de Precisao* (4) | A distancia |
+| Ladino | *Arremesso Ritmico* (4) | Custo **2+ PA** |
+| Paladino | *Lamina dos Sepulcros* (4) | Dano necrotico/radiante |
+| Ladino / Paladino | *Aplicacao Rapida*, *Luz Penitente*, *Voto de Caca*, *Mordida do Voto*, *Carga do Juramento* | Ver `multi` no JSON |
 
-**Referencia VTT:** `data/character/pa-modifiers.json` (ids em kebab-case, ex. `chama-controlada`).
+#### −1 PA no custo — magias (`costReduceByKind.spell`)
+
+| Classe | Talentos | Filtro extra |
+|--------|----------|--------------|
+| Mago | *Chama Controlada*, *Combustao Arcana*, *Brasas Persistentes* | Fogo (area em *Brasas*) |
+| | *Gelar Ingrediente*, *Escudo de Geada* | Frio |
+| | *Fermentacao Acelerada*, *Doce Encantador* | Qualquer magia |
+| | *Nuvem Bacteriana*, *Nevoa de Caldeira* | Area |
+| | *Caldo Corrosivo* | Acido/veneno |
+| | *Acucar Cristalizado* (12) | Custo **2+ PA** |
+| Clérigo | *Purificacao Abencoada*, *Golpe do Jejum*, *Mesa Abundante* | Area em *Mesa* |
+| | *Dominio do Limiar*, *Colheita de Alma* | Necrotico |
+| Bardo | *Cancao Ebria*, *Nota Picante*, *Sinfonia de Ervas* | Area em *Sinfonia* |
+| Druida | *Esporos Necroticos*, *Toque de Bolor*, *Vinha Agarradora*, *Semente Guardia*, *Tremor Leve* | Necrotico / trovao-forca |
+| Artifice | *Bomba de Glandula*, *Laboratorio de Campo* | Area / custo **2+ PA** |
+| Bruxo | *Toque da Voragem*, *Contrato Ardente*, *Sussurro Salino*, *Manto de Bruma*, *Correntes Infernais* | Psiquico, fogo, area |
+
+#### −1 PA no custo — habilidades (`costReduceByKind.ability`)
+
+| Classe | Talentos |
+|--------|----------|
+| Bárbaro | *Rush Doce* (8), *Mordida do Coracao* (4) |
+| Ladino | *Toque Fantasmal* (4), *Passo entre Sombras* (8) |
+| Bardo | *Menu de Expedicao* (8), *Fermento de Masmorra* (8) |
+| Druida | *Forma Aprimorada* (4) |
+| Artifice | *Panela Viva* (4), *Armadilha Biologica* (4) |
+
+#### −1 PA — arma + magia ou habilidade (`costReduceByKind.multi`)
+
+Talentos que reduzem **magia ou habilidade** conforme a ação usada (cada tipo conta separado no limite 1×/turno): *Purificar Veneno*, *Pao da Manha*, *Harmonizacao de Tacas*, *Fogareiro Portatil*, *Seringa Basica*, *Sangue do Patrono*, *Agarrão do Pacto*, *Aplicacao Rapida*, *Luz Penitente*, *Voto de Caca*, *Mordida do Voto*, *Carga do Juramento*.
+
+Ids em kebab-case no JSON (ex. `chama-controlada`).
 
 ---
 

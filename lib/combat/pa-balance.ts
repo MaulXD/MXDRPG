@@ -36,9 +36,10 @@ export function isMonsterOffensiveAction(action: CombatActionOption): boolean {
   return action.kind === "weapon" || action.kind === "unarmed";
 }
 
+/** Mantém custo do compêndio (mordidas 1 PA); só usa 2 PA se o JSON não definir custo. */
 export function normalizeMonsterActionPa(action: CombatActionOption): CombatActionOption {
   if (!isMonsterOffensiveAction(action)) return action;
-  const paCost = Math.max(PA_OFFENSIVE_ACTION_COST, action.paCost);
+  const paCost = action.paCost > 0 ? action.paCost : PA_OFFENSIVE_ACTION_COST;
   if (paCost === action.paCost) return action;
   const label = action.label.replace(/PA\s+\d+/i, `PA ${paCost}`);
   return { ...action, paCost, label };
