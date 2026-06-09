@@ -21,6 +21,8 @@ import { syncAdventureActorsForRoom } from "@/lib/room/adventure-actors";
 import { joinRoomMembers } from "@/lib/room/adventure-room";
 import { getRoom, joinRoomByInvite } from "@/lib/room/store";
 
+export const dynamic = "force-dynamic";
+
 type Props = {
   params: Promise<{ roomId: string }>;
   searchParams: Promise<{ invite?: string; joined?: string }>;
