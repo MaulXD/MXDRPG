@@ -1,0 +1,132 @@
+.friends-hub {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.friends-hub__section-title {
+  margin: 0 0 0.5rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.friends-hub__add {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.friends-hub__add input {
+  flex: 1 1 160px;
+  min-width: 0;
+}
+
+.friends-hub__list,
+.friends-hub__invites {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.friends-hub__item,
+.friends-hub__invite {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.55rem 0.65rem;
+  border-radius: var(--radius-sm, 8px);
+  background: rgba(0, 0, 0, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.friends-hub__avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.08);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.friends-hub__avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.friends-hub__meta {
+  flex: 1;
+  min-width: 0;
+}
+
+.friends-hub__name {
+  display: block;
+  font-weight: 600;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.friends-hub__sub {
+  display: block;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.friends-hub__actions {
+  display: flex;
+  gap: 0.35rem;
+  flex-shrink: 0;
+}
+
+.friends-hub__empty {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.friends-hub__err {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--danger, #e57373);
+}
+
+.friends-hub__ok {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--accent);
+}
+
+.send-mesa-invite {
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.send-mesa-invite__row {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.send-mesa-invite select {
+  flex: 1 1 140px;
+  min-width: 0;
+}
+
+.send-mesa-invite__msg {
+  width: 100%;
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+}
