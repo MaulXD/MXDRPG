@@ -43,6 +43,7 @@ function buildSheetPdfLinkUrl(opts) {
 function parsePdfLinkAction(value) {
   if (value.startsWith("roll:")) {
     const skill = value.slice(5);
+    if (!skill || !VALID_SKILLS.has(skill)) return null;
     return { characterId: "", action: "roll", skill };
   }
   if (value === "open") return { characterId: "", action: "open" };
@@ -163,7 +164,12 @@ test("open", () => {
 });
 test("invalid returns null", () => {
   assert.equal(parsePdfLinkAction("foo"), null);
-  assert.equal(parsePdfLinkAction("roll:"), { characterId: "", action: "roll", skill: "" });
+});
+test("roll: with empty skill id returns null", () => {
+  assert.equal(parsePdfLinkAction("roll:"), null);
+});
+test("roll: with invalid skill returns null", () => {
+  assert.equal(parsePdfLinkAction("roll:foo"), null);
 });
 
 console.log("verify-sheet-pdf: parseSheetPdfSearchParams");

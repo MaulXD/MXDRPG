@@ -28,15 +28,6 @@ export function buildSheetPdfLinkUrl(opts: {
   return `${base}${path}?${params.toString()}`;
 }
 
-export function parsePdfLinkAction(value: string): SheetPdfDeepLinkParams | null {
-  if (value.startsWith("roll:")) {
-    const skill = value.slice(5) as SheetSkillId;
-    return { characterId: "", action: "roll", skill };
-  }
-  if (value === "open") return { characterId: "", action: "open" };
-  return null;
-}
-
 const VALID_SKILLS = new Set<SheetSkillId>([
   "percepcao",
   "investigacao",
@@ -45,6 +36,16 @@ const VALID_SKILLS = new Set<SheetSkillId>([
   "furtividade",
   "atletismo",
 ]);
+
+export function parsePdfLinkAction(value: string): SheetPdfDeepLinkParams | null {
+  if (value.startsWith("roll:")) {
+    const skill = value.slice(5) as SheetSkillId;
+    if (!skill || !VALID_SKILLS.has(skill)) return null;
+    return { characterId: "", action: "roll", skill };
+  }
+  if (value === "open") return { characterId: "", action: "open" };
+  return null;
+}
 
 export function parseSheetPdfSearchParams(
   search: string
