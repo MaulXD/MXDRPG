@@ -20,9 +20,11 @@ type Props = {
   showMonsterHpToPlayers?: boolean;
   /** Caminhada restante no turno (só no hover do token ativo). */
   showMovement?: boolean;
-  /** Jogador: abrir bestiário individual do monstro. */
-  showMonsterInfoAction?: boolean;
-  onMonsterInfo?: () => void;
+  /** Jogador: dica de clique direito no monstro. */
+  showMonsterInfoHint?: boolean;
+  /** Mestre: ficha completa do monstro (compêndio). */
+  showMonsterSheetAction?: boolean;
+  onMonsterSheet?: () => void;
 };
 
 export function TokenHoverMiniHud({
@@ -33,8 +35,9 @@ export function TokenHoverMiniHud({
   viewerToken,
   showMonsterHpToPlayers = false,
   showMovement = false,
-  showMonsterInfoAction = false,
-  onMonsterInfo,
+  showMonsterInfoHint = false,
+  showMonsterSheetAction = false,
+  onMonsterSheet,
 }: Props) {
   const mode = miniHudModeForViewer(token, { isGm, viewerToken, showMonsterHpToPlayers });
   const turn = turnOrderHint(combat, token.id);
@@ -44,9 +47,9 @@ export function TokenHoverMiniHud({
     <div
       className={`vtt-mini-hud glass-panel${turn?.isActive ? " vtt-mini-hud--active" : ""}`}
       style={{
-        left: anchor.x,
+        left: anchor.x + 14,
         top: anchor.y,
-        transform: "translate(-50%, calc(-100% - 10px))",
+        transform: "translateY(-50%)",
       }}
       role="tooltip"
     >
@@ -82,17 +85,21 @@ export function TokenHoverMiniHud({
         </span>
       ) : null}
 
-      {showMonsterInfoAction && onMonsterInfo ? (
+      {showMonsterSheetAction && onMonsterSheet ? (
         <button
           type="button"
           className="vtt-mini-hud__info-btn"
           onClick={(e) => {
             e.stopPropagation();
-            onMonsterInfo();
+            onMonsterSheet();
           }}
         >
-          Exibir informações
+          Ver ficha
         </button>
+      ) : null}
+
+      {showMonsterInfoHint ? (
+        <p className="vtt-mini-hud__hint">Clique com o direito para exibir informações</p>
       ) : null}
 
       {turn ? (

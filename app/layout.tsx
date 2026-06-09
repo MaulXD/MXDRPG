@@ -7,6 +7,7 @@ import { SiteHeaderWrapper } from "@/components/SiteHeaderWrapper";
 import { SiteFooter } from "@/components/SiteFooter";
 import { ThemeScript } from "@/components/ThemeScript";
 import "./globals.css";
+import "@/components/nav-motion.css";
 import "@/components/ui/medieval-borders.css";
 import "@/components/home/home.css";
 import "@/components/vtt/eldarin-v4.css";

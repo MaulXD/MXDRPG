@@ -1,6 +1,11 @@
 "use client";
 
 import { useCallback, useEffect, useState, type ReactNode } from "react";
+import { createPortal } from "react-dom";
+
+function stopWheelBubble(e: React.WheelEvent) {
+  e.stopPropagation();
+}
 
 function HelpSection({ title, children }: { title: string; children: ReactNode }) {
   return (
@@ -13,8 +18,13 @@ function HelpSection({ title, children }: { title: string; children: ReactNode }
 
 export function VttHelpButton() {
   const [open, setOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   const close = useCallback(() => setOpen(false), []);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     if (!open) return;
@@ -36,15 +46,21 @@ export function VttHelpButton() {
       >
         ?
       </button>
-      {open ? (
-        <div
-          className="vtt-help-backdrop"
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="vtt-help-title"
-          onClick={close}
-        >
-          <div className="vtt-help-panel glass-panel" onClick={(e) => e.stopPropagation()}>
+      {open && mounted
+        ? createPortal(
+            <div
+              className="vtt-help-backdrop"
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="vtt-help-title"
+              onClick={close}
+              onWheel={stopWheelBubble}
+            >
+              <div
+                className="vtt-help-panel glass-panel"
+                onClick={(e) => e.stopPropagation()}
+                onWheel={stopWheelBubble}
+              >
             <h3 id="vtt-help-title" className="vtt-help-panel__title">
               Dicas de jogo — Mesa Eldarin
             </h3>
@@ -195,8 +211,8 @@ export function VttHelpButton() {
                   controles de <strong>zoom</strong>.
                 </li>
                 <li>
-                  <strong>Scroll do mouse</strong> — zoom. <strong>Alt + arrastar</strong> — mover a
-                  câmera (em qualquer modo).
+                  <strong>Scroll do mouse</strong> — zoom. <strong>Alt + arrastar</strong> ou{" "}
+                  <strong>setas do teclado</strong> — mover a câmera (em qualquer modo).
                 </li>
                 <li>
                   Modo <strong>Ping</strong> ou <strong>Alt + clique</strong> — marca posição para o
@@ -258,9 +274,11 @@ export function VttHelpButton() {
             <button type="button" className="btn vtt-help-panel__close" onClick={close}>
               Entendi
             </button>
-          </div>
-        </div>
-      ) : null}
+              </div>
+            </div>,
+            document.body
+          )
+        : null}
     </>
   );
 }

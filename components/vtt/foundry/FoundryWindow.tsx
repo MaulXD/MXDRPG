@@ -44,8 +44,7 @@ export function FoundryWindow({
   } | null>(null);
 
   const onHeaderPointerDown = useCallback(
-    (e: React.PointerEvent<HTMLDivElement>) => {
-      if ((e.target as HTMLElement).closest("button")) return;
+    (e: React.PointerEvent<HTMLSpanElement>) => {
       onFocus();
       dragRef.current = {
         startX: e.clientX,
@@ -59,7 +58,7 @@ export function FoundryWindow({
   );
 
   const onHeaderPointerMove = useCallback(
-    (e: React.PointerEvent<HTMLDivElement>) => {
+    (e: React.PointerEvent<HTMLSpanElement>) => {
       if (!dragRef.current) return;
       const dx = e.clientX - dragRef.current.startX;
       const dy = e.clientY - dragRef.current.startY;
@@ -74,7 +73,7 @@ export function FoundryWindow({
     [onLayoutChange]
   );
 
-  const onHeaderPointerUp = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
+  const onHeaderPointerUp = useCallback((e: React.PointerEvent<HTMLSpanElement>) => {
     dragRef.current = null;
     e.currentTarget.releasePointerCapture(e.pointerId);
   }, []);
@@ -128,15 +127,20 @@ export function FoundryWindow({
       role="dialog"
       aria-label={title}
     >
-      <div
-        className="foundry-window__header"
-        onPointerDown={onHeaderPointerDown}
-        onPointerMove={onHeaderPointerMove}
-        onPointerUp={onHeaderPointerUp}
-        onPointerCancel={onHeaderPointerUp}
-      >
-        <span className="foundry-window__title">{title}</span>
-        <div className="foundry-window__actions">
+      <div className="foundry-window__header">
+        <span
+          className="foundry-window__title"
+          onPointerDown={onHeaderPointerDown}
+          onPointerMove={onHeaderPointerMove}
+          onPointerUp={onHeaderPointerUp}
+          onPointerCancel={onHeaderPointerUp}
+        >
+          {title}
+        </span>
+        <div
+          className="foundry-window__actions"
+          onPointerDown={(e) => e.stopPropagation()}
+        >
           {headerExtra}
           <button
             type="button"

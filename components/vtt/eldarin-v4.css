@@ -561,9 +561,59 @@
 .card-corner--bl { bottom: -2px; left: -2px; }
 .card-corner--br { bottom: -2px; right: -2px; }
 
+.mesa-dismissible-banner {
+  position: relative;
+  padding-right: 2.25rem;
+}
+
+.mesa-dismissible-banner--inline {
+  margin: 0.5rem 1rem;
+  padding: 0.85rem 2.5rem 0.85rem 1rem;
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+.mesa-dismissible-banner__body {
+  min-width: 0;
+}
+
+.mesa-dismissible-banner__text {
+  margin: 0.35rem 0 0.65rem;
+  color: var(--text-muted);
+}
+
+.mesa-dismissible-banner__cta {
+  font-size: 0.85rem;
+}
+
+.mesa-dismissible-banner__close {
+  position: absolute;
+  top: 0.45rem;
+  right: 0.45rem;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border: 1px solid var(--glass-border);
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.25);
+  color: var(--text-muted);
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mesa-dismissible-banner__close:hover {
+  color: var(--text);
+  border-color: var(--glass-border-bright);
+  background: rgba(255, 255, 255, 0.06);
+}
+
 .mesa-persistence-notice {
   margin: 0 0 6px;
-  padding: 8px 12px;
+  padding: 8px 2.25rem 8px 12px;
   border: 1px solid var(--accent-warn);
   border-radius: 2px;
   background: color-mix(in srgb, var(--accent-warn) 12%, var(--bg-deep));
@@ -601,14 +651,6 @@
   background-size: 18px 18px;
   background-position: top left, top right, bottom left, bottom right;
   background-repeat: no-repeat;
-}
-
-[data-theme="light"] .glass,
-[data-theme="light"] .glass-panel {
-  --v4-corner: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18' overflow='visible'%3E%3Cpolyline points='16,2 2,2 2,16' fill='none' stroke='%238a6020' stroke-width='2' stroke-linecap='square'/%3E%3C/svg%3E");
-  --v4-corner-tr: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18' overflow='visible'%3E%3Cpolyline points='2,2 16,2 16,16' fill='none' stroke='%238a6020' stroke-width='2' stroke-linecap='square'/%3E%3C/svg%3E");
-  --v4-corner-bl: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18' overflow='visible'%3E%3Cpolyline points='16,16 2,16 2,2' fill='none' stroke='%238a6020' stroke-width='2' stroke-linecap='square'/%3E%3C/svg%3E");
-  --v4-corner-br: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18' overflow='visible'%3E%3Cpolyline points='2,16 16,16 16,2' fill='none' stroke='%238a6020' stroke-width='2' stroke-linecap='square'/%3E%3C/svg%3E");
 }
 
 /* Não duplicar quinas quando já há OrnamentCard */

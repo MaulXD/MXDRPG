@@ -77,6 +77,13 @@ export function listCharactersFromRegistry(ownerId: string): CharacterSheet[] {
     .map((c) => normalizeCharacter({ ...c }));
 }
 
+export function removeCharacterFromRegistry(id: string): void {
+  characterRegistry().delete(id);
+  const idx = DEMO_CHARACTERS.findIndex((c) => c.id === id);
+  if (idx >= 0) DEMO_CHARACTERS.splice(idx, 1);
+  savePersisted(characterRegistry());
+}
+
 export function upsertCharacterRegistry(sheet: CharacterSheet): CharacterSheet {
   const normalized = normalizeCharacter(sheet);
   characterRegistry().set(normalized.id, normalized);

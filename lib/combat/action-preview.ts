@@ -3,6 +3,7 @@ import {
   buildAttackModifiers,
   canAttackTarget,
   effectiveDefenderAc,
+  paNeedForCombatAction,
 } from "@/lib/combat/attack";
 import { attackRollModeDetail, canTokenAct, formatRollModeWithSources } from "@/lib/combat/conditions";
 import { formatRollMode, type RollMode } from "@/lib/combat/d20";
@@ -128,12 +129,7 @@ export function previewAttackOnTarget(
   }
 
   const check = canAttackTarget(attacker, defender, action, turn, { actor, channelExtraPa });
-  const pa =
-    actor && action.channelMaxExtraPa
-      ? totalChannelPaCost(actor, action, channelExtraPa)
-      : actor && action.kind === "weapon"
-        ? totalAttackPaCost(actor, action)
-        : effectivePaCost(actor, action);
+  const pa = paNeedForCombatAction(attacker, actor, action, channelExtraPa);
   const paCheck = checkCanSpendPa(attacker, pa);
 
   const paChip = unifiedPaChipForAction(attacker, actor, action, channelExtraPa);

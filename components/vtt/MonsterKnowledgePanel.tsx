@@ -8,6 +8,8 @@ type Props = {
   token: BattleToken;
   adventureId: string;
   roomId: string;
+  /** Mestre em visão jogador — API aceita bestiário do usuário logado. */
+  simulatePlayerView?: boolean;
   onClose: () => void;
 };
 
@@ -19,7 +21,13 @@ function formatWhen(at: number): string {
   }
 }
 
-export function MonsterKnowledgePanel({ token, adventureId, roomId, onClose }: Props) {
+export function MonsterKnowledgePanel({
+  token,
+  adventureId,
+  roomId,
+  simulatePlayerView = false,
+  onClose,
+}: Props) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [knowledge, setKnowledge] = useState<PlayerMonsterKnowledgeView | null>(null);
@@ -29,6 +37,7 @@ export function MonsterKnowledgePanel({ token, adventureId, roomId, onClose }: P
     setError(null);
     try {
       const q = new URLSearchParams({ tokenId: token.id, roomId });
+      if (simulatePlayerView) q.set("simulatePlayerView", "1");
       const res = await fetch(`/api/adventure/${encodeURIComponent(adventureId)}/monster-knowledge?${q}`);
       const data = (await res.json().catch(() => ({}))) as {
         error?: string;
@@ -44,7 +53,7 @@ export function MonsterKnowledgePanel({ token, adventureId, roomId, onClose }: P
     } finally {
       setLoading(false);
     }
-  }, [adventureId, roomId, token.id]);
+  }, [adventureId, roomId, token.id, simulatePlayerView]);
 
   useEffect(() => {
     void load();
@@ -81,7 +90,7 @@ export function MonsterKnowledgePanel({ token, adventureId, roomId, onClose }: P
                 Você já tirou <strong>{knowledge.damageDealtByPlayer} HP</strong> de criaturas como esta.
               </p>
               <p className="vtt-monster-knowledge__hint">
-                Você não sabe quanto de vida ela ainda tem — só o dano que você mesmo infligiu.
+                Você não sabe quanto de vida a criatura ainda tem — só o dano que você mesmo infligiu.
               </p>
             </section>
           ) : null}
@@ -104,7 +113,7 @@ export function MonsterKnowledgePanel({ token, adventureId, roomId, onClose }: P
           ) : null}
 
           <section className="vtt-monster-knowledge__section">
-            <h4>Ataques que ela usou contra você</h4>
+            <h4>Ataques recebidos</h4>
             {knowledge.attacksAgainstPlayer.length === 0 ? (
               <p className="vtt-monster-knowledge__muted">
                 Nenhum ataque desta criatura contra seu personagem foi registrado na mesa.

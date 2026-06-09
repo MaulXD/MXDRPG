@@ -35,8 +35,9 @@ export async function GET(req: Request, { params }: Params) {
     return NextResponse.json({ error: "Sala inválida" }, { status: 400 });
   }
 
+  const simulatePlayerView = url.searchParams.get("simulatePlayerView") === "1";
   const isGm = canManageRoom(room, session.user);
-  if (isGm) {
+  if (isGm && !simulatePlayerView) {
     return NextResponse.json({ error: "Disponível apenas para jogadores" }, { status: 403 });
   }
 

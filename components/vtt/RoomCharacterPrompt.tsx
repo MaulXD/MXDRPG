@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { DismissibleMesaBanner } from "@/components/vtt/DismissibleMesaBanner";
 import type { SessionUser } from "@/lib/auth/types";
 import type { RoomActor } from "@/lib/room/types";
 import { canEditRoomActor } from "@/lib/auth/room-access";
@@ -35,27 +36,22 @@ export function RoomCharacterPrompt({
   if (mine.length > 0) return null;
 
   return (
-    <div
-      className="glass-panel"
-      style={{
-        margin: "0.5rem 1rem",
-        padding: "0.85rem 1rem",
-        fontSize: "0.88rem",
-        lineHeight: 1.5,
-      }}
+    <DismissibleMesaBanner
+      bannerId={`char-prompt:${adventureId}:${session.id}`}
+      className="glass-panel mesa-dismissible-banner--inline"
+      aria-label="Criar personagem nesta aventura"
     >
       <strong>Personagem desta aventura</strong>
-      <p style={{ margin: "0.35rem 0 0.65rem", color: "var(--text-muted)" }}>
+      <p className="mesa-dismissible-banner__text">
         Crie uma ficha em <em>{roomName}</em>. Ela só existe nesta aventura — depois arraste o token na
         mesa.
       </p>
       <Link
         href={`/aventura/${adventureId}/personagem/novo`}
-        className="btn"
-        style={{ fontSize: "0.85rem" }}
+        className="btn mesa-dismissible-banner__cta"
       >
         Criar personagem
       </Link>
-    </div>
+    </DismissibleMesaBanner>
   );
 }

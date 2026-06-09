@@ -292,7 +292,7 @@ export type GmCombatAction =
   | { action: "set-order"; order: string[]; activeTokenId?: string }
   | { action: "set-active"; tokenId: string }
   | { action: "revert"; undoId: string }
-  | { action: "set-hp"; tokenId: string; value: number; max?: number };
+  | { action: "set-hp"; tokenId: string; value: number; max?: number; temp?: number };
 
 export async function postGmCombatAction(roomId: string, body: GmCombatAction) {
   const res = await fetch(`/api/room/${roomId}/combat/gm`, {

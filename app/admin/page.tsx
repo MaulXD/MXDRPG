@@ -34,6 +34,12 @@ export default async function AdminPage() {
           />
         </PermissionGate>
         <DashboardCard
+          title="Mesas"
+          description="Ver aventuras, corrigir mestre e atribuir jogadores quando aparecem como visitante."
+          accent="lime"
+          href="/admin/mesas"
+        />
+        <DashboardCard
           title="Auditoria"
           description="Logs de login, alterações de campanha e exportações."
           accent="cyan"

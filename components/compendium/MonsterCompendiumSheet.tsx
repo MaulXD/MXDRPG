@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { CompendiumIcon } from "@/components/compendium/CompendiumIcon";
 import { entryBookRef } from "@/lib/compendium/format";
 import { compendiumTypeColor } from "@/lib/compendium/icons";
@@ -22,8 +22,8 @@ const TIER_LABEL = {
 type Props = {
   entryId: string;
   onClose?: () => void;
-  /** Cabeçalho compacto (modal) vs página inteira */
-  variant?: "dialog" | "embedded";
+  /** dialog = modal · popup = janela flutuante · embedded = painel */
+  variant?: "dialog" | "popup" | "embedded";
 };
 
 function attrMod(value: number): string {
@@ -60,6 +60,10 @@ export function MonsterCompendiumSheet({ entryId, onClose, variant = "dialog" }:
   const template = getMonsterTemplate(entryId);
   const entry = getEntry("monstros", entryId);
   const [tab, setTab] = useState<"ficha" | "livro">("ficha");
+
+  useEffect(() => {
+    setTab("ficha");
+  }, [entryId]);
 
   if (!template || !entry) {
     return (

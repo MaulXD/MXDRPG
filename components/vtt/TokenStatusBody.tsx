@@ -5,7 +5,7 @@ import type { CombatTrack } from "@/lib/room/combat";
 import { TokenStatusList } from "@/components/vtt/TokenStatusList";
 import { TokenConditionsPanel } from "@/components/vtt/TokenConditionsPanel";
 import { PaHudMeter } from "@/components/vtt/PaHudMeter";
-import { hpBarColor, hpRatio } from "@/lib/vtt/token-hp-display";
+import { formatTokenHpLine, hpBarColor, hpRatio } from "@/lib/vtt/token-hp-display";
 
 type Props = {
   token: BattleToken;
@@ -38,9 +38,7 @@ export function TokenStatusBody({
                 }}
               />
             </div>
-            <span>
-              {token.vida ?? 0}/{token.vidaMax} HP
-            </span>
+            <span>{formatTokenHpLine(token)} HP</span>
           </div>
           {token.defesa != null ? (
             <span className="vtt-status-modal-stat">CA {token.defesa}</span>

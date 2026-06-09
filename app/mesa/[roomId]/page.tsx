@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { MesaWorkspace } from "@/components/vtt/MesaWorkspace";
+import { MesaVisitorNotice } from "@/components/vtt/MesaVisitorNotice";
 import { RoomCharacterPrompt } from "@/components/vtt/RoomCharacterPrompt";
 import {
   canManageRoom,
@@ -149,23 +150,7 @@ export default async function MesaRoomPage({ params, searchParams }: Props) {
 
   return (
     <div className="vtt-page vtt-page--mesa">
-      {visitor ? (
-        <div
-          className="glass-panel"
-          style={{
-            margin: "0.5rem 1rem",
-            padding: "0.6rem 0.85rem",
-            fontSize: "0.85rem",
-            color: "var(--text-muted)",
-          }}
-        >
-          Modo <strong>visitante</strong> na demo — pode jogar o Aventureiro; sem chat.{" "}
-          <Link href={entrarPath(mesaRoomPath(roomId, inviteCode))} className="text-link">
-            Entrar na conta
-          </Link>{" "}
-          para jogar.
-        </div>
-      ) : null}
+      {visitor ? <MesaVisitorNotice roomId={roomId} inviteCode={inviteCode} /> : null}
 
       <RoomCharacterPrompt
         adventureId={room.adventureId ?? roomId}

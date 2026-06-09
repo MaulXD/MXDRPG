@@ -60,6 +60,7 @@ export function syncLinkedTokens(
       nivel: actor.identity.nivel,
       vida: actor.resources.vida.value,
       vidaMax: actor.resources.vida.max,
+      vidaTemp: actor.resources.vida.temp,
       defesa: actor.tactical.defesa,
       defesaBonus: token.defesaBonus,
       defesaBuffSource: token.defesaBuffSource,

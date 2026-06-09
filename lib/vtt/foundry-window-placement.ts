@@ -11,6 +11,7 @@ export type MesaWindowId =
   | "spawn"
   | "invite"
   | "character"
+  | "monsterSheet"
   | "status";
 
 export type FoundryWindowLayout = {

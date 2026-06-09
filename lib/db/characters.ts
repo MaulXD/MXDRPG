@@ -38,3 +38,9 @@ export async function upsertCharacter(sheet: CharacterSheet): Promise<CharacterS
   `;
   return normalized;
 }
+
+export async function deleteCharacter(id: string): Promise<void> {
+  const sql = getSql();
+  if (!sql) return;
+  await sql`DELETE FROM eldarin_characters WHERE id = ${id}`;
+}

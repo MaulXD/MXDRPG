@@ -70,7 +70,7 @@ export function BattlefieldViewControls({
           <MapToolbarIcon name="dungeon" />
         </button>
       ) : null}
-      <span className="vtt-view-hint">Scroll · Alt+arrastar</span>
+      <span className="vtt-view-hint">Scroll · Alt+arrastar · Setas</span>
     </div>
   );
 }

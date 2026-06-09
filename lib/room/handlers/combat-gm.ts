@@ -21,7 +21,7 @@ export type GmCombatAction =
   | { action: "set-order"; order: string[]; activeTokenId?: string }
   | { action: "set-active"; tokenId: string }
   | { action: "revert"; undoId: string }
-  | { action: "set-hp"; tokenId: string; value: number; max?: number };
+  | { action: "set-hp"; tokenId: string; value: number; max?: number; temp?: number };
 
 function assertGm(
   room: NonNullable<Awaited<ReturnType<typeof getRoom>>>,
@@ -167,8 +167,18 @@ export async function executeGmCombatAction(
       const hpMax = hpMaxRaw ?? Math.max(value, before.vidaMax ?? value, 1);
       const vida = Math.min(value, hpMax);
       const prevHp = before.vida ?? hpMax;
+      const prevTemp = before.vidaTemp ?? 0;
 
-      tokens[idx] = { ...before, vida, vidaMax: hpMax };
+      let vidaTemp = before.vidaTemp ?? 0;
+      if (body.temp != null) {
+        const tempRaw = Math.floor(Number(body.temp));
+        if (!Number.isFinite(tempRaw) || tempRaw < 0) {
+          return { ok: false, error: "Vida temporária deve ser 0 ou mais" };
+        }
+        vidaTemp = tempRaw;
+      }
+
+      tokens[idx] = { ...before, vida, vidaMax: hpMax, vidaTemp: vidaTemp > 0 ? vidaTemp : undefined };
       room.scene = { ...room.scene, tokens };
 
       if (before.linked && before.actorId && room.actors[before.actorId]) {
@@ -177,7 +187,11 @@ export async function executeGmCombatAction(
           ...actor,
           resources: {
             ...actor.resources,
-            vida: { max: hpMax, value: vida },
+            vida: {
+              max: hpMax,
+              value: vida,
+              temp: vidaTemp > 0 ? vidaTemp : undefined,
+            },
           },
           revision: actor.revision + 1,
         };
@@ -188,10 +202,16 @@ export async function executeGmCombatAction(
       }
 
       syncCombatOrderWithTokens(room);
+      const tempNote =
+        body.temp != null && vidaTemp !== prevTemp
+          ? vidaTemp > 0
+            ? ` · temp ${prevTemp}→${vidaTemp}`
+            : " · temp removida"
+          : "";
       appendRoomChatMessage(room, {
         ...author,
         kind: "system",
-        text: `Mestre ajustou a vida de ${before.name}: ${prevHp}/${before.vidaMax ?? hpMax} → ${vida}/${hpMax}.`,
+        text: `Mestre ajustou a vida de ${before.name}: ${prevHp}/${before.vidaMax ?? hpMax} → ${vida}/${hpMax}${tempNote}.`,
       });
       break;
     }

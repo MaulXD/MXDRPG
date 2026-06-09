@@ -73,12 +73,17 @@ import {
 } from "@/lib/room/portrait-sync";
 import { isMonsterToken } from "@/lib/room/settings";
 import {
+  canShowSheetInActionRing,
+  resolveMonsterSheetOpenTarget,
+} from "@/lib/vtt/monster-sheet-access";
+import {
   listTokenCombatActions,
   combatAttackRequestOpts,
   needsFriendlyFireConfirm,
   resolveCombatAction,
 } from "@/lib/combat/attack";
 import { FriendlyFireConfirmDialog } from "@/components/vtt/FriendlyFireConfirmDialog";
+import { TokenGmHpDialog } from "@/components/vtt/TokenGmHpDialog";
 import { SpellTargetConfirmBar } from "@/components/vtt/SpellTargetConfirmBar";
 import { isMultiTargetSpell, spellTargetCount } from "@/lib/combat/spell-target-count";
 import type { CombatActionOption } from "@/lib/combat/types";
@@ -157,6 +162,8 @@ type Props = {
   onRefresh?: () => void;
   onApplySnapshot?: (snap: RoomSnapshot) => void;
   onOpenSheet?: (actorId?: string) => void;
+  /** Abre ficha de monstro do compêndio em janela flutuante. */
+  onOpenMonsterSheet?: (entryId: string) => void;
   onHoverAxialChange?: (axial: Axial | null) => void;
   onOpenDungeonPanel?: () => void;
   showSpawnInSidebar?: boolean;
@@ -205,6 +212,8 @@ type Props = {
   ownerDisplayNames?: Map<string, string>;
   /** Quando definido, substitui a detecção interna de mestre (ex.: visão simulada de jogador). */
   isRoomGm?: boolean;
+  /** Mestre simulando visão/controles de jogador na mesa. */
+  simulatePlayerView?: boolean;
 };
 
 export function HexBattlefield({
@@ -225,6 +234,7 @@ export function HexBattlefield({
   onRefresh,
   onApplySnapshot,
   onOpenSheet,
+  onOpenMonsterSheet,
   onHoverAxialChange,
   onOpenDungeonPanel,
   showSpawnInSidebar = true,
@@ -268,6 +278,7 @@ export function HexBattlefield({
   isWindowFloating,
   ownerDisplayNames,
   isRoomGm: isRoomGmProp,
+  simulatePlayerView = false,
 }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
@@ -280,6 +291,7 @@ export function HexBattlefield({
   const [hoverAxial, setHoverAxial] = useState<Axial | null>(null);
   const [hoverTargetId, setHoverTargetId] = useState<string | null>(null);
   const [hoverTokenId, setHoverTokenId] = useState<string | null>(null);
+  const [hoverPointer, setHoverPointer] = useState<{ x: number; y: number } | null>(null);
   const [gmDragTokenId, setGmDragTokenId] = useState<string | null>(null);
   const [monsterKnowledgeToken, setMonsterKnowledgeToken] = useState<BattleToken | null>(null);
   const [playerBestiaryTarget, setPlayerBestiaryTarget] = useState<{
@@ -297,10 +309,12 @@ export function HexBattlefield({
   const [actionErr, setActionErr] = useState<string | null>(null);
   const [channelExtraPa, setChannelExtraPa] = useState(0);
   const [actionRingAt, setActionRingAt] = useState<{ x: number; y: number } | null>(null);
+  const [gmHpEditTokenId, setGmHpEditTokenId] = useState<string | null>(null);
   const [friendlyFireTargetId, setFriendlyFireTargetId] = useState<string | null>(null);
   const [friendlyFireBusy, setFriendlyFireBusy] = useState(false);
   const [spellTargetIds, setSpellTargetIds] = useState<string[]>([]);
   const [spellTargetBusy, setSpellTargetBusy] = useState(false);
+  const attackBusyRef = useRef(false);
   const [modalStatusToken, setModalStatusToken] = useState<BattleToken | null>(null);
   const { visible: hudVisible, setHudVisible } = useCombatHudVisible(roomId);
   const toast = useVttToast();
@@ -458,6 +472,15 @@ export function HexBattlefield({
     [actionRingBlockReason]
   );
 
+  const canOpenActionRing = useCallback(
+    (t: BattleToken) => {
+      if (!canOperateToken(t)) return false;
+      if (canControlCombat) return true;
+      return actionRingBlockReason(t) == null;
+    },
+    [canOperateToken, canControlCombat, actionRingBlockReason]
+  );
+
   const onActionRingBlocked = useCallback(
     (t: BattleToken) => {
       const reason = actionRingBlockReason(t);
@@ -492,17 +515,32 @@ export function HexBattlefield({
     }
   }, [isRoomGm]);
 
+  const canViewMonsterKnowledge = !isRoomGm || simulatePlayerView;
+
   const openMonsterKnowledge = useCallback(
     (token: BattleToken) => {
-      if (isRoomGm || !isMonsterToken(token)) return;
+      if (!canViewMonsterKnowledge || !isMonsterToken(token)) return;
       setMonsterKnowledgeToken(token);
     },
-    [isRoomGm]
+    [canViewMonsterKnowledge]
   );
 
   const closeMonsterKnowledge = useCallback(() => {
     setMonsterKnowledgeToken(null);
   }, []);
+
+  const openMonsterSheetForToken = useCallback(
+    (token: BattleToken) => {
+      const target = resolveMonsterSheetOpenTarget(token);
+      if (!target) return;
+      if (target.kind === "compendium") {
+        onOpenMonsterSheet?.(target.entryId);
+        return;
+      }
+      onOpenSheet?.(target.actorId);
+    },
+    [onOpenSheet, onOpenMonsterSheet]
+  );
 
   const canOpenPlayerBestiary = useCallback(
     (token: BattleToken) => {
@@ -982,10 +1020,10 @@ export function HexBattlefield({
   }, [selectedId, snapshot?.combat?.activeIndex, snapshot?.combat?.round]);
 
   useEffect(() => {
-    if (actionRingAt && selected && !canPreviewTurnMove(selected)) {
+    if (actionRingAt && selected && !canOpenActionRing(selected)) {
       setActionRingAt(null);
     }
-  }, [actionRingAt, selected, canPreviewTurnMove]);
+  }, [actionRingAt, selected, canOpenActionRing]);
 
   const removeSelectedToken = useCallback(async () => {
     if (!canControlCombat || !selectedId || !selected) return;
@@ -1340,11 +1378,13 @@ export function HexBattlefield({
   const executeAttackOn = useCallback(
     async (defenderId: string) => {
       if (!selected || !activeCombatAction) return;
+      if (attackBusyRef.current) return;
       if (activeCombatAction.areaShape && activeCombatAction.areaShape !== "single") {
         setActionErr("Magia de área: clique o centro da área no mapa (não um alvo único).");
         return;
       }
       setActionErr(null);
+      attackBusyRef.current = true;
       try {
         let snap: RoomSnapshot;
         if (activeCombatAction.kind === "ability") {
@@ -1364,11 +1404,12 @@ export function HexBattlefield({
           );
         }
         playCombatFxFromSnap(snap, { deferSnap: true });
-        setActionMode("idle");
-        setSelectedCombatAction(null);
         setSpellTargetIds([]);
+        // Mantém modo ataque para permitir outro alvo no mesmo turno (Esc cancela).
       } catch (e) {
         setActionErr(e instanceof Error ? e.message : "Falha no ataque");
+      } finally {
+        attackBusyRef.current = false;
       }
     },
     [
@@ -1738,6 +1779,7 @@ export function HexBattlefield({
     onGmDragPreview,
     onHoverTargetChange: setHoverTargetId,
     onHoverTokenChange: setHoverTokenId,
+    onHoverPointerChange: setHoverPointer,
     onAttack: (id) => void attackToken(id),
     onMove: (a) => void moveSelectedTo(a),
     onAreaSpell: (c, d) => void castAreaSpell(c, d),
@@ -1747,14 +1789,14 @@ export function HexBattlefield({
     fogEnabled: Boolean(displayScene.fogEnabled),
     viewRef: battlefieldView.viewRef,
     onActionRingRequest: (token, clientX, clientY) => {
-      if (!canPreviewTurnMove(token)) {
+      if (!canOpenActionRing(token)) {
         onActionRingBlocked(token);
         return;
       }
       setActionRingAt({ x: clientX, y: clientY });
       setActionErr(null);
     },
-    canOpenActionRing: canPreviewTurnMove,
+    canOpenActionRing,
     onActionRingBlocked,
     onOpenMonsterKnowledge: openMonsterKnowledge,
     onOpenPlayerBestiary: openPlayerBestiary,
@@ -1934,19 +1976,24 @@ export function HexBattlefield({
   }, [foundryLayout, statusWindowLayout?.open, resolveStatusToken]);
 
   const hoverMiniHudAnchor = useMemo(() => {
-    if (!hoverTokenId) return null;
+    if (!hoverTokenId || !hoverPointer) return null;
     const wrap = wrapRef.current;
-    if (!wrap) return null;
-    const token = displayScene.tokens.find((t) => t.id === hoverTokenId);
-    if (!token) return null;
-    const w = wrap.clientWidth;
-    const h = wrap.clientHeight;
-    const { ox, oy } = canvasCenter(w, h);
-    const world = axialToPixel(token.axial.q, token.axial.r, displayScene.hexSize, ox, oy);
-    const screen = worldToScreen(world.x, world.y, w, h, battlefieldView.view);
-    const tokenR = hexDrawRadius(displayScene.hexSize) * (battlefieldView.view.scale ?? 1);
-    return { x: screen.x, y: screen.y - tokenR - 8 };
-  }, [hoverTokenId, displayScene.tokens, displayScene.hexSize, battlefieldView.view]);
+    const canvas = canvasRef.current;
+    if (!wrap || !canvas) return null;
+
+    if (foundryLayout) {
+      const hudEl = document.getElementById("foundry-mesa-hud");
+      if (!hudEl) return hoverPointer;
+      const hudRect = hudEl.getBoundingClientRect();
+      const canvasRect = canvas.getBoundingClientRect();
+      return {
+        x: canvasRect.left - hudRect.left + hoverPointer.x,
+        y: canvasRect.top - hudRect.top + hoverPointer.y,
+      };
+    }
+
+    return hoverPointer;
+  }, [hoverTokenId, hoverPointer, foundryLayout]);
 
   const hoverMiniHudToken =
     hoverTokenId != null
@@ -2092,7 +2139,12 @@ export function HexBattlefield({
       {gmToolsPanel}
       {dungeonPanel}
       {canControlCombat && showSpawnInSidebar ? (
-        <MonsterSpawnPanel roomId={roomId} spawnAxial={hoverAxial} onSpawned={(snap) => syncRoom(snap)} />
+        <MonsterSpawnPanel
+          roomId={roomId}
+          spawnAxial={hoverAxial}
+          onSpawned={(snap) => syncRoom(snap)}
+          onOpenMonsterSheet={onOpenMonsterSheet}
+        />
       ) : null}
     </>
   );
@@ -2476,7 +2528,7 @@ export function HexBattlefield({
             {moveHoverHint.text}
           </div>
         ) : null}
-        {actionRingAt && selected && canPreviewTurnMove(selected) ? (
+        {actionRingAt && selected && canOpenActionRing(selected) ? (
           <TokenActionRing
             x={actionRingAt.x}
             y={actionRingAt.y}
@@ -2486,6 +2538,16 @@ export function HexBattlefield({
             combat={combat}
             canBypassTurn={canBypassTurnProp}
             roomId={roomId}
+            showTokenSheet={canShowSheetInActionRing(selected, {
+              isRoomGm,
+              userId: session?.id,
+              roomActors,
+            })}
+            onOpenTokenSheet={() => openMonsterSheetForToken(selected)}
+            showPlayerBestiary={canOpenPlayerBestiary(selected)}
+            onOpenPlayerBestiary={() => openPlayerBestiary(selected)}
+            showGmHpEdit={canControlCombat && selected.vidaMax != null}
+            onOpenGmHpEdit={() => setGmHpEditTokenId(selected.id)}
             onPickMode={(mode, action) => {
               if (action?.selfTarget) {
                 void fireSelfAbility(action);
@@ -2539,6 +2601,7 @@ export function HexBattlefield({
                 canControlCombat={canControlCombat}
                 roomId={roomId}
                 onOpenSheet={onOpenSheet}
+                onOpenMonsterSheet={onOpenMonsterSheet}
                 onSnapshot={syncRoom}
                 onUpdate={refresh}
                 onHide={() => setHudVisible(false)}
@@ -2564,8 +2627,13 @@ export function HexBattlefield({
                   viewerToken={playerToken}
                   showMonsterHpToPlayers={roomSettings.showMonsterHpToPlayers}
                   showMovement={highlights.turnMovePreview}
-                  showMonsterInfoAction={!isRoomGm && isMonsterToken(hoverMiniHudToken)}
-                  onMonsterInfo={() => openMonsterKnowledge(hoverMiniHudToken)}
+                  showMonsterInfoHint={
+                    canViewMonsterKnowledge && isMonsterToken(hoverMiniHudToken)
+                  }
+                  showMonsterSheetAction={
+                    isRoomGm && Boolean(hoverMiniHudToken.monsterEntryId)
+                  }
+                  onMonsterSheet={() => openMonsterSheetForToken(hoverMiniHudToken)}
                 />
               );
               if (foundryLayout && hudOverlayRoot) {
@@ -2580,6 +2648,7 @@ export function HexBattlefield({
               token={monsterKnowledgeToken}
               adventureId={adventureIdProp ?? roomId}
               roomId={roomId}
+              simulatePlayerView={simulatePlayerView}
               onClose={closeMonsterKnowledge}
             />
           </div>
@@ -2613,6 +2682,17 @@ export function HexBattlefield({
           onTokenCastFx={onTokenCastFx}
           onChatReveal={onCombatChatReveal}
           onDone={onCombatFxDone}
+        />
+        <TokenGmHpDialog
+          open={gmHpEditTokenId !== null}
+          token={
+            gmHpEditTokenId
+              ? (displayScene.tokens.find((t) => t.id === gmHpEditTokenId) ?? null)
+              : null
+          }
+          roomId={roomId}
+          onClose={() => setGmHpEditTokenId(null)}
+          onApplied={() => refresh()}
         />
         <FriendlyFireConfirmDialog
           open={friendlyFireTargetId !== null}

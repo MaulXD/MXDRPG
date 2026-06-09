@@ -1,6 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
+import { CharacterManageDialog } from "@/components/character/CharacterManageDialog";
 import { canEditRoomActor } from "@/lib/auth/room-access";
 import type { SessionUser } from "@/lib/auth/types";
 import type { RoomActor } from "@/lib/room/types";
@@ -17,7 +19,17 @@ type Props = {
   session: SessionUser | null;
   selectedActorId?: string | null;
   canCreateCharacter?: boolean;
+  isRoomGm?: boolean;
   onOpenSheet: (actorId: string) => void;
+  onCharactersChanged?: () => void;
+};
+
+type ManageState = {
+  actorId: string;
+  actorName: string;
+  mode: "delete" | "transfer";
+  asGm: boolean;
+  excludeUserId?: string | null;
 };
 
 function ActorAvatar({ actor, ringColor }: { actor: RoomActor; ringColor: string }) {
@@ -43,18 +55,22 @@ export function PlayableCharactersPanel({
   session,
   selectedActorId,
   canCreateCharacter = false,
+  isRoomGm = false,
   onOpenSheet,
+  onCharactersChanged,
 }: Props) {
   const roomAuth = { roomId, adventureId };
   const roster = listPlayablePlayerActors(actors, adventureId);
   const createHref = `/aventura/${adventureId}/personagem/novo`;
   const colorIds = roster.map((a) => a.id);
+  const [manage, setManage] = useState<ManageState | null>(null);
 
   return (
     <div className="vtt-playable-panel">
       <p className="vtt-eyebrow">Personagens jogáveis</p>
       <p className="vtt-combat-hint vtt-playable-panel__lead">
         Veja as fichas de todos na mesa. Só o dono pode editar inventário, identidade e nível.
+        {isRoomGm ? " Como mestre, você pode transferir ou excluir fichas de jogadores." : ""}
       </p>
 
       {roster.length === 0 ? (
@@ -66,6 +82,8 @@ export function PlayableCharactersPanel({
             const canEdit = canEditRoomActor(roomAuth, actor, session);
             const ringColor = playerColorForActor(actor.id, colorIds);
             const active = selectedActorId === actor.id;
+            const canManageMine = mine && session;
+            const canManageAsGm = isRoomGm && session && !actor.gmAuthored;
 
             return (
               <li key={actor.id}>
@@ -90,13 +108,81 @@ export function PlayableCharactersPanel({
                       {actor.resources.pontosAcao.max}
                     </span>
                   </div>
-                  <button
-                    type="button"
-                    className="btn btn-ghost vtt-playable-card__open"
-                    onClick={() => onOpenSheet(actor.id)}
-                  >
-                    {canEdit ? "Abrir ficha" : "Ver ficha"}
-                  </button>
+                  <div className="vtt-playable-card__actions">
+                    <button
+                      type="button"
+                      className="btn btn-ghost vtt-playable-card__open"
+                      onClick={() => onOpenSheet(actor.id)}
+                    >
+                      {canEdit ? "Abrir ficha" : "Ver ficha"}
+                    </button>
+                    {canManageMine ? (
+                      <>
+                        <button
+                          type="button"
+                          className="btn btn-ghost vtt-playable-card__manage"
+                          onClick={() =>
+                            setManage({
+                              actorId: actor.id,
+                              actorName: actor.name,
+                              mode: "transfer",
+                              asGm: false,
+                              excludeUserId: session?.id,
+                            })
+                          }
+                        >
+                          Transferir
+                        </button>
+                        <button
+                          type="button"
+                          className="btn btn-ghost vtt-playable-card__manage vtt-playable-card__manage--danger"
+                          onClick={() =>
+                            setManage({
+                              actorId: actor.id,
+                              actorName: actor.name,
+                              mode: "delete",
+                              asGm: false,
+                            })
+                          }
+                        >
+                          Excluir
+                        </button>
+                      </>
+                    ) : null}
+                    {canManageAsGm && !mine ? (
+                      <>
+                        <button
+                          type="button"
+                          className="btn btn-ghost vtt-playable-card__manage"
+                          onClick={() =>
+                            setManage({
+                              actorId: actor.id,
+                              actorName: actor.name,
+                              mode: "transfer",
+                              asGm: true,
+                              excludeUserId: actor.ownerId,
+                            })
+                          }
+                        >
+                          Atribuir a…
+                        </button>
+                        <button
+                          type="button"
+                          className="btn btn-ghost vtt-playable-card__manage vtt-playable-card__manage--danger"
+                          onClick={() =>
+                            setManage({
+                              actorId: actor.id,
+                              actorName: actor.name,
+                              mode: "delete",
+                              asGm: true,
+                            })
+                          }
+                        >
+                          Excluir
+                        </button>
+                      </>
+                    ) : null}
+                  </div>
                 </div>
               </li>
             );
@@ -108,6 +194,21 @@ export function PlayableCharactersPanel({
         <Link href={createHref} className="btn btn-secondary vtt-playable-create">
           + Criar novo personagem
         </Link>
+      ) : null}
+
+      {manage ? (
+        <CharacterManageDialog
+          open
+          mode={manage.mode}
+          characterId={manage.actorId}
+          characterName={manage.actorName}
+          adventureId={adventureId}
+          roomId={roomId}
+          asGm={manage.asGm}
+          excludeUserId={manage.excludeUserId}
+          onClose={() => setManage(null)}
+          onSuccess={() => onCharactersChanged?.()}
+        />
       ) : null}
     </div>
   );
