@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { resolveCharacter } from "@/lib/character/characters";
 import {
+  dismissRejectedSheetEditRequest,
   getSheetEditRequest,
   resolveSheetEditRequestByGm,
 } from "@/lib/character/sheet-edit-request-store";
@@ -21,6 +22,19 @@ export async function PATCH(request: Request, { params }: Params) {
   if (!editRequest || editRequest.characterId !== id) {
     return NextResponse.json({ error: "Solicitação não encontrada" }, { status: 404 });
   }
+  const body = (await request.json()) as { action?: string };
+
+  if (body.action === "dismiss") {
+    if (editRequest.requesterUserId !== session.user.id) {
+      return NextResponse.json({ error: "Sem permissão" }, { status: 403 });
+    }
+    const ok = await dismissRejectedSheetEditRequest(requestId, session.user.id);
+    if (!ok) {
+      return NextResponse.json({ error: "Não foi possível dispensar" }, { status: 400 });
+    }
+    return NextResponse.json({ ok: true });
+  }
+
   if (editRequest.status !== "pending") {
     return NextResponse.json({ error: "Solicitação já resolvida" }, { status: 400 });
   }
@@ -35,7 +49,6 @@ export async function PATCH(request: Request, { params }: Params) {
     return NextResponse.json({ error: "Ficha não encontrada" }, { status: 404 });
   }
 
-  const body = (await request.json()) as { action?: string };
   if (body.action !== "approve" && body.action !== "reject") {
     return NextResponse.json({ error: "Ação inválida" }, { status: 400 });
   }

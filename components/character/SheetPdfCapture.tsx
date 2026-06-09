@@ -47,7 +47,7 @@ import "./sheet-pdf-capture.css";
 
 type Props = {
   character: CharacterSheet;
-  inventory: InventoryItem[];
+  inventory?: InventoryItem[];
   roomId?: string;
 };
 
@@ -57,7 +57,7 @@ const SKILL_ICONS = {
   iniciativa: IconLightning,
 } as const;
 
-function resolveInventory(inventory: InventoryItem[]) {
+function resolveInventory(inventory: InventoryItem[] = []) {
   return inventory
     .map((ref) => {
       const entry = getEntry(ref.packId, ref.entryId);
@@ -111,7 +111,7 @@ function PdfInventoryRow({
   );
 }
 
-export function SheetPdfCapture({ character, inventory, roomId }: Props) {
+export function SheetPdfCapture({ character, inventory = [], roomId }: Props) {
   const { identity, resources, movement, tactical } = character;
   const prof = proficiencyBonus(identity.nivel);
   const defesa = resolveActorDefesa(character);

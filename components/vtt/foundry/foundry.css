@@ -1279,6 +1279,30 @@
   display: flex;
   gap: 0.4rem;
   justify-content: flex-end;
+  align-items: center;
+}
+
+.mesa-edit-requests-bell__status {
+  font-size: 0.74rem;
+  font-weight: 600;
+}
+
+.mesa-edit-requests-bell__status--wait {
+  color: rgba(200, 190, 160, 0.85);
+}
+
+.mesa-edit-requests-bell__status--ok {
+  color: rgb(168, 210, 160);
+}
+
+.mesa-edit-requests-bell__status--bad {
+  color: rgb(220, 140, 120);
+}
+
+.mesa-edit-requests-bell__hint {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  font-style: italic;
 }
 
 .player-edit-request-notice {

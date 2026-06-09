@@ -71,8 +71,11 @@ type Props = {
 };
 
 const RING_RADIUS_BASE = 152;
-/** Duração da animação de tornado ao fechar (sincronizar com CSS). */
-const TAR_VORTEX_EXIT_MS = 540;
+/** Duração da animação de saída (sincronizar com CSS). */
+const TAR_RING_EXIT_MS = 480;
+/** Tempo até hover/transições após entrada (orbita → posição final). */
+const TAR_RING_INTRO_MS = 620;
+
 function ringLayout(slotCount: number): { radius: number; track: number; slotScale: number } {
   if (slotCount <= 5) {
     return { radius: RING_RADIUS_BASE, track: 312, slotScale: 1 };
@@ -81,6 +84,21 @@ function ringLayout(slotCount: number): { radius: number; track: number; slotSca
     return { radius: Math.round(RING_RADIUS_BASE * 1.16), track: 360, slotScale: 1.04 };
   }
   return { radius: Math.round(RING_RADIUS_BASE * 1.32), track: 408, slotScale: 1.08 };
+}
+
+/** Posições da órbita inicial (giro) e destino final de cada slot. */
+function slotOrbitPositions(angle: number, radius: number) {
+  const spin = 1.55;
+  const innerR = radius * 0.4;
+  const midR = radius * 0.76;
+  return {
+    x: Math.cos(angle) * radius,
+    y: Math.sin(angle) * radius,
+    orbitX: Math.cos(angle + spin) * innerR,
+    orbitY: Math.sin(angle + spin) * innerR,
+    orbitMidX: Math.cos(angle + spin * 0.38) * midR,
+    orbitMidY: Math.sin(angle + spin * 0.38) * midR,
+  };
 }
 
 function nextHexPaLabel(token: BattleToken): string {
@@ -133,8 +151,10 @@ export function TokenActionRing({
 }: Props) {
   const [ringView, setRingView] = useState<RingView>("main");
   const [exiting, setExiting] = useState(false);
+  const [introDone, setIntroDone] = useState(false);
   const exitingRef = useRef(false);
   const exitTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const introTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [hoveredInfoSlotId, setHoveredInfoSlotId] = useState<string | null>(null);
   const [pinnedInfoSlotId, setPinnedInfoSlotId] = useState<string | null>(null);
   const [infoPointer, setInfoPointer] = useState<{ x: number; y: number } | null>(null);
@@ -165,12 +185,13 @@ export function TokenActionRing({
     setExiting(true);
     exitTimerRef.current = setTimeout(() => {
       onClose();
-    }, TAR_VORTEX_EXIT_MS);
+    }, TAR_RING_EXIT_MS);
   }, [onClose]);
 
   useEffect(() => {
     return () => {
       if (exitTimerRef.current) clearTimeout(exitTimerRef.current);
+      if (introTimerRef.current) clearTimeout(introTimerRef.current);
     };
   }, []);
 
@@ -181,6 +202,7 @@ export function TokenActionRing({
     setPinnedInfoSlotId(null);
     exitingRef.current = false;
     setExiting(false);
+    setIntroDone(false);
   }, [token.id]);
 
   useEffect(() => {
@@ -487,6 +509,17 @@ export function TokenActionRing({
   const slice = (2 * Math.PI) / Math.max(displaySlots.length, 1);
   const ringKey = `${token.id}-${ringView}-${displaySlots.length}`;
 
+  useEffect(() => {
+    setIntroDone(false);
+    if (introTimerRef.current) clearTimeout(introTimerRef.current);
+    introTimerRef.current = setTimeout(() => {
+      setIntroDone(true);
+    }, TAR_RING_INTRO_MS);
+    return () => {
+      if (introTimerRef.current) clearTimeout(introTimerRef.current);
+    };
+  }, [ringKey]);
+
   const centerTitle =
     ringView === "main"
       ? "Fechar (Esc)"
@@ -504,8 +537,8 @@ export function TokenActionRing({
     >
       <div
         className={`token-action-ring${ringView !== "main" ? " token-action-ring--sub" : ""}${
-          exiting ? " token-action-ring--exiting" : ""
-        }`}
+          introDone ? " token-action-ring--settled" : ""
+        }${exiting ? " token-action-ring--exiting" : ""}`}
         style={{ left: x, top: y, "--tar-token": tokenRingColor } as CSSProperties}
         role="menu"
         aria-label={
@@ -566,8 +599,7 @@ export function TokenActionRing({
 
         {displaySlots.map((slot, i) => {
           const angle = slice * i - Math.PI / 2;
-          const left = Math.cos(angle) * layout.radius;
-          const top = Math.sin(angle) * layout.radius;
+          const pos = slotOrbitPositions(angle, layout.radius);
           return (
             <button
               key={`${ringKey}-${slot.id}`}
@@ -579,8 +611,12 @@ export function TokenActionRing({
               style={
                 {
                   "--tar-i": i,
-                  "--tar-x": `${left}px`,
-                  "--tar-y": `${top}px`,
+                  "--tar-x": `${pos.x}px`,
+                  "--tar-y": `${pos.y}px`,
+                  "--tar-orbit-x": `${pos.orbitX}px`,
+                  "--tar-orbit-y": `${pos.orbitY}px`,
+                  "--tar-orbit-mid-x": `${pos.orbitMidX}px`,
+                  "--tar-orbit-mid-y": `${pos.orbitMidY}px`,
                   "--tar-slot-scale": layout.slotScale,
                   "--tar-slot-count": displaySlots.length,
                 } as CSSProperties
