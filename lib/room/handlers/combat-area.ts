@@ -19,7 +19,7 @@ import { maybeRecordCombatUndo } from "../combat-undo";
 import { getRoom, persistRoom, toSnapshot } from "../internal/registry";
 import { syncCombatOrderWithTokens } from "../combat-order";
 import { shouldAnnounceDefeat } from "../combat-chat-events";
-import { recordMonsterDefeat } from "../combat-xp";
+import { recordDefeatWithPaRewards } from "../combat-defeat-rewards";
 import { appendRoomChatMessage } from "./chat";
 import type { AttackExecuteResult } from "./combat-attack";
 
@@ -104,7 +104,7 @@ export async function executeRoomAreaSpell(
   }
 
   const spentCaster = markActionRechargeUsed(
-    applyPaSpend(caster, areaResult.paCost),
+    applyPaSpend(caster, areaResult.paCost, { actionKind: "spell" }),
     action,
     room.combat.round
   );
@@ -246,7 +246,7 @@ export async function executeRoomAreaSpell(
     defeated.add(hit.tokenId);
     const target = room.scene.tokens.find((t) => t.id === hit.tokenId);
     if (!target) continue;
-    await recordMonsterDefeat(room, author, {
+    await recordDefeatWithPaRewards(room, author, {
       defenderTokenId: hit.tokenId,
       defenderName: target.name,
       attackerTokenId: caster.id,

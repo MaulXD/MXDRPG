@@ -2,7 +2,13 @@ import type { TokenCondition } from "@/lib/combat/conditions";
 import { hasCondition } from "@/lib/combat/conditions";
 import type { PaTurnRules } from "@/lib/combat/pa-economy";
 import { PA_ACCUMULATION_CAP_DEFAULT, PA_RECOVERY_PER_TURN } from "@/lib/combat/pa-economy";
+import { clearPaDiscountUsed, markPaDiscountUsed } from "@/lib/combat/pa-turn-discount";
+import type { CombatActionOption } from "@/lib/combat/types";
 import type { BattleToken } from "@/lib/vtt/types";
+
+export type PaSpendOptions = {
+  actionKind?: CombatActionOption["kind"];
+};
 
 /** Recuperação padrão por turno (alias). */
 export { PA_RECOVERY_PER_TURN } from "@/lib/combat/pa-economy";
@@ -55,13 +61,13 @@ export function materializeCombatPa(token: BattleToken, paMax: number): BattleTo
 
 /** Zera pool antes de conceder PA no turno — evita carry fantasma do spawn (ex. 5+5=9). */
 export function clearCombatPaPool(token: BattleToken): BattleToken {
-  return {
+  return clearPaDiscountUsed({
     ...token,
     pa: 0,
     bankedPa: 0,
     paSpentThisTurn: 0,
     peaoFreeMoveUsed: false,
-  };
+  });
 }
 
 /** Ao receber Atordoado: zera PA (livro / DOS stun). */
@@ -203,16 +209,16 @@ export function formatEndTurnPaBankMessage(plan: EndTurnPaBankPlan, rules?: PaTu
 /** Fim do turno: sobra no pool, cortada pelo teto de acúmulo (9 padrão). */
 export function bankPaAtEndOfTurn(token: BattleToken, rules?: PaTurnRules): BattleToken {
   if (hasCondition(token, "atordoado")) {
-    return { ...token, pa: 0, bankedPa: 0, paSpentThisTurn: 0 };
+    return clearPaDiscountUsed({ ...token, pa: 0, bankedPa: 0, paSpentThisTurn: 0 });
   }
   const cap = accumulationCap(rules);
   const pool = Math.max(0, token.pa ?? 0) + tokenBankedPa(token);
-  return {
+  return clearPaDiscountUsed({
     ...token,
     pa: Math.min(cap, pool),
     bankedPa: 0,
     paSpentThisTurn: 0,
-  };
+  });
 }
 
 /** Início de combate / iniciativa: pool = recuperação (sem sobra). */
@@ -221,14 +227,14 @@ export function startTurnPaFull(token: BattleToken, rules: PaTurnRules): BattleT
     rules.turnStartPa != null
       ? rules.turnStartPa
       : Math.min(accumulationCap(rules), rules.recoveryPerTurn);
-  return {
+  return clearPaDiscountUsed({
     ...token,
     paMax: rules.recoveryPerTurn,
     pa,
     bankedPa: 0,
     paSpentThisTurn: 0,
     peaoFreeMoveUsed: false,
-  };
+  });
 }
 
 /** Início do turno: sobra + recuperação, teto de acúmulo; ou PA fixo (Canhão de Vidro). */
@@ -241,14 +247,14 @@ export function refreshPaAtTurnStart(token: BattleToken, rules: PaTurnRules): Ba
     const carry = Math.max(0, token.pa ?? 0) + tokenBankedPa(token);
     pa = Math.min(cap, carry + rules.recoveryPerTurn);
   }
-  return {
+  return clearPaDiscountUsed({
     ...token,
     paMax: rules.recoveryPerTurn,
     pa,
     bankedPa: 0,
     paSpentThisTurn: 0,
     peaoFreeMoveUsed: false,
-  };
+  });
 }
 
 /** Bônus de PA no turno (Carrasco, Adrenalina, etc.) — pode ultrapassar o teto de acúmulo. */
@@ -274,7 +280,11 @@ export function checkCanSpendPa(token: BattleToken, cost: number): PaSpendCheck 
   return { ok: true, cost };
 }
 
-export function applyPaSpend(token: BattleToken, cost: number): BattleToken {
+export function applyPaSpend(
+  token: BattleToken,
+  cost: number,
+  opts?: PaSpendOptions
+): BattleToken {
   const paMax = token.paMax ?? PA_RECOVERY_PER_TURN;
   const prepared = materializeCombatPa(token, paMax);
   const check = checkCanSpendPa(prepared, cost);
@@ -282,13 +292,16 @@ export function applyPaSpend(token: BattleToken, cost: number): BattleToken {
 
   const pa = Math.max(0, (prepared.pa ?? 0) - cost);
 
-  return {
-    ...token,
-    paMax,
-    pa,
-    bankedPa: 0,
-    paSpentThisTurn: tokenPaSpentThisTurn(prepared) + cost,
-  };
+  return markPaDiscountUsed(
+    {
+      ...token,
+      paMax,
+      pa,
+      bankedPa: 0,
+      paSpentThisTurn: tokenPaSpentThisTurn(prepared) + cost,
+    },
+    opts?.actionKind
+  );
 }
 
 export function applyConditionPaRules(token: BattleToken): BattleToken {

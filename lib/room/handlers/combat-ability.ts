@@ -26,7 +26,7 @@ import { getRoom, persistRoom, toSnapshot } from "../internal/registry";
 import type { RoomSnapshot, RoomState } from "../types";
 import { syncCombatOrderWithTokens } from "../combat-order";
 import { shouldAnnounceDefeat } from "../combat-chat-events";
-import { recordMonsterDefeat } from "../combat-xp";
+import { recordDefeatWithPaRewards } from "../combat-defeat-rewards";
 import { appendRoomChatMessage } from "./chat";
 
 export type AbilityExecuteResult =
@@ -65,7 +65,7 @@ function applyAbilityToRoom(
   let spent = attackerBefore;
   if (attackerBefore && resolved.paCost > 0) {
     spent = markActionRechargeUsed(
-      applyPaSpend(attackerBefore, resolved.paCost),
+      applyPaSpend(attackerBefore, resolved.paCost, { actionKind: "ability" }),
       action,
       room.combat.round
     );
@@ -287,7 +287,7 @@ export async function executeRoomAbility(
       },
     });
     if (defender && shouldAnnounceDefeat(result.defenderHpBefore, result.defenderHpAfter)) {
-      await recordMonsterDefeat(room, author, {
+      await recordDefeatWithPaRewards(room, author, {
         defenderTokenId: defender.id,
         defenderName: defender.name,
         attackerTokenId,
@@ -319,7 +319,7 @@ export async function executeRoomAbility(
       },
     });
     if (defender && shouldAnnounceDefeat(save.defenderHpBefore, save.defenderHpAfter)) {
-      await recordMonsterDefeat(room, author, {
+      await recordDefeatWithPaRewards(room, author, {
         defenderTokenId: defender.id,
         defenderName: defender.name,
         attackerTokenId,

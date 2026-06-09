@@ -7,7 +7,7 @@ import {
 } from "@/lib/combat/attack";
 import { attackRollModeDetail, canTokenAct, formatRollModeWithSources } from "@/lib/combat/conditions";
 import { formatRollMode, type RollMode } from "@/lib/combat/d20";
-import { effectivePaCost, totalAttackPaCost } from "@/lib/combat/pa-economy";
+import { effectivePaCost, paCostContextFromToken, totalAttackPaCost } from "@/lib/combat/pa-economy";
 import { totalChannelPaCost } from "@/lib/combat/spell-channel";
 import { unifiedPaChipForAction, unifiedPaChipForMove } from "@/lib/combat/pa-chip";
 import { checkCanSpendPa, tokenSpendablePa } from "@/lib/combat/pa-turn";
@@ -102,7 +102,7 @@ export function previewAttackOnTarget(
 
   if (action.kind === "ability") {
     const use = canUseAbility(attacker, action, turn, actor);
-    const pa = effectivePaCost(actor, action);
+    const pa = effectivePaCost(actor, action, paCostContextFromToken(attacker));
     const paChip = unifiedPaChipForAction(attacker, actor, action, channelExtraPa);
     if (!use.ok) {
       return withPaChip(action.name, paChip, [{ text: use.reason ?? "Inválido", tone: "err" }], false);
@@ -195,7 +195,7 @@ export function previewAreaCast(
   const pa = actor
     ? action.channelMaxExtraPa
       ? totalChannelPaCost(actor, action, channelExtraPa)
-      : effectivePaCost(actor, action)
+      : effectivePaCost(actor, action, paCostContextFromToken(caster))
     : action.paCost + channelExtraPa;
   const paCheck = checkCanSpendPa(caster, pa);
   const paChip = unifiedPaChipForAction(caster, actor, action, channelExtraPa);

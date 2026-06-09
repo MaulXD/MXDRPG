@@ -1,5 +1,5 @@
 import { paNeedForCombatAction } from "@/lib/combat/attack";
-import { listPaModifiersForActor } from "@/lib/combat/pa-economy";
+import { describePaDiscountNote, listPaModifiersForActor, paCostContextFromToken } from "@/lib/combat/pa-cost-reduce";
 import { tokenSpendablePa } from "@/lib/combat/pa-turn";
 import type { CombatActionOption } from "@/lib/combat/types";
 import type { CharacterSheet } from "@/lib/character/types";
@@ -7,11 +7,14 @@ import type { MoveCheck, MovePaOptions } from "@/lib/vtt/movement";
 import type { BattleToken } from "@/lib/vtt/types";
 
 const MOD_LABELS: Record<string, string> = {
-  "afinidade-arcanica": "Afinidade",
+  "afinidade-arcanica": "Afinidade arcânica",
+  "afinidade-divina": "Afinidade divina",
+  "afinidade-do-pacto": "Afinidade do pacto",
   "corte-limpo": "Corte limpo",
+  "tiro-de-precisao": "Tiro de precisão",
+  "chama-controlada": "Chama controlada",
   "rush-doce": "Rush doce",
-  "ataque-extra-guerreiro": "Guerreiro",
-  "o-peao": "O Peão",
+  "ataque-extra-guerreiro": "Ataque extra",
 };
 
 function modifierLabel(id: string): string {
@@ -41,12 +44,17 @@ export function formatUnifiedPaChip(
 
 function actionModifierNote(
   actor: CharacterSheet | null,
-  action: CombatActionOption
+  action: CombatActionOption,
+  token: BattleToken
 ): string | null {
   if (!actor) return null;
-  const ids = listPaModifiersForActor(actor, action);
+  const ctx = paCostContextFromToken(token);
+  const ids = listPaModifiersForActor(actor, action, ctx);
   if (ids.length === 0) return null;
-  return modifierLabel(ids[0]);
+  return (
+    describePaDiscountNote(token, action, ids) ??
+    (ids.length === 1 ? modifierLabel(ids[0]!) : `${ids.length} reduções`)
+  );
 }
 
 export function unifiedPaChipForAction(
@@ -60,7 +68,7 @@ export function unifiedPaChipForAction(
       ? action.paCost + channelExtraPa
       : action.paCost;
   const effective = paNeedForCombatAction(token, actor, action, channelExtraPa);
-  return formatUnifiedPaChip(token, base, effective, actionModifierNote(actor, action));
+  return formatUnifiedPaChip(token, base, effective, actionModifierNote(actor, action, token));
 }
 
 export function unifiedPaChipForMove(
