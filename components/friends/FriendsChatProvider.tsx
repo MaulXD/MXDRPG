@@ -17,6 +17,7 @@ import type { FriendSummary } from "@/lib/friends/types";
 import "./friends.css";
 
 const INVITE_POLL_MS = 30_000;
+const UNREAD_POLL_MS = 4_000;
 
 type FriendsChatContextValue = {
   open: boolean;
@@ -25,6 +26,8 @@ type FriendsChatContextValue = {
   closeChat: () => void;
   selfUserId: string | null;
   inviteCount: number;
+  unreadCount: number;
+  refreshUnread: () => Promise<void>;
   ready: boolean;
 };
 
@@ -79,7 +82,12 @@ function FriendsChatFloatingWindow({
         {loading && friends.length === 0 ? (
           <p className="friends-chat-float__hint">Carregando…</p>
         ) : (
-          <FriendsChat friends={friends} selfUserId={selfUserId} variant="float" />
+          <FriendsChat
+            friends={friends}
+            selfUserId={selfUserId}
+            variant="float"
+            onMessagesRead={refreshUnread}
+          />
         )}
       </div>
     </div>
@@ -92,8 +100,20 @@ export function FriendsChatProvider({ children }: { children: ReactNode }) {
   const [selfUserId, setSelfUserId] = useState<string | null>(null);
   const [friends, setFriends] = useState<FriendSummary[]>([]);
   const [inviteCount, setInviteCount] = useState(0);
+  const [unreadCount, setUnreadCount] = useState(0);
   const [loading, setLoading] = useState(false);
   const [mounted, setMounted] = useState(false);
+
+  const refreshUnread = useCallback(async () => {
+    try {
+      const res = await fetch("/api/friends/messages/unread", { cache: "no-store" });
+      if (!res.ok) return;
+      const data = (await res.json()) as { unreadCount?: number };
+      setUnreadCount(Math.max(0, data.unreadCount ?? 0));
+    } catch {
+      /* ignore */
+    }
+  }, []);
 
   const refreshInvites = useCallback(async () => {
     try {
@@ -143,16 +163,30 @@ export function FriendsChatProvider({ children }: { children: ReactNode }) {
       }
     })();
     void refreshInvites();
-    const id = window.setInterval(() => void refreshInvites(), INVITE_POLL_MS);
-    return () => window.clearInterval(id);
-  }, [refreshInvites]);
+    void refreshUnread();
+    const inviteId = window.setInterval(() => void refreshInvites(), INVITE_POLL_MS);
+    const unreadId = window.setInterval(() => void refreshUnread(), UNREAD_POLL_MS);
+    return () => {
+      window.clearInterval(inviteId);
+      window.clearInterval(unreadId);
+    };
+  }, [refreshInvites, refreshUnread]);
+
+  useEffect(() => {
+    if (!selfUserId) return;
+    void refreshUnread();
+  }, [selfUserId, refreshUnread]);
 
   useEffect(() => {
     if (!open) return;
     void loadSessionAndFriends();
-    const id = window.setInterval(() => void loadSessionAndFriends(), 30_000);
+    void refreshUnread();
+    const id = window.setInterval(() => {
+      void loadSessionAndFriends();
+      void refreshUnread();
+    }, 30_000);
     return () => window.clearInterval(id);
-  }, [open, loadSessionAndFriends]);
+  }, [open, loadSessionAndFriends, refreshUnread]);
 
   const closeChat = useCallback(() => setOpen(false), []);
   const openChat = useCallback(() => setOpen(true), []);
@@ -166,9 +200,11 @@ export function FriendsChatProvider({ children }: { children: ReactNode }) {
       closeChat,
       selfUserId,
       inviteCount,
+      unreadCount,
+      refreshUnread,
       ready,
     }),
-    [open, toggle, openChat, closeChat, selfUserId, inviteCount, ready]
+    [open, toggle, openChat, closeChat, selfUserId, inviteCount, unreadCount, refreshUnread, ready]
   );
 
   return (
@@ -176,21 +212,13 @@ export function FriendsChatProvider({ children }: { children: ReactNode }) {
       {children}
       {mounted && open && selfUserId
         ? createPortal(
-            <>
-              <button
-                type="button"
-                className="friends-chat-overlay"
-                aria-label="Fechar mensagens"
-                onClick={closeChat}
-              />
-              <FriendsChatFloatingWindow
-                friends={friends}
-                selfUserId={selfUserId}
-                inviteCount={inviteCount}
-                loading={loading}
-                onClose={closeChat}
-              />
-            </>,
+            <FriendsChatFloatingWindow
+              friends={friends}
+              selfUserId={selfUserId}
+              inviteCount={inviteCount}
+              loading={loading}
+              onClose={closeChat}
+            />,
             document.body
           )
         : null}

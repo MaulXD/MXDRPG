@@ -89,3 +89,45 @@ export async function insertFriendMessage(
     createdAt: now,
   };
 }
+
+export async function countUnreadFriendMessages(userId: string): Promise<number> {
+  if (!dbEnabled()) return 0;
+  const sql = getSql();
+  if (!sql) return 0;
+
+  const rows = await sql<{ count: string }[]>`
+    SELECT COUNT(*)::text AS count
+    FROM eldarin_friend_messages
+    WHERE to_user_id = ${userId}
+      AND read_at IS NULL
+  `;
+
+  return Number(rows[0]?.count ?? 0);
+}
+
+export async function markFriendMessagesRead(
+  userId: string,
+  friendId: string
+): Promise<number> {
+  if (!dbEnabled()) return 0;
+  const sql = getSql();
+  if (!sql) return 0;
+
+  const friends = await isFriendLink(userId, friendId);
+  if (!friends) return 0;
+
+  const now = Date.now();
+  const rows = await sql<{ count: string }[]>`
+    WITH updated AS (
+      UPDATE eldarin_friend_messages
+      SET read_at = ${now}
+      WHERE to_user_id = ${userId}
+        AND from_user_id = ${friendId}
+        AND read_at IS NULL
+      RETURNING 1
+    )
+    SELECT COUNT(*)::text AS count FROM updated
+  `;
+
+  return Number(rows[0]?.count ?? 0);
+}

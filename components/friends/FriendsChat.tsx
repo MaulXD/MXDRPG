@@ -24,11 +24,18 @@ type Props = {
   friends: FriendSummary[];
   selfUserId: string;
   onFriendsChange?: () => void;
+  onMessagesRead?: () => void;
   /** Janela flutuante global (navbar) */
   variant?: "default" | "float";
 };
 
-export function FriendsChat({ friends, selfUserId, onFriendsChange, variant = "default" }: Props) {
+export function FriendsChat({
+  friends,
+  selfUserId,
+  onFriendsChange,
+  onMessagesRead,
+  variant = "default",
+}: Props) {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [messages, setMessages] = useState<FriendMessage[]>([]);
   const [draft, setDraft] = useState("");
@@ -44,6 +51,18 @@ export function FriendsChat({ friends, selfUserId, onFriendsChange, variant = "d
     const el = threadRef.current;
     if (el) el.scrollTop = el.scrollHeight;
   }, []);
+
+  const markThreadRead = useCallback(
+    async (friendId: string) => {
+      try {
+        await fetch(`/api/friends/${friendId}/messages/read`, { method: "POST" });
+        onMessagesRead?.();
+      } catch {
+        /* ignore */
+      }
+    },
+    [onMessagesRead]
+  );
 
   const loadMessages = useCallback(
     async (friendId: string, initial = false) => {
@@ -77,20 +96,23 @@ export function FriendsChat({ friends, selfUserId, onFriendsChange, variant = "d
     setLoading(true);
     setError("");
     void loadMessages(selectedId, true)
+      .then(() => markThreadRead(selectedId))
       .catch(() => setError("Não foi possível carregar mensagens."))
       .finally(() => {
         setLoading(false);
         scrollToBottom();
       });
-  }, [selectedId, loadMessages, scrollToBottom]);
+  }, [selectedId, loadMessages, markThreadRead, scrollToBottom]);
 
   useEffect(() => {
     if (!selectedId) return;
     const id = window.setInterval(() => {
-      void loadMessages(selectedId).then(scrollToBottom);
+      void loadMessages(selectedId)
+        .then(() => markThreadRead(selectedId))
+        .then(scrollToBottom);
     }, POLL_MS);
     return () => window.clearInterval(id);
-  }, [selectedId, loadMessages, scrollToBottom]);
+  }, [selectedId, loadMessages, markThreadRead, scrollToBottom]);
 
   async function sendMessage(e: React.FormEvent) {
     e.preventDefault();

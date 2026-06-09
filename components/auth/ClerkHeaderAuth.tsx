@@ -3,6 +3,7 @@
 import { Show, SignInButton, SignUpButton } from "@clerk/nextjs";
 import Link from "next/link";
 import { AnimatedNavLink } from "@/components/AnimatedNavLink";
+import { IconUser } from "@/components/ui/EldarinIcons";
 import { ClerkHeaderUserMenu } from "@/components/auth/ClerkHeaderUserMenu";
 import { FriendsNavChat } from "@/components/friends/FriendsNavChat";
 import type { SessionUser } from "@/lib/auth/types";
@@ -29,7 +30,9 @@ export function ClerkHeaderAuth({ session }: Props) {
         </SignUpButton>
       </Show>
       <Show when="signed-in">
-        <AnimatedNavLink href="/conta">Perfil</AnimatedNavLink>
+        <AnimatedNavLink href="/conta" icon={<IconUser size={16} />}>
+          Perfil
+        </AnimatedNavLink>
         <FriendsNavChat />
         {session ? (
           <Link href={portalPathForRole(session.user.role)} className="btn nav-cta">
