@@ -38,11 +38,8 @@ export const metadata: Metadata = {
   description:
     "Mesa virtual no navegador: combaté hex, PA, fichas medievais. Admin, Mestre e Jogador.",
   icons: {
-    icon: [
-      { url: "/brand/favicon-32.png", sizes: "32x32", type: "image/png" },
-      { url: "/brand/favicon.webp", sizes: "512x512", type: "image/webp" },
-    ],
-    apple: "/brand/apple-touch-icon.png",
+    icon: "/icon.svg",
+    apple: "/icon.svg",
   },
 };
 
