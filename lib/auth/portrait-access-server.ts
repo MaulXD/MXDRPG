@@ -1,6 +1,6 @@
 import "server-only";
 
-import { canEditCharacter } from "@/lib/character/demo-characters";
+import { canEditCharacterWithGrant } from "@/lib/character/edit-access";
 import type { CharacterSheet } from "@/lib/character/types";
 import type { SessionUser } from "@/lib/auth/types";
 import { canManageRoom } from "@/lib/auth/room-access";
@@ -11,7 +11,7 @@ export async function canEditCharacterPortrait(
   character: CharacterSheet,
   user: SessionUser
 ): Promise<boolean> {
-  if (canEditCharacter(character, user.id, user.role)) return true;
+  if (canEditCharacterWithGrant(character, user.id, user.role)) return true;
   const roomId = character.campaignRoomId ?? character.adventureId;
   if (!roomId) return false;
   const room = await getRoom(roomId);

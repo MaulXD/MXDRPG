@@ -217,6 +217,31 @@ export function IconWand({ className, size = defaultSize }: IconProps) {
   );
 }
 
+export function IconBestiary({ className, size = defaultSize }: IconProps) {
+  return (
+    <svg className={className} width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden>
+      <path
+        d="M6 4.5h12a1.5 1.5 0 011.5 1.5v12a1.5 1.5 0 01-1.5 1.5H6A1.5 1.5 0 014.5 18V6A1.5 1.5 0 016 4.5z"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        fill="color-mix(in srgb, currentColor 8%, transparent)"
+      />
+      <path
+        d="M8.5 8.5c0-1.1.9-2 2-2s2 .9 2 2-.9 2-2 2-2-.9-2-2z"
+        stroke="currentColor"
+        strokeWidth="1.3"
+      />
+      <path
+        d="M7 16c.8-1.6 2-2.5 5-2.5s4.2.9 5 2.5"
+        stroke="currentColor"
+        strokeWidth="1.3"
+        strokeLinecap="round"
+      />
+      <path d="M9 6.5V4M15 6.5V4" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
+    </svg>
+  );
+}
+
 export function IconCamera({ className, size = defaultSize }: IconProps) {
   return (
     <svg className={className} width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden>

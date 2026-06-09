@@ -38,9 +38,11 @@ import {
 } from "@/components/character/SheetPopupLoadoutBar";
 import { SheetPopupPortrait } from "@/components/character/SheetPopupPortrait";
 import { SheetPopupQuickBar } from "@/components/character/SheetPopupQuickBar";
+import { PersonalBestiaryPanel } from "@/components/character/PersonalBestiaryPanel";
 import {
   IconArmor,
   IconBackpack,
+  IconBestiary,
   IconCoins,
   IconLightning,
   IconSword,
@@ -54,15 +56,18 @@ import {
   type AttributeKey,
 } from "@/lib/character/rules";
 import { SheetPdfExportButton } from "@/components/character/SheetPdfExportButton";
+import { SheetEditRequestButton } from "@/components/character/SheetEditRequestButton";
+import { PlayerEditRequestNotice } from "@/components/vtt/PlayerEditRequestNotice";
 import { useSheetPdfDeepLink } from "@/hooks/useSheetPdfDeepLink";
 import { OrnamentCard } from "@/components/ui/OrnamentCard";
 import { SectionDivider } from "@/components/ui/SectionDivider";
 import { Portrait } from "@/components/vtt/Portrait";
 import { sanitizePortraitFocus } from "@/lib/media/portrait-focus";
+import { isTypingTarget } from "@/lib/vtt/keyboard-guard";
 import "./sheet.css";
 import "./sheet-popup.css";
 
-type Tab = "inventário" | "tesouro" | "habilidades" | "magias";
+type Tab = "inventário" | "tesouro" | "habilidades" | "magias" | "bestiário";
 
 type Props = {
   character: CharacterSheetData;
@@ -76,6 +81,8 @@ type Props = {
   variant?: "page" | "popup";
   /** Oculta botão inline (export fica na barra da janela Foundry) */
   hidePdfExport?: boolean;
+  /** Botão de solicitar edição ao mestre (fichas em campanha) */
+  showEditRequest?: boolean;
 };
 
 const PLAYER_PACKS: CompendiumPackId[] = ["armas", "habilidades", "magias", "equipamentos"];
@@ -89,6 +96,7 @@ export function CharacterSheet({
   embedded = false,
   variant = "page",
   hidePdfExport = false,
+  showEditRequest = false,
 }: Props) {
   const canEditPortrait = canEditPortraitProp ?? canEdit;
   const [tab, setTab] = useState<Tab>("inventário");
@@ -97,6 +105,10 @@ export function CharacterSheet({
   const [pickerPack, setPickerPack] = useState<CompendiumPackId>("armas");
   const [selectedInvId, setSelectedInvId] = useState<string | null>(null);
   const [localSheet, setLocalSheet] = useState<CharacterSheetData | null>(null);
+  const [bestiaryCount, setBestiaryCount] = useState<number | undefined>(undefined);
+
+  const adventureId = character.adventureId?.trim() || null;
+  const showBestiaryTab = Boolean(adventureId);
 
   const { snapshot, refresh, applySnapshot } = useRoomSync(roomId);
   const sheetBase = localSheet ?? character;
@@ -260,23 +272,26 @@ export function CharacterSheet({
   }, [tab, character.id]);
 
   useEffect(() => {
-    function isTypingTarget(target: EventTarget | null): boolean {
-      if (!(target instanceof HTMLElement)) return false;
-      return Boolean(target.closest("input, textarea, select, [contenteditable='true']"));
+    if (!showBestiaryTab && tab === "bestiário") {
+      setTab("inventário");
     }
+  }, [showBestiaryTab, tab]);
 
+  useEffect(() => {
     function onKey(e: KeyboardEvent) {
-      if (e.key !== "Delete" || !canEdit || tab === "tesouro" || pickerOpen) return;
+      if (e.key !== "Delete" && e.key !== "Backspace") return;
+      if (!canEdit || tab === "tesouro" || tab === "bestiário" || pickerOpen) return;
       if (isTypingTarget(e.target)) return;
       if (!selectedInvId) return;
       const row = filtered.find((r) => r.ref.instanceId === selectedInvId);
       if (!row) return;
       e.preventDefault();
+      e.stopImmediatePropagation();
       removeItem(selectedInvId);
     }
 
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    window.addEventListener("keydown", onKey, true);
+    return () => window.removeEventListener("keydown", onKey, true);
   }, [canEdit, tab, pickerOpen, selectedInvId, filtered, inventory]);
 
   const { identity, resources, movement, tactical } = live;
@@ -327,6 +342,7 @@ export function CharacterSheet({
     tesouro: "Tesouro e riquezas",
     habilidades: "Habilidades",
     magias: "Magias",
+    bestiário: "Bestiário pessoal",
   };
 
   const sheetTabs: Array<{
@@ -358,6 +374,16 @@ export function CharacterSheet({
       icon: <IconWand size={16} className="sheet-tab__icon" />,
       count: tabCounts.magias,
     },
+    ...(showBestiaryTab
+      ? [
+          {
+            id: "bestiário" as const,
+            label: "Bestiário Pessoal",
+            icon: <IconBestiary size={16} className="sheet-tab__icon" />,
+            count: bestiaryCount,
+          },
+        ]
+      : []),
   ];
 
   const sectionIcons: Record<string, ReactNode> = {
@@ -398,7 +424,7 @@ export function CharacterSheet({
         >
           {tabTitles[tab]}
         </h2>
-        {canEdit && tab !== "tesouro" ? (
+        {canEdit && tab !== "tesouro" && tab !== "bestiário" ? (
           <button type="button" className="btn" onClick={() => setPickerOpen(true)}>
             + Compêndio
           </button>
@@ -410,6 +436,13 @@ export function CharacterSheet({
           characterId={character.id}
           seed={live.lootEconomy ?? character.lootEconomy}
           canEdit={canEdit}
+        />
+      ) : tab === "bestiário" && adventureId ? (
+        <PersonalBestiaryPanel
+          adventureId={adventureId}
+          roomId={roomId}
+          characterName={live.name}
+          onCountChange={setBestiaryCount}
         />
       ) : filtered.length === 0 ? (
         <div className="inv-empty">
@@ -717,15 +750,30 @@ export function CharacterSheet({
 
     return (
       <div className="sheet-shell sheet-shell--popup">
-        {!hidePdfExport ? (
+        {!hidePdfExport || showEditRequest ? (
           <div className="sheet-popup-export">
-            <SheetPdfExportButton
-              character={live}
-              inventory={inventory}
-              characterId={character.id}
-              roomId={inRoom ? roomId : undefined}
-            />
+            {showEditRequest && adventureId ? (
+              <SheetEditRequestButton
+                characterId={character.id}
+                adventureId={adventureId}
+                roomId={inRoom ? roomId : undefined}
+              />
+            ) : null}
+            {!hidePdfExport ? (
+              <SheetPdfExportButton
+                character={live}
+                inventory={inventory}
+                characterId={character.id}
+                roomId={inRoom ? roomId : undefined}
+              />
+            ) : null}
           </div>
+        ) : null}
+        {showEditRequest ? (
+          <PlayerEditRequestNotice
+            characterId={character.id}
+            adventureId={adventureId ?? undefined}
+          />
         ) : null}
         <OrnamentCard className="sheet-popup-top">
           <div className="sheet-popup-top__portrait-col">
@@ -757,7 +805,10 @@ export function CharacterSheet({
                 className="portrait--sheet-popup"
               />
             )}
+          </div>
 
+          <div className="sheet-popup-top__identity">
+            <CharacterSheetPopupHero name={live.name} identity={identity} />
             <SheetPopupCombatStrip
               defesa={displayDefesa}
               iniciativa={tactical.iniciativa}
@@ -768,10 +819,6 @@ export function CharacterSheet({
               hpMax={resources.vida.max}
               hpPct={hpPct}
             />
-          </div>
-
-          <div className="sheet-popup-top__identity">
-            <CharacterSheetPopupHero name={live.name} identity={identity} />
           </div>
 
           <div className="sheet-popup-top__attrs" role="group" aria-label="Atributos">
@@ -893,6 +940,12 @@ function InventoryRow({
               if (e.key === "Enter" || e.key === " ") {
                 e.preventDefault();
                 onSelect?.();
+                return;
+              }
+              if (e.key === "Delete" || e.key === "Backspace") {
+                e.preventDefault();
+                e.stopPropagation();
+                onRemove();
               }
             }
           : undefined

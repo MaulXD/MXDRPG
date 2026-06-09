@@ -1,7 +1,8 @@
 import { redirect, notFound } from "next/navigation";
 import { CharacterSheet } from "@/components/character/CharacterSheet";
 import { MedievalFrame } from "@/components/ui/MedievalFrame";
-import { canEditCharacter, resolveCharacter } from "@/lib/character/characters";
+import { canEditCharacterWithGrant, resolveCharacter } from "@/lib/character/characters";
+import { isAdventureBoundCharacter } from "@/lib/character/adventure-bind";
 import { canEditCharacterPortrait } from "@/lib/auth/portrait-access-server";
 import { signInPath } from "@/lib/auth/post-auth-redirect";
 import { getSession } from "@/lib/auth/session";
@@ -21,8 +22,10 @@ export default async function PersonagemPage({ params }: Props) {
   const character = await resolveCharacter(id);
   if (!character) notFound();
 
-  const canEdit = canEditCharacter(character, session.user.id, session.user.role);
+  const canEdit = canEditCharacterWithGrant(character, session.user.id, session.user.role);
   const canEditPortrait = canEdit || (await canEditCharacterPortrait(character, session.user));
+  const isOwner = character.ownerId === session.user.id;
+  const showEditRequest = isOwner && isAdventureBoundCharacter(character);
 
   const compendium = Object.fromEntries(
     PLAYER_PACKS.map((p) => [p, getPackEntries(p, { role: session.user.role })])
@@ -38,6 +41,7 @@ export default async function PersonagemPage({ params }: Props) {
           compendium={compendium}
           roomId={character.adventureId ?? character.campaignRoomId ?? "demo"}
           variant="popup"
+          showEditRequest={showEditRequest}
         />
       </MedievalFrame>
     </div>

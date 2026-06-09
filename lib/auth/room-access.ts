@@ -1,4 +1,7 @@
-import { canEditCharacter } from "@/lib/character/demo-characters";
+import {
+  canEditCharacterWithGrant,
+  type CharacterEditAccessOptions,
+} from "@/lib/character/edit-access";
 import {
   characterBelongsToAdventure,
   resolveAdventureId,
@@ -248,13 +251,16 @@ export function canPlaceRoomActorOnBoard(
 export function canEditRoomActor(
   room: RoomAuthContext,
   actor: Pick<CharacterSheet, "id" | "ownerId" | "adventureId" | "campaignRoomId">,
-  user: SessionUser | null | undefined
+  user: SessionUser | null | undefined,
+  options?: CharacterEditAccessOptions
 ): boolean {
   if (!canParticipateInRoom(room, user)) return false;
   const adventureId = room.adventureId ?? room.roomId;
   const authActor = actorForRoomAuth(room, actor);
   if (!characterBelongsToAdventure(authActor, adventureId)) return false;
-  if (user) return canEditCharacter(authActor as CharacterSheet, user.id, user.role);
+  if (user) {
+    return canEditCharacterWithGrant(authActor as CharacterSheet, user.id, user.role, options);
+  }
   return (
     room.roomId === "demo" &&
     DEMO_PLAYABLE_ACTOR_IDS.includes(actor.id as (typeof DEMO_PLAYABLE_ACTOR_IDS)[number])

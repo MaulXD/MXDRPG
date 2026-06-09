@@ -174,7 +174,7 @@ function actionFromEntry(
 
   const rangeHex = tactical?.alcanceHex?.value ?? 1;
   const rawPa = tactical?.custoPontosAcao?.value ?? PA_DEFAULT_ACTION_COST;
-  const paCost = rawPa;
+  const paCost = Math.max(PA_DEFAULT_ACTION_COST, rawPa);
   const damageFormula = weapon?.dano?.formula ?? "1d4";
   const damageType = weapon?.dano?.tipo ?? "contundente";
 

@@ -2784,10 +2784,12 @@
 .room-chat--rail {
   flex: 1;
   min-height: 0;
+  min-width: 0;
   width: 100%;
   max-width: 100%;
   height: 100%;
   overflow: hidden;
+  box-sizing: border-box;
   border: none;
   border-radius: 0;
   background: transparent;
@@ -2823,6 +2825,9 @@
   border-radius: var(--radius);
   border: 1px solid var(--glass-border);
   background: rgba(0, 0, 0, 0.18);
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .room-chat-event--system {
@@ -2908,8 +2913,8 @@
 
 .room-chat-event-icon {
   flex-shrink: 0;
-  width: 2rem;
-  height: 2rem;
+  width: 2.35rem;
+  height: 2.35rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2917,6 +2922,22 @@
   font-size: 1rem;
   background: rgba(180, 80, 60, 0.15);
   border: 1px solid rgba(180, 80, 60, 0.35);
+  overflow: hidden;
+}
+
+/* Dado 3D compacto — evita estourar o rail do chat */
+.room-chat-event-icon .dice-3d--sm {
+  width: 2.1rem;
+  gap: 0;
+}
+
+.room-chat-event-icon .dice-3d--sm .dice-3d-stage {
+  width: 2.1rem;
+  height: 2.1rem;
+}
+
+.room-chat-event-icon .dice-3d--sm .dice-3d-label {
+  display: none;
 }
 
 .room-chat-event--hit .room-chat-event-icon {
@@ -2962,6 +2983,8 @@
   font-size: 0.82rem;
   line-height: 1.45;
   color: var(--text);
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .room-chat-event--defeat .room-chat-combat-summary {
@@ -3003,6 +3026,8 @@
   font-size: 0.68rem;
   color: var(--text-dim);
   line-height: 1.4;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .room-chat-event--chat {
@@ -4122,11 +4147,18 @@
 
 .room-chat-input {
   display: flex;
-  gap: 0.5rem;
+  align-items: center;
+  gap: 0.45rem;
+  width: 100%;
+  min-width: 0;
+  flex-shrink: 0;
+  box-sizing: border-box;
 }
 
 .room-chat-input input {
-  flex: 1;
+  flex: 1 1 auto;
+  min-width: 0;
+  width: 100%;
   padding: 0.5rem 0.75rem;
   border-radius: var(--radius-pill);
   border: 1px solid var(--glass-border);
@@ -4134,6 +4166,14 @@
   color: var(--text);
   font-family: inherit;
   font-size: 0.85rem;
+  box-sizing: border-box;
+}
+
+.room-chat-input .btn {
+  flex: 0 0 auto;
+  white-space: nowrap;
+  padding: 0.45rem 0.75rem;
+  font-size: 0.78rem;
 }
 
 .dice-roller {
