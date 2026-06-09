@@ -281,6 +281,210 @@
   margin-top: 0.65rem;
 }
 
+.monster-sheet__xp {
+  margin-top: 0.85rem;
+  padding-top: 0.85rem;
+  border-top: 1px solid var(--glass-border);
+}
+
+.monster-sheet__xp-hero {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 0.85rem;
+  padding: 0.7rem 0.8rem;
+  border-radius: 10px;
+  border: 1px solid rgba(201, 169, 98, 0.35);
+  background: linear-gradient(135deg, rgba(201, 169, 98, 0.14), rgba(122, 163, 201, 0.08));
+}
+
+.monster-sheet__xp-hero-copy {
+  min-width: 0;
+}
+
+.monster-sheet__xp-hero-copy .monster-sheet__section-label {
+  margin-bottom: 0.2rem;
+}
+
+.monster-sheet__xp-formula {
+  margin: 0;
+  font-size: 0.74rem;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.monster-sheet__xp-hero-value {
+  display: flex;
+  align-items: baseline;
+  gap: 0.25rem;
+  flex-shrink: 0;
+}
+
+.monster-sheet__xp-value {
+  font-family: var(--font-display);
+  font-size: clamp(1.55rem, 4vw, 1.95rem);
+  line-height: 1;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+
+.monster-sheet__xp-unit {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.monster-sheet__xp-lead {
+  margin: 0.5rem 0 0;
+  font-size: 0.72rem;
+  line-height: 1.45;
+  color: var(--text-dim);
+}
+
+.monster-sheet__xp-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.45rem;
+  margin-top: 0.55rem;
+}
+
+@media (max-width: 560px) {
+  .monster-sheet__xp-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .monster-sheet__xp-hero {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+.monster-sheet__xp-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 0;
+  padding: 0.5rem 0.55rem;
+  border-radius: 8px;
+  border: 1px solid var(--glass-border);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.monster-sheet__xp-card--highlight {
+  border-color: rgba(201, 169, 98, 0.4);
+  background: rgba(201, 169, 98, 0.08);
+}
+
+.monster-sheet__xp-card--elite {
+  border-color: rgba(122, 163, 201, 0.35);
+}
+
+.monster-sheet__xp-card--colossal {
+  border-color: rgba(200, 120, 80, 0.35);
+}
+
+.monster-sheet__xp-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.35rem;
+}
+
+.monster-sheet__xp-card-label {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.monster-sheet__xp-card-threat {
+  font-size: 0.6rem;
+  font-weight: 600;
+  color: var(--accent-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.monster-sheet__xp-card-value {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  line-height: 1.15;
+  color: var(--text-strong);
+  font-variant-numeric: tabular-nums;
+}
+
+.monster-sheet__xp-card-value span {
+  font-family: var(--font-ui);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.monster-sheet__xp-card-detail {
+  margin: 0;
+  font-size: 0.64rem;
+  line-height: 1.35;
+  color: var(--text-dim);
+}
+
+.monster-sheet__xp-gap {
+  margin-top: 0.55rem;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+.monster-sheet__xp-gap summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--text-muted);
+  list-style: none;
+}
+
+.monster-sheet__xp-gap summary::-webkit-details-marker {
+  display: none;
+}
+
+.monster-sheet__xp-gap summary::before {
+  content: "▸ ";
+  color: var(--accent-muted);
+}
+
+.monster-sheet__xp-gap[open] summary::before {
+  content: "▾ ";
+}
+
+.monster-sheet__xp-gap-list {
+  margin: 0.4rem 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.monster-sheet__xp-gap-list li {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.3rem 0.4rem;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.03);
+  font-size: 0.68rem;
+}
+
+.monster-sheet__xp-gap-list strong {
+  font-variant-numeric: tabular-nums;
+  color: var(--accent);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
 .monster-sheet__section-label {
   margin: 0 0 0.45rem;
   font-size: 0.68rem;

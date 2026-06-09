@@ -10,6 +10,7 @@ import type { CombatActionOption } from "@/lib/combat/types";
 import { biomeDisplayName, resolveMonsterBiomes } from "@/lib/vtt/monster-biomes";
 import { getMonsterTemplate } from "@/lib/vtt/monsters";
 import { CREATURE_SIZE_HEX_LABEL, CREATURE_SIZE_PT } from "@/lib/vtt/monster-sizes";
+import { monsterXpRewardsForThreat, XP_LEVEL_GAP_HINTS } from "@/lib/character/xp";
 import { OrnamentCard } from "@/components/ui/OrnamentCard";
 import "./monster-sheet.css";
 
@@ -60,6 +61,10 @@ export function MonsterCompendiumSheet({ entryId, onClose, variant = "dialog" }:
   const template = getMonsterTemplate(entryId);
   const entry = getEntry("monstros", entryId);
   const [tab, setTab] = useState<"ficha" | "livro">("ficha");
+  const xpRewards = useMemo(
+    () => (template ? monsterXpRewardsForThreat(template.ameaca) : []),
+    [template?.ameaca, entryId]
+  );
 
   useEffect(() => {
     setTab("ficha");
@@ -82,6 +87,7 @@ export function MonsterCompendiumSheet({ entryId, onClose, variant = "dialog" }:
   const biomes = resolveMonsterBiomes(template);
   const color = compendiumTypeColor(entry.type);
   const descriptionHtml = String(entry.system.description ?? template.description ?? "");
+  const baseXp = xpRewards[0]?.poolXp ?? 0;
 
   return (
     <div className={`monster-sheet monster-sheet--${variant}`}>
@@ -186,6 +192,58 @@ export function MonsterCompendiumSheet({ entryId, onClose, variant = "dialog" }:
                 </p>
               </div>
             ) : null}
+
+            <section className="monster-sheet__xp" aria-labelledby="monster-sheet-xp-title">
+              <div className="monster-sheet__xp-hero">
+                <div className="monster-sheet__xp-hero-copy">
+                  <p id="monster-sheet-xp-title" className="monster-sheet__section-label">
+                    Recompensa de XP
+                  </p>
+                  <p className="monster-sheet__xp-formula">100 × ameaça {template.ameaca}</p>
+                </div>
+                <div className="monster-sheet__xp-hero-value">
+                  <span className="monster-sheet__xp-value">{baseXp.toLocaleString("pt-BR")}</span>
+                  <span className="monster-sheet__xp-unit">XP</span>
+                </div>
+              </div>
+
+              <p className="monster-sheet__xp-lead">
+                Pool ao derrotar · dividido entre os participantes elegíveis da mesa.
+              </p>
+
+              <div className="monster-sheet__xp-grid">
+                {xpRewards.map((row) => (
+                  <article
+                    key={row.variant}
+                    className={`monster-sheet__xp-card monster-sheet__xp-card--${row.variant}${
+                      row.variant === "normal" ? " monster-sheet__xp-card--highlight" : ""
+                    }`}
+                  >
+                    <header className="monster-sheet__xp-card-head">
+                      <span className="monster-sheet__xp-card-label">{row.label}</span>
+                      <span className="monster-sheet__xp-card-threat">nv {row.threatLevel}</span>
+                    </header>
+                    <p className="monster-sheet__xp-card-value">
+                      {row.poolXp.toLocaleString("pt-BR")}
+                      <span> XP</span>
+                    </p>
+                    <p className="monster-sheet__xp-card-detail">{row.detail}</p>
+                  </article>
+                ))}
+              </div>
+
+              <details className="monster-sheet__xp-gap">
+                <summary>Ajuste por nível do grupo</summary>
+                <ul className="monster-sheet__xp-gap-list">
+                  {XP_LEVEL_GAP_HINTS.map((hint) => (
+                    <li key={hint.gap}>
+                      <span>{hint.gap}</span>
+                      <strong>{hint.multiplier}</strong>
+                    </li>
+                  ))}
+                </ul>
+              </details>
+            </section>
           </OrnamentCard>
 
           <section className="monster-sheet__actions" aria-labelledby="monster-sheet-actions-title">

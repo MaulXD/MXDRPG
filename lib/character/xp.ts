@@ -24,6 +24,50 @@ export function xpFromMonster(monsterLevel: number, options?: { elite?: boolean;
   return xp;
 }
 
+export type MonsterXpVariantReward = {
+  variant: "normal" | "elite" | "colossal";
+  label: string;
+  threatLevel: number;
+  poolXp: number;
+  detail: string;
+};
+
+/** Recompensa de XP por variante de spawn (Cap. XII simplificado). */
+export function monsterXpRewardsForThreat(baseThreat: number): MonsterXpVariantReward[] {
+  const base = Math.max(1, Math.min(MAX_LEVEL, Math.floor(baseThreat)));
+  return [
+    {
+      variant: "normal",
+      label: "Padrão",
+      threatLevel: base,
+      poolXp: xpFromMonster(base),
+      detail: `100 × ameaça ${base}`,
+    },
+    {
+      variant: "elite",
+      label: "Elite",
+      threatLevel: Math.min(MAX_LEVEL, base + 1),
+      poolXp: xpFromMonster(Math.min(MAX_LEVEL, base + 1), { elite: true }),
+      detail: `ameaça +1 · bônus +50%`,
+    },
+    {
+      variant: "colossal",
+      label: "Colossal",
+      threatLevel: Math.min(MAX_LEVEL, base + 2),
+      poolXp: xpFromMonster(Math.min(MAX_LEVEL, base + 2)),
+      detail: `ameaça +2`,
+    },
+  ];
+}
+
+/** Multiplicadores quando o nível médio do grupo difere da ameaça do monstro. */
+export const XP_LEVEL_GAP_HINTS: ReadonlyArray<{ gap: string; multiplier: string }> = [
+  { gap: "Grupo 4+ níveis acima", multiplier: "25% do pool" },
+  { gap: "Grupo 2–3 níveis acima", multiplier: "50% do pool" },
+  { gap: "Diferença normal", multiplier: "100% do pool" },
+  { gap: "Grupo 2+ níveis abaixo", multiplier: "125% do pool" },
+];
+
 /** Reduz XP quando o grupo esta muito acima do monstro (N medio - M) */
 export function xpMultiplierForLevelGap(partyLevel: number, monsterLevel: number): number {
   const gap = partyLevel - monsterLevel;
