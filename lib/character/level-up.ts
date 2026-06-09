@@ -50,6 +50,16 @@ function ownedTalents(actor: CharacterSheet): CharacterTalent[] {
   return parseCharacterTalents(actor.identity.talentos);
 }
 
+/** Personagem sem vida — level-up não ressuscita. */
+export function isCharacterDead(actor: CharacterSheet): boolean {
+  return actor.resources.vida.value <= 0;
+}
+
+function hpValueAfterLevelUp(actor: CharacterSheet, newMax: number): number {
+  if (isCharacterDead(actor)) return 0;
+  return newMax;
+}
+
 export function canLevelUp(actor: CharacterSheet): boolean {
   const nivel = actor.identity.nivel;
   const xpTotal = actor.identity.xpTotal ?? 0;
@@ -159,7 +169,9 @@ export function previewLevelUp(actor: CharacterSheet, choices?: LevelUpChoices):
   const lines = [
     `Nível ${next}`,
     `+${Math.max(1, hpGain)} HP (dado da classe + CON)`,
-    "Cura total de vida",
+    isCharacterDead(actor)
+      ? "Vida máxima sobe — personagem permanece morto/inconsciente"
+      : "Cura total de vida",
     `Bônus de proficiência +${proficiencyBonus(next)}`,
   ];
 
@@ -255,7 +267,7 @@ export function applyLevelUp(actor: CharacterSheet, choices: LevelUpChoices = {}
     attributes,
     culinary,
     resources: {
-      vida: { value: newMax, max: newMax },
+      vida: { value: hpValueAfterLevelUp(actor, newMax), max: newMax },
       pontosAcao: { value: paMax, max: paMax },
     },
     tactical: {

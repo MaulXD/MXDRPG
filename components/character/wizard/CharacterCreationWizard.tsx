@@ -25,6 +25,9 @@ import {
   sanitizeWizardDraftForSave,
   validateWizardDraft,
 } from "@/lib/character/build-from-wizard";
+import { characterToWizardDraft } from "@/lib/character/wizard-from-character";
+import type { CharacterSheet } from "@/lib/character/types";
+import type { SheetEditScope } from "@/lib/character/sheet-edit-request";
 import {
   EMPTY_WIZARD_DRAFT,
   type CharacterWizardDraft,
@@ -108,6 +111,12 @@ const STEP_SHORTCUTS: Partial<Record<(typeof STEPS)[number], string>> = {
   Retrato: "Pode pular e adicionar imagem depois",
 };
 
+type EditMode = {
+  scope: SheetEditScope;
+  existingCharacter: CharacterSheet;
+  requestId: string;
+};
+
 type Props = {
   slotsLeft: number;
   /** Ficha vinculada a esta aventura. */
@@ -116,6 +125,7 @@ type Props = {
   /** @deprecated use adventureId */
   roomId?: string | null;
   roomName?: string | null;
+  editMode?: EditMode;
 };
 
 type PointBuyMode = "suggested" | "custom" | "baseline";
@@ -151,18 +161,25 @@ export function CharacterCreationWizard({
   adventureName = null,
   roomId = null,
   roomName = null,
+  editMode,
 }: Props) {
-  const adventureId = adventureIdProp ?? roomId;
+  const adventureId = adventureIdProp ?? roomId ?? editMode?.existingCharacter.adventureId ?? null;
   const label = adventureName ?? roomName;
   const router = useRouter();
+  const isEdit = Boolean(editMode);
   const [step, setStep] = useState(0);
-  const [draft, setDraft] = useState<CharacterWizardDraft>({
-    ...EMPTY_WIZARD_DRAFT,
-    pointBuy: suggestedPointBuyForClassAndRace(
-      EMPTY_WIZARD_DRAFT.classe,
-      EMPTY_WIZARD_DRAFT.raca,
-      EMPTY_WIZARD_DRAFT.linhagem
-    ),
+  const [draft, setDraft] = useState<CharacterWizardDraft>(() => {
+    if (editMode?.existingCharacter) {
+      return characterToWizardDraft(editMode.existingCharacter);
+    }
+    return {
+      ...EMPTY_WIZARD_DRAFT,
+      pointBuy: suggestedPointBuyForClassAndRace(
+        EMPTY_WIZARD_DRAFT.classe,
+        EMPTY_WIZARD_DRAFT.raca,
+        EMPTY_WIZARD_DRAFT.linhagem
+      ),
+    };
   });
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
@@ -353,13 +370,31 @@ export function CharacterCreationWizard({
     if (invalidAt !== null) {
       const message = stepError(invalidAt) ?? validateWizardDraft(draft);
       setStep(invalidAt);
-      setErr(message ?? "Revise os passos antes de criar");
+      setErr(message ?? isEdit ? "Revise os passos antes de salvar" : "Revise os passos antes de criar");
       return;
     }
     setBusy(true);
     setErr(null);
     try {
       const payload = sanitizeWizardDraftForSave(draft);
+
+      if (isEdit && editMode) {
+        const res = await fetch(`/api/characters/${editMode.existingCharacter.id}/edit-save`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "same-origin",
+          body: JSON.stringify({
+            requestId: editMode.requestId,
+            draft: payload,
+          }),
+        });
+        const data = (await res.json()) as { error?: string };
+        if (!res.ok) throw new Error(data.error ?? "Erro ao salvar");
+        router.push(`/personagem/${editMode.existingCharacter.id}`);
+        router.refresh();
+        return;
+      }
+
       const res = await fetch("/api/characters", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -945,7 +980,7 @@ export function CharacterCreationWizard({
                 onClick={finish}
                 disabled={busy || slotsLeft <= 0}
               >
-                {busy ? "Criando…" : "Criar personagem"}
+                {busy ? (isEdit ? "Salvando…" : "Criando…") : isEdit ? "Salvar alterações" : "Criar personagem"}
               </button>
             )}
           </div>

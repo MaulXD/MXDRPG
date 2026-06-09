@@ -563,6 +563,7 @@
 .foundry-dock-panel__body {
   flex: 1;
   min-height: 0;
+  min-width: 0;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -681,8 +682,9 @@
 
 .foundry-dock-panel--chat .room-chat,
 .foundry-dock-panel--dice .dice-roller {
-  padding: 0.85rem 0.95rem 1rem;
-  font-size: 0.9rem;
+  padding: 0.55rem 0.5rem 0.65rem;
+  font-size: 0.88rem;
+  box-sizing: border-box;
 }
 
 .foundry-dock-panel--dungeon .vtt-dungeon-panel {
@@ -842,6 +844,13 @@
   display: flex;
   flex-direction: column;
   min-height: 0;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.foundry-window--chat .room-chat,
+.foundry-dock-panel--chat .room-chat {
+  min-width: 0;
 }
 
 .foundry-window--character .foundry-window__body {
@@ -901,6 +910,12 @@
 .foundry-window--character .sheet-popup-top {
   flex-shrink: 0;
   width: 100%;
+}
+
+.foundry-window--character .sheet-popup-quickbar {
+  flex-shrink: 0;
+  width: 100%;
+  align-self: stretch;
 }
 
 .foundry-window--character .sheet-popup-body {
@@ -1170,6 +1185,134 @@
   font-size: 0.72rem;
   font-style: normal;
   color: var(--text-muted);
+}
+
+/* Sino de solicitações de edição — mesma altura do pill Online */
+.mesa-edit-requests-bell {
+  position: relative;
+}
+
+.mesa-edit-requests-bell__trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  padding: 0.35rem 0.55rem;
+  min-height: 2rem;
+  border-radius: 999px;
+  border: 1px solid var(--mesa-accent-border);
+  background: rgba(12, 14, 18, 0.82);
+  color: var(--text-primary);
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+}
+
+.mesa-edit-requests-bell__trigger:hover {
+  border-color: rgba(201, 169, 98, 0.55);
+}
+
+.mesa-edit-requests-bell__icon {
+  font-size: 0.95rem;
+  line-height: 1;
+}
+
+.mesa-edit-requests-bell__badge {
+  min-width: 1rem;
+  text-align: center;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: rgb(230, 190, 120);
+}
+
+.mesa-edit-requests-bell__panel {
+  position: absolute;
+  top: calc(100% + 0.4rem);
+  right: 0;
+  min-width: 16rem;
+  max-width: 22rem;
+  padding: 0.65rem 0.75rem;
+  z-index: 40;
+}
+
+.mesa-edit-requests-bell__title {
+  margin: 0 0 0.5rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+}
+
+.mesa-edit-requests-bell__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.mesa-edit-requests-bell__item {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.mesa-edit-requests-bell__item:last-child {
+  border-bottom: none;
+}
+
+.mesa-edit-requests-bell__item-head {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  margin-bottom: 0.45rem;
+}
+
+.mesa-edit-requests-bell__scope {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.mesa-edit-requests-bell__actions {
+  display: flex;
+  gap: 0.4rem;
+  justify-content: flex-end;
+}
+
+.player-edit-request-notice {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0 0.65rem;
+  padding: 0.45rem 0.65rem;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  background: rgba(18, 22, 32, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.player-edit-request-notice--approved {
+  border-color: rgba(107, 180, 95, 0.45);
+  background: rgba(20, 36, 24, 0.65);
+}
+
+.player-edit-request-notice__link {
+  font-weight: 600;
+  color: rgb(168, 210, 160);
+  text-decoration: underline;
+}
+
+.player-edit-request-notice__dismiss {
+  margin-left: auto;
+  font-size: 0.78rem;
+  opacity: 0.8;
+  cursor: pointer;
+  background: none;
+  border: none;
+  color: inherit;
 }
 
 .avatar-profile-form {

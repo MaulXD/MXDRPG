@@ -235,9 +235,13 @@
 
 .sheet-tabs {
   display: flex;
-  gap: 0.35rem;
-  margin-bottom: 1rem;
   flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  gap: 0.35rem;
+  width: 100%;
+  margin-bottom: 1rem;
 }
 
 .sheet-tab {
@@ -1629,4 +1633,86 @@
   border: 1px solid var(--border);
   background: var(--surface);
   color: var(--text);
+}
+
+/* Bestiário pessoal (aba da ficha) */
+.sheet-bestiary {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  max-height: min(52vh, 420px);
+  overflow-y: auto;
+  padding-right: 0.15rem;
+}
+
+.sheet-bestiary .vtt-player-bestiary__entry {
+  padding: 0.55rem 0.65rem;
+  border-radius: 8px;
+  border: 1px solid var(--glass-border);
+  background: rgba(0, 0, 0, 0.12);
+}
+
+.sheet-bestiary .vtt-player-bestiary__entry-title {
+  margin: 0 0 0.35rem;
+  font-size: 0.92rem;
+  font-family: var(--font-display);
+}
+
+.sheet-bestiary .vtt-player-bestiary__line {
+  margin: 0.2rem 0 0;
+  font-size: 0.8rem;
+  line-height: 1.4;
+}
+
+.sheet-bestiary .vtt-player-bestiary__attacks-label {
+  margin: 0 0 0.25rem;
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.sheet-bestiary .vtt-monster-knowledge__attacks {
+  list-style: none;
+  margin: 0.35rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.sheet-bestiary .vtt-monster-knowledge__attacks li {
+  font-size: 0.78rem;
+  line-height: 1.35;
+  padding: 0.35rem 0.45rem;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.sheet-bestiary .vtt-monster-knowledge__attack-time {
+  display: inline-block;
+  min-width: 2.8rem;
+  margin-right: 0.35rem;
+  color: var(--text-dim);
+  font-size: 0.72rem;
+}
+
+.sheet-bestiary .vtt-monster-knowledge__miss {
+  color: var(--text-dim);
+}
+
+.sheet-bestiary__empty,
+.sheet-bestiary__muted {
+  padding: 2rem 1rem;
+  text-align: center;
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: rgba(232, 226, 214, 0.72);
+}
+
+.sheet-bestiary__error {
+  padding: 1rem;
+  text-align: center;
+  font-size: 0.85rem;
+  color: #e07a7a;
 }

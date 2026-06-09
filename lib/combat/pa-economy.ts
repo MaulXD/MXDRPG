@@ -8,7 +8,7 @@ import type { MonsterTier } from "@/lib/vtt/monsters";
 export const PA_RECOVERY_PER_TURN = 5;
 
 /** Máximo de PA acumulados no pool entre turnos (sobra). */
-export const PA_ACCUMULATION_CAP_DEFAULT = 9;
+export const PA_ACCUMULATION_CAP_DEFAULT = 8;
 
 /** PA de recuperação / pool para monstros comuns. */
 export const MONSTER_PA_DEFAULT = 6;
