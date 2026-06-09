@@ -1,12 +1,15 @@
 import Link from "next/link";
 import { AdventureLobby } from "@/components/adventure/AdventureLobby";
 import { MedievalFrame } from "@/components/ui/MedievalFrame";
-import { requireSession } from "@/lib/auth/session";
+import { signInPath } from "@/lib/auth/post-auth-redirect";
+import { getSession } from "@/lib/auth/session";
 import { dbEnabled } from "@/lib/db/enabled";
 import { redirect } from "next/navigation";
 
 export default async function EldarinMesasPage() {
-  const user = await requireSession();
+  const session = await getSession();
+  if (!session) redirect(signInPath("/eldarin"));
+  const user = session.user;
   if (dbEnabled() && !user.nickname) {
     redirect("/entrar/apelido?redirect=/eldarin");
   }

@@ -2,7 +2,6 @@ import "server-only";
 
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { isClerkEnabled } from "@/lib/auth/clerk-config";
-import { dbEnabled } from "@/lib/db/enabled";
 import type { SessionUser } from "@/lib/auth/types";
 import { ensureUserFromClerk } from "@/lib/db/users";
 
@@ -36,15 +35,7 @@ export async function resolveClerkSessionUser(): Promise<SessionUser | null> {
   try {
     return await ensureUserFromClerk(profile);
   } catch (err) {
-    if (dbEnabled()) {
-      console.error("[clerk-sync] ensureUserFromClerk failed:", err);
-      try {
-        return await ensureUserFromClerk(profile);
-      } catch (retryErr) {
-        console.error("[clerk-sync] ensureUserFromClerk retry failed:", retryErr);
-        return null;
-      }
-    }
+    console.error("[clerk-sync] ensureUserFromClerk failed, using ephemeral session:", err);
     return {
       id: `clerk-${userId}`,
       email,
@@ -52,6 +43,7 @@ export async function resolveClerkSessionUser(): Promise<SessionUser | null> {
       nickname: null,
       role: "member" as const,
       clerkId: userId,
+      oauthAvatarUrl: cu.imageUrl ?? null,
     };
   }
 }

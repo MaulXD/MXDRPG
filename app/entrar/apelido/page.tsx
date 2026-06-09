@@ -1,6 +1,11 @@
 import { redirect } from "next/navigation";
 import { NicknameForm } from "@/components/auth/NicknameForm";
-import { DEFAULT_POST_AUTH_PATH, safeRedirectPath, signInPath } from "@/lib/auth/post-auth-redirect";
+import {
+  apelidoPathWithRedirect,
+  DEFAULT_POST_AUTH_PATH,
+  safeRedirectPath,
+  signInPath,
+} from "@/lib/auth/post-auth-redirect";
 import { dbEnabled } from "@/lib/db/enabled";
 import { getSession } from "@/lib/auth/session";
 
@@ -11,7 +16,7 @@ export default async function ApelidoPage({ searchParams }: Props) {
   const session = await getSession();
   const dest = safeRedirectPath(params.redirect) ?? DEFAULT_POST_AUTH_PATH;
 
-  if (!session) redirect(signInPath("/entrar/apelido"));
+  if (!session) redirect(signInPath(apelidoPathWithRedirect(dest)));
   if (session.user.nickname) redirect(dest);
   if (!dbEnabled()) redirect(dest);
 
