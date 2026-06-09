@@ -325,6 +325,13 @@
     0 8px 20px rgba(0, 0, 0, 0.2);
 }
 
+.char-wizard-pick__head {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 0.35rem;
+}
+
 .char-wizard-pick__icon {
   width: 2.1rem;
   height: 2.1rem;

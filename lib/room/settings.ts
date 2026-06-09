@@ -1,3 +1,4 @@
+import { isTokenDefeated } from "@/lib/vtt/token-hp-display";
 import type { BattleToken } from "@/lib/vtt/types";
 import type { GmCreation } from "@/lib/room/gm-creations";
 
@@ -46,9 +47,12 @@ export function isMonsterToken(token: BattleToken): boolean {
 
 /** Remove HP numérico do token (para snapshot de jogadores). */
 export function redactMonsterHp(token: BattleToken): BattleToken {
+  const defeated = isTokenDefeated(token);
   return {
     ...token,
     vida: undefined,
     vidaMax: undefined,
+    vidaTemp: undefined,
+    defeated: defeated ? true : undefined,
   };
 }

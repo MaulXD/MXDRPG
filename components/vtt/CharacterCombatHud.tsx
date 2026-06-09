@@ -5,7 +5,7 @@ import type { CombatTrack } from "@/lib/room/combat";
 import { activeTokenId } from "@/lib/room/combat";
 import type { RoomSnapshot } from "@/lib/room/types";
 import type { BattleToken } from "@/lib/vtt/types";
-import { hpRatio } from "@/lib/vtt/token-hp-display";
+import { hpRatio, isTokenDefeated } from "@/lib/vtt/token-hp-display";
 import { listTokenEffectChips } from "@/lib/vtt/token-effects";
 import { nextCombatTurn } from "@/hooks/useRoomSync";
 import { useImageNaturalSize } from "@/hooks/useImageNaturalSize";
@@ -86,6 +86,7 @@ export function CharacterCombatHud({
   const isYourTurn = Boolean(activeId && token.id === activeId && isControlled);
   const ratio = hpRatio(token);
   const hpPct = Math.round(ratio * 100);
+  const defeated = isTokenDefeated(token);
   const hasStatusEffects = listTokenEffectChips(token).length > 0;
   const portraitSrc = firstPortraitDataUrl(token.imageUrl, portraitFallback);
   const imgSize = useImageNaturalSize(portraitSrc);
@@ -171,7 +172,9 @@ export function CharacterCombatHud({
             <span className="hud-name" title={token.name}>
               {token.name}
             </span>
-            {token.vidaMax != null ? (
+            {defeated ? (
+              <span className="hud-hp hud-hp--defeated">Morto</span>
+            ) : token.vidaMax != null ? (
               <span className="hud-hp">
                 {token.vida ?? 0} <span className="hud-hp-sep">/</span> {token.vidaMax}
               </span>

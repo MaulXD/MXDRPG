@@ -12,6 +12,7 @@ import { createChatId } from "../chat";
 import { formatSaveChatDetail } from "@/lib/combat/spell";
 import type { CombatActionRequest } from "@/lib/combat/types";
 import type { Axial } from "@/lib/vtt/hex-math";
+import { patchTokenVitals } from "@/lib/vtt/token-hp-display";
 import type { ChatMessage } from "../chat";
 import { activeTokenId } from "../combat";
 import { maybeRecordCombatUndo } from "../combat-undo";
@@ -112,7 +113,7 @@ export async function executeRoomAreaSpell(
     tokens: room.scene.tokens.map((t) => {
       if (t.id === casterTokenId) return { ...t, ...spentCaster, id: t.id };
       const hp = hpByToken.get(t.id);
-      if (hp != null) return { ...t, vida: hp };
+      if (hp != null) return patchTokenVitals(t, { vida: hp });
       return t;
     }),
   };

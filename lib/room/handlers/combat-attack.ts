@@ -10,6 +10,7 @@ import { defenderPatchAfterSaveSpell } from "@/lib/combat/spell-debuffs";
 import { formatSaveChatDetail, resolveSaveSpell, type SaveSpellResolution } from "@/lib/combat/spell";
 import { spellTargetCount } from "@/lib/combat/spell-target-count";
 import type { AttackResolution } from "@/lib/combat/attack";
+import { patchTokenVitals } from "@/lib/vtt/token-hp-display";
 import type { BattleToken } from "@/lib/vtt/types";
 import { ensureTokenCombatPa, syncActorPaFromToken } from "@/lib/combat/combat-token-pa";
 import { applyPaSpend } from "@/lib/combat/pa-turn";
@@ -130,8 +131,7 @@ export async function executeRoomAttack(
         if (t.id === attackerTokenId) return { ...t, ...spentAttacker, id: t.id };
         if (t.id === defenderTokenId) {
           return {
-            ...t,
-            vida: saveResult.defenderHpAfter,
+            ...patchTokenVitals(t, { vida: saveResult.defenderHpAfter }),
             ...(debuffPatch ?? {}),
             id: t.id,
           };
@@ -234,11 +234,10 @@ export async function executeRoomAttack(
       }
       if (t.id === defenderTokenId) {
         const tempAfter = last.defenderTempHpAfter;
-        return {
-          ...t,
+        return patchTokenVitals(t, {
           vida: finalHp,
           vidaTemp: tempAfter != null && tempAfter > 0 ? tempAfter : undefined,
-        };
+        });
       }
       return t;
     }),
@@ -493,7 +492,8 @@ async function executeRoomMultiTargetAttack(
       const hp = hpByToken.get(t.id);
       const debuff = debuffByToken.get(t.id);
       if (hp != null || debuff) {
-        return { ...t, ...(debuff ?? {}), ...(hp != null ? { vida: hp } : {}), id: t.id };
+        const patched = hp != null ? patchTokenVitals(t, { vida: hp }) : t;
+        return { ...patched, ...(debuff ?? {}), id: t.id };
       }
       return t;
     }),

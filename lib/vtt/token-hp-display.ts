@@ -32,14 +32,27 @@ export function formatTokenHpLine(token: BattleToken): string {
 }
 
 export function hpRatio(token: BattleToken): number {
+  if (isTokenDefeated(token)) return 0;
   if (token.vidaMax == null || token.vidaMax <= 0) return 1;
   const v = token.vida ?? token.vidaMax;
   return Math.max(0, Math.min(1, v / token.vidaMax));
 }
 
 export function isTokenDefeated(token: BattleToken): boolean {
+  if (token.defeated) return true;
   if (token.vidaMax == null) return false;
   return (token.vida ?? 0) <= 0;
+}
+
+/** Aplica vida/temp e sincroniza `defeated` quando há vidaMax. */
+export function patchTokenVitals(
+  token: BattleToken,
+  patch: Partial<Pick<BattleToken, "vida" | "vidaMax" | "vidaTemp">>
+): BattleToken {
+  const next = { ...token, ...patch };
+  if (next.vidaMax == null) return next;
+  const defeated = (next.vida ?? 0) <= 0;
+  return { ...next, defeated: defeated ? true : undefined };
 }
 
 const HP_BAR_GRAPHITE = "rgb(58, 58, 60)";

@@ -24,6 +24,8 @@ export type BattleToken = {
   nivel?: number;
   vida?: number;
   vidaMax?: number;
+  /** Derrotado (HP ≤ 0) — mantido quando HP do monstro é oculto para jogadores. */
+  defeated?: boolean;
   /** Vida temporária (absorve dano antes da vida normal). */
   vidaTemp?: number;
   defesa?: number;

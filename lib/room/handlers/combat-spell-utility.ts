@@ -5,6 +5,7 @@ import { isAreaSpellAction } from "@/lib/combat/area-spell";
 import type { CombatActionRequest } from "@/lib/combat/types";
 import type { ChatMessage } from "../chat";
 import { activeTokenId } from "../combat";
+import { patchTokenVitals } from "@/lib/vtt/token-hp-display";
 import { getRoom, persistRoom, toSnapshot } from "../internal/registry";
 import { syncCombatOrderWithTokens } from "../combat-order";
 import { maybeRecordCombatUndo } from "../combat-undo";
@@ -96,7 +97,9 @@ export async function executeRoomSpellUtility(
       }
       if (result.targetTokenId && t.id === result.targetTokenId) {
         const patch: typeof t = { ...t, ...(result.targetUpdate ?? {}), id: t.id };
-        if (result.targetHpAfter != null && t.vidaMax != null) patch.vida = result.targetHpAfter;
+        if (result.targetHpAfter != null && t.vidaMax != null) {
+          return patchTokenVitals(patch, { vida: result.targetHpAfter });
+        }
         return patch;
       }
       return t;

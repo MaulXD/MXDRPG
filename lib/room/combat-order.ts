@@ -1,12 +1,12 @@
 import { hasCondition } from "@/lib/combat/conditions";
+import { isTokenDefeated } from "@/lib/vtt/token-hp-display";
 import type { BattleToken } from "@/lib/vtt/types";
 import type { RoomState } from "./types";
 import { activeTokenId } from "./combat";
 
 /** Token derrotado (HP ≤ 0) — fora da ordem até ressuscitar. */
 export function isDefeatedToken(token: BattleToken): boolean {
-  if (token.vidaMax == null) return false;
-  return (token.vida ?? 0) <= 0;
+  return isTokenDefeated(token);
 }
 
 /** Sincroniza ordem de iniciativa com vida dos tokens. */
