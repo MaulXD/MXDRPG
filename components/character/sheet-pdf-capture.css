@@ -2,7 +2,7 @@
   position: fixed;
   left: -12000px;
   top: 0;
-  width: 920px;
+  width: 794px;
   z-index: -1;
   pointer-events: none;
   overflow: visible;
@@ -11,7 +11,7 @@
 }
 
 .sheet-pdf-capture {
-  width: 920px;
+  width: 794px;
   background: #121921;
 }
 

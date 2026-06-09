@@ -1,0 +1,529 @@
+/* Ficha popup — layout estilo D&D Beyond (tema Eldarin) */
+
+.sheet-shell--ddb {
+  --ddb-header: #4a1520;
+  --ddb-header-deep: #2d0c12;
+  --ddb-panel: #faf7f0;
+  --ddb-panel-border: #d8cfc0;
+  --ddb-ink: #1e1814;
+  --ddb-muted: #6a5c4e;
+  --ddb-prof: #2f6fed;
+  --ddb-hp: #3a9d55;
+  --ddb-pa: #a83232;
+  --ddb-gold: #b8922e;
+  background: #e8e2d6;
+  color: var(--ddb-ink);
+  gap: 0;
+  padding: 0;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.sheet-shell--ddb > .sheet-ddb-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.35rem;
+  padding: 0.35rem 0.5rem;
+  background: var(--ddb-header-deep);
+}
+
+.sheet-ddb-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.65rem 0.85rem 0.55rem;
+  background:
+    radial-gradient(ellipse 80% 120% at 15% 0%, rgba(255, 255, 255, 0.06), transparent 55%),
+    linear-gradient(135deg, var(--ddb-header) 0%, var(--ddb-header-deep) 100%);
+  color: #f8f2ea;
+}
+
+.sheet-ddb-header__name {
+  margin: 0;
+  font-family: var(--font-display, Georgia), serif;
+  font-size: clamp(1.15rem, 3.5vw, 1.55rem);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1.1;
+}
+
+.sheet-ddb-header__class {
+  margin: 0.2rem 0 0;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: rgba(248, 242, 234, 0.78);
+}
+
+.sheet-ddb-header__meta {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  flex-shrink: 0;
+}
+
+.sheet-ddb-header__level {
+  width: 2.35rem;
+  height: 2.35rem;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  background: rgba(0, 0, 0, 0.22);
+  font-family: var(--font-display, Georgia), serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+.sheet-ddb-header__xp {
+  min-width: 7.5rem;
+}
+
+.sheet-ddb-header__xp-text {
+  display: block;
+  font-size: 0.62rem;
+  color: rgba(248, 242, 234, 0.75);
+  margin-bottom: 0.15rem;
+  text-align: right;
+}
+
+.sheet-ddb-header__xp-bar {
+  height: 0.35rem;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.35);
+  overflow: hidden;
+}
+
+.sheet-ddb-header__xp-bar > span {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, #d4b356, #f0d878);
+  border-radius: inherit;
+}
+
+.sheet-ddb-attrs {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0.35rem;
+  padding: 0.45rem 0.65rem 0.55rem;
+  background: #f0ebe2;
+  border-bottom: 1px solid var(--ddb-panel-border);
+}
+
+.sheet-ddb-attr {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.08rem;
+  padding: 0.35rem 0.15rem 0.3rem;
+  background: var(--ddb-panel);
+  border: 1px solid var(--ddb-panel-border);
+  border-radius: 8px;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.65) inset;
+}
+
+.sheet-ddb-attr__label {
+  font-size: 0.58rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: var(--ddb-muted);
+}
+
+.sheet-ddb-attr__score {
+  font-size: 1.05rem;
+  line-height: 1;
+  font-weight: 700;
+}
+
+.sheet-ddb-attr__mod {
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: var(--ddb-muted);
+}
+
+.sheet-ddb-attr__mod--pos {
+  color: #2d6a3d;
+}
+
+.sheet-ddb-attr__mod--neg {
+  color: #8b3030;
+}
+
+.sheet-ddb-body {
+  display: grid;
+  grid-template-columns: minmax(108px, 0.85fr) minmax(0, 1.35fr) minmax(0, 1fr);
+  gap: 0.5rem;
+  padding: 0.5rem 0.55rem;
+  min-height: 0;
+}
+
+.sheet-ddb-col {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.sheet-ddb-portrait-wrap {
+  border-radius: 8px;
+  overflow: hidden;
+  border: 2px solid #fff;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+  background: #d8cfc0;
+}
+
+.sheet-shell--ddb .portrait--sheet-popup,
+.sheet-shell--ddb .sheet-popup-portrait {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  max-height: 168px;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.sheet-ddb-hex-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.25rem;
+}
+
+.sheet-ddb-hex {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.65rem;
+  padding: 0.2rem;
+  background: var(--ddb-panel);
+  border: 1px solid var(--ddb-panel-border);
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  text-align: center;
+}
+
+.sheet-ddb-hex__label {
+  font-size: 0.52rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ddb-muted);
+}
+
+.sheet-ddb-hex strong {
+  font-size: 0.78rem;
+  line-height: 1.1;
+}
+
+.sheet-ddb-resource {
+  background: var(--ddb-panel);
+  border: 1px solid var(--ddb-panel-border);
+  border-radius: 8px;
+  padding: 0.3rem 0.4rem 0.35rem;
+}
+
+.sheet-ddb-resource__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.35rem;
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: var(--ddb-muted);
+  margin-bottom: 0.2rem;
+}
+
+.sheet-ddb-resource__head strong {
+  font-size: 0.72rem;
+  color: var(--ddb-ink);
+}
+
+.sheet-ddb-resource__bar {
+  height: 0.42rem;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+.sheet-ddb-resource__bar > span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+}
+
+.sheet-ddb-resource__bar--hp > span {
+  background: var(--ddb-hp);
+}
+
+.sheet-ddb-resource__bar--pa > span {
+  background: var(--ddb-pa);
+}
+
+.sheet-ddb-ca {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.35rem 0.45rem;
+  background: var(--ddb-panel);
+  border: 1px solid var(--ddb-panel-border);
+  border-radius: 8px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--ddb-muted);
+}
+
+.sheet-ddb-ca strong {
+  font-size: 1rem;
+  color: var(--ddb-ink);
+}
+
+.sheet-ddb-panel {
+  background: var(--ddb-panel);
+  border: 1px solid var(--ddb-panel-border);
+  border-radius: 10px;
+  overflow: hidden;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.sheet-ddb-panel--skills {
+  min-height: 12rem;
+}
+
+.sheet-ddb-panel__head {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.4rem 0.55rem;
+  border-bottom: 1px solid var(--ddb-panel-border);
+  background: rgba(255, 255, 255, 0.55);
+}
+
+.sheet-ddb-panel__head h3 {
+  margin: 0;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ddb-muted);
+}
+
+.sheet-ddb-panel__icon {
+  font-size: 0.85rem;
+  opacity: 0.55;
+}
+
+.sheet-ddb-skill-list {
+  list-style: none;
+  margin: 0;
+  padding: 0.15rem 0;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.sheet-ddb-skill-list li {
+  margin: 0;
+}
+
+.sheet-ddb-skill {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 0.85rem 1.6rem 1fr auto;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.28rem 0.55rem;
+  border: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.12s;
+}
+
+.sheet-ddb-skill:hover:not(:disabled) {
+  background: rgba(47, 111, 237, 0.06);
+}
+
+.sheet-ddb-skill:disabled {
+  cursor: default;
+  opacity: 0.85;
+}
+
+.sheet-ddb-skill__dot,
+.sheet-ddb-save__dot {
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 50%;
+  border: 2px solid #b8b0a4;
+  background: transparent;
+}
+
+.sheet-ddb-skill__dot.is-on,
+.sheet-ddb-save__dot.is-on {
+  border-color: var(--ddb-prof);
+  background: var(--ddb-prof);
+}
+
+.sheet-ddb-skill__attr {
+  font-size: 0.58rem;
+  font-weight: 800;
+  color: var(--ddb-muted);
+}
+
+.sheet-ddb-skill__name {
+  font-size: 0.72rem;
+}
+
+.sheet-ddb-skill__mod {
+  font-size: 0.75rem;
+  min-width: 1.75rem;
+  text-align: right;
+}
+
+.sheet-ddb-skill.is-trained .sheet-ddb-skill__name {
+  font-weight: 700;
+}
+
+.sheet-ddb-saves {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.25rem 0.45rem;
+  padding: 0.4rem 0.5rem 0.5rem;
+}
+
+.sheet-ddb-save {
+  display: grid;
+  grid-template-columns: 0.7rem 1fr auto;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.68rem;
+}
+
+.sheet-ddb-save__label {
+  color: var(--ddb-muted);
+}
+
+.sheet-ddb-save.is-trained .sheet-ddb-save__label {
+  font-weight: 700;
+  color: var(--ddb-ink);
+}
+
+.sheet-ddb-trait-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 0.4rem 0.5rem 0.5rem;
+}
+
+.sheet-ddb-trait {
+  display: flex;
+  flex-direction: column;
+  gap: 0.08rem;
+  padding: 0.35rem 0.45rem;
+  border-radius: 6px;
+  border: 1px solid var(--ddb-panel-border);
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.sheet-ddb-trait--accent {
+  border-color: rgba(184, 146, 46, 0.45);
+  background: rgba(184, 146, 46, 0.08);
+}
+
+.sheet-ddb-trait__tag {
+  font-size: 0.55rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ddb-muted);
+}
+
+.sheet-ddb-trait__value {
+  font-size: 0.72rem;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.sheet-ddb-culinary {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.25rem;
+  padding: 0.4rem 0.5rem 0.5rem;
+}
+
+.sheet-ddb-culinary__item {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.25rem;
+  font-size: 0.62rem;
+  color: var(--ddb-muted);
+  padding: 0.2rem 0.25rem;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.45);
+}
+
+.sheet-ddb-culinary__item strong {
+  color: var(--ddb-ink);
+}
+
+.sheet-ddb-loadout {
+  padding: 0 0.55rem;
+}
+
+.sheet-ddb-drawer {
+  padding: 0.35rem 0.55rem 0.55rem;
+  border-top: 1px solid var(--ddb-panel-border);
+  background: #f0ebe2;
+}
+
+.sheet-shell--ddb .sheet-ddb-drawer .ornament-card {
+  background: var(--ddb-panel);
+  border-color: var(--ddb-panel-border);
+  box-shadow: none;
+}
+
+.sheet-shell--ddb .sheet-tabs {
+  border-color: var(--ddb-panel-border);
+}
+
+.sheet-shell--ddb .sheet-tab--active {
+  background: var(--ddb-panel);
+  color: var(--ddb-ink);
+}
+
+@media (max-width: 720px) {
+  .sheet-ddb-body {
+    grid-template-columns: 1fr;
+  }
+
+  .sheet-ddb-attrs {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.foundry-window--character .mf--sheet-page:has(.sheet-shell--ddb) {
+  background: transparent;
+  --mf-pad: 0;
+  --mf-inset: 0;
+  padding: 0;
+  border: none;
+  box-shadow: none;
+}
+
+.foundry-window--character .mf--sheet-page:has(.sheet-shell--ddb)::before,
+.foundry-window--character .mf--sheet-page:has(.sheet-shell--ddb)::after {
+  display: none;
+}
+
+.foundry-window--character .sheet-shell--ddb {
+  background: #e8e2d6;
+  border-radius: 8px;
+}
+
+.foundry-window--character .sheet-shell--ddb .sheet-ddb-body {
+  min-height: 280px;
+}

@@ -97,10 +97,16 @@ function FriendsChatFloatingWindow({
   );
 }
 
-export function FriendsChatProvider({ children }: { children: ReactNode }) {
+type ProviderProps = {
+  children: ReactNode;
+  /** Sessão do servidor — navbar renderiza Mensagens no primeiro paint. */
+  initialUserId?: string | null;
+};
+
+export function FriendsChatProvider({ children, initialUserId = null }: ProviderProps) {
   const [open, setOpen] = useState(false);
-  const [ready, setReady] = useState(false);
-  const [selfUserId, setSelfUserId] = useState<string | null>(null);
+  const [ready, setReady] = useState(initialUserId != null);
+  const [selfUserId, setSelfUserId] = useState<string | null>(initialUserId);
   const [friends, setFriends] = useState<FriendSummary[]>([]);
   const [inviteCount, setInviteCount] = useState(0);
   const [requestCount, setRequestCount] = useState(0);

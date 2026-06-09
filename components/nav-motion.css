@@ -33,9 +33,13 @@
   }
 }
 
-.site-header,
 .vtt-topbar {
   animation: ui-header-enter 0.36s var(--ease-out) both;
+}
+
+/* Navbar principal: sem fade-in — evita flicker com ícones que hidratam depois */
+.site-header {
+  animation: none;
 }
 
 .page-enter,
@@ -115,6 +119,10 @@
 
   .vtt-topbar-shell {
     transition: none;
+  }
+
+  .vtt-chrome--topbar-hidden .vtt-main {
+    padding-top: 0.5rem;
   }
 
   .nav-link::after {

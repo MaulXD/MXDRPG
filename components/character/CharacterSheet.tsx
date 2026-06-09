@@ -28,14 +28,12 @@ import { WizardHoverTip } from "@/components/character/wizard/WizardHoverTip";
 import { SubclassTrackPanel } from "@/components/character/SubclassTrackPanel";
 import { CombatLoadoutPanel } from "@/components/character/CombatLoadoutPanel";
 import { LootEconomyPanel } from "@/components/character/LootEconomyPanel";
-import { CharacterSheetPopupHero } from "@/components/character/CharacterSheetPopupHero";
-import { SheetPopupCombatStrip } from "@/components/character/SheetPopupCombatStrip";
 import {
   SheetPopupLoadoutBar,
   type LoadoutPatch,
 } from "@/components/character/SheetPopupLoadoutBar";
 import { SheetPopupPortrait } from "@/components/character/SheetPopupPortrait";
-import { SheetPopupQuickBar } from "@/components/character/SheetPopupQuickBar";
+import { SheetPopupDdbView } from "@/components/character/SheetPopupDdbView";
 import { PersonalBestiaryPanel } from "@/components/character/PersonalBestiaryPanel";
 import {
   IconArmor,
@@ -754,115 +752,90 @@ export function CharacterSheet({
       </>
     );
 
-    return (
-      <div className="sheet-shell sheet-shell--popup">
-        {!hidePdfExport || showEditRequest ? (
-          <div className="sheet-popup-export">
-            {showEditRequest && adventureId ? (
-              <SheetEditRequestButton
-                characterId={character.id}
-                adventureId={adventureId}
-                roomId={inRoom ? roomId : undefined}
-              />
-            ) : null}
-            {!hidePdfExport ? (
-              <SheetPdfExportButton
-                character={live}
-                inventory={inventory}
-                characterId={character.id}
-                roomId={inRoom ? roomId : undefined}
-              />
-            ) : null}
-          </div>
-        ) : null}
-        <OrnamentCard className="sheet-popup-top">
-          <div className="sheet-popup-top__portrait-col">
-            {inRoom ? (
-              <SheetPopupPortrait
-                actorId={character.id}
-                roomId={roomId}
-                name={live.name}
-                portraitUrl={popupPortraitSrc}
-                tokenImageUrl={live.tokenImageUrl ?? character.tokenImageUrl}
-                portraitFocus={live.portraitFocus ?? character.portraitFocus}
-                tokenFocus={live.tokenFocus ?? character.tokenFocus}
-                canEdit={canEditPortrait}
-                onSaved={refresh}
-              />
-            ) : (
-              <Portrait
-                tier="hero"
-                imageSrc={popupPortraitSrc}
-                initials={
-                  popupPortraitSrc
-                    ? undefined
-                    : live.name.trim().slice(0, 2).toUpperCase() || "?"
-                }
-                alt={live.name}
-                focus={portraitFocus ?? undefined}
-                imgW={offlinePopupPortraitSize.w}
-                imgH={offlinePopupPortraitSize.h}
-                className="portrait--sheet-popup"
-              />
-            )}
-          </div>
+    const portraitNode = inRoom ? (
+      <SheetPopupPortrait
+        actorId={character.id}
+        roomId={roomId}
+        name={live.name}
+        portraitUrl={popupPortraitSrc}
+        tokenImageUrl={live.tokenImageUrl ?? character.tokenImageUrl}
+        portraitFocus={live.portraitFocus ?? character.portraitFocus}
+        tokenFocus={live.tokenFocus ?? character.tokenFocus}
+        canEdit={canEditPortrait}
+        onSaved={refresh}
+      />
+    ) : (
+      <Portrait
+        tier="hero"
+        imageSrc={popupPortraitSrc}
+        initials={
+          popupPortraitSrc ? undefined : live.name.trim().slice(0, 2).toUpperCase() || "?"
+        }
+        alt={live.name}
+        focus={portraitFocus ?? undefined}
+        imgW={offlinePopupPortraitSize.w}
+        imgH={offlinePopupPortraitSize.h}
+        className="portrait--sheet-popup"
+      />
+    );
 
-          <div className="sheet-popup-top__identity">
-            <CharacterSheetPopupHero name={live.name} identity={identity} />
-            <SheetPopupCombatStrip
-              defesa={displayDefesa}
-              iniciativa={tactical.iniciativa}
-              movimentoWalk={movement.walk}
-              movimentoRun={movement.run}
-              profBonus={prof}
-              hpValue={resources.vida.value}
-              hpMax={resources.vida.max}
-              hpPct={hpPct}
+    const toolbarNode =
+      !hidePdfExport || showEditRequest ? (
+        <>
+          {showEditRequest && adventureId ? (
+            <SheetEditRequestButton
+              characterId={character.id}
+              adventureId={adventureId}
+              roomId={inRoom ? roomId : undefined}
             />
-          </div>
+          ) : null}
+          {!hidePdfExport ? (
+            <SheetPdfExportButton
+              character={live}
+              inventory={inventory}
+              characterId={character.id}
+              roomId={inRoom ? roomId : undefined}
+            />
+          ) : null}
+        </>
+      ) : null;
 
-          <div className="sheet-popup-top__attrs" role="group" aria-label="Atributos">
-            {(Object.keys(ATTRIBUTE_LABELS) as AttributeKey[]).map((k) => {
-              const m = attributeMod(live.attributes[k]);
-              const sign = m > 0 ? "pos" : m < 0 ? "neg" : "zero";
-              return (
-                <div className="sheet-popup-attr sheet-attr-cell" key={k}>
-                  <label className="sheet-attr-cell__label">{ATTRIBUTE_LABELS[k]}</label>
-                  <strong className="sheet-attr-cell__base">{live.attributes[k]}</strong>
-                  <span className="sheet-attr-cell__divider" aria-hidden />
-                  <span className={`sheet-attr-cell__mod sheet-attr-cell__mod--${sign}`}>
-                    {m >= 0 ? `+${m}` : m}
-                  </span>
-                </div>
-              );
-            })}
-          </div>
-        </OrnamentCard>
-
-        <SheetPopupQuickBar actor={live} roomId={inRoom ? roomId : undefined} onRoll={refresh} />
-
-        {canEdit ? (
-          <SheetPopupLoadoutBar
-            actor={live}
-            inventory={inventory}
-            canEdit={canEdit}
-            onSaved={inRoom ? refresh : () => undefined}
-            savePatch={saveLoadoutPatch}
-            eyebrow={inRoom ? "Em uso na mesa" : "Equipamento ativo"}
-          />
-        ) : null}
-
-        <div className="sheet-popup-body">
-          <OrnamentCard className="sheet-popup-center sheet-panel">
-            {canEdit || inRoom ? (
-              <details className="sheet-popup-advanced" open>
-                <summary>Gestão do personagem</summary>
-                <div className="sheet-popup-advanced__body">{popupRightAside}</div>
-              </details>
-            ) : null}
-            {tabPanel}
-          </OrnamentCard>
-        </div>
+    return (
+      <>
+        <SheetPopupDdbView
+          character={live}
+          displayDefesa={displayDefesa}
+          profBonus={prof}
+          hpPct={hpPct}
+          portrait={portraitNode}
+          toolbar={toolbarNode}
+          inRoom={inRoom}
+          roomId={roomId}
+          onRoll={refresh}
+          loadout={
+            canEdit ? (
+              <SheetPopupLoadoutBar
+                actor={live}
+                inventory={inventory}
+                canEdit={canEdit}
+                onSaved={inRoom ? refresh : () => undefined}
+                savePatch={saveLoadoutPatch}
+                eyebrow={inRoom ? "Em uso na mesa" : "Equipamento ativo"}
+              />
+            ) : null
+          }
+          drawer={
+            <OrnamentCard className="sheet-popup-center sheet-panel">
+              {canEdit || inRoom ? (
+                <details className="sheet-popup-advanced" open>
+                  <summary>Gestão do personagem</summary>
+                  <div className="sheet-popup-advanced__body">{popupRightAside}</div>
+                </details>
+              ) : null}
+              {tabPanel}
+            </OrnamentCard>
+          }
+        />
 
         {pickerOpen ? (
           <CompendiumPicker
@@ -874,7 +847,7 @@ export function CharacterSheet({
             onClose={() => setPickerOpen(false)}
           />
         ) : null}
-      </div>
+      </>
     );
   }
 

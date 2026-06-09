@@ -1,5 +1,6 @@
 import { antecedenteMeta } from "@/lib/character/wizard-meta";
 import {
+  ATTRIBUTE_LABELS,
   attributeMod,
   getClass,
   proficiencyBonus,
@@ -115,6 +116,50 @@ export function buildSheetReligionSkill(actor: CharacterSheet): SheetQuickSkill 
     rollFormula: skillRollFormula(mod),
     trained: isSkillTrained(actor, RELIGIAO_SKILL),
   };
+}
+
+/** Salvaguardas proficientes por classe (padrão d20, alinhado às classes Eldarin). */
+const CLASS_SAVE_PROFICIENCIES: Partial<Record<ClassId, AttributeKey[]>> = {
+  Guerreiro: ["forca", "constituicao"],
+  Patrulheiro: ["destreza", "sabedoria"],
+  Ladino: ["destreza", "inteligencia"],
+  Mago: ["inteligencia", "sabedoria"],
+  Clérigo: ["sabedoria", "carisma"],
+  Bárbaro: ["forca", "constituicao"],
+  Bardo: ["destreza", "carisma"],
+  Druida: ["inteligencia", "sabedoria"],
+  Artífice: ["constituicao", "inteligencia"],
+  Paladino: ["sabedoria", "carisma"],
+  Bruxo: ["sabedoria", "carisma"],
+};
+
+export type SheetSavingThrow = {
+  attr: AttributeKey;
+  label: string;
+  mod: number;
+  display: string;
+  trained: boolean;
+};
+
+export function isSaveTrained(actor: CharacterSheet, attr: AttributeKey): boolean {
+  const saves = CLASS_SAVE_PROFICIENCIES[actor.identity.classe as ClassId];
+  return saves?.includes(attr) ?? false;
+}
+
+export function buildSheetSavingThrows(actor: CharacterSheet): SheetSavingThrow[] {
+  const prof = proficiencyBonus(actor.identity.nivel);
+  return (Object.keys(ATTRIBUTE_LABELS) as AttributeKey[]).map((attr) => {
+    const base = attributeMod(actor.attributes[attr]);
+    const trained = isSaveTrained(actor, attr);
+    const mod = base + (trained ? prof : 0);
+    return {
+      attr,
+      label: ATTRIBUTE_LABELS[attr],
+      mod,
+      display: formatSkillMod(mod),
+      trained,
+    };
+  });
 }
 
 export function resolveSheetSkillRoll(

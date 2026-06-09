@@ -162,6 +162,15 @@
   border-radius: var(--radius-pill);
 }
 
+.friends-nav-chat__toggle.is-pending {
+  opacity: 1;
+  cursor: default;
+}
+
+.friends-nav-chat__toggle.is-pending .friends-nav-chat__icon {
+  opacity: 1;
+}
+
 .friends-nav-chat__toggle:hover {
   color: var(--text);
   background: var(--accent-soft);

@@ -907,6 +907,15 @@
   container-type: inline-size;
 }
 
+.foundry-window--character .sheet-shell--ddb {
+  width: 100%;
+  max-width: 100%;
+}
+
+.foundry-window--character .sheet-shell--ddb .sheet-ddb-body {
+  min-height: 300px;
+}
+
 .foundry-window--character .sheet-popup-top {
   flex-shrink: 0;
   width: 100%;

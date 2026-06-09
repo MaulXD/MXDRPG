@@ -39,12 +39,15 @@ type PdfLinkRect = {
 };
 
 function resolveCaptureBackground(root: HTMLElement): string {
+  const doc = root.classList.contains("sheet-pdf-doc")
+    ? root
+    : (root.querySelector(".sheet-pdf-doc") as HTMLElement | null);
   const shell = root.querySelector(".sheet-shell--popup") as HTMLElement | null;
   const frame = root.querySelector(".mf") as HTMLElement | null;
-  const target = shell ?? frame ?? root;
+  const target = doc ?? shell ?? frame ?? root;
   const bg = getComputedStyle(target).backgroundColor;
   if (bg && bg !== "rgba(0, 0, 0, 0)" && bg !== "transparent") return bg;
-  return "#121921";
+  return "#faf6ee";
 }
 
 function rectInRoot(node: HTMLElement, root: HTMLElement) {
@@ -195,7 +198,7 @@ export async function prepareSheetPdfCaptureHost(host: HTMLElement | null): Prom
   host.style.position = "fixed";
   host.style.left = "-12000px";
   host.style.top = "0";
-  host.style.width = "920px";
+  host.style.width = "794px";
   host.style.visibility = "visible";
   host.style.opacity = "1";
   host.style.zIndex = "-1";
@@ -236,7 +239,7 @@ export async function exportSheetPdf(
     const backgroundColor = resolveCaptureBackground(root);
     const links = opts ? collectPdfLinks(root, opts) : [];
 
-    const captureW = Math.max(root.scrollWidth, root.offsetWidth, 920);
+    const captureW = Math.max(root.scrollWidth, root.offsetWidth, 794);
     const captureH = Math.max(root.scrollHeight, root.offsetHeight, 400);
 
     const renderCapture = (scale: number) =>
@@ -258,14 +261,14 @@ export async function exportSheetPdf(
             clonedHost.style.position = "fixed";
             clonedHost.style.left = "0";
             clonedHost.style.top = "0";
-            clonedHost.style.width = "920px";
+            clonedHost.style.width = "794px";
             clonedHost.style.zIndex = "1";
             unhideCaptureTree(clonedHost);
             inlineComputedStylesForHtml2Canvas(liveHost, clonedHost);
             scrubElementInlineStyles(clonedHost);
           }
-          clonedRoot.style.width = "920px";
-          clonedRoot.style.maxWidth = "920px";
+          clonedRoot.style.width = "794px";
+          clonedRoot.style.maxWidth = "794px";
           inlineComputedStylesForHtml2Canvas(root, clonedRoot);
           scrubElementInlineStyles(clonedRoot);
           stripStylesheetsFromClone(clonedDoc);
