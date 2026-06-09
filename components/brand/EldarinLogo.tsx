@@ -2,11 +2,9 @@ import Image from "next/image";
 import Link from "next/link";
 import "./eldarin-logo.css";
 
-const BRAND = {
-  logotipo: "/brand/eldarin-logotipo.png",
-  dragao: "/brand/eldarin-dragao.png",
-  tipografia: "/brand/eldarin-tipografia.png",
-} as const;
+export const BRAND_FAVICON = "/brand/favicon.png";
+export const BRAND_NAVBAR = "/brand/navbar.png";
+export const BRAND_LANDING = "/brand/landing.png";
 
 export type EldarinLogoVariant = "header" | "full" | "mark";
 
@@ -17,52 +15,48 @@ type Props = {
   className?: string;
   /** Texto alternativo; padrão descreve a marca. */
   alt?: string;
+  /** Exibir nome “Eldarin” ao lado do ícone (padrão: sim, exceto mark). */
+  showName?: boolean;
+};
+
+const ICON_SIZE: Record<EldarinLogoVariant, number> = {
+  header: 28,
+  full: 56,
+  mark: 32,
 };
 
 export function EldarinLogo({
   variant = "header",
   href = "/",
   className = "",
-  alt = "Eldarin",
+  alt = variant === "header" ? "MXDRPG" : "Eldarin",
+  showName = variant !== "mark" && variant !== "header",
 }: Props) {
   const rootClass = `eldarin-logo eldarin-logo--${variant}${className ? ` ${className}` : ""}`;
+  const size = ICON_SIZE[variant];
 
   const content =
-    variant === "full" ? (
+    variant === "header" ? (
       <Image
-        src={BRAND.logotipo}
+        src={BRAND_NAVBAR}
         alt={alt}
-        width={160}
-        height={72}
-        className="eldarin-logo__full-img"
-        priority={variant === "full"}
-      />
-    ) : variant === "mark" ? (
-      <Image
-        src={BRAND.dragao}
-        alt={alt}
-        width={32}
-        height={32}
-        className="eldarin-logo__mark-img"
+        width={26}
+        height={38}
+        className="eldarin-logo__navbar"
+        priority
       />
     ) : (
       <>
         <Image
-          src={BRAND.dragao}
-          alt=""
-          aria-hidden
-          width={28}
-          height={28}
-          className="eldarin-logo__dragao"
+          src={BRAND_FAVICON}
+          alt={showName ? "" : alt}
+          aria-hidden={showName ? true : undefined}
+          width={size}
+          height={size}
+          className="eldarin-logo__icon"
+          priority={variant === "full"}
         />
-        <Image
-          src={BRAND.tipografia}
-          alt={alt}
-          width={108}
-          height={24}
-          className="eldarin-logo__tipografia"
-          priority
-        />
+        {showName ? <span className="eldarin-logo__name">{alt}</span> : null}
       </>
     );
 

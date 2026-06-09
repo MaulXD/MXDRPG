@@ -1,5 +1,6 @@
+import Image from "next/image";
 import Link from "next/link";
-import { EldarinLogo } from "@/components/brand/EldarinLogo";
+import { BRAND_LANDING } from "@/components/brand/EldarinLogo";
 import { HexPreview } from "@/components/home/HexPreview";
 import { HomeFeatureIcon, type HomeFeatureIconName } from "@/components/ui/EldarinIcons";
 
@@ -30,26 +31,33 @@ export default function HomePage() {
   return (
     <>
       <section className="page-wrap page-hero">
-        <div className="hero-grid">
-          <div className="hero-copy">
-            <p className="eyebrow">VTT proprietário</p>
-            <h1 className="display-xl" style={{ margin: 0 }}>
-              <EldarinLogo variant="full" href={null} className="eldarin-logo--hero" />
-            </h1>
-            <p className="lead" style={{ marginTop: "1.25rem" }}>
-              Sua mesa virtual de fantasia: combaté em hexágonos, pontos de ação e fichas com
-              identidade visual única — direto no navegador.
-            </p>
-            <div className="hero-actions">
-              <Link href="/sign-in" className="btn">
-                Entrar e jogar
-              </Link>
-              <Link href="/mesa/demo" prefetch={false} className="btn btn-secondary">
-                Demo ao vivo
-              </Link>
-            </div>
+        <div className="landing-hero">
+          <h1 className="landing-hero__brand">
+            <Image
+              src={BRAND_LANDING}
+              alt="MXDRPG"
+              width={260}
+              height={380}
+              className="landing-hero__logo"
+              priority
+            />
+          </h1>
+          <p className="eyebrow landing-hero__eyebrow">VTT proprietário</p>
+          <p className="lead landing-hero__lead">
+            Sua mesa virtual de fantasia: combaté em hexágonos, pontos de ação e fichas com
+            identidade visual única — direto no navegador.
+          </p>
+          <div className="hero-actions landing-hero__actions">
+            <Link href="/sign-in" className="btn">
+              Entrar e jogar
+            </Link>
+            <Link href="/mesa/demo" prefetch={false} className="btn btn-secondary">
+              Demo ao vivo
+            </Link>
           </div>
-          <HexPreview />
+          <div className="landing-hero__visual" aria-hidden>
+            <HexPreview />
+          </div>
         </div>
       </section>
 
