@@ -6,7 +6,7 @@ import { IconBook, IconHome, IconScroll } from "@/components/ui/EldarinIcons";
 const links = [
   { href: "/", label: "Início", exact: true, icon: IconHome },
   { href: "/sistema", label: "Sistema", icon: IconScroll },
-  { href: "/biblioteca", label: "Compêndios", icon: IconBook },
+  { href: "/compendios", label: "Compêndios", icon: IconBook },
 ] as const;
 
 export function SiteNavLinks() {
