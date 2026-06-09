@@ -22,7 +22,7 @@ import { getRoom, persistRoom, toSnapshot } from "../internal/registry";
 import type { RoomSnapshot } from "../types";
 import { syncCombatOrderWithTokens } from "../combat-order";
 import { shouldAnnounceDefeat } from "../combat-chat-events";
-import { recordMonsterDefeat } from "../combat-xp";
+import { recordDefeatWithPaRewards } from "../combat-defeat-rewards";
 import { maybeRecordCombatUndo } from "../combat-undo";
 import { isMonsterToken } from "@/lib/room/settings";
 import { appendRoomChatMessage } from "./chat";
@@ -116,7 +116,7 @@ export async function executeRoomAttack(
     });
 
     const spentAttacker = markActionRechargeUsed(
-      applyPaSpend(attacker, saveResult.paCost),
+      applyPaSpend(attacker, saveResult.paCost, { actionKind: action.kind }),
       action,
       room.combat.round
     );
@@ -178,7 +178,7 @@ export async function executeRoomAttack(
     });
 
     if (shouldAnnounceDefeat(saveResult.defenderHpBefore, saveResult.defenderHpAfter)) {
-      await recordMonsterDefeat(room, author, {
+      await recordDefeatWithPaRewards(room, author, {
         defenderTokenId,
         defenderName: defender.name,
         attackerTokenId,
@@ -213,7 +213,11 @@ export async function executeRoomAttack(
   const finalHp = last.defenderHpAfter;
   const finalAttackerHp =
     last.attackerHpAfter ?? attacker.vida ?? null;
-  const spentAttacker = markActionRechargeUsed(applyPaSpend(attacker, paCost), action, room.combat.round);
+  const spentAttacker = markActionRechargeUsed(
+    applyPaSpend(attacker, paCost, { actionKind: action.kind }),
+    action,
+    room.combat.round
+  );
   const built = buildAttackModifiers(attacker, defender, action);
   const anyHit = attackResults.some((r) => r.hit);
   const buffCleanup = attackerAfterAttack(
@@ -309,7 +313,7 @@ export async function executeRoomAttack(
   }
 
   if (shouldAnnounceDefeat(last.defenderHpBefore, finalHp)) {
-    await recordMonsterDefeat(room, author, {
+    await recordDefeatWithPaRewards(room, author, {
       defenderTokenId,
       defenderName: defender.name,
       attackerTokenId,
@@ -466,7 +470,7 @@ async function executeRoomMultiTargetAttack(
   const paCost = saveResults[0]?.paCost ?? attackResults[0]?.paCost ?? action.paCost;
 
   let spentAttacker = markActionRechargeUsed(
-    applyPaSpend(attacker, paCost),
+    applyPaSpend(attacker, paCost, { actionKind: action.kind }),
     action,
     room.combat.round
   );
@@ -555,7 +559,7 @@ async function executeRoomMultiTargetAttack(
 
     if (shouldAnnounceDefeat(res.defenderHpBefore, res.defenderHpAfter)) {
       const def = defenders.find((d) => d.id === res.defenderTokenId);
-      await recordMonsterDefeat(room, author, {
+      await recordDefeatWithPaRewards(room, author, {
         defenderTokenId: res.defenderTokenId,
         defenderName: def?.name ?? "Alvo",
         attackerTokenId,
@@ -595,7 +599,7 @@ async function executeRoomMultiTargetAttack(
 
     if (shouldAnnounceDefeat(result.defenderHpBefore, result.defenderHpAfter)) {
       const def = defenders.find((d) => d.id === result.defenderTokenId);
-      await recordMonsterDefeat(room, author, {
+      await recordDefeatWithPaRewards(room, author, {
         defenderTokenId: result.defenderTokenId,
         defenderName: def?.name ?? "Alvo",
         attackerTokenId,

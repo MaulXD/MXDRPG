@@ -1,9 +1,20 @@
 {
-  "version": 2,
+  "version": 3,
+  "meta": {
+    "costReduceDefaults": {
+      "amount": 1,
+      "firstPerTurn": true,
+      "note": "Reduções −PA: 1× por turno na 1ª ação do tipo (Cap. 12.0). Armas: só o 1º golpe em Ataque Extra."
+    }
+  },
   "passivePa": {
     "lobo-solitario": { "recoveryPerTurn": 7, "accumulationCap": 11 },
     "canhao-de-vidro": { "turnStartPa": 7, "freeBasicMovePa": false },
-    "o-peao": { "freeBasicMovePa": true }
+    "o-peao": { "freeBasicMovePa": true },
+    "aceleracao": { "recoveryPerTurnBonus": 1 }
+  },
+  "onKillPa": {
+    "carrasco": { "amount": 2, "incompatibleWith": ["o-peao"] }
   },
   "paMaxByTalent": {
     "maestria-de-acougue": 1,
@@ -84,61 +95,70 @@
       "minPaCost": 2
     }
   ],
-  "costReduce": [
-    { "talentId": "corte-limpo", "kinds": ["weapon"], "amount": 1, "firstWeaponHitOnly": true },
-    { "talentId": "rush-doce", "kinds": ["ability"], "amount": 1 },
-    { "talentId": "mordida-do-coracao", "kinds": ["ability"], "amount": 1 },
-    { "talentId": "chama-controlada", "kinds": ["spell"], "amount": 1, "damageTypes": ["fogo"] },
-    { "talentId": "combustao-arcana", "kinds": ["spell"], "amount": 1, "damageTypes": ["fogo"] },
-    { "talentId": "brasas-persistentes", "kinds": ["spell"], "amount": 1, "damageTypes": ["fogo"], "areaOnly": true },
-    { "talentId": "gelar-ingrediente", "kinds": ["spell"], "amount": 1, "damageTypes": ["frio"] },
-    { "talentId": "escudo-de-geada", "kinds": ["spell"], "amount": 1, "damageTypes": ["frio"] },
-    { "talentId": "fermentacao-acelerada", "kinds": ["spell"], "amount": 1 },
-    { "talentId": "nuvem-bacteriana", "kinds": ["spell"], "amount": 1, "areaOnly": true },
-    { "talentId": "caldo-corrosivo", "kinds": ["spell"], "amount": 1, "damageTypes": ["ácido", "veneno"] },
-    { "talentId": "nevoa-de-caldeira", "kinds": ["spell"], "amount": 1, "areaOnly": true },
-    { "talentId": "doce-encantador", "kinds": ["spell"], "amount": 1 },
-    { "talentId": "acucar-cristalizado", "kinds": ["spell"], "amount": 1, "minPaCost": 2 },
-    { "talentId": "purificar-veneno", "kinds": ["spell", "ability"], "amount": 1 },
-    { "talentId": "purificacao-abencoada", "kinds": ["spell"], "amount": 1 },
-    { "talentId": "pao-da-manha", "kinds": ["spell", "ability"], "amount": 1 },
-    { "talentId": "mesa-abundante", "kinds": ["spell"], "amount": 1, "areaOnly": true },
-    { "talentId": "golpe-do-jejum", "kinds": ["spell"], "amount": 1 },
-    { "talentId": "dominio-do-limiar", "kinds": ["spell"], "amount": 1, "damageTypes": ["necrótico"] },
-    { "talentId": "colheita-de-alma", "kinds": ["spell"], "amount": 1, "damageTypes": ["necrótico"] },
-    { "talentId": "harmonizacao-de-tacas", "kinds": ["spell", "ability"], "amount": 1 },
-    { "talentId": "menu-de-expedicao", "kinds": ["ability"], "amount": 1 },
-    { "talentId": "fermento-de-masmorra", "kinds": ["ability"], "amount": 1 },
-    { "talentId": "cancao-ebria", "kinds": ["spell"], "amount": 1 },
-    { "talentId": "nota-picante", "kinds": ["spell"], "amount": 1 },
-    { "talentId": "sinfonia-de-ervas", "kinds": ["spell"], "amount": 1, "areaOnly": true },
-    { "talentId": "arremesso-ritmico", "kinds": ["weapon"], "amount": 1, "minPaCost": 2 },
-    { "talentId": "esporos-necroticos", "kinds": ["spell"], "amount": 1, "damageTypes": ["necrótico"] },
-    { "talentId": "toque-de-bolor", "kinds": ["spell"], "amount": 1 },
-    { "talentId": "forma-aprimorada", "kinds": ["ability"], "amount": 1 },
-    { "talentId": "vinha-agarradora", "kinds": ["spell"], "amount": 1 },
-    { "talentId": "tremor-leve", "kinds": ["spell"], "amount": 1, "damageTypes": ["trovão", "força"] },
-    { "talentId": "semente-guardia", "kinds": ["spell"], "amount": 1 },
-    { "talentId": "panela-viva", "kinds": ["ability"], "amount": 1 },
-    { "talentId": "fogareiro-portatil", "kinds": ["spell", "ability"], "amount": 1, "damageTypes": ["fogo"] },
-    { "talentId": "bomba-de-glandula", "kinds": ["spell"], "amount": 1, "areaOnly": true },
-    { "talentId": "seringa-basica", "kinds": ["spell", "ability"], "amount": 1 },
-    { "talentId": "laboratorio-de-campo", "kinds": ["spell"], "amount": 1, "minPaCost": 2 },
-    { "talentId": "armadilha-biologica", "kinds": ["ability"], "amount": 1 },
-    { "talentId": "toque-fantasmal", "kinds": ["ability"], "amount": 1 },
-    { "talentId": "passo-entre-sombras", "kinds": ["ability"], "amount": 1 },
-    { "talentId": "aplicacao-rapida", "kinds": ["weapon", "ability"], "amount": 1 },
-    { "talentId": "luz-penitente", "kinds": ["weapon", "ability"], "amount": 1, "damageTypes": ["radiante"] },
-    { "talentId": "lamina-dos-sepulcros", "kinds": ["weapon"], "amount": 1, "damageTypes": ["necrótico", "radiante"] },
-    { "talentId": "voto-de-caca", "kinds": ["weapon", "ability"], "amount": 1 },
-    { "talentId": "mordida-do-voto", "kinds": ["weapon", "ability"], "amount": 1 },
-    { "talentId": "carga-do-juramento", "kinds": ["weapon", "ability"], "amount": 1 },
-    { "talentId": "toque-da-voragem", "kinds": ["spell"], "amount": 1, "damageTypes": ["psíquico"] },
-    { "talentId": "contrato-ardente", "kinds": ["spell"], "amount": 1, "damageTypes": ["fogo"] },
-    { "talentId": "sangue-do-patrono", "kinds": ["spell", "ability"], "amount": 1 },
-    { "talentId": "sussurro-salino", "kinds": ["spell"], "amount": 1 },
-    { "talentId": "manto-de-bruma", "kinds": ["spell"], "amount": 1, "areaOnly": true },
-    { "talentId": "agarrão-do-pacto", "kinds": ["spell", "ability"], "amount": 1 },
-    { "talentId": "correntes-infernais", "kinds": ["spell"], "amount": 1, "areaOnly": true }
-  ]
+  "costReduceByKind": {
+    "weapon": [
+      { "talentId": "corte-limpo", "firstWeaponHitOnly": true },
+      { "talentId": "tiro-de-precisao", "rangedOnly": true },
+      { "talentId": "arremesso-ritmico", "minPaCost": 2 },
+      { "talentId": "lamina-dos-sepulcros", "damageTypes": ["necrótico", "radiante"] }
+    ],
+    "spell": [
+      { "talentId": "chama-controlada", "damageTypes": ["fogo"] },
+      { "talentId": "combustao-arcana", "damageTypes": ["fogo"] },
+      { "talentId": "brasas-persistentes", "damageTypes": ["fogo"], "areaOnly": true },
+      { "talentId": "gelar-ingrediente", "damageTypes": ["frio"] },
+      { "talentId": "escudo-de-geada", "damageTypes": ["frio"] },
+      { "talentId": "fermentacao-acelerada" },
+      { "talentId": "nuvem-bacteriana", "areaOnly": true },
+      { "talentId": "caldo-corrosivo", "damageTypes": ["ácido", "veneno"] },
+      { "talentId": "nevoa-de-caldeira", "areaOnly": true },
+      { "talentId": "doce-encantador" },
+      { "talentId": "acucar-cristalizado", "minPaCost": 2 },
+      { "talentId": "purificacao-abencoada" },
+      { "talentId": "golpe-do-jejum" },
+      { "talentId": "mesa-abundante", "areaOnly": true },
+      { "talentId": "dominio-do-limiar", "damageTypes": ["necrótico"] },
+      { "talentId": "colheita-de-alma", "damageTypes": ["necrótico"] },
+      { "talentId": "cancao-ebria" },
+      { "talentId": "nota-picante" },
+      { "talentId": "sinfonia-de-ervas", "areaOnly": true },
+      { "talentId": "esporos-necroticos", "damageTypes": ["necrótico"] },
+      { "talentId": "toque-de-bolor" },
+      { "talentId": "vinha-agarradora" },
+      { "talentId": "tremor-leve", "damageTypes": ["trovão", "força"] },
+      { "talentId": "semente-guardia" },
+      { "talentId": "bomba-de-glandula", "areaOnly": true },
+      { "talentId": "laboratorio-de-campo", "minPaCost": 2 },
+      { "talentId": "toque-da-voragem", "damageTypes": ["psíquico"] },
+      { "talentId": "contrato-ardente", "damageTypes": ["fogo"] },
+      { "talentId": "sussurro-salino" },
+      { "talentId": "manto-de-bruma", "areaOnly": true },
+      { "talentId": "correntes-infernais", "areaOnly": true }
+    ],
+    "ability": [
+      { "talentId": "rush-doce" },
+      { "talentId": "mordida-do-coracao" },
+      { "talentId": "menu-de-expedicao" },
+      { "talentId": "fermento-de-masmorra" },
+      { "talentId": "forma-aprimorada" },
+      { "talentId": "panela-viva" },
+      { "talentId": "armadilha-biologica" },
+      { "talentId": "toque-fantasmal" },
+      { "talentId": "passo-entre-sombras" }
+    ],
+    "multi": [
+      { "talentId": "purificar-veneno", "kinds": ["spell", "ability"] },
+      { "talentId": "pao-da-manha", "kinds": ["spell", "ability"] },
+      { "talentId": "harmonizacao-de-tacas", "kinds": ["spell", "ability"] },
+      { "talentId": "fogareiro-portatil", "kinds": ["spell", "ability"], "damageTypes": ["fogo"] },
+      { "talentId": "seringa-basica", "kinds": ["spell", "ability"] },
+      { "talentId": "aplicacao-rapida", "kinds": ["weapon", "ability"] },
+      { "talentId": "luz-penitente", "kinds": ["weapon", "ability"], "damageTypes": ["radiante"] },
+      { "talentId": "voto-de-caca", "kinds": ["weapon", "ability"] },
+      { "talentId": "mordida-do-voto", "kinds": ["weapon", "ability"] },
+      { "talentId": "carga-do-juramento", "kinds": ["weapon", "ability"] },
+      { "talentId": "sangue-do-patrono", "kinds": ["spell", "ability"] },
+      { "talentId": "agarrão-do-pacto", "kinds": ["spell", "ability"] }
+    ]
+  }
 }

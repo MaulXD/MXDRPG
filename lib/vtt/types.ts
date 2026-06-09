@@ -15,6 +15,16 @@ export type BattleToken = {
   bankedPa?: number;
   /** PA já gastos neste turno (informativo; sem teto de gasto) */
   paSpentThisTurn?: number;
+  /** Desconto −PA já consumido neste turno, por tipo (Cap. 12.0). */
+  paDiscountUsed?: Partial<Record<"weapon" | "spell" | "ability", boolean>>;
+  /** Bônus on-kill já concedidos neste turno (ex.: Carrasco). */
+  onKillPaGranted?: Partial<Record<string, boolean>>;
+  /** @deprecated Use `paDiscountUsed.weapon`. */
+  paReduceWeaponUsed?: boolean;
+  /** @deprecated Use `paDiscountUsed.spell`. */
+  paReduceSpellUsed?: boolean;
+  /** @deprecated Use `paDiscountUsed.ability`. */
+  paReduceAbilityUsed?: boolean;
   /** O Peão: 1 PA de movimento básico já isento neste turno */
   peaoFreeMoveUsed?: boolean;
   ownerRole: "mestre" | "jogador";

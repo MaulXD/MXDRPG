@@ -24,8 +24,8 @@ type Props = {
   friends: FriendSummary[];
   selfUserId: string;
   onFriendsChange?: () => void;
-  /** Painel compacto na navbar global */
-  variant?: "default" | "nav";
+  /** Janela flutuante global (navbar) */
+  variant?: "default" | "float";
 };
 
 export function FriendsChat({ friends, selfUserId, onFriendsChange, variant = "default" }: Props) {
@@ -131,7 +131,7 @@ export function FriendsChat({ friends, selfUserId, onFriendsChange, variant = "d
   }
 
   return (
-    <div className={`friends-chat${variant === "nav" ? " friends-chat--nav" : ""}`}>
+    <div className={`friends-chat${variant === "float" ? " friends-chat--float" : ""}`}>
       <aside className="friends-chat__list">
         <h3 className="friends-chat__list-title">Conversas</h3>
         {friends.length === 0 ? (

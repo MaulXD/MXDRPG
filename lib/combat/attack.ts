@@ -37,9 +37,12 @@ import {
 import { resolveSpellPaCost } from "@/lib/combat/pa-balance";
 import {
   effectivePaCost,
+  mergePaCostContext,
+  paCostContextFromToken,
   totalAttackPaCost,
   weaponAttackCount,
 } from "@/lib/combat/pa-economy";
+import { isPaDiscountAvailable } from "@/lib/combat/pa-turn-discount";
 import { checkCanSpendPa } from "@/lib/combat/pa-turn";
 import { canActOnCombatTurn, TURN_WAIT_MSG } from "@/lib/combat/turn-guard";
 import { parseRecharge, rechargeBlockReason } from "@/lib/combat/recharge";
@@ -595,11 +598,15 @@ export function paNeedForCombatAction(
   }
   if (action.kind === "weapon") {
     const count = weaponAttackCount(actor, action);
-    if (count > 1) return totalAttackPaCost(actor, action);
-    const attackIndex = (attacker.paSpentThisTurn ?? 0) > 0 ? 2 : 1;
-    return effectivePaCost(actor, action, { attackIndex, attackCount: count });
+    if (count > 1) return totalAttackPaCost(actor, action, attacker);
+    const attackIndex = isPaDiscountAvailable(attacker, "weapon") ? 1 : 2;
+    return effectivePaCost(
+      actor,
+      action,
+      mergePaCostContext(attacker, { attackIndex, attackCount: count })
+    );
   }
-  return effectivePaCost(actor, action);
+  return effectivePaCost(actor, action, paCostContextFromToken(attacker));
 }
 
 /** Jogador (não criatura) atacando aliado com ação ofensiva — exige confirmação na UI. */
@@ -841,10 +848,14 @@ export function resolveAttack(
     const hpMax = defenderToken.vidaMax ?? hpBefore;
     const hpAfter = Math.min(hpMax, hpBefore + healRoll.total);
     const attr = attributeLabel(castKey);
-    const paCost = effectivePaCost(actor, action, {
-      attackIndex: opts?.attackIndex ?? 1,
-      attackCount: opts?.attackCount ?? 1,
-    });
+    const paCost = effectivePaCost(
+      actor,
+      action,
+      mergePaCostContext(attackerToken, {
+        attackIndex: opts?.attackIndex ?? 1,
+        attackCount: opts?.attackCount ?? 1,
+      })
+    );
     const summary = `${actor.name} cura ${defenderToken.name} com ${resolved.name}: +${healRoll.total} HP (${healRoll.rolls.join("+")}${healRoll.attributeMod ? `+${healRoll.attributeMod}` : ""} ${attr}) — ${hpBefore}→${hpAfter}`;
 
     return {
@@ -930,11 +941,15 @@ export function resolveAttack(
   }
 
   const paCost = resolved.channelMaxExtraPa
-    ? totalChannelPaCost(actor, action, channelExtra)
-    : effectivePaCost(actor, action, {
-        attackIndex: opts?.attackIndex ?? 1,
-        attackCount: opts?.attackCount ?? 1,
-      });
+    ? totalChannelPaCost(actor, action, channelExtra, attackerToken)
+    : effectivePaCost(
+        actor,
+        action,
+        mergePaCostContext(attackerToken, {
+          attackIndex: opts?.attackIndex ?? 1,
+          attackCount: opts?.attackCount ?? 1,
+        })
+      );
 
   const baseRes: AttackResolution = {
     attackerTokenId: attackerToken.id,
@@ -986,7 +1001,7 @@ export function resolveMultiAttack(
   allTokens: BattleToken[] = []
 ): AttackResolution[] {
   const count = warriorAttackCount(actor, action);
-  const totalPa = totalAttackPaCost(actor, action);
+  const totalPa = totalAttackPaCost(actor, action, attackerTokenIn);
   const paCheck = checkCanSpendPa(attackerTokenIn, totalPa);
   if (!paCheck.ok) throw new Error(paCheck.reason ?? "PA insuficiente");
   const results: AttackResolution[] = [];

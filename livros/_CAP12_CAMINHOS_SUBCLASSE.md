@@ -75,7 +75,7 @@
 - **Guerreiro:** Ataque Extra em nv. 5 (2 ataques), 11 (3), 17 (4) — soma-se aos talentos de subclasse. **VTT:** cada golpe custa **1 PA** (Cap. 3.1).
 - **Ladino:** Ataque Furtivo escala normalmente; talentos de subclasse podem modificar tipo de dano ou condições do furtivo.
 - **Bárbaro:** Furia e talentos de subclasse interagem onde indicado.
-- **Mago / Clérigo / Bardo / Druida / Artífice:** magias exclusivas de subclasse (Cap. 19) **somam-se** ao grimorio ou lista de preparacao e **não** substituem talentos de caminho. **VTT:** **Afinidade Arcânica** no nv. 5 (magias 2+ PA −1); talentos ±PA — **Livro do Jogador Cap. 12.0** e `data/character/pa-modifiers.json`.
+- **Mago / Clérigo / Bardo / Druida / Artífice:** magias exclusivas de subclasse (Cap. 19) **somam-se** ao grimorio ou lista de preparacao e **não** substituem talentos de caminho. **VTT:** **Afinidade Arcânica** no nv. 5 (**primeira magia** do turno, 2+ PA −1); talentos ±PA — **1× por turno** (Cap. 12.0) e `data/character/pa-modifiers.json`.
 - **Paladino:** Golpe Sagrado escala com nivel; **Afinidade Divina** no nv. 5. Talentos de trilha modificam radiante, necrotico e suporte de aura.
 - **Bruxo:** slots de Pacto recarregam em descanso curto; **Afinidade do Pacto** no nv. 5. Invocações (Cap. 19.4) somam-se ao pacto; talentos reduzem PA de magias por patrono (psíquico, fogo, encantamento).
 

@@ -31,7 +31,11 @@ import {
   listTokenCombatActions,
   resolveCombatAction,
 } from "@/lib/combat/attack";
-import { effectivePaCost, totalAttackPaCost } from "@/lib/combat/pa-economy";
+import {
+  effectivePaCost,
+  paCostContextFromToken,
+  totalAttackPaCost,
+} from "@/lib/combat/pa-economy";
 import { isActionOnRecharge } from "@/lib/combat/recharge";
 import { totalChannelPaCost } from "@/lib/combat/spell-channel";
 import type { TokenActionMode } from "@/lib/vtt/action-mode";
@@ -114,20 +118,24 @@ function nextHexPaLabel(token: BattleToken): string {
   return cost === 0 ? "0 PA" : `${cost} PA`;
 }
 
-function combatActionPaLabel(actor: RoomActor | null, action: CombatActionOption | undefined): string {
+function combatActionPaLabel(
+  token: BattleToken,
+  actor: RoomActor | null,
+  action: CombatActionOption | undefined
+): string {
   if (!action) return "—";
   if (action.channelMaxExtraPa) {
-    const base = effectivePaCost(actor, action);
+    const base = totalChannelPaCost(actor, action, 0, token);
     return `${base}+ PA`;
   }
   if (actor && action.kind === "weapon") {
-    const total = totalAttackPaCost(actor, action);
+    const total = totalAttackPaCost(actor, action, token);
     return `${total} PA`;
   }
   if (actor && (action.kind === "spell" || action.kind === "ability")) {
-    return `${totalChannelPaCost(actor, action, 0)} PA`;
+    return `${totalChannelPaCost(actor, action, 0, token)} PA`;
   }
-  return `${effectivePaCost(actor, action)} PA`;
+  return `${effectivePaCost(actor, action, paCostContextFromToken(token))} PA`;
 }
 
 function truncateRingLabel(name: string, max = 11): string {
@@ -285,7 +293,7 @@ export function TokenActionRing({
         tone,
         label: truncateRingLabel(action.label || action.name),
         glyph,
-        paLabel: combatActionPaLabel(actor, action),
+        paLabel: combatActionPaLabel(token, actor, action),
         longLabel: true,
         disabled: turnBlocked || cd.blocked,
         rechargeHint: cd.blocked ? cd.hint : undefined,
@@ -348,7 +356,7 @@ export function TokenActionRing({
         tone: "attack",
         label: "Atacar",
         glyph: <IconSword size={16} />,
-        paLabel: combatActionPaLabel(actor, weapon),
+        paLabel: combatActionPaLabel(token, actor, weapon),
         disabled: turnBlocked || weapons.length === 0,
         title: weapon ? formatCombatActionTooltip(weapon, actor) : undefined,
         action: weapon ?? null,
@@ -359,7 +367,7 @@ export function TokenActionRing({
         tone: "spell",
         label: "Magia",
         glyph: <IconSpell size={16} />,
-        paLabel: spells.length > 1 ? `${spells.length}×` : combatActionPaLabel(actor, spell),
+        paLabel: spells.length > 1 ? `${spells.length}×` : combatActionPaLabel(token, actor, spell),
         disabled: turnBlocked || spells.length === 0,
         title:
           spells.length > 1
@@ -379,7 +387,7 @@ export function TokenActionRing({
         tone: "ability",
         label: "Habilidade",
         glyph: <IconAbility size={16} />,
-        paLabel: abilities.length > 1 ? `${abilities.length}×` : combatActionPaLabel(actor, ability),
+        paLabel: abilities.length > 1 ? `${abilities.length}×` : combatActionPaLabel(token, actor, ability),
         disabled: turnBlocked || abilities.length === 0,
         title:
           abilities.length > 1
