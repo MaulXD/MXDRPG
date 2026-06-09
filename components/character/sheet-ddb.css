@@ -16,7 +16,17 @@
   gap: 0;
   padding: 0;
   border-radius: 10px;
-  overflow: hidden;
+  overflow: clip;
+}
+
+.sheet-shell--popup.sheet-shell--ddb {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-width: 0;
+  background: #e8e2d6;
+  color: var(--ddb-ink);
+  overflow: visible;
 }
 
 .sheet-shell--ddb > .sheet-ddb-toolbar {
@@ -26,11 +36,15 @@
   gap: 0.5rem;
   padding: 0.35rem 0.5rem;
   background: var(--ddb-header-deep);
-  cursor: grab;
-  user-select: none;
 }
 
-.sheet-shell--ddb > .sheet-ddb-toolbar:active {
+.sheet-ddb-header {
+  cursor: grab;
+  user-select: none;
+  touch-action: none;
+}
+
+.sheet-ddb-header:active {
   cursor: grabbing;
 }
 
@@ -111,6 +125,13 @@
     radial-gradient(ellipse 80% 120% at 15% 0%, rgba(255, 255, 255, 0.06), transparent 55%),
     linear-gradient(135deg, var(--ddb-header) 0%, var(--ddb-header-deep) 100%);
   color: #f8f2ea;
+  cursor: grab;
+  user-select: none;
+  touch-action: none;
+}
+
+.sheet-ddb-header:active {
+  cursor: grabbing;
 }
 
 .sheet-ddb-header__name {
@@ -226,10 +247,11 @@
 
 .sheet-ddb-body {
   display: grid;
-  grid-template-columns: minmax(108px, 0.85fr) minmax(0, 1.35fr) minmax(0, 1fr);
+  grid-template-columns: minmax(108px, 0.85fr) minmax(200px, 1.35fr) minmax(168px, 1fr);
   gap: 0.5rem;
   padding: 0.5rem 0.55rem;
-  min-height: 0;
+  min-height: 280px;
+  align-items: start;
 }
 
 .sheet-ddb-col {
@@ -237,7 +259,9 @@
   display: flex;
   flex-direction: column;
   gap: 0.4rem;
+  align-self: start;
 }
+
 
 .sheet-ddb-portrait-wrap {
   border-radius: 8px;
@@ -363,7 +387,12 @@
 }
 
 .sheet-ddb-panel--skills {
-  min-height: 12rem;
+  flex: 0 1 auto;
+  min-height: 0;
+}
+
+.sheet-ddb-col--right .sheet-ddb-panel {
+  flex: 0 0 auto;
 }
 
 .sheet-ddb-panel__head {
@@ -394,7 +423,8 @@
   margin: 0;
   padding: 0.15rem 0;
   overflow-y: auto;
-  flex: 1;
+  flex: 1 1 auto;
+  min-height: 0;
 }
 
 .sheet-ddb-skill-list li {
@@ -660,4 +690,9 @@
 
 .foundry-window--character .sheet-shell--ddb .sheet-ddb-body {
   min-height: 280px;
+}
+
+.vtt-chrome[data-vtt-mesa="foundry"] .sheet-shell--ddb {
+  background: #e8e2d6;
+  border-color: transparent;
 }

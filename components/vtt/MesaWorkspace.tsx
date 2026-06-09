@@ -137,7 +137,8 @@ export function MesaWorkspace({
     (actorId?: string) => {
       const id = actorId ?? defaultActorId;
       setSheetPopupActorId(id);
-      windows.open("character");
+      windows.openAsPopup("character");
+      windows.focus("character");
     },
     [defaultActorId, windows]
   );
