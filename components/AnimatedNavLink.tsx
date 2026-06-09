@@ -9,6 +9,7 @@ type Props = {
   className?: string;
   /** Só marca ativo na URL exata (ex.: Início `/`). */
   exact?: boolean;
+  icon?: React.ReactNode;
 };
 
 function isActive(pathname: string, href: string, exact?: boolean): boolean {
@@ -22,6 +23,7 @@ export function AnimatedNavLink({
   children,
   className = "nav-link",
   exact,
+  icon,
 }: Props) {
   const pathname = usePathname() ?? "";
   const active = isActive(pathname, href, exact);
@@ -32,7 +34,8 @@ export function AnimatedNavLink({
       className={`${className}${active ? " nav-link--active" : ""}`}
       aria-current={active ? "page" : undefined}
     >
-      {children}
+      {icon ? <span className="nav-link__icon">{icon}</span> : null}
+      <span className="nav-link__label">{children}</span>
     </Link>
   );
 }
