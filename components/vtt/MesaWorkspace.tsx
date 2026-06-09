@@ -15,7 +15,12 @@ import type { BattleScene } from "@/lib/vtt/types";
 import type { Axial } from "@/lib/vtt/hex-math";
 import { useCombatTurnFlow } from "@/hooks/vtt/useCombatTurnFlow";
 import { useFoundryWindows, type MesaWindowId } from "@/hooks/vtt/useFoundryWindows";
-import { useRoomSync } from "@/hooks/useRoomSync";
+import { useGmPlayerViewMode } from "@/hooks/vtt/useGmPlayerViewMode";
+import { useRoomSync, type RoomMemberOnlineEvent } from "@/hooks/useRoomSync";
+import { useRoomPresence } from "@/hooks/useRoomPresence";
+import { MesaPresenceAlerts } from "@/components/vtt/MesaPresenceAlerts";
+import { MesaOnlineMenu } from "@/components/vtt/MesaOnlineMenu";
+import { GmPlayerViewToggle } from "@/components/vtt/GmPlayerViewToggle";
 import { VttToastProvider } from "@/components/vtt/VttToast";
 import { FoundryDockPanel } from "@/components/vtt/foundry/FoundryDockPanel";
 import { FoundryWindow } from "@/components/vtt/foundry/FoundryWindow";
@@ -68,13 +73,52 @@ export function MesaWorkspace({
   packs: _packs,
   defaultActorId = "pc-thrain-ferroescudo",
 }: Props) {
+  const isActualGm = canControlCombat;
+  const { playAsPlayer, togglePlayAsPlayer, effectiveIsGm } = useGmPlayerViewMode(
+    roomId,
+    isActualGm
+  );
+  const effectiveCanControlCombat = effectiveIsGm;
+  const combatAccessOpts = useMemo(
+    () => ({ simulatePlayerView: playAsPlayer }),
+    [playAsPlayer]
+  );
+
   const [sheetPopupActorId, setSheetPopupActorId] = useState<string | null>(null);
   const [spawnAxial, setSpawnAxial] = useState<Axial | null>(null);
   const [combatChatReveal, setCombatChatReveal] = useState<
     Record<string, import("@/lib/combat/chat-display").CombatChatRevealPhase>
   >({});
-  const { snapshot, syncError, refresh, applySnapshot } = useRoomSync(roomId, { inviteCode });
+  const memberOnlineRef = useRef<((event: RoomMemberOnlineEvent) => void) | null>(null);
+  const presenceUser =
+    session && canParticipateInRoom({ roomId, ownerId: roomOwnerId, memberIds }, session)
+      ? { id: session.id, name: session.nickname?.trim() || session.name }
+      : null;
+  const {
+    online: presenceOnline,
+    loading: presenceLoading,
+    handleMemberOnline,
+    ownerDisplayNames,
+  } = useRoomPresence({ roomId, inviteCode });
+  const { snapshot, syncError, refresh, applySnapshot } = useRoomSync(roomId, {
+    inviteCode,
+    presenceUser,
+    onMemberOnline: (event) => {
+      memberOnlineRef.current?.(event);
+      handleMemberOnline(event);
+    },
+  });
   const windows = useFoundryWindows(roomId);
+  const { close: closeWindow } = windows;
+
+  const GM_ONLY_WINDOW_IDS: MesaWindowId[] = ["spawn", "dungeon", "gm"];
+
+  useEffect(() => {
+    if (!playAsPlayer) return;
+    for (const id of GM_ONLY_WINDOW_IDS) {
+      closeWindow(id);
+    }
+  }, [playAsPlayer, closeWindow]);
 
   const openSheet = useCallback(
     (actorId?: string) => {
@@ -152,19 +196,20 @@ export function MesaWorkspace({
 
   const canControlToken = useCallback(
     (token: import("@/lib/vtt/types").BattleToken) =>
-      canControlTokenCheck(turnRoom, session, token),
-    [turnRoom, session]
+      canControlTokenCheck(turnRoom, session, token, combatAccessOpts),
+    [turnRoom, session, combatAccessOpts]
   );
 
   const canViewTokenPaCb = useCallback(
-    (token: import("@/lib/vtt/types").BattleToken) => canViewTokenPa(turnRoom, session, token),
-    [turnRoom, session]
+    (token: import("@/lib/vtt/types").BattleToken) =>
+      canViewTokenPa(turnRoom, session, token, combatAccessOpts),
+    [turnRoom, session, combatAccessOpts]
   );
 
   const canEndTurn = useMemo(() => {
     if (!snapshot?.combat?.order?.length) return false;
-    return canAdvanceCombatTurn(turnRoom, session, snapshot.combat);
-  }, [snapshot?.combat, session, turnRoom]);
+    return canAdvanceCombatTurn(turnRoom, session, snapshot.combat, combatAccessOpts);
+  }, [snapshot?.combat, session, turnRoom, combatAccessOpts]);
 
   const canParticipate = useMemo(
     () =>
@@ -234,6 +279,7 @@ export function MesaWorkspace({
 
   return (
     <VttToastProvider>
+      <MesaPresenceAlerts bridgeRef={memberOnlineRef} selfUserId={session?.id} />
       <MesaWorkspaceCombatFlow
         roomId={roomId}
         roomOwnerId={roomOwnerId}
@@ -264,7 +310,7 @@ export function MesaWorkspace({
             isActive={isPanelActive}
             onOpenDock={handleOpenDock}
             onOpenPopup={handleOpenPopup}
-            showGm={canControlCombat}
+            showGm={effectiveCanControlCombat}
             showInvite={Boolean(canParticipate && roomInviteCode)}
             dockOpen={dockOpen}
           >
@@ -358,7 +404,7 @@ export function MesaWorkspace({
               </FoundryDockPanel>
             ) : null}
 
-            {canControlCombat && !windows.isFloating("spawn") ? (
+            {effectiveCanControlCombat && !windows.isFloating("spawn") ? (
               <FoundryDockPanel
                 title="Invocar monstros"
                 open={win("spawn").open}
@@ -385,12 +431,26 @@ export function MesaWorkspace({
             className="foundry-mesa__stage"
             onContextMenuCapture={(e) => e.preventDefault()}
           >
+            <div className="foundry-mesa__stage-header">
+              {isActualGm ? (
+                <GmPlayerViewToggle
+                  playAsPlayer={playAsPlayer}
+                  onToggle={togglePlayAsPlayer}
+                />
+              ) : null}
+              <MesaOnlineMenu
+                online={presenceOnline}
+                loading={presenceLoading}
+                selfUserId={session?.id}
+              />
+            </div>
             <HexBattlefield
               scene={scene}
               canEdit={canEdit}
               canUseWhiteboard={canEdit}
-              canControlCombat={canControlCombat}
-              canRepositionTokens={canControlCombat}
+              canControlCombat={effectiveCanControlCombat}
+              canRepositionTokens={effectiveCanControlCombat}
+              isRoomGm={effectiveIsGm}
               canBypassTurn={canBypassTurn}
               canEndTurn={canEndTurn}
               roomOwnerId={roomOwnerId}
@@ -402,6 +462,7 @@ export function MesaWorkspace({
               snapshot={snapshot}
               session={session}
               roomActors={snapshot?.actors ?? {}}
+              ownerDisplayNames={ownerDisplayNames}
               onRefresh={refresh}
               onApplySnapshot={applySnapshot}
               onOpenSheet={openSheet}
@@ -559,7 +620,7 @@ export function MesaWorkspace({
                 </FoundryWindow>
               ) : null}
 
-              {canControlCombat && windows.isFloating("spawn") ? (
+              {effectiveCanControlCombat && windows.isFloating("spawn") ? (
                 <FoundryWindow
                   title="Invocar monstros"
                   layout={win("spawn")}

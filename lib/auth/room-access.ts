@@ -6,6 +6,7 @@ import {
 import type { CharacterSheet } from "@/lib/character/types";
 import type { SessionUser } from "@/lib/auth/types";
 import { normalizeRoomSettings, type RoomSettings } from "@/lib/room/settings";
+import { memberIdsHasUser } from "@/lib/auth/member-ids";
 import type { RoomState } from "@/lib/room/types";
 
 /** PCs jogáveis na mesa demo sem login (visitante). */
@@ -22,9 +23,16 @@ export function normalizeInviteCode(code: string): string {
   return code.trim().toUpperCase();
 }
 
-export function inviteMatches(room: RoomState, code: string | null | undefined): boolean {
+export function inviteMatches(
+  room: Pick<RoomState, "inviteCode">,
+  code: string | null | undefined,
+  adventureInviteCode?: string | null
+): boolean {
   if (!code?.trim()) return false;
-  return normalizeInviteCode(room.inviteCode) === normalizeInviteCode(code);
+  const norm = normalizeInviteCode(code);
+  if (normalizeInviteCode(room.inviteCode) === norm) return true;
+  if (adventureInviteCode && normalizeInviteCode(adventureInviteCode) === norm) return true;
+  return false;
 }
 
 /** Criador da mesa = “mestre” só nesta sala (modelo Roll20) */
@@ -38,11 +46,12 @@ export function isRoomOwner(
 
 export function isRoomMember(
   room: Pick<RoomState, "roomId"> & { ownerId?: string; memberIds?: string[] },
-  userId: string | undefined
+  userId: string | undefined,
+  clerkId?: string | null
 ): boolean {
   if (!userId) return false;
   if (isRoomOwner(room, userId)) return true;
-  return (room.memberIds ?? []).includes(userId);
+  return memberIdsHasUser(room.memberIds ?? [], userId, clerkId);
 }
 
 export function canManageRoom(
@@ -107,12 +116,13 @@ export function canDeleteMapMarkup(
 export function canViewRoom(
   room: RoomState,
   user: SessionUser | null | undefined,
-  inviteCode?: string | null
+  inviteCode?: string | null,
+  adventureInviteCode?: string | null
 ): boolean {
   if (room.roomId === "demo") return true;
   if (user?.role === "admin") return true;
-  if (user && isRoomMember(room, user.id)) return true;
-  if (inviteMatches(room, inviteCode)) return true;
+  if (user && isRoomMember(room, user.id, user.clerkId)) return true;
+  if (inviteMatches(room, inviteCode, adventureInviteCode)) return true;
   return false;
 }
 
@@ -120,13 +130,14 @@ export function canViewRoom(
 export function isRoomVisitor(
   room: RoomState,
   user: SessionUser | null | undefined,
-  inviteCode?: string | null
+  inviteCode?: string | null,
+  adventureInviteCode?: string | null
 ): boolean {
-  if (!canViewRoom(room, user, inviteCode)) return false;
+  if (!canViewRoom(room, user, inviteCode, adventureInviteCode)) return false;
   if (room.roomId === "demo") return !user;
-  if (!user) return inviteMatches(room, inviteCode);
-  if (user.role === "admin" || isRoomMember(room, user.id)) return false;
-  return inviteMatches(room, inviteCode);
+  if (!user) return inviteMatches(room, inviteCode, adventureInviteCode);
+  if (user.role === "admin" || isRoomMember(room, user.id, user.clerkId)) return false;
+  return inviteMatches(room, inviteCode, adventureInviteCode);
 }
 
 /** Editar tokens, combate, chat, dados — membro da mesa (demo: exige login). */
@@ -137,7 +148,7 @@ export function canParticipateInRoom(
   if (room.roomId === "demo") return Boolean(user);
   if (!user) return false;
   if (user.role === "admin") return true;
-  return isRoomMember(room, user.id);
+  return isRoomMember(room, user.id, user.clerkId);
 }
 
 /** @deprecated Use canParticipateInRoom — mantido para rotas existentes */

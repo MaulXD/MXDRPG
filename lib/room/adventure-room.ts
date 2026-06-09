@@ -1,6 +1,7 @@
 import * as dbAdventures from "@/lib/db/adventures";
 import type { Adventure } from "@/lib/adventure/types";
 import { dbEnabled } from "@/lib/db/enabled";
+import { fetchClerkIdForUser } from "@/lib/db/users";
 import { DEMO_SCENE } from "@/lib/vtt/demo-scene";
 import { DEFAULT_ROOM_SETTINGS } from "@/lib/room/settings";
 import { emptyCombat } from "./combat";
@@ -43,8 +44,25 @@ export async function createRoomForAdventure(adventure: Adventure): Promise<Room
 export async function joinRoomMembers(roomId: string, userId: string): Promise<void> {
   const room = await getRoom(roomId);
   if (!room) return;
-  if (room.ownerId !== userId && !room.memberIds.includes(userId)) {
+
+  const clerkId = await fetchClerkIdForUser(userId);
+  const alias = clerkId ? `clerk-${clerkId}` : null;
+  let changed = false;
+
+  if (room.ownerId === userId) return;
+
+  if (alias && room.memberIds.includes(alias) && !room.memberIds.includes(userId)) {
+    room.memberIds = room.memberIds.map((id) => (id === alias ? userId : id));
+    changed = true;
+  } else if (alias && room.memberIds.includes(alias) && room.memberIds.includes(userId)) {
+    room.memberIds = room.memberIds.filter((id) => id !== alias);
+    changed = true;
+  } else if (!room.memberIds.includes(userId)) {
     room.memberIds.push(userId);
+    changed = true;
+  }
+
+  if (changed) {
     room.updatedAt = Date.now();
     room.revision += 1;
     rooms().set(roomId, room);

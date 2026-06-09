@@ -33,3 +33,15 @@ export function getBestiaryEntry(
 export function setBestiaryEntry(entry: PlayerBestiaryEntry, userId: string, adventureId: string): void {
   bestiaryStore().set(bestiaryStoreKey(userId, adventureId, entry.typeKey), entry);
 }
+
+export function listBestiaryEntriesForUser(
+  userId: string,
+  adventureId: string
+): PlayerBestiaryEntry[] {
+  const prefix = `${userId}:${adventureId}:`;
+  const out: PlayerBestiaryEntry[] = [];
+  for (const [key, entry] of bestiaryStore()) {
+    if (key.startsWith(prefix)) out.push(entry);
+  }
+  return out.sort((a, b) => b.updatedAt - a.updatedAt);
+}

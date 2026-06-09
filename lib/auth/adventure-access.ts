@@ -1,3 +1,4 @@
+import { memberIdsHasUser } from "@/lib/auth/member-ids";
 import type { Adventure } from "@/lib/adventure/types";
 
 export function isAdventureOwner(
@@ -9,11 +10,12 @@ export function isAdventureOwner(
 
 export function isAdventureMember(
   adventure: Pick<Adventure, "ownerId" | "memberIds">,
-  userId: string | undefined
+  userId: string | undefined,
+  clerkId?: string | null
 ): boolean {
   if (!userId) return false;
   if (isAdventureOwner(adventure, userId)) return true;
-  return adventure.memberIds.includes(userId);
+  return memberIdsHasUser(adventure.memberIds, userId, clerkId);
 }
 
 export function canManageAdventure(

@@ -15,8 +15,11 @@ import {
 } from "@/lib/character/starter-kits";
 import type { CharacterAttributes } from "@/lib/character/types";
 import { attributeMod } from "@/lib/character/rules";
+import { entryTooltipText } from "@/lib/compendium/format";
 import { getEntry } from "@/lib/compendium/registry";
+import type { CompendiumPackId } from "@/lib/compendium/types";
 import type { CombatLoadout } from "@/lib/combat/types";
+import { WizardHoverTip } from "@/components/character/wizard/WizardHoverTip";
 
 type Props = {
   classe: string;
@@ -37,6 +40,19 @@ function entryLabel(
 ): string {
   const entry = getEntry(packId, entryId);
   return entry?.name ?? entryId;
+}
+
+function entryTooltip(packId: CompendiumPackId, entryId: string): string | undefined {
+  const entry = getEntry(packId, entryId);
+  if (!entry) return undefined;
+  const text = entryTooltipText(entry.system, entry.type, entry.name);
+  return text || undefined;
+}
+
+function loadoutTooltip(loadout: CombatLoadout): string | undefined {
+  const pack = loadout.packId as CompendiumPackId;
+  if (pack !== "armas" && pack !== "magias" && pack !== "habilidades") return undefined;
+  return entryTooltip(pack, loadout.entryId);
 }
 
 function toggleId(ids: string[], entryId: string, on: boolean): string[] {
@@ -181,7 +197,9 @@ export function WizardEquipmentStep({
                     applyEquipment(classe, next, onChange);
                   }}
                 >
-                  {combatLabel(loadout)}
+                  <WizardHoverTip text={loadoutTooltip(loadout)}>
+                    <span>{combatLabel(loadout)}</span>
+                  </WizardHoverTip>
                 </button>
               );
             })}
@@ -217,7 +235,9 @@ export function WizardEquipmentStep({
                     applyEquipment(classe, { ...equipment, sideWeaponEntryId: entryId }, onChange)
                   }
                 >
-                  {entryLabel("armas", entryId)}
+                  <WizardHoverTip text={entryTooltip("armas", entryId)}>
+                    <span>{entryLabel("armas", entryId)}</span>
+                  </WizardHoverTip>
                 </button>
               );
             })}
@@ -252,7 +272,9 @@ export function WizardEquipmentStep({
                   applyEquipment(classe, { ...equipment, armorEntryId: entryId }, onChange)
                 }
               >
-                {entryLabel("equipamentos", entryId)}
+                <WizardHoverTip text={entryTooltip("equipamentos", entryId)}>
+                  <span>{entryLabel("equipamentos", entryId)}</span>
+                </WizardHoverTip>
               </button>
             );
           })}
@@ -286,10 +308,12 @@ export function WizardEquipmentStep({
                       applyEquipment(classe, next, onChange);
                     }}
                   />
-                  <span>
-                    {entryLabel("magias", entryId)}
-                    {isPrimary ? " (principal)" : null}
-                  </span>
+                  <WizardHoverTip text={entryTooltip("magias", entryId)}>
+                    <span>
+                      {entryLabel("magias", entryId)}
+                      {isPrimary ? " (principal)" : null}
+                    </span>
+                  </WizardHoverTip>
                 </label>
               );
             })}
@@ -320,7 +344,9 @@ export function WizardEquipmentStep({
                       applyEquipment(classe, next, onChange);
                     }}
                   />
-                  <span>{entryLabel("equipamentos", entryId)}</span>
+                  <WizardHoverTip text={entryTooltip("equipamentos", entryId)}>
+                    <span>{entryLabel("equipamentos", entryId)}</span>
+                  </WizardHoverTip>
                 </label>
               );
             })}

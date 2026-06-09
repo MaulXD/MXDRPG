@@ -4616,7 +4616,7 @@
   pointer-events: none;
 }
 
-.vtt-combat-hud > * {
+.vtt-combat-hud > *:not(.hud-corner):not(.hud-corners-layer) {
   position: relative;
   z-index: 1;
 }
@@ -5737,6 +5737,52 @@
 .vtt-mini-hud__info-btn:hover {
   background: rgba(201, 169, 98, 0.22);
   border-color: rgba(201, 169, 98, 0.65);
+}
+
+.vtt-player-bestiary {
+  width: min(420px, calc(100vw - 2rem));
+  max-height: min(70vh, 520px);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.vtt-player-bestiary__body {
+  overflow-y: auto;
+  padding: 0.65rem 0.85rem 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.vtt-player-bestiary__entry {
+  padding: 0.55rem 0.65rem;
+  border-radius: 8px;
+  border: 1px solid var(--glass-border);
+  background: rgba(8, 12, 18, 0.35);
+}
+
+.vtt-player-bestiary__entry-title {
+  margin: 0 0 0.35rem;
+  font-size: 0.92rem;
+}
+
+.vtt-player-bestiary__line {
+  margin: 0.2rem 0 0;
+  font-size: 0.8rem;
+  line-height: 1.4;
+}
+
+.vtt-player-bestiary__attacks-wrap {
+  margin-top: 0.45rem;
+}
+
+.vtt-player-bestiary__attacks-label {
+  margin: 0 0 0.25rem;
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
 }
 
 .vtt-monster-knowledge-wrap {

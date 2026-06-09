@@ -30,6 +30,7 @@ import { drawTokenEffectBadges } from "@/lib/vtt/draw-token-effects";
 import {
   drawTokenDefeatedOverlay,
   drawTokenDefeatedSkull,
+  drawDualTokenNameLabel,
   drawTokenNameLabel,
   shouldDrawTokenNameplate,
   drawTokenHpSegments,
@@ -39,6 +40,8 @@ import {
   isTokenDefeated,
   type TokenHpDisplay,
 } from "@/lib/vtt/token-hp-display";
+import type { RoomSettings } from "@/lib/room/settings";
+import type { RoomActor } from "@/lib/room/types";
 import {
   drawTokenCastFx,
   type ActiveTokenCastFx,
@@ -279,6 +282,9 @@ type TokenDrawParams = {
   /** Posição visual (pode ser fracionária durante animação) */
   tokenPositionOverride?: Map<string, { q: number; r: number }>;
   tokenHpDisplay?: Map<string, TokenHpDisplay>;
+  roomSettings?: Pick<RoomSettings, "showUsernameOnTokenNameplate">;
+  roomActors?: Record<string, RoomActor>;
+  ownerDisplayNames?: Map<string, string>;
 };
 
 function drawSingleToken(
@@ -407,8 +413,32 @@ function drawSingleToken(
       }
     }
 
-    if (shouldDrawTokenNameplate(token)) {
-      drawTokenNameLabel(ctx, x, y, r, token.name);
+    const showUsernamePlate = p.roomSettings?.showUsernameOnTokenNameplate ?? false;
+    const isHovered = p.hoverTokenId === token.id;
+    if (
+      shouldDrawTokenNameplate(token, {
+        showUsernameOnTokenNameplate: showUsernamePlate,
+        hovered: isHovered,
+      })
+    ) {
+      const useDual =
+        showUsernamePlate &&
+        token.linked &&
+        !token.monsterEntryId &&
+        token.actorId &&
+        p.roomActors &&
+        p.ownerDisplayNames;
+      if (useDual) {
+        const ownerId = p.roomActors![token.actorId!]?.ownerId;
+        const username = ownerId ? p.ownerDisplayNames!.get(ownerId) : null;
+        if (username) {
+          drawDualTokenNameLabel(ctx, x, y, r, username, token.name);
+        } else {
+          drawTokenNameLabel(ctx, x, y, r, token.name);
+        }
+      } else {
+        drawTokenNameLabel(ctx, x, y, r, token.name);
+      }
     }
 
   drawTokenEffectBadges(ctx, x, y, r, token);

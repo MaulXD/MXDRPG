@@ -70,7 +70,10 @@ export function SheetPdfExportButton({
         className={btnClass}
         onClick={() => void exportPdf()}
         disabled={busy}
-        title="Baixar ficha em PDF (ações rápidas com link para a mesa)"
+        title={
+          error ||
+          "Baixar ficha em PDF (ações rápidas com link para a mesa)"
+        }
         aria-label="Exportar ficha em PDF"
       >
         {busy ? "…" : isChrome ? "PDF" : compact ? "PDF" : "Exportar PDF"}

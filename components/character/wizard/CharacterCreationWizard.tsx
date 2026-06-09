@@ -5,7 +5,10 @@ import { useRouter } from "next/navigation";
 import { SubclassTrackCard } from "@/components/character/wizard/SubclassTrackCard";
 import { WizardHoverTip } from "@/components/character/wizard/WizardHoverTip";
 import { WizardEquipmentStep } from "@/components/character/wizard/WizardEquipmentStep";
-import { WizardPortraitStep } from "@/components/character/wizard/WizardPortraitStep";
+import {
+  WizardPortraitStep,
+  type WizardPortraitStepHandle,
+} from "@/components/character/wizard/WizardPortraitStep";
 import { ReligionPickGrid } from "@/components/character/ReligionPickGrid";
 import { religionDisplayName } from "@/lib/character/pantheon";
 import { WizardPickIcon } from "@/components/character/wizard/WizardPickIcon";
@@ -165,6 +168,7 @@ export function CharacterCreationWizard({
   const [err, setErr] = useState<string | null>(null);
   const [pointBuyMode, setPointBuyMode] = useState<PointBuyMode>("suggested");
   const nameInputRef = useRef<HTMLInputElement>(null);
+  const portraitStepRef = useRef<WizardPortraitStepHandle>(null);
   const pointBuyClassRaceRef = useRef({
     classe: EMPTY_WIZARD_DRAFT.classe,
     raca: EMPTY_WIZARD_DRAFT.raca,
@@ -302,12 +306,24 @@ export function CharacterCreationWizard({
     setStep(index);
   }
 
-  function next() {
+  async function flushPortraitStep(): Promise<boolean> {
+    if (step !== 7) return true;
+    const ok = (await portraitStepRef.current?.flushPending()) ?? true;
+    if (!ok) {
+      setErr(
+        "Não foi possível salvar o retrato. Use uma imagem menor ou clique em Aplicar retrato + token."
+      );
+    }
+    return ok;
+  }
+
+  async function next() {
     const e = stepError(step);
     if (e) {
       setErr(e);
       return;
     }
+    if (!(await flushPortraitStep())) return;
     setErr(null);
     setStep(Math.min(step + 1, STEPS.length - 1));
   }
@@ -322,7 +338,7 @@ export function CharacterCreationWizard({
     if (e.target instanceof HTMLTextAreaElement) return;
     if (step === 3 && pbLeft !== 0) return;
     e.preventDefault();
-    if (step < STEPS.length - 1) next();
+    if (step < STEPS.length - 1) void next();
     else void finish();
   }
 
@@ -332,6 +348,7 @@ export function CharacterCreationWizard({
   const poolPct = Math.min(100, (pbSpent / POINT_BUY_POOL) * 100);
 
   async function finish() {
+    if (!(await flushPortraitStep())) return;
     const invalidAt = firstInvalidStep();
     if (invalidAt !== null) {
       const message = stepError(invalidAt) ?? validateWizardDraft(draft);
@@ -794,6 +811,7 @@ export function CharacterCreationWizard({
           <>
             <StepHead index={7} title="Retrato e token" hint={STEP_HINTS.Retrato} />
             <WizardPortraitStep
+              ref={portraitStepRef}
               portraitUrl={draft.portraitUrl ?? null}
               tokenImageUrl={draft.tokenImageUrl ?? null}
               portraitFocus={draft.portraitFocus ?? null}

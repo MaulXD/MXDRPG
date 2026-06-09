@@ -161,6 +161,16 @@ export async function waitForSheetPdfCapture(root: HTMLElement): Promise<void> {
   await new Promise((r) => setTimeout(r, 180));
 }
 
+function unhideCaptureTree(node: HTMLElement): void {
+  let el: HTMLElement | null = node;
+  while (el) {
+    el.style.visibility = "visible";
+    el.style.opacity = "1";
+    el.style.display = el.style.display === "none" ? "block" : el.style.display;
+    el = el.parentElement;
+  }
+}
+
 export async function prepareSheetPdfCaptureHost(host: HTMLElement | null): Promise<() => void> {
   if (!host) return () => undefined;
 
@@ -175,13 +185,14 @@ export async function prepareSheetPdfCaptureHost(host: HTMLElement | null): Prom
     pointerEvents: host.style.pointerEvents,
   };
 
+  // Fora da tela, mas visível — html2canvas ignora nós com visibility:hidden (PDF em branco).
   host.style.position = "fixed";
-  host.style.left = "0";
+  host.style.left = "-12000px";
   host.style.top = "0";
   host.style.width = "920px";
-  host.style.visibility = "hidden";
-  host.style.opacity = "0";
-  host.style.zIndex = "-9999";
+  host.style.visibility = "visible";
+  host.style.opacity = "1";
+  host.style.zIndex = "-1";
   host.style.pointerEvents = "none";
 
   return () => {
@@ -215,17 +226,43 @@ export async function exportSheetPdf(
     const backgroundColor = resolveCaptureBackground(root);
     const links = opts ? collectPdfLinks(root, opts) : [];
 
+    const captureW = Math.max(root.scrollWidth, root.offsetWidth, 920);
+    const captureH = Math.max(root.scrollHeight, root.offsetHeight, 400);
+
     const canvas = await html2canvas(root, {
       scale: 2,
       useCORS: true,
-      allowTaint: false,
+      allowTaint: true,
       logging: false,
       backgroundColor,
-      windowWidth: root.scrollWidth,
-      windowHeight: root.scrollHeight,
+      width: captureW,
+      height: captureH,
+      windowWidth: captureW,
+      windowHeight: captureH,
+      onclone: (_doc, clonedRoot) => {
+        unhideCaptureTree(clonedRoot);
+        const clonedHost = clonedRoot.closest(".sheet-pdf-capture-host") as HTMLElement | null;
+        if (clonedHost) {
+          clonedHost.style.position = "fixed";
+          clonedHost.style.left = "0";
+          clonedHost.style.top = "0";
+          clonedHost.style.width = "920px";
+          clonedHost.style.zIndex = "1";
+          unhideCaptureTree(clonedHost);
+        }
+        clonedRoot.style.width = "920px";
+        clonedRoot.style.maxWidth = "920px";
+      },
     });
 
+    if (canvas.width < 8 || canvas.height < 8) {
+      throw new Error("Captura da ficha vazia — recarregue a página e tente exportar de novo.");
+    }
+
     const imgData = canvas.toDataURL("image/png");
+    if (!imgData || imgData.length < 2000) {
+      throw new Error("Não foi possível rasterizar a ficha. Tente novamente após a página carregar.");
+    }
     const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
     const pageWidth = pdf.internal.pageSize.getWidth();
     const pageHeight = pdf.internal.pageSize.getHeight();

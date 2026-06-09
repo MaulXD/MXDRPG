@@ -100,16 +100,25 @@ export function CharacterSheet({
 
   const { snapshot, refresh, applySnapshot } = useRoomSync(roomId);
   const sheetBase = localSheet ?? character;
-  const live = snapshot?.actors[character.id] ?? sheetBase;
-  const inRoom = Boolean(snapshot?.actors[character.id]);
+  const roomActor = snapshot?.actors[character.id];
+  const liveRaw = roomActor ?? sheetBase;
+  const live: CharacterSheetData = {
+    ...liveRaw,
+    inventory: roomActor?.inventory?.length ? roomActor.inventory : character.inventory,
+    combatLoadout: roomActor?.combatLoadout ?? character.combatLoadout ?? null,
+    armorLoadout: roomActor?.armorLoadout ?? character.armorLoadout ?? null,
+  };
+  const inRoom = Boolean(roomActor);
 
   useEffect(() => {
     setLocalSheet(null);
   }, [character.id, character.combatLoadout, character.armorLoadout, character.tactical?.defesa]);
 
   useEffect(() => {
-    setInventory(loadInventory(character.id, character.inventory));
-  }, [character.id, character.inventory]);
+    const seed =
+      inRoom && live.inventory?.length ? live.inventory : character.inventory;
+    setInventory(loadInventory(character.id, seed));
+  }, [character.id, character.inventory, inRoom, live.inventory]);
 
   const persist = useCallback(
     (items: InventoryItem[]) => {

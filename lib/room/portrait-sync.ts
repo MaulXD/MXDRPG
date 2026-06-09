@@ -53,21 +53,24 @@ export function mergeScenePreservingPortraits(
   prev: BattleScene,
   next: BattleScene
 ): BattleScene {
-  return {
-    ...next,
-    tokens: next.tokens.map((remote) => {
-      const local = prev.tokens.find((t) => t.id === remote.id);
-      if (!local) return remote;
-      const portrait = mergeTokenPortraitFields(local, remote);
-      if (
-        portrait.imageUrl === remote.imageUrl &&
-        portrait.imageFocus === remote.imageFocus
-      ) {
-        return remote;
-      }
-      return { ...remote, ...portrait };
-    }),
-  };
+  const remoteIds = new Set(next.tokens.map((t) => t.id));
+  const merged = next.tokens.map((remote) => {
+    const local = prev.tokens.find((t) => t.id === remote.id);
+    if (!local) return remote;
+    const portrait = mergeTokenPortraitFields(local, remote);
+    if (
+      portrait.imageUrl === remote.imageUrl &&
+      portrait.imageFocus === remote.imageFocus
+    ) {
+      return remote;
+    }
+    return { ...remote, ...portrait };
+  });
+  // Snapshot SSE parcial pode omitir tokens — não remover do tabuleiro local.
+  for (const local of prev.tokens) {
+    if (!remoteIds.has(local.id)) merged.push(local);
+  }
+  return { ...next, tokens: merged };
 }
 
 /** Copia imageUrl do token para a ficha quando só o mapa tinha a imagem. */

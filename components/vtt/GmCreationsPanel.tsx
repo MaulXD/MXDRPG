@@ -3,7 +3,8 @@
 import { useEffect, useMemo, useState } from "react";
 import type { Axial } from "@/lib/vtt/hex-math";
 import type { RoomActor } from "@/lib/room/types";
-import type { GmCreation } from "@/lib/room/gm-creations";
+import type { GmCreation, GmCreatureStats } from "@/lib/room/gm-creations";
+import { sanitizeCreatureStats } from "@/lib/room/gm-creations";
 import { listMonsterTemplates } from "@/lib/vtt/monsters";
 import {
   createGmCreation,
@@ -47,12 +48,35 @@ export function GmCreationsPanel({
   const [cloneMonsterId, setCloneMonsterId] = useState(monsters[0]?.entryId ?? "");
   const [cloneActorId, setCloneActorId] = useState(cloneableActors[0]?.id ?? "");
 
+  const CREATURE_STAT_BOUNDS: Record<
+    keyof Pick<
+      GmCreatureStats,
+      "vidaMax" | "paMax" | "defesa" | "walk" | "run" | "forca" | "agilidade" | "ameaca"
+    >,
+    { min: number; max?: number }
+  > = {
+    vidaMax: { min: 1 },
+    paMax: { min: 1 },
+    defesa: { min: 0 },
+    walk: { min: 1 },
+    run: { min: 1 },
+    forca: { min: 1 },
+    agilidade: { min: 1 },
+    ameaca: { min: 0 },
+  };
+
   useEffect(() => {
     if (!selectedId || !creations[selectedId]) {
       setDraft(null);
       return;
     }
-    setDraft(structuredClone(creations[selectedId]));
+    const remote = creations[selectedId];
+    setDraft((prev) => {
+      if (prev?.id === selectedId && prev.updatedAt === remote.updatedAt) {
+        return prev;
+      }
+      return structuredClone(remote);
+    });
   }, [selectedId, creations]);
 
   async function run<T>(fn: () => Promise<T>) {
@@ -158,15 +182,34 @@ export function GmCreationsPanel({
     setDraft((d) => (d ? { ...d, name } : d));
   }
 
-  function updateCreatureField(key: keyof NonNullable<GmCreation["creature"]>, value: number) {
+  function parseCreatureStat(
+    key: keyof typeof CREATURE_STAT_BOUNDS,
+    raw: string,
+    fallback: number
+  ): number {
+    const trimmed = raw.trim();
+    if (!trimmed) return fallback;
+    const n = Number(trimmed);
+    if (!Number.isFinite(n)) return fallback;
+    const { min, max } = CREATURE_STAT_BOUNDS[key];
+    const floored = Math.floor(n);
+    if (max != null) return Math.max(min, Math.min(max, floored));
+    return Math.max(min, floored);
+  }
+
+  function updateCreatureField(
+    key: keyof typeof CREATURE_STAT_BOUNDS,
+    raw: string
+  ) {
     setDraft((d) => {
       if (!d?.creature) return d;
-      const creature = {
+      const value = parseCreatureStat(key, raw, d.creature[key]);
+      const creature = sanitizeCreatureStats({
         ...d.creature,
         [key]: value,
         ...(key === "vidaMax" ? { vida: value } : {}),
         ...(key === "paMax" ? { pa: value } : {}),
-      };
+      });
       return { ...d, creature };
     });
   }
@@ -326,8 +369,11 @@ export function GmCreationsPanel({
                   <input
                     className="vtt-input"
                     type="number"
+                    min={CREATURE_STAT_BOUNDS[key].min}
+                    max={CREATURE_STAT_BOUNDS[key].max}
+                    step={1}
                     value={draft.creature![key]}
-                    onChange={(e) => updateCreatureField(key, Number(e.target.value))}
+                    onChange={(e) => updateCreatureField(key, e.target.value)}
                     disabled={busy}
                   />
                 </label>

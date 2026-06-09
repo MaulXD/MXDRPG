@@ -16,6 +16,8 @@ import {
   resolveMonsterBiomes,
   type DungeonBiomeId,
 } from "@/lib/vtt/monster-biomes";
+import { MonsterSheetDialog } from "@/components/compendium/MonsterSheetDialog";
+import "@/components/compendium/monster-sheet.css";
 
 type Props = {
   roomId: string;
@@ -37,6 +39,7 @@ export function MonsterSpawnPanel({ roomId, spawnAxial, onSpawned }: Props) {
   const [groupLevelDelta, setGroupLevelDelta] = useState(0);
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState<string | null>(null);
+  const [sheetEntryId, setSheetEntryId] = useState<string | null>(null);
   const dragGhostRef = useRef<HTMLElement | null>(null);
 
   const spawnOpts = useMemo(
@@ -223,10 +226,20 @@ export function MonsterSpawnPanel({ roomId, spawnAxial, onSpawned }: Props) {
       </label>
 
       {selected && preview ? (
-        <p className="vtt-spawn-meta">
-          Preview: {preview.name} · {CREATURE_SIZE_PT[preview.creatureSize]} ({CREATURE_SIZE_HEX_LABEL[preview.creatureSize]}) · ameaça{" "}
-          {preview.ameaca} · {preview.vidaMax} HP · PA {preview.paMax} · CA {preview.defesa}
-        </p>
+        <>
+          <p className="vtt-spawn-meta">
+            Preview: {preview.name} · {CREATURE_SIZE_PT[preview.creatureSize]} (
+            {CREATURE_SIZE_HEX_LABEL[preview.creatureSize]}) · ameaça {preview.ameaca} ·{" "}
+            {preview.vidaMax} HP · PA {preview.paMax} · CA {preview.defesa}
+          </p>
+          <button
+            type="button"
+            className="btn btn-ghost vtt-spawn-sheet-btn"
+            onClick={() => setSheetEntryId(entryId)}
+          >
+            Ver ficha do livro
+          </button>
+        </>
       ) : null}
 
       <p className="vtt-combat-hint">
@@ -240,6 +253,8 @@ export function MonsterSpawnPanel({ roomId, spawnAxial, onSpawned }: Props) {
       </button>
 
       {msg ? <p className="sheet-inline-msg">{msg}</p> : null}
+
+      <MonsterSheetDialog entryId={sheetEntryId} onClose={() => setSheetEntryId(null)} />
     </div>
   );
 }

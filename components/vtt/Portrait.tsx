@@ -29,6 +29,8 @@ export function Portrait({
   className = "",
 }: Props) {
   const rootClass = `portrait${size === "hud" ? " portrait--hud" : ""}${className ? ` ${className}` : ""}`;
+  const isSheetPopup = className.includes("portrait--sheet-popup");
+  const fitMode = size === "hud" || isSheetPopup ? "cover" : "contain";
   const canFocus = Boolean(imageSrc && focus && imgW > 0 && imgH > 0);
 
   return (
@@ -41,7 +43,7 @@ export function Portrait({
             imgW={imgW}
             imgH={imgH}
             shape="square"
-            fitMode={size === "hud" ? "cover" : "contain"}
+            fitMode={fitMode}
           />
         ) : imageSrc ? (
           // eslint-disable-next-line @next/next/no-img-element

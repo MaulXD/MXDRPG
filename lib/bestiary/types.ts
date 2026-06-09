@@ -37,3 +37,11 @@ export type PlayerMonsterKnowledgeView = {
   hpMaxKnown: number | null;
   hasAnyKnowledge: boolean;
 };
+
+/** Visão do mestre — bestiário completo de um jogador na aventura. */
+export type PlayerBestiaryGmView = {
+  playerUserId: string;
+  playerName: string;
+  characterName: string;
+  entries: PlayerMonsterKnowledgeView[];
+};

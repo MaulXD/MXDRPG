@@ -1,7 +1,7 @@
 "use client";
 
 import "./sheet.css";
-import { useEffect, useRef, useState } from "react";
+import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
 import { PortraitFocusEditor } from "@/components/character/PortraitFocusEditor";
 import { PortraitFocusFrame } from "@/components/character/PortraitFocusFrame";
 import { useImageNaturalSize } from "@/hooks/useImageNaturalSize";
@@ -18,6 +18,11 @@ import {
 } from "@/lib/media/image-upload-client";
 
 export type PortraitEditorBundle = PortraitBundle;
+
+export type PortraitEditorPanelHandle = {
+  /** Aplica imagem escolhida mas ainda não confirmada com "Aplicar". */
+  flushPending: () => Promise<boolean>;
+};
 
 type FocusSlot = "portrait" | "token";
 
@@ -43,19 +48,22 @@ function initialFocus(
   return sanitizePortraitFocus(primary) ?? sanitizePortraitFocus(fallback) ?? DEFAULT_PORTRAIT_FOCUS;
 }
 
-export function PortraitEditorPanel({
-  portraitUrl,
-  tokenImageUrl,
-  portraitFocus,
-  tokenFocus,
-  canEdit,
-  tokenRingColor = "var(--accent)",
-  onPersist,
-  onClear,
-  saveNewLabel = "Salvar retrato + token",
-  saveFocusLabel = "Aplicar enquadramento",
-  onDraftChange,
-}: Props) {
+export const PortraitEditorPanel = forwardRef<PortraitEditorPanelHandle, Props>(function PortraitEditorPanel(
+  {
+    portraitUrl,
+    tokenImageUrl,
+    portraitFocus,
+    tokenFocus,
+    canEdit,
+    tokenRingColor = "var(--accent)",
+    onPersist,
+    onClear,
+    saveNewLabel = "Salvar retrato + token",
+    saveFocusLabel = "Aplicar enquadramento",
+    onDraftChange,
+  },
+  ref
+) {
   const fileRef = useRef<HTMLInputElement>(null);
   const pendingFileRef = useRef<File | null>(null);
   const [busy, setBusy] = useState(false);
@@ -108,22 +116,49 @@ export function PortraitEditorPanel({
     }
   }
 
-  async function saveDraft() {
+  async function persistPendingFile(): Promise<boolean> {
     const file = pendingFileRef.current;
-    if (!file) return;
+    if (!file) return true;
+    const bundle = await buildPortraitBundle(file, {
+      portraitFocus: focusPortrait,
+      tokenFocus: focusToken,
+    });
+    await onPersist(bundle);
+    pendingFileRef.current = null;
+    if (draftSrc?.startsWith("blob:")) URL.revokeObjectURL(draftSrc);
+    setDraftSrc(null);
+    setFocusPortrait(bundle.portraitFocus);
+    setFocusToken(bundle.tokenFocus);
+    return true;
+  }
+
+  useImperativeHandle(
+    ref,
+    () => ({
+      async flushPending() {
+        if (!pendingFileRef.current) return true;
+        setBusy(true);
+        setMsg(null);
+        try {
+          await persistPendingFile();
+          setMsg("Retrato e token salvos.");
+          return true;
+        } catch (e) {
+          setMsg(e instanceof Error ? e.message : "Erro ao salvar");
+          return false;
+        } finally {
+          setBusy(false);
+        }
+      },
+    }),
+    [focusPortrait, focusToken, draftSrc, onPersist]
+  );
+
+  async function saveDraft() {
     setBusy(true);
     setMsg(null);
     try {
-      const bundle = await buildPortraitBundle(file, {
-        portraitFocus: focusPortrait,
-        tokenFocus: focusToken,
-      });
-      await onPersist(bundle);
-      pendingFileRef.current = null;
-      if (draftSrc?.startsWith("blob:")) URL.revokeObjectURL(draftSrc);
-      setDraftSrc(null);
-      setFocusPortrait(bundle.portraitFocus);
-      setFocusToken(bundle.tokenFocus);
+      await persistPendingFile();
       setMsg("Retrato e token salvos.");
     } catch (e) {
       setMsg(e instanceof Error ? e.message : "Erro ao salvar");
@@ -303,4 +338,4 @@ export function PortraitEditorPanel({
       {msg ? <p className="sheet-portrait-msg">{msg}</p> : null}
     </div>
   );
-}
+});

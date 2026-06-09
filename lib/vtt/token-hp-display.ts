@@ -269,8 +269,63 @@ export function drawTokenWalkRemainingBadge(
   ctx.restore();
 }
 
-export function shouldDrawTokenNameplate(token: BattleToken): boolean {
-  return token.nameplateMode === "always";
+export function shouldDrawTokenNameplate(
+  token: BattleToken,
+  opts: {
+    showUsernameOnTokenNameplate: boolean;
+    hovered: boolean;
+  }
+): boolean {
+  if (token.nameplateMode === "always") return true;
+  if (
+    opts.showUsernameOnTokenNameplate &&
+    token.linked &&
+    !token.monsterEntryId &&
+    opts.hovered
+  ) {
+    return true;
+  }
+  return false;
+}
+
+/** Duas linhas: username (negrito) + nome da ficha (menor), sem parênteses. */
+export function drawDualTokenNameLabel(
+  ctx: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  tokenR: number,
+  username: string,
+  characterName: string
+): void {
+  const userLine = username.trim();
+  const charLine = characterName.trim();
+  if (!userLine && !charLine) return;
+
+  const userSize = Math.max(10, Math.round(tokenR * 0.32));
+  const charSize = Math.max(8, Math.round(tokenR * 0.26));
+  const lineGap = 2;
+  const nameY = y + tokenR + 6;
+
+  ctx.save();
+  ctx.textAlign = "center";
+  ctx.textBaseline = "top";
+  ctx.lineJoin = "round";
+
+  const drawLine = (text: string, fontSize: number, yOffset: number, bold: boolean) => {
+    if (!text) return;
+    ctx.font = `${bold ? "700" : "600"} ${fontSize}px Lora, Georgia, serif`;
+    ctx.lineWidth = Math.max(2, fontSize * 0.2);
+    ctx.strokeStyle = "rgba(0, 0, 0, 0.92)";
+    ctx.fillStyle = bold ? "rgba(255, 255, 255, 0.98)" : "rgba(232, 226, 214, 0.92)";
+    ctx.strokeText(text, x, yOffset);
+    ctx.fillText(text, x, yOffset);
+  };
+
+  drawLine(userLine, userSize, nameY, true);
+  if (charLine) {
+    drawLine(charLine, charSize, nameY + userSize + lineGap, false);
+  }
+  ctx.restore();
 }
 
 /** Nome abaixo do token — negrito com contorno preto. */

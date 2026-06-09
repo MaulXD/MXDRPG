@@ -2,6 +2,7 @@ import "server-only";
 
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { isClerkEnabled } from "@/lib/auth/clerk-config";
+import { dbEnabled } from "@/lib/db/enabled";
 import type { SessionUser } from "@/lib/auth/types";
 import { ensureUserFromClerk } from "@/lib/db/users";
 
@@ -25,19 +26,32 @@ export async function resolveClerkSessionUser(): Promise<SessionUser | null> {
     email.split("@")[0] ||
     "Jogador";
 
+  const profile = {
+    clerkId: userId,
+    email,
+    name: name.slice(0, 80),
+    oauthAvatarUrl: cu.imageUrl ?? null,
+  };
+
   try {
-    return await ensureUserFromClerk({
-      clerkId: userId,
-      email,
-      name: name.slice(0, 80),
-    });
-  } catch {
+    return await ensureUserFromClerk(profile);
+  } catch (err) {
+    if (dbEnabled()) {
+      console.error("[clerk-sync] ensureUserFromClerk failed:", err);
+      try {
+        return await ensureUserFromClerk(profile);
+      } catch (retryErr) {
+        console.error("[clerk-sync] ensureUserFromClerk retry failed:", retryErr);
+        return null;
+      }
+    }
     return {
       id: `clerk-${userId}`,
       email,
       name: name.slice(0, 80),
       nickname: null,
       role: "member" as const,
+      clerkId: userId,
     };
   }
 }
