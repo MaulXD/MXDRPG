@@ -1,9 +1,12 @@
+import { redirect } from "next/navigation";
 import { ClerkSignInPanel } from "@/components/auth/ClerkSignInPanel";
 import { hasClerkPublishableKey } from "@/lib/auth/clerk-config";
 import {
   DEFAULT_POST_AUTH_PATH,
+  postAuthRedirect,
   safeRedirectPath,
 } from "@/lib/auth/post-auth-redirect";
+import { getSession } from "@/lib/auth/session";
 
 type Props = { searchParams: Promise<{ redirect?: string }> };
 
@@ -22,6 +25,10 @@ export default async function SignInPage({ searchParams }: Props) {
 
   const params = await searchParams;
   const afterAuth = safeRedirectPath(params.redirect) ?? DEFAULT_POST_AUTH_PATH;
+  const session = await getSession();
+  if (session) {
+    redirect(postAuthRedirect(session.user, afterAuth));
+  }
   const signUpUrl = `/sign-up?redirect=${encodeURIComponent(afterAuth)}`;
 
   return (
