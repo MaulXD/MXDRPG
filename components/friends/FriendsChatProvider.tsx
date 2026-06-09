@@ -56,7 +56,7 @@ function FriendsChatFloatingWindow({
   }, [onClose]);
 
   return (
-    <div className="friends-chat-float glass" role="dialog" aria-label="Mensagens com amigos">
+    <div className="friends-chat-float" role="dialog" aria-label="Mensagens com amigos">
       <header className="friends-chat-float__head">
         <h2 className="friends-chat-float__title">Mensagens</h2>
         <div className="friends-chat-float__actions">
@@ -176,13 +176,21 @@ export function FriendsChatProvider({ children }: { children: ReactNode }) {
       {children}
       {mounted && open && selfUserId
         ? createPortal(
-            <FriendsChatFloatingWindow
-              friends={friends}
-              selfUserId={selfUserId}
-              inviteCount={inviteCount}
-              loading={loading}
-              onClose={closeChat}
-            />,
+            <>
+              <button
+                type="button"
+                className="friends-chat-overlay"
+                aria-label="Fechar mensagens"
+                onClick={closeChat}
+              />
+              <FriendsChatFloatingWindow
+                friends={friends}
+                selfUserId={selfUserId}
+                inviteCount={inviteCount}
+                loading={loading}
+                onClose={closeChat}
+              />
+            </>,
             document.body
           )
         : null}
