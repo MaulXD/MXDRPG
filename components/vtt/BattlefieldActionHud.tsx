@@ -7,7 +7,7 @@ import {
   obscuredHpBarColor,
   type MiniHudMode,
 } from "@/lib/vtt/combat-hud";
-import { hpBarColor, hpRatio } from "@/lib/vtt/token-hp-display";
+import { hpBarColor, hpRatio, isTokenDefeated } from "@/lib/vtt/token-hp-display";
 import type { BattleToken } from "@/lib/vtt/types";
 
 type Props = {
@@ -29,11 +29,14 @@ function TargetVitals({
   mode: MiniHudMode;
 }) {
   const ratio = hpRatio(token);
+  const defeated = isTokenDefeated(token);
 
   return (
     <>
       <strong className="vtt-action-hud__target-name">{token.name}</strong>
-      {mode === "full" && token.vidaMax != null ? (
+      {defeated ? (
+        <span className="vtt-mini-hud__defeated">Morto</span>
+      ) : mode === "full" && token.vidaMax != null ? (
         <div className="vtt-action-hud__target-hp">
           <div className="vtt-action-hud__target-hp-track" aria-hidden>
             <div

@@ -2625,10 +2625,6 @@ export function HexBattlefield({
                   showMonsterInfoHint={
                     canViewMonsterKnowledge && isMonsterToken(hoverMiniHudToken)
                   }
-                  showMonsterSheetAction={
-                    isRoomGm && Boolean(hoverMiniHudToken.monsterEntryId)
-                  }
-                  onMonsterSheet={() => openMonsterSheetForToken(hoverMiniHudToken)}
                 />
               );
               if (foundryLayout && hudOverlayRoot) {

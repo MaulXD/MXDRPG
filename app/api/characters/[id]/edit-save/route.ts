@@ -12,7 +12,7 @@ import {
   consumeSheetEditGrant,
   getSheetEditRequest,
 } from "@/lib/character/sheet-edit-request-store";
-import { canEditCharacterWithGrant } from "@/lib/character/edit-access";
+import { canStructuralSheetEditWithGrant } from "@/lib/character/edit-access";
 import { getSession } from "@/lib/auth/session";
 import { syncAdventureActorsForRoom } from "@/lib/room/adventure-actors";
 import { getAdventure } from "@/lib/adventure/store";
@@ -55,7 +55,7 @@ export async function POST(request: Request, { params }: Params) {
   }
 
   const grant = grantFromRequest(editRequest);
-  if (!canEditCharacterWithGrant(existing, session.user.id, session.user.role, { grant })) {
+  if (!canStructuralSheetEditWithGrant(existing, session.user.id, session.user.role, { grant })) {
     return NextResponse.json({ error: "Sem permissão para editar" }, { status: 403 });
   }
 

@@ -9,7 +9,7 @@ import {
   turnOrderHint,
 } from "@/lib/vtt/combat-hud";
 import { hexToMeters, walkRemaining } from "@/lib/vtt/movement";
-import { hpBarColor, hpRatio } from "@/lib/vtt/token-hp-display";
+import { hpBarColor, hpRatio, isTokenDefeated } from "@/lib/vtt/token-hp-display";
 
 type Props = {
   token: BattleToken;
@@ -22,9 +22,6 @@ type Props = {
   showMovement?: boolean;
   /** Jogador: dica de clique direito no monstro. */
   showMonsterInfoHint?: boolean;
-  /** Mestre: ficha completa do monstro (compêndio). */
-  showMonsterSheetAction?: boolean;
-  onMonsterSheet?: () => void;
 };
 
 export function TokenHoverMiniHud({
@@ -36,12 +33,11 @@ export function TokenHoverMiniHud({
   showMonsterHpToPlayers = false,
   showMovement = false,
   showMonsterInfoHint = false,
-  showMonsterSheetAction = false,
-  onMonsterSheet,
 }: Props) {
   const mode = miniHudModeForViewer(token, { isGm, viewerToken, showMonsterHpToPlayers });
   const turn = turnOrderHint(combat, token.id);
   const ratio = hpRatio(token);
+  const defeated = isTokenDefeated(token);
 
   return (
     <div
@@ -55,7 +51,9 @@ export function TokenHoverMiniHud({
     >
       <strong className="vtt-mini-hud__name">{token.name}</strong>
 
-      {mode === "full" && token.vidaMax != null ? (
+      {defeated ? (
+        <span className="vtt-mini-hud__defeated">Morto</span>
+      ) : mode === "full" && token.vidaMax != null ? (
         <div className="vtt-mini-hud__hp">
           <div className="vtt-mini-hud__hp-track" aria-hidden>
             <div
@@ -83,19 +81,6 @@ export function TokenHoverMiniHud({
         <span className="vtt-mini-hud__move">
           {walkRemaining(token)} hex · {hexToMeters(walkRemaining(token))} m
         </span>
-      ) : null}
-
-      {showMonsterSheetAction && onMonsterSheet ? (
-        <button
-          type="button"
-          className="vtt-mini-hud__info-btn"
-          onClick={(e) => {
-            e.stopPropagation();
-            onMonsterSheet();
-          }}
-        >
-          Ver ficha
-        </button>
       ) : null}
 
       {showMonsterInfoHint ? (

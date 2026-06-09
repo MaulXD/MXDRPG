@@ -4,7 +4,8 @@ import "@/components/world/world-lore.css";
 import { WizardHoverTip } from "@/components/character/wizard/WizardHoverTip";
 import { getReligion, religionDisplayName } from "@/lib/character/pantheon";
 import { religionBonusTooltip } from "@/lib/character/religion-tooltips";
-import { religionGlyph, religionIconColor } from "@/lib/character/wizard-religion-icons";
+import { ReligionDeityIcon } from "@/components/character/ReligionDeityIcon";
+import { religionIconColor } from "@/lib/character/wizard-religion-icons";
 
 type Props = {
   religiao: string | null | undefined;
@@ -26,13 +27,14 @@ export function ReligionSheetPanel({ religiao, compact }: Props) {
 
   return (
     <div className={`sheet-religion${compact ? " sheet-religion--compact" : ""}`}>
+      {compact ? <p className="sheet-religion__eyebrow">Devotion</p> : null}
       <div className="sheet-religion__header">
         <span
-          className="sheet-religion__glyph"
+          className="sheet-religion__glyph sheet-religion__glyph--svg"
           style={{ color, borderColor: `${color}55`, background: `${color}18` }}
           aria-hidden
         >
-          {religionGlyph(r.id)}
+          <ReligionDeityIcon religionId={r.id} size={22} />
         </span>
         <div>
           <WizardHoverTip text={tip}>
@@ -41,7 +43,7 @@ export function ReligionSheetPanel({ religiao, compact }: Props) {
           <p className="sheet-religion__domain">{r.domain}</p>
         </div>
       </div>
-      <p className="sheet-religion__summary">{r.summary}</p>
+      {!compact ? <p className="sheet-religion__summary">{r.summary}</p> : null}
       <ul className="sheet-religion__bonuses">
         {r.bonuses.map((b) => (
           <li key={b}>

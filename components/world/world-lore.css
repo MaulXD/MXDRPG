@@ -35,6 +35,15 @@
   font-size: 0.85rem;
 }
 
+.sheet-religion__eyebrow {
+  margin: 0 0 0.4rem;
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted, #9aaabf);
+}
+
 .sheet-religion__header {
   display: flex;
   gap: 0.75rem;
@@ -51,6 +60,11 @@
   border: 1px solid;
   font-size: 1.1rem;
   flex-shrink: 0;
+}
+
+.sheet-religion__glyph--svg svg {
+  width: 1.35rem;
+  height: 1.35rem;
 }
 
 .sheet-religion__title {
@@ -230,6 +244,11 @@
   border-radius: 8px;
   border: 1px solid;
   margin-bottom: 0.4rem;
+}
+
+.world-pantheon-card__glyph--svg svg {
+  width: 1.25rem;
+  height: 1.25rem;
 }
 
 .world-pantheon-card__title {

@@ -16,9 +16,18 @@ import {
   upsertCharacterRegistry,
 } from "./character-registry";
 import { canEditCharacter } from "./demo-characters";
-import { canEditCharacterWithGrant, grantFromRequest } from "./edit-access";
+import {
+  canEditCharacterWithGrant,
+  canStructuralSheetEditWithGrant,
+  grantFromRequest,
+} from "./edit-access";
 
-export { canEditCharacter, canEditCharacterWithGrant, grantFromRequest };
+export {
+  canEditCharacter,
+  canEditCharacterWithGrant,
+  canStructuralSheetEditWithGrant,
+  grantFromRequest,
+};
 export { MAX_CHARACTERS_PER_USER_PER_ADVENTURE } from "./adventure-bind";
 
 declare global {

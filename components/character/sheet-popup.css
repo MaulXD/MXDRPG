@@ -566,6 +566,7 @@
 .sheet-popup-identity__chip {
   display: inline-flex;
   align-items: center;
+  gap: 0.3rem;
   max-width: 100%;
   padding: 0.14rem 0.45rem;
   border-radius: 999px;
@@ -578,6 +579,11 @@
   cursor: help;
   outline: none;
   transition: border-color 0.15s, background 0.15s;
+}
+
+.sheet-popup-identity__chip-icon {
+  flex-shrink: 0;
+  opacity: 0.95;
 }
 
 .sheet-popup-identity__chip:hover,
@@ -2424,11 +2430,6 @@
   cursor: not-allowed;
 }
 
-.sheet-popup-quickbtn--religion {
-  cursor: default;
-  min-width: min(9rem, 100%);
-}
-
 .sheet-popup-quickbtn__icon {
   color: var(--sheet-accent);
 }
@@ -2443,17 +2444,6 @@
   font-size: 0.92rem;
   color: var(--sheet-text);
   font-variant-numeric: tabular-nums;
-}
-
-.sheet-popup-quickbtn__mod--text {
-  font-size: 0.68rem;
-  font-weight: 600;
-  text-align: center;
-  line-height: 1.2;
-  max-width: 9rem;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 /* —— Loadout arma / armadura —— */
@@ -2586,6 +2576,20 @@
   display: flex;
   justify-content: flex-end;
   gap: 0.5rem;
+}
+
+.sheet-structural-edit {
+  margin-top: 0.65rem;
+  font-size: 0.82rem;
+}
+
+.sheet-structural-edit > summary {
+  cursor: pointer;
+  color: var(--text-muted, #9aaabf);
+}
+
+.sheet-structural-edit__hint {
+  margin: 0.45rem 0 0.55rem;
 }
 
 

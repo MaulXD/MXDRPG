@@ -15,15 +15,14 @@ import {
   IconBackpack,
   IconEye,
   IconLightning,
+  IconBook,
   IconSearch,
   IconSword,
-  IconTemple,
   IconWand,
 } from "@/components/character/SheetPopupIcons";
 import { OrnamentCard } from "@/components/ui/OrnamentCard";
 import { SectionDivider } from "@/components/ui/SectionDivider";
 import { Portrait } from "@/components/vtt/Portrait";
-import { religionDisplayName } from "@/lib/character/pantheon";
 import { resolveActorDefesa } from "@/lib/character/armor-defense";
 import {
   ATTRIBUTE_LABELS,
@@ -55,6 +54,7 @@ const SKILL_ICONS = {
   percepcao: IconEye,
   investigacao: IconSearch,
   iniciativa: IconLightning,
+  religiao: IconBook,
 } as const;
 
 function resolveInventory(inventory: InventoryItem[] = []) {
@@ -138,9 +138,7 @@ export function SheetPdfCapture({ character, inventory = [], roomId }: Props) {
   const loot = loadLoot(character.id, character.lootEconomy ?? EMPTY_LOOT);
   const lootText = lootLines(loot);
 
-  const skills = buildSheetQuickSkills(character);
-  const religionSkill = buildSheetReligionSkill(character);
-  const religionName = identity.religiao ? religionDisplayName(identity.religiao) : "Sem deus";
+  const skills = [...buildSheetQuickSkills(character), buildSheetReligionSkill(character)];
 
   const noopSave = async () => undefined;
 
@@ -224,18 +222,6 @@ export function SheetPdfCapture({ character, inventory = [], roomId }: Props) {
                 </div>
               );
             })}
-
-            <div
-              className={`sheet-popup-quickbtn sheet-popup-quickbtn--religion sheet-pdf-link ${religionSkill.trained ? "is-trained" : ""}`}
-              data-pdf-link="roll:religiao"
-              aria-label="Religião"
-            >
-              <IconTemple size={17} className="sheet-popup-quickbtn__icon" />
-              <span className="sheet-popup-quickbtn__label">Religião</span>
-              <strong className="sheet-popup-quickbtn__mod sheet-popup-quickbtn__mod--text">
-                {religionName}
-              </strong>
-            </div>
           </div>
         </section>
 

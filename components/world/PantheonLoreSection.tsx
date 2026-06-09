@@ -4,7 +4,8 @@ import "@/components/character/wizard/wizard.css";
 import { WizardHoverTip } from "@/components/character/wizard/WizardHoverTip";
 import { RELIGION_LIST } from "@/lib/character/pantheon";
 import { religionCardTooltip, religionLoreSnippet } from "@/lib/character/religion-tooltips";
-import { religionGlyph, religionIconColor } from "@/lib/character/wizard-religion-icons";
+import { ReligionDeityIcon } from "@/components/character/ReligionDeityIcon";
+import { religionIconColor } from "@/lib/character/wizard-religion-icons";
 
 export function PantheonLoreSection() {
   return (
@@ -22,11 +23,11 @@ export function PantheonLoreSection() {
           return (
             <article key={r.id} className="world-pantheon-card">
               <span
-                className="world-pantheon-card__glyph"
+                className="world-pantheon-card__glyph world-pantheon-card__glyph--svg"
                 style={{ color, borderColor: `${color}55`, background: `${color}18` }}
                 aria-hidden
               >
-                {religionGlyph(r.id)}
+                <ReligionDeityIcon religionId={r.id} size={24} />
               </span>
               <WizardHoverTip text={tip}>
                 <h3 className="world-pantheon-card__title">

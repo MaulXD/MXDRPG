@@ -11,6 +11,7 @@ import { syncCombatOrderWithTokens } from "../combat-order";
 import { revertCombatUndo } from "../combat-undo";
 import { persistActorToAdventureSheet } from "../adventure-actors";
 import { appendRoomChatMessage } from "./chat";
+import { patchTokenVitals } from "@/lib/vtt/token-hp-display";
 import { getRoom, persistRoom, toSnapshot } from "../internal/registry";
 import type { RoomSnapshot } from "../types";
 
@@ -178,7 +179,11 @@ export async function executeGmCombatAction(
         vidaTemp = tempRaw;
       }
 
-      tokens[idx] = { ...before, vida, vidaMax: hpMax, vidaTemp: vidaTemp > 0 ? vidaTemp : undefined };
+      tokens[idx] = patchTokenVitals(before, {
+        vida,
+        vidaMax: hpMax,
+        vidaTemp: vidaTemp > 0 ? vidaTemp : undefined,
+      });
       room.scene = { ...room.scene, tokens };
 
       if (before.linked && before.actorId && room.actors[before.actorId]) {

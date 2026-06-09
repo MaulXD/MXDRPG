@@ -25,7 +25,7 @@ export default async function PersonagemPage({ params }: Props) {
   const canEdit = canEditCharacterWithGrant(character, session.user.id, session.user.role);
   const canEditPortrait = canEdit || (await canEditCharacterPortrait(character, session.user));
   const isOwner = character.ownerId === session.user.id;
-  const showEditRequest = isOwner && isAdventureBoundCharacter(character);
+  const showEditRequest = isOwner && isAdventureBoundCharacter(character) && !canEdit;
 
   const compendium = Object.fromEntries(
     PLAYER_PACKS.map((p) => [p, getPackEntries(p, { role: session.user.role })])

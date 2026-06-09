@@ -13,6 +13,7 @@ import { markActionRechargeUsed } from "@/lib/combat/recharge";
 import { enrichBuffsWithTimedEffects } from "@/lib/combat/timed-effects";
 import { getEntry } from "@/lib/compendium/registry";
 import { isMonsterToken } from "@/lib/room/settings";
+import { patchTokenVitals } from "@/lib/vtt/token-hp-display";
 import { formatAttackChatDetail } from "@/lib/combat/attack";
 import { formatSaveChatDetail } from "@/lib/combat/spell";
 import type { CombatActionRequest } from "@/lib/combat/types";
@@ -103,7 +104,7 @@ function applyAbilityToRoom(
       }
       if (defenderTokenId && t.id === defenderTokenId) {
         if (resolved.kind === "heal") {
-          return { ...t, vida: resolved.defenderHpAfter };
+          return patchTokenVitals(t, { vida: resolved.defenderHpAfter });
         }
         if (resolved.kind === "mark" && resolved.defenderUpdate) {
           return enrichBuffsWithTimedEffects(t, resolved.defenderUpdate, action.abilityEffect, tickCtx);
@@ -112,13 +113,16 @@ function applyAbilityToRoom(
           return enrichBuffsWithTimedEffects(t, resolved.defenderUpdate, "ally_inspire", tickCtx);
         }
         if (resolved.kind === "spell_save" && resolved.defenderUpdate) {
-          return { ...t, ...resolved.defenderUpdate, vida: resolved.save.defenderHpAfter };
+          return {
+            ...patchTokenVitals(t, { vida: resolved.save.defenderHpAfter }),
+            ...resolved.defenderUpdate,
+          };
         }
         if (
           (resolved.kind === "attack" || resolved.kind === "spell_strike") &&
           t.vidaMax != null
         ) {
-          return { ...t, vida: resolved.attack.defenderHpAfter };
+          return patchTokenVitals(t, { vida: resolved.attack.defenderHpAfter });
         }
       }
       return t;
