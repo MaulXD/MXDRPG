@@ -61,6 +61,46 @@ export async function getApprovedGrantForCharacter(
   return null;
 }
 
+export async function listActiveSheetEditRequestsForUser(
+  adventureId: string,
+  requesterUserId: string
+): Promise<SheetEditRequest[]> {
+  if (dbEnabled()) {
+    const { listActiveRequestsForUser } = await db();
+    return listActiveRequestsForUser(adventureId, requesterUserId);
+  }
+  return [...memoryStore().values()]
+    .filter(
+      (r) =>
+        r.adventureId === adventureId &&
+        r.requesterUserId === requesterUserId &&
+        ["pending", "approved", "rejected"].includes(r.status)
+    )
+    .sort((a, b) => b.updatedAt - a.updatedAt);
+}
+
+export async function dismissRejectedSheetEditRequest(
+  requestId: string,
+  requesterUserId: string
+): Promise<boolean> {
+  if (dbEnabled()) {
+    const { dismissRejectedSheetEditRequest: dismissDb, fetchSheetEditRequest } = await db();
+    const current = await fetchSheetEditRequest(requestId);
+    if (!current || current.requesterUserId !== requesterUserId || current.status !== "rejected") {
+      return false;
+    }
+    return dismissDb(requestId);
+  }
+
+  const store = memoryStore();
+  const current = store.get(requestId);
+  if (!current || current.requesterUserId !== requesterUserId || current.status !== "rejected") {
+    return false;
+  }
+  store.set(requestId, { ...current, status: "consumed", updatedAt: Date.now() });
+  return true;
+}
+
 export async function listPendingSheetEditRequests(
   adventureId: string
 ): Promise<SheetEditRequest[]> {

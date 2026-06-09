@@ -160,6 +160,37 @@ export async function resolveSheetEditRequest(
   return row ? rowToRequest(row) : null;
 }
 
+export async function listActiveRequestsForUser(
+  adventureId: string,
+  requesterUserId: string
+): Promise<SheetEditRequest[]> {
+  if (!dbEnabled()) return [];
+  const sql = getSql();
+  if (!sql) return [];
+  const rows = await sql<Row[]>`
+    SELECT * FROM eldarin_sheet_edit_requests
+    WHERE adventure_id = ${adventureId}
+      AND requester_user_id = ${requesterUserId}
+      AND status IN ('pending', 'approved', 'rejected')
+    ORDER BY updated_at DESC
+  `;
+  return rows.map(rowToRequest);
+}
+
+export async function dismissRejectedSheetEditRequest(requestId: string): Promise<boolean> {
+  if (!dbEnabled()) return false;
+  const sql = getSql();
+  if (!sql) return false;
+  const now = Date.now();
+  const rows = await sql<{ id: string }[]>`
+    UPDATE eldarin_sheet_edit_requests
+    SET status = 'consumed', updated_at = ${now}
+    WHERE id = ${requestId} AND status = 'rejected'
+    RETURNING id
+  `;
+  return rows.length > 0;
+}
+
 export async function consumeSheetEditRequest(requestId: string): Promise<boolean> {
   if (!dbEnabled()) return false;
   const sql = getSql();

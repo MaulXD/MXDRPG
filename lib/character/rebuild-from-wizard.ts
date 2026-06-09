@@ -93,9 +93,8 @@ export function mergeWizardIntoCharacterPreservingCampaign(
   const err = validateWizardDraft(safeDraft);
   if (err) throw new Error(err);
 
-  const nivel = existing.identity.nivel;
-  const xpTotal = existing.identity.xpTotal;
-  const classChanged = safeDraft.classe !== existing.identity.classe;
+  /** XP acumulado na campanha — preservado para re-subir nível pelo assistente. */
+  const xpTotal = Math.max(0, existing.identity.xpTotal ?? 0);
 
   const levelOne = buildCharacterFromWizard(
     existing.ownerId,
@@ -116,11 +115,17 @@ export function mergeWizardIntoCharacterPreservingCampaign(
     armorLoadout: existing.armorLoadout ?? null,
     identity: {
       ...levelOne.identity,
-      nivel,
+      nivel: 1,
       xpTotal,
-      subclasse: classChanged ? null : (existing.identity.subclasse ?? null),
-      talentos: classChanged ? [] : (existing.identity.talentos ?? []),
+      subclasse: null,
+      talentos: [],
     },
+    culinary: { trinchar: 0, harmonizacao: 0, coccao: 0, estomagoDeFerro: 0 },
+    tactical: {
+      defesa: 10 + attributeMod(levelOne.attributes.destreza),
+      iniciativa: attributeMod(levelOne.attributes.destreza),
+    },
+    movement: { walk: 4, run: 6 },
   });
 
   const withIdentity = applyIdentityPatch(merged, {
@@ -131,7 +136,7 @@ export function mergeWizardIntoCharacterPreservingCampaign(
     attributes: merged.attributes,
   });
 
-  return recalcResourcesAtLevel(withIdentity, nivel);
+  return recalcResourcesAtLevel(withIdentity, 1);
 }
 
 export function validateLastLevelReedit(actor: CharacterSheet): string | null {

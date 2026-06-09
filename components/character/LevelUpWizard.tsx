@@ -1,6 +1,7 @@
 ﻿"use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { createPortal } from "react-dom";
 import type { CharacterSheet } from "@/lib/character/types";
 import type { LevelUpChoices } from "@/lib/character/level-up";
 import {
@@ -244,18 +245,40 @@ export function LevelUpWizard({ actor, roomId, canEdit, onDone, onApplied }: Pro
         return (
           <>
             <p className="lu-hint">
-              Escolha o talento do <strong>nível {currentStep.level}</strong> na árvore. Os nós
-              anteriores precisam estar completos (cadeia 4→8→12→16).
+              Escolha o talento do <strong>nível {currentStep.level}</strong> na trilha{" "}
+              {track ? (
+                <>
+                  <strong>{track.subclass}</strong>
+                </>
+              ) : null}
+              . A cadeia segue 4→8→12→16.
             </p>
             {track ? (
-              <TalentTreeGraph
-                track={track}
-                owned={owned}
-                actorLevel={actor.identity.nivel}
-                pickingLevel={currentStep.level}
-                selectedId={talentoId}
-                onSelect={setTalentoId}
-              />
+              <>
+                {talentReq?.options.length ? (
+                  <div className="lu-talent-picks" role="group" aria-label="Talentos disponíveis">
+                    {talentReq.options.map((opt) => (
+                      <button
+                        key={opt.id}
+                        type="button"
+                        className={`lu-talent-pick${talentoId === opt.id ? " lu-talent-pick--on" : ""}`}
+                        onClick={() => setTalentoId(opt.id)}
+                      >
+                        <span className="lu-talent-pick__lv">Nv {opt.level}</span>
+                        <span className="lu-talent-pick__name">{opt.name}</span>
+                      </button>
+                    ))}
+                  </div>
+                ) : null}
+                <TalentTreeGraph
+                  track={track}
+                  owned={owned}
+                  actorLevel={actor.identity.nivel}
+                  pickingLevel={currentStep.level}
+                  selectedId={talentoId}
+                  onSelect={setTalentoId}
+                />
+              </>
             ) : (
               <p className="lu-err">Defina uma subclasse antes de escolher talentos.</p>
             )}
@@ -364,8 +387,9 @@ export function LevelUpWizard({ actor, roomId, canEdit, onDone, onApplied }: Pro
         )}
       </div>
 
-      {open ? (
-        <div className="lu-overlay" role="presentation" onClick={() => !busy && setOpen(false)}>
+      {open && typeof document !== "undefined"
+        ? createPortal(
+            <div className="lu-overlay" role="presentation" onClick={() => !busy && setOpen(false)}>
           <div
             className="lu-shell"
             role="dialog"
@@ -452,8 +476,10 @@ export function LevelUpWizard({ actor, roomId, canEdit, onDone, onApplied }: Pro
             </footer>
             {msg ? <p className="lu-err" style={{ padding: "0 1rem 0.75rem" }}>{msg}</p> : null}
           </div>
-        </div>
-      ) : null}
+        </div>,
+            document.body
+          )
+        : null}
     </div>
   );
 }

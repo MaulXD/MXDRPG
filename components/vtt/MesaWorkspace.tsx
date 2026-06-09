@@ -21,6 +21,7 @@ import { useRoomPresence } from "@/hooks/useRoomPresence";
 import { MesaPresenceAlerts } from "@/components/vtt/MesaPresenceAlerts";
 import { MesaOnlineMenu } from "@/components/vtt/MesaOnlineMenu";
 import { MesaEditRequestsBell } from "@/components/vtt/MesaEditRequestsBell";
+import { MesaPlayerEditRequestsBell } from "@/components/vtt/MesaPlayerEditRequestsBell";
 import { GmPlayerViewToggle } from "@/components/vtt/GmPlayerViewToggle";
 import { VttToastProvider } from "@/components/vtt/VttToast";
 import { FoundryDockPanel } from "@/components/vtt/foundry/FoundryDockPanel";
@@ -472,6 +473,7 @@ export function MesaWorkspace({
               {isActualGm ? (
                 <MesaEditRequestsBell adventureId={adventureId} roomId={roomId} />
               ) : null}
+              {session ? <MesaPlayerEditRequestsBell adventureId={adventureId} /> : null}
               <MesaOnlineMenu
                 online={presenceOnline}
                 loading={presenceLoading}

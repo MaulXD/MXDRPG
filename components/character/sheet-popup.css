@@ -1970,10 +1970,13 @@
 
 
 
+/* Trilha completa só no modal de level-up (.lu-overlay), não na sidebar compacta */
 .sheet-popup-advanced__body .lu-tree {
-
   display: none;
+}
 
+.lu-overlay .lu-tree {
+  display: block;
 }
 
 

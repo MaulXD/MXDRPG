@@ -450,6 +450,14 @@ export function CharacterCreationWizard({
         <WizardProgress steps={STEPS} current={step} busy={busy} onGoTo={goToStep} />
       </header>
 
+      {isEdit && editMode?.scope === "full_rebuild" ? (
+        <p className="char-wizard-edit-banner" role="note">
+          Ao salvar, a ficha volta ao <strong>nível 1</strong> (subclasse e talentos zerados). Seu XP
+          permanece — use <strong>Subir de nível</strong> na ficha para escolher subclasse, talentos e
+          bônus de cada nível de novo.
+        </p>
+      ) : null}
+
       <div className="char-wizard-body">
         <div
           className="glass char-wizard-panel"

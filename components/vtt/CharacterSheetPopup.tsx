@@ -21,7 +21,6 @@ import type { RoomActor } from "@/lib/room/types";
 
 import { SheetPdfExportButton } from "@/components/character/SheetPdfExportButton";
 import { SheetEditRequestButton } from "@/components/character/SheetEditRequestButton";
-import { PlayerEditRequestNotice } from "@/components/vtt/PlayerEditRequestNotice";
 import { isAdventureBoundCharacter } from "@/lib/character/adventure-bind";
 import { FoundryWindow } from "@/components/vtt/foundry/FoundryWindow";
 import { MedievalFrame } from "@/components/ui/MedievalFrame";
@@ -135,7 +134,7 @@ export function CharacterSheetPopup({
   const canEditPortrait = canEditRoomActorPortrait(roomCtx, merged, session);
   const showEditRequest = isOwner && campaignBound && !canEdit;
 
-  const inventory = live?.inventory?.length ? live.inventory : seed.inventory;
+  const inventory = live?.inventory ?? seed.inventory ?? [];
   const sheetCharacter = {
     ...seed,
     ...live,
@@ -190,9 +189,6 @@ export function CharacterSheetPopup({
     >
 
       <div className="foundry-sheet-body">
-        {isOwner && campaignBound ? (
-          <PlayerEditRequestNotice characterId={actorId} adventureId={adventureId} />
-        ) : null}
         {!canEdit && !canEditPortrait ? (
           <p className="foundry-sheet-readonly" role="status">
             Somente leitura — ficha de outro jogador. Você pode ver atributos e status, mas não editar.

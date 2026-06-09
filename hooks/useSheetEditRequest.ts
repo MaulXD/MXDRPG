@@ -67,3 +67,39 @@ export function useGmEditRequests(adventureId: string | null, roomId?: string | 
 
   return { requests, loading, refresh, hasPending: requests.length > 0 };
 }
+
+export type PlayerEditRequestRow = SheetEditRequest & { characterName?: string };
+
+export function usePlayerEditRequests(adventureId: string | null, enabled = true) {
+  const [requests, setRequests] = useState<PlayerEditRequestRow[]>([]);
+  const [loading, setLoading] = useState(false);
+
+  const refresh = useCallback(async () => {
+    if (!adventureId || !enabled) return;
+    setLoading(true);
+    try {
+      const res = await fetch(`/api/adventures/${adventureId}/my-edit-requests`, {
+        credentials: "same-origin",
+      });
+      if (!res.ok) return;
+      const data = (await res.json()) as { requests?: PlayerEditRequestRow[] };
+      setRequests(data.requests ?? []);
+    } finally {
+      setLoading(false);
+    }
+  }, [adventureId, enabled]);
+
+  useEffect(() => {
+    void refresh();
+    if (!adventureId || !enabled) return;
+    const id = window.setInterval(() => void refresh(), POLL_MS);
+    return () => window.clearInterval(id);
+  }, [adventureId, enabled, refresh]);
+
+  return {
+    requests,
+    loading,
+    refresh,
+    hasActive: requests.length > 0,
+  };
+}
