@@ -99,7 +99,12 @@ export function MesaWorkspace({
     loading: presenceLoading,
     handleMemberOnline,
     ownerDisplayNames,
-  } = useRoomPresence({ roomId, inviteCode });
+  } = useRoomPresence({
+    roomId,
+    inviteCode,
+    presenceUser,
+    isRoomOwner: isActualGm,
+  });
   const { snapshot, syncError, refresh, applySnapshot } = useRoomSync(roomId, {
     inviteCode,
     presenceUser,

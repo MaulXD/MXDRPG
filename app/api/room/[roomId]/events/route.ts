@@ -1,4 +1,4 @@
-import { canParticipateInRoom } from "@/lib/auth/room-access";
+import { canTrackRoomPresence } from "@/lib/auth/presence-access";
 import { requireRoomView } from "@/lib/auth/authorize-room-view";
 import { presenceEventsAfter, touchRoomPresence } from "@/lib/room/presence";
 import { getRoomRevision } from "@/lib/room/revision";
@@ -26,7 +26,10 @@ export async function GET(request: Request, { params }: Params) {
   let lastHeartbeat = Date.now();
   const user = auth.user;
   const presenceLabel = user?.nickname?.trim() || user?.name?.trim() || "Jogador";
-  const tracksPresence = Boolean(user && canParticipateInRoom(auth.room, user));
+  let tracksPresence = false;
+  if (user) {
+    tracksPresence = await canTrackRoomPresence(auth.room, user);
+  }
 
   let lastPresenceEventId = 0;
   const connectedAt = Date.now();

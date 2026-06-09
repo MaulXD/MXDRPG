@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { canParticipateInRoom } from "@/lib/auth/room-access";
+import { canTrackRoomPresence } from "@/lib/auth/presence-access";
 import { requireRoomView } from "@/lib/auth/authorize-room-view";
 import { touchRoomPresence } from "@/lib/room/presence";
 import { buildEnrichedRoomPresence } from "@/lib/room/presence-enrich";
@@ -21,7 +21,7 @@ async function presenceResponse(
 
   if (touch) {
     const user = auth.user;
-    if (!user || !canParticipateInRoom(auth.room, user)) {
+    if (!user || !(await canTrackRoomPresence(auth.room, user))) {
       return NextResponse.json({ error: "Participantes logados apenas" }, { status: 403 });
     }
     touchRoomPresence(roomId, touch.userId, touch.label);
@@ -34,7 +34,20 @@ async function presenceResponse(
 export async function GET(req: Request, { params }: Params) {
   const { roomId } = await params;
   const invite = new URL(req.url).searchParams.get("invite");
-  return presenceResponse(roomId, invite);
+
+  const auth = await requireRoomView(roomId, invite);
+  if ("error" in auth) {
+    return NextResponse.json({ error: auth.error }, { status: auth.status });
+  }
+
+  let touch: { userId: string; label: string } | undefined;
+  const user = auth.user;
+  if (user && (await canTrackRoomPresence(auth.room, user))) {
+    const label = user.nickname?.trim() || user.name?.trim() || "Jogador";
+    touch = { userId: user.id, label };
+  }
+
+  return presenceResponse(roomId, invite, touch);
 }
 
 export async function POST(req: Request, { params }: Params) {
@@ -47,10 +60,10 @@ export async function POST(req: Request, { params }: Params) {
   }
 
   const user = auth.user;
-  if (!user || !canParticipateInRoom(auth.room, user)) {
+  if (!user || !(await canTrackRoomPresence(auth.room, user))) {
     return NextResponse.json({ error: "Participantes logados apenas" }, { status: 403 });
   }
 
   const label = user.nickname?.trim() || user.name?.trim() || "Jogador";
-  return presenceResponse(roomId, invite, { userId: user.id, label: label });
+  return presenceResponse(roomId, invite, { userId: user.id, label });
 }
