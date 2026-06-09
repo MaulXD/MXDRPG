@@ -4,7 +4,7 @@ import { useCallback, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import type { CharacterSheet, InventoryItem } from "@/lib/character/types";
 import { exportSheetPdf, sheetPdfFilename } from "@/lib/character/export-sheet-pdf";
-import { SheetPdfCapture } from "@/components/character/SheetPdfCapture";
+import { SheetPdfDocument } from "@/components/character/SheetPdfDocument";
 import { useVttToast } from "@/components/vtt/VttToast";
 
 type Props = {
@@ -19,7 +19,7 @@ type Props = {
 };
 
 function captureRootReady(host: HTMLElement): HTMLElement | null {
-  const root = host.querySelector(".sheet-pdf-capture") as HTMLElement | null;
+  const root = host.querySelector(".sheet-pdf-doc") as HTMLElement | null;
   if (!root) return null;
   if (root.offsetWidth < 8 || root.offsetHeight < 8) return null;
   return root;
@@ -98,7 +98,7 @@ export function SheetPdfExportButton({
 
   const offscreen = (
     <div ref={hostRef} aria-hidden className="sheet-pdf-capture-host">
-      <SheetPdfCapture character={character} inventory={inventory} roomId={roomId} />
+      <SheetPdfDocument character={character} inventory={inventory} roomId={roomId} />
     </div>
   );
 
