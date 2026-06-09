@@ -1,69 +1,72 @@
 /**
- * Tema mesa Eldarin — ardósia + azul frio.
+ * Tema mesa Eldarin v5 — chrome escuro + stage (Foundry).
+ * docs/DESIGN-ELDARIN-V5-CORES.md
  * Aplicado em `.vtt-chrome[data-vtt-mesa="foundry"]` (página /mesa/[id]).
- * Variáveis propagam para topbar, mapa (canvas), HUD, painéis e ficha popup.
  */
 
 .vtt-chrome[data-vtt-mesa="foundry"] {
   color-scheme: dark;
 
-  /* Superfícies da página */
-  --bg-deep: #0a0e14;
-  --bg-mid: #101620;
-  --bg-elevated: #161e2a;
-  --surface: #141a24;
-  --surface-raised: #1a2030;
-  --surface-inset: #0d121a;
+  /* stage — canvas */
+  --stage-bg: #0e0e0c;
+  --stage-grid: #1c1c18;
+  --stage-fog: rgba(10, 10, 8, 0.85);
+  --stage-token-ring: #b8922e;
+  --stage-ruler: #c8bfa8;
 
-  --border: #2a3a50;
-  --border-accent: #3a5a80;
+  /* Chrome v5 — aliases legados na mesa */
+  --bg-deep: var(--chrome-bg);
+  --bg-mid: var(--chrome-surface);
+  --bg-elevated: var(--chrome-header);
+  --surface: var(--chrome-surface);
+  --surface-raised: var(--chrome-header);
+  --surface-inset: var(--chrome-bg);
+  --border: var(--chrome-border);
+  --border-accent: var(--chrome-accent);
+  --glass: rgba(30, 29, 26, 0.94);
+  --glass-strong: rgba(17, 17, 16, 0.98);
+  --glass-border: rgba(56, 52, 42, 0.65);
+  --glass-border-bright: rgba(184, 146, 46, 0.45);
+  --accent: var(--chrome-accent);
+  --accent-muted: var(--chrome-text-muted);
+  --accent-primary: var(--chrome-accent);
+  --accent-gold: var(--chrome-accent);
+  --accent-secondary: var(--type-weapon);
+  --accent-success: var(--semantic-success);
+  --accent-warn: var(--semantic-warn);
+  --accent-info: var(--semantic-info);
+  --text: var(--chrome-text);
+  --text-strong: #e8e0d0;
+  --text-muted: var(--chrome-text-muted);
+  --text-dim: #4a4038;
 
-  --glass: rgba(16, 22, 32, 0.94);
-  --glass-strong: rgba(10, 14, 20, 0.98);
-  --glass-border: rgba(122, 163, 201, 0.22);
-  --glass-border-bright: rgba(122, 163, 201, 0.45);
+  /* Tokens mesa */
+  --mesa-rail-bg: linear-gradient(180deg, var(--chrome-surface) 0%, var(--chrome-bg) 100%);
+  --mesa-dock-bg: var(--chrome-bg);
+  --mesa-stage-bg: var(--stage-bg);
+  --mesa-surface: var(--chrome-surface);
+  --mesa-surface-inset: var(--chrome-bg);
+  --mesa-accent: var(--chrome-accent);
+  --mesa-accent-soft: rgba(184, 146, 46, 0.18);
+  --mesa-accent-border: rgba(184, 146, 46, 0.38);
+  --mesa-gm-accent: var(--semantic-gm);
+  --mesa-gm-soft: rgba(58, 30, 82, 0.2);
+  --mesa-text: var(--chrome-text);
+  --mesa-text-dim: var(--chrome-text-muted);
 
-  --accent: #7aa3c9;
-  --accent-muted: #5a7f9e;
-  --accent-primary: #7aa3c9;
-  --accent-gold: #7aa3c9;
-  --accent-secondary: #c9927a;
-  --accent-success: #6b9e5a;
-  --accent-warn: #d4a030;
-  --accent-info: #6aafc8;
-
-  --text: #e8ecf4;
-  --text-strong: #f0f4fa;
-  --text-muted: #9aaabf;
-  --text-dim: #5a6a80;
-
-  /* Tokens mesa (alias usados no Foundry) */
-  --mesa-rail-bg: linear-gradient(180deg, #121820 0%, #0c1018 100%);
-  --mesa-dock-bg: #101620;
-  --mesa-stage-bg: #0a0e14;
-  --mesa-surface: #141a24;
-  --mesa-surface-inset: #0d121a;
-  --mesa-accent: #7aa3c9;
-  --mesa-accent-soft: rgba(122, 163, 201, 0.18);
-  --mesa-accent-border: rgba(122, 163, 201, 0.38);
-  --mesa-gm-accent: #c9927a;
-  --mesa-gm-soft: rgba(160, 110, 90, 0.2);
-  --mesa-text: #e8ecf4;
-  --mesa-text-dim: #9aaabf;
-
-  /* Mapa hex — azul ardósia (lidos por readThemeColor no canvas) */
-  --vtt-canvas-bg-0: #121820;
-  --vtt-canvas-bg-1: #0a0e14;
-  --vtt-hex-fill: rgba(122, 163, 201, 0.04);
+  /* Mapa hex (lidos por readThemeColor no canvas) */
+  --vtt-canvas-bg-0: #141412;
+  --vtt-canvas-bg-1: var(--stage-bg);
+  --vtt-hex-fill: rgba(184, 146, 46, 0.04);
   --vtt-hex-stroke: rgba(130, 132, 138, 0.58);
   --vtt-hex-walk-fill: rgba(72, 110, 95, 0.58);
   --vtt-hex-walk-stroke: rgba(100, 155, 130, 0.72);
   --vtt-hex-walk-paid-fill: rgba(55, 120, 130, 0.62);
   --vtt-hex-walk-paid-stroke: rgba(90, 175, 185, 0.82);
   --vtt-hex-run-fill: rgba(90, 130, 175, 0.55);
-  --vtt-hex-run-stroke: rgba(122, 163, 201, 0.68);
-  --vtt-hex-hover-fill: rgba(122, 163, 201, 0.28);
-  --vtt-hex-hover-stroke: #7aa3c9;
+  --vtt-hex-run-stroke: rgba(184, 146, 46, 0.68);
+  --vtt-hex-hover-fill: rgba(184, 146, 46, 0.28);
+  --vtt-hex-hover-stroke: var(--chrome-accent);
   --vtt-hex-turn-walk-fill: rgba(72, 110, 95, 0.42);
   --vtt-hex-turn-walk-stroke: rgba(100, 155, 130, 0.44);
   --vtt-hex-attack-fill: rgba(180, 90, 55, 0.58);
@@ -155,14 +158,14 @@
   --vtt-hex-on-green-path-stroke: rgba(0, 0, 0, 0.9);
   --vtt-hex-on-green-path-glow: rgba(255, 255, 255, 0.35);
 
-  --vtt-token-turn-glow: rgba(122, 163, 201, 0.5);
-  --vtt-token-ring-turn: #5a8ab8;
-  --vtt-token-ring-selected: #8eb8dc;
-  --vtt-token-text: #e8ecf4;
-  --vtt-token-subtext: #9aa8bc;
-  --vtt-path-stroke: rgba(122, 163, 201, 0.9);
-  --vtt-path-glow: rgba(90, 140, 180, 0.35);
-  --vtt-hp-bar: #5c8260;
+  --vtt-token-turn-glow: rgba(184, 146, 46, 0.5);
+  --vtt-token-ring-turn: var(--stage-token-ring);
+  --vtt-token-ring-selected: var(--stage-token-ring);
+  --vtt-token-text: var(--chrome-text);
+  --vtt-token-subtext: var(--chrome-text-muted);
+  --vtt-path-stroke: rgba(184, 146, 46, 0.9);
+  --vtt-path-glow: rgba(184, 146, 46, 0.35);
+  --vtt-hp-bar: var(--semantic-success);
 
   background: var(--bg-deep);
   color: var(--text);
@@ -290,17 +293,17 @@
 .vtt-chrome[data-vtt-mesa="foundry"] .mesa-panel-scroll,
 .vtt-chrome[data-vtt-mesa="foundry"] .foundry-dock-panel__body,
 .vtt-chrome[data-vtt-mesa="foundry"] .foundry-window__body {
-  scrollbar-color: rgba(122, 163, 201, 0.45) rgba(0, 0, 0, 0.25);
+  scrollbar-color: rgba(184, 146, 46, 0.45) rgba(0, 0, 0, 0.25);
 }
 
 /* Token action ring */
 .vtt-chrome[data-vtt-mesa="foundry"] .token-action-ring__track {
-  border-color: rgba(122, 163, 201, 0.28);
-  box-shadow: 0 0 0 1px rgba(122, 163, 201, 0.1);
+  border-color: rgba(184, 146, 46, 0.28);
+  box-shadow: 0 0 0 1px rgba(184, 146, 46, 0.1);
 }
 
 .vtt-chrome[data-vtt-mesa="foundry"] .token-action-ring__slot-btn {
-  border-color: rgba(122, 163, 201, 0.35);
+  border-color: rgba(184, 146, 46, 0.35);
   background: rgba(14, 20, 30, 0.92);
 }
 
@@ -354,7 +357,7 @@
 .vtt-chrome[data-vtt-mesa="foundry"] .inv-row--selected {
   border-color: var(--mesa-accent-border);
   background: var(--mesa-accent-soft);
-  box-shadow: 0 0 0 1px rgba(122, 163, 201, 0.2);
+  box-shadow: 0 0 0 1px rgba(184, 146, 46, 0.2);
 }
 
 .vtt-chrome[data-vtt-mesa="foundry"] .sheet-tab.active {

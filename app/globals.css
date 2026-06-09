@@ -1,50 +1,95 @@
-/* Eldarin — tema medieval escuro */
+/* Eldarin — design system v5 (docs/DESIGN-ELDARIN-V5-CORES.md) */
 
 [data-theme="dark"],
 :root {
   color-scheme: dark;
 
-  /* Tema ardósia + azul frio (mesma paleta da mesa VTT) */
-  --bg-deep: #0a0e14;
-  --bg-mid: #101620;
-  --bg-elevated: #161e2a;
+  /* chrome — navbar, rail, dock, UI estrutural */
+  --chrome-bg: #111110;
+  --chrome-surface: #1e1d1a;
+  --chrome-header: #2a2820;
+  --chrome-border: #38342a;
+  --chrome-accent: #b8922e;
+  --chrome-accent-hover: #d4aa52;
+  --chrome-text: #c8bfa8;
+  --chrome-text-muted: #6b6050;
 
-  --surface: #141a24;
-  --surface-raised: #1a2030;
-  --surface-inset: #0d121a;
+  /* content — pergaminho, fichas, compêndio */
+  --content-bg: #f6f0e4;
+  --content-bg-elevated: #faf6ee;
+  --content-border: #c8b48a;
+  --content-border-strong: #8c7a5e;
+  --content-text: #1e1a14;
+  --content-text-muted: #5a4e38;
+  --content-ink: #3d2e1a;
+  --content-accent: #b8922e;
 
-  --border: #2a3a50;
-  --border-accent: #3a5a80;
+  /* stage — canvas (mesa-theme reforça na mesa) */
+  --stage-bg: #0e0e0c;
+  --stage-grid: #1c1c18;
+  --stage-fog: rgba(10, 10, 8, 0.85);
+  --stage-token-ring: #b8922e;
+  --stage-ruler: #c8bfa8;
 
-  --glass: rgba(16, 22, 32, 0.94);
-  --glass-strong: rgba(10, 14, 20, 0.98);
-  --glass-border: rgba(122, 163, 201, 0.22);
-  --glass-border-bright: rgba(122, 163, 201, 0.45);
-  --accent-soft: rgba(122, 163, 201, 0.14);
+  /* semantic — HP, estados, feedback */
+  --semantic-hp: #7a1e1e;
+  --semantic-pa: #1a3d5c;
+  --semantic-success: #2a4a2c;
+  --semantic-warn: #6e4800;
+  --semantic-danger: #5e1a0e;
+  --semantic-info: #1a2e4a;
+  --semantic-gm: #3a1e52;
+
+  /* type — compêndio (border-left / ícone) */
+  --type-weapon: #8b3a22;
+  --type-magic: #1a3d5c;
+  --type-gear: #4a3820;
+  --type-ability: #6e4800;
+  --type-effect: #2a4a2c;
+  --type-creature: #5e1a0e;
+
+  /* Legacy aliases — componentes existentes */
+  --bg-deep: var(--chrome-bg);
+  --bg-mid: var(--chrome-surface);
+  --bg-elevated: var(--chrome-header);
+  --surface: var(--chrome-surface);
+  --surface-raised: var(--chrome-header);
+  --surface-inset: var(--chrome-bg);
+  --border: var(--chrome-border);
+  --border-accent: var(--chrome-accent);
+
+  --glass: rgba(30, 29, 26, 0.94);
+  --glass-strong: rgba(17, 17, 16, 0.98);
+  --glass-border: rgba(56, 52, 42, 0.65);
+  --glass-border-bright: rgba(184, 146, 46, 0.45);
+  --accent-soft: rgba(184, 146, 46, 0.14);
   --blur: 12px;
 
-  --accent: #7aa3c9;
-  --accent-muted: #5a7f9e;
-  --accent-primary: #7aa3c9;
-  --accent-secondary: #c9927a;
-  --accent-success: #6b9e5a;
-  --accent-warn: #d4a030;
-  --accent-violet: #8a7a9e;
-  --accent-gold: var(--accent);
-  --accent-green: #7cb872;
-  --accent-danger: #e07070;
-  --accent-info: #6aafc8;
+  --accent: var(--chrome-accent);
+  --accent-muted: var(--chrome-text-muted);
+  --accent-primary: var(--chrome-accent);
+  --accent-secondary: var(--type-weapon);
+  --accent-success: var(--semantic-success);
+  --accent-warn: var(--semantic-warn);
+  --accent-violet: var(--semantic-gm);
+  --accent-gold: var(--chrome-accent);
+  --accent-green: var(--semantic-success);
+  --accent-danger: var(--semantic-danger);
+  --accent-info: var(--semantic-info);
 
-  --neon-cyan: var(--accent);
-  --neon-magenta: var(--accent-secondary);
-  --neon-lime: var(--accent-success);
-  --neon-amber: var(--accent-warn);
-  --neon-violet: var(--accent-violet);
+  --neon-cyan: var(--chrome-accent);
+  --neon-magenta: var(--type-weapon);
+  --neon-lime: var(--semantic-success);
+  --neon-amber: var(--semantic-warn);
+  --neon-violet: var(--semantic-gm);
 
-  --text: #e8ecf4;
-  --text-strong: #f0f4fa;
-  --text-muted: #9aaabf;
-  --text-dim: #5a6a80;
+  --text: var(--chrome-text);
+  --text-strong: #e8e0d0;
+  --text-muted: var(--chrome-text-muted);
+  --text-dim: #4a4038;
+
+  --parchment: var(--content-bg);
+  --parchment-deep: var(--content-bg-elevated);
 
   --radius: 8px;
   --radius-lg: 12px;
@@ -62,9 +107,9 @@
   --control-h-sm: 2rem;
   --control-h-xs: 1.75rem;
 
-  --vtt-canvas-bg-0: #121820;
-  --vtt-canvas-bg-1: #0a0e14;
-  --vtt-hex-fill: rgba(122, 163, 201, 0.04);
+  --vtt-canvas-bg-0: #141412;
+  --vtt-canvas-bg-1: var(--stage-bg);
+  --vtt-hex-fill: rgba(184, 146, 46, 0.04);
   --vtt-hex-stroke: rgba(130, 132, 138, 0.58);
   --vtt-hex-walk-fill: rgba(72, 110, 95, 0.58);
   --vtt-hex-walk-stroke: rgba(100, 155, 130, 0.72);
@@ -80,18 +125,18 @@
   --vtt-hex-area-stroke: rgba(180, 120, 255, 0.85);
   --vtt-hex-area-center-fill: rgba(200, 100, 255, 0.68);
   --vtt-hex-area-center-stroke: #e8c4ff;
-  --vtt-token-turn-glow: rgba(122, 163, 201, 0.5);
-  --vtt-hex-run-fill: rgba(90, 130, 175, 0.55);
-  --vtt-hex-run-stroke: rgba(122, 163, 201, 0.68);
-  --vtt-hex-hover-fill: rgba(122, 163, 201, 0.28);
-  --vtt-hex-hover-stroke: #7aa3c9;
-  --vtt-token-ring-turn: #5a8ab8;
-  --vtt-token-ring-selected: #8eb8dc;
-  --vtt-hp-bar: #5c8260;
-  --vtt-token-text: #e8ecf4;
-  --vtt-token-subtext: #9aa8bc;
-  --vtt-path-stroke: rgba(122, 163, 201, 0.9);
-  --vtt-path-glow: rgba(90, 140, 180, 0.35);
+  --vtt-token-turn-glow: rgba(184, 146, 46, 0.5);
+  --vtt-hex-run-fill: rgba(110, 72, 0, 0.45);
+  --vtt-hex-run-stroke: rgba(184, 146, 46, 0.68);
+  --vtt-hex-hover-fill: rgba(184, 146, 46, 0.28);
+  --vtt-hex-hover-stroke: var(--chrome-accent);
+  --vtt-token-ring-turn: var(--stage-token-ring);
+  --vtt-token-ring-selected: var(--stage-token-ring);
+  --vtt-hp-bar: var(--semantic-success);
+  --vtt-token-text: var(--chrome-text);
+  --vtt-token-subtext: var(--chrome-text-muted);
+  --vtt-path-stroke: rgba(184, 146, 46, 0.9);
+  --vtt-path-glow: rgba(184, 146, 46, 0.35);
 }
 
 * {
