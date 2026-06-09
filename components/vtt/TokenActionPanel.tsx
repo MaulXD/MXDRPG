@@ -1,5 +1,7 @@
 ﻿"use client";
 
+import { ActionKindIcon } from "@/components/ui/EldarinIcons";
+
 
 
 import { useMemo, useState } from "react";
@@ -753,7 +755,9 @@ export function TokenActionPanel({
 
         >
 
-          ◆ Usar {activeAction.name}
+          <>
+            <ActionKindIcon kind="ability" size={14} /> Usar {activeAction.name}
+          </>
 
         </button>
 
@@ -788,7 +792,11 @@ export function TokenActionPanel({
 
                 >
 
-                  {actionMode === "spell" ? "✦" : actionMode === "ability" ? "◆" : "⚔"} {t.name}
+                  <ActionKindIcon
+                    kind={actionMode === "spell" ? "spell" : actionMode === "ability" ? "ability" : "attack"}
+                    size={14}
+                  />{" "}
+                  {t.name}
 
                   {t.defesa != null
 

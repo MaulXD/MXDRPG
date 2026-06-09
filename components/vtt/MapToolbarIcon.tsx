@@ -129,11 +129,13 @@ export function MapToolbarIcon({ name, className = "map-toolbar__icon" }: Props)
         </IconSvg>
       );
 
-    case "polygon":
+    case "circle":
       return (
         <IconSvg className={className}>
-          <path
-            d="M12 4.5 18.5 8.25v7.5L12 19.5 5.5 15.75v-7.5L12 4.5z"
+          <circle
+            cx="12"
+            cy="12"
+            r="7.25"
             {...S}
             fill="color-mix(in srgb, currentColor 8%, transparent)"
           />

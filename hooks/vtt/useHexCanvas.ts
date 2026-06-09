@@ -55,6 +55,7 @@ export type HexCanvasDrawState = {
   hoverAxial: Axial | null;
   hoverMovePreview: MoveCheck | null;
   spawnDropHover: boolean;
+  spawnDropFootprintKeys?: Set<string> | null;
   pathCells: Axial[];
   focusByTokenId: Map<string, PortraitFocus>;
   selectedId: string | null;
@@ -177,6 +178,7 @@ export function useHexCanvas(
       hoverAxial: s.hoverAxial,
       hoverMovePreview: s.hoverMovePreview,
       spawnDropHover: s.spawnDropHover,
+      spawnDropFootprintKeys: s.spawnDropFootprintKeys,
       pathCells: s.pathCells,
       pathDashPhase: pathDashPhaseRef.current,
       visibleHexSet: s.visibleHexSet,

@@ -1,5 +1,7 @@
 "use client";
 
+import { IconCheck } from "@/components/ui/EldarinIcons";
+
 type Props = {
   steps: readonly string[];
   current: number;
@@ -34,7 +36,7 @@ export function WizardProgress({ steps, current, busy, onGoTo }: Props) {
                 title={label}
               >
                 <span className="char-wizard-progress__dot">
-                  {done ? "✓" : i + 1}
+                  {done ? <IconCheck size={12} /> : i + 1}
                 </span>
                 <span className="char-wizard-progress__label">{label}</span>
               </button>

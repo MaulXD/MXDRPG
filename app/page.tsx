@@ -1,23 +1,26 @@
 import Link from "next/link";
+import { EldarinLogo } from "@/components/brand/EldarinLogo";
 import { HexPreview } from "@/components/home/HexPreview";
-const features = [
+import { HomeFeatureIcon, type HomeFeatureIconName } from "@/components/ui/EldarinIcons";
+
+const features: Array<{ icon: HomeFeatureIconName; title: string; text: string }> = [
   {
-    icon: "⬡",
+    icon: "hex",
     title: "VTT no navegador",
     text: "Mesa virtual própria — zero instalação, zero dependência de apps de terceiros.",
   },
   {
-    icon: "◎",
+    icon: "target",
     title: "Grid hexagonal",
     text: "Movimento tático com faixas visuais: caminhada verde, corrida âmbar, PA automático.",
   },
   {
-    icon: "◈",
+    icon: "diamond",
     title: "Visual medieval",
     text: "Pergaminho, pedra e bronze — tema claro ou escuro, sem neon futurista.",
   },
   {
-    icon: "⚔",
+    icon: "sword",
     title: "Papéis de mesa",
     text: "Admin, Mestre e Jogador — cada um com painel e permissões claras.",
   },
@@ -30,7 +33,9 @@ export default function HomePage() {
         <div className="hero-grid">
           <div className="hero-copy">
             <p className="eyebrow">VTT proprietário</p>
-            <h1 className="display-xl">Eldarin</h1>
+            <h1 className="display-xl" style={{ margin: 0 }}>
+              <EldarinLogo variant="full" href={null} className="eldarin-logo--hero" />
+            </h1>
             <p className="lead" style={{ marginTop: "1.25rem" }}>
               Sua mesa virtual de fantasia: combaté em hexágonos, pontos de ação e fichas com
               identidade visual única — direto no navegador.
@@ -78,7 +83,9 @@ export default function HomePage() {
         <div className="grid-2">
           {features.map((f) => (
             <article key={f.title} className="glass feature-card">
-              <div className="feature-icon">{f.icon}</div>
+              <div className="feature-icon">
+                <HomeFeatureIcon name={f.icon} size={28} />
+              </div>
               <h3>{f.title}</h3>
               <p>{f.text}</p>
             </article>

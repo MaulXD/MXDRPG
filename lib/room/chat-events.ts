@@ -21,27 +21,6 @@ export function combatEventTone(combat: NonNullable<ChatMessage["combat"]>): Com
   return "info";
 }
 
-export function combatEventIcon(tone: CombatEventTone): string {
-  switch (tone) {
-    case "defeat":
-      return "☠";
-    case "crit":
-      return "✦";
-    case "crit-fail":
-      return "✗";
-    case "hit":
-      return "⚔";
-    case "miss":
-      return "◇";
-    case "save":
-      return "🛡";
-    case "heal":
-      return "♥";
-    default:
-      return "•";
-  }
-}
-
 export function parsePrimaryDie(formula: string): number {
   const m = formula.trim().match(/d(\d+)/i);
   if (m) return Math.min(100, Math.max(2, parseInt(m[1], 10)));

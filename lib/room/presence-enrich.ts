@@ -2,7 +2,7 @@ import "server-only";
 
 import { normalizeUserRole } from "@/lib/auth/roles";
 import { ensureDbMigrations } from "@/lib/db/ensure-migrations";
-import { resolveUserAvatarUrl } from "@/lib/db/user-avatar";
+import { parseAvatarFocus, resolveUserAvatarUrl } from "@/lib/db/user-avatar";
 import { getSql } from "@/lib/db/client";
 import { dbEnabled } from "@/lib/db/enabled";
 import { fetchClerkIdForUser, fetchUserByClerkId, fetchUserById } from "@/lib/db/users";
@@ -11,10 +11,13 @@ import { resolveActorTokenImageUrl } from "@/lib/room/portrait-sync";
 import { listRoomPresence } from "@/lib/room/presence";
 import type { RoomActor, RoomState } from "@/lib/room/types";
 
+import type { PortraitFocus } from "@/lib/media/portrait-focus";
+
 export type RoomPresenceMember = {
   userId: string;
   displayName: string;
   avatarUrl: string | null;
+  avatarFocus?: PortraitFocus | null;
   characterPortraitUrl: string | null;
   role: "gm" | "player";
   characterName: string | null;
@@ -29,6 +32,7 @@ type UserPresenceRow = {
   avatar_url?: string | null;
   oauth_avatar_url?: string | null;
   avatar_source?: string | null;
+  avatar_focus?: unknown;
 };
 
 function displayNameFromRow(row: UserPresenceRow): string {
@@ -73,7 +77,7 @@ async function fetchUserPresenceRows(userIds: string[]): Promise<Map<string, Use
   if (!sql) return out;
 
   const fullSelect =
-    "id, nickname, name, role, avatar_url, oauth_avatar_url, avatar_source";
+    "id, nickname, name, role, avatar_url, oauth_avatar_url, avatar_source, avatar_focus";
   const baseSelect = "id, nickname, name, role";
 
   let rows: UserPresenceRow[] = [];
@@ -115,6 +119,7 @@ async function profileForUserId(
         avatar_url: stored.avatarUrl ?? null,
         oauth_avatar_url: stored.oauthAvatarUrl ?? null,
         avatar_source: stored.avatarSource ?? null,
+        avatar_focus: stored.avatarFocus ?? null,
       };
     }
   }
@@ -129,6 +134,7 @@ async function profileForUserId(
       avatar_url: sessionUser.avatarUrl ?? null,
       oauth_avatar_url: sessionUser.oauthAvatarUrl ?? null,
       avatar_source: sessionUser.avatarSource ?? null,
+      avatar_focus: sessionUser.avatarFocus ?? null,
     };
   }
 
@@ -184,6 +190,7 @@ export async function buildEnrichedRoomPresence(room: RoomState): Promise<RoomPr
             oauthAvatarUrl: profile.oauth_avatar_url,
           })
         : null,
+      avatarFocus: profile ? parseAvatarFocus(profile.avatar_focus) : null,
       characterPortraitUrl: character.portraitUrl,
       role: isOwner ? "gm" : "player",
       characterName: character.name,

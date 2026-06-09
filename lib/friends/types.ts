@@ -1,8 +1,11 @@
+import type { PortraitFocus } from "@/lib/media/portrait-focus";
+
 export type FriendSummary = {
   id: string;
   nickname: string | null;
   name: string;
   avatarUrl: string | null;
+  avatarFocus?: PortraitFocus | null;
   addedAt: number;
 };
 

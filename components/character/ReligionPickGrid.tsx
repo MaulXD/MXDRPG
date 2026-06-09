@@ -11,6 +11,7 @@ import {
 } from "@/lib/character/pantheon";
 import { religionCardTooltip, religionLoreSnippet } from "@/lib/character/religion-tooltips";
 import { ReligionDeityIcon } from "@/components/character/ReligionDeityIcon";
+import { IconCheck } from "@/components/ui/EldarinIcons";
 import { religionIconColor } from "@/lib/character/wizard-religion-icons";
 
 type Props = {
@@ -54,7 +55,7 @@ function ReligionCard({
           <ReligionDeityIcon religionId={r.id} size={20} />
         </span>
         <span className="char-wizard-pick__check" aria-hidden>
-          ✓
+          <IconCheck size={12} />
         </span>
       </div>
       <WizardHoverTip text={tip}>

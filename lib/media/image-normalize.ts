@@ -3,7 +3,17 @@ import "server-only";
 import sharp from "sharp";
 
 const MAX_DATA_URL_CHARS = 600_000 * 1.4;
-const ALLOWED = ["image/jpeg", "image/png", "image/webp", "image/gif"];
+const ALLOWED = [
+  "image/jpeg",
+  "image/png",
+  "image/webp",
+  "image/gif",
+  "image/bmp",
+  "image/avif",
+  "image/tiff",
+  "image/heif",
+  "image/heic",
+];
 
 function parseDataUrl(value: string): { mime: string; buffer: Buffer } | null {
   if (!value.startsWith("data:image/")) return null;
@@ -11,7 +21,7 @@ function parseDataUrl(value: string): { mime: string; buffer: Buffer } | null {
   const comma = value.indexOf(",");
   if (semi < 0 || comma < 0) return null;
   const mime = value.slice(5, semi);
-  if (!ALLOWED.includes(mime)) return null;
+  if (!ALLOWED.includes(mime) && !mime.startsWith("image/")) return null;
   const b64 = value.slice(comma + 1);
   try {
     return { mime, buffer: Buffer.from(b64, "base64") };

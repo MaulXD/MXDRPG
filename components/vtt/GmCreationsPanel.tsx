@@ -1,5 +1,7 @@
 "use client";
 
+import { IconClose } from "@/components/ui/EldarinIcons";
+
 import { useEffect, useMemo, useState } from "react";
 import type { Axial } from "@/lib/vtt/hex-math";
 import type { RoomActor } from "@/lib/room/types";
@@ -330,7 +332,7 @@ export function GmCreationsPanel({
                 disabled={busy}
                 title="Excluir template"
               >
-                ✕
+                <IconClose size={12} />
               </button>
             </li>
           ))}

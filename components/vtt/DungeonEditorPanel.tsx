@@ -1,5 +1,7 @@
 "use client";
 
+import { IconCheck } from "@/components/ui/EldarinIcons";
+
 import { useEffect, useRef, useState } from "react";
 import type { BattleScene, DungeonObjectKind } from "@/lib/vtt/types";
 import type { RoomSnapshot } from "@/lib/room/types";
@@ -216,7 +218,7 @@ export function DungeonEditorPanel({
         <p className="vtt-eyebrow">Camada 1 — imagem de piso (fundo)</p>
         {hasFloorImage ? (
           <p className="vtt-dungeon-floor-status">
-            ✓ Fundo ativo — no mapa, <strong>arraste</strong> a imagem para posicionar e use os{" "}
+            <IconCheck size={14} /> Fundo ativo — no mapa, <strong>arraste</strong> a imagem para posicionar e use os{" "}
             <strong>cantos dourados</strong> para redimensionar.
           </p>
         ) : (

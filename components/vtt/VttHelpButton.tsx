@@ -227,7 +227,7 @@ export function VttHelpButton() {
                   Jogadores só veem tokens dentro do campo de visão.
                 </li>
                 <li>
-                  Modo <strong>Desenho</strong> — traço livre, linha, seta, formas, polígono e texto
+                  Modo <strong>Desenho</strong> — traço livre, linha, seta, retângulo, círculo e texto
                   (temporário ou permanente). Painel <strong>Lousa</strong> na barra lateral para
                   opções extras. <kbd>Del</kbd> apaga desenho selecionado.
                 </li>

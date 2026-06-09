@@ -3,8 +3,6 @@ import {
   HEX_DIRECTIONS,
   axialDistance,
   axialToPixel,
-  hexCorners,
-  hexNeighbors,
   hexesInRange,
 } from "@/lib/vtt/hex-math";
 import type { BattleToken } from "@/lib/vtt/types";
@@ -71,9 +69,9 @@ function largeOccupiedHexes(anchor: Axial): Axial[] {
   ];
 }
 
-/** Raio máximo do disco do token centrado no footprint, sem ultrapassar a área ocupada. */
-function footprintInscribedRadius(hexSize: number, hexes: Axial[]): number {
-  if (hexes.length === 0) return hexInscribedRadius(hexSize);
+/** Raio visual que preenche o footprint multi-hex (centroide + alcance aos centros dos hexes). */
+function footprintFillRadius(hexSize: number, hexes: Axial[]): number {
+  if (hexes.length <= 1) return hexInscribedRadius(hexSize);
 
   let sx = 0;
   let sy = 0;
@@ -84,24 +82,14 @@ function footprintInscribedRadius(hexSize: number, hexes: Axial[]): number {
   }
   const cx = sx / hexes.length;
   const cy = sy / hexes.length;
-  const keys = new Set(hexes.map((h) => `${h.q},${h.r}`));
-  const drawHexR = hexSize * 0.92;
 
-  let minBoundaryDist = Infinity;
+  let maxCenterDist = 0;
   for (const h of hexes) {
-    const { x: hx, y: hy } = axialToPixel(h.q, h.r, hexSize, 0, 0);
-    const corners = hexCorners(hx, hy, drawHexR);
-    for (let d = 0; d < 6; d++) {
-      const neighbor = hexNeighbors(h)[d];
-      if (keys.has(`${neighbor.q},${neighbor.r}`)) continue;
-      for (const cornerIdx of [(d + 4) % 6, (d + 5) % 6]) {
-        const c = corners[cornerIdx];
-        minBoundaryDist = Math.min(minBoundaryDist, Math.hypot(c.x - cx, c.y - cy));
-      }
-    }
+    const p = axialToPixel(h.q, h.r, hexSize, 0, 0);
+    maxCenterDist = Math.max(maxCenterDist, Math.hypot(p.x - cx, p.y - cy));
   }
 
-  return Math.max(4, minBoundaryDist);
+  return maxCenterDist + hexInscribedRadius(hexSize) * 0.92;
 }
 
 export function occupiedHexes(anchor: Axial, size: CreatureSize): Axial[] {
@@ -181,30 +169,18 @@ export const HEX_INSCRIBED_RATIO = Math.sqrt(3) / 2;
 /** Legado — raio médio inscrito com folga mínima anti-alias. */
 export const TOKEN_RADIUS_RATIO = HEX_INSCRIBED_RATIO - 0.01;
 
-/** Multi-hex: raio visual em múltiplos de hexSize (pequeno/médio usam inscrito). */
-export const TOKEN_RADIUS_RATIO_BY_SIZE: Record<CreatureSize, number> = {
-  small: HEX_INSCRIBED_RATIO,
-  medium: HEX_INSCRIBED_RATIO,
-  large: 0.465,
-  huge: 1.55,
-  gargantuan: 2.52,
-  colossal: 3.48,
-};
-
 export function hexInscribedRadius(hexSize: number): number {
   return hexSize * HEX_INSCRIBED_RATIO;
 }
 
-/** Raio máximo do token — círculo inscrito no hex (centro → aresta), sem ultrapassar. */
+/** Raio de desenho do token — inscrito no hex (pequeno/médio) ou preenchendo o footprint. */
 export function tokenDrawRadius(hexSize: number, size: CreatureSize): number {
   const edgePad = Math.max(0.5, hexSize * 0.004);
   if (size === "small" || size === "medium") {
     return hexInscribedRadius(hexSize) - edgePad;
   }
-  if (size === "large") {
-    return footprintInscribedRadius(hexSize, largeOccupiedHexes({ q: 0, r: 0 })) - edgePad;
-  }
-  return hexSize * TOKEN_RADIUS_RATIO_BY_SIZE[size] - edgePad;
+  const hexes = occupiedHexes({ q: 0, r: 0 }, size);
+  return Math.max(4, footprintFillRadius(hexSize, hexes)) - edgePad;
 }
 
 export function tokenPixelCenter(

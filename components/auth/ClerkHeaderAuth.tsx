@@ -2,6 +2,8 @@
 
 import { Show, SignInButton, SignUpButton, UserButton } from "@clerk/nextjs";
 import Link from "next/link";
+import { AnimatedNavLink } from "@/components/AnimatedNavLink";
+import { FriendsNavBadge } from "@/components/friends/FriendsNavBadge";
 import type { SessionUser } from "@/lib/auth/types";
 import { portalPathForRole, roleMeta } from "@/lib/auth/roles";
 import { clerkSocialOnlyAppearance } from "@/lib/auth/clerk-appearance";
@@ -26,6 +28,8 @@ export function ClerkHeaderAuth({ session }: Props) {
         </SignUpButton>
       </Show>
       <Show when="signed-in">
+        <AnimatedNavLink href="/conta">Perfil</AnimatedNavLink>
+        <FriendsNavBadge />
         {session ? (
           <Link href={portalPathForRole(session.user.role)} className="btn nav-cta">
             {roleMeta(session.user.role).label}

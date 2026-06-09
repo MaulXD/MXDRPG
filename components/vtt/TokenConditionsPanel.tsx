@@ -1,5 +1,7 @@
 "use client";
 
+import { IconClose } from "@/components/ui/EldarinIcons";
+
 import { useState } from "react";
 import type { BattleToken } from "@/lib/vtt/types";
 import type { TokenCondition } from "@/lib/combat/conditions";
@@ -140,7 +142,7 @@ export function TokenConditionsPanel({
               className="btn btn-ghost vtt-duration-btn vtt-duration-btn--cancel"
               onClick={() => setPending(null)}
             >
-              ✕
+              <IconClose size={12} />
             </button>
           </div>
         </div>

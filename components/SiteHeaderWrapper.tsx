@@ -1,4 +1,6 @@
 import { ClerkHeaderAuth } from "@/components/auth/ClerkHeaderAuth";
+import { EldarinLogo } from "@/components/brand/EldarinLogo";
+import { FriendsNavBadge } from "@/components/friends/FriendsNavBadge";
 import { hasClerkPublishableKey } from "@/lib/auth/clerk-config";
 import { getSession } from "@/lib/auth/session";
 import { portalPathForRole, roleMeta } from "@/lib/auth/roles";
@@ -17,9 +19,7 @@ export async function SiteHeaderWrapper() {
 
   return (
     <header className="glass site-header">
-      <Link href="/" className="site-logo neon-title">
-        ELDARIN
-      </Link>
+      <EldarinLogo variant="header" />
       <nav className="site-nav">
         {links.map((l) => (
           <AnimatedNavLink key={l.href} href={l.href} exact={l.href === "/"}>
@@ -29,9 +29,13 @@ export async function SiteHeaderWrapper() {
         {clerkEnabled ? (
           <ClerkHeaderAuth session={session} />
         ) : session ? (
-          <Link href={portalPathForRole(session.user.role)} className="btn nav-cta">
-            {roleMeta(session.user.role).label}
-          </Link>
+          <>
+            <AnimatedNavLink href="/conta">Perfil</AnimatedNavLink>
+            <FriendsNavBadge />
+            <Link href={portalPathForRole(session.user.role)} className="btn nav-cta">
+              {roleMeta(session.user.role).label}
+            </Link>
+          </>
         ) : (
           <Link href="/sign-in" className="btn nav-cta">
             Entrar

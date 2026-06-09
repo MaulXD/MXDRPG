@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { NicknameForm } from "@/components/auth/NicknameForm";
+import { EldarinLogo } from "@/components/brand/EldarinLogo";
 import {
   apelidoPathWithRedirect,
   DEFAULT_POST_AUTH_PATH,
@@ -23,12 +24,15 @@ export default async function ApelidoPage({ searchParams }: Props) {
   return (
     <div className="page-wrap" style={{ maxWidth: 420, paddingTop: "2rem" }}>
       <header className="page-header" style={{ paddingBottom: "1rem" }}>
-        <p className="eyebrow">Conta</p>
+        <EldarinLogo variant="full" href="/" />
+        <p className="eyebrow" style={{ marginTop: "1rem" }}>
+          Conta
+        </p>
         <h1 className="display-lg">Escolha seu apelido</h1>
         <p className="lead">Apelido para login rápido na mesa. Em seguida você cria ou entra em partidas.</p>
       </header>
       <div className="glass" style={{ padding: "1.5rem" }}>
-        <NicknameForm redirect={dest} />
+        <NicknameForm initialNickname="" redirectAfterSave={dest} />
       </div>
     </div>
   );

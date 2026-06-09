@@ -2,9 +2,11 @@ import { NextResponse } from "next/server";
 import { auth, clerkClient } from "@clerk/nextjs/server";
 import { isClerkEnabled } from "@/lib/auth/clerk-config";
 import { dbEnabled } from "@/lib/db/enabled";
+import { ensureDbMigrations } from "@/lib/db/ensure-migrations";
 import { deleteUserAccount, updateUserAvatar } from "@/lib/db/users";
 import { normalizeAvatarSource } from "@/lib/db/user-avatar";
 import { destroySession, getSession } from "@/lib/auth/session";
+import { sanitizePortraitFocus } from "@/lib/media/portrait-focus";
 
 export async function PATCH(req: Request) {
   const session = await getSession();
@@ -21,12 +23,15 @@ export async function PATCH(req: Request) {
   const body = (await req.json()) as {
     avatarSource?: string;
     avatarUrl?: string | null;
+    avatarFocus?: { x?: number; y?: number; scale?: number } | null;
   };
 
   try {
+    await ensureDbMigrations();
     const user = await updateUserAvatar(session.user.id, {
       avatarSource: normalizeAvatarSource(body.avatarSource),
       avatarUrl: body.avatarUrl,
+      avatarFocus: sanitizePortraitFocus(body.avatarFocus) ?? undefined,
     });
     return NextResponse.json({ ok: true, user });
   } catch (e) {
