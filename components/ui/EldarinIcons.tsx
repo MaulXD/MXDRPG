@@ -250,6 +250,19 @@ export function IconStar({ className, size }: IconProps) {
   );
 }
 
+export function IconHourglass({ className, size }: IconProps) {
+  return (
+    <Svg className={className} size={size}>
+      <path d="M8 4h8M8 20h8" {...S} />
+      <path
+        d="M9.5 4c0 2.2 1.8 4 4 4s4-1.8 4-4M9.5 20c0-2.2 1.8-4 4-4s4 1.8 4 4"
+        {...S}
+      />
+      <path d="M10 8.5h4l-2 3.5 2 3.5h-4l2-3.5-2-3.5z" {...S} />
+    </Svg>
+  );
+}
+
 export type ActionKind = "spell" | "ability" | "attack";
 
 export function ActionKindIcon({

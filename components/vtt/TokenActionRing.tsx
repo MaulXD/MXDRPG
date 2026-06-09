@@ -15,6 +15,7 @@ import {
   IconAbility,
   IconChevronLeft,
   IconHeart,
+  IconHourglass,
   IconMenu,
   IconMove,
   IconRun,
@@ -84,9 +85,9 @@ type Props = {
 
 const RING_RADIUS_BASE = 152;
 /** Duração da animação de saída (sincronizar com CSS). */
-const TAR_RING_EXIT_MS = 480;
-/** Tempo até hover/transições após entrada (orbita → posição final). */
-const TAR_RING_INTRO_MS = 620;
+const TAR_RING_EXIT_MS = 420;
+/** Tempo até hover/transições após entrada (radial → posição final). */
+const TAR_RING_INTRO_MS = 560;
 
 function ringLayout(slotCount: number): { radius: number; track: number; slotScale: number } {
   if (slotCount <= 5) {
@@ -98,18 +99,11 @@ function ringLayout(slotCount: number): { radius: number; track: number; slotSca
   return { radius: Math.round(RING_RADIUS_BASE * 1.32), track: 408, slotScale: 1.08 };
 }
 
-/** Posições da órbita inicial (giro) e destino final de cada slot. */
-function slotOrbitPositions(angle: number, radius: number) {
-  const spin = 1.55;
-  const innerR = radius * 0.4;
-  const midR = radius * 0.76;
+/** Posição final de cada slot ao longo de um raio a partir do centro do token. */
+function slotRadialPosition(angle: number, radius: number) {
   return {
     x: Math.cos(angle) * radius,
     y: Math.sin(angle) * radius,
-    orbitX: Math.cos(angle + spin) * innerR,
-    orbitY: Math.sin(angle + spin) * innerR,
-    orbitMidX: Math.cos(angle + spin * 0.38) * midR,
-    orbitMidY: Math.sin(angle + spin * 0.38) * midR,
   };
 }
 
@@ -563,9 +557,6 @@ export function TokenActionRing({
         onClick={(e) => e.stopPropagation()}
         onContextMenu={(e) => e.preventDefault()}
       >
-        <span className="token-action-ring__vortex-core" aria-hidden />
-        <span className="token-action-ring__vortex" aria-hidden />
-        <span className="token-action-ring__vortex-wind" aria-hidden />
         <span
           key={ringKey}
           className="token-action-ring__track"
@@ -574,6 +565,7 @@ export function TokenActionRing({
               width: layout.track,
               height: layout.track,
               "--tar-track": `${layout.track}px`,
+              "--tar-spoke-count": displaySlots.length,
             } as CSSProperties
           }
           aria-hidden
@@ -611,7 +603,7 @@ export function TokenActionRing({
 
         {displaySlots.map((slot, i) => {
           const angle = slice * i - Math.PI / 2;
-          const pos = slotOrbitPositions(angle, layout.radius);
+          const pos = slotRadialPosition(angle, layout.radius);
           return (
             <button
               key={`${ringKey}-${slot.id}`}
@@ -625,10 +617,6 @@ export function TokenActionRing({
                   "--tar-i": i,
                   "--tar-x": `${pos.x}px`,
                   "--tar-y": `${pos.y}px`,
-                  "--tar-orbit-x": `${pos.orbitX}px`,
-                  "--tar-orbit-y": `${pos.orbitY}px`,
-                  "--tar-orbit-mid-x": `${pos.orbitMidX}px`,
-                  "--tar-orbit-mid-y": `${pos.orbitMidY}px`,
                   "--tar-slot-scale": layout.slotScale,
                   "--tar-slot-count": displaySlots.length,
                 } as CSSProperties
@@ -691,7 +679,7 @@ export function TokenActionRing({
               {slot.rechargeHint ? (
                 <span className="token-action-ring__cd" title={`Recarga · ${slot.rechargeHint}`}>
                   <span className="token-action-ring__cd-icon" aria-hidden>
-                    ⏳
+                    <IconHourglass size={10} />
                   </span>
                   {slot.rechargeHint}
                 </span>

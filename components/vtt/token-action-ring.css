@@ -41,138 +41,7 @@
 .token-action-ring__vortex-core,
 .token-action-ring__vortex,
 .token-action-ring__vortex-wind {
-  position: absolute;
-  left: 0;
-  top: 0;
-  transform: translate(-50%, -50%);
-  border-radius: 50%;
-  pointer-events: none;
-}
-
-.token-action-ring__vortex-core {
-  width: 28px;
-  height: 28px;
-  background: radial-gradient(
-    circle,
-    color-mix(in srgb, var(--tar-token, #c9a962) 85%, white) 0%,
-    color-mix(in srgb, var(--tar-token, #c9a962) 35%, transparent) 55%,
-    transparent 72%
-  );
-  box-shadow: 0 0 14px color-mix(in srgb, var(--tar-token, #c9a962) 45%, transparent);
-  animation: tar-vortex-core-in 0.38s ease-out both;
-}
-
-.token-action-ring__vortex {
-  width: 96px;
-  height: 96px;
-  border: 2px solid color-mix(in srgb, var(--tar-token, #c9a962) 28%, transparent);
-  border-radius: 50%;
-  opacity: 0.55;
-  animation: tar-vortex-spin-in 0.42s ease-out both;
-}
-
-.token-action-ring__vortex-wind {
-  width: 120px;
-  height: 120px;
-  border: 1px dashed color-mix(in srgb, var(--tar-token, #c9a962) 32%, transparent);
-  border-radius: 50%;
-  opacity: 0.4;
-  animation: tar-vortex-wind-in 0.4s ease-out both;
-}
-
-.token-action-ring--exiting .token-action-ring__vortex-core {
-  animation: tar-vortex-core-out 0.5s cubic-bezier(0.55, 0, 0.95, 0.38) both;
-}
-
-.token-action-ring--exiting .token-action-ring__vortex {
-  animation: tar-vortex-spin-out 0.54s cubic-bezier(0.55, 0, 1, 0.42) both;
-}
-
-.token-action-ring--exiting .token-action-ring__vortex-wind {
-  animation: tar-vortex-wind-out 0.52s cubic-bezier(0.55, 0, 1, 0.4) both;
-}
-
-@keyframes tar-vortex-core-in {
-  0% {
-    opacity: 0;
-    transform: translate3d(-50%, -50%, 0) scale(1.6);
-  }
-  40% {
-    opacity: 0.9;
-    transform: translate3d(-50%, -50%, 0) scale(0.9);
-  }
-  100% {
-    opacity: 0;
-    transform: translate3d(-50%, -50%, 0) scale(0.4);
-  }
-}
-
-@keyframes tar-vortex-core-out {
-  0% {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(0.2);
-  }
-  40% {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1.1);
-  }
-  100% {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(2.6);
-  }
-}
-
-@keyframes tar-vortex-spin-in {
-  0% {
-    opacity: 0;
-    transform: translate3d(-50%, -50%, 0) rotate(0deg) scale(0.35);
-  }
-  50% {
-    opacity: 0.7;
-  }
-  100% {
-    opacity: 0;
-    transform: translate3d(-50%, -50%, 0) rotate(280deg) scale(1.35);
-  }
-}
-
-@keyframes tar-vortex-spin-out {
-  0% {
-    opacity: 0;
-    transform: translate(-50%, -50%) rotate(0deg) scale(2.1);
-  }
-  30% {
-    opacity: 0.9;
-  }
-  100% {
-    opacity: 0;
-    transform: translate(-50%, -50%) rotate(-680deg) scale(0.08);
-  }
-}
-
-@keyframes tar-vortex-wind-in {
-  0% {
-    opacity: 0;
-    transform: translate3d(-50%, -50%, 0) rotate(0deg) scale(0.45);
-  }
-  100% {
-    opacity: 0;
-    transform: translate3d(-50%, -50%, 0) rotate(220deg) scale(1.2);
-  }
-}
-
-@keyframes tar-vortex-wind-out {
-  0% {
-    opacity: 0;
-    transform: translate(-50%, -50%) rotate(0deg) scale(1.55);
-  }
-  35% {
-    opacity: 0.7;
-  }
-  100% {
-    opacity: 0;
-    transform: translate(-50%, -50%) rotate(-520deg) scale(0.1);
-  }
+  display: none;
 }
 
 .token-action-ring__track {
@@ -185,33 +54,39 @@
   border-radius: 50%;
   border: 1px dashed rgba(201, 169, 98, 0.22);
   box-shadow: 0 0 0 1px rgba(201, 169, 98, 0.08);
-  animation: tar-track-vortex-in 0.44s cubic-bezier(0.22, 1, 0.36, 1) both;
+  background-image: repeating-conic-gradient(
+    from -90deg,
+    transparent 0deg calc(360deg / var(--tar-spoke-count, 6) - 1.5deg),
+    rgba(201, 169, 98, 0.14) calc(360deg / var(--tar-spoke-count, 6) - 1.5deg)
+      calc(360deg / var(--tar-spoke-count, 6))
+  );
+  animation: tar-track-radial-in 0.38s cubic-bezier(0.22, 1, 0.36, 1) both;
   pointer-events: none;
 }
 
 .token-action-ring--exiting .token-action-ring__track {
-  animation: tar-track-vortex-out 0.48s cubic-bezier(0.55, 0, 0.95, 0.4) both;
+  animation: tar-track-radial-out 0.42s cubic-bezier(0.55, 0, 0.95, 0.4) both;
 }
 
-@keyframes tar-track-vortex-in {
+@keyframes tar-track-radial-in {
   0% {
     opacity: 0;
-    transform: translate3d(-50%, -50%, 0) rotate(-90deg) scale(0.55);
+    transform: translate3d(-50%, -50%, 0) scale(0.45);
   }
   100% {
     opacity: 1;
-    transform: translate3d(-50%, -50%, 0) rotate(0deg) scale(1);
+    transform: translate3d(-50%, -50%, 0) scale(1);
   }
 }
 
-@keyframes tar-track-vortex-out {
+@keyframes tar-track-radial-out {
   0% {
     opacity: 1;
-    transform: translate(-50%, -50%) rotate(0deg) scale(1);
+    transform: translate(-50%, -50%) scale(1);
   }
   100% {
     opacity: 0;
-    transform: translate(-50%, -50%) rotate(280deg) scale(0.06);
+    transform: translate(-50%, -50%) scale(0.35);
   }
 }
 
@@ -245,7 +120,7 @@
   box-shadow:
     0 12px 32px rgba(0, 0, 0, 0.5),
     0 0 24px color-mix(in srgb, var(--tar-token, #c9a962) 35%, transparent);
-  animation: tar-center-vortex-in 0.36s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: tar-center-radial-in 0.34s cubic-bezier(0.22, 1, 0.36, 1) both;
   transition:
     border-color 0.15s,
     background 0.15s,
@@ -253,14 +128,14 @@
 }
 
 .token-action-ring--exiting .token-action-ring__center {
-  animation: tar-center-vortex-out 0.44s cubic-bezier(0.55, 0, 1, 0.38) both;
+  animation: tar-center-radial-out 0.4s cubic-bezier(0.55, 0, 1, 0.38) both;
   pointer-events: none;
 }
 
-@keyframes tar-center-vortex-in {
+@keyframes tar-center-radial-in {
   0% {
     opacity: 0;
-    transform: translate3d(-50%, -50%, 0) scale(0.35);
+    transform: translate3d(-50%, -50%, 0) scale(0.5);
   }
   100% {
     opacity: 1;
@@ -268,14 +143,14 @@
   }
 }
 
-@keyframes tar-center-vortex-out {
+@keyframes tar-center-radial-out {
   0% {
     opacity: 1;
-    transform: translate(-50%, -50%) rotate(0deg) scale(1);
+    transform: translate(-50%, -50%) scale(1);
   }
   100% {
     opacity: 0;
-    transform: translate(-50%, -50%) rotate(220deg) scale(0.04);
+    transform: translate(-50%, -50%) scale(0.35);
   }
 }
 
@@ -354,8 +229,8 @@
     0 0 12px var(--tar-glow, transparent);
   opacity: 0;
   transform: translate3d(-50%, -50%, 0) scale(0.2);
-  animation: tar-slot-orbit-in 0.52s cubic-bezier(0.22, 1, 0.36, 1) both;
-  animation-delay: calc(0.05s + var(--tar-i, 0) * 0.034s);
+  animation: tar-slot-radial-in 0.42s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(0.04s + var(--tar-i, 0) * 0.03s);
   will-change: transform, opacity;
   transition:
     border-color 0.12s,
@@ -373,8 +248,8 @@
 }
 
 .token-action-ring--exiting .token-action-ring__slot {
-  animation: tar-slot-vortex-out 0.48s cubic-bezier(0.55, 0, 0.92, 0.38) both;
-  animation-delay: calc((var(--tar-slot-count, 6) - 1 - var(--tar-i, 0)) * 0.032s);
+  animation: tar-slot-radial-out 0.4s cubic-bezier(0.55, 0, 0.92, 0.38) both;
+  animation-delay: calc((var(--tar-slot-count, 6) - 1 - var(--tar-i, 0)) * 0.028s);
   pointer-events: none;
 }
 
@@ -442,28 +317,19 @@
   --tar-pa: #f0b0b0;
 }
 
-@keyframes tar-slot-orbit-in {
+@keyframes tar-slot-radial-in {
   0% {
     opacity: 0;
-    transform: translate3d(-50%, -50%, 0) scale(calc(var(--tar-slot-scale, 1) * 0.15));
+    transform: translate3d(-50%, -50%, 0) scale(calc(var(--tar-slot-scale, 1) * 0.25));
   }
-  16% {
-    opacity: 0.75;
+  55% {
+    opacity: 0.92;
     transform: translate3d(
-        calc(-50% + var(--tar-orbit-x, 0px)),
-        calc(-50% + var(--tar-orbit-y, 0px)),
+        calc(-50% + var(--tar-x, 0px) * 0.88),
+        calc(-50% + var(--tar-y, 0px) * 0.88),
         0
       )
-      scale(calc(var(--tar-slot-scale, 1) * 0.72));
-  }
-  48% {
-    opacity: 1;
-    transform: translate3d(
-        calc(-50% + var(--tar-orbit-mid-x, 0px)),
-        calc(-50% + var(--tar-orbit-mid-y, 0px)),
-        0
-      )
-      scale(calc(var(--tar-slot-scale, 1) * 0.9));
+      scale(calc(var(--tar-slot-scale, 1) * 0.96));
   }
   100% {
     opacity: 1;
@@ -476,7 +342,7 @@
   }
 }
 
-@keyframes tar-slot-vortex-out {
+@keyframes tar-slot-radial-out {
   0% {
     opacity: 1;
     transform: translate3d(
@@ -486,18 +352,9 @@
       )
       scale(var(--tar-slot-scale, 1));
   }
-  38% {
-    opacity: 0.7;
-    transform: translate3d(
-        calc(-50% + var(--tar-orbit-mid-x, 0px)),
-        calc(-50% + var(--tar-orbit-mid-y, 0px)),
-        0
-      )
-      scale(calc(var(--tar-slot-scale, 1) * 0.82));
-  }
   100% {
     opacity: 0;
-    transform: translate3d(-50%, -50%, 0) scale(calc(var(--tar-slot-scale, 1) * 0.12));
+    transform: translate3d(-50%, -50%, 0) scale(calc(var(--tar-slot-scale, 1) * 0.2));
   }
 }
 
@@ -610,7 +467,9 @@
 }
 
 .token-action-ring__cd-icon {
-  font-size: 0.58rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   line-height: 1;
 }
 
@@ -714,21 +573,12 @@
 
 @media (prefers-reduced-motion: reduce) {
   .token-action-ring-backdrop,
-  .token-action-ring__vortex-core,
-  .token-action-ring__vortex,
-  .token-action-ring__vortex-wind,
   .token-action-ring__track,
   .token-action-ring__center,
   .token-action-ring__slot,
   .token-action-ring__detail {
     animation: none;
     opacity: 1;
-  }
-
-  .token-action-ring__vortex-core,
-  .token-action-ring__vortex,
-  .token-action-ring__vortex-wind {
-    display: none;
   }
 
   .token-action-ring__slot {
