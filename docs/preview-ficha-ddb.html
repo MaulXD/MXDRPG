@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Eldarin — Preview da ficha (layout DDB)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Lora:wght@400;600&family=Source+Sans+3:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Página de preview ── */
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding: 1.5rem;
+      font-family: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+      background: #111110;
+      color: #c8bfa8;
+    }
+    .preview-page {
+      max-width: 780px;
+      margin: 0 auto;
+    }
+    .preview-page__title {
+      margin: 0 0 0.35rem;
+      font-family: Cinzel, Georgia, serif;
+      font-size: 1.1rem;
+      color: #b8922e;
+    }
+    .preview-page__desc {
+      margin: 0 0 1.25rem;
+      font-size: 0.82rem;
+      color: #6b6050;
+      line-height: 1.5;
+    }
+    .preview-page__desc code {
+      font-size: 0.78rem;
+      color: #c8bfa8;
+    }
+
+    /* ── sheet-ddb.css (espelho do componente) ── */
+    :root {
+      --font-display: "Cinzel", Georgia, serif;
+      --font-body: "Lora", Georgia, serif;
+      --font-ui: "Source Sans 3", system-ui, sans-serif;
+    }
+
+    .sheet-shell {
+      display: flex;
+      flex-direction: column;
+      font-family: var(--font-ui);
+    }
+
+    .sheet-shell--ddb {
+      --ddb-header: #4a1520;
+      --ddb-header-deep: #2d0c12;
+      --ddb-panel: #faf7f0;
+      --ddb-panel-border: #d8cfc0;
+      --ddb-ink: #1e1814;
+      --ddb-muted: #6a5c4e;
+      --ddb-prof: #2f6fed;
+      --ddb-hp: #3a9d55;
+      --ddb-pa: #a83232;
+      --ddb-gold: #b8922e;
+      background: #e8e2d6;
+      color: var(--ddb-ink);
+      gap: 0;
+      padding: 0;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+    }
+
+    .sheet-shell--ddb > .sheet-ddb-toolbar {
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.35rem;
+      padding: 0.35rem 0.5rem;
+      background: var(--ddb-header-deep);
+    }
+
+    .sheet-ddb-toolbar .btn-mock {
+      padding: 0.2rem 0.55rem;
+      font-size: 0.65rem;
+      font-weight: 700;
+      border-radius: 4px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(0, 0, 0, 0.25);
+      color: #f8f2ea;
+    }
+
+    .sheet-ddb-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 0.75rem;
+      padding: 0.65rem 0.85rem 0.55rem;
+      background:
+        radial-gradient(ellipse 80% 120% at 15% 0%, rgba(255, 255, 255, 0.06), transparent 55%),
+        linear-gradient(135deg, var(--ddb-header) 0%, var(--ddb-header-deep) 100%);
+      color: #f8f2ea;
+    }
+
+    .sheet-ddb-header__name {
+      margin: 0;
+      font-family: var(--font-display);
+      font-size: clamp(1.15rem, 3.5vw, 1.55rem);
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      line-height: 1.1;
+    }
+
+    .sheet-ddb-header__class {
+      margin: 0.2rem 0 0;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      color: rgba(248, 242, 234, 0.78);
+    }
+
+    .sheet-ddb-header__meta {
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      flex-shrink: 0;
+    }
+
+    .sheet-ddb-header__level {
+      width: 2.35rem;
+      height: 2.35rem;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, 0.35);
+      background: rgba(0, 0, 0, 0.22);
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 700;
+    }
+
+    .sheet-ddb-header__xp { min-width: 7.5rem; }
+
+    .sheet-ddb-header__xp-text {
+      display: block;
+      font-size: 0.62rem;
+      color: rgba(248, 242, 234, 0.75);
+      margin-bottom: 0.15rem;
+      text-align: right;
+    }
+
+    .sheet-ddb-header__xp-bar {
+      height: 0.35rem;
+      border-radius: 999px;
+      background: rgba(0, 0, 0, 0.35);
+      overflow: hidden;
+    }
+
+    .sheet-ddb-header__xp-bar > span {
+      display: block;
+      height: 100%;
+      background: linear-gradient(90deg, #d4b356, #f0d878);
+      border-radius: inherit;
+    }
+
+    .sheet-ddb-attrs {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 0.35rem;
+      padding: 0.45rem 0.65rem 0.55rem;
+      background: #f0ebe2;
+      border-bottom: 1px solid var(--ddb-panel-border);
+    }
+
+    .sheet-ddb-attr {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.08rem;
+      padding: 0.35rem 0.15rem 0.3rem;
+      background: var(--ddb-panel);
+      border: 1px solid var(--ddb-panel-border);
+      border-radius: 8px;
+      box-shadow: 0 1px 0 rgba(255, 255, 255, 0.65) inset;
+    }
+
+    .sheet-ddb-attr__label {
+      font-size: 0.58rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      color: var(--ddb-muted);
+    }
+
+    .sheet-ddb-attr__score {
+      font-size: 1.05rem;
+      line-height: 1;
+      font-weight: 700;
+    }
+
+    .sheet-ddb-attr__mod {
+      font-size: 0.62rem;
+      font-weight: 700;
+      color: var(--ddb-muted);
+    }
+
+    .sheet-ddb-attr__mod--pos { color: #2d6a3d; }
+    .sheet-ddb-attr__mod--neg { color: #8b3030; }
+
+    .sheet-ddb-body {
+      display: grid;
+      grid-template-columns: minmax(108px, 0.85fr) minmax(0, 1.35fr) minmax(0, 1fr);
+      gap: 0.5rem;
+      padding: 0.5rem 0.55rem;
+      min-height: 280px;
+    }
+
+    .sheet-ddb-col {
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .sheet-ddb-portrait-wrap {
+      border-radius: 8px;
+      overflow: hidden;
+      border: 2px solid #fff;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+      background: #d8cfc0;
+    }
+
+    .sheet-ddb-portrait {
+      width: 100%;
+      aspect-ratio: 3 / 4;
+      max-height: 168px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(160deg, #c4b8a8 0%, #8a7d6e 55%, #5c5248 100%);
+      color: rgba(255, 255, 255, 0.35);
+      font-size: 3rem;
+    }
+
+    .sheet-ddb-hex-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.25rem;
+    }
+
+    .sheet-ddb-hex {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 2.65rem;
+      padding: 0.2rem;
+      background: var(--ddb-panel);
+      border: 1px solid var(--ddb-panel-border);
+      clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+      text-align: center;
+    }
+
+    .sheet-ddb-hex__label {
+      font-size: 0.52rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--ddb-muted);
+    }
+
+    .sheet-ddb-hex strong {
+      font-size: 0.78rem;
+      line-height: 1.1;
+    }
+
+    .sheet-ddb-resource {
+      background: var(--ddb-panel);
+      border: 1px solid var(--ddb-panel-border);
+      border-radius: 8px;
+      padding: 0.3rem 0.4rem 0.35rem;
+    }
+
+    .sheet-ddb-resource__head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 0.35rem;
+      font-size: 0.62rem;
+      font-weight: 700;
+      color: var(--ddb-muted);
+      margin-bottom: 0.2rem;
+    }
+
+    .sheet-ddb-resource__head strong {
+      font-size: 0.72rem;
+      color: var(--ddb-ink);
+    }
+
+    .sheet-ddb-resource__bar {
+      height: 0.42rem;
+      border-radius: 999px;
+      background: rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+    }
+
+    .sheet-ddb-resource__bar > span {
+      display: block;
+      height: 100%;
+      border-radius: inherit;
+    }
+
+    .sheet-ddb-resource__bar--hp > span { background: var(--ddb-hp); }
+    .sheet-ddb-resource__bar--pa > span { background: var(--ddb-pa); }
+
+    .sheet-ddb-ca {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.35rem 0.45rem;
+      background: var(--ddb-panel);
+      border: 1px solid var(--ddb-panel-border);
+      border-radius: 8px;
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: var(--ddb-muted);
+    }
+
+    .sheet-ddb-ca strong {
+      font-size: 1rem;
+      color: var(--ddb-ink);
+    }
+
+    .sheet-ddb-panel {
+      background: var(--ddb-panel);
+      border: 1px solid var(--ddb-panel-border);
+      border-radius: 10px;
+      overflow: hidden;
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sheet-ddb-panel--skills { min-height: 12rem; }
+
+    .sheet-ddb-panel__head {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.4rem 0.55rem;
+      border-bottom: 1px solid var(--ddb-panel-border);
+      background: rgba(255, 255, 255, 0.55);
+    }
+
+    .sheet-ddb-panel__head h3 {
+      margin: 0;
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ddb-muted);
+    }
+
+    .sheet-ddb-panel__icon {
+      font-size: 0.85rem;
+      opacity: 0.55;
+    }
+
+    .sheet-ddb-skill-list {
+      list-style: none;
+      margin: 0;
+      padding: 0.15rem 0;
+      overflow-y: auto;
+      flex: 1;
+    }
+
+    .sheet-ddb-skill-list li { margin: 0; }
+
+    .sheet-ddb-skill {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 0.85rem 1.6rem 1fr auto;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.28rem 0.55rem;
+      border: none;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+      background: transparent;
+      color: inherit;
+      font: inherit;
+      text-align: left;
+      cursor: default;
+    }
+
+    .sheet-ddb-skill__dot,
+    .sheet-ddb-save__dot {
+      width: 0.55rem;
+      height: 0.55rem;
+      border-radius: 50%;
+      border: 2px solid #b8b0a4;
+      background: transparent;
+    }
+
+    .sheet-ddb-skill__dot.is-on,
+    .sheet-ddb-save__dot.is-on {
+      border-color: var(--ddb-prof);
+      background: var(--ddb-prof);
+    }
+
+    .sheet-ddb-skill__attr {
+      font-size: 0.58rem;
+      font-weight: 800;
+      color: var(--ddb-muted);
+    }
+
+    .sheet-ddb-skill__name { font-size: 0.72rem; }
+
+    .sheet-ddb-skill__mod {
+      font-size: 0.75rem;
+      min-width: 1.75rem;
+      text-align: right;
+    }
+
+    .sheet-ddb-skill.is-trained .sheet-ddb-skill__name { font-weight: 700; }
+
+    .sheet-ddb-saves {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.25rem 0.45rem;
+      padding: 0.4rem 0.5rem 0.5rem;
+    }
+
+    .sheet-ddb-save {
+      display: grid;
+      grid-template-columns: 0.7rem 1fr auto;
+      align-items: center;
+      gap: 0.3rem;
+      font-size: 0.68rem;
+    }
+
+    .sheet-ddb-save__label { color: var(--ddb-muted); }
+
+    .sheet-ddb-save.is-trained .sheet-ddb-save__label {
+      font-weight: 700;
+      color: var(--ddb-ink);
+    }
+
+    .sheet-ddb-trait-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+      padding: 0.4rem 0.5rem 0.5rem;
+    }
+
+    .sheet-ddb-trait {
+      display: flex;
+      flex-direction: column;
+      gap: 0.08rem;
+      padding: 0.35rem 0.45rem;
+      border-radius: 6px;
+      border: 1px solid var(--ddb-panel-border);
+      background: rgba(255, 255, 255, 0.5);
+    }
+
+    .sheet-ddb-trait--accent {
+      border-color: rgba(184, 146, 46, 0.45);
+      background: rgba(184, 146, 46, 0.08);
+    }
+
+    .sheet-ddb-trait__tag {
+      font-size: 0.55rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ddb-muted);
+    }
+
+    .sheet-ddb-trait__value {
+      font-size: 0.72rem;
+      font-weight: 600;
+      line-height: 1.25;
+    }
+
+    .sheet-ddb-culinary {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.25rem;
+      padding: 0.4rem 0.5rem 0.5rem;
+    }
+
+    .sheet-ddb-culinary__item {
+      display: flex;
+      justify-content: space-between;
+      gap: 0.25rem;
+      font-size: 0.62rem;
+      color: var(--ddb-muted);
+      padding: 0.2rem 0.25rem;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.45);
+    }
+
+    .sheet-ddb-culinary__item strong { color: var(--ddb-ink); }
+
+    .sheet-ddb-drawer {
+      padding: 0.35rem 0.55rem 0.55rem;
+      border-top: 1px solid var(--ddb-panel-border);
+      background: #f0ebe2;
+    }
+
+    .sheet-tabs-mock {
+      display: flex;
+      gap: 0.25rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .sheet-tab-mock {
+      padding: 0.3rem 0.65rem;
+      font-size: 0.65rem;
+      font-weight: 700;
+      border-radius: 6px 6px 0 0;
+      border: 1px solid var(--ddb-panel-border);
+      background: rgba(255, 255, 255, 0.35);
+      color: var(--ddb-muted);
+    }
+
+    .sheet-tab-mock--active {
+      background: var(--ddb-panel);
+      color: var(--ddb-ink);
+      border-bottom-color: var(--ddb-panel);
+    }
+
+    .sheet-drawer-content {
+      padding: 0.65rem 0.75rem;
+      background: var(--ddb-panel);
+      border: 1px solid var(--ddb-panel-border);
+      border-radius: 0 8px 8px 8px;
+      font-size: 0.75rem;
+      color: var(--ddb-muted);
+      min-height: 3.5rem;
+    }
+
+    @media (max-width: 720px) {
+      .sheet-ddb-body { grid-template-columns: 1fr; }
+      .sheet-ddb-attrs { grid-template-columns: repeat(3, 1fr); }
+    }
+  </style>
+</head>
+<body>
+  <div class="preview-page">
+    <h1 class="preview-page__title">Preview — Ficha popup (layout D&D Beyond)</h1>
+    <p class="preview-page__desc">
+      Espelho estático de <code>SheetPopupDdbView</code> + <code>sheet-ddb.css</code>.
+      Abra este arquivo no navegador para ver cores, grid e hierarquia visual sem rodar o app.
+    </p>
+
+    <article class="sheet-shell sheet-shell--popup sheet-shell--ddb" aria-label="Ficha de personagem">
+      <!-- toolbar (PDF, fechar, etc.) -->
+      <div class="sheet-ddb-toolbar">
+        <span class="btn-mock">PDF</span>
+        <span class="btn-mock">✕</span>
+      </div>
+
+      <!-- header vinho -->
+      <header class="sheet-ddb-header">
+        <div class="sheet-ddb-header__main">
+          <h2 class="sheet-ddb-header__name">Theron Valdris</h2>
+          <p class="sheet-ddb-header__class">GUERREIRO · NV 5</p>
+        </div>
+        <div class="sheet-ddb-header__meta">
+          <div class="sheet-ddb-header__level" aria-label="Nível 5">5</div>
+          <div class="sheet-ddb-header__xp">
+            <span class="sheet-ddb-header__xp-text">1.240 / 2.400 XP</span>
+            <div class="sheet-ddb-header__xp-bar" role="progressbar" aria-valuenow="52" aria-valuemin="0" aria-valuemax="100">
+              <span style="width: 52%"></span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- faixa de 6 atributos -->
+      <div class="sheet-ddb-attrs" role="group" aria-label="Atributos">
+        <div class="sheet-ddb-attr">
+          <span class="sheet-ddb-attr__label">FOR</span>
+          <strong class="sheet-ddb-attr__score">16</strong>
+          <span class="sheet-ddb-attr__mod sheet-ddb-attr__mod--pos">+3</span>
+        </div>
+        <div class="sheet-ddb-attr">
+          <span class="sheet-ddb-attr__label">DES</span>
+          <strong class="sheet-ddb-attr__score">12</strong>
+          <span class="sheet-ddb-attr__mod sheet-ddb-attr__mod--pos">+1</span>
+        </div>
+        <div class="sheet-ddb-attr">
+          <span class="sheet-ddb-attr__label">CON</span>
+          <strong class="sheet-ddb-attr__score">14</strong>
+          <span class="sheet-ddb-attr__mod sheet-ddb-attr__mod--pos">+2</span>
+        </div>
+        <div class="sheet-ddb-attr">
+          <span class="sheet-ddb-attr__label">INT</span>
+          <strong class="sheet-ddb-attr__score">10</strong>
+          <span class="sheet-ddb-attr__mod sheet-ddb-attr__mod--zero">+0</span>
+        </div>
+        <div class="sheet-ddb-attr">
+          <span class="sheet-ddb-attr__label">SAB</span>
+          <strong class="sheet-ddb-attr__score">11</strong>
+          <span class="sheet-ddb-attr__mod sheet-ddb-attr__mod--pos">+0</span>
+        </div>
+        <div class="sheet-ddb-attr">
+          <span class="sheet-ddb-attr__label">CAR</span>
+          <strong class="sheet-ddb-attr__score">8</strong>
+          <span class="sheet-ddb-attr__mod sheet-ddb-attr__mod--neg">−1</span>
+        </div>
+      </div>
+
+      <!-- corpo em 3 colunas -->
+      <div class="sheet-ddb-body">
+        <!-- coluna esquerda: retrato + combate -->
+        <aside class="sheet-ddb-col sheet-ddb-col--left">
+          <div class="sheet-ddb-portrait-wrap">
+            <div class="sheet-ddb-portrait" aria-hidden>⚔</div>
+          </div>
+
+          <div class="sheet-ddb-hex-row" aria-label="Combate rápido">
+            <div class="sheet-ddb-hex">
+              <span class="sheet-ddb-hex__label">Inic.</span>
+              <strong>+1</strong>
+            </div>
+            <div class="sheet-ddb-hex">
+              <span class="sheet-ddb-hex__label">Desloc.</span>
+              <strong>6/12</strong>
+            </div>
+            <div class="sheet-ddb-hex">
+              <span class="sheet-ddb-hex__label">Prof.</span>
+              <strong>+3</strong>
+            </div>
+          </div>
+
+          <div class="sheet-ddb-resource">
+            <div class="sheet-ddb-resource__head">
+              <span>Pontos de vida</span>
+              <strong>38/42</strong>
+            </div>
+            <div class="sheet-ddb-resource__bar sheet-ddb-resource__bar--hp">
+              <span style="width: 90%"></span>
+            </div>
+          </div>
+
+          <div class="sheet-ddb-resource">
+            <div class="sheet-ddb-resource__head">
+              <span>Pontos de ação</span>
+              <strong>4/6</strong>
+            </div>
+            <div class="sheet-ddb-resource__bar sheet-ddb-resource__bar--pa">
+              <span style="width: 67%"></span>
+            </div>
+          </div>
+
+          <div class="sheet-ddb-ca">
+            <span>Classe de armadura</span>
+            <strong>17</strong>
+          </div>
+        </aside>
+
+        <!-- coluna central: perícias -->
+        <main class="sheet-ddb-col sheet-ddb-col--skills">
+          <section class="sheet-ddb-panel sheet-ddb-panel--skills" aria-label="Perícias">
+            <header class="sheet-ddb-panel__head">
+              <span class="sheet-ddb-panel__icon" aria-hidden>◫</span>
+              <h3>Perícias</h3>
+            </header>
+            <ul class="sheet-ddb-skill-list">
+              <li>
+                <div class="sheet-ddb-skill is-trained">
+                  <span class="sheet-ddb-skill__dot is-on"></span>
+                  <span class="sheet-ddb-skill__attr">SAB</span>
+                  <span class="sheet-ddb-skill__name">Percepção</span>
+                  <strong class="sheet-ddb-skill__mod">14</strong>
+                </div>
+              </li>
+              <li>
+                <div class="sheet-ddb-skill">
+                  <span class="sheet-ddb-skill__dot"></span>
+                  <span class="sheet-ddb-skill__attr">INT</span>
+                  <span class="sheet-ddb-skill__name">Investigação</span>
+                  <strong class="sheet-ddb-skill__mod">+0</strong>
+                </div>
+              </li>
+              <li>
+                <div class="sheet-ddb-skill">
+                  <span class="sheet-ddb-skill__dot"></span>
+                  <span class="sheet-ddb-skill__attr">DES</span>
+                  <span class="sheet-ddb-skill__name">Iniciativa</span>
+                  <strong class="sheet-ddb-skill__mod">+1</strong>
+                </div>
+              </li>
+              <li>
+                <div class="sheet-ddb-skill is-trained">
+                  <span class="sheet-ddb-skill__dot is-on"></span>
+                  <span class="sheet-ddb-skill__attr">DES</span>
+                  <span class="sheet-ddb-skill__name">Furtividade</span>
+                  <strong class="sheet-ddb-skill__mod">+4</strong>
+                </div>
+              </li>
+              <li>
+                <div class="sheet-ddb-skill is-trained">
+                  <span class="sheet-ddb-skill__dot is-on"></span>
+                  <span class="sheet-ddb-skill__attr">FOR</span>
+                  <span class="sheet-ddb-skill__name">Atletismo</span>
+                  <strong class="sheet-ddb-skill__mod">+6</strong>
+                </div>
+              </li>
+              <li>
+                <div class="sheet-ddb-skill">
+                  <span class="sheet-ddb-skill__dot"></span>
+                  <span class="sheet-ddb-skill__attr">INT</span>
+                  <span class="sheet-ddb-skill__name">Religião</span>
+                  <strong class="sheet-ddb-skill__mod">+0</strong>
+                </div>
+              </li>
+            </ul>
+          </section>
+        </main>
+
+        <!-- coluna direita: salvaguardas, traços, culinária -->
+        <aside class="sheet-ddb-col sheet-ddb-col--right">
+          <section class="sheet-ddb-panel sheet-ddb-panel--saves" aria-label="Salvaguardas">
+            <header class="sheet-ddb-panel__head"><h3>Salvaguardas</h3></header>
+            <div class="sheet-ddb-saves">
+              <div class="sheet-ddb-save is-trained">
+                <span class="sheet-ddb-save__dot is-on"></span>
+                <span class="sheet-ddb-save__label">Força</span>
+                <strong>+6</strong>
+              </div>
+              <div class="sheet-ddb-save">
+                <span class="sheet-ddb-save__dot"></span>
+                <span class="sheet-ddb-save__label">Destreza</span>
+                <strong>+1</strong>
+              </div>
+              <div class="sheet-ddb-save is-trained">
+                <span class="sheet-ddb-save__dot is-on"></span>
+                <span class="sheet-ddb-save__label">Constituição</span>
+                <strong>+5</strong>
+              </div>
+              <div class="sheet-ddb-save">
+                <span class="sheet-ddb-save__dot"></span>
+                <span class="sheet-ddb-save__label">Inteligência</span>
+                <strong>+0</strong>
+              </div>
+              <div class="sheet-ddb-save">
+                <span class="sheet-ddb-save__dot"></span>
+                <span class="sheet-ddb-save__label">Sabedoria</span>
+                <strong>+0</strong>
+              </div>
+              <div class="sheet-ddb-save">
+                <span class="sheet-ddb-save__dot"></span>
+                <span class="sheet-ddb-save__label">Carisma</span>
+                <strong>−1</strong>
+              </div>
+            </div>
+          </section>
+
+          <section class="sheet-ddb-panel sheet-ddb-panel--traits" aria-label="Traços">
+            <header class="sheet-ddb-panel__head"><h3>Traços</h3></header>
+            <div class="sheet-ddb-trait-cards">
+              <div class="sheet-ddb-trait">
+                <span class="sheet-ddb-trait__tag">Raça</span>
+                <span class="sheet-ddb-trait__value">Humano</span>
+              </div>
+              <div class="sheet-ddb-trait">
+                <span class="sheet-ddb-trait__tag">Classe</span>
+                <span class="sheet-ddb-trait__value">Guerreiro</span>
+              </div>
+              <div class="sheet-ddb-trait sheet-ddb-trait--accent">
+                <span class="sheet-ddb-trait__tag">Subclasse</span>
+                <span class="sheet-ddb-trait__value">Campeão</span>
+              </div>
+              <div class="sheet-ddb-trait">
+                <span class="sheet-ddb-trait__tag">Antecedente</span>
+                <span class="sheet-ddb-trait__value">Soldado</span>
+              </div>
+              <div class="sheet-ddb-trait">
+                <span class="sheet-ddb-trait__tag">Religião</span>
+                <span class="sheet-ddb-trait__value">Tyr</span>
+              </div>
+            </div>
+          </section>
+
+          <section class="sheet-ddb-panel sheet-ddb-panel--culinary" aria-label="Culinária">
+            <header class="sheet-ddb-panel__head"><h3>Culinária</h3></header>
+            <div class="sheet-ddb-culinary">
+              <div class="sheet-ddb-culinary__item"><span>Extração</span><strong>+2</strong></div>
+              <div class="sheet-ddb-culinary__item"><span>Forrageio</span><strong>+1</strong></div>
+              <div class="sheet-ddb-culinary__item"><span>Fabricação</span><strong>+0</strong></div>
+              <div class="sheet-ddb-culinary__item"><span>Fortitude</span><strong>+3</strong></div>
+            </div>
+          </section>
+        </aside>
+      </div>
+
+      <!-- drawer inferior (abas: inventário, magias, etc.) -->
+      <div class="sheet-ddb-drawer">
+        <div class="sheet-tabs-mock" role="tablist">
+          <span class="sheet-tab-mock sheet-tab-mock--active">Inventário</span>
+          <span class="sheet-tab-mock">Magias</span>
+          <span class="sheet-tab-mock">Anotações</span>
+        </div>
+        <div class="sheet-drawer-content">
+          Área do drawer — conteúdo das abas (inventário, magias, anotações) renderizado pelo componente pai.
+        </div>
+      </div>
+    </article>
+  </div>
+</body>
+</html>
