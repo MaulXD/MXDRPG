@@ -1,105 +1,176 @@
-.avatar-profile-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.avatar-profile-form__preview {
-  width: 96px;
-  height: 96px;
-  flex-shrink: 0;
-}
-
-.avatar-profile-form__preview-avatar {
-  width: 96px;
-  height: 96px;
-  border-radius: 50%;
-  overflow: hidden;
-  border: 2px solid rgba(201, 169, 98, 0.45);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(0, 0, 0, 0.25);
-}
-
-.avatar-profile-form__preview-avatar img {
-  width: 100%;
-  height: 100%;
-}
-
-.avatar-profile-form__fallback {
-  font-size: 2rem;
-  font-weight: 700;
-  color: var(--text-muted);
-}
-
-.avatar-profile-form__source {
-  border: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.45rem;
-}
-
-.avatar-profile-form__radio {
-  display: flex;
-  align-items: center;
-  gap: 0.45rem;
-  font-size: 0.9rem;
-  cursor: pointer;
-}
-
-.avatar-profile-form__custom {
-  display: flex;
-  flex-direction: column;
-  gap: 0.65rem;
-}
-
-.avatar-profile-form__editor {
-  margin-top: 0.35rem;
-  padding-top: 0.75rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.avatar-profile-form__editor .portrait-focus-editor__hint {
-  font-size: 0.8rem;
-}
-
-.avatar-profile-form__actions {
-  display: flex;
-  gap: 0.5rem;
-}
-
-.nickname-form {
-  display: flex;
-  flex-direction: column;
-  gap: 0.65rem;
-}
-
-.nickname-form__actions {
-  display: flex;
-  gap: 0.5rem;
-}
-
-.user-avatar {
-  display: grid;
-  place-items: center;
-  overflow: hidden;
-  border-radius: 50%;
-}
-
-.user-avatar img {
-  width: 100%;
-  height: 100%;
-  display: block;
-}
-
-.user-avatar--fallback {
-  font-size: 0.85rem;
-  font-weight: 600;
-  background: rgba(255, 255, 255, 0.08);
-  width: 100%;
-  height: 100%;
-}
-
+.avatar-profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.avatar-profile-form__header {
+  display: flex;
+  gap: 1.25rem;
+  align-items: flex-start;
+}
+
+@media (max-width: 520px) {
+  .avatar-profile-form__header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+}
+
+.avatar-profile-form__preview {
+  width: 96px;
+  height: 96px;
+  flex-shrink: 0;
+}
+
+.avatar-profile-form__preview-avatar {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid rgba(201, 169, 98, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.avatar-profile-form__preview-avatar img {
+  width: 100%;
+  height: 100%;
+}
+
+.avatar-profile-form__fallback {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.avatar-profile-form__source {
+  border: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.avatar-profile-form__source legend {
+  margin-bottom: 0.15rem;
+}
+
+.avatar-profile-form__radio {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.45rem;
+  font-size: 0.9rem;
+  line-height: 1.35;
+  cursor: pointer;
+}
+
+.avatar-profile-form__radio input {
+  flex-shrink: 0;
+  margin-top: 0.15rem;
+}
+
+.avatar-profile-form__custom {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.avatar-profile-form__editor {
+  margin-top: 0.35rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.avatar-profile-form__editor .portrait-focus-editor__hint {
+  font-size: 0.8rem;
+}
+
+.avatar-profile-form__actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.nickname-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.nickname-form__actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.user-avatar {
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 50%;
+}
+
+.user-avatar img {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.user-avatar--fallback {
+  font-size: 0.85rem;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.08);
+  width: 100%;
+  height: 100%;
+}
+
+/* Campos compartilhados na página /conta (sem carregar vtt.css inteiro) */
+.avatar-profile-form .vtt-field,
+.nickname-form .vtt-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: 0;
+  width: 100%;
+  font-size: 0.78rem;
+  color: var(--text-dim);
+}
+
+.avatar-profile-form .vtt-field > span,
+.nickname-form .vtt-field > span {
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.avatar-profile-form .vtt-field input,
+.nickname-form .vtt-field input {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  padding: 0.45rem 0.6rem;
+  border-radius: 6px;
+  border: 1px solid var(--glass-border);
+  background: var(--surface-inset);
+  color: var(--text);
+  font-size: 0.85rem;
+  font-family: inherit;
+}
+
+.avatar-profile-form .vtt-field input[type="file"] {
+  padding: 0.35rem 0.5rem;
+  font-size: 0.8rem;
+}
+
+.avatar-profile-form .vtt-combat-hint,
+.nickname-form .vtt-combat-hint {
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  margin: 0;
+  line-height: 1.4;
+}
+

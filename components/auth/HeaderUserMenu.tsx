@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { UserAvatar } from "@/components/ui/UserAvatar";
 import type { SessionUser } from "@/lib/auth/types";
 import type { PortraitFocus } from "@/lib/media/portrait-focus";
@@ -20,7 +21,14 @@ function userLabel(user: SessionUser): string {
 export function HeaderUserMenu({ user: initialUser, onSignOut }: Props) {
   const [user, setUser] = useState<SessionUser | null>(initialUser ?? null);
   const [open, setOpen] = useState(false);
-  const rootRef = useRef<HTMLDivElement>(null);
+  const [mounted, setMounted] = useState(false);
+  const [panelPos, setPanelPos] = useState({ top: 0, right: 0 });
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     if (initialUser) {
@@ -39,10 +47,34 @@ export function HeaderUserMenu({ user: initialUser, onSignOut }: Props) {
     })();
   }, [initialUser]);
 
+  const updatePanelPosition = useCallback(() => {
+    const trigger = triggerRef.current;
+    if (!trigger) return;
+    const rect = trigger.getBoundingClientRect();
+    setPanelPos({
+      top: rect.bottom + 8,
+      right: Math.max(8, window.innerWidth - rect.right),
+    });
+  }, []);
+
+  useLayoutEffect(() => {
+    if (!open) return;
+    updatePanelPosition();
+    window.addEventListener("resize", updatePanelPosition);
+    window.addEventListener("scroll", updatePanelPosition, true);
+    return () => {
+      window.removeEventListener("resize", updatePanelPosition);
+      window.removeEventListener("scroll", updatePanelPosition, true);
+    };
+  }, [open, updatePanelPosition]);
+
   useEffect(() => {
     if (!open) return;
     function onDocPointer(e: PointerEvent) {
-      if (!rootRef.current?.contains(e.target as Node)) setOpen(false);
+      const target = e.target as Node;
+      if (triggerRef.current?.contains(target)) return;
+      if (panelRef.current?.contains(target)) return;
+      setOpen(false);
     }
     function onKey(e: KeyboardEvent) {
       if (e.key === "Escape") setOpen(false);
@@ -69,35 +101,55 @@ export function HeaderUserMenu({ user: initialUser, onSignOut }: Props) {
 
   const label = userLabel(user);
 
-  return (
-    <div className="header-user-menu" ref={rootRef}>
-      <button
-        type="button"
-        className="header-user-menu__trigger"
-        aria-expanded={open}
-        aria-haspopup="menu"
-        title={label}
-        onClick={() => setOpen((v) => !v)}
+  const panel =
+    open && mounted ? (
+      <div
+        ref={panelRef}
+        className="header-user-menu__panel header-user-menu__panel--portal glass"
+        role="menu"
+        style={{ top: panelPos.top, right: panelPos.right }}
       >
-        <UserAvatar
-          url={user.avatarUrl}
-          focus={user.avatarFocus as PortraitFocus | null}
-          label={label}
-          className="user-avatar--nav"
-        />
-      </button>
+        <p className="header-user-menu__label">{label}</p>
+        <Link
+          href="/conta"
+          className="header-user-menu__item"
+          role="menuitem"
+          onClick={() => setOpen(false)}
+        >
+          Editar perfil
+        </Link>
+        <button
+          type="button"
+          className="header-user-menu__item header-user-menu__item--danger"
+          role="menuitem"
+          onClick={() => void signOut()}
+        >
+          Sair
+        </button>
+      </div>
+    ) : null;
 
-      {open ? (
-        <div className="header-user-menu__panel glass" role="menu">
-          <p className="header-user-menu__label">{label}</p>
-          <Link href="/conta" className="header-user-menu__item" role="menuitem" onClick={() => setOpen(false)}>
-            Editar perfil
-          </Link>
-          <button type="button" className="header-user-menu__item header-user-menu__item--danger" role="menuitem" onClick={() => void signOut()}>
-            Sair
-          </button>
-        </div>
-      ) : null}
-    </div>
+  return (
+    <>
+      <div className="header-user-menu">
+        <button
+          ref={triggerRef}
+          type="button"
+          className="header-user-menu__trigger"
+          aria-expanded={open}
+          aria-haspopup="menu"
+          title={label}
+          onClick={() => setOpen((v) => !v)}
+        >
+          <UserAvatar
+            url={user.avatarUrl}
+            focus={user.avatarFocus as PortraitFocus | null}
+            label={label}
+            className="user-avatar--nav"
+          />
+        </button>
+      </div>
+      {panel ? createPortal(panel, document.body) : null}
+    </>
   );
 }

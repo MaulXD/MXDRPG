@@ -19,7 +19,7 @@ export function SiteNavLinks() {
             key={l.href}
             href={l.href}
             exact={"exact" in l ? l.exact : undefined}
-            icon={<Icon size={16} />}
+            icon={<Icon size={18} />}
           >
             {l.label}
           </AnimatedNavLink>

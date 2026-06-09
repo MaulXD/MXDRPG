@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { AvatarProfileForm } from "@/components/auth/AvatarProfileForm";
-import { EldarinLogo } from "@/components/brand/EldarinLogo";
 import { NicknameForm } from "@/components/auth/NicknameForm";
 import { FriendsChat } from "@/components/friends/FriendsChat";
 import { MedievalFrame } from "@/components/ui/MedievalFrame";
@@ -32,7 +31,6 @@ export default async function ContaPage() {
           </Link>{" "}
           · Conta
         </p>
-        <EldarinLogo variant="mark" href="/" />
         <h1 className="display-lg" style={{ marginTop: "0.75rem" }}>
           Seu perfil
         </h1>

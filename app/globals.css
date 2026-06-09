@@ -368,9 +368,13 @@ button.btn {
 }
 
 .nav-link__icon {
-  display: inline-flex;
+  display: block;
+  width: 1.125rem;
+  height: 1.125rem;
   flex-shrink: 0;
-  opacity: 0.88;
+  opacity: 0.92;
+  color: currentColor;
+  stroke: currentColor;
 }
 
 .nav-link__label {
@@ -697,6 +701,19 @@ textarea.vtt-input:focus {
 
 select.vtt-input {
   cursor: pointer;
+}
+
+/* Dropdown nativo: evita texto claro em fundo cinza do sistema (Windows/Chrome) */
+select {
+  color-scheme: dark;
+  background-color: var(--surface-inset);
+  color: var(--text);
+}
+
+select option,
+select optgroup {
+  background-color: var(--surface-raised);
+  color: var(--text);
 }
 
 .btn-sm {

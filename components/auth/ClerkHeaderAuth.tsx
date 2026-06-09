@@ -30,7 +30,7 @@ export function ClerkHeaderAuth({ session }: Props) {
         </SignUpButton>
       </Show>
       <Show when="signed-in">
-        <AnimatedNavLink href="/conta" icon={<IconUser size={16} />}>
+        <AnimatedNavLink href="/conta" icon={<IconUser size={18} />}>
           Perfil
         </AnimatedNavLink>
         <FriendsNavChat />

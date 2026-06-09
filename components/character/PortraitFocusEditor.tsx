@@ -1,6 +1,8 @@
 ﻿"use client";
 
+import "./portrait-focus.css";
 import type { CSSProperties } from "react";
+import { useEffect, useState } from "react";
 import { PortraitFocusFrame } from "@/components/character/PortraitFocusFrame";
 import { useImageNaturalSize } from "@/hooks/useImageNaturalSize";
 import {
@@ -44,10 +46,18 @@ export function PortraitFocusEditor({
   const tokenPreview = normalizePortraitFocus(tokenFocus ?? focus);
   const scale = normalized.scale ?? 1;
   const { w: imgW, h: imgH } = useImageNaturalSize(imageSrc);
+  const [internalMode, setInternalMode] = useState<"portrait" | "token">(previewMode);
+  const activeMode = onPreviewModeChange ? previewMode : internalMode;
+
+  useEffect(() => {
+    if (onPreviewModeChange) return;
+    setInternalMode(previewMode);
+  }, [onPreviewModeChange, previewMode]);
 
   function pickSlot(slot: "portrait" | "token") {
     if (disabled) return;
-    onPreviewModeChange?.(slot);
+    if (onPreviewModeChange) onPreviewModeChange(slot);
+    else setInternalMode(slot);
   }
 
   return (
@@ -59,10 +69,10 @@ export function PortraitFocusEditor({
       <div className="portrait-focus-previews portrait-focus-previews--duo">
         <button
           type="button"
-          className={`portrait-focus-preview-slot${previewMode === "portrait" ? " is-active" : ""}`}
+          className={`portrait-focus-preview-slot${activeMode === "portrait" ? " is-active" : ""}`}
           onClick={() => pickSlot("portrait")}
           disabled={disabled}
-          aria-pressed={previewMode === "portrait"}
+          aria-pressed={activeMode === "portrait"}
         >
           <span className="portrait-focus-preview-label">Retrato</span>
           <PortraitFocusFrame
@@ -77,10 +87,10 @@ export function PortraitFocusEditor({
         </button>
         <button
           type="button"
-          className={`portrait-focus-preview-slot portrait-focus-preview-slot--token${previewMode === "token" ? " is-active" : ""}`}
+          className={`portrait-focus-preview-slot portrait-focus-preview-slot--token${activeMode === "token" ? " is-active" : ""}`}
           onClick={() => pickSlot("token")}
           disabled={disabled}
-          aria-pressed={previewMode === "token"}
+          aria-pressed={activeMode === "token"}
           style={tokenRingColor ? ({ "--token-ring": tokenRingColor } as CSSProperties) : undefined}
         >
           <span className="portrait-focus-preview-label">Token</span>
@@ -105,7 +115,7 @@ export function PortraitFocusEditor({
           size={FRAME}
           imgW={imgW}
           imgH={imgH}
-          fitMode={previewMode === "token" ? "cover" : "contain"}
+          fitMode={activeMode === "token" ? "cover" : "contain"}
           disabled={disabled}
           className="portrait-focus-frame--stage portrait-focus-frame--interactive"
           label="Ajustar enquadramento"
