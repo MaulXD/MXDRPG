@@ -65,7 +65,7 @@ export function SiteShell({ children, header, footer }: Props) {
                 <AnimatedNavLink href="/mesa" icon={<IconHex size={18} />}>
                   Mesas
                 </AnimatedNavLink>
-                <AnimatedNavLink href="/biblioteca" icon={<IconBook size={18} />}>
+                <AnimatedNavLink href="/compendios" icon={<IconBook size={18} />}>
                   Compêndios
                 </AnimatedNavLink>
                 <AnimatedNavLink href="/eldarin" icon={<IconStar size={18} />}>
