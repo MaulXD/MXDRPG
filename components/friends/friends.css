@@ -146,31 +146,51 @@
   cursor: pointer;
   font: inherit;
   color: inherit;
-  padding: 0;
+  padding: 0 0.75rem;
+  min-height: var(--control-h);
+  border-radius: var(--radius-pill);
+}
+
+.friends-nav-chat__toggle:hover {
+  color: var(--text);
+  background: var(--accent-soft);
 }
 
 .friends-nav-chat__toggle.is-open {
   color: var(--accent);
 }
 
+.friends-nav-chat__icon-wrap {
+  position: relative;
+  display: inline-flex;
+  flex-shrink: 0;
+}
+
 .friends-nav-chat__icon {
   opacity: 0.85;
 }
 
-/* Camada acima da mesa VTT (HUD, canvas, janelas Foundry) */
-.friends-chat-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 10400;
-  border: none;
-  padding: 0;
-  margin: 0;
-  background: rgba(4, 8, 14, 0.52);
-  backdrop-filter: blur(2px);
-  cursor: default;
+.friends-nav-chat__badge {
+  position: absolute;
+  top: -0.4rem;
+  right: -0.45rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1rem;
+  height: 1rem;
+  padding: 0 0.25rem;
+  border-radius: 999px;
+  font-size: 0.6rem;
+  font-weight: 700;
+  line-height: 1;
+  background: var(--accent-warn, #d4a030);
+  color: #1a1208;
+  border: 1px solid rgba(0, 0, 0, 0.35);
+  pointer-events: none;
 }
 
-/* Janela flutuante global (portal em document.body) */
+/* Janela flutuante global (portal em document.body) — não modal; fundo permanece clicável */
 .friends-chat-float {
   position: fixed;
   z-index: 10401;

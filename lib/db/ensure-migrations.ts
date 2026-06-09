@@ -99,6 +99,17 @@ export async function ensureDbMigrations(): Promise<void> {
         ON eldarin_friend_messages (from_user_id, to_user_id, created_at);
       CREATE INDEX IF NOT EXISTS idx_friend_messages_to
         ON eldarin_friend_messages (to_user_id, created_at DESC);
+
+      ALTER TABLE eldarin_friend_messages
+        ADD COLUMN IF NOT EXISTS read_at BIGINT;
+
+      UPDATE eldarin_friend_messages
+      SET read_at = created_at
+      WHERE read_at IS NULL;
+
+      CREATE INDEX IF NOT EXISTS idx_friend_messages_unread
+        ON eldarin_friend_messages (to_user_id, read_at)
+        WHERE read_at IS NULL;
     `);
 
     ensured = true;

@@ -296,6 +296,42 @@ export function CombatEventIcon({ tone, className, size = 18 }: IconProps & { to
   }
 }
 
+export function IconHome({ className, size }: IconProps) {
+  return (
+    <Svg className={className} size={size}>
+      <path d="M5 10.5V19.5h5v-5h4v5h5V10.5L12 5.5 5 10.5z" {...S} />
+    </Svg>
+  );
+}
+
+export function IconBook({ className, size }: IconProps) {
+  return (
+    <Svg className={className} size={size}>
+      <path d="M6 5.5h5.5a2.5 2.5 0 012.5 2.5V19.5H6V5.5z" {...S} />
+      <path d="M12 5.5H17.5A2.5 2.5 0 0120 8v11.5H12V5.5z" {...S} />
+      <path d="M9 9.5h2M15 9.5h2" {...S} opacity={0.7} />
+    </Svg>
+  );
+}
+
+export function IconScroll({ className, size }: IconProps) {
+  return (
+    <Svg className={className} size={size}>
+      <path d="M8 5.5h9a2 2 0 012 2v11.5H9.5A2.5 2.5 0 007 16.5V5.5z" {...S} />
+      <path d="M8 9h6M8 12h5M8 15h4" {...S} opacity={0.7} />
+    </Svg>
+  );
+}
+
+export function IconUser({ className, size }: IconProps) {
+  return (
+    <Svg className={className} size={size}>
+      <circle cx="12" cy="9" r="3.25" {...S} />
+      <path d="M6.5 19.5c.8-3 2.8-4.5 5.5-4.5s4.7 1.5 5.5 4.5" {...S} />
+    </Svg>
+  );
+}
+
 export function IconChat({ className, size }: IconProps) {
   return (
     <Svg className={className} size={size}>

@@ -7,12 +7,8 @@ import { getSession } from "@/lib/auth/session";
 import { portalPathForRole, roleMeta } from "@/lib/auth/roles";
 import Link from "next/link";
 import { AnimatedNavLink } from "@/components/AnimatedNavLink";
-
-const links = [
-  { href: "/", label: "Início" },
-  { href: "/sistema", label: "Sistema" },
-  { href: "/biblioteca", label: "Compêndios" },
-];
+import { SiteNavLinks } from "@/components/SiteNavLinks";
+import { IconUser } from "@/components/ui/EldarinIcons";
 
 export async function SiteHeaderWrapper() {
   const session = await getSession();
@@ -22,16 +18,14 @@ export async function SiteHeaderWrapper() {
     <header className="glass site-header">
       <EldarinLogo variant="header" />
       <nav className="site-nav">
-        {links.map((l) => (
-          <AnimatedNavLink key={l.href} href={l.href} exact={l.href === "/"}>
-            {l.label}
-          </AnimatedNavLink>
-        ))}
+        <SiteNavLinks />
         {clerkEnabled ? (
           <ClerkHeaderAuth session={session} />
         ) : session ? (
           <>
-            <AnimatedNavLink href="/conta">Perfil</AnimatedNavLink>
+            <AnimatedNavLink href="/conta" icon={<IconUser size={16} />}>
+              Perfil
+            </AnimatedNavLink>
             <FriendsNavChat />
             <Link href={portalPathForRole(session.user.role)} className="btn nav-cta">
               {roleMeta(session.user.role).label}

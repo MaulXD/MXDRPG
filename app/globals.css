@@ -355,6 +355,7 @@ button.btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 0.35rem;
   min-height: var(--control-h);
   padding: 0 0.75rem;
   font-size: 0.88rem;
@@ -364,6 +365,21 @@ button.btn {
   border-radius: var(--radius-pill);
   box-sizing: border-box;
   transition: color 0.2s, background 0.2s;
+}
+
+.nav-link__icon {
+  display: inline-flex;
+  flex-shrink: 0;
+  opacity: 0.88;
+}
+
+.nav-link__label {
+  line-height: 1;
+}
+
+.nav-link--active .nav-link__icon,
+.nav-link:hover .nav-link__icon {
+  opacity: 1;
 }
 
 .nav-link:hover {
