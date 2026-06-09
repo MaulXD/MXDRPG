@@ -13,6 +13,7 @@ import { formatXpProgressDetail, xpProgressRatio, MAX_LEVEL } from "@/lib/charac
 import { religionDisplayName } from "@/lib/character/pantheon";
 import { buildSheetSavingThrows } from "@/lib/character/sheet-skills";
 import { SheetDdbSkillsPanel } from "@/components/character/SheetDdbSkillsPanel";
+import type { FoundryWindowDragHandlers } from "@/hooks/vtt/useFoundryWindowDrag";
 import "./sheet-ddb.css";
 
 type Props = {
@@ -22,6 +23,9 @@ type Props = {
   hpPct: number;
   portrait: ReactNode;
   toolbar?: ReactNode;
+  toolbarLeading?: ReactNode;
+  toolbarTrailing?: ReactNode;
+  toolbarDrag?: FoundryWindowDragHandlers;
   loadout?: ReactNode;
   drawer: ReactNode;
   inRoom: boolean;
@@ -36,6 +40,9 @@ export function SheetPopupDdbView({
   hpPct,
   portrait,
   toolbar,
+  toolbarLeading,
+  toolbarTrailing,
+  toolbarDrag,
   loadout,
   drawer,
   inRoom,
@@ -57,7 +64,30 @@ export function SheetPopupDdbView({
 
   return (
     <div className="sheet-shell sheet-shell--popup sheet-shell--ddb">
-      {toolbar ? <div className="sheet-ddb-toolbar">{toolbar}</div> : null}
+      {toolbar || toolbarLeading || toolbarTrailing ? (
+        <div
+          className="sheet-ddb-toolbar"
+          onPointerDown={toolbarDrag?.onPointerDown}
+          onPointerMove={toolbarDrag?.onPointerMove}
+          onPointerUp={toolbarDrag?.onPointerUp}
+          onPointerCancel={toolbarDrag?.onPointerCancel}
+        >
+          {toolbarLeading ? (
+            <div className="sheet-ddb-toolbar__leading">{toolbarLeading}</div>
+          ) : (
+            <span className="sheet-ddb-toolbar__drag-hint" aria-hidden>
+              ⠿
+            </span>
+          )}
+          <div
+            className="sheet-ddb-toolbar__actions"
+            onPointerDown={(e) => e.stopPropagation()}
+          >
+            {toolbar}
+            {toolbarTrailing}
+          </div>
+        </div>
+      ) : null}
 
       <header className="sheet-ddb-header">
         <div className="sheet-ddb-header__main">

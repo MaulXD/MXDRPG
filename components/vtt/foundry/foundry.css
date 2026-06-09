@@ -717,6 +717,37 @@
   min-height: 0;
 }
 
+/* Ficha popup — cartão DDB sem barra Foundry */
+.foundry-window--chromeless {
+  border: none;
+  background: transparent;
+  backdrop-filter: none;
+  box-shadow: none;
+  overflow: visible;
+}
+
+.foundry-window--chromeless.foundry-window--character-sheet .sheet-shell--ddb {
+  box-shadow:
+    0 12px 40px rgba(0, 0, 0, 0.45),
+    0 0 0 1px rgba(0, 0, 0, 0.12);
+}
+
+.foundry-window--chromeless .foundry-window__body {
+  background: transparent;
+  padding: 0;
+  overflow: visible;
+}
+
+.foundry-window--chromeless .foundry-window__resize {
+  z-index: 2;
+}
+
+.foundry-window--chromeless .foundry-window__body--chromeless-min {
+  padding: 0.35rem 0.5rem;
+  background: var(--ddb-header-deep, #2d0c12);
+  border-radius: 8px;
+}
+
 .foundry-window__header {
   display: flex;
   align-items: center;
@@ -853,8 +884,16 @@
   min-width: 0;
 }
 
-.foundry-window--character .foundry-window__body {
+.foundry-window--character:not(.foundry-window--chromeless) .foundry-window__body {
   background: var(--mesa-surface);
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+
+.foundry-window--character.foundry-window--chromeless .foundry-window__body {
   display: flex;
   flex-direction: column;
   min-height: 0;
@@ -953,6 +992,11 @@
   font-size: 0.75rem;
   line-height: 1.4;
   color: var(--text-muted);
+}
+
+.foundry-sheet-body--ddb {
+  width: 100%;
+  min-width: 0;
 }
 
 .foundry-sheet-toolbar {

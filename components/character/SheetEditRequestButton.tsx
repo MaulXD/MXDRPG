@@ -10,7 +10,7 @@ type Props = {
   characterId: string;
   adventureId: string;
   roomId?: string;
-  variant?: "chrome" | "inline";
+  variant?: "chrome" | "inline" | "ddb-toolbar";
   onRequested?: () => void;
 };
 
@@ -53,7 +53,11 @@ export function SheetEditRequestButton({
   }
 
   const btnClass =
-    variant === "chrome" ? "foundry-window__btn" : "btn btn-secondary btn-sm";
+    variant === "ddb-toolbar"
+      ? "sheet-ddb-toolbar__btn"
+      : variant === "chrome"
+        ? "foundry-window__btn"
+        : "btn btn-secondary btn-sm";
 
   return (
     <>
