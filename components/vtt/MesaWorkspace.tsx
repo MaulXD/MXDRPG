@@ -1,6 +1,5 @@
 ﻿"use client";
 
-import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { isStagedCombatChatMessage } from "@/lib/combat/chat-display";
 import {
@@ -476,9 +475,6 @@ export function MesaWorkspace({
                 <MesaEditRequestsBell adventureId={adventureId} roomId={roomId} />
               ) : null}
               {session ? <MesaPlayerEditRequestsBell adventureId={adventureId} /> : null}
-              <Link href="/conta" className="mesa-stage-pill">
-                Perfil
-              </Link>
               <MesaOnlineMenu
                 online={presenceOnline}
                 loading={presenceLoading}

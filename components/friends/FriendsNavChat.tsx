@@ -10,14 +10,18 @@ export function FriendsNavChat() {
   if (!chat?.ready || !chat.selfUserId) return null;
 
   const messageBadge = chat.unreadCount > 0 ? chat.unreadCount : 0;
+  const requestBadge = chat.requestCount > 0 ? chat.requestCount : 0;
   const inviteBadge = chat.inviteCount > 0 ? chat.inviteCount : 0;
-  const badge = messageBadge > 0 ? messageBadge : inviteBadge;
+  const badge =
+    messageBadge > 0 ? messageBadge : requestBadge > 0 ? requestBadge : inviteBadge;
   const badgeLabel =
     messageBadge > 0
       ? `${messageBadge} mensagem${messageBadge === 1 ? "" : "s"} não lida${messageBadge === 1 ? "" : "s"}`
-      : inviteBadge > 0
-        ? `${inviteBadge} convite${inviteBadge === 1 ? "" : "s"} pendente${inviteBadge === 1 ? "" : "s"}`
-        : "";
+      : requestBadge > 0
+        ? `${requestBadge} pedido${requestBadge === 1 ? "" : "s"} de amizade`
+        : inviteBadge > 0
+          ? `${inviteBadge} convite${inviteBadge === 1 ? "" : "s"} de mesa`
+          : "";
 
   return (
     <button

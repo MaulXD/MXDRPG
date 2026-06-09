@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { FriendsChat } from "@/components/friends/FriendsChat";
 import { UserAvatar } from "@/components/ui/UserAvatar";
-import type { FriendSummary, MesaInviteSummary } from "@/lib/friends/types";
+import type { FriendRequestSummary, FriendSummary, MesaInviteSummary } from "@/lib/friends/types";
 import type { PortraitFocus } from "@/lib/media/portrait-focus";
 import "./friends.css";
 
@@ -18,6 +18,8 @@ type Props = {
 
 export function FriendsHub({ selfUserId }: Props) {
   const [friends, setFriends] = useState<FriendSummary[]>([]);
+  const [incomingRequests, setIncomingRequests] = useState<FriendRequestSummary[]>([]);
+  const [outgoingRequests, setOutgoingRequests] = useState<FriendRequestSummary[]>([]);
   const [invites, setInvites] = useState<MesaInviteSummary[]>([]);
   const [nickname, setNickname] = useState("");
   const [loading, setLoading] = useState(false);
@@ -25,13 +27,22 @@ export function FriendsHub({ selfUserId }: Props) {
   const [okMsg, setOkMsg] = useState("");
 
   const load = useCallback(async () => {
-    const [fRes, iRes] = await Promise.all([
+    const [fRes, rRes, iRes] = await Promise.all([
       fetch("/api/friends", { cache: "no-store" }),
+      fetch("/api/friends/requests", { cache: "no-store" }),
       fetch("/api/friends/invites", { cache: "no-store" }),
     ]);
     if (fRes.ok) {
       const data = (await fRes.json()) as { friends?: FriendSummary[] };
       setFriends(data.friends ?? []);
+    }
+    if (rRes.ok) {
+      const data = (await rRes.json()) as {
+        incoming?: FriendRequestSummary[];
+        outgoing?: FriendRequestSummary[];
+      };
+      setIncomingRequests(data.incoming ?? []);
+      setOutgoingRequests(data.outgoing ?? []);
     }
     if (iRes.ok) {
       const data = (await iRes.json()) as { invites?: MesaInviteSummary[] };
@@ -54,13 +65,17 @@ export function FriendsHub({ selfUserId }: Props) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ nickname: nickname.trim() }),
       });
-      const data = (await res.json().catch(() => ({}))) as { error?: string };
+      const data = (await res.json().catch(() => ({}))) as { error?: string; kind?: string };
       if (!res.ok) {
-        setError(data.error ?? "Não foi possível adicionar");
+        setError(data.error ?? "Não foi possível enviar o pedido");
         return;
       }
       setNickname("");
-      setOkMsg("Amigo adicionado.");
+      if (data.kind === "friend") {
+        setOkMsg("Pedido aceito — vocês já são amigos.");
+      } else {
+        setOkMsg("Pedido de amizade enviado.");
+      }
       await load();
     } catch {
       setError("Falha de conexão.");
@@ -85,8 +100,101 @@ export function FriendsHub({ selfUserId }: Props) {
     await load();
   }
 
+  async function acceptRequest(requestId: string) {
+    setError("");
+    const res = await fetch(`/api/friends/requests/${requestId}/accept`, { method: "POST" });
+    if (!res.ok) {
+      const data = (await res.json().catch(() => ({}))) as { error?: string };
+      setError(data.error ?? "Erro ao aceitar");
+      return;
+    }
+    setOkMsg("Amizade aceita.");
+    await load();
+  }
+
+  async function dismissRequest(requestId: string) {
+    setError("");
+    await fetch(`/api/friends/requests/${requestId}`, { method: "DELETE" });
+    await load();
+  }
+
+  function requestLabel(req: FriendRequestSummary): string {
+    if (req.fromNickname) return `@${req.fromNickname}`;
+    return req.fromDisplayName;
+  }
+
+  function outgoingLabel(req: FriendRequestSummary): string {
+    if (req.toNickname) return `@${req.toNickname}`;
+    return req.toDisplayName;
+  }
+
   return (
     <div className="friends-hub" id="amigos">
+      {incomingRequests.length > 0 ? (
+        <section>
+          <h2 className="friends-hub__section-title">Pedidos de amizade</h2>
+          <ul className="friends-hub__invites">
+            {incomingRequests.map((req) => (
+              <li key={req.id} className="friends-hub__invite friends-hub__invite--request">
+                <UserAvatar
+                  url={req.fromAvatarUrl}
+                  label={requestLabel(req)}
+                  className="friends-hub__avatar"
+                />
+                <div className="friends-hub__meta">
+                  <span className="friends-hub__name">{requestLabel(req)}</span>
+                  <span className="friends-hub__sub">quer ser seu amigo</span>
+                </div>
+                <div className="friends-hub__actions">
+                  <button
+                    type="button"
+                    className="btn btn-sm"
+                    onClick={() => void acceptRequest(req.id)}
+                  >
+                    Aceitar
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-ghost btn-sm"
+                    onClick={() => void dismissRequest(req.id)}
+                  >
+                    Recusar
+                  </button>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
+
+      {outgoingRequests.length > 0 ? (
+        <section>
+          <h2 className="friends-hub__section-title">Aguardando resposta</h2>
+          <ul className="friends-hub__list">
+            {outgoingRequests.map((req) => (
+              <li key={req.id} className="friends-hub__item friends-hub__item--pending">
+                <UserAvatar
+                  url={req.toAvatarUrl}
+                  label={outgoingLabel(req)}
+                  className="friends-hub__avatar"
+                />
+                <div className="friends-hub__meta">
+                  <span className="friends-hub__name">{outgoingLabel(req)}</span>
+                  <span className="friends-hub__sub">pedido enviado</span>
+                </div>
+                <button
+                  type="button"
+                  className="btn btn-ghost btn-sm"
+                  onClick={() => void dismissRequest(req.id)}
+                >
+                  Cancelar
+                </button>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
+
       {invites.length > 0 ? (
         <section>
           <h2 className="friends-hub__section-title">Convites de mesa</h2>
@@ -125,8 +233,8 @@ export function FriendsHub({ selfUserId }: Props) {
       <section>
         <h2 className="friends-hub__section-title">Amigos</h2>
         <p className="friends-hub__sub" style={{ margin: "0 0 0.65rem" }}>
-          Adicione pelo apelido (ex.: <code>raulf</code>). Depois envie convites de mesa pelo painel
-          Compartilhar na VTT.
+          Envie um pedido pelo apelido (ex.: <code>raulf</code>). A outra pessoa precisa aceitar
+          antes de aparecer na lista. Depois, use Compartilhar na VTT para convites de mesa.
         </p>
         <form className="friends-hub__add" onSubmit={addFriend}>
           <input
@@ -138,7 +246,7 @@ export function FriendsHub({ selfUserId }: Props) {
             disabled={loading}
           />
           <button type="submit" className="btn btn-sm" disabled={loading || !nickname.trim()}>
-            Adicionar
+            Enviar pedido
           </button>
         </form>
         {error ? <p className="friends-hub__err">{error}</p> : null}
