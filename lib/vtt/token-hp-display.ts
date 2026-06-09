@@ -23,6 +23,14 @@ export function hpBarColor(ratio: number): string {
   return `rgb(${r},${g},${b})`;
 }
 
+export function formatTokenHpLine(token: BattleToken): string {
+  if (token.vidaMax == null) return "—";
+  const cur = token.vida ?? 0;
+  const max = token.vidaMax;
+  const temp = token.vidaTemp ?? 0;
+  return temp > 0 ? `${cur}/${max} +${temp} temp` : `${cur}/${max}`;
+}
+
 export function hpRatio(token: BattleToken): number {
   if (token.vidaMax == null || token.vidaMax <= 0) return 1;
   const v = token.vida ?? token.vidaMax;

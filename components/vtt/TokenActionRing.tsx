@@ -4,6 +4,7 @@ import {
   useCallback,
   useEffect,
   useMemo,
+  useRef,
   useState,
   type CSSProperties,
   type FocusEvent,
@@ -30,7 +31,7 @@ import { CombatActionDetail } from "@/components/vtt/CombatActionDetail";
 import { computeCursorDetailPlacement } from "@/lib/vtt/cursor-detail-placement";
 import "./token-action-ring.css";
 
-type SlotTone = "walk" | "run" | "attack" | "spell" | "ability";
+type SlotTone = "walk" | "run" | "attack" | "spell" | "ability" | "sheet" | "bestiary" | "hp";
 type RingView = "main" | "spell" | "ability";
 
 type DisplaySlot = {
@@ -60,9 +61,18 @@ type Props = {
   onPickMode: (mode: TokenActionMode, action: CombatActionOption | null) => void;
   onClose: () => void;
   onRoomSync: () => void;
+  showTokenSheet?: boolean;
+  onOpenTokenSheet?: () => void;
+  showPlayerBestiary?: boolean;
+  onOpenPlayerBestiary?: () => void;
+  /** Mestre: ajustar vida do token (personagem ou monstro). */
+  showGmHpEdit?: boolean;
+  onOpenGmHpEdit?: () => void;
 };
 
 const RING_RADIUS_BASE = 152;
+/** Duração da animação de tornado ao fechar (sincronizar com CSS). */
+const TAR_VORTEX_EXIT_MS = 540;
 function ringLayout(slotCount: number): { radius: number; track: number; slotScale: number } {
   if (slotCount <= 5) {
     return { radius: RING_RADIUS_BASE, track: 312, slotScale: 1 };
@@ -114,8 +124,17 @@ export function TokenActionRing({
   onPickMode,
   onClose,
   onRoomSync,
+  showTokenSheet = false,
+  onOpenTokenSheet,
+  showPlayerBestiary = false,
+  onOpenPlayerBestiary,
+  showGmHpEdit = false,
+  onOpenGmHpEdit,
 }: Props) {
   const [ringView, setRingView] = useState<RingView>("main");
+  const [exiting, setExiting] = useState(false);
+  const exitingRef = useRef(false);
+  const exitTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [hoveredInfoSlotId, setHoveredInfoSlotId] = useState<string | null>(null);
   const [pinnedInfoSlotId, setPinnedInfoSlotId] = useState<string | null>(null);
   const [infoPointer, setInfoPointer] = useState<{ x: number; y: number } | null>(null);
@@ -140,11 +159,28 @@ export function TokenActionRing({
     return primaryTokenRingColor(token, playerActorIds);
   }, [token, allTokens]);
 
+  const beginClose = useCallback(() => {
+    if (exitingRef.current) return;
+    exitingRef.current = true;
+    setExiting(true);
+    exitTimerRef.current = setTimeout(() => {
+      onClose();
+    }, TAR_VORTEX_EXIT_MS);
+  }, [onClose]);
+
+  useEffect(() => {
+    return () => {
+      if (exitTimerRef.current) clearTimeout(exitTimerRef.current);
+    };
+  }, []);
+
   useEffect(() => {
     setRingView("main");
     setHoveredInfoSlotId(null);
     setInfoPointer(null);
     setPinnedInfoSlotId(null);
+    exitingRef.current = false;
+    setExiting(false);
   }, [token.id]);
 
   useEffect(() => {
@@ -170,9 +206,9 @@ export function TokenActionRing({
         void saveLoadout(mode === "spell" ? "magias" : "habilidades", action.entryId);
       }
       onPickMode(mode, action);
-      onClose();
+      beginClose();
     },
-    [turnBlocked, token, combat?.round, actor, saveLoadout, onPickMode, onClose]
+    [turnBlocked, token, combat?.round, actor, saveLoadout, onPickMode, beginClose]
   );
 
   const pickMain = useCallback(
@@ -200,9 +236,9 @@ export function TokenActionRing({
       }
 
       onPickMode(mode, action);
-      onClose();
+      beginClose();
     },
-    [turnBlocked, weapons, spells, abilities, actor, saveLoadout, onPickMode, onClose]
+    [turnBlocked, weapons, spells, abilities, actor, onPickMode, beginClose]
   );
 
   const combatRound = combat?.round ?? 1;
@@ -256,7 +292,7 @@ export function TokenActionRing({
     const spell = spells[0];
     const ability = abilities[0];
 
-    return [
+    const slots: DisplaySlot[] = [
       {
         id: "move-walk",
         tone: "walk",
@@ -331,6 +367,55 @@ export function TokenActionRing({
         onClick: () => pickMain("ability"),
       },
     ];
+
+    if (showTokenSheet && onOpenTokenSheet) {
+      slots.push({
+        id: "sheet",
+        tone: "sheet",
+        label: "Ficha",
+        glyph: "▤",
+        paLabel: "—",
+        title: "Abrir ficha deste token",
+        onClick: () => {
+          onOpenTokenSheet();
+          beginClose();
+        },
+      });
+    }
+
+    if (showPlayerBestiary && onOpenPlayerBestiary) {
+      slots.push({
+        id: "bestiary",
+        tone: "bestiary",
+        label: "Bestiário",
+        glyph: "☰",
+        paLabel: "—",
+        title: "Bestiário individual do jogador (visão do mestre)",
+        onClick: () => {
+          onOpenPlayerBestiary();
+          beginClose();
+        },
+      });
+    }
+
+    if (showGmHpEdit && onOpenGmHpEdit && token.vidaMax != null) {
+      const temp = token.vidaTemp ?? 0;
+      const hpNow = token.vida ?? 0;
+      slots.push({
+        id: "hp",
+        tone: "hp",
+        label: "Vida",
+        glyph: "♥",
+        paLabel: temp > 0 ? `${hpNow}/${token.vidaMax} +${temp}` : `${hpNow}/${token.vidaMax}`,
+        title: "Ajustar vida atual, máxima e temporária",
+        onClick: () => {
+          onOpenGmHpEdit();
+          beginClose();
+        },
+      });
+    }
+
+    return slots;
   }, [
     ringView,
     spells,
@@ -343,6 +428,16 @@ export function TokenActionRing({
     pickCombatAction,
     slotForAction,
     combatRound,
+    showTokenSheet,
+    onOpenTokenSheet,
+    showPlayerBestiary,
+    onOpenPlayerBestiary,
+    showGmHpEdit,
+    onOpenGmHpEdit,
+    token.vida,
+    token.vidaMax,
+    token.vidaTemp,
+    beginClose,
   ]);
 
   const layout = ringLayout(displaySlots.length);
@@ -383,11 +478,11 @@ export function TokenActionRing({
         setRingView("main");
         return;
       }
-      onClose();
+      beginClose();
     }
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [ringView, onClose]);
+  }, [ringView, beginClose]);
 
   const slice = (2 * Math.PI) / Math.max(displaySlots.length, 1);
   const ringKey = `${token.id}-${ringView}-${displaySlots.length}`;
@@ -399,17 +494,19 @@ export function TokenActionRing({
 
   return (
     <div
-      className="token-action-ring-backdrop"
+      className={`token-action-ring-backdrop${exiting ? " token-action-ring-backdrop--exiting" : ""}`}
       role="presentation"
-      onClick={onClose}
+      onClick={beginClose}
       onContextMenu={(e) => {
         e.preventDefault();
-        onClose();
+        beginClose();
       }}
     >
       <div
-        className={`token-action-ring${ringView !== "main" ? " token-action-ring--sub" : ""}`}
-        style={{ left: x, top: y }}
+        className={`token-action-ring${ringView !== "main" ? " token-action-ring--sub" : ""}${
+          exiting ? " token-action-ring--exiting" : ""
+        }`}
+        style={{ left: x, top: y, "--tar-token": tokenRingColor } as CSSProperties}
         role="menu"
         aria-label={
           ringView === "main"
@@ -421,6 +518,9 @@ export function TokenActionRing({
         onClick={(e) => e.stopPropagation()}
         onContextMenu={(e) => e.preventDefault()}
       >
+        <span className="token-action-ring__vortex-core" aria-hidden />
+        <span className="token-action-ring__vortex" aria-hidden />
+        <span className="token-action-ring__vortex-wind" aria-hidden />
         <span
           key={ringKey}
           className="token-action-ring__track"
@@ -482,7 +582,7 @@ export function TokenActionRing({
                   "--tar-x": `${left}px`,
                   "--tar-y": `${top}px`,
                   "--tar-slot-scale": layout.slotScale,
-                  transform: `translate(calc(-50% + ${left}px), calc(-50% + ${top}px)) scale(${layout.slotScale})`,
+                  "--tar-slot-count": displaySlots.length,
                 } as CSSProperties
               }
               disabled={slot.disabled}

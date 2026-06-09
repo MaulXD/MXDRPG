@@ -20,6 +20,10 @@ import {
 import { resolvePortraitFrameTier } from "@/lib/vtt/portrait-frame";
 import { Portrait } from "@/components/vtt/Portrait";
 import { HudCorners } from "@/components/vtt/HudCorners";
+import {
+  canShowMonsterSheetButton,
+  resolveMonsterSheetOpenTarget,
+} from "@/lib/vtt/monster-sheet-access";
 
 type Props = {
   token: BattleToken;
@@ -31,6 +35,7 @@ type Props = {
   canControlCombat?: boolean;
   roomId: string;
   onOpenSheet?: (actorId?: string) => void;
+  onOpenMonsterSheet?: (entryId: string) => void;
   onSnapshot?: (snap: RoomSnapshot) => void;
   onUpdate: () => void;
   onHide: () => void;
@@ -67,6 +72,7 @@ export function CharacterCombatHud({
   canControlCombat = false,
   roomId,
   onOpenSheet,
+  onOpenMonsterSheet,
   onSnapshot,
   onUpdate,
   onHide,
@@ -94,6 +100,21 @@ export function CharacterCombatHud({
     Boolean(combat?.order?.length) &&
     Boolean(activeId) &&
     (canControlCombat || (activeId === token.id && isYourTurn));
+
+  const sheetTarget = resolveMonsterSheetOpenTarget(token);
+  const showSheetButton =
+    canShowMonsterSheetButton(token) &&
+    ((sheetTarget?.kind === "actor" && onOpenSheet) ||
+      (sheetTarget?.kind === "compendium" && onOpenMonsterSheet));
+
+  function handleOpenSheet() {
+    if (!sheetTarget) return;
+    if (sheetTarget.kind === "actor") {
+      onOpenSheet?.(sheetTarget.actorId);
+      return;
+    }
+    onOpenMonsterSheet?.(sheetTarget.entryId);
+  }
 
   async function handleEndTurn() {
     setBusy(true);
@@ -178,11 +199,11 @@ export function CharacterCombatHud({
         </div>
 
         <div className="hud-actions">
-          {token.linked && onOpenSheet ? (
+          {showSheetButton ? (
             <button
               type="button"
               className="hud-btn"
-              onClick={() => onOpenSheet(token.actorId)}
+              onClick={handleOpenSheet}
             >
               <svg viewBox="0 0 16 16" fill="none" aria-hidden>
                 <rect x="2" y="1.5" width="12" height="13" rx="1" stroke="currentColor" strokeWidth="1.2" />

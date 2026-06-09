@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { DismissibleMesaBanner } from "@/components/vtt/DismissibleMesaBanner";
 
 type Health = {
   db?: boolean;
@@ -32,19 +33,33 @@ export function MesaPersistenceNotice() {
   if (!memoryMode && !dbDown) return null;
 
   return (
-    <div className="mesa-persistence-notice" role="status">
+    <>
       {memoryMode ? (
-        <p>
-          <strong>Sem banco de dados</strong> — nada fica salvo após reinício do servidor. Configure{" "}
-          <code>DATABASE_URL</code> e rode <code>npm run db:setup</code>.
-        </p>
+        <DismissibleMesaBanner
+          bannerId="persistence:memory"
+          className="mesa-persistence-notice"
+          role="status"
+          aria-label="Aviso de persistência"
+        >
+          <p>
+            <strong>Sem banco de dados</strong> — nada fica salvo após reinício do servidor. Configure{" "}
+            <code>DATABASE_URL</code> e rode <code>npm run db:setup</code>.
+          </p>
+        </DismissibleMesaBanner>
       ) : null}
       {dbDown ? (
-        <p>
-          <strong>Banco indisponível</strong>
-          {health?.dbError ? ` — ${health.dbError}` : ""}. Dados podem não ser gravados.
-        </p>
+        <DismissibleMesaBanner
+          bannerId="persistence:db-down"
+          className="mesa-persistence-notice"
+          role="status"
+          aria-label="Banco indisponível"
+        >
+          <p>
+            <strong>Banco indisponível</strong>
+            {health?.dbError ? ` — ${health.dbError}` : ""}. Dados podem não ser gravados.
+          </p>
+        </DismissibleMesaBanner>
       ) : null}
-    </div>
+    </>
   );
 }

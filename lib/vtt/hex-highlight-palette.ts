@@ -64,8 +64,8 @@ const VAR_SUFFIX: Record<PaletteKey, string> = {
 };
 
 const FALLBACKS: HexHighlightPalette = {
-  fill: "rgba(180,155,110,0.06)",
-  stroke: "rgba(180,155,110,0.2)",
+  fill: "rgba(180,155,110,0.04)",
+  stroke: "rgba(130,132,138,0.58)",
   walkFill: "rgba(90,115,82,0.58)",
   walkStroke: "rgba(120,150,95,0.75)",
   turnWalkFill: "rgba(90,115,82,0.42)",

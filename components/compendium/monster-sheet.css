@@ -1,3 +1,15 @@
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 .monster-sheet-backdrop {
   position: fixed;
   inset: 0;
@@ -19,18 +31,82 @@
   border-radius: var(--radius);
 }
 
+.monster-sheet-dialog > .monster-sheet {
+  flex: 1;
+  min-height: 0;
+}
+
 .monster-sheet {
   display: flex;
   flex-direction: column;
   min-height: 0;
-  color: var(--text-primary);
+  color: var(--text);
 }
 
 .monster-sheet--dialog {
-  max-height: min(88vh, 820px);
+  flex: 1;
+  min-height: 0;
+  max-height: none;
+}
+
+.monster-sheet--popup {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.monster-sheet--popup .monster-sheet__header {
+  padding-top: 0.65rem;
+}
+
+.monster-sheet-popup {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  height: 100%;
+}
+
+.monster-sheet-popup__picker {
+  flex-shrink: 0;
+  display: grid;
+  grid-template-columns: 1fr minmax(9.5rem, 42%);
+  gap: 0.5rem;
+  padding: 0.55rem 0.7rem;
+  border-bottom: 1px solid var(--glass-border);
+  background: rgba(0, 0, 0, 0.18);
+}
+
+.monster-sheet-popup__search,
+.monster-sheet-popup__select {
+  margin: 0;
+  min-width: 0;
+}
+
+.monster-sheet-popup__body {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.foundry-window--monster-sheet .foundry-window__body {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  padding: 0;
+}
+
+@media (max-width: 520px) {
+  .monster-sheet-popup__picker {
+    grid-template-columns: 1fr;
+  }
 }
 
 .monster-sheet__header {
+  flex-shrink: 0;
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
@@ -101,11 +177,12 @@
 }
 
 .monster-sheet__close:hover {
-  color: var(--text-primary);
+  color: var(--text);
   border-color: var(--glass-border-bright);
 }
 
 .monster-sheet__tabs {
+  flex-shrink: 0;
   display: flex;
   gap: 0.35rem;
   padding: 0.55rem 1rem 0;
@@ -130,6 +207,8 @@
 }
 
 .monster-sheet__body {
+  flex: 1;
+  min-height: 0;
   overflow-y: auto;
   padding: 0.75rem 1rem 1rem;
   display: flex;
@@ -262,9 +341,10 @@
 }
 
 .monster-sheet__lore {
+  flex: 1;
+  min-height: 0;
   overflow-y: auto;
   padding: 0.75rem 1rem 1rem;
-  max-height: min(70vh, 640px);
 }
 
 .monster-sheet__muted {

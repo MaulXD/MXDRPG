@@ -1,0 +1,115 @@
+/* Animações leves — navegação e chrome */
+
+@keyframes ui-header-enter {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes ui-page-enter {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes ui-dock-enter {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.site-header,
+.vtt-topbar {
+  animation: ui-header-enter 0.36s var(--ease-out) both;
+}
+
+.page-enter,
+.vtt-main.page-enter {
+  animation: ui-page-enter 0.34s var(--ease-out) both;
+}
+
+.nav-link {
+  position: relative;
+}
+
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0.18rem;
+  width: 0;
+  height: 2px;
+  border-radius: 1px;
+  background: var(--accent);
+  opacity: 0;
+  transform: translateX(-50%);
+  transition:
+    width 0.22s var(--ease-out),
+    opacity 0.22s var(--ease-out);
+}
+
+.nav-link:hover::after,
+.nav-link--active::after {
+  width: 58%;
+  opacity: 1;
+}
+
+.nav-link--active {
+  color: var(--text);
+  background: var(--accent-soft);
+}
+
+.vtt-nav .nav-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--control-h);
+  color: var(--text-muted);
+  padding: 0 0.5rem;
+  border-radius: var(--radius);
+  line-height: 1;
+  box-sizing: border-box;
+  transition: color 0.2s, background 0.2s;
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.vtt-nav .nav-link:hover {
+  color: var(--accent);
+  background: var(--accent-soft, rgba(122, 163, 201, 0.12));
+}
+
+.foundry-sidebar--dock-open .foundry-dock-panel {
+  animation: ui-dock-enter 0.28s var(--ease-out) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-header,
+  .vtt-topbar,
+  .page-enter,
+  .vtt-main.page-enter,
+  .foundry-sidebar--dock-open .foundry-dock-panel {
+    animation: none;
+  }
+
+  .nav-link::after {
+    transition: none;
+  }
+}

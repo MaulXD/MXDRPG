@@ -1,9 +1,5 @@
-import {
-  effectivePaCost,
-  listPaModifiersForActor,
-  totalAttackPaCost,
-} from "@/lib/combat/pa-economy";
-import { totalChannelPaCost } from "@/lib/combat/spell-channel";
+import { paNeedForCombatAction } from "@/lib/combat/attack";
+import { listPaModifiersForActor } from "@/lib/combat/pa-economy";
 import { tokenSpendablePa } from "@/lib/combat/pa-turn";
 import type { CombatActionOption } from "@/lib/combat/types";
 import type { CharacterSheet } from "@/lib/character/types";
@@ -63,13 +59,7 @@ export function unifiedPaChipForAction(
     action.channelMaxExtraPa != null
       ? action.paCost + channelExtraPa
       : action.paCost;
-  const effective = actor
-    ? action.channelMaxExtraPa
-      ? totalChannelPaCost(actor, action, channelExtraPa)
-      : action.kind === "weapon"
-        ? totalAttackPaCost(actor, action)
-        : effectivePaCost(actor, action)
-    : base;
+  const effective = paNeedForCombatAction(token, actor, action, channelExtraPa);
   return formatUnifiedPaChip(token, base, effective, actionModifierNote(actor, action));
 }
 

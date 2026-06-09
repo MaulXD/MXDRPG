@@ -16,13 +16,13 @@ import {
   resolveMonsterBiomes,
   type DungeonBiomeId,
 } from "@/lib/vtt/monster-biomes";
-import { MonsterSheetDialog } from "@/components/compendium/MonsterSheetDialog";
 import "@/components/compendium/monster-sheet.css";
 
 type Props = {
   roomId: string;
   spawnAxial: Axial | null;
   onSpawned: (snapshot: RoomSnapshot) => void;
+  onOpenMonsterSheet?: (entryId: string) => void;
 };
 
 const VARIANT_LABEL: Record<MonsterSpawnVariant, string> = {
@@ -31,7 +31,7 @@ const VARIANT_LABEL: Record<MonsterSpawnVariant, string> = {
   colossal: "Colossal (×2 HP, +PA)",
 };
 
-export function MonsterSpawnPanel({ roomId, spawnAxial, onSpawned }: Props) {
+export function MonsterSpawnPanel({ roomId, spawnAxial, onSpawned, onOpenMonsterSheet }: Props) {
   const monsters = listMonsterTemplates();
   const [biomeFilter, setBiomeFilter] = useState<"all" | DungeonBiomeId>("all");
   const [entryId, setEntryId] = useState(monsters[0]?.entryId ?? "");
@@ -39,7 +39,6 @@ export function MonsterSpawnPanel({ roomId, spawnAxial, onSpawned }: Props) {
   const [groupLevelDelta, setGroupLevelDelta] = useState(0);
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState<string | null>(null);
-  const [sheetEntryId, setSheetEntryId] = useState<string | null>(null);
   const dragGhostRef = useRef<HTMLElement | null>(null);
 
   const spawnOpts = useMemo(
@@ -235,7 +234,7 @@ export function MonsterSpawnPanel({ roomId, spawnAxial, onSpawned }: Props) {
           <button
             type="button"
             className="btn btn-ghost vtt-spawn-sheet-btn"
-            onClick={() => setSheetEntryId(entryId)}
+            onClick={() => onOpenMonsterSheet?.(entryId)}
           >
             Ver ficha do livro
           </button>
@@ -254,7 +253,6 @@ export function MonsterSpawnPanel({ roomId, spawnAxial, onSpawned }: Props) {
 
       {msg ? <p className="sheet-inline-msg">{msg}</p> : null}
 
-      <MonsterSheetDialog entryId={sheetEntryId} onClose={() => setSheetEntryId(null)} />
     </div>
   );
 }

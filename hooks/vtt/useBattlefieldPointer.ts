@@ -58,6 +58,8 @@ type Params = {
   onHoverAxialChange?: (a: Axial | null) => void;
   onHoverTargetChange?: (tokenId: string | null) => void;
   onHoverTokenChange?: (tokenId: string | null) => void;
+  /** Posição do ponteiro no canvas (px, py) — para mini HUD seguir o mouse. */
+  onHoverPointerChange?: (pos: { x: number; y: number } | null) => void;
   showMovement: boolean;
   isAreaSpellMode: boolean;
   needsAreaDirection: boolean;
@@ -168,6 +170,7 @@ export function useBattlefieldPointer({
   onOpenPlayerBestiary,
   canOpenPlayerBestiary,
   onHoverTokenChange,
+  onHoverPointerChange,
   dungeonEditor,
   whiteboard,
   mapTools,
@@ -571,6 +574,15 @@ export function useBattlefieldPointer({
         }
 
         if (hit.id !== selectedId) {
+          if (
+            selectedId &&
+            isTargetMode(actionMode) &&
+            activeCombatAction &&
+            !attackableIds.has(hit.id)
+          ) {
+            onAreaSpellError?.("Alvo inválido para esta ação");
+            return;
+          }
           if (selectedId && attackableIds.has(hit.id)) return;
           setSelectedId(hit.id);
         }
@@ -624,6 +636,8 @@ export function useBattlefieldPointer({
       scene,
       canControlCombat,
       actionMode,
+      activeCombatAction,
+      onAreaSpellError,
       onOpenMonsterKnowledge,
       onOpenPlayerBestiary,
       canOpenPlayerBestiary,
@@ -633,6 +647,7 @@ export function useBattlefieldPointer({
   const onPointerMove = useCallback(
     (e: React.PointerEvent<HTMLCanvasElement>) => {
       const { px, py } = pointerPos(e);
+      onHoverPointerChange?.({ x: px, y: py });
       const axial = axialAtScreen(px, py);
       const world = worldAtScreen(px, py);
 
@@ -892,6 +907,7 @@ export function useBattlefieldPointer({
     },
     [
       pointerPos,
+      onHoverPointerChange,
       axialAtScreen,
       setHoverAxial,
       onHoverAxialChange,
@@ -1026,7 +1042,11 @@ export function useBattlefieldPointer({
 
       if (Math.hypot(px - start.x, py - start.y) > 8) return;
 
-      const hit = tokenAtPoint(px, py);
+      let hit = tokenAtPoint(px, py);
+      if (!hit) {
+        const clickAxial = axialAtScreen(px, py);
+        if (clickAxial) hit = tokenAtAxial(clickAxial);
+      }
 
       const castAreaAtHex = (targetAxial: Axial): boolean => {
         if (!selectedId || !areaMode || !activeCombatAction || !selected) return false;
@@ -1115,6 +1135,7 @@ export function useBattlefieldPointer({
     [
       pointerPos,
       tokenAtPoint,
+      tokenAtAxial,
       axialAtScreen,
       selectedId,
       attackableIds,
@@ -1156,7 +1177,15 @@ export function useBattlefieldPointer({
     onHoverAxialChange?.(null);
     onHoverTargetChange?.(null);
     onHoverTokenChange?.(null);
-  }, [setHoverAxial, onHoverAxialChange, onHoverTargetChange, onHoverTokenChange, onGmDragPreview]);
+    onHoverPointerChange?.(null);
+  }, [
+    setHoverAxial,
+    onHoverAxialChange,
+    onHoverTargetChange,
+    onHoverTokenChange,
+    onHoverPointerChange,
+    onGmDragPreview,
+  ]);
 
   const onContextMenu = useCallback(
     (e: React.MouseEvent<HTMLCanvasElement>) => {
@@ -1178,9 +1207,13 @@ export function useBattlefieldPointer({
       }
       if (!hit) return;
 
-      if (onOpenPlayerBestiary && canOpenPlayerBestiary?.(hit)) {
-        if (hit.id !== selectedId) setSelectedId(hit.id);
-        onOpenPlayerBestiary(hit);
+      if (
+        !canControlCombat &&
+        isMonsterToken(hit) &&
+        onOpenMonsterKnowledge &&
+        !whiteboard?.active
+      ) {
+        onOpenMonsterKnowledge(hit);
         return;
       }
 
@@ -1198,6 +1231,8 @@ export function useBattlefieldPointer({
       axialAtScreen,
       tokenAtAxial,
       tokenScreenCenter,
+      canControlCombat,
+      onOpenMonsterKnowledge,
       canOpenActionRing,
       canOpenPlayerBestiary,
       onActionRingBlocked,

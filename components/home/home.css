@@ -6,10 +6,6 @@
   pointer-events: none;
 }
 
-[data-theme="light"] .hex-preview-glow {
-  background: radial-gradient(circle, rgba(107, 68, 35, 0.12), transparent 65%);
-}
-
 .hex-preview-svg {
   width: 100%;
   height: 100%;

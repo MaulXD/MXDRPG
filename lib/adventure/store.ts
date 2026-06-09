@@ -30,6 +30,14 @@ function adventures(): Map<string, Adventure> {
   return globalThis.__eldarinAdventures;
 }
 
+export function listCachedAdventures(): Adventure[] {
+  return [...adventures().values()];
+}
+
+export function cacheAdventure(adventure: Adventure): void {
+  adventures().set(adventure.adventureId, adventure);
+}
+
 const CREATE_IDEMPOTENCY_MS = 120_000;
 
 function normalizeAdventureName(name: string): string {
@@ -250,7 +258,10 @@ export async function ensureAdventureMembership(
 ): Promise<Adventure | null> {
   const adv = await getAdventure(adventureId);
   if (!adv) return null;
-  if (adv.ownerId === userId || adv.memberIds.includes(userId)) return adv;
+  const { memberIdsHasUser } = await import("@/lib/auth/member-ids");
+  const { fetchClerkIdForUser } = await import("@/lib/db/users");
+  const clerkId = await fetchClerkIdForUser(userId);
+  if (adv.ownerId === userId || memberIdsHasUser(adv.memberIds, userId, clerkId)) return adv;
 
   const { listCharactersForUserInAdventure } = await import("@/lib/character/characters");
   const chars = await listCharactersForUserInAdventure(userId, adventureId);
@@ -346,8 +357,12 @@ export async function listAdventuresForUser(userId: string): Promise<AdventureLi
     }
   }
 
+  const { memberIdsHasUser } = await import("@/lib/auth/member-ids");
+  const { fetchClerkIdForUser } = await import("@/lib/db/users");
+  const clerkId = await fetchClerkIdForUser(userId);
+
   for (const adv of adventures().values()) {
-    if (adv.ownerId !== userId && !adv.memberIds.includes(userId)) continue;
+    if (adv.ownerId !== userId && !memberIdsHasUser(adv.memberIds, userId, clerkId)) continue;
     if (seenIds.has(adv.adventureId)) continue;
     if (seenRooms.has(adv.primaryRoomId)) continue;
     if (shouldPurgeAdventure(adv)) continue;

@@ -190,6 +190,27 @@ export async function listAdventuresForOwnerOrMember(
   }));
 }
 
+export async function listAllAdventures(): Promise<Adventure[]> {
+  const sql = getSql();
+  if (!sql) return [];
+  let rows: AdventureRow[];
+  try {
+    rows = await withDbTimeout(
+      sql<AdventureRow[]>`
+        SELECT adventure_id, owner_id, name, synopsis, invite_code, member_ids,
+               primary_room_id, created_at, updated_at, deleted_at
+        FROM eldarin_adventures
+        ORDER BY updated_at DESC
+      `,
+      8000,
+      "listAllAdventures"
+    );
+  } catch {
+    return [];
+  }
+  return rows.map(rowToAdventure);
+}
+
 export async function deleteAdventurePermanent(adventureId: string): Promise<void> {
   const sql = getSql();
   if (!sql) return;

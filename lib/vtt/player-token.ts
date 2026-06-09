@@ -39,6 +39,7 @@ export function createPlayerTokenFromActor(
     nivel: actor.identity.nivel,
     vida: actor.resources.vida.value,
     vidaMax: actor.resources.vida.max,
+    vidaTemp: actor.resources.vida.temp,
     defesa: actor.tactical.defesa,
     imageUrl,
     imageFocus: focus,

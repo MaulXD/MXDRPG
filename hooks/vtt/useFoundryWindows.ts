@@ -40,6 +40,7 @@ const DEFAULT_LAYOUTS: Record<MesaWindowId, Omit<FoundryWindowLayout, "open" | "
   spawn: { x: 400, y: 360, width: 320, height: 380 },
   invite: { x: 52, y: 48, width: 280, height: 280 },
   character: { x: 72, y: 40, width: 960, height: 680 },
+  monsterSheet: { x: 96, y: 56, width: 520, height: 640 },
   status: { x: 52, y: 48, width: 400, height: 520 },
 };
 
