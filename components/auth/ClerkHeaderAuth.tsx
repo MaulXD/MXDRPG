@@ -1,9 +1,10 @@
 "use client";
 
-import { Show, SignInButton, SignUpButton, UserButton } from "@clerk/nextjs";
+import { Show, SignInButton, SignUpButton } from "@clerk/nextjs";
 import Link from "next/link";
 import { AnimatedNavLink } from "@/components/AnimatedNavLink";
-import { FriendsNavBadge } from "@/components/friends/FriendsNavBadge";
+import { ClerkHeaderUserMenu } from "@/components/auth/ClerkHeaderUserMenu";
+import { FriendsNavChat } from "@/components/friends/FriendsNavChat";
 import type { SessionUser } from "@/lib/auth/types";
 import { portalPathForRole, roleMeta } from "@/lib/auth/roles";
 import { clerkSocialOnlyAppearance } from "@/lib/auth/clerk-appearance";
@@ -29,13 +30,13 @@ export function ClerkHeaderAuth({ session }: Props) {
       </Show>
       <Show when="signed-in">
         <AnimatedNavLink href="/conta">Perfil</AnimatedNavLink>
-        <FriendsNavBadge />
+        <FriendsNavChat />
         {session ? (
           <Link href={portalPathForRole(session.user.role)} className="btn nav-cta">
             {roleMeta(session.user.role).label}
           </Link>
         ) : null}
-        <UserButton appearance={clerkSocialOnlyAppearance} />
+        <ClerkHeaderUserMenu user={session?.user ?? null} />
       </Show>
     </>
   );

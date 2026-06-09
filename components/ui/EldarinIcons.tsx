@@ -296,6 +296,17 @@ export function CombatEventIcon({ tone, className, size = 18 }: IconProps & { to
   }
 }
 
+export function IconChat({ className, size }: IconProps) {
+  return (
+    <Svg className={className} size={size}>
+      <path
+        d="M5 6.5h14a2 2 0 012 2v6.5a2 2 0 01-2 2H10l-4.5 3v-3H5a2 2 0 01-2-2V8.5a2 2 0 012-2z"
+        {...S}
+      />
+    </Svg>
+  );
+}
+
 export type HomeFeatureIconName = "hex" | "target" | "diamond" | "sword";
 
 export function HomeFeatureIcon({ name, className, size = 28 }: IconProps & { name: HomeFeatureIconName }) {

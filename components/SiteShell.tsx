@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import { AnimatedNavLink } from "@/components/AnimatedNavLink";
 import { BugReportButton } from "@/components/BugReportButton";
 import { EldarinLogo } from "@/components/brand/EldarinLogo";
+import { FriendsNavChat } from "@/components/friends/FriendsNavChat";
 import "@/components/vtt/mesa-theme.css";
 
 type Props = {
@@ -25,6 +26,7 @@ export function SiteShell({ children, header, footer }: Props) {
             <AnimatedNavLink href="/mesa">Mesas</AnimatedNavLink>
             <AnimatedNavLink href="/biblioteca">Compêndios</AnimatedNavLink>
             <AnimatedNavLink href="/eldarin">Minhas mesas</AnimatedNavLink>
+            <FriendsNavChat />
           </nav>
         </header>
         <main key={pathname} className="vtt-main page-enter">
