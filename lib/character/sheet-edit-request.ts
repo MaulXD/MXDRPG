@@ -30,7 +30,7 @@ export function isActiveSheetEditGrant(
 
 export function sheetEditScopeLabel(scope: SheetEditScope): string {
   return scope === "full_rebuild"
-    ? "Reconstruir do nível 1 (raça/classe)"
+    ? "Reconstruir do nv 1 (raça/classe) e subir de novo"
     : "Editar só o último nível";
 }
 

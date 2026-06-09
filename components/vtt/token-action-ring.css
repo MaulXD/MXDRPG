@@ -2,9 +2,8 @@
   position: fixed;
   inset: 0;
   z-index: 240;
-  background: rgba(4, 6, 10, 0.28);
-  backdrop-filter: blur(2px);
-  animation: tar-backdrop-in 0.34s var(--ease-out) both;
+  background: rgba(4, 6, 10, 0.36);
+  animation: tar-backdrop-in 0.28s ease-out both;
 }
 
 .token-action-ring-backdrop--exiting {
@@ -36,6 +35,7 @@
   height: 0;
   z-index: 241;
   pointer-events: none;
+  contain: layout style;
 }
 
 .token-action-ring__vortex-core,
@@ -58,39 +58,26 @@
     color-mix(in srgb, var(--tar-token, #c9a962) 35%, transparent) 55%,
     transparent 72%
   );
-  box-shadow: 0 0 18px color-mix(in srgb, var(--tar-token, #c9a962) 55%, transparent);
-  animation: tar-vortex-core-in 0.52s cubic-bezier(0.22, 1, 0.32, 1) both;
+  box-shadow: 0 0 14px color-mix(in srgb, var(--tar-token, #c9a962) 45%, transparent);
+  animation: tar-vortex-core-in 0.38s ease-out both;
 }
 
 .token-action-ring__vortex {
-  width: 118px;
-  height: 118px;
-  background: conic-gradient(
-    from 0deg,
-    transparent 0deg,
-    color-mix(in srgb, var(--tar-token, #c9a962) 55%, transparent) 42deg,
-    transparent 84deg,
-    color-mix(in srgb, var(--tar-token, #c9a962) 38%, transparent) 132deg,
-    transparent 180deg,
-    color-mix(in srgb, var(--tar-token, #c9a962) 48%, transparent) 228deg,
-    transparent 276deg,
-    color-mix(in srgb, var(--tar-token, #c9a962) 32%, transparent) 318deg,
-    transparent 360deg
-  );
-  mask: radial-gradient(circle, black 18%, transparent 72%);
-  -webkit-mask: radial-gradient(circle, black 18%, transparent 72%);
-  filter: blur(0.4px);
-  animation: tar-vortex-spin-in 0.58s cubic-bezier(0.18, 0.85, 0.28, 1) both;
+  width: 96px;
+  height: 96px;
+  border: 2px solid color-mix(in srgb, var(--tar-token, #c9a962) 28%, transparent);
+  border-radius: 50%;
+  opacity: 0.55;
+  animation: tar-vortex-spin-in 0.42s ease-out both;
 }
 
 .token-action-ring__vortex-wind {
-  width: 148px;
-  height: 148px;
-  border: 2px dashed color-mix(in srgb, var(--tar-token, #c9a962) 42%, transparent);
-  border-top-color: transparent;
-  border-bottom-color: transparent;
-  opacity: 0.65;
-  animation: tar-vortex-wind-in 0.56s cubic-bezier(0.2, 0.9, 0.3, 1) both;
+  width: 120px;
+  height: 120px;
+  border: 1px dashed color-mix(in srgb, var(--tar-token, #c9a962) 32%, transparent);
+  border-radius: 50%;
+  opacity: 0.4;
+  animation: tar-vortex-wind-in 0.4s ease-out both;
 }
 
 .token-action-ring--exiting .token-action-ring__vortex-core {
@@ -108,15 +95,15 @@
 @keyframes tar-vortex-core-in {
   0% {
     opacity: 0;
-    transform: translate(-50%, -50%) scale(2.4);
+    transform: translate3d(-50%, -50%, 0) scale(1.6);
   }
-  35% {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(0.85);
+  40% {
+    opacity: 0.9;
+    transform: translate3d(-50%, -50%, 0) scale(0.9);
   }
   100% {
     opacity: 0;
-    transform: translate(-50%, -50%) scale(0.35);
+    transform: translate3d(-50%, -50%, 0) scale(0.4);
   }
 }
 
@@ -138,14 +125,14 @@
 @keyframes tar-vortex-spin-in {
   0% {
     opacity: 0;
-    transform: translate(-50%, -50%) rotate(0deg) scale(0.12);
+    transform: translate3d(-50%, -50%, 0) rotate(0deg) scale(0.35);
   }
-  25% {
-    opacity: 0.95;
+  50% {
+    opacity: 0.7;
   }
   100% {
     opacity: 0;
-    transform: translate(-50%, -50%) rotate(620deg) scale(2.15);
+    transform: translate3d(-50%, -50%, 0) rotate(280deg) scale(1.35);
   }
 }
 
@@ -166,11 +153,11 @@
 @keyframes tar-vortex-wind-in {
   0% {
     opacity: 0;
-    transform: translate(-50%, -50%) rotate(0deg) scale(0.2);
+    transform: translate3d(-50%, -50%, 0) rotate(0deg) scale(0.45);
   }
   100% {
     opacity: 0;
-    transform: translate(-50%, -50%) rotate(480deg) scale(1.65);
+    transform: translate3d(-50%, -50%, 0) rotate(220deg) scale(1.2);
   }
 }
 
@@ -198,7 +185,7 @@
   border-radius: 50%;
   border: 1px dashed rgba(201, 169, 98, 0.22);
   box-shadow: 0 0 0 1px rgba(201, 169, 98, 0.08);
-  animation: tar-track-vortex-in 0.52s cubic-bezier(0.2, 0.92, 0.28, 1) both;
+  animation: tar-track-vortex-in 0.44s cubic-bezier(0.22, 1, 0.36, 1) both;
   pointer-events: none;
 }
 
@@ -209,15 +196,11 @@
 @keyframes tar-track-vortex-in {
   0% {
     opacity: 0;
-    transform: translate(-50%, -50%) rotate(-240deg) scale(0.08);
-  }
-  55% {
-    opacity: 0.85;
-    transform: translate(-50%, -50%) rotate(80deg) scale(0.92);
+    transform: translate3d(-50%, -50%, 0) rotate(-90deg) scale(0.55);
   }
   100% {
     opacity: 1;
-    transform: translate(-50%, -50%) rotate(0deg) scale(1);
+    transform: translate3d(-50%, -50%, 0) rotate(0deg) scale(1);
   }
 }
 
@@ -262,7 +245,7 @@
   box-shadow:
     0 12px 32px rgba(0, 0, 0, 0.5),
     0 0 24px color-mix(in srgb, var(--tar-token, #c9a962) 35%, transparent);
-  animation: tar-center-vortex-in 0.46s cubic-bezier(0.2, 0.95, 0.28, 1) both;
+  animation: tar-center-vortex-in 0.36s cubic-bezier(0.22, 1, 0.36, 1) both;
   transition:
     border-color 0.15s,
     background 0.15s,
@@ -277,15 +260,11 @@
 @keyframes tar-center-vortex-in {
   0% {
     opacity: 0;
-    transform: translate(-50%, -50%) rotate(-180deg) scale(0.05);
-  }
-  45% {
-    opacity: 0.75;
-    transform: translate(-50%, -50%) rotate(40deg) scale(0.88);
+    transform: translate3d(-50%, -50%, 0) scale(0.35);
   }
   100% {
     opacity: 1;
-    transform: translate(-50%, -50%) rotate(0deg) scale(1);
+    transform: translate3d(-50%, -50%, 0) scale(1);
   }
 }
 
@@ -305,8 +284,8 @@
   filter: brightness(1.08);
 }
 
-.token-action-ring:not(.token-action-ring--exiting) .token-action-ring__center:hover {
-  transform: translate(-50%, -50%) scale(1.04);
+.token-action-ring--settled:not(.token-action-ring--exiting) .token-action-ring__center:hover {
+  transform: translate3d(-50%, -50%, 0) scale(1.04);
 }
 
 .token-action-ring__center-name {
@@ -374,10 +353,18 @@
     0 10px 24px rgba(0, 0, 0, 0.42),
     0 0 12px var(--tar-glow, transparent);
   opacity: 0;
-  transform: translate(calc(-50% + var(--tar-x, 0px)), calc(-50% + var(--tar-y, 0px)))
-    rotate(0deg) scale(var(--tar-slot-scale, 1));
-  animation: tar-slot-vortex-in 0.54s cubic-bezier(0.18, 0.9, 0.26, 1) both;
-  animation-delay: calc(0.06s + var(--tar-i, 0) * 0.042s);
+  transform: translate3d(-50%, -50%, 0) scale(0.2);
+  animation: tar-slot-orbit-in 0.52s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(0.05s + var(--tar-i, 0) * 0.034s);
+  will-change: transform, opacity;
+  transition:
+    border-color 0.12s,
+    background 0.12s,
+    box-shadow 0.12s;
+}
+
+.token-action-ring--settled .token-action-ring__slot {
+  will-change: auto;
   transition:
     border-color 0.12s,
     background 0.12s,
@@ -455,59 +442,72 @@
   --tar-pa: #f0b0b0;
 }
 
-@keyframes tar-slot-vortex-in {
+@keyframes tar-slot-orbit-in {
   0% {
     opacity: 0;
-    transform: translate(-50%, -50%)
-      rotate(calc(var(--tar-i, 0) * -72deg + 200deg)) scale(0);
+    transform: translate3d(-50%, -50%, 0) scale(calc(var(--tar-slot-scale, 1) * 0.15));
   }
-  38% {
-    opacity: 0.55;
-    transform: translate(
-        calc(-50% + var(--tar-x, 0px) * 0.42),
-        calc(-50% + var(--tar-y, 0px) * 0.42)
+  16% {
+    opacity: 0.75;
+    transform: translate3d(
+        calc(-50% + var(--tar-orbit-x, 0px)),
+        calc(-50% + var(--tar-orbit-y, 0px)),
+        0
       )
-      rotate(calc(var(--tar-i, 0) * 28deg - 40deg)) scale(calc(var(--tar-slot-scale, 1) * 0.62));
+      scale(calc(var(--tar-slot-scale, 1) * 0.72));
   }
-  72% {
-    opacity: 0.92;
-    transform: translate(
-        calc(-50% + var(--tar-x, 0px) * 0.88),
-        calc(-50% + var(--tar-y, 0px) * 0.88)
+  48% {
+    opacity: 1;
+    transform: translate3d(
+        calc(-50% + var(--tar-orbit-mid-x, 0px)),
+        calc(-50% + var(--tar-orbit-mid-y, 0px)),
+        0
       )
-      rotate(calc(var(--tar-i, 0) * 8deg)) scale(calc(var(--tar-slot-scale, 1) * 0.96));
+      scale(calc(var(--tar-slot-scale, 1) * 0.9));
   }
   100% {
     opacity: 1;
-    transform: translate(calc(-50% + var(--tar-x, 0px)), calc(-50% + var(--tar-y, 0px)))
-      rotate(0deg) scale(var(--tar-slot-scale, 1));
+    transform: translate3d(
+        calc(-50% + var(--tar-x, 0px)),
+        calc(-50% + var(--tar-y, 0px)),
+        0
+      )
+      scale(var(--tar-slot-scale, 1));
   }
 }
 
 @keyframes tar-slot-vortex-out {
   0% {
     opacity: 1;
-    transform: translate(calc(-50% + var(--tar-x, 0px)), calc(-50% + var(--tar-y, 0px)))
-      rotate(0deg) scale(var(--tar-slot-scale, 1));
-  }
-  42% {
-    opacity: 0.65;
-    transform: translate(
-        calc(-50% + var(--tar-x, 0px) * 0.38),
-        calc(-50% + var(--tar-y, 0px) * 0.38)
+    transform: translate3d(
+        calc(-50% + var(--tar-x, 0px)),
+        calc(-50% + var(--tar-y, 0px)),
+        0
       )
-      rotate(calc(var(--tar-i, 0) * 52deg - 95deg)) scale(calc(var(--tar-slot-scale, 1) * 0.58));
+      scale(var(--tar-slot-scale, 1));
+  }
+  38% {
+    opacity: 0.7;
+    transform: translate3d(
+        calc(-50% + var(--tar-orbit-mid-x, 0px)),
+        calc(-50% + var(--tar-orbit-mid-y, 0px)),
+        0
+      )
+      scale(calc(var(--tar-slot-scale, 1) * 0.82));
   }
   100% {
     opacity: 0;
-    transform: translate(-50%, -50%)
-      rotate(calc(var(--tar-i, 0) * -95deg + 260deg)) scale(0);
+    transform: translate3d(-50%, -50%, 0) scale(calc(var(--tar-slot-scale, 1) * 0.12));
   }
 }
 
-.token-action-ring:not(.token-action-ring--exiting) .token-action-ring__slot:hover:not(:disabled) {
-  transform: translate(calc(-50% + var(--tar-x, 0px)), calc(-50% + var(--tar-y, 0px)))
-    rotate(0deg) scale(calc(var(--tar-slot-scale, 1) * 1.06));
+.token-action-ring--settled:not(.token-action-ring--exiting) .token-action-ring__slot:hover:not(:disabled) {
+  transform: translate3d(
+      calc(-50% + var(--tar-x, 0px)),
+      calc(-50% + var(--tar-y, 0px)),
+      0
+    )
+    scale(calc(var(--tar-slot-scale, 1) * 1.06));
   box-shadow:
     0 12px 28px rgba(0, 0, 0, 0.48),
     0 0 18px var(--tar-glow, rgba(201, 169, 98, 0.2));
@@ -732,7 +732,12 @@
   }
 
   .token-action-ring__slot {
-    transform: translate(calc(-50% + var(--tar-x, 0px)), calc(-50% + var(--tar-y, 0px)))
+    transform: translate3d(
+        calc(-50% + var(--tar-x, 0px)),
+        calc(-50% + var(--tar-y, 0px)),
+        0
+      )
       scale(var(--tar-slot-scale, 1));
+    will-change: auto;
   }
 }

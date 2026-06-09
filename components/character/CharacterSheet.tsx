@@ -57,7 +57,6 @@ import {
 } from "@/lib/character/rules";
 import { SheetPdfExportButton } from "@/components/character/SheetPdfExportButton";
 import { SheetEditRequestButton } from "@/components/character/SheetEditRequestButton";
-import { PlayerEditRequestNotice } from "@/components/vtt/PlayerEditRequestNotice";
 import { useSheetPdfDeepLink } from "@/hooks/useSheetPdfDeepLink";
 import { OrnamentCard } from "@/components/ui/OrnamentCard";
 import { SectionDivider } from "@/components/ui/SectionDivider";
@@ -768,12 +767,6 @@ export function CharacterSheet({
               />
             ) : null}
           </div>
-        ) : null}
-        {showEditRequest ? (
-          <PlayerEditRequestNotice
-            characterId={character.id}
-            adventureId={adventureId ?? undefined}
-          />
         ) : null}
         <OrnamentCard className="sheet-popup-top">
           <div className="sheet-popup-top__portrait-col">

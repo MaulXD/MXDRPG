@@ -212,10 +212,14 @@ export async function exportSheetPdf(
   filename: string,
   opts?: SheetPdfExportOptions
 ): Promise<void> {
-  const [{ default: html2canvas }, { jsPDF }] = await Promise.all([
+  const [{ default: html2canvas }, jspdfMod] = await Promise.all([
     import("html2canvas"),
     import("jspdf"),
   ]);
+  const jsPDFCtor = jspdfMod.jsPDF ?? jspdfMod.default;
+  if (typeof jsPDFCtor !== "function") {
+    throw new Error("Biblioteca jsPDF indisponível — recarregue a página e tente de novo.");
+  }
 
   const host = root.closest(".sheet-pdf-capture-host") as HTMLElement | null;
   const restoreHost = await prepareSheetPdfCaptureHost(host);
@@ -263,7 +267,7 @@ export async function exportSheetPdf(
     if (!imgData || imgData.length < 2000) {
       throw new Error("Não foi possível rasterizar a ficha. Tente novamente após a página carregar.");
     }
-    const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
+    const pdf = new jsPDFCtor({ orientation: "portrait", unit: "mm", format: "a4" });
     const pageWidth = pdf.internal.pageSize.getWidth();
     const pageHeight = pdf.internal.pageSize.getHeight();
     const imgWidth = pageWidth;

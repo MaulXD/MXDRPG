@@ -6,6 +6,8 @@
   z-index: -1;
   pointer-events: none;
   overflow: visible;
+  visibility: visible;
+  opacity: 1;
 }
 
 .sheet-pdf-capture {

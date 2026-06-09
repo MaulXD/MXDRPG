@@ -60,7 +60,11 @@ export function SheetEditRequestButton({
         className={btnClass}
         title="Solicitar edição ao mestre"
         aria-label="Solicitar edição ao mestre"
-        onClick={() => {
+        onPointerDown={(e) => e.stopPropagation()}
+        onPointerUp={(e) => e.stopPropagation()}
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
           setOpen(true);
           setMsg(null);
         }}

@@ -37,6 +37,7 @@ function applySetLevel(actor: RoomActor, level: number): RoomActor {
   const conMod = attributeMod(actor.attributes.constituicao);
   const hpMax = hpMaxFor(actor.identity.classe, nivel, conMod);
   const paMax = paMaxFor(nivel, actor.resources.pontosAcao.max);
+  const resetProgression = nivel <= 1;
   return {
     ...normalizeCharacter({
       ...actor,
@@ -44,6 +45,8 @@ function applySetLevel(actor: RoomActor, level: number): RoomActor {
         ...actor.identity,
         nivel,
         xpTotal: xpTotalForLevel(nivel),
+        subclasse: resetProgression ? null : actor.identity.subclasse,
+        talentos: resetProgression ? [] : actor.identity.talentos,
       },
       resources: {
         vida: {
