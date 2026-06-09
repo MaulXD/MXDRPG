@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { dbEnabled } from "@/lib/db/enabled";
+import { ensureDbMigrations } from "@/lib/db/ensure-migrations";
 import { setUserNickname } from "@/lib/db/users";
 import { getSession } from "@/lib/auth/session";
 
@@ -19,12 +20,15 @@ export async function POST(request: Request) {
   }
 
   try {
+    await ensureDbMigrations();
     const user = await setUserNickname(session.user.id, nickname);
     return NextResponse.json({ ok: true, user });
   } catch (e) {
-    return NextResponse.json(
-      { error: e instanceof Error ? e.message : "Apelido inválido" },
-      { status: 400 }
-    );
+    const raw = e instanceof Error ? e.message : "Apelido inválido";
+    const safe =
+      /column|relation|does not exist|postgres/i.test(raw)
+        ? "Banco desatualizado — tente de novo em alguns segundos ou avise o suporte."
+        : raw;
+    return NextResponse.json({ error: safe }, { status: 400 });
   }
 }
