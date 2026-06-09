@@ -1,6 +1,7 @@
 import { ClerkHeaderAuth } from "@/components/auth/ClerkHeaderAuth";
+import { HeaderUserMenu } from "@/components/auth/HeaderUserMenu";
 import { EldarinLogo } from "@/components/brand/EldarinLogo";
-import { FriendsNavBadge } from "@/components/friends/FriendsNavBadge";
+import { FriendsNavChat } from "@/components/friends/FriendsNavChat";
 import { hasClerkPublishableKey } from "@/lib/auth/clerk-config";
 import { getSession } from "@/lib/auth/session";
 import { portalPathForRole, roleMeta } from "@/lib/auth/roles";
@@ -31,10 +32,11 @@ export async function SiteHeaderWrapper() {
         ) : session ? (
           <>
             <AnimatedNavLink href="/conta">Perfil</AnimatedNavLink>
-            <FriendsNavBadge />
+            <FriendsNavChat />
             <Link href={portalPathForRole(session.user.role)} className="btn nav-cta">
               {roleMeta(session.user.role).label}
             </Link>
+            <HeaderUserMenu user={session.user} />
           </>
         ) : (
           <Link href="/sign-in" className="btn nav-cta">

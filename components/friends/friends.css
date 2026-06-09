@@ -131,6 +131,127 @@
   font-size: 0.85rem;
 }
 
+.site-header,
+.vtt-topbar {
+  overflow: visible;
+}
+
+.friends-nav-chat {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.friends-nav-chat__toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+  padding: 0;
+}
+
+.friends-nav-chat__toggle.is-open {
+  color: var(--accent);
+}
+
+.friends-nav-chat__icon {
+  opacity: 0.85;
+}
+
+.site-nav .friends-nav-chat__panel,
+.vtt-nav .friends-nav-chat__panel {
+  right: 0;
+}
+
+.friends-nav-chat__panel {
+  position: absolute;
+  top: calc(100% + 0.55rem);
+  right: 0;
+  z-index: 400;
+  width: min(440px, calc(100vw - 1.5rem));
+  max-height: min(520px, calc(100vh - 5rem));
+  display: flex;
+  flex-direction: column;
+  padding: 0.65rem;
+  border-radius: var(--radius-md, 12px);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45);
+}
+
+.friends-nav-chat__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.45rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.friends-nav-chat__title {
+  margin: 0;
+  font-size: 0.82rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.friends-nav-chat__head-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.friends-nav-chat__hub-link {
+  font-size: 0.78rem;
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.friends-nav-chat__hub-link:hover {
+  text-decoration: underline;
+}
+
+.friends-nav-chat__close {
+  display: grid;
+  place-items: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border: none;
+  border-radius: var(--radius-sm, 8px);
+  background: rgba(255, 255, 255, 0.06);
+  color: inherit;
+  cursor: pointer;
+}
+
+.friends-nav-chat__close:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.friends-nav-chat__hint {
+  margin: 0;
+  padding: 1rem 0.5rem;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.friends-chat--nav {
+  min-height: 360px;
+  grid-template-columns: minmax(120px, 150px) 1fr;
+}
+
+.friends-chat--nav .friends-chat__messages {
+  max-height: 240px;
+}
+
+.friends-chat--nav .friends-chat__list-title {
+  font-size: 0.68rem;
+}
+
 .friends-nav-badge {
   position: relative;
   gap: 0.35rem;

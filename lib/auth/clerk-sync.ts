@@ -3,7 +3,7 @@ import "server-only";
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { isClerkEnabled } from "@/lib/auth/clerk-config";
 import type { SessionUser } from "@/lib/auth/types";
-import { ensureUserFromClerk } from "@/lib/db/users";
+import { ensureUserFromClerk, fetchUserByClerkId, fetchUserById } from "@/lib/db/users";
 
 function ephemeralClerkSession(
   userId: string,
@@ -28,6 +28,19 @@ export async function resolveClerkSessionUser(): Promise<SessionUser | null> {
   const { userId, sessionClaims } = await auth();
   if (!userId) return null;
 
+  // Caminho rápido: usuário já no Postgres (webhook ou login anterior).
+  // Evita currentUser() — chamada extra ao Clerk em cada request autenticado.
+  try {
+    const existing = await fetchUserByClerkId(userId);
+    if (existing) {
+      const session = await fetchUserById(existing.id);
+      if (session) return { ...session, clerkId: userId };
+    }
+  } catch (err) {
+    console.error("[clerk-sync] fetchUserByClerkId failed:", err);
+  }
+
+  // Primeiro login / conta ainda não vinculada — busca perfil no Clerk.
   let cu = null;
   try {
     cu = await currentUser();
