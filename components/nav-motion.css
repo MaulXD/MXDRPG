@@ -113,6 +113,10 @@
     animation: none;
   }
 
+  .vtt-topbar-shell {
+    transition: none;
+  }
+
   .nav-link::after {
     transition: none;
   }
