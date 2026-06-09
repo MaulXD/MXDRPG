@@ -11,6 +11,20 @@
   color: var(--text);
 }
 
+.vtt-topbar-shell {
+  flex-shrink: 0;
+  position: relative;
+  z-index: 120;
+  transition: transform 0.28s var(--ease-out, ease-out), opacity 0.22s ease;
+  transform-origin: top center;
+}
+
+.vtt-chrome--topbar-hidden .vtt-topbar-shell {
+  transform: translateY(-100%);
+  opacity: 0;
+  pointer-events: none;
+}
+
 .vtt-topbar {
   flex-shrink: 0;
   display: flex;
@@ -25,6 +39,81 @@
   border-top: none;
   border-bottom: 1px solid var(--glass-border);
   margin: 0;
+}
+
+.vtt-topbar__end {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  min-width: 0;
+}
+
+.vtt-topbar-toggle {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  border: 1px solid var(--glass-border);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-muted);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+}
+
+.vtt-topbar-toggle:hover {
+  color: var(--accent);
+  border-color: var(--glass-border-bright);
+  background: rgba(122, 163, 201, 0.1);
+}
+
+.vtt-topbar-toggle:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.vtt-topbar-toggle__chevron {
+  display: block;
+  width: 0.45rem;
+  height: 0.45rem;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(-135deg) translateY(2px);
+}
+
+.vtt-topbar-toggle__chevron--down {
+  transform: rotate(45deg) translateY(-2px);
+}
+
+.vtt-topbar-reveal {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  z-index: 130;
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 1.35rem;
+  padding: 0;
+  margin: 0;
+  border: 1px solid var(--glass-border-bright);
+  border-top: none;
+  border-radius: 0 0 10px 10px;
+  background: var(--glass);
+  color: var(--text-muted);
+  cursor: pointer;
+  transform: translateX(-50%);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+  transition: color 0.15s, background 0.15s;
+}
+
+.vtt-topbar-reveal:hover {
+  color: var(--accent);
+  background: var(--surface-raised);
 }
 
 .vtt-topbar-actions {

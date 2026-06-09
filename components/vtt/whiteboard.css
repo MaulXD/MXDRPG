@@ -7,9 +7,9 @@
   transform: translateY(-50%);
   z-index: 12;
   display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 0.35rem;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0;
   pointer-events: none;
 }
 
@@ -217,43 +217,10 @@
 .map-toolbar__sub {
   display: flex;
   flex-direction: column;
-  gap: 0.35rem;
-  padding: 0.45rem;
-  border-radius: 10px;
-  border: 1px solid var(--mesa-accent-border, var(--glass-border));
-  background: rgba(10, 14, 22, 0.92);
-  backdrop-filter: blur(10px);
-  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.45);
-  align-self: stretch;
-  justify-content: center;
-}
-
-.map-toolbar-shell .map-toolbar__colors {
-  display: grid;
-  grid-template-columns: repeat(4, 1.15rem);
-  gap: 0.22rem;
-  max-width: none;
-}
-
-.map-toolbar-shell .map-toolbar__widths {
-  flex-direction: row;
-  flex-wrap: wrap;
-  gap: 0.2rem;
-}
-
-.map-toolbar-shell .map-toolbar__width {
-  min-width: 2.1rem;
-  padding: 0 0.25rem;
-}
-
-.map-toolbar-shell .map-toolbar__clear {
-  width: auto;
-  white-space: nowrap;
-}
-
-.map-toolbar-shell .map-toolbar__hint {
-  max-width: none;
-  white-space: nowrap;
+  gap: 0.3rem;
+  padding-top: 0.35rem;
+  margin-top: 0.1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .map-markup-text-input {
