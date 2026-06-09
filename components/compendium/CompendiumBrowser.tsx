@@ -1,6 +1,6 @@
 ﻿"use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import type { UserRole } from "@/lib/auth/types";
 import type { CompendiumEntry, CompendiumPackId, CompendiumPackMeta } from "@/lib/compendium/types";
@@ -18,13 +18,32 @@ type Props = {
   role: UserRole | null;
   /** Painel estreito da mesa (layout em lista, sem grid largo) */
   variant?: "page" | "rail";
+  /** Pack inicial (rota /compendios/[packId]) */
+  initialPackId?: CompendiumPackId;
 };
 
-export function CompendiumBrowser({ packs, data, role, variant = "page" }: Props) {
-  const [packId, setPackId] = useState<CompendiumPackId>(packs[0]?.id ?? "armas");
+export function CompendiumBrowser({
+  packs,
+  data,
+  role,
+  variant = "page",
+  initialPackId,
+}: Props) {
+  const [packId, setPackId] = useState<CompendiumPackId>(
+    initialPackId && packs.some((p) => p.id === initialPackId)
+      ? initialPackId
+      : (packs[0]?.id ?? "armas")
+  );
   const [query, setQuery] = useState("");
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [monsterSheetId, setMonsterSheetId] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!initialPackId || !packs.some((p) => p.id === initialPackId)) return;
+    setPackId(initialPackId);
+    setSelectedId(null);
+    setQuery("");
+  }, [initialPackId, packs]);
 
   const activePack = packs.find((p) => p.id === packId) ?? packs[0];
 
@@ -131,13 +150,14 @@ export function CompendiumBrowser({ packs, data, role, variant = "page" }: Props
         <ul className="comp-pack-list">
           {packs.map((p) => (
             <li key={p.id}>
-              <button
-                type="button"
+              <Link
+                href={`/compendios/${p.id}`}
                 className={`comp-pack-btn ${p.id === packId ? "active" : ""}`}
+                aria-current={p.id === packId ? "page" : undefined}
                 onClick={() => onPickPack(p.id)}
               >
                 {p.label}
-              </button>
+              </Link>
             </li>
           ))}
         </ul>
