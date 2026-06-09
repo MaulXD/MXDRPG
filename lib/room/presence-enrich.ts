@@ -1,8 +1,10 @@
 import "server-only";
 
+import { normalizeUserRole } from "@/lib/auth/roles";
 import { resolveUserAvatarUrl } from "@/lib/db/user-avatar";
 import { getSql } from "@/lib/db/client";
 import { dbEnabled } from "@/lib/db/enabled";
+import { fetchClerkIdForUser } from "@/lib/db/users";
 import { resolveActorTokenImageUrl } from "@/lib/room/portrait-sync";
 import { listRoomPresence } from "@/lib/room/presence";
 import type { RoomActor, RoomState } from "@/lib/room/types";
@@ -21,6 +23,7 @@ type UserPresenceRow = {
   id: string;
   nickname: string | null;
   name: string;
+  role: string | null;
   avatar_url: string | null;
   oauth_avatar_url: string | null;
   avatar_source: string | null;
@@ -67,7 +70,7 @@ async function fetchUserPresenceRows(userIds: string[]): Promise<Map<string, Use
   if (!sql) return out;
 
   const rows = await sql<UserPresenceRow[]>`
-    SELECT id, nickname, name, avatar_url, oauth_avatar_url, avatar_source
+    SELECT id, nickname, name, role, avatar_url, oauth_avatar_url, avatar_source
     FROM eldarin_users
     WHERE id = ANY(${userIds})
   `;
@@ -77,20 +80,40 @@ async function fetchUserPresenceRows(userIds: string[]): Promise<Map<string, Use
   return out;
 }
 
+async function isPresenceGmUser(
+  userId: string,
+  room: RoomState,
+  profileRole: string | null | undefined
+): Promise<boolean> {
+  if (userId === room.ownerId) return true;
+  if (normalizeUserRole(profileRole) === "admin") return true;
+
+  if (userId.startsWith("usr_") && room.ownerId.startsWith("clerk-")) {
+    const clerk = await fetchClerkIdForUser(userId);
+    if (clerk && room.ownerId === `clerk-${clerk}`) return true;
+  }
+  if (userId.startsWith("clerk-") && room.ownerId.startsWith("usr_")) {
+    const ownerClerk = await fetchClerkIdForUser(room.ownerId);
+    if (ownerClerk && userId === `clerk-${ownerClerk}`) return true;
+  }
+  return false;
+}
+
 /** Lista presença online enriquecida com avatar, papel e ficha ativa no mapa. */
 export async function buildEnrichedRoomPresence(room: RoomState): Promise<RoomPresenceMember[]> {
-  const raw = listRoomPresence(room.roomId);
+  const raw = await listRoomPresence(room.roomId);
   if (!raw.length) return [];
 
   const userIds = raw.map((e) => e.userId);
   const profiles = await fetchUserPresenceRows(userIds);
 
-  return raw.map((entry) => {
+  const members: RoomPresenceMember[] = [];
+  for (const entry of raw) {
     const profile = profiles.get(entry.userId);
-    const isOwner = entry.userId === room.ownerId;
+    const isOwner = await isPresenceGmUser(entry.userId, room, profile?.role);
     const displayName = profile ? displayNameFromRow(profile) : entry.displayName;
     const character = characterForUser(entry.userId, room);
-    return {
+    members.push({
       userId: entry.userId,
       displayName,
       avatarUrl: profile
@@ -104,6 +127,7 @@ export async function buildEnrichedRoomPresence(room: RoomState): Promise<RoomPr
       role: isOwner ? "gm" : "player",
       characterName: character.name,
       isOwner,
-    };
-  });
+    });
+  }
+  return members;
 }
