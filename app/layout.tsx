@@ -38,8 +38,8 @@ export const metadata: Metadata = {
   description:
     "Mesa virtual no navegador: combaté hex, PA, fichas medievais. Admin, Mestre e Jogador.",
   icons: {
-    icon: "/brand/eldarin-dragao.png",
-    apple: "/brand/eldarin-dragao.png",
+    icon: "/brand/favicon.png",
+    apple: "/brand/favicon.png",
   },
 };
 
