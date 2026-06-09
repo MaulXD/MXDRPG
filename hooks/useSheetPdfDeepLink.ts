@@ -35,12 +35,23 @@ export function useSheetPdfDeepLink({
     onRolled,
   });
   ctxRef.current = { roomId, combat, tokens, actors, bypassTurn, openSheet, onRolled };
+  const processedRef = useRef(false);
 
   useEffect(() => {
     if (!enabled || typeof window === "undefined") return;
 
     const params = readSheetPdfDeepLinkFromLocation();
-    if (!params) return;
+    if (!params || processedRef.current) return;
+
+    const needsRollContext =
+      params.action === "roll" && params.skill && roomId;
+    if (needsRollContext) {
+      const actor = actors?.[params.characterId];
+      const token = tokens?.find((t) => t.linked && t.actorId === params.characterId);
+      if (!actor || !token) return;
+    }
+
+    processedRef.current = true;
 
     void (async () => {
       try {
@@ -60,5 +71,5 @@ export function useSheetPdfDeepLink({
         clearSheetPdfDeepLinkFromUrl();
       }
     })();
-  }, [enabled]);
+  }, [enabled, roomId, actors, tokens, combat]);
 }
