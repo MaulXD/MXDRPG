@@ -1,6 +1,5 @@
-import Image from "next/image";
 import Link from "next/link";
-import { BRAND_LANDING } from "@/components/brand/EldarinLogo";
+import { EldarinLogo } from "@/components/brand/EldarinLogo";
 import { HexPreview } from "@/components/home/HexPreview";
 import { HomeFeatureIcon, type HomeFeatureIconName } from "@/components/ui/EldarinIcons";
 
@@ -33,15 +32,7 @@ export default function HomePage() {
       <section className="page-wrap page-hero">
         <div className="landing-hero">
           <h1 className="landing-hero__brand">
-            <Image
-              src={BRAND_LANDING}
-              alt="MXDRPG"
-              width={640}
-              height={935}
-              className="landing-hero__logo"
-              priority
-              sizes="(max-width: 768px) 92vw, 28rem"
-            />
+            <EldarinLogo variant="full" href={null} className="eldarin-logo--hero" />
           </h1>
           <p className="eyebrow landing-hero__eyebrow">VTT proprietário</p>
           <p className="lead landing-hero__lead">
