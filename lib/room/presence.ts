@@ -1,5 +1,12 @@
 import "server-only";
 
+import { dbEnabled } from "@/lib/db/enabled";
+import {
+  listRoomPresenceDb,
+  pruneRoomPresenceDb,
+  touchRoomPresenceDb,
+} from "@/lib/db/room-presence";
+
 /** Janela sem heartbeat antes de considerar offline (ms). */
 export const PRESENCE_TTL_MS = 40_000;
 
@@ -88,7 +95,13 @@ export function touchRoomPresence(
 
   const prev = map.get(userId);
   const wasOnline = prev != null && now - prev.lastSeen < PRESENCE_TTL_MS;
-  map.set(userId, { displayName: displayName(name), lastSeen: now });
+  const label = displayName(name);
+  map.set(userId, { displayName: label, lastSeen: now });
+
+  if (dbEnabled()) {
+    void touchRoomPresenceDb(roomId, userId, label);
+    void pruneRoomPresenceDb(roomId);
+  }
 
   if (wasOnline) return null;
 
@@ -116,8 +129,7 @@ export function presenceEventsAfter(
   return { events, lastId };
 }
 
-/** Lista quem está online na mesa. */
-export function listRoomPresence(roomId: string): { userId: string; displayName: string }[] {
+function listRoomPresenceMemory(roomId: string): { userId: string; displayName: string }[] {
   const now = Date.now();
   const map = roomPresence().get(roomId);
   if (!map) return [];
@@ -128,4 +140,19 @@ export function listRoomPresence(roomId: string): { userId: string; displayName:
     }
   }
   return out;
+}
+
+/** Lista quem está online na mesa (Postgres quando disponível). */
+export async function listRoomPresence(
+  roomId: string
+): Promise<{ userId: string; displayName: string }[]> {
+  if (dbEnabled()) {
+    try {
+      const dbList = await listRoomPresenceDb(roomId);
+      if (dbList.length) return dbList;
+    } catch {
+      /* fallback memória */
+    }
+  }
+  return listRoomPresenceMemory(roomId);
 }

@@ -148,6 +148,7 @@ export function canParticipateInRoom(
   if (room.roomId === "demo") return Boolean(user);
   if (!user) return false;
   if (user.role === "admin") return true;
+  if (room.ownerId && canManageRoom({ ownerId: room.ownerId }, user)) return true;
   return isRoomMember(room, user.id, user.clerkId);
 }
 
