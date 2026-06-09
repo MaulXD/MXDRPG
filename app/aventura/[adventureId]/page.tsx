@@ -23,7 +23,7 @@ import {
 
 } from "@/lib/character/characters";
 
-import { ensureAdventureMembership, getAdventure } from "@/lib/adventure/store";
+import { ensureAdventureMembership, getAdventure, joinAdventureByInvite } from "@/lib/adventure/store";
 
 import { getRoom } from "@/lib/room/store";
 
@@ -36,7 +36,13 @@ type Props = {
 
   params: Promise<{ adventureId: string }>;
 
-  searchParams: Promise<{ vinculado?: string; personagem?: string; char?: string; mesa?: string }>;
+  searchParams: Promise<{
+    vinculado?: string;
+    personagem?: string;
+    char?: string;
+    mesa?: string;
+    invite?: string;
+  }>;
 
 };
 
@@ -58,7 +64,14 @@ export default async function AventuraHubPage({ params, searchParams }: Props) {
 
   const { adventureId } = await params;
 
-  const { vinculado, personagem, char: newCharId, mesa: mesaFromQuery } = await searchParams;
+  const {
+    vinculado,
+    personagem,
+    char: newCharId,
+    mesa: mesaFromQuery,
+    invite: inviteParam,
+  } = await searchParams;
+  const inviteCode = inviteParam?.trim() || null;
 
   const justJoined = vinculado === "1";
 
@@ -139,37 +152,32 @@ export default async function AventuraHubPage({ params, searchParams }: Props) {
 
 
   if (
-
-    !isAdventureMember(adventure, session.user.id) &&
-
-    adventureId !== "demo"
-
+    !isAdventureMember(adventure, session.user.id, session.user.clerkId) &&
+    inviteCode
   ) {
-
-    adventure = (await ensureAdventureMembership(adventureId, session.user.id)) ?? adventure;
-
+    const joined = await joinAdventureByInvite(inviteCode, session.user.id);
+    if (joined) adventure = joined;
   }
 
+  if (
+    !isAdventureMember(adventure, session.user.id, session.user.clerkId) &&
+    adventureId !== "demo"
+  ) {
+    adventure = (await ensureAdventureMembership(adventureId, session.user.id)) ?? adventure;
+  }
 
-
-  if (!isAdventureMember(adventure, session.user.id) && adventureId !== "demo") {
-
+  if (!isAdventureMember(adventure, session.user.id, session.user.clerkId) && adventureId !== "demo") {
     return (
-
       <div className="page-wrap">
-
         <p>Entre na mesa com o código de convite.</p>
-
+        <p style={{ color: "var(--text-muted)", fontSize: "0.9rem" }}>
+          Use o link do mestre (com <code>?invite=</code>) ou cole o código em Suas mesas.
+        </p>
         <Link href="/eldarin" className="btn">
-
           Suas mesas
-
         </Link>
-
       </div>
-
     );
-
   }
 
 

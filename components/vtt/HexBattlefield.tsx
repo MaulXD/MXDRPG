@@ -99,6 +99,7 @@ import { BattlefieldActionHud } from "@/components/vtt/BattlefieldActionHud";
 import { CharacterCombatHud } from "@/components/vtt/CharacterCombatHud";
 import { CombatHudRestoreButton } from "@/components/vtt/CombatHudRestoreButton";
 import { MonsterKnowledgePanel } from "@/components/vtt/MonsterKnowledgePanel";
+import { PlayerBestiaryGmPanel } from "@/components/vtt/PlayerBestiaryGmPanel";
 import { TokenHoverMiniHud } from "@/components/vtt/TokenHoverMiniHud";
 import { TokenStatusBody } from "@/components/vtt/TokenStatusBody";
 import { EndTurnBar } from "@/components/vtt/EndTurnBar";
@@ -200,6 +201,10 @@ type Props = {
   /** Abre o painel Status na barra lateral (Foundry). */
   onStatusDockOpen?: () => void;
   isWindowFloating?: (id: MesaWindowId) => boolean;
+  /** userId → apelido/nome para placa dual nos tokens. */
+  ownerDisplayNames?: Map<string, string>;
+  /** Quando definido, substitui a detecção interna de mestre (ex.: visão simulada de jogador). */
+  isRoomGm?: boolean;
 };
 
 export function HexBattlefield({
@@ -261,6 +266,8 @@ export function HexBattlefield({
   onStatusWindowFocus,
   onStatusDockOpen,
   isWindowFloating,
+  ownerDisplayNames,
+  isRoomGm: isRoomGmProp,
 }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
@@ -275,6 +282,10 @@ export function HexBattlefield({
   const [hoverTokenId, setHoverTokenId] = useState<string | null>(null);
   const [gmDragTokenId, setGmDragTokenId] = useState<string | null>(null);
   const [monsterKnowledgeToken, setMonsterKnowledgeToken] = useState<BattleToken | null>(null);
+  const [playerBestiaryTarget, setPlayerBestiaryTarget] = useState<{
+    token: BattleToken;
+    ownerId: string;
+  } | null>(null);
   const [areaCenter, setAreaCenter] = useState<Axial | null>(null);
   const [combatFx, setCombatFx] = useState<CombatFxState | null>(null);
   const [tokenFlash, setTokenFlash] = useState<{
@@ -468,10 +479,18 @@ export function HexBattlefield({
 
   const focusByTokenId = usePortraitFocusByToken(displayScene.tokens, snapshot?.actors);
 
-  const isRoomGm = useMemo(
+  const isRoomGmComputed = useMemo(
     () => (session ? canManageRoom({ ownerId: roomOwnerId }, session) : false),
     [session, roomOwnerId]
   );
+  const isRoomGm = isRoomGmProp ?? isRoomGmComputed;
+
+  useEffect(() => {
+    if (!isRoomGm) {
+      setDungeonModeOpen(false);
+      setDungeonEditorActive(false);
+    }
+  }, [isRoomGm]);
 
   const openMonsterKnowledge = useCallback(
     (token: BattleToken) => {
@@ -483,6 +502,30 @@ export function HexBattlefield({
 
   const closeMonsterKnowledge = useCallback(() => {
     setMonsterKnowledgeToken(null);
+  }, []);
+
+  const canOpenPlayerBestiary = useCallback(
+    (token: BattleToken) => {
+      if (!isRoomGm || isMonsterToken(token) || !token.linked || !token.actorId) return false;
+      const actor = roomActors[token.actorId];
+      return Boolean(actor && !actor.gmAuthored && actor.ownerId);
+    },
+    [isRoomGm, roomActors]
+  );
+
+  const openPlayerBestiary = useCallback(
+    (token: BattleToken) => {
+      if (!canOpenPlayerBestiary(token) || !token.actorId) return;
+      const ownerId = roomActors[token.actorId]?.ownerId;
+      if (!ownerId) return;
+      setPlayerBestiaryTarget({ token, ownerId });
+      setActionRingAt(null);
+    },
+    [canOpenPlayerBestiary, roomActors]
+  );
+
+  const closePlayerBestiary = useCallback(() => {
+    setPlayerBestiaryTarget(null);
   }, []);
 
   const canManageMarkups = useMemo(
@@ -729,6 +772,9 @@ export function HexBattlefield({
       mapImage,
       mapBackdropTone: mapBackdropToneValue,
       tokenHpDisplay,
+      roomSettings,
+      roomActors,
+      ownerDisplayNames,
       dungeonEditorActive: dungeonMapEditing,
       floorEditActive: floorMapEditing,
       dungeonEditorTool:
@@ -764,6 +810,9 @@ export function HexBattlefield({
       displayPings,
       mapImage,
       tokenHpDisplay,
+      roomSettings,
+      roomActors,
+      ownerDisplayNames,
       dungeonMapEditing,
       floorMapEditing,
       dungeonTool,
@@ -1424,35 +1473,38 @@ export function HexBattlefield({
       }
       setActionErr(null);
       moveBusyRef.current = true;
+      const tokenId = selected.id;
       const origin = selected.axial;
       const path = check.path ?? [origin, axial];
       try {
         const snap = await moveRoomTokenBudget(
           roomId,
-          selected.id,
+          tokenId,
           axial.q,
           axial.r,
           highlights.moveMode,
           selectedBypass
         );
         if (!snap?.scene) throw new Error("Resposta inválida ao mover token");
-        syncRoom(snap);
-        moveAnimRef.current = { tokenId: selected.id, q: origin.q, r: origin.r };
+
+        // Anima antes de aplicar o snapshot — evita corrida com SSE que sumia o token.
+        moveAnimRef.current = { tokenId, q: origin.q, r: origin.r };
         redraw();
         await animateTokenAlongPath(path, (step) => {
-          moveAnimRef.current = { tokenId: selected.id, q: step.q, r: step.r };
+          moveAnimRef.current = { tokenId, q: step.q, r: step.r };
           redraw();
         });
         moveAnimRef.current = null;
+        syncRoom(snap);
         redraw();
-        flushPendingSceneSnapshot();
       } catch (e) {
         setActionErr(e instanceof Error ? e.message : "Movimento inválido");
         moveAnimRef.current = null;
         redraw();
-        flushPendingSceneSnapshot();
+        refresh();
       } finally {
         moveBusyRef.current = false;
+        flushPendingSceneSnapshot();
       }
     },
     [
@@ -1466,6 +1518,7 @@ export function HexBattlefield({
       selectedBypass,
       syncRoom,
       redraw,
+      refresh,
       flushPendingSceneSnapshot,
       displayScene.tokens,
       displayScene.gridRadius,
@@ -1704,6 +1757,8 @@ export function HexBattlefield({
     canOpenActionRing: canPreviewTurnMove,
     onActionRingBlocked,
     onOpenMonsterKnowledge: openMonsterKnowledge,
+    onOpenPlayerBestiary: openPlayerBestiary,
+    canOpenPlayerBestiary,
     dungeonEditor: isRoomGm
       ? {
           layer: dungeonLayer,
@@ -2526,6 +2581,17 @@ export function HexBattlefield({
               adventureId={adventureIdProp ?? roomId}
               roomId={roomId}
               onClose={closeMonsterKnowledge}
+            />
+          </div>
+        ) : null}
+        {playerBestiaryTarget && roomId ? (
+          <div className="vtt-monster-knowledge-wrap">
+            <PlayerBestiaryGmPanel
+              token={playerBestiaryTarget.token}
+              playerUserId={playerBestiaryTarget.ownerId}
+              adventureId={adventureIdProp ?? roomId}
+              roomId={roomId}
+              onClose={closePlayerBestiary}
             />
           </div>
         ) : null}

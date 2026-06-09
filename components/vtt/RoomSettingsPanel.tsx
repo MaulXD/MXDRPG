@@ -22,6 +22,7 @@ export function RoomSettingsPanel({
   const [showMonsterHp, setShowMonsterHp] = useState(settings.showMonsterHpToPlayers);
   const [showMonsterHpChat, setShowMonsterHpChat] = useState(settings.showMonsterHpInChat);
   const [allowPing, setAllowPing] = useState(settings.allowPlayerPing);
+  const [showUsernamePlate, setShowUsernamePlate] = useState(settings.showUsernameOnTokenNameplate);
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState<string | null>(null);
 
@@ -30,6 +31,7 @@ export function RoomSettingsPanel({
     setShowMonsterHp(settings.showMonsterHpToPlayers);
     setShowMonsterHpChat(settings.showMonsterHpInChat);
     setAllowPing(settings.allowPlayerPing);
+    setShowUsernamePlate(settings.showUsernameOnTokenNameplate);
   }, [roomName, settings]);
 
   async function save() {
@@ -42,6 +44,7 @@ export function RoomSettingsPanel({
         showMonsterHpToPlayers: showMonsterHp,
         showMonsterHpInChat: showMonsterHpChat,
         allowPlayerPing: allowPing,
+        showUsernameOnTokenNameplate: showUsernamePlate,
         gmBypassInitiative: false,
       });
       onUpdated(snapshot);
@@ -95,6 +98,23 @@ export function RoomSettingsPanel({
         <p className="vtt-combat-hint" style={{ margin: 0 }}>
           Você pode rolar iniciativa, reordenar a fila e passar turnos. Mover, atacar e usar magia só na
           vez de cada token (personagens e monstros).
+        </p>
+      </fieldset>
+
+      <fieldset className="vtt-settings-fieldset">
+        <legend className="vtt-eyebrow">Tokens no mapa</legend>
+        <label className="vtt-check">
+          <input
+            type="checkbox"
+            checked={showUsernamePlate}
+            onChange={(e) => setShowUsernamePlate(e.target.checked)}
+          />
+          Exibir username + ficha em duas linhas (sem parênteses)
+        </label>
+        <p className="vtt-combat-hint" style={{ margin: 0 }}>
+          Personagens de jogador mostram apelido na primeira linha e nome da ficha abaixo. Monstros
+          mantêm só o nome. Com a opção ativa, a placa aparece ao passar o mouse; use
+          &quot;sempre visível&quot; no token para fixar.
         </p>
       </fieldset>
 

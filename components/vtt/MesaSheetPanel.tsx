@@ -23,12 +23,18 @@ export function MesaSheetPanel({ actorId, roomId, actors, session, compendium }:
     return <p className="inv-empty">Personagem não encontrado.</p>;
   }
   const canEdit = canEditRoomActor({ roomId }, { ...seed, ...live }, session);
-  const inventory = live.inventory?.length ? live.inventory : seed.inventory;
+  const inventory = live?.inventory?.length ? live.inventory : seed.inventory;
 
   return (
     <div className="mesa-panel-scroll mesa-panel-scroll--rail mesa-sheet-embed">
       <CharacterSheet
-        character={{ ...seed, ...live, inventory }}
+        character={{
+          ...seed,
+          ...(live ?? {}),
+          inventory,
+          combatLoadout: live?.combatLoadout ?? seed.combatLoadout ?? null,
+          armorLoadout: live?.armorLoadout ?? seed.armorLoadout ?? null,
+        }}
         canEdit={canEdit}
         compendium={compendium}
         roomId={roomId}

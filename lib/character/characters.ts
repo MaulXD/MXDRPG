@@ -163,6 +163,12 @@ export async function createCharacterFromWizard(
     const adv = await getAdventure(adventureId);
     if (adv) {
       mesaRoomId = adv.primaryRoomId;
+      const { attachCharacterToRoomState } = await import("@/lib/room/adventure-actors");
+      const { getRoom, persistRoom } = await import("@/lib/room/internal/registry");
+      const room = await getRoom(adv.primaryRoomId);
+      if (room && attachCharacterToRoomState(room, saved)) {
+        await persistRoom(adv.primaryRoomId, room);
+      }
       await syncAdventureActorsForRoom(adv.primaryRoomId);
     }
   }

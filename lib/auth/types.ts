@@ -7,6 +7,14 @@ export interface SessionUser {
   name: string;
   nickname?: string | null;
   role: UserRole;
+  /** URL resolvida (OAuth ou personalizada). */
+  avatarUrl?: string | null;
+  /** Foto do provedor OAuth — usada quando avatarSource é oauth. */
+  oauthAvatarUrl?: string | null;
+  /** Preferência de avatar — só relevante na edição de perfil. */
+  avatarSource?: "oauth" | "custom";
+  /** Clerk user id — reconcilia `clerk-{id}` legado em memberIds. */
+  clerkId?: string | null;
 }
 
 export interface SessionPayload {

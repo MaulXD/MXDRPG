@@ -2,6 +2,12 @@ import { hashPassword } from "@/lib/auth/password";
 import { normalizeNickname, validateNickname } from "@/lib/auth/nickname";
 import { normalizeUserRole } from "@/lib/auth/roles";
 import type { SessionUser, UserRole } from "@/lib/auth/types";
+import {
+  normalizeAvatarSource,
+  resolveUserAvatarUrl,
+  sanitizeCustomAvatarUrl,
+  type AvatarSource,
+} from "@/lib/db/user-avatar";
 import { getSql } from "@/lib/db/client";
 
 export type StoredUser = {
@@ -14,6 +20,9 @@ export type StoredUser = {
   cpfPrefixHash?: string | null;
   birthDate?: string | null;
   role: UserRole;
+  avatarUrl?: string | null;
+  oauthAvatarUrl?: string | null;
+  avatarSource?: AvatarSource;
   createdAt: number;
 };
 
@@ -31,8 +40,14 @@ type UserRow = {
   cpf_prefix_hash: string | null;
   birth_date: string | Date | null;
   role: string;
+  avatar_url: string | null;
+  oauth_avatar_url: string | null;
+  avatar_source: string | null;
   created_at: number;
 };
+
+const USER_SELECT =
+  "id, clerk_id, email, nickname, name, password_hash, cpf_prefix_hash, birth_date, role, avatar_url, oauth_avatar_url, avatar_source, created_at";
 
 function formatBirthDate(value: string | Date | null | undefined): string | null {
   if (value == null) return null;
@@ -47,6 +62,7 @@ function formatBirthDate(value: string | Date | null | undefined): string | null
 }
 
 function rowToStored(r: UserRow): StoredUser {
+  const avatarSource = normalizeAvatarSource(r.avatar_source);
   return {
     id: r.id,
     clerkId: r.clerk_id,
@@ -57,18 +73,36 @@ function rowToStored(r: UserRow): StoredUser {
     cpfPrefixHash: r.cpf_prefix_hash,
     birthDate: formatBirthDate(r.birth_date),
     role: normalizeUserRole(r.role),
+    avatarUrl: r.avatar_url,
+    oauthAvatarUrl: r.oauth_avatar_url,
+    avatarSource,
     createdAt: Number(r.created_at),
   };
 }
 
-function toSessionUser(row: Pick<UserRow, "id" | "email" | "nickname" | "name" | "role">): SessionUser {
+function storedToSession(row: StoredUser | UserRow): SessionUser {
+  const avatarSource = normalizeAvatarSource(
+    "avatar_source" in row ? row.avatar_source : row.avatarSource
+  );
+  const avatarUrl = resolveUserAvatarUrl({
+    avatarSource,
+    avatarUrl: "avatar_url" in row ? row.avatar_url : row.avatarUrl,
+    oauthAvatarUrl: "oauth_avatar_url" in row ? row.oauth_avatar_url : row.oauthAvatarUrl,
+  });
   return {
     id: row.id,
     email: row.email,
     name: row.name,
     nickname: row.nickname,
     role: normalizeUserRole(row.role),
+    avatarUrl,
+    oauthAvatarUrl: "oauth_avatar_url" in row ? row.oauth_avatar_url : row.oauthAvatarUrl ?? null,
+    avatarSource,
   };
+}
+
+function toSessionUser(row: Pick<UserRow, "id" | "email" | "nickname" | "name" | "role" | "avatar_url" | "oauth_avatar_url" | "avatar_source">): SessionUser {
+  return storedToSession(row as UserRow);
 }
 
 export async function fetchUserByEmail(email: string): Promise<StoredUser | null> {
@@ -76,7 +110,7 @@ export async function fetchUserByEmail(email: string): Promise<StoredUser | null
   if (!sql) return null;
   const key = slugEmail(email);
   const rows = await sql<UserRow[]>`
-    SELECT id, clerk_id, email, nickname, name, password_hash, cpf_prefix_hash, birth_date, role, created_at
+    SELECT ${sql.unsafe(USER_SELECT)}
     FROM eldarin_users WHERE LOWER(email) = ${key} LIMIT 1
   `;
   const r = rows[0];
@@ -88,7 +122,7 @@ export async function fetchUserByNickname(nickname: string): Promise<StoredUser 
   if (!sql) return null;
   const key = normalizeNickname(nickname);
   const rows = await sql<UserRow[]>`
-    SELECT id, clerk_id, email, nickname, name, password_hash, cpf_prefix_hash, birth_date, role, created_at
+    SELECT ${sql.unsafe(USER_SELECT)}
     FROM eldarin_users WHERE LOWER(nickname) = ${key} LIMIT 1
   `;
   const r = rows[0];
@@ -99,7 +133,7 @@ export async function fetchUserByClerkId(clerkId: string): Promise<StoredUser | 
   const sql = getSql();
   if (!sql) return null;
   const rows = await sql<UserRow[]>`
-    SELECT id, clerk_id, email, nickname, name, password_hash, cpf_prefix_hash, birth_date, role, created_at
+    SELECT ${sql.unsafe(USER_SELECT)}
     FROM eldarin_users WHERE clerk_id = ${clerkId} LIMIT 1
   `;
   const r = rows[0];
@@ -110,11 +144,24 @@ export async function fetchUserById(id: string): Promise<SessionUser | null> {
   const sql = getSql();
   if (!sql) return null;
   const rows = await sql<UserRow[]>`
-    SELECT id, clerk_id, email, nickname, name, password_hash, cpf_prefix_hash, birth_date, role, created_at
+    SELECT ${sql.unsafe(USER_SELECT)}
     FROM eldarin_users WHERE id = ${id} LIMIT 1
   `;
   const r = rows[0];
   return r ? toSessionUser(r) : null;
+}
+
+export async function fetchClerkIdForUser(userId: string): Promise<string | null> {
+  const sql = getSql();
+  if (!sql) return null;
+  try {
+    const rows = await sql<{ clerk_id: string | null }[]>`
+      SELECT clerk_id FROM eldarin_users WHERE id = ${userId} LIMIT 1
+    `;
+    return rows[0]?.clerk_id ?? null;
+  } catch {
+    return null;
+  }
 }
 
 function clerkSessionFallback(input: {
@@ -128,6 +175,7 @@ function clerkSessionFallback(input: {
     name: input.name,
     nickname: null,
     role: "member",
+    clerkId: input.clerkId,
   };
 }
 
@@ -135,29 +183,42 @@ export async function ensureUserFromClerk(input: {
   clerkId: string;
   email: string;
   name: string;
+  oauthAvatarUrl?: string | null;
 }): Promise<SessionUser> {
   const sql = getSql();
   if (!sql) return clerkSessionFallback(input);
 
+  const oauthAvatar = input.oauthAvatarUrl?.trim() || null;
+
   const existing = await fetchUserByClerkId(input.clerkId);
   if (existing) {
-    return {
-      id: existing.id,
-      email: existing.email,
-      name: existing.name,
-      nickname: existing.nickname ?? null,
-      role: existing.role,
-    };
+    if (oauthAvatar && oauthAvatar !== existing.oauthAvatarUrl) {
+      await sql`
+        UPDATE eldarin_users
+        SET oauth_avatar_url = ${oauthAvatar}, name = ${input.name.slice(0, 80)}
+        WHERE id = ${existing.id}
+      `;
+    }
+    const refreshed = await fetchUserById(existing.id);
+    if (refreshed) {
+      return { ...refreshed, clerkId: input.clerkId };
+    }
+    return storedToSession(existing);
   }
 
   const email = slugEmail(input.email);
   const byEmail = await fetchUserByEmail(email);
   if (byEmail) {
     await sql`
-      UPDATE eldarin_users SET clerk_id = ${input.clerkId}, name = ${input.name.slice(0, 80)}
+      UPDATE eldarin_users
+      SET clerk_id = ${input.clerkId},
+          name = ${input.name.slice(0, 80)},
+          oauth_avatar_url = COALESCE(${oauthAvatar}, oauth_avatar_url)
       WHERE id = ${byEmail.id}
     `;
-    return (await fetchUserById(byEmail.id))!;
+    const linked = await fetchUserById(byEmail.id);
+    if (!linked) return clerkSessionFallback(input);
+    return { ...linked, clerkId: input.clerkId };
   }
 
   const user: StoredUser = {
@@ -168,11 +229,15 @@ export async function ensureUserFromClerk(input: {
     name: input.name.slice(0, 80),
     passwordHash: null,
     role: "member",
+    oauthAvatarUrl: oauthAvatar,
+    avatarSource: "oauth",
     createdAt: Date.now(),
   };
 
   await sql`
-    INSERT INTO eldarin_users (id, clerk_id, email, nickname, name, password_hash, role, created_at)
+    INSERT INTO eldarin_users (
+      id, clerk_id, email, nickname, name, password_hash, role, oauth_avatar_url, avatar_source, created_at
+    )
     VALUES (
       ${user.id},
       ${user.clerkId ?? null},
@@ -181,16 +246,49 @@ export async function ensureUserFromClerk(input: {
       ${user.name},
       ${user.passwordHash},
       ${user.role},
+      ${user.oauthAvatarUrl ?? null},
+      ${user.avatarSource ?? "oauth"},
       ${user.createdAt}
     )
   `;
-  return {
-    id: user.id,
-    email: user.email,
-    name: user.name,
-    nickname: user.nickname ?? null,
-    role: user.role,
-  };
+  return storedToSession(user);
+}
+
+export async function updateUserAvatar(
+  userId: string,
+  opts: { avatarSource: AvatarSource; avatarUrl?: string | null }
+): Promise<SessionUser> {
+  const sql = getSql();
+  if (!sql) throw new Error("DATABASE_URL não configurada");
+
+  const avatarSource = normalizeAvatarSource(opts.avatarSource);
+
+  const existing = await sql<UserRow[]>`
+    SELECT ${sql.unsafe(USER_SELECT)} FROM eldarin_users WHERE id = ${userId} LIMIT 1
+  `;
+  const row = existing[0];
+  if (!row) throw new Error("Conta não encontrada");
+
+  let customUrl = row.avatar_url;
+  if (avatarSource === "custom") {
+    if (opts.avatarUrl !== undefined && opts.avatarUrl !== null && String(opts.avatarUrl).trim()) {
+      customUrl = sanitizeCustomAvatarUrl(opts.avatarUrl);
+    }
+    if (!customUrl) {
+      throw new Error("Informe uma foto válida (URL ou upload)");
+    }
+  }
+
+  await sql`
+    UPDATE eldarin_users
+    SET avatar_source = ${avatarSource},
+        avatar_url = ${avatarSource === "custom" ? customUrl : row.avatar_url}
+    WHERE id = ${userId}
+  `;
+
+  const updated = await fetchUserById(userId);
+  if (!updated) throw new Error("Conta não encontrada");
+  return updated;
 }
 
 export async function insertUser(
@@ -263,7 +361,7 @@ export async function completeUserPasswordRegistration(
   if (password.length < 6) throw new Error("Senha deve ter pelo menos 6 caracteres");
 
   const existing = await sql<UserRow[]>`
-    SELECT id, clerk_id, email, nickname, name, password_hash, cpf_prefix_hash, birth_date, role, created_at
+    SELECT ${sql.unsafe(USER_SELECT)}
     FROM eldarin_users WHERE id = ${userId} LIMIT 1
   `;
   const row = existing[0];
@@ -289,7 +387,7 @@ export async function completeUserPasswordRegistration(
   `;
 
   const updated = await sql<UserRow[]>`
-    SELECT id, clerk_id, email, nickname, name, password_hash, cpf_prefix_hash, birth_date, role, created_at
+    SELECT ${sql.unsafe(USER_SELECT)}
     FROM eldarin_users WHERE id = ${userId} LIMIT 1
   `;
   return rowToStored(updated[0]!);
@@ -303,7 +401,7 @@ export async function updateUserProfile(
   if (!sql) throw new Error("DATABASE_URL não configurada");
 
   const existing = await sql<UserRow[]>`
-    SELECT id, clerk_id, email, nickname, name, password_hash, cpf_prefix_hash, birth_date, role, created_at
+    SELECT ${sql.unsafe(USER_SELECT)}
     FROM eldarin_users WHERE id = ${userId} LIMIT 1
   `;
   const row = existing[0];
@@ -329,7 +427,7 @@ export async function updateUserProfile(
   `;
 
   const updated = await sql<UserRow[]>`
-    SELECT id, clerk_id, email, nickname, name, password_hash, cpf_prefix_hash, birth_date, role, created_at
+    SELECT ${sql.unsafe(USER_SELECT)}
     FROM eldarin_users WHERE id = ${userId} LIMIT 1
   `;
   return rowToStored(updated[0]!);

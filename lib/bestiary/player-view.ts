@@ -1,4 +1,8 @@
-import type { PlayerBestiaryEntry, PlayerMonsterKnowledgeView } from "@/lib/bestiary/types";
+import type {
+  PlayerBestiaryEntry,
+  PlayerBestiaryGmView,
+  PlayerMonsterKnowledgeView,
+} from "@/lib/bestiary/types";
 
 /** Monta o que o jogador pode ver — nunca expõe HP atual do monstro. */
 export function buildPlayerMonsterKnowledgeView(
@@ -19,5 +23,26 @@ export function buildPlayerMonsterKnowledgeView(
     killCount,
     hpMaxKnown,
     hasAnyKnowledge: attacks.length > 0 || damageDealt > 0 || killCount > 0,
+  };
+}
+
+export function buildPlayerBestiaryGmView(opts: {
+  playerUserId: string;
+  playerName: string;
+  characterName: string;
+  entries: PlayerBestiaryEntry[];
+}): PlayerBestiaryGmView {
+  const views = opts.entries
+    .map((entry) =>
+      buildPlayerMonsterKnowledgeView(entry, entry.displayName, entry.typeKey)
+    )
+    .filter((v) => v.hasAnyKnowledge)
+    .sort((a, b) => a.displayName.localeCompare(b.displayName, "pt-BR"));
+
+  return {
+    playerUserId: opts.playerUserId,
+    playerName: opts.playerName,
+    characterName: opts.characterName,
+    entries: views,
   };
 }

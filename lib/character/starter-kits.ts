@@ -730,9 +730,20 @@ function mergeStarterItems(refs: StarterItemRef[]): InventoryItem[] {
 
 function refsFromEquipmentDraft(equipment: StarterEquipmentDraft): StarterItemRef[] {
   const refs: StarterItemRef[] = [];
-  if (equipment.combatLoadout?.packId === "armas") {
+  const combat = equipment.combatLoadout;
+  if (
+    combat &&
+    (combat.packId === "armas" ||
+      combat.packId === "magias" ||
+      combat.packId === "habilidades")
+  ) {
     refs.push({
-      packId: equipment.combatLoadout.packId,
+      packId: combat.packId,
+      entryId: combat.entryId,
+    });
+  } else if (equipment.combatLoadout?.packId === "magias") {
+    refs.push({
+      packId: "magias",
       entryId: equipment.combatLoadout.entryId,
     });
   }

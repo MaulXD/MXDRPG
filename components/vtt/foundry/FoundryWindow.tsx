@@ -145,7 +145,32 @@ export function FoundryWindow({
             aria-label={layout.minimized ? "Restaurar janela" : "Recolher janela"}
             title={layout.minimized ? "Restaurar" : "Recolher"}
           >
-            {layout.minimized ? "▢" : "−"}
+            {layout.minimized ? (
+              <svg viewBox="0 0 12 12" width="12" height="12" aria-hidden>
+                <rect
+                  x="2.5"
+                  y="2.5"
+                  width="7"
+                  height="7"
+                  rx="1"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.4"
+                />
+              </svg>
+            ) : (
+              <svg viewBox="0 0 12 12" width="12" height="12" aria-hidden>
+                <line
+                  x1="2.5"
+                  y1="6"
+                  x2="9.5"
+                  y2="6"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                />
+              </svg>
+            )}
           </button>
           <button
             type="button"
@@ -154,7 +179,26 @@ export function FoundryWindow({
             aria-label="Fechar janela"
             title="Fechar"
           >
-            ×
+            <svg viewBox="0 0 12 12" width="12" height="12" aria-hidden>
+              <line
+                x1="2.5"
+                y1="2.5"
+                x2="9.5"
+                y2="9.5"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+              />
+              <line
+                x1="9.5"
+                y1="2.5"
+                x2="2.5"
+                y2="9.5"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+              />
+            </svg>
           </button>
         </div>
       </div>

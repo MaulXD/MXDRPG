@@ -284,10 +284,11 @@
 /* Topo da ficha — retrato | identidade / combate | atributos */
 
 .sheet-popup-top {
+  --sheet-popup-portrait-size: 132px;
 
   display: grid;
 
-  grid-template-columns: minmax(120px, 168px) minmax(0, 1fr);
+  grid-template-columns: var(--sheet-popup-portrait-size) minmax(0, 1fr);
 
   grid-template-areas:
 
@@ -314,6 +315,10 @@
   flex-direction: column;
 
   gap: 0.45rem;
+
+  width: var(--sheet-popup-portrait-size);
+
+  flex-shrink: 0;
 
   min-width: 0;
 
@@ -1999,7 +2004,7 @@
 /* Responsivo — janela larga (mesa Foundry) */
 @container foundry-sheet (min-width: 640px) {
   .sheet-popup-top {
-    grid-template-columns: minmax(120px, 168px) minmax(0, 1.25fr) minmax(0, 1fr);
+    grid-template-columns: var(--sheet-popup-portrait-size) minmax(0, 1.25fr) minmax(0, 1fr);
     grid-template-areas:
       "portrait identity identity"
       "portrait attrs attrs";
@@ -2008,7 +2013,7 @@
 
 @container foundry-sheet (min-width: 920px) {
   .sheet-popup-top {
-    grid-template-columns: minmax(132px, 180px) minmax(0, 1.5fr) minmax(260px, 1fr);
+    grid-template-columns: var(--sheet-popup-portrait-size) minmax(0, 1.5fr) minmax(260px, 1fr);
     grid-template-areas: "portrait identity attrs";
   }
 
@@ -2024,7 +2029,7 @@
 
 @container sheet-popup (min-width: 640px) {
   .sheet-popup-top {
-    grid-template-columns: minmax(120px, 168px) minmax(0, 1.25fr) minmax(0, 1fr);
+    grid-template-columns: var(--sheet-popup-portrait-size) minmax(0, 1.25fr) minmax(0, 1fr);
     grid-template-areas:
       "portrait identity identity"
       "portrait attrs attrs";
@@ -2053,11 +2058,11 @@
 
   .sheet-popup-top__portrait-col {
 
-    max-width: 140px;
+    width: var(--sheet-popup-portrait-size);
+
+    max-width: none;
 
     margin: 0 auto;
-
-    width: 100%;
 
   }
 
@@ -2094,8 +2099,10 @@
 /* —— Retrato interativo —— */
 .sheet-popup-portrait-wrap {
   position: relative;
-  width: 100%;
-  max-width: 148px;
+  width: var(--sheet-popup-portrait-size, 132px);
+  height: var(--sheet-popup-portrait-size, 132px);
+  max-width: none;
+  flex-shrink: 0;
   margin: 0 auto;
   aspect-ratio: 1;
 }

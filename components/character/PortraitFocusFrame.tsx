@@ -103,11 +103,13 @@ export function PortraitFocusFrame({
     dragRef.current = null;
   }, []);
 
+  const useFluidFrame = className.includes("portrait-focus-frame--square");
+
   return (
     <div
       ref={frameRef}
       className={`portrait-focus-frame ${className}`.trim()}
-      style={{ width: size, height: size }}
+      style={useFluidFrame ? undefined : { width: size, height: size }}
       onPointerDown={onPointerDown}
       onPointerMove={onPointerMove}
       onPointerUp={onPointerUp}

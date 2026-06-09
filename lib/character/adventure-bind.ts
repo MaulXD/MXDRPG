@@ -1,7 +1,7 @@
 import type { CharacterSheet } from "@/lib/character/types";
 
 /** Uma ficha de jogador por aventura. */
-export const MAX_CHARACTERS_PER_USER_PER_ADVENTURE = 1;
+export const MAX_CHARACTERS_PER_USER_PER_ADVENTURE = 3;
 
 export function resolveAdventureId(
   sheet: Pick<CharacterSheet, "adventureId" | "campaignRoomId">

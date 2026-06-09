@@ -86,6 +86,9 @@ type Params = {
   onActionRingBlocked?: (token: BattleToken) => void;
   /** Jogador: abrir registro de combate do monstro. */
   onOpenMonsterKnowledge?: (token: BattleToken) => void;
+  /** Mestre: abrir bestiário do dono do token de jogador. */
+  onOpenPlayerBestiary?: (token: BattleToken) => void;
+  canOpenPlayerBestiary?: (token: BattleToken) => boolean;
   dungeonEditor?: {
     layer: DungeonEditLayer;
     active: boolean;
@@ -162,6 +165,8 @@ export function useBattlefieldPointer({
   canOpenActionRing,
   onActionRingBlocked,
   onOpenMonsterKnowledge,
+  onOpenPlayerBestiary,
+  canOpenPlayerBestiary,
   onHoverTokenChange,
   dungeonEditor,
   whiteboard,
@@ -620,6 +625,8 @@ export function useBattlefieldPointer({
       canControlCombat,
       actionMode,
       onOpenMonsterKnowledge,
+      onOpenPlayerBestiary,
+      canOpenPlayerBestiary,
     ]
   );
 
@@ -1170,6 +1177,13 @@ export function useBattlefieldPointer({
         if (axial) hit = tokenAtAxial(axial);
       }
       if (!hit) return;
+
+      if (onOpenPlayerBestiary && canOpenPlayerBestiary?.(hit)) {
+        if (hit.id !== selectedId) setSelectedId(hit.id);
+        onOpenPlayerBestiary(hit);
+        return;
+      }
+
       if (!canOpenActionRing?.(hit)) {
         onActionRingBlocked?.(hit);
         return;
@@ -1185,10 +1199,12 @@ export function useBattlefieldPointer({
       tokenAtAxial,
       tokenScreenCenter,
       canOpenActionRing,
+      canOpenPlayerBestiary,
       onActionRingBlocked,
       selectedId,
       setSelectedId,
       onActionRingRequest,
+      onOpenPlayerBestiary,
       whiteboard,
       finishPolygon,
     ]

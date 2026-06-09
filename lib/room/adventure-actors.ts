@@ -29,7 +29,7 @@ export function actorBelongsToRoom(room: RoomState, actor: RoomActor): boolean {
 
 function mergePortraitFromRoom(sheet: CharacterSheet, prev?: RoomActor): CharacterSheet {
   if (!prev) return sheet;
-  return {
+  let merged: CharacterSheet = {
     ...sheet,
     portraitUrl: sheet.portraitUrl ?? prev.portraitUrl ?? null,
     tokenImageUrl: sheet.tokenImageUrl ?? prev.tokenImageUrl ?? null,
@@ -37,6 +37,23 @@ function mergePortraitFromRoom(sheet: CharacterSheet, prev?: RoomActor): Charact
     coverFocus: sheet.coverFocus ?? prev.coverFocus ?? null,
     tokenFocus: sheet.tokenFocus ?? prev.tokenFocus ?? null,
   };
+
+  const sheetHasGear =
+    sheet.inventory.length > 0 || sheet.combatLoadout != null || sheet.armorLoadout != null;
+  const prevMissingGear =
+    !prev.inventory?.length && prev.combatLoadout == null && prev.armorLoadout == null;
+
+  if (sheetHasGear && prevMissingGear) {
+    merged = {
+      ...merged,
+      inventory: sheet.inventory,
+      combatLoadout: sheet.combatLoadout ?? null,
+      armorLoadout: sheet.armorLoadout ?? null,
+      lootEconomy: sheet.lootEconomy ?? merged.lootEconomy,
+    };
+  }
+
+  return merged;
 }
 
 function portraitBackfillNeeded(sheet: CharacterSheet, prev?: RoomActor): boolean {

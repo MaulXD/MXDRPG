@@ -13,7 +13,7 @@ export function WizardHoverTip({ text, children, className }: Props) {
   if (!text?.trim()) return <>{children}</>;
 
   return (
-    <span className={`wizard-hover-tip${className ? ` ${className}` : ""}`} title={text}>
+    <span className={`wizard-hover-tip${className ? ` ${className}` : ""}`} tabIndex={0}>
       {children}
       <span className="wizard-hover-tip__bubble" role="tooltip">
         {text}

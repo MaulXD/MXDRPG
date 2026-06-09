@@ -5,22 +5,25 @@ import { RoomCharacterPrompt } from "@/components/vtt/RoomCharacterPrompt";
 import {
   canManageRoom,
   canParticipateInRoom,
-  canViewRoom,
-  inviteMatches,
-  isRoomMember,
   isRoomVisitor,
 } from "@/lib/auth/room-access";
+import {
+  canViewRoomServer,
+  inviteMatchesRoom,
+  isRoomMemberResolved,
+} from "@/lib/auth/room-access-server";
 import { entrarPath, mesaRoomPath } from "@/lib/auth/post-auth-redirect";
 import { getSession } from "@/lib/auth/session";
 import { getPackEntries, getVisiblePacks } from "@/lib/compendium/registry";
 import type { CompendiumPackId } from "@/lib/compendium/types";
 import { bindPlayerToAdventure } from "@/lib/adventure/store";
 import { syncAdventureActorsForRoom } from "@/lib/room/adventure-actors";
-import { joinRoomByInvite, getRoom } from "@/lib/room/store";
+import { joinRoomMembers } from "@/lib/room/adventure-room";
+import { getRoom, joinRoomByInvite } from "@/lib/room/store";
 
 type Props = {
   params: Promise<{ roomId: string }>;
-  searchParams: Promise<{ invite?: string }>;
+  searchParams: Promise<{ invite?: string; joined?: string }>;
 };
 
 export default async function MesaRoomPage({ params, searchParams }: Props) {
@@ -30,6 +33,7 @@ export default async function MesaRoomPage({ params, searchParams }: Props) {
 
   const session = await getSession();
   let room = await getRoom(roomId);
+  let joinError: string | null = null;
 
   if (!room) {
     return (
@@ -48,23 +52,36 @@ export default async function MesaRoomPage({ params, searchParams }: Props) {
     );
   }
 
-  if (
-    session?.user &&
-    inviteCode &&
-    inviteMatches(room, inviteCode) &&
-    !isRoomMember(room, session.user.id) &&
-    session.user.role !== "admin"
-  ) {
-    const joined = await joinRoomByInvite(inviteCode, session.user.id);
-    if (joined) {
-      redirect(`/mesa/${roomId}`);
+  if (session?.user && roomId !== "demo") {
+    if (
+      !room.memberIds.includes(session.user.id) &&
+      (await isRoomMemberResolved(room, session.user.id, session.user.clerkId))
+    ) {
+      await joinRoomMembers(roomId, session.user.id);
+      room = (await getRoom(roomId)) ?? room;
+    }
+  }
+
+  if (session?.user && inviteCode && session.user.role !== "admin") {
+    const alreadyMember = await isRoomMemberResolved(room, session.user.id, session.user.clerkId);
+    if (!alreadyMember && (await inviteMatchesRoom(room, inviteCode))) {
+      const joined = await joinRoomByInvite(inviteCode, session.user.id);
+      const fresh =
+        joined?.roomId === roomId ? joined : ((await getRoom(roomId)) ?? room);
+      room = fresh;
+
+      if (await isRoomMemberResolved(room, session.user.id, session.user.clerkId)) {
+        redirect(`/mesa/${roomId}?joined=1`);
+      }
+      joinError =
+        "Não foi possível entrar na mesa com este convite. Tente novamente ou peça um novo link ao mestre.";
     }
   }
 
   if (
     session?.user &&
     roomId !== "demo" &&
-    (room.ownerId === session.user.id || (room.memberIds ?? []).includes(session.user.id))
+    (await isRoomMemberResolved(room, session.user.id, session.user.clerkId))
   ) {
     const advId = room.adventureId ?? roomId;
     if (room.ownerId !== session.user.id) {
@@ -78,7 +95,20 @@ export default async function MesaRoomPage({ params, searchParams }: Props) {
     }
   }
 
-  if (!canViewRoom(room, session?.user ?? null, inviteCode)) {
+  if (!(await canViewRoomServer(room, session?.user ?? null, inviteCode))) {
+    if (joinError) {
+      return (
+        <div className="page-wrap" style={{ maxWidth: 520, paddingTop: "2rem" }}>
+          <p>{joinError}</p>
+          <Link href={mesaRoomPath(roomId, inviteCode)} className="btn" style={{ marginTop: "1rem" }}>
+            Tentar de novo
+          </Link>
+          <Link href="/eldarin" className="btn btn--ghost" style={{ marginTop: "0.75rem", marginLeft: "0.5rem" }}>
+            Inserir código em Suas mesas
+          </Link>
+        </div>
+      );
+    }
     return (
       <div className="page-wrap">
         <p>Esta mesa é privada. Peça o código ou link de convite ao mestre.</p>
@@ -87,8 +117,8 @@ export default async function MesaRoomPage({ params, searchParams }: Props) {
             Entrar para participar
           </Link>
         ) : (
-          <Link href="/painel" className="btn" style={{ marginTop: "1rem" }}>
-            Inserir código no painel
+          <Link href="/eldarin" className="btn" style={{ marginTop: "1rem" }}>
+            Inserir código em Suas mesas
           </Link>
         )}
       </div>

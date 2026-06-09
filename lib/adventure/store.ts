@@ -287,9 +287,22 @@ export async function joinAdventureByInvite(
 }
 
 async function joinAdventureRecord(adventure: Adventure, userId: string): Promise<Adventure> {
-  if (adventure.ownerId !== userId && !adventure.memberIds.includes(userId)) {
-    adventure.memberIds.push(userId);
-    adventure.updatedAt = Date.now();
+  const { fetchClerkIdForUser } = await import("@/lib/db/users");
+  const { memberIdsHasUser } = await import("@/lib/auth/member-ids");
+  const clerkId = await fetchClerkIdForUser(userId);
+  const alias = clerkId ? `clerk-${clerkId}` : null;
+
+  if (adventure.ownerId !== userId) {
+    if (alias && adventure.memberIds.includes(alias) && !adventure.memberIds.includes(userId)) {
+      adventure.memberIds = adventure.memberIds.map((id) => (id === alias ? userId : id));
+      adventure.updatedAt = Date.now();
+    } else if (alias && adventure.memberIds.includes(alias) && adventure.memberIds.includes(userId)) {
+      adventure.memberIds = adventure.memberIds.filter((id) => id !== alias);
+      adventure.updatedAt = Date.now();
+    } else if (!memberIdsHasUser(adventure.memberIds, userId, clerkId)) {
+      adventure.memberIds.push(userId);
+      adventure.updatedAt = Date.now();
+    }
   }
   adventures().set(adventure.adventureId, adventure);
   await joinRoomMembers(adventure.primaryRoomId, userId);
