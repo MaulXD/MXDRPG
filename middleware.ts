@@ -1,8 +1,9 @@
 import { clerkMiddleware } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
-import { hasClerkPublishableKey } from "@/lib/auth/clerk-config";
+import { isClerkEnabled } from "@/lib/auth/clerk-config";
 
-export default hasClerkPublishableKey()
+/** Só ativa clerkMiddleware com pk + sk — evita 500 se só uma chave existir na Vercel. */
+export default isClerkEnabled()
   ? clerkMiddleware()
   : () => NextResponse.next();
 
