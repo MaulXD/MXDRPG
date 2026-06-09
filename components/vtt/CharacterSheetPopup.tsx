@@ -1,7 +1,5 @@
 "use client";
 
-
-
 import Link from "next/link";
 
 import { CharacterSheet } from "@/components/character/CharacterSheet";
@@ -16,117 +14,66 @@ import type { CompendiumEntry, CompendiumPackId } from "@/lib/compendium/types";
 import type { SessionUser } from "@/lib/auth/types";
 
 import type { FoundryWindowLayout } from "@/hooks/vtt/useFoundryWindows";
+import { useFoundryWindowDrag } from "@/hooks/vtt/useFoundryWindowDrag";
 
 import type { RoomActor } from "@/lib/room/types";
 
-import { SheetPdfExportButton } from "@/components/character/SheetPdfExportButton";
-import { SheetEditRequestButton } from "@/components/character/SheetEditRequestButton";
 import { isAdventureBoundCharacter } from "@/lib/character/adventure-bind";
 import { FoundryWindow } from "@/components/vtt/foundry/FoundryWindow";
-import { MedievalFrame } from "@/components/ui/MedievalFrame";
 
 import "@/components/character/sheet-popup.css";
 
-
-
 type Props = {
-
   actorId: string;
-
   roomId: string;
-
   adventureId: string;
-
   roomOwnerId: string;
-
   actors: Record<string, RoomActor>;
-
   session: SessionUser | null;
-
   compendium: Record<CompendiumPackId, CompendiumEntry[]>;
-
   layout: FoundryWindowLayout;
-
   onLayoutChange: (patch: Partial<FoundryWindowLayout>) => void;
-
   onFocus: () => void;
-
   onMinimize: () => void;
-
   onClose: () => void;
-
 };
 
-
-
 export function CharacterSheetPopup({
-
   actorId,
-
   roomId,
-
   adventureId,
-
   roomOwnerId,
-
   actors,
-
   session,
-
   compendium,
-
   layout,
-
   onLayoutChange,
-
   onFocus,
-
   onMinimize,
-
   onClose,
-
 }: Props) {
-
   const live = actors[actorId];
-
   const seed = live ?? getCharacter(actorId);
-
-
+  const toolbarDrag = useFoundryWindowDrag(layout, onLayoutChange, onFocus);
 
   if (!seed) {
-
     return (
-
       <FoundryWindow
-
         title="Ficha"
-
         layout={{ ...layout, open: true }}
-
         onLayoutChange={onLayoutChange}
-
         onClose={onClose}
-
         onMinimize={onMinimize}
-
         onFocus={onFocus}
-
         className="foundry-window--character"
-
+        chromeless
       >
-
         <p style={{ padding: "1rem" }}>Personagem não encontrado.</p>
-
       </FoundryWindow>
-
     );
-
   }
 
-
-
   const merged = { ...seed, ...live };
-
   const roomCtx = { roomId, adventureId, ownerId: roomOwnerId };
   const isOwner = session?.id === merged.ownerId;
   const campaignBound = isAdventureBoundCharacter(merged);
@@ -144,90 +91,66 @@ export function CharacterSheetPopup({
     armorLoadout: live?.armorLoadout ?? seed.armorLoadout ?? null,
   };
 
-  return (
-
-    <FoundryWindow
-
-      title={seed.name}
-
-      layout={layout}
-
-      onLayoutChange={onLayoutChange}
-
-      onClose={onClose}
-
-      onMinimize={onMinimize}
-
-      onFocus={onFocus}
-
-      className="foundry-window--character"
-
-      minWidth={680}
-
-      minHeight={400}
-
-      headerExtra={
-        <>
-          {showEditRequest ? (
-            <SheetEditRequestButton
-              characterId={actorId}
-              adventureId={adventureId}
-              roomId={roomId}
-              variant="chrome"
-            />
-          ) : null}
-          <SheetPdfExportButton
-            character={sheetCharacter}
-            inventory={inventory}
-            characterId={actorId}
-            roomId={roomId}
-            variant="chrome"
-          />
-        </>
-      }
-
-    >
-
-      <div className="foundry-sheet-body">
-        {!canEdit && !canEditPortrait ? (
-          <p className="foundry-sheet-readonly" role="status">
-            Somente leitura — ficha de outro jogador. Você pode ver atributos e status, mas não editar.
-          </p>
-        ) : !canEdit && canEditPortrait ? (
-          <p className="foundry-sheet-readonly foundry-sheet-readonly--portrait" role="status">
-            Mestre: você pode atualizar o retrato e o token deste personagem.
-          </p>
-        ) : null}
-
-        <div className="foundry-sheet-toolbar">
-          <Link
-            href={`/personagem/${actorId}`}
-            className="foundry-window__btn"
-            title="Abrir ficha em página inteira"
-            aria-label="Abrir em nova página"
-          >
-            ↗
-          </Link>
-        </div>
-
-        <MedievalFrame variant="gothic" compact flush className="mf--sheet-page mf--foundry-fill">
-          <CharacterSheet
-            character={sheetCharacter}
-            canEdit={canEdit}
-            canEditPortrait={canEditPortrait}
-            compendium={compendium}
-            roomId={roomId}
-            variant="popup"
-            hidePdfExport
-          />
-        </MedievalFrame>
-
-      </div>
-
-    </FoundryWindow>
-
+  const toolbarTrailing = (
+    <>
+      <Link
+        href={`/personagem/${actorId}`}
+        className="sheet-ddb-toolbar__btn"
+        title="Abrir ficha em página inteira"
+        aria-label="Abrir em nova página"
+        onPointerDown={(e) => e.stopPropagation()}
+      >
+        ↗
+      </Link>
+      <button
+        type="button"
+        className="sheet-ddb-toolbar__btn"
+        onClick={onMinimize}
+        aria-label="Recolher ficha"
+        title="Recolher"
+        onPointerDown={(e) => e.stopPropagation()}
+      >
+        −
+      </button>
+      <button
+        type="button"
+        className="sheet-ddb-toolbar__btn sheet-ddb-toolbar__btn--close"
+        onClick={onClose}
+        aria-label="Fechar ficha"
+        title="Fechar"
+        onPointerDown={(e) => e.stopPropagation()}
+      >
+        ✕
+      </button>
+    </>
   );
 
+  return (
+    <FoundryWindow
+      title={seed.name}
+      layout={layout}
+      onLayoutChange={onLayoutChange}
+      onClose={onClose}
+      onMinimize={onMinimize}
+      onFocus={onFocus}
+      className="foundry-window--character foundry-window--character-sheet"
+      minWidth={680}
+      minHeight={400}
+      chromeless
+    >
+      <div className="foundry-sheet-body foundry-sheet-body--ddb">
+        <CharacterSheet
+          character={sheetCharacter}
+          canEdit={canEdit}
+          canEditPortrait={canEditPortrait}
+          compendium={compendium}
+          roomId={roomId}
+          variant="popup"
+          showEditRequest={showEditRequest}
+          popupToolbarTrailing={toolbarTrailing}
+          popupToolbarDrag={toolbarDrag}
+        />
+      </div>
+    </FoundryWindow>
+  );
 }
-
-

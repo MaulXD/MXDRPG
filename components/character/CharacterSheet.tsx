@@ -59,6 +59,7 @@ import { SectionDivider } from "@/components/ui/SectionDivider";
 import { Portrait } from "@/components/vtt/Portrait";
 import { sanitizePortraitFocus } from "@/lib/media/portrait-focus";
 import { isTypingTarget } from "@/lib/vtt/keyboard-guard";
+import type { FoundryWindowDragHandlers } from "@/hooks/vtt/useFoundryWindowDrag";
 import "./sheet.css";
 import "./sheet-popup.css";
 
@@ -74,10 +75,16 @@ type Props = {
   embedded?: boolean;
   /** Pop-up na mesa (layout estilo VTT) vs página inteira */
   variant?: "page" | "popup";
-  /** Oculta botão inline (export fica na barra da janela Foundry) */
+  /** Oculta botão inline (legado — popup na mesa usa toolbar DDB) */
   hidePdfExport?: boolean;
   /** Botão de solicitar edição ao mestre (fichas em campanha) */
   showEditRequest?: boolean;
+  /** Toolbar DDB — aviso à esquerda (ex.: somente leitura) */
+  popupToolbarLeading?: ReactNode;
+  /** Toolbar DDB — fechar, abrir página, etc. */
+  popupToolbarTrailing?: ReactNode;
+  /** Arrastar janela Foundry pela toolbar */
+  popupToolbarDrag?: FoundryWindowDragHandlers;
 };
 
 const PLAYER_PACKS: CompendiumPackId[] = ["armas", "habilidades", "magias", "equipamentos"];
@@ -92,6 +99,9 @@ export function CharacterSheet({
   variant = "page",
   hidePdfExport = false,
   showEditRequest = false,
+  popupToolbarLeading,
+  popupToolbarTrailing,
+  popupToolbarDrag,
 }: Props) {
   const canEditPortrait = canEditPortraitProp ?? canEdit;
   const [tab, setTab] = useState<Tab>("inventário");
@@ -787,6 +797,7 @@ export function CharacterSheet({
               characterId={character.id}
               adventureId={adventureId}
               roomId={inRoom ? roomId : undefined}
+              variant={popupToolbarDrag ? "ddb-toolbar" : "inline"}
             />
           ) : null}
           {!hidePdfExport ? (
@@ -795,6 +806,8 @@ export function CharacterSheet({
               inventory={inventory}
               characterId={character.id}
               roomId={inRoom ? roomId : undefined}
+              variant={popupToolbarDrag ? "ddb-toolbar" : "default"}
+              compact={!!popupToolbarDrag}
             />
           ) : null}
         </>
@@ -809,6 +822,9 @@ export function CharacterSheet({
           hpPct={hpPct}
           portrait={portraitNode}
           toolbar={toolbarNode}
+          toolbarLeading={popupToolbarLeading}
+          toolbarTrailing={popupToolbarTrailing}
+          toolbarDrag={popupToolbarDrag}
           inRoom={inRoom}
           roomId={roomId}
           onRoll={refresh}
@@ -825,15 +841,15 @@ export function CharacterSheet({
             ) : null
           }
           drawer={
-            <OrnamentCard className="sheet-popup-center sheet-panel">
+            <div className="sheet-ddb-drawer-inner">
               {canEdit || inRoom ? (
-                <details className="sheet-popup-advanced" open>
+                <details className="sheet-popup-advanced sheet-popup-advanced--ddb">
                   <summary>Gestão do personagem</summary>
                   <div className="sheet-popup-advanced__body">{popupRightAside}</div>
                 </details>
               ) : null}
               {tabPanel}
-            </OrnamentCard>
+            </div>
           }
         />
 

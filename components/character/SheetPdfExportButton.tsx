@@ -14,8 +14,8 @@ type Props = {
   roomId?: string;
   className?: string;
   compact?: boolean;
-  /** Botão quadrado na barra da janela Foundry (minimizar/fechar) */
-  variant?: "default" | "chrome";
+  /** default | chrome (legado Foundry) | ddb-toolbar (ficha popup) */
+  variant?: "default" | "chrome" | "ddb-toolbar";
 };
 
 function captureRootReady(host: HTMLElement): HTMLElement | null {
@@ -64,6 +64,7 @@ export function SheetPdfExportButton({
   const toast = useVttToast();
   const resolvedCharacterId = characterId ?? character.id;
   const isChrome = variant === "chrome";
+  const isDdbToolbar = variant === "ddb-toolbar";
 
   const notify = useCallback(
     (message: string, variant: "warn" | "success" = "warn") => {
@@ -102,9 +103,11 @@ export function SheetPdfExportButton({
     </div>
   );
 
-  const btnClass = isChrome
-    ? `foundry-window__btn foundry-window__btn--pdf${busy ? " is-busy" : ""}${className ? ` ${className}` : ""}`
-    : `btn btn-secondary sheet-pdf-export-btn${compact ? " sheet-pdf-export-btn--toolbar" : ""}${className ? ` ${className}` : ""}`;
+  const btnClass = isDdbToolbar
+    ? `sheet-ddb-toolbar__btn${busy ? " is-busy" : ""}${className ? ` ${className}` : ""}`
+    : isChrome
+      ? `foundry-window__btn foundry-window__btn--pdf${busy ? " is-busy" : ""}${className ? ` ${className}` : ""}`
+      : `btn btn-secondary sheet-pdf-export-btn${compact ? " sheet-pdf-export-btn--toolbar" : ""}${className ? ` ${className}` : ""}`;
 
   return (
     <>
@@ -125,7 +128,7 @@ export function SheetPdfExportButton({
         }
         aria-label="Exportar ficha em PDF"
       >
-        {busy ? "…" : isChrome ? "PDF" : compact ? "PDF" : "Exportar PDF"}
+        {busy ? "…" : isChrome || isDdbToolbar || compact ? "PDF" : "Exportar PDF"}
       </button>
       {error && !isChrome ? (
         <span className="sheet-pdf-doc__muted" role="alert" style={{ marginLeft: "0.5rem" }}>
