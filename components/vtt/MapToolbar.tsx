@@ -172,6 +172,46 @@ export function MapToolbar({
             })}
           </div>
 
+          {mapToolMode === "draw" ? (
+            <div className="map-toolbar__sub" role="group" aria-label="Opções de desenho">
+              <div className="map-toolbar__colors" role="group" aria-label="Cor">
+                {MARKUP_COLORS.map((c) => (
+                  <button
+                    key={c}
+                    type="button"
+                    className={`map-toolbar__swatch${color === c ? " map-toolbar__swatch--active" : ""}`}
+                    style={{ background: c }}
+                    aria-label={`Cor ${c}`}
+                    onClick={() => onColorChange(c)}
+                  />
+                ))}
+              </div>
+              <div className="map-toolbar__widths" role="group" aria-label="Espessura">
+                {MARKUP_WIDTHS.map((w) => (
+                  <button
+                    key={w}
+                    type="button"
+                    className={`map-toolbar__width${width === w ? " map-toolbar__width--active" : ""}`}
+                    onClick={() => onWidthChange(w)}
+                  >
+                    {w}px
+                  </button>
+                ))}
+              </div>
+              {canManageAll && onClearSession ? (
+                <button
+                  type="button"
+                  className="map-toolbar__clear"
+                  disabled={busy}
+                  title="Remove desenhos temporários da sessão"
+                  onClick={onClearSession}
+                >
+                  Limpar sessão
+                </button>
+              ) : null}
+              <p className="map-toolbar__hint">{drawHint(drawTool)}</p>
+            </div>
+          ) : null}
         </>
       ) : null}
 
@@ -231,47 +271,6 @@ export function MapToolbar({
         </button>
       </div>
       </div>
-
-      {canUseDraw && mapToolMode === "draw" ? (
-        <div className="map-toolbar__sub" role="group" aria-label="Opções de desenho">
-          <div className="map-toolbar__colors" role="group" aria-label="Cor">
-            {MARKUP_COLORS.map((c) => (
-              <button
-                key={c}
-                type="button"
-                className={`map-toolbar__swatch${color === c ? " map-toolbar__swatch--active" : ""}`}
-                style={{ background: c }}
-                aria-label={`Cor ${c}`}
-                onClick={() => onColorChange(c)}
-              />
-            ))}
-          </div>
-          <div className="map-toolbar__widths" role="group" aria-label="Espessura">
-            {MARKUP_WIDTHS.map((w) => (
-              <button
-                key={w}
-                type="button"
-                className={`map-toolbar__width${width === w ? " map-toolbar__width--active" : ""}`}
-                onClick={() => onWidthChange(w)}
-              >
-                {w}px
-              </button>
-            ))}
-          </div>
-          {canManageAll && onClearSession ? (
-            <button
-              type="button"
-              className="map-toolbar__clear"
-              disabled={busy}
-              title="Remove desenhos temporários da sessão"
-              onClick={onClearSession}
-            >
-              Limpar sessão
-            </button>
-          ) : null}
-          <p className="map-toolbar__hint">{drawHint(drawTool)}</p>
-        </div>
-      ) : null}
     </div>
   );
 }

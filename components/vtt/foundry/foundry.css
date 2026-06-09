@@ -1555,12 +1555,13 @@
 .whiteboard-panel__colors {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.35rem;
+  gap: 0.3rem;
+  max-width: 9.5rem;
 }
 
 .whiteboard-panel__swatch {
-  width: 28px;
-  height: 28px;
+  width: 1.35rem;
+  height: 1.35rem;
   border-radius: 50%;
   border: 2px solid transparent;
   cursor: pointer;
