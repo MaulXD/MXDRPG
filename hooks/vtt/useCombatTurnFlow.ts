@@ -118,6 +118,15 @@ export function useCombatTurnFlow({
     trackedActiveKey.current = activeKey;
 
     if (paZeroKey.current === activeKey || autoPassBusy.current) return;
+
+    const serverAutoPassed = (combat.notices ?? []).some(
+      (n) => n.includes("passou automaticamente") && n.includes(token.name)
+    );
+    if (serverAutoPassed) {
+      paZeroKey.current = activeKey;
+      return;
+    }
+
     paZeroKey.current = activeKey;
 
     toast.push("PA esgotados — o turno será passado.", "warn");
