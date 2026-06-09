@@ -85,6 +85,8 @@ type Props = {
   popupToolbarTrailing?: ReactNode;
   /** Arrastar janela Foundry pela toolbar */
   popupToolbarDrag?: FoundryWindowDragHandlers;
+  /** Ficha DDB em /personagem/:id (sem moldura Foundry) */
+  standalonePage?: boolean;
 };
 
 const PLAYER_PACKS: CompendiumPackId[] = ["armas", "habilidades", "magias", "equipamentos"];
@@ -102,6 +104,7 @@ export function CharacterSheet({
   popupToolbarLeading,
   popupToolbarTrailing,
   popupToolbarDrag,
+  standalonePage = false,
 }: Props) {
   const canEditPortrait = canEditPortraitProp ?? canEdit;
   const [tab, setTab] = useState<Tab>("inventário");
@@ -301,6 +304,7 @@ export function CharacterSheet({
 
   const { identity, resources, movement, tactical } = live;
   const isPopup = variant === "popup";
+  const isStandalonePopup = isPopup && standalonePage;
   const hpPct =
     resources.vida.max > 0
       ? Math.round((resources.vida.value / resources.vida.max) * 100)
@@ -797,7 +801,7 @@ export function CharacterSheet({
               characterId={character.id}
               adventureId={adventureId}
               roomId={inRoom ? roomId : undefined}
-              variant={popupToolbarDrag ? "ddb-toolbar" : "inline"}
+              variant={popupToolbarDrag || isStandalonePopup ? "ddb-toolbar" : "inline"}
             />
           ) : null}
           {!hidePdfExport ? (
@@ -806,8 +810,8 @@ export function CharacterSheet({
               inventory={inventory}
               characterId={character.id}
               roomId={inRoom ? roomId : undefined}
-              variant={popupToolbarDrag ? "ddb-toolbar" : "default"}
-              compact={!!popupToolbarDrag}
+              variant={popupToolbarDrag || isStandalonePopup ? "ddb-toolbar" : "default"}
+              compact={!!popupToolbarDrag || isStandalonePopup}
             />
           ) : null}
         </>
@@ -825,6 +829,7 @@ export function CharacterSheet({
           toolbarLeading={popupToolbarLeading}
           toolbarTrailing={popupToolbarTrailing}
           toolbarDrag={popupToolbarDrag}
+          standalone={isStandalonePopup}
           inRoom={inRoom}
           roomId={roomId}
           onRoll={refresh}
