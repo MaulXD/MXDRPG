@@ -322,16 +322,72 @@
   border: 2px solid #fff;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
   background: #d8cfc0;
+  padding: 0;
 }
 
-.sheet-shell--ddb .portrait--sheet-popup,
-.sheet-shell--ddb .sheet-popup-portrait {
+.sheet-ddb-portrait {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.sheet-ddb-portrait.is-empty {
+  cursor: pointer;
+  min-height: 120px;
+  background: #d8cfc0;
+}
+
+.sheet-ddb-portrait__hover {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  background: rgba(30, 24, 20, 0.55);
+  color: #f8f2ea;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  opacity: 0;
+  transition: opacity 0.15s;
+  pointer-events: none;
+}
+
+.sheet-ddb-portrait:hover .sheet-ddb-portrait__hover,
+.sheet-ddb-portrait:focus-visible .sheet-ddb-portrait__hover {
+  opacity: 1;
+}
+
+.sheet-shell--ddb .portrait--ddb {
   width: 100%;
   aspect-ratio: 3 / 4;
   max-height: 168px;
-  border: none;
+  height: auto;
+  flex: none;
+}
+
+.sheet-shell--ddb .portrait--frameless .portrait-inner {
+  inset: 0;
+  clip-path: none;
   border-radius: 0;
-  box-shadow: none;
+  background: #d8cfc0;
+}
+
+.sheet-shell--ddb .portrait--ddb img,
+.sheet-shell--ddb .portrait--ddb .portrait-focus-fill {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .sheet-ddb-hex-row {

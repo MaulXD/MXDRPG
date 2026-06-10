@@ -15,6 +15,8 @@ type Props = {
   imgH?: number;
   size?: "default" | "hud";
   className?: string;
+  /** Sem moldura SVG (ficha DDB) */
+  frameless?: boolean;
 };
 
 export function Portrait({
@@ -27,8 +29,16 @@ export function Portrait({
   imgH = 0,
   size = "default",
   className = "",
+  frameless = false,
 }: Props) {
-  const rootClass = `portrait${size === "hud" ? " portrait--hud" : ""}${className ? ` ${className}` : ""}`;
+  const rootClass = [
+    "portrait",
+    size === "hud" ? "portrait--hud" : "",
+    frameless ? "portrait--frameless" : "",
+    className,
+  ]
+    .filter(Boolean)
+    .join(" ");
   const isSheetPopup = className.includes("portrait--sheet-popup");
   const fitMode = size === "hud" || isSheetPopup ? "cover" : "contain";
   const canFocus = Boolean(imageSrc && focus && imgW > 0 && imgH > 0);
@@ -52,7 +62,7 @@ export function Portrait({
           <span className="portrait-initials">{initials}</span>
         ) : null}
       </div>
-      <PortraitFrameSvg tier={tier} />
+      {frameless ? null : <PortraitFrameSvg tier={tier} />}
     </div>
   );
 }
