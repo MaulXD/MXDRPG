@@ -29,6 +29,8 @@ type Props = {
   tokenFocus?: PortraitFocus | null;
   canEdit: boolean;
   onSaved: () => void;
+  /** Ficha DDB — um único container, sem moldura dourada */
+  layout?: "classic" | "ddb";
 };
 
 export function SheetPopupPortrait({
@@ -41,7 +43,9 @@ export function SheetPopupPortrait({
   tokenFocus,
   canEdit,
   onSaved,
+  layout = "classic",
 }: Props) {
+  const isDdb = layout === "ddb";
   const fileRef = useRef<HTMLInputElement>(null);
   const pendingFileRef = useRef<File | null>(null);
   const [open, setOpen] = useState(false);
@@ -142,11 +146,14 @@ export function SheetPopupPortrait({
     }
   }
 
-  return (
-    <div className="sheet-popup-portrait-wrap">
+  const portraitBtn = (
       <button
         type="button"
-        className={`sheet-popup-portrait ${previewSrc ? "has-image" : "is-empty"}`}
+        className={
+          isDdb
+            ? `sheet-ddb-portrait ${previewSrc ? "has-image" : "is-empty"}`
+            : `sheet-popup-portrait ${previewSrc ? "has-image" : "is-empty"}`
+        }
         onClick={() => {
           if (!canEdit) return;
           if (previewSrc) setOpen(true);
@@ -156,21 +163,30 @@ export function SheetPopupPortrait({
       >
         <Portrait
           tier="hero"
+          frameless={isDdb}
           imageSrc={previewSrc}
           initials={previewSrc ? undefined : "?"}
           alt={name}
           focus={focusPortrait}
           imgW={imgSize.w > 0 ? imgSize.w : undefined}
           imgH={imgSize.h > 0 ? imgSize.h : undefined}
-          className="portrait--sheet-popup"
+          className={isDdb ? "portrait--ddb" : "portrait--sheet-popup"}
         />
         {canEdit ? (
-          <span className="sheet-popup-portrait__hover" aria-hidden>
+          <span
+            className={isDdb ? "sheet-ddb-portrait__hover" : "sheet-popup-portrait__hover"}
+            aria-hidden
+          >
             <IconCamera size={22} />
             <span>{previewSrc ? "Ajustar retrato" : "Inserir imagem"}</span>
           </span>
         ) : null}
       </button>
+  );
+
+  return (
+    <>
+      {isDdb ? portraitBtn : <div className="sheet-popup-portrait-wrap">{portraitBtn}</div>}
 
       <input
         ref={fileRef}
@@ -224,6 +240,6 @@ export function SheetPopupPortrait({
           {msg ? <p className="sheet-popup-portrait-editor__msg">{msg}</p> : null}
         </div>
       ) : null}
-    </div>
+    </>
   );
 }

@@ -777,10 +777,12 @@ export function CharacterSheet({
         tokenFocus={live.tokenFocus ?? character.tokenFocus}
         canEdit={canEditPortrait}
         onSaved={refresh}
+        layout="ddb"
       />
     ) : (
       <Portrait
         tier="hero"
+        frameless
         imageSrc={popupPortraitSrc}
         initials={
           popupPortraitSrc ? undefined : live.name.trim().slice(0, 2).toUpperCase() || "?"
@@ -789,7 +791,7 @@ export function CharacterSheet({
         focus={portraitFocus ?? undefined}
         imgW={offlinePopupPortraitSize.w}
         imgH={offlinePopupPortraitSize.h}
-        className="portrait--sheet-popup"
+        className="portrait--ddb"
       />
     );
 
