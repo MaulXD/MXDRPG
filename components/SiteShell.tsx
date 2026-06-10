@@ -5,10 +5,10 @@ import { usePathname } from "next/navigation";
 import { AnimatedNavLink } from "@/components/AnimatedNavLink";
 import { VttTopbarUserMenu } from "@/components/auth/VttTopbarUserMenu";
 import { EldarinLogo } from "@/components/brand/EldarinLogo";
-import { FriendsNavLink } from "@/components/friends/FriendsNavLink";
 import { FriendsNavMessages } from "@/components/friends/FriendsNavMessages";
 import { MesasNavLink } from "@/components/nav/MesasNavLink";
-import { IconBook } from "@/components/ui/EldarinIcons";
+import { NotificationsBell } from "@/components/notifications/NotificationsBell";
+import { IconBook, IconScroll } from "@/components/ui/EldarinIcons";
 import "@/components/vtt/mesa-theme.css";
 
 const VT_TOPBAR_HIDDEN_KEY = "eldarin-vtt-topbar-hidden";
@@ -68,10 +68,15 @@ export function SiteShell({ children, header, footer }: Props) {
                 <AnimatedNavLink href="/compendios" icon={<IconBook size={18} />}>
                   Compêndios
                 </AnimatedNavLink>
-                <FriendsNavLink />
-                <FriendsNavMessages />
+                <AnimatedNavLink href="/sistema" icon={<IconScroll size={18} />}>
+                  Sistema
+                </AnimatedNavLink>
               </nav>
-              <VttTopbarUserMenu />
+              <div className="site-nav__end vtt-topbar__social">
+                <NotificationsBell />
+                <FriendsNavMessages />
+                <VttTopbarUserMenu />
+              </div>
             </div>
           </header>
           {topbarReady && !topbarHidden ? (

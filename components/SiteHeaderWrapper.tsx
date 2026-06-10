@@ -1,16 +1,12 @@
 import { ClerkHeaderAuth } from "@/components/auth/ClerkHeaderAuth";
 import { HeaderUserMenu } from "@/components/auth/HeaderUserMenu";
 import { EldarinLogo } from "@/components/brand/EldarinLogo";
-import { FriendsNavLink } from "@/components/friends/FriendsNavLink";
 import { FriendsNavMessages } from "@/components/friends/FriendsNavMessages";
 import { NotificationsBell } from "@/components/notifications/NotificationsBell";
 import { hasClerkPublishableKey } from "@/lib/auth/clerk-config";
 import { getSession } from "@/lib/auth/session";
-import { portalPathForRole, roleMeta } from "@/lib/auth/roles";
 import Link from "next/link";
-import { AnimatedNavLink } from "@/components/AnimatedNavLink";
 import { SiteNavLinks } from "@/components/SiteNavLinks";
-import { IconUser } from "@/components/ui/EldarinIcons";
 
 export async function SiteHeaderWrapper() {
   const session = await getSession();
@@ -24,18 +20,11 @@ export async function SiteHeaderWrapper() {
         {clerkEnabled ? (
           <ClerkHeaderAuth session={session} />
         ) : session ? (
-          <>
-            <AnimatedNavLink href="/conta" icon={<IconUser size={18} />}>
-              Perfil
-            </AnimatedNavLink>
+          <div className="site-nav__end">
             <NotificationsBell />
-            <FriendsNavLink />
             <FriendsNavMessages />
-            <Link href={portalPathForRole(session.user.role)} className="btn nav-cta">
-              {roleMeta(session.user.role).label}
-            </Link>
             <HeaderUserMenu user={session.user} />
-          </>
+          </div>
         ) : (
           <Link href="/sign-in" className="btn nav-cta">
             Entrar
