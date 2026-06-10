@@ -73,27 +73,29 @@ export function SiteShell({ children, header, footer }: Props) {
                 </AnimatedNavLink>
                 <FriendsNavLink />
               </nav>
-              <button
-                type="button"
-                className="vtt-topbar-toggle vtt-topbar-toggle--hide"
-                onClick={hideTopbar}
-                aria-label="Ocultar barra de navegação"
-                title="Ocultar menu"
-              >
-                <span className="vtt-topbar-toggle__chevron" aria-hidden />
-              </button>
             </div>
           </header>
+          {topbarReady && !topbarHidden ? (
+            <button
+              type="button"
+              className="vtt-topbar-tab vtt-topbar-tab--collapse glass"
+              onClick={hideTopbar}
+              aria-label="Ocultar barra de navegação"
+              title="Ocultar menu"
+            >
+              <span className="vtt-topbar-tab__chevron vtt-topbar-tab__chevron--up" aria-hidden />
+            </button>
+          ) : null}
         </div>
         {topbarReady && topbarHidden ? (
           <button
             type="button"
-            className="vtt-topbar-reveal glass"
+            className="vtt-topbar-tab vtt-topbar-tab--reveal glass"
             onClick={showTopbar}
             aria-label="Mostrar barra de navegação"
             title="Mostrar menu"
           >
-            <span className="vtt-topbar-toggle__chevron vtt-topbar-toggle__chevron--down" aria-hidden />
+            <span className="vtt-topbar-tab__chevron vtt-topbar-tab__chevron--down" aria-hidden />
           </button>
         ) : null}
         <main key={pathname} className="vtt-main page-enter">
