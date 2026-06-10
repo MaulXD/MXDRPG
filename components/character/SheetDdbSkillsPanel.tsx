@@ -58,7 +58,7 @@ export function SheetDdbSkillsPanel({ actor, roomId, onRoll }: Props) {
           const value = skill.passive != null ? skill.passive : skill.display;
           return (
             <li key={skill.def.id}>
-              <SheetHoverTip tip={tip}>
+              <SheetHoverTip tip={tip} className="sheet-ddb-skill-tip">
                 <button
                   type="button"
                   className={`sheet-ddb-skill${skill.trained ? " is-trained" : ""}`}
