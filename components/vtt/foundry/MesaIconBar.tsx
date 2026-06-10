@@ -38,6 +38,7 @@ function IconButton({
   return (
     <button
       type="button"
+      data-rail-icon={icon.icon}
       className={`foundry-icon-bar__btn${active ? " foundry-icon-bar__btn--active" : ""}${gm ? " foundry-icon-bar__btn--gm" : ""}`}
       onClick={() => onOpenPopup(icon.id)}
       onContextMenu={(e) => {
