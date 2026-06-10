@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { PortraitFocusEditor } from "@/components/character/PortraitFocusEditor";
 import { IconCamera } from "@/components/character/SheetPopupIcons";
 import { Portrait } from "@/components/vtt/Portrait";
@@ -15,13 +16,14 @@ import {
 import {
   buildPortraitBundle,
   buildPortraitBundleFromDataUrl,
+  type PortraitBundle,
 } from "@/lib/media/image-upload-client";
 import { firstPortraitDataUrl } from "@/lib/room/portrait-sync";
 import { playerColorForActor } from "@/lib/vtt/token-colors";
 
 type Props = {
   actorId: string;
-  roomId: string;
+  roomId?: string;
   name: string;
   portraitUrl?: string | null;
   tokenImageUrl?: string | null;
@@ -29,9 +31,32 @@ type Props = {
   tokenFocus?: PortraitFocus | null;
   canEdit: boolean;
   onSaved: () => void;
+  /** Persistência fora da sala (ex.: página /personagem/:id) */
+  onPersistBundle?: (bundle: PortraitBundle) => Promise<void>;
   /** Ficha DDB — um único container, sem moldura dourada */
   layout?: "classic" | "ddb";
 };
+
+const EDITOR_WIDTH = 300;
+const EDITOR_EST_HEIGHT = 420;
+
+function clampEditorPosition(rect: DOMRect): { top: number; left: number } {
+  const width = Math.min(EDITOR_WIDTH, window.innerWidth * 0.92);
+  let left = rect.left;
+  let top = rect.bottom + 6;
+
+  if (left + width > window.innerWidth - 8) {
+    left = window.innerWidth - width - 8;
+  }
+  if (left < 8) left = 8;
+
+  if (top + EDITOR_EST_HEIGHT > window.innerHeight - 8) {
+    top = rect.top - EDITOR_EST_HEIGHT - 6;
+    if (top < 8) top = 8;
+  }
+
+  return { top, left };
+}
 
 export function SheetPopupPortrait({
   actorId,
@@ -43,15 +68,19 @@ export function SheetPopupPortrait({
   tokenFocus,
   canEdit,
   onSaved,
+  onPersistBundle,
   layout = "classic",
 }: Props) {
   const isDdb = layout === "ddb";
   const fileRef = useRef<HTMLInputElement>(null);
+  const anchorRef = useRef<HTMLDivElement>(null);
   const pendingFileRef = useRef<File | null>(null);
   const [open, setOpen] = useState(false);
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState<string | null>(null);
   const [draftSrc, setDraftSrc] = useState<string | null>(null);
+  const [editorPos, setEditorPos] = useState<{ top: number; left: number } | null>(null);
+  const [mounted, setMounted] = useState(false);
   const [focusPortrait, setFocusPortrait] = useState<PortraitFocus>(() =>
     sanitizePortraitFocus(portraitFocus) ?? DEFAULT_PORTRAIT_FOCUS
   );
@@ -65,6 +94,27 @@ export function SheetPopupPortrait({
   const ringColor = playerColorForActor(actorId, [actorId]);
 
   useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const updateEditorPos = useCallback(() => {
+    const el = anchorRef.current;
+    if (!el) return;
+    setEditorPos(clampEditorPosition(el.getBoundingClientRect()));
+  }, []);
+
+  useEffect(() => {
+    if (!open) return;
+    updateEditorPos();
+    window.addEventListener("scroll", updateEditorPos, true);
+    window.addEventListener("resize", updateEditorPos);
+    return () => {
+      window.removeEventListener("scroll", updateEditorPos, true);
+      window.removeEventListener("resize", updateEditorPos);
+    };
+  }, [open, updateEditorPos]);
+
+  useEffect(() => {
     if (draftSrc) return;
     setFocusPortrait(sanitizePortraitFocus(portraitFocus) ?? DEFAULT_PORTRAIT_FOCUS);
     setFocusToken(
@@ -75,16 +125,16 @@ export function SheetPopupPortrait({
   }, [portraitFocus, tokenFocus, draftSrc]);
 
   const persist = useCallback(
-    async (bundle: {
-      portraitUrl: string;
-      tokenImageUrl: string;
-      portraitFocus: PortraitFocus;
-      tokenFocus: PortraitFocus;
-    }) => {
-      await patchRoomActor(roomId, actorId, bundle);
+    async (bundle: PortraitBundle) => {
+      if (onPersistBundle) {
+        await onPersistBundle(bundle);
+      } else {
+        if (!roomId) throw new Error("roomId ausente para salvar retrato na mesa");
+        await patchRoomActor(roomId, actorId, bundle);
+      }
       onSaved();
     },
-    [actorId, onSaved, roomId]
+    [actorId, onPersistBundle, onSaved, roomId]
   );
 
   async function onPickFile(file: File) {
@@ -128,11 +178,11 @@ export function SheetPopupPortrait({
   }
 
   async function saveFocusOnly() {
-    if (!portraitUrl) return;
+    if (!previewSrc) return;
     setBusy(true);
     setMsg(null);
     try {
-      const bundle = await buildPortraitBundleFromDataUrl(portraitUrl, {
+      const bundle = await buildPortraitBundleFromDataUrl(previewSrc, {
         portraitFocus: focusPortrait,
         tokenFocus: focusToken,
       });
@@ -147,46 +197,120 @@ export function SheetPopupPortrait({
   }
 
   const portraitBtn = (
-      <button
-        type="button"
-        className={
-          isDdb
-            ? `sheet-ddb-portrait ${previewSrc ? "has-image" : "is-empty"}`
-            : `sheet-popup-portrait ${previewSrc ? "has-image" : "is-empty"}`
-        }
-        onClick={() => {
-          if (!canEdit) return;
-          if (previewSrc) setOpen(true);
-          else fileRef.current?.click();
-        }}
-        aria-label={previewSrc ? `Retrato de ${name}` : `Adicionar retrato de ${name}`}
-      >
-        <Portrait
-          tier="hero"
-          frameless={isDdb}
-          imageSrc={previewSrc}
-          initials={previewSrc ? undefined : "?"}
-          alt={name}
-          focus={focusPortrait}
-          imgW={imgSize.w > 0 ? imgSize.w : undefined}
-          imgH={imgSize.h > 0 ? imgSize.h : undefined}
-          className={isDdb ? "portrait--ddb" : "portrait--sheet-popup"}
-        />
-        {canEdit ? (
-          <span
-            className={isDdb ? "sheet-ddb-portrait__hover" : "sheet-popup-portrait__hover"}
-            aria-hidden
-          >
-            <IconCamera size={22} />
-            <span>{previewSrc ? "Ajustar retrato" : "Inserir imagem"}</span>
-          </span>
-        ) : null}
-      </button>
+    <button
+      type="button"
+      className={
+        isDdb
+          ? `sheet-ddb-portrait ${previewSrc ? "has-image" : "is-empty"}`
+          : `sheet-popup-portrait ${previewSrc ? "has-image" : "is-empty"}`
+      }
+      onClick={() => {
+        if (!canEdit) return;
+        if (previewSrc) setOpen(true);
+        else fileRef.current?.click();
+      }}
+      aria-label={previewSrc ? `Retrato de ${name}` : `Adicionar retrato de ${name}`}
+    >
+      <Portrait
+        tier="hero"
+        frameless={isDdb}
+        imageSrc={previewSrc}
+        initials={previewSrc ? undefined : "?"}
+        alt={name}
+        focus={focusPortrait}
+        imgW={imgSize.w > 0 ? imgSize.w : undefined}
+        imgH={imgSize.h > 0 ? imgSize.h : undefined}
+        className={isDdb ? "portrait--ddb" : "portrait--sheet-popup"}
+      />
+      {canEdit ? (
+        <span
+          className={isDdb ? "sheet-ddb-portrait__hover" : "sheet-popup-portrait__hover"}
+          aria-hidden
+        >
+          <IconCamera size={22} />
+          <span>{previewSrc ? "Ajustar retrato" : "Inserir imagem"}</span>
+        </span>
+      ) : null}
+    </button>
   );
+
+  const editorDialog =
+    open && canEdit && editorPos ? (
+      <div
+        className="sheet-popup-portrait-editor sheet-popup-portrait-editor--portal"
+        style={{ top: editorPos.top, left: editorPos.left }}
+        role="dialog"
+        aria-label="Editor de retrato"
+      >
+        <div className="sheet-popup-portrait-editor__head">
+          <strong>Retrato e token</strong>
+          <button
+            type="button"
+            className="sheet-popup-portrait-editor__close"
+            onClick={() => setOpen(false)}
+          >
+            ×
+          </button>
+        </div>
+        <p className="sheet-popup-portrait-editor__hint">{IMAGE_UPLOAD_HINT}</p>
+        <PortraitFocusEditor
+          imageSrc={previewSrc ?? ""}
+          focus={editingSlot === "token" ? focusToken : focusPortrait}
+          portraitFocus={focusPortrait}
+          tokenFocus={focusToken}
+          onFocusChange={(next) => {
+            if (editingSlot === "token") setFocusToken(next);
+            else setFocusPortrait(next);
+          }}
+          disabled={busy}
+          previewMode={editingSlot}
+          onPreviewModeChange={setEditingSlot}
+          tokenRingColor={ringColor}
+        />
+        <div className="sheet-popup-portrait-editor__actions">
+          <button
+            type="button"
+            className="btn btn-ghost"
+            disabled={busy}
+            onClick={() => fileRef.current?.click()}
+          >
+            Trocar arquivo
+          </button>
+          {draftSrc ? (
+            <button
+              type="button"
+              className="btn btn-primary"
+              disabled={busy}
+              onClick={() => void saveDraft()}
+            >
+              Salvar retrato
+            </button>
+          ) : (
+            <button
+              type="button"
+              className="btn btn-primary"
+              disabled={busy || !previewSrc}
+              onClick={() => void saveFocusOnly()}
+            >
+              Aplicar enquadramento
+            </button>
+          )}
+        </div>
+        {msg ? <p className="sheet-popup-portrait-editor__msg">{msg}</p> : null}
+      </div>
+    ) : null;
 
   return (
     <>
-      {isDdb ? portraitBtn : <div className="sheet-popup-portrait-wrap">{portraitBtn}</div>}
+      {isDdb ? (
+        <div className="sheet-ddb-portrait-anchor" ref={anchorRef}>
+          {portraitBtn}
+        </div>
+      ) : (
+        <div className="sheet-popup-portrait-wrap" ref={anchorRef}>
+          {portraitBtn}
+        </div>
+      )}
 
       <input
         ref={fileRef}
@@ -200,46 +324,7 @@ export function SheetPopupPortrait({
         }}
       />
 
-      {open && canEdit ? (
-        <div className="sheet-popup-portrait-editor" role="dialog" aria-label="Editor de retrato">
-          <div className="sheet-popup-portrait-editor__head">
-            <strong>Retrato e token</strong>
-            <button type="button" className="sheet-popup-portrait-editor__close" onClick={() => setOpen(false)}>
-              ×
-            </button>
-          </div>
-          <p className="sheet-popup-portrait-editor__hint">{IMAGE_UPLOAD_HINT}</p>
-          <PortraitFocusEditor
-            imageSrc={previewSrc ?? ""}
-            focus={editingSlot === "token" ? focusToken : focusPortrait}
-            portraitFocus={focusPortrait}
-            tokenFocus={focusToken}
-            onFocusChange={(next) => {
-              if (editingSlot === "token") setFocusToken(next);
-              else setFocusPortrait(next);
-            }}
-            disabled={busy}
-            previewMode={editingSlot}
-            onPreviewModeChange={setEditingSlot}
-            tokenRingColor={ringColor}
-          />
-          <div className="sheet-popup-portrait-editor__actions">
-            <button type="button" className="btn btn-ghost" disabled={busy} onClick={() => fileRef.current?.click()}>
-              Trocar arquivo
-            </button>
-            {draftSrc ? (
-              <button type="button" className="btn btn-primary" disabled={busy} onClick={() => void saveDraft()}>
-                Salvar retrato
-              </button>
-            ) : (
-              <button type="button" className="btn btn-primary" disabled={busy || !portraitUrl} onClick={() => void saveFocusOnly()}>
-                Aplicar enquadramento
-              </button>
-            )}
-          </div>
-          {msg ? <p className="sheet-popup-portrait-editor__msg">{msg}</p> : null}
-        </div>
-      ) : null}
+      {mounted && editorDialog ? createPortal(editorDialog, document.body) : null}
     </>
   );
 }
