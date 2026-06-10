@@ -1,13 +1,17 @@
 import { NextResponse } from "next/server";
 import { createAdventure, listAdventuresForUser } from "@/lib/adventure/store";
 import { getSession } from "@/lib/auth/session";
+import { DEFAULT_RPG_SYSTEM_ID, normalizeRpgSystemId } from "@/lib/rpg/systems";
 
-export async function GET() {
+export async function GET(request: Request) {
   const session = await getSession();
   if (!session) {
     return NextResponse.json({ error: "Faça login" }, { status: 401 });
   }
-  const adventures = await listAdventuresForUser(session.user.id);
+  const { searchParams } = new URL(request.url);
+  const rpgSystemParam = searchParams.get("rpgSystem");
+  const rpgSystemId = rpgSystemParam ? normalizeRpgSystemId(rpgSystemParam) : undefined;
+  const adventures = await listAdventuresForUser(session.user.id, { rpgSystemId });
   return NextResponse.json({ adventures });
 }
 
@@ -25,7 +29,8 @@ export async function POST(request: Request) {
     }
 
     const accessMode = body.accessMode === "closed" ? "closed" : "public";
-    const result = await createAdventure(session.user.id, name, { accessMode });
+    const rpgSystemId = normalizeRpgSystemId(body.rpgSystem ?? DEFAULT_RPG_SYSTEM_ID);
+    const result = await createAdventure(session.user.id, name, { accessMode, rpgSystemId });
     if (!result.ok) {
       return NextResponse.json({ error: result.error }, { status: 400 });
     }
@@ -37,6 +42,7 @@ export async function POST(request: Request) {
         inviteCode: adventure.inviteCode,
         primaryRoomId: adventure.primaryRoomId,
         accessMode: adventure.accessMode,
+        rpgSystemId: adventure.rpgSystemId,
         isOwner: true,
       },
     });

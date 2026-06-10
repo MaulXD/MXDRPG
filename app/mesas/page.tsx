@@ -14,18 +14,18 @@ export default async function MesasHubPage() {
   return (
     <div className="page-wrap" style={{ maxWidth: 920, paddingTop: "2rem", paddingBottom: "3rem" }}>
       <header className="page-header" style={{ paddingBottom: "1.5rem" }}>
-        <p className="eyebrow">MXDRPG</p>
-        <h1 className="display-lg">Mesas</h1>
+        <p className="eyebrow">MXDRPG · sistemas</p>
+        <h1 className="display-lg">Escolha seu RPG</h1>
         <p className="lead">
-          Hub de RPGs no navegador. Cada sistema tem mesas, fichas e salas próprias — comece por{" "}
-          <strong>Eldarin</strong>, nosso VTT tático em grid hexagonal.
+          Cada sistema tem mesas, fichas e salas próprias no navegador. Hoje jogamos{" "}
+          <strong>Eldarin</strong> (grid hex e PA por turno); D&D e Vampiro chegam em breve.
         </p>
       </header>
 
       <MedievalFrame variant="royal" page>
         <div className="rpg-hub-grid">
           {RPG_SYSTEMS.map((sys) => (
-            <RpgSystemCoverCard key={sys.id} system={sys} variant="hub" />
+            <RpgSystemCoverCard key={sys.id} system={sys} />
           ))}
         </div>
 

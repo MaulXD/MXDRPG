@@ -20,6 +20,7 @@ function formatRestoreDeadline(deletedAt: number): string {
     ownerId: "",
     name: "",
     synopsis: "",
+    rpgSystemId: "eldarin",
     accessMode: "public",
     inviteCode: "",
     memberIds: [],
@@ -48,7 +49,7 @@ export function AdventureLobby() {
   const creatingRef = useRef(false);
 
   const load = useCallback(async () => {
-    const res = await fetch("/api/adventures");
+    const res = await fetch("/api/adventures?rpgSystem=eldarin");
     if (res.ok) {
       const data = await res.json();
       setAdventures(data.adventures ?? []);
@@ -77,7 +78,7 @@ export function AdventureLobby() {
       const res = await fetch("/api/adventures", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: newName, accessMode }),
+        body: JSON.stringify({ name: newName, accessMode, rpgSystem: "eldarin" }),
       });
       const data = (await res.json().catch(() => ({}))) as {
         error?: string;
