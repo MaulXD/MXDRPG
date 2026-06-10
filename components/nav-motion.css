@@ -102,7 +102,7 @@
 
 .vtt-nav .nav-link:hover {
   color: var(--accent);
-  background: var(--accent-soft, rgba(122, 163, 201, 0.12));
+  background: var(--accent-soft);
 }
 
 .vtt-nav .nav-link {

@@ -18,7 +18,7 @@
 | `--chrome-accent` | `#b8922e` | Hover, foco, indicador ativo, logo |
 | `--chrome-accent-hover` | `#d4aa52` | Estado hover do acento |
 | `--chrome-text` | `#c8bfa8` | Texto de UI no chrome |
-| `--chrome-text-muted` | `#6b6050` | Labels secundários, ícones inativos |
+| `--chrome-text-muted` | `#a89878` | Labels secundários, ícones inativos (≥4.5:1 s/ `--chrome-surface`) |
 
 ```css
 /* globals.css — :root */
@@ -29,7 +29,7 @@
 --chrome-accent:       #b8922e;
 --chrome-accent-hover: #d4aa52;
 --chrome-text:         #c8bfa8;
---chrome-text-muted:   #6b6050;
+--chrome-text-muted:   #a89878;
 ```
 
 **Regras de uso:**
@@ -102,21 +102,21 @@
 | Token | Hex | Contraste s/ `#f6f0e4` | Uso |
 |---|---|---|---|
 | `--semantic-hp` | `#7a1e1e` | 8.2:1 ✓ | HP, dano, vida |
-| `--semantic-pa` | `#1a3d5c` | 7.6:1 ✓ | CA, escudo, defesa |
+| `--semantic-pa` | `#8b3228` | 6.8:1 ✓ | PA, combate, recurso tático |
 | `--semantic-success` | `#2a4a2c` | 7.1:1 ✓ | Buff ativo, sucesso |
 | `--semantic-warn` | `#6e4800` | 6.3:1 ✓ | Atenção, condição |
 | `--semantic-danger` | `#5e1a0e` | 8.8:1 ✓ | Veneno, crítico, perigo |
-| `--semantic-info` | `#1a2e4a` | 8.1:1 ✓ | Info, lore, nota |
+| `--semantic-info` | `#5a4e38` | 6.1:1 ✓ | Info, lore, nota |
 | `--semantic-gm` | `#3a1e52` | 7.4:1 ✓ | Exclusivo GM, notas secretas |
 
 ```css
 /* globals.css — :root */
 --semantic-hp:      #7a1e1e;
---semantic-pa:      #1a3d5c;
+--semantic-pa:      #8b3228;
 --semantic-success: #2a4a2c;
 --semantic-warn:    #6e4800;
 --semantic-danger:  #5e1a0e;
---semantic-info:    #1a2e4a;
+--semantic-info:    #5a4e38;
 --semantic-gm:      #3a1e52;
 ```
 
@@ -133,7 +133,7 @@
 | Tipo | Token | Hex | Regra de uso |
 |---|---|---|---|
 | Arma | `--type-weapon` | `#8b3a22` | `border-left: 3px solid` apenas |
-| Magia | `--type-magic` | `#1a3d5c` | `border-left: 3px solid` + ícone |
+| Magia | `--type-magic` | `#6e3a52` | `border-left: 3px solid` + ícone |
 | Equipamento | `--type-gear` | `#4a3820` | `border-left: 3px solid` apenas |
 | Habilidade | `--type-ability` | `#6e4800` | `border-left: 3px solid` + ícone |
 | Efeito | `--type-effect` | `#2a4a2c` | chip pequeno apenas |
@@ -142,7 +142,7 @@
 ```css
 /* globals.css — :root */
 --type-weapon:   #8b3a22;
---type-magic:    #1a3d5c;
+--type-magic:    #6e3a52;
 --type-gear:     #4a3820;
 --type-ability:  #6e4800;
 --type-effect:   #2a4a2c;
@@ -160,6 +160,20 @@ Padrão de card compêndio:
   border-radius: 0 4px 4px 0;
 }
 ```
+
+---
+
+## Aliases legados — texto no chrome
+
+| Token | Hex | Uso |
+|---|---|---|
+| `--text` | `var(--chrome-text)` | Corpo de UI no chrome |
+| `--text-strong` | `#e8e0d0` | Títulos, nomes, ênfase |
+| `--text-muted` | `var(--chrome-text-muted)` | Meta-labels no chrome |
+| `--text-dim` | `#8a7d68` | Rodapé, hints secundários no chrome |
+| `--landing-accent-vtt` | `#8a6840` | Acento bronze na landing (VTT) |
+
+> `--content-text-muted` (`#5a4e38`) permanece exclusivo do pergaminho — não reutilizar no chrome escuro.
 
 ---
 

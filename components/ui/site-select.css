@@ -32,7 +32,7 @@
 .site-select__trigger:focus-visible {
   outline: none;
   border-color: var(--accent);
-  box-shadow: 0 0 0 2px rgba(122, 163, 201, 0.22);
+  box-shadow: 0 0 0 2px rgba(184, 146, 46, 0.22);
 }
 
 .site-select__value {
@@ -90,17 +90,17 @@
 }
 
 .site-select__option:hover {
-  background: rgba(122, 163, 201, 0.14);
+  background: rgba(184, 146, 46, 0.14);
   color: var(--text-strong);
 }
 
 .site-select__option.is-selected {
-  background: rgba(122, 163, 201, 0.22);
+  background: rgba(184, 146, 46, 0.22);
   color: var(--accent);
   font-weight: 600;
 }
 
 .site-select__option:focus-visible {
   outline: none;
-  background: rgba(122, 163, 201, 0.18);
+  background: rgba(184, 146, 46, 0.18);
 }

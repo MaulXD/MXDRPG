@@ -79,7 +79,7 @@ function drawSingleMarkup(
 
   if (selected) {
     ctx.setLineDash([5, 4]);
-    ctx.strokeStyle = "rgba(122, 163, 201, 0.95)";
+    ctx.strokeStyle = "rgba(184, 146, 46, 0.95)";
     ctx.lineWidth = 1.5;
     const bounds = markupBounds(markup);
     if (bounds) {

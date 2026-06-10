@@ -141,7 +141,7 @@
 .world-lore__filter input:focus {
   outline: none;
   border-color: var(--accent);
-  box-shadow: 0 0 0 2px rgba(122, 163, 201, 0.22);
+  box-shadow: 0 0 0 2px rgba(184, 146, 46, 0.22);
 }
 
 .world-lore__hint {
