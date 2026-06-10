@@ -14,8 +14,10 @@ import {
   subclassSpecialtyTooltip,
   subclassTalentTooltip,
 } from "@/lib/character/subclass-wizard-tooltips";
-import type { SheetQuickSkill } from "@/lib/character/sheet-skills";
+import type { SheetQuickSkill, SheetSavingThrow } from "@/lib/character/sheet-skills";
 import type { CharacterIdentity } from "@/lib/character/types";
+import { entryTooltipText } from "@/lib/compendium/format";
+import type { CompendiumEntry } from "@/lib/compendium/types";
 import { antecedenteMeta } from "@/lib/character/wizard-meta";
 import {
   antecedenteGainDescription,
@@ -167,11 +169,31 @@ export function deityChipTip(religiao: string | null | undefined): SheetTipConte
   return { title: name, lines: lines.length ? lines : ["Bônus de devoção ativos."] };
 }
 
+const ATTRIBUTE_USE: Record<AttributeKey, string> = {
+  forca: "Força bruta — empurrar, agarrar, escalar e ataques corpo a corpo.",
+  destreza: "Agilidade — reflexos, furtividade, iniciativa e ataques à distância.",
+  constituicao: "Vigor — resistência a venenos, fadiga e sustentação de PV.",
+  inteligencia: "Raciocínio — magia arcana, investigação e conhecimento.",
+  sabedoria: "Instinto — percepção, magia divina e resistir ilusões.",
+  carisma: "Presença — persuasão, intimidação e magia carismática.",
+};
+
+const SAVE_USE: Record<AttributeKey, string> = {
+  forca: "Resistir empurrão, agarrão, quedas e efeitos que exigem força física.",
+  destreza: "Esquivar áreas, armadilhas, explosões e efeitos de reflexo.",
+  constituicao: "Aguentar venenos, doenças, exaustão e dano direto ao corpo.",
+  inteligencia: "Resistir ilusões, confusão mental e manipulação arcana.",
+  sabedoria: "Resistir medo, possessão, encantamento e efeitos divinos sutis.",
+  carisma: "Manter a vontade contra dominação, banimento e efeitos sociais mágicos.",
+};
+
 const SKILL_USE: Record<string, string> = {
   percepcao:
     "Notar perigos, emboscadas, criaturas ocultas, pistas visuais ou sonoras no ambiente.",
   investigacao:
     "Examinar uma cena, procurar compartimentos secretos, armadilhas ou deduzir o que aconteceu.",
+  religiao:
+    "Conhecimento sobre deuses, rituais, símbolos sagrados e tradições do panteão.",
   iniciativa:
     "Determina a ordem de turno no combate — quem age primeiro quando a luta começa.",
   furtividade:
@@ -179,6 +201,106 @@ const SKILL_USE: Record<string, string> = {
   atletismo:
     "Escalar, saltar, nadar, empurrar ou agarrar — força física bruta em situações de perigo.",
 };
+
+export function attributeTip(
+  attr: AttributeKey,
+  score: number,
+  mod: number
+): SheetTipContent {
+  const sign = mod >= 0 ? `+${mod}` : `${mod}`;
+  return {
+    title: ATTRIBUTE_LABELS[attr],
+    lines: [
+      ATTRIBUTE_USE[attr],
+      "",
+      `Valor ${score} · modificador ${sign}`,
+      "Modificador entra em perícias, salvaguardas e ataques ligados ao atributo.",
+    ],
+  };
+}
+
+export function savingThrowTip(save: SheetSavingThrow, nivel: number): SheetTipContent {
+  const prof = save.trained ? proficiencyBonus(nivel) : 0;
+  const base = save.mod - prof;
+  const baseSign = base >= 0 ? `+${base}` : `${base}`;
+  const lines: string[] = [
+    SAVE_USE[save.attr],
+    "",
+    save.trained
+      ? `Composição: ${save.label} ${baseSign} · prof +${prof}`
+      : `Composição: ${save.label} ${baseSign} (sem proficiência de classe)`,
+    `Total: ${save.display} · rolagem 1d20${save.mod >= 0 ? `+${save.mod}` : save.mod}`,
+  ];
+  if (save.trained) {
+    lines.push("Proficiente — sua classe treina esta salvaguarda.");
+  }
+  return { title: `Salvaguarda de ${save.label}`, lines };
+}
+
+export function combatStatTip(
+  kind: "iniciativa" | "movement" | "prof" | "ca" | "hp" | "pa",
+  values: { iniciativa?: number; walk?: number; run?: number; prof?: number; ca?: number; hp?: string; pa?: string }
+): SheetTipContent {
+  switch (kind) {
+    case "iniciativa":
+      return {
+        title: "Iniciativa",
+        lines: [
+          "Define sua posição na ordem de turno quando o combate começa.",
+          `Modificador atual: ${values.iniciativa! >= 0 ? `+${values.iniciativa}` : values.iniciativa}`,
+          "Baseado em DES, bônus de classe e equipamento.",
+        ],
+      };
+    case "movement":
+      return {
+        title: "Deslocamento",
+        lines: [
+          `Caminhada ${values.walk} hex · corrida ${values.run} hex por turno.`,
+          "Movimento gasta PA conforme as regras da mesa.",
+          "Terreno difícil ou efeitos podem reduzir o deslocamento.",
+        ],
+      };
+    case "prof":
+      return {
+        title: "Proficiência",
+        lines: [
+          `Bônus +${values.prof} somado a perícias e salvaguardas treinadas.`,
+          "Escala com o nível do personagem.",
+        ],
+      };
+    case "ca":
+      return {
+        title: "Classe de armadura",
+        lines: [
+          `CA ${values.ca} — dificuldade para acertar você com ataques.`,
+          "Armadura, DES, escudo e talentos alteram este valor.",
+        ],
+      };
+    case "hp":
+      return {
+        title: "Pontos de vida",
+        lines: [
+          `Reserva atual: ${values.hp}.`,
+          "Ao chegar a 0 PV você fica inconsciente ou derrotado.",
+        ],
+      };
+    case "pa":
+      return {
+        title: "Pontos de ação",
+        lines: [
+          `Disponíveis: ${values.pa}.`,
+          "Gastos em ataques, magias, habilidades e movimento tático.",
+          "Recarregam no início do seu turno (até o máximo da ficha).",
+        ],
+      };
+  }
+}
+
+export function compendiumEntryTip(entry: CompendiumEntry): SheetTipContent {
+  const text = entryTooltipText(entry.system, entry.type, entry.name);
+  const lines = text.split("\n").filter((line) => line.trim().length > 0);
+  return { title: entry.name, lines: lines.length ? lines : ["Sem descrição no compêndio."] };
+}
 
 export function skillQuickActionTip(skill: SheetQuickSkill, nivel: number): SheetTipContent {
   const use = SKILL_USE[skill.def.id] ?? `Teste de ${skill.def.label}.`;
