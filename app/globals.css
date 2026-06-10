@@ -88,7 +88,14 @@
   --text: var(--chrome-text);
   --text-strong: #e8e0d0;
   --text-muted: var(--chrome-text-muted);
-  --text-dim: #8a7d68;
+  --text-dim: #9a9080;
+
+  /* chrome — campos (input, busca) em fundo escuro; sem azul */
+  --chrome-field-bg: #1c1b18;
+  --chrome-field-bg-focus: #252420;
+  --chrome-field-border: var(--chrome-border);
+  --chrome-field-text: var(--chrome-text);
+  --chrome-field-placeholder: #9a9080;
 
   --parchment: var(--content-bg);
   --parchment-deep: var(--content-bg-elevated);
@@ -285,6 +292,66 @@ a {
   border-radius: var(--radius);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
   color: var(--text);
+}
+
+/* Campos em UI escura — contraste legível, zero azul marinho */
+.chrome-field,
+.comp-search,
+.friends-search input,
+.friends-toolbar input[type="search"],
+.friends-toolbar input[type="text"],
+.room-chat-form input,
+.room-chat-form textarea,
+.site-select__control,
+.auth-form input:not([type="checkbox"]):not([type="radio"]),
+.auth-form textarea,
+.mesa-rail-panel input,
+.mesa-rail-panel textarea,
+.mesa-rail-panel select,
+.whiteboard-toolbar input,
+.glass input[type="search"],
+.glass input[type="text"]:not([class*="content"]),
+.glass textarea:not([class*="content"]),
+.page-wrap input[type="search"]:not(.content-input),
+.page-wrap input[type="text"]:not(.content-input) {
+  color: var(--chrome-field-text);
+  background: var(--chrome-field-bg);
+  border-color: var(--chrome-field-border);
+}
+
+.chrome-field::placeholder,
+.comp-search::placeholder,
+.friends-search input::placeholder,
+.friends-toolbar input::placeholder,
+.room-chat-form input::placeholder,
+.room-chat-form textarea::placeholder,
+.auth-form input::placeholder,
+.auth-form textarea::placeholder,
+.glass input::placeholder,
+.glass textarea::placeholder,
+.page-wrap input::placeholder {
+  color: var(--chrome-field-placeholder);
+  opacity: 1;
+}
+
+.chrome-field:focus,
+.comp-search:focus,
+.friends-search input:focus,
+.friends-toolbar input:focus,
+.room-chat-form input:focus,
+.room-chat-form textarea:focus,
+.site-select__control:focus,
+.auth-form input:focus,
+.auth-form textarea:focus,
+.mesa-rail-panel input:focus,
+.mesa-rail-panel textarea:focus,
+.glass input:focus,
+.glass textarea:focus,
+.page-wrap input:focus {
+  outline: none;
+  border-color: var(--chrome-accent);
+  background: var(--chrome-field-bg-focus);
+  box-shadow: 0 0 0 2px rgba(184, 146, 46, 0.22);
 }
 
 .btn,
@@ -782,9 +849,9 @@ button.btn {
   font-family: var(--font-ui);
   font-size: 0.88rem;
   font-weight: 500;
-  color: var(--text);
-  background: var(--surface-inset);
-  border: 1px solid var(--glass-border);
+  color: var(--chrome-field-text);
+  background: var(--chrome-field-bg);
+  border: 1px solid var(--chrome-field-border);
   border-radius: var(--radius);
   padding: 0.5rem 0.65rem;
   transition: border-color 0.15s, box-shadow 0.15s;

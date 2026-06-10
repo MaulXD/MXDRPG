@@ -34,6 +34,8 @@ import {
 } from "@/components/character/SheetPopupLoadoutBar";
 import { SheetPopupPortrait } from "@/components/character/SheetPopupPortrait";
 import { SheetPopupDdbView } from "@/components/character/SheetPopupDdbView";
+import { SheetDdbDrawer } from "@/components/character/SheetDdbDrawer";
+import { SheetDdbManagePanel } from "@/components/character/SheetDdbManagePanel";
 import { PersonalBestiaryPanel } from "@/components/character/PersonalBestiaryPanel";
 import {
   IconArmor,
@@ -686,85 +688,28 @@ export function CharacterSheet({
   );
 
   if (isPopup) {
-    const popupRightAside = (
-      <>
-        {inRoom ? (
-          <div className="sheet-popup-live">
-            <span className="sheet-live-dot" aria-hidden />
-            Sync mesa · rev {snapshot?.revision ?? 0}
-          </div>
-        ) : null}
-
-        <div className="sheet-popup-pills">
-          {identity.raca ? <span className="sheet-popup-pill">{identity.raca}</span> : null}
-          {identity.classe ? <span className="sheet-popup-pill">{identity.classe}</span> : null}
-          {identity.subclasse ? (
-            <span className="sheet-popup-pill sheet-popup-pill--accent">{identity.subclasse}</span>
-          ) : null}
-          {identity.antecedente ? (
-            <span className="sheet-popup-pill">{identity.antecedente}</span>
-          ) : null}
-        </div>
-
-        <ReligionSheetPanel religiao={identity.religiao} compact />
-
-        {canEdit ? (
-          <LevelUpWizard
-            actor={live}
-            roomId={roomId}
-            canEdit={canEdit}
-            onDone={refresh}
-            onApplied={(patch) => {
-              if (!snapshot) return;
-              applySnapshot({
-                ...snapshot,
-                actors: { ...snapshot.actors, [patch.actor.id]: patch.actor },
-                scene: patch.scene,
-                revision: patch.revision,
-              });
-            }}
-          />
-        ) : null}
-
-        {canEdit && inRoom ? (
-          <Link
-            href={`/personagem/${character.id}`}
-            className="btn btn-ghost"
-            style={{ width: "100%", fontSize: "0.78rem" }}
-          >
-            Editar retrato e identidade ↗
-          </Link>
-        ) : null}
-
-        <SubclassTrackPanel actor={live} popup />
-        <FutureLevelsPanel actor={live} compact />
-
-        {canEdit && inRoom ? (
-          <CharacterIdentityEditor
-            actor={live}
-            roomId={roomId}
-            canEdit={canEdit}
-            onSaved={refresh}
-          />
-        ) : null}
-
-        {canEdit && adventureId ? (
-          <details className="sheet-structural-edit">
-            <summary>Reconstruir ficha (aprovação do mestre)</summary>
-            <p className="vtt-combat-hint sheet-structural-edit__hint">
-              Para refazer raça/classe ou só o último nível, envie uma solicitação — o dia a dia da ficha
-              continua editável por você.
-            </p>
-            <SheetEditRequestButton
-              characterId={character.id}
-              adventureId={adventureId}
-              roomId={inRoom ? roomId : undefined}
-              variant="inline"
-            />
-          </details>
-        ) : null}
-      </>
-    );
+    const managePanel =
+      canEdit || inRoom ? (
+        <SheetDdbManagePanel
+          character={character}
+          live={live}
+          roomId={roomId}
+          adventureId={adventureId}
+          inRoom={inRoom}
+          canEdit={canEdit}
+          snapshotRevision={snapshot?.revision}
+          onRefresh={refresh}
+          onLevelApplied={(patch) => {
+            if (!snapshot) return;
+            applySnapshot({
+              ...snapshot,
+              actors: { ...snapshot.actors, [patch.actor.id]: patch.actor },
+              scene: patch.scene,
+              revision: patch.revision,
+            });
+          }}
+        />
+      ) : null;
 
     const portraitNode = inRoom ? (
       <SheetPopupPortrait
@@ -848,15 +793,7 @@ export function CharacterSheet({
             ) : null
           }
           drawer={
-            <div className="sheet-ddb-drawer-inner">
-              {canEdit || inRoom ? (
-                <details className="sheet-popup-advanced sheet-popup-advanced--ddb">
-                  <summary>Gestão do personagem</summary>
-                  <div className="sheet-popup-advanced__body">{popupRightAside}</div>
-                </details>
-              ) : null}
-              {tabPanel}
-            </div>
+            <SheetDdbDrawer manage={managePanel}>{tabPanel}</SheetDdbDrawer>
           }
         />
 

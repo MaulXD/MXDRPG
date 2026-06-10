@@ -11,17 +11,17 @@
 
 .sheet-pdf-capture {
   width: 794px;
-  background: #121921;
+  background: #e8e2d6;
 }
 
 .sheet-pdf-capture__frame.mf {
-  --mf-bg: #121921;
-  --mf-accent: #7aa3c9;
+  --mf-bg: #e8e2d6;
+  --mf-accent: #b8922e;
   --mf-pad: 0.65rem;
   --mf-inset: 10px;
   width: 100%;
   margin: 0;
-  background: #121921;
+  background: #e8e2d6;
 }
 
 .sheet-pdf-capture .sheet-shell--popup {
@@ -48,13 +48,13 @@
 .sheet-pdf-capture__footer {
   margin: 0.75rem 0 0.25rem;
   padding-top: 0.5rem;
-  border-top: 1px solid rgba(122, 163, 201, 0.18);
+  border-top: 1px solid rgba(184, 146, 46, 0.25);
   font-size: 0.68rem;
-  color: rgba(200, 210, 224, 0.55);
+  color: #5a4e38;
   text-align: center;
   line-height: 1.5;
 }
 
 .sheet-pdf-capture__footer-links {
-  color: rgba(122, 163, 201, 0.85);
+  color: #8a6020;
 }

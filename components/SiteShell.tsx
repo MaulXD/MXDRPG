@@ -59,7 +59,7 @@ export function SiteShell({ children, header, footer }: Props) {
       >
         <div className="vtt-topbar-shell">
           <header className="vtt-topbar glass">
-            <EldarinLogo variant="header" />
+            <EldarinLogo variant="header" image="navbar" />
             <div className="vtt-topbar__end">
               <nav className="vtt-nav">
                 <AnimatedNavLink href="/mesa" icon={<IconHex size={18} />}>
