@@ -19,20 +19,18 @@ export function FriendsNavMessages() {
   return (
     <button
       type="button"
-      className={`friends-nav-messages nav-link${chat.messengerOpen && !chat.messengerMinimized ? " nav-link--active" : ""}`}
+      className={`friends-nav-messages friends-nav-messages__trigger${chat.messengerOpen && !chat.messengerMinimized ? " is-open" : ""}`}
       onClick={() => chat.toggleMessenger()}
       aria-pressed={chat.messengerOpen && !chat.messengerMinimized}
+      aria-label={badgeLabel ? `Mensagens, ${badgeLabel}` : "Mensagens"}
       title="Mensagens"
     >
-      <IconChat size={16} className="nav-link__icon" />
-      <span className="friends-nav-link__wrap nav-link__label">
-        Mensagens
-        {unread > 0 ? (
-          <span className="friends-nav-chat__badge friends-nav-link__badge" aria-label={badgeLabel}>
-            {unread > 9 ? "9+" : unread}
-          </span>
-        ) : null}
-      </span>
+      <IconChat size={18} />
+      {unread > 0 ? (
+        <span className="friends-nav-messages__badge" aria-hidden>
+          {unread > 9 ? "9+" : unread}
+        </span>
+      ) : null}
     </button>
   );
 }

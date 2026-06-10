@@ -121,7 +121,9 @@ export async function listNotificationsForUser(userId: string): Promise<Notifica
         requestId: req.id,
         fromUserId: req.fromUserId,
         fromDisplayName: req.fromDisplayName,
+        fromAvatarUrl: req.fromAvatarUrl,
         canAccept: true,
+        canReject: true,
       },
     });
   }
@@ -141,6 +143,7 @@ export async function listNotificationsForUser(userId: string): Promise<Notifica
         roomId: inv.roomId,
         fromUserId: inv.fromUserId,
         fromDisplayName: inv.fromDisplayName,
+        fromAvatarUrl: inv.fromAvatarUrl,
         canDismiss: true,
       },
     });

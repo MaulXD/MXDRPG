@@ -20,7 +20,9 @@ export type NotificationItem = {
     characterId?: string;
     fromUserId?: string;
     fromDisplayName?: string;
+    fromAvatarUrl?: string | null;
     canAccept?: boolean;
+    canReject?: boolean;
     canDismiss?: boolean;
   };
 };

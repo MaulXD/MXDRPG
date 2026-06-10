@@ -85,10 +85,29 @@
 }
 
 .notifications-bell__item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
   padding: 0.65rem 0.7rem;
   border-radius: 8px;
   background: rgba(0, 0, 0, 0.25);
   border: 1px solid var(--glass-border);
+}
+
+.notifications-bell__avatar {
+  width: 2.25rem;
+  height: 2.25rem;
+  flex-shrink: 0;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.notifications-bell__item-content {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
 }
 
 .notifications-bell__item-head {

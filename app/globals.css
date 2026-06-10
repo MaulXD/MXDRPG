@@ -474,8 +474,18 @@ button.btn {
 .site-nav {
   display: flex;
   align-items: center;
-  gap: 0.2rem;
+  flex: 1;
+  min-width: 0;
+  gap: 0.5rem;
   font-family: var(--font-ui), system-ui, -apple-system, sans-serif;
+}
+
+.site-nav__end {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  margin-left: auto;
+  flex-shrink: 0;
 }
 
 .nav-link {
