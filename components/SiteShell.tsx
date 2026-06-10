@@ -7,7 +7,8 @@ import { VttTopbarUserMenu } from "@/components/auth/VttTopbarUserMenu";
 import { EldarinLogo } from "@/components/brand/EldarinLogo";
 import { FriendsNavLink } from "@/components/friends/FriendsNavLink";
 import { FriendsNavMessages } from "@/components/friends/FriendsNavMessages";
-import { IconBook, IconHex, IconStar } from "@/components/ui/EldarinIcons";
+import { MesasNavMenu } from "@/components/nav/MesasNavMenu";
+import { IconBook } from "@/components/ui/EldarinIcons";
 import "@/components/vtt/mesa-theme.css";
 
 const VT_TOPBAR_HIDDEN_KEY = "eldarin-vtt-topbar-hidden";
@@ -63,14 +64,9 @@ export function SiteShell({ children, header, footer }: Props) {
             <EldarinLogo variant="header" image="navbar" />
             <div className="vtt-topbar__end">
               <nav className="vtt-nav">
-                <AnimatedNavLink href="/mesa" icon={<IconHex size={18} />}>
-                  Mesas
-                </AnimatedNavLink>
+                <MesasNavMenu variant="vtt" />
                 <AnimatedNavLink href="/compendios" icon={<IconBook size={18} />}>
                   Compêndios
-                </AnimatedNavLink>
-                <AnimatedNavLink href="/eldarin" icon={<IconStar size={18} />}>
-                  Minhas mesas
                 </AnimatedNavLink>
                 <FriendsNavLink />
                 <FriendsNavMessages />

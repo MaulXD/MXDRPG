@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 560" role="img" aria-label="Eldarin">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4a1520"/>
+      <stop offset="55%" stop-color="#2d0c12"/>
+      <stop offset="100%" stop-color="#1a080c"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#f0d878"/>
+      <stop offset="100%" stop-color="#b8922e"/>
+    </linearGradient>
+    <pattern id="hex" width="28" height="24" patternUnits="userSpaceOnUse" patternTransform="scale(1.2)">
+      <path d="M14 2 L26 9 L26 17 L14 24 L2 17 L2 9 Z" fill="none" stroke="#b8922e" stroke-opacity="0.18" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="400" height="560" fill="url(#bg)"/>
+  <rect width="400" height="560" fill="url(#hex)"/>
+  <circle cx="200" cy="210" r="88" fill="none" stroke="url(#gold)" stroke-width="3" opacity="0.55"/>
+  <text x="200" y="225" text-anchor="middle" fill="#f8f2ea" font-family="Georgia, serif" font-size="42" font-weight="700" letter-spacing="6">ELDARIN</text>
+  <text x="200" y="268" text-anchor="middle" fill="#d4b356" font-family="system-ui, sans-serif" font-size="13" letter-spacing="4">GRID HEX · PA</text>
+  <rect x="48" y="480" width="304" height="4" rx="2" fill="#b8922e" opacity="0.45"/>
+</svg>
