@@ -75,7 +75,7 @@
 .vtt-topbar-toggle:hover {
   color: var(--accent);
   border-color: var(--glass-border-bright);
-  background: rgba(122, 163, 201, 0.1);
+  background: var(--accent-soft);
 }
 
 .vtt-topbar-toggle:focus-visible {
@@ -154,7 +154,7 @@
 
 .vtt-nav a:hover {
   color: var(--accent);
-  background: var(--accent-soft, rgba(122, 163, 201, 0.12));
+  background: var(--accent-soft);
 }
 
 .vtt-main {
@@ -3696,7 +3696,7 @@
 
 .vtt-dungeon-panel--open {
   border-color: var(--glass-border-bright);
-  box-shadow: 0 0 0 1px rgba(122, 163, 201, 0.12);
+  box-shadow: 0 0 0 1px rgba(184, 146, 46, 0.12);
 }
 
 .vtt-dungeon-floor-pointer {
@@ -4302,7 +4302,7 @@
 .comp-rail-list,
 .room-chat-log {
   scrollbar-width: thin;
-  scrollbar-color: rgba(122, 163, 201, 0.45) rgba(0, 0, 0, 0.2);
+  scrollbar-color: rgba(184, 146, 46, 0.45) rgba(0, 0, 0, 0.2);
 }
 
 .mesa-rail-panel::-webkit-scrollbar,
@@ -4319,7 +4319,7 @@
 .mesa-panel-scroll--rail::-webkit-scrollbar-thumb,
 .comp-rail-list::-webkit-scrollbar-thumb,
 .room-chat-log::-webkit-scrollbar-thumb {
-  background: rgba(122, 163, 201, 0.35);
+  background: rgba(184, 146, 46, 0.35);
   border-radius: 4px;
 }
 
