@@ -19,6 +19,15 @@ export function FriendsMessengerDock() {
   const chat = useFriendsChat();
   const [mounted, setMounted] = useState(false);
 
+  const messengerOpen = chat?.messengerOpen ?? false;
+  const messengerMinimized = chat?.messengerMinimized ?? false;
+
+  const drag = useDraggablePopup({
+    width: MESSENGER_W,
+    height: MESSENGER_H,
+    enabled: mounted && Boolean(chat?.selfUserId) && messengerOpen && !messengerMinimized,
+  });
+
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -37,13 +46,7 @@ export function FriendsMessengerDock() {
 
   if (!mounted || !chat?.selfUserId) return null;
 
-  const { messengerOpen, messengerMinimized, openChats, activeChatId, friends, refreshUnread } = chat;
-
-  const drag = useDraggablePopup({
-    width: MESSENGER_W,
-    height: MESSENGER_H,
-    enabled: messengerOpen && !messengerMinimized,
-  });
+  const { openChats, activeChatId, friends, refreshUnread } = chat;
 
   const friendById = (id: string) => friends.find((f) => f.id === id) ?? null;
 
