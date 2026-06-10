@@ -242,8 +242,22 @@
 
     .sheet-ddb-hex-row {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(2, 1fr);
       gap: 0.25rem;
+    }
+
+    .sheet-ddb-hex--ca {
+      background: rgba(184, 146, 46, 0.12);
+      border-color: rgba(184, 146, 46, 0.45);
+    }
+
+    .sheet-ddb-hex--ca .sheet-ddb-hex__label {
+      color: #8a6020;
+      font-weight: 800;
+    }
+
+    .sheet-ddb-hex--ca strong {
+      font-size: 0.92rem;
     }
 
     .sheet-ddb-hex {
@@ -631,6 +645,10 @@
               <span class="sheet-ddb-hex__label">Prof.</span>
               <strong>+3</strong>
             </div>
+            <div class="sheet-ddb-hex sheet-ddb-hex--ca" title="Classe de armadura">
+              <span class="sheet-ddb-hex__label">CA</span>
+              <strong>17</strong>
+            </div>
           </div>
 
           <div class="sheet-ddb-resource">
@@ -653,10 +671,6 @@
             </div>
           </div>
 
-          <div class="sheet-ddb-ca">
-            <span>Classe de armadura</span>
-            <strong>17</strong>
-          </div>
         </aside>
 
         <!-- coluna central: perícias -->
