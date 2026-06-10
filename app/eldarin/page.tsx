@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { AdventureLobby } from "@/components/adventure/AdventureLobby";
-import { FriendsHub } from "@/components/friends/FriendsHub";
 import { MedievalFrame } from "@/components/ui/MedievalFrame";
 import { signInPath } from "@/lib/auth/post-auth-redirect";
 import { getSession } from "@/lib/auth/session";
@@ -28,7 +27,9 @@ export default async function EldarinMesasPage() {
         <p className="lead">
           Crie uma mesa como mestre ou entre com o código de convite. Mesas ingressadas ficam salvas
           na sua conta — só o mestre pode excluir (com 30 dias para restaurar).{" "}
-          <Link href="/conta">Editar foto de perfil</Link>
+          <Link href="/amigos">Amigos e mensagens</Link>
+          {" · "}
+          <Link href="/conta">Editar perfil</Link>
         </p>
       </header>
 
@@ -36,11 +37,6 @@ export default async function EldarinMesasPage() {
         <AdventureLobby />
       </MedievalFrame>
 
-      <div style={{ marginTop: "1.25rem" }}>
-        <MedievalFrame variant="royal" page>
-          <FriendsHub selfUserId={user.id} />
-        </MedievalFrame>
-      </div>
     </div>
   );
 }

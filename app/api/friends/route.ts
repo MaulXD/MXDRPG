@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { ensureDbMigrations } from "@/lib/db/ensure-migrations";
-import { addFriendByNickname, listFriends } from "@/lib/friends/store";
+import { addFriendByNickname, addFriendByUserId, listFriends } from "@/lib/friends/store";
 import { getSession } from "@/lib/auth/session";
 
 export const runtime = "nodejs";
@@ -23,13 +23,19 @@ export async function POST(request: Request) {
   }
 
   const body = await request.json().catch(() => ({}));
+  const userId = String(body.userId ?? "").trim();
   const nickname = String(body.nickname ?? "").trim();
-  if (!nickname) {
-    return NextResponse.json({ error: "Informe o apelido" }, { status: 400 });
-  }
 
   await ensureDbMigrations();
-  const result = await addFriendByNickname(session.user.id, nickname);
+
+  if (!userId && !nickname) {
+    return NextResponse.json({ error: "Informe o apelido ou o jogador" }, { status: 400 });
+  }
+
+  const result = userId
+    ? await addFriendByUserId(session.user.id, userId)
+    : await addFriendByNickname(session.user.id, nickname);
+
   if (!result.ok) {
     return NextResponse.json({ error: result.error }, { status: 400 });
   }

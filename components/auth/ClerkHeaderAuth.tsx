@@ -5,7 +5,7 @@ import Link from "next/link";
 import { AnimatedNavLink } from "@/components/AnimatedNavLink";
 import { IconUser } from "@/components/ui/EldarinIcons";
 import { ClerkHeaderUserMenu } from "@/components/auth/ClerkHeaderUserMenu";
-import { FriendsNavChat } from "@/components/friends/FriendsNavChat";
+import { FriendsNavLink } from "@/components/friends/FriendsNavLink";
 import type { SessionUser } from "@/lib/auth/types";
 import { portalPathForRole, roleMeta } from "@/lib/auth/roles";
 
@@ -21,7 +21,7 @@ export function ClerkHeaderAuth({ session }: Props) {
         <AnimatedNavLink href="/conta" icon={<IconUser size={18} />}>
           Perfil
         </AnimatedNavLink>
-        <FriendsNavChat />
+        <FriendsNavLink />
         <Link href={portalPathForRole(session.user.role)} className="btn nav-cta">
           {roleMeta(session.user.role).label}
         </Link>
