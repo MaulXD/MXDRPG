@@ -18,6 +18,18 @@
   overflow: hidden;
   border-radius: var(--radius);
   background: var(--mesa-stage-bg);
+
+  /* Cores dos atalhos — ícone, dock e janelas */
+  --rail-status: #e8b84a;
+  --rail-actors: #5ec4d4;
+  --rail-initiative: #b8922e;
+  --rail-ficha: #d4535c;
+  --rail-chat: #6ecf8a;
+  --rail-dice: #b08ee8;
+  --rail-invite: #e8927a;
+  --rail-dungeon: #c9927a;
+  --rail-gm: #d46a6a;
+  --rail-spawn: #e8a050;
 }
 
 .foundry-sidebar {
@@ -152,25 +164,27 @@
   pointer-events: auto;
 }
 
-/* Barra de ícones */
+/* Barra de ícones — largura fixa, só o necessário para rótulos */
 .foundry-icon-bar {
   flex-shrink: 0;
-  width: clamp(56px, 4.8vw, 66px);
+  width: 3rem;
+  max-width: 3rem;
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  gap: 0.15rem;
-  padding: 0.45rem 0.22rem 0.6rem;
+  gap: 0.1rem;
+  padding: 0.3rem 0.1rem 0.45rem;
   background: rgba(30, 29, 26, 0.65);
+  box-sizing: border-box;
 }
 
 .foundry-icon-bar__section-title {
-  margin: 0.15rem 0 0.25rem;
-  padding: 0 0.15rem;
+  margin: 0.1rem 0 0.18rem;
+  padding: 0;
   font-family: var(--font-display);
-  font-size: 0.58rem;
+  font-size: 0.5rem;
   font-weight: 600;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   text-align: center;
   color: var(--mesa-text-dim);
@@ -184,7 +198,7 @@
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  gap: 0.3rem;
+  gap: 0.22rem;
   width: 100%;
 }
 
@@ -202,10 +216,10 @@
 
 .foundry-icon-bar__btn {
   width: 100%;
-  min-height: 50px;
-  padding: 0.28rem 0.14rem 0.32rem;
+  min-height: 2.65rem;
+  padding: 0.2rem 0.08rem 0.22rem;
   border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 10px;
+  border-radius: 8px;
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.015));
   color: rgba(200, 191, 168, 0.85);
   cursor: pointer;
@@ -213,7 +227,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 0.32rem;
+  gap: 0.18rem;
   transition:
     background 0.18s,
     border-color 0.18s,
@@ -224,35 +238,32 @@
 
 .foundry-icon-bar__btn:hover {
   color: var(--text-strong);
-  border-color: color-mix(in srgb, var(--mesa-accent) 42%, transparent);
-  background: linear-gradient(180deg, rgba(184, 146, 46, 0.16), rgba(184, 146, 46, 0.05));
+  border-color: color-mix(in srgb, var(--rail-icon-color, var(--mesa-accent)) 42%, transparent);
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--rail-icon-color, var(--mesa-accent)) 16%, transparent),
+    color-mix(in srgb, var(--rail-icon-color, var(--mesa-accent)) 5%, transparent)
+  );
   transform: translateY(-1px);
 }
 
 .foundry-icon-bar__btn--active {
   color: var(--text-strong);
-  border-color: color-mix(in srgb, var(--mesa-accent) 58%, transparent);
-  background: linear-gradient(180deg, rgba(184, 146, 46, 0.32), rgba(110, 85, 35, 0.14));
+  border-color: color-mix(in srgb, var(--rail-icon-color, var(--mesa-accent)) 58%, transparent);
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--rail-icon-color, var(--mesa-accent)) 32%, transparent),
+    color-mix(in srgb, var(--rail-icon-color, var(--mesa-accent)) 14%, transparent)
+  );
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.1),
     0 4px 14px rgba(0, 0, 0, 0.22);
 }
 
-.foundry-icon-bar__btn--gm {
-  border-color: rgba(160, 100, 80, 0.2);
-}
-
-.foundry-icon-bar__btn--gm:hover,
-.foundry-icon-bar__btn--gm.foundry-icon-bar__btn--active {
-  color: #f0d4c4;
-  border-color: rgba(201, 146, 122, 0.45);
-  background: linear-gradient(180deg, var(--mesa-gm-soft), rgba(80, 48, 38, 0.12));
-}
-
 .foundry-icon-bar__icon-wrap {
-  width: 1.82rem;
-  height: 1.82rem;
-  border-radius: 9px;
+  width: 1.45rem;
+  height: 1.45rem;
+  border-radius: 7px;
   display: grid;
   place-items: center;
   background: linear-gradient(145deg, rgba(255, 255, 255, 0.07), rgba(0, 0, 0, 0.12));
@@ -265,79 +276,83 @@
 }
 
 .foundry-icon-bar__btn:hover .foundry-icon-bar__icon-wrap {
-  border-color: color-mix(in srgb, var(--mesa-accent) 35%, transparent);
-  background: linear-gradient(145deg, rgba(184, 146, 46, 0.18), rgba(0, 0, 0, 0.1));
+  border-color: color-mix(in srgb, var(--rail-icon-color, var(--mesa-accent)) 35%, transparent);
+  background: linear-gradient(
+    145deg,
+    color-mix(in srgb, var(--rail-icon-color, var(--mesa-accent)) 18%, transparent),
+    rgba(0, 0, 0, 0.1)
+  );
 }
 
 .foundry-icon-bar__btn--active .foundry-icon-bar__icon-wrap {
-  border-color: color-mix(in srgb, var(--mesa-accent) 55%, transparent);
-  background: linear-gradient(145deg, rgba(184, 146, 46, 0.28), rgba(60, 48, 20, 0.35));
+  border-color: color-mix(in srgb, var(--rail-icon-color, var(--mesa-accent)) 55%, transparent);
+  background: linear-gradient(
+    145deg,
+    color-mix(in srgb, var(--rail-icon-color, var(--mesa-accent)) 28%, transparent),
+    rgba(0, 0, 0, 0.28)
+  );
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.12),
-    0 0 12px rgba(184, 146, 46, 0.2);
-}
-
-.foundry-icon-bar__btn--gm .foundry-icon-bar__icon-wrap {
-  border-color: rgba(201, 146, 122, 0.18);
-  background: linear-gradient(145deg, rgba(201, 146, 122, 0.1), rgba(0, 0, 0, 0.14));
-}
-
-.foundry-icon-bar__btn--gm:hover .foundry-icon-bar__icon-wrap,
-.foundry-icon-bar__btn--gm.foundry-icon-bar__btn--active .foundry-icon-bar__icon-wrap {
-  border-color: rgba(201, 146, 122, 0.45);
-  background: linear-gradient(145deg, rgba(201, 146, 122, 0.22), rgba(60, 36, 28, 0.3));
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.08),
-    0 0 10px rgba(201, 146, 122, 0.15);
+    0 0 12px color-mix(in srgb, var(--rail-icon-color, var(--mesa-accent)) 20%, transparent);
 }
 
 .foundry-icon-bar__icon-wrap[data-rail-icon] .foundry-icon-bar__icon {
   color: var(--rail-icon-color, currentColor);
 }
 
+.foundry-icon-bar__btn[data-rail-icon="status"],
 .foundry-icon-bar__icon-wrap[data-rail-icon="status"] {
-  --rail-icon-color: #e8b84a;
+  --rail-icon-color: var(--rail-status);
 }
 
+.foundry-icon-bar__btn[data-rail-icon="actors"],
 .foundry-icon-bar__icon-wrap[data-rail-icon="actors"] {
-  --rail-icon-color: #5ec4d4;
+  --rail-icon-color: var(--rail-actors);
 }
 
+.foundry-icon-bar__btn[data-rail-icon="initiative"],
 .foundry-icon-bar__icon-wrap[data-rail-icon="initiative"] {
-  --rail-icon-color: #b8922e;
+  --rail-icon-color: var(--rail-initiative);
 }
 
+.foundry-icon-bar__btn[data-rail-icon="ficha"],
 .foundry-icon-bar__icon-wrap[data-rail-icon="ficha"] {
-  --rail-icon-color: #d4c4a0;
+  --rail-icon-color: var(--rail-ficha);
 }
 
+.foundry-icon-bar__btn[data-rail-icon="chat"],
 .foundry-icon-bar__icon-wrap[data-rail-icon="chat"] {
-  --rail-icon-color: #6ecf8a;
+  --rail-icon-color: var(--rail-chat);
 }
 
+.foundry-icon-bar__btn[data-rail-icon="dice"],
 .foundry-icon-bar__icon-wrap[data-rail-icon="dice"] {
-  --rail-icon-color: #b08ee8;
+  --rail-icon-color: var(--rail-dice);
 }
 
+.foundry-icon-bar__btn[data-rail-icon="invite"],
 .foundry-icon-bar__icon-wrap[data-rail-icon="invite"] {
-  --rail-icon-color: #e8927a;
+  --rail-icon-color: var(--rail-invite);
 }
 
+.foundry-icon-bar__btn[data-rail-icon="dungeon"],
 .foundry-icon-bar__icon-wrap[data-rail-icon="dungeon"] {
-  --rail-icon-color: #c9927a;
+  --rail-icon-color: var(--rail-dungeon);
 }
 
+.foundry-icon-bar__btn[data-rail-icon="gm"],
 .foundry-icon-bar__icon-wrap[data-rail-icon="gm"] {
-  --rail-icon-color: #d46a6a;
+  --rail-icon-color: var(--rail-gm);
 }
 
+.foundry-icon-bar__btn[data-rail-icon="spawn"],
 .foundry-icon-bar__icon-wrap[data-rail-icon="spawn"] {
-  --rail-icon-color: #e8a050;
+  --rail-icon-color: var(--rail-spawn);
 }
 
 .foundry-icon-bar__icon {
-  width: 1.22rem;
-  height: 1.22rem;
+  width: 1rem;
+  height: 1rem;
   display: block;
   flex-shrink: 0;
   filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.35));
@@ -376,6 +391,65 @@
   border-radius: 10px;
   border: 1px solid var(--glass-border);
   background: rgba(0, 0, 0, 0.18);
+}
+
+.foundry-dock-panel--ficha .vtt-playable-card--active,
+.foundry-window--ficha .vtt-playable-card--active {
+  border-color: color-mix(in srgb, var(--rail-ficha) 42%, transparent);
+  background: color-mix(in srgb, var(--rail-ficha) 14%, transparent);
+}
+
+.foundry-dock-panel--actors .vtt-token-list button.active,
+.foundry-window--actors .vtt-token-list button.active,
+.foundry-dock-panel--actors .vtt-token-row--active,
+.foundry-window--actors .vtt-token-row--active {
+  border-color: color-mix(in srgb, var(--rail-actors) 55%, transparent);
+  background: color-mix(in srgb, var(--rail-actors) 12%, transparent);
+}
+
+.foundry-dock-panel--actors .vtt-token-row:hover,
+.foundry-window--actors .vtt-token-row:hover {
+  border-color: color-mix(in srgb, var(--rail-actors) 45%, transparent);
+  background: color-mix(in srgb, var(--rail-actors) 10%, transparent);
+}
+
+.foundry-dock-panel--initiative .vtt-turn-list li.active,
+.foundry-dock-panel--initiative .vtt-turn-list li.vtt-turn-active,
+.foundry-window--initiative .vtt-turn-list li.active,
+.foundry-window--initiative .vtt-turn-list li.vtt-turn-active {
+  border-color: color-mix(in srgb, var(--rail-initiative) 55%, transparent);
+  background: color-mix(in srgb, var(--rail-initiative) 10%, transparent);
+  box-shadow: inset 3px 0 0 color-mix(in srgb, var(--rail-initiative) 85%, transparent);
+}
+
+.foundry-dock-panel--initiative .vtt-turn-avatar-slot--active::before,
+.foundry-window--initiative .vtt-turn-avatar-slot--active::before {
+  border-color: color-mix(in srgb, var(--rail-initiative) 92%, transparent);
+}
+
+.foundry-dock-panel--initiative .vtt-turn-round,
+.foundry-window--initiative .vtt-turn-round {
+  color: var(--rail-initiative);
+}
+
+.foundry-dock-panel--status .foundry-dock-panel__body .vtt-eyebrow,
+.foundry-window--status .vtt-eyebrow {
+  color: var(--rail-status);
+}
+
+.foundry-dock-panel--actors .foundry-dock-panel__body .vtt-eyebrow,
+.foundry-window--actors .vtt-eyebrow {
+  color: var(--rail-actors);
+}
+
+.foundry-dock-panel--initiative .foundry-dock-panel__body .vtt-eyebrow,
+.foundry-window--initiative .vtt-eyebrow {
+  color: var(--rail-initiative);
+}
+
+.foundry-dock-panel--ficha .foundry-dock-panel__body .vtt-eyebrow,
+.foundry-window--ficha .vtt-eyebrow {
+  color: var(--rail-ficha);
 }
 
 .vtt-playable-card--active {
@@ -472,16 +546,17 @@
 }
 
 .foundry-icon-bar__label {
-  font-family: var(--font-display);
-  font-size: 0.54rem;
-  font-weight: 600;
-  line-height: 1.1;
-  letter-spacing: 0.03em;
+  font-family: var(--font-ui, system-ui, sans-serif);
+  font-size: 0.48rem;
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: 0.02em;
   text-align: center;
   max-width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  text-transform: uppercase;
 }
 
 /* Painel dock (coluna de conteúdo) */
@@ -523,7 +598,82 @@
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--mesa-accent);
+  color: var(--panel-accent, var(--mesa-accent));
+}
+
+/* Cabeçalhos dock/janela — cor do atalho correspondente */
+.foundry-dock-panel--status,
+.foundry-window--status {
+  --panel-accent: var(--rail-status);
+}
+
+.foundry-dock-panel--actors,
+.foundry-window--actors {
+  --panel-accent: var(--rail-actors);
+}
+
+.foundry-dock-panel--initiative,
+.foundry-window--initiative {
+  --panel-accent: var(--rail-initiative);
+}
+
+.foundry-dock-panel--ficha,
+.foundry-window--ficha {
+  --panel-accent: var(--rail-ficha);
+}
+
+.foundry-dock-panel--chat,
+.foundry-window--chat {
+  --panel-accent: var(--rail-chat);
+}
+
+.foundry-dock-panel--dice,
+.foundry-window--dice {
+  --panel-accent: var(--rail-dice);
+}
+
+.foundry-dock-panel--invite,
+.foundry-window--invite {
+  --panel-accent: var(--rail-invite);
+}
+
+.foundry-dock-panel--dungeon,
+.foundry-window--dungeon {
+  --panel-accent: var(--rail-dungeon);
+}
+
+.foundry-dock-panel--gm,
+.foundry-window--gm {
+  --panel-accent: var(--rail-gm);
+}
+
+.foundry-dock-panel--spawn,
+.foundry-window--spawn {
+  --panel-accent: var(--rail-spawn);
+}
+
+.foundry-dock-panel--status .foundry-dock-panel__header,
+.foundry-dock-panel--actors .foundry-dock-panel__header,
+.foundry-dock-panel--initiative .foundry-dock-panel__header,
+.foundry-dock-panel--ficha .foundry-dock-panel__header,
+.foundry-dock-panel--chat .foundry-dock-panel__header,
+.foundry-dock-panel--dice .foundry-dock-panel__header,
+.foundry-dock-panel--invite .foundry-dock-panel__header,
+.foundry-dock-panel--dungeon .foundry-dock-panel__header,
+.foundry-dock-panel--gm .foundry-dock-panel__header,
+.foundry-dock-panel--spawn .foundry-dock-panel__header,
+.foundry-window--status .foundry-window__header,
+.foundry-window--actors .foundry-window__header,
+.foundry-window--initiative .foundry-window__header,
+.foundry-window--ficha .foundry-window__header,
+.foundry-window--chat .foundry-window__header,
+.foundry-window--dice .foundry-window__header,
+.foundry-window--invite .foundry-window__header,
+.foundry-window--dungeon .foundry-window__header,
+.foundry-window--gm .foundry-window__header,
+.foundry-window--spawn .foundry-window__header {
+  background: color-mix(in srgb, var(--panel-accent) 18%, transparent);
+  border-bottom-color: color-mix(in srgb, var(--panel-accent) 42%, transparent);
 }
 
 .foundry-dock-panel__actions {
@@ -775,7 +925,7 @@
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--mesa-accent);
+  color: var(--panel-accent, var(--mesa-accent));
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1789,15 +1939,16 @@
 
 @media (max-width: 640px) {
   .foundry-icon-bar {
-    width: 54px;
+    width: 2.875rem;
+    max-width: 2.875rem;
   }
 
   .foundry-icon-bar__btn {
-    min-height: 46px;
+    min-height: 2.5rem;
   }
 
   .foundry-icon-bar__label {
-    font-size: 0.5rem;
+    font-size: 0.46rem;
   }
 
   .foundry-sidebar--dock-open .foundry-sidebar__dock {
