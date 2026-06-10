@@ -14,10 +14,10 @@ import { isPortraitOnlyPatch } from "@/lib/auth/portrait-access";
 import { canEditCharacterPortrait } from "@/lib/auth/portrait-access-server";
 import { getSession } from "@/lib/auth/session";
 import type { CharacterSheet } from "@/lib/character/types";
-import { applyIdentityPatch } from "@/lib/character/identity";
+import { applyIdentityPatch, type IdentityPatch } from "@/lib/character/identity";
 import { normalizeReligionId } from "@/lib/character/pantheon";
 import { normalizeCharacter } from "@/lib/character/normalize";
-import { sanitizeActorPatch } from "@/lib/room/internal/actor-patch";
+import { mergeIdentityPatch, sanitizeActorPatch } from "@/lib/room/internal/actor-patch";
 
 type Params = { params: Promise<{ id: string }> };
 
@@ -69,7 +69,7 @@ export async function PATCH(request: Request, { params }: Params) {
       | "armorLoadout"
       | "lootEconomy"
     >
-  > & { religiao?: string };
+  > & { religiao?: string; identityPatch?: IdentityPatch };
 
   const requestId = new URL(request.url).searchParams.get("requestId")?.trim() || null;
   let grant = null;
@@ -111,6 +111,10 @@ export async function PATCH(request: Request, { params }: Params) {
 
   if (patch.religiao !== undefined) {
     merged = applyIdentityPatch(merged, { religiao: normalizeReligionId(patch.religiao) });
+  }
+
+  if (patch.identityPatch) {
+    merged = normalizeCharacter(mergeIdentityPatch(merged, patch.identityPatch));
   }
 
   const saved = await saveCharacter(merged);

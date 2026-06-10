@@ -19,14 +19,22 @@ import { patchRoomActor } from "@/hooks/useRoomSync";
 
 type Props = {
   actor: CharacterSheet;
-  roomId: string;
+  roomId?: string;
   canEdit: boolean;
   onSaved: () => void;
+  /** Persistência fora da sala (ex.: PATCH /api/characters) */
+  onSaveIdentity?: (patch: IdentityPatch) => Promise<void>;
 };
 
 const ATTR_KEYS = Object.keys(ATTRIBUTE_LABELS) as AttributeKey[];
 
-export function CharacterIdentityEditor({ actor, roomId, canEdit, onSaved }: Props) {
+export function CharacterIdentityEditor({
+  actor,
+  roomId,
+  canEdit,
+  onSaved,
+  onSaveIdentity,
+}: Props) {
   const [open, setOpen] = useState(false);
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState<string | null>(null);
@@ -62,7 +70,12 @@ export function CharacterIdentityEditor({ actor, roomId, canEdit, onSaved }: Pro
     setBusy(true);
     setMsg(null);
     try {
-      await patchRoomActor(roomId, actor.id, { identityPatch: patch });
+      if (onSaveIdentity) {
+        await onSaveIdentity(patch);
+      } else {
+        if (!roomId) throw new Error("Sala ausente para salvar identidade");
+        await patchRoomActor(roomId, actor.id, { identityPatch: patch });
+      }
       await onSaved();
       setMsg("Ficha atualizada.");
       setOpen(false);

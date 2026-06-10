@@ -30,11 +30,13 @@ import "./level-up.css";
 
 type Props = {
   actor: CharacterSheet;
-  roomId: string;
+  roomId?: string;
   canEdit: boolean;
   onDone: () => void | Promise<void>;
   /** Atualiza o sync da mesa logo após o POST (antes do refresh). */
   onApplied?: (patch: LevelUpRoomResponse) => void;
+  /** Subir nível fora da sala (ex.: POST /api/characters/:id/level-up) */
+  onLevelUp?: (choices: LevelUpChoices) => Promise<void>;
 };
 
 const STEP_LABEL: Record<LevelUpWizardStep["type"], string> = {
@@ -46,7 +48,14 @@ const STEP_LABEL: Record<LevelUpWizardStep["type"], string> = {
   confirm: "Confirmar",
 };
 
-export function LevelUpWizard({ actor, roomId, canEdit, onDone, onApplied }: Props) {
+export function LevelUpWizard({
+  actor,
+  roomId,
+  canEdit,
+  onDone,
+  onApplied,
+  onLevelUp,
+}: Props) {
   const [open, setOpen] = useState(false);
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState<string | null>(null);
@@ -137,8 +146,13 @@ export function LevelUpWizard({ actor, roomId, canEdit, onDone, onApplied }: Pro
     setBusy(true);
     setMsg(null);
     try {
-      const patch = await levelUpRoomActor(roomId, actor.id, choices);
-      onApplied?.(patch);
+      if (onLevelUp) {
+        await onLevelUp(choices);
+      } else {
+        if (!roomId) throw new Error("Sala ausente para subir nível");
+        const patch = await levelUpRoomActor(roomId, actor.id, choices);
+        onApplied?.(patch);
+      }
       await onDone();
       setOpen(false);
       setTalentoId("");
