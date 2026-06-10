@@ -18,8 +18,8 @@ export default async function EldarinMesasPage() {
     <div className="page-wrap" style={{ maxWidth: 760, paddingTop: "1.75rem", paddingBottom: "3rem" }}>
       <header className="page-header" style={{ paddingBottom: "1.25rem" }}>
         <p className="eyebrow">
-          <Link href="/rpg" style={{ color: "var(--text-muted)" }}>
-            ← RPGs
+          <Link href="/mesas" style={{ color: "var(--text-muted)" }}>
+            ← Mesas
           </Link>{" "}
           · Eldarin
         </p>

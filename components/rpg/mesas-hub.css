@@ -1,0 +1,243 @@
+.mesas-nav {
+  position: relative;
+}
+
+.mesas-nav__trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+  padding: 0 0.75rem;
+  min-height: var(--control-h);
+  border-radius: var(--radius-pill);
+}
+
+.mesas-nav__trigger:hover,
+.mesas-nav__trigger[aria-expanded="true"] {
+  color: var(--text);
+  background: var(--accent-soft);
+}
+
+.mesas-nav__trigger.nav-link--active {
+  color: var(--chrome-nav-link-hover, var(--text-strong));
+}
+
+.mesas-nav__chevron {
+  font-size: 0.62rem;
+  opacity: 0.65;
+  transition: transform 0.15s ease;
+}
+
+.mesas-nav__trigger[aria-expanded="true"] .mesas-nav__chevron {
+  transform: rotate(180deg);
+}
+
+.mesas-nav__panel {
+  position: absolute;
+  top: calc(100% + 0.45rem);
+  left: 0;
+  z-index: 12050;
+  width: min(22rem, calc(100vw - 1.5rem));
+  padding: 0.65rem;
+  border-radius: var(--radius-md, 12px);
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.45);
+}
+
+.mesas-nav__panel--portal {
+  position: fixed;
+  top: auto;
+  left: auto;
+}
+
+.mesas-nav__title {
+  margin: 0 0 0.5rem;
+  padding: 0 0.15rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.mesas-nav__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.mesas-nav__footer {
+  margin-top: 0.55rem;
+  padding-top: 0.55rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 0.78rem;
+}
+
+.mesas-nav__footer a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.mesas-nav__footer a:hover {
+  text-decoration: underline;
+}
+
+/* Card compartilhado — nav compacto e página hub */
+.rpg-cover-card {
+  display: grid;
+  grid-template-columns: 4.5rem minmax(0, 1fr);
+  gap: 0.65rem;
+  align-items: center;
+  padding: 0.45rem;
+  border-radius: var(--radius-sm, 8px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(0, 0, 0, 0.22);
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.15s, background 0.15s, transform 0.15s;
+}
+
+.rpg-cover-card:hover:not(.rpg-cover-card--soon) {
+  border-color: rgba(184, 146, 46, 0.45);
+  background: rgba(184, 146, 46, 0.08);
+  transform: translateY(-1px);
+}
+
+.rpg-cover-card--soon {
+  opacity: 0.62;
+  cursor: not-allowed;
+}
+
+.rpg-cover-card__cover {
+  width: 4.5rem;
+  aspect-ratio: 5 / 7;
+  border-radius: 6px;
+  overflow: hidden;
+  flex-shrink: 0;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.rpg-cover-card__cover img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.rpg-cover-card__body {
+  min-width: 0;
+}
+
+.rpg-cover-card__name {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 0.92rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  line-height: 1.2;
+}
+
+.rpg-cover-card__tagline {
+  margin: 0.2rem 0 0;
+  font-size: 0.74rem;
+  color: var(--text-muted);
+  line-height: 1.35;
+}
+
+.rpg-cover-card__badge {
+  display: inline-block;
+  margin-top: 0.35rem;
+  padding: 0.12rem 0.45rem;
+  border-radius: 999px;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: rgba(184, 146, 46, 0.2);
+  color: var(--accent);
+}
+
+.rpg-cover-card--soon .rpg-cover-card__badge {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-muted);
+}
+
+/* Página hub — cards grandes */
+.rpg-hub-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr));
+  gap: 1.1rem;
+}
+
+.rpg-hub-card {
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--radius-md, 12px);
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.2);
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s;
+}
+
+.rpg-hub-card:hover:not(.rpg-hub-card--soon) {
+  transform: translateY(-3px);
+  border-color: rgba(184, 146, 46, 0.5);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+}
+
+.rpg-hub-card--soon {
+  opacity: 0.58;
+  cursor: not-allowed;
+}
+
+.rpg-hub-card__cover {
+  aspect-ratio: 5 / 7;
+  width: 100%;
+  background: #1a1208;
+}
+
+.rpg-hub-card__cover img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.rpg-hub-card__body {
+  padding: 0.85rem 0.9rem 1rem;
+}
+
+.rpg-hub-card__name {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.rpg-hub-card__tagline {
+  margin: 0.35rem 0 0;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  line-height: 1.45;
+}
+
+.rpg-hub-card__cta {
+  display: inline-block;
+  margin-top: 0.75rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.rpg-hub-card--soon .rpg-hub-card__cta {
+  color: var(--text-muted);
+}

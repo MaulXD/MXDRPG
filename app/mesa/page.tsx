@@ -16,8 +16,8 @@ export default async function MesaIndexPage() {
           Mesa demo (pública)
         </Link>
         {session ? (
-          <Link href="/eldarin" className="btn btn-secondary">
-            Suas mesas
+          <Link href="/mesas" className="btn btn-secondary">
+            Hub de mesas
           </Link>
         ) : (
           <Link href="/sign-in" className="btn btn-secondary">
