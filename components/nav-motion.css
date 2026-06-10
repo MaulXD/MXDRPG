@@ -74,8 +74,13 @@
 }
 
 .nav-link--active {
-  color: var(--text);
+  color: var(--chrome-nav-link-hover, var(--text-strong));
   background: var(--accent-soft);
+}
+
+.site-nav .nav-link--active {
+  color: var(--chrome-nav-link-hover, var(--text-strong));
+  font-weight: 700;
 }
 
 .vtt-nav .nav-link {
