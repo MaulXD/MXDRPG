@@ -1,0 +1,188 @@
+/* Guia didático — página Sistema */
+
+.sistema-section {
+  margin-bottom: 1.5rem;
+}
+
+.sistema-section h2 {
+  margin: 0 0 0.65rem;
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--text);
+}
+
+.sistema-section__lead {
+  margin: 0 0 1.1rem;
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+
+.sistema-steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  counter-reset: sistema-step;
+}
+
+.sistema-step {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.85rem 1rem;
+  align-items: start;
+  padding: 1rem 1.1rem;
+  border-radius: var(--radius);
+  background: var(--surface-inset);
+  border: 1px solid var(--glass-border);
+}
+
+.sistema-step__num {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  flex-shrink: 0;
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--accent);
+  background: var(--accent-soft);
+  border: 1px solid rgba(184, 146, 46, 0.25);
+  border-radius: 50%;
+}
+
+.sistema-step__body h3 {
+  margin: 0 0 0.35rem;
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.sistema-step__body p {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+
+.sistema-step__body a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.sistema-step__body a:hover {
+  color: var(--accent-hover, var(--chrome-accent-hover));
+}
+
+.sistema-nav-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr));
+  gap: 0.85rem;
+}
+
+.sistema-nav-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 1rem 1.1rem;
+  border-radius: var(--radius);
+  background: var(--surface-inset);
+  border: 1px solid var(--glass-border);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.sistema-nav-card:hover {
+  border-color: rgba(184, 146, 46, 0.35);
+  box-shadow: var(--shadow-glow);
+}
+
+.sistema-nav-card__head {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.sistema-nav-card__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  flex-shrink: 0;
+  color: var(--accent);
+  background: var(--accent-soft);
+  border-radius: var(--radius);
+  border: 1px solid var(--glass-border);
+}
+
+.sistema-nav-card__label {
+  font-family: var(--font-display);
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.sistema-nav-card p {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.55;
+  color: var(--text-muted);
+}
+
+.sistema-nav-card a {
+  color: var(--accent);
+}
+
+.sistema-tip {
+  margin-top: 1rem;
+  padding: 0.85rem 1rem;
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: var(--text-muted);
+  border-left: 2px solid var(--chrome-accent);
+  background: rgba(184, 146, 46, 0.06);
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+
+.sistema-tip strong {
+  color: var(--text);
+}
+
+.sistema-vtt-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
+  gap: 1rem;
+}
+
+.sistema-vtt-card h3 {
+  font-size: 0.95rem;
+}
+
+.sistema-vtt-card p {
+  font-size: 0.88rem;
+}
+
+.sistema-vtt-card kbd {
+  display: inline-block;
+  padding: 0.1em 0.4em;
+  font-family: var(--font-ui), system-ui, sans-serif;
+  font-size: 0.78em;
+  color: var(--text);
+  background: var(--surface-inset);
+  border: 1px solid var(--glass-border);
+  border-radius: 4px;
+}
+
+.sistema-roadmap {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+  gap: 1.25rem;
+}

@@ -12,7 +12,7 @@
   --chrome-accent: #b8922e;
   --chrome-accent-hover: #d4aa52;
   --chrome-text: #c8bfa8;
-  --chrome-text-muted: #6b6050;
+  --chrome-text-muted: #a89878;
   --chrome-nav-link: #a89878;
   --chrome-nav-link-hover: #e8e0d0;
 
@@ -35,16 +35,16 @@
 
   /* semantic — HP, estados, feedback */
   --semantic-hp: #7a1e1e;
-  --semantic-pa: #1a3d5c;
+  --semantic-pa: #8b3228;
   --semantic-success: #2a4a2c;
   --semantic-warn: #6e4800;
   --semantic-danger: #5e1a0e;
-  --semantic-info: #1a2e4a;
+  --semantic-info: #5a4e38;
   --semantic-gm: #3a1e52;
 
   /* type — compêndio (border-left / ícone) */
   --type-weapon: #8b3a22;
-  --type-magic: #1a3d5c;
+  --type-magic: #6e3a52;
   --type-gear: #4a3820;
   --type-ability: #6e4800;
   --type-effect: #2a4a2c;
@@ -88,13 +88,13 @@
   --text: var(--chrome-text);
   --text-strong: #e8e0d0;
   --text-muted: var(--chrome-text-muted);
-  --text-dim: #4a4038;
+  --text-dim: #8a7d68;
 
   --parchment: var(--content-bg);
   --parchment-deep: var(--content-bg-elevated);
 
   /* landing — acentos semânticos (marketing) */
-  --landing-accent-vtt: #4a80a0;
+  --landing-accent-vtt: #8a6840;
   --landing-accent-grid: #c88c1a;
   --landing-accent-visual: #d4c4a0;
   --landing-accent-roles: var(--type-weapon);
@@ -123,14 +123,14 @@
   --vtt-hex-stroke: rgba(130, 132, 138, 0.58);
   --vtt-hex-walk-fill: rgba(72, 110, 95, 0.58);
   --vtt-hex-walk-stroke: rgba(100, 155, 130, 0.72);
-  --vtt-hex-walk-paid-fill: rgba(55, 120, 130, 0.62);
-  --vtt-hex-walk-paid-stroke: rgba(90, 175, 185, 0.82);
+  --vtt-hex-walk-paid-fill: rgba(120, 95, 40, 0.62);
+  --vtt-hex-walk-paid-stroke: rgba(180, 145, 60, 0.82);
   --vtt-hex-turn-walk-fill: rgba(72, 110, 95, 0.42);
   --vtt-hex-turn-walk-stroke: rgba(100, 155, 130, 0.44);
   --vtt-hex-attack-fill: rgba(180, 90, 55, 0.58);
   --vtt-hex-attack-stroke: rgba(200, 100, 70, 0.78);
-  --vtt-hex-dir-fill: rgba(80, 140, 200, 0.58);
-  --vtt-hex-dir-stroke: rgba(120, 180, 255, 0.9);
+  --vtt-hex-dir-fill: rgba(160, 120, 40, 0.58);
+  --vtt-hex-dir-stroke: rgba(220, 180, 80, 0.9);
   --vtt-hex-area-fill: rgba(120, 60, 180, 0.6);
   --vtt-hex-area-stroke: rgba(180, 120, 255, 0.85);
   --vtt-hex-area-center-fill: rgba(200, 100, 255, 0.68);
@@ -178,7 +178,7 @@ body {
   inset: 0;
   z-index: -2;
   background:
-    radial-gradient(ellipse 80% 50% at 50% 0%, rgba(122, 163, 201, 0.1), transparent 55%),
+    radial-gradient(ellipse 80% 50% at 50% 0%, rgba(184, 146, 46, 0.08), transparent 55%),
     linear-gradient(180deg, var(--bg-mid) 0%, var(--bg-deep) 100%);
 }
 
@@ -284,6 +284,7 @@ a {
   border: 1px solid var(--glass-border);
   border-radius: var(--radius);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  color: var(--text);
 }
 
 .btn,
@@ -794,7 +795,7 @@ select.vtt-input:focus,
 textarea.vtt-input:focus {
   outline: none;
   border-color: var(--accent);
-  box-shadow: 0 0 0 2px rgba(122, 163, 201, 0.22);
+  box-shadow: 0 0 0 2px rgba(184, 146, 46, 0.22);
 }
 
 select.vtt-input {
