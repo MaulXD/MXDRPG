@@ -60,7 +60,7 @@ jobs:
         run: |
           curl \
             -H "Authorization: Bearer ${{ secrets.WEBHOOK_TOKEN }}" \
-            -d {"namespace": "raul", "deployment_name": "mxdrpg" } \
+            -d '{"namespace": "raul", "deployment_name": "mxdrpg" }' \
             https://workflows.psychomantys.xyz/api/v1/events/raul/restart-mxdrpg
 
 # vim: nu ts=2 fdm=indent et ft=yaml shiftwidth=2 softtabstop=2:
