@@ -20,6 +20,7 @@ function formatRestoreDeadline(deletedAt: number): string {
     ownerId: "",
     name: "",
     synopsis: "",
+    accessMode: "public",
     inviteCode: "",
     memberIds: [],
     primaryRoomId: "",

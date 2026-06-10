@@ -9,7 +9,7 @@ export default async function PainelPage() {
   if (!session) redirect(signInPath("/eldarin"));
   const user = session.user;
   if (dbEnabled() && !user.nickname) {
-    redirect("/entrar/apelido?redirect=/rpg");
+    redirect("/entrar/apelido?redirect=/mesas");
   }
   redirect("/eldarin");
 }

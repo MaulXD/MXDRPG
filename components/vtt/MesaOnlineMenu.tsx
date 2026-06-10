@@ -368,10 +368,9 @@ export function MesaOnlineMenu({ online, loading = false, selfUserId, adventureI
                     <button
                       type="button"
                       className="vtt-btn vtt-btn--ghost vtt-btn--compact mesa-online-menu__hover-btn mesa-online-menu__hover-btn--accent"
-                      disabled={friendState === "loading"}
                       onClick={() => void addFriendByUserId(member.userId)}
                     >
-                      {friendState === "loading" ? "Enviando…" : "Adicionar amigo"}
+                      Adicionar amigo
                     </button>
                   ) : null}
                   {incomingRequestId ? (
