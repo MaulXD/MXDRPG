@@ -8,6 +8,8 @@ CREATE TABLE IF NOT EXISTS eldarin_users (
   nickname TEXT,
   name TEXT NOT NULL,
   password_hash TEXT,
+  cpf_prefix_hash TEXT,
+  birth_date DATE,
   role TEXT NOT NULL DEFAULT 'member',
   created_at BIGINT NOT NULL
 );
@@ -34,7 +36,8 @@ CREATE TABLE IF NOT EXISTS eldarin_adventures (
   member_ids JSONB NOT NULL DEFAULT '[]'::jsonb,
   primary_room_id TEXT NOT NULL,
   created_at BIGINT NOT NULL,
-  updated_at BIGINT NOT NULL
+  updated_at BIGINT NOT NULL,
+  deleted_at BIGINT
 );
 
 CREATE UNIQUE INDEX IF NOT EXISTS eldarin_adventures_invite_upper ON eldarin_adventures (UPPER(invite_code));
@@ -59,3 +62,15 @@ CREATE TABLE IF NOT EXISTS eldarin_rooms (
 CREATE UNIQUE INDEX IF NOT EXISTS eldarin_rooms_invite_upper ON eldarin_rooms (UPPER(invite_code));
 CREATE INDEX IF NOT EXISTS eldarin_rooms_owner ON eldarin_rooms (owner_id);
 CREATE INDEX IF NOT EXISTS eldarin_rooms_updated ON eldarin_rooms (updated_at DESC);
+
+CREATE TABLE IF NOT EXISTS eldarin_player_bestiary (
+  user_id TEXT NOT NULL,
+  adventure_id TEXT NOT NULL,
+  type_key TEXT NOT NULL,
+  data JSONB NOT NULL,
+  updated_at BIGINT NOT NULL,
+  PRIMARY KEY (user_id, adventure_id, type_key)
+);
+
+CREATE INDEX IF NOT EXISTS eldarin_player_bestiary_adventure
+  ON eldarin_player_bestiary (adventure_id, user_id);

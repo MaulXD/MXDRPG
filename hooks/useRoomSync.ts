@@ -4,16 +4,29 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { IdentityPatch } from "@/lib/character/identity";
 import type { LevelUpChoices } from "@/lib/character/level-up";
 import type { CharacterSheet } from "@/lib/character/types";
+import { normalizeCombatTrack } from "@/lib/room/combat";
 import type { RoomActor, RoomSnapshot } from "@/lib/room/types";
+import type { DungeonObject } from "@/lib/vtt/types";
 
 const FETCH_TIMEOUT_MS = 12_000;
+
+export type RoomMemberOnlineEvent = {
+  userId: string;
+  displayName: string;
+};
 
 type SyncOpts = {
   /** Código na URL (?invite=) — visitante assiste com SSE/GET */
   inviteCode?: string | null;
   /** Fallback poll se SSE falhar (ms) */
   pollIntervalMs?: number;
+  /** Jogador logado na mesa — heartbeat de presença */
+  presenceUser?: { id: string; name: string } | null;
+  /** Outro participante entrou online (via SSE) */
+  onMemberOnline?: (event: RoomMemberOnlineEvent) => void;
 };
+
+const PRESENCE_HEARTBEAT_MS = 15_000;
 
 function roomQuery(roomId: string, inviteCode?: string | null): string {
   const q = new URLSearchParams();
@@ -25,16 +38,26 @@ function roomQuery(roomId: string, inviteCode?: string | null): string {
 export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
   const inviteCode = opts.inviteCode ?? null;
   const pollIntervalMs = opts.pollIntervalMs ?? 4000;
+  const presenceUser = opts.presenceUser ?? null;
+  const onMemberOnline = opts.onMemberOnline;
   const [snapshot, setSnapshot] = useState<RoomSnapshot | null>(null);
   const [loading, setLoading] = useState(true);
   const [syncError, setSyncError] = useState<string | null>(null);
   const revisionRef = useRef(0);
   const query = useMemo(() => roomQuery(roomId, inviteCode), [roomId, inviteCode]);
   const sseReadyRef = useRef(false);
+  const onMemberOnlineRef = useRef(onMemberOnline);
+  onMemberOnlineRef.current = onMemberOnline;
 
   const applySnapshot = useCallback((data: RoomSnapshot) => {
+    if (data.revision < revisionRef.current) return;
     revisionRef.current = data.revision;
-    setSnapshot(data);
+    const tokens = Array.isArray(data.scene?.tokens) ? data.scene.tokens : [];
+    setSnapshot({
+      ...data,
+      scene: { ...data.scene, tokens },
+      combat: normalizeCombatTrack(data.combat, tokens),
+    });
     setSyncError(null);
     setLoading(false);
   }, []);
@@ -104,7 +127,12 @@ export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
 
       es.onmessage = (ev) => {
         try {
-          const data = JSON.parse(ev.data) as { type?: string; revision?: number };
+          const data = JSON.parse(ev.data) as {
+            type?: string;
+            revision?: number;
+            userId?: string;
+            displayName?: string;
+          };
           if (data.type === "revision" && typeof data.revision === "number") {
             if (data.revision > revisionRef.current) {
               void refresh();
@@ -114,6 +142,16 @@ export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
             if (data.revision > revisionRef.current) {
               void refresh();
             }
+          }
+          if (
+            data.type === "member_online" &&
+            typeof data.userId === "string" &&
+            typeof data.displayName === "string"
+          ) {
+            onMemberOnlineRef.current?.({
+              userId: data.userId,
+              displayName: data.displayName,
+            });
           }
         } catch {
           /* ignore parse */
@@ -134,6 +172,23 @@ export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
       if (pollId) clearInterval(pollId);
     };
   }, [roomId, inviteCode, refresh, pollIntervalMs, loading]);
+
+  useEffect(() => {
+    if (!presenceUser?.id) return;
+
+    const ping = () => {
+      void fetch(`/api/room/${roomId}/presence${query}`, {
+        method: "POST",
+        credentials: "same-origin",
+      }).catch(() => {
+        /* rede instável */
+      });
+    };
+
+    ping();
+    const id = setInterval(ping, PRESENCE_HEARTBEAT_MS);
+    return () => clearInterval(id);
+  }, [roomId, query, presenceUser?.id]);
 
   return { snapshot, loading, syncError, refresh, applySnapshot };
 }
@@ -158,7 +213,16 @@ export async function patchRoomActor(
   patch: Partial<
     Pick<
       CharacterSheet,
-      "portraitUrl" | "tokenImageUrl" | "portraitFocus" | "name" | "biography" | "combatLoadout"
+      | "portraitUrl"
+      | "tokenImageUrl"
+      | "portraitFocus"
+      | "coverFocus"
+      | "tokenFocus"
+      | "name"
+      | "biography"
+      | "combatLoadout"
+      | "armorLoadout"
+      | "inventory"
     >
   > & {
     identityPatch?: IdentityPatch;
@@ -221,6 +285,29 @@ export async function nextCombatTurn(roomId: string) {
   return res.json() as Promise<RoomSnapshot>;
 }
 
+export type GmCombatAction =
+  | { action: "reset-pa"; tokenId: string }
+  | { action: "defer-turn"; tokenId: string }
+  | { action: "restore-order" }
+  | { action: "set-order"; order: string[]; activeTokenId?: string }
+  | { action: "set-active"; tokenId: string }
+  | { action: "revert"; undoId: string }
+  | { action: "set-hp"; tokenId: string; value: number; max?: number; temp?: number };
+
+export async function postGmCombatAction(roomId: string, body: GmCombatAction) {
+  const res = await fetch(`/api/room/${roomId}/combat/gm`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    credentials: "same-origin",
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) {
+    const err = (await res.json().catch(() => ({}))) as { error?: string };
+    throw new Error(err.error ?? "Falha no controle do mestre");
+  }
+  return res.json() as Promise<RoomSnapshot>;
+}
+
 export async function postRoomAttack(
   roomId: string,
   attackerTokenId: string,
@@ -230,13 +317,19 @@ export async function postRoomAttack(
     actionEntryId?: string;
     bypassTurn?: boolean;
     channelExtraPa?: number;
+    defenderTokenIds?: string[];
   } = {}
 ) {
   const res = await fetch(`/api/room/${roomId}/combat/attack`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     credentials: "same-origin",
-    body: JSON.stringify({ attackerTokenId, defenderTokenId, ...opts }),
+    body: JSON.stringify({
+      attackerTokenId,
+      defenderTokenId,
+      defenderTokenIds: opts.defenderTokenIds,
+      ...opts,
+    }),
   });
   if (!res.ok) {
     const err = (await res.json()) as { error?: string };
@@ -303,6 +396,7 @@ export async function postRoomAreaSpell(
   const res = await fetch(`/api/room/${roomId}/combat/area`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
+    credentials: "same-origin",
     body: JSON.stringify({ casterTokenId, centerQ, centerR, ...opts }),
   });
   if (!res.ok) {
@@ -332,6 +426,18 @@ export async function spawnRoomMonster(
   return res.json() as Promise<RoomSnapshot>;
 }
 
+export async function deleteRoomToken(roomId: string, tokenId: string) {
+  const res = await fetch(`/api/room/${roomId}/tokens/${tokenId}`, {
+    method: "DELETE",
+    credentials: "same-origin",
+  });
+  if (!res.ok) {
+    const err = (await res.json()) as { error?: string };
+    throw new Error(err.error ?? "Falha ao remover token");
+  }
+  return res.json() as Promise<RoomSnapshot>;
+}
+
 export async function repositionRoomToken(
   roomId: string,
   tokenId: string,
@@ -347,6 +453,85 @@ export async function repositionRoomToken(
   if (!res.ok) {
     const err = (await res.json()) as { error?: string };
     throw new Error(err.error ?? "Falha ao reposicionar");
+  }
+  return res.json() as Promise<RoomSnapshot>;
+}
+
+export async function createGmCreation(
+  roomId: string,
+  body: {
+    mode?: "blank" | "monster" | "actor";
+    name?: string;
+    creationKind?: "creature" | "npc";
+    monsterEntryId?: string;
+    actorId?: string;
+  }
+) {
+  const res = await fetch(`/api/room/${roomId}/gm/creations`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    credentials: "same-origin",
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) {
+    const err = (await res.json()) as { error?: string };
+    throw new Error(err.error ?? "Falha ao criar template");
+  }
+  return res.json() as Promise<{
+    creation: import("@/lib/room/gm-creations").GmCreation;
+    snapshot: RoomSnapshot;
+  }>;
+}
+
+export async function updateGmCreation(
+  roomId: string,
+  creationId: string,
+  patch: Record<string, unknown>
+) {
+  const res = await fetch(`/api/room/${roomId}/gm/creations/${creationId}`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    credentials: "same-origin",
+    body: JSON.stringify(patch),
+  });
+  if (!res.ok) {
+    const err = (await res.json()) as { error?: string };
+    throw new Error(err.error ?? "Falha ao salvar template");
+  }
+  return res.json() as Promise<{
+    creation: import("@/lib/room/gm-creations").GmCreation;
+    snapshot: RoomSnapshot;
+  }>;
+}
+
+export async function deleteGmCreation(roomId: string, creationId: string) {
+  const res = await fetch(`/api/room/${roomId}/gm/creations/${creationId}`, {
+    method: "DELETE",
+    credentials: "same-origin",
+  });
+  if (!res.ok) {
+    const err = (await res.json()) as { error?: string };
+    throw new Error(err.error ?? "Falha ao excluir template");
+  }
+  const data = (await res.json()) as { snapshot: RoomSnapshot };
+  return data.snapshot;
+}
+
+export async function spawnGmCreation(
+  roomId: string,
+  creationId: string,
+  q: number,
+  r: number
+) {
+  const res = await fetch(`/api/room/${roomId}/tokens/spawn-gm`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    credentials: "same-origin",
+    body: JSON.stringify({ creationId, q, r }),
+  });
+  if (!res.ok) {
+    const err = (await res.json()) as { error?: string };
+    throw new Error(err.error ?? "Falha ao colocar na mesa");
   }
   return res.json() as Promise<RoomSnapshot>;
 }
@@ -396,6 +581,8 @@ export type ScenePatchBody = {
   mapImageOffsetY?: number;
   fogEnabled?: boolean;
   revealedHexes?: string[];
+  dungeonObjects?: DungeonObject[];
+  mapMarkups?: import("@/lib/vtt/types").MapMarkup[];
 };
 
 export type RoomSettingsPatchBody = {
@@ -403,6 +590,8 @@ export type RoomSettingsPatchBody = {
   showMonsterHpToPlayers?: boolean;
   showMonsterHpInChat?: boolean;
   allowPlayerPing?: boolean;
+  showUsernameOnTokenNameplate?: boolean;
+  gmBypassInitiative?: boolean;
 };
 
 export async function patchRoomSettings(roomId: string, patch: RoomSettingsPatchBody) {
@@ -460,6 +649,26 @@ export async function postRoomChat(
   if (!res.ok) {
     const err = (await res.json()) as { error?: string };
     throw new Error(err.error ?? "Falha ao enviar");
+  }
+  return res.json() as Promise<RoomSnapshot>;
+}
+
+export async function gmActorProgress(
+  roomId: string,
+  body:
+    | { action: "grant-xp"; actorId: string; amount: number }
+    | { action: "set-level"; actorId: string; level: number }
+    | { action: "set-hp"; actorId: string; value: number; max?: number }
+): Promise<RoomSnapshot> {
+  const res = await fetch(`/api/room/${roomId}/gm/actor-progress`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    credentials: "same-origin",
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) {
+    const err = (await res.json()) as { error?: string };
+    throw new Error(err.error ?? "Falha ao ajustar progresso");
   }
   return res.json() as Promise<RoomSnapshot>;
 }

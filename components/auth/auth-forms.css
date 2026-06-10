@@ -1,0 +1,150 @@
+.auth-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.auth-field__label {
+  line-height: 1.35;
+}
+
+.auth-field__input {
+  display: block;
+  width: 100%;
+  padding: 0.65rem 0.85rem;
+  border-radius: 10px;
+  border: 1px solid var(--glass-border);
+  background: var(--chrome-field-bg);
+  color: var(--chrome-field-text);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.auth-field__input::placeholder {
+  color: var(--chrome-field-placeholder);
+  opacity: 1;
+}
+
+.auth-field__input:focus {
+  border-color: var(--chrome-accent);
+  background: var(--chrome-field-bg-focus);
+  box-shadow: 0 0 0 2px rgba(184, 146, 46, 0.22);
+}
+
+.auth-field__password-wrap {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+}
+
+.auth-field__input--password {
+  padding-right: 4.25rem;
+}
+
+.auth-field__toggle {
+  position: absolute;
+  right: 0.35rem;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  border-radius: 8px;
+  padding: 0.3rem 0.55rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--gold, #c9a84c);
+  background: rgba(0, 0, 0, 0.35);
+  cursor: pointer;
+}
+
+.auth-field__toggle:hover {
+  background: rgba(184, 146, 46, 0.18);
+}
+
+.auth-field__hint {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  line-height: 1.45;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.auth-form__intro {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  line-height: 1.55;
+}
+
+.auth-form__error {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #ff6b8a;
+  line-height: 1.45;
+}
+
+.auth-form__success {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #7dcea0;
+  line-height: 1.45;
+}
+
+.auth-form__actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  align-items: center;
+  padding-bottom: 0.25rem;
+}
+
+.auth-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  align-items: stretch;
+}
+
+.auth-tabs__btn {
+  flex: 1;
+  min-width: 0;
+}
+
+.auth-card {
+  overflow: visible;
+}
+
+/* Reforço: esconder login por e-mail no Clerk */
+.clerk-social-only .cl-dividerRow,
+.clerk-social-only .cl-dividerText,
+.clerk-social-only .cl-formFieldRow,
+.clerk-social-only .cl-formButtonPrimary,
+.clerk-social-only .cl-footerAction,
+.clerk-social-only .cl-footer,
+.clerk-social-only .cl-alternativeMethodsBlockButton,
+.clerk-social-only .cl-identityPreview,
+.clerk-social-only .cl-backRow {
+  display: none !important;
+}
+
+.auth-form__clear {
+  border: none;
+  background: none;
+  padding: 0;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.auth-form__clear:hover {
+  color: var(--text);
+}

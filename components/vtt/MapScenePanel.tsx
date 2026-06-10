@@ -13,9 +13,6 @@ type Props = {
 
 export function MapScenePanel({ roomId, scene, onUpdated }: Props) {
   const [url, setUrl] = useState(scene.mapImageUrl ?? "");
-  const [scale, setScale] = useState(String(scene.mapImageScale ?? 1));
-  const [offX, setOffX] = useState(String(scene.mapImageOffsetX ?? 0));
-  const [offY, setOffY] = useState(String(scene.mapImageOffsetY ?? 0));
   const [fog, setFog] = useState(Boolean(scene.fogEnabled));
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState<string | null>(null);
@@ -27,9 +24,6 @@ export function MapScenePanel({ roomId, scene, onUpdated }: Props) {
     try {
       const snapshot = await patchRoomScene(roomId, {
         mapImageUrl: url.trim() || null,
-        mapImageScale: Number(scale) || 1,
-        mapImageOffsetX: Number(offX) || 0,
-        mapImageOffsetY: Number(offY) || 0,
         fogEnabled: fog,
       });
       onUpdated(snapshot);
@@ -68,20 +62,10 @@ export function MapScenePanel({ roomId, scene, onUpdated }: Props) {
           placeholder="https://…/mapa.jpg"
         />
       </label>
-      <div className="vtt-map-panel-row">
-        <label className="vtt-field vtt-field--compact">
-          <span>Escala</span>
-          <input type="number" min={0.25} max={4} step={0.05} value={scale} onChange={(e) => setScale(e.target.value)} />
-        </label>
-        <label className="vtt-field vtt-field--compact">
-          <span>Offset X</span>
-          <input type="number" step={10} value={offX} onChange={(e) => setOffX(e.target.value)} />
-        </label>
-        <label className="vtt-field vtt-field--compact">
-          <span>Offset Y</span>
-          <input type="number" step={10} value={offY} onChange={(e) => setOffY(e.target.value)} />
-        </label>
-      </div>
+      <p className="vtt-combat-hint">
+        Posição e escala do fundo são ajustadas na mesa: aba <strong>1 · Piso</strong> do editor de mapa e
+        arraste/redimensione direto no mapa.
+      </p>
       <label className="vtt-check">
         <input type="checkbox" checked={fog} onChange={(e) => setFog(e.target.checked)} />
         Fog of war ativa

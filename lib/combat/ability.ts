@@ -6,7 +6,10 @@ import type { CharacterSheet } from "@/lib/character/types";
 
 import { rollDice } from "@/lib/dice/roll";
 
+import { isMonsterToken } from "@/lib/room/settings";
 import type { BattleToken } from "@/lib/vtt/types";
+
+import { tokenAxialDistance } from "@/lib/vtt/creature-size";
 
 import { getMonsterTemplate } from "@/lib/vtt/monsters";
 
@@ -15,6 +18,7 @@ import { axialDistance, hexDirection, HEX_DIRECTIONS } from "@/lib/vtt/hex-math"
 import { abilityFromEntry } from "@/lib/combat/compendium-actions";
 
 import type { CombatActionOption, CombatTurnOptions } from "@/lib/combat/types";
+import { canActOnCombatTurn, TURN_WAIT_MSG } from "@/lib/combat/turn-guard";
 
 import {
 
@@ -35,6 +39,7 @@ import { combineRollModes, type RollMode } from "@/lib/combat/d20";
 import { toggleTokenCondition } from "@/lib/combat/conditions";
 import { effectivePaCost } from "@/lib/combat/pa-economy";
 import { checkCanSpendPa } from "@/lib/combat/pa-turn";
+import { rechargeBlockReason } from "@/lib/combat/recharge";
 
 
 
@@ -157,25 +162,15 @@ export function listCombatAbilities(actor: CharacterSheet): CombatActionOption[]
 
 
 export function isAllyToken(attacker: BattleToken, other: BattleToken): boolean {
-
   if (other.id === attacker.id) return false;
-
-  if (attacker.monsterEntryId) return Boolean(other.monsterEntryId);
-
-  return Boolean(other.linked && other.actorId && !other.monsterEntryId);
-
+  if (isMonsterToken(attacker)) return isMonsterToken(other);
+  return !isMonsterToken(other);
 }
 
-
-
 export function isEnemyToken(attacker: BattleToken, other: BattleToken): boolean {
-
   if (other.id === attacker.id) return false;
-
-  if (attacker.monsterEntryId) return !other.monsterEntryId;
-
-  return Boolean(other.monsterEntryId || !other.linked);
-
+  if (isMonsterToken(attacker)) return !isMonsterToken(other);
+  return isMonsterToken(other) || !other.linked;
 }
 
 
@@ -244,10 +239,14 @@ function assertTurnAndPa(
 
 ): void {
 
-  if (turn?.activeTokenId && token.id !== turn.activeTokenId && !turn.bypassTurn) {
-
-    throw new Error("Aguarde seu turno na iniciativa");
-
+  if (
+    !canActOnCombatTurn(token.id, {
+      activeTokenId: turn?.activeTokenId,
+      bypassTurn: turn?.bypassTurn,
+      combatHasOrder: turn?.combatHasOrder,
+    })
+  ) {
+    throw new Error(TURN_WAIT_MSG);
   }
 
   const paNeed = effectivePaCost(actor, action);
@@ -689,7 +688,9 @@ export function resolveAbilitySpellStrike(
 
 
 
-  const raw = resolveTokenAttack(attacker, defender, spellAction, actor, turn);
+  const raw = resolveTokenAttack(attacker, defender, spellAction, actor, turn, undefined, [], {
+    skipPaCheck: true,
+  });
   const attack = (Array.isArray(raw) ? raw[0] : raw) as AttackResolution;
 
   if (attrMod && attack.hit && attack.damage) {
@@ -701,7 +702,7 @@ export function resolveAbilitySpellStrike(
     }
   }
 
-  return { kind: "spell_strike", attack, paCost: action.paCost };
+  return { kind: "spell_strike", attack, paCost: effectivePaCost(actor, action) };
 
 }
 
@@ -725,7 +726,9 @@ export function resolveAbilityRestrain(
 
   const save = resolveSaveSpell(attacker, defender, actor, defenderActor, action, turn);
 
-  const conditions = toggleTokenCondition(defender, "restringido");
+  const restrained = !save.save.success;
+
+  const conditions = restrained ? toggleTokenCondition(defender, "restringido") : defender.conditions;
 
   return {
 
@@ -735,13 +738,17 @@ export function resolveAbilityRestrain(
 
       ...save,
 
-      summary: `${save.summary} — ${defender.name} fica restringido.`,
+      summary: restrained
+
+        ? `${save.summary} — ${defender.name} fica restringido.`
+
+        : `${save.summary} — ${defender.name} resiste às raízes.`,
 
     },
 
     paCost: effectivePaCost(actor, action),
 
-    defenderUpdate: { conditions },
+    defenderUpdate: restrained ? { conditions } : undefined,
 
   };
 
@@ -971,11 +978,18 @@ export function canUseAbility(
 
 ): { ok: boolean; reason?: string } {
 
-  if (turn?.activeTokenId && token.id !== turn.activeTokenId && !turn.bypassTurn) {
-
-    return { ok: false, reason: "Aguarde seu turno na iniciativa" };
-
+  if (
+    !canActOnCombatTurn(token.id, {
+      activeTokenId: turn?.activeTokenId,
+      bypassTurn: turn?.bypassTurn,
+      combatHasOrder: turn?.combatHasOrder,
+    })
+  ) {
+    return { ok: false, reason: TURN_WAIT_MSG };
   }
+
+  const rechargeReason = rechargeBlockReason(token, action, turn?.combatRound ?? 1);
+  if (rechargeReason) return { ok: false, reason: rechargeReason };
 
   const paNeed = effectivePaCost(actor ?? null, action);
   const paCheck = checkCanSpendPa(token, paNeed);
@@ -1005,7 +1019,7 @@ export function canAbilityTarget(
 
 
 
-  const dist = axialDistance(attacker.axial, defender.axial);
+  const dist = tokenAxialDistance(attacker, defender);
 
   if (dist > action.rangeHex) {
 
@@ -1019,7 +1033,7 @@ export function canAbilityTarget(
 
     if (!isAllyToken(attacker, defender)) {
 
-      return { ok: false, reason: "Selecione um aliado linkado" };
+      return { ok: false, reason: "Selecione um aliado" };
 
     }
 
@@ -1035,16 +1049,8 @@ export function canAbilityTarget(
 
 
 
-  if (!isEnemyToken(attacker, defender)) {
-
-    return { ok: false, reason: "Alvo inválido" };
-
-  }
-
   if (defender.vidaMax != null && (defender.vida ?? 0) <= 0) {
-
     return { ok: false, reason: "Alvo já derrotado" };
-
   }
 
   return canUseAbility(attacker, action, turn, actor);

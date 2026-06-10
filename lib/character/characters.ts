@@ -10,12 +10,24 @@ import { isAdventureMember } from "@/lib/auth/adventure-access";
 import { getAdventure } from "@/lib/adventure/store";
 import { syncAdventureActorsForRoom } from "@/lib/room/adventure-actors";
 import {
-  DEMO_CHARACTERS,
-  getCharacter,
-  canEditCharacter,
-} from "./demo-characters";
+  characterRegistry,
+  getCharacterFromRegistry,
+  listCharactersFromRegistry,
+  upsertCharacterRegistry,
+} from "./character-registry";
+import { canEditCharacter } from "./demo-characters";
+import {
+  canEditCharacterWithGrant,
+  canStructuralSheetEditWithGrant,
+  grantFromRequest,
+} from "./edit-access";
 
-export { getCharacter, canEditCharacter };
+export {
+  canEditCharacter,
+  canEditCharacterWithGrant,
+  canStructuralSheetEditWithGrant,
+  grantFromRequest,
+};
 export { MAX_CHARACTERS_PER_USER_PER_ADVENTURE } from "./adventure-bind";
 
 declare global {
@@ -25,32 +37,58 @@ declare global {
 
 async function ensureDbCharactersSeeded(): Promise<void> {
   if (!dbEnabled() || globalThis.__eldarinDbCharactersSeeded) return;
-  const { upsertCharacter } = await import("@/lib/db/characters");
-  for (const sheet of DEMO_CHARACTERS) {
-    await upsertCharacter(sheet);
+  try {
+    const { upsertCharacter } = await import("@/lib/db/characters");
+    for (const sheet of characterRegistry().values()) {
+      await upsertCharacter(sheet);
+    }
+    globalThis.__eldarinDbCharactersSeeded = true;
+  } catch (e) {
+    console.warn(
+      "[eldarin] seed de fichas demo no Postgres falhou — continuando sem seed:",
+      e instanceof Error ? e.message : e
+    );
   }
-  globalThis.__eldarinDbCharactersSeeded = true;
 }
 
 export async function resolveCharacter(id: string): Promise<CharacterSheet | null> {
+  const fromRegistry = getCharacterFromRegistry(id);
+
   if (dbEnabled()) {
     await ensureDbCharactersSeeded();
-    const { fetchCharacter } = await import("@/lib/db/characters");
-    const fromDb = await fetchCharacter(id);
-    if (fromDb) return fromDb;
+    try {
+      const { fetchCharacter } = await import("@/lib/db/characters");
+      const fromDb = await fetchCharacter(id);
+      if (fromDb) return fromDb;
+    } catch (e) {
+      console.warn(
+        "[eldarin] Postgres fetchCharacter falhou — usando registry:",
+        e instanceof Error ? e.message : e
+      );
+    }
   }
-  return getCharacter(id);
+
+  return fromRegistry;
 }
 
 export async function listCharactersForUser(userId: string): Promise<CharacterSheet[]> {
+  const local = listCharactersFromRegistry(userId);
+
   if (dbEnabled()) {
     await ensureDbCharactersSeeded();
     const { listCharactersByOwner } = await import("@/lib/db/characters");
-    return listCharactersByOwner(userId);
+    const fromDb = await listCharactersByOwner(userId);
+    const byId = new Map<string, CharacterSheet>();
+    for (const sheet of fromDb) byId.set(sheet.id, sheet);
+    for (const sheet of local) {
+      if (sheet.ownerId === userId && !byId.has(sheet.id)) {
+        byId.set(sheet.id, sheet);
+      }
+    }
+    return [...byId.values()];
   }
-  return DEMO_CHARACTERS.filter((c) => c.ownerId === userId).map((c) =>
-    normalizeCharacter({ ...c })
-  );
+
+  return local;
 }
 
 export async function listCharactersForUserInAdventure(
@@ -72,22 +110,36 @@ export const MAX_CHARACTERS_PER_USER = 10;
 
 export async function saveCharacter(sheet: CharacterSheet): Promise<CharacterSheet> {
   const normalized = normalizeCharacter(sheet);
-  const idx = DEMO_CHARACTERS.findIndex((c) => c.id === normalized.id);
-  if (idx >= 0) DEMO_CHARACTERS[idx] = normalized;
-  else DEMO_CHARACTERS.push(normalized);
+  const saved = upsertCharacterRegistry(normalized);
 
   if (dbEnabled()) {
-    const { upsertCharacter } = await import("@/lib/db/characters");
-    await upsertCharacter(normalized);
+    try {
+      const { upsertCharacter } = await import("@/lib/db/characters");
+      await upsertCharacter(saved);
+    } catch (e) {
+      console.error(
+        "[eldarin] Postgres upsertCharacter falhou (ficha salva em registry local):",
+        e instanceof Error ? e.message : e
+      );
+      throw new Error(
+        "Não foi possível gravar a ficha no banco. Rode npm run db:migrate ou verifique DATABASE_URL."
+      );
+    }
   }
-  return normalized;
+
+  const verified = await resolveCharacter(saved.id);
+  if (!verified) {
+    throw new Error("Ficha criada mas não encontrada ao salvar — tente novamente");
+  }
+
+  return saved;
 }
 
 export async function createCharacterFromWizard(
   userId: string,
   draft: import("./wizard-types").CharacterWizardDraft,
   opts?: { adventureId?: string | null; roomId?: string | null }
-): Promise<CharacterSheet> {
+): Promise<{ sheet: CharacterSheet; mesaRoomId: string | null }> {
   const existing = await listCharactersForUser(userId);
   if (existing.length >= MAX_CHARACTERS_PER_USER) {
     throw new Error(`Limite de ${MAX_CHARACTERS_PER_USER} fichas por conta`);
@@ -108,15 +160,30 @@ export async function createCharacterFromWizard(
   }
 
   const { buildCharacterFromWizard } = await import("./build-from-wizard");
-  const sheet = buildCharacterFromWizard(userId, draft, undefined, adventureId);
+  const { normalizeWizardDraftImages } = await import("./normalize-wizard-images");
+  const normalizedDraft = await normalizeWizardDraftImages(draft);
+  const sheet = buildCharacterFromWizard(userId, normalizedDraft, undefined, adventureId);
   const saved = await saveCharacter(sheet);
 
+  const { attachCharacterToDemoRoom } = await import("@/lib/room/demo-character-sync");
+  await attachCharacterToDemoRoom(saved);
+
+  let mesaRoomId: string | null = null;
   if (adventureId) {
     const adv = await getAdventure(adventureId);
-    if (adv) await syncAdventureActorsForRoom(adv.primaryRoomId);
+    if (adv) {
+      mesaRoomId = adv.primaryRoomId;
+      const { attachCharacterToRoomState } = await import("@/lib/room/adventure-actors");
+      const { getRoom, persistRoom } = await import("@/lib/room/internal/registry");
+      const room = await getRoom(adv.primaryRoomId);
+      if (room && attachCharacterToRoomState(room, saved)) {
+        await persistRoom(adv.primaryRoomId, room);
+      }
+      await syncAdventureActorsForRoom(adv.primaryRoomId);
+    }
   }
 
-  return saved;
+  return { sheet: saved, mesaRoomId };
 }
 
 export async function createCharacter(
@@ -127,7 +194,8 @@ export async function createCharacter(
   if (existing.length >= MAX_CHARACTERS_PER_USER) {
     throw new Error(`Limite de ${MAX_CHARACTERS_PER_USER} fichas por conta`);
   }
-  const sheet = normalizeCharacter({
+  const { applyStarterKitToSheet, getDefaultStarterKitId } = await import("./starter-kits");
+  const shell = normalizeCharacter({
     id: `pc-${Date.now().toString(36)}`,
     ownerId: userId,
     name: name.trim().slice(0, 80) || "Novo personagem",
@@ -137,7 +205,7 @@ export async function createCharacter(
       xpTotal: 0,
       raca: "Humano",
       classe: "Guerreiro",
-      antecedente: "Aventureiro",
+      antecedente: "Explorador",
       talentos: [],
     },
     attributes: {
@@ -157,6 +225,13 @@ export async function createCharacter(
     tactical: { defesa: 11, iniciativa: 0 },
     inventory: [],
     combatLoadout: null,
+    armorLoadout: null,
+  });
+  const sheet = applyStarterKitToSheet(shell, {
+    classe: "Guerreiro",
+    raca: "Humano",
+    antecedente: "Explorador",
+    starterKitId: getDefaultStarterKitId("Guerreiro"),
   });
   return saveCharacter(sheet);
 }

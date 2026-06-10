@@ -1,4 +1,4 @@
-# BIOMAS VERTICAIS, ESCURIDAO SEM TOCHA E COZINHA SEGURA — Eldarin v4.0
+﻿# BIOMAS VERTICAIS, ESCURIDAO SEM TOCHA E COZINHA SEGURA — Eldarin v4.0
 
 > Complementa `BIOMAS-APROFUNDADOS.md`, Cap. 16–18 (Jogador), Cap. 20 (Mestre).
 
@@ -112,7 +112,7 @@ Itens para **não conjuradores** e backup do grupo em mapas **sem fogo aberto**.
 | **Kit de Brasas Magicas (inicial)** | 6 brasas | Cada brasa: 30 min de calor de panela; penumbra 3m; +1 Coccao; **não** detona gas | 45 po |
 | **Brasa Magica (avulsa)** | 1 | Igual acima, 30 min | 12 po |
 | **Bolsa de Recarga** (6 brasas) | 6 | Repoe kit; fabrico alquimico | 35 po |
-| **Suporte de Pedra-Caldeira** | — | Slot para 1 brasa; recipiente estavel; +1 Harmonização em sopas | 25 po |
+| **Suporte de Pedra-Caldeira** | — | Slot para 1 brasa; recipiente estavel; +1 Forrageio em sopas | 25 po |
 | **Panela Selada de Masmorra** | — | Obrigatoria em gas: tampa vedada; sem ela, Coccao em gas e CON CD 12 | 20 po |
 | **Pano Umido Antifaisca** | 3 usos | 1 uso: ignora 1 detonacao por tocha acidental (não no Ninho) | 8 po |
 
@@ -131,7 +131,7 @@ Itens para **não conjuradores** e backup do grupo em mapas **sem fogo aberto**.
 | Guerreiro, Ladino, Patrulheiro, Bárbaro | **Kit obrigatorio** para Prato Estruturado com Coccao 8+ ou comem só cru/arriscado |
 | Artífice Fogareiro | Fogareiro Portátil **não funciona** em gas; use Brasas ou upgrade nv.4 “Caldeira de Brasas” (abaixo) |
 
-**Upgrade Artífice (Engenheiro de Fogareiros) nv.4 — opcional Mestre:** *Caldeira de Brasas* — seu Fogareiro Portátil passa a usar brasas mágicas embutidas (6/descanso longo) em biomas de gas.
+**Upgrade Artífice (Engenheiro de Explosivos) nv.4 — opcional Mestre:** *Caldeira de Brasas* — seu Fogareiro Portátil passa a usar brasas mágicas embutidas (6/descanso longo) em biomas de gas.
 
 ---
 

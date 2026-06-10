@@ -56,7 +56,9 @@ export function CombatLoadoutPanel({ actor, roomId, canEdit, onSaved }: Props) {
           disabled={!canEdit || busy}
           onChange={(e) => {
             const [packId, entryId] = e.target.value.split(":");
-            if (packId === "armas" || packId === "magias") void pick(packId, entryId);
+            if (packId === "armas" || packId === "magias" || packId === "habilidades") {
+              void pick(packId, entryId);
+            }
           }}
         >
           <option value="">— automático —</option>

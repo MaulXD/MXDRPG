@@ -93,7 +93,7 @@ export function CampaignLobby() {
             </button>
           </form>
           <p style={{ fontSize: "0.75rem", color: "var(--text-muted)", margin: "0.5rem 0 0" }}>
-            Após criar, você configura HP visível, mapa e convite antes de abrir a mesa.
+            O código de convite é gerado automaticamente. Depois você configura mapa e visibilidade de HP.
           </p>
         </section>
 
@@ -168,7 +168,7 @@ export function CampaignLobby() {
         </p>
       ) : null}
 
-      <Link href="/mesa/demo" className="btn btn-secondary">
+      <Link href="/mesa/demo" prefetch={false} className="btn btn-secondary">
         Mesa demo pública
       </Link>
     </div>

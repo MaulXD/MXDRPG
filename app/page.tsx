@@ -1,23 +1,35 @@
 import Link from "next/link";
+import { EldarinLogo } from "@/components/brand/EldarinLogo";
 import { HexPreview } from "@/components/home/HexPreview";
-const features = [
+import { HomeFeatureIcon, type HomeFeatureIconName } from "@/components/ui/EldarinIcons";
+
+const features: Array<{
+  icon: HomeFeatureIconName;
+  slug: "vtt" | "grid" | "visual" | "papeis";
+  title: string;
+  text: string;
+}> = [
   {
-    icon: "⬡",
+    icon: "hex",
+    slug: "vtt",
     title: "VTT no navegador",
     text: "Mesa virtual própria — zero instalação, zero dependência de apps de terceiros.",
   },
   {
-    icon: "◎",
+    icon: "target",
+    slug: "grid",
     title: "Grid hexagonal",
     text: "Movimento tático com faixas visuais: caminhada verde, corrida âmbar, PA automático.",
   },
   {
-    icon: "◈",
+    icon: "diamond",
+    slug: "visual",
     title: "Visual medieval",
     text: "Pergaminho, pedra e bronze — tema claro ou escuro, sem neon futurista.",
   },
   {
-    icon: "⚔",
+    icon: "sword",
+    slug: "papeis",
     title: "Papéis de mesa",
     text: "Admin, Mestre e Jogador — cada um com painel e permissões claras.",
   },
@@ -26,25 +38,27 @@ const features = [
 export default function HomePage() {
   return (
     <>
-      <section className="page-wrap page-hero">
-        <div className="hero-grid">
-          <div className="hero-copy">
-            <p className="eyebrow">VTT proprietário</p>
-            <h1 className="display-xl">Eldarin</h1>
-            <p className="lead" style={{ marginTop: "1.25rem" }}>
-              Sua mesa virtual de fantasia: combaté em hexágonos, pontos de ação e fichas com
-              identidade visual única — direto no navegador.
-            </p>
-            <div className="hero-actions">
-              <Link href="/mesa/demo" className="btn">
-                Jogar demo ao vivo
-              </Link>
-              <Link href="/entrar" className="btn btn-secondary">
-                Entrar na plataforma
-              </Link>
-            </div>
+      <section className="page-wrap page-hero page-hero--landing">
+        <div className="landing-hero">
+          <h1 className="landing-hero__brand">
+            <EldarinLogo variant="full" href={null} image="landing" className="eldarin-logo--hero" />
+          </h1>
+          <p className="eyebrow landing-hero__eyebrow">VTT proprietário</p>
+          <p className="lead landing-hero__lead">
+            Sua mesa virtual de fantasia: combaté em hexágonos, pontos de ação e fichas com
+            identidade visual única — direto no navegador.
+          </p>
+          <div className="hero-actions landing-hero__actions">
+            <Link href="/sign-in" className="btn btn-primary">
+              Entrar e jogar
+            </Link>
+            <Link href="/mesa/demo" prefetch={false} className="btn btn-secondary">
+              Demo ao vivo
+            </Link>
           </div>
-          <HexPreview />
+          <div className="landing-hero__visual" aria-hidden>
+            <HexPreview />
+          </div>
         </div>
       </section>
 
@@ -77,8 +91,10 @@ export default function HomePage() {
         </p>
         <div className="grid-2">
           {features.map((f) => (
-            <article key={f.title} className="glass feature-card">
-              <div className="feature-icon">{f.icon}</div>
+            <article key={f.title} className={`glass feature-card feature-card--${f.slug}`}>
+              <div className="feature-icon">
+                <HomeFeatureIcon name={f.icon} size={28} />
+              </div>
               <h3>{f.title}</h3>
               <p>{f.text}</p>
             </article>
@@ -87,12 +103,12 @@ export default function HomePage() {
       </section>
 
       <section className="page-wrap">
-        <div className="glass cta-band">
+        <div className="glass cta-band cta-band--landing">
           <h2 className="display-lg">Pronto para a masmorra?</h2>
           <p className="lead" style={{ margin: "0 auto 1.5rem", textAlign: "center", maxWidth: "28rem" }}>
             Abra a mesa demo, arraste tokens e teste caminhada vs corrida em segundos.
           </p>
-          <Link href="/mesa/demo" className="btn">
+          <Link href="/mesa/demo" prefetch={false} className="btn btn-primary">
             Abrir mesa hex
           </Link>
         </div>

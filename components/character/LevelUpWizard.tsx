@@ -1,6 +1,7 @@
 ﻿"use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { createPortal } from "react-dom";
 import type { CharacterSheet } from "@/lib/character/types";
 import type { LevelUpChoices } from "@/lib/character/level-up";
 import {
@@ -17,7 +18,12 @@ import {
 } from "@/lib/character/level-up-ui";
 import { ATTRIBUTE_LABELS, type AttributeKey } from "@/lib/character/rules";
 import { parseCharacterTalents } from "@/lib/character/subclass-tracks";
-import { formatXpProgress, xpToNextLevel } from "@/lib/character/xp";
+import {
+  formatXpProgress,
+  formatXpProgressDetail,
+  xpProgressRatio,
+  xpToNextLevel,
+} from "@/lib/character/xp";
 import { levelUpRoomActor, type LevelUpRoomResponse } from "@/hooks/useRoomSync";
 import { TalentTreeGraph } from "@/components/character/TalentTreeGraph";
 import "./level-up.css";
@@ -144,6 +150,8 @@ export function LevelUpWizard({ actor, roomId, canEdit, onDone, onApplied }: Pro
   }
 
   const ready = canLevelUp(actor);
+  const xpDetail = formatXpProgressDetail(actor.identity.nivel, actor.identity.xpTotal ?? 0);
+  const xpPct = Math.round(xpProgressRatio(actor.identity.nivel, actor.identity.xpTotal ?? 0) * 100);
 
   function renderStep() {
     if (!currentStep) return null;
@@ -165,7 +173,7 @@ export function LevelUpWizard({ actor, roomId, canEdit, onDone, onApplied }: Pro
                 compact
               />
             ) : (
-              <p className="lu-hint">No nv 2 você escolhe a subclasse (Dieta Marcial) e desbloqueia a trilha.</p>
+              <p className="lu-hint">No nv 2 você escolhe o Caminho de Assimilação (subclasse) e desbloqueia a trilha.</p>
             )}
           </>
         );
@@ -174,7 +182,7 @@ export function LevelUpWizard({ actor, roomId, canEdit, onDone, onApplied }: Pro
         return (
           <>
             <p className="lu-hint">
-              Escolha sua <strong>Dieta Marcial</strong> (subclasse). Cada cartão mostra a trilha de
+              Escolha seu <strong>Caminho de Assimilação</strong> (subclasse). Cada cartão mostra a trilha de
               talentos nv 4 → 8 → 12 → 16 → ascensão 20.
             </p>
             <div className="lu-subclass-grid">
@@ -237,18 +245,40 @@ export function LevelUpWizard({ actor, roomId, canEdit, onDone, onApplied }: Pro
         return (
           <>
             <p className="lu-hint">
-              Escolha o talento do <strong>nível {currentStep.level}</strong> na árvore. Os nós
-              anteriores precisam estar completos (cadeia 4→8→12→16).
+              Escolha o talento do <strong>nível {currentStep.level}</strong> na trilha{" "}
+              {track ? (
+                <>
+                  <strong>{track.subclass}</strong>
+                </>
+              ) : null}
+              . A cadeia segue 4→8→12→16.
             </p>
             {track ? (
-              <TalentTreeGraph
-                track={track}
-                owned={owned}
-                actorLevel={actor.identity.nivel}
-                pickingLevel={currentStep.level}
-                selectedId={talentoId}
-                onSelect={setTalentoId}
-              />
+              <>
+                {talentReq?.options.length ? (
+                  <div className="lu-talent-picks" role="group" aria-label="Talentos disponíveis">
+                    {talentReq.options.map((opt) => (
+                      <button
+                        key={opt.id}
+                        type="button"
+                        className={`lu-talent-pick${talentoId === opt.id ? " lu-talent-pick--on" : ""}`}
+                        onClick={() => setTalentoId(opt.id)}
+                      >
+                        <span className="lu-talent-pick__lv">Nv {opt.level}</span>
+                        <span className="lu-talent-pick__name">{opt.name}</span>
+                      </button>
+                    ))}
+                  </div>
+                ) : null}
+                <TalentTreeGraph
+                  track={track}
+                  owned={owned}
+                  actorLevel={actor.identity.nivel}
+                  pickingLevel={currentStep.level}
+                  selectedId={talentoId}
+                  onSelect={setTalentoId}
+                />
+              </>
             ) : (
               <p className="lu-err">Defina uma subclasse antes de escolher talentos.</p>
             )}
@@ -318,29 +348,48 @@ export function LevelUpWizard({ actor, roomId, canEdit, onDone, onApplied }: Pro
   }
 
   return (
-    <div className="sheet-level-box">
-      <p className="sheet-xp-line">{formatXpProgress(actor.identity.nivel, actor.identity.xpTotal)}</p>
+    <div className={`sheet-level-box${ready ? " sheet-level-box--ready" : ""}`}>
+      <div className="sheet-level-box__head">
+        <div className="sheet-level-box__badge" aria-hidden>
+          {actor.identity.nivel}
+        </div>
+        <div className="sheet-level-box__meta">
+          <p className="sheet-level-box__title">Progressão de nível</p>
+          <p className="sheet-level-box__xp-primary">{xpDetail.primary}</p>
+          <p className="sheet-level-box__xp-secondary">{xpDetail.secondary}</p>
+        </div>
+      </div>
+
+      {actor.identity.nivel < 20 ? (
+        <div className="sheet-level-box__bar" role="progressbar" aria-valuenow={xpPct} aria-valuemin={0} aria-valuemax={100}>
+          <div className="sheet-level-box__bar-fill" style={{ width: `${xpPct}%` }} />
+          <span className="sheet-level-box__bar-label">{xpDetail.barLabel}</span>
+        </div>
+      ) : null}
 
       <div className="lu-trigger-row">
         <button
           type="button"
-          className={`btn ${ready ? "btn--level-ready" : ""}`}
+          className={`btn sheet-level-box__cta ${ready ? "btn--level-ready" : ""}`}
           disabled={!ready}
           onClick={() => setOpen(true)}
         >
-          {ready ? "Subir de nível" : "Subir nível…"}
+          {ready ? `Subir para nível ${nextLevel}` : "Aguardando XP"}
         </button>
-        {!ready ? (
-          <span className="sheet-xp-line" style={{ margin: 0 }}>
-            {actor.identity.nivel >= 20
-              ? "Nível máximo"
-              : `Faltam ${xpToNextLevel(actor.identity.nivel, actor.identity.xpTotal ?? 0)} XP`}
+        {ready ? (
+          <span className="sheet-level-box__ready-tag">Pronto para subir</span>
+        ) : actor.identity.nivel >= 20 ? (
+          <span className="sheet-level-box__ready-tag">Nível máximo</span>
+        ) : (
+          <span className="sheet-level-box__xp-remaining">
+            Faltam {xpToNextLevel(actor.identity.nivel, actor.identity.xpTotal ?? 0).toLocaleString("pt-BR")} XP
           </span>
-        ) : null}
+        )}
       </div>
 
-      {open ? (
-        <div className="lu-overlay" role="presentation" onClick={() => !busy && setOpen(false)}>
+      {open && typeof document !== "undefined"
+        ? createPortal(
+            <div className="lu-overlay" role="presentation" onClick={() => !busy && setOpen(false)}>
           <div
             className="lu-shell"
             role="dialog"
@@ -351,7 +400,7 @@ export function LevelUpWizard({ actor, roomId, canEdit, onDone, onApplied }: Pro
             <header className="lu-header">
               <div>
                 <h2 id="lu-title">
-                  Level up — {actor.name}
+                  Subir de nível — {actor.name}
                 </h2>
                 <p className="lu-header-meta">
                   {actor.identity.classe} · Nv {actor.identity.nivel} → {nextLevel}
@@ -427,8 +476,10 @@ export function LevelUpWizard({ actor, roomId, canEdit, onDone, onApplied }: Pro
             </footer>
             {msg ? <p className="lu-err" style={{ padding: "0 1rem 0.75rem" }}>{msg}</p> : null}
           </div>
-        </div>
-      ) : null}
+        </div>,
+            document.body
+          )
+        : null}
     </div>
   );
 }

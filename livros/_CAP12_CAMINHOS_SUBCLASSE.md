@@ -1,60 +1,66 @@
-# CAPÍTULO 12 — CAMINHOS DE SUBCLASSE (DIETA MARCIAL)
+﻿# CAPÍTULO 12 — CAMINHOS DE SUBCLASSE (CAMINHO DE ASSIMILAÇÃO)
 
-> **Nota de edicao:** Este capitulo substitui as arvores genericas de talentos por classe (Caminho do Acougueiro/Bastiao, Predador/Guia, etc.). A identidade mecanica vem da **Subclasse (Cap. 4)** escolhida no Nivel 2.
+> **Nota de edição:** Este capítulo define as trilhas de combate e sobrevivência por subclasse. A identidade mecânica vem do **Caminho de Assimilação (Cap. 4)** escolhido no nível 2 — passivos de masmorra, não foco culinário.
 
 ---
 
-## Indice — 34 Subclasses por Classe
+## Indice — 44 Subclasses por Classe
 
 | Classe | Subclasse |
 |--------|-----------|
-| **Guerreiro** | Predador Voraz |
-| | Quebra-Cascos |
+| **Guerreiro** | Caçador de Feras |
+| | Quebrador de Carapaças |
 | | Cavaleiro Draconico |
-| | Guerreiro das Profundezas |
-| **Patrulheiro** | Caçador Celeste |
-| | Forrageiro dos Esporos |
-| | Rastreador de Sangue Frio |
-| | Guia de Enxame |
-| **Ladino** | Degustador de Sombras |
-| | Extrator de Geleias |
-| | Ladrao de Glandulas |
+| | Sentinela das Profundezas |
+| **Patrulheiro** | Caçador do Céu |
+| | Explorador de Esporos |
+| | Rastreador de Escamas |
+| | Mestre de Enxame |
+| **Ladino** | Sombra Etérea |
+| | Forma Amorfa |
+| | Assassino Venenoso |
 | | Corsario de Cripta |
-| **Mago** | Piromante de Forno |
+| **Mago** | Piromante das Brasas |
 | | Criomante de Conservacao |
-| | Mago Fermentador |
-| | Alquimista de Caldos |
-| | Mago Confeiteiro |
-| **Clérigo** | Sacerdote da Purificacao |
-| | Monge do Jejum |
-| | Clérigo do Pao da Vida |
+| | Mago Alquímico |
+| | Alquimista Ácido |
+| | Mago dos Encantos |
+| **Clérigo** | Sacerdote Purificador |
+| | Monge Ascético |
+| | Clérigo do Sustento |
 | | Pastor de Quimeras |
 | | Clérigo do Limiar *(Trilha Necromantica)* |
 | **Bárbaro** | Devorador de Coracoes |
 | | Mandibula de Ferro |
-| | Ruminante das Neves |
+| | Colosso do Gelo |
 | | Frenetico do Acucar |
-| **Bardo** | Sommelier de Masmorra |
-| | Bardo Cervejeiro |
+| **Bardo** | Estratega de Masmorra |
+| | Bardo Fermentador |
 | | Dancarino das Facas |
-| | Cantor das Especiarias |
+| | Cantor dos Venenos |
 | **Druida** | Circulo da Decomposicao |
 | | Circulo do Superpredador |
 | | Circulo da Simbiose |
 | | Circulo do Solo Vivo |
 | **Artífice** | Ferreiro de Utensilios |
-| | Engenheiro de Fogareiros |
+| | Engenheiro de Explosivos |
 | | Biologo Alquimico |
 | | Construtor de Armadilhas |
+| **Paladino** | Jurado do Sol |
+| | Cavaleiro do Limiar |
+| | Guardião da Gorge |
+| **Bruxo** | Filho da Voragem |
+| | Herdeiro do Sangue |
+| | Voz das Profundezas |
 
 ---
 
 ## Regras
 
 ### Escolha e identidade
-- **Nivel 2:** escolhe **uma** Subclasse listada no Capítulo 4. Ganha imediatamente a **Dieta Especializada** passiva da subclasse (bonus ativo após Refeicao Comum ou melhor, como o Bonus de Dieta Base da classe).
+- **Nivel 2:** escolhe **uma** Subclasse listada no Capítulo 4. Ganha imediatamente a **Passivo de Assimilação** passiva da subclasse (bonus ativo após Refeicao Comum ou melhor, como o Bônus Passivo de Sobrevivência da classe).
 - A subclasse define **identidade de combaté e culinaria** — não ha mais caminhos genericos duplicados por classe.
-- Especialidade alimentar indica quais monstros/ingredientes **otimizam** a dieta; outras refeicoes ainda ativam Bonus de Dieta Base, mas não os efeitos da Dieta Especializada.
+- Especialidade alimentar indica quais monstros/ingredientes **otimizam** a dieta; outras refeicoes ainda ativam Bônus Passivo de Sobrevivência, mas não os efeitos da Passivo de Assimilação.
 
 ### Talentos obrigatorios do Caminho
 - **Niveis 4, 8, 12 e 16:** em cada janela, o personagem escolhe **exatamente 1** talento do **seu** Caminho de Subclasse (cadeia com pre-requisito).
@@ -69,11 +75,13 @@
 - **Guerreiro:** Ataque Extra em nv. 5 (2 ataques), 11 (3), 17 (4) — soma-se aos talentos de subclasse. **VTT:** cada golpe custa **1 PA** (Cap. 3.1).
 - **Ladino:** Ataque Furtivo escala normalmente; talentos de subclasse podem modificar tipo de dano ou condições do furtivo.
 - **Bárbaro:** Furia e talentos de subclasse interagem onde indicado.
-- **Mago / Clérigo / Bardo / Druida / Artífice:** magias exclusivas de subclasse (Cap. 19) **somam-se** ao grimorio ou lista de preparacao e **não** substituem talentos de caminho. **VTT:** **Afinidade Arcânica** no nv. 5 (magias 2+ PA −1); talentos ±PA — **Livro do Jogador Cap. 12.0** e `data/character/pa-modifiers.json`.
+- **Mago / Clérigo / Bardo / Druida / Artífice:** magias exclusivas de subclasse (Cap. 19) **somam-se** ao grimorio ou lista de preparacao e **não** substituem talentos de caminho. **VTT:** **Afinidade Arcânica** no nv. 5 (**primeira magia** do turno, 2+ PA −1); talentos ±PA — **1× por turno** (Cap. 12.0) e `data/character/pa-modifiers.json`.
+- **Paladino:** Golpe Sagrado escala com nivel; **Afinidade Divina** no nv. 5. Talentos de trilha modificam radiante, necrotico e suporte de aura.
+- **Bruxo:** slots de Pacto recarregam em descanso curto; **Afinidade do Pacto** no nv. 5. Invocações (Cap. 19.4) somam-se ao pacto; talentos reduzem PA de magias por patrono (psíquico, fogo, encantamento).
 
 ### Culinaria em masmorra (estilo expedicao)
-- Muitos talentos referem **Trinchar**, **Estudo de Anatomia**, **qualidade de ingrediente** e **refeicao de campo** — assumem o sistema de Parte V (Alimentacao e Culinaria Biomágica).
-- Quando um talento diz "ingrediente intacto", significa qualidade máxima para aquela parte sem teste adicional de Trinchar.
+- Muitos talentos referem **Extração**, **Estudo de Anatomia**, **qualidade de ingrediente** e **refeicao de campo** — assumem o sistema de Parte V (Alimentacao e Culinaria Biomágica).
+- Quando um talento diz "ingrediente intacto", significa qualidade máxima para aquela parte sem teste adicional de Extração.
 
 ---
 
@@ -83,13 +91,13 @@
 
 ## GUERREIRO
 
-### Predador Voraz (Guerreiro)
+### Caçador de Feras (Guerreiro)
 
 **Dieta nv.2:** Ao comer carne vermelha de feras e bestiais, ganha +2 FOR e regeneração de 3 HP por turno por 4 horas.
 
 **Nv 4 — Corte Limpo:** Ataques contra feras e bestiais ignoram 3 pontos de CA. Acertos críticos causam sangramento (2d4 HP no inicio do turno do alvo, 3 turnos). Criaturas mortas por crítico rendem o triplo de porcoes de carne.
 
-**Nv 8 — Maestria Voraz (requer Corte Limpo):** +4 permanente em Trinchar ao processar feras. Como ação bonus, pode Trinchar um monstro bestial vivo acima de 25% HP — o alvo fica Atordoado 1 turno e perde 1d10 HP. Uma vez por combate.
+**Nv 8 — Maestria Voraz (requer Corte Limpo):** +4 permanente em Extração ao processar feras. Como ação bonus, pode Extração um monstro bestial vivo acima de 25% HP — o alvo fica Atordoado 1 turno e perde 1d10 HP. Uma vez por combate.
 
 **Nv 12 — Abaté Perfeito (requer Maestria Voraz):** Uma vez por turno, se reduzir um inimigo a 0 HP com um único ataque corpo a corpo, todos os ingredientes da carcaca ficam intactos (qualidade superior automatica). Com 2+ ataques por ação (nv. 5+), pode declarar qual ataque e o "abate" antes de rolar.
 
@@ -99,7 +107,7 @@
 
 ---
 
-### Quebra-Cascos (Guerreiro)
+### Quebrador de Carapaças (Guerreiro)
 
 **Dieta nv.2:** Ao comer artropodes e carapaceos, a pele endurece — imunidade temporária a acertos críticos contra você e +2 CA por 8 horas.
 
@@ -131,7 +139,7 @@
 
 ---
 
-### Guerreiro das Profundezas (Guerreiro)
+### Sentinela das Profundezas (Guerreiro)
 
 **Dieta nv.2:** Ao comer aquaticos e anfibios, ganha respiração aquatica, nado 12m/turno e pele escorregadia (+2 em testes para escapar agarrao) por 8 horas.
 
@@ -149,7 +157,7 @@
 
 ## PATRULHEIRO
 
-### Caçador Celeste (Patrulheiro)
+### Caçador do Céu (Patrulheiro)
 
 **Dieta nv.2:** Ao comer aves e voadores, visao no escuro perfeita até 36m e +9m de alcance em ataques a distancia por 8 horas.
 
@@ -165,7 +173,7 @@
 
 ---
 
-### Forrageiro dos Esporos (Patrulheiro)
+### Explorador de Esporos (Patrulheiro)
 
 **Dieta nv.2:** Ao comer flora e fungos de masmorra, imunidade a controle mental, ataques toxicos passivos leves (1d4 veneno em primeiro ataque por combate) e nuvem de esporos curativos no descanso (aliados recuperam 1d8 HP).
 
@@ -181,7 +189,7 @@
 
 ---
 
-### Rastreador de Sangue Frio (Patrulheiro)
+### Rastreador de Escamas (Patrulheiro)
 
 **Dieta nv.2:** Ao comer repteis e basiliscos, imunidade a petrificação e camuflagem de pele (Vantagem em Furtividade em terreno rochoso) por 8 horas.
 
@@ -193,11 +201,11 @@
 
 **Nv 16 — Olhar Frio (requer Escamas Adaptativas):** 1/descanso curto: olhar reptiliano (1 alvo, 18m, CON CD 15 ou Lentidão 1 min; falha por 5+ = Paralisado 1 turno). Criaturas ja Envenenadas tem Desvantagem no save.
 
-**Nv 20 — Ascensao — Forma de Reptil:** Transformacao parcial 10 min (1/descanso longo): escamas +2 CA, escalada 9m, mordida 2d6+DES perfurante como ação bonus, imunidade a petrificação. Pode extrair glândula de petrificação de basilisco morto com Vantagem em Trinchar.
+**Nv 20 — Ascensao — Forma de Reptil:** Transformacao parcial 10 min (1/descanso longo): escamas +2 CA, escalada 9m, mordida 2d6+DES perfurante como ação bonus, imunidade a petrificação. Pode extrair glândula de petrificação de basilisco morto com Vantagem em Extração.
 
 ---
 
-### Guia de Enxame (Patrulheiro)
+### Mestre de Enxame (Patrulheiro)
 
 **Dieta nv.2:** Ao comer pragas e insetos menores, conexao telepatica com insetos locais — detecta vibracoes no chao a 15m e localiza invisiveis "sentindo" o enxame.
 
@@ -215,7 +223,7 @@
 
 ## LADINO
 
-### Degustador de Sombras (Ladino)
+### Sombra Etérea (Ladino)
 
 **Dieta nv.2:** Ao comer ectoplasma e residuos espirituais, pode ficar intangivel 1 turno por combaté e Ataque Furtivo ganha +1d6 necrótico.
 
@@ -231,7 +239,7 @@
 
 ---
 
-### Extrator de Geleias (Ladino)
+### Forma Amorfa (Ladino)
 
 **Dieta nv.2:** Ao comer amorfos e slimes, corpo elastico — passa por frestas de 15cm, escapa agarramento automaticamente, resistência a ácido.
 
@@ -241,7 +249,7 @@
 
 **Nv 12 — Forma Fluida (requer Absorção de Impacto):** 1/descanso curto, 3 turnos: imune a agarrao, crítico contra você vira acerto normal, deslocamento +3m. Ataques furtivos aplicam Desarme leve (objeto cai) em falha de DES CD 14.
 
-**Nv 16 — Corpo de Gel (requer Forma Fluida):** Resistência a ácido e perfurante. Pode se comprimir em espaco de 5cm por 1 rodada (ação bônus). Extrair nucleo de slime morto: Vantagem em Trinchar, qualidade máxima.
+**Nv 16 — Corpo de Gel (requer Forma Fluida):** Resistência a ácido e perfurante. Pode se comprimir em espaco de 5cm por 1 rodada (ação bônus). Extrair nucleo de slime morto: Vantagem em Extração, qualidade máxima.
 
 **Nv 20 — Ascensao — Dissolucao:** 1/descanso longo: dissolve armadura nao-mágica de metal em contato (1 peca, 1 minuto fora de combate) OU em combaté toca alvo — 6d8 ácido e equipamento leve corroi (DES CD 16 metade dano). Ataque Furtivo máximo (10d6 em nv. 20) contra alvo sem armadura pesada ganha +2d6.
 
@@ -271,7 +279,7 @@
 
 **Nv 8 — Aparencia Cadaverica (requer Sussurro de Tumba):** Parece morto-vivo para inspecao casual. Pode entrar em criptas sem alarme social. Fingir morte agora e ação bonus.
 
-**Nv 12 — Aura de Morte (requer Aparencia Cadaverica):** Raio 3m: inimigos vivos tem -1 em ataques (medo visceral). 1/descanso curto, comanda 1 morto-vivo Fraco (HP 15, 1 ataque) por 10 min — ele pode Trinchar para o grupo.
+**Nv 12 — Aura de Morte (requer Aparencia Cadaverica):** Raio 3m: inimigos vivos tem -1 em ataques (medo visceral). 1/descanso curto, comanda 1 morto-vivo Fraco (HP 15, 1 ataque) por 10 min — ele pode Extração para o grupo.
 
 **Nv 16 — Controle de Morto-Vivo (requer Aura de Morte):** Ate 3 mortos-vivos Fracos ou 1 Medio (estatisticas do Mestre) obedecendo por 1 hora. Ataques furtivos contra alvos adjacentes a seu morto-vivo ganham +2d6 necrótico.
 
@@ -281,7 +289,7 @@
 
 ## MAGO
 
-### Piromante de Forno (Mago)
+### Piromante das Brasas (Mago)
 
 **Dieta nv.2:** Refeicoes assadas por você maximizam recuperacao de Mana do grupo no descanso; feiticos de fogo +1d6 vs gelo/agua e dispensam componentes de fogo.
 
@@ -313,7 +321,7 @@
 
 ---
 
-### Mago Fermentador (Mago)
+### Mago Alquímico (Mago)
 
 **Dieta nv.2:** Pratos fermentados garantem imunidade a ilusao ao grupo por 8h e removem doenca ou maldicao leve após refeicao.
 
@@ -329,7 +337,7 @@
 
 ---
 
-### Alquimista de Caldos (Mago)
+### Alquimista Ácido (Mago)
 
 **Dieta nv.2:** Sopas densas permitem regurgitar ácido 2d6 ou expelir nevoa venenosa (CD 13 CON ou Envenenado) 1/combaté após refeicao propria.
 
@@ -339,13 +347,13 @@
 
 **Nv 12 — Nevoa de Caldeira (requer Sopa de Resistência):** Nevoa 6m: CON CD 15 ou Envenenado; visibilidade reduzida para inimigos. Aliados dentro veem normalmente.
 
-**Nv 16 — Extracao Liquida (requer Nevoa de Caldeira):** Trinchar liquido: de monstros amorfos extrai 1d4 porcoes extras com teste de Coccao CD 14. Feiticos de ácido +2d6.
+**Nv 16 — Extracao Liquida (requer Nevoa de Caldeira):** Extração liquido: de monstros amorfos extrai 1d4 porcoes extras com teste de Coccao CD 14. Feiticos de ácido +2d6.
 
 **Nv 20 — Ascensao — Maré Acida:** 1/descanso longo: linha 18m x 3m de caldo fervente — 8d8 ácido e terreno dificil 1 min. Se matar com este dano, corpo dissolve em ingredientes alquimicos (qualidade superior automatica).
 
 ---
 
-### Mago Confeiteiro (Mago)
+### Mago dos Encantos (Mago)
 
 **Dieta nv.2:** Glicose arcana concede 1 magia de Encantamento nv. 1-3 por dia sem gastar espaco (escolhida ao preparar, Cap. 19).
 
@@ -379,11 +387,11 @@
 
 ---
 
-### Monge do Jejum (Clérigo)
+### Monge Ascético (Clérigo)
 
 **Dieta nv.2:** Após 8h sem comer, +4 em esquiva e dano radiante nos ataques; ao quebrar o jejum com refeicao, onda 3d8 radiante em 6m (CON CD 14 metade).
 
-**Nv 4 — Disciplina Vazia:** Enquanto em jejum ativo, não precisa comer para manter Bonus de Dieta Base da classe (não o da subclasse). +2 em Concentracao.
+**Nv 4 — Disciplina Vazia:** Enquanto em jejum ativo, não precisa comer para manter Bônus Passivo de Sobrevivência da classe (não o da subclasse). +2 em Concentracao.
 
 **Nv 8 — Golpe do Jejum (requer Disciplina Vazia):** Primeiro ataque após quebrar jejum causa +3d8 radiante extra. 1/combaté se permanecer em jejum: esquiva reacao +4 CA.
 
@@ -461,7 +469,7 @@
 
 ---
 
-### Ruminante das Neves (Bárbaro)
+### Colosso do Gelo (Bárbaro)
 
 **Dieta nv.2:** Imunidade a frio e ignora 1 nivel de Exaustao por estocar calorias de criaturas gordurosas; pode reservar 1 refeicao para dia sem comer.
 
@@ -495,13 +503,13 @@
 
 ## BARDO
 
-### Sommelier de Masmorra (Bardo)
+### Estratega de Masmorra (Bardo)
 
 **Dieta nv.2:** Bebidas emparelhadas com prato maximizam dados de cura de magias do Bardo pelas proximas horas.
 
-**Nv 4 — Harmonização de Taças:** Ao usar Inspiracao em quem vai cozinhar, alvo ganha +1d6 em Coccao/Harmonização por 1h (Cap. 19).
+**Nv 4 — Forrageio de Taças:** Ao usar Inspiracao em quem vai cozinhar, alvo ganha +1d6 em Coccao/Forrageio por 1h (Cap. 19).
 
-**Nv 8 — Menu de Expedicao (requer Harmonização de Taças):** Descanso curto com bebida sua: grupo recupera +1d8 HP extra e ativa dieta mesmo com refeicao Comum.
+**Nv 8 — Menu de Expedicao (requer Forrageio de Taças):** Descanso curto com bebida sua: grupo recupera +1d8 HP extra e ativa dieta mesmo com refeicao Comum.
 
 **Nv 12 — Reserva Envelhecida (requer Menu de Expedicao):** 1 magia de cura por descanso longo cura valor máximo dos dados se vinho correto foi consumido antes.
 
@@ -511,7 +519,7 @@
 
 ---
 
-### Bardo Cervejeiro (Bardo)
+### Bardo Fermentador (Bardo)
 
 **Dieta nv.2:** Cervejas de fungo concedem HP temporario igual ao dado de Inspiracao atual sempre que usa Inspiracao de Bardo.
 
@@ -543,7 +551,7 @@
 
 ---
 
-### Cantor das Especiarias (Bardo)
+### Cantor dos Venenos (Bardo)
 
 **Dieta nv.2:** Raizes picantes raras aumentam CD de resistência de ilusao e encantamento em +3 por 8h.
 
@@ -587,7 +595,7 @@
 
 **Nv 12 — Forma Monstruosa (requer Fusao Biomágica):** Pode assumir monstros até CR = nivel do Druida (basilisco, manticora, etc.).
 
-**Nv 16 — Caça Alpha (requer Forma Monstruosa):** Em Forma Selvagem, +2d6 no primeiro ataque contra presa com HP cheio. Trinchar em forma concede Vantagem.
+**Nv 16 — Caça Alpha (requer Forma Monstruosa):** Em Forma Selvagem, +2d6 no primeiro ataque contra presa com HP cheio. Extração em forma concede Vantagem.
 
 **Nv 20 — Ascensao — Forma Lendaria:** 1/descanso longo: Forma de Boss derrotado pela campanha (10 min), mantem INT/SAB, estatisticas fisicas do Boss. HP extra da dieta dobra. Apos terminar, deve comer 1 porcao da especie ou Exaustao 1.
 
@@ -619,7 +627,7 @@
 
 **Nv 12 — Tremor Leve (requer Pele de Pedra):** 1/descanso curto: 6m, criaturas FOR CD 14 ou Prostradas. Estruturas frageis racham (narrativo).
 
-**Nv 16 — Golem Momentaneo (requer Tremor Leve):** 1/descanso longo: elemental de pedra Pequeno (30 HP) por 10 min obedece; pode Trinchar rochas.
+**Nv 16 — Golem Momentaneo (requer Tremor Leve):** 1/descanso longo: elemental de pedra Pequeno (30 HP) por 10 min obedece; pode Extração rochas.
 
 **Nv 20 — Ascensao — Montanha Viva:** 1/descanso longo, 10 min: tamanho Grande, resistência contundente/perfurante/cortante, esmagamento 3d10 contundente (acao, 1/turno). Aliados em 3m imunes a tremor e desabamento. Pedras comidas neste estado alimentam grupo 1 dia sem refeicao.
 
@@ -643,7 +651,7 @@
 
 ---
 
-### Engenheiro de Fogareiros (Artífice)
+### Engenheiro de Explosivos (Artífice)
 
 **Dieta nv.2:** Glandulas combustiveis concedem resistência a Fogo e +2d6 em bombas e engenhocas por 8h.
 
@@ -681,7 +689,7 @@
 
 **Nv 4 — Armadilha Biologica:** Monta armadilha em 5 min com ingrediente (efeito biomagico do monstro, Percepção CD 18 detectar).
 
-**Nv 8 — Extracao Perfeita (requer Armadilha Biologica):** Vantagem em Trinchar se monstro morreu em armadilha sua ou com 0 dano de arma cortante.
+**Nv 8 — Extracao Perfeita (requer Armadilha Biologica):** Vantagem em Extração se monstro morreu em armadilha sua ou com 0 dano de arma cortante.
 
 **Nv 12 — Rede de Campo (requer Extracao Perfeita):** 3 armadilhas ativas simultaneas. Armadilha pode ser remota (corda, 9m).
 
@@ -691,11 +699,111 @@
 
 ---
 
+## PALADINO
+
+### Jurado do Sol (Paladino)
+
+**Dieta nv.2:** Ao comer carne de origem celestial (celestiais corrompidos, quimeras luminosas, anjos caidos), ganha resistência radiante, visão perfeita 18m e +2 em saves contra medo por 8 horas.
+
+**Nv 4 — Luz Penitente:** Golpe Sagrado ignora resistência radiante do alvo. Imposição de Mãos cura +1d8 extra em aliados com menos de metade dos HP. 1/descanso curto: flash radiante 3m — mortos-vivos 2d8 radiante (sem save).
+
+**Nv 8 — Escudo Solar (requer Luz Penitente):** Reação quando aliado adjacente sofrer dano: reduz dano em 1d10 + CAR (minimo 1). Enquanto dieta ativa, você emite luz fraca 6m (inimigos furtivos −2 Furtividade).
+
+**Nv 12 — Julgamento Ardente (requer Escudo Solar):** 1/descanso curto: marca 1 inimigo visível (9m) por 1 minuto — seus Golpes Sagrados contra ele não gastam PA extra na primeira vez por turno. Mortos-vivos marcados têm Desvantagem em ataques contra você.
+
+**Nv 16 — Coroa de Fogo (requer Julgamento Ardente):** Aura de Devoção passa a 6m e concede resistência radiante a aliados dentro dela. 1/combate: explosão solar 4,5m, 4d8 radiante (DES CD 15 metade), aliados imunes.
+
+**Nv 20 — Ascensao — Avatar do Amanhecer:** 10 minutos, 1/descanso longo: voo 12m, imunidade radiante, Golpe Sagrado maximizado (rola maximo nos dados). Aliados na Aura curam 2d8 no inicio do turno deles. Ao terminar, deve comer porção celestial ou sofre Exaustao 1 até refeicao consagrada.
+
+---
+
+### Cavaleiro do Limiar (Paladino)
+
+**Dieta nv.2:** Ossos consagrados ou carne de morto-vivo sagrado concedem resistência necrótico; mortos-vivos têm Desvantagem para escolhê-lo como primeiro alvo até você ataca-los.
+
+**Nv 4 — Lâmina dos Sepulcros:** Ataques com arma contra mortos-vivos ganham +1d8 radiante ou necrótico (escolha ao acertar). Extração em carcaças de mortos-vivos rende 1 porção de osso Consagrado sem teste.
+
+**Nv 8 — Voto de Caça (requer Lâmina dos Sepulcros):** Declare voto contra 1 tipo de morto-vivo ao comer dieta (24h). +3 dano contra esse tipo e Vantagem em Percepção para detecta-los.
+
+**Nv 12 — Marca do Limiar (requer Voto de Caça):** Ao reduzir morto-vivo a 0 HP, impoe Marca do Limiar — proximo morto-vivo que atacar o mesmo aliado sofre 2d8 necrótico.
+
+**Nv 16 — Processão Silenciosa (requer Marca do Limiar):** 1/descanso longo: forma espectral 10 min (atravessa portas, +10 Furtividade vs mortos-vivos). Ataques ignoram imunidade necrótico (vira resistência).
+
+**Nv 20 — Ascensao — Cavaleiro Espectral:** 1 minuto, 1/descanso longo: resistência fisico, atravessa criaturas, +2d10 necrótico/radiante. Ergue 1 morto-vivo Medio como servo (HP = nivel × 5) por 10 min.
+
+---
+
+### Guardião da Gorge (Paladino)
+
+**Dieta nv.2:** Carne de besta sagrada ou quimera concede +2 CON e +1 CA a aliados adjacentes por 8 horas.
+
+**Nv 4 — Mordida do Voto:** Ação bonus: mordida ritual — +2 FOR e +3m movimento por 1 minuto. Ataques de oportunidade têm Desvantagem contra você enquanto corre.
+
+**Nv 8 — Fera Interior (requer Mordida do Voto):** Primeiro ataque corpo a corpo por turno +1d8 perfurante. Pode carregar aliado Caído adjacente sem metade de velocidade (1/combate).
+
+**Nv 12 — Carga do Juramento (requer Fera Interior):** 1/descanso curto: investida 12m — Vantagem no primeiro ataque; derruba em acerto (FOR CD 14). Aliados na linha +1 CA.
+
+**Nv 16 — Pele de Quimera (requer Carga do Juramento):** Resistência cortante com dieta. Reação: retalho 2d6 + FOR (tipo da quimera consumida). Usos: CON/descanso curto.
+
+**Nv 20 — Ascensao — Forma do Guardião:** 10 min: tamanho Grande, +4 CON, garras 2d8+FOR, investida 1/turno. Aliados adjacentes +2 CA e Vantagem vs medo.
+
+---
+
+## BRUXO
+
+### Filho da Voragem (Bruxo)
+
+**Dieta nv.2:** Carne aberrante concede resistência psíquico e +3m alcance em magias de controle por 8 horas.
+
+**Nv 4 — Toque da Voragem:** Raio do Pacto psíquico, empurra 1,5m (FOR CD 13). Magias de controle +1 CD com dieta.
+
+**Nv 8 — Olhar Entre Dimensões (requer Toque da Voragem):** Ver invisiveis 18m, 10 min/descanso curto. Reação: 2d6 psíquico a quem faz alvo falhar save mental.
+
+**Nv 12 — Agarrão do Pacto (requer Olhar Entre Dimensões):** Tentáculos 9m — 2 alvos Restringidos (FOR CD 15), 1/combate.
+
+**Nv 16 — Mente Partida (requer Agarrão do Pacto):** Confusao 1 min (INT CD 16), 1/descanso longo. Aberrações INT ≤ 8 falham automaticamente.
+
+**Nv 20 — Ascensao — Boca do Abismo:** Boca dimensional 6m, 4d10 psíquico/turno, teletransporte 9m, 1 minuto/descanso longo.
+
+---
+
+### Herdeiro do Sangue (Bruxo)
+
+**Dieta nv.2:** Sangue infernal — resistência fogo; ao matar, HP temp = CAR (1/turno).
+
+**Nv 4 — Contrato Ardente:** Raio fogo; marca Sangue +2d6 no proximo fogo contra alvo.
+
+**Nv 8 — Sangue do Patrono (requer Contrato Ardente):** Sacrifica 1d8 HP para recuperar 1 slot. Imune Sangramento com dieta.
+
+**Nv 12 — Pacto de Ferro (requer Sangue do Patrono):** Resistência necrótico/fogo. Correntes 3d8 fogo + Restringir, 1/combate.
+
+**Nv 16 — Correntes Infernais (requer Pacto de Ferro):** Fogo ignora resistência. Selo de sangue 3m, 3d6 fogo ao entrar.
+
+**Nv 20 — Ascensao — Tirano do Sangue:** Voo 12m, Raio em linha, recupera slot ao matar (1/turno), imune fogo/necrótico, 10 min.
+
+---
+
+### Voz das Profundezas (Bruxo)
+
+**Dieta nv.2:** Carne abissal — respiração aquática, +1 CD encantamento/ilusao por 8h.
+
+**Nv 4 — Sussurro Salino:** Raio frio; +1 rodada de concentracao em encantamentos (max +2).
+
+**Nv 8 — Corrente Mental (requer Sussurro Salino):** Telepatia 18m. Eco mental repete encantamento nv.1 sem slot, 1/descanso curto.
+
+**Nv 12 — Manto de Bruma (requer Corrente Mental):** Névoa 6m, 1 min — aliados furtivos, inimigos −2 ataques a distancia.
+
+**Nv 16 — Puxão Abissal (requer Manto de Bruma):** +2 CD controle em agua/névoa. Puxar 9m, 2d8 frio, 1/combate.
+
+**Nv 20 — Ascensao — Hino das Profundezas:** Canção 12m, Amedrontado/Lento, aliados +3 saves mentais, 1 minuto.
+
+---
+
 ## Referencia rapida — janelas de talento
 
 | Nivel | Ganho de subclasse |
 |-------|-------------------|
-| 2 | Dieta Especializada (passiva) |
+| 2 | Passivo de Assimilação (passiva) |
 | 4 | Talento 1 do caminho |
 | 8 | Talento 2 (requer 4) |
 | 12 | Talento 3 (requer 8) |
@@ -706,4 +814,4 @@
 
 ---
 
-*Fim do Capítulo 12 — Caminhos de Subclasse (Dieta Marcial).*
+*Fim do Capítulo 12 — Caminhos de Subclasse (Caminho de Assimilação).*

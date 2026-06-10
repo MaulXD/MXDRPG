@@ -29,6 +29,30 @@ const TALENT_HABILIDADE: Record<string, string> = {
   "combustao-arcana": "habilidades-raio-arcano",
   "pico-de-acucar": "habilidades-furia-controlada",
   "forma-aprimorada": "habilidades-forma-selvagem",
+  "luz-penitente": "habilidades-luz-penitente",
+  "escudo-solar": "habilidades-escudo-solar",
+  "julgamento-ardente": "habilidades-julgamento-ardente",
+  "coroa-de-fogo": "habilidades-coroa-de-fogo",
+  "lamina-dos-sepulcros": "habilidades-lamina-dos-sepulcros",
+  "voto-de-caca": "habilidades-voto-de-caca",
+  "marca-do-limiar": "habilidades-marca-do-limiar",
+  "processao-silenciosa": "habilidades-processao-silenciosa",
+  "mordida-do-voto": "habilidades-mordida-do-voto",
+  "fera-interior": "habilidades-fera-interior",
+  "carga-do-juramento": "habilidades-carga-do-juramento",
+  "pele-de-quimera": "habilidades-pele-de-quimera",
+  "toque-da-voragem": "habilidades-raio-do-pacto-psiquico",
+  "olhar-entre-dimensoes": "habilidades-olhar-entre-dimensoes",
+  "agarrao-do-pacto": "habilidades-agarrao-do-pacto",
+  "mente-partida": "habilidades-mente-partida",
+  "contrato-ardente": "habilidades-raio-do-pacto-ardente",
+  "sangue-do-patrono": "habilidades-sangue-do-patrono",
+  "pacto-de-ferro": "habilidades-pacto-de-ferro",
+  "correntes-infernais": "habilidades-correntes-infernais",
+  "sussurro-salino": "habilidades-raio-do-pacto-salino",
+  "corrente-mental": "habilidades-corrente-mental",
+  "manto-de-bruma": "habilidades-manto-de-bruma",
+  "puxao-abissal": "habilidades-puxao-abissal",
 };
 
 const CLASS_FALLBACK: Record<string, string> = {
@@ -40,7 +64,9 @@ const CLASS_FALLBACK: Record<string, string> = {
   Bardo: "habilidades-inspiracao-de-batalha",
   Bárbaro: "habilidades-furia-controlada",
   Druida: "habilidades-forma-selvagem",
-  Artifice: "habilidades-barreira-de-cobre",
+  Artífice: "habilidades-barreira-de-cobre",
+  Paladino: "habilidades-imposicao-de-maos",
+  Bruxo: "habilidades-raio-do-pacto",
 };
 
 export function habilidadeEntryForTalent(

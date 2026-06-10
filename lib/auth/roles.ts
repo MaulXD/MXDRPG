@@ -14,7 +14,7 @@ export const ROLES: Record<
     label: "Membro",
     description: "Cria mesas, joga nas suas e nas que entrou.",
     level: 10,
-    homePath: "/painel",
+    homePath: "/eldarin",
   },
 };
 

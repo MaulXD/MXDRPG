@@ -2,11 +2,19 @@ import type { CharacterSheet } from "@/lib/character/types";
 import type { BattlePing, BattleScene } from "@/lib/vtt/types";
 import type { ChatMessage } from "./chat";
 import type { CombatTrack } from "./combat";
+import type { CombatUndoEntry } from "./combat-undo";
+import type { GmCreation } from "./gm-creations";
 import type { RoomSettings } from "./settings";
 
 export type { CombatTrack };
+export type { CombatUndoEntry };
 
-export type RoomActor = CharacterSheet & { revision: number };
+export type RoomActor = CharacterSheet & {
+  revision: number;
+  /** Instância de NPC criada pelo mestre (não sincroniza com ficha de jogador). */
+  gmAuthored?: boolean;
+  gmTemplateId?: string;
+};
 
 export type RoomState = {
   roomId: string;
@@ -22,6 +30,8 @@ export type RoomState = {
   scene: BattleScene;
   actors: Record<string, RoomActor>;
   combat: CombatTrack;
+  /** Pilha de desfazer jogadas (só mestre na UI). */
+  combatUndo?: CombatUndoEntry[];
   chat: ChatMessage[];
   pings: BattlePing[];
   revision: number;
@@ -44,6 +54,10 @@ export type RoomSnapshot = {
   scene: BattleScene;
   actors: Record<string, RoomActor>;
   combat: CombatTrack;
+  /** Presente apenas para o mestre (snapshotForViewer). */
+  combatUndo?: CombatUndoEntry[];
+  /** Templates do mestre — só no snapshot do GM. */
+  gmCreations?: Record<string, GmCreation>;
   chat: ChatMessage[];
   pings: BattlePing[];
   revision: number;

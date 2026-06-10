@@ -8,6 +8,8 @@ next-env.d.ts
 
 # Runtime user registry (seed stays in git)
 data/users/registry.json
+data/characters/registry.json
+data/bug-reports/*.json
 
 # Legacy web/ (app na raiz)
 web/node_modules/
@@ -28,3 +30,6 @@ __pycache__/
 *.pyc
 
 public/uploads/
+
+# Previews locais de design (não versionar)
+preview-ficha.html

@@ -87,6 +87,8 @@ function applyMovementPaCost(
 export type MovePaOptions = {
   /** O Peão: isenta 1 PA do bloco básico de movimento (1×/turno). */
   freeBasicMovePa?: boolean;
+  /** Mestre com bypass: move sem gastar nem exigir PA. */
+  gmBypass?: boolean;
 };
 
 export function canMoveToken(
@@ -130,7 +132,9 @@ export function canMoveToken(
   }
 
   const rawPaCost = movementPaCost(spent, dist, bands);
-  const paCost = effectiveMovementPaCost(token, rawPaCost, paOpts?.freeBasicMovePa);
+  const paCost = paOpts?.gmBypass
+    ? 0
+    : effectiveMovementPaCost(token, rawPaCost, paOpts?.freeBasicMovePa);
 
   if (dist === 0) {
     return { ok: false, reason: "Mesmo hex", dist, paCost: 0, needsPa: false, nextSpent: spent, nextPa: token.pa, path };

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { assertTokenControl, chatRoleForUser } from "@/lib/auth/authorize-room";
 import { canBypassCombatTurn } from "@/lib/auth/room-access";
+import { effectiveBypassTurn } from "@/lib/combat/turn-guard";
 import { getSession } from "@/lib/auth/session";
 import { snapshotForViewer } from "@/lib/room/snapshot-for-viewer";
 import { executeRoomAttack, getRoom } from "@/lib/room/store";
@@ -11,6 +12,7 @@ type Params = { params: Promise<{ roomId: string }> };
 type Body = {
   attackerTokenId?: string;
   defenderTokenId?: string;
+  defenderTokenIds?: string[];
   actionPack?: "armas" | "magias" | "habilidades";
   actionEntryId?: string;
   bypassTurn?: boolean;
@@ -50,10 +52,14 @@ export async function POST(req: Request, { params }: Params) {
   const body = (await req.json()) as Body;
 
   const attackerTokenId = body.attackerTokenId?.trim();
+  const defenderTokenIds = body.defenderTokenIds?.map((id) => id.trim()).filter(Boolean);
   const defenderTokenId = body.defenderTokenId?.trim();
 
-  if (!attackerTokenId || !defenderTokenId) {
-    return NextResponse.json({ error: "Tokens inválidos" }, { status: 400 });
+  if (!attackerTokenId) {
+    return NextResponse.json({ error: "Conjurador inválido" }, { status: 400 });
+  }
+  if (!defenderTokenIds?.length && !defenderTokenId) {
+    return NextResponse.json({ error: "Alvo inválido" }, { status: 400 });
   }
 
   if (!room) {
@@ -67,14 +73,21 @@ export async function POST(req: Request, { params }: Params) {
   }
 
   const canBypass = canBypassCombatTurn(room, session?.user ?? null);
-  const bypassTurn = Boolean(body.bypassTurn && canBypass);
+  const bypassTurn = Boolean(body.bypassTurn && attacker && effectiveBypassTurn(attacker, canBypass));
 
-  const result = await executeRoomAttack(roomId, attackerTokenId, defenderTokenId, author, {
-    packId: body.actionPack,
-    entryId: body.actionEntryId?.trim(),
-    bypassTurn,
-    channelExtraPa: body.channelExtraPa,
-  });
+  const result = await executeRoomAttack(
+    roomId,
+    attackerTokenId,
+    defenderTokenId ?? defenderTokenIds![0]!,
+    author,
+    {
+      packId: body.actionPack,
+      entryId: body.actionEntryId?.trim(),
+      bypassTurn,
+      channelExtraPa: body.channelExtraPa,
+      defenderTokenIds: defenderTokenIds?.length ? defenderTokenIds : undefined,
+    }
+  );
 
   if (!result.ok) {
     return NextResponse.json({ error: result.error }, { status: 400 });

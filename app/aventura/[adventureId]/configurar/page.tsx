@@ -1,8 +1,10 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { AdventureAccessPanel } from "@/components/adventure/AdventureAccessPanel";
 import { MesaSetupClient } from "@/components/campaign/MesaSetupClient";
 import { canManageAdventure } from "@/lib/auth/adventure-access";
 import { getAdventure } from "@/lib/adventure/store";
+import { signInPath } from "@/lib/auth/post-auth-redirect";
 import { getSession } from "@/lib/auth/session";
 import { normalizeRoomSettings } from "@/lib/room/settings";
 import { getRoom } from "@/lib/room/store";
@@ -12,7 +14,7 @@ type Props = { params: Promise<{ adventureId: string }> };
 export default async function ConfigurarAventuraPage({ params }: Props) {
   const { adventureId } = await params;
   const session = await getSession();
-  if (!session) redirect(`/entrar?redirect=/aventura/${adventureId}/configurar`);
+  if (!session) redirect(signInPath(`/aventura/${adventureId}/configurar`));
 
   const adventure = await getAdventure(adventureId);
   if (!adventure) {
@@ -58,9 +60,11 @@ export default async function ConfigurarAventuraPage({ params }: Props) {
         </p>
       </header>
 
+      <AdventureAccessPanel adventureId={adventureId} accessMode={adventure.accessMode ?? "public"} />
+
       <div
         className="glass-panel"
-        style={{ padding: "1.25rem", display: "flex", flexDirection: "column", gap: "1rem" }}
+        style={{ padding: "1.25rem", display: "flex", flexDirection: "column", gap: "1rem", marginTop: "1rem" }}
       >
         <MesaSetupClient
           roomId={adventure.primaryRoomId}

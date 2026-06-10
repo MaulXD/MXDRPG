@@ -7,12 +7,14 @@ import { pixelToAxial } from "@/lib/vtt/hex-math";
 import type { RoomSnapshot } from "@/lib/room/types";
 import {
   clearActiveActorSpawnDragPayload,
+  clearActiveGmCreationSpawnDragPayload,
   clearActiveSpawnDragPayload,
   isBoardSpawnDrag,
   readActorSpawnDrag,
+  readGmCreationSpawnDrag,
   readMonsterSpawnDrag,
 } from "@/lib/vtt/spawn-drag";
-import { placeRoomActorOnHex, spawnRoomMonster } from "@/hooks/useRoomSync";
+import { placeRoomActorOnHex, spawnGmCreation, spawnRoomMonster } from "@/hooks/useRoomSync";
 import type { BattleScene } from "@/lib/vtt/types";
 
 type Params = {
@@ -20,8 +22,9 @@ type Params = {
   canvasRef: RefObject<HTMLCanvasElement | null>;
   scene: BattleScene;
   roomId: string;
+  /** Aceita soltar monstros / criações GM no mapa */
   enabled: boolean;
-  /** Permite soltar personagens da aventura no mapa */
+  /** Permite soltar personagens da aventura no mapa (jogadores + mestre) */
   allowActorDrop?: boolean;
   onSpawned: (snapshot: RoomSnapshot) => void;
   setHoverAxial: (a: Axial | null) => void;
@@ -71,20 +74,22 @@ export function useMonsterSpawnDrop({
     [setHoverAxial, onHoverAxialChange]
   );
 
+  const dropZoneActive = enabled || allowActorDrop;
+
   const onDragEnter = useCallback(
     (e: React.DragEvent) => {
-      if (!enabled || !isBoardSpawnDrag(e.dataTransfer)) return;
+      if (!dropZoneActive || !isBoardSpawnDrag(e.dataTransfer)) return;
       e.preventDefault();
       e.stopPropagation();
       dragDepthRef.current += 1;
       setSpawnDragActive(true);
     },
-    [enabled]
+    [dropZoneActive]
   );
 
   const onDragLeave = useCallback(
     (e: React.DragEvent) => {
-      if (!enabled || !spawnDragActive) return;
+      if (!dropZoneActive || !spawnDragActive) return;
       const wrap = wrapRef.current;
       const next = e.relatedTarget;
       if (wrap && next instanceof Node && wrap.contains(next)) return;
@@ -94,37 +99,46 @@ export function useMonsterSpawnDrop({
         reportHover(null);
       }
     },
-    [enabled, spawnDragActive, wrapRef, reportHover]
+    [dropZoneActive, spawnDragActive, wrapRef, reportHover]
   );
 
   const onDragOver = useCallback(
     (e: React.DragEvent) => {
-      if (!enabled || !isBoardSpawnDrag(e.dataTransfer)) return;
+      if (!dropZoneActive || !isBoardSpawnDrag(e.dataTransfer)) return;
       e.preventDefault();
       e.stopPropagation();
       e.dataTransfer.dropEffect = "copy";
       const axial = axialFromEvent(e.clientX, e.clientY);
       if (axial) reportHover(axial);
     },
-    [enabled, axialFromEvent, reportHover]
+    [dropZoneActive, axialFromEvent, reportHover]
   );
 
   const onDrop = useCallback(
     async (e: React.DragEvent) => {
-      if (!enabled) return;
+      if (!dropZoneActive) return;
       e.preventDefault();
       e.stopPropagation();
       dragDepthRef.current = 0;
       setSpawnDragActive(false);
+
+      const gmPayload = enabled ? readGmCreationSpawnDrag(e.dataTransfer) : null;
+      const monsterPayload =
+        enabled && !gmPayload ? readMonsterSpawnDrag(e.dataTransfer) : null;
+      const actorPayload =
+        allowActorDrop && !gmPayload && !monsterPayload
+          ? readActorSpawnDrag(e.dataTransfer)
+          : null;
+
       clearActiveSpawnDragPayload();
       clearActiveActorSpawnDragPayload();
-      const monsterPayload = readMonsterSpawnDrag(e.dataTransfer);
-      const actorPayload = allowActorDrop ? readActorSpawnDrag(e.dataTransfer) : null;
+      clearActiveGmCreationSpawnDragPayload();
+
       const axial = axialFromEvent(e.clientX, e.clientY);
       reportHover(null);
-      if ((!monsterPayload && !actorPayload) || !axial) {
-        if (!monsterPayload && !actorPayload) {
-          onError?.("Solte no mapa (arraste da lista Invocar ou Personagens).");
+      if ((!monsterPayload && !actorPayload && !gmPayload) || !axial) {
+        if (!monsterPayload && !actorPayload && !gmPayload) {
+          onError?.("Solte no mapa (arraste da lista Invocar, Personagens ou Minhas fichas).");
         } else {
           onError?.("Hex inválido — solte sobre o tabuleiro.");
         }
@@ -134,12 +148,14 @@ export function useMonsterSpawnDrop({
 
       busyRef.current = true;
       try {
-        const snapshot = actorPayload
-          ? await placeRoomActorOnHex(roomId, actorPayload.actorId, axial.q, axial.r)
-          : await spawnRoomMonster(roomId, monsterPayload!.entryId, axial.q, axial.r, {
-              variant: monsterPayload!.variant,
-              groupLevelDelta: monsterPayload!.groupLevelDelta || undefined,
-            });
+        const snapshot = gmPayload
+          ? await spawnGmCreation(roomId, gmPayload.creationId, axial.q, axial.r)
+          : actorPayload
+            ? await placeRoomActorOnHex(roomId, actorPayload.actorId, axial.q, axial.r)
+            : await spawnRoomMonster(roomId, monsterPayload!.entryId, axial.q, axial.r, {
+                variant: monsterPayload!.variant,
+                groupLevelDelta: monsterPayload!.groupLevelDelta || undefined,
+              });
         onSpawned(snapshot);
       } catch (err) {
         onError?.(err instanceof Error ? err.message : "Falha ao colocar no mapa");
@@ -147,7 +163,7 @@ export function useMonsterSpawnDrop({
         busyRef.current = false;
       }
     },
-    [enabled, allowActorDrop, axialFromEvent, reportHover, roomId, onSpawned, onError]
+    [dropZoneActive, enabled, allowActorDrop, axialFromEvent, reportHover, roomId, onSpawned, onError]
   );
 
   return {

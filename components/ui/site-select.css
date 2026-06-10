@@ -1,0 +1,106 @@
+.site-select {
+  position: relative;
+  width: 100%;
+  min-width: 0;
+}
+
+.site-select__trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  min-height: 2.1rem;
+  padding: 0.4rem 0.55rem;
+  border-radius: 6px;
+  border: 1px solid var(--glass-border);
+  background: var(--chrome-field-bg);
+  color: var(--chrome-field-text);
+  font-family: inherit;
+  font-size: 0.88rem;
+  line-height: 1.3;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.site-select__trigger:hover {
+  border-color: var(--glass-border-bright);
+}
+
+.site-select--open .site-select__trigger,
+.site-select__trigger:focus-visible {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(184, 146, 46, 0.22);
+}
+
+.site-select__value {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.site-select__chevron {
+  width: 0.45rem;
+  height: 0.45rem;
+  border-right: 2px solid var(--text-muted);
+  border-bottom: 2px solid var(--text-muted);
+  transform: rotate(45deg) translateY(-1px);
+  flex-shrink: 0;
+  transition: transform 0.15s ease;
+}
+
+.site-select--open .site-select__chevron {
+  transform: rotate(-135deg) translateY(1px);
+}
+
+.site-select__list {
+  position: absolute;
+  z-index: 300;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  max-height: min(280px, 50vh);
+  overflow-y: auto;
+  margin: 0;
+  padding: 0.3rem;
+  list-style: none;
+  border-radius: 8px;
+  border: 1px solid var(--glass-border-bright);
+  background: var(--surface-raised);
+  box-shadow: var(--shadow-soft);
+}
+
+.site-select__option {
+  width: 100%;
+  display: block;
+  padding: 0.48rem 0.55rem;
+  border: none;
+  border-radius: 5px;
+  background: transparent;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 0.85rem;
+  line-height: 1.35;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s;
+}
+
+.site-select__option:hover {
+  background: rgba(184, 146, 46, 0.14);
+  color: var(--text-strong);
+}
+
+.site-select__option.is-selected {
+  background: rgba(184, 146, 46, 0.22);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.site-select__option:focus-visible {
+  outline: none;
+  background: rgba(184, 146, 46, 0.18);
+}

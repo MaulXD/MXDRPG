@@ -1,0 +1,284 @@
+.religion-pick__section {
+  margin-bottom: 1.5rem;
+}
+
+.religion-pick__heading {
+  margin: 0 0 0.35rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.char-wizard-pick__epithet {
+  font-weight: 500;
+  opacity: 0.85;
+}
+
+.char-wizard-pick__domain {
+  font-size: 0.78rem;
+  opacity: 0.88;
+}
+
+.char-wizard-pick--compact .char-wizard-pick__domain {
+  display: none;
+}
+
+.sheet-religion {
+  margin-top: 0.75rem;
+  padding: 0.85rem 1rem;
+  border-radius: 10px;
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+  background: rgba(0, 0, 0, 0.15);
+}
+
+.sheet-religion--compact {
+  padding: 0.65rem 0.75rem;
+  font-size: 0.85rem;
+}
+
+.sheet-religion__eyebrow {
+  margin: 0 0 0.4rem;
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted, #9aaabf);
+}
+
+.sheet-religion__header {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+}
+
+.sheet-religion__glyph {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 8px;
+  border: 1px solid;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.sheet-religion__glyph--svg svg {
+  width: 1.35rem;
+  height: 1.35rem;
+}
+
+.sheet-religion__title {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: help;
+}
+
+.sheet-religion__domain {
+  margin: 0.15rem 0 0;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.sheet-religion__summary {
+  margin: 0.5rem 0 0;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: var(--text-muted);
+}
+
+.sheet-religion__bonuses {
+  margin: 0.5rem 0 0;
+  padding-left: 1.1rem;
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
+.sheet-religion__bonuses li {
+  cursor: help;
+}
+
+.sheet-religion__penalty {
+  margin: 0.5rem 0 0;
+  font-size: 0.75rem;
+  color: var(--warn, #e8a045);
+}
+
+.sheet-popup-pill--faith {
+  border-color: rgba(184, 168, 232, 0.35);
+  cursor: help;
+}
+
+.sheet-identity-religion {
+  margin: 1rem 0;
+}
+
+.world-lore__filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.world-lore__filter {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.78rem;
+  min-width: 10rem;
+}
+
+.world-lore__filter input {
+  padding: 0.4rem 0.55rem;
+  border-radius: 6px;
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.12));
+  background: var(--surface-inset);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 0.88rem;
+}
+
+.world-lore__filter input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(184, 146, 46, 0.22);
+}
+
+.world-lore__hint {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  margin: 0 0 1.25rem;
+}
+
+.world-lore__region {
+  margin-bottom: 2rem;
+}
+
+.world-lore__region-title {
+  font-size: 1rem;
+  margin: 0 0 0.75rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 1px solid var(--border, rgba(255, 255, 255, 0.1));
+}
+
+.world-lore__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 0.85rem;
+}
+
+.world-lore-card {
+  padding: 0.85rem 1rem;
+  border-radius: 10px;
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+  background: rgba(0, 0, 0, 0.12);
+}
+
+.world-lore-card__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin-bottom: 0.35rem;
+}
+
+.world-lore-card__title {
+  margin: 0;
+  font-size: 0.95rem;
+  cursor: help;
+}
+
+.world-lore-card__kind {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.world-lore-card__summary {
+  margin: 0;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: var(--text-muted);
+}
+
+.world-lore-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  font-size: 0.72rem;
+}
+
+.world-lore-card__meta span {
+  cursor: help;
+  padding: 0.15rem 0.45rem;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.world-lore-card__hooks {
+  margin: 0.5rem 0 0;
+  padding-left: 1rem;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.world-lore-card__hooks li {
+  cursor: help;
+}
+
+.world-pantheon__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 0.75rem;
+}
+
+.world-pantheon-card {
+  padding: 0.75rem 0.9rem;
+  border-radius: 10px;
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.world-pantheon-card__glyph {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 8px;
+  border: 1px solid;
+  margin-bottom: 0.4rem;
+}
+
+.world-pantheon-card__glyph--svg svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.world-pantheon-card__title {
+  margin: 0;
+  font-size: 0.88rem;
+  cursor: help;
+}
+
+.world-pantheon-card__epithet {
+  font-weight: 500;
+  opacity: 0.85;
+}
+
+.world-pantheon-card__domain {
+  margin: 0.2rem 0;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  cursor: help;
+}
+
+.world-pantheon-card__summary {
+  margin: 0;
+  font-size: 0.78rem;
+  line-height: 1.4;
+  color: var(--text-muted);
+}

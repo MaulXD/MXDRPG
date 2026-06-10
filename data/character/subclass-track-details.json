@@ -1,0 +1,805 @@
+{
+  "version": 1,
+  "details": {
+    "cacador-de-feras": {
+      "dietDetail": "Ao comer carne vermelha de feras e bestiais, ganha +2 FOR e regeneração de 3 HP por turno por 4 horas.",
+      "talents": {
+        "4": {
+          "name": "Corte Limpo",
+          "summary": "Ataques contra feras e bestiais ignoram 3 pontos de CA. Acertos críticos causam sangramento (2d4 HP no inicio do turno do alvo, 3 turnos). Criaturas mortas por crítico rendem o triplo de porcoes de carne."
+        },
+        "8": {
+          "name": "Maestria Voraz (requer Corte Limpo)",
+          "summary": "+4 permanente em Extração ao processar feras. Como ação bonus, pode Extração um monstro bestial vivo acima de 25% HP — o alvo fica Atordoado 1 turno e perde 1d10 HP. Uma vez por combate."
+        },
+        "12": {
+          "name": "Abaté Perfeito (requer Maestria Voraz)",
+          "summary": "Uma vez por turno, se reduzir um inimigo a 0 HP com um único ataque corpo a corpo, todos os ingredientes da carcaca ficam intactos (qualidade superior automatica). Com 2+ ataques por ação (nv. 5+), pode declarar qual ataque e o \"abate\" antes de rolar."
+        },
+        "16": {
+          "name": "Sangue de Predador (requer Abaté Perfeito)",
+          "summary": "Como ação bonus, consome coracao de fera (inventário ou extraido na hora): recupera 2d10 HP e ganha +3 em ataques corpo a corpo até o fim do combate. Usos: CON por descanso curto."
+        },
+        "20": {
+          "name": "Ascensao — Legado do Predador",
+          "summary": "Mutacoes biomágicas obtidas de feras duram 48 horas em vez de 24. Uma vez por descanso longo, pode assumir por 10 minutos um traco de predador supremo (+4 FOR, garras 2d6, sentido de cheiro 18m). Enquanto ativo, cada acerto crítico em fera ou bestial cura 1d10 HP."
+        }
+      }
+    },
+    "quebrador-de-carapacas": {
+      "dietDetail": "Ao comer artropodes e carapaceos, a pele endurece — imunidade temporária a acertos críticos contra você e +2 CA por 8 horas.",
+      "talents": {
+        "4": {
+          "name": "Percussao Penetrante",
+          "summary": "Ataques com armas contundentes ou de impacto ignoram 5 pontos de CA de criaturas com carapaça natural ou armadura nao-metalica pesada. +1d6 dano contra insetoides e crustaceos."
+        },
+        "8": {
+          "name": "Estrutura Quitinosa (requer Percussao Penetrante)",
+          "summary": "Enquanto a dieta estiver ativa, +4 CA adicional (cumulativo com a dieta). Escudo e armadura media contam como +1 slot de protecao contra crítico (primeiro crítico por combaté vira acerto normal)."
+        },
+        "12": {
+          "name": "Esmagamento Total (requer Estrutura Quitinosa)",
+          "summary": "Ao acertar um ataque contundente, pode escolher destruir a carapaça do alvo: -4 CA permanente até reparar/armadura nova, e você extrai 1 porcao de quitina intacta. Uma vez por alvo por combate."
+        },
+        "16": {
+          "name": "Corpo de Crustaceo (requer Esmagamento Total)",
+          "summary": "Resistência a dano perfurante e cortante enquanto dieta ativa. Reacao: ao sofrer dano fisico, reduz 1d10+CON (minimo 1). Usos: CON por descanso curto."
+        },
+        "20": {
+          "name": "Ascensao — Carapaça Viva",
+          "summary": "+2 CA base permanente. Uma vez por descanso longo, endurece a pele em carapaça viva (10 min): imune a crítico, resistência a perfurante/cortante/contundente, e ataques desarmados seus causam 2d8+FOR perfurante."
+        }
+      }
+    },
+    "cavaleiro-draconico": {
+      "dietDetail": "Ao consumir repteis ou draconideos, ganha resistência a um tipo elemental (escolha ao comer) e baforada curta 2d6 (ação bônus, cone 4,5m, 1/combate).",
+      "talents": {
+        "4": {
+          "name": "Escama de Wyrm",
+          "summary": "Armadura ou escudo reforcado com couro draconico concede +1 CA. Imune a medo de dragoes e reptis gigantes."
+        },
+        "8": {
+          "name": "Ira Draconica (requer Escama de Wyrm)",
+          "summary": "Baforada da dieta passa a 4d6 e empurra alvos 3m (FOR CD 14). Se você ja tem 2+ ataques por acao, pode substituir um ataque da ação por baforada."
+        },
+        "12": {
+          "name": "Heranca de Sangue (requer Ira Draconica)",
+          "summary": "Resistência elemental da dieta vira **imunidade** ao tipo escolhido enquanto dieta ativa. Primeiro ataque corpo a corpo em cada combaté causa +2d6 do tipo elemental."
+        },
+        "16": {
+          "name": "Majestade do Dragão (requer Heranca de Sangue)",
+          "summary": "Acao bonus: Presenca Aterrorizante (9m, SAB CD 15 ou Amedrontado 1 min, reteste no fim do turno). Criaturas de tipo reptil/draconico tem Desvantagem no save."
+        },
+        "20": {
+          "name": "Ascensao — Ascensao Draconica",
+          "summary": "10 minutos, 1/descanso longo: asas (voo 12m), baforada ilimitada no tipo elemental, +4 FOR, escamas +2 CA. Ao terminar, deve comer uma porcao draconica ou sofre 1 nivel de Exaustao até a proxima refeicao."
+        }
+      }
+    },
+    "sentinela-das-profundezas": {
+      "dietDetail": "Ao comer aquaticos e anfibios, ganha respiração aquatica, nado 12m/turno e pele escorregadia (+2 em testes para escapar agarrao) por 8 horas.",
+      "talents": {
+        "4": {
+          "name": "Combaté Subaquatico",
+          "summary": "Sem penalidade de ataque ou movimento sob agua. Em terreno encharcado ou chuva, +1 CA por escorregadio."
+        },
+        "8": {
+          "name": "Pele Anfibia (requer Combaté Subaquatico)",
+          "summary": "Ignora terreno dificil molhado/lodoso. Pode agarrar com vantagem em oponentes em superficie molhada."
+        },
+        "12": {
+          "name": "Pressao das Profundezas (requer Pele Anfibia)",
+          "summary": "Imune a dano de pressao, sufocamento por mergulho e efeitos de \"puxar para o fundo\". Aliados adjacentes em agua profunda podem respirar se você permitir (ação bônus, 8h)."
+        },
+        "16": {
+          "name": "Mestre das Aguas Negras (requer Pressao das Profundezas)",
+          "summary": "Enquanto submerso ou em chuva forte: +2 CA e **+1 ataque** por ação de Ataque (cumulativo com Ataque Extra de nv. 5/11/17). Fora d'agua, mantem +1 ataque se dieta ativa nas ultimas 4h."
+        },
+        "20": {
+          "name": "Ascensao — Forma Abissal",
+          "summary": "1/descanso longo, 1 minuto: controla correntes em raio 9m (terreno dificil, empurra 3m no inicio do turno dos inimigos, aliados ganham nado). Seus ataques em agua causam +2d8 frio ou pressao (escolha ao ativar)."
+        }
+      }
+    },
+    "cacador-do-ceu": {
+      "dietDetail": "Ao comer aves e voadores, visao no escuro perfeita até 36m e +9m de alcance em ataques a distancia por 8 horas.",
+      "talents": {
+        "4": {
+          "name": "Tiro de Precisao",
+          "summary": "Primeiro ataque a distancia em cada combaté contra alvo com HP cheio causa +2d6 dano (estilo Primeiro Sangue). Se o alvo for voador, +3d6."
+        },
+        "8": {
+          "name": "Rastreio Aereo (requer Tiro de Precisao)",
+          "summary": "Estudo de Anatomia em aves concede ignorar meia cobertura e tres quartos contra aquela especie. Pode localizar criaturas voadoras no mesmo andar por som de asa (Percepção automatica CD 12 para surpresa)."
+        },
+        "12": {
+          "name": "Olho de Falcao (requer Rastreio Aereo)",
+          "summary": "Marca uma Presa (ação bônus, 1/descanso curto): sabe direcao exata no andar; ataques a distancia com Vantagem se a Presa não tiver visto você neste combate."
+        },
+        "16": {
+          "name": "Golpe Celeste (requer Olho de Falcao)",
+          "summary": "1/descanso longo: um ataque a distancia ignora CA, resistências e imunidades fisicas; trata como crítico para dano e extracao (penas intactas)."
+        },
+        "20": {
+          "name": "Ascensao — Ataque de Mergulho",
+          "summary": "Uma vez por combate, pode \"mergulhar\" de plataforma ou salto (minimo 3m de queda ou voo): ataque a distancia ou corpo a corpo com +4d6 e derruba Prostrado (DES CD 16). Se matar, recupera a munição ou arma e 1d10 HP de adrenalina."
+        }
+      }
+    },
+    "explorador-de-esporos": {
+      "dietDetail": "Ao comer flora e fungos de masmorra, imunidade a controle mental, ataques toxicos passivos leves (1d4 veneno em primeiro ataque por combate) e nuvem de esporos curativos no descanso (aliados recuperam 1d8 HP).",
+      "talents": {
+        "4": {
+          "name": "Identificacao de Flora",
+          "summary": "Vantagem em Natureza e Coccao com fungos/plantas. Pode identificar esporos toxicos ou curativos sem kit em 1 minuto."
+        },
+        "8": {
+          "name": "Flechas de Esporo (requer Identificacao de Flora)",
+          "summary": "Prepara 3 municoes de esporo por descanso longo: ao acertar, alvo testa CON CD 14 ou Envenenado; aliados podem usar esporo curativo (cura 2d8, ação bonus)."
+        },
+        "12": {
+          "name": "Nuvem de Cura (requer Flechas de Esporo)",
+          "summary": "No descanso curto, espalha esporos curativos (raio 6m): aliados recuperam 2d8+SAB HP e removem 1 condicao de veneno ou doenca leve."
+        },
+        "16": {
+          "name": "Rede de Raizes (requer Nuvem de Cura)",
+          "summary": "1/descanso longo em área com vegetacao ou fungos: raizes Restringem inimigos em raio 6m (FOR CD 15, metade velocidade se passar). Aliados no raio tem cobertura parcial (+2 CA)."
+        },
+        "20": {
+          "name": "Ascensao — Florescimento Toxico",
+          "summary": "10 minutos, 1/descanso longo: nuvem 9m de esporos — inimigos 4d8 veneno + Envenenado (CON CD 16); aliados imunes e curados 2d8. Apos efeito, nascem 1d4 porcoes de fungo raro no chao."
+        }
+      }
+    },
+    "rastreador-de-escamas": {
+      "dietDetail": "Ao comer repteis e basiliscos, imunidade a petrificação e camuflagem de pele (Vantagem em Furtividade em terreno rochoso) por 8 horas.",
+      "talents": {
+        "4": {
+          "name": "Rastejamento Silencioso",
+          "summary": "Vantagem em Furtividade e Iniciativa em cavernas e ruinas. Primeiro ataque em surpresa causa +2d6 se dieta ativa."
+        },
+        "8": {
+          "name": "Sentido Termico (requer Rastejamento Silencioso)",
+          "summary": "Detecta criaturas vivas a 18m mesmo invisiveis ou atras de parede fina (1m). Nao funciona em constructos frios."
+        },
+        "12": {
+          "name": "Escamas Adaptativas (requer Sentido Termico)",
+          "summary": "Resistência a frio e fogo enquanto dieta ativa. Reacao: +4 CA contra um ataque que você viu (escamas eriçadas). Usos: SAB por descanso curto."
+        },
+        "16": {
+          "name": "Olhar Frio (requer Escamas Adaptativas)",
+          "summary": "1/descanso curto: olhar reptiliano (1 alvo, 18m, CON CD 15 ou Lentidão 1 min; falha por 5+ = Paralisado 1 turno). Criaturas ja Envenenadas tem Desvantagem no save."
+        },
+        "20": {
+          "name": "Ascensao — Forma de Reptil",
+          "summary": "Transformacao parcial 10 min (1/descanso longo): escamas +2 CA, escalada 9m, mordida 2d6+DES perfurante como ação bonus, imunidade a petrificação. Pode extrair glândula de petrificação de basilisco morto com Vantagem em Extração."
+        }
+      }
+    },
+    "mestre-de-enxame": {
+      "dietDetail": "Ao comer pragas e insetos menores, conexao telepatica com insetos locais — detecta vibracoes no chao a 15m e localiza invisiveis \"sentindo\" o enxame.",
+      "talents": {
+        "4": {
+          "name": "Sentido de Formigueiro",
+          "summary": "Aliados a 3m ganham +2 em Percepção passiva. Você não pode ser surpreendido por criaturas Medias ou menores."
+        },
+        "8": {
+          "name": "Direcao de Enxame (requer Sentido de Formigueiro)",
+          "summary": "Acao bonus: direciona insetos para um quadrado — próximo ataque contra ocupante tem Vantagem, ou aliado naquele quadrado ganha +2 CA até seu próximo turno. Usos: SAB por descanso curto."
+        },
+        "12": {
+          "name": "Convocacao de Insetos (requer Direcao de Enxame)",
+          "summary": "1/descanso longo: enxame ocupa 6m (dano 2d8 perfurante no turno deles a quem entrar, velocidade metade). Dura 1 minuto ou até dispersar (fogo área 3d6+)."
+        },
+        "16": {
+          "name": "Mente Coletiva (requer Convocacao de Insetos)",
+          "summary": "Compartilha sentidos com aliados a 9m (todos veem o que um viu neste turno, 1 rodada). Mapa mental de armadilhas no andar após 30 min de exploracao (estilo Cartografo Nato, apenas passagens e armadilhas mecanicas)."
+        },
+        "20": {
+          "name": "Ascensao — Infestacao",
+          "summary": "1/descanso longo: infesta o andar — por 1 hora, você sempre sabe numero aproximado e tipo de criaturas Medias- no raio 30m; inimigos que descansam no andar sofrem 2d6 veneno ao acordar (CON CD 16 metade). Aliados ganham +3 em sobrevivencia e forrageio."
+        }
+      }
+    },
+    "sombra-eterea": {
+      "dietDetail": "Ao comer ectoplasma e residuos espirituais, pode ficar intangivel 1 turno por combaté e Ataque Furtivo ganha +1d6 necrótico.",
+      "talents": {
+        "4": {
+          "name": "Toque Fantasmal",
+          "summary": "Ataque Furtivo pode aplicar Lentidão espiritual (velocidade -3m, 1 min, CON CD 13). Uma vez por combate, atravessa parede fina (30cm) como movimento."
+        },
+        "8": {
+          "name": "Passo entre Sombras (requer Toque Fantasmal)",
+          "summary": "Intangibilidade da dieta sobe para 2 turnos/combate. Ao sair de intangibilidade, próximo ataque furtivo tem Vantagem automatica."
+        },
+        "12": {
+          "name": "Absorção de Eter (requer Passo entre Sombras)",
+          "summary": "Ao reduzir espiritual a 0 HP, absorve fragmento: recupera 1 uso de intangibilidade ou 1d8 HP. Ataques furtivos contra espirituais causam dano máximo nos dados de furtivo."
+        },
+        "16": {
+          "name": "Forma Translucida (requer Absorção de Eter)",
+          "summary": "1/descanso longo, 1 minuto: semi-invisivel (ataques contra você com Desvantagem; seus furtivos +2d6). Comunica telepaticamente com aliados a 18m."
+        },
+        "20": {
+          "name": "Ascensao — Mente Morta",
+          "summary": "Imune a medo e encantamento. 1/combate, quando um aliado cai a 0 HP, reacao: fica intangivel até o fim do turno e faz um Ataque Furtivo contra quem causou o dano com crítico em 19-20."
+        }
+      }
+    },
+    "forma-amorfa": {
+      "dietDetail": "Ao comer amorfos e slimes, corpo elastico — passa por frestas de 15cm, escapa agarramento automaticamente, resistência a ácido.",
+      "talents": {
+        "4": {
+          "name": "Flexibilidade Extrema",
+          "summary": "Vantagem em testes para escapar e em Furtividade em tubos. Ataque Furtivo em alvo Agarrado causa +1d6 ácido."
+        },
+        "8": {
+          "name": "Absorção de Impacto (requer Flexibilidade Extrema)",
+          "summary": "Reacao ao dano contundente ou de queda: reduz metade. Pode \"rebater\" 1d10 ácido ao atacante se o dano foi reduzido a 0."
+        },
+        "12": {
+          "name": "Forma Fluida (requer Absorção de Impacto)",
+          "summary": "1/descanso curto, 3 turnos: imune a agarrao, crítico contra você vira acerto normal, deslocamento +3m. Ataques furtivos aplicam Desarme leve (objeto cai) em falha de DES CD 14."
+        },
+        "16": {
+          "name": "Corpo de Gel (requer Forma Fluida)",
+          "summary": "Resistência a ácido e perfurante. Pode se comprimir em espaco de 5cm por 1 rodada (ação bônus). Extrair nucleo de slime morto: Vantagem em Extração, qualidade máxima."
+        },
+        "20": {
+          "name": "Ascensao — Dissolucao",
+          "summary": "1/descanso longo: dissolve armadura nao-mágica de metal em contato (1 peca, 1 minuto fora de combate) OU em combaté toca alvo — 6d8 ácido e equipamento leve corroi (DES CD 16 metade dano). Ataque Furtivo máximo (10d6 em nv. 20) contra alvo sem armadura pesada ganha +2d6."
+        }
+      }
+    },
+    "corsario-de-cripta": {
+      "dietDetail": "Ao comer osseos e mortos-vivos corporeos, resistência a necrótico e pode fingir morte perfeita (zera aggro até se mover ou 1 hora).",
+      "talents": {
+        "4": {
+          "name": "Sussurro de Tumba",
+          "summary": "Comunica com mortos-vivos Int 3+ como se compartilhasse idioma por 1 minuto (não controla). Vantagem em Ataque Furtivo contra mortos-vivos distraidos."
+        },
+        "8": {
+          "name": "Aparencia Cadaverica (requer Sussurro de Tumba)",
+          "summary": "Parece morto-vivo para inspecao casual. Pode entrar em criptas sem alarme social. Fingir morte agora e ação bonus."
+        },
+        "12": {
+          "name": "Aura de Morte (requer Aparencia Cadaverica)",
+          "summary": "Raio 3m: inimigos vivos tem -1 em ataques (medo visceral). 1/descanso curto, comanda 1 morto-vivo Fraco (HP 15, 1 ataque) por 10 min — ele pode Extração para o grupo."
+        },
+        "16": {
+          "name": "Controle de Morto-Vivo (requer Aura de Morte)",
+          "summary": "Ate 3 mortos-vivos Fracos ou 1 Medio (estatisticas do Mestre) obedecendo por 1 hora. Ataques furtivos contra alvos adjacentes a seu morto-vivo ganham +2d6 necrótico."
+        },
+        "20": {
+          "name": "Ascensao — Senhor da Cripta",
+          "summary": "1/descanso longo: levanta esqueleto de monstro Grande morto na sessao (metade HP original, ataques do monstro sem magia). Enquanto ativo, você tem resistência a necrótico e crítico em mortos-vivos em 19-20. Ossos extraidos por você contam como ingrediente Lendário menor."
+        }
+      }
+    },
+    "piromante-das-brasas": {
+      "dietDetail": "Refeicoes assadas por você maximizam recuperacao de Mana do grupo no descanso; feiticos de fogo +1d6 vs gelo/agua e dispensam componentes de fogo.",
+      "talents": {
+        "4": {
+          "name": "Chama Controlada",
+          "summary": "Truque `Chama de Fogareiro` extra. 1/descanso curto, maximize dano de um feitico de fogo de nivel 3 ou menor."
+        },
+        "8": {
+          "name": "Forno de Campo (requer Chama Controlada)",
+          "summary": "Prepara refeicao assada em combaté (10 min) ou ação bônus \"lanche carbonizado\" (1d8 HP temp a aliado adjacente). Aliados que comem ganham resistência a frio 1 hora."
+        },
+        "12": {
+          "name": "Combustao Arcana (requer Forno de Campo)",
+          "summary": "Ao lancar feitico de fogo, pode acender ingrediente inflamavel em alcance — +2d6 no próximo ataque de aliado contra alvo naquele quadrado."
+        },
+        "16": {
+          "name": "Brasas Persistentes (requer Combustao Arcana)",
+          "summary": "Feiticos de fogo deixam brasas 1 rodada (2d6 fogo a quem iniciar turno no espaco). `Bola de Fogo` pode não incendiar comida aliada (variante Forno Arcano, Cap. 19)."
+        },
+        "20": {
+          "name": "Ascensao — Coracao do Forno",
+          "summary": "1/descanso longo, 1 minuto: aura 6m de calor — aliados +2 em Coccao e recuperam 1 espaco de magia de nivel 3 ou menor ao fim; inimigos 4d10 fogo no inicio do turno (DES CD 17 metade). Seus feiticos de fogo ignoram resistência enquanto ativo."
+        }
+      }
+    },
+    "mago-alquimico": {
+      "dietDetail": "Pratos fermentados garantem imunidade a ilusao ao grupo por 8h e removem doenca ou maldicao leve após refeicao.",
+      "talents": {
+        "4": {
+          "name": "Fermentação Acelerada",
+          "summary": "Magias `Envelhecer Matéria` e `Fermentação Acelerada` (Cap. 19). Transforma Comum em Incomum com 1 espaco nv. 1 em 1 minuto."
+        },
+        "8": {
+          "name": "Cultura Viva (requer Fermentação Acelerada)",
+          "summary": "Cria antidoto cultural para veneno identificado (5 min, 3 doses). Aliados que comem seu fermentado ganham Vantagem em saves de ilusao e encantamento 24h."
+        },
+        "12": {
+          "name": "Nuvem Bacteriana (requer Cultura Viva)",
+          "summary": "1/descanso curto: nuvem 4,5m — inimigos CON CD 14 ou Envenenado \"fermentado\" (Desvantagem em Concentracao); aliados curam 2d8+INT."
+        },
+        "16": {
+          "name": "Transmutação Enzimatica (requer Nuvem Bacteriana)",
+          "summary": "Combina dois ingredientes incompativeis em hibrido 1/descanso longo (propriedades de ambos, 24h). Veneno vira antidoto correspondente."
+        },
+        "20": {
+          "name": "Ascensao — Grande Barril",
+          "summary": "1/semana: barril de fermento lendario — grupo inteiro imune a ilusao, doenca e maldicao moderada por 7 dias; 1/dia cada um pode rerrolar um save mental falho."
+        }
+      }
+    },
+    "alquimista-acido": {
+      "dietDetail": "Sopas densas permitem regurgitar ácido 2d6 ou expelir nevoa venenosa (CD 13 CON ou Envenenado) 1/combaté após refeicao propria.",
+      "talents": {
+        "4": {
+          "name": "Caldo Corrosivo",
+          "summary": "Truque de acidificar liquido. +2 em Coccao para sopas. 1/descanso longo: cone 4,5m 4d6 ácido (INT CD 14 metade) após Gourmet proprio."
+        },
+        "8": {
+          "name": "Sopa de Resistência (requer Caldo Corrosivo)",
+          "summary": "Refeicao de sopa concede resistência a ácido e veneno ao grupo 8h. Você pode armazenar 1 \"engolida\" de ácido para usar reacao (3d6 ácido ao ser golpeado corpo a corpo)."
+        },
+        "12": {
+          "name": "Nevoa de Caldeira (requer Sopa de Resistência)",
+          "summary": "Nevoa 6m: CON CD 15 ou Envenenado; visibilidade reduzida para inimigos. Aliados dentro veem normalmente."
+        },
+        "16": {
+          "name": "Extracao Liquida (requer Nevoa de Caldeira)",
+          "summary": "Extração liquido: de monstros amorfos extrai 1d4 porcoes extras com teste de Coccao CD 14. Feiticos de ácido +2d6."
+        },
+        "20": {
+          "name": "Ascensao — Maré Acida",
+          "summary": "1/descanso longo: linha 18m x 3m de caldo fervente — 8d8 ácido e terreno dificil 1 min. Se matar com este dano, corpo dissolve em ingredientes alquimicos (qualidade superior automatica)."
+        }
+      }
+    },
+    "mago-dos-encantos": {
+      "dietDetail": "Glicose arcana concede 1 magia de Encantamento nv. 1-3 por dia sem gastar espaco (escolhida ao preparar, Cap. 19).",
+      "talents": {
+        "4": {
+          "name": "Doce Encantador",
+          "summary": "Truque `Doce Confuso` (Cap. 19). Inspirar aliado com doce: +1d4 em um teste social ou Coccao em 1 hora."
+        },
+        "8": {
+          "name": "Banquete Minimo (requer Doce Encantador)",
+          "summary": "Acao bonus: distribui doces (3 aliados) — +1d6 HP temp e Vantagem no próximo save de Sabedoria."
+        },
+        "12": {
+          "name": "Acucar Cristalizado (requer Banquete Minimo)",
+          "summary": "1/descanso curto: cristal de acucar arcano — prende 1 inimigo Pequeno/Medio (DES CD 15 ou Restringido 1 min). Ou cura aliado 3d8+INT."
+        },
+        "16": {
+          "name": "Festa Hipnotica (requer Acucar Cristalizado)",
+          "summary": "1/descanso longo: 9m, criaturas com INT 4+ testam SAB CD 16 ou Encantados (não atacam grupo) por 1 rodada; aliados recuperam 2d8 HP."
+        },
+        "20": {
+          "name": "Ascensao — Imperio do Doce",
+          "summary": "Encantamento diario sobe para nv. 4 sem espaco 1x/dia. Grupo que come seu banquete semanal (preparacao 1h) tem Vantagem contra medo e charm por 24h e +2 CD em suas magias de encantamento."
+        }
+      }
+    },
+    "monge-ascetico": {
+      "dietDetail": "Após 8h sem comer, +4 em esquiva e dano radiante nos ataques; ao quebrar o jejum com refeicao, onda 3d8 radiante em 6m (CON CD 14 metade).",
+      "talents": {
+        "4": {
+          "name": "Disciplina Vazia",
+          "summary": "Enquanto em jejum ativo, não precisa comer para manter Bônus Passivo de Sobrevivência da classe (não o da subclasse). +2 em Concentracao."
+        },
+        "8": {
+          "name": "Golpe do Jejum (requer Disciplina Vazia)",
+          "summary": "Primeiro ataque após quebrar jejum causa +3d8 radiante extra. 1/combaté se permanecer em jejum: esquiva reacao +4 CA."
+        },
+        "12": {
+          "name": "Jejum Prolongado (requer Golpe do Jejum)",
+          "summary": "Jejum seguro até 3 dias sem Exaustao (agua normal). No 3o dia, onda ao comer sobe para 5d8."
+        },
+        "16": {
+          "name": "Corpo Templo (requer Jejum Prolongado)",
+          "summary": "Resistência a necrótico e veneno enquanto jejum 8h+. Cura mágica em você cura +2 HP por nivel de espaco."
+        },
+        "20": {
+          "name": "Ascensao — Transfiguracao pelo Vazio",
+          "summary": "1/descanso longo: jejum instantaneo 1 minuto e explosao 10d8 radiante em 9m (inimigos CON CD 17); aliados curados 4d8. Proximas 24h: imune a fome forcada e veneno."
+        }
+      }
+    },
+    "pastor-de-quimeras": {
+      "dietDetail": "Ao comer bestas mágicas complexas, canaliza aura de animal (ex.: Leao — aliados adjacentes Vantagem em ataques) por 8h.",
+      "talents": {
+        "4": {
+          "name": "Ecologia Sagrada",
+          "summary": "Estudo de Anatomia em quimeras com Vantagem. Identifica qual traco animal a carne concedera antes de cozinhar."
+        },
+        "8": {
+          "name": "Aura Dupla (requer Ecologia Sagrada)",
+          "summary": "Pode manter duas auras menores simultaneas (metade do bônus cada) ou uma aura maior (+1 aliados adjacentes em dano)."
+        },
+        "12": {
+          "name": "Chamado do Rebanho (requer Aura Dupla)",
+          "summary": "Convoca espirito-bestia Medio (HP 30, 1 ataque 2d6) por 10 min, 1/descanso longo. Espirito pode carregar 1 porcao de ingrediente sem estragar."
+        },
+        "16": {
+          "name": "Sincretismo (requer Chamado do Rebanho)",
+          "summary": "Ao cozinhar quimera, grupo escolhe 2 mutacoes leves da lista da especie em vez de 1."
+        },
+        "20": {
+          "name": "Ascensao — Cordeiro e Leao",
+          "summary": "1/descanso longo, 10 min: aura 9m — aliados +2 ataques/dano e imunes a medo; você assume tracos de Boss quimera ja consumido (asas, baforada ou escamas, a escolha do Mestre). Mortos-vivos animais fogem (SAB CD 17)."
+        }
+      }
+    },
+    "mandibula-de-ferro": {
+      "dietDetail": "Mastigar exoesqueletos concede +1d6 perfurante em ataques desarmados (estilhacos entre os punhos) por 8h.",
+      "talents": {
+        "4": {
+          "name": "Mastigador",
+          "summary": "Pode morder carapaça como ação bônus em agarramento: 2d6+FOR perfurante e alvo -2 CA até fim do turno dele."
+        },
+        "8": {
+          "name": "Ossos como Arma (requer Mastigador)",
+          "summary": "Em Furia, ataques desarmados contam como magicos e +1d8. Pode quebrar escudo inimigo em crítico (DES CD 14)."
+        },
+        "12": {
+          "name": "Mandibula de Ferro (requer Ossos como Arma)",
+          "summary": "Resistência a perfurante fora de Furia; em Furia, imune a crítico. Mordida recupera 1d6 HP se dano causado >= 10."
+        },
+        "16": {
+          "name": "Esmagar Cranio (requer Mandibula de Ferro)",
+          "summary": "1/combaté em Furia: mordida em alvo Agarrado — se HP restante < 5d6+FOR, execucao narrativa (Mestre confirma) e você ganha +2 CA de restos de carapaça."
+        },
+        "20": {
+          "name": "Ascensao — Titereiro de Quitina",
+          "summary": "Furia transforma pele em carapaça total: +3 CA, garras 3d6 perfurante, resistência cortante/contundente. 1/descanso longo, mordida área (cone 3m) 6d6 perfurante."
+        }
+      }
+    },
+    "colosso-do-gelo": {
+      "dietDetail": "Imunidade a frio e ignora 1 nivel de Exaustao por estocar calorias de criaturas gordurosas; pode reservar 1 refeicao para dia sem comer.",
+      "talents": {
+        "4": {
+          "name": "Reserva de Gordura",
+          "summary": "Sem comer 24h, mantem dieta ativa. Em Furia, resistência a frio vira imunidade."
+        },
+        "8": {
+          "name": "Avalanche (requer Reserva de Gordura)",
+          "summary": "Em neve ou gelo, deslocamento +6m e primeiro ataque em Furia derruba (FOR CD 15 Prostrado)."
+        },
+        "12": {
+          "name": "Hibernação de Combaté (requer Avalanche)",
+          "summary": "1/descanso curto: 1 rodada \"dormir\" em Furia — próximo turno acorda com ação completa extra e 3d8 HP."
+        },
+        "16": {
+          "name": "Pele de Mamute (requer Hibernação de Combate)",
+          "summary": "+2 CA em Furia. Aliados adjacentes em clima frio extremo não ganham Exaustao ambiental."
+        },
+        "20": {
+          "name": "Ascensao — Inverno Eterno",
+          "summary": "1/descanso longo, 1 min: aura 9m de frio — inimigos 3d8 frio e velocidade metade; você tamanho Grande, +4 CON temporario, Furia automatica sem gastar uso. Terreno torna-se dificil para inimigos."
+        }
+      }
+    },
+    "estratega-de-masmorra": {
+      "dietDetail": "Bebidas emparelhadas com prato maximizam dados de cura de magias do Bardo pelas proximas horas.",
+      "talents": {
+        "4": {
+          "name": "Forrageio de Taças",
+          "summary": "Ao usar Inspiracao em quem vai cozinhar, alvo ganha +1d6 em Coccao/Forrageio por 1h (Cap. 19)."
+        },
+        "8": {
+          "name": "Menu de Expedicao (requer Forrageio de Taças)",
+          "summary": "Descanso curto com bebida sua: grupo recupera +1d8 HP extra e ativa dieta mesmo com refeicao Comum."
+        },
+        "12": {
+          "name": "Reserva Envelhecida (requer Menu de Expedicao)",
+          "summary": "1 magia de cura por descanso longo cura valor máximo dos dados se vinho correto foi consumido antes."
+        },
+        "16": {
+          "name": "Brinde de Batalha (requer Reserva Envelhecida)",
+          "summary": "Acao bonus: aliado bebe — próximo ataque Vantagem e +1d8 dano. Usos: CAR por descanso curto."
+        },
+        "20": {
+          "name": "Ascensao — Grande Cru",
+          "summary": "1/semana: banquete liquido — magias de cura do grupo dobram dados por 24h; 1/dia cada aliado rerrola save de veneno ou medo após brinde."
+        }
+      }
+    },
+    "bardo-fermentador": {
+      "dietDetail": "Cervejas de fungo concedem HP temporario igual ao dado de Inspiracao atual sempre que usa Inspiracao de Bardo.",
+      "talents": {
+        "4": {
+          "name": "Fermento de Masmorra",
+          "summary": "Cria 3 cervejas por descanso longo (acao bônus beber: 1d8 HP temp + 1d6 Inspiracao extra ao próximo teste)."
+        },
+        "8": {
+          "name": "Ressaca Positiva (requer Fermento de Masmorra)",
+          "summary": "Aliado que bebe recupera 1 uso de habilidade de classe em descanso curto (1/dia por grupo)."
+        },
+        "12": {
+          "name": "Cançao Ebria (requer Ressaca Positiva)",
+          "summary": "Cancao de Poder (estilo Cap. 12 antigo): aliados +2 ataques; inimigos SAB CD 15 Distraidos. 1/descanso curto."
+        },
+        "16": {
+          "name": "Barril Explosivo (requer Cançao Ebria)",
+          "summary": "Arremessa barril (18m): 4d6 fogo + CON CD 15 ou Envenenado leve. Ingrediente de fungo necessario."
+        },
+        "20": {
+          "name": "Ascensao — Festa dos Fungos",
+          "summary": "1/descanso longo: nuvem alegra 9m — aliados Vantagem em todos os saves mentais 10 min; inimigos com INT 6+ testam CAR CD 17 ou não atacam (encantamento) 1 rodada. Inspiracao de Bardo sobe 1 passo de dado (ex.: 1d8 para 1d10) até descanso longo."
+        }
+      }
+    },
+    "cantor-dos-venenos": {
+      "dietDetail": "Raizes picantes raras aumentam CD de resistência de ilusao e encantamento em +3 por 8h.",
+      "talents": {
+        "4": {
+          "name": "Nota Picante",
+          "summary": "+1 CD em ilusao/encantamento. Truque de ilusao olfativa (nuvem de especiaria)."
+        },
+        "8": {
+          "name": "Refrao Queima (requer Nota Picante)",
+          "summary": "1/descanso curto: aliado que falhou save mental repete com Vantagem após cheirar especiaria (ação bônus)."
+        },
+        "12": {
+          "name": "Sinfornia de Ervas (requer Refrao Queima)",
+          "summary": "Contracanto (estilo Cap. 12): reacao interrompe feitico 18m, CD Concentracao 14+CAR."
+        },
+        "16": {
+          "name": "Encanto Culinario (requer Sinfornia de Ervas)",
+          "summary": "Refeicao com especiarias: quem come ganha +2 CD em saves mentais 8h. Você prepara 2 porcoes extra de efeito."
+        },
+        "20": {
+          "name": "Ascensao — Ode ao Wasabi",
+          "summary": "1/descanso longo: canto 1 min — inimigos 6d8 psiquico + SAB CD 18 ou Atordoado 1 turno; aliados imunes e +3 CD em magias mentais 1 hora. Ilusoes criadas por você parecem reais até dano fisico (CD 19 para desacreditar)."
+        }
+      }
+    },
+    "circulo-da-simbiose": {
+      "dietDetail": "Sementes mágicas criam armadura de vinhas (rebaté 1d6 cortante a cada ataque recebido) por 8h.",
+      "talents": {
+        "4": {
+          "name": "Semente Guardia",
+          "summary": "Armadura de vinhas +2 CA e 1d6 rebate. Planta semente em 1 min: cresce fruta curativa 1d8 em 8h."
+        },
+        "8": {
+          "name": "Rede Simbiotica (requer Semente Guardia)",
+          "summary": "Aliado adjacente ganha metade do rebaté (arredonda 1d4 minimo). Pode compartilhar 1 mutação vegetal com aliado por descanso longo."
+        },
+        "12": {
+          "name": "Vinha Agarradora (requer Rede Simbiotica)",
+          "summary": "1/descanso curto: vinhas 6m Restringem (FOR CD 15). Em Forma Selvagem, ataques aplicam Lentidão em falha de DES CD 14."
+        },
+        "16": {
+          "name": "Floresta em Miniatura (requer Vinha Agarradora)",
+          "summary": "Descanso longo em área verde: cria 2d4 porcoes de planta Comum. Imune a veneno de plantas enquanto dieta ativa."
+        },
+        "20": {
+          "name": "Ascensao — Corpo Bosque",
+          "summary": "10 min, 1/descanso longo: pele-bosque — CA 16+SAB, rebaté 2d6, regenera 2d8/turno. Aliados a 3m ganham +2 CA de vinhas. Ao terminar, planta arvore que frutifica em 1 semana (recurso de faccao)."
+        }
+      }
+    },
+    "engenheiro-de-explosivos": {
+      "dietDetail": "Glandulas combustiveis concedem resistência a Fogo e +2d6 em bombas e engenhocas por 8h.",
+      "talents": {
+        "4": {
+          "name": "Fogareiro Portátil",
+          "summary": "Acende fogueira segura em 1 acao; cozinha em combaté em dobro de velocidade (minimo 5 min por prato simples)."
+        },
+        "8": {
+          "name": "Bomba de Glandula (requer Fogareiro Portátil)",
+          "summary": "3 bombas/descanso longo (4d6 fogo, 3m, DES CD 14). Nao afeta comida aliada se acertar panela — escolhe ao arremessar."
+        },
+        "12": {
+          "name": "Caldeira a Pressao (requer Bomba de Glandula)",
+          "summary": "Reacao: explosao controlada reduz dano de fogo em você a 0 e reflete 2d8 fogo ao atacante (alcance 3m)."
+        },
+        "16": {
+          "name": "Motor de Vapor Menor (requer Caldeira a Pressao)",
+          "summary": "Construto Auxiliar (Cap. 12 antigo Engenheiro) ganha lanca-fogo integrada 2d6+INT."
+        },
+        "20": {
+          "name": "Ascensao — Inferno Controlado",
+          "summary": "1/descanso longo: incendio direcionado 12m linha 10d6 fogo (DES CD 17 metade); aliados na linha sofrem metade automaticamente. Bombas dobram dado até descanso longo. Imune a proprio fogo."
+        }
+      }
+    },
+    "construtor-de-armadilhas": {
+      "dietDetail": "Carne extraída sem dano de batalha concede Vantagem em INT e criacao de invencoes por 24h.",
+      "talents": {
+        "4": {
+          "name": "Armadilha Biologica",
+          "summary": "Monta armadilha em 5 min com ingrediente (efeito biomagico do monstro, Percepção CD 18 detectar)."
+        },
+        "8": {
+          "name": "Extracao Perfeita (requer Armadilha Biologica)",
+          "summary": "Vantagem em Extração se monstro morreu em armadilha sua ou com 0 dano de arma cortante."
+        },
+        "12": {
+          "name": "Rede de Campo (requer Extracao Perfeita)",
+          "summary": "3 armadilhas ativas simultaneas. Armadilha pode ser remota (corda, 9m)."
+        },
+        "16": {
+          "name": "Engenho de Caça (requer Rede de Campo)",
+          "summary": "1/descanso longo: armadilha maior (6d8 dano tipo escolhido + condicao do ingrediente, FOR ou DES CD 16)."
+        },
+        "20": {
+          "name": "Ascensao — Arquiteto da Masmorra",
+          "summary": "1/descanso longo: converte área 12m em \"zona preparada\" 1 hora — todas as armadilhas +2d6, Percepção inimiga CD 20, você e aliados Vantagem em Furtividade e INT para invencoes. Ao fim, recupera todos os ingredientes usados (metade porcoes, qualidade preservada)."
+        }
+      }
+    },
+    "jurado-do-sol": {
+      "dietDetail": "Ao comer carne de origem celestial (celestiais corrompidos, quimeras luminosas, anjos caidos), ganha resistência radiante, visão perfeita 18m e +2 em saves contra medo por 8 horas.",
+      "talents": {
+        "4": {
+          "name": "Luz Penitente",
+          "summary": "Golpe Sagrado ignora resistência radiante do alvo. Imposição de Mãos cura +1d8 extra em aliados com menos de metade dos HP. 1/descanso curto: flash radiante 3m — mortos-vivos 2d8 radiante (sem save)."
+        },
+        "8": {
+          "name": "Escudo Solar (requer Luz Penitente)",
+          "summary": "Reação quando aliado adjacente sofrer dano: reduz dano em 1d10 + CAR (minimo 1). Enquanto dieta ativa, você emite luz fraca 6m (inimigos furtivos −2 Furtividade)."
+        },
+        "12": {
+          "name": "Julgamento Ardente (requer Escudo Solar)",
+          "summary": "1/descanso curto: marca 1 inimigo visível (9m) por 1 minuto — seus Golpes Sagrados contra ele não gastam PA extra na primeira vez por turno. Mortos-vivos marcados têm Desvantagem em ataques contra você."
+        },
+        "16": {
+          "name": "Coroa de Fogo (requer Julgamento Ardente)",
+          "summary": "Aura de Devoção passa a 6m e concede resistência radiante a aliados dentro dela. 1/combate: explosão solar 4,5m, 4d8 radiante (DES CD 15 metade), aliados imunes."
+        },
+        "20": {
+          "name": "Ascensao — Avatar do Amanhecer",
+          "summary": "10 minutos, 1/descanso longo: voo 12m, imunidade radiante, Golpe Sagrado maximizado (rola maximo nos dados). Aliados na Aura curam 2d8 no inicio do turno deles. Ao terminar, deve comer porção celestial ou sofre Exaustao 1 até refeicao consagrada."
+        }
+      }
+    },
+    "cavaleiro-do-limiar": {
+      "dietDetail": "Ossos consagrados ou carne de morto-vivo sagrado concedem resistência necrótico; mortos-vivos têm Desvantagem para escolhê-lo como primeiro alvo até você ataca-los.",
+      "talents": {
+        "4": {
+          "name": "Lâmina dos Sepulcros",
+          "summary": "Ataques com arma contra mortos-vivos ganham +1d8 radiante ou necrótico (escolha ao acertar). Extração em carcaças de mortos-vivos rende 1 porção de osso Consagrado sem teste."
+        },
+        "8": {
+          "name": "Voto de Caça (requer Lâmina dos Sepulcros)",
+          "summary": "Declare voto contra 1 tipo de morto-vivo ao comer dieta (24h). +3 dano contra esse tipo e Vantagem em Percepção para detecta-los."
+        },
+        "12": {
+          "name": "Marca do Limiar (requer Voto de Caça)",
+          "summary": "Ao reduzir morto-vivo a 0 HP, impoe Marca do Limiar — proximo morto-vivo que atacar o mesmo aliado sofre 2d8 necrótico."
+        },
+        "16": {
+          "name": "Processão Silenciosa (requer Marca do Limiar)",
+          "summary": "1/descanso longo: forma espectral 10 min (atravessa portas, +10 Furtividade vs mortos-vivos). Ataques ignoram imunidade necrótico (vira resistência)."
+        },
+        "20": {
+          "name": "Ascensao — Cavaleiro Espectral",
+          "summary": "1 minuto, 1/descanso longo: resistência fisico, atravessa criaturas, +2d10 necrótico/radiante. Ergue 1 morto-vivo Medio como servo (HP = nivel × 5) por 10 min."
+        }
+      }
+    },
+    "guardiao-da-gorge": {
+      "dietDetail": "Carne de besta sagrada ou quimera concede +2 CON e +1 CA a aliados adjacentes por 8 horas.",
+      "talents": {
+        "4": {
+          "name": "Mordida do Voto",
+          "summary": "Ação bonus: mordida ritual — +2 FOR e +3m movimento por 1 minuto. Ataques de oportunidade têm Desvantagem contra você enquanto corre."
+        },
+        "8": {
+          "name": "Fera Interior (requer Mordida do Voto)",
+          "summary": "Primeiro ataque corpo a corpo por turno +1d8 perfurante. Pode carregar aliado Caído adjacente sem metade de velocidade (1/combate)."
+        },
+        "12": {
+          "name": "Carga do Juramento (requer Fera Interior)",
+          "summary": "1/descanso curto: investida 12m — Vantagem no primeiro ataque; derruba em acerto (FOR CD 14). Aliados na linha +1 CA."
+        },
+        "16": {
+          "name": "Pele de Quimera (requer Carga do Juramento)",
+          "summary": "Resistência cortante com dieta. Reação: retalho 2d6 + FOR (tipo da quimera consumida). Usos: CON/descanso curto."
+        },
+        "20": {
+          "name": "Ascensao — Forma do Guardião",
+          "summary": "10 min: tamanho Grande, +4 CON, garras 2d8+FOR, investida 1/turno. Aliados adjacentes +2 CA e Vantagem vs medo."
+        }
+      }
+    },
+    "filho-da-voragem": {
+      "dietDetail": "Carne aberrante concede resistência psíquico e +3m alcance em magias de controle por 8 horas.",
+      "talents": {
+        "4": {
+          "name": "Toque da Voragem",
+          "summary": "Raio do Pacto psíquico, empurra 1,5m (FOR CD 13). Magias de controle +1 CD com dieta."
+        },
+        "8": {
+          "name": "Olhar Entre Dimensões (requer Toque da Voragem)",
+          "summary": "Ver invisiveis 18m, 10 min/descanso curto. Reação: 2d6 psíquico a quem faz alvo falhar save mental."
+        },
+        "12": {
+          "name": "Agarrão do Pacto (requer Olhar Entre Dimensões)",
+          "summary": "Tentáculos 9m — 2 alvos Restringidos (FOR CD 15), 1/combate."
+        },
+        "16": {
+          "name": "Mente Partida (requer Agarrão do Pacto)",
+          "summary": "Confusao 1 min (INT CD 16), 1/descanso longo. Aberrações INT ≤ 8 falham automaticamente."
+        },
+        "20": {
+          "name": "Ascensao — Boca do Abismo",
+          "summary": "Boca dimensional 6m, 4d10 psíquico/turno, teletransporte 9m, 1 minuto/descanso longo."
+        }
+      }
+    },
+    "herdeiro-do-sangue": {
+      "dietDetail": "Sangue infernal — resistência fogo; ao matar, HP temp = CAR (1/turno).",
+      "talents": {
+        "4": {
+          "name": "Contrato Ardente",
+          "summary": "Raio fogo; marca Sangue +2d6 no proximo fogo contra alvo."
+        },
+        "8": {
+          "name": "Sangue do Patrono (requer Contrato Ardente)",
+          "summary": "Sacrifica 1d8 HP para recuperar 1 slot. Imune Sangramento com dieta."
+        },
+        "12": {
+          "name": "Pacto de Ferro (requer Sangue do Patrono)",
+          "summary": "Resistência necrótico/fogo. Correntes 3d8 fogo + Restringir, 1/combate."
+        },
+        "16": {
+          "name": "Correntes Infernais (requer Pacto de Ferro)",
+          "summary": "Fogo ignora resistência. Selo de sangue 3m, 3d6 fogo ao entrar."
+        },
+        "20": {
+          "name": "Ascensao — Tirano do Sangue",
+          "summary": "Voo 12m, Raio em linha, recupera slot ao matar (1/turno), imune fogo/necrótico, 10 min."
+        }
+      }
+    },
+    "voz-das-profundezas": {
+      "dietDetail": "Carne abissal — respiração aquática, +1 CD encantamento/ilusao por 8h.",
+      "talents": {
+        "4": {
+          "name": "Sussurro Salino",
+          "summary": "Raio frio; +1 rodada de concentracao em encantamentos (max +2)."
+        },
+        "8": {
+          "name": "Corrente Mental (requer Sussurro Salino)",
+          "summary": "Telepatia 18m. Eco mental repete encantamento nv.1 sem slot, 1/descanso curto."
+        },
+        "12": {
+          "name": "Manto de Bruma (requer Corrente Mental)",
+          "summary": "Névoa 6m, 1 min — aliados furtivos, inimigos −2 ataques a distancia."
+        },
+        "16": {
+          "name": "Puxão Abissal (requer Manto de Bruma)",
+          "summary": "+2 CD controle em agua/névoa. Puxar 9m, 2d8 frio, 1/combate."
+        },
+        "20": {
+          "name": "Ascensao — Hino das Profundezas",
+          "summary": "Canção 12m, Amedrontado/Lento, aliados +3 saves mentais, 1 minuto."
+        }
+      }
+    },
+    "clerigo-do-limiar": {
+      "dietDetail": "Carnes osseas ou de morto-vivo corporeo consumidas com rito do Limiar concedem resistência a necrótico e fazem mortos-vivos com INT 3 ou menos ignorarem você como primeiro alvo do combaté até você ataca-los ou usar necromancia hostil contra a especie.",
+      "talents": {
+        "4": {
+          "name": "Domínio do Limiar",
+          "summary": "Comanda **servos** mortos-vivos (zumbi ou esqueleto reduzido: HP = 10 + nivel×3, CA = 8 + nivel÷4, ataque 1d6 + mod. SAB necrótico). Maximo de servos = min(3, mod. SAB). Agem na sua iniciativa (acao bônus para ordenar ataque ou movimento). Recupera 1 servo destruido por descanso longo se tiver carcaca. Servos podem Extração corpos mortos com metade do seu bônus de Extração."
+        },
+        "8": {
+          "name": "Colheita de Alma (requer Domínio do Limiar)",
+          "summary": "Ao reduzir criatura viva a 0 HP, captura 1 fragmento de alma (inventário, max 3). Consumir fragmento: cura 2d8 + SAB OU lança 1 magia de Necromancia de nv. 3 ou menos sem gastar espaco (1/descanso longo). Fragmento alimenta `Animação de Mortos` sem componente de carcaca se usado no mesmo dia."
+        },
+        "12": {
+          "name": "Sacrificio Ritual (requer Colheita de Alma)",
+          "summary": "Transfere HP proprio a aliado na taxa 1:2 (minimo 1 HP transferido). Pode manter Concentracao enquanto transfere. 1/descanso curto, pode sacrificar um servo para curar aliado 4d8 + nivel sem custo de HP."
+        },
+        "16": {
+          "name": "Senhor da Fronteira (requer Sacrificio Ritual)",
+          "summary": "Imune a morte instantanea. Ao chegar a 0 HP, estado **liminar** 1 minuto: age normalmente, não pode ser curado, ao fim testa CON CD 17 — sucesso fica com 1 HP, falha morre (ou narrativa de Phylactery se campanha permitir)."
+        },
+        "20": {
+          "name": "Ascensao — Desejo do Limiar",
+          "summary": "Desbloqueia a magia **Desejo de Morte** (Cap. 18) — pode prepara-la 1x após descanso longo sem gastar espaco de nv. 9. Servos ativos sobem para min(6, mod. SAB + 2) e usam estatisticas de Esqueleto Armado ou Zumbi de Masmorra do bestiário com HP dobrado. Uma vez por descanso longo, `Animação de Mortos` dura 24h sem Concentracao."
+        }
+      }
+    }
+  }
+}

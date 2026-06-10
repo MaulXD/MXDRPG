@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { createAdventure, listAdventuresForUser } from "@/lib/adventure/store";
 import { getSession } from "@/lib/auth/session";
+import { DEFAULT_RPG_SYSTEM_ID } from "@/lib/rpg/systems";
 
 /** Compat: responde `rooms` mapeando aventuras (mesa = primaryRoomId). */
 export async function GET() {
@@ -8,7 +9,9 @@ export async function GET() {
   if (!session) {
     return NextResponse.json({ error: "Faça login" }, { status: 401 });
   }
-  const adventures = await listAdventuresForUser(session.user.id);
+  const adventures = await listAdventuresForUser(session.user.id, {
+    rpgSystemId: DEFAULT_RPG_SYSTEM_ID,
+  });
   return NextResponse.json({
     rooms: adventures.map((a) => ({
       roomId: a.primaryRoomId,
@@ -30,9 +33,8 @@ export async function POST(request: Request) {
   if (!name) {
     return NextResponse.json({ error: "Nome da aventura obrigatório" }, { status: 400 });
   }
-  const inviteCodeRaw = body.inviteCode != null ? String(body.inviteCode) : undefined;
   const result = await createAdventure(session.user.id, name, {
-    inviteCode: inviteCodeRaw,
+    rpgSystemId: DEFAULT_RPG_SYSTEM_ID,
   });
   if (!result.ok) {
     return NextResponse.json({ error: result.error }, { status: 400 });

@@ -1,16 +1,25 @@
 import type { Axial } from "@/lib/vtt/hex-math";
-import { axialToPixel, hexCorners } from "@/lib/vtt/hex-math";
-import { hexToMeters, type MoveCheck } from "@/lib/vtt/movement";
+import { axialToPixel, hexCorners, hexDrawRadius } from "@/lib/vtt/hex-math";
+import type { MoveCheck } from "@/lib/vtt/movement";
 import { readThemeColor } from "@/lib/theme";
+import {
+  resolveHexPalette,
+  type HexHighlightPalette,
+} from "@/lib/vtt/hex-highlight-palette";
+import type { MapBackdropTone } from "@/lib/vtt/map-luminance";
 import type { PortraitFocus } from "@/lib/media/portrait-focus";
 import { DEFAULT_PORTRAIT_FOCUS } from "@/lib/media/portrait-focus";
-import { collectPlayerActorIds, resolveTokenRing } from "@/lib/vtt/token-colors";
+import { collectPlayerActorIds, resolveTokenRing, tokenPortraitInset } from "@/lib/vtt/token-colors";
+import {
+  creatureSizeOf,
+  occupiedHexes,
+  tokenDrawRadius,
+  tokenPixelCenter,
+} from "@/lib/vtt/creature-size";
 import {
   drawCircularTokenImage,
-  drawTokenDropShadow,
   drawTokenIdentityRings,
   drawTokenPlaceholder,
-  tokenRadius,
 } from "@/lib/vtt/token-canvas";
 import {
   drawAttackableHint,
@@ -18,6 +27,25 @@ import {
   drawTurnActiveIndicator,
 } from "@/lib/vtt/draw-token-animations";
 import { drawTokenEffectBadges } from "@/lib/vtt/draw-token-effects";
+import {
+  drawTokenDefeatedOverlay,
+  drawTokenDefeatedSkull,
+  drawDualTokenNameLabel,
+  drawTokenNameLabel,
+  shouldDrawTokenNameplate,
+  drawTokenHpSegments,
+  hpBarColor,
+  hpRatio,
+  hpRingLayout,
+  isTokenDefeated,
+  type TokenHpDisplay,
+} from "@/lib/vtt/token-hp-display";
+import type { RoomSettings } from "@/lib/room/settings";
+import type { RoomActor } from "@/lib/room/types";
+import {
+  drawTokenCastFx,
+  type ActiveTokenCastFx,
+} from "@/lib/vtt/token-cast-fx";
 import { isTargetMode, type TokenActionMode } from "@/lib/vtt/action-mode";
 import type { BattleScene, BattleToken } from "@/lib/vtt/types";
 export type TokenFlashKind = "hit" | "miss" | "crit";
@@ -71,6 +99,7 @@ type GridDrawParams = {
   hexSize: number;
   layout: CanvasLayout;
   showMovement: boolean;
+  turnMovePreview?: boolean;
   walkSet: Set<string>;
   paidWalkSet: Set<string>;
   rangeSet: Set<string>;
@@ -82,49 +111,67 @@ type GridDrawParams = {
   hoverAxial: Axial | null;
   hoverMovePreview: MoveCheck | null;
   spawnDropHover: boolean;
+  /** Hexes do footprint ao arrastar spawn multi-hex (null = só hex sob cursor). */
+  spawnDropFootprintKeys?: Set<string> | null;
   pathCells: Axial[];
   pathDashPhase: number;
   /** null = todos os hexes visíveis (mestre ou fog desligado) */
   visibleHexSet: Set<string> | null;
+  mapBackdropTone?: MapBackdropTone;
+  palette?: HexHighlightPalette;
 };
+
+/** Halo oposto ao traço principal — melhora leitura do grid sobre imagens de cenário. */
+function baseHexContrastStroke(tone: MapBackdropTone): string {
+  if (tone === "dark") return "rgba(0, 0, 0, 0.42)";
+  if (tone === "light" || tone === "green") return "rgba(255, 255, 255, 0.38)";
+  return "rgba(0, 0, 0, 0.32)";
+}
 
 export function drawHexGridLayer(ctx: CanvasRenderingContext2D, p: GridDrawParams): void {
   const { layout, hexSize } = p;
   const { ox, oy } = layout;
+  const pal =
+    p.palette ?? resolveHexPalette(p.mapBackdropTone ?? "none");
 
   for (const cell of p.gridCells) {
     const key = `${cell.q},${cell.r}`;
     if (p.visibleHexSet && !p.visibleHexSet.has(key)) continue;
 
     const { x, y } = axialToPixel(cell.q, cell.r, hexSize, ox, oy);
-    let fill = readThemeColor("--vtt-hex-fill", "rgba(180,155,110,0.07)");
-    let stroke = readThemeColor("--vtt-hex-stroke", "rgba(180,155,110,0.28)");
-    let lineWidth = 1.5;
+    let fill = pal.fill;
+    let stroke = pal.stroke;
+    let lineWidth = 1;
 
     if (p.showMovement && p.walkSet.has(key) && !p.paidWalkSet.has(key)) {
-      fill = readThemeColor("--vtt-hex-walk-fill", "rgba(90,115,82,0.28)");
-      stroke = readThemeColor("--vtt-hex-walk-stroke", "rgba(120,150,95,0.75)");
+      if (p.turnMovePreview) {
+        fill = pal.turnWalkFill;
+        stroke = pal.turnWalkStroke;
+      } else {
+        fill = pal.walkFill;
+        stroke = pal.walkStroke;
+      }
     }
     if (p.showMovement && p.paidWalkSet.has(key)) {
-      fill = readThemeColor("--vtt-hex-walk-paid-fill", "rgba(70,130,120,0.32)");
-      stroke = readThemeColor("--vtt-hex-walk-paid-stroke", "rgba(100,180,165,0.85)");
+      fill = pal.walkPaidFill;
+      stroke = pal.walkPaidStroke;
     }
     if (p.showMovement && p.rangeSet.has(key) && !p.walkSet.has(key)) {
-      fill = readThemeColor("--vtt-hex-run-fill", "rgba(184,134,11,0.22)");
-      stroke = readThemeColor("--vtt-hex-run-stroke", "rgba(201,169,98,0.65)");
+      fill = pal.runFill;
+      stroke = pal.runStroke;
     }
     if (isTargetMode(p.actionMode) && p.attackRangeSet.has(key)) {
-      fill = readThemeColor("--vtt-hex-attack-fill", "rgba(139,69,19,0.2)");
-      stroke = readThemeColor("--vtt-hex-attack-stroke", "rgba(180,80,60,0.7)");
+      fill = pal.attackFill;
+      stroke = pal.attackStroke;
     }
     if (p.isAreaSpellMode && p.areaDirectionSet.has(key)) {
-      fill = readThemeColor("--vtt-hex-dir-fill", "rgba(80,140,200,0.3)");
-      stroke = readThemeColor("--vtt-hex-dir-stroke", "rgba(120,180,255,0.9)");
+      fill = pal.dirFill;
+      stroke = pal.dirStroke;
       lineWidth = 2;
     }
     if (p.isAreaSpellMode && p.areaPreviewSet.has(key)) {
-      fill = readThemeColor("--vtt-hex-area-fill", "rgba(120,60,180,0.35)");
-      stroke = readThemeColor("--vtt-hex-area-stroke", "rgba(180,120,255,0.85)");
+      fill = pal.areaFill;
+      stroke = pal.areaStroke;
     }
     if (
       p.isAreaSpellMode &&
@@ -132,58 +179,64 @@ export function drawHexGridLayer(ctx: CanvasRenderingContext2D, p: GridDrawParam
       p.hoverAxial?.r === cell.r &&
       p.areaPreviewSet.has(key)
     ) {
-      fill = readThemeColor("--vtt-hex-area-center-fill", "rgba(200,100,255,0.45)");
-      stroke = readThemeColor("--vtt-hex-area-center-stroke", "#e8c4ff");
+      fill = pal.areaCenterFill;
+      stroke = pal.areaCenterStroke;
       lineWidth = 2.5;
     }
-    const isHover =
-      p.hoverAxial?.q === cell.q && p.hoverAxial?.r === cell.r;
+    const isHoverCell = p.hoverAxial?.q === cell.q && p.hoverAxial?.r === cell.r;
+    const isSpawnHover =
+      p.spawnDropHover &&
+      (p.spawnDropFootprintKeys != null
+        ? p.spawnDropFootprintKeys.has(key)
+        : isHoverCell);
     if (
-      isHover &&
+      isHoverCell &&
       p.showMovement &&
       p.hoverMovePreview &&
       !p.hoverMovePreview.ok
     ) {
-      fill = readThemeColor("--vtt-hex-invalid-fill", "rgba(160,50,50,0.35)");
-      stroke = readThemeColor("--vtt-hex-invalid-stroke", "rgba(220,80,70,0.95)");
+      fill = pal.invalidFill;
+      stroke = pal.invalidStroke;
       lineWidth = 2.5;
-    } else if (isHover && p.spawnDropHover) {
-      fill = readThemeColor("--vtt-hex-spawn-fill", "rgba(90, 115, 82, 0.38)");
-      stroke = readThemeColor("--vtt-hex-spawn-stroke", "rgba(184, 255, 60, 0.9)");
+    } else if (isSpawnHover) {
+      fill = pal.spawnFill;
+      stroke = pal.spawnStroke;
       lineWidth = 2.5;
-    } else if (isHover) {
-      stroke = readThemeColor("--vtt-hex-hover-stroke", "#c9a962");
-      fill = readThemeColor("--vtt-hex-hover-fill", "rgba(201,169,98,0.18)");
+    } else if (isHoverCell) {
+      stroke = pal.hoverStroke;
+      fill = pal.hoverFill;
     }
 
     ctx.beginPath();
-    const corners = hexCorners(x, y, hexSize - 2);
+    const corners = hexCorners(x, y, hexDrawRadius(hexSize));
     ctx.moveTo(corners[0].x, corners[0].y);
     for (let i = 1; i < corners.length; i++) ctx.lineTo(corners[i].x, corners[i].y);
     ctx.closePath();
+    const isMoveHighlight =
+      p.showMovement &&
+      (p.walkSet.has(key) || p.paidWalkSet.has(key) || p.rangeSet.has(key));
+
     ctx.fillStyle = fill;
     ctx.fill();
+
+    const isBaseHex = fill === pal.fill && stroke === pal.stroke && lineWidth === 1;
+
+    if (isMoveHighlight && fill !== pal.fill) {
+      ctx.strokeStyle = "rgba(0, 0, 0, 0.72)";
+      ctx.lineWidth = lineWidth + 1.5;
+      ctx.stroke();
+    }
+
+    if (isBaseHex) {
+      ctx.strokeStyle = baseHexContrastStroke(p.mapBackdropTone ?? "none");
+      ctx.lineWidth = lineWidth + 1.4;
+      ctx.stroke();
+    }
+
     ctx.strokeStyle = stroke;
-    ctx.lineWidth = lineWidth;
+    ctx.lineWidth = isBaseHex ? 1.25 : lineWidth;
     ctx.stroke();
 
-    if (isHover && p.showMovement && p.hoverMovePreview) {
-      ctx.fillStyle = readThemeColor("--vtt-token-text", "#e8e0d4");
-      ctx.font = "600 9px Lora, Georgia, serif";
-      ctx.textAlign = "center";
-      if (p.hoverMovePreview.ok && p.hoverMovePreview.dist > 0) {
-        const pa =
-          p.hoverMovePreview.paCost > 0
-            ? `PA +${p.hoverMovePreview.paCost}`
-            : "PA +0";
-        ctx.fillText(`${p.hoverMovePreview.dist} hex · ${hexToMeters(p.hoverMovePreview.dist)} m`, x, y - 8);
-        ctx.fillStyle = readThemeColor("--vtt-hex-walk-paid-stroke", "rgba(100,180,165,0.95)");
-        ctx.fillText(pa, x, y + 4);
-      } else if (!p.hoverMovePreview.ok) {
-        ctx.fillStyle = readThemeColor("--vtt-hex-invalid-stroke", "rgba(220,80,70,0.95)");
-        ctx.fillText(p.hoverMovePreview.reason ?? "Inválido", x, y + 4);
-      }
-    }
   }
 
   drawMovementPathLayer(ctx, p);
@@ -193,8 +246,10 @@ export function drawMovementPathLayer(ctx: CanvasRenderingContext2D, p: GridDraw
   if (!p.showMovement || p.pathCells.length < 2) return;
 
   const { hexSize, layout, pathDashPhase } = p;
-  const stroke = readThemeColor("--vtt-path-stroke", "rgba(201,169,98,0.92)");
-  const glow = readThemeColor("--vtt-path-glow", "rgba(120,180,95,0.35)");
+  const pal =
+    p.palette ?? resolveHexPalette(p.mapBackdropTone ?? "none");
+  const stroke = pal.pathStroke;
+  const glow = pal.pathGlow;
 
   const points = p.pathCells.map((cell) => {
     const { x, y } = axialToPixel(cell.q, cell.r, hexSize, layout.ox, layout.oy);
@@ -236,39 +291,108 @@ type TokenDrawParams = {
   selectedId: string | null;
   turnActiveId: string | null;
   attackableIds: Set<string>;
+  spellPickedTargetIds?: Set<string>;
   hoverAttackTargetId: string | null;
+  hoverTokenId: string | null;
+  /** 1 → 1.1 animado no token sob o cursor */
+  tokenHoverScale?: number;
   tokenAnimTimeSec: number;
   tokenFlash: { tokenId: string; kind: TokenFlashKind } | null;
+  tokenCastFx?: ActiveTokenCastFx[];
+  castFxNowMs?: number;
   /** Posição visual (pode ser fracionária durante animação) */
   tokenPositionOverride?: Map<string, { q: number; r: number }>;
+  tokenHpDisplay?: Map<string, TokenHpDisplay>;
+  roomSettings?: Pick<RoomSettings, "showUsernameOnTokenNameplate">;
+  roomActors?: Record<string, RoomActor>;
+  ownerDisplayNames?: Map<string, string>;
 };
 
-export function drawTokensLayer(ctx: CanvasRenderingContext2D, p: TokenDrawParams): void {
-  const { scene, layout } = p;
-  const playerActorIds = collectPlayerActorIds(scene.tokens);
-  const size = scene.hexSize;
-
-  for (const token of scene.tokens) {
+function drawSingleToken(
+  ctx: CanvasRenderingContext2D,
+  p: TokenDrawParams,
+  token: BattleScene["tokens"][number],
+  playerActorIds: string[],
+  size: number,
+  hoverScale: number
+): void {
+  const { layout } = p;
     const pos = p.tokenPositionOverride?.get(token.id) ?? token.axial;
-    const { x, y } = axialToPixel(pos.q, pos.r, size, layout.ox, layout.oy);
-    const r = tokenRadius(size);
+    const creatureSize = creatureSizeOf(token);
+  const { x, y } = tokenPixelCenter(pos, creatureSize, size, layout.ox, layout.oy);
+  const r = tokenDrawRadius(size, creatureSize);
+
+  ctx.save();
+  if (hoverScale !== 1) {
+    ctx.translate(x, y);
+    ctx.scale(hoverScale, hoverScale);
+    ctx.translate(-x, -y);
+  }
+
+  if (creatureSize !== "small" && creatureSize !== "medium") {
+      ctx.save();
+      const isLargeFootprint = creatureSize === "large";
+      for (const hex of occupiedHexes(pos, creatureSize)) {
+        const { x: hx, y: hy } = axialToPixel(hex.q, hex.r, size, layout.ox, layout.oy);
+        const corners = hexCorners(hx, hy, size * 0.92);
+        ctx.beginPath();
+        ctx.moveTo(corners[0].x, corners[0].y);
+        for (let i = 1; i < corners.length; i++) ctx.lineTo(corners[i].x, corners[i].y);
+        ctx.closePath();
+        ctx.fillStyle = isLargeFootprint ? "rgba(255,255,255,0.07)" : "rgba(255,255,255,0.04)";
+        ctx.fill();
+        ctx.strokeStyle = isLargeFootprint ? "rgba(201,169,98,0.38)" : "rgba(201,169,98,0.22)";
+        ctx.lineWidth = isLargeFootprint ? 1.35 : 1;
+        ctx.stroke();
+      }
+      ctx.restore();
+    }
     const img = p.images.get(token.id);
     const focus = p.focusByTokenId.get(token.id) ?? DEFAULT_PORTRAIT_FOCUS;
     const ringStyle = resolveTokenRing(token, playerActorIds);
+    const hpLayout = hpRingLayout(r, ringStyle);
+    const hpVis = p.tokenHpDisplay?.get(token.id);
+    const showHpBar = Boolean(hpVis?.bar && token.vidaMax != null && token.vida != null);
+    const ringInset = tokenPortraitInset(ringStyle);
+    const identityR = showHpBar ? hpLayout.identityBase : Math.max(4, r - ringInset);
+    const portraitR = showHpBar ? hpLayout.contentRFull : r;
+    const defeated = isTokenDefeated(token);
 
     if (token.id === p.turnActiveId) {
       drawTurnActiveIndicator(ctx, x, y, r, p.tokenAnimTimeSec);
     }
 
-    drawTokenDropShadow(ctx, x, y, r);
-
     if (img?.complete && img.naturalWidth > 0) {
-      drawCircularTokenImage(ctx, img, x, y, r, focus);
+      drawCircularTokenImage(ctx, img, x, y, portraitR, focus);
     } else {
-      drawTokenPlaceholder(ctx, x, y, r, token.color, token.name);
+      drawTokenPlaceholder(ctx, x, y, portraitR, token.color, token.name);
     }
 
-    drawTokenIdentityRings(ctx, x, y, r, ringStyle);
+    if (defeated) {
+      drawTokenDefeatedOverlay(ctx, x, y, portraitR);
+    }
+
+    drawTokenIdentityRings(ctx, x, y, identityR, ringStyle);
+
+    if (showHpBar) {
+      const ratio = hpRatio(token);
+      drawTokenHpSegments(ctx, x, y, hpLayout, ratio, hpBarColor(ratio));
+    }
+
+    drawTokenIdentityRings(ctx, x, y, hpLayout.identityBase, ringStyle, {
+      skipOutermostRing: showHpBar,
+      outerRingOffset: hpLayout.outerRingOffset,
+    });
+
+    if (defeated) {
+      drawTokenDefeatedSkull(ctx, x, y, r);
+    }
+
+    const castFxList = p.tokenCastFx?.filter((fx) => fx.tokenId === token.id) ?? [];
+    const nowMs = p.castFxNowMs ?? Date.now();
+    for (const fx of castFxList) {
+      drawTokenCastFx(ctx, x, y, r, fx.kind, nowMs - fx.startedAt, fx.durationMs);
+    }
 
     if (p.tokenFlash?.tokenId === token.id) {
       const flashColor =
@@ -286,10 +410,20 @@ export function drawTokensLayer(ctx: CanvasRenderingContext2D, p: TokenDrawParam
 
     if (token.id === p.selectedId) {
       ctx.beginPath();
-      ctx.arc(x, y, r + 4, 0, Math.PI * 2);
+      ctx.arc(x, y, r + 2, 0, Math.PI * 2);
       ctx.strokeStyle = readThemeColor("--vtt-token-ring-selected", "#c9a962");
+      ctx.lineWidth = 2;
+      ctx.stroke();
+    }
+
+    if (p.spellPickedTargetIds?.has(token.id)) {
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(x, y, r + 4, 0, Math.PI * 2);
+      ctx.strokeStyle = "rgba(184, 146, 46, 0.92)";
       ctx.lineWidth = 2.5;
       ctx.stroke();
+      ctx.restore();
     }
 
     if (p.attackableIds.has(token.id)) {
@@ -300,28 +434,54 @@ export function drawTokensLayer(ctx: CanvasRenderingContext2D, p: TokenDrawParam
       }
     }
 
-    if (token.vidaMax != null && token.vida != null) {
-      const barW = size * 0.85;
-      const barH = 5;
-      const bx = x - barW / 2;
-      const by = y - r - 12;
-      ctx.fillStyle = "rgba(0,0,0,0.5)";
-      ctx.fillRect(bx - 1, by - 1, barW + 2, barH + 2);
-      ctx.fillStyle = "rgba(40,40,40,0.8)";
-      ctx.fillRect(bx, by, barW, barH);
-      ctx.fillStyle = readThemeColor("--vtt-hp-bar", "#5a7352");
-      ctx.fillRect(bx, by, barW * (token.vida / token.vidaMax), barH);
+    const showUsernamePlate = p.roomSettings?.showUsernameOnTokenNameplate ?? false;
+    const isHovered = p.hoverTokenId === token.id;
+    if (
+      shouldDrawTokenNameplate(token, {
+        showUsernameOnTokenNameplate: showUsernamePlate,
+        hovered: isHovered,
+      })
+    ) {
+      const useDual =
+        showUsernamePlate &&
+        token.linked &&
+        !token.monsterEntryId &&
+        token.actorId &&
+        p.roomActors &&
+        p.ownerDisplayNames;
+      if (useDual) {
+        const ownerId = p.roomActors![token.actorId!]?.ownerId;
+        const username = ownerId ? p.ownerDisplayNames!.get(ownerId) : null;
+        if (username) {
+          drawDualTokenNameLabel(ctx, x, y, r, username, token.name);
+        } else {
+          drawTokenNameLabel(ctx, x, y, r, token.name);
+        }
+      } else {
+        drawTokenNameLabel(ctx, x, y, r, token.name);
+      }
     }
 
-    ctx.save();
-    ctx.fillStyle = readThemeColor("--vtt-token-text", "#e8e0d4");
-    ctx.font = "600 12px Lora, Georgia, serif";
-    ctx.textAlign = "center";
-    ctx.shadowColor = "rgba(0,0,0,0.85)";
-    ctx.shadowBlur = 5;
-    ctx.fillText(token.name, x, y + r + 14);
-    ctx.restore();
+  drawTokenEffectBadges(ctx, x, y, r, token);
+  ctx.restore();
+}
 
-    drawTokenEffectBadges(ctx, x, y, r, token);
+export function drawTokensLayer(ctx: CanvasRenderingContext2D, p: TokenDrawParams): void {
+  const { scene, layout } = p;
+  const playerActorIds = collectPlayerActorIds(scene.tokens);
+  const size = scene.hexSize;
+  const hoverId = p.hoverTokenId;
+  const hoverScale = p.tokenHoverScale ?? 1;
+
+  for (const token of scene.tokens) {
+    if (token.id === hoverId) continue;
+    drawSingleToken(ctx, p, token, playerActorIds, size, 1);
+  }
+
+  if (hoverId) {
+    const hovered = scene.tokens.find((t) => t.id === hoverId);
+    if (hovered) {
+      drawSingleToken(ctx, p, hovered, playerActorIds, size, hoverScale);
+    }
   }
 }

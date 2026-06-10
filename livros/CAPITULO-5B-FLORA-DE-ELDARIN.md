@@ -1,6 +1,6 @@
-# CAPÍTULO 5B — FLORA DE MASMORRA (40 ESPECIES)
+﻿# CAPÍTULO 5B — FLORA DE MASMORRA (40 ESPECIES)
 
-> Alimentacao **vegetal** para Druidas, Forrageiros e Clérigo do Pao da Vida. Cada planta ativa **Bonus de Dieta Base** e efeito proprio (sem precisar de monstro). Ver tambem **Assimilação por Espécime** (Cap. 6.2) para carne de monstro.  
+> Alimentacao **vegetal** para Druidas, Forrageiros e Clérigo do Pao da Vida. Cada planta ativa **Bônus Passivo de Sobrevivência** e efeito proprio (sem precisar de monstro). Ver tambem **Assimilação por Espécime** (Cap. 6.2) para carne de monstro.  
 > **Sobrevivencia em biomas:** muitas plantas **não substituem** monstro (ex.: #12 não respira agua) — ver `BIOMAS-APROFUNDADOS.md` e `REGRAS-ECOLOGIA-DE-SOBREVIVENCIA.md`.
 
 ---
@@ -9,9 +9,9 @@
 
 | Regra | Detalhe |
 |-------|---------|
-| **Quem pode** | Druida (Ciclo da Vida), Forrageiro dos Esporos, Clérigo do Pao da Vida, qualquer um com Estômago de Ferro 4+ |
+| **Quem pode** | Druida (Ciclo da Vida), Explorador de Esporos, Clérigo do Pao da Vida, qualquer um com Fortitude 4+ |
 | **Preparo** | Crua (Druida ok), refeicao Comum (Coccao 8+), ou ritual de Pao da Vida |
-| **Trinchar planta** | DES ou SAB + bonus; planta **Comum** não exige Estudo de Anatomia |
+| **Extração planta** | DES ou SAB + bonus; planta **Comum** não exige Estudo de Anatomia |
 | **Mutação** | Planta **não** rola d4 de assimilação de monstro — concede **efeito de planta** (24h ou nota) |
 | **Ecologia** | Monstros listados em **Consumidores** comem a planta no bioma; Mestre pode fazer encontros de herbivoria |
 
@@ -78,7 +78,7 @@
 
 ### 03 — Broto de Veia
 **Consumidores:** Quase todos os herbivoros pequenos; Centopeia (filhotes).  
-**Efeito:** +1 em Trinchar e Harmonização; primeira refeicao de **monstro** no dia conta como Comum+.
+**Efeito:** +1 em Extração e Forrageio; primeira refeicao de **monstro** no dia conta como Comum+.
 
 ### 04 — Erva-Sino
 **Consumidores:** Grifo (ninhos), Harpia, aventureiros locais.  
@@ -90,7 +90,7 @@
 
 ### 06 — Cogumelo-Bandeira
 **Consumidores:** Goblin, Cogumelo-Rei (simbiose), Ghoul (ocasional).  
-**Efeito:** +3 Estômago de Ferro; imune a podridao leve de ingrediente Comum.
+**Efeito:** +3 Fortitude; imune a podridao leve de ingrediente Comum.
 
 ### 07 — Trevo de Obelisco
 **Consumidores:** Zumbi (não — supersticao); Espectro (energia); humanos de Grimwald.  
@@ -130,7 +130,7 @@
 
 ### 16 — Esporo-Madrugada
 **Consumidores:** Cogumelo-Rei, Forrageiro (cultivo), insetos.  
-**Efeito:** Nuvem 1,5m curativa 1d8 HP (1/dia, acao); +2 Harmonização com fungos.
+**Efeito:** Nuvem 1,5m curativa 1d8 HP (1/dia, acao); +2 Forrageio com fungos.
 
 ### 17 — Raiz de Yeti
 **Consumidores:** Yeti, Lobo do Inverno, Basilisco de Gelo (raro).  
@@ -202,7 +202,7 @@
 
 ### 33 — Raiz de Valdrun
 **Consumidores:** Anoes; Forjado de Osso (minerais).  
-**Efeito:** +2 em craft/Trinchar metal e osso 24h; ignora -2 sem treino em osso 1 refeicao.
+**Efeito:** +2 em craft/Extração metal e osso 24h; ignora -2 sem treino em osso 1 refeicao.
 
 ### 34 — Orquidea Sorn
 **Consumidores:** Aberracao (polen); Leitores de Sorn.  

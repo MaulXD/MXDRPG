@@ -1,14 +1,92 @@
+.page-hero--landing {
+  background:
+    radial-gradient(ellipse 60% 40% at 50% 60%, var(--landing-hero-glow) 0%, transparent 70%),
+    var(--bg-deep);
+  border-radius: var(--radius-lg);
+  margin-top: 0.5rem;
+}
+
+.landing-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: calc(100vh - var(--header-h) - 4rem);
+  padding: 2rem 0 3rem;
+}
+
+.landing-hero__brand {
+  margin: 0;
+  line-height: 1.1;
+}
+
+.landing-hero__brand .eldarin-logo--hero {
+  display: inline-flex;
+  justify-content: center;
+}
+
+.landing-hero__eyebrow {
+  margin: 1.35rem 0 0;
+}
+
+.landing-hero__lead {
+  margin: 1rem 0 0;
+  max-width: 36rem;
+}
+
+.landing-hero__actions {
+  justify-content: center;
+  margin-top: 1.75rem;
+}
+
+.landing-hero__visual {
+  width: min(100%, 22rem);
+  margin-top: 2.5rem;
+  opacity: 0.88;
+  pointer-events: none;
+}
+
+.landing-hero__visual .hero-visual {
+  margin: 0 auto;
+}
+
 .hex-preview-glow {
   position: absolute;
   inset: 12%;
-  background: radial-gradient(circle, rgba(201, 169, 98, 0.15), transparent 65%);
+  background: radial-gradient(circle, rgba(74, 128, 160, 0.2), transparent 65%);
   filter: blur(32px);
   pointer-events: none;
 }
 
-[data-theme="light"] .hex-preview-glow {
-  background: radial-gradient(circle, rgba(107, 68, 35, 0.12), transparent 65%);
+/* Cards de feature — ícone por semântica */
+.feature-card--vtt .feature-icon {
+  color: var(--landing-accent-vtt);
+  border-color: rgba(74, 128, 160, 0.35);
 }
+
+.feature-card--grid .feature-icon {
+  color: var(--landing-accent-grid);
+  border-color: rgba(200, 140, 26, 0.35);
+}
+
+.feature-card--visual .feature-icon {
+  color: var(--landing-accent-visual);
+  border-color: rgba(212, 196, 160, 0.35);
+}
+
+.feature-card--papeis .feature-icon {
+  color: var(--landing-accent-roles);
+  border-color: rgba(139, 58, 34, 0.35);
+}
+
+.cta-band--landing {
+  background: var(--landing-cta-surface);
+  border-top: 1px solid rgba(184, 146, 46, 0.3);
+  border-bottom: 1px solid rgba(184, 146, 46, 0.3);
+  border-left: 3px solid var(--landing-accent-roles);
+}
+
 
 .hex-preview-svg {
   width: 100%;
@@ -39,28 +117,33 @@
   align-items: center;
   gap: 0.65rem;
   padding: 0.5rem 1rem;
-  font-family: var(--font-display);
-  font-size: 0.68rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
+  font-family: var(--font-ui, system-ui, sans-serif);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--text-muted);
+  color: var(--text, #c8bfa8);
   white-space: nowrap;
-  border: 1px solid var(--glass-border);
+  border: 1px solid rgba(184, 146, 46, 0.35);
   border-radius: var(--radius-pill);
-  background: var(--glass);
+  background: rgba(30, 29, 26, 0.94);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
 }
 
-.badge-dot {
-  width: 8px;
-  height: 8px;
+.hex-preview-badge .badge-dot {
+  width: 9px;
+  height: 9px;
   border-radius: 50%;
+  flex-shrink: 0;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.25);
 }
 
-.badge-dot.walk {
-  background: var(--accent-success);
+.hex-preview-badge .badge-dot.walk {
+  background: #4db86a;
+  box-shadow: 0 0 8px rgba(77, 184, 106, 0.55);
 }
 
-.badge-dot.run {
-  background: var(--accent-warn);
+.hex-preview-badge .badge-dot.run {
+  background: #e8b84a;
+  box-shadow: 0 0 8px rgba(232, 184, 74, 0.5);
 }

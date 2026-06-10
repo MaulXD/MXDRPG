@@ -1,4 +1,4 @@
-# CATÁLOGO — ARMAS, ARMADURAS, FORJA, MUNIÇÃO E POÇÕES — Eldarin v4.0
+﻿# CATÁLOGO — ARMAS, ARMADURAS, FORJA, MUNIÇÃO E POÇÕES — Eldarin v4.0
 
 > IDs canônicos · encantamento **+1 / +2 / +3** · forja mágica (Artífice) · VTT: `python scripts/gen-equipment-compendium.py`  
 > Índice geral: `TABELA-IDS-ELDARIN.md`
@@ -17,6 +17,19 @@
 **ID VTT:** `armas-arc-l01-mais-2` = **ARC-L02-E2** (Arco Longo de Teixo +2).
 
 **Empilhamento:** encantamento **não** acumula com segunda arma; armadura mágica substitui bônus anterior no mesmo slot.
+
+### Texto na ficha (VTT)
+
+Cada entrada do compêndio inclui **descrição de uso** gerada por `scripts/gen-equipment-compendium.py`:
+
+| Variante | Arma (texto na ficha) | Armadura (texto na ficha) |
+|----------|----------------------|---------------------------|
+| **+0** | Dano, alcance hex, PA 1, efeito base (se houver) | Categoria, CA base, nota especial (se houver) |
+| **+1** | Herda efeitos de +0 · **+1 ataque e +1 dano** | Herda nota de +0 · **+1 CA mágica** |
+| **+2** | Herda efeitos · **+2 ataque e +2 dano** | **+2 CA mágica** |
+| **+3** | Herda efeitos · **+3 ataque e +3 dano** (+ propriedade menor, Mestre) | **+3 CA mágica** (+ resistência menor, Mestre) |
+
+**Referência na ficha:** `catalogId` (ex.: `WPN-S02`, `ARM-01-E2`) e `bookRef` apontando para este catálogo.
 
 ---
 
@@ -183,9 +196,9 @@ Cada linha em **+0 a +3** (80 entradas VTT). Encantamento soma **CA mágica** (n
 | POC-10 | Resistência ao Fogo | Res. fogo 1h |
 | POC-11 | Resistência ao Gelo | Res. gelo 1h |
 | POC-12 | Resistência ao Ácido | Res. ácido 1h |
-| POC-13 | Elixir de Trinchar | +2 Trinchar 8h |
-| POC-14 | Elixir de Harmonização | +2 Harmon 8h |
-| POC-15 | Tônico de Estômago de Ferro | Imune podridao leve 24h |
+| POC-13 | Elixir de Extração | +2 Extração 8h |
+| POC-14 | Elixir de Forrageio | +2 Harmon 8h |
+| POC-15 | Tônico de Fortitude | Imune podridao leve 24h |
 | POC-16 | Soro de Mutação Estavel | 1 mutação leve 8h |
 | POC-17 | Destilado de Wyvern | Arma +1d6 veneno, 5 ataques |
 | POC-18 | Essência de Gelo Aromático | Preserva ingrediente 72h |

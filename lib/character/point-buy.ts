@@ -1,9 +1,11 @@
+import { classAttributePriority } from "@/lib/character/class-scales";
 import type { AttributeKey } from "@/lib/character/rules";
 import { getRace } from "@/lib/character/rules";
 
 /** Eldarin Cap. 10 — compra de pontos (base 8, pool 27). */
 export const POINT_BUY_POOL = 27;
 export const POINT_BUY_MIN = 8;
+/** Cap. 10 — máximo 15 antes dos bônus raciais. */
 export const POINT_BUY_MAX_BEFORE_RACIAL = 15;
 
 const COST_TABLE: Record<number, number> = {
@@ -49,71 +51,110 @@ export function defaultPointBuyScores(): Record<AttributeKey, number> {
   };
 }
 
-/** Distribuição sugerida (27 pts) por classe — Eldarin point-buy. */
-export function suggestedPointBuyForClass(classe: string): Record<AttributeKey, number> {
-  switch (classe) {
-    case "Mago":
-    case "Artífice":
-      return {
-        forca: 8,
-        destreza: 13,
-        constituicao: 14,
-        inteligencia: 15,
-        sabedoria: 12,
-        carisma: 10,
-      };
-    case "Clérigo":
-    case "Druida":
-      return {
-        forca: 8,
-        destreza: 12,
-        constituicao: 14,
-        inteligencia: 10,
-        sabedoria: 15,
-        carisma: 13,
-      };
-    case "Ladino":
-    case "Bardo":
-      return {
-        forca: 8,
-        destreza: 15,
-        constituicao: 12,
-        inteligencia: 10,
-        sabedoria: 10,
-        carisma: 14,
-      };
-    case "Patrulheiro":
-      return {
-        forca: 10,
-        destreza: 15,
-        constituicao: 14,
-        inteligencia: 10,
-        sabedoria: 12,
-        carisma: 8,
-      };
-    case "Bárbaro":
-      return {
-        forca: 15,
-        destreza: 12,
-        constituicao: 14,
-        inteligencia: 8,
-        sabedoria: 10,
-        carisma: 10,
-      };
-    default:
-      return {
-        forca: 15,
-        destreza: 14,
-        constituicao: 14,
-        inteligencia: 8,
-        sabedoria: 12,
-        carisma: 8,
-      };
-  }
+export function isBaselinePointBuy(scores: Record<AttributeKey, number>): boolean {
+  return ATTR_ORDER.every((key) => (scores[key] ?? POINT_BUY_MIN) === POINT_BUY_MIN);
 }
 
+/** Bônus raciais somados (inclui linhagem de Meio-Humano). */
+export function getRacialBonuses(
+  raceId: string,
+  linhagem?: string | null
+): Partial<Record<AttributeKey, number>> {
+  const race = getRace(raceId);
+  if (!race) return {};
+
+  const out: Partial<Record<AttributeKey, number>> = {};
+  const merge = (bonus: Partial<Record<AttributeKey, number>>) => {
+    for (const [key, value] of Object.entries(bonus) as [AttributeKey, number][]) {
+      out[key] = (out[key] ?? 0) + value;
+    }
+  };
+
+  if (race.fixedBonus) merge(race.fixedBonus);
+  merge(race.attributeBonus);
+  if (raceId === "Meio-Humano" && linhagem && race.linhagens) {
+    const lin = race.linhagens.find((l) => l.id === linhagem);
+    if (lin) merge(lin.attributeBonus);
+  }
+  return out;
+}
+
+/**
+ * Prioridade de compra: atributos primários da classe primeiro;
+ * em empate, quem recebe menos bônus racial (evita “desperdiçar” pontos).
+ */
+export function raceAwarePointBuyPriority(
+  classe: string,
+  raceId: string,
+  linhagem?: string | null
+): AttributeKey[] {
+  const classPri = classAttributePriority(classe);
+  const racial = getRacialBonuses(raceId, linhagem);
+  const ordered = [...classPri, ...ATTR_ORDER.filter((k) => !classPri.includes(k))];
+  const seen = new Set<AttributeKey>();
+  const unique: AttributeKey[] = [];
+  for (const key of ordered) {
+    if (seen.has(key)) continue;
+    seen.add(key);
+    unique.push(key);
+  }
+
+  return unique.sort((a, b) => {
+    const ia = classPri.indexOf(a);
+    const ib = classPri.indexOf(b);
+    const ca = ia < 0 ? 99 : ia;
+    const cb = ib < 0 ? 99 : ib;
+    if (ca !== cb) return ca - cb;
+    return (racial[a] ?? 0) - (racial[b] ?? 0);
+  });
+}
+
+/**
+ * Gasta os 27 pontos em ordem de prioridade: esgota o atributo principal (até 15)
+ * antes de investir no próximo. Evita distribuição “plana” 12/13 em tudo.
+ */
+export function spendFullPointBuy(priorities: AttributeKey[]): Record<AttributeKey, number> {
+  const scores = defaultPointBuyScores();
+  const seen = new Set<AttributeKey>();
+  const order: AttributeKey[] = [];
+  for (const key of [...priorities, ...ATTR_ORDER]) {
+    if (seen.has(key)) continue;
+    seen.add(key);
+    order.push(key);
+  }
+
+  for (const key of order) {
+    while (canIncreasePointBuy(scores, key)) {
+      scores[key] = (scores[key] ?? POINT_BUY_MIN) + 1;
+      if (totalPointBuyCost(scores) >= POINT_BUY_POOL) break;
+    }
+    if (totalPointBuyCost(scores) >= POINT_BUY_POOL) break;
+  }
+
+  return scores;
+}
+
+/** Distribuição sugerida (27 pts) por classe — prioriza atributos primários da ficha. */
+export function suggestedPointBuyForClass(classe: string): Record<AttributeKey, number> {
+  return spendFullPointBuy(classAttributePriority(classe));
+}
+
+/** Sugestão inteligente: classe + raça (e linhagem). */
+export function suggestedPointBuyForClassAndRace(
+  classe: string,
+  raceId: string,
+  linhagem?: string | null
+): Record<AttributeKey, number> {
+  return spendFullPointBuy(raceAwarePointBuyPriority(classe, raceId, linhagem));
+}
+
+/** @deprecated Use isBaselinePointBuy — custo 0 também significa baseline 8 em tudo. */
 export function isUnsetPointBuy(scores: Record<AttributeKey, number>): boolean {
   return totalPointBuyCost(scores) === 0;
+}
+
+export function isCompletePointBuy(scores: Record<AttributeKey, number>): boolean {
+  return totalPointBuyCost(scores) === POINT_BUY_POOL;
 }
 
 export function pointBuyIncreaseCost(

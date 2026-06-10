@@ -3,19 +3,19 @@ import {
   buildAttackModifiers,
   canAttackTarget,
   effectiveDefenderAc,
+  paNeedForCombatAction,
 } from "@/lib/combat/attack";
-import { attackRollMode, canTokenAct } from "@/lib/combat/conditions";
-import { combineRollModes, formatRollMode, type RollMode } from "@/lib/combat/d20";
-import { effectivePaCost, totalAttackPaCost } from "@/lib/combat/pa-economy";
+import { attackRollModeDetail, canTokenAct, formatRollModeWithSources } from "@/lib/combat/conditions";
+import { formatRollMode, type RollMode } from "@/lib/combat/d20";
+import { effectivePaCost, paCostContextFromToken, totalAttackPaCost } from "@/lib/combat/pa-economy";
 import { totalChannelPaCost } from "@/lib/combat/spell-channel";
 import { unifiedPaChipForAction, unifiedPaChipForMove } from "@/lib/combat/pa-chip";
 import { checkCanSpendPa, tokenSpendablePa } from "@/lib/combat/pa-turn";
 import type { CombatActionOption, CombatTurnOptions } from "@/lib/combat/types";
 import { canAbilityTarget, canUseAbility } from "@/lib/combat/ability";
 import { canCastAreaAt } from "@/lib/combat/area-spell";
+import { estimateTargetCombatPreview } from "@/lib/combat/hit-chance";
 import type { CharacterSheet } from "@/lib/character/types";
-import { attributeMod, proficiencyBonus } from "@/lib/character/rules";
-import { attackAttribute, isProficient } from "@/lib/combat/attack";
 import type { Axial } from "@/lib/vtt/hex-math";
 import { canMoveToken, type MovementPathContext } from "@/lib/vtt/movement";
 import type { BattleToken } from "@/lib/vtt/types";
@@ -88,37 +88,48 @@ export function previewAttackOnTarget(
   action: CombatActionOption,
   allTokens: BattleToken[],
   turn?: CombatTurnOptions,
-  channelExtraPa = 0
+  channelExtraPa = 0,
+  defenderActor: CharacterSheet | null = null
 ): ActionPreview {
+  const combatPreview = estimateTargetCombatPreview(
+    attacker,
+    defender,
+    actor,
+    defenderActor,
+    action,
+    allTokens
+  );
+
   if (action.kind === "ability") {
-    const use = canUseAbility(attacker, action, turn);
-    const pa = effectivePaCost(actor, action);
+    const use = canUseAbility(attacker, action, turn, actor);
+    const pa = effectivePaCost(actor, action, paCostContextFromToken(attacker));
     const paChip = unifiedPaChipForAction(attacker, actor, action, channelExtraPa);
     if (!use.ok) {
       return withPaChip(action.name, paChip, [{ text: use.reason ?? "Inválido", tone: "err" }], false);
     }
     const target = canAbilityTarget(attacker, defender, action, turn, actor);
     const paCheck = checkCanSpendPa(attacker, pa);
-    return withPaChip(
-      `${action.name} → ${defender.name}`,
-      paChip,
-      [
-        {
-          text: target.ok ? (target.reason ?? "Alvo válido") : (target.reason ?? "Alvo inválido"),
-          tone: target.ok && paCheck.ok ? "ok" : "err",
-        },
-      ],
-      Boolean(target.ok && paCheck.ok)
-    );
+    const lines: ActionPreviewLine[] = [];
+    if (combatPreview) {
+      lines.push({
+        text: combatPreview.summaryLabel,
+        tone:
+          combatPreview.rollMode === "disadvantage"
+            ? "warn"
+            : combatPreview.rollMode === "advantage"
+              ? "ok"
+              : undefined,
+      });
+    }
+    lines.push({
+      text: target.ok ? (target.reason ?? "Alvo válido") : (target.reason ?? "Alvo inválido"),
+      tone: target.ok && paCheck.ok ? "ok" : "err",
+    });
+    return withPaChip(action.name, paChip, lines, Boolean(target.ok && paCheck.ok));
   }
 
   const check = canAttackTarget(attacker, defender, action, turn, { actor, channelExtraPa });
-  const pa =
-    actor && action.channelMaxExtraPa
-      ? totalChannelPaCost(actor, action, channelExtraPa)
-      : actor && action.kind === "weapon"
-        ? totalAttackPaCost(actor, action)
-        : effectivePaCost(actor, action);
+  const pa = paNeedForCombatAction(attacker, actor, action, channelExtraPa);
   const paCheck = checkCanSpendPa(attacker, pa);
 
   const paChip = unifiedPaChipForAction(attacker, actor, action, channelExtraPa);
@@ -129,32 +140,36 @@ export function previewAttackOnTarget(
   }
 
   const built = buildAttackModifiers(attacker, defender, action);
-  const rollMode = combineRollModes(
-    attackRollMode(attacker, defender, allTokens, {
+
+  const lines: ActionPreviewLine[] = [];
+  if (combatPreview) {
+    lines.push({
+      text: combatPreview.summaryLabel,
+      tone:
+        combatPreview.rollMode === "disadvantage"
+          ? "warn"
+          : combatPreview.rollMode === "advantage"
+            ? "ok"
+            : undefined,
+    });
+  } else {
+    const rollDetail = attackRollModeDetail(attacker, defender, allTokens, {
       flanking: hasFlanking(attacker, defender, allTokens),
-    }),
-    built.modifier.rollMode ?? "normal"
-  );
-
-  let estAtk = "—";
-  if (actor) {
-    const attrKey = attackAttribute(actor, action);
-    const mod =
-      attributeMod(actor.attributes[attrKey]) +
-      (isProficient(actor, action) ? proficiencyBonus(actor.identity.nivel) : 0) +
-      action.attackBonus +
-      (built.modifier.attackBonus ?? 0);
-    estAtk = `~${10 + mod} (média d20)`;
+      action,
+    });
+    const rollTag =
+      formatRollModeWithSources(rollDetail.mode, rollDetail.sources) ||
+      rollModeLabel(rollDetail.mode);
+    lines.push({
+      text: `${rollTag} · CA ${effectiveDefenderAc(defender)}`,
+      tone:
+        rollDetail.mode === "disadvantage"
+          ? "warn"
+          : rollDetail.mode === "advantage"
+            ? "ok"
+            : undefined,
+    });
   }
-
-  const ac = effectiveDefenderAc(defender);
-
-  const lines: ActionPreviewLine[] = [
-    {
-      text: `${rollModeLabel(rollMode)} · ATK ${estAtk} vs CA ${ac}`,
-      tone: rollMode === "disadvantage" ? "warn" : rollMode === "advantage" ? "ok" : undefined,
-    },
-  ];
   if (built.modifier.label) {
     lines.push({ text: built.modifier.label, tone: "ok" });
   }
@@ -164,12 +179,7 @@ export function previewAttackOnTarget(
     lines.push({ text: paCheck.reason ?? "PA insuficiente", tone: "err" });
   }
 
-  return withPaChip(
-    `${action.name} → ${defender.name}`,
-    paChip,
-    lines,
-    Boolean(check.ok && paCheck.ok)
-  );
+  return withPaChip(action.name, paChip, lines, Boolean(check.ok && paCheck.ok));
 }
 
 export function previewAreaCast(
@@ -185,7 +195,7 @@ export function previewAreaCast(
   const pa = actor
     ? action.channelMaxExtraPa
       ? totalChannelPaCost(actor, action, channelExtraPa)
-      : effectivePaCost(actor, action)
+      : effectivePaCost(actor, action, paCostContextFromToken(caster))
     : action.paCost + channelExtraPa;
   const paCheck = checkCanSpendPa(caster, pa);
   const paChip = unifiedPaChipForAction(caster, actor, action, channelExtraPa);
@@ -194,7 +204,13 @@ export function previewAreaCast(
     action.name,
     paChip,
     [
-      { text: `Centro q${center.q} r${center.r}`, tone: "ok" },
+      {
+        text:
+          action.areaShape && (action.areaShape === "cone" || action.areaShape === "line")
+            ? `Origem: conjurador q${caster.axial.q} r${caster.axial.r}`
+            : `Centro q${center.q} r${center.r}`,
+        tone: "ok",
+      },
       {
         text: check.ok ? "Solte para conjurar" : (check.reason ?? "Inválido"),
         tone: check.ok && paCheck.ok ? "ok" : "err",
@@ -214,7 +230,12 @@ export function previewAreaDirectionStep(
   return withPaChip(
     "Direção da área",
     paChip,
-    [{ text: `Clique o hex para onde aponta o ${shape === "cone" ? "cone" : "raio"}`, tone: "ok" }],
+    [
+      {
+        text: `Clique o hex vizinho ao conjurador — direção do ${shape === "cone" ? "cone" : "raio"}`,
+        tone: "ok",
+      },
+    ],
     true
   );
 }

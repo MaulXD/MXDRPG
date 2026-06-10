@@ -1,0 +1,111 @@
+.user-avatar {
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 50%;
+}
+
+.user-avatar img {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.user-avatar--fallback {
+  font-size: 0.85rem;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.08);
+  width: 100%;
+  height: 100%;
+}
+
+.user-avatar--nav {
+  width: 2.25rem;
+  height: 2.25rem;
+  flex-shrink: 0;
+  border: 1px solid rgba(184, 146, 46, 0.35);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.2);
+}
+
+.header-user-menu {
+  margin-left: 0.35rem;
+}
+
+.header-user-menu__trigger {
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 50%;
+  line-height: 0;
+  pointer-events: auto;
+  position: relative;
+  z-index: 1;
+}
+
+.header-user-menu__trigger .user-avatar {
+  pointer-events: none;
+}
+
+.header-user-menu__trigger:hover .user-avatar--nav {
+  border-color: rgba(201, 169, 98, 0.55);
+}
+
+.header-user-menu__trigger:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.header-user-menu__panel {
+  min-width: 10.5rem;
+  padding: 0.35rem;
+  border-radius: var(--radius-md, 12px);
+  background: var(--glass-strong, rgba(30, 29, 26, 0.98));
+  border: 1px solid var(--glass-border-bright);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.45);
+}
+
+/* Portal em document.body — fora da navbar (evita overflow/z-index da barra) */
+.header-user-menu__panel--portal {
+  position: fixed !important;
+  z-index: 10450;
+  pointer-events: auto;
+}
+
+.header-user-menu__label {
+  margin: 0;
+  padding: 0.35rem 0.55rem 0.5rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 14rem;
+}
+
+.header-user-menu__item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 0.45rem 0.55rem;
+  border: none;
+  border-radius: var(--radius-sm, 8px);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: 0.88rem;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.header-user-menu__item:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.header-user-menu__item--danger {
+  color: var(--danger, #e57373);
+}

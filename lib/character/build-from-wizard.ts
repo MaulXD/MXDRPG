@@ -1,11 +1,18 @@
 import { applyIdentityPatch } from "@/lib/character/identity";
 import { normalizeCharacter } from "@/lib/character/normalize";
 import { attributesAfterRacial, validatePointBuy } from "@/lib/character/point-buy";
-import type { CharacterWizardDraft } from "@/lib/character/wizard-types";
 import type { CharacterSheet } from "@/lib/character/types";
-import { attributeMod, hpMaxFor } from "@/lib/character/rules";
+import { attributeMod, getClass, hpMaxFor } from "@/lib/character/rules";
 import { validateImageDataUrl } from "@/lib/media/image-data-url";
+import type { CharacterWizardDraft } from "@/lib/character/wizard-types";
 import { xpTotalForLevel } from "@/lib/character/xp";
+import {
+  applyStarterKitToSheet,
+  getDefaultStarterEquipment,
+  getDefaultStarterKitId,
+  sanitizeStarterEquipmentForClass,
+  validateStarterEquipment,
+} from "@/lib/character/starter-kits";
 
 const MAX_PORTRAIT_FIELD_CHARS = 900_000;
 
@@ -25,6 +32,10 @@ export function sanitizeWizardDraftForSave(
     ...draft,
     portraitUrl,
     tokenImageUrl,
+    starterEquipment: sanitizeStarterEquipmentForClass(
+      draft.classe,
+      draft.starterEquipment ?? getDefaultStarterEquipment(draft.classe)
+    ),
   };
 }
 
@@ -34,12 +45,19 @@ export function validateWizardDraft(draft: CharacterWizardDraft): string | null 
   if (name.length > 80) return "Nome muito longo (máx 80)";
   if (!draft.raca) return "Escolha uma raça";
   if (!draft.classe) return "Escolha uma classe";
+  if (!getClass(draft.classe)) return "Classe inválida";
   if (draft.raca === "Meio-Humano" && !draft.linhagem?.trim()) {
     return "Meio-Humano exige linhagem";
   }
   const pb = validatePointBuy(draft.pointBuy);
   if (pb) return pb;
   if (!draft.antecedente.trim()) return "Escolha um antecedente";
+  if (!draft.religiao?.trim()) return "Escolha uma devotion (ou Sem Deus)";
+  const equipErr = validateStarterEquipment(
+    draft.classe,
+    draft.starterEquipment ?? getDefaultStarterEquipment(draft.classe)
+  );
+  if (equipErr) return equipErr;
   return null;
 }
 
@@ -71,6 +89,8 @@ export function buildCharacterFromWizard(
     portraitUrl: safeDraft.portraitUrl ?? null,
     tokenImageUrl: safeDraft.tokenImageUrl ?? null,
     portraitFocus: safeDraft.portraitFocus ?? null,
+    coverFocus: safeDraft.coverFocus ?? safeDraft.portraitFocus ?? null,
+    tokenFocus: safeDraft.tokenFocus ?? safeDraft.portraitFocus ?? null,
     identity: {
       nivel: 1,
       xpTotal: xpTotalForLevel(1),
@@ -79,6 +99,7 @@ export function buildCharacterFromWizard(
       subclasse: null,
       linhagem: safeDraft.raca === "Meio-Humano" ? safeDraft.linhagem : null,
       antecedente: safeDraft.antecedente,
+      religiao: safeDraft.religiao,
       talentos: [],
     },
     attributes,
@@ -91,9 +112,18 @@ export function buildCharacterFromWizard(
     tactical: { defesa: 10 + desMod, iniciativa: desMod },
     inventory: [],
     combatLoadout: null,
+    armorLoadout: null,
   });
 
-  return applyIdentityPatch(shell, {
+  const withKit = applyStarterKitToSheet(shell, {
+    classe: safeDraft.classe,
+    raca: safeDraft.raca,
+    antecedente: safeDraft.antecedente,
+    starterKitId: safeDraft.starterKitId || getDefaultStarterKitId(safeDraft.classe),
+    equipment: safeDraft.starterEquipment,
+  });
+
+  return applyIdentityPatch(withKit, {
     raca: safeDraft.raca,
     classe: safeDraft.classe,
     linhagem: safeDraft.raca === "Meio-Humano" ? safeDraft.linhagem : null,
