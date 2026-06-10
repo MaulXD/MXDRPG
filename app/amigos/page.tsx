@@ -28,7 +28,7 @@ export default async function AmigosPage() {
         </p>
       </header>
 
-      <MedievalFrame variant="royal" page>
+      <MedievalFrame variant="royal" page compact className="friends-page-frame">
         <Suspense fallback={<p className="friends-hub__sub">Carregando…</p>}>
           <FriendsPageClient selfUserId={user.id} />
         </Suspense>
