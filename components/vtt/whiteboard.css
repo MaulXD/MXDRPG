@@ -103,7 +103,7 @@
 }
 
 .map-toolbar__btn[data-tool-icon="line"] {
-  --tool-icon-color: #a8c8e8;
+  --tool-icon-color: var(--chrome-accent-hover);
 }
 
 .map-toolbar__btn[data-tool-icon="arrow"] {

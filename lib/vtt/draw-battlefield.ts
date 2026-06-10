@@ -420,7 +420,7 @@ function drawSingleToken(
       ctx.save();
       ctx.beginPath();
       ctx.arc(x, y, r + 4, 0, Math.PI * 2);
-      ctx.strokeStyle = "rgba(122, 163, 201, 0.92)";
+      ctx.strokeStyle = "rgba(184, 146, 46, 0.92)";
       ctx.lineWidth = 2.5;
       ctx.stroke();
       ctx.restore();

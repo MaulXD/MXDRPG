@@ -207,7 +207,7 @@
   border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 10px;
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.015));
-  color: rgba(190, 206, 224, 0.72);
+  color: rgba(200, 191, 168, 0.85);
   cursor: pointer;
   display: flex;
   flex-direction: column;
@@ -223,16 +223,16 @@
 }
 
 .foundry-icon-bar__btn:hover {
-  color: #e8f0fa;
+  color: var(--text-strong);
   border-color: color-mix(in srgb, var(--mesa-accent) 42%, transparent);
-  background: linear-gradient(180deg, rgba(122, 163, 201, 0.16), rgba(122, 163, 201, 0.05));
+  background: linear-gradient(180deg, rgba(184, 146, 46, 0.16), rgba(184, 146, 46, 0.05));
   transform: translateY(-1px);
 }
 
 .foundry-icon-bar__btn--active {
-  color: #f2f7fc;
+  color: var(--text-strong);
   border-color: color-mix(in srgb, var(--mesa-accent) 58%, transparent);
-  background: linear-gradient(180deg, rgba(122, 163, 201, 0.32), rgba(72, 108, 148, 0.14));
+  background: linear-gradient(180deg, rgba(184, 146, 46, 0.32), rgba(110, 85, 35, 0.14));
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.1),
     0 4px 14px rgba(0, 0, 0, 0.22);
@@ -266,15 +266,15 @@
 
 .foundry-icon-bar__btn:hover .foundry-icon-bar__icon-wrap {
   border-color: color-mix(in srgb, var(--mesa-accent) 35%, transparent);
-  background: linear-gradient(145deg, rgba(122, 163, 201, 0.18), rgba(0, 0, 0, 0.1));
+  background: linear-gradient(145deg, rgba(184, 146, 46, 0.18), rgba(0, 0, 0, 0.1));
 }
 
 .foundry-icon-bar__btn--active .foundry-icon-bar__icon-wrap {
   border-color: color-mix(in srgb, var(--mesa-accent) 55%, transparent);
-  background: linear-gradient(145deg, rgba(122, 163, 201, 0.28), rgba(40, 62, 88, 0.35));
+  background: linear-gradient(145deg, rgba(184, 146, 46, 0.28), rgba(60, 48, 20, 0.35));
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.12),
-    0 0 12px rgba(122, 163, 201, 0.2);
+    0 0 12px rgba(184, 146, 46, 0.2);
 }
 
 .foundry-icon-bar__btn--gm .foundry-icon-bar__icon-wrap {
@@ -705,11 +705,11 @@
   min-height: 80px;
   border-radius: 10px;
   border: 1px solid var(--mesa-accent-border);
-  background: rgba(14, 20, 30, 0.96);
+  background: rgba(30, 29, 26, 0.96);
   backdrop-filter: blur(12px);
   box-shadow:
     0 14px 36px rgba(0, 0, 0, 0.5),
-    0 0 0 1px rgba(122, 163, 201, 0.12);
+    0 0 0 1px rgba(184, 146, 46, 0.12);
   overflow: hidden;
 }
 
@@ -862,7 +862,7 @@
   width: 14px;
   height: 14px;
   cursor: nwse-resize;
-  background: linear-gradient(135deg, transparent 50%, rgba(122, 163, 201, 0.4) 50%);
+  background: linear-gradient(135deg, transparent 50%, rgba(184, 146, 46, 0.4) 50%);
 }
 
 .foundry-window--status .foundry-window__body,
@@ -1063,8 +1063,8 @@
   padding: 0.35rem 0.65rem;
   border-radius: 999px;
   border: 1px solid var(--mesa-accent-border);
-  background: rgba(12, 14, 18, 0.82);
-  color: var(--text-primary);
+  background: rgba(30, 29, 26, 0.92);
+  color: var(--text);
   font-size: 0.78rem;
   font-weight: 600;
   cursor: pointer;
@@ -1077,12 +1077,12 @@
 }
 
 .gm-player-view-toggle--player {
-  border-color: rgba(122, 163, 201, 0.45);
-  background: rgba(18, 22, 32, 0.88);
+  border-color: rgba(184, 146, 46, 0.45);
+  background: rgba(30, 29, 26, 0.92);
 }
 
 .gm-player-view-toggle--player:hover {
-  border-color: rgba(168, 200, 232, 0.55);
+  border-color: rgba(212, 170, 82, 0.55);
 }
 
 .gm-player-view-toggle__icon {
@@ -1102,8 +1102,8 @@
   padding: 0.35rem 0.65rem;
   border-radius: 999px;
   border: 1px solid var(--mesa-accent-border);
-  background: rgba(12, 14, 18, 0.82);
-  color: var(--text-primary);
+  background: rgba(30, 29, 26, 0.92);
+  color: var(--text);
   font-size: 0.78rem;
   font-weight: 600;
   cursor: pointer;
@@ -1113,7 +1113,7 @@
 
 .mesa-stage-pill:hover {
   border-color: rgba(201, 169, 98, 0.55);
-  color: var(--text-primary);
+  color: var(--text);
 }
 
 .mesa-online-menu__avatar-wrap {
@@ -1271,7 +1271,7 @@
   font-size: 0.82rem;
   font-weight: 700;
   line-height: 1.25;
-  color: var(--text-primary);
+  color: var(--text-strong);
 }
 
 .mesa-online-menu__hover-role--gm {
@@ -1315,8 +1315,8 @@
   min-height: 2rem;
   border-radius: 999px;
   border: 1px solid var(--mesa-accent-border);
-  background: rgba(12, 14, 18, 0.82);
-  color: var(--text-primary);
+  background: rgba(30, 29, 26, 0.92);
+  color: var(--text);
   font-size: 0.78rem;
   font-weight: 600;
   cursor: pointer;
@@ -1348,6 +1348,9 @@
   max-width: 22rem;
   padding: 0.65rem 0.75rem;
   z-index: 40;
+  background: var(--chrome-surface);
+  border: 1px solid var(--mesa-accent-border);
+  color: var(--text);
 }
 
 .mesa-edit-requests-bell__title {
@@ -1356,7 +1359,7 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  color: var(--text-muted);
+  color: var(--text-strong);
 }
 
 .mesa-edit-requests-bell__list {
@@ -1384,9 +1387,14 @@
   margin-bottom: 0.45rem;
 }
 
+.mesa-edit-requests-bell__item-head strong {
+  color: var(--text-strong);
+  font-weight: 700;
+}
+
 .mesa-edit-requests-bell__scope {
   font-size: 0.75rem;
-  color: var(--text-muted);
+  color: var(--text);
 }
 
 .mesa-edit-requests-bell__actions {
@@ -1402,7 +1410,7 @@
 }
 
 .mesa-edit-requests-bell__status--wait {
-  color: rgba(200, 190, 160, 0.85);
+  color: #e8d4a8;
 }
 
 .mesa-edit-requests-bell__status--ok {
@@ -1415,7 +1423,7 @@
 
 .mesa-edit-requests-bell__hint {
   font-size: 0.72rem;
-  color: var(--text-muted);
+  color: #a89878;
   font-style: italic;
 }
 
@@ -1428,7 +1436,7 @@
   padding: 0.45rem 0.65rem;
   border-radius: 8px;
   font-size: 0.82rem;
-  background: rgba(18, 22, 32, 0.75);
+  background: rgba(30, 29, 26, 0.75);
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
@@ -1695,7 +1703,7 @@
 }
 
 .foundry-dock-panel--whiteboard .foundry-dock-panel__head {
-  border-bottom-color: rgba(122, 163, 201, 0.25);
+  border-bottom-color: rgba(184, 146, 46, 0.25);
 }
 
 @media (max-width: 900px) {
