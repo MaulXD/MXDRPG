@@ -187,7 +187,8 @@
 }
 
 .friends-nav-chat__icon {
-  opacity: 0.85;
+  opacity: 1;
+  color: currentColor;
 }
 
 .friends-nav-chat__badge {
