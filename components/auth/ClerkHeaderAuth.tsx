@@ -2,6 +2,7 @@
 
 import { SignInButton, SignUpButton } from "@clerk/nextjs";
 import { ClerkHeaderUserMenu } from "@/components/auth/ClerkHeaderUserMenu";
+import { FriendsNavIcon } from "@/components/friends/FriendsNavIcon";
 import { FriendsNavMessages } from "@/components/friends/FriendsNavMessages";
 import { NotificationsBell } from "@/components/notifications/NotificationsBell";
 import type { SessionUser } from "@/lib/auth/types";
@@ -16,6 +17,7 @@ export function ClerkHeaderAuth({ session }: Props) {
     return (
       <div className="site-nav__end">
         <NotificationsBell />
+        <FriendsNavIcon />
         <FriendsNavMessages />
         <ClerkHeaderUserMenu user={session.user} />
       </div>

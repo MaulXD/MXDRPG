@@ -1528,6 +1528,13 @@
   margin-top: 0.75rem;
 }
 
+.sheet-inventory-msg,
+.loot-panel__msg {
+  margin: 0 0 0.5rem;
+  font-size: 0.78rem;
+  color: #8b3030;
+}
+
 .loot-panel {
   display: flex;
   flex-direction: column;

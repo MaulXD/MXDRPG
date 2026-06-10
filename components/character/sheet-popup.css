@@ -781,11 +781,37 @@
 
 
 
+.sheet-popup-identity__xp-tip {
+
+  display: block;
+
+  width: 88px;
+
+  cursor: help;
+
+}
+
+
+
+.sheet-popup-identity__xp-tip:focus-within .sheet-popup-identity__xp {
+
+  outline: 1px solid var(--sheet-accent);
+
+  outline-offset: 2px;
+
+  border-radius: 4px;
+
+}
+
+
+
 .sheet-popup-identity__xp {
 
   width: 88px;
 
   text-align: center;
+
+  outline: none;
 
 }
 
@@ -2438,10 +2464,13 @@
 /* —— XP / Ascensão —— */
 .sheet-popup-identity__xp-primary {
   margin: 0;
-  font-size: 0.68rem;
-  font-weight: 600;
-  color: var(--sheet-text);
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #f0ebe2;
   text-align: center;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
 }
 
 .sheet-popup-identity__ascension {

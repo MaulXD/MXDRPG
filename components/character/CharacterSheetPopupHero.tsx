@@ -105,19 +105,30 @@ export function CharacterSheetPopupHero({ name, identity }: Props) {
           <div className="sheet-popup-identity__ring">
             <span>{nivel}</span>
           </div>
-          <div className="sheet-popup-identity__xp">
-            <p className="sheet-popup-identity__xp-primary">{xpDetail.primary}</p>
-            <div
-              className="sheet-popup-identity__xp-track"
-              role="progressbar"
-              aria-valuenow={nivel >= MAX_LEVEL ? 100 : xpPct}
-              aria-valuemin={0}
-              aria-valuemax={100}
-              aria-label={xpDetail.barLabel}
-            >
-              <span style={{ width: `${xpPct}%` }} />
+          <SheetHoverTip
+            className="sheet-popup-identity__xp-tip"
+            tip={{
+              lines: [
+                xpDetail.secondary,
+                nivel < MAX_LEVEL && xpDetail.barLabel ? xpDetail.barLabel : "",
+              ].filter(Boolean),
+            }}
+          >
+            <div className="sheet-popup-identity__xp" tabIndex={0} title={xpDetail.secondary}>
+              <p className="sheet-popup-identity__xp-primary">{xpDetail.primary}</p>
+              <div
+                className="sheet-popup-identity__xp-track"
+                role="progressbar"
+                aria-valuenow={nivel >= MAX_LEVEL ? 100 : xpPct}
+                aria-valuemin={0}
+                aria-valuemax={100}
+                aria-label={`${xpDetail.primary} — ${xpDetail.secondary}`}
+              >
+                <span style={{ width: `${xpPct}%` }} />
+              </div>
             </div>
-            <span className="sheet-popup-identity__xp-text">{xpDetail.secondary}</span>
+          </SheetHoverTip>
+          <div className="sheet-popup-identity__xp-extra">
             {nivel >= MAX_LEVEL && ascension ? (
               <SheetHoverTip tip={{ title: ascension.name, lines: ["Ascensão nv. 20 — capstone da subclasse."] }}>
                 <span className="sheet-popup-identity__ascension" tabIndex={0}>
