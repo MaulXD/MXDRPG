@@ -57,7 +57,7 @@ async function listPlayerSheetEditNotifications(userId: string): Promise<Notific
         title: isApproved ? "Edição de ficha aprovada" : "Pedido de edição de ficha",
         body: `${charName} · ${sheetEditScopeLabel(r.scope)} — ${sheetEditStatusLabel(r.status)}`,
         href: isApproved
-          ? `/personagem/${r.characterId}/editar`
+          ? `/personagem/${r.characterId}/editar?requestId=${encodeURIComponent(r.id)}`
           : `/mesa/${full.primaryRoomId}`,
         createdAt: r.updatedAt,
         meta: {
