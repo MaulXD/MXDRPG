@@ -52,11 +52,14 @@ export function DrawingToolbar({
 
   return (
     <div
+      className="map-toolbar-shell drawing-toolbar-shell"
+      onClick={(e) => e.stopPropagation()}
+      onPointerDown={(e) => e.stopPropagation()}
+    >
+    <div
       className={`drawing-toolbar${active ? "" : " drawing-toolbar--off"}`}
       role="toolbar"
       aria-label="Ferramentas de desenho"
-      onClick={(e) => e.stopPropagation()}
-      onPointerDown={(e) => e.stopPropagation()}
     >
       <button
         type="button"
@@ -85,26 +88,30 @@ export function DrawingToolbar({
         ))}
       </div>
 
+    </div>
+
       {active ? (
-        <div className="drawing-toolbar__sub">
-          <div className="drawing-toolbar__colors" role="group" aria-label="Cor">
+        <div className="map-toolbar__flyout drawing-toolbar__flyout" role="group" aria-label="Opções de desenho">
+          <p className="map-toolbar__flyout-label">Cor</p>
+          <div className="map-toolbar__colors drawing-toolbar__colors" role="group" aria-label="Cor">
             {MARKUP_COLORS.map((c) => (
               <button
                 key={c}
                 type="button"
-                className={`drawing-toolbar__swatch${color === c ? " drawing-toolbar__swatch--active" : ""}`}
+                className={`map-toolbar__swatch drawing-toolbar__swatch${color === c ? " map-toolbar__swatch--active drawing-toolbar__swatch--active" : ""}`}
                 style={{ background: c }}
                 aria-label={`Cor ${c}`}
                 onClick={() => onColorChange(c)}
               />
             ))}
           </div>
-          <div className="drawing-toolbar__widths" role="group" aria-label="Espessura">
+          <p className="map-toolbar__flyout-label">Espessura</p>
+          <div className="map-toolbar__widths drawing-toolbar__widths" role="group" aria-label="Espessura">
             {MARKUP_WIDTHS.map((w) => (
               <button
                 key={w}
                 type="button"
-                className={`drawing-toolbar__width${width === w ? " drawing-toolbar__width--active" : ""}`}
+                className={`map-toolbar__width drawing-toolbar__width${width === w ? " map-toolbar__width--active drawing-toolbar__width--active" : ""}`}
                 onClick={() => onWidthChange(w)}
               >
                 {w}px
@@ -114,7 +121,7 @@ export function DrawingToolbar({
           {canManageAll && onClearSession ? (
             <button
               type="button"
-              className="drawing-toolbar__clear"
+              className="map-toolbar__clear drawing-toolbar__clear"
               disabled={busy}
               title="Remove desenhos temporários da sessão"
               onClick={onClearSession}
@@ -122,7 +129,7 @@ export function DrawingToolbar({
               Limpar sessão
             </button>
           ) : null}
-          <p className="drawing-toolbar__hint">
+          <p className="map-toolbar__hint drawing-toolbar__hint">
             {tool === "select"
               ? "Del apaga"
               : tool === "text"

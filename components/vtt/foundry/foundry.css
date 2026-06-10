@@ -161,7 +161,7 @@
   align-items: stretch;
   gap: 0.15rem;
   padding: 0.45rem 0.22rem 0.6rem;
-  background: rgba(8, 12, 18, 0.65);
+  background: rgba(30, 29, 26, 0.65);
 }
 
 .foundry-icon-bar__section-title {
@@ -304,7 +304,7 @@
 }
 
 .foundry-icon-bar__icon-wrap[data-rail-icon="initiative"] {
-  --rail-icon-color: #7aa3c9;
+  --rail-icon-color: #b8922e;
 }
 
 .foundry-icon-bar__icon-wrap[data-rail-icon="ficha"] {

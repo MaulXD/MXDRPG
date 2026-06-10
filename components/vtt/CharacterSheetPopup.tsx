@@ -21,8 +21,6 @@ import type { RoomActor } from "@/lib/room/types";
 import { isAdventureBoundCharacter } from "@/lib/character/adventure-bind";
 import { FoundryWindow } from "@/components/vtt/foundry/FoundryWindow";
 
-import "@/components/character/sheet-popup.css";
-
 type Props = {
   actorId: string;
   roomId: string;

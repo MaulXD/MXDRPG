@@ -225,7 +225,7 @@
   padding: 0;
   border-radius: var(--radius-md, 12px);
   border: 1px solid rgba(184, 146, 46, 0.28);
-  background: var(--glass-strong, rgba(10, 14, 20, 0.98));
+  background: var(--glass-strong, rgba(30, 29, 26, 0.98));
   background-image: none;
   box-shadow:
     0 24px 64px rgba(0, 0, 0, 0.55),
@@ -323,7 +323,7 @@
 .friends-chat--float .friends-chat__thread {
   flex: 1;
   min-height: 0;
-  background: rgba(8, 12, 18, 0.72);
+  background: rgba(30, 29, 26, 0.72);
 }
 
 .friends-chat--float .friends-chat__messages {

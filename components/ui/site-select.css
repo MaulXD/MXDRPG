@@ -14,8 +14,8 @@
   padding: 0.4rem 0.55rem;
   border-radius: 6px;
   border: 1px solid var(--glass-border);
-  background: var(--surface-inset);
-  color: var(--text);
+  background: var(--chrome-field-bg);
+  color: var(--chrome-field-text);
   font-family: inherit;
   font-size: 0.88rem;
   line-height: 1.3;

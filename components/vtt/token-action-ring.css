@@ -288,7 +288,7 @@
 .token-action-ring__slot--ability {
   --tar-border: rgba(72, 168, 198, 0.72);
   --tar-bg-top: rgba(24, 52, 62, 0.92);
-  --tar-bg-bottom: rgba(12, 24, 30, 0.94);
+  --tar-bg-bottom: rgba(36, 28, 18, 0.94);
   --tar-glow: rgba(72, 168, 198, 0.28);
   --tar-pa: #88d8f0;
 }
@@ -385,7 +385,7 @@
   height: 1.35rem;
   border-radius: 50%;
   border: 1px solid rgba(255, 255, 255, 0.45);
-  background: rgba(8, 10, 16, 0.72);
+  background: rgba(30, 29, 26, 0.72);
   color: #fff;
   font-size: 0.72rem;
   font-weight: 800;
@@ -485,7 +485,7 @@
   background: linear-gradient(
     165deg,
     color-mix(in srgb, var(--accent-primary, #c9a962) 18%, #12151f) 0%,
-    rgba(10, 12, 18, 0.97) 55%
+    rgba(30, 29, 26, 0.97) 55%
   );
   box-shadow:
     0 14px 36px rgba(0, 0, 0, 0.55),

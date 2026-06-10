@@ -16,17 +16,23 @@
   padding: 0.65rem 0.85rem;
   border-radius: 10px;
   border: 1px solid var(--glass-border);
-  background: rgba(0, 0, 0, 0.4);
-  color: var(--text);
+  background: var(--chrome-field-bg);
+  color: var(--chrome-field-text);
   font-family: var(--font-body);
   font-size: 0.95rem;
   outline: none;
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
+.auth-field__input::placeholder {
+  color: var(--chrome-field-placeholder);
+  opacity: 1;
+}
+
 .auth-field__input:focus {
-  border-color: rgba(184, 146, 46, 0.65);
-  box-shadow: 0 0 0 2px rgba(184, 146, 46, 0.15);
+  border-color: var(--chrome-accent);
+  background: var(--chrome-field-bg-focus);
+  box-shadow: 0 0 0 2px rgba(184, 146, 46, 0.22);
 }
 
 .auth-field__password-wrap {

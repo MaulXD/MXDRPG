@@ -18,7 +18,7 @@
   align-items: center;
   justify-content: center;
   padding: 1rem;
-  background: rgba(8, 12, 18, 0.55);
+  background: rgba(30, 29, 26, 0.55);
   backdrop-filter: blur(3px);
 }
 
@@ -295,7 +295,7 @@
   padding: 0.7rem 0.8rem;
   border-radius: 10px;
   border: 1px solid rgba(201, 169, 98, 0.35);
-  background: linear-gradient(135deg, rgba(201, 169, 98, 0.14), rgba(122, 163, 201, 0.08));
+  background: linear-gradient(135deg, rgba(201, 169, 98, 0.14), rgba(184, 146, 46, 0.08));
 }
 
 .monster-sheet__xp-hero-copy {
@@ -378,7 +378,7 @@
 }
 
 .monster-sheet__xp-card--elite {
-  border-color: rgba(122, 163, 201, 0.35);
+  border-color: rgba(184, 146, 46, 0.35);
 }
 
 .monster-sheet__xp-card--colossal {
@@ -513,7 +513,7 @@
   padding: 0.55rem 0.65rem;
   border-radius: 8px;
   border: 1px solid var(--glass-border);
-  background: rgba(8, 12, 18, 0.35);
+  background: rgba(30, 29, 26, 0.35);
 }
 
 .monster-sheet-action__head {

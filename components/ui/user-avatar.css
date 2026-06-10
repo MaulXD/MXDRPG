@@ -62,7 +62,7 @@
   min-width: 10.5rem;
   padding: 0.35rem;
   border-radius: var(--radius-md, 12px);
-  background: var(--glass-strong, rgba(10, 14, 20, 0.98));
+  background: var(--glass-strong, rgba(30, 29, 26, 0.98));
   border: 1px solid var(--glass-border-bright);
   box-shadow: 0 12px 36px rgba(0, 0, 0, 0.45);
 }
