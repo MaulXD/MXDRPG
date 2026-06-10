@@ -1,36 +1,43 @@
+import { ClerkHeaderAuth } from "@/components/auth/ClerkHeaderAuth";
+import { HeaderUserMenu } from "@/components/auth/HeaderUserMenu";
+import { EldarinLogo } from "@/components/brand/EldarinLogo";
+import { FriendsNavLink } from "@/components/friends/FriendsNavLink";
+import { FriendsNavMessages } from "@/components/friends/FriendsNavMessages";
+import { NotificationsBell } from "@/components/notifications/NotificationsBell";
+import { hasClerkPublishableKey } from "@/lib/auth/clerk-config";
 import { getSession } from "@/lib/auth/session";
 import { portalPathForRole, roleMeta } from "@/lib/auth/roles";
 import Link from "next/link";
-import { ThemeToggle } from "@/components/ThemeToggle";
-
-const links = [
-  { href: "/", label: "Início" },
-  { href: "/sistema", label: "Sistema" },
-  { href: "/biblioteca", label: "Compêndios" },
-  { href: "/mesa", label: "Mesa" },
-];
+import { AnimatedNavLink } from "@/components/AnimatedNavLink";
+import { SiteNavLinks } from "@/components/SiteNavLinks";
+import { IconUser } from "@/components/ui/EldarinIcons";
 
 export async function SiteHeaderWrapper() {
   const session = await getSession();
+  const clerkEnabled = hasClerkPublishableKey();
 
   return (
     <header className="glass site-header">
-      <Link href="/" className="site-logo neon-title">
-        ELDARIN
-      </Link>
+      <EldarinLogo variant="header" image="navbar" />
       <nav className="site-nav">
-        {links.map((l) => (
-          <Link key={l.href} href={l.href} className="nav-link">
-            {l.label}
-          </Link>
-        ))}
-        <ThemeToggle />
-        {session ? (
-          <Link href={portalPathForRole(session.user.role)} className="btn nav-cta">
-            {roleMeta(session.user.role).label}
-          </Link>
+        <SiteNavLinks />
+        {clerkEnabled ? (
+          <ClerkHeaderAuth session={session} />
+        ) : session ? (
+          <>
+            <AnimatedNavLink href="/conta" icon={<IconUser size={18} />}>
+              Perfil
+            </AnimatedNavLink>
+            <NotificationsBell />
+            <FriendsNavLink />
+            <FriendsNavMessages />
+            <Link href={portalPathForRole(session.user.role)} className="btn nav-cta">
+              {roleMeta(session.user.role).label}
+            </Link>
+            <HeaderUserMenu user={session.user} />
+          </>
         ) : (
-          <Link href="/entrar" className="btn nav-cta">
+          <Link href="/sign-in" className="btn nav-cta">
             Entrar
           </Link>
         )}

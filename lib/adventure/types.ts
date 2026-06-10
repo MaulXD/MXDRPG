@@ -1,9 +1,16 @@
+import type { AdventureAccessMode } from "@/lib/adventure/access";
+import type { RpgSystemId } from "@/lib/rpg/systems";
+
 /** Campanha persistente — contém mesa ao vivo, fichas e membros. */
 export type Adventure = {
   adventureId: string;
   ownerId: string;
   name: string;
   synopsis: string;
+  /** Hub MXDRPG — qual RPG esta mesa pertence. */
+  rpgSystemId: RpgSystemId;
+  /** Pública: entrada livre; fechada: só convite mestre, senha única ou aprovação. */
+  accessMode: AdventureAccessMode;
   inviteCode: string;
   /** Jogadores vinculados permanentemente (só cresce; não remover ao sair da mesa). */
   memberIds: string[];
@@ -11,6 +18,8 @@ export type Adventure = {
   primaryRoomId: string;
   createdAt: number;
   updatedAt: number;
+  /** Exclusão suave — só o mestre restaura em até 30 dias. */
+  deletedAt?: number | null;
 };
 
 export type AdventureListItem = {
@@ -21,4 +30,5 @@ export type AdventureListItem = {
   primaryRoomId: string;
   isOwner: boolean;
   updatedAt: number;
+  deletedAt?: number | null;
 };

@@ -1,5 +1,5 @@
 import { welcomeChat } from "@/lib/room/chat";
-import { emptyCombat } from "@/lib/room/combat";
+import { normalizeCombatTrack } from "@/lib/room/combat";
 import { normalizeRoomSettings } from "@/lib/room/settings";
 import type { RoomListItem, RoomState } from "@/lib/room/types";
 import type { RoomSettings } from "@/lib/room/settings";
@@ -23,6 +23,8 @@ type RoomRow = {
 };
 
 function rowToState(row: RoomRow): RoomState {
+  const tokens = Array.isArray(row.scene?.tokens) ? row.scene.tokens : [];
+  const scene = { ...row.scene, tokens };
   return {
     roomId: row.room_id,
     adventureId: row.adventure_id ?? row.room_id,
@@ -30,9 +32,9 @@ function rowToState(row: RoomRow): RoomState {
     name: row.name,
     inviteCode: row.invite_code,
     memberIds: row.member_ids ?? [],
-    scene: row.scene,
+    scene,
     actors: row.actors ?? {},
-    combat: row.combat,
+    combat: normalizeCombatTrack(row.combat, tokens),
     chat: row.chat?.length ? row.chat : [welcomeChat()],
     pings: [],
     settings: normalizeRoomSettings(row.settings),
@@ -77,9 +79,7 @@ export async function fetchRoom(roomId: string): Promise<RoomState | null> {
   }
   const row = rows[0];
   if (!row) return null;
-  const state = rowToState(row);
-  if (!state.combat) state.combat = emptyCombat(state.scene.tokens);
-  return state;
+  return rowToState(row);
 }
 
 export async function saveRoom(state: RoomState): Promise<void> {
@@ -109,6 +109,7 @@ export async function saveRoom(state: RoomState): Promise<void> {
       settings = EXCLUDED.settings,
       revision = EXCLUDED.revision,
       updated_at = EXCLUDED.updated_at
+    WHERE eldarin_rooms.revision <= EXCLUDED.revision
   `,
     5000,
     "saveRoom"
@@ -117,6 +118,16 @@ export async function saveRoom(state: RoomState): Promise<void> {
 
 export async function insertRoom(state: RoomState): Promise<void> {
   await saveRoom(state);
+}
+
+export async function deleteRoom(roomId: string): Promise<void> {
+  const sql = getSql();
+  if (!sql) return;
+  await withDbTimeout(
+    sql`DELETE FROM eldarin_rooms WHERE room_id = ${roomId}`,
+    5000,
+    "deleteRoom"
+  );
 }
 
 export async function fetchRoomByInvite(inviteCode: string): Promise<RoomState | null> {

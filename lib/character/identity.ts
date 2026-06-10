@@ -9,7 +9,9 @@ import {
   hpMaxFor,
   paMaxFor,
 } from "@/lib/character/rules";
+import { resolveActorDefesa } from "@/lib/character/armor-defense";
 import { normalizeCharacter } from "@/lib/character/normalize";
+import { religionDisplayName } from "@/lib/character/pantheon";
 import { parseCharacterTalents } from "@/lib/character/subclass-tracks";
 
 export type IdentityPatch = {
@@ -18,6 +20,7 @@ export type IdentityPatch = {
   subclasse?: string | null;
   linhagem?: string | null;
   antecedente?: string;
+  religiao?: string | null;
   attributes?: Partial<CharacterAttributes>;
   resetAttributes?: boolean;
 };
@@ -30,6 +33,7 @@ export function applyIdentityPatch(actor: CharacterSheet, patch: IdentityPatch):
   if (patch.subclasse !== undefined) identity.subclasse = patch.subclasse;
   if (patch.linhagem !== undefined) identity.linhagem = patch.linhagem;
   if (patch.antecedente !== undefined) identity.antecedente = patch.antecedente;
+  if (patch.religiao !== undefined) identity.religiao = patch.religiao;
 
   if (patch.classe && patch.classe !== actor.identity.classe) {
     const cls = getClass(patch.classe);
@@ -66,7 +70,7 @@ export function applyIdentityPatch(actor: CharacterSheet, patch: IdentityPatch):
     culinary.estomagoDeFerro += 2;
   }
 
-  return normalizeCharacter({
+  const merged = {
     ...actor,
     identity,
     attributes,
@@ -82,10 +86,11 @@ export function applyIdentityPatch(actor: CharacterSheet, patch: IdentityPatch):
       },
     },
     tactical: {
-      defesa: 10 + desMod,
-      iniciativa: desMod,
+      defesa: resolveActorDefesa({ ...actor, identity, attributes }),
+      iniciativa: actor.tactical?.iniciativa ?? desMod,
     },
-  });
+  };
+  return normalizeCharacter(merged);
 }
 
 export function describeIdentity(actor: CharacterSheet): string[] {
@@ -96,7 +101,7 @@ export function describeIdentity(actor: CharacterSheet): string[] {
   if (cls) {
     lines.push(`${cls.id}: d${cls.hpDie} · ${cls.primary}`);
     lines.push(`Proficiências: ${cls.proficiencies}`);
-    lines.push(`Dieta base: ${cls.dietBonus}`);
+    lines.push(`Bônus passivo: ${cls.dietBonus}`);
   }
   if (race) {
     lines.push(`Raça: ${race.traits.slice(0, 3).join(", ")}`);
@@ -104,6 +109,9 @@ export function describeIdentity(actor: CharacterSheet): string[] {
   }
   if (actor.identity.subclasse) {
     lines.push(`Subclasse: ${actor.identity.subclasse}`);
+  }
+  if (actor.identity.religiao) {
+    lines.push(`Devotion: ${religionDisplayName(actor.identity.religiao)}`);
   }
   return lines;
 }

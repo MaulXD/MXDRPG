@@ -1,4 +1,4 @@
-# Guia de Ecologia — Amorfos, Elementais e Vulcânicos
+﻿# Guia de Ecologia — Amorfos, Elementais e Vulcânicos
 **Eldarin v4.0 · Folheto de mesa**
 
 ---
@@ -29,7 +29,7 @@ Compartilham biomas **quentes** e **químicos** (Fornalhas, Pântano, Vidro Fosc
 | Elemental derrotado | 20 | Recipiente mágico; janela curta |
 | Glândula de ignição | 17 | Kit Artífice |
 
-**Não Trinchar** como carcaça — **coletar núcleo/gel** sem perfurar (DES CD ou perde tudo).
+**Não Extração** como carcaça — **coletar núcleo/gel** sem perfurar (DES CD ou perde tudo).
 
 ---
 
@@ -54,7 +54,7 @@ Compartilham biomas **quentes** e **químicos** (Fornalhas, Pântano, Vidro Fosc
 
 - **Chama de Fogareiro** (truque) controla temperatura = vantagem Cocção em pratos de magma.  
 - Slime fluorescente (bioma 13): ilumina + mutação “visão no escuro aprimorada”.  
-- Gororoba ácida: **Estômago de Ferro CD 16** ou dano contínuo 1d4/h.
+- Gororoba ácida: **Fortitude CD 16** ou dano contínuo 1d4/h.
 
 **Espécimes:** Slime ácido, elemental de fogo, salamandra — Caps. IX + bioma 4.
 

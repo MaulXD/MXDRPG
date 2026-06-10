@@ -7,6 +7,7 @@ import {
   normalizeRoomSettings,
   redactMonsterHp,
 } from "@/lib/room/settings";
+import { filterDungeonObjectsForFog } from "@/lib/vtt/dungeon-layer";
 import { filterTokensForFog, visibleHexSetForPlayer } from "@/lib/vtt/fog-of-war";
 import type { BattleToken } from "@/lib/vtt/types";
 import type { ChatMessage } from "./chat";
@@ -63,6 +64,8 @@ export function snapshotForViewer(
   user: SessionUser | null | undefined
 ): RoomSnapshot {
   const isGm = canManageRoom(room, user);
+  const combatUndo = isGm ? snapshot.combatUndo : undefined;
+  const gmCreations = isGm ? snapshot.gmCreations : undefined;
   const settings = normalizeRoomSettings(room.settings ?? snapshot.settings);
   const actorIds = user
     ? Object.entries(snapshot.actors)
@@ -104,16 +107,24 @@ export function snapshotForViewer(
     chat === snapshot.chat;
 
   if (tokensUnchanged && settings === snapshot.settings) {
-    return snapshot;
+    return { ...snapshot, combatUndo, gmCreations };
   }
+
+  const dungeonObjects =
+    fogVisible != null
+      ? filterDungeonObjectsForFog(snapshot.scene, fogVisible)
+      : snapshot.scene.dungeonObjects;
 
   return {
     ...snapshot,
     settings,
     chat,
+    combatUndo,
+    gmCreations,
     scene: {
       ...snapshot.scene,
       tokens,
+      dungeonObjects,
       revealedHexes: isGm ? snapshot.scene.revealedHexes : snapshot.scene.revealedHexes,
     },
   };

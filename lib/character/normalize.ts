@@ -1,10 +1,33 @@
+import { migrateSubclassName } from "@/lib/character/legacy-names";
+import { normalizeReligionId } from "@/lib/character/pantheon";
 import type { CharacterAttributes, CharacterSheet, CharacterIdentity } from "@/lib/character/types";
 import { parseCharacterTalents } from "@/lib/character/subclass-tracks";
 import { computeCulinary, hpMaxFor, attributeMod } from "@/lib/character/rules";
 import { paMaxForActor } from "@/lib/combat/pa-economy";
+import { resolveActorDefesa } from "@/lib/character/armor-defense";
 import { xpTotalForLevel } from "@/lib/character/xp";
-import { syncSubclassTalentsToInventory } from "@/lib/character/subclass-vtt";
+import { syncCombatAbilitiesToInventory } from "@/lib/character/combat-inventory-sync";
+import { ensureLoadoutItemsInInventory } from "@/lib/character/inventory-loadout-sync";
 import { EMPTY_LOOT } from "@/lib/character/loot-storage";
+import {
+  applyStarterKitToSheet,
+  getDefaultStarterKitId,
+} from "@/lib/character/starter-kits";
+
+function backfillStarterKitIfBare(sheet: CharacterSheet): CharacterSheet {
+  if (sheet.identity.nivel > 1) return sheet;
+  const bare =
+    (sheet.inventory?.length ?? 0) === 0 &&
+    !sheet.combatLoadout &&
+    !sheet.armorLoadout;
+  if (!bare) return sheet;
+  return applyStarterKitToSheet(sheet, {
+    classe: sheet.identity.classe,
+    raca: sheet.identity.raca,
+    antecedente: sheet.identity.antecedente,
+    starterKitId: getDefaultStarterKitId(sheet.identity.classe),
+  });
+}
 
 const DEFAULT_ATTRS: CharacterAttributes = {
   forca: 10,
@@ -36,9 +59,10 @@ export function normalizeIdentity(identity: Partial<CharacterIdentity> & { nivel
     xpTotal: identity.xpTotal ?? defaultXpForLevel(identity.nivel),
     raca: identity.raca ?? "Humano",
     classe: identity.classe ?? "Guerreiro",
-    subclasse: identity.subclasse ?? null,
+    subclasse: migrateSubclassName(identity.subclasse ?? null) ?? null,
     linhagem: identity.linhagem ?? null,
     antecedente: identity.antecedente ?? "Explorador",
+    religiao: normalizeReligionId(identity.religiao),
     talentos: parseCharacterTalents(identity.talentos),
   };
 }
@@ -73,9 +97,10 @@ export function normalizeCharacter(sheet: CharacterSheet): CharacterSheet {
       },
     },
     tactical: {
-      defesa: sheet.tactical?.defesa ?? 10 + desMod,
+      defesa: resolveActorDefesa({ ...sheet, identity, attributes }),
       iniciativa: sheet.tactical?.iniciativa ?? desMod,
     },
   };
-  return syncSubclassTalentsToInventory(base);
+  const withKit = backfillStarterKitIfBare(base);
+  return syncCombatAbilitiesToInventory(ensureLoadoutItemsInInventory(withKit));
 }

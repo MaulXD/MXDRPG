@@ -7,7 +7,8 @@ import fs from "node:fs";
 import path from "node:path";
 
 const ROOT = path.join(process.cwd(), "data", "compendiums");
-const FILES = ["armas.json", "magias.json", "habilidades.json"];
+/** Só armas: magias/truques e habilidades podem ter 1 PA no compêndio (livro §3.1.1). */
+const FILES = ["armas.json"];
 
 let total = 0;
 

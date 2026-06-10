@@ -1,4 +1,5 @@
 import tracksData from "@/data/character/subclass-tracks.json";
+import { LEGACY_SUBCLASS_NAMES, migrateSubclassName } from "@/lib/character/legacy-names";
 import { getClass } from "@/lib/character/rules";
 
 export type TalentKind = "talent" | "ascension";
@@ -37,6 +38,12 @@ for (const track of TRACKS) {
   byId.set(track.id, track);
 }
 
+/** Resolve nomes antigos gravados em fichas legadas. */
+for (const [oldName, newName] of Object.entries(LEGACY_SUBCLASS_NAMES)) {
+  const track = bySubclass.get(normalizeKey(newName));
+  if (track) bySubclass.set(normalizeKey(oldName), track);
+}
+
 export const SUBCLASS_TRACKS = TRACKS;
 
 export const TALENT_WINDOW_LEVELS = [4, 8, 12, 16] as const;
@@ -52,7 +59,8 @@ function normalizeKey(value: string): string {
 
 export function getSubclassTrack(subclass: string | null | undefined): SubclassTrack | null {
   if (!subclass) return null;
-  return bySubclass.get(normalizeKey(subclass)) ?? null;
+  const migrated = migrateSubclassName(subclass) ?? subclass;
+  return bySubclass.get(normalizeKey(migrated)) ?? bySubclass.get(normalizeKey(subclass)) ?? null;
 }
 
 export function getTrackForClass(classId: string, subclass: string): SubclassTrack | null {
@@ -120,7 +128,7 @@ export function validateTalentChoice(
   talentId: string
 ): string | null {
   const track = getSubclassTrack(subclass);
-  if (!track) return "Escolha uma subclasse (Dieta Marcial) antes do talento.";
+  if (!track) return "Escolha um Caminho de Assimilação (subclasse) antes do talento.";
 
   const options = getAvailableTalents(track, owned, targetLevel);
   if (!options.length) {

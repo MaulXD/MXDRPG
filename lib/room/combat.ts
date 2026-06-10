@@ -6,13 +6,50 @@ export type CombatTrack = {
   order: string[];
   activeIndex: number;
   round: number;
+  /** Avisos de turno para toast na UI (consumidos no próximo avanço). */
+  notices?: string[];
+  /** Ordem da última iniciativa — restaurada pelo mestre. */
+  naturalOrder?: string[];
+  /** Mestre alterou a fila manualmente. */
+  orderOverridden?: boolean;
 };
 
-export function emptyCombat(tokens: BattleToken[]): CombatTrack {
+export function emptyCombat(tokens: BattleToken[] = []): CombatTrack {
   return {
     order: tokens.map((t) => t.id),
     activeIndex: 0,
     round: 1,
+    notices: [],
+  };
+}
+
+/** Garante `order` e índices válidos — evita crash na UI quando o JSON do banco veio incompleto. */
+export function normalizeCombatTrack(
+  combat: Partial<CombatTrack> | null | undefined,
+  tokens: BattleToken[] = []
+): CombatTrack {
+  if (!combat || !Array.isArray(combat.order)) {
+    return emptyCombat(tokens);
+  }
+  const order = combat.order.filter((id): id is string => typeof id === "string" && id.length > 0);
+  if (!order.length) {
+    return {
+      ...emptyCombat(tokens),
+      round: Math.max(1, combat.round ?? 1),
+      notices: Array.isArray(combat.notices) ? combat.notices : [],
+      naturalOrder: combat.naturalOrder,
+      orderOverridden: combat.orderOverridden,
+    };
+  }
+  const maxIdx = order.length - 1;
+  const activeIndex = Math.min(Math.max(0, combat.activeIndex ?? 0), maxIdx);
+  return {
+    order,
+    activeIndex,
+    round: Math.max(1, combat.round ?? 1),
+    notices: Array.isArray(combat.notices) ? combat.notices : [],
+    naturalOrder: combat.naturalOrder,
+    orderOverridden: combat.orderOverridden,
   };
 }
 
@@ -45,7 +82,7 @@ export function rollInitiative(room: RoomState): { order: string[]; scores: Reco
 }
 
 export function nextTurn(combat: CombatTrack): CombatTrack {
-  if (!combat.order.length) return combat;
+  if (!combat.order?.length) return combat;
   const nextIndex = (combat.activeIndex + 1) % combat.order.length;
   return {
     ...combat,
@@ -55,5 +92,5 @@ export function nextTurn(combat: CombatTrack): CombatTrack {
 }
 
 export function activeTokenId(combat: CombatTrack): string | null {
-  return combat.order[combat.activeIndex] ?? null;
+  return combat.order?.[combat.activeIndex] ?? null;
 }

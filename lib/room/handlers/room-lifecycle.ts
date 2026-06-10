@@ -1,12 +1,23 @@
 import { createAdventure } from "@/lib/adventure/store";
 import { syncAdventureActorsForRoom } from "@/lib/room/adventure-actors";
+import { joinRoomMembers } from "@/lib/room/adventure-room";
 import * as dbRooms from "@/lib/db/rooms";
 import { getRoom, rooms, toSnapshot } from "../internal/registry";
 import type { RoomListItem, RoomSnapshot, RoomState } from "../types";
 
 export async function getRoomSnapshot(roomId: string): Promise<RoomSnapshot | null> {
-  const room = await getRoom(roomId);
-  return room ? toSnapshot(room) : null;
+  let room = await getRoom(roomId);
+  if (!room) return null;
+
+  if (dbRooms.dbEnabled()) {
+    const fromDb = await dbRooms.fetchRoom(roomId);
+    if (fromDb && fromDb.revision > room.revision) {
+      rooms().set(roomId, fromDb);
+      room = fromDb;
+    }
+  }
+
+  return toSnapshot(room);
 }
 
 /** Cria aventura + mesa (1:1). Preferir `createAdventure` na API. */
@@ -40,27 +51,16 @@ export async function joinRoomByInviteLegacy(
   if (dbRooms.dbEnabled()) {
     const fromDb = await dbRooms.fetchRoomByInvite(code);
     if (fromDb) {
-      if (fromDb.ownerId !== userId && !fromDb.memberIds.includes(userId)) {
-        fromDb.memberIds.push(userId);
-        fromDb.updatedAt = Date.now();
-        fromDb.revision += 1;
-      }
-      rooms().set(fromDb.roomId, fromDb);
-      if (fromDb.roomId !== "demo") await dbRooms.saveRoom(fromDb);
-      return syncAdventureActorsForRoom(fromDb.roomId);
+      await joinRoomMembers(fromDb.roomId, userId);
+      const room = await getRoom(fromDb.roomId);
+      if (!room) return null;
+      return syncAdventureActorsForRoom(room.roomId);
     }
   }
 
   for (const room of rooms().values()) {
     if (room.inviteCode.toUpperCase() !== code) continue;
-    if (room.ownerId !== userId && !room.memberIds.includes(userId)) {
-      room.memberIds.push(userId);
-      room.updatedAt = Date.now();
-      room.revision += 1;
-      if (dbRooms.dbEnabled() && room.roomId !== "demo") {
-        await dbRooms.saveRoom(room);
-      }
-    }
+    await joinRoomMembers(room.roomId, userId);
     return syncAdventureActorsForRoom(room.roomId);
   }
   return null;

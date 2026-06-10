@@ -1,0 +1,60 @@
+.sheet-pdf-capture-host {
+  position: fixed;
+  left: -10000px;
+  top: 0;
+  width: 794px;
+  max-height: 100vh;
+  overflow: hidden;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.sheet-pdf-capture {
+  width: 794px;
+  background: #e8e2d6;
+}
+
+.sheet-pdf-capture__frame.mf {
+  --mf-bg: #e8e2d6;
+  --mf-accent: #b8922e;
+  --mf-pad: 0.65rem;
+  --mf-inset: 10px;
+  width: 100%;
+  margin: 0;
+  background: #e8e2d6;
+}
+
+.sheet-pdf-capture .sheet-shell--popup {
+  width: 100%;
+  max-width: 100%;
+}
+
+.sheet-pdf-capture .sheet-popup-export,
+.sheet-pdf-capture .sheet-popup-advanced,
+.sheet-pdf-capture .inv-remove,
+.sheet-pdf-capture .sheet-toolbar .btn {
+  display: none !important;
+}
+
+.sheet-pdf-capture .sheet-tabs {
+  pointer-events: none;
+}
+
+.sheet-pdf-capture .sheet-pdf-link {
+  cursor: pointer;
+  position: relative;
+}
+
+.sheet-pdf-capture__footer {
+  margin: 0.75rem 0 0.25rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid rgba(184, 146, 46, 0.25);
+  font-size: 0.68rem;
+  color: #5a4e38;
+  text-align: center;
+  line-height: 1.5;
+}
+
+.sheet-pdf-capture__footer-links {
+  color: #8a6020;
+}

@@ -6,6 +6,7 @@ import { rollDice } from "@/lib/dice/roll";
 import { saveRollMode } from "@/lib/combat/conditions";
 import { formatD20Detail, formatRollMode, rollD20, type RollMode } from "@/lib/combat/d20";
 import type { CombatActionOption, CombatTurnOptions } from "@/lib/combat/types";
+import { canActOnCombatTurn, TURN_WAIT_MSG } from "@/lib/combat/turn-guard";
 import { canAttackTarget, spellcastingAttribute } from "@/lib/combat/attack";
 import {
   actionWithChannel,
@@ -101,8 +102,14 @@ export function resolveSaveSpell(
       skipPaCheck: opts?.skipPaCheck,
     });
     if (!check.ok) throw new Error(check.reason ?? "Magia inválida");
-  } else if (turn?.activeTokenId && attackerToken.id !== turn.activeTokenId && !turn.bypassTurn) {
-    throw new Error("Aguarde seu turno na iniciativa");
+  } else if (
+    !canActOnCombatTurn(attackerToken.id, {
+      activeTokenId: turn?.activeTokenId,
+      bypassTurn: turn?.bypassTurn,
+      combatHasOrder: turn?.combatHasOrder,
+    })
+  ) {
+    throw new Error(TURN_WAIT_MSG);
   }
 
   const saveKey = resolved.saveAttribute ?? "constituicao";
@@ -122,7 +129,10 @@ export function resolveSaveSpell(
   const success = saveTotal >= dc;
 
   const hpBefore = defenderHp(defenderToken);
-  const damage = rollSaveDamage(resolved.damageFormula, success);
+  const damage =
+    resolved.damageFormula === "0"
+      ? { formula: "0", rolls: [], attributeMod: 0, total: 0, doubled: false }
+      : rollSaveDamage(resolved.damageFormula, success);
   const hpAfter = Math.max(0, hpBefore - damage.total);
 
   const attr = attributeLabel(saveKey);

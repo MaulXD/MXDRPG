@@ -8,6 +8,8 @@ type Props = {
   characterId: string;
   portraitUrl?: string | null;
   portraitFocus?: PortraitFocus | null;
+  coverFocus?: PortraitFocus | null;
+  tokenFocus?: PortraitFocus | null;
   tokenImageUrl?: string | null;
   canEdit: boolean;
 };
@@ -16,6 +18,8 @@ export function CharacterPortraitFields({
   characterId,
   portraitUrl,
   portraitFocus,
+  coverFocus,
+  tokenFocus,
   tokenImageUrl,
   canEdit,
 }: Props) {
@@ -39,12 +43,16 @@ export function CharacterPortraitFields({
       portraitUrl={portraitUrl ?? null}
       tokenImageUrl={tokenImageUrl}
       portraitFocus={portraitFocus}
+      coverFocus={coverFocus}
+      tokenFocus={tokenFocus}
       canEdit={canEdit}
       onPersist={async (bundle) => {
         await patchCharacter({
           portraitUrl: bundle.portraitUrl,
           tokenImageUrl: bundle.tokenImageUrl,
           portraitFocus: bundle.portraitFocus,
+          coverFocus: bundle.coverFocus,
+          tokenFocus: bundle.tokenFocus,
         });
       }}
       onClear={async () => {
@@ -52,6 +60,8 @@ export function CharacterPortraitFields({
           portraitUrl: null,
           tokenImageUrl: null,
           portraitFocus: null,
+          coverFocus: null,
+          tokenFocus: null,
         });
       }}
     />

@@ -34,7 +34,7 @@ export default function PrivacidadePage() {
         {body}
       </article>
       <p style={{ marginTop: "2rem" }}>
-        <Link href="/entrar">Voltar ao login</Link>
+        <Link href="/sign-in">Voltar ao login</Link>
       </p>
     </div>
   );

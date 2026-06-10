@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { canEditRoomActor } from "@/lib/auth/room-access";
+import { actorForRoomAuth, canEditRoomActor } from "@/lib/auth/room-access";
 import { getSession } from "@/lib/auth/session";
 import { canLevelUp, validateLevelUpChoices, type LevelUpChoices } from "@/lib/character/level-up";
 import { resolveCharacter } from "@/lib/character/characters";
@@ -20,11 +20,13 @@ export async function POST(req: Request, { params }: Params) {
     return NextResponse.json({ error: "Personagem inválido" }, { status: 404 });
   }
 
-  if (!canEditRoomActor(room, seed, session?.user ?? null)) {
+  const current = await getRoomActor(roomId, actorId);
+  const actorForAuth = actorForRoomAuth(room, { ...seed, ...current });
+
+  if (!canEditRoomActor(room, actorForAuth, session?.user ?? null)) {
     return NextResponse.json({ error: "Sem permissão para editar esta ficha" }, { status: 403 });
   }
 
-  const current = await getRoomActor(roomId, actorId);
   if (!current) {
     return NextResponse.json({ error: "Personagem não está na sala" }, { status: 404 });
   }

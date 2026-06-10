@@ -16,12 +16,17 @@ import {
   isGoblinMonster,
 } from "@/lib/vtt/goblin-combat";
 import { monsterCombatActions } from "@/lib/vtt/monster-actions";
+import { isMonsterToken } from "@/lib/room/settings";
 import type { BattleToken } from "@/lib/vtt/types";
+import { tokenAxialDistance } from "@/lib/vtt/creature-size";
 import { axialDistance } from "@/lib/vtt/hex-math";
+import { applyDamageWithTempHp } from "@/lib/combat/hp-temp";
 import { abilityFromEntry } from "@/lib/combat/compendium-actions";
 import { attackRollMode, canTokenAct } from "@/lib/combat/conditions";
+import { clearTimedEffectsForFields } from "@/lib/combat/timed-effects";
 import { combineRollModes, formatD20Detail, formatRollMode, rollD20, type RollMode } from "@/lib/combat/d20";
-import { parseAreaShape } from "@/lib/combat/area-spell";
+import { isAreaSpellAction, parseAreaShape } from "@/lib/combat/area-spell";
+import { buildMagiaCombatAction } from "@/lib/combat/spell-parse";
 import { listSubclassCombatActions } from "@/lib/character/subclass-vtt";
 import {
   appendHealToSummary,
@@ -29,12 +34,18 @@ import {
   mergeBonusIntoDamage,
   normalizeWeaponSpecial,
 } from "@/lib/combat/equipment-effects";
+import { resolveSpellPaCost } from "@/lib/combat/pa-balance";
 import {
   effectivePaCost,
+  mergePaCostContext,
+  paCostContextFromToken,
   totalAttackPaCost,
   weaponAttackCount,
 } from "@/lib/combat/pa-economy";
+import { isPaDiscountAvailable } from "@/lib/combat/pa-turn-discount";
 import { checkCanSpendPa } from "@/lib/combat/pa-turn";
+import { canActOnCombatTurn, TURN_WAIT_MSG } from "@/lib/combat/turn-guard";
+import { parseRecharge, rechargeBlockReason } from "@/lib/combat/recharge";
 import {
   actionWithChannel,
   clampChannelExtraPa,
@@ -91,6 +102,8 @@ export type AttackResolution = {
   damage: DamageBreakdown | null;
   defenderHpBefore: number;
   defenderHpAfter: number;
+  defenderTempHpBefore?: number;
+  defenderTempHpAfter?: number;
   attackerHpBefore?: number;
   attackerHpAfter?: number;
   attackerHeal?: number;
@@ -139,10 +152,18 @@ function parseSaveAttribute(raw: string | undefined): AttributeKey | undefined {
   return map[raw.toLowerCase()] ?? undefined;
 }
 
+function parseHealFormulaFromDescription(description: string): string | null {
+  const plain = description.replace(/<[^>]+>/g, " ");
+  const m = plain.match(/Cura\s+(\d+d\d+)/i);
+  return m?.[1] ?? null;
+}
+
 function actionFromEntry(
   entry: CompendiumEntry,
   packId: "armas" | "magias"
 ): CombatActionOption | null {
+  if (packId === "magias") return buildMagiaCombatAction(entry);
+
   const weapon = entry.system.weapon as
     | {
         dano?: { formula?: string; tipo?: string };
@@ -150,67 +171,29 @@ function actionFromEntry(
         special?: unknown;
       }
     | undefined;
-  const spell = entry.system.spell as
-    | {
-        nivel?: number;
-        save?: { attribute?: string; cd?: number };
-        channel?: { maxExtraPa?: number; bonusPerPa?: string };
-        area?: {
-          shape?: string;
-          radiusHex?: number;
-          hexCount?: number;
-          lengthHex?: number;
-        };
-      }
-    | undefined;
   const tactical = entry.system.tactical as
     | { alcanceHex?: { value?: number }; custoPontosAcao?: { value?: number } }
     | undefined;
 
-  const saveAttr = parseSaveAttribute(spell?.save?.attribute);
-  const areaShape = parseAreaShape(spell?.area?.shape);
-  const isAreaSpell = packId === "magias" && areaShape !== "single";
-  const isSaveSpell = packId === "magias" && Boolean(saveAttr) && Boolean(weapon?.dano?.formula);
-  if (packId === "magias" && !weapon?.dano?.formula && !isSaveSpell && !isAreaSpell) return null;
-
   const rangeHex = tactical?.alcanceHex?.value ?? 1;
-  const paCost = tactical?.custoPontosAcao?.value ?? PA_DEFAULT_ACTION_COST;
-  const kind: CombatActionKind = packId === "magias" ? "spell" : "weapon";
-  const resolution: CombatResolution = isSaveSpell ? "save" : "attack";
-  const areaSize =
-    spell?.area?.lengthHex ?? spell?.area?.radiusHex ?? (areaShape === "wall" ? undefined : 2);
-  const areaHexCount = spell?.area?.hexCount;
-  const areaRadiusHex =
-    areaShape === "burst" ||
-    areaShape === "cube" ||
-    areaShape === "cone" ||
-    areaShape === "line"
-      ? (areaSize ?? 2)
-      : undefined;
-
-  const channel = parseSpellChannel(spell?.channel);
+  const rawPa = tactical?.custoPontosAcao?.value ?? PA_DEFAULT_ACTION_COST;
+  const paCost = Math.max(PA_DEFAULT_ACTION_COST, rawPa);
+  const damageFormula = weapon?.dano?.formula ?? "1d4";
+  const damageType = weapon?.dano?.tipo ?? "contundente";
 
   return {
     packId,
     entryId: entry.id,
     name: entry.name,
-    kind,
-    resolution,
-    damageFormula: weapon?.dano?.formula ?? "1d4",
-    damageType: weapon?.dano?.tipo ?? (kind === "spell" ? "mágico" : "contundente"),
+    kind: "weapon",
+    resolution: "attack",
+    damageFormula,
+    damageType,
     attackBonus: weapon?.ataque?.bonus ?? 0,
     rangeHex,
     paCost,
-    saveAttribute: saveAttr,
-    saveDc: spell?.save?.cd,
-    areaShape: packId === "magias" && areaShape !== "single" ? areaShape : undefined,
-    areaRadiusHex,
-    areaHexCount: areaShape === "wall" ? areaHexCount ?? 3 : undefined,
-    channelMaxExtraPa: channel?.maxExtraPa,
-    channelBonusPerPa: channel?.bonusPerPa,
-    equipmentSpecials:
-      packId === "armas" ? normalizeWeaponSpecial(weapon?.special) : undefined,
-    label: `${entry.name} · ${rangeHex} hex · PA ${paCost}${channel ? " · canalizável" : ""}${isSaveSpell ? " · teste" : ""}${areaShape !== "single" ? ` · área ${areaShape}` : ""}`,
+    equipmentSpecials: normalizeWeaponSpecial(weapon?.special),
+    label: `${entry.name} · ${rangeHex} hex · PA ${paCost}`,
   };
 }
 
@@ -225,17 +208,21 @@ function applyHitSpecialsToResolution(
   hit: boolean,
   critical: boolean,
   damage: DamageBreakdown | null,
-  hpBefore: number
+  hpBefore: number,
+  tempBefore: number
 ): AttackResolution {
   const specials = action.equipmentSpecials ?? [];
   if (!specials.length) return res;
 
   const fx = applyEquipmentOnHitEffects(specials, hit, critical);
   let hpAfter = res.defenderHpAfter;
+  let tempAfter = res.defenderTempHpAfter ?? tempBefore;
   let dmg = damage;
   if (hit && dmg && fx.bonusDamage > 0) {
     dmg = mergeBonusIntoDamage(dmg, fx.bonusDamage, fx.notes);
-    hpAfter = Math.max(0, hpBefore - dmg.total);
+    const damaged = applyDamageWithTempHp(hpBefore, tempBefore, dmg.total);
+    hpAfter = damaged.hp;
+    tempAfter = damaged.tempHp;
   }
 
   const atkHpBefore = attackerHp(attackerToken);
@@ -252,6 +239,7 @@ function applyHitSpecialsToResolution(
     ...res,
     damage: dmg,
     defenderHpAfter: hpAfter,
+    defenderTempHpAfter: tempAfter,
     attackerHpBefore: atkHpBefore,
     attackerHpAfter: atkHpAfter,
     attackerHeal: fx.attackerHeal || undefined,
@@ -299,6 +287,9 @@ export function listTokenCombatActions(
   let all: CombatActionOption[];
   if (actor) {
     all = listCombatActions(actor);
+  } else if (token.gmCreationId) {
+    const custom = token.gmActions ?? [];
+    all = custom.length ? [...custom, MONSTER_UNARMED] : [MONSTER_UNARMED];
   } else if (token.monsterEntryId) {
     const monsterActions = monsterCombatActions(token.monsterEntryId);
     all = monsterActions.length ? [...monsterActions, MONSTER_UNARMED] : [MONSTER_UNARMED];
@@ -310,6 +301,62 @@ export function listTokenCombatActions(
     return all.filter((a) => a.kind === "weapon" || a.kind === "unarmed");
   }
   return all.filter((a) => a.kind === filter);
+}
+
+export function resolveRoomAttackAction(
+  attacker: BattleToken,
+  actor: CharacterSheet | null,
+  opts: CombatActionRequest
+): CombatActionOption {
+  if (actor) return resolveCombatAction(actor, opts);
+
+  const actions = listTokenCombatActions(attacker, null);
+  if (opts.packId && opts.entryId) {
+    const byPack = actions.find(
+      (a) => a.packId === opts.packId && a.entryId === opts.entryId
+    );
+    if (byPack) return byPack;
+    throw new Error(`Ação "${opts.entryId}" não está disponível no combate`);
+  }
+  if (opts.entryId) {
+    const byEntry = actions.find((a) => a.entryId === opts.entryId);
+    if (byEntry) return byEntry;
+    throw new Error(`Ação "${opts.entryId}" não está disponível no combate`);
+  }
+  const fallback = actions[0];
+  if (!fallback) throw new Error("Atacante sem ações de combate");
+  return fallback;
+}
+
+export function combatAttackRequestOpts(
+  action: CombatActionOption,
+  attacker: BattleToken,
+  opts?: {
+    bypassTurn?: boolean;
+    channelExtraPa?: number;
+  }
+): {
+  actionPack?: "armas" | "magias" | "habilidades";
+  actionEntryId?: string;
+  bypassTurn?: boolean;
+  channelExtraPa?: number;
+} {
+  const packId =
+    action.packId === "armas" ||
+    action.packId === "magias" ||
+    action.packId === "habilidades"
+      ? action.packId
+      : undefined;
+  const needsEntryId =
+    Boolean(packId) || isMonsterToken(attacker) || Boolean(attacker.gmCreationId);
+  return {
+    actionPack: packId,
+    actionEntryId: needsEntryId ? action.entryId : undefined,
+    bypassTurn: opts?.bypassTurn,
+    ...(action.channelMaxExtraPa && opts?.channelExtraPa
+      ? { channelExtraPa: opts.channelExtraPa }
+      : {}),
+  };
 }
 
 export function defaultCombatLoadout(actor: CharacterSheet): CombatLoadout | null {
@@ -336,6 +383,7 @@ export function resolveCombatAction(
   if (packId && entryId) {
     const found = actions.find((a) => a.packId === packId && a.entryId === entryId);
     if (found) return found;
+    throw new Error(`Ação "${entryId}" não está disponível no combate`);
   }
 
   const fallback = actions.find((a) => a.kind === "weapon" || a.kind === "spell") ?? actions[0];
@@ -361,6 +409,8 @@ export function spellcastingAttribute(classId: string): AttributeKey {
     case "Druida":
       return "sabedoria";
     case "Bardo":
+    case "Paladino":
+    case "Bruxo":
       return "carisma";
     default:
       return "inteligencia";
@@ -423,24 +473,16 @@ export function buildAttackModifiers(
   action: CombatActionOption
 ): { modifier: AttackModifier; consumeAttackerMark: boolean; consumeDefenderFinta: boolean } {
   let attackBonus = attacker.nextAttackBonus ?? 0;
-  let rollMode: RollMode = "normal";
   const labels: string[] = [];
 
   if (attackBonus) labels.push(`+${attackBonus}`);
-  if (attacker.allyAttackAdvantage) {
-    rollMode = "advantage";
-    labels.push("inspiração");
-  }
-  if (attacker.rangedAttackAdvantage && action.rangeHex > 1) {
-    rollMode = combineRollModes(rollMode, "advantage");
-    labels.push("tiro certeiro");
-  }
+  if (attacker.allyAttackAdvantage) labels.push("inspiração");
+  if (attacker.rangedAttackAdvantage && action.rangeHex > 1) labels.push("tiro certeiro");
 
   const mark: AttackMark | undefined = attacker.attackMark;
   let consumeAttackerMark = false;
   if (mark && mark.targetId === defender.id) {
     if (mark.attackerDisadvantage) {
-      rollMode = "disadvantage";
       labels.push("finta");
       consumeAttackerMark = true;
     } else {
@@ -448,19 +490,16 @@ export function buildAttackModifiers(
         /* mark stays */
       } else {
         if (mark.bonus) attackBonus += mark.bonus;
-        if (mark.advantage || mark.bonus) {
-          rollMode = combineRollModes(rollMode, "advantage");
-        }
+        if (mark.advantage || mark.bonus) labels.push("marca");
         if (mark.bonus) labels.push(`marca +${mark.bonus}`);
         consumeAttackerMark = true;
       }
     }
   }
 
-  let consumeDefenderFinta = false;
+  const consumeDefenderFinta = Boolean(attacker.attackMark?.attackerDisadvantage);
   if (attacker.attackMark?.attackerDisadvantage) {
-    rollMode = combineRollModes(rollMode, "disadvantage");
-    labels.push("finta");
+    if (!labels.includes("finta")) labels.push("finta");
     consumeAttackerMark = true;
   }
 
@@ -472,7 +511,6 @@ export function buildAttackModifiers(
     modifier: {
       attackBonus: attackBonus || undefined,
       label: labels.length ? labels.join(", ") : undefined,
-      rollMode: rollMode !== "normal" ? rollMode : undefined,
     },
     consumeAttackerMark,
     consumeDefenderFinta,
@@ -495,6 +533,22 @@ export function attackerAfterAttack(
   if (consumeAttackerMark) patch.attackMark = undefined;
   if (attacker.chargeReady && action.rangeHex <= 1) patch.chargeReady = undefined;
   if (hit && attacker.bonusDamageFormula) patch.bonusDamageFormula = undefined;
+
+  const consumed: (keyof import("@/lib/vtt/types").BattleToken)[] = [];
+  if (patch.nextAttackBonus !== undefined) consumed.push("nextAttackBonus");
+  if (patch.allyAttackAdvantage !== undefined) consumed.push("allyAttackAdvantage");
+  if (patch.rangedAttackAdvantage !== undefined) consumed.push("rangedAttackAdvantage");
+  if (patch.chargeReady !== undefined) consumed.push("chargeReady", "chargeNote");
+  if (patch.bonusDamageFormula !== undefined) consumed.push("bonusDamageFormula");
+  if (patch.attackMark !== undefined) consumed.push("attackMark");
+
+  if (consumed.length) {
+    const cleared = clearTimedEffectsForFields(attacker, consumed);
+    if (cleared.timedEffects !== attacker.timedEffects) {
+      patch.timedEffects = cleared.timedEffects;
+    }
+  }
+
   return patch;
 }
 
@@ -512,6 +566,61 @@ function defenderHp(token: BattleToken): number {
   return token.vida ?? 0;
 }
 
+function isMonsterSide(token: BattleToken): boolean {
+  return Boolean(token.monsterEntryId || token.gmCreationId);
+}
+
+function isFriendlyTarget(attacker: BattleToken, defender: BattleToken): boolean {
+  if (attacker.id === defender.id) return false;
+  if (isMonsterSide(attacker)) return isMonsterSide(defender);
+  return !isMonsterSide(defender);
+}
+
+export function isHealingSpell(action: CombatActionOption): boolean {
+  const dt = (action.damageType ?? "").toLowerCase();
+  return (
+    dt.includes("cura") ||
+    action.abilityEffect === "heal_touch" ||
+    action.spellEffect === "heal"
+  );
+}
+
+/** PA do próximo ataque — 2º golpe no turno não reaproveita desconto do 1º (ex. Corte Limpo). */
+export function paNeedForCombatAction(
+  attacker: BattleToken,
+  actor: CharacterSheet | null,
+  action: CombatActionOption,
+  channelExtraPa = 0
+): number {
+  if (!actor) return action.paCost + channelExtraPa;
+  if (action.channelMaxExtraPa != null) {
+    return totalChannelPaCost(actor, action, channelExtraPa);
+  }
+  if (action.kind === "weapon") {
+    const count = weaponAttackCount(actor, action);
+    if (count > 1) return totalAttackPaCost(actor, action, attacker);
+    const attackIndex = isPaDiscountAvailable(attacker, "weapon") ? 1 : 2;
+    return effectivePaCost(
+      actor,
+      action,
+      mergePaCostContext(attacker, { attackIndex, attackCount: count })
+    );
+  }
+  return effectivePaCost(actor, action, paCostContextFromToken(attacker));
+}
+
+/** Jogador (não criatura) atacando aliado com ação ofensiva — exige confirmação na UI. */
+export function needsFriendlyFireConfirm(
+  attacker: BattleToken,
+  defender: BattleToken,
+  action: CombatActionOption
+): boolean {
+  if (isMonsterToken(attacker)) return false;
+  if (action.selfTarget || action.allyTarget) return false;
+  if (action.kind === "spell" && isHealingSpell(action)) return false;
+  return isFriendlyTarget(attacker, defender);
+}
+
 export function canAttackTarget(
   attacker: BattleToken,
   defender: BattleToken,
@@ -524,35 +633,50 @@ export function canAttackTarget(
     channelExtraPa?: number;
   }
 ): { ok: boolean; reason?: string } {
-  if (action.kind === "ability" && action.selfTarget) {
-    return { ok: false, reason: "Use botão de habilidade" };
+  if ((action.kind === "ability" || action.kind === "spell") && action.selfTarget) {
+    return { ok: false, reason: "Use o anel de ações (alvo próprio)" };
+  }
+  if (isAreaSpellAction(action)) {
+    return { ok: false, reason: "Magia de área — clique o centro no mapa" };
   }
   if (attacker.id === defender.id) return { ok: false, reason: "Alvo inválido" };
 
-  if (turn?.activeTokenId && attacker.id !== turn.activeTokenId && !turn.bypassTurn) {
-    return { ok: false, reason: "Aguarde seu turno na iniciativa" };
+  if (
+    !canActOnCombatTurn(attacker.id, {
+      activeTokenId: turn?.activeTokenId,
+      bypassTurn: turn?.bypassTurn,
+      combatHasOrder: turn?.combatHasOrder,
+    })
+  ) {
+    return { ok: false, reason: TURN_WAIT_MSG };
   }
+
+  const rechargeReason = rechargeBlockReason(attacker, action, turn?.combatRound ?? 1);
+  if (rechargeReason) return { ok: false, reason: rechargeReason };
 
   const act = canTokenAct(attacker);
   if (!act.ok) return act;
 
-  const dist = axialDistance(attacker.axial, defender.axial);
+  const dist = tokenAxialDistance(attacker, defender);
   if (!opts?.skipRangeCheck && dist > action.rangeHex) {
     return { ok: false, reason: `Fora de alcance (${dist} hex, máx ${action.rangeHex})` };
   }
   if (!opts?.skipPaCheck) {
     const channelExtra = opts?.channelExtraPa ?? 0;
-    const paNeed = opts?.actor
-      ? action.channelMaxExtraPa
-        ? totalChannelPaCost(opts.actor, action, channelExtra)
-        : totalAttackPaCost(opts.actor, action)
-      : action.paCost + channelExtra;
+    const paNeed = paNeedForCombatAction(attacker, opts?.actor ?? null, action, channelExtra);
     const paCheck = checkCanSpendPa(attacker, paNeed);
     if (!paCheck.ok) return { ok: false, reason: paCheck.reason };
   }
   if (defender.vidaMax != null && defenderHp(defender) <= 0) {
     return { ok: false, reason: "Alvo já derrotado" };
   }
+
+  if (action.kind === "spell" && isHealingSpell(action)) {
+    if (!isFriendlyTarget(attacker, defender)) {
+      return { ok: false, reason: "Selecione um aliado para curar" };
+    }
+  }
+
   return { ok: true };
 }
 
@@ -575,11 +699,16 @@ function resolveMonsterAttack(
   const template = attackerToken.monsterEntryId
     ? getMonsterTemplate(attackerToken.monsterEntryId)
     : null;
+  const gmStats = attackerToken.gmCreatureStats;
   const fixedMod = template
     ? action.rangeHex > 1
       ? Math.floor((template.agilidade - 10) / 2)
       : Math.floor((template.forca - 10) / 2)
-    : 0;
+    : gmStats
+      ? action.rangeHex > 1
+        ? Math.floor((gmStats.agilidade - 10) / 2)
+        : Math.floor((gmStats.forca - 10) / 2)
+      : 0;
 
   const built = buildAttackModifiers(attackerToken, defenderToken, action);
   const goblinMod = goblinMonsterAttackModifier(attackerToken, defenderToken, allTokens);
@@ -590,7 +719,7 @@ function resolveMonsterAttack(
   const extraBonus = merged?.attackBonus ?? 0;
 
   const rollMode = combineRollModes(
-    attackRollMode(attackerToken, defenderToken, []),
+    attackRollMode(attackerToken, defenderToken, allTokens, { action }),
     merged?.rollMode ?? "normal"
   );
   const naturalRoll = rollD20(rollMode);
@@ -602,8 +731,10 @@ function resolveMonsterAttack(
   const hit = critical || (!criticalFail && attackTotal >= ac);
 
   const hpBefore = defenderHp(defenderToken);
+  const tempBefore = defenderToken.vidaTemp ?? 0;
   let damage: DamageBreakdown | null = null;
   let hpAfter = hpBefore;
+  let tempAfter = tempBefore;
 
   if (hit) {
     damage = rollActionDamage(
@@ -623,7 +754,9 @@ function resolveMonsterAttack(
         total: damage.total + sneak.total,
       };
     }
-    hpAfter = Math.max(0, hpBefore - damage.total);
+    const damaged = applyDamageWithTempHp(hpBefore, tempBefore, damage.total);
+    hpAfter = damaged.hp;
+    tempAfter = damaged.tempHp;
   }
 
   let baseRes: AttackResolution = {
@@ -650,6 +783,8 @@ function resolveMonsterAttack(
     damage,
     defenderHpBefore: hpBefore,
     defenderHpAfter: hpAfter,
+    defenderTempHpBefore: tempBefore,
+    defenderTempHpAfter: tempAfter,
     summary: "",
   };
 
@@ -674,7 +809,8 @@ function resolveMonsterAttack(
     hit,
     critical,
     damage,
-    hpBefore
+    hpBefore,
+    tempBefore
   );
 }
 
@@ -704,6 +840,52 @@ export function resolveAttack(
   });
   if (!check.ok) throw new Error(check.reason ?? "Ataque inválido");
 
+  if (isHealingSpell(resolved)) {
+    const castKey = spellcastingAttribute(actor.identity.classe);
+    const castMod = attributeMod(actor.attributes[castKey]);
+    const healRoll = rollActionDamage(resolved.damageFormula, castMod, false);
+    const hpBefore = defenderHp(defenderToken);
+    const hpMax = defenderToken.vidaMax ?? hpBefore;
+    const hpAfter = Math.min(hpMax, hpBefore + healRoll.total);
+    const attr = attributeLabel(castKey);
+    const paCost = effectivePaCost(
+      actor,
+      action,
+      mergePaCostContext(attackerToken, {
+        attackIndex: opts?.attackIndex ?? 1,
+        attackCount: opts?.attackCount ?? 1,
+      })
+    );
+    const summary = `${actor.name} cura ${defenderToken.name} com ${resolved.name}: +${healRoll.total} HP (${healRoll.rolls.join("+")}${healRoll.attributeMod ? `+${healRoll.attributeMod}` : ""} ${attr}) — ${hpBefore}→${hpAfter}`;
+
+    return {
+      attackerTokenId: attackerToken.id,
+      defenderTokenId: defenderToken.id,
+      actionKind: "spell",
+      weaponName: resolved.name,
+      rangeHex: resolved.rangeHex,
+      paCost,
+      defenderAc: effectiveDefenderAc(defenderToken),
+      attack: {
+        natural: 20,
+        attributeMod: castMod,
+        profBonus: 0,
+        weaponBonus: 0,
+        total: 0,
+        attributeLabel: attr,
+        rollMode: "normal",
+        d20Detail: "toque",
+      },
+      hit: true,
+      critical: false,
+      criticalFail: false,
+      damage: healRoll,
+      defenderHpBefore: hpBefore,
+      defenderHpAfter: hpAfter,
+      summary,
+    };
+  }
+
   const attrKey = attackAttribute(actor, resolved);
   const attrMod = attributeMod(actor.attributes[attrKey]);
   const prof = isProficient(actor, action) ? proficiencyBonus(actor.identity.nivel) : 0;
@@ -711,7 +893,7 @@ export function resolveAttack(
   const merged = mergeModifiers(built.modifier, modifier);
   const extraBonus = merged?.attackBonus ?? 0;
   const rollMode = combineRollModes(
-    attackRollMode(attackerToken, defenderToken, allTokens),
+    attackRollMode(attackerToken, defenderToken, allTokens, { action: resolved }),
     merged?.rollMode ?? "normal"
   );
   const naturalRoll = rollD20(rollMode);
@@ -724,8 +906,10 @@ export function resolveAttack(
   const hit = critical || (!criticalFail && attackTotal >= ac);
 
   const hpBefore = defenderHp(defenderToken);
+  const tempBefore = defenderToken.vidaTemp ?? 0;
   let damage: DamageBreakdown | null = null;
   let hpAfter = hpBefore;
+  let tempAfter = tempBefore;
 
   if (hit) {
     const dmgMod = resolved.kind === "spell" ? 0 : attrMod;
@@ -735,7 +919,9 @@ export function resolveAttack(
       damage.rolls.push(...extra.rolls);
       damage.total += extra.total;
     }
-    hpAfter = Math.max(0, hpBefore - damage.total);
+    const damaged = applyDamageWithTempHp(hpBefore, tempBefore, damage.total);
+    hpAfter = damaged.hp;
+    tempAfter = damaged.tempHp;
   }
 
   const attr = attributeLabel(attrKey);
@@ -755,11 +941,15 @@ export function resolveAttack(
   }
 
   const paCost = resolved.channelMaxExtraPa
-    ? totalChannelPaCost(actor, action, channelExtra)
-    : effectivePaCost(actor, action, {
-        attackIndex: opts?.attackIndex ?? 1,
-        attackCount: opts?.attackCount ?? 1,
-      });
+    ? totalChannelPaCost(actor, action, channelExtra, attackerToken)
+    : effectivePaCost(
+        actor,
+        action,
+        mergePaCostContext(attackerToken, {
+          attackIndex: opts?.attackIndex ?? 1,
+          attackCount: opts?.attackCount ?? 1,
+        })
+      );
 
   const baseRes: AttackResolution = {
     attackerTokenId: attackerToken.id,
@@ -785,6 +975,8 @@ export function resolveAttack(
     damage,
     defenderHpBefore: hpBefore,
     defenderHpAfter: hpAfter,
+    defenderTempHpBefore: tempBefore,
+    defenderTempHpAfter: tempAfter,
     summary,
   };
 
@@ -795,7 +987,8 @@ export function resolveAttack(
     hit,
     critical,
     damage,
-    hpBefore
+    hpBefore,
+    tempBefore
   );
 }
 
@@ -808,7 +1001,7 @@ export function resolveMultiAttack(
   allTokens: BattleToken[] = []
 ): AttackResolution[] {
   const count = warriorAttackCount(actor, action);
-  const totalPa = totalAttackPaCost(actor, action);
+  const totalPa = totalAttackPaCost(actor, action, attackerTokenIn);
   const paCheck = checkCanSpendPa(attackerTokenIn, totalPa);
   if (!paCheck.ok) throw new Error(paCheck.reason ?? "PA insuficiente");
   const results: AttackResolution[] = [];
@@ -831,6 +1024,15 @@ export function resolveMultiAttack(
     if (res.attackerHpAfter != null) {
       attackerToken = { ...attackerToken, vida: res.attackerHpAfter };
     }
+    const built = buildAttackModifiers(attackerToken, currentDefender, action);
+    const buffCleanup = attackerAfterAttack(
+      attackerToken,
+      action,
+      built.consumeAttackerMark,
+      built.consumeDefenderFinta,
+      res.hit
+    );
+    attackerToken = { ...attackerToken, ...buffCleanup };
     if ((currentDefender.vida ?? 0) <= 0) break;
   }
 
@@ -845,7 +1047,7 @@ export function resolveTokenAttack(
   turn?: CombatTurnOptions,
   modifier?: AttackModifier,
   allTokens: BattleToken[] = [],
-  opts?: { channelExtraPa?: number }
+  opts?: { channelExtraPa?: number; skipPaCheck?: boolean }
 ): AttackResolution | AttackResolution[] {
   if (!actor) {
     return resolveMonsterAttack(
@@ -862,6 +1064,7 @@ export function resolveTokenAttack(
   }
   return resolveAttack(attackerToken, defenderToken, actor, action, turn, modifier, allTokens, {
     channelExtraPa: opts?.channelExtraPa,
+    skipPaCheck: opts?.skipPaCheck,
   });
 }
 
@@ -875,8 +1078,10 @@ export function formatAttackChatDetail(res: AttackResolution): string {
     `CA ${res.defenderAc}`,
   ];
   if (res.hit && res.damage) {
+    const heal = res.summary.includes(" cura ");
+    const dmgLabel = heal ? "Cura" : "Dano";
     parts.push(
-      `Dano ${res.damage.rolls.join("+")}${res.damage.attributeMod ? `+${res.damage.attributeMod}` : ""} = ${res.damage.total}`
+      `${dmgLabel} ${res.damage.rolls.join("+")}${res.damage.attributeMod ? `+${res.damage.attributeMod}` : ""} = ${res.damage.total}`
     );
     parts.push(`HP ${res.defenderHpBefore}→${res.defenderHpAfter}`);
   }

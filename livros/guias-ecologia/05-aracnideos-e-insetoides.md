@@ -1,4 +1,4 @@
-# Guia de Ecologia — Aracnídeos e Insetóides
+﻿# Guia de Ecologia — Aracnídeos e Insetóides
 **Eldarin v4.0 · Folheto de mesa**
 
 ---
@@ -15,7 +15,7 @@
 
 - Teia: movimento reduzido; FOR para soltar.  
 - Ovos: som alto pode eclodir larvas.  
-- Veneno: Harmonização CD 14+ antes de cozinhar glândula.
+- Veneno: Forrageio CD 14+ antes de cozinhar glândula.
 
 ---
 
@@ -26,7 +26,7 @@
 | Carne de artrópode | 10–14 | Proteína, caldo |
 | Glândula de veneno | 17 | Ladino / Artífice alquímico |
 | Seda / quitina | 14 | Corda, +2 CA temporário na assimilacao |
-| Ovo | 10 | Nutritivo; Estômago de Ferro CD 10 se cru |
+| Ovo | 10 | Nutritivo; Fortitude CD 10 se cru |
 
 ---
 
@@ -50,7 +50,7 @@
 ## Cozinha
 
 - **Fritura rápida** (Cocção 12+) para besouros.  
-- Veneno: só após **Purificar Veneno** ou Harmonização 18+.  
+- Veneno: só após **Purificar Veneno** ou Forrageio 18+.  
 - Prato perfeito com seda de matriarca = rolagem 2d4 no prato.
 
 ---

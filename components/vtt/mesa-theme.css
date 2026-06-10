@@ -1,0 +1,466 @@
+/**
+ * Tema mesa Eldarin v5 — chrome escuro + stage (Foundry).
+ * docs/DESIGN-ELDARIN-V5-CORES.md
+ * Aplicado em `.vtt-chrome[data-vtt-mesa="foundry"]` (página /mesa/[id]).
+ */
+
+.vtt-chrome[data-vtt-mesa="foundry"] {
+  color-scheme: dark;
+
+  /* stage — canvas */
+  --stage-bg: #0e0e0c;
+  --stage-grid: #1c1c18;
+  --stage-fog: rgba(10, 10, 8, 0.85);
+  --stage-token-ring: #b8922e;
+  --stage-ruler: #c8bfa8;
+
+  /* Chrome v5 — aliases legados na mesa */
+  --bg-deep: var(--chrome-bg);
+  --bg-mid: var(--chrome-surface);
+  --bg-elevated: var(--chrome-header);
+  --surface: var(--chrome-surface);
+  --surface-raised: var(--chrome-header);
+  --surface-inset: var(--chrome-bg);
+  --border: var(--chrome-border);
+  --border-accent: var(--chrome-accent);
+  --glass: rgba(30, 29, 26, 0.94);
+  --glass-strong: rgba(17, 17, 16, 0.98);
+  --glass-border: rgba(56, 52, 42, 0.65);
+  --glass-border-bright: rgba(184, 146, 46, 0.45);
+  --accent: var(--chrome-accent);
+  --accent-muted: var(--chrome-text-muted);
+  --accent-primary: var(--chrome-accent);
+  --accent-gold: var(--chrome-accent);
+  --accent-secondary: var(--type-weapon);
+  --accent-success: var(--semantic-success);
+  --accent-warn: var(--semantic-warn);
+  --accent-info: var(--semantic-info);
+  --text: var(--chrome-text);
+  --text-strong: #e8e0d0;
+  --text-muted: var(--chrome-text-muted);
+  --text-dim: #8a7d68;
+
+  /* Tokens mesa */
+  --mesa-rail-bg: linear-gradient(180deg, var(--chrome-surface) 0%, var(--chrome-bg) 100%);
+  --mesa-dock-bg: var(--chrome-bg);
+  --mesa-stage-bg: var(--stage-bg);
+  --mesa-surface: var(--chrome-surface);
+  --mesa-surface-inset: var(--chrome-bg);
+  --mesa-accent: var(--chrome-accent);
+  --mesa-accent-soft: rgba(184, 146, 46, 0.18);
+  --mesa-accent-border: rgba(184, 146, 46, 0.38);
+  --mesa-gm-accent: var(--semantic-gm);
+  --mesa-gm-soft: rgba(58, 30, 82, 0.2);
+  --mesa-text: var(--chrome-text);
+  --mesa-text-dim: var(--chrome-text-muted);
+
+  /* Mapa hex (lidos por readThemeColor no canvas) */
+  --vtt-canvas-bg-0: #141412;
+  --vtt-canvas-bg-1: var(--stage-bg);
+  --vtt-hex-fill: rgba(184, 146, 46, 0.04);
+  --vtt-hex-stroke: rgba(130, 132, 138, 0.58);
+  --vtt-hex-walk-fill: rgba(72, 110, 95, 0.58);
+  --vtt-hex-walk-stroke: rgba(100, 155, 130, 0.72);
+  --vtt-hex-walk-paid-fill: rgba(120, 95, 40, 0.62);
+  --vtt-hex-walk-paid-stroke: rgba(180, 145, 60, 0.82);
+  --vtt-hex-run-fill: rgba(160, 110, 20, 0.55);
+  --vtt-hex-run-stroke: rgba(220, 180, 80, 0.78);
+  --vtt-hex-hover-fill: rgba(184, 146, 46, 0.28);
+  --vtt-hex-hover-stroke: var(--chrome-accent);
+  --vtt-hex-turn-walk-fill: rgba(72, 110, 95, 0.42);
+  --vtt-hex-turn-walk-stroke: rgba(100, 155, 130, 0.44);
+  --vtt-hex-attack-fill: rgba(180, 90, 55, 0.58);
+  --vtt-hex-attack-stroke: rgba(200, 100, 70, 0.78);
+  --vtt-hex-dir-fill: rgba(160, 120, 40, 0.58);
+  --vtt-hex-dir-stroke: rgba(220, 180, 80, 0.9);
+  --vtt-hex-area-fill: rgba(120, 60, 180, 0.6);
+  --vtt-hex-area-stroke: rgba(180, 120, 255, 0.85);
+  --vtt-hex-area-center-fill: rgba(200, 100, 255, 0.68);
+  --vtt-hex-area-center-stroke: #e8c4ff;
+
+  /* Grid sobre mapa escuro — grafite claro (contraste) */
+  --vtt-hex-on-dark-fill: rgba(255, 255, 255, 0.03);
+  --vtt-hex-on-dark-stroke: rgba(210, 212, 218, 0.52);
+  --vtt-hex-on-dark-walk-fill: rgba(130, 210, 150, 0.55);
+  --vtt-hex-on-dark-walk-stroke: rgba(170, 240, 185, 0.78);
+  --vtt-hex-on-dark-turn-walk-fill: rgba(130, 210, 150, 0.4);
+  --vtt-hex-on-dark-turn-walk-stroke: rgba(170, 240, 185, 0.48);
+  --vtt-hex-on-dark-walk-paid-fill: rgba(200, 165, 70, 0.58);
+  --vtt-hex-on-dark-walk-paid-stroke: rgba(240, 210, 120, 0.88);
+  --vtt-hex-on-dark-run-fill: rgba(255, 210, 90, 0.52);
+  --vtt-hex-on-dark-run-stroke: rgba(255, 230, 140, 0.78);
+  --vtt-hex-on-dark-attack-fill: rgba(255, 170, 120, 0.55);
+  --vtt-hex-on-dark-attack-stroke: rgba(255, 120, 80, 0.88);
+  --vtt-hex-on-dark-dir-fill: rgba(220, 175, 70, 0.55);
+  --vtt-hex-on-dark-dir-stroke: rgba(255, 220, 130, 0.92);
+  --vtt-hex-on-dark-area-fill: rgba(200, 140, 255, 0.58);
+  --vtt-hex-on-dark-area-stroke: rgba(220, 180, 255, 0.9);
+  --vtt-hex-on-dark-area-center-fill: rgba(230, 180, 255, 0.68);
+  --vtt-hex-on-dark-area-center-stroke: #f0d8ff;
+  --vtt-hex-on-dark-hover-fill: rgba(255, 255, 255, 0.2);
+  --vtt-hex-on-dark-hover-stroke: rgba(255, 255, 255, 0.72);
+  --vtt-hex-on-dark-invalid-fill: rgba(255, 90, 80, 0.52);
+  --vtt-hex-on-dark-invalid-stroke: rgba(255, 140, 120, 0.95);
+  --vtt-hex-on-dark-path-stroke: rgba(255, 220, 120, 0.95);
+  --vtt-hex-on-dark-path-glow: rgba(255, 200, 80, 0.38);
+
+  /* Grid sobre mapa claro — grafite escuro (contraste) */
+  --vtt-hex-on-light-fill: rgba(0, 0, 0, 0.04);
+  --vtt-hex-on-light-stroke: rgba(58, 60, 66, 0.68);
+  --vtt-hex-on-light-walk-fill: rgba(30, 110, 70, 0.52);
+  --vtt-hex-on-light-walk-stroke: rgba(20, 90, 55, 0.82);
+  --vtt-hex-on-light-turn-walk-fill: rgba(30, 110, 70, 0.38);
+  --vtt-hex-on-light-turn-walk-stroke: rgba(20, 90, 55, 0.52);
+  --vtt-hex-on-light-walk-paid-fill: rgba(140, 110, 30, 0.55);
+  --vtt-hex-on-light-walk-paid-stroke: rgba(100, 75, 15, 0.88);
+  --vtt-hex-on-light-run-fill: rgba(160, 100, 20, 0.5);
+  --vtt-hex-on-light-run-stroke: rgba(130, 80, 10, 0.78);
+  --vtt-hex-on-light-attack-fill: rgba(160, 70, 40, 0.55);
+  --vtt-hex-on-light-attack-stroke: rgba(140, 50, 30, 0.85);
+  --vtt-hex-on-light-dir-fill: rgba(160, 120, 30, 0.55);
+  --vtt-hex-on-light-dir-stroke: rgba(120, 85, 10, 0.88);
+  --vtt-hex-on-light-area-fill: rgba(100, 50, 150, 0.58);
+  --vtt-hex-on-light-area-stroke: rgba(80, 40, 120, 0.85);
+  --vtt-hex-on-light-area-center-fill: rgba(180, 90, 220, 0.65);
+  --vtt-hex-on-light-area-center-stroke: #6b2a8a;
+  --vtt-hex-on-light-hover-fill: rgba(0, 0, 0, 0.18);
+  --vtt-hex-on-light-hover-stroke: rgba(0, 0, 0, 0.72);
+  --vtt-hex-on-light-invalid-fill: rgba(180, 40, 30, 0.5);
+  --vtt-hex-on-light-invalid-stroke: rgba(140, 20, 15, 0.95);
+  --vtt-hex-on-light-path-stroke: rgba(160, 110, 20, 0.95);
+  --vtt-hex-on-light-path-glow: rgba(184, 146, 46, 0.32);
+
+  /* Mapas com fundo verde — grafite escuro para não sumir no terreno */
+  --vtt-hex-on-green-fill: rgba(0, 0, 0, 0.05);
+  --vtt-hex-on-green-stroke: rgba(58, 60, 66, 0.72);
+  --vtt-hex-on-green-walk-fill: rgba(255, 252, 235, 0.72);
+  --vtt-hex-on-green-walk-stroke: rgba(0, 0, 0, 0.92);
+  --vtt-hex-on-green-turn-walk-fill: rgba(255, 252, 235, 0.55);
+  --vtt-hex-on-green-turn-walk-stroke: rgba(0, 0, 0, 0.72);
+  --vtt-hex-on-green-walk-paid-fill: rgba(255, 235, 180, 0.68);
+  --vtt-hex-on-green-walk-paid-stroke: rgba(90, 60, 0, 0.95);
+  --vtt-hex-on-green-run-fill: rgba(255, 196, 72, 0.65);
+  --vtt-hex-on-green-run-stroke: rgba(90, 45, 0, 0.95);
+  --vtt-hex-on-green-attack-fill: rgba(255, 210, 180, 0.65);
+  --vtt-hex-on-green-attack-stroke: rgba(120, 30, 10, 0.9);
+  --vtt-hex-on-green-dir-fill: rgba(255, 220, 140, 0.65);
+  --vtt-hex-on-green-dir-stroke: rgba(100, 65, 0, 0.92);
+  --vtt-hex-on-green-area-fill: rgba(240, 200, 255, 0.65);
+  --vtt-hex-on-green-area-stroke: rgba(80, 20, 120, 0.9);
+  --vtt-hex-on-green-area-center-fill: rgba(255, 230, 255, 0.75);
+  --vtt-hex-on-green-area-center-stroke: rgba(40, 0, 80, 0.95);
+  --vtt-hex-on-green-invalid-fill: rgba(255, 120, 100, 0.55);
+  --vtt-hex-on-green-invalid-stroke: rgba(100, 10, 0, 0.98);
+  --vtt-hex-on-green-spawn-fill: rgba(255, 252, 220, 0.55);
+  --vtt-hex-on-green-spawn-stroke: rgba(0, 0, 0, 0.9);
+  --vtt-hex-on-green-hover-fill: rgba(255, 255, 255, 0.28);
+  --vtt-hex-on-green-hover-stroke: rgba(0, 0, 0, 0.88);
+  --vtt-hex-on-green-path-stroke: rgba(0, 0, 0, 0.9);
+  --vtt-hex-on-green-path-glow: rgba(255, 255, 255, 0.35);
+
+  --vtt-token-turn-glow: rgba(184, 146, 46, 0.5);
+  --vtt-token-ring-turn: var(--stage-token-ring);
+  --vtt-token-ring-selected: var(--stage-token-ring);
+  --vtt-token-text: var(--chrome-text);
+  --vtt-token-subtext: var(--chrome-text-muted);
+  --vtt-path-stroke: rgba(184, 146, 46, 0.9);
+  --vtt-path-glow: rgba(184, 146, 46, 0.35);
+  --vtt-hp-bar: var(--semantic-success);
+
+  background: var(--bg-deep);
+  color: var(--text);
+}
+
+/* Topbar e chrome */
+.vtt-chrome[data-vtt-mesa="foundry"] .vtt-topbar {
+  background: var(--glass-strong);
+  border-bottom-color: var(--mesa-accent-border);
+}
+
+.vtt-chrome[data-vtt-mesa="foundry"] .vtt-nav a:hover {
+  color: var(--mesa-accent);
+  background: var(--mesa-accent-soft);
+}
+
+.vtt-chrome[data-vtt-mesa="foundry"] .neon-title {
+  color: var(--mesa-accent);
+}
+
+.vtt-chrome[data-vtt-mesa="foundry"] .btn-secondary:hover {
+  background: var(--mesa-accent-soft);
+  border-color: var(--mesa-accent-border);
+}
+
+.vtt-chrome[data-vtt-mesa="foundry"] .glass-panel {
+  background: var(--surface-raised);
+  border-color: var(--mesa-accent-border);
+}
+
+/* Convite / prompts */
+.vtt-chrome[data-vtt-mesa="foundry"] .room-invite-bar {
+  background: rgba(0, 0, 0, 0.28);
+  border-color: var(--mesa-accent-border);
+}
+
+.vtt-chrome[data-vtt-mesa="foundry"] .room-invite-code {
+  color: var(--mesa-accent);
+  background: var(--mesa-accent-soft);
+  border-color: var(--mesa-accent-border);
+}
+
+/* Painéis VTT — substitui dourado hardcoded por azul */
+.vtt-chrome[data-vtt-mesa="foundry"] .vtt-sidebar,
+.vtt-chrome[data-vtt-mesa="foundry"] .vtt-action-panel,
+.vtt-chrome[data-vtt-mesa="foundry"] .vtt-dungeon-panel,
+.vtt-chrome[data-vtt-mesa="foundry"] .glass-panel {
+  border-color: var(--mesa-accent-border);
+}
+
+.vtt-chrome[data-vtt-mesa="foundry"] .vtt-eyebrow {
+  color: var(--mesa-accent);
+}
+
+.vtt-chrome[data-vtt-mesa="foundry"] .vtt-help-trigger {
+  border-color: var(--mesa-accent-border);
+  color: var(--mesa-accent);
+  background: var(--glass-strong);
+}
+
+.vtt-chrome[data-vtt-mesa="foundry"] .vtt-help-trigger:hover {
+  background: var(--mesa-accent-soft);
+}
+
+.vtt-chrome[data-vtt-mesa="foundry"] .vtt-action-hud {
+  background: var(--glass-strong);
+  border-color: var(--mesa-accent-border);
+}
+
+.vtt-chrome[data-vtt-mesa="foundry"] .vtt-action-hud-title {
+  color: var(--mesa-accent);
+}
+
+.vtt-chrome[data-vtt-mesa="foundry"] .vtt-action-hud-lines .tone-warn {
+  color: #e8d4a8;
+}
+
+.vtt-chrome[data-vtt-mesa="foundry"] .vtt-end-turn-bar {
+  background: var(--glass-strong);
+  border-color: var(--mesa-accent-border);
+}
+
+.vtt-chrome[data-vtt-mesa="foundry"] .vtt-end-turn-active strong {
+  color: var(--mesa-accent);
+}
+
+.vtt-chrome[data-vtt-mesa="foundry"] .vtt-turn-row--active,
+.vtt-chrome[data-vtt-mesa="foundry"] .vtt-turn-row.is-active {
+  border-color: var(--mesa-accent-border);
+  background: var(--mesa-accent-soft);
+  box-shadow: inset 3px 0 0 var(--mesa-accent);
+}
+
+.vtt-chrome[data-vtt-mesa="foundry"] .vtt-token-row:hover,
+.vtt-chrome[data-vtt-mesa="foundry"] .vtt-turn-row:hover {
+  border-color: var(--mesa-accent);
+  background: var(--mesa-accent-soft);
+}
+
+.vtt-chrome[data-vtt-mesa="foundry"] .vtt-token-list button.active {
+  border-color: var(--mesa-accent-border);
+  background: var(--mesa-accent-soft);
+}
+
+.vtt-chrome[data-vtt-mesa="foundry"] .neon-chip.active {
+  border-color: var(--mesa-accent);
+  color: var(--mesa-accent);
+}
+
+.vtt-chrome[data-vtt-mesa="foundry"] .vtt-channel-float {
+  border-color: var(--mesa-accent-border);
+  background: var(--glass-strong);
+}
+
+.vtt-chrome[data-vtt-mesa="foundry"] .vtt-modal-panel {
+  border-color: var(--mesa-accent-border);
+  background: var(--glass-strong);
+}
+
+.vtt-chrome[data-vtt-mesa="foundry"] .vtt-canvas-wrap--spawn-drop {
+  outline-color: var(--mesa-accent);
+}
+
+/* Rolagem */
+.vtt-chrome[data-vtt-mesa="foundry"] .mesa-panel-scroll,
+.vtt-chrome[data-vtt-mesa="foundry"] .foundry-dock-panel__body,
+.vtt-chrome[data-vtt-mesa="foundry"] .foundry-window__body {
+  scrollbar-color: rgba(184, 146, 46, 0.45) rgba(0, 0, 0, 0.25);
+}
+
+/* Token action ring */
+.vtt-chrome[data-vtt-mesa="foundry"] .token-action-ring__track {
+  border-color: rgba(184, 146, 46, 0.28);
+  box-shadow: 0 0 0 1px rgba(184, 146, 46, 0.1);
+}
+
+.vtt-chrome[data-vtt-mesa="foundry"] .token-action-ring__slot-btn {
+  border-color: rgba(184, 146, 46, 0.35);
+  background: rgba(30, 29, 26, 0.92);
+}
+
+.vtt-chrome[data-vtt-mesa="foundry"] .token-action-ring__slot-btn:hover {
+  border-color: var(--mesa-accent);
+  background: var(--mesa-accent-soft);
+}
+
+/* Toast */
+.vtt-chrome[data-vtt-mesa="foundry"] .vtt-toast {
+  background: rgba(30, 29, 26, 0.94);
+  border-color: var(--mesa-accent-border);
+}
+
+/* Ficha popup na mesa */
+.vtt-chrome[data-vtt-mesa="foundry"] .sheet-shell--popup:not(.sheet-shell--ddb) {
+  background: var(--mesa-surface);
+  border-color: var(--mesa-accent-border);
+}
+
+.vtt-chrome[data-vtt-mesa="foundry"] .sheet-popup-top {
+  background: var(--mesa-surface-inset);
+  border-bottom-color: var(--mesa-accent-border);
+}
+
+.vtt-chrome[data-vtt-mesa="foundry"] .sheet-popup-identity__eyebrow,
+.vtt-chrome[data-vtt-mesa="foundry"] .sheet-popup-identity__ring,
+.vtt-chrome[data-vtt-mesa="foundry"] .sheet-popup-attr strong,
+.vtt-chrome[data-vtt-mesa="foundry"] .sheet-popup-skill__abbr,
+.vtt-chrome[data-vtt-mesa="foundry"] .sheet-popup-skill__bonus,
+.vtt-chrome[data-vtt-mesa="foundry"] .sheet-popup-section-title {
+  color: var(--mesa-accent);
+}
+
+.vtt-chrome[data-vtt-mesa="foundry"] .sheet-popup-identity__ring {
+  border-color: var(--mesa-accent);
+  box-shadow: 0 0 0 3px var(--mesa-accent-soft);
+}
+
+.vtt-chrome[data-vtt-mesa="foundry"] .sheet-popup-center {
+  background: var(--mesa-surface);
+}
+
+.vtt-chrome[data-vtt-mesa="foundry"] .sheet-popup-skill__abbr,
+.vtt-chrome[data-vtt-mesa="foundry"] .sheet-popup-skill__bonus,
+.vtt-chrome[data-vtt-mesa="foundry"] .sheet-popup-pill--accent {
+  color: var(--mesa-accent);
+  border-color: var(--mesa-accent-border);
+}
+
+.vtt-chrome[data-vtt-mesa="foundry"] .inv-row--selected {
+  border-color: var(--mesa-accent-border);
+  background: var(--mesa-accent-soft);
+  box-shadow: 0 0 0 1px rgba(184, 146, 46, 0.2);
+}
+
+.vtt-chrome[data-vtt-mesa="foundry"] .sheet-tab.active {
+  color: var(--mesa-accent);
+  border-color: var(--mesa-accent-border);
+}
+
+/* Level-up na ficha (mesa) */
+.vtt-chrome[data-vtt-mesa="foundry"] .level-up-wizard .lu-step--active {
+  border-color: var(--mesa-accent-border);
+  background: var(--mesa-accent-soft);
+}
+
+/* Iniciativa / turno */
+.vtt-chrome[data-vtt-mesa="foundry"] .vtt-turn-list--compact li.active,
+.vtt-chrome[data-vtt-mesa="foundry"] .vtt-turn-list--compact li.vtt-turn-active {
+  background: rgba(76, 140, 74, 0.32);
+}
+
+.vtt-chrome[data-vtt-mesa="foundry"] .vtt-turn-list li.active,
+.vtt-chrome[data-vtt-mesa="foundry"] .vtt-turn-list li.vtt-turn-active {
+  border-color: var(--mesa-accent-border);
+  background: var(--mesa-accent-soft);
+  box-shadow: inset 3px 0 0 var(--mesa-accent);
+}
+
+.vtt-chrome[data-vtt-mesa="foundry"] .vtt-turn-list li.vtt-turn-drag-over {
+  border-color: var(--mesa-accent-border);
+  background: var(--mesa-accent-soft);
+}
+
+.vtt-chrome[data-vtt-mesa="foundry"] .vtt-turn-gm-banner {
+  border-color: var(--mesa-accent-border);
+  background: var(--mesa-accent-soft);
+}
+
+.vtt-chrome[data-vtt-mesa="foundry"] .vtt-turn-gm-chip--active,
+.vtt-chrome[data-vtt-mesa="foundry"] .vtt-turn-gm-chip:hover:not(:disabled) {
+  border-color: var(--mesa-accent-border);
+  color: var(--mesa-accent);
+}
+
+.vtt-chrome[data-vtt-mesa="foundry"] .vtt-turn-round {
+  color: var(--mesa-accent);
+}
+
+.vtt-chrome[data-vtt-mesa="foundry"] .vtt-turn-next-btn {
+  border-color: var(--mesa-accent-border);
+}
+
+/* Chat, dados, picker */
+.vtt-chrome[data-vtt-mesa="foundry"] .room-chat,
+.vtt-chrome[data-vtt-mesa="foundry"] .dice-roller,
+.vtt-chrome[data-vtt-mesa="foundry"] .picker-modal {
+  border-color: var(--mesa-accent-border);
+  background: var(--glass);
+}
+
+.vtt-chrome[data-vtt-mesa="foundry"] .picker-modal .sheet-tab.active {
+  color: var(--mesa-accent);
+  border-color: var(--mesa-accent-border);
+}
+
+/* Combate / spawn / dungeon */
+.vtt-chrome[data-vtt-mesa="foundry"] .vtt-combat-actions .btn--primary,
+.vtt-chrome[data-vtt-mesa="foundry"] .vtt-spawn-entry--highlight {
+  border-color: var(--mesa-accent-border);
+  background: var(--mesa-accent-soft);
+}
+
+.vtt-chrome[data-vtt-mesa="foundry"] .vtt-dungeon-tool--active {
+  border-color: var(--mesa-accent);
+  color: var(--mesa-accent);
+  background: var(--mesa-accent-soft);
+}
+
+.vtt-chrome[data-vtt-mesa="foundry"] .vtt-view-btn--dungeon-on {
+  border-color: var(--mesa-accent);
+  color: var(--mesa-accent);
+  background: var(--mesa-accent-soft);
+}
+
+/* Editor de mapa — painel no dock/janela */
+.vtt-chrome[data-vtt-mesa="foundry"] .vtt-dungeon-layer-tab--on,
+.vtt-chrome[data-vtt-mesa="foundry"] .vtt-dungeon-tool--on {
+  border-color: var(--mesa-accent-border);
+  color: var(--mesa-accent);
+  background: var(--mesa-accent-soft);
+}
+
+.vtt-chrome[data-vtt-mesa="foundry"] .vtt-dungeon-layer--floor {
+  border-color: var(--mesa-accent-border);
+  background: var(--mesa-accent-soft);
+}
+
+.vtt-chrome[data-vtt-mesa="foundry"] .vtt-btn--floor-upload {
+  border-color: var(--mesa-accent-border) !important;
+  background: var(--mesa-accent-soft) !important;
+  color: var(--mesa-text);
+}
+
+.vtt-chrome[data-vtt-mesa="foundry"] .vtt-dungeon-toggle--on {
+  border-color: var(--mesa-accent-border);
+  color: var(--mesa-accent);
+  background: var(--mesa-accent-soft);
+}

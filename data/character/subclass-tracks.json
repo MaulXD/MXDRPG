@@ -1,12 +1,12 @@
 {
-  "version": 1,
+  "version": 2,
   "tracks": [
     {
-      "id": "predador-voraz",
+      "id": "cacador-de-feras",
       "classId": "Guerreiro",
-      "subclass": "Predador Voraz",
+      "subclass": "Caçador de Feras",
       "specialty": "Feras e Bestiais",
-      "diet": "Carne vermelha de feras: +2 FOR e regen 3 HP/turno por 4h",
+      "diet": "Assimilação de feras: +2 FOR e regen 3 HP/turno por 4h",
       "talents": [
         {
           "level": 4,
@@ -17,7 +17,7 @@
         },
         {
           "level": 8,
-          "id": "maestria-de-acougue",
+          "id": "maestria-voraz",
           "name": "Maestria Voraz",
           "kind": "talent",
           "requires": "corte-limpo"
@@ -27,7 +27,7 @@
           "id": "abate-perfeito",
           "name": "Abate Perfeito",
           "kind": "talent",
-          "requires": "maestria-de-acougue"
+          "requires": "maestria-voraz"
         },
         {
           "level": 16,
@@ -38,7 +38,7 @@
         },
         {
           "level": 20,
-          "id": "legado-do-acougue",
+          "id": "legado-do-predador",
           "name": "Legado do Predador",
           "kind": "ascension",
           "requires": null
@@ -46,11 +46,11 @@
       ]
     },
     {
-      "id": "quebra-cascos",
+      "id": "quebrador-de-carapacas",
       "classId": "Guerreiro",
-      "subclass": "Quebra-Cascos",
+      "subclass": "Quebrador de Carapaças",
       "specialty": "Carapaças e Insetoides",
-      "diet": "Artropodes: imune a críticos temporário e +2 CA por 8h",
+      "diet": "Assimilação de artropodes: imune a críticos temporário e +2 CA por 8h",
       "talents": [
         {
           "level": 4,
@@ -94,7 +94,7 @@
       "classId": "Guerreiro",
       "subclass": "Cavaleiro Dracônico",
       "specialty": "Escamosos e Draconídeos",
-      "diet": "Répteis/dracônicos: resistência elemental e baforada 2d6",
+      "diet": "Assimilação dracônica: resistência elemental e baforada 2d6",
       "talents": [
         {
           "level": 4,
@@ -134,11 +134,11 @@
       ]
     },
     {
-      "id": "guerreiro-das-profundezas",
+      "id": "sentinela-das-profundezas",
       "classId": "Guerreiro",
-      "subclass": "Guerreiro das Profundezas",
+      "subclass": "Sentinela das Profundezas",
       "specialty": "Aquáticos e Anfíbios",
-      "diet": "Aquáticos: respiração aquática, nado 12m",
+      "diet": "Assimilação aquática: respiração submersa, nado 12m",
       "talents": [
         {
           "level": 4,
@@ -178,11 +178,11 @@
       ]
     },
     {
-      "id": "cacador-celeste",
+      "id": "cacador-do-ceu",
       "classId": "Patrulheiro",
-      "subclass": "Caçador Celeste",
+      "subclass": "Caçador do Céu",
       "specialty": "Aves e Voadores",
-      "diet": "Aves: visão 36m e +9m alcance por 8h",
+      "diet": "Assimilação de aves: visão 36m e +9m alcance por 8h",
       "talents": [
         {
           "level": 4,
@@ -222,11 +222,11 @@
       ]
     },
     {
-      "id": "forrageiro-dos-esporos",
+      "id": "explorador-de-esporos",
       "classId": "Patrulheiro",
-      "subclass": "Forrageiro dos Esporos",
+      "subclass": "Explorador de Esporos",
       "specialty": "Flora e Fungos",
-      "diet": "Flora/fungos: imune controle mental",
+      "diet": "Assimilação de flora: imune a controle mental",
       "talents": [
         {
           "level": 4,
@@ -266,11 +266,11 @@
       ]
     },
     {
-      "id": "rastreador-de-sangue-frio",
+      "id": "rastreador-de-escamas",
       "classId": "Patrulheiro",
-      "subclass": "Rastreador de Sangue Frio",
+      "subclass": "Rastreador de Escamas",
       "specialty": "Répteis e Basiliscos",
-      "diet": "Répteis: imune petrificação",
+      "diet": "Assimilação de répteis: imune a petrificação",
       "talents": [
         {
           "level": 4,
@@ -310,11 +310,11 @@
       ]
     },
     {
-      "id": "guia-de-enxame",
+      "id": "mestre-de-enxame",
       "classId": "Patrulheiro",
-      "subclass": "Guia de Enxame",
+      "subclass": "Mestre de Enxame",
       "specialty": "Pragas e Insetos",
-      "diet": "Insetos: telepatia local",
+      "diet": "Assimilação de insetos: telepatia local com enxames",
       "talents": [
         {
           "level": 4,
@@ -354,11 +354,11 @@
       ]
     },
     {
-      "id": "degustador-de-sombras",
+      "id": "sombra-eterea",
       "classId": "Ladino",
-      "subclass": "Degustador de Sombras",
+      "subclass": "Sombra Etérea",
       "specialty": "Espirituais",
-      "diet": "Ectoplasma: intangível 1 turno",
+      "diet": "Assimilação ectoplásmica: intangível 1 turno",
       "talents": [
         {
           "level": 4,
@@ -398,11 +398,11 @@
       ]
     },
     {
-      "id": "extrator-de-geleias",
+      "id": "forma-amorfa",
       "classId": "Ladino",
-      "subclass": "Extrator de Geleias",
+      "subclass": "Forma Amorfa",
       "specialty": "Amorfos e Slimes",
-      "diet": "Slimes: elasticidade e resistência ácido",
+      "diet": "Assimilação de slimes: elasticidade e resistência a ácido",
       "talents": [
         {
           "level": 4,
@@ -442,11 +442,11 @@
       ]
     },
     {
-      "id": "ladrao-de-glandulas",
+      "id": "assassino-venenoso",
       "classId": "Ladino",
-      "subclass": "Ladrão de Glândulas",
+      "subclass": "Assassino Venenoso",
       "specialty": "Peçonhentos",
-      "diet": "Veneno purificado: +1d4 veneno",
+      "diet": "Assimilação venenosa: +1d4 dano de veneno em ataques",
       "talents": [
         {
           "level": 4,
@@ -490,7 +490,7 @@
       "classId": "Ladino",
       "subclass": "Corsário de Cripta",
       "specialty": "Ossos e Mortos-Vivos",
-      "diet": "Ossos: fingir morte, resistência necrotico",
+      "diet": "Assimilação óssea: fingir morte, resistência a necrótico",
       "talents": [
         {
           "level": 4,
@@ -530,11 +530,11 @@
       ]
     },
     {
-      "id": "piromante-de-forno",
+      "id": "piromante-das-brasas",
       "classId": "Mago",
-      "subclass": "Piromante de Forno",
-      "specialty": "Calor e Assados",
-      "diet": "Assados maximizam mana do grupo",
+      "subclass": "Piromante das Brasas",
+      "specialty": "Fogo e Calor",
+      "diet": "Assimilação ígnea: feitiços de fogo +1d6 vs gelo/água",
       "talents": [
         {
           "level": 4,
@@ -574,11 +574,11 @@
       ]
     },
     {
-      "id": "criomante-de-conservacao",
+      "id": "criomante-do-gelo",
       "classId": "Mago",
-      "subclass": "Criomante de Conservação",
-      "specialty": "Gelo e Dry-Aged",
-      "diet": "Dry-aged: aura frio e +3 CA",
+      "subclass": "Criomante do Gelo",
+      "specialty": "Gelo e Conservação",
+      "diet": "Assimilação glacial: aura de frio e +3 CA",
       "talents": [
         {
           "level": 4,
@@ -618,11 +618,11 @@
       ]
     },
     {
-      "id": "mago-fermentador",
+      "id": "mago-alquimico",
       "classId": "Mago",
-      "subclass": "Mago Fermentador",
-      "specialty": "Fermentados",
-      "diet": "Fermentados: imune ilusão",
+      "subclass": "Mago Alquímico",
+      "specialty": "Fermentados e Catalisadores",
+      "diet": "Assimilação alquímica: imune a ilusão",
       "talents": [
         {
           "level": 4,
@@ -662,11 +662,11 @@
       ]
     },
     {
-      "id": "alquimista-de-caldos",
+      "id": "alquimista-acido",
       "classId": "Mago",
-      "subclass": "Alquimista de Caldos",
+      "subclass": "Alquimista Ácido",
       "specialty": "Ácidos e Líquidos",
-      "diet": "Sopas: ácido ou névoa venenosa",
+      "diet": "Assimilação ácida: névoa corrosiva e resistências",
       "talents": [
         {
           "level": 4,
@@ -706,11 +706,11 @@
       ]
     },
     {
-      "id": "mago-confeiteiro",
+      "id": "mago-dos-encantos",
       "classId": "Mago",
-      "subclass": "Mago Confeiteiro",
-      "specialty": "Doces Mágicos",
-      "diet": "Glicose arcana: encantamento grátis",
+      "subclass": "Mago dos Encantos",
+      "specialty": "Encantamento e Ilusão",
+      "diet": "Assimilação arcana: encantamentos com vantagem",
       "talents": [
         {
           "level": 4,
@@ -750,11 +750,11 @@
       ]
     },
     {
-      "id": "sacerdote-da-purificacao",
+      "id": "sacerdote-purificador",
       "classId": "Clérigo",
-      "subclass": "Sacerdote da Purificação",
+      "subclass": "Sacerdote Purificador",
       "specialty": "Amaldiçoados",
-      "diet": "Carnes purificadas: +3 vs mal",
+      "diet": "Assimilação purificada: +3 em testes contra mal",
       "talents": [
         {
           "level": 4,
@@ -786,19 +786,19 @@
         },
         {
           "level": 20,
-          "id": "julgamento-da-mesa",
-          "name": "Julgamento da Mesa",
+          "id": "julgamento-final",
+          "name": "Julgamento Final",
           "kind": "ascension",
           "requires": null
         }
       ]
     },
     {
-      "id": "monge-do-jejum",
+      "id": "monge-ascetico",
       "classId": "Clérigo",
-      "subclass": "Monge do Jejum",
+      "subclass": "Monge Ascético",
       "specialty": "Energia Interna",
-      "diet": "Jejum 8h+: +4 esquiva e radiante",
+      "diet": "Jejum de masmorra 8h+: +4 esquiva e dano radiante",
       "talents": [
         {
           "level": 4,
@@ -838,11 +838,11 @@
       ]
     },
     {
-      "id": "clerigo-do-pao-da-vida",
+      "id": "clerigo-do-sustento",
       "classId": "Clérigo",
-      "subclass": "Clérigo do Pão da Vida",
+      "subclass": "Clérigo do Sustento",
       "specialty": "Flora Divina",
-      "diet": "Pães: HP temp nv×3",
+      "diet": "Assimilação divina: HP temporários nv×3 ao grupo",
       "talents": [
         {
           "level": 4,
@@ -874,8 +874,8 @@
         },
         {
           "level": 20,
-          "id": "milagre-do-pao",
-          "name": "Milagre do Pão",
+          "id": "milagre-do-sustento",
+          "name": "Milagre do Sustento",
           "kind": "ascension",
           "requires": null
         }
@@ -886,7 +886,7 @@
       "classId": "Clérigo",
       "subclass": "Pastor de Quimeras",
       "specialty": "Monstros Mistos",
-      "diet": "Quimeras: aura animal",
+      "diet": "Assimilação quimérica: aura animal aliada",
       "talents": [
         {
           "level": 4,
@@ -929,8 +929,8 @@
       "id": "clerigo-do-limiar",
       "classId": "Clérigo",
       "subclass": "Clérigo do Limiar",
-      "specialty": "Mortos-vivos (Necromântica)",
-      "diet": "Ossos: servos ignoram você como alvo",
+      "specialty": "Mortos-vivos",
+      "diet": "Assimilação liminar: servos ignoram você como alvo",
       "talents": [
         {
           "level": 4,
@@ -970,11 +970,11 @@
       ]
     },
     {
-      "id": "devorador-de-coracoes",
+      "id": "devorador-de-essencia",
       "classId": "Bárbaro",
-      "subclass": "Devorador de Corações",
+      "subclass": "Devorador de Essência",
       "specialty": "Órgãos Vitais",
-      "diet": "Coração: traço instintivo 24h",
+      "diet": "Assimilação vital: traço instintivo 24h",
       "talents": [
         {
           "level": 4,
@@ -1018,7 +1018,7 @@
       "classId": "Bárbaro",
       "subclass": "Mandíbula de Ferro",
       "specialty": "Ossos e Carapaças",
-      "diet": "Exoesqueletos: +1d6 perfurante",
+      "diet": "Assimilação quitinosa: +1d6 perfurante",
       "talents": [
         {
           "level": 4,
@@ -1058,11 +1058,11 @@
       ]
     },
     {
-      "id": "ruminante-das-neves",
+      "id": "colosso-do-gelo",
       "classId": "Bárbaro",
-      "subclass": "Ruminante das Neves",
+      "subclass": "Colosso do Gelo",
       "specialty": "Gordura e Gigantes",
-      "diet": "Gordura: imune frio",
+      "diet": "Assimilação glacial: imune a frio",
       "talents": [
         {
           "level": 4,
@@ -1102,11 +1102,11 @@
       ]
     },
     {
-      "id": "frenetico-do-acucar",
+      "id": "berserker-veloz",
       "classId": "Bárbaro",
-      "subclass": "Frenético do Açúcar",
-      "specialty": "Doces Mágicos",
-      "diet": "Glicose: velocidade dobrada",
+      "subclass": "Berserker Veloz",
+      "specialty": "Metabolismo Acelerado",
+      "diet": "Assimilação acelerada: velocidade dobrada em fúria",
       "talents": [
         {
           "level": 4,
@@ -1138,19 +1138,19 @@
         },
         {
           "level": 20,
-          "id": "diabetes-arcano",
-          "name": "Diabetes Arcano",
+          "id": "furia-incandescente",
+          "name": "Fúria Incandescente",
           "kind": "ascension",
           "requires": null
         }
       ]
     },
     {
-      "id": "sommelier-de-masmorra",
+      "id": "estratega-de-masmorra",
       "classId": "Bardo",
-      "subclass": "Sommelier de Masmorra",
+      "subclass": "Estratega de Masmorra",
       "specialty": "Fermentados",
-      "diet": "Bebidas maximizam cura",
+      "diet": "Assimilação tática: cura de magias do bardo maximizada",
       "talents": [
         {
           "level": 4,
@@ -1190,11 +1190,11 @@
       ]
     },
     {
-      "id": "bardo-cervejeiro",
+      "id": "bardo-fermentador",
       "classId": "Bardo",
-      "subclass": "Bardo Cervejeiro",
+      "subclass": "Bardo Fermentador",
       "specialty": "Fungos e Levedura",
-      "diet": "Cerveja: HP temp = Inspiração",
+      "diet": "Assimilação fúngica: HP temp = Inspiração",
       "talents": [
         {
           "level": 4,
@@ -1234,11 +1234,11 @@
       ]
     },
     {
-      "id": "dancarino-das-facas",
+      "id": "dancarino-das-laminas",
       "classId": "Bardo",
-      "subclass": "Dançarino das Facas",
+      "subclass": "Dançarino das Lâminas",
       "specialty": "Aves",
-      "diet": "Aves: CAR para atacar",
+      "diet": "Assimilação aérea: CAR para atacar à distância",
       "talents": [
         {
           "level": 4,
@@ -1278,11 +1278,11 @@
       ]
     },
     {
-      "id": "cantor-das-especiarias",
+      "id": "cantor-dos-venenos",
       "classId": "Bardo",
-      "subclass": "Cantor das Especiarias",
-      "specialty": "Ervas",
-      "diet": "Especiarias: +3 CD ilusão",
+      "subclass": "Cantor dos Venenos",
+      "specialty": "Ervas e Toxinas",
+      "diet": "Assimilação herbal: +3 CD de ilusão",
       "talents": [
         {
           "level": 4,
@@ -1314,19 +1314,19 @@
         },
         {
           "level": 20,
-          "id": "ode-ao-wasabi",
-          "name": "Ode ao Wasabi",
+          "id": "ode-ao-veneno",
+          "name": "Ode ao Veneno",
           "kind": "ascension",
           "requires": null
         }
       ]
     },
     {
-      "id": "circulo-da-decomposicao",
+      "id": "circulo-da-podridao",
       "classId": "Druida",
-      "subclass": "Círculo da Decomposição",
+      "subclass": "Círculo da Podridão",
       "specialty": "Fungos Necróticos",
-      "diet": "Cogumelos: imune necrotico",
+      "diet": "Assimilação necrótica: imune a dano necrótico",
       "talents": [
         {
           "level": 4,
@@ -1366,11 +1366,11 @@
       ]
     },
     {
-      "id": "circulo-do-superpredador",
+      "id": "circulo-do-predador",
       "classId": "Druida",
-      "subclass": "Círculo do Superpredador",
-      "specialty": "Carne Crua de Feras",
-      "diet": "Forma Selvagem: HP extra",
+      "subclass": "Círculo do Predador",
+      "specialty": "Feras e Bestiais",
+      "diet": "Forma selvagem: HP extra ao transformar",
       "talents": [
         {
           "level": 4,
@@ -1414,7 +1414,7 @@
       "classId": "Druida",
       "subclass": "Círculo da Simbiose",
       "specialty": "Sementes Mágicas",
-      "diet": "Vinhas: rebate 1d6 cortante",
+      "diet": "Assimilação simbiótica: rebate 1d6 cortante",
       "talents": [
         {
           "level": 4,
@@ -1454,11 +1454,11 @@
       ]
     },
     {
-      "id": "circulo-do-solo-vivo",
+      "id": "circulo-da-terra",
       "classId": "Druida",
-      "subclass": "Círculo do Solo Vivo",
+      "subclass": "Círculo da Terra",
       "specialty": "Minerais e Terra",
-      "diet": "Pedras: resistência contundente",
+      "diet": "Assimilação telúrica: resistência a contundente",
       "talents": [
         {
           "level": 4,
@@ -1498,11 +1498,11 @@
       ]
     },
     {
-      "id": "ferreiro-de-utensilios",
+      "id": "ferreiro-de-campo",
       "classId": "Artífice",
-      "subclass": "Ferreiro de Utensílios",
+      "subclass": "Ferreiro de Campo",
       "specialty": "Carapaças",
-      "diet": "Panelas de exoesqueleto: +2 CA",
+      "diet": "Assimilação de exoesqueletos: +2 CA em armadura improvisada",
       "talents": [
         {
           "level": 4,
@@ -1534,19 +1534,19 @@
         },
         {
           "level": 20,
-          "id": "mestre-de-utensilios",
-          "name": "Mestre de Utensílios",
+          "id": "mestre-de-campo",
+          "name": "Mestre de Campo",
           "kind": "ascension",
           "requires": null
         }
       ]
     },
     {
-      "id": "engenheiro-de-fogareiros",
+      "id": "engenheiro-de-explosivos",
       "classId": "Artífice",
-      "subclass": "Engenheiro de Fogareiros",
+      "subclass": "Engenheiro de Explosivos",
       "specialty": "Inflamáveis",
-      "diet": "Glandulas: resistência fogo, bombas +2d6",
+      "diet": "Assimilação inflamável: bombas +2d6 fogo",
       "talents": [
         {
           "level": 4,
@@ -1586,11 +1586,11 @@
       ]
     },
     {
-      "id": "biologo-alquimico",
+      "id": "biologo-de-masmorra",
       "classId": "Artífice",
-      "subclass": "Biólogo Alquímico",
+      "subclass": "Biólogo de Masmorra",
       "specialty": "Ácidos e Venenos",
-      "diet": "Micro-doses: imune veneno, +1d6 ácido",
+      "diet": "Assimilação tóxica: imune veneno, +1d6 ácido",
       "talents": [
         {
           "level": 4,
@@ -1633,8 +1633,8 @@
       "id": "construtor-de-armadilhas",
       "classId": "Artífice",
       "subclass": "Construtor de Armadilhas",
-      "specialty": "Caça Intacta",
-      "diet": "Carne intacta: Vantagem INT/invenções",
+      "specialty": "Caça e Extração",
+      "diet": "Assimilação de caça: vantagem em INT para armadilhas",
       "talents": [
         {
           "level": 4,
@@ -1668,6 +1668,270 @@
           "level": 20,
           "id": "arquiteto-da-masmorra",
           "name": "Arquiteto da Masmorra",
+          "kind": "ascension",
+          "requires": null
+        }
+      ]
+    },
+    {
+      "id": "jurado-do-sol",
+      "classId": "Paladino",
+      "subclass": "Jurado do Sol",
+      "specialty": "Celestiais e Luminosos",
+      "diet": "Assimilação solar: resistência radiante, visão 18m e +2 em saves vs medo por 8h",
+      "talents": [
+        {
+          "level": 4,
+          "id": "luz-penitente",
+          "name": "Luz Penitente",
+          "kind": "talent",
+          "requires": null
+        },
+        {
+          "level": 8,
+          "id": "escudo-solar",
+          "name": "Escudo Solar",
+          "kind": "talent",
+          "requires": "luz-penitente"
+        },
+        {
+          "level": 12,
+          "id": "julgamento-ardente",
+          "name": "Julgamento Ardente",
+          "kind": "talent",
+          "requires": "escudo-solar"
+        },
+        {
+          "level": 16,
+          "id": "coroa-de-fogo",
+          "name": "Coroa de Fogo",
+          "kind": "talent",
+          "requires": "julgamento-ardente"
+        },
+        {
+          "level": 20,
+          "id": "avatar-do-amanhecer",
+          "name": "Avatar do Amanhecer",
+          "kind": "ascension",
+          "requires": null
+        }
+      ]
+    },
+    {
+      "id": "cavaleiro-do-limiar",
+      "classId": "Paladino",
+      "subclass": "Cavaleiro do Limiar",
+      "specialty": "Mortos-Vivos Sagrados",
+      "diet": "Assimilação liminar sagrada: resistência necrótico; mortos-vivos têm desvantagem para escolhê-lo como alvo",
+      "talents": [
+        {
+          "level": 4,
+          "id": "lamina-dos-sepulcros",
+          "name": "Lâmina dos Sepulcros",
+          "kind": "talent",
+          "requires": null
+        },
+        {
+          "level": 8,
+          "id": "voto-de-caca",
+          "name": "Voto de Caça",
+          "kind": "talent",
+          "requires": "lamina-dos-sepulcros"
+        },
+        {
+          "level": 12,
+          "id": "marca-do-limiar",
+          "name": "Marca do Limiar",
+          "kind": "talent",
+          "requires": "voto-de-caca"
+        },
+        {
+          "level": 16,
+          "id": "processao-silenciosa",
+          "name": "Processão Silenciosa",
+          "kind": "talent",
+          "requires": "marca-do-limiar"
+        },
+        {
+          "level": 20,
+          "id": "cavaleiro-espectral",
+          "name": "Cavaleiro Espectral",
+          "kind": "ascension",
+          "requires": null
+        }
+      ]
+    },
+    {
+      "id": "guardiao-da-gorge",
+      "classId": "Paladino",
+      "subclass": "Guardião da Gorge",
+      "specialty": "Bestas Sagradas e Quimeras",
+      "diet": "Assimilação quimérica: +2 CON e aliados adjacentes +1 CA por 8h",
+      "talents": [
+        {
+          "level": 4,
+          "id": "mordida-do-voto",
+          "name": "Mordida do Voto",
+          "kind": "talent",
+          "requires": null
+        },
+        {
+          "level": 8,
+          "id": "fera-interior",
+          "name": "Fera Interior",
+          "kind": "talent",
+          "requires": "mordida-do-voto"
+        },
+        {
+          "level": 12,
+          "id": "carga-do-juramento",
+          "name": "Carga do Juramento",
+          "kind": "talent",
+          "requires": "fera-interior"
+        },
+        {
+          "level": 16,
+          "id": "pele-de-quimera",
+          "name": "Pele de Quimera",
+          "kind": "talent",
+          "requires": "carga-do-juramento"
+        },
+        {
+          "level": 20,
+          "id": "forma-do-guardiao",
+          "name": "Forma do Guardião",
+          "kind": "ascension",
+          "requires": null
+        }
+      ]
+    },
+    {
+      "id": "filho-da-voragem",
+      "classId": "Bruxo",
+      "subclass": "Filho da Voragem",
+      "specialty": "Aberrações e Tentáculos",
+      "diet": "Assimilação aberrante: resistência psíquico e +3m alcance em magias de controle por 8h",
+      "talents": [
+        {
+          "level": 4,
+          "id": "toque-da-voragem",
+          "name": "Toque da Voragem",
+          "kind": "talent",
+          "requires": null
+        },
+        {
+          "level": 8,
+          "id": "olhar-entre-dimensoes",
+          "name": "Olhar Entre Dimensões",
+          "kind": "talent",
+          "requires": "toque-da-voragem"
+        },
+        {
+          "level": 12,
+          "id": "agarrao-do-pacto",
+          "name": "Agarrão do Pacto",
+          "kind": "talent",
+          "requires": "olhar-entre-dimensoes"
+        },
+        {
+          "level": 16,
+          "id": "mente-partida",
+          "name": "Mente Partida",
+          "kind": "talent",
+          "requires": "agarrao-do-pacto"
+        },
+        {
+          "level": 20,
+          "id": "boca-do-abismo",
+          "name": "Boca do Abismo",
+          "kind": "ascension",
+          "requires": null
+        }
+      ]
+    },
+    {
+      "id": "herdeiro-do-sangue",
+      "classId": "Bruxo",
+      "subclass": "Herdeiro do Sangue",
+      "specialty": "Diabos e Sangue Amaldiçoado",
+      "diet": "Assimilação infernal: resistência fogo; ao reduzir inimigo a 0 HP recupera HP temp = CAR",
+      "talents": [
+        {
+          "level": 4,
+          "id": "contrato-ardente",
+          "name": "Contrato Ardente",
+          "kind": "talent",
+          "requires": null
+        },
+        {
+          "level": 8,
+          "id": "sangue-do-patrono",
+          "name": "Sangue do Patrono",
+          "kind": "talent",
+          "requires": "contrato-ardente"
+        },
+        {
+          "level": 12,
+          "id": "pacto-de-ferro",
+          "name": "Pacto de Ferro",
+          "kind": "talent",
+          "requires": "sangue-do-patrono"
+        },
+        {
+          "level": 16,
+          "id": "correntes-infernais",
+          "name": "Correntes Infernais",
+          "kind": "talent",
+          "requires": "pacto-de-ferro"
+        },
+        {
+          "level": 20,
+          "id": "tirano-do-sangue",
+          "name": "Tirano do Sangue",
+          "kind": "ascension",
+          "requires": null
+        }
+      ]
+    },
+    {
+      "id": "voz-das-profundezas",
+      "classId": "Bruxo",
+      "subclass": "Voz das Profundezas",
+      "specialty": "Aquáticos Antigos e Lodo",
+      "diet": "Assimilação abissal: respiração aquática e magias de encantamento +1 CD por 8h",
+      "talents": [
+        {
+          "level": 4,
+          "id": "sussurro-salino",
+          "name": "Sussurro Salino",
+          "kind": "talent",
+          "requires": null
+        },
+        {
+          "level": 8,
+          "id": "corrente-mental",
+          "name": "Corrente Mental",
+          "kind": "talent",
+          "requires": "sussurro-salino"
+        },
+        {
+          "level": 12,
+          "id": "manto-de-bruma",
+          "name": "Manto de Bruma",
+          "kind": "talent",
+          "requires": "corrente-mental"
+        },
+        {
+          "level": 16,
+          "id": "puxao-abissal",
+          "name": "Puxão Abissal",
+          "kind": "talent",
+          "requires": "manto-de-bruma"
+        },
+        {
+          "level": 20,
+          "id": "hino-das-profundezas",
+          "name": "Hino das Profundezas",
           "kind": "ascension",
           "requires": null
         }

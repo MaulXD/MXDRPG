@@ -1,19 +1,31 @@
 import type { Metadata } from "next";
-import { Cinzel, Lora } from "next/font/google";
+import { Cinzel, Lora, Source_Sans_3 } from "next/font/google";
 import { AuthProvider } from "@/components/auth/AuthProvider";
-import { isClerkEnabled } from "@/lib/auth/clerk-config";
+import { FriendsChatProvider } from "@/components/friends/FriendsChatProvider";
+import { NotificationsProvider } from "@/components/notifications/NotificationsProvider";
+import { hasClerkPublishableKey } from "@/lib/auth/clerk-config";
+import { getSession } from "@/lib/auth/session";
 import { SiteShell } from "@/components/SiteShell";
 import { SiteHeaderWrapper } from "@/components/SiteHeaderWrapper";
 import { SiteFooter } from "@/components/SiteFooter";
 import { ThemeScript } from "@/components/ThemeScript";
 import "./globals.css";
+import "@/components/nav-motion.css";
+import "@/components/ui/medieval-borders.css";
 import "@/components/home/home.css";
-import "@/components/vtt/vtt.css";
+import "@/components/vtt/eldarin-v4.css";
 
 const lora = Lora({
   subsets: ["latin"],
   variable: "--font-body",
   display: "swap",
+});
+
+const sourceSans = Source_Sans_3({
+  subsets: ["latin"],
+  variable: "--font-ui",
+  display: "swap",
+  weight: ["400", "500", "600", "700"],
 });
 
 const cinzel = Cinzel({
@@ -27,23 +39,38 @@ export const metadata: Metadata = {
   title: "Eldarin — VTT tático hexagonal",
   description:
     "Mesa virtual no navegador: combaté hex, PA, fichas medievais. Admin, Mestre e Jogador.",
+  icons: {
+    icon: [{ url: "/favicon.png", type: "image/png" }],
+    apple: [{ url: "/favicon.png", type: "image/png" }],
+  },
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
-  const clerkOn = isClerkEnabled();
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const clerkPublishableKey = hasClerkPublishableKey()
+    ? process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY!.trim()
+    : "";
+  const session = await getSession();
 
   return (
-    <html lang="pt-BR" className={`${lora.variable} ${cinzel.variable}`} suppressHydrationWarning>
+    <html
+      lang="pt-BR"
+      className={`${lora.variable} ${cinzel.variable} ${sourceSans.variable}`}
+      suppressHydrationWarning
+    >
       <head>
         <ThemeScript />
       </head>
       <body>
-        <AuthProvider enabled={clerkOn}>
-          <div className="site-bg" aria-hidden />
-          <div className="site-noise" aria-hidden />
-          <SiteShell header={<SiteHeaderWrapper />} footer={<SiteFooter />}>
-            {children}
-          </SiteShell>
+        <AuthProvider publishableKey={clerkPublishableKey}>
+          <FriendsChatProvider initialUserId={session?.user.id ?? null}>
+            <NotificationsProvider initialUserId={session?.user.id ?? null}>
+              <div className="site-bg" aria-hidden />
+              <div className="site-noise" aria-hidden />
+              <SiteShell header={<SiteHeaderWrapper />} footer={<SiteFooter />}>
+                {children}
+              </SiteShell>
+            </NotificationsProvider>
+          </FriendsChatProvider>
         </AuthProvider>
       </body>
     </html>

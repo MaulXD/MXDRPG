@@ -7,7 +7,7 @@ export type CharacterAttributes = Record<AttributeKey, number>;
 export type CharacterCulinary = Record<CulinaryKey, number>;
 
 export type CharacterResources = {
-  vida: { value: number; max: number };
+  vida: { value: number; max: number; temp?: number };
   pontosAcao: { value: number; max: number };
 };
 
@@ -22,11 +22,13 @@ export type CharacterIdentity = {
   xpTotal: number;
   raca: string;
   classe: string;
-  /** Dieta Marcial — escolhida no nv 2 */
+  /** Caminho de Assimilação (subclasse) — escolhido no nv 2 */
   subclasse?: string | null;
   /** Meio-Humano: linhagem permanente */
   linhagem?: string | null;
   antecedente: string;
+  /** Devotion religiosa (panteão Eldarin) ou sem-deus */
+  religiao?: string | null;
   /** Talentos de subclasse (nv 4/8/12/16) + ascensão nv20 */
   talentos?: Array<{ level: number; id: string; name: string }>;
 };
@@ -58,8 +60,12 @@ export type CharacterSheet = {
   biography: string;
   /** Retrato na ficha (Foundry: Actor artwork) */
   portraitUrl?: string | null;
-  /** Ponto focal do retrato/token (0–1) */
+  /** Ponto focal do retrato (0–1) */
   portraitFocus?: import("@/lib/media/portrait-focus").PortraitFocus | null;
+  /** Enquadramento da capa larga (fallback: portraitFocus) */
+  coverFocus?: import("@/lib/media/portrait-focus").PortraitFocus | null;
+  /** Enquadramento do token na mesa (fallback: portraitFocus) */
+  tokenFocus?: import("@/lib/media/portrait-focus").PortraitFocus | null;
   /** Gerado automaticamente do retrato + foco */
   tokenImageUrl?: string | null;
   identity: CharacterIdentity;
@@ -74,4 +80,6 @@ export type CharacterSheet = {
   lootEconomy?: LootEconomy;
   /** Arma ou magia ofensiva selecionada na mesa */
   combatLoadout?: CombatLoadout | null;
+  /** Armadura equipada — afeta CA na ficha e no token */
+  armorLoadout?: { packId: "equipamentos"; entryId: string } | null;
 };

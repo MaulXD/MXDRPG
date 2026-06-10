@@ -10,6 +10,8 @@ type Props = {
   actorId: string;
   portraitUrl?: string | null;
   portraitFocus?: PortraitFocus | null;
+  coverFocus?: PortraitFocus | null;
+  tokenFocus?: PortraitFocus | null;
   tokenImageUrl?: string | null;
   canEdit: boolean;
   onSaved: () => void;
@@ -20,6 +22,8 @@ export function PortraitFields({
   actorId,
   portraitUrl,
   portraitFocus,
+  coverFocus,
+  tokenFocus,
   tokenImageUrl,
   canEdit,
   onSaved,
@@ -31,6 +35,8 @@ export function PortraitFields({
       portraitUrl={portraitUrl ?? null}
       tokenImageUrl={tokenImageUrl}
       portraitFocus={portraitFocus}
+      coverFocus={coverFocus}
+      tokenFocus={tokenFocus}
       canEdit={canEdit}
       tokenRingColor={ringColor}
       onPersist={async (bundle) => {
@@ -38,6 +44,8 @@ export function PortraitFields({
           portraitUrl: bundle.portraitUrl,
           tokenImageUrl: bundle.tokenImageUrl,
           portraitFocus: bundle.portraitFocus,
+          coverFocus: bundle.coverFocus,
+          tokenFocus: bundle.tokenFocus,
         });
         onSaved();
       }}
@@ -46,6 +54,8 @@ export function PortraitFields({
           portraitUrl: null,
           tokenImageUrl: null,
           portraitFocus: null,
+          coverFocus: null,
+          tokenFocus: null,
         });
         onSaved();
       }}

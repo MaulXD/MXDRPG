@@ -1,4 +1,4 @@
-# Guia de Ecologia — Dracônicos e Wyverns
+﻿# Guia de Ecologia — Dracônicos e Wyverns
 **Eldarin v4.0 · Folheto de mesa**
 
 ---
@@ -25,7 +25,7 @@ Fornalhas Douradas, Abismo Invertido, Arquipélago Magnético, Abatedouro Celest
 | Glândula de veneno | Difícil | Alquimia, revestimento ácido |
 | Coração (boss) | Especialista | Banquete lendário |
 
-**Risco:** sangue ainda **quente** queima; Trinchar sem kit = perda de glândulas.
+**Risco:** sangue ainda **quente** queima; Extração sem kit = perda de glândulas.
 
 ---
 
@@ -33,7 +33,7 @@ Fornalhas Douradas, Abismo Invertido, Arquipélago Magnético, Abatedouro Celest
 
 - Escama: **Cocção** baixa ou gororoba vira “sopa de pedra”.  
 - Carne de wyrm: **Gourmet** comum em grupos veteranos — **+3 CA** na assimilacao oficial.  
-- **Estômago de Ferro CD 13** para veneno residual.
+- **Fortitude CD 13** para veneno residual.
 
 ---
 

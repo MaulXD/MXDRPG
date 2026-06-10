@@ -5,6 +5,10 @@ import type { Axial } from "@/lib/vtt/hex-math";
 import { defaultMovementFields } from "@/lib/vtt/movement";
 import type { CombatActionOption } from "@/lib/combat/types";
 import type { BattleToken } from "@/lib/vtt/types";
+import { bumpCreatureSize } from "@/lib/vtt/creature-size";
+import type { CreatureSize } from "@/lib/vtt/creature-size";
+import { parseCreatureSize, resolveMonsterCreatureSize } from "@/lib/vtt/monster-sizes";
+import { normalizeMonsterActionPa } from "@/lib/combat/pa-balance";
 import { MONSTER_PA_MIN, normalizeMonsterPa } from "@/lib/vtt/monster-pa";
 import {
   applyMonsterSpawnScaling,
@@ -21,6 +25,8 @@ export type MonsterTemplate = {
   entryId: string;
   name: string;
   description: string;
+  /** IDs BIO-## quando definidos no compêndio; senão inferidos na UI. */
+  biomas?: string[];
   tier: MonsterTier;
   vida: number;
   vidaMax: number;
@@ -33,6 +39,7 @@ export type MonsterTemplate = {
   forca: number;
   agilidade: number;
   actions: CombatActionOption[];
+  creatureSize: CreatureSize;
 };
 
 type MonsterSystem = {
@@ -47,6 +54,8 @@ type MonsterSystem = {
     defesa?: { value?: number };
     ameaca?: { value?: number };
     tier?: string;
+    tamanho?: string;
+    biomas?: string[];
   };
   actions?: CombatActionOption[];
 };
@@ -81,6 +90,7 @@ function parseMonster(raw: CompendiumEntryRaw, index: number): MonsterTemplate {
     entryId,
     name: raw.name,
     description: sys.description ?? "",
+    biomas: tactical.biomas?.length ? tactical.biomas : undefined,
     tier,
     vida: resources.vida?.value ?? resources.vida?.max ?? 10,
     vidaMax: resources.vida?.max ?? resources.vida?.value ?? 10,
@@ -92,7 +102,12 @@ function parseMonster(raw: CompendiumEntryRaw, index: number): MonsterTemplate {
     ameaca,
     forca: attrs.forca?.value ?? 10,
     agilidade: attrs.agilidade?.value ?? 10,
-    actions: (sys.actions as CombatActionOption[] | undefined) ?? [],
+    actions: ((sys.actions as CombatActionOption[] | undefined) ?? []).map(
+      normalizeMonsterActionPa
+    ),
+    creatureSize:
+      parseCreatureSize(tactical.tamanho) ??
+      resolveMonsterCreatureSize(entryId, raw.name, { walk: movement.walk?.value, tier }),
   };
 }
 
@@ -107,7 +122,9 @@ export function getMonsterTemplate(entryId: string): MonsterTemplate | null {
 }
 
 export function listMonsterTemplates(): MonsterTemplate[] {
-  return TEMPLATES;
+  return [...TEMPLATES].sort(
+    (a, b) => a.ameaca - b.ameaca || a.name.localeCompare(b.name, "pt-BR")
+  );
 }
 
 export function scaleMonsterTemplate(
@@ -133,7 +150,7 @@ export function createMonsterToken(
     color,
     walk: template.walk,
     run: template.run,
-    pa: template.pa,
+    pa: 0,
     paMax: template.paMax,
     ownerRole: "mestre",
     linked: false,
@@ -145,8 +162,11 @@ export function createMonsterToken(
     monsterTier: template.tier,
     monsterVariant: spawnMeta?.variant && spawnMeta.variant !== "normal" ? spawnMeta.variant : undefined,
     ...defaultMovementFields({ walk: template.walk, run: template.run }),
-    footprint:
-      template.tier === "mob" && template.walk <= 3 ? "small" : "medium",
+    creatureSize: (() => {
+      let size = template.creatureSize;
+      if (spawnMeta?.variant === "colossal") size = bumpCreatureSize(size, 1);
+      return size;
+    })(),
   };
 }
 

@@ -11,7 +11,7 @@ export function ClerkSignInLinks() {
       <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
         <SignInButton mode="modal">
           <button type="button" className="btn btn-secondary" style={{ flex: 1 }}>
-            Google / Discord / e-mail
+            Google / Discord
           </button>
         </SignInButton>
         <SignUpButton mode="modal">

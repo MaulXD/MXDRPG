@@ -39,7 +39,6 @@ export function MesaSetupClient({
       <RoomSettingsPanel
         roomId={roomId}
         roomName={name}
-        inviteCode={inviteCode}
         settings={settings}
         onUpdated={(snap) => {
           setName(snap.scene.name);

@@ -5,6 +5,8 @@ import { dbEnabled } from "@/lib/db/enabled";
 
 export const INVITE_CODE_MIN = 4;
 export const INVITE_CODE_MAX = 16;
+/** Tamanho padrão ao gerar código automaticamente (ex.: 10 caracteres). */
+export const INVITE_CODE_DEFAULT_LENGTH = 10;
 
 const INVITE_PATTERN = /^[A-Z0-9]+$/;
 
@@ -29,7 +31,7 @@ export function validateInviteCode(code: string): { ok: true } | { ok: false; er
   return { ok: true };
 }
 
-export function randomInviteCode(length = 8): string {
+export function randomInviteCode(length = INVITE_CODE_DEFAULT_LENGTH): string {
   const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
   let s = "";
   for (let i = 0; i < length; i++) s += chars[Math.floor(Math.random() * chars.length)];
@@ -71,7 +73,7 @@ export async function resolveInviteCodeForCreate(
   const trimmed = requested?.trim();
   if (!trimmed) {
     for (let attempt = 0; attempt < 12; attempt++) {
-      const code = randomInviteCode();
+      const code = randomInviteCode(INVITE_CODE_DEFAULT_LENGTH);
       if (!(await isInviteCodeTaken(code))) return { code };
     }
     return { error: "Não foi possível gerar um código único; tente novamente" };
