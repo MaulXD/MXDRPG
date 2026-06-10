@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { AnimatedNavLink } from "@/components/AnimatedNavLink";
 import { BugReportButton } from "@/components/BugReportButton";
 import { EldarinLogo } from "@/components/brand/EldarinLogo";
-import { FriendsNavChat } from "@/components/friends/FriendsNavChat";
+import { FriendsNavLink } from "@/components/friends/FriendsNavLink";
 import { IconBook, IconHex, IconStar } from "@/components/ui/EldarinIcons";
 import "@/components/vtt/mesa-theme.css";
 
@@ -71,7 +71,7 @@ export function SiteShell({ children, header, footer }: Props) {
                 <AnimatedNavLink href="/eldarin" icon={<IconStar size={18} />}>
                   Minhas mesas
                 </AnimatedNavLink>
-                <FriendsNavChat />
+                <FriendsNavLink />
               </nav>
               <button
                 type="button"

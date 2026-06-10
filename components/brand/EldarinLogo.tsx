@@ -32,8 +32,8 @@ export function EldarinLogo({
       <Image
         src={BRAND_LOGO_LANDING}
         alt={name}
-        width={400}
-        height={400}
+        width={368}
+        height={336}
         className="eldarin-logo__img eldarin-logo__img--landing"
         priority={variant === "full"}
       />
@@ -41,8 +41,8 @@ export function EldarinLogo({
       <Image
         src={BRAND_LOGO_NAVBAR}
         alt={name}
-        width={280}
-        height={72}
+        width={534}
+        height={213}
         className="eldarin-logo__img eldarin-logo__img--navbar"
         priority
       />

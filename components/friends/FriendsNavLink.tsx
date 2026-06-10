@@ -1,11 +1,12 @@
 "use client";
 
-import { IconChat } from "@/components/ui/EldarinIcons";
+import { AnimatedNavLink } from "@/components/AnimatedNavLink";
+import { IconUser } from "@/components/ui/EldarinIcons";
 import { useFriendsChat } from "@/components/friends/FriendsChatProvider";
 import "./friends.css";
 
-/** Botão na navbar — abre a janela flutuante global de mensagens. */
-export function FriendsNavChat() {
+/** Link na navbar → página /amigos (com badge de pendências). */
+export function FriendsNavLink() {
   const chat = useFriendsChat();
   if (!chat) return null;
   if (chat.ready && !chat.selfUserId) return null;
@@ -24,27 +25,16 @@ export function FriendsNavChat() {
           ? `${inviteBadge} convite${inviteBadge === 1 ? "" : "s"} de mesa`
           : "";
 
-  const pending = !chat.ready;
-
   return (
-    <button
-      type="button"
-      className={`nav-link friends-nav-chat__toggle${chat.open ? " is-open" : ""}${pending ? " is-pending" : ""}`}
-      aria-expanded={chat.open}
-      aria-haspopup="dialog"
-      aria-busy={pending}
-      disabled={pending}
-      onClick={chat.toggle}
-    >
-      <span className="friends-nav-chat__icon-wrap">
-        <IconChat size={16} className="friends-nav-chat__icon" />
+    <AnimatedNavLink href="/amigos" icon={<IconUser size={16} />} className="friends-nav-link nav-link">
+      <span className="friends-nav-link__wrap">
+        Amigos
         {badge > 0 ? (
-          <span className="friends-nav-chat__badge" aria-label={badgeLabel}>
+          <span className="friends-nav-chat__badge friends-nav-link__badge" aria-label={badgeLabel}>
             {badge > 9 ? "9+" : badge}
           </span>
         ) : null}
       </span>
-      <span className="nav-link__label">Mensagens</span>
-    </button>
+    </AnimatedNavLink>
   );
 }

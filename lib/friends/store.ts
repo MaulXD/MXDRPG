@@ -24,7 +24,12 @@ import {
 import { dbEnabled } from "@/lib/db/enabled";
 import { fetchUserById, fetchUserByNickname } from "@/lib/db/users";
 import { resolveUserAvatarUrl } from "@/lib/db/user-avatar";
-import type { FriendRequestSummary, FriendSummary, MesaInviteSummary } from "@/lib/friends/types";
+import type {
+  FriendRequestSummary,
+  FriendSummary,
+  MesaInviteSummary,
+  PublicUserProfile,
+} from "@/lib/friends/types";
 
 function requireDb(): { ok: true } | { ok: false; error: string } {
   if (!dbEnabled()) {
@@ -186,6 +191,47 @@ export async function countIncomingFriendRequests(userId: string): Promise<numbe
   return countPendingIncomingFriendRequests(userId);
 }
 
+async function requestFriendship(
+  userId: string,
+  targetId: string
+): Promise<
+  | { ok: true; kind: "friend"; friend: FriendSummary }
+  | { ok: true; kind: "request"; request: FriendRequestSummary }
+  | { ok: false; error: string }
+> {
+  if (targetId === userId) return { ok: false, error: "Você não pode adicionar a si mesmo" };
+
+  const alreadyFriend =
+    (await isFriendLink(userId, targetId)) || (await isFriendLink(targetId, userId));
+  if (alreadyFriend) return { ok: false, error: "Vocês já são amigos" };
+
+  const reversePending = await findPendingFriendRequest(targetId, userId);
+  if (reversePending) {
+    const accepted = await acceptFriendRequest(userId, reversePending.id);
+    if (!accepted.ok) return accepted;
+    return { ok: true, kind: "friend", friend: accepted.friend };
+  }
+
+  const existing = await findPendingFriendRequest(userId, targetId);
+  if (existing) return { ok: false, error: "Pedido já enviado — aguardando resposta" };
+
+  const id = `freq_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 8)}`;
+  await insertFriendRequest({ id, fromUserId: userId, toUserId: targetId });
+
+  const request = await rowToFriendRequest(
+    {
+      id,
+      from_user_id: userId,
+      to_user_id: targetId,
+      created_at: Date.now(),
+    },
+    userId
+  );
+  if (!request) return { ok: false, error: "Erro ao criar pedido" };
+
+  return { ok: true, kind: "request", request };
+}
+
 export async function addFriendByNickname(
   userId: string,
   nicknameRaw: string
@@ -202,37 +248,25 @@ export async function addFriendByNickname(
 
   const target = await fetchUserByNickname(v.nickname);
   if (!target) return { ok: false, error: "Apelido não encontrado" };
-  if (target.id === userId) return { ok: false, error: "Você não pode adicionar a si mesmo" };
 
-  const alreadyFriend =
-    (await isFriendLink(userId, target.id)) || (await isFriendLink(target.id, userId));
-  if (alreadyFriend) return { ok: false, error: "Vocês já são amigos" };
+  return requestFriendship(userId, target.id);
+}
 
-  const reversePending = await findPendingFriendRequest(target.id, userId);
-  if (reversePending) {
-    const accepted = await acceptFriendRequest(userId, reversePending.id);
-    if (!accepted.ok) return accepted;
-    return { ok: true, kind: "friend", friend: accepted.friend };
-  }
+export async function addFriendByUserId(
+  userId: string,
+  targetUserId: string
+): Promise<
+  | { ok: true; kind: "friend"; friend: FriendSummary }
+  | { ok: true; kind: "request"; request: FriendRequestSummary }
+  | { ok: false; error: string }
+> {
+  const gate = requireDb();
+  if (!gate.ok) return gate;
 
-  const existing = await findPendingFriendRequest(userId, target.id);
-  if (existing) return { ok: false, error: "Pedido já enviado — aguardando resposta" };
+  const target = await fetchUserById(targetUserId);
+  if (!target) return { ok: false, error: "Usuário não encontrado" };
 
-  const id = `freq_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 8)}`;
-  await insertFriendRequest({ id, fromUserId: userId, toUserId: target.id });
-
-  const request = await rowToFriendRequest(
-    {
-      id,
-      from_user_id: userId,
-      to_user_id: target.id,
-      created_at: Date.now(),
-    },
-    userId
-  );
-  if (!request) return { ok: false, error: "Erro ao criar pedido" };
-
-  return { ok: true, kind: "request", request };
+  return requestFriendship(userId, target.id);
 }
 
 export async function listFriends(userId: string): Promise<FriendSummary[]> {
@@ -279,21 +313,21 @@ async function canShareAdventureInvite(
   return memberIdsHasUser(adv.memberIds, userId, clerkId);
 }
 
-export async function sendMesaInviteToFriend(
+export async function sendMesaInviteToUser(
   fromUserId: string,
-  friendId: string,
+  toUserId: string,
   adventureId: string,
   opts?: { message?: string; clerkId?: string | null }
 ): Promise<{ ok: true; invite: MesaInviteSummary } | { ok: false; error: string }> {
   const gate = requireDb();
   if (!gate.ok) return gate;
 
-  if (friendId === fromUserId) {
-    return { ok: false, error: "Escolha um amigo da lista" };
+  if (toUserId === fromUserId) {
+    return { ok: false, error: "Escolha outro jogador" };
   }
 
-  const isFriend = await isFriendLink(fromUserId, friendId);
-  if (!isFriend) return { ok: false, error: "Só é possível convidar amigos da sua lista" };
+  const target = await fetchUserById(toUserId);
+  if (!target) return { ok: false, error: "Usuário não encontrado" };
 
   const canShare = await canShareAdventureInvite(fromUserId, adventureId, opts?.clerkId);
   if (!canShare) return { ok: false, error: "Você não participa desta mesa" };
@@ -310,7 +344,7 @@ export async function sendMesaInviteToFriend(
   await insertMesaInvite({
     id,
     fromUserId,
-    toUserId: friendId,
+    toUserId,
     roomId: adv.primaryRoomId,
     adventureId: adv.adventureId,
     inviteCode: adv.inviteCode,
@@ -332,6 +366,98 @@ export async function sendMesaInviteToFriend(
       message: opts?.message?.trim() || null,
       inviteUrl,
       createdAt: Date.now(),
+    },
+  };
+}
+
+export async function sendMesaInviteToFriend(
+  fromUserId: string,
+  friendId: string,
+  adventureId: string,
+  opts?: { message?: string; clerkId?: string | null }
+): Promise<{ ok: true; invite: MesaInviteSummary } | { ok: false; error: string }> {
+  const isFriend = await isFriendLink(fromUserId, friendId);
+  if (!isFriend) return { ok: false, error: "Só é possível convidar amigos da sua lista" };
+  return sendMesaInviteToUser(fromUserId, friendId, adventureId, opts);
+}
+
+export async function sendMesaInviteByNickname(
+  fromUserId: string,
+  nicknameRaw: string,
+  adventureId: string,
+  opts?: { message?: string; clerkId?: string | null }
+): Promise<{ ok: true; invite: MesaInviteSummary } | { ok: false; error: string }> {
+  const gate = requireDb();
+  if (!gate.ok) return gate;
+
+  const v = validateNickname(nicknameRaw);
+  if (!v.ok) return v;
+
+  const target = await fetchUserByNickname(v.nickname);
+  if (!target) return { ok: false, error: "Apelido não encontrado" };
+
+  return sendMesaInviteToUser(fromUserId, target.id, adventureId, opts);
+}
+
+export async function getUserPublicProfile(
+  viewerId: string,
+  targetUserId: string
+): Promise<{ ok: true; profile: PublicUserProfile } | { ok: false; error: string }> {
+  const gate = requireDb();
+  if (!gate.ok) return gate;
+
+  const target = await fetchUserById(targetUserId);
+  if (!target) return { ok: false, error: "Jogador não encontrado" };
+
+  if (target.id === viewerId) {
+    return {
+      ok: true,
+      profile: {
+        id: target.id,
+        nickname: target.nickname ?? null,
+        name: target.name,
+        displayName: displayName(target),
+        avatarUrl: resolveUserAvatarUrl(target),
+        avatarFocus: target.avatarFocus ?? null,
+        relationship: "self",
+      },
+    };
+  }
+
+  let relationship: PublicUserProfile["relationship"] = "none";
+  let friendSince: number | undefined;
+  let pendingRequestId: string | null = null;
+
+  if (await isFriendLink(viewerId, target.id)) {
+    relationship = "friend";
+    const links = await listFriendIds(viewerId);
+    friendSince = links.find((l) => l.friendId === target.id)?.addedAt;
+  } else {
+    const incoming = await findPendingFriendRequest(target.id, viewerId);
+    if (incoming) {
+      relationship = "incoming";
+      pendingRequestId = incoming.id;
+    } else {
+      const outgoing = await findPendingFriendRequest(viewerId, target.id);
+      if (outgoing) {
+        relationship = "outgoing";
+        pendingRequestId = outgoing.id;
+      }
+    }
+  }
+
+  return {
+    ok: true,
+    profile: {
+      id: target.id,
+      nickname: target.nickname ?? null,
+      name: target.name,
+      displayName: displayName(target),
+      avatarUrl: resolveUserAvatarUrl(target),
+      avatarFocus: target.avatarFocus ?? null,
+      relationship,
+      friendSince,
+      pendingRequestId,
     },
   };
 }

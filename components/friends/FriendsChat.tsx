@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { UserAvatar } from "@/components/ui/UserAvatar";
+import { friendLabel } from "@/components/friends/friend-label";
 import type { FriendSummary } from "@/lib/friends/types";
 import type { PortraitFocus } from "@/lib/media/portrait-focus";
 import "./friends.css";
@@ -15,28 +16,28 @@ type FriendMessage = {
 };
 
 const POLL_MS = 4_000;
-
-function friendLabel(f: FriendSummary): string {
-  return f.nickname ? `@${f.nickname}` : f.name;
-}
+const fetchOpts = { credentials: "same-origin" as const, cache: "no-store" as const };
 
 type Props = {
   friends: FriendSummary[];
   selfUserId: string;
-  onFriendsChange?: () => void;
   onMessagesRead?: () => void;
-  /** Janela flutuante global (navbar) */
+  onSelectFriend?: (friendId: string) => void;
+  initialSelectedId?: string | null;
   variant?: "default" | "float";
+  hideList?: boolean;
 };
 
 export function FriendsChat({
   friends,
   selfUserId,
-  onFriendsChange,
   onMessagesRead,
+  onSelectFriend,
+  initialSelectedId = null,
   variant = "default",
+  hideList = false,
 }: Props) {
-  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [selectedId, setSelectedId] = useState<string | null>(initialSelectedId);
   const [messages, setMessages] = useState<FriendMessage[]>([]);
   const [draft, setDraft] = useState("");
   const [loading, setLoading] = useState(false);
@@ -47,6 +48,12 @@ export function FriendsChat({
 
   const selected = friends.find((f) => f.id === selectedId) ?? null;
 
+  useEffect(() => {
+    if (initialSelectedId && friends.some((f) => f.id === initialSelectedId)) {
+      setSelectedId(initialSelectedId);
+    }
+  }, [initialSelectedId, friends]);
+
   const scrollToBottom = useCallback(() => {
     const el = threadRef.current;
     if (el) el.scrollTop = el.scrollHeight;
@@ -55,7 +62,10 @@ export function FriendsChat({
   const markThreadRead = useCallback(
     async (friendId: string) => {
       try {
-        await fetch(`/api/friends/${friendId}/messages/read`, { method: "POST" });
+        await fetch(`/api/friends/${friendId}/messages/read`, {
+          method: "POST",
+          credentials: "same-origin",
+        });
         onMessagesRead?.();
       } catch {
         /* ignore */
@@ -64,28 +74,31 @@ export function FriendsChat({
     [onMessagesRead]
   );
 
-  const loadMessages = useCallback(
-    async (friendId: string, initial = false) => {
-      const after = initial ? 0 : lastTsRef.current;
-      const q = after > 0 ? `?after=${after}` : "";
-      const res = await fetch(`/api/friends/${friendId}/messages${q}`, { cache: "no-store" });
-      if (!res.ok) return;
-      const data = (await res.json()) as { messages?: FriendMessage[] };
-      const batch = data.messages ?? [];
-      if (!batch.length) return;
-      setMessages((prev) => {
-        if (initial) return batch;
-        const ids = new Set(prev.map((m) => m.id));
-        const merged = [...prev];
-        for (const m of batch) {
-          if (!ids.has(m.id)) merged.push(m);
-        }
-        return merged.sort((a, b) => a.createdAt - b.createdAt);
-      });
-      lastTsRef.current = Math.max(lastTsRef.current, ...batch.map((m) => m.createdAt));
-    },
-    []
-  );
+  const loadMessages = useCallback(async (friendId: string, initial = false) => {
+    const after = initial ? 0 : lastTsRef.current;
+    const q = after > 0 ? `?after=${after}` : "";
+    const res = await fetch(`/api/friends/${friendId}/messages${q}`, fetchOpts);
+    if (!res.ok) {
+      const data = (await res.json().catch(() => ({}))) as { error?: string };
+      if (initial) {
+        setError(data.error ?? (res.status === 401 ? "Faça login novamente." : "Não foi possível carregar."));
+      }
+      return;
+    }
+    const data = (await res.json()) as { messages?: FriendMessage[] };
+    const batch = data.messages ?? [];
+    if (!batch.length) return;
+    setMessages((prev) => {
+      if (initial) return batch;
+      const ids = new Set(prev.map((m) => m.id));
+      const merged = [...prev];
+      for (const m of batch) {
+        if (!ids.has(m.id)) merged.push(m);
+      }
+      return merged.sort((a, b) => a.createdAt - b.createdAt);
+    });
+    lastTsRef.current = Math.max(lastTsRef.current, ...batch.map((m) => m.createdAt));
+  }, []);
 
   useEffect(() => {
     if (!selectedId) {
@@ -124,6 +137,7 @@ export function FriendsChat({
     try {
       const res = await fetch(`/api/friends/${selectedId}/messages`, {
         method: "POST",
+        credentials: "same-origin",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ text }),
       });
@@ -150,10 +164,14 @@ export function FriendsChat({
     setDraft("");
     setMessages([]);
     lastTsRef.current = 0;
+    onSelectFriend?.(id);
   }
 
   return (
-    <div className={`friends-chat${variant === "float" ? " friends-chat--float" : ""}`}>
+    <div
+      className={`friends-chat${variant === "float" ? " friends-chat--float" : ""}${hideList ? " friends-chat--no-list" : ""}`}
+    >
+      {!hideList ? (
       <aside className="friends-chat__list">
         <h3 className="friends-chat__list-title">Conversas</h3>
         {friends.length === 0 ? (
@@ -180,6 +198,7 @@ export function FriendsChat({
           </ul>
         )}
       </aside>
+      ) : null}
 
       <section className="friends-chat__thread">
         {!selected ? (
@@ -193,7 +212,13 @@ export function FriendsChat({
                 label={friendLabel(selected)}
                 className="friends-hub__avatar"
               />
-              <span className="friends-chat__header-name">{friendLabel(selected)}</span>
+              <button
+                type="button"
+                className="friends-chat__header-name friends-chat__header-profile"
+                onClick={() => onSelectFriend?.(selected.id)}
+              >
+                {friendLabel(selected)}
+              </button>
             </header>
 
             <div className="friends-chat__messages" ref={threadRef}>
