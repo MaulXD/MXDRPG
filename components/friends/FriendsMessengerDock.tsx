@@ -12,8 +12,11 @@ import { UserAvatar } from "@/components/ui/UserAvatar";
 import type { PortraitFocus } from "@/lib/media/portrait-focus";
 import "./friends.css";
 
-const MESSENGER_W = 360;
-const MESSENGER_H = 440;
+const MESSENGER_W = 400;
+const MESSENGER_H = 460;
+const MESSENGER_MIN_W = 300;
+const MESSENGER_MIN_H = 320;
+const MESSENGER_LAYOUT_KEY = "eldarin-messenger-layout";
 
 export function FriendsMessengerDock() {
   const chat = useFriendsChat();
@@ -25,6 +28,9 @@ export function FriendsMessengerDock() {
   const drag = useDraggablePopup({
     width: MESSENGER_W,
     height: MESSENGER_H,
+    minWidth: MESSENGER_MIN_W,
+    minHeight: MESSENGER_MIN_H,
+    storageKey: MESSENGER_LAYOUT_KEY,
     enabled: mounted && Boolean(chat?.selfUserId) && messengerOpen && !messengerMinimized,
   });
 
@@ -102,9 +108,9 @@ export function FriendsMessengerDock() {
         role="dialog"
         aria-label="Mensagens"
         style={drag.panelStyle}
-        onPointerMove={drag.onDragPointerMove}
-        onPointerUp={drag.onDragPointerUp}
-        onPointerCancel={drag.onDragPointerUp}
+        onPointerMove={drag.onPanelPointerMove}
+        onPointerUp={drag.onPanelPointerUp}
+        onPointerCancel={drag.onPanelPointerUp}
       >
         <header
           className="friends-chat-float__head friends-chat-float__head--drag"
@@ -185,11 +191,19 @@ export function FriendsMessengerDock() {
             friends={friends}
             selfUserId={chat.selfUserId}
             variant="float"
+            hideList={openChats.length > 0}
             initialSelectedId={activeChatId}
             onSelectFriend={onSelectFriend}
             onMessagesRead={() => void refreshUnread()}
           />
         </div>
+        <div
+          className="friends-chat-float__resize"
+          role="presentation"
+          aria-hidden
+          title="Redimensionar"
+          onPointerDown={drag.onResizePointerDown}
+        />
       </div>
     ) : null;
 
