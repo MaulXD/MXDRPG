@@ -247,7 +247,8 @@
   align-items: stretch;
 }
 
-.sheet-shell--popup {
+/* Tema escuro legado — NÃO aplicar na ficha DDB (sheet-shell--ddb) */
+.sheet-shell--popup:not(.sheet-shell--ddb) {
 
   --sheet-bg: #121921;
 
@@ -295,24 +296,24 @@
 
 
 
-.sheet-shell--popup .sheet-panel {
+.sheet-shell--popup:not(.sheet-shell--ddb) .sheet-panel {
 
   grid-area: unset;
 
 }
 
-.page-wrap--sheet-popup .sheet-shell--popup {
+.page-wrap--sheet-popup .sheet-shell--popup:not(.sheet-shell--ddb) {
   overflow: visible;
   width: 100%;
   max-width: 100%;
   align-self: stretch;
 }
 
-.sheet-shell--popup > .ornament-card,
-.sheet-shell--popup > .sheet-popup-body,
-.sheet-shell--popup > .sheet-popup-quickbar,
-.sheet-shell--popup > .sheet-popup-loadout,
-.sheet-shell--popup > .sheet-popup-export {
+.sheet-shell--popup:not(.sheet-shell--ddb) > .ornament-card,
+.sheet-shell--popup:not(.sheet-shell--ddb) > .sheet-popup-body,
+.sheet-shell--popup:not(.sheet-shell--ddb) > .sheet-popup-quickbar,
+.sheet-shell--popup:not(.sheet-shell--ddb) > .sheet-popup-loadout,
+.sheet-shell--popup:not(.sheet-shell--ddb) > .sheet-popup-export {
   width: 100%;
   max-width: 100%;
   align-self: stretch;
@@ -2028,19 +2029,19 @@
 
 }
 
-.sheet-shell--popup .sheet-level-box__xp-primary,
-.sheet-shell--popup .inv-row h4,
-.sheet-shell--popup .inv-section__title {
+.sheet-shell--popup:not(.sheet-shell--ddb) .sheet-level-box__xp-primary,
+.sheet-shell--popup:not(.sheet-shell--ddb) .inv-row h4,
+.sheet-shell--popup:not(.sheet-shell--ddb) .inv-section__title {
   color: var(--sheet-text, #f0ece4);
 }
 
-.sheet-shell--popup .inv-row__desc,
-.sheet-shell--popup .inv-section__hint,
-.sheet-shell--popup .sheet-level-box__xp-secondary {
+.sheet-shell--popup:not(.sheet-shell--ddb) .inv-row__desc,
+.sheet-shell--popup:not(.sheet-shell--ddb) .inv-section__hint,
+.sheet-shell--popup:not(.sheet-shell--ddb) .sheet-level-box__xp-secondary {
   color: rgba(232, 226, 214, 0.86);
 }
 
-.sheet-shell--popup .inv-section {
+.sheet-shell--popup:not(.sheet-shell--ddb) .inv-section {
   border-color: color-mix(in srgb, var(--sheet-accent, #c9a962) 28%, transparent);
 }
 
@@ -2057,7 +2058,7 @@
 
 
 
-.sheet-shell--popup .btn-ghost {
+.sheet-shell--popup:not(.sheet-shell--ddb) .btn-ghost {
 
   color: rgba(232, 226, 214, 0.75);
 
@@ -2065,12 +2066,12 @@
 
 }
 
-.sheet-shell--popup .btn:hover {
+.sheet-shell--popup:not(.sheet-shell--ddb) .btn:hover {
   transform: none;
 }
 
-.sheet-shell--popup .btn-ghost:hover,
-.sheet-shell--popup .btn-ghost:focus-visible {
+.sheet-shell--popup:not(.sheet-shell--ddb) .btn-ghost:hover,
+.sheet-shell--popup:not(.sheet-shell--ddb) .btn-ghost:focus-visible {
   border-color: rgba(122, 163, 201, 0.45);
   background: var(--accent-soft);
   color: var(--sheet-accent);
@@ -2078,7 +2079,7 @@
 
 
 
-.sheet-shell--popup .sheet-tab {
+.sheet-shell--popup:not(.sheet-shell--ddb) .sheet-tab {
 
   color: rgba(232, 226, 214, 0.55);
 
@@ -2086,7 +2087,7 @@
 
 
 
-.sheet-shell--popup .sheet-tab.active {
+.sheet-shell--popup:not(.sheet-shell--ddb) .sheet-tab.active {
 
   color: var(--sheet-accent);
 

@@ -16,7 +16,7 @@ export async function SiteHeaderWrapper() {
 
   return (
     <header className="glass site-header">
-      <EldarinLogo variant="header" />
+      <EldarinLogo variant="header" image="navbar" />
       <nav className="site-nav">
         <SiteNavLinks />
         {clerkEnabled ? (

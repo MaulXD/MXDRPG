@@ -21,6 +21,11 @@
   line-height: 1.1;
 }
 
+.landing-hero__brand .eldarin-logo--hero {
+  display: inline-flex;
+  justify-content: center;
+}
+
 .landing-hero__eyebrow {
   margin: 1.35rem 0 0;
 }

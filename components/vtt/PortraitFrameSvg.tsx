@@ -56,31 +56,31 @@ export function PortraitFrameSvg({ tier, className = "" }: Props) {
         <svg className={frameClass} viewBox="0 0 80 80" fill="none" aria-hidden>
           <rect x="7" y="7" width="66" height="66" stroke="#4a6080" strokeWidth="1" />
           <rect x="10" y="10" width="60" height="60" stroke="#2a3a50" strokeWidth="0.5" />
-          <line x1="4" y1="7" x2="20" y2="7" stroke="#7aa3c9" strokeWidth="1.5" strokeLinecap="square" />
-          <line x1="7" y1="4" x2="7" y2="20" stroke="#7aa3c9" strokeWidth="1.5" strokeLinecap="square" />
-          <line x1="7" y1="7" x2="13" y2="13" stroke="#7aa3c9" strokeWidth="1" opacity=".6" />
-          <circle cx="7" cy="7" r="2" fill="#7aa3c9" />
-          <line x1="76" y1="7" x2="60" y2="7" stroke="#7aa3c9" strokeWidth="1.5" strokeLinecap="square" />
-          <line x1="73" y1="4" x2="73" y2="20" stroke="#7aa3c9" strokeWidth="1.5" strokeLinecap="square" />
-          <line x1="73" y1="7" x2="67" y2="13" stroke="#7aa3c9" strokeWidth="1" opacity=".6" />
-          <circle cx="73" cy="7" r="2" fill="#7aa3c9" />
-          <line x1="4" y1="73" x2="20" y2="73" stroke="#7aa3c9" strokeWidth="1.5" strokeLinecap="square" />
-          <line x1="7" y1="76" x2="7" y2="60" stroke="#7aa3c9" strokeWidth="1.5" strokeLinecap="square" />
-          <line x1="7" y1="73" x2="13" y2="67" stroke="#7aa3c9" strokeWidth="1" opacity=".6" />
-          <circle cx="7" cy="73" r="2" fill="#7aa3c9" />
-          <line x1="76" y1="73" x2="60" y2="73" stroke="#7aa3c9" strokeWidth="1.5" strokeLinecap="square" />
-          <line x1="73" y1="76" x2="73" y2="60" stroke="#7aa3c9" strokeWidth="1.5" strokeLinecap="square" />
-          <line x1="73" y1="73" x2="67" y2="67" stroke="#7aa3c9" strokeWidth="1" opacity=".6" />
-          <circle cx="73" cy="73" r="2" fill="#7aa3c9" />
+          <line x1="4" y1="7" x2="20" y2="7" stroke="#b8922e" strokeWidth="1.5" strokeLinecap="square" />
+          <line x1="7" y1="4" x2="7" y2="20" stroke="#b8922e" strokeWidth="1.5" strokeLinecap="square" />
+          <line x1="7" y1="7" x2="13" y2="13" stroke="#b8922e" strokeWidth="1" opacity=".6" />
+          <circle cx="7" cy="7" r="2" fill="#b8922e" />
+          <line x1="76" y1="7" x2="60" y2="7" stroke="#b8922e" strokeWidth="1.5" strokeLinecap="square" />
+          <line x1="73" y1="4" x2="73" y2="20" stroke="#b8922e" strokeWidth="1.5" strokeLinecap="square" />
+          <line x1="73" y1="7" x2="67" y2="13" stroke="#b8922e" strokeWidth="1" opacity=".6" />
+          <circle cx="73" cy="7" r="2" fill="#b8922e" />
+          <line x1="4" y1="73" x2="20" y2="73" stroke="#b8922e" strokeWidth="1.5" strokeLinecap="square" />
+          <line x1="7" y1="76" x2="7" y2="60" stroke="#b8922e" strokeWidth="1.5" strokeLinecap="square" />
+          <line x1="7" y1="73" x2="13" y2="67" stroke="#b8922e" strokeWidth="1" opacity=".6" />
+          <circle cx="7" cy="73" r="2" fill="#b8922e" />
+          <line x1="76" y1="73" x2="60" y2="73" stroke="#b8922e" strokeWidth="1.5" strokeLinecap="square" />
+          <line x1="73" y1="76" x2="73" y2="60" stroke="#b8922e" strokeWidth="1.5" strokeLinecap="square" />
+          <line x1="73" y1="73" x2="67" y2="67" stroke="#b8922e" strokeWidth="1" opacity=".6" />
+          <circle cx="73" cy="73" r="2" fill="#b8922e" />
           {/* Entalhes */}
           <polygon points="40,1 48,7 40,15 32,7" fill="#4a6080" opacity="0.7" />
-          <polygon points="40,1 44,5 40,8 36,5" fill="#7aa3c9" />
+          <polygon points="40,1 44,5 40,8 36,5" fill="#b8922e" />
           <polygon points="40,79 48,73 40,65 32,73" fill="#4a6080" opacity="0.7" />
-          <polygon points="40,79 44,75 40,72 36,75" fill="#7aa3c9" />
+          <polygon points="40,79 44,75 40,72 36,75" fill="#b8922e" />
           <polygon points="1,40 7,48 15,40 7,32" fill="#4a6080" opacity="0.7" />
-          <polygon points="1,40 5,44 8,40 5,36" fill="#7aa3c9" />
+          <polygon points="1,40 5,44 8,40 5,36" fill="#b8922e" />
           <polygon points="79,40 73,48 65,40 73,32" fill="#4a6080" opacity="0.7" />
-          <polygon points="79,40 75,44 72,40 75,36" fill="#7aa3c9" />
+          <polygon points="79,40 75,44 72,40 75,36" fill="#b8922e" />
         </svg>
       );
     case "miniboss":

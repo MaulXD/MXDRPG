@@ -77,21 +77,29 @@
   min-width: 200px;
   padding: 0.65rem 1rem;
   border-radius: var(--radius-pill);
-  border: 1px solid var(--glass-border);
-  background: rgba(8, 12, 24, 0.8);
-  color: var(--text);
+  border: 1px solid var(--chrome-field-border);
+  background: var(--chrome-field-bg);
+  color: var(--chrome-field-text);
   font-family: inherit;
   font-size: 0.9rem;
 }
 
+.comp-search::placeholder {
+  color: var(--chrome-field-placeholder);
+  opacity: 1;
+}
+
 .comp-search:focus {
   outline: none;
-  border-color: var(--glass-border-bright);
+  border-color: var(--chrome-accent);
+  background: var(--chrome-field-bg-focus);
+  box-shadow: 0 0 0 2px rgba(184, 146, 46, 0.22);
 }
 
 .comp-count {
-  font-size: 0.8rem;
-  color: var(--text-dim);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-muted);
 }
 
 .comp-grid {
@@ -107,8 +115,9 @@
   width: 100%;
   padding: 1rem;
   border-radius: 2px;
-  background: var(--surface);
+  background: var(--chrome-surface);
   border: 1px solid var(--border-accent);
+  color: var(--text);
   cursor: pointer;
   transition: border-color 0.2s, transform 0.2s;
   text-align: left;
@@ -185,6 +194,7 @@
   font-weight: 700;
   line-height: 1.25;
   word-break: break-word;
+  color: var(--text-strong);
 }
 
 /* —— Mesa: painel lateral estreito —— */
@@ -353,7 +363,8 @@
   border-radius: 0;
   border: none;
   border-top: 1px solid var(--glass-border-bright);
-  background: rgba(0, 0, 0, 0.25);
+  background: var(--chrome-surface);
+  color: var(--text);
 }
 
 .comp-detail--rail h3 {
@@ -421,9 +432,14 @@
 }
 
 .comp-detail-body {
-  color: var(--text-muted);
+  color: var(--text);
   font-size: 0.92rem;
   line-height: 1.65;
+}
+
+.comp-detail:not(.ornament-card--parchment) .comp-detail-head h3,
+.comp-detail:not(.ornament-card--parchment) h3 {
+  color: var(--text-strong);
 }
 
 .comp-detail-body p {

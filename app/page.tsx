@@ -41,7 +41,7 @@ export default function HomePage() {
       <section className="page-wrap page-hero page-hero--landing">
         <div className="landing-hero">
           <h1 className="landing-hero__brand">
-            <EldarinLogo variant="full" href={null} className="eldarin-logo--hero" />
+            <EldarinLogo variant="full" href={null} image="landing" className="eldarin-logo--hero" />
           </h1>
           <p className="eyebrow landing-hero__eyebrow">VTT proprietário</p>
           <p className="lead landing-hero__lead">
