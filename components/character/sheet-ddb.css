@@ -58,14 +58,20 @@
   padding: 0;
   border-radius: 10px;
   overflow: clip;
+  /* Sobrescreve .sheet-shell { display: grid; align-items: start } de sheet.css */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  grid-template-columns: unset;
+  grid-template-areas: unset;
 }
 
 .sheet-shell--popup.sheet-shell--ddb {
-  display: flex;
-  flex-direction: column;
   flex: 0 1 auto;
   width: 100%;
+  max-width: 100%;
   min-width: 0;
+  align-self: stretch;
   background: #e8e2d6;
   color: var(--ddb-ink);
   overflow: visible;
@@ -77,6 +83,18 @@
   --sheet-accent: var(--ddb-gold);
   --sheet-text: var(--ddb-ink);
   --sheet-text-muted: var(--ddb-muted);
+}
+
+.sheet-shell--ddb > .sheet-ddb-toolbar,
+.sheet-shell--ddb > .sheet-ddb-header,
+.sheet-shell--ddb > .sheet-ddb-attrs,
+.sheet-shell--ddb > .sheet-ddb-body,
+.sheet-shell--ddb > .sheet-ddb-loadout,
+.sheet-shell--ddb > .sheet-ddb-drawer {
+  width: 100%;
+  max-width: 100%;
+  align-self: stretch;
+  box-sizing: border-box;
 }
 
 .sheet-shell--ddb > .sheet-ddb-toolbar {
@@ -182,6 +200,12 @@
   cursor: grab;
   user-select: none;
   touch-action: none;
+  flex-shrink: 0;
+}
+
+.sheet-ddb-header__main {
+  flex: 1;
+  min-width: 0;
 }
 
 .sheet-ddb-header:active {

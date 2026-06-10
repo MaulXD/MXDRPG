@@ -1,6 +1,7 @@
 import "server-only";
 
 import { getAdventure } from "@/lib/adventure/store";
+import { isAdventureClosed } from "@/lib/adventure/access";
 import * as dbAdventures from "@/lib/db/adventures";
 import { dbEnabled } from "@/lib/db/enabled";
 import { fetchClerkIdForUser } from "@/lib/db/users";
@@ -63,8 +64,18 @@ export async function canViewRoomServer(
   user: SessionUser | null | undefined,
   inviteCode?: string | null
 ): Promise<boolean> {
-  if (canViewRoom(room, user, inviteCode)) return true;
+  if (room.roomId === "demo") return true;
+  if (user?.role === "admin") return true;
+
+  const adventureId = room.adventureId ?? room.roomId;
+  const adv = await getAdventure(adventureId);
+  const closed = adv ? isAdventureClosed(adv) : false;
+
   if (user && (await isRoomMemberResolved(room, user.id, user.clerkId))) return true;
   if (inviteCode && (await inviteMatchesRoom(room, inviteCode))) return true;
+
+  if (closed) return false;
+
+  if (canViewRoom(room, user, inviteCode)) return true;
   return false;
 }

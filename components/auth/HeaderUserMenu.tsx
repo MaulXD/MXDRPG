@@ -1,5 +1,7 @@
 "use client";
 
+import { BugReportMenuItem } from "@/components/BugReportMenuItem";
+import { BugReportModal } from "@/components/BugReportModal";
 import "@/components/ui/user-avatar.css";
 import Link from "next/link";
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
@@ -22,6 +24,7 @@ function userLabel(user: SessionUser): string {
 export function HeaderUserMenu({ user: initialUser, onSignOut }: Props) {
   const [user, setUser] = useState<SessionUser | null>(initialUser ?? null);
   const [open, setOpen] = useState(false);
+  const [bugReportOpen, setBugReportOpen] = useState(false);
   const [panelPos, setPanelPos] = useState({ top: 0, right: 0 });
   const triggerRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
@@ -123,6 +126,12 @@ export function HeaderUserMenu({ user: initialUser, onSignOut }: Props) {
         >
           Editar perfil
         </Link>
+        <BugReportMenuItem
+          onOpen={() => {
+            setOpen(false);
+            setBugReportOpen(true);
+          }}
+        />
         <button
           type="button"
           className="header-user-menu__item header-user-menu__item--danger"
@@ -155,6 +164,7 @@ export function HeaderUserMenu({ user: initialUser, onSignOut }: Props) {
         </button>
       </div>
       {panel ? createPortal(panel, document.body) : null}
+      <BugReportModal open={bugReportOpen} onClose={() => setBugReportOpen(false)} />
     </>
   );
 }

@@ -788,3 +788,169 @@
     flex-direction: column;
   }
 }
+
+/* Nav — botão Mensagens (estilo link) */
+.friends-nav-messages {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+  text-decoration: none;
+}
+
+.friends-nav-messages:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Abas de conversas abertas no messenger */
+.friends-messenger-tabs {
+  flex-shrink: 0;
+  display: flex;
+  align-items: stretch;
+  gap: 0.25rem;
+  padding: 0.35rem 0.5rem 0;
+  overflow-x: auto;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  scrollbar-width: thin;
+}
+
+.friends-messenger-tabs__tab {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  max-width: 9.5rem;
+  border-radius: var(--radius-sm, 8px) var(--radius-sm, 8px) 0 0;
+  background: rgba(0, 0, 0, 0.15);
+  border: 1px solid transparent;
+  border-bottom: none;
+}
+
+.friends-messenger-tabs__tab.is-active {
+  background: rgba(184, 146, 46, 0.12);
+  border-color: rgba(184, 146, 46, 0.28);
+}
+
+.friends-messenger-tabs__select {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-width: 0;
+  flex: 1;
+  padding: 0.35rem 0.25rem 0.35rem 0.4rem;
+  border: none;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+
+.friends-messenger-tabs__avatar {
+  width: 1.35rem;
+  height: 1.35rem;
+  flex-shrink: 0;
+}
+
+.friends-messenger-tabs__name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.friends-messenger-tabs__close {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 1.5rem;
+  height: 100%;
+  padding: 0;
+  border: none;
+  border-radius: 0 var(--radius-sm, 8px) 0 0;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.friends-messenger-tabs__close:hover {
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* Launcher minimizado (estilo Facebook) */
+.friends-messenger-launcher {
+  position: fixed;
+  z-index: 10401;
+  right: max(1rem, env(safe-area-inset-right, 0px));
+  bottom: max(1rem, env(safe-area-inset-bottom, 0px));
+  display: flex;
+  align-items: flex-end;
+  gap: 0.45rem;
+  padding: 0.35rem;
+  border-radius: 999px;
+  border: 1px solid rgba(184, 146, 46, 0.28);
+  background: var(--glass-strong, rgba(30, 29, 26, 0.98));
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+}
+
+.friends-messenger-launcher__main {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border: none;
+  border-radius: 50%;
+  background: linear-gradient(145deg, rgba(184, 146, 46, 0.35), rgba(120, 90, 30, 0.5));
+  color: var(--text);
+  cursor: pointer;
+}
+
+.friends-messenger-launcher__main:hover {
+  filter: brightness(1.08);
+}
+
+.friends-messenger-launcher__badge {
+  position: absolute;
+  top: -0.15rem;
+  right: -0.15rem;
+  min-width: 1rem;
+  height: 1rem;
+  padding: 0 0.2rem;
+  border-radius: 999px;
+  font-size: 0.58rem;
+  font-weight: 700;
+  line-height: 1rem;
+  text-align: center;
+  background: var(--accent-warn, #d4a030);
+  color: #1a1208;
+  border: 1px solid rgba(0, 0, 0, 0.35);
+}
+
+.friends-messenger-launcher__chat {
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  border: 2px solid transparent;
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+  transition: transform 0.15s, border-color 0.15s;
+}
+
+.friends-messenger-launcher__chat:hover {
+  transform: translateY(-2px);
+}
+
+.friends-messenger-launcher__chat.is-active {
+  border-color: var(--accent);
+}
+
+.friends-messenger-launcher__avatar {
+  width: 2.35rem;
+  height: 2.35rem;
+}

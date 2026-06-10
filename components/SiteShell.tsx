@@ -3,9 +3,10 @@
 import { useCallback, useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { AnimatedNavLink } from "@/components/AnimatedNavLink";
-import { BugReportButton } from "@/components/BugReportButton";
+import { VttTopbarUserMenu } from "@/components/auth/VttTopbarUserMenu";
 import { EldarinLogo } from "@/components/brand/EldarinLogo";
 import { FriendsNavLink } from "@/components/friends/FriendsNavLink";
+import { FriendsNavMessages } from "@/components/friends/FriendsNavMessages";
 import { IconBook, IconHex, IconStar } from "@/components/ui/EldarinIcons";
 import "@/components/vtt/mesa-theme.css";
 
@@ -72,7 +73,9 @@ export function SiteShell({ children, header, footer }: Props) {
                   Minhas mesas
                 </AnimatedNavLink>
                 <FriendsNavLink />
+                <FriendsNavMessages />
               </nav>
+              <VttTopbarUserMenu />
             </div>
           </header>
           {topbarReady && !topbarHidden ? (
@@ -101,7 +104,6 @@ export function SiteShell({ children, header, footer }: Props) {
         <main key={pathname} className="vtt-main page-enter">
           {children}
         </main>
-        <BugReportButton variant="vtt" />
       </div>
     );
   }
@@ -113,7 +115,6 @@ export function SiteShell({ children, header, footer }: Props) {
         {children}
       </main>
       {footer}
-      <BugReportButton variant="site" />
     </>
   );
 }
