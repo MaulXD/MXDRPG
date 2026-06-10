@@ -2290,6 +2290,13 @@
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
 }
 
+.sheet-popup-portrait-editor--portal {
+  position: fixed;
+  z-index: 10050;
+  max-height: min(90vh, 560px);
+  overflow: auto;
+}
+
 .sheet-popup-portrait-editor__head {
   display: flex;
   align-items: center;
