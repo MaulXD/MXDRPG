@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatedNavLink } from "@/components/AnimatedNavLink";
-import { MesasNavMenu } from "@/components/nav/MesasNavMenu";
+import { MesasNavLink } from "@/components/nav/MesasNavLink";
 import { IconBook, IconHome, IconScroll } from "@/components/ui/EldarinIcons";
 
 const links = [
@@ -13,7 +13,7 @@ const links = [
 export function SiteNavLinks() {
   return (
     <>
-      <MesasNavMenu />
+      <MesasNavLink />
       {links.map((l) => {
         const Icon = l.icon;
         return (

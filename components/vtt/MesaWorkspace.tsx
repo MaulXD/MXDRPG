@@ -480,7 +480,6 @@ export function MesaWorkspace({
                 online={presenceOnline}
                 loading={presenceLoading}
                 selfUserId={session?.id}
-                adventureId={adventureId}
               />
             </div>
             <HexBattlefield

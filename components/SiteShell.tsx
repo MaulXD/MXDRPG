@@ -7,7 +7,7 @@ import { VttTopbarUserMenu } from "@/components/auth/VttTopbarUserMenu";
 import { EldarinLogo } from "@/components/brand/EldarinLogo";
 import { FriendsNavLink } from "@/components/friends/FriendsNavLink";
 import { FriendsNavMessages } from "@/components/friends/FriendsNavMessages";
-import { MesasNavMenu } from "@/components/nav/MesasNavMenu";
+import { MesasNavLink } from "@/components/nav/MesasNavLink";
 import { IconBook } from "@/components/ui/EldarinIcons";
 import "@/components/vtt/mesa-theme.css";
 
@@ -64,7 +64,7 @@ export function SiteShell({ children, header, footer }: Props) {
             <EldarinLogo variant="header" image="navbar" />
             <div className="vtt-topbar__end">
               <nav className="vtt-nav">
-                <MesasNavMenu variant="vtt" />
+                <MesasNavLink variant="vtt" />
                 <AnimatedNavLink href="/compendios" icon={<IconBook size={18} />}>
                   Compêndios
                 </AnimatedNavLink>
