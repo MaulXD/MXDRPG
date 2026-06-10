@@ -7,6 +7,7 @@ type AdventureRow = {
   owner_id: string;
   name: string;
   synopsis: string;
+  access_mode?: string | null;
   invite_code: string;
   member_ids: string[];
   primary_room_id: string;
@@ -16,11 +17,13 @@ type AdventureRow = {
 };
 
 function rowToAdventure(row: AdventureRow): Adventure {
+  const accessMode = row.access_mode === "closed" ? "closed" : "public";
   return {
     adventureId: row.adventure_id,
     ownerId: row.owner_id,
     name: row.name,
     synopsis: row.synopsis ?? "",
+    accessMode,
     inviteCode: row.invite_code,
     memberIds: row.member_ids ?? [],
     primaryRoomId: row.primary_room_id,
@@ -36,6 +39,7 @@ function adventureToRow(a: Adventure): AdventureRow {
     owner_id: a.ownerId,
     name: a.name,
     synopsis: a.synopsis,
+    access_mode: a.accessMode ?? "public",
     invite_code: a.inviteCode,
     member_ids: a.memberIds,
     primary_room_id: a.primaryRoomId,
@@ -52,7 +56,7 @@ export async function fetchAdventureByPrimaryRoom(roomId: string): Promise<Adven
   try {
     rows = await withDbTimeout(
       sql<AdventureRow[]>`
-        SELECT adventure_id, owner_id, name, synopsis, invite_code, member_ids,
+        SELECT adventure_id, owner_id, name, synopsis, access_mode, invite_code, member_ids,
                primary_room_id, created_at, updated_at, deleted_at
         FROM eldarin_adventures WHERE primary_room_id = ${roomId} LIMIT 1
       `,
@@ -73,7 +77,7 @@ export async function fetchAdventure(adventureId: string): Promise<Adventure | n
   try {
     rows = await withDbTimeout(
       sql<AdventureRow[]>`
-        SELECT adventure_id, owner_id, name, synopsis, invite_code, member_ids,
+        SELECT adventure_id, owner_id, name, synopsis, access_mode, invite_code, member_ids,
                primary_room_id, created_at, updated_at, deleted_at
         FROM eldarin_adventures WHERE adventure_id = ${adventureId} LIMIT 1
       `,
@@ -113,7 +117,7 @@ export async function fetchAdventureByInvite(inviteCode: string): Promise<Advent
   try {
     rows = await withDbTimeout(
       sql<AdventureRow[]>`
-        SELECT adventure_id, owner_id, name, synopsis, invite_code, member_ids,
+        SELECT adventure_id, owner_id, name, synopsis, access_mode, invite_code, member_ids,
                primary_room_id, created_at, updated_at, deleted_at
         FROM eldarin_adventures WHERE UPPER(invite_code) = ${code} LIMIT 1
       `,
@@ -134,10 +138,11 @@ export async function saveAdventure(adventure: Adventure): Promise<void> {
   await withDbTimeout(
     sql`
     INSERT INTO eldarin_adventures (
-      adventure_id, owner_id, name, synopsis, invite_code, member_ids,
+      adventure_id, owner_id, name, synopsis, access_mode, invite_code, member_ids,
       primary_room_id, created_at, updated_at, deleted_at
     ) VALUES (
       ${row.adventure_id}, ${row.owner_id}, ${row.name}, ${row.synopsis},
+      ${row.access_mode ?? "public"},
       ${row.invite_code}, ${sql.json(row.member_ids)}, ${row.primary_room_id},
       ${row.created_at}, ${row.updated_at}, ${row.deleted_at}
     )
@@ -145,6 +150,7 @@ export async function saveAdventure(adventure: Adventure): Promise<void> {
       owner_id = EXCLUDED.owner_id,
       name = EXCLUDED.name,
       synopsis = EXCLUDED.synopsis,
+      access_mode = EXCLUDED.access_mode,
       invite_code = EXCLUDED.invite_code,
       member_ids = EXCLUDED.member_ids,
       primary_room_id = EXCLUDED.primary_room_id,
@@ -165,7 +171,7 @@ export async function listAdventuresForOwnerOrMember(
   try {
     rows = await withDbTimeout(
       sql<AdventureRow[]>`
-        SELECT adventure_id, owner_id, name, synopsis, invite_code, member_ids,
+        SELECT adventure_id, owner_id, name, synopsis, access_mode, invite_code, member_ids,
                primary_room_id, created_at, updated_at, deleted_at
         FROM eldarin_adventures
         WHERE owner_id = ${userId}
@@ -197,7 +203,7 @@ export async function listAllAdventures(): Promise<Adventure[]> {
   try {
     rows = await withDbTimeout(
       sql<AdventureRow[]>`
-        SELECT adventure_id, owner_id, name, synopsis, invite_code, member_ids,
+        SELECT adventure_id, owner_id, name, synopsis, access_mode, invite_code, member_ids,
                primary_room_id, created_at, updated_at, deleted_at
         FROM eldarin_adventures
         ORDER BY updated_at DESC

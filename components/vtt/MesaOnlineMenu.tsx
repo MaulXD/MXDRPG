@@ -8,6 +8,8 @@ import { UserAvatar } from "@/components/ui/UserAvatar";
 import type { RoomPresenceMember } from "@/hooks/useRoomPresence";
 import { computeCursorDetailPlacement } from "@/lib/vtt/cursor-detail-placement";
 
+const PANEL_HIDE_DELAY_MS = 500;
+
 type Props = {
   online: RoomPresenceMember[];
   loading?: boolean;
@@ -60,27 +62,69 @@ function MemberAvatar({ member }: { member: RoomPresenceMember }) {
   );
 }
 
-type HoverState = {
+type ProfilePanelState = {
   member: RoomPresenceMember;
   pointer: { x: number; y: number };
+  pinned: boolean;
 };
 
 type FriendActionState = "idle" | "loading" | "friend" | "pending" | "error";
 
 export function MesaOnlineMenu({ online, loading = false, selfUserId, adventureId }: Props) {
   const [open, setOpen] = useState(false);
-  const [hover, setHover] = useState<HoverState | null>(null);
+  const [panel, setPanel] = useState<ProfilePanelState | null>(null);
   const [friendIds, setFriendIds] = useState<Set<string>>(new Set());
   const [pendingIds, setPendingIds] = useState<Set<string>>(new Set());
+  const [incomingByUser, setIncomingByUser] = useState<Map<string, string>>(new Map());
   const [nickname, setNickname] = useState("");
   const [addLoading, setAddLoading] = useState(false);
   const [addError, setAddError] = useState("");
   const [addOk, setAddOk] = useState("");
   const [memberActions, setMemberActions] = useState<Record<string, FriendActionState>>({});
   const rootRef = useRef<HTMLDivElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
+  const hideTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const sorted = useMemo(() => sortMembers(online), [online]);
   const canSocialize = Boolean(selfUserId);
+
+  const clearHideTimer = useCallback(() => {
+    if (hideTimerRef.current) {
+      clearTimeout(hideTimerRef.current);
+      hideTimerRef.current = null;
+    }
+  }, []);
+
+  const closePanel = useCallback(() => {
+    clearHideTimer();
+    setPanel(null);
+  }, [clearHideTimer]);
+
+  const scheduleHide = useCallback(() => {
+    clearHideTimer();
+    hideTimerRef.current = setTimeout(() => {
+      setPanel((prev) => (prev?.pinned ? prev : null));
+    }, PANEL_HIDE_DELAY_MS);
+  }, [clearHideTimer]);
+
+  const openPanel = useCallback(
+    (member: RoomPresenceMember, pointer: { x: number; y: number }, pinned = false) => {
+      clearHideTimer();
+      setPanel({ member, pointer, pinned });
+    },
+    [clearHideTimer]
+  );
+
+  const togglePin = useCallback(
+    (member: RoomPresenceMember, pointer: { x: number; y: number }) => {
+      clearHideTimer();
+      setPanel((prev) => {
+        if (prev?.member.userId === member.userId && prev.pinned) return null;
+        return { member, pointer, pinned: true };
+      });
+    },
+    [clearHideTimer]
+  );
 
   const loadSocial = useCallback(async () => {
     if (!canSocialize) return;
@@ -94,9 +138,15 @@ export function MesaOnlineMenu({ online, loading = false, selfUserId, adventureI
     }
     if (rRes.ok) {
       const data = (await rRes.json()) as {
+        incoming?: { id: string; fromUserId: string }[];
         outgoing?: { toUserId: string }[];
       };
       setPendingIds(new Set((data.outgoing ?? []).map((r) => r.toUserId)));
+      const incoming = new Map<string, string>();
+      for (const req of data.incoming ?? []) {
+        incoming.set(req.fromUserId, req.id);
+      }
+      setIncomingByUser(incoming);
     }
   }, [canSocialize]);
 
@@ -108,19 +158,25 @@ export function MesaOnlineMenu({ online, loading = false, selfUserId, adventureI
   useEffect(() => {
     if (!open) return;
     const onDoc = (e: MouseEvent) => {
-      if (!rootRef.current?.contains(e.target as Node)) setOpen(false);
+      const target = e.target as Node;
+      if (rootRef.current?.contains(target)) return;
+      if (panelRef.current?.contains(target)) return;
+      setOpen(false);
+      closePanel();
     };
     document.addEventListener("mousedown", onDoc);
     return () => document.removeEventListener("mousedown", onDoc);
-  }, [open]);
+  }, [open, closePanel]);
 
   useEffect(() => {
     if (!open) {
-      setHover(null);
+      closePanel();
       setAddError("");
       setAddOk("");
     }
-  }, [open]);
+  }, [open, closePanel]);
+
+  useEffect(() => () => clearHideTimer(), [clearHideTimer]);
 
   async function addFriendByUserId(targetUserId: string) {
     if (!canSocialize || targetUserId === selfUserId) return;
@@ -135,14 +191,17 @@ export function MesaOnlineMenu({ online, loading = false, selfUserId, adventureI
       const data = (await res.json().catch(() => ({}))) as { error?: string; kind?: string };
       if (!res.ok) {
         setMemberActions((prev) => ({ ...prev, [targetUserId]: "error" }));
+        setAddError(data.error ?? "Não foi possível enviar o pedido");
         throw new Error(data.error ?? "Erro");
       }
       if (data.kind === "friend") {
         setFriendIds((prev) => new Set(prev).add(targetUserId));
         setMemberActions((prev) => ({ ...prev, [targetUserId]: "friend" }));
+        setAddOk("Amizade aceita!");
       } else {
         setPendingIds((prev) => new Set(prev).add(targetUserId));
         setMemberActions((prev) => ({ ...prev, [targetUserId]: "pending" }));
+        setAddOk("Pedido de amizade enviado.");
       }
       await loadSocial();
     } catch (e) {
@@ -181,11 +240,14 @@ export function MesaOnlineMenu({ online, loading = false, selfUserId, adventureI
   }
 
   async function acceptFriendRequest(requestId: string) {
-    await fetch(`/api/friends/requests/${requestId}/accept`, {
+    const res = await fetch(`/api/friends/requests/${requestId}/accept`, {
       method: "POST",
       credentials: "same-origin",
     });
-    await loadSocial();
+    if (res.ok) {
+      setAddOk("Amizade aceita!");
+      await loadSocial();
+    }
   }
 
   async function inviteToMesa(targetUserId: string) {
@@ -201,6 +263,7 @@ export function MesaOnlineMenu({ online, loading = false, selfUserId, adventureI
       const data = (await res.json().catch(() => ({}))) as { error?: string };
       if (!res.ok) {
         setMemberActions((prev) => ({ ...prev, [targetUserId]: "error" }));
+        setAddError(data.error ?? "Não foi possível convidar");
         return;
       }
       setMemberActions((prev) => ({ ...prev, [targetUserId]: "idle" }));
@@ -218,26 +281,46 @@ export function MesaOnlineMenu({ online, loading = false, selfUserId, adventureI
     return "idle";
   }
 
+  function pointerFromAvatar(el: HTMLElement): { x: number; y: number } {
+    const rect = el.getBoundingClientRect();
+    return { x: rect.right, y: rect.top + rect.height / 2 };
+  }
+
   const count = online.length;
   const label = loading && count === 0 ? "…" : String(count);
 
-  const tooltip =
-    hover && typeof document !== "undefined"
+  const profilePortal =
+    panel && typeof document !== "undefined"
       ? (() => {
-          const { member, pointer } = hover;
+          const { member, pointer, pinned } = panel;
           const isSelf = member.userId === selfUserId;
           const friendState = memberFriendState(member.userId);
+          const incomingRequestId = incomingByUser.get(member.userId);
           const placement = computeCursorDetailPlacement(pointer);
           return createPortal(
             <div
+              ref={panelRef}
               className={`mesa-online-menu__hover-card glass-panel mesa-online-menu__hover-card--cursor mesa-online-menu__hover-card--interactive${
-                placement.flipLeft ? " mesa-online-menu__hover-card--cursor-left" : ""
-              }`}
+                pinned ? " mesa-online-menu__hover-card--pinned" : ""
+              }${placement.flipLeft ? " mesa-online-menu__hover-card--cursor-left" : ""}`}
               style={{ left: placement.left, top: placement.top }}
-              role="tooltip"
-              onMouseEnter={() => setHover(hover)}
-              onMouseLeave={() => setHover(null)}
+              role="dialog"
+              aria-label={`Perfil de ${playerDisplayName(member)}`}
+              onMouseEnter={clearHideTimer}
+              onMouseLeave={() => {
+                if (!pinned) scheduleHide();
+              }}
             >
+              {pinned ? (
+                <button
+                  type="button"
+                  className="mesa-online-menu__panel-close"
+                  aria-label="Fechar perfil"
+                  onClick={closePanel}
+                >
+                  ✕
+                </button>
+              ) : null}
               {isSelf ? (
                 <>
                   <div className="mesa-online-menu__hover-row">
@@ -254,6 +337,7 @@ export function MesaOnlineMenu({ online, loading = false, selfUserId, adventureI
                 </>
               ) : canSocialize ? (
                 <PlayerProfileCard
+                  key={`${member.userId}-${friendState}`}
                   userId={member.userId}
                   selfUserId={selfUserId ?? undefined}
                   compact
@@ -278,15 +362,39 @@ export function MesaOnlineMenu({ online, loading = false, selfUserId, adventureI
                   </div>
                 </>
               )}
-              {canSocialize && !isSelf && adventureId && friendState !== "loading" ? (
+              {canSocialize && !isSelf ? (
                 <div className="mesa-online-menu__hover-actions">
-                  <button
-                    type="button"
-                    className="vtt-btn vtt-btn--ghost vtt-btn--compact mesa-online-menu__hover-btn"
-                    onClick={() => void inviteToMesa(member.userId)}
-                  >
-                    Convidar à mesa
-                  </button>
+                  {friendState === "idle" ? (
+                    <button
+                      type="button"
+                      className="vtt-btn vtt-btn--ghost vtt-btn--compact mesa-online-menu__hover-btn mesa-online-menu__hover-btn--accent"
+                      disabled={friendState === "loading"}
+                      onClick={() => void addFriendByUserId(member.userId)}
+                    >
+                      {friendState === "loading" ? "Enviando…" : "Adicionar amigo"}
+                    </button>
+                  ) : null}
+                  {incomingRequestId ? (
+                    <button
+                      type="button"
+                      className="vtt-btn vtt-btn--ghost vtt-btn--compact mesa-online-menu__hover-btn mesa-online-menu__hover-btn--accent"
+                      onClick={() => void acceptFriendRequest(incomingRequestId)}
+                    >
+                      Aceitar pedido de amizade
+                    </button>
+                  ) : null}
+                  {friendState === "pending" ? (
+                    <span className="mesa-online-menu__hover-status">Pedido enviado — aguardando resposta</span>
+                  ) : null}
+                  {adventureId && friendState !== "loading" ? (
+                    <button
+                      type="button"
+                      className="vtt-btn vtt-btn--ghost vtt-btn--compact mesa-online-menu__hover-btn"
+                      onClick={() => void inviteToMesa(member.userId)}
+                    >
+                      Convidar à mesa
+                    </button>
+                  ) : null}
                   {friendState === "friend" ? (
                     <Link
                       href={`/amigos?com=${encodeURIComponent(member.userId)}`}
@@ -329,6 +437,7 @@ export function MesaOnlineMenu({ online, loading = false, selfUserId, adventureI
               {sorted.map((member) => {
                 const isSelf = member.userId === selfUserId;
                 const isGm = isGmMember(member);
+                const isActive = panel?.member.userId === member.userId;
                 const sheetName = characterDisplayName(member);
                 const playerName = playerDisplayName(member);
                 return (
@@ -336,9 +445,9 @@ export function MesaOnlineMenu({ online, loading = false, selfUserId, adventureI
                     key={member.userId}
                     className={`mesa-online-menu__item${isSelf ? " mesa-online-menu__item--self" : ""}${
                       isGm ? " mesa-online-menu__item--gm" : ""
-                    }`}
+                    }${isActive ? " mesa-online-menu__item--active" : ""}`}
                     role="option"
-                    aria-selected={isSelf}
+                    aria-selected={isSelf || isActive}
                     aria-label={`${roleLabel(member)}, ${sheetName}, jogador ${playerName}${
                       isSelf ? ", você" : ""
                     }`}
@@ -346,29 +455,34 @@ export function MesaOnlineMenu({ online, loading = false, selfUserId, adventureI
                     <button
                       type="button"
                       className="mesa-online-menu__avatar-btn"
-                      onMouseEnter={(e) =>
-                        setHover({ member, pointer: { x: e.clientX, y: e.clientY } })
-                      }
-                      onMouseMove={(e) =>
-                        setHover((prev) =>
-                          prev?.member.userId === member.userId
-                            ? { member, pointer: { x: e.clientX, y: e.clientY } }
-                            : prev
-                        )
-                      }
-                      onMouseLeave={() =>
-                        setHover((prev) => (prev?.member.userId === member.userId ? null : prev))
-                      }
-                      onFocus={(e) => {
-                        const rect = e.currentTarget.getBoundingClientRect();
-                        setHover({
-                          member,
-                          pointer: { x: rect.right, y: rect.top + rect.height / 2 },
-                        });
+                      aria-expanded={isActive}
+                      onMouseEnter={(e) => {
+                        const pinned =
+                          panel?.member.userId === member.userId && panel.pinned;
+                        openPanel(member, { x: e.clientX, y: e.clientY }, pinned);
                       }}
-                      onBlur={() =>
-                        setHover((prev) => (prev?.member.userId === member.userId ? null : prev))
-                      }
+                      onMouseMove={(e) => {
+                        if (panel?.pinned && panel.member.userId !== member.userId) return;
+                        openPanel(
+                          member,
+                          { x: e.clientX, y: e.clientY },
+                          panel?.member.userId === member.userId && panel.pinned
+                        );
+                      }}
+                      onMouseLeave={() => {
+                        if (panel?.pinned && panel.member.userId === member.userId) return;
+                        scheduleHide();
+                      }}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        togglePin(member, pointerFromAvatar(e.currentTarget));
+                      }}
+                      onFocus={(e) => {
+                        openPanel(member, pointerFromAvatar(e.currentTarget), false);
+                      }}
+                      onBlur={() => {
+                        if (!panel?.pinned) scheduleHide();
+                      }}
                     >
                       <span className="mesa-online-menu__avatar">
                         <MemberAvatar member={member} />
@@ -407,7 +521,7 @@ export function MesaOnlineMenu({ online, loading = false, selfUserId, adventureI
         </div>
       ) : null}
 
-      {tooltip}
+      {profilePortal}
     </div>
   );
 }

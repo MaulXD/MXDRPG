@@ -24,7 +24,8 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Nome da aventura obrigatório" }, { status: 400 });
     }
 
-    const result = await createAdventure(session.user.id, name);
+    const accessMode = body.accessMode === "closed" ? "closed" : "public";
+    const result = await createAdventure(session.user.id, name, { accessMode });
     if (!result.ok) {
       return NextResponse.json({ error: result.error }, { status: 400 });
     }
@@ -35,6 +36,7 @@ export async function POST(request: Request) {
         name: adventure.name,
         inviteCode: adventure.inviteCode,
         primaryRoomId: adventure.primaryRoomId,
+        accessMode: adventure.accessMode,
         isOwner: true,
       },
     });

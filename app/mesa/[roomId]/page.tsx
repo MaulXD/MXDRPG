@@ -16,7 +16,10 @@ import { entrarPath, mesaRoomPath } from "@/lib/auth/post-auth-redirect";
 import { getSession } from "@/lib/auth/session";
 import { getPackEntries, getVisiblePacks } from "@/lib/compendium/registry";
 import type { CompendiumPackId } from "@/lib/compendium/types";
-import { bindPlayerToAdventure } from "@/lib/adventure/store";
+import { getAdventure, bindPlayerToAdventure } from "@/lib/adventure/store";
+import { isAdventureClosed } from "@/lib/adventure/access";
+import { shouldAutoJoinRoom } from "@/lib/auth/adventure-room-access";
+import { MesaClosedGate } from "@/components/vtt/MesaClosedGate";
 import { syncAdventureActorsForRoom } from "@/lib/room/adventure-actors";
 import { joinRoomMembers } from "@/lib/room/adventure-room";
 import { getRoom, joinRoomByInvite } from "@/lib/room/store";
@@ -55,9 +58,13 @@ export default async function MesaRoomPage({ params, searchParams }: Props) {
   }
 
   if (session?.user && roomId !== "demo") {
-    if (
-      !room.memberIds.includes(session.user.id) &&
-      (await isRoomMemberResolved(room, session.user.id, session.user.clerkId))
+    const isMember = await isRoomMemberResolved(room, session.user.id, session.user.clerkId);
+    if (!room.memberIds.includes(session.user.id) && isMember) {
+      await joinRoomMembers(roomId, session.user.id);
+      room = (await getRoom(roomId)) ?? room;
+    } else if (
+      !isMember &&
+      (await shouldAutoJoinRoom(room, session.user))
     ) {
       await joinRoomMembers(roomId, session.user.id);
       room = (await getRoom(roomId)) ?? room;
@@ -111,6 +118,20 @@ export default async function MesaRoomPage({ params, searchParams }: Props) {
         </div>
       );
     }
+    const advId = room.adventureId ?? roomId;
+    const adventure = await getAdventure(advId);
+    const closed = adventure ? isAdventureClosed(adventure) : false;
+
+    if (closed && session?.user) {
+      return (
+        <MesaClosedGate
+          roomId={roomId}
+          adventureId={advId}
+          roomName={adventure?.name ?? room.name}
+        />
+      );
+    }
+
     return (
       <div className="page-wrap">
         <p>Esta mesa é privada. Peça o código ou link de convite ao mestre.</p>

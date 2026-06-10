@@ -39,6 +39,7 @@ export function AdventureLobby() {
   const router = useRouter();
   const [adventures, setAdventures] = useState<AdventureRow[]>([]);
   const [newName, setNewName] = useState("");
+  const [accessMode, setAccessMode] = useState<"public" | "closed">("public");
   const [joinCode, setJoinCode] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -75,7 +76,7 @@ export function AdventureLobby() {
       const res = await fetch("/api/adventures", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: newName }),
+        body: JSON.stringify({ name: newName, accessMode }),
       });
       const data = (await res.json().catch(() => ({}))) as {
         error?: string;
@@ -180,6 +181,27 @@ export function AdventureLobby() {
               required
               style={inputStyle}
             />
+            <fieldset style={{ border: "none", padding: 0, margin: 0 }}>
+              <legend style={{ fontSize: "0.85rem", marginBottom: "0.35rem" }}>Tipo de acesso</legend>
+              <label style={{ display: "flex", gap: "0.4rem", alignItems: "center", fontSize: "0.85rem", marginBottom: "0.25rem" }}>
+                <input
+                  type="radio"
+                  name="accessMode"
+                  checked={accessMode === "public"}
+                  onChange={() => setAccessMode("public")}
+                />
+                Pública (padrão) — jogadores logados podem entrar na mesa
+              </label>
+              <label style={{ display: "flex", gap: "0.4rem", alignItems: "center", fontSize: "0.85rem" }}>
+                <input
+                  type="radio"
+                  name="accessMode"
+                  checked={accessMode === "closed"}
+                  onChange={() => setAccessMode("closed")}
+                />
+                Fechada — só código do mestre, senha única ou aprovação
+              </label>
+            </fieldset>
             <p style={{ margin: 0, fontSize: "0.8rem", color: "var(--text-muted)" }}>
               Um código de convite de 10 caracteres é gerado automaticamente. Você copia e compartilha
               na página da mesa (painel <strong>Convite</strong>).
