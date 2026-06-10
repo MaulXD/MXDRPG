@@ -13,6 +13,16 @@ import { formatXpProgressDetail, xpProgressRatio, MAX_LEVEL } from "@/lib/charac
 import { SheetHoverTip } from "@/components/character/SheetHoverTip";
 import { religionDisplayName } from "@/lib/character/pantheon";
 import { buildSheetSavingThrows } from "@/lib/character/sheet-skills";
+import {
+  attributeTip,
+  backgroundChipTip,
+  classChipTip,
+  combatStatTip,
+  deityChipTip,
+  raceChipTip,
+  savingThrowTip,
+  subclassChipTip,
+} from "@/lib/character/sheet-tooltips";
 import { SheetDdbSkillsPanel } from "@/components/character/SheetDdbSkillsPanel";
 import type { FoundryWindowDragHandlers } from "@/hooks/vtt/useFoundryWindowDrag";
 import "./sheet-ddb.css";
@@ -144,13 +154,19 @@ export function SheetPopupDdbView({
           const m = attributeMod(character.attributes[k]);
           const sign = m > 0 ? "pos" : m < 0 ? "neg" : "zero";
           return (
-            <div className="sheet-ddb-attr" key={k}>
-              <span className="sheet-ddb-attr__label">{ATTRIBUTE_LABELS[k]}</span>
-              <strong className="sheet-ddb-attr__score">{character.attributes[k]}</strong>
-              <span className={`sheet-ddb-attr__mod sheet-ddb-attr__mod--${sign}`}>
-                {m >= 0 ? `+${m}` : m}
-              </span>
-            </div>
+            <SheetHoverTip
+              key={k}
+              className="sheet-ddb-attr-tip"
+              tip={attributeTip(k, character.attributes[k], m)}
+            >
+              <div className="sheet-ddb-attr" tabIndex={0}>
+                <span className="sheet-ddb-attr__label">{ATTRIBUTE_LABELS[k]}</span>
+                <strong className="sheet-ddb-attr__score">{character.attributes[k]}</strong>
+                <span className={`sheet-ddb-attr__mod sheet-ddb-attr__mod--${sign}`}>
+                  {m >= 0 ? `+${m}` : m}
+                </span>
+              </div>
+            </SheetHoverTip>
           );
         })}
       </div>
@@ -160,51 +176,85 @@ export function SheetPopupDdbView({
           <div className="sheet-ddb-portrait-wrap">{portrait}</div>
 
           <div className="sheet-ddb-hex-row" aria-label="Combate rápido">
-            <div className="sheet-ddb-hex">
-              <span className="sheet-ddb-hex__label">Inic.</span>
-              <strong>
-                {tactical.iniciativa >= 0 ? `+${tactical.iniciativa}` : tactical.iniciativa}
-              </strong>
-            </div>
-            <div className="sheet-ddb-hex sheet-ddb-hex--center">
-              <span className="sheet-ddb-hex__label">Desloc.</span>
-              <strong>
-                {movement.walk}/{movement.run}
-              </strong>
-            </div>
-            <div className="sheet-ddb-hex">
-              <span className="sheet-ddb-hex__label">Prof.</span>
-              <strong>+{profBonus}</strong>
-            </div>
-            <div className="sheet-ddb-hex sheet-ddb-hex--ca" title="Classe de armadura">
-              <span className="sheet-ddb-hex__label">CA</span>
-              <strong>{displayDefesa}</strong>
-            </div>
+            <SheetHoverTip
+              className="sheet-ddb-hex-tip"
+              tip={combatStatTip("iniciativa", { iniciativa: tactical.iniciativa })}
+            >
+              <div className="sheet-ddb-hex" tabIndex={0}>
+                <span className="sheet-ddb-hex__label">Inic.</span>
+                <strong>
+                  {tactical.iniciativa >= 0 ? `+${tactical.iniciativa}` : tactical.iniciativa}
+                </strong>
+              </div>
+            </SheetHoverTip>
+            <SheetHoverTip
+              className="sheet-ddb-hex-tip"
+              tip={combatStatTip("movement", { walk: movement.walk, run: movement.run })}
+            >
+              <div className="sheet-ddb-hex sheet-ddb-hex--center" tabIndex={0}>
+                <span className="sheet-ddb-hex__label">Desloc.</span>
+                <strong>
+                  {movement.walk}/{movement.run}
+                </strong>
+              </div>
+            </SheetHoverTip>
+            <SheetHoverTip
+              className="sheet-ddb-hex-tip"
+              tip={combatStatTip("prof", { prof: profBonus })}
+            >
+              <div className="sheet-ddb-hex" tabIndex={0}>
+                <span className="sheet-ddb-hex__label">Prof.</span>
+                <strong>+{profBonus}</strong>
+              </div>
+            </SheetHoverTip>
+            <SheetHoverTip
+              className="sheet-ddb-hex-tip"
+              tip={combatStatTip("ca", { ca: displayDefesa })}
+            >
+              <div className="sheet-ddb-hex sheet-ddb-hex--ca" tabIndex={0}>
+                <span className="sheet-ddb-hex__label">CA</span>
+                <strong>{displayDefesa}</strong>
+              </div>
+            </SheetHoverTip>
           </div>
 
-          <div className="sheet-ddb-resource">
-            <div className="sheet-ddb-resource__head">
-              <span>Pontos de vida</span>
-              <strong>
-                {resources.vida.value}/{resources.vida.max}
-              </strong>
+          <SheetHoverTip
+            className="sheet-ddb-resource-tip"
+            tip={combatStatTip("hp", {
+              hp: `${resources.vida.value}/${resources.vida.max}`,
+            })}
+          >
+            <div className="sheet-ddb-resource" tabIndex={0}>
+              <div className="sheet-ddb-resource__head">
+                <span>Pontos de vida</span>
+                <strong>
+                  {resources.vida.value}/{resources.vida.max}
+                </strong>
+              </div>
+              <div className="sheet-ddb-resource__bar sheet-ddb-resource__bar--hp">
+                <span style={{ width: `${hpPct}%` }} />
+              </div>
             </div>
-            <div className="sheet-ddb-resource__bar sheet-ddb-resource__bar--hp">
-              <span style={{ width: `${hpPct}%` }} />
-            </div>
-          </div>
+          </SheetHoverTip>
 
-          <div className="sheet-ddb-resource">
-            <div className="sheet-ddb-resource__head">
-              <span>Pontos de ação</span>
-              <strong>
-                {resources.pontosAcao.value}/{resources.pontosAcao.max}
-              </strong>
+          <SheetHoverTip
+            className="sheet-ddb-resource-tip"
+            tip={combatStatTip("pa", {
+              pa: `${resources.pontosAcao.value}/${resources.pontosAcao.max}`,
+            })}
+          >
+            <div className="sheet-ddb-resource" tabIndex={0}>
+              <div className="sheet-ddb-resource__head">
+                <span>Pontos de ação</span>
+                <strong>
+                  {resources.pontosAcao.value}/{resources.pontosAcao.max}
+                </strong>
+              </div>
+              <div className="sheet-ddb-resource__bar sheet-ddb-resource__bar--pa">
+                <span style={{ width: `${paPct}%` }} />
+              </div>
             </div>
-            <div className="sheet-ddb-resource__bar sheet-ddb-resource__bar--pa">
-              <span style={{ width: `${paPct}%` }} />
-            </div>
-          </div>
+          </SheetHoverTip>
         </aside>
 
         <main className="sheet-ddb-col sheet-ddb-col--skills">
@@ -222,14 +272,20 @@ export function SheetPopupDdbView({
             </header>
             <div className="sheet-ddb-saves">
               {saves.map((save) => (
-                <div
+                <SheetHoverTip
                   key={save.attr}
-                  className={`sheet-ddb-save${save.trained ? " is-trained" : ""}`}
+                  className="sheet-ddb-save-tip"
+                  tip={savingThrowTip(save, nivel)}
                 >
-                  <span className={`sheet-ddb-save__dot${save.trained ? " is-on" : ""}`} />
-                  <span className="sheet-ddb-save__label">{save.label}</span>
-                  <strong>{save.display}</strong>
-                </div>
+                  <div
+                    className={`sheet-ddb-save${save.trained ? " is-trained" : ""}`}
+                    tabIndex={0}
+                  >
+                    <span className={`sheet-ddb-save__dot${save.trained ? " is-on" : ""}`} />
+                    <span className="sheet-ddb-save__label">{save.label}</span>
+                    <strong>{save.display}</strong>
+                  </div>
+                </SheetHoverTip>
               ))}
             </div>
           </section>
@@ -240,35 +296,51 @@ export function SheetPopupDdbView({
             </header>
             <div className="sheet-ddb-trait-cards">
               {identity.raca ? (
-                <div className="sheet-ddb-trait">
-                  <span className="sheet-ddb-trait__tag">Raça</span>
-                  <span className="sheet-ddb-trait__value">{identity.raca}</span>
-                </div>
+                <SheetHoverTip className="sheet-ddb-trait-tip" tip={raceChipTip(identity)}>
+                  <div className="sheet-ddb-trait" tabIndex={0}>
+                    <span className="sheet-ddb-trait__tag">Raça</span>
+                    <span className="sheet-ddb-trait__value">{identity.raca}</span>
+                  </div>
+                </SheetHoverTip>
               ) : null}
               {identity.classe ? (
-                <div className="sheet-ddb-trait">
-                  <span className="sheet-ddb-trait__tag">Classe</span>
-                  <span className="sheet-ddb-trait__value">{identity.classe}</span>
-                </div>
+                <SheetHoverTip className="sheet-ddb-trait-tip" tip={classChipTip(identity.classe)}>
+                  <div className="sheet-ddb-trait" tabIndex={0}>
+                    <span className="sheet-ddb-trait__tag">Classe</span>
+                    <span className="sheet-ddb-trait__value">{identity.classe}</span>
+                  </div>
+                </SheetHoverTip>
               ) : null}
               {identity.subclasse ? (
-                <div className="sheet-ddb-trait sheet-ddb-trait--accent">
-                  <span className="sheet-ddb-trait__tag">Subclasse</span>
-                  <span className="sheet-ddb-trait__value">{identity.subclasse}</span>
-                </div>
+                <SheetHoverTip
+                  className="sheet-ddb-trait-tip"
+                  tip={subclassChipTip(identity.classe, identity.subclasse, nivel)}
+                >
+                  <div className="sheet-ddb-trait sheet-ddb-trait--accent" tabIndex={0}>
+                    <span className="sheet-ddb-trait__tag">Subclasse</span>
+                    <span className="sheet-ddb-trait__value">{identity.subclasse}</span>
+                  </div>
+                </SheetHoverTip>
               ) : null}
               {identity.antecedente ? (
-                <div className="sheet-ddb-trait">
-                  <span className="sheet-ddb-trait__tag">Antecedente</span>
-                  <span className="sheet-ddb-trait__value">{identity.antecedente}</span>
-                </div>
+                <SheetHoverTip
+                  className="sheet-ddb-trait-tip"
+                  tip={backgroundChipTip(identity.antecedente)}
+                >
+                  <div className="sheet-ddb-trait" tabIndex={0}>
+                    <span className="sheet-ddb-trait__tag">Antecedente</span>
+                    <span className="sheet-ddb-trait__value">{identity.antecedente}</span>
+                  </div>
+                </SheetHoverTip>
               ) : null}
-              <div className="sheet-ddb-trait">
-                <span className="sheet-ddb-trait__tag">Religião</span>
-                <span className="sheet-ddb-trait__value">
-                  {identity.religiao ? religionDisplayName(identity.religiao) : "Sem Deus"}
-                </span>
-              </div>
+              <SheetHoverTip className="sheet-ddb-trait-tip" tip={deityChipTip(identity.religiao)}>
+                <div className="sheet-ddb-trait" tabIndex={0}>
+                  <span className="sheet-ddb-trait__tag">Religião</span>
+                  <span className="sheet-ddb-trait__value">
+                    {identity.religiao ? religionDisplayName(identity.religiao) : "Sem Deus"}
+                  </span>
+                </div>
+              </SheetHoverTip>
             </div>
           </section>
 

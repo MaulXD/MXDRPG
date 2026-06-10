@@ -36,6 +36,8 @@ import { SheetPopupPortrait } from "@/components/character/SheetPopupPortrait";
 import { SheetPopupDdbView } from "@/components/character/SheetPopupDdbView";
 import { SheetDdbDrawer } from "@/components/character/SheetDdbDrawer";
 import { SheetDdbManagePanel } from "@/components/character/SheetDdbManagePanel";
+import { SheetHoverTip } from "@/components/character/SheetHoverTip";
+import { compendiumEntryTip } from "@/lib/character/sheet-tooltips";
 import { PersonalBestiaryPanel } from "@/components/character/PersonalBestiaryPanel";
 import {
   IconArmor,
@@ -973,6 +975,29 @@ function InventoryRow({
   const descriptionHtml = entryDescriptionHtml(entry.system);
   const descriptionText = stripHtml(descriptionHtml);
   const { catalogId, bookRef } = entryBookRef(entry.system);
+  const tip = compendiumEntryTip(entry);
+
+  const rowBody = (
+    <>
+      <CompendiumIcon entry={entry} color={color} className="inv-icon" />
+      <div className="inv-row__body">
+        <h4>{entry.name}</h4>
+        <p className="inv-row__tags">{tags.slice(0, 4).join(" · ")}</p>
+        {showDetail && descriptionText ? (
+          <p className="inv-row__desc">{descriptionText}</p>
+        ) : null}
+        {showDetail && (catalogId || bookRef) ? (
+          <p className="inv-row__ref">
+            {catalogId ? <span className="inv-row__ref-id">{catalogId}</span> : null}
+            {catalogId && bookRef ? " · " : null}
+            {bookRef ? <span className="inv-row__ref-book">{bookRef}</span> : null}
+          </p>
+        ) : null}
+      </div>
+      <span className="inv-type">{entry.type}</span>
+      {quantity > 1 ? <span className="inv-type">×{quantity}</span> : null}
+    </>
+  );
 
   return (
     <li
@@ -997,23 +1022,11 @@ function InventoryRow({
           : undefined
       }
     >
-      <CompendiumIcon entry={entry} color={color} className="inv-icon" />
-      <div className="inv-row__body">
-        <h4>{entry.name}</h4>
-        <p className="inv-row__tags">{tags.slice(0, 4).join(" · ")}</p>
-        {showDetail && descriptionText ? (
-          <p className="inv-row__desc">{descriptionText}</p>
-        ) : null}
-        {showDetail && (catalogId || bookRef) ? (
-          <p className="inv-row__ref">
-            {catalogId ? <span className="inv-row__ref-id">{catalogId}</span> : null}
-            {catalogId && bookRef ? " · " : null}
-            {bookRef ? <span className="inv-row__ref-book">{bookRef}</span> : null}
-          </p>
-        ) : null}
-      </div>
-      <span className="inv-type">{entry.type}</span>
-      {quantity > 1 ? <span className="inv-type">×{quantity}</span> : null}
+      <SheetHoverTip tip={tip} className="inv-row__tip">
+        <div className="inv-row__hit" tabIndex={0}>
+          {rowBody}
+        </div>
+      </SheetHoverTip>
       {canEdit ? (
         <button
           type="button"
