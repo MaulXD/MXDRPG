@@ -46,7 +46,7 @@ export function HexPreview() {
         </circle>
         <circle cx={toXY(2, -1).x} cy={toXY(2, -1).y} r="10" fill="#8b4545" opacity="0.85" />
       </svg>
-      <div className="hex-preview-badge glass">
+      <div className="hex-preview-badge">
         <span className="badge-dot walk" />
         Caminhada
         <span className="badge-dot run" />
