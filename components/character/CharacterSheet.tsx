@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import type { CharacterSheet as CharacterSheetData, InventoryItem } from "@/lib/character/types";
 import { formatXpProgress } from "@/lib/character/xp";
 import { loadInventory, newInstanceId, saveInventory } from "@/lib/character/inventory-storage";
@@ -59,6 +60,7 @@ import { useSheetPdfDeepLink } from "@/hooks/useSheetPdfDeepLink";
 import { OrnamentCard } from "@/components/ui/OrnamentCard";
 import { SectionDivider } from "@/components/ui/SectionDivider";
 import { Portrait } from "@/components/vtt/Portrait";
+import type { PortraitBundle } from "@/lib/media/image-upload-client";
 import { sanitizePortraitFocus } from "@/lib/media/portrait-focus";
 import { isTypingTarget } from "@/lib/vtt/keyboard-guard";
 import type { FoundryWindowDragHandlers } from "@/hooks/vtt/useFoundryWindowDrag";
@@ -109,6 +111,7 @@ export function CharacterSheet({
   standalonePage = false,
 }: Props) {
   const canEditPortrait = canEditPortraitProp ?? canEdit;
+  const router = useRouter();
   const [tab, setTab] = useState<Tab>("inventário");
   const [inventory, setInventory] = useState<InventoryItem[]>(character.inventory);
   const [pickerOpen, setPickerOpen] = useState(false);
@@ -190,6 +193,40 @@ export function CharacterSheet({
       if (data.character) setLocalSheet(data.character);
     },
     [character.id, inRoom, roomId, refresh]
+  );
+
+  const persistPortraitBundle = useCallback(
+    async (bundle: PortraitBundle) => {
+      const res = await fetch(`/api/characters/${character.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          portraitUrl: bundle.portraitUrl,
+          tokenImageUrl: bundle.tokenImageUrl,
+          portraitFocus: bundle.portraitFocus,
+          coverFocus: bundle.coverFocus,
+          tokenFocus: bundle.tokenFocus,
+        }),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error((data as { error?: string }).error ?? `Erro ${res.status}`);
+      }
+      const data = (await res.json()) as { character?: CharacterSheetData };
+      if (data.character) {
+        setLocalSheet(data.character);
+      } else {
+        setLocalSheet((prev) => ({
+          ...(prev ?? character),
+          portraitUrl: bundle.portraitUrl,
+          tokenImageUrl: bundle.tokenImageUrl,
+          portraitFocus: bundle.portraitFocus,
+          coverFocus: bundle.coverFocus,
+          tokenFocus: bundle.tokenFocus,
+        }));
+      }
+    },
+    [character]
   );
 
   const resolved = useMemo(() => {
@@ -711,17 +748,18 @@ export function CharacterSheet({
         />
       ) : null;
 
-    const portraitNode = inRoom ? (
+    const portraitNode = canEditPortrait ? (
       <SheetPopupPortrait
         actorId={character.id}
-        roomId={roomId}
+        roomId={inRoom ? roomId : undefined}
         name={live.name}
-        portraitUrl={popupPortraitSrc}
+        portraitUrl={live.portraitUrl ?? character.portraitUrl}
         tokenImageUrl={live.tokenImageUrl ?? character.tokenImageUrl}
         portraitFocus={live.portraitFocus ?? character.portraitFocus}
         tokenFocus={live.tokenFocus ?? character.tokenFocus}
         canEdit={canEditPortrait}
-        onSaved={refresh}
+        onSaved={inRoom ? refresh : () => router.refresh()}
+        onPersistBundle={inRoom ? undefined : persistPortraitBundle}
         layout="ddb"
       />
     ) : (

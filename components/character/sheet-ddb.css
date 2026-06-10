@@ -351,11 +351,16 @@
 
 .sheet-ddb-portrait-wrap {
   border-radius: 8px;
-  overflow: hidden;
+  overflow: visible;
   border: 2px solid #fff;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
   background: #d8cfc0;
   padding: 0;
+}
+
+.sheet-ddb-portrait-anchor {
+  position: relative;
+  width: 100%;
 }
 
 .sheet-ddb-portrait {
