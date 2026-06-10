@@ -4,6 +4,7 @@ import * as dbAdventures from "@/lib/db/adventures";
 import * as dbRooms from "@/lib/db/rooms";
 import { dbEnabled } from "@/lib/db/enabled";
 import { resolveInviteCodeForCreate } from "@/lib/adventure/invite-code";
+import type { AdventureAccessMode } from "@/lib/adventure/access";
 import {
   canRestoreAdventure,
   isAdventureJoinable,
@@ -123,6 +124,7 @@ function ensureDemoAdventure(): Adventure {
     ownerId: "usr_demo_mestre",
     name: "Mesa demonstração",
     synopsis: "Aventura pública para testar o VTT.",
+    accessMode: "public",
     inviteCode: "DEMOELDR",
     memberIds: [],
     primaryRoomId: "demo",
@@ -163,6 +165,7 @@ export async function getAdventure(adventureId: string): Promise<Adventure | nul
       ownerId: room.ownerId,
       name: room.name,
       synopsis: "",
+      accessMode: "public",
       inviteCode: room.inviteCode,
       memberIds: [...room.memberIds],
       primaryRoomId: room.roomId,
@@ -182,7 +185,8 @@ export type CreateAdventureResult =
 
 export async function createAdventure(
   ownerId: string,
-  name: string
+  name: string,
+  options?: { accessMode?: AdventureAccessMode }
 ): Promise<CreateAdventureResult> {
   const label = name.trim().slice(0, 80) || "Nova aventura";
 
@@ -200,11 +204,14 @@ export async function createAdventure(
   }
   const inviteCode = resolved.code;
 
+  const accessMode = options?.accessMode === "closed" ? "closed" : "public";
+
   const adventure: Adventure = {
     adventureId,
     ownerId,
     name: label,
     synopsis: "",
+    accessMode,
     inviteCode,
     memberIds: [],
     primaryRoomId: adventureId,
@@ -297,7 +304,7 @@ export async function joinAdventureByInvite(
   return getAdventure(room.adventureId ?? room.roomId);
 }
 
-async function joinAdventureRecord(adventure: Adventure, userId: string): Promise<Adventure> {
+export async function joinAdventureRecord(adventure: Adventure, userId: string): Promise<Adventure> {
   const { fetchClerkIdForUser } = await import("@/lib/db/users");
   const { memberIdsHasUser } = await import("@/lib/auth/member-ids");
   const clerkId = await fetchClerkIdForUser(userId);

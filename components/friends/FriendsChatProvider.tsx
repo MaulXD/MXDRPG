@@ -9,6 +9,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import { FriendsMessengerDock } from "@/components/friends/FriendsMessengerDock";
 import type { FriendSummary } from "@/lib/friends/types";
 import "./friends.css";
 
@@ -23,6 +24,20 @@ type FriendsChatContextValue = {
   unreadCount: number;
   refreshUnread: () => Promise<void>;
   ready: boolean;
+  friends: FriendSummary[];
+  refreshFriends: () => Promise<void>;
+  messengerOpen: boolean;
+  messengerMinimized: boolean;
+  openChats: string[];
+  activeChatId: string | null;
+  toggleMessenger: () => void;
+  openMessenger: () => void;
+  closeMessenger: () => void;
+  minimizeMessenger: () => void;
+  restoreMessenger: () => void;
+  openChat: (friendId: string) => void;
+  closeChat: (friendId: string) => void;
+  setActiveChatId: (friendId: string) => void;
 };
 
 const FriendsChatContext = createContext<FriendsChatContextValue | null>(null);
@@ -42,6 +57,11 @@ export function FriendsChatProvider({ children, initialUserId = null }: Provider
   const [inviteCount, setInviteCount] = useState(0);
   const [requestCount, setRequestCount] = useState(0);
   const [unreadCount, setUnreadCount] = useState(0);
+  const [friends, setFriends] = useState<FriendSummary[]>([]);
+  const [messengerOpen, setMessengerOpen] = useState(false);
+  const [messengerMinimized, setMessengerMinimized] = useState(false);
+  const [openChats, setOpenChats] = useState<string[]>([]);
+  const [activeChatId, setActiveChatId] = useState<string | null>(null);
 
   const refreshUnread = useCallback(async () => {
     try {
@@ -53,6 +73,18 @@ export function FriendsChatProvider({ children, initialUserId = null }: Provider
       /* ignore */
     }
   }, []);
+
+  const refreshFriends = useCallback(async () => {
+    if (!selfUserId) return;
+    try {
+      const res = await fetch("/api/friends", fetchOpts);
+      if (!res.ok) return;
+      const data = (await res.json()) as { friends?: FriendSummary[] };
+      setFriends(data.friends ?? []);
+    } catch {
+      /* ignore */
+    }
+  }, [selfUserId]);
 
   const refreshInvites = useCallback(async () => {
     try {
@@ -74,6 +106,56 @@ export function FriendsChatProvider({ children, initialUserId = null }: Provider
     } catch {
       /* ignore */
     }
+  }, []);
+
+  const openMessenger = useCallback(() => {
+    setMessengerOpen(true);
+    setMessengerMinimized(false);
+    void refreshFriends();
+  }, [refreshFriends]);
+
+  const closeMessenger = useCallback(() => {
+    setMessengerOpen(false);
+    setMessengerMinimized(false);
+  }, []);
+
+  const minimizeMessenger = useCallback(() => {
+    setMessengerOpen(true);
+    setMessengerMinimized(true);
+  }, []);
+
+  const restoreMessenger = useCallback(() => {
+    setMessengerOpen(true);
+    setMessengerMinimized(false);
+    void refreshFriends();
+  }, [refreshFriends]);
+
+  const toggleMessenger = useCallback(() => {
+    if (!messengerOpen) {
+      openMessenger();
+      return;
+    }
+    if (messengerMinimized) {
+      restoreMessenger();
+      return;
+    }
+    closeMessenger();
+  }, [messengerOpen, messengerMinimized, openMessenger, restoreMessenger, closeMessenger]);
+
+  const openChat = useCallback((friendId: string) => {
+    setOpenChats((prev) => (prev.includes(friendId) ? prev : [...prev, friendId]));
+    setActiveChatId(friendId);
+  }, []);
+
+  const closeChat = useCallback((friendId: string) => {
+    setOpenChats((prev) => {
+      const next = prev.filter((id) => id !== friendId);
+      setActiveChatId((cur) => {
+        if (cur !== friendId) return cur;
+        return next.length > 0 ? next[next.length - 1]! : null;
+      });
+      return next;
+    });
   }, []);
 
   useEffect(() => {
@@ -105,7 +187,8 @@ export function FriendsChatProvider({ children, initialUserId = null }: Provider
   useEffect(() => {
     if (!selfUserId) return;
     void refreshUnread();
-  }, [selfUserId, refreshUnread]);
+    void refreshFriends();
+  }, [selfUserId, refreshUnread, refreshFriends]);
 
   const value = useMemo(
     () => ({
@@ -115,11 +198,50 @@ export function FriendsChatProvider({ children, initialUserId = null }: Provider
       unreadCount,
       refreshUnread,
       ready,
+      friends,
+      refreshFriends,
+      messengerOpen,
+      messengerMinimized,
+      openChats,
+      activeChatId,
+      toggleMessenger,
+      openMessenger,
+      closeMessenger,
+      minimizeMessenger,
+      restoreMessenger,
+      openChat,
+      closeChat,
+      setActiveChatId,
     }),
-    [selfUserId, inviteCount, requestCount, unreadCount, refreshUnread, ready]
+    [
+      selfUserId,
+      inviteCount,
+      requestCount,
+      unreadCount,
+      refreshUnread,
+      ready,
+      friends,
+      refreshFriends,
+      messengerOpen,
+      messengerMinimized,
+      openChats,
+      activeChatId,
+      toggleMessenger,
+      openMessenger,
+      closeMessenger,
+      minimizeMessenger,
+      restoreMessenger,
+      openChat,
+      closeChat,
+    ]
   );
 
-  return <FriendsChatContext.Provider value={value}>{children}</FriendsChatContext.Provider>;
+  return (
+    <FriendsChatContext.Provider value={value}>
+      {children}
+      <FriendsMessengerDock />
+    </FriendsChatContext.Provider>
+  );
 }
 
 /** @deprecated unused — kept for type compatibility if imported elsewhere */

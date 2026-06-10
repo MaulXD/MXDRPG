@@ -1,3 +1,4 @@
+import { shouldAutoJoinRoom } from "@/lib/auth/adventure-room-access";
 import { tryJoinRoomWithInvite } from "@/lib/auth/invite-access";
 import {
   canViewRoomServer,
@@ -28,7 +29,11 @@ export async function requireRoomView(
     if (joined) room = joined;
   }
 
-  if (user && !(await isRoomMemberResolved(room, user.id, user.clerkId))) {
+  if (
+    user &&
+    !(await isRoomMemberResolved(room, user.id, user.clerkId)) &&
+    (await shouldAutoJoinRoom(room, user))
+  ) {
     await joinRoomMembers(roomId, user.id);
     room = (await getRoom(roomId)) ?? room;
   }

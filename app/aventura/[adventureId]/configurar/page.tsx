@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { AdventureAccessPanel } from "@/components/adventure/AdventureAccessPanel";
 import { MesaSetupClient } from "@/components/campaign/MesaSetupClient";
 import { canManageAdventure } from "@/lib/auth/adventure-access";
 import { getAdventure } from "@/lib/adventure/store";
@@ -59,9 +60,11 @@ export default async function ConfigurarAventuraPage({ params }: Props) {
         </p>
       </header>
 
+      <AdventureAccessPanel adventureId={adventureId} accessMode={adventure.accessMode ?? "public"} />
+
       <div
         className="glass-panel"
-        style={{ padding: "1.25rem", display: "flex", flexDirection: "column", gap: "1rem" }}
+        style={{ padding: "1.25rem", display: "flex", flexDirection: "column", gap: "1rem", marginTop: "1rem" }}
       >
         <MesaSetupClient
           roomId={adventure.primaryRoomId}

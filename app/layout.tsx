@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Cinzel, Lora, Source_Sans_3 } from "next/font/google";
 import { AuthProvider } from "@/components/auth/AuthProvider";
 import { FriendsChatProvider } from "@/components/friends/FriendsChatProvider";
+import { NotificationsProvider } from "@/components/notifications/NotificationsProvider";
 import { hasClerkPublishableKey } from "@/lib/auth/clerk-config";
 import { getSession } from "@/lib/auth/session";
 import { SiteShell } from "@/components/SiteShell";
@@ -62,11 +63,13 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       <body>
         <AuthProvider publishableKey={clerkPublishableKey}>
           <FriendsChatProvider initialUserId={session?.user.id ?? null}>
-            <div className="site-bg" aria-hidden />
-            <div className="site-noise" aria-hidden />
-            <SiteShell header={<SiteHeaderWrapper />} footer={<SiteFooter />}>
-              {children}
-            </SiteShell>
+            <NotificationsProvider initialUserId={session?.user.id ?? null}>
+              <div className="site-bg" aria-hidden />
+              <div className="site-noise" aria-hidden />
+              <SiteShell header={<SiteHeaderWrapper />} footer={<SiteFooter />}>
+                {children}
+              </SiteShell>
+            </NotificationsProvider>
           </FriendsChatProvider>
         </AuthProvider>
       </body>
