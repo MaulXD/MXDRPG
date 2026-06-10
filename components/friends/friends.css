@@ -131,6 +131,15 @@
   align-items: center;
 }
 
+.send-mesa-invite__row--nickname {
+  margin-top: 0.45rem;
+}
+
+.send-mesa-invite__row--nickname input {
+  flex: 1 1 140px;
+  min-width: 0;
+}
+
 .send-mesa-invite select {
   flex: 1 1 140px;
   min-width: 0;
@@ -514,4 +523,268 @@
   flex: 1;
   min-width: 0;
   resize: vertical;
+}
+
+.friends-chat--no-list .friends-chat__thread {
+  border-left: none;
+}
+
+.friends-chat__header-profile {
+  border: none;
+  background: transparent;
+  padding: 0;
+  font: inherit;
+  font-weight: 600;
+  color: var(--text-strong);
+  cursor: pointer;
+  text-align: left;
+}
+
+.friends-chat__header-profile:hover {
+  color: var(--accent);
+}
+
+.friends-nav-link {
+  position: relative;
+}
+
+.friends-nav-link__wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.friends-nav-link__badge {
+  position: static;
+  margin-left: 0.15rem;
+}
+
+.friends-page-wrap {
+  min-width: 0;
+}
+
+.friends-page {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  min-width: 0;
+}
+
+.friends-page__alerts {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.friends-page__alert {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+  padding: 0.55rem 0.65rem;
+  border-radius: var(--radius-sm, 8px);
+  background: rgba(0, 0, 0, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.friends-page__alert--request {
+  border-color: rgba(184, 146, 46, 0.28);
+}
+
+.friends-page__alert--pending {
+  justify-content: space-between;
+}
+
+.friends-page__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 220px) minmax(0, 1fr) minmax(0, 240px);
+  gap: 1rem;
+  min-width: 0;
+  align-items: start;
+}
+
+.friends-page__sidebar,
+.friends-page__main,
+.friends-page__profile {
+  min-width: 0;
+}
+
+.friends-page__friend-list {
+  list-style: none;
+  margin: 0.75rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.friends-page__friend-list li {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.friends-page__friend {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.45rem;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  background: rgba(0, 0, 0, 0.12);
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+}
+
+.friends-page__friend.is-active {
+  border-color: rgba(184, 146, 46, 0.35);
+  background: rgba(184, 146, 46, 0.1);
+}
+
+.friends-page__friend-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.85rem;
+}
+
+.friends-page__friend-preview {
+  flex-shrink: 0;
+  width: 1.75rem;
+  height: 1.75rem;
+  border: none;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.friends-page__remove {
+  margin-top: 0.65rem;
+}
+
+.player-profile-card {
+  padding: 0.75rem;
+  border-radius: var(--radius-sm, 8px);
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.player-profile-card--compact {
+  padding: 0.5rem;
+  background: transparent;
+  border: none;
+}
+
+.player-profile-card__hero {
+  display: flex;
+  gap: 0.65rem;
+  align-items: center;
+}
+
+.player-profile-card__avatar {
+  width: 52px;
+  height: 52px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.player-profile-card--compact .player-profile-card__avatar {
+  width: 40px;
+  height: 40px;
+}
+
+.player-profile-card__head {
+  min-width: 0;
+}
+
+.player-profile-card__name {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.player-profile-card__sub {
+  margin: 0.1rem 0 0;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.player-profile-card__badge {
+  display: inline-block;
+  margin-top: 0.25rem;
+  font-size: 0.65rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.player-profile-card__meta {
+  margin: 0.65rem 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.player-profile-card__row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.player-profile-card__row dt {
+  font-size: 0.62rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.player-profile-card__row dd {
+  margin: 0;
+  font-size: 0.82rem;
+}
+
+.player-profile-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-top: 0.65rem;
+}
+
+.player-profile-card__hint {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.mesa-online-menu__profile-card {
+  min-width: 0;
+}
+
+.mesa-online-menu__hover-card .player-profile-card--compact {
+  padding: 0;
+}
+
+@media (max-width: 900px) {
+  .friends-page__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .friends-page__profile {
+    order: 3;
+  }
+}
+
+@media (max-width: 520px) {
+  .friends-chat {
+    flex-direction: column;
+  }
 }

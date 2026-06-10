@@ -58,15 +58,21 @@
 }
 
 .eldarin-logo__img--landing {
-  max-width: min(280px, 68vw);
+  max-width: min(360px, 82vw);
+  height: auto;
+}
+
+.eldarin-logo--hero.eldarin-logo--image .eldarin-logo__img--landing {
+  max-width: min(400px, 90vw);
+  filter: drop-shadow(0 12px 36px rgba(0, 0, 0, 0.55));
 }
 
 .eldarin-logo__img--navbar {
   width: auto;
-  height: clamp(1.65rem, 4.2vw, 2.15rem);
-  max-width: min(11.5rem, 38vw);
+  height: clamp(1.75rem, 4.8vw, 2.35rem);
+  max-width: min(13rem, 42vw);
   object-fit: contain;
-  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.35));
+  filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.4));
 }
 
 .eldarin-logo--header.eldarin-logo--image .eldarin-logo__img--landing {
@@ -91,7 +97,7 @@
   }
 
   .eldarin-logo__img--navbar {
-    height: 1.5rem;
-    max-width: min(9.5rem, 34vw);
+    height: 1.6rem;
+    max-width: min(10.5rem, 40vw);
   }
 }
