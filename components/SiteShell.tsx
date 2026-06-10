@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { AnimatedNavLink } from "@/components/AnimatedNavLink";
 import { VttTopbarUserMenu } from "@/components/auth/VttTopbarUserMenu";
 import { EldarinLogo } from "@/components/brand/EldarinLogo";
+import { FriendsNavIcon } from "@/components/friends/FriendsNavIcon";
 import { FriendsNavMessages } from "@/components/friends/FriendsNavMessages";
 import { MesasNavLink } from "@/components/nav/MesasNavLink";
 import { NotificationsBell } from "@/components/notifications/NotificationsBell";
@@ -74,6 +75,7 @@ export function SiteShell({ children, header, footer }: Props) {
               </nav>
               <div className="site-nav__end vtt-topbar__social">
                 <NotificationsBell />
+                <FriendsNavIcon />
                 <FriendsNavMessages />
                 <VttTopbarUserMenu />
               </div>

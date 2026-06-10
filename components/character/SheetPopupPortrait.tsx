@@ -6,7 +6,7 @@ import { PortraitFocusEditor } from "@/components/character/PortraitFocusEditor"
 import { IconCamera } from "@/components/character/SheetPopupIcons";
 import { Portrait } from "@/components/vtt/Portrait";
 import { useImageNaturalSize } from "@/hooks/useImageNaturalSize";
-import { patchRoomActor } from "@/hooks/useRoomSync";
+import { persistPortraitBundleToRoom } from "@/lib/character/portrait-persist-client";
 import { IMAGE_UPLOAD_HINT } from "@/lib/media/image-data-url";
 import {
   DEFAULT_PORTRAIT_FOCUS,
@@ -130,7 +130,7 @@ export function SheetPopupPortrait({
         await onPersistBundle(bundle);
       } else {
         if (!roomId) throw new Error("roomId ausente para salvar retrato na mesa");
-        await patchRoomActor(roomId, actorId, bundle);
+        await persistPortraitBundleToRoom(roomId, actorId, bundle);
       }
       onSaved();
     },

@@ -52,10 +52,16 @@
 .vtt-topbar__end {
   display: flex;
   align-items: center;
-  gap: 0.35rem;
+  gap: 0.25rem;
   flex-wrap: wrap;
   justify-content: flex-end;
   min-width: 0;
+  margin-left: auto;
+}
+
+.vtt-topbar__social {
+  padding-left: 0.4rem;
+  border-left: 1px solid rgba(184, 146, 46, 0.16);
 }
 
 /* Aba central — mesma forma para abrir (↓) e fechar (↑) a navbar na mesa */
@@ -127,7 +133,7 @@
 
 .vtt-nav {
   display: flex;
-  gap: 1rem;
+  gap: 0.35rem;
   font-size: 0.88rem;
 }
 

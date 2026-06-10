@@ -15,8 +15,7 @@ import { useImageNaturalSize } from "@/hooks/useImageNaturalSize";
 import { patchRoomActor, useRoomSync } from "@/hooks/useRoomSync";
 import { firstPortraitDataUrl } from "@/lib/room/portrait-sync";
 import { CharacterSheetCover } from "@/components/character/CharacterSheetCover";
-import { CharacterPortraitFields } from "@/components/character/CharacterPortraitFields";
-import { PortraitFields } from "@/components/character/PortraitFields";
+import { PortraitEditorFields } from "@/components/character/PortraitEditorFields";
 import {
   CharacterIdentityEditor,
   CharacterStatsGrid,
@@ -61,6 +60,12 @@ import { OrnamentCard } from "@/components/ui/OrnamentCard";
 import { SectionDivider } from "@/components/ui/SectionDivider";
 import { Portrait } from "@/components/vtt/Portrait";
 import type { PortraitBundle } from "@/lib/media/image-upload-client";
+import {
+  patchCharacterRecord,
+  persistInventoryToCharacter,
+  persistLootEconomyToCharacter,
+} from "@/lib/character/character-persist-client";
+import { persistPortraitBundleToCharacter } from "@/lib/character/portrait-persist-client";
 import type { IdentityPatch } from "@/lib/character/identity";
 import type { LevelUpChoices } from "@/lib/character/level-up";
 import type { CombatLoadout } from "@/lib/combat/types";
@@ -132,48 +137,75 @@ export function CharacterSheet({
   const liveRaw = roomActor ?? sheetBase;
   const live: CharacterSheetData = {
     ...liveRaw,
-    inventory: roomActor?.inventory?.length ? roomActor.inventory : character.inventory,
-    combatLoadout: roomActor?.combatLoadout ?? character.combatLoadout ?? null,
-    armorLoadout: roomActor?.armorLoadout ?? character.armorLoadout ?? null,
+    inventory: roomActor?.inventory?.length
+      ? roomActor.inventory
+      : (sheetBase.inventory ?? character.inventory),
+    combatLoadout:
+      roomActor?.combatLoadout ??
+      sheetBase.combatLoadout ??
+      character.combatLoadout ??
+      null,
+    armorLoadout:
+      roomActor?.armorLoadout ??
+      sheetBase.armorLoadout ??
+      character.armorLoadout ??
+      null,
   };
   const inRoom = Boolean(roomActor);
 
   useEffect(() => {
     setLocalSheet(null);
-  }, [character.id, character.combatLoadout, character.armorLoadout, character.tactical?.defesa]);
+  }, [
+    character.id,
+    character.combatLoadout,
+    character.armorLoadout,
+    character.inventory,
+    character.lootEconomy,
+    character.tactical?.defesa,
+  ]);
 
   useEffect(() => {
-    const seed =
-      inRoom && live.inventory?.length ? live.inventory : character.inventory;
+    const seed = inRoom && roomActor?.inventory?.length
+      ? roomActor.inventory
+      : (sheetBase.inventory ?? character.inventory);
     setInventory(loadInventory(character.id, seed));
-  }, [character.id, character.inventory, inRoom, live.inventory]);
+  }, [character.id, character.inventory, inRoom, roomActor?.inventory, sheetBase.inventory]);
 
-  const persist = useCallback(
+  const [inventoryMsg, setInventoryMsg] = useState<string | null>(null);
+
+  const persistInventory = useCallback(
     (items: InventoryItem[]) => {
       setInventory(items);
       saveInventory(character.id, items);
+      setInventoryMsg(null);
       void (async () => {
         try {
           if (inRoom) {
             await patchRoomActor(roomId, character.id, { inventory: items });
             await refresh();
-          } else {
-            const res = await fetch(`/api/characters/${character.id}`, {
-              method: "PATCH",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ inventory: items }),
-            });
-            if (!res.ok) {
-              const err = (await res.json().catch(() => ({}))) as { error?: string };
-              throw new Error(err.error ?? "Falha ao salvar inventário");
-            }
+            return;
+          }
+          const data = await persistInventoryToCharacter(character.id, items);
+          if (data.character) {
+            setLocalSheet(data.character);
+            saveInventory(character.id, data.character.inventory);
           }
         } catch (e) {
-          console.error("[ficha] inventário não persistiu:", e);
+          setInventoryMsg(e instanceof Error ? e.message : "Falha ao salvar inventário");
         }
       })();
     },
     [character.id, inRoom, roomId, refresh]
+  );
+
+  const persistLootEconomy = useCallback(
+    async (loot: NonNullable<CharacterSheetData["lootEconomy"]>) => {
+      const data = await persistLootEconomyToCharacter(character.id, loot);
+      if (data.character) {
+        setLocalSheet(data.character);
+      }
+    },
+    [character.id]
   );
 
   const saveLoadoutPatch = useCallback(
@@ -207,16 +239,7 @@ export function CharacterSheet({
 
   const patchCharacterApi = useCallback(
     async (body: Record<string, unknown>) => {
-      const res = await fetch(`/api/characters/${character.id}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      });
-      if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
-        throw new Error((data as { error?: string }).error ?? `Erro ${res.status}`);
-      }
-      const data = (await res.json()) as { character?: CharacterSheetData };
+      const data = await patchCharacterRecord(character.id, body);
       applyCharacterResponse(data);
       return data;
     },
@@ -225,14 +248,9 @@ export function CharacterSheet({
 
   const persistPortraitBundle = useCallback(
     async (bundle: PortraitBundle) => {
-      const data = await patchCharacterApi({
-        portraitUrl: bundle.portraitUrl,
-        tokenImageUrl: bundle.tokenImageUrl,
-        portraitFocus: bundle.portraitFocus,
-        coverFocus: bundle.coverFocus,
-        tokenFocus: bundle.tokenFocus,
-      });
-      if (!data?.character) {
+      const data = await persistPortraitBundleToCharacter(character.id, bundle);
+      applyCharacterResponse(data);
+      if (!data.character) {
         setLocalSheet((prev) => ({
           ...(prev ?? character),
           portraitUrl: bundle.portraitUrl,
@@ -243,7 +261,7 @@ export function CharacterSheet({
         }));
       }
     },
-    [character, patchCharacterApi]
+    [applyCharacterResponse, character]
   );
 
   const persistIdentityPatch = useCallback(
@@ -338,13 +356,13 @@ export function CharacterSheet({
   function addFromCompendium(entry: CompendiumEntry) {
     const existing = inventory.find((i) => i.packId === entry.packId && i.entryId === entry.id);
     if (existing) {
-      persist(
+      persistInventory(
         inventory.map((i) =>
           i.instanceId === existing.instanceId ? { ...i, quantity: i.quantity + 1 } : i
         )
       );
     } else {
-      persist([
+      persistInventory([
         ...inventory,
         {
           instanceId: newInstanceId(),
@@ -358,7 +376,7 @@ export function CharacterSheet({
   }
 
   function removeItem(instanceId: string) {
-    persist(inventory.filter((i) => i.instanceId !== instanceId));
+    persistInventory(inventory.filter((i) => i.instanceId !== instanceId));
     setSelectedInvId((cur) => (cur === instanceId ? null : cur));
   }
 
@@ -527,11 +545,18 @@ export function CharacterSheet({
         ) : null}
       </div>
 
+      {inventoryMsg ? (
+        <p className="sheet-inventory-msg" role="status">
+          {inventoryMsg}
+        </p>
+      ) : null}
+
       {tab === "tesouro" ? (
         <LootEconomyPanel
           characterId={character.id}
           seed={live.lootEconomy ?? character.lootEconomy}
           canEdit={canEdit}
+          onPersist={!inRoom ? persistLootEconomy : undefined}
         />
       ) : tab === "bestiário" && adventureId ? (
         <PersonalBestiaryPanel
@@ -644,40 +669,32 @@ export function CharacterSheet({
         />
       ) : null}
 
-      {canEditPortrait && inRoom && !isPopup ? (
-        <PortraitFields
-          roomId={roomId}
-          actorId={character.id}
-          portraitUrl={live.portraitUrl}
-          portraitFocus={live.portraitFocus}
-          coverFocus={live.coverFocus}
-          tokenFocus={live.tokenFocus}
-          tokenImageUrl={live.tokenImageUrl}
-          canEdit={canEditPortrait}
-          onSaved={refresh}
-        />
-      ) : null}
-
-      {isPopup && canEdit && inRoom ? (
-        <Link
-          href={`/personagem/${character.id}`}
-          className="btn btn-ghost"
-          style={{ width: "100%", fontSize: "0.8rem" }}
-        >
-          Editar retrato e identidade ↗
-        </Link>
-      ) : null}
-
-      {canEditPortrait && !inRoom ? (
-        <CharacterPortraitFields
-          characterId={character.id}
-          portraitUrl={live.portraitUrl ?? character.portraitUrl}
-          portraitFocus={live.portraitFocus ?? character.portraitFocus}
-          coverFocus={live.coverFocus ?? character.coverFocus}
-          tokenFocus={live.tokenFocus ?? character.tokenFocus}
-          tokenImageUrl={live.tokenImageUrl ?? character.tokenImageUrl}
-          canEdit={canEditPortrait}
-        />
+      {canEditPortrait && !isPopup ? (
+        inRoom ? (
+          <PortraitEditorFields
+            mode="room"
+            roomId={roomId}
+            actorId={character.id}
+            portraitUrl={live.portraitUrl}
+            portraitFocus={live.portraitFocus}
+            coverFocus={live.coverFocus}
+            tokenFocus={live.tokenFocus}
+            tokenImageUrl={live.tokenImageUrl}
+            canEdit={canEditPortrait}
+            onSaved={refresh}
+          />
+        ) : (
+          <PortraitEditorFields
+            mode="character"
+            characterId={character.id}
+            portraitUrl={live.portraitUrl ?? character.portraitUrl}
+            portraitFocus={live.portraitFocus ?? character.portraitFocus}
+            coverFocus={live.coverFocus ?? character.coverFocus}
+            tokenFocus={live.tokenFocus ?? character.tokenFocus}
+            tokenImageUrl={live.tokenImageUrl ?? character.tokenImageUrl}
+            canEdit={canEditPortrait}
+          />
+        )
       ) : null}
 
       {!isPopup && identity.talentos && identity.talentos.length > 0 ? (

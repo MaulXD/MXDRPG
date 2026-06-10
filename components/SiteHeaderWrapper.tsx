@@ -1,6 +1,7 @@
 import { ClerkHeaderAuth } from "@/components/auth/ClerkHeaderAuth";
 import { HeaderUserMenu } from "@/components/auth/HeaderUserMenu";
 import { EldarinLogo } from "@/components/brand/EldarinLogo";
+import { FriendsNavIcon } from "@/components/friends/FriendsNavIcon";
 import { FriendsNavMessages } from "@/components/friends/FriendsNavMessages";
 import { NotificationsBell } from "@/components/notifications/NotificationsBell";
 import { hasClerkPublishableKey } from "@/lib/auth/clerk-config";
@@ -15,21 +16,26 @@ export async function SiteHeaderWrapper() {
   return (
     <header className="glass site-header">
       <EldarinLogo variant="header" image="navbar" />
-      <nav className="site-nav">
-        <SiteNavLinks />
-        {clerkEnabled ? (
-          <ClerkHeaderAuth session={session} />
-        ) : session ? (
-          <div className="site-nav__end">
-            <NotificationsBell />
-            <FriendsNavMessages />
-            <HeaderUserMenu user={session.user} />
+      <nav className="site-nav" aria-label="Principal">
+        <div className="site-nav__cluster">
+          <div className="site-nav__links">
+            <SiteNavLinks />
           </div>
-        ) : (
-          <Link href="/sign-in" className="btn nav-cta">
-            Entrar
-          </Link>
-        )}
+          {clerkEnabled ? (
+            <ClerkHeaderAuth session={session} />
+          ) : session ? (
+            <div className="site-nav__end">
+              <NotificationsBell />
+              <FriendsNavIcon />
+              <FriendsNavMessages />
+              <HeaderUserMenu user={session.user} />
+            </div>
+          ) : (
+            <Link href="/sign-in" className="btn nav-cta">
+              Entrar
+            </Link>
+          )}
+        </div>
       </nav>
     </header>
   );

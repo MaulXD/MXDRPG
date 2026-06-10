@@ -184,6 +184,7 @@ export function CharacterCreationWizard({
   });
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
+  const [showValidation, setShowValidation] = useState(false);
   const [pointBuyMode, setPointBuyMode] = useState<PointBuyMode>("suggested");
   const nameInputRef = useRef<HTMLInputElement>(null);
   const portraitStepRef = useRef<WizardPortraitStepHandle>(null);
@@ -318,8 +319,17 @@ export function CharacterCreationWizard({
     return 8;
   }
 
+  const invalidSteps = useMemo(() => {
+    if (!showValidation) return [];
+    const out: number[] = [];
+    for (let i = 0; i < STEPS.length - 1; i++) {
+      if (stepError(i)) out.push(i);
+    }
+    return out;
+  }, [showValidation, draft]);
+
   function goToStep(index: number) {
-    if (index > step) return;
+    if (busy || index < 0 || index >= STEPS.length) return;
     setErr(null);
     setStep(index);
   }
@@ -338,6 +348,7 @@ export function CharacterCreationWizard({
   async function next() {
     const e = stepError(step);
     if (e) {
+      setShowValidation(true);
       setErr(e);
       return;
     }
@@ -369,6 +380,7 @@ export function CharacterCreationWizard({
     if (!(await flushPortraitStep())) return;
     const invalidAt = firstInvalidStep();
     if (invalidAt !== null) {
+      setShowValidation(true);
       const message = stepError(invalidAt) ?? validateWizardDraft(draft);
       setStep(invalidAt);
       setErr(message ?? isEdit ? "Revise os passos antes de salvar" : "Revise os passos antes de criar");
@@ -448,7 +460,19 @@ export function CharacterCreationWizard({
             </>
           ) : null}
         </p>
-        <WizardProgress steps={STEPS} current={step} busy={busy} onGoTo={goToStep} />
+        <WizardProgress
+          steps={STEPS}
+          current={step}
+          busy={busy}
+          invalidSteps={invalidSteps}
+          onGoTo={goToStep}
+        />
+        {showValidation && invalidSteps.length > 0 ? (
+          <p className="char-wizard-validation-banner" role="alert">
+            <strong>Pendente:</strong> {invalidSteps.map((i) => STEPS[i]).join(" · ")} — clique no passo
+            para corrigir.
+          </p>
+        ) : null}
       </header>
 
       {isEdit && editMode?.scope === "full_rebuild" ? (
@@ -470,7 +494,9 @@ export function CharacterCreationWizard({
         {step === 0 ? (
           <>
             <StepHead index={0} title="Conceito" hint={STEP_HINTS.Conceito} />
-            <div className="char-wizard-field char-wizard-field--name">
+            <div
+              className={`char-wizard-field char-wizard-field--name${showValidation && stepError(0) ? " char-wizard-field--invalid" : ""}`}
+            >
               <label htmlFor="char-name">Nome do personagem</label>
               <input
                 id="char-name"
@@ -533,7 +559,13 @@ export function CharacterCreationWizard({
               ))}
             </div>
             {draft.raca === "Meio-Humano" ? (
-              <>
+              <div
+                className={
+                  showValidation && stepError(1)
+                    ? "char-wizard-step-block--invalid"
+                    : undefined
+                }
+              >
                 <p className="char-wizard-meta" style={{ marginBottom: "0.5rem" }}>
                   Escolha a linhagem — define bônus de atributo e traço permanente.
                 </p>
@@ -573,7 +605,7 @@ export function CharacterCreationWizard({
                     </button>
                   ))}
                 </div>
-              </>
+              </div>
             ) : null}
             {raceDef ? (
               <>
@@ -687,7 +719,9 @@ export function CharacterCreationWizard({
         {step === 3 ? (
           <>
             <StepHead index={3} title="Atributos" hint={STEP_HINTS.Atributos} />
-            <div className="char-wizard-pool">
+            <div
+              className={`char-wizard-pool${showValidation && stepError(3) ? " char-wizard-step-block--invalid" : ""}`}
+            >
               <div className="char-wizard-pool__meter" style={{ flex: "1 1 12rem", minWidth: 0 }}>
                 <label>
                   Pool de pontos
@@ -831,6 +865,11 @@ export function CharacterCreationWizard({
         {step === 5 ? (
           <>
             <StepHead index={5} title="Equipamento inicial" hint={STEP_HINTS.Equipamento} />
+            <div
+              className={
+                showValidation && stepError(5) ? "char-wizard-step-block--invalid" : undefined
+              }
+            >
             <WizardEquipmentStep
               classe={draft.classe}
               attributes={finalAttrs}
@@ -838,16 +877,23 @@ export function CharacterCreationWizard({
               equipment={draft.starterEquipment}
               onChange={(p) => patch(p)}
             />
+            </div>
           </>
         ) : null}
 
         {step === 6 ? (
           <>
             <StepHead index={6} title="Religião e devotion" hint={STEP_HINTS.Religião} />
+            <div
+              className={
+                showValidation && stepError(6) ? "char-wizard-step-block--invalid" : undefined
+              }
+            >
             <ReligionPickGrid
               value={draft.religiao}
               onChange={(id) => patch({ religiao: id })}
             />
+            </div>
           </>
         ) : null}
 
@@ -869,15 +915,31 @@ export function CharacterCreationWizard({
           <>
             <StepHead index={8} title="Revisão" hint={STEP_HINTS.Revisão} />
             <div className="char-wizard-review-grid">
-              <dl className="char-wizard-review-card">
+              <dl
+                className={`char-wizard-review-card${showValidation && stepError(0) ? " char-wizard-review-card--invalid" : ""}`}
+              >
                 <dt>Nome</dt>
-                <dd>{draft.name.trim() || "—"}</dd>
+                <dd>
+                  {draft.name.trim() || "—"}
+                  {showValidation && stepError(0) ? (
+                    <button type="button" className="char-wizard-review-fix" onClick={() => goToStep(0)}>
+                      Corrigir
+                    </button>
+                  ) : null}
+                </dd>
               </dl>
-              <dl className="char-wizard-review-card">
+              <dl
+                className={`char-wizard-review-card${showValidation && stepError(1) ? " char-wizard-review-card--invalid" : ""}`}
+              >
                 <dt>Raça</dt>
                 <dd>
                   {draft.raca}
                   {draft.linhagem ? ` (${draft.linhagem})` : ""}
+                  {showValidation && stepError(1) ? (
+                    <button type="button" className="char-wizard-review-fix" onClick={() => goToStep(1)}>
+                      Corrigir
+                    </button>
+                  ) : null}
                 </dd>
               </dl>
               <dl className="char-wizard-review-card">
@@ -898,11 +960,22 @@ export function CharacterCreationWizard({
                   <dd>{subclassTracks.map((t) => t.subclass).join(" · ")}</dd>
                 </dl>
               ) : null}
-              <dl className="char-wizard-review-card">
+              <dl
+                className={`char-wizard-review-card${showValidation && stepError(4) ? " char-wizard-review-card--invalid" : ""}`}
+              >
                 <dt>Antecedente</dt>
-                <dd>{draft.antecedente}</dd>
+                <dd>
+                  {draft.antecedente || "—"}
+                  {showValidation && stepError(4) ? (
+                    <button type="button" className="char-wizard-review-fix" onClick={() => goToStep(4)}>
+                      Corrigir
+                    </button>
+                  ) : null}
+                </dd>
               </dl>
-              <dl className="char-wizard-review-card">
+              <dl
+                className={`char-wizard-review-card${showValidation && stepError(5) ? " char-wizard-review-card--invalid" : ""}`}
+              >
                 <dt>Equipamento</dt>
                 <dd>
                   {(() => {
@@ -913,11 +986,25 @@ export function CharacterCreationWizard({
                     if (preset) return `${preset.label} — ${describeStarterEquipment(draft.starterEquipment)}`;
                     return describeStarterEquipment(draft.starterEquipment);
                   })()}
+                  {showValidation && stepError(5) ? (
+                    <button type="button" className="char-wizard-review-fix" onClick={() => goToStep(5)}>
+                      Corrigir
+                    </button>
+                  ) : null}
                 </dd>
               </dl>
-              <dl className="char-wizard-review-card">
+              <dl
+                className={`char-wizard-review-card${showValidation && stepError(6) ? " char-wizard-review-card--invalid" : ""}`}
+              >
                 <dt>Devotion</dt>
-                <dd>{religionDisplayName(draft.religiao)}</dd>
+                <dd>
+                  {religionDisplayName(draft.religiao)}
+                  {showValidation && stepError(6) ? (
+                    <button type="button" className="char-wizard-review-fix" onClick={() => goToStep(6)}>
+                      Corrigir
+                    </button>
+                  ) : null}
+                </dd>
               </dl>
               <dl className="char-wizard-review-card">
                 <dt>Vida máxima</dt>
@@ -937,8 +1024,16 @@ export function CharacterCreationWizard({
                 </dd>
               </dl>
             </div>
-            <p className="char-wizard-meta" style={{ marginBottom: "0.75rem" }}>
+            <p
+              className={`char-wizard-meta${showValidation && stepError(3) ? " char-wizard-step-block--invalid" : ""}`}
+              style={{ marginBottom: "0.75rem", padding: showValidation && stepError(3) ? "0.5rem 0.75rem" : undefined }}
+            >
               Atributos finais
+              {showValidation && stepError(3) ? (
+                <button type="button" className="char-wizard-review-fix" onClick={() => goToStep(3)}>
+                  Corrigir
+                </button>
+              ) : null}
             </p>
             <div className="char-wizard-preview-chips">
               {ATTR_ORDER.map((k) => (
