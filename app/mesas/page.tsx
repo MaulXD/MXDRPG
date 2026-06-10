@@ -16,10 +16,6 @@ export default async function MesasHubPage() {
       <header className="page-header" style={{ paddingBottom: "1.5rem" }}>
         <p className="eyebrow">MXDRPG · sistemas</p>
         <h1 className="display-lg">Escolha seu RPG</h1>
-        <p className="lead">
-          Cada sistema tem mesas, fichas e salas próprias no navegador. Hoje jogamos{" "}
-          <strong>Eldarin</strong> (grid hex e PA por turno); D&D e Vampiro chegam em breve.
-        </p>
       </header>
 
       <MedievalFrame variant="royal" page>
