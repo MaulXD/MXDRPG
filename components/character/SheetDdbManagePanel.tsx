@@ -7,7 +7,11 @@ import { CharacterIdentityEditor } from "@/components/character/CharacterIdentit
 import { LevelUpWizard } from "@/components/character/LevelUpWizard";
 import { FutureLevelsPanel } from "@/components/character/FutureLevelsPanel";
 import { SubclassTrackPanel } from "@/components/character/SubclassTrackPanel";
+import { CombatLoadoutPanel } from "@/components/character/CombatLoadoutPanel";
 import { SheetEditRequestButton } from "@/components/character/SheetEditRequestButton";
+import type { IdentityPatch } from "@/lib/character/identity";
+import type { LevelUpChoices } from "@/lib/character/level-up";
+import type { CombatLoadout } from "@/lib/combat/types";
 
 type Props = {
   character: CharacterSheet;
@@ -19,6 +23,9 @@ type Props = {
   snapshotRevision?: number;
   onRefresh: () => void;
   onLevelApplied: (patch: LevelUpRoomResponse) => void;
+  onSaveIdentity?: (patch: IdentityPatch) => Promise<void>;
+  onLevelUp?: (choices: LevelUpChoices) => Promise<void>;
+  onSaveCombatLoadout?: (loadout: CombatLoadout) => Promise<void>;
 };
 
 /** Ferramentas de edição — drawer inferior da ficha DDB (sem duplicar traços do painel direito). */
@@ -32,6 +39,9 @@ export function SheetDdbManagePanel({
   snapshotRevision,
   onRefresh,
   onLevelApplied,
+  onSaveIdentity,
+  onLevelUp,
+  onSaveCombatLoadout,
 }: Props) {
   if (!canEdit && !inRoom) return null;
 
@@ -47,10 +57,11 @@ export function SheetDdbManagePanel({
       {canEdit ? (
         <LevelUpWizard
           actor={live}
-          roomId={roomId}
+          roomId={inRoom ? roomId : undefined}
           canEdit={canEdit}
           onDone={onRefresh}
-          onApplied={(patch) => onLevelApplied(patch)}
+          onApplied={inRoom ? (patch) => onLevelApplied(patch) : undefined}
+          onLevelUp={!inRoom ? onLevelUp : undefined}
         />
       ) : null}
 
@@ -66,12 +77,23 @@ export function SheetDdbManagePanel({
       <SubclassTrackPanel actor={live} popup />
       <FutureLevelsPanel actor={live} compact />
 
-      {canEdit && inRoom ? (
+      {canEdit ? (
         <CharacterIdentityEditor
           actor={live}
-          roomId={roomId}
+          roomId={inRoom ? roomId : undefined}
           canEdit={canEdit}
           onSaved={onRefresh}
+          onSaveIdentity={!inRoom ? onSaveIdentity : undefined}
+        />
+      ) : null}
+
+      {canEdit ? (
+        <CombatLoadoutPanel
+          actor={live}
+          roomId={inRoom ? roomId : undefined}
+          canEdit={canEdit}
+          onSaved={onRefresh}
+          onSaveLoadout={!inRoom ? onSaveCombatLoadout : undefined}
         />
       ) : null}
 

@@ -8,12 +8,19 @@ import { patchRoomActor } from "@/hooks/useRoomSync";
 
 type Props = {
   actor: CharacterSheet;
-  roomId: string;
+  roomId?: string;
   canEdit: boolean;
   onSaved: () => void;
+  onSaveLoadout?: (loadout: CombatLoadout) => Promise<void>;
 };
 
-export function CombatLoadoutPanel({ actor, roomId, canEdit, onSaved }: Props) {
+export function CombatLoadoutPanel({
+  actor,
+  roomId,
+  canEdit,
+  onSaved,
+  onSaveLoadout,
+}: Props) {
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
 
@@ -29,7 +36,13 @@ export function CombatLoadoutPanel({ actor, roomId, canEdit, onSaved }: Props) {
     setBusy(true);
     setErr(null);
     try {
-      await patchRoomActor(roomId, actor.id, { combatLoadout: { packId, entryId } });
+      const loadout = { packId, entryId } as CombatLoadout;
+      if (onSaveLoadout) {
+        await onSaveLoadout(loadout);
+      } else {
+        if (!roomId) throw new Error("Sala ausente para salvar loadout");
+        await patchRoomActor(roomId, actor.id, { combatLoadout: loadout });
+      }
       onSaved();
     } catch (e) {
       setErr(e instanceof Error ? e.message : "Não foi possível salvar o loadout.");

@@ -61,6 +61,9 @@ import { OrnamentCard } from "@/components/ui/OrnamentCard";
 import { SectionDivider } from "@/components/ui/SectionDivider";
 import { Portrait } from "@/components/vtt/Portrait";
 import type { PortraitBundle } from "@/lib/media/image-upload-client";
+import type { IdentityPatch } from "@/lib/character/identity";
+import type { LevelUpChoices } from "@/lib/character/level-up";
+import type { CombatLoadout } from "@/lib/combat/types";
 import { sanitizePortraitFocus } from "@/lib/media/portrait-focus";
 import { isTypingTarget } from "@/lib/vtt/keyboard-guard";
 import type { FoundryWindowDragHandlers } from "@/hooks/vtt/useFoundryWindowDrag";
@@ -195,27 +198,41 @@ export function CharacterSheet({
     [character.id, inRoom, roomId, refresh]
   );
 
-  const persistPortraitBundle = useCallback(
-    async (bundle: PortraitBundle) => {
+  const applyCharacterResponse = useCallback((data: { character?: CharacterSheetData }) => {
+    if (data.character) {
+      setLocalSheet(data.character);
+      return;
+    }
+  }, []);
+
+  const patchCharacterApi = useCallback(
+    async (body: Record<string, unknown>) => {
       const res = await fetch(`/api/characters/${character.id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          portraitUrl: bundle.portraitUrl,
-          tokenImageUrl: bundle.tokenImageUrl,
-          portraitFocus: bundle.portraitFocus,
-          coverFocus: bundle.coverFocus,
-          tokenFocus: bundle.tokenFocus,
-        }),
+        body: JSON.stringify(body),
       });
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
         throw new Error((data as { error?: string }).error ?? `Erro ${res.status}`);
       }
       const data = (await res.json()) as { character?: CharacterSheetData };
-      if (data.character) {
-        setLocalSheet(data.character);
-      } else {
+      applyCharacterResponse(data);
+      return data;
+    },
+    [applyCharacterResponse, character.id]
+  );
+
+  const persistPortraitBundle = useCallback(
+    async (bundle: PortraitBundle) => {
+      const data = await patchCharacterApi({
+        portraitUrl: bundle.portraitUrl,
+        tokenImageUrl: bundle.tokenImageUrl,
+        portraitFocus: bundle.portraitFocus,
+        coverFocus: bundle.coverFocus,
+        tokenFocus: bundle.tokenFocus,
+      });
+      if (!data?.character) {
         setLocalSheet((prev) => ({
           ...(prev ?? character),
           portraitUrl: bundle.portraitUrl,
@@ -226,7 +243,38 @@ export function CharacterSheet({
         }));
       }
     },
-    [character]
+    [character, patchCharacterApi]
+  );
+
+  const persistIdentityPatch = useCallback(
+    async (patch: IdentityPatch) => {
+      await patchCharacterApi({ identityPatch: patch });
+    },
+    [patchCharacterApi]
+  );
+
+  const levelUpCharacter = useCallback(
+    async (choices: LevelUpChoices) => {
+      const res = await fetch(`/api/characters/${character.id}/level-up`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(choices),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error((data as { error?: string }).error ?? `Erro ${res.status}`);
+      }
+      const data = (await res.json()) as { character?: CharacterSheetData };
+      applyCharacterResponse(data);
+    },
+    [applyCharacterResponse, character.id]
+  );
+
+  const persistCombatLoadout = useCallback(
+    async (loadout: CombatLoadout) => {
+      await patchCharacterApi({ combatLoadout: loadout });
+    },
+    [patchCharacterApi]
   );
 
   const resolved = useMemo(() => {
@@ -576,18 +624,23 @@ export function CharacterSheet({
       {canEdit ? (
         <LevelUpWizard
           actor={live}
-          roomId={roomId}
+          roomId={inRoom ? roomId : undefined}
           canEdit={canEdit}
-          onDone={refresh}
-          onApplied={(patch) => {
-            if (!snapshot) return;
-            applySnapshot({
-              ...snapshot,
-              actors: { ...snapshot.actors, [patch.actor.id]: patch.actor },
-              scene: patch.scene,
-              revision: patch.revision,
-            });
-          }}
+          onDone={inRoom ? refresh : () => router.refresh()}
+          onApplied={
+            inRoom
+              ? (patch) => {
+                  if (!snapshot) return;
+                  applySnapshot({
+                    ...snapshot,
+                    actors: { ...snapshot.actors, [patch.actor.id]: patch.actor },
+                    scene: patch.scene,
+                    revision: patch.revision,
+                  });
+                }
+              : undefined
+          }
+          onLevelUp={!inRoom ? levelUpCharacter : undefined}
         />
       ) : null}
 
@@ -662,21 +715,23 @@ export function CharacterSheet({
       </section>
       <FutureLevelsPanel actor={live} compact={isPopup} />
 
-      {inRoom ? (
+      {canEdit ? (
         <CombatLoadoutPanel
           actor={live}
-          roomId={roomId}
+          roomId={inRoom ? roomId : undefined}
           canEdit={canEdit}
-          onSaved={refresh}
+          onSaved={inRoom ? refresh : () => router.refresh()}
+          onSaveLoadout={!inRoom ? persistCombatLoadout : undefined}
         />
       ) : null}
 
-      {canEdit && inRoom ? (
+      {canEdit ? (
         <CharacterIdentityEditor
           actor={live}
-          roomId={roomId}
+          roomId={inRoom ? roomId : undefined}
           canEdit={canEdit}
-          onSaved={refresh}
+          onSaved={inRoom ? refresh : () => router.refresh()}
+          onSaveIdentity={!inRoom ? persistIdentityPatch : undefined}
         />
       ) : null}
 
@@ -735,7 +790,7 @@ export function CharacterSheet({
           inRoom={inRoom}
           canEdit={canEdit}
           snapshotRevision={snapshot?.revision}
-          onRefresh={refresh}
+          onRefresh={inRoom ? refresh : () => router.refresh()}
           onLevelApplied={(patch) => {
             if (!snapshot) return;
             applySnapshot({
@@ -745,6 +800,9 @@ export function CharacterSheet({
               revision: patch.revision,
             });
           }}
+          onSaveIdentity={!inRoom ? persistIdentityPatch : undefined}
+          onLevelUp={!inRoom ? levelUpCharacter : undefined}
+          onSaveCombatLoadout={!inRoom ? persistCombatLoadout : undefined}
         />
       ) : null;
 
