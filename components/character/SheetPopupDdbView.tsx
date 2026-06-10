@@ -165,6 +165,10 @@ export function SheetPopupDdbView({
               <span className="sheet-ddb-hex__label">Prof.</span>
               <strong>+{profBonus}</strong>
             </div>
+            <div className="sheet-ddb-hex sheet-ddb-hex--ca" title="Classe de armadura">
+              <span className="sheet-ddb-hex__label">CA</span>
+              <strong>{displayDefesa}</strong>
+            </div>
           </div>
 
           <div className="sheet-ddb-resource">
@@ -189,11 +193,6 @@ export function SheetPopupDdbView({
             <div className="sheet-ddb-resource__bar sheet-ddb-resource__bar--pa">
               <span style={{ width: `${paPct}%` }} />
             </div>
-          </div>
-
-          <div className="sheet-ddb-ca">
-            <span>Classe de armadura</span>
-            <strong>{displayDefesa}</strong>
           </div>
         </aside>
 
