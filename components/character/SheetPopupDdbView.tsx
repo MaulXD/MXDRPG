@@ -10,6 +10,7 @@ import {
   type CulinaryKey,
 } from "@/lib/character/rules";
 import { formatXpProgressDetail, xpProgressRatio, MAX_LEVEL } from "@/lib/character/xp";
+import { SheetHoverTip } from "@/components/character/SheetHoverTip";
 import { religionDisplayName } from "@/lib/character/pantheon";
 import { buildSheetSavingThrows } from "@/lib/character/sheet-skills";
 import { SheetDdbSkillsPanel } from "@/components/character/SheetDdbSkillsPanel";
@@ -112,19 +113,29 @@ export function SheetPopupDdbView({
           <div className="sheet-ddb-header__level" aria-label={`Nível ${nivel}`}>
             {nivel}
           </div>
-          <div className="sheet-ddb-header__xp">
-            <span className="sheet-ddb-header__xp-text">{xpDetail.secondary}</span>
-            <div
-              className="sheet-ddb-header__xp-bar"
-              role="progressbar"
-              aria-valuenow={nivel >= MAX_LEVEL ? 100 : xpPct}
-              aria-valuemin={0}
-              aria-valuemax={100}
-              aria-label={xpDetail.barLabel}
-            >
-              <span style={{ width: `${xpPct}%` }} />
+          <SheetHoverTip
+            className="sheet-ddb-header__xp-tip"
+            tip={{
+              lines: [
+                xpDetail.secondary,
+                nivel < MAX_LEVEL && xpDetail.barLabel ? xpDetail.barLabel : "",
+              ].filter(Boolean),
+            }}
+          >
+            <div className="sheet-ddb-header__xp" tabIndex={0} title={xpDetail.secondary}>
+              <span className="sheet-ddb-header__xp-text">{xpDetail.primary}</span>
+              <div
+                className="sheet-ddb-header__xp-bar"
+                role="progressbar"
+                aria-valuenow={nivel >= MAX_LEVEL ? 100 : xpPct}
+                aria-valuemin={0}
+                aria-valuemax={100}
+                aria-label={`${xpDetail.primary} — ${xpDetail.secondary}`}
+              >
+                <span style={{ width: `${xpPct}%` }} />
+              </div>
             </div>
-          </div>
+          </SheetHoverTip>
         </div>
       </header>
 

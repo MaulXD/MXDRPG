@@ -896,6 +896,19 @@
   }
 }
 
+/* Nav — ícone Amigos (link compacto, alinhado ao sino) */
+.friends-nav-icon {
+  display: inline-flex;
+  flex-shrink: 0;
+  text-decoration: none;
+}
+
+.friends-nav-icon.is-active {
+  color: var(--accent);
+  background: rgba(184, 146, 46, 0.12);
+  border-color: rgba(184, 146, 46, 0.28);
+}
+
 /* Nav — botão Mensagens (ícone compacto, alinhado ao sino) */
 .friends-nav-messages {
   display: inline-flex;

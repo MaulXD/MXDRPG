@@ -89,7 +89,7 @@ export function formatXpProgress(level: number, xpTotal: number): string {
   const band = next - prev;
   const progress = Math.max(0, xpTotal - prev);
   if (xpTotal >= next) return `↑ nv ${level + 1}`;
-  return `${progress} / ${band} XP`;
+  return `${progress}/${band}`;
 }
 
 /** Texto rico para bloco de nível/XP na ficha popup */
@@ -108,15 +108,17 @@ export function formatXpProgressDetail(
   const prev = xpTotalForLevel(level);
   const band = xpTotalForLevel(level + 1) - prev;
   const progress = Math.max(0, xpTotal - prev);
+  /** Fração compacta (sem separador de milhar — legível no header da ficha) */
+  const fraction = `${progress}/${band}`;
   if (remaining === 0) {
     return {
-      primary: `${progress} / ${band} XP`,
+      primary: fraction,
       secondary: `Pronto para subir ao nv. ${level + 1}`,
       barLabel: `↑ nv ${level + 1}`,
     };
   }
   return {
-    primary: `${progress} / ${band} XP`,
+    primary: fraction,
     secondary: `Faltam ${remaining.toLocaleString("pt-BR")} XP para o nv. ${level + 1}`,
     barLabel: `${xpTotal.toLocaleString("pt-BR")} XP total`,
   };

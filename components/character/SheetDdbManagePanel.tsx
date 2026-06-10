@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import type { CharacterSheet } from "@/lib/character/types";
 import type { LevelUpRoomResponse } from "@/hooks/useRoomSync";
 import { CharacterIdentityEditor } from "@/components/character/CharacterIdentityEditor";
@@ -63,15 +62,6 @@ export function SheetDdbManagePanel({
           onApplied={inRoom ? (patch) => onLevelApplied(patch) : undefined}
           onLevelUp={!inRoom ? onLevelUp : undefined}
         />
-      ) : null}
-
-      {canEdit && inRoom ? (
-        <Link
-          href={`/personagem/${character.id}`}
-          className="btn btn-ghost sheet-ddb-manage__link"
-        >
-          Editar retrato e identidade ↗
-        </Link>
       ) : null}
 
       <SubclassTrackPanel actor={live} popup />

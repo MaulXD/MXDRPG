@@ -17,6 +17,8 @@ type Props = {
   characterId: string;
   seed?: LootEconomy;
   canEdit: boolean;
+  /** Persistência com atualização da ficha (ex.: standalone) */
+  onPersist?: (loot: LootEconomy) => Promise<void>;
 };
 
 function bumpStack(
@@ -110,9 +112,10 @@ function AddStackRow({ prefix, onAdd }: { prefix: string; onAdd: (id: string) =>
   );
 }
 
-export function LootEconomyPanel({ characterId, seed, canEdit }: Props) {
+export function LootEconomyPanel({ characterId, seed, canEdit, onPersist }: Props) {
   const initial = seed ?? EMPTY_LOOT;
   const [loot, setLoot] = useState<LootEconomy>(initial);
+  const [msg, setMsg] = useState<string | null>(null);
 
   useEffect(() => {
     setLoot(loadLoot(characterId, initial));
@@ -122,19 +125,39 @@ export function LootEconomyPanel({ characterId, seed, canEdit }: Props) {
     (next: LootEconomy) => {
       setLoot(next);
       saveLoot(characterId, next);
-      void fetch(`/api/characters/${characterId}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ lootEconomy: next }),
-      }).catch((e) => console.error("[loot] falha ao persistir no servidor:", e));
+      setMsg(null);
+      void (async () => {
+        try {
+          if (onPersist) {
+            await onPersist(next);
+            return;
+          }
+          const res = await fetch(`/api/characters/${characterId}`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ lootEconomy: next }),
+          });
+          if (!res.ok) {
+            const data = await res.json().catch(() => ({}));
+            throw new Error((data as { error?: string }).error ?? `Erro ${res.status}`);
+          }
+        } catch (e) {
+          setMsg(e instanceof Error ? e.message : "Falha ao salvar tesouro");
+        }
+      })();
     },
-    [characterId]
+    [characterId, onPersist]
   );
 
   const setPo = (po: number) => persist({ ...loot, po: Math.max(0, Math.floor(po)) });
 
   return (
     <div className="loot-panel">
+      {msg ? (
+        <p className="loot-panel__msg" role="status">
+          {msg}
+        </p>
+      ) : null}
       <div className="loot-po">
         <label htmlFor="loot-po">Pecas de ouro (po)</label>
         {canEdit ? (
