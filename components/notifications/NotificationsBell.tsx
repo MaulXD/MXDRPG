@@ -223,7 +223,9 @@ function NotificationRow({
             </>
           ) : (
             <Link href={item.href} className="notifications-bell__link" onClick={onNavigate}>
-              Ver
+              {item.type === "sheet_edit_player" && item.title === "Edição de ficha aprovada"
+                ? "Abrir edição"
+                : "Ver"}
             </Link>
           )}
           {item.type === "mesa_invite" && item.meta?.inviteId ? (
