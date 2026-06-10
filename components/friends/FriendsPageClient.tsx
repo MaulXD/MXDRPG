@@ -18,6 +18,8 @@ type Props = {
   selfUserId: string;
 };
 
+type SidebarTab = "friends" | "incoming" | "outgoing";
+
 export function FriendsPageClient({ selfUserId }: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -33,6 +35,7 @@ export function FriendsPageClient({ selfUserId }: Props) {
   const [okMsg, setOkMsg] = useState("");
   const [previewUserId, setPreviewUserId] = useState<string | null>(null);
   const [chatUserId, setChatUserId] = useState<string | null>(null);
+  const [sidebarTab, setSidebarTab] = useState<SidebarTab>("friends");
 
   const load = useCallback(async () => {
     const [fRes, rRes, iRes] = await Promise.all([
@@ -96,6 +99,7 @@ export function FriendsPageClient({ selfUserId }: Props) {
       }
       setNickname("");
       setOkMsg(data.kind === "friend" ? "Amizade aceita!" : "Pedido de amizade enviado.");
+      if (data.kind !== "friend") setSidebarTab("outgoing");
       await load();
     } catch {
       setError("Falha de conexão.");
@@ -177,27 +181,52 @@ export function FriendsPageClient({ selfUserId }: Props) {
     return req.toDisplayName;
   }
 
+  function renderRequestRow(
+    req: FriendRequestSummary,
+    mode: "incoming" | "outgoing"
+  ) {
+    const isIncoming = mode === "incoming";
+    const avatarUrl = isIncoming ? req.fromAvatarUrl : req.toAvatarUrl;
+    const label = isIncoming ? requestLabel(req) : outgoingLabel(req);
+    const sub = isIncoming ? "quer ser seu amigo" : "aguardando resposta";
+
+    return (
+      <li key={req.id} className="friends-page__request">
+        <button
+          type="button"
+          className="friends-page__request-main"
+          onClick={() => setPreviewUserId(isIncoming ? req.fromUserId : req.toUserId)}
+        >
+          <UserAvatar url={avatarUrl} label={label} className="friends-hub__avatar" />
+          <div className="friends-hub__meta">
+            <span className="friends-hub__name">{label}</span>
+            <span className="friends-hub__sub">{sub}</span>
+          </div>
+        </button>
+        <div className="friends-hub__actions">
+          {isIncoming ? (
+            <>
+              <button type="button" className="btn btn-sm" onClick={() => void acceptRequest(req.id)}>
+                Aceitar
+              </button>
+              <button type="button" className="btn btn-ghost btn-sm" onClick={() => void dismissRequest(req.id)}>
+                Recusar
+              </button>
+            </>
+          ) : (
+            <button type="button" className="btn btn-ghost btn-sm" onClick={() => void dismissRequest(req.id)}>
+              Cancelar
+            </button>
+          )}
+        </div>
+      </li>
+    );
+  }
+
   return (
     <div className="friends-page">
-      {(incomingRequests.length > 0 || outgoingRequests.length > 0 || invites.length > 0) && (
+      {invites.length > 0 ? (
         <section className="friends-page__alerts">
-          {incomingRequests.map((req) => (
-            <div key={req.id} className="friends-page__alert friends-page__alert--request">
-              <UserAvatar url={req.fromAvatarUrl} label={requestLabel(req)} className="friends-hub__avatar" />
-              <div className="friends-hub__meta">
-                <span className="friends-hub__name">{requestLabel(req)}</span>
-                <span className="friends-hub__sub">quer ser seu amigo</span>
-              </div>
-              <div className="friends-hub__actions">
-                <button type="button" className="btn btn-sm" onClick={() => void acceptRequest(req.id)}>
-                  Aceitar
-                </button>
-                <button type="button" className="btn btn-ghost btn-sm" onClick={() => void dismissRequest(req.id)}>
-                  Recusar
-                </button>
-              </div>
-            </div>
-          ))}
           {invites.map((inv) => (
             <div key={inv.id} className="friends-page__alert">
               <UserAvatar url={inv.fromAvatarUrl} label={inv.fromDisplayName} className="friends-hub__avatar" />
@@ -218,69 +247,112 @@ export function FriendsPageClient({ selfUserId }: Props) {
               </div>
             </div>
           ))}
-          {outgoingRequests.map((req) => (
-            <div key={req.id} className="friends-page__alert friends-page__alert--pending">
-              <span className="friends-hub__sub">
-                Pedido enviado para {outgoingLabel(req)}
-              </span>
-              <button type="button" className="btn btn-ghost btn-sm" onClick={() => void dismissRequest(req.id)}>
-                Cancelar
-              </button>
-            </div>
-          ))}
         </section>
-      )}
+      ) : null}
 
       <div className="friends-page__grid">
         <aside className="friends-page__sidebar">
-          <h2 className="friends-hub__section-title">Amigos</h2>
-          <form className="friends-hub__add" onSubmit={addFriend}>
-            <input
-              className="input"
-              placeholder="Apelido @usuario"
-              value={nickname}
-              onChange={(e) => setNickname(e.target.value)}
-              autoComplete="off"
-              disabled={loading}
-            />
-            <button type="submit" className="btn btn-sm" disabled={loading || !nickname.trim()}>
-              Adicionar
+          <nav className="friends-page__tabs" aria-label="Listas de amigos">
+            <button
+              type="button"
+              className={`friends-page__tab${sidebarTab === "friends" ? " is-active" : ""}`}
+              onClick={() => setSidebarTab("friends")}
+            >
+              Amigos
             </button>
-          </form>
-          {error ? <p className="friends-hub__err">{error}</p> : null}
-          {okMsg ? <p className="friends-hub__ok">{okMsg}</p> : null}
+            <button
+              type="button"
+              className={`friends-page__tab${sidebarTab === "incoming" ? " is-active" : ""}`}
+              onClick={() => setSidebarTab("incoming")}
+            >
+              Recebidos
+              {incomingRequests.length > 0 ? (
+                <span className="friends-page__tab-badge">{incomingRequests.length}</span>
+              ) : null}
+            </button>
+            <button
+              type="button"
+              className={`friends-page__tab${sidebarTab === "outgoing" ? " is-active" : ""}`}
+              onClick={() => setSidebarTab("outgoing")}
+            >
+              Enviados
+              {outgoingRequests.length > 0 ? (
+                <span className="friends-page__tab-badge">{outgoingRequests.length}</span>
+              ) : null}
+            </button>
+          </nav>
 
-          {friends.length > 0 ? (
-            <ul className="friends-page__friend-list">
-              {friends.map((f) => (
-                <li key={f.id}>
-                  <button
-                    type="button"
-                    className={`friends-page__friend${chatUserId === f.id ? " is-active" : ""}`}
-                    onClick={() => openChat(f.id)}
-                  >
-                    <UserAvatar
-                      url={f.avatarUrl}
-                      focus={f.avatarFocus as PortraitFocus | null}
-                      label={friendLabel(f)}
-                      className="friends-hub__avatar"
-                    />
-                    <span className="friends-page__friend-name">{friendLabel(f)}</span>
-                  </button>
-                  <button
-                    type="button"
-                    className="friends-page__friend-preview"
-                    aria-label={`Ver perfil de ${friendLabel(f)}`}
-                    onClick={() => setPreviewUserId(f.id)}
-                  >
-                    ⋯
-                  </button>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p className="friends-hub__empty">Nenhum amigo ainda — adicione pelo apelido.</p>
-          )}
+          {sidebarTab === "friends" ? (
+            <>
+              <form className="friends-hub__add" onSubmit={addFriend}>
+                <input
+                  className="input"
+                  placeholder="Apelido @usuario"
+                  value={nickname}
+                  onChange={(e) => setNickname(e.target.value)}
+                  autoComplete="off"
+                  disabled={loading}
+                />
+                <button type="submit" className="btn btn-sm" disabled={loading || !nickname.trim()}>
+                  Adicionar
+                </button>
+              </form>
+              {error ? <p className="friends-hub__err">{error}</p> : null}
+              {okMsg ? <p className="friends-hub__ok">{okMsg}</p> : null}
+
+              {friends.length > 0 ? (
+                <ul className="friends-page__friend-list">
+                  {friends.map((f) => (
+                    <li key={f.id}>
+                      <button
+                        type="button"
+                        className={`friends-page__friend${chatUserId === f.id ? " is-active" : ""}`}
+                        onClick={() => openChat(f.id)}
+                      >
+                        <UserAvatar
+                          url={f.avatarUrl}
+                          focus={f.avatarFocus as PortraitFocus | null}
+                          label={friendLabel(f)}
+                          className="friends-hub__avatar"
+                        />
+                        <span className="friends-page__friend-name">{friendLabel(f)}</span>
+                      </button>
+                      <button
+                        type="button"
+                        className="friends-page__friend-preview"
+                        aria-label={`Ver perfil de ${friendLabel(f)}`}
+                        onClick={() => setPreviewUserId(f.id)}
+                      >
+                        ⋯
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="friends-hub__empty">Nenhum amigo ainda — adicione pelo apelido.</p>
+              )}
+            </>
+          ) : null}
+
+          {sidebarTab === "incoming" ? (
+            incomingRequests.length > 0 ? (
+              <ul className="friends-page__request-list">
+                {incomingRequests.map((req) => renderRequestRow(req, "incoming"))}
+              </ul>
+            ) : (
+              <p className="friends-hub__empty">Nenhum pedido recebido.</p>
+            )
+          ) : null}
+
+          {sidebarTab === "outgoing" ? (
+            outgoingRequests.length > 0 ? (
+              <ul className="friends-page__request-list">
+                {outgoingRequests.map((req) => renderRequestRow(req, "outgoing"))}
+              </ul>
+            ) : (
+              <p className="friends-hub__empty">Nenhum pedido enviado.</p>
+            )
+          ) : null}
         </aside>
 
         <div className="friends-page__main">

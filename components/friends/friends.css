@@ -622,6 +622,101 @@
   min-width: 0;
 }
 
+.friends-page__tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-bottom: 0.75rem;
+}
+
+.friends-page__tab {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  padding: 0.4rem 0.45rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-sm, 8px);
+  background: rgba(0, 0, 0, 0.15);
+  color: var(--text-muted);
+  font: inherit;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+}
+
+.friends-page__tab:hover {
+  color: var(--text);
+  border-color: rgba(184, 146, 46, 0.35);
+}
+
+.friends-page__tab.is-active {
+  color: var(--accent);
+  border-color: rgba(184, 146, 46, 0.45);
+  background: rgba(184, 146, 46, 0.1);
+}
+
+.friends-page__tab-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.1rem;
+  height: 1.1rem;
+  padding: 0 0.25rem;
+  border-radius: 999px;
+  font-size: 0.62rem;
+  font-weight: 700;
+  line-height: 1;
+  background: var(--accent);
+  color: #1a1208;
+}
+
+.friends-page__request-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.friends-page__request {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: 0.5rem 0.55rem;
+  border-radius: var(--radius-sm, 8px);
+  background: rgba(0, 0, 0, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.friends-page__request-main {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  width: 100%;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.friends-page__request-main:hover .friends-hub__name {
+  color: var(--accent);
+}
+
+.friends-page__request .friends-hub__actions {
+  justify-content: flex-end;
+}
+
 .friends-page__friend-list {
   list-style: none;
   margin: 0.75rem 0 0;
@@ -801,18 +896,55 @@
   }
 }
 
-/* Nav — botão Mensagens (estilo link) */
+/* Nav — botão Mensagens (ícone compacto, alinhado ao sino) */
 .friends-nav-messages {
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  font: inherit;
-  text-decoration: none;
+  display: inline-flex;
+  flex-shrink: 0;
 }
 
-.friends-nav-messages:focus-visible {
+.friends-nav-messages__trigger {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: color 0.15s, background 0.15s, border-color 0.15s;
+}
+
+.friends-nav-messages__trigger:hover,
+.friends-nav-messages__trigger.is-open {
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.06);
+  border-color: var(--glass-border);
+}
+
+.friends-nav-messages__trigger:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
+}
+
+.friends-nav-messages__badge {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  min-width: 1.1rem;
+  height: 1.1rem;
+  padding: 0 0.25rem;
+  border-radius: 999px;
+  background: var(--accent, #c9a227);
+  color: #1a1208;
+  font-size: 0.65rem;
+  font-weight: 700;
+  line-height: 1.1rem;
+  text-align: center;
+  pointer-events: none;
 }
 
 /* Abas de conversas abertas no messenger */

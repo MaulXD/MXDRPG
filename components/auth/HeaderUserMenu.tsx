@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { UserAvatar } from "@/components/ui/UserAvatar";
+import { portalPathForRole, roleMeta } from "@/lib/auth/roles";
 import type { SessionUser } from "@/lib/auth/types";
 import type { PortraitFocus } from "@/lib/media/portrait-focus";
 
@@ -119,12 +120,28 @@ export function HeaderUserMenu({ user: initialUser, onSignOut }: Props) {
       >
         <p className="header-user-menu__label">{label}</p>
         <Link
+          href="/amigos"
+          className="header-user-menu__item"
+          role="menuitem"
+          onClick={() => setOpen(false)}
+        >
+          Amigos
+        </Link>
+        <Link
+          href={portalPathForRole(user.role)}
+          className="header-user-menu__item"
+          role="menuitem"
+          onClick={() => setOpen(false)}
+        >
+          {roleMeta(user.role).label}
+        </Link>
+        <Link
           href="/conta"
           className="header-user-menu__item"
           role="menuitem"
           onClick={() => setOpen(false)}
         >
-          Editar perfil
+          Minha conta
         </Link>
         <BugReportMenuItem
           onOpen={() => {
