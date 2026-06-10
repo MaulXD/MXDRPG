@@ -15,8 +15,8 @@
   flex-shrink: 0;
   position: relative;
   z-index: 120;
-  overflow: hidden;
-  max-height: 5.5rem;
+  overflow: visible;
+  max-height: calc(5.5rem + 1.4rem);
   transition:
     max-height 0.28s var(--ease-out, ease-out),
     opacity 0.22s ease;
@@ -25,6 +25,7 @@
 .vtt-chrome--topbar-hidden .vtt-topbar-shell {
   max-height: 0;
   opacity: 0;
+  overflow: hidden;
   pointer-events: none;
 }
 
@@ -57,50 +58,8 @@
   min-width: 0;
 }
 
-.vtt-topbar-toggle {
-  display: grid;
-  place-items: center;
-  width: 2rem;
-  height: 2rem;
-  padding: 0;
-  border: 1px solid var(--glass-border);
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.04);
-  color: var(--text-muted);
-  cursor: pointer;
-  flex-shrink: 0;
-  transition: color 0.15s, border-color 0.15s, background 0.15s;
-}
-
-.vtt-topbar-toggle:hover {
-  color: var(--accent);
-  border-color: var(--glass-border-bright);
-  background: var(--accent-soft);
-}
-
-.vtt-topbar-toggle:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-}
-
-.vtt-topbar-toggle__chevron {
-  display: block;
-  width: 0.45rem;
-  height: 0.45rem;
-  border-right: 2px solid currentColor;
-  border-bottom: 2px solid currentColor;
-  transform: rotate(-135deg) translateY(2px);
-}
-
-.vtt-topbar-toggle__chevron--down {
-  transform: rotate(45deg) translateY(-2px);
-}
-
-.vtt-topbar-reveal {
-  position: fixed;
-  top: 0;
-  left: 50%;
-  z-index: 130;
+/* Aba central — mesma forma para abrir (↓) e fechar (↑) a navbar na mesa */
+.vtt-topbar-tab {
   display: grid;
   place-items: center;
   width: 2.75rem;
@@ -113,14 +72,51 @@
   background: var(--glass);
   color: var(--text-muted);
   cursor: pointer;
-  transform: translateX(-50%);
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
-  transition: color 0.15s, background 0.15s;
+  transition: color 0.15s, background 0.15s, border-color 0.15s;
 }
 
-.vtt-topbar-reveal:hover {
+.vtt-topbar-tab:hover {
   color: var(--accent);
   background: var(--surface-raised);
+  border-color: rgba(201, 169, 98, 0.45);
+}
+
+.vtt-topbar-tab:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.vtt-topbar-tab--collapse {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  z-index: 131;
+  transform: translate(-50%, calc(100% - 1px));
+}
+
+.vtt-topbar-tab--reveal {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  z-index: 130;
+  transform: translateX(-50%);
+}
+
+.vtt-topbar-tab__chevron {
+  display: block;
+  width: 0.45rem;
+  height: 0.45rem;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+}
+
+.vtt-topbar-tab__chevron--up {
+  transform: rotate(-135deg) translateY(2px);
+}
+
+.vtt-topbar-tab__chevron--down {
+  transform: rotate(45deg) translateY(-2px);
 }
 
 .vtt-topbar-actions {
