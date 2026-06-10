@@ -6,10 +6,14 @@ import { createPortal } from "react-dom";
 import { FriendsChat } from "@/components/friends/FriendsChat";
 import { friendLabel } from "@/components/friends/friend-label";
 import { useFriendsChat } from "@/components/friends/FriendsChatProvider";
+import { useDraggablePopup } from "@/components/friends/useDraggablePopup";
 import { IconChat } from "@/components/ui/EldarinIcons";
 import { UserAvatar } from "@/components/ui/UserAvatar";
 import type { PortraitFocus } from "@/lib/media/portrait-focus";
 import "./friends.css";
+
+const MESSENGER_W = 360;
+const MESSENGER_H = 440;
 
 export function FriendsMessengerDock() {
   const chat = useFriendsChat();
@@ -34,6 +38,12 @@ export function FriendsMessengerDock() {
   if (!mounted || !chat?.selfUserId) return null;
 
   const { messengerOpen, messengerMinimized, openChats, activeChatId, friends, refreshUnread } = chat;
+
+  const drag = useDraggablePopup({
+    width: MESSENGER_W,
+    height: MESSENGER_H,
+    enabled: messengerOpen && !messengerMinimized,
+  });
 
   const friendById = (id: string) => friends.find((f) => f.id === id) ?? null;
 
@@ -83,8 +93,20 @@ export function FriendsMessengerDock() {
 
   const dock =
     messengerOpen && !messengerMinimized ? (
-      <div className="friends-chat-float glass-panel" role="dialog" aria-label="Mensagens">
-        <header className="friends-chat-float__head">
+      <div
+        ref={drag.panelRef}
+        className="friends-chat-float friends-chat-float--popup"
+        role="dialog"
+        aria-label="Mensagens"
+        style={drag.panelStyle}
+        onPointerMove={drag.onDragPointerMove}
+        onPointerUp={drag.onDragPointerUp}
+        onPointerCancel={drag.onDragPointerUp}
+      >
+        <header
+          className="friends-chat-float__head friends-chat-float__head--drag"
+          onPointerDown={drag.onDragPointerDown}
+        >
           <h2 className="friends-chat-float__title">Mensagens</h2>
           <div className="friends-chat-float__actions">
             <Link href="/amigos" className="friends-chat-float__hub" onClick={() => chat.closeMessenger()}>

@@ -10,6 +10,11 @@ import {
   isAdventureJoinable,
   shouldPurgeAdventure,
 } from "./lifecycle";
+import {
+  DEFAULT_RPG_SYSTEM_ID,
+  normalizeRpgSystemId,
+  type RpgSystemId,
+} from "@/lib/rpg/systems";
 import type { Adventure, AdventureListItem } from "./types";
 import {
   createRoomForAdventure,
@@ -124,6 +129,7 @@ function ensureDemoAdventure(): Adventure {
     ownerId: "usr_demo_mestre",
     name: "Mesa demonstração",
     synopsis: "Aventura pública para testar o VTT.",
+    rpgSystemId: DEFAULT_RPG_SYSTEM_ID,
     accessMode: "public",
     inviteCode: "DEMOELDR",
     memberIds: [],
@@ -165,6 +171,7 @@ export async function getAdventure(adventureId: string): Promise<Adventure | nul
       ownerId: room.ownerId,
       name: room.name,
       synopsis: "",
+      rpgSystemId: DEFAULT_RPG_SYSTEM_ID,
       accessMode: "public",
       inviteCode: room.inviteCode,
       memberIds: [...room.memberIds],
@@ -186,7 +193,7 @@ export type CreateAdventureResult =
 export async function createAdventure(
   ownerId: string,
   name: string,
-  options?: { accessMode?: AdventureAccessMode }
+  options?: { accessMode?: AdventureAccessMode; rpgSystemId?: RpgSystemId }
 ): Promise<CreateAdventureResult> {
   const label = name.trim().slice(0, 80) || "Nova aventura";
 
@@ -205,12 +212,14 @@ export async function createAdventure(
   const inviteCode = resolved.code;
 
   const accessMode = options?.accessMode === "closed" ? "closed" : "public";
+  const rpgSystemId = normalizeRpgSystemId(options?.rpgSystemId ?? DEFAULT_RPG_SYSTEM_ID);
 
   const adventure: Adventure = {
     adventureId,
     ownerId,
     name: label,
     synopsis: "",
+    rpgSystemId,
     accessMode,
     inviteCode,
     memberIds: [],
@@ -346,16 +355,21 @@ function toListItem(adv: Adventure, userId: string): AdventureListItem {
   };
 }
 
-export async function listAdventuresForUser(userId: string): Promise<AdventureListItem[]> {
+export async function listAdventuresForUser(
+  userId: string,
+  options?: { rpgSystemId?: RpgSystemId }
+): Promise<AdventureListItem[]> {
+  const rpgFilter = options?.rpgSystemId;
   const seenIds = new Set<string>();
   const seenRooms = new Set<string>();
   const out: AdventureListItem[] = [];
 
   if (dbEnabled()) {
-    const fromDb = await dbAdventures.listAdventuresForOwnerOrMember(userId);
+    const fromDb = await dbAdventures.listAdventuresForOwnerOrMember(userId, rpgFilter);
     for (const item of fromDb) {
       const full = await getAdventure(item.adventureId);
       if (!full) continue;
+      if (rpgFilter && full.rpgSystemId !== rpgFilter) continue;
       adventures().set(full.adventureId, full);
       seenIds.add(item.adventureId);
       seenIds.add(full.adventureId);
@@ -369,6 +383,7 @@ export async function listAdventuresForUser(userId: string): Promise<AdventureLi
   const clerkId = await fetchClerkIdForUser(userId);
 
   for (const adv of adventures().values()) {
+    if (rpgFilter && adv.rpgSystemId !== rpgFilter) continue;
     if (adv.ownerId !== userId && !memberIdsHasUser(adv.memberIds, userId, clerkId)) continue;
     if (seenIds.has(adv.adventureId)) continue;
     if (seenRooms.has(adv.primaryRoomId)) continue;

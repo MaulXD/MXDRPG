@@ -1,6 +1,6 @@
 .notifications-bell {
-  position: relative;
   display: inline-flex;
+  flex-shrink: 0;
 }
 
 .notifications-bell__trigger {
@@ -44,15 +44,19 @@
 }
 
 .notifications-bell__panel {
-  position: absolute;
-  top: calc(100% + 0.5rem);
-  right: 0;
-  z-index: 200;
   width: min(22rem, calc(100vw - 2rem));
   max-height: min(24rem, 70vh);
   overflow: auto;
   padding: 0.75rem;
   border-radius: 12px;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.45);
+}
+
+/* Portal em document.body — fora da navbar (evita overflow/z-index da barra) */
+.notifications-bell__panel--portal {
+  position: fixed !important;
+  z-index: 10450;
+  pointer-events: auto;
 }
 
 .notifications-bell__title {

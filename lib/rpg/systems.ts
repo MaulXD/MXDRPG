@@ -2,6 +2,18 @@
 
 export type RpgSystemId = "eldarin" | "dnd" | "vtm";
 
+/** Sistema padrão — mesas legadas e criação atual no hub Eldarin. */
+export const DEFAULT_RPG_SYSTEM_ID: RpgSystemId = "eldarin";
+
+const RPG_SYSTEM_IDS = new Set<RpgSystemId>(["eldarin", "dnd", "vtm"]);
+
+export function normalizeRpgSystemId(raw: unknown): RpgSystemId {
+  if (typeof raw === "string" && RPG_SYSTEM_IDS.has(raw as RpgSystemId)) {
+    return raw as RpgSystemId;
+  }
+  return DEFAULT_RPG_SYSTEM_ID;
+}
+
 export type RpgSystem = {
   id: RpgSystemId;
   name: string;

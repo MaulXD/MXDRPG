@@ -1,4 +1,5 @@
 import type { AdventureAccessMode } from "@/lib/adventure/access";
+import type { RpgSystemId } from "@/lib/rpg/systems";
 
 /** Campanha persistente — contém mesa ao vivo, fichas e membros. */
 export type Adventure = {
@@ -6,6 +7,8 @@ export type Adventure = {
   ownerId: string;
   name: string;
   synopsis: string;
+  /** Hub MXDRPG — qual RPG esta mesa pertence. */
+  rpgSystemId: RpgSystemId;
   /** Pública: entrada livre; fechada: só convite mestre, senha única ou aprovação. */
   accessMode: AdventureAccessMode;
   inviteCode: string;

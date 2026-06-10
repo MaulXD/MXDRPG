@@ -1,12 +1,14 @@
 import type { Adventure, AdventureListItem } from "@/lib/adventure/types";
 import { getSql } from "@/lib/db/client";
 import { withDbTimeout } from "@/lib/db/timeout";
+import { normalizeRpgSystemId, type RpgSystemId } from "@/lib/rpg/systems";
 
 type AdventureRow = {
   adventure_id: string;
   owner_id: string;
   name: string;
   synopsis: string;
+  rpg_system?: string | null;
   access_mode?: string | null;
   invite_code: string;
   member_ids: string[];
@@ -23,6 +25,7 @@ function rowToAdventure(row: AdventureRow): Adventure {
     ownerId: row.owner_id,
     name: row.name,
     synopsis: row.synopsis ?? "",
+    rpgSystemId: normalizeRpgSystemId(row.rpg_system),
     accessMode,
     inviteCode: row.invite_code,
     memberIds: row.member_ids ?? [],
@@ -39,6 +42,7 @@ function adventureToRow(a: Adventure): AdventureRow {
     owner_id: a.ownerId,
     name: a.name,
     synopsis: a.synopsis,
+    rpg_system: a.rpgSystemId ?? "eldarin",
     access_mode: a.accessMode ?? "public",
     invite_code: a.inviteCode,
     member_ids: a.memberIds,
@@ -56,7 +60,7 @@ export async function fetchAdventureByPrimaryRoom(roomId: string): Promise<Adven
   try {
     rows = await withDbTimeout(
       sql<AdventureRow[]>`
-        SELECT adventure_id, owner_id, name, synopsis, access_mode, invite_code, member_ids,
+        SELECT adventure_id, owner_id, name, synopsis, rpg_system, access_mode, invite_code, member_ids,
                primary_room_id, created_at, updated_at, deleted_at
         FROM eldarin_adventures WHERE primary_room_id = ${roomId} LIMIT 1
       `,
@@ -77,7 +81,7 @@ export async function fetchAdventure(adventureId: string): Promise<Adventure | n
   try {
     rows = await withDbTimeout(
       sql<AdventureRow[]>`
-        SELECT adventure_id, owner_id, name, synopsis, access_mode, invite_code, member_ids,
+        SELECT adventure_id, owner_id, name, synopsis, rpg_system, access_mode, invite_code, member_ids,
                primary_room_id, created_at, updated_at, deleted_at
         FROM eldarin_adventures WHERE adventure_id = ${adventureId} LIMIT 1
       `,
@@ -117,7 +121,7 @@ export async function fetchAdventureByInvite(inviteCode: string): Promise<Advent
   try {
     rows = await withDbTimeout(
       sql<AdventureRow[]>`
-        SELECT adventure_id, owner_id, name, synopsis, access_mode, invite_code, member_ids,
+        SELECT adventure_id, owner_id, name, synopsis, rpg_system, access_mode, invite_code, member_ids,
                primary_room_id, created_at, updated_at, deleted_at
         FROM eldarin_adventures WHERE UPPER(invite_code) = ${code} LIMIT 1
       `,
@@ -138,10 +142,11 @@ export async function saveAdventure(adventure: Adventure): Promise<void> {
   await withDbTimeout(
     sql`
     INSERT INTO eldarin_adventures (
-      adventure_id, owner_id, name, synopsis, access_mode, invite_code, member_ids,
+      adventure_id, owner_id, name, synopsis, rpg_system, access_mode, invite_code, member_ids,
       primary_room_id, created_at, updated_at, deleted_at
     ) VALUES (
       ${row.adventure_id}, ${row.owner_id}, ${row.name}, ${row.synopsis},
+      ${row.rpg_system ?? "eldarin"},
       ${row.access_mode ?? "public"},
       ${row.invite_code}, ${sql.json(row.member_ids)}, ${row.primary_room_id},
       ${row.created_at}, ${row.updated_at}, ${row.deleted_at}
@@ -150,6 +155,7 @@ export async function saveAdventure(adventure: Adventure): Promise<void> {
       owner_id = EXCLUDED.owner_id,
       name = EXCLUDED.name,
       synopsis = EXCLUDED.synopsis,
+      rpg_system = EXCLUDED.rpg_system,
       access_mode = EXCLUDED.access_mode,
       invite_code = EXCLUDED.invite_code,
       member_ids = EXCLUDED.member_ids,
@@ -163,15 +169,26 @@ export async function saveAdventure(adventure: Adventure): Promise<void> {
 }
 
 export async function listAdventuresForOwnerOrMember(
-  userId: string
+  userId: string,
+  rpgSystemId?: RpgSystemId
 ): Promise<AdventureListItem[]> {
   const sql = getSql();
   if (!sql) return [];
   let rows: AdventureRow[];
   try {
     rows = await withDbTimeout(
-      sql<AdventureRow[]>`
-        SELECT adventure_id, owner_id, name, synopsis, access_mode, invite_code, member_ids,
+      rpgSystemId
+        ? sql<AdventureRow[]>`
+        SELECT adventure_id, owner_id, name, synopsis, rpg_system, access_mode, invite_code, member_ids,
+               primary_room_id, created_at, updated_at, deleted_at
+        FROM eldarin_adventures
+        WHERE rpg_system = ${rpgSystemId}
+          AND (owner_id = ${userId}
+           OR member_ids @> ${sql.json([userId])}::jsonb)
+        ORDER BY updated_at DESC
+      `
+        : sql<AdventureRow[]>`
+        SELECT adventure_id, owner_id, name, synopsis, rpg_system, access_mode, invite_code, member_ids,
                primary_room_id, created_at, updated_at, deleted_at
         FROM eldarin_adventures
         WHERE owner_id = ${userId}
@@ -203,7 +220,7 @@ export async function listAllAdventures(): Promise<Adventure[]> {
   try {
     rows = await withDbTimeout(
       sql<AdventureRow[]>`
-        SELECT adventure_id, owner_id, name, synopsis, access_mode, invite_code, member_ids,
+        SELECT adventure_id, owner_id, name, synopsis, rpg_system, access_mode, invite_code, member_ids,
                primary_room_id, created_at, updated_at, deleted_at
         FROM eldarin_adventures
         ORDER BY updated_at DESC

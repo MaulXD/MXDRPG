@@ -220,15 +220,12 @@
   pointer-events: none;
 }
 
-/* Janela flutuante global (portal em document.body) — não modal; fundo permanece clicável */
+/* Popup compacto (portal em document.body) — estilo messenger, não painel de página */
 .friends-chat-float {
-  position: fixed;
+  position: fixed !important;
   z-index: 10401;
-  left: auto;
-  right: max(1rem, env(safe-area-inset-right, 0px));
-  bottom: max(1rem, env(safe-area-inset-bottom, 0px));
-  width: min(760px, calc(100vw - 1.5rem));
-  height: min(580px, calc(100vh - 5.5rem));
+  width: min(360px, calc(100vw - 2rem));
+  height: min(440px, calc(100vh - 5.5rem));
   display: flex;
   flex-direction: column;
   padding: 0;
@@ -237,10 +234,17 @@
   background: var(--glass-strong, rgba(30, 29, 26, 0.98));
   background-image: none;
   box-shadow:
-    0 24px 64px rgba(0, 0, 0, 0.55),
+    0 16px 48px rgba(0, 0, 0, 0.55),
     0 0 0 1px rgba(0, 0, 0, 0.25);
   overflow: hidden;
   isolation: isolate;
+  pointer-events: auto;
+  touch-action: none;
+}
+
+.friends-chat-float--popup {
+  /* v4 .glass-panel força position:relative — popup ignora moldura de página */
+  max-width: min(360px, calc(100vw - 2rem));
 }
 
 .friends-chat-float__head {
@@ -252,6 +256,16 @@
   padding: 0.65rem 0.85rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   background: rgba(0, 0, 0, 0.2);
+}
+
+.friends-chat-float__head--drag {
+  cursor: grab;
+  user-select: none;
+  touch-action: none;
+}
+
+.friends-chat-float__head--drag:active {
+  cursor: grabbing;
 }
 
 .friends-chat-float__title {
@@ -312,8 +326,8 @@
   flex: 1;
   min-height: 0;
   min-width: 0;
-  grid-template-columns: minmax(168px, 220px) minmax(0, 1fr);
-  gap: 0.65rem;
+  grid-template-columns: minmax(108px, 34%) minmax(0, 1fr);
+  gap: 0.5rem;
 }
 
 .friends-chat--float .friends-chat__list {
@@ -343,14 +357,12 @@
 
 @media (max-width: 560px) {
   .friends-chat-float {
-    right: 0.5rem;
-    left: 0.5rem;
-    width: auto;
-    height: min(72vh, calc(100vh - 4.5rem));
+    width: min(340px, calc(100vw - 1rem));
+    height: min(420px, calc(100vh - 4.5rem));
   }
 
   .friends-chat--float {
-    grid-template-columns: minmax(120px, 38%) minmax(0, 1fr);
+    grid-template-columns: minmax(96px, 32%) minmax(0, 1fr);
   }
 }
 
