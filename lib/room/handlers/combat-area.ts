@@ -1,14 +1,25 @@
 ﻿import { formatAttackChatDetail, resolveCombatAction } from "@/lib/combat/attack";
 import { prepareCombatToken, syncActorPaFromToken } from "@/lib/combat/combat-token-pa";
 import { applyPaSpend } from "@/lib/combat/pa-turn";
-import { formatAreaSpellChatDetail, resolveAreaSpell } from "@/lib/combat/area-spell";
+import { markActionRechargeUsed } from "@/lib/combat/recharge";
+import {
+  formatAreaSpellChatDetail,
+  resolveAreaSpell,
+  type AreaHit,
+} from "@/lib/combat/area-spell";
+import { resolveAreaCascadeMode, sortAreaHits } from "@/lib/combat/area-cascade";
+import { createChatId } from "../chat";
 import { formatSaveChatDetail } from "@/lib/combat/spell";
 import type { CombatActionRequest } from "@/lib/combat/types";
 import type { Axial } from "@/lib/vtt/hex-math";
+import { patchTokenVitals } from "@/lib/vtt/token-hp-display";
 import type { ChatMessage } from "../chat";
 import { activeTokenId } from "../combat";
+import { maybeRecordCombatUndo } from "../combat-undo";
 import { getRoom, persistRoom, toSnapshot } from "../internal/registry";
-import { appendDefeatChatMessage, shouldAnnounceDefeat } from "../combat-chat-events";
+import { syncCombatOrderWithTokens } from "../combat-order";
+import { shouldAnnounceDefeat } from "../combat-chat-events";
+import { recordDefeatWithPaRewards } from "../combat-defeat-rewards";
 import { appendRoomChatMessage } from "./chat";
 import type { AttackExecuteResult } from "./combat-attack";
 
@@ -48,7 +59,14 @@ export async function executeRoomAreaSpell(
   const turn = {
     activeTokenId: activeTokenId(room.combat),
     bypassTurn: opts.bypassTurn,
+    combatRound: room.combat.round,
+    combatHasOrder: Boolean(room.combat?.order?.length),
   };
+
+  const actorRacas: Record<string, string | undefined> = {};
+  for (const [actorId, sheet] of Object.entries(room.actors)) {
+    actorRacas[actorId] = sheet.identity?.raca;
+  }
 
   let areaResult;
   try {
@@ -61,11 +79,20 @@ export async function executeRoomAreaSpell(
       room.actors,
       turn,
       opts.areaDirection,
-      opts.channelExtraPa ?? 0
+      opts.channelExtraPa ?? 0,
+      actorRacas
     );
   } catch (e) {
     return { ok: false, error: e instanceof Error ? e.message : "Magia de área inválida" };
   }
+
+  maybeRecordCombatUndo(room, {
+    tokenId: casterTokenId,
+    tokenName: caster.name,
+    kind: "area",
+    summary: action.label ?? action.name,
+    bypassTurn: opts.bypassTurn,
+  });
 
   const hpByToken = new Map<string, number>();
   for (const hit of areaResult.hits) {
@@ -76,13 +103,17 @@ export async function executeRoomAreaSpell(
     }
   }
 
-  const spentCaster = applyPaSpend(caster, areaResult.paCost);
+  const spentCaster = markActionRechargeUsed(
+    applyPaSpend(caster, areaResult.paCost, { actionKind: "spell" }),
+    action,
+    room.combat.round
+  );
   room.scene = {
     ...room.scene,
     tokens: room.scene.tokens.map((t) => {
       if (t.id === casterTokenId) return { ...t, ...spentCaster, id: t.id };
       const hp = hpByToken.get(t.id);
-      if (hp != null && t.vidaMax != null) return { ...t, vida: hp };
+      if (hp != null) return patchTokenVitals(t, { vida: hp });
       return t;
     }),
   };
@@ -110,31 +141,47 @@ export async function executeRoomAreaSpell(
     };
   }
 
+  const areaBatchId = createChatId();
+  const areaCascade = resolveAreaCascadeMode(action);
+  const sortedHits: AreaHit[] = sortAreaHits(
+    areaResult.hits,
+    room.scene.tokens,
+    areaResult.center,
+    caster,
+    areaCascade,
+    room.combat.order
+  );
+
   appendRoomChatMessage(room, {
     ...author,
     kind: "combat",
     text: areaResult.summary,
     combat: {
       attackerTokenId: caster.id,
-      defenderTokenId: areaResult.hits[0]?.tokenId ?? caster.id,
+      defenderTokenId: sortedHits[0]?.tokenId ?? caster.id,
       actionKind: "spell",
       weaponName: areaResult.actionName,
       resolution: action.resolution,
-      areaCenterQ: center.q,
-      areaCenterR: center.r,
+      areaCenterQ: areaResult.center.q,
+      areaCenterR: areaResult.center.r,
       areaHexCount: areaResult.areaHexes.length,
-      damageTotal: areaResult.hits.reduce((sum, h) => {
+      areaBatchId,
+      areaShape: action.areaShape,
+      areaCascade,
+      areaHexList: areaResult.areaHexes,
+      spellDamageType: action.damageType,
+      damageTotal: sortedHits.reduce((sum, h) => {
         if (h.kind === "attack") return sum + (h.result.damage?.total ?? 0);
         if (h.kind === "save") return sum + h.result.damage.total;
         return sum;
       }, 0),
       defenderHpBefore: 0,
       defenderHpAfter: 0,
-      detail: formatAreaSpellChatDetail(areaResult),
+      detail: formatAreaSpellChatDetail(areaResult, action.damageType),
     },
   });
 
-  for (const hit of areaResult.hits) {
+  for (const hit of sortedHits) {
     if (hit.kind === "save") {
       const r = hit.result;
       appendRoomChatMessage(room, {
@@ -146,6 +193,8 @@ export async function executeRoomAreaSpell(
           defenderTokenId: r.defenderTokenId,
           actionKind: "spell",
           weaponName: r.weaponName,
+          areaBatchId,
+          spellDamageType: action.damageType,
           resolution: "save",
           saveNatural: r.save.natural,
           saveTotal: r.save.total,
@@ -170,6 +219,8 @@ export async function executeRoomAreaSpell(
           defenderTokenId: r.defenderTokenId,
           actionKind: "spell",
           weaponName: r.weaponName,
+          areaBatchId,
+          spellDamageType: action.damageType,
           resolution: "attack",
           attackNatural: r.attack.natural,
           attackTotal: r.attack.total,
@@ -188,14 +239,14 @@ export async function executeRoomAreaSpell(
   }
 
   const defeated = new Set<string>();
-  for (const hit of areaResult.hits) {
+  for (const hit of sortedHits) {
     const r = hit.kind === "attack" ? hit.result : hit.kind === "save" ? hit.result : null;
     if (!r || defeated.has(hit.tokenId)) continue;
     if (!shouldAnnounceDefeat(r.defenderHpBefore, r.defenderHpAfter)) continue;
     defeated.add(hit.tokenId);
     const target = room.scene.tokens.find((t) => t.id === hit.tokenId);
     if (!target) continue;
-    appendDefeatChatMessage(room, author, {
+    await recordDefeatWithPaRewards(room, author, {
       defenderTokenId: hit.tokenId,
       defenderName: target.name,
       attackerTokenId: caster.id,
@@ -203,5 +254,6 @@ export async function executeRoomAreaSpell(
     });
   }
 
+  syncCombatOrderWithTokens(room);
   return { ok: true, snapshot: toSnapshot(await persistRoom(roomId, room)) };
 }

@@ -9,7 +9,11 @@ import { abilityFromEntry } from "@/lib/combat/compendium-actions";
 import { monsterCombatActions } from "@/lib/vtt/monster-actions";
 import { prepareCombatToken, syncActorPaFromToken } from "@/lib/combat/combat-token-pa";
 import { applyPaSpend } from "@/lib/combat/pa-turn";
+import { markActionRechargeUsed } from "@/lib/combat/recharge";
+import { enrichBuffsWithTimedEffects } from "@/lib/combat/timed-effects";
 import { getEntry } from "@/lib/compendium/registry";
+import { isMonsterToken } from "@/lib/room/settings";
+import { patchTokenVitals } from "@/lib/vtt/token-hp-display";
 import { formatAttackChatDetail } from "@/lib/combat/attack";
 import { formatSaveChatDetail } from "@/lib/combat/spell";
 import type { CombatActionRequest } from "@/lib/combat/types";
@@ -17,9 +21,12 @@ import type { CharacterSheet } from "@/lib/character/types";
 import type { BattleToken } from "@/lib/vtt/types";
 import type { ChatMessage } from "../chat";
 import { activeTokenId } from "../combat";
+import { maybeRecordCombatUndo } from "../combat-undo";
 import { getRoom, persistRoom, toSnapshot } from "../internal/registry";
 import type { RoomSnapshot, RoomState } from "../types";
-import { appendDefeatChatMessage, shouldAnnounceDefeat } from "../combat-chat-events";
+import { syncCombatOrderWithTokens } from "../combat-order";
+import { shouldAnnounceDefeat } from "../combat-chat-events";
+import { recordDefeatWithPaRewards } from "../combat-defeat-rewards";
 import { appendRoomChatMessage } from "./chat";
 
 export type AbilityExecuteResult =
@@ -52,17 +59,25 @@ function applyAbilityToRoom(
   attackerTokenId: string,
   defenderTokenId: string | null,
   resolved: AbilityResolution,
-  actionName: string
+  action: import("@/lib/combat/types").CombatActionOption
 ): void {
   const attackerBefore = room.scene.tokens.find((t) => t.id === attackerTokenId);
-  const spent =
-    attackerBefore && resolved.paCost > 0
-      ? applyPaSpend(attackerBefore, resolved.paCost)
-      : attackerBefore;
+  let spent = attackerBefore;
+  if (attackerBefore && resolved.paCost > 0) {
+    spent = markActionRechargeUsed(
+      applyPaSpend(attackerBefore, resolved.paCost, { actionKind: "ability" }),
+      action,
+      room.combat.round
+    );
+  } else if (attackerBefore && action.recharge) {
+    spent = markActionRechargeUsed(attackerBefore, action, room.combat.round);
+  }
 
   if (spent && attackerBefore?.linked) {
     syncActorPaFromToken(room, { ...attackerBefore, ...spent });
   }
+
+  const tickCtx = { round: room.combat.round, activeIndex: room.combat.activeIndex };
 
   room.scene = {
     ...room.scene,
@@ -70,31 +85,44 @@ function applyAbilityToRoom(
       if (t.id === attackerTokenId) {
         const base = spent ? { ...t, ...spent, id: t.id } : t;
         if (resolved.kind === "buff" || resolved.kind === "charge") {
-          return { ...base, ...resolved.attackerUpdate };
+          return enrichBuffsWithTimedEffects(
+            base,
+            resolved.attackerUpdate,
+            action.abilityEffect,
+            tickCtx
+          );
         }
         if ("attackerUpdate" in resolved && resolved.attackerUpdate) {
-          return { ...base, ...resolved.attackerUpdate };
+          return enrichBuffsWithTimedEffects(
+            base,
+            resolved.attackerUpdate,
+            action.abilityEffect,
+            tickCtx
+          );
         }
         return base;
       }
       if (defenderTokenId && t.id === defenderTokenId) {
         if (resolved.kind === "heal") {
-          return { ...t, vida: resolved.defenderHpAfter };
+          return patchTokenVitals(t, { vida: resolved.defenderHpAfter });
         }
         if (resolved.kind === "mark" && resolved.defenderUpdate) {
-          return { ...t, ...resolved.defenderUpdate };
+          return enrichBuffsWithTimedEffects(t, resolved.defenderUpdate, action.abilityEffect, tickCtx);
         }
         if (resolved.kind === "ally_buff" && resolved.defenderUpdate) {
-          return { ...t, ...resolved.defenderUpdate };
+          return enrichBuffsWithTimedEffects(t, resolved.defenderUpdate, "ally_inspire", tickCtx);
         }
         if (resolved.kind === "spell_save" && resolved.defenderUpdate) {
-          return { ...t, ...resolved.defenderUpdate, vida: resolved.save.defenderHpAfter };
+          return {
+            ...patchTokenVitals(t, { vida: resolved.save.defenderHpAfter }),
+            ...resolved.defenderUpdate,
+          };
         }
         if (
           (resolved.kind === "attack" || resolved.kind === "spell_strike") &&
           t.vidaMax != null
         ) {
-          return { ...t, vida: resolved.attack.defenderHpAfter };
+          return patchTokenVitals(t, { vida: resolved.attack.defenderHpAfter });
         }
       }
       return t;
@@ -165,7 +193,7 @@ export async function executeRoomAbility(
   if (attacker.linked && attacker.actorId && !actor) {
     return { ok: false, error: "Ficha não encontrada" };
   }
-  if (!actor && !attacker.monsterEntryId) {
+  if (!actor && !isMonsterToken(attacker)) {
     return { ok: false, error: "Habilidade requer ficha linkada ou monstro" };
   }
 
@@ -182,16 +210,18 @@ export async function executeRoomAbility(
   const turn = {
     activeTokenId: activeTokenId(room.combat),
     bypassTurn: opts.bypassTurn,
+    combatRound: room.combat.round,
+    combatHasOrder: Boolean(room.combat?.order?.length),
   };
 
   if (action.selfTarget) {
-    const check = canUseAbility(attacker, action, turn);
+    const check = canUseAbility(attacker, action, turn, actor);
     if (!check.ok) return { ok: false, error: check.reason ?? "Habilidade inválida" };
   } else {
     if (!defenderTokenId) return { ok: false, error: "Alvo obrigatório" };
     const defender = room.scene.tokens.find((t) => t.id === defenderTokenId);
     if (!defender) return { ok: false, error: "Alvo não encontrado" };
-    const targetCheck = canAbilityTarget(attacker, defender, action, turn);
+    const targetCheck = canAbilityTarget(attacker, defender, action, turn, actor);
     if (!targetCheck.ok) return { ok: false, error: targetCheck.reason ?? "Alvo inválido" };
   }
 
@@ -220,7 +250,15 @@ export async function executeRoomAbility(
     return { ok: false, error: e instanceof Error ? e.message : "Habilidade inválida" };
   }
 
-  applyAbilityToRoom(room, attackerTokenId, defenderTokenId, resolved, action.name);
+  maybeRecordCombatUndo(room, {
+    tokenId: attackerTokenId,
+    tokenName: attacker.name,
+    kind: "ability",
+    summary: action.name,
+    bypassTurn: opts.bypassTurn,
+  });
+
+  applyAbilityToRoom(room, attackerTokenId, defenderTokenId, resolved, action);
 
   const defId = defenderTokenId ?? attackerTokenId;
   if (resolved.kind === "attack" || resolved.kind === "spell_strike") {
@@ -249,7 +287,7 @@ export async function executeRoomAbility(
       },
     });
     if (defender && shouldAnnounceDefeat(result.defenderHpBefore, result.defenderHpAfter)) {
-      appendDefeatChatMessage(room, author, {
+      await recordDefeatWithPaRewards(room, author, {
         defenderTokenId: defender.id,
         defenderName: defender.name,
         attackerTokenId,
@@ -281,7 +319,7 @@ export async function executeRoomAbility(
       },
     });
     if (defender && shouldAnnounceDefeat(save.defenderHpBefore, save.defenderHpAfter)) {
-      appendDefeatChatMessage(room, author, {
+      await recordDefeatWithPaRewards(room, author, {
         defenderTokenId: defender.id,
         defenderName: defender.name,
         attackerTokenId,
@@ -316,5 +354,6 @@ export async function executeRoomAbility(
     });
   }
 
+  syncCombatOrderWithTokens(room);
   return { ok: true, snapshot: toSnapshot(await persistRoom(roomId, room)) };
 }

@@ -1,18 +1,19 @@
 import Link from "next/link";
+import { EldarinLogo } from "@/components/brand/EldarinLogo";
 
 export function SiteFooter() {
   return (
     <footer className="glass site-footer">
       <div>
-        <strong className="neon-title" style={{ fontSize: "0.95rem" }}>
-          ELDARIN
-        </strong>
-        <p style={{ margin: "0.35rem 0 0", fontSize: "0.8rem" }}>VTT tático hex · fantasia</p>
+        <EldarinLogo variant="full" href="/" className="eldarin-logo--footer" />
+        <p style={{ margin: "0.5rem 0 0", fontSize: "0.8rem" }}>VTT tático hex · fantasia</p>
       </div>
-      <nav style={{ display: "flex", gap: "1.25rem" }}>
+      <nav className="site-footer__nav" aria-label="Links do site">
         <Link href="/sistema">Sistema</Link>
-        <Link href="/mesa">Mesa</Link>
-        <Link href="/entrar">Entrar</Link>
+        <Link href="/mesa/demo" prefetch={false}>
+          Mesa demo
+        </Link>
+        <Link href="/sign-in">Entrar</Link>
         <Link href="/privacidade">Privacidade</Link>
       </nav>
     </footer>

@@ -7,14 +7,37 @@ on:
     branches: [main]
 
 jobs:
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      data: ${{ steps.filter.outputs.data }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            data:
+              - "livros/**"
+              - "scripts/generate-*.mjs"
+              - "scripts/sync-*.mjs"
+              - "scripts/gen-*.py"
+              - "scripts/verify-compendium-*.mjs"
+              - "scripts/verify-monster-*.mjs"
+              - "data/compendiums/**"
+              - "data/character/subclass-tracks.json"
+              - "lib/character/loot-catalog.ts"
+
   data-sync:
     runs-on: ubuntu-latest
+    needs: changes
+    if: needs.changes.outputs.data == 'true'
     steps:
       - uses: actions/checkout@v4
 
       - uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "24"
           cache: npm
           cache-dependency-path: package-lock.json
 
@@ -40,13 +63,12 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
-    needs: data-sync
     steps:
       - uses: actions/checkout@v4
 
       - uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "24"
           cache: npm
           cache-dependency-path: package-lock.json
 

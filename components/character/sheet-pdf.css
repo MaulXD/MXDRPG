@@ -1,0 +1,182 @@
+/* Ficha compacta A4 — 2 colunas (export PDF) */
+.sheet-pdf-doc {
+  width: 210mm;
+  max-width: 794px;
+  margin: 0;
+  padding: 8mm 8mm 10mm;
+  box-sizing: border-box;
+  background: #faf6ee;
+  color: #1a1410;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 7.5pt;
+  line-height: 1.28;
+}
+
+.sheet-pdf-doc__head {
+  column-span: all;
+  margin-bottom: 0.45em;
+}
+
+.sheet-pdf-doc__brand {
+  margin: 0 0 0.2em;
+  font-size: 6.5pt;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #5c4a32;
+  text-align: center;
+}
+
+.sheet-pdf-doc__title {
+  margin: 0;
+  padding-bottom: 0.25em;
+  border-bottom: 2px solid #b8922e;
+  font-size: 12pt;
+  text-align: center;
+  font-weight: 700;
+}
+
+.sheet-pdf-doc__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 6mm;
+  column-gap: 6mm;
+}
+
+.sheet-pdf-doc__col {
+  min-width: 0;
+}
+
+.sheet-pdf-doc__full {
+  grid-column: 1 / -1;
+  margin-top: 0.35em;
+  padding-top: 0.35em;
+  border-top: 1px solid #c4b59a;
+}
+
+.sheet-pdf-doc h2 {
+  margin: 0.5em 0 0.2em;
+  padding: 0.12em 0.35em;
+  font-size: 7.5pt;
+  background: #3d5c40;
+  color: #f0e6d4;
+  page-break-after: avoid;
+  break-after: avoid;
+}
+
+.sheet-pdf-doc__col:first-child h2 {
+  margin-top: 0.35em;
+}
+
+.sheet-pdf-doc table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0.15em 0 0.35em;
+  font-size: 6.5pt;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+.sheet-pdf-doc th,
+.sheet-pdf-doc td {
+  border: 1px solid #c4b59a;
+  padding: 0.12em 0.25em;
+  text-align: left;
+  vertical-align: top;
+}
+
+.sheet-pdf-doc thead th {
+  background: #2c3d2e;
+  color: #f0e6d4;
+  font-weight: 600;
+  text-align: center;
+}
+
+.sheet-pdf-doc__attrs td {
+  text-align: center;
+  padding: 0.18em 0.15em;
+}
+
+.sheet-pdf-doc__attr-base {
+  display: block;
+  font-weight: 700;
+  font-size: 7pt;
+}
+
+.sheet-pdf-doc__attr-mod {
+  display: block;
+  font-size: 6pt;
+  color: #4a4035;
+}
+
+.sheet-pdf-doc__kv th {
+  width: 4.2em;
+  background: #ebe2d0;
+  color: #2c2419;
+  font-weight: 600;
+}
+
+.sheet-pdf-doc__culinary th,
+.sheet-pdf-doc__culinary td {
+  text-align: center;
+}
+
+.sheet-pdf-doc__attacks th:nth-child(2),
+.sheet-pdf-doc__attacks th:nth-child(3),
+.sheet-pdf-doc__attacks td:nth-child(2),
+.sheet-pdf-doc__attacks td:nth-child(3) {
+  width: 2.5em;
+  text-align: center;
+}
+
+.sheet-pdf-doc__skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35em 0.65em;
+  margin: 0.25em 0;
+}
+
+.sheet-pdf-doc__skill {
+  font-size: 6.5pt;
+  padding: 0.1em 0.35em;
+  border: 1px solid #c4b59a;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.sheet-pdf-doc__skill strong {
+  color: #2c3d2e;
+}
+
+.sheet-pdf-doc__mesa-hint,
+.sheet-pdf-doc__notes {
+  margin: 0.25em 0 0;
+  font-size: 6.5pt;
+  color: #5c4a32;
+}
+
+.sheet-pdf-doc__foot {
+  margin-top: 0.45em;
+  padding-top: 0.3em;
+  border-top: 1px solid #c4b59a;
+  font-size: 6pt;
+  color: #7a6a52;
+  text-align: center;
+}
+
+.sheet-pdf-export-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.78rem;
+}
+
+.sheet-pdf-export-btn--toolbar {
+  min-height: 2rem;
+  padding: 0.25rem 0.65rem;
+}
+
+.sheet-popup-export {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 0.5rem;
+}

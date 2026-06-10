@@ -1,4 +1,4 @@
-# ELDARIN v4.0 — Ficha de Personagem
+﻿# ELDARIN v4.0 — Ficha de Personagem
 
 > Imprima frente e verso (A4). Regras completas: *Livro do Jogador*.
 
@@ -34,7 +34,7 @@ Reação: _________________________ · Ação bônus: _________________________
 
 ## Culinária · Mutações · Magia
 
-| Trinchar | | Harmon. | | Cocção | | Estômago | |
+| Extração | | Harmon. | | Cocção | | Estômago | |
 |:---:|:---:|:---:|:---:|:---:|:---:|
 | ☐treino | | ☐treino | | ☐treino | | ☐treino | |
 

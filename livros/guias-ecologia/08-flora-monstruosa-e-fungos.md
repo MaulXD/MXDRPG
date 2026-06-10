@@ -1,4 +1,4 @@
-# Guia de Ecologia — Flora Monstruosa e Fungos
+﻿# Guia de Ecologia — Flora Monstruosa e Fungos
 **Eldarin v4.0 · Folheto de mesa**
 
 ---
@@ -31,7 +31,7 @@ Estômago Botânico (principal), Cavernas de Vidro Fosco (lodo neon), bordas de 
 |---------|-----|------|
 | Fruto / flor | 10 | Druida: anatomia automática flora/fungos |
 | Esporo do rei | 17 | Máscara + recipiente |
-| Hifa raiz | 14 | Trinchar como planta (DES ou SAB) |
+| Hifa raiz | 14 | Extração como planta (DES ou SAB) |
 | Suco digestivo | 12 | Frasco — veneno de contato |
 
 **Sem “1h de carcaça”** igual animal — planta seca em **2–6h** (Mestre).

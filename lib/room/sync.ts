@@ -3,9 +3,12 @@ import { normalizeCharacter } from "@/lib/character/normalize";
 import { paMaxForActor } from "@/lib/combat/pa-economy";
 import { normalizeTokenPaFields } from "@/lib/combat/pa-token-state";
 import { defaultMovementFields } from "@/lib/vtt/movement";
-import { tokenFootprint } from "@/lib/vtt/token-occupancy";
+import { creatureSizeOf } from "@/lib/vtt/creature-size";
 import { collectPlayerActorIds, playerColorForActor } from "@/lib/vtt/token-colors";
-import { DEFAULT_PORTRAIT_FOCUS, sanitizePortraitFocus } from "@/lib/media/portrait-focus";
+import {
+  resolveLinkedTokenImageFocus,
+  resolveLinkedTokenImageUrl,
+} from "@/lib/room/portrait-sync";
 import { DEMO_SCENE } from "@/lib/vtt/demo-scene";
 import type { BattleScene, BattleToken } from "@/lib/vtt/types";
 import { emptyCombat } from "./combat";
@@ -27,7 +30,7 @@ export function syncLinkedTokens(
     const actor = actors[token.actorId];
     if (!actor) return token;
 
-    const focus = sanitizePortraitFocus(actor.portraitFocus) ?? DEFAULT_PORTRAIT_FOCUS;
+    const focus = resolveLinkedTokenImageFocus(actor);
     const playerColor = playerColorForActor(token.actorId, playerIds);
     const paMax = paMaxForActor(actor);
     const paSource =
@@ -35,7 +38,7 @@ export function syncLinkedTokens(
         ? token.pa
         : typeof token.pa === "number"
           ? token.pa
-          : actor.resources.pontosAcao.value;
+          : 0;
     const paFields = normalizeTokenPaFields(
       {
         ...token,
@@ -57,6 +60,7 @@ export function syncLinkedTokens(
       nivel: actor.identity.nivel,
       vida: actor.resources.vida.value,
       vidaMax: actor.resources.vida.max,
+      vidaTemp: actor.resources.vida.temp,
       defesa: actor.tactical.defesa,
       defesaBonus: token.defesaBonus,
       defesaBuffSource: token.defesaBuffSource,
@@ -68,13 +72,16 @@ export function syncLinkedTokens(
       reactionShiftReady: token.reactionShiftReady,
       bonusDamageFormula: token.bonusDamageFormula,
       rangedAttackAdvantage: token.rangedAttackAdvantage,
+      weakened: token.weakened,
+      nameplateMode: token.nameplateMode,
       conditions: token.conditions,
-      imageUrl: actor.tokenImageUrl ?? actor.portraitUrl ?? token.imageUrl ?? null,
+      timedEffects: token.timedEffects,
+      imageUrl: resolveLinkedTokenImageUrl(token, actor),
       imageFocus: focus,
       movementWalkMax: actor.movement.walk,
       movementRunMax: actor.movement.run,
       movementSpentHex: token.movementSpentHex ?? 0,
-      footprint: tokenFootprint(token, actor.identity.raca),
+      creatureSize: creatureSizeOf(token, actor.identity.raca),
     };
   });
 
@@ -87,11 +94,17 @@ function ensureMovementFields(token: BattleToken): BattleToken {
 }
 
 export function createDemoRoom(): RoomState {
-  const aventureiro = getCharacter("pc-aventureiro");
-  if (!aventureiro) throw new Error("Demo character missing");
+  const thrain = getCharacter("pc-thrain-ferroescudo");
+  const lyanna = getCharacter("pc-lyanna-umbral");
+  const maelis = getCharacter("pc-maelis-purificador");
+  const pippin = getCharacter("pc-pippin-sussurro");
+  if (!thrain || !lyanna || !maelis || !pippin) throw new Error("Demo character missing");
 
   const actors: Record<string, RoomActor> = {
-    [aventureiro.id]: { ...normalizeCharacter(aventureiro), revision: 1 },
+    [thrain.id]: { ...normalizeCharacter(thrain), revision: 1 },
+    [lyanna.id]: { ...normalizeCharacter(lyanna), revision: 1 },
+    [maelis.id]: { ...normalizeCharacter(maelis), revision: 1 },
+    [pippin.id]: { ...normalizeCharacter(pippin), revision: 1 },
   };
 
   const scene = syncLinkedTokens(DEMO_SCENE, actors);

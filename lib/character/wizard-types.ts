@@ -1,4 +1,9 @@
 import type { AttributeKey } from "@/lib/character/rules";
+import {
+  getDefaultStarterEquipment,
+  getDefaultStarterKitId,
+  type StarterEquipmentDraft,
+} from "@/lib/character/starter-kits";
 import type { PortraitFocus } from "@/lib/media/portrait-focus";
 
 export const ANTECEDENTE_OPTIONS = [
@@ -20,10 +25,17 @@ export type CharacterWizardDraft = {
   linhagem: string | null;
   classe: string;
   antecedente: string;
+  /** Preset de equipamento (último kit aplicado ou correspondente à montagem manual). */
+  starterKitId: string;
+  /** Arma, armadura, magias e extras montados no passo Equipamento. */
+  starterEquipment: StarterEquipmentDraft;
+  religiao: string;
   pointBuy: Record<AttributeKey, number>;
   portraitUrl?: string | null;
   tokenImageUrl?: string | null;
   portraitFocus?: PortraitFocus | null;
+  coverFocus?: PortraitFocus | null;
+  tokenFocus?: PortraitFocus | null;
 };
 
 export const EMPTY_WIZARD_DRAFT: CharacterWizardDraft = {
@@ -33,6 +45,9 @@ export const EMPTY_WIZARD_DRAFT: CharacterWizardDraft = {
   linhagem: null,
   classe: "Guerreiro",
   antecedente: "Explorador",
+  starterKitId: getDefaultStarterKitId("Guerreiro"),
+  starterEquipment: getDefaultStarterEquipment("Guerreiro"),
+  religiao: "sem-deus",
   pointBuy: {
     forca: 8,
     destreza: 8,
@@ -44,4 +59,6 @@ export const EMPTY_WIZARD_DRAFT: CharacterWizardDraft = {
   portraitUrl: null,
   tokenImageUrl: null,
   portraitFocus: null,
+  coverFocus: null,
+  tokenFocus: null,
 };

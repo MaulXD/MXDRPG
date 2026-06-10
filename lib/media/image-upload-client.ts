@@ -7,18 +7,41 @@ import {
   type PortraitFocus,
 } from "@/lib/media/portrait-focus";
 
-const MAX_INPUT_BYTES = 8_000_000;
+export const MAX_INPUT_BYTES = 8_000_000;
 const MAX_DATA_URL_CHARS = 600_000 * 1.4;
 const INPUT_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif"];
 
 const PORTRAIT_MAX_EDGE = 1024;
 const TOKEN_MAX_EDGE = 512;
+const MAP_MAX_EDGE = 1920;
+const BUG_SCREENSHOT_MAX_EDGE = 1280;
+
+export type PortraitFocusSet = {
+  portraitFocus: PortraitFocus;
+  coverFocus?: PortraitFocus;
+  tokenFocus?: PortraitFocus;
+};
 
 export type PortraitBundle = {
   portraitUrl: string;
   tokenImageUrl: string;
   portraitFocus: PortraitFocus;
+  coverFocus: PortraitFocus;
+  tokenFocus: PortraitFocus;
 };
+
+function normalizeFocusSet(input: PortraitFocus | PortraitFocusSet): Required<PortraitFocusSet> {
+  if ("portraitFocus" in input) {
+    const portraitFocus = normalizePortraitFocus(input.portraitFocus);
+    return {
+      portraitFocus,
+      coverFocus: normalizePortraitFocus(input.coverFocus ?? input.portraitFocus),
+      tokenFocus: normalizePortraitFocus(input.tokenFocus ?? input.portraitFocus),
+    };
+  }
+  const f = normalizePortraitFocus(input);
+  return { portraitFocus: f, coverFocus: f, tokenFocus: f };
+}
 
 function loadImageFromFile(file: File): Promise<HTMLImageElement> {
   return new Promise((resolve, reject) => {
@@ -55,7 +78,8 @@ function canvasToWebp(canvas: HTMLCanvasElement, quality: number): string | null
   }
 }
 
-function drawCover(
+/** Token quadrado — scale 1 = preenche o quadro; >1 = zoom com pan. */
+function drawFramedImage(
   ctx: CanvasRenderingContext2D,
   img: HTMLImageElement,
   width: number,
@@ -65,8 +89,9 @@ function drawCover(
   const f = normalizePortraitFocus(focus);
   const iw = img.naturalWidth;
   const ih = img.naturalHeight;
-  const zoom = f.scale ?? 1;
-  const scale = Math.max(width / iw, height / ih) * zoom;
+  const zoom = Math.max(1, f.scale ?? 1);
+  const coverScale = Math.max(width / iw, height / ih);
+  const scale = coverScale * zoom;
   const sw = width / scale;
   const sh = height / scale;
   const sx = Math.max(0, Math.min(iw - sw, (iw - sw) * f.x));
@@ -74,23 +99,18 @@ function drawCover(
   ctx.drawImage(img, sx, sy, sw, sh, 0, 0, width, height);
 }
 
-function encodeWebpCover(
+function encodeWebpFramedSquare(
   img: HTMLImageElement,
   maxEdge: number,
   focus: PortraitFocus
 ): string {
-  const longest = Math.max(img.naturalWidth, img.naturalHeight);
-  const scale = longest > maxEdge ? maxEdge / longest : 1;
-  const width = Math.max(1, Math.round(img.naturalWidth * scale));
-  const height = Math.max(1, Math.round(img.naturalHeight * scale));
-
   const canvas = document.createElement("canvas");
-  canvas.width = width;
-  canvas.height = height;
+  canvas.width = maxEdge;
+  canvas.height = maxEdge;
   const ctx = canvas.getContext("2d");
   if (!ctx) throw new Error("Canvas indisponível neste navegador");
 
-  drawCover(ctx, img, width, height, focus);
+  drawFramedImage(ctx, img, maxEdge, maxEdge, focus);
 
   let edge = maxEdge;
   while (edge >= 256) {
@@ -102,19 +122,18 @@ function encodeWebpCover(
       }
     }
     edge = Math.floor(edge * 0.75);
-    const nextScale = (edge / maxEdge) * scale;
-    canvas.width = Math.max(1, Math.round(img.naturalWidth * nextScale));
-    canvas.height = Math.max(1, Math.round(img.naturalHeight * nextScale));
-    drawCover(ctx, img, canvas.width, canvas.height, focus);
+    canvas.width = edge;
+    canvas.height = edge;
+    drawFramedImage(ctx, img, edge, edge, focus);
   }
 
   throw new Error("Imagem grande demais mesmo após compressão WebP.");
 }
 
-/** Retrato + token WebP a partir do arquivo e do ponto focal */
+/** Retrato + token WebP a partir do arquivo e focos por slot */
 export async function buildPortraitBundle(
   file: File,
-  focus: PortraitFocus = DEFAULT_PORTRAIT_FOCUS
+  focuses: PortraitFocus | PortraitFocusSet = DEFAULT_PORTRAIT_FOCUS
 ): Promise<PortraitBundle> {
   if (!INPUT_TYPES.includes(file.type)) {
     throw new Error("Formato inválido. Use JPEG, PNG, WebP ou GIF.");
@@ -124,24 +143,130 @@ export async function buildPortraitBundle(
   }
 
   const img = await loadImageFromFile(file);
-  return buildPortraitBundleFromImage(img, focus);
+  return buildPortraitBundleFromImage(img, focuses);
 }
 
-/** Regenera token (e opcionalmente retrato) a partir de data URL existente */
+/** Regenera retrato/token a partir de data URL existente */
 export async function buildPortraitBundleFromDataUrl(
   portraitDataUrl: string,
-  focus: PortraitFocus
+  focuses: PortraitFocus | PortraitFocusSet
 ): Promise<PortraitBundle> {
   const img = await loadImageFromDataUrl(portraitDataUrl);
-  return buildPortraitBundleFromImage(img, focus);
+  return buildPortraitBundleFromImage(img, focuses);
+}
+
+function encodeWebpFit(img: HTMLImageElement, maxEdge: number): string {
+  const longest = Math.max(img.naturalWidth, img.naturalHeight);
+  const scale = longest > maxEdge ? maxEdge / longest : 1;
+  const width = Math.max(1, Math.round(img.naturalWidth * scale));
+  const height = Math.max(1, Math.round(img.naturalHeight * scale));
+
+  const canvas = document.createElement("canvas");
+  canvas.width = width;
+  canvas.height = height;
+  const ctx = canvas.getContext("2d");
+  if (!ctx) throw new Error("Canvas indisponível neste navegador");
+  ctx.drawImage(img, 0, 0, width, height);
+
+  let edge = maxEdge;
+  while (edge >= 320) {
+    for (let quality = 0.88; quality >= 0.45; quality -= 0.08) {
+      const dataUrl = canvasToWebp(canvas, quality);
+      if (dataUrl && dataUrl.length <= MAX_DATA_URL_CHARS) {
+        const valid = validateImageDataUrl(dataUrl);
+        if (valid) return valid;
+      }
+    }
+    edge = Math.floor(edge * 0.75);
+    const nextScale = (edge / maxEdge) * scale;
+    canvas.width = Math.max(1, Math.round(img.naturalWidth * nextScale));
+    canvas.height = Math.max(1, Math.round(img.naturalHeight * nextScale));
+    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+  }
+
+  throw new Error("Mapa grande demais mesmo após compressão WebP.");
+}
+
+/** Captura de tela para report de bug — WebP comprimido. */
+export async function buildBugScreenshotFromFile(file: File): Promise<string> {
+  if (!INPUT_TYPES.includes(file.type)) {
+    throw new Error("Formato inválido. Use JPEG, PNG, WebP ou GIF.");
+  }
+  if (file.size > MAX_INPUT_BYTES) {
+    throw new Error("Arquivo grande demais (máx ~8 MB antes da compressão).");
+  }
+  const img = await loadImageFromFile(file);
+  return encodeWebpFit(img, BUG_SCREENSHOT_MAX_EDGE);
+}
+
+/** Imagem de piso do hex — WebP data URL para `mapImageUrl`. */
+export async function buildMapImageFromFile(file: File): Promise<string> {
+  if (!INPUT_TYPES.includes(file.type)) {
+    throw new Error("Formato inválido. Use JPEG, PNG, WebP ou GIF.");
+  }
+  if (file.size > MAX_INPUT_BYTES) {
+    throw new Error("Arquivo grande demais (máx ~8 MB antes da compressão).");
+  }
+  const img = await loadImageFromFile(file);
+  return encodeWebpFit(img, MAP_MAX_EDGE);
+}
+
+/** Lê arquivo de imagem (até ~8 MB) para data URL — servidor normaliza para WebP. */
+export async function readAvatarImageFile(file: File): Promise<string> {
+  if (!file.type.startsWith("image/")) {
+    throw new Error("Formato inválido. Escolha um arquivo de imagem.");
+  }
+  if (file.size > MAX_INPUT_BYTES) {
+    throw new Error("Arquivo grande demais (máx ~8 MB antes da compressão).");
+  }
+  return loadImageFromFile(file).then(
+    (img) =>
+      new Promise<string>((resolve, reject) => {
+        const canvas = document.createElement("canvas");
+        canvas.width = img.naturalWidth;
+        canvas.height = img.naturalHeight;
+        const ctx = canvas.getContext("2d");
+        if (!ctx) {
+          reject(new Error("Canvas indisponível neste navegador"));
+          return;
+        }
+        ctx.drawImage(img, 0, 0);
+        try {
+          const dataUrl = canvas.toDataURL(file.type === "image/png" ? "image/png" : "image/jpeg", 0.92);
+          if (!dataUrl.startsWith("data:image/")) {
+            reject(new Error("Falha ao ler imagem"));
+            return;
+          }
+          resolve(dataUrl);
+        } catch {
+          const reader = new FileReader();
+          reader.onload = () => {
+            const result = reader.result;
+            if (typeof result !== "string" || !result.startsWith("data:image/")) {
+              reject(new Error("Falha ao ler imagem"));
+              return;
+            }
+            resolve(result);
+          };
+          reader.onerror = () => reject(new Error("Falha ao ler imagem"));
+          reader.readAsDataURL(file);
+        }
+      })
+  );
 }
 
 export async function buildPortraitBundleFromImage(
   img: HTMLImageElement,
-  focus: PortraitFocus
+  focuses: PortraitFocus | PortraitFocusSet
 ): Promise<PortraitBundle> {
-  const normalized = normalizePortraitFocus(focus);
-  const portraitUrl = encodeWebpCover(img, PORTRAIT_MAX_EDGE, normalized);
-  const tokenImageUrl = encodeWebpCover(img, TOKEN_MAX_EDGE, normalized);
-  return { portraitUrl, tokenImageUrl, portraitFocus: normalized };
+  const set = normalizeFocusSet(focuses);
+  const portraitUrl = encodeWebpFit(img, PORTRAIT_MAX_EDGE);
+  const tokenImageUrl = encodeWebpFramedSquare(img, TOKEN_MAX_EDGE, set.tokenFocus);
+  return {
+    portraitUrl,
+    tokenImageUrl,
+    portraitFocus: set.portraitFocus,
+    coverFocus: set.coverFocus,
+    tokenFocus: set.tokenFocus,
+  };
 }

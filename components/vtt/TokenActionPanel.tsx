@@ -1,5 +1,7 @@
 ﻿"use client";
 
+import { ActionKindIcon } from "@/components/ui/EldarinIcons";
+
 
 
 import { useMemo, useState } from "react";
@@ -18,11 +20,20 @@ import {
 
   canAttackTarget,
 
+  combatAttackRequestOpts,
+
+  needsFriendlyFireConfirm,
+
   warriorAttackCount,
 
 } from "@/lib/combat/attack";
 
+import { attackerForCombatCheck } from "@/lib/combat/combat-token-pa";
+
+import { FriendlyFireConfirmDialog } from "@/components/vtt/FriendlyFireConfirmDialog";
+
 import { canAbilityTarget, canUseAbility } from "@/lib/combat/ability";
+import { effectiveBypassTurn } from "@/lib/combat/turn-guard";
 
 import type { CombatActionOption } from "@/lib/combat/types";
 import { areaNeedsDirection } from "@/lib/combat/area-spell";
@@ -61,13 +72,14 @@ import {
 
 import { listSubclassCombatActions } from "@/lib/character/subclass-vtt";
 import { patchRoomActor, postRoomAttack, postRoomAbility } from "@/hooks/useRoomSync";
+import { CombatActionDetail } from "@/components/vtt/CombatActionDetail";
 import { SpellChannelControl } from "@/components/vtt/SpellChannelControl";
 
 import { useCombatTurn } from "@/hooks/useCombatActions";
 
 import type { ChatMessage } from "@/lib/room/chat";
 
-import { axialDistance } from "@/lib/vtt/hex-math";
+import { tokenAxialDistance } from "@/lib/vtt/creature-size";
 
 
 
@@ -141,9 +153,16 @@ export function TokenActionPanel({
 
   const [err, setErr] = useState<string | null>(null);
 
+  const [friendlyFireTargetId, setFriendlyFireTargetId] = useState<string | null>(null);
+
   const turn = useCombatTurn({ combat, canBypassTurn });
-
-
+  const tokenBypass = effectiveBypassTurn(token, canBypassTurn);
+  const tokenTurn = {
+    activeTokenId: turn.activeTokenId,
+    bypassTurn: tokenBypass,
+    combatHasOrder: turn.combatHasOrder,
+    combatRound: turn.combatRound,
+  };
 
   const weapons = useMemo(
 
@@ -210,15 +229,20 @@ export function TokenActionPanel({
 
 
 
-  const turnBlocked =
-
-    turn.activeTokenId && turn.activeTokenId !== token.id && !turn.bypassTurn;
+  const turnBlocked = turn.isTurnBlockedForToken(token);
 
 
 
   const attackTargets = useMemo(() => {
 
     if (!activeAction || activeAction.selfTarget) return [];
+
+    const attacker = attackerForCombatCheck(
+      token,
+      actor,
+      tokenTurn,
+      { combatHasOrder: Boolean(combat?.order?.length) }
+    );
 
     return tokens
 
@@ -230,27 +254,15 @@ export function TokenActionPanel({
 
           activeAction.kind === "ability"
 
-            ? canAbilityTarget(token, t, activeAction, {
+            ? canAbilityTarget(attacker, t, activeAction, tokenTurn, actor)
 
-                activeTokenId: turn.activeTokenId,
-
-                bypassTurn: turn.bypassTurn,
-
-              }, actor)
-
-            : canAttackTarget(token, t, activeAction, {
-
-                activeTokenId: turn.activeTokenId,
-
-                bypassTurn: turn.bypassTurn,
-
-              }, { actor });
+            : canAttackTarget(attacker, t, activeAction, tokenTurn, { actor });
 
         return {
 
           token: t,
 
-          dist: axialDistance(token.axial, t.axial),
+          dist: tokenAxialDistance(attacker, t),
 
           ...check,
 
@@ -260,7 +272,7 @@ export function TokenActionPanel({
 
       .filter((x) => x.dist <= activeAction.rangeHex);
 
-  }, [token, tokens, activeAction, turn, actor]);
+  }, [token, tokens, activeAction, turn, actor, combat?.order?.length]);
 
 
 
@@ -268,13 +280,7 @@ export function TokenActionPanel({
 
     if (!activeAction?.selfTarget) return false;
 
-    return canUseAbility(token, activeAction, {
-
-      activeTokenId: turn.activeTokenId,
-
-      bypassTurn: turn.bypassTurn,
-
-    }, actor).ok;
+    return canUseAbility(token, activeAction, tokenTurn, actor).ok;
 
   }, [token, activeAction, turn, actor]);
 
@@ -292,93 +298,82 @@ export function TokenActionPanel({
 
 
 
-  async function executeAttack(defenderId: string) {
-
+  async function runAttack(defenderId: string) {
     if (!activeAction || busy) return;
 
-    setBusy(true);
+    if (activeAction.areaShape && activeAction.areaShape !== "single") {
+      setErr("Magia de área: clique o centro da área no mapa.");
+      return;
+    }
 
+    setBusy(true);
     setErr(null);
 
     try {
-
       let snapshot: import("@/lib/room/types").RoomSnapshot;
 
       if (activeAction.kind === "ability") {
-
         snapshot = await postRoomAbility(roomId, token.id, defenderId, {
-
           actionEntryId: activeAction.entryId,
-
-          bypassTurn: turn.bypassTurn,
-
+          bypassTurn: tokenBypass,
         });
-
       } else {
-
-        const packId =
-
-          activeAction.packId === "armas" || activeAction.packId === "magias"
-
-            ? activeAction.packId
-
-            : undefined;
-
-        snapshot = await postRoomAttack(roomId, token.id, defenderId, {
-
-          actionPack: packId,
-
-          actionEntryId: packId ? activeAction.entryId : undefined,
-
-          bypassTurn: turn.bypassTurn,
-
-          channelExtraPa: activeAction.channelMaxExtraPa ? channelExtraPa : undefined,
-
-        });
-
+        snapshot = await postRoomAttack(
+          roomId,
+          token.id,
+          defenderId,
+          combatAttackRequestOpts(activeAction, token, {
+            bypassTurn: tokenBypass,
+            channelExtraPa: activeAction.channelMaxExtraPa ? channelExtraPa : undefined,
+          })
+        );
       }
 
       const combatMsgs = snapshot.chat.filter((m) => m.kind === "combat");
-
       const last = combatMsgs[combatMsgs.length - 1];
-
       if (last?.kind === "combat") onAttackResult(last);
 
       onActionModeChange("idle");
-
       onRoomSync(snapshot);
-
     } catch (e) {
-
       setErr(e instanceof Error ? e.message : "Falha na ação");
-
     } finally {
-
       setBusy(false);
-
     }
+  }
 
+  function executeAttack(defenderId: string) {
+    if (!activeAction || busy) return;
+    const defender = tokens.find((t) => t.id === defenderId);
+    if (!defender) return;
+    if (needsFriendlyFireConfirm(token, defender, activeAction)) {
+      setFriendlyFireTargetId(defenderId);
+      return;
+    }
+    void runAttack(defenderId);
   }
 
 
 
   async function executeSelfAbility() {
-
     if (!activeAction?.selfTarget || busy) return;
 
     setBusy(true);
-
     setErr(null);
 
     try {
-
-      const snapshot = await postRoomAbility(roomId, token.id, null, {
-
-        actionEntryId: activeAction.entryId,
-
-        bypassTurn: turn.bypassTurn,
-
-      });
+      const snapshot =
+        activeAction.kind === "ability"
+          ? await postRoomAbility(roomId, token.id, null, {
+              actionEntryId: activeAction.entryId,
+              bypassTurn: tokenBypass,
+            })
+          : await postRoomAttack(
+              roomId,
+              token.id,
+              token.id,
+              combatAttackRequestOpts(activeAction, token, { bypassTurn: tokenBypass })
+            );
 
       const combatMsgs = snapshot.chat.filter((m) => m.kind === "combat");
 
@@ -711,7 +706,10 @@ export function TokenActionPanel({
 
       ) : null}
 
-
+      {(actionMode === "attack" || actionMode === "spell" || actionMode === "ability") &&
+      activeAction ? (
+        <CombatActionDetail action={activeAction} actor={actor} />
+      ) : null}
 
       {isSaveSpell ? (
         <p className="vtt-combat-hint">Teste de resistência vs CD — metade do dano se passar.</p>
@@ -724,7 +722,7 @@ export function TokenActionPanel({
           {activeAction.areaHexCount != null ? ` · ${activeAction.areaHexCount} hex` : ""} — alcance{" "}
           {activeAction.rangeHex} hex no mapa.
           {areaNeedsDirection(activeAction.areaShape)
-            ? " 1º clique = centro · 2º = hex vizinho (direção)."
+            ? " Clique o hex vizinho ao conjurador para definir a direção."
             : " Clique o centro da área."}
         </p>
       ) : null}
@@ -757,7 +755,9 @@ export function TokenActionPanel({
 
         >
 
-          ◆ Usar {activeAction.name}
+          <>
+            <ActionKindIcon kind="ability" size={14} /> Usar {activeAction.name}
+          </>
 
         </button>
 
@@ -765,7 +765,10 @@ export function TokenActionPanel({
 
 
 
-      {isTargetMode(actionMode) && activeAction && !activeAction.selfTarget ? (
+      {isTargetMode(actionMode) &&
+      activeAction &&
+      !activeAction.selfTarget &&
+      !(activeAction.areaShape && activeAction.areaShape !== "single") ? (
 
         <>
 
@@ -789,7 +792,11 @@ export function TokenActionPanel({
 
                 >
 
-                  {actionMode === "spell" ? "✦" : actionMode === "ability" ? "◆" : "⚔"} {t.name}
+                  <ActionKindIcon
+                    kind={actionMode === "spell" ? "spell" : actionMode === "ability" ? "ability" : "attack"}
+                    size={14}
+                  />{" "}
+                  {t.name}
 
                   {t.defesa != null
 
@@ -810,7 +817,7 @@ export function TokenActionPanel({
           <p className="vtt-combat-click-hint">
             {activeAction.allyTarget
               ? "Ou clique no aliado destacado no mapa."
-              : "Ou clique no inimigo destacado no mapa."}
+              : "Ou clique no alvo destacado no mapa."}
           </p>
 
         </>
@@ -820,6 +827,26 @@ export function TokenActionPanel({
 
 
       {err ? <p className="dice-err">{err}</p> : null}
+
+      <FriendlyFireConfirmDialog
+        open={friendlyFireTargetId !== null}
+        attacker={token}
+        defender={
+          friendlyFireTargetId
+            ? tokens.find((t) => t.id === friendlyFireTargetId) ?? null
+            : null
+        }
+        busy={busy}
+        onConfirm={() => {
+          if (!friendlyFireTargetId) return;
+          const id = friendlyFireTargetId;
+          setFriendlyFireTargetId(null);
+          void runAttack(id);
+        }}
+        onCancel={() => {
+          if (!busy) setFriendlyFireTargetId(null);
+        }}
+      />
 
     </div>
 

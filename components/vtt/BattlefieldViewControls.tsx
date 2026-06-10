@@ -1,5 +1,7 @@
 "use client";
 
+import { MapToolbarIcon } from "@/components/vtt/MapToolbarIcon";
+
 type Props = {
   zoomPercent: number;
   canZoomIn: boolean;
@@ -7,6 +9,9 @@ type Props = {
   onZoomIn: () => void;
   onZoomOut: () => void;
   onReset: () => void;
+  showDungeonEditor?: boolean;
+  dungeonEditorActive?: boolean;
+  onToggleDungeonEditor?: () => void;
 };
 
 export function BattlefieldViewControls({
@@ -16,6 +21,9 @@ export function BattlefieldViewControls({
   onZoomIn,
   onZoomOut,
   onReset,
+  showDungeonEditor = false,
+  dungeonEditorActive = false,
+  onToggleDungeonEditor,
 }: Props) {
   return (
     <div className="vtt-view-controls" role="toolbar" aria-label="Zoom e navegação do mapa">
@@ -51,7 +59,18 @@ export function BattlefieldViewControls({
       >
         ⊙
       </button>
-      <span className="vtt-view-hint">Scroll · Alt+arrastar</span>
+      {showDungeonEditor && onToggleDungeonEditor ? (
+        <button
+          type="button"
+          className={`vtt-view-btn vtt-view-btn--dungeon${dungeonEditorActive ? " vtt-view-btn--dungeon-on" : ""}`}
+          onClick={onToggleDungeonEditor}
+          title="Modo masmorra — Piso: subir e ajustar fundo no mapa; Objetos: paredes"
+          aria-label="Modo masmorra"
+        >
+          <MapToolbarIcon name="dungeon" />
+        </button>
+      ) : null}
+      <span className="vtt-view-hint">Scroll · Alt+arrastar · Setas</span>
     </div>
   );
 }

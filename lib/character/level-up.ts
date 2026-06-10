@@ -10,8 +10,10 @@ import {
   paMaxFor,
   proficiencyBonus,
   racialMilestone,
+  SUBCLASS_PATH_LABEL,
   TALENT_LEVELS,
 } from "@/lib/character/rules";
+import { resolveActorDefesa } from "@/lib/character/armor-defense";
 import {
   ASCENSION_LEVEL,
   getAscension,
@@ -22,7 +24,8 @@ import {
   validateTalentChoice,
   type CharacterTalent,
 } from "@/lib/character/subclass-tracks";
-import { syncSubclassTalentsToInventory } from "@/lib/character/subclass-vtt";
+import { applyPerLevelBonuses, perLevelGainLines } from "@/lib/character/per-level-gains";
+import { syncCombatAbilitiesToInventory } from "@/lib/character/combat-inventory-sync";
 import {
   canAdvanceLevel,
   formatXpProgress,
@@ -45,6 +48,16 @@ export type LevelUpRequirement =
 
 function ownedTalents(actor: CharacterSheet): CharacterTalent[] {
   return parseCharacterTalents(actor.identity.talentos);
+}
+
+/** Personagem sem vida — level-up não ressuscita. */
+export function isCharacterDead(actor: CharacterSheet): boolean {
+  return actor.resources.vida.value <= 0;
+}
+
+function hpValueAfterLevelUp(actor: CharacterSheet, newMax: number): number {
+  if (isCharacterDead(actor)) return 0;
+  return newMax;
 }
 
 export function canLevelUp(actor: CharacterSheet): boolean {
@@ -101,7 +114,7 @@ export function validateLevelUpChoices(
 
   for (const r of reqs) {
     if (r.kind === "subclasse" && !choices.subclasse && !actor.identity.subclasse) {
-      return "Escolha uma subclasse (Dieta Marcial).";
+      return `Escolha um ${SUBCLASS_PATH_LABEL} (subclasse).`;
     }
     if (r.kind === "asi") {
       const total = Object.values(choices.asi ?? {}).reduce((s, v) => s + (v ?? 0), 0);
@@ -156,24 +169,27 @@ export function previewLevelUp(actor: CharacterSheet, choices?: LevelUpChoices):
   const lines = [
     `Nível ${next}`,
     `+${Math.max(1, hpGain)} HP (dado da classe + CON)`,
-    "Cura total de vida",
+    isCharacterDead(actor)
+      ? "Vida máxima sobe — personagem permanece morto/inconsciente"
+      : "Cura total de vida",
     `Bônus de proficiência +${proficiencyBonus(next)}`,
   ];
 
   const oldPa = paMaxFor(actor.identity.nivel, actor.resources.pontosAcao.max);
   const newPa = paMaxFor(next, actor.resources.pontosAcao.max);
-  if (newPa > oldPa) lines.push(`+1 PA máximo (${newPa})`);
+  if (newPa > oldPa) lines.push(`PA por turno: ${newPa}`);
 
   for (const f of classLevelFeatures(actor.identity.classe, next)) {
     lines.push(f);
   }
 
-  const racial = racialMilestone(actor.identity.raca, next, actor.identity.linhagem);
-  if (racial) lines.push(`Marco racial: ${racial}`);
+  for (const line of perLevelGainLines(actor, next)) {
+    if (!lines.includes(line)) lines.push(line);
+  }
 
   const sub = choices?.subclasse ?? actor.identity.subclasse;
   const track = getSubclassTrack(sub);
-  if (next === 2 && track) lines.push(`Dieta Marcial: ${track.diet}`);
+  if (next === 2 && track) lines.push(`${SUBCLASS_PATH_LABEL}: ${track.specialty}`);
 
   if (choices?.talentoId && track) {
     const t = track.talents.find((x) => x.id === choices.talentoId);
@@ -251,14 +267,16 @@ export function applyLevelUp(actor: CharacterSheet, choices: LevelUpChoices = {}
     attributes,
     culinary,
     resources: {
-      vida: { value: newMax, max: newMax },
+      vida: { value: hpValueAfterLevelUp(actor, newMax), max: newMax },
       pontosAcao: { value: paMax, max: paMax },
     },
     tactical: {
-      defesa: 10 + attributeMod(attributes.destreza),
-      iniciativa: attributeMod(attributes.destreza),
+      defesa: actor.armorLoadout?.entryId
+        ? resolveActorDefesa({ ...actor, attributes })
+        : 10 + attributeMod(attributes.destreza),
+      iniciativa: actor.tactical.iniciativa ?? attributeMod(attributes.destreza),
     },
   };
 
-  return syncSubclassTalentsToInventory(leveled);
+  return syncCombatAbilitiesToInventory(applyPerLevelBonuses(leveled, nivel));
 }

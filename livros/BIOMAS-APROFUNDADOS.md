@@ -1,4 +1,4 @@
-# BIOMAS APROFUNDADOS — Eldarin v4.0
+﻿# BIOMAS APROFUNDADOS — Eldarin v4.0
 
 > **Por que** cada masmorra “parece um mundo”, **como** viver la dentro, e **o que** plantas, monstros e objetos fazem na mesa.  
 > Objetos: `CATALOGO-OBJETOS-DE-CENARIO.md` · Regras: `REGRAS-ECOLOGIA-DE-SOBREVIVENCIA.md` · Plantas: Cap. 5B.
@@ -325,7 +325,7 @@
 | Necessidade | Flora | Fauna |
 |-------------|-------|-------|
 | Doenca/necrose | #13 Hera | #003 Ghoul · vermes |
-| Nutricao | #19 se encontrar | carne rica (Trinchar CD 14) |
+| Nutricao | #19 se encontrar | carne rica (Extração CD 14) |
 | Medo | #32 Mira | — |
 
 **Objetos:** OBJ-B15-01 a 03.
@@ -438,7 +438,7 @@
 Quando o Mestre mistura biomas num andar:
 
 1. **Borda:** 1 objeto de cada bioma + save de **ambiente** do bioma mais severo.  
-2. **Flora:** plantas dos dois biomas com Harmonização CD +2.  
+2. **Flora:** plantas dos dois biomas com Forrageio CD +2.  
 3. **Fauna híbrida:** use assimilação do espécime base + 1 habilidade aleatória do bioma vizinho (Mestre).  
 4. **Narrativa:** “predador migrante” explica criatura fora do habitat.
 

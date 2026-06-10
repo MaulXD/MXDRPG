@@ -6,12 +6,90 @@
  * lib/vtt/monster-scaling.ts (spawn), não duplicam entradas aqui.
  * Cap. XII groupLevelDelta também é runtime no painel de invocação.
  */
-import { writeFileSync } from "fs";
+import { readFileSync, writeFileSync } from "fs";
 import { join, dirname } from "path";
 import { fileURLToPath } from "url";
 
+const MONSTER_TAMANHOS = JSON.parse(
+  readFileSync(join(dirname(fileURLToPath(import.meta.url)), "..", "data", "monster-tamanhos.json"), "utf8")
+);
+
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const OUT = join(__dirname, "..", "data", "compendiums");
+const LM_PATH = join(__dirname, "..", "livros", "LIVRO-DO-MESTRE.md");
+const SPELL_BOOK = join(__dirname, "..", "livros", "_parte_x_magias_v4_revisada.md");
+
+function escapeHtml(s) {
+  return s
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+/** Extrai Lore + Comportamento de LIVRO-DO-MESTRE §001–080 */
+function parseMonsterLoreBook() {
+  const md = readFileSync(LM_PATH, "utf8");
+  const map = {};
+  const chunks = md.split(/\n## (\d{3}) — /);
+  for (let i = 1; i < chunks.length; i += 2) {
+    const num = chunks[i];
+    const body = chunks[i + 1] ?? "";
+    const title = body.split("\n")[0]?.trim() ?? "";
+    const loreMatch = body.match(/\*\*Lore:\*\*\s*\n([\s\S]*?)(?=\n\*\*Comportamento|\n\| Estatística|\n\*\*Habilidades)/);
+    const behaviorMatch = body.match(
+      /\*\*Comportamento na mesa:\*\*\s*\n([\s\S]*?)(?=\n\| Estatística|\n\*\*Habilidades|\n---)/
+    );
+    const lore = loreMatch?.[1]?.replace(/\s+/g, " ").trim() ?? "";
+    const behaviorRaw = behaviorMatch?.[1] ?? "";
+    const behavior = behaviorRaw
+      .split("\n")
+      .map((l) => l.replace(/^\s*-\s*\*\*([^*]+):\*\*\s*/, "$1: ").replace(/^\s*-\s*/, "").trim())
+      .filter((l) => l && !l.startsWith("|"))
+      .filter((l) => !/^culinária:/i.test(l));
+    if (title || lore) map[num] = { title, lore, behavior };
+  }
+  return map;
+}
+
+function buildMonsterDescription(entry, loreEntry, nivel) {
+  if (!loreEntry?.lore && !loreEntry?.behavior?.length) {
+    return `<p><strong>${escapeHtml(entry.name)}</strong> — criatura nv ${nivel} das masmorras de Eldarin.</p>`;
+  }
+  let html = `<p><strong>${escapeHtml(loreEntry.title || entry.name)}</strong> (ameaça nv ${nivel}).</p>`;
+  if (loreEntry.lore) html += `<p>${escapeHtml(loreEntry.lore)}</p>`;
+  if (loreEntry.behavior?.length) {
+    html += `<p><strong>Comportamento na mesa</strong></p><ul>`;
+    for (const b of loreEntry.behavior.slice(0, 5)) {
+      html += `<li>${escapeHtml(b)}</li>`;
+    }
+    html += `</ul>`;
+  }
+  return html;
+}
+
+/** Descrições do grimório (Cap. 18) */
+function parseSpellLoreBook() {
+  const md = readFileSync(SPELL_BOOK, "utf8");
+  const start = md.indexOf("## CAPÍTULO 18");
+  const slice = start >= 0 ? md.slice(start) : md;
+  const map = {};
+  const re = /\*\*([^*]+)\*\* — ([^\n]+)\n([\s\S]*?)(?=\n\*\*|\n## |\n---\s*$|$)/g;
+  let m;
+  while ((m = re.exec(slice)) !== null) {
+    const name = m[1].trim();
+    const meta = m[2].trim();
+    const desc = m[3]
+      .replace(/\n+/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+    if (name && desc && !name.startsWith("NIVEL")) map[name] = { meta, desc };
+  }
+  return map;
+}
+
+const MONSTER_LORE = parseMonsterLoreBook();
+const SPELL_LORE = parseSpellLoreBook();
 
 function mod(n) {
   return Math.floor((n - 10) / 2);
@@ -31,8 +109,8 @@ function monsterActions(name, nivel, tier, attrs) {
       damageType: "perfurante",
       attackBonus: nivel >= 4 ? 2 : nivel >= 2 ? 1 : 0,
       rangeHex: 1,
-      paCost: 1,
-      label: "Mordida · 1 hex · PA 1",
+      paCost: 2,
+      label: "Mordida · 1 hex · PA 2",
     },
   ];
   if (tier !== "mob" || nivel >= 2) {
@@ -46,8 +124,8 @@ function monsterActions(name, nivel, tier, attrs) {
       damageType: "cortante",
       attackBonus: mod(attrs.agilidade),
       rangeHex: 1,
-      paCost: 1,
-      label: "Garras · 1 hex · PA 1",
+      paCost: 2,
+      label: "Garras · 1 hex · PA 2",
     });
   }
   if (nivel >= 4) {
@@ -75,8 +153,8 @@ function monsterActions(name, nivel, tier, attrs) {
       damageType: "contundente",
       attackBonus: forMod,
       rangeHex: 2,
-      paCost: 1,
-      label: "Investida · 2 hex · PA 1",
+      paCost: 2,
+      label: "Investida · 2 hex · PA 2",
     });
   }
   return actions;
@@ -105,8 +183,10 @@ function mob(
 ) {
   const paMin = 6;
   const paMax = Math.max(paMin, pa);
+  const entryId = `monstros-${slug(name)}`;
+  const tamanho = MONSTER_TAMANHOS[entryId] ?? "medium";
   return {
-    id: `monstros-${slug(name)}`,
+    id: entryId,
     name,
     type: "npc",
     system: {
@@ -120,7 +200,7 @@ function mob(
         pontosAcao: { value: paMax, max: paMax },
       },
       movement: { hex: { walk: { value: move.walk }, run: { value: move.run } } },
-      tactical: { defesa: { value: ca }, ameaca: { value: nivel }, tier },
+      tactical: { defesa: { value: ca }, ameaca: { value: nivel }, tier, tamanho },
       actions: monsterActions(name, nivel, tier, attrs),
     },
   };
@@ -132,9 +212,9 @@ function monCod(n) {
 
 /** 001–060 + extras (ordem = LIVRO-DO-JOGADOR §6.2) */
 const MONSTERS = [
-  mob("Zumbi de Masmorra", 2, 22, 10, "mob", { forca: 13, agilidade: 8 }, { walk: 3, run: 5 }),
-  mob("Esqueleto Armado", 2, 18, 13, "mob", { forca: 10, agilidade: 14 }),
-  mob("Ghoul", 3, 36, 12, "mob", { forca: 13, agilidade: 15 }),
+  mob("Zumbi de Masmorra", 2, 26, 10, "mob", { forca: 13, agilidade: 8 }, { walk: 3, run: 5 }, 7),
+  mob("Esqueleto Armado", 2, 20, 13, "mob", { forca: 10, agilidade: 14 }, { walk: 4, run: 6 }, 7),
+  mob("Ghoul", 3, 38, 12, "mob", { forca: 13, agilidade: 15 }, { walk: 4, run: 6 }, 7),
   mob("Espectro", 4, 28, 14, "mini", { forca: 8, agilidade: 14 }),
   mob("Lich (Arquiliche)", 18, 285, 17, "boss", { forca: 11, agilidade: 16 }, { walk: 4, run: 6 }, 4),
   mob("Assombração", 3, 45, 13, "mob", { forca: 6, agilidade: 16 }),
@@ -198,14 +278,40 @@ const MONSTERS = [
   mob("Verme Gigante de Pedra", 10, 142, 18, "boss", { forca: 22, agilidade: 6 }, { walk: 4, run: 6 }),
   mob("Salamandra Gigante", 6, 65, 13, "mini", { forca: 15, agilidade: 12 }),
   mob("Behemoth de Pedra", 14, 230, 19, "boss", { forca: 24, agilidade: 6 }, { walk: 4, run: 6 }),
-  // aliases mesa spawn
-  mob("Goblin", 1, 7, 13, "mob", { forca: 8, agilidade: 14 }, { walk: 4, run: 6 }, 3, "Alias de Goblin de Caverna para spawn rápido."),
-  mob("Esqueleto de Guarda", 2, 22, 14, "mob", { forca: 12, agilidade: 10 }),
-  mob("Slime de Masmorra", 2, 30, 11, "mob", { forca: 14, agilidade: 6 }, { walk: 2, run: 3 }),
+  mob("Fera da Sombra", 8, 78, 14, "mini", { forca: 12, agilidade: 16 }),
+  mob("Medusa", 7, 75, 15, "mini", { forca: 14, agilidade: 14 }),
+  mob("Fênix de Caverna", 13, 152, 16, "boss", { forca: 16, agilidade: 18 }, { walk: 5, run: 10 }),
+  mob("Gigante de Pedra", 12, 126, 17, "boss", { forca: 23, agilidade: 8 }, { walk: 4, run: 6 }),
+  mob("Bruxa da Masmorra", 8, 82, 17, "mini", { forca: 12, agilidade: 14 }),
+  mob("Fera Seminal", 11, 108, 13, "boss", { forca: 16, agilidade: 12 }),
+  mob("Carniçal Alado", 9, 104, 15, "mini", { forca: 15, agilidade: 16 }, { walk: 5, run: 10 }),
+  mob("Balor", 19, 262, 19, "boss", { forca: 26, agilidade: 14 }, { walk: 5, run: 8 }, 5),
+  mob("Enxame de Ratos-Cadáveres", 2, 24, 10, "mob", { forca: 10, agilidade: 14 }, { walk: 4, run: 6 }),
+  mob("Elemental de Terra", 8, 126, 17, "mini", { forca: 20, agilidade: 8 }, { walk: 3, run: 5 }),
+  mob("Banshee", 8, 58, 12, "mini", { forca: 8, agilidade: 14 }),
+  mob("Morcego-Tirano", 5, 65, 12, "mini", { forca: 16, agilidade: 14 }, { walk: 5, run: 10 }),
+  mob("Ooze Ocular", 6, 72, 13, "mini", { forca: 12, agilidade: 10 }, { walk: 2, run: 4 }),
+  mob("Tarrasque (Bebê)", 20, 676, 25, "boss", { forca: 30, agilidade: 10 }, { walk: 6, run: 10 }, 5),
+  // aliases mesa spawn (sem codigo 001–080)
+  { ...mob("Goblin", 1, 7, 13, "mob", { forca: 8, agilidade: 14 }, { walk: 4, run: 6 }, 3, "Alias de Goblin de Caverna para spawn rápido."), spawnAlias: true },
+  { ...mob("Esqueleto de Guarda", 2, 22, 14, "mob", { forca: 12, agilidade: 10 }), spawnAlias: true },
+  { ...mob("Slime de Masmorra", 2, 30, 11, "mob", { forca: 14, agilidade: 6 }, { walk: 2, run: 3 }), spawnAlias: true },
 ];
 
-for (let i = 0; i < MONSTERS.length; i++) {
-  MONSTERS[i].system.catalogId = monCod(i + 1);
+let catalogSeq = 0;
+for (const entry of MONSTERS) {
+  if (entry.spawnAlias) {
+    entry.system.catalogId = `MON-SPAWN-${slug(entry.name)}`;
+    entry.system.bookRef = "LIVRO-DO-MESTRE.md";
+    continue;
+  }
+  catalogSeq += 1;
+  entry.system.catalogId = monCod(catalogSeq);
+  entry.system.bookRef = "LIVRO-DO-MESTRE.md";
+  const loreKey = String(catalogSeq).padStart(3, "0");
+  const loreEntry = MONSTER_LORE[loreKey];
+  const nivel = entry.system.tactical?.ameaca?.value ?? catalogSeq;
+  entry.system.description = buildMonsterDescription(entry, loreEntry, nivel);
 }
 
 function spell(
@@ -389,41 +495,95 @@ const SPELLS = [
   spell("Doce Confuso", 1, "Encantamento", 6, 1, "Save CON ou amedrontado.", { save: "constituicao" }),
 ];
 
-const ABILITIES = [
-  ["Investida Hexagonal", 2, 1, "charge", "Movimento 2 hex sem provocar."],
-  ["Golpe Flanqueador", 1, 2, "melee_attack_bonus", "Ataque cac com vantagem se flanqueio."],
-  ["Postura Defensiva", 0, 1, "defense_buff", "+2 defesa até próximo turno."],
-  ["Reflexos de Masmorra", 1, 1, "reacao", "Reação: desloca 1 hex."],
-  ["Olhar do Caçador", 5, 1, "mark", "Marca alvo; +2 próximo ataque à distância."],
-  ["Investida do Guerreiro", 2, 1, "charge", "Corrida em linha reta."],
-  ["Golpe Devastador", 1, 2, "melee_attack_bonus", "+2 no próximo ataque corpo a corpo."],
-  ["Esquiva Tática", 0, 1, "defense_buff", "+2 defesa até seu próximo turno."],
-  ["Tiro Certeiro", 5, 1, "mark", "Próximo ataque à distância com vantagem."],
-  ["Emboscada", 1, 2, "melee_attack_bonus", "Ataque furtivo adjacente."],
-  ["Finta", 1, 1, "mark", "Alvo tem desvantagem no próximo ataque contra ele."],
-  ["Passo das Sombras", 2, 1, "charge", "Teleporte curto 2 hex (movimento)."],
-  ["Raio Arcano", 6, 1, "spell", "Truque ofensivo 1d10+INT."],
-  ["Escudo Mágico", 0, 1, "defense_buff", "+3 defesa 1 rodada."],
-  ["Canalizar Energia", 1, 2, "melee_attack_bonus", "Ataque sagrado +2d6 radiante."],
-  ["Fúria Controlada", 0, 1, "defense_buff", "Resistência contundente 1 turno."],
-  ["Investida Bárbara", 3, 1, "charge", "Corre 3 hex em linha."],
-  ["Inspiração de Batalha", 4, 1, "mark", "Aliado ganha vantagem no próximo ataque."],
-  ["Canção de Cura", 1, 1, "buff", "Aliado recupera 1d6 HP."],
-  ["Forma Selvagem", 0, 2, "charge", "Prepara transformação (movimento)."],
-  ["Raízes Prendentes", 4, 2, "spell", "Restringe alvo 1 turno."],
-  ["Disparo de Artilheiro", 6, 1, "spell", "Projétil 2d8."],
-  ["Barreira de Cobre", 0, 1, "defense_buff", "+2 defesa contra magia."],
-].map(([name, range, pa, tipo, desc]) => ({
+const BOOK_HAB = "CATALOGO-HABILIDADES-TATICAS.md";
+
+const ABILITY_CATALOG = [
+  ["Investida Hexagonal", 2, 1, "ativa", "1/turno", "Desloca em linha reta até 2 hex sem provocar ataques de oportunidade durante o movimento."],
+  ["Golpe Flanqueador", 1, 2, "ativa", "", "Gasta 2 PA: próximo ataque corpo a corpo com vantagem se você flanquear o alvo."],
+  ["Postura Defensiva", 0, 1, "ativa", "", "+2 defesa até o início do seu próximo turno."],
+  ["Reflexos de Masmorra", 1, 1, "reacao", "", "Reação a um ataque: desloca 1 hex imediatamente (não provoca oportunidades)."],
+  ["Olhar do Caçador", 5, 1, "ativa", "", "Marca um alvo visível a até 5 hex; seu próximo ataque à distância contra ele ganha +2."],
+  ["Investida do Guerreiro", 2, 1, "ativa", "1/turno", "Corrida em linha reta até 2 hex; ideal terminar adjacente a um inimigo para atacar no mesmo turno."],
+  ["Golpe Devastador", 1, 2, "ativa", "", "Próximo ataque corpo a corpo recebe +2 no teste de ataque."],
+  ["Esquiva Tática", 0, 1, "ativa", "", "+2 defesa até o início do seu próximo turno."],
+  ["Tiro Certeiro", 5, 1, "ativa", "", "Próximo ataque à distância contra alvo visível é feito com vantagem."],
+  ["Emboscada", 1, 2, "ativa", "", "Ataque furtivo adjacente; vantagem se o alvo não viu você no início do turno."],
+  ["Finta", 1, 1, "ativa", "", "Alvo marcado tem desvantagem no próximo ataque contra você."],
+  ["Passo das Sombras", 2, 1, "ativa", "1/turno", "Teleporte curto de até 2 hex; conta como movimento."],
+  ["Raio Arcano", 6, 1, "ativa", "", "Truque ofensivo: 1d10+INT de dano mágico em um alvo a até 6 hex."],
+  ["Escudo Mágico", 0, 1, "ativa", "", "+3 defesa até o início do seu próximo turno."],
+  ["Canalizar Energia", 1, 2, "ativa", "", "Ataque corpo a corpo sagrado: +2 no ataque e +2d6 radiante no dano."],
+  ["Fúria Controlada", 0, 1, "ativa", "", "Resistência a dano contundente até o fim do seu próximo turno."],
+  ["Investida Bárbara", 3, 1, "ativa", "1/turno", "Corre até 3 hex em linha reta sem provocar oportunidades."],
+  ["Inspiração de Batalha", 4, 1, "ativa", "", "Aliado visível a até 4 hex ganha vantagem no próximo ataque."],
+  ["Canção de Cura", 1, 1, "ativa", "", "Aliado adjacente recupera 1d6 HP."],
+  ["Forma Selvagem", 0, 2, "ativa", "", "Prepara transformação biomágica (2 PA; Mestre valida a forma)."],
+  ["Raízes Prendentes", 4, 2, "ativa", "", "Restringe alvo 1 turno (save FOR); raízes no hex do alvo."],
+  ["Disparo de Artilheiro", 6, 1, "ativa", "", "Projétil concentrado: 2d8 de dano à distância."],
+  ["Barreira de Cobre", 0, 1, "ativa", "", "+2 defesa contra efeitos mágicos até seu próximo turno."],
+  ["Imposição de Mãos", 1, 1, "ativa", "", "Aliado adjacente recupera 1d8+CAR HP, ou 2d8 radiante vs morto-vivo."],
+  ["Golpe Sagrado", 1, 1, "ativa", "", "Próximo ataque corpo a corpo +2d8 radiante (PA extra)."],
+  ["Raio do Pacto", 6, 1, "ativa", "", "Truque: 1d10+CAR de dano mágico em um alvo a até 6 hex."],
+  ["Raio do Pacto Psíquico", 6, 1, "ativa", "", "Raio psíquico 1d10+CAR; empurra 1,5m em acerto (FOR CD 13)."],
+  ["Raio do Pacto Ardente", 6, 1, "ativa", "", "Raio de fogo 1d10+CAR; marca Sangue no acerto (+2d6 fogo depois)."],
+  ["Raio do Pacto Salino", 6, 1, "ativa", "", "Raio de frio 1d10+CAR."],
+  ["Luz Penitente", 2, 1, "ativa", "1/descanso curto", "Flash radiante 3m: mortos-vivos sofrem 2d8 radiante (sem save)."],
+  ["Escudo Solar", 1, 1, "reacao", "", "Reação: aliado adjacente reduz dano sofrido em 1d10+CAR (mín. 1)."],
+  ["Julgamento Ardente", 9, 1, "ativa", "1/descanso curto", "Marca inimigo visível 9m; Golpe Sagrado contra ele não gasta PA extra 1×/turno."],
+  ["Coroa de Fogo", 3, 2, "ativa", "1/combate", "Explosão solar 4,5m: 4d8 radiante (DES CD 15 metade); aliados imunes."],
+  ["Lâmina dos Sepulcros", 1, 1, "ativa", "", "Próximo ataque vs morto-vivo +1d8 radiante ou necrótico."],
+  ["Voto de Caça", 9, 1, "ativa", "", "Marca tipo de morto-vivo declarado; +3 dano e vantagem em Percepção vs esse tipo."],
+  ["Marca do Limiar", 6, 1, "ativa", "", "Marca liminar: próximo morto-vivo que atacar aliado marcado sofre 2d8 necrótico."],
+  ["Processão Silenciosa", 2, 2, "ativa", "1/descanso longo", "Forma espectral 10 min: atravessa portas, +10 Furtividade vs mortos-vivos."],
+  ["Mordida do Voto", 1, 1, "ativa", "", "Ação bônus: +2 FOR e +3m movimento por 1 minuto; oportunidades têm desvantagem."],
+  ["Fera Interior", 1, 1, "ativa", "", "Primeiro ataque corpo a corpo do turno +1d8 perfurante."],
+  ["Carga do Juramento", 6, 2, "ativa", "1/descanso curto", "Investida 12m: vantagem no primeiro ataque; derruba em acerto (FOR CD 14)."],
+  ["Pele de Quimera", 1, 1, "reacao", "", "Retalho 2d6+FOR (tipo da quimera); usos = CON/descanso curto."],
+  ["Olhar Entre Dimensões", 6, 1, "reacao", "", "Reação: 2d6 psíquico a quem faz aliado falhar save mental."],
+  ["Agarrão do Pacto", 5, 2, "ativa", "1/combate", "Tentáculos 9m: até 2 alvos Restringidos (FOR CD 15)."],
+  ["Mente Partida", 6, 2, "ativa", "1/descanso longo", "Confusão 1 min (INT CD 16); aberrações INT ≤ 8 falham automaticamente."],
+  ["Sangue do Patrono", 0, 1, "ativa", "", "Sacrifica 1d8 HP para recuperar 1 slot de Pacto."],
+  ["Pacto de Ferro", 5, 2, "ativa", "1/combate", "Correntes 3d8 fogo + Restringir alvo (FOR CD 15)."],
+  ["Correntes Infernais", 3, 2, "ativa", "", "Selo de sangue 3m: 3d6 fogo a quem entrar; fogo ignora resistência."],
+  ["Corrente Mental", 6, 1, "ativa", "1/descanso curto", "Eco mental: repete encantamento nv.1 sem slot."],
+  ["Manto de Bruma", 3, 2, "ativa", "", "Névoa 6m 1 min: aliados furtivos; inimigos −2 em ataques à distância."],
+  ["Puxão Abissal", 5, 2, "ativa", "1/combate", "Puxa alvo 9m e 2d8 frio (FOR CD 15)."],
+];
+
+const ABILITIES = ABILITY_CATALOG.map(([name, range, pa, tipo, recarga, desc]) => ({
   id: `habilidades-${slug(name)}`,
   name,
   type: "habilidade",
   system: {
     catalogId: `HAB-${slug(name)}`,
+    bookRef: BOOK_HAB,
     description: `<p>${desc}</p>`,
     tactical: { alcanceHex: { value: range, min: 0 }, custoPontosAcao: { value: pa, min: 0 } },
-    ability: { tipo: tipo === "reacao" ? "reacao" : "ativa", recarga: tipo === "charge" ? "1/turno" : "" },
+    ability: { tipo, recarga },
   },
 }));
+
+for (const s of SPELLS) {
+  const lore = SPELL_LORE[s.name];
+  if (lore) {
+    const escola = s.system.spell?.escola ?? "";
+    const nv = s.system.spell?.nivel ?? 0;
+    const pa = s.system.tactical?.custoPontosAcao?.value ?? 1;
+    const hex = s.system.tactical?.alcanceHex?.value ?? 0;
+    s.system.description = `<p>${escapeHtml(lore.desc)}</p><p><em>${escapeHtml(lore.meta)} · nv ${nv} · ${pa} PA · ${hex} hex</em></p>`;
+    s.system.bookRef = "_parte_x_magias_v4_revisada.md";
+  } else {
+    const escola = s.system.spell?.escola ?? "Magia";
+    const nv = s.system.spell?.nivel ?? 0;
+    const base = stripHtmlTag(s.system.description);
+    s.system.description = `<p>${escapeHtml(base)}</p><p><em>${escola} · nv ${nv}</em></p>`;
+    s.system.bookRef = "_parte_x_magias_v4_revisada.md";
+  }
+}
+
+function stripHtmlTag(html) {
+  return String(html).replace(/<[^>]+>/g, "").trim();
+}
 
 writeFileSync(join(OUT, "monstros.json"), JSON.stringify(MONSTERS, null, 2) + "\n");
 writeFileSync(join(OUT, "magias.json"), JSON.stringify(SPELLS, null, 2) + "\n");

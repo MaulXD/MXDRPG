@@ -5,6 +5,7 @@ import { getSession } from "@/lib/auth/session";
 import { snapshotForViewer } from "@/lib/room/snapshot-for-viewer";
 import { moveRoomToken, getRoom, getRoomSnapshot } from "@/lib/room/store";
 import { activeTokenId } from "@/lib/room/combat";
+import { effectiveBypassTurn } from "@/lib/combat/turn-guard";
 import type { MoveMode } from "@/lib/vtt/movement";
 
 type Params = { params: Promise<{ roomId: string }> };
@@ -46,7 +47,11 @@ export async function POST(req: Request, { params }: Params) {
     return NextResponse.json({ error: "Sem permissão" }, { status: 403 });
   }
 
-  if (session && !canMoveToken(room, session.user, token)) {
+  if (!session) {
+    return NextResponse.json({ error: "Faça login para mover tokens" }, { status: 401 });
+  }
+
+  if (!canMoveToken(room, session.user, token)) {
     return NextResponse.json({ error: "Sem permissão neste token" }, { status: 403 });
   }
 
@@ -60,7 +65,7 @@ export async function POST(req: Request, { params }: Params) {
     mode,
     {
       activeTokenId: activeTokenId(snapshotBefore.combat),
-      bypassTurn: Boolean(body.bypassTurn && canBypass),
+      bypassTurn: Boolean(body.bypassTurn && token && effectiveBypassTurn(token, canBypass)),
     }
   );
 

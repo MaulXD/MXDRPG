@@ -64,6 +64,11 @@ export function hexDirection(from: Axial, to: Axial): number | null {
   return idx >= 0 ? idx : null;
 }
 
+/** Raio de desenho do hex — igual ao espaçamento axial para hexes colados. */
+export function hexDrawRadius(hexSize: number): number {
+  return hexSize;
+}
+
 export function hexCorners(cx: number, cy: number, size: number): { x: number; y: number }[] {
   const corners = [];
   for (let i = 0; i < 6; i++) {

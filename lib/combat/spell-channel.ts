@@ -1,6 +1,7 @@
 import type { CharacterSheet } from "@/lib/character/types";
-import { effectivePaCost } from "@/lib/combat/pa-economy";
+import { effectivePaCost, paCostContextFromToken } from "@/lib/combat/pa-economy";
 import type { CombatActionOption } from "@/lib/combat/types";
+import type { BattleToken } from "@/lib/vtt/types";
 
 /** PA extras investidos na mesma conjuração (regra mesa digital). */
 export const CHANNEL_MAX_EXTRA_PA = 2;
@@ -75,24 +76,27 @@ export function actionWithChannel(
 export function totalChannelPaCost(
   actor: CharacterSheet | null,
   action: CombatActionOption,
-  extraPa: number
+  extraPa: number,
+  token?: BattleToken | null
 ): number {
   const extra = clampChannelExtraPa(action, extraPa);
-  const base = effectivePaCost(actor, action);
+  const base = effectivePaCost(actor, action, paCostContextFromToken(token));
   return base + extra;
 }
 
 export function formatChannelPaLabel(
   actor: CharacterSheet | null,
   action: CombatActionOption,
-  extraPa: number
+  extraPa: number,
+  token?: BattleToken | null
 ): string {
+  const ctx = paCostContextFromToken(token);
   if (!action.channelMaxExtraPa) {
-    const cost = effectivePaCost(actor, action);
+    const cost = effectivePaCost(actor, action, ctx);
     return `PA ${cost}`;
   }
   const extra = clampChannelExtraPa(action, extraPa);
-  const base = effectivePaCost(actor, action);
+  const base = effectivePaCost(actor, action, ctx);
   const total = base + extra;
   const bonus = action.channelBonusPerPa ?? CHANNEL_BONUS_PER_PA;
   if (extra === 0) {

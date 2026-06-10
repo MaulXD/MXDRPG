@@ -1,4 +1,4 @@
-# ECOLOGIA DE MASMORRA E CULINARIA BIOMAGICA
+﻿# ECOLOGIA DE MASMORRA E CULINARIA BIOMAGICA
 ## Livro de Regras Completo — Edicao do Mestre — O Mundo de Eldarin
 ### Versao 4.0
 
@@ -45,7 +45,7 @@ Pilares do sistema:
 
 Eldarin e um mundo de tamanho medio construido, literal e figurativamente, ao redor das suas 11 masmorras. Sua economia, politica, cultura e religiao giram em torno do submundo. O reino central, **Valdremor**, ocupa o coracao geografico do continente, equidistante das 11 entradas conhecidas como As Bocas. A capital e **Ossenfurt** — cidade construida onde os primeiros exploradores fundaram acampamento ha seiscentos anos.
 
-Nao existe, em Eldarin, a distincao cultural entre "aventureiro" e "cidadao". Explorar masmorras e uma profissao reconhecida, taxada e regulamentada pelo Estado. Ha sindicatos de exploradores, seguros de vida para grupos, mercados de ingredientes frescos nas cidades mais proximas as entradas, e escolas que ensinam Trinchar como disciplina obrigatoria ao lado de matematica.
+Nao existe, em Eldarin, a distincao cultural entre "aventureiro" e "cidadao". Explorar masmorras e uma profissao reconhecida, taxada e regulamentada pelo Estado. Ha sindicatos de exploradores, seguros de vida para grupos, mercados de ingredientes frescos nas cidades mais proximas as entradas, e escolas que ensinam Extração como disciplina obrigatoria ao lado de matematica.
 
 ### 1.3 O Submundo como Organismo
 
@@ -65,7 +65,7 @@ Ingredientes de monstros sao a principal commodity de Valdremor. Cada cidade pro
 
 **O Sindicato dos Exploradores:** Grupos de aventureiros se registram ao entrar em qualquer masmorra. Beneficios: seguro de vida (100 po por morte confirmada), acesso a mapas parciais, credito em lojas, informação sobre monstros. Custo: 5% de toda renda obtida.
 
-**A Academia de Culinaria de Ossenfurt:** A maior instituicao de ensino culinário-biomagico do mundo. Aceita estudantes, treina Harmonização e Coccao, publica pesquisas sobre novas combinacoes de ingredientes.
+**A Academia de Culinaria de Ossenfurt:** A maior instituicao de ensino culinário-biomagico do mundo. Aceita estudantes, treina Forrageio e Coccao, publica pesquisas sobre novas combinacoes de ingredientes.
 
 ---
 
@@ -120,19 +120,19 @@ CA base = 10 + MOD DES (sem armadura)
 
 Alem dos atributos classicos, toda ficha possui a secao **Culinaria de Masmorra** com quatro atributos especificos:
 
-**Trinchar (Destreza Manual):** A habilidade fisica de cortar, eviscerar e filetar carcacas de monstros.
+**Extração (Destreza Manual):** A habilidade fisica de cortar, eviscerar e filetar carcacas de monstros.
 - Teste: 1d20 + MOD DES + Proficiencia (se treinado)
 - Sem treinamento: -2 na rolagem.
 - Com Estudo de Anatomia: Vantagem na rolagem.
 
-**Harmonização (Intuicao/Sabedoria):** A capacidade de equilibrar sabores, neutralizar toxinas e extrair o máximo biologico de um ingrediente.
+**Forrageio (Intuicao/Sabedoria):** A capacidade de equilibrar sabores, neutralizar toxinas e extrair o máximo biologico de um ingrediente.
 - Teste: 1d20 + MOD SAB + Proficiencia (se treinado)
 
 **Coccao (Tecnica/Fogo):** Controle de tempo e temperatura.
 - Teste: 1d20 + MOD INT + Proficiencia (se treinado)
 - Resultado abaixo de 8: Gororoba. 9-15: Comum. 16-20: Gourmet. 21+: Prato Perfeito.
 
-**Estômago de Ferro (Resistência):** A tolerancia gastrica do personagem.
+**Fortitude (Resistência):** A tolerancia gastrica do personagem.
 - Teste: 1d20 + MOD CON + Proficiencia (se treinado)
 - CD 10: Alimentos estragados leves. CD 13: Venenos processados. CD 16: Ingredientes amaldicados. CD 19: Essências demoniacas ou divinas.
 
@@ -229,7 +229,7 @@ Os atributos culinários sobem com pratica: cada vez que o personagem prepara um
 **Habilidades Raciais:**
 - Adaptabilidade: Uma vez por descanso longo, ganha Vantagem em qualquer teste antes de rolar.
 - Paladar Versatil: Escolhe qual atributo culinário recebe o bonus de "primeira vez com novo monstro".
-- Resistência Mundana: +2 permanente em Estômago de Ferro.
+- Resistência Mundana: +2 permanente em Fortitude.
 - Determinacao: Uma vez por dia, ao ser reduzido a 0 HP, fica a 1 HP em vez disso.
 
 **Progressao Racial:**
@@ -252,7 +252,7 @@ Os atributos culinários sobem com pratica: cada vez que o personagem prepara um
 
 **Habilidades Raciais:**
 - Visao Arcana: Visao no escuro até 18m. Detecta campos magicos ativos (armadilhas, auras) num raio de 5m.
-- Instinto de Harmonização: +3 permanente em Harmonização.
+- Instinto de Forrageio: +3 permanente em Forrageio.
 - Sono Elfico: Descanso Longo em apenas 4h de meditacao.
 - Resistência a Encantamentos: Vantagem em teste de resistências contra Charme e Medo.
 
@@ -277,7 +277,7 @@ Os atributos culinários sobem com pratica: cada vez que o personagem prepara um
 **Habilidades Raciais:**
 - Resistência Ana: Vantagem em teste de resistências contra veneno. Resistência a dano de veneno.
 - Visao de Escuro: 18m de visao perfeita no escuro.
-- Mestria de Ferramentas: Proficiencia automatica em todas as ferramentas de Trinchar, incluindo Especialista. +2 permanente em Trinchar.
+- Mestria de Ferramentas: Proficiencia automatica em todas as ferramentas de Extração, incluindo Especialista. +2 permanente em Extração.
 - Instinto de Forja: Ao criar Ferramentas Orgânicas de Boss, rola duas vezes e usa o melhor resultado.
 
 **Progressao Racial:**
@@ -315,7 +315,7 @@ Os atributos culinários sobem com pratica: cada vez que o personagem prepara um
 | 8 | Faro de Perigo — no inicio de cada sessao, o Mestre informa ao Halfling se ha uma armadilha mortal no próximo andar |
 | 10 | Sorte Compartilhada — pode gastar um uso de Sorte Inata em favor de um aliado adjacente |
 | 12 | Reflexos de Sobrevivente — nunca pode ser surpreendido em combaté |
-| 14 | +2 em Harmonização |
+| 14 | +2 em Forrageio |
 | 16 | Esquiva do Destino — uma vez por semana, cancela completamente um efeito que deveria afeta-lo |
 | 18 | Sentido de Horde — detecta automaticamente o numero aproximado de inimigos em uma sala antes de entrar |
 | 20 | Abencado pela Sorte — Sorte Inata funciona em qualquer dado, sem limite de usos diarios |
@@ -329,7 +329,7 @@ Os atributos culinários sobem com pratica: cada vez que o personagem prepara um
 **Atributos:** +2 INT, +1 SAB
 
 **Habilidades Raciais:**
-- Mente Alquimica: +4 permanente em Harmonização para identificar e combinar propriedades de ingredientes.
+- Mente Alquimica: +4 permanente em Forrageio para identificar e combinar propriedades de ingredientes.
 - Pocioneiro Nato: Ao criar qualquer poção usando ingredientes de monstros, o resultado e sempre uma categoria acima do normal.
 - Identificacao Instantanea: Pode identificar qualquer substancia, veneno, poção ou ingrediente com um teste de Arcana CD 10.
 - Laboratorio Portátil: Pode processar qualquer ingrediente bruto em componente alquimico estavel em 10 minutos.
@@ -549,7 +549,7 @@ Um Forjado de Osso e feito de peças de monstros diferentes — cada exemplar e 
 
 ## CAPÍTULO 4 — AS NOVE CLASSES BASE
 
-Cada classe define o papel de combaté no Nivel 1 e o **Bonus de Dieta Base** — a vantagem passiva que qualquer boa refeicao ativa, independente do tipo de monstro. No **Nivel 2**, o personagem escolhe sua **Subclasse (Dieta Marcial)**.
+Cada classe define o papel de combaté no Nivel 1 e o **Bônus Passivo de Sobrevivência** — a vantagem passiva que qualquer boa refeicao ativa, independente do tipo de monstro. No **Nivel 2**, o personagem escolhe sua **Subclasse (Caminho de Assimilação)**.
 
 ---
 
@@ -557,9 +557,9 @@ Cada classe define o papel de combaté no Nivel 1 e o **Bonus de Dieta Base** �
 
 Dado de HP: 1d10 | Atributos Primarios: Força ou Destreza
 Proficiencias: Todas as armaduras, todos os escudos, todas as armas
-Atributos Culinarios Iniciais: Trinchar +3, Estômago de Ferro +2
+Atributos Culinarios Iniciais: Extração +3, Fortitude +2
 
-**Bonus de Dieta Base (Nivel 1):**
+**Bônus Passivo de Sobrevivência (Nivel 1):**
 Metabolismo Focado — Apos uma Refeicao Comum ou melhor, ganha Vantagem em testes de Força e Atletismo até o próximo descanso longo.
 
 **Tabela de Progressao:**
@@ -567,7 +567,7 @@ Metabolismo Focado — Apos uma Refeicao Comum ou melhor, ganha Vantagem em test
 | Nivel | HP | Ataque Extra | Habilidades Notaveis |
 |-------|-----|-------------|---------------------|
 | 1 | 10+CON | — | Segundo Folego, Estilo de Combaté |
-| 2 | +6 | — | Subclasse, Bonus de Dieta Especializada |
+| 2 | +6 | — | Subclasse, Bonus de Passivo de Assimilação |
 | 5 | +6 | 2 ataques/acao | Ataque Extra |
 | 11 | +6 | 3 ataques/acao | Ataque Extra Adicional |
 | 17 | +6 | 4 ataques/acao | Ataque Extra Maximo |
@@ -581,13 +581,13 @@ Metabolismo Focado — Apos uma Refeicao Comum ou melhor, ganha Vantagem em test
 
 **Subclasses do Guerreiro:**
 
-Predador Voraz (Especialidade: Feras e Bestiais): Ao comer carne vermelha de feras, ganha +2 FOR e regeneração de 3 HP/turno por 4h. Progressao: Corte Limpo (críticos causam sangramento e triplo de ingredientes), Maestria Voraz (+4 em Trinchar em feras), Abaté Perfeito (ingredientes sempre intactos em morte de um único ataque), Sangue de Predador (consome coracao para recuperar 2d10 HP e +3 em ataques), Legado do Predador (mutacoes de Feras duram 48h).
+Caçador de Feras (Especialidade: Feras e Bestiais): Ao comer carne vermelha de feras, ganha +2 FOR e regeneração de 3 HP/turno por 4h. Progressao: Corte Limpo (críticos causam sangramento e triplo de ingredientes), Maestria Voraz (+4 em Extração em feras), Abaté Perfeito (ingredientes sempre intactos em morte de um único ataque), Sangue de Predador (consome coracao para recuperar 2d10 HP e +3 em ataques), Legado do Predador (mutacoes de Feras duram 48h).
 
-Quebra-Cascos (Especialidade: Carapaças e Insetoides): Ao comer artropodes, pele endurece — imunidade temporária a acertos críticos e +2 CA por 8h. Progressao: Percussao Penetrante (ignora 5 pontos de CA de criaturas com carapaça), Estrutura Quitinosa (+4 CA permanente quando dieta ativa), Esmagamento Total (pode destruir carapaça de monstro em acerto), Corpo de Crustaceo (resistência a perfurante e cortante), Carapaça Viva (+2 CA base permanente).
+Quebrador de Carapaças (Especialidade: Carapaças e Insetoides): Ao comer artropodes, pele endurece — imunidade temporária a acertos críticos e +2 CA por 8h. Progressao: Percussao Penetrante (ignora 5 pontos de CA de criaturas com carapaça), Estrutura Quitinosa (+4 CA permanente quando dieta ativa), Esmagamento Total (pode destruir carapaça de monstro em acerto), Corpo de Crustaceo (resistência a perfurante e cortante), Carapaça Viva (+2 CA base permanente).
 
 Cavaleiro Draconico (Especialidade: Escamosos e Draconideos): Consumir repteis ou draconicos concede resistência elemental e baforada curta (2d6). Progressao: Escama de Wyrm (+1 CA com couro draconiico), Ira Draconica (baforada 4d6 e empurra inimigos), Heranca de Sangue (resistência vira imunidade), Majestade do Dragão (Presenca Aterrorizante), Ascensao Draconica (transforma-se parcialmente: asas, baforada ilimitada, +4 FOR).
 
-Guerreiro das Profundezas (Especialidade: Aquaticos e Anfibios): Comer monstros aquaticos concede respiração aquatica, nado de 12m/turno e pele escorregadia por 8h. Progressao: Combaté Subaquatico (sem penalidades na agua), Pele Anfibia (sem penalidade em terreno molhado), Pressao das Profundezas (imune a dano de pressao), Mestre das Aguas Negras (+2 ataques e CA quando submerso), Forma Abissal (controla correntes de agua numa área de 9m).
+Sentinela das Profundezas (Especialidade: Aquaticos e Anfibios): Comer monstros aquaticos concede respiração aquatica, nado de 12m/turno e pele escorregadia por 8h. Progressao: Combaté Subaquatico (sem penalidades na agua), Pele Anfibia (sem penalidade em terreno molhado), Pressao das Profundezas (imune a dano de pressao), Mestre das Aguas Negras (+2 ataques e CA quando submerso), Forma Abissal (controla correntes de agua numa área de 9m).
 
 ---
 
@@ -595,20 +595,20 @@ Guerreiro das Profundezas (Especialidade: Aquaticos e Anfibios): Comer monstros 
 
 Dado de HP: 1d10 | Atributos Primarios: Destreza e Sabedoria
 Proficiencias: Armaduras leves e medias, escudos, armas simples e marciais
-Atributos Culinarios Iniciais: Harmonização +3, Trinchar +2
+Atributos Culinarios Iniciais: Forrageio +3, Extração +2
 
-**Bonus de Dieta Base (Nivel 1):**
+**Bônus Passivo de Sobrevivência (Nivel 1):**
 Estômago Selvagem — Nao sofre penalidades ao consumir alimentos crus, semi-preparados ou de qualidade duvidosa. Pode comer no campo sem fogueira sem risco.
 
 **Subclasses do Patrulheiro:**
 
-Caçador Celeste (Especialidade: Aves e Voadores): Comer monstros alados afia a visao no escuro (perfeita até 36m) e aumenta alcance de ataques em +9m por 8h. Progressao: Tiro de Precisao, Rastreio Aereo, Olho de Falcao, Golpe Celeste, Ataque de Mergulho.
+Caçador do Céu (Especialidade: Aves e Voadores): Comer monstros alados afia a visao no escuro (perfeita até 36m) e aumenta alcance de ataques em +9m por 8h. Progressao: Tiro de Precisao, Rastreio Aereo, Olho de Falcao, Golpe Celeste, Ataque de Mergulho.
 
-Forrageiro dos Esporos (Especialidade: Flora e Fungos): Imunidade a controle mental, ataques toxicos passivos e nuvens de esporos curativos no descanso por 12h. Progressao: Identificacao de Flora, Flechas de Esporo, Nuvem de Cura, Rede de Raizes, Florescimento Toxico.
+Explorador de Esporos (Especialidade: Flora e Fungos): Imunidade a controle mental, ataques toxicos passivos e nuvens de esporos curativos no descanso por 12h. Progressao: Identificacao de Flora, Flechas de Esporo, Nuvem de Cura, Rede de Raizes, Florescimento Toxico.
 
-Rastreador de Sangue Frio (Especialidade: Repteis e Basiliscos): Imunidade a petrificação e camuflagem de pele ativa (Advantage em Furtividade em terrenos rochosos) por 8h. Progressao: Rastejamento Silencioso, Sentido Termico, Escamas Adaptativas, Olhar Frio, Forma de Reptil.
+Rastreador de Escamas (Especialidade: Repteis e Basiliscos): Imunidade a petrificação e camuflagem de pele ativa (Advantage em Furtividade em terrenos rochosos) por 8h. Progressao: Rastejamento Silencioso, Sentido Termico, Escamas Adaptativas, Olhar Frio, Forma de Reptil.
 
-Guia de Enxame (Especialidade: Pragas e Insetos Menores): Conexao telepatica com insetos locais — detecta vibracoes no chao a 15m e localiza inimigos invisiveis. Progressao: Sentido de Formigueiro, Direcao de Enxame, Convocacao de Insetos, Mente Coletiva, Infestacao.
+Mestre de Enxame (Especialidade: Pragas e Insetos Menores): Conexao telepatica com insetos locais — detecta vibracoes no chao a 15m e localiza inimigos invisiveis. Progressao: Sentido de Formigueiro, Direcao de Enxame, Convocacao de Insetos, Mente Coletiva, Infestacao.
 
 ---
 
@@ -616,18 +616,18 @@ Guia de Enxame (Especialidade: Pragas e Insetos Menores): Conexao telepatica com
 
 Dado de HP: 1d8 | Atributos Primarios: Destreza e Inteligencia
 Proficiencias: Armaduras leves, armas simples, espadas curtas, bestas de mao, rapiers
-Atributos Culinarios Iniciais: Trinchar +4, Harmonização +2
+Atributos Culinarios Iniciais: Extração +4, Forrageio +2
 
-**Bonus de Dieta Base (Nivel 1):**
+**Bônus Passivo de Sobrevivência (Nivel 1):**
 Digestão Rápida — Uma refeicao antes da batalha concede +6m de deslocamento e Vantagem em Iniciativa no primeiro turno de qualquer combate.
 
 **Ataque Furtivo:** Causa dano bonus (1d6 no nivel 1, crescendo até 10d6 no nivel 20) ao atacar com Vantagem ou quando um aliado esta adjacente ao alvo.
 
 **Subclasses do Ladino:**
 
-Degustador de Sombras (Especialidade: Espirituais): Comer ectoplasma permite ficar intangivel por 1 turno uma vez por combate, e adiciona +1d6 necrótico a ataques furtivos. Progressao: Toque Fantasmal, Passo entre Sombras, Absorção de Eter, Forma Translucida, Mente Morta.
+Sombra Etérea (Especialidade: Espirituais): Comer ectoplasma permite ficar intangivel por 1 turno uma vez por combate, e adiciona +1d6 necrótico a ataques furtivos. Progressao: Toque Fantasmal, Passo entre Sombras, Absorção de Eter, Forma Translucida, Mente Morta.
 
-Extrator de Geleias (Especialidade: Amorfos e Slimes): Corpo ganha elasticidade anormal — passa por frestas de 15cm, escapa de qualquer agarramento automaticamente, resistência a ácido. Progressao: Flexibilidade Extrema, Absorção de Impacto, Forma Fluida, Corpo de Gel, Dissolucao.
+Forma Amorfa (Especialidade: Amorfos e Slimes): Corpo ganha elasticidade anormal — passa por frestas de 15cm, escapa de qualquer agarramento automaticamente, resistência a ácido. Progressao: Flexibilidade Extrema, Absorção de Impacto, Forma Fluida, Corpo de Gel, Dissolucao.
 
 Ladrao de Glandulas (Especialidade: Peconhentos): Bebendo veneno purificado, ataques ganham dano venenoso passivo (+1d4) e saliva torna-se corrosiva. Progressao: Resistência a Veneno, Aplicacao Rápida, Veneno Personalizado, Imunidade Total, Veneno Lendário.
 
@@ -639,22 +639,22 @@ Corsario de Cripta (Especialidade: Osseos e Mortos-Vivos Corporeos): Resistênci
 
 Dado de HP: 1d6 | Atributos Primarios: Inteligencia
 Proficiencias: Adagas, dardos, fundas, cajados, bestas leves
-Atributos Culinarios Iniciais: Coccao +4, Harmonização +3
+Atributos Culinarios Iniciais: Coccao +4, Forrageio +3
 
-**Bonus de Dieta Base (Nivel 1):**
+**Bônus Passivo de Sobrevivência (Nivel 1):**
 Mente Nutrigena — Consumir qualquer ingrediente magico (lodo elemental, glândula de mana, cristal de monstro) restaura 1 espaco de feitico de nivel baixo.
 
 **Subclasses do Mago:**
 
-Piromante de Forno (Especialidade: Calor e Assados): Refeicoes assadas pelo Mago maximizam a Mana do grupo; feiticos de fogo dispensam componentes e causam +1d6 em criaturas de Gelo/Agua.
+Piromante das Brasas (Especialidade: Calor e Assados): Refeicoes assadas pelo Mago maximizam a Mana do grupo; feiticos de fogo dispensam componentes e causam +1d6 em criaturas de Gelo/Agua.
 
 Criomante de Conservacao (Especialidade: Gelo e Dry-Aged): Carnes envelhecidas mágicamente no gelo concedem aura congelante passiva (1d4 frio a adjacentes) e escudos de gelo (+3 CA temporária).
 
-Mago Fermentador (Especialidade: Tempo e Bacterias): Pratos fermentados garantem imunidade a ilusao e curam doenças/maldicoes do grupo.
+Mago Alquímico (Especialidade: Tempo e Bacterias): Pratos fermentados garantem imunidade a ilusao e curam doenças/maldicoes do grupo.
 
-Alquimista de Caldos (Especialidade: Ácidos e Liquidos): Sopas densas de monstro permitem regurgitar ácido (2d6) ou expelir nevoa venenosa (CD 13 CON ou Envenenado) em combate.
+Alquimista Ácido (Especialidade: Ácidos e Liquidos): Sopas densas de monstro permitem regurgitar ácido (2d6) ou expelir nevoa venenosa (CD 13 CON ou Envenenado) em combate.
 
-Mago Confeiteiro (Especialidade: Doces Magicos): Dieta rica em glicose arcana concede feiticos de encantamento e confusao de graça (sem espaco de magia) uma vez por dia.
+Mago dos Encantos (Especialidade: Doces Magicos): Dieta rica em glicose arcana concede feiticos de encantamento e confusao de graça (sem espaco de magia) uma vez por dia.
 
 ---
 
@@ -662,16 +662,16 @@ Mago Confeiteiro (Especialidade: Doces Magicos): Dieta rica em glicose arcana co
 
 Dado de HP: 1d8 | Atributos Primarios: Sabedoria e Carisma
 Proficiencias: Armaduras leves e medias, escudos, armas simples
-Atributos Culinarios Iniciais: Harmonização +4, Estômago de Ferro +3
+Atributos Culinarios Iniciais: Forrageio +4, Fortitude +3
 
-**Bonus de Dieta Base (Nivel 1):**
+**Bônus Passivo de Sobrevivência (Nivel 1):**
 Comunhao Material — Toda vez que se alimenta de qualquer refeicao, recebe HP Temporarios igual ao nivel do Clérigo vezes 2.
 
 **Subclasses do Clérigo:**
 
 Sacerdote da Purificacao (Especialidade: Amaldicados e Infectados): Carnes purificadas por reza concedem +3 em ataques contra o mal e curam maldicoes ativas no grupo após a refeicao.
 
-Monge do Jejum (Especialidade: Energia Interna): Lutar de barriga vazia por 8h+ concede +4 em esquiva e dano radiante. Quando finalmente come, libera onda de choque (3d8 radiante, área 6m).
+Monge Ascético (Especialidade: Energia Interna): Lutar de barriga vazia por 8h+ concede +4 em esquiva e dano radiante. Quando finalmente come, libera onda de choque (3d8 radiante, área 6m).
 
 Clérigo do Pao da Vida (Especialidade: Flora Divina): Transforma musgos e plantas em paes que fornecem HP Temporario extra (Nivel x3) a todo o grupo a cada manha.
 
@@ -685,9 +685,9 @@ Clérigo do Limiar (Especialidade: Mortos-Vivos Corporeos e Carnes Necroticas): 
 
 Dado de HP: 1d12 | Atributos Primarios: Força e Constituicao
 Proficiencias: Armaduras leves e medias (nao pesadas), escudos, todas as armas
-Atributos Culinarios Iniciais: Estômago de Ferro +4, Trinchar +2
+Atributos Culinarios Iniciais: Fortitude +4, Extração +2
 
-**Bonus de Dieta Base (Nivel 1):**
+**Bônus Passivo de Sobrevivência (Nivel 1):**
 Sede de Sangue — Consumir carne crua ou o coracao de um monstro recem-abatido (ação bônus) cura 1d8+CON em HP e estende a duração da Furia em 2 turnos.
 
 **Furia:** Como ação bonus, entra em Furia por 1 minuto. Durante a Furia: +2 dano em ataques de Forca, Vantagem em testes de Força e CON, resistência a dano contundente/cortante/perfurante. Usos: 2 no Nivel 1, crescendo com o nivel.
@@ -698,7 +698,7 @@ Devorador de Coracoes (Especialidade: Orgaos Vitais de Predadores): Ao comer cor
 
 Mandibula de Ferro (Especialidade: Ossos e Carapaças): Mastigar exoesqueletos concede +1d6 dano perfurante em ataques desarmados (estilhacos entre os punhos).
 
-Ruminante das Neves (Especialidade: Gordura e Monstros Gigantes): Imunidade a dano de frio e ignora penalidades de Exaustao ao estocar calorias de criaturas gordurosas. Pode reservar uma refeicao para dias sem comer.
+Colosso do Gelo (Especialidade: Gordura e Monstros Gigantes): Imunidade a dano de frio e ignora penalidades de Exaustao ao estocar calorias de criaturas gordurosas. Pode reservar uma refeicao para dias sem comer.
 
 Frenetico do Acucar (Especialidade: Doces Magicos e Slimes de Fruta): Velocidade de movimento dobra e ganha Acao Bonus extra ao consumir glicose mágica, mas sofre crash (Nivel 1 de Exaustao) quando o efeito acaba.
 
@@ -708,22 +708,22 @@ Frenetico do Acucar (Especialidade: Doces Magicos e Slimes de Fruta): Velocidade
 
 Dado de HP: 1d8 | Atributos Primarios: Carisma e Destreza
 Proficiencias: Armaduras leves, armas simples, algumas marciais, todos os instrumentos musicais
-Atributos Culinarios Iniciais: Harmonização +5, Coccao +2
+Atributos Culinarios Iniciais: Forrageio +5, Coccao +2
 
-**Bonus de Dieta Base (Nivel 1):**
+**Bônus Passivo de Sobrevivência (Nivel 1):**
 Harmonia de Sabores — Quando o Bardo come junto do grupo, a duração dos bonus de comida de todos os membros e estendida em 50%.
 
 **Inspiracao de Bardo:** Como ação bonus, concede 1d6 de Inspiracao a um aliado. O aliado pode adicionar esse dado a qualquer teste. Evolui de 1d6 para 1d12 conforme o nivel.
 
 **Subclasses do Bardo:**
 
-Sommelier de Masmorra (Especialidade: Fermentados e Liquidos Organicos): Bebidas emparelhadas com o prato correto maximizam os dados de cura de qualquer magia do Bardo pelas proximas horas.
+Estratega de Masmorra (Especialidade: Fermentados e Liquidos Organicos): Bebidas emparelhadas com o prato correto maximizam os dados de cura de qualquer magia do Bardo pelas proximas horas.
 
-Bardo Cervejeiro (Especialidade: Fungos e Levedura): Beber suas cervejas de fungo concede HP Temporario adicional (igual ao dado de Inspiracao atual) sempre que usa Inspiracao de Bardo.
+Bardo Fermentador (Especialidade: Fungos e Levedura): Beber suas cervejas de fungo concede HP Temporario adicional (igual ao dado de Inspiracao atual) sempre que usa Inspiracao de Bardo.
 
 Danciarino das Facas (Especialidade: Aves e Ingredientes Ageis): Carnes magras de aves permitem usar Carisma em vez de Destreza para atacar e recuperar facas de trinchar lancadas.
 
-Cantor das Especiarias (Especialidade: Ervas e Plantas Magicas): Mastigar raizes picantes raras aumenta a CD de resistência dos feiticos de ilusao e encantamento em +3.
+Cantor dos Venenos (Especialidade: Ervas e Plantas Magicas): Mastigar raizes picantes raras aumenta a CD de resistência dos feiticos de ilusao e encantamento em +3.
 
 ---
 
@@ -731,9 +731,9 @@ Cantor das Especiarias (Especialidade: Ervas e Plantas Magicas): Mastigar raizes
 
 Dado de HP: 1d8 | Atributos Primarios: Sabedoria
 Proficiencias: Armaduras leves e medias (nao metalicas), escudos não metalicos, armas simples não metalicas
-Atributos Culinarios Iniciais: Harmonização +5, Trinchar +1
+Atributos Culinarios Iniciais: Forrageio +5, Extração +1
 
-**Bonus de Dieta Base (Nivel 1):**
+**Bônus Passivo de Sobrevivência (Nivel 1):**
 Ciclo da Vida — Pode se alimentar de qualquer planta, raiz ou fungo venenoso da masmorra, convertendo o veneno em nutricao sem sofrer dano.
 
 **Forma Selvagem:** Como acao, transforma-se em qualquer besta que ja tenha encontrado (HP máximo do animal, mantém INT e SAB). Usos e limites evoluem com o nivel.
@@ -754,9 +754,9 @@ Circulo do Solo Vivo (Especialidade: Minerais e Elementais de Terra): Mastigar p
 
 Dado de HP: 1d8 | Atributos Primarios: Inteligencia e Destreza
 Proficiencias: Armaduras leves e medias, escudos, todas as ferramentas, armas simples e bestas
-Atributos Culinarios Iniciais: Coccao +5, Trinchar +3
+Atributos Culinarios Iniciais: Coccao +5, Extração +3
 
-**Bonus de Dieta Base (Nivel 1):**
+**Bônus Passivo de Sobrevivência (Nivel 1):**
 Panela de Pressao — Utensilios criados pelo Artífice fazem qualquer ingrediente render o dobro de porcoes.
 
 **Infusoes:** O Artífice pode criar Infusoes Magicas em itens mundanos — transformando uma espada comum em +1, ou uma mochila em extradimensional.
@@ -765,7 +765,7 @@ Panela de Pressao — Utensilios criados pelo Artífice fazem qualquer ingredien
 
 Ferreiro de Utensilios (Especialidade: Carapaças e Ingredientes Duros): Comer pratos feitos em panelas forjadas de exoesqueleto aumenta a CA das proprias armaduras em +2.
 
-Engenheiro de Fogareiros (Especialidade: Inflamaveis e Glandulas de Fogo): Consumir glândulas combustiveis concede resistência a Fogo e aumenta o dano de bombas e engenhocas em +2d6.
+Engenheiro de Explosivos (Especialidade: Inflamaveis e Glandulas de Fogo): Consumir glândulas combustiveis concede resistência a Fogo e aumenta o dano de bombas e engenhocas em +2d6.
 
 Biologo Alquimico (Especialidade: Ácidos e Venenos): Micro-doses de toxinas processadas garantem imunidade a envenenamento e a habilidade de revestir armas com ácido corrosivo (+1d6 ácido, 1 minuto).
 
@@ -795,7 +795,7 @@ Antes de extrair ingredientes de um monstro, o grupo pode fazer um Estudo de Ana
 
 - Qualquer personagem faz um teste de Inteligencia/Natureza contra a CD do monstro.
 - CD = 10 + Nivel do monstro dividido por 2 (arredondado)
-- Sucesso: O grupo mapeia a Anatomia daquela especie permanentemente. Futuras rolagens de Trinchar contra aquela especie tem Vantagem.
+- Sucesso: O grupo mapeia a Anatomia daquela especie permanentemente. Futuras rolagens de Extração contra aquela especie tem Vantagem.
 - Falha: Pode tentar novamente após matar 3 exemplares adicionais da mesma especie.
 
 **Bonus de Anatomia por Classe:**
@@ -803,11 +803,11 @@ Antes de extrair ingredientes de um monstro, o grupo pode fazer um Estudo de Ana
 - Artífice Biologo Alquimico: +5 em testes de Anatomia de qualquer especie
 - Druida: Automaticamente conhece anatomia de Flora e Fungos
 
-### 5.2 Extracao de Ingredientes (Trinchar)
+### 5.2 Extracao de Ingredientes (Extração)
 
 Apos matar um monstro, o grupo tem **1 hora** antes que a carne comece a degradar mágicamente.
 
-| Dificuldade | CD de Trinchar | Resultado em falha |
+| Dificuldade | CD de Extração | Resultado em falha |
 |-------------|---------------|-------------------|
 | Facil | 10 | Carne básica obtida, partes nobres destruidas |
 | Medio | 14 | Metade dos ingredientes recuperados |
@@ -816,7 +816,7 @@ Apos matar um monstro, o grupo tem **1 hora** antes que a carne comece a degrada
 
 **Ferramentas de Extracao:**
 - Faca comum: Serve para Facil e Medio.
-- Kit de Trinchar (do Artífice): +2 em todos os testes, serve para Dificil.
+- Kit de Extração (do Artífice): +2 em todos os testes, serve para Dificil.
 - Ferramentas Especializadas (orgânicas ou mágicas): Necessarias para Especialista.
 - Recipiente Magico Selado: Necessario para Espirituais e Elementais.
 
@@ -826,12 +826,12 @@ O Cozinheiro do grupo (quem tem maior Coccao) rola para determinar a qualidade d
 
 | Resultado do Teste de Coccao | Qualidade | Efeito |
 |-----------------------------|-----------|--------|
-| 7 ou menos | Gororoba | Recupera HP minimo (1d4). Teste de Estômago de Ferro CD 13 ou sofre debuff severo. |
-| 8–15 | Refeicao Comum | Restaura 50% do HP e Mana perdidos. Ativa Bonus de Dieta Base e Subclasse. |
+| 7 ou menos | Gororoba | Recupera HP minimo (1d4). Teste de Fortitude CD 13 ou sofre debuff severo. |
+| 8–15 | Refeicao Comum | Restaura 50% do HP e Mana perdidos. Ativa Bônus Passivo de Sobrevivência e Subclasse. |
 | 16–20 | Refeicao Gourmet | Restaura 100% do HP e Mana. Concede Buff Temporario ao grupo inteiro por 2 horas. |
 | 21+ | Prato Perfeito | Como Gourmet + o cozinheiro rola 2d4 na Rolagem do Prato (escolhe o maior). |
 
-**Debuffs de Gororoba (Teste de Estômago de Ferro, CD 13):**
+**Debuffs de Gororoba (Teste de Fortitude, CD 13):**
 - Falha por 1-4: -20% do HP Maximo por 24h
 - Falha por 5-9: Velocidade reduzida a metade por 12h
 - Falha por 10+: Impossibilidade de lancar magias complexas por enjoo severo por 8h
@@ -874,12 +874,12 @@ Alem de **ingredientes** (carne, glândulas), masmorras geram **riqueza capturav
 
 | Fonte | Regra |
 |-------|--------|
-| **Monstro** | Apos Trinchar com **sucesso**, cada espécime concede **1 saque** (especiaria + minério + moedas/tesouro) — tabela **001–060** em `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` |
-| **Trinchar excepcional** | Resultado **5+ acima da CD** = +1 especiaria **ou** +1 minério (escolha do grupo) |
+| **Monstro** | Apos Extração com **sucesso**, cada espécime concede **1 saque** (especiaria + minério + moedas/tesouro) — tabela **001–060** em `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` |
+| **Extração excepcional** | Resultado **5+ acima da CD** = +1 especiaria **ou** +1 minério (escolha do grupo) |
 | **Cenario** | Objetos **OBJ-R** (veios, baus, altares) — saque fixo ou rolagem 1d12 do bioma |
 | **Forrageio** | 1x por descanso curto no bioma: SAB ou INT + Natureza CD 12 → 1d6 (catálogo) |
 
-**Especiaria em prato:** 1 ESP por refeicao = **+1 Harmonização** no teste de Coccao daquela refeicao.
+**Especiaria em prato:** 1 ESP por refeicao = **+1 Forrageio** no teste de Coccao daquela refeicao.
 
 **Minério:** vendido ou usado em craft (Artífice CD 12; 3 unidades Comuns = 1 item +0 orgânico 24h).
 
@@ -1025,7 +1025,7 @@ Espécimes-chave: Aranha Tecerrochas (Nivel 3), Escorpião Gigante (Nivel 4), Ce
 
 | # | Habilidade | Efeito |
 |---|-----------|--------|
-| 1 | Estômago de Ferro | Imune a penalidades por alimentos estragados ou podres. |
+| 1 | Fortitude | Imune a penalidades por alimentos estragados ou podres. |
 | 2 | Instinto de Horda | Bonus de +2 em dano quando um aliado tambem estiver atacando o mesmo alvo. |
 | 3 | Faro para Ouro | Detecta metais preciosos e tesouros atraves de paredes até 10m. |
 | 4 | Adrenalina Covarde | Velocidade dobra temporáriamente ao se afastar de um inimigo mais forte. |
@@ -1118,7 +1118,7 @@ Espécimes-chave: Aranha Tecerrochas (Nivel 3), Escorpião Gigante (Nivel 4), Ce
 
 # CAPÍTULO 5B — FLORA DE MASMORRA (40 ESPECIES)
 
-> Alimentacao **vegetal** para Druidas, Forrageiros e Clérigo do Pao da Vida. Cada planta ativa **Bonus de Dieta Base** e efeito proprio (sem precisar de monstro). Ver tambem **Assimilação por Espécime** (Cap. 6.2) para carne de monstro.
+> Alimentacao **vegetal** para Druidas, Forrageiros e Clérigo do Pao da Vida. Cada planta ativa **Bônus Passivo de Sobrevivência** e efeito proprio (sem precisar de monstro). Ver tambem **Assimilação por Espécime** (Cap. 6.2) para carne de monstro.
 
 ---
 
@@ -1126,9 +1126,9 @@ Espécimes-chave: Aranha Tecerrochas (Nivel 3), Escorpião Gigante (Nivel 4), Ce
 
 | Regra | Detalhe |
 |-------|---------|
-| **Quem pode** | Druida (Ciclo da Vida), Forrageiro dos Esporos, Clérigo do Pao da Vida, qualquer um com Estômago de Ferro 4+ |
+| **Quem pode** | Druida (Ciclo da Vida), Explorador de Esporos, Clérigo do Pao da Vida, qualquer um com Fortitude 4+ |
 | **Preparo** | Crua (Druida ok), refeicao Comum (Coccao 8+), ou ritual de Pao da Vida |
-| **Trinchar planta** | DES ou SAB + bonus; planta **Comum** não exige Estudo de Anatomia |
+| **Extração planta** | DES ou SAB + bonus; planta **Comum** não exige Estudo de Anatomia |
 | **Mutação** | Planta **não** rola d4 de assimilação de monstro — concede **efeito de planta** (24h ou nota) |
 | **Ecologia** | Monstros listados em **Consumidores** comem a planta no bioma; Mestre pode fazer encontros de herbivoria |
 
@@ -1195,7 +1195,7 @@ Espécimes-chave: Aranha Tecerrochas (Nivel 3), Escorpião Gigante (Nivel 4), Ce
 
 ### 03 — Broto de Veia
 **Consumidores:** Quase todos os herbivoros pequenos; Centopeia (filhotes).  
-**Efeito:** +1 em Trinchar e Harmonização; primeira refeicao de **monstro** no dia conta como Comum+.
+**Efeito:** +1 em Extração e Forrageio; primeira refeicao de **monstro** no dia conta como Comum+.
 
 ### 04 — Erva-Sino
 **Consumidores:** Grifo (ninhos), Harpia, aventureiros locais.  
@@ -1207,7 +1207,7 @@ Espécimes-chave: Aranha Tecerrochas (Nivel 3), Escorpião Gigante (Nivel 4), Ce
 
 ### 06 — Cogumelo-Bandeira
 **Consumidores:** Goblin, Cogumelo-Rei (simbiose), Ghoul (ocasional).  
-**Efeito:** +3 Estômago de Ferro; imune a podridao leve de ingrediente Comum.
+**Efeito:** +3 Fortitude; imune a podridao leve de ingrediente Comum.
 
 ### 07 — Trevo de Obelisco
 **Consumidores:** Zumbi (nao — supersticao); Espectro (energia); humanos de Grimwald.  
@@ -1247,7 +1247,7 @@ Espécimes-chave: Aranha Tecerrochas (Nivel 3), Escorpião Gigante (Nivel 4), Ce
 
 ### 16 — Esporo-Madrugada
 **Consumidores:** Cogumelo-Rei, Forrageiro (cultivo), insetos.  
-**Efeito:** Nuvem 1,5m curativa 1d8 HP (1/dia, acao); +2 Harmonização com fungos.
+**Efeito:** Nuvem 1,5m curativa 1d8 HP (1/dia, acao); +2 Forrageio com fungos.
 
 ### 17 — Raiz de Yeti
 **Consumidores:** Yeti, Lobo do Inverno, Basilisco de Gelo (raro).  
@@ -1319,7 +1319,7 @@ Espécimes-chave: Aranha Tecerrochas (Nivel 3), Escorpião Gigante (Nivel 4), Ce
 
 ### 33 — Raiz de Valdrun
 **Consumidores:** Anoes; Forjado de Osso (minerais).  
-**Efeito:** +2 em craft/Trinchar metal e osso 24h; ignora -2 sem treino em osso 1 refeicao.
+**Efeito:** +2 em craft/Extração metal e osso 24h; ignora -2 sem treino em osso 1 refeicao.
 
 ### 34 — Orquidea Sorn
 **Consumidores:** Aberracao (polen); Leitores de Sorn.  
@@ -1409,7 +1409,7 @@ Espécimes-chave: Aranha Tecerrochas (Nivel 3), Escorpião Gigante (Nivel 4), Ce
 | 1 | Mordida Paralisante | Mordidas: CD 13 CON ou Paralisado por 1 turno (1/alvo/combate). |
 | 2 | Faro Cadaverico | Detecta criaturas vivas até 30m, inclusive atras de paredes finas (24h). |
 | 3 | Instinto de Horda | +2 em dano quando um aliado tambem ataca o mesmo alvo (24h). |
-| 4 | Estômago de Ferro | Imune a penalidades por alimentos estragados ou podres (24h). |
+| 4 | Fortitude | Imune a penalidades por alimentos estragados ou podres (24h). |
 | 5 | Garras Necrofagicas | Garras e mordidas causam +1d6 necrótico (24h). |
 | 6 | Adrenalina Covarde | Velocidade dobra ao se afastar de inimigo claramente mais forte (24h). |
 | 7 | Visao de Submundo | Visao perfeita no escuro absoluto (24h). |
@@ -1657,7 +1657,7 @@ Espécimes-chave: Aranha Tecerrochas (Nivel 3), Escorpião Gigante (Nivel 4), Ce
 | 2 | Visao de Aguia | Visao perfeita no escuro 60m; imune a ilusoes visuais (24h). |
 | 3 | Par Eterno | Se aliado cai a 0 HP a 60m, Furia: +4 dano e Vantagem em ataques por 10 min (1/combate). |
 | 4 | Voo Verdadeiro | Voo 12m por turno (24h). |
-| 5 | Garra de Grifo | +3 em testes de Trinchar quando usa garra como ferramenta (24h). |
+| 5 | Garra de Grifo | +3 em testes de Extração quando usa garra como ferramenta (24h). |
 | 6 | Penas de Voo | +9m de salto; Vantagem em Percepção e Iniciativa (24h). |
 | 7 | Nobreza Bestial | Vantagem em Intimidacao contra feras (24h). |
 | 8 | Ossos Ocos | Sem dano de quedas até 15m; saltos triplicam (24h). |
@@ -1783,7 +1783,7 @@ Espécimes-chave: Aranha Tecerrochas (Nivel 3), Escorpião Gigante (Nivel 4), Ce
 
 | # | Habilidade | Efeito |
 |---|-----------|--------|
-| 1 | Estômago de Ferro | Imune a penalidades por alimentos estragados (24h). |
+| 1 | Fortitude | Imune a penalidades por alimentos estragados (24h). |
 | 2 | Instinto de Horda | +2 dano quando aliado ataca o mesmo alvo (24h). |
 | 3 | Faro para Ouro | Detecta metais preciosos atras de paredes até 10m (24h). |
 | 4 | Adrenalina Covarde | Velocidade dobra ao fugir de inimigo mais forte (24h). |
@@ -1803,7 +1803,7 @@ Espécimes-chave: Aranha Tecerrochas (Nivel 3), Escorpião Gigante (Nivel 4), Ce
 | 5 | Metabolismo Acelerado | Descanso curto e longo em metade do tempo (24h). |
 | 6 | Visao de Submundo | Visao perfeita no escuro (24h). |
 | 7 | Marcha Militar | Velocidade +3m em formacao com aliados (24h). |
-| 8 | Estômago de Ferro | Imune a penalidades por comida podre (24h). |
+| 8 | Fortitude | Imune a penalidades por comida podre (24h). |
 
 ## 034 — ORC DE MASMORRA
 
@@ -1815,7 +1815,7 @@ Espécimes-chave: Aranha Tecerrochas (Nivel 3), Escorpião Gigante (Nivel 4), Ce
 | 4 | Instinto de Horda | +2 dano com aliado no mesmo alvo (24h). |
 | 5 | Visao de Submundo | Visao perfeita no escuro (24h). |
 | 6 | Furia Contida | Uma vez por combate, +1d12 dano em um acerto (24h). |
-| 7 | Estômago de Ferro | Imune a penalidades por comida podre (24h). |
+| 7 | Fortitude | Imune a penalidades por comida podre (24h). |
 | 8 | Garras de Escavador | Escava terra a velocidade de caminhada (24h). |
 
 ## 035 — COGUMELO-REI
@@ -2257,8 +2257,8 @@ Valdrun tambem e associado aos Forjados de Osso: a crenca e que o "momento em qu
 **Cultos:** A Igreja da Forja Permanente e a religiao organizada de Valdrun — hierarquica, tecnica, com rituais que envolvem trabalho manual. O Culto do Desperdicio Zero e uma seita mais radical que considera pecado mortal descartar qualquer ingrediente de monstro sem aproveitar completamente.
 
 **Bonus para Seguidores de Valdrun:**
-- Artesao Abencado: Proficiencia automatica em ferramentas de Trinchar de todos os niveis.
-- Transformador: Uma vez por dia, ao falhar num teste de Harmonização, pode rolar novamente (Valdrun "inspira" a tecnica correta).
+- Artesao Abencado: Proficiencia automatica em ferramentas de Extração de todos os niveis.
+- Transformador: Uma vez por dia, ao falhar num teste de Forrageio, pode rolar novamente (Valdrun "inspira" a tecnica correta).
 - Nucleo Resiliente: Seguidores que tambem sao Forjados de Osso tem o CD de destruicao do Nucleo de Alma aumentado em +4.
 - Bencao do Aproveitamento: Ao preparar um Banquete Lendário de Boss, rola uma habilidade de assimilação extra garantida alem do Foco normal.
 
@@ -2393,10 +2393,10 @@ Decida se o personagem segue Valdrun, Mira, Sorn, um culto menor, ou e Sem-Deus.
 
 Some os bonus da classe com quaisquer bonus raciais.
 
-- Trinchar: base 0 + bonus de classe + bonus racial
-- Harmonização: base 0 + bonus de classe + bonus racial
+- Extração: base 0 + bonus de classe + bonus racial
+- Forrageio: base 0 + bonus de classe + bonus racial
 - Coccao: base 0 + bonus de classe + bonus racial
-- Estômago de Ferro: base 0 + bonus de classe + bonus racial
+- Fortitude: base 0 + bonus de classe + bonus racial
 
 ### Passo 7 — Equipamento Inicial
 
@@ -2406,7 +2406,7 @@ Cada personagem comeca com:
 - 50 po para compras adicionais
 
 Itens especiais por raca:
-- Anao: Um kit de ferramentas de Trinchar completo (normalmente 150 po)
+- Anao: Um kit de ferramentas de Extração completo (normalmente 150 po)
 - Gnomo: Um laboratorio portátil de destilacao (normalmente 200 po)
 - Forjado de Osso: Ferramentas de manutencao (1 conjunto, normalmente 100 po)
 
@@ -2426,7 +2426,7 @@ Escolha ou crie um background narrativo. Responda:
 
 ## CAPÍTULO 11 — REGRAS DE TALENTOS
 
-Nos **Niveis 4, 8, 12 e 16**, alem dos bonus normais de progressao, cada personagem escolhe **1 Talento do Caminho de Subclasse** (Cap. 12), ligado a **Dieta Marcial** escolhida no Nivel 2.
+Nos **Niveis 4, 8, 12 e 16**, alem dos bonus normais de progressao, cada personagem escolhe **1 Talento do Caminho de Subclasse** (Cap. 12), ligado a **Caminho de Assimilação** escolhida no Nivel 2.
 
 **Fontes de Talentos:**
 - **Caminho de Subclasse (obrigatorio):** 34 caminhos — um por subclasse (Cap. 4). Cadeia 4 → 8 → 12 → 16, mais **Ascensao** no Nivel 20.
@@ -2436,7 +2436,7 @@ Nos **Niveis 4, 8, 12 e 16**, alem dos bonus normais de progressao, cada persona
 
 **Limite padrão:** 4 talentos de subclasse (um por janela) + Ascensao no 20. O extra universal do nv. 12 não substitui o talento de subclasse — e adicional se o Mestre permitir.
 
-**Nivel 2:** Escolha a subclasse; ganha a **Dieta Especializada** passiva (Cap. 4 e Cap. 12).
+**Nivel 2:** Escolha a subclasse; ganha a **Passivo de Assimilação** passiva (Cap. 4 e Cap. 12).
 
 ### Balanceamento (classes vs monstros)
 
@@ -2463,42 +2463,42 @@ Use a **faixa de andar** (Livro do Mestre, Cap. 21) e o **escalonamento** quando
 
 | Classe | Subclasse |
 |--------|-----------|
-| **Guerreiro** | Predador Voraz |
-| | Quebra-Cascos |
+| **Guerreiro** | Caçador de Feras |
+| | Quebrador de Carapaças |
 | | Cavaleiro Draconico |
-| | Guerreiro das Profundezas |
-| **Patrulheiro** | Caçador Celeste |
-| | Forrageiro dos Esporos |
-| | Rastreador de Sangue Frio |
-| | Guia de Enxame |
-| **Ladino** | Degustador de Sombras |
-| | Extrator de Geleias |
+| | Sentinela das Profundezas |
+| **Patrulheiro** | Caçador do Céu |
+| | Explorador de Esporos |
+| | Rastreador de Escamas |
+| | Mestre de Enxame |
+| **Ladino** | Sombra Etérea |
+| | Forma Amorfa |
 | | Ladrao de Glandulas |
 | | Corsario de Cripta |
-| **Mago** | Piromante de Forno |
+| **Mago** | Piromante das Brasas |
 | | Criomante de Conservacao |
-| | Mago Fermentador |
-| | Alquimista de Caldos |
-| | Mago Confeiteiro |
+| | Mago Alquímico |
+| | Alquimista Ácido |
+| | Mago dos Encantos |
 | **Clérigo** | Sacerdote da Purificacao |
-| | Monge do Jejum |
+| | Monge Ascético |
 | | Clérigo do Pao da Vida |
 | | Pastor de Quimeras |
 | | Clérigo do Limiar *(Trilha Necromantica)* |
 | **Bárbaro** | Devorador de Coracoes |
 | | Mandibula de Ferro |
-| | Ruminante das Neves |
+| | Colosso do Gelo |
 | | Frenetico do Acucar |
-| **Bardo** | Sommelier de Masmorra |
-| | Bardo Cervejeiro |
+| **Bardo** | Estratega de Masmorra |
+| | Bardo Fermentador |
 | | Dancarino das Facas |
-| | Cantor das Especiarias |
+| | Cantor dos Venenos |
 | **Druida** | Circulo da Decomposicao |
 | | Circulo do Superpredador |
 | | Circulo da Simbiose |
 | | Circulo do Solo Vivo |
 | **Artífice** | Ferreiro de Utensilios |
-| | Engenheiro de Fogareiros |
+| | Engenheiro de Explosivos |
 | | Biologo Alquimico |
 | | Construtor de Armadilhas |
 
@@ -2507,9 +2507,9 @@ Use a **faixa de andar** (Livro do Mestre, Cap. 21) e o **escalonamento** quando
 ## Regras
 
 ### Escolha e identidade
-- **Nivel 2:** escolhe **uma** Subclasse listada no Capítulo 4. Ganha imediatamente a **Dieta Especializada** passiva da subclasse (bonus ativo após Refeicao Comum ou melhor, como o Bonus de Dieta Base da classe).
+- **Nivel 2:** escolhe **uma** Subclasse listada no Capítulo 4. Ganha imediatamente a **Passivo de Assimilação** passiva da subclasse (bonus ativo após Refeicao Comum ou melhor, como o Bônus Passivo de Sobrevivência da classe).
 - A subclasse define **identidade de combaté e culinaria** — não ha mais caminhos genericos duplicados por classe.
-- Especialidade alimentar indica quais monstros/ingredientes **otimizam** a dieta; outras refeicoes ainda ativam Bonus de Dieta Base, mas não os efeitos da Dieta Especializada.
+- Especialidade alimentar indica quais monstros/ingredientes **otimizam** a dieta; outras refeicoes ainda ativam Bônus Passivo de Sobrevivência, mas não os efeitos da Passivo de Assimilação.
 
 ### Talentos obrigatorios do Caminho
 - **Niveis 4, 8, 12 e 16:** em cada janela, o personagem escolhe **exatamente 1** talento do **seu** Caminho de Subclasse (cadeia com pre-requisito).
@@ -2527,8 +2527,8 @@ Use a **faixa de andar** (Livro do Mestre, Cap. 21) e o **escalonamento** quando
 - **Mago / Clérigo / Bardo / Druida / Artífice:** magias exclusivas de subclasse (Cap. 19) **somam-se** ao grimorio ou lista de preparacao e **não** substituem talentos de caminho.
 
 ### Culinaria em masmorra (estilo expedicao)
-- Muitos talentos referem **Trinchar**, **Estudo de Anatomia**, **qualidade de ingrediente** e **refeicao de campo** — assumem o sistema de Parte V (Alimentacao e Culinaria Biomágica).
-- Quando um talento diz "ingrediente intacto", significa qualidade máxima para aquela parte sem teste adicional de Trinchar.
+- Muitos talentos referem **Extração**, **Estudo de Anatomia**, **qualidade de ingrediente** e **refeicao de campo** — assumem o sistema de Parte V (Alimentacao e Culinaria Biomágica).
+- Quando um talento diz "ingrediente intacto", significa qualidade máxima para aquela parte sem teste adicional de Extração.
 
 ---
 
@@ -2538,13 +2538,13 @@ Use a **faixa de andar** (Livro do Mestre, Cap. 21) e o **escalonamento** quando
 
 ## GUERREIRO
 
-### Predador Voraz (Guerreiro)
+### Caçador de Feras (Guerreiro)
 
 **Dieta nv.2:** Ao comer carne vermelha de feras e bestiais, ganha +2 FOR e regeneração de 3 HP por turno por 4 horas.
 
 **Nv 4 — Corte Limpo:** Ataques contra feras e bestiais ignoram 3 pontos de CA. Acertos críticos causam sangramento (2d4 HP no inicio do turno do alvo, 3 turnos). Criaturas mortas por crítico rendem o triplo de porcoes de carne.
 
-**Nv 8 — Maestria Voraz (requer Corte Limpo):** +4 permanente em Trinchar ao processar feras. Como ação bonus, pode Trinchar um monstro bestial vivo acima de 25% HP — o alvo fica Atordoado 1 turno e perde 1d10 HP. Uma vez por combate.
+**Nv 8 — Maestria Voraz (requer Corte Limpo):** +4 permanente em Extração ao processar feras. Como ação bonus, pode Extração um monstro bestial vivo acima de 25% HP — o alvo fica Atordoado 1 turno e perde 1d10 HP. Uma vez por combate.
 
 **Nv 12 — Abaté Perfeito (requer Maestria Voraz):** Uma vez por turno, se reduzir um inimigo a 0 HP com um único ataque corpo a corpo, todos os ingredientes da carcaca ficam intactos (qualidade superior automatica). Com 2+ ataques por ação (nv. 5+), pode declarar qual ataque e o "abate" antes de rolar.
 
@@ -2554,7 +2554,7 @@ Use a **faixa de andar** (Livro do Mestre, Cap. 21) e o **escalonamento** quando
 
 ---
 
-### Quebra-Cascos (Guerreiro)
+### Quebrador de Carapaças (Guerreiro)
 
 **Dieta nv.2:** Ao comer artropodes e carapaceos, a pele endurece — imunidade temporária a acertos críticos contra você e +2 CA por 8 horas.
 
@@ -2586,7 +2586,7 @@ Use a **faixa de andar** (Livro do Mestre, Cap. 21) e o **escalonamento** quando
 
 ---
 
-### Guerreiro das Profundezas (Guerreiro)
+### Sentinela das Profundezas (Guerreiro)
 
 **Dieta nv.2:** Ao comer aquaticos e anfibios, ganha respiração aquatica, nado 12m/turno e pele escorregadia (+2 em testes para escapar agarrao) por 8 horas.
 
@@ -2604,7 +2604,7 @@ Use a **faixa de andar** (Livro do Mestre, Cap. 21) e o **escalonamento** quando
 
 ## PATRULHEIRO
 
-### Caçador Celeste (Patrulheiro)
+### Caçador do Céu (Patrulheiro)
 
 **Dieta nv.2:** Ao comer aves e voadores, visao no escuro perfeita até 36m e +9m de alcance em ataques a distancia por 8 horas.
 
@@ -2620,7 +2620,7 @@ Use a **faixa de andar** (Livro do Mestre, Cap. 21) e o **escalonamento** quando
 
 ---
 
-### Forrageiro dos Esporos (Patrulheiro)
+### Explorador de Esporos (Patrulheiro)
 
 **Dieta nv.2:** Ao comer flora e fungos de masmorra, imunidade a controle mental, ataques toxicos passivos leves (1d4 veneno em primeiro ataque por combate) e nuvem de esporos curativos no descanso (aliados recuperam 1d8 HP).
 
@@ -2636,7 +2636,7 @@ Use a **faixa de andar** (Livro do Mestre, Cap. 21) e o **escalonamento** quando
 
 ---
 
-### Rastreador de Sangue Frio (Patrulheiro)
+### Rastreador de Escamas (Patrulheiro)
 
 **Dieta nv.2:** Ao comer repteis e basiliscos, imunidade a petrificação e camuflagem de pele (Vantagem em Furtividade em terreno rochoso) por 8 horas.
 
@@ -2648,11 +2648,11 @@ Use a **faixa de andar** (Livro do Mestre, Cap. 21) e o **escalonamento** quando
 
 **Nv 16 — Olhar Frio (requer Escamas Adaptativas):** 1/descanso curto: olhar reptiliano (1 alvo, 18m, CON CD 15 ou Lentidão 1 min; falha por 5+ = Paralisado 1 turno). Criaturas ja Envenenadas tem Desvantagem no save.
 
-**Nv 20 — Ascensao — Forma de Reptil:** Transformacao parcial 10 min (1/descanso longo): escamas +2 CA, escalada 9m, mordida 2d6+DES perfurante como ação bonus, imunidade a petrificação. Pode extrair glândula de petrificação de basilisco morto com Vantagem em Trinchar.
+**Nv 20 — Ascensao — Forma de Reptil:** Transformacao parcial 10 min (1/descanso longo): escamas +2 CA, escalada 9m, mordida 2d6+DES perfurante como ação bonus, imunidade a petrificação. Pode extrair glândula de petrificação de basilisco morto com Vantagem em Extração.
 
 ---
 
-### Guia de Enxame (Patrulheiro)
+### Mestre de Enxame (Patrulheiro)
 
 **Dieta nv.2:** Ao comer pragas e insetos menores, conexao telepatica com insetos locais — detecta vibracoes no chao a 15m e localiza invisiveis "sentindo" o enxame.
 
@@ -2670,7 +2670,7 @@ Use a **faixa de andar** (Livro do Mestre, Cap. 21) e o **escalonamento** quando
 
 ## LADINO
 
-### Degustador de Sombras (Ladino)
+### Sombra Etérea (Ladino)
 
 **Dieta nv.2:** Ao comer ectoplasma e residuos espirituais, pode ficar intangivel 1 turno por combaté e Ataque Furtivo ganha +1d6 necrótico.
 
@@ -2686,7 +2686,7 @@ Use a **faixa de andar** (Livro do Mestre, Cap. 21) e o **escalonamento** quando
 
 ---
 
-### Extrator de Geleias (Ladino)
+### Forma Amorfa (Ladino)
 
 **Dieta nv.2:** Ao comer amorfos e slimes, corpo elastico — passa por frestas de 15cm, escapa agarramento automaticamente, resistência a ácido.
 
@@ -2696,7 +2696,7 @@ Use a **faixa de andar** (Livro do Mestre, Cap. 21) e o **escalonamento** quando
 
 **Nv 12 — Forma Fluida (requer Absorção de Impacto):** 1/descanso curto, 3 turnos: imune a agarrao, crítico contra você vira acerto normal, deslocamento +3m. Ataques furtivos aplicam Desarme leve (objeto cai) em falha de DES CD 14.
 
-**Nv 16 — Corpo de Gel (requer Forma Fluida):** Resistência a ácido e perfurante. Pode se comprimir em espaco de 5cm por 1 rodada (ação bônus). Extrair nucleo de slime morto: Vantagem em Trinchar, qualidade máxima.
+**Nv 16 — Corpo de Gel (requer Forma Fluida):** Resistência a ácido e perfurante. Pode se comprimir em espaco de 5cm por 1 rodada (ação bônus). Extrair nucleo de slime morto: Vantagem em Extração, qualidade máxima.
 
 **Nv 20 — Ascensao — Dissolucao:** 1/descanso longo: dissolve armadura nao-mágica de metal em contato (1 peca, 1 minuto fora de combate) OU em combaté toca alvo — 6d8 ácido e equipamento leve corroi (DES CD 16 metade dano). Ataque Furtivo máximo (10d6 em nv. 20) contra alvo sem armadura pesada ganha +2d6.
 
@@ -2726,7 +2726,7 @@ Use a **faixa de andar** (Livro do Mestre, Cap. 21) e o **escalonamento** quando
 
 **Nv 8 — Aparencia Cadaverica (requer Sussurro de Tumba):** Parece morto-vivo para inspecao casual. Pode entrar em criptas sem alarme social. Fingir morte agora e ação bonus.
 
-**Nv 12 — Aura de Morte (requer Aparencia Cadaverica):** Raio 3m: inimigos vivos tem -1 em ataques (medo visceral). 1/descanso curto, comanda 1 morto-vivo Fraco (HP 15, 1 ataque) por 10 min — ele pode Trinchar para o grupo.
+**Nv 12 — Aura de Morte (requer Aparencia Cadaverica):** Raio 3m: inimigos vivos tem -1 em ataques (medo visceral). 1/descanso curto, comanda 1 morto-vivo Fraco (HP 15, 1 ataque) por 10 min — ele pode Extração para o grupo.
 
 **Nv 16 — Controle de Morto-Vivo (requer Aura de Morte):** Ate 3 mortos-vivos Fracos ou 1 Medio (estatisticas do Mestre) obedecendo por 1 hora. Ataques furtivos contra alvos adjacentes a seu morto-vivo ganham +2d6 necrótico.
 
@@ -2736,7 +2736,7 @@ Use a **faixa de andar** (Livro do Mestre, Cap. 21) e o **escalonamento** quando
 
 ## MAGO
 
-### Piromante de Forno (Mago)
+### Piromante das Brasas (Mago)
 
 **Dieta nv.2:** Refeicoes assadas por você maximizam recuperacao de Mana do grupo no descanso; feiticos de fogo +1d6 vs gelo/agua e dispensam componentes de fogo.
 
@@ -2768,7 +2768,7 @@ Use a **faixa de andar** (Livro do Mestre, Cap. 21) e o **escalonamento** quando
 
 ---
 
-### Mago Fermentador (Mago)
+### Mago Alquímico (Mago)
 
 **Dieta nv.2:** Pratos fermentados garantem imunidade a ilusao ao grupo por 8h e removem doenca ou maldicao leve após refeicao.
 
@@ -2784,7 +2784,7 @@ Use a **faixa de andar** (Livro do Mestre, Cap. 21) e o **escalonamento** quando
 
 ---
 
-### Alquimista de Caldos (Mago)
+### Alquimista Ácido (Mago)
 
 **Dieta nv.2:** Sopas densas permitem regurgitar ácido 2d6 ou expelir nevoa venenosa (CD 13 CON ou Envenenado) 1/combaté após refeicao propria.
 
@@ -2794,13 +2794,13 @@ Use a **faixa de andar** (Livro do Mestre, Cap. 21) e o **escalonamento** quando
 
 **Nv 12 — Nevoa de Caldeira (requer Sopa de Resistência):** Nevoa 6m: CON CD 15 ou Envenenado; visibilidade reduzida para inimigos. Aliados dentro veem normalmente.
 
-**Nv 16 — Extracao Liquida (requer Nevoa de Caldeira):** Trinchar liquido: de monstros amorfos extrai 1d4 porcoes extras com teste de Coccao CD 14. Feiticos de ácido +2d6.
+**Nv 16 — Extracao Liquida (requer Nevoa de Caldeira):** Extração liquido: de monstros amorfos extrai 1d4 porcoes extras com teste de Coccao CD 14. Feiticos de ácido +2d6.
 
 **Nv 20 — Ascensao — Maré Acida:** 1/descanso longo: linha 18m x 3m de caldo fervente — 8d8 ácido e terreno dificil 1 min. Se matar com este dano, corpo dissolve em ingredientes alquimicos (qualidade superior automatica).
 
 ---
 
-### Mago Confeiteiro (Mago)
+### Mago dos Encantos (Mago)
 
 **Dieta nv.2:** Glicose arcana concede 1 magia de Encantamento nv. 1-3 por dia sem gastar espaco (escolhida ao preparar, Cap. 19).
 
@@ -2834,11 +2834,11 @@ Use a **faixa de andar** (Livro do Mestre, Cap. 21) e o **escalonamento** quando
 
 ---
 
-### Monge do Jejum (Clérigo)
+### Monge Ascético (Clérigo)
 
 **Dieta nv.2:** Após 8h sem comer, +4 em esquiva e dano radiante nos ataques; ao quebrar o jejum com refeicao, onda 3d8 radiante em 6m (CON CD 14 metade).
 
-**Nv 4 — Disciplina Vazia:** Enquanto em jejum ativo, não precisa comer para manter Bonus de Dieta Base da classe (nao o da subclasse). +2 em Concentracao.
+**Nv 4 — Disciplina Vazia:** Enquanto em jejum ativo, não precisa comer para manter Bônus Passivo de Sobrevivência da classe (nao o da subclasse). +2 em Concentracao.
 
 **Nv 8 — Golpe do Jejum (requer Disciplina Vazia):** Primeiro ataque após quebrar jejum causa +3d8 radiante extra. 1/combaté se permanecer em jejum: esquiva reacao +4 CA.
 
@@ -2886,7 +2886,7 @@ Use a **faixa de andar** (Livro do Mestre, Cap. 21) e o **escalonamento** quando
 
 **Dieta nv.2:** Carnes osseas ou de morto-vivo corporeo consumidas com rito do Limiar concedem resistência a necrótico e fazem mortos-vivos com INT 3 ou menos ignorarem você como primeiro alvo do combaté até você ataca-los ou usar necromancia hostil contra a especie.
 
-**Nv 4 — Domínio do Limiar:** Comanda **servos** mortos-vivos (zumbi ou esqueleto reduzido: HP = 10 + nivel×3, CA = 8 + nivel÷4, ataque 1d6 + mod. SAB necrótico). Maximo de servos = min(3, mod. SAB). Agem na sua iniciativa (ação bônus para ordenar ataque ou movimento). Recupera 1 servo destruido por descanso longo se tiver carcaca. Servos podem Trinchar corpos mortos com metade do seu bonus de Trinchar.
+**Nv 4 — Domínio do Limiar:** Comanda **servos** mortos-vivos (zumbi ou esqueleto reduzido: HP = 10 + nivel×3, CA = 8 + nivel÷4, ataque 1d6 + mod. SAB necrótico). Maximo de servos = min(3, mod. SAB). Agem na sua iniciativa (ação bônus para ordenar ataque ou movimento). Recupera 1 servo destruido por descanso longo se tiver carcaca. Servos podem Extração corpos mortos com metade do seu bonus de Extração.
 
 **Nv 8 — Colheita de Alma (requer Domínio do Limiar):** Ao reduzir criatura viva a 0 HP, captura 1 fragmento de alma (inventário, max 3). Consumir fragmento: cura 2d8 + SAB OU lança 1 magia de Necromancia de nv. 3 ou menos sem gastar espaco (1/descanso longo). Fragmento alimenta `Animação de Mortos` sem componente de carcaca se usado no mesmo dia.
 
@@ -2932,7 +2932,7 @@ Use a **faixa de andar** (Livro do Mestre, Cap. 21) e o **escalonamento** quando
 
 ---
 
-### Ruminante das Neves (Bárbaro)
+### Colosso do Gelo (Bárbaro)
 
 **Dieta nv.2:** Imunidade a frio e ignora 1 nivel de Exaustao por estocar calorias de criaturas gordurosas; pode reservar 1 refeicao para dia sem comer.
 
@@ -2966,13 +2966,13 @@ Use a **faixa de andar** (Livro do Mestre, Cap. 21) e o **escalonamento** quando
 
 ## BARDO
 
-### Sommelier de Masmorra (Bardo)
+### Estratega de Masmorra (Bardo)
 
 **Dieta nv.2:** Bebidas emparelhadas com prato maximizam dados de cura de magias do Bardo pelas proximas horas.
 
-**Nv 4 — Harmonização de Taças:** Ao usar Inspiracao em quem vai cozinhar, alvo ganha +1d6 em Coccao/Harmonização por 1h (Cap. 19).
+**Nv 4 — Forrageio de Taças:** Ao usar Inspiracao em quem vai cozinhar, alvo ganha +1d6 em Coccao/Forrageio por 1h (Cap. 19).
 
-**Nv 8 — Menu de Expedicao (requer Harmonização de Taças):** Descanso curto com bebida sua: grupo recupera +1d8 HP extra e ativa dieta mesmo com refeicao Comum.
+**Nv 8 — Menu de Expedicao (requer Forrageio de Taças):** Descanso curto com bebida sua: grupo recupera +1d8 HP extra e ativa dieta mesmo com refeicao Comum.
 
 **Nv 12 — Reserva Envelhecida (requer Menu de Expedicao):** 1 magia de cura por descanso longo cura valor máximo dos dados se vinho correto foi consumido antes.
 
@@ -2982,7 +2982,7 @@ Use a **faixa de andar** (Livro do Mestre, Cap. 21) e o **escalonamento** quando
 
 ---
 
-### Bardo Cervejeiro (Bardo)
+### Bardo Fermentador (Bardo)
 
 **Dieta nv.2:** Cervejas de fungo concedem HP temporario igual ao dado de Inspiracao atual sempre que usa Inspiracao de Bardo.
 
@@ -3014,7 +3014,7 @@ Use a **faixa de andar** (Livro do Mestre, Cap. 21) e o **escalonamento** quando
 
 ---
 
-### Cantor das Especiarias (Bardo)
+### Cantor dos Venenos (Bardo)
 
 **Dieta nv.2:** Raizes picantes raras aumentam CD de resistência de ilusao e encantamento em +3 por 8h.
 
@@ -3058,7 +3058,7 @@ Use a **faixa de andar** (Livro do Mestre, Cap. 21) e o **escalonamento** quando
 
 **Nv 12 — Forma Monstruosa (requer Fusao Biomágica):** Pode assumir monstros até CR = nivel do Druida (basilisco, manticora, etc.).
 
-**Nv 16 — Caça Alpha (requer Forma Monstruosa):** Em Forma Selvagem, +2d6 no primeiro ataque contra presa com HP cheio. Trinchar em forma concede Vantagem.
+**Nv 16 — Caça Alpha (requer Forma Monstruosa):** Em Forma Selvagem, +2d6 no primeiro ataque contra presa com HP cheio. Extração em forma concede Vantagem.
 
 **Nv 20 — Ascensao — Forma Lendaria:** 1/descanso longo: Forma de Boss derrotado pela campanha (10 min), mantem INT/SAB, estatisticas fisicas do Boss. HP extra da dieta dobra. Apos terminar, deve comer 1 porcao da especie ou Exaustao 1.
 
@@ -3090,7 +3090,7 @@ Use a **faixa de andar** (Livro do Mestre, Cap. 21) e o **escalonamento** quando
 
 **Nv 12 — Tremor Leve (requer Pele de Pedra):** 1/descanso curto: 6m, criaturas FOR CD 14 ou Prostradas. Estruturas frageis racham (narrativo).
 
-**Nv 16 — Golem Momentaneo (requer Tremor Leve):** 1/descanso longo: elemental de pedra Pequeno (30 HP) por 10 min obedece; pode Trinchar rochas.
+**Nv 16 — Golem Momentaneo (requer Tremor Leve):** 1/descanso longo: elemental de pedra Pequeno (30 HP) por 10 min obedece; pode Extração rochas.
 
 **Nv 20 — Ascensao — Montanha Viva:** 1/descanso longo, 10 min: tamanho Grande, resistência contundente/perfurante/cortante, esmagamento 3d10 contundente (acao, 1/turno). Aliados em 3m imunes a tremor e desabamento. Pedras comidas neste estado alimentam grupo 1 dia sem refeicao.
 
@@ -3114,7 +3114,7 @@ Use a **faixa de andar** (Livro do Mestre, Cap. 21) e o **escalonamento** quando
 
 ---
 
-### Engenheiro de Fogareiros (Artífice)
+### Engenheiro de Explosivos (Artífice)
 
 **Dieta nv.2:** Glandulas combustiveis concedem resistência a Fogo e +2d6 em bombas e engenhocas por 8h.
 
@@ -3152,7 +3152,7 @@ Use a **faixa de andar** (Livro do Mestre, Cap. 21) e o **escalonamento** quando
 
 **Nv 4 — Armadilha Biologica:** Monta armadilha em 5 min com ingrediente (efeito biomagico do monstro, Percepção CD 18 detectar).
 
-**Nv 8 — Extracao Perfeita (requer Armadilha Biologica):** Vantagem em Trinchar se monstro morreu em armadilha sua ou com 0 dano de arma cortante.
+**Nv 8 — Extracao Perfeita (requer Armadilha Biologica):** Vantagem em Extração se monstro morreu em armadilha sua ou com 0 dano de arma cortante.
 
 **Nv 12 — Rede de Campo (requer Extracao Perfeita):** 3 armadilhas ativas simultaneas. Armadilha pode ser remota (corda, 9m).
 
@@ -3166,7 +3166,7 @@ Use a **faixa de andar** (Livro do Mestre, Cap. 21) e o **escalonamento** quando
 
 | Nivel | Ganho de subclasse |
 |-------|-------------------|
-| 2 | Dieta Especializada (passiva) |
+| 2 | Passivo de Assimilação (passiva) |
 | 4 | Talento 1 do caminho |
 | 8 | Talento 2 (requer 4) |
 | 12 | Talento 3 (requer 8) |
@@ -3177,7 +3177,7 @@ Use a **faixa de andar** (Livro do Mestre, Cap. 21) e o **escalonamento** quando
 
 ---
 
-*Fim do Capítulo 12 — Caminhos de Subclasse (Dieta Marcial).*
+*Fim do Capítulo 12 — Caminhos de Subclasse (Caminho de Assimilação).*
 
 
 ## CAPÍTULO 13 — TALENTOS UNIVERSAIS
@@ -3194,17 +3194,17 @@ Golpe Brutal (FOR 18, Nivel 12): Uma vez por turno, pode declarar um Golpe Bruta
 
 ### TALENTOS CULINARIOS
 
-Maos de Mestre — Trinchar (Trinchar +4, Nivel 4): +3 permanente em Trinchar. Nunca sofre penalidade por extrair ingredientes "as cegas" — mesmo sem Estudo de Anatomia, extrai como se tivesse feito o estudo.
+Maos de Mestre — Extração (Extração +4, Nivel 4): +3 permanente em Extração. Nunca sofre penalidade por extrair ingredientes "as cegas" — mesmo sem Estudo de Anatomia, extrai como se tivesse feito o estudo.
 
-Paladar Apurado — Harmonização (Harmonização +5, Nivel 4): +3 permanente em Harmonização. Uma vez por refeicao, pode rolar o resultado de Harmonização com Vantagem.
+Paladar Apurado — Forrageio (Forrageio +5, Nivel 4): +3 permanente em Forrageio. Uma vez por refeicao, pode rolar o resultado de Forrageio com Vantagem.
 
 Controle de Chama Perfeito — Coccao (Coccao +4, Nivel 8): O resultado minimo em testes de Coccao e sempre 10 (nunca Gororoba). Prato Perfeito agora exige resultado 18+ em vez de 21+.
 
-Estômago Lendário (Estômago de Ferro +5, Nivel 8): Imune a debuffs de Gororoba. Pode comer ingredientes de categoria Especialista crus. Uma vez por semana, pode ingerir um ingrediente bruto de Boss e receber 1 mutação aleatoria por 8h.
+Estômago Lendário (Fortitude +5, Nivel 8): Imune a debuffs de Gororoba. Pode comer ingredientes de categoria Especialista crus. Uma vez por semana, pode ingerir um ingrediente bruto de Boss e receber 1 mutação aleatoria por 8h.
 
-Cozinheiro de Expedicao (Nivel 4): Pode preparar refeicoes em metade do tempo normal. Em combate, pode preparar uma "refeicao de emergencia" como ação bonus — concede 2d8 HP Temporarios e ativa o Bonus de Dieta Base de qualquer aliado que consuma.
+Cozinheiro de Expedicao (Nivel 4): Pode preparar refeicoes em metade do tempo normal. Em combate, pode preparar uma "refeicao de emergencia" como ação bonus — concede 2d8 HP Temporarios e ativa o Bônus Passivo de Sobrevivência de qualquer aliado que consuma.
 
-Extrator de Elite (Trinchar +6, Nivel 12): Ao extrair ingredientes de um monstro com Estudo de Anatomia, extrai automaticamente o dobro de ingredientes normais. Nunca destroca ingredientes de Boss durante extracao.
+Extrator de Elite (Extração +6, Nivel 12): Ao extrair ingredientes de um monstro com Estudo de Anatomia, extrai automaticamente o dobro de ingredientes normais. Nunca destroca ingredientes de Boss durante extracao.
 
 ### TALENTOS DE SOBREVIVENCIA
 
@@ -3226,7 +3226,7 @@ Negociador do Submundo (CAR 15, Nivel 4): Pode tentar negociar com qualquer mons
 
 Mercador de Ingredientes (Nivel 4): Vende ingredientes por 150% do preço normal. Recebe informação sobre demanda atual — sabe quais ingredientes estão valorizados antes de entrar na masmorra.
 
-Especializacao de Inimigo (Nivel 8): Escolhe um tipo de monstro. Ganha +2 em ataques, +2d6 de dano e Vantagem em Trinchar contra esse tipo. Pode ser escolhido multiplas vezes para tipos diferentes.
+Especializacao de Inimigo (Nivel 8): Escolhe um tipo de monstro. Ganha +2 em ataques, +2d6 de dano e Vantagem em Extração contra esse tipo. Pode ser escolhido multiplas vezes para tipos diferentes.
 
 Alquimista Amador (INT 13, Nivel 4): Pode criar pocoes básicas (Cura Leve, Antidoto, Resistência Elemental) com ingredientes de monstros sem ser Gnomo ou ter subclasse de alquimia.
 
@@ -3395,14 +3395,14 @@ Criada das glândulas intactas da Matriarca Tecela de Cristal. Lança fios micro
 
 ## CAPÍTULO 16 — EQUIPAMENTOS E ITENS DE AVENTURA
 
-### 16.1 Ferramentas de Trinchar
+### 16.1 Ferramentas de Extração
 
 | Item | Bonus | Notas | Preço |
 |------|-------|-------|-------|
 | Faca de Campo | +0 | Basica. Serve para Facil | 2 po |
-| Kit de Trinchar Basico | +1 | Facil e Medio sem penalidade | 15 po |
-| Kit de Trinchar Avancado | +2 | Ate Dificil sem penalidade | 50 po |
-| Kit de Artífice (Trinchar) | +3 | Todas as dificuldades, incluindo Especialista | 150 po |
+| Kit de Extração Basico | +1 | Facil e Medio sem penalidade | 15 po |
+| Kit de Extração Avancado | +2 | Ate Dificil sem penalidade | 50 po |
+| Kit de Artífice (Extração) | +3 | Todas as dificuldades, incluindo Especialista | 150 po |
 | Recipiente de Vidro Grosso | Necessario | Para Slimes e Ácidos | 25 po/conjunto |
 | Frasco Selado Magicamente | Necessario | Para Espirituais e Elementais | 80 po/frasco |
 | Luva Resistente a Ácido | Protecao | Necessaria para Centopeias e Pudins | 30 po |
@@ -3419,7 +3419,7 @@ Criada das glândulas intactas da Matriarca Tecela de Cristal. Lança fios micro
 | Fogareiro Portátil (Artífice) | Controle de temperatura preciso (+3 Coccao) | 300 po |
 | Nucleo de Chama Primordial | Fonte de calor eterno. Nunca apaga | 800 po |
 | Cera de Mumia (Preservacao) | Ingredientes não estragam por 7 dias | 50 po/bloco |
-| Frascos de Fermentacao | +2 Harmonização em ingredientes fermentados | 30 po/conjunto |
+| Frascos de Fermentacao | +2 Forrageio em ingredientes fermentados | 30 po/conjunto |
 
 ### 16.3 Protecoes e Vestimentas
 
@@ -3567,7 +3567,7 @@ Algumas magias da lista geral possuem **variante** anotada no Cap. 19 (ex.: Piro
 Chama pequena e controlável na ponta dos dedos; temperatura precisa. Uso culinário: dispensa fogareiro ou lenha.
 
 **Lâmina de Espirito** — Transmutação | Acao Bonus | Pessoal | 1 minuto | Mago, Bardo, Artífice
-Lâmina eterea (1d4 forca). +2 em testes de Trinchar com ela.
+Lâmina eterea (1d4 forca). +2 em testes de Extração com ela.
 
 **Detectar Veneno** — Adivinhacao | Acao | Pessoal | 10 minutos | Mago, Clérigo, Bardo, Druida, Artífice
 Em raio de 3m, detecta toxinas em comida, bebida ou ingrediente (aura avermelhada).
@@ -3576,14 +3576,14 @@ Em raio de 3m, detecta toxinas em comida, bebida ou ingrediente (aura avermelhad
 Criatura a 0 HP para de fazer falhas de morte; não cura HP.
 
 **Maos Firmes** — Transmutação | Acao | Toque | 1 hora | Mago, Druida, Artífice
-Alvo (você ou aliado) ganha +2 em Trinchar e não sofre -2 por falta de treinamento nesta hora.
+Alvo (você ou aliado) ganha +2 em Extração e não sofre -2 por falta de treinamento nesta hora.
 
 ---
 
 ### NIVEL 1
 
 **Extracao Amplificada** — Biomancia | 1 minuto | Toque | Instantanea | Mago, Druida, Artífice
-Monstro morto rende dobro de ingredientes; testes de Trinchar na proxima 1h tem +4.
+Monstro morto rende dobro de ingredientes; testes de Extração na proxima 1h tem +4.
 
 **Maos Gelidas** — Evocacao | Acao | 4,5m | Instantanea | Mago
 Cone 4,5m: 2d6 frio (CON CD ou dobro). Congela ingredientes.
@@ -3623,7 +3623,7 @@ Esfera 1m: 4d6 ácido (DES CD); -1 CA em armadura atingida.
 Converte ingrediente em equivalente de mesma raridade (ex.: goblin -> grifo).
 
 **Inspiracao Culinaria** — Encantamento | Acao Bonus | 9m | 1 hora | Bardo
-+3 em Coccao e Harmonização; Prato Perfeito durante efeito da +1d6 HP temp por nivel do Bardo ao grupo.
++3 em Coccao e Forrageio; Prato Perfeito durante efeito da +1d6 HP temp por nivel do Bardo ao grupo.
 
 **Preservação Perfeita** — Transmutação | Acao | Toque | 30 dias | Mago, Clérigo, Druida, Artífice
 Ingrediente preservado 30 dias sem perder propriedades biomágicas.
@@ -3642,7 +3642,7 @@ Som ou imagem estática em cubo 1,5m; não causa dano.
 ### NIVEL 3
 
 **Animação de Mortos** — Necromancia | 1 minuto | 3m | 24 horas | Mago, Clérigo
-Anima até 2 cadaveres Medios ou menores; podem Trinchar com proficiencia = metade do nivel do conjurador. Em espaco de nivel 5: 4 Medios ou 2 Grandes.
+Anima até 2 cadaveres Medios ou menores; podem Extração com proficiencia = metade do nivel do conjurador. Em espaco de nivel 5: 4 Medios ou 2 Grandes.
 
 **Injecao Biomágica** — Biomancia | Acao | Toque | 12 horas | Mago, Artífice
 Uma habilidade de assimilação do ingrediente usado, 12h, sem refeicao (ingrediente consumido).
@@ -3765,25 +3765,25 @@ Estes efeitos **nao entram** na contagem de 60 feiticos:
 
 | Subclasse | Bonus |
 |-----------|--------|
-| **Piromante de Forno** | Conhece truque `Chama de Fogareiro` extra; feiticos de fogo +1d6 vs criaturas de gelo/agua; sem componentes de fogo |
+| **Piromante das Brasas** | Conhece truque `Chama de Fogareiro` extra; feiticos de fogo +1d6 vs criaturas de gelo/agua; sem componentes de fogo |
 | **Sacerdote da Purificacao** | `Purificar Veneno` 3x/dia sem gastar espaco de nivel 1 |
-| **Mago Confeiteiro** | 1 magia de Encantamento nv. 1–3 por dia sem gastar espaco (escolhida ao preparar) |
+| **Mago dos Encantos** | 1 magia de Encantamento nv. 1–3 por dia sem gastar espaco (escolhida ao preparar) |
 | **Clérigo do Pao da Vida** | Ritual `Pao da Manha` (R, 10 min): paes = nivel do Clérigo; quem come ao amanhecer ganha HP temp = nivel x3 |
-| **Sommelier de Masmorra** | Ao usar Inspiracao de Bardo em quem prepara refeicao, alvo ganha +1d6 em Coccao/Harmonização por 1h |
-| **Alquimista de Caldos** | 1x/descanso longo: expelir caldo (cone 4,5m 4d6 ácido ou nuvem 3m DES CD 13 Envenenado) após refeicao Gourmet própria |
+| **Estratega de Masmorra** | Ao usar Inspiracao de Bardo em quem prepara refeicao, alvo ganha +1d6 em Coccao/Forrageio por 1h |
+| **Alquimista Ácido** | 1x/descanso longo: expelir caldo (cone 4,5m 4d6 ácido ou nuvem 3m DES CD 13 Envenenado) após refeicao Gourmet própria |
 | **Criomante de Conservacao** | Dieta gelo: aura 1d4 frio em adjacentes; ver magia exclusiva Cap. 19.3 |
-| **Alquimista de Caldos (Mago)** | Sopas: regurgitar ácido 2d6 ou nevoa venenosa 1x/combaté |
-| **Monge do Jejum** | 8h sem comer: +4 esquiva e 3d8 radiante em área ao primeiro prato |
+| **Alquimista Ácido (Mago)** | Sopas: regurgitar ácido 2d6 ou nevoa venenosa 1x/combaté |
+| **Monge Ascético** | 8h sem comer: +4 esquiva e 3d8 radiante em área ao primeiro prato |
 | **Pastor de Quimeras** | Dieta de quimera: aura de animal (ex. Leao) para aliados adjacentes |
 | **Clérigo do Limiar** | `Toque do Limiar` (truque, 2x/descanso curto): 1d8 necrótico ou cura 1d4+SAB em morto-vivo aliado; servos da subclasse contam como aliados para alcance de toque |
-| **Cantor das Especiarias** | +3 CD em Ilusao/Encantamento após ervas raras |
+| **Cantor dos Venenos** | +3 CD em Ilusao/Encantamento após ervas raras |
 | **Dancarino das Facas** | Carne de ave: atacar com CAR; recuperar facas de trinchar |
-| **Bardo Cervejeiro** | Inspiracao de Bardo concede HP temp = dado de Inspiracao atual |
+| **Bardo Fermentador** | Inspiracao de Bardo concede HP temp = dado de Inspiracao atual |
 | **Circulo do Superpredador** | Forma Selvagem +HP do ultimo monstro grande comido |
 | **Circulo da Simbiose** | Sementes: armadura de vinhas, 1d6 cortante ao atacante |
 | **Circulo do Solo Vivo** | Pedras elementais: resistência contundente enquanto dieta ativa |
 | **Biologo Alquimico (Artífice)** | Micro-doses: imunidade veneno; arma +1d6 ácido 1 min |
-| **Engenheiro de Fogareiros** | Glandulas de fogo: resistência Fogo; bombas +2d6 |
+| **Engenheiro de Explosivos** | Glandulas de fogo: resistência Fogo; bombas +2d6 |
 | **Ferreiro de Utensilios** | Prato em panela de exoesqueleto: +2 CA em armaduras proprias |
 | **Construtor de Armadilhas** | Carne intacta: Vantagem INT e invencoes 24h |
 
@@ -3791,9 +3791,9 @@ Estes efeitos **nao entram** na contagem de 60 feiticos:
 
 | Subclasse | Magia exclusiva (Cap. 19.3) |
 |-----------|----------------------------|
-| Piromante de Forno | Maos Ardentes |
+| Piromante das Brasas | Maos Ardentes |
 | Criomante de Conservacao | Gelo de Conservação |
-| Mago Fermentador | Envelhecer Matéria, Fermentação Acelerada |
+| Mago Alquímico | Envelhecer Matéria, Fermentação Acelerada |
 | Sacerdote da Purificacao | Purificacao Abencada |
 | Circulo da Decomposicao | Esporos Necroticos, Grande Decomposicao |
 | Bardo Confeiteiro | Doce Confuso |
@@ -3803,20 +3803,20 @@ Estes efeitos **nao entram** na contagem de 60 feiticos:
 
 | Subclasse | Base | Variante |
 |-----------|------|----------|
-| **Piromante de Forno** | `Bola de Fogo` (nv. 3) | **Forno Arcano:** mesma área e dano; aliados na área sofrem metade ou nenhum dano (escolha do conjurador); não incendeia comida do grupo |
+| **Piromante das Brasas** | `Bola de Fogo` (nv. 3) | **Forno Arcano:** mesma área e dano; aliados na área sofrem metade ou nenhum dano (escolha do conjurador); não incendeia comida do grupo |
 
 ### 19.3 Magias exclusivas (8 — contam no total de 60)
 
-**Piromante de Forno — Maos Ardentes** — Evocacao | Acao | Toque | Instantanea | Nivel 1
+**Piromante das Brasas — Maos Ardentes** — Evocacao | Acao | Toque | Instantanea | Nivel 1
 Toque: 3d6 fogo (DES CD ou metade). Ingrediente tocado e selado e assado por dentro em 1 rodada.
 
 **Criomante de Conservacao — Gelo de Conservação** — Transmutação | Acao | Toque | 8 horas | Nivel 2
 Ingrediente fica em estase de gelo seco: propriedades biomágicas preservadas 8h sem recipiente; +2 CA temp ao conjurador enquanto segura o ingrediente.
 
-**Mago Fermentador — Envelhecer Matéria** — Transmutação | Truque | Toque | Instantanea
+**Mago Alquímico — Envelhecer Matéria** — Transmutação | Truque | Toque | Instantanea
 Objeto orgânico inanimado envelhece visualmente (fermentacao aparente); não altera propriedades mágicas até conjurar `Fermentação Acelerada`.
 
-**Mago Fermentador — Fermentação Acelerada** — Transmutação | 10 minutos | Toque | Instantanea | Nivel 2
+**Mago Alquímico — Fermentação Acelerada** — Transmutação | 10 minutos | Toque | Instantanea | Nivel 2
 Ingrediente fermenta em 1 minuto com efeito de 1 ano de cura natural; remove doenças leves não mágicas em quem consumir.
 
 **Sacerdote da Purificacao — Purificacao Abencada** — Abjuracao | Acao | Toque | Instantanea | Nivel 4
@@ -3826,7 +3826,7 @@ Remove maldicao, veneno ou corrupcao mágica em criatura ou ingrediente.
 Nuvem 1,5m: criaturas CON CD ou Envenenado 1 rodada; ingredientes necrofagos na nuvem ganham +1 na rolagem de assimilação.
 
 **Druida, Circulo da Decomposicao — Grande Decomposicao** — Transmutação | Acao | 9m | Instantanea | Nivel 5
-Organico em cubo 3m vira fertilizante seguro; decompoe carcaca para extracao automatica (como Trinchar CD 14 bem-sucedido).
+Organico em cubo 3m vira fertilizante seguro; decompoe carcaca para extracao automatica (como Extração CD 14 bem-sucedido).
 
 **Bardo Confeiteiro — Doce Confuso** — Encantamento | Acao | 18m | Instantanea | Nivel 1
 Um humanoide CON CD ou Amedrontado e Desvantagem em Percepção por 1 minuto (sabor de panico).
@@ -3976,7 +3976,7 @@ Ingredientes Tipicos: Cristal Vivo de Gargula, Gel Cristalino, Exoesqueleto de D
 
 ### BIOMA 7 — CEMITERIO DE COLOSSOS
 Ambiente: Deserto inteiramente feito de ossos e po de osso triturado. Colinas que sao cranios de bestas do tamanho de montanhas. Vento carrega po de osso que irrita os olhos. Nenhuma planta, nenhuma agua.
-Perigos: Po de osso toxico em concentracao alta (Estômago de Ferro CD 10 por hora ou Envenenamento leve), instabilidade de estruturas osseas colapsindo.
+Perigos: Po de osso toxico em concentracao alta (Fortitude CD 10 por hora ou Envenenamento leve), instabilidade de estruturas osseas colapsindo.
 Fauna Nativa: Mortos-Vivos (Espectros Antigos, Ghouls Ancioes), Goblinoides (Necrofagos catadores de medula), Insetoides (Vermes Gigantes de Pedra), Gigantes (Ciclopes solitarios).
 Ingredientes Tipicos: Fêmur Milenar, Po de Osso Necrotico, Cristal de Mana Osseo, Medula Podre.
 
@@ -4002,7 +4002,7 @@ Ingredientes Tipicos: Ácido de Slime, Nucleo de Pudim, Glandula Digestiva de Mo
 Ambiente: Biblioteca de proporcoes impossiveis. Estantes de madeira de lei apodrecida chegando ao teto a 20m de altura. Pergaminhos rasgados no chao centimetros de profundidade. Magia residual da vida a mobilia. Silencio absoluto exceto por paginas virando.
 Perigos: Mobilia animada hostil, armadilhas de feiticos presos em livros, labirinto de estantes que muda.
 Fauna Nativa: Mimicos (Grimorios Falsos, Mimicos de Movel), Espirituais (Espiritos de Magos Antigos, Banshees), Insetoides (Tracas-Gigantes que comem conhecimento), Construtos (Automatos de Genio, guardioes dos arquivos).
-Ingredientes Tipicos: Fluido Mental, Eco de Intencao, Pergaminho Arcano (tempero para Mago Fermentador).
+Ingredientes Tipicos: Fluido Mental, Eco de Intencao, Pergaminho Arcano (tempero para Mago Alquímico).
 
 ### BIOMA 12 — NINHO CREPUSCULAR
 Ambiente: Abismo vertical forrado apenas por seda cinza. Nao ha chao ou paredes visiveis — apenas teias em camadas. Ovos do tamanho de carruagens pendurados em cachos. Silencio perturbador interrompido por sons de coisas se movendo nas teias.
@@ -4024,13 +4024,13 @@ Ingredientes Tipicos: Resina de Construto (usada pelo Artífice como material ba
 
 ### BIOMA 15 — DESERTO DE CARNE E TENDOES
 Ambiente: O chao e macio e quente. Dunas de tecido muscular. Rios de sangue coagulado que parecem lama bordo. Arterias rompidas pingam do teto. O ar fede a ferro e carne crua. Este bioma esta dentro de algo — ninguem sabe o que.
-Perigos: Sangue que pode infectar feridas abertas (Estômago de Ferro CD 12 ou doenca), terreno que "digere" calcados, arterias que explodem.
+Perigos: Sangue que pode infectar feridas abertas (Fortitude CD 12 ou doenca), terreno que "digere" calcados, arterias que explodem.
 Fauna Nativa: Parasitas (Vermes-Carrapatos, Moscas-Carnica em massas), Amorfos (Globulos Amorfos), Aberracoes.
 Ingredientes Tipicos: Medula Coagulada, Sangue Rico em Proteina, Parasita Purificado.
 
 ### BIOMA 16 — JARDIM DE CINZAS PETRIFICADAS
 Ambiente: Tudo foi transformado em pedra e coberto por neve de cinzas vulcanicas. Arvores-estatua, aventureiros-estatua, monstros-estatua. Uma nevasca perpetua de cinza cobre tudo 2cm por dia. Silencio sepulcral.
-Perigos: Cinzas em concentracao alta (Estômago de Ferro CD 11 por hora ou penalidade), basiliscos que parecem estatuas, terreno irregular oculto pelas cinzas.
+Perigos: Cinzas em concentracao alta (Fortitude CD 11 por hora ou penalidade), basiliscos que parecem estatuas, terreno irregular oculto pelas cinzas.
 Fauna Nativa: Repteis (Basiliscos, Basiliscos de Magma), Construtos/Besta (Gargulas, Medusas), Mimicos (Mimicos de Estatua).
 Ingredientes Tipicos: Glandula do Olhar Petrificante, Escama de Obsidiana, Po de Estatua.
 
@@ -4145,7 +4145,7 @@ Biomas Dominantes: Estômago Botanico, Ninho Crepuscular, Pantano da Decomposica
 Especialidade Ecologica: Flora, fungos, aracnideos, insetos.
 Ingredientes Raros: Esporos do Rei Cogumelo Anciao, Seda de Matriarca Tecela, Flor Narcotica perfeita.
 Boss Tipico: Rei Cogumelo-Cadaverico ou Matriarca Tecela de Cristal.
-Caracteristica Unica: Esporos no ar afetam a Harmonização — cozinheiros tem +2 em Harmonização, mas testam SAB CD 12 por hora ou ficam levemente alucinados.
+Caracteristica Unica: Esporos no ar afetam a Forrageio — cozinheiros tem +2 em Forrageio, mas testam SAB CD 12 por hora ou ficam levemente alucinados.
 Lore: Varias familias de exploradores veteranos que passaram geracoes explorando esta masmorra desenvolveram resistência natural aos esporos — seus descendentes nascem com teores elevados de melanina fungica na pele.
 
 ### MASMORRA 4 — A BOCA NEGRA (O Cemiterio Sem Fim)
@@ -4154,7 +4154,7 @@ Biomas Dominantes: Cemiterio de Colossos, Cidadela Palida, Fosso das Emocoes Eco
 Especialidade Ecologica: Mortos-vivos, espirituais, goblinoides necrofagos.
 Ingredientes Raros: Ectoplasma de Emocao puro, Fêmur Milenar de Esqueleto Comandante, Cristal de Mana Osseo.
 Boss Tipico: Arquiliche ou Lorde Vampiro.
-Caracteristica Unica: Morrer dentro desta masmorra tem 30% de chance de reviver como morto-vivo no local dentro de 1d4 horas (Estômago de Ferro CD 15 após ressurgir ou o personagem e perdido).
+Caracteristica Unica: Morrer dentro desta masmorra tem 30% de chance de reviver como morto-vivo no local dentro de 1d4 horas (Fortitude CD 15 após ressurgir ou o personagem e perdido).
 Lore: E dito que todos os habitantes de Valdremor que morreram ha 500+ anos estão em algum andar desta masmorra.
 
 ### MASMORRA 5 — A BOCA DOURADA (O Arquivo Perdido)
@@ -4245,9 +4245,9 @@ Quando um Chefao e derrotado, o grupo tem **até 6 horas** antes que a carne per
 
 | Papel | Teste | Consequencia |
 |-------|-------|-------------|
-| Cortador Principal | Trinchar CD 18 | Falha: perde 1 glândula nobre |
+| Cortador Principal | Extração CD 18 | Falha: perde 1 glândula nobre |
 | Controlador de Calor | Coccao CD 18 | Falha: textura errada — reduz d4 de Aproveitamento em 1 |
-| Harmonizador | Harmonização CD 16 | Falha: sabor desequilibrado — buffs duram 12h em vez de permanente |
+| Harmonizador | Forrageio CD 16 | Falha: sabor desequilibrado — buffs duram 12h em vez de permanente |
 | Sentinela | Percepção CD 14 | Falha: interrupcao — grupo leva 1d8 de dano de surpresa |
 | Catador de Espécime | Natureza/INT CD 15 | Sucesso: identifica ingrediente bonus secreto |
 
@@ -4344,7 +4344,7 @@ Cada monstro possui uma **versão Elite** desbloqueada quando encontrado nos and
 
 **Flora de masmorra:** 40 especies em **Cap. 5B** — Druidas e ecossistema; monstros **Consumidores** listados por planta.
 
-**Saque economico:** Trinchar com sucesso concede ESP/MIN/tesouro por codigo em `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md`; cenario **OBJ-R**.
+**Saque economico:** Extração com sucesso concede ESP/MIN/tesouro por codigo em `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md`; cenario **OBJ-R**.
 
 ### Estatísticas
 
@@ -4353,7 +4353,7 @@ Cada monstro possui uma **versão Elite** desbloqueada quando encontrado nos and
 - **Dano:** Dado de dano por ataque base
 - **Resistências:** Tipos de dano que o monstro sofre metade
 - **Imunidades:** Tipos de dano que não surtem efeito
-- **Nível de Extração:** Dificuldade de Trinchar (Fácil / Médio / Difícil / Especialista)
+- **Nível de Extração:** Dificuldade de Extração (Fácil / Médio / Difícil / Especialista)
 - **Biomas:** Onde é encontrado (máximo 4)
 
 ---
@@ -4374,7 +4374,7 @@ Os zumbis de masmorra não são criados por necromantes — eles nascem espontan
 - **Padrão:** ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).
 - **Moral:** não foge; persegue o alvo mais próximo até 0 HP (mente ausente).
 - **Pós-morte:** ver habilidades (levante/toxina) — 1 rodada de risco ao grupo.
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.
+- **Culinária:** janela 1h pós-morte; Extração conforme Nível de Extração.
 
 | Estatística | Valor |
 |-------------|-------|
@@ -4389,17 +4389,17 @@ Os zumbis de masmorra não são criados por necromantes — eles nascem espontan
 
 **Habilidades:**
 - *Levante Inevitável:* Se não for destruído com dano de fogo ou luz, o zumbi se levanta com 1 HP após 1d4 turnos.
-- *Mordida Infecciosa:* Um acerto crítico da mordida infecta o alvo com Podridão de Masmorra (penalidade de -1 em Trinchar e Harmonização por 24h).
+- *Mordida Infecciosa:* Um acerto crítico da mordida infecta o alvo com Podridão de Masmorra (penalidade de -1 em Extração e Forrageio por 24h).
 
 **Ingredientes (Extração):**
-- Medula Podre (Fácil): Ingrediente básico de caldos necróticos. Sem bônus próprio, mas usado como base para receitas do Mago Fermentador.
-- Dente de Masmorra (Fácil): 1d4 dentes por zumbi. O Ladrão de Glândulas pode transformá-los em veneno de decomposição.
+- Medula Podre (Fácil): Ingrediente básico de caldos necróticos. Sem bônus próprio, mas usado como base para receitas do Mago Alquímico.
+- Dente de Masmorra (Fácil): 1d4 dentes por zumbi. O Assassino Venenoso pode transformá-los em veneno de decomposição.
 
-**Saque (Trinchar com sucesso):** ESP-12 · MIN-03 · 2d6 po — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 001).
+**Saque (Extração com sucesso):** ESP-12 · MIN-03 · 2d6 po — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 001).
 
 **Versão Elite — Zumbi Colossal (Nível 5):**
 HP 85 | CA 10 | Dano 2d8+3 | Resistência: Cortante, Necrótico
-*Corrupção Maciça:* Ao morrer, explode em uma nuvem de esporos necróticos (dano 2d6 em área, teste de Estômago de Ferro ou contrai Podridão de Masmorra Avançada).
+*Corrupção Maciça:* Ao morrer, explode em uma nuvem de esporos necróticos (dano 2d6 em área, teste de Fortitude ou contrai Podridão de Masmorra Avançada).
 
 ---
 
@@ -4436,7 +4436,7 @@ Diferentes dos zumbis, esqueletos são frequentemente *construídos*, não acide
 - Fêmur Milenar (Médio): O ingrediente predileto do Corsário de Cripta. Fervido por 8 horas, produz um caldo que concede Resistência Fantasmagórica por 4h.
 - Cristal de Mana Ósseo (Difícil): Ocasionalmente, esqueletos de magos preservam um cristal de mana dentro do crânio. Raridade: 30% de chance.
 
-**Saque (Trinchar com sucesso):** ESP-19 · MIN-03 · 1d4×10 po + broche — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 002).
+**Saque (Extração com sucesso):** ESP-19 · MIN-03 · 1d4×10 po + broche — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 002).
 
 **Versão Elite — Esqueleto Comandante (Nível 6):**
 HP 60 | CA 16 | Dano 2d6+2
@@ -4457,7 +4457,7 @@ Ghouls são a prova de que a morte pode piorar. Criados de aventureiros que prat
 - **Tática:** foca conjurador ou menor HP; usa cobertura se INT 6+.
 - **Moral:** não foge; persegue o alvo mais próximo até 0 HP (mente ausente).
 - **Pós-morte:** ver habilidades (levante/toxina) — 1 rodada de risco ao grupo.
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.
+- **Culinária:** janela 1h pós-morte; Extração conforme Nível de Extração.
 
 | Estatística | Valor |
 |-------------|-------|
@@ -4479,7 +4479,7 @@ Ghouls são a prova de que a morte pode piorar. Criados de aventureiros que prat
 - Glândula Paralisante (Difícil): Localizada sob a língua. Extraída intacta, produz veneno de paralisia de alta qualidade.
 - Sebo de Ghoul (Fácil): Gordura com propriedades térmicas. Usada como combustível natural de fogareiros.
 
-**Saque (Trinchar com sucesso):** ESP-12 · MIN-14 · 3d6 po + amuleto — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 003).
+**Saque (Extração com sucesso):** ESP-12 · MIN-14 · 3d6 po + amuleto — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 003).
 
 **Versão Elite — Ghoul Ancião (Nível 8):**
 HP 110 | CA 14 | Dano 2d6+4 (garras) + Paralisia automática na mordida
@@ -4498,7 +4498,7 @@ Espectros são emoções — especificamente, emoções tão intensas no momento
 - **Padrão:** ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).
 - **Moral:** não foge; persegue o alvo mais próximo até 0 HP (mente ausente).
 - **Pós-morte:** ver habilidades (levante/toxina) — 1 rodada de risco ao grupo.
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.
+- **Culinária:** janela 1h pós-morte; Extração conforme Nível de Extração.
 
 | Estatística | Valor |
 |-------------|-------|
@@ -4518,9 +4518,9 @@ Espectros são emoções — especificamente, emoções tão intensas no momento
 
 **Ingredientes (Extração):**
 - Ectoplasma de Emoção (Especialista): Deve ser capturado em frasco de vidro selado com cera de abelha-espectral. Se a emoção do espectro for de ódio, o ectoplasma concede bônus em ataques. Se for de saudade, concede visões do passado do local.
-- Fragmento de Alma (Especialista): Raridade 20%. Uma faísca de consciência preservada. O Degustador de Sombras consegue absorvê-la diretamente para ganhar Passo Intangível imediatamente.
+- Fragmento de Alma (Especialista): Raridade 20%. Uma faísca de consciência preservada. O Sombra Etérea consegue absorvê-la diretamente para ganhar Passo Intangível imediatamente.
 
-**Saque (Trinchar com sucesso):** ESP-24 · MIN-07 · TES-08 (80 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 004).
+**Saque (Extração com sucesso):** ESP-24 · MIN-07 · TES-08 (80 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 004).
 
 **Versão Elite — Grande Espectro (Nível 9):**
 HP 85 | CA 14 | Dano 3d8 necrótico + redução permanente de 5 no HP máximo até descanso longo
@@ -4539,7 +4539,7 @@ Um Lich não morre — ele *decide* não morrer. O processo de lichificação é
 - **Tática:** foca conjurador ou menor HP; usa cobertura se INT 6+.
 - **Moral:** não foge por HP; pode sacrificar lacaios.
 - **Pós-morte:** ver habilidades (levante/toxina) — 1 rodada de risco ao grupo.
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.
+- **Culinária:** janela 1h pós-morte; Extração conforme Nível de Extração.
 
 | Estatística | Valor |
 |-------------|-------|
@@ -4570,7 +4570,7 @@ Um Lich não morre — ele *decide* não morrer. O processo de lichificação é
 - *Consciência Estendida:* O grupo pode usar Memória de Lich — uma vez por dia, qualquer membro pode fazer uma pergunta sobre a história ou segredos da masmorra atual e receber uma resposta verdadeira (fragmentada e críptica, mas verdadeira).
 
 ---
-**Saque (Trinchar com sucesso):** ESP-30 · MIN-22 · TES-15 (2 500 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 005).
+**Saque (Extração com sucesso):** ESP-30 · MIN-22 · TES-15 (2 500 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 005).
 
 ## 006 — ASSOMBRAÇÃO
 006**Tipo:** Morto-Vivo Espiritual | **Nível:** 5 | **XP:** 500 | **Faixa:** Intermediário
@@ -4584,7 +4584,7 @@ Assombrações são mais perigosas que espectros porque têm *intenção*. Onde 
 - **Território:** +2 ataque defendendo ninho/tesouro; persegue até limite do bioma.
 - **Moral:** não foge; persegue o alvo mais próximo até 0 HP (mente ausente).
 - **Pós-morte:** ver habilidades (levante/toxina) — 1 rodada de risco ao grupo.
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.
+- **Culinária:** janela 1h pós-morte; Extração conforme Nível de Extração.
 
 | Estatística | Valor |
 |-------------|-------|
@@ -4606,7 +4606,7 @@ Assombrações são mais perigosas que espectros porque têm *intenção*. Onde 
 - Eco de Intenção (Especialista): Uma névoa viscosa de cor azul-acinzentada. Se consumida como sopinha morna, concede ao personagem a capacidade de perceber as *intenções* de qualquer criatura que se aproxime por 2h.
 
 ---
-**Saque (Trinchar com sucesso):** ESP-24 · MIN-07 · TES-06 (120 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 006).
+**Saque (Extração com sucesso):** ESP-24 · MIN-07 · TES-06 (120 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 006).
 
 ## 007 — VAMPIRO
 007**Tipo:** Morto-Vivo Inteligente | **Nível:** 10 | **XP:** 1000 | **Faixa:** Perigoso
@@ -4620,7 +4620,7 @@ Os vampiros das masmorras são diferentes dos lendários da superfície. Sem ace
 - **Fraqueza tática:** recua de fogo/luz radiante; CD 12 SAB ou Desvantagem 1 rodada.
 - **Moral:** não foge; persegue o alvo mais próximo até 0 HP (mente ausente).
 - **Pós-morte:** ver habilidades (levante/toxina) — 1 rodada de risco ao grupo.
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.
+- **Culinária:** janela 1h pós-morte; Extração conforme Nível de Extração.
 
 | Estatística | Valor |
 |-------------|-------|
@@ -4642,10 +4642,10 @@ Os vampiros das masmorras são diferentes dos lendários da superfície. Sem ace
 
 **Ingredientes (Extração):**
 - Sangue de Vampiro (Difícil): Deve ser coletado ainda quente em frasco de ébano. Misturado a qualquer prato, estende os efeitos das mutações biomágicas por +12h.
-- Presas Retráteis (Difícil): O Ladrão de Glândulas transforma em seringa de veneno que injeta dreno de vida.
+- Presas Retráteis (Difícil): O Assassino Venenoso transforma em seringa de veneno que injeta dreno de vida.
 - Coração de Vampiro (Especialista): Não bate, mas pulsa com energia necrótica. Consumido cozido, concede Regeneração de Vampiro (5 HP/turno) por 8h.
 
-**Saque (Trinchar com sucesso):** ESP-13 · MIN-14 · TES-11 (400 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 007).
+**Saque (Extração com sucesso):** ESP-13 · MIN-14 · TES-11 (400 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 007).
 
 **Versão Elite — Lorde Vampiro (Nível 15):**
 HP 220 | CA 18 | Todas as habilidades aumentadas
@@ -4665,7 +4665,7 @@ Guerreiros que fizeram juramentos que não puderam cumprir na vida ficam presos 
 - **Território:** +2 ataque defendendo ninho/tesouro; persegue até limite do bioma.
 - **Moral:** não foge; persegue o alvo mais próximo até 0 HP (mente ausente).
 - **Pós-morte:** ver habilidades (levante/toxina) — 1 rodada de risco ao grupo.
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.
+- **Culinária:** janela 1h pós-morte; Extração conforme Nível de Extração.
 
 | Estatística | Valor |
 |-------------|-------|
@@ -4688,7 +4688,7 @@ Guerreiros que fizeram juramentos que não puderam cumprir na vida ficam presos 
 - Éter de Juramento (Especialista): A névoa liberada quando a armadura é desmontada. Capturado, pode ser usado pelo Clérigo para criar um *Juramento de Proteção Divina* — uma barreira imaterial.
 
 ---
-**Saque (Trinchar com sucesso):** ESP-02 · MIN-06 · TES-09 (200 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 008).
+**Saque (Extração com sucesso):** ESP-02 · MIN-06 · TES-09 (200 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 008).
 
 ## 009 — MÚMIA
 009**Tipo:** Morto-Vivo Preservado | **Nível:** 6 | **XP:** 600 | **Faixa:** Intermediário
@@ -4702,7 +4702,7 @@ As múmias das masmorras não vêm de pirâmides do deserto — elas são o resu
 - **Fraqueza tática:** recua de fogo/luz radiante; CD 12 SAB ou Desvantagem 1 rodada.
 - **Moral:** não foge; persegue o alvo mais próximo até 0 HP (mente ausente).
 - **Pós-morte:** ver habilidades (levante/toxina) — 1 rodada de risco ao grupo.
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.
+- **Culinária:** janela 1h pós-morte; Extração conforme Nível de Extração.
 
 | Estatística | Valor |
 |-------------|-------|
@@ -4716,13 +4716,13 @@ As múmias das masmorras não vêm de pirâmides do deserto — elas são o resu
 | Biomas | Jardim de Cinzas Petrificadas, Cemitério de Colossos, Arquivos Soterrados, Cidadela Pálida |
 
 **Habilidades:**
-- *Maldição da Múmia:* Acerto força teste de Constituição CD 15 ou alvo contrai Podridão da Múmia (HP máximo reduzido em 10 por dia; só curada por Remover Maldição ou pela cozinha do Sacerdote da Purificação).
+- *Maldição da Múmia:* Acerto força teste de Constituição CD 15 ou alvo contrai Podridão da Múmia (HP máximo reduzido em 10 por dia; só curada por Remover Maldição ou pela cozinha do Sacerdote Purificador).
 - *Aversão ao Fogo:* Sofre dano dobrado de fogo e fica Assustada de chamas.
 - *Olhar Paralisante:* Ação, CD 14 Sabedoria ou alvo fica Paralisado por 1 turno.
 
 **Ingredientes (Extração):**
 - Linho Rúnico (Fácil): As faixas preservadas ainda carregam os encantamentos. Podem ser desfeitas e usadas como tempero arcano que estende a duração de qualquer buff por +4h.
-- Órgãos em Jarra (Médio): Rins, fígado e coração preservados em vasilhas. Preparados pelo Mago Fermentador, são ingredientes perfeitos para refeições de resistência.
+- Órgãos em Jarra (Médio): Rins, fígado e coração preservados em vasilhas. Preparados pelo Mago Alquímico, são ingredientes perfeitos para refeições de resistência.
 - Cera de Preservação (Fácil): Usada pelo Artífice para criar recipientes que impedem ingredientes de estragar por 7 dias.
 
 ---
@@ -4732,7 +4732,7 @@ As múmias das masmorras não vêm de pirâmides do deserto — elas são o resu
 *Descendentes ou primos dos grandes dragões ancestrais. Suas carnes são as mais densas em energia mágica de qualquer espécie caçável — e as mais difíceis de extrair sem ferramentas adequadas.*
 
 ---
-**Saque (Trinchar com sucesso):** ESP-25 · MIN-03 · TES-10 (350 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 009).
+**Saque (Extração com sucesso):** ESP-25 · MIN-03 · TES-10 (350 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 009).
 
 ## 010 — DRAGONETE DE MAGMA
 010**Tipo:** Dracônico Menor | **Nível:** 3 | **XP:** 300 | **Faixa:** Comum
@@ -4745,7 +4745,7 @@ Dragonetes são dragões que nunca cresceram — seja por condições adversas d
 - **Combate:** prioriza números — reforços em 1d4 rodadas se 1 aliado cair (ruído/feromônio).
 - **Território:** +2 ataque defendendo ninho/tesouro; persegue até limite do bioma.
 - **Moral:** não foge; persegue o alvo mais próximo até 0 HP (mente ausente).
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.
+- **Culinária:** janela 1h pós-morte; Extração conforme Nível de Extração.
 
 | Estatística | Valor |
 |-------------|-------|
@@ -4764,12 +4764,12 @@ Dragonetes são dragões que nunca cresceram — seja por condições adversas d
 - *Ninhada Furiosa:* Se outro dragonete do grupo for morto, todos os sobreviventes ganham +2 em ataques e +1d6 de dano por turno.
 
 **Ingredientes (Extração):**
-- Glândula de Ignição (Médio): A fonte biológica da baforada. Usada pelo Engenheiro de Fogareiros para criar um fogareiro portátil que nunca apaga.
+- Glândula de Ignição (Médio): A fonte biológica da baforada. Usada pelo Engenheiro de Explosivos para criar um fogareiro portátil que nunca apaga.
 - Escama de Dragonete (Fácil): 2d6 escamas por espécime. Resistentes ao calor, usadas como panelas naturais.
 - Coração de Magma (Difícil): Permanece aquecido por 48h após extração. Consumido, concede 30% de resistência a fogo por 12h.
 
 ---
-**Saque (Trinchar com sucesso):** ESP-03 · MIN-01 · 2d8 po — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 010).
+**Saque (Extração com sucesso):** ESP-03 · MIN-01 · 2d8 po — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 010).
 
 ## 011 — WYVERN
 011**Tipo:** Dracônico Médio | **Nível:** 9 | **XP:** 900 | **Faixa:** Perigoso
@@ -4783,7 +4783,7 @@ Wyverns são frequentemente confundidos com dragões, mas a diferença é fundam
 - **Território:** +2 ataque defendendo ninho/tesouro; persegue até limite do bioma.
 - **Fraqueza tática:** recua de fogo/luz radiante; CD 12 SAB ou Desvantagem 1 rodada.
 - **Moral:** não foge; persegue o alvo mais próximo até 0 HP (mente ausente).
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.
+- **Culinária:** janela 1h pós-morte; Extração conforme Nível de Extração.
 
 | Estatística | Valor |
 |-------------|-------|
@@ -4806,7 +4806,7 @@ Wyverns são frequentemente confundidos com dragões, mas a diferença é fundam
 - Asa de Wyvern (Médio): Membrana resistente, usada como escudo improvisado ou material de artesanato.
 - Carne de Wyvern (Médio): Rica em proteína. Um prato Gourmet de Wyvern concede +5m de deslocamento e Vantagem em testes de atletismo por 8h.
 
-**Saque (Trinchar com sucesso):** ESP-03 · MIN-12 · TES-07 (300 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 011).
+**Saque (Extração com sucesso):** ESP-03 · MIN-12 · TES-07 (300 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 011).
 
 **Versão Elite — Wyvern-Rei (Nível 14):**
 HP 195 | CA 16 | Ferrão CD 19 | Dano aumentado em +3
@@ -4826,7 +4826,7 @@ Dragões verdadeiros — com quatro patas, asas próprias e inteligência compar
 - **Combate:** prioriza números — reforços em 1d4 rodadas se 1 aliado cair (ruído/feromônio).
 - **Tática:** foca conjurador ou menor HP; usa cobertura se INT 6+.
 - **Moral:** não foge por HP; pode sacrificar lacaios.
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.
+- **Culinária:** janela 1h pós-morte; Extração conforme Nível de Extração.
 
 | Estatística | Valor |
 |-------------|-------|
@@ -4857,7 +4857,7 @@ Dragões verdadeiros — com quatro patas, asas próprias e inteligência compar
 - *Herança Dracônica:* Uma vez por dia longo descanso, o grupo pode usar Presença Aterrorizante do Dragão (CD 14) como ação.
 
 ---
-**Saque (Trinchar com sucesso):** ESP-04 · MIN-16 · TES-14 (800 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 012).
+**Saque (Extração com sucesso):** ESP-04 · MIN-16 · TES-14 (800 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 012).
 
 ## 013 — DRAKE DE PEDRA
 013**Tipo:** Dracônico Subterrâneo | **Nível:** 5 | **XP:** 500 | **Faixa:** Intermediário
@@ -4868,7 +4868,7 @@ Drakes são o ramo mais terrestre dos dracônicos — sem asas funcionais, com p
 **Comportamento na mesa:**
 - **Padrão:** ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).
 - **Moral:** não foge; persegue o alvo mais próximo até 0 HP (mente ausente).
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.
+- **Culinária:** janela 1h pós-morte; Extração conforme Nível de Extração.
 
 | Estatística | Valor |
 |-------------|-------|
@@ -4887,11 +4887,11 @@ Drakes são o ramo mais terrestre dos dracônicos — sem asas funcionais, com p
 - *Mordida Esmagadora:* Na mordida, alvo testa Força CD 15 ou fica Agarrado. Enquanto agarrado, Drake continua mordendo automaticamente.
 
 **Ingredientes (Extração):**
-- Escama de Granito (Difícil): Material para armaduras naturais (+2 CA). O Ferreiro de Utensílios pode reforjar em panelas que resistem a qualquer temperatura.
+- Escama de Granito (Difícil): Material para armaduras naturais (+2 CA). O Ferreiro de Campo pode reforjar em panelas que resistem a qualquer temperatura.
 - Cristais Minerais do Estômago (Médio): O Drake ingere minérios. Seu estômago contém 1d6 cristais processados de alto valor alquímico.
 
 ---
-**Saque (Trinchar com sucesso):** ESP-05 · MIN-02 · 4d6 po — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 013).
+**Saque (Extração com sucesso):** ESP-05 · MIN-02 · 4d6 po — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 013).
 
 ## 014 — DRAGÃO ANCIÃO DE FOGO
 014**Tipo:** Dracônico Verdadeiro | **Nível:** 20 | **XP:** 2000 | **Faixa:** Lendário
@@ -4904,7 +4904,7 @@ Um Dragão Ancião de Fogo tem mais de 800 anos. Nessa idade, um dragão de fogo
 - **Território:** +2 ataque defendendo ninho/tesouro; persegue até limite do bioma.
 - **Fraqueza tática:** recua de fogo/luz radiante; CD 12 SAB ou Desvantagem 1 rodada.
 - **Moral:** não foge por HP; pode sacrificar lacaios.
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.
+- **Culinária:** janela 1h pós-morte; Extração conforme Nível de Extração.
 
 | Estatística | Valor |
 |-------------|-------|
@@ -4939,7 +4939,7 @@ Um Dragão Ancião de Fogo tem mais de 800 anos. Nessa idade, um dragão de fogo
 *Criaturas criadas artificialmente, animadas por magia, mecanismos ou uma combinação das duas. Não têm carne comestível — mas suas partes são os ingredientes de artesanato mais valiosos do jogo.*
 
 ---
-**Saque (Trinchar com sucesso):** ESP-03 · MIN-01 · TES-16 (5 000 po+) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 014).
+**Saque (Extração com sucesso):** ESP-03 · MIN-01 · TES-16 (5 000 po+) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 014).
 
 ## 015 — GOLEM DE PEDRA
 015**Tipo:** Construto Arcano | **Nível:** 8 | **XP:** 800 | **Faixa:** Intermediário
@@ -4951,7 +4951,7 @@ Golems de pedra são os guardas mais comuns de câmaras de tesouro antigas. Escu
 - **Padrão:** ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).
 - **Território:** +2 ataque defendendo ninho/tesouro; persegue até limite do bioma.
 - **Moral:** não foge; persegue o alvo mais próximo até 0 HP (mente ausente).
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.
+- **Culinária:** janela 1h pós-morte; Extração conforme Nível de Extração.
 
 | Estatística | Valor |
 |-------------|-------|
@@ -4974,7 +4974,7 @@ Golems de pedra são os guardas mais comuns de câmaras de tesouro antigas. Escu
 - Pó de Granito Arcano (Médio): O corpo pulverizado. Misturado a qualquer alimento, adiciona uma camada de mineral que concede +2 CA por 6h (a pele fica levemente acinzentada).
 
 ---
-**Saque (Trinchar com sucesso):** ESP-05 · MIN-22 · TES-12 (250 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 015).
+**Saque (Extração com sucesso):** ESP-05 · MIN-22 · TES-12 (250 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 015).
 
 ## 016 — ARMADURA ANIMADA
 016**Tipo:** Construto Mágico | **Nível:** 4 | **XP:** 400 | **Faixa:** Comum
@@ -4985,7 +4985,7 @@ Não é um fantasma dentro de uma armadura — é a armadura que *é* a criatura
 **Comportamento na mesa:**
 - **Padrão:** ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).
 - **Moral:** não foge; persegue o alvo mais próximo até 0 HP (mente ausente).
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.
+- **Culinária:** janela 1h pós-morte; Extração conforme Nível de Extração.
 
 | Estatística | Valor |
 |-------------|-------|
@@ -5003,11 +5003,11 @@ Não é um fantasma dentro de uma armadura — é a armadura que *é* a criatura
 - *Construtora de Formação:* Duas ou mais armaduras adjacentes não podem ser separadas por efeitos de empurrão.
 
 **Ingredientes — Construto:**
-- Aço Encantado (Médio): 1d4 peças por armadura. Material premium para o Ferreiro de Utensílios criar panelas ou armas com encantamentos já embutidos.
+- Aço Encantado (Médio): 1d4 peças por armadura. Material premium para o Ferreiro de Campo criar panelas ou armas com encantamentos já embutidos.
 - Runa de Animação (Difícil): A placa interna com a programação. Pode ser relida pelo Mago para aprender um novo feitiço de invocação ou controlá-la temporáriamente.
 
 ---
-**Saque (Trinchar com sucesso):** ESP-19 · MIN-06 · 1d4×10 po — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 016).
+**Saque (Extração com sucesso):** ESP-19 · MIN-06 · 1d4×10 po — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 016).
 
 ## 017 — GOLEM DE FERRO VULCÂNICO
 017**Tipo:** Construto Arcano Pesado | **Nível:** 12 | **XP:** 1200 | **Faixa:** Perigoso
@@ -5018,7 +5018,7 @@ Uma evolução terrível do Golem de Pedra, forjado especificamente para as Forn
 **Comportamento na mesa:**
 - **Padrão:** ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).
 - **Moral:** não foge; persegue o alvo mais próximo até 0 HP (mente ausente).
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.
+- **Culinária:** janela 1h pós-morte; Extração conforme Nível de Extração.
 
 | Estatística | Valor |
 |-------------|-------|
@@ -5041,7 +5041,7 @@ Uma evolução terrível do Golem de Pedra, forjado especificamente para as Forn
 - Ferro Vulcânico (Médio): 2d8 peças. O material mais resistente ao calor disponível. Panelas feitas dele permitem cozinhar qualquer criatura vulcânica sem risco de acidente.
 
 ---
-**Saque (Trinchar com sucesso):** ESP-11 · MIN-01 · TES-13 (600 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 017).
+**Saque (Extração com sucesso):** ESP-11 · MIN-01 · TES-13 (600 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 017).
 
 ## 018 — AUTÔMATO DE GÊNIO
 018**Tipo:** Construto Mágico Inteligente | **Nível:** 10 | **XP:** 1000 | **Faixa:** Perigoso
@@ -5055,7 +5055,7 @@ Poucos aventureiros sabem que alguns autômatos não foram programados para comb
 - **Tática:** foca conjurador ou menor HP; usa cobertura se INT 6+.
 - **Território:** +2 ataque defendendo ninho/tesouro; persegue até limite do bioma.
 - **Moral:** não foge; persegue o alvo mais próximo até 0 HP (mente ausente).
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.
+- **Culinária:** janela 1h pós-morte; Extração conforme Nível de Extração.
 
 | Estatística | Valor |
 |-------------|-------|
@@ -5074,7 +5074,7 @@ Poucos aventureiros sabem que alguns autômatos não foram programados para comb
 - *Núcleo Adaptativo:* Muda resistências a cada descanso longo baseado nos últimos danos sofridos.
 
 **Ingredientes — Construto:**
-- Núcleo Cognitivo (Especialista): Um cristal de safira programado. O Mago Confeiteiro pode usar em um doce especial que concede memória eidética por 24h.
+- Núcleo Cognitivo (Especialista): Um cristal de safira programado. O Mago dos Encantos pode usar em um doce especial que concede memória eidética por 24h.
 - Fluido Arcano (Difícil): O "sangue" do autômato. Misturado a qualquer prato, concede +2 em Inteligência por 8h.
 
 ---
@@ -5084,7 +5084,7 @@ Poucos aventureiros sabem que alguns autômatos não foram programados para comb
 *As criaturas mais acessíveis culinatoriamente. Carnes ricas, extração relativamente simples, e os buffs mais sólidos para iniciantes. A espinha dorsal da dieta de qualquer aventureiro na masmorra.*
 
 ---
-**Saque (Trinchar com sucesso):** ESP-19 · MIN-22 · TES-12 (300 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 018).
+**Saque (Extração com sucesso):** ESP-19 · MIN-22 · TES-12 (300 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 018).
 
 ## 019 — MINOTAURO
 019**Tipo:** Besta Humanoide | **Nível:** 5 | **XP:** 500 | **Faixa:** Intermediário
@@ -5097,7 +5097,7 @@ Minotauros dentro de masmorras não são aberrações criadas por maldições di
 - **Combate:** prioriza números — reforços em 1d4 rodadas se 1 aliado cair (ruído/feromônio).
 - **Território:** +2 ataque defendendo ninho/tesouro; persegue até limite do bioma.
 - **Moral:** não foge; persegue o alvo mais próximo até 0 HP (mente ausente).
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.
+- **Culinária:** janela 1h pós-morte; Extração conforme Nível de Extração.
 
 | Estatística | Valor |
 |-------------|-------|
@@ -5121,7 +5121,7 @@ Minotauros dentro de masmorras não são aberrações criadas por maldições di
 - Couro Bestial (Médio): Resistente. Material para armaduras ou fundos de mochilas.
 
 ---
-**Saque (Trinchar com sucesso):** ESP-06 · MIN-04 · 3d8 po — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 019).
+**Saque (Extração com sucesso):** ESP-06 · MIN-04 · 3d8 po — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 019).
 
 ## 020 — BASILISCO
 020**Tipo:** Réptil Mágico | **Nível:** 6 | **XP:** 600 | **Faixa:** Intermediário
@@ -5133,7 +5133,7 @@ O Basilisco é tanto uma bênção quanto uma maldição para caçadores de masm
 - **Abertura:** emboscada — vantagem na 1ª rodada se grupo não detectou (Percepção passiva vs CD 10+n//2).
 - **Fraqueza tática:** recua de fogo/luz radiante; CD 12 SAB ou Desvantagem 1 rodada.
 - **Moral:** não foge; persegue o alvo mais próximo até 0 HP (mente ausente).
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.
+- **Culinária:** janela 1h pós-morte; Extração conforme Nível de Extração.
 
 | Estatística | Valor |
 |-------------|-------|
@@ -5157,7 +5157,7 @@ O Basilisco é tanto uma bênção quanto uma maldição para caçadores de masm
 - Escama Minerada (Fácil): Dura como pedra, usada pelo Artífice.
 
 ---
-**Saque (Trinchar com sucesso):** ESP-05 · MIN-12 · TES-07 (180 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 020).
+**Saque (Extração com sucesso):** ESP-05 · MIN-12 · TES-07 (180 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 020).
 
 ## 021 — MANTICORA
 021**Tipo:** Quimera Predadora | **Nível:** 8 | **XP:** 800 | **Faixa:** Intermediário
@@ -5170,7 +5170,7 @@ Manticoras são o pesadelo de qualquer expedição que subestime o alcance. Com 
 - **Território:** +2 ataque defendendo ninho/tesouro; persegue até limite do bioma.
 - **Fraqueza tática:** recua de fogo/luz radiante; CD 12 SAB ou Desvantagem 1 rodada.
 - **Moral:** não foge; persegue o alvo mais próximo até 0 HP (mente ausente).
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.
+- **Culinária:** janela 1h pós-morte; Extração conforme Nível de Extração.
 
 | Estatística | Valor |
 |-------------|-------|
@@ -5194,7 +5194,7 @@ Manticoras são o pesadelo de qualquer expedição que subestime o alcance. Com 
 - Asa de Morcego-Leão (Difícil): Material exótico para capas e escudos.
 
 ---
-**Saque (Trinchar com sucesso):** ESP-09 · MIN-08 · 4d10 po — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 021).
+**Saque (Extração com sucesso):** ESP-09 · MIN-08 · 4d10 po — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 021).
 
 ## 022 — GRIFO
 022**Tipo:** Besta Majestosa | **Nível:** 7 | **XP:** 700 | **Faixa:** Intermediário
@@ -5205,7 +5205,7 @@ Grifos são considerados pelos aventureiros experientes o indicador mais confiá
 **Comportamento na mesa:**
 - **Padrão:** ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).
 - **Moral:** não foge; persegue o alvo mais próximo até 0 HP (mente ausente).
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.
+- **Culinária:** janela 1h pós-morte; Extração conforme Nível de Extração.
 
 | Estatística | Valor |
 |-------------|-------|
@@ -5226,10 +5226,10 @@ Grifos são considerados pelos aventureiros experientes o indicador mais confiá
 **Ingredientes (Extração):**
 - Carne de Grifo (Médio): Textura entre peru selvagem e vitela. Um prato Gourmet concede Vantagem em Percepção e Iniciativa por 6h, além de +9m de salto.
 - Penas de Voo (Fácil): 2d6 penas longas por grifo. Material para flechas de precisão ou instrumentos musicais do Bardo.
-- Garra de Grifo (Médio): Ferramenta de corte natural de altíssima qualidade — bônus em Trinchar quando usada como faca.
+- Garra de Grifo (Médio): Ferramenta de corte natural de altíssima qualidade — bônus em Extração quando usada como faca.
 
 ---
-**Saque (Trinchar com sucesso):** ESP-10 · MIN-09 · TES-08 (220 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 022).
+**Saque (Extração com sucesso):** ESP-10 · MIN-09 · TES-08 (220 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 022).
 
 ## 023 — COCATRIZ
 023**Tipo:** Réptil-Ave Petrificante | **Nível:** 4 | **XP:** 400 | **Faixa:** Comum
@@ -5240,7 +5240,7 @@ A Cocatriz parece um cruzamento absurdo de galo com dragão — e é exatamente 
 **Comportamento na mesa:**
 - **Padrão:** ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).
 - **Moral:** ao 50% HP, INT CD 10 ou fuga/rendição.
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.
+- **Culinária:** janela 1h pós-morte; Extração conforme Nível de Extração.
 
 | Estatística | Valor |
 |-------------|-------|
@@ -5259,7 +5259,7 @@ A Cocatriz parece um cruzamento absurdo de galo com dragão — e é exatamente 
 
 **Ingredientes (Extração):**
 - Ovo de Cocatriz (Fácil — no ninho): O melhor ingrediente de café da manhã da masmorra. Mexido ou cozido, concede +10 HP Temporários e imunidade à petrificação por 4h.
-- Glândula de Petrificação (Difícil): Extraída do bico sem contaminar a carne. Usada pelo Rastreador de Sangue Frio como veneno de seta.
+- Glândula de Petrificação (Difícil): Extraída do bico sem contaminar a carne. Usada pelo Rastreador de Escamas como veneno de seta.
 - Carne de Cocatriz (Fácil): Similar a frango selvagem. Prato Comum restaura HP e mana normalmente.
 
 ---
@@ -5269,7 +5269,7 @@ A Cocatriz parece um cruzamento absurdo de galo com dragão — e é exatamente 
 *Exoesqueletos duros escondem carnes brancas e suculentas. Requerem ferramentas de quebra para extração adequada, mas seus ingredientes são versáteis e os mais comuns nas Profundezas.*
 
 ---
-**Saque (Trinchar com sucesso):** ESP-05 · MIN-12 · 2d10 po — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 023).
+**Saque (Extração com sucesso):** ESP-05 · MIN-12 · 2d10 po — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 023).
 
 ## 024 — ARANHA TECERROCHAS
 024**Tipo:** Aracnídeo Predador | **Nível:** 3 | **XP:** 300 | **Faixa:** Comum
@@ -5281,7 +5281,7 @@ A Aranha Tecerrochas é o predador mais comum das masmorras de nível médio. Do
 - **Abertura:** emboscada — vantagem na 1ª rodada se grupo não detectou (Percepção passiva vs CD 10+n//2).
 - **Território:** +2 ataque defendendo ninho/tesouro; persegue até limite do bioma.
 - **Moral:** não foge; persegue o alvo mais próximo até 0 HP (mente ausente).
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.
+- **Culinária:** janela 1h pós-morte; Extração conforme Nível de Extração.
 
 | Estatística | Valor |
 |-------------|-------|
@@ -5304,7 +5304,7 @@ A Aranha Tecerrochas é o predador mais comum das masmorras de nível médio. Do
 - Seda de Tecerrochas (Fácil): 1d4 metros de seda por aranha. Material de amarração e artesanato de alta durabilidade.
 - Glândula de Veneno (Difícil): Veneno paralisante leve — menos potente que o de Wyvern, mas muito mais seguro de aplicar.
 
-**Saque (Trinchar com sucesso):** ESP-14 · MIN-21 · 1d6×5 po — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 024).
+**Saque (Extração com sucesso):** ESP-14 · MIN-21 · 1d6×5 po — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 024).
 
 **Versão Elite — Matriarca Tecerrochas (Nível 8):**
 HP 95 | CA 15 | Dano 2d8+4 (mordida) + teia automática em área
@@ -5323,7 +5323,7 @@ Escorpiões gigantes nas masmorras chegam ao tamanho de cavalos. Caçam instinti
 - **Padrão:** ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).
 - **Combate:** prioriza números — reforços em 1d4 rodadas se 1 aliado cair (ruído/feromônio).
 - **Moral:** não foge; persegue o alvo mais próximo até 0 HP (mente ausente).
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.
+- **Culinária:** janela 1h pós-morte; Extração conforme Nível de Extração.
 
 | Estatística | Valor |
 |-------------|-------|
@@ -5347,7 +5347,7 @@ Escorpiões gigantes nas masmorras chegam ao tamanho de cavalos. Caçam instinti
 - Exoesqueleto (Difícil): Peça inteira pode ser reforjada pelo Artífice em armadura natural leve.
 
 ---
-**Saque (Trinchar com sucesso):** ESP-14 · MIN-18 · 3d6 po — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 025).
+**Saque (Extração com sucesso):** ESP-14 · MIN-18 · 3d6 po — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 025).
 
 ## 026 — CENTOPEIA CÁUSTICA
 026**Tipo:** Insetóide Ácido | **Nível:** 5 | **XP:** 500 | **Faixa:** Intermediário
@@ -5359,7 +5359,7 @@ A Centopeia Cáustica tem 4 metros de comprimento e secreta ácido de poros ao l
 - **Padrão:** ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).
 - **Combate:** prioriza números — reforços em 1d4 rodadas se 1 aliado cair (ruído/feromônio).
 - **Moral:** não foge; persegue o alvo mais próximo até 0 HP (mente ausente).
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.
+- **Culinária:** janela 1h pós-morte; Extração conforme Nível de Extração.
 
 | Estatística | Valor |
 |-------------|-------|
@@ -5378,12 +5378,12 @@ A Centopeia Cáustica tem 4 metros de comprimento e secreta ácido de poros ao l
 - *Segmentos Autônomos:* Se dividida ao meio, cada metade continua funcionando com metade do HP.
 
 **Ingredientes (Extração):**
-- Ácido Cáustico Puro (Especialista — exige recipiente resistente a ácido): O Alquimista de Caldos pode usá-lo como base para sopas de dano extremo.
+- Ácido Cáustico Puro (Especialista — exige recipiente resistente a ácido): O Alquimista Ácido pode usá-lo como base para sopas de dano extremo.
 - Carne de Centopeia (Difícil — ácido deve ser neutralizado primeiro com sal mineral): Uma das carnes mais desafiadoras de preparar. Prato Perfeito concede Quelíceras Ácidas e Metabolismo Filtrador por 12h.
 - Pele Poro-Ácido (Médio): Segmentos de pele tratados tornam-se materiais resistentes a ácido.
 
 ---
-**Saque (Trinchar com sucesso):** ESP-15 · MIN-13 · 2d8 po — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 026).
+**Saque (Extração com sucesso):** ESP-15 · MIN-13 · 2d8 po — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 026).
 
 ## 027 — BESOURO-DIAMANTE
 027**Tipo:** Insetóide Minério | **Nível:** 2 | **XP:** 200 | **Faixa:** Comum
@@ -5395,7 +5395,7 @@ O Besouro-Diamante não é tão valioso quanto o nome sugere — mas é mais út
 - **Padrão:** ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).
 - **Combate:** prioriza números — reforços em 1d4 rodadas se 1 aliado cair (ruído/feromônio).
 - **Moral:** não foge; persegue o alvo mais próximo até 0 HP (mente ausente).
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.
+- **Culinária:** janela 1h pós-morte; Extração conforme Nível de Extração.
 
 | Estatística | Valor |
 |-------------|-------|
@@ -5422,7 +5422,7 @@ O Besouro-Diamante não é tão valioso quanto o nome sugere — mas é mais út
 *Os habitantes das profundezas inundadas. Carnes brancas e saborosas, mas a caça é perigosa para grupos sem preparação aquática.*
 
 ---
-**Saque (Trinchar com sucesso):** ESP-20 · MIN-17 · TES-05 (50 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 027).
+**Saque (Extração com sucesso):** ESP-20 · MIN-17 · TES-05 (50 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 027).
 
 ## 028 — SAPO-ENGOLIDOR
 028**Tipo:** Anfíbio Colossal | **Nível:** 6 | **XP:** 600 | **Faixa:** Intermediário
@@ -5433,7 +5433,7 @@ O Sapo-Engolidor chegaa 3 metros de comprimento e 1,5m de altura. Sua estratégi
 **Comportamento na mesa:**
 - **Abertura:** emboscada — vantagem na 1ª rodada se grupo não detectou (Percepção passiva vs CD 10+n//2).
 - **Moral:** não foge; persegue o alvo mais próximo até 0 HP (mente ausente).
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.
+- **Culinária:** janela 1h pós-morte; Extração conforme Nível de Extração.
 
 | Estatística | Valor |
 |-------------|-------|
@@ -5457,7 +5457,7 @@ O Sapo-Engolidor chegaa 3 metros de comprimento e 1,5m de altura. Sua estratégi
 - Glândula de Língua (Médio): Músculo elástico — o Artífice cria cordas de amarração de alta resistência.
 
 ---
-**Saque (Trinchar com sucesso):** ESP-01 · MIN-10 · 2d12 po — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 028).
+**Saque (Extração com sucesso):** ESP-01 · MIN-10 · 2d12 po — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 028).
 
 ## 029 — KRAKEN MENOR (TENTACULADO)
 029**Tipo:** Cefalópode Abissal | **Nível:** 11 | **XP:** 1100 | **Faixa:** Perigoso
@@ -5469,7 +5469,7 @@ Os Krakens Menores das masmorras são descendentes de Krakens verdadeiros que fi
 - **Abertura:** emboscada — vantagem na 1ª rodada se grupo não detectou (Percepção passiva vs CD 10+n//2).
 - **Tática:** foca conjurador ou menor HP; usa cobertura se INT 6+.
 - **Moral:** não foge; persegue o alvo mais próximo até 0 HP (mente ausente).
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.
+- **Culinária:** janela 1h pós-morte; Extração conforme Nível de Extração.
 
 | Estatística | Valor |
 |-------------|-------|
@@ -5491,11 +5491,11 @@ Os Krakens Menores das masmorras são descendentes de Krakens verdadeiros que fi
 
 **Ingredientes (Extração):**
 - Tentáculo de Kraken (Médio): Carne de textura firme, sabor de lula. Prato Gourmet concede Agarramento Automático por 6h (linguagem de tentáculos improvisa).
-- Tinta Abissal (Difícil): A tinta é mais que cegante — é alquimicamente ativa. O Alquimista de Caldos a usa como base para névoa venenosa concentrada.
+- Tinta Abissal (Difícil): A tinta é mais que cegante — é alquimicamente ativa. O Alquimista Ácido a usa como base para névoa venenosa concentrada.
 - Bico de Kraken (Difícil): O Artífice o reforja em lâmina que corta através de resistências mágicas.
 
 ---
-**Saque (Trinchar com sucesso):** ESP-01 · MIN-10 · TES-14 (700 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 029).
+**Saque (Extração com sucesso):** ESP-01 · MIN-10 · TES-14 (700 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 029).
 
 ## 030 — SERPENTE-DO-ABISMO
 030**Tipo:** Réptil Aquático Predador | **Nível:** 7 | **XP:** 700 | **Faixa:** Intermediário
@@ -5507,7 +5507,7 @@ Cobras de 8 metros que habitam os rios e lagos subterrâneos, especializadas em 
 - **Padrão:** ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).
 - **Fraqueza tática:** recua de fogo/luz radiante; CD 12 SAB ou Desvantagem 1 rodada.
 - **Moral:** não foge; persegue o alvo mais próximo até 0 HP (mente ausente).
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.
+- **Culinária:** janela 1h pós-morte; Extração conforme Nível de Extração.
 
 | Estatística | Valor |
 |-------------|-------|
@@ -5527,11 +5527,11 @@ Cobras de 8 metros que habitam os rios e lagos subterrâneos, especializadas em 
 
 **Ingredientes (Extração):**
 - Carne de Serpente (Fácil): Um dos mais fáceis de preparar entre os aquáticos. Concede Pele Escorregadia por 6h.
-- Veneno Neurotóxico (Médio): O Ladrão de Glândulas extrai e usa em setas de atordoamento.
+- Veneno Neurotóxico (Médio): O Assassino Venenoso extrai e usa em setas de atordoamento.
 - Couro de Abismo (Médio): Impermeável. Material para capas e bolsas que nunca molham o interior.
 
 ---
-**Saque (Trinchar com sucesso):** ESP-01 · MIN-11 · 5d10 po — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 030).
+**Saque (Extração com sucesso):** ESP-01 · MIN-11 · 5d10 po — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 030).
 
 ## 031 — TUBARÃO-CEGO DAS CAVERNAS
 031**Tipo:** Peixe Predador Abissal | **Nível:** 5 | **XP:** 500 | **Faixa:** Intermediário
@@ -5544,7 +5544,7 @@ Sem olhos — órgãos atrofiados após gerações sem luz — o Tubarão-Cego u
 - **Combate:** prioriza números — reforços em 1d4 rodadas se 1 aliado cair (ruído/feromônio).
 - **Fraqueza tática:** recua de fogo/luz radiante; CD 12 SAB ou Desvantagem 1 rodada.
 - **Moral:** não foge; persegue o alvo mais próximo até 0 HP (mente ausente).
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.
+- **Culinária:** janela 1h pós-morte; Extração conforme Nível de Extração.
 
 | Estatística | Valor |
 |-------------|-------|
@@ -5573,7 +5573,7 @@ Sem olhos — órgãos atrofiados após gerações sem luz — o Tubarão-Cego u
 *Criaturas com inteligência primitiva a moderada. Caçar goblinóides levanta questões morais em alguns grupos — mas suas carnes têm propriedades biomágicas únicas relacionadas à sobrevivência.*
 
 ---
-**Saque (Trinchar com sucesso):** ESP-01 · MIN-10 · 3d8 po — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 031).
+**Saque (Extração com sucesso):** ESP-01 · MIN-10 · 3d8 po — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 031).
 
 ## 032 — GOBLIN DE CAVERNA
 032**Tipo:** Goblinoide Comum | **Nível:** 1 | **XP:** 100 | **Faixa:** Comum
@@ -5585,7 +5585,7 @@ Goblins de caverna são os habitantes mais abundantes das masmorras de baixo ní
 - **Abertura:** emboscada — vantagem na 1ª rodada se grupo não detectou (Percepção passiva vs CD 10+n//2).
 - **Combate:** prioriza números — reforços em 1d4 rodadas se 1 aliado cair (ruído/feromônio).
 - **Moral:** ao 50% HP, INT CD 10 ou fuga/rendição.
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.
+- **Culinária:** janela 1h pós-morte; Extração conforme Nível de Extração.
 
 | Estatística | Valor |
 |-------------|-------|
@@ -5604,25 +5604,25 @@ Goblins de caverna são os habitantes mais abundantes das masmorras de baixo ní
 - *Coordenação de Horda:* +1 em ataques para cada aliado goblin adjacente ao alvo (máx +4).
 
 **Ingredientes (Extração):**
-- Carne de Goblin (Fácil): Controversa, mas funcional. Concede Estômago de Ferro e Faro para Ouro por 6h.
+- Carne de Goblin (Fácil): Controversa, mas funcional. Concede Fortitude e Faro para Ouro por 6h.
 - Adrenalina de Fuga (Difícil): Glândula que o Bárbaro Devorador usa para surtos de velocidade.
 - Ferramentas Improvisadas (Fácil): Goblins sempre carregam gambiarras úteis.
 
 ---
-**Saque (Trinchar com sucesso):** ESP-07 · MIN-04 · 1d6 po — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 032).
+**Saque (Extração com sucesso):** ESP-07 · MIN-04 · 1d6 po — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 032).
 
 ## 033 — HOBGOBLIN GUERREIRO
 033**Tipo:** Goblinoide Disciplinado | **Nível:** 3 | **XP:** 300 | **Faixa:** Comum
 
 **Lore:**
-Hobgoblins são o que acontece quando goblins evoluem militarmente. Maiores, mais fortes, mais organizados — e, crucialmente, treinados. Hobgoblins têm hierarquia militar rígida, usam armaduras de qualidade e lutam em formação. Nas masmorras, servem como tropas de choque de fortalezas goblinóides ou como mercenários contratados por monstros mais inteligentes. Sua carne é muscular e densa, com um sabor levemente amargo que desaparece com marinadas ácidas — o que o Sommelier de Masmorra descobriu acidentalmente.
+Hobgoblins são o que acontece quando goblins evoluem militarmente. Maiores, mais fortes, mais organizados — e, crucialmente, treinados. Hobgoblins têm hierarquia militar rígida, usam armaduras de qualidade e lutam em formação. Nas masmorras, servem como tropas de choque de fortalezas goblinóides ou como mercenários contratados por monstros mais inteligentes. Sua carne é muscular e densa, com um sabor levemente amargo que desaparece com marinadas ácidas — o que o Estratega de Masmorra descobriu acidentalmente.
 
 **Comportamento na mesa:**
 - **Padrão:** ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).
 - **Combate:** prioriza números — reforços em 1d4 rodadas se 1 aliado cair (ruído/feromônio).
 - **Tática:** foca conjurador ou menor HP; usa cobertura se INT 6+.
 - **Moral:** ao 50% HP, INT CD 10 ou fuga/rendição.
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.
+- **Culinária:** janela 1h pós-morte; Extração conforme Nível de Extração.
 
 | Estatística | Valor |
 |-------------|-------|
@@ -5643,7 +5643,7 @@ Hobgoblins são o que acontece quando goblins evoluem militarmente. Maiores, mai
 - Carne de Hobgoblin (Médio — marinada recomendada): Prato Gourmet concede Instinto de Horda e Metabolismo Acelerado por 8h.
 
 ---
-**Saque (Trinchar com sucesso):** ESP-08 · MIN-04 · 2d6 po — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 033).
+**Saque (Extração com sucesso):** ESP-08 · MIN-04 · 2d6 po — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 033).
 
 ## 034 — ORC DE MASMORRA
 034**Tipo:** Goblinoide Grande | **Nível:** 4 | **XP:** 400 | **Faixa:** Comum
@@ -5657,7 +5657,7 @@ Orcs de masmorra são maiores e mais selvagens que seus primos da superfície. A
 - **Território:** +2 ataque defendendo ninho/tesouro; persegue até limite do bioma.
 - **Fraqueza tática:** recua de fogo/luz radiante; CD 12 SAB ou Desvantagem 1 rodada.
 - **Moral:** ao 50% HP, INT CD 10 ou fuga/rendição.
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.
+- **Culinária:** janela 1h pós-morte; Extração conforme Nível de Extração.
 
 | Estatística | Valor |
 |-------------|-------|
@@ -5685,7 +5685,7 @@ Orcs de masmorra são maiores e mais selvagens que seus primos da superfície. A
 *As plantas da masmorra evoluíram em direções impossíveis na superfície. São simultaneamente as mais seguras e as mais perigosas — seguros de aproximar, perigosos de consumir sem estudo.*
 
 ---
-**Saque (Trinchar com sucesso):** ESP-06 · MIN-04 · 4d6 po — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 034).
+**Saque (Extração com sucesso):** ESP-06 · MIN-04 · 4d6 po — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 034).
 
 ## 035 — COGUMELO-REI (MICÔNIDO ANCIÃO)
 035**Tipo:** Fungo Senciente | **Nível:** 6 | **XP:** 600 | **Faixa:** Intermediário
@@ -5697,7 +5697,7 @@ Micônidos são cogumelos que se tornaram conscientes através de um processo ma
 - **Padrão:** ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).
 - **Território:** +2 ataque defendendo ninho/tesouro; persegue até limite do bioma.
 - **Moral:** não foge; persegue o alvo mais próximo até 0 HP (mente ausente).
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.
+- **Culinária:** janela 1h pós-morte; Extração conforme Nível de Extração.
 
 | Estatística | Valor |
 |-------------|-------|
@@ -5716,12 +5716,12 @@ Micônidos são cogumelos que se tornaram conscientes através de um processo ma
 - *Mente-de-Colmeia:* Conectado telepaticamente a todos os micônidos num raio de 60m.
 
 **Ingredientes (Extração):**
-- Corpo de Cogumelo (Médio): O Forrageiro dos Esporos transforma em poderoso composto. Prato Gourmet concede imunidade a controle mental e Esporos Curativos por 24h.
+- Corpo de Cogumelo (Médio): O Explorador de Esporos transforma em poderoso composto. Prato Gourmet concede imunidade a controle mental e Esporos Curativos por 24h.
 - Esporos do Rei (Difícil): Os esporos do Ancião têm concentração 10x maior. Podem criar alucinações totais ou, processados, um antídoto para qualquer veneno.
 - Hifa Raiz (Fácil): Material de construção natural — as hifas tecem estruturas resistentes.
 
 ---
-**Saque (Trinchar com sucesso):** ESP-16 · MIN-20 · TES-06 (150 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 035).
+**Saque (Extração com sucesso):** ESP-16 · MIN-20 · TES-06 (150 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 035).
 
 ## 036 — TREANT PODRE
 036**Tipo:** Flora Animada Corrompida | **Nível:** 8 | **XP:** 800 | **Faixa:** Intermediário
@@ -5733,7 +5733,7 @@ Treants da masmorra são árvores que foram animadas pela energia necrótica dos
 - **Padrão:** ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).
 - **Fraqueza tática:** recua de fogo/luz radiante; CD 12 SAB ou Desvantagem 1 rodada.
 - **Moral:** não foge; persegue o alvo mais próximo até 0 HP (mente ausente).
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.
+- **Culinária:** janela 1h pós-morte; Extração conforme Nível de Extração.
 
 | Estatística | Valor |
 |-------------|-------|
@@ -5752,12 +5752,12 @@ Treants da masmorra são árvores que foram animadas pela energia necrótica dos
 - *Casca de Ferro Podre:* Ataques cortantes causam 1d4 de dano mínimo independente de tudo.
 
 **Ingredientes (Extração):**
-- Madeira Necrótica (Médio): Queima roxo e causa dano a mortos-vivos. O Círculo da Decomposição usa como tocha sagrada.
+- Madeira Necrótica (Médio): Queima roxo e causa dano a mortos-vivos. O Círculo da Podridão usa como tocha sagrada.
 - Seiva Podre (Difícil): Veneno de decomposição — aplicado em armas, adiciona 2d6 necrótico por turno por 3 turnos.
 - Casca Resistente (Fácil): Material de construção de altíssima durabilidade.
 
 ---
-**Saque (Trinchar com sucesso):** ESP-17 · MIN-19 · TES-10 (200 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 036).
+**Saque (Extração com sucesso):** ESP-17 · MIN-19 · TES-10 (200 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 036).
 
 ## 037 — PLANTA CARNÍVORA GIGANTE
 037**Tipo:** Flora Predadora | **Nível:** 5 | **XP:** 500 | **Faixa:** Intermediário
@@ -5768,7 +5768,7 @@ Diferente das plantas carnívoras da superfície, essas plantas da masmorra evol
 **Comportamento na mesa:**
 - **Abertura:** emboscada — vantagem na 1ª rodada se grupo não detectou (Percepção passiva vs CD 10+n//2).
 - **Moral:** não foge; persegue o alvo mais próximo até 0 HP (mente ausente).
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.
+- **Culinária:** janela 1h pós-morte; Extração conforme Nível de Extração.
 
 | Estatística | Valor |
 |-------------|-------|
@@ -5798,7 +5798,7 @@ Diferente das plantas carnívoras da superfície, essas plantas da masmorra evol
 *Criaturas sem forma definida ou compostas de matéria elemental pura. Impossíveis de "cortar" no sentido tradicional — exigem técnicas específicas de extração.*
 
 ---
-**Saque (Trinchar com sucesso):** ESP-18 · MIN-19 · 2d10 po — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 037).
+**Saque (Extração com sucesso):** ESP-18 · MIN-19 · 2d10 po — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 037).
 
 ## 038 — SLIME ÁCIDO
 038**Tipo:** Amorfo Corrosivo | **Nível:** 2 | **XP:** 200 | **Faixa:** Comum
@@ -5809,7 +5809,7 @@ O Slime Ácido é o mais simples dos amorfos — uma massa de gel ácido com con
 **Comportamento na mesa:**
 - **Padrão:** ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).
 - **Moral:** ao 50% HP, INT CD 10 ou fuga/rendição.
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.
+- **Culinária:** janela 1h pós-morte; Extração conforme Nível de Extração.
 
 | Estatística | Valor |
 |-------------|-------|
@@ -5828,23 +5828,23 @@ O Slime Ácido é o mais simples dos amorfos — uma massa de gel ácido com con
 - *Absorção:* Criaturas que entrem em contato são puxadas para dentro da massa (Força CD 12 para resistir).
 
 **Ingredientes (Extração):**
-- Ácido de Slime (Especialista): O Extrator de Geleias coleta em frascos de vidro. Diluído 10:1, é o melhor agente de limpeza de ingredientes contaminados.
+- Ácido de Slime (Especialista): O Forma Amorfa coleta em frascos de vidro. Diluído 10:1, é o melhor agente de limpeza de ingredientes contaminados.
 - Núcleo Amorfo (Difícil): Centro sólido de gel concentrado. Consumido (processado pelo Alquimista), concede Corpo de Lodo por 4h.
 
 ---
-**Saque (Trinchar com sucesso):** ESP-15 · MIN-13 · 1d4 po — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 038).
+**Saque (Extração com sucesso):** ESP-15 · MIN-13 · 1d4 po — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 038).
 
 ## 039 — SLIME DE CRISTAL
 039**Tipo:** Amorfo Minerado | **Nível:** 4 | **XP:** 400 | **Faixa:** Comum
 
 **Lore:**
-O Slime de Cristal é uma evolução do Slime Ácido que passou gerações habitando o Labirinto Prismático e absorvendo minerais cristalinos. O resultado é um gel semi-transparente repleto de cristais suspensos que refletem luz em padrões hipnóticos. O problema culinário é que os cristais internos cortam qualquer recipiente comum — o Extrator de Geleias é o único especialista capaz de coletar esse slime sem acidentes.
+O Slime de Cristal é uma evolução do Slime Ácido que passou gerações habitando o Labirinto Prismático e absorvendo minerais cristalinos. O resultado é um gel semi-transparente repleto de cristais suspensos que refletem luz em padrões hipnóticos. O problema culinário é que os cristais internos cortam qualquer recipiente comum — o Forma Amorfa é o único especialista capaz de coletar esse slime sem acidentes.
 
 **Comportamento na mesa:**
 - **Padrão:** ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).
 - **Fraqueza tática:** recua de fogo/luz radiante; CD 12 SAB ou Desvantagem 1 rodada.
 - **Moral:** não foge; persegue o alvo mais próximo até 0 HP (mente ausente).
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.
+- **Culinária:** janela 1h pós-morte; Extração conforme Nível de Extração.
 
 | Estatística | Valor |
 |-------------|-------|
@@ -5862,11 +5862,11 @@ O Slime de Cristal é uma evolução do Slime Ácido que passou gerações habit
 - *Reflexo de Luz:* Feitiços de luz direcionados ao Slime refletem em direção aleatória.
 
 **Ingredientes (Extração):**
-- Cristais de Slime (Especialista): Cada cristal vale alquimicamente. O Mago Confeiteiro os usa em doces que causam ilusões vívidas.
+- Cristais de Slime (Especialista): Cada cristal vale alquimicamente. O Mago dos Encantos os usa em doces que causam ilusões vívidas.
 - Gel Cristalino (Especialista): Preparado como gelatina mágica, concede Juntas Articuladas e Reflexo de Luz por 6h.
 
 ---
-**Saque (Trinchar com sucesso):** ESP-20 · MIN-05 · TES-05 (80 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 039).
+**Saque (Extração com sucesso):** ESP-20 · MIN-05 · TES-05 (80 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 039).
 
 ## 040 — ELEMENTAL DE FOGO
 040**Tipo:** Elemental Primordial | **Nível:** 7 | **XP:** 700 | **Faixa:** Intermediário
@@ -5879,7 +5879,7 @@ Elementais de fogo não são criaturas do plano material — são manifestaçõe
 - **Tática:** foca conjurador ou menor HP; usa cobertura se INT 6+.
 - **Fraqueza tática:** recua de fogo/luz radiante; CD 12 SAB ou Desvantagem 1 rodada.
 - **Moral:** não foge; persegue o alvo mais próximo até 0 HP (mente ausente).
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.
+- **Culinária:** janela 1h pós-morte; Extração conforme Nível de Extração.
 
 | Estatística | Valor |
 |-------------|-------|
@@ -5898,11 +5898,11 @@ Elementais de fogo não são criaturas do plano material — são manifestaçõe
 - *Absorção de Chama:* Ataques de fogo curam o Elemental.
 
 **Ingredientes — Elemental (Não-comestível direto):**
-- Núcleo de Chama Primordial (Especialista): Capturado em orbe de obsidiana. O Piromante de Forno usa como combustível eterno de sua forja. O Engenheiro de Fogareiros o integra em mecanismos.
-- Centelha Elemental (Difícil): Faíscas coletadas com luva de amianto. Consumidas em forma de doce pelo Mago Confeiteiro, concedem Hálito de Brasa por 8h.
+- Núcleo de Chama Primordial (Especialista): Capturado em orbe de obsidiana. O Piromante das Brasas usa como combustível eterno de sua forja. O Engenheiro de Explosivos o integra em mecanismos.
+- Centelha Elemental (Difícil): Faíscas coletadas com luva de amianto. Consumidas em forma de doce pelo Mago dos Encantos, concedem Hálito de Brasa por 8h.
 
 ---
-**Saque (Trinchar com sucesso):** ESP-03 · MIN-01 · TES-07 (180 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 040).
+**Saque (Extração com sucesso):** ESP-03 · MIN-01 · TES-07 (180 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 040).
 
 ## 041 — ELEMENTAL DE GELO
 041**Tipo:** Elemental Primordial | **Nível:** 7 | **XP:** 700 | **Faixa:** Intermediário
@@ -5914,7 +5914,7 @@ Primos glaciais dos Elementais de Fogo, os Elementais de Gelo habitam a Prisão 
 - **Padrão:** ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).
 - **Fraqueza tática:** recua de fogo/luz radiante; CD 12 SAB ou Desvantagem 1 rodada.
 - **Moral:** não foge; persegue o alvo mais próximo até 0 HP (mente ausente).
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.
+- **Culinária:** janela 1h pós-morte; Extração conforme Nível de Extração.
 
 | Estatística | Valor |
 |-------------|-------|
@@ -5934,14 +5934,14 @@ Primos glaciais dos Elementais de Fogo, os Elementais de Gelo habitam a Prisão 
 
 **Ingredientes — Elemental:**
 - Núcleo de Gelo Eterno (Especialista): Nunca derrete em condições naturais. O Criomante o usa como câmara de conservação perfeita — ingredientes próximos a ele nunca estragam.
-- Fragmento Primordial (Difícil): Consumido como gelo-raspado pelo Mago Confeiteiro, concede imunidade a frio e Passos de Geada por 24h.
+- Fragmento Primordial (Difícil): Consumido como gelo-raspado pelo Mago dos Encantos, concede imunidade a frio e Passos de Geada por 24h.
 
 ---
 
 # CAPÍTULO X — CRIATURAS GLACIAIS
 
 ---
-**Saque (Trinchar com sucesso):** ESP-04 · MIN-16 · TES-07 — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 041).
+**Saque (Extração com sucesso):** ESP-04 · MIN-16 · TES-07 — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 041).
 
 ## 042 — YETI DAS PROFUNDEZAS
 042**Tipo:** Besta Glacial | **Nível:** 5 | **XP:** 500 | **Faixa:** Intermediário
@@ -5955,7 +5955,7 @@ Yetis das profundezas da masmorra evoluíram para ambientes sem luz, desenvolven
 - **Território:** +2 ataque defendendo ninho/tesouro; persegue até limite do bioma.
 - **Fraqueza tática:** recua de fogo/luz radiante; CD 12 SAB ou Desvantagem 1 rodada.
 - **Moral:** não foge; persegue o alvo mais próximo até 0 HP (mente ausente).
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.
+- **Culinária:** janela 1h pós-morte; Extração conforme Nível de Extração.
 
 | Estatística | Valor |
 |-------------|-------|
@@ -5979,7 +5979,7 @@ Yetis das profundezas da masmorra evoluíram para ambientes sem luz, desenvolven
 - Gordura de Yeti (Fácil): Combustível de alta eficiência para fogareiros em ambientes frios.
 
 ---
-**Saque (Trinchar com sucesso):** ESP-04 · MIN-16 · 3d8 po (pele) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 042).
+**Saque (Extração com sucesso):** ESP-04 · MIN-16 · 3d8 po (pele) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 042).
 
 ## 043 — LOBO DO INVERNO
 043**Tipo:** Besta Glacial Predadora | **Nível:** 4 | **XP:** 400 | **Faixa:** Comum
@@ -5992,7 +5992,7 @@ Lobos do inverno são caçadores em matilha que coordenam com inteligência pró
 - **Combate:** prioriza números — reforços em 1d4 rodadas se 1 aliado cair (ruído/feromônio).
 - **Tática:** foca conjurador ou menor HP; usa cobertura se INT 6+.
 - **Moral:** não foge; persegue o alvo mais próximo até 0 HP (mente ausente).
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.
+- **Culinária:** janela 1h pós-morte; Extração conforme Nível de Extração.
 
 | Estatística | Valor |
 |-------------|-------|
@@ -6019,7 +6019,7 @@ Lobos do inverno são caçadores em matilha que coordenam com inteligência pró
 # CAPÍTULO XI — MÍMICOS E METAMORFOS
 
 ---
-**Saque (Trinchar com sucesso):** ESP-10 · MIN-04 · 2d8 po — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 043).
+**Saque (Extração com sucesso):** ESP-10 · MIN-04 · 2d8 po — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 043).
 
 ## 044 — MÍMICO DE BAÚL
 044**Tipo:** Metamorfo Predador | **Nível:** 3 | **XP:** 300 | **Faixa:** Comum
@@ -6030,7 +6030,7 @@ O Mímico clássico — disfarçado de baú de tesouro, esperando pacientemente 
 **Comportamento na mesa:**
 - **Padrão:** ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).
 - **Moral:** não foge; persegue o alvo mais próximo até 0 HP (mente ausente).
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.
+- **Culinária:** janela 1h pós-morte; Extração conforme Nível de Extração.
 
 | Estatística | Valor |
 |-------------|-------|
@@ -6051,11 +6051,11 @@ O Mímico clássico — disfarçado de baú de tesouro, esperando pacientemente 
 
 **Ingredientes (Extração):**
 - Pele Camaleônica (Difícil): Células que mudam de cor e textura. Consumida, concede Camuflagem Perfeita e Pele Mutável por 8h.
-- Saliva Ácida (Difícil): Mais segura que a de slime, mais versátil. O Ladrão de Glândulas usa em ataques.
+- Saliva Ácida (Difícil): Mais segura que a de slime, mais versátil. O Assassino Venenoso usa em ataques.
 - Tesouro Interno (Fácil — mas com cuidado): 30% de chance de conter ouro ou itens de aventureiros anteriores.
 
 ---
-**Saque (Trinchar com sucesso):** ESP-19 · MIN-06 · TES-04 (conteudo imitado) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 044).
+**Saque (Extração com sucesso):** ESP-19 · MIN-06 · TES-04 (conteudo imitado) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 044).
 
 ## 045 — DOPPELGANGER
 045**Tipo:** Metamorfo Inteligente | **Nível:** 7 | **XP:** 700 | **Faixa:** Intermediário
@@ -6068,7 +6068,7 @@ Doppelgangers são a evolução inteligente dos Mímicos — em vez de imitar ob
 - **Combate:** prioriza números — reforços em 1d4 rodadas se 1 aliado cair (ruído/feromônio).
 - **Tática:** foca conjurador ou menor HP; usa cobertura se INT 6+.
 - **Moral:** não foge; persegue o alvo mais próximo até 0 HP (mente ausente).
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.
+- **Culinária:** janela 1h pós-morte; Extração conforme Nível de Extração.
 
 | Estatística | Valor |
 |-------------|-------|
@@ -6088,7 +6088,7 @@ Doppelgangers são a evolução inteligente dos Mímicos — em vez de imitar ob
 
 **Ingredientes (Extração):**
 - Glândula de Polimorfismo (Especialista): Órgão de alteração de forma. Consumida como capsula, concede Pele Mutável completa por 24h — cópia perfeita de qualquer humanoide.
-- Fluido Mental (Difícil): Líquido que processa pensamentos roubados. O Mago Fermentador usa como base para poção de Leitura de Mente.
+- Fluido Mental (Difícil): Líquido que processa pensamentos roubados. O Mago Alquímico usa como base para poção de Leitura de Mente.
 
 ---
 
@@ -6097,7 +6097,7 @@ Doppelgangers são a evolução inteligente dos Mímicos — em vez de imitar ob
 *Espécimes raros, criaturas de origem divina ou corrompida, e monstros que não se encaixam nas categorias ecológicas anteriores.*
 
 ---
-**Saque (Trinchar com sucesso):** ESP-26 · MIN-07 · TES-13 (250 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 045).
+**Saque (Extração com sucesso):** ESP-26 · MIN-07 · TES-13 (250 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 045).
 
 ## 046 — HIDRA DAS CAVERNAS
 046**Tipo:** Réptil Regenerativo | **Nível:** 9 | **XP:** 900 | **Faixa:** Perigoso
@@ -6109,7 +6109,7 @@ A Hidra das Cavernas adaptou-se ao submundo com 5 cabeças iniciais e a capacida
 - **Padrão:** ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).
 - **Fraqueza tática:** recua de fogo/luz radiante; CD 12 SAB ou Desvantagem 1 rodada.
 - **Moral:** não foge; persegue o alvo mais próximo até 0 HP (mente ausente).
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.
+- **Culinária:** janela 1h pós-morte; Extração conforme Nível de Extração.
 
 | Estatística | Valor |
 |-------------|-------|
@@ -6140,7 +6140,7 @@ A Hidra das Cavernas adaptou-se ao submundo com 5 cabeças iniciais e a capacida
 - Couro de Hidra (Médio): Uma das peles mais resistentes disponíveis.
 
 ---
-**Saque (Trinchar com sucesso):** ESP-02 · MIN-11 · TES-11 (6d10 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 046).
+**Saque (Extração com sucesso):** ESP-02 · MIN-11 · TES-11 (6d10 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 046).
 
 ## 047 — QUIMERA
 047**Tipo:** Besta Composta Mágica | **Nível:** 11 | **XP:** 1100 | **Faixa:** Perigoso
@@ -6151,7 +6151,7 @@ Uma Quimera não é criada — ela emerge. Em pontos de alta confluência de mag
 **Comportamento na mesa:**
 - **Padrão:** ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).
 - **Moral:** não foge; persegue o alvo mais próximo até 0 HP (mente ausente).
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.
+- **Culinária:** janela 1h pós-morte; Extração conforme Nível de Extração.
 
 | Estatística | Valor |
 |-------------|-------|
@@ -6175,7 +6175,7 @@ Uma Quimera não é criada — ela emerge. Em pontos de alta confluência de mag
 - Núcleo Mágico de Fusão (Especialista): O ponto de origem da fusão. Estudado pelo Mago, permite lançar uma magia sem preparação uma vez.
 
 ---
-**Saque (Trinchar com sucesso):** ESP-09 · MIN-08 · TES-14 (400 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 047).
+**Saque (Extração com sucesso):** ESP-09 · MIN-08 · TES-14 (400 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 047).
 
 ## 048 — ANJO CAÍDO
 048**Tipo:** Celestial Corrompido | **Nível:** 14 | **XP:** 1400 | **Faixa:** Elite
@@ -6188,7 +6188,7 @@ O Abatedouro Celestial não é chamado assim por acaso. Entidades divinas — an
 - **Território:** +2 ataque defendendo ninho/tesouro; persegue até limite do bioma.
 - **Fraqueza tática:** recua de fogo/luz radiante; CD 12 SAB ou Desvantagem 1 rodada.
 - **Moral:** não foge por HP; pode sacrificar lacaios.
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.
+- **Culinária:** janela 1h pós-morte; Extração conforme Nível de Extração.
 
 | Estatística | Valor |
 |-------------|-------|
@@ -6207,14 +6207,14 @@ O Abatedouro Celestial não é chamado assim por acaso. Entidades divinas — an
 - *Magia Divina:* Acesso a feitiços divinos e sombrios até nível 7.
 - *Voo Perfeito:* Manobrabilidade excepcional, imune a quedas.
 
-**Ingredientes — Banquete Lendário (requer Sacerdote da Purificação):**
+**Ingredientes — Banquete Lendário (requer Sacerdote Purificador):**
 - Pena Angelical (Fácil): Cada pena emite luz divina. Usada como tocha que dura eternamente.
 - Sangue Divino (Difícil): Cura qualquer doença, maldição ou veneno. O Sacerdote o usa para purificar ingredientes corrompidos.
 - Coração Corrompido (Especialista): Dualidade de sagrado e sombrio. Consumido no Banquete, concede resistência permanente tanto a radiante quanto a necrótico.
 - Espada Flamejante (Não comestível — Ferramenta Lendária): O Artífice pode estabilizá-la como arma mágica de +3 que causa 2d6 de dano extra (sagrado ou necrótico, alternado).
 
 ---
-**Saque (Trinchar com sucesso):** ESP-27 · MIN-23 · TES-16 (1 200 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 048).
+**Saque (Extração com sucesso):** ESP-27 · MIN-23 · TES-16 (1 200 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 048).
 
 ## 049 — GÁRGULA DE CRISTAL
 049**Tipo:** Construto-Besta | **Nível:** 6 | **XP:** 600 | **Faixa:** Intermediário
@@ -6226,7 +6226,7 @@ Gárgulas são criaturas que existem no limiar entre construto e besta — anima
 - **Padrão:** ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).
 - **Tática:** foca conjurador ou menor HP; usa cobertura se INT 6+.
 - **Moral:** não foge; persegue o alvo mais próximo até 0 HP (mente ausente).
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.
+- **Culinária:** janela 1h pós-morte; Extração conforme Nível de Extração.
 
 | Estatística | Valor |
 |-------------|-------|
@@ -6249,7 +6249,7 @@ Gárgulas são criaturas que existem no limiar entre construto e besta — anima
 - Fragmentos Cristalinos (Fácil): Material de artesanato de alta qualidade para afiar armas e revestir escudos.
 
 ---
-**Saque (Trinchar com sucesso):** ESP-20 · MIN-05 · TES-08 (180 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 049).
+**Saque (Extração com sucesso):** ESP-20 · MIN-05 · TES-08 (180 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 049).
 
 ## 050 — ABERRAÇÃO TENTACULAR
 050**Tipo:** Aberração Psíquica | **Nível:** 10 | **XP:** 1000 | **Faixa:** Perigoso
@@ -6261,7 +6261,7 @@ A Aberração Tentacular é o que acontece quando a masmorra produz vida própri
 - **Padrão:** ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).
 - **Combate:** prioriza números — reforços em 1d4 rodadas se 1 aliado cair (ruído/feromônio).
 - **Moral:** não foge; persegue o alvo mais próximo até 0 HP (mente ausente).
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.
+- **Culinária:** janela 1h pós-morte; Extração conforme Nível de Extração.
 
 | Estatística | Valor |
 |-------------|-------|
@@ -6281,11 +6281,11 @@ A Aberração Tentacular é o que acontece quando a masmorra produz vida própri
 - *Absorção Psíquica:* Quando mata uma criatura, absorve suas memórias (sabe tudo que ela sabia).
 
 **Ingredientes (Extração):**
-- Núcleo Psíquico (Especialista): O centro de inteligência. Consumido pelo Degustador de Sombras, concede Leitura Mental e Voz de Tumba por 12h.
-- Fluido Tentacular (Difícil): Líquido que carrega os impulsos psíquicos. O Mago Fermentador o usa em poções de comunicação telepática.
+- Núcleo Psíquico (Especialista): O centro de inteligência. Consumido pelo Sombra Etérea, concede Leitura Mental e Voz de Tumba por 12h.
+- Fluido Tentacular (Difícil): Líquido que carrega os impulsos psíquicos. O Mago Alquímico o usa em poções de comunicação telepática.
 
 ---
-**Saque (Trinchar com sucesso):** ESP-28 · MIN-22 · TES-13 (350 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 050).
+**Saque (Extração com sucesso):** ESP-28 · MIN-22 · TES-13 (350 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 050).
 
 ## 051 — BASILISCO DE MAGMA
 051**Tipo:** Réptil Vulcânico Especial | **Nível:** 8 | **XP:** 800 | **Faixa:** Intermediário
@@ -6296,7 +6296,7 @@ Uma fusão improvável de Basilisco e ambiente vulcânico — o Basilisco de Mag
 **Comportamento na mesa:**
 - **Padrão:** ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).
 - **Moral:** não foge; persegue o alvo mais próximo até 0 HP (mente ausente).
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.
+- **Culinária:** janela 1h pós-morte; Extração conforme Nível de Extração.
 
 | Estatística | Valor |
 |-------------|-------|
@@ -6315,11 +6315,11 @@ Uma fusão improvável de Basilisco e ambiente vulcânico — o Basilisco de Mag
 
 **Ingredientes (Extração):**
 - Escama de Obsidiana (Difícil): Material de armor e utensílio que resiste a qualquer temperatura.
-- Glândula do Olhar Vulcânico (Especialista): O Rastreador de Sangue Frio a usa para criar flechas petrificantes de magma.
+- Glândula do Olhar Vulcânico (Especialista): O Rastreador de Escamas a usa para criar flechas petrificantes de magma.
 - Carne Vulcânica (Difícil): Prato Gourmet concede imunidade a fogo, Sangue Fervente e Pele de Obsidiana por 24h.
 
 ---
-**Saque (Trinchar com sucesso):** ESP-03 · MIN-01 · TES-07 — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 051).
+**Saque (Extração com sucesso):** ESP-03 · MIN-01 · TES-07 — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 051).
 
 ## 052 — SEREIA DAS PROFUNDEZAS
 052**Tipo:** Humanoide Aquático Encantador | **Nível:** 6 | **XP:** 600 | **Faixa:** Intermediário
@@ -6333,7 +6333,7 @@ As Sereias das masmorras perderam a beleza — a falta de luz e a pressão das p
 - **Tática:** foca conjurador ou menor HP; usa cobertura se INT 6+.
 - **Fraqueza tática:** recua de fogo/luz radiante; CD 12 SAB ou Desvantagem 1 rodada.
 - **Moral:** não foge; persegue o alvo mais próximo até 0 HP (mente ausente).
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.
+- **Culinária:** janela 1h pós-morte; Extração conforme Nível de Extração.
 
 | Estatística | Valor |
 |-------------|-------|
@@ -6356,7 +6356,7 @@ As Sereias das masmorras perderam a beleza — a falta de luz e a pressão das p
 - Carne de Sereia (Difícil): Concede Guelras, Radar Lateral e Camuflagem de Polvo por 24h.
 
 ---
-**Saque (Trinchar com sucesso):** ESP-29 · MIN-10 · TES-10 (300 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 052).
+**Saque (Extração com sucesso):** ESP-29 · MIN-10 · TES-10 (300 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 052).
 
 ## 053 — TROLL DE PEDRA
 053**Tipo:** Gigante Menor Regenerativo | **Nível:** 6 | **XP:** 600 | **Faixa:** Intermediário
@@ -6367,7 +6367,7 @@ Trolls de Pedra são maiores que trolls comuns, mais lentos e com regeneração 
 **Comportamento na mesa:**
 - **Padrão:** ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).
 - **Moral:** não foge; persegue o alvo mais próximo até 0 HP (mente ausente).
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.
+- **Culinária:** janela 1h pós-morte; Extração conforme Nível de Extração.
 
 | Estatística | Valor |
 |-------------|-------|
@@ -6391,7 +6391,7 @@ Trolls de Pedra são maiores que trolls comuns, mais lentos e com regeneração 
 - Sangue Regenerativo (Médio): Misturado a qualquer ingrediente, estende os efeitos de cura da refeição por +4h.
 
 ---
-**Saque (Trinchar com sucesso):** ESP-06 · MIN-04 · 4d8 po — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 053).
+**Saque (Extração com sucesso):** ESP-06 · MIN-04 · 4d8 po — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 053).
 
 ## 054 — CICLOPE
 054**Tipo:** Gigante Médio | **Nível:** 9 | **XP:** 900 | **Faixa:** Perigoso
@@ -6405,7 +6405,7 @@ Ciclopes nas masmorras são seres melancólicos. Inteligentes o suficiente para 
 - **Tática:** foca conjurador ou menor HP; usa cobertura se INT 6+.
 - **Território:** +2 ataque defendendo ninho/tesouro; persegue até limite do bioma.
 - **Moral:** não foge; persegue o alvo mais próximo até 0 HP (mente ausente).
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.
+- **Culinária:** janela 1h pós-morte; Extração conforme Nível de Extração.
 
 | Estatística | Valor |
 |-------------|-------|
@@ -6428,7 +6428,7 @@ Ciclopes nas masmorras são seres melancólicos. Inteligentes o suficiente para 
 - Olho de Ciclope (Difícil): Órgão óptico único com propriedades mágicas. O Artífice pode criar um monocular que revela fraquezas de monstros.
 
 ---
-**Saque (Trinchar com sucesso):** ESP-06 · MIN-02 · TES-11 (5d12 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 054).
+**Saque (Extração com sucesso):** ESP-06 · MIN-02 · TES-11 (5d12 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 054).
 
 ## 055 — HARPIA DE CAVERNA
 055**Tipo:** Humanoide Alado | **Nível:** 4 | **XP:** 400 | **Faixa:** Comum
@@ -6440,7 +6440,7 @@ Harpias de caverna perderam o canto encantador de suas primas da superfície —
 - **Padrão:** ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).
 - **Combate:** prioriza números — reforços em 1d4 rodadas se 1 aliado cair (ruído/feromônio).
 - **Moral:** ao 50% HP, INT CD 10 ou fuga/rendição.
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.
+- **Culinária:** janela 1h pós-morte; Extração conforme Nível de Extração.
 
 | Estatística | Valor |
 |-------------|-------|
@@ -6466,7 +6466,7 @@ Harpias de caverna perderam o canto encantador de suas primas da superfície —
 # CAPÍTULO XIII — MONSTROS ADICIONAIS DO CATÁLOGO
 
 ---
-**Saque (Trinchar com sucesso):** ESP-10 · MIN-09 · 2d10 po joias — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 055).
+**Saque (Extração com sucesso):** ESP-10 · MIN-09 · 2d10 po joias — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 055).
 
 ## 056 — ROPER (TENTÁCULO-PEDRA)
 056**Tipo:** Aberração Mineral | **Nível:** 5 | **XP:** 500 | **Faixa:** Intermediário
@@ -6484,10 +6484,10 @@ Harpias de caverna perderam o canto encantador de suas primas da superfície —
 **Comportamento na mesa:**
 - **Padrão:** ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).
 - **Moral:** não foge; persegue o alvo mais próximo até 0 HP (mente ausente).
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.
+- **Culinária:** janela 1h pós-morte; Extração conforme Nível de Extração.
 
 ---
-**Saque (Trinchar com sucesso):** ESP-14 · MIN-21 · 3d8 po — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 056).
+**Saque (Extração com sucesso):** ESP-14 · MIN-21 · 3d8 po — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 056).
 
 ## 057 — ABOLETH
 057**Tipo:** Aberração Aquática Ancestral | **Nível:** 16 | **XP:** 1600 | **Faixa:** Elite
@@ -6496,7 +6496,7 @@ Harpias de caverna perderam o canto encantador de suas primas da superfície —
 |----|-----|------|--------|
 | 195 | 17 | 2d6+6 (tentáculo) × 3 ataques + Escravização Mental | Mar de Prata Cega, Pântano da Decomposição |
 **Habilidades:** *Escravização* (CD 19 Sabedoria — falha: servidão permanente) • *Memória Ancestral* (sabe tudo que qualquer criatura já escravizada sabia) • *Muco Transformador* (contato transforma pele em muco — precisa de água para sobreviver).
-**Ingredientes:** Tentáculo de Aboleth (Especialista) — Muco Transformador (Especialista — usado pelo Mago Fermentador para criar a única poção que transforma raça temporáriamente).
+**Ingredientes:** Tentáculo de Aboleth (Especialista) — Muco Transformador (Especialista — usado pelo Mago Alquímico para criar a única poção que transforma raça temporáriamente).
 
 ---
 
@@ -6505,10 +6505,10 @@ Harpias de caverna perderam o canto encantador de suas primas da superfície —
 **Comportamento na mesa:**
 - **Padrão:** ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).
 - **Moral:** não foge por HP; pode sacrificar lacaios.
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.
+- **Culinária:** janela 1h pós-morte; Extração conforme Nível de Extração.
 
 ---
-**Saque (Trinchar com sucesso):** ESP-30 · MIN-11 · TES-16 (2 000 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 057).
+**Saque (Extração com sucesso):** ESP-30 · MIN-11 · TES-16 (2 000 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 057).
 
 ## 058 — PUDIM NEGRO
 058**Tipo:** Amorfo Extremo | **Nível:** 7 | **XP:** 700 | **Faixa:** Intermediário
@@ -6526,10 +6526,10 @@ Harpias de caverna perderam o canto encantador de suas primas da superfície —
 **Comportamento na mesa:**
 - **Padrão:** ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).
 - **Moral:** não foge; persegue o alvo mais próximo até 0 HP (mente ausente).
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.
+- **Culinária:** janela 1h pós-morte; Extração conforme Nível de Extração.
 
 ---
-**Saque (Trinchar com sucesso):** ESP-15 · MIN-13 · TES-06 (120 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 058).
+**Saque (Extração com sucesso):** ESP-15 · MIN-13 · TES-06 (120 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 058).
 
 ## 059 — LAGOSTA-GIGANTE ABISSAL
 059**Tipo:** Crustáceo Aquático | **Nível:** 4 | **XP:** 400 | **Faixa:** Comum
@@ -6547,10 +6547,10 @@ Harpias de caverna perderam o canto encantador de suas primas da superfície —
 **Comportamento na mesa:**
 - **Padrão:** ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).
 - **Moral:** não foge; persegue o alvo mais próximo até 0 HP (mente ausente).
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.
+- **Culinária:** janela 1h pós-morte; Extração conforme Nível de Extração.
 
 ---
-**Saque (Trinchar com sucesso):** ESP-01 · MIN-10 · TES-05 (90 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 059).
+**Saque (Extração com sucesso):** ESP-01 · MIN-10 · TES-05 (90 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 059).
 
 ## 060 — CARANGUEJO-EREMITA COLOSSAL
 060**Tipo:** Crustáceo Aquático Adaptado | **Nível:** 7 | **XP:** 700 | **Faixa:** Intermediário
@@ -6568,7 +6568,7 @@ Harpias de caverna perderam o canto encantador de suas primas da superfície —
 **Comportamento na mesa:**
 - **Padrão:** ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).
 - **Moral:** não foge; persegue o alvo mais próximo até 0 HP (mente ausente).
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.## 061 — ARANHA-CAVALEIRA (JINOBAKE)
+- **Culinária:** janela 1h pós-morte; Extração conforme Nível de Extração.## 061 — ARANHA-CAVALEIRA (JINOBAKE)
 **Tipo:** Aracnídeo de Élite | **Nível:** 9 | **XP:** 900 | **Faixa:** Perigoso
 **Lore:** Aranhas que evoluíram para montar outras criaturas — literalmente. Uma Aranha-Cavaleira controla sua montaria com enzimas injetadas no sistema nervoso. Monta desde lobos até pequenos drakes.
 | HP | CA | Dano | Biomas |
@@ -6584,7 +6584,7 @@ Harpias de caverna perderam o canto encantador de suas primas da superfície —
 **Comportamento na mesa:**
 - **Padrão:** ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).
 - **Moral:** não foge; persegue o alvo mais próximo até 0 HP (mente ausente).
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.## 062 — MOSCA-CARNIÇA COLOSSAL
+- **Culinária:** janela 1h pós-morte; Extração conforme Nível de Extração.## 062 — MOSCA-CARNIÇA COLOSSAL
 **Tipo:** Insetóide Necrófago | **Nível:** 2 | **XP:** 200 | **Faixa:** Comum
 **Lore:** Do tamanho de um gato gordo, a Mosca-Carniça é o sistema de limpeza da masmorra. Onde há mortos, há centenas delas em minutos. Inofensiva individualmente, aterrorizante em enxame.
 | HP | CA | Dano | Biomas |
@@ -6600,7 +6600,7 @@ Harpias de caverna perderam o canto encantador de suas primas da superfície —
 **Comportamento na mesa:**
 - **Padrão:** ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).
 - **Moral:** não foge; persegue o alvo mais próximo até 0 HP (mente ausente).
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.## 063 — BESOURO-TROVÃO
+- **Culinária:** janela 1h pós-morte; Extração conforme Nível de Extração.## 063 — BESOURO-TROVÃO
 **Tipo:** Insetóide Elemental | **Nível:** 5 | **XP:** 500 | **Faixa:** Intermediário
 **Lore:** Absorve energia elétrica do Arquipélago Magnético e a libera em descargas de defesa. O zumbido dos seus élitros a 50 metros é aviso suficiente para recuar.
 | HP | CA | Dano | Biomas |
@@ -6616,7 +6616,7 @@ Harpias de caverna perderam o canto encantador de suas primas da superfície —
 **Comportamento na mesa:**
 - **Padrão:** ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).
 - **Moral:** não foge; persegue o alvo mais próximo até 0 HP (mente ausente).
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.## 064 — VERME GIGANTE DE PEDRA
+- **Culinária:** janela 1h pós-morte; Extração conforme Nível de Extração.## 064 — VERME GIGANTE DE PEDRA
 **Tipo:** Verme Escavador | **Nível:** 10 | **XP:** 1000 | **Faixa:** Perigoso
 **Lore:** 20 metros de comprimento, escava por pedra como se fosse areia. As galerias que cria tornam-se os corredores da masmorra ao longo de décadas. A mandíbula tritura rocha e carne com igual facilidade.
 | HP | CA | Dano | Biomas |
@@ -6632,7 +6632,7 @@ Harpias de caverna perderam o canto encantador de suas primas da superfície —
 **Comportamento na mesa:**
 - **Padrão:** ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).
 - **Moral:** não foge; persegue o alvo mais próximo até 0 HP (mente ausente).
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.## 065 — SALAMANDRA GIGANTE
+- **Culinária:** janela 1h pós-morte; Extração conforme Nível de Extração.## 065 — SALAMANDRA GIGANTE
 **Tipo:** Anfíbio Vulcânico | **Nível:** 6 | **XP:** 600 | **Faixa:** Intermediário
 **Lore:** Não confundir com Salamandras de Magma elementais. Esta é uma criatura biológica adaptada ao calor — pele rugosa que suporta temperatura de 300°C, respiração de vapor. Habita as bordas de rios de magma onde temperaturas são "apenas" extremas.
 | HP | CA | Dano | Biomas |
@@ -6649,7 +6649,7 @@ Harpias de caverna perderam o canto encantador de suas primas da superfície —
 **Comportamento na mesa:**
 - **Padrão:** ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).
 - **Moral:** não foge; persegue o alvo mais próximo até 0 HP (mente ausente).
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.## 066 — BEHEMOTH DE PEDRA
+- **Culinária:** janela 1h pós-morte; Extração conforme Nível de Extração.## 066 — BEHEMOTH DE PEDRA
 **Tipo:** Besta Colossal | **Nível:** 14 | **XP:** 1400 | **Faixa:** Elite
 **Lore:** Uma criatura de proporções absurdas — 15 metros de altura — que se move por andares inteiros como se fossem corredores normais. Herbívoro. O problema é que "herbívoro" em masmorras significa que come cogumelos gigantes e qualquer outra planta, mas esmagará qualquer coisa no caminho sem perceber.
 | HP | CA | Dano | Biomas |
@@ -6666,7 +6666,7 @@ Harpias de caverna perderam o canto encantador de suas primas da superfície —
 **Comportamento na mesa:**
 - **Padrão:** ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).
 - **Moral:** não foge por HP; pode sacrificar lacaios.
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.## 067 — FERA DA SOMBRA
+- **Culinária:** janela 1h pós-morte; Extração conforme Nível de Extração.## 067 — FERA DA SOMBRA
 **Tipo:** Elemental das Sombras | **Nível:** 8 | **XP:** 800 | **Faixa:** Intermediário
 **Lore:** Manifestação de escuridão acumulada nos cantos dos andares mais profundos onde a luz nunca chegou. Não tem forma definida mas prefere parecer um felino. Drena a luz ao redor como se respirasse.
 | HP | CA | Dano | Biomas |
@@ -6683,7 +6683,7 @@ Harpias de caverna perderam o canto encantador de suas primas da superfície —
 **Comportamento na mesa:**
 - **Padrão:** ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).
 - **Moral:** não foge; persegue o alvo mais próximo até 0 HP (mente ausente).
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.## 068 — MEDUSA
+- **Culinária:** janela 1h pós-morte; Extração conforme Nível de Extração.## 068 — MEDUSA
 **Tipo:** Humanoide Mágico Petrificante | **Nível:** 7 | **XP:** 700 | **Faixa:** Intermediário
 **Lore:** As Medusas das masmorras são descendentes de criaturas amaldiçoadas por deuses já esquecidos. Vivem em câmaras decoradas com estátuas — suas vítimas anteriores. Algumas chegam a um nível perturbador de conforto com as estátuas, tratando-as como companhia.
 | HP | CA | Dano | Biomas |
@@ -6699,7 +6699,7 @@ Harpias de caverna perderam o canto encantador de suas primas da superfície —
 **Comportamento na mesa:**
 - **Padrão:** ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).
 - **Moral:** não foge; persegue o alvo mais próximo até 0 HP (mente ausente).
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.## 069 — FÊNIX DE CAVERNA
+- **Culinária:** janela 1h pós-morte; Extração conforme Nível de Extração.## 069 — FÊNIX DE CAVERNA
 **Tipo:** Ave Elemental de Fogo | **Nível:** 13 | **XP:** 1300 | **Faixa:** Elite
 **Lore:** Uma fênix adaptada à escuridão — plumagem negra com brasas internas que brilham através das penas. Morre e renasce dentro de seu ninho. A caça de uma Fênix exige destruir o ninho simultaneamente à criatura, senão ela renasce em 1d4 horas.
 | HP | CA | Dano | Biomas |
@@ -6716,7 +6716,7 @@ Harpias de caverna perderam o canto encantador de suas primas da superfície —
 **Comportamento na mesa:**
 - **Padrão:** ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).
 - **Moral:** não foge por HP; pode sacrificar lacaios.
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.## 070 — GIGANTE DE PEDRA
+- **Culinária:** janela 1h pós-morte; Extração conforme Nível de Extração.## 070 — GIGANTE DE PEDRA
 **Tipo:** Gigante Elemental | **Nível:** 12 | **XP:** 1200 | **Faixa:** Perigoso
 **Lore:** Escultores por natureza, os Gigantes de Pedra constroem impérios subterrâneos de arte que nenhum aventureiro sobreviveu para relatar completamente. Hostis a invasores de suas galerias, mas respeitam a força — um grupo que derrota um Gigante de Pedra em combaté honesto pode às vezes negociar com os sobreviventes.
 | HP | CA | Dano | Biomas |
@@ -6732,7 +6732,7 @@ Harpias de caverna perderam o canto encantador de suas primas da superfície —
 **Comportamento na mesa:**
 - **Padrão:** ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).
 - **Moral:** não foge; persegue o alvo mais próximo até 0 HP (mente ausente).
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.## 071 — BRUXA DA MASMORRA (HAG)
+- **Culinária:** janela 1h pós-morte; Extração conforme Nível de Extração.## 071 — BRUXA DA MASMORRA (HAG)
 **Tipo:** Humanoide Mágico Corrompido | **Nível:** 8 | **XP:** 800 | **Faixa:** Intermediário
 **Lore:** Bruxas são o que acontece com magas que passaram décadas dentro das masmorras, absorvendo energia. Não são criadas por maldição — são o produto de uma escolha. A corrupção é gradual: primeiro a pele endurece, depois os dentes escurecem, depois os olhos mudam de cor. Ao final, algo que ainda pensa como maga mas tem corpo de criatura. Elas negociam, mentem e raramente atacam diretamente — preferem usar outros.
 | HP | CA | Dano | Biomas |
@@ -6748,7 +6748,7 @@ Harpias de caverna perderam o canto encantador de suas primas da superfície —
 **Comportamento na mesa:**
 - **Padrão:** ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).
 - **Moral:** não foge; persegue o alvo mais próximo até 0 HP (mente ausente).
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.## 072 — FERA SEMINAL (DESTIVORE)
+- **Culinária:** janela 1h pós-morte; Extração conforme Nível de Extração.## 072 — FERA SEMINAL (DESTIVORE)
 **Tipo:** Aberração Alimentar | **Nível:** 11 | **XP:** 1100 | **Faixa:** Perigoso
 **Lore:** Uma criatura que se alimenta da própria essência do que os aventureiros comeram. Detecta mutações biomágicas ativas e ataca diretamente os órgãos que as produzem.
 | HP | CA | Dano | Biomas |
@@ -6764,7 +6764,7 @@ Harpias de caverna perderam o canto encantador de suas primas da superfície —
 **Comportamento na mesa:**
 - **Padrão:** ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).
 - **Moral:** não foge; persegue o alvo mais próximo até 0 HP (mente ausente).
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.## 073 — CARNIÇAL ALADO (VROCK)
+- **Culinária:** janela 1h pós-morte; Extração conforme Nível de Extração.## 073 — CARNIÇAL ALADO (VROCK)
 **Tipo:** Demônio Menor | **Nível:** 9 | **XP:** 900 | **Faixa:** Perigoso
 **Lore:** Não é nativo da masmorra — veio de outro plano e ficou preso. Demônio com corpo de abutre humanoide, penas negras e cheiro de enxofre. Caótico e destrutivo por natureza, mas com inteligência suficiente para ser imprevisível.
 | HP | CA | Dano | Biomas |
@@ -6781,7 +6781,7 @@ Harpias de caverna perderam o canto encantador de suas primas da superfície —
 **Comportamento na mesa:**
 - **Padrão:** ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).
 - **Moral:** não foge; persegue o alvo mais próximo até 0 HP (mente ausente).
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.## 074 — BALOR (ARQUIDEMÔNIO)
+- **Culinária:** janela 1h pós-morte; Extração conforme Nível de Extração.## 074 — BALOR (ARQUIDEMÔNIO)
 **Tipo:** Demônio Maior | **Nível:** 19 | **XP:** 1900 | **Faixa:** Lendário
 **Lore:** Os Balors são generais do Abismo — criaturas de poder colossal que raramente chegam ao plano material. Quando chegam à masmorra, é porque foram convocados por algo poderoso o suficiente para abrir uma fenda planar, e então abandonados. Um Balor de masmorra é uma catástrofe ambulante de 6 metros de altura com asas flamejantes e uma espada que queima em vorpal.
 | HP | CA | Dano | Biomas |
@@ -6799,7 +6799,7 @@ Harpias de caverna perderam o canto encantador de suas primas da superfície —
 **Comportamento na mesa:**
 - **Padrão:** ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).
 - **Moral:** não foge por HP; pode sacrificar lacaios.
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.## 075 — ENXAME DE RATOS-CADÁVERES
+- **Culinária:** janela 1h pós-morte; Extração conforme Nível de Extração.## 075 — ENXAME DE RATOS-CADÁVERES
 **Tipo:** Morto-Vivo Enxame | **Nível:** 2 | **XP:** 200 | **Faixa:** Comum
 **Lore:** Ratos normais que morreram em massa e foram animados coletivamente por energia necrótica — um único "organismo" de centenas de corpos. Movem-se em ondas, passam por qualquer abertura, corroem equipamentos com dentes e unhas.
 | HP | CA | Dano | Biomas |
@@ -6807,7 +6807,7 @@ Harpias de caverna perderam o canto encantador de suas primas da superfície —
 | 24 | 10 | 2d6 (mordidas múltiplas em área de ocupação) | Cemitério de Colossos, Estômago Botânico, Cidadela Pálida, Arquivos Soterrados |
 **Resistências:** Contundente, Cortante, Perfurante. **Imunidades:** Veneno, Exaustão.
 **Habilidades:** *Ocupação de Área* (qualquer criatura que comece o turno no espaço do enxame toma 2d6 automaticamente) • *Infiltração* (passa por qualquer abertura maior que 3cm) • *Resistente a Ataques Focados* (ataques de área causam dano normal, ataques individuais causam 1 de dano máximo).
-**Ingredientes:** Ossinhos de Rato-Cadáver (Fácil — em grande quantidade) • Pó de Osso Necrótico (Médio — ingrediente de pó que o Mago Fermentador usa em refeições de resistência necrótica).
+**Ingredientes:** Ossinhos de Rato-Cadáver (Fácil — em grande quantidade) • Pó de Osso Necrótico (Médio — ingrediente de pó que o Mago Alquímico usa em refeições de resistência necrótica).
 
 ---
 
@@ -6817,7 +6817,7 @@ Harpias de caverna perderam o canto encantador de suas primas da superfície —
 - **Padrão:** ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).
 - **Moral:** não foge; persegue o alvo mais próximo até 0 HP (mente ausente).
 - **Pós-morte:** ver habilidades (levante/toxina) — 1 rodada de risco ao grupo.
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.## 076 — ELEMENTAL DE TERRA
+- **Culinária:** janela 1h pós-morte; Extração conforme Nível de Extração.## 076 — ELEMENTAL DE TERRA
 **Tipo:** Elemental Primordial | **Nível:** 8 | **XP:** 800 | **Faixa:** Intermediário
 **Lore:** Manifestação do Plano da Terra no ambiente da masmorra, frequentemente confundido com Golems de Pedra. A diferença: Golems são criados, Elementais emergem. O Elemental de Terra é a própria rocha tornando-se consciente e irritada com os seres de carne que a perfuram.
 | HP | CA | Dano | Biomas |
@@ -6825,7 +6825,7 @@ Harpias de caverna perderam o canto encantador de suas primas da superfície —
 | 126 | 17 | 2d8+8 (socos de pedra) × 2 | Jardim de Cinzas Petrificadas, Arquipélago Magnético, Cemitério de Colossos |
 **Resistências:** Não-mágico (cortante, perfurante, contundente). **Imunidades:** Veneno, Exaustão.
 **Habilidades:** *Imersão na Terra* (move-se através de pedra sem deixar rastro — velocidade normal) • *Tremor* (ação, CD 15 Destreza ou Prostrado em área de 6m) • *Absorção de Terra* (recupera 10 HP por turno em contato com pedra natural).
-**Ingredientes:** Núcleo de Terra Primordial (Especialista) • O Círculo do Solo Vivo usa como ingrediente central — consumido, concede resistência permanente a contundente (funciona uma vez por personagem, sendo Elemental de Terra).
+**Ingredientes:** Núcleo de Terra Primordial (Especialista) • O Círculo da Terra usa como ingrediente central — consumido, concede resistência permanente a contundente (funciona uma vez por personagem, sendo Elemental de Terra).
 
 ---
 
@@ -6834,7 +6834,7 @@ Harpias de caverna perderam o canto encantador de suas primas da superfície —
 **Comportamento na mesa:**
 - **Padrão:** ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).
 - **Moral:** não foge; persegue o alvo mais próximo até 0 HP (mente ausente).
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.## 077 — BANSHEE
+- **Culinária:** janela 1h pós-morte; Extração conforme Nível de Extração.## 077 — BANSHEE
 **Tipo:** Morto-Vivo Espiritual Feminino | **Nível:** 8 | **XP:** 800 | **Faixa:** Intermediário
 **Lore:** A Banshee é criada especificamente de mulheres de beleza extraordinária que morreram de amor não correspondido ou traição. O grito delas não é ataque — é um gemido de dor genuíno que simplesmente mata. Habitam ruínas de câmaras que pertenceram a elas em vida, ainda decoradas como eram.
 | HP | CA | Dano | Biomas |
@@ -6842,7 +6842,7 @@ Harpias de caverna perderam o canto encantador de suas primas da superfície —
 | 58 | 12 | 3d6 psíquico (toque corrupto) | Cidadela Pálida, Fosso das Emoções Ecoantes, Arquivos Soterrados |
 **Resistências:** Ácido, Fogo, Relâmpago, não-mágico. **Imunidades:** Frio, Necrótico, Veneno.
 **Habilidades:** *Grito de Banshee* (uma vez/dia: CD 13 Constituição para toda criatura viva dentro de 30m que possa ouvi-la — falha: cai a 0 HP instantaneamente; sucesso: toma 3d6 psíquico) • *Detectar Vida* (sabe quantas criaturas vivas estão num raio de 5km).
-**Ingredientes:** Eco de Dor (Especialista — o "cristal" de emoção da Banshee) • Processado, permite ao Degustador de Sombras usar o Grito de Banshee como habilidade uma vez por semana.
+**Ingredientes:** Eco de Dor (Especialista — o "cristal" de emoção da Banshee) • Processado, permite ao Sombra Etérea usar o Grito de Banshee como habilidade uma vez por semana.
 
 ---
 
@@ -6852,7 +6852,7 @@ Harpias de caverna perderam o canto encantador de suas primas da superfície —
 - **Padrão:** ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).
 - **Moral:** não foge; persegue o alvo mais próximo até 0 HP (mente ausente).
 - **Pós-morte:** ver habilidades (levante/toxina) — 1 rodada de risco ao grupo.
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.## 078 — MORCEGO-TIRANO
+- **Culinária:** janela 1h pós-morte; Extração conforme Nível de Extração.## 078 — MORCEGO-TIRANO
 **Tipo:** Besta Alada Predadora | **Nível:** 5 | **XP:** 500 | **Faixa:** Intermediário
 **Lore:** Do tamanho de um cavalo de batalha, com envergadura de 8 metros. Os Morcegos-Tirano dominam o Abismo Invertido, caçando em grupos de 3 a 6 e usando ecolocalização para mapear o ambiente com precisão de centímetros. A caverna tem mapa tridimensional perfeito na mente deles.
 | HP | CA | Dano | Biomas |
@@ -6868,14 +6868,14 @@ Harpias de caverna perderam o canto encantador de suas primas da superfície —
 **Comportamento na mesa:**
 - **Padrão:** ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).
 - **Moral:** não foge; persegue o alvo mais próximo até 0 HP (mente ausente).
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.## 079 — OOZE OCULAR (OLHO FLUTUANTE)
+- **Culinária:** janela 1h pós-morte; Extração conforme Nível de Extração.## 079 — OOZE OCULAR (OLHO FLUTUANTE)
 **Tipo:** Aberração Ocular | **Nível:** 6 | **XP:** 600 | **Faixa:** Intermediário
 **Lore:** Uma massa gelatinosa central com dezenas de olhos em hastes que surgem de toda a superfície. Cada olho têm um poder mágico diferente. A criatura processa o mundo através de múltiplas perspectivas simultâneas — literalmente vê em todas as direções ao mesmo tempo.
 | HP | CA | Dano | Biomas |
 |----|-----|------|--------|
 | 72 | 13 | 1d8+3 mordida + Raios oculares | Arquivos Soterrados, Labirinto Prismático, Fosso das Emoções Ecoantes, Matriz de Extrusão |
 **Habilidades:** *Visão Antímágica* (cone de 9m do olho central — nenhuma magia funciona dentro do cone) • *Raios Oculares* (até 3/turno; cada olho tem efeito diferente: Sono, Petrificação, Desintegração, Encantamento, Medo) • *Visão 360°* (não pode ser surpreendido, sem flanqueamento).
-**Ingredientes:** Olho Central (Especialista — o órgão antimágico) • Processado, cria lente que, quando olhada, anula a próxima magia que atingir o usuário (1 uso). Olhos Secundários (Difícil — cada um tem aplicação diferente; o Biólogo Alquímico cria poções específicas por olho).
+**Ingredientes:** Olho Central (Especialista — o órgão antimágico) • Processado, cria lente que, quando olhada, anula a próxima magia que atingir o usuário (1 uso). Olhos Secundários (Difícil — cada um tem aplicação diferente; o Biólogo de Masmorra cria poções específicas por olho).
 
 ---
 
@@ -6884,7 +6884,7 @@ Harpias de caverna perderam o canto encantador de suas primas da superfície —
 **Comportamento na mesa:**
 - **Padrão:** ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).
 - **Moral:** não foge; persegue o alvo mais próximo até 0 HP (mente ausente).
-- **Culinária:** janela 1h pós-morte; Trinchar conforme Nível de Extração.## 080 — TARRASQUE (BEBÊ)
+- **Culinária:** janela 1h pós-morte; Extração conforme Nível de Extração.## 080 — TARRASQUE (BEBÊ)
 **Tipo:** Besta Titânica | **Nível:** 20 | **XP:** 2000 | **Faixa:** Lendário
 **Lore:** O Tarrasque adulto é uma calamidade civilizacional — invulnerável, regenerativo, devastador. O "bebê" que ocasionalmente aparece na Masmorra 11 tem "apenas" 8 metros de altura e é jovem demais para ter regeneração completa. Ainda assim, é o maior desafio concebível para qualquer grupo. Sua carne é a mais densamente mágica de qualquer ser vivo — mas isso é secundário quando você está tentando sobreviver ao encontro.
 | HP | CA | Dano | Biomas |
@@ -6942,15 +6942,15 @@ Cada masmorra principal têm um Boss exclusivo gerado com base no Chefe Final so
 
 | Fonte | Teste / ação | Resultado |
 |-------|--------------|-----------|
-| **Monstro** | Trinchar **bem-sucedido** (CD da ficha) | Ingredientes (ficha) + **1 saque** da tabela 001–060 |
-| **Monstro (extra)** | Trinchar **5+ acima da CD** | +1 item (especiaria OU minério) |
+| **Monstro** | Extração **bem-sucedido** (CD da ficha) | Ingredientes (ficha) + **1 saque** da tabela 001–060 |
+| **Monstro (extra)** | Extração **5+ acima da CD** | +1 item (especiaria OU minério) |
 | **Cenario (RE)** | Interagir com OBJ-R / deposito | Item fixo ou rolagem do bioma |
 | **Forrageio economico** | SAB ou INT + prof. Natureza CD 12, 1x/descanso curto no bioma | 1d6: 1 nada · 2 especiaria · 3 minério · 4 2d6x10 po · 5 tesouro menor · 6 raro |
 | **Covil / boss** | Sala marcada | 2d6 x (10 x nivel medio do andar) po + 1 tesouro |
 
 **Ladino:** Vantagem em forrageio economico e em detectar OBJ-R (Percepção).
 
-**Artífice / Valdrun:** minérios rendem **+2** em craft; especiarias **+1 Harmonização** ao usar na receita.
+**Artífice / Valdrun:** minérios rendem **+2** em craft; especiarias **+1 Forrageio** ao usar na receita.
 
 ---
 
@@ -6963,7 +6963,7 @@ Cada masmorra principal têm um Boss exclusivo gerado com base no Chefe Final so
 | **Raro** | 100–250 po | 400–900 po |
 | **Lendário** | 300–600 po | 1 000+ po |
 
-**Uso culinário:** especiaria em Prato Estruturado = **+1 Harmonização** (nao cumula com Prato Perfeito). 1 especiaria por prato.
+**Uso culinário:** especiaria em Prato Estruturado = **+1 Forrageio** (nao cumula com Prato Perfeito). 1 especiaria por prato.
 
 **Uso craft:** 3 unidades do mesmo minério Comum = 1 item orgânico +0 (Artífice CD 12) ou +1 arma temporária 24h.
 
@@ -6974,7 +6974,7 @@ Cada masmorra principal têm um Boss exclusivo gerado com base no Chefe Final so
 | ID | Nome | Raridade | Venda | Uso / nota |
 |----|------|----------|-------|------------|
 | ESP-01 | Sal de Veia | Comum | 8 po | +1 Coccao sopas; Mar, Pantano |
-| ESP-02 | Casca de Grimwald | Comum | 10 po | +1 Harmonização; Cidadela, florestas |
+| ESP-02 | Casca de Grimwald | Comum | 10 po | +1 Forrageio; Cidadela, florestas |
 | ESP-03 | Po Draconico Fino | Incomum | 45 po | Resistência fogo 1h se comido cru |
 | ESP-04 | Gelo Aromático | Incomum | 40 po | Preserva carne 72h |
 | ESP-05 | Musgo Seco de Cinza | Comum | 12 po | +1 Estômago vs toxina leve |
@@ -6995,7 +6995,7 @@ Cada masmorra principal têm um Boss exclusivo gerado com base no Chefe Final so
 | ESP-20 | Cristal Triturado | Raro | 130 po | Labirinto; visao ilusao 12h |
 | ESP-21 | Seda em Po | Incomum | 45 po | +2 em testes de corda/teia |
 | ESP-22 | Resina Quente | Comum | 15 po | Matriz Extrusao; cola craft |
-| ESP-23 | Incenso de Valdrun | Comum | 12 po | Ritual forja; +1 Trinchar osso |
+| ESP-23 | Incenso de Valdrun | Comum | 12 po | Ritual forja; +1 Extração osso |
 | ESP-24 | Eco de Lagrimas | Raro | 180 po | Espiritos; imune medo 1 combaté |
 | ESP-25 | Resina de Embalsamo | Incomum | 60 po | Mumia; preserva ingrediente 7d |
 | ESP-26 | Essência Doppel | Raro | 200 po | Copia aroma; +2 Enganação 8h |
@@ -7072,7 +7072,7 @@ Cada masmorra principal têm um Boss exclusivo gerado com base no Chefe Final so
 
 ## Saque por espécime (001–060)
 
-Apos Trinchar com sucesso, cada criatura concede **1 linha** abaixo (alem dos ingredientes da ficha). Se o grupo não Trinchar, pode rolar **1d4** moedas = metade do valor em po apenas.
+Apos Extração com sucesso, cada criatura concede **1 linha** abaixo (alem dos ingredientes da ficha). Se o grupo não Extração, pode rolar **1d4** moedas = metade do valor em po apenas.
 
 | Cod | Espécime | Especiaria | Minério | Tesouro / moedas |
 |-----|----------|------------|---------|------------------|

@@ -1,7 +1,8 @@
-import { canManageRoom } from "@/lib/auth/room-access";
+import { canManageRoom, DEMO_PLAYABLE_ACTOR_IDS } from "@/lib/auth/room-access";
 import type { SessionUser } from "@/lib/auth/types";
 import { activeTokenId, type CombatTrack } from "@/lib/room/combat";
 import type { RoomActor } from "@/lib/room/types";
+import { isMonsterToken } from "@/lib/room/settings";
 import type { BattleScene, BattleToken } from "@/lib/vtt/types";
 
 export type CombatTurnRoom = {
@@ -12,14 +13,45 @@ export type CombatTurnRoom = {
   actors: Record<string, RoomActor>;
 };
 
+export type CombatTurnAccessOpts = {
+  /** Mestre simula visão de jogador no cliente (não altera permissões no servidor). */
+  simulatePlayerView?: boolean;
+  showMonsterHpToPlayers?: boolean;
+};
+
+function hasGmView(
+  room: CombatTurnRoom,
+  user: SessionUser | null,
+  opts?: Pick<CombatTurnAccessOpts, "simulatePlayerView">
+): boolean {
+  return canManageRoom(room, user) && !opts?.simulatePlayerView;
+}
+
+/** Mestre vê HP de qualquer criatura; jogadores só veem PCs linkados (e aliados no hover na UI). */
+export function canViewTokenHp(
+  room: CombatTurnRoom,
+  user: SessionUser | null,
+  token: BattleToken,
+  opts?: CombatTurnAccessOpts
+): boolean {
+  if (hasGmView(room, user, opts)) return true;
+  if (token.vidaMax == null) return false;
+  if (isMonsterToken(token) && !token.linked) {
+    return Boolean(opts?.showMonsterHpToPlayers);
+  }
+  if (token.linked && !token.monsterEntryId) return true;
+  return false;
+}
+
 /** Mestre vê todos os PA; jogadores só veem PA de fichas linkadas (nunca monstros). */
 export function canViewTokenPa(
   room: CombatTurnRoom,
   user: SessionUser | null,
-  token: BattleToken
+  token: BattleToken,
+  opts?: Pick<CombatTurnAccessOpts, "simulatePlayerView">
 ): boolean {
-  if (canManageRoom(room, user)) return true;
-  if (token.monsterEntryId && !token.linked) return false;
+  if (hasGmView(room, user, opts)) return true;
+  if (isMonsterToken(token) && !token.linked) return false;
   if (token.linked && token.actorId) {
     if (room.roomId === "demo") return true;
     if (!user) return false;
@@ -31,12 +63,23 @@ export function canViewTokenPa(
 export function canControlToken(
   room: CombatTurnRoom,
   user: SessionUser | null,
-  token: BattleToken
+  token: BattleToken,
+  opts?: Pick<CombatTurnAccessOpts, "simulatePlayerView">
 ): boolean {
-  if (room.roomId === "demo") return true;
+  if (room.roomId === "demo") {
+    if (!user) return false;
+    if (hasGmView(room, user, opts)) return true;
+    if (isMonsterToken(token)) return false;
+    if (token.linked && token.actorId) {
+      return DEMO_PLAYABLE_ACTOR_IDS.includes(
+        token.actorId as (typeof DEMO_PLAYABLE_ACTOR_IDS)[number]
+      );
+    }
+    return false;
+  }
   if (!user) return false;
-  if (canManageRoom(room, user)) return true;
-  if (token.monsterEntryId) return false;
+  if (hasGmView(room, user, opts)) return true;
+  if (isMonsterToken(token)) return false;
   if (token.linked && token.actorId) {
     return room.actors[token.actorId]?.ownerId === user.id;
   }
@@ -47,15 +90,15 @@ export function canControlToken(
 export function canAdvanceCombatTurn(
   room: CombatTurnRoom,
   user: SessionUser | null,
-  combat: CombatTrack
+  combat: CombatTrack,
+  opts?: Pick<CombatTurnAccessOpts, "simulatePlayerView">
 ): boolean {
-  if (!combat.order.length) return false;
-  if (room.roomId === "demo") return true;
+  if (!combat.order?.length) return false;
   if (!user) return false;
-  if (canManageRoom(room, user)) return true;
+  if (hasGmView(room, user, opts)) return true;
   const activeId = activeTokenId(combat);
   if (!activeId) return false;
   const token = room.scene.tokens.find((t) => t.id === activeId);
   if (!token) return false;
-  return canControlToken(room, user, token);
+  return canControlToken(room, user, token, opts);
 }

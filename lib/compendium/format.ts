@@ -2,6 +2,22 @@ export function stripHtml(html: string): string {
   return html.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
 }
 
+export type EntryBookRef = {
+  catalogId?: string;
+  bookRef?: string;
+};
+
+export function entryDescriptionHtml(system: Record<string, unknown>): string {
+  return String(system.description ?? "").trim();
+}
+
+/** Referência canônica (ID do livro + opcional capítulo). */
+export function entryBookRef(system: Record<string, unknown>): EntryBookRef {
+  const catalogId = system.catalogId != null ? String(system.catalogId) : undefined;
+  const bookRef = system.bookRef != null ? String(system.bookRef) : undefined;
+  return { catalogId, bookRef };
+}
+
 export function slugId(name: string): string {
   return name
     .normalize("NFD")
@@ -16,6 +32,20 @@ type Weapon = { dano?: { formula?: string; tipo?: string }; ataque?: { bonus?: n
 type Ability = { tipo?: string; recarga?: string };
 type Spell = { nivel?: number; escola?: string; tempo?: string; alcance?: string };
 type ActorResources = { vida?: { value?: number; max?: number }; pontosAcao?: { value?: number; max?: number } };
+
+/** Texto para tooltip/hover em fichas e wizard (sem HTML). */
+export function entryTooltipText(
+  system: Record<string, unknown>,
+  type: string,
+  fallbackName?: string
+): string {
+  const desc = stripHtml(entryDescriptionHtml(system));
+  const meta = entrySummary(system, type).join(" · ");
+  if (desc && meta) return `${desc}\n\n${meta}`;
+  if (desc) return desc;
+  if (meta) return meta;
+  return fallbackName?.trim() || "";
+}
 
 export function entrySummary(system: Record<string, unknown>, type: string): string[] {
   const lines: string[] = [];

@@ -36,6 +36,93 @@ CATEGORY_PT = {
     "organica": "Orgânica",
 }
 
+BOOK_EQUIP = "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md"
+
+ENCHANT_WEAPON_TEXT = {
+    1: "Aprimoramento +1: soma +1 ao ataque e +1 ao dano.",
+    2: "Aprimoramento +2: soma +2 ao ataque e +2 ao dano.",
+    3: "Aprimoramento +3: soma +3 ao ataque e +3 ao dano; pode ganhar propriedade menor (Mestre).",
+}
+
+ENCHANT_ARMOR_TEXT = {
+    1: "Aprimoramento +1: soma +1 de CA mágica.",
+    2: "Aprimoramento +2: soma +2 de CA mágica.",
+    3: "Aprimoramento +3: soma +3 de CA mágica; pode ganhar resistência menor (Mestre).",
+}
+
+POCAO_DESC = {
+    "POC-01": "Restaura 2d4+2 HP ao beber (ação).",
+    "POC-02": "Restaura 4d4+4 HP.",
+    "POC-03": "Restaura 8d4+8 HP.",
+    "POC-04": "Neutraliza um veneno ativo.",
+    "POC-05": "Vantagem em saves contra veneno por 1 hora.",
+    "POC-06": "FOR +2 por 1 hora.",
+    "POC-07": "DES +2 por 1 hora.",
+    "POC-08": "CON +2 por 1 hora.",
+    "POC-09": "Vantagem em Percepção por 8 horas.",
+    "POC-10": "Resistência a fogo por 1 hora.",
+    "POC-11": "Resistência a gelo por 1 hora.",
+    "POC-12": "Resistência a ácido por 1 hora.",
+    "POC-13": "Bônus +2 em Extração por 8 horas.",
+    "POC-14": "Bônus +2 em Forrageio por 8 horas.",
+    "POC-15": "Imune a podridão leve por 24 horas.",
+    "POC-16": "Concede 1 mutação leve estável por 8 horas.",
+    "POC-17": "Reveste arma: +1d6 veneno nos próximos 5 ataques.",
+    "POC-18": "Preserva ingrediente orgânico por 72 horas.",
+    "POC-19": "Respiração aquática por 8 horas.",
+    "POC-20": "+2 CA por 1 hora.",
+    "POC-21": "Vantagem em Furtividade por 8 horas.",
+    "POC-22": "Visão no escuro 18 m por 8 horas.",
+    "POC-23": "Cura 1d8 HP em aliados num raio de 6 m.",
+    "POC-24": "Elixir lendário: permite 1 Prato Perfeito (Mestre).",
+}
+
+MUN_DESC = {
+    "MUN-01": "Pacote de 20 flechas comuns para arcos.",
+    "MUN-02": "Flechas de caça: +1 dano em alvo ferido.",
+    "MUN-03": "Flechas cortantes: propriedade Cortante.",
+    "MUN-04": "Flechas perfurantes: crítico rola 3 dados de dano.",
+    "MUN-05": "Flechas de fogo: +1d4 fogo no acerto.",
+    "MUN-06": "Flechas de gelo: lentidão CD 12 no acerto.",
+    "MUN-07": "Flechas de veneno: veneno CD 13 no acerto.",
+    "MUN-08": "Flechas de esporo: patrulheiro / flora monstruosa.",
+    "MUN-09": "Pacote de 20 virotes para bestas.",
+    "MUN-10": "Virotes pesados para besta pesada.",
+    "MUN-11": "Virotes perfurantes: propriedade Penetrante.",
+    "MUN-12": "Agulhas para zarabatana (10 unidades).",
+}
+
+
+def weapon_flavor(canon_id: str, name: str) -> str:
+    if canon_id.startswith("ARC-L"):
+        return "Arco longo de precisão — ideal para corredores amplos e alvos distantes."
+    if canon_id.startswith("ARC-C"):
+        return "Arco curto e ágil — favorito de patrulheiros em passagens estreitas."
+    if canon_id.startswith("BST-"):
+        return "Besta mecânica — perfura armaduras leves com virotes pesados."
+    if canon_id.startswith("WPN-S"):
+        return "Lâmina balanceada para duelos corpo a corpo nas masmorras."
+    if canon_id.startswith("WPN-P"):
+        return "Haste ou lança — mantém inimigos à distância no hex adjacente."
+    if canon_id.startswith("ORG-"):
+        return "Arma orgânica forjada de partes de monstro — propriedades únicas na mesa."
+    if "machado" in name.lower() or "cutelo" in name.lower():
+        return "Corte pesado — quebra guardas e carapaças com força bruta."
+    if "adaga" in name.lower() or "punhal" in name.lower():
+        return "Lâmina leve — perfeita para fintas e ataques de oportunidade."
+    return f"Arma de forja Eldarin — {name.split(' de ')[-1] if ' de ' in name else 'modelo padrão'}."
+
+
+def armor_flavor(canon_id: str, name: str, categoria: str) -> str:
+    cat = CATEGORY_PT.get(categoria, categoria)
+    if categoria == "pesada":
+        return f"Armadura {cat} — proteção máxima, penaliza furtividade."
+    if categoria == "media":
+        return f"Armadura {cat} — equilíbrio entre mobilidade e defesa."
+    if categoria == "organica":
+        return f"Armadura {cat} — placas vivas ou quitina, adapta-se ao bioma."
+    return f"Armadura {cat} — leve o suficiente para escaramuças longas."
+
 
 def slug(s: str) -> str:
     import unicodedata
@@ -62,14 +149,22 @@ def weapon_entry(
     entry_id = f"armas-{slug(canon_id)}"
     if enchant:
         entry_id += f"-mais-{enchant}"
-    desc = f"<p>Ataque +{bonus + enchant} · Dano {formula}.</p>"
+    parts = [
+        f"<strong>{display}</strong> ({canon_id}).",
+        weapon_flavor(canon_id, name),
+        f"Dano {formula} {tipo}, alcance {alcance} hex, 2 PA por ataque.",
+        f"Ataque {bonus + enchant:+d}.",
+    ]
     special = weapon_special_for(canon_id, enchant)
     if special:
         labels = []
         effs = special.get("effects", [special])
         for e in effs:
             labels.append(e.get("label", e.get("effectId", "?")))
-        desc = desc[:-4] + f" · Efeito: {', '.join(labels)}.</p>"
+        parts.append(f"Efeito: {', '.join(labels)}.")
+    if enchant:
+        parts.append(ENCHANT_WEAPON_TEXT[enchant])
+    desc = f"<p>{' '.join(parts)}</p>"
     weapon_sys: dict = {
         "dano": {"formula": formula, "tipo": tipo},
         "ataque": {"bonus": bonus + enchant},
@@ -82,11 +177,12 @@ def weapon_entry(
         "type": "arma",
         "system": {
             "description": desc,
-            "catalogId": canon_id,
+            "catalogId": canon_id if enchant == 0 else f"{canon_id}-E{enchant}",
+            "bookRef": BOOK_EQUIP,
             "enchant": enchant,
             "tactical": {
                 "alcanceHex": {"value": alcance, "min": 0},
-                "custoPontosAcao": {"value": 1, "min": 0},
+                "custoPontosAcao": {"value": 2, "min": 0},
             },
             "weapon": weapon_sys,
         },
@@ -105,28 +201,32 @@ def armor_entry(
     entry_id = f"equipamentos-{slug(canon_id)}"
     if enchant:
         entry_id += f"-mais-{enchant}"
-    desc = (
-        f"<p>{CATEGORY_PT.get(categoria, categoria)} · CA base {ca_base}"
-        + (f" +{bonus_ca} mágico" if bonus_ca else "")
-        + ".</p>"
-    )
+    parts = [
+        f"<strong>{display}</strong> ({canon_id}).",
+        armor_flavor(canon_id, name, categoria),
+        f"CA base {ca_base}.",
+    ]
     armor_sys: dict = {"categoria": categoria, "caBase": ca_base}
     note = ARMOR_SPECIAL_DESC.get(canon_id)
     if note and enchant == 0:
-        desc = desc[:-4] + f" · {note}.</p>"
+        parts.append(note + ".")
         armor_sys["special"] = {
             "effectId": canon_id,
             "trigger": "whileEquipped",
             "kind": "narrative",
             "label": note,
         }
+    if enchant:
+        parts.append(ENCHANT_ARMOR_TEXT[enchant])
+    desc = f"<p>{' '.join(parts)}</p>"
     return {
         "id": entry_id,
         "name": display,
         "type": "equipamento",
         "system": {
             "description": desc,
-            "catalogId": canon_id,
+            "catalogId": canon_id if enchant == 0 else f"{canon_id}-E{enchant}",
+            "bookRef": BOOK_EQUIP,
             "enchant": enchant,
             "armor": armor_sys,
             "gear": {"peso": 2, "equipado": False},
@@ -136,13 +236,15 @@ def armor_entry(
 
 
 def potion_entry(canon_id: str, name: str, effect: str) -> dict:
+    text = POCAO_DESC.get(canon_id, effect)
     return {
         "id": f"equipamentos-{slug(canon_id)}",
         "name": name,
         "type": "equipamento",
         "system": {
-            "description": f"<p>{effect}</p>",
+            "description": f"<p><strong>{name}</strong> ({canon_id}). {text}</p>",
             "catalogId": canon_id,
+            "bookRef": BOOK_EQUIP,
             "consumable": True,
             "gear": {"peso": 1, "equipado": False},
         },
@@ -150,13 +252,15 @@ def potion_entry(canon_id: str, name: str, effect: str) -> dict:
 
 
 def ammo_entry(canon_id: str, name: str, weapon_type: str) -> dict:
+    text = MUN_DESC.get(canon_id, f"Munição para {weapon_type}.")
     return {
         "id": f"equipamentos-{slug(canon_id)}",
         "name": name,
         "type": "equipamento",
         "system": {
-            "description": f"<p>Munição para {weapon_type}.</p>",
+            "description": f"<p><strong>{name}</strong> ({canon_id}). {text}</p>",
             "catalogId": canon_id,
+            "bookRef": BOOK_EQUIP,
             "ammo": {"weaponType": weapon_type},
             "gear": {"peso": 1, "equipado": False},
         },
@@ -178,7 +282,10 @@ def main() -> int:
         cid, name, dmg, rng, tipo, effect_ids = row
         entry_id = f"armas-{slug(cid)}"
         special = organic_special(effect_ids)
-        desc = f"<p>Arma orgânica · CD de durabilidade na ficha.</p>"
+        desc = (
+            f"<p><strong>{name}</strong> ({cid}). Arma orgânica: dano {dmg} {tipo}, "
+            f"alcance {rng} hex. CD de durabilidade na ficha; efeitos do catálogo ORG.</p>"
+        )
         weapon_sys: dict = {
             "dano": {"formula": dmg, "tipo": tipo},
             "ataque": {"bonus": 1},
@@ -193,11 +300,12 @@ def main() -> int:
                 "system": {
                     "description": desc,
                     "catalogId": cid,
+                    "bookRef": BOOK_EQUIP,
                     "enchant": 0,
                     "organic": True,
                     "tactical": {
                         "alcanceHex": {"value": rng, "min": 0},
-                        "custoPontosAcao": {"value": 1, "min": 0},
+                        "custoPontosAcao": {"value": 2, "min": 0},
                     },
                     "weapon": weapon_sys,
                 },
@@ -224,6 +332,14 @@ def main() -> int:
     for cid, name, wtype in MUNICAO:
         equip.append(ammo_entry(cid, name, wtype))
 
+    LEGACY_UTIL_DESC = {
+        "Kit de Trinchar": "Ferramentas para desmontar carcaças e extrair componentes com segurança.",
+        "Tocha de Masmorra": "Ilumina 6 m; 1 h de luz estável em corredores úmidos.",
+        "Corda de Seda de Aranha": "Resiste a ácido leve; ideal para rapel e amarras silenciosas.",
+        "Kit de Brasas Mágicas (6)": "Brasas que acendem sem fumaça — útil onde fogo aberto é perigoso.",
+        "Forja Portátil do Artífice": "Kit compacto para reparos e aprimoramentos em campo.",
+    }
+
     # utilitários legado
     legacy_util = [
         ("equipamentos-kit-de-trinchar", "Kit de Trinchar", 0),
@@ -241,7 +357,8 @@ def main() -> int:
                     "name": name,
                     "type": "equipamento",
                     "system": {
-                        "description": f"<p>{name}</p>",
+                        "description": f"<p><strong>{name}</strong>. {LEGACY_UTIL_DESC.get(name, 'Equipamento de aventura.')}</p>",
+                        "bookRef": BOOK_EQUIP,
                         "catalogId": canon_id,
                         "gear": {"peso": 2, "equipado": False},
                         **({"tactical": {"bonusDefesa": {"value": bonus}}} if bonus else {}),

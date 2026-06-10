@@ -1,4 +1,4 @@
-# ASSIMILACAO POR ESPECIME — Eldarin v4.0
+﻿# ASSIMILACAO POR ESPECIME — Eldarin v4.0
 
 Ao preparar um monstro especifico, o Prato Estruturado usa **esta tabela**, não a tabela da categoria ecologica. Cada espécime possui **8 habilidades** proprias. Nomes podem repetir entre monstros; a lista completa e sempre a dos 8 da ficha da criatura.
 
@@ -41,7 +41,7 @@ Ao preparar um monstro especifico, o Prato Estruturado usa **esta tabela**, não
 | 1 | Mordida Paralisante | Mordidas: CD 13 CON ou Paralisado por 1 turno (1/alvo/combate). |
 | 2 | Faro Cadaverico | Detecta criaturas vivas até 30m, inclusive atras de paredes finas (24h). |
 | 3 | Instinto de Horda | +2 em dano quando um aliado tambem ataca o mesmo alvo (24h). |
-| 4 | Estômago de Ferro | Imune a penalidades por alimentos estragados ou podres (24h). |
+| 4 | Fortitude | Imune a penalidades por alimentos estragados ou podres (24h). |
 | 5 | Garras Necrofagicas | Garras e mordidas causam +1d6 necrótico (24h). |
 | 6 | Adrenalina Covarde | Velocidade dobra ao se afastar de inimigo claramente mais forte (24h). |
 | 7 | Visao de Submundo | Visao perfeita no escuro absoluto (24h). |
@@ -289,7 +289,7 @@ Ao preparar um monstro especifico, o Prato Estruturado usa **esta tabela**, não
 | 2 | Visao de Aguia | Visao perfeita no escuro 60m; imune a ilusoes visuais (24h). |
 | 3 | Par Eterno | Se aliado cai a 0 HP a 60m, Furia: +4 dano e Vantagem em ataques por 10 min (1/combate). |
 | 4 | Voo Verdadeiro | Voo 12m por turno (24h). |
-| 5 | Garra de Grifo | +3 em testes de Trinchar quando usa garra como ferramenta (24h). |
+| 5 | Garra de Grifo | +3 em testes de Extração quando usa garra como ferramenta (24h). |
 | 6 | Penas de Voo | +9m de salto; Vantagem em Percepção e Iniciativa (24h). |
 | 7 | Nobreza Bestial | Vantagem em Intimidacao contra feras (24h). |
 | 8 | Ossos Ocos | Sem dano de quedas até 15m; saltos triplicam (24h). |
@@ -415,7 +415,7 @@ Ao preparar um monstro especifico, o Prato Estruturado usa **esta tabela**, não
 
 | # | Habilidade | Efeito |
 |---|-----------|--------|
-| 1 | Estômago de Ferro | Imune a penalidades por alimentos estragados (24h). |
+| 1 | Fortitude | Imune a penalidades por alimentos estragados (24h). |
 | 2 | Instinto de Horda | +2 dano quando aliado ataca o mesmo alvo (24h). |
 | 3 | Faro para Ouro | Detecta metais preciosos atras de paredes até 10m (24h). |
 | 4 | Adrenalina Covarde | Velocidade dobra ao fugir de inimigo mais forte (24h). |
@@ -435,7 +435,7 @@ Ao preparar um monstro especifico, o Prato Estruturado usa **esta tabela**, não
 | 5 | Metabolismo Acelerado | Descanso curto e longo em metade do tempo (24h). |
 | 6 | Visao de Submundo | Visao perfeita no escuro (24h). |
 | 7 | Marcha Militar | Velocidade +3m em formacao com aliados (24h). |
-| 8 | Estômago de Ferro | Imune a penalidades por comida podre (24h). |
+| 8 | Fortitude | Imune a penalidades por comida podre (24h). |
 
 ## 034 — ORC DE MASMORRA
 
@@ -447,7 +447,7 @@ Ao preparar um monstro especifico, o Prato Estruturado usa **esta tabela**, não
 | 4 | Instinto de Horda | +2 dano com aliado no mesmo alvo (24h). |
 | 5 | Visao de Submundo | Visao perfeita no escuro (24h). |
 | 6 | Furia Contida | Uma vez por combate, +1d12 dano em um acerto (24h). |
-| 7 | Estômago de Ferro | Imune a penalidades por comida podre (24h). |
+| 7 | Fortitude | Imune a penalidades por comida podre (24h). |
 | 8 | Garras de Escavador | Escava terra a velocidade de caminhada (24h). |
 
 ## 035 — COGUMELO-REI

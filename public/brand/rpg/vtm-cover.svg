@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 560" role="img" aria-label="Vampiro a Mascara">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#120810"/>
+      <stop offset="45%" stop-color="#1a0a14"/>
+      <stop offset="100%" stop-color="#0a0608"/>
+    </linearGradient>
+    <radialGradient id="moon" cx="50%" cy="30%" r="40%">
+      <stop offset="0%" stop-color="#4a2030" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#120810" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="400" height="560" fill="url(#bg)"/>
+  <rect width="400" height="560" fill="url(#moon)"/>
+  <circle cx="200" cy="175" r="52" fill="none" stroke="#8b3048" stroke-width="2" opacity="0.7"/>
+  <path d="M200 130 L215 195 L280 195 L228 232 L248 295 L200 258 L152 295 L172 232 L120 195 L185 195 Z" fill="#6a1828" opacity="0.75"/>
+  <text x="200" y="400" text-anchor="middle" fill="#e8d8dc" font-family="Georgia, serif" font-size="24" font-weight="700">VAMPIRO</text>
+  <text x="200" y="435" text-anchor="middle" fill="#b07080" font-family="Georgia, serif" font-size="18" font-weight="600">A MÁSCARA</text>
+  <text x="200" y="538" text-anchor="middle" fill="#7a5860" font-family="system-ui, sans-serif" font-size="12" letter-spacing="3">EM BREVE</text>
+</svg>

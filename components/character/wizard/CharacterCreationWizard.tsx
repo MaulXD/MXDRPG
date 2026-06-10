@@ -1,29 +1,75 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState, type KeyboardEvent } from "react";
+import { IconCheck, IconStar } from "@/components/ui/EldarinIcons";
 import { useRouter } from "next/navigation";
-import { WizardPortraitStep } from "@/components/character/wizard/WizardPortraitStep";
+import { SubclassTrackCard } from "@/components/character/wizard/SubclassTrackCard";
+import { WizardHoverTip } from "@/components/character/wizard/WizardHoverTip";
+import { WizardEquipmentStep } from "@/components/character/wizard/WizardEquipmentStep";
+import {
+  WizardPortraitStep,
+  type WizardPortraitStepHandle,
+} from "@/components/character/wizard/WizardPortraitStep";
+import { ReligionPickGrid } from "@/components/character/ReligionPickGrid";
+import { religionDisplayName } from "@/lib/character/pantheon";
+import { WizardPickIcon } from "@/components/character/wizard/WizardPickIcon";
+import { WizardProgress } from "@/components/character/wizard/WizardProgress";
+import {
+  classIconColor,
+  lineageIconColor,
+  raceIconColor,
+  resolveClassIcon,
+  resolveLineageIcon,
+  resolveRaceIcon,
+} from "@/lib/character/wizard-icons";
 import {
   sanitizeWizardDraftForSave,
   validateWizardDraft,
 } from "@/lib/character/build-from-wizard";
+import { characterToWizardDraft } from "@/lib/character/wizard-from-character";
+import type { CharacterSheet } from "@/lib/character/types";
+import type { SheetEditScope } from "@/lib/character/sheet-edit-request";
 import {
-  ANTECEDENTE_OPTIONS,
   EMPTY_WIZARD_DRAFT,
   type CharacterWizardDraft,
 } from "@/lib/character/wizard-types";
 import {
   ATTR_ORDER,
+  POINT_BUY_MAX_BEFORE_RACIAL,
   POINT_BUY_POOL,
   attributesAfterRacial,
   canDecreasePointBuy,
   canIncreasePointBuy,
-  isUnsetPointBuy,
+  defaultPointBuyScores,
+  getRacialBonuses,
   pointBuyCost,
-  suggestedPointBuyForClass,
+  suggestedPointBuyForClassAndRace,
   totalPointBuyCost,
   validatePointBuy,
 } from "@/lib/character/point-buy";
+import {
+  classAttributeFocusRank,
+  classAttributeFocusSummary,
+} from "@/lib/character/class-scales";
+import { ANTECEDENTE_META } from "@/lib/character/wizard-meta";
+import { subclassTrackIntroTooltip } from "@/lib/character/subclass-wizard-tooltips";
+import {
+  antecedenteGainDescription,
+  classFeaturesAtLevelOne,
+  classSurvivalPassiveTooltip,
+  linhagemTraitLines,
+  racialTraitDescription,
+} from "@/lib/character/wizard-tooltips";
+import { buildWizardPreview } from "@/lib/character/wizard-preview";
+import {
+  describeStarterEquipment,
+  findMatchingStarterKitId,
+  getDefaultStarterEquipment,
+  getDefaultStarterKitId,
+  resolveStarterKitOption,
+  validateStarterEquipment,
+} from "@/lib/character/starter-kits";
+import { listSubclassOptions } from "@/lib/character/level-up-ui";
 import {
   ATTRIBUTE_LABELS,
   CLASS_LIST,
@@ -34,6 +80,7 @@ import {
   hpMaxFor,
 } from "@/lib/character/rules";
 import "@/components/character/wizard/wizard.css";
+import "@/components/world/world-lore.css";
 
 const STEPS = [
   "Conceito",
@@ -41,9 +88,35 @@ const STEPS = [
   "Classe",
   "Atributos",
   "Antecedente",
+  "Equipamento",
+  "Religião",
   "Retrato",
   "Revisão",
 ] as const;
+
+const STEP_HINTS: Record<(typeof STEPS)[number], string> = {
+  Conceito: "Dê um nome memorável — a biografia pode ficar para depois.",
+  Raça: "Escolha uma carta; passe o mouse nos traços para ver detalhes.",
+  Classe: "Define vida, proficiências e caminhos no nível 2.",
+  Atributos:
+    "27 pontos no total — a sugestão prioriza o foco da classe (Cap. 4); ajuste livremente com +/−.",
+  Antecedente: "História e ganhos do antecedente — itens extras somam ao kit de equipamento.",
+  Equipamento: "Escolha arma e armadura dentro das proficiências da classe; a CA já considera o kit.",
+  Religião: "Cartas com bônus ao passar o mouse — Sem Deus também tem vantagens próprias.",
+  Retrato: "Opcional agora — uma imagem vira retrato e token na mesa.",
+  Revisão: "Confira tudo e crie — você pode editar depois na ficha.",
+};
+
+const STEP_SHORTCUTS: Partial<Record<(typeof STEPS)[number], string>> = {
+  Atributos: "Enter avança quando o pool estiver zerado",
+  Retrato: "Pode pular e adicionar imagem depois",
+};
+
+type EditMode = {
+  scope: SheetEditScope;
+  existingCharacter: CharacterSheet;
+  requestId: string;
+};
 
 type Props = {
   slotsLeft: number;
@@ -53,13 +126,34 @@ type Props = {
   /** @deprecated use adventureId */
   roomId?: string | null;
   roomName?: string | null;
+  editMode?: EditMode;
 };
 
-function ensurePointBuyIfUnset(
-  draft: CharacterWizardDraft
-): CharacterWizardDraft {
-  if (!isUnsetPointBuy(draft.pointBuy)) return draft;
-  return { ...draft, pointBuy: suggestedPointBuyForClass(draft.classe) };
+type PointBuyMode = "suggested" | "custom" | "baseline";
+
+function pickInitial(label: string): string {
+  const t = label.trim();
+  return t ? t[0]!.toUpperCase() : "?";
+}
+
+function StepHead({
+  index,
+  title,
+  hint,
+}: {
+  index: number;
+  title: string;
+  hint: string;
+}) {
+  return (
+    <div className="char-wizard-step-head">
+      <p className="char-wizard-step-head__eyebrow">
+        Passo {index + 1} de {STEPS.length}
+      </p>
+      <h2>{title}</h2>
+      <p>{hint}</p>
+    </div>
+  );
 }
 
 export function CharacterCreationWizard({
@@ -68,19 +162,36 @@ export function CharacterCreationWizard({
   adventureName = null,
   roomId = null,
   roomName = null,
+  editMode,
 }: Props) {
-  const adventureId = adventureIdProp ?? roomId;
+  const adventureId = adventureIdProp ?? roomId ?? editMode?.existingCharacter.adventureId ?? null;
   const label = adventureName ?? roomName;
   const router = useRouter();
+  const isEdit = Boolean(editMode);
   const [step, setStep] = useState(0);
-  const [draft, setDraft] = useState<CharacterWizardDraft>({
-    ...EMPTY_WIZARD_DRAFT,
-    pointBuy: suggestedPointBuyForClass(EMPTY_WIZARD_DRAFT.classe),
+  const [draft, setDraft] = useState<CharacterWizardDraft>(() => {
+    if (editMode?.existingCharacter) {
+      return characterToWizardDraft(editMode.existingCharacter);
+    }
+    return {
+      ...EMPTY_WIZARD_DRAFT,
+      pointBuy: suggestedPointBuyForClassAndRace(
+        EMPTY_WIZARD_DRAFT.classe,
+        EMPTY_WIZARD_DRAFT.raca,
+        EMPTY_WIZARD_DRAFT.linhagem
+      ),
+    };
   });
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
-  const [portraitPending, setPortraitPending] = useState(false);
-  const [pbAutoApplied, setPbAutoApplied] = useState(true);
+  const [pointBuyMode, setPointBuyMode] = useState<PointBuyMode>("suggested");
+  const nameInputRef = useRef<HTMLInputElement>(null);
+  const portraitStepRef = useRef<WizardPortraitStepHandle>(null);
+  const pointBuyClassRaceRef = useRef({
+    classe: EMPTY_WIZARD_DRAFT.classe,
+    raca: EMPTY_WIZARD_DRAFT.raca,
+    linhagem: EMPTY_WIZARD_DRAFT.linhagem as string | null,
+  });
 
   const raceDef = getRace(draft.raca);
   const classDef = getClass(draft.classe);
@@ -93,12 +204,56 @@ export function CharacterCreationWizard({
   );
 
   const previewHp = hpMaxFor(draft.classe, 1, attributeMod(finalAttrs.constituicao));
+  const previewLines = useMemo(() => buildWizardPreview(draft), [draft]);
+  const subclassTracks = useMemo(
+    () => listSubclassOptions(draft.classe),
+    [draft.classe]
+  );
 
   useEffect(() => {
-    if (step !== 3 || !isUnsetPointBuy(draft.pointBuy)) return;
-    setDraft((d) => ensurePointBuyIfUnset(d));
-    setPbAutoApplied(true);
-  }, [step, draft.pointBuy, draft.classe]);
+    const prev = pointBuyClassRaceRef.current;
+    const next = {
+      classe: draft.classe,
+      raca: draft.raca,
+      linhagem: draft.linhagem,
+    };
+    const classRaceChanged =
+      prev.classe !== next.classe ||
+      prev.raca !== next.raca ||
+      prev.linhagem !== next.linhagem;
+    pointBuyClassRaceRef.current = next;
+
+    if (pointBuyMode !== "suggested" || !classRaceChanged) return;
+    setDraft((d) => ({
+      ...d,
+      pointBuy: suggestedPointBuyForClassAndRace(d.classe, d.raca, d.linhagem),
+    }));
+  }, [pointBuyMode, draft.classe, draft.raca, draft.linhagem]);
+
+  function applySuggestedPointBuy() {
+    setPointBuyMode("suggested");
+    setDraft((d) => ({
+      ...d,
+      pointBuy: suggestedPointBuyForClassAndRace(d.classe, d.raca, d.linhagem),
+    }));
+  }
+
+  function resetPointBuyBaseline() {
+    setPointBuyMode("baseline");
+    setDraft((d) => ({
+      ...d,
+      pointBuy: defaultPointBuyScores(),
+    }));
+  }
+
+  const racialBonuses = useMemo(
+    () => getRacialBonuses(draft.raca, draft.linhagem),
+    [draft.raca, draft.linhagem]
+  );
+
+  useEffect(() => {
+    if (step === 0) nameInputRef.current?.focus();
+  }, [step]);
 
   function patch(p: Partial<CharacterWizardDraft>) {
     setDraft((d) => ({ ...d, ...p }));
@@ -113,11 +268,11 @@ export function CharacterCreationWizard({
         ...d,
         pointBuy: {
           ...d.pointBuy,
-          [key]: Math.max(8, Math.min(15, cur + delta)),
+          [key]: Math.max(8, Math.min(POINT_BUY_MAX_BEFORE_RACIAL, cur + delta)),
         },
       };
     });
-    setPbAutoApplied(false);
+    setPointBuyMode("custom");
   }
 
   function stepError(index: number): string | null {
@@ -136,8 +291,12 @@ export function CharacterCreationWizard({
       if (!draft.antecedente) return "Escolha antecedente";
       return null;
     }
-    if (index === 5 && portraitPending) {
-      return "Aplique o retrato com «Aplicar retrato + token» ou use «Pular por agora»";
+    if (index === 5) {
+      return validateStarterEquipment(draft.classe, draft.starterEquipment);
+    }
+    if (index === 6) {
+      if (!draft.religiao) return "Escolha devotion ou Sem Deus";
+      return null;
     }
     return null;
   }
@@ -152,9 +311,11 @@ export function CharacterCreationWizard({
     if (v.includes("pontos") || v.includes("Atributo")) return 3;
     if (v.includes("linhagem") || v.includes("raça")) return 1;
     if (v.includes("antecedente")) return 4;
+    if (v.includes("equipamento") || v.includes("kit")) return 5;
+    if (v.includes("devotion") || v.includes("religi")) return 6;
     if (v.includes("classe")) return 2;
     if (v.includes("Nome")) return 0;
-    return 6;
+    return 8;
   }
 
   function goToStep(index: number) {
@@ -163,19 +324,26 @@ export function CharacterCreationWizard({
     setStep(index);
   }
 
-  function next() {
+  async function flushPortraitStep(): Promise<boolean> {
+    if (step !== 7) return true;
+    const ok = (await portraitStepRef.current?.flushPending()) ?? true;
+    if (!ok) {
+      setErr(
+        "Não foi possível salvar o retrato. Use uma imagem menor ou clique em Aplicar retrato + token."
+      );
+    }
+    return ok;
+  }
+
+  async function next() {
     const e = stepError(step);
     if (e) {
       setErr(e);
       return;
     }
+    if (!(await flushPortraitStep())) return;
     setErr(null);
-    const nextStep = Math.min(step + 1, STEPS.length - 1);
-    if (nextStep === 3) {
-      setDraft((d) => ensurePointBuyIfUnset(d));
-      setPbAutoApplied(isUnsetPointBuy(draft.pointBuy));
-    }
-    setStep(nextStep);
+    setStep(Math.min(step + 1, STEPS.length - 1));
   }
 
   function back() {
@@ -183,18 +351,51 @@ export function CharacterCreationWizard({
     setStep((s) => Math.max(0, s - 1));
   }
 
+  function handlePanelKeyDown(e: KeyboardEvent) {
+    if (e.key !== "Enter" || busy) return;
+    if (e.target instanceof HTMLTextAreaElement) return;
+    if (step === 3 && pbLeft !== 0) return;
+    e.preventDefault();
+    if (step < STEPS.length - 1) void next();
+    else void finish();
+  }
+
+  const stepLabel = STEPS[step]!;
+  const footerHint = STEP_SHORTCUTS[stepLabel] ?? STEP_HINTS[stepLabel];
+  const nameInitial = draft.name.trim()[0]?.toUpperCase() ?? "?";
+  const poolPct = Math.min(100, (pbSpent / POINT_BUY_POOL) * 100);
+
   async function finish() {
+    if (!(await flushPortraitStep())) return;
     const invalidAt = firstInvalidStep();
     if (invalidAt !== null) {
       const message = stepError(invalidAt) ?? validateWizardDraft(draft);
       setStep(invalidAt);
-      setErr(message ?? "Revise os passos antes de criar");
+      setErr(message ?? isEdit ? "Revise os passos antes de salvar" : "Revise os passos antes de criar");
       return;
     }
     setBusy(true);
     setErr(null);
     try {
       const payload = sanitizeWizardDraftForSave(draft);
+
+      if (isEdit && editMode) {
+        const res = await fetch(`/api/characters/${editMode.existingCharacter.id}/edit-save`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "same-origin",
+          body: JSON.stringify({
+            requestId: editMode.requestId,
+            draft: payload,
+          }),
+        });
+        const data = (await res.json()) as { error?: string };
+        if (!res.ok) throw new Error(data.error ?? "Erro ao salvar");
+        router.push(`/personagem/${editMode.existingCharacter.id}`);
+        router.refresh();
+        return;
+      }
+
       const res = await fetch("/api/characters", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -205,7 +406,12 @@ export function CharacterCreationWizard({
           roomId: adventureId ?? undefined,
         }),
       });
-      let data: { error?: string; character?: { id: string } } = {};
+      let data: {
+        error?: string;
+        character?: { id: string; name?: string };
+        adventureId?: string | null;
+        mesaRoomId?: string | null;
+      } = {};
       try {
         data = (await res.json()) as typeof data;
       } catch {
@@ -213,11 +419,15 @@ export function CharacterCreationWizard({
       }
       if (!res.ok) throw new Error(data.error ?? "Erro ao criar");
       if (!data.character?.id) throw new Error("Resposta inválida do servidor");
-      if (adventureId) {
-        router.push(`/aventura/${adventureId}`);
-      } else {
-        router.push(`/personagem/${data.character.id}`);
-      }
+      const adv = data.adventureId ?? adventureId ?? null;
+      const mesa = data.mesaRoomId ?? null;
+      const charId = data.character.id;
+
+      const dest = adv
+        ? `/aventura/${encodeURIComponent(adv)}?personagem=criado&char=${encodeURIComponent(charId)}${mesa ? `&mesa=${encodeURIComponent(mesa)}` : ""}`
+        : `/personagem/${encodeURIComponent(charId)}`;
+
+      router.push(dest);
       router.refresh();
     } catch (e) {
       setErr(e instanceof Error ? e.message : "Erro");
@@ -228,57 +438,68 @@ export function CharacterCreationWizard({
 
   return (
     <div className="char-wizard">
-      {adventureId ? (
-        <p className="char-wizard-meta" style={{ marginBottom: "0.75rem" }}>
-          Ficha exclusiva da aventura <strong>{label ?? adventureId}</strong> — mesa, registros e
-          progresso ficam nesta campanha.
+      <header className="char-wizard-hero">
+        <p className="char-wizard-hero__badge">
+          Eldarin · <strong>{slotsLeft}</strong> {slotsLeft === 1 ? "vaga" : "vagas"} na conta
+          {adventureId ? (
+            <>
+              {" "}
+              · campanha <strong>{label ?? adventureId}</strong>
+            </>
+          ) : null}
+        </p>
+        <WizardProgress steps={STEPS} current={step} busy={busy} onGoTo={goToStep} />
+      </header>
+
+      {isEdit && editMode?.scope === "full_rebuild" ? (
+        <p className="char-wizard-edit-banner" role="note">
+          Ao salvar, a ficha volta ao <strong>nível 1</strong> (subclasse e talentos zerados). Seu XP
+          permanece — use <strong>Subir de nível</strong> na ficha para escolher subclasse, talentos e
+          bônus de cada nível de novo.
         </p>
       ) : null}
-      <nav className="char-wizard-steps" aria-label="Passos">
-        {STEPS.map((label, i) => (
-          <button
-            key={label}
-            type="button"
-            className={`char-wizard-step ${i === step ? "active" : ""} ${i < step ? "done" : ""}`}
-            disabled={i > step || busy}
-            onClick={() => goToStep(i)}
-            aria-current={i === step ? "step" : undefined}
-          >
-            {i + 1}. {label}
-          </button>
-        ))}
-      </nav>
 
-      <div className="glass char-wizard-panel">
+      <div className="char-wizard-body">
+        <div
+          className="glass char-wizard-panel"
+          onKeyDown={handlePanelKeyDown}
+          role="group"
+          aria-label={`Passo: ${stepLabel}`}
+        >
+          <div className="char-wizard-panel-inner">
         {step === 0 ? (
           <>
-            <h2>Conceito</h2>
-            <label>
-              Nome do personagem
+            <StepHead index={0} title="Conceito" hint={STEP_HINTS.Conceito} />
+            <div className="char-wizard-field char-wizard-field--name">
+              <label htmlFor="char-name">Nome do personagem</label>
               <input
+                id="char-name"
+                ref={nameInputRef}
                 value={draft.name}
                 onChange={(e) => patch({ name: e.target.value })}
                 maxLength={80}
                 required
                 placeholder="Ex: Lyra das Profundezas"
+                autoComplete="off"
               />
-            </label>
-            <label>
-              Biografia (opcional)
+            </div>
+            <div className="char-wizard-field">
+              <label htmlFor="char-bio">Biografia (opcional)</label>
               <textarea
+                id="char-bio"
                 value={draft.biography}
                 onChange={(e) => patch({ biography: e.target.value })}
                 rows={4}
                 maxLength={2000}
                 placeholder="Por que está nas masmorras?"
               />
-            </label>
+            </div>
           </>
         ) : null}
 
         {step === 1 ? (
           <>
-            <h2>Raça</h2>
+            <StepHead index={1} title="Raça" hint={STEP_HINTS["Raça"]} />
             <div className="char-wizard-pick-grid" role="listbox" aria-label="Raça">
               {RACE_LIST.map((r) => (
                 <button
@@ -296,40 +517,104 @@ export function CharacterCreationWizard({
                     patch({ raca: r.id, linhagem });
                   }}
                 >
+                  <div style={{ display: "flex", width: "100%", alignItems: "flex-start" }}>
+                    <WizardPickIcon kind={resolveRaceIcon(r.id)} color={raceIconColor(r.id)} />
+                    <span className="char-wizard-pick__check" aria-hidden>
+                      <IconCheck size={14} />
+                    </span>
+                  </div>
                   <strong>{r.id}</strong>
-                  <span>{r.traits[0]}</span>
+                  <span>
+                    <WizardHoverTip text={racialTraitDescription(r.traits[0])}>
+                      {r.traits[0]}
+                    </WizardHoverTip>
+                  </span>
                 </button>
               ))}
             </div>
             {draft.raca === "Meio-Humano" ? (
-              <label>
-                Linhagem
-                <select
-                  value={draft.linhagem ?? ""}
-                  onChange={(e) => patch({ linhagem: e.target.value || null })}
-                >
-                  <option value="">— escolher —</option>
+              <>
+                <p className="char-wizard-meta" style={{ marginBottom: "0.5rem" }}>
+                  Escolha a linhagem — define bônus de atributo e traço permanente.
+                </p>
+                <div className="char-wizard-pick-grid" role="listbox" aria-label="Linhagem">
                   {(raceDef?.linhagens ?? []).map((l) => (
-                    <option key={l.id} value={l.id}>
-                      {l.id}
-                    </option>
+                    <button
+                      key={l.id}
+                      type="button"
+                      role="option"
+                      aria-selected={draft.linhagem === l.id}
+                      className={`char-wizard-pick ${draft.linhagem === l.id ? "char-wizard-pick--on" : ""}`}
+                      onClick={() => patch({ linhagem: l.id })}
+                    >
+                      <div style={{ display: "flex", width: "100%", alignItems: "flex-start" }}>
+                        <WizardPickIcon
+                          kind={resolveLineageIcon(l.id)}
+                          color={lineageIconColor(l.id)}
+                        />
+                        <span className="char-wizard-pick__check" aria-hidden>
+                          <IconCheck size={14} />
+                        </span>
+                      </div>
+                      <strong>{l.id}</strong>
+                      <span>
+                        {linhagemTraitLines(l.trait).map((tr, i) => (
+                          <span key={tr.name}>
+                            {i > 0 ? " · " : null}
+                            <WizardHoverTip text={tr.description}>{tr.name}</WizardHoverTip>
+                          </span>
+                        ))}
+                      </span>
+                      <span>
+                        {Object.entries(l.attributeBonus)
+                          .map(([k, v]) => `${ATTRIBUTE_LABELS[k as keyof typeof ATTRIBUTE_LABELS]} +${v}`)
+                          .join(" · ")}
+                      </span>
+                    </button>
                   ))}
-                </select>
-              </label>
+                </div>
+              </>
             ) : null}
             {raceDef ? (
-              <ul className="char-wizard-notes">
-                {raceDef.traits.map((t) => (
-                  <li key={t}>{t}</li>
-                ))}
-              </ul>
+              <>
+                <p className="char-wizard-meta" style={{ marginTop: "0.75rem", marginBottom: "0.35rem" }}>
+                  Habilidades raciais — passe o mouse para ver o efeito:
+                </p>
+                <ul className="char-wizard-notes">
+                  {raceDef.traits.map((t) => (
+                    <li key={t}>
+                      <WizardHoverTip text={racialTraitDescription(t)}>{t}</WizardHoverTip>
+                    </li>
+                  ))}
+                </ul>
+                {draft.raca === "Meio-Humano" && draft.linhagem ? (
+                  <>
+                    <p className="char-wizard-meta" style={{ marginTop: "0.5rem", marginBottom: "0.35rem" }}>
+                      Traços da {draft.linhagem}:
+                    </p>
+                    <ul className="char-wizard-notes">
+                      {linhagemTraitLines(
+                        raceDef.linhagens?.find((l) => l.id === draft.linhagem)?.trait ?? ""
+                      ).map((tr) => (
+                        <li key={tr.name}>
+                          <WizardHoverTip text={tr.description}>{tr.name}</WizardHoverTip>
+                        </li>
+                      ))}
+                    </ul>
+                  </>
+                ) : null}
+                <p className="char-wizard-meta" style={{ marginTop: "0.5rem" }}>
+                  Marcos raciais e talentos de classe aparecem na ficha em{" "}
+                  <strong>Níveis futuros</strong>.
+                </p>
+              </>
             ) : null}
           </>
         ) : null}
 
         {step === 2 ? (
           <>
-            <h2>Classe</h2>
+            <StepHead index={2} title="Classe" hint={STEP_HINTS.Classe} />
             <div className="char-wizard-pick-grid" role="listbox" aria-label="Classe">
               {CLASS_LIST.map((c) => (
                 <button
@@ -339,13 +624,19 @@ export function CharacterCreationWizard({
                   aria-selected={draft.classe === c.id}
                   className={`char-wizard-pick ${draft.classe === c.id ? "char-wizard-pick--on" : ""}`}
                   onClick={() => {
-                    const pointBuy = isUnsetPointBuy(draft.pointBuy)
-                      ? suggestedPointBuyForClass(c.id)
-                      : draft.pointBuy;
-                    patch({ classe: c.id, pointBuy });
-                    setPbAutoApplied(isUnsetPointBuy(draft.pointBuy));
+                    patch({
+                      classe: c.id,
+                      starterKitId: getDefaultStarterKitId(c.id),
+                      starterEquipment: getDefaultStarterEquipment(c.id),
+                    });
                   }}
                 >
+                  <div style={{ display: "flex", width: "100%", alignItems: "flex-start" }}>
+                    <WizardPickIcon kind={resolveClassIcon(c.id)} color={classIconColor(c.id)} />
+                    <span className="char-wizard-pick__check" aria-hidden>
+                      <IconCheck size={14} />
+                    </span>
+                  </div>
                   <strong>{c.id}</strong>
                   <span>
                     d{c.hpDie} · {c.primary}
@@ -354,170 +645,401 @@ export function CharacterCreationWizard({
               ))}
             </div>
             {classDef ? (
-              <ul className="char-wizard-notes">
-                <li>{classDef.proficiencies}</li>
-                <li>{classDef.dietBonus}</li>
-                <li>Subclasse (Dieta Marcial) no nível 2 — na ficha depois.</li>
-              </ul>
+              <>
+                <ul className="char-wizard-notes">
+                  <li>
+                    <strong>Proficiências:</strong>{" "}
+                    <WizardHoverTip text={`Armas, armaduras e ferramentas que ${draft.classe} usa sem penalidade de treino.`}>
+                      {classDef.proficiencies}
+                    </WizardHoverTip>
+                  </li>
+                  <li>
+                    <WizardHoverTip text={classSurvivalPassiveTooltip(draft.classe)}>
+                      <strong>Bônus passivo (nv 1):</strong> {classDef.dietBonus}
+                    </WizardHoverTip>
+                  </li>
+                  {classFeaturesAtLevelOne(draft.classe)
+                    .filter((f) => !f.startsWith("Proficiências:"))
+                    .map((f) => (
+                      <li key={f}>
+                        <strong>Nv 1:</strong> {f}
+                      </li>
+                    ))}
+                  <li>
+                    <WizardHoverTip text={subclassTrackIntroTooltip()}>
+                      <strong>Nível 2:</strong> escolha um Caminho de Assimilação (subclasse) — trilhas abaixo.
+                    </WizardHoverTip>
+                  </li>
+                </ul>
+                {subclassTracks.length ? (
+                  <div className="char-wizard-tracks">
+                    <p className="char-wizard-meta">Caminhos disponíveis no nível 2</p>
+                    {subclassTracks.map((t) => (
+                      <SubclassTrackCard key={t.id} track={t} />
+                    ))}
+                  </div>
+                ) : null}
+              </>
             ) : null}
           </>
         ) : null}
 
         {step === 3 ? (
           <>
-            <h2>Atributos — compra de pontos</h2>
-            <p className="char-wizard-meta">
-              Pool {POINT_BUY_POOL} · gastos {pbSpent} · restam{" "}
-              <strong style={{ color: pbLeft !== 0 ? "#ff6b8a" : "var(--neon-lime)" }}>
-                {pbLeft}
-              </strong>
-              {pbAutoApplied && pbLeft === 0 ? (
-                <> · sugestão para {draft.classe} aplicada (ajuste com +/−)</>
+            <StepHead index={3} title="Atributos" hint={STEP_HINTS.Atributos} />
+            <div className="char-wizard-pool">
+              <div className="char-wizard-pool__meter" style={{ flex: "1 1 12rem", minWidth: 0 }}>
+                <label>
+                  Pool de pontos
+                  <strong className={pbLeft === 0 ? "is-ok" : "is-warn"}>
+                    {pbLeft} restantes
+                  </strong>
+                </label>
+                <div className="char-wizard-pool__bar" aria-hidden>
+                  <span style={{ width: `${poolPct}%` }} />
+                </div>
+              </div>
+              {pointBuyMode === "suggested" && pbLeft === 0 ? (
+                <p className="char-wizard-meta" style={{ margin: 0 }}>
+                  Sugestão para <strong>{draft.classe}</strong> ({draft.raca}
+                  {draft.linhagem ? ` · ${draft.linhagem}` : ""}) — foco:{" "}
+                  <strong>{classAttributeFocusSummary(draft.classe)}</strong>
+                  {draft.classe === "Guerreiro" ? (
+                    <> (padrão corpo a corpo; arqueiro pode inverter DES e FOR)</>
+                  ) : null}
+                </p>
+              ) : pointBuyMode === "baseline" ? (
+                <p className="char-wizard-meta" style={{ margin: 0 }}>
+                  Baseline 8 em tudo — distribua os <strong>27 pontos</strong> (antes dos bônus raciais).
+                </p>
               ) : null}
-            </p>
+            </div>
             <div className="char-wizard-attr-actions">
               <button
                 type="button"
                 className="btn btn-secondary"
-                onClick={() => {
-                  patch({ pointBuy: suggestedPointBuyForClass(draft.classe) });
-                  setPbAutoApplied(true);
-                }}
+                onClick={applySuggestedPointBuy}
               >
                 Sugestão para {draft.classe}
               </button>
               <button
                 type="button"
                 className="btn btn-ghost"
-                onClick={() => {
-                  patch({ pointBuy: { ...EMPTY_WIZARD_DRAFT.pointBuy } });
-                  setPbAutoApplied(false);
-                }}
+                onClick={resetPointBuyBaseline}
               >
                 Resetar (8 em tudo)
               </button>
             </div>
-            <div className="char-wizard-attrs">
-              {ATTR_ORDER.map((key) => (
-                <div key={key} className="char-wizard-attr">
-                  <span>{ATTRIBUTE_LABELS[key]}</span>
-                  <div className="char-wizard-attr-controls">
-                    <button
-                      type="button"
-                      onClick={() => setAttr(key, -1)}
-                      disabled={!canDecreasePointBuy(draft.pointBuy, key)}
-                      aria-label={`Diminuir ${ATTRIBUTE_LABELS[key]}`}
-                    >
-                      −
-                    </button>
-                    <strong>{draft.pointBuy[key]}</strong>
-                    <button
-                      type="button"
-                      onClick={() => setAttr(key, 1)}
-                      disabled={!canIncreasePointBuy(draft.pointBuy, key)}
-                      aria-label={`Aumentar ${ATTRIBUTE_LABELS[key]}`}
-                    >
-                      +
-                    </button>
+            <div className="char-wizard-attr-grid">
+              {ATTR_ORDER.map((key) => {
+                const base = draft.pointBuy[key];
+                const racial = racialBonuses[key] ?? 0;
+                const final = finalAttrs[key];
+                const mod = attributeMod(final);
+                const focusRank = classAttributeFocusRank(draft.classe, key);
+                return (
+                  <div
+                    key={key}
+                    className={`char-wizard-attr-card${focusRank ? " char-wizard-attr-card--focus" : ""}`}
+                  >
+                    <span className="char-wizard-attr-card__label">
+                      {ATTRIBUTE_LABELS[key]}
+                      {focusRank ? (
+                        <span className="char-wizard-attr-card__focus" title="Foco da classe">
+                          {focusRank === 1 ? <IconStar size={12} /> : focusRank}
+                        </span>
+                      ) : null}
+                    </span>
+                    <span className="char-wizard-attr-card__score">{base}</span>
+                    <span className="char-wizard-attr-card__mod">
+                      {racial > 0 ? (
+                        <>
+                          +{racial} raça → <strong>{final}</strong> (mod {mod >= 0 ? "+" : ""}
+                          {mod})
+                        </>
+                      ) : (
+                        <>
+                          mod {mod >= 0 ? "+" : ""}
+                          {mod} → {final}
+                        </>
+                      )}
+                    </span>
+                    <span className="char-wizard-attr-card__cost">
+                      custo {pointBuyCost(base)}
+                    </span>
+                    <div className="char-wizard-attr-card__controls">
+                      <button
+                        type="button"
+                        onClick={() => setAttr(key, -1)}
+                        disabled={!canDecreasePointBuy(draft.pointBuy, key)}
+                        aria-label={`Diminuir ${ATTRIBUTE_LABELS[key]}`}
+                      >
+                        −
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setAttr(key, 1)}
+                        disabled={!canIncreasePointBuy(draft.pointBuy, key)}
+                        aria-label={`Aumentar ${ATTRIBUTE_LABELS[key]}`}
+                      >
+                        +
+                      </button>
+                    </div>
                   </div>
-                  <small>
-                    custo {pointBuyCost(draft.pointBuy[key])} → {finalAttrs[key]} (mod{" "}
-                    {attributeMod(finalAttrs[key]) >= 0 ? "+" : ""}
-                    {attributeMod(finalAttrs[key])})
-                  </small>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </>
         ) : null}
 
         {step === 4 ? (
           <>
-            <h2>Antecedente</h2>
-            <label>
-              Antecedente
-              <select
-                value={draft.antecedente}
-                onChange={(e) => patch({ antecedente: e.target.value })}
-              >
-                {ANTECEDENTE_OPTIONS.map((a) => (
-                  <option key={a} value={a}>
-                    {a}
-                  </option>
-                ))}
-              </select>
-            </label>
+            <StepHead index={4} title="Antecedente" hint={STEP_HINTS.Antecedente} />
+            <div className="char-wizard-pick-grid char-wizard-pick-grid--wide" role="listbox" aria-label="Antecedente">
+              {ANTECEDENTE_META.map((a) => (
+                <button
+                  key={a.id}
+                  type="button"
+                  role="option"
+                  aria-selected={draft.antecedente === a.id}
+                  className={`char-wizard-pick ${draft.antecedente === a.id ? "char-wizard-pick--on" : ""}`}
+                  onClick={() => patch({ antecedente: a.id })}
+                >
+                  <div style={{ display: "flex", width: "100%", alignItems: "flex-start" }}>
+                    <span className="char-wizard-pick__icon">{pickInitial(a.title)}</span>
+                    <span className="char-wizard-pick__check" aria-hidden>
+                      <IconCheck size={14} />
+                    </span>
+                  </div>
+                  <strong>{a.title}</strong>
+                  <span>{a.summary}</span>
+                  <span>
+                    Você ganha:{" "}
+                    {a.gains.map((g, i) => (
+                      <span key={g}>
+                        {i > 0 ? " · " : null}
+                        <WizardHoverTip text={antecedenteGainDescription(g)}>{g}</WizardHoverTip>
+                      </span>
+                    ))}
+                  </span>
+                </button>
+              ))}
+            </div>
           </>
         ) : null}
 
         {step === 5 ? (
           <>
-            <h2>Retrato e token</h2>
-            <WizardPortraitStep
-              portraitUrl={draft.portraitUrl ?? null}
-              tokenImageUrl={draft.tokenImageUrl ?? null}
-              portraitFocus={draft.portraitFocus ?? null}
+            <StepHead index={5} title="Equipamento inicial" hint={STEP_HINTS.Equipamento} />
+            <WizardEquipmentStep
+              classe={draft.classe}
+              attributes={finalAttrs}
+              starterKitId={draft.starterKitId}
+              equipment={draft.starterEquipment}
               onChange={(p) => patch(p)}
-              onPendingChange={setPortraitPending}
             />
           </>
         ) : null}
 
         {step === 6 ? (
           <>
-            <h2>Revisão</h2>
-            <dl className="char-wizard-review">
-              <dt>Nome</dt>
-              <dd>{draft.name}</dd>
-              <dt>Raça / classe</dt>
-              <dd>
-                {draft.raca}
-                {draft.linhagem ? ` (${draft.linhagem})` : ""} · {draft.classe} nv 1
-              </dd>
-              <dt>Antecedente</dt>
-              <dd>{draft.antecedente}</dd>
-              <dt>Vida</dt>
-              <dd>{previewHp}</dd>
-              <dt>Atributos</dt>
-              <dd>
-                {ATTR_ORDER.map((k) => `${ATTRIBUTE_LABELS[k]} ${finalAttrs[k]}`).join(" · ")}
-              </dd>
-              <dt>Retrato</dt>
-              <dd>{draft.portraitUrl ? "Sim" : "Depois"}</dd>
-            </dl>
-            {classDef ? (
-              <ul className="char-wizard-notes">
-                <li>{classDef.proficiencies}</li>
-                <li>{classDef.dietBonus}</li>
-                {raceDef?.traits.slice(0, 2).map((t) => (
-                  <li key={t}>{t}</li>
-                ))}
-              </ul>
-            ) : null}
-            <p className="char-wizard-meta">
-              Fichas restantes nesta conta: {slotsLeft}
-            </p>
+            <StepHead index={6} title="Religião e devotion" hint={STEP_HINTS.Religião} />
+            <ReligionPickGrid
+              value={draft.religiao}
+              onChange={(id) => patch({ religiao: id })}
+            />
           </>
         ) : null}
 
+        {step === 7 ? (
+          <>
+            <StepHead index={7} title="Retrato e token" hint={STEP_HINTS.Retrato} />
+            <WizardPortraitStep
+              ref={portraitStepRef}
+              portraitUrl={draft.portraitUrl ?? null}
+              tokenImageUrl={draft.tokenImageUrl ?? null}
+              portraitFocus={draft.portraitFocus ?? null}
+              tokenFocus={draft.tokenFocus ?? null}
+              onChange={(p) => patch(p)}
+            />
+          </>
+        ) : null}
+
+        {step === 8 ? (
+          <>
+            <StepHead index={8} title="Revisão" hint={STEP_HINTS.Revisão} />
+            <div className="char-wizard-review-grid">
+              <dl className="char-wizard-review-card">
+                <dt>Nome</dt>
+                <dd>{draft.name.trim() || "—"}</dd>
+              </dl>
+              <dl className="char-wizard-review-card">
+                <dt>Raça</dt>
+                <dd>
+                  {draft.raca}
+                  {draft.linhagem ? ` (${draft.linhagem})` : ""}
+                </dd>
+              </dl>
+              <dl className="char-wizard-review-card">
+                <dt>Classe</dt>
+                <dd>
+                  {draft.classe} · nível 1
+                  {classDef ? (
+                    <>
+                      <br />
+                      <span className="char-wizard-meta">{classDef.dietBonus}</span>
+                    </>
+                  ) : null}
+                </dd>
+              </dl>
+              {subclassTracks.length ? (
+                <dl className="char-wizard-review-card" style={{ gridColumn: "1 / -1" }}>
+                  <dt>Caminhos (nv 2)</dt>
+                  <dd>{subclassTracks.map((t) => t.subclass).join(" · ")}</dd>
+                </dl>
+              ) : null}
+              <dl className="char-wizard-review-card">
+                <dt>Antecedente</dt>
+                <dd>{draft.antecedente}</dd>
+              </dl>
+              <dl className="char-wizard-review-card">
+                <dt>Equipamento</dt>
+                <dd>
+                  {(() => {
+                    const kitId = findMatchingStarterKitId(draft.classe, draft.starterEquipment);
+                    const preset = kitId
+                      ? resolveStarterKitOption(draft.classe, kitId)
+                      : null;
+                    if (preset) return `${preset.label} — ${describeStarterEquipment(draft.starterEquipment)}`;
+                    return describeStarterEquipment(draft.starterEquipment);
+                  })()}
+                </dd>
+              </dl>
+              <dl className="char-wizard-review-card">
+                <dt>Devotion</dt>
+                <dd>{religionDisplayName(draft.religiao)}</dd>
+              </dl>
+              <dl className="char-wizard-review-card">
+                <dt>Vida máxima</dt>
+                <dd>{previewHp}</dd>
+              </dl>
+              <dl className="char-wizard-review-card">
+                <dt>Retrato</dt>
+                <dd>
+                  {draft.portraitUrl ? (
+                    <div className="char-wizard-review-portrait">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={draft.portraitUrl} alt="" />
+                    </div>
+                  ) : (
+                    "Adicionar depois na ficha"
+                  )}
+                </dd>
+              </dl>
+            </div>
+            <p className="char-wizard-meta" style={{ marginBottom: "0.75rem" }}>
+              Atributos finais
+            </p>
+            <div className="char-wizard-preview-chips">
+              {ATTR_ORDER.map((k) => (
+                <span key={k} className="char-wizard-preview-chip">
+                  {ATTRIBUTE_LABELS[k]} {finalAttrs[k]}
+                </span>
+              ))}
+            </div>
+            <dl className="char-wizard-preview-list">
+              {previewLines.map((line) => (
+                <div key={line.label} className="char-wizard-preview-row">
+                  <dt>{line.label}</dt>
+                  <dd>{line.value}</dd>
+                </div>
+              ))}
+            </dl>
+            <p className="char-wizard-meta">
+              Após criar, você pode editar tudo na ficha. Restam{" "}
+              <strong>{slotsLeft}</strong> {slotsLeft === 1 ? "vaga" : "vagas"} na conta.
+            </p>
+          </>
+        ) : null}
+          </div>
+
         {err ? <p className="char-wizard-err">{err}</p> : null}
 
-        <div className="char-wizard-actions">
-          {step > 0 ? (
-            <button type="button" className="btn btn-secondary" onClick={back} disabled={busy}>
-              Voltar
-            </button>
-          ) : null}
-          {step < STEPS.length - 1 ? (
-            <button type="button" className="btn" onClick={next} disabled={busy}>
-              Próximo
-            </button>
-          ) : (
-            <button type="button" className="btn" onClick={finish} disabled={busy || slotsLeft <= 0}>
-              {busy ? "Criando…" : "Criar personagem"}
-            </button>
-          )}
+        <footer className="char-wizard-footer">
+          <p className="char-wizard-footer__hint">{footerHint}</p>
+          <div className="char-wizard-footer__actions">
+            {step > 0 ? (
+              <button type="button" className="btn btn-secondary" onClick={back} disabled={busy}>
+                Voltar
+              </button>
+            ) : null}
+            {step < STEPS.length - 1 ? (
+              <button
+                type="button"
+                className="btn btn-primary-cta"
+                onClick={next}
+                disabled={busy}
+              >
+                Próximo
+              </button>
+            ) : (
+              <button
+                type="button"
+                className="btn btn-primary-cta"
+                onClick={finish}
+                disabled={busy || slotsLeft <= 0}
+              >
+                {busy ? (isEdit ? "Salvando…" : "Criando…") : isEdit ? "Salvar alterações" : "Criar personagem"}
+              </button>
+            )}
+          </div>
+        </footer>
         </div>
+
+        <aside className="glass char-wizard-preview" aria-label="Prévia da ficha">
+          <p className="char-wizard-preview-eyebrow">Prévia ao vivo</p>
+          <div className="char-wizard-preview__portrait" aria-hidden>
+            {draft.portraitUrl ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={draft.portraitUrl} alt="" />
+            ) : (
+              nameInitial
+            )}
+          </div>
+          <h3 className="char-wizard-preview-title">{draft.name.trim() || "Sem nome"}</h3>
+          <p className="char-wizard-preview-sub">
+            {draft.raca}
+            {draft.linhagem ? ` · ${draft.linhagem}` : ""}
+            <br />
+            {draft.classe} · {draft.antecedente}
+            <br />
+            {religionDisplayName(draft.religiao)}
+          </p>
+          <div className="char-wizard-preview-chips">
+            <span className="char-wizard-preview-chip">Nv 1</span>
+            <span className="char-wizard-preview-chip">{draft.classe}</span>
+            {draft.linhagem ? (
+              <span className="char-wizard-preview-chip">{draft.linhagem}</span>
+            ) : null}
+          </div>
+          <div className="char-wizard-preview-hp">
+            <label>
+              Vida
+              <strong>{previewHp}</strong>
+            </label>
+            <div className="char-wizard-preview-hp-bar" aria-hidden>
+              <span />
+            </div>
+          </div>
+          <dl className="char-wizard-preview-list">
+            {previewLines.slice(0, 6).map((line) => (
+              <div key={line.label} className="char-wizard-preview-row">
+                <dt>{line.label}</dt>
+                <dd>{line.value}</dd>
+              </div>
+            ))}
+          </dl>
+        </aside>
       </div>
     </div>
   );
