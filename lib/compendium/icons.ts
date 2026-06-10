@@ -4,7 +4,7 @@ import type { CompendiumEntry, ItemType } from "@/lib/compendium/types";
 export const COMPENDIUM_TYPE_COLOR: Record<string, string> = {
   arma: "#8b3a22",
   habilidade: "#6e4800",
-  magia: "#1a3d5c",
+  magia: "#6e3a52",
   equipamento: "#4a3820",
   efeito: "#2a4a2c",
   npc: "#5e1a0e",
