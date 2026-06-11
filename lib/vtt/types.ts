@@ -90,6 +90,8 @@ export type BattleToken = {
   rangedAttackAdvantage?: boolean;
   /** Raios de Enfraquecimento etc. — desvantagem em ataques e testes de FOR */
   weakened?: boolean;
+  /** Antídoto de masmorra (POC-05) — vantagem em salvaguardas */
+  saveAdvantagePoison?: boolean;
   /** Condições Eldarin Cap. 3.4 */
   conditions?: import("@/lib/combat/conditions").TokenCondition[];
   /** Buffs/debuffs/condições com contador de turno ou rodada */
