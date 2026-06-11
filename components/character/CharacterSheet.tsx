@@ -57,6 +57,8 @@ import {
 } from "@/lib/character/rules";
 import { SheetPdfExportButton } from "@/components/character/SheetPdfExportButton";
 import { SheetEditRequestButton } from "@/components/character/SheetEditRequestButton";
+import { usePlayerInventoryRequests } from "@/hooks/useInventoryItemRequest";
+import { inventoryRequestLabel } from "@/lib/character/inventory-item-request";
 import { useSheetPdfDeepLink } from "@/hooks/useSheetPdfDeepLink";
 import { OrnamentCard } from "@/components/ui/OrnamentCard";
 import { SectionDivider } from "@/components/ui/SectionDivider";
@@ -93,6 +95,8 @@ type Props = {
   hidePdfExport?: boolean;
   /** Botão de solicitar edição ao mestre (fichas em campanha) */
   showEditRequest?: boolean;
+  /** Inventário: edição direta, solicitar ao mestre, ou somente leitura */
+  inventoryEditMode?: "direct" | "request" | "readonly";
   /** Toolbar DDB — aviso à esquerda (ex.: somente leitura) */
   popupToolbarLeading?: ReactNode;
   /** Toolbar DDB — fechar, abrir página, etc. */
@@ -115,12 +119,18 @@ export function CharacterSheet({
   variant = "page",
   hidePdfExport = false,
   showEditRequest = false,
+  inventoryEditMode: inventoryEditModeProp,
   popupToolbarLeading,
   popupToolbarTrailing,
   popupToolbarDrag,
   standalonePage = false,
 }: Props) {
   const canEditPortrait = canEditPortraitProp ?? canEdit;
+  const inventoryEditMode =
+    inventoryEditModeProp ?? (canEdit ? "direct" : "readonly");
+  const canEditInventory = inventoryEditMode === "direct";
+  const canRequestInventory = inventoryEditMode === "request";
+  const canPickCompendium = canEditInventory || canRequestInventory;
   const router = useRouter();
   const [tab, setTab] = useState<Tab>("inventário");
   const [inventory, setInventory] = useState<InventoryItem[]>(character.inventory);
@@ -174,6 +184,11 @@ export function CharacterSheet({
   }, [character.id, character.inventory, inRoom, roomActor?.inventory, sheetBase.inventory]);
 
   const [inventoryMsg, setInventoryMsg] = useState<string | null>(null);
+  const { requests: pendingInventoryRequests, refresh: refreshPendingInventory } =
+    usePlayerInventoryRequests(
+      character.id,
+      canRequestInventory && Boolean(adventureId)
+    );
 
   const persistInventory = useCallback(
     (items: InventoryItem[]) => {
@@ -378,7 +393,39 @@ export function CharacterSheet({
   }, [filtered, tab]);
 
 
-  function addFromCompendium(entry: CompendiumEntry) {
+  async function addFromCompendium(entry: CompendiumEntry) {
+    if (canRequestInventory) {
+      if (!adventureId) {
+        setInventoryMsg("Aventura não identificada para solicitar item");
+        return;
+      }
+      setInventoryMsg(null);
+      try {
+        const res = await fetch(`/api/characters/${character.id}/inventory-request`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "same-origin",
+          body: JSON.stringify({
+            packId: entry.packId,
+            entryId: entry.id,
+            adventureId,
+            roomId: inRoom ? roomId : undefined,
+            quantity: 1,
+          }),
+        });
+        const data = (await res.json()) as { error?: string };
+        if (!res.ok) {
+          throw new Error(data.error ?? `Erro ${res.status}`);
+        }
+        setInventoryMsg(`Solicitação enviada ao mestre: ${entry.name}`);
+        await refreshPendingInventory();
+      } catch (e) {
+        setInventoryMsg(e instanceof Error ? e.message : "Falha ao solicitar item");
+      }
+      setPickerOpen(false);
+      return;
+    }
+
     const existing = inventory.find((i) => i.packId === entry.packId && i.entryId === entry.id);
     if (existing) {
       persistInventory(
@@ -418,7 +465,7 @@ export function CharacterSheet({
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
       if (e.key !== "Delete" && e.key !== "Backspace") return;
-      if (!canEdit || tab === "tesouro" || tab === "bestiário" || pickerOpen) return;
+      if (!canEditInventory || tab === "tesouro" || tab === "bestiário" || pickerOpen) return;
       if (isTypingTarget(e.target)) return;
       if (!selectedInvId) return;
       const row = filtered.find((r) => r.ref.instanceId === selectedInvId);
@@ -430,7 +477,7 @@ export function CharacterSheet({
 
     window.addEventListener("keydown", onKey, true);
     return () => window.removeEventListener("keydown", onKey, true);
-  }, [canEdit, tab, pickerOpen, selectedInvId, filtered, inventory]);
+  }, [canEditInventory, tab, pickerOpen, selectedInvId, filtered, inventory]);
 
   const { identity, resources, movement, tactical } = live;
   const isPopup = variant === "popup";
@@ -563,7 +610,7 @@ export function CharacterSheet({
         >
           {tabTitles[tab]}
         </h2>
-        {canEdit && tab !== "tesouro" && tab !== "bestiário" ? (
+        {canPickCompendium && tab !== "tesouro" && tab !== "bestiário" ? (
           <button type="button" className="btn" onClick={() => setPickerOpen(true)}>
             + Compêndio
           </button>
@@ -574,6 +621,17 @@ export function CharacterSheet({
         <p className="sheet-inventory-msg" role="status">
           {inventoryMsg}
         </p>
+      ) : null}
+
+      {canRequestInventory && pendingInventoryRequests.length > 0 ? (
+        <div className="sheet-inventory-pending" role="status">
+          <p className="sheet-inventory-pending__title">Aguardando aprovação do mestre</p>
+          <ul className="sheet-inventory-pending__list">
+            {pendingInventoryRequests.map((r) => (
+              <li key={r.id}>{inventoryRequestLabel(r)}</li>
+            ))}
+          </ul>
+        </div>
       ) : null}
 
       {tab === "tesouro" ? (
@@ -597,11 +655,15 @@ export function CharacterSheet({
             : tab === "habilidades"
               ? "Nenhuma habilidade — use + Compêndio ou suba de nível na trilha de subclasse."
               : "Nenhuma magia preparada — adicione pelo compêndio."}
-          {canEdit ? " Use + Compêndio para adicionar." : null}
+          {canPickCompendium
+            ? canRequestInventory
+              ? " Use + Compêndio para solicitar itens ao mestre."
+              : " Use + Compêndio para adicionar."
+            : null}
         </div>
       ) : (
         <>
-          {canEdit && filtered.length > 0 ? (
+          {canEditInventory && filtered.length > 0 ? (
             <p className="inv-hint">
               Clique em um item e pressione <strong>Delete</strong> para remover.
             </p>
@@ -624,7 +686,7 @@ export function CharacterSheet({
                         key={ref.instanceId}
                         entry={entry}
                         quantity={ref.quantity}
-                        canEdit={canEdit}
+                        canEdit={canEditInventory}
                         selected={selectedInvId === ref.instanceId}
                         showDetail
                         onSelect={() => setSelectedInvId(ref.instanceId)}
@@ -642,7 +704,7 @@ export function CharacterSheet({
                   key={ref.instanceId}
                   entry={entry}
                   quantity={ref.quantity}
-                  canEdit={canEdit}
+                  canEdit={canEditInventory}
                   selected={selectedInvId === ref.instanceId}
                   showDetail
                   onSelect={() => setSelectedInvId(ref.instanceId)}

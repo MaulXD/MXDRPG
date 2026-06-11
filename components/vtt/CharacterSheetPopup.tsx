@@ -6,7 +6,7 @@ import { CharacterSheet } from "@/components/character/CharacterSheet";
 
 import { getCharacter } from "@/lib/character/demo-characters";
 
-import { canEditRoomActor } from "@/lib/auth/room-access";
+import { canEditRoomActor, requiresInventoryGmApproval } from "@/lib/auth/room-access";
 import { canEditRoomActorPortrait } from "@/lib/auth/portrait-access";
 
 import type { CompendiumEntry, CompendiumPackId } from "@/lib/compendium/types";
@@ -78,6 +78,12 @@ export function CharacterSheetPopup({
   const canEdit = canEditRoomActor(roomCtx, merged, session);
   const canEditPortrait = canEditRoomActorPortrait(roomCtx, merged, session);
   const showEditRequest = isOwner && campaignBound && !canEdit;
+  const inventoryNeedsApproval = requiresInventoryGmApproval(roomCtx, merged, session);
+  const inventoryEditMode = inventoryNeedsApproval
+    ? "request"
+    : canEdit
+      ? "direct"
+      : "readonly";
 
   const inventory = live?.inventory ?? seed.inventory ?? [];
   const sheetCharacter = {
@@ -145,6 +151,7 @@ export function CharacterSheetPopup({
           roomId={roomId}
           variant="popup"
           showEditRequest={showEditRequest}
+          inventoryEditMode={inventoryEditMode}
           popupToolbarTrailing={toolbarTrailing}
           popupToolbarDrag={toolbarDrag}
         />
