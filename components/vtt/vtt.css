@@ -2170,6 +2170,10 @@
   animation: vtt-turn-attackable-pulse 2s ease-in-out infinite;
 }
 
+.vtt-turn-list li.vtt-turn-in-range {
+  border-color: rgba(232, 168, 88, 0.42);
+}
+
 .vtt-turn-list li.vtt-turn-attack-focus {
   border-color: rgba(255, 90, 80, 0.9);
   background: rgba(196, 68, 68, 0.14);

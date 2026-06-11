@@ -53,6 +53,7 @@ type Params = {
   actionMode: TokenActionMode;
   activeCombatAction: CombatActionOption | null;
   attackableIds: Set<string>;
+  rangeTargetIds?: Set<string>;
   hoverAxial: Axial | null;
   setHoverAxial: (a: Axial | null) => void;
   onHoverAxialChange?: (a: Axial | null) => void;
@@ -139,6 +140,7 @@ export function useBattlefieldPointer({
   actionMode,
   activeCombatAction,
   attackableIds,
+  rangeTargetIds,
   setHoverAxial,
   onHoverAxialChange,
   onHoverTargetChange,
@@ -353,11 +355,14 @@ export function useBattlefieldPointer({
   const reportHoverTarget = useCallback(
     (px: number, py: number) => {
       const hoverToken = tokenAtPoint(px, py);
-      const id =
-        hoverToken && selectedId && attackableIds.has(hoverToken.id) ? hoverToken.id : null;
+      const inRange =
+        hoverToken &&
+        selectedId &&
+        (attackableIds.has(hoverToken.id) || rangeTargetIds?.has(hoverToken.id));
+      const id = inRange ? hoverToken!.id : null;
       onHoverTargetChange?.(id);
     },
-    [tokenAtPoint, selectedId, attackableIds, onHoverTargetChange]
+    [tokenAtPoint, selectedId, attackableIds, rangeTargetIds, onHoverTargetChange]
   );
 
   const onPointerDown = useCallback(

@@ -844,6 +844,7 @@ export function HexBattlefield({
       selectedId,
       turnActiveId,
       attackableIds: highlights.attackableIds,
+      rangeTargetIds: highlights.rangeTargetIds,
       spellPickedTargetIds:
         spellTargetIds.length > 0 ? new Set(spellTargetIds) : undefined,
       hoverAttackTargetId: hoverTargetId,
@@ -1039,6 +1040,7 @@ export function HexBattlefield({
       gmRepositionBusyRef.current
     ) {
       pendingCombatSnapRef.current = snap;
+      if (onApplySnapshot) onApplySnapshot(snap);
       startTransition(() => {
         setScene((prev) => ({
           ...prev,
@@ -1055,7 +1057,7 @@ export function HexBattlefield({
     startTransition(() => {
       setScene((prev) => mergeScenePreservingPortraits(prev, snap.scene));
     });
-  }, [snapshotRevision, combatFx, mergeTokenCombatFields]);
+  }, [snapshotRevision, combatFx, mergeTokenCombatFields, onApplySnapshot]);
 
   useEffect(() => {
     setActionMode("idle");
@@ -1080,7 +1082,7 @@ export function HexBattlefield({
     setChannelExtraPa(0);
     setAreaCenter(null);
     setSpellTargetIds([]);
-  }, [selectedId, snapshot?.combat?.activeIndex, snapshot?.combat?.round]);
+  }, [selectedId, turnActiveId, snapshot?.combat?.round]);
 
   useEffect(() => {
     if (actionRingAt && selected && !canOpenActionRing(selected)) {
@@ -1869,6 +1871,7 @@ export function HexBattlefield({
     actionMode,
     activeCombatAction,
     attackableIds: highlights.attackableIds,
+    rangeTargetIds: highlights.rangeTargetIds,
     hoverAxial,
     setHoverAxial,
     onHoverAxialChange,
@@ -2455,6 +2458,7 @@ export function HexBattlefield({
               onSnapshot={syncRoom}
               onUpdate={refresh}
               attackableIds={highlights.attackableIds}
+              rangeTargetIds={highlights.rangeTargetIds}
               hoverAttackTargetId={hoverTargetId}
               onHoverAttackTargetChange={setHoverTargetId}
             />

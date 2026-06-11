@@ -24,6 +24,7 @@ import {
 import {
   drawAttackableHint,
   drawAttackTargetFocus,
+  drawRangeTargetHint,
   drawTurnActiveIndicator,
 } from "@/lib/vtt/draw-token-animations";
 import { drawTokenEffectBadges } from "@/lib/vtt/draw-token-effects";
@@ -327,6 +328,7 @@ type TokenDrawParams = {
   selectedId: string | null;
   turnActiveId: string | null;
   attackableIds: Set<string>;
+  rangeTargetIds?: Set<string>;
   spellPickedTargetIds?: Set<string>;
   hoverAttackTargetId: string | null;
   hoverTokenId: string | null;
@@ -462,11 +464,16 @@ function drawSingleToken(
       ctx.restore();
     }
 
-    if (p.attackableIds.has(token.id)) {
-      if (token.id === p.hoverAttackTargetId) {
+    const inRange =
+      p.attackableIds.has(token.id) ||
+      (p.rangeTargetIds?.has(token.id) ?? false);
+    if (inRange) {
+      if (token.id === p.hoverAttackTargetId && p.attackableIds.has(token.id)) {
         drawAttackTargetFocus(ctx, x, y, r, p.tokenAnimTimeSec);
-      } else {
+      } else if (p.attackableIds.has(token.id)) {
         drawAttackableHint(ctx, x, y, r, p.tokenAnimTimeSec);
+      } else {
+        drawRangeTargetHint(ctx, x, y, r, p.tokenAnimTimeSec);
       }
     }
 

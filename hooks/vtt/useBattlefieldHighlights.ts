@@ -16,6 +16,7 @@ import type { CombatActionOption } from "@/lib/combat/types";
 import type { CharacterSheet } from "@/lib/character/types";
 import { isMoveMode, isTargetMode, type TokenActionMode } from "@/lib/vtt/action-mode";
 import { buildHexGrid } from "@/lib/vtt/hex-grid";
+import { tokenAxialDistance } from "@/lib/vtt/creature-size";
 import { axialKey } from "@/lib/vtt/token-occupancy";
 import { reachableMovementHexes } from "@/lib/vtt/movement-path";
 import { paTurnRulesForActor } from "@/lib/combat/pa-economy";
@@ -314,6 +315,28 @@ export function useBattlefieldHighlights({
     actorRacas,
   ]);
 
+  /** Tokens no alcance (só distância) — anel no mapa mesmo se PA/turno bloquear. */
+  const rangeTargetIds = useMemo(() => {
+    if (!selected || !activeCombatAction || !isTargetMode(actionMode)) return new Set<string>();
+    if (isAreaSpellMode) return areaTargetIds;
+    if (activeCombatAction.selfTarget) return new Set<string>();
+    const ids = new Set<string>();
+    for (const t of scene.tokens) {
+      if (t.id === selected.id) continue;
+      const dist = tokenAxialDistance(selected, t, actorRacas);
+      if (dist <= activeCombatAction.rangeHex) ids.add(t.id);
+    }
+    return ids;
+  }, [
+    selected,
+    scene.tokens,
+    activeCombatAction,
+    actionMode,
+    isAreaSpellMode,
+    areaTargetIds,
+    actorRacas,
+  ]);
+
   const attackableIds = useMemo(() => {
     if (!selected || !activeCombatAction || !isTargetMode(actionMode)) return new Set<string>();
     if (isAreaSpellMode) return areaTargetIds;
@@ -360,6 +383,7 @@ export function useBattlefieldHighlights({
     hoverMovePreview,
     hoverPathCells,
     attackableIds,
+    rangeTargetIds,
     areaTargetIds,
     showMovement,
     turnMovePreview,
