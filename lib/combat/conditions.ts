@@ -165,6 +165,10 @@ export function saveRollModeDetail(defender: BattleToken): AttackRollModeDetail 
     modes.push("disadvantage");
     sources.push("enfraquecido");
   }
+  if (defender.saveAdvantagePoison) {
+    modes.push("advantage");
+    sources.push("antídoto de masmorra");
+  }
   return { mode: combineRollModes(...modes), sources };
 }
 

@@ -58,9 +58,16 @@ export async function executeRoomConsume(
   );
   if (!turnRecheck.ok) return { ok: false, error: turnRecheck.reason };
 
+  const combat = room.combat;
+  const activeIdx = combat?.order?.findIndex((id) => id === activeTokenId(combat)) ?? 0;
+  const tickCtx = {
+    round: combat?.round ?? 1,
+    activeIndex: activeIdx >= 0 ? activeIdx : 0,
+  };
+
   let resolved;
   try {
-    resolved = resolveConsumableUse(token, actor, item);
+    resolved = resolveConsumableUse(token, actor, item, tickCtx);
   } catch (e) {
     return { ok: false, error: e instanceof Error ? e.message : "Falha ao usar item" };
   }

@@ -24,7 +24,9 @@
     "test:pa": "node scripts/verify-pa-bank.mjs",
     "test:move": "node scripts/verify-movement-pa.mjs",
     "test:pdf": "node scripts/verify-sheet-pdf.mjs",
-    "test": "node scripts/verify-pa-bank.mjs && node scripts/verify-movement-pa.mjs && node scripts/verify-hex-path.mjs && node scripts/verify-sheet-pdf.mjs && npm run sync:data:check"
+    "test:consumables": "node scripts/verify-consumables.mjs",
+    "test:inventory-requests": "node scripts/verify-inventory-requests.mjs",
+    "test": "node scripts/verify-pa-bank.mjs && node scripts/verify-movement-pa.mjs && node scripts/verify-hex-path.mjs && node scripts/verify-sheet-pdf.mjs && node scripts/verify-consumables.mjs && npm run sync:data:check"
   },
   "dependencies": {
     "@clerk/nextjs": "^7.4.3",

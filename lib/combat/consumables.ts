@@ -2,25 +2,18 @@ import type { CharacterSheet, InventoryItem } from "@/lib/character/types";
 import { getEntry } from "@/lib/compendium/registry";
 import { entryDescriptionHtml, stripHtml } from "@/lib/compendium/format";
 import { rollDice, type DiceResult } from "@/lib/dice/roll";
-import { hasCondition, toggleTokenCondition, type TokenCondition } from "@/lib/combat/conditions";
+import {
+  applyConsumableBuffs,
+  consumableEffectDef,
+  consumableHealFormula,
+  CONSUMABLE_CATALOG_EFFECTS,
+} from "@/lib/combat/consumable-effects";
+import type { CombatTickContext } from "@/lib/combat/timed-effects";
 import { PA_DEFAULT_ACTION_COST } from "@/lib/combat/pa-economy";
 import { canActOnCombatTurn, TURN_WAIT_MSG } from "@/lib/combat/turn-guard";
 import { checkCanSpendPa } from "@/lib/combat/pa-turn";
 import type { CombatTrack } from "@/lib/room/combat";
 import type { BattleToken } from "@/lib/vtt/types";
-
-/** Fórmulas de cura por ID de catálogo (POC-01 … POC-24). */
-const POTION_HEAL_FORMULA: Record<string, string> = {
-  "POC-01": "2d4+2",
-  "POC-02": "4d4+4",
-  "POC-03": "8d4+8",
-  "POC-23": "1d8",
-};
-
-/** Efeitos mecânicos simples além de cura. */
-const POTION_CLEAR_CONDITION: Record<string, TokenCondition> = {
-  "POC-04": "envenenado",
-};
 
 export type ActorConsumable = {
   instanceId: string;
@@ -30,6 +23,7 @@ export type ActorConsumable = {
   quantity: number;
   description: string;
   healFormula?: string;
+  effectHint?: string;
 };
 
 export type ConsumableUseResult = {
@@ -48,7 +42,7 @@ function catalogIdFromEntry(system: Record<string, unknown>): string {
 }
 
 function isPotionCatalogId(catalogId: string): boolean {
-  return catalogId.startsWith("POC-");
+  return catalogId.startsWith("POC-") && Boolean(CONSUMABLE_CATALOG_EFFECTS[catalogId]);
 }
 
 export function listActorConsumables(actor: CharacterSheet): ActorConsumable[] {
@@ -63,12 +57,13 @@ export function listActorConsumables(actor: CharacterSheet): ActorConsumable[] {
 
     const catalogId = catalogIdFromEntry(entry.system);
     if (item.packId === "consumiveis") {
-      if (!catalogId) continue;
+      if (!catalogId || !consumableEffectDef(catalogId)) continue;
     } else {
       if (entry.system.consumable !== true) continue;
       if (!isPotionCatalogId(catalogId)) continue;
     }
 
+    const def = consumableEffectDef(catalogId);
     const description = stripHtml(entryDescriptionHtml(entry.system));
     out.push({
       instanceId: item.instanceId,
@@ -77,7 +72,8 @@ export function listActorConsumables(actor: CharacterSheet): ActorConsumable[] {
       name: entry.name,
       quantity: item.quantity,
       description,
-      healFormula: POTION_HEAL_FORMULA[catalogId],
+      healFormula: consumableHealFormula(catalogId),
+      effectHint: def?.hint,
     });
   }
 
@@ -125,7 +121,8 @@ function decrementInventory(
 export function resolveConsumableUse(
   token: BattleToken,
   actor: CharacterSheet,
-  consumable: ActorConsumable
+  consumable: ActorConsumable,
+  ctx: CombatTickContext = { round: 1, activeIndex: 0 }
 ): ConsumableUseResult {
   const item = actor.inventory.find((i) => i.instanceId === consumable.instanceId);
   if (!item || item.quantity <= 0) {
@@ -136,29 +133,25 @@ export function resolveConsumableUse(
   const hpMax = token.vidaMax ?? actor.resources.vida.max;
   let hpAfter = hpBefore;
   let healRoll: DiceResult | undefined;
-  let tokenPatch: Partial<BattleToken> = {};
+  let workingToken: BattleToken = { ...token };
   const effectNotes: string[] = [];
 
-  if (consumable.healFormula) {
-    healRoll = rollDice(consumable.healFormula);
+  const healFormula = consumable.healFormula ?? consumableHealFormula(consumable.catalogId);
+  if (healFormula) {
+    healRoll = rollDice(healFormula);
     hpAfter = Math.min(hpMax, hpBefore + healRoll.total);
     effectNotes.push(
       `Cura ${healRoll.total} HP (${healRoll.rolls.join(", ")}${healRoll.modifier >= 0 ? `+${healRoll.modifier}` : healRoll.modifier})`
     );
   }
 
-  const clearCond = POTION_CLEAR_CONDITION[consumable.catalogId];
-  if (clearCond && hasCondition(token, clearCond)) {
-    tokenPatch = {
-      ...tokenPatch,
-      conditions: toggleTokenCondition({ ...token, ...tokenPatch }, clearCond),
-    };
-    effectNotes.push(`Remove ${clearCond}`);
-  }
+  const buffResult = applyConsumableBuffs(workingToken, consumable.catalogId, ctx);
+  workingToken = buffResult.token;
+  effectNotes.push(...buffResult.notes);
 
-  if (!consumable.healFormula && !clearCond) {
-    const short = consumable.description.split(".")[0]?.trim() || consumable.name;
-    effectNotes.push(short);
+  if (!healRoll && effectNotes.length === 0) {
+    const def = consumableEffectDef(consumable.catalogId);
+    effectNotes.push(def?.hint ?? consumable.description.split(".")[0]?.trim() ?? consumable.name);
   }
 
   const inventory = decrementInventory(actor.inventory, consumable.instanceId);
@@ -167,6 +160,23 @@ export function resolveConsumableUse(
     healRoll != null
       ? `${actor.name} bebe ${consumable.name} — +${healRoll.total} HP (${hpBefore}→${hpAfter})`
       : `${actor.name} usa ${consumable.name} — ${detail}`;
+
+  const tokenPatch: Partial<BattleToken> = {};
+  const buffFields = [
+    "conditions",
+    "timedEffects",
+    "defesaBonus",
+    "defesaBuffSource",
+    "bonusDamageFormula",
+    "saveAdvantagePoison",
+  ] as const;
+  for (const field of buffFields) {
+    const beforeVal = token[field];
+    const afterVal = workingToken[field];
+    if (JSON.stringify(beforeVal) !== JSON.stringify(afterVal)) {
+      (tokenPatch as Record<string, unknown>)[field] = afterVal;
+    }
+  }
 
   return {
     paCost: consumablePaCost(),
