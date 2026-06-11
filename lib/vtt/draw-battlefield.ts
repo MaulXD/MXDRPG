@@ -81,7 +81,7 @@ export function prepareBattlefieldCanvas(
   if (!ctx) return null;
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   ctx.imageSmoothingEnabled = true;
-  ctx.imageSmoothingQuality = "high";
+  ctx.imageSmoothingQuality = "medium";
 
   return { w, h, ox: w / 2, oy: h / 2, dpr };
 }

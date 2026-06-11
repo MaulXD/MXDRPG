@@ -110,6 +110,16 @@ export function useBattlefieldHighlights({
 
   const gridCells = useMemo(() => buildHexGrid(scene.gridRadius), [scene.gridRadius]);
 
+  const sceneMoveKey = useMemo(
+    () =>
+      `${scene.gridRadius}|${scene.tokens
+        .map((t) => `${t.id}:${t.axial.q},${t.axial.r}`)
+        .join(";")}|${(scene.dungeonObjects ?? [])
+        .map((o) => `${o.id}:${o.q},${o.r}`)
+        .join(";")}`,
+    [scene.gridRadius, scene.tokens, scene.dungeonObjects]
+  );
+
   const moveCtx = useMemo(
     () =>
       moveHighlightToken
@@ -129,13 +139,21 @@ export function useBattlefieldHighlights({
     if (!moveHighlightToken || !showMovement || turnMovePreview) return new Set<string>();
     const cells = reachableMovementHexes(moveHighlightToken, effectiveMoveMode, scene, actorRacas);
     return new Set(cells.map(axialKey));
-  }, [moveHighlightToken, showMovement, turnMovePreview, effectiveMoveMode, scene, actorRacas]);
+  }, [
+    moveHighlightToken,
+    showMovement,
+    turnMovePreview,
+    effectiveMoveMode,
+    sceneMoveKey,
+    scene,
+    actorRacas,
+  ]);
 
   const walkSet = useMemo(() => {
     if (!moveHighlightToken || !showMovement) return new Set<string>();
     const cells = reachableMovementHexes(moveHighlightToken, "walk", scene, actorRacas);
     return new Set(cells.map(axialKey));
-  }, [moveHighlightToken, showMovement, scene, actorRacas]);
+  }, [moveHighlightToken, showMovement, sceneMoveKey, scene, actorRacas]);
 
   const movePaOptsHighlight = useMemo(() => {
     const moveBypass = moveHighlightToken
@@ -153,10 +171,7 @@ export function useBattlefieldHighlights({
     if (!moveHighlightToken || !showMovement || !moveCtx || turnMovePreview) {
       return new Set<string>();
     }
-    const hexKeys =
-      effectiveMoveMode === "run"
-        ? new Set([...walkSet, ...rangeSet])
-        : walkSet;
+    const hexKeys = effectiveMoveMode === "run" ? rangeSet : walkSet;
     const set = new Set<string>();
     for (const key of hexKeys) {
       const [q, r] = key.split(",").map(Number);
