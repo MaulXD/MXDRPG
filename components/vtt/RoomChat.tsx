@@ -1,6 +1,6 @@
 ﻿"use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { ChatMessage } from "@/lib/room/chat";
 import {
   combatEventTone,
@@ -38,7 +38,7 @@ export function RoomChat({ roomId, messages, combatReveal = {}, onUpdate, readOn
     if (el) el.scrollTop = el.scrollHeight;
   }, [messages]);
 
-  async function send() {
+  const send = useCallback(async () => {
     const msg = text.trim();
     if (!msg || busy) return;
     setBusy(true);
@@ -49,7 +49,7 @@ export function RoomChat({ roomId, messages, combatReveal = {}, onUpdate, readOn
     } finally {
       setBusy(false);
     }
-  }
+  }, [text, busy, roomId, onUpdate]);
 
   return (
     <div className="room-chat room-chat--rail">
@@ -67,14 +67,19 @@ export function RoomChat({ roomId, messages, combatReveal = {}, onUpdate, readOn
           className="room-chat-input"
           onSubmit={(e) => {
             e.preventDefault();
-            send();
+            void send();
           }}
         >
-          <input
-            type="text"
+          <textarea
+            rows={2}
             placeholder="Mensagem para a mesa…"
             value={text}
             onChange={(e) => setText(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key !== "Enter" || e.shiftKey || e.nativeEvent.isComposing) return;
+              e.preventDefault();
+              void send();
+            }}
             maxLength={500}
           />
           <button type="submit" className="btn" disabled={busy || !text.trim()}>
