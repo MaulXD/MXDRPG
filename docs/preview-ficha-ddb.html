@@ -59,16 +59,18 @@
       --ddb-panel-border: #d8cfc0;
       --ddb-ink: #1e1814;
       --ddb-muted: #6a5c4e;
-      --ddb-prof: #2f6fed;
+      --ddb-prof: #b8922e;
       --ddb-hp: #3a9d55;
       --ddb-pa: #a83232;
+      --ddb-xp: #8b2830;
+      --ddb-xp-bright: #d4535c;
       --ddb-gold: #b8922e;
       background: #e8e2d6;
       color: var(--ddb-ink);
       gap: 0;
       padding: 0;
       border-radius: 10px;
-      overflow: hidden;
+      overflow: visible;
       box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
     }
 
@@ -159,7 +161,7 @@
     .sheet-ddb-header__xp-bar > span {
       display: block;
       height: 100%;
-      background: linear-gradient(90deg, #d4b356, #f0d878);
+      background: linear-gradient(90deg, var(--ddb-xp), var(--ddb-xp-bright));
       border-radius: inherit;
     }
 
@@ -208,11 +210,22 @@
 
     .sheet-ddb-body {
       display: grid;
-      grid-template-columns: 96px minmax(0, 1.65fr) minmax(118px, 0.82fr);
-      gap: 0.5rem;
-      padding: 0.5rem 0.55rem;
+      grid-template-columns: 96px minmax(10.25rem, 12.75rem) minmax(0, 1fr);
+      gap: 0.45rem;
+      padding: 0.45rem 0.5rem;
       min-height: 280px;
     }
+
+    .sheet-ddb-col--right {
+      display: grid;
+      grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+      gap: 0.35rem;
+      align-content: start;
+    }
+
+    .sheet-ddb-col--right .sheet-ddb-panel--saves { grid-column: 1; }
+    .sheet-ddb-col--right .sheet-ddb-panel--traits { grid-column: 2; }
+    .sheet-ddb-col--right .sheet-ddb-panel--culinary { grid-column: 1 / -1; }
 
     .sheet-ddb-col {
       min-width: 0;
@@ -438,9 +451,9 @@
 
     .sheet-ddb-saves {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0.25rem 0.45rem;
-      padding: 0.4rem 0.5rem 0.5rem;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.2rem 0.35rem;
+      padding: 0.32rem 0.42rem 0.42rem;
     }
 
     .sheet-ddb-save {
@@ -459,10 +472,14 @@
     }
 
     .sheet-ddb-trait-cards {
-      display: flex;
-      flex-direction: column;
-      gap: 0.3rem;
-      padding: 0.4rem 0.5rem 0.5rem;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.22rem;
+      padding: 0.32rem 0.42rem 0.42rem;
+    }
+
+    .sheet-ddb-trait-cards .sheet-ddb-trait:last-child {
+      grid-column: 1 / -1;
     }
 
     .sheet-ddb-trait {
@@ -552,9 +569,22 @@
       min-height: 3.5rem;
     }
 
+    @media (max-width: 900px) {
+      .sheet-ddb-body { grid-template-columns: 96px minmax(0, 1fr); }
+      .sheet-ddb-col--skills { grid-column: 1 / -1; }
+      .sheet-ddb-col--right { grid-column: 1 / -1; grid-template-columns: 1fr; }
+    }
+
     @media (max-width: 720px) {
       .sheet-ddb-body { grid-template-columns: 1fr; }
       .sheet-ddb-attrs { grid-template-columns: repeat(3, 1fr); }
+      .sheet-ddb-saves { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 480px) {
+      .sheet-ddb-attrs { grid-template-columns: repeat(2, 1fr); }
+      .sheet-ddb-trait-cards { grid-template-columns: 1fr; }
+      .sheet-ddb-culinary { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -563,7 +593,8 @@
     <h1 class="preview-page__title">Preview — Ficha popup (layout D&D Beyond)</h1>
     <p class="preview-page__desc">
       Espelho estático de <code>SheetPopupDdbView</code> + <code>sheet-ddb.css</code>.
-      Abra este arquivo no navegador para ver cores, grid e hierarquia visual sem rodar o app.
+      Tooltips reais usam portal no app (<code>SheetHoverTip</code>); aqui só layout e cores.
+      Abra no navegador para validar grid, salvaguardas/traços em duas colunas e breakpoints.
     </p>
 
     <article class="sheet-shell sheet-shell--popup sheet-shell--ddb" aria-label="Ficha de personagem">

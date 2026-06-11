@@ -18,10 +18,13 @@ import {
   backgroundChipTip,
   classChipTip,
   combatStatTip,
+  culinaryTip,
   deityChipTip,
+  levelTip,
   raceChipTip,
   savingThrowTip,
   subclassChipTip,
+  xpBarTip,
 } from "@/lib/character/sheet-tooltips";
 import { SheetDdbSkillsPanel } from "@/components/character/SheetDdbSkillsPanel";
 import type { FoundryWindowDragHandlers } from "@/hooks/vtt/useFoundryWindowDrag";
@@ -120,17 +123,17 @@ export function SheetPopupDdbView({
           <p className="sheet-ddb-header__class">{classLine.toUpperCase()}</p>
         </div>
         <div className="sheet-ddb-header__meta" data-no-drag>
-          <div className="sheet-ddb-header__level" aria-label={`Nível ${nivel}`}>
-            {nivel}
-          </div>
+          <SheetHoverTip
+            className="sheet-ddb-header__level-tip"
+            tip={levelTip(nivel, xpTotal)}
+          >
+            <div className="sheet-ddb-header__level" tabIndex={0} aria-label={`Nível ${nivel}`}>
+              {nivel}
+            </div>
+          </SheetHoverTip>
           <SheetHoverTip
             className="sheet-ddb-header__xp-tip"
-            tip={{
-              lines: [
-                xpDetail.secondary,
-                nivel < MAX_LEVEL && xpDetail.barLabel ? xpDetail.barLabel : "",
-              ].filter(Boolean),
-            }}
+            tip={xpBarTip(nivel, xpTotal)}
           >
             <div className="sheet-ddb-header__xp" tabIndex={0} title={xpDetail.secondary}>
               <span className="sheet-ddb-header__xp-text">{xpDetail.primary}</span>
@@ -350,10 +353,16 @@ export function SheetPopupDdbView({
             </header>
             <div className="sheet-ddb-culinary">
               {(Object.keys(CULINARY_LABELS) as CulinaryKey[]).map((k) => (
-                <div className="sheet-ddb-culinary__item" key={k}>
-                  <span>{CULINARY_LABELS[k]}</span>
-                  <strong>+{character.culinary[k] ?? 0}</strong>
-                </div>
+                <SheetHoverTip
+                  key={k}
+                  className="sheet-ddb-culinary-tip"
+                  tip={culinaryTip(k, character.culinary[k] ?? 0)}
+                >
+                  <div className="sheet-ddb-culinary__item" tabIndex={0}>
+                    <span>{CULINARY_LABELS[k]}</span>
+                    <strong>+{character.culinary[k] ?? 0}</strong>
+                  </div>
+                </SheetHoverTip>
               ))}
             </div>
           </section>

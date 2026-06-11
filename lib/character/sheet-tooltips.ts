@@ -5,7 +5,9 @@ import {
   getRace,
   proficiencyBonus,
   type AttributeKey,
+  type CulinaryKey,
 } from "@/lib/character/rules";
+import { formatXpProgressDetail, MAX_LEVEL, xpToNextLevel } from "@/lib/character/xp";
 import { religionDisplayName } from "@/lib/character/pantheon";
 import { religionBonusTooltip } from "@/lib/character/religion-tooltips";
 import { getAscension, getSubclassTrack } from "@/lib/character/subclass-tracks";
@@ -201,6 +203,57 @@ const SKILL_USE: Record<string, string> = {
   atletismo:
     "Escalar, saltar, nadar, empurrar ou agarrar — força física bruta em situações de perigo.",
 };
+
+const CULINARY_USE: Record<CulinaryKey, string> = {
+  trinchar:
+    "Extração e processamento — desossa, limpeza de caça/pesca e aproveitamento de ingredientes brutos.",
+  harmonizacao:
+    "Forrageio e identificação — reconhecer plantas, frutos e recursos comestíveis no ambiente.",
+  coccao:
+    "Fabricação culinária — preparar refeições de viagem, caldos e itens de campo que sustentam o grupo.",
+  estomagoDeFerro:
+    "Fortitude alimentar — resistir venenos, comida estragada, jejum e efeitos de ingestão.",
+};
+
+export function levelTip(nivel: number, xpTotal: number): SheetTipContent {
+  const xpDetail = formatXpProgressDetail(nivel, xpTotal);
+  const lines = [
+    `Nível ${nivel} de ${MAX_LEVEL} — define proficiência, PV, talentos e marcos de classe.`,
+    xpDetail.secondary,
+  ];
+  if (nivel < MAX_LEVEL) {
+    const falta = xpToNextLevel(nivel, xpTotal);
+    if (falta > 0) {
+      lines.push(`Próximo nível em ${falta.toLocaleString("pt-BR")} XP.`);
+    } else {
+      lines.push("XP suficiente — suba de nível na edição da ficha.");
+    }
+  }
+  return { title: `Nível ${nivel}`, lines };
+}
+
+export function xpBarTip(nivel: number, xpTotal: number): SheetTipContent {
+  const d = formatXpProgressDetail(nivel, xpTotal);
+  const lines = [d.secondary];
+  if (d.barLabel) lines.push(d.barLabel);
+  if (nivel < MAX_LEVEL) {
+    lines.push("XP vem de combates e marcos — o mestre distribui o pool da cena.");
+  }
+  return { title: "Experiência", lines: lines.filter(Boolean) };
+}
+
+export function culinaryTip(key: CulinaryKey, value: number): SheetTipContent {
+  const label = CULINARY_LABELS[key];
+  return {
+    title: label,
+    lines: [
+      CULINARY_USE[key],
+      "",
+      `Bônus +${value} somado a testes de sobrevivência e culinária desta área.`,
+      "Valores vêm da classe, raça e marcos raciais.",
+    ],
+  };
+}
 
 export function attributeTip(
   attr: AttributeKey,
