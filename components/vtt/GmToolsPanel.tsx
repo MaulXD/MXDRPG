@@ -24,6 +24,7 @@ type Props = {
   spawnAxial: Axial | null;
   combatUndo?: CombatUndoEntry[];
   onSceneUpdated: (snap: RoomSnapshot) => void;
+  onRefresh?: () => void;
 };
 
 const TABS: { id: GmTab; label: string; hint: string }[] = [
@@ -44,6 +45,7 @@ export function GmToolsPanel({
   spawnAxial,
   combatUndo = [],
   onSceneUpdated,
+  onRefresh,
 }: Props) {
   const [tab, setTab] = useState<GmTab>("jogadores");
   const active = TABS.find((t) => t.id === tab) ?? TABS[0];
@@ -95,9 +97,11 @@ export function GmToolsPanel({
           <>
             <GmSavingThrowPanel
               roomId={roomId}
+              inviteCode={inviteCode}
               tokens={tokens}
               roomActors={roomActors}
               onUpdated={onSceneUpdated}
+              onRefresh={onRefresh}
             />
             <GmActorProgressPanel
               roomId={roomId}
