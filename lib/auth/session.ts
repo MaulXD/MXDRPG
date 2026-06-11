@@ -50,7 +50,9 @@ export async function getLegacyCookieSession(): Promise<SessionPayload | null> {
 }
 
 export async function getSession(): Promise<SessionPayload | null> {
-  if (!isClerkEnabled()) return null;
+  if (!isClerkEnabled()) {
+    return getLegacyCookieSession();
+  }
 
   if (dbEnabled()) {
     try {
