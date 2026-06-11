@@ -304,6 +304,24 @@ export async function levelUpRoomActor(
   return res.json() as Promise<LevelUpRoomResponse>;
 }
 
+export async function postStructuredMeal(
+  roomId: string,
+  body: import("@/lib/culinary/types").StructuredMealInput
+): Promise<RoomSnapshot> {
+  const res = await fetch(`/api/room/${roomId}/culinary/meal`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    credentials: "same-origin",
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) {
+    const err = (await res.json().catch(() => ({}))) as { error?: string };
+    throw new Error(err.error ?? "Falha ao preparar refeição");
+  }
+  const data = (await res.json()) as { snapshot: RoomSnapshot };
+  return data.snapshot;
+}
+
 export async function rollInitiative(roomId: string) {
   const res = await fetch(`/api/room/${roomId}/combat/roll-initiative`, { method: "POST" });
   if (!res.ok) {

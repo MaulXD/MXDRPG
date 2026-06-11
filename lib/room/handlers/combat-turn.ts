@@ -327,6 +327,7 @@ export function ensureCombatActiveHasPa(room: RoomState): void {
   const active = getActiveBattleToken(room);
   if (!active) return;
   if ((active.pa ?? 0) > 0) return;
+  if ((active.paSpentThisTurn ?? 0) > 0) return;
   refreshActiveTokenPa(room, "full");
 }
 

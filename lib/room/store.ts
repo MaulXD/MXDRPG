@@ -29,11 +29,11 @@ export { executeRoomAbility, type AbilityExecuteResult } from "./handlers/combat
 export { executeRoomAreaSpell } from "./handlers/combat-area";
 export { executeGmCombatAction, type GmCombatAction } from "./handlers/combat-gm";
 export { executeGmActorProgress, type GmActorProgressAction } from "./handlers/gm-actor-progress";
-export {
-  executeGmSavingThrows,
+export { executeGmSavingThrows,
   type GmSavingThrowRequest,
   type GmSavingThrowTarget,
 } from "./handlers/gm-saving-throw";
+export { executeStructuredMeal } from "./handlers/culinary-meal";
 export { executeRoomConsume, type ConsumeExecuteResult } from "./handlers/combat-consume";
 export { addRoomPing } from "./handlers/ping";
 export { patchRoomScene, revealRoomHex, type ScenePatch } from "./handlers/scene";

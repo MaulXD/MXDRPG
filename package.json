@@ -26,9 +26,11 @@
     "test:pdf": "node scripts/verify-sheet-pdf.mjs",
     "test:consumables": "node scripts/verify-consumables.mjs",
     "test:inventory-requests": "node scripts/verify-inventory-requests.mjs",
+    "test:culinary": "node scripts/verify-culinary.mjs",
     "smoke:inventory-flow": "node scripts/smoke/inventory-request-flow.mjs",
     "smoke:p9-inventory": "node scripts/smoke/p9-inventory-five-steps.mjs",
     "smoke:level-up-pa": "node scripts/smoke/level-up-pa-sync.mjs",
+    "smoke:combat-core": "node scripts/smoke/combat-core.mjs",
     "test": "node scripts/verify-pa-bank.mjs && node scripts/verify-movement-pa.mjs && node scripts/verify-hex-path.mjs && node scripts/verify-sheet-pdf.mjs && node scripts/verify-consumables.mjs && npm run sync:data:check"
   },
   "dependencies": {
