@@ -215,7 +215,7 @@ export function previewAreaCast(
   const check = canCastAreaAt(caster, center, action, turn, actor, channelExtraPa);
   const pa = actor
     ? action.channelMaxExtraPa
-      ? totalChannelPaCost(actor, action, channelExtraPa)
+      ? totalChannelPaCost(actor, action, channelExtraPa, caster)
       : effectivePaCost(actor, action, paCostContextFromToken(caster))
     : action.paCost + channelExtraPa;
   const paCheck = checkCanSpendPa(caster, pa);

@@ -74,7 +74,7 @@ export async function executeRoomConsume(
     return { ok: false, error: e instanceof Error ? e.message : "Falha ao usar item" };
   }
 
-  const spent = applyPaSpend(token, resolved.paCost, { actionKind: "ability" });
+  const spent = applyPaSpend(token, resolved.paCost);
   syncActorPaFromToken(room, spent);
 
   const healed = patchTokenVitals(

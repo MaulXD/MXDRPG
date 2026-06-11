@@ -156,6 +156,15 @@ export function weaponAttackPaIndex(
   return isPaDiscountAvailable(token, "weapon") ? 1 : 2;
 }
 
+/** PA efetivo no turno atual (talentos, 1×/turno, índice de golpe). */
+export function paCostForToken(
+  actor: CharacterSheet | null,
+  action: CombatActionOption,
+  token?: BattleToken | null
+): number {
+  return effectivePaCost(actor, action, paCostContextFromToken(token));
+}
+
 export function effectivePaCost(
   actor: CharacterSheet | null,
   action: CombatActionOption,

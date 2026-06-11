@@ -2,7 +2,7 @@ import { attributeMod, proficiencyBonus } from "@/lib/character/rules";
 import type { CharacterSheet } from "@/lib/character/types";
 import type { BattleToken } from "@/lib/vtt/types";
 import { rollDice } from "@/lib/dice/roll";
-import { effectivePaCost } from "@/lib/combat/pa-economy";
+import { paCostForToken } from "@/lib/combat/pa-economy";
 import { checkCanSpendPa } from "@/lib/combat/pa-turn";
 import { rechargeBlockReason } from "@/lib/combat/recharge";
 import { applyConditionWithDuration } from "@/lib/combat/timed-effects";
@@ -49,7 +49,7 @@ export function resolveSpellUtility(
   const rechargeReason = rechargeBlockReason(caster, action, turn?.combatRound ?? 1);
   if (rechargeReason) throw new Error(rechargeReason);
 
-  const paNeed = effectivePaCost(actor, action);
+  const paNeed = paCostForToken(actor, action, caster);
   const paCheck = checkCanSpendPa(caster, paNeed);
   if (!paCheck.ok) throw new Error(paCheck.reason ?? "PA insuficiente");
 
