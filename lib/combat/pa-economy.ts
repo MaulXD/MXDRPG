@@ -109,6 +109,7 @@ export function effectiveMovementPaCost(
 export {
   PA_MIN_COST_AFTER_REDUCTION,
   effectivePaCost,
+  paCostForToken,
   formatPaCostLabel,
   listPaModifiersForActor,
   mergePaCostContext,

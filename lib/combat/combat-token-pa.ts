@@ -70,9 +70,12 @@ export function attackerForCombatCheck(
   let prepared = materializeCombatPa(attacker, paMax);
   prepared = { ...attacker, ...normalizeTokenPaFields(prepared, paMax) };
 
+  const combatHasOrder = opts?.combatHasOrder ?? turn?.combatHasOrder ?? true;
   if (!mayRefreshCombatPa(prepared, turn, opts)) return prepared;
   if (tokenSpendablePa(prepared) > 0) return prepared;
-  if ((prepared.paSpentThisTurn ?? 0) > 0) return prepared;
+  if ((prepared.paSpentThisTurn ?? 0) > 0) {
+    if (combatHasOrder || !isMonsterToken(prepared)) return prepared;
+  }
 
   const refreshed = startTurnPaFull(prepared, rules);
   return { ...prepared, ...normalizeTokenPaFields(refreshed, paMax) };

@@ -5,8 +5,13 @@ import { getEntry } from "@/lib/compendium/registry";
 import type { CompendiumPackId } from "@/lib/compendium/types";
 import type { SpellAreaShape } from "@/lib/combat/area-spell";
 import { abilityEffectDurationHint } from "@/lib/combat/buff-durations";
-import { effectivePaCost, totalAttackPaCost } from "@/lib/combat/pa-economy";
+import {
+  effectivePaCost,
+  paCostContextFromToken,
+  totalAttackPaCost,
+} from "@/lib/combat/pa-economy";
 import type { AbilityEffect, CombatActionOption } from "@/lib/combat/types";
+import type { BattleToken } from "@/lib/vtt/types";
 
 const AREA_LABELS: Record<SpellAreaShape, string> = {
   single: "alvo único",
@@ -50,13 +55,18 @@ function compendiumPack(
   return null;
 }
 
-function effectiveCostLine(action: CombatActionOption, actor?: CharacterSheet | null): string {
+function effectiveCostLine(
+  action: CombatActionOption,
+  actor?: CharacterSheet | null,
+  token?: BattleToken | null
+): string {
   if (!actor) return `Custo: ${action.paCost} PA`;
   const base = action.paCost;
+  const ctx = paCostContextFromToken(token);
   const eff =
     action.kind === "weapon"
-      ? totalAttackPaCost(actor, action)
-      : effectivePaCost(actor, action);
+      ? totalAttackPaCost(actor, action, token)
+      : effectivePaCost(actor, action, ctx);
   if (eff === base) return `Custo: ${eff} PA`;
   return `Custo: ${base} → ${eff} PA (talentos/classe)`;
 }
@@ -127,7 +137,8 @@ function targetLine(action: CombatActionOption): string {
 /** Linhas de detalhe para UI e tooltip. */
 export function formatCombatActionTooltipLines(
   action: CombatActionOption,
-  actor?: CharacterSheet | null
+  actor?: CharacterSheet | null,
+  token?: BattleToken | null
 ): string[] {
   const lines: string[] = [];
   const seen = new Set<string>();
@@ -164,7 +175,7 @@ export function formatCombatActionTooltipLines(
   push(resolutionLine(action));
   push(areaLine(action));
   push(targetLine(action));
-  push(effectiveCostLine(action, actor));
+  push(effectiveCostLine(action, actor, token));
 
   if (action.channelMaxExtraPa) {
     push(
@@ -190,7 +201,8 @@ export function formatCombatActionTooltipLines(
 /** Texto único para atributo title (quebras de linha). */
 export function formatCombatActionTooltip(
   action: CombatActionOption,
-  actor?: CharacterSheet | null
+  actor?: CharacterSheet | null,
+  token?: BattleToken | null
 ): string {
-  return formatCombatActionTooltipLines(action, actor).join("\n");
+  return formatCombatActionTooltipLines(action, actor, token).join("\n");
 }

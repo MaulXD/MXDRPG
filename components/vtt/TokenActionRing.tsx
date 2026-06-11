@@ -40,8 +40,10 @@ import {
   resolveCombatAction,
 } from "@/lib/combat/attack";
 import {
+  effectiveMovementPaCost,
   effectivePaCost,
   paCostContextFromToken,
+  paTurnRulesForActor,
   totalAttackPaCost,
 } from "@/lib/combat/pa-economy";
 import { isActionOnRecharge } from "@/lib/combat/recharge";
@@ -131,10 +133,12 @@ function slotRadialPosition(angle: number, radius: number) {
   };
 }
 
-function nextHexPaLabel(token: BattleToken): string {
+function nextHexPaLabel(token: BattleToken, actor: RoomActor | null): string {
   const bands = movementPaBandsForToken(token);
   const spent = token.movementSpentHex ?? 0;
-  const cost = movementPaCost(spent, 1, bands);
+  const raw = movementPaCost(spent, 1, bands);
+  const freeBasic = actor ? paTurnRulesForActor(actor).freeBasicMovePa : false;
+  const cost = effectiveMovementPaCost(token, raw, freeBasic);
   return cost === 0 ? "0 PA" : `${cost} PA`;
 }
 
@@ -213,7 +217,7 @@ export function TokenActionRing({
   const turnBlocked = turn.isTurnBlockedForToken(token);
   const consumablePa = consumablePaCost();
 
-  const movePa = useMemo(() => nextHexPaLabel(token), [token]);
+  const movePa = useMemo(() => nextHexPaLabel(token, actor), [token, actor]);
 
   const tokenRingColor = useMemo(() => {
     const playerActorIds = collectPlayerActorIds(allTokens);
@@ -351,7 +355,7 @@ export function TokenActionRing({
         disabled: turnBlocked || cd.blocked,
         rechargeHint: cd.blocked ? cd.hint : undefined,
         title: [
-          formatCombatActionTooltip(action, actor),
+          formatCombatActionTooltip(action, actor, token),
           rechargeTitle ? `Recarga: ${rechargeTitle}` : null,
           cd.blocked && cd.hint ? `Disponível: ${cd.hint}` : null,
         ]
@@ -441,7 +445,7 @@ export function TokenActionRing({
         glyph: <IconSword size={16} />,
         paLabel: combatActionPaLabel(token, actor, weapon),
         disabled: turnBlocked || weapons.length === 0,
-        title: weapon ? formatCombatActionTooltip(weapon, actor) : undefined,
+        title: weapon ? formatCombatActionTooltip(weapon, actor, token) : undefined,
         action: weapon ?? null,
         onClick: () => pickMain("attack"),
       },
@@ -456,7 +460,7 @@ export function TokenActionRing({
           spells.length > 1
             ? `${spells.length} magias disponíveis — abra o submenu`
             : spell
-              ? formatCombatActionTooltip(spell, actor)
+              ? formatCombatActionTooltip(spell, actor, token)
               : undefined,
         action: spells.length === 1 ? spell ?? null : null,
         detailHint:
@@ -476,7 +480,7 @@ export function TokenActionRing({
           abilities.length > 1
             ? `${abilities.length} habilidades disponíveis — abra o submenu`
             : ability
-              ? formatCombatActionTooltip(ability, actor)
+              ? formatCombatActionTooltip(ability, actor, token)
               : undefined,
         action: abilities.length === 1 ? ability ?? null : null,
         detailHint:

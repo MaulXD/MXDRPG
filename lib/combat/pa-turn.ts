@@ -288,7 +288,9 @@ export function applyPaSpend(
   const paMax = token.paMax ?? PA_RECOVERY_PER_TURN;
   const prepared = materializeCombatPa(token, paMax);
   const check = checkCanSpendPa(prepared, cost);
-  if (!check.ok) return token;
+  if (!check.ok) {
+    throw new Error(check.reason ?? "PA insuficiente");
+  }
 
   const pa = Math.max(0, (prepared.pa ?? 0) - cost);
 
