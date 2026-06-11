@@ -19,17 +19,17 @@
   border-radius: var(--radius);
   background: var(--mesa-stage-bg);
 
-  /* Cores dos atalhos — ícone, dock e janelas */
-  --rail-status: #e8b84a;
-  --rail-actors: #5ec4d4;
-  --rail-initiative: #b8922e;
-  --rail-ficha: #d4535c;
-  --rail-chat: #6ecf8a;
-  --rail-dice: #b08ee8;
-  --rail-invite: #e8927a;
-  --rail-dungeon: #c9927a;
-  --rail-gm: #d46a6a;
-  --rail-spawn: #e8a050;
+  /* Cores dos atalhos — ícone, dock e janelas (tons mais claros para contraste no fundo escuro) */
+  --rail-status: #f0c85a;
+  --rail-actors: #6ed8e8;
+  --rail-initiative: #d4a83a;
+  --rail-ficha: #f06870;
+  --rail-chat: #7ee89a;
+  --rail-dice: #c8a8ff;
+  --rail-invite: #f8a088;
+  --rail-dungeon: #d8a088;
+  --rail-gm: #e87878;
+  --rail-spawn: #f0b058;
 }
 
 .foundry-sidebar {
@@ -174,7 +174,7 @@
   align-items: stretch;
   gap: 0.1rem;
   padding: 0.3rem 0.1rem 0.45rem;
-  background: rgba(30, 29, 26, 0.65);
+  background: rgba(18, 17, 15, 0.94);
   box-sizing: border-box;
 }
 
@@ -182,12 +182,12 @@
   margin: 0.1rem 0 0.18rem;
   padding: 0;
   font-family: var(--font-display);
-  font-size: 0.5rem;
-  font-weight: 600;
-  letter-spacing: 0.06em;
+  font-size: 0.52rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   text-align: center;
-  color: var(--mesa-text-dim);
+  color: rgba(232, 224, 208, 0.72);
 }
 
 .foundry-icon-bar__section-title--gm {
@@ -218,22 +218,28 @@
   width: 100%;
   min-height: 2.65rem;
   padding: 0.2rem 0.08rem 0.22rem;
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 8px;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.015));
-  color: rgba(200, 191, 168, 0.85);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.02));
+  color: rgba(232, 226, 214, 0.92);
   cursor: pointer;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 0.18rem;
+  outline: none;
   transition:
     background 0.18s,
     border-color 0.18s,
     color 0.18s,
     box-shadow 0.18s,
     transform 0.12s;
+}
+
+.foundry-icon-bar__btn:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--rail-icon-color, var(--mesa-accent)) 72%, #fff);
+  outline-offset: 1px;
 }
 
 .foundry-icon-bar__btn:hover {
@@ -249,30 +255,40 @@
 
 .foundry-icon-bar__btn--active {
   color: var(--text-strong);
-  border-color: color-mix(in srgb, var(--rail-icon-color, var(--mesa-accent)) 58%, transparent);
+  border-color: color-mix(in srgb, var(--rail-icon-color, var(--mesa-accent)) 72%, transparent);
   background: linear-gradient(
     180deg,
-    color-mix(in srgb, var(--rail-icon-color, var(--mesa-accent)) 32%, transparent),
-    color-mix(in srgb, var(--rail-icon-color, var(--mesa-accent)) 14%, transparent)
+    color-mix(in srgb, var(--rail-icon-color, var(--mesa-accent)) 38%, transparent),
+    color-mix(in srgb, var(--rail-icon-color, var(--mesa-accent)) 16%, transparent)
   );
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.1),
-    0 4px 14px rgba(0, 0, 0, 0.22);
+    inset 0 1px 0 rgba(255, 255, 255, 0.14),
+    0 0 0 1px color-mix(in srgb, var(--rail-icon-color, var(--mesa-accent)) 22%, transparent),
+    0 4px 16px color-mix(in srgb, var(--rail-icon-color, var(--mesa-accent)) 18%, transparent);
 }
 
 .foundry-icon-bar__icon-wrap {
-  width: 1.45rem;
-  height: 1.45rem;
+  width: 1.55rem;
+  height: 1.55rem;
   border-radius: 7px;
   display: grid;
   place-items: center;
-  background: linear-gradient(145deg, rgba(255, 255, 255, 0.07), rgba(0, 0, 0, 0.12));
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 0.2));
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
   transition:
     background 0.18s,
     border-color 0.18s,
     box-shadow 0.18s;
+}
+
+.foundry-icon-bar__icon-wrap[data-rail-icon] {
+  background: linear-gradient(
+    145deg,
+    color-mix(in srgb, var(--rail-icon-color) 24%, rgba(0, 0, 0, 0.32)),
+    color-mix(in srgb, var(--rail-icon-color) 10%, rgba(0, 0, 0, 0.42))
+  );
+  border-color: color-mix(in srgb, var(--rail-icon-color) 32%, transparent);
 }
 
 .foundry-icon-bar__btn:hover .foundry-icon-bar__icon-wrap {
@@ -351,21 +367,26 @@
 }
 
 .foundry-icon-bar__icon {
-  width: 1rem;
-  height: 1rem;
+  width: 1.1rem;
+  height: 1.1rem;
   display: block;
   flex-shrink: 0;
-  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.35));
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.55));
   transition: filter 0.18s;
 }
 
+.foundry-icon-bar__icon-wrap[data-rail-icon] .foundry-icon-bar__icon {
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.5))
+    drop-shadow(0 0 5px color-mix(in srgb, var(--rail-icon-color) 42%, transparent));
+}
+
 .foundry-icon-bar__btn:hover .foundry-icon-bar__icon-wrap[data-rail-icon] .foundry-icon-bar__icon {
-  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.4))
-    drop-shadow(0 0 6px color-mix(in srgb, var(--rail-icon-color) 45%, transparent));
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.45))
+    drop-shadow(0 0 9px color-mix(in srgb, var(--rail-icon-color) 58%, transparent));
 }
 
 .foundry-icon-bar__btn--active .foundry-icon-bar__icon-wrap[data-rail-icon] .foundry-icon-bar__icon {
-  filter: drop-shadow(0 0 8px color-mix(in srgb, var(--rail-icon-color) 55%, transparent));
+  filter: drop-shadow(0 0 10px color-mix(in srgb, var(--rail-icon-color) 72%, transparent));
 }
 
 /* Lista de personagens jogáveis (painel Ficha) */
@@ -547,16 +568,24 @@
 
 .foundry-icon-bar__label {
   font-family: var(--font-ui, system-ui, sans-serif);
-  font-size: 0.48rem;
-  font-weight: 700;
+  font-size: 0.52rem;
+  font-weight: 800;
   line-height: 1.05;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.04em;
   text-align: center;
   max-width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   text-transform: uppercase;
+  color: color-mix(in srgb, var(--rail-icon-color, rgba(232, 226, 214, 0.9)) 82%, #fff);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.55);
+}
+
+.foundry-icon-bar__btn:hover .foundry-icon-bar__label,
+.foundry-icon-bar__btn--active .foundry-icon-bar__label {
+  color: var(--rail-icon-color, var(--text-strong));
+  text-shadow: 0 0 8px color-mix(in srgb, var(--rail-icon-color, #fff) 35%, transparent);
 }
 
 /* Painel dock (coluna de conteúdo) */
@@ -855,8 +884,7 @@
   min-height: 80px;
   border-radius: 10px;
   border: 1px solid var(--mesa-accent-border);
-  background: rgba(30, 29, 26, 0.96);
-  backdrop-filter: blur(12px);
+  background: rgba(30, 29, 26, 0.98);
   box-shadow:
     0 14px 36px rgba(0, 0, 0, 0.5),
     0 0 0 1px rgba(184, 146, 46, 0.12);
@@ -1227,7 +1255,6 @@
   font-size: 0.78rem;
   font-weight: 600;
   cursor: pointer;
-  backdrop-filter: blur(8px);
   white-space: nowrap;
 }
 
@@ -1266,7 +1293,6 @@
   font-size: 0.78rem;
   font-weight: 600;
   cursor: pointer;
-  backdrop-filter: blur(8px);
   text-decoration: none;
 }
 
@@ -1545,7 +1571,6 @@
   font-size: 0.78rem;
   font-weight: 600;
   cursor: pointer;
-  backdrop-filter: blur(8px);
 }
 
 .mesa-edit-requests-bell__trigger:hover {
@@ -1948,7 +1973,7 @@
   }
 
   .foundry-icon-bar__label {
-    font-size: 0.46rem;
+    font-size: 0.5rem;
   }
 
   .foundry-sidebar--dock-open .foundry-sidebar__dock {

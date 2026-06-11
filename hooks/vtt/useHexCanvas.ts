@@ -108,9 +108,12 @@ export function useHexCanvas(
   const tokenAnimTimeSecRef = useRef(0);
   const tokenHoverScaleRef = useRef(1);
   const lastAnimFrameMsRef = useRef(0);
+  const lastDrawFrameMsRef = useRef(0);
   const frameAnimRef = useRef<number | null>(null);
 
   const TOKEN_HOVER_SCALE = 1.1;
+  /** ~30 fps — anéis de turno/alvo não precisam de 60 fps e aliviam CPU/GPU. */
+  const ANIM_FRAME_MIN_MS = 33;
 
   const needsCanvasAnimation = useCallback((s: HexCanvasDrawState) => {
     const hoverTarget = s.hoverTokenId ? TOKEN_HOVER_SCALE : 1;
@@ -264,6 +267,12 @@ export function useHexCanvas(
     }
 
     const loop = (t: number) => {
+      if (t - lastDrawFrameMsRef.current < ANIM_FRAME_MIN_MS) {
+        frameAnimRef.current = requestAnimationFrame(loop);
+        return;
+      }
+      lastDrawFrameMsRef.current = t;
+
       const sec = t / 1000;
       const prev = lastAnimFrameMsRef.current || t;
       const dt = Math.min(0.05, (t - prev) / 1000);
@@ -300,19 +309,10 @@ export function useHexCanvas(
 
   useLayoutEffect(() => {
     draw();
-    const ro = new ResizeObserver(() => draw());
+    const ro = new ResizeObserver(() => drawRef.current());
     if (wrapRef.current) ro.observe(wrapRef.current);
     return () => ro.disconnect();
   }, [draw, wrapRef, view.scale, view.panX, view.panY]);
-
-  useEffect(() => {
-    const t1 = requestAnimationFrame(() => draw());
-    const t2 = setTimeout(() => draw(), 50);
-    return () => {
-      cancelAnimationFrame(t1);
-      clearTimeout(t2);
-    };
-  }, [draw]);
 
   return { draw, redraw: () => drawRef.current() };
 }

@@ -207,6 +207,38 @@ export function useBattlefieldPointer({
     startOffY: number;
     dragging: boolean;
   } | null>(null);
+  const lastHoverAxialKeyRef = useRef<string | null>(null);
+  const lastHoverPointerRef = useRef<{ x: number; y: number } | null>(null);
+  const lastHoverTokenIdRef = useRef<string | null>(null);
+
+  const publishHoverAxial = useCallback(
+    (axial: Axial | null) => {
+      const key = axial ? `${axial.q},${axial.r}` : null;
+      if (key === lastHoverAxialKeyRef.current) return;
+      lastHoverAxialKeyRef.current = key;
+      setHoverAxial(axial);
+      onHoverAxialChange?.(axial);
+    },
+    [setHoverAxial, onHoverAxialChange]
+  );
+
+  const publishHoverPointer = useCallback(
+    (pos: { x: number; y: number } | null) => {
+      if (!onHoverPointerChange) return;
+      if (!pos) {
+        if (lastHoverPointerRef.current === null) return;
+        lastHoverPointerRef.current = null;
+        onHoverPointerChange(null);
+        return;
+      }
+      const prev = lastHoverPointerRef.current;
+      if (prev && Math.hypot(pos.x - prev.x, pos.y - prev.y) < 6) return;
+      lastHoverPointerRef.current = pos;
+      onHoverPointerChange(pos);
+    },
+    [onHoverPointerChange]
+  );
+
   const wbDrawRef = useRef<{
     mode: "draw" | "move";
     startWx: number;
@@ -579,8 +611,7 @@ export function useBattlefieldPointer({
       }
 
       if (canControlCombat && actionMode === "idle" && !selectedId) {
-        setHoverAxial(axial);
-        onHoverAxialChange?.(axial);
+        publishHoverAxial(axial);
       }
     },
     [
@@ -595,8 +626,7 @@ export function useBattlefieldPointer({
       onRepositionToken,
       onGmDragPreview,
       actionMode,
-      setHoverAxial,
-      onHoverAxialChange,
+      publishHoverAxial,
       dungeonEditor,
       whiteboard,
       worldAtScreen,
@@ -614,7 +644,7 @@ export function useBattlefieldPointer({
   const onPointerMove = useCallback(
     (e: React.PointerEvent<HTMLCanvasElement>) => {
       const { px, py } = pointerPos(e);
-      onHoverPointerChange?.({ x: px, y: py });
+      publishHoverPointer({ x: px, y: py });
       const axial = axialAtScreen(px, py);
       const world = worldAtScreen(px, py);
 
@@ -686,8 +716,7 @@ export function useBattlefieldPointer({
         }
         if (gmEarly.dragging) {
           if (axial) {
-            setHoverAxial(axial);
-            onHoverAxialChange?.(axial);
+            publishHoverAxial(axial);
             onGmDragPreview?.(gmEarly.tokenId, axial);
           }
           if (canvasRef.current) canvasRef.current.style.cursor = "grabbing";
@@ -768,19 +797,21 @@ export function useBattlefieldPointer({
           dng.dragging = true;
         }
         if (dng.dragging) {
-          setHoverAxial(axial);
-          onHoverAxialChange?.(axial);
+          publishHoverAxial(axial);
           if (canvasRef.current) canvasRef.current.style.cursor = "grabbing";
           return;
         }
       }
 
-      setHoverAxial(axial);
-      onHoverAxialChange?.(axial);
+      publishHoverAxial(axial);
       reportHoverTarget(px, py);
 
       const hoverToken = tokenAtPoint(px, py);
-      onHoverTokenChange?.(hoverToken?.id ?? null);
+      const hoverTokenId = hoverToken?.id ?? null;
+      if (hoverTokenId !== lastHoverTokenIdRef.current) {
+        lastHoverTokenIdRef.current = hoverTokenId;
+        onHoverTokenChange?.(hoverTokenId);
+      }
 
       const canvas = canvasRef.current;
       if (canvas) {
@@ -856,10 +887,9 @@ export function useBattlefieldPointer({
     },
     [
       pointerPos,
-      onHoverPointerChange,
+      publishHoverPointer,
+      publishHoverAxial,
       axialAtScreen,
-      setHoverAxial,
-      onHoverAxialChange,
       reportHoverTarget,
       tokenAtPoint,
       onHoverTokenChange,
@@ -1118,17 +1148,18 @@ export function useBattlefieldPointer({
     dungeonDragRef.current = null;
     wbDrawRef.current = null;
     measureDragRef.current = null;
-    setHoverAxial(null);
-    onHoverAxialChange?.(null);
+    lastHoverAxialKeyRef.current = null;
+    lastHoverPointerRef.current = null;
+    lastHoverTokenIdRef.current = null;
+    publishHoverAxial(null);
     onHoverTargetChange?.(null);
     onHoverTokenChange?.(null);
-    onHoverPointerChange?.(null);
+    publishHoverPointer(null);
   }, [
-    setHoverAxial,
-    onHoverAxialChange,
+    publishHoverAxial,
+    publishHoverPointer,
     onHoverTargetChange,
     onHoverTokenChange,
-    onHoverPointerChange,
     onGmDragPreview,
   ]);
 

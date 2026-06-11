@@ -15,9 +15,15 @@ export function useTokenImages(tokens: BattleToken[]) {
   useEffect(() => {
     const map = imagesRef.current;
     let cancelled = false;
+    let bumpTimer: ReturnType<typeof setTimeout> | null = null;
 
     const bump = () => {
-      if (!cancelled) setImgTick((n) => n + 1);
+      if (cancelled) return;
+      if (bumpTimer) return;
+      bumpTimer = setTimeout(() => {
+        bumpTimer = null;
+        if (!cancelled) setImgTick((n) => n + 1);
+      }, 48);
     };
 
     for (const token of tokens) {
@@ -44,6 +50,7 @@ export function useTokenImages(tokens: BattleToken[]) {
 
     return () => {
       cancelled = true;
+      if (bumpTimer) clearTimeout(bumpTimer);
     };
   }, [imageKey, tokens]);
 

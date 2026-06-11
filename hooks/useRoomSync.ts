@@ -1,6 +1,13 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import {
+  startTransition,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import type { IdentityPatch } from "@/lib/character/identity";
 import type { LevelUpChoices } from "@/lib/character/level-up";
 import type { CharacterSheet } from "@/lib/character/types";
@@ -27,6 +34,8 @@ type SyncOpts = {
 };
 
 const PRESENCE_HEARTBEAT_MS = 15_000;
+/** Agrupa rajadas de revision SSE em um único fetch — evita sensação de “sistema pesado”. */
+const REFRESH_DEBOUNCE_MS = 220;
 
 function roomQuery(roomId: string, inviteCode?: string | null): string {
   const q = new URLSearchParams();
@@ -53,16 +62,28 @@ export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
     if (data.revision < revisionRef.current) return;
     revisionRef.current = data.revision;
     const tokens = Array.isArray(data.scene?.tokens) ? data.scene.tokens : [];
-    setSnapshot({
-      ...data,
-      scene: { ...data.scene, tokens },
-      combat: normalizeCombatTrack(data.combat, tokens),
+    startTransition(() => {
+      setSnapshot({
+        ...data,
+        scene: { ...data.scene, tokens },
+        combat: normalizeCombatTrack(data.combat, tokens),
+      });
+      setSyncError(null);
+      setLoading(false);
     });
-    setSyncError(null);
-    setLoading(false);
   }, []);
 
+  const refreshImplRef = useRef<(() => Promise<void>) | null>(null);
+  const refreshDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const refreshInFlightRef = useRef(false);
+  const refreshQueuedRef = useRef(false);
+
   const refresh = useCallback(async () => {
+    if (refreshInFlightRef.current) {
+      refreshQueuedRef.current = true;
+      return;
+    }
+    refreshInFlightRef.current = true;
     const ac = new AbortController();
     const timer = setTimeout(() => ac.abort(), FETCH_TIMEOUT_MS);
     try {
@@ -90,8 +111,23 @@ export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
     } finally {
       clearTimeout(timer);
       setLoading(false);
+      refreshInFlightRef.current = false;
+      if (refreshQueuedRef.current) {
+        refreshQueuedRef.current = false;
+        void refreshImplRef.current?.();
+      }
     }
   }, [roomId, query, applySnapshot]);
+
+  refreshImplRef.current = refresh;
+
+  const scheduleRefresh = useCallback(() => {
+    if (refreshDebounceRef.current) return;
+    refreshDebounceRef.current = setTimeout(() => {
+      refreshDebounceRef.current = null;
+      void refresh();
+    }, REFRESH_DEBOUNCE_MS);
+  }, [refresh]);
 
   useEffect(() => {
     setLoading(true);
@@ -135,12 +171,12 @@ export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
           };
           if (data.type === "revision" && typeof data.revision === "number") {
             if (data.revision > revisionRef.current) {
-              void refresh();
+              scheduleRefresh();
             }
           }
           if (data.type === "connected" && typeof data.revision === "number") {
             if (data.revision > revisionRef.current) {
-              void refresh();
+              scheduleRefresh();
             }
           }
           if (
@@ -170,8 +206,12 @@ export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
     return () => {
       es?.close();
       if (pollId) clearInterval(pollId);
+      if (refreshDebounceRef.current) {
+        clearTimeout(refreshDebounceRef.current);
+        refreshDebounceRef.current = null;
+      }
     };
-  }, [roomId, inviteCode, refresh, pollIntervalMs, loading]);
+  }, [roomId, inviteCode, refresh, scheduleRefresh, pollIntervalMs, loading]);
 
   useEffect(() => {
     if (!presenceUser?.id) return;

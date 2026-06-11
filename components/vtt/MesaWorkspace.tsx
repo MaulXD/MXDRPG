@@ -211,7 +211,7 @@ export function MesaWorkspace({
       }
     }
     if (freshIds.length) onCombatChatReveal(freshIds, "roll");
-  }, [snapshot?.chat, onCombatChatReveal]);
+  }, [snapshot?.revision, onCombatChatReveal]);
 
   const turnRoom = useMemo(
     () => ({
