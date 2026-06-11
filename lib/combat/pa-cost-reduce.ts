@@ -8,7 +8,7 @@ import {
 } from "@/lib/character/pa-modifiers";
 import type { CharacterSheet } from "@/lib/character/types";
 import { extraAttackCount } from "@/lib/character/rules";
-import { readPaDiscountUsed } from "@/lib/combat/pa-turn-discount";
+import { isPaDiscountAvailable, readPaDiscountUsed } from "@/lib/combat/pa-turn-discount";
 import type { CombatActionOption } from "@/lib/combat/types";
 import type { BattleToken } from "@/lib/vtt/types";
 
@@ -142,6 +142,20 @@ export function weaponAttackCount(actor: CharacterSheet, action: CombatActionOpt
   return extraAttackCount(actor.identity.classe, actor.identity.nivel);
 }
 
+/** Índice do golpe para desconto −PA: 1º com desconto disponível, senão preço integral (2º golpe lógico). */
+export function weaponAttackPaIndex(
+  token: BattleToken | null | undefined,
+  action: CombatActionOption,
+  explicitIndex?: number,
+  actor?: CharacterSheet | null
+): number {
+  if (explicitIndex != null) return explicitIndex;
+  if (action.kind !== "weapon" && action.kind !== "unarmed") return 1;
+  if (actor && weaponAttackCount(actor, action) > 1) return 1;
+  if (!token) return 1;
+  return isPaDiscountAvailable(token, "weapon") ? 1 : 2;
+}
+
 export function effectivePaCost(
   actor: CharacterSheet | null,
   action: CombatActionOption,
@@ -173,7 +187,12 @@ export function totalAttackPaCost(
   }
   const count = weaponAttackCount(actor, action);
   if (count <= 1) {
-    return effectivePaCost(actor, action, mergePaCostContext(token, { attackIndex: 1, attackCount: 1 }));
+    const attackIndex = weaponAttackPaIndex(token, action, undefined, actor);
+    return effectivePaCost(
+      actor,
+      action,
+      mergePaCostContext(token, { attackIndex, attackCount: 1 })
+    );
   }
 
   let sum = 0;

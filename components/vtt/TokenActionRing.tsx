@@ -397,7 +397,17 @@ export function TokenActionRing({
       }));
     }
 
-    const weapon = weapons[0];
+    const weapon = actor
+      ? (() => {
+          try {
+            const resolved = resolveCombatAction(actor);
+            if (resolved.kind === "weapon" || resolved.kind === "unarmed") return resolved;
+          } catch {
+            /* loadout inválido — cai no primeiro arma */
+          }
+          return weapons[0] ?? null;
+        })()
+      : (weapons[0] ?? null);
     const spell = spells[0];
     const ability = abilities[0];
 

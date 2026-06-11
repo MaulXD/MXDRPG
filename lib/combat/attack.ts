@@ -42,8 +42,8 @@ import {
   paCostContextFromToken,
   totalAttackPaCost,
   weaponAttackCount,
+  weaponAttackPaIndex,
 } from "@/lib/combat/pa-economy";
-import { isPaDiscountAvailable } from "@/lib/combat/pa-turn-discount";
 import { checkCanSpendPa } from "@/lib/combat/pa-turn";
 import { canActOnCombatTurn, TURN_WAIT_MSG } from "@/lib/combat/turn-guard";
 import { parseRecharge, rechargeBlockReason } from "@/lib/combat/recharge";
@@ -600,7 +600,7 @@ export function paNeedForCombatAction(
   if (action.kind === "weapon") {
     const count = weaponAttackCount(actor, action);
     if (count > 1) return totalAttackPaCost(actor, action, attacker);
-    const attackIndex = isPaDiscountAvailable(attacker, "weapon") ? 1 : 2;
+    const attackIndex = weaponAttackPaIndex(attacker, action, undefined, actor);
     return effectivePaCost(
       actor,
       action,
@@ -854,7 +854,7 @@ export function resolveAttack(
       actor,
       action,
       mergePaCostContext(attackerToken, {
-        attackIndex: opts?.attackIndex ?? 1,
+        attackIndex: weaponAttackPaIndex(attackerToken, action, opts?.attackIndex, actor),
         attackCount: opts?.attackCount ?? 1,
       })
     );
@@ -949,7 +949,7 @@ export function resolveAttack(
         actor,
         action,
         mergePaCostContext(attackerToken, {
-          attackIndex: opts?.attackIndex ?? 1,
+          attackIndex: weaponAttackPaIndex(attackerToken, action, opts?.attackIndex, actor),
           attackCount: opts?.attackCount ?? 1,
         })
       );
