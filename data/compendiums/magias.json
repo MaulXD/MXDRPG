@@ -699,7 +699,11 @@
         "nivel": 2,
         "escola": "Ilusão",
         "tempo": "1 ação",
-        "alcance": "6 hex"
+        "alcance": "6 hex",
+        "area": {
+          "shape": "cube",
+          "radiusHex": 1
+        }
       },
       "bookRef": "_parte_x_magias_v4_revisada.md"
     }
