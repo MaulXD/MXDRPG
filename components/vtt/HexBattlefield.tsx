@@ -2576,9 +2576,6 @@ export function HexBattlefield({
         className={`vtt-canvas-wrap${attackTargetCursor ? " vtt-canvas-wrap--attack-target" : ""}${spawnDragActive ? " vtt-canvas-wrap--spawn-drop" : ""}${battlefieldView.isPanning ? " vtt-canvas-wrap--panning" : ""}`}
         onContextMenu={(e) => e.preventDefault()}
         onContextMenuCapture={(e) => e.preventDefault()}
-        onWheel={(e) => {
-          battlefieldView.onWheel(e);
-        }}
         {...spawnDropHandlers}
       >
         <VttHelpButton />
