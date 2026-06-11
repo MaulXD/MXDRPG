@@ -27,14 +27,23 @@ type TargetRow = {
 
 type Props = {
   roomId: string;
+  inviteCode?: string | null;
   tokens: BattleToken[];
   roomActors: Record<string, RoomActor>;
   onUpdated: (snapshot: RoomSnapshot) => void;
+  onRefresh?: () => void;
 };
 
 const SAVE_ATTRS = Object.keys(ATTRIBUTE_LABELS) as AttributeKey[];
 
-export function GmSavingThrowPanel({ roomId, tokens, roomActors, onUpdated }: Props) {
+export function GmSavingThrowPanel({
+  roomId,
+  inviteCode = null,
+  tokens,
+  roomActors,
+  onUpdated,
+  onRefresh,
+}: Props) {
   const [attribute, setAttribute] = useState<AttributeKey>("constituicao");
   const [mode, setMode] = useState<TargetMode>("on-map");
   const [dc, setDc] = useState("");
@@ -48,16 +57,18 @@ export function GmSavingThrowPanel({ roomId, tokens, roomActors, onUpdated }: Pr
   );
 
   const rows = useMemo((): TargetRow[] => {
-    const players = Object.values(roomActors)
-      .filter(isPlayerRoomActor)
-      .sort((a, b) => a.name.localeCompare(b.name, "pt"));
+    const players = Object.entries(roomActors)
+      .map(([key, actor]) => ({ key, actor }))
+      .filter(({ actor }) => isPlayerRoomActor(actor))
+      .sort((a, b) => a.actor.name.localeCompare(b.actor.name, "pt"));
 
-    return players.map((actor) => {
-      const token = playerTokens.find((t) => t.actorId === actor.id);
+    return players.map(({ key, actor }) => {
+      const actorId = actor.id || key;
+      const token = playerTokens.find((t) => t.actorId === actorId || t.actorId === key);
       const saves = buildSheetSavingThrows(actor);
       const save = saves.find((s) => s.attr === attribute) ?? saves[0];
       return {
-        actorId: actor.id,
+        actorId,
         tokenId: token?.id,
         name: actor.name,
         onMap: Boolean(token),
@@ -110,12 +121,17 @@ export function GmSavingThrowPanel({ roomId, tokens, roomActors, onUpdated }: Pr
     setBusy(true);
     setMsg(null);
     try {
-      const snapshot = await gmSavingThrows(roomId, {
-        attribute,
-        targets,
-        dc: dcNum,
-      });
+      const snapshot = await gmSavingThrows(
+        roomId,
+        {
+          attribute,
+          targets,
+          dc: dcNum,
+        },
+        inviteCode
+      );
       onUpdated(snapshot);
+      onRefresh?.();
       setMsg(
         `Salvaguarda de ${ATTRIBUTE_LABELS[attribute]} rolada para ${targets.length} personagem(ns).`
       );
@@ -137,6 +153,8 @@ export function GmSavingThrowPanel({ roomId, tokens, roomActors, onUpdated }: Pr
   const previewMod = rows[0]
     ? buildSheetSavingThrows(roomActors[rows[0].actorId]).find((s) => s.attr === attribute)
     : null;
+
+  const targetCount = mode === "pick" ? picked.size : modeSelection.length;
 
   return (
     <section className="vtt-panel vtt-gm-saves">
@@ -238,7 +256,12 @@ export function GmSavingThrowPanel({ roomId, tokens, roomActors, onUpdated }: Pr
         </ul>
       </fieldset>
 
-      <button type="button" className="btn vtt-gm-saves__roll" disabled={busy} onClick={() => void roll()}>
+      <button
+        type="button"
+        className="btn vtt-gm-saves__roll"
+        disabled={busy || targetCount === 0}
+        onClick={() => void roll()}
+      >
         {busy ? "Rolando…" : `Rolar salv. ${ATTRIBUTE_LABELS[attribute]}`}
       </button>
 

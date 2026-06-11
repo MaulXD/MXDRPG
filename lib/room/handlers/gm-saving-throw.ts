@@ -4,10 +4,11 @@ import { formatD20Detail, rollD20 } from "@/lib/combat/d20";
 import { formatRollModeWithSources, saveRollModeDetail } from "@/lib/combat/conditions";
 import { canManageRoom } from "@/lib/auth/room-access";
 import type { SessionUser } from "@/lib/auth/types";
-import { isPlayerRoomActor } from "@/lib/vtt/player-tokens";
+import { isPlayerBattleToken, isPlayerRoomActor } from "@/lib/vtt/player-tokens";
+import type { BattleToken } from "@/lib/vtt/types";
 import { appendRoomChatMessage } from "./chat";
 import { getRoom, persistRoom, toSnapshot } from "../internal/registry";
-import type { RoomSnapshot } from "../types";
+import type { RoomActor, RoomSnapshot, RoomState } from "../types";
 
 export type GmSavingThrowTarget = {
   actorId: string;
@@ -34,6 +35,29 @@ function assertGm(
 
 function formatMod(mod: number): string {
   return mod >= 0 ? `+${mod}` : `${mod}`;
+}
+
+function resolveRoomActor(room: RoomState, actorId: string): RoomActor | null {
+  const key = actorId.trim();
+  if (!key) return null;
+  const direct = room.actors[key];
+  if (direct && isPlayerRoomActor(direct)) return direct;
+  return (
+    Object.values(room.actors).find((a) => a.id === key && isPlayerRoomActor(a)) ?? null
+  );
+}
+
+function findPlayerToken(
+  tokens: BattleToken[],
+  actors: Record<string, RoomActor>,
+  actorId: string,
+  tokenId?: string
+): BattleToken | null {
+  const playerTokens = tokens.filter((t) => isPlayerBattleToken(t, actors));
+  if (tokenId) {
+    return playerTokens.find((t) => t.id === tokenId) ?? null;
+  }
+  return playerTokens.find((t) => t.actorId === actorId) ?? null;
 }
 
 function formatGmSaveChatDetail(opts: {
@@ -98,16 +122,13 @@ export async function executeGmSavingThrows(
 
   for (const target of targets) {
     const actorId = target.actorId.trim();
-    const actor = room.actors[actorId];
-    if (!actor || !isPlayerRoomActor(actor)) continue;
+    const actor = resolveRoomActor(room, actorId);
+    if (!actor) continue;
 
     const save = buildSheetSavingThrows(actor).find((s) => s.attr === attribute);
     if (!save) continue;
 
-    const token =
-      (target.tokenId
-        ? tokens.find((t) => t.id === target.tokenId)
-        : tokens.find((t) => t.actorId === actorId)) ?? null;
+    const token = findPlayerToken(tokens, room.actors, actor.id, target.tokenId);
 
     const rollDetail = token ? saveRollModeDetail(token) : { mode: "normal" as const, sources: [] };
     const d20 = rollD20(rollDetail.mode);

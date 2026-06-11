@@ -14,6 +14,7 @@ import {
 import {
   IconAbility,
   IconChevronLeft,
+  IconFlask,
   IconHeart,
   IconHourglass,
   IconMenu,
@@ -23,6 +24,13 @@ import {
   IconSpell,
   IconSword,
 } from "@/components/ui/EldarinIcons";
+import {
+  consumablePaCost,
+  listActorConsumables,
+  type ActorConsumable,
+} from "@/lib/combat/consumables";
+import { consumeRoomItem, patchRoomActor } from "@/hooks/useRoomSync";
+import type { RoomSnapshot } from "@/lib/room/types";
 import type { BattleToken } from "@/lib/vtt/types";
 import type { RoomActor } from "@/lib/room/types";
 import type { CombatTrack } from "@/lib/room/combat";
@@ -41,15 +49,23 @@ import { totalChannelPaCost } from "@/lib/combat/spell-channel";
 import type { TokenActionMode } from "@/lib/vtt/action-mode";
 import { movementPaCost, movementPaBandsForToken } from "@/lib/vtt/movement-pa";
 import { useCombatTurn } from "@/hooks/useCombatActions";
-import { patchRoomActor } from "@/hooks/useRoomSync";
 import { formatCombatActionTooltip } from "@/lib/combat/action-tooltip";
 import { collectPlayerActorIds, primaryTokenRingColor } from "@/lib/vtt/token-colors";
 import { CombatActionDetail } from "@/components/vtt/CombatActionDetail";
 import { computeCursorDetailPlacement } from "@/lib/vtt/cursor-detail-placement";
 import "./token-action-ring.css";
 
-type SlotTone = "walk" | "run" | "attack" | "spell" | "ability" | "sheet" | "bestiary" | "hp";
-type RingView = "main" | "spell" | "ability";
+type SlotTone =
+  | "walk"
+  | "run"
+  | "attack"
+  | "spell"
+  | "ability"
+  | "consumable"
+  | "sheet"
+  | "bestiary"
+  | "hp";
+type RingView = "main" | "spell" | "ability" | "consumable";
 
 type DisplaySlot = {
   id: string;
@@ -63,6 +79,7 @@ type DisplaySlot = {
   rechargeHint?: string;
   action?: CombatActionOption | null;
   detailHint?: string;
+  consumable?: ActorConsumable | null;
   onClick: () => void;
 };
 
@@ -77,7 +94,7 @@ type Props = {
   roomId: string;
   onPickMode: (mode: TokenActionMode, action: CombatActionOption | null) => void;
   onClose: () => void;
-  onRoomSync: () => void;
+  onRoomSync: (snapshot?: RoomSnapshot) => void;
   showTokenSheet?: boolean;
   onOpenTokenSheet?: () => void;
   showPlayerBestiary?: boolean;
@@ -183,8 +200,13 @@ export function TokenActionRing({
     () => listTokenCombatActions(token, actor, "ability"),
     [token, actor]
   );
+  const consumables = useMemo(
+    () => (actor ? listActorConsumables(actor) : []),
+    [actor]
+  );
 
   const turnBlocked = turn.isTurnBlockedForToken(token);
+  const consumablePa = consumablePaCost();
 
   const movePa = useMemo(() => nextHexPaLabel(token), [token]);
 
@@ -277,6 +299,32 @@ export function TokenActionRing({
     [turnBlocked, weapons, spells, abilities, actor, onPickMode, beginClose]
   );
 
+  const openConsumableSubmenu = useCallback(() => {
+    if (consumables.length === 0) return;
+    setRingView("consumable");
+  }, [consumables.length]);
+
+  const [consumeBusy, setConsumeBusy] = useState(false);
+
+  const drinkConsumable = useCallback(
+    async (item: ActorConsumable) => {
+      if (turnBlocked || consumeBusy) return;
+      setConsumeBusy(true);
+      try {
+        const snap = await consumeRoomItem(roomId, token.id, item.instanceId, {
+          bypassTurn: canBypassTurn,
+        });
+        onRoomSync(snap);
+        beginClose();
+      } catch {
+        onRoomSync();
+      } finally {
+        setConsumeBusy(false);
+      }
+    },
+    [turnBlocked, consumeBusy, roomId, token.id, canBypassTurn, onRoomSync, beginClose]
+  );
+
   const combatRound = combat?.round ?? 1;
 
   const slotForAction = useCallback(
@@ -322,6 +370,24 @@ export function TokenActionRing({
       return abilities.map((action) =>
         slotForAction(action, "ability", <IconAbility size={16} />, () => pickCombatAction("ability", action))
       );
+    }
+
+    if (ringView === "consumable") {
+      return consumables.map((item) => ({
+        id: `poc-${item.instanceId}`,
+        tone: "consumable" as const,
+        label: truncateRingLabel(item.name, 14),
+        glyph: <IconFlask size={16} />,
+        paLabel: `${consumablePa} PA`,
+        longLabel: true,
+        disabled: turnBlocked || consumeBusy,
+        title: `${item.name} ×${item.quantity}\n${item.description}`,
+        detailHint: item.healFormula
+          ? `Cura ${item.healFormula} · ${item.quantity} no inventário`
+          : `${item.quantity} no inventário`,
+        consumable: item,
+        onClick: () => void drinkConsumable(item),
+      }));
     }
 
     const weapon = weapons[0];
@@ -402,6 +468,41 @@ export function TokenActionRing({
             : undefined,
         onClick: () => pickMain("ability"),
       },
+      {
+        id: "consumable",
+        tone: "consumable",
+        label: "Consumível",
+        glyph: <IconFlask size={16} />,
+        paLabel:
+          consumables.length > 1
+            ? `${consumables.length}×`
+            : consumables.length === 1
+              ? `${consumablePa} PA`
+              : "—",
+        disabled: turnBlocked || consumables.length === 0,
+        title:
+          consumables.length === 0
+            ? "Sem poções no inventário"
+            : consumables.length > 1
+              ? `${consumables.length} poções — abra o submenu`
+              : `${consumables[0]?.name} ×${consumables[0]?.quantity}`,
+        detailHint:
+          consumables.length === 0
+            ? "Adicione poções (POC) ao inventário da ficha."
+            : consumables.length > 1
+              ? "Poções do inventário — clique para escolher."
+              : consumables[0]?.healFormula
+                ? `Cura ${consumables[0].healFormula}`
+                : consumables[0]?.description,
+        consumable: consumables.length === 1 ? consumables[0] : null,
+        onClick: () => {
+          if (consumables.length === 1) {
+            void drinkConsumable(consumables[0]!);
+            return;
+          }
+          openConsumableSubmenu();
+        },
+      },
     ];
 
     if (showTokenSheet && onOpenTokenSheet) {
@@ -456,6 +557,11 @@ export function TokenActionRing({
     ringView,
     spells,
     abilities,
+    consumables,
+    consumablePa,
+    consumeBusy,
+    drinkConsumable,
+    openConsumableSubmenu,
     weapons,
     actor,
     movePa,
@@ -560,7 +666,9 @@ export function TokenActionRing({
             ? `Ações de ${token.name}`
             : ringView === "spell"
               ? `Magias de ${token.name}`
-              : `Habilidades de ${token.name}`
+              : ringView === "ability"
+                ? `Habilidades de ${token.name}`
+                : `Consumíveis de ${token.name}`
         }
         onClick={(e) => e.stopPropagation()}
         onContextMenu={(e) => e.preventDefault()}
@@ -602,7 +710,11 @@ export function TokenActionRing({
               </span>
               <span className="token-action-ring__center-name">Voltar</span>
               <span className="token-action-ring__center-hint">
-                {ringView === "spell" ? "Magias" : "Habilidades"}
+                {ringView === "spell"
+                  ? "Magias"
+                  : ringView === "ability"
+                    ? "Habilidades"
+                    : "Consumíveis"}
               </span>
             </>
           )}
@@ -632,7 +744,7 @@ export function TokenActionRing({
               title={`${slot.label} · ${slot.paLabel}`}
               onClick={slot.onClick}
             >
-              {(slot.action || slot.detailHint) && !slot.disabled ? (
+              {(slot.action || slot.detailHint || slot.consumable) && !slot.disabled ? (
                 <button
                   type="button"
                   className={`token-action-ring__info${
@@ -716,6 +828,33 @@ export function TokenActionRing({
               actor={actor}
               className="combat-action-detail--ring"
             />
+          </div>
+        ) : activeDetailSlot.consumable ? (
+          <div
+            className={`token-action-ring__detail token-action-ring__detail--hint token-action-ring__detail--cursor${
+              detailPlacement.flipLeft ? " token-action-ring__detail--cursor-left" : ""
+            }`}
+            style={
+              {
+                left: detailPlacement.left,
+                top: detailPlacement.top,
+              } as CSSProperties
+            }
+            onClick={(e) => e.stopPropagation()}
+          >
+            <p className="token-action-ring__detail-hint">
+              <strong>{activeDetailSlot.consumable.name}</strong>
+              <br />
+              ×{activeDetailSlot.consumable.quantity} · {consumablePa} PA
+              {activeDetailSlot.consumable.healFormula ? (
+                <>
+                  <br />
+                  Cura {activeDetailSlot.consumable.healFormula}
+                </>
+              ) : null}
+              <br />
+              {activeDetailSlot.consumable.description}
+            </p>
           </div>
         ) : activeDetailSlot.detailHint ? (
           <div
