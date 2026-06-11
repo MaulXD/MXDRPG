@@ -760,15 +760,6 @@ function MesaWorkspaceCombatFlow({
   applySnapshot: (snap: import("@/lib/room/types").RoomSnapshot) => void;
   refresh: () => void;
 }) {
-  useCombatTurnFlow({
-    roomId,
-    roomCtx: { roomId, ownerId: roomOwnerId, memberIds },
-    snapshot,
-    session,
-    canEndTurn,
-    combatAccessOpts,
-    onSnapshot: applySnapshot,
-    onRefresh: refresh,
-  });
+  useCombatTurnFlow({ snapshot });
   return null;
 }
