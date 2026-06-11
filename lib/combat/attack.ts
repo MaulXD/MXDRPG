@@ -20,6 +20,7 @@ import { isMonsterToken } from "@/lib/room/settings";
 import type { BattleToken } from "@/lib/vtt/types";
 import { tokenAxialDistance } from "@/lib/vtt/creature-size";
 import { axialDistance } from "@/lib/vtt/hex-math";
+import { resistedDamageAmount } from "@/lib/combat/damage-resist";
 import { applyDamageWithTempHp } from "@/lib/combat/hp-temp";
 import { abilityFromEntry } from "@/lib/combat/compendium-actions";
 import { attackRollMode, canTokenAct } from "@/lib/combat/conditions";
@@ -754,7 +755,8 @@ function resolveMonsterAttack(
         total: damage.total + sneak.total,
       };
     }
-    const damaged = applyDamageWithTempHp(hpBefore, tempBefore, damage.total);
+    const dmgTotal = resistedDamageAmount(damage.total, defenderToken, action.damageType);
+    const damaged = applyDamageWithTempHp(hpBefore, tempBefore, dmgTotal);
     hpAfter = damaged.hp;
     tempAfter = damaged.tempHp;
   }
@@ -919,7 +921,8 @@ export function resolveAttack(
       damage.rolls.push(...extra.rolls);
       damage.total += extra.total;
     }
-    const damaged = applyDamageWithTempHp(hpBefore, tempBefore, damage.total);
+    const dmgTotal = resistedDamageAmount(damage.total, defenderToken, resolved.damageType);
+    const damaged = applyDamageWithTempHp(hpBefore, tempBefore, dmgTotal);
     hpAfter = damaged.hp;
     tempAfter = damaged.tempHp;
   }

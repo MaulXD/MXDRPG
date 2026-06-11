@@ -151,7 +151,15 @@ export function attackRollMode(
   return attackRollModeDetail(attacker, defender, allTokens, opts).mode;
 }
 
-export function saveRollModeDetail(defender: BattleToken): AttackRollModeDetail {
+export type SaveRollContext = {
+  /** Salvaguarda contra veneno/toxina (POC-05 só aplica neste caso). */
+  poison?: boolean;
+};
+
+export function saveRollModeDetail(
+  defender: BattleToken,
+  ctx?: SaveRollContext
+): AttackRollModeDetail {
   const modes: RollMode[] = [];
   const sources: string[] = [];
   for (const c of tokenConditions(defender)) {
@@ -165,15 +173,15 @@ export function saveRollModeDetail(defender: BattleToken): AttackRollModeDetail 
     modes.push("disadvantage");
     sources.push("enfraquecido");
   }
-  if (defender.saveAdvantagePoison) {
+  if (defender.saveAdvantagePoison && ctx?.poison) {
     modes.push("advantage");
     sources.push("antídoto de masmorra");
   }
   return { mode: combineRollModes(...modes), sources };
 }
 
-export function saveRollMode(defender: BattleToken): RollMode {
-  return saveRollModeDetail(defender).mode;
+export function saveRollMode(defender: BattleToken, ctx?: SaveRollContext): RollMode {
+  return saveRollModeDetail(defender, ctx).mode;
 }
 
 export function formatRollModeWithSources(mode: RollMode, sources: string[]): string {

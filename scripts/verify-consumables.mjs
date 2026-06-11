@@ -28,14 +28,20 @@ for (const id of uniquePoc) {
   assert.ok(catalogIds.includes(id), `efeito órfão sem entrada no JSON: ${id}`);
 }
 
-const healIds = ["POC-01", "POC-02", "POC-03", "POC-23"];
+const healIds = ["POC-01", "POC-02", "POC-03"];
 for (const id of healIds) {
   assert.match(effectsSrc, new RegExp(`"${id}"[^}]+kind: "heal"`));
 }
+
+assert.match(effectsSrc, /"POC-23"[^}]+kind: "group_heal"/);
+assert.match(effectsSrc, /"POC-23"[^}]+aoeHex/);
 
 assert.match(effectsSrc, /"POC-04"[^}]+clear_condition/);
 assert.match(effectsSrc, /"POC-20"[^}]+defesa_bonus/);
 assert.match(effectsSrc, /"POC-17"[^}]+weapon_coating/);
 assert.match(effectsSrc, /"POC-05"[^}]+save_advantage_poison/);
+assert.match(effectsSrc, /"POC-10"[^}]+damage_resist/);
+assert.match(effectsSrc, /"POC-11"[^}]+damage_resist/);
+assert.match(effectsSrc, /"POC-12"[^}]+damage_resist/);
 
 console.log("verify-consumables OK —", catalogIds.length, "itens com efeito mapeado");

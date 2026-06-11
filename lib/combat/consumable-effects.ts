@@ -6,10 +6,12 @@ import type { BattleToken } from "@/lib/vtt/types";
 
 export type ConsumableEffectKind =
   | "heal"
+  | "group_heal"
   | "clear_condition"
   | "defesa_bonus"
   | "weapon_coating"
   | "save_advantage_poison"
+  | "damage_resist"
   | "buff_chip";
 
 export type ConsumableEffectDef = {
@@ -19,9 +21,16 @@ export type ConsumableEffectDef = {
   bonus?: number;
   rounds?: number;
   turns?: number;
+  /** Alcance em hex para cura em área (POC-23: 6 m ≈ 4 hex). */
+  aoeHex?: number;
+  /** Tag de tipo de dano para resistência (POC-10 … POC-12). */
+  resistTag?: string;
   label?: string;
   hint: string;
 };
+
+/** 6 m no grid tático Eldarin (1 hex = 1,5 m). */
+export const GROUP_HEAL_AOE_HEX = 4;
 
 /** Efeitos por catalogId (POC-01 … POC-24). Durações longas viram rodadas de combate. */
 export const CONSUMABLE_CATALOG_EFFECTS: Record<string, ConsumableEffectDef> = {
@@ -60,22 +69,25 @@ export const CONSUMABLE_CATALOG_EFFECTS: Record<string, ConsumableEffectDef> = {
     hint: "Vantagem em Percepção (encontro)",
   },
   "POC-10": {
-    kind: "buff_chip",
+    kind: "damage_resist",
+    resistTag: "fogo",
     label: "Resist. fogo",
     rounds: 10,
-    hint: "Resistência a fogo",
+    hint: "Resistência a fogo (metade do dano)",
   },
   "POC-11": {
-    kind: "buff_chip",
+    kind: "damage_resist",
+    resistTag: "gelo",
     label: "Resist. gelo",
     rounds: 10,
-    hint: "Resistência a gelo",
+    hint: "Resistência a gelo (metade do dano)",
   },
   "POC-12": {
-    kind: "buff_chip",
+    kind: "damage_resist",
+    resistTag: "ácido",
     label: "Resist. ácido",
     rounds: 10,
-    hint: "Resistência a ácido",
+    hint: "Resistência a ácido (metade do dano)",
   },
   "POC-13": {
     kind: "buff_chip",
@@ -140,9 +152,10 @@ export const CONSUMABLE_CATALOG_EFFECTS: Record<string, ConsumableEffectDef> = {
     hint: "Visão no escuro 18 m",
   },
   "POC-23": {
-    kind: "heal",
+    kind: "group_heal",
     formula: "1d8",
-    hint: "Cura 1d8 HP (em combate: só em si)",
+    aoeHex: GROUP_HEAL_AOE_HEX,
+    hint: "Cura 1d8 HP em aliados num raio de 6 m",
   },
   "POC-24": {
     kind: "buff_chip",
@@ -160,7 +173,8 @@ export function consumableEffectDef(catalogId: string): ConsumableEffectDef | nu
 
 export function consumableHealFormula(catalogId: string): string | undefined {
   const def = consumableEffectDef(catalogId);
-  return def?.kind === "heal" ? def.formula : undefined;
+  if (!def?.formula) return undefined;
+  return def.kind === "heal" || def.kind === "group_heal" ? def.formula : undefined;
 }
 
 function timedChip(
@@ -241,6 +255,26 @@ export function applyConsumableBuffs(
           label: def.label ?? "Antídoto de masmorra",
           roundsLeft: def.rounds ?? 10,
           clearFields: ["saveAdvantagePoison"],
+        },
+        ctx
+      );
+      notes.push(def.hint);
+      break;
+    }
+    case "damage_resist": {
+      const tag = def.resistTag ?? "fogo";
+      const existing = next.damageResist ?? [];
+      next = {
+        ...next,
+        damageResist: existing.includes(tag) ? existing : [...existing, tag],
+      };
+      next = timedChip(
+        next,
+        {
+          kind: "buff",
+          label: def.label ?? `Resist. ${tag}`,
+          roundsLeft: def.rounds ?? 10,
+          clearFields: ["damageResist"],
         },
         ctx
       );
