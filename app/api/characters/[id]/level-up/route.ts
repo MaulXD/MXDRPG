@@ -55,5 +55,8 @@ export async function POST(req: Request, { params }: Params) {
   const leveled = normalizeCharacter(applyLevelUp(existing, choices));
   const saved = await saveCharacter(leveled);
 
+  const { pushCharacterSheetToLiveRooms } = await import("@/lib/room/push-character-to-rooms");
+  await pushCharacterSheetToLiveRooms(saved);
+
   return NextResponse.json({ ok: true, character: saved });
 }
