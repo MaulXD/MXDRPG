@@ -1551,6 +1551,28 @@
   color: #8b3030;
 }
 
+.sheet-inventory-pending {
+  margin: 0 0 0.65rem;
+  padding: 0.5rem 0.65rem;
+  border-radius: 0.35rem;
+  border: 1px solid rgba(201, 169, 98, 0.35);
+  background: rgba(201, 169, 98, 0.08);
+}
+
+.sheet-inventory-pending__title {
+  margin: 0 0 0.35rem;
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: var(--text-strong);
+}
+
+.sheet-inventory-pending__list {
+  margin: 0;
+  padding-left: 1.1rem;
+  font-size: 0.76rem;
+  color: var(--text-muted);
+}
+
 .loot-panel {
   display: flex;
   flex-direction: column;
