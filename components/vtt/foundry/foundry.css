@@ -1612,6 +1612,12 @@
   color: var(--text-strong);
 }
 
+.mesa-edit-requests-bell__bulk {
+  margin-bottom: 0.55rem;
+  display: flex;
+  justify-content: flex-end;
+}
+
 .mesa-edit-requests-bell__list {
   list-style: none;
   margin: 0;

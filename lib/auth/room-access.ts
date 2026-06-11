@@ -4,6 +4,7 @@ import {
 } from "@/lib/character/edit-access";
 import {
   characterBelongsToAdventure,
+  isAdventureBoundCharacter,
   resolveAdventureId,
 } from "@/lib/character/adventure-bind";
 import type { CharacterSheet } from "@/lib/character/types";
@@ -245,6 +246,22 @@ export function canPlaceRoomActorOnBoard(
   const authActor = actorForRoomAuth(room, actor);
   if (!characterBelongsToAdventure(authActor, adventureId)) return false;
   return canManageRoom(room, user);
+}
+
+/** Adicionar itens ao inventário exige aprovação do mestre (dono em campanha, não-GM). */
+export function requiresInventoryGmApproval(
+  room: RoomAuthContext,
+  actor: Pick<CharacterSheet, "id" | "ownerId" | "adventureId" | "campaignRoomId">,
+  user: SessionUser | null | undefined
+): boolean {
+  if (!user || !canParticipateInRoom(room, user)) return false;
+  if (user.role === "admin") return false;
+  if (room.ownerId && isRoomOwner(room, user.id)) return false;
+  const adventureId = room.adventureId ?? room.roomId;
+  const authActor = actorForRoomAuth(room, actor);
+  if (authActor.ownerId !== user.id) return false;
+  if (!isAdventureBoundCharacter(authActor)) return false;
+  return characterBelongsToAdventure(authActor, adventureId);
 }
 
 /** Editar ficha na mesa (level-up, identidade, retrato) — alinhado a `canParticipateInRoom`. */
