@@ -238,6 +238,11 @@
   flex-shrink: 0;
 }
 
+.sheet-ddb-header__level-tip {
+  display: block;
+  flex-shrink: 0;
+}
+
 .sheet-ddb-header__level {
   width: 2.35rem;
   height: 2.35rem;
@@ -249,6 +254,13 @@
   font-family: var(--font-display, Georgia), serif;
   font-size: 1.15rem;
   font-weight: 700;
+  cursor: help;
+  outline: none;
+}
+
+.sheet-ddb-header__level:focus-visible {
+  outline: 2px solid rgba(240, 216, 120, 0.75);
+  outline-offset: 2px;
 }
 
 .sheet-ddb-header__xp-tip {
@@ -398,7 +410,9 @@
 .sheet-ddb-trait-tip,
 .sheet-ddb-hex-tip,
 .sheet-ddb-resource-tip,
-.sheet-ddb-skill-tip {
+.sheet-ddb-skill-tip,
+.sheet-ddb-culinary-tip,
+.sheet-ddb-header__level-tip {
   min-width: 0;
 }
 
@@ -410,9 +424,21 @@
 .sheet-ddb-save-tip .sheet-ddb-save,
 .sheet-ddb-trait-tip .sheet-ddb-trait,
 .sheet-ddb-hex-tip .sheet-ddb-hex,
-.sheet-ddb-resource-tip .sheet-ddb-resource {
+.sheet-ddb-resource-tip .sheet-ddb-resource,
+.sheet-ddb-culinary-tip .sheet-ddb-culinary__item {
   cursor: help;
   outline: none;
+}
+
+.sheet-ddb-attr:focus-visible,
+.sheet-ddb-save:focus-visible,
+.sheet-ddb-trait:focus-visible,
+.sheet-ddb-hex:focus-visible,
+.sheet-ddb-resource:focus-visible,
+.sheet-ddb-culinary__item:focus-visible,
+.sheet-ddb-header__xp:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--ddb-gold) 70%, #fff);
+  outline-offset: 2px;
 }
 
 .sheet-ddb-attr-tip .sheet-hover-tip__bubble,
@@ -991,6 +1017,11 @@
   padding: 0.4rem 0.5rem 0.5rem;
 }
 
+.sheet-ddb-culinary-tip {
+  display: block;
+  min-width: 0;
+}
+
 .sheet-ddb-culinary__item {
   display: flex;
   justify-content: space-between;
@@ -1002,6 +1033,13 @@
   border-radius: 5px;
   background: #fff;
   border: 1px solid #d8cfc0;
+  transition: border-color 0.12s, background 0.12s;
+}
+
+.sheet-ddb-culinary-tip:hover .sheet-ddb-culinary__item,
+.sheet-ddb-culinary__item:focus-visible {
+  border-color: color-mix(in srgb, var(--ddb-gold) 45%, var(--ddb-panel-border));
+  background: rgba(255, 255, 255, 0.92);
 }
 
 .sheet-ddb-culinary__item span {
@@ -1228,15 +1266,44 @@
   overflow: visible;
 }
 
+@media (max-width: 900px) {
+  .sheet-ddb-body {
+    grid-template-columns: 96px minmax(0, 1fr);
+  }
+
+  .sheet-ddb-col--skills {
+    grid-column: 1 / -1;
+    max-width: none;
+    width: 100%;
+  }
+
+  .sheet-ddb-panel--skills {
+    max-width: none;
+  }
+
+  .sheet-ddb-col--right {
+    grid-column: 1 / -1;
+  }
+}
+
 @media (max-width: 720px) {
+  .page-wrap--sheet-ddb {
+    padding-inline: 0.5rem;
+  }
+
   .sheet-ddb-body {
     grid-template-columns: 1fr;
+    padding-inline: 0.4rem;
   }
 
   .sheet-ddb-col--left {
     width: 100%;
-    max-width: 140px;
+    max-width: 168px;
     margin-inline: auto;
+  }
+
+  .sheet-ddb-col--skills {
+    grid-column: auto;
   }
 
   .sheet-ddb-col--right {
@@ -1255,6 +1322,47 @@
 
   .sheet-ddb-attrs {
     grid-template-columns: repeat(3, 1fr);
+    padding-inline: 0.45rem;
+  }
+
+  .sheet-ddb-header {
+    padding-inline: 0.65rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .sheet-ddb-header {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .sheet-ddb-header__meta {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .sheet-ddb-attrs {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .sheet-ddb-trait-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .sheet-ddb-trait__value {
+    white-space: normal;
+    overflow: visible;
+    text-overflow: unset;
+    line-height: 1.35;
+  }
+
+  .sheet-ddb-culinary {
+    grid-template-columns: 1fr;
+  }
+
+  .sheet-ddb-skill__name {
+    white-space: normal;
+    line-height: 1.2;
   }
 }
 

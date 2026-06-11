@@ -55,10 +55,20 @@ export function SheetDdbSkillsPanel({ actor, roomId, onRoll }: Props) {
       <ul className="sheet-ddb-skill-list">
         {skills.map((skill) => {
           const tip = skillQuickActionTip(skill, actor.identity.nivel);
+          const tipInRoom = roomId
+            ? tip
+            : {
+                ...tip,
+                lines: [
+                  ...tip.lines,
+                  "",
+                  "Rolagem no chat disponível dentro de uma mesa ativa.",
+                ],
+              };
           const value = skill.passive != null ? skill.passive : skill.display;
           return (
             <li key={skill.def.id}>
-              <SheetHoverTip tip={tip} className="sheet-ddb-skill-tip">
+              <SheetHoverTip tip={tipInRoom} className="sheet-ddb-skill-tip">
                 <button
                   type="button"
                   className={`sheet-ddb-skill${skill.trained ? " is-trained" : ""}`}
