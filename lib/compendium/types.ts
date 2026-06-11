@@ -1,9 +1,15 @@
 import type { UserRole } from "@/lib/auth/types";
 
-export type ItemType = "arma" | "habilidade" | "magia" | "equipamento" | "efeito";
+export type ItemType = "arma" | "habilidade" | "magia" | "equipamento" | "consumivel" | "efeito";
 export type ActorType = "character" | "npc";
 
-export type CompendiumPackId = "armas" | "habilidades" | "magias" | "monstros" | "equipamentos";
+export type CompendiumPackId =
+  | "armas"
+  | "habilidades"
+  | "magias"
+  | "monstros"
+  | "equipamentos"
+  | "consumiveis";
 
 export type CompendiumEntryRaw = {
   id?: string;

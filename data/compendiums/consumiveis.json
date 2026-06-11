@@ -1,0 +1,362 @@
+[
+  {
+    "id": "consumiveis-poc-01",
+    "name": "Poção de Vida Menor",
+    "type": "consumivel",
+    "system": {
+      "description": "<p><strong>Poção de Vida Menor</strong> (POC-01). Restaura 2d4+2 HP ao beber (ação).</p>",
+      "catalogId": "POC-01",
+      "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
+      "consumable": true,
+      "gear": {
+        "peso": 1,
+        "equipado": false
+      }
+    }
+  },
+  {
+    "id": "consumiveis-poc-02",
+    "name": "Poção de Vida",
+    "type": "consumivel",
+    "system": {
+      "description": "<p><strong>Poção de Vida</strong> (POC-02). Restaura 4d4+4 HP.</p>",
+      "catalogId": "POC-02",
+      "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
+      "consumable": true,
+      "gear": {
+        "peso": 1,
+        "equipado": false
+      }
+    }
+  },
+  {
+    "id": "consumiveis-poc-03",
+    "name": "Poção de Vida Maior",
+    "type": "consumivel",
+    "system": {
+      "description": "<p><strong>Poção de Vida Maior</strong> (POC-03). Restaura 8d4+8 HP.</p>",
+      "catalogId": "POC-03",
+      "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
+      "consumable": true,
+      "gear": {
+        "peso": 1,
+        "equipado": false
+      }
+    }
+  },
+  {
+    "id": "consumiveis-poc-04",
+    "name": "Antídoto Universal",
+    "type": "consumivel",
+    "system": {
+      "description": "<p><strong>Antídoto Universal</strong> (POC-04). Neutraliza um veneno ativo.</p>",
+      "catalogId": "POC-04",
+      "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
+      "consumable": true,
+      "gear": {
+        "peso": 1,
+        "equipado": false
+      }
+    }
+  },
+  {
+    "id": "consumiveis-poc-05",
+    "name": "Antídoto de Masmorra",
+    "type": "consumivel",
+    "system": {
+      "description": "<p><strong>Antídoto de Masmorra</strong> (POC-05). Vantagem em saves contra veneno por 1 hora.</p>",
+      "catalogId": "POC-05",
+      "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
+      "consumable": true,
+      "gear": {
+        "peso": 1,
+        "equipado": false
+      }
+    }
+  },
+  {
+    "id": "consumiveis-poc-06",
+    "name": "Poção de Força de Touro",
+    "type": "consumivel",
+    "system": {
+      "description": "<p><strong>Poção de Força de Touro</strong> (POC-06). FOR +2 por 1 hora.</p>",
+      "catalogId": "POC-06",
+      "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
+      "consumable": true,
+      "gear": {
+        "peso": 1,
+        "equipado": false
+      }
+    }
+  },
+  {
+    "id": "consumiveis-poc-07",
+    "name": "Poção de Agilidade Felina",
+    "type": "consumivel",
+    "system": {
+      "description": "<p><strong>Poção de Agilidade Felina</strong> (POC-07). DES +2 por 1 hora.</p>",
+      "catalogId": "POC-07",
+      "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
+      "consumable": true,
+      "gear": {
+        "peso": 1,
+        "equipado": false
+      }
+    }
+  },
+  {
+    "id": "consumiveis-poc-08",
+    "name": "Poção de Vigor de Urso",
+    "type": "consumivel",
+    "system": {
+      "description": "<p><strong>Poção de Vigor de Urso</strong> (POC-08). CON +2 por 1 hora.</p>",
+      "catalogId": "POC-08",
+      "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
+      "consumable": true,
+      "gear": {
+        "peso": 1,
+        "equipado": false
+      }
+    }
+  },
+  {
+    "id": "consumiveis-poc-09",
+    "name": "Poção de Clarividência",
+    "type": "consumivel",
+    "system": {
+      "description": "<p><strong>Poção de Clarividência</strong> (POC-09). Vantagem em Percepção por 8 horas.</p>",
+      "catalogId": "POC-09",
+      "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
+      "consumable": true,
+      "gear": {
+        "peso": 1,
+        "equipado": false
+      }
+    }
+  },
+  {
+    "id": "consumiveis-poc-10",
+    "name": "Poção de Resistência ao Fogo",
+    "type": "consumivel",
+    "system": {
+      "description": "<p><strong>Poção de Resistência ao Fogo</strong> (POC-10). Resistência a fogo por 1 hora.</p>",
+      "catalogId": "POC-10",
+      "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
+      "consumable": true,
+      "gear": {
+        "peso": 1,
+        "equipado": false
+      }
+    }
+  },
+  {
+    "id": "consumiveis-poc-11",
+    "name": "Poção de Resistência ao Gelo",
+    "type": "consumivel",
+    "system": {
+      "description": "<p><strong>Poção de Resistência ao Gelo</strong> (POC-11). Resistência a gelo por 1 hora.</p>",
+      "catalogId": "POC-11",
+      "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
+      "consumable": true,
+      "gear": {
+        "peso": 1,
+        "equipado": false
+      }
+    }
+  },
+  {
+    "id": "consumiveis-poc-12",
+    "name": "Poção de Resistência ao Ácido",
+    "type": "consumivel",
+    "system": {
+      "description": "<p><strong>Poção de Resistência ao Ácido</strong> (POC-12). Resistência a ácido por 1 hora.</p>",
+      "catalogId": "POC-12",
+      "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
+      "consumable": true,
+      "gear": {
+        "peso": 1,
+        "equipado": false
+      }
+    }
+  },
+  {
+    "id": "consumiveis-poc-13",
+    "name": "Elixir de Trinchar",
+    "type": "consumivel",
+    "system": {
+      "description": "<p><strong>Elixir de Trinchar</strong> (POC-13). Bônus +2 em Extração por 8 horas.</p>",
+      "catalogId": "POC-13",
+      "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
+      "consumable": true,
+      "gear": {
+        "peso": 1,
+        "equipado": false
+      }
+    }
+  },
+  {
+    "id": "consumiveis-poc-14",
+    "name": "Elixir de Harmonização",
+    "type": "consumivel",
+    "system": {
+      "description": "<p><strong>Elixir de Harmonização</strong> (POC-14). Bônus +2 em Forrageio por 8 horas.</p>",
+      "catalogId": "POC-14",
+      "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
+      "consumable": true,
+      "gear": {
+        "peso": 1,
+        "equipado": false
+      }
+    }
+  },
+  {
+    "id": "consumiveis-poc-15",
+    "name": "Tônico de Estômago de Ferro",
+    "type": "consumivel",
+    "system": {
+      "description": "<p><strong>Tônico de Estômago de Ferro</strong> (POC-15). Imune a podridão leve por 24 horas.</p>",
+      "catalogId": "POC-15",
+      "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
+      "consumable": true,
+      "gear": {
+        "peso": 1,
+        "equipado": false
+      }
+    }
+  },
+  {
+    "id": "consumiveis-poc-16",
+    "name": "Soro de Mutação Estável",
+    "type": "consumivel",
+    "system": {
+      "description": "<p><strong>Soro de Mutação Estável</strong> (POC-16). Concede 1 mutação leve estável por 8 horas.</p>",
+      "catalogId": "POC-16",
+      "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
+      "consumable": true,
+      "gear": {
+        "peso": 1,
+        "equipado": false
+      }
+    }
+  },
+  {
+    "id": "consumiveis-poc-17",
+    "name": "Destilado de Wyvern",
+    "type": "consumivel",
+    "system": {
+      "description": "<p><strong>Destilado de Wyvern</strong> (POC-17). Reveste arma: +1d6 veneno nos próximos 5 ataques.</p>",
+      "catalogId": "POC-17",
+      "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
+      "consumable": true,
+      "gear": {
+        "peso": 1,
+        "equipado": false
+      }
+    }
+  },
+  {
+    "id": "consumiveis-poc-18",
+    "name": "Essência de Gelo Aromático",
+    "type": "consumivel",
+    "system": {
+      "description": "<p><strong>Essência de Gelo Aromático</strong> (POC-18). Preserva ingrediente orgânico por 72 horas.</p>",
+      "catalogId": "POC-18",
+      "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
+      "consumable": true,
+      "gear": {
+        "peso": 1,
+        "equipado": false
+      }
+    }
+  },
+  {
+    "id": "consumiveis-poc-19",
+    "name": "Poção de Respiração Abissal",
+    "type": "consumivel",
+    "system": {
+      "description": "<p><strong>Poção de Respiração Abissal</strong> (POC-19). Respiração aquática por 8 horas.</p>",
+      "catalogId": "POC-19",
+      "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
+      "consumable": true,
+      "gear": {
+        "peso": 1,
+        "equipado": false
+      }
+    }
+  },
+  {
+    "id": "consumiveis-poc-20",
+    "name": "Poção de Pele de Pedra",
+    "type": "consumivel",
+    "system": {
+      "description": "<p><strong>Poção de Pele de Pedra</strong> (POC-20). +2 CA por 1 hora.</p>",
+      "catalogId": "POC-20",
+      "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
+      "consumable": true,
+      "gear": {
+        "peso": 1,
+        "equipado": false
+      }
+    }
+  },
+  {
+    "id": "consumiveis-poc-21",
+    "name": "Poção de Passo Silencioso",
+    "type": "consumivel",
+    "system": {
+      "description": "<p><strong>Poção de Passo Silencioso</strong> (POC-21). Vantagem em Furtividade por 8 horas.</p>",
+      "catalogId": "POC-21",
+      "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
+      "consumable": true,
+      "gear": {
+        "peso": 1,
+        "equipado": false
+      }
+    }
+  },
+  {
+    "id": "consumiveis-poc-22",
+    "name": "Poção de Visão no Escuro",
+    "type": "consumivel",
+    "system": {
+      "description": "<p><strong>Poção de Visão no Escuro</strong> (POC-22). Visão no escuro 18 m por 8 horas.</p>",
+      "catalogId": "POC-22",
+      "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
+      "consumable": true,
+      "gear": {
+        "peso": 1,
+        "equipado": false
+      }
+    }
+  },
+  {
+    "id": "consumiveis-poc-23",
+    "name": "Poção de Cura de Grupo",
+    "type": "consumivel",
+    "system": {
+      "description": "<p><strong>Poção de Cura de Grupo</strong> (POC-23). Cura 1d8 HP em aliados num raio de 6 m.</p>",
+      "catalogId": "POC-23",
+      "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
+      "consumable": true,
+      "gear": {
+        "peso": 1,
+        "equipado": false
+      }
+    }
+  },
+  {
+    "id": "consumiveis-poc-24",
+    "name": "Elixir Lendário de Valdrun",
+    "type": "consumivel",
+    "system": {
+      "description": "<p><strong>Elixir Lendário de Valdrun</strong> (POC-24). Elixir lendário: permite 1 Prato Perfeito (Mestre).</p>",
+      "catalogId": "POC-24",
+      "bookRef": "CATALOGO-ARMAS-ARMADURAS-FORJA-E-POCOES.md",
+      "consumable": true,
+      "gear": {
+        "peso": 1,
+        "equipado": false
+      }
+    }
+  }
+]

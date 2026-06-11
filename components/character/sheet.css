@@ -295,6 +295,13 @@
   padding: 1.25rem;
 }
 
+.sheet-toolbar__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  align-items: center;
+}
+
 .sheet-toolbar {
   display: flex;
   justify-content: space-between;

@@ -313,7 +313,7 @@ export function SheetPopupDdbView({
             <div className="sheet-ddb-trait-cards">
               {identity.raca ? (
                 <SheetHoverTip className="sheet-ddb-trait-tip" tip={raceChipTip(identity)}>
-                  <div className="sheet-ddb-trait" tabIndex={0}>
+                  <div className="sheet-ddb-trait">
                     <span className="sheet-ddb-trait__tag">Raça</span>
                     <span className="sheet-ddb-trait__value">{identity.raca}</span>
                   </div>
@@ -321,7 +321,7 @@ export function SheetPopupDdbView({
               ) : null}
               {identity.classe ? (
                 <SheetHoverTip className="sheet-ddb-trait-tip" tip={classChipTip(identity.classe)}>
-                  <div className="sheet-ddb-trait" tabIndex={0}>
+                  <div className="sheet-ddb-trait">
                     <span className="sheet-ddb-trait__tag">Classe</span>
                     <span className="sheet-ddb-trait__value">{identity.classe}</span>
                   </div>
@@ -332,7 +332,7 @@ export function SheetPopupDdbView({
                   className="sheet-ddb-trait-tip"
                   tip={subclassChipTip(identity.classe, identity.subclasse, nivel)}
                 >
-                  <div className="sheet-ddb-trait sheet-ddb-trait--accent" tabIndex={0}>
+                  <div className="sheet-ddb-trait sheet-ddb-trait--accent">
                     <span className="sheet-ddb-trait__tag">Subclasse</span>
                     <span className="sheet-ddb-trait__value">{identity.subclasse}</span>
                   </div>
@@ -343,14 +343,14 @@ export function SheetPopupDdbView({
                   className="sheet-ddb-trait-tip"
                   tip={backgroundChipTip(identity.antecedente)}
                 >
-                  <div className="sheet-ddb-trait" tabIndex={0}>
+                  <div className="sheet-ddb-trait">
                     <span className="sheet-ddb-trait__tag">Antecedente</span>
                     <span className="sheet-ddb-trait__value">{identity.antecedente}</span>
                   </div>
                 </SheetHoverTip>
               ) : null}
               <SheetHoverTip className="sheet-ddb-trait-tip" tip={deityChipTip(identity.religiao)}>
-                <div className="sheet-ddb-trait" tabIndex={0}>
+                <div className="sheet-ddb-trait">
                   <span className="sheet-ddb-trait__tag">Religião</span>
                   <span className="sheet-ddb-trait__value">
                     {identity.religiao ? religionDisplayName(identity.religiao) : "Sem Deus"}
