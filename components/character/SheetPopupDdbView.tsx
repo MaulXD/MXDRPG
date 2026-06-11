@@ -26,6 +26,7 @@ import {
   subclassChipTip,
   xpBarTip,
 } from "@/lib/character/sheet-tooltips";
+import { SheetDdbShieldAc } from "@/components/character/SheetDdbShieldAc";
 import { SheetDdbSkillsPanel } from "@/components/character/SheetDdbSkillsPanel";
 import type { FoundryWindowDragHandlers } from "@/hooks/vtt/useFoundryWindowDrag";
 import "./sheet-ddb.css";
@@ -77,7 +78,9 @@ export function SheetPopupDdbView({
       ? Math.round((resources.pontosAcao.value / resources.pontosAcao.max) * 100)
       : 0;
 
-  const classLine = [identity.classe, nivel ? `Nv ${nivel}` : null].filter(Boolean).join(" · ");
+  const classLine = [identity.classe, nivel ? `NV ${nivel}` : null]
+    .filter(Boolean)
+    .join(" • ");
   const dragHandle =
     !standalone && toolbarDrag
       ? {
@@ -117,67 +120,71 @@ export function SheetPopupDdbView({
         </div>
       ) : null}
 
-      <header className="sheet-ddb-header" {...dragHandle}>
-        <div className="sheet-ddb-header__main">
-          <h2 className="sheet-ddb-header__name">{character.name}</h2>
-          <p className="sheet-ddb-header__class">{classLine.toUpperCase()}</p>
+      <div className="sheet-ddb-hero">
+        <div className="sheet-ddb-hero__portrait" data-no-drag>
+          <div className="sheet-ddb-portrait-wrap">{portrait}</div>
         </div>
-        <div className="sheet-ddb-header__meta" data-no-drag>
-          <SheetHoverTip
-            className="sheet-ddb-header__level-tip"
-            tip={levelTip(nivel, xpTotal)}
-          >
-            <div className="sheet-ddb-header__level" tabIndex={0} aria-label={`Nível ${nivel}`}>
-              {nivel}
-            </div>
-          </SheetHoverTip>
-          <SheetHoverTip
-            className="sheet-ddb-header__xp-tip"
-            tip={xpBarTip(nivel, xpTotal)}
-          >
-            <div className="sheet-ddb-header__xp" tabIndex={0} title={xpDetail.secondary}>
-              <span className="sheet-ddb-header__xp-text">{xpDetail.primary}</span>
-              <div
-                className="sheet-ddb-header__xp-bar"
-                role="progressbar"
-                aria-valuenow={nivel >= MAX_LEVEL ? 100 : xpPct}
-                aria-valuemin={0}
-                aria-valuemax={100}
-                aria-label={`${xpDetail.primary} — ${xpDetail.secondary}`}
-              >
-                <span style={{ width: `${xpPct}%` }} />
-              </div>
-            </div>
-          </SheetHoverTip>
-        </div>
-      </header>
 
-      <div className="sheet-ddb-attrs" role="group" aria-label="Atributos">
-        {(Object.keys(ATTRIBUTE_LABELS) as AttributeKey[]).map((k) => {
-          const m = attributeMod(character.attributes[k]);
-          const sign = m > 0 ? "pos" : m < 0 ? "neg" : "zero";
-          return (
+        <header className="sheet-ddb-header" {...dragHandle}>
+          <div className="sheet-ddb-header__main">
+            <h2 className="sheet-ddb-header__name">{character.name}</h2>
+            <p className="sheet-ddb-header__class">{classLine.toUpperCase()}</p>
+          </div>
+          <div className="sheet-ddb-header__meta" data-no-drag>
             <SheetHoverTip
-              key={k}
-              className="sheet-ddb-attr-tip"
-              tip={attributeTip(k, character.attributes[k], m)}
+              className="sheet-ddb-header__level-tip"
+              tip={levelTip(nivel, xpTotal)}
             >
-              <div className="sheet-ddb-attr" tabIndex={0}>
-                <span className="sheet-ddb-attr__label">{ATTRIBUTE_LABELS[k]}</span>
-                <strong className="sheet-ddb-attr__score">{character.attributes[k]}</strong>
-                <span className={`sheet-ddb-attr__mod sheet-ddb-attr__mod--${sign}`}>
-                  {m >= 0 ? `+${m}` : m}
-                </span>
+              <div className="sheet-ddb-header__level" tabIndex={0} aria-label={`Nível ${nivel}`}>
+                {nivel}
               </div>
             </SheetHoverTip>
-          );
-        })}
+            <SheetHoverTip
+              className="sheet-ddb-header__xp-tip"
+              tip={xpBarTip(nivel, xpTotal)}
+            >
+              <div className="sheet-ddb-header__xp" tabIndex={0} title={xpDetail.secondary}>
+                <span className="sheet-ddb-header__xp-text">{xpDetail.primary}</span>
+                <div
+                  className="sheet-ddb-header__xp-bar"
+                  role="progressbar"
+                  aria-valuenow={nivel >= MAX_LEVEL ? 100 : xpPct}
+                  aria-valuemin={0}
+                  aria-valuemax={100}
+                  aria-label={`${xpDetail.primary} — ${xpDetail.secondary}`}
+                >
+                  <span style={{ width: `${xpPct}%` }} />
+                </div>
+              </div>
+            </SheetHoverTip>
+          </div>
+        </header>
+
+        <div className="sheet-ddb-attrs" role="group" aria-label="Atributos">
+          {(Object.keys(ATTRIBUTE_LABELS) as AttributeKey[]).map((k) => {
+            const m = attributeMod(character.attributes[k]);
+            const sign = m > 0 ? "pos" : m < 0 ? "neg" : "zero";
+            return (
+              <SheetHoverTip
+                key={k}
+                className="sheet-ddb-attr-tip"
+                tip={attributeTip(k, character.attributes[k], m)}
+              >
+                <div className="sheet-ddb-attr" tabIndex={0}>
+                  <span className="sheet-ddb-attr__label">{ATTRIBUTE_LABELS[k]}</span>
+                  <strong className="sheet-ddb-attr__score">{character.attributes[k]}</strong>
+                  <span className={`sheet-ddb-attr__mod sheet-ddb-attr__mod--${sign}`}>
+                    {m >= 0 ? `+${m}` : m}
+                  </span>
+                </div>
+              </SheetHoverTip>
+            );
+          })}
+        </div>
       </div>
 
       <div className="sheet-ddb-body">
         <aside className="sheet-ddb-col sheet-ddb-col--left">
-          <div className="sheet-ddb-portrait-wrap">{portrait}</div>
-
           <div className="sheet-ddb-hex-row" aria-label="Combate rápido">
             <SheetHoverTip
               className="sheet-ddb-hex-tip"
@@ -211,13 +218,10 @@ export function SheetPopupDdbView({
               </div>
             </SheetHoverTip>
             <SheetHoverTip
-              className="sheet-ddb-hex-tip"
+              className="sheet-ddb-shield-tip"
               tip={combatStatTip("ca", { ca: displayDefesa })}
             >
-              <div className="sheet-ddb-hex sheet-ddb-hex--ca" tabIndex={0}>
-                <span className="sheet-ddb-hex__label">CA</span>
-                <strong>{displayDefesa}</strong>
-              </div>
+              <SheetDdbShieldAc value={displayDefesa} tabIndex={0} />
             </SheetHoverTip>
           </div>
 
