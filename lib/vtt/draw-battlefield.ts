@@ -47,6 +47,7 @@ import {
   type ActiveTokenCastFx,
 } from "@/lib/vtt/token-cast-fx";
 import { isTargetMode, type TokenActionMode } from "@/lib/vtt/action-mode";
+import { gridLodLevel, skipLodDeepBaseHex, type GridLod } from "@/lib/vtt/canvas-lod";
 import type { BattleScene, BattleToken } from "@/lib/vtt/types";
 export type TokenFlashKind = "hit" | "miss" | "crit";
 
@@ -119,6 +120,7 @@ type GridDrawParams = {
   visibleHexSet: Set<string> | null;
   mapBackdropTone?: MapBackdropTone;
   palette?: HexHighlightPalette;
+  viewScale?: number;
 };
 
 /** Halo oposto ao traço principal — melhora leitura do grid sobre imagens de cenário. */
@@ -133,6 +135,7 @@ export function drawHexGridLayer(ctx: CanvasRenderingContext2D, p: GridDrawParam
   const { ox, oy } = layout;
   const pal =
     p.palette ?? resolveHexPalette(p.mapBackdropTone ?? "none");
+  const lod: GridLod = gridLodLevel(p.viewScale ?? 1);
 
   for (const cell of p.gridCells) {
     const key = `${cell.q},${cell.r}`;
@@ -207,19 +210,32 @@ export function drawHexGridLayer(ctx: CanvasRenderingContext2D, p: GridDrawParam
       fill = pal.hoverFill;
     }
 
+    const isMoveHighlight =
+      p.showMovement &&
+      (p.walkSet.has(key) || p.paidWalkSet.has(key) || p.rangeSet.has(key));
+    const isBaseHex = fill === pal.fill && stroke === pal.stroke && lineWidth === 1;
+
+    if (lod === "deep" && isBaseHex && !isHoverCell && skipLodDeepBaseHex(cell.q, cell.r)) {
+      continue;
+    }
+
     ctx.beginPath();
     const corners = hexCorners(x, y, hexDrawRadius(hexSize));
     ctx.moveTo(corners[0].x, corners[0].y);
     for (let i = 1; i < corners.length; i++) ctx.lineTo(corners[i].x, corners[i].y);
     ctx.closePath();
-    const isMoveHighlight =
-      p.showMovement &&
-      (p.walkSet.has(key) || p.paidWalkSet.has(key) || p.rangeSet.has(key));
+
+    if (lod !== "full" && isBaseHex && !isMoveHighlight && !isHoverCell) {
+      ctx.strokeStyle = pal.stroke;
+      ctx.lineWidth = lod === "deep" ? 0.75 : 1;
+      ctx.globalAlpha = lod === "deep" ? 0.55 : 0.72;
+      ctx.stroke();
+      ctx.globalAlpha = 1;
+      continue;
+    }
 
     ctx.fillStyle = fill;
     ctx.fill();
-
-    const isBaseHex = fill === pal.fill && stroke === pal.stroke && lineWidth === 1;
 
     if (isMoveHighlight && fill !== pal.fill) {
       ctx.strokeStyle = "rgba(0, 0, 0, 0.72)";
@@ -227,7 +243,7 @@ export function drawHexGridLayer(ctx: CanvasRenderingContext2D, p: GridDrawParam
       ctx.stroke();
     }
 
-    if (isBaseHex) {
+    if (isBaseHex && lod === "full") {
       ctx.strokeStyle = baseHexContrastStroke(p.mapBackdropTone ?? "none");
       ctx.lineWidth = lineWidth + 1.4;
       ctx.stroke();

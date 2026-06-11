@@ -1,4 +1,5 @@
 import type { Axial } from "@/lib/vtt/hex-math";
+import { lodDisplayGridRadiusCap } from "@/lib/vtt/canvas-lod";
 
 /** Células axiais dentro do raio da cena */
 export function buildHexGrid(gridRadius: number): Axial[] {
@@ -38,9 +39,10 @@ export function displayHexGridRadius(
   viewScale = 1
 ): number {
   const viewportR = viewportGridRadius(w, h, hexSize, viewScale);
+  const radiusCap = lodDisplayGridRadiusCap(viewScale);
   return Math.min(
     Math.max(sceneRadius, viewportR),
-    Math.max(sceneRadius, DISPLAY_GRID_RADIUS_CAP)
+    Math.max(sceneRadius, radiusCap)
   );
 }
 

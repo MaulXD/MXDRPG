@@ -2,6 +2,7 @@ import type { Axial } from "@/lib/vtt/hex-math";
 import { axialToPixel, hexCorners, hexDrawRadius } from "@/lib/vtt/hex-math";
 import { isHexVisibleToPlayer } from "@/lib/vtt/fog-of-war";
 import type { BattlePing } from "@/lib/vtt/types";
+import { gridLodLevel } from "@/lib/vtt/canvas-lod";
 import type { BattleScene } from "@/lib/vtt/types";
 import type { CanvasLayout } from "@/lib/vtt/draw-battlefield";
 
@@ -44,11 +45,13 @@ export function drawFogLayer(
   scene: BattleScene,
   hexSize: number,
   layout: CanvasLayout,
-  visibleHexSet: Set<string> | null
+  visibleHexSet: Set<string> | null,
+  viewScale = 1
 ): void {
   if (!visibleHexSet || !scene.fogEnabled) return;
 
   const { ox, oy } = layout;
+  const lod = gridLodLevel(viewScale);
   ctx.save();
   for (const cell of cells) {
     if (isHexVisibleToPlayer(scene, cell.q, cell.r, visibleHexSet)) {
@@ -60,11 +63,13 @@ export function drawFogLayer(
     ctx.moveTo(corners[0].x, corners[0].y);
     for (let i = 1; i < corners.length; i++) ctx.lineTo(corners[i].x, corners[i].y);
     ctx.closePath();
-    ctx.fillStyle = "rgba(4, 6, 10, 0.82)";
+    ctx.fillStyle = lod === "deep" ? "rgba(4, 6, 10, 0.78)" : "rgba(4, 6, 10, 0.82)";
     ctx.fill();
-    ctx.strokeStyle = "rgba(20, 24, 32, 0.5)";
-    ctx.lineWidth = 1;
-    ctx.stroke();
+    if (lod === "full") {
+      ctx.strokeStyle = "rgba(20, 24, 32, 0.5)";
+      ctx.lineWidth = 1;
+      ctx.stroke();
+    }
   }
   ctx.restore();
 }

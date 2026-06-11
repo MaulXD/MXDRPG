@@ -189,6 +189,7 @@ export function useHexCanvas(
       visibleHexSet: s.visibleHexSet,
       mapBackdropTone: s.mapBackdropTone,
       palette: hexPalette,
+      viewScale: view.scale,
     });
 
     drawDungeonLayer(ctx, s.scene, s.scene.hexSize, layout, {
@@ -201,7 +202,7 @@ export function useHexCanvas(
       visibleHexSet: s.visibleHexSet,
     });
 
-    drawFogLayer(ctx, s.gridCells, s.scene, s.scene.hexSize, layout, s.visibleHexSet);
+    drawFogLayer(ctx, s.gridCells, s.scene, s.scene.hexSize, layout, s.visibleHexSet, view.scale);
 
     const markups = pruneMapMarkups(s.mapMarkups ?? s.scene.mapMarkups ?? []);
     if (markups.length > 0 || s.markupPreview) {
