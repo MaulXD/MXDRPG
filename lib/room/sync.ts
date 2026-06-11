@@ -33,12 +33,16 @@ export function syncLinkedTokens(
     const focus = resolveLinkedTokenImageFocus(actor);
     const playerColor = playerColorForActor(token.actorId, playerIds);
     const paMax = paMaxForActor(actor);
+    const levelChanged =
+      typeof token.nivel === "number" && token.nivel !== actor.identity.nivel;
     const paSource =
       opts?.preserveCombatPa && typeof token.pa === "number"
         ? token.pa
-        : typeof token.pa === "number"
-          ? token.pa
-          : 0;
+        : levelChanged
+          ? paMax
+          : typeof token.pa === "number"
+            ? token.pa
+            : paMax;
     const paFields = normalizeTokenPaFields(
       {
         ...token,
