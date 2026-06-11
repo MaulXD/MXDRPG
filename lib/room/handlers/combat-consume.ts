@@ -67,7 +67,9 @@ export async function executeRoomConsume(
 
   let resolved;
   try {
-    resolved = resolveConsumableUse(token, actor, item, tickCtx);
+    resolved = resolveConsumableUse(token, actor, item, tickCtx, {
+      sceneTokens: room.scene.tokens,
+    });
   } catch (e) {
     return { ok: false, error: e instanceof Error ? e.message : "Falha ao usar item" };
   }
@@ -80,10 +82,32 @@ export async function executeRoomConsume(
     { vida: resolved.hpAfter }
   );
 
+  const aoeHeals = resolved.aoeHeals ?? [];
+  const aoeByToken = new Map(aoeHeals.map((h) => [h.tokenId, h]));
+
   room.scene = {
     ...room.scene,
-    tokens: room.scene.tokens.map((t) => (t.id === tokenId ? healed : t)),
+    tokens: room.scene.tokens.map((t) => {
+      if (t.id === tokenId) return healed;
+      const aoe = aoeByToken.get(t.id);
+      if (!aoe) return t;
+      return patchTokenVitals({ ...t }, { vida: aoe.hpAfter });
+    }),
   };
+
+  for (const aoe of aoeHeals) {
+    if (!aoe.actorId) continue;
+    const ally = room.actors[aoe.actorId];
+    if (!ally) continue;
+    room.actors[aoe.actorId] = {
+      ...ally,
+      resources: {
+        ...ally.resources,
+        vida: { ...ally.resources.vida, value: aoe.hpAfter },
+      },
+      revision: ally.revision + 1,
+    };
+  }
 
   room.actors[actorId] = {
     ...actor,

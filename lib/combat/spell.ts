@@ -4,6 +4,7 @@ import type { CharacterSheet } from "@/lib/character/types";
 import type { BattleToken } from "@/lib/vtt/types";
 import { rollDice } from "@/lib/dice/roll";
 import { saveRollMode } from "@/lib/combat/conditions";
+import { isPoisonDamageType, resistedDamageAmount } from "@/lib/combat/damage-resist";
 import { formatD20Detail, formatRollMode, rollD20, type RollMode } from "@/lib/combat/d20";
 import type { CombatActionOption, CombatTurnOptions } from "@/lib/combat/types";
 import { canActOnCombatTurn, TURN_WAIT_MSG } from "@/lib/combat/turn-guard";
@@ -122,7 +123,8 @@ export function resolveSaveSpell(
   const saveProf = defenderActor
     ? proficiencyBonus(defenderActor.identity.nivel)
     : 0;
-  const rollMode = saveRollMode(defenderToken);
+  const saveCtx = { poison: isPoisonDamageType(resolved.damageType) };
+  const rollMode = saveRollMode(defenderToken, saveCtx);
   const naturalRoll = rollD20(rollMode);
   const natural = naturalRoll.natural;
   const saveTotal = natural + saveMod + saveProf;
@@ -133,13 +135,22 @@ export function resolveSaveSpell(
     resolved.damageFormula === "0"
       ? { formula: "0", rolls: [], attributeMod: 0, total: 0, doubled: false }
       : rollSaveDamage(resolved.damageFormula, success);
-  const hpAfter = Math.max(0, hpBefore - damage.total);
+  const resistedTotal = resistedDamageAmount(
+    damage.total,
+    defenderToken,
+    resolved.damageType
+  );
+  const hpAfter = Math.max(0, hpBefore - resistedTotal);
 
   const attr = attributeLabel(saveKey);
   const modeTag = rollMode !== "normal" ? ` [${formatRollMode(rollMode)}]` : "";
   const outcome = success ? "resistiu (metade)" : "falhou (dano pleno)";
   const channelTag = channelExtra > 0 ? ` [canalizado +${channelExtra} PA]` : "";
-  const summary = `${actor.name} conjura ${resolved.name}${channelTag}${modeTag} em ${defenderToken.name}: teste ${attr} ${saveTotal} vs CD ${dc} — ${outcome} — ${damage.total} ${resolved.damageType}`;
+  const dmgNote =
+    resistedTotal < damage.total
+      ? `${resistedTotal} ${resolved.damageType} (resist.)`
+      : `${damage.total} ${resolved.damageType}`;
+  const summary = `${actor.name} conjura ${resolved.name}${channelTag}${modeTag} em ${defenderToken.name}: teste ${attr} ${saveTotal} vs CD ${dc} — ${outcome} — ${dmgNote}`;
 
   return {
     attackerTokenId: attackerToken.id,
