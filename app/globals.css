@@ -577,15 +577,6 @@ button.btn {
   font-size: 0.72rem;
 }
 
-.site-nav .cl-userButton-root {
-  margin-left: 0.35rem;
-}
-
-.site-nav .cl-userButtonTrigger {
-  width: 2.25rem;
-  height: 2.25rem;
-}
-
 .hero-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;

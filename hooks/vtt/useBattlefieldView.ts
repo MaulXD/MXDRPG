@@ -182,14 +182,16 @@ export function useBattlefieldView({ wrapRef, canvasRef }: Params) {
     [bumpView]
   );
 
-  const onWheel = useCallback(
-    (e: React.WheelEvent) => {
+  useEffect(() => {
+    const wrap = wrapRef.current;
+    if (!wrap) return;
+
+    function onWheel(e: WheelEvent) {
       const target = e.target;
       if (target instanceof HTMLElement && target.closest(".vtt-help-backdrop")) return;
 
       const canvas = canvasRef.current;
-      const wrap = wrapRef.current;
-      if (!canvas || !wrap) return;
+      if (!canvas) return;
       e.preventDefault();
       const rect = canvas.getBoundingClientRect();
       const px = e.clientX - rect.left;
@@ -199,9 +201,11 @@ export function useBattlefieldView({ wrapRef, canvasRef }: Params) {
       bumpView(
         zoomViewAtPointer(viewRef.current, px, py, w, h, viewRef.current.scale * delta)
       );
-    },
-    [bumpView, canvasRef, wrapRef]
-  );
+    }
+
+    wrap.addEventListener("wheel", onWheel, { passive: false });
+    return () => wrap.removeEventListener("wheel", onWheel);
+  }, [bumpView, canvasRef, wrapRef]);
 
   const isPanButton = (e: React.PointerEvent) =>
     e.button === 1 || (e.button === 0 && (e.altKey || e.shiftKey));
@@ -298,7 +302,6 @@ export function useBattlefieldView({ wrapRef, canvasRef }: Params) {
     resetView,
     centerOnWorld,
     panBy,
-    onWheel,
     onPointerDown,
     onPointerMove,
     endPan,
