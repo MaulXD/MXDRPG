@@ -36,6 +36,29 @@ function formatMod(mod: number): string {
   return mod >= 0 ? `+${mod}` : `${mod}`;
 }
 
+function formatGmSaveChatDetail(opts: {
+  attributeLabel: string;
+  d20Detail: string;
+  mod: number;
+  total: number;
+  trained: boolean;
+  dc?: number;
+  success?: boolean;
+  modeNote?: string;
+}): string {
+  const parts = [
+    `Salv. ${opts.attributeLabel}: ${opts.d20Detail}${formatMod(opts.mod)} = ${opts.total}${
+      opts.trained ? " (prof.)" : ""
+    }`,
+  ];
+  if (opts.dc != null) {
+    parts.push(`CD ${opts.dc}`);
+    parts.push(opts.success ? "Sucesso" : "Falha");
+  }
+  if (opts.modeNote) parts.push(opts.modeNote);
+  return parts.join(" · ");
+}
+
 export async function executeGmSavingThrows(
   roomId: string,
   body: GmSavingThrowRequest,
@@ -93,17 +116,55 @@ export async function executeGmSavingThrows(
     const dcNote =
       dc != null ? ` · CD ${dc} ${total >= dc ? "✓" : "✗"}` : "";
     const profNote = save.trained ? " · proficiente" : "";
-
-    appendRoomChatMessage(room, {
-      ...author,
-      kind: "roll",
-      text: `${actor.name} — Salv. ${save.label}: ${total} (${formatD20Detail(d20)}${formatMod(save.mod)})${modeNote ? ` · ${modeNote}` : ""}${profNote}${dcNote}`,
-      roll: {
-        formula: `1d20${formatMod(save.mod)}`,
-        rolls: d20.secondary != null ? [d20.natural, d20.secondary] : [d20.natural],
-        total,
-      },
+    const success = dc != null ? total >= dc : undefined;
+    const summary = `${actor.name} — Salv. ${save.label}: ${total} (${formatD20Detail(d20)}${formatMod(save.mod)})${modeNote ? ` · ${modeNote}` : ""}${profNote}${dcNote}`;
+    const detail = formatGmSaveChatDetail({
+      attributeLabel: save.label,
+      d20Detail: formatD20Detail(d20),
+      mod: save.mod,
+      total,
+      trained: save.trained,
+      dc,
+      success,
+      modeNote: modeNote || undefined,
     });
+
+    if (token) {
+      const hp = token.vida ?? actor.resources.vida.value;
+      appendRoomChatMessage(room, {
+        ...author,
+        kind: "combat",
+        text: summary,
+        combat: {
+          attackerTokenId: token.id,
+          defenderTokenId: token.id,
+          actionKind: "ability",
+          weaponName: `Salvaguarda · ${save.label}`,
+          resolution: "save",
+          saveNatural: d20.natural,
+          saveTotal: total,
+          saveDc: dc,
+          saveSuccess: success,
+          saveAttribute: save.label,
+          saveRollMode: rollDetail.mode,
+          damageTotal: null,
+          defenderHpBefore: hp,
+          defenderHpAfter: hp,
+          detail,
+        },
+      });
+    } else {
+      appendRoomChatMessage(room, {
+        ...author,
+        kind: "roll",
+        text: summary,
+        roll: {
+          formula: `1d20${formatMod(save.mod)}`,
+          rolls: d20.secondary != null ? [d20.natural, d20.secondary] : [d20.natural],
+          total,
+        },
+      });
+    }
     rolled += 1;
   }
 
