@@ -7,12 +7,15 @@ import {
   consumableEffectDef,
   consumableHealFormula,
   CONSUMABLE_CATALOG_EFFECTS,
+  GROUP_HEAL_AOE_HEX,
 } from "@/lib/combat/consumable-effects";
 import type { CombatTickContext } from "@/lib/combat/timed-effects";
+import { isAllyToken } from "@/lib/combat/ability";
 import { PA_DEFAULT_ACTION_COST } from "@/lib/combat/pa-economy";
 import { canActOnCombatTurn, TURN_WAIT_MSG } from "@/lib/combat/turn-guard";
 import { checkCanSpendPa } from "@/lib/combat/pa-turn";
 import type { CombatTrack } from "@/lib/room/combat";
+import { axialDistance } from "@/lib/vtt/hex-math";
 import type { BattleToken } from "@/lib/vtt/types";
 
 export type ActorConsumable = {
@@ -26,6 +29,13 @@ export type ActorConsumable = {
   effectHint?: string;
 };
 
+export type ConsumableAoeHeal = {
+  tokenId: string;
+  actorId?: string;
+  hpBefore: number;
+  hpAfter: number;
+};
+
 export type ConsumableUseResult = {
   paCost: number;
   summary: string;
@@ -35,6 +45,8 @@ export type ConsumableUseResult = {
   hpAfter: number;
   inventory: InventoryItem[];
   tokenPatch: Partial<BattleToken>;
+  /** Aliados curados por POC-23 (exclui o consumidor). */
+  aoeHeals?: ConsumableAoeHeal[];
 };
 
 function catalogIdFromEntry(system: Record<string, unknown>): string {
@@ -122,7 +134,8 @@ export function resolveConsumableUse(
   token: BattleToken,
   actor: CharacterSheet,
   consumable: ActorConsumable,
-  ctx: CombatTickContext = { round: 1, activeIndex: 0 }
+  ctx: CombatTickContext = { round: 1, activeIndex: 0 },
+  opts?: { sceneTokens?: BattleToken[] }
 ): ConsumableUseResult {
   const item = actor.inventory.find((i) => i.instanceId === consumable.instanceId);
   if (!item || item.quantity <= 0) {
@@ -136,13 +149,42 @@ export function resolveConsumableUse(
   let workingToken: BattleToken = { ...token };
   const effectNotes: string[] = [];
 
+  const effectDef = consumableEffectDef(consumable.catalogId);
   const healFormula = consumable.healFormula ?? consumableHealFormula(consumable.catalogId);
+  let aoeHeals: ConsumableAoeHeal[] | undefined;
+
   if (healFormula) {
     healRoll = rollDice(healFormula);
     hpAfter = Math.min(hpMax, hpBefore + healRoll.total);
     effectNotes.push(
       `Cura ${healRoll.total} HP (${healRoll.rolls.join(", ")}${healRoll.modifier >= 0 ? `+${healRoll.modifier}` : healRoll.modifier})`
     );
+
+    if (effectDef?.kind === "group_heal" && opts?.sceneTokens?.length) {
+      const rangeHex = effectDef.aoeHex ?? GROUP_HEAL_AOE_HEX;
+      aoeHeals = [];
+      for (const ally of opts.sceneTokens) {
+        if (ally.id === token.id) continue;
+        if (!isAllyToken(token, ally)) continue;
+        if (axialDistance(token.axial, ally.axial) > rangeHex) continue;
+        const allyHpBefore = ally.vida ?? ally.vidaMax ?? 0;
+        const allyHpMax = ally.vidaMax ?? allyHpBefore;
+        const allyHpAfter = Math.min(allyHpMax, allyHpBefore + healRoll.total);
+        if (allyHpAfter === allyHpBefore) continue;
+        aoeHeals.push({
+          tokenId: ally.id,
+          actorId: ally.actorId,
+          hpBefore: allyHpBefore,
+          hpAfter: allyHpAfter,
+        });
+      }
+      if (aoeHeals.length) {
+        const names = aoeHeals
+          .map((h) => opts.sceneTokens!.find((t) => t.id === h.tokenId)?.name)
+          .filter(Boolean);
+        effectNotes.push(`Aliados curados (${names.join(", ")})`);
+      }
+    }
   }
 
   const buffResult = applyConsumableBuffs(workingToken, consumable.catalogId, ctx);
@@ -169,6 +211,7 @@ export function resolveConsumableUse(
     "defesaBuffSource",
     "bonusDamageFormula",
     "saveAdvantagePoison",
+    "damageResist",
   ] as const;
   for (const field of buffFields) {
     const beforeVal = token[field];
@@ -187,5 +230,6 @@ export function resolveConsumableUse(
     hpAfter,
     inventory,
     tokenPatch,
+    aoeHeals,
   };
 }

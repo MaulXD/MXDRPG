@@ -108,6 +108,11 @@ export function MesaPlayerInventoryRequestsBell({ adventureId }: Props) {
                   {r.status === "approved" ? (
                     <span className="mesa-edit-requests-bell__hint">Item adicionado à ficha</span>
                   ) : null}
+                  {r.status === "rejected" ? (
+                    <span className="mesa-edit-requests-bell__hint mesa-edit-requests-bell__status--bad">
+                      O mestre recusou este pedido
+                    </span>
+                  ) : null}
                 </div>
               </li>
             ))}

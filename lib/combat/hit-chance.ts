@@ -12,6 +12,7 @@ import {
   formatRollModeWithSources,
   saveRollModeDetail,
 } from "@/lib/combat/conditions";
+import { isPoisonDamageType } from "@/lib/combat/damage-resist";
 import { combineRollModes, type RollMode } from "@/lib/combat/d20";
 import type { CombatActionOption } from "@/lib/combat/types";
 import { goblinMonsterAttackModifier } from "@/lib/vtt/goblin-combat";
@@ -138,7 +139,9 @@ export function estimateTargetCombatPreview(
     const saveBonus =
       attributeMod(saveAttr) +
       (defenderActor ? proficiencyBonus(defenderActor.identity.nivel) : 0);
-    const saveDetail = saveRollModeDetail(defender);
+    const saveDetail = saveRollModeDetail(defender, {
+      poison: isPoisonDamageType(action.damageType),
+    });
     const failPct = saveFailPercent(saveBonus, dc, saveDetail.mode);
     const rollModeText = formatSaveRollModeText(saveDetail);
     const modeSuffix = rollModeText ? ` · ${rollModeText}` : "";
