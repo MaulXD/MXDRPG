@@ -6104,3 +6104,155 @@
   font-size: 0.68rem;
 }
 
+/* —— Demo guided tour (/mesa/demo) —— */
+.demo-guided-tour__trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--accent-gold, #c9a962) 45%, transparent);
+  background: rgba(30, 29, 26, 0.92);
+  color: var(--accent-gold, #c9a962);
+  font-size: 0.74rem;
+  font-weight: 700;
+  font-family: var(--font-display);
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    background 0.15s,
+    border-color 0.15s,
+    transform 0.15s var(--ease-out);
+}
+
+.demo-guided-tour__trigger:hover {
+  border-color: rgba(201, 169, 98, 0.65);
+  background: rgba(24, 20, 14, 0.96);
+  transform: scale(1.03);
+}
+
+.demo-guided-tour {
+  position: fixed;
+  right: clamp(0.65rem, 2vw, 1.1rem);
+  bottom: clamp(0.65rem, 2vh, 1.1rem);
+  z-index: 80;
+  width: min(22rem, calc(100vw - 1.25rem));
+  pointer-events: auto;
+}
+
+.demo-guided-tour__card {
+  padding: 0.95rem 1rem 0.85rem;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+}
+
+.demo-guided-tour__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.45rem;
+}
+
+.demo-guided-tour__kicker {
+  margin: 0;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.demo-guided-tour__progress {
+  margin: 0;
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.demo-guided-tour__title {
+  margin: 0 0 0.5rem;
+  font-family: var(--font-display);
+  font-size: 1rem;
+  line-height: 1.25;
+  color: var(--accent-gold, #c9a962);
+}
+
+.demo-guided-tour__body {
+  margin: 0;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: var(--text);
+}
+
+.demo-guided-tour__cta {
+  margin: 0.65rem 0 0;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: var(--text-muted);
+}
+
+.demo-guided-tour__actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-top: 0.85rem;
+  flex-wrap: wrap;
+}
+
+.demo-guided-tour__nav {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-left: auto;
+}
+
+.demo-guided-tour__btn {
+  padding: 0.38rem 0.72rem;
+  border-radius: 6px;
+  font-size: 0.76rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition:
+    background 0.15s,
+    border-color 0.15s,
+    opacity 0.15s;
+}
+
+.demo-guided-tour__btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.demo-guided-tour__btn--ghost {
+  background: transparent;
+  border-color: transparent;
+  color: var(--text-muted);
+}
+
+.demo-guided-tour__btn--ghost:hover:not(:disabled) {
+  color: var(--text);
+}
+
+.demo-guided-tour__btn--secondary {
+  background: rgba(0, 0, 0, 0.25);
+  border-color: var(--glass-border);
+  color: var(--text);
+}
+
+.demo-guided-tour__btn--secondary:hover:not(:disabled) {
+  border-color: color-mix(in srgb, var(--accent-gold, #c9a962) 35%, transparent);
+}
+
+.demo-guided-tour__btn--primary {
+  background: color-mix(in srgb, var(--accent-gold, #c9a962) 18%, rgba(30, 29, 26, 0.95));
+  border-color: color-mix(in srgb, var(--accent-gold, #c9a962) 50%, transparent);
+  color: var(--accent-gold, #c9a962);
+}
+
+.demo-guided-tour__btn--primary:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--accent-gold, #c9a962) 28%, rgba(30, 29, 26, 0.95));
+}
+
