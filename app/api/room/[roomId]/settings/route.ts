@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { requireRoomManage } from "@/lib/auth/authorize-room";
+import { validateDisplayName } from "@/lib/moderation/display-name";
 import { getRoom, patchRoomSettings } from "@/lib/room/store";
 
 type Params = { params: Promise<{ roomId: string }> };
@@ -14,7 +15,13 @@ export async function PATCH(req: Request, { params }: Params) {
   const body = (await req.json()) as Record<string, unknown>;
   const patch: import("@/lib/room/handlers/settings").RoomSettingsPatch = {};
 
-  if (typeof body.name === "string") patch.name = body.name;
+  if (typeof body.name === "string") {
+    const checked = validateDisplayName(body.name);
+    if (!checked.ok) {
+      return NextResponse.json({ error: checked.error }, { status: 400 });
+    }
+    patch.name = checked.name;
+  }
   if (typeof body.showMonsterHpToPlayers === "boolean") {
     patch.showMonsterHpToPlayers = body.showMonsterHpToPlayers;
   }

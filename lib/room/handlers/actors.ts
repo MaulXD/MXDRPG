@@ -2,6 +2,7 @@ import { applyLevelUp, canLevelUp, type LevelUpChoices } from "@/lib/character/l
 import { normalizeCharacter } from "@/lib/character/normalize";
 import type { CharacterSheet } from "@/lib/character/types";
 import type { IdentityPatch } from "@/lib/character/identity";
+import { validateDisplayName } from "@/lib/moderation/display-name";
 import { mergeIdentityPatch, sanitizeActorPatch } from "../internal/actor-patch";
 import { persistActorToAdventureSheet } from "../adventure-actors";
 import { getRoom, persistRoom, toSnapshot } from "../internal/registry";
@@ -17,6 +18,12 @@ export async function updateRoomActor(
 
   const current = room.actors[actorId];
   if (!current) return null;
+
+  if (patch.name !== undefined) {
+    const checked = validateDisplayName(String(patch.name));
+    if (!checked.ok) return null;
+    patch = { ...patch, name: checked.name };
+  }
 
   const safe = await sanitizeActorPatch(patch);
   const hasIdentity = Boolean(patch.identityPatch);

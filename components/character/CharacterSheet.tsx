@@ -297,6 +297,29 @@ export function CharacterSheet({
     [patchCharacterApi]
   );
 
+  const levelUpControl = canEdit ? (
+    <LevelUpWizard
+      actor={live}
+      roomId={inRoom ? roomId : undefined}
+      canEdit={canEdit}
+      onDone={inRoom ? refresh : () => router.refresh()}
+      onApplied={
+        inRoom
+          ? (patch) => {
+              if (!snapshot) return;
+              applySnapshot({
+                ...snapshot,
+                actors: { ...snapshot.actors, [patch.actor.id]: patch.actor },
+                scene: patch.scene,
+                revision: patch.revision,
+              });
+            }
+          : undefined
+      }
+      onLevelUp={!inRoom ? levelUpCharacter : undefined}
+    />
+  ) : null;
+
   const resolved = useMemo(() => {
     return inventory
       .map((ref) => {
@@ -648,28 +671,7 @@ export function CharacterSheet({
         </p>
       ) : null}
 
-      {canEdit ? (
-        <LevelUpWizard
-          actor={live}
-          roomId={inRoom ? roomId : undefined}
-          canEdit={canEdit}
-          onDone={inRoom ? refresh : () => router.refresh()}
-          onApplied={
-            inRoom
-              ? (patch) => {
-                  if (!snapshot) return;
-                  applySnapshot({
-                    ...snapshot,
-                    actors: { ...snapshot.actors, [patch.actor.id]: patch.actor },
-                    scene: patch.scene,
-                    revision: patch.revision,
-                  });
-                }
-              : undefined
-          }
-          onLevelUp={!inRoom ? levelUpCharacter : undefined}
-        />
-      ) : null}
+      {levelUpControl}
 
       {canEditPortrait && !isPopup ? (
         inRoom ? (
@@ -810,17 +812,7 @@ export function CharacterSheet({
           canEdit={canEdit}
           snapshotRevision={snapshot?.revision}
           onRefresh={inRoom ? refresh : () => router.refresh()}
-          onLevelApplied={(patch) => {
-            if (!snapshot) return;
-            applySnapshot({
-              ...snapshot,
-              actors: { ...snapshot.actors, [patch.actor.id]: patch.actor },
-              scene: patch.scene,
-              revision: patch.revision,
-            });
-          }}
           onSaveIdentity={!inRoom ? persistIdentityPatch : undefined}
-          onLevelUp={!inRoom ? levelUpCharacter : undefined}
           onSaveCombatLoadout={!inRoom ? persistCombatLoadout : undefined}
         />
       ) : null;
@@ -895,6 +887,7 @@ export function CharacterSheet({
           inRoom={inRoom}
           roomId={roomId}
           onRoll={refresh}
+          progression={levelUpControl}
           loadout={
             canEdit ? (
               <SheetPopupLoadoutBar

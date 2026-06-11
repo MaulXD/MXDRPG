@@ -12,6 +12,7 @@ import {
   BATTLEFIELD_SCALE_MAX,
   BATTLEFIELD_SCALE_MIN,
   DEFAULT_BATTLEFIELD_VIEW,
+  panViewToCenterWorld,
   type BattlefieldView,
   zoomViewAtPointer,
 } from "@/lib/vtt/battlefield-view";
@@ -46,6 +47,7 @@ export function useBattlefieldView({ wrapRef, canvasRef }: Params) {
     panX: number;
     panY: number;
   } | null>(null);
+  const centerAnimRef = useRef<number | null>(null);
   const [isPanning, setIsPanning] = useState(false);
 
   const viewDrawListenersRef = useRef(new Set<() => void>());
@@ -83,6 +85,9 @@ export function useBattlefieldView({ wrapRef, canvasRef }: Params) {
       if (flushViewStateRef.current != null) {
         cancelAnimationFrame(flushViewStateRef.current);
       }
+      if (centerAnimRef.current != null) {
+        cancelAnimationFrame(centerAnimRef.current);
+      }
     },
     []
   );
@@ -95,8 +100,58 @@ export function useBattlefieldView({ wrapRef, canvasRef }: Params) {
   }, []);
 
   const resetView = useCallback(() => {
+    if (centerAnimRef.current != null) {
+      cancelAnimationFrame(centerAnimRef.current);
+      centerAnimRef.current = null;
+    }
     bumpView(DEFAULT_BATTLEFIELD_VIEW, { syncState: true });
   }, [bumpView]);
+
+  const centerOnWorld = useCallback(
+    (wx: number, wy: number, options?: { animate?: boolean }) => {
+      const canvas = canvasRef.current;
+      const wrap = wrapRef.current;
+      if (!canvas) return;
+      const { w, h } = canvasSize(canvas, wrap);
+      if (w < 10 || h < 10) return;
+
+      if (centerAnimRef.current != null) {
+        cancelAnimationFrame(centerAnimRef.current);
+        centerAnimRef.current = null;
+      }
+
+      const target = panViewToCenterWorld(viewRef.current, wx, wy, w, h);
+      const animate = options?.animate !== false;
+
+      if (!animate) {
+        bumpView(target, { syncState: true });
+        return;
+      }
+
+      const start = viewRef.current;
+      const durationMs = 280;
+      const t0 = performance.now();
+
+      const step = (now: number) => {
+        const t = Math.min(1, (now - t0) / durationMs);
+        const ease = t * (2 - t);
+        bumpView({
+          scale: start.scale,
+          panX: start.panX + (target.panX - start.panX) * ease,
+          panY: start.panY + (target.panY - start.panY) * ease,
+        });
+        if (t < 1) {
+          centerAnimRef.current = requestAnimationFrame(step);
+        } else {
+          centerAnimRef.current = null;
+          bumpView(target, { syncState: true });
+        }
+      };
+
+      centerAnimRef.current = requestAnimationFrame(step);
+    },
+    [bumpView, canvasRef, wrapRef]
+  );
 
   const zoomBy = useCallback(
     (factor: number) => {
@@ -241,6 +296,7 @@ export function useBattlefieldView({ wrapRef, canvasRef }: Params) {
     zoomIn,
     zoomOut,
     resetView,
+    centerOnWorld,
     panBy,
     onWheel,
     onPointerDown,

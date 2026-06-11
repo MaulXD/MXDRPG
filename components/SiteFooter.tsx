@@ -14,6 +14,7 @@ export function SiteFooter() {
           Mesa demo
         </Link>
         <Link href="/sign-in">Entrar</Link>
+        <Link href="/aplicativo">Instalar app</Link>
         <Link href="/privacidade">Privacidade</Link>
       </nav>
     </footer>

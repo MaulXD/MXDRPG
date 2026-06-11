@@ -26,6 +26,7 @@ import {
   sanitizeWizardDraftForSave,
   validateWizardDraft,
 } from "@/lib/character/build-from-wizard";
+import { validateDisplayName } from "@/lib/moderation/display-name";
 import { characterToWizardDraft } from "@/lib/character/wizard-from-character";
 import type { CharacterSheet } from "@/lib/character/types";
 import type { SheetEditScope } from "@/lib/character/sheet-edit-request";
@@ -278,9 +279,8 @@ export function CharacterCreationWizard({
 
   function stepError(index: number): string | null {
     if (index === 0) {
-      const name = draft.name.trim();
-      if (!name) return "Nome obrigatório";
-      if (name.length < 2) return "Nome precisa de pelo menos 2 caracteres";
+      const checked = validateDisplayName(draft.name);
+      if (!checked.ok) return checked.error;
       return null;
     }
     if (index === 1) {
