@@ -142,7 +142,7 @@ import { occupiedHexes } from "@/lib/vtt/creature-size";
 import { resolveMonsterCreatureSize } from "@/lib/vtt/monster-sizes";
 import { getActiveSpawnDragPayload } from "@/lib/vtt/spawn-drag";
 import { paTurnRulesForActor } from "@/lib/combat/pa-economy";
-import { canMoveToken, hexToMeters, type MovementPathContext } from "@/lib/vtt/movement";
+import { canMoveToken, type MovementPathContext } from "@/lib/vtt/movement";
 import { animateTokenAlongPath } from "@/lib/vtt/token-move-animation";
 import { axialToPixel, hexDrawRadius } from "@/lib/vtt/hex-math";
 import { canvasCenter, worldToScreen } from "@/lib/vtt/battlefield-view";
@@ -773,21 +773,6 @@ export function HexBattlefield({
     gmRepositionActive: Boolean(gmDragTokenId),
   });
 
-  const moveHoverHint = useMemo(() => {
-    if (gmDragTokenId || !highlights.showMovement || !hoverAxial) return null;
-    const preview = highlights.hoverMovePreview;
-    if (!preview) return null;
-    if (!preview.ok) {
-      return { kind: "error" as const, text: preview.reason ?? "Movimento inválido" };
-    }
-    if (preview.dist <= 0) return null;
-    const pa = preview.paCost > 0 ? `PA +${preview.paCost}` : "PA +0";
-    return {
-      kind: "ok" as const,
-      text: `${preview.dist} hex · ${hexToMeters(preview.dist)} m · ${pa}`,
-    };
-  }, [gmDragTokenId, highlights.showMovement, highlights.hoverMovePreview, hoverAxial]);
-
   const onFloorDrag = useCallback((offsetX: number, offsetY: number) => {
     setFloorPreview((prev) => ({
       mapImageScale: prev?.mapImageScale ?? canvasScene.mapImageScale ?? 1,
@@ -1300,6 +1285,31 @@ export function HexBattlefield({
   ]);
 
   const actionPreviewAnchor = useMemo(() => {
+    const wrap = wrapRef.current;
+    if (!wrap) return null;
+    const w = wrap.clientWidth;
+    const h = wrap.clientHeight;
+    const { ox, oy } = canvasCenter(w, h);
+    const tokenR = hexDrawRadius(displayScene.hexSize) * (battlefieldView.view.scale ?? 1);
+    const gap = 10;
+
+    if (highlights.showMovement && hoverAxial && isMoveMode(actionMode)) {
+      const world = axialToPixel(hoverAxial.q, hoverAxial.r, displayScene.hexSize, ox, oy);
+      const screen = worldToScreen(world.x, world.y, w, h, battlefieldView.view);
+      return { x: screen.x, y: screen.y - tokenR - gap };
+    }
+
+    if (
+      highlights.isAreaSpellMode &&
+      activeCombatAction &&
+      hoverAxial &&
+      !highlights.needsAreaDirection
+    ) {
+      const world = axialToPixel(hoverAxial.q, hoverAxial.r, displayScene.hexSize, ox, oy);
+      const screen = worldToScreen(world.x, world.y, w, h, battlefieldView.view);
+      return { x: screen.x, y: screen.y - tokenR - gap };
+    }
+
     if (
       !hoverTargetId ||
       !activeCombatAction ||
@@ -1308,13 +1318,8 @@ export function HexBattlefield({
     ) {
       return null;
     }
-    const wrap = wrapRef.current;
-    if (!wrap) return null;
     const defender = displayScene.tokens.find((t) => t.id === hoverTargetId);
     if (!defender) return null;
-    const w = wrap.clientWidth;
-    const h = wrap.clientHeight;
-    const { ox, oy } = canvasCenter(w, h);
     const world = axialToPixel(
       defender.axial.q,
       defender.axial.r,
@@ -1323,14 +1328,15 @@ export function HexBattlefield({
       oy
     );
     const screen = worldToScreen(world.x, world.y, w, h, battlefieldView.view);
-    const tokenR = hexDrawRadius(displayScene.hexSize) * (battlefieldView.view.scale ?? 1);
-    const gap = 10;
     return { x: screen.x, y: screen.y - tokenR - gap };
   }, [
+    highlights.showMovement,
+    highlights.isAreaSpellMode,
+    highlights.needsAreaDirection,
+    hoverAxial,
+    actionMode,
     hoverTargetId,
     activeCombatAction,
-    actionMode,
-    highlights.isAreaSpellMode,
     displayScene.tokens,
     displayScene.hexSize,
     battlefieldView.view,
@@ -2571,15 +2577,6 @@ export function HexBattlefield({
           }}
           onContextMenu={pointer.onContextMenu}
         />
-        {moveHoverHint ? (
-          <div
-            className={`vtt-move-hover-hint${moveHoverHint.kind === "error" ? " vtt-move-hover-hint--err" : ""}`}
-            role="status"
-            aria-live="polite"
-          >
-            {moveHoverHint.text}
-          </div>
-        ) : null}
         {markupTextDraft && canvasWrapSize.w > 0 && canvasWrapSize.h > 0 ? (
           <MapMarkupTextEditor
             wx={markupTextDraft.wx}

@@ -17,7 +17,14 @@ import { canCastAreaAt } from "@/lib/combat/area-spell";
 import { estimateTargetCombatPreview } from "@/lib/combat/hit-chance";
 import type { CharacterSheet } from "@/lib/character/types";
 import type { Axial } from "@/lib/vtt/hex-math";
-import { canMoveToken, type MovementPathContext } from "@/lib/vtt/movement";
+import {
+  canMoveToken,
+  hexToMeters,
+  formatMovementLabel,
+  movementRunMax,
+  movementWalkMax,
+  type MovementPathContext,
+} from "@/lib/vtt/movement";
 import type { BattleToken } from "@/lib/vtt/types";
 
 export type ActionPreviewLine = {
@@ -56,28 +63,42 @@ export function previewMove(
 ): ActionPreview {
   const check = canMoveToken(token, target, mode, ctx, paOpts);
   const paChip = unifiedPaChipForMove(token, check, paOpts);
-  const tier =
-    check.paCost === 0
-      ? "faixa sem PA extra"
-      : mode === "run"
-        ? "corrida (+PA)"
-        : "caminhada com PA";
+  const lines: ActionPreviewLine[] = [];
+
+  if (!check.ok) {
+    lines.push({ text: check.reason ?? "Hex inválido", tone: "err" });
+  } else if (check.dist <= 0) {
+    lines.push({ text: "Mesmo hex — escolha outro destino", tone: "warn" });
+  } else {
+    const paLine =
+      check.paCost === 0
+        ? "+0 PA"
+        : mode === "run"
+          ? `+${check.paCost} PA (corrida)`
+          : `+${check.paCost} PA (caminhada)`;
+    lines.push({
+      text: paLine,
+      tone: check.paCost > 0 ? "warn" : "ok",
+    });
+    const moveMax = mode === "run" ? movementRunMax(token) : movementWalkMax(token);
+    lines.push({
+      text: `Após mover: ${formatMovementLabel(check.nextSpent, moveMax)}`,
+      tone: "ok",
+    });
+    lines.push({
+      text: `Este passo: ${check.dist} hex · ${hexToMeters(check.dist)} m`,
+      tone: "ok",
+    });
+    if (check.path && check.path.length > 1) {
+      lines.push({ text: `Rota: ${check.path.length - 1} passos`, tone: "ok" });
+    }
+  }
 
   return withPaChip(
     mode === "walk" ? "Caminhada" : "Corrida",
     paChip,
-    [
-      {
-        text: check.ok
-          ? `${check.dist} hex · ${tier}`
-          : (check.reason ?? "Hex inválido"),
-        tone: check.ok ? "ok" : "err",
-      },
-      ...(check.ok && check.path && check.path.length > 1
-        ? [{ text: `Rota: ${check.path.length - 1} passos`, tone: "ok" as const }]
-        : []),
-    ],
-    check.ok
+    lines,
+    check.ok && check.dist > 0
   );
 }
 
