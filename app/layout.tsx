@@ -8,6 +8,7 @@ import { getSession } from "@/lib/auth/session";
 import { SiteShell } from "@/components/SiteShell";
 import { SiteHeaderWrapper } from "@/components/SiteHeaderWrapper";
 import { SiteFooter } from "@/components/SiteFooter";
+import { ServiceWorkerRegister } from "@/components/pwa/ServiceWorkerRegister";
 import { ThemeScript } from "@/components/ThemeScript";
 import "./globals.css";
 import "@/components/nav-motion.css";
@@ -39,9 +40,15 @@ export const metadata: Metadata = {
   title: "Eldarin — VTT tático hexagonal",
   description:
     "Mesa virtual no navegador: combaté hex, PA, fichas medievais. Admin, Mestre e Jogador.",
+  applicationName: "Eldarin",
+  appleWebApp: {
+    capable: true,
+    title: "Eldarin",
+    statusBarStyle: "black-translucent",
+  },
   icons: {
     icon: [{ url: "/favicon.png", type: "image/png" }],
-    apple: [{ url: "/favicon.png", type: "image/png" }],
+    apple: [{ url: "/icon.png", type: "image/png" }],
   },
 };
 
@@ -61,6 +68,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <ThemeScript />
       </head>
       <body>
+        <ServiceWorkerRegister />
         <AuthProvider publishableKey={clerkPublishableKey}>
           <FriendsChatProvider initialUserId={session?.user.id ?? null}>
             <NotificationsProvider initialUserId={session?.user.id ?? null}>

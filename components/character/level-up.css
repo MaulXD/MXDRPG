@@ -25,7 +25,7 @@
 .lu-overlay {
   position: fixed;
   inset: 0;
-  z-index: 1300;
+  z-index: 10100;
   background: rgba(8, 6, 4, 0.78);
   backdrop-filter: blur(6px);
   display: flex;

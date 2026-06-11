@@ -13,6 +13,7 @@ import {
 import { isPortraitOnlyPatch } from "@/lib/auth/portrait-access";
 import { canEditCharacterPortrait } from "@/lib/auth/portrait-access-server";
 import { getSession } from "@/lib/auth/session";
+import { validateDisplayName } from "@/lib/moderation/display-name";
 import type { CharacterSheet } from "@/lib/character/types";
 import { applyIdentityPatch, type IdentityPatch } from "@/lib/character/identity";
 import { normalizeReligionId } from "@/lib/character/pantheon";
@@ -100,11 +101,19 @@ export async function PATCH(request: Request, { params }: Params) {
     return NextResponse.json({ error: "Sem permissão" }, { status: 403 });
   }
 
+  if (patch.name !== undefined) {
+    const checked = validateDisplayName(String(patch.name));
+    if (!checked.ok) {
+      return NextResponse.json({ error: checked.error }, { status: 400 });
+    }
+    patch.name = checked.name;
+  }
+
   const safe = await sanitizeActorPatch(patch);
   let merged = normalizeCharacter({
     ...existing,
     ...safe,
-    name: patch.name !== undefined ? String(patch.name).trim().slice(0, 80) : existing.name,
+    name: patch.name !== undefined ? patch.name : existing.name,
     biography:
       patch.biography !== undefined ? String(patch.biography).slice(0, 2000) : existing.biography,
   });

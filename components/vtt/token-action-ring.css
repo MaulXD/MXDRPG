@@ -3,11 +3,11 @@
   inset: 0;
   z-index: 240;
   background: rgba(4, 6, 10, 0.36);
-  animation: tar-backdrop-in 0.28s ease-out both;
+  animation: tar-backdrop-in 0.22s ease-out both;
 }
 
 .token-action-ring-backdrop--exiting {
-  animation: tar-backdrop-out 0.42s var(--ease-out) both;
+  animation: tar-backdrop-out 0.3s ease-in both;
   pointer-events: none;
 }
 
@@ -60,33 +60,39 @@
     rgba(201, 169, 98, 0.14) calc(360deg / var(--tar-spoke-count, 6) - 1.5deg)
       calc(360deg / var(--tar-spoke-count, 6))
   );
-  animation: tar-track-radial-in 0.38s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: tar-track-radial-in 0.3s cubic-bezier(0.19, 1, 0.22, 1) 0.05s both;
   pointer-events: none;
 }
 
+.token-action-ring--settled:not(.token-action-ring--exiting) .token-action-ring__track {
+  animation: none;
+  opacity: 1;
+  transform: translate3d(-50%, -50%, 0) scale(1) rotate(0deg);
+}
+
 .token-action-ring--exiting .token-action-ring__track {
-  animation: tar-track-radial-out 0.42s cubic-bezier(0.55, 0, 0.95, 0.4) both;
+  animation: tar-track-radial-out 0.3s cubic-bezier(0.55, 0, 1, 0.38) both;
 }
 
 @keyframes tar-track-radial-in {
   0% {
     opacity: 0;
-    transform: translate3d(-50%, -50%, 0) scale(0.45);
+    transform: translate3d(-50%, -50%, 0) scale(0.62) rotate(-10deg);
   }
   100% {
     opacity: 1;
-    transform: translate3d(-50%, -50%, 0) scale(1);
+    transform: translate3d(-50%, -50%, 0) scale(1) rotate(0deg);
   }
 }
 
 @keyframes tar-track-radial-out {
   0% {
     opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
+    transform: translate3d(-50%, -50%, 0) scale(1) rotate(0deg);
   }
   100% {
     opacity: 0;
-    transform: translate(-50%, -50%) scale(0.35);
+    transform: translate3d(-50%, -50%, 0) scale(0.5) rotate(8deg);
   }
 }
 
@@ -120,22 +126,33 @@
   box-shadow:
     0 12px 32px rgba(0, 0, 0, 0.5),
     0 0 24px color-mix(in srgb, var(--tar-token, #c9a962) 35%, transparent);
-  animation: tar-center-radial-in 0.34s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: tar-center-radial-in 0.26s cubic-bezier(0.19, 1, 0.22, 1) both;
   transition:
     border-color 0.15s,
     background 0.15s,
-    filter 0.15s;
+    filter 0.15s,
+    transform 0.14s var(--ease-out, ease-out);
+}
+
+.token-action-ring--settled:not(.token-action-ring--exiting) .token-action-ring__center {
+  animation: none;
+  opacity: 1;
+  transform: translate3d(-50%, -50%, 0) scale(1);
 }
 
 .token-action-ring--exiting .token-action-ring__center {
-  animation: tar-center-radial-out 0.4s cubic-bezier(0.55, 0, 1, 0.38) both;
+  animation: tar-center-radial-out 0.28s cubic-bezier(0.55, 0, 1, 0.38) both;
   pointer-events: none;
 }
 
 @keyframes tar-center-radial-in {
   0% {
     opacity: 0;
-    transform: translate3d(-50%, -50%, 0) scale(0.5);
+    transform: translate3d(-50%, -50%, 0) scale(0.72);
+  }
+  72% {
+    opacity: 1;
+    transform: translate3d(-50%, -50%, 0) scale(1.04);
   }
   100% {
     opacity: 1;
@@ -146,11 +163,11 @@
 @keyframes tar-center-radial-out {
   0% {
     opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
+    transform: translate3d(-50%, -50%, 0) scale(1);
   }
   100% {
     opacity: 0;
-    transform: translate(-50%, -50%) scale(0.35);
+    transform: translate3d(-50%, -50%, 0) scale(0.55);
   }
 }
 
@@ -228,9 +245,9 @@
     0 10px 24px rgba(0, 0, 0, 0.42),
     0 0 12px var(--tar-glow, transparent);
   opacity: 0;
-  transform: translate3d(-50%, -50%, 0) scale(0.2);
-  animation: tar-slot-radial-in 0.42s cubic-bezier(0.22, 1, 0.36, 1) both;
-  animation-delay: calc(0.04s + var(--tar-i, 0) * 0.03s);
+  transform: translate3d(-50%, -50%, 0) scale(0.35);
+  animation: tar-slot-radial-in 0.34s cubic-bezier(0.19, 1, 0.22, 1) both;
+  animation-delay: calc(0.1s + var(--tar-i, 0) * 0.038s);
   will-change: transform, opacity;
   transition:
     border-color 0.12s,
@@ -238,7 +255,10 @@
     box-shadow 0.12s;
 }
 
-.token-action-ring--settled .token-action-ring__slot {
+.token-action-ring--settled:not(.token-action-ring--exiting) .token-action-ring__slot {
+  animation-name: tar-slot-swap-in;
+  animation-duration: 0.24s;
+  animation-delay: calc(var(--tar-i, 0) * 0.03s);
   will-change: auto;
   transition:
     border-color 0.12s,
@@ -248,8 +268,8 @@
 }
 
 .token-action-ring--exiting .token-action-ring__slot {
-  animation: tar-slot-radial-out 0.4s cubic-bezier(0.55, 0, 0.92, 0.38) both;
-  animation-delay: calc((var(--tar-slot-count, 6) - 1 - var(--tar-i, 0)) * 0.028s);
+  animation: tar-slot-radial-out 0.28s cubic-bezier(0.55, 0, 1, 0.38) both;
+  animation-delay: calc((var(--tar-slot-count, 6) - 1 - var(--tar-i, 0)) * 0.024s);
   pointer-events: none;
 }
 
@@ -320,16 +340,28 @@
 @keyframes tar-slot-radial-in {
   0% {
     opacity: 0;
-    transform: translate3d(-50%, -50%, 0) scale(calc(var(--tar-slot-scale, 1) * 0.25));
+    transform: translate3d(-50%, -50%, 0) scale(calc(var(--tar-slot-scale, 1) * 0.32));
   }
-  55% {
-    opacity: 0.92;
+  100% {
+    opacity: 1;
     transform: translate3d(
-        calc(-50% + var(--tar-x, 0px) * 0.88),
-        calc(-50% + var(--tar-y, 0px) * 0.88),
+        calc(-50% + var(--tar-x, 0px)),
+        calc(-50% + var(--tar-y, 0px)),
         0
       )
-      scale(calc(var(--tar-slot-scale, 1) * 0.96));
+      scale(var(--tar-slot-scale, 1));
+  }
+}
+
+@keyframes tar-slot-swap-in {
+  0% {
+    opacity: 0;
+    transform: translate3d(
+        calc(-50% + var(--tar-x, 0px)),
+        calc(-50% + var(--tar-y, 0px)),
+        0
+      )
+      scale(calc(var(--tar-slot-scale, 1) * 0.86));
   }
   100% {
     opacity: 1;
@@ -354,7 +386,7 @@
   }
   100% {
     opacity: 0;
-    transform: translate3d(-50%, -50%, 0) scale(calc(var(--tar-slot-scale, 1) * 0.2));
+    transform: translate3d(-50%, -50%, 0) scale(calc(var(--tar-slot-scale, 1) * 0.28));
   }
 }
 
@@ -577,8 +609,14 @@
   .token-action-ring__center,
   .token-action-ring__slot,
   .token-action-ring__detail {
-    animation: none;
+    animation: none !important;
     opacity: 1;
+    filter: none;
+  }
+
+  .token-action-ring__track,
+  .token-action-ring__center {
+    transform: translate3d(-50%, -50%, 0) scale(1);
   }
 
   .token-action-ring__slot {

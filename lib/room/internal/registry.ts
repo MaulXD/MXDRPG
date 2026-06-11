@@ -19,6 +19,7 @@ import { prunePings } from "@/lib/vtt/ping";
 import { getRoomGmCreations } from "../gm-creations";
 import { normalizeRoomSettings } from "../settings";
 import { backfillActorPortraitsFromTokens } from "../portrait-sync";
+import { migrateLegacyDisplayName } from "@/lib/moderation/display-name";
 import { createDemoRoom, syncLinkedTokens } from "../sync";
 import type { RoomSnapshot, RoomState } from "../types";
 
@@ -233,6 +234,12 @@ export async function getRoom(roomId: string): Promise<RoomState | null> {
   if (room) {
     room.settings = normalizeRoomSettings(room.settings);
     if (!room.adventureId) room.adventureId = room.roomId;
+    const legacyName = migrateLegacyDisplayName(room.name);
+    if (legacyName !== room.name) {
+      room.name = legacyName;
+      room.scene = { ...room.scene, name: legacyName };
+      return persistRoom(roomId, room);
+    }
   }
   return room;
 }

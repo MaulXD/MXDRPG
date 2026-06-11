@@ -712,3 +712,20 @@ export async function gmActorProgress(
   }
   return res.json() as Promise<RoomSnapshot>;
 }
+
+export async function gmSavingThrows(
+  roomId: string,
+  body: import("@/lib/room/handlers/gm-saving-throw").GmSavingThrowRequest
+): Promise<RoomSnapshot> {
+  const res = await fetch(`/api/room/${roomId}/gm/saving-throw`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    credentials: "same-origin",
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) {
+    const err = (await res.json()) as { error?: string };
+    throw new Error(err.error ?? "Falha ao rolar salvaguarda");
+  }
+  return res.json() as Promise<RoomSnapshot>;
+}

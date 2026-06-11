@@ -1,15 +1,12 @@
 "use client";
 
 import type { CharacterSheet } from "@/lib/character/types";
-import type { LevelUpRoomResponse } from "@/hooks/useRoomSync";
 import { CharacterIdentityEditor } from "@/components/character/CharacterIdentityEditor";
-import { LevelUpWizard } from "@/components/character/LevelUpWizard";
 import { FutureLevelsPanel } from "@/components/character/FutureLevelsPanel";
 import { SubclassTrackPanel } from "@/components/character/SubclassTrackPanel";
 import { CombatLoadoutPanel } from "@/components/character/CombatLoadoutPanel";
 import { SheetEditRequestButton } from "@/components/character/SheetEditRequestButton";
 import type { IdentityPatch } from "@/lib/character/identity";
-import type { LevelUpChoices } from "@/lib/character/level-up";
 import type { CombatLoadout } from "@/lib/combat/types";
 
 type Props = {
@@ -21,9 +18,7 @@ type Props = {
   canEdit: boolean;
   snapshotRevision?: number;
   onRefresh: () => void;
-  onLevelApplied: (patch: LevelUpRoomResponse) => void;
   onSaveIdentity?: (patch: IdentityPatch) => Promise<void>;
-  onLevelUp?: (choices: LevelUpChoices) => Promise<void>;
   onSaveCombatLoadout?: (loadout: CombatLoadout) => Promise<void>;
 };
 
@@ -37,9 +32,7 @@ export function SheetDdbManagePanel({
   canEdit,
   snapshotRevision,
   onRefresh,
-  onLevelApplied,
   onSaveIdentity,
-  onLevelUp,
   onSaveCombatLoadout,
 }: Props) {
   if (!canEdit && !inRoom) return null;
@@ -51,17 +44,6 @@ export function SheetDdbManagePanel({
           <span className="sheet-live-dot" aria-hidden />
           Sync mesa · rev {snapshotRevision ?? 0}
         </div>
-      ) : null}
-
-      {canEdit ? (
-        <LevelUpWizard
-          actor={live}
-          roomId={inRoom ? roomId : undefined}
-          canEdit={canEdit}
-          onDone={onRefresh}
-          onApplied={inRoom ? (patch) => onLevelApplied(patch) : undefined}
-          onLevelUp={!inRoom ? onLevelUp : undefined}
-        />
       ) : null}
 
       <SubclassTrackPanel actor={live} popup />

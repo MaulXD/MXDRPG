@@ -86,3 +86,19 @@ export function zoomViewAtPointer(
     panY: py - (wy - oy) * scale - oy,
   };
 }
+
+/** Centraliza um ponto do tabuleiro (px mundo) no meio do canvas, mantendo o zoom. */
+export function panViewToCenterWorld(
+  view: BattlefieldView,
+  wx: number,
+  wy: number,
+  w: number,
+  h: number
+): BattlefieldView {
+  const { ox, oy } = canvasCenter(w, h);
+  return {
+    ...view,
+    panX: -(wx - ox) * view.scale,
+    panY: -(wy - oy) * view.scale,
+  };
+}

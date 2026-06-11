@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { validateDisplayName } from "@/lib/moderation/display-name";
 
 type RoomRow = {
   roomId: string;
@@ -38,10 +39,16 @@ export function CampaignLobby() {
     e.preventDefault();
     setLoading(true);
     setError("");
+    const checked = validateDisplayName(newName);
+    if (!checked.ok) {
+      setError(checked.error);
+      setLoading(false);
+      return;
+    }
     const res = await fetch("/api/campaigns", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name: newName }),
+      body: JSON.stringify({ name: checked.name }),
     });
     const data = await res.json();
     setLoading(false);

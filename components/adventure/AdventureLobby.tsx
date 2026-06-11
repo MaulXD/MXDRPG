@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { adventureRestoreDeadline } from "@/lib/adventure/lifecycle";
+import { validateDisplayName } from "@/lib/moderation/display-name";
 
 type AdventureRow = {
   adventureId: string;
@@ -74,11 +75,18 @@ export function AdventureLobby() {
     creatingRef.current = true;
     setLoading(true);
     setError("");
+    const checked = validateDisplayName(newName);
+    if (!checked.ok) {
+      setError(checked.error);
+      creatingRef.current = false;
+      setLoading(false);
+      return;
+    }
     try {
       const res = await fetch("/api/adventures", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: newName, accessMode, rpgSystem: "eldarin" }),
+        body: JSON.stringify({ name: checked.name, accessMode, rpgSystem: "eldarin" }),
       });
       const data = (await res.json().catch(() => ({}))) as {
         error?: string;

@@ -44,6 +44,8 @@ type Props = {
   /** Página /personagem/:id — sem arraste, toolbar só com ações */
   standalone?: boolean;
   loadout?: ReactNode;
+  /** Barra de XP / level up — visível na ficha sem abrir gestão colapsada */
+  progression?: ReactNode;
   drawer: ReactNode;
   inRoom: boolean;
   roomId?: string;
@@ -62,6 +64,7 @@ export function SheetPopupDdbView({
   toolbarDrag,
   standalone = false,
   loadout,
+  progression,
   drawer,
   inRoom,
   roomId,
@@ -182,6 +185,12 @@ export function SheetPopupDdbView({
           })}
         </div>
       </div>
+
+      {progression ? (
+        <div className="sheet-ddb-progression" data-no-drag>
+          {progression}
+        </div>
+      ) : null}
 
       <div className="sheet-ddb-body">
         <aside className="sheet-ddb-col sheet-ddb-col--left">

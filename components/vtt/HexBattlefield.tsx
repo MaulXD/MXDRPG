@@ -138,7 +138,7 @@ import {
 } from "@/lib/vtt/map-luminance";
 import { useBattlefieldPointer } from "@/hooks/vtt/useBattlefieldPointer";
 import { useMonsterSpawnDrop } from "@/hooks/vtt/useMonsterSpawnDrop";
-import { occupiedHexes } from "@/lib/vtt/creature-size";
+import { creatureSizeOf, occupiedHexes, tokenPixelCenter } from "@/lib/vtt/creature-size";
 import { resolveMonsterCreatureSize } from "@/lib/vtt/monster-sizes";
 import { getActiveSpawnDragPayload } from "@/lib/vtt/spawn-drag";
 import { paTurnRulesForActor } from "@/lib/combat/pa-economy";
@@ -662,6 +662,11 @@ export function HexBattlefield({
 
   const battlefieldView = useBattlefieldView({ wrapRef, canvasRef });
   const canvasWrapSize = useCanvasWrapSize(wrapRef);
+  const combatTurnFocusKey = useMemo(() => {
+    if (!combat?.order?.length) return null;
+    return `${combat.round}:${combat.activeIndex}:${turnActiveId ?? ""}`;
+  }, [combat?.round, combat?.activeIndex, combat?.order?.length, turnActiveId]);
+  const prevCombatTurnFocusKey = useRef<string | null>(null);
 
   const [displayGridRadius, setDisplayGridRadius] = useState(() =>
     displayHexGridRadius(
@@ -1185,6 +1190,44 @@ export function HexBattlefield({
     },
     []
   );
+
+  useEffect(() => {
+    if (combatTurnFocusKey === null) {
+      prevCombatTurnFocusKey.current = null;
+      return;
+    }
+    if (prevCombatTurnFocusKey.current === null) {
+      prevCombatTurnFocusKey.current = combatTurnFocusKey;
+      return;
+    }
+    if (prevCombatTurnFocusKey.current === combatTurnFocusKey) return;
+    prevCombatTurnFocusKey.current = combatTurnFocusKey;
+
+    if (!turnActiveId) return;
+    const token = displayScene.tokens.find((t) => t.id === turnActiveId);
+    if (!token) return;
+
+    const canvas = canvasRef.current;
+    if (!canvas || canvas.clientWidth < 10 || canvas.clientHeight < 10) return;
+
+    const { ox, oy } = canvasCenter(canvas.clientWidth, canvas.clientHeight);
+    const pos = tokenDrawPosition(token);
+    const size = creatureSizeOf(token, actorRacas[token.actorId ?? ""]);
+    const { x, y } = tokenPixelCenter(pos, size, displayScene.hexSize, ox, oy);
+
+    requestAnimationFrame(() => {
+      battlefieldView.centerOnWorld(x, y);
+    });
+  }, [
+    combatTurnFocusKey,
+    turnActiveId,
+    displayScene.tokens,
+    displayScene.hexSize,
+    actorRacas,
+    tokenDrawPosition,
+    battlefieldView.centerOnWorld,
+    canvasRef,
+  ]);
 
   const castAreaSpell = useCallback(
     async (center: Axial, direction?: number) => {
@@ -2118,6 +2161,7 @@ export function HexBattlefield({
       <GmToolsPanel
         roomId={roomId}
         scene={displayScene}
+        tokens={displayScene.tokens ?? []}
         snapshot={snapshot}
         inviteCode={inviteCode}
         roomActors={roomActors}
