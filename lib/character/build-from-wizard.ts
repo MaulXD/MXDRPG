@@ -13,6 +13,7 @@ import {
   sanitizeStarterEquipmentForClass,
   validateStarterEquipment,
 } from "@/lib/character/starter-kits";
+import { validateDisplayName } from "@/lib/moderation/display-name";
 
 const MAX_PORTRAIT_FIELD_CHARS = 900_000;
 
@@ -40,9 +41,12 @@ export function sanitizeWizardDraftForSave(
 }
 
 export function validateWizardDraft(draft: CharacterWizardDraft): string | null {
-  const name = draft.name.trim();
-  if (!name || name.length < 2) return "Informe o nome do personagem";
-  if (name.length > 80) return "Nome muito longo (máx 80)";
+  const nameCheck = validateDisplayName(draft.name);
+  if (!nameCheck.ok) {
+    if (nameCheck.error.includes("2 caracteres")) return "Informe o nome do personagem";
+    return nameCheck.error;
+  }
+  const name = nameCheck.name;
   if (!draft.raca) return "Escolha uma raça";
   if (!draft.classe) return "Escolha uma classe";
   if (!getClass(draft.classe)) return "Classe inválida";

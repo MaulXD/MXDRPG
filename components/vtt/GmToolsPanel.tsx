@@ -1,17 +1,23 @@
 "use client";
 
-import type { BattleScene } from "@/lib/vtt/types";
+import { useState } from "react";
+import type { BattleScene, BattleToken } from "@/lib/vtt/types";
 import type { Axial } from "@/lib/vtt/hex-math";
 import type { RoomSnapshot } from "@/lib/room/types";
 import { GmActionHistoryPanel } from "@/components/vtt/GmActionHistoryPanel";
 import { GmActorProgressPanel } from "@/components/vtt/GmActorProgressPanel";
 import { GmCreationsPanel } from "@/components/vtt/GmCreationsPanel";
+import { GmSavingThrowPanel } from "@/components/vtt/GmSavingThrowPanel";
 import { RoomSettingsPanel } from "@/components/vtt/RoomSettingsPanel";
 import type { CombatUndoEntry } from "@/lib/room/types";
+import "./gm-tools.css";
+
+type GmTab = "sala" | "jogadores" | "criaturas" | "combate";
 
 type Props = {
   roomId: string;
   scene: BattleScene;
+  tokens: BattleToken[];
   snapshot: RoomSnapshot;
   inviteCode?: string | null;
   roomActors: RoomSnapshot["actors"];
@@ -20,10 +26,18 @@ type Props = {
   onSceneUpdated: (snap: RoomSnapshot) => void;
 };
 
-/** Configurações e ferramentas do mestre (sem editor de mapa). */
+const TABS: { id: GmTab; label: string; hint: string }[] = [
+  { id: "sala", label: "Sala", hint: "Nome, visibilidade e convite" },
+  { id: "jogadores", label: "Jogadores", hint: "XP, vida e salvaguardas" },
+  { id: "criaturas", label: "Criaturas", hint: "Templates do mestre" },
+  { id: "combate", label: "Combate", hint: "Desfazer ações" },
+];
+
+/** Ferramentas do mestre — menu em abas. */
 export function GmToolsPanel({
   roomId,
   scene,
+  tokens,
   snapshot,
   inviteCode = null,
   roomActors,
@@ -31,41 +45,86 @@ export function GmToolsPanel({
   combatUndo = [],
   onSceneUpdated,
 }: Props) {
+  const [tab, setTab] = useState<GmTab>("jogadores");
+  const active = TABS.find((t) => t.id === tab) ?? TABS[0];
+
   return (
-    <aside className="vtt-sidebar vtt-sidebar--gm">
-      <p className="vtt-eyebrow">Ferramentas do mestre</p>
-      <p className="vtt-sync-live">
-        <span className="vtt-sync-dot" aria-hidden />
-        Sync · rev {snapshot.revision}
-      </p>
-      <h2 className="vtt-title">{scene.name}</h2>
-      <p className="vtt-hint">
-        <strong>Delete</strong> remove token selecionado. Ctrl+clique revela névoa. Alt+clique envia
-        ping no mapa.
-      </p>
+    <aside className="vtt-sidebar vtt-sidebar--gm vtt-gm-tools">
+      <header className="vtt-gm-tools__head">
+        <p className="vtt-eyebrow">Menu do mestre</p>
+        <p className="vtt-sync-live">
+          <span className="vtt-sync-dot" aria-hidden />
+          Sync · rev {snapshot.revision}
+        </p>
+        <h2 className="vtt-title vtt-gm-tools__title">{scene.name}</h2>
+      </header>
 
-      <RoomSettingsPanel
-        roomId={roomId}
-        roomName={scene.name}
-        settings={snapshot.settings}
-        onUpdated={onSceneUpdated}
-      />
+      <nav className="vtt-gm-tools__nav" aria-label="Seções do mestre">
+        {TABS.map((t) => (
+          <button
+            key={t.id}
+            type="button"
+            className={`vtt-gm-tools__tab${tab === t.id ? " is-active" : ""}`}
+            aria-current={tab === t.id ? "page" : undefined}
+            onClick={() => setTab(t.id)}
+          >
+            {t.label}
+          </button>
+        ))}
+      </nav>
 
-      <GmActorProgressPanel roomId={roomId} roomActors={roomActors} onUpdated={onSceneUpdated} />
+      <p className="vtt-gm-tools__tab-hint">{active.hint}</p>
 
-      <GmActionHistoryPanel
-        roomId={roomId}
-        combatUndo={combatUndo}
-        onUpdated={onSceneUpdated}
-      />
+      <div className="vtt-gm-tools__body">
+        {tab === "sala" ? (
+          <>
+            <p className="vtt-hint vtt-gm-tools__short-hint">
+              <strong>Delete</strong> remove token selecionado. Ctrl+clique revela névoa. Alt+clique
+              envia ping.
+            </p>
+            <RoomSettingsPanel
+              roomId={roomId}
+              roomName={scene.name}
+              settings={snapshot.settings}
+              onUpdated={onSceneUpdated}
+            />
+          </>
+        ) : null}
 
-      <GmCreationsPanel
-        roomId={roomId}
-        creations={snapshot.gmCreations ?? snapshot.settings.gmCreations ?? {}}
-        roomActors={roomActors}
-        spawnAxial={spawnAxial}
-        onUpdated={onSceneUpdated}
-      />
+        {tab === "jogadores" ? (
+          <>
+            <GmSavingThrowPanel
+              roomId={roomId}
+              tokens={tokens}
+              roomActors={roomActors}
+              onUpdated={onSceneUpdated}
+            />
+            <GmActorProgressPanel
+              roomId={roomId}
+              roomActors={roomActors}
+              onUpdated={onSceneUpdated}
+            />
+          </>
+        ) : null}
+
+        {tab === "criaturas" ? (
+          <GmCreationsPanel
+            roomId={roomId}
+            creations={snapshot.gmCreations ?? snapshot.settings.gmCreations ?? {}}
+            roomActors={roomActors}
+            spawnAxial={spawnAxial}
+            onUpdated={onSceneUpdated}
+          />
+        ) : null}
+
+        {tab === "combate" ? (
+          <GmActionHistoryPanel
+            roomId={roomId}
+            combatUndo={combatUndo}
+            onUpdated={onSceneUpdated}
+          />
+        ) : null}
+      </div>
     </aside>
   );
 }

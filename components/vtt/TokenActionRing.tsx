@@ -89,9 +89,9 @@ type Props = {
 
 const RING_RADIUS_BASE = 152;
 /** Duração da animação de saída (sincronizar com CSS). */
-const TAR_RING_EXIT_MS = 420;
-/** Tempo até hover/transições após entrada (radial → posição final). */
-const TAR_RING_INTRO_MS = 560;
+const TAR_RING_EXIT_MS = 320;
+/** Tempo até hover/transições após entrada radial inicial. */
+const TAR_RING_INTRO_MS = 500;
 
 function ringLayout(slotCount: number): { radius: number; track: number; slotScale: number } {
   if (slotCount <= 5) {
@@ -521,7 +521,7 @@ export function TokenActionRing({
   }, [ringView, beginClose]);
 
   const slice = (2 * Math.PI) / Math.max(displaySlots.length, 1);
-  const ringKey = `${token.id}-${ringView}-${displaySlots.length}`;
+  const slotsKey = `${ringView}-${displaySlots.map((s) => s.id).join("|")}`;
 
   useEffect(() => {
     setIntroDone(false);
@@ -532,7 +532,7 @@ export function TokenActionRing({
     return () => {
       if (introTimerRef.current) clearTimeout(introTimerRef.current);
     };
-  }, [ringKey]);
+  }, [token.id]);
 
   const centerTitle =
     ringView === "main"
@@ -566,7 +566,6 @@ export function TokenActionRing({
         onContextMenu={(e) => e.preventDefault()}
       >
         <span
-          key={ringKey}
           className="token-action-ring__track"
           style={
             {
@@ -614,7 +613,7 @@ export function TokenActionRing({
           const pos = slotRadialPosition(angle, layout.radius);
           return (
             <button
-              key={`${ringKey}-${slot.id}`}
+              key={`${slotsKey}-${slot.id}`}
               type="button"
               role="menuitem"
               className={`token-action-ring__slot token-action-ring__slot--${slot.tone}${

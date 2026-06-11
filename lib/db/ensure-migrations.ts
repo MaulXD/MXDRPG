@@ -168,6 +168,27 @@ export async function ensureDbMigrations(): Promise<void> {
         WHERE status = 'pending';
     `);
 
+    await sql.unsafe(`
+      UPDATE eldarin_adventures
+      SET
+        name = 'Minha paz',
+        updated_at = (EXTRACT(EPOCH FROM NOW()) * 1000)::BIGINT
+      WHERE lower(trim(name)) = 'minha rola';
+
+      UPDATE eldarin_rooms
+      SET
+        name = 'Minha paz',
+        scene = jsonb_set(COALESCE(scene, '{}'::jsonb), '{name}', '"Minha paz"'::jsonb, true),
+        updated_at = (EXTRACT(EPOCH FROM NOW()) * 1000)::BIGINT
+      WHERE lower(trim(name)) = 'minha rola';
+
+      UPDATE eldarin_characters
+      SET
+        data = jsonb_set(COALESCE(data, '{}'::jsonb), '{name}', '"Minha paz"'::jsonb, true),
+        updated_at = (EXTRACT(EPOCH FROM NOW()) * 1000)::BIGINT
+      WHERE lower(trim(data->>'name')) = 'minha rola';
+    `);
+
     ensured = true;
   })().catch((err) => {
     ensuring = null;

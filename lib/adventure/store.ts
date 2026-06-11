@@ -23,6 +23,10 @@ import {
 } from "@/lib/room/adventure-room";
 import { rooms } from "@/lib/room/internal/registry";
 import { getRoom } from "@/lib/room/store";
+import {
+  migrateLegacyDisplayName,
+  validateDisplayName,
+} from "@/lib/moderation/display-name";
 
 declare global {
   // eslint-disable-next-line no-var
@@ -150,17 +154,41 @@ async function purgeAdventureIfExpired(adv: Adventure): Promise<Adventure | null
   return null;
 }
 
+async function maybeMigrateLegacyAdventureName(adv: Adventure): Promise<Adventure> {
+  const next = migrateLegacyDisplayName(adv.name);
+  if (next === adv.name) return adv;
+  const updated: Adventure = { ...adv, name: next, updatedAt: Date.now() };
+  adventures().set(updated.adventureId, updated);
+  if (dbEnabled() && updated.adventureId !== "demo") {
+    await dbAdventures.saveAdventure(updated);
+  }
+  const room = await getRoom(updated.primaryRoomId);
+  if (room && room.name !== next) {
+    room.name = next;
+    room.scene = { ...room.scene, name: next };
+    room.updatedAt = Date.now();
+    if (dbEnabled()) {
+      await dbRooms.saveRoom(room);
+    }
+  }
+  return updated;
+}
+
 export async function getAdventure(adventureId: string): Promise<Adventure | null> {
   if (adventureId === "demo") return ensureDemoAdventure();
 
   const cached = adventures().get(adventureId);
-  if (cached) return purgeAdventureIfExpired(cached);
+  if (cached) {
+    const purged = await purgeAdventureIfExpired(cached);
+    return purged ? maybeMigrateLegacyAdventureName(purged) : null;
+  }
 
   if (dbEnabled()) {
     const fromDb = await dbAdventures.fetchAdventure(adventureId);
     if (fromDb) {
       adventures().set(adventureId, fromDb);
-      return purgeAdventureIfExpired(fromDb);
+      const purged = await purgeAdventureIfExpired(fromDb);
+      return purged ? maybeMigrateLegacyAdventureName(purged) : null;
     }
   }
 
@@ -180,7 +208,7 @@ export async function getAdventure(adventureId: string): Promise<Adventure | nul
       updatedAt: room.updatedAt,
     };
     adventures().set(inferred.adventureId, inferred);
-    return inferred;
+    return maybeMigrateLegacyAdventureName(inferred);
   }
 
   return null;
@@ -195,7 +223,11 @@ export async function createAdventure(
   name: string,
   options?: { accessMode?: AdventureAccessMode; rpgSystemId?: RpgSystemId }
 ): Promise<CreateAdventureResult> {
-  const label = name.trim().slice(0, 80) || "Nova aventura";
+  const checked = validateDisplayName(name);
+  if (!checked.ok) {
+    return { ok: false, error: checked.error };
+  }
+  const label = checked.name.slice(0, 80) || "Nova aventura";
 
   const recent = await findRecentOwnedAdventure(ownerId, label);
   if (recent) {

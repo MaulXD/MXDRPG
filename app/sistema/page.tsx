@@ -15,6 +15,7 @@ import {
 import "./sistema.css";
 
 const LIVE = [
+  "Instalar como aplicativo no Chrome (atalho na área de trabalho)",
   "Mesa hex ao vivo com sync SSE (fallback poll)",
   "Combate: PA, movimento, ataque, habilidade, magias de área (cone/linha)",
   "Preview no mapa: PA, alcance, vantagem/desvantagem",
@@ -271,6 +272,9 @@ export default function SistemaPage() {
         </Link>
         <Link href="/compendios" className="btn btn-ghost">
           Compêndios
+        </Link>
+        <Link href="/aplicativo" className="btn btn-ghost">
+          Instalar app
         </Link>
         <Link href="/mundo" className="btn btn-ghost">
           Atlas e panteão
