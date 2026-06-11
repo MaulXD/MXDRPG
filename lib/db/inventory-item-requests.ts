@@ -132,6 +132,37 @@ export async function insertInventoryItemRequest(input: {
   return row ? rowToRequest(row) : null;
 }
 
+export async function listActiveInventoryRequestsForUser(
+  adventureId: string,
+  requesterUserId: string
+): Promise<InventoryItemRequest[]> {
+  if (!dbEnabled()) return [];
+  const sql = getSql();
+  if (!sql) return [];
+  const rows = await sql<Row[]>`
+    SELECT * FROM eldarin_inventory_item_requests
+    WHERE adventure_id = ${adventureId}
+      AND requester_user_id = ${requesterUserId}
+      AND status IN ('pending', 'approved', 'rejected')
+    ORDER BY updated_at DESC
+  `;
+  return rows.map(rowToRequest);
+}
+
+export async function dismissInventoryItemRequest(requestId: string): Promise<boolean> {
+  if (!dbEnabled()) return false;
+  const sql = getSql();
+  if (!sql) return false;
+  const now = Date.now();
+  const rows = await sql<{ id: string }[]>`
+    UPDATE eldarin_inventory_item_requests
+    SET status = 'consumed', updated_at = ${now}
+    WHERE id = ${requestId} AND status IN ('approved', 'rejected')
+    RETURNING id
+  `;
+  return rows.length > 0;
+}
+
 export async function resolveInventoryItemRequest(
   requestId: string,
   action: "approve" | "reject",

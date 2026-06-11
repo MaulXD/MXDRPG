@@ -58,6 +58,54 @@ export async function listPendingInventoryRequestsForAdventure(
     .sort((a, b) => a.createdAt - b.createdAt);
 }
 
+export async function listActiveInventoryRequestsForUser(
+  adventureId: string,
+  requesterUserId: string
+): Promise<InventoryItemRequest[]> {
+  if (dbEnabled()) {
+    const { listActiveInventoryRequestsForUser: listDb } = await db();
+    return listDb(adventureId, requesterUserId);
+  }
+  return [...memoryStore().values()]
+    .filter(
+      (r) =>
+        r.adventureId === adventureId &&
+        r.requesterUserId === requesterUserId &&
+        ["pending", "approved", "rejected"].includes(r.status)
+    )
+    .sort((a, b) => b.updatedAt - a.updatedAt);
+}
+
+export async function dismissInventoryItemRequest(
+  requestId: string,
+  requesterUserId: string
+): Promise<boolean> {
+  if (dbEnabled()) {
+    const { dismissInventoryItemRequest: dismissDb, fetchInventoryItemRequest } = await db();
+    const current = await fetchInventoryItemRequest(requestId);
+    if (
+      !current ||
+      current.requesterUserId !== requesterUserId ||
+      !["approved", "rejected"].includes(current.status)
+    ) {
+      return false;
+    }
+    return dismissDb(requestId);
+  }
+
+  const store = memoryStore();
+  const current = store.get(requestId);
+  if (
+    !current ||
+    current.requesterUserId !== requesterUserId ||
+    !["approved", "rejected"].includes(current.status)
+  ) {
+    return false;
+  }
+  store.set(requestId, { ...current, status: "consumed", updatedAt: Date.now() });
+  return true;
+}
+
 export async function listPendingInventoryRequestsForCharacter(
   characterId: string
 ): Promise<InventoryItemRequest[]> {

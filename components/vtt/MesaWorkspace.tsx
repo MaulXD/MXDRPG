@@ -22,6 +22,7 @@ import { MesaPresenceAlerts } from "@/components/vtt/MesaPresenceAlerts";
 import { MesaOnlineMenu } from "@/components/vtt/MesaOnlineMenu";
 import { MesaEditRequestsBell } from "@/components/vtt/MesaEditRequestsBell";
 import { MesaPlayerEditRequestsBell } from "@/components/vtt/MesaPlayerEditRequestsBell";
+import { MesaPlayerInventoryRequestsBell } from "@/components/vtt/MesaPlayerInventoryRequestsBell";
 import { GmPlayerViewToggle } from "@/components/vtt/GmPlayerViewToggle";
 import { VttToastProvider } from "@/components/vtt/VttToast";
 import { FoundryDockPanel } from "@/components/vtt/foundry/FoundryDockPanel";
@@ -476,6 +477,7 @@ export function MesaWorkspace({
                 <MesaEditRequestsBell adventureId={adventureId} roomId={roomId} />
               ) : null}
               {session ? <MesaPlayerEditRequestsBell adventureId={adventureId} /> : null}
+              {session ? <MesaPlayerInventoryRequestsBell adventureId={adventureId} /> : null}
               <MesaOnlineMenu
                 online={presenceOnline}
                 loading={presenceLoading}

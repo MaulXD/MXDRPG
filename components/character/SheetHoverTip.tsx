@@ -92,16 +92,30 @@ export function SheetHoverTip({ tip, children, className }: Props) {
     if (isTraitTip(className)) {
       const spaceLeft = a.left - gap - margin;
       const spaceRight = window.innerWidth - margin - (a.right + gap);
+      const spaceAbove = a.top - gap - margin;
+      const spaceBelow = window.innerHeight - margin - (a.bottom + gap);
       let left: number;
       let top = a.top + a.height / 2;
       let transform: string;
 
-      if (spaceLeft >= bw * 0.85) {
+      if (spaceLeft >= bw * 0.65) {
         left = a.left - gap;
         transform = "translate(-100%, -50%)";
-      } else if (spaceRight >= bw * 0.85) {
+      } else if (spaceRight >= bw * 0.65) {
         left = a.right + gap;
         transform = "translateY(-50%)";
+      } else if (spaceAbove >= bh && spaceAbove >= spaceBelow) {
+        left = clampHorizontal(a.left + a.width / 2, bw / 2, margin);
+        top = a.top - gap;
+        transform = "translate(-50%, -100%)";
+        setCoords({ top, left, transform });
+        return;
+      } else if (spaceBelow >= bh) {
+        left = clampHorizontal(a.left + a.width / 2, bw / 2, margin);
+        top = a.bottom + gap;
+        transform = "translateX(-50%)";
+        setCoords({ top, left, transform });
+        return;
       } else {
         left = clampHorizontal(a.left + a.width / 2, bw / 2, margin);
         const spaceBelow = window.innerHeight - margin - (a.bottom + gap);

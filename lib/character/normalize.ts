@@ -8,6 +8,7 @@ import { resolveActorDefesa } from "@/lib/character/armor-defense";
 import { xpTotalForLevel } from "@/lib/character/xp";
 import { syncCombatAbilitiesToInventory } from "@/lib/character/combat-inventory-sync";
 import { ensureLoadoutItemsInInventory } from "@/lib/character/inventory-loadout-sync";
+import { normalizeLegacyConsumables } from "@/lib/character/inventory-normalize";
 import { EMPTY_LOOT } from "@/lib/character/loot-storage";
 import {
   applyStarterKitToSheet,
@@ -102,5 +103,9 @@ export function normalizeCharacter(sheet: CharacterSheet): CharacterSheet {
     },
   };
   const withKit = backfillStarterKitIfBare(base);
-  return syncCombatAbilitiesToInventory(ensureLoadoutItemsInInventory(withKit));
+  const withLegacyConsumables = {
+    ...withKit,
+    inventory: normalizeLegacyConsumables(withKit.inventory ?? []),
+  };
+  return syncCombatAbilitiesToInventory(ensureLoadoutItemsInInventory(withLegacyConsumables));
 }
