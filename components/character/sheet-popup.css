@@ -718,6 +718,35 @@
   visibility: visible;
 }
 
+/* Portal — renderizado em document.body para não ser cortado por overflow */
+.sheet-hover-tip__bubble--portal {
+  position: fixed;
+  z-index: 10050;
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: none;
+}
+
+.sheet-hover-tip__bubble--portal.sheet-hover-tip__bubble--popup {
+  min-width: 210px;
+  max-width: min(320px, calc(100vw - 16px));
+  max-height: min(40vh, 16rem);
+  overflow-y: auto;
+  padding: 0.55rem 0.65rem;
+  border-radius: 9px;
+  border: 1px solid var(--sheet-border-bright);
+  background: rgba(10, 14, 22, 0.97);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.5);
+  font-size: 0.72rem;
+  line-height: 1.45;
+  color: var(--sheet-text-muted);
+  display: flex;
+  flex-direction: column;
+  gap: 0.18rem;
+  text-align: left;
+  font-weight: 400;
+}
+
 .sheet-popup-quickbar .sheet-hover-tip {
   max-width: none;
   flex: 0 0 auto;

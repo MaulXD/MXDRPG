@@ -59,7 +59,7 @@
   gap: 0;
   padding: 0;
   border-radius: 10px;
-  overflow: clip;
+  overflow: visible;
   /* Sobrescreve .sheet-shell { display: grid; align-items: start } de sheet.css */
   display: flex;
   flex-direction: column;
@@ -355,6 +355,44 @@
   visibility: visible;
 }
 
+/* Portal DDB — tema escuro da ficha popup */
+.sheet-hover-tip__bubble--portal.sheet-hover-tip__bubble--ddb {
+  min-width: 12.5rem;
+  max-width: min(18.5rem, calc(100vw - 16px));
+  max-height: min(40vh, 16rem);
+  overflow-y: auto;
+  padding: 0.5rem 0.62rem;
+  border-radius: 8px;
+  border: 1px solid rgba(74, 21, 32, 0.42);
+  background: rgba(18, 10, 12, 0.97);
+  color: #e8dfd0;
+  font-size: 0.68rem;
+  line-height: 1.42;
+  display: flex;
+  flex-direction: column;
+  gap: 0.14rem;
+  text-align: left;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.42);
+}
+
+.sheet-hover-tip__bubble--portal.sheet-hover-tip__bubble--ddb .sheet-hover-tip__title {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #f8f2ea;
+  font-family: var(--font-display, Georgia), serif;
+}
+
+.sheet-hover-tip__bubble--portal.sheet-hover-tip__bubble--ddb .sheet-hover-tip__line {
+  display: block;
+  color: #d8cfc4;
+}
+
+.sheet-hover-tip__bubble--portal.sheet-hover-tip__bubble--ddb-xp {
+  min-width: 11rem;
+  text-align: right;
+  border-color: rgba(240, 216, 120, 0.35);
+}
+
 .sheet-ddb-attr-tip,
 .sheet-ddb-save-tip,
 .sheet-ddb-trait-tip,
@@ -379,10 +417,11 @@
 
 .sheet-ddb-attr-tip .sheet-hover-tip__bubble,
 .sheet-ddb-save-tip .sheet-hover-tip__bubble,
-.sheet-ddb-trait-tip .sheet-hover-tip__bubble {
+.sheet-ddb-trait-tip .sheet-hover-tip__bubble,
+.sheet-ddb-resource-tip .sheet-hover-tip__bubble {
   left: 50%;
-  bottom: calc(100% + 6px);
-  top: auto;
+  top: calc(100% + 6px);
+  bottom: auto;
   transform: translateX(-50%);
 }
 
@@ -468,6 +507,7 @@
   padding: 0.45rem 0.65rem 0.55rem;
   background: #f0ebe2;
   border-bottom: 1px solid var(--ddb-panel-border);
+  overflow: visible;
 }
 
 .sheet-ddb-attr {
@@ -757,7 +797,7 @@
   background: var(--ddb-panel);
   border: 1px solid var(--ddb-panel-border);
   border-radius: 10px;
-  overflow: hidden;
+  overflow: visible;
   flex: 0 0 auto;
   display: flex;
   flex-direction: column;

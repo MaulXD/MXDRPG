@@ -127,8 +127,7 @@ export function FriendsChat({
     return () => window.clearInterval(id);
   }, [selectedId, loadMessages, markThreadRead, scrollToBottom]);
 
-  async function sendMessage(e: React.FormEvent) {
-    e.preventDefault();
+  const submitDraft = useCallback(async () => {
     if (!selectedId || sending) return;
     const text = draft.trim();
     if (!text) return;
@@ -157,6 +156,11 @@ export function FriendsChat({
     } finally {
       setSending(false);
     }
+  }, [selectedId, sending, draft, scrollToBottom]);
+
+  function sendMessage(e: React.FormEvent) {
+    e.preventDefault();
+    void submitDraft();
   }
 
   function pickFriend(id: string) {
@@ -254,6 +258,11 @@ export function FriendsChat({
                 placeholder="Escreva uma mensagem…"
                 value={draft}
                 onChange={(e) => setDraft(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key !== "Enter" || e.shiftKey || e.nativeEvent.isComposing) return;
+                  e.preventDefault();
+                  void submitDraft();
+                }}
                 disabled={sending}
               />
               <button type="submit" className="btn btn-sm" disabled={sending || !draft.trim()}>

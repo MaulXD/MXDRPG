@@ -4245,7 +4245,7 @@
 
 .room-chat-input {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   gap: 0.45rem;
   width: 100%;
   min-width: 0;
@@ -4253,18 +4253,26 @@
   box-sizing: border-box;
 }
 
-.room-chat-input input {
+.room-chat-input input,
+.room-chat-input textarea {
   flex: 1 1 auto;
   min-width: 0;
   width: 100%;
   padding: 0.5rem 0.75rem;
-  border-radius: var(--radius-pill);
+  border-radius: var(--radius);
   border: 1px solid var(--glass-border);
   background: var(--surface-inset);
   color: var(--text);
   font-family: inherit;
   font-size: 0.85rem;
   box-sizing: border-box;
+}
+
+.room-chat-input textarea {
+  resize: none;
+  line-height: 1.35;
+  min-height: 2.5rem;
+  max-height: 6rem;
 }
 
 .room-chat-input .btn {
