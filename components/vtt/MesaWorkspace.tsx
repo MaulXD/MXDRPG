@@ -37,6 +37,7 @@ import { DiceRoller } from "@/components/vtt/DiceRoller";
 import { MonsterSpawnPanel } from "@/components/vtt/MonsterSpawnPanel";
 import { RoomInvitePanel } from "@/components/vtt/RoomInvitePanel";
 import { MesaPersistenceNotice } from "@/components/vtt/MesaPersistenceNotice";
+import { DemoGuidedTour } from "@/components/vtt/DemoGuidedTour";
 import { useSheetPdfDeepLink } from "@/hooks/useSheetPdfDeepLink";
 import "@/components/vtt/foundry/foundry.css";
 
@@ -478,6 +479,11 @@ export function MesaWorkspace({
               ) : null}
               {session ? <MesaPlayerEditRequestsBell adventureId={adventureId} /> : null}
               {session ? <MesaPlayerInventoryRequestsBell adventureId={adventureId} /> : null}
+              <DemoGuidedTour
+                roomId={roomId}
+                session={session}
+                isRoomGm={isActualGm}
+              />
               <MesaOnlineMenu
                 online={presenceOnline}
                 loading={presenceLoading}
