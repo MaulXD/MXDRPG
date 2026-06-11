@@ -107,8 +107,11 @@ type Props = {
 const RING_RADIUS_BASE = 152;
 /** Duração da animação de saída (sincronizar com CSS). */
 const TAR_RING_EXIT_MS = 320;
-/** Tempo até hover/transições após entrada radial inicial. */
-const TAR_RING_INTRO_MS = 500;
+/** Atraso + duração do último slot em `tar-slot-radial-in` (+ folga). */
+function tarIntroMs(slotCount: number): number {
+  const lastDelay = 0.1 + Math.max(0, slotCount - 1) * 0.038;
+  return Math.ceil((lastDelay + 0.34) * 1000) + 32;
+}
 
 function ringLayout(slotCount: number): { radius: number; track: number; slotScale: number } {
   if (slotCount <= 5) {
@@ -183,7 +186,9 @@ export function TokenActionRing({
   const [ringView, setRingView] = useState<RingView>("main");
   const [exiting, setExiting] = useState(false);
   const [introDone, setIntroDone] = useState(false);
+  const [viewSwap, setViewSwap] = useState(false);
   const exitingRef = useRef(false);
+  const ringViewRef = useRef(ringView);
   const exitTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const introTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [hoveredInfoSlotId, setHoveredInfoSlotId] = useState<string | null>(null);
@@ -633,14 +638,26 @@ export function TokenActionRing({
 
   useEffect(() => {
     setIntroDone(false);
+    setViewSwap(false);
+    ringViewRef.current = "main";
     if (introTimerRef.current) clearTimeout(introTimerRef.current);
+    const ms = tarIntroMs(displaySlots.length);
     introTimerRef.current = setTimeout(() => {
       setIntroDone(true);
-    }, TAR_RING_INTRO_MS);
+    }, ms);
     return () => {
       if (introTimerRef.current) clearTimeout(introTimerRef.current);
     };
   }, [token.id]);
+
+  useEffect(() => {
+    if (ringViewRef.current === ringView) return;
+    ringViewRef.current = ringView;
+    if (!introDone) return;
+    setViewSwap(true);
+    const t = setTimeout(() => setViewSwap(false), 260);
+    return () => clearTimeout(t);
+  }, [ringView, introDone]);
 
   const centerTitle =
     ringView === "main"
@@ -660,7 +677,9 @@ export function TokenActionRing({
       <div
         className={`token-action-ring${ringView !== "main" ? " token-action-ring--sub" : ""}${
           introDone ? " token-action-ring--settled" : ""
-        }${exiting ? " token-action-ring--exiting" : ""}`}
+        }${viewSwap ? " token-action-ring--swap" : ""}${
+          exiting ? " token-action-ring--exiting" : ""
+        }`}
         style={{ left: x, top: y, "--tar-token": tokenRingColor } as CSSProperties}
         role="menu"
         aria-label={
