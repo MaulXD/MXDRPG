@@ -121,6 +121,15 @@ export function IconAbility({ className, size }: IconProps) {
   );
 }
 
+export function IconFlask({ className, size }: IconProps) {
+  return (
+    <Svg className={className} size={size}>
+      <path d="M9 3h6v3l4 9a4 4 0 01-3.6 5.9H8.6A4 4 0 015 15l4-9V3z" {...S} />
+      <path d="M9 6h6" {...S} />
+    </Svg>
+  );
+}
+
 export function IconHeart({ className, size }: IconProps) {
   return (
     <Svg className={className} size={size}>

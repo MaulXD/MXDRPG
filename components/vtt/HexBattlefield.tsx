@@ -637,6 +637,9 @@ export function HexBattlefield({
   const combatFxIdRef = useRef<string | null>(null);
   const combatFxQueueRef = useRef<CombatFxState[]>([]);
   const pendingCombatSnapRef = useRef<RoomSnapshot | null>(null);
+  const playCombatFxFromSnapRef = useRef<
+    ((snap: RoomSnapshot, opts?: { deferSnap?: boolean }) => void) | null
+  >(null);
 
   const syncRoom = useCallback(
     (snap?: RoomSnapshot) => {
@@ -647,12 +650,14 @@ export function HexBattlefield({
         setScene((prev) => mergeScenePreservingPortraits(prev, snap.scene));
         if (onApplySnapshot) onApplySnapshot(snap);
         else refresh();
+        playCombatFxFromSnapRef.current?.(snap);
       } else if (snap) {
         if (snap.revision > appliedSceneRevisionRef.current) {
           appliedSceneRevisionRef.current = snap.revision;
         }
         if (onApplySnapshot) onApplySnapshot(snap);
         else refresh();
+        playCombatFxFromSnapRef.current?.(snap);
       } else {
         refresh();
       }
@@ -942,6 +947,8 @@ export function HexBattlefield({
     },
     [enqueueCombatFxFromChat]
   );
+
+  playCombatFxFromSnapRef.current = playCombatFxFromSnap;
 
   useEffect(() => {
     if (!snapshot?.chat) return;
@@ -2168,6 +2175,7 @@ export function HexBattlefield({
         spawnAxial={hoverAxial}
         combatUndo={snapshot.combatUndo}
         onSceneUpdated={(snap) => syncRoom(snap)}
+        onRefresh={refresh}
       />
     ) : null;
 
@@ -2672,7 +2680,7 @@ export function HexBattlefield({
               if (mode !== "spell") setChannelExtraPa(0);
             }}
             onClose={() => setActionRingAt(null)}
-            onRoomSync={() => refresh()}
+            onRoomSync={(snap) => (snap ? syncRoom(snap) : refresh())}
           />
         ) : null}
         {actionMode === "spell" &&

@@ -400,6 +400,25 @@ export async function postRoomAbility(
   return res.json() as Promise<RoomSnapshot>;
 }
 
+export async function consumeRoomItem(
+  roomId: string,
+  tokenId: string,
+  instanceId: string,
+  opts: { bypassTurn?: boolean } = {}
+) {
+  const res = await fetch(`/api/room/${roomId}/combat/consume`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    credentials: "same-origin",
+    body: JSON.stringify({ tokenId, instanceId, ...opts }),
+  });
+  if (!res.ok) {
+    const err = (await res.json()) as { error?: string };
+    throw new Error(err.error ?? "Falha ao usar consumível");
+  }
+  return res.json() as Promise<RoomSnapshot>;
+}
+
 export async function moveRoomTokenBudget(
   roomId: string,
   tokenId: string,
@@ -715,9 +734,11 @@ export async function gmActorProgress(
 
 export async function gmSavingThrows(
   roomId: string,
-  body: import("@/lib/room/handlers/gm-saving-throw").GmSavingThrowRequest
+  body: import("@/lib/room/handlers/gm-saving-throw").GmSavingThrowRequest,
+  inviteCode?: string | null
 ): Promise<RoomSnapshot> {
-  const res = await fetch(`/api/room/${roomId}/gm/saving-throw`, {
+  const q = inviteCode?.trim() ? `?invite=${encodeURIComponent(inviteCode.trim())}` : "";
+  const res = await fetch(`/api/room/${roomId}/gm/saving-throw${q}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     credentials: "same-origin",

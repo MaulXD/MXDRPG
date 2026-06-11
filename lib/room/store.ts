@@ -34,6 +34,7 @@ export {
   type GmSavingThrowRequest,
   type GmSavingThrowTarget,
 } from "./handlers/gm-saving-throw";
+export { executeRoomConsume, type ConsumeExecuteResult } from "./handlers/combat-consume";
 export { addRoomPing } from "./handlers/ping";
 export { patchRoomScene, revealRoomHex, type ScenePatch } from "./handlers/scene";
 export { patchRoomSettings, type RoomSettingsPatch } from "./handlers/settings";

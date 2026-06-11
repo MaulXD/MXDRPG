@@ -55,6 +55,11 @@
   --ddb-xp: #8b2830;
   --ddb-xp-bright: #d4535c;
   --ddb-gold: #b8922e;
+  --ddb-level-ready: #4a6b18;
+  --ddb-level-ready-bright: #6fa318;
+  /* Botões globais usam var(--text); na mesa o chrome é escuro — forçar tinta clara na ficha */
+  --text: var(--ddb-ink);
+  --text-muted: var(--ddb-muted);
   background: #e8e2d6;
   color: var(--ddb-ink);
   gap: 0;
@@ -1216,7 +1221,52 @@
 }
 
 .sheet-ddb-progression .sheet-level-box__ready-tag {
-  color: #4a6b18;
+  color: var(--ddb-level-ready);
+  font-weight: 700;
+}
+
+.sheet-ddb-progression .sheet-level-box__xp-secondary {
+  color: #3d3428;
+}
+
+.sheet-ddb-progression .sheet-level-box--ready .sheet-level-box__bar-fill {
+  background: linear-gradient(90deg, var(--ddb-level-ready-bright), var(--ddb-level-ready));
+}
+
+.sheet-ddb-progression .sheet-level-box__bar-label {
+  color: var(--ddb-ink);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.85),
+    0 0 3px rgba(255, 255, 255, 0.55);
+}
+
+.sheet-ddb-progression .lu-trigger-row .btn {
+  color: var(--ddb-ink);
+  background: #f0ebe2;
+  border-color: var(--ddb-panel-border);
+  box-shadow: none;
+}
+
+.sheet-ddb-progression .lu-trigger-row .btn:disabled {
+  color: var(--ddb-muted);
+  opacity: 1;
+}
+
+.sheet-ddb-progression .lu-trigger-row .btn--level-ready {
+  color: #14200c;
+  border-color: var(--ddb-level-ready);
+  background: linear-gradient(180deg, #a8e032 0%, var(--ddb-level-ready-bright) 55%, var(--ddb-level-ready) 100%);
+  box-shadow: 0 2px 10px rgba(74, 107, 24, 0.28);
+  font-weight: 800;
+}
+
+.sheet-ddb-progression .lu-trigger-row .btn--level-ready:hover:not(:disabled) {
+  color: #0f1808;
+  border-color: #3d5c14;
+  background: linear-gradient(180deg, #b8f03c 0%, #7db51e 55%, #4a6b18 100%);
+  box-shadow: 0 3px 14px rgba(74, 107, 24, 0.38);
 }
 
 .sheet-ddb-drawer {

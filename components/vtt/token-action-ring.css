@@ -313,6 +313,14 @@
   --tar-pa: #88d8f0;
 }
 
+.token-action-ring__slot--consumable {
+  --tar-border: rgba(90, 168, 110, 0.78);
+  --tar-bg-top: rgba(22, 48, 32, 0.94);
+  --tar-bg-bottom: rgba(12, 24, 16, 0.96);
+  --tar-glow: rgba(90, 168, 110, 0.32);
+  --tar-pa: #9ee8b0;
+}
+
 .token-action-ring__slot--sheet {
   --tar-border: rgba(201, 169, 98, 0.72);
   --tar-bg-top: rgba(42, 36, 24, 0.94);
