@@ -201,6 +201,26 @@ export function drawHexGridLayer(ctx: CanvasRenderingContext2D, p: GridDrawParam
       fill = pal.invalidFill;
       stroke = pal.invalidStroke;
       lineWidth = 2.5;
+    } else if (
+      isHoverCell &&
+      p.showMovement &&
+      p.hoverMovePreview?.ok &&
+      p.hoverMovePreview.dist > 0
+    ) {
+      if (p.paidWalkSet.has(key)) {
+        fill = pal.walkPaidFill;
+        stroke = pal.walkPaidStroke;
+      } else if (p.rangeSet.has(key) && !p.walkSet.has(key)) {
+        fill = pal.runFill;
+        stroke = pal.runStroke;
+      } else if (p.walkSet.has(key)) {
+        fill = pal.walkFill;
+        stroke = pal.walkStroke;
+      } else {
+        fill = pal.hoverFill;
+        stroke = pal.hoverStroke;
+      }
+      lineWidth = 2.5;
     } else if (isSpawnHover) {
       fill = pal.spawnFill;
       stroke = pal.spawnStroke;

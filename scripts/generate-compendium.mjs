@@ -396,7 +396,9 @@ const SPELLS = [
   spell("Preservação Perfeita", 2, "Transmutação", 1, 1, "Ingrediente preservado 30 dias."),
   spell("Forma Menor", 2, "Transmutação", 0, 1, "Polimorfo em besta pequena."),
   spell("Escudo Arcano", 2, "Abjuração", 0, 1, "Reação: +5 CA 1 rodada.", { tempo: "reação" }),
-  spell("Ilusão Menor", 2, "Ilusão", 6, 1, "Som ou imagem estática."),
+  spell("Ilusão Menor", 2, "Ilusão", 6, 1, "Som ou imagem estática em cubo 1 hex.", {
+    area: { shape: "cube", radiusHex: 1 },
+  }),
   spell("Muralha Hexagonal", 2, "Abjuração", 3, 2, "Barreira em 3 hex.", { area: { shape: "wall", hexCount: 3 } }),
   spell("Animação de Mortos", 3, "Necromancia", 3, 2, "Anima 2 cadáveres por 24h.", { tempo: "1 minuto" }),
   spell("Injeção Biomágica", 3, "Biomancia", 1, 1, "Habilidade assimilacao 12h do ingrediente."),
