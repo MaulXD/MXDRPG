@@ -24,7 +24,7 @@ export function SpellChannelControl({ action, token, actor, value, onChange }: P
 
   const max = Math.min(action.channelMaxExtraPa, CHANNEL_MAX_EXTRA_PA);
   const extra = clampChannelExtraPa(action, value);
-  const totalPa = totalChannelPaCost(actor, action, extra);
+  const totalPa = totalChannelPaCost(actor, action, extra, token);
   const paOk = checkCanSpendPa(token, totalPa).ok;
   const bonus = action.channelBonusPerPa ?? "1d6";
 
@@ -47,7 +47,7 @@ export function SpellChannelControl({ action, token, actor, value, onChange }: P
         ))}
       </div>
       <p className={`vtt-channel-cost${paOk ? "" : " vtt-channel-cost--err"}`}>
-        {formatChannelPaLabel(actor, action, extra)} · {token.pa} PA disponíveis
+        {formatChannelPaLabel(actor, action, extra, token)} · {token.pa} PA disponíveis
       </p>
     </div>
   );

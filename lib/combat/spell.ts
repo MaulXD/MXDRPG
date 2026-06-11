@@ -158,7 +158,7 @@ export function resolveSaveSpell(
     actionKind: "spell",
     weaponName: resolved.name,
     rangeHex: resolved.rangeHex,
-    paCost: totalChannelPaCost(actor, action, channelExtra),
+    paCost: totalChannelPaCost(actor, action, channelExtra, attackerToken),
     save: {
       natural,
       attributeMod: saveMod,

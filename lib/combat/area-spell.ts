@@ -131,7 +131,7 @@ export function canCastAreaAt(
   const origin = directed ? caster.axial : center;
 
   const extra = clampChannelExtraPa(action, channelExtraPa);
-  const paNeed = actor ? totalChannelPaCost(actor, action, extra) : action.paCost + extra;
+  const paNeed = actor ? totalChannelPaCost(actor, action, extra, caster) : action.paCost + extra;
   const paCheck = checkCanSpendPa(caster, paNeed);
   if (!paCheck.ok) return { ok: false, reason: paCheck.reason };
 
@@ -199,7 +199,7 @@ export function resolveAreaSpell(
       center,
       areaHexes,
       actionName: resolved.name,
-      paCost: totalChannelPaCost(actor, action, extra),
+      paCost: totalChannelPaCost(actor, action, extra, caster),
       hits: [],
       summary: `${actor.name} conjura ${resolved.name} em ${areaHexes.length} hex (${areaHexes.map((h) => `q${h.q}r${h.r}`).join(", ")}).`,
     };
@@ -252,7 +252,7 @@ export function resolveAreaSpell(
     center: areaOrigin,
     areaHexes,
     actionName: resolved.name,
-    paCost: totalChannelPaCost(actor, action, extra),
+    paCost: totalChannelPaCost(actor, action, extra, caster),
     hits,
     summary,
   };

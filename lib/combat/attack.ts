@@ -595,7 +595,7 @@ export function paNeedForCombatAction(
 ): number {
   if (!actor) return action.paCost + channelExtraPa;
   if (action.channelMaxExtraPa != null) {
-    return totalChannelPaCost(actor, action, channelExtraPa);
+    return totalChannelPaCost(actor, action, channelExtraPa, attacker);
   }
   if (action.kind === "weapon") {
     const count = weaponAttackCount(actor, action);
