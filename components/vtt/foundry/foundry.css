@@ -1678,9 +1678,17 @@
 }
 
 .mesa-edit-requests-bell__hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
   font-size: 0.72rem;
   color: #a89878;
   font-style: italic;
+}
+
+.mesa-edit-requests-bell__inline-icon {
+  flex-shrink: 0;
+  opacity: 0.9;
 }
 
 .player-edit-request-notice {

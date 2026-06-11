@@ -45,7 +45,20 @@ try {
     assert.ok(cols.has(required), `coluna ausente: ${required}`);
   }
 
-  console.log("verify-inventory-requests OK —", rows.length, "colunas");
+  const checks = await sql`
+    SELECT pg_get_constraintdef(oid) AS def
+    FROM pg_constraint
+    WHERE conrelid = 'eldarin_inventory_item_requests'::regclass
+      AND contype = 'c'
+      AND conname = 'eldarin_inventory_item_requests_status_check'
+  `;
+  const statusCheck = checks[0]?.def ?? "";
+  assert.ok(
+    statusCheck.includes("'consumed'"),
+    "status CHECK deve incluir consumed — rode migration 016"
+  );
+
+  console.log("verify-inventory-requests OK —", rows.length, "colunas, status CHECK com consumed");
 } catch (e) {
   console.error("verify-inventory-requests FALHOU:", e instanceof Error ? e.message : e);
   process.exit(1);

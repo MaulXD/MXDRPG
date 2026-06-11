@@ -1094,6 +1094,8 @@
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0.22rem;
   padding: 0.32rem 0.42rem 0.42rem;
+  position: relative;
+  isolation: isolate;
 }
 
 .sheet-ddb-trait {
@@ -1470,10 +1472,45 @@
   box-shadow: 0 1px 3px rgba(30, 24, 20, 0.1);
 }
 
+.sheet-shell--ddb .sheet-toolbar .btn.btn-secondary {
+  color: #2a2218;
+  background: linear-gradient(180deg, #ebe2d4 0%, #ddd2c0 100%);
+  border-color: rgba(74, 21, 32, 0.28);
+  font-weight: 600;
+}
+
 .sheet-shell--ddb .sheet-toolbar .btn:not(.btn-primary-cta):not(.btn--level-ready):hover {
   color: var(--ddb-ink);
   border-color: var(--ddb-gold);
   background: linear-gradient(180deg, #fff 0%, #f0ebe2 100%);
+}
+
+.sheet-shell--ddb .sheet-toolbar .btn.btn-secondary:hover {
+  color: #1e1810;
+  border-color: var(--ddb-gold);
+  background: linear-gradient(180deg, #f8f4ec 0%, #e8dfd0 100%);
+}
+
+.sheet-shell--ddb .sheet-inventory-pending--active {
+  border-color: rgba(184, 146, 46, 0.75);
+  background: rgba(184, 146, 46, 0.12);
+  animation: sheet-inventory-pending-pulse-ddb 2.4s ease-in-out infinite;
+}
+
+@keyframes sheet-inventory-pending-pulse-ddb {
+  0%,
+  100% {
+    border-color: rgba(184, 146, 46, 0.5);
+    box-shadow: 0 0 0 0 rgba(184, 146, 46, 0.12);
+  }
+  50% {
+    border-color: rgba(210, 170, 60, 0.95);
+    box-shadow: 0 0 8px 1px rgba(184, 146, 46, 0.25);
+  }
+}
+
+.sheet-shell--ddb .sheet-inventory-pending__icon {
+  color: var(--ddb-gold);
 }
 
 .sheet-shell--ddb .sheet-toolbar__actions {

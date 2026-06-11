@@ -1,4 +1,4 @@
-export type InventoryItemRequestStatus = "pending" | "approved" | "rejected";
+export type InventoryItemRequestStatus = "pending" | "approved" | "rejected" | "consumed";
 
 export type InventoryItemRequest = {
   id: string;
@@ -36,6 +36,8 @@ export function inventoryRequestStatusLabel(status: InventoryItemRequestStatus):
       return "Aprovado";
     case "rejected":
       return "Recusado pelo mestre";
+    case "consumed":
+      return "Notificação dispensada";
     default:
       return status;
   }
