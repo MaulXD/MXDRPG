@@ -256,15 +256,27 @@
 }
 
 .token-action-ring--settled:not(.token-action-ring--exiting) .token-action-ring__slot {
-  animation-name: tar-slot-swap-in;
-  animation-duration: 0.24s;
-  animation-delay: calc(var(--tar-i, 0) * 0.03s);
+  animation: none;
+  opacity: 1;
+  transform: translate3d(
+      calc(-50% + var(--tar-x, 0px)),
+      calc(-50% + var(--tar-y, 0px)),
+      0
+    )
+    scale(var(--tar-slot-scale, 1));
   will-change: auto;
   transition:
     border-color 0.12s,
     background 0.12s,
     box-shadow 0.12s,
     transform 0.14s var(--ease-out, ease-out);
+}
+
+.token-action-ring--settled.token-action-ring--swap:not(.token-action-ring--exiting)
+  .token-action-ring__slot {
+  animation: tar-slot-swap-in 0.24s cubic-bezier(0.19, 1, 0.22, 1) both;
+  animation-delay: calc(var(--tar-i, 0) * 0.03s);
+  opacity: 0;
 }
 
 .token-action-ring--exiting .token-action-ring__slot {
