@@ -1,6 +1,7 @@
 ﻿"use client";
 
 import {
+  startTransition,
   useCallback,
   useEffect,
   useLayoutEffect,
@@ -310,7 +311,6 @@ export function HexBattlefield({
     kind: NonNullable<TokenCombatFlash>;
   } | null>(null);
   const [tokenCastFx, setTokenCastFx] = useState<ActiveTokenCastFx[]>([]);
-  const [castFxTick, setCastFxTick] = useState(0);
   const [actionErr, setActionErr] = useState<string | null>(null);
   const [channelExtraPa, setChannelExtraPa] = useState(0);
   const [actionRingAt, setActionRingAt] = useState<{ x: number; y: number } | null>(null);
@@ -820,7 +820,6 @@ export function HexBattlefield({
       hoverTokenId,
       tokenFlash,
       tokenCastFx,
-      castFxNowMs: Date.now(),
       visibleHexSet,
       pings: displayPings,
       mapImage,
@@ -860,7 +859,6 @@ export function HexBattlefield({
       hoverTokenId,
       tokenFlash,
       tokenCastFx,
-      castFxTick,
       visibleHexSet,
       displayPings,
       mapImage,
@@ -981,11 +979,16 @@ export function HexBattlefield({
     setScene((prev) => mergeScenePreservingPortraits(prev, snap.scene));
   }, []);
 
-  useEffect(() => {
-    if (!snapshot) return;
-    if (snapshot.revision <= appliedSceneRevisionRef.current) return;
+  const snapshotRef = useRef(snapshot);
+  snapshotRef.current = snapshot;
+  const snapshotRevision = snapshot?.revision ?? 0;
 
-    const pendingFx = snapshot.chat.some(
+  useEffect(() => {
+    const snap = snapshotRef.current;
+    if (!snap) return;
+    if (snap.revision <= appliedSceneRevisionRef.current) return;
+
+    const pendingFx = snap.chat.some(
       (m) => isPlayableCombatFxMessage(m) && !seenCombatRef.current.has(m.id)
     );
     if (
@@ -996,20 +999,24 @@ export function HexBattlefield({
       moveBusyRef.current ||
       gmRepositionBusyRef.current
     ) {
-      pendingCombatSnapRef.current = snapshot;
-      setScene((prev) => ({
-        ...prev,
-        tokens: prev.tokens.map((t) => {
-          const remote = snapshot.scene.tokens.find((r) => r.id === t.id);
-          return remote ? mergeTokenCombatFields(t, remote) : t;
-        }),
-      }));
+      pendingCombatSnapRef.current = snap;
+      startTransition(() => {
+        setScene((prev) => ({
+          ...prev,
+          tokens: prev.tokens.map((t) => {
+            const remote = snap.scene.tokens.find((r) => r.id === t.id);
+            return remote ? mergeTokenCombatFields(t, remote) : t;
+          }),
+        }));
+      });
       return;
     }
 
-    appliedSceneRevisionRef.current = snapshot.revision;
-    setScene((prev) => mergeScenePreservingPortraits(prev, snapshot.scene));
-  }, [snapshot, combatFx, mergeTokenCombatFields]);
+    appliedSceneRevisionRef.current = snap.revision;
+    startTransition(() => {
+      setScene((prev) => mergeScenePreservingPortraits(prev, snap.scene));
+    });
+  }, [snapshotRevision, combatFx, mergeTokenCombatFields]);
 
   useEffect(() => {
     setActionMode("idle");
@@ -1135,7 +1142,6 @@ export function HexBattlefield({
         durationMs: castFxDuration(kind),
       },
     ]);
-    setCastFxTick((n) => n + 1);
   }, []);
 
   useEffect(() => {
@@ -1146,8 +1152,7 @@ export function HexBattlefield({
         const next = prev.filter((fx) => now - fx.startedAt < fx.durationMs);
         return next.length === prev.length ? prev : next;
       });
-      setCastFxTick((n) => n + 1);
-    }, 50);
+    }, 120);
     return () => window.clearInterval(id);
   }, [tokenCastFx.length]);
 
