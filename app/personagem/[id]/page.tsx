@@ -10,7 +10,13 @@ import type { CompendiumPackId } from "@/lib/compendium/types";
 
 type Props = { params: Promise<{ id: string }> };
 
-const PLAYER_PACKS: CompendiumPackId[] = ["armas", "habilidades", "magias", "equipamentos"];
+const PLAYER_PACKS: CompendiumPackId[] = [
+  "armas",
+  "habilidades",
+  "magias",
+  "equipamentos",
+  "consumiveis",
+];
 
 export default async function PersonagemPage({ params }: Props) {
   const { id } = await params;

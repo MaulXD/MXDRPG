@@ -10,6 +10,7 @@ import type { CompendiumEntry, CompendiumPackId } from "@/lib/compendium/types";
 import { CompendiumIcon } from "@/components/compendium/CompendiumIcon";
 import { entryBookRef, entryDescriptionHtml, entrySummary, stripHtml } from "@/lib/compendium/format";
 import { compendiumTypeColor } from "@/lib/compendium/icons";
+import { isConsumableEntry } from "@/lib/compendium/consumables";
 import { getEntry } from "@/lib/compendium/registry";
 import { useImageNaturalSize } from "@/hooks/useImageNaturalSize";
 import { patchRoomActor, useRoomSync } from "@/hooks/useRoomSync";
@@ -48,6 +49,7 @@ import {
   IconSword,
   IconWand,
 } from "@/components/character/SheetPopupIcons";
+import { IconFlask } from "@/components/ui/EldarinIcons";
 import { resolveActorDefesa } from "@/lib/character/armor-defense";
 import {
   ATTRIBUTE_LABELS,
@@ -107,7 +109,13 @@ type Props = {
   standalonePage?: boolean;
 };
 
-const PLAYER_PACKS: CompendiumPackId[] = ["armas", "habilidades", "magias", "equipamentos"];
+const PLAYER_PACKS: CompendiumPackId[] = [
+  "armas",
+  "habilidades",
+  "magias",
+  "equipamentos",
+  "consumiveis",
+];
 
 export function CharacterSheet({
   character,
@@ -371,12 +379,26 @@ export function CharacterSheet({
       items: Array<{ ref: InventoryItem; entry: CompendiumEntry }>;
     }> = [];
     const weapons = filtered.filter((r) => r.entry.type === "arma");
-    const gear = filtered.filter((r) => r.entry.type === "equipamento");
+    const consumables = filtered.filter((r) => isConsumableEntry(r.entry));
+    const gear = filtered.filter(
+      (r) => r.entry.type === "equipamento" && !isConsumableEntry(r.entry)
+    );
     const other = filtered.filter(
-      (r) => r.entry.type !== "arma" && r.entry.type !== "equipamento"
+      (r) =>
+        r.entry.type !== "arma" &&
+        r.entry.type !== "equipamento" &&
+        !isConsumableEntry(r.entry)
     );
     if (weapons.length) {
       sections.push({ id: "armas", label: "Armas", hint: "Corpo a corpo e à distância", items: weapons });
+    }
+    if (consumables.length) {
+      sections.push({
+        id: "consumiveis",
+        label: "Consumíveis",
+        hint: "Poções e elixires — use no anel de ações em combate",
+        items: consumables,
+      });
     }
     if (gear.length) {
       sections.push({
@@ -574,6 +596,7 @@ export function CharacterSheet({
 
   const sectionIcons: Record<string, ReactNode> = {
     armas: <IconSword size={18} className="inv-section__icon" />,
+    consumiveis: <IconFlask size={18} className="inv-section__icon" />,
     equipamentos: <IconArmor size={18} className="inv-section__icon" />,
     outros: <IconBackpack size={18} className="inv-section__icon" />,
   };
@@ -611,9 +634,32 @@ export function CharacterSheet({
           {tabTitles[tab]}
         </h2>
         {canPickCompendium && tab !== "tesouro" && tab !== "bestiário" ? (
-          <button type="button" className="btn" onClick={() => setPickerOpen(true)}>
-            + Compêndio
-          </button>
+          <div className="sheet-toolbar__actions">
+            {tab === "inventário" ? (
+              <button
+                type="button"
+                className="btn btn-secondary"
+                onClick={() => {
+                  setPickerPack("consumiveis");
+                  setPickerOpen(true);
+                }}
+              >
+                + Consumível
+              </button>
+            ) : null}
+            <button
+              type="button"
+              className="btn"
+              onClick={() => {
+                if (tab === "habilidades") setPickerPack("habilidades");
+                else if (tab === "magias") setPickerPack("magias");
+                else setPickerPack("armas");
+                setPickerOpen(true);
+              }}
+            >
+              + Compêndio
+            </button>
+          </div>
         ) : null}
       </div>
 
@@ -1118,6 +1164,7 @@ function CompendiumPicker({
     habilidades: "Habilidades",
     magias: "Magias",
     equipamentos: "Equipamentos",
+    consumiveis: "Consumíveis",
     monstros: "Monstros",
   };
 

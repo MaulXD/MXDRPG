@@ -55,13 +55,19 @@ export function listActorConsumables(actor: CharacterSheet): ActorConsumable[] {
   const out: ActorConsumable[] = [];
 
   for (const item of actor.inventory) {
-    if (item.packId !== "equipamentos" || item.quantity <= 0) continue;
-    const entry = getEntry("equipamentos", item.entryId);
+    if (item.quantity <= 0) continue;
+    if (item.packId !== "equipamentos" && item.packId !== "consumiveis") continue;
+
+    const entry = getEntry(item.packId, item.entryId);
     if (!entry) continue;
-    if (entry.system.consumable !== true) continue;
 
     const catalogId = catalogIdFromEntry(entry.system);
-    if (!isPotionCatalogId(catalogId)) continue;
+    if (item.packId === "consumiveis") {
+      if (!catalogId) continue;
+    } else {
+      if (entry.system.consumable !== true) continue;
+      if (!isPotionCatalogId(catalogId)) continue;
+    }
 
     const description = stripHtml(entryDescriptionHtml(entry.system));
     out.push({

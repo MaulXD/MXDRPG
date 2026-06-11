@@ -9,6 +9,7 @@ const INVENTORY_PACKS = new Set<CompendiumPackId>([
   "habilidades",
   "magias",
   "equipamentos",
+  "consumiveis",
 ]);
 
 function sanitizeLootStacks(raw: unknown): Record<string, number> {

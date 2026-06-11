@@ -34,12 +34,20 @@ function portalModifierClass(className?: string): string {
   if (className?.includes("sheet-ddb-header__xp-tip")) {
     return "sheet-hover-tip__bubble--ddb-xp";
   }
+  if (className?.includes("sheet-ddb-trait-tip")) {
+    return "sheet-hover-tip__bubble--ddb-trait";
+  }
   return "";
 }
 
-/** Ficha DDB: quase sempre abaixo do alvo — evita cobrir o cabeçalho e cortar no topo. */
+function isTraitTip(className?: string): boolean {
+  return Boolean(className?.includes("sheet-ddb-trait-tip"));
+}
+
+/** Ficha DDB: abaixo do alvo — exceto traços (grade compacta). */
 function prefersBelowAnchor(className?: string): boolean {
   if (!className?.includes("sheet-ddb")) return false;
+  if (isTraitTip(className)) return false;
   return true;
 }
 
@@ -80,6 +88,47 @@ export function SheetHoverTip({ tip, children, className }: Props) {
     const bh = b?.height ?? 96;
     const gap = 8;
     const margin = 8;
+
+    if (isTraitTip(className)) {
+      const spaceLeft = a.left - gap - margin;
+      const spaceRight = window.innerWidth - margin - (a.right + gap);
+      let left: number;
+      let top = a.top + a.height / 2;
+      let transform: string;
+
+      if (spaceLeft >= bw * 0.85) {
+        left = a.left - gap;
+        transform = "translate(-100%, -50%)";
+      } else if (spaceRight >= bw * 0.85) {
+        left = a.right + gap;
+        transform = "translateY(-50%)";
+      } else {
+        left = clampHorizontal(a.left + a.width / 2, bw / 2, margin);
+        const spaceBelow = window.innerHeight - margin - (a.bottom + gap);
+        const spaceAbove = a.top - gap - margin;
+        if (spaceAbove >= bh && spaceAbove >= spaceBelow) {
+          top = a.top - gap;
+          transform = "translate(-50%, -100%)";
+        } else {
+          top = a.bottom + gap;
+          transform = "translateX(-50%)";
+        }
+        setCoords({ top, left, transform });
+        return;
+      }
+
+      const halfH = bh / 2;
+      top = Math.max(margin + halfH, Math.min(window.innerHeight - margin - halfH, top));
+      if (transform === "translate(-100%, -50%)") {
+        left = Math.max(margin + bw, left);
+      } else {
+        left = Math.min(window.innerWidth - margin - bw, left);
+      }
+
+      setCoords({ top, left, transform });
+      return;
+    }
+
     const left = clampHorizontal(a.left + a.width / 2, bw / 2, margin);
 
     const spaceBelow = window.innerHeight - margin - (a.bottom + gap);
@@ -158,6 +207,7 @@ export function SheetHoverTip({ tip, children, className }: Props) {
 
   const themeClass = portalThemeClass(className);
   const modifierClass = portalModifierClass(className);
+  const hoverOnly = isTraitTip(className);
 
   const bubble =
     open && mounted
@@ -203,8 +253,8 @@ export function SheetHoverTip({ tip, children, className }: Props) {
         aria-describedby={open ? tooltipId : undefined}
         onMouseEnter={openTip}
         onMouseLeave={closeTip}
-        onFocus={openTip}
-        onBlur={onFocusOut}
+        onFocus={hoverOnly ? undefined : openTip}
+        onBlur={hoverOnly ? undefined : onFocusOut}
       >
         {children}
       </span>
