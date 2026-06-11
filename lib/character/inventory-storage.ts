@@ -1,3 +1,4 @@
+import { normalizeLegacyConsumables } from "@/lib/character/inventory-normalize";
 import type { InventoryItem } from "./types";
 
 const PREFIX = "eldarin-inventory-";
@@ -29,10 +30,13 @@ export function loadInventory(characterId: string, seed: InventoryItem[]): Inven
       return seed;
     }
     if (shouldPreferSeed(seed, parsed)) {
-      saveInventory(characterId, seed);
-      return seed;
+      const normalizedSeed = normalizeLegacyConsumables(seed);
+      saveInventory(characterId, normalizedSeed);
+      return normalizedSeed;
     }
-    return parsed;
+    const normalized = normalizeLegacyConsumables(parsed);
+    if (normalized !== parsed) saveInventory(characterId, normalized);
+    return normalized;
   } catch {
     return seed;
   }

@@ -1,6 +1,6 @@
 ﻿"use client";
 
-import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import type { CharacterSheet as CharacterSheetData, InventoryItem } from "@/lib/character/types";
@@ -49,7 +49,7 @@ import {
   IconSword,
   IconWand,
 } from "@/components/character/SheetPopupIcons";
-import { IconFlask } from "@/components/ui/EldarinIcons";
+import { IconFlask, IconHourglass } from "@/components/ui/EldarinIcons";
 import { resolveActorDefesa } from "@/lib/character/armor-defense";
 import {
   ATTRIBUTE_LABELS,
@@ -59,7 +59,11 @@ import {
 } from "@/lib/character/rules";
 import { SheetPdfExportButton } from "@/components/character/SheetPdfExportButton";
 import { SheetEditRequestButton } from "@/components/character/SheetEditRequestButton";
-import { usePlayerInventoryRequests } from "@/hooks/useInventoryItemRequest";
+import {
+  usePlayerInventoryNotifications,
+  usePlayerInventoryRequests,
+} from "@/hooks/useInventoryItemRequest";
+import { normalizeLegacyConsumables } from "@/lib/character/inventory-normalize";
 import { inventoryRequestLabel } from "@/lib/character/inventory-item-request";
 import { useSheetPdfDeepLink } from "@/hooks/useSheetPdfDeepLink";
 import { OrnamentCard } from "@/components/ui/OrnamentCard";
@@ -192,11 +196,40 @@ export function CharacterSheet({
   }, [character.id, character.inventory, inRoom, roomActor?.inventory, sheetBase.inventory]);
 
   const [inventoryMsg, setInventoryMsg] = useState<string | null>(null);
+  const inventoryRequestEnabled = canRequestInventory && Boolean(adventureId);
   const { requests: pendingInventoryRequests, refresh: refreshPendingInventory } =
-    usePlayerInventoryRequests(
-      character.id,
-      canRequestInventory && Boolean(adventureId)
+    usePlayerInventoryRequests(character.id, inventoryRequestEnabled);
+  const { requests: inventoryNotifications } = usePlayerInventoryNotifications(
+    adventureId,
+    inventoryRequestEnabled
+  );
+  const processedApprovedInventoryRef = useRef<Set<string>>(new Set());
+
+  useEffect(() => {
+    const newlyApproved = inventoryNotifications.filter(
+      (r) =>
+        r.characterId === character.id &&
+        r.status === "approved" &&
+        !processedApprovedInventoryRef.current.has(r.id)
     );
+    if (!newlyApproved.length) return;
+    newlyApproved.forEach((r) => processedApprovedInventoryRef.current.add(r.id));
+
+    void (async () => {
+      if (inRoom) {
+        await refresh();
+        return;
+      }
+      const res = await fetch(`/api/characters/${character.id}`, { credentials: "same-origin" });
+      if (!res.ok) return;
+      const data = (await res.json()) as { character?: CharacterSheetData };
+      if (!data.character?.inventory) return;
+      const normalized = normalizeLegacyConsumables(data.character.inventory);
+      setInventory(loadInventory(character.id, normalized));
+      saveInventory(character.id, normalized);
+      setLocalSheet(data.character);
+    })();
+  }, [inventoryNotifications, character.id, inRoom, refresh]);
 
   const persistInventory = useCallback(
     (items: InventoryItem[]) => {
@@ -670,8 +703,11 @@ export function CharacterSheet({
       ) : null}
 
       {canRequestInventory && pendingInventoryRequests.length > 0 ? (
-        <div className="sheet-inventory-pending" role="status">
-          <p className="sheet-inventory-pending__title">Aguardando aprovação do mestre</p>
+        <div className="sheet-inventory-pending sheet-inventory-pending--active" role="status">
+          <p className="sheet-inventory-pending__title">
+            <IconHourglass size={14} className="sheet-inventory-pending__icon" aria-hidden />
+            Aguardando aprovação do mestre
+          </p>
           <ul className="sheet-inventory-pending__list">
             {pendingInventoryRequests.map((r) => (
               <li key={r.id}>{inventoryRequestLabel(r)}</li>
