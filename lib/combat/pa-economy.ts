@@ -116,5 +116,6 @@ export {
   totalAttackPaCost,
   warriorFlatWeaponPaPerHit,
   weaponAttackCount,
+  weaponAttackPaIndex,
   type PaCostContext,
 } from "@/lib/combat/pa-cost-reduce";
