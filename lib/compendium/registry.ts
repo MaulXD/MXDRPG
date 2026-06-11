@@ -4,6 +4,7 @@ import habilidadesData from "@/data/compendiums/habilidades.json";
 import magiasData from "@/data/compendiums/magias.json";
 import monstrosData from "@/data/compendiums/monstros.json";
 import equipamentosData from "@/data/compendiums/equipamentos.json";
+import consumiveisData from "@/data/compendiums/consumiveis.json";
 import type {
   CompendiumEntry,
   CompendiumEntryRaw,
@@ -18,6 +19,7 @@ const PACK_DATA: Record<CompendiumPackId, CompendiumEntryRaw[]> = {
   magias: magiasData as CompendiumEntryRaw[],
   monstros: monstrosData as CompendiumEntryRaw[],
   equipamentos: equipamentosData as CompendiumEntryRaw[],
+  consumiveis: consumiveisData as CompendiumEntryRaw[],
 };
 
 export const COMPENDIUM_PACKS: CompendiumPackMeta[] = [
@@ -46,6 +48,13 @@ export const COMPENDIUM_PACKS: CompendiumPackMeta[] = [
     id: "equipamentos",
     label: "Equipamentos",
     description: "Armaduras, ferramentas e itens de aventura.",
+    documentKind: "item",
+    roles: "public",
+  },
+  {
+    id: "consumiveis",
+    label: "Consumíveis",
+    description: "Poções, antídotos e elixires usáveis em combate.",
     documentKind: "item",
     roles: "public",
   },
@@ -94,6 +103,10 @@ export function getPackEntries(
 
   const q = opts?.query?.trim().toLowerCase() ?? "";
   let entries = entriesForPack(packId);
+
+  if (packId === "equipamentos") {
+    entries = entries.filter((e) => e.system.consumable !== true);
+  }
 
   if (q) {
     entries = entries.filter((e) => {

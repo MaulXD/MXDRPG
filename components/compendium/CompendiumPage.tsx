@@ -8,6 +8,7 @@ const PACK_IDS: CompendiumPackId[] = [
   "habilidades",
   "magias",
   "equipamentos",
+  "consumiveis",
   "monstros",
 ];
 

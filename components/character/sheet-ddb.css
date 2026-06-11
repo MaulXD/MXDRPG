@@ -57,9 +57,13 @@
   --ddb-gold: #b8922e;
   --ddb-level-ready: #4a6b18;
   --ddb-level-ready-bright: #6fa318;
-  /* Botões globais usam var(--text); na mesa o chrome é escuro — forçar tinta clara na ficha */
+  /* Botões globais usam var(--text) e var(--surface); na mesa o chrome é escuro */
   --text: var(--ddb-ink);
   --text-muted: var(--ddb-muted);
+  --surface: #ebe4d8;
+  --surface-raised: #f5f0e8;
+  --bg-elevated: #faf7f0;
+  --glass-border-bright: var(--ddb-panel-border);
   background: #e8e2d6;
   color: var(--ddb-ink);
   gap: 0;
@@ -91,6 +95,10 @@
   --sheet-accent: var(--ddb-gold);
   --sheet-text: var(--ddb-ink);
   --sheet-text-muted: var(--ddb-muted);
+  --surface: #ebe4d8;
+  --surface-raised: #f5f0e8;
+  --bg-elevated: #faf7f0;
+  --glass-border-bright: var(--ddb-panel-border);
 }
 
 .sheet-shell--ddb > .sheet-ddb-toolbar,
@@ -442,6 +450,12 @@
   min-width: 11rem;
   text-align: right;
   border-color: rgba(240, 216, 120, 0.35);
+}
+
+.sheet-hover-tip__bubble--portal.sheet-hover-tip__bubble--ddb-trait {
+  min-width: 10.5rem;
+  max-width: min(16rem, calc(100vw - 16px));
+  max-height: min(34vh, 13rem);
 }
 
 .sheet-ddb-attr-tip,
@@ -1447,6 +1461,26 @@
   border: 1px solid var(--ddb-panel-border);
   border-top: none;
   border-radius: 0;
+}
+
+.sheet-shell--ddb .sheet-toolbar .btn:not(.btn-primary-cta):not(.btn--level-ready) {
+  color: var(--ddb-ink);
+  background: linear-gradient(180deg, #f5f0e8 0%, #ebe4d8 100%);
+  border-color: var(--ddb-panel-border);
+  box-shadow: 0 1px 3px rgba(30, 24, 20, 0.1);
+}
+
+.sheet-shell--ddb .sheet-toolbar .btn:not(.btn-primary-cta):not(.btn--level-ready):hover {
+  color: var(--ddb-ink);
+  border-color: var(--ddb-gold);
+  background: linear-gradient(180deg, #fff 0%, #f0ebe2 100%);
+}
+
+.sheet-shell--ddb .sheet-toolbar__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  align-items: center;
 }
 
 .sheet-shell--ddb .sheet-toolbar + *,

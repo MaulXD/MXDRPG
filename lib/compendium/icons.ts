@@ -6,6 +6,7 @@ export const COMPENDIUM_TYPE_COLOR: Record<string, string> = {
   habilidade: "#6e4800",
   magia: "#6e3a52",
   equipamento: "#4a3820",
+  consumivel: "#3a6b42",
   efeito: "#2a4a2c",
   npc: "#5e1a0e",
   character: "#5e1a0e",
@@ -160,6 +161,8 @@ export function resolveCompendiumIconKind(entry: EntryLike): CompendiumIconKind 
     case "magia":
       return spellKind(entry);
     case "equipamento":
+      return equipKind(entry);
+    case "consumivel":
       return equipKind(entry);
     case "efeito":
       return "effect";
