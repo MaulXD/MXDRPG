@@ -59,6 +59,9 @@ function hexPathPoints(
 
 function resultLabelFor(fx: CombatFxState): string {
   if (fx.saveTotal != null) {
+    if (fx.saveDc == null || fx.saveSuccess === undefined) {
+      return String(fx.saveTotal);
+    }
     return fx.saveSuccess ? "TESTE OK" : "TESTE FALHOU";
   }
   if (fx.criticalFail) return "FALHA CRÍTICA";

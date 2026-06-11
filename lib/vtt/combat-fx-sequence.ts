@@ -66,6 +66,7 @@ function combatFxFromMessage(
     return {
       ...base,
       actionKind: "spell",
+      ...(c.saveNatural != null ? { attackNatural: c.saveNatural } : {}),
       saveTotal: c.saveTotal,
       saveDc: c.saveDc,
       saveSuccess: c.saveSuccess,
