@@ -100,7 +100,8 @@ export function IconDiamond({ className, size }: IconProps) {
 export function IconSword({ className, size }: IconProps) {
   return (
     <Svg className={className} size={size}>
-      <path d="M4 20l5-5M14 4l6 6M9 9l6 6M16 3l5 5-3 3" {...S} />
+      <path d="M12 2l2 2-7 7 1 5 5 1 7-7 2 2-9 9-6-1-1-6z" {...S} />
+      <path d="M14 4l6 6" {...S} />
     </Svg>
   );
 }
