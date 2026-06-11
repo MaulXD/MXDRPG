@@ -8,6 +8,7 @@ import { resolveActorDefesa } from "@/lib/character/armor-defense";
 import { xpTotalForLevel } from "@/lib/character/xp";
 import { syncCombatAbilitiesToInventory } from "@/lib/character/combat-inventory-sync";
 import { ensureLoadoutItemsInInventory } from "@/lib/character/inventory-loadout-sync";
+import { EMPTY_CULINARY_PROGRESS } from "@/lib/culinary/types";
 import { normalizeLegacyConsumables } from "@/lib/character/inventory-normalize";
 import { EMPTY_LOOT } from "@/lib/character/loot-storage";
 import {
@@ -106,6 +107,12 @@ export function normalizeCharacter(sheet: CharacterSheet): CharacterSheet {
   const withLegacyConsumables = {
     ...withKit,
     inventory: normalizeLegacyConsumables(withKit.inventory ?? []),
+    culinaryProgress: {
+      ...EMPTY_CULINARY_PROGRESS,
+      ...withKit.culinaryProgress,
+      studiedAnatomyCatalogIds: [...(withKit.culinaryProgress?.studiedAnatomyCatalogIds ?? [])],
+      activeAssimilations: [...(withKit.culinaryProgress?.activeAssimilations ?? [])],
+    },
   };
   return syncCombatAbilitiesToInventory(ensureLoadoutItemsInInventory(withLegacyConsumables));
 }

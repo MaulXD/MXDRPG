@@ -155,7 +155,9 @@ function refreshDemoActorsIfStale(room: RoomState): void {
   }
 
   if (changed) {
-    room.scene = syncLinkedTokens(room.scene, room.actors);
+    room.scene = syncLinkedTokens(room.scene, room.actors, {
+      preserveCombatPa: Boolean(room.combat?.order?.length),
+    });
   }
 
   for (const seed of DEMO_SCENE.tokens) {
@@ -174,6 +176,7 @@ function refreshDemoActorsIfStale(room: RoomState): void {
 
 export async function persistRoom(roomId: string, state: RoomState): Promise<RoomState> {
   if (state.combat?.order?.length) {
+    ensureCombatActiveHasPa(state);
     maybeAutoPassWhenActivePaZero(state);
   }
   const updated = bumpRoom(state);

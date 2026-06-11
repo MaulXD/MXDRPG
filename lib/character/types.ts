@@ -82,4 +82,6 @@ export type CharacterSheet = {
   combatLoadout?: CombatLoadout | null;
   /** Armadura equipada — afeta CA na ficha e no token */
   armorLoadout?: { packId: "equipamentos"; entryId: string } | null;
+  /** Assimilações ativas, anatomia estudada, fome (Cap. 5–6). */
+  culinaryProgress?: import("@/lib/culinary/types").CharacterCulinaryProgress;
 };

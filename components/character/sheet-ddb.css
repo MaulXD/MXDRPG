@@ -1162,6 +1162,38 @@
   transition: border-color 0.12s, background 0.12s;
 }
 
+.sheet-ddb-assim-list {
+  list-style: none;
+  margin: 0;
+  padding: 0.35rem 0.5rem 0.55rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.sheet-ddb-assim-list li {
+  font-size: 0.68rem;
+  line-height: 1.35;
+  padding: 0.35rem 0.45rem;
+  border-radius: 6px;
+  background: rgba(90, 168, 110, 0.08);
+  border: 1px solid rgba(90, 168, 110, 0.25);
+}
+
+.sheet-ddb-assim-list li strong {
+  display: block;
+  color: #2d5a38;
+}
+
+.sheet-ddb-assim-list li span {
+  color: #4a3f34;
+}
+
+.sheet-ddb-assim-list li small {
+  color: #7a6f62;
+  font-size: 0.6rem;
+}
+
 .sheet-ddb-culinary-tip:hover .sheet-ddb-culinary__item,
 .sheet-ddb-culinary__item:focus-visible {
   border-color: color-mix(in srgb, var(--ddb-gold) 45%, var(--ddb-panel-border));

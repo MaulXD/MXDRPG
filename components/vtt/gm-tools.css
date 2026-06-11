@@ -16,9 +16,52 @@
 
 .vtt-gm-tools__nav {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0.35rem;
   flex-shrink: 0;
+}
+
+.vtt-gm-culinary {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  padding: 0.65rem 0.75rem;
+}
+
+.vtt-gm-culinary__title {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.vtt-gm-culinary__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+}
+
+.vtt-gm-culinary__fieldset {
+  border: 1px solid rgba(201, 169, 98, 0.18);
+  border-radius: 8px;
+  padding: 0.5rem 0.65rem;
+  margin: 0;
+}
+
+.vtt-gm-culinary__fieldset legend {
+  font-size: 0.72rem;
+  padding: 0 0.25rem;
+}
+
+.vtt-gm-culinary__check,
+.vtt-gm-culinary__radio {
+  display: flex;
+  gap: 0.45rem;
+  align-items: flex-start;
+  font-size: 0.78rem;
+  margin: 0.25rem 0;
+}
+
+.vtt-hint--warn {
+  color: #e8a060;
 }
 
 .vtt-gm-tools__tab {

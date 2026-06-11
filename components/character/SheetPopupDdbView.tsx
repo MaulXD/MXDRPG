@@ -378,6 +378,17 @@ export function SheetPopupDdbView({
                 </SheetHoverTip>
               ))}
             </div>
+            {character.culinaryProgress?.activeAssimilations?.length ? (
+              <ul className="sheet-ddb-assim-list">
+                {character.culinaryProgress.activeAssimilations.map((a) => (
+                  <li key={`${a.entryId}-${a.acquiredAt}`}>
+                    <strong>{a.name}</strong>
+                    <span>{a.effectLabel}</span>
+                    <small>{a.specimenCatalogId}</small>
+                  </li>
+                ))}
+              </ul>
+            ) : null}
           </section>
         </aside>
       </div>

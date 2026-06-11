@@ -942,10 +942,18 @@ export function HexBattlefield({
 
   const playCombatFxFromSnap = useCallback(
     (snap: RoomSnapshot, opts?: { deferSnap?: boolean }) => {
+      const queueBefore = combatFxQueueRef.current.length;
+      const activeFxBefore = combatFxIdRef.current;
       if (opts?.deferSnap) pendingCombatSnapRef.current = snap;
       enqueueCombatFxFromChat(snap.chat, snap.scene.tokens);
+      const queuedFx =
+        combatFxQueueRef.current.length > queueBefore || combatFxIdRef.current !== activeFxBefore;
+      if (opts?.deferSnap && !queuedFx) {
+        pendingCombatSnapRef.current = null;
+        syncRoom(snap);
+      }
     },
-    [enqueueCombatFxFromChat]
+    [enqueueCombatFxFromChat, syncRoom, combatFx]
   );
 
   playCombatFxFromSnapRef.current = playCombatFxFromSnap;
@@ -1007,10 +1015,8 @@ export function HexBattlefield({
     const snap = pendingCombatSnapRef.current;
     if (!snap) return;
     pendingCombatSnapRef.current = null;
-    if (snap.revision <= appliedSceneRevisionRef.current) return;
-    appliedSceneRevisionRef.current = snap.revision;
-    setScene((prev) => mergeScenePreservingPortraits(prev, snap.scene));
-  }, []);
+    syncRoom(snap);
+  }, [syncRoom]);
 
   const snapshotRef = useRef(snapshot);
   snapshotRef.current = snapshot;

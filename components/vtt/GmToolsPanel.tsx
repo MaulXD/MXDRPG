@@ -8,11 +8,12 @@ import { GmActionHistoryPanel } from "@/components/vtt/GmActionHistoryPanel";
 import { GmActorProgressPanel } from "@/components/vtt/GmActorProgressPanel";
 import { GmCreationsPanel } from "@/components/vtt/GmCreationsPanel";
 import { GmSavingThrowPanel } from "@/components/vtt/GmSavingThrowPanel";
+import { CulinaryMealPanel } from "@/components/vtt/CulinaryMealPanel";
 import { RoomSettingsPanel } from "@/components/vtt/RoomSettingsPanel";
 import type { CombatUndoEntry } from "@/lib/room/types";
 import "./gm-tools.css";
 
-type GmTab = "sala" | "jogadores" | "criaturas" | "combate";
+type GmTab = "sala" | "jogadores" | "culinaria" | "criaturas" | "combate";
 
 type Props = {
   roomId: string;
@@ -30,6 +31,7 @@ type Props = {
 const TABS: { id: GmTab; label: string; hint: string }[] = [
   { id: "sala", label: "Sala", hint: "Nome, visibilidade e convite" },
   { id: "jogadores", label: "Jogadores", hint: "XP, vida e salvaguardas" },
+  { id: "culinaria", label: "Culinária", hint: "Prato estruturado e assimilação" },
   { id: "criaturas", label: "Criaturas", hint: "Templates do mestre" },
   { id: "combate", label: "Combate", hint: "Desfazer ações" },
 ];
@@ -109,6 +111,14 @@ export function GmToolsPanel({
               onUpdated={onSceneUpdated}
             />
           </>
+        ) : null}
+
+        {tab === "culinaria" ? (
+          <CulinaryMealPanel
+            roomId={roomId}
+            roomActors={roomActors}
+            onUpdated={onSceneUpdated}
+          />
         ) : null}
 
         {tab === "criaturas" ? (
