@@ -10,7 +10,6 @@ import {
 } from "react";
 import {
   applyBattlefieldViewTransform,
-  DEFAULT_BATTLEFIELD_VIEW,
   type BattlefieldView,
 } from "@/lib/vtt/battlefield-view";
 import type { Axial } from "@/lib/vtt/hex-math";
@@ -98,7 +97,8 @@ export function useHexCanvas(
   state: HexCanvasDrawState,
   imgTick: number,
   moveAnimRef?: TokenMoveAnimRef,
-  view: BattlefieldView = DEFAULT_BATTLEFIELD_VIEW
+  viewRef?: RefObject<BattlefieldView>,
+  subscribeViewDraw?: (fn: () => void) => () => void
 ) {
   const stateRef = useRef(state);
   stateRef.current = state;
@@ -151,6 +151,8 @@ export function useHexCanvas(
 
     const s = stateRef.current;
     drawBattlefieldBackground(ctx, layout.w, layout.h);
+
+    const view = viewRef?.current ?? { scale: 1, panX: 0, panY: 0 };
 
     ctx.save();
     applyBattlefieldViewTransform(ctx, layout.w, layout.h, view);
@@ -247,10 +249,19 @@ export function useHexCanvas(
 
     ctx.restore();
     return true;
-  }, [canvasRef, wrapRef, imagesRef, imgTick, themeTick, moveAnimRef, view]);
+  }, [canvasRef, wrapRef, imagesRef, imgTick, themeTick, moveAnimRef, viewRef]);
 
   const drawRef = useRef(draw);
   drawRef.current = draw;
+
+  const viewDrawRafRef = useRef<number | null>(null);
+  const scheduleViewDraw = useCallback(() => {
+    if (viewDrawRafRef.current != null) return;
+    viewDrawRafRef.current = requestAnimationFrame(() => {
+      viewDrawRafRef.current = null;
+      drawRef.current();
+    });
+  }, []);
 
   useEffect(() => {
     const stopLoop = () => {
@@ -307,12 +318,26 @@ export function useHexCanvas(
     needsCanvasAnimation,
   ]);
 
+  useEffect(() => {
+    if (!subscribeViewDraw) return;
+    return subscribeViewDraw(scheduleViewDraw);
+  }, [subscribeViewDraw, scheduleViewDraw]);
+
+  useEffect(
+    () => () => {
+      if (viewDrawRafRef.current != null) {
+        cancelAnimationFrame(viewDrawRafRef.current);
+      }
+    },
+    []
+  );
+
   useLayoutEffect(() => {
     draw();
     const ro = new ResizeObserver(() => drawRef.current());
     if (wrapRef.current) ro.observe(wrapRef.current);
     return () => ro.disconnect();
-  }, [draw, wrapRef, view.scale, view.panX, view.panY]);
+  }, [draw, wrapRef]);
 
   return { draw, redraw: () => drawRef.current() };
 }

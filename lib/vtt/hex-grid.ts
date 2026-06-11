@@ -27,7 +27,22 @@ export function viewportGridRadius(
 }
 
 /** Limite de raio extra além do da cena — evita dezenas de milhares de hexes com zoom out. */
-const DISPLAY_GRID_RADIUS_CAP = 24;
+export const DISPLAY_GRID_RADIUS_CAP = 24;
+
+/** Raio axial efetivo do grid de desenho (cena + viewport, com teto). */
+export function displayHexGridRadius(
+  sceneRadius: number,
+  w: number,
+  h: number,
+  hexSize: number,
+  viewScale = 1
+): number {
+  const viewportR = viewportGridRadius(w, h, hexSize, viewScale);
+  return Math.min(
+    Math.max(sceneRadius, viewportR),
+    Math.max(sceneRadius, DISPLAY_GRID_RADIUS_CAP)
+  );
+}
 
 /** Grid da cena expandido até preencher o viewport (com teto de performance). */
 export function buildDisplayHexGrid(
@@ -37,10 +52,5 @@ export function buildDisplayHexGrid(
   hexSize: number,
   viewScale = 1
 ): Axial[] {
-  const viewportR = viewportGridRadius(w, h, hexSize, viewScale);
-  const r = Math.min(
-    Math.max(sceneRadius, viewportR),
-    Math.max(sceneRadius, DISPLAY_GRID_RADIUS_CAP)
-  );
-  return buildHexGrid(r);
+  return buildHexGrid(displayHexGridRadius(sceneRadius, w, h, hexSize, viewScale));
 }

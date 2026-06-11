@@ -1,6 +1,13 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState, type RefObject } from "react";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  startTransition,
+  type RefObject,
+} from "react";
 import {
   BATTLEFIELD_SCALE_MAX,
   BATTLEFIELD_SCALE_MIN,
@@ -41,13 +48,54 @@ export function useBattlefieldView({ wrapRef, canvasRef }: Params) {
   } | null>(null);
   const [isPanning, setIsPanning] = useState(false);
 
-  const bumpView = useCallback((next: BattlefieldView) => {
-    viewRef.current = next;
-    setView(next);
+  const viewDrawListenersRef = useRef(new Set<() => void>());
+  const flushViewStateRef = useRef<number | null>(null);
+
+  const notifyViewDraw = useCallback(() => {
+    for (const fn of viewDrawListenersRef.current) fn();
+  }, []);
+
+  const scheduleViewStateFlush = useCallback(() => {
+    if (flushViewStateRef.current != null) return;
+    flushViewStateRef.current = requestAnimationFrame(() => {
+      flushViewStateRef.current = null;
+      startTransition(() => {
+        setView(viewRef.current);
+      });
+    });
+  }, []);
+
+  const bumpView = useCallback(
+    (next: BattlefieldView, options?: { syncState?: boolean }) => {
+      viewRef.current = next;
+      notifyViewDraw();
+      if (options?.syncState) {
+        setView(next);
+        return;
+      }
+      scheduleViewStateFlush();
+    },
+    [notifyViewDraw, scheduleViewStateFlush]
+  );
+
+  useEffect(
+    () => () => {
+      if (flushViewStateRef.current != null) {
+        cancelAnimationFrame(flushViewStateRef.current);
+      }
+    },
+    []
+  );
+
+  const subscribeViewDraw = useCallback((fn: () => void) => {
+    viewDrawListenersRef.current.add(fn);
+    return () => {
+      viewDrawListenersRef.current.delete(fn);
+    };
   }, []);
 
   const resetView = useCallback(() => {
-    bumpView(DEFAULT_BATTLEFIELD_VIEW);
+    bumpView(DEFAULT_BATTLEFIELD_VIEW, { syncState: true });
   }, [bumpView]);
 
   const zoomBy = useCallback(
@@ -198,6 +246,7 @@ export function useBattlefieldView({ wrapRef, canvasRef }: Params) {
     onPointerDown,
     onPointerMove,
     endPan,
+    subscribeViewDraw,
     scaleMin: BATTLEFIELD_SCALE_MIN,
     scaleMax: BATTLEFIELD_SCALE_MAX,
     canZoomIn: view.scale < BATTLEFIELD_SCALE_MAX - 0.01,
