@@ -384,7 +384,9 @@ export function TokenActionRing({
         title: `${item.name} ×${item.quantity}\n${item.description}`,
         detailHint: item.healFormula
           ? `Cura ${item.healFormula} · ${item.quantity} no inventário`
-          : `${item.quantity} no inventário`,
+          : item.effectHint
+            ? `${item.effectHint} · ×${item.quantity}`
+            : `${item.quantity} no inventário`,
         consumable: item,
         onClick: () => void drinkConsumable(item),
       }));
@@ -493,7 +495,7 @@ export function TokenActionRing({
               ? "Poções do inventário — clique para escolher."
               : consumables[0]?.healFormula
                 ? `Cura ${consumables[0].healFormula}`
-                : consumables[0]?.description,
+                : consumables[0]?.effectHint ?? consumables[0]?.description,
         consumable: consumables.length === 1 ? consumables[0] : null,
         onClick: () => {
           if (consumables.length === 1) {
@@ -850,6 +852,11 @@ export function TokenActionRing({
                 <>
                   <br />
                   Cura {activeDetailSlot.consumable.healFormula}
+                </>
+              ) : activeDetailSlot.consumable.effectHint ? (
+                <>
+                  <br />
+                  {activeDetailSlot.consumable.effectHint}
                 </>
               ) : null}
               <br />
