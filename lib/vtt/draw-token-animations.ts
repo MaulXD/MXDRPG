@@ -41,6 +41,28 @@ export function drawTurnActiveIndicator(
   ctx.restore();
 }
 
+/** Alvo no alcance mas bloqueado (turno/PA/etc.) — anel âmbar tracejado. */
+export function drawRangeTargetHint(
+  ctx: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  r: number,
+  timeSec: number
+): void {
+  const t = ringAnimTime(timeSec);
+  const pulse = 0.5 + 0.5 * Math.sin(t * 2.8);
+  ctx.save();
+  ctx.setLineDash([3, 7]);
+  ctx.lineDashOffset = t * 18;
+  ctx.beginPath();
+  ctx.arc(x, y, r + 2 + pulse, 0, Math.PI * 2);
+  ctx.strokeStyle = `rgba(232, 168, 88, ${0.28 + pulse * 0.22})`;
+  ctx.lineWidth = 1.5;
+  ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.restore();
+}
+
 /** Alvos válidos de ataque (modo alvo) — pulso vermelho suave. */
 export function drawAttackableHint(
   ctx: CanvasRenderingContext2D,

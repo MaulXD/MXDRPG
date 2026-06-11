@@ -46,6 +46,9 @@ type Props = {
 
   attackableIds?: ReadonlySet<string>;
 
+  /** Tokens no alcance (anel no mapa) — pode incluir alvos bloqueados por turno/PA. */
+  rangeTargetIds?: ReadonlySet<string>;
+
   /** Alvo sob o cursor no hex ou na lista de turnos. */
 
   hoverAttackTargetId?: string | null;
@@ -105,6 +108,8 @@ export function TurnOrderPanel({
 
   attackableIds,
 
+  rangeTargetIds,
+
   hoverAttackTargetId = null,
 
   onHoverAttackTargetChange,
@@ -123,7 +128,9 @@ export function TurnOrderPanel({
   const [dragOverId, setDragOverId] = useState<string | null>(null);
   const [settingsOpen, setSettingsOpen] = useState(false);
 
-  const attackHoverEnabled = Boolean(attackableIds && attackableIds.size > 0);
+  const attackHoverEnabled = Boolean(
+    (attackableIds && attackableIds.size > 0) || (rangeTargetIds && rangeTargetIds.size > 0)
+  );
 
   const tokenMap = new Map(tokens.map((t) => [t.id, t]));
   const displayOrder = livingOrderIds(track.order, tokenMap);
@@ -485,6 +492,7 @@ export function TurnOrderPanel({
             const draggable = canControl && !defeated;
 
             const attackable = Boolean(attackableIds?.has(id));
+            const inRangeOnly = Boolean(!attackable && rangeTargetIds?.has(id));
 
             const attackFocus = hoverAttackTargetId === id;
 
@@ -494,7 +502,13 @@ export function TurnOrderPanel({
 
               defeated ? "defeated" : "",
 
-              attackFocus ? "vtt-turn-attack-focus" : attackable ? "vtt-turn-attackable" : "",
+              attackFocus
+                ? "vtt-turn-attack-focus"
+                : attackable
+                  ? "vtt-turn-attackable"
+                  : inRangeOnly
+                    ? "vtt-turn-in-range"
+                    : "",
 
               draggable ? "vtt-turn-draggable" : "",
 
