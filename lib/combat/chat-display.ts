@@ -1,4 +1,13 @@
 import type { ChatMessage } from "@/lib/room/chat";
+import { combatHealAmount, isCombatHealEvent } from "@/lib/room/chat-events";
+import {
+  combatChatActionTags,
+  combatChatHeroCaption,
+  combatUsageKind,
+} from "@/lib/combat/chat-labels";
+
+export { combatChatActionTags } from "@/lib/combat/chat-labels";
+export { combatChatBonusHealNote, combatChatTargetName } from "@/lib/combat/chat-labels";
 
 export type CombatChatRevealPhase = "roll" | "damage";
 
@@ -7,6 +16,7 @@ export function isStagedCombatChatMessage(msg: ChatMessage): boolean {
   if (msg.kind !== "combat" || !msg.combat) return false;
   const c = msg.combat;
   if (c.resolution === "defeat") return false;
+  if (isCombatHealEvent(c) && !c.attackNatural && c.attackTotal == null) return false;
   if (c.areaCenterQ != null && c.areaCenterR != null && c.areaBatchId && !c.attackNatural && !c.saveTotal) {
     return false;
   }
@@ -92,29 +102,6 @@ export function combatChatAuthorRoleLabel(role: ChatMessage["authorRole"]): stri
   return "Jogador";
 }
 
-export function combatChatActionTags(c: NonNullable<ChatMessage["combat"]>): string {
-  const tags: string[] = [];
-  if (c.resolution === "save") {
-    tags.push("Teste de resistência", "Magia");
-  } else if (c.resolution === "defeat") {
-    tags.push("Derrota");
-  } else if (c.actionKind === "weapon") {
-    tags.push("Ataque", "Arma");
-  } else if (c.actionKind === "unarmed") {
-    tags.push("Ataque", "Desarmado");
-  } else if (c.actionKind === "spell") {
-    tags.push("Magia");
-  } else {
-    tags.push("Habilidade");
-  }
-  const mode = c.attackRollMode ?? c.saveRollMode;
-  if (mode === "advantage") tags.push("Vantagem");
-  if (mode === "disadvantage") tags.push("Desvantagem");
-  if (c.critical) tags.push("Crítico");
-  if (c.criticalFail) tags.push("Falha crítica");
-  return tags.join(" · ");
-}
-
 /** Fórmula legível para o bloco central do cartão (ex.: 1d20 + 2 + 3). */
 export function combatChatRollFormula(detailRoll: string): string {
   const chunk = detailRoll.split(" · ")[0]?.trim() ?? detailRoll.trim();
@@ -160,6 +147,24 @@ export function combatChatHeroDisplay(
 
   if (c.hit === false || c.criticalFail) {
     return { value: String(c.attackNatural ?? c.attackTotal ?? "—"), caption: "Errou" };
+  }
+
+  if (isCombatHealEvent(c)) {
+    const heal = combatHealAmount(c);
+    if (heal > 0) {
+      return {
+        value: `+${heal}`,
+        caption: combatChatHeroCaption(c, msg.text) ?? "HP",
+      };
+    }
+  }
+
+  const usageKind = combatUsageKind(c, msg.text);
+  if (usageKind === "buff" || usageKind === "consumable_effect") {
+    return { value: "↑", caption: "Aplicado" };
+  }
+  if (usageKind === "debuff") {
+    return { value: "↓", caption: "Efeito" };
   }
 
   if (c.damageTotal != null && c.damageTotal > 0) {
