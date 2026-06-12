@@ -299,16 +299,6 @@ export async function removeRoomToken(
   const preserveActorId =
     removed.linked && removed.actorId ? removed.actorId : null;
 
-  if (room.combat?.order?.length) {
-    const prevActiveId = activeTokenId(room.combat);
-    if (prevActiveId === tokenId) {
-      return {
-        ok: false,
-        error: "Este token está na vez — passe o turno antes de remover do mapa",
-      };
-    }
-  }
-
   room.scene = {
     ...room.scene,
     tokens: room.scene.tokens.filter((t) => t.id !== tokenId),
