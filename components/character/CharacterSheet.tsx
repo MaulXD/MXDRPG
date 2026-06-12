@@ -36,6 +36,8 @@ import {
 } from "@/components/character/SheetPopupLoadoutBar";
 import { SheetPopupPortrait } from "@/components/character/SheetPopupPortrait";
 import { SheetPopupDdbView } from "@/components/character/SheetPopupDdbView";
+import { SheetPopupV2View, type SheetV2TabId } from "@/components/character/SheetPopupV2View";
+import { SheetFichaOverview } from "@/components/character/SheetFichaOverview";
 import { SheetDdbDrawer } from "@/components/character/SheetDdbDrawer";
 import { SheetDdbManagePanel } from "@/components/character/SheetDdbManagePanel";
 import { SheetHoverTip } from "@/components/character/SheetHoverTip";
@@ -47,7 +49,9 @@ import {
   IconBestiary,
   IconCoins,
   IconLightning,
+  IconShield,
   IconSword,
+  IconUser,
   IconWand,
 } from "@/components/character/SheetPopupIcons";
 import { IconFlask, IconHourglass } from "@/components/ui/EldarinIcons";
@@ -112,6 +116,8 @@ type Props = {
   popupToolbarDrag?: FoundryWindowDragHandlers;
   /** Ficha DDB em /personagem/:id (sem moldura Foundry) */
   standalonePage?: boolean;
+  /** Popup: layout DDB (padrão) ou V2 estilo Foundry com abas laterais */
+  popupLayout?: "ddb" | "v2";
 };
 
 const PLAYER_PACKS: CompendiumPackId[] = [
@@ -137,6 +143,7 @@ export function CharacterSheet({
   popupToolbarTrailing,
   popupToolbarDrag,
   standalonePage = false,
+  popupLayout = "ddb",
 }: Props) {
   const canEditPortrait = canEditPortraitProp ?? canEdit;
   const inventoryEditMode =
@@ -146,6 +153,7 @@ export function CharacterSheet({
   const canPickCompendium = canEditInventory || canRequestInventory;
   const router = useRouter();
   const [tab, setTab] = useState<Tab>("inventário");
+  const [v2Tab, setV2Tab] = useState<SheetV2TabId>("ficha");
   const [inventory, setInventory] = useState<InventoryItem[]>(character.inventory);
   const [pickerOpen, setPickerOpen] = useState(false);
   const [pickerPack, setPickerPack] = useState<CompendiumPackId>("armas");
@@ -640,27 +648,29 @@ export function CharacterSheet({
     outros: <IconBackpack size={18} className="inv-section__icon" />,
   };
 
-  const tabPanel = (
-    <>
-      <div className="sheet-tabs" role="tablist" aria-label="Inventário e recursos">
-        {sheetTabs.map((t) => (
-          <button
-            key={t.id}
-            type="button"
-            role="tab"
-            aria-selected={tab === t.id}
-            className={`sheet-tab ${tab === t.id ? "active" : ""}`}
-            onClick={() => setTab(t.id)}
-          >
-            {t.icon}
-            <span className="sheet-tab__label">{t.label}</span>
-            {t.count && t.count > 0 ? (
-              <span className="sheet-tab__count">{t.count}</span>
-            ) : null}
-          </button>
-        ))}
-      </div>
+  const tabStrip = (
+    <div className="sheet-tabs" role="tablist" aria-label="Inventário e recursos">
+      {sheetTabs.map((t) => (
+        <button
+          key={t.id}
+          type="button"
+          role="tab"
+          aria-selected={tab === t.id}
+          className={`sheet-tab ${tab === t.id ? "active" : ""}`}
+          onClick={() => setTab(t.id)}
+        >
+          {t.icon}
+          <span className="sheet-tab__label">{t.label}</span>
+          {t.count && t.count > 0 ? (
+            <span className="sheet-tab__count">{t.count}</span>
+          ) : null}
+        </button>
+      ))}
+    </div>
+  );
 
+  const tabBody = (
+    <>
       <div className="sheet-toolbar">
         <h2
           className={isPopup ? "sheet-popup-panel-title" : undefined}
@@ -823,6 +833,13 @@ export function CharacterSheet({
           )}
         </>
       )}
+    </>
+  );
+
+  const tabPanel = (
+    <>
+      {tabStrip}
+      {tabBody}
     </>
   );
 

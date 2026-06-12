@@ -16,10 +16,18 @@ type Props = {
   roomId: string;
   coverUrl?: string | null;
   coverFocus?: PortraitFocus | null;
+  /** hub = gerenciamento da aventura; vtt = painel da sala ao vivo */
+  variant?: "hub" | "vtt";
   onUpdated: (snapshot: RoomSnapshot) => void;
 };
 
-export function RoomCoverEditor({ roomId, coverUrl, coverFocus, onUpdated }: Props) {
+export function RoomCoverEditor({
+  roomId,
+  coverUrl,
+  coverFocus,
+  variant = "vtt",
+  onUpdated,
+}: Props) {
   const fileRef = useRef<HTMLInputElement>(null);
   const pendingFileRef = useRef<File | null>(null);
   const [draftSrc, setDraftSrc] = useState<string | null>(null);
@@ -91,15 +99,22 @@ export function RoomCoverEditor({ roomId, coverUrl, coverFocus, onUpdated }: Pro
     onPickFile(file);
   }
 
+  const hub = variant === "hub";
+
   return (
-    <fieldset className="vtt-settings-fieldset mesa-room-cover-editor" onPaste={onPaste}>
-      <legend className="vtt-eyebrow">Foto de capa</legend>
+    <fieldset
+      className={`vtt-settings-fieldset mesa-room-cover-editor${hub ? " mesa-room-cover-editor--hub" : ""}`}
+      onPaste={onPaste}
+    >
+      {!hub ? <legend className="vtt-eyebrow">Foto de capa</legend> : null}
       <p className="vtt-combat-hint" style={{ margin: 0 }}>
-        Imagem opcional exibida discretamente atrás do mapa para todos na mesa. {IMAGE_UPLOAD_HINT}
+        {hub
+          ? `JPG, PNG ou WebP. ${IMAGE_UPLOAD_HINT}`
+          : `Imagem opcional exibida discretamente atrás do mapa para todos na mesa. ${IMAGE_UPLOAD_HINT}`}
       </p>
 
       <div
-        className={`mesa-room-cover-preview${previewSrc ? " mesa-room-cover-preview--has-image" : ""}`}
+        className={`mesa-room-cover-preview${previewSrc ? " mesa-room-cover-preview--has-image" : ""}${hub ? " mesa-room-cover-preview--hub" : ""}`}
       >
         {previewSrc ? (
           <img

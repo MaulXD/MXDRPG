@@ -4035,6 +4035,18 @@
   opacity: 0.85;
 }
 
+.mesa-room-cover-preview--hub {
+  aspect-ratio: 1;
+  max-width: 148px;
+  max-height: 148px;
+}
+
+.mesa-room-cover-editor--hub {
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
 .vtt-dungeon-panel {
   display: flex;
   flex-direction: column;

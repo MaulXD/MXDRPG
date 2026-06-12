@@ -90,7 +90,8 @@
 
 .adventure-table-card {
   display: grid;
-  grid-template-columns: 148px minmax(0, 1fr);
+  grid-template-columns: 120px minmax(0, 1fr);
+  align-items: stretch;
   gap: 0;
   border-radius: 12px;
   overflow: hidden;
@@ -106,11 +107,13 @@
 
 .adventure-table-card__cover-link {
   display: block;
-  width: 148px;
-  height: 148px;
-  flex-shrink: 0;
+  width: 120px;
+  height: 100%;
+  min-height: 0;
+  align-self: stretch;
   text-decoration: none;
   overflow: hidden;
+  border-radius: 12px 0 0 12px;
   background-color: #1a1208;
 }
 
@@ -126,7 +129,7 @@
 .adventure-table-card__body {
   display: flex;
   flex-direction: column;
-  padding: 0.85rem 1rem 0.75rem;
+  padding: 0.65rem 0.85rem 0.7rem;
   min-width: 0;
 }
 
@@ -146,9 +149,9 @@
 .adventure-table-card__title {
   margin: 0;
   font-family: var(--font-display);
-  font-size: 1.35rem;
+  font-size: 1.1rem;
   font-weight: 700;
-  line-height: 1.15;
+  line-height: 1.2;
   color: #d4b356;
   text-decoration: none;
   letter-spacing: 0.01em;
@@ -190,7 +193,7 @@
   align-items: center;
   gap: 0.35rem;
   font-family: var(--font-display);
-  font-size: 1.05rem;
+  font-size: 0.92rem;
   font-weight: 700;
   color: #c9a962;
   text-decoration: none;
@@ -216,7 +219,7 @@
 
 .adventure-table-card__divider {
   height: 1px;
-  margin: 0.65rem 0 0.55rem;
+  margin: 0.45rem 0 0.4rem;
   background: linear-gradient(
     90deg,
     rgba(184, 146, 46, 0.35) 0%,
@@ -225,7 +228,6 @@
 }
 
 .adventure-table-card__players {
-  flex: 1;
   min-width: 0;
 }
 
@@ -239,8 +241,8 @@
 
 .adventure-table-card__avatar {
   position: relative;
-  width: 2.35rem;
-  height: 2.35rem;
+  width: 2rem;
+  height: 2rem;
   border-radius: 50%;
   overflow: hidden;
   border: 2px solid rgba(255, 255, 255, 0.12);
@@ -285,9 +287,10 @@
 
 .adventure-table-card__meta {
   margin: 0;
-  font-size: 0.82rem;
+  font-size: 0.75rem;
   color: rgba(232, 226, 214, 0.72);
-  line-height: 1.45;
+  line-height: 1.4;
+  word-break: break-word;
 }
 
 .adventure-table-card__meta strong {
@@ -304,10 +307,17 @@
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 0.5rem;
-  margin-top: 0.65rem;
-  padding-top: 0.55rem;
+  gap: 0.4rem;
+  margin-top: 0.5rem;
+  padding-top: 0.45rem;
   border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.adventure-table-card__invite-row {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.5rem;
 }
 
 .adventure-table-card__invite {
@@ -318,6 +328,13 @@
 .adventure-table-card__invite code {
   font-size: 0.78rem;
   color: rgba(232, 226, 214, 0.88);
+}
+
+.adventure-table-card__copy {
+  font-size: 0.72rem;
+  padding: 0.12rem 0.45rem;
+  color: #d4b356;
+  border-color: rgba(184, 146, 46, 0.35);
 }
 
 .adventure-table-card__delete {
@@ -333,6 +350,8 @@
   .adventure-table-card__cover-link {
     width: 100%;
     height: auto;
-    aspect-ratio: 1;
+    min-height: unset;
+    aspect-ratio: 16 / 9;
+    border-radius: 12px 12px 0 0;
   }
 }
