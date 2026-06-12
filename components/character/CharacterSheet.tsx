@@ -361,6 +361,7 @@ export function CharacterSheet({
   const levelUpControl = canEdit ? (
     <LevelUpWizard
       actor={live}
+      theme="ddb"
       roomId={inRoom ? roomId : undefined}
       canEdit={canEdit}
       onDone={inRoom ? refresh : () => router.refresh()}

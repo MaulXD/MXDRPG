@@ -1830,3 +1830,301 @@
   background: #e8e2d6;
   border-color: transparent;
 }
+
+/* ── Level-up wizard — mesmo esquema da ficha DDB ── */
+
+.lu-overlay--ddb {
+  --ddb-header: #4a1520;
+  --ddb-header-deep: #2d0c12;
+  --ddb-panel: #faf7f0;
+  --ddb-panel-border: #d8cfc0;
+  --ddb-ink: #1e1814;
+  --ddb-muted: #6a5c4e;
+  --ddb-gold: #b8922e;
+  --ddb-level-ready: #4a6b18;
+  --ddb-level-ready-bright: #6fa318;
+  background: rgba(16, 14, 11, 0.28);
+  backdrop-filter: blur(3px);
+}
+
+.lu-overlay--ddb .lu-shell,
+.lu-shell--ddb {
+  border-color: var(--ddb-panel-border);
+  background: #e8e2d6;
+  box-shadow:
+    0 20px 56px rgba(30, 24, 20, 0.22),
+    0 0 0 1px rgba(255, 255, 255, 0.45) inset;
+  color: var(--ddb-ink);
+}
+
+.lu-overlay--ddb .lu-header,
+.lu-shell--ddb .lu-header {
+  background: linear-gradient(135deg, var(--ddb-header) 0%, var(--ddb-header-deep) 100%);
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+.lu-overlay--ddb .lu-header h2,
+.lu-shell--ddb .lu-header h2 {
+  color: #f8f2ea;
+}
+
+.lu-overlay--ddb .lu-header-meta,
+.lu-shell--ddb .lu-header-meta {
+  color: rgba(248, 242, 234, 0.78);
+}
+
+.lu-overlay--ddb .lu-close,
+.lu-shell--ddb .lu-close {
+  color: #f8f2ea;
+  border-color: rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.lu-overlay--ddb .lu-close:hover:not(:disabled),
+.lu-shell--ddb .lu-close:hover:not(:disabled) {
+  border-color: rgba(255, 255, 255, 0.38);
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+
+.lu-overlay--ddb .lu-stepper,
+.lu-shell--ddb .lu-stepper {
+  background: #f0ebe2;
+  border-bottom-color: var(--ddb-panel-border);
+}
+
+.lu-overlay--ddb .lu-step-pill,
+.lu-shell--ddb .lu-step-pill {
+  color: var(--ddb-muted);
+}
+
+.lu-overlay--ddb .lu-step-pill--active,
+.lu-shell--ddb .lu-step-pill--active {
+  border-color: rgba(184, 146, 46, 0.55);
+  color: #5c4510;
+  background: rgba(184, 146, 46, 0.14);
+}
+
+.lu-overlay--ddb .lu-step-pill--done,
+.lu-shell--ddb .lu-step-pill--done {
+  color: var(--ddb-level-ready);
+}
+
+.lu-overlay--ddb .lu-main,
+.lu-shell--ddb .lu-main {
+  background: var(--ddb-panel);
+}
+
+.lu-overlay--ddb .lu-aside,
+.lu-shell--ddb .lu-aside {
+  border-left-color: var(--ddb-panel-border);
+  background: #f0ebe2;
+}
+
+.lu-overlay--ddb .lu-aside-title,
+.lu-shell--ddb .lu-aside-title,
+.lu-overlay--ddb .lu-hint,
+.lu-shell--ddb .lu-hint,
+.lu-overlay--ddb .lu-confirm-list li,
+.lu-shell--ddb .lu-confirm-list li {
+  color: var(--ddb-muted);
+}
+
+.lu-overlay--ddb .lu-bonus-group h5,
+.lu-shell--ddb .lu-bonus-group h5 {
+  color: #5c4510;
+}
+
+.lu-overlay--ddb .lu-bonus-group ul,
+.lu-shell--ddb .lu-bonus-group ul {
+  color: var(--ddb-ink);
+}
+
+.lu-overlay--ddb .lu-footer,
+.lu-shell--ddb .lu-footer {
+  border-top-color: var(--ddb-panel-border);
+  background: #f0ebe2;
+}
+
+.lu-overlay--ddb .sheet-xp-line,
+.lu-shell--ddb .sheet-xp-line {
+  color: var(--ddb-muted);
+}
+
+.lu-overlay--ddb .lu-subclass-card,
+.lu-shell--ddb .lu-subclass-card {
+  border-color: var(--ddb-panel-border);
+  background: linear-gradient(165deg, #fff 0%, #f5f0e8 100%);
+}
+
+.lu-overlay--ddb .lu-subclass-card:hover,
+.lu-shell--ddb .lu-subclass-card:hover {
+  border-color: rgba(184, 146, 46, 0.45);
+}
+
+.lu-overlay--ddb .lu-subclass-card--active,
+.lu-shell--ddb .lu-subclass-card--active {
+  border-color: var(--ddb-gold);
+  background: linear-gradient(165deg, rgba(184, 146, 46, 0.12) 0%, #faf7f0 100%);
+  box-shadow: 0 4px 16px rgba(30, 24, 20, 0.1);
+}
+
+.lu-overlay--ddb .lu-subclass-card h4,
+.lu-shell--ddb .lu-subclass-card h4,
+.lu-overlay--ddb .lu-tree-title,
+.lu-shell--ddb .lu-tree-title,
+.lu-overlay--ddb .lu-tree-name,
+.lu-shell--ddb .lu-tree-name,
+.lu-overlay--ddb .lu-confirm-list strong,
+.lu-shell--ddb .lu-confirm-list strong {
+  color: var(--ddb-ink);
+}
+
+.lu-overlay--ddb .lu-subclass-card p,
+.lu-shell--ddb .lu-subclass-card p,
+.lu-overlay--ddb .lu-tree-blurb,
+.lu-shell--ddb .lu-tree-blurb,
+.lu-overlay--ddb .lu-tree-specialty,
+.lu-shell--ddb .lu-tree-specialty {
+  color: var(--ddb-muted);
+}
+
+.lu-overlay--ddb .lu-asi-btn,
+.lu-shell--ddb .lu-asi-btn {
+  border-color: var(--ddb-panel-border);
+  background: #f5f0e8;
+  color: var(--ddb-ink);
+}
+
+.lu-overlay--ddb .lu-asi-btn:hover,
+.lu-shell--ddb .lu-asi-btn:hover {
+  border-color: rgba(184, 146, 46, 0.45);
+}
+
+.lu-overlay--ddb .lu-asi-btn--on,
+.lu-shell--ddb .lu-asi-btn--on {
+  border-color: var(--ddb-level-ready);
+  color: var(--ddb-level-ready);
+  background: rgba(184, 255, 60, 0.16);
+}
+
+.lu-overlay--ddb .lu-talent-pick,
+.lu-shell--ddb .lu-talent-pick {
+  border-color: var(--ddb-panel-border);
+  background: #f5f0e8;
+}
+
+.lu-overlay--ddb .lu-talent-pick--on,
+.lu-shell--ddb .lu-talent-pick--on,
+.lu-overlay--ddb .lu-talent-pick:hover,
+.lu-shell--ddb .lu-talent-pick:hover {
+  border-color: var(--ddb-gold);
+  background: rgba(184, 146, 46, 0.1);
+  box-shadow: 0 0 0 2px rgba(184, 146, 46, 0.14);
+}
+
+.lu-overlay--ddb .lu-tree-connector,
+.lu-shell--ddb .lu-tree-connector {
+  background: linear-gradient(180deg, rgba(184, 146, 46, 0.55), rgba(184, 146, 46, 0.12));
+}
+
+.lu-overlay--ddb .lu-tree-node,
+.lu-shell--ddb .lu-tree-node {
+  border-color: var(--ddb-panel-border);
+  background: #f8f4ec;
+}
+
+.lu-overlay--ddb .lu-tree-node--selectable,
+.lu-shell--ddb .lu-tree-node--selectable {
+  border-color: rgba(184, 146, 46, 0.5);
+  background: rgba(184, 146, 46, 0.08);
+}
+
+.lu-overlay--ddb .lu-tree-node--selected,
+.lu-shell--ddb .lu-tree-node--selected,
+.lu-overlay--ddb .lu-tree-node--selectable.lu-tree-node--selected,
+.lu-shell--ddb .lu-tree-node--selectable.lu-tree-node--selected {
+  border-color: var(--ddb-gold);
+  background: rgba(184, 146, 46, 0.14);
+  box-shadow: 0 0 0 2px rgba(184, 146, 46, 0.16);
+}
+
+.lu-overlay--ddb .lu-tree-node--owned,
+.lu-shell--ddb .lu-tree-node--owned {
+  border-color: rgba(74, 107, 24, 0.45);
+  background: rgba(184, 255, 60, 0.1);
+}
+
+.lu-overlay--ddb .lu-tree-node--selectable .lu-tree-badge,
+.lu-shell--ddb .lu-tree-node--selectable .lu-tree-badge {
+  color: #5c4510;
+}
+
+.lu-overlay--ddb .lu-tree-node--owned .lu-tree-badge,
+.lu-shell--ddb .lu-tree-node--owned .lu-tree-badge {
+  color: var(--ddb-level-ready);
+}
+
+.lu-overlay--ddb .lu-ascension-banner,
+.lu-shell--ddb .lu-ascension-banner {
+  border-color: rgba(184, 146, 46, 0.45);
+  background: linear-gradient(135deg, rgba(184, 146, 46, 0.14), rgba(74, 21, 32, 0.06));
+  color: var(--ddb-ink);
+}
+
+.lu-overlay--ddb .lu-ascension-banner strong,
+.lu-shell--ddb .lu-ascension-banner strong {
+  color: #5c4510;
+}
+
+.lu-overlay--ddb .btn,
+.lu-shell--ddb .btn {
+  color: var(--ddb-ink);
+  background: #f0ebe2;
+  border-color: var(--ddb-panel-border);
+  box-shadow: none;
+}
+
+.lu-overlay--ddb .btn:hover:not(:disabled),
+.lu-shell--ddb .btn:hover:not(:disabled) {
+  border-color: rgba(184, 146, 46, 0.5);
+  background: #faf7f0;
+}
+
+.lu-overlay--ddb .lu-footer-actions .btn:not(.btn-ghost),
+.lu-shell--ddb .lu-footer-actions .btn:not(.btn-ghost) {
+  color: #14200c;
+  border-color: var(--ddb-level-ready);
+  background: linear-gradient(
+    180deg,
+    #a8e032 0%,
+    var(--ddb-level-ready-bright) 55%,
+    var(--ddb-level-ready) 100%
+  );
+  font-weight: 800;
+  box-shadow: 0 2px 10px rgba(74, 107, 24, 0.24);
+}
+
+.lu-overlay--ddb .lu-footer-actions .btn:not(.btn-ghost):hover:not(:disabled),
+.lu-shell--ddb .lu-footer-actions .btn:not(.btn-ghost):hover:not(:disabled) {
+  border-color: #3d5c14;
+  background: linear-gradient(180deg, #b8f03c 0%, #7db51e 55%, #4a6b18 100%);
+}
+
+.lu-overlay--ddb .btn-ghost,
+.lu-shell--ddb .btn-ghost {
+  color: var(--ddb-muted);
+  background: transparent;
+}
+
+.lu-overlay--ddb .btn-ghost:hover:not(:disabled),
+.lu-shell--ddb .btn-ghost:hover:not(:disabled) {
+  color: var(--ddb-ink);
+  border-color: var(--ddb-panel-border);
+  background: rgba(255, 255, 255, 0.55);
+}
+
+.lu-overlay--ddb .lu-err,
+.lu-shell--ddb .lu-err {
+  color: #a83232;
+}
