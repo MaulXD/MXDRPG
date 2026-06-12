@@ -1,28 +1,26 @@
 /**
- * Pathfinding hex + ocupação (small/medium).
+ * Pathfinding no grid quadrado (8 direções, Chebyshev) + ocupação.
  * node scripts/verify-hex-path.mjs
  */
 import assert from "node:assert/strict";
-import { createRequire } from "node:module";
 
-const require = createRequire(import.meta.url);
-
-// Compilar via ts não — lógica espelhada mínima para CI sem ts-node
 function axialKey(a) {
   return `${a.q},${a.r}`;
 }
 
 function axialDistance(a, b) {
-  return (Math.abs(a.q - b.q) + Math.abs(a.q + a.r - b.q - b.r) + Math.abs(a.r - b.r)) / 2;
+  return Math.max(Math.abs(a.q - b.q), Math.abs(a.r - b.r));
 }
 
 const DIRS = [
   { q: 1, r: 0 },
-  { q: 1, r: -1 },
-  { q: 0, r: -1 },
-  { q: -1, r: 0 },
-  { q: -1, r: 1 },
+  { q: 1, r: 1 },
   { q: 0, r: 1 },
+  { q: -1, r: 1 },
+  { q: -1, r: 0 },
+  { q: -1, r: -1 },
+  { q: 0, r: -1 },
+  { q: 1, r: -1 },
 ];
 
 function neighbors(a) {
@@ -36,8 +34,9 @@ function findHexPath(from, to, maxSteps, canEnter) {
   const parent = new Map();
   const dist = new Map([[startKey, 0]]);
   const queue = [from];
-  while (queue.length) {
-    const cur = queue.shift();
+  let head = 0;
+  while (head < queue.length) {
+    const cur = queue[head++];
     const curKey = axialKey(cur);
     const curDist = dist.get(curKey) ?? 0;
     if (curKey === goalKey) {

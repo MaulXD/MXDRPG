@@ -1,18 +1,33 @@
 import type { Axial } from "@/lib/vtt/hex-math";
-import { HEX_DIRECTIONS, hexNeighbors, hexesInRange } from "@/lib/vtt/hex-math";
+import {
+  GRID_DIRECTION_COUNT,
+  HEX_DIRECTIONS,
+  hexesInRange,
+} from "@/lib/vtt/hex-math";
 
 export type AreaShape = "single" | "burst" | "wall" | "cone" | "line" | "cube";
 
 export function areaNeedsDirection(shape: AreaShape): boolean {
+  return shape === "cone" || shape === "line" || shape === "wall";
+}
+
+/** Cone e linha partem do conjurador; muralha e explosões usam o centro clicado. */
+export function areaUsesCasterOrigin(shape: AreaShape): boolean {
   return shape === "cone" || shape === "line";
 }
 
 function axialStep(from: Axial, dirIdx: number, steps = 1): Axial {
-  const d = HEX_DIRECTIONS[dirIdx % 6];
+  const d = HEX_DIRECTIONS[dirIdx % GRID_DIRECTION_COUNT]!;
   return { q: from.q + d.q * steps, r: from.r + d.r * steps };
 }
 
-/** Linha de `lengthHex` hex a partir do centro na direção 0–5. */
+/** Perpendicular à direção (rotação 90° no grid). */
+function perpDirection(dirIdx: number): Axial {
+  const d = HEX_DIRECTIONS[dirIdx % GRID_DIRECTION_COUNT]!;
+  return { q: -d.r, r: d.q };
+}
+
+/** Linha de células a partir do centro na direção 0–7. */
 export function lineHexes(center: Axial, directionIdx: number, lengthHex: number): Axial[] {
   const len = Math.max(1, lengthHex);
   const out: Axial[] = [];
@@ -22,21 +37,20 @@ export function lineHexes(center: Axial, directionIdx: number, lengthHex: number
   return out;
 }
 
-/** Cone hex: abre 60° na direção escolhida. */
+/** Cone no grid quadrado: alarga 1 célula por passo na direção escolhida. */
 export function coneHexes(center: Axial, directionIdx: number, lengthHex: number): Axial[] {
   const len = Math.max(1, lengthHex);
   const map = new Map<string, Axial>();
   const key = (a: Axial) => `${a.q},${a.r}`;
   map.set(key(center), center);
 
+  const perp = perpDirection(directionIdx);
   for (let dist = 1; dist <= len; dist++) {
     const tip = axialStep(center, directionIdx, dist);
     map.set(key(tip), tip);
-    const left = (directionIdx + 5) % 6;
-    const right = (directionIdx + 1) % 6;
     for (let w = 1; w < dist; w++) {
-      const l = axialStep(tip, left, w);
-      const r = axialStep(tip, right, w);
+      const l = { q: tip.q + perp.q * w, r: tip.r + perp.r * w };
+      const r = { q: tip.q - perp.q * w, r: tip.r - perp.r * w };
       map.set(key(l), l);
       map.set(key(r), r);
     }
@@ -60,9 +74,13 @@ export function computeAreaHexes(opts: {
   }
 
   if (shape === "wall") {
-    const count = opts.hexCount ?? 3;
-    const cells = [center, ...hexNeighbors(center)];
-    return cells.slice(0, count);
+    const count = Math.max(1, opts.hexCount ?? 3);
+    const dir = opts.direction ?? 0;
+    const out: Axial[] = [];
+    for (let i = 0; i < count; i++) {
+      out.push(axialStep(center, dir, i));
+    }
+    return out;
   }
 
   if (shape === "line") {

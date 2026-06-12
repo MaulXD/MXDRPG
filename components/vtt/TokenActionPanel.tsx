@@ -36,7 +36,7 @@ import { canAbilityTarget, canUseAbility } from "@/lib/combat/ability";
 import { effectiveBypassTurn } from "@/lib/combat/turn-guard";
 
 import type { CombatActionOption } from "@/lib/combat/types";
-import { areaNeedsDirection } from "@/lib/combat/area-spell";
+import { areaNeedsDirection, areaUsesCasterOrigin } from "@/lib/combat/area-spell";
 
 import {
 
@@ -718,12 +718,14 @@ export function TokenActionPanel({
       {actionMode === "spell" && activeAction?.areaShape && activeAction.areaShape !== "single" ? (
         <p className="vtt-combat-hint">
           Área {activeAction.areaShape}
-          {activeAction.areaRadiusHex != null ? ` · ${activeAction.areaRadiusHex} hex` : ""}
-          {activeAction.areaHexCount != null ? ` · ${activeAction.areaHexCount} hex` : ""} — alcance{" "}
-          {activeAction.rangeHex} hex no mapa.
-          {areaNeedsDirection(activeAction.areaShape)
-            ? " Clique o hex vizinho ao conjurador para definir a direção."
-            : " Clique o centro da área."}
+          {activeAction.areaRadiusHex != null ? ` · ${activeAction.areaRadiusHex} células` : ""}
+          {activeAction.areaHexCount != null ? ` · ${activeAction.areaHexCount} células` : ""} — alcance{" "}
+          {activeAction.rangeHex} células no mapa.
+          {activeAction.areaShape === "wall"
+            ? " Clique o centro da muralha, depois uma célula vizinha para a direção."
+            : areaNeedsDirection(activeAction.areaShape) && areaUsesCasterOrigin(activeAction.areaShape)
+              ? " Clique a célula vizinha ao conjurador para definir a direção."
+              : " Clique o centro da área."}
         </p>
       ) : null}
 

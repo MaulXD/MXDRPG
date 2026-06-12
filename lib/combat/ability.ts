@@ -9,7 +9,7 @@ import { rollDice } from "@/lib/dice/roll";
 import { isMonsterToken } from "@/lib/room/settings";
 import type { BattleToken } from "@/lib/vtt/types";
 
-import { tokenAxialDistance } from "@/lib/vtt/creature-size";
+import { tokenAxialDistance, tokenOccupiedHexes, tokenOccupiesAxial } from "@/lib/vtt/creature-size";
 
 import { getMonsterTemplate } from "@/lib/vtt/monsters";
 
@@ -181,31 +181,69 @@ export function hasFlanking(
 
   defender: BattleToken,
 
-  tokens: BattleToken[]
+  tokens: BattleToken[],
+
+  actorRacas?: Record<string, string | undefined>
 
 ): boolean {
 
-  const dir = hexDirection(defender.axial, attacker.axial);
+  const attRaca = attacker.actorId ? actorRacas?.[attacker.actorId] : undefined;
 
-  if (dir === null) return false;
+  const defRaca = defender.actorId ? actorRacas?.[defender.actorId] : undefined;
 
-  const opp = HEX_DIRECTIONS[(dir + 3) % 6];
+  const attHexes = tokenOccupiedHexes(attacker, attRaca);
 
-  const oppositeHex = { q: defender.axial.q + opp.q, r: defender.axial.r + opp.r };
+  const defHexes = tokenOccupiedHexes(defender, defRaca);
 
-  return tokens.some(
+  const dirCount = HEX_DIRECTIONS.length;
 
-    (t) =>
+  for (const dh of defHexes) {
 
-      t.id !== attacker.id &&
+    for (const ah of attHexes) {
 
-      t.id !== defender.id &&
+      if (axialDistance(ah, dh) !== 1) continue;
 
-      t.axial.q === oppositeHex.q &&
+      const dir = hexDirection(dh, ah);
 
-      t.axial.r === oppositeHex.r
+      if (dir === null) continue;
 
-  );
+      const opp = HEX_DIRECTIONS[(dir + dirCount / 2) % dirCount]!;
+
+      const oppositeHex = { q: dh.q + opp.q, r: dh.r + opp.r };
+
+      if (
+
+        tokens.some(
+
+          (t) =>
+
+            t.id !== attacker.id &&
+
+            t.id !== defender.id &&
+
+            tokenOccupiesAxial(
+
+              t,
+
+              oppositeHex,
+
+              t.actorId ? actorRacas?.[t.actorId] : undefined
+
+            )
+
+        )
+
+      ) {
+
+        return true;
+
+      }
+
+    }
+
+  }
+
+  return false;
 
 }
 

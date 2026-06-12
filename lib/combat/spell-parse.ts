@@ -259,6 +259,6 @@ export function buildMagiaCombatAction(entry: CompendiumEntry): CombatActionOpti
     spellEffect,
     defesaBuffAmount,
     targetCount: targetCount > 1 ? targetCount : undefined,
-    label: `${entry.name} · ${selfTarget ? "self" : allyTarget ? "aliado" : `${rangeHex} hex`} · PA ${paCost}${tags.length ? ` · ${tags.join(", ")}` : ""}`,
+    label: `${entry.name} · ${selfTarget ? "self" : allyTarget ? "aliado" : `${rangeHex} células`} · PA ${paCost}${tags.length ? ` · ${tags.join(", ")}` : ""}`,
   };
 }

@@ -520,7 +520,7 @@ Cada monstro possui uma **versão Elite** desbloqueada quando encontrado nos and
 - **HP:** Pontos de vida totais
 - **CA:** Classe de Armadura (10 = sem proteção; 20+ = praticamente impenetrável)
 - **Dano:** Dado de dano por ataque base
-- **Tamanho:** Categoria corporal no grid hexagonal (Pequeno a Colossal; ver Livro do Jogador §3.1.3.1)
+- **Tamanho:** Categoria corporal no grid quadrado (SRD/D&D 5e: Pequeno a Colossal; ver Livro do Jogador §3.1.3.1)
 - **Resistências:** Tipos de dano que o monstro sofre metade
 - **Imunidades:** Tipos de dano que não surtem efeito
 - **Nível de Extração:** Dificuldade de Extração (Fácil / Médio / Difícil / Especialista)
@@ -553,7 +553,7 @@ Os zumbis de masmorra não são criados por necromantes — eles nascem espontan
 | CA | 8 |
 | Dano | 1d6 (pancada) |
 | Movimento | 6m/turno |
-| Tamanho | Médio · 1 hex |
+| Tamanho | Médio · 1×1 |
 | Resistências | Necrótico |
 | Imunidades | Veneno, Exaustão |
 | Nível de Extração | Fácil |
@@ -595,7 +595,7 @@ Diferentes dos zumbis, esqueletos são frequentemente *construídos*, não acide
 | CA | 13 (ossos densos + armadura fragmentada) |
 | Dano | 1d8 (espada enferrujada) ou 1d6 (arco de osso) |
 | Movimento | 9m/turno |
-| Tamanho | Médio · 1 hex |
+| Tamanho | Médio · 1×1 |
 | Resistências | Perfurante |
 | Imunidades | Veneno, Exaustão, Necrótico |
 | Nível de Extração | Médio |
@@ -638,7 +638,7 @@ Ghouls são a prova de que a morte pode piorar. Criados de aventureiros que prat
 | CA | 12 |
 | Dano | 1d6+2 (garras) + 1d4 (mordida paralisante) |
 | Movimento | 9m/turno |
-| Tamanho | Médio · 1 hex |
+| Tamanho | Médio · 1×1 |
 | Resistências | Necrótico |
 | Imunidades | Veneno, Exaustão |
 | Nível de Extração | Médio |
@@ -680,7 +680,7 @@ Espectros são emoções — especificamente, emoções tão intensas no momento
 | CA | 12 (imaterial) |
 | Dano | 2d6 necrótico (toque de vida) |
 | Movimento | 12m/turno (voo) |
-| Tamanho | Médio · 1 hex |
+| Tamanho | Médio · 1×1 |
 | Resistências | Ácido, Fogo, Relâmpago, Trovão, Contundente, Cortante, Perfurante (não-mágico) |
 | Imunidades | Frio, Necrótico, Veneno |
 | Nível de Extração | Especialista (requer recipiente mágico) |
@@ -722,7 +722,7 @@ Um Lich não morre — ele *decide* não morrer. O processo de lichificação é
 | CA | 17 (mantos de proteção arcana) |
 | Dano | 4d8+8 necrótico (toque paralisante) ou 8d6 (Relâmpago) |
 | Movimento | 9m/turno (voo 9m) |
-| Tamanho | Médio · 1 hex |
+| Tamanho | Médio · 1×1 |
 | Resistências | Frio, Relâmpago, Necrótico |
 | Imunidades | Veneno, Psíquico, Exaustão, Paralisado, Assustado |
 | Nível de Extração | Especialista |
@@ -768,7 +768,7 @@ Assombrações são mais perigosas que espectros porque têm *intenção*. Onde 
 | CA | 13 |
 | Dano | 2d8+3 psíquico |
 | Movimento | 9m/turno (voo) |
-| Tamanho | Médio · 1 hex |
+| Tamanho | Médio · 1×1 |
 | Resistências | Ácido, Fogo, Relâmpago, não-mágico |
 | Imunidades | Frio, Necrótico, Veneno |
 | Nível de Extração | Especialista |
@@ -805,7 +805,7 @@ Os vampiros das masmorras são diferentes dos lendários da superfície. Sem ace
 | CA | 16 |
 | Dano | 1d8+5 (garras) + 2d6+4 necrótico e dreno (mordida) |
 | Movimento | 9m/turno (escalar 9m, voar 9m) |
-| Tamanho | Médio · 1 hex |
+| Tamanho | Médio · 1×1 |
 | Resistências | Necrótico, não-mágico (cortante, contundente, perfurante) |
 | Imunidades | Veneno |
 | Nível de Extração | Difícil |
@@ -851,7 +851,7 @@ Guerreiros que fizeram juramentos que não puderam cumprir na vida ficam presos 
 | CA | 18 (armadura espectral) |
 | Dano | 2d8+4 (espada longa espectral) |
 | Movimento | 9m/turno |
-| Tamanho | Médio · 1 hex |
+| Tamanho | Médio · 1×1 |
 | Resistências | Necrótico, não-mágico |
 | Imunidades | Veneno, Exaustão |
 | Nível de Extração | Especialista (a armadura é o ingrediente) |
@@ -889,7 +889,7 @@ As múmias das masmorras não vêm de pirâmides do deserto — elas são o resu
 | CA | 11 |
 | Dano | 2d6+3 (golpe) + Maldição da Múmia |
 | Movimento | 6m/turno |
-| Tamanho | Médio · 1 hex |
+| Tamanho | Médio · 1×1 |
 | Resistências | Contundente, Perfurante, Cortante (não-mágico) |
 | Imunidades | Veneno, Psíquico, Exaustão, Necrótico |
 | Nível de Extração | Difícil |
@@ -934,7 +934,7 @@ Dragonetes são dragões que nunca cresceram — seja por condições adversas d
 | Dano | 1d8+3 (garras) + 1d6 (mordida) |
 | Baforada | 3d6 fogo (cone 3m, recarga 5-6) |
 | Movimento | 9m/turno (voar 12m) |
-| Tamanho | Grande · 3 hex |
+| Tamanho | Grande · 2×2 |
 | Resistências | Fogo |
 | Imunidades | — |
 | Nível de Extração | Médio |
@@ -972,7 +972,7 @@ Wyverns são frequentemente confundidos com dragões, mas a diferença é fundam
 | CA | 13 |
 | Dano | 2d6+4 (mordida) + 2d6+4 (garras) + 2d8+4 veneno (ferrão) |
 | Movimento | 6m/turno (voar 18m) |
-| Tamanho | Grande · 3 hex |
+| Tamanho | Grande · 2×2 |
 | Resistências | — |
 | Imunidades | — |
 | Nível de Extração | Difícil |
@@ -1017,7 +1017,7 @@ Dragões verdadeiros — com quatro patas, asas próprias e inteligência compar
 | Dano | 2d10+7 (mordida) + 2d6+7 (garras) + 1d12+7 (cauda) |
 | Baforada | 10d8 frio (cone 15m, recarga 5-6) |
 | Movimento | 12m/turno (voar 24m, nadar 12m) |
-| Tamanho | Gigante · 7 hex |
+| Tamanho | Grande · 2×2 |
 | Resistências | — |
 | Imunidades | Frio |
 | Nível de Extração | Especialista |
@@ -1059,7 +1059,7 @@ Drakes são o ramo mais terrestre dos dracônicos — sem asas funcionais, com p
 | CA | 17 (carapaça de pedra) |
 | Dano | 2d6+4 (mordida) + 1d8+4 (cauda de pedra) |
 | Movimento | 9m/turno (escavar 6m) |
-| Tamanho | Grande · 3 hex |
+| Tamanho | Grande · 2×2 |
 | Resistências | Perfurante, Cortante |
 | Imunidades | Petrificação |
 | Nível de Extração | Difícil |
@@ -1097,7 +1097,7 @@ Um Dragão Ancião de Fogo tem mais de 800 anos. Nessa idade, um dragão de fogo
 | Dano | 3d10+10 (mordida) + 3d6+10 (garras) + 2d12+10 (cauda) |
 | Baforada | 26d6 fogo (cone 18m, recarga 5-6) |
 | Movimento | 12m/turno (voar 24m) |
-| Tamanho | Imenso · 19 hex |
+| Tamanho | Imenso · 4×4 |
 | Resistências | — |
 | Imunidades | Fogo |
 | Nível de Extração | Especialista (Evento de Grupo obrigatório) |
@@ -1144,7 +1144,7 @@ Golems de pedra são os guardas mais comuns de câmaras de tesouro antigas. Escu
 | CA | 17 |
 | Dano | 3d8+6 (soco de pedra) |
 | Movimento | 9m/turno |
-| Tamanho | Grande · 3 hex |
+| Tamanho | Grande · 2×2 |
 | Resistências | — |
 | Imunidades | Veneno, Psíquico, Feitiços de Encantamento/Ilusão, Perfurante/Cortante (não-mágico) |
 | Nível de Extração | Especialista (Artífice necessário) |
@@ -1179,7 +1179,7 @@ Não é um fantasma dentro de uma armadura — é a armadura que *é* a criatura
 | CA | 18 |
 | Dano | 1d8+3 (espada) |
 | Movimento | 6m/turno |
-| Tamanho | Médio · 1 hex |
+| Tamanho | Médio · 1×1 |
 | Resistências | — |
 | Imunidades | Veneno, Psíquico, Feitiços de Encantamento, Exaustão |
 | Nível de Extração | Médio (Artífice ajuda) |
@@ -1213,7 +1213,7 @@ Uma evolução terrível do Golem de Pedra, forjado especificamente para as Forn
 | CA | 20 |
 | Dano | 3d10+8 (soco de ferro) + 2d6 fogo automático em adjacência |
 | Movimento | 6m/turno |
-| Tamanho | Grande · 3 hex |
+| Tamanho | Grande · 2×2 |
 | Resistências | Fogo, Contundente, Cortante, Perfurante (não-mágico) |
 | Imunidades | Veneno, Psíquico, Fogo Extremo |
 | Nível de Extração | Especialista |
@@ -1251,7 +1251,7 @@ Poucos aventureiros sabem que alguns autômatos não foram programados para comb
 | CA | 16 |
 | Dano | 2d8+4 (lâminas integradas) ou Magia variável |
 | Movimento | 9m/turno (levitar 9m) |
-| Tamanho | Grande · 3 hex |
+| Tamanho | Grande · 2×2 |
 | Resistências | Psíquico |
 | Imunidades | Veneno, Exaustão |
 | Nível de Extração | Especialista |
@@ -1294,7 +1294,7 @@ Minotauros dentro de masmorras não são aberrações criadas por maldições di
 | CA | 14 |
 | Dano | 2d8+5 (machado) + 2d8 (chifrada) |
 | Movimento | 12m/turno |
-| Tamanho | Grande · 3 hex |
+| Tamanho | Grande · 2×2 |
 | Resistências | — |
 | Imunidades | — |
 | Nível de Extração | Fácil |
@@ -1331,7 +1331,7 @@ O Basilisco é tanto uma bênção quanto uma maldição para caçadores de masm
 | CA | 15 |
 | Dano | 2d6+3 (mordida petrificante) |
 | Movimento | 6m/turno |
-| Tamanho | Grande · 3 hex |
+| Tamanho | Médio · 1×1 |
 | Resistências | — |
 | Imunidades | Petrificação |
 | Nível de Extração | Médio |
@@ -1369,7 +1369,7 @@ Manticoras são o pesadelo de qualquer expedição que subestime o alcance. Com 
 | CA | 14 |
 | Dano | 2d6+5 (garras) + 2d8+5 (mordida) + 1d8+5 fogo por espinho (até 3/turno, alcance 45m) |
 | Movimento | 9m/turno (voar 15m) |
-| Tamanho | Grande · 3 hex |
+| Tamanho | Grande · 2×2 |
 | Resistências | — |
 | Imunidades | — |
 | Nível de Extração | Difícil |
@@ -1405,7 +1405,7 @@ Grifos são considerados pelos aventureiros experientes o indicador mais confiá
 | CA | 12 |
 | Dano | 2d8+4 (garras dianteiras) + 1d6+4 (mordida) |
 | Movimento | 9m/turno (voar 24m) |
-| Tamanho | Grande · 3 hex |
+| Tamanho | Grande · 2×2 |
 | Resistências | — |
 | Imunidades | — |
 | Nível de Extração | Médio |
@@ -1441,7 +1441,7 @@ A Cocatriz parece um cruzamento absurdo de galo com dragão — e é exatamente 
 | CA | 11 |
 | Dano | 1d4+1 (bico petrificante) |
 | Movimento | 6m/turno (voar 12m) |
-| Tamanho | Médio · 1 hex |
+| Tamanho | Pequeno · 1×1 |
 | Resistências | — |
 | Imunidades | Petrificação |
 | Nível de Extração | Fácil |
@@ -1483,7 +1483,7 @@ A Aranha Tecerrochas é o predador mais comum das masmorras de nível médio. Do
 | CA | 13 |
 | Dano | 1d8+3 (mordida envenenada) |
 | Movimento | 9m/turno (trepar 9m) |
-| Tamanho | Grande · 3 hex |
+| Tamanho | Grande · 2×2 |
 | Resistências | — |
 | Imunidades | — |
 | Nível de Extração | Médio |
@@ -1526,7 +1526,7 @@ Escorpiões gigantes nas masmorras chegam ao tamanho de cavalos. Caçam instinti
 | CA | 15 |
 | Dano | 1d8+3 (garras, agarramento automático) + 1d10+3 veneno (ferrão) |
 | Movimento | 9m/turno |
-| Tamanho | Gigante · 7 hex |
+| Tamanho | Grande · 2×2 |
 | Resistências | Perfurante |
 | Imunidades | — |
 | Nível de Extração | Médio (exoesqueleto requer martelo) |
@@ -1563,7 +1563,7 @@ A Centopeia Cáustica tem 4 metros de comprimento e secreta ácido de poros ao l
 | CA | 13 |
 | Dano | 2d6+2 (mordida) + 2d4 ácido contínuo em contato |
 | Movimento | 9m/turno (trepar 9m) |
-| Tamanho | Grande · 3 hex |
+| Tamanho | Grande · 2×2 |
 | Resistências | Ácido |
 | Imunidades | — |
 | Nível de Extração | Difícil (ácido contamina tudo) |
@@ -1600,7 +1600,7 @@ O Besouro-Diamante não é tão valioso quanto o nome sugere — mas é mais út
 | CA | 17 (exoesqueleto de diamante) |
 | Dano | 1d4 (mandíbulas) |
 | Movimento | 6m/turno |
-| Tamanho | Grande · 3 hex |
+| Tamanho | Pequeno · 1×1 |
 | Resistências | Perfurante, Cortante |
 | Imunidades | — |
 | Nível de Extração | Fácil |
@@ -1639,7 +1639,7 @@ O Sapo-Engolidor chegaa 3 metros de comprimento e 1,5m de altura. Sua estratégi
 | CA | 11 |
 | Dano | 2d6+4 (língua — puxão + Agarrado) ou 3d8+4 (mordida engolimento) |
 | Movimento | 6m/turno (nadar 9m, saltar 6m) |
-| Tamanho | Grande · 3 hex |
+| Tamanho | Grande · 2×2 |
 | Resistências | — |
 | Imunidades | — |
 | Nível de Extração | Médio |
@@ -1676,7 +1676,7 @@ Os Krakens Menores das masmorras são descendentes de Krakens verdadeiros que fi
 | CA | 16 |
 | Dano | 3d6+5 por tentáculo (agarramento automático) + 2d8+5 (mordida) |
 | Movimento | 3m/turno (nadar 18m) |
-| Tamanho | Imenso · 19 hex |
+| Tamanho | Imenso · 4×4 |
 | Resistências | Relâmpago |
 | Imunidades | — |
 | Nível de Extração | Difícil |
@@ -1715,7 +1715,7 @@ Cobras de 8 metros que habitam os rios e lagos subterrâneos, especializadas em 
 | CA | 13 |
 | Dano | 1d8+4 (mordida venenosa) + 2d8+4/turno (constrição) |
 | Movimento | 9m/turno (nadar 12m) |
-| Tamanho | Gigante · 7 hex |
+| Tamanho | Gigante · 3×3 |
 | Resistências | — |
 | Imunidades | — |
 | Nível de Extração | Médio |
@@ -1753,7 +1753,7 @@ Sem olhos — órgãos atrofiados após gerações sem luz — o Tubarão-Cego u
 | CA | 13 |
 | Dano | 2d8+4 (mordida) |
 | Movimento | 3m/turno em terra (nadar 18m) |
-| Tamanho | Grande · 3 hex |
+| Tamanho | Gigante · 3×3 |
 | Resistências | — |
 | Imunidades | Visão de Ilusão, Cegueira |
 | Nível de Extração | Médio |
@@ -1795,7 +1795,7 @@ Goblins de caverna são os habitantes mais abundantes das masmorras de baixo ní
 | CA | 13 |
 | Dano | 1d6+1 (facão enferrujado) ou 1d4 (arco pequeno) |
 | Movimento | 9m/turno |
-| Tamanho | Pequeno · 1 hex |
+| Tamanho | Pequeno · 1×1 |
 | Resistências | — |
 | Imunidades | — |
 | Nível de Extração | Fácil |
@@ -1833,7 +1833,7 @@ Hobgoblins são o que acontece quando goblins evoluem militarmente. Maiores, mai
 | CA | 18 (armadura de placas) |
 | Dano | 2d6+2 (espada longa) |
 | Movimento | 9m/turno |
-| Tamanho | Médio · 1 hex |
+| Tamanho | Médio · 1×1 |
 | Resistências | — |
 | Imunidades | — |
 | Nível de Extração | Médio |
@@ -1869,7 +1869,7 @@ Orcs de masmorra são maiores e mais selvagens que seus primos da superfície. A
 | CA | 13 |
 | Dano | 1d12+3 (machado grande) |
 | Movimento | 9m/turno |
-| Tamanho | Médio · 1 hex |
+| Tamanho | Médio · 1×1 |
 | Resistências | — |
 | Imunidades | — |
 | Nível de Extração | Fácil |
@@ -1910,7 +1910,7 @@ Micônidos são cogumelos que se tornaram conscientes através de um processo ma
 | CA | 8 |
 | Dano | 2d6+2 (soco de hifa) + Esporos (área) |
 | Movimento | 3m/turno |
-| Tamanho | Gigante · 7 hex |
+| Tamanho | Grande · 2×2 |
 | Resistências | Fogo |
 | Imunidades | Veneno, Psíquico, Exaustão |
 | Nível de Extração | Médio |
@@ -1947,7 +1947,7 @@ Treants da masmorra são árvores que foram animadas pela energia necrótica dos
 | CA | 16 |
 | Dano | 3d6+5 (galho) + 2d6 necrótico em área (gás) |
 | Movimento | 6m/turno |
-| Tamanho | Gigante · 7 hex |
+| Tamanho | Gigante · 3×3 |
 | Resistências | Contundente, Perfurante |
 | Imunidades | Necrótico, Exaustão |
 | Nível de Extração | Difícil |
@@ -1983,7 +1983,7 @@ Diferente das plantas carnívoras da superfície, essas plantas da masmorra evol
 | CA | 10 |
 | Dano | 2d6+3 (gavinha agarrante) + 4d6 ácido/turno (estômago) |
 | Movimento | 3m/turno |
-| Tamanho | Gigante · 7 hex |
+| Tamanho | Grande · 2×2 |
 | Resistências | — |
 | Imunidades | Veneno, Exaustão |
 | Nível de Extração | Médio |
@@ -2025,7 +2025,7 @@ O Slime Ácido é o mais simples dos amorfos — uma massa de gel ácido com con
 | CA | 8 |
 | Dano | 2d6 ácido (contato) |
 | Movimento | 3m/turno |
-| Tamanho | Médio · 1 hex |
+| Tamanho | Médio · 1×1 |
 | Resistências | Ácido |
 | Imunidades | Fogo (aquece mas não mata), Cortante, Perfurante |
 | Nível de Extração | Especialista (recipiente de vidro grosso) |
@@ -2061,7 +2061,7 @@ O Slime de Cristal é uma evolução do Slime Ácido que passou gerações habit
 | CA | 11 |
 | Dano | 2d6 cortante (cristais) + 1d6 ácido (contato) |
 | Movimento | 6m/turno |
-| Tamanho | Médio · 1 hex |
+| Tamanho | Médio · 1×1 |
 | Resistências | Cortante, Ácido |
 | Imunidades | Perfurante |
 | Nível de Extração | Especialista |
@@ -2097,7 +2097,7 @@ Elementais de fogo não são criaturas do plano material — são manifestaçõe
 | CA | 13 |
 | Dano | 2d6+5 fogo (toque) + 2d8 fogo automático em adjacência |
 | Movimento | 12m/turno |
-| Tamanho | Grande · 3 hex |
+| Tamanho | Grande · 2×2 |
 | Resistências | — |
 | Imunidades | Fogo, Veneno, Exaustão |
 | Nível de Extração | Especialista (captura elemental) |
@@ -2133,7 +2133,7 @@ Primos glaciais dos Elementais de Fogo, os Elementais de Gelo habitam a Prisão 
 | CA | 15 |
 | Dano | 2d8+5 frio (soco) + Lança de Gelo 3d6 frio (alcance 18m) |
 | Movimento | 6m/turno |
-| Tamanho | Grande · 3 hex |
+| Tamanho | Grande · 2×2 |
 | Resistências | — |
 | Imunidades | Frio, Veneno, Exaustão |
 | Nível de Extração | Especialista |
@@ -2175,7 +2175,7 @@ Yetis das profundezas da masmorra evoluíram para ambientes sem luz, desenvolven
 | CA | 12 |
 | Dano | 2d6+5 (garras) + 1d8+5 (abraço congelante) |
 | Movimento | 12m/turno |
-| Tamanho | Grande · 3 hex |
+| Tamanho | Grande · 2×2 |
 | Resistências | Frio |
 | Imunidades | — |
 | Nível de Extração | Médio |
@@ -2213,7 +2213,7 @@ Lobos do inverno são caçadores em matilha que coordenam com inteligência pró
 | CA | 13 |
 | Dano | 2d6+4 (mordida) + Sopro de Gelo |
 | Movimento | 15m/turno |
-| Tamanho | Grande · 3 hex |
+| Tamanho | Grande · 2×2 |
 | Resistências | Frio |
 | Imunidades | — |
 | Nível de Extração | Fácil |
@@ -2252,7 +2252,7 @@ O Mímico clássico — disfarçado de baú de tesouro, esperando pacientemente 
 | CA | 12 |
 | Dano | 3d6+3 (mordida ácida) + Adesivo |
 | Movimento | 9m/turno |
-| Tamanho | Médio · 1 hex |
+| Tamanho | Médio · 1×1 |
 | Resistências | Ácido |
 | Imunidades | — |
 | Nível de Extração | Difícil |
@@ -2291,7 +2291,7 @@ Doppelgangers são a evolução inteligente dos Mímicos — em vez de imitar ob
 | CA | 14 |
 | Dano | 2d6+3 (golpes ou arma copiada) |
 | Movimento | 9m/turno |
-| Tamanho | Médio · 1 hex |
+| Tamanho | Médio · 1×1 |
 | Resistências | — |
 | Imunidades | — |
 | Nível de Extração | Difícil |
@@ -2333,7 +2333,7 @@ A Hidra das Cavernas adaptou-se ao submundo com 5 cabeças iniciais e a capacida
 | CA | 15 |
 | Dano | 2d6+5 por mordida (5 ataques, cada com efeito diferente) |
 | Movimento | 9m/turno (nadar 9m) |
-| Tamanho | Gigante · 7 hex |
+| Tamanho | Gigante · 3×3 |
 | Resistências | — |
 | Imunidades | — |
 | Nível de Extração | Especialista (Cauterizar cotos primeiro) |
@@ -2377,7 +2377,7 @@ Uma Quimera não é criada — ela emerge. Em pontos de alta confluência de mag
 | Dano | 2d6+5 (garras de leão) + 2d6+5 (mordida de dragão) + 2d6+5 (chifres de cabra) |
 | Baforada | 7d8 fogo (cone 9m, recarga 5-6) |
 | Movimento | 9m/turno (voar 18m) |
-| Tamanho | Grande · 3 hex |
+| Tamanho | Grande · 2×2 |
 | Resistências | — |
 | Imunidades | — |
 | Nível de Extração | Difícil |
@@ -2414,7 +2414,7 @@ O Abatedouro Celestial não é chamado assim por acaso. Entidades divinas — an
 | CA | 19 |
 | Dano | 3d8+6 sagrado/necrótico (espada flamejante) + 2d10 radiante (toque) |
 | Movimento | 9m/turno (voar 18m) |
-| Tamanho | Grande · 3 hex |
+| Tamanho | Médio · 1×1 |
 | Resistências | Radiante, Necrótico |
 | Imunidades | Veneno, Exaustão, Encantamento |
 | Nível de Extração | Especialista |
@@ -2453,7 +2453,7 @@ Gárgulas são criaturas que existem no limiar entre construto e besta — anima
 | CA | 15 |
 | Dano | 1d6+3 (garras) + 1d6+3 (mordida) |
 | Movimento | 9m/turno (voar 15m) |
-| Tamanho | Médio · 1 hex |
+| Tamanho | Médio · 1×1 |
 | Resistências | Cortante, Perfurante |
 | Imunidades | Veneno, Psíquico, Exaustão |
 | Nível de Extração | Difícil (Artífice recomendado) |
@@ -2489,7 +2489,7 @@ A Aberração Tentacular é o que acontece quando a masmorra produz vida própri
 | CA | 15 |
 | Dano | 2d6+4 psíquico (tentáculo mental) |
 | Movimento | 6m/turno (levitar) |
-| Tamanho | Grande · 3 hex |
+| Tamanho | Grande · 2×2 |
 | Resistências | Psíquico |
 | Imunidades | Veneno, Exaustão |
 | Nível de Extração | Especialista |
@@ -2525,7 +2525,7 @@ Uma fusão improvável de Basilisco e ambiente vulcânico — o Basilisco de Mag
 | CA | 17 (escamas de obsidiana) |
 | Dano | 2d6+4 (mordida ígnea) |
 | Movimento | 6m/turno |
-| Tamanho | Grande · 3 hex |
+| Tamanho | Médio · 1×1 |
 | Resistências | Fogo, Perfurante |
 | Imunidades | Petrificação, Fogo Extremo |
 | Nível de Extração | Especialista |
@@ -2563,7 +2563,7 @@ As Sereias das masmorras perderam a beleza — a falta de luz e a pressão das p
 | CA | 12 |
 | Dano | 2d6+3 (garras) + Canto Encantador |
 | Movimento | 6m/turno (nadar 18m) |
-| Tamanho | Médio · 1 hex |
+| Tamanho | Médio · 1×1 |
 | Resistências | Frio |
 | Imunidades | — |
 | Nível de Extração | Difícil (questões éticas à parte) |
@@ -2598,7 +2598,7 @@ Trolls de Pedra são maiores que trolls comuns, mais lentos e com regeneração 
 | CA | 15 |
 | Dano | 1d6+5 (garras, 2 ataques) + 1d10+5 (mordida) |
 | Movimento | 9m/turno |
-| Tamanho | Grande · 3 hex |
+| Tamanho | Grande · 2×2 |
 | Resistências | — |
 | Imunidades | — |
 | Nível de Extração | Médio |
@@ -2637,7 +2637,7 @@ Ciclopes nas masmorras são seres melancólicos. Inteligentes o suficiente para 
 | CA | 14 |
 | Dano | 2d10+7 (clava) |
 | Movimento | 12m/turno |
-| Tamanho | Gigante · 7 hex |
+| Tamanho | Gigante · 3×3 |
 | Resistências | — |
 | Imunidades | — |
 | Nível de Extração | Médio |
@@ -2673,7 +2673,7 @@ Harpias de caverna perderam o canto encantador de suas primas da superfície —
 | CA | 11 |
 | Dano | 2d6 (garras) + 1d6 (mordida) |
 | Movimento | 6m/turno (voar 12m) |
-| Tamanho | Médio · 1 hex |
+| Tamanho | Médio · 1×1 |
 | Resistências | — |
 | Imunidades | — |
 | Nível de Extração | Fácil |
@@ -3040,7 +3040,7 @@ Harpias de caverna perderam o canto encantador de suas primas da superfície —
 **Lore:** Os Balors são generais do Abismo — criaturas de poder colossal que raramente chegam ao plano material. Quando chegam à masmorra, é porque foram convocados por algo poderoso o suficiente para abrir uma fenda planar, e então abandonados. Um Balor de masmorra é uma catástrofe ambulante de 6 metros de altura com asas flamejantes e uma espada que queima em vorpal.
 | HP | CA | Dano | Tamanho | Biomas |
 |----|-----|------|---------|--------|
-| 262 | 19 | 3d6+12 fogo (espada vorpal) + 2d8+12 relâmpago (chicote de relâmpago) | Gigante | Abatedouro Celestial, Fornalhas Douradas |
+| 262 | 19 | 3d6+12 fogo (espada vorpal) + 2d8+12 relâmpago (chicote de relâmpago) | Grande | Abatedouro Celestial, Fornalhas Douradas |
 **Resistências:** Frio, Relâmpago, Fogo. **Imunidades:** Veneno, Fogo Extremo, Não-mágico.
 **Habilidades:** *Resistência Lendária (3/dia)* • *Ações Lendárias (3)* • *Explosão da Morte* (ao morrer, explode — 20d6 fogo em raio 9m) • *Aura Flamejante* (criaturas adjacentes tomam 2d8 fogo automaticamente) • *Teleporte* (como ação bônus, 30m).
 **Ingredientes (Banquete Lendário — requer purificação prévia do Sacerdote):** Núcleo Demoníaco (Especialista — fonte de poder planar do Balor; o Artífice usa para criar um Portal Portátil de uso único) • Espada Vorpal de Fogo (Ferramenta Lendária — arma +4, decapita automaticamente em acerto crítico, causa 3d6 fogo extra).
@@ -3119,7 +3119,7 @@ Harpias de caverna perderam o canto encantador de suas primas da superfície —
 **Lore:** Do tamanho de um cavalo de batalha, com envergadura de 8 metros. Os Morcegos-Tirano dominam o Abismo Invertido, caçando em grupos de 3 a 6 e usando ecolocalização para mapear o ambiente com precisão de centímetros. A caverna tem mapa tridimensional perfeito na mente deles.
 | HP | CA | Dano | Tamanho | Biomas |
 |----|-----|------|---------|--------|
-| 65 | 12 | 2d6+3 (mordida) + 1d8+3 (garras) | Grande | Abismo Invertido, Ninho Crepuscular, Cidadela Pálida |
+| 65 | 12 | 2d6+3 (mordida) + 1d8+3 (garras) | Gigante | Abismo Invertido, Ninho Crepuscular, Cidadela Pálida |
 **Habilidades:** *Ecolocalização* (não pode ser enganado por ilusões visuais ou escuridão, detecta movimento em 36m) • *Mergulho* (dano dobrado ao cair pelo menos 9m).
 **Ingredientes:** Carne de Morcego-Tirano (Médio) • Prato Gourmet concede Ossos Ocos, Visão de Rapina e Ecolocalização (equivalente a Pena-Bússola) por 12h. Membrana de Asa (Médio — material para cloaks de planagem).
 
@@ -3162,89 +3162,88 @@ Harpias de caverna perderam o canto encantador de suas primas da superfície —
 
 ## APÊNDICE — TAMANHO NO GRID (001–080)
 
-| Cod | Espécime | Tamanho | Hex |
-|-----|----------|---------|-----|
-| 001 | Zumbi de Masmorra | Médio | 1 hex |
-| 002 | Esqueleto Armado | Médio | 1 hex |
-| 003 | Ghoul | Médio | 1 hex |
-| 004 | Espectro | Médio | 1 hex |
-| 005 | Lich (Arquiliche) | Médio | 1 hex |
-| 006 | Assombração | Médio | 1 hex |
-| 007 | Vampiro | Médio | 1 hex |
-| 008 | Cavaleiro Espectral | Médio | 1 hex |
-| 009 | Múmia | Médio | 1 hex |
-| 010 | Dragonete de Magma | Grande | 3 hex |
-| 011 | Wyvern | Grande | 3 hex |
-| 012 | Dragão Jovem de Gelo | Gigante | 7 hex |
-| 013 | Drake de Pedra | Grande | 3 hex |
-| 014 | Dragão Ancião de Fogo | Imenso | 19 hex |
-| 015 | Golem de Pedra | Grande | 3 hex |
-| 016 | Armadura Animada | Médio | 1 hex |
-| 017 | Golem de Ferro Vulcânico | Grande | 3 hex |
-| 018 | Autômato de Gênio | Grande | 3 hex |
-| 019 | Minotauro | Grande | 3 hex |
-| 020 | Basilisco | Grande | 3 hex |
-| 021 | Manticora | Grande | 3 hex |
-| 022 | Grifo | Grande | 3 hex |
-| 023 | Cocatriz | Médio | 1 hex |
-| 024 | Aranha Tecerrochas | Grande | 3 hex |
-| 025 | Escorpião Gigante | Gigante | 7 hex |
-| 026 | Centopeia Cáustica | Grande | 3 hex |
-| 027 | Besouro-Diamante | Grande | 3 hex |
-| 028 | Sapo-Engolidor | Grande | 3 hex |
-| 029 | Kraken Menor | Imenso | 19 hex |
-| 030 | Serpente-do-Abismo | Gigante | 7 hex |
-| 031 | Tubarão-Cego | Grande | 3 hex |
-| 032 | Goblin de Caverna | Pequeno | 1 hex |
-| 033 | Hobgoblin Guerreiro | Médio | 1 hex |
-| 034 | Orc de Masmorra | Médio | 1 hex |
-| 035 | Cogumelo-Rei | Gigante | 7 hex |
-| 036 | Treant Podre | Gigante | 7 hex |
-| 037 | Planta Carnívora Gigante | Gigante | 7 hex |
-| 038 | Slime Ácido | Médio | 1 hex |
-| 039 | Slime de Cristal | Médio | 1 hex |
-| 040 | Elemental de Fogo | Grande | 3 hex |
-| 041 | Elemental de Gelo | Grande | 3 hex |
-| 042 | Yeti das Profundezas | Grande | 3 hex |
-| 043 | Lobo do Inverno | Grande | 3 hex |
-| 044 | Mímico de Baú | Médio | 1 hex |
-| 045 | Doppelganger | Médio | 1 hex |
-| 046 | Hidra das Cavernas | Gigante | 7 hex |
-| 047 | Quimera | Grande | 3 hex |
-| 048 | Anjo Caído | Grande | 3 hex |
-| 049 | Gárgula de Cristal | Médio | 1 hex |
-| 050 | Aberração Tentacular | Grande | 3 hex |
-| 051 | Basilisco de Magma | Grande | 3 hex |
-| 052 | Sereia das Profundezas | Médio | 1 hex |
-| 053 | Troll de Pedra | Grande | 3 hex |
-| 054 | Ciclope | Gigante | 7 hex |
-| 055 | Harpia de Caverna | Médio | 1 hex |
-| 056 | Roper | Grande | 3 hex |
-| 057 | Aboleth | Grande | 3 hex |
-| 058 | Pudim Negro | Grande | 3 hex |
-| 059 | Lagosta-Gigante Abissal | Grande | 3 hex |
-| 060 | Caranguejo-Eremita Colossal | Imenso | 19 hex |
-| 061 | Aranha-Cavaleira | Grande | 3 hex |
-| 062 | Mosca-Carniça Colossal | Grande | 3 hex |
-| 063 | Besouro-Trovão | Grande | 3 hex |
-| 064 | Verme Gigante de Pedra | Imenso | 19 hex |
-| 065 | Salamandra Gigante | Grande | 3 hex |
-| 066 | Behemoth de Pedra | Imenso | 19 hex |
-| 067 | Fera da Sombra | Médio | 1 hex |
-| 068 | Medusa | Médio | 1 hex |
-| 069 | Fênix de Caverna | Grande | 3 hex |
-| 070 | Gigante de Pedra | Gigante | 7 hex |
-| 071 | Bruxa da Masmorra | Médio | 1 hex |
-| 072 | Fera Seminal | Grande | 3 hex |
-| 073 | Carniçal Alado | Grande | 3 hex |
-| 074 | Balor | Gigante | 7 hex |
-| 075 | Enxame de Ratos-Cadáveres | Médio | 1 hex |
-| 076 | Elemental de Terra | Grande | 3 hex |
-| 077 | Banshee | Médio | 1 hex |
-| 078 | Morcego-Tirano | Grande | 3 hex |
-| 079 | Ooze Ocular | Grande | 3 hex |
-| 080 | Tarrasque (Bebê) | Imenso | 19 hex |
-
+| Cod | Espécime | Tamanho | Grid |
+|-----|----------|---------|------|
+| 001 | Zumbi de Masmorra | Médio | 1×1 |
+| 002 | Esqueleto Armado | Médio | 1×1 |
+| 003 | Ghoul | Médio | 1×1 |
+| 004 | Espectro | Médio | 1×1 |
+| 005 | Lich (Arquiliche) | Médio | 1×1 |
+| 006 | Assombração | Médio | 1×1 |
+| 007 | Vampiro | Médio | 1×1 |
+| 008 | Cavaleiro Espectral | Médio | 1×1 |
+| 009 | Múmia | Médio | 1×1 |
+| 010 | Dragonete de Magma | Grande | 2×2 |
+| 011 | Wyvern | Grande | 2×2 |
+| 012 | Dragão Jovem de Gelo | Grande | 2×2 |
+| 013 | Drake de Pedra | Grande | 2×2 |
+| 014 | Dragão Ancião de Fogo | Imenso | 4×4 |
+| 015 | Golem de Pedra | Grande | 2×2 |
+| 016 | Armadura Animada | Médio | 1×1 |
+| 017 | Golem de Ferro Vulcânico | Grande | 2×2 |
+| 018 | Autômato de Gênio | Grande | 2×2 |
+| 019 | Minotauro | Grande | 2×2 |
+| 020 | Basilisco | Médio | 1×1 |
+| 021 | Manticora | Grande | 2×2 |
+| 022 | Grifo | Grande | 2×2 |
+| 023 | Cocatriz | Pequeno | 1×1 |
+| 024 | Aranha Tecerrochas | Grande | 2×2 |
+| 025 | Escorpião Gigante | Grande | 2×2 |
+| 026 | Centopeia Cáustica | Grande | 2×2 |
+| 027 | Besouro-Diamante | Pequeno | 1×1 |
+| 028 | Sapo-Engolidor | Grande | 2×2 |
+| 029 | Kraken Menor | Imenso | 4×4 |
+| 030 | Serpente-do-Abismo | Gigante | 3×3 |
+| 031 | Tubarão-Cego | Gigante | 3×3 |
+| 032 | Goblin de Caverna | Pequeno | 1×1 |
+| 033 | Hobgoblin Guerreiro | Médio | 1×1 |
+| 034 | Orc de Masmorra | Médio | 1×1 |
+| 035 | Cogumelo-Rei | Grande | 2×2 |
+| 036 | Treant Podre | Gigante | 3×3 |
+| 037 | Planta Carnívora Gigante | Grande | 2×2 |
+| 038 | Slime Ácido | Médio | 1×1 |
+| 039 | Slime de Cristal | Médio | 1×1 |
+| 040 | Elemental de Fogo | Grande | 2×2 |
+| 041 | Elemental de Gelo | Grande | 2×2 |
+| 042 | Yeti das Profundezas | Grande | 2×2 |
+| 043 | Lobo do Inverno | Grande | 2×2 |
+| 044 | Mímico de Baú | Médio | 1×1 |
+| 045 | Doppelganger | Médio | 1×1 |
+| 046 | Hidra das Cavernas | Gigante | 3×3 |
+| 047 | Quimera | Grande | 2×2 |
+| 048 | Anjo Caído | Médio | 1×1 |
+| 049 | Gárgula de Cristal | Médio | 1×1 |
+| 050 | Aberração Tentacular | Grande | 2×2 |
+| 051 | Basilisco de Magma | Médio | 1×1 |
+| 052 | Sereia das Profundezas | Médio | 1×1 |
+| 053 | Troll de Pedra | Grande | 2×2 |
+| 054 | Ciclope | Gigante | 3×3 |
+| 055 | Harpia de Caverna | Médio | 1×1 |
+| 056 | Roper | Grande | 2×2 |
+| 057 | Aboleth | Grande | 2×2 |
+| 058 | Pudim Negro | Grande | 2×2 |
+| 059 | Lagosta-Gigante Abissal | Grande | 2×2 |
+| 060 | Caranguejo-Eremita Colossal | Imenso | 4×4 |
+| 061 | Aranha-Cavaleira | Grande | 2×2 |
+| 062 | Mosca-Carniça Colossal | Grande | 2×2 |
+| 063 | Besouro-Trovão | Grande | 2×2 |
+| 064 | Verme Gigante de Pedra | Imenso | 4×4 |
+| 065 | Salamandra Gigante | Grande | 2×2 |
+| 066 | Behemoth de Pedra | Imenso | 4×4 |
+| 067 | Fera da Sombra | Médio | 1×1 |
+| 068 | Medusa | Médio | 1×1 |
+| 069 | Fênix de Caverna | Grande | 2×2 |
+| 070 | Gigante de Pedra | Gigante | 3×3 |
+| 071 | Bruxa da Masmorra | Médio | 1×1 |
+| 072 | Fera Seminal | Grande | 2×2 |
+| 073 | Carniçal Alado | Grande | 2×2 |
+| 074 | Balor | Grande | 2×2 |
+| 075 | Enxame de Ratos-Cadáveres | Médio | 1×1 |
+| 076 | Elemental de Terra | Grande | 2×2 |
+| 077 | Banshee | Médio | 1×1 |
+| 078 | Morcego-Tirano | Gigante | 3×3 |
+| 079 | Ooze Ocular | Grande | 2×2 |
+| 080 | Tarrasque (Bebê) | Imenso | 4×4 |
 
 ---
 

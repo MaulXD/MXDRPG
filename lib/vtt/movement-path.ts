@@ -1,5 +1,11 @@
+import { anchorCandidatesForCell } from "@/lib/vtt/creature-size";
 import type { Axial } from "@/lib/vtt/hex-math";
-import { findHexPath, pathStepCount, reachableHexesBfs } from "@/lib/vtt/hex-path";
+import {
+  findHexPath,
+  pathStepCount,
+  reachableHexesBfs,
+  reachableHexesBfsWithDist,
+} from "@/lib/vtt/hex-path";
 import {
   canEnterHex,
   occupancyContext,
@@ -39,7 +45,14 @@ export function movementPathTo(
   const { occupancy, moverSize } = occupancyContext(ctx.tokens, token, ctx.actorRacas);
   const blocked = blockedHexSet({ dungeonObjects: ctx.dungeonObjects });
   const canEnter = canEnterFactory(occupancy, moverSize, ctx.gridRadius, blocked);
-  return findHexPath(token.axial, target, { maxSteps, canEnter });
+
+  const anchors = anchorCandidatesForCell(target, moverSize);
+  let best: Axial[] | null = null;
+  for (const anchor of anchors) {
+    const path = findHexPath(token.axial, anchor, { maxSteps, canEnter });
+    if (path && (!best || path.length < best.length)) best = path;
+  }
+  return best;
 }
 
 export function movementPathDistance(
@@ -53,6 +66,17 @@ export function movementPathDistance(
   return pathStepCount(path);
 }
 
+function movementReachContext(
+  token: BattleToken,
+  scene: Pick<BattleScene, "tokens" | "gridRadius" | "dungeonObjects">,
+  actorRacas?: Record<string, string | undefined>
+) {
+  const { occupancy, moverSize } = occupancyContext(scene.tokens, token, actorRacas);
+  const blocked = blockedHexSet(scene);
+  const canEnter = canEnterFactory(occupancy, moverSize, scene.gridRadius, blocked);
+  return canEnter;
+}
+
 export function reachableMovementHexes(
   token: BattleToken,
   mode: MoveMode,
@@ -60,8 +84,18 @@ export function reachableMovementHexes(
   actorRacas?: Record<string, string | undefined>
 ): Axial[] {
   const maxSteps = mode === "walk" ? walkRemaining(token) : runRemaining(token);
-  const { occupancy, moverSize } = occupancyContext(scene.tokens, token, actorRacas);
-  const blocked = blockedHexSet(scene);
-  const canEnter = canEnterFactory(occupancy, moverSize, scene.gridRadius, blocked);
+  const canEnter = movementReachContext(token, scene, actorRacas);
   return reachableHexesBfs(token.axial, maxSteps, canEnter);
+}
+
+/** Distância BFS por célula-âncora alcançável (sem pathfind por célula). */
+export function reachableMovementDistances(
+  token: BattleToken,
+  mode: MoveMode,
+  scene: Pick<BattleScene, "tokens" | "gridRadius" | "dungeonObjects">,
+  actorRacas?: Record<string, string | undefined>
+): Map<string, number> {
+  const maxSteps = mode === "walk" ? walkRemaining(token) : runRemaining(token);
+  const canEnter = movementReachContext(token, scene, actorRacas);
+  return reachableHexesBfsWithDist(token.axial, maxSteps, canEnter);
 }

@@ -1,6 +1,6 @@
 import type { Axial } from "@/lib/vtt/hex-math";
-import { axialDistance } from "@/lib/vtt/hex-math";
-import { creatureSizeOf, occupiedHexes, type CreatureSize } from "@/lib/vtt/creature-size";
+import { inSquareGrid } from "@/lib/vtt/hex-math";
+import { creatureSizeOf, occupiedHexes, tokenOccupiesAxial, type CreatureSize } from "@/lib/vtt/creature-size";
 import {
   axialKey,
   buildOccupancy,
@@ -40,18 +40,20 @@ export function dungeonObjectAt(
 }
 
 export function hexInDungeonGrid(axial: Axial, gridRadius: number): boolean {
-  return axialDistance({ q: 0, r: 0 }, axial) <= gridRadius;
+  return inSquareGrid(axial, gridRadius);
 }
 
 export function tokenOccupiesAxialSimple(
   tokens: BattleToken[],
   axial: Axial,
-  exceptTokenId?: string
+  exceptTokenId?: string,
+  actorRacas: Record<string, string | undefined> = {}
 ): boolean {
-  return tokens.some(
-    (t) =>
-      t.id !== exceptTokenId && t.axial.q === axial.q && t.axial.r === axial.r
-  );
+  return tokens.some((t) => {
+    if (t.id === exceptTokenId) return false;
+    const raca = t.actorId ? actorRacas[t.actorId] : undefined;
+    return tokenOccupiesAxial(t, axial, raca);
+  });
 }
 
 type AnchorTokenOpts = {

@@ -2,6 +2,7 @@ import type { Axial } from "@/lib/vtt/hex-math";
 import { axialDistance } from "@/lib/vtt/hex-math";
 import {
   areaNeedsDirection,
+  areaUsesCasterOrigin,
   computeAreaHexes,
   type AreaShape,
 } from "@/lib/vtt/hex-area";
@@ -28,7 +29,7 @@ import { resolveSaveSpell, type SaveSpellResolution } from "@/lib/combat/spell";
 
 export type SpellAreaShape = AreaShape;
 
-export { areaNeedsDirection };
+export { areaNeedsDirection, areaUsesCasterOrigin };
 
 export function isAreaSpellAction(action: CombatActionOption): boolean {
   return Boolean(action.areaShape && action.areaShape !== "single");
@@ -128,7 +129,7 @@ export function canCastAreaAt(
 
   const shape = action.areaShape ?? "burst";
   const directed = areaNeedsDirection(shape);
-  const origin = directed ? caster.axial : center;
+  const origin = areaUsesCasterOrigin(shape) ? caster.axial : center;
 
   const extra = clampChannelExtraPa(action, channelExtraPa);
   const paNeed = actor ? totalChannelPaCost(actor, action, extra, caster) : action.paCost + extra;
@@ -138,7 +139,7 @@ export function canCastAreaAt(
   if (!directed) {
     const dist = axialDistance(caster.axial, center);
     if (dist > action.rangeHex) {
-      return { ok: false, reason: `Centro fora de alcance (${dist}/${action.rangeHex} hex)` };
+      return { ok: false, reason: `Centro fora de alcance (${dist}/${action.rangeHex} células)` };
     }
   }
 
@@ -179,10 +180,14 @@ export function resolveAreaSpell(
 
   const shape = resolved.areaShape ?? "burst";
   const directed = areaNeedsDirection(shape);
-  const areaOrigin = directed ? caster.axial : center;
+  const areaOrigin = areaUsesCasterOrigin(shape) ? caster.axial : center;
 
   if (directed && areaDirection == null) {
-    throw new Error("Escolha a direção da área (hex vizinho ao conjurador)");
+    throw new Error(
+      shape === "wall"
+        ? "Escolha a direção da muralha (célula vizinha ao centro)"
+        : "Escolha a direção da área (célula vizinha ao conjurador)"
+    );
   }
   const areaHexes = computeSpellAreaHexes(
     areaOrigin,
@@ -201,7 +206,7 @@ export function resolveAreaSpell(
       actionName: resolved.name,
       paCost: totalChannelPaCost(actor, action, extra, caster),
       hits: [],
-      summary: `${actor.name} conjura ${resolved.name} em ${areaHexes.length} hex (${areaHexes.map((h) => `q${h.q}r${h.r}`).join(", ")}).`,
+      summary: `${actor.name} conjura ${resolved.name} em ${areaHexes.length} células (${areaHexes.map((h) => `q${h.q}r${h.r}`).join(", ")}).`,
     };
   }
 
@@ -245,7 +250,7 @@ export function resolveAreaSpell(
   const summary =
     hits.length === 0
       ? `${actor.name} conjura ${resolved.name}${channelTag} — nenhum alvo na área.`
-      : `${actor.name} conjura ${resolved.name}${channelTag} (${areaHexes.length} hex) — ${hits.length} alvo(s), ${totalEffect} ${effectLabel}.`;
+      : `${actor.name} conjura ${resolved.name}${channelTag} (${areaHexes.length} células) — ${hits.length} alvo(s), ${totalEffect} ${effectLabel}.`;
 
   return {
     casterTokenId: caster.id,
@@ -281,5 +286,5 @@ export function formatAreaSpellChatDetail(
     }
     return h.summary;
   });
-  return [`Área q${res.center.q}r${res.center.r} · ${res.areaHexes.length} hex`, ...lines].join(" · ");
+  return [`Área q${res.center.q}r${res.center.r} · ${res.areaHexes.length} células`, ...lines].join(" · ");
 }

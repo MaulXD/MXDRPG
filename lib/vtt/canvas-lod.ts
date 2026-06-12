@@ -20,8 +20,3 @@ export function lodDisplayGridRadiusCap(viewScale: number): number {
   if (viewScale < LOD_LIGHT_SCALE) return Math.min(DISPLAY_GRID_RADIUS_CAP, 20);
   return DISPLAY_GRID_RADIUS_CAP;
 }
-
-/** Em LOD profundo, desenha só metade dos hexes base (xadrez) para aliviar CPU. */
-export function skipLodDeepBaseHex(q: number, r: number): boolean {
-  return ((q + r) & 1) !== 0;
-}

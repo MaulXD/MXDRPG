@@ -3,7 +3,7 @@
 import { useCallback, useRef, type RefObject } from "react";
 import type { Axial } from "@/lib/vtt/hex-math";
 import { axialToPixel, hexDirection, pixelToAxial } from "@/lib/vtt/hex-math";
-import { areaNeedsDirection, canCastAreaAt } from "@/lib/combat/area-spell";
+import { areaNeedsDirection, areaUsesCasterOrigin, canCastAreaAt } from "@/lib/combat/area-spell";
 import type { CombatActionOption } from "@/lib/combat/types";
 import type { CharacterSheet } from "@/lib/character/types";
 import { isMoveMode, isTargetMode } from "@/lib/vtt/action-mode";
@@ -1063,10 +1063,44 @@ export function useBattlefieldPointer({
         };
         const shape = activeCombatAction.areaShape ?? "burst";
 
-        if (areaNeedsDirection(shape)) {
+        if (shape === "wall") {
+          if (!areaCenter) {
+            const check = canCastAreaAt(
+              selected,
+              targetAxial,
+              activeCombatAction,
+              turnCtx,
+              selectedActor,
+              channelExtraPa
+            );
+            if (check.ok) setAreaCenter(targetAxial);
+            else onAreaSpellError(check.reason ?? "Centro de área inválido");
+            return true;
+          }
+          const dir = hexDirection(areaCenter, targetAxial);
+          if (dir == null) {
+            onAreaSpellError("Clique numa célula vizinha ao centro da muralha para definir a direção");
+            return true;
+          }
+          const check = canCastAreaAt(
+            selected,
+            areaCenter,
+            activeCombatAction,
+            turnCtx,
+            selectedActor,
+            channelExtraPa
+          );
+          if (check.ok) {
+            onAreaSpell(areaCenter, dir);
+            setAreaCenter(null);
+          } else onAreaSpellError(check.reason ?? "Área inválida");
+          return true;
+        }
+
+        if (areaNeedsDirection(shape) && areaUsesCasterOrigin(shape)) {
           const dir = hexDirection(selected.axial, targetAxial);
           if (dir == null) {
-            onAreaSpellError("Clique num hex vizinho ao conjurador para definir a direção");
+            onAreaSpellError("Clique numa célula vizinha ao conjurador para definir a direção");
             return true;
           }
           const check = canCastAreaAt(

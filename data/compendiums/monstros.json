@@ -2276,7 +2276,7 @@
           "value": 13
         },
         "tier": "boss",
-        "tamanho": "huge"
+        "tamanho": "large"
       },
       "actions": [
         {
@@ -3874,7 +3874,7 @@
           "value": 7
         },
         "tier": "mini",
-        "tamanho": "large"
+        "tamanho": "medium"
       },
       "actions": [
         {
@@ -4483,7 +4483,7 @@
           "value": 4
         },
         "tier": "mob",
-        "tamanho": "medium"
+        "tamanho": "small"
       },
       "actions": [
         {
@@ -4889,7 +4889,7 @@
           "value": 3
         },
         "tier": "mob",
-        "tamanho": "huge"
+        "tamanho": "large"
       },
       "actions": [
         {
@@ -5295,7 +5295,7 @@
           "value": 5
         },
         "tier": "mini",
-        "tamanho": "large"
+        "tamanho": "small"
       },
       "actions": [
         {
@@ -6107,7 +6107,7 @@
           "value": 5
         },
         "tier": "mini",
-        "tamanho": "large"
+        "tamanho": "huge"
       },
       "actions": [
         {
@@ -6935,7 +6935,7 @@
           "value": 7
         },
         "tier": "mini",
-        "tamanho": "huge"
+        "tamanho": "large"
       },
       "actions": [
         {
@@ -7341,7 +7341,7 @@
           "value": 5
         },
         "tier": "mob",
-        "tamanho": "huge"
+        "tamanho": "large"
       },
       "actions": [
         {
@@ -9574,7 +9574,7 @@
           "value": 14
         },
         "tier": "boss",
-        "tamanho": "large"
+        "tamanho": "medium"
       },
       "actions": [
         {
@@ -10183,7 +10183,7 @@
           "value": 8
         },
         "tier": "mini",
-        "tamanho": "large"
+        "tamanho": "medium"
       },
       "actions": [
         {
@@ -13438,7 +13438,7 @@
           "value": 19
         },
         "tier": "boss",
-        "tamanho": "huge"
+        "tamanho": "large"
       },
       "actions": [
         {
@@ -13802,7 +13802,7 @@
           "value": 5
         },
         "tier": "mini",
-        "tamanho": "large"
+        "tamanho": "huge"
       },
       "actions": [
         {

@@ -48,7 +48,7 @@ import {
   type ActiveTokenCastFx,
 } from "@/lib/vtt/token-cast-fx";
 import { isTargetMode, type TokenActionMode } from "@/lib/vtt/action-mode";
-import { gridLodLevel, skipLodDeepBaseHex, type GridLod } from "@/lib/vtt/canvas-lod";
+import { gridLodLevel, type GridLod } from "@/lib/vtt/canvas-lod";
 import type { BattleScene, BattleToken } from "@/lib/vtt/types";
 export type TokenFlashKind = "hit" | "miss" | "crit";
 
@@ -89,11 +89,59 @@ export function prepareBattlefieldCanvas(
 }
 
 export function drawBattlefieldBackground(ctx: CanvasRenderingContext2D, w: number, h: number): void {
-  const bg = ctx.createLinearGradient(0, 0, w, h);
-  bg.addColorStop(0, readThemeColor("--vtt-canvas-bg-0", "#1a1610"));
-  bg.addColorStop(1, readThemeColor("--vtt-canvas-bg-1", "#0f0d0a"));
-  ctx.fillStyle = bg;
+  ctx.fillStyle = readThemeColor("--vtt-canvas-bg-0", "#eeeeee");
   ctx.fillRect(0, 0, w, h);
+}
+
+/** Grade base em linhas (1 traço por eixo) — leve como Roll20/Foundry. */
+function drawSquareGridLines(
+  ctx: CanvasRenderingContext2D,
+  p: GridDrawParams,
+  stroke: string,
+  lod: GridLod
+): void {
+  const { hexSize, layout, gridCells, visibleHexSet } = p;
+  const { ox, oy } = layout;
+
+  let minQ = Infinity;
+  let maxQ = -Infinity;
+  let minR = Infinity;
+  let maxR = -Infinity;
+  let any = false;
+
+  for (const cell of gridCells) {
+    const key = `${cell.q},${cell.r}`;
+    if (visibleHexSet && !visibleHexSet.has(key)) continue;
+    any = true;
+    minQ = Math.min(minQ, cell.q);
+    maxQ = Math.max(maxQ, cell.q);
+    minR = Math.min(minR, cell.r);
+    maxR = Math.max(maxR, cell.r);
+  }
+  if (!any) return;
+
+  const step = lod === "deep" ? 2 : 1;
+  const alpha = lod === "full" ? 0.5 : lod === "light" ? 0.38 : 0.3;
+  const lineWidth = lod === "deep" ? 0.75 : 1;
+
+  ctx.save();
+  ctx.beginPath();
+  ctx.strokeStyle = stroke;
+  ctx.lineWidth = lineWidth;
+  ctx.globalAlpha = alpha;
+
+  for (let q = minQ; q <= maxQ + 1; q += step) {
+    const x = ox + q * hexSize;
+    ctx.moveTo(x, oy + minR * hexSize);
+    ctx.lineTo(x, oy + (maxR + 1) * hexSize);
+  }
+  for (let r = minR; r <= maxR + 1; r += step) {
+    const y = oy + r * hexSize;
+    ctx.moveTo(ox + minQ * hexSize, y);
+    ctx.lineTo(ox + (maxQ + 1) * hexSize, y);
+  }
+  ctx.stroke();
+  ctx.restore();
 }
 
 type GridDrawParams = {
@@ -124,11 +172,10 @@ type GridDrawParams = {
   viewScale?: number;
 };
 
-/** Halo oposto ao traço principal — melhora leitura do grid sobre imagens de cenário. */
-function baseHexContrastStroke(tone: MapBackdropTone): string {
-  if (tone === "dark") return "rgba(0, 0, 0, 0.42)";
-  if (tone === "light" || tone === "green") return "rgba(255, 255, 255, 0.38)";
-  return "rgba(0, 0, 0, 0.32)";
+/** Traço da grade base — preto sem halo duplo. */
+function baseGridStroke(tone: MapBackdropTone, fallback: string): string {
+  if (tone === "dark") return "rgba(0, 0, 0, 0.55)";
+  return fallback;
 }
 
 export function drawHexGridLayer(ctx: CanvasRenderingContext2D, p: GridDrawParams): void {
@@ -137,6 +184,9 @@ export function drawHexGridLayer(ctx: CanvasRenderingContext2D, p: GridDrawParam
   const pal =
     p.palette ?? resolveHexPalette(p.mapBackdropTone ?? "none");
   const lod: GridLod = gridLodLevel(p.viewScale ?? 1);
+  const tone = p.mapBackdropTone ?? "none";
+
+  drawSquareGridLines(ctx, p, baseGridStroke(tone, pal.stroke), lod);
 
   for (const cell of p.gridCells) {
     const key = `${cell.q},${cell.r}`;
@@ -236,9 +286,7 @@ export function drawHexGridLayer(ctx: CanvasRenderingContext2D, p: GridDrawParam
       (p.walkSet.has(key) || p.paidWalkSet.has(key) || p.rangeSet.has(key));
     const isBaseHex = fill === pal.fill && stroke === pal.stroke && lineWidth === 1;
 
-    if (lod === "deep" && isBaseHex && !isHoverCell && skipLodDeepBaseHex(cell.q, cell.r)) {
-      continue;
-    }
+    if (isBaseHex && !isHoverCell) continue;
 
     ctx.beginPath();
     const corners = hexCorners(x, y, hexDrawRadius(hexSize));
@@ -246,34 +294,20 @@ export function drawHexGridLayer(ctx: CanvasRenderingContext2D, p: GridDrawParam
     for (let i = 1; i < corners.length; i++) ctx.lineTo(corners[i].x, corners[i].y);
     ctx.closePath();
 
-    if (lod !== "full" && isBaseHex && !isMoveHighlight && !isHoverCell) {
-      ctx.strokeStyle = pal.stroke;
-      ctx.lineWidth = lod === "deep" ? 0.75 : 1;
-      ctx.globalAlpha = lod === "deep" ? 0.55 : 0.72;
-      ctx.stroke();
-      ctx.globalAlpha = 1;
-      continue;
+    if (fill !== "transparent" && fill !== "rgba(0,0,0,0)") {
+      ctx.fillStyle = fill;
+      ctx.fill();
     }
-
-    ctx.fillStyle = fill;
-    ctx.fill();
 
     if (isMoveHighlight && fill !== pal.fill) {
-      ctx.strokeStyle = "rgba(0, 0, 0, 0.72)";
-      ctx.lineWidth = lineWidth + 1.5;
-      ctx.stroke();
-    }
-
-    if (isBaseHex && lod === "full") {
-      ctx.strokeStyle = baseHexContrastStroke(p.mapBackdropTone ?? "none");
-      ctx.lineWidth = lineWidth + 1.4;
+      ctx.strokeStyle = "rgba(0, 0, 0, 0.35)";
+      ctx.lineWidth = lineWidth + 1;
       ctx.stroke();
     }
 
     ctx.strokeStyle = stroke;
-    ctx.lineWidth = isBaseHex ? 1.25 : lineWidth;
+    ctx.lineWidth = lineWidth;
     ctx.stroke();
-
   }
 
   drawMovementPathLayer(ctx, p);

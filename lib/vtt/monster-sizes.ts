@@ -14,14 +14,14 @@ export const CREATURE_SIZE_PT: Record<CreatureSize, string> = {
   colossal: "Colossal",
 };
 
-/** Hexes ocupados (referência rápida para o livro). */
+/** @deprecated Use CREATURE_SIZE_GRID_LABEL */
 export const CREATURE_SIZE_HEX_LABEL: Record<CreatureSize, string> = {
-  small: "1 hex",
-  medium: "1 hex",
-  large: "4 hex",
-  huge: "7 hex",
-  gargantuan: "19 hex",
-  colossal: "37 hex",
+  small: "1 célula",
+  medium: "1 célula",
+  large: "2×2 (4 células)",
+  huge: "3×3 (9 células)",
+  gargantuan: "4×4 (16 células)",
+  colossal: "5×5 (25 células)",
 };
 
 const VALID_SIZES = new Set<string>([
@@ -67,27 +67,38 @@ export function resolveMonsterCreatureSize(
     lower.includes("verme gigante") ||
     lower.includes("hidra") ||
     lower.includes("ciclope") ||
-    lower.includes("dragão jovem") ||
-    lower.includes("dragao jovem") ||
-    lower.includes("escorpião gigante") ||
-    lower.includes("escorpiao gigante") ||
-    lower.includes("planta carnívora gigante") ||
-    lower.includes("planta carnivora gigante") ||
     lower.includes("treant") ||
-    lower.includes("cogumelo-rei")
+    lower.includes("cogumelo-rei") ||
+    lower.includes("gigante de pedra") ||
+    lower.includes("morcego-tirano") ||
+    lower.includes("tubarao") ||
+    lower.includes("tubarão") ||
+    lower.includes("serpente-do-abismo")
   ) {
     return "huge";
   }
   if (
+    lower.includes("dragão jovem") ||
+    lower.includes("dragao jovem") ||
     lower.includes("minotauro") ||
     lower.includes("golem") ||
     lower.includes("wyvern") ||
     lower.includes("grifo") ||
     lower.includes("manticora") ||
-    lower.includes("basilisco") ||
-    lower.includes("elemental")
+    lower.includes("elemental") ||
+    lower.includes("balor") ||
+    lower.includes("escorpião gigante") ||
+    lower.includes("escorpiao gigante")
   ) {
     return "large";
+  }
+  if (
+    lower.includes("basilisco") ||
+    lower.includes("cocatriz") ||
+    lower.includes("besouro-diamante") ||
+    lower.includes("besouro diamante")
+  ) {
+    return lower.includes("basilisco") ? "medium" : "small";
   }
   if (
     (lower.includes("goblin") || opts?.tier === "mob") &&

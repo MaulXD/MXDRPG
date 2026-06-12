@@ -1,15 +1,13 @@
 import type { Axial } from "@/lib/vtt/hex-math";
 import {
-  HEX_DIRECTIONS,
   axialDistance,
   axialToPixel,
-  hexesInRange,
 } from "@/lib/vtt/hex-math";
 import type { BattleToken } from "@/lib/vtt/types";
 import { resolveMonsterCreatureSize } from "@/lib/vtt/monster-sizes";
 import type { MonsterSpawnVariant } from "@/lib/vtt/monster-scaling";
 
-/** Tamanho corporal no grid hex (Livro do Jogador — VTT). */
+/** Tamanho corporal no grid (Livro do Jogador — VTT). */
 export type CreatureSize =
   | "small"
   | "medium"
@@ -20,14 +18,24 @@ export type CreatureSize =
 
 const SMALL_RACES = new Set(["Halfling", "Gnomo"]);
 
-/** Hexes ocupados por tamanho (Médio 1 · Grande 4 · Gigante 7 · …). */
+/** Células ocupadas por tamanho — SRD/D&D 5e (1 célula ≈ 5 ft / 1,5 m). */
 export const SIZE_HEX_COUNT: Record<CreatureSize, number> = {
   small: 1,
   medium: 1,
   large: 4,
-  huge: 7,
-  gargantuan: 19,
-  colossal: 37,
+  huge: 9,
+  gargantuan: 16,
+  colossal: 25,
+};
+
+/** Rótulo de footprint no grid quadrado. */
+export const CREATURE_SIZE_GRID_LABEL: Record<CreatureSize, string> = {
+  small: "1×1",
+  medium: "1×1",
+  large: "2×2",
+  huge: "3×3",
+  gargantuan: "4×4",
+  colossal: "5×5",
 };
 
 const SIZE_ORDER: CreatureSize[] = [
@@ -39,37 +47,35 @@ const SIZE_ORDER: CreatureSize[] = [
   "colossal",
 ];
 
-/** Raio do disco hexagonal (0 = só centro; 1 = centro + 6 vizinhos = 7 hex). */
-function axialDiskRadius(size: CreatureSize): number {
+function squareFootprint(anchor: Axial, side: number): Axial[] {
+  const cells: Axial[] = [];
+  for (let dq = 0; dq < side; dq++) {
+    for (let dr = 0; dr < side; dr++) {
+      cells.push({ q: anchor.q + dq, r: anchor.r + dr });
+    }
+  }
+  return cells;
+}
+
+function footprintSide(size: CreatureSize): number {
   switch (size) {
     case "small":
     case "medium":
-      return 0;
-    case "huge":
       return 1;
-    case "gargantuan":
+    case "large":
       return 2;
-    case "colossal":
+    case "huge":
       return 3;
+    case "gargantuan":
+      return 4;
+    case "colossal":
+      return 5;
     default:
-      return 0;
+      return 1;
   }
 }
 
-/** Grande: losango compacto de 4 hex (âncora + três vizinhos que fecham o bloco). */
-function largeOccupiedHexes(anchor: Axial): Axial[] {
-  const e = HEX_DIRECTIONS[0];
-  const ne = HEX_DIRECTIONS[1];
-  const se = HEX_DIRECTIONS[5];
-  return [
-    anchor,
-    { q: anchor.q + e.q, r: anchor.r + e.r },
-    { q: anchor.q + se.q, r: anchor.r + se.r },
-    { q: anchor.q + ne.q, r: anchor.r + ne.r },
-  ];
-}
-
-/** Raio visual que preenche o footprint multi-hex (centroide + alcance aos centros dos hexes). */
+/** Raio visual que preenche o footprint multi-célula (centroide + alcance). */
 function footprintFillRadius(hexSize: number, hexes: Axial[]): number {
   if (hexes.length <= 1) return hexInscribedRadius(hexSize);
 
@@ -93,8 +99,22 @@ function footprintFillRadius(hexSize: number, hexes: Axial[]): number {
 }
 
 export function occupiedHexes(anchor: Axial, size: CreatureSize): Axial[] {
-  if (size === "large") return largeOccupiedHexes(anchor);
-  return hexesInRange(anchor, axialDiskRadius(size));
+  const side = footprintSide(size);
+  if (side === 1) return [{ q: anchor.q, r: anchor.r }];
+  return squareFootprint(anchor, side);
+}
+
+/** Âncoras NW possíveis quando o jogador clica numa célula do footprint desejado. */
+export function anchorCandidatesForCell(cell: Axial, size: CreatureSize): Axial[] {
+  const side = footprintSide(size);
+  if (side === 1) return [{ q: cell.q, r: cell.r }];
+  const anchors: Axial[] = [];
+  for (let dq = 0; dq < side; dq++) {
+    for (let dr = 0; dr < side; dr++) {
+      anchors.push({ q: cell.q - dq, r: cell.r - dr });
+    }
+  }
+  return anchors;
 }
 
 /** @deprecated Use resolveMonsterCreatureSize com entryId */
@@ -163,8 +183,8 @@ export function tokenAxialDistance(
   return min === Infinity ? axialDistance(a.axial, b.axial) : min;
 }
 
-/** hexSize = centro → vértice; círculo inscrito (centro → aresta) = hexSize × √3/2. */
-export const HEX_INSCRIBED_RATIO = Math.sqrt(3) / 2;
+/** hexSize = lado da célula; círculo inscrito ≈ metade do quadrado. */
+export const HEX_INSCRIBED_RATIO = 0.48;
 
 /** Legado — raio médio inscrito com folga mínima anti-alias. */
 export const TOKEN_RADIUS_RATIO = HEX_INSCRIBED_RATIO - 0.01;
