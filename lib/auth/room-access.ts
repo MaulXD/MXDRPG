@@ -234,18 +234,25 @@ export function actorForRoomAuth(
   };
 }
 
-/** Colocar ou mover token de personagem no mapa — dono da ficha ou mestre da mesa. */
+/** Colocar ou mover token de personagem no mapa — dono da ficha, demo jogável ou mestre. */
 export function canPlaceRoomActorOnBoard(
-  room: Pick<RoomState, "roomId" | "ownerId"> & { adventureId?: string },
+  room: Pick<RoomState, "roomId" | "ownerId" | "memberIds"> & { adventureId?: string },
   actor: Pick<CharacterSheet, "id" | "ownerId" | "adventureId" | "campaignRoomId">,
   user: SessionUser | null | undefined
 ): boolean {
-  if (canEditRoomActor(room, actor, user)) return true;
-  if (!user || !canParticipateInRoom(room, user)) return false;
+  if (!user) return false;
+  if (canManageRoom(room, user)) return true;
+  if (!canParticipateInRoom(room, user)) return false;
   const adventureId = room.adventureId ?? room.roomId;
   const authActor = actorForRoomAuth(room, actor);
   if (!characterBelongsToAdventure(authActor, adventureId)) return false;
-  return canManageRoom(room, user);
+  if (
+    room.roomId === "demo" &&
+    DEMO_PLAYABLE_ACTOR_IDS.includes(actor.id as (typeof DEMO_PLAYABLE_ACTOR_IDS)[number])
+  ) {
+    return true;
+  }
+  return authActor.ownerId === user.id;
 }
 
 /** Adicionar itens ao inventário exige aprovação do mestre (dono em campanha, não-GM). */

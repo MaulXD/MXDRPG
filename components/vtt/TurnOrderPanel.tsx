@@ -162,7 +162,6 @@ export function TurnOrderPanel({
     try {
       const snap = await nextCombatTurn(roomId, { force: true });
       onSnapshot?.(snap);
-      onUpdate();
     } catch (e) {
       setGmError(e instanceof Error ? e.message : "Falha ao passar turno");
     } finally {

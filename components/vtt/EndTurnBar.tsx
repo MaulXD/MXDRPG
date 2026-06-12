@@ -41,7 +41,6 @@ export function EndTurnBar({
     try {
       const snap = await nextCombatTurn(roomId, { force: true });
       onSnapshot?.(snap);
-      onUpdate();
     } catch (e) {
       setErr(e instanceof Error ? e.message : "Não foi possível passar o turno");
     } finally {

@@ -512,6 +512,7 @@ export function MesaWorkspace({
               canBypassTurn={canBypassTurn}
               canEndTurn={canEndTurn}
               roomOwnerId={roomOwnerId}
+              memberIds={memberIds}
               canControlToken={canControlToken}
               canViewTokenPa={canViewTokenPaCb}
               roomId={roomId}
@@ -776,7 +777,7 @@ function MesaWorkspaceCombatFlow({
     snapshot,
     roomId,
     canAutoPass: canEndTurn,
-    onSnapshot: applySnapshot,
+    onSnapshot: (snap) => applySnapshot(snap, { force: true }),
   });
   return null;
 }

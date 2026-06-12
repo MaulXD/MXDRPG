@@ -163,11 +163,12 @@ type Props = {
   canViewTokenPa?: (token: import("@/lib/vtt/types").BattleToken) => boolean;
   roomId?: string;
   roomOwnerId?: string;
+  memberIds?: string[];
   adventureId?: string;
   inviteCode?: string | null;
   snapshot?: RoomSnapshot | null;
   onRefresh?: () => void;
-  onApplySnapshot?: (snap: RoomSnapshot) => void;
+  onApplySnapshot?: (snap: RoomSnapshot, opts?: { force?: boolean }) => void;
   onOpenSheet?: (actorId?: string) => void;
   /** Abre ficha de monstro do compêndio em janela flutuante. */
   onOpenMonsterSheet?: (entryId: string) => void;
@@ -235,6 +236,7 @@ export function HexBattlefield({
   canViewTokenPa,
   roomId = "demo",
   roomOwnerId = "",
+  memberIds = [],
   adventureId: adventureIdProp,
   inviteCode = null,
   snapshot = null,
@@ -653,18 +655,18 @@ export function HexBattlefield({
   const syncRoom = useCallback(
     (snap?: RoomSnapshot) => {
       if (snap?.scene) {
-        if (snap.revision > appliedSceneRevisionRef.current) {
+        if (snap.revision >= appliedSceneRevisionRef.current) {
           appliedSceneRevisionRef.current = snap.revision;
+          setScene((prev) => mergeScenePreservingPortraits(prev, snap.scene));
         }
-        setScene((prev) => mergeScenePreservingPortraits(prev, snap.scene));
-        if (onApplySnapshot) onApplySnapshot(snap);
+        if (onApplySnapshot) onApplySnapshot(snap, { force: true });
         else refresh();
         playCombatFxFromSnapRef.current?.(snap);
       } else if (snap) {
-        if (snap.revision > appliedSceneRevisionRef.current) {
+        if (snap.revision >= appliedSceneRevisionRef.current) {
           appliedSceneRevisionRef.current = snap.revision;
         }
-        if (onApplySnapshot) onApplySnapshot(snap);
+        if (onApplySnapshot) onApplySnapshot(snap, { force: true });
         else refresh();
         playCombatFxFromSnapRef.current?.(snap);
       } else {
@@ -925,6 +927,19 @@ export function HexBattlefield({
     battlefieldView.subscribeViewDraw
   );
 
+  useLayoutEffect(() => {
+    const anim = moveAnimRef.current;
+    if (!anim) return;
+    const token = scene.tokens.find((t) => t.id === anim.tokenId);
+    if (
+      !token ||
+      (token.axial.q === anim.q && token.axial.r === anim.r)
+    ) {
+      moveAnimRef.current = null;
+      redraw();
+    }
+  }, [scene, redraw]);
+
   useEffect(() => {
     if (floorPreview) redraw();
   }, [floorPreview, redraw]);
@@ -1102,19 +1117,24 @@ export function HexBattlefield({
   const removeSelectedToken = useCallback(async () => {
     if (!canControlCombat || !selectedId || !selected) return;
     setActionErr(null);
+    const removedId = selectedId;
     try {
-      const snap = await deleteRoomToken(roomId, selectedId);
+      if (moveAnimRef.current?.tokenId === removedId) moveAnimRef.current = null;
+      if (gmDragTokenId === removedId) setGmDragTokenId(null);
+      const snap = await deleteRoomToken(roomId, removedId);
+      pendingCombatSnapRef.current = null;
       syncRoom(snap);
       const nextId = snap.scene.tokens[0]?.id ?? null;
       setSelectedId(nextId);
       setActionRingAt(null);
+      redraw();
       toast.push(`${selected.name} removido do mapa`, "success");
     } catch (e) {
       const msg = e instanceof Error ? e.message : "Falha ao remover token";
       setActionErr(msg);
       toast.push(msg, "warn");
     }
-  }, [canControlCombat, selectedId, selected, roomId, syncRoom, toast]);
+  }, [canControlCombat, selectedId, selected, roomId, syncRoom, toast, gmDragTokenId, redraw]);
 
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
@@ -1682,8 +1702,15 @@ export function HexBattlefield({
           moveAnimRef.current = { tokenId, q: step.q, r: step.r };
           redraw();
         });
-        moveAnimRef.current = null;
-        syncRoom(snap);
+        const end = path[path.length - 1];
+        moveAnimRef.current = { tokenId, q: end.q, r: end.r };
+        if (snap.revision >= appliedSceneRevisionRef.current) {
+          appliedSceneRevisionRef.current = snap.revision;
+          setScene((prev) => mergeScenePreservingPortraits(prev, snap.scene));
+        }
+        if (onApplySnapshot) onApplySnapshot(snap, { force: true });
+        else void refresh();
+        playCombatFxFromSnapRef.current?.(snap);
         redraw();
       } catch (e) {
         setActionErr(e instanceof Error ? e.message : "Movimento inválido");
@@ -1704,7 +1731,7 @@ export function HexBattlefield({
       turn.activeTokenId,
       turn.combatHasOrder,
       selectedBypass,
-      syncRoom,
+      onApplySnapshot,
       redraw,
       refresh,
       flushPendingSceneSnapshot,
@@ -2190,6 +2217,8 @@ export function HexBattlefield({
       roomActors={roomActors}
       session={session}
       adventureId={adventureIdProp ?? roomId}
+      roomOwnerId={roomOwnerId}
+      memberIds={memberIds}
       spawnAxial={hoverAxial}
       selectedId={selectedId}
       onSelect={setSelectedId}
@@ -2198,16 +2227,12 @@ export function HexBattlefield({
       canViewTokenPa={canViewTokenPaFn}
       canUseToken={Boolean(canUseToken)}
       canControlCombat={canControlCombat}
-      canApplyConditions={isRoomGm}
       showMovementLegend={Boolean(selected && highlights.showMovement)}
       actionMode={actionMode}
       actionErr={actionErr}
       roomId={roomId}
-      onOpenSheet={onOpenSheet}
       onPlaced={(snap) => syncRoom(snap)}
-      onUpdate={refresh}
       fogHint={fogListHint}
-      onOpenStatus={openStatus}
     />
   );
 

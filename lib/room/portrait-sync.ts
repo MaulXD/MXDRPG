@@ -53,7 +53,6 @@ export function mergeScenePreservingPortraits(
   prev: BattleScene,
   next: BattleScene
 ): BattleScene {
-  const remoteIds = new Set(next.tokens.map((t) => t.id));
   const merged = next.tokens.map((remote) => {
     const local = prev.tokens.find((t) => t.id === remote.id);
     if (!local) return remote;
@@ -66,10 +65,6 @@ export function mergeScenePreservingPortraits(
     }
     return { ...remote, ...portrait };
   });
-  // Snapshot SSE parcial pode omitir tokens — não remover do tabuleiro local.
-  for (const local of prev.tokens) {
-    if (!remoteIds.has(local.id)) merged.push(local);
-  }
   return { ...next, tokens: merged };
 }
 

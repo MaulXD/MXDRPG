@@ -58,20 +58,23 @@ export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
   const onMemberOnlineRef = useRef(onMemberOnline);
   onMemberOnlineRef.current = onMemberOnline;
 
-  const applySnapshot = useCallback((data: RoomSnapshot) => {
-    if (data.revision < revisionRef.current) return;
-    revisionRef.current = data.revision;
-    const tokens = Array.isArray(data.scene?.tokens) ? data.scene.tokens : [];
-    startTransition(() => {
-      setSnapshot({
-        ...data,
-        scene: { ...data.scene, tokens },
-        combat: normalizeCombatTrack(data.combat, tokens),
+  const applySnapshot = useCallback(
+    (data: RoomSnapshot, opts?: { force?: boolean }) => {
+      if (!opts?.force && data.revision < revisionRef.current) return;
+      revisionRef.current = Math.max(revisionRef.current, data.revision);
+      const tokens = Array.isArray(data.scene?.tokens) ? data.scene.tokens : [];
+      startTransition(() => {
+        setSnapshot({
+          ...data,
+          scene: { ...data.scene, tokens },
+          combat: normalizeCombatTrack(data.combat, tokens),
+        });
+        setSyncError(null);
+        setLoading(false);
       });
-      setSyncError(null);
-      setLoading(false);
-    });
-  }, []);
+    },
+    []
+  );
 
   const refreshImplRef = useRef<(() => Promise<void>) | null>(null);
   const refreshDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
