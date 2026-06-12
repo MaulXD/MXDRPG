@@ -13,6 +13,7 @@ import {
   isRoomMemberResolved,
 } from "@/lib/auth/room-access-server";
 import { entrarPath, mesaRoomPath } from "@/lib/auth/post-auth-redirect";
+import { materializeSessionUser } from "@/lib/auth/session-user";
 import { getSession } from "@/lib/auth/session";
 import { getPackEntries, getVisiblePacks } from "@/lib/compendium/registry";
 import type { CompendiumPackId } from "@/lib/compendium/types";
@@ -57,29 +58,31 @@ export default async function MesaRoomPage({ params, searchParams }: Props) {
     );
   }
 
-  if (session?.user && roomId !== "demo") {
-    const isMember = await isRoomMemberResolved(room, session.user.id, session.user.clerkId);
-    if (!room.memberIds.includes(session.user.id) && isMember) {
-      await joinRoomMembers(roomId, session.user.id);
+  const accountUser = session?.user ? await materializeSessionUser(session.user) : null;
+
+  if (accountUser && roomId !== "demo") {
+    const isMember = await isRoomMemberResolved(room, accountUser.id, accountUser.clerkId);
+    if (!room.memberIds.includes(accountUser.id) && isMember) {
+      await joinRoomMembers(roomId, accountUser.id);
       room = (await getRoom(roomId)) ?? room;
     } else if (
       !isMember &&
-      (await shouldAutoJoinRoom(room, session.user))
+      (await shouldAutoJoinRoom(room, accountUser))
     ) {
-      await joinRoomMembers(roomId, session.user.id);
+      await joinRoomMembers(roomId, accountUser.id);
       room = (await getRoom(roomId)) ?? room;
     }
   }
 
-  if (session?.user && inviteCode && session.user.role !== "admin") {
-    const alreadyMember = await isRoomMemberResolved(room, session.user.id, session.user.clerkId);
+  if (accountUser && inviteCode && accountUser.role !== "admin") {
+    const alreadyMember = await isRoomMemberResolved(room, accountUser.id, accountUser.clerkId);
     if (!alreadyMember && (await inviteMatchesRoom(room, inviteCode))) {
-      const joined = await joinRoomByInvite(inviteCode, session.user.id);
+      const joined = await joinRoomByInvite(inviteCode, accountUser.id);
       const fresh =
         joined?.roomId === roomId ? joined : ((await getRoom(roomId)) ?? room);
       room = fresh;
 
-      if (await isRoomMemberResolved(room, session.user.id, session.user.clerkId)) {
+      if (await isRoomMemberResolved(room, accountUser.id, accountUser.clerkId)) {
         redirect(`/mesa/${roomId}?joined=1`);
       }
       joinError =
@@ -88,13 +91,13 @@ export default async function MesaRoomPage({ params, searchParams }: Props) {
   }
 
   if (
-    session?.user &&
+    accountUser &&
     roomId !== "demo" &&
-    (await isRoomMemberResolved(room, session.user.id, session.user.clerkId))
+    (await isRoomMemberResolved(room, accountUser.id, accountUser.clerkId))
   ) {
     const advId = room.adventureId ?? roomId;
-    if (room.ownerId !== session.user.id) {
-      await bindPlayerToAdventure(advId, session.user.id);
+    if (room.ownerId !== accountUser.id) {
+      await bindPlayerToAdventure(advId, accountUser.id);
     }
     try {
       const synced = await syncAdventureActorsForRoom(roomId);

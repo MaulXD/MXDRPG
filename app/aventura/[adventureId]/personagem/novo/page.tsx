@@ -3,10 +3,10 @@ import { redirect } from "next/navigation";
 import { CharacterCreationWizard } from "@/components/character/wizard/CharacterCreationWizard";
 import { MedievalFrame } from "@/components/ui/MedievalFrame";
 import { isAdventureMember } from "@/lib/auth/adventure-access";
-import { getAdventure, joinAdventureByInvite } from "@/lib/adventure/store";
+import { ensureSessionAdventureAccess } from "@/lib/adventure/store";
 import {
-  countCharactersForUserInAdventure,
-  listCharactersForUser,
+  listCharactersForSessionUser,
+  listCharactersForSessionUserInAdventure,
   MAX_CHARACTERS_PER_USER,
   MAX_CHARACTERS_PER_USER_PER_ADVENTURE,
 } from "@/lib/character/characters";
@@ -30,48 +30,50 @@ export default async function AventuraNovoPersonagemPage({ params, searchParams 
     redirect(signInPath(dest));
   }
 
-  let adventure = await getAdventure(adventureId);
+  const { adventure, accountUser } = await ensureSessionAdventureAccess(adventureId, session.user, {
+    inviteCode,
+  });
+
   if (!adventure) {
     return (
       <div className="page-wrap">
         <p>Aventura não encontrada.</p>
-        <Link href="/painel">Painel</Link>
+        <Link href="/eldarin">Suas mesas</Link>
       </div>
     );
   }
 
-  if (
-    !isAdventureMember(adventure, session.user.id, session.user.clerkId) &&
-    inviteCode
-  ) {
-    const joined = await joinAdventureByInvite(inviteCode, session.user.id);
-    if (joined) adventure = joined;
-  }
-
-  if (!isAdventureMember(adventure, session.user.id, session.user.clerkId)) {
+  if (!isAdventureMember(adventure, accountUser.id, accountUser.clerkId) && adventureId !== "demo") {
     return (
       <div className="page-wrap">
         <p>Entre na aventura com o código de convite antes de criar o personagem.</p>
         <p style={{ color: "var(--text-muted)", fontSize: "0.9rem" }}>
           Abra o link que o mestre enviou (com <code>?invite=</code>) ou cole o código em Suas mesas.
         </p>
-        <Link href="/eldarin" className="btn">
+        {adventure.primaryRoomId ? (
+          <Link href={`/mesa/${adventure.primaryRoomId}`} className="btn" style={{ marginTop: "0.75rem" }}>
+            Voltar à mesa
+          </Link>
+        ) : null}
+        <Link href="/eldarin" className="btn btn--ghost" style={{ marginTop: "0.75rem", marginLeft: "0.5rem" }}>
           Suas mesas
         </Link>
       </div>
     );
   }
 
-  const total = (await listCharactersForUser(session.user.id)).length;
-  const inAdv = await countCharactersForUserInAdventure(session.user.id, adventureId);
+  const myChars = await listCharactersForSessionUser(accountUser);
+  const inAdvChars = await listCharactersForSessionUserInAdventure(accountUser, adventureId);
+  const total = myChars.length;
+  const inAdv = inAdvChars.length;
 
   if (total >= MAX_CHARACTERS_PER_USER) {
     return (
       <div className="page-wrap" style={{ maxWidth: 520, paddingTop: "2rem" }}>
         <h1 className="display-lg">Limite de fichas</h1>
         <p className="lead">Limite global de {MAX_CHARACTERS_PER_USER} fichas na conta.</p>
-        <Link href="/painel" className="btn">
-          Voltar
+        <Link href={`/mesa/${adventure.primaryRoomId}`} className="btn">
+          Voltar à mesa
         </Link>
       </div>
     );

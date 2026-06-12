@@ -299,6 +299,52 @@ export async function bindPlayerToAdventure(
   return joinAdventureRecord(adv, userId);
 }
 
+/** Garante acesso à aventura (convite, sala HEX ou ficha existente). */
+export async function ensureSessionAdventureAccess(
+  adventureId: string,
+  user: import("@/lib/auth/types").SessionUser,
+  opts?: { inviteCode?: string | null }
+): Promise<{
+  adventure: Adventure | null;
+  accountUser: import("@/lib/auth/types").SessionUser;
+}> {
+  const { materializeSessionUser } = await import("@/lib/auth/session-user");
+  const { isAdventureMember } = await import("@/lib/auth/adventure-access");
+  const { isRoomMemberResolved } = await import("@/lib/auth/room-access-server");
+
+  const accountUser = await materializeSessionUser(user);
+  let adventure = await getAdventure(adventureId);
+  if (!adventure) return { adventure: null, accountUser };
+
+  const inviteCode = opts?.inviteCode?.trim() || null;
+  if (
+    !isAdventureMember(adventure, accountUser.id, accountUser.clerkId) &&
+    inviteCode
+  ) {
+    const joined = await joinAdventureByInvite(inviteCode, accountUser.id);
+    if (joined) adventure = joined;
+  }
+
+  if (
+    !isAdventureMember(adventure, accountUser.id, accountUser.clerkId) &&
+    adventure.primaryRoomId
+  ) {
+    const room = await getRoom(adventure.primaryRoomId);
+    if (room && (await isRoomMemberResolved(room, accountUser.id, accountUser.clerkId))) {
+      adventure = (await bindPlayerToAdventure(adventureId, accountUser.id)) ?? adventure;
+    }
+  }
+
+  if (
+    !isAdventureMember(adventure, accountUser.id, accountUser.clerkId) &&
+    adventureId !== "demo"
+  ) {
+    adventure = (await ensureAdventureMembership(adventureId, accountUser.id)) ?? adventure;
+  }
+
+  return { adventure, accountUser };
+}
+
 /** Reconcilia membro se já tem ficha nesta aventura (vínculo retroativo). */
 export async function ensureAdventureMembership(
   adventureId: string,
