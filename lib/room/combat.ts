@@ -1,6 +1,12 @@
 import type { BattleToken } from "@/lib/vtt/types";
 import type { RoomState } from "./types";
 
+export type CombatPendingAutoPass = {
+  tokenId: string;
+  /** Epoch ms — turno só avança após este instante (PA zerado visível na UI). */
+  passAt: number;
+};
+
 export type CombatTrack = {
   /** IDs de token na ordem de iniciativa (maior primeiro) */
   order: string[];
@@ -12,6 +18,8 @@ export type CombatTrack = {
   naturalOrder?: string[];
   /** Mestre alterou a fila manualmente. */
   orderOverridden?: boolean;
+  /** Auto-passe agendado após esgotar PA (delay antes de `advanceRoomTurn`). */
+  pendingAutoPass?: CombatPendingAutoPass;
 };
 
 export function emptyCombat(tokens: BattleToken[] = []): CombatTrack {
@@ -43,6 +51,13 @@ export function normalizeCombatTrack(
   }
   const maxIdx = order.length - 1;
   const activeIndex = Math.min(Math.max(0, combat.activeIndex ?? 0), maxIdx);
+  const pendingAutoPass =
+    combat.pendingAutoPass &&
+    typeof combat.pendingAutoPass.tokenId === "string" &&
+    typeof combat.pendingAutoPass.passAt === "number"
+      ? combat.pendingAutoPass
+      : undefined;
+
   return {
     order,
     activeIndex,
@@ -50,6 +65,7 @@ export function normalizeCombatTrack(
     notices: Array.isArray(combat.notices) ? combat.notices : [],
     naturalOrder: combat.naturalOrder,
     orderOverridden: combat.orderOverridden,
+    pendingAutoPass,
   };
 }
 

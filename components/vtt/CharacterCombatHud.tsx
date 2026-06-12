@@ -121,7 +121,7 @@ export function CharacterCombatHud({
     setBusy(true);
     setErr(null);
     try {
-      const snap = await nextCombatTurn(roomId);
+      const snap = await nextCombatTurn(roomId, { force: true });
       onSnapshot?.(snap);
       onUpdate();
     } catch (e) {
