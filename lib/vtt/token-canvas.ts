@@ -5,6 +5,10 @@ import type { TokenRingStyle } from "@/lib/vtt/token-colors";
 
 export { TOKEN_RADIUS_RATIO };
 
+function finitePositive(n: number, fallback: number): number {
+  return Number.isFinite(n) && n > 0 ? n : fallback;
+}
+
 export function tokenRadius(hexSize: number, size: CreatureSize = "medium"): number {
   return tokenDrawRadius(hexSize, size);
 }
@@ -18,13 +22,18 @@ export function drawTokenPlaceholder(
   color: string,
   name: string
 ): void {
+  const x = Number(cx);
+  const y = Number(cy);
+  const r = finitePositive(radius, 8);
+  if (!Number.isFinite(x) || !Number.isFinite(y)) return;
+
   ctx.save();
   ctx.beginPath();
-  ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+  ctx.arc(x, y, r, 0, Math.PI * 2);
   ctx.fillStyle = color;
   ctx.fill();
 
-  const shade = ctx.createRadialGradient(cx, cy - radius * 0.2, radius * 0.05, cx, cy, radius);
+  const shade = ctx.createRadialGradient(x, y - r * 0.2, r * 0.05, x, y, r);
   shade.addColorStop(0, "rgba(255,255,255,0.14)");
   shade.addColorStop(0.45, "rgba(255,255,255,0)");
   shade.addColorStop(1, "rgba(0,0,0,0.28)");
@@ -35,10 +44,10 @@ export function drawTokenPlaceholder(
   const initial = (name.trim()[0] ?? "?").toUpperCase();
   ctx.save();
   ctx.fillStyle = "rgba(255,255,255,0.92)";
-  ctx.font = `700 ${Math.round(radius * 1.05)}px Lora, Georgia, serif`;
+  ctx.font = `700 ${Math.round(r * 1.05)}px Lora, Georgia, serif`;
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
-  ctx.fillText(initial, cx, cy + 1);
+  ctx.fillText(initial, x, y + 1);
   ctx.restore();
 }
 

@@ -175,12 +175,13 @@ export function hexInscribedRadius(hexSize: number): number {
 
 /** Raio de desenho do token — inscrito no hex (pequeno/médio) ou preenchendo o footprint. */
 export function tokenDrawRadius(hexSize: number, size: CreatureSize): number {
-  const edgePad = Math.max(0.5, hexSize * 0.004);
+  const hs = Number.isFinite(hexSize) && hexSize > 0 ? hexSize : 36;
+  const edgePad = Math.max(0.5, hs * 0.004);
   if (size === "small" || size === "medium") {
-    return hexInscribedRadius(hexSize) - edgePad;
+    return hexInscribedRadius(hs) - edgePad;
   }
   const hexes = occupiedHexes({ q: 0, r: 0 }, size);
-  return Math.max(4, footprintFillRadius(hexSize, hexes)) - edgePad;
+  return Math.max(4, footprintFillRadius(hs, hexes)) - edgePad;
 }
 
 export function isMultiHexCreatureSize(size: CreatureSize): boolean {

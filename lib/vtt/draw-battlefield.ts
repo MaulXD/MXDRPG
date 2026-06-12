@@ -355,10 +355,15 @@ function drawSingleToken(
   hoverScale: number
 ): void {
   const { layout } = p;
-    const pos = p.tokenPositionOverride?.get(token.id) ?? token.axial;
-    const creatureSize = creatureSizeOf(token);
+  const rawPos = p.tokenPositionOverride?.get(token.id) ?? token.axial;
+  const q = Number(rawPos.q);
+  const rCoord = Number(rawPos.r);
+  if (!Number.isFinite(q) || !Number.isFinite(rCoord)) return;
+  const pos = { q, r: rCoord };
+  const creatureSize = creatureSizeOf(token);
   const { x, y } = tokenPixelCenter(pos, creatureSize, size, layout.ox, layout.oy);
   const r = tokenDrawRadius(size, creatureSize);
+  if (!Number.isFinite(x) || !Number.isFinite(y) || !Number.isFinite(r) || r <= 0) return;
 
   ctx.save();
   if (hoverScale !== 1) {
@@ -512,7 +517,8 @@ function drawSingleToken(
 export function drawTokensLayer(ctx: CanvasRenderingContext2D, p: TokenDrawParams): void {
   const { scene, layout } = p;
   const playerActorIds = collectPlayerActorIds(scene.tokens);
-  const size = scene.hexSize;
+  const size =
+    Number.isFinite(scene.hexSize) && scene.hexSize > 0 ? scene.hexSize : 36;
   const hoverId = p.hoverTokenId;
   const hoverScale = p.tokenHoverScale ?? 1;
 
