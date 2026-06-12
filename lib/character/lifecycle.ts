@@ -1,6 +1,8 @@
 import "server-only";
 
 import { getAdventure } from "@/lib/adventure/store";
+import { resolveCharacterAccount } from "@/lib/auth/account-user";
+import { characterOwnedBySessionUser } from "@/lib/auth/account-ownership";
 import type { SessionUser } from "@/lib/auth/types";
 import { fetchClerkIdForUser, fetchUserByNickname } from "@/lib/db/users";
 import {
@@ -14,7 +16,10 @@ import { removeCharacterFromRegistry } from "@/lib/character/character-registry"
 import { characterBelongsToAdventure } from "@/lib/character/adventure-bind";
 import type { CharacterSheet } from "@/lib/character/types";
 import { getRoom, persistRoom } from "@/lib/room/internal/registry";
-import { syncAdventureActorsForRoom } from "@/lib/room/adventure-actors";
+import {
+  attachCharacterToRoomState,
+  syncAdventureActorsForRoom,
+} from "@/lib/room/adventure-actors";
 import type { RoomState } from "@/lib/room/types";
 
 export type CharacterLifecycleResult =
@@ -58,13 +63,23 @@ async function persistCharacterDelete(characterId: string): Promise<void> {
 async function resolveTargetUserId(
   targetUserId?: string | null,
   targetNickname?: string | null
-): Promise<{ userId: string } | { error: string }> {
-  if (targetUserId?.trim()) return { userId: targetUserId.trim() };
+): Promise<{ userId: string; canonicalId: string } | { error: string }> {
+  if (targetUserId?.trim()) {
+    const account = await resolveCharacterAccount(targetUserId.trim());
+    return { userId: targetUserId.trim(), canonicalId: account.canonicalId };
+  }
   const nick = targetNickname?.trim();
   if (!nick) return { error: "Informe o jogador de destino" };
   const user = await fetchUserByNickname(nick);
   if (!user) return { error: "Jogador não encontrado por apelido" };
-  return { userId: user.id };
+  const account = await resolveCharacterAccount(user.id, user.clerkId);
+  return { userId: user.id, canonicalId: account.canonicalId };
+}
+
+async function accountsReferToSameUser(a: string, b: string): Promise<boolean> {
+  const left = await resolveCharacterAccount(a);
+  const right = await resolveCharacterAccount(b);
+  return left.canonicalId === right.canonicalId;
 }
 
 export async function deleteCharacterSheet(
@@ -134,13 +149,17 @@ export async function transferCharacterSheet(
     return { ok: false, error: "Sem permissão para transferir esta ficha", status: 403 };
   }
 
-  const isOwner = sheet.ownerId === actor.id;
+  const isOwner = characterOwnedBySessionUser(sheet, actor);
   if (!asGm && isOwner) {
     const confirmName = opts.confirmName?.trim();
     if (!confirmName) {
       return { ok: false, error: "Digite o nome do personagem para confirmar", status: 400 };
     }
-    if (!characterNameMatchesConfirm(sheet.name, confirmName)) {
+    const roomActorName = room?.actors[characterId]?.name;
+    const nameOk =
+      characterNameMatchesConfirm(sheet.name, confirmName) ||
+      Boolean(roomActorName && characterNameMatchesConfirm(roomActorName, confirmName));
+    if (!nameOk) {
       return { ok: false, error: "O nome digitado não confere com o personagem", status: 400 };
     }
   }
@@ -150,12 +169,27 @@ export async function transferCharacterSheet(
     return { ok: false, error: targetResolved.error, status: 400 };
   }
 
-  const targetClerkId = await fetchClerkIdForUser(targetResolved.userId);
-  if (!canAssignCharacterToMember(adventure, targetResolved.userId, targetClerkId)) {
-    return { ok: false, error: "O destino não participa desta aventura", status: 400 };
+  const targetClerkId = await fetchClerkIdForUser(targetResolved.canonicalId);
+  if (
+    !canAssignCharacterToMember(adventure, targetResolved.canonicalId, targetClerkId) &&
+    !canAssignCharacterToMember(adventure, targetResolved.userId, targetClerkId)
+  ) {
+    if (room) {
+      const { isRoomMemberResolved } = await import("@/lib/auth/room-access-server");
+      const inRoom = await isRoomMemberResolved(
+        room,
+        targetResolved.canonicalId,
+        targetClerkId
+      );
+      if (!inRoom) {
+        return { ok: false, error: "O destino não participa desta aventura", status: 400 };
+      }
+    } else {
+      return { ok: false, error: "O destino não participa desta aventura", status: 400 };
+    }
   }
 
-  if (targetResolved.userId === sheet.ownerId) {
+  if (await accountsReferToSameUser(targetResolved.canonicalId, sheet.ownerId)) {
     return { ok: false, error: "Esta ficha já pertence a esse jogador", status: 400 };
   }
 
@@ -163,7 +197,14 @@ export async function transferCharacterSheet(
     return { ok: false, error: "Ficha não pertence a esta aventura", status: 400 };
   }
 
-  const updated = await saveCharacter({ ...sheet, ownerId: targetResolved.userId });
+  const updated = await saveCharacter({
+    ...sheet,
+    ownerId: targetResolved.canonicalId,
+  });
+  if (room) {
+    attachCharacterToRoomState(room, updated);
+    await persistRoom(roomId, room);
+  }
   await syncAdventureActorsForRoom(roomId);
 
   return { ok: true, character: updated, roomId };

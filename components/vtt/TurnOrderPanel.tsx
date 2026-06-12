@@ -6,7 +6,8 @@ import { useState, type DragEvent } from "react";
 
 import type { BattleToken } from "@/lib/vtt/types";
 
-import { normalizeCombatTrack, type CombatTrack } from "@/lib/room/combat";
+import { activeTokenId, normalizeCombatTrack, type CombatTrack } from "@/lib/room/combat";
+import { resolveLivingActiveTokenId } from "@/lib/room/combat-order";
 import type { CombatUndoEntry, RoomSnapshot } from "@/lib/room/types";
 
 import { nextCombatTurn, postGmCombatAction, rollInitiative } from "@/hooks/useRoomSync";
@@ -135,7 +136,8 @@ export function TurnOrderPanel({
   const tokenMap = new Map(tokens.map((t) => [t.id, t]));
   const displayOrder = livingOrderIds(track.order, tokenMap);
 
-  const activeId = track.order[track.activeIndex] ?? null;
+  const activeId =
+    resolveLivingActiveTokenId(track, tokens) ?? activeTokenId(track);
 
   const activeToken = activeId ? tokenMap.get(activeId) : null;
 

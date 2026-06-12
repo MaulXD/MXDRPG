@@ -41,19 +41,26 @@ export function CharacterManageDialog({
   const [error, setError] = useState<string | null>(null);
 
   const loadMembers = useCallback(async () => {
-    const res = await fetch(`/api/adventures/${adventureId}/members`);
-    if (!res.ok) return;
-    const data = (await res.json()) as { members?: MemberOption[] };
-    const list = (data.members ?? []).filter((m) => m.userId !== excludeUserId);
-    setMembers(list);
-    if (list.length > 0 && !targetUserId) {
-      setTargetUserId(list[0].userId);
+    const exclude = excludeUserId ? `?exclude=${encodeURIComponent(excludeUserId)}` : "";
+    const res = await fetch(`/api/adventures/${adventureId}/members${exclude}`);
+    if (!res.ok) {
+      setMembers([]);
+      setTargetUserId("");
+      return;
     }
-  }, [adventureId, excludeUserId, targetUserId]);
+    const data = (await res.json()) as { members?: MemberOption[] };
+    const list = data.members ?? [];
+    setMembers(list);
+    setTargetUserId((prev) => {
+      if (list.some((m) => m.userId === prev)) return prev;
+      return list[0]?.userId ?? "";
+    });
+  }, [adventureId, excludeUserId]);
 
   useEffect(() => {
     if (!open) return;
     setConfirmName("");
+    setTargetUserId("");
     setError(null);
     if (mode === "transfer") void loadMembers();
   }, [open, mode, loadMembers]);
@@ -163,7 +170,11 @@ export function CharacterManageDialog({
             <button
               type="submit"
               className={`btn ${mode === "delete" ? "btn-primary" : "btn-secondary"}`}
-              disabled={loading || (needsConfirm && !confirmName.trim())}
+              disabled={
+                loading ||
+                (needsConfirm && !confirmName.trim()) ||
+                (mode === "transfer" && (!targetUserId || members.length === 0))
+              }
             >
               {loading ? "Aguarde…" : actionLabel}
             </button>

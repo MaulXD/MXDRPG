@@ -3,6 +3,7 @@
 import { useState } from "react";
 import type { CombatTrack } from "@/lib/room/combat";
 import { activeTokenId } from "@/lib/room/combat";
+import { resolveLivingActiveTokenId } from "@/lib/room/combat-order";
 import type { RoomSnapshot } from "@/lib/room/types";
 import type { BattleToken } from "@/lib/vtt/types";
 import { hpRatio, isTokenDefeated } from "@/lib/vtt/token-hp-display";
@@ -27,6 +28,7 @@ import {
 
 type Props = {
   token: BattleToken;
+  sceneTokens?: BattleToken[];
   combat: CombatTrack | null | undefined;
   isGmView: boolean;
   isControlled: boolean;
@@ -64,6 +66,7 @@ function HudCaShield({ value }: { value: number }) {
 
 export function CharacterCombatHud({
   token,
+  sceneTokens,
   combat,
   isGmView,
   isControlled,
@@ -82,7 +85,9 @@ export function CharacterCombatHud({
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
 
-  const activeId = combat ? activeTokenId(combat) : null;
+  const activeId = combat
+    ? resolveLivingActiveTokenId(combat, sceneTokens ?? [token]) ?? activeTokenId(combat)
+    : null;
   const isYourTurn = Boolean(activeId && token.id === activeId && isControlled);
   const ratio = hpRatio(token);
   const hpPct = Math.round(ratio * 100);

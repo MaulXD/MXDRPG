@@ -155,7 +155,7 @@ export function TokenActionPanel({
 
   const [friendlyFireTargetId, setFriendlyFireTargetId] = useState<string | null>(null);
 
-  const turn = useCombatTurn({ combat, canBypassTurn });
+  const turn = useCombatTurn({ combat, canBypassTurn, tokens });
   const tokenBypass = effectiveBypassTurn(token, canBypassTurn);
   const tokenTurn = {
     activeTokenId: turn.activeTokenId,

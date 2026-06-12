@@ -78,7 +78,7 @@ export function PlayableCharactersPanel({
       ) : (
         <ul className="vtt-playable-list" role="list">
           {roster.map((actor) => {
-            const mine = isActorOwnedByUser(actor, session?.id);
+            const mine = isActorOwnedByUser(actor, session);
             const canEdit = canEditRoomActor(roomAuth, actor, session);
             const ringColor = playerColorForActor(actor.id, colorIds);
             const active = selectedActorId === actor.id;
@@ -127,7 +127,7 @@ export function PlayableCharactersPanel({
                               actorName: actor.name,
                               mode: "transfer",
                               asGm: false,
-                              excludeUserId: session?.id,
+                              excludeUserId: actor.ownerId,
                             })
                           }
                         >

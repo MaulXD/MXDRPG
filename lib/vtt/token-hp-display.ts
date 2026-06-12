@@ -40,6 +40,7 @@ export function hpRatio(token: BattleToken): number {
 
 export function isTokenDefeated(token: BattleToken): boolean {
   if (token.defeated) return true;
+  if (token.vida != null && token.vida <= 0) return true;
   if (token.vidaMax == null) return false;
   return (token.vida ?? 0) <= 0;
 }

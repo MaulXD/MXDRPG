@@ -69,6 +69,7 @@ import type { CombatFxState } from "@/lib/vtt/combat-fx-types";
 import { ingestNewCombatFx, isPlayableCombatFxMessage } from "@/lib/vtt/combat-fx-sequence";
 import type { ChatMessage } from "@/lib/room/chat";
 import { activeTokenId, normalizeCombatTrack } from "@/lib/room/combat";
+import { resolveLivingActiveTokenId } from "@/lib/room/combat-order";
 import { TurnHandoffOverlay } from "@/components/vtt/TurnHandoffOverlay";
 import {
   firstPortraitDataUrl,
@@ -427,8 +428,14 @@ export function HexBattlefield({
 
   const { imagesRef, imgTick } = useTokenImages(displayScene.tokens);
   const refresh = onRefresh ?? (() => {});
-  const turnActiveId = combat ? activeTokenId(combat) : null;
-  const turn = useCombatTurn({ combat, canBypassTurn: canBypassTurnProp });
+  const turnActiveId = combat
+    ? resolveLivingActiveTokenId(combat, displayScene.tokens) ?? activeTokenId(combat)
+    : null;
+  const turn = useCombatTurn({
+    combat,
+    canBypassTurn: canBypassTurnProp,
+    tokens: displayScene.tokens,
+  });
   const tokenBypass = useCallback(
     (t: BattleToken) => effectiveBypassTurn(t, canBypassTurnProp),
     [canBypassTurnProp]
@@ -1141,12 +1148,17 @@ export function HexBattlefield({
       if (shouldIgnoreBattlefieldShortcut(e.target)) return;
 
       if (e.key === "Delete") {
-        if (canControlCombat && selectedId && actionMode === "idle" && !actionRingAt) {
-          e.preventDefault();
-          void removeSelectedToken();
-        } else {
-          e.preventDefault();
+        e.preventDefault();
+        e.stopPropagation();
+        if (!canControlCombat || !selectedId || actionMode !== "idle" || actionRingAt) {
+          return;
         }
+        const rawActive = combat ? activeTokenId(combat) : null;
+        if (rawActive && selectedId === rawActive) {
+          toast.push("Passe o turno antes de remover o token na vez", "warn");
+          return;
+        }
+        void removeSelectedToken();
         return;
       }
 
@@ -1170,8 +1182,10 @@ export function HexBattlefield({
     actionRingAt,
     actionMode,
     canControlCombat,
+    combat,
     selectedId,
     removeSelectedToken,
+    toast,
   ]);
 
   const onCombatApplyState = useCallback(() => {
@@ -2803,6 +2817,7 @@ export function HexBattlefield({
             hudVisible ? (
               <CharacterCombatHud
                 token={hudToken}
+                sceneTokens={displayScene.tokens}
                 combat={combat}
                 isGmView={isRoomGm && !hudIsControlled}
                 isControlled={hudIsControlled}
