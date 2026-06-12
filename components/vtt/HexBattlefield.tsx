@@ -88,6 +88,7 @@ import {
   resolveCombatAction,
 } from "@/lib/combat/attack";
 import { FriendlyFireConfirmDialog } from "@/components/vtt/FriendlyFireConfirmDialog";
+import { DeleteTokenConfirmDialog } from "@/components/vtt/DeleteTokenConfirmDialog";
 import { TokenGmHpDialog } from "@/components/vtt/TokenGmHpDialog";
 import { SpellTargetConfirmBar } from "@/components/vtt/SpellTargetConfirmBar";
 import { isMultiTargetSpell, spellTargetCount } from "@/lib/combat/spell-target-count";
@@ -322,6 +323,8 @@ export function HexBattlefield({
   const [gmHpEditTokenId, setGmHpEditTokenId] = useState<string | null>(null);
   const [friendlyFireTargetId, setFriendlyFireTargetId] = useState<string | null>(null);
   const [friendlyFireBusy, setFriendlyFireBusy] = useState(false);
+  const [deleteTokenConfirmOpen, setDeleteTokenConfirmOpen] = useState(false);
+  const [deleteTokenBusy, setDeleteTokenBusy] = useState(false);
   const [spellTargetIds, setSpellTargetIds] = useState<string[]>([]);
   const [spellTargetBusy, setSpellTargetBusy] = useState(false);
   const attackBusyRef = useRef(false);
@@ -1121,10 +1124,17 @@ export function HexBattlefield({
     }
   }, [actionRingAt, selected, canOpenActionRing]);
 
+  useEffect(() => {
+    if (!deleteTokenConfirmOpen) return;
+    if (!selectedId || !selected) setDeleteTokenConfirmOpen(false);
+  }, [deleteTokenConfirmOpen, selectedId, selected]);
+
   const removeSelectedToken = useCallback(async () => {
     if (!canControlCombat || !selectedId || !selected) return;
     setActionErr(null);
+    setDeleteTokenBusy(true);
     const removedId = selectedId;
+    const removedName = selected.name;
     try {
       if (moveAnimRef.current?.tokenId === removedId) moveAnimRef.current = null;
       if (gmDragTokenId === removedId) setGmDragTokenId(null);
@@ -1134,12 +1144,15 @@ export function HexBattlefield({
       const nextId = snap.scene.tokens[0]?.id ?? null;
       setSelectedId(nextId);
       setActionRingAt(null);
+      setDeleteTokenConfirmOpen(false);
       redraw();
-      toast.push(`${selected.name} removido do mapa`, "success");
+      toast.push(`${removedName} removido do mapa`, "success");
     } catch (e) {
       const msg = e instanceof Error ? e.message : "Falha ao remover token";
       setActionErr(msg);
       toast.push(msg, "warn");
+    } finally {
+      setDeleteTokenBusy(false);
     }
   }, [canControlCombat, selectedId, selected, roomId, syncRoom, toast, gmDragTokenId, redraw]);
 
@@ -1150,7 +1163,8 @@ export function HexBattlefield({
       if (e.key === "Delete") {
         e.preventDefault();
         e.stopPropagation();
-        if (!canControlCombat || !selectedId || actionMode !== "idle" || actionRingAt) {
+        if (deleteTokenConfirmOpen || deleteTokenBusy) return;
+        if (!canControlCombat || !selectedId || !selected || actionMode !== "idle" || actionRingAt) {
           return;
         }
         const rawActive = combat ? activeTokenId(combat) : null;
@@ -1158,7 +1172,7 @@ export function HexBattlefield({
           toast.push("Passe o turno antes de remover o token na vez", "warn");
           return;
         }
-        void removeSelectedToken();
+        setDeleteTokenConfirmOpen(true);
         return;
       }
 
@@ -1183,8 +1197,10 @@ export function HexBattlefield({
     actionMode,
     canControlCombat,
     combat,
+    selected,
     selectedId,
-    removeSelectedToken,
+    deleteTokenConfirmOpen,
+    deleteTokenBusy,
     toast,
   ]);
 
@@ -2923,6 +2939,15 @@ export function HexBattlefield({
           onConfirm={() => void confirmFriendlyFire()}
           onCancel={() => {
             if (!friendlyFireBusy) setFriendlyFireTargetId(null);
+          }}
+        />
+        <DeleteTokenConfirmDialog
+          open={deleteTokenConfirmOpen}
+          token={selected}
+          busy={deleteTokenBusy}
+          onConfirm={() => void removeSelectedToken()}
+          onCancel={() => {
+            if (!deleteTokenBusy) setDeleteTokenConfirmOpen(false);
           }}
         />
         {isMultiTargetSpell(activeCombatAction) && isTargetMode(actionMode) ? (

@@ -263,7 +263,7 @@ export function VttHelpButton() {
                   <kbd>Esc</kbd> — cancela ataque/movimento/magia, régua ou volta ao modo Interagir.
                 </li>
                 <li>
-                  <kbd>Delete</kbd> — mestre remove o token selecionado do mapa.
+                  <kbd>Delete</kbd> — mestre: com token selecionado, pede confirmação antes de remover do mapa.
                 </li>
                 <li>
                   <kbd>Alt</kbd> + arrastar — mover câmera · <kbd>Alt</kbd> + clique — ping.
