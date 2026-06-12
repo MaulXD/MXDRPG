@@ -59,6 +59,21 @@ function sanitizeInventory(raw: unknown): InventoryItem[] | undefined {
   return out;
 }
 
+function sanitizePreparedSpellIds(raw: unknown): string[] | undefined {
+  if (!Array.isArray(raw)) return undefined;
+  const out: string[] = [];
+  const seen = new Set<string>();
+  for (const id of raw) {
+    if (typeof id !== "string") continue;
+    const trimmed = id.trim().slice(0, 120);
+    if (!trimmed || seen.has(trimmed)) continue;
+    seen.add(trimmed);
+    out.push(trimmed);
+    if (out.length >= 50) break;
+  }
+  return out;
+}
+
 export async function sanitizeActorPatch(
   patch: Partial<CharacterSheet> & { identityPatch?: IdentityPatch }
 ): Promise<Partial<CharacterSheet>> {
@@ -117,6 +132,10 @@ export async function sanitizeActorPatch(
   if ("lootEconomy" in patch) {
     const loot = sanitizeLootEconomy(patch.lootEconomy);
     if (loot) out.lootEconomy = loot;
+  }
+  if ("preparedSpellIds" in patch) {
+    const ids = sanitizePreparedSpellIds(patch.preparedSpellIds);
+    if (ids) out.preparedSpellIds = ids;
   }
   return out;
 }

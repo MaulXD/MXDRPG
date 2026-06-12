@@ -3685,6 +3685,36 @@
   gap: 0.4rem;
 }
 
+.mesa-room-cover-editor__actions {
+  margin-top: 0.35rem;
+}
+
+.mesa-room-cover-preview {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 21 / 9;
+  max-height: clamp(6rem, 28cqw, 10rem);
+  border-radius: 8px;
+  border: 1px solid var(--glass-border);
+  background: rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mesa-room-cover-preview__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.mesa-room-cover-preview__placeholder {
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  opacity: 0.85;
+}
+
 .vtt-dungeon-panel {
   display: flex;
   flex-direction: column;

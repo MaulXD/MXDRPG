@@ -38,6 +38,7 @@ import { MonsterSpawnPanel } from "@/components/vtt/MonsterSpawnPanel";
 import { RoomInvitePanel } from "@/components/vtt/RoomInvitePanel";
 import { MesaPersistenceNotice } from "@/components/vtt/MesaPersistenceNotice";
 import { DemoGuidedTour } from "@/components/vtt/DemoGuidedTour";
+import { RoomCoverBackdrop } from "@/components/vtt/RoomCoverBackdrop";
 import { useSheetPdfDeepLink } from "@/hooks/useSheetPdfDeepLink";
 import "@/components/vtt/foundry/foundry.css";
 
@@ -263,15 +264,20 @@ export function MesaWorkspace({
     [roomId, roomOwnerId, memberIds, session]
   );
 
+  const roomSettings = useMemo(
+    () => normalizeRoomSettings(snapshot?.settings),
+    [snapshot?.settings]
+  );
+
   const canBypassTurn = useMemo(() => {
     return canBypassCombatTurn(
       {
         ownerId: roomOwnerId,
-        settings: normalizeRoomSettings(snapshot?.settings),
+        settings: roomSettings,
       },
       session
     );
-  }, [roomOwnerId, snapshot?.settings, session]);
+  }, [roomOwnerId, roomSettings, session]);
 
   useSheetPdfDeepLink({
     roomId,
@@ -467,6 +473,10 @@ export function MesaWorkspace({
             className="foundry-mesa__stage"
             onContextMenuCapture={(e) => e.preventDefault()}
           >
+            <RoomCoverBackdrop
+              coverUrl={roomSettings.coverUrl}
+              coverFocus={roomSettings.coverFocus}
+            />
             <div className="foundry-mesa__stage-header">
               {isActualGm ? (
                 <GmPlayerViewToggle

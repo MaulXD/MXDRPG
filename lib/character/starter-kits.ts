@@ -1,4 +1,5 @@
 import { computeDefesaFromArmor } from "@/lib/character/armor-defense";
+import { isCasterClass } from "@/lib/character/spell-prep";
 import { newInstanceId } from "@/lib/character/inventory-storage";
 import { attributeMod, type ClassId } from "@/lib/character/rules";
 import type {
@@ -869,11 +870,21 @@ export function applyStarterKitToSheet(
   }
 ): CharacterSheet {
   const built = buildStarterInventory(opts);
+  const kit = resolveStarterKitOption(opts.classe, opts.starterKitId);
+  const equipment =
+    opts.equipment ??
+    (kit
+      ? loadoutDraftFromKit(kit)
+      : sanitizeStarterEquipmentForClass(opts.classe, emptyStarterEquipment()));
+  const preparedSpellIds = isCasterClass(opts.classe)
+    ? sortedUnique(equipment.spellEntryIds)
+    : undefined;
   return {
     ...sheet,
     inventory: built.inventory,
     combatLoadout: built.combatLoadout,
     armorLoadout: built.armorLoadout,
     lootEconomy: built.lootEconomy,
+    ...(preparedSpellIds !== undefined ? { preparedSpellIds } : {}),
   };
 }

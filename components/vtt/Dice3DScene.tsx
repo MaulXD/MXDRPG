@@ -3,6 +3,10 @@
 import { useEffect, useRef } from "react";
 import { eulerForDieValue } from "@/lib/vtt/dice-orientations";
 import { faceMaterialsForDie } from "@/lib/vtt/dice-face-texture";
+import {
+  canCreateWebGLDiceContext,
+  registerWebGLDiceContext,
+} from "@/lib/vtt/webgl-dice-pool";
 
 type Props = {
   sides: number;
@@ -29,11 +33,12 @@ export function Dice3DScene({ sides, value, rolling, sizePx }: Props) {
 
   useEffect(() => {
     const wrap = wrapRef.current;
-    if (!wrap) return;
+    if (!wrap || !canCreateWebGLDiceContext()) return;
 
+    const releaseContext = registerWebGLDiceContext();
     let disposed = false;
     let raf = 0;
-    let cleanup: (() => void) | undefined;
+    let teardown: (() => void) | undefined;
 
     void import("three").then((THREE) => {
       if (disposed || !wrapRef.current) return;
@@ -48,6 +53,13 @@ export function Dice3DScene({ sides, value, rolling, sizePx }: Props) {
       renderer.setSize(sizePx, sizePx);
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
       wrap.appendChild(renderer.domElement);
+
+      const onContextLost = (e: Event) => {
+        e.preventDefault();
+        disposed = true;
+        cancelAnimationFrame(raf);
+      };
+      renderer.domElement.addEventListener("webglcontextlost", onContextLost);
 
       const geo = geometryForSides(THREE, sides);
       const materials = faceMaterialsForDie(THREE, sides);
@@ -128,9 +140,11 @@ export function Dice3DScene({ sides, value, rolling, sizePx }: Props) {
 
       raf = requestAnimationFrame(tick);
 
-      cleanup = () => {
+      teardown = () => {
         cancelAnimationFrame(raf);
+        renderer.domElement.removeEventListener("webglcontextlost", onContextLost);
         renderer.dispose();
+        renderer.forceContextLoss();
         geo.dispose();
         materials.forEach((m) => {
           m.map?.dispose();
@@ -146,7 +160,8 @@ export function Dice3DScene({ sides, value, rolling, sizePx }: Props) {
 
     return () => {
       disposed = true;
-      cleanup?.();
+      teardown?.();
+      releaseContext();
     };
   }, [sides, sizePx]);
 

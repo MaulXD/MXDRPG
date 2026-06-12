@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import type { RoomSettings } from "@/lib/room/settings";
 import type { RoomSnapshot } from "@/lib/room/types";
 import { patchRoomSettings } from "@/hooks/useRoomSync";
+import { RoomCoverEditor } from "@/components/vtt/RoomCoverEditor";
 
 type Props = {
   roomId: string;
@@ -72,6 +73,13 @@ export function RoomSettingsPanel({
           onChange={(e) => setName(e.target.value)}
         />
       </label>
+
+      <RoomCoverEditor
+        roomId={roomId}
+        coverUrl={settings.coverUrl}
+        coverFocus={settings.coverFocus}
+        onUpdated={onUpdated}
+      />
 
       <fieldset className="vtt-settings-fieldset">
         <legend className="vtt-eyebrow">Visibilidade para jogadores</legend>

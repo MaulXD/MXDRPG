@@ -104,6 +104,8 @@ type Props = {
   /** Mestre: ajustar vida do token (personagem ou monstro). */
   showGmHpEdit?: boolean;
   onOpenGmHpEdit?: () => void;
+  /** Abre seletor de magias estilo D&D (em vez do submenu radial). */
+  onOpenSpellPicker?: () => void;
 };
 
 const RING_RADIUS_BASE = 152;
@@ -186,6 +188,7 @@ export function TokenActionRing({
   onOpenPlayerBestiary,
   showGmHpEdit = false,
   onOpenGmHpEdit,
+  onOpenSpellPicker,
 }: Props) {
   const [ringView, setRingView] = useState<RingView>("main");
   const [exiting, setExiting] = useState(false);
@@ -278,13 +281,29 @@ export function TokenActionRing({
     [turnBlocked, token, combat?.round, actor, saveLoadout, onPickMode, beginClose]
   );
 
+  const resolveRingAttackAction = useCallback((): CombatActionOption | null => {
+    if (!actor) return weapons[0] ?? null;
+    try {
+      const resolved = resolveCombatAction(actor);
+      if (resolved.kind === "weapon" || resolved.kind === "unarmed") return resolved;
+    } catch {
+      /* loadout inválido ou apontando para magia/habilidade */
+    }
+    return weapons[0] ?? null;
+  }, [actor, weapons]);
+
   const pickMain = useCallback(
     (mode: TokenActionMode) => {
       if (turnBlocked && mode !== "idle") return;
 
       if (mode === "spell") {
         if (spells.length === 0) return;
-        setRingView("spell");
+        if (spells.length === 1) {
+          pickCombatAction("spell", spells[0]!);
+          return;
+        }
+        onOpenSpellPicker?.();
+        beginClose();
         return;
       }
       if (mode === "ability") {
@@ -295,17 +314,35 @@ export function TokenActionRing({
 
       let action: CombatActionOption | null = null;
       if (mode === "attack") {
-        action = actor ? resolveCombatAction(actor) : (weapons[0] ?? null);
+        action = resolveRingAttackAction();
+        if (actor && action && action.packId !== "unarmed") {
+          void saveLoadout(action.packId as "armas", action.entryId);
+        }
       } else if (mode === "idle") {
         action = null;
       } else if (actor) {
-        action = resolveCombatAction(actor);
+        try {
+          action = resolveCombatAction(actor);
+        } catch {
+          action = null;
+        }
       }
 
       onPickMode(mode, action);
       beginClose();
     },
-    [turnBlocked, weapons, spells, abilities, actor, onPickMode, beginClose]
+    [
+      turnBlocked,
+      spells,
+      abilities,
+      actor,
+      onPickMode,
+      beginClose,
+      onOpenSpellPicker,
+      pickCombatAction,
+      resolveRingAttackAction,
+      saveLoadout,
+    ]
   );
 
   const openConsumableSubmenu = useCallback(() => {
@@ -758,28 +795,52 @@ export function TokenActionRing({
         {displaySlots.map((slot, i) => {
           const angle = slice * i - Math.PI / 2;
           const pos = slotRadialPosition(angle, layout.radius);
+          const slotStyle = {
+            "--tar-i": i,
+            "--tar-x": `${pos.x}px`,
+            "--tar-y": `${pos.y}px`,
+            "--tar-slot-scale": layout.slotScale,
+            "--tar-slot-count": displaySlots.length,
+          } as CSSProperties;
+          const showInfo =
+            (slot.action || slot.detailHint || slot.consumable) && !slot.disabled;
           return (
-            <button
+            <div
               key={`${slotsKey}-${slot.id}`}
-              type="button"
-              role="menuitem"
-              className={`token-action-ring__slot token-action-ring__slot--${slot.tone}${
-                slot.rechargeHint ? " token-action-ring__slot--cooldown" : ""
-              }`}
-              style={
-                {
-                  "--tar-i": i,
-                  "--tar-x": `${pos.x}px`,
-                  "--tar-y": `${pos.y}px`,
-                  "--tar-slot-scale": layout.slotScale,
-                  "--tar-slot-count": displaySlots.length,
-                } as CSSProperties
-              }
-              disabled={slot.disabled}
-              title={`${slot.label} · ${slot.paLabel}`}
-              onClick={slot.onClick}
+              className="token-action-ring__slot-wrap"
+              style={slotStyle}
             >
-              {(slot.action || slot.detailHint || slot.consumable) && !slot.disabled ? (
+              <button
+                type="button"
+                role="menuitem"
+                className={`token-action-ring__slot token-action-ring__slot--${slot.tone}${
+                  slot.rechargeHint ? " token-action-ring__slot--cooldown" : ""
+                }`}
+                disabled={slot.disabled}
+                title={`${slot.label} · ${slot.paLabel}`}
+                onClick={slot.onClick}
+              >
+                <span className="token-action-ring__glyph" aria-hidden>
+                  {slot.glyph}
+                </span>
+                <span
+                  className={`token-action-ring__label${
+                    slot.longLabel ? " token-action-ring__label--long" : ""
+                  }`}
+                >
+                  {slot.label}
+                </span>
+                <span className="token-action-ring__pa">{slot.paLabel}</span>
+                {slot.rechargeHint ? (
+                  <span className="token-action-ring__cd" title={`Recarga · ${slot.rechargeHint}`}>
+                    <span className="token-action-ring__cd-icon" aria-hidden>
+                      <IconHourglass size={10} />
+                    </span>
+                    {slot.rechargeHint}
+                  </span>
+                ) : null}
+              </button>
+              {showInfo ? (
                 <button
                   type="button"
                   className={`token-action-ring__info${
@@ -819,26 +880,7 @@ export function TokenActionRing({
                   i
                 </button>
               ) : null}
-              <span className="token-action-ring__glyph" aria-hidden>
-                {slot.glyph}
-              </span>
-              <span
-                className={`token-action-ring__label${
-                  slot.longLabel ? " token-action-ring__label--long" : ""
-                }`}
-              >
-                {slot.label}
-              </span>
-              <span className="token-action-ring__pa">{slot.paLabel}</span>
-              {slot.rechargeHint ? (
-                <span className="token-action-ring__cd" title={`Recarga · ${slot.rechargeHint}`}>
-                  <span className="token-action-ring__cd-icon" aria-hidden>
-                    <IconHourglass size={10} />
-                  </span>
-                  {slot.rechargeHint}
-                </span>
-              ) : null}
-            </button>
+            </div>
           );
         })}
 

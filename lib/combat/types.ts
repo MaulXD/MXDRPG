@@ -73,6 +73,10 @@ export type CombatActionOption = {
   recharge?: RechargeSpec;
   /** Efeito utilitário / cura / debuff de magia */
   spellEffect?: SpellEffectKind;
+  /** Nível do círculo (0 = truque) */
+  spellLevel?: number;
+  /** Escola arcana */
+  spellSchool?: string;
 };
 
 export type CombatTurnOptions = {

@@ -54,6 +54,7 @@ import { WhiteboardPanel } from "@/components/vtt/WhiteboardPanel";
 import { FoundryDockPanel } from "@/components/vtt/foundry/FoundryDockPanel";
 import type { RoomSnapshot } from "@/lib/room/types";
 import { TokenActionRing } from "@/components/vtt/TokenActionRing";
+import { SpellPickerPanel } from "@/components/vtt/SpellPickerPanel";
 import { SpellChannelControl } from "@/components/vtt/SpellChannelControl";
 import { MonsterSpawnPanel } from "@/components/vtt/MonsterSpawnPanel";
 import type { MapToolMode, MeasurePreview } from "@/lib/vtt/map-toolbar";
@@ -314,6 +315,7 @@ export function HexBattlefield({
   const [actionErr, setActionErr] = useState<string | null>(null);
   const [channelExtraPa, setChannelExtraPa] = useState(0);
   const [actionRingAt, setActionRingAt] = useState<{ x: number; y: number } | null>(null);
+  const [spellPickerOpen, setSpellPickerOpen] = useState(false);
   const [gmHpEditTokenId, setGmHpEditTokenId] = useState<string | null>(null);
   const [friendlyFireTargetId, setFriendlyFireTargetId] = useState<string | null>(null);
   const [friendlyFireBusy, setFriendlyFireBusy] = useState(false);
@@ -501,7 +503,14 @@ export function HexBattlefield({
 
   const activeCombatAction = useMemo(() => {
     if (selectedCombatAction) return selectedCombatAction;
-    if (selectedActor) return resolveCombatAction(selectedActor);
+    if (selectedActor) {
+      try {
+        return resolveCombatAction(selectedActor);
+      } catch {
+        const fallback = listTokenCombatActions(selected!, selectedActor)[0];
+        return fallback ?? null;
+      }
+    }
     if (selected) return listTokenCombatActions(selected, null)[0] ?? null;
     return null;
   }, [selectedCombatAction, selectedActor, selected]);
@@ -2686,8 +2695,23 @@ export function HexBattlefield({
               setSelectedCombatAction(action);
               if (mode !== "spell") setChannelExtraPa(0);
             }}
+            onOpenSpellPicker={() => setSpellPickerOpen(true)}
             onClose={() => setActionRingAt(null)}
             onRoomSync={(snap) => (snap ? syncRoom(snap) : refresh())}
+          />
+        ) : null}
+        {spellPickerOpen && selected ? (
+          <SpellPickerPanel
+            spells={listTokenCombatActions(selected, selectedActor, "spell")}
+            actor={selectedActor}
+            token={selected}
+            onPick={(spell) => {
+              setSelectedCombatAction(spell);
+              setActionMode("spell");
+              setSpellPickerOpen(false);
+              setActionRingAt(null);
+            }}
+            onClose={() => setSpellPickerOpen(false)}
           />
         ) : null}
         {actionMode === "spell" &&

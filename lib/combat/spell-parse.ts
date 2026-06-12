@@ -224,11 +224,16 @@ export function buildMagiaCombatAction(entry: CompendiumEntry): CombatActionOpti
   if (channel) tags.push("canalizável");
   if (targetCount > 1) tags.push(`${targetCount} alvos`);
 
+  const spellLevel = spell?.nivel ?? 1;
+  const spellSchool = (spell as { escola?: string } | undefined)?.escola?.trim() ?? "";
+
   return {
     packId: "magias",
     entryId: entry.id,
     name: entry.name,
     kind: "spell",
+    spellLevel,
+    spellSchool: spellSchool || undefined,
     resolution,
     damageFormula,
     damageType,
