@@ -83,7 +83,7 @@ export function GmToolsPanel({
         {tab === "sala" ? (
           <>
             <p className="vtt-hint vtt-gm-tools__short-hint">
-              <strong>Delete</strong> remove token selecionado. Ctrl+clique revela névoa. Alt+clique
+              <strong>Delete</strong> pede confirmação para remover o token selecionado. Ctrl+clique revela névoa. Alt+clique
               envia ping.
             </p>
             <RoomSettingsPanel
