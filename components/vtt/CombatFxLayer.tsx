@@ -129,7 +129,7 @@ export function CombatFxLayer({
       roll: 800,
       resultPanelHold: mode === "area-intro" ? 900 : 1400,
       postPanelDelay: 500,
-      damageFade: 1030,
+      damageFade: 1500,
       areaTargetMark: 280,
     };
   }, [fx?.mode, reducedMotion]);
@@ -444,6 +444,16 @@ export function CombatFxLayer({
                     ) : null}
                     {showRollDetail ? (
                       <p className="combat-fx-panel-detail">{detailParts.roll}</p>
+                    ) : null}
+                    {fx.damageTotal != null && fx.damageTotal > 0 ? (
+                      <p
+                        className={`combat-fx-panel-damage${fx.critical ? " combat-fx-panel-damage--crit" : ""}${fx.isHeal ? " combat-fx-panel-damage--heal" : ""}`}
+                      >
+                        {fx.isHeal ? `+${fx.damageTotal}` : `−${fx.damageTotal}`}
+                        {fx.damageTypeLabel ? (
+                          <span className="combat-fx-panel-damage__type">{fx.damageTypeLabel}</span>
+                        ) : null}
+                      </p>
                     ) : null}
                   </div>
                 ) : showRoll ? (
