@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import {
   startTransition,
@@ -1895,6 +1895,7 @@ export function HexBattlefield({
   const pointer = useBattlefieldPointer({
     canvasRef,
     scene: displayScene,
+    actorRacas,
     tokenDrawPosition,
     selectedId,
     setSelectedId,
