@@ -3,17 +3,11 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { AdventureTableCard } from "@/components/adventure/AdventureTableCard";
 import { adventureRestoreDeadline } from "@/lib/adventure/lifecycle";
+import type { AdventureListItem } from "@/lib/adventure/types";
 import { validateDisplayName } from "@/lib/moderation/display-name";
-
-type AdventureRow = {
-  adventureId: string;
-  name: string;
-  inviteCode: string;
-  primaryRoomId: string;
-  isOwner: boolean;
-  deletedAt?: number | null;
-};
+import "@/components/rpg/mesas-hub.css";
 
 function formatRestoreDeadline(deletedAt: number): string {
   const deadline = adventureRestoreDeadline({
@@ -40,7 +34,7 @@ function formatRestoreDeadline(deletedAt: number): string {
 
 export function AdventureLobby() {
   const router = useRouter();
-  const [adventures, setAdventures] = useState<AdventureRow[]>([]);
+  const [adventures, setAdventures] = useState<AdventureListItem[]>([]);
   const [newName, setNewName] = useState("");
   const [accessMode, setAccessMode] = useState<"public" | "closed">("public");
   const [joinCode, setJoinCode] = useState("");
@@ -249,28 +243,14 @@ export function AdventureLobby() {
       {asMaster.length > 0 ? (
         <section>
           <h3 style={{ fontSize: "1rem", marginBottom: "0.75rem" }}>Mesas que você mestreia</h3>
-          <ul style={listStyle}>
+          <ul className="adventure-table-list">
             {asMaster.map((a) => (
-              <li key={a.adventureId} className="glass-panel" style={{ padding: "0.85rem 1rem" }}>
-                <div style={{ display: "flex", justifyContent: "space-between", gap: "0.75rem", flexWrap: "wrap" }}>
-                  <div>
-                    <Link href={`/aventura/${a.adventureId}`} style={{ fontWeight: 600 }}>
-                      {a.name}
-                    </Link>
-                    <span style={{ marginLeft: "0.5rem", fontSize: "0.8rem", color: "var(--text-muted)" }}>
-                      convite <code>{a.inviteCode}</code>
-                    </span>
-                  </div>
-                  <button
-                    type="button"
-                    className="btn btn-ghost btn-sm"
-                    disabled={actionId === a.adventureId}
-                    onClick={() => deleteMesa(a.adventureId, a.name)}
-                    style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}
-                  >
-                    Excluir mesa
-                  </button>
-                </div>
+              <li key={a.adventureId}>
+                <AdventureTableCard
+                  adventure={a}
+                  deleteBusy={actionId === a.adventureId}
+                  onDelete={() => deleteMesa(a.adventureId, a.name)}
+                />
               </li>
             ))}
           </ul>
@@ -280,15 +260,10 @@ export function AdventureLobby() {
       {asPlayer.length > 0 ? (
         <section>
           <h3 style={{ fontSize: "1rem", marginBottom: "0.75rem" }}>Mesas em que você joga</h3>
-          <ul style={listStyle}>
+          <ul className="adventure-table-list">
             {asPlayer.map((a) => (
-              <li key={a.adventureId} className="glass-panel" style={{ padding: "0.85rem 1rem" }}>
-                <Link href={`/aventura/${a.adventureId}`} style={{ fontWeight: 600 }}>
-                  {a.name}
-                </Link>
-                <span style={{ marginLeft: "0.5rem", fontSize: "0.8rem", color: "var(--text-muted)" }}>
-                  · jogador vinculado
-                </span>
+              <li key={a.adventureId}>
+                <AdventureTableCard adventure={a} />
               </li>
             ))}
           </ul>
@@ -298,7 +273,7 @@ export function AdventureLobby() {
       {trash.length > 0 ? (
         <section>
           <h3 style={{ fontSize: "1rem", marginBottom: "0.75rem" }}>Lixeira (30 dias para restaurar)</h3>
-          <ul style={listStyle}>
+          <ul className="adventure-table-list">
             {trash.map((a) => (
               <li key={a.adventureId} className="glass-panel" style={{ padding: "0.85rem 1rem", opacity: 0.9 }}>
                 <div style={{ display: "flex", justifyContent: "space-between", gap: "0.75rem", flexWrap: "wrap" }}>
@@ -346,11 +321,3 @@ const inputStyle: React.CSSProperties = {
   width: "100%",
 };
 
-const listStyle: React.CSSProperties = {
-  listStyle: "none",
-  padding: 0,
-  margin: 0,
-  display: "flex",
-  flexDirection: "column",
-  gap: "0.5rem",
-};

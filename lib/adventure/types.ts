@@ -1,4 +1,5 @@
 import type { AdventureAccessMode } from "@/lib/adventure/access";
+import type { PortraitFocus } from "@/lib/media/portrait-focus";
 import type { RpgSystemId } from "@/lib/rpg/systems";
 
 /** Campanha persistente — contém mesa ao vivo, fichas e membros. */
@@ -22,6 +23,14 @@ export type Adventure = {
   deletedAt?: number | null;
 };
 
+export type AdventureListMember = {
+  userId: string;
+  displayName: string;
+  avatarUrl: string | null;
+  isOwner: boolean;
+  online: boolean;
+};
+
 export type AdventureListItem = {
   adventureId: string;
   name: string;
@@ -31,4 +40,9 @@ export type AdventureListItem = {
   isOwner: boolean;
   updatedAt: number;
   deletedAt?: number | null;
+  /** Capa da mesa VTT (mestre) ou arte padrão Eldarin. */
+  coverUrl?: string | null;
+  coverFocus?: PortraitFocus | null;
+  members?: AdventureListMember[];
+  onlineCount?: number;
 };
