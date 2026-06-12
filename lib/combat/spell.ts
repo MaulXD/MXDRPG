@@ -73,12 +73,11 @@ function rollSaveDamage(
   half: boolean
 ): DamageBreakdown {
   const base = rollDice(formula);
-  const total = base.rolls.reduce((a, b) => a + b, 0);
-  const final = half ? Math.floor(total / 2) : total;
+  const final = half ? Math.floor(base.total / 2) : base.total;
   return {
     formula,
     rolls: base.rolls,
-    attributeMod: 0,
+    attributeMod: base.modifier,
     total: Math.max(0, final),
     doubled: false,
   };
