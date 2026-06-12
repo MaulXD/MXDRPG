@@ -82,6 +82,14 @@ export function SheetPopupV2View({
     .filter(Boolean)
     .join(" · ");
 
+  const inicDisplay =
+    tactical.iniciativa >= 0 ? `+${tactical.iniciativa}` : String(tactical.iniciativa);
+  const quickStats = [
+    `Inic. ${inicDisplay}`,
+    `Desl. ${movement.walk}/${movement.run}`,
+    `Prof. +${profBonus}`,
+  ].join(" · ");
+
   const dragHandle =
     !standalone && toolbarDrag
       ? {
@@ -125,6 +133,9 @@ export function SheetPopupV2View({
         <div className="sheet-v2-header__main">
           <h2 className="sheet-v2-header__name">{character.name}</h2>
           <p className="sheet-v2-header__class">{classLine}</p>
+          <p className="sheet-v2-header__quick" title="Iniciativa, deslocamento e bônus de proficiência">
+            {quickStats}
+          </p>
         </div>
         <div className="sheet-v2-header__meta" data-no-drag>
           <SheetHoverTip className="sheet-v2-header__level-tip" tip={levelTip(nivel, xpTotal)}>
@@ -169,40 +180,6 @@ export function SheetPopupV2View({
               <SheetDdbShieldAc value={displayDefesa} tabIndex={0} />
             </div>
           </SheetHoverTip>
-
-          <div className="sheet-v2-diamonds" aria-label="Estatísticas rápidas">
-            <SheetHoverTip
-              className="sheet-v2-diamond-tip"
-              tip={combatStatTip("iniciativa", { iniciativa: tactical.iniciativa })}
-            >
-              <div className="sheet-v2-diamond" tabIndex={0}>
-                <span>Inic.</span>
-                <strong>
-                  {tactical.iniciativa >= 0 ? `+${tactical.iniciativa}` : tactical.iniciativa}
-                </strong>
-              </div>
-            </SheetHoverTip>
-            <SheetHoverTip
-              className="sheet-v2-diamond-tip"
-              tip={combatStatTip("movement", { walk: movement.walk, run: movement.run })}
-            >
-              <div className="sheet-v2-diamond sheet-v2-diamond--wide" tabIndex={0}>
-                <span>Desloc.</span>
-                <strong>
-                  {movement.walk}/{movement.run}
-                </strong>
-              </div>
-            </SheetHoverTip>
-            <SheetHoverTip
-              className="sheet-v2-diamond-tip"
-              tip={combatStatTip("prof", { prof: profBonus })}
-            >
-              <div className="sheet-v2-diamond" tabIndex={0}>
-                <span>Prof.</span>
-                <strong>+{profBonus}</strong>
-              </div>
-            </SheetHoverTip>
-          </div>
 
           <SheetHoverTip
             className="sheet-v2-resource-tip"

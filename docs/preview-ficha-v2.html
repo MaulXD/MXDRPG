@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Eldarin — Preview da ficha V2 (estilo Foundry)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Lora:wght@400;600&family=Source+Sans+3:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding: 1.5rem;
+      font-family: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+      background: #111110;
+      color: #c8bfa8;
+    }
+    .preview-page {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+    .preview-page__title {
+      margin: 0 0 0.35rem;
+      font-family: Cinzel, Georgia, serif;
+      font-size: 1.1rem;
+      color: #b8922e;
+    }
+    .preview-page__desc {
+      margin: 0 0 1rem;
+      font-size: 0.82rem;
+      color: #6b6050;
+      line-height: 1.55;
+    }
+    .preview-page__desc code {
+      font-size: 0.78rem;
+      color: #c8bfa8;
+    }
+    .preview-flow {
+      margin: 0 0 1.25rem;
+      padding: 0.85rem 1rem;
+      border-radius: 8px;
+      border: 1px solid rgba(184, 146, 46, 0.25);
+      background: rgba(74, 21, 32, 0.15);
+      font-size: 0.78rem;
+      line-height: 1.5;
+      color: #a89a88;
+    }
+    .preview-flow strong { color: #d4b356; }
+    .preview-flow ol {
+      margin: 0.5rem 0 0;
+      padding-left: 1.2rem;
+    }
+    .preview-flow li { margin-bottom: 0.25rem; }
+
+    :root {
+      --font-display: "Cinzel", Georgia, serif;
+      --font-body: "Lora", Georgia, serif;
+      --font-ui: "Source Sans 3", system-ui, sans-serif;
+    }
+
+    /* ── sheet-v2.css (espelho) ── */
+    .sheet-shell--v2 {
+      --v2-header: #2d0c12;
+      --v2-header-deep: #1a080c;
+      --v2-panel: #f3eee3;
+      --v2-panel-border: #c8bca8;
+      --v2-ink: #1e1814;
+      --v2-muted: #6a5c4e;
+      --v2-gold: #b8922e;
+      --v2-hp: #3a9d55;
+      --v2-pa: #a83232;
+      display: flex;
+      flex-direction: column;
+      background: #ddd6c8;
+      color: var(--v2-ink);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+      min-height: min(88vh, 720px);
+      font-family: var(--font-ui);
+    }
+
+    .sheet-v2-toolbar {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.35rem 0.5rem;
+      background: var(--v2-header-deep);
+      color: #f8f2ea;
+    }
+    .sheet-v2-toolbar__label {
+      flex: 1;
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(248, 242, 234, 0.55);
+    }
+    .sheet-v2-toolbar__actions {
+      display: flex;
+      gap: 0.25rem;
+    }
+    .btn-mock {
+      padding: 0.2rem 0.55rem;
+      font-size: 0.65rem;
+      font-weight: 700;
+      border-radius: 4px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(0, 0, 0, 0.25);
+      color: #f8f2ea;
+      cursor: default;
+    }
+
+    .sheet-v2-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 0.75rem;
+      padding: 0.65rem 0.85rem 0.55rem;
+      background: linear-gradient(135deg, #4a1520 0%, var(--v2-header) 55%, var(--v2-header-deep) 100%);
+      color: #f8f2ea;
+      border-bottom: 2px solid rgba(184, 146, 46, 0.35);
+    }
+    .sheet-v2-header__name {
+      margin: 0;
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 700;
+      line-height: 1.15;
+    }
+    .sheet-v2-header__class {
+      margin: 0.2rem 0 0;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(248, 242, 234, 0.72);
+    }
+    .sheet-v2-header__quick {
+      margin: 0.28rem 0 0;
+      font-size: 0.62rem;
+      font-weight: 600;
+      color: rgba(248, 242, 234, 0.55);
+    }
+    .sheet-v2-header__meta {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 0.35rem;
+    }
+    .sheet-v2-header__level {
+      width: 2.1rem;
+      height: 2.1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      border: 2px solid var(--v2-gold);
+      background: rgba(0, 0, 0, 0.25);
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 700;
+      color: #f0d878;
+    }
+    .sheet-v2-header__xp { min-width: 7.5rem; text-align: right; }
+    .sheet-v2-header__xp-text {
+      display: block;
+      font-size: 0.58rem;
+      color: rgba(248, 242, 234, 0.65);
+      margin-bottom: 0.15rem;
+    }
+    .sheet-v2-header__xp-bar {
+      height: 4px;
+      border-radius: 2px;
+      background: rgba(0, 0, 0, 0.35);
+      overflow: hidden;
+    }
+    .sheet-v2-header__xp-bar > span {
+      display: block;
+      height: 100%;
+      background: linear-gradient(90deg, #8b2830, #d4535c);
+      border-radius: 2px;
+    }
+
+    .sheet-v2-progression {
+      padding: 0.35rem 0.65rem;
+      background: var(--v2-panel);
+      border-bottom: 1px solid var(--v2-panel-border);
+      font-size: 0.72rem;
+    }
+    .sheet-v2-progression .btn-mock {
+      background: rgba(184, 146, 46, 0.2);
+      border-color: rgba(184, 146, 46, 0.45);
+      color: #5c4010;
+      cursor: pointer;
+    }
+
+    .sheet-v2-frame {
+      flex: 1;
+      min-height: 0;
+      display: grid;
+      grid-template-columns: 118px minmax(0, 1fr) 50px;
+      background: var(--v2-panel);
+    }
+
+    .sheet-v2-rail-left {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.5rem 0.4rem 0.6rem;
+      background: linear-gradient(180deg, #e8e0d2 0%, #ddd4c4 100%);
+      border-right: 1px solid var(--v2-panel-border);
+    }
+    .sheet-v2-portrait-wrap {
+      width: 96px;
+      height: 96px;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 2px solid rgba(74, 21, 32, 0.35);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      background: linear-gradient(160deg, #c4b8a8 0%, #5c5248 100%);
+      display: grid;
+      place-items: center;
+      color: rgba(255, 255, 255, 0.35);
+      font-size: 2.5rem;
+    }
+
+    .sheet-ddb-shield-ac {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.06rem;
+    }
+    .sheet-ddb-shield-ac__label {
+      font-size: 0.52rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: #7a5518;
+    }
+    .sheet-ddb-shield-ac__frame {
+      position: relative;
+      width: 2.15rem;
+      height: 2.5rem;
+      display: grid;
+      place-items: center;
+    }
+    .sheet-ddb-shield-ac__svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+    .sheet-ddb-shield-ac__fill { fill: #fff8e6; }
+    .sheet-ddb-shield-ac__rim { fill: none; stroke: #c9a227; stroke-width: 1.6; }
+    .sheet-ddb-shield-ac__value {
+      position: relative;
+      z-index: 1;
+      font-size: 1.15rem;
+      font-weight: 800;
+      margin-top: 0.2rem;
+    }
+
+    .sheet-v2-resource {
+      width: 100%;
+      padding: 0.35rem 0.4rem;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.45);
+      border: 1px solid rgba(0, 0, 0, 0.08);
+    }
+    .sheet-v2-resource__head {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.58rem;
+      color: var(--v2-muted);
+      margin-bottom: 0.25rem;
+    }
+    .sheet-v2-resource__head strong {
+      font-size: 0.72rem;
+      color: var(--v2-ink);
+    }
+    .sheet-v2-resource__bar {
+      height: 5px;
+      border-radius: 3px;
+      background: rgba(0, 0, 0, 0.12);
+      overflow: hidden;
+    }
+    .sheet-v2-resource__bar > span {
+      display: block;
+      height: 100%;
+      border-radius: 3px;
+    }
+    .sheet-v2-resource__bar--hp > span { background: var(--v2-hp); }
+    .sheet-v2-resource__bar--pa > span { background: var(--v2-pa); }
+
+    .sheet-v2-sync {
+      margin: 0.25rem 0 0;
+      font-size: 0.58rem;
+      color: var(--v2-muted);
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+    .sheet-live-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #6fa324;
+      box-shadow: 0 0 6px rgba(111, 163, 36, 0.6);
+    }
+
+    .sheet-v2-main {
+      min-width: 0;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+    }
+    .sheet-v2-loadout {
+      flex-shrink: 0;
+      padding: 0.45rem 0.65rem;
+      border-bottom: 1px solid var(--v2-panel-border);
+      font-size: 0.68rem;
+      color: var(--v2-muted);
+      background: rgba(255, 255, 255, 0.35);
+    }
+    .sheet-v2-loadout strong { color: var(--v2-ink); }
+    .sheet-v2-main__scroll {
+      flex: 1;
+      min-height: 0;
+      overflow: auto;
+      padding: 0.55rem 0.65rem 0.75rem;
+    }
+
+    .sheet-v2-rail-tabs {
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+      padding: 0.4rem 0.28rem;
+      background: linear-gradient(180deg, #2a261e 0%, #1a1814 100%);
+      border-left: 1px solid rgba(184, 146, 46, 0.2);
+    }
+    .sheet-v2-tab {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      min-height: 2.15rem;
+      padding: 0.3rem;
+      border: none;
+      border-radius: 6px;
+      background: transparent;
+      color: rgba(200, 191, 168, 0.55);
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+    }
+    .sheet-v2-tab:hover {
+      background: rgba(255, 255, 255, 0.06);
+      color: #e8e2d6;
+    }
+    .sheet-v2-tab.is-active {
+      background: rgba(184, 146, 46, 0.18);
+      color: #e0c078;
+      box-shadow: inset 0 0 0 1px rgba(184, 146, 46, 0.38);
+    }
+    .sheet-v2-tab__icon {
+      display: flex;
+      width: 1.15rem;
+      height: 1.15rem;
+    }
+    .sheet-v2-tab__icon svg { width: 100%; height: 100%; }
+    .sheet-v2-tab__badge {
+      position: absolute;
+      top: 1px;
+      right: 1px;
+      min-width: 0.9rem;
+      height: 0.9rem;
+      padding: 0 0.18rem;
+      border-radius: 999px;
+      background: #7a5518;
+      color: #f8f2ea;
+      font-size: 0.5rem;
+      font-weight: 700;
+      line-height: 0.9rem;
+      text-align: center;
+    }
+
+    .sheet-v2-overview {
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+      gap: 0.65rem;
+    }
+
+    /* painéis DDB reutilizados no centro */
+    .sheet-ddb-panel {
+      background: #faf7f0;
+      border: 1px solid #d8cfc0;
+      border-radius: 10px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .sheet-ddb-panel--skills { min-height: 14rem; }
+    .sheet-ddb-panel__head {
+      padding: 0.4rem 0.55rem;
+      border-bottom: 1px solid #d8cfc0;
+      background: rgba(255, 255, 255, 0.55);
+    }
+    .sheet-ddb-panel__head h3 {
+      margin: 0;
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--v2-muted);
+    }
+    .sheet-ddb-skill-list {
+      list-style: none;
+      margin: 0;
+      padding: 0.15rem 0;
+      flex: 1;
+    }
+    .sheet-ddb-skill {
+      display: grid;
+      grid-template-columns: 0.85rem 1.6rem 1fr auto;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.28rem 0.55rem;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+      font-size: 0.72rem;
+    }
+    .sheet-ddb-skill__dot,
+    .sheet-ddb-save__dot {
+      width: 0.55rem;
+      height: 0.55rem;
+      border-radius: 50%;
+      border: 2px solid #b8b0a4;
+    }
+    .sheet-ddb-skill__dot.is-on,
+    .sheet-ddb-save__dot.is-on {
+      border-color: var(--v2-gold);
+      background: var(--v2-gold);
+    }
+    .sheet-ddb-skill__attr {
+      font-size: 0.58rem;
+      font-weight: 800;
+      color: var(--v2-muted);
+    }
+    .sheet-ddb-skill.is-trained .sheet-ddb-skill__name { font-weight: 700; }
+    .sheet-ddb-skill__mod { font-weight: 700; }
+
+    .sheet-ddb-saves {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.2rem 0.35rem;
+      padding: 0.32rem 0.42rem 0.42rem;
+    }
+    .sheet-ddb-save {
+      display: grid;
+      grid-template-columns: 0.7rem 1fr auto;
+      align-items: center;
+      gap: 0.3rem;
+      font-size: 0.68rem;
+    }
+    .sheet-ddb-save__label { color: var(--v2-muted); }
+    .sheet-ddb-save.is-trained .sheet-ddb-save__label {
+      font-weight: 700;
+      color: var(--v2-ink);
+    }
+
+    .sheet-ddb-trait-cards {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.22rem;
+      padding: 0.32rem 0.42rem 0.42rem;
+    }
+    .sheet-ddb-trait {
+      display: flex;
+      flex-direction: column;
+      gap: 0.08rem;
+      padding: 0.35rem 0.45rem;
+      border-radius: 6px;
+      border: 1px solid #d8cfc0;
+      background: rgba(255, 255, 255, 0.5);
+    }
+    .sheet-ddb-trait--accent {
+      border-color: rgba(184, 146, 46, 0.45);
+      background: rgba(184, 146, 46, 0.08);
+    }
+    .sheet-ddb-trait__tag {
+      font-size: 0.55rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--v2-muted);
+    }
+    .sheet-ddb-trait__value {
+      font-size: 0.72rem;
+      font-weight: 600;
+    }
+    .sheet-ddb-culinary {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.25rem;
+      padding: 0.4rem 0.5rem 0.5rem;
+    }
+    .sheet-ddb-culinary__item {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.62rem;
+      color: var(--v2-muted);
+      padding: 0.2rem 0.25rem;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.45);
+    }
+
+    .sheet-v2-panel-title {
+      margin: 0 0 0.5rem;
+      font-family: var(--font-display);
+      font-size: 1rem;
+      color: var(--v2-ink);
+    }
+    .sheet-v2-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .sheet-v2-list li {
+      display: flex;
+      justify-content: space-between;
+      gap: 0.5rem;
+      padding: 0.45rem 0.55rem;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+      font-size: 0.75rem;
+    }
+    .sheet-v2-list li span:last-child {
+      color: var(--v2-muted);
+      font-size: 0.68rem;
+    }
+    .sheet-v2-empty {
+      padding: 1.5rem;
+      text-align: center;
+      font-size: 0.78rem;
+      color: var(--v2-muted);
+    }
+
+    .tab-panel { display: none; }
+    .tab-panel.is-visible { display: block; }
+
+    @media (max-width: 720px) {
+      .sheet-v2-frame { grid-template-columns: 104px minmax(0, 1fr) 44px; }
+      .sheet-v2-portrait-wrap { width: 88px; height: 88px; }
+      .sheet-v2-header__quick { display: none; }
+      .sheet-v2-overview { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="preview-page">
+    <h1 class="preview-page__title">Preview — Ficha V2 (estilo Foundry)</h1>
+    <p class="preview-page__desc">
+      Protótipo interativo de <code>SheetPopupV2View</code> + <code>sheet-v2.css</code>.
+      Clique nas abas à <strong>direita</strong> para trocar o conteúdo central.
+      No app real: <code>/personagem/:id/v2</code> (planejado) ou popup na mesa com <code>popupLayout="v2"</code>.
+    </p>
+
+    <div class="preview-flow">
+      <strong>Como funcionaria no Eldarin</strong>
+      <ol>
+        <li><strong>Trilho esquerdo fixo</strong> — retrato, CA (escudo), barras de HP e PA; inic./desloc./prof. no cabeçalho.</li>
+        <li><strong>Abas laterais</strong> — trilho escuro neutro (sem vermelho), ícones SVG do app (sem emojis).</li>
+        <li><strong>Centro rolável</strong> — conteúdo da aba ativa (perícias na aba Ficha; listas nas demais).</li>
+        <li><strong>Trilho direito</strong> — ícones verticais (Foundry): Ficha, Inventário, Tesouro, Habilidades, Magias, Bestiário, Gestão.</li>
+        <li><strong>Topo</strong> — nome, classe, nível, XP; barra de equipamento ativo; botão de subir de nível quando aplicável.</li>
+        <li><strong>Popup na mesa</strong> — mesma shell, com alça ⠿ para arrastar; standalone em <code>/personagem/:id/v2</code> sem moldura Foundry.</li>
+      </ol>
+    </div>
+
+    <article class="sheet-shell sheet-shell--popup sheet-shell--v2" aria-label="Ficha V2">
+      <div class="sheet-v2-toolbar">
+        <span class="sheet-v2-toolbar__label">Ficha V2 (preview)</span>
+        <div class="sheet-v2-toolbar__actions">
+          <span class="btn-mock">PDF</span>
+          <span class="btn-mock">✕</span>
+        </div>
+      </div>
+
+      <header class="sheet-v2-header">
+        <div class="sheet-v2-header__main">
+          <h2 class="sheet-v2-header__name">Theron Valdris</h2>
+          <p class="sheet-v2-header__class">Guerreiro · Campeão · Nv 5</p>
+          <p class="sheet-v2-header__quick">Inic. +1 · Desl. 6/12 · Prof. +3</p>
+        </div>
+        <div class="sheet-v2-header__meta">
+          <div class="sheet-v2-header__level" title="Nível 5">5</div>
+          <div class="sheet-v2-header__xp">
+            <span class="sheet-v2-header__xp-text">1.240 / 2.400 XP</span>
+            <div class="sheet-v2-header__xp-bar" role="progressbar" aria-valuenow="52">
+              <span style="width: 52%"></span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <div class="sheet-v2-progression">
+        <button type="button" class="btn-mock">Subir de nível disponível</button>
+      </div>
+
+      <div class="sheet-v2-frame">
+        <!-- trilho esquerdo -->
+        <aside class="sheet-v2-rail-left" aria-label="Retrato e combate">
+          <div class="sheet-v2-portrait-wrap" title="Clique para editar retrato" aria-hidden></div>
+
+          <div class="sheet-v2-ac">
+            <div class="sheet-ddb-shield-ac">
+              <span class="sheet-ddb-shield-ac__label">CA</span>
+              <div class="sheet-ddb-shield-ac__frame">
+                <svg class="sheet-ddb-shield-ac__svg" viewBox="0 0 40 46" aria-hidden="true">
+                  <path class="sheet-ddb-shield-ac__fill" d="M20 3 L35 9.5 V22.5 C35 31.5 28.5 38.5 20 42.5 C11.5 38.5 5 31.5 5 22.5 V9.5 Z" />
+                  <path class="sheet-ddb-shield-ac__rim" d="M20 3 L35 9.5 V22.5 C35 31.5 28.5 38.5 20 42.5 C11.5 38.5 5 31.5 5 22.5 V9.5 Z" />
+                </svg>
+                <strong class="sheet-ddb-shield-ac__value">17</strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="sheet-v2-resource">
+            <div class="sheet-v2-resource__head">
+              <span>Pontos de vida</span>
+              <strong>38/42</strong>
+            </div>
+            <div class="sheet-v2-resource__bar sheet-v2-resource__bar--hp">
+              <span style="width: 90%"></span>
+            </div>
+          </div>
+
+          <div class="sheet-v2-resource">
+            <div class="sheet-v2-resource__head">
+              <span>Pontos de ação</span>
+              <strong>4/6</strong>
+            </div>
+            <div class="sheet-v2-resource__bar sheet-v2-resource__bar--pa">
+              <span style="width: 67%"></span>
+            </div>
+          </div>
+
+          <p class="sheet-v2-sync">
+            <span class="sheet-live-dot" aria-hidden></span>
+            Sync mesa
+          </p>
+        </aside>
+
+        <!-- centro -->
+        <main class="sheet-v2-main">
+          <div class="sheet-v2-loadout">
+            <strong>Em uso na mesa:</strong> Espada longa +1 · Armadura de placas · Escudo
+          </div>
+
+          <div class="sheet-v2-main__scroll">
+            <!-- aba Ficha -->
+            <div class="tab-panel is-visible" data-panel="ficha">
+              <div class="sheet-v2-overview">
+                <section class="sheet-v2-overview__skills">
+                  <section class="sheet-ddb-panel sheet-ddb-panel--skills" aria-label="Perícias">
+                    <header class="sheet-ddb-panel__head"><h3>Perícias</h3></header>
+                    <ul class="sheet-ddb-skill-list">
+                      <li>
+                        <div class="sheet-ddb-skill is-trained">
+                          <span class="sheet-ddb-skill__dot is-on"></span>
+                          <span class="sheet-ddb-skill__attr">SAB</span>
+                          <span class="sheet-ddb-skill__name">Percepção</span>
+                          <strong class="sheet-ddb-skill__mod">14</strong>
+                        </div>
+                      </li>
+                      <li>
+                        <div class="sheet-ddb-skill is-trained">
+                          <span class="sheet-ddb-skill__dot is-on"></span>
+                          <span class="sheet-ddb-skill__attr">FOR</span>
+                          <span class="sheet-ddb-skill__name">Atletismo</span>
+                          <strong class="sheet-ddb-skill__mod">+6</strong>
+                        </div>
+                      </li>
+                      <li>
+                        <div class="sheet-ddb-skill is-trained">
+                          <span class="sheet-ddb-skill__dot is-on"></span>
+                          <span class="sheet-ddb-skill__attr">DES</span>
+                          <span class="sheet-ddb-skill__name">Furtividade</span>
+                          <strong class="sheet-ddb-skill__mod">+4</strong>
+                        </div>
+                      </li>
+                      <li>
+                        <div class="sheet-ddb-skill">
+                          <span class="sheet-ddb-skill__dot"></span>
+                          <span class="sheet-ddb-skill__attr">INT</span>
+                          <span class="sheet-ddb-skill__name">Investigação</span>
+                          <strong class="sheet-ddb-skill__mod">+0</strong>
+                        </div>
+                      </li>
+                      <li>
+                        <div class="sheet-ddb-skill">
+                          <span class="sheet-ddb-skill__dot"></span>
+                          <span class="sheet-ddb-skill__attr">DES</span>
+                          <span class="sheet-ddb-skill__name">Iniciativa</span>
+                          <strong class="sheet-ddb-skill__mod">+1</strong>
+                        </div>
+                      </li>
+                    </ul>
+                  </section>
+                </section>
+
+                <aside class="sheet-v2-overview__aside">
+                  <section class="sheet-ddb-panel" aria-label="Salvaguardas">
+                    <header class="sheet-ddb-panel__head"><h3>Salvaguardas</h3></header>
+                    <div class="sheet-ddb-saves">
+                      <div class="sheet-ddb-save is-trained">
+                        <span class="sheet-ddb-save__dot is-on"></span>
+                        <span class="sheet-ddb-save__label">Força</span>
+                        <strong>+6</strong>
+                      </div>
+                      <div class="sheet-ddb-save">
+                        <span class="sheet-ddb-save__dot"></span>
+                        <span class="sheet-ddb-save__label">Destreza</span>
+                        <strong>+1</strong>
+                      </div>
+                      <div class="sheet-ddb-save is-trained">
+                        <span class="sheet-ddb-save__dot is-on"></span>
+                        <span class="sheet-ddb-save__label">Constituição</span>
+                        <strong>+5</strong>
+                      </div>
+                      <div class="sheet-ddb-save">
+                        <span class="sheet-ddb-save__dot"></span>
+                        <span class="sheet-ddb-save__label">Inteligência</span>
+                        <strong>+0</strong>
+                      </div>
+                      <div class="sheet-ddb-save">
+                        <span class="sheet-ddb-save__dot"></span>
+                        <span class="sheet-ddb-save__label">Sabedoria</span>
+                        <strong>+0</strong>
+                      </div>
+                      <div class="sheet-ddb-save">
+                        <span class="sheet-ddb-save__dot"></span>
+                        <span class="sheet-ddb-save__label">Carisma</span>
+                        <strong>−1</strong>
+                      </div>
+                    </div>
+                  </section>
+
+                  <section class="sheet-ddb-panel" aria-label="Traços">
+                    <header class="sheet-ddb-panel__head"><h3>Traços</h3></header>
+                    <div class="sheet-ddb-trait-cards">
+                      <div class="sheet-ddb-trait">
+                        <span class="sheet-ddb-trait__tag">Raça</span>
+                        <span class="sheet-ddb-trait__value">Humano</span>
+                      </div>
+                      <div class="sheet-ddb-trait">
+                        <span class="sheet-ddb-trait__tag">Classe</span>
+                        <span class="sheet-ddb-trait__value">Guerreiro</span>
+                      </div>
+                      <div class="sheet-ddb-trait sheet-ddb-trait--accent">
+                        <span class="sheet-ddb-trait__tag">Subclasse</span>
+                        <span class="sheet-ddb-trait__value">Campeão</span>
+                      </div>
+                      <div class="sheet-ddb-trait">
+                        <span class="sheet-ddb-trait__tag">Religião</span>
+                        <span class="sheet-ddb-trait__value">Tyr</span>
+                      </div>
+                    </div>
+                  </section>
+
+                  <section class="sheet-ddb-panel" aria-label="Culinária">
+                    <header class="sheet-ddb-panel__head"><h3>Culinária</h3></header>
+                    <div class="sheet-ddb-culinary">
+                      <div class="sheet-ddb-culinary__item"><span>Extração</span><strong>+2</strong></div>
+                      <div class="sheet-ddb-culinary__item"><span>Forrageio</span><strong>+1</strong></div>
+                      <div class="sheet-ddb-culinary__item"><span>Fabricação</span><strong>+0</strong></div>
+                      <div class="sheet-ddb-culinary__item"><span>Fortitude</span><strong>+3</strong></div>
+                    </div>
+                  </section>
+                </aside>
+              </div>
+            </div>
+
+            <!-- inventário -->
+            <div class="tab-panel" data-panel="inventário">
+              <h3 class="sheet-v2-panel-title">Inventário</h3>
+              <ul class="sheet-v2-list">
+                <li><span>Espada longa +1</span><span>equipada</span></li>
+                <li><span>Armadura de placas</span><span>vestida</span></li>
+                <li><span>Escudo</span><span>equipado</span></li>
+                <li><span>Poção de cura</span><span>×3</span></li>
+                <li><span>Corda de seda (15 m)</span><span>×1</span></li>
+              </ul>
+            </div>
+
+            <!-- tesouro -->
+            <div class="tab-panel" data-panel="tesouro">
+              <h3 class="sheet-v2-panel-title">Tesouro</h3>
+              <ul class="sheet-v2-list">
+                <li><span>Peças de ouro</span><span>240 PO</span></li>
+                <li><span>Prata</span><span>18 PP</span></li>
+                <li><span>Esmeralda</span><span>50 PO</span></li>
+              </ul>
+            </div>
+
+            <!-- habilidades -->
+            <div class="tab-panel" data-panel="habilidades">
+              <h3 class="sheet-v2-panel-title">Habilidades</h3>
+              <ul class="sheet-v2-list">
+                <li><span>Ataque extra</span><span>passiva</span></li>
+                <li><span>Estilo de luta: Defesa</span><span>+1 CA</span></li>
+                <li><span>Surto de ação</span><span>1/descanso</span></li>
+              </ul>
+            </div>
+
+            <!-- magias -->
+            <div class="tab-panel" data-panel="magias">
+              <h3 class="sheet-v2-panel-title">Magias</h3>
+              <p class="sheet-v2-empty">Guerreiro sem truques — painel de preparação aparece para classes conjuradoras.</p>
+            </div>
+
+            <!-- bestiário -->
+            <div class="tab-panel" data-panel="bestiário">
+              <h3 class="sheet-v2-panel-title">Bestiário</h3>
+              <ul class="sheet-v2-list">
+                <li><span>Lobo</span><span>anatomia estudada</span></li>
+                <li><span>Goblin</span><span>anatomia estudada</span></li>
+              </ul>
+            </div>
+
+            <!-- gestão -->
+            <div class="tab-panel" data-panel="gestão">
+              <h3 class="sheet-v2-panel-title">Gestão</h3>
+              <ul class="sheet-v2-list">
+                <li><span>Editar identidade</span><span>mestre ou dono</span></li>
+                <li><span>Equipamento de combate</span><span>arma + armadura</span></li>
+                <li><span>Religião / devoção</span><span>Tyr</span></li>
+                <li><span>Solicitar edição ao mestre</span><span>se vinculado à aventura</span></li>
+              </ul>
+            </div>
+          </div>
+        </main>
+
+        <!-- abas laterais -->
+        <nav class="sheet-v2-rail-tabs" aria-label="Seções da ficha" id="v2-tabs">
+          <button type="button" class="sheet-v2-tab is-active" data-tab="ficha" title="Ficha" aria-current="page">
+            <span class="sheet-v2-tab__icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden><circle cx="12" cy="8" r="3.5" stroke="currentColor" stroke-width="1.5"/><path d="M5.5 20c.8-3.5 3.2-5.5 6.5-5.5s5.7 2 6.5 5.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+          </button>
+          <button type="button" class="sheet-v2-tab" data-tab="inventário" title="Inventário">
+            <span class="sheet-v2-tab__icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden><path d="M8.5 10V8.5a3.5 3.5 0 117 0V10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M6 10h12a2 2 0 012 2v7a2 2 0 01-2 2H6a2 2 0 01-2-2v-7a2 2 0 012-2z" stroke="currentColor" stroke-width="1.5"/><path d="M9.5 14h5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+            <span class="sheet-v2-tab__badge">5</span>
+          </button>
+          <button type="button" class="sheet-v2-tab" data-tab="tesouro" title="Tesouro">
+            <span class="sheet-v2-tab__icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden><ellipse cx="9" cy="10" rx="5" ry="2.2" stroke="currentColor" stroke-width="1.5"/><path d="M4 10v4.5c0 1.2 2.2 2.2 5 2.2s5-1 5-2.2V10" stroke="currentColor" stroke-width="1.5"/><ellipse cx="15" cy="13" rx="5" ry="2.2" stroke="currentColor" stroke-width="1.5"/><path d="M10 13v4c0 1.2 2.2 2.2 5 2.2s5-1 5-2.2v-4" stroke="currentColor" stroke-width="1.5"/></svg></span>
+          </button>
+          <button type="button" class="sheet-v2-tab" data-tab="habilidades" title="Habilidades">
+            <span class="sheet-v2-tab__icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden><path d="M13 2L5 14h6l-1 8 9-13h-6l0-7z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></span>
+          </button>
+          <button type="button" class="sheet-v2-tab" data-tab="magias" title="Magias">
+            <span class="sheet-v2-tab__icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden><path d="M4 20l10-10M14 6l4-4M16 4l4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </button>
+          <button type="button" class="sheet-v2-tab" data-tab="bestiário" title="Bestiário">
+            <span class="sheet-v2-tab__icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden><path d="M6 4.5h12a1.5 1.5 0 011.5 1.5v12a1.5 1.5 0 01-1.5 1.5H6A1.5 1.5 0 014.5 18V6A1.5 1.5 0 016 4.5z" stroke="currentColor" stroke-width="1.5"/><path d="M8.5 8.5c0-1.1.9-2 2-2s2 .9 2 2-.9 2-2 2-2-.9-2-2z" stroke="currentColor" stroke-width="1.3"/><path d="M7 16c.8-1.6 2-2.5 5-2.5s4.2.9 5 2.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg></span>
+            <span class="sheet-v2-tab__badge">2</span>
+          </button>
+          <button type="button" class="sheet-v2-tab" data-tab="gestão" title="Gestão">
+            <span class="sheet-v2-tab__icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden><circle cx="12" cy="12" r="2.5" stroke="currentColor" stroke-width="1.5"/><path d="M12 3.5v2M12 18.5v2M3.5 12h2M18.5 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M5.6 18.4l1.4-1.4M17 7l1.4-1.4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></span>
+          </button>
+        </nav>
+      </div>
+    </article>
+  </div>
+
+  <script>
+    (function () {
+      const tabs = document.querySelectorAll(".sheet-v2-tab");
+      const panels = document.querySelectorAll(".tab-panel");
+
+      tabs.forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          const id = btn.getAttribute("data-tab");
+          tabs.forEach(function (t) {
+            t.classList.toggle("is-active", t === btn);
+            t.setAttribute("aria-current", t === btn ? "page" : null);
+          });
+          panels.forEach(function (p) {
+            p.classList.toggle("is-visible", p.getAttribute("data-panel") === id);
+          });
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

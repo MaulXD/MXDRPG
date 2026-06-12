@@ -25,8 +25,8 @@ export function AdventureCoverManager({ roomId, settings: initialSettings }: Pro
     <section className="glass-panel adventure-cover-manager" style={{ padding: "1.25rem", marginBottom: "1rem" }}>
       <h2 style={{ margin: "0 0 0.35rem", fontSize: "1rem" }}>Capa da mesa</h2>
       <p style={{ color: "var(--text-muted)", fontSize: "0.88rem", margin: "0 0 1rem", lineHeight: 1.45 }}>
-        Miniatura nos cartões de <strong>Suas mesas</strong>. Se não definir capa, usamos o mapa da sala ou a
-        imagem padrão do Eldarin.
+        Miniatura quadrada nos cartões de <strong>Suas mesas</strong> — ajuste zoom e posição após enviar a
+        imagem. Sem capa, usamos o mapa da sala ou a imagem padrão do Eldarin.
       </p>
       <RoomCoverEditor
         roomId={roomId}

@@ -91,7 +91,7 @@
 .adventure-table-card {
   display: grid;
   grid-template-columns: 120px minmax(0, 1fr);
-  align-items: stretch;
+  align-items: start;
   gap: 0;
   border-radius: 12px;
   overflow: hidden;
@@ -108,9 +108,9 @@
 .adventure-table-card__cover-link {
   display: block;
   width: 120px;
-  height: 100%;
-  min-height: 0;
-  align-self: stretch;
+  height: 120px;
+  aspect-ratio: 1;
+  flex-shrink: 0;
   text-decoration: none;
   overflow: hidden;
   border-radius: 12px 0 0 12px;
@@ -350,8 +350,7 @@
   .adventure-table-card__cover-link {
     width: 100%;
     height: auto;
-    min-height: unset;
-    aspect-ratio: 16 / 9;
+    aspect-ratio: 1;
     border-radius: 12px 12px 0 0;
   }
 }
