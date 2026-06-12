@@ -2,7 +2,17 @@
 
 import Link from "next/link";
 import type { AdventureListItem } from "@/lib/adventure/types";
+import {
+  DEFAULT_PORTRAIT_FOCUS,
+  portraitFocusToImgStyle,
+  sanitizePortraitFocus,
+} from "@/lib/media/portrait-focus";
+import { DEFAULT_RPG_SYSTEM_ID, RPG_SYSTEMS } from "@/lib/rpg/systems";
 import "@/components/rpg/mesas-hub.css";
+
+const DEFAULT_COVER =
+  RPG_SYSTEMS.find((s) => s.id === DEFAULT_RPG_SYSTEM_ID)?.coverSrc ??
+  "/brand/rpg/eldarin-cover.svg";
 
 type Props = {
   adventure: AdventureListItem;
@@ -46,18 +56,27 @@ function MemberAvatar({
 export function AdventureTableCard({ adventure, onDelete, deleteBusy }: Props) {
   const members = adventure.members ?? [];
   const onlineCount = adventure.onlineCount ?? members.filter((m) => m.online).length;
-  const cover = adventure.coverUrl ?? "/brand/rpg/eldarin-cover.svg";
+  const coverSrc = adventure.coverUrl?.trim() || DEFAULT_COVER;
+  const coverFocus =
+    sanitizePortraitFocus(adventure.coverFocus) ?? DEFAULT_PORTRAIT_FOCUS;
   const mesaHref = `/mesa/${adventure.primaryRoomId}`;
   const hubHref = `/aventura/${adventure.adventureId}`;
 
   return (
     <article className="adventure-table-card">
       <Link href={hubHref} className="adventure-table-card__cover-link" aria-hidden tabIndex={-1}>
-        <div
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={coverSrc}
+          alt=""
           className="adventure-table-card__cover"
-          style={{ backgroundImage: `url(${cover})` }}
-          role="img"
-          aria-label={`Capa da mesa ${adventure.name}`}
+          style={portraitFocusToImgStyle(coverFocus)}
+          decoding="async"
+          onError={(e) => {
+            if (e.currentTarget.src !== DEFAULT_COVER) {
+              e.currentTarget.src = DEFAULT_COVER;
+            }
+          }}
         />
       </Link>
 
