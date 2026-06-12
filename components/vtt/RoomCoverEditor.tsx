@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { CoverFocusEditor } from "@/components/vtt/CoverFocusEditor";
 import { IMAGE_UPLOAD_HINT } from "@/lib/media/image-data-url";
 import { buildRoomCoverFromFile } from "@/lib/media/image-upload-client";
 import {
@@ -21,6 +22,13 @@ type Props = {
   onUpdated: (snapshot: RoomSnapshot) => void;
 };
 
+function focusEquals(a: PortraitFocus, b: PortraitFocus): boolean {
+  const na = sanitizePortraitFocus(a);
+  const nb = sanitizePortraitFocus(b);
+  if (!na || !nb) return false;
+  return na.x === nb.x && na.y === nb.y && (na.scale ?? 1) === (nb.scale ?? 1);
+}
+
 export function RoomCoverEditor({
   roomId,
   coverUrl,
@@ -31,6 +39,9 @@ export function RoomCoverEditor({
   const fileRef = useRef<HTMLInputElement>(null);
   const pendingFileRef = useRef<File | null>(null);
   const [draftSrc, setDraftSrc] = useState<string | null>(null);
+  const [draftFocus, setDraftFocus] = useState<PortraitFocus>(
+    () => sanitizePortraitFocus(coverFocus) ?? DEFAULT_PORTRAIT_FOCUS
+  );
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState<string | null>(null);
 
@@ -40,8 +51,14 @@ export function RoomCoverEditor({
     };
   }, [draftSrc]);
 
-  const focus = sanitizePortraitFocus(coverFocus) ?? DEFAULT_PORTRAIT_FOCUS;
+  useEffect(() => {
+    if (draftSrc) return;
+    setDraftFocus(sanitizePortraitFocus(coverFocus) ?? DEFAULT_PORTRAIT_FOCUS);
+  }, [coverFocus, draftSrc]);
+
+  const savedFocus = sanitizePortraitFocus(coverFocus) ?? DEFAULT_PORTRAIT_FOCUS;
   const previewSrc = draftSrc ?? coverUrl ?? null;
+  const focusDirty = Boolean(coverUrl && !draftSrc && !focusEquals(draftFocus, savedFocus));
 
   async function persistFile(file: File) {
     setBusy(true);
@@ -50,7 +67,7 @@ export function RoomCoverEditor({
       const dataUrl = await buildRoomCoverFromFile(file);
       const snapshot = await patchRoomSettings(roomId, {
         coverUrl: dataUrl,
-        coverFocus: focus,
+        coverFocus: draftFocus,
       });
       pendingFileRef.current = null;
       if (draftSrc?.startsWith("blob:")) URL.revokeObjectURL(draftSrc);
@@ -65,11 +82,27 @@ export function RoomCoverEditor({
     }
   }
 
+  async function saveFocusOnly() {
+    if (busy || !coverUrl) return;
+    setBusy(true);
+    setMsg(null);
+    try {
+      const snapshot = await patchRoomSettings(roomId, { coverFocus: draftFocus });
+      onUpdated(snapshot);
+      setMsg("Enquadramento salvo.");
+    } catch (e) {
+      setMsg(e instanceof Error ? e.message : "Erro ao salvar enquadramento");
+    } finally {
+      setBusy(false);
+    }
+  }
+
   function onPickFile(file: File) {
     pendingFileRef.current = file;
     if (draftSrc?.startsWith("blob:")) URL.revokeObjectURL(draftSrc);
     setDraftSrc(URL.createObjectURL(file));
-    setMsg("Clique em «Aplicar capa» para confirmar.");
+    setDraftFocus(DEFAULT_PORTRAIT_FOCUS);
+    setMsg("Ajuste o zoom se quiser, depois clique em «Aplicar capa».");
   }
 
   async function removeCover() {
@@ -81,6 +114,7 @@ export function RoomCoverEditor({
       pendingFileRef.current = null;
       if (draftSrc?.startsWith("blob:")) URL.revokeObjectURL(draftSrc);
       setDraftSrc(null);
+      setDraftFocus(DEFAULT_PORTRAIT_FOCUS);
       if (fileRef.current) fileRef.current.value = "";
       onUpdated(snapshot);
       setMsg("Capa removida.");
@@ -109,7 +143,7 @@ export function RoomCoverEditor({
       {!hub ? <legend className="vtt-eyebrow">Foto de capa</legend> : null}
       <p className="vtt-combat-hint" style={{ margin: 0 }}>
         {hub
-          ? `JPG, PNG ou WebP. ${IMAGE_UPLOAD_HINT}`
+          ? `Miniatura quadrada em Suas mesas. ${IMAGE_UPLOAD_HINT}`
           : `Imagem opcional exibida discretamente atrás do mapa para todos na mesa. ${IMAGE_UPLOAD_HINT}`}
       </p>
 
@@ -120,13 +154,22 @@ export function RoomCoverEditor({
           <img
             src={previewSrc}
             alt=""
-            style={portraitFocusToImgStyle(focus)}
+            style={portraitFocusToImgStyle(draftFocus)}
             className="mesa-room-cover-preview__img"
           />
         ) : (
           <span className="mesa-room-cover-preview__placeholder">Sem capa</span>
         )}
       </div>
+
+      {previewSrc ? (
+        <CoverFocusEditor
+          imageSrc={previewSrc}
+          focus={draftFocus}
+          onFocusChange={setDraftFocus}
+          disabled={busy}
+        />
+      ) : null}
 
       <div className="vtt-map-panel-actions mesa-room-cover-editor__actions">
         <input
@@ -158,6 +201,11 @@ export function RoomCoverEditor({
             }}
           >
             Aplicar capa
+          </button>
+        ) : null}
+        {focusDirty ? (
+          <button type="button" className="vtt-btn" disabled={busy} onClick={() => void saveFocusOnly()}>
+            Salvar enquadramento
           </button>
         ) : null}
         {coverUrl ? (
