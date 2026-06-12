@@ -1,5 +1,6 @@
 /** Limit concurrent WebGL dice renderers — browsers cap ~16 contexts per tab. */
-const MAX_ACTIVE = 6;
+/** Só combate/roller (lg) usam WebGL — 2 é suficiente com fila de FX. */
+const MAX_ACTIVE = 2;
 
 let active = 0;
 

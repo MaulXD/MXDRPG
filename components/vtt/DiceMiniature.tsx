@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { parsePrimaryDie } from "@/lib/room/chat-events";
+import { Dice2DFallback } from "@/components/vtt/Dice2DFallback";
 import { Dice3DScene } from "@/components/vtt/Dice3DScene";
 
 type Props = {
@@ -47,12 +48,17 @@ export function DiceMiniature({ formula, value, rolling = false, size = "md" }: 
     .filter(Boolean)
     .join(" ");
 
-  const showOverlay = rolling || value == null;
+  /** WebGL só no dado grande (combate / roller) — chat sm não consome contexto. */
+  const useWebGL = size === "lg";
+  const showOverlay = !useWebGL && (rolling || value == null);
 
   return (
     <div className={wrapClass} role="img" aria-label={`d${sides}: ${display}`}>
       <div className="dice-3d-stage">
-        <Dice3DScene sides={sides} value={value} rolling={rolling} sizePx={px} />
+        <Dice2DFallback display={display} rolling={rolling} />
+        {useWebGL ? (
+          <Dice3DScene sides={sides} value={value} rolling={rolling} sizePx={px} />
+        ) : null}
         {showOverlay ? (
           <span className="dice-3d-face dice-3d-face--overlay" aria-hidden>
             {display}
