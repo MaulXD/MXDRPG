@@ -333,6 +333,9 @@ export async function executeRoomAbility(
         : resolved.kind === "heal" || resolved.kind === "ally_buff"
           ? resolved.summary
           : action.name;
+    const hpBefore = defender?.vida ?? attacker.vida ?? 0;
+    const hpAfter =
+      resolved.kind === "heal" ? resolved.defenderHpAfter : defender?.vida ?? attacker.vida ?? 0;
     appendRoomChatMessage(room, {
       ...author,
       kind: "combat",
@@ -342,13 +345,11 @@ export async function executeRoomAbility(
         defenderTokenId: defId,
         actionKind: "ability",
         weaponName: action.name,
-        damageTotal:
-          resolved.kind === "heal"
-            ? null
-            : null,
-        defenderHpBefore: defender?.vida ?? attacker.vida ?? 0,
-        defenderHpAfter:
-          resolved.kind === "heal" ? resolved.defenderHpAfter : defender?.vida ?? attacker.vida ?? 0,
+        damageTotal: null,
+        attackerHeal:
+          resolved.kind === "heal" ? Math.max(0, hpAfter - hpBefore) : undefined,
+        defenderHpBefore: hpBefore,
+        defenderHpAfter: hpAfter,
         detail: text,
       },
     });

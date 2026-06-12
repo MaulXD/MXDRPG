@@ -79,7 +79,14 @@ export function mergeBonusIntoDamage(
   };
 }
 
-export function appendHealToSummary(summary: string, heal: number): string {
+export function appendHealToSummary(
+  summary: string,
+  heal: number,
+  sourceLabel?: string
+): string {
   if (heal <= 0) return summary;
-  return `${summary} · +${heal} HP (arma)`;
+  const src = sourceLabel?.trim();
+  return src
+    ? `${summary} · recupera +${heal} HP (${src})`
+    : `${summary} · recupera +${heal} HP`;
 }

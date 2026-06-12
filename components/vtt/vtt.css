@@ -3162,6 +3162,37 @@
   box-shadow: 0 4px 16px rgba(184, 146, 46, 0.2);
 }
 
+.combat-chat-card--heal {
+  border-color: rgba(42, 122, 66, 0.35);
+  background: linear-gradient(165deg, #eef6ef 0%, #e2efe4 100%);
+}
+
+.combat-chat-card--heal .combat-chat-card__result-value {
+  color: #2a7a42;
+}
+
+.combat-chat-card--heal .combat-chat-card__result-caption {
+  color: rgba(42, 122, 66, 0.65);
+}
+
+.combat-chat-card--buff {
+  border-color: rgba(90, 118, 168, 0.35);
+  background: linear-gradient(165deg, #eef2f8 0%, #e4eaf4 100%);
+}
+
+.combat-chat-card--buff .combat-chat-card__result-value {
+  color: #3d5a8a;
+}
+
+.combat-chat-card--debuff {
+  border-color: rgba(120, 80, 140, 0.3);
+  background: linear-gradient(165deg, #f4eef8 0%, #ebe2f0 100%);
+}
+
+.combat-chat-card--debuff .combat-chat-card__result-value {
+  color: #6a4080;
+}
+
 .combat-chat-card__header {
   display: flex;
   align-items: flex-start;
@@ -3360,6 +3391,11 @@
   height: 100%;
   border-radius: 3px;
   transition: width 0.2s ease;
+}
+
+.combat-chat-card__hp-label--heal {
+  color: #2a7a42;
+  font-weight: 600;
 }
 
 .combat-chat-card__hp-label {

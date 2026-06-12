@@ -198,10 +198,11 @@ export function resolveConsumableUse(
 
   const inventory = decrementInventory(actor.inventory, consumable.instanceId);
   const detail = effectNotes.join(" · ") || consumable.description;
+  const healApplied = Math.max(0, hpAfter - hpBefore);
   const summary =
     healRoll != null
-      ? `${actor.name} bebe ${consumable.name} — +${healRoll.total} HP (${hpBefore}→${hpAfter})`
-      : `${actor.name} usa ${consumable.name} — ${detail}`;
+      ? `${actor.name} usa ${consumable.name} — recupera +${healApplied} HP (${hpBefore} → ${hpAfter})`
+      : `${actor.name} usa ${consumable.name} — ${effectNotes[0] ?? detail.split(" · ")[0] ?? consumable.name}`;
 
   const tokenPatch: Partial<BattleToken> = {};
   const buffFields = [

@@ -235,7 +235,13 @@ function applyHitSpecialsToResolution(
       : atkHpBefore;
 
   let summary = res.summary;
-  if (fx.attackerHeal > 0) summary = appendHealToSummary(summary, fx.attackerHeal);
+  if (fx.attackerHeal > 0) {
+    summary = appendHealToSummary(
+      summary,
+      fx.attackerHeal,
+      fx.notes.length ? fx.notes.join(", ") : undefined
+    );
+  }
 
   return {
     ...res,

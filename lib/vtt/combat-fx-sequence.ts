@@ -37,9 +37,11 @@ function combatFxFromMessage(
   const c = msg.combat;
   const weaponName = c.weaponName ?? "";
   const detail = c.detail ?? "";
+  const blob = `${weaponName} ${detail}`.toLowerCase();
   const isHeal =
-    c.actionKind === "ability" &&
-    (weaponName.toLowerCase().includes("cura") || detail.toLowerCase().includes("cura"));
+    (c.attackerHeal != null && c.attackerHeal > 0 && !c.damageTotal) ||
+    (c.actionKind === "ability" &&
+      (blob.includes("cura") || blob.includes("poção") || blob.includes("pocao")));
   const castResolved = resolveCastFxFromCombat(msg);
   const castFxKind = castResolved?.kind ?? null;
 
