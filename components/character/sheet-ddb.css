@@ -84,6 +84,8 @@
   max-width: 100%;
   min-width: 0;
   align-self: stretch;
+  container-type: inline-size;
+  container-name: sheet-ddb;
   background: #e8e2d6;
   color: var(--ddb-ink);
   overflow: visible;
@@ -644,7 +646,7 @@
 .sheet-ddb-body {
   display: grid;
   /* Esquerda fixa (alinha com retrato do hero) · perícias · direita */
-  grid-template-columns: 108px minmax(10.25rem, 12.75rem) minmax(0, 1fr);
+  grid-template-columns: 108px minmax(0, 12rem) minmax(9.5rem, 1fr);
   gap: 0.45rem;
   padding: 0.45rem 0.5rem;
   width: 100%;
@@ -673,9 +675,21 @@
 
 .sheet-ddb-col--right {
   display: grid;
-  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+  grid-template-columns: repeat(2, minmax(8.25rem, 1fr));
   gap: 0.35rem;
   align-content: start;
+  min-width: 0;
+}
+
+.sheet-ddb-col--right .sheet-ddb-panel {
+  min-width: 0;
+  overflow: visible;
+}
+
+.sheet-ddb-col--right .sheet-ddb-saves,
+.sheet-ddb-col--right .sheet-ddb-trait-cards,
+.sheet-ddb-col--right .sheet-ddb-culinary {
+  min-width: 0;
 }
 
 .sheet-ddb-col--right .sheet-ddb-panel--saves {
@@ -1219,10 +1233,48 @@
 .sheet-ddb-progression {
   padding: 0 0.55rem;
   margin-top: 0.15rem;
+  position: relative;
+  z-index: 1;
+}
+
+/* Editor de retrato — modal centralizado (não sobrepõe a ficha) */
+.sheet-ddb-portrait-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 10060;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: rgba(12, 8, 10, 0.62);
+  backdrop-filter: blur(4px);
+}
+
+.sheet-ddb-portrait-modal {
+  position: relative;
+  width: min(320px, calc(100vw - 2rem));
+  max-height: min(90vh, 560px);
+  overflow: auto;
+  margin: 0;
+  border-radius: 12px;
+  border: 1px solid var(--ddb-panel-border);
+  background: var(--ddb-panel);
+  color: var(--ddb-ink);
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.45);
+}
+
+.sheet-ddb-portrait-modal .sheet-popup-portrait-editor__head strong {
+  color: var(--ddb-ink);
+}
+
+.sheet-ddb-portrait-modal .sheet-portrait-hint,
+.sheet-ddb-portrait-modal .portrait-focus-editor__hint {
+  color: var(--ddb-muted);
 }
 
 .sheet-ddb-progression .sheet-level-box {
   margin: 0;
+  overflow: hidden;
   border-color: var(--ddb-panel-border);
   background: linear-gradient(
     165deg,
@@ -1290,11 +1342,24 @@
     0 0 3px rgba(255, 255, 255, 0.55);
 }
 
+.sheet-ddb-progression .lu-trigger-row {
+  gap: 0.45rem;
+}
+
 .sheet-ddb-progression .lu-trigger-row .btn {
   color: var(--ddb-ink);
   background: #f0ebe2;
   border-color: var(--ddb-panel-border);
   box-shadow: none;
+  max-width: 100%;
+  white-space: normal;
+  text-align: center;
+  line-height: 1.25;
+}
+
+.sheet-ddb-progression .sheet-level-box__cta {
+  flex: 1 1 10rem;
+  min-width: 0;
 }
 
 .sheet-ddb-progression .lu-trigger-row .btn:disabled {
@@ -1580,6 +1645,48 @@
   overflow: visible;
 }
 
+@container foundry-sheet (max-width: 820px) {
+  .sheet-shell--ddb .sheet-ddb-body {
+    grid-template-columns: 108px minmax(0, 1fr);
+  }
+
+  .sheet-shell--ddb .sheet-ddb-col--skills {
+    grid-column: 1 / -1;
+    max-width: none;
+    width: 100%;
+  }
+
+  .sheet-shell--ddb .sheet-ddb-panel--skills {
+    max-width: none;
+  }
+
+  .sheet-shell--ddb .sheet-ddb-col--right {
+    grid-column: 1 / -1;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@container sheet-ddb (max-width: 820px) {
+  .sheet-ddb-body {
+    grid-template-columns: 108px minmax(0, 1fr);
+  }
+
+  .sheet-ddb-col--skills {
+    grid-column: 1 / -1;
+    max-width: none;
+    width: 100%;
+  }
+
+  .sheet-ddb-panel--skills {
+    max-width: none;
+  }
+
+  .sheet-ddb-col--right {
+    grid-column: 1 / -1;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
 @media (max-width: 900px) {
   .sheet-ddb-body {
     grid-template-columns: 108px minmax(0, 1fr);
@@ -1597,6 +1704,7 @@
 
   .sheet-ddb-col--right {
     grid-column: 1 / -1;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
