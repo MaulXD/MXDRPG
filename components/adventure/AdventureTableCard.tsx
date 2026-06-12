@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useCallback, useState } from "react";
 import type { AdventureListItem } from "@/lib/adventure/types";
 import {
   DEFAULT_PORTRAIT_FOCUS,
@@ -54,8 +55,19 @@ function MemberAvatar({
 }
 
 export function AdventureTableCard({ adventure, onDelete, deleteBusy }: Props) {
+  const [inviteCopied, setInviteCopied] = useState(false);
   const members = adventure.members ?? [];
   const onlineCount = adventure.onlineCount ?? members.filter((m) => m.online).length;
+
+  const copyInviteCode = useCallback(async () => {
+    try {
+      await navigator.clipboard.writeText(adventure.inviteCode);
+      setInviteCopied(true);
+      setTimeout(() => setInviteCopied(false), 2000);
+    } catch {
+      /* ignore */
+    }
+  }, [adventure.inviteCode]);
   const coverSrc = adventure.coverUrl?.trim() || DEFAULT_COVER;
   const coverFocus =
     sanitizePortraitFocus(adventure.coverFocus) ?? DEFAULT_PORTRAIT_FOCUS;
@@ -99,7 +111,6 @@ export function AdventureTableCard({ adventure, onDelete, deleteBusy }: Props) {
               </span>
               Abrir mesa
             </Link>
-            <span className="adventure-table-card__vtt-tag">VTT · miniaturas</span>
           </div>
         </header>
 
@@ -135,19 +146,30 @@ export function AdventureTableCard({ adventure, onDelete, deleteBusy }: Props) {
           </p>
         </div>
 
-        {adventure.isOwner && onDelete ? (
+        {adventure.isOwner ? (
           <footer className="adventure-table-card__footer">
-            <span className="adventure-table-card__invite">
-              Convite <code>{adventure.inviteCode}</code>
-            </span>
-            <button
-              type="button"
-              className="btn btn-ghost btn-sm adventure-table-card__delete"
-              disabled={deleteBusy}
-              onClick={onDelete}
-            >
-              Excluir mesa
-            </button>
+            <div className="adventure-table-card__invite-row">
+              <span className="adventure-table-card__invite">
+                Convite <code>{adventure.inviteCode}</code>
+              </span>
+              <button
+                type="button"
+                className="btn btn-ghost btn-sm adventure-table-card__copy"
+                onClick={() => void copyInviteCode()}
+              >
+                {inviteCopied ? "Copiado" : "Copiar"}
+              </button>
+            </div>
+            {onDelete ? (
+              <button
+                type="button"
+                className="btn btn-ghost btn-sm adventure-table-card__delete"
+                disabled={deleteBusy}
+                onClick={onDelete}
+              >
+                Excluir mesa
+              </button>
+            ) : null}
           </footer>
         ) : null}
       </div>
