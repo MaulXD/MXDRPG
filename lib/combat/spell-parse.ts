@@ -222,6 +222,7 @@ export function buildMagiaCombatAction(entry: CompendiumEntry): CombatActionOpti
   if (selfTarget) tags.push("self");
   if (allyTarget) tags.push("aliado");
   if (channel) tags.push("canalizável");
+  if (recharge) tags.push(recharge.label);
   if (targetCount > 1) tags.push(`${targetCount} alvos`);
 
   const spellLevel = spell?.nivel ?? 1;

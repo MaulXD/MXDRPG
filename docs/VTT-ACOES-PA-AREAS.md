@@ -11,10 +11,12 @@ Toda ação na mesa deve exibir **PA efetivo** (não só o custo bruto do JSON):
 
 | Fonte | Função | UI |
 |-------|--------|-----|
-| Compêndio | `tactical.custoPontosAcao.value` | Custo base (padrão **2 PA** se omitido) |
+| Compêndio | `tactical.custoPontosAcao.value` | Custo base **1, 2 ou 3 PA** (ataque arma padrão **2 PA** se omitido) |
+| Compêndio | `spell.recarga` / `ability.recarga` | `1/turno` ou `1/combate` — tag no picker |
 | Motor | `effectivePaCost(actor, action, ctx?)` | Custo após talentos / Afinidade / Guerreiro |
 | Motor | `totalAttackPaCost` | Multi-ataque arma |
 | Motor | `paMaxForActor` (PC) / `MONSTER_PA_MIN` 6 (NPC) + token `pa` | “Gasta X · restam Y” |
+| Turno | `scheduleAutoPassWhenActivePaZero` | **PA = 0** → passagem automática (~1,5 s) |
 
 **Chip padrão no hover/rodapé:**
 
@@ -30,22 +32,20 @@ PA: 2 → 1 (Afinidade) · Restam 4/6
 
 | Modo | PA | Implementação |
 |------|-----|----------------|
-| Movimentação | **Faixas** | `lib/vtt/movement-pa.ts` — 1º bloco (2 hex) = 1 PA; meio livre; corrida a partir de `walk+2` |
-| Limite de hex | walk / run | Por ficha/monstro; ex. walk 4 run 7: hex 1–2 → 1 PA; 3–5 livre; 6+ → PA corrida |
+| Movimentação | **Faixas** | `lib/vtt/movement-pa.ts` — 1º bloco = 1 PA; meio livre; corrida a partir de `walk+2` |
+| Alcance / preview | **Pés (D&D)** | `lib/vtt/movement-feet.ts` — BFS com diagonais 5/10 ft; não quadrado Chebyshev |
+| Caminho | Rota no grid | `lib/vtt/movement-path.ts` + `useBattlefieldHighlights` |
+| Limite | walk / run | Por ficha/monstro; ex. walk 4 run 7: cél. 1–2 → 1 PA; 3–5 livre; 6+ → PA corrida |
 
-Arquivo: `lib/vtt/movement.ts`.
+Arquivos: `lib/vtt/movement.ts`, `lib/vtt/movement-feet.ts`.
 
 ### UX (modo jogo)
 
-1. Botão **Caminhar** / **Correr** (já existe `move-walk` / `move-run`).
-2. Pintar hexes: verde = caminhada grátis; amarelo = precisa corrida (+1 PA).
-3. **Hover no hex destino:**
-   - `+0 PA` ou `+1 PA (corrida)`
-   - `Movimento: 3/6 hex (4,5/9 m)`
-   - Se `needsPa && pa < 1` → hex vermelho + “PA insuficiente”
-4. Clique confirma → `POST tokens/move`.
-
-**Gap:** `useBattlefieldHighlights` já tem `hoverMovePreview` — falta chip PA visível e cores distintas walk vs run-paid.
+1. Botão **Caminhar** / **Correr** (`move-walk` / `move-run`).
+2. Preview de alcance em **pés** ao longo de rota válida (obstáculos e ocupação).
+3. Células: verde = caminhada grátis; âmbar = corrida (+PA).
+4. **Hover no destino:** `+0 PA` / `+1 PA (corrida)` · metros restantes · PA insuficiente em vermelho.
+5. Clique confirma → `POST tokens/move`.
 
 ---
 

@@ -157,7 +157,7 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 2,
+          "value": 3,
           "min": 0
         }
       },
@@ -462,20 +462,20 @@
     "system": {
       "catalogId": "HAB-forma-selvagem",
       "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
-      "description": "<p>Prepara transformação biomágica (2 PA; Mestre valida a forma).</p>",
+      "description": "<p>Prepara transformação biomágica (3 PA; Mestre valida a forma).</p>",
       "tactical": {
         "alcanceHex": {
           "value": 0,
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 2,
+          "value": 3,
           "min": 0
         }
       },
       "ability": {
         "tipo": "ativa",
-        "recarga": ""
+        "recarga": "1/combate"
       }
     }
   },
@@ -1117,13 +1117,13 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 2,
+          "value": 3,
           "min": 0
         }
       },
       "ability": {
         "tipo": "ativa",
-        "recarga": ""
+        "recarga": "1/turno"
       }
     }
   },
@@ -1189,13 +1189,13 @@
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 2,
+          "value": 3,
           "min": 0
         }
       },
       "ability": {
         "tipo": "ativa",
-        "recarga": "1/combate"
+        "recarga": "1/turno"
       }
     }
   }
