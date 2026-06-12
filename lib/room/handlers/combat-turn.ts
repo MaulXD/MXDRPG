@@ -401,6 +401,13 @@ export async function advanceRoomTurn(
   const room = await getRoom(roomId);
   if (!room) return null;
 
+  if (!opts?.force) {
+    if (executePendingAutoPassIfDue(room)) {
+      return toSnapshot(await persistRoom(roomId, room, { skipAutoPassSchedule: true }));
+    }
+    return toSnapshot(room);
+  }
+
   const notices = applyTurnPaTransition(room);
   room.combat = { ...room.combat, notices };
 
