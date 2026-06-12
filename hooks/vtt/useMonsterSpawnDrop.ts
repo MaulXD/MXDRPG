@@ -14,6 +14,7 @@ import {
   readGmCreationSpawnDrag,
   readMonsterSpawnDrag,
 } from "@/lib/vtt/spawn-drag";
+import { resolveMonsterSpawnPlacement } from "@/lib/vtt/spawn-placement";
 import { placeRoomActorOnHex, spawnGmCreation, spawnRoomMonster } from "@/hooks/useRoomSync";
 import type { BattleScene } from "@/lib/vtt/types";
 
@@ -140,7 +141,7 @@ export function useMonsterSpawnDrop({
         if (!monsterPayload && !actorPayload && !gmPayload) {
           onError?.("Solte no mapa (arraste da lista Invocar, Personagens ou Minhas fichas).");
         } else {
-          onError?.("Hex inválido — solte sobre o tabuleiro.");
+          onError?.("Célula inválida — solte sobre o tabuleiro.");
         }
         return;
       }
@@ -148,22 +149,39 @@ export function useMonsterSpawnDrop({
 
       busyRef.current = true;
       try {
-        const snapshot = gmPayload
-          ? await spawnGmCreation(roomId, gmPayload.creationId, axial.q, axial.r)
-          : actorPayload
-            ? await placeRoomActorOnHex(roomId, actorPayload.actorId, axial.q, axial.r)
-            : await spawnRoomMonster(roomId, monsterPayload!.entryId, axial.q, axial.r, {
-                variant: monsterPayload!.variant,
-                groupLevelDelta: monsterPayload!.groupLevelDelta || undefined,
-              });
-        onSpawned(snapshot);
+        if (monsterPayload) {
+          const placement = resolveMonsterSpawnPlacement(scene, axial, monsterPayload.entryId, {
+            variant: monsterPayload.variant,
+            groupLevelDelta: monsterPayload.groupLevelDelta || undefined,
+          });
+          if (!placement.ok) {
+            onError?.(placement.reason);
+            return;
+          }
+          const snapshot = await spawnRoomMonster(
+            roomId,
+            monsterPayload.entryId,
+            placement.anchor.q,
+            placement.anchor.r,
+            {
+              variant: monsterPayload.variant,
+              groupLevelDelta: monsterPayload.groupLevelDelta || undefined,
+            }
+          );
+          onSpawned(snapshot);
+        } else {
+          const snapshot = gmPayload
+            ? await spawnGmCreation(roomId, gmPayload.creationId, axial.q, axial.r)
+            : await placeRoomActorOnHex(roomId, actorPayload!.actorId, axial.q, axial.r);
+          onSpawned(snapshot);
+        }
       } catch (err) {
         onError?.(err instanceof Error ? err.message : "Falha ao colocar no mapa");
       } finally {
         busyRef.current = false;
       }
     },
-    [dropZoneActive, enabled, allowActorDrop, axialFromEvent, reportHover, roomId, onSpawned, onError]
+    [dropZoneActive, enabled, allowActorDrop, axialFromEvent, reportHover, roomId, scene, onSpawned, onError]
   );
 
   return {

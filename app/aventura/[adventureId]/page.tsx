@@ -284,7 +284,7 @@ export default async function AventuraHubPage({ params, searchParams }: Props) {
 
           <Link href={`/mesa/${mesaId}`} className="btn btn-sm" style={{ marginTop: "0.5rem" }}>
 
-            Entrar na sala HEX
+            Entrar na sala VTT
 
           </Link>
 
@@ -318,7 +318,7 @@ export default async function AventuraHubPage({ params, searchParams }: Props) {
 
           Você ingressou nesta mesa. Ela permanece salva em{" "}
 
-          <Link href="/eldarin">Suas mesas</Link> — crie seu personagem e entre na sala HEX.
+          <Link href="/eldarin">Suas mesas</Link> — crie seu personagem e entre na sala VTT.
 
         </div>
 
@@ -330,7 +330,7 @@ export default async function AventuraHubPage({ params, searchParams }: Props) {
 
         <section className="glass-panel" style={{ padding: "1.25rem", marginBottom: "1rem" }}>
 
-          <h2 style={{ margin: "0 0 0.75rem", fontSize: "1rem" }}>Sala de jogo (HEX)</h2>
+          <h2 style={{ margin: "0 0 0.75rem", fontSize: "1rem" }}>Sala de jogo (VTT)</h2>
 
           <p style={{ color: "var(--text-muted)", fontSize: "0.9rem", margin: "0 0 1rem" }}>
 
@@ -340,7 +340,7 @@ export default async function AventuraHubPage({ params, searchParams }: Props) {
 
           <Link href={`/mesa/${adventure.primaryRoomId}`} className="btn">
 
-            Entrar na sala HEX
+            Entrar na sala VTT
 
           </Link>
 
@@ -417,7 +417,7 @@ export default async function AventuraHubPage({ params, searchParams }: Props) {
 
               <p style={{ color: "var(--text-muted)", margin: "0 0 1rem" }}>
 
-                Nenhuma ficha de jogador ainda — eles criam na sala HEX ou aqui.
+                Nenhuma ficha de jogador ainda — eles criam na sala VTT ou aqui.
 
               </p>
 
@@ -429,13 +429,13 @@ export default async function AventuraHubPage({ params, searchParams }: Props) {
 
           <section className="glass-panel" style={{ padding: "1.25rem", marginBottom: "1rem" }}>
 
-            <h2 style={{ margin: "0 0 0.75rem", fontSize: "1rem" }}>Sala HEX (mestre)</h2>
+            <h2 style={{ margin: "0 0 0.75rem", fontSize: "1rem" }}>Sala VTT (mestre)</h2>
 
             <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem" }}>
 
               <Link href={`/mesa/${adventure.primaryRoomId}`} className="btn">
 
-                Abrir sala HEX
+                Abrir sala VTT
 
               </Link>
 
@@ -467,7 +467,7 @@ export default async function AventuraHubPage({ params, searchParams }: Props) {
 
           Máx. {MAX_CHARACTERS_PER_USER_PER_ADVENTURE} por jogador nesta mesa — vinculado à conta{" "}
 
-          <strong>{accountUser.nickname?.trim() || accountUser.name}</strong>. Crie na sala HEX ou aqui.
+          <strong>{accountUser.nickname?.trim() || accountUser.name}</strong>. Crie na sala VTT ou aqui.
 
         </p>
 

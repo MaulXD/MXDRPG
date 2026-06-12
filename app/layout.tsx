@@ -37,9 +37,9 @@ const cinzel = Cinzel({
 });
 
 export const metadata: Metadata = {
-  title: "Eldarin — VTT tático hexagonal",
+  title: "Eldarin — VTT tático",
   description:
-    "Mesa virtual no navegador: combaté hex, PA, fichas medievais. Admin, Mestre e Jogador.",
+    "Mesa virtual no navegador: combate em grid, PA, fichas medievais. Admin, Mestre e Jogador.",
   applicationName: "Eldarin",
   appleWebApp: {
     capable: true,

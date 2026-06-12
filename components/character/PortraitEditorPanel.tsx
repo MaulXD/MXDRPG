@@ -273,7 +273,7 @@ export const PortraitEditorPanel = forwardRef<PortraitEditorPanelHandle, Props>(
             )}
           </div>
           <strong>Token</strong>
-          <span>Mapa hex</span>
+          <span>Mapa VTT</span>
         </button>
       </div>
 

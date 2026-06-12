@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { EldarinLogo } from "@/components/brand/EldarinLogo";
-import { HexPreview } from "@/components/home/HexPreview";
 import { HomeFeatureIcon, type HomeFeatureIconName } from "@/components/ui/EldarinIcons";
 
 const features: Array<{
@@ -10,15 +9,15 @@ const features: Array<{
   text: string;
 }> = [
   {
-    icon: "hex",
+    icon: "target",
     slug: "vtt",
     title: "VTT no navegador",
     text: "Mesa virtual própria — zero instalação, zero dependência de apps de terceiros.",
   },
   {
-    icon: "target",
+    icon: "move",
     slug: "grid",
-    title: "Grid hexagonal",
+    title: "Grid tático",
     text: "Movimento tático com faixas visuais: caminhada verde, corrida âmbar, PA automático.",
   },
   {
@@ -45,7 +44,7 @@ export default function HomePage() {
           </h1>
           <p className="eyebrow landing-hero__eyebrow">VTT proprietário</p>
           <p className="lead landing-hero__lead">
-            Sua mesa virtual de fantasia: combaté em hexágonos, pontos de ação e fichas com
+            Sua mesa virtual de fantasia: combate tático em grid, pontos de ação e fichas com
             identidade visual única — direto no navegador.
           </p>
           <div className="hero-actions landing-hero__actions">
@@ -56,17 +55,14 @@ export default function HomePage() {
               Demo ao vivo
             </Link>
           </div>
-          <div className="landing-hero__visual" aria-hidden>
-            <HexPreview />
-          </div>
         </div>
       </section>
 
       <section className="page-wrap section-tight">
         <div className="glass stats-strip">
           <div>
-            <div className="stat-value">Hex</div>
-            <div className="stat-label">Grid tático</div>
+            <div className="stat-value">Grid</div>
+            <div className="stat-label">Combate tático</div>
           </div>
           <div>
             <div className="stat-value">PA</div>
@@ -109,7 +105,7 @@ export default function HomePage() {
             Abra a mesa demo, arraste tokens e teste caminhada vs corrida em segundos.
           </p>
           <Link href="/mesa/demo" prefetch={false} className="btn btn-primary">
-            Abrir mesa hex
+            Abrir mesa demo
           </Link>
         </div>
       </section>

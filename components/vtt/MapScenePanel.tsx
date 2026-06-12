@@ -42,7 +42,7 @@ export function MapScenePanel({ roomId, scene, onUpdated }: Props) {
     try {
       const snapshot = await patchRoomScene(roomId, { revealedHexes: [] });
       onUpdated(snapshot);
-      setMsg("Fog resetada (nenhum hex revelado).");
+      setMsg("Fog resetada (nenhuma célula revelada).");
     } catch (e) {
       setMsg(e instanceof Error ? e.message : "Erro");
     } finally {
@@ -71,8 +71,8 @@ export function MapScenePanel({ roomId, scene, onUpdated }: Props) {
         Fog of war ativa
       </label>
       <p className="vtt-combat-hint">
-        Alt+clique no mapa: ping (todos veem). Com fog: Ctrl+clique revela hex. Movimento dos tokens
-        revela o hex onde param.
+        Alt+clique no mapa: ping (todos veem). Com fog: Ctrl+clique revela célula. Movimento dos tokens
+        revela a célula onde param.
       </p>
       <div className="vtt-map-panel-actions">
         <button type="button" className="vtt-btn" disabled={busy} onClick={() => void applyMap()}>

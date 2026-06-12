@@ -53,7 +53,7 @@ export const WizardPortraitStep = forwardRef<WizardPortraitStepHandle, Props>(
     return (
       <div className="wizard-portrait">
         <p className="char-wizard-meta" style={{ marginTop: 0, marginBottom: "1rem" }}>
-          Envie uma imagem ou pule este passo — o retrato aparece na ficha e o token no mapa hex.
+          Envie uma imagem ou pule este passo — o retrato aparece na ficha e o token no mapa.
           Ao avançar, a imagem escolhida é aplicada automaticamente (ou use &quot;Aplicar retrato +
           token&quot; antes).
         </p>

@@ -163,11 +163,11 @@ export function MonsterCompendiumSheet({ entryId, onClose, variant = "dialog" }:
               </div>
               <div className="monster-sheet__vital">
                 <span className="monster-sheet__vital-label">Caminhada</span>
-                <strong>{template.walk} hex</strong>
+                <strong>{template.walk} cél.</strong>
               </div>
               <div className="monster-sheet__vital">
                 <span className="monster-sheet__vital-label">Corrida</span>
-                <strong>{template.run} hex</strong>
+                <strong>{template.run} cél.</strong>
               </div>
             </div>
 

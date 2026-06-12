@@ -7,6 +7,7 @@ import { listMonsterTemplates, scaleMonsterTemplate } from "@/lib/vtt/monsters";
 import { CREATURE_SIZE_HEX_LABEL, CREATURE_SIZE_PT } from "@/lib/vtt/monster-sizes";
 import type { MonsterSpawnVariant } from "@/lib/vtt/monster-scaling";
 import { clearActiveSpawnDragPayload, writeMonsterSpawnDrag } from "@/lib/vtt/spawn-drag";
+import { resolveMonsterSpawnPlacement } from "@/lib/vtt/spawn-placement";
 import { CompendiumIcon } from "@/components/compendium/CompendiumIcon";
 import { compendiumTypeColor } from "@/lib/compendium/icons";
 import { spawnRoomMonster } from "@/hooks/useRoomSync";
@@ -20,6 +21,7 @@ import "@/components/compendium/monster-sheet.css";
 
 type Props = {
   roomId: string;
+  scene: import("@/lib/vtt/types").BattleScene;
   spawnAxial: Axial | null;
   onSpawned: (snapshot: RoomSnapshot) => void;
   onOpenMonsterSheet?: (entryId: string) => void;
@@ -31,7 +33,7 @@ const VARIANT_LABEL: Record<MonsterSpawnVariant, string> = {
   colossal: "Colossal (×2 HP, +PA)",
 };
 
-export function MonsterSpawnPanel({ roomId, spawnAxial, onSpawned, onOpenMonsterSheet }: Props) {
+export function MonsterSpawnPanel({ roomId, scene, spawnAxial, onSpawned, onOpenMonsterSheet }: Props) {
   const monsters = listMonsterTemplates();
   const [biomeFilter, setBiomeFilter] = useState<"all" | DungeonBiomeId>("all");
   const [entryId, setEntryId] = useState(monsters[0]?.entryId ?? "");
@@ -60,7 +62,18 @@ export function MonsterSpawnPanel({ roomId, spawnAxial, onSpawned, onOpenMonster
     setBusy(true);
     setMsg(null);
     try {
-      const snapshot = await spawnRoomMonster(roomId, monsterId, axial.q, axial.r, spawnOpts);
+      const placement = resolveMonsterSpawnPlacement(scene, axial, monsterId, spawnOpts);
+      if (!placement.ok) {
+        setMsg(placement.reason);
+        return;
+      }
+      const snapshot = await spawnRoomMonster(
+        roomId,
+        monsterId,
+        placement.anchor.q,
+        placement.anchor.r,
+        spawnOpts
+      );
       const placed = snapshot.scene.tokens[snapshot.scene.tokens.length - 1];
       setMsg(`${placed?.name ?? "Monstro"} colocado na mesa.`);
       onSpawned(snapshot);
@@ -121,7 +134,7 @@ export function MonsterSpawnPanel({ roomId, spawnAxial, onSpawned, onOpenMonster
     <div className="vtt-spawn-panel">
       <p className="vtt-eyebrow">Invocar monstro</p>
       <p className="vtt-combat-hint vtt-spawn-drag-hint">
-        Arraste um monstro da lista para o tabuleiro (solte no hex). O token aparece como o Goblin —
+        Arraste um monstro da lista para o tabuleiro (solte na célula). O token aparece como o Goblin —
         com nome, vida, PA e ações do compêndio.
       </p>
 
@@ -243,8 +256,8 @@ export function MonsterSpawnPanel({ roomId, spawnAxial, onSpawned, onOpenMonster
 
       <p className="vtt-combat-hint">
         {spawnAxial
-          ? `Hex alvo: q${spawnAxial.q}, r${spawnAxial.r}`
-          : "Passe o mouse no mapa ou solte o monstro em um hex."}
+          ? `Célula alvo: q${spawnAxial.q}, r${spawnAxial.r}`
+          : "Passe o mouse no mapa ou solte o monstro em uma célula."}
       </p>
 
       <button type="button" className="btn" disabled={busy || !spawnAxial} onClick={spawn}>

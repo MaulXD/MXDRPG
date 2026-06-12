@@ -8,7 +8,7 @@ export default async function MesaIndexPage() {
     <div className="page-wrap">
       <h1 className="neon-title">Mesa virtual</h1>
       <p style={{ color: "var(--text-muted)", maxWidth: 560, lineHeight: 1.6 }}>
-        Grade hexagonal, tokens, PA e combaté Eldarin no navegador. Experimente a demo pública ou crie sua mesa com
+        Grade quadrada, tokens, PA e combaté Eldarin no navegador. Experimente a demo pública ou crie sua mesa com
         conta.
       </p>
       <div className="action-row" style={{ marginTop: "1rem" }}>

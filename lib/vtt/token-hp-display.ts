@@ -264,7 +264,7 @@ export function drawTokenWalkRemainingBadge(
   walkHex: number,
   metersLabel: string
 ): void {
-  const label = `${walkHex} hex`;
+  const label = `${walkHex} cél.`;
   const padX = 8;
   const boxH = 26;
   const gap = 10;

@@ -15,7 +15,7 @@ import { nextMonsterDisplayName } from "@/lib/vtt/monster-display-name";
 import { ensureCombatActiveHasPa } from "./combat-turn";
 import type { Axial } from "@/lib/vtt/hex-math";
 import type { CharacterSheet } from "@/lib/character/types";
-import { canAnchorTokenAt } from "@/lib/vtt/dungeon-layer";
+import { resolveSpawnAnchor } from "@/lib/vtt/dungeon-layer";
 import { getRoom, persistRoom, toSnapshot } from "../internal/registry";
 import type { RoomSnapshot } from "../types";
 import type { SpawnExecuteResult } from "./tokens";
@@ -104,21 +104,26 @@ export async function spawnRoomGmCreation(
   if (creation.kind === "creature") {
     const token = createCreatureTokenFromGmCreation(creation, axial);
     if (!token) return { ok: false, error: "Criatura inválida" };
-    if (!canAnchorTokenAt(room.scene, axial, { token })) {
-      return { ok: false, error: "Hex bloqueado ou ocupado" };
+    const anchor = resolveSpawnAnchor(room.scene, axial, { token });
+    if (!anchor) {
+      return { ok: false, error: "Célula bloqueada, ocupada ou sem espaço para a criatura" };
     }
+    const placed =
+      anchor.q === token.axial.q && anchor.r === token.axial.r
+        ? token
+        : { ...token, axial: anchor };
     const baseName =
       creation.source.type === "monster"
-        ? (creation.source.label ?? token.name.replace(/\s*\(custom\)\s*$/i, ""))
-        : token.name.replace(/\s*\(custom\)\s*$/i, "");
-    token.name = nextMonsterDisplayName(room.scene.tokens, baseName || "Monstro");
-    room.scene = { ...room.scene, tokens: [...room.scene.tokens, token] };
+        ? (creation.source.label ?? placed.name.replace(/\s*\(custom\)\s*$/i, ""))
+        : placed.name.replace(/\s*\(custom\)\s*$/i, "");
+    placed.name = nextMonsterDisplayName(room.scene.tokens, baseName || "Monstro");
+    room.scene = { ...room.scene, tokens: [...room.scene.tokens, placed] };
     if (room.combat?.order) {
-      room.combat = { ...room.combat, order: [...room.combat.order, token.id] };
+      room.combat = { ...room.combat, order: [...room.combat.order, placed.id] };
       ensureCombatActiveHasPa(room);
     }
     const updated = await persistRoom(roomId, room);
-    return { ok: true, snapshot: toSnapshot(updated), tokenId: token.id };
+    return { ok: true, snapshot: toSnapshot(updated), tokenId: placed.id };
   }
 
   const instance = npcInstanceFromGmCreation(creation, room);
@@ -126,13 +131,18 @@ export async function spawnRoomGmCreation(
 
   room.actors[instance.id] = instance;
   const token = createPlayerTokenFromActor(instance, axial);
-  if (!canAnchorTokenAt(room.scene, axial, { token })) {
-    return { ok: false, error: "Hex bloqueado ou ocupado" };
+  const anchor = resolveSpawnAnchor(room.scene, axial, { token });
+  if (!anchor) {
+    return { ok: false, error: "Célula bloqueada, ocupada ou sem espaço" };
   }
-  token.ownerRole = "mestre";
-  room.scene = { ...room.scene, tokens: [...room.scene.tokens, token] };
+  const placed =
+    anchor.q === token.axial.q && anchor.r === token.axial.r
+      ? token
+      : { ...token, axial: anchor };
+  placed.ownerRole = "mestre";
+  room.scene = { ...room.scene, tokens: [...room.scene.tokens, placed] };
   if (room.combat?.order) {
-    room.combat = { ...room.combat, order: [...room.combat.order, token.id] };
+    room.combat = { ...room.combat, order: [...room.combat.order, placed.id] };
   }
 
   const updated = await persistRoom(roomId, room);

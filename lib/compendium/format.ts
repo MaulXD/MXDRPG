@@ -52,7 +52,7 @@ export function entrySummary(system: Record<string, unknown>, type: string): str
   const tactical = system.tactical as Tactical | undefined;
 
   if (tactical?.alcanceHex?.value != null) {
-    lines.push(`Alcance ${tactical.alcanceHex.value} hex`);
+    lines.push(`Alcance ${tactical.alcanceHex.value} cél.`);
   }
   if (tactical?.custoPontosAcao?.value != null) {
     lines.push(`PA ${tactical.custoPontosAcao.value}`);

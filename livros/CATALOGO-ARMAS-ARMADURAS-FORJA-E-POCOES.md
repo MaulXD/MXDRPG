@@ -31,21 +31,23 @@ Cada entrada do compêndio inclui **descrição de uso** gerada por `scripts/gen
 
 **Referência na ficha:** `catalogId` (ex.: `WPN-S02`, `ARM-01-E2`) e `bookRef` apontando para este catálogo.
 
+**Alcance à distância (hex):** derivado do SRD/D&D 5e a **70%** — arco longo **21 hex** (32 m), arco curto **11 hex** (17 m), besta leve **11 hex**, besta pesada **14 hex**, besta de mão **4 hex**. Ver `lib/vtt/ranged-weapon-range.ts` e Livro do Jogador §14.1.
+
 ---
 
 ## Arcos longos (9) — ARC-L01 a ARC-L09
 
 | ID | Nome | Dano | Alcance hex |
 |----|------|------|-------------|
-| ARC-L01 | Arco Longo de Vinha | 1d8 | 5 |
-| ARC-L02 | Arco Longo de Teixo | 1d8 | 5 |
-| ARC-L03 | Arco Longo de Grimwald | 1d8 | 6 |
-| ARC-L04 | Arco Longo de Prata | 1d8 | 6 |
-| ARC-L05 | Arco Longo de Cripta | 1d8 | 5 |
-| ARC-L06 | Arco Longo de Osso de Grifo | 1d10 | 6 |
-| ARC-L07 | Arco Longo de Dragão | 1d10 | 5 |
-| ARC-L08 | Arco Longo de Abismo | 1d8 | 7 |
-| ARC-L09 | Arco Longo de Valdrun | 1d10 | 6 |
+| ARC-L01 | Arco Longo de Vinha | 1d8 | 21 |
+| ARC-L02 | Arco Longo de Teixo | 1d8 | 21 |
+| ARC-L03 | Arco Longo de Grimwald | 1d8 | 21 |
+| ARC-L04 | Arco Longo de Prata | 1d8 | 21 |
+| ARC-L05 | Arco Longo de Cripta | 1d8 | 21 |
+| ARC-L06 | Arco Longo de Osso de Grifo | 1d10 | 23 |
+| ARC-L07 | Arco Longo de Dragão | 1d10 | 21 |
+| ARC-L08 | Arco Longo de Abismo | 1d8 | 24 |
+| ARC-L09 | Arco Longo de Valdrun | 1d10 | 22 |
 
 Cada linha existe em **+0, +1, +2, +3** (36 entradas VTT).
 
@@ -55,15 +57,15 @@ Cada linha existe em **+0, +1, +2, +3** (36 entradas VTT).
 
 | ID | Nome | Dano | Alcance hex |
 |----|------|------|-------------|
-| ARC-C01 | Arco Curto de Caçador | 1d6 | 4 |
-| ARC-C02 | Arco Curto de Teixo | 1d6 | 4 |
-| ARC-C03 | Arco Curto de Goblin | 1d6 | 3 |
-| ARC-C04 | Arco Curto de Cripta | 1d6 | 4 |
-| ARC-C05 | Arco Curto de Costela | 1d8 | 4 |
-| ARC-C06 | Arco Curto de Matriarca | 1d6 | 5 |
-| ARC-C07 | Arco Curto de Ninho | 1d6 | 4 |
-| ARC-C08 | Arco Curto de Marfim | 1d6 | 4 |
-| ARC-C09 | Arco Curto de Valdrun | 1d8 | 5 |
+| ARC-C01 | Arco Curto de Caçador | 1d6 | 11 |
+| ARC-C02 | Arco Curto de Teixo | 1d6 | 11 |
+| ARC-C03 | Arco Curto de Goblin | 1d6 | 9 |
+| ARC-C04 | Arco Curto de Cripta | 1d6 | 11 |
+| ARC-C05 | Arco Curto de Costela | 1d8 | 11 |
+| ARC-C06 | Arco Curto de Matriarca | 1d6 | 12 |
+| ARC-C07 | Arco Curto de Ninho | 1d6 | 11 |
+| ARC-C08 | Arco Curto de Marfim | 1d6 | 11 |
+| ARC-C09 | Arco Curto de Valdrun | 1d8 | 12 |
 
 Cada linha em **+0 a +3** (36 entradas VTT).
 
@@ -73,14 +75,14 @@ Cada linha em **+0 a +3** (36 entradas VTT).
 
 | ID | Nome | Dano | Alcance hex | Nota |
 |----|------|------|-------------|------|
-| BST-01 | Besta Leve | 1d8 | 6 | Recarga |
-| BST-02 | Besta de Mao | 1d6 | 3 | Leve |
-| BST-03 | Besta Pesada | 1d10 | 5 | Pesada |
-| BST-04 | Besta de Repetição | 1d8 | 5 | Recarga reduzida |
-| BST-05 | Besta de Assalto | 1d10 | 4 | Penetrante |
-| BST-06 | Besta de Caverna | 1d8 | 4 | Compacta |
-| BST-07 | Besta de Alcance | 1d10 | 7 | Pesada |
-| BST-08 | Besta de Engenharia | 1d10 | 6 | Artífice |
+| BST-01 | Besta Leve | 1d8 | 11 | Recarga |
+| BST-02 | Besta de Mao | 1d6 | 4 | Leve |
+| BST-03 | Besta Pesada | 1d10 | 14 | Pesada |
+| BST-04 | Besta de Repetição | 1d8 | 11 | Recarga reduzida |
+| BST-05 | Besta de Assalto | 1d10 | 11 | Penetrante |
+| BST-06 | Besta de Caverna | 1d8 | 9 | Compacta |
+| BST-07 | Besta de Alcance | 1d10 | 21 | Pesada |
+| BST-08 | Besta de Engenharia | 1d10 | 14 | Artífice |
 
 Cada linha em **+0 a +3** (32 entradas VTT).
 
@@ -114,11 +116,11 @@ Cada linha em **+0 a +3** (48 entradas VTT).
 | WPN-P01 | Lança Curta | 1d6 perf. | 1 |
 | WPN-P02 | Lança Longa | 1d10 perf. | 2 |
 | WPN-P03 | Pique de Falange | 1d10 perf. | 2 |
-| WPN-P04 | Azagaia | 1d6 perf. | 3 |
+| WPN-P04 | Azagaia | 1d6 perf. | 4 |
 | WPN-P05 | Tridente | 1d6 perf. | 1 |
 | WPN-P06 | Alabarda | 1d10 cort. | 2 |
 | WPN-P07 | Lança de Cavalaria | 1d8 perf. | 2 |
-| WPN-P08 | Javelin de Caça | 1d6 perf. | 3 |
+| WPN-P08 | Javelin de Caça | 1d6 perf. | 4 |
 | WPN-P09 | Lança de Teixo | 1d8 perf. | 2 |
 | WPN-P10 | Lança de Valdrun | 1d10 perf. | 2 |
 

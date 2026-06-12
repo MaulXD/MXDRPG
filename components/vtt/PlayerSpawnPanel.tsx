@@ -187,7 +187,7 @@ export function PlayerSpawnPanel({
     <div className="vtt-spawn-panel vtt-spawn-panel--players">
       <p className="vtt-eyebrow">Personagens</p>
       <p className="vtt-combat-hint vtt-spawn-drag-hint">
-        Arraste o seu personagem (vivo) para o mapa ou clique com um hex selecionado.
+        Arraste o seu personagem (vivo) para o mapa ou clique com uma célula selecionada.
       </p>
 
       <ul className="vtt-spawn-drag-list" role="list">
@@ -262,8 +262,8 @@ export function PlayerSpawnPanel({
 
       <p className="vtt-combat-hint">
         {spawnAxial
-          ? `Hex alvo: q${spawnAxial.q}, r${spawnAxial.r}`
-          : "Passe o mouse no mapa ou solte o personagem em um hex."}
+          ? `Célula alvo: q${spawnAxial.q}, r${spawnAxial.r}`
+          : "Passe o mouse no mapa ou solte o personagem em uma célula."}
       </p>
 
       {msg ? <p className="sheet-inline-msg">{msg}</p> : null}

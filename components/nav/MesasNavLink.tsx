@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { IconHex } from "@/components/ui/EldarinIcons";
+import { IconShield } from "@/components/ui/EldarinIcons";
 import { isMesasNavActive, MESAS_HUB_PATH } from "@/lib/rpg/systems";
 
 type Props = {
@@ -21,7 +21,7 @@ export function MesasNavLink({ variant = "site" }: Props) {
       aria-current={active ? "page" : undefined}
       title="Hub de mesas e RPGs"
     >
-      <IconHex size={18} className="nav-link__icon" />
+      <IconShield size={18} className="nav-link__icon" />
       <span className="nav-link__label">Mesas</span>
     </Link>
   );

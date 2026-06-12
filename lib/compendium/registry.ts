@@ -26,7 +26,7 @@ export const COMPENDIUM_PACKS: CompendiumPackMeta[] = [
   {
     id: "armas",
     label: "Armas",
-    description: "Armas corpo a corpo e à distância com alcance hex e PA.",
+    description: "Armas corpo a corpo e à distância com alcance em células e PA.",
     documentKind: "item",
     roles: "public",
   },

@@ -1,6 +1,12 @@
 import type { Axial } from "@/lib/vtt/hex-math";
 import { inSquareGrid } from "@/lib/vtt/hex-math";
-import { creatureSizeOf, occupiedHexes, tokenOccupiesAxial, type CreatureSize } from "@/lib/vtt/creature-size";
+import {
+  anchorCandidatesForCell,
+  creatureSizeOf,
+  occupiedHexes,
+  tokenOccupiesAxial,
+  type CreatureSize,
+} from "@/lib/vtt/creature-size";
 import {
   axialKey,
   buildOccupancy,
@@ -99,6 +105,29 @@ export function canAnchorTokenAt(
   return canEnterHex(axial, moverSize, occupancy, scene.gridRadius);
 }
 
+/**
+ * Célula clicada → âncora NW válida (spawn / reposicionar criaturas multi-célula).
+ */
+export function resolveSpawnAnchor(
+  scene: Pick<BattleScene, "dungeonObjects" | "gridRadius" | "tokens">,
+  cell: Axial,
+  opts: AnchorTokenOpts
+): Axial | null {
+  const token = opts.token;
+  const moverRaca = token?.actorId ? opts.actorRacas?.[token.actorId] : undefined;
+  const size =
+    opts.moverSize ?? (token ? creatureSizeOf(token, moverRaca) : "medium");
+
+  if (size === "small" || size === "medium") {
+    return canAnchorTokenAt(scene, cell, opts) ? cell : null;
+  }
+
+  for (const anchor of anchorCandidatesForCell(cell, size)) {
+    if (canAnchorTokenAt(scene, anchor, opts)) return anchor;
+  }
+  return null;
+}
+
 export function canPlaceDungeonObjectAt(
   scene: Pick<BattleScene, "dungeonObjects" | "gridRadius" | "tokens">,
   axial: Axial,
@@ -117,7 +146,7 @@ export function addDungeonObject(
   axial: Axial
 ): { ok: true; objects: DungeonObject[] } | { ok: false; error: string } {
   if (!canPlaceDungeonObjectAt(scene, axial)) {
-    return { ok: false, error: "Hex inválido, ocupado por token ou já tem objeto" };
+    return { ok: false, error: "Célula inválida, ocupada por token ou já tem objeto" };
   }
   const objects = [...dungeonObjectsOf(scene)];
   const at = dungeonObjectAt(scene, axial);

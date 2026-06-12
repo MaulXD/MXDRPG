@@ -2,7 +2,6 @@ import Link from "next/link";
 import {
   IconBook,
   IconChat,
-  IconHex,
   IconHome,
   IconMove,
   IconRun,
@@ -16,7 +15,7 @@ import "./sistema.css";
 
 const LIVE = [
   "Instalar como aplicativo no Chrome (atalho na área de trabalho)",
-  "Mesa hex ao vivo com sync SSE (fallback poll)",
+  "Mesa VTT ao vivo com sync SSE (fallback poll)",
   "Combate: PA, movimento, ataque, habilidade, magias de área (cone/linha)",
   "Preview no mapa: PA, alcance, vantagem/desvantagem",
   "Iniciativa, condições, spawn do bestiário (69 espécies)",
@@ -70,7 +69,7 @@ const STEPS = [
     title: "Abra a sala VTT",
     text: (
       <>
-        Na aventura, abra a mesa hex. Compartilhe o link de convite para amigos entrarem como
+        Na aventura, abra a mesa VTT. Compartilhe o link de convite para amigos entrarem como
         jogadores ou visitantes (somente leitura).
       </>
     ),
@@ -120,14 +119,14 @@ const NAV_ITEMS = [
 
 const VTT_BASICS = [
   {
-    icon: IconHex,
+    icon: IconMove,
     title: "Tokens no mapa",
-    text: "Personagens e monstros aparecem como tokens nos hexágonos. Selecione na lista ou no mapa para ver vida, defesa e PA. Quem está na vez tem anel dourado.",
+    text: "Personagens e monstros aparecem como tokens no grid. Selecione na lista ou no mapa para ver vida, defesa e PA. Quem está na vez tem anel dourado.",
   },
   {
     icon: IconMove,
     title: "Movimento",
-    text: "No seu turno, clique direito no token para o anel de ações. Caminhada usa hexes gratuitos (verde); corrida além disso pode gastar 1 PA (âmbar). Esc para cancelar.",
+    text: "No seu turno, clique direito no token para o anel de ações. Caminhada usa células gratuitas (verde); corrida além disso pode gastar 1 PA (âmbar). Esc para cancelar.",
   },
   {
     icon: IconSword,
@@ -158,7 +157,7 @@ export default function SistemaPage() {
         <p className="eyebrow">Guia do jogador</p>
         <h1 className="display-lg text-gradient">Como jogar no Eldarin VTT</h1>
         <p className="lead">
-          Do cadastro à mesa hex: aprenda a navegar o site, entrar numa aventura e usar tokens,
+          Do cadastro à mesa VTT: aprenda a navegar o site, entrar numa aventura e usar tokens,
           movimento e combate por Pontos de Ação — alinhado ao livro Eldarin v4.
         </p>
       </header>
@@ -223,7 +222,7 @@ export default function SistemaPage() {
       <section className="glass sistema-section" style={{ padding: "1.25rem 1.5rem" }}>
         <h2>Na mesa VTT</h2>
         <p className="sistema-section__lead">
-          O essencial do jogo tático: mapa hexagonal, turnos e fichas integradas ao combate.
+          O essencial do jogo tático: grid quadrado, turnos e fichas integradas ao combate.
         </p>
         <div className="sistema-vtt-grid">
           {VTT_BASICS.map((card) => {

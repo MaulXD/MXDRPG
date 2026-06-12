@@ -12,7 +12,7 @@ import { createPlayerTokenFromActor } from "@/lib/vtt/player-token";
 import type { MonsterSpawnOptions } from "@/lib/vtt/monster-scaling";
 import type { BattleToken } from "@/lib/vtt/types";
 import { canActOnCombatTurn, TURN_WAIT_MSG } from "@/lib/combat/turn-guard";
-import { canAnchorTokenAt } from "@/lib/vtt/dungeon-layer";
+import { resolveSpawnAnchor } from "@/lib/vtt/dungeon-layer";
 import { revealAxial } from "@/lib/vtt/fog-of-war";
 import { characterBelongsToAdventure } from "@/lib/character/adventure-bind";
 import { ensureAdventureActorInRoom } from "@/lib/room/adventure-actors";
@@ -118,6 +118,11 @@ export async function moveRoomToken(
   );
   if (!check.ok) return { ok: false, error: check.reason ?? "Movimento inválido" };
 
+  const dest =
+    check.path && check.path.length > 0
+      ? check.path[check.path.length - 1]!
+      : target;
+
   maybeRecordCombatUndo(room, {
     tokenId: token.id,
     tokenName: token.name,
@@ -128,7 +133,7 @@ export async function moveRoomToken(
 
   let moved: BattleToken = {
     ...token,
-    axial: target,
+    axial: dest,
     movementSpentHex: opts.bypassTurn ? token.movementSpentHex ?? 0 : check.nextSpent,
   };
   if (!opts.bypassTurn) {
@@ -147,7 +152,7 @@ export async function moveRoomToken(
   tokens[idx] = moved;
   let scene = { ...room.scene, tokens };
   if (scene.fogEnabled) {
-    scene = revealAxial(scene, target);
+    scene = revealAxial(scene, dest);
   }
   room.scene = scene;
   syncActorPaFromToken(room, moved);
@@ -173,13 +178,17 @@ export async function spawnRoomMonster(
 
   token.name = nextMonsterDisplayName(room.scene.tokens, token.name);
 
-  if (!canAnchorTokenAt(room.scene, axial, { token })) {
-    return { ok: false, error: "Hex bloqueado ou ocupado" };
+  const anchor = resolveSpawnAnchor(room.scene, axial, { token });
+  if (!anchor) {
+    return { ok: false, error: "Célula bloqueada, ocupada ou sem espaço para o tamanho do monstro" };
   }
+  const placed = anchor.q === token.axial.q && anchor.r === token.axial.r
+    ? token
+    : { ...token, axial: anchor };
 
   room.scene = {
     ...room.scene,
-    tokens: [...room.scene.tokens, token],
+    tokens: [...room.scene.tokens, placed],
   };
 
   if (room.combat?.order) {
@@ -207,12 +216,16 @@ export async function repositionRoomToken(
   if (idx < 0) return { ok: false, error: "Token não encontrado" };
 
   const mover = room.scene.tokens[idx];
-  if (!canAnchorTokenAt(room.scene, target, { exceptTokenId: tokenId, token: mover })) {
-    return { ok: false, error: "Hex bloqueado, fora do tabuleiro ou ocupado" };
+  const anchor = resolveSpawnAnchor(room.scene, target, {
+    exceptTokenId: tokenId,
+    token: mover,
+  });
+  if (!anchor) {
+    return { ok: false, error: "Célula bloqueada, fora do mapa ou sem espaço para o token" };
   }
 
   const tokens = [...room.scene.tokens];
-  tokens[idx] = { ...tokens[idx], axial: target };
+  tokens[idx] = { ...tokens[idx], axial: anchor };
   room.scene = { ...room.scene, tokens };
 
   if (room.combat?.notices?.length) {
@@ -244,17 +257,16 @@ export async function placeRoomActorOnHex(
     (t) => t.linked && t.actorId === actorId
   );
   if (existing) {
-    if (
-      !canAnchorTokenAt(room.scene, target, {
-        exceptTokenId: existing.id,
-        token: existing,
-        actorRacas,
-      })
-    ) {
-      return { ok: false, error: "Hex bloqueado, fora do tabuleiro ou ocupado" };
+    const anchor = resolveSpawnAnchor(room.scene, target, {
+      exceptTokenId: existing.id,
+      token: existing,
+      actorRacas,
+    });
+    if (!anchor) {
+      return { ok: false, error: "Célula bloqueada, fora do mapa ou sem espaço para o personagem" };
     }
     const tokens = room.scene.tokens.map((t) =>
-      t.id === existing.id ? { ...t, axial: target } : t
+      t.id === existing.id ? { ...t, axial: anchor } : t
     );
     room.scene = { ...room.scene, tokens };
     const updated = await persistRoom(roomId, room);
@@ -262,12 +274,17 @@ export async function placeRoomActorOnHex(
   }
 
   const token = createPlayerTokenFromActor(actor, target);
-  if (!canAnchorTokenAt(room.scene, target, { token, actorRacas })) {
-    return { ok: false, error: "Hex bloqueado, fora do tabuleiro ou ocupado" };
+  const anchor = resolveSpawnAnchor(room.scene, target, { token, actorRacas });
+  if (!anchor) {
+    return { ok: false, error: "Célula bloqueada, fora do mapa ou sem espaço para o personagem" };
   }
+  const placed =
+    anchor.q === token.axial.q && anchor.r === token.axial.r
+      ? token
+      : { ...token, axial: anchor };
   room.scene = {
     ...room.scene,
-    tokens: [...room.scene.tokens, token],
+    tokens: [...room.scene.tokens, placed],
   };
   if (room.combat?.order) {
     room.combat = {

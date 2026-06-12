@@ -103,7 +103,7 @@ export function SpellPickerPanel({ spells, actor, token, onPick, onClose }: Prop
                             <span className="spell-picker__card-meta">
                               {spell.spellSchool ? `${spell.spellSchool} · ` : ""}
                               {pa} PA
-                              {spell.rangeHex ? ` · ${spell.rangeHex} hex` : ""}
+                              {spell.rangeHex ? ` · ${spell.rangeHex} cél.` : ""}
                             </span>
                           </button>
                         </li>

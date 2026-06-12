@@ -50,7 +50,7 @@ import {
 import { isTargetMode, type TokenActionMode } from "@/lib/vtt/action-mode";
 import { gridLodLevel, type GridLod } from "@/lib/vtt/canvas-lod";
 import type { BattleScene, BattleToken } from "@/lib/vtt/types";
-export type TokenFlashKind = "hit" | "miss" | "crit";
+export type TokenFlashKind = "hit" | "miss" | "crit" | "heal";
 
 export type CanvasLayout = {
   w: number;
@@ -163,6 +163,9 @@ type GridDrawParams = {
   spawnDropHover: boolean;
   /** Hexes do footprint ao arrastar spawn multi-hex (null = só hex sob cursor). */
   spawnDropFootprintKeys?: Set<string> | null;
+  /** Footprint de destino ao mover monstro/criatura multi-hex. */
+  moveHoverFootprintKeys?: Set<string> | null;
+  spawnDropInvalid?: boolean;
   pathCells: Axial[];
   pathDashPhase: number;
   /** null = todos os hexes visíveis (mestre ou fog desligado) */
@@ -240,15 +243,26 @@ export function drawHexGridLayer(ctx: CanvasRenderingContext2D, p: GridDrawParam
     const isHoverCell = p.hoverAxial?.q === cell.q && p.hoverAxial?.r === cell.r;
     const isSpawnHover =
       p.spawnDropHover &&
+      !p.spawnDropInvalid &&
       (p.spawnDropFootprintKeys != null
         ? p.spawnDropFootprintKeys.has(key)
         : isHoverCell);
+    const isSpawnInvalidHover =
+      p.spawnDropHover && p.spawnDropInvalid && isHoverCell;
+    const isMoveFootprintHover =
+      p.showMovement &&
+      p.moveHoverFootprintKeys != null &&
+      p.moveHoverFootprintKeys.has(key);
     if (
       isHoverCell &&
       p.showMovement &&
       p.hoverMovePreview &&
       !p.hoverMovePreview.ok
     ) {
+      fill = pal.invalidFill;
+      stroke = pal.invalidStroke;
+      lineWidth = 2.5;
+    } else if (isSpawnInvalidHover) {
       fill = pal.invalidFill;
       stroke = pal.invalidStroke;
       lineWidth = 2.5;
@@ -261,24 +275,24 @@ export function drawHexGridLayer(ctx: CanvasRenderingContext2D, p: GridDrawParam
       if (p.paidWalkSet.has(key)) {
         fill = pal.walkPaidFill;
         stroke = pal.walkPaidStroke;
+        lineWidth = 2.5;
       } else if (p.rangeSet.has(key) && !p.walkSet.has(key)) {
         fill = pal.runFill;
         stroke = pal.runStroke;
+        lineWidth = 2.5;
       } else if (p.walkSet.has(key)) {
         fill = pal.walkFill;
         stroke = pal.walkStroke;
-      } else {
-        fill = pal.hoverFill;
-        stroke = pal.hoverStroke;
+        lineWidth = 2.5;
       }
+    } else if (isMoveFootprintHover) {
+      fill = pal.walkFill;
+      stroke = pal.walkStroke;
       lineWidth = 2.5;
     } else if (isSpawnHover) {
       fill = pal.spawnFill;
       stroke = pal.spawnStroke;
       lineWidth = 2.5;
-    } else if (isHoverCell) {
-      stroke = pal.hoverStroke;
-      fill = pal.hoverFill;
     }
 
     const isMoveHighlight =
@@ -286,7 +300,7 @@ export function drawHexGridLayer(ctx: CanvasRenderingContext2D, p: GridDrawParam
       (p.walkSet.has(key) || p.paidWalkSet.has(key) || p.rangeSet.has(key));
     const isBaseHex = fill === pal.fill && stroke === pal.stroke && lineWidth === 1;
 
-    if (isBaseHex && !isHoverCell) continue;
+    if (isBaseHex) continue;
 
     ctx.beginPath();
     const corners = hexCorners(x, y, hexDrawRadius(hexSize));
@@ -475,9 +489,11 @@ function drawSingleToken(
       const flashColor =
         p.tokenFlash.kind === "crit"
           ? "rgba(232,160,32,0.95)"
-          : p.tokenFlash.kind === "hit"
-            ? "rgba(200,80,60,0.9)"
-            : "rgba(140,140,160,0.85)";
+          : p.tokenFlash.kind === "heal"
+            ? "rgba(80,220,140,0.92)"
+            : p.tokenFlash.kind === "hit"
+              ? "rgba(200,80,60,0.9)"
+              : "rgba(140,140,160,0.85)";
       ctx.beginPath();
       ctx.arc(x, y, r + 10, 0, Math.PI * 2);
       ctx.strokeStyle = flashColor;

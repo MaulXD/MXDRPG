@@ -3,6 +3,12 @@ import { applyPaSpend, checkCanSpendPa } from "@/lib/combat/pa-turn";
 import type { Axial } from "@/lib/vtt/hex-math";
 import { axialDistance } from "@/lib/vtt/hex-math";
 import { pathStepCount } from "@/lib/vtt/hex-path";
+import { cellsToFeet, pathFeetCost } from "@/lib/vtt/movement-feet";
+import {
+  creatureSizeOf,
+  isMultiHexCreatureSize,
+  occupiedHexes,
+} from "@/lib/vtt/creature-size";
 import {
   movementPathTo,
   reachableMovementDistances,
@@ -34,9 +40,13 @@ export function hexToMeters(hex: number): number {
   return Math.round(hex * METERS_PER_HEX * 10) / 10;
 }
 
+export function hexToFeet(hex: number): number {
+  return cellsToFeet(hex);
+}
+
 export function formatMovementLabel(spent: number, max: number): string {
   const left = Math.max(0, max - spent);
-  return `${left}/${max} células (${hexToMeters(left)}/${hexToMeters(max)} m)`;
+  return `${left}/${max} células (${hexToFeet(left)}/${hexToFeet(max)} ft)`;
 }
 
 export function movementSpent(token: BattleToken): number {
@@ -131,6 +141,20 @@ export function canMoveToken(
     }
     path = found;
     dist = pathStepCount(found);
+    const feetLeft =
+      mode === "walk" ? cellsToFeet(walkLeft) : cellsToFeet(runLeft);
+    if (pathFeetCost(found) > feetLeft + 0.001) {
+      return {
+        ok: false,
+        reason: `Fora do alcance (${pathFeetCost(found)} ft; restam ${feetLeft} ft)`,
+        dist,
+        paCost: 0,
+        needsPa: false,
+        nextSpent: spent,
+        nextPa: token.pa,
+        path,
+      };
+    }
   } else {
     dist = axialDistance(token.axial, target);
   }
@@ -238,6 +262,21 @@ export function reachableHexes(token: BattleToken, mode: MoveMode): number {
   return mode === "walk" ? walkRemaining(token) : runRemaining(token);
 }
 
+function expandAnchorKeysToFootprint(
+  anchorKeys: Iterable<string>,
+  size: ReturnType<typeof creatureSizeOf>
+): Set<string> {
+  if (!isMultiHexCreatureSize(size)) return new Set(anchorKeys);
+  const set = new Set<string>();
+  for (const key of anchorKeys) {
+    const [q, r] = key.split(",").map(Number);
+    for (const hex of occupiedHexes({ q, r }, size)) {
+      set.add(`${hex.q},${hex.r}`);
+    }
+  }
+  return set;
+}
+
 /** Células cujo movimento exige PA (BFS + faixas, sem pathfind por célula). */
 export function paidMovementHexKeys(
   token: BattleToken,
@@ -255,7 +294,7 @@ export function paidMovementHexKeys(
     ctx,
     ctx.actorRacas
   );
-  const set = new Set<string>();
+  const anchorKeys = new Set<string>();
   for (const [key, dist] of distMap) {
     if (dist === 0) continue;
     if (mode === "walk" && dist > walkLeft) continue;
@@ -269,7 +308,8 @@ export function paidMovementHexKeys(
       const paCheck = checkCanSpendPa(token, paCost);
       if (!paCheck.ok) continue;
     }
-    set.add(key);
+    anchorKeys.add(key);
   }
-  return set;
+  const moverRaca = token.actorId ? ctx.actorRacas?.[token.actorId] : undefined;
+  return expandAnchorKeysToFootprint(anchorKeys, creatureSizeOf(token, moverRaca));
 }

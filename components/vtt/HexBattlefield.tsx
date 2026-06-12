@@ -142,7 +142,7 @@ import {
 import { useBattlefieldPointer } from "@/hooks/vtt/useBattlefieldPointer";
 import { useMonsterSpawnDrop } from "@/hooks/vtt/useMonsterSpawnDrop";
 import { creatureSizeOf, occupiedHexes, tokenPixelCenter } from "@/lib/vtt/creature-size";
-import { resolveMonsterCreatureSize } from "@/lib/vtt/monster-sizes";
+import { resolveMonsterSpawnPlacement } from "@/lib/vtt/spawn-placement";
 import { getActiveSpawnDragPayload } from "@/lib/vtt/spawn-drag";
 import { paTurnRulesForActor } from "@/lib/combat/pa-economy";
 import { canMoveToken, type MovementPathContext } from "@/lib/vtt/movement";
@@ -770,14 +770,31 @@ export function HexBattlefield({
     viewRef: battlefieldView.viewRef,
   });
 
-  const spawnDropFootprintKeys = useMemo(() => {
+  const spawnDropPreview = useMemo(() => {
     if (!spawnDragActive || !hoverAxial) return null;
     const payload = getActiveSpawnDragPayload();
     if (!payload) return null;
-    const size = resolveMonsterCreatureSize(payload.entryId, "", { variant: payload.variant });
-    if (size === "small" || size === "medium") return null;
-    return new Set(occupiedHexes(hoverAxial, size).map((h) => `${h.q},${h.r}`));
-  }, [spawnDragActive, hoverAxial]);
+    const placement = resolveMonsterSpawnPlacement(displayScene, hoverAxial, payload.entryId, {
+      variant: payload.variant,
+      groupLevelDelta: payload.groupLevelDelta || undefined,
+    });
+    if (!placement.ok) {
+      return { valid: false as const, footprintKeys: null };
+    }
+    const size = placement.token.creatureSize ?? "medium";
+    if (size === "small" || size === "medium") {
+      return { valid: true as const, footprintKeys: null };
+    }
+    return {
+      valid: true as const,
+      footprintKeys: new Set(
+        occupiedHexes(placement.anchor, size).map((h) => `${h.q},${h.r}`)
+      ),
+    };
+  }, [spawnDragActive, hoverAxial, displayScene]);
+
+  const spawnDropFootprintKeys = spawnDropPreview?.footprintKeys ?? null;
+  const spawnDropInvalid = spawnDropPreview?.valid === false;
 
   const hoverTurnToken = listTokens.find((t) => t.id === hoverTokenId) ?? null;
   const hoverTurnActor =
@@ -803,6 +820,30 @@ export function HexBattlefield({
     combatHasOrder: Boolean(combat?.order?.length),
     gmRepositionActive: Boolean(gmDragTokenId),
   });
+
+  const moveHoverFootprintKeys = useMemo(() => {
+    const mover = isMoveMode(actionMode)
+      ? selected
+      : highlights.turnMovePreview
+        ? hoverTurnToken
+        : null;
+    if (!highlights.showMovement || !mover || !highlights.hoverMovePreview?.ok) return null;
+    const path = highlights.hoverMovePreview.path;
+    if (!path?.length) return null;
+    const dest = path[path.length - 1]!;
+    const raca = mover.actorId ? actorRacas[mover.actorId] : undefined;
+    const size = creatureSizeOf(mover, raca);
+    if (size === "small" || size === "medium") return null;
+    return new Set(occupiedHexes(dest, size).map((h) => `${h.q},${h.r}`));
+  }, [
+    actionMode,
+    selected,
+    highlights.turnMovePreview,
+    highlights.showMovement,
+    highlights.hoverMovePreview,
+    hoverTurnToken,
+    actorRacas,
+  ]);
 
   const onFloorDrag = useCallback((offsetX: number, offsetY: number) => {
     setFloorPreview((prev) => ({
@@ -842,6 +883,34 @@ export function HexBattlefield({
     void commitFloorPreview();
   }, [commitFloorPreview]);
 
+  /** Hover no canvas só quando há ação (movimento, magia, spawn, editor). */
+  const trackGridHover = useMemo(
+    () =>
+      Boolean(
+        highlights.showMovement ||
+          highlights.isAreaSpellMode ||
+          (spawnDragActive && (canControlCombat || canEdit)) ||
+          dungeonMapEditing ||
+          mapToolMode === "measure" ||
+          gmDragTokenId
+      ),
+    [
+      highlights.showMovement,
+      highlights.isAreaSpellMode,
+      spawnDragActive,
+      canControlCombat,
+      canEdit,
+      dungeonMapEditing,
+      mapToolMode,
+      gmDragTokenId,
+    ]
+  );
+
+  const hoverAxialForCanvas = useMemo(() => {
+    if (!trackGridHover) return null;
+    return hoverAxial;
+  }, [trackGridHover, hoverAxial]);
+
   const canvasState: HexCanvasDrawState = useMemo(
     () => ({
       scene: canvasScene,
@@ -856,10 +925,12 @@ export function HexBattlefield({
       isAreaSpellMode: highlights.isAreaSpellMode,
       areaPreviewSet: highlights.areaPreviewSet,
       areaDirectionSet: highlights.areaDirectionSet,
-      hoverAxial,
+      hoverAxial: hoverAxialForCanvas,
       hoverMovePreview: highlights.hoverMovePreview,
       spawnDropHover: spawnDragActive && (canControlCombat || canEdit),
       spawnDropFootprintKeys,
+      spawnDropInvalid,
+      moveHoverFootprintKeys,
       pathCells: highlights.hoverPathCells ?? [],
       focusByTokenId,
       selectedId,
@@ -900,9 +971,11 @@ export function HexBattlefield({
       measurePreview,
       highlights,
       actionMode,
-      hoverAxial,
+      hoverAxialForCanvas,
       spawnDragActive,
       spawnDropFootprintKeys,
+      spawnDropInvalid,
+      moveHoverFootprintKeys,
       canControlCombat,
       focusByTokenId,
       selectedId,
@@ -1710,12 +1783,13 @@ export function HexBattlefield({
       const tokenId = selected.id;
       const origin = selected.axial;
       const path = check.path ?? [origin, axial];
+      const dest = path[path.length - 1] ?? axial;
       try {
         const snap = await moveRoomTokenBudget(
           roomId,
           tokenId,
-          axial.q,
-          axial.r,
+          dest.q,
+          dest.r,
           highlights.moveMode,
           selectedBypass
         );
@@ -1878,7 +1952,7 @@ export function HexBattlefield({
         const snap = await revealRoomHex(roomId, axial.q, axial.r);
         syncRoom(snap);
       } catch (e) {
-        setActionErr(e instanceof Error ? e.message : "Falha ao revelar hex");
+        setActionErr(e instanceof Error ? e.message : "Falha ao revelar célula");
       }
     },
     [roomId, canControlCombat, displayScene.fogEnabled, syncRoom]
@@ -1959,6 +2033,7 @@ export function HexBattlefield({
     hoverAxial,
     setHoverAxial,
     onHoverAxialChange,
+    trackGridHover,
     showMovement: highlights.showMovement,
     isAreaSpellMode: highlights.isAreaSpellMode,
     needsAreaDirection: highlights.needsAreaDirection,
@@ -2350,6 +2425,7 @@ export function HexBattlefield({
       {canControlCombat && showSpawnInSidebar ? (
         <MonsterSpawnPanel
           roomId={roomId}
+          scene={displayScene}
           spawnAxial={hoverAxial}
           onSpawned={(snap) => syncRoom(snap)}
           onOpenMonsterSheet={onOpenMonsterSheet}
