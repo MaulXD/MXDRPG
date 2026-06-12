@@ -3,6 +3,7 @@
 import { useState } from "react";
 import type { CombatTrack } from "@/lib/room/combat";
 import { activeTokenId, normalizeCombatTrack } from "@/lib/room/combat";
+import { resolveLivingActiveTokenId } from "@/lib/room/combat-order";
 import type { BattleToken } from "@/lib/vtt/types";
 import { nextCombatTurn } from "@/hooks/useRoomSync";
 
@@ -29,7 +30,7 @@ export function EndTurnBar({
   const [err, setErr] = useState<string | null>(null);
 
   const track = normalizeCombatTrack(combat, tokens);
-  const activeId = activeTokenId(track);
+  const activeId = resolveLivingActiveTokenId(track, tokens) ?? activeTokenId(track);
   const activeToken = tokens.find((t) => t.id === activeId);
   const hasOrder = track.order.length > 0;
 

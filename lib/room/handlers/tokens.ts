@@ -5,11 +5,12 @@ import type { Axial } from "@/lib/vtt/hex-math";
 import { canMoveToken, type MoveMode } from "@/lib/vtt/movement";
 import { createMonsterTokenFromEntryId } from "@/lib/vtt/monsters";
 import { nextMonsterDisplayName } from "@/lib/vtt/monster-display-name";
+import { activeTokenId } from "../combat";
+import { removeTokenFromCombatOrder } from "../combat-order";
 import { ensureCombatActiveHasPa } from "./combat-turn";
 import { createPlayerTokenFromActor } from "@/lib/vtt/player-token";
 import type { MonsterSpawnOptions } from "@/lib/vtt/monster-scaling";
 import type { BattleToken } from "@/lib/vtt/types";
-import { activeTokenId } from "../combat";
 import { canActOnCombatTurn, TURN_WAIT_MSG } from "@/lib/combat/turn-guard";
 import { canAnchorTokenAt } from "@/lib/vtt/dungeon-layer";
 import { revealAxial } from "@/lib/vtt/fog-of-war";
@@ -298,30 +299,23 @@ export async function removeRoomToken(
   const preserveActorId =
     removed.linked && removed.actorId ? removed.actorId : null;
 
+  if (room.combat?.order?.length) {
+    const prevActiveId = activeTokenId(room.combat);
+    if (prevActiveId === tokenId) {
+      return {
+        ok: false,
+        error: "Este token está na vez — passe o turno antes de remover do mapa",
+      };
+    }
+  }
+
   room.scene = {
     ...room.scene,
     tokens: room.scene.tokens.filter((t) => t.id !== tokenId),
   };
 
   if (room.combat?.order?.length) {
-    const prevOrder = room.combat.order;
-    const removedIndex = prevOrder.indexOf(tokenId);
-    const order = prevOrder.filter((id) => id !== tokenId);
-    let activeIndex = room.combat.activeIndex;
-
-    if (removedIndex >= 0 && removedIndex < activeIndex) {
-      activeIndex = Math.max(0, activeIndex - 1);
-    } else if (removedIndex === activeIndex) {
-      activeIndex = Math.min(activeIndex, Math.max(0, order.length - 1));
-    } else if (activeIndex >= order.length) {
-      activeIndex = Math.max(0, order.length - 1);
-    }
-
-    room.combat = {
-      ...room.combat,
-      order,
-      activeIndex,
-    };
+    removeTokenFromCombatOrder(room, tokenId);
   }
 
   let updated = await persistRoom(roomId, room);

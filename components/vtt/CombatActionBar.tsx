@@ -41,7 +41,7 @@ export function CombatActionBar({
   onAttackResult,
   onUpdate,
 }: Props) {
-  const turn = useCombatTurn({ combat, canBypassTurn });
+  const turn = useCombatTurn({ combat, canBypassTurn, tokens });
   const attackerBypass = effectiveBypassTurn(attacker, canBypassTurn);
   const attackerTurn = {
     activeTokenId: turn.activeTokenId,

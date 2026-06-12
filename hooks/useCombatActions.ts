@@ -11,6 +11,7 @@ import type { RoomActor } from "@/lib/room/types";
 import type { CombatTrack } from "@/lib/room/combat";
 
 import { activeTokenId } from "@/lib/room/combat";
+import { resolveLivingActiveTokenId } from "@/lib/room/combat-order";
 
 import { tokenAxialDistance } from "@/lib/vtt/creature-size";
 
@@ -47,13 +48,19 @@ type TurnOpts = {
 
   canBypassTurn: boolean;
 
+  tokens?: BattleToken[];
+
 };
 
 
 
-export function useCombatTurn({ combat, canBypassTurn }: TurnOpts) {
+export function useCombatTurn({ combat, canBypassTurn, tokens = [] }: TurnOpts) {
 
-  const activeId = combat ? activeTokenId(combat) : null;
+  const activeId = combat
+    ? (tokens.length
+        ? resolveLivingActiveTokenId(combat, tokens)
+        : null) ?? activeTokenId(combat)
+    : null;
   const combatHasOrder = Boolean(combat?.order?.length);
 
   const turnOpts = (token: BattleToken) => ({

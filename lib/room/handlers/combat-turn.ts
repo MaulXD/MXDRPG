@@ -24,7 +24,9 @@ import { activeTokenId, nextTurn, rollInitiative } from "../combat";
 import { applyGmCombatOrder } from "../combat-gm";
 import {
   getActiveBattleToken,
+  isDefeatedToken,
   shouldAutoSkipTurn,
+  skipUnplayableActives,
   syncCombatOrderWithTokens,
 } from "../combat-order";
 import { clearCombatRecharges, clearPerTurnRecharges } from "@/lib/combat/recharge";
@@ -243,7 +245,9 @@ function applyTurnPaTransition(room: RoomState): string[] {
     if (!active) break;
 
     if (shouldAutoSkipTurn(active)) {
-      if (active.conditions?.includes("atordoado")) {
+      if (isDefeatedToken(active)) {
+        notices.push(`${active.name} está morto — turno passado.`);
+      } else if (active.conditions?.includes("atordoado")) {
         notices.push(formatStunSkipNotice(active.name));
       }
       stepToNextCombatant(room, notices);
@@ -355,7 +359,9 @@ export async function rollRoomInitiative(roomId: string): Promise<RoomSnapshot |
     if (!active) break;
 
     if (shouldAutoSkipTurn(active)) {
-      if (active.conditions?.includes("atordoado")) {
+      if (isDefeatedToken(active)) {
+        notices.push(`${active.name} está morto — turno passado.`);
+      } else if (active.conditions?.includes("atordoado")) {
         notices.push(formatStunSkipNotice(active.name));
       }
       stepToNextCombatant(room, notices);
@@ -375,8 +381,9 @@ export async function rollRoomInitiative(roomId: string): Promise<RoomSnapshot |
 /** Garante PA no token ativo quando a ordem existe mas ninguém rolou iniciativa ainda. */
 export function ensureCombatActiveHasPa(room: RoomState): void {
   if (!room.combat?.order?.length) return;
+  skipUnplayableActives(room);
   const active = getActiveBattleToken(room);
-  if (!active) return;
+  if (!active || shouldAutoSkipTurn(active)) return;
   if ((active.pa ?? 0) > 0) return;
   if ((active.paSpentThisTurn ?? 0) > 0) return;
   refreshActiveTokenPa(room, "full");

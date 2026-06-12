@@ -1,3 +1,5 @@
+import { characterOwnedBySessionUser } from "@/lib/auth/account-ownership";
+import type { SessionUser } from "@/lib/auth/types";
 import { characterBelongsToAdventure } from "@/lib/character/adventure-bind";
 import type { RoomActor } from "@/lib/room/types";
 
@@ -18,7 +20,9 @@ export function listPlayablePlayerActors(
 
 export function isActorOwnedByUser(
   actor: Pick<RoomActor, "ownerId">,
-  userId: string | undefined
+  user: Pick<SessionUser, "id" | "clerkId"> | string | null | undefined
 ): boolean {
-  return Boolean(userId && actor.ownerId === userId);
+  if (!user) return false;
+  if (typeof user === "string") return Boolean(actor.ownerId === user);
+  return characterOwnedBySessionUser(actor, user);
 }
