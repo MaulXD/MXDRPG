@@ -76,7 +76,10 @@ export function hpRingLayout(tokenR: number, ringStyle: TokenRingStyle): {
   outerRingOffset: number;
 } {
   const width = Math.max(2, tokenR * 0.055);
-  const outerRingOffset = Math.min(...ringStyle.rings.map((ring) => ring.radiusOffset));
+  const outerRingOffset =
+    ringStyle.rings.length > 0
+      ? Math.min(...ringStyle.rings.map((ring) => ring.radiusOffset))
+      : 0;
   const borderR = tokenR - width * 0.5;
   const contentRFull = Math.max(4, borderR - width * 0.5 - 0.25);
   const identityBase = contentRFull;
