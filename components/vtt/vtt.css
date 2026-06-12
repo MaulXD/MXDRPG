@@ -3137,6 +3137,291 @@
   gap: 0.25rem;
 }
 
+/* ── Cartão de combate no chat (estilo roll card) ── */
+
+.combat-chat-card {
+  margin-bottom: 0.65rem;
+  padding: 0.65rem 0.7rem 0.7rem;
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.14);
+  background: linear-gradient(165deg, #f6f0e4 0%, #ebe2d2 48%, #e4d9c6 100%);
+  color: #2a2420;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22);
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.combat-chat-card--defeat {
+  border-color: rgba(120, 30, 30, 0.35);
+  background: linear-gradient(165deg, #f0e4e4 0%, #e8d4d4 100%);
+}
+
+.combat-chat-card--crit {
+  border-color: rgba(184, 146, 46, 0.55);
+  box-shadow: 0 4px 16px rgba(184, 146, 46, 0.2);
+}
+
+.combat-chat-card__header {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.55rem;
+  margin-bottom: 0.55rem;
+}
+
+.combat-chat-card__thumb {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  background: #3d3028;
+}
+
+.combat-chat-card__thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.combat-chat-card__thumb-fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.92);
+  letter-spacing: 0.04em;
+}
+
+.combat-chat-card__identity {
+  flex: 1;
+  min-width: 0;
+}
+
+.combat-chat-card__name {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 0.92rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #1f1a16;
+}
+
+.combat-chat-card__role {
+  display: block;
+  margin-top: 0.1rem;
+  font-size: 0.68rem;
+  color: rgba(42, 36, 32, 0.62);
+}
+
+.combat-chat-card__role-sep {
+  opacity: 0.5;
+}
+
+.combat-chat-card__time {
+  flex-shrink: 0;
+  font-size: 0.62rem;
+  color: rgba(42, 36, 32, 0.5);
+  white-space: nowrap;
+}
+
+.combat-chat-card__action {
+  display: flex;
+  gap: 0.45rem;
+  align-items: flex-start;
+  padding: 0.45rem 0.5rem;
+  margin-bottom: 0.45rem;
+  border-radius: 6px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.55);
+}
+
+.combat-chat-card__action-icon {
+  flex-shrink: 0;
+  width: 1.35rem;
+  height: 1.35rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.06);
+  color: #5c4a38;
+}
+
+.combat-chat-card__action-text {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.12rem;
+}
+
+.combat-chat-card__action-name {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #1f1a16;
+}
+
+.combat-chat-card__action-target {
+  font-size: 0.72rem;
+  color: rgba(42, 36, 32, 0.72);
+}
+
+.combat-chat-card__action-tags {
+  font-size: 0.62rem;
+  color: rgba(42, 36, 32, 0.55);
+  letter-spacing: 0.02em;
+}
+
+.combat-chat-card__formula {
+  margin-bottom: 0.4rem;
+  padding: 0.35rem 0.5rem;
+  border-radius: 5px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.45);
+  font-family: var(--font-mono, monospace);
+  font-size: 0.74rem;
+  text-align: center;
+  color: rgba(42, 36, 32, 0.82);
+}
+
+.combat-chat-card__result {
+  display: flex;
+  align-items: stretch;
+  border-radius: 6px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  background: rgba(255, 255, 255, 0.62);
+  overflow: hidden;
+  margin-bottom: 0.4rem;
+}
+
+.combat-chat-card__result-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0.45rem 0.35rem;
+  min-height: 3.2rem;
+}
+
+.combat-chat-card__result-value {
+  font-family: var(--font-display);
+  font-size: 1.85rem;
+  font-weight: 700;
+  line-height: 1;
+  color: #1a1612;
+}
+
+.combat-chat-card--crit .combat-chat-card__result-value {
+  color: #8a6018;
+}
+
+.combat-chat-card--miss .combat-chat-card__result-value,
+.combat-chat-card--crit-fail .combat-chat-card__result-value {
+  color: #6a5048;
+}
+
+.combat-chat-card--defeat .combat-chat-card__result-value {
+  color: #8a2828;
+}
+
+.combat-chat-card__result-caption {
+  margin-top: 0.2rem;
+  font-size: 0.62rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: rgba(42, 36, 32, 0.55);
+}
+
+.combat-chat-card__expand {
+  flex-shrink: 0;
+  width: 2rem;
+  border: none;
+  border-left: 1px solid rgba(0, 0, 0, 0.1);
+  background: rgba(0, 0, 0, 0.04);
+  color: rgba(42, 36, 32, 0.55);
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.combat-chat-card__expand:hover {
+  background: rgba(0, 0, 0, 0.08);
+  color: #1f1a16;
+}
+
+.combat-chat-card__expand[aria-expanded="true"] {
+  transform: rotate(90deg);
+}
+
+.combat-chat-card__detail {
+  margin: 0 0 0.35rem;
+  padding: 0.4rem 0.45rem;
+  border-radius: 5px;
+  background: rgba(0, 0, 0, 0.05);
+  font-size: 0.65rem;
+  line-height: 1.45;
+  color: rgba(42, 36, 32, 0.72);
+  overflow-wrap: anywhere;
+}
+
+.combat-chat-card__summary {
+  margin: 0;
+  font-size: 0.74rem;
+  line-height: 1.4;
+  color: rgba(42, 36, 32, 0.88);
+  overflow-wrap: anywhere;
+}
+
+.combat-chat-card--defeat .combat-chat-card__summary {
+  font-weight: 600;
+  color: #7a2828;
+}
+
+.combat-chat-card__damage {
+  margin: 0.3rem 0 0;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #6a3820;
+}
+
+.combat-chat-card__heal {
+  margin: 0.25rem 0 0;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #2a6a38;
+}
+
+.combat-chat-card__hp {
+  position: relative;
+  height: 6px;
+  margin-top: 0.4rem;
+  border-radius: 3px;
+  background: rgba(0, 0, 0, 0.12);
+  overflow: hidden;
+}
+
+.combat-chat-card__hp-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.2s ease;
+}
+
+.combat-chat-card__hp-label {
+  position: absolute;
+  right: 0;
+  top: -1.05rem;
+  font-size: 0.58rem;
+  color: rgba(42, 36, 32, 0.55);
+}
+
 .room-chat-chat-text {
   margin: 0;
   font-size: 0.82rem;

@@ -2,33 +2,30 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { ChatMessage } from "@/lib/room/chat";
-import {
-  combatEventTone,
-  parsePrimaryDie,
-} from "@/lib/room/chat-events";
-import { CombatEventIcon } from "@/components/ui/EldarinIcons";
+import { parsePrimaryDie } from "@/lib/room/chat-events";
 import { postRoomChat } from "@/hooks/useRoomSync";
 import { DiceMiniature } from "@/components/vtt/DiceMiniature";
-import { hpBarColor } from "@/lib/vtt/token-hp-display";
-import {
-  combatChatDamageSummary,
-  combatChatNaturalDie,
-  combatChatRollSummary,
-  isStagedCombatChatMessage,
-  shouldShowCombatDamageInChat,
-  splitCombatChatDetail,
-  type CombatChatRevealPhase,
-} from "@/lib/combat/chat-display";
+import { CombatChatCard } from "@/components/vtt/CombatChatCard";
+import type { CombatChatRevealPhase } from "@/lib/combat/chat-display";
+import type { BattleToken } from "@/lib/vtt/types";
 
 type Props = {
   roomId: string;
   messages: ChatMessage[];
+  tokens?: BattleToken[];
   combatReveal?: Record<string, CombatChatRevealPhase>;
   onUpdate: () => void;
   readOnly?: boolean;
 };
 
-export function RoomChat({ roomId, messages, combatReveal = {}, onUpdate, readOnly = false }: Props) {
+export function RoomChat({
+  roomId,
+  messages,
+  tokens = [],
+  combatReveal = {},
+  onUpdate,
+  readOnly = false,
+}: Props) {
   const [text, setText] = useState("");
   const [busy, setBusy] = useState(false);
   const listRef = useRef<HTMLDivElement>(null);
@@ -55,7 +52,12 @@ export function RoomChat({ roomId, messages, combatReveal = {}, onUpdate, readOn
     <div className="room-chat room-chat--rail">
       <div ref={listRef} className="room-chat-log">
         {messages.map((m) => (
-          <ChatEvent key={m.id} message={m} revealPhase={combatReveal[m.id]} />
+          <ChatEvent
+            key={m.id}
+            message={m}
+            tokens={tokens}
+            revealPhase={combatReveal[m.id]}
+          />
         ))}
       </div>
       {readOnly ? (
@@ -93,9 +95,11 @@ export function RoomChat({ roomId, messages, combatReveal = {}, onUpdate, readOn
 
 function ChatEvent({
   message,
+  tokens,
   revealPhase,
 }: {
   message: ChatMessage;
+  tokens: BattleToken[];
   revealPhase?: CombatChatRevealPhase;
 }) {
   const time = new Date(message.at).toLocaleTimeString("pt-BR", {
@@ -138,63 +142,13 @@ function ChatEvent({
   }
 
   if (message.kind === "combat" && message.combat) {
-    const tone = combatEventTone(message.combat);
-    const c = message.combat;
-    const staged = isStagedCombatChatMessage(message);
-    const showDamage = shouldShowCombatDamageInChat(message, revealPhase);
-    const naturalDie = combatChatNaturalDie(message);
-    const summary = staged && !showDamage ? combatChatRollSummary(message) : combatChatDamageSummary(message);
-    const detailParts = c.detail
-      ? splitCombatChatDetail(c.detail, c.resolution === "save" ? "save" : "attack")
-      : { roll: "", damage: null };
-    const detail =
-      staged && !showDamage
-        ? detailParts.roll || null
-        : c.detail || null;
-    const hpMax = Math.max(c.defenderHpBefore, c.defenderHpAfter, 1);
-    const hpPct = Math.round((c.defenderHpAfter / hpMax) * 100);
-    const hpFillColor = hpBarColor(c.defenderHpAfter / hpMax);
-    const showHpBar =
-      showDamage &&
-      tone !== "defeat" &&
-      tone !== "info" &&
-      c.defenderHpBefore > 0 &&
-      (c.hit || c.resolution === "save");
-
     return (
-      <article className={`room-chat-event room-chat-event--combat room-chat-event--${tone}`}>
-        <div className="room-chat-event-icon" aria-hidden>
-          {naturalDie != null && staged ? (
-            <DiceMiniature formula="1d20" value={naturalDie} size="sm" />
-          ) : (
-            <CombatEventIcon tone={tone} size={18} />
-          )}
-        </div>
-        <div className="room-chat-event-body">
-          <header className="room-chat-event-headline">
-            <span className="room-chat-time">{time}</span>
-            {tone !== "defeat" ? (
-              <span className="room-chat-author">{message.authorName}</span>
-            ) : null}
-          </header>
-          <p className="room-chat-combat-summary">{summary}</p>
-          {showDamage && c.attackerHeal && c.attackerHeal > 0 ? (
-            <p className="room-chat-combat-heal">+{c.attackerHeal} HP (arma)</p>
-          ) : null}
-          {showHpBar ? (
-            <div className="room-chat-hp-bar" role="presentation">
-              <div
-                className="room-chat-hp-bar-fill"
-                style={{ width: `${Math.min(100, hpPct)}%`, background: hpFillColor }}
-              />
-              <span className="room-chat-hp-bar-label">
-                HP {c.defenderHpBefore}→{c.defenderHpAfter}
-              </span>
-            </div>
-          ) : null}
-          {detail ? <p className="room-chat-combat-detail">{detail}</p> : null}
-        </div>
-      </article>
+      <CombatChatCard
+        message={message}
+        revealPhase={revealPhase}
+        tokens={tokens}
+        time={time}
+      />
     );
   }
 
