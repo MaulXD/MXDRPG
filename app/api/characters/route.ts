@@ -1,12 +1,13 @@
 import { NextResponse } from "next/server";
 import {
   createCharacterFromWizard,
-  listCharactersForUser,
-  listCharactersForUserInAdventure,
+  listCharactersForSessionUser,
+  listCharactersForSessionUserInAdventure,
   MAX_CHARACTERS_PER_USER,
   MAX_CHARACTERS_PER_USER_PER_ADVENTURE,
 } from "@/lib/character/characters";
 import type { CharacterWizardDraft } from "@/lib/character/wizard-types";
+import { materializeSessionUser } from "@/lib/auth/session-user";
 import { getSession } from "@/lib/auth/session";
 
 export async function GET(req: Request) {
@@ -18,9 +19,10 @@ export async function GET(req: Request) {
     new URL(req.url).searchParams.get("adventureId")?.trim() ||
     new URL(req.url).searchParams.get("roomId")?.trim() ||
     null;
+  const user = await materializeSessionUser(session.user);
   const characters = adventureId
-    ? await listCharactersForUserInAdventure(session.user.id, adventureId)
-    : await listCharactersForUser(session.user.id);
+    ? await listCharactersForSessionUserInAdventure(user, adventureId)
+    : await listCharactersForSessionUser(user);
   return NextResponse.json({
     characters: characters.map((c) => ({
       id: c.id,
@@ -47,8 +49,10 @@ export async function POST(request: Request) {
     roomId?: string;
   };
   try {
-    const { sheet, mesaRoomId } = await createCharacterFromWizard(session.user.id, body, {
+    const user = await materializeSessionUser(session.user);
+    const { sheet, mesaRoomId } = await createCharacterFromWizard(user.id, body, {
       adventureId: body.adventureId ?? body.roomId ?? null,
+      clerkId: user.clerkId ?? session.user.clerkId,
     });
     return NextResponse.json({
       ok: true,

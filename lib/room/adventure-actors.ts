@@ -1,3 +1,4 @@
+import { resolveCharacterAccount } from "@/lib/auth/account-user";
 import {
   listCharactersForUserInAdventure,
   resolveCharacter,
@@ -14,6 +15,15 @@ import type { RoomActor, RoomState } from "./types";
 
 function participantIds(room: RoomState): string[] {
   return [...new Set([room.ownerId, ...room.memberIds])];
+}
+
+async function resolvedParticipantIds(room: RoomState): Promise<string[]> {
+  const canonical = new Set<string>();
+  for (const userId of participantIds(room)) {
+    const account = await resolveCharacterAccount(userId);
+    canonical.add(account.canonicalId);
+  }
+  return [...canonical];
 }
 
 /** Ator ainda pertence a esta mesa/aventura (tolerante a legado sem adventureId). */
@@ -109,7 +119,7 @@ export async function syncAdventureActorsForRoom(roomId: string): Promise<RoomSt
     changed = true;
   }
 
-  for (const userId of participantIds(room)) {
+  for (const userId of await resolvedParticipantIds(room)) {
     const sheets = await listCharactersForUserInAdventure(userId, adventureId);
     for (const sheet of sheets) {
       if (!characterBelongsToAdventure(sheet, adventureId)) continue;

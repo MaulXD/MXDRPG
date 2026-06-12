@@ -1,4 +1,10 @@
 import "server-only";
+import type { SessionUser } from "@/lib/auth/types";
+import {
+  resolveCharacterAccount,
+  resolveSessionCharacterAccount,
+  type CharacterAccount,
+} from "@/lib/auth/account-user";
 import type { CharacterSheet } from "./types";
 import {
   MAX_CHARACTERS_PER_USER_PER_ADVENTURE,
@@ -7,12 +13,13 @@ import { computeCulinary } from "./rules";
 import { normalizeCharacter } from "./normalize";
 import { dbEnabled } from "@/lib/db/enabled";
 import { isAdventureMember } from "@/lib/auth/adventure-access";
-import { getAdventure } from "@/lib/adventure/store";
+import { bindPlayerToAdventure, getAdventure } from "@/lib/adventure/store";
 import { syncAdventureActorsForRoom } from "@/lib/room/adventure-actors";
 import {
   characterRegistry,
   getCharacterFromRegistry,
-  listCharactersFromRegistry,
+  listCharactersFromRegistryByOwners,
+  reassignRegistryCharacterOwners,
   upsertCharacterRegistry,
 } from "./character-registry";
 import { canEditCharacter } from "./demo-characters";
@@ -71,39 +78,105 @@ export async function resolveCharacter(id: string): Promise<CharacterSheet | nul
   return fromRegistry;
 }
 
-export async function listCharactersForUser(userId: string): Promise<CharacterSheet[]> {
-  const local = listCharactersFromRegistry(userId);
+async function reconcileCharacterOwners(account: CharacterAccount): Promise<void> {
+  const aliases = account.queryIds.filter((id) => id !== account.canonicalId);
+  if (aliases.length === 0) return;
+
+  reassignRegistryCharacterOwners(aliases, account.canonicalId);
+
+  if (dbEnabled()) {
+    try {
+      const { reassignCharacterOwners } = await import("@/lib/db/characters");
+      await reassignCharacterOwners(aliases, account.canonicalId);
+    } catch (e) {
+      console.warn(
+        "[eldarin] reconcileCharacterOwners falhou:",
+        e instanceof Error ? e.message : e
+      );
+    }
+  }
+}
+
+function normalizeOwnerOnSheets(
+  sheets: CharacterSheet[],
+  canonicalId: string
+): CharacterSheet[] {
+  return sheets.map((sheet) =>
+    sheet.ownerId === canonicalId ? sheet : { ...sheet, ownerId: canonicalId }
+  );
+}
+
+export async function listCharactersForUser(
+  userId: string,
+  opts?: { clerkId?: string | null }
+): Promise<CharacterSheet[]> {
+  const account = await resolveCharacterAccount(userId, opts?.clerkId);
+  await reconcileCharacterOwners(account);
+
+  const local = listCharactersFromRegistryByOwners(account.queryIds);
 
   if (dbEnabled()) {
     await ensureDbCharactersSeeded();
-    const { listCharactersByOwner } = await import("@/lib/db/characters");
-    const fromDb = await listCharactersByOwner(userId);
+    const { listCharactersByOwners } = await import("@/lib/db/characters");
+    const fromDb = await listCharactersByOwners(account.queryIds);
     const byId = new Map<string, CharacterSheet>();
     for (const sheet of fromDb) byId.set(sheet.id, sheet);
     for (const sheet of local) {
-      if (sheet.ownerId === userId && !byId.has(sheet.id)) {
+      if (characterOwnedByQuery(sheet, account) && !byId.has(sheet.id)) {
         byId.set(sheet.id, sheet);
       }
     }
-    return [...byId.values()];
+    return normalizeOwnerOnSheets([...byId.values()], account.canonicalId);
   }
 
-  return local;
+  return normalizeOwnerOnSheets(local, account.canonicalId);
+}
+
+function characterOwnedByQuery(sheet: CharacterSheet, account: CharacterAccount): boolean {
+  return account.queryIds.includes(sheet.ownerId);
+}
+
+/** Lista fichas da conta logada (materializa usuário + reconcilia aliases). */
+export async function listCharactersForSessionUser(user: SessionUser): Promise<CharacterSheet[]> {
+  const account = await resolveSessionCharacterAccount(user);
+  return listCharactersForUser(account.canonicalId, { clerkId: account.clerkId });
 }
 
 export async function listCharactersForUserInAdventure(
   userId: string,
+  adventureId: string,
+  opts?: { clerkId?: string | null }
+): Promise<CharacterSheet[]> {
+  const all = await listCharactersForUser(userId, opts);
+  return all.filter((c) => (c.adventureId ?? c.campaignRoomId) === adventureId);
+}
+
+export async function listCharactersForSessionUserInAdventure(
+  user: SessionUser,
   adventureId: string
 ): Promise<CharacterSheet[]> {
-  const all = await listCharactersForUser(userId);
-  return all.filter((c) => (c.adventureId ?? c.campaignRoomId) === adventureId);
+  const account = await resolveSessionCharacterAccount(user);
+  return listCharactersForUserInAdventure(account.canonicalId, adventureId, {
+    clerkId: account.clerkId,
+  });
 }
 
 export async function countCharactersForUserInAdventure(
   userId: string,
-  adventureId: string
+  adventureId: string,
+  opts?: { clerkId?: string | null }
 ): Promise<number> {
-  return (await listCharactersForUserInAdventure(userId, adventureId)).length;
+  return (await listCharactersForUserInAdventure(userId, adventureId, opts)).length;
+}
+
+/** ID canônico da conta para gravar novas fichas. */
+export async function canonicalOwnerIdForUser(
+  userId: string,
+  clerkId?: string | null
+): Promise<string> {
+  const account = await resolveCharacterAccount(userId, clerkId);
+  await reconcileCharacterOwners(account);
+  return account.canonicalId;
 }
 
 export const MAX_CHARACTERS_PER_USER = 10;
@@ -138,9 +211,14 @@ export async function saveCharacter(sheet: CharacterSheet): Promise<CharacterShe
 export async function createCharacterFromWizard(
   userId: string,
   draft: import("./wizard-types").CharacterWizardDraft,
-  opts?: { adventureId?: string | null; roomId?: string | null }
+  opts?: {
+    adventureId?: string | null;
+    roomId?: string | null;
+    clerkId?: string | null;
+  }
 ): Promise<{ sheet: CharacterSheet; mesaRoomId: string | null }> {
-  const existing = await listCharactersForUser(userId);
+  const ownerId = await canonicalOwnerIdForUser(userId, opts?.clerkId);
+  const existing = await listCharactersForUser(ownerId, { clerkId: opts?.clerkId });
   if (existing.length >= MAX_CHARACTERS_PER_USER) {
     throw new Error(`Limite de ${MAX_CHARACTERS_PER_USER} fichas por conta`);
   }
@@ -150,10 +228,12 @@ export async function createCharacterFromWizard(
   if (adventureId) {
     const adventure = await getAdventure(adventureId);
     if (!adventure) throw new Error("Aventura não encontrada");
-    if (!isAdventureMember(adventure, userId)) {
+    if (!isAdventureMember(adventure, ownerId, opts?.clerkId)) {
       throw new Error("Entre na aventura antes de criar a ficha");
     }
-    const inAdv = await countCharactersForUserInAdventure(userId, adventure.adventureId);
+    const inAdv = await countCharactersForUserInAdventure(ownerId, adventure.adventureId, {
+      clerkId: opts?.clerkId,
+    });
     if (inAdv >= MAX_CHARACTERS_PER_USER_PER_ADVENTURE) {
       throw new Error("Você já tem um personagem nesta aventura");
     }
@@ -162,7 +242,7 @@ export async function createCharacterFromWizard(
   const { buildCharacterFromWizard } = await import("./build-from-wizard");
   const { normalizeWizardDraftImages } = await import("./normalize-wizard-images");
   const normalizedDraft = await normalizeWizardDraftImages(draft);
-  const sheet = buildCharacterFromWizard(userId, normalizedDraft, undefined, adventureId);
+  const sheet = buildCharacterFromWizard(ownerId, normalizedDraft, undefined, adventureId);
   const saved = await saveCharacter(sheet);
 
   const { attachCharacterToDemoRoom } = await import("@/lib/room/demo-character-sync");
@@ -172,6 +252,7 @@ export async function createCharacterFromWizard(
   if (adventureId) {
     const adv = await getAdventure(adventureId);
     if (adv) {
+      await bindPlayerToAdventure(adv.adventureId, ownerId);
       mesaRoomId = adv.primaryRoomId;
       const { attachCharacterToRoomState } = await import("@/lib/room/adventure-actors");
       const { getRoom, persistRoom } = await import("@/lib/room/internal/registry");
@@ -188,16 +269,18 @@ export async function createCharacterFromWizard(
 
 export async function createCharacter(
   userId: string,
-  name: string
+  name: string,
+  opts?: { clerkId?: string | null }
 ): Promise<CharacterSheet> {
-  const existing = await listCharactersForUser(userId);
+  const ownerId = await canonicalOwnerIdForUser(userId, opts?.clerkId);
+  const existing = await listCharactersForUser(ownerId, { clerkId: opts?.clerkId });
   if (existing.length >= MAX_CHARACTERS_PER_USER) {
     throw new Error(`Limite de ${MAX_CHARACTERS_PER_USER} fichas por conta`);
   }
   const { applyStarterKitToSheet, getDefaultStarterKitId } = await import("./starter-kits");
   const shell = normalizeCharacter({
     id: `pc-${Date.now().toString(36)}`,
-    ownerId: userId,
+    ownerId,
     name: name.trim().slice(0, 80) || "Novo personagem",
     biography: "",
     identity: {
