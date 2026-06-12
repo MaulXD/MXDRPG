@@ -27,9 +27,12 @@ import {
 import { levelUpRoomActor, type LevelUpRoomResponse } from "@/hooks/useRoomSync";
 import { TalentTreeGraph } from "@/components/character/TalentTreeGraph";
 import "./level-up.css";
+import "./sheet-ddb.css";
 
 type Props = {
   actor: CharacterSheet;
+  /** Visual do modal — padrão segue a ficha DDB (creme + bordô). */
+  theme?: "ddb" | "classic";
   roomId?: string;
   canEdit: boolean;
   onDone: () => void | Promise<void>;
@@ -50,6 +53,7 @@ const STEP_LABEL: Record<LevelUpWizardStep["type"], string> = {
 
 export function LevelUpWizard({
   actor,
+  theme = "ddb",
   roomId,
   canEdit,
   onDone,
@@ -403,9 +407,13 @@ export function LevelUpWizard({
 
       {open && typeof document !== "undefined"
         ? createPortal(
-            <div className="lu-overlay" role="presentation" onClick={() => !busy && setOpen(false)}>
+            <div
+              className={`lu-overlay${theme === "ddb" ? " lu-overlay--ddb" : ""}`}
+              role="presentation"
+              onClick={() => !busy && setOpen(false)}
+            >
           <div
-            className="lu-shell"
+            className={`lu-shell${theme === "ddb" ? " lu-shell--ddb" : ""}`}
             role="dialog"
             aria-modal="true"
             aria-labelledby="lu-title"
