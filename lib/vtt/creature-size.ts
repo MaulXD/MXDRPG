@@ -183,6 +183,35 @@ export function tokenDrawRadius(hexSize: number, size: CreatureSize): number {
   return Math.max(4, footprintFillRadius(hexSize, hexes)) - edgePad;
 }
 
+export function isMultiHexCreatureSize(size: CreatureSize): boolean {
+  return size !== "small" && size !== "medium";
+}
+
+/**
+ * Raio de clique/hover — disco do retrato, não o footprint inteiro.
+ * Evita inimigos grandes “roubarem” cliques nos hexes vizinhos.
+ */
+export function tokenHitRadius(hexSize: number, size: CreatureSize): number {
+  const inscribed = hexInscribedRadius(hexSize);
+  const pad = Math.max(2, hexSize * 0.045);
+  switch (size) {
+    case "small":
+      return Math.max(4, inscribed * 0.92 + pad);
+    case "medium":
+      return inscribed + pad;
+    case "large":
+      return inscribed * 1.22 + pad;
+    case "huge":
+      return inscribed * 1.38 + pad;
+    case "gargantuan":
+      return inscribed * 1.52 + pad;
+    case "colossal":
+      return inscribed * 1.65 + pad;
+    default:
+      return inscribed + pad;
+  }
+}
+
 export function tokenPixelCenter(
   anchor: Axial,
   size: CreatureSize,
