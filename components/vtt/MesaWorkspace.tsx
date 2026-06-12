@@ -770,7 +770,10 @@ function MesaWorkspaceCombatFlow({
   session: SessionUser | null;
   canEndTurn: boolean;
   combatAccessOpts: import("@/lib/auth/combat-turn-access").CombatTurnAccessOpts;
-  applySnapshot: (snap: import("@/lib/room/types").RoomSnapshot) => void;
+  applySnapshot: (
+    snap: import("@/lib/room/types").RoomSnapshot,
+    opts?: { force?: boolean }
+  ) => void;
   refresh: () => void;
 }) {
   useCombatTurnFlow({
