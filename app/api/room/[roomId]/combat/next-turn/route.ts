@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { canAdvanceCombatTurn } from "@/lib/auth/combat-turn-access";
-import { canParticipateInRoom } from "@/lib/auth/room-access";
+import { isRoomMemberResolved } from "@/lib/auth/room-access-server";
 import { getSession } from "@/lib/auth/session";
 import { snapshotForViewer } from "@/lib/room/snapshot-for-viewer";
 import { advanceRoomTurn, getRoom } from "@/lib/room/store";
@@ -22,7 +22,7 @@ export async function POST(req: Request, { params }: Params) {
     if (!session?.user) {
       return NextResponse.json({ error: "Faça login para passar o turno" }, { status: 401 });
     }
-    if (!canParticipateInRoom(room, session.user)) {
+    if (!(await isRoomMemberResolved(room, session.user.id, session.user.clerkId))) {
       return NextResponse.json({ error: "Você não participa desta mesa" }, { status: 403 });
     }
   }

@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server";
-import { canPlaceRoomActorOnBoard } from "@/lib/auth/room-access";
+import { canManageRoom, canPlaceRoomActorOnBoard } from "@/lib/auth/room-access";
 import { getSession } from "@/lib/auth/session";
 import { snapshotForViewer } from "@/lib/room/snapshot-for-viewer";
 import { getRoom, placeRoomActorOnHex } from "@/lib/room/store";
+import { isActorDowned, isTokenDowned } from "@/lib/vtt/player-tokens";
 
 type Params = { params: Promise<{ roomId: string }> };
 
@@ -31,8 +32,19 @@ export async function POST(req: Request, { params }: Params) {
     return NextResponse.json({ error: "Personagem não encontrado na aventura" }, { status: 404 });
   }
 
-  if (!canPlaceRoomActorOnBoard(room, actor, session?.user ?? null)) {
+  const user = session?.user ?? null;
+  if (!canPlaceRoomActorOnBoard(room, actor, user)) {
     return NextResponse.json({ error: "Sem permissão para posicionar este personagem" }, { status: 403 });
+  }
+
+  if (!canManageRoom(room, user)) {
+    const existing = room.scene.tokens.find((t) => t.linked && t.actorId === actorId);
+    if (isActorDowned(actor) || (existing && isTokenDowned(existing))) {
+      return NextResponse.json(
+        { error: "Personagem inconsciente não pode entrar no mapa" },
+        { status: 400 }
+      );
+    }
   }
 
   const result = await placeRoomActorOnHex(roomId, actorId, { q: body.q, r: body.r });

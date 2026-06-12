@@ -4,8 +4,9 @@ import Link from "next/link";
 import { useMemo, useRef, useState } from "react";
 import type { Axial } from "@/lib/vtt/hex-math";
 import type { RoomActor, RoomSnapshot } from "@/lib/room/types";
-import { canEditRoomActor } from "@/lib/auth/room-access";
+import { canEditRoomActor, canPlaceRoomActorOnBoard } from "@/lib/auth/room-access";
 import type { SessionUser } from "@/lib/auth/types";
+import { isActorDowned, isTokenDowned } from "@/lib/vtt/player-tokens";
 import { collectPlayerActorIds, playerColorForActor } from "@/lib/vtt/token-colors";
 import { clearActiveActorSpawnDragPayload, writeActorSpawnDrag } from "@/lib/vtt/spawn-drag";
 import { deleteRoomToken, placeRoomActorOnHex } from "@/hooks/useRoomSync";
@@ -14,6 +15,8 @@ import type { BattleToken } from "@/lib/vtt/types";
 type Props = {
   adventureId?: string;
   roomId: string;
+  roomOwnerId?: string;
+  memberIds?: string[];
   actors: Record<string, RoomActor>;
   session: SessionUser | null;
   tokens: BattleToken[];
@@ -63,6 +66,8 @@ function ActorSpawnAvatar({
 export function PlayerSpawnPanel({
   adventureId: adventureIdProp,
   roomId,
+  roomOwnerId = "",
+  memberIds = [],
   actors,
   session,
   tokens,
@@ -78,6 +83,10 @@ export function PlayerSpawnPanel({
   const [msg, setMsg] = useState<string | null>(null);
 
   const adventureId = adventureIdProp ?? roomId;
+  const roomCtx = useMemo(
+    () => ({ roomId, adventureId, ownerId: roomOwnerId, memberIds }),
+    [roomId, adventureId, roomOwnerId, memberIds]
+  );
 
   const playerActorIds = useMemo(
     () => collectPlayerActorIds(tokens.filter((t) => t.linked && t.actorId)),
@@ -88,9 +97,15 @@ export function PlayerSpawnPanel({
     const all = Object.values(actors);
     if (showAllActors) return all.sort((a, b) => a.name.localeCompare(b.name, "pt"));
     return all
-      .filter((a) => canEditRoomActor({ roomId, adventureId }, a, session))
+      .filter((a) => canPlaceRoomActorOnBoard(roomCtx, a, session))
       .sort((a, b) => a.name.localeCompare(b.name, "pt"));
-  }, [actors, showAllActors, roomId, adventureId, session]);
+  }, [actors, showAllActors, roomCtx, session]);
+
+  function canDragToMap(actor: RoomActor): boolean {
+    const onBoard = tokenOnBoard(actor.id);
+    if (onBoard && isTokenDowned(onBoard)) return false;
+    return !isActorDowned(actor);
+  }
 
   function tokenOnBoard(actorId: string) {
     return tokens.find((t) => t.linked && t.actorId === actorId);
@@ -100,7 +115,7 @@ export function PlayerSpawnPanel({
     if (!tokenOnBoard(actor.id)) return false;
     if (canPullBack) return true;
     if (!allowOwnerPullBack || !session) return false;
-    return canEditRoomActor({ roomId, adventureId }, actor, session);
+    return canEditRoomActor(roomCtx, actor, session);
   }
 
   async function placeAt(actorId: string, axial: Axial) {
@@ -172,8 +187,7 @@ export function PlayerSpawnPanel({
     <div className="vtt-spawn-panel vtt-spawn-panel--players">
       <p className="vtt-eyebrow">Personagens</p>
       <p className="vtt-combat-hint vtt-spawn-drag-hint">
-        Exiba os existentes abaixo ou crie um novo. Arraste para o mapa para colocar ou
-        reposicionar.
+        Arraste o seu personagem (vivo) para o mapa ou clique com um hex selecionado.
       </p>
 
       <ul className="vtt-spawn-drag-list" role="list">
@@ -183,26 +197,38 @@ export function PlayerSpawnPanel({
             ...new Set([...playerActorIds, actor.id]),
           ]);
           const busy = busyId === actor.id;
+          const placeable = canDragToMap(actor);
 
           return (
             <li key={actor.id} className="vtt-spawn-drag-row">
               <div
                 role="button"
-                tabIndex={0}
-                draggable={!busy}
-                className="vtt-spawn-drag-card vtt-spawn-drag-card--actor"
+                tabIndex={placeable ? 0 : -1}
+                draggable={!busy && placeable}
+                className={`vtt-spawn-drag-card vtt-spawn-drag-card--actor${placeable ? "" : " vtt-spawn-drag-card--disabled"}`}
                 onKeyDown={(e) => {
                   if (e.key === "Enter" || e.key === " ") {
                     e.preventDefault();
-                    if (spawnAxial && !busy) void placeAt(actor.id, spawnAxial);
+                    if (spawnAxial && !busy && placeable) void placeAt(actor.id, spawnAxial);
                   }
                 }}
-                onDragStart={(e) => onDragStart(actor.id, actor.name, e)}
+                onDragStart={(e) => {
+                  if (!placeable) {
+                    e.preventDefault();
+                    return;
+                  }
+                  onDragStart(actor.id, actor.name, e);
+                }}
                 onDragEnd={onDragEnd}
                 onClick={() => {
-                  if (spawnAxial && !busy) void placeAt(actor.id, spawnAxial);
+                  if (spawnAxial && !busy && placeable) void placeAt(actor.id, spawnAxial);
+                  else if (!placeable) setMsg(`${actor.name} está inconsciente — cure antes de entrar no mapa.`);
                 }}
-                title={`Arrastar ${actor.name} para o mapa`}
+                title={
+                  placeable
+                    ? `Arrastar ${actor.name} para o mapa`
+                    : `${actor.name} inconsciente — não pode entrar no mapa`
+                }
               >
                 <span className="vtt-spawn-drag-grip" aria-hidden>
                   ⠿
@@ -213,6 +239,7 @@ export function PlayerSpawnPanel({
                   <span>
                     Nv{actor.identity.nivel} {actor.identity.classe}
                     {onBoard ? ` · q${onBoard.axial.q}r${onBoard.axial.r}` : " · fora"}
+                    {!placeable ? " · inconsciente" : ""}
                   </span>
                 </span>
               </div>

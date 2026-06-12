@@ -92,9 +92,12 @@ export function VttHelpButton() {
             <HelpSection title="Ícones — Jogo (todos os jogadores)">
               <ul className="vtt-help-panel__list">
                 <li>
-                  <strong>Tokens</strong> — personagens e monstros no mapa. Selecione na lista ou no
-                  hex; veja vida, defesa e PA (quando visível). Botão <strong>Status</strong> abre
-                  condições e buffs ativos no seu personagem (somente leitura para jogadores).
+                  <strong>Personagens</strong> — arraste fichas para o mapa, retire do tabuleiro e
+                  selecione tokens na lista (ou clique no hex). PA e efeitos aparecem quando visíveis.
+                </li>
+                <li>
+                  <strong>Status</strong> — condições e buffs do personagem (jogador: só o próprio;
+                  mestre: token selecionado).
                 </li>
                 <li>
                   <strong>Turno</strong> — ordem de iniciativa, rodada atual e quem está na vez.
@@ -188,7 +191,7 @@ export function VttHelpButton() {
             <HelpSection title="Status, condições e buffs">
               <ul className="vtt-help-panel__list">
                 <li>
-                  Botão <strong>Status</strong> (painel Tokens) — jogadores veem só o próprio
+                  Botão <strong>Status</strong> na barra lateral — jogadores veem só o próprio
                   personagem; o mestre vê o token selecionado.
                 </li>
                 <li>
@@ -241,7 +244,7 @@ export function VttHelpButton() {
             <HelpSection title="Ficha de personagem">
               <ul className="vtt-help-panel__list">
                 <li>
-                  Abra pela lista <strong>Ficha</strong> ou pelo link no painel Tokens. Popup da ficha
+                  Abra pela lista <strong>Ficha</strong> ou pelo painel <strong>Personagens</strong>. Popup da ficha
                   pode ser movido e redimensionado como os outros painéis.
                 </li>
                 <li>
