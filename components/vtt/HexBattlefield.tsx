@@ -98,7 +98,7 @@ import {
   previewAreaCast,
   previewAreaDirectionStep,
   previewAttackOnTarget,
-  previewMove,
+  previewMoveFromCheck,
   type ActionPreview,
 } from "@/lib/combat/action-preview";
 import {
@@ -969,7 +969,20 @@ export function HexBattlefield({
       markupPreview,
       selectedMarkupId,
       measurePreview,
-      highlights,
+      highlights.showMovement,
+      highlights.turnMovePreview,
+      highlights.walkSet,
+      highlights.paidWalkSet,
+      highlights.rangeSet,
+      highlights.attackRangeSet,
+      highlights.isAreaSpellMode,
+      highlights.areaPreviewSet,
+      highlights.areaDirectionSet,
+      highlights.hoverMovePreview,
+      highlights.hoverPathCells,
+      highlights.attackableIds,
+      highlights.rangeTargetIds,
+      highlights.moveMode,
       actionMode,
       hoverAxialForCanvas,
       spawnDragActive,
@@ -1404,20 +1417,19 @@ export function HexBattlefield({
 
   const actionPreview: ActionPreview | null = useMemo(() => {
     if (!selected) return null;
-    if (highlights.showMovement && hoverAxial) {
+    if (highlights.showMovement && hoverAxial && highlights.hoverMovePreview) {
       const movePaOpts = {
         ...(selectedActor
           ? { freeBasicMovePa: paTurnRulesForActor(selectedActor).freeBasicMovePa }
           : {}),
         ...(selectedBypass ? { gmBypass: true as const } : {}),
       };
-      const moveCtx: MovementPathContext = {
-        tokens: displayScene.tokens,
-        gridRadius: displayScene.gridRadius,
-        actorRacas,
-        dungeonObjects: displayScene.dungeonObjects,
-      };
-      return previewMove(selected, hoverAxial, highlights.moveMode, movePaOpts, moveCtx);
+      return previewMoveFromCheck(
+        highlights.hoverMovePreview,
+        selected,
+        highlights.moveMode,
+        movePaOpts
+      );
     }
     if (highlights.needsAreaDirection && activeCombatAction) {
       const shape = activeCombatAction.areaShape;
@@ -1467,13 +1479,18 @@ export function HexBattlefield({
   }, [
     selected,
     selectedActor,
+    selectedBypass,
     hoverAxial,
     hoverTargetId,
-    highlights,
+    highlights.showMovement,
+    highlights.hoverMovePreview,
+    highlights.moveMode,
+    highlights.needsAreaDirection,
+    highlights.isAreaSpellMode,
     activeCombatAction,
     actionMode,
     areaCenter,
-    displayScene,
+    displayScene.tokens,
     turn,
     channelExtraPa,
     snapshot?.actors,
@@ -1798,9 +1815,14 @@ export function HexBattlefield({
         // Anima antes de aplicar o snapshot — evita corrida com SSE que sumia o token.
         moveAnimRef.current = { tokenId, q: origin.q, r: origin.r };
         redraw();
+        let lastMoveRedrawMs = performance.now();
         await animateTokenAlongPath(path, (step) => {
           moveAnimRef.current = { tokenId, q: step.q, r: step.r };
-          redraw();
+          const now = performance.now();
+          if (now - lastMoveRedrawMs >= 33) {
+            lastMoveRedrawMs = now;
+            redraw();
+          }
         });
         const end = path[path.length - 1];
         moveAnimRef.current = { tokenId, q: end.q, r: end.r };

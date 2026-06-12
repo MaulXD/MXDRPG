@@ -133,8 +133,7 @@ export function useHexCanvas(
       (pruneMapMarkups(s.mapMarkups ?? []).length ?? 0) > 0 ||
       Boolean(s.markupPreview) ||
       Boolean(s.measurePreview) ||
-      (s.tokenCastFx?.length ?? 0) > 0 ||
-      Boolean(moveAnimRef?.current)
+      (s.tokenCastFx?.length ?? 0) > 0
     );
   }, [moveAnimRef]);
 

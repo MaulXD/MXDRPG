@@ -819,6 +819,10 @@
           "shape": "burst",
           "radiusHex": 4
         },
+        "channel": {
+          "maxExtraPa": 2,
+          "bonusPerPa": "1d6"
+        },
         "ataque": {
           "bonus": 0
         }

@@ -54,11 +54,13 @@ export function movementSpent(token: BattleToken): number {
 }
 
 export function movementWalkMax(token: BattleToken): number {
-  return token.movementWalkMax ?? token.walk;
+  const v = token.movementWalkMax ?? token.walk;
+  return Number.isFinite(v) && v >= 0 ? v : 4;
 }
 
 export function movementRunMax(token: BattleToken): number {
-  return token.movementRunMax ?? token.run;
+  const v = token.movementRunMax ?? token.run;
+  return Number.isFinite(v) && v >= 0 ? v : 6;
 }
 
 export function walkRemaining(token: BattleToken): number {
@@ -282,20 +284,18 @@ export function paidMovementHexKeys(
   token: BattleToken,
   mode: MoveMode,
   ctx: MovementPathContext,
-  paOpts?: MovePaOptions
+  paOpts?: MovePaOptions,
+  distMap?: Map<string, number>
 ): Set<string> {
   const spent = movementSpent(token);
   const walkLeft = walkRemaining(token);
   const runLeft = runRemaining(token);
   const bands = movementPaBandsForToken(token);
-  const distMap = reachableMovementDistances(
-    token,
-    mode,
-    ctx,
-    ctx.actorRacas
-  );
+  const resolvedDist =
+    distMap ??
+    reachableMovementDistances(token, mode, ctx, ctx.actorRacas);
   const anchorKeys = new Set<string>();
-  for (const [key, dist] of distMap) {
+  for (const [key, dist] of resolvedDist) {
     if (dist === 0) continue;
     if (mode === "walk" && dist > walkLeft) continue;
     if (mode === "run" && dist > runLeft) continue;

@@ -54,14 +54,12 @@ function rollModeLabel(mode: RollMode): string {
   return formatRollMode(mode);
 }
 
-export function previewMove(
+export function previewMoveFromCheck(
+  check: import("@/lib/vtt/movement").MoveCheck,
   token: BattleToken,
-  target: Axial,
   mode: "walk" | "run",
-  paOpts?: import("@/lib/vtt/movement").MovePaOptions,
-  ctx?: MovementPathContext
+  paOpts?: import("@/lib/vtt/movement").MovePaOptions
 ): ActionPreview {
-  const check = canMoveToken(token, target, mode, ctx, paOpts);
   const paChip = unifiedPaChipForMove(token, check, paOpts);
   const lines: ActionPreviewLine[] = [];
 
@@ -100,6 +98,17 @@ export function previewMove(
     lines,
     check.ok && check.dist > 0
   );
+}
+
+export function previewMove(
+  token: BattleToken,
+  target: Axial,
+  mode: "walk" | "run",
+  paOpts?: import("@/lib/vtt/movement").MovePaOptions,
+  ctx?: MovementPathContext
+): ActionPreview {
+  const check = canMoveToken(token, target, mode, ctx, paOpts);
+  return previewMoveFromCheck(check, token, mode, paOpts);
 }
 
 export function previewAttackOnTarget(

@@ -17,8 +17,7 @@ import type { CharacterSheet } from "@/lib/character/types";
 import { isMoveMode, isTargetMode, type TokenActionMode } from "@/lib/vtt/action-mode";
 import { buildHexGrid } from "@/lib/vtt/hex-grid";
 import { tokenAxialDistance } from "@/lib/vtt/creature-size";
-import { axialKey } from "@/lib/vtt/token-occupancy";
-import { reachableMovementFootprintHexes } from "@/lib/vtt/movement-path";
+import { reachabilityBundle } from "@/lib/vtt/movement-path";
 import { effectiveRangedMaxHex, isWithinRangedAttackRange } from "@/lib/combat/ranged-attack-range";
 import { paTurnRulesForActor } from "@/lib/combat/pa-economy";
 import { canMoveToken, paidMovementHexKeys, type MoveCheck } from "@/lib/vtt/movement";
@@ -141,35 +140,41 @@ export function useBattlefieldHighlights({
 
   const highlightActor = turnMovePreview ? hoverTurnActor : selectedActor;
 
-  const rangeSet = useMemo(() => {
-    if (!moveHighlightToken || !showMovement || turnMovePreview) return new Set<string>();
-    const cells = reachableMovementFootprintHexes(
-      moveHighlightToken,
-      effectiveMoveMode,
-      scene,
-      actorRacas
-    );
-    return new Set(cells.map(axialKey));
+  const walkReach = useMemo(() => {
+    if (!moveHighlightToken || !showMovement) return null;
+    return reachabilityBundle(moveHighlightToken, "walk", scene, actorRacas);
+  }, [moveHighlightToken, showMovement, sceneMoveKey, actorRacas]);
+
+  const runReach = useMemo(() => {
+    if (
+      !moveHighlightToken ||
+      !showMovement ||
+      turnMovePreview ||
+      effectiveMoveMode === "walk"
+    ) {
+      return null;
+    }
+    return reachabilityBundle(moveHighlightToken, "run", scene, actorRacas);
   }, [
     moveHighlightToken,
     showMovement,
     turnMovePreview,
     effectiveMoveMode,
     sceneMoveKey,
-    scene,
     actorRacas,
   ]);
 
-  const walkSet = useMemo(() => {
-    if (!moveHighlightToken || !showMovement || turnMovePreview) return new Set<string>();
-    const cells = reachableMovementFootprintHexes(
-      moveHighlightToken,
-      "walk",
-      scene,
-      actorRacas
-    );
-    return new Set(cells.map(axialKey));
-  }, [moveHighlightToken, showMovement, turnMovePreview, sceneMoveKey, scene, actorRacas]);
+  const walkSet = useMemo(
+    () => walkReach?.footprintKeys ?? new Set<string>(),
+    [walkReach]
+  );
+
+  const rangeSet = useMemo(() => {
+    if (!runReach) return new Set<string>();
+    const set = new Set(runReach.footprintKeys);
+    for (const key of walkSet) set.delete(key);
+    return set;
+  }, [runReach, walkSet]);
 
   const movePaOptsHighlight = useMemo(() => {
     const moveBypass = moveHighlightToken
@@ -184,22 +189,26 @@ export function useBattlefieldHighlights({
   }, [highlightActor, moveHighlightToken, turn.bypassTurn]);
 
   const paidWalkSet = useMemo(() => {
-    if (!moveHighlightToken || !showMovement || !moveCtx || turnMovePreview) {
+    if (!moveHighlightToken || !showMovement || !moveCtx) {
       return new Set<string>();
     }
+    const bundle = effectiveMoveMode === "run" ? runReach : walkReach;
+    if (!bundle) return new Set<string>();
     return paidMovementHexKeys(
       moveHighlightToken,
       effectiveMoveMode,
       moveCtx,
-      movePaOptsHighlight
+      movePaOptsHighlight,
+      bundle.distMap
     );
   }, [
     moveHighlightToken,
     showMovement,
     moveCtx,
     movePaOptsHighlight,
-    turnMovePreview,
     effectiveMoveMode,
+    walkReach,
+    runReach,
     sceneMoveKey,
   ]);
 
@@ -396,23 +405,44 @@ export function useBattlefieldHighlights({
     areaTargetIds,
   ]);
 
-  return {
-    gridCells,
-    rangeSet,
-    walkSet,
-    paidWalkSet,
-    attackRangeSet,
-    areaPreviewSet,
-    areaDirectionSet,
-    hoverMovePreview,
-    hoverPathCells,
-    attackableIds,
-    rangeTargetIds,
-    areaTargetIds,
-    showMovement,
-    turnMovePreview,
-    isAreaSpellMode,
-    needsAreaDirection,
-    moveMode: effectiveMoveMode,
-  };
+  return useMemo(
+    () => ({
+      gridCells,
+      rangeSet,
+      walkSet,
+      paidWalkSet,
+      attackRangeSet,
+      areaPreviewSet,
+      areaDirectionSet,
+      hoverMovePreview,
+      hoverPathCells,
+      attackableIds,
+      rangeTargetIds,
+      areaTargetIds,
+      showMovement,
+      turnMovePreview,
+      isAreaSpellMode,
+      needsAreaDirection,
+      moveMode: effectiveMoveMode,
+    }),
+    [
+      gridCells,
+      rangeSet,
+      walkSet,
+      paidWalkSet,
+      attackRangeSet,
+      areaPreviewSet,
+      areaDirectionSet,
+      hoverMovePreview,
+      hoverPathCells,
+      attackableIds,
+      rangeTargetIds,
+      areaTargetIds,
+      showMovement,
+      turnMovePreview,
+      isAreaSpellMode,
+      needsAreaDirection,
+      effectiveMoveMode,
+    ]
+  );
 }
