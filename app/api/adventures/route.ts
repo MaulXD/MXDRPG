@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { enrichAdventureListItems } from "@/lib/adventure/list-enrich";
 import { createAdventure, listAdventuresForUser } from "@/lib/adventure/store";
 import { getSession } from "@/lib/auth/session";
 import { DEFAULT_RPG_SYSTEM_ID, normalizeRpgSystemId } from "@/lib/rpg/systems";
@@ -11,7 +12,9 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const rpgSystemParam = searchParams.get("rpgSystem");
   const rpgSystemId = rpgSystemParam ? normalizeRpgSystemId(rpgSystemParam) : undefined;
-  const adventures = await listAdventuresForUser(session.user.id, { rpgSystemId });
+  const adventures = await enrichAdventureListItems(
+    await listAdventuresForUser(session.user.id, { rpgSystemId })
+  );
   return NextResponse.json({ adventures });
 }
 

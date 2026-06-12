@@ -15,7 +15,7 @@ export default async function EldarinMesasPage() {
   }
 
   return (
-    <div className="page-wrap" style={{ maxWidth: 760, paddingTop: "1.75rem", paddingBottom: "3rem" }}>
+    <div className="page-wrap" style={{ maxWidth: 920, paddingTop: "1.75rem", paddingBottom: "3rem" }}>
       <header className="page-header" style={{ paddingBottom: "1.25rem" }}>
         <p className="eyebrow">
           <Link href="/mesas" style={{ color: "var(--text-muted)" }}>
