@@ -339,6 +339,7 @@ function spell(
         ...(opts.save ? { save: { attribute: opts.save } } : {}),
         ...(opts.area ? { area: opts.area } : {}),
         ...(opts.channel ? { channel: { maxExtraPa: 2, bonusPerPa: "1d6" } } : {}),
+        ...(opts.recarga ? { recarga: opts.recarga } : {}),
       },
     },
   };
@@ -384,8 +385,8 @@ const SPELLS = [
   }),
   spell("Sussurro de Masmorra", 1, "Adivinhação", 10, 1, "Telepatia com aliado visível."),
   spell("Aprimoramento Biomágico", 2, "Biomancia", 1, 2, "+1 habilidade assimilacao na próxima refeição.", { tempo: "10 minutos" }),
-  spell("Raios de Enfraquecimento", 2, "Necromancia", 6, 1, "3 raios; save CON ou desvantagem.", { save: "constituicao" }),
-  spell("Esfera Ácida de Monstro", 2, "Evocação", 6, 2, "4d6 ácido; save DES. Canalizável.", {
+  spell("Raios de Enfraquecimento", 2, "Necromancia", 6, 2, "3 raios; save CON ou desvantagem.", { save: "constituicao" }),
+  spell("Esfera Ácida de Monstro", 2, "Evocação", 6, 3, "4d6 ácido; save DES. Canalizável.", {
     dano: "4d6",
     tipo: "ácido",
     save: "destreza",
@@ -409,28 +410,31 @@ const SPELLS = [
     area: { shape: "burst", radiusHex: 4 },
     channel: true,
   }),
-  spell("Nova Arcana", 3, "Evocação", 5, 2, "Explosão 3d6 fogo em área (raio 3 m).", {
+  spell("Nova Arcana", 3, "Evocação", 5, 3, "Explosão 3d6 fogo em área (raio 3 m).", {
     dano: "3d6",
     tipo: "fogo",
     save: "destreza",
     area: { shape: "burst", radiusHex: 2 },
   }),
-  spell("Contágio Necrótico", 3, "Necromancia", 1, 2, "Save CON ou envenenado prolongado.", { save: "constituicao" }),
-  spell("Ventania", 3, "Evocação", 6, 1, "Linha 6 hex empurra; save FOR.", {
+  spell("Contágio Necrótico", 3, "Necromancia", 1, 3, "Save CON ou envenenado prolongado.", {
+    save: "constituicao",
+    recarga: "1/turno",
+  }),
+  spell("Ventania", 3, "Evocação", 6, 2, "Linha 6 hex empurra; save FOR.", {
     dano: "2d6",
     tipo: "contundente",
     save: "forca",
     area: { shape: "line", lengthHex: 12 },
   }),
   spell("Ler Mentes", 3, "Adivinhação", 4, 1, "Lê pensamentos superficiais."),
-  spell("Relâmpago", 3, "Evocação", 8, 2, "Um alvo: 4d8 relâmpago; save DES. Canalizável.", {
+  spell("Relâmpago", 3, "Evocação", 8, 3, "Um alvo: 4d8 relâmpago; save DES. Canalizável.", {
     dano: "4d8",
     tipo: "relâmpago",
     save: "destreza",
     channel: true,
   }),
-  spell("Sono", 3, "Encantamento", 6, 1, "Até 5 alvos; save SAB.", { save: "sabedoria" }),
-  spell("Raio do Limiar", 3, "Necromancia", 6, 2, "4d8 necrótico; save CON. Canalizável.", {
+  spell("Sono", 3, "Encantamento", 6, 2, "Até 5 alvos; save SAB.", { save: "sabedoria", recarga: "1/turno" }),
+  spell("Raio do Limiar", 3, "Necromancia", 6, 3, "4d8 necrótico; save CON. Canalizável.", {
     dano: "4d8",
     tipo: "necrótico",
     save: "constituicao",
@@ -442,12 +446,21 @@ const SPELLS = [
     tipo: "necrótico",
     save: "constituicao",
     channel: true,
+    recarga: "1/turno",
   }),
   spell("Mutação Forçada", 4, "Biomancia", 6, 1, "Mutação negativa aleatória 1h."),
-  spell("Parede de Fogo", 4, "Evocação", 8, 1, "Parede até 18 m: 5d8 fogo.", { dano: "5d8", tipo: "fogo", area: { shape: "wall", hexCount: 12 } }),
+  spell("Parede de Fogo", 4, "Evocação", 8, 3, "Parede até 18 m: 5d8 fogo.", {
+    dano: "5d8",
+    tipo: "fogo",
+    area: { shape: "wall", hexCount: 12 },
+    recarga: "1/turno",
+  }),
   spell("Preservação Anual", 4, "Transmutação", 1, 1, "Preserva ingrediente 1 ano."),
-  spell("Cura em Massa", 4, "Abjuração", 6, 1, "Até 6 alvos: 3d8 + mod."),
-  spell("Ressurreição Incompleta", 5, "Necromancia", 1, 3, "Aliado volta com 1 HP.", { tempo: "1 hora" }),
+  spell("Cura em Massa", 4, "Abjuração", 6, 3, "Até 6 alvos: 3d8 + mod.", { recarga: "1/turno" }),
+  spell("Ressurreição Incompleta", 5, "Necromancia", 1, 3, "Aliado volta com 1 HP.", {
+    tempo: "1 hora",
+    recarga: "1/combate",
+  }),
   spell("Grande Transmutação Biomágica", 5, "Biomancia", 1, 3, "Mutacao forte 7 dias (boss).", { tempo: "1 hora" }),
   spell("Cone de Frio", 5, "Evocação", 6, 3, "8d8 frio em cone. Canalizável.", {
     dano: "8d8",
@@ -455,32 +468,60 @@ const SPELLS = [
     save: "constituicao",
     area: { shape: "cone", lengthHex: 12 },
     channel: true,
+    recarga: "1/turno",
   }),
-  spell("Despertar", 5, "Transmutação", 1, 3, "Planta ou besta ganha INT 10.", { tempo: "8 horas" }),
-  spell("Salto Dimensional", 5, "Conjuração", 6, 1, "Teletransporte 6 hex.", { tempo: "ação bônus" }),
-  spell("Restaurar Vigor", 5, "Abjuração", 1, 2, "Remove 1 exaustão e doença leve.", { tempo: "1 hora" }),
-  spell("Causar Praga", 6, "Necromancia", 6, 1, "10d6 veneno; save CON.", { dano: "10d6", tipo: "veneno", save: "constituicao" }),
-  spell("Desintegrar", 6, "Transmutação", 6, 1, "10d6+40 força; save DES.", { dano: "10d6+40", tipo: "força", save: "destreza" }),
+  spell("Despertar", 5, "Transmutação", 1, 3, "Planta ou besta ganha INT 10.", {
+    tempo: "8 horas",
+    recarga: "1/combate",
+  }),
+  spell("Salto Dimensional", 5, "Conjuração", 6, 2, "Teletransporte 6 hex.", {
+    tempo: "ação bônus",
+    recarga: "1/turno",
+  }),
+  spell("Restaurar Vigor", 5, "Abjuração", 1, 3, "Remove 1 exaustão e doença leve.", {
+    tempo: "1 hora",
+    recarga: "1/turno",
+  }),
+  spell("Causar Praga", 6, "Necromancia", 6, 3, "10d6 veneno; save CON.", {
+    dano: "10d6",
+    tipo: "veneno",
+    save: "constituicao",
+    recarga: "1/turno",
+  }),
+  spell("Desintegrar", 6, "Transmutação", 6, 3, "10d6+40 força; save DES.", {
+    dano: "10d6+40",
+    tipo: "força",
+    save: "destreza",
+    recarga: "1/turno",
+  }),
   spell("Cadeia de Relâmpago", 6, "Evocação", 10, 3, "10d8 relâmpago em cadeia. Canalizável.", {
     dano: "10d8",
     tipo: "relâmpago",
     save: "destreza",
     channel: true,
+    recarga: "1/turno",
   }),
-  spell("Forma de Monstro", 7, "Biomancia", 1, 2, "Polimorfo em monstro do bestiário."),
-  spell("Prisão de Gelo", 7, "Evocação", 6, 1, "Restringido + 5d6 frio/turno.", { dano: "5d6", tipo: "frio" }),
-  spell("Regeneração Biomágica", 7, "Biomancia", 1, 1, "4d8+15 HP no início de cada turno."),
+  spell("Forma de Monstro", 7, "Biomancia", 1, 3, "Polimorfo em monstro do bestiário.", { recarga: "1/combate" }),
+  spell("Prisão de Gelo", 7, "Evocação", 6, 3, "Restringido + 5d6 frio/turno.", {
+    dano: "5d6",
+    tipo: "frio",
+    recarga: "1/turno",
+  }),
+  spell("Regeneração Biomágica", 7, "Biomancia", 1, 2, "4d8+15 HP no início de cada turno."),
   spell("Invisibilidade Maior", 7, "Ilusão", 1, 1, "Até 6 aliados invisíveis."),
-  spell("Terremoto", 8, "Evocação", 20, 2, "Área 30 hex; save DES prostrado.", {
+  spell("Terremoto", 8, "Evocação", 20, 3, "Área 30 hex; save DES prostrado.", {
     dano: "6d6",
     tipo: "contundente",
     save: "destreza",
     area: { shape: "burst", radiusHex: 10 },
   }),
-  spell("Biomancia Suprema — Transcendência", 9, "Biomancia", 0, 3, "Integra DNA de 3 bosses.", { tempo: "1 hora" }),
-  spell("Desejo de Morte", 9, "Necromancia", 0, 3, "Condição irrevogável de morte."),
+  spell("Biomancia Suprema — Transcendência", 9, "Biomancia", 0, 3, "Integra DNA de 3 bosses.", {
+    tempo: "1 hora",
+    recarga: "1/combate",
+  }),
+  spell("Desejo de Morte", 9, "Necromancia", 0, 3, "Condição irrevogável de morte.", { recarga: "1/combate" }),
   // Subclasse (mesa / grimório)
-  spell("Mãos Ardentes", 1, "Evocação", 1, 1, "Piromante: 3d6 fogo ao toque.", { dano: "3d6", tipo: "fogo", save: "destreza" }),
+  spell("Mãos Ardentes", 1, "Evocação", 1, 2, "Piromante: 3d6 fogo ao toque.", { dano: "3d6", tipo: "fogo", save: "destreza" }),
   spell("Gelo de Conservação", 2, "Transmutação", 1, 1, "Criomante: estase de ingrediente 8h."),
   spell("Fermentação Acelerada", 2, "Transmutação", 1, 2, "Mago Fermentador: fermenta em 1 min.", { tempo: "10 minutos" }),
   spell("Purificação Abençoada", 4, "Abjuração", 1, 1, "Remove maldição ou veneno."),
@@ -490,10 +531,11 @@ const SPELLS = [
     save: "constituicao",
     area: { shape: "burst", radiusHex: 1 },
   }),
-  spell("Grande Decomposição", 5, "Transmutação", 4, 2, "Decompõe orgânico em cubo 3 hex.", {
+  spell("Grande Decomposição", 5, "Transmutação", 4, 3, "Decompõe orgânico em cubo 3 hex.", {
     area: { shape: "cube", radiusHex: 1 },
+    recarga: "1/turno",
   }),
-  spell("Doce Confuso", 1, "Encantamento", 6, 1, "Save CON ou amedrontado.", { save: "constituicao" }),
+  spell("Doce Confuso", 1, "Encantamento", 6, 2, "Save CON ou amedrontado.", { save: "constituicao" }),
 ];
 
 const BOOK_HAB = "CATALOGO-HABILIDADES-TATICAS.md";
@@ -505,7 +547,7 @@ const ABILITY_CATALOG = [
   ["Reflexos de Masmorra", 1, 1, "reacao", "", "Reação a um ataque: desloca 1 hex imediatamente (não provoca oportunidades)."],
   ["Olhar do Caçador", 5, 1, "ativa", "", "Marca um alvo visível a até 5 hex; seu próximo ataque à distância contra ele ganha +2."],
   ["Investida do Guerreiro", 2, 1, "ativa", "1/turno", "Corrida em linha reta até 2 hex; ideal terminar adjacente a um inimigo para atacar no mesmo turno."],
-  ["Golpe Devastador", 1, 2, "ativa", "", "Próximo ataque corpo a corpo recebe +2 no teste de ataque."],
+  ["Golpe Devastador", 1, 3, "ativa", "", "Próximo ataque corpo a corpo recebe +2 no teste de ataque."],
   ["Esquiva Tática", 0, 1, "ativa", "", "+2 defesa até o início do seu próximo turno."],
   ["Tiro Certeiro", 5, 1, "ativa", "", "Próximo ataque à distância contra alvo visível é feito com vantagem."],
   ["Emboscada", 1, 2, "ativa", "", "Ataque furtivo adjacente; vantagem se o alvo não viu você no início do turno."],
@@ -518,7 +560,7 @@ const ABILITY_CATALOG = [
   ["Investida Bárbara", 3, 1, "ativa", "1/turno", "Corre até 3 hex em linha reta sem provocar oportunidades."],
   ["Inspiração de Batalha", 4, 1, "ativa", "", "Aliado visível a até 4 hex ganha vantagem no próximo ataque."],
   ["Canção de Cura", 1, 1, "ativa", "", "Aliado adjacente recupera 1d6 HP."],
-  ["Forma Selvagem", 0, 2, "ativa", "", "Prepara transformação biomágica (2 PA; Mestre valida a forma)."],
+  ["Forma Selvagem", 0, 3, "ativa", "1/combate", "Prepara transformação biomágica (3 PA; Mestre valida a forma)."],
   ["Raízes Prendentes", 4, 2, "ativa", "", "Restringe alvo 1 turno (save FOR); raízes no hex do alvo."],
   ["Disparo de Artilheiro", 6, 1, "ativa", "", "Projétil concentrado: 2d8 de dano à distância."],
   ["Barreira de Cobre", 0, 1, "ativa", "", "+2 defesa contra efeitos mágicos até seu próximo turno."],
@@ -545,10 +587,10 @@ const ABILITY_CATALOG = [
   ["Mente Partida", 6, 2, "ativa", "1/descanso longo", "Confusão 1 min (INT CD 16); aberrações INT ≤ 8 falham automaticamente."],
   ["Sangue do Patrono", 0, 1, "ativa", "", "Sacrifica 1d8 HP para recuperar 1 slot de Pacto."],
   ["Pacto de Ferro", 5, 2, "ativa", "1/combate", "Correntes 3d8 fogo + Restringir alvo (FOR CD 15)."],
-  ["Correntes Infernais", 3, 2, "ativa", "", "Selo de sangue 3m: 3d6 fogo a quem entrar; fogo ignora resistência."],
+  ["Correntes Infernais", 3, 3, "ativa", "1/turno", "Selo de sangue 3m: 3d6 fogo a quem entrar; fogo ignora resistência."],
   ["Corrente Mental", 6, 1, "ativa", "1/descanso curto", "Eco mental: repete encantamento nv.1 sem slot."],
   ["Manto de Bruma", 3, 2, "ativa", "", "Névoa 6m 1 min: aliados furtivos; inimigos −2 em ataques à distância."],
-  ["Puxão Abissal", 5, 2, "ativa", "1/combate", "Puxa alvo 9m e 2d8 frio (FOR CD 15)."],
+  ["Puxão Abissal", 5, 3, "ativa", "1/turno", "Puxa alvo 9m e 2d8 frio (FOR CD 15)."],
 ];
 
 const ABILITIES = ABILITY_CATALOG.map(([name, range, pa, tipo, recarga, desc]) => ({

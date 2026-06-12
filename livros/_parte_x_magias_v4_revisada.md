@@ -59,6 +59,89 @@ Classes conjuradoras: **Mago, Clérigo, Bardo, Druida, Artífice**. Possuem **Es
 
 Algumas magias da lista geral possuem **variante** anotada no Cap. 19 (ex.: Piromante e `Bola de Fogo`). Lancar a variante gasta o **mesmo espaco** que a magia base; não e uma magia extra na contagem do grimorio.
 
+### 17.6 Mesa digital (VTT) — custo em PA e recarga
+
+Na **mesa digital**, o combate usa **Pontos de Acao (PA)** em vez de Acao/Ação Bonus do livro de mesa (`LIVRO-DO-JOGADOR.md`, §2.6 e §3.1). O **nivel de espaco** (§17.1) continua valendo para preparacao e descanso; o **PA** e o custo **por turno** no VTT.
+
+| Faixa | PA | Exemplos |
+|-------|-----|----------|
+| Leve | **1** | Truques, Curar Ferimentos, Armadura Arcana, Forma Menor, Invisibilidade Maior |
+| Moderado | **2** | Maos Gelidas, Onda de Trovao, Raios de Enfraquecimento, Sono, Ventania, Salto Dimensional |
+| Pesado | **3** | Bola de Fogo, Relampago, Esfera Acida, Cura em Massa, Cone de Frio, Terremoto, Desejo de Morte |
+
+**Canalizaveis (10):** antes de conjurar, +0 a +2 PA extras; cada PA extra soma **+1d6** ao dano (base nao reduzida por Afinidade Arcanica). Ver tabela em `LIVRO-DO-JOGADOR.md` §3.1.1.2.
+
+**Recarga** (campo `spell.recarga` no JSON): **1/turno** limita uma conjuracao por turno; **1/combate** limita uma por combate. Sem tag = pode repetir no turno se houver PA.
+
+| Magia | Nv espaco | PA (VTT) | Recarga |
+|-------|-----------|----------|---------|
+| Chama de Fogareiro | 0 | 1 | — |
+| Detectar Veneno | 0 | 1 | — |
+| Esporos Necroticos | 0 | 1 | — |
+| Estabilizar | 0 | 1 | — |
+| Lâmina de Espirito | 0 | 1 | — |
+| Maos Firmes | 0 | 1 | — |
+| Armadura Arcana | 1 | 1 | — |
+| Crescimento Acelerado | 1 | 1 | — |
+| Curar Ferimentos | 1 | 1 | — |
+| Extracao Amplificada | 1 | 1 | — |
+| Identificar Ingrediente | 1 | 1 | — |
+| Purificar Veneno | 1 | 1 | — |
+| Sussurro de Masmorra | 1 | 1 | — |
+| Chama de Vinha | 1 | 2 | — |
+| Doce Confuso | 1 | 2 | — |
+| Maos Ardentes | 1 | 2 | — |
+| Maos Gelidas | 1 | 2 | — |
+| Onda de Trovao | 1 | 2 | — |
+| Escudo Arcano | 2 | 1 | — |
+| Forma Menor | 2 | 1 | — |
+| Gelo de Conservacao | 2 | 1 | — |
+| Ilusao Menor | 2 | 1 | — |
+| Inspiracao Culinaria | 2 | 1 | — |
+| Preservacao Perfeita | 2 | 1 | — |
+| Aprimoramento Biomagico | 2 | 2 | — |
+| Fermentacao Acelerada | 2 | 2 | — |
+| Muralha de Energia | 2 | 2 | — |
+| Raios de Enfraquecimento | 2 | 2 | — |
+| Transmutacao de Carne | 2 | 2 | — |
+| Esfera Acida de Monstro | 2 | 3 | — |
+| Injecao Biomagica | 3 | 1 | — |
+| Ler Mentes | 3 | 1 | — |
+| Animacao de Mortos | 3 | 2 | — |
+| Sono | 3 | 2 | 1/turno |
+| Ventania | 3 | 2 | — |
+| Bola de Fogo | 3 | 3 | — |
+| Contagio Necrotico | 3 | 3 | 1/turno |
+| Nova Arcana | 3 | 3 | — |
+| Raio do Limiar | 3 | 3 | — |
+| Relampago | 3 | 3 | — |
+| Mutacao Forcada | 4 | 1 | — |
+| Preservacao Anual | 4 | 1 | — |
+| Purificacao Abencoada | 4 | 1 | — |
+| Visao do Ecossistema | 4 | 2 | — |
+| Cura em Massa | 4 | 3 | 1/turno |
+| Murcha | 4 | 3 | 1/turno |
+| Parede de Fogo | 4 | 3 | 1/turno |
+| Salto Dimensional | 5 | 2 | 1/turno |
+| Cone de Frio | 5 | 3 | 1/turno |
+| Despertar | 5 | 3 | 1/combate |
+| Grande Decomposicao | 5 | 3 | 1/turno |
+| Grande Transmutacao Biomagica | 5 | 3 | — |
+| Ressurreicao Incompleta | 5 | 3 | 1/combate |
+| Restaurar Vigor | 5 | 3 | 1/turno |
+| Cadeia de Relampago | 6 | 3 | 1/turno |
+| Causar Praga | 6 | 3 | 1/turno |
+| Desintegrar | 6 | 3 | 1/turno |
+| Invisibilidade Maior | 7 | 1 | — |
+| Regeneracao Biomagica | 7 | 2 | — |
+| Forma de Monstro | 7 | 3 | 1/combate |
+| Prisao de Gelo | 7 | 3 | 1/turno |
+| Terremoto | 8 | 3 | — |
+| Biomancia Suprema — Transcendencia | 9 | 3 | 1/combate |
+| Desejo de Morte | 9 | 3 | 1/combate |
+
+Fonte canonica do VTT: `data/compendiums/magias.json` (regenerar apos editar esta secao).
+
 ---
 
 ## CAPÍTULO 18 — LISTA DE MAGIAS (GRIMORIO DE ELDARIN)
