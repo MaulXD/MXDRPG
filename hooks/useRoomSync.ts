@@ -332,10 +332,12 @@ export async function rollInitiative(roomId: string) {
   return res.json() as Promise<RoomSnapshot>;
 }
 
-export async function nextCombatTurn(roomId: string) {
+export async function nextCombatTurn(roomId: string, opts?: { force?: boolean }) {
   const res = await fetch(`/api/room/${roomId}/combat/next-turn`, {
     method: "POST",
     credentials: "same-origin",
+    headers: opts?.force ? { "Content-Type": "application/json" } : undefined,
+    body: opts?.force ? JSON.stringify({ force: true }) : undefined,
   });
   if (!res.ok) {
     const err = (await res.json().catch(() => ({}))) as { error?: string };

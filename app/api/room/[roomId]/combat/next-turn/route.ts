@@ -7,10 +7,12 @@ import { advanceRoomTurn, getRoom } from "@/lib/room/store";
 
 type Params = { params: Promise<{ roomId: string }> };
 
-export async function POST(_req: Request, { params }: Params) {
+export async function POST(req: Request, { params }: Params) {
   const { roomId } = await params;
   const session = await getSession();
   const room = await getRoom(roomId);
+  const body = (await req.json().catch(() => ({}))) as { force?: boolean };
+  const force = Boolean(body.force);
 
   if (!room) {
     return NextResponse.json({ error: "Sala não encontrada" }, { status: 404 });
@@ -33,7 +35,7 @@ export async function POST(_req: Request, { params }: Params) {
   }
 
   try {
-    const snapshot = await advanceRoomTurn(roomId);
+    const snapshot = await advanceRoomTurn(roomId, { force });
     if (!snapshot) {
       return NextResponse.json({ error: "Sala não encontrada" }, { status: 404 });
     }
