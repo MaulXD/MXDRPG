@@ -1,5 +1,5 @@
 import type { Axial } from "@/lib/vtt/hex-math";
-import { axialDistance } from "@/lib/vtt/hex-math";
+import { inSquareGrid } from "@/lib/vtt/hex-math";
 import {
   creatureSizeOf,
   occupiedHexes,
@@ -38,9 +38,8 @@ export function buildOccupancy(
   const map: OccupancyMap = new Map();
   for (const t of tokens) {
     if (excludeTokenId && t.id === excludeTokenId) continue;
-    const raca = t.actorId ? actorRacas[t.actorId] : undefined;
     const size = sizeOf(t);
-    const hexes = occupiedHexes(t.axial, creatureSizeOf(t, raca));
+    const hexes = occupiedHexes(t.axial, size);
     for (const hex of hexes) {
       const key = axialKey(hex);
       const prev = map.get(key);
@@ -56,10 +55,26 @@ export function buildOccupancy(
 }
 
 export function inGrid(hex: Axial, gridRadius: number): boolean {
-  return axialDistance({ q: 0, r: 0 }, hex) <= gridRadius;
+  return inSquareGrid(hex, gridRadius);
 }
 
-/** Pode ancorar o token neste hex (todos os hexes do corpo devem caber). */
+const MAX_SMALL_PER_CELL = 2;
+
+function cellAllowsMover(
+  hex: Axial,
+  moverSize: CreatureSize,
+  occupancy: OccupancyMap
+): boolean {
+  const occ = occupancy.get(axialKey(hex));
+  if (!occ || occ.tokenIds.length === 0) return true;
+  if (moverSize !== "small") return false;
+  return (
+    occ.tokenIds.length < MAX_SMALL_PER_CELL &&
+    occ.sizes.every((s) => s === "small")
+  );
+}
+
+/** Pode ancorar o token nesta célula (todos os hexes do corpo devem caber). */
 export function canEnterHex(
   anchor: Axial,
   moverSize: CreatureSize,
@@ -69,8 +84,7 @@ export function canEnterHex(
   const body = occupiedHexes(anchor, moverSize);
   for (const hex of body) {
     if (!inGrid(hex, gridRadius)) return false;
-    const occ = occupancy.get(axialKey(hex));
-    if (occ && occ.tokenIds.length > 0) return false;
+    if (!cellAllowsMover(hex, moverSize, occupancy)) return false;
   }
   return true;
 }
