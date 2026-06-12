@@ -56,10 +56,11 @@ export function removeTokenFromCombatOrder(room: RoomState, removedTokenId: stri
 
   let activeIndex = room.combat.activeIndex;
   const removedIndex = prevOrder.indexOf(removedTokenId);
-  if (removedIndex >= 0 && removedIndex < activeIndex) {
+  if (prevActiveId === removedTokenId) {
+    activeIndex = removedIndex >= order.length ? 0 : removedIndex;
+  } else if (removedIndex >= 0 && removedIndex < activeIndex) {
     activeIndex -= 1;
-  }
-  if (prevActiveId && order.includes(prevActiveId)) {
+  } else if (prevActiveId && order.includes(prevActiveId)) {
     activeIndex = order.indexOf(prevActiveId);
   } else {
     activeIndex = Math.min(activeIndex, order.length - 1);

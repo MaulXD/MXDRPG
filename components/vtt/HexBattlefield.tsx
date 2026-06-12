@@ -1167,11 +1167,6 @@ export function HexBattlefield({
         if (!canControlCombat || !selectedId || !selected || actionMode !== "idle" || actionRingAt) {
           return;
         }
-        const rawActive = combat ? activeTokenId(combat) : null;
-        if (rawActive && selectedId === rawActive) {
-          toast.push("Passe o turno antes de remover o token na vez", "warn");
-          return;
-        }
         setDeleteTokenConfirmOpen(true);
         return;
       }
@@ -1196,7 +1191,6 @@ export function HexBattlefield({
     actionRingAt,
     actionMode,
     canControlCombat,
-    combat,
     selected,
     selectedId,
     deleteTokenConfirmOpen,
@@ -2944,6 +2938,9 @@ export function HexBattlefield({
         <DeleteTokenConfirmDialog
           open={deleteTokenConfirmOpen}
           token={selected}
+          isOnTurn={Boolean(
+            combat && selectedId && activeTokenId(combat) === selectedId
+          )}
           busy={deleteTokenBusy}
           onConfirm={() => void removeSelectedToken()}
           onCancel={() => {

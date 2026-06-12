@@ -7,6 +7,8 @@ import { isMonsterToken } from "@/lib/room/settings";
 type Props = {
   open: boolean;
   token: BattleToken | null;
+  /** Token está na vez na iniciativa (aviso, não bloqueia). */
+  isOnTurn?: boolean;
   busy?: boolean;
   onConfirm: () => void;
   onCancel: () => void;
@@ -15,6 +17,7 @@ type Props = {
 export function DeleteTokenConfirmDialog({
   open,
   token,
+  isOnTurn = false,
   busy = false,
   onConfirm,
   onCancel,
@@ -61,6 +64,7 @@ export function DeleteTokenConfirmDialog({
         <p className="vtt-modal-lead">{lead}</p>
         <p className="vtt-modal-warn" role="status">
           Token selecionado: <strong>{token.name}</strong>
+          {isOnTurn ? " — está na vez; a iniciativa segue para o próximo." : null}
         </p>
         <div className="vtt-modal-actions">
           <button
