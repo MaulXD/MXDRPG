@@ -118,17 +118,17 @@ export function combatChatActionTags(c: NonNullable<ChatMessage["combat"]>): str
 /** Fórmula legível para o bloco central do cartão (ex.: 1d20 + 2 + 3). */
 export function combatChatRollFormula(detailRoll: string): string {
   const chunk = detailRoll.split(" · ")[0]?.trim() ?? detailRoll.trim();
-  const attack = chunk.match(/1d20\s*=\s*(\d+)((?:\s*\+\d+)*)\s*=\s*(\d+)/i);
+  const attack = chunk.match(/1d20\s*=\s*(\d+)((?:\s*[+-]\d+)*)\s*=\s*(\d+)/i);
   if (attack) {
-    const mods = [...attack[2].matchAll(/\+(\d+)/g)].map((m) => m[1]).join(" + ");
-    return mods ? `1d20 + ${mods}` : "1d20";
+    const mods = attack[2].match(/[+-]\d+/g)?.join(" ") ?? "";
+    return mods ? `1d20 ${mods}` : "1d20";
   }
-  const save = chunk.match(/Teste\s+1d20\s*=\s*(\d+)((?:\s*\+\d+)*)\s*=\s*(\d+)/i);
+  const save = chunk.match(/Teste\s+1d20\s*=\s*(\d+)((?:\s*[+-]\d+)*)\s*=\s*(\d+)/i);
   if (save) {
-    const mods = [...save[2].matchAll(/\+(\d+)/g)].map((m) => m[1]).join(" + ");
-    return mods ? `1d20 + ${mods}` : "1d20";
+    const mods = save[2].match(/[+-]\d+/g)?.join(" ") ?? "";
+    return mods ? `1d20 ${mods}` : "1d20";
   }
-  return chunk || "—";
+  return chunk.length > 48 ? `${chunk.slice(0, 45)}…` : chunk || "—";
 }
 
 export function combatChatHeroDisplay(
