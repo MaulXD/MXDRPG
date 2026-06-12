@@ -80,6 +80,8 @@ export type CharacterSheet = {
   lootEconomy?: LootEconomy;
   /** Arma ou magia ofensiva selecionada na mesa */
   combatLoadout?: CombatLoadout | null;
+  /** Magias preparadas para o dia (truques sempre disponíveis). Vazio = todas do inventário. */
+  preparedSpellIds?: string[];
   /** Armadura equipada — afeta CA na ficha e no token */
   armorLoadout?: { packId: "equipamentos"; entryId: string } | null;
   /** Assimilações ativas, anatomia estudada, fome (Cap. 5–6). */

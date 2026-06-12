@@ -28,6 +28,7 @@ import { clearTimedEffectsForFields } from "@/lib/combat/timed-effects";
 import { combineRollModes, formatD20Detail, formatRollMode, rollD20, type RollMode } from "@/lib/combat/d20";
 import { isAreaSpellAction, parseAreaShape } from "@/lib/combat/area-spell";
 import { buildMagiaCombatAction } from "@/lib/combat/spell-parse";
+import { isSpellCombatReady } from "@/lib/character/spell-prep";
 import { listSubclassCombatActions } from "@/lib/character/subclass-vtt";
 import {
   appendHealToSummary,
@@ -257,6 +258,7 @@ export function listCombatActions(actor: CharacterSheet): CombatActionOption[] {
     if (item.packId === "armas" || item.packId === "magias") {
       const entry = getEntry(item.packId, item.entryId);
       if (!entry) continue;
+      if (item.packId === "magias" && !isSpellCombatReady(actor, item.entryId)) continue;
       const action = actionFromEntry(entry, item.packId);
       if (action) out.push(action);
     }

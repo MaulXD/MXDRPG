@@ -28,6 +28,7 @@ import { ReligionSheetPanel } from "@/components/character/ReligionSheetPanel";
 import { WizardHoverTip } from "@/components/character/wizard/WizardHoverTip";
 import { SubclassTrackPanel } from "@/components/character/SubclassTrackPanel";
 import { CombatLoadoutPanel } from "@/components/character/CombatLoadoutPanel";
+import { SpellPrepPanel } from "@/components/character/SpellPrepPanel";
 import { LootEconomyPanel } from "@/components/character/LootEconomyPanel";
 import {
   SheetPopupLoadoutBar,
@@ -174,6 +175,10 @@ export function CharacterSheet({
       sheetBase.armorLoadout ??
       character.armorLoadout ??
       null,
+    preparedSpellIds:
+      roomActor?.preparedSpellIds ??
+      sheetBase.preparedSpellIds ??
+      character.preparedSpellIds,
   };
   const inRoom = Boolean(roomActor);
 
@@ -743,6 +748,26 @@ export function CharacterSheet({
               : " Use + Compêndio para adicionar."
             : null}
         </div>
+      ) : tab === "magias" ? (
+        <SpellPrepPanel
+          actor={live}
+          spells={filtered}
+          canEdit={canEdit}
+          roomId={inRoom ? roomId : undefined}
+          onSaved={() => void refresh()}
+          onPersistLocal={
+            !inRoom
+              ? (next) => {
+                  void patchCharacterApi({ preparedSpellIds: next }).then(() => {
+                    setLocalSheet((prev) => ({
+                      ...(prev ?? character),
+                      preparedSpellIds: next,
+                    }));
+                  });
+                }
+              : undefined
+          }
+        />
       ) : (
         <>
           {canEditInventory && filtered.length > 0 ? (

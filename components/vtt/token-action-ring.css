@@ -97,6 +97,7 @@
 }
 
 .token-action-ring__center,
+.token-action-ring__slot-wrap,
 .token-action-ring__slot {
   pointer-events: auto;
 }
@@ -220,12 +221,25 @@
   box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.06);
 }
 
-.token-action-ring__slot {
+.token-action-ring__slot-wrap {
   position: absolute;
   left: 0;
   top: 0;
   width: 104px;
   height: 104px;
+  opacity: 0;
+  transform: translate3d(-50%, -50%, 0) scale(0.35);
+  animation: tar-slot-radial-in 0.34s cubic-bezier(0.19, 1, 0.22, 1) both;
+  animation-delay: calc(0.1s + var(--tar-i, 0) * 0.038s);
+  will-change: transform, opacity;
+}
+
+.token-action-ring__slot {
+  position: relative;
+  left: auto;
+  top: auto;
+  width: 100%;
+  height: 100%;
   border-radius: 50%;
   border: 2px solid var(--tar-border, rgba(201, 169, 98, 0.35));
   background: radial-gradient(
@@ -244,18 +258,13 @@
   box-shadow:
     0 10px 24px rgba(0, 0, 0, 0.42),
     0 0 12px var(--tar-glow, transparent);
-  opacity: 0;
-  transform: translate3d(-50%, -50%, 0) scale(0.35);
-  animation: tar-slot-radial-in 0.34s cubic-bezier(0.19, 1, 0.22, 1) both;
-  animation-delay: calc(0.1s + var(--tar-i, 0) * 0.038s);
-  will-change: transform, opacity;
   transition:
     border-color 0.12s,
     background 0.12s,
     box-shadow 0.12s;
 }
 
-.token-action-ring--settled:not(.token-action-ring--exiting) .token-action-ring__slot {
+.token-action-ring--settled:not(.token-action-ring--exiting) .token-action-ring__slot-wrap {
   animation: none;
   opacity: 1;
   transform: translate3d(
@@ -265,24 +274,38 @@
     )
     scale(var(--tar-slot-scale, 1));
   will-change: auto;
+  transition: transform 0.14s var(--ease-out, ease-out);
+}
+
+.token-action-ring--settled:not(.token-action-ring--exiting) .token-action-ring__slot {
+  animation: none;
+  opacity: 1;
+  transform: none;
+  will-change: auto;
   transition:
     border-color 0.12s,
     background 0.12s,
-    box-shadow 0.12s,
-    transform 0.14s var(--ease-out, ease-out);
+    box-shadow 0.12s;
 }
 
 .token-action-ring--settled.token-action-ring--swap:not(.token-action-ring--exiting)
-  .token-action-ring__slot {
+  .token-action-ring__slot-wrap {
   animation: tar-slot-swap-in 0.24s cubic-bezier(0.19, 1, 0.22, 1) both;
   animation-delay: calc(var(--tar-i, 0) * 0.03s);
   opacity: 0;
 }
 
-.token-action-ring--exiting .token-action-ring__slot {
+.token-action-ring--exiting .token-action-ring__slot-wrap {
   animation: tar-slot-radial-out 0.28s cubic-bezier(0.55, 0, 1, 0.38) both;
   animation-delay: calc((var(--tar-slot-count, 6) - 1 - var(--tar-i, 0)) * 0.024s);
   pointer-events: none;
+}
+
+.token-action-ring__slot-wrap .token-action-ring__slot {
+  opacity: 1;
+  transform: none;
+  animation: none;
+  will-change: auto;
 }
 
 .token-action-ring__slot--walk {
@@ -410,17 +433,22 @@
   }
 }
 
-.token-action-ring--settled:not(.token-action-ring--exiting) .token-action-ring__slot:hover:not(:disabled) {
+.token-action-ring--settled:not(.token-action-ring--exiting) .token-action-ring__slot-wrap:hover:not(:has(.token-action-ring__slot:disabled)) {
   transform: translate3d(
       calc(-50% + var(--tar-x, 0px)),
       calc(-50% + var(--tar-y, 0px)),
       0
     )
     scale(calc(var(--tar-slot-scale, 1) * 1.06));
+  z-index: 2;
+}
+
+.token-action-ring--settled:not(.token-action-ring--exiting)
+  .token-action-ring__slot-wrap:hover:not(:has(.token-action-ring__slot:disabled))
+  .token-action-ring__slot {
   box-shadow:
     0 12px 28px rgba(0, 0, 0, 0.48),
     0 0 18px var(--tar-glow, rgba(201, 169, 98, 0.2));
-  z-index: 2;
 }
 
 .token-action-ring__slot:disabled {
@@ -627,6 +655,7 @@
   .token-action-ring-backdrop,
   .token-action-ring__track,
   .token-action-ring__center,
+  .token-action-ring__slot-wrap,
   .token-action-ring__slot,
   .token-action-ring__detail {
     animation: none !important;
@@ -639,7 +668,7 @@
     transform: translate3d(-50%, -50%, 0) scale(1);
   }
 
-  .token-action-ring__slot {
+  .token-action-ring__slot-wrap {
     transform: translate3d(
         calc(-50% + var(--tar-x, 0px)),
         calc(-50% + var(--tar-y, 0px)),
@@ -647,5 +676,9 @@
       )
       scale(var(--tar-slot-scale, 1));
     will-change: auto;
+  }
+
+  .token-action-ring__slot-wrap .token-action-ring__slot {
+    transform: none;
   }
 }

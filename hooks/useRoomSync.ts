@@ -263,6 +263,7 @@ export async function patchRoomActor(
       | "combatLoadout"
       | "armorLoadout"
       | "inventory"
+      | "preparedSpellIds"
     >
   > & {
     identityPatch?: IdentityPatch;
@@ -669,6 +670,8 @@ export type RoomSettingsPatchBody = {
   allowPlayerPing?: boolean;
   showUsernameOnTokenNameplate?: boolean;
   gmBypassInitiative?: boolean;
+  coverUrl?: string | null;
+  coverFocus?: import("@/lib/media/portrait-focus").PortraitFocus | null;
 };
 
 export async function patchRoomSettings(roomId: string, patch: RoomSettingsPatchBody) {

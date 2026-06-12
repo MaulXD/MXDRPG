@@ -1,3 +1,4 @@
+import { sanitizePortraitFocus, type PortraitFocus } from "@/lib/media/portrait-focus";
 import { isTokenDefeated } from "@/lib/vtt/token-hp-display";
 import type { BattleToken } from "@/lib/vtt/types";
 import type { GmCreation } from "@/lib/room/gm-creations";
@@ -16,6 +17,10 @@ export type RoomSettings = {
   gmBypassInitiative: boolean;
   /** Fichas criadas pelo mestre (templates editáveis, não são PCs de jogador). */
   gmCreations?: Record<string, GmCreation>;
+  /** Foto de capa opcional da mesa (data URL WebP ou URL externa). */
+  coverUrl?: string | null;
+  /** Enquadramento da capa no painel/mesa. */
+  coverFocus?: PortraitFocus | null;
 };
 
 export const DEFAULT_ROOM_SETTINGS: RoomSettings = {
@@ -37,6 +42,9 @@ export function normalizeRoomSettings(raw?: Partial<RoomSettings> | null): RoomS
       raw?.showUsernameOnTokenNameplate ?? DEFAULT_ROOM_SETTINGS.showUsernameOnTokenNameplate,
     gmBypassInitiative: false,
     gmCreations: raw?.gmCreations,
+    coverUrl:
+      typeof raw?.coverUrl === "string" && raw.coverUrl.trim() ? raw.coverUrl.trim() : null,
+    coverFocus: sanitizePortraitFocus(raw?.coverFocus),
   };
 }
 
