@@ -226,8 +226,16 @@ export async function createCharacterFromWizard(
   const adventureId =
     opts?.adventureId?.trim() || opts?.roomId?.trim() || null;
   if (adventureId) {
-    const adventure = await getAdventure(adventureId);
+    let adventure = await getAdventure(adventureId);
     if (!adventure) throw new Error("Aventura não encontrada");
+    if (!isAdventureMember(adventure, ownerId, opts?.clerkId)) {
+      const { isRoomMemberResolved } = await import("@/lib/auth/room-access-server");
+      const { getRoom } = await import("@/lib/room/internal/registry");
+      const room = adventure.primaryRoomId ? await getRoom(adventure.primaryRoomId) : null;
+      if (room && (await isRoomMemberResolved(room, ownerId, opts?.clerkId))) {
+        adventure = (await bindPlayerToAdventure(adventure.adventureId, ownerId)) ?? adventure;
+      }
+    }
     if (!isAdventureMember(adventure, ownerId, opts?.clerkId)) {
       throw new Error("Entre na aventura antes de criar a ficha");
     }
