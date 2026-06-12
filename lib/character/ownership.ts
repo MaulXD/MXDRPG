@@ -2,6 +2,7 @@ import "server-only";
 
 import { isAdventureMember, canManageAdventure } from "@/lib/auth/adventure-access";
 import { canManageRoom } from "@/lib/auth/room-access";
+import { characterOwnedBySessionUser } from "@/lib/auth/account-ownership";
 import type { SessionUser } from "@/lib/auth/types";
 import type { Adventure } from "@/lib/adventure/types";
 import type { CharacterSheet } from "@/lib/character/types";
@@ -27,7 +28,7 @@ export function canDeleteCharacterSheet(
   }
 ): boolean {
   if (user.role === "admin") return true;
-  if (isCharacterOwner(sheet, user.id)) return true;
+  if (characterOwnedBySessionUser(sheet, user)) return true;
   if (opts?.room && canManageRoom(opts.room, user)) return true;
   if (opts?.adventure && canManageAdventure(opts.adventure, user)) return true;
   return false;
@@ -48,7 +49,7 @@ export function canTransferCharacterSheet(
     if (opts.adventure && canManageAdventure(opts.adventure, user)) return true;
     return false;
   }
-  return isCharacterOwner(sheet, user.id);
+  return characterOwnedBySessionUser(sheet, user);
 }
 
 export function canAssignCharacterToMember(

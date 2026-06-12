@@ -8,6 +8,7 @@ import {
   resolveAdventureId,
 } from "@/lib/character/adventure-bind";
 import type { CharacterSheet } from "@/lib/character/types";
+import { characterOwnedBySessionUser } from "@/lib/auth/account-ownership";
 import type { SessionUser } from "@/lib/auth/types";
 import { normalizeRoomSettings, type RoomSettings } from "@/lib/room/settings";
 import { memberIdsHasUser } from "@/lib/auth/member-ids";
@@ -252,7 +253,7 @@ export function canPlaceRoomActorOnBoard(
   ) {
     return true;
   }
-  return authActor.ownerId === user.id;
+  return characterOwnedBySessionUser(authActor, user);
 }
 
 /** Adicionar itens ao inventário exige aprovação do mestre (dono em campanha, não-GM). */
@@ -283,7 +284,9 @@ export function canEditRoomActor(
   const authActor = actorForRoomAuth(room, actor);
   if (!characterBelongsToAdventure(authActor, adventureId)) return false;
   if (user) {
-    return canEditCharacterWithGrant(authActor as CharacterSheet, user.id, user.role, options);
+    if (user.role === "admin") return true;
+    if (characterOwnedBySessionUser(authActor, user)) return true;
+    return false;
   }
   return (
     room.roomId === "demo" &&
