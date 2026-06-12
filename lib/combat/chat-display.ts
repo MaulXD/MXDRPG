@@ -84,3 +84,95 @@ export function shouldShowCombatDamageInChat(
   if (!reveal) return true;
   return reveal === "damage";
 }
+
+export function combatChatAuthorRoleLabel(role: ChatMessage["authorRole"]): string {
+  if (role === "mestre") return "Mestre";
+  if (role === "admin") return "Admin";
+  if (role === "guest") return "Visitante";
+  return "Jogador";
+}
+
+export function combatChatActionTags(c: NonNullable<ChatMessage["combat"]>): string {
+  const tags: string[] = [];
+  if (c.resolution === "save") {
+    tags.push("Teste de resistência", "Magia");
+  } else if (c.resolution === "defeat") {
+    tags.push("Derrota");
+  } else if (c.actionKind === "weapon") {
+    tags.push("Ataque", "Arma");
+  } else if (c.actionKind === "unarmed") {
+    tags.push("Ataque", "Desarmado");
+  } else if (c.actionKind === "spell") {
+    tags.push("Magia");
+  } else {
+    tags.push("Habilidade");
+  }
+  const mode = c.attackRollMode ?? c.saveRollMode;
+  if (mode === "advantage") tags.push("Vantagem");
+  if (mode === "disadvantage") tags.push("Desvantagem");
+  if (c.critical) tags.push("Crítico");
+  if (c.criticalFail) tags.push("Falha crítica");
+  return tags.join(" · ");
+}
+
+/** Fórmula legível para o bloco central do cartão (ex.: 1d20 + 2 + 3). */
+export function combatChatRollFormula(detailRoll: string): string {
+  const chunk = detailRoll.split(" · ")[0]?.trim() ?? detailRoll.trim();
+  const attack = chunk.match(/1d20\s*=\s*(\d+)((?:\s*\+\d+)*)\s*=\s*(\d+)/i);
+  if (attack) {
+    const mods = [...attack[2].matchAll(/\+(\d+)/g)].map((m) => m[1]).join(" + ");
+    return mods ? `1d20 + ${mods}` : "1d20";
+  }
+  const save = chunk.match(/Teste\s+1d20\s*=\s*(\d+)((?:\s*\+\d+)*)\s*=\s*(\d+)/i);
+  if (save) {
+    const mods = [...save[2].matchAll(/\+(\d+)/g)].map((m) => m[1]).join(" + ");
+    return mods ? `1d20 + ${mods}` : "1d20";
+  }
+  return chunk || "—";
+}
+
+export function combatChatHeroDisplay(
+  msg: ChatMessage,
+  showDamage: boolean
+): { value: string; caption: string } {
+  const c = msg.combat;
+  if (!c) return { value: "—", caption: "" };
+
+  if (c.resolution === "defeat") {
+    return { value: "0", caption: "HP" };
+  }
+
+  if (!showDamage) {
+    const natural = combatChatNaturalDie(msg);
+    if (natural != null) {
+      return {
+        value: String(natural),
+        caption: c.resolution === "save" ? "d20" : natural === 20 ? "Natural 20" : natural === 1 ? "Natural 1" : "d20",
+      };
+    }
+    if (c.attackTotal != null) {
+      return { value: String(c.attackTotal), caption: `vs CA ${c.defenderAc ?? "?"}` };
+    }
+    if (c.saveTotal != null) {
+      return { value: String(c.saveTotal), caption: `vs CD ${c.saveDc ?? "?"}` };
+    }
+  }
+
+  if (c.hit === false || c.criticalFail) {
+    return { value: String(c.attackNatural ?? c.attackTotal ?? "—"), caption: "Errou" };
+  }
+
+  if (c.damageTotal != null && c.damageTotal > 0) {
+    const type = c.spellDamageType?.trim();
+    return {
+      value: String(c.damageTotal),
+      caption: type ? `Dano ${type}` : "Dano",
+    };
+  }
+
+  if (c.attackTotal != null) {
+    return { value: String(c.attackTotal), caption: `vs CA ${c.defenderAc ?? "?"}` };
+  }
+
+  return { value: "—", caption: "" };
+}
