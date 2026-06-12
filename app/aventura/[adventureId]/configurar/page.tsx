@@ -55,8 +55,8 @@ export default async function ConfigurarAventuraPage({ params }: Props) {
         <p className="eyebrow">Aventura · mestre</p>
         <h1 className="display-lg">Mesa: {adventure.name}</h1>
         <p className="lead">
-          Mapa, fog, visibilidade de HP dos monstros e convite. A aventura também guarda as fichas dos
-          jogadores.
+          Capa da mesa (miniatura em Suas mesas), mapa, fog, visibilidade de HP dos monstros e convite. A
+          aventura também guarda as fichas dos jogadores.
         </p>
       </header>
 

@@ -40,6 +40,7 @@ export function MesaSetupClient({
         roomId={roomId}
         roomName={name}
         settings={settings}
+        coverVariant="hub"
         onUpdated={(snap) => {
           setName(snap.scene.name);
           onSnapshot(snap);

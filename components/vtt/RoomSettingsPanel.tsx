@@ -10,6 +10,8 @@ type Props = {
   roomId: string;
   roomName: string;
   settings: RoomSettings;
+  /** hub = página de gerenciamento; vtt = painel lateral na sala */
+  coverVariant?: "hub" | "vtt";
   onUpdated: (snapshot: RoomSnapshot) => void;
 };
 
@@ -17,6 +19,7 @@ export function RoomSettingsPanel({
   roomId,
   roomName,
   settings,
+  coverVariant = "vtt",
   onUpdated,
 }: Props) {
   const [name, setName] = useState(roomName);
@@ -78,6 +81,7 @@ export function RoomSettingsPanel({
         roomId={roomId}
         coverUrl={settings.coverUrl}
         coverFocus={settings.coverFocus}
+        variant={coverVariant}
         onUpdated={onUpdated}
       />
 
