@@ -4219,17 +4219,58 @@
 
 .combat-fx-damage-label {
   display: block;
-  font-size: 0.55rem;
+  font-size: 0.62rem;
   font-weight: 800;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  opacity: 0.85;
-  margin-bottom: 0.1rem;
+  opacity: 1;
+  color: rgba(255, 220, 210, 0.95);
+  margin-bottom: 0.15rem;
 }
 
 .combat-fx-damage-value {
   display: block;
   line-height: 1;
+  font-size: 1em;
+}
+
+.combat-fx-panel-damage {
+  margin: 0.35rem 0 0;
+  font-family: var(--font-display);
+  font-size: 2.35rem;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: #ff6b6b;
+  text-shadow:
+    0 0 20px rgba(255, 80, 80, 0.55),
+    0 3px 12px rgba(0, 0, 0, 0.75);
+}
+
+.combat-fx-panel-damage--crit {
+  font-size: 2.85rem;
+  color: #ffc040;
+  text-shadow:
+    0 0 24px rgba(255, 192, 48, 0.65),
+    0 3px 14px rgba(0, 0, 0, 0.8);
+}
+
+.combat-fx-panel-damage--heal {
+  font-size: 2.5rem;
+  color: #6ee7a0;
+  text-shadow:
+    0 0 18px rgba(80, 220, 140, 0.5),
+    0 3px 12px rgba(0, 0, 0, 0.7);
+}
+
+.combat-fx-panel-damage__type {
+  display: block;
+  margin-top: 0.2rem;
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-dim);
 }
 
 .combat-fx-panel-inner {
@@ -4287,33 +4328,52 @@
   transform: translate(-50%, -50%);
   font-family: var(--font-display);
   font-weight: 800;
-  color: #e85a5a;
+  color: #ff5a5a;
+  text-align: center;
+  padding: 0.4rem 0.75rem 0.5rem;
+  border-radius: 14px;
+  background: rgba(10, 4, 6, 0.88);
+  border: 2px solid rgba(255, 90, 90, 0.55);
+  box-shadow:
+    0 10px 32px rgba(0, 0, 0, 0.6),
+    0 0 36px rgba(255, 70, 70, 0.35);
   text-shadow:
-    0 0 18px rgba(232, 90, 90, 0.55),
-    0 4px 14px rgba(0, 0, 0, 0.75);
-  animation: combat-damage-float 2.8s ease-out forwards;
+    0 0 22px rgba(255, 80, 80, 0.65),
+    0 4px 16px rgba(0, 0, 0, 0.85);
+  animation: combat-damage-float 3.6s ease-out forwards;
   pointer-events: none;
-  z-index: 7;
+  z-index: 12;
 }
 
 .combat-fx-damage--hex {
-  font-size: 3.4rem;
+  font-size: 4.5rem;
   line-height: 1;
   letter-spacing: -0.02em;
 }
 
 .combat-fx-damage.crit {
-  font-size: 4.25rem;
-  color: #ffb020;
+  font-size: 5.75rem;
+  color: #ffc840;
+  border-color: rgba(255, 200, 48, 0.75);
+  box-shadow:
+    0 12px 36px rgba(0, 0, 0, 0.65),
+    0 0 44px rgba(255, 180, 32, 0.45);
   text-shadow:
-    0 0 22px rgba(255, 176, 32, 0.65),
-    0 4px 16px rgba(0, 0, 0, 0.8);
+    0 0 28px rgba(255, 200, 48, 0.75),
+    0 4px 18px rgba(0, 0, 0, 0.85);
 }
 
 .combat-fx-damage.heal {
-  color: var(--accent-success);
-  font-size: 3.6rem;
+  color: #6ee7a0;
+  font-size: 4.75rem;
   letter-spacing: 0.02em;
+  border-color: rgba(80, 220, 140, 0.55);
+  box-shadow:
+    0 10px 32px rgba(0, 0, 0, 0.55),
+    0 0 32px rgba(80, 220, 140, 0.35);
+  text-shadow:
+    0 0 20px rgba(80, 220, 140, 0.55),
+    0 4px 14px rgba(0, 0, 0, 0.75);
 }
 
 .combat-fx-reduced .combat-d20.rolling {
@@ -4357,11 +4417,26 @@
 }
 
 @keyframes combat-damage-float {
-  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.7); }
-  10% { opacity: 1; transform: translate(-50%, -50%) scale(1.12); }
-  18% { opacity: 1; transform: translate(-50%, -52%) scale(1); }
-  65% { opacity: 1; transform: translate(-50%, -62%) scale(1.02); }
-  100% { opacity: 0; transform: translate(-50%, -78%) scale(1.08); }
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.65);
+  }
+  8% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.18);
+  }
+  16% {
+    opacity: 1;
+    transform: translate(-50%, -52%) scale(1);
+  }
+  72% {
+    opacity: 1;
+    transform: translate(-50%, -64%) scale(1.04);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -82%) scale(1.1);
+  }
 }
 
 .room-chat-input {
