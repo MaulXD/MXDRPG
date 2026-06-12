@@ -3838,6 +3838,11 @@
   align-items: center;
 }
 
+.vtt-spawn-drag-card--disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
 .vtt-spawn-drag-avatar {
   flex-shrink: 0;
   width: 36px;

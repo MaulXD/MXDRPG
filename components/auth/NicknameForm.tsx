@@ -1,6 +1,7 @@
 "use client";
 
 import "./avatar-profile.css";
+import { validateNickname } from "@/lib/auth/nickname";
 import { useRouter } from "next/navigation";
 import { useCallback, useState } from "react";
 
@@ -21,6 +22,11 @@ export function NicknameForm({ initialNickname, redirectAfterSave }: Props) {
     const trimmed = nickname.trim();
     if (!trimmed) {
       setMsg("Informe um apelido.");
+      return;
+    }
+    const v = validateNickname(trimmed);
+    if (!v.ok) {
+      setMsg(v.error);
       return;
     }
     setBusy(true);
@@ -56,10 +62,16 @@ export function NicknameForm({ initialNickname, redirectAfterSave }: Props) {
           value={nickname}
           onChange={(e) => setNickname(e.target.value)}
           autoComplete="username"
-          maxLength={32}
+          minLength={3}
+          maxLength={24}
+          pattern="[a-zA-Z0-9_-]*"
           disabled={busy}
+          placeholder="ex: meu_apelido"
         />
       </label>
+      <p className="vtt-combat-hint" style={{ marginTop: "0.35rem" }}>
+        3–24 caracteres: letras, números, _ ou -
+      </p>
       <div className="nickname-form__actions">
         <button type="button" className="btn btn-sm" disabled={busy} onClick={() => void save()}>
           Salvar apelido

@@ -219,10 +219,17 @@ export async function getRoom(roomId: string): Promise<RoomState | null> {
   const map = rooms();
   let room = map.get(roomId) ?? null;
 
-  if (!room && shouldPersistToDb(roomId)) {
-    room = await dbRooms.fetchRoom(roomId);
-    if (!room) room = await backfillRoomFromAdventure(roomId);
-    if (room) map.set(roomId, room);
+  if (shouldPersistToDb(roomId)) {
+    const fromDb = await dbRooms.fetchRoom(roomId);
+    if (fromDb) {
+      if (!room || fromDb.revision > room.revision) {
+        map.set(roomId, fromDb);
+        room = fromDb;
+      }
+    } else if (!room) {
+      room = await backfillRoomFromAdventure(roomId);
+      if (room) map.set(roomId, room);
+    }
   }
 
   if (!room && roomId === "demo") {

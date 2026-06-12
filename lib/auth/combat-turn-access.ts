@@ -99,6 +99,8 @@ export function canAdvanceCombatTurn(
   const activeId = activeTokenId(combat);
   if (!activeId) return false;
   const token = room.scene.tokens.find((t) => t.id === activeId);
-  if (!token) return false;
+  if (!token) {
+    return hasGmView(room, user, opts);
+  }
   return canControlToken(room, user, token, opts);
 }

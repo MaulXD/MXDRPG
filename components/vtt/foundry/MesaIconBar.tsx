@@ -65,8 +65,8 @@ export function MesaIconBar({
   showInvite = false,
 }: Props) {
   const icons: IconDef[] = [
+    { id: "actors", label: "Personagens", icon: "actors", section: "play" },
     { id: "status", label: "Status", icon: "status", section: "play" },
-    { id: "actors", label: "Tokens", icon: "actors", section: "play" },
     { id: "initiative", label: "Turno", icon: "initiative", section: "play" },
     { id: "ficha", label: "Ficha", icon: "ficha", section: "play" },
     { id: "chat", label: "Chat", icon: "chat", section: "play" },

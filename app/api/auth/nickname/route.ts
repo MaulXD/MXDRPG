@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { materializeSessionUser } from "@/lib/auth/session-user";
 import { dbEnabled } from "@/lib/db/enabled";
 import { ensureDbMigrations } from "@/lib/db/ensure-migrations";
 import { setUserNickname } from "@/lib/db/users";
@@ -21,7 +22,8 @@ export async function POST(request: Request) {
 
   try {
     await ensureDbMigrations();
-    const user = await setUserNickname(session.user.id, nickname);
+    const dbUser = await materializeSessionUser(session.user);
+    const user = await setUserNickname(dbUser.id, nickname);
     return NextResponse.json({ ok: true, user });
   } catch (e) {
     const raw = e instanceof Error ? e.message : "Apelido inválido";

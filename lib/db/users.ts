@@ -372,11 +372,23 @@ export async function setUserNickname(userId: string, nickname: string): Promise
   const v = validateNickname(nickname);
   if (!v.ok) throw new Error(v.error);
 
-  const taken = await fetchUserByNickname(v.nickname);
-  if (taken && taken.id !== userId) throw new Error("Este apelido já está em uso");
+  let resolvedId = userId;
+  if (userId.startsWith("clerk-")) {
+    const stored = await fetchUserByClerkId(userId.slice("clerk-".length));
+    if (!stored) throw new Error("Conta não encontrada — saia e entre de novo");
+    resolvedId = stored.id;
+  }
 
-  await sql`UPDATE eldarin_users SET nickname = ${v.nickname} WHERE id = ${userId}`;
-  return (await fetchUserById(userId))!;
+  const existing = await fetchUserById(resolvedId);
+  if (!existing) throw new Error("Conta não encontrada — saia e entre de novo");
+
+  const taken = await fetchUserByNickname(v.nickname);
+  if (taken && taken.id !== resolvedId) throw new Error("Este apelido já está em uso");
+
+  await sql`UPDATE eldarin_users SET nickname = ${v.nickname} WHERE id = ${resolvedId}`;
+  const updated = await fetchUserById(resolvedId);
+  if (!updated?.nickname) throw new Error("Falha ao salvar apelido — tente de novo");
+  return updated;
 }
 
 export async function completeUserPasswordRegistration(
