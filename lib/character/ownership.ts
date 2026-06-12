@@ -9,7 +9,8 @@ import type { CharacterSheet } from "@/lib/character/types";
 import type { RoomState } from "@/lib/room/types";
 
 export function characterNameMatchesConfirm(name: string, confirm: string): boolean {
-  return name.trim().toLowerCase() === confirm.trim().toLowerCase();
+  const norm = (s: string) => s.trim().normalize("NFC").toLowerCase();
+  return norm(name) === norm(confirm);
 }
 
 export function isCharacterOwner(

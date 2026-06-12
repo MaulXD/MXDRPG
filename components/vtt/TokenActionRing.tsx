@@ -201,7 +201,7 @@ export function TokenActionRing({
   const [hoveredInfoSlotId, setHoveredInfoSlotId] = useState<string | null>(null);
   const [pinnedInfoSlotId, setPinnedInfoSlotId] = useState<string | null>(null);
   const [infoPointer, setInfoPointer] = useState<{ x: number; y: number } | null>(null);
-  const turn = useCombatTurn({ combat, canBypassTurn });
+  const turn = useCombatTurn({ combat, canBypassTurn, tokens: allTokens });
 
   const weapons = useMemo(
     () => listTokenCombatActions(token, actor, "weapon"),
