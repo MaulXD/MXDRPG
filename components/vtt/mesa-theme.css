@@ -55,32 +55,32 @@
   --mesa-text-dim: var(--chrome-text-muted);
 
   /* Mapa hex (lidos por readThemeColor no canvas) */
-  --vtt-canvas-bg-0: #141412;
-  --vtt-canvas-bg-1: var(--stage-bg);
-  --vtt-hex-fill: rgba(184, 146, 46, 0.04);
-  --vtt-hex-stroke: rgba(130, 132, 138, 0.58);
-  --vtt-hex-walk-fill: rgba(72, 110, 95, 0.58);
-  --vtt-hex-walk-stroke: rgba(100, 155, 130, 0.72);
-  --vtt-hex-walk-paid-fill: rgba(120, 95, 40, 0.62);
-  --vtt-hex-walk-paid-stroke: rgba(180, 145, 60, 0.82);
-  --vtt-hex-run-fill: rgba(160, 110, 20, 0.55);
-  --vtt-hex-run-stroke: rgba(220, 180, 80, 0.78);
-  --vtt-hex-hover-fill: rgba(184, 146, 46, 0.28);
-  --vtt-hex-hover-stroke: var(--chrome-accent);
-  --vtt-hex-turn-walk-fill: rgba(72, 110, 95, 0.42);
-  --vtt-hex-turn-walk-stroke: rgba(100, 155, 130, 0.44);
-  --vtt-hex-attack-fill: rgba(180, 90, 55, 0.58);
-  --vtt-hex-attack-stroke: rgba(200, 100, 70, 0.78);
-  --vtt-hex-dir-fill: rgba(160, 120, 40, 0.58);
-  --vtt-hex-dir-stroke: rgba(220, 180, 80, 0.9);
-  --vtt-hex-area-fill: rgba(120, 60, 180, 0.6);
-  --vtt-hex-area-stroke: rgba(180, 120, 255, 0.85);
-  --vtt-hex-area-center-fill: rgba(200, 100, 255, 0.68);
-  --vtt-hex-area-center-stroke: #e8c4ff;
+  --vtt-canvas-bg-0: #eeeeee;
+  --vtt-canvas-bg-1: #eeeeee;
+  --vtt-hex-fill: transparent;
+  --vtt-hex-stroke: rgba(0, 0, 0, 0.5);
+  --vtt-hex-walk-fill: rgba(72, 130, 95, 0.35);
+  --vtt-hex-walk-stroke: rgba(0, 0, 0, 0.55);
+  --vtt-hex-walk-paid-fill: rgba(180, 150, 60, 0.38);
+  --vtt-hex-walk-paid-stroke: rgba(0, 0, 0, 0.6);
+  --vtt-hex-run-fill: rgba(220, 170, 40, 0.32);
+  --vtt-hex-run-stroke: rgba(0, 0, 0, 0.55);
+  --vtt-hex-hover-fill: rgba(0, 0, 0, 0.08);
+  --vtt-hex-hover-stroke: rgba(0, 0, 0, 0.65);
+  --vtt-hex-turn-walk-fill: rgba(72, 130, 95, 0.25);
+  --vtt-hex-turn-walk-stroke: rgba(0, 0, 0, 0.4);
+  --vtt-hex-attack-fill: rgba(200, 90, 50, 0.35);
+  --vtt-hex-attack-stroke: rgba(0, 0, 0, 0.6);
+  --vtt-hex-dir-fill: rgba(80, 140, 200, 0.38);
+  --vtt-hex-dir-stroke: rgba(0, 0, 0, 0.65);
+  --vtt-hex-area-fill: rgba(130, 80, 200, 0.38);
+  --vtt-hex-area-stroke: rgba(0, 0, 0, 0.65);
+  --vtt-hex-area-center-fill: rgba(160, 100, 220, 0.45);
+  --vtt-hex-area-center-stroke: rgba(0, 0, 0, 0.75);
 
-  /* Grid sobre mapa escuro — grafite claro (contraste) */
-  --vtt-hex-on-dark-fill: rgba(255, 255, 255, 0.03);
-  --vtt-hex-on-dark-stroke: rgba(210, 212, 218, 0.52);
+  /* Grid sobre mapa escuro — linhas pretas finas */
+  --vtt-hex-on-dark-fill: transparent;
+  --vtt-hex-on-dark-stroke: rgba(0, 0, 0, 0.55);
   --vtt-hex-on-dark-walk-fill: rgba(130, 210, 150, 0.55);
   --vtt-hex-on-dark-walk-stroke: rgba(170, 240, 185, 0.78);
   --vtt-hex-on-dark-turn-walk-fill: rgba(130, 210, 150, 0.4);
@@ -104,9 +104,9 @@
   --vtt-hex-on-dark-path-stroke: rgba(255, 220, 120, 0.95);
   --vtt-hex-on-dark-path-glow: rgba(255, 200, 80, 0.38);
 
-  /* Grid sobre mapa claro — grafite escuro (contraste) */
-  --vtt-hex-on-light-fill: rgba(0, 0, 0, 0.04);
-  --vtt-hex-on-light-stroke: rgba(58, 60, 66, 0.68);
+  /* Grid sobre mapa claro — linhas pretas */
+  --vtt-hex-on-light-fill: transparent;
+  --vtt-hex-on-light-stroke: rgba(0, 0, 0, 0.5);
   --vtt-hex-on-light-walk-fill: rgba(30, 110, 70, 0.52);
   --vtt-hex-on-light-walk-stroke: rgba(20, 90, 55, 0.82);
   --vtt-hex-on-light-turn-walk-fill: rgba(30, 110, 70, 0.38);
@@ -131,8 +131,8 @@
   --vtt-hex-on-light-path-glow: rgba(184, 146, 46, 0.32);
 
   /* Mapas com fundo verde — grafite escuro para não sumir no terreno */
-  --vtt-hex-on-green-fill: rgba(0, 0, 0, 0.05);
-  --vtt-hex-on-green-stroke: rgba(58, 60, 66, 0.72);
+  --vtt-hex-on-green-fill: transparent;
+  --vtt-hex-on-green-stroke: rgba(0, 0, 0, 0.52);
   --vtt-hex-on-green-walk-fill: rgba(255, 252, 235, 0.72);
   --vtt-hex-on-green-walk-stroke: rgba(0, 0, 0, 0.92);
   --vtt-hex-on-green-turn-walk-fill: rgba(255, 252, 235, 0.55);
@@ -163,8 +163,8 @@
   --vtt-token-ring-selected: var(--stage-token-ring);
   --vtt-token-text: var(--chrome-text);
   --vtt-token-subtext: var(--chrome-text-muted);
-  --vtt-path-stroke: rgba(184, 146, 46, 0.9);
-  --vtt-path-glow: rgba(184, 146, 46, 0.35);
+  --vtt-path-stroke: rgba(0, 0, 0, 0.75);
+  --vtt-path-glow: rgba(0, 0, 0, 0.12);
   --vtt-hp-bar: var(--semantic-success);
 
   background: var(--bg-deep);

@@ -80,7 +80,9 @@ export async function POST(req: Request, { params }: Params) {
       entryId: body.actionEntryId?.trim(),
       bypassTurn,
       areaDirection:
-        typeof body.areaDirection === "number" && body.areaDirection >= 0 && body.areaDirection < 6
+        typeof body.areaDirection === "number" &&
+        body.areaDirection >= 0 &&
+        body.areaDirection < 8
           ? body.areaDirection
           : undefined,
       channelExtraPa: body.channelExtraPa,

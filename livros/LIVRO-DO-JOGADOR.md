@@ -330,28 +330,27 @@ Na mesa, antes de conjurar escolha **+0, +1 ou +2 PA extras**. Cada PA extra adi
 2. Cura aliado (habilidade 1 PA) → 1 PA.
 3. Ataque com maça 1 PA → 1 PA. Total gasto: 3 PA; sobram 4 PA.
 
-### 3.1.3 Movimento e PA no hexagonal (VTT)
+### 3.1.3 Movimento e PA no grid quadrado (VTT)
 
-- **1 hex = 1,5 m.** Referencia de deslocamento: ~**9 m** por turno ≈ **6 hex** de corrida maxima; caminhada tipica ≈ **4 hex** com faixas de PA (`Cap. 2.6`).
-- **Rota no mapa:** ao mover, o VTT traca um **caminho pelo grid** (nao linha reta atraves de obstaculos) e anima o token ao longo da rota; hex bloqueados por **tokens medios**; **Halfling**, **Gnomo** e criaturas **pequenas** (mob com deslocamento curto, ou `sharedHex` no token) podem **dividir o mesmo hex** com outra criatura pequena (ate 2 no bloco).
-- **Modo caminhada / corrida:** orcamento de hex e custo de PA conforme faixas `walk`/`run` da ficha; o alcance mostrado na mesa respeita bloqueios e rotas validas.
+- **1 célula = 1,5 m.** Referencia de deslocamento: ~**9 m** por turno ≈ **6 células** de corrida maxima; caminhada tipica ≈ **4 células** com faixas de PA (`Cap. 2.6`).
+- **Rota no mapa:** ao mover, o VTT traca um **caminho pelo grid** (nao linha reta atraves de obstaculos) e anima o token ao longo da rota; células bloqueadas por **tokens medios**; **Halfling**, **Gnomo** e criaturas **pequenas** (mob com deslocamento curto, ou `sharedHex` no token) podem **dividir a mesma célula** com outra criatura pequena (ate 2 no bloco).
+- **Modo caminhada / corrida:** orcamento de células e custo de PA conforme faixas `walk`/`run` da ficha; cada passo (ortogonal ou diagonal) conta **1** no orçamento; o alcance mostrado na mesa respeita bloqueios e rotas validas.
 
 #### 3.1.3.1 Tamanho de criaturas no grid (VTT)
 
-Cada token ocupa **um ou mais hex** conforme o tamanho corporal. A escala segue o **SRD / D&D 5e** (Pequeno a Colossal). No VTT, o campo `tactical.tamanho` em `data/compendiums/monstros.json` espelha `data/monster-tamanhos.json` (80 fichas **001–080** + aliases de spawn). Tabela completa por código: *Livro do Mestre*, apêndice **Tamanho no grid (001–080)**; cada ficha lista **Tamanho** nas estatísticas.
+Cada token ocupa **uma ou mais células** conforme o tamanho corporal. A escala segue o **SRD / D&D 5e** (Pequeno a Colossal). No VTT, o campo `tactical.tamanho` em `data/compendiums/monstros.json` espelha `data/monster-tamanhos.json` (80 fichas **001–080** + aliases de spawn). Tabela completa por código: *Livro do Mestre*, apêndice **Tamanho no grid (001–080)**; cada ficha lista **Tamanho** nas estatísticas.
 
-| Tamanho (livro) | Categoria SRD | Hex ocupados | Exemplos no bestiário Eldarin |
-|-----------------|---------------|--------------|-------------------------------|
-| **Pequeno** | Small | **1** | Goblin, Goblin de Caverna |
-| **Médio** | Medium | **1** | Zumbi, Orc, Esqueleto, Vampiro, Slimes |
-| **Grande** | Large | **3** | Minotauro, Wyvern, Golem, Grifo, Elementais |
-| **Gigante** | Huge | **7** | Escorpião Gigante, Hidra, Ciclope, Dragão Jovem de Gelo, Treant Podre |
-| **Imenso** | Gargantuan | **19** | Dragão Ancião de Fogo, Kraken Menor, Verme Gigante de Pedra, Behemoth |
-| **Colossal** | Colossal+ | **37** | Variante Colossal na invocação (+1 degrau no tamanho base) |
+| Tamanho (livro) | Categoria SRD | Células (grid) | Exemplos no bestiário Eldarin |
+|-----------------|---------------|----------------|--------------------------------|
+| **Pequeno** | Small | **1×1** (~5 ft) | Goblin, Cocatriz, Besouro-Diamante |
+| **Médio** | Medium | **1×1** (~5 ft) | Zumbi, Orc, Esqueleto, Vampiro, Basilisco |
+| **Grande** | Large | **2×2** (~10 ft) | Minotauro, Wyvern, Golem, Dragão Jovem, Escorpião Gigante |
+| **Gigante** | Huge | **3×3** (~15 ft) | Hidra, Ciclope, Treant Podre, Tubarão-Cego, Gigante de Pedra |
+| **Imenso** | Gargantuan | **4×4** (~20 ft) | Dragão Ancião de Fogo, Kraken Menor, Verme Gigante de Pedra |
+| **Colossal** | Colossal+ | **5×5** (~25 ft+) | Variante Colossal na invocação (+1 degrau no tamanho base) |
 
-- **Grande** usa **3 hex em linha** (centro + dois opostos); demais tamanhos multi-hex usam **disco** ao redor do centro.
-- Invocação **Elite** não altera tamanho; **Colossal** sobe **um degrau** (ex. Grande → Gigante).
-- O token na mesa escala visualmente com o tamanho; bloqueio de movimento e alcance consideram **todos os hex** ocupados.
+- **Grande+** usa **bloco quadrado** com **âncora no canto NW** (célula `q,r` do token); invocação **Elite** não altera tamanho; **Colossal** sobe **um degrau** (ex. Grande → Gigante).
+- O token na mesa escala visualmente com o tamanho; bloqueio de movimento e alcance consideram **todas as células** ocupadas.
 
 ### 3.2 Ataques
 

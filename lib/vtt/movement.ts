@@ -3,7 +3,11 @@ import { applyPaSpend, checkCanSpendPa } from "@/lib/combat/pa-turn";
 import type { Axial } from "@/lib/vtt/hex-math";
 import { axialDistance } from "@/lib/vtt/hex-math";
 import { pathStepCount } from "@/lib/vtt/hex-path";
-import { movementPathTo, type MovementPathContext } from "@/lib/vtt/movement-path";
+import {
+  movementPathTo,
+  reachableMovementDistances,
+  type MovementPathContext,
+} from "@/lib/vtt/movement-path";
 import type { BattleToken } from "@/lib/vtt/types";
 import {
   describeMovementPaBands,
@@ -22,7 +26,7 @@ export {
   describeMovementPaBands,
 } from "@/lib/vtt/movement-pa";
 
-/** Eldarin tactical grid: 1 hex = 1,5 m (9 m base ≈ 6 hex) */
+/** Eldarin tactical grid: 1 célula = 1,5 m (9 m base ≈ 6 células) */
 export const METERS_PER_HEX = 1.5;
 export const BASE_MOVEMENT_METERS = 9;
 
@@ -32,7 +36,7 @@ export function hexToMeters(hex: number): number {
 
 export function formatMovementLabel(spent: number, max: number): string {
   const left = Math.max(0, max - spent);
-  return `${left}/${max} hex (${hexToMeters(left)}/${hexToMeters(max)} m)`;
+  return `${left}/${max} células (${hexToMeters(left)}/${hexToMeters(max)} m)`;
 }
 
 export function movementSpent(token: BattleToken): number {
@@ -116,8 +120,8 @@ export function canMoveToken(
         ok: false,
         reason:
           straight === 0
-            ? "Mesmo hex"
-            : "Sem rota — hex bloqueado ou fora do alcance",
+            ? "Mesma célula"
+            : "Sem rota — célula bloqueada ou fora do alcance",
         dist: straight,
         paCost: 0,
         needsPa: false,
@@ -137,7 +141,7 @@ export function canMoveToken(
     : effectiveMovementPaCost(token, rawPaCost, paOpts?.freeBasicMovePa);
 
   if (dist === 0) {
-    return { ok: false, reason: "Mesmo hex", dist, paCost: 0, needsPa: false, nextSpent: spent, nextPa: token.pa, path };
+    return { ok: false, reason: "Mesma célula", dist, paCost: 0, needsPa: false, nextSpent: spent, nextPa: token.pa, path };
   }
 
   if (paCost > 0) {
@@ -159,7 +163,7 @@ export function canMoveToken(
     if (dist > walkLeft) {
       return {
         ok: false,
-        reason: `Caminhada: faltam ${dist - walkLeft} hex (${hexToMeters(dist - walkLeft)} m) — use corrida`,
+        reason: `Caminhada: faltam ${dist - walkLeft} células (${hexToMeters(dist - walkLeft)} m) — use corrida`,
         dist,
         paCost,
         needsPa: paCost > 0,
@@ -188,7 +192,7 @@ export function canMoveToken(
   if (dist > runLeft) {
     return {
       ok: false,
-      reason: `Corrida: máx ${runLeft} hex restantes`,
+      reason: `Corrida: máx ${runLeft} células restantes`,
       dist,
       paCost,
       needsPa: paCost > 0,
@@ -232,4 +236,40 @@ export function defaultMovementFields(token: Pick<BattleToken, "walk" | "run">):
 
 export function reachableHexes(token: BattleToken, mode: MoveMode): number {
   return mode === "walk" ? walkRemaining(token) : runRemaining(token);
+}
+
+/** Células cujo movimento exige PA (BFS + faixas, sem pathfind por célula). */
+export function paidMovementHexKeys(
+  token: BattleToken,
+  mode: MoveMode,
+  ctx: MovementPathContext,
+  paOpts?: MovePaOptions
+): Set<string> {
+  const spent = movementSpent(token);
+  const walkLeft = walkRemaining(token);
+  const runLeft = runRemaining(token);
+  const bands = movementPaBandsForToken(token);
+  const distMap = reachableMovementDistances(
+    token,
+    mode,
+    ctx,
+    ctx.actorRacas
+  );
+  const set = new Set<string>();
+  for (const [key, dist] of distMap) {
+    if (dist === 0) continue;
+    if (mode === "walk" && dist > walkLeft) continue;
+    if (mode === "run" && dist > runLeft) continue;
+    const rawPaCost = movementPaCost(spent, dist, bands);
+    const paCost = paOpts?.gmBypass
+      ? 0
+      : effectiveMovementPaCost(token, rawPaCost, paOpts?.freeBasicMovePa);
+    if (paCost <= 0) continue;
+    if (!paOpts?.gmBypass) {
+      const paCheck = checkCanSpendPa(token, paCost);
+      if (!paCheck.ok) continue;
+    }
+    set.add(key);
+  }
+  return set;
 }

@@ -4,7 +4,7 @@ import { useMemo } from "react";
 import type { Axial } from "@/lib/vtt/hex-math";
 import { axialDistance, hexDirection, hexNeighbors, hexesInRange } from "@/lib/vtt/hex-math";
 import {
-  areaNeedsDirection,
+  areaUsesCasterOrigin,
   canCastAreaAt,
   computeSpellAreaHexes,
 } from "@/lib/combat/area-spell";
@@ -20,7 +20,7 @@ import { tokenAxialDistance } from "@/lib/vtt/creature-size";
 import { axialKey } from "@/lib/vtt/token-occupancy";
 import { reachableMovementHexes } from "@/lib/vtt/movement-path";
 import { paTurnRulesForActor } from "@/lib/combat/pa-economy";
-import { canMoveToken, type MoveCheck } from "@/lib/vtt/movement";
+import { canMoveToken, paidMovementHexKeys, type MoveCheck } from "@/lib/vtt/movement";
 import type { BattleScene, BattleToken } from "@/lib/vtt/types";
 import { canActOnCombatTurn, effectiveBypassTurn } from "@/lib/combat/turn-guard";
 
@@ -102,11 +102,15 @@ export function useBattlefieldHighlights({
       activeCombatAction.areaShape !== "single"
   );
 
+  const areaShape = activeCombatAction?.areaShape;
+  const isWallSpell = areaShape === "wall";
+  const wallAwaitingDirection = Boolean(isWallSpell && areaCenter);
+
   const needsAreaDirection = Boolean(
     isAreaSpellMode &&
-      activeCombatAction?.areaShape &&
-      areaNeedsDirection(activeCombatAction.areaShape) &&
-      areaDirection == null
+      areaShape &&
+      ((areaUsesCasterOrigin(areaShape) && areaDirection == null) ||
+        (isWallSpell && areaCenter != null))
   );
 
   const gridCells = useMemo(() => buildHexGrid(scene.gridRadius), [scene.gridRadius]);
@@ -172,29 +176,20 @@ export function useBattlefieldHighlights({
     if (!moveHighlightToken || !showMovement || !moveCtx || turnMovePreview) {
       return new Set<string>();
     }
-    const hexKeys = effectiveMoveMode === "run" ? rangeSet : walkSet;
-    const set = new Set<string>();
-    for (const key of hexKeys) {
-      const [q, r] = key.split(",").map(Number);
-      const check = canMoveToken(
-        moveHighlightToken,
-        { q, r },
-        effectiveMoveMode,
-        moveCtx,
-        movePaOptsHighlight
-      );
-      if (check.ok && check.paCost > 0) set.add(key);
-    }
-    return set;
+    return paidMovementHexKeys(
+      moveHighlightToken,
+      effectiveMoveMode,
+      moveCtx,
+      movePaOptsHighlight
+    );
   }, [
     moveHighlightToken,
     showMovement,
-    walkSet,
-    rangeSet,
     moveCtx,
     movePaOptsHighlight,
     turnMovePreview,
     effectiveMoveMode,
+    sceneMoveKey,
   ]);
 
   const attackRangeSet = useMemo(() => {
@@ -204,30 +199,48 @@ export function useBattlefieldHighlights({
         hexesInRange(selected.axial, activeCombatAction.rangeHex).map((c) => `${c.q},${c.r}`)
       );
     }
-    if (isAreaSpellMode && needsAreaDirection && selected) {
+    if (isAreaSpellMode && needsAreaDirection && areaUsesCasterOrigin(activeCombatAction.areaShape ?? "burst") && selected) {
       return new Set([`${selected.axial.q},${selected.axial.r}`]);
+    }
+    if (isAreaSpellMode && wallAwaitingDirection && areaCenter) {
+      return new Set(hexNeighbors(areaCenter).map((c) => `${c.q},${c.r}`));
     }
     return new Set(
       hexesInRange(selected.axial, activeCombatAction.rangeHex)
         .filter((c) => axialDistance(selected.axial, c) > 0)
         .map((c) => `${c.q},${c.r}`)
     );
-  }, [selected, activeCombatAction, actionMode, isAreaSpellMode, needsAreaDirection, turn]);
+  }, [selected, activeCombatAction, actionMode, isAreaSpellMode, needsAreaDirection, wallAwaitingDirection, areaCenter, turn]);
 
   const areaDirectionSet = useMemo(() => {
-    if (!needsAreaDirection || !selected) return new Set<string>();
-    return new Set(hexNeighbors(selected.axial).map((c) => `${c.q},${c.r}`));
-  }, [needsAreaDirection, selected]);
+    if (!needsAreaDirection) return new Set<string>();
+    if (wallAwaitingDirection && areaCenter) {
+      return new Set(hexNeighbors(areaCenter).map((c) => `${c.q},${c.r}`));
+    }
+    if (selected) {
+      return new Set(hexNeighbors(selected.axial).map((c) => `${c.q},${c.r}`));
+    }
+    return new Set<string>();
+  }, [needsAreaDirection, wallAwaitingDirection, areaCenter, selected]);
 
   const previewDirection = useMemo(() => {
     if (areaDirection != null) return areaDirection;
-    if (!needsAreaDirection || !selected || !hoverAxial) return null;
-    return hexDirection(selected.axial, hoverAxial);
-  }, [areaDirection, needsAreaDirection, selected, hoverAxial]);
+    if (!needsAreaDirection || !hoverAxial) return null;
+    const origin =
+      wallAwaitingDirection && areaCenter
+        ? areaCenter
+        : selected?.axial ?? null;
+    if (!origin) return null;
+    return hexDirection(origin, hoverAxial);
+  }, [areaDirection, needsAreaDirection, wallAwaitingDirection, areaCenter, selected, hoverAxial]);
 
   const areaPreviewSet = useMemo(() => {
     if (!selected || !activeCombatAction || !isAreaSpellMode) return new Set<string>();
-    const previewCenter = needsAreaDirection ? selected.axial : hoverAxial;
+    const previewCenter = areaUsesCasterOrigin(activeCombatAction.areaShape ?? "burst")
+      ? selected.axial
+      : wallAwaitingDirection && areaCenter
+        ? areaCenter
+        : hoverAxial;
     if (!previewCenter) return new Set<string>();
     const check = canCastAreaAt(
       selected,

@@ -191,7 +191,7 @@
         },
         "area": {
           "shape": "cone",
-          "lengthHex": 2
+          "lengthHex": 3
         },
         "channel": {
           "maxExtraPa": 2,
@@ -341,7 +341,7 @@
         },
         "area": {
           "shape": "cube",
-          "radiusHex": 2
+          "radiusHex": 1
         },
         "channel": {
           "maxExtraPa": 2,
@@ -710,11 +710,11 @@
   },
   {
     "id": "magias-muralha-hexagonal",
-    "name": "Muralha Hexagonal",
+    "name": "Muralha de Energia",
     "type": "magia",
     "system": {
       "catalogId": "MAG-muralha-hexagonal",
-      "description": "<p>Barreira em 3 hex.</p><p><em>Abjuração · nv 2</em></p>",
+      "description": "<p>Barreira reta em 3 células (4,5 m).</p><p><em>Abjuração · nv 2</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 3,
@@ -817,17 +817,7 @@
         },
         "area": {
           "shape": "burst",
-          "radiusHex": 2
-        },
-        "channel": {
-          "maxExtraPa": 2,
-          "bonusPerPa": "1d6"
-        }
-      },
-      "weapon": {
-        "dano": {
-          "formula": "8d6",
-          "tipo": "fogo"
+          "radiusHex": 4
         },
         "ataque": {
           "bonus": 0
@@ -838,11 +828,11 @@
   },
   {
     "id": "magias-nova-hex",
-    "name": "Nova Hex",
+    "name": "Nova Arcana",
     "type": "magia",
     "system": {
       "catalogId": "MAG-nova-hex",
-      "description": "<p>Explosão 3d6 fogo em área.</p><p><em>Evocação · nv 3</em></p>",
+      "description": "<p>Explosão 3d6 fogo em área (raio 3 m).</p><p><em>Evocação · nv 3</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 5,
@@ -934,7 +924,7 @@
         },
         "area": {
           "shape": "line",
-          "lengthHex": 6
+          "lengthHex": 12
         }
       },
       "weapon": {
@@ -999,10 +989,6 @@
         "alcance": "8 hex",
         "save": {
           "attribute": "destreza"
-        },
-        "area": {
-          "shape": "line",
-          "lengthHex": 6
         },
         "channel": {
           "maxExtraPa": 2,
@@ -1210,7 +1196,7 @@
         "alcance": "8 hex",
         "area": {
           "shape": "wall",
-          "hexCount": 4
+          "hexCount": 12
         }
       },
       "weapon": {
@@ -1356,7 +1342,7 @@
         },
         "area": {
           "shape": "cone",
-          "lengthHex": 4
+          "lengthHex": 12
         },
         "channel": {
           "maxExtraPa": 2,
@@ -1711,7 +1697,7 @@
         },
         "area": {
           "shape": "burst",
-          "radiusHex": 5
+          "radiusHex": 10
         }
       },
       "weapon": {
@@ -1942,7 +1928,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-grande-decomposicao",
-      "description": "<p>Decompõe orgânico em cubo 3 hex.</p><p><em>Transmutação · nv 5</em></p>",
+      "description": "<p>Decompõe orgânico em cubo de 3 células (4,5 m).</p><p><em>Transmutação · nv 5</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 4,

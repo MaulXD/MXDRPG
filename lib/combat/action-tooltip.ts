@@ -31,7 +31,7 @@ const ABILITY_EFFECT_HINT: Record<AbilityEffect, string> = {
   melee_attack_bonus: withDuration("melee_attack_bonus", "Bônus no próximo ataque corpo a corpo."),
   defense_buff: withDuration("defense_buff", "Aumenta defesa até o início do próximo turno."),
   charge: withDuration("charge", "Investida em linha reta com bônus no ataque corpo a corpo."),
-  shadow_step: withDuration("shadow_step", "Deslocamento curto (teleporte) para hex visível."),
+  shadow_step: withDuration("shadow_step", "Deslocamento curto (teleporte) para célula visível."),
   mark: withDuration("mark", "Marca o alvo — bônus ou vantagem no próximo ataque contra ele."),
   mark_disadvantage: withDuration(
     "mark_disadvantage",
@@ -123,15 +123,15 @@ function areaLine(action: CombatActionOption): string | null {
   if (!action.areaShape || action.areaShape === "single") return null;
   const shape = AREA_LABELS[action.areaShape] ?? action.areaShape;
   const parts = [shape];
-  if (action.areaRadiusHex != null) parts.push(`${action.areaRadiusHex} hex`);
-  if (action.areaHexCount != null) parts.push(`${action.areaHexCount} hex`);
+  if (action.areaRadiusHex != null) parts.push(`${action.areaRadiusHex} células`);
+  if (action.areaHexCount != null) parts.push(`${action.areaHexCount} células`);
   return `Área: ${parts.join(" · ")}`;
 }
 
 function targetLine(action: CombatActionOption): string {
   if (action.selfTarget) return "Alvo: você";
-  if (action.allyTarget) return `Alvo: aliado · alcance ${action.rangeHex} hex`;
-  return `Alcance: ${action.rangeHex} hex`;
+  if (action.allyTarget) return `Alvo: aliado · alcance ${action.rangeHex} células`;
+  return `Alcance: ${action.rangeHex} células`;
 }
 
 /** Linhas de detalhe para UI e tooltip. */
