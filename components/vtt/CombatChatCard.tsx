@@ -6,10 +6,8 @@ import { combatEventTone } from "@/lib/room/chat-events";
 import { CombatEventIcon } from "@/components/ui/EldarinIcons";
 import {
   combatChatActionTags,
-  combatChatAuthorRoleLabel,
   combatChatDamageSummary,
   combatChatHeroDisplay,
-  combatChatRollFormula,
   combatChatRollSummary,
   isStagedCombatChatMessage,
   shouldShowCombatDamageInChat,
@@ -60,19 +58,9 @@ export function CombatChatCard({ message, revealPhase, tokens, time }: Props) {
   const defender = tokens.find((t) => t.id === c.defenderTokenId);
   const focusToken = c.resolution === "defeat" ? defender : attacker;
   const tokenName = focusToken?.name ?? message.authorName;
-  const detailParts = c.detail
-    ? splitCombatChatDetail(c.detail, c.resolution === "save" ? "save" : "attack")
-    : { roll: "", damage: null };
-  const formula = combatChatRollFormula(detailParts.roll || c.detail || "");
   const hero = combatChatHeroDisplay(message, showDamage);
   const summary =
     staged && !showDamage ? combatChatRollSummary(message) : combatChatDamageSummary(message);
-  const damageLine =
-    showDamage && detailParts.damage
-      ? detailParts.damage
-      : showDamage && c.detail && !detailParts.roll
-        ? c.detail
-        : null;
   const actionName = c.weaponName?.trim() || (c.resolution === "defeat" ? "Derrotado" : "Ação");
   const vsTarget =
     c.resolution !== "defeat" && defender?.name && attacker?.id !== defender.id
@@ -87,6 +75,11 @@ export function CombatChatCard({ message, revealPhase, tokens, time }: Props) {
     tone !== "info" &&
     c.defenderHpBefore > 0 &&
     (c.hit || c.resolution === "save");
+  const hasDetail = Boolean(c.detail?.trim());
+
+  const actionLine = [actionName, vsTarget ? `→ ${vsTarget}` : null, combatChatActionTags(c)]
+    .filter(Boolean)
+    .join(" · ");
 
   return (
     <article className={`combat-chat-card combat-chat-card--${tone}`}>
@@ -94,40 +87,21 @@ export function CombatChatCard({ message, revealPhase, tokens, time }: Props) {
         <TokenThumb token={focusToken} />
         <div className="combat-chat-card__identity">
           <strong className="combat-chat-card__name">{tokenName}</strong>
-          <span className="combat-chat-card__role">
-            {message.authorName}
-            <span className="combat-chat-card__role-sep"> · </span>
-            {combatChatAuthorRoleLabel(message.authorRole)}
-          </span>
+          <span className="combat-chat-card__action-line">{actionLine}</span>
         </div>
         <time className="combat-chat-card__time">{time}</time>
       </header>
 
-      <div className="combat-chat-card__action">
-        <span className="combat-chat-card__action-icon" aria-hidden>
-          <CombatEventIcon tone={tone} size={16} />
-        </span>
-        <div className="combat-chat-card__action-text">
-          <span className="combat-chat-card__action-name">{actionName}</span>
-          {vsTarget ? (
-            <span className="combat-chat-card__action-target">→ {vsTarget}</span>
-          ) : null}
-          <span className="combat-chat-card__action-tags">{combatChatActionTags(c)}</span>
-        </div>
-      </div>
-
-      {formula && formula !== "—" ? (
-        <div className="combat-chat-card__formula">{formula}</div>
-      ) : null}
-
-      <div className="combat-chat-card__result">
-        <div className="combat-chat-card__result-main">
+      <div className="combat-chat-card__body">
+        <div className="combat-chat-card__roll" aria-hidden>
+          <CombatEventIcon tone={tone} size={14} />
           <span className="combat-chat-card__result-value">{hero.value}</span>
           {hero.caption ? (
             <span className="combat-chat-card__result-caption">{hero.caption}</span>
           ) : null}
         </div>
-        {c.detail ? (
+        <p className="combat-chat-card__summary">{summary}</p>
+        {hasDetail ? (
           <button
             type="button"
             className="combat-chat-card__expand"
@@ -140,14 +114,8 @@ export function CombatChatCard({ message, revealPhase, tokens, time }: Props) {
         ) : null}
       </div>
 
-      {expanded && c.detail ? (
+      {expanded && hasDetail ? (
         <p className="combat-chat-card__detail">{c.detail}</p>
-      ) : null}
-
-      <p className="combat-chat-card__summary">{summary}</p>
-
-      {showDamage && damageLine ? (
-        <p className="combat-chat-card__damage">{damageLine}</p>
       ) : null}
 
       {showDamage && c.attackerHeal && c.attackerHeal > 0 ? (
