@@ -107,9 +107,22 @@ function isFreshThisTurn(fx: TimedEffect, ctx: CombatTickContext): boolean {
   return fx.appliedRound === ctx.round && fx.appliedActiveIndex === ctx.activeIndex;
 }
 
+/** Não decrementa no mesmo turno em que o efeito foi aplicado (ex.: buff “1 turno”). */
+function shouldSkipTurnEndTick(fx: TimedEffect, ctx: CombatTickContext): boolean {
+  if (fx.appliedRound == null || fx.appliedActiveIndex == null) return false;
+  return isFreshThisTurn(fx, ctx);
+}
+
+/** Não decrementa na fronteira da rodada em que o efeito entrou em cena. */
+function shouldSkipRoundTick(fx: TimedEffect, endedRound: number): boolean {
+  if (fx.appliedRound == null) return false;
+  return fx.appliedRound === endedRound;
+}
+
 /** Fim do turno do dono — decrementa `turnsLeft`. */
 export function tickTokenTimedEffectsOnTurnEnd(
-  token: BattleToken
+  token: BattleToken,
+  ctx: CombatTickContext
 ): { token: BattleToken; expired: TimedEffect[] } {
   const list = timedEffectsOf(token);
   if (!list.length) return { token, expired: [] };
@@ -119,6 +132,10 @@ export function tickTokenTimedEffectsOnTurnEnd(
 
   for (const fx of list) {
     if (fx.turnsLeft == null) {
+      kept.push(fx);
+      continue;
+    }
+    if (shouldSkipTurnEndTick(fx, ctx)) {
       kept.push(fx);
       continue;
     }
@@ -138,7 +155,8 @@ export function tickTokenTimedEffectsOnTurnEnd(
 
 /** Nova rodada — decrementa `roundsLeft` em todos os tokens. */
 export function tickAllTimedEffectsOnNewRound(
-  tokens: BattleToken[]
+  tokens: BattleToken[],
+  endedRound: number
 ): { tokens: BattleToken[]; expired: { tokenId: string; fx: TimedEffect }[] } {
   const expired: { tokenId: string; fx: TimedEffect }[] = [];
   const nextTokens = tokens.map((token) => {
@@ -150,6 +168,10 @@ export function tickAllTimedEffectsOnNewRound(
 
     for (const fx of list) {
       if (fx.roundsLeft == null) {
+        kept.push(fx);
+        continue;
+      }
+      if (shouldSkipRoundTick(fx, endedRound)) {
         kept.push(fx);
         continue;
       }

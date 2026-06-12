@@ -34,6 +34,7 @@ import {
   formatExpiredNotice,
   tickAllTimedEffectsOnNewRound,
   tickTokenTimedEffectsOnTurnEnd,
+  type CombatTickContext,
 } from "@/lib/combat/timed-effects";
 import { resetAllTokenMovement } from "../internal/token-reset";
 import { getRoom, persistRoom, toSnapshot } from "../internal/registry";
@@ -121,7 +122,11 @@ function bankEndingToken(room: RoomState, notices: string[]): void {
   if (idx < 0) return;
 
   const tokens = [...room.scene.tokens];
-  const tickEnd = tickTokenTimedEffectsOnTurnEnd(tokens[idx]);
+  const turnCtx: CombatTickContext = {
+    round: room.combat.round,
+    activeIndex: room.combat.activeIndex,
+  };
+  const tickEnd = tickTokenTimedEffectsOnTurnEnd(tokens[idx], turnCtx);
   for (const fx of tickEnd.expired) {
     notices.push(formatExpiredNotice(fx, tokens[idx].name));
   }
@@ -215,7 +220,7 @@ function stepToNextCombatant(room: RoomState, notices: string[]): void {
   const prevRound = room.combat.round;
   room.combat = nextTurn(room.combat);
   if (room.combat.round > prevRound) {
-    const tick = tickAllTimedEffectsOnNewRound(room.scene.tokens);
+    const tick = tickAllTimedEffectsOnNewRound(room.scene.tokens, prevRound);
     room.scene = { ...room.scene, tokens: tick.tokens };
     for (const { tokenId, fx } of tick.expired) {
       const name = room.scene.tokens.find((t) => t.id === tokenId)?.name ?? "Token";

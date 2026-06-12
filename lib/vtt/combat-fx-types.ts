@@ -17,6 +17,7 @@ export type CombatFxTargetBurst = {
   saveSuccess?: boolean;
   hit?: boolean;
   critical?: boolean;
+  isHeal?: boolean;
   damageTotal: number | null;
   detail?: string;
 };

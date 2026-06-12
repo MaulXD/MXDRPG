@@ -1,6 +1,7 @@
 import { generalDamagePresetLabel } from "@/lib/combat/area-cascade";
 import type { CombatFxState, CombatFxTargetBurst } from "@/lib/vtt/combat-fx-types";
 import type { ChatMessage } from "@/lib/room/chat";
+import { combatHealAmount, combatMessageLooksLikeHeal, isCombatHealEvent } from "@/lib/room/chat-events";
 import type { Axial } from "@/lib/vtt/hex-math";
 import type { BattleToken } from "@/lib/vtt/types";
 import { resolveCastFxFromCombat } from "@/lib/vtt/token-cast-fx";
@@ -37,13 +38,10 @@ function combatFxFromMessage(
   const c = msg.combat;
   const weaponName = c.weaponName ?? "";
   const detail = c.detail ?? "";
-  const blob = `${weaponName} ${detail}`.toLowerCase();
-  const isHeal =
-    (c.attackerHeal != null && c.attackerHeal > 0 && !c.damageTotal) ||
-    (c.actionKind === "ability" &&
-      (blob.includes("cura") || blob.includes("poção") || blob.includes("pocao")));
+  const isHeal = isCombatHealEvent(c);
+  const healAmount = isHeal ? combatHealAmount(c) : null;
   const castResolved = resolveCastFxFromCombat(msg);
-  const castFxKind = castResolved?.kind ?? null;
+  const castFxKind = castResolved?.kind ?? (isHeal ? "heal" : null);
 
   const base = {
     id: msg.id,
@@ -53,14 +51,14 @@ function combatFxFromMessage(
     defenderAxial,
     attackerAxial,
     defenderTokenId: c.defenderTokenId,
-    damageTotal: c.damageTotal,
+    damageTotal: isHeal ? healAmount ?? c.damageTotal : c.damageTotal,
     isHeal,
     castFxKind,
     castFxTargetId: castResolved?.tokenId ?? c.defenderTokenId,
     deferStateApply: opts?.deferStateApply,
     resolveDetail: c.detail,
     spellDamageType: c.spellDamageType,
-    damageTypeLabel: generalDamagePresetLabel(),
+    damageTypeLabel: isHeal ? "Cura" : generalDamagePresetLabel(),
     chatMessageIds: [msg.id],
   };
 
@@ -95,6 +93,7 @@ function buildAreaIntro(summary: ChatMessage, attackerAxial: Axial): CombatFxSta
   if (!c || c.areaCenterQ == null || c.areaCenterR == null) return null;
   const center = { q: c.areaCenterQ, r: c.areaCenterR };
   const castResolved = resolveCastFxFromCombat(summary);
+  const isHeal = combatMessageLooksLikeHeal(c);
   return {
     id: `${summary.id}-intro`,
     mode: "area-intro",
@@ -105,12 +104,13 @@ function buildAreaIntro(summary: ChatMessage, attackerAxial: Axial): CombatFxSta
     actionKind: "spell",
     spellName: c.weaponName,
     resolveDetail: c.detail,
-    damageTypeLabel: generalDamagePresetLabel(),
+    damageTypeLabel: isHeal ? "Cura" : generalDamagePresetLabel(),
     spellDamageType: c.spellDamageType,
     areaHexes: areaHexesFromCombat(c),
     areaCascade: c.areaCascade,
     damageTotal: c.damageTotal,
-    castFxKind: castResolved?.kind ?? "fire",
+    isHeal,
+    castFxKind: castResolved?.kind ?? (isHeal ? "heal" : "fire"),
     castFxTargetId: castResolved?.tokenId ?? c.defenderTokenId,
   };
 }
@@ -131,6 +131,7 @@ function buildSimultaneousBurst(
     const hc = msg.combat;
     const token = tokens.find((t) => t.id === hc.defenderTokenId);
     if (!token) continue;
+    const isHeal = isCombatHealEvent(hc);
     targets.push({
       tokenId: token.id,
       axial: token.axial,
@@ -142,12 +143,14 @@ function buildSimultaneousBurst(
       saveSuccess: hc.saveSuccess,
       hit: hc.hit,
       critical: hc.critical,
-      damageTotal: hc.damageTotal,
+      isHeal,
+      damageTotal: isHeal ? combatHealAmount(hc) : hc.damageTotal,
       detail: hc.detail,
     });
   }
 
   const castResolved = resolveCastFxFromCombat(summary);
+  const isAreaHeal = summary.combat ? combatMessageLooksLikeHeal(summary.combat) : false;
 
   return {
     id: `${summary.id}-simul`,
@@ -159,13 +162,14 @@ function buildSimultaneousBurst(
     actionKind: "spell",
     spellName: c.weaponName,
     resolveDetail: c.detail,
-    damageTypeLabel: generalDamagePresetLabel(),
+    damageTypeLabel: isAreaHeal ? "Cura" : generalDamagePresetLabel(),
     spellDamageType: c.spellDamageType,
     areaHexes: areaHexesFromCombat(c),
     areaCascade: "simultaneous",
     areaTargets: targets,
     damageTotal: c.damageTotal,
-    castFxKind: castResolved?.kind ?? "fire",
+    isHeal: isAreaHeal,
+    castFxKind: castResolved?.kind ?? (isAreaHeal ? "heal" : "fire"),
     chatMessageIds: hits.map((m) => m.id),
   };
 }
@@ -196,6 +200,7 @@ export function buildAreaFxSequence(
     const defer = opts?.deferStateApplyForToken?.(defender.id) ?? true;
     const fx = combatFxFromMessage(msg, attackerAxial, defender.axial, { deferStateApply: defer });
     if (!fx) continue;
+    const isHeal = fx.isHeal ?? false;
     out.push({
       ...fx,
       id: msg.id,
@@ -206,7 +211,7 @@ export function buildAreaFxSequence(
       cascadeTotal: hits.length,
       spellName: summary.combat?.weaponName,
       resolveDetail: msg.combat.detail,
-      damageTypeLabel: generalDamagePresetLabel(),
+      damageTypeLabel: isHeal ? "Cura" : generalDamagePresetLabel(),
       spellDamageType: summary.combat?.spellDamageType,
       areaHexes: areaHexesFromCombat(summary.combat!),
       chatMessageIds: [msg.id],

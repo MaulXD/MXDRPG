@@ -289,7 +289,7 @@ export function gmCreationCombatActions(creation: GmCreation): CombatActionOptio
   if (stats.actions.length > 0) {
     return stats.actions.map((a) => ({
       ...a,
-      label: a.label ?? `${a.name} · ${a.rangeHex ?? 1} hex · PA ${a.paCost}`,
+      label: a.label ?? `${a.name} · ${a.rangeHex ?? 1} cél. · PA ${a.paCost}`,
     }));
   }
   if (creation.source.type === "monster" && creation.source.id) {

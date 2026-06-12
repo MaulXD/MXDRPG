@@ -15,7 +15,7 @@ import type { TokenCastFxKind } from "@/lib/vtt/token-cast-fx";
 
 export type { CombatFxState, CombatFxTargetBurst } from "@/lib/vtt/combat-fx-types";
 
-export type TokenCombatFlash = "hit" | "miss" | "crit" | null;
+export type TokenCombatFlash = "hit" | "miss" | "crit" | "heal" | null;
 
 type Props = {
   wrapRef: React.RefObject<HTMLDivElement | null>;
@@ -58,6 +58,7 @@ function hexPathPoints(
 }
 
 function resultLabelFor(fx: CombatFxState): string {
+  if (fx.isHeal) return "CURA";
   if (fx.saveTotal != null) {
     if (fx.saveDc == null || fx.saveSuccess === undefined) {
       return String(fx.saveTotal);
@@ -69,10 +70,29 @@ function resultLabelFor(fx: CombatFxState): string {
   return "ERROU";
 }
 
+function isPureHealCast(fx: CombatFxState): boolean {
+  return Boolean(fx.isHeal && fx.attackTotal === 0 && fx.attackNatural === 20);
+}
+
+function isHealCastWithoutRoll(fx: CombatFxState): boolean {
+  if (!fx.isHeal) return false;
+  if (isPureHealCast(fx)) return true;
+  return fx.attackNatural == null && fx.attackTotal == null && fx.saveTotal == null;
+}
+
 function flashForTarget(t: CombatFxTargetBurst): TokenCombatFlash {
+  if (t.isHeal) return "heal";
   if (t.critical) return "crit";
   if (t.hit === false && t.saveTotal == null) return "miss";
   if (t.hit || t.saveTotal != null) return "hit";
+  return "miss";
+}
+
+function tokenFlashForFx(fx: CombatFxState): TokenCombatFlash {
+  if (fx.isHeal) return "heal";
+  if (fx.critical) return "crit";
+  if (fx.hit === false && fx.saveTotal == null) return "miss";
+  if (fx.hit || fx.saveTotal != null) return "hit";
   return "miss";
 }
 
@@ -230,14 +250,7 @@ export function CombatFxLayer({
 
     const playTokenFx = () => {
       if (data.defenderTokenId) {
-        const flash: TokenCombatFlash = data.critical
-          ? "crit"
-          : data.hit === false && data.saveTotal == null
-            ? "miss"
-            : data.hit || data.saveTotal != null
-              ? "hit"
-              : "miss";
-        onTokenFlashRef.current?.(data.defenderTokenId, flash);
+        onTokenFlashRef.current?.(data.defenderTokenId, tokenFlashForFx(data));
       }
       if (!castFxTriggeredRef.current && data.castFxKind && data.castFxTargetId) {
         const shouldPlay =
@@ -296,14 +309,54 @@ export function CombatFxLayer({
     };
 
     if (data.mode === "area-target") {
-      runRollResultDamageSequence(timings.areaTargetMark);
+      if (isHealCastWithoutRoll(data)) {
+        const panelEnd = timings.mark + (reducedMotion ? 420 : 880);
+        timeouts.push(
+          setTimeout(() => {
+            revealChat("roll");
+            setPhase("result");
+          }, timings.areaTargetMark)
+        );
+        schedulePostPanelDamage(
+          panelEnd,
+          () => {
+            playTokenFx();
+          },
+          () => {
+            applyDamagePhase();
+            revealChat("damage");
+          }
+        );
+      } else {
+        runRollResultDamageSequence(timings.areaTargetMark);
+      }
       return () => {
         for (const id of timeouts) clearTimeout(id);
       };
     }
 
     const t0 = setTimeout(() => {
-      runRollResultDamageSequence(timings.mark);
+      if (isHealCastWithoutRoll(data)) {
+        const panelEnd = timings.mark + (reducedMotion ? 420 : 880);
+        timeouts.push(
+          setTimeout(() => {
+            revealChat("roll");
+            setPhase("result");
+          }, timings.mark)
+        );
+        schedulePostPanelDamage(
+          panelEnd,
+          () => {
+            playTokenFx();
+          },
+          () => {
+            applyDamagePhase();
+            revealChat("damage");
+          }
+        );
+      } else {
+        runRollResultDamageSequence(timings.mark);
+      }
     }, 0);
     timeouts.push(t0);
 
@@ -341,12 +394,17 @@ export function CombatFxLayer({
   const areaFill = accent.replace(/[\d.]+\)$/, "0.2)");
 
   const resultLabel = resultLabelFor(fx);
-  const showDicePanel = fx.mode === "single" || fx.mode === "area-target";
+  const healCastWithoutRoll = isHealCastWithoutRoll(fx);
+  const showDicePanel =
+    !healCastWithoutRoll && (fx.mode === "single" || fx.mode === "area-target");
   const showPanel =
     fx.mode === "area-intro" ||
-    (showDicePanel && panelVisible && (phase === "roll" || phase === "result"));
+    ((showDicePanel || healCastWithoutRoll) &&
+      panelVisible &&
+      (phase === "roll" || phase === "result"));
   const showResultText =
-    fx.mode === "area-intro" || (showDicePanel && panelVisible && phase === "result");
+    fx.mode === "area-intro" ||
+    ((showDicePanel || healCastWithoutRoll) && panelVisible && phase === "result");
   const showRoll = showDicePanel && phase === "roll";
   const detailParts = fx.resolveDetail
     ? splitCombatChatDetail(
@@ -358,6 +416,7 @@ export function CombatFxLayer({
     showDicePanel &&
     phase === "result" &&
     Boolean(detailParts.roll) &&
+    !healCastWithoutRoll &&
     (fx.hit === true || fx.hit === false || fx.saveTotal != null);
 
   const areaHexPaths =
@@ -413,6 +472,22 @@ export function CombatFxLayer({
                   <p className="combat-fx-area-detail">{fx.resolveDetail}</p>
                 ) : null}
               </div>
+            ) : healCastWithoutRoll ? (
+              <>
+                {showResultText && !showRoll ? (
+                  <div className="combat-fx-panel-result">
+                    <p className="combat-fx-result heal">{resultLabel}</p>
+                    {fx.damageTotal != null && fx.damageTotal > 0 ? (
+                      <p className="combat-fx-panel-damage combat-fx-panel-damage--heal">
+                        +{fx.damageTotal}
+                        <span className="combat-fx-panel-damage__type">Cura</span>
+                      </p>
+                    ) : null}
+                  </div>
+                ) : showRoll ? (
+                  <p className="combat-fx-rolling">Curando…</p>
+                ) : null}
+              </>
             ) : (
               <>
                 <DiceMiniature
@@ -427,12 +502,16 @@ export function CombatFxLayer({
                   <div className="combat-fx-panel-result">
                     <p
                       className={`combat-fx-result ${
-                        fx.saveSuccess !== false && (fx.hit || fx.saveTotal != null) ? "hit" : "miss"
+                        fx.isHeal
+                          ? "heal"
+                          : fx.saveSuccess !== false && (fx.hit || fx.saveTotal != null)
+                            ? "hit"
+                            : "miss"
                       }`}
                     >
                       {resultLabel}
                     </p>
-                    {fx.saveTotal != null || fx.attackTotal != null || fx.defenderAc != null ? (
+                    {fx.saveTotal != null || (fx.attackTotal != null && !fx.isHeal) || fx.defenderAc != null ? (
                       <p className="combat-fx-panel-vs">
                         {fx.saveTotal != null
                           ? `${fx.saveTotal} vs CD ${fx.saveDc ?? "—"}`
@@ -481,14 +560,15 @@ export function CombatFxLayer({
         ? fx.areaTargets?.map((t) => {
             if (t.damageTotal == null || t.damageTotal <= 0) return null;
             const pos = markScreen(t.axial);
+            const heal = t.isHeal ?? fx.isHeal;
             return (
               <div
                 key={t.tokenId}
-                className={`combat-fx-damage combat-fx-damage--hex ${t.critical ? "crit" : ""}`}
+                className={`combat-fx-damage combat-fx-damage--hex ${t.critical ? "crit" : ""}${heal ? " heal" : ""}`}
                 style={{ left: pos.x, top: pos.y }}
               >
-                <span className="combat-fx-damage-label">{fx.damageTypeLabel ?? "Dano"}</span>
-                <span className="combat-fx-damage-value">−{t.damageTotal}</span>
+                <span className="combat-fx-damage-label">{heal ? "Cura" : fx.damageTypeLabel ?? "Dano"}</span>
+                <span className="combat-fx-damage-value">{heal ? `+${t.damageTotal}` : `−${t.damageTotal}`}</span>
               </div>
             );
           })

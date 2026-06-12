@@ -3109,16 +3109,18 @@ Alquimista Amador (INT 13, Nivel 4): Pode criar pocoes básicas (Cura Leve, Anti
 | Cortante | Causa Sangramento em acertos críticos (1d4 dano/turno) |
 | Perfurante | Em acertos críticos, o dado de dano e rolado 3 vezes |
 
+**Alcance à distância (livro e VTT):** segue a tabela **SRD / D&D 5e** (alcance normal / longo em pés), convertida para metros e **reduzida a 70%** (30% menor que o PHB). Na mesa digital, o **alcance normal** vira `alcanceHex` (1 célula = 1,5 m). Ex.: arco longo SRD 150/600 ft → **32/128 m** → **21 células** de alcance de ataque no mapa. Além do alcance normal, o Mestre pode aplicar **desvantagem** até o alcance longo (regra narrativa).
+
 ### 14.2 Armas Simples (Corpo a Corpo)
 
 | Arma | Dano | Propriedades | Preço |
 |------|------|-------------|-------|
 | Clava | 1d4 contundente | Leve | 1 po |
-| Adaga | 1d4 perfurante | Leve, Arremesso (6/18m) | 2 po |
+| Adaga | 1d4 perfurante | Leve, Arremesso (4/13m) | 2 po |
 | Foice Curta | 1d4 cortante | Leve | 1 po |
-| Lança | 1d6 perfurante | Arremesso (6/12m), Versatil (1d8) | 1 po |
+| Lança | 1d6 perfurante | Arremesso (4/13m), Versatil (1d8) | 1 po |
 | Cajado | 1d6 contundente | Versatil (1d8) | 2 po |
-| Machado de Mao | 1d6 cortante | Leve, Arremesso (6/12m) | 5 po |
+| Machado de Mao | 1d6 cortante | Leve, Arremesso (4/13m) | 5 po |
 | Maça | 1d6 contundente | Esmagadora | 5 po |
 | Martelo de Guerra | 1d8 contundente | Versatil (1d10), Esmagadora | 15 po |
 
@@ -3126,10 +3128,10 @@ Alquimista Amador (INT 13, Nivel 4): Pode criar pocoes básicas (Cura Leve, Anti
 
 | Arma | Dano | Alcance | Propriedades | Preço |
 |------|------|---------|-------------|-------|
-| Besta Leve | 1d8 perfurante | 24/96m | Munição, Recarga | 25 po |
-| Dardo | 1d4 perfurante | 6/18m | Leve, Arremesso | 5 cp |
-| Funda | 1d4 contundente | 9/36m | Munição | 1 po |
-| Zarabatana | 1 perfurante | 7,5/30m | Munição (agulha) | 10 po |
+| Besta Leve | 1d8 perfurante | 17/68m | Munição, Recarga | 25 po |
+| Dardo | 1d4 perfurante | 4/13m | Leve, Arremesso | 5 cp |
+| Funda | 1d4 contundente | 6/26m | Munição | 1 po |
+| Zarabatana | 1 perfurante | 5/21m | Munição (agulha) | 10 po |
 
 ### 14.4 Armas Marciais (Corpo a Corpo)
 
@@ -3145,17 +3147,17 @@ Alquimista Amador (INT 13, Nivel 4): Pode criar pocoes básicas (Cura Leve, Anti
 | Lança Longa | 1d10 perfurante | Pesada, Alcance | 10 po |
 | Rapieira | 1d8 perfurante | Leve, Perfurante | 25 po |
 | Sabre | 1d6 cortante | Leve, Cortante | 25 po |
-| Tridente | 1d6 perfurante | Arremesso (6/12m), Versatil (1d8) | 5 po |
+| Tridente | 1d6 perfurante | Arremesso (4/13m), Versatil (1d8) | 5 po |
 | Chicote | 1d4 cortante | Alcance, Leve | 2 po |
 
 ### 14.5 Armas Marciais (A Distancia)
 
 | Arma | Dano | Alcance | Propriedades | Preço |
 |------|------|---------|-------------|-------|
-| Arco Curto | 1d6 perfurante | 24/96m | Munição, Cortante | 25 po |
-| Arco Longo | 1d8 perfurante | 45/180m | Munição, Pesada, Perfurante | 50 po |
-| Besta Pesada | 1d10 perfurante | 30/120m | Munição, Pesada, Recarga | 50 po |
-| Besta de Mao | 1d6 perfurante | 9/36m | Leve, Munição, Recarga | 75 po |
+| Arco Curto | 1d6 perfurante | 17/68m | Munição, Cortante | 25 po |
+| Arco Longo | 1d8 perfurante | 32/128m | Munição, Pesada, Perfurante | 50 po |
+| Besta Pesada | 1d10 perfurante | 21/85m | Munição, Pesada, Recarga | 50 po |
+| Besta de Mao | 1d6 perfurante | 6/26m | Leve, Munição, Recarga | 75 po |
 
 ### 14.6 Escudos e Protecao
 

@@ -308,7 +308,7 @@ export function combatStatTip(
       return {
         title: "Deslocamento",
         lines: [
-          `Caminhada ${values.walk} hex · corrida ${values.run} hex por turno.`,
+          `Caminhada ${values.walk} cél. · corrida ${values.run} cél. por turno.`,
           "Movimento gasta PA conforme as regras da mesa.",
           "Terreno difícil ou efeitos podem reduzir o deslocamento.",
         ],

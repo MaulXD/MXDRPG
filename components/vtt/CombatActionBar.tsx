@@ -189,7 +189,7 @@ export function CombatActionBar({
 
       {isAreaSpell ? (
         <p className="vtt-combat-hint">
-          Magia de área ({action.areaShape}) — selecione o centro ou a direção no mapa hexagonal.
+          Magia de área ({action.areaShape}) — selecione o centro ou a direção no mapa.
         </p>
       ) : null}
 
@@ -209,7 +209,7 @@ export function CombatActionBar({
           )}
         </button>
       ) : isAreaSpell ? null : !targets.length ? (
-        <p className="vtt-combat-hint">Nenhum alvo no alcance ({action.rangeHex} hex).</p>
+        <p className="vtt-combat-hint">Nenhum alvo no alcance ({action.rangeHex} células).</p>
       ) : (
         <ul className="vtt-combat-targets">
           {targets.map(({ token, ok, reason }) => (

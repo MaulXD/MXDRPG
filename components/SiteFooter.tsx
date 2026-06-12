@@ -6,7 +6,7 @@ export function SiteFooter() {
     <footer className="glass site-footer">
       <div>
         <EldarinLogo variant="full" href="/" className="eldarin-logo--footer" />
-        <p style={{ margin: "0.5rem 0 0", fontSize: "0.8rem" }}>VTT tático hex · fantasia</p>
+        <p style={{ margin: "0.5rem 0 0", fontSize: "0.8rem" }}>VTT tático · fantasia</p>
       </div>
       <nav className="site-footer__nav" aria-label="Links do site">
         <Link href="/sistema">Sistema</Link>

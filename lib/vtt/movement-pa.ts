@@ -67,13 +67,13 @@ export function describeMovementPaBands(bands: MovementPaBands): string {
   const freeEnd = Math.min(bands.walk, bands.runChargeFrom - 1);
   const freeLabel =
     bands.firstBlock + 1 <= freeEnd
-      ? `hex ${bands.firstBlock + 1}–${freeEnd} sem PA extra`
+      ? `cél. ${bands.firstBlock + 1}–${freeEnd} sem PA extra`
       : null;
   const parts = [
-    `1º bloco: ${bands.firstBlock} hex → 1 PA`,
+    `1º bloco: ${bands.firstBlock} cél. → 1 PA`,
     freeLabel,
     bands.runChargeFrom <= bands.run
-      ? `a partir do hex ${bands.runChargeFrom}: +1 PA / ${bands.runBlockSize} hex (corrida)`
+      ? `a partir da cél. ${bands.runChargeFrom}: +1 PA / ${bands.runBlockSize} cél. (corrida)`
       : null,
   ].filter(Boolean);
   return parts.join(" · ");

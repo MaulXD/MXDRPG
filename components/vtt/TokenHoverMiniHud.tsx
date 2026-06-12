@@ -79,7 +79,7 @@ export function TokenHoverMiniHud({
 
       {showMovement ? (
         <span className="vtt-mini-hud__move">
-          {walkRemaining(token)} hex · {hexToMeters(walkRemaining(token))} m
+          {walkRemaining(token)} cél. · {hexToMeters(walkRemaining(token))} m
         </span>
       ) : null}
 

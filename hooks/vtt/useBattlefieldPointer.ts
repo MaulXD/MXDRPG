@@ -63,6 +63,8 @@ type Params = {
   onHoverTokenChange?: (tokenId: string | null) => void;
   /** Posição do ponteiro no canvas (px, py) — para mini HUD seguir o mouse. */
   onHoverPointerChange?: (pos: { x: number; y: number } | null) => void;
+  /** Só atualiza célula sob o cursor quando o mapa precisa de preview (movimento, magia, etc.). */
+  trackGridHover?: boolean;
   showMovement: boolean;
   isAreaSpellMode: boolean;
   needsAreaDirection: boolean;
@@ -176,6 +178,7 @@ export function useBattlefieldPointer({
   canOpenPlayerBestiary,
   onHoverTokenChange,
   onHoverPointerChange,
+  trackGridHover = false,
   dungeonEditor,
   whiteboard,
   mapTools,
@@ -832,7 +835,7 @@ export function useBattlefieldPointer({
         }
       }
 
-      publishHoverAxial(axial);
+      publishHoverAxial(trackGridHover ? axial : null);
       reportHoverTarget(px, py);
 
       const hoverToken = tokenAtPoint(px, py);
@@ -919,6 +922,7 @@ export function useBattlefieldPointer({
       publishHoverPointer,
       publishHoverAxial,
       axialAtScreen,
+      trackGridHover,
       reportHoverTarget,
       tokenAtPoint,
       onHoverTokenChange,

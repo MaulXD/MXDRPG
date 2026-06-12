@@ -4665,6 +4665,16 @@
   color: var(--accent-success);
 }
 
+.combat-fx-result.heal {
+  color: #6ee7a0;
+  font-size: 1.05rem;
+  text-shadow: 0 0 16px rgba(80, 220, 140, 0.45);
+}
+
+.combat-fx-damage.heal .combat-fx-damage-label {
+  color: rgba(180, 255, 210, 0.95);
+}
+
 .combat-fx-result.miss {
   color: var(--accent-secondary);
 }

@@ -108,7 +108,7 @@ export const RELIGION_LIST: ReligionDef[] = [
     cults: ["Irmandade da Maré Baixa", "Faróis de Salmour"],
     bonuses: [
       "Pé Firme no Convés: +2 em testes de equilíbrio e natação",
-      "Maré Favorável: 1/dia ignora terreno difícil em hexes alagados ou costeiros",
+      "Maré Favorável: 1/dia ignora terreno difícil em células alagadas ou costeiras",
       "Eco Abissal: vantagem em Percepção para ouvir movimento através de água",
       "Salvação do Naufrágio: 1/descanso longo — rerrolar save contra afogamento",
     ],
@@ -178,7 +178,7 @@ export const RELIGION_LIST: ReligionDef[] = [
     cults: ["Círculo de Roda-Lua", "Vigias do Véu (Alto Serath)"],
     bonuses: [
       "Sonho Lúcido: 1/descanso longo — visionar pista sobre próxima masmorra (Mestre dá 1 detalhe)",
-      "Passo Entre Hexes: 1/dia teletransporte de 1 hex após save de INT CD 12 (só em área com névoa ou anomalia)",
+      "Passo Entre Células: 1/dia teletransporte de 1 célula após save de INT CD 12 (só em área com névoa ou anomalia)",
       "Leitura do Véu: +2 em Arcanismo e História sobre fenômenos planares",
       "Presença Etérea: vantagem em Furtividade à noite ou em névoa",
     ],

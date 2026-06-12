@@ -44,7 +44,7 @@ const DEFAULT_LAYOUTS: Record<MesaWindowId, Omit<FoundryWindowLayout, "open" | "
   status: { x: 52, y: 48, width: 400, height: 520 },
 };
 
-const DEFAULT_OPEN: MesaWindowId[] = ["initiative"];
+const DEFAULT_OPEN: MesaWindowId[] = ["initiative", "spawn"];
 
 /** Painéis abertos por padrão como janela flutuante (não na barra lateral). */
 const DEFAULT_FLOATING: MesaWindowId[] = ["initiative"];
@@ -139,13 +139,9 @@ function loadRegistry(roomId?: string): Registry {
 }
 
 export function useFoundryWindows(roomId?: string) {
-  const [registry, setRegistry] = useState<Registry>(() =>
-    typeof window !== "undefined" ? loadRegistry(roomId) : buildDefaultRegistry()
-  );
-  const [floating, setFloating] = useState<FloatingMap>(() =>
-    typeof window !== "undefined" ? loadFloating(roomId) : defaultFloatingMap()
-  );
-  const [hydrated, setHydrated] = useState(() => typeof window !== "undefined");
+  const [registry, setRegistry] = useState<Registry>(() => buildDefaultRegistry());
+  const [floating, setFloating] = useState<FloatingMap>(() => defaultFloatingMap());
+  const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
     setRegistry(loadRegistry(roomId));

@@ -21,6 +21,7 @@ import type { BattleToken } from "@/lib/vtt/types";
 import { tokenAxialDistance } from "@/lib/vtt/creature-size";
 import { axialDistance } from "@/lib/vtt/hex-math";
 import { resistedDamageAmount } from "@/lib/combat/damage-resist";
+import { effectiveRangedMaxHex } from "@/lib/combat/ranged-attack-range";
 import { applyDamageWithTempHp } from "@/lib/combat/hp-temp";
 import { abilityFromEntry } from "@/lib/combat/compendium-actions";
 import { attackRollMode, canTokenAct } from "@/lib/combat/conditions";
@@ -126,13 +127,13 @@ const UNARMED: CombatActionOption = {
   attackBonus: 0,
   rangeHex: 1,
   paCost: PA_DEFAULT_ACTION_COST,
-  label: `Ataque desarmado · 1 hex · PA ${PA_DEFAULT_ACTION_COST}`,
+  label: `Ataque desarmado · 1 cél. · PA ${PA_DEFAULT_ACTION_COST}`,
 };
 
 const MONSTER_UNARMED: CombatActionOption = {
   ...UNARMED,
   name: "Ataque natural",
-  label: `Ataque natural · 1 hex · PA ${PA_DEFAULT_ACTION_COST}`,
+  label: `Ataque natural · 1 cél. · PA ${PA_DEFAULT_ACTION_COST}`,
 };
 
 function parseSaveAttribute(raw: string | undefined): AttributeKey | undefined {
@@ -195,7 +196,7 @@ function actionFromEntry(
     rangeHex,
     paCost,
     equipmentSpecials: normalizeWeaponSpecial(weapon?.special),
-    label: `${entry.name} · ${rangeHex} hex · PA ${paCost}`,
+    label: `${entry.name} · ${rangeHex} cél. · PA ${paCost}`,
   };
 }
 
@@ -667,8 +668,9 @@ export function canAttackTarget(
   if (!act.ok) return act;
 
   const dist = tokenAxialDistance(attacker, defender);
-  if (!opts?.skipRangeCheck && dist > action.rangeHex) {
-    return { ok: false, reason: `Fora de alcance (${dist} hex, máx ${action.rangeHex})` };
+  const maxRange = effectiveRangedMaxHex(action);
+  if (!opts?.skipRangeCheck && dist > maxRange) {
+    return { ok: false, reason: `Fora de alcance (${dist} cél., máx ${maxRange})` };
   }
   if (!opts?.skipPaCheck) {
     const channelExtra = opts?.channelExtraPa ?? 0;

@@ -13,7 +13,7 @@ export async function POST(req: Request, { params }: Params) {
   const body = (await req.json()) as Body;
 
   if (body.q == null || body.r == null) {
-    return NextResponse.json({ error: "Hex inválido" }, { status: 400 });
+    return NextResponse.json({ error: "Célula inválida" }, { status: 400 });
   }
 
   const room = await getRoom(roomId);
@@ -26,7 +26,7 @@ export async function POST(req: Request, { params }: Params) {
 
   const snapshot = await addRoomPing(roomId, session?.user ?? null, body.q, body.r, color);
   if (!snapshot) {
-    return NextResponse.json({ error: "Sem permissão ou hex inválido" }, { status: 403 });
+    return NextResponse.json({ error: "Sem permissão ou célula inválida" }, { status: 403 });
   }
 
   return NextResponse.json(snapshotForViewer(snapshot, room, session?.user ?? null));

@@ -45,8 +45,8 @@ type ToolBtn = {
 const MAP_TOOLS: ToolBtn[] = [
   { id: "token", label: "Interagir", title: "Selecionar tokens e jogar (padrão)", section: "map" },
   { id: "ping", label: "Ping", title: "Clique no mapa para marcar posição para o grupo", section: "map" },
-  { id: "measure", label: "Régua", title: "Arraste no mapa para medir distância em hex e metros", section: "map" },
-  { id: "fog", label: "Névoa", title: "Clique para revelar hex (mestre)", section: "map" },
+  { id: "measure", label: "Régua", title: "Arraste no mapa para medir distância em células e metros", section: "map" },
+  { id: "fog", label: "Névoa", title: "Clique para revelar célula (mestre)", section: "map" },
 ];
 
 const DRAW_TOOLS: ToolBtn[] = [

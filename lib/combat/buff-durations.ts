@@ -21,7 +21,7 @@ function turns(n: number): BuffDurationRule {
   return {
     spec: { kind: "turns", count: n },
     label,
-    description: `Expira após ${label} do personagem (ou ao ser consumido, se antes).`,
+    description: `Expira após ${label} completos do personagem (não conta o turno em que foi aplicado).`,
   };
 }
 
@@ -30,7 +30,7 @@ function rounds(n: number): BuffDurationRule {
   return {
     spec: { kind: "rounds", count: n },
     label,
-    description: `Expira após ${label} de combate (contador global).`,
+    description: `Expira após ${label} completas de combate (a rodada de aplicação não consome contador).`,
   };
 }
 

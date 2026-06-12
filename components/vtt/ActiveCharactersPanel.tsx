@@ -84,7 +84,7 @@ export function ActiveCharactersPanel({
           Só aparecem jogadores e criaturas no seu campo de visão.
         </p>
       ) : (
-        <p className="vtt-combat-hint">Clique na lista ou direto no hex.</p>
+        <p className="vtt-combat-hint">Clique na lista ou direto no mapa.</p>
       )}
 
       {showMovementLegend ? (

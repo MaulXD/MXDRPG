@@ -49,7 +49,7 @@ export function SheetPopupCombatStrip({
           <div
             className="sheet-popup-stat-pill"
             role="listitem"
-            title="Movimento — caminhada / corrida em hexes por turno"
+            title="Movimento — caminhada / corrida em células por turno"
           >
             <IconBoot size={16} />
             <span className="sheet-popup-stat-pill__label">Movimento</span>
