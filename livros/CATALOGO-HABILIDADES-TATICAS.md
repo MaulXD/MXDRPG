@@ -12,7 +12,7 @@
 | **Alcance** | Hexágonos a partir do token (0 = em si) |
 | **PA** | Pontos de ação gastos ao usar |
 | **Tipo** | `ativa`, `passiva` ou `reacao` |
-| **Recarga** | Limite por turno/combate (ex.: `1/turno`) |
+| **Recarga** | Limite por turno ou combate (ex.: `1/turno`, `1/combate`) |
 
 ---
 
@@ -31,7 +31,7 @@
 | ID | Nome | Alc. | PA | Tipo | Recarga | Como funciona |
 |----|------|------|----|------|---------|---------------|
 | HAB-investida-do-guerreiro | Investida do Guerreiro | 2 | 1 | ativa | 1/turno | Corrida em linha reta até 2 hex; termine adjacente a um inimigo para atacar no mesmo turno. |
-| HAB-golpe-devastador | Golpe Devastador | 1 | 2 | ativa | — | Próximo ataque corpo a corpo recebe +2 no teste de ataque. |
+| HAB-golpe-devastador | Golpe Devastador | 1 | 3 | ativa | — | Próximo ataque corpo a corpo recebe +2 no teste de ataque. |
 | HAB-esquiva-tatica | Esquiva Tática | 0 | 1 | ativa | — | +2 defesa até o início do seu próximo turno. |
 | HAB-canalizar-energia | Canalizar Energia | 1 | 2 | ativa | — | Ataque corpo a corpo sagrado: +2 no ataque e +2d6 radiante no dano. |
 | HAB-furia-controlada | Fúria Controlada | 0 | 1 | ativa | — | Resistência a dano contundente até o fim do seu próximo turno. |
@@ -60,7 +60,7 @@
 | ID | Nome | Alc. | PA | Tipo | Recarga | Como funciona |
 |----|------|------|----|------|---------|---------------|
 | HAB-investida-barbara | Investida Bárbara | 3 | 1 | ativa | 1/turno | Corre até 3 hex em linha reta sem provocar oportunidades. |
-| HAB-forma-selvagem | Forma Selvagem | 0 | 2 | ativa | — | Prepara transformação biomágica (movimento + ritual; Mestre valida forma). |
+| HAB-forma-selvagem | Forma Selvagem | 0 | 3 | ativa | 1/combate | Prepara transformação biomágica (movimento + ritual; Mestre valida forma). |
 | HAB-raizes-prendentes | Raízes Prendentes | 4 | 2 | ativa | — | Restringe alvo 1 turno (save FOR); raízes no hex do alvo. |
 
 ## Artilheiro
@@ -68,6 +68,13 @@
 | ID | Nome | Alc. | PA | Tipo | Recarga | Como funciona |
 |----|------|------|----|------|---------|---------------|
 | HAB-disparo-de-artilheiro | Disparo de Artilheiro | 6 | 1 | ativa | — | Projétil concentrado: 2d8 de dano à distância. |
+
+## Pacto e trilhas avançadas
+
+| ID | Nome | Alc. | PA | Tipo | Recarga | Como funciona |
+|----|------|------|----|------|---------|---------------|
+| HAB-correntes-infernais | Correntes Infernais | 3 | 3 | ativa | 1/turno | Selo de sangue 3 m: 3d6 fogo a quem entrar; fogo ignora resistência. |
+| HAB-puxao-abissal | Puxão Abissal | 5 | 3 | ativa | 1/turno | Puxa alvo 9 m e 2d8 frio (FOR CD 15). |
 
 ---
 

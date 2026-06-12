@@ -7,21 +7,16 @@ export const PA_OFFENSIVE_ACTION_COST = PA_DEFAULT_ACTION_COST;
 /** Truques, utilitários, cura leve nv1 — podem permanecer em 1 PA. */
 export const PA_UTILITY_SPELL_COST = 1;
 
+/** Magias de combate forte (nv 3+, área, burst, controle) — compêndio. */
+export const PA_POWER_SPELL_COST = 3;
+
 export type SpellPaTier = "cantrip" | "combat_nv1" | "combat_nv2" | "combat_nv3" | "combat_high";
 
-/** Magias de combate com 1 PA no JSON que devem subir (dano/controle fora do tier). */
-export const SPELL_PA_OVERRIDES: Record<string, number> = {
-  "magias-maos-ardentes": PA_OFFENSIVE_ACTION_COST,
-  "magias-raios-de-enfraquecimento": PA_OFFENSIVE_ACTION_COST,
-  "magias-ventania": PA_OFFENSIVE_ACTION_COST,
-  "magias-parede-de-fogo": PA_OFFENSIVE_ACTION_COST,
-  "magias-cura-em-massa": 3,
-  "magias-causar-praga": 3,
-  "magias-desintegrar": 3,
-  "magias-prisao-de-gelo": 3,
-  "magias-regeneracao-biomagica": PA_OFFENSIVE_ACTION_COST,
-  "magias-doce-confuso": PA_OFFENSIVE_ACTION_COST,
-};
+/**
+ * Exceções legadas — preferir `custoPontosAcao` em data/compendiums/magias.json.
+ * Escala alvo: nv0/util = 1 PA · nv1–2 combate = 2 PA · nv3+ forte = 3 PA · recarga 1/turno em CC/cura/burst.
+ */
+export const SPELL_PA_OVERRIDES: Record<string, number> = {};
 
 export function isMonsterOffensiveAction(action: CombatActionOption): boolean {
   if (action.selfTarget || action.allyTarget) return false;

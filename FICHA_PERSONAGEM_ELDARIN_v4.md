@@ -60,7 +60,7 @@ Truques: _________________________ · Magias nv1–3: _________________________
 
 **XP:** monstro = 100×Nv (÷ PCs) · subir nv = 50×Nv×(Nv−1) acum. · fraco: ×0,5 / ×0,25
 
-**PA (VTT):** nv1=5 · nv5=6 · nv10=7 · nv15=8 · ataque/magia/hab = custo compendio · Guerreiro nv5+ = 1 PA/golpe · conjurador nv5+ = magia 2+ PA −1
+**PA (VTT):** nv1=5 · nv5=6 · nv10=7 · nv15=8 · magias **1/2/3 PA** (compêndio) · ataque arma **2 PA** · recarga `1/turno`/`1/combate` · Guerreiro nv5+ = 1 PA/golpe · conjurador nv5+ = 1ª magia 2+ PA −1 · PA=0 passa turno
 
 **Bioma:** ☐ gas/sem tocha → Brasas ou Calor de Panela · ☐ vertical (9/12) · Brasas restantes ___
 

@@ -3,7 +3,7 @@
 
 > Regras, personagem, combate, culinária biomágica, magia. Bestiário e masmorras: *Livro do Mestre*.
 
-**Pontos principais (mesa digital):** combate por **Pontos de Acao (PA)** — inspirado em **Divinity: Original Sin 2** — **recuperacao fixa 5 PA/turno** (talentos podem alterar); **acumula ate 9 PA** no pool se nao gastar; **sem teto de gasto no turno** (bonus de PA permitem gastar mais no mesmo turno); **ataque basico 2 PA**; **monstros 6 PA**, **bosses 9 PA**; movimento por faixas (`walk`/`run`); **Atordoado** zera PA (`Cap. 2.6`, `Cap. 3.1`).
+**Pontos principais (mesa digital):** combate por **Pontos de Acao (PA)** — inspirado em **Divinity: Original Sin 2** — **recuperacao fixa 5 PA/turno** (talentos podem alterar); **acumula ate 9 PA** no pool se nao gastar; **sem teto de gasto no turno** (bonus de PA permitem gastar mais no mesmo turno); **ataque basico 2 PA**; magias em **1, 2 ou 3 PA** com **recarga** seletiva (`§3.1.1.3–4`); **monstros 6 PA**, **bosses 9 PA**; movimento por faixas (`walk`/`run`); **Atordoado** zera PA; **PA zerado** encerra o turno automaticamente no VTT (`Cap. 2.6`, `Cap. 3.1`).
 
 ---
 
@@ -229,8 +229,8 @@ O *Livro do Mestre* descreve ameaca e tier; o JSON `data/compendiums/monstros.js
 | Tipo | Custo tipico |
 |------|----------------|
 | Ataque com arma | **2 PA** por golpe (padrao; compendio pode variar) |
-| Magia | **1 PA** ou mais (`custoPontosAcao` na magia) |
-| Habilidade de classe / trilha | **1 PA** ou mais (compendio) |
+| Magia | **1, 2 ou 3 PA** conforme poder (`§3.1.1.3`); truques e utilitarios em geral **1 PA** |
+| Habilidade de classe / trilha | **1–3 PA** no compendio; algumas com **recarga** (`§3.1.1.4`) |
 | **Movimentacao basica** (VTT) | **Faixas por hex** no turno (valores `walk` / `run` da ficha ou monstro): **1º bloco** (min. 2 hex, ou 1 se walk=1) → **1 PA**; **faixa livre** ate o hex anterior à corrida → **0 PA**; **corrida** a partir do hex **walk+2** (max. `run`) → **+1 PA a cada 2 hex** (ou 1 PA/hex se sobra 1 hex de corrida) |
 | Orcamento de hex | **Caminhada** ate `walk`; **corrida** ate `run` — ex. walk **4**, run **7**: hex **1–2** → 1 PA; **3–5** livres; do **6º** em diante → PA de corrida |
 
@@ -250,7 +250,7 @@ Regras completas, exemplos de turno e tabelas de talentos: **Cap. 3.1** e **Cap.
 4. Movimento: Ate o valor de deslocamento base (normalmente 9m).
 5. Reacao: Uma por turno, em resposta a gatilhos especificos.
 
-**Mesa digital (VTT):** turnos usam **Pontos de Acao (PA)** (`Cap. 2.6`), no estilo **DOS**. No inicio do seu turno voce soma **PA base** ao que sobrou no pool (com teto). **Movimento, ataque, magia e habilidade** gastam PA conforme o compendio; **movimento basico = 1 PA**.
+**Mesa digital (VTT):** turnos usam **Pontos de Acao (PA)** (`Cap. 2.6`), no estilo **DOS**. No inicio do seu turno voce soma **PA base** ao que sobrou no pool (com teto). **Movimento, ataque, magia e habilidade** gastam PA conforme o compendio; **movimento basico = 1 PA**. Se o token ativo **esgota PA** (chega a 0), o VTT **passa o turno** automaticamente apos breve pausa (~1,5 s), salvo **Atordoado** (que ja zera o pool no inicio do turno).
 
 ### 3.1.1 Economia de PA (mesa digital)
 
@@ -267,7 +267,8 @@ Regras completas, exemplos de turno e tabelas de talentos: **Cap. 3.1** e **Cap.
 | Guerreiro nv. 5+ | Cada golpe de **Ataque Extra** custa **1 PA** (excecao; demais ataques com arma seguem o custo do item, em geral **2 PA**) |
 | Mago, Clérigo, Druida, Bardo, Artifice nv. 5+ | **Afinidade Arcanica** — **1ª magia** do turno com custo **2+ PA**: **−1 PA** (min. 0) |
 | Monstros (VTT) | Custo por acao no compendio (muitas mordidas/garras **1 PA**); pool minimo **6 PA** |
-| Cantrips / utilitarios | Alguns truques sem dano de combate podem ter **1 PA** no compendio |
+| Cantrips / utilitarios | Truques e rituais de apoio em geral **1 PA** no compendio |
+| Fim do turno (VTT) | **PA = 0** → passagem automatica de turno (~1,5 s) |
 
 #### 3.1.1.1 Areas na mesa digital (VTT)
 
@@ -292,17 +293,17 @@ Dez magias de dano marcadas como **canalizáveis** no VTT (`spell.channel` no JS
 | Mãos Gelidas | 1 | 2 | até +2 PA |
 | Chama de Vinha | 1 | 2 | até +2 PA |
 | Onda de Trovão | 1 | 2 | até +2 PA |
-| Esfera Ácida de Monstro | 2 | 2 | até +2 PA |
-| Relâmpago | 3 | 2 | até +2 PA |
+| Esfera Ácida de Monstro | 2 | 3 | até +2 PA |
+| Relâmpago | 3 | 3 | até +2 PA |
 | Bola de Fogo | 3 | 3 | até +2 PA |
-| Raio do Limiar | 3 | 2 | até +2 PA |
+| Raio do Limiar | 3 | 3 | até +2 PA |
 | Murcha | 4 | 3 | até +2 PA |
 | Cone de Frio | 5 | 3 | até +2 PA |
 | Cadeia de Relâmpago | 6 | 3 | até +2 PA |
 
 Na mesa, antes de conjurar escolha **+0, +1 ou +2 PA extras**. Cada PA extra adiciona **+1d6** à fórmula de dano daquela conjuração. Os PA extras **não** são reduzidos por Afinidade Arcânica nem por talentos (só o custo base). O gasto no turno **não tem teto fixo** (Cap. 2.6) — bonus de PA (Carrasco, etc.) podem permitir gastar mais no mesmo turno.
 
-**Empilhamento (na mesma ação):** reducoes de talento e de classe **somam** antes do minimo 0 PA — mas **somente na primeira ação elegível do turno** (ver abaixo). Ex.: na **primeira** magia de fogo do turno, Bola de Fogo 2 PA com *Chama Controlada* (−1) e Afinidade Arcanica (−1) = **0 PA**. Uma **segunda** magia no mesmo turno paga o custo integral do compendio.
+**Empilhamento (na mesma ação):** reducoes de talento e de classe **somam** antes do minimo 0 PA — mas **somente na primeira ação elegível do turno** (ver abaixo). Ex.: na **primeira** magia de fogo do turno, Bola de Fogo **3 PA** com *Chama Controlada* (−1) e Afinidade Arcanica (−1) = **1 PA**. Uma **segunda** magia no mesmo turno paga o custo integral do compendio.
 
 **Regra geral — 1× por turno:** qualquer **−1 PA** de talento ou de Afinidade Arcânica/Divina/Pacto aplica-se **no máximo uma vez por turno**, na **primeira** ação do tipo indicado:
 - **Arma:** só o **primeiro ataque com arma** do turno (dentro de Ataque Extra do Guerreiro, só o **primeiro golpe** da ação recebe desconto).
@@ -310,6 +311,29 @@ Na mesa, antes de conjurar escolha **+0, +1 ou +2 PA extras**. Cada PA extra adi
 - **Habilidade:** só a **primeira habilidade** do turno.
 
 **Talentos** (Cap. 12.0) aumentam PA maximo ou reduzem custo conforme a tabela. A ficha deve registrar o talento pelo **nome**; no VTT o **id** da trilha (ex. `chama-controlada`) precisa constar em `talentos` para o calculo automatico.
+
+#### 3.1.1.3 Escala de PA em magias (mesa digital)
+
+O custo em PA **nao** espelha o nivel de espaco de magia do grimorio — e o **freio tatico** do VTT (estilo DOS). Cada magia no compendio traz `custoPontosAcao` (1, 2 ou 3).
+
+| Faixa | PA tipico | O que entra aqui |
+|-------|-----------|------------------|
+| **Leve** | **1 PA** | Truques; buffs, cura pontual, utilitarios, identificacao, preservacao; magias nv. 3–4 sem burst |
+| **Moderado** | **2 PA** | Dano ou controle nv. 1–2 (Maos Gelidas, Onda de Trovao); animacao, ventania, sono; salto dimensional |
+| **Pesado** | **3 PA** | Burst (Bola de Fogo, Relampago, Cone de Frio); CC forte; cura em massa; magias nv. 5–9 de impacto alto |
+
+**Distribuicao no compendio (64 magias):** **25× 1 PA**, **16× 2 PA**, **23× 3 PA**. Tabela nome a nome: **Parte X, §17.6** (`_parte_x_magias_v4_revisada.md`).
+
+#### 3.1.1.4 Recarga (mesa digital)
+
+Algumas magias e habilidades trazem **recarga** no JSON — limite de uso **independente** do pool de PA (nao existe regra global de “nao repetir a mesma magia no turno”).
+
+| Tag no VTT | Significado |
+|------------|-------------|
+| **1/turno** | No maximo **uma vez por turno** (ex.: Sono, Cura em Massa, Cadeia de Relampago, Correntes Infernais) |
+| **1/combate** | No maximo **uma vez por combate** (ex.: Ressurreicao Incompleta, Forma de Monstro, Despertar, Biomancia Suprema, Desejo de Morte) |
+
+O seletor de magias/habilidades na mesa exibe a tag quando aplicavel. Sem tag = pode usar de novo no mesmo turno se houver PA.
 
 ### 3.1.2 Exemplos de turno (PA)
 
@@ -319,11 +343,11 @@ Na mesa, antes de conjurar escolha **+0, +1 ou +2 PA extras**. Cada PA extra adi
 3. *Investida do Guerreiro* (habilidade 1 PA) → 1 PA (restam 3 PA).
 4. Guardar 3 PA para o proximo turno (volta a 6 PA).
 
-**Mago nv. 5 (6 PA), *Chama Controlada* (nv. 4), Bola de Fogo (2 PA no compendio):**
+**Mago nv. 5 (6 PA), *Chama Controlada* (nv. 4), Bola de Fogo (3 PA no compendio):**
 1. Correr alem da caminhada → 1 PA (restam 5 PA).
-2. Bola de Fogo (1ª magia do turno) → 2 − 1 (fogo) − 1 (Afinidade) = **0 PA** (restam 5 PA).
-3. Segunda magia no mesmo turno → custo integral (ex. Raio Arcano 2 PA).
-3. Magia Cantrip 1 PA → 1 PA (restam 4 PA).
+2. Bola de Fogo (1ª magia do turno) → 3 − 1 (fogo) − 1 (Afinidade) = **1 PA** (restam 4 PA).
+3. Truque *Raio Arcano* (habilidade 1 PA) → 1 PA (restam 3 PA).
+4. Segunda magia no mesmo turno → custo integral (ex. Relampago **3 PA**); sobram 0 PA → VTT passa o turno.
 
 **Clérigo nv. 10 (7 PA), sem talentos de reducao:**
 1. Magia 2 PA → Afinidade → **1 PA**.
