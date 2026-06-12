@@ -2,18 +2,20 @@
 
 import { useState } from "react";
 import type { ChatMessage } from "@/lib/room/chat";
-import { combatEventTone } from "@/lib/room/chat-events";
+import { combatEventTone, combatHealAmount, isCombatHealEvent } from "@/lib/room/chat-events";
 import { CombatEventIcon } from "@/components/ui/EldarinIcons";
 import {
   combatChatActionTags,
+  combatChatBonusHealNote,
   combatChatDamageSummary,
   combatChatHeroDisplay,
   combatChatRollSummary,
+  combatChatTargetName,
   isStagedCombatChatMessage,
   shouldShowCombatDamageInChat,
-  splitCombatChatDetail,
   type CombatChatRevealPhase,
 } from "@/lib/combat/chat-display";
+import { combatUsageKind } from "@/lib/combat/chat-labels";
 import { hpBarColor } from "@/lib/vtt/token-hp-display";
 import type { BattleToken } from "@/lib/vtt/types";
 
@@ -52,6 +54,7 @@ export function CombatChatCard({ message, revealPhase, tokens, time }: Props) {
   if (!c) return null;
 
   const tone = combatEventTone(c);
+  const usageKind = combatUsageKind(c, message.text);
   const staged = isStagedCombatChatMessage(message);
   const showDamage = shouldShowCombatDamageInChat(message, revealPhase);
   const attacker = tokens.find((t) => t.id === c.attackerTokenId);
@@ -62,27 +65,36 @@ export function CombatChatCard({ message, revealPhase, tokens, time }: Props) {
   const summary =
     staged && !showDamage ? combatChatRollSummary(message) : combatChatDamageSummary(message);
   const actionName = c.weaponName?.trim() || (c.resolution === "defeat" ? "Derrotado" : "Ação");
-  const vsTarget =
-    c.resolution !== "defeat" && defender?.name && attacker?.id !== defender.id
-      ? defender.name
-      : null;
+  const vsTarget = combatChatTargetName(c, defender?.name, message.text);
+  const bonusHealNote = combatChatBonusHealNote(c);
   const hpMax = Math.max(c.defenderHpBefore, c.defenderHpAfter, 1);
   const hpPct = Math.round((c.defenderHpAfter / hpMax) * 100);
   const hpFillColor = hpBarColor(c.defenderHpAfter / hpMax);
+  const healAmount = combatHealAmount(c);
+  const isHealEvent = isCombatHealEvent(c) && healAmount > 0;
   const showHpBar =
     showDamage &&
+    !isHealEvent &&
     tone !== "defeat" &&
     tone !== "info" &&
     c.defenderHpBefore > 0 &&
     (c.hit || c.resolution === "save");
+  const showHealBar =
+    showDamage && isHealEvent && c.defenderHpBefore >= 0;
   const hasDetail = Boolean(c.detail?.trim());
 
-  const actionLine = [actionName, vsTarget ? `→ ${vsTarget}` : null, combatChatActionTags(c)]
+  const actionLine = [
+    actionName,
+    vsTarget ? `→ ${vsTarget}` : null,
+    combatChatActionTags(c, message.text),
+  ]
     .filter(Boolean)
     .join(" · ");
 
   return (
-    <article className={`combat-chat-card combat-chat-card--${tone}`}>
+    <article
+      className={`combat-chat-card combat-chat-card--${tone}${usageKind === "buff" || usageKind === "consumable_effect" ? " combat-chat-card--buff" : ""}${usageKind === "debuff" ? " combat-chat-card--debuff" : ""}`}
+    >
       <header className="combat-chat-card__header">
         <TokenThumb token={focusToken} />
         <div className="combat-chat-card__identity">
@@ -118,8 +130,23 @@ export function CombatChatCard({ message, revealPhase, tokens, time }: Props) {
         <p className="combat-chat-card__detail">{c.detail}</p>
       ) : null}
 
-      {showDamage && c.attackerHeal && c.attackerHeal > 0 ? (
-        <p className="combat-chat-card__heal">+{c.attackerHeal} HP (arma)</p>
+      {showDamage && bonusHealNote ? (
+        <p className="combat-chat-card__heal">{bonusHealNote}</p>
+      ) : null}
+
+      {showHealBar ? (
+        <div className="combat-chat-card__hp combat-chat-card__hp--heal" role="presentation">
+          <div
+            className="combat-chat-card__hp-fill"
+            style={{
+              width: `${Math.min(100, hpPct)}%`,
+              background: "var(--accent-success, #3d8f55)",
+            }}
+          />
+          <span className="combat-chat-card__hp-label combat-chat-card__hp-label--heal">
+            +{healAmount} HP ({c.defenderHpBefore} → {c.defenderHpAfter})
+          </span>
+        </div>
       ) : null}
 
       {showHpBar ? (

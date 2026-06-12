@@ -11,7 +11,7 @@ export type ActiveTokenCastFx = {
 };
 
 const FIRE_KEYWORDS = ["fogo", "chama", "incêndio", "incendio", "piro", "ardente", "brasas"];
-const HEAL_KEYWORDS = ["cura", "curar", "curou", "restaura", "restaurou"];
+const HEAL_KEYWORDS = ["cura", "curar", "curou", "restaura", "restaurou", "poção", "pocao", "poção de vida"];
 
 export function castFxDuration(kind: TokenCastFxKind): number {
   return kind === "slash" ? 1000 : 3000;

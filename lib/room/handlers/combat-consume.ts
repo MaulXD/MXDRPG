@@ -130,11 +130,10 @@ export async function executeRoomConsume(
       weaponName: item.name,
       resolution: "attack",
       damageTotal: null,
-      attackerHeal: resolved.healRoll?.total,
+      attackerHeal: Math.max(0, resolved.hpAfter - resolved.hpBefore),
       defenderHpBefore: resolved.hpBefore,
       defenderHpAfter: resolved.hpAfter,
       detail: resolved.detail,
-      hit: true,
     },
   });
 
