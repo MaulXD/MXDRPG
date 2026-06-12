@@ -90,7 +90,7 @@
 
 .adventure-table-card {
   display: grid;
-  grid-template-columns: minmax(108px, 148px) minmax(0, 1fr);
+  grid-template-columns: 148px minmax(0, 1fr);
   gap: 0;
   border-radius: 12px;
   overflow: hidden;
@@ -106,18 +106,21 @@
 
 .adventure-table-card__cover-link {
   display: block;
-  min-height: 100%;
+  width: 148px;
+  height: 148px;
+  flex-shrink: 0;
   text-decoration: none;
+  overflow: hidden;
+  background-color: #1a1208;
 }
 
 .adventure-table-card__cover {
+  display: block;
   width: 100%;
   height: 100%;
-  min-height: 148px;
+  object-fit: cover;
+  object-position: center;
   background-color: #1a1208;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
 }
 
 .adventure-table-card__body {
@@ -327,8 +330,9 @@
     grid-template-columns: 1fr;
   }
 
-  .adventure-table-card__cover {
-    min-height: 120px;
-    aspect-ratio: 16 / 9;
+  .adventure-table-card__cover-link {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
   }
 }

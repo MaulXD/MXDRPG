@@ -131,7 +131,8 @@ export async function enrichAdventureListItems(
 
     const room = await getRoom(item.primaryRoomId);
     const settings = normalizeRoomSettings(room?.settings);
-    const coverUrl = settings.coverUrl?.trim() || DEFAULT_COVER;
+    const mapThumb = room?.scene?.mapImageUrl?.trim() || null;
+    const coverUrl = settings.coverUrl?.trim() || mapThumb || DEFAULT_COVER;
     const coverFocus = settings.coverFocus ?? null;
     const onlineCount = members.filter((m) => m.online).length;
 
