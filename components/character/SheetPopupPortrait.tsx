@@ -234,70 +234,93 @@ export function SheetPopupPortrait({
     </button>
   );
 
-  const editorDialog =
-    open && canEdit && editorPos ? (
-      <div
-        className="sheet-popup-portrait-editor sheet-popup-portrait-editor--portal"
-        style={{ top: editorPos.top, left: editorPos.left }}
-        role="dialog"
-        aria-label="Editor de retrato"
-      >
-        <div className="sheet-popup-portrait-editor__head">
-          <strong>Retrato e token</strong>
-          <button
-            type="button"
-            className="sheet-popup-portrait-editor__close"
-            onClick={() => setOpen(false)}
-          >
-            ×
-          </button>
-        </div>
-        <p className="sheet-popup-portrait-editor__hint">{IMAGE_UPLOAD_HINT}</p>
-        <PortraitFocusEditor
-          imageSrc={previewSrc ?? ""}
-          focus={editingSlot === "token" ? focusToken : focusPortrait}
-          portraitFocus={focusPortrait}
-          tokenFocus={focusToken}
-          onFocusChange={(next) => {
-            if (editingSlot === "token") setFocusToken(next);
-            else setFocusPortrait(next);
-          }}
-          disabled={busy}
-          previewMode={editingSlot}
-          onPreviewModeChange={setEditingSlot}
-          tokenRingColor={ringColor}
-        />
-        <div className="sheet-popup-portrait-editor__actions">
-          <button
-            type="button"
-            className="btn btn-ghost"
-            disabled={busy}
-            onClick={() => fileRef.current?.click()}
-          >
-            Trocar arquivo
-          </button>
-          {draftSrc ? (
-            <button
-              type="button"
-              className="btn btn-primary"
-              disabled={busy}
-              onClick={() => void saveDraft()}
-            >
-              Salvar retrato
-            </button>
-          ) : (
-            <button
-              type="button"
-              className="btn btn-primary"
-              disabled={busy || !previewSrc}
-              onClick={() => void saveFocusOnly()}
-            >
-              Aplicar enquadramento
-            </button>
-          )}
-        </div>
-        {msg ? <p className="sheet-popup-portrait-editor__msg">{msg}</p> : null}
+  const editorInner = (
+    <>
+      <div className="sheet-popup-portrait-editor__head">
+        <strong>Retrato e token</strong>
+        <button
+          type="button"
+          className="sheet-popup-portrait-editor__close"
+          onClick={() => setOpen(false)}
+        >
+          ×
+        </button>
       </div>
+      <p className="sheet-popup-portrait-editor__hint">{IMAGE_UPLOAD_HINT}</p>
+      <PortraitFocusEditor
+        imageSrc={previewSrc ?? ""}
+        focus={editingSlot === "token" ? focusToken : focusPortrait}
+        portraitFocus={focusPortrait}
+        tokenFocus={focusToken}
+        onFocusChange={(next) => {
+          if (editingSlot === "token") setFocusToken(next);
+          else setFocusPortrait(next);
+        }}
+        disabled={busy}
+        previewMode={editingSlot}
+        onPreviewModeChange={setEditingSlot}
+        tokenRingColor={ringColor}
+      />
+      <div className="sheet-popup-portrait-editor__actions">
+        <button
+          type="button"
+          className="btn btn-ghost"
+          disabled={busy}
+          onClick={() => fileRef.current?.click()}
+        >
+          Trocar arquivo
+        </button>
+        {draftSrc ? (
+          <button
+            type="button"
+            className="btn btn-primary"
+            disabled={busy}
+            onClick={() => void saveDraft()}
+          >
+            Salvar retrato
+          </button>
+        ) : (
+          <button
+            type="button"
+            className="btn btn-primary"
+            disabled={busy || !previewSrc}
+            onClick={() => void saveFocusOnly()}
+          >
+            Aplicar enquadramento
+          </button>
+        )}
+      </div>
+      {msg ? <p className="sheet-popup-portrait-editor__msg">{msg}</p> : null}
+    </>
+  );
+
+  const editorDialog =
+    open && canEdit ? (
+      isDdb ? (
+        <div
+          className="sheet-ddb-portrait-modal-backdrop"
+          role="presentation"
+          onClick={() => setOpen(false)}
+        >
+          <div
+            className="sheet-ddb-portrait-modal sheet-popup-portrait-editor"
+            role="dialog"
+            aria-label="Editor de retrato"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {editorInner}
+          </div>
+        </div>
+      ) : editorPos ? (
+        <div
+          className="sheet-popup-portrait-editor sheet-popup-portrait-editor--portal"
+          style={{ top: editorPos.top, left: editorPos.left }}
+          role="dialog"
+          aria-label="Editor de retrato"
+        >
+          {editorInner}
+        </div>
+      ) : null
     ) : null;
 
   return (
