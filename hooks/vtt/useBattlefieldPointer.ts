@@ -16,7 +16,8 @@ import {
 } from "@/lib/vtt/battlefield-view";
 import {
   creatureSizeOf,
-  tokenDrawRadius,
+  isMultiHexCreatureSize,
+  tokenHitRadius,
   tokenOccupiesAxial,
   tokenPixelCenter,
 } from "@/lib/vtt/creature-size";
@@ -47,6 +48,7 @@ type TurnCtx = {
 type Params = {
   canvasRef: RefObject<HTMLCanvasElement | null>;
   scene: BattleScene;
+  actorRacas?: Record<string, string | undefined>;
   tokenDrawPosition?: (token: BattleToken) => { q: number; r: number };
   selectedId: string | null;
   setSelectedId: (id: string | null) => void;
@@ -134,6 +136,7 @@ type Params = {
 export function useBattlefieldPointer({
   canvasRef,
   scene,
+  actorRacas,
   tokenDrawPosition,
   selectedId,
   setSelectedId,
@@ -299,31 +302,52 @@ export function useBattlefieldPointer({
     [boardCoords, scene.hexSize]
   );
 
+  const tokenSizeOf = useCallback(
+    (token: BattleToken) =>
+      creatureSizeOf(token, token.actorId ? actorRacas?.[token.actorId] : undefined),
+    [actorRacas]
+  );
+
   const tokenAtPoint = useCallback(
     (px: number, py: number): BattleToken | null => {
       const c = boardCoords(px, py);
       if (!c) return null;
+      let best: { token: BattleToken; dist: number } | null = null;
       for (const token of scene.tokens) {
         const pos = tokenDrawPosition?.(token) ?? token.axial;
-        const size = creatureSizeOf(token);
-        const r = tokenDrawRadius(scene.hexSize, size) + 4;
+        const size = tokenSizeOf(token);
+        const r = tokenHitRadius(scene.hexSize, size);
         const { x, y } = tokenPixelCenter(pos, size, scene.hexSize, c.ox, c.oy);
-        if (Math.hypot(c.world.x - x, c.world.y - y) < r) return token;
+        const dist = Math.hypot(c.world.x - x, c.world.y - y);
+        if (dist < r && (!best || dist < best.dist)) {
+          best = { token, dist };
+        }
       }
-      return null;
+      return best?.token ?? null;
     },
-    [boardCoords, scene, tokenDrawPosition]
+    [boardCoords, scene.hexSize, scene.tokens, tokenDrawPosition, tokenSizeOf]
   );
 
   const tokenAtAxial = useCallback(
     (axial: Axial): BattleToken | null => {
+      let best: { token: BattleToken; dist: number } | null = null;
       for (const token of scene.tokens) {
         const pos = tokenDrawPosition?.(token) ?? token.axial;
-        if (tokenOccupiesAxial({ ...token, axial: pos }, axial)) return token;
+        const size = tokenSizeOf(token);
+        const matches = isMultiHexCreatureSize(size)
+          ? pos.q === axial.q && pos.r === axial.r
+          : tokenOccupiesAxial(
+              { ...token, axial: pos },
+              axial,
+              token.actorId ? actorRacas?.[token.actorId] : undefined
+            );
+        if (!matches) continue;
+        const dist = Math.abs(axial.q - pos.q) + Math.abs(axial.r - pos.r);
+        if (!best || dist < best.dist) best = { token, dist };
       }
-      return null;
+      return best?.token ?? null;
     },
-    [scene.tokens, tokenDrawPosition]
+    [scene.tokens, tokenDrawPosition, tokenSizeOf, actorRacas]
   );
 
   const tokenScreenCenter = useCallback(
@@ -333,13 +357,13 @@ export function useBattlefieldPointer({
       const c = boardCoords(0, 0);
       if (!c) return null;
       const pos = tokenDrawPosition?.(token) ?? token.axial;
-      const size = creatureSizeOf(token);
+      const size = tokenSizeOf(token);
       const { x, y } = tokenPixelCenter(pos, size, scene.hexSize, c.ox, c.oy);
       const screen = worldToScreen(x, y, c.w, c.h, viewRef.current);
       const rect = canvas.getBoundingClientRect();
       return { x: rect.left + screen.x, y: rect.top + screen.y };
     },
-    [canvasRef, boardCoords, tokenDrawPosition, scene.hexSize, viewRef]
+    [canvasRef, boardCoords, tokenDrawPosition, scene.hexSize, viewRef, tokenSizeOf]
   );
 
   const pointerPos = useCallback(
