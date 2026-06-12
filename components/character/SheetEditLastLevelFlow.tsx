@@ -18,6 +18,7 @@ import { ATTRIBUTE_LABELS, type AttributeKey } from "@/lib/character/rules";
 import { parseCharacterTalents } from "@/lib/character/subclass-tracks";
 import { TalentTreeGraph } from "@/components/character/TalentTreeGraph";
 import "./level-up.css";
+import "./sheet-ddb.css";
 
 type Props = {
   preparedActor: CharacterSheet;
@@ -200,7 +201,7 @@ export function SheetEditLastLevelFlow({
   }
 
   return (
-    <div className="lu-shell">
+    <div className="lu-shell lu-shell--ddb">
       <header className="lu-header">
         <h2>Reeditar último nível</h2>
         <p>Passo {stepIndex + 1} de {steps.length}</p>
