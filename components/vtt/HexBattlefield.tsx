@@ -1222,6 +1222,9 @@ export function HexBattlefield({
     }
     if (prevCombatTurnFocusKey.current === null) {
       prevCombatTurnFocusKey.current = combatTurnFocusKey;
+      if (isRoomGm && canControlCombat && turnActiveId) {
+        setSelectedId(turnActiveId);
+      }
       return;
     }
     if (prevCombatTurnFocusKey.current === combatTurnFocusKey) return;
@@ -1230,6 +1233,10 @@ export function HexBattlefield({
     if (!turnActiveId) return;
     const token = displayScene.tokens.find((t) => t.id === turnActiveId);
     if (!token) return;
+
+    if (isRoomGm && canControlCombat) {
+      setSelectedId(turnActiveId);
+    }
 
     const canvas = canvasRef.current;
     if (!canvas || canvas.clientWidth < 10 || canvas.clientHeight < 10) return;
@@ -1245,6 +1252,8 @@ export function HexBattlefield({
   }, [
     combatTurnFocusKey,
     turnActiveId,
+    isRoomGm,
+    canControlCombat,
     displayScene.tokens,
     displayScene.hexSize,
     actorRacas,
@@ -1505,6 +1514,16 @@ export function HexBattlefield({
     async (defenderId: string) => {
       if (!selected || !activeCombatAction) return;
       if (attackBusyRef.current) return;
+      if (
+        !canActOnCombatTurn(selected.id, {
+          activeTokenId: turn.activeTokenId,
+          bypassTurn: selectedBypass,
+          combatHasOrder: turn.combatHasOrder,
+        })
+      ) {
+        setActionErr(TURN_WAIT_MSG);
+        return;
+      }
       if (activeCombatAction.areaShape && activeCombatAction.areaShape !== "single") {
         setActionErr("Magia de área: clique o centro da área no mapa (não um alvo único).");
         return;
@@ -1545,6 +1564,8 @@ export function HexBattlefield({
       roomId,
       channelExtraPa,
       playCombatFxFromSnap,
+      turn.activeTokenId,
+      turn.combatHasOrder,
     ]
   );
 
@@ -2044,9 +2065,17 @@ export function HexBattlefield({
   }, [displayScene.tokens, roomActors, session]);
 
   const hudToken = isRoomGm
-    ? (selected ?? turnActiveToken ?? playerToken)
+    ? (turnActiveToken ?? selected ?? playerToken)
     : playerToken;
-  const hudIsControlled = Boolean(playerToken && hudToken && playerToken.id === hudToken.id);
+  const hudIsControlled =
+    Boolean(playerToken && hudToken && playerToken.id === hudToken.id) ||
+    Boolean(
+      isRoomGm &&
+        canControlCombat &&
+        hudToken &&
+        turnActiveId === hudToken.id &&
+        canOperateToken(hudToken)
+    );
   const hudPortraitFallback = hudToken?.actorId
     ? firstPortraitDataUrl(
         roomActors[hudToken.actorId]?.tokenImageUrl,
@@ -2057,7 +2086,7 @@ export function HexBattlefield({
   const resolveStatusToken = useCallback(
     (explicit?: BattleToken | null) => {
       if (explicit) return explicit;
-      if (isRoomGm) return selected ?? turnActiveToken ?? playerToken;
+      if (isRoomGm) return turnActiveToken ?? selected ?? playerToken;
       return playerToken;
     },
     [isRoomGm, selected, turnActiveToken, playerToken]
