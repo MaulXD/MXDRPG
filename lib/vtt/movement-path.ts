@@ -24,6 +24,9 @@ import { axialKey } from "@/lib/vtt/token-occupancy";
 import type { BattleScene, BattleToken } from "@/lib/vtt/types";
 import { runRemaining, walkRemaining, type MoveMode } from "@/lib/vtt/movement";
 
+/** Teto de passos no pathfind — evita explosão com walk/run corrompidos. */
+export const PATHFIND_MAX_STEPS = 32;
+
 export type MovementPathContext = {
   tokens: BattleToken[];
   gridRadius: number;
@@ -48,12 +51,47 @@ function feetPathOpts(
   mode: MoveMode,
   canEnter: (hex: Axial) => boolean
 ): FeetPathOptions {
-  const maxSteps = mode === "walk" ? walkRemaining(token) : runRemaining(token);
+  const rawSteps = mode === "walk" ? walkRemaining(token) : runRemaining(token);
+  const bounded = Number.isFinite(rawSteps) ? Math.max(0, Math.floor(rawSteps)) : 0;
+  const maxSteps = Math.min(PATHFIND_MAX_STEPS, bounded);
   return {
     maxFeet: cellsToFeet(maxSteps),
     maxSteps,
     canEnter,
   };
+}
+
+export type ReachabilityBundle = {
+  distMap: Map<string, number>;
+  footprintKeys: Set<string>;
+};
+
+/** Um passe de BFS em pés → mapa de distâncias + células do footprint alcançáveis. */
+export function reachabilityBundle(
+  token: BattleToken,
+  mode: MoveMode,
+  scene: Pick<BattleScene, "tokens" | "gridRadius" | "dungeonObjects">,
+  actorRacas?: Record<string, string | undefined>
+): ReachabilityBundle {
+  const { canEnter, moverSize } = movementReachContext(token, scene, actorRacas);
+  const opts = feetPathOpts(token, mode, canEnter);
+  const reachMap = reachableAnchorsByFeet(token.axial, opts);
+  const distMap = new Map<string, number>();
+  const anchors: Axial[] = [];
+  for (const [key, { steps }] of reachMap) {
+    if (steps <= 0) continue;
+    const [q, r] = key.split(",").map(Number);
+    const anchor = { q, r };
+    if (!withinCentroidFeet(token.axial, moverSize, anchor, opts.maxFeet)) continue;
+    distMap.set(key, steps);
+    anchors.push(anchor);
+  }
+  const moverRaca = token.actorId ? actorRacas?.[token.actorId] : undefined;
+  const size = creatureSizeOf(token, moverRaca);
+  const footprintKeys = new Set(
+    expandAnchorsToFootprintHexes(anchors, size).map((hex) => axialKey(hex))
+  );
+  return { distMap, footprintKeys };
 }
 
 function reachableAnchorsWithinFeet(
@@ -113,13 +151,21 @@ export function movementPathTo(
   const canEnter = canEnterFactory(occupancy, moverSize, ctx.gridRadius, blocked);
   const opts = feetPathOpts(token, mode, canEnter);
   const maxFeet = opts.maxFeet;
+  if (maxFeet <= 0) return null;
 
   const anchors = anchorCandidatesForCell(target, moverSize);
   let best: Axial[] | null = null;
+  let bestSteps = Infinity;
   for (const anchor of anchors) {
     if (!withinCentroidFeet(token.axial, moverSize, anchor, maxFeet)) continue;
     const path = findPathByFeet(token.axial, anchor, opts);
-    if (path && (!best || pathStepCount(path) < pathStepCount(best))) best = path;
+    if (!path) continue;
+    const steps = pathStepCount(path);
+    if (steps < bestSteps) {
+      bestSteps = steps;
+      best = path;
+      if (steps <= 1) break;
+    }
   }
   return best;
 }

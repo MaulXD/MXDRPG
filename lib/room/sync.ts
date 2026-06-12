@@ -93,8 +93,22 @@ export function syncLinkedTokens(
 }
 
 function ensureMovementFields(token: BattleToken): BattleToken {
-  if (token.movementWalkMax != null && token.movementSpentHex != null) return token;
-  return { ...token, ...defaultMovementFields(token) };
+  const walk = Number.isFinite(token.walk) ? token.walk : (token.movementWalkMax ?? 4);
+  const run = Number.isFinite(token.run) ? token.run : (token.movementRunMax ?? 6);
+  if (
+    token.movementWalkMax != null &&
+    token.movementSpentHex != null &&
+    Number.isFinite(token.walk) &&
+    Number.isFinite(token.run)
+  ) {
+    return token;
+  }
+  return {
+    ...token,
+    walk,
+    run,
+    ...defaultMovementFields({ walk, run }),
+  };
 }
 
 export function createDemoRoom(): RoomState {
