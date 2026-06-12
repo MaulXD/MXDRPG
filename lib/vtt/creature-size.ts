@@ -104,6 +104,12 @@ export function occupiedHexes(anchor: Axial, size: CreatureSize): Axial[] {
   return squareFootprint(anchor, side);
 }
 
+/** Centro geométrico do footprint (células = índices + ½). */
+export function footprintCenter(anchor: Axial, size: CreatureSize): { q: number; r: number } {
+  const side = footprintSide(size);
+  return { q: anchor.q + side / 2, r: anchor.r + side / 2 };
+}
+
 /** Âncoras NW possíveis quando o jogador clica numa célula do footprint desejado. */
 export function anchorCandidatesForCell(cell: Axial, size: CreatureSize): Axial[] {
   const side = footprintSide(size);

@@ -11,6 +11,7 @@ import {
   totalAttackPaCost,
 } from "@/lib/combat/pa-economy";
 import type { AbilityEffect, CombatActionOption } from "@/lib/combat/types";
+import { rangedLongRangeLabel } from "@/lib/combat/ranged-attack-range";
 import type { BattleToken } from "@/lib/vtt/types";
 
 const AREA_LABELS: Record<SpellAreaShape, string> = {
@@ -40,7 +41,7 @@ const ABILITY_EFFECT_HINT: Record<AbilityEffect, string> = {
   spell_strike: "Projétil ou raio — rolagem de ataque contra CA.",
   heal_touch: "Cura um aliado adjacente.",
   restrain: "Alvo faz teste de resistência ou fica impedido.",
-  reaction_shift: withDuration("reaction_shift", "Desloca 1 hex como reação (fora do turno)."),
+  reaction_shift: withDuration("reaction_shift", "Desloca 1 célula como reação (fora do turno)."),
   wild_shape: withDuration("wild_shape", "Assume forma selvagem no próximo movimento."),
   ally_inspire: withDuration("ally_inspire", "Concede bônus temporários a um aliado."),
   ranged_advantage: withDuration("ranged_advantage", "Próximo ataque à distância com vantagem."),
@@ -131,6 +132,10 @@ function areaLine(action: CombatActionOption): string | null {
 function targetLine(action: CombatActionOption): string {
   if (action.selfTarget) return "Alvo: você";
   if (action.allyTarget) return `Alvo: aliado · alcance ${action.rangeHex} células`;
+  const ranged = rangedLongRangeLabel(action);
+  if (ranged) {
+    return `Alcance: ${ranged} (desvantagem além do normal)`;
+  }
   return `Alcance: ${action.rangeHex} células`;
 }
 

@@ -32,7 +32,7 @@ function generatedMonsterActions(
     attackBonus: t.ameaca >= 4 ? 2 : t.ameaca >= 2 ? 1 : 0,
     rangeHex: 1,
     paCost: pa,
-    label: `Mordida · 1 hex · PA ${pa}`,
+    label: `Mordida · 1 cél. · PA ${pa}`,
   });
 
   if (t.tier !== "mob" || t.ameaca >= 2) {
@@ -47,7 +47,7 @@ function generatedMonsterActions(
       attackBonus: dexMod,
       rangeHex: 1,
       paCost: pa,
-      label: `Garras · 1 hex · PA ${pa}`,
+      label: `Garras · 1 cél. · PA ${pa}`,
     });
   }
 
@@ -63,7 +63,7 @@ function generatedMonsterActions(
       attackBonus: t.ameaca,
       rangeHex: t.tier === "boss" ? 6 : 4,
       paCost: pa,
-      label: `Ataque especial · ${t.tier === "boss" ? 6 : 4} hex · PA ${pa}`,
+      label: `Ataque especial · ${t.tier === "boss" ? 6 : 4} cél. · PA ${pa}`,
     });
   } else if (t.ameaca >= 2) {
     actions.push({
@@ -77,7 +77,7 @@ function generatedMonsterActions(
       attackBonus: forMod,
       rangeHex: 2,
       paCost: pa,
-      label: `Investida · 2 hex · PA ${pa}`,
+      label: `Investida · 2 cél. · PA ${pa}`,
     });
   }
 
@@ -92,7 +92,7 @@ export function monsterCombatActions(entryId: string): CombatActionOption[] {
     t.actions.length > 0
       ? t.actions.map((a) => ({
           ...a,
-          label: a.label ?? `${a.name} · ${a.rangeHex ?? 1} hex · PA ${a.paCost}`,
+          label: a.label ?? `${a.name} · ${a.rangeHex ?? 1} cél. · PA ${a.paCost}`,
         }))
       : generatedMonsterActions(entryId, t);
 

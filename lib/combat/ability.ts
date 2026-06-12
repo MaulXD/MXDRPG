@@ -361,7 +361,7 @@ export function resolveAbilityBuff(
 
       buffSource: action.name,
 
-      summary: `${name} usa ${action.name} — pode deslocar 1 hex (reação).`,
+      summary: `${name} usa ${action.name} — pode deslocar 1 célula (reação).`,
 
       attackerUpdate: { reactionShiftReady: true, defesaBonus: 0 },
 
@@ -429,7 +429,7 @@ export function resolveAbilityBuff(
 
       paCost: paCostForToken(actor, action, token),
 
-      summary: `${name} usa ${action.name} — teleporte até ${action.rangeHex} hex (sem provocar).`,
+      summary: `${name} usa ${action.name} — teleporte até ${action.rangeHex} cél. (sem provocar).`,
 
       attackerUpdate: {
 
@@ -455,7 +455,7 @@ export function resolveAbilityBuff(
 
       paCost: paCostForToken(actor, action, token),
 
-      summary: `${name} usa ${action.name} — mova até ${action.rangeHex} hex em linha reta (sem provocar). Próximo ataque corpo a corpo pode ser feito.`,
+      summary: `${name} usa ${action.name} — mova até ${action.rangeHex} cél. em linha reta (sem provocar). Próximo ataque corpo a corpo pode ser feito.`,
 
       attackerUpdate: { chargeReady: true, chargeNote: undefined },
 
@@ -1074,7 +1074,7 @@ export function canAbilityTarget(
 
   if (dist > action.rangeHex) {
 
-    return { ok: false, reason: `Fora de alcance (${dist} hex, máx ${action.rangeHex})` };
+    return { ok: false, reason: `Fora de alcance (${dist} cél., máx ${action.rangeHex})` };
 
   }
 

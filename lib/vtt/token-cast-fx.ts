@@ -1,4 +1,5 @@
 import type { ChatMessage } from "@/lib/room/chat";
+import { combatMessageLooksLikeHeal } from "@/lib/room/chat-events";
 
 export type TokenCastFxKind = "heal" | "fire" | "slash" | "buff";
 
@@ -55,7 +56,7 @@ export function resolveCastFxFromCombat(msg: ChatMessage): {
   }
 
   const isHeal =
-    (c.damageTotal != null && c.damageTotal > 0 && nameLooksHeal(name, detail)) ||
+    combatMessageLooksLikeHeal(c) ||
     (c.actionKind === "ability" && nameLooksHeal(name, detail));
 
   if (isHeal && c.defenderTokenId) {

@@ -18,7 +18,8 @@ import { isMoveMode, isTargetMode, type TokenActionMode } from "@/lib/vtt/action
 import { buildHexGrid } from "@/lib/vtt/hex-grid";
 import { tokenAxialDistance } from "@/lib/vtt/creature-size";
 import { axialKey } from "@/lib/vtt/token-occupancy";
-import { reachableMovementHexes } from "@/lib/vtt/movement-path";
+import { reachableMovementFootprintHexes } from "@/lib/vtt/movement-path";
+import { effectiveRangedMaxHex, isWithinRangedAttackRange } from "@/lib/combat/ranged-attack-range";
 import { paTurnRulesForActor } from "@/lib/combat/pa-economy";
 import { canMoveToken, paidMovementHexKeys, type MoveCheck } from "@/lib/vtt/movement";
 import type { BattleScene, BattleToken } from "@/lib/vtt/types";
@@ -142,7 +143,12 @@ export function useBattlefieldHighlights({
 
   const rangeSet = useMemo(() => {
     if (!moveHighlightToken || !showMovement || turnMovePreview) return new Set<string>();
-    const cells = reachableMovementHexes(moveHighlightToken, effectiveMoveMode, scene, actorRacas);
+    const cells = reachableMovementFootprintHexes(
+      moveHighlightToken,
+      effectiveMoveMode,
+      scene,
+      actorRacas
+    );
     return new Set(cells.map(axialKey));
   }, [
     moveHighlightToken,
@@ -155,10 +161,15 @@ export function useBattlefieldHighlights({
   ]);
 
   const walkSet = useMemo(() => {
-    if (!moveHighlightToken || !showMovement) return new Set<string>();
-    const cells = reachableMovementHexes(moveHighlightToken, "walk", scene, actorRacas);
+    if (!moveHighlightToken || !showMovement || turnMovePreview) return new Set<string>();
+    const cells = reachableMovementFootprintHexes(
+      moveHighlightToken,
+      "walk",
+      scene,
+      actorRacas
+    );
     return new Set(cells.map(axialKey));
-  }, [moveHighlightToken, showMovement, sceneMoveKey, scene, actorRacas]);
+  }, [moveHighlightToken, showMovement, turnMovePreview, sceneMoveKey, scene, actorRacas]);
 
   const movePaOptsHighlight = useMemo(() => {
     const moveBypass = moveHighlightToken
@@ -206,7 +217,7 @@ export function useBattlefieldHighlights({
       return new Set(hexNeighbors(areaCenter).map((c) => `${c.q},${c.r}`));
     }
     return new Set(
-      hexesInRange(selected.axial, activeCombatAction.rangeHex)
+      hexesInRange(selected.axial, effectiveRangedMaxHex(activeCombatAction))
         .filter((c) => axialDistance(selected.axial, c) > 0)
         .map((c) => `${c.q},${c.r}`)
     );
@@ -337,7 +348,7 @@ export function useBattlefieldHighlights({
     for (const t of scene.tokens) {
       if (t.id === selected.id) continue;
       const dist = tokenAxialDistance(selected, t, actorRacas);
-      if (dist <= activeCombatAction.rangeHex) ids.add(t.id);
+      if (isWithinRangedAttackRange(dist, activeCombatAction)) ids.add(t.id);
     }
     return ids;
   }, [

@@ -90,8 +90,8 @@
 
 .adventure-table-card {
   display: grid;
-  grid-template-columns: 120px minmax(0, 1fr);
-  align-items: start;
+  grid-template-columns: 168px minmax(0, 1fr);
+  align-items: stretch;
   gap: 0;
   border-radius: 12px;
   overflow: hidden;
@@ -106,30 +106,38 @@
 }
 
 .adventure-table-card__cover-link {
-  display: block;
-  width: 120px;
-  height: 120px;
-  aspect-ratio: 1;
-  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: stretch;
+  width: 168px;
+  min-height: 100%;
+  padding: 0.85rem 0.65rem 0.85rem 0.85rem;
   text-decoration: none;
-  overflow: hidden;
-  border-radius: 12px 0 0 12px;
-  background-color: #1a1208;
+  background-color: rgba(0, 0, 0, 0.22);
+  border-right: 1px solid rgba(184, 146, 46, 0.12);
 }
 
 .adventure-table-card__cover {
   display: block;
   width: 100%;
-  height: 100%;
+  max-width: 152px;
+  aspect-ratio: 1;
+  height: auto;
   object-fit: cover;
   object-position: center;
+  border-radius: 10px;
+  border: 1px solid rgba(184, 146, 46, 0.22);
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.45),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.04);
   background-color: #1a1208;
 }
 
 .adventure-table-card__body {
   display: flex;
   flex-direction: column;
-  padding: 0.65rem 0.85rem 0.7rem;
+  padding: 0.75rem 0.95rem 0.75rem 0.8rem;
   min-width: 0;
 }
 
@@ -349,8 +357,14 @@
 
   .adventure-table-card__cover-link {
     width: 100%;
-    height: auto;
-    aspect-ratio: 1;
-    border-radius: 12px 12px 0 0;
+    min-height: 0;
+    padding: 0.85rem 0.85rem 0.35rem;
+    border-right: none;
+    border-bottom: 1px solid rgba(184, 146, 46, 0.12);
+  }
+
+  .adventure-table-card__cover {
+    max-width: min(220px, 72vw);
+    margin: 0 auto;
   }
 }

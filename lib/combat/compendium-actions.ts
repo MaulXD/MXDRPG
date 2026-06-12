@@ -309,7 +309,7 @@ export function abilityFromEntry(entry: CompendiumEntry): CombatActionOption | n
     attackBonus = 0;
   }
 
-  const targetLabel = selfTarget ? "self" : extras.allyTarget ? "aliado" : `${rangeHex} hex`;
+  const targetLabel = selfTarget ? "self" : extras.allyTarget ? "aliado" : `${rangeHex} cél.`;
 
   return {
     packId: "habilidades",

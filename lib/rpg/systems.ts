@@ -33,11 +33,11 @@ export const RPG_SYSTEMS: RpgSystem[] = [
     id: "eldarin",
     name: "Eldarin",
     shortName: "Eldarin",
-    tagline: "Fantasia tática · grid hex · PA por turno",
+    tagline: "Fantasia tática · grid quadrado · PA por turno",
     href: "/eldarin",
     available: true,
     coverSrc: "/brand/rpg/eldarin-cover.svg",
-    coverAlt: "Capa Eldarin — fantasia tática em grid hexagonal",
+    coverAlt: "Capa Eldarin — fantasia tática em grid",
   },
   {
     id: "dnd",

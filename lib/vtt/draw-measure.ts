@@ -10,7 +10,7 @@ export function drawMeasureLayer(
 
   const hexDist = axialDistance(measure.startAxial, measure.endAxial);
   const meters = hexToMeters(hexDist);
-  const label = `${hexDist} hex · ${meters} m`;
+  const label = `${hexDist} cél. · ${meters} m`;
 
   ctx.save();
   ctx.strokeStyle = "#f1c40f";

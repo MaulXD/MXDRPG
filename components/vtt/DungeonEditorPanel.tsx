@@ -142,7 +142,7 @@ export function DungeonEditorPanel({
             disabled={busy}
             onClick={() => onActiveChange(!active)}
           >
-            {active ? "Pintando hex" : "Editar no mapa"}
+            {active ? "Pintando célula" : "Editar no mapa"}
           </button>
         ) : null}
       </div>
@@ -171,7 +171,7 @@ export function DungeonEditorPanel({
 
       {layer === "objects" && active ? (
         <p className="vtt-dungeon-active-hint">
-          Clique no hex para {tool === "erase" ? "apagar" : tool === "move" ? "mover/selecionar" : "colocar"}{" "}
+          Clique na célula para {tool === "erase" ? "apagar" : tool === "move" ? "mover/selecionar" : "colocar"}{" "}
           {tool === "wall" ? "parede" : tool === "object" ? "objeto" : ""}.
         </p>
       ) : null}
@@ -223,7 +223,7 @@ export function DungeonEditorPanel({
           </p>
         ) : (
           <p className="vtt-dungeon-floor-callout">
-            Envie um mapa (JPG/PNG/WebP) ou cole uma URL. A imagem fica <em>atrás</em> dos hexágonos.
+            Envie um mapa (JPG/PNG/WebP) ou cole uma URL. A imagem fica <em>atrás</em> do grid.
           </p>
         )}
         <input
@@ -291,7 +291,7 @@ export function DungeonEditorPanel({
           Fog of war ativa
         </label>
         <p className="vtt-combat-hint">
-          Tokens não entram em hexes com parede/objeto. Ctrl+clique revela hex com névoa.
+          Tokens não entram em células com parede/objeto. Ctrl+clique revela célula com névoa.
         </p>
         <div className="vtt-map-panel-actions">
           <button type="button" className="vtt-btn vtt-btn--ghost" disabled={busy || !objectCount} onClick={() => void clearObjects()}>

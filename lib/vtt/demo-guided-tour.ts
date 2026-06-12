@@ -11,7 +11,7 @@ const VISITOR_STEPS: DemoTourStep[] = [
   {
     title: "Bem-vindo à mesa demo",
     body:
-      "Esta é a sala pública do Eldarin VTT — mapa hexagonal, tokens, combate por PA e fichas de personagem. Use este tour para conhecer o fluxo de consumíveis.",
+      "Esta é a sala pública do Eldarin VTT — grid tático, tokens, combate por PA e fichas de personagem. Use este tour para conhecer o fluxo de consumíveis.",
   },
   {
     title: "Modo visitante",

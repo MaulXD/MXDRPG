@@ -66,9 +66,9 @@ export function previewMove(
   const lines: ActionPreviewLine[] = [];
 
   if (!check.ok) {
-    lines.push({ text: check.reason ?? "Hex inválido", tone: "err" });
+    lines.push({ text: check.reason ?? "Célula inválida", tone: "err" });
   } else if (check.dist <= 0) {
-    lines.push({ text: "Mesmo hex — escolha outro destino", tone: "warn" });
+    lines.push({ text: "Mesma célula — escolha outro destino", tone: "warn" });
   } else {
     const paLine =
       check.paCost === 0
@@ -86,7 +86,7 @@ export function previewMove(
       tone: "ok",
     });
     lines.push({
-      text: `Este passo: ${check.dist} hex · ${hexToMeters(check.dist)} m`,
+      text: `Este passo: ${check.dist} cél. · ${hexToMeters(check.dist)} m`,
       tone: "ok",
     });
     if (check.path && check.path.length > 1) {
@@ -253,7 +253,7 @@ export function previewAreaDirectionStep(
     paChip,
     [
       {
-        text: `Clique o hex vizinho ao conjurador — direção do ${shape === "cone" ? "cone" : "raio"}`,
+        text: `Clique a célula vizinha ao conjurador — direção do ${shape === "cone" ? "cone" : "raio"}`,
         tone: "ok",
       },
     ],

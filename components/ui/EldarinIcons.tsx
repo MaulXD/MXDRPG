@@ -353,14 +353,14 @@ export function IconChat({ className, size }: IconProps) {
   );
 }
 
-export type HomeFeatureIconName = "hex" | "target" | "diamond" | "sword";
+export type HomeFeatureIconName = "target" | "move" | "diamond" | "sword";
 
 export function HomeFeatureIcon({ name, className, size = 28 }: IconProps & { name: HomeFeatureIconName }) {
   switch (name) {
-    case "hex":
-      return <IconHex className={className} size={size} />;
     case "target":
       return <IconCircleTarget className={className} size={size} />;
+    case "move":
+      return <IconMove className={className} size={size} />;
     case "diamond":
       return <IconDiamond className={className} size={size} />;
     case "sword":

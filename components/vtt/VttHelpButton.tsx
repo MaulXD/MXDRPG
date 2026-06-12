@@ -93,7 +93,7 @@ export function VttHelpButton() {
               <ul className="vtt-help-panel__list">
                 <li>
                   <strong>Personagens</strong> — arraste fichas para o mapa, retire do tabuleiro e
-                  selecione tokens na lista (ou clique no hex). PA e efeitos aparecem quando visíveis.
+                  selecione tokens na lista (ou clique no mapa). PA e efeitos aparecem quando visíveis.
                 </li>
                 <li>
                   <strong>Status</strong> — condições e buffs do personagem (jogador: só o próprio;
@@ -135,7 +135,7 @@ export function VttHelpButton() {
                   criaturas customizadas).
                 </li>
                 <li>
-                  <strong>Invocar</strong> — arraste monstros do compêndio para o hex desejado no
+                  <strong>Invocar</strong> — arraste monstros do compêndio para a célula desejada no
                   mapa. Monstros entram na iniciativa quando o combate já está rolando.
                 </li>
               </ul>
@@ -148,7 +148,7 @@ export function VttHelpButton() {
                   o token destacado com <strong>anel dourado</strong> no mapa.
                 </li>
                 <li>
-                  No seu turno, <strong>clique direito</strong> no seu personagem ou no hex dele
+                  No seu turno, <strong>clique direito</strong> no seu personagem ou na célula dele
                   para abrir o <strong>anel de ações</strong> (mover, atacar, magia, habilidade).
                 </li>
                 <li>
@@ -157,12 +157,12 @@ export function VttHelpButton() {
                 </li>
                 <li>
                   Escolha uma ação → o mapa entra em modo de <strong>alvo</strong> ou{" "}
-                  <strong>movimento</strong> (hexes coloridos). Clique no alvo ou hex válido.{" "}
+                  <strong>movimento</strong> (células coloridas). Clique no alvo ou célula válida.{" "}
                   <kbd>Esc</kbd> cancela.
                 </li>
                 <li>
                   Magias de <strong>área</strong> pedem um clique no centro (e às vezes na direção
-                  em um hex vizinho).
+                  em uma célula vizinha).
                 </li>
                 <li>
                   Ao terminar, clique em <em>Passar turno</em> (barra inferior). PA não gastos podem
@@ -178,8 +178,8 @@ export function VttHelpButton() {
                   anel ou compêndio).
                 </li>
                 <li>
-                  <strong>Caminhada</strong> usa hexes gratuitos por turno; <strong>corrida</strong>{" "}
-                  além disso pode gastar 1 PA. Hexes verdes/âmbar no mapa mostram onde você pode ir.
+                  <strong>Caminhada</strong> usa células gratuitas por turno; <strong>corrida</strong>{" "}
+                  além disso pode gastar 1 PA. Células verdes/âmbar no mapa mostram onde você pode ir.
                 </li>
                 <li>
                   Ícones de <strong>condição/buff</strong> no token mostram efeitos ativos; passe o
@@ -222,11 +222,11 @@ export function VttHelpButton() {
                   grupo (se permitido nas configurações).
                 </li>
                 <li>
-                  Modo <strong>Régua</strong> — arraste no mapa para medir distância em hex e metros.
+                  Modo <strong>Régua</strong> — arraste no mapa para medir distância em células e metros.
                   <kbd>Esc</kbd> limpa a medição.
                 </li>
                 <li>
-                  Modo <strong>Névoa</strong> ou <strong>Ctrl + clique</strong> — revela hex (mestre).
+                  Modo <strong>Névoa</strong> ou <strong>Ctrl + clique</strong> — revela célula (mestre).
                   Jogadores só veem tokens dentro do campo de visão.
                 </li>
                 <li>
@@ -269,7 +269,7 @@ export function VttHelpButton() {
                   <kbd>Alt</kbd> + arrastar — mover câmera · <kbd>Alt</kbd> + clique — ping.
                 </li>
                 <li>
-                  <kbd>Ctrl</kbd> + clique — revelar hex (névoa, mestre).
+                  <kbd>Ctrl</kbd> + clique — revelar célula (névoa, mestre).
                 </li>
               </ul>
             </HelpSection>

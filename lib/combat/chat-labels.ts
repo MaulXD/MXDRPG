@@ -64,7 +64,12 @@ export function combatUsageKind(
   if (c.resolution === "save") return "spell_save";
   if (c.actionKind === "weapon") return "weapon_attack";
   if (c.actionKind === "unarmed") return "unarmed_attack";
-  if (c.actionKind === "spell") return "spell";
+  if (c.actionKind === "spell") {
+    if (isCombatHealEvent(c)) {
+      return c.attackerTokenId === c.defenderTokenId ? "heal_self" : "heal_ally";
+    }
+    return "spell";
+  }
 
   const selfTarget = c.attackerTokenId === c.defenderTokenId;
   const b = blob(c, text);

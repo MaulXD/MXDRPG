@@ -207,7 +207,7 @@ export function SheetPdfDocument({ character, inventory, roomId }: Props) {
                 <td>{tactical.iniciativa >= 0 ? `+${tactical.iniciativa}` : tactical.iniciativa}</td>
                 <th>Desloc.</th>
                 <td colSpan={3}>
-                  {movement.walk}/{movement.run} hex
+                  {movement.walk}/{movement.run} cél.
                 </td>
               </tr>
             </tbody>

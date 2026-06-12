@@ -2,6 +2,8 @@ import type { CombatActionOption } from "@/lib/combat/types";
 import { hasFlanking } from "@/lib/combat/ability";
 import { combineRollModes, formatRollMode, type RollMode } from "@/lib/combat/d20";
 import { axialDistance } from "@/lib/vtt/hex-math";
+import { tokenAxialDistance } from "@/lib/vtt/creature-size";
+import { isRangedLongRange } from "@/lib/combat/ranged-attack-range";
 import type { BattleToken } from "@/lib/vtt/types";
 
 /** Condições Eldarin Cap. 3.4 — subset usado na mesa */
@@ -138,6 +140,14 @@ export function attackRollModeDetail(
   const buff = tokenBuffAttackRollMode(attacker, defender, opts?.action);
   if (buff.mode !== "normal") modes.push(buff.mode);
   sources.push(...buff.sources);
+
+  if (opts?.action) {
+    const dist = tokenAxialDistance(attacker, defender);
+    if (isRangedLongRange(dist, opts.action)) {
+      modes.push("disadvantage");
+      sources.push("alcance longo");
+    }
+  }
 
   return { mode: combineRollModes(...modes), sources };
 }

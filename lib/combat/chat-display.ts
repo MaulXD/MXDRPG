@@ -16,6 +16,7 @@ export function isStagedCombatChatMessage(msg: ChatMessage): boolean {
   if (msg.kind !== "combat" || !msg.combat) return false;
   const c = msg.combat;
   if (c.resolution === "defeat") return false;
+  if (isCombatHealEvent(c) && c.attackTotal === 0 && c.attackNatural === 20) return false;
   if (isCombatHealEvent(c) && !c.attackNatural && c.attackTotal == null) return false;
   if (c.areaCenterQ != null && c.areaCenterR != null && c.areaBatchId && !c.attackNatural && !c.saveTotal) {
     return false;
@@ -39,6 +40,13 @@ export function splitCombatChatDetail(
     };
   }
 
+  const healIdx = parts.findIndex((p) => p.startsWith("Cura "));
+  if (healIdx >= 0) {
+    return {
+      roll: parts.slice(0, healIdx).join(" · "),
+      damage: parts.slice(healIdx).join(" · "),
+    };
+  }
   const dmgIdx = parts.findIndex((p) => p.startsWith("Dano "));
   if (dmgIdx < 0) return { roll: detail, damage: null };
   return {

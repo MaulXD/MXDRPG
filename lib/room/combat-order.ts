@@ -1,9 +1,8 @@
 import { hasCondition } from "@/lib/combat/conditions";
 import { formatStunSkipNotice } from "@/lib/combat/pa-turn";
-import { tickAllTimedEffectsOnNewRound } from "@/lib/combat/timed-effects";
 import { isTokenDefeated } from "@/lib/vtt/token-hp-display";
 import type { BattleToken } from "@/lib/vtt/types";
-import { activeTokenId, nextTurn, type CombatTrack } from "./combat";
+import { activeTokenId, type CombatTrack } from "./combat";
 import type { RoomState } from "./types";
 
 /** Token derrotado (HP ≤ 0) — fora da ordem até ressuscitar. */
@@ -131,15 +130,25 @@ export function syncCombatOrderWithTokens(room: RoomState): void {
   skipUnplayableActives(room);
 }
 
-/** Pula mortos/atordoados na vez sem avançar turno manualmente. */
+/** Pula mortos/atordoados na fila sem avançar rodada nem tickar efeitos (só reindexa). */
 export function skipUnplayableActives(room: RoomState): string[] {
   const notices: string[] = [];
   if (!room.combat?.order?.length) return notices;
 
-  const maxSkips = Math.max(1, room.combat.order.length + 1);
-  for (let i = 0; i < maxSkips; i++) {
-    const active = getActiveBattleToken(room);
-    if (!active || !shouldAutoSkipTurn(active)) break;
+  const order = room.combat.order;
+  const byId = new Map(room.scene.tokens.map((t) => [t.id, t]));
+  const startIdx = room.combat.activeIndex;
+
+  for (let step = 0; step < order.length; step++) {
+    const idx = (startIdx + step) % order.length;
+    const active = byId.get(order[idx]!);
+    if (!active) continue;
+    if (!shouldAutoSkipTurn(active)) {
+      if (idx !== startIdx) {
+        room.combat = { ...room.combat, activeIndex: idx };
+      }
+      break;
+    }
 
     if (isDefeatedToken(active)) {
       notices.push(`${active.name} está morto — turno passado.`);
@@ -147,32 +156,15 @@ export function skipUnplayableActives(room: RoomState): string[] {
       notices.push(formatStunSkipNotice(active.name));
     }
 
-    const prevRound = room.combat.round;
-    room.combat = nextTurn(room.combat);
-    if (room.combat.round > prevRound) {
-      const tick = tickAllTimedEffectsOnNewRound(room.scene.tokens);
-      room.scene = { ...room.scene, tokens: tick.tokens };
+    if (step === order.length - 1) {
+      const aliveOrder = order.filter((id) => {
+        const t = byId.get(id);
+        return t != null && !isDefeatedToken(t);
+      });
+      if (!aliveOrder.length) {
+        room.combat = { ...room.combat, order: [], activeIndex: 0 };
+      }
     }
-
-    const byId = new Map(room.scene.tokens.map((t) => [t.id, t]));
-    const aliveOrder = room.combat.order.filter((id) => {
-      const t = byId.get(id);
-      return t != null && !isDefeatedToken(t);
-    });
-    if (!aliveOrder.length) {
-      room.combat = { ...room.combat, order: [], activeIndex: 0 };
-      break;
-    }
-    const steppedId = activeTokenId(room.combat);
-    room.combat = {
-      ...room.combat,
-      order: aliveOrder,
-      activeIndex: activeIndexInAliveOrder(
-        aliveOrder,
-        steppedId,
-        room.combat.activeIndex
-      ),
-    };
   }
 
   if (notices.length && room.combat) {

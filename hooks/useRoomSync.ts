@@ -717,7 +717,7 @@ export async function revealRoomHex(roomId: string, q: number, r: number) {
   });
   if (!res.ok) {
     const err = (await res.json()) as { error?: string };
-    throw new Error(err.error ?? "Falha ao revelar hex");
+    throw new Error(err.error ?? "Falha ao revelar célula");
   }
   return res.json() as Promise<RoomSnapshot>;
 }

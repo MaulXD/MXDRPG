@@ -450,6 +450,7 @@ export function MesaWorkspace({
                 <div className="mesa-panel-scroll mesa-panel-scroll--rail">
                   <MonsterSpawnPanel
                     roomId={roomId}
+                    scene={snapshot?.scene ?? scene}
                     spawnAxial={spawnAxial}
                     onSpawned={(snap) => applySnapshot(snap)}
                     onOpenMonsterSheet={openMonsterSheet}
@@ -689,6 +690,7 @@ export function MesaWorkspace({
                   <div className="mesa-panel-scroll mesa-panel-scroll--rail">
                     <MonsterSpawnPanel
                       roomId={roomId}
+                      scene={snapshot?.scene ?? scene}
                       spawnAxial={spawnAxial}
                       onSpawned={(snap) => applySnapshot(snap)}
                       onOpenMonsterSheet={openMonsterSheet}

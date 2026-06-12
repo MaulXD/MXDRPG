@@ -3,10 +3,10 @@ import type { MetadataRoute } from "next";
 export default function manifest(): MetadataRoute.Manifest {
   return {
     id: "/",
-    name: "Eldarin — VTT tático hexagonal",
+    name: "Eldarin — VTT tático",
     short_name: "Eldarin",
     description:
-      "Mesa virtual no navegador: combate hex, Pontos de Ação, fichas e compêndios Eldarin v4.",
+      "Mesa virtual no navegador: combate em grid, Pontos de Ação, fichas e compêndios Eldarin v4.",
     start_url: "/",
     scope: "/",
     display: "standalone",

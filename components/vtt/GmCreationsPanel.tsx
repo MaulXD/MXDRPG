@@ -170,7 +170,7 @@ export function GmCreationsPanel({
 
   async function handleSpawn(id: string) {
     if (!spawnAxial) {
-      setMsg("Passe o mouse sobre um hex no mapa ou arraste o template até o tabuleiro.");
+      setMsg("Passe o mouse sobre uma célula no mapa ou arraste o template até o tabuleiro.");
       return;
     }
     await run(async () => {
@@ -321,7 +321,7 @@ export function GmCreationsPanel({
                 }}
                 onClick={() => handleSpawn(item.id)}
                 disabled={busy}
-                title="Colocar no hex sob o cursor"
+                title="Colocar na célula sob o cursor"
               >
                 ⊕
               </button>

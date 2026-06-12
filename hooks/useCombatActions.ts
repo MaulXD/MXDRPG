@@ -27,6 +27,7 @@ import {
 import { attackerForCombatCheck } from "@/lib/combat/combat-token-pa";
 
 import { canAbilityTarget, canUseAbility } from "@/lib/combat/ability";
+import { isWithinRangedAttackRange } from "@/lib/combat/ranged-attack-range";
 import {
   canActOnCombatTurn,
   effectiveBypassTurn,
@@ -161,7 +162,7 @@ export function useCombatActions(
 
             : canAttackTarget(prepared, t, action, attackerTurn, { actor });
 
-      if (check.ok && tokenAxialDistance(prepared, t) <= action.rangeHex) {
+      if (check.ok && isWithinRangedAttackRange(tokenAxialDistance(prepared, t), action)) {
 
         ids.add(t.id);
 

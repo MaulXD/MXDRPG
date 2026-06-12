@@ -476,9 +476,9 @@ export function TokenActionPanel({
 
         <span className="vtt-movement-sub">
 
-          Caminhada {walkRemaining(token)} hex ({hexToMeters(walkRemaining(token))} m) · Corrida{" "}
+          Caminhada {walkRemaining(token)} cél. ({hexToMeters(walkRemaining(token))} m) · Corrida{" "}
 
-          {runRemaining(token)} hex restantes · {movePaHint}
+          {runRemaining(token)} cél. restantes · {movePaHint}
 
         </span>
 
@@ -735,7 +735,7 @@ export function TokenActionPanel({
 
         <p className="vtt-combat-hint">
 
-          Clique hex verde/ambar no mapa. Distância mostrada no hover.
+          Clique célula verde/âmbar no mapa. Distância mostrada no hover.
 
         </p>
 
