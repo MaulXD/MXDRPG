@@ -4047,6 +4047,66 @@
   margin: 0;
 }
 
+.cover-focus-editor {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.55rem;
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+.cover-focus-editor__hint {
+  width: 100%;
+  margin: 0;
+  text-align: center;
+  line-height: 1.45;
+}
+
+.cover-focus-editor__label {
+  display: block;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 0.3rem;
+  text-align: center;
+}
+
+.cover-focus-editor__card-preview {
+  width: 100%;
+  max-width: 148px;
+}
+
+.cover-focus-editor__frame--card {
+  width: 120px;
+  height: 120px;
+  margin: 0 auto;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--glass-border);
+}
+
+.cover-focus-editor__stage {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.cover-focus-editor__frame--stage {
+  width: min(200px, 100%);
+  aspect-ratio: 1;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--glass-border);
+}
+
+.cover-focus-editor .portrait-focus-sliders {
+  width: 100%;
+  max-width: 280px;
+}
+
 .vtt-dungeon-panel {
   display: flex;
   flex-direction: column;
