@@ -165,5 +165,11 @@ export function Dice3DScene({ sides, value, rolling, sizePx }: Props) {
     };
   }, [sides, sizePx]);
 
-  return <div ref={wrapRef} className="dice-3d-canvas" aria-hidden />;
+  return (
+    <div
+      ref={wrapRef}
+      className="dice-3d-canvas dice-3d-canvas--webgl"
+      aria-hidden
+    />
+  );
 }
