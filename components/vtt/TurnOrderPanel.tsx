@@ -160,7 +160,7 @@ export function TurnOrderPanel({
     setBusy(true);
     setGmError(null);
     try {
-      const snap = await nextCombatTurn(roomId);
+      const snap = await nextCombatTurn(roomId, { force: true });
       onSnapshot?.(snap);
       onUpdate();
     } catch (e) {

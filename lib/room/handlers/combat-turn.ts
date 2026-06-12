@@ -37,6 +37,9 @@ import { resetAllTokenMovement } from "../internal/token-reset";
 import { getRoom, persistRoom, toSnapshot } from "../internal/registry";
 import type { RoomSnapshot, RoomState } from "../types";
 
+/** Pausa entre PA zerado e avanço automático do turno (ms). */
+export const COMBAT_AUTO_PASS_DELAY_MS = 1500;
+
 function paRulesForToken(room: RoomState, token: BattleToken) {
   if (token.linked && token.actorId && room.actors[token.actorId]) {
     return paTurnRulesForActor(room.actors[token.actorId]);
@@ -220,8 +223,14 @@ function stepToNextCombatant(room: RoomState, notices: string[]): void {
   resetAllTokenMovement(room, notices);
 }
 
+function clearPendingAutoPass(room: RoomState): void {
+  if (!room.combat?.pendingAutoPass) return;
+  room.combat = { ...room.combat, pendingAutoPass: undefined };
+}
+
 function applyTurnPaTransition(room: RoomState): string[] {
   const notices: string[] = [];
+  clearPendingAutoPass(room);
   syncCombatOrderWithTokens(room);
 
   bankEndingToken(room, notices);
@@ -249,14 +258,56 @@ function applyTurnPaTransition(room: RoomState): string[] {
   return notices;
 }
 
-/** Passa turno automaticamente quando o token ativo esgota PA gastáveis. */
-export function maybeAutoPassWhenActivePaZero(room: RoomState): boolean {
+/** Agenda auto-passe quando o ativo esgota PA (não avança até o delay). */
+export function scheduleAutoPassWhenActivePaZero(room: RoomState): boolean {
   if (!room.combat?.order?.length) return false;
 
   const active = getActiveBattleToken(room);
   if (!active) return false;
-  if (hasCondition(active, "atordoado")) return false;
-  if (tokenSpendablePa(active) > 0) return false;
+  if (hasCondition(active, "atordoado")) {
+    clearPendingAutoPass(room);
+    return false;
+  }
+
+  if (tokenSpendablePa(active) > 0) {
+    clearPendingAutoPass(room);
+    return false;
+  }
+
+  const pending = room.combat.pendingAutoPass;
+  if (pending?.tokenId === active.id) {
+    if (pending.passAt > Date.now()) return false;
+    return false;
+  }
+
+  room.combat = {
+    ...room.combat,
+    pendingAutoPass: {
+      tokenId: active.id,
+      passAt: Date.now() + COMBAT_AUTO_PASS_DELAY_MS,
+    },
+  };
+  return true;
+}
+
+/** Executa auto-passe agendado após o delay (chamado por `advanceRoomTurn`). */
+export function executePendingAutoPassIfDue(
+  room: RoomState,
+  opts?: { force?: boolean }
+): boolean {
+  const pending = room.combat?.pendingAutoPass;
+  if (!pending) return false;
+  if (!opts?.force && Date.now() < pending.passAt) return false;
+
+  const active = getActiveBattleToken(room);
+  if (!active || active.id !== pending.tokenId) {
+    clearPendingAutoPass(room);
+    return false;
+  }
+  if (hasCondition(active, "atordoado") || tokenSpendablePa(active) > 0) {
+    clearPendingAutoPass(room);
+    return false;
+  }
 
   const transitionNotices = applyTurnPaTransition(room);
   room.combat = {
@@ -331,14 +382,25 @@ export function ensureCombatActiveHasPa(room: RoomState): void {
   refreshActiveTokenPa(room, "full");
 }
 
-export async function advanceRoomTurn(roomId: string): Promise<RoomSnapshot | null> {
+export async function advanceRoomTurn(
+  roomId: string,
+  opts?: { force?: boolean }
+): Promise<RoomSnapshot | null> {
   const room = await getRoom(roomId);
   if (!room) return null;
+
+  if (executePendingAutoPassIfDue(room, opts)) {
+    return toSnapshot(await persistRoom(roomId, room, { skipAutoPassSchedule: true }));
+  }
+
+  if (room.combat.pendingAutoPass && !opts?.force) {
+    return toSnapshot(room);
+  }
 
   const notices = applyTurnPaTransition(room);
   room.combat = { ...room.combat, notices };
 
-  return toSnapshot(await persistRoom(roomId, room));
+  return toSnapshot(await persistRoom(roomId, room, { skipAutoPassSchedule: true }));
 }
 
 export async function setRoomCombatOrder(

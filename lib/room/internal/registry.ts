@@ -12,7 +12,8 @@ import { welcomeChat } from "../chat";
 import { normalizeCombatTrack } from "../combat";
 import {
   ensureCombatActiveHasPa,
-  maybeAutoPassWhenActivePaZero,
+  executePendingAutoPassIfDue,
+  scheduleAutoPassWhenActivePaZero,
 } from "../handlers/combat-turn";
 import { pruneMapMarkups } from "@/lib/vtt/map-markup";
 import { prunePings } from "@/lib/vtt/ping";
@@ -174,10 +175,22 @@ function refreshDemoActorsIfStale(room: RoomState): void {
   }
 }
 
-export async function persistRoom(roomId: string, state: RoomState): Promise<RoomState> {
+export type PersistRoomOpts = {
+  /** Evita reagendar auto-passe logo após avançar turno manualmente/automático. */
+  skipAutoPassSchedule?: boolean;
+};
+
+export async function persistRoom(
+  roomId: string,
+  state: RoomState,
+  opts?: PersistRoomOpts
+): Promise<RoomState> {
   if (state.combat?.order?.length) {
     ensureCombatActiveHasPa(state);
-    maybeAutoPassWhenActivePaZero(state);
+    if (!opts?.skipAutoPassSchedule) {
+      scheduleAutoPassWhenActivePaZero(state);
+      executePendingAutoPassIfDue(state);
+    }
   }
   const updated = bumpRoom(state);
   rooms().set(roomId, updated);

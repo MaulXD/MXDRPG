@@ -770,6 +770,11 @@ function MesaWorkspaceCombatFlow({
   applySnapshot: (snap: import("@/lib/room/types").RoomSnapshot) => void;
   refresh: () => void;
 }) {
-  useCombatTurnFlow({ snapshot });
+  useCombatTurnFlow({
+    snapshot,
+    roomId,
+    canAutoPass: canEndTurn,
+    onSnapshot: applySnapshot,
+  });
   return null;
 }
