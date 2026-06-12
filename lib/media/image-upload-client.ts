@@ -199,6 +199,20 @@ export async function buildBugScreenshotFromFile(file: File): Promise<string> {
   return encodeWebpFit(img, BUG_SCREENSHOT_MAX_EDGE);
 }
 
+const ROOM_COVER_MAX_EDGE = 1280;
+
+/** Capa da mesa — WebP data URL para `RoomSettings.coverUrl`. */
+export async function buildRoomCoverFromFile(file: File): Promise<string> {
+  if (!INPUT_TYPES.includes(file.type)) {
+    throw new Error("Formato inválido. Use JPEG, PNG, WebP ou GIF.");
+  }
+  if (file.size > MAX_INPUT_BYTES) {
+    throw new Error("Arquivo grande demais (máx ~8 MB antes da compressão).");
+  }
+  const img = await loadImageFromFile(file);
+  return encodeWebpFit(img, ROOM_COVER_MAX_EDGE);
+}
+
 /** Imagem de piso do hex — WebP data URL para `mapImageUrl`. */
 export async function buildMapImageFromFile(file: File): Promise<string> {
   if (!INPUT_TYPES.includes(file.type)) {

@@ -1796,3 +1796,78 @@
   font-size: 0.85rem;
   color: #e07a7a;
 }
+
+/* Magias preparadas (aba Magias) */
+.spell-prep {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.65rem, 2cqi, 1rem);
+  min-width: 0;
+}
+
+.spell-prep__hint,
+.spell-prep__count {
+  margin: 0;
+  font-size: 0.86rem;
+  line-height: 1.55;
+  color: rgba(232, 226, 214, 0.78);
+}
+
+.spell-prep__level {
+  min-width: 0;
+}
+
+.spell-prep__level-title {
+  margin: 0 0 0.45rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(201, 169, 98, 0.85);
+  font-family: var(--font-display);
+}
+
+.spell-prep__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.spell-prep__row {
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.28);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.spell-prep__label {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  padding: 0.65rem 0.85rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+.spell-prep__label input:disabled {
+  cursor: default;
+}
+
+.spell-prep__school {
+  color: rgba(232, 226, 214, 0.65);
+  font-weight: 400;
+}
+
+.spell-prep__tag {
+  font-size: 0.78rem;
+  color: rgba(201, 169, 98, 0.8);
+}
+
+.spell-prep .dice-err {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #e07a7a;
+}

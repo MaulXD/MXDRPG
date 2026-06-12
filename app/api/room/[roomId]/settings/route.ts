@@ -31,6 +31,20 @@ export async function PATCH(req: Request, { params }: Params) {
   if (typeof body.allowPlayerPing === "boolean") {
     patch.allowPlayerPing = body.allowPlayerPing;
   }
+  if (typeof body.showUsernameOnTokenNameplate === "boolean") {
+    patch.showUsernameOnTokenNameplate = body.showUsernameOnTokenNameplate;
+  }
+  if (body.coverUrl === null) {
+    patch.coverUrl = null;
+    patch.coverFocus = null;
+  } else if (typeof body.coverUrl === "string") {
+    patch.coverUrl = body.coverUrl;
+  }
+  if (body.coverFocus === null) {
+    patch.coverFocus = null;
+  } else if (body.coverFocus && typeof body.coverFocus === "object") {
+    patch.coverFocus = body.coverFocus as import("@/lib/media/portrait-focus").PortraitFocus;
+  }
 
   const snapshot = await patchRoomSettings(roomId, auth.user, patch);
   if (!snapshot) {

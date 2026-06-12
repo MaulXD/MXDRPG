@@ -1,0 +1,158 @@
+.spell-picker-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+  background: rgba(4, 6, 10, 0.72);
+  backdrop-filter: blur(4px);
+}
+
+.spell-picker {
+  width: min(920px, 100%);
+  max-height: min(82vh, 720px);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1rem 1.1rem 1.1rem;
+  border-radius: 14px;
+  border: 1px solid rgba(139, 111, 212, 0.35);
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.55);
+}
+
+.spell-picker__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.spell-picker__eyebrow {
+  margin: 0;
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(196, 168, 255, 0.85);
+}
+
+.spell-picker__title {
+  margin: 0.15rem 0 0;
+  font-size: 1.15rem;
+  font-weight: 600;
+}
+
+.spell-picker__search {
+  width: 100%;
+  padding: 0.55rem 0.75rem;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(0, 0, 0, 0.25);
+  color: inherit;
+  font: inherit;
+}
+
+.spell-picker__body {
+  display: grid;
+  grid-template-columns: 1fr minmax(220px, 34%);
+  gap: 0.85rem;
+  min-height: 0;
+  flex: 1;
+}
+
+.spell-picker__list {
+  overflow: auto;
+  max-height: min(58vh, 520px);
+  padding-right: 0.25rem;
+}
+
+.spell-picker__level + .spell-picker__level {
+  margin-top: 0.85rem;
+}
+
+.spell-picker__level-title {
+  margin: 0 0 0.4rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(196, 168, 255, 0.75);
+}
+
+.spell-picker__cards {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.spell-picker__card {
+  width: 100%;
+  text-align: left;
+  padding: 0.55rem 0.65rem;
+  border-radius: 8px;
+  border: 1px solid rgba(139, 111, 212, 0.22);
+  background: rgba(48, 32, 72, 0.45);
+  color: inherit;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.spell-picker__card:hover,
+.spell-picker__card--on {
+  border-color: rgba(196, 168, 255, 0.55);
+  background: rgba(72, 48, 108, 0.55);
+}
+
+.spell-picker__card-name {
+  display: block;
+  font-weight: 600;
+  font-size: 0.92rem;
+}
+
+.spell-picker__card-meta {
+  display: block;
+  margin-top: 0.15rem;
+  font-size: 0.74rem;
+  color: rgba(255, 255, 255, 0.62);
+}
+
+.spell-picker__detail {
+  overflow: auto;
+  max-height: min(58vh, 520px);
+  padding: 0.65rem 0.75rem;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(0, 0, 0, 0.22);
+}
+
+.spell-picker__detail-title {
+  margin: 0 0 0.5rem;
+  font-size: 0.95rem;
+}
+
+.spell-picker__detail-lines {
+  margin: 0;
+  padding-left: 1rem;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.spell-picker__empty {
+  margin: 0;
+  padding: 1rem 0.5rem;
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 0.85rem;
+}
+
+@media (max-width: 720px) {
+  .spell-picker__body {
+    grid-template-columns: 1fr;
+  }
+  .spell-picker__detail {
+    max-height: 180px;
+  }
+}
