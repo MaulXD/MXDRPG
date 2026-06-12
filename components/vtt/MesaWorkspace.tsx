@@ -367,6 +367,7 @@ export function MesaWorkspace({
                 <RoomChat
                   roomId={roomId}
                   messages={chat}
+                  tokens={scene.tokens}
                   combatReveal={combatChatReveal}
                   onUpdate={refresh}
                   readOnly={!canChat}
@@ -596,6 +597,7 @@ export function MesaWorkspace({
                   <RoomChat
                     roomId={roomId}
                     messages={chat}
+                    tokens={scene.tokens}
                     combatReveal={combatChatReveal}
                     onUpdate={refresh}
                     readOnly={!canChat}
