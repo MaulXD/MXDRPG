@@ -318,7 +318,11 @@ export function MesaWorkspace({
   return (
     <VttToastProvider>
       <MesaPresenceAlerts bridgeRef={memberOnlineRef} selfUserId={session?.id} />
-      <MesaWorkspaceCombatFlow snapshot={snapshot} />
+      <MesaWorkspaceCombatFlow
+        snapshot={snapshot}
+        roomId={roomId}
+        onSnapshot={applySnapshot}
+      />
       <div className="mesa-workspace mesa-workspace--foundry">
         {syncError ? (
           <p className="mesa-sync-err" role="alert">
@@ -746,9 +750,13 @@ export function MesaWorkspace({
 
 function MesaWorkspaceCombatFlow({
   snapshot,
+  roomId,
+  onSnapshot,
 }: {
   snapshot: import("@/lib/room/types").RoomSnapshot | null;
+  roomId: string;
+  onSnapshot: (snap: import("@/lib/room/types").RoomSnapshot) => void;
 }) {
-  useCombatTurnFlow({ snapshot });
+  useCombatTurnFlow({ snapshot, roomId, onSnapshot });
   return null;
 }

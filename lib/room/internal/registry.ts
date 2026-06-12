@@ -10,7 +10,11 @@ import {
 } from "@/lib/vtt/token-integrity";
 import { welcomeChat } from "../chat";
 import { normalizeCombatTrack } from "../combat";
-import { ensureCombatActiveHasPa } from "../handlers/combat-turn";
+import {
+  ensureCombatActiveHasPa,
+  executePendingAutoPassIfDue,
+  scheduleAutoPassWhenActivePaZero,
+} from "../handlers/combat-turn";
 import { pruneMapMarkups } from "@/lib/vtt/map-markup";
 import { prunePings } from "@/lib/vtt/ping";
 import { getRoomGmCreations } from "../gm-creations";
@@ -183,8 +187,9 @@ export async function persistRoom(
 ): Promise<RoomState> {
   if (state.combat?.order?.length) {
     ensureCombatActiveHasPa(state);
-    if (!opts?.skipAutoPassSchedule && state.combat.pendingAutoPass) {
-      state.combat = { ...state.combat, pendingAutoPass: undefined };
+    if (!opts?.skipAutoPassSchedule) {
+      scheduleAutoPassWhenActivePaZero(state);
+      executePendingAutoPassIfDue(state);
     }
   }
   const updated = bumpRoom(state);
@@ -245,6 +250,9 @@ export async function getRoom(roomId: string): Promise<RoomState | null> {
   }
   if (room?.combat?.order?.length) {
     ensureCombatActiveHasPa(room);
+    if (executePendingAutoPassIfDue(room)) {
+      return persistRoom(roomId, room);
+    }
   }
   if (room && !room.chat?.length) {
     room.chat = [welcomeChat()];
