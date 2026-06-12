@@ -9,7 +9,17 @@ export function isVttOverlayTarget(target: EventTarget | null): boolean {
   if (!(target instanceof HTMLElement)) return false;
   return Boolean(
     target.closest(
-      ".foundry-window, .sheet-shell--popup, .picker-overlay, .vtt-modal-backdrop, [role='dialog'][aria-modal='true']"
+      [
+        ".foundry-window",
+        ".sheet-shell--popup",
+        ".picker-overlay",
+        ".vtt-modal-backdrop",
+        "[role='dialog'][aria-modal='true']",
+        ".vtt-end-turn-bar",
+        ".vtt-combat-hud",
+        ".vtt-turn-track",
+        ".vtt-hud-wrapper",
+      ].join(", ")
     )
   );
 }

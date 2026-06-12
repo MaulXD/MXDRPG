@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { canManageAdventure, isAdventureMember } from "@/lib/auth/adventure-access";
 
 import { signInPath } from "@/lib/auth/post-auth-redirect";
+import { materializeSessionUser } from "@/lib/auth/session-user";
 import { getSession } from "@/lib/auth/session";
 
 import {
@@ -17,7 +18,7 @@ import {
 
 import {
 
-  listCharactersForUserInAdventure,
+  listCharactersForSessionUserInAdventure,
 
   MAX_CHARACTERS_PER_USER_PER_ADVENTURE,
 
@@ -83,6 +84,8 @@ export default async function AventuraHubPage({ params, searchParams }: Props) {
 
   if (!session) redirect(signInPath(`/aventura/${adventureId}`));
 
+  const accountUser = await materializeSessionUser(session.user);
+
 
 
   let adventure = await getAdventure(adventureId);
@@ -105,7 +108,7 @@ export default async function AventuraHubPage({ params, searchParams }: Props) {
 
 
 
-  const isGm = canManageAdventure(adventure, session.user);
+  const isGm = canManageAdventure(adventure, accountUser);
 
 
 
@@ -154,21 +157,21 @@ export default async function AventuraHubPage({ params, searchParams }: Props) {
 
 
   if (
-    !isAdventureMember(adventure, session.user.id, session.user.clerkId) &&
+    !isAdventureMember(adventure, accountUser.id, accountUser.clerkId) &&
     inviteCode
   ) {
-    const joined = await joinAdventureByInvite(inviteCode, session.user.id);
+    const joined = await joinAdventureByInvite(inviteCode, accountUser.id);
     if (joined) adventure = joined;
   }
 
   if (
-    !isAdventureMember(adventure, session.user.id, session.user.clerkId) &&
+    !isAdventureMember(adventure, accountUser.id, accountUser.clerkId) &&
     adventureId !== "demo"
   ) {
-    adventure = (await ensureAdventureMembership(adventureId, session.user.id)) ?? adventure;
+    adventure = (await ensureAdventureMembership(adventureId, accountUser.id)) ?? adventure;
   }
 
-  if (!isAdventureMember(adventure, session.user.id, session.user.clerkId) && adventureId !== "demo") {
+  if (!isAdventureMember(adventure, accountUser.id, accountUser.clerkId) && adventureId !== "demo") {
     return (
       <div className="page-wrap">
         <p>Entre na mesa com o código de convite.</p>
@@ -191,11 +194,11 @@ export default async function AventuraHubPage({ params, searchParams }: Props) {
     if (fresh) room = await getRoom(fresh.primaryRoomId);
   }
 
-  let myChars: Awaited<ReturnType<typeof listCharactersForUserInAdventure>> = [];
+  let myChars: Awaited<ReturnType<typeof listCharactersForSessionUserInAdventure>> = [];
 
   try {
 
-    myChars = await listCharactersForUserInAdventure(session.user.id, adventureId);
+    myChars = await listCharactersForSessionUserInAdventure(accountUser, adventureId);
 
   } catch (e) {
 
@@ -462,7 +465,9 @@ export default async function AventuraHubPage({ params, searchParams }: Props) {
 
         <p style={{ color: "var(--text-muted)", fontSize: "0.9rem", margin: "0 0 1rem" }}>
 
-          Máx. {MAX_CHARACTERS_PER_USER_PER_ADVENTURE} por jogador nesta mesa. Crie na sala HEX ou aqui.
+          Máx. {MAX_CHARACTERS_PER_USER_PER_ADVENTURE} por jogador nesta mesa — vinculado à conta{" "}
+
+          <strong>{accountUser.nickname?.trim() || accountUser.name}</strong>. Crie na sala HEX ou aqui.
 
         </p>
 

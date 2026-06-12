@@ -72,9 +72,30 @@ export function getCharacterFromRegistry(id: string): CharacterSheet | null {
 }
 
 export function listCharactersFromRegistry(ownerId: string): CharacterSheet[] {
+  return listCharactersFromRegistryByOwners([ownerId]);
+}
+
+export function listCharactersFromRegistryByOwners(ownerIds: string[]): CharacterSheet[] {
+  const allowed = new Set(ownerIds);
   return [...characterRegistry().values()]
-    .filter((c) => c.ownerId === ownerId)
+    .filter((c) => allowed.has(c.ownerId))
     .map((c) => normalizeCharacter({ ...c }));
+}
+
+export function reassignRegistryCharacterOwners(
+  fromOwnerIds: string[],
+  toOwnerId: string
+): number {
+  const aliases = new Set(fromOwnerIds.filter((id) => id && id !== toOwnerId));
+  if (aliases.size === 0) return 0;
+  let count = 0;
+  for (const [id, sheet] of characterRegistry()) {
+    if (!aliases.has(sheet.ownerId)) continue;
+    characterRegistry().set(id, normalizeCharacter({ ...sheet, ownerId: toOwnerId }));
+    count += 1;
+  }
+  if (count > 0) savePersisted(characterRegistry());
+  return count;
 }
 
 export function removeCharacterFromRegistry(id: string): void {

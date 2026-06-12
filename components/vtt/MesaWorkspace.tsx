@@ -318,17 +318,7 @@ export function MesaWorkspace({
   return (
     <VttToastProvider>
       <MesaPresenceAlerts bridgeRef={memberOnlineRef} selfUserId={session?.id} />
-      <MesaWorkspaceCombatFlow
-        roomId={roomId}
-        roomOwnerId={roomOwnerId}
-        memberIds={memberIds}
-        snapshot={snapshot}
-        session={session}
-        canEndTurn={canEndTurn}
-        combatAccessOpts={combatAccessOpts}
-        applySnapshot={applySnapshot}
-        refresh={refresh}
-      />
+      <MesaWorkspaceCombatFlow snapshot={snapshot} />
       <div className="mesa-workspace mesa-workspace--foundry">
         {syncError ? (
           <p className="mesa-sync-err" role="alert">
@@ -753,34 +743,10 @@ export function MesaWorkspace({
 }
 
 function MesaWorkspaceCombatFlow({
-  roomId,
-  roomOwnerId,
-  memberIds,
   snapshot,
-  session,
-  canEndTurn,
-  combatAccessOpts,
-  applySnapshot,
-  refresh,
 }: {
-  roomId: string;
-  roomOwnerId: string;
-  memberIds: string[];
   snapshot: import("@/lib/room/types").RoomSnapshot | null;
-  session: SessionUser | null;
-  canEndTurn: boolean;
-  combatAccessOpts: import("@/lib/auth/combat-turn-access").CombatTurnAccessOpts;
-  applySnapshot: (
-    snap: import("@/lib/room/types").RoomSnapshot,
-    opts?: { force?: boolean }
-  ) => void;
-  refresh: () => void;
 }) {
-  useCombatTurnFlow({
-    snapshot,
-    roomId,
-    canAutoPass: canEndTurn,
-    onSnapshot: (snap) => applySnapshot(snap, { force: true }),
-  });
+  useCombatTurnFlow({ snapshot });
   return null;
 }

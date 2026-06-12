@@ -1,3 +1,4 @@
+import { characterOwnedBySessionUser } from "@/lib/auth/account-ownership";
 import { canManageRoom, DEMO_PLAYABLE_ACTOR_IDS } from "@/lib/auth/room-access";
 import type { SessionUser } from "@/lib/auth/types";
 import { activeTokenId, type CombatTrack } from "@/lib/room/combat";
@@ -55,7 +56,8 @@ export function canViewTokenPa(
   if (token.linked && token.actorId) {
     if (room.roomId === "demo") return true;
     if (!user) return false;
-    return room.actors[token.actorId]?.ownerId === user.id;
+    const actor = room.actors[token.actorId];
+    return actor ? characterOwnedBySessionUser(actor, user) : false;
   }
   return false;
 }
@@ -81,7 +83,8 @@ export function canControlToken(
   if (hasGmView(room, user, opts)) return true;
   if (isMonsterToken(token)) return false;
   if (token.linked && token.actorId) {
-    return room.actors[token.actorId]?.ownerId === user.id;
+    const actor = room.actors[token.actorId];
+    return actor ? characterOwnedBySessionUser(actor, user) : false;
   }
   return false;
 }

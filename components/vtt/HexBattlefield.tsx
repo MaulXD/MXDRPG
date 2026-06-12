@@ -1144,6 +1144,8 @@ export function HexBattlefield({
         if (canControlCombat && selectedId && actionMode === "idle" && !actionRingAt) {
           e.preventDefault();
           void removeSelectedToken();
+        } else {
+          e.preventDefault();
         }
         return;
       }
