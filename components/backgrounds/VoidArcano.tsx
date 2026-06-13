@@ -72,20 +72,6 @@ export default function VoidArcano() {
     }
     ctx.globalAlpha = 1;
 
-    const rot = t * 0.15;
-    ctx.save();
-    ctx.translate(W / 2, H / 2);
-    ctx.rotate(rot);
-    ctx.strokeStyle = `rgba(184,146,46,${0.08 + 0.05 * Math.sin(t * 0.6)})`;
-    ctx.lineWidth = 1;
-    for (let i = 0; i < 3; i++) {
-      const a = (i / 3) * Math.PI * 2;
-      ctx.beginPath();
-      ctx.ellipse(0, 0, W * 0.35, H * 0.12, a, 0, Math.PI * 2);
-      ctx.stroke();
-    }
-    ctx.restore();
-
     drawVignette(ctx, W, H, 0.4);
   }, [stars]);
 

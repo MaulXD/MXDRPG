@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Eldarin — Preview dos fundos animados</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { margin: 0; height: 100%; font-family: "Source Sans 3", system-ui, sans-serif; color: #e8e0d0; background: #111; }
+    button { font: inherit; cursor: pointer; }
+    .page { min-height: 100%; display: flex; flex-direction: column; }
+    .topbar {
+      position: relative; z-index: 20;
+      display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1.25rem;
+      padding: 0.85rem 1.25rem;
+      background: rgba(17,17,16,0.92);
+      border-bottom: 1px solid rgba(184,146,46,0.25);
+    }
+    .topbar h1 { margin: 0; font-family: Cinzel, serif; font-size: 1.1rem; letter-spacing: 0.06em; color: #b8922e; }
+    .topbar p { margin: 0; font-size: 0.82rem; color: #a89878; flex: 1; min-width: 200px; }
+    .controls { display: flex; flex-wrap: wrap; gap: 0.45rem; align-items: center; }
+    .controls label { font-size: 0.78rem; color: #a89878; display: flex; align-items: center; gap: 0.35rem; }
+    .btn {
+      padding: 0.4rem 0.75rem; border-radius: 6px;
+      border: 1px solid rgba(184,146,46,0.35);
+      background: rgba(30,29,26,0.8); color: #e8e0d0;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .btn:hover { border-color: #b8922e; background: rgba(184,146,46,0.12); }
+    .btn.is-active { border-color: #b8922e; background: rgba(184,146,46,0.22); color: #fff; }
+    .layout { flex: 1; display: grid; grid-template-columns: 1fr; min-height: 0; }
+    .layout--gallery { grid-template-columns: 1fr; padding: 1rem; gap: 1rem; align-content: start; }
+    .preview-stage {
+      position: relative; min-height: calc(100vh - 72px); overflow: hidden;
+    }
+    .preview-stage canvas { display: block; width: 100%; height: 100%; }
+    .preview-stage__canvas-wrap { position: absolute; inset: 0; }
+    .mock-ui {
+      position: absolute; inset: 0; pointer-events: none; z-index: 2;
+      display: flex; flex-direction: column; padding: 1.5rem;
+    }
+    .mock-header {
+      align-self: center; width: min(900px, 100%);
+      padding: 0.55rem 1rem; border-radius: 8px;
+      background: rgba(17,17,16,0.58); backdrop-filter: blur(8px);
+      border: 1px solid rgba(184,146,46,0.2);
+      font-family: Cinzel, serif; color: #b8922e; text-align: center;
+    }
+    .mock-cards {
+      flex: 1; display: flex; align-items: center; justify-content: center;
+      gap: 1rem; flex-wrap: wrap; padding: 2rem 0;
+    }
+    .mock-card {
+      width: min(280px, 90vw); padding: 1.25rem; border-radius: 8px;
+      background: rgba(30,29,26,0.52); backdrop-filter: blur(6px);
+      border: 1px solid rgba(184,146,46,0.28);
+    }
+    .mock-card h2 { margin: 0 0 0.5rem; font-family: Cinzel, serif; font-size: 1rem; color: #e8e0d0; }
+    .mock-card p { margin: 0; font-size: 0.85rem; color: #a89878; line-height: 1.5; }
+    .badge {
+      position: absolute; left: 1rem; bottom: 1rem; z-index: 3;
+      padding: 0.45rem 0.75rem; border-radius: 6px;
+      background: rgba(0,0,0,0.55); border: 1px solid rgba(184,146,46,0.35);
+      font-size: 0.8rem;
+    }
+    .badge strong { color: #b8922e; font-family: Cinzel, serif; }
+    .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1rem; }
+    .gallery-item {
+      position: relative; border-radius: 10px; overflow: hidden;
+      border: 1px solid rgba(184,146,46,0.25);
+      aspect-ratio: 16/10; background: #000;
+    }
+    .gallery-item canvas { width: 100%; height: 100%; display: block; }
+    .gallery-item__label {
+      position: absolute; left: 0; right: 0; bottom: 0;
+      padding: 0.5rem 0.75rem;
+      background: linear-gradient(transparent, rgba(0,0,0,0.85));
+      font-size: 0.82rem;
+    }
+    .gallery-item__label strong { font-family: Cinzel, serif; color: #b8922e; }
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="topbar">
+      <h1>Eldarin — Fundos animados</h1>
+      <p>Preview offline das 7 animações do site. Use para dar seu veredito.</p>
+      <div class="controls">
+        <button type="button" class="btn is-active" id="mode-full">Tela cheia</button>
+        <button type="button" class="btn" id="mode-gallery">Galeria (7 juntas)</button>
+        <label><input type="checkbox" id="toggle-mock" checked /> Simular painéis do site</label>
+      </div>
+      <div class="controls" id="bg-buttons"></div>
+    </header>
+
+    <div class="layout" id="layout-full">
+      <section class="preview-stage" id="stage-full">
+        <div class="preview-stage__canvas-wrap"><canvas id="canvas-full"></canvas></div>
+        <div class="mock-ui" id="mock-ui">
+          <div class="mock-header">ELDARIN — VTT tático</div>
+          <div class="mock-cards">
+            <div class="mock-card"><h2>Mesa demo</h2><p>Grid, PA e fichas no navegador.</p></div>
+            <div class="mock-card"><h2>Compêndios</h2><p>Magias, armas e monstros integrados.</p></div>
+          </div>
+        </div>
+        <div class="badge" id="badge-full"><strong>NevoaRoxa</strong> — névoa roxa deslizante</div>
+      </section>
+    </div>
+
+    <div class="layout layout--gallery hidden" id="layout-gallery">
+      <div class="gallery" id="gallery"></div>
+    </div>
+  </div>
+
+  <script>
+    const ANIM_SPEED = 0.5;
+
+    const BACKGROUNDS = [
+      { id: "NevoaRoxa", label: "Névoa Roxa", desc: "Névoa roxa difusa e lenta" },
+      { id: "GridTatico", label: "Grid Tático", desc: "Grade em movimento + pontos dourados" },
+      { id: "Oceano", label: "Oceano", desc: "Azul profundo + reflexos sutis" },
+      { id: "Brasas", label: "Brasas", desc: "Brasas subindo com brilho" },
+      { id: "Runas", label: "Runas", desc: "Runas flutuando para cima" },
+      { id: "Pergaminho", label: "Pergaminho", desc: "Células + luzes âmbar orbitando" },
+      { id: "VoidArcano", label: "Void Arcano", desc: "Estrelas orbitando" },
+    ];
+
+    function drawVignette(ctx, W, H, edgeAlpha = 0.45) {
+      const g = ctx.createRadialGradient(W/2, H/2, H*0.12, W/2, H/2, H*0.92);
+      g.addColorStop(0, "rgba(0,0,0,0)");
+      g.addColorStop(1, `rgba(0,0,0,${edgeAlpha})`);
+      ctx.globalAlpha = 1;
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, W, H);
+    }
+
+    const drawers = {
+      NevoaRoxa(ctx, W, H, t) {
+        const BLOBS = [
+          { x:0.12,y:0.35,rx:0.34,ry:0.22,ph:0,sp:0.045,rgb:"72,32,140" },
+          { x:0.42,y:0.55,rx:0.38,ry:0.24,ph:1.4,sp:0.032,rgb:"40,18,95" },
+          { x:0.72,y:0.28,rx:0.3,ry:0.2,ph:2.8,sp:0.038,rgb:"95,45,160" },
+          { x:0.58,y:0.72,rx:0.32,ry:0.18,ph:4.1,sp:0.028,rgb:"55,25,110" },
+          { x:0.22,y:0.68,rx:0.26,ry:0.16,ph:5.5,sp:0.05,rgb:"120,60,180" },
+        ];
+        ctx.fillStyle = "#0a0614";
+        ctx.fillRect(0,0,W,H);
+        for (const b of BLOBS) {
+          const x = ((b.x + t*b.sp) % 1.35) - 0.18;
+          const pulse = 0.05 + 0.03*Math.sin(t*0.9+b.ph);
+          const wobble = Math.sin(t*0.55+b.ph)*H*0.04;
+          const cx = x*W, cy = b.y*H+wobble, radius = b.rx*W*1.15;
+          const g = ctx.createRadialGradient(cx,cy,0,cx,cy,radius);
+          g.addColorStop(0,`rgba(${b.rgb},${pulse*0.55})`);
+          g.addColorStop(0.35,`rgba(${b.rgb},${pulse*0.28})`);
+          g.addColorStop(0.7,`rgba(${b.rgb},${pulse*0.08})`);
+          g.addColorStop(1,"rgba(0,0,0,0)");
+          ctx.fillStyle = g;
+          ctx.beginPath();
+          ctx.ellipse(cx,cy,b.rx*W*1.1,b.ry*H*1.1,0,0,Math.PI*2);
+          ctx.fill();
+        }
+        const sweep = (t*0.08)%1;
+        const sg = ctx.createLinearGradient(0,0,W,H);
+        sg.addColorStop(Math.max(0,sweep-0.2),"rgba(0,0,0,0)");
+        sg.addColorStop(sweep,"rgba(100,60,160,0.04)");
+        sg.addColorStop(Math.min(1,sweep+0.2),"rgba(0,0,0,0)");
+        ctx.fillStyle = sg;
+        ctx.fillRect(0,0,W,H);
+        drawVignette(ctx,W,H,0.42);
+      },
+
+      GridTatico(ctx, W, H, t) {
+        const CELL = 40;
+        const ox = (t*18)%CELL, oy = (t*12)%CELL;
+        ctx.fillStyle = "#0c1018";
+        ctx.fillRect(0,0,W,H);
+        ctx.strokeStyle = "rgba(184,146,46,0.14)";
+        ctx.lineWidth = 1;
+        for (let x=-CELL+ox; x<W+CELL; x+=CELL) { ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke(); }
+        for (let y=-CELL+oy; y<H+CELL; y+=CELL) { ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke(); }
+        for (let x=CELL; x<W; x+=CELL*3) for (let y=CELL; y<H; y+=CELL*3) {
+          ctx.globalAlpha = 0.25+0.35*Math.sin(t*1.8+x*0.02+y*0.015);
+          ctx.fillStyle = "#b8922e";
+          ctx.fillRect(x-2,y-2,4,4);
+        }
+        ctx.globalAlpha = 1;
+        drawVignette(ctx,W,H,0.4);
+      },
+
+      Oceano(ctx, W, H, t) {
+        ctx.fillStyle = "#020610"; ctx.fillRect(0,0,W,H);
+        const dg = ctx.createLinearGradient(0,0,0,H);
+        dg.addColorStop(0,"rgba(8,28,58,0.55)");
+        dg.addColorStop(0.5,"rgba(4,14,32,0.72)");
+        dg.addColorStop(1,"rgba(2,8,20,0.88)");
+        ctx.fillStyle = dg; ctx.fillRect(0,0,W,H);
+        for (let i=0;i<5;i++) {
+          const fx=((t*0.04+i*0.2)%1.2)*W, fy=H*(0.2+i*0.12)+Math.sin(t*0.7+i)*16;
+          const fg=ctx.createRadialGradient(fx,fy,0,fx,fy,72);
+          fg.addColorStop(0,"rgba(30,70,120,0.12)"); fg.addColorStop(1,"rgba(0,0,0,0)");
+          ctx.fillStyle=fg; ctx.fillRect(0,0,W,H);
+        }
+        drawVignette(ctx,W,H,0.48);
+      },
+
+      Brasas(ctx, W, H, t, dt, state) {
+        if (!state.embers) {
+          state.embers = Array.from({length:70},()=>{
+            const e = spawnEmber();
+            e.y = Math.random();
+            return e;
+          });
+        }
+        ctx.fillStyle = "#120a04"; ctx.fillRect(0,0,W,H);
+        const glow = ctx.createRadialGradient(W*0.5,H*0.85,0,W*0.5,H,H*0.55);
+        glow.addColorStop(0,`rgba(200,80,20,${0.18+0.06*Math.sin(t*1.5)})`);
+        glow.addColorStop(1,"rgba(0,0,0,0)");
+        ctx.fillStyle=glow; ctx.fillRect(0,0,W,H);
+        for (const e of state.embers) {
+          e.y -= e.vy*dt; e.x += (e.vx+Math.sin(t*2.2+e.phase)*0.025)*dt; e.life -= dt*0.35;
+          if (e.life<=0||e.y<-0.05) Object.assign(e, spawnEmber());
+          const alpha = (e.life/e.maxLife)*0.9, px=e.x*W, py=e.y*H;
+          if (e.hot) {
+            const tg=ctx.createRadialGradient(px,py,0,px,py,e.r*4);
+            tg.addColorStop(0,`rgba(255,140,30,${alpha*0.5})`); tg.addColorStop(1,"rgba(0,0,0,0)");
+            ctx.fillStyle=tg; ctx.fillRect(px-e.r*4,py-e.r*4,e.r*8,e.r*8);
+            ctx.fillStyle=`rgb(255,${100+Math.floor(e.life*100)},20)`;
+          } else ctx.fillStyle=`rgba(180,120,80,${alpha*0.7})`;
+          ctx.globalAlpha=alpha; ctx.beginPath(); ctx.arc(px,py,e.r,0,Math.PI*2); ctx.fill();
+        }
+        ctx.globalAlpha=1;
+        drawVignette(ctx,W,H,0.44);
+      },
+
+      Runas(ctx, W, H, t, dt, state) {
+        const CHARS = "ᚠᚢᚦᚨᚱᚲᚷᚹᚾᛁᛈᛉᛊᛏᛒᛖᛗᛚᛟᛞ";
+        if (!state.runes) {
+          state.runes = Array.from({length:32},()=>({
+            x:Math.random(), y:Math.random(),
+            c: CHARS[Math.floor(Math.random()*CHARS.length)],
+            size:16+Math.random()*22, phase:Math.random()*Math.PI*2,
+            speed:0.4+Math.random()*0.8, drift:(Math.random()-0.5)*0.03,
+            rise:0.012+Math.random()*0.02,
+          }));
+        }
+        ctx.fillStyle="#0a0812"; ctx.fillRect(0,0,W,H);
+        ctx.textAlign="center"; ctx.textBaseline="middle";
+        for (const r of state.runes) {
+          r.y -= r.rise*dt; r.x += r.drift*dt;
+          if (r.y<-0.05){r.y=1.05;r.x=Math.random();}
+          if (r.x<-0.05) r.x=1.05; if (r.x>1.05) r.x=-0.05;
+          ctx.globalAlpha = 0.15+0.25*Math.sin(t*r.speed+r.phase);
+          ctx.fillStyle="#c8a060";
+          ctx.font = `${r.size*(1+0.08*Math.sin(t*r.speed*0.7+r.phase))}px Cinzel, serif`;
+          ctx.fillText(r.c,r.x*W,r.y*H);
+        }
+        ctx.globalAlpha=1;
+        drawVignette(ctx,W,H,0.42);
+      },
+
+      Pergaminho(ctx, W, H, t, dt, state) {
+        const CELL=48, LIGHTS=[{x:0.5,y:0.45,r:280,ph:0},{x:0.18,y:0.3,r:160,ph:1.6},{x:0.82,y:0.7,r:150,ph:3.2}];
+        if (!state.cells || state.W!==W || state.H!==H) {
+          state.cells=[]; state.W=W; state.H=H;
+          const cols=Math.ceil(W/CELL)+1, rows=Math.ceil(H/CELL)+1;
+          for (let r=0;r<rows;r++) for (let c=0;c<cols;c++)
+            state.cells.push({x:c*CELL,y:r*CELL,seed:(r*883+c*421)%100});
+        }
+        ctx.fillStyle="#14100a"; ctx.fillRect(0,0,W,H);
+        for (const cl of state.cells) {
+          const shimmer=Math.sin(t*0.6+cl.seed*0.1)*3, b=14+cl.seed*0.08+shimmer;
+          ctx.fillStyle=`rgb(${b+6},${Math.floor(b*0.9)},${Math.floor(b*0.55)})`;
+          ctx.fillRect(cl.x,cl.y,CELL,CELL);
+          ctx.strokeStyle="rgba(0,0,0,0.25)"; ctx.lineWidth=0.5;
+          ctx.strokeRect(cl.x+0.5,cl.y+0.5,CELL-1,CELL-1);
+        }
+        for (const g of LIGHTS) {
+          const ox=Math.sin(t*0.35+g.ph)*W*0.04, oy=Math.cos(t*0.28+g.ph)*H*0.03;
+          const pulse=0.12+0.08*Math.sin(t*0.9+g.ph);
+          const gr=ctx.createRadialGradient(g.x*W+ox,g.y*H+oy,0,g.x*W+ox,g.y*H+oy,g.r);
+          gr.addColorStop(0,`rgba(200,140,50,${pulse})`);
+          gr.addColorStop(0.45,`rgba(170,100,35,${pulse*0.35})`);
+          gr.addColorStop(1,"rgba(0,0,0,0)");
+          ctx.fillStyle=gr; ctx.fillRect(0,0,W,H);
+        }
+        drawVignette(ctx,W,H,0.46);
+      },
+
+      VoidArcano(ctx, W, H, t, dt, state) {
+        const PALETTE=["184,146,46","140,100,200","80,120,180"];
+        if (!state.stars) {
+          state.stars = Array.from({length:80},()=>({
+            x:Math.random(),y:Math.random(),r:0.8+Math.random()*2.2,
+            phase:Math.random()*Math.PI*2,speed:0.6+Math.random()*1.2,
+            rgb:PALETTE[Math.floor(Math.random()*PALETTE.length)],
+            orbit:8+Math.random()*20, driftX:(Math.random()-0.5)*0.02, driftY:(Math.random()-0.5)*0.015,
+          }));
+        }
+        ctx.fillStyle="#06060e"; ctx.fillRect(0,0,W,H);
+        const core=ctx.createRadialGradient(W/2,H/2,0,W/2,H/2,H*0.45);
+        core.addColorStop(0,`rgba(60,30,120,${0.15+0.06*Math.sin(t*0.7)})`);
+        core.addColorStop(1,"rgba(0,0,0,0)");
+        ctx.fillStyle=core; ctx.fillRect(0,0,W,H);
+        for (const s of state.stars) {
+          s.x+=s.driftX*dt; s.y+=s.driftY*dt;
+          if(s.x<0)s.x=1; if(s.x>1)s.x=0; if(s.y<0)s.y=1; if(s.y>1)s.y=0;
+          const ox=Math.sin(t*s.speed+s.phase)*s.orbit, oy=Math.cos(t*s.speed*0.8+s.phase)*s.orbit;
+          const px=s.x*W+ox, py=s.y*H+oy, alpha=0.35+0.45*Math.sin(t*s.speed+s.phase);
+          const glow=ctx.createRadialGradient(px,py,0,px,py,s.r*5);
+          glow.addColorStop(0,`rgba(${s.rgb},${alpha*0.45})`); glow.addColorStop(1,"rgba(0,0,0,0)");
+          ctx.fillStyle=glow; ctx.fillRect(px-s.r*5,py-s.r*5,s.r*10,s.r*10);
+          ctx.globalAlpha=alpha; ctx.fillStyle=`rgb(${s.rgb})`;
+          ctx.beginPath(); ctx.arc(px,py,s.r,0,Math.PI*2); ctx.fill();
+        }
+        ctx.globalAlpha=1;
+        drawVignette(ctx,W,H,0.4);
+      },
+    };
+
+    function spawnEmber() {
+      return {
+        x:Math.random(), y:1.05+Math.random()*0.1,
+        vy:0.08+Math.random()*0.12, vx:(Math.random()-0.5)*0.04,
+        life:0.6+Math.random()*0.4, maxLife:1,
+        phase:Math.random()*Math.PI*2, r:1.2+Math.random()*2.2,
+        hot:Math.random()<0.45,
+      };
+    }
+
+    function setupCanvas(canvas) {
+      const dpr = Math.min(window.devicePixelRatio||1, 2);
+      const rect = canvas.getBoundingClientRect();
+      const w = rect.width || canvas.clientWidth || window.innerWidth;
+      const h = rect.height || canvas.clientHeight || window.innerHeight;
+      canvas.width = Math.floor(w*dpr);
+      canvas.height = Math.floor(h*dpr);
+      const ctx = canvas.getContext("2d");
+      ctx.setTransform(dpr,0,0,dpr,0,0);
+      return { ctx, w, h };
+    }
+
+    const loops = new Map();
+
+    function startLoop(canvas, bgId, state = {}) {
+      stopLoop(canvas);
+      let time = 0, last = performance.now();
+      const tick = (now) => {
+        const dt = Math.min(0.05,(now-last)/1000);
+        last = now; time += dt;
+        const t = time * ANIM_SPEED;
+        const scaledDt = dt * ANIM_SPEED;
+        const { ctx, w, h } = setupCanvas(canvas);
+        const draw = drawers[bgId];
+        if (draw) draw(ctx, w, h, t, scaledDt, state);
+        const id = requestAnimationFrame(tick);
+        loops.set(canvas, id);
+      };
+      const id = requestAnimationFrame(tick);
+      loops.set(canvas, id);
+      return state;
+    }
+
+    function stopLoop(canvas) {
+      const id = loops.get(canvas);
+      if (id) cancelAnimationFrame(id);
+      loops.delete(canvas);
+    }
+
+    let activeId = "NevoaRoxa";
+    const fullCanvas = document.getElementById("canvas-full");
+    const fullState = {};
+    const badge = document.getElementById("badge-full");
+    const bgButtons = document.getElementById("bg-buttons");
+    const layoutFull = document.getElementById("layout-full");
+    const layoutGallery = document.getElementById("layout-gallery");
+    const gallery = document.getElementById("gallery");
+    const mockUi = document.getElementById("mock-ui");
+
+    BACKGROUNDS.forEach((bg) => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "btn" + (bg.id === activeId ? " is-active" : "");
+      btn.textContent = bg.label;
+      btn.dataset.id = bg.id;
+      btn.addEventListener("click", () => selectBackground(bg.id));
+      bgButtons.appendChild(btn);
+
+      const item = document.createElement("div");
+      item.className = "gallery-item";
+      item.innerHTML = `<canvas></canvas><div class="gallery-item__label"><strong>${bg.label}</strong> — ${bg.desc}</div>`;
+      gallery.appendChild(item);
+      const c = item.querySelector("canvas");
+      const st = {};
+      item._state = st;
+      item._id = bg.id;
+      item._canvas = c;
+    });
+
+    function selectBackground(id) {
+      activeId = id;
+      const meta = BACKGROUNDS.find(b => b.id === id);
+      badge.innerHTML = `<strong>${meta.label}</strong> — ${meta.desc}`;
+      bgButtons.querySelectorAll(".btn").forEach(b => {
+        b.classList.toggle("is-active", b.dataset.id === id);
+      });
+      startLoop(fullCanvas, id, fullState);
+    }
+
+    function setMode(mode) {
+      const isGallery = mode === "gallery";
+      layoutFull.classList.toggle("hidden", isGallery);
+      layoutGallery.classList.toggle("hidden", !isGallery);
+      document.getElementById("mode-full").classList.toggle("is-active", !isGallery);
+      document.getElementById("mode-gallery").classList.toggle("is-active", isGallery);
+      bgButtons.classList.toggle("hidden", isGallery);
+
+      if (isGallery) {
+        stopLoop(fullCanvas);
+        gallery.querySelectorAll(".gallery-item").forEach((item) => {
+          startLoop(item._canvas, item._id, item._state);
+        });
+      } else {
+        gallery.querySelectorAll(".gallery-item").forEach((item) => stopLoop(item._canvas));
+        selectBackground(activeId);
+      }
+    }
+
+    document.getElementById("mode-full").addEventListener("click", () => setMode("full"));
+    document.getElementById("mode-gallery").addEventListener("click", () => setMode("gallery"));
+    document.getElementById("toggle-mock").addEventListener("change", (e) => {
+      mockUi.classList.toggle("hidden", !e.target.checked);
+    });
+
+    window.addEventListener("resize", () => {
+      if (!layoutGallery.classList.contains("hidden")) {
+        gallery.querySelectorAll(".gallery-item").forEach((item) => {
+          if (loops.has(item._canvas)) startLoop(item._canvas, item._id, item._state);
+        });
+      } else if (loops.has(fullCanvas)) {
+        startLoop(fullCanvas, activeId, fullState);
+      }
+    });
+
+    selectBackground(activeId);
+  </script>
+</body>
+</html>

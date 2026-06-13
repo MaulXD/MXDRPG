@@ -48,13 +48,6 @@ export default function Runas() {
     }
     ctx.globalAlpha = 1;
 
-    const ringR = H * (0.15 + 0.04 * Math.sin(t * 0.5));
-    ctx.strokeStyle = `rgba(184,146,46,${0.12 + 0.08 * Math.sin(t)})`;
-    ctx.lineWidth = 1.5;
-    ctx.beginPath();
-    ctx.arc(W / 2, H / 2, ringR, 0, Math.PI * 2);
-    ctx.stroke();
-
     drawVignette(ctx, W, H, 0.42);
   }, [runes]);
 

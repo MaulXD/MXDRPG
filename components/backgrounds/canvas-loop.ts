@@ -10,7 +10,8 @@ export type CanvasFrame = {
   dt: number;
 };
 
-/** Vinheta leve — a antiga (0.88) escondia toda a animação. */
+/** Velocidade global dos fundos (0.5 = 50% mais lento). */
+export const BACKGROUND_ANIM_SPEED = 0.5;
 export function drawVignette(
   ctx: CanvasRenderingContext2D,
   width: number,
@@ -79,8 +80,8 @@ export function useCanvasAnimation(
         ctx,
         width: window.innerWidth,
         height: window.innerHeight,
-        time,
-        dt,
+        time: time * BACKGROUND_ANIM_SPEED,
+        dt: dt * BACKGROUND_ANIM_SPEED,
       });
 
       rafId = requestAnimationFrame(loop);

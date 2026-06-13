@@ -4,7 +4,11 @@ import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 import type { ComponentType } from "react";
-import { resolveActiveBackgroundId, type BackgroundId } from "@/lib/backgrounds";
+import {
+  resolveActiveBackgroundId,
+  shouldShowAnimatedBackground,
+  type BackgroundId,
+} from "@/lib/backgrounds";
 
 const HTML_ANIMATED_BG_CLASS = "eldarin-has-animated-bg";
 
@@ -20,14 +24,14 @@ const BACKGROUND_COMPONENTS: Record<BackgroundId, ComponentType> = {
 
 export function BackgroundWrapper() {
   const pathname = usePathname() ?? "";
-  const isMesa = pathname.startsWith("/mesa");
+  const showBackground = shouldShowAnimatedBackground(pathname);
 
   useEffect(() => {
-    document.documentElement.classList.toggle(HTML_ANIMATED_BG_CLASS, !isMesa);
+    document.documentElement.classList.toggle(HTML_ANIMATED_BG_CLASS, showBackground);
     return () => document.documentElement.classList.remove(HTML_ANIMATED_BG_CLASS);
-  }, [isMesa]);
+  }, [showBackground]);
 
-  if (isMesa) return null;
+  if (!showBackground) return null;
 
   const ActiveBackground = BACKGROUND_COMPONENTS[resolveActiveBackgroundId()];
 
