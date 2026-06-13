@@ -33,3 +33,12 @@ export function resolveActiveBackgroundId(date?: Date): BackgroundId {
   if (ACTIVE_BACKGROUND_OVERRIDE) return ACTIVE_BACKGROUND_OVERRIDE;
   return getDailyBackgroundId(date);
 }
+
+/** Grade VTT ao vivo — única rota sem fundo animado (`/mesa/:roomId`). */
+export function isMesaBattlefieldPath(pathname: string): boolean {
+  return /^\/mesa\/[^/]+\/?$/.test(pathname);
+}
+
+export function shouldShowAnimatedBackground(pathname: string): boolean {
+  return !isMesaBattlefieldPath(pathname);
+}

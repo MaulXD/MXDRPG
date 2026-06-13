@@ -28,14 +28,6 @@ export default function GridTatico() {
       ctx.stroke();
     }
 
-    const pulse = 0.14 + 0.08 * Math.sin(t * 1.2);
-    const pr = ctx.createRadialGradient(W / 2, H / 2, 0, W / 2, H / 2, H * 0.55);
-    pr.addColorStop(0, `rgba(184,146,46,${pulse})`);
-    pr.addColorStop(0.5, `rgba(60,100,140,${pulse * 0.4})`);
-    pr.addColorStop(1, "rgba(0,0,0,0)");
-    ctx.fillStyle = pr;
-    ctx.fillRect(0, 0, W, H);
-
     for (let x = CELL; x < W; x += CELL * 3) {
       for (let y = CELL; y < H; y += CELL * 3) {
         const a = 0.25 + 0.35 * Math.sin(t * 1.8 + x * 0.02 + y * 0.015);
@@ -45,14 +37,6 @@ export default function GridTatico() {
       }
     }
     ctx.globalAlpha = 1;
-
-    const scanY = ((t * 90) % (H + 80)) - 40;
-    const scan = ctx.createLinearGradient(0, scanY - 30, 0, scanY + 30);
-    scan.addColorStop(0, "rgba(0,0,0,0)");
-    scan.addColorStop(0.5, "rgba(184,146,46,0.1)");
-    scan.addColorStop(1, "rgba(0,0,0,0)");
-    ctx.fillStyle = scan;
-    ctx.fillRect(0, 0, W, H);
 
     drawVignette(ctx, W, H, 0.4);
   }, []);

@@ -1,4 +1,4 @@
-/* Fundo animado visível em todo o site exceto /mesa* */
+/* Fundo animado em todo o site exceto a grade VTT (/mesa/:roomId) */
 
 html.eldarin-has-animated-bg body {
   background: transparent;
