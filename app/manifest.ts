@@ -1,9 +1,12 @@
 import type { MetadataRoute } from "next";
 import { SITE_NAME } from "@/lib/site-metadata";
 
+/** Identidade PWA — altere se precisar forçar reinstalação após rename do app. */
+const PWA_ID = "mxdrpg";
+
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    id: "/",
+    id: PWA_ID,
     name: SITE_NAME,
     short_name: SITE_NAME,
     description:
