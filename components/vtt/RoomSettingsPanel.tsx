@@ -10,7 +10,7 @@ import {
   portraitFocusToImgStyle,
   sanitizePortraitFocus,
 } from "@/lib/media/portrait-focus";
-import { getDefaultRpgCover } from "@/lib/rpg/systems";
+import { resolveMesaCoverSrc } from "@/lib/rpg/systems";
 
 type Props = {
   roomId: string;
@@ -37,7 +37,7 @@ export function RoomSettingsPanel({
   const [msg, setMsg] = useState<string | null>(null);
   const [coverEditorOpen, setCoverEditorOpen] = useState(false);
   const hubCoverPreview =
-    settings.coverUrl?.trim() || getDefaultRpgCover();
+    resolveMesaCoverSrc(settings.coverUrl);
   const hubCoverFocus =
     sanitizePortraitFocus(settings.coverFocus) ?? DEFAULT_PORTRAIT_FOCUS;
 

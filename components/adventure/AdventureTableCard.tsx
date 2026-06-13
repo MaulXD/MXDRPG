@@ -8,10 +8,10 @@ import {
   portraitFocusToImgStyle,
   sanitizePortraitFocus,
 } from "@/lib/media/portrait-focus";
-import { DEFAULT_RPG_SYSTEM_ID, getDefaultRpgCover } from "@/lib/rpg/systems";
+import { DEFAULT_RPG_SYSTEM_ID, normalizeRpgSystemId, resolveMesaCoverSrc } from "@/lib/rpg/systems";
 import "@/components/rpg/mesas-hub.css";
 
-const DEFAULT_COVER = getDefaultRpgCover(DEFAULT_RPG_SYSTEM_ID);
+const DEFAULT_COVER = resolveMesaCoverSrc(null, DEFAULT_RPG_SYSTEM_ID);
 
 type Props = {
   adventure: AdventureListItem;
@@ -66,7 +66,10 @@ export function AdventureTableCard({ adventure, onDelete, deleteBusy }: Props) {
       /* ignore */
     }
   }, [adventure.inviteCode]);
-  const coverSrc = adventure.coverUrl?.trim() || DEFAULT_COVER;
+  const coverSrc = resolveMesaCoverSrc(
+    adventure.coverUrl,
+    normalizeRpgSystemId(adventure.rpgSystemId)
+  );
   const coverFocus =
     sanitizePortraitFocus(adventure.coverFocus) ?? DEFAULT_PORTRAIT_FOCUS;
   const mesaHref = `/mesa/${adventure.primaryRoomId}`;

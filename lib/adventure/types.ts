@@ -40,7 +40,9 @@ export type AdventureListItem = {
   isOwner: boolean;
   updatedAt: number;
   deletedAt?: number | null;
-  /** Capa da mesa VTT (mestre) ou arte padrão Eldarin. */
+  /** Sistema RPG desta mesa — define a capa padrão. */
+  rpgSystemId?: RpgSystemId;
+  /** Capa da mesa VTT (mestre) ou arte padrão do sistema. */
   coverUrl?: string | null;
   coverFocus?: PortraitFocus | null;
   members?: AdventureListMember[];
