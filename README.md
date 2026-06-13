@@ -9,6 +9,7 @@ Não use `drpg.vercel.app` — é outro projeto (React App antigo), não este VT
 |-------|--------|
 | **`app/`, `components/`, `lib/`** | App Next.js (VTT) — deploy na Vercel na **raiz** do repo |
 | **[docs/CLAUDE-PROJETO.md](docs/CLAUDE-PROJETO.md)** | Guia completo para ensinar Claude / outros agentes de IA |
+| **[docs/CLAUDE-CODIGO-SEGURO.md](docs/CLAUDE-CODIGO-SEGURO.md)** | **Checklist para editar sem quebrar** — leia antes de mexer no código |
 | `livros/` | Regras e lore |
 | `vinite/` | Módulo Foundry |
 | `archive/web/` | Legado — não editar; app canônico na raiz |
