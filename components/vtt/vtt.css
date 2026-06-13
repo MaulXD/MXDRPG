@@ -4062,12 +4062,31 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  box-sizing: border-box;
+}
+
+.mesa-room-cover-preview.mesa-room-cover-preview--hub {
+  width: 148px;
+  height: 148px;
+  max-width: 148px;
+  max-height: 148px;
+  aspect-ratio: 1;
+  flex: 0 0 auto;
+  align-self: flex-start;
+  margin-top: 0.25rem;
+  border-radius: 10px;
+  border-color: rgba(184, 146, 46, 0.22);
+  background-color: #1a1208;
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.35),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.04);
 }
 
 .mesa-room-cover-preview__img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  display: block;
 }
 
 .mesa-room-cover-preview__placeholder {
@@ -4076,10 +4095,23 @@
   opacity: 0.85;
 }
 
-.mesa-room-cover-preview--hub {
-  aspect-ratio: 1;
-  max-width: 148px;
-  max-height: 148px;
+.mesa-cover-hub-control {
+  min-width: 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.mesa-cover-hub-control__actions {
+  margin-top: 0.1rem;
+}
+
+.vtt-room-settings--hub {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  min-width: 0;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .mesa-room-cover-editor--hub {
