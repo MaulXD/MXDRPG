@@ -40,6 +40,7 @@
   flex-shrink: 0;
   height: 100%;
   min-height: 0;
+  overflow: visible;
   pointer-events: auto;
   background: var(--mesa-rail-bg);
   border-right: 1px solid var(--mesa-accent-border);
@@ -191,18 +192,19 @@
   pointer-events: auto;
 }
 
-/* Barra de ícones — largura fixa, só o necessário para rótulos */
+/* Barra de ícones — só ícones; rótulo no tooltip ao passar o mouse */
 .foundry-icon-bar {
   flex-shrink: 0;
-  width: 3rem;
-  max-width: 3rem;
+  width: 2.75rem;
+  max-width: 2.75rem;
   display: flex;
   flex-direction: column;
   align-items: stretch;
   gap: 0.1rem;
-  padding: 0.3rem 0.1rem 0.45rem;
+  padding: 0.35rem 0.2rem 0.45rem;
   background: rgba(18, 17, 15, 0.94);
   box-sizing: border-box;
+  overflow: visible;
 }
 
 .foundry-icon-bar__section-title {
@@ -242,19 +244,18 @@
 }
 
 .foundry-icon-bar__btn {
+  position: relative;
   width: 100%;
-  min-height: 2.65rem;
-  padding: 0.2rem 0.08rem 0.22rem;
+  min-height: 2.35rem;
+  padding: 0.28rem;
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 8px;
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.02));
   color: rgba(232, 226, 214, 0.92);
   cursor: pointer;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 0.18rem;
   outline: none;
   transition:
     background 0.18s,
@@ -593,26 +594,63 @@
   font-size: 0.82rem;
 }
 
-.foundry-icon-bar__label {
+.foundry-icon-bar__tooltip {
+  position: absolute;
+  left: calc(100% + 0.45rem);
+  top: 50%;
+  transform: translateY(-50%) translateX(-4px);
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  gap: 0.12rem;
+  padding: 0.38rem 0.58rem;
+  border-radius: 6px;
+  border: 1px solid color-mix(in srgb, var(--rail-icon-color, var(--mesa-accent)) 45%, transparent);
+  background: rgba(14, 13, 11, 0.96);
+  box-shadow:
+    0 4px 14px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
   font-family: var(--font-ui, system-ui, sans-serif);
-  font-size: 0.52rem;
-  font-weight: 800;
-  line-height: 1.05;
-  letter-spacing: 0.04em;
-  text-align: center;
-  max-width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  text-transform: uppercase;
-  color: color-mix(in srgb, var(--rail-icon-color, rgba(232, 226, 214, 0.9)) 82%, #fff);
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.55);
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.14s ease,
+    visibility 0.14s ease,
+    transform 0.14s ease;
 }
 
-.foundry-icon-bar__btn:hover .foundry-icon-bar__label,
-.foundry-icon-bar__btn--active .foundry-icon-bar__label {
-  color: var(--rail-icon-color, var(--text-strong));
-  text-shadow: 0 0 8px color-mix(in srgb, var(--rail-icon-color, #fff) 35%, transparent);
+.foundry-icon-bar__tooltip-title {
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+  color: var(--text-strong);
+}
+
+.foundry-icon-bar__tooltip-hint {
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  color: var(--text-muted);
+}
+
+.foundry-icon-bar__tooltip::before {
+  content: "";
+  position: absolute;
+  right: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 5px solid transparent;
+  border-right-color: rgba(14, 13, 11, 0.96);
+}
+
+.foundry-icon-bar__btn:hover .foundry-icon-bar__tooltip,
+.foundry-icon-bar__btn:focus-visible .foundry-icon-bar__tooltip {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(-50%) translateX(0);
 }
 
 /* Painel dock (coluna de conteúdo) */
@@ -2005,16 +2043,16 @@
 
 @media (max-width: 640px) {
   .foundry-icon-bar {
-    width: 2.875rem;
-    max-width: 2.875rem;
+    width: 2.5rem;
+    max-width: 2.5rem;
   }
 
   .foundry-icon-bar__btn {
-    min-height: 2.5rem;
+    min-height: 2.2rem;
   }
 
-  .foundry-icon-bar__label {
-    font-size: 0.5rem;
+  .foundry-icon-bar__tooltip {
+    font-size: 0.68rem;
   }
 
   .foundry-sidebar--dock-open .foundry-sidebar__dock {

@@ -89,7 +89,7 @@ export function prepareBattlefieldCanvas(
 }
 
 export function drawBattlefieldBackground(ctx: CanvasRenderingContext2D, w: number, h: number): void {
-  ctx.fillStyle = readThemeColor("--vtt-canvas-bg-0", "#eeeeee");
+  ctx.fillStyle = readThemeColor("--vtt-canvas-bg-0", "#7a7a78");
   ctx.fillRect(0, 0, w, h);
 }
 
@@ -121,8 +121,8 @@ function drawSquareGridLines(
   if (!any) return;
 
   const step = lod === "deep" ? 2 : 1;
-  const alpha = lod === "full" ? 0.5 : lod === "light" ? 0.38 : 0.3;
-  const lineWidth = lod === "deep" ? 0.75 : 1;
+  const alpha = lod === "full" ? 0.92 : lod === "light" ? 0.82 : 0.72;
+  const lineWidth = lod === "deep" ? 1 : 1.25;
 
   ctx.save();
   ctx.beginPath();
@@ -148,6 +148,9 @@ type GridDrawParams = {
   gridCells: Axial[];
   hexSize: number;
   layout: CanvasLayout;
+  /** Origem do grid (alinhada ao mapa quando há piso). */
+  gridOx?: number;
+  gridOy?: number;
   showMovement: boolean;
   turnMovePreview?: boolean;
   walkSet: Set<string>;
@@ -175,15 +178,15 @@ type GridDrawParams = {
   viewScale?: number;
 };
 
-/** Traço da grade base — preto sem halo duplo. */
-function baseGridStroke(tone: MapBackdropTone, fallback: string): string {
-  if (tone === "dark") return "rgba(0, 0, 0, 0.55)";
-  return fallback;
+/** Traço da grade base — preto forte para leitura tática. */
+function baseGridStroke(_tone: MapBackdropTone, _fallback: string): string {
+  return "rgba(0, 0, 0, 0.9)";
 }
 
 export function drawHexGridLayer(ctx: CanvasRenderingContext2D, p: GridDrawParams): void {
-  const { layout, hexSize } = p;
-  const { ox, oy } = layout;
+  const { layout, hexSize, gridOx, gridOy } = p;
+  const ox = gridOx ?? layout.ox;
+  const oy = gridOy ?? layout.oy;
   const pal =
     p.palette ?? resolveHexPalette(p.mapBackdropTone ?? "none");
   const lod: GridLod = gridLodLevel(p.viewScale ?? 1);
@@ -331,13 +334,15 @@ export function drawMovementPathLayer(ctx: CanvasRenderingContext2D, p: GridDraw
   if (!p.showMovement || p.pathCells.length < 2) return;
 
   const { hexSize, layout, pathDashPhase } = p;
+  const ox = p.gridOx ?? layout.ox;
+  const oy = p.gridOy ?? layout.oy;
   const pal =
     p.palette ?? resolveHexPalette(p.mapBackdropTone ?? "none");
   const stroke = pal.pathStroke;
   const glow = pal.pathGlow;
 
   const points = p.pathCells.map((cell) => {
-    const { x, y } = axialToPixel(cell.q, cell.r, hexSize, layout.ox, layout.oy);
+    const { x, y } = axialToPixel(cell.q, cell.r, hexSize, ox, oy);
     return { x, y };
   });
 
@@ -371,6 +376,9 @@ export function drawMovementPathLayer(ctx: CanvasRenderingContext2D, p: GridDraw
 type TokenDrawParams = {
   scene: BattleScene;
   layout: CanvasLayout;
+  gridOx?: number;
+  gridOy?: number;
+  gridHexSize?: number;
   images: Map<string, HTMLImageElement>;
   focusByTokenId: Map<string, PortraitFocus>;
   selectedId: string | null;
@@ -400,6 +408,8 @@ function drawSingleToken(
   token: BattleScene["tokens"][number],
   playerActorIds: string[],
   size: number,
+  ox: number,
+  oy: number,
   hoverScale: number
 ): void {
   const { layout } = p;
@@ -409,7 +419,7 @@ function drawSingleToken(
   if (!Number.isFinite(q) || !Number.isFinite(rCoord)) return;
   const pos = { q, r: rCoord };
   const creatureSize = creatureSizeOf(token);
-  const { x, y } = tokenPixelCenter(pos, creatureSize, size, layout.ox, layout.oy);
+  const { x, y } = tokenPixelCenter(pos, creatureSize, size, ox, oy);
   const r = tokenDrawRadius(size, creatureSize);
   if (!Number.isFinite(x) || !Number.isFinite(y) || !Number.isFinite(r) || r <= 0) return;
 
@@ -424,7 +434,7 @@ function drawSingleToken(
       ctx.save();
       const isLargeFootprint = creatureSize === "large";
       for (const hex of occupiedHexes(pos, creatureSize)) {
-        const { x: hx, y: hy } = axialToPixel(hex.q, hex.r, size, layout.ox, layout.oy);
+        const { x: hx, y: hy } = axialToPixel(hex.q, hex.r, size, ox, oy);
         const corners = hexCorners(hx, hy, size * 0.92);
         ctx.beginPath();
         ctx.moveTo(corners[0].x, corners[0].y);
@@ -568,19 +578,22 @@ export function drawTokensLayer(ctx: CanvasRenderingContext2D, p: TokenDrawParam
   const { scene, layout } = p;
   const playerActorIds = collectPlayerActorIds(scene.tokens);
   const size =
-    Number.isFinite(scene.hexSize) && scene.hexSize > 0 ? scene.hexSize : 36;
+    p.gridHexSize ??
+    (Number.isFinite(scene.hexSize) && scene.hexSize > 0 ? scene.hexSize : 36);
+  const ox = p.gridOx ?? layout.ox;
+  const oy = p.gridOy ?? layout.oy;
   const hoverId = p.hoverTokenId;
   const hoverScale = p.tokenHoverScale ?? 1;
 
   for (const token of scene.tokens) {
     if (token.id === hoverId) continue;
-    drawSingleToken(ctx, p, token, playerActorIds, size, 1);
+    drawSingleToken(ctx, p, token, playerActorIds, size, ox, oy, 1);
   }
 
   if (hoverId) {
     const hovered = scene.tokens.find((t) => t.id === hoverId);
     if (hovered) {
-      drawSingleToken(ctx, p, hovered, playerActorIds, size, hoverScale);
+      drawSingleToken(ctx, p, hovered, playerActorIds, size, ox, oy, hoverScale);
     }
   }
 }

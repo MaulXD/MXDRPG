@@ -55,8 +55,8 @@
   --mesa-text-dim: var(--chrome-text-muted);
 
   /* Mapa hex (lidos por readThemeColor no canvas) */
-  --vtt-canvas-bg-0: #eeeeee;
-  --vtt-canvas-bg-1: #eeeeee;
+  --vtt-canvas-bg-0: #7a7a78;
+  --vtt-canvas-bg-1: #7a7a78;
   --vtt-hex-fill: transparent;
   --vtt-hex-stroke: rgba(0, 0, 0, 0.5);
   --vtt-hex-walk-fill: rgba(72, 130, 95, 0.35);

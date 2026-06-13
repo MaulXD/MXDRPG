@@ -46,11 +46,14 @@ export function drawFogLayer(
   hexSize: number,
   layout: CanvasLayout,
   visibleHexSet: Set<string> | null,
-  viewScale = 1
+  viewScale = 1,
+  gridOx?: number,
+  gridOy?: number
 ): void {
   if (!visibleHexSet || !scene.fogEnabled) return;
 
-  const { ox, oy } = layout;
+  const ox = gridOx ?? layout.ox;
+  const oy = gridOy ?? layout.oy;
   const lod = gridLodLevel(viewScale);
   ctx.save();
   for (const cell of cells) {
@@ -78,10 +81,13 @@ export function drawPingLayer(
   ctx: CanvasRenderingContext2D,
   pings: BattlePing[],
   hexSize: number,
-  layout: CanvasLayout
+  layout: CanvasLayout,
+  gridOx?: number,
+  gridOy?: number
 ): void {
   const now = Date.now();
-  const { ox, oy } = layout;
+  const ox = gridOx ?? layout.ox;
+  const oy = gridOy ?? layout.oy;
 
   for (const ping of pings) {
     const age = (now - ping.at) / 1000;

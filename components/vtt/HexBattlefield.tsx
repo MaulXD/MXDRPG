@@ -149,6 +149,7 @@ import { canMoveToken, type MovementPathContext } from "@/lib/vtt/movement";
 import { animateTokenAlongPath } from "@/lib/vtt/token-move-animation";
 import { axialToPixel, hexDrawRadius } from "@/lib/vtt/hex-math";
 import { canvasCenter, worldToScreen } from "@/lib/vtt/battlefield-view";
+import { resolveMapAlignedGridLayout, mapFloorLocalToWorld } from "@/lib/vtt/grid-layout";
 import "./vtt.css";
 
 type Props = {
@@ -1503,12 +1504,21 @@ export function HexBattlefield({
     const w = wrap.clientWidth;
     const h = wrap.clientHeight;
     const { ox, oy } = canvasCenter(w, h);
-    const tokenR = hexDrawRadius(displayScene.hexSize) * (battlefieldView.view.scale ?? 1);
+    const grid = resolveMapAlignedGridLayout(displayScene, ox, oy);
+    const floorScale = grid.floorAnchor?.scale ?? 1;
+    const tokenR = hexDrawRadius(grid.hexSize) * floorScale * (battlefieldView.view.scale ?? 1);
     const gap = 10;
 
+    const axialToScreen = (q: number, r: number) => {
+      const local = axialToPixel(q, r, grid.hexSize, grid.ox, grid.oy);
+      const world = grid.floorAnchor
+        ? mapFloorLocalToWorld(local.x, local.y, grid.floorAnchor)
+        : local;
+      return worldToScreen(world.x, world.y, w, h, battlefieldView.view);
+    };
+
     if (highlights.showMovement && hoverAxial && isMoveMode(actionMode)) {
-      const world = axialToPixel(hoverAxial.q, hoverAxial.r, displayScene.hexSize, ox, oy);
-      const screen = worldToScreen(world.x, world.y, w, h, battlefieldView.view);
+      const screen = axialToScreen(hoverAxial.q, hoverAxial.r);
       return { x: screen.x, y: screen.y - tokenR - gap };
     }
 
@@ -1518,8 +1528,7 @@ export function HexBattlefield({
       hoverAxial &&
       !highlights.needsAreaDirection
     ) {
-      const world = axialToPixel(hoverAxial.q, hoverAxial.r, displayScene.hexSize, ox, oy);
-      const screen = worldToScreen(world.x, world.y, w, h, battlefieldView.view);
+      const screen = axialToScreen(hoverAxial.q, hoverAxial.r);
       return { x: screen.x, y: screen.y - tokenR - gap };
     }
 
@@ -1533,14 +1542,7 @@ export function HexBattlefield({
     }
     const defender = displayScene.tokens.find((t) => t.id === hoverTargetId);
     if (!defender) return null;
-    const world = axialToPixel(
-      defender.axial.q,
-      defender.axial.r,
-      displayScene.hexSize,
-      ox,
-      oy
-    );
-    const screen = worldToScreen(world.x, world.y, w, h, battlefieldView.view);
+    const screen = axialToScreen(defender.axial.q, defender.axial.r);
     return { x: screen.x, y: screen.y - tokenR - gap };
   }, [
     highlights.showMovement,
@@ -1550,9 +1552,23 @@ export function HexBattlefield({
     actionMode,
     hoverTargetId,
     activeCombatAction,
-    displayScene.tokens,
-    displayScene.hexSize,
+    displayScene,
     battlefieldView.view,
+  ]);
+
+  const combatFxGrid = useMemo(() => {
+    const wrap = wrapRef.current;
+    const w = wrap?.clientWidth ?? 800;
+    const h = wrap?.clientHeight ?? 640;
+    const { ox, oy } = canvasCenter(w, h);
+    return resolveMapAlignedGridLayout(displayScene, ox, oy);
+  }, [
+    displayScene.hexSize,
+    displayScene.mapImageUrl,
+    displayScene.mapImageScale,
+    displayScene.mapImageOffsetX,
+    displayScene.mapImageOffsetY,
+    canvasWrapSize,
   ]);
 
   const fireSelfAbility = useCallback(
@@ -3004,7 +3020,10 @@ export function HexBattlefield({
         />
         <CombatFxLayer
           wrapRef={wrapRef}
-          hexSize={scene.hexSize}
+          hexSize={combatFxGrid.hexSize}
+          gridOx={combatFxGrid.ox}
+          gridOy={combatFxGrid.oy}
+          floorAnchor={combatFxGrid.floorAnchor}
           fx={combatFx}
           view={battlefieldView.view}
           onApplyState={onCombatApplyState}
