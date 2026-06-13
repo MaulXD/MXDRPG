@@ -1120,6 +1120,7 @@ export function HexBattlefield({
       nameplateMode: remote.nameplateMode,
       conditions: remote.conditions,
       timedEffects: remote.timedEffects,
+      actionRecharge: remote.actionRecharge,
       ...mergeTokenPortraitFields(local, remote),
     }),
     []

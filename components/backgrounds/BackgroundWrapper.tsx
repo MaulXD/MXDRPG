@@ -2,8 +2,11 @@
 
 import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
+import { useEffect } from "react";
 import type { ComponentType } from "react";
 import { resolveActiveBackgroundId, type BackgroundId } from "@/lib/backgrounds";
+
+const HTML_ANIMATED_BG_CLASS = "eldarin-has-animated-bg";
 
 const BACKGROUND_COMPONENTS: Record<BackgroundId, ComponentType> = {
   NevoaRoxa: dynamic(() => import("./NevoaRoxa"), { ssr: false }),
@@ -17,7 +20,14 @@ const BACKGROUND_COMPONENTS: Record<BackgroundId, ComponentType> = {
 
 export function BackgroundWrapper() {
   const pathname = usePathname() ?? "";
-  if (pathname.startsWith("/mesa")) return null;
+  const isMesa = pathname.startsWith("/mesa");
+
+  useEffect(() => {
+    document.documentElement.classList.toggle(HTML_ANIMATED_BG_CLASS, !isMesa);
+    return () => document.documentElement.classList.remove(HTML_ANIMATED_BG_CLASS);
+  }, [isMesa]);
+
+  if (isMesa) return null;
 
   const ActiveBackground = BACKGROUND_COMPONENTS[resolveActiveBackgroundId()];
 

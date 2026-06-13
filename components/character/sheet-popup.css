@@ -725,6 +725,12 @@
   opacity: 1 !important;
   visibility: visible !important;
   pointer-events: none;
+  /* Neutraliza regras do tooltip inline (absolute + bottom) que esmagavam o balão */
+  bottom: auto !important;
+  right: auto !important;
+  width: max-content;
+  height: auto;
+  box-sizing: border-box;
 }
 
 .sheet-hover-tip__bubble--portal.sheet-hover-tip__bubble--popup {

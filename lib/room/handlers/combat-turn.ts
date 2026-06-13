@@ -137,10 +137,10 @@ function bankEndingToken(room: RoomState, notices: string[]): void {
   const paMax = rules.recoveryPerTurn;
   const bankPlan = planEndOfTurnPaBank(before, rules);
 
-  const ended = {
+  const ended = clearPerTurnRecharges({
     ...before,
     ...normalizeTokenPaFields(bankPaAtEndOfTurn(before, rules), paMax),
-  };
+  });
   tokens[idx] = ended;
   room.scene = { ...room.scene, tokens };
 
