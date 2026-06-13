@@ -1,75 +1,56 @@
-'use client'
-import { useEffect, useRef } from 'react'
+"use client";
+
+import { useCallback } from "react";
+import { drawVignette, useCanvasAnimation, type CanvasFrame } from "./canvas-loop";
+
+const WAVES = Array.from({ length: 8 }, (_, i) => ({
+  baseY: 0.2 + i * 0.09,
+  freq: 0.008 + i * 0.0015,
+  phase: i * 0.9,
+  speed: 1.2 + i * 0.25,
+  amp: 10 + i * 3,
+}));
 
 export default function Oceano() {
-  const canvasRef = useRef<HTMLCanvasElement>(null)
+  const draw = useCallback(({ ctx, width: W, height: H, time: t }: CanvasFrame) => {
+    ctx.fillStyle = "#041018";
+    ctx.fillRect(0, 0, W, H);
 
-  useEffect(() => {
-    const canvas = canvasRef.current
-    if (!canvas) return
-    const ctx = canvas.getContext('2d')!
-    let rafId: number
-    let t = 0
+    const dg = ctx.createLinearGradient(0, 0, 0, H);
+    dg.addColorStop(0, "rgba(20,60,120,0.35)");
+    dg.addColorStop(1, "rgba(4,16,40,0.55)");
+    ctx.fillStyle = dg;
+    ctx.fillRect(0, 0, W, H);
 
-    const waves = Array.from({ length: 12 }, (_, i) => ({
-      y: 0.25 + i * 0.06,
-      freq: 0.012 - i * 0.001,
-      ph: i * 0.5,
-      speed: 0.4 + i * 0.1,
-      amp: 4 + i * 1.5,
-    }))
+    WAVES.forEach((w, i) => {
+      const alpha = 0.12 + 0.1 * (1 - i / WAVES.length) + 0.06 * Math.sin(t * 0.8 + i);
+      ctx.strokeStyle = `rgba(60,140,220,${alpha})`;
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      for (let x = 0; x <= W; x += 4) {
+        const y =
+          w.baseY * H +
+          Math.sin(x * w.freq + t * w.speed + w.phase) * w.amp +
+          Math.sin(x * w.freq * 0.5 - t * 0.6 + w.phase) * (w.amp * 0.4);
+        if (x === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+    });
 
-    function resize() {
-      canvas!.width = window.innerWidth
-      canvas!.height = window.innerHeight
+    for (let i = 0; i < 6; i++) {
+      const fx = ((t * 0.04 + i * 0.17) % 1.2) * W;
+      const fy = H * (0.25 + i * 0.1) + Math.sin(t + i) * 20;
+      const fg = ctx.createRadialGradient(fx, fy, 0, fx, fy, 60);
+      fg.addColorStop(0, "rgba(100,180,255,0.18)");
+      fg.addColorStop(1, "rgba(0,0,0,0)");
+      ctx.fillStyle = fg;
+      ctx.fillRect(0, 0, W, H);
     }
-    resize()
 
-    let resizeTimer: ReturnType<typeof setTimeout>
-    const onResize = () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(resize, 100) }
-    window.addEventListener('resize', onResize)
+    drawVignette(ctx, W, H, 0.45);
+  }, []);
 
-    function frame() {
-      t += 0.008
-      const W = canvas!.width, H = canvas!.height
-      ctx.fillStyle = '#020810'
-      ctx.fillRect(0, 0, W, H)
-
-      const dg = ctx.createLinearGradient(0, 0, 0, H)
-      dg.addColorStop(0, 'rgba(5,20,50,0.3)')
-      dg.addColorStop(1, 'rgba(2,10,30,0.5)')
-      ctx.fillStyle = dg
-      ctx.fillRect(0, 0, W, H)
-
-      waves.forEach((w, i) => {
-        const a = 0.03 + 0.02 * (1 - i / 12)
-        ctx.strokeStyle = `rgba(40,100,180,${a + 0.01 * Math.sin(t * 0.5 + i)})`
-        ctx.lineWidth = 0.7
-        ctx.beginPath()
-        for (let x = 0; x <= W; x += 3) {
-          const y = w.y * H + Math.sin(x * w.freq + t * w.speed + w.ph) * w.amp
-            + Math.sin(x * (w.freq * 0.6) - t * 0.25 + w.ph) * 2.5
-          x === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y)
-        }
-        ctx.stroke()
-      })
-
-      const vg = ctx.createRadialGradient(W / 2, H / 2, H * 0.08, W / 2, H / 2, H * 0.82)
-      vg.addColorStop(0, 'rgba(0,0,0,0)')
-      vg.addColorStop(1, 'rgba(1,4,10,0.9)')
-      ctx.fillStyle = vg
-      ctx.fillRect(0, 0, W, H)
-
-      rafId = requestAnimationFrame(frame)
-    }
-    frame()
-
-    return () => {
-      cancelAnimationFrame(rafId)
-      window.removeEventListener('resize', onResize)
-      clearTimeout(resizeTimer)
-    }
-  }, [])
-
-  return <canvas ref={canvasRef} style={{ width: '100%', height: '100%', display: 'block' }} />
+  const canvasRef = useCanvasAnimation(draw);
+  return <canvas ref={canvasRef} style={{ width: "100%", height: "100%", display: "block" }} />;
 }
