@@ -5,7 +5,6 @@ import {
   useEffect,
   useLayoutEffect,
   useRef,
-  useState,
   type RefObject,
 } from "react";
 import {
@@ -34,6 +33,11 @@ import { isTargetMode, type TokenActionMode } from "@/lib/vtt/action-mode";
 import type { MoveCheck } from "@/lib/vtt/movement";
 import type { TokenHpDisplay } from "@/lib/vtt/token-hp-display";
 import type { ActiveTokenCastFx } from "@/lib/vtt/token-cast-fx";
+import {
+  applyMapFloorTransform,
+  resolveMapAlignedGridLayout,
+  sceneForMapFloorDraw,
+} from "@/lib/vtt/grid-layout";
 import { resolveHexPalette } from "@/lib/vtt/hex-highlight-palette";
 import type { MapBackdropTone } from "@/lib/vtt/map-luminance";
 import type { BattleScene } from "@/lib/vtt/types";
@@ -106,7 +110,6 @@ export function useHexCanvas(
   const stateRef = useRef(state);
   stateRef.current = state;
 
-  const [themeTick, setThemeTick] = useState(0);
   const pathDashPhaseRef = useRef(0);
   const tokenAnimTimeSecRef = useRef(0);
   const tokenHoverScaleRef = useRef(1);
@@ -137,12 +140,6 @@ export function useHexCanvas(
     );
   }, [moveAnimRef]);
 
-  useEffect(() => {
-    const onTheme = () => setThemeTick((n) => n + 1);
-    window.addEventListener("eldarin-theme-change", onTheme);
-    return () => window.removeEventListener("eldarin-theme-change", onTheme);
-  }, []);
-
   const draw = useCallback(() => {
     const canvas = canvasRef.current;
     if (!canvas) return false;
@@ -160,18 +157,29 @@ export function useHexCanvas(
     ctx.save();
     applyBattlefieldViewTransform(ctx, layout.w, layout.h, view);
 
+    const grid = resolveMapAlignedGridLayout(s.scene, layout.ox, layout.oy);
+    const floorAnchor = grid.floorAnchor;
+    const mapDrawScene = floorAnchor ? sceneForMapFloorDraw(s.scene) : s.scene;
+
     const mapImg = s.mapImage;
+    if (floorAnchor) {
+      ctx.save();
+      applyMapFloorTransform(ctx, floorAnchor);
+    }
+
     if (mapImg?.complete && mapImg.naturalWidth > 0) {
-      drawMapImageLayer(ctx, mapImg, s.scene, layout);
+      drawMapImageLayer(ctx, mapImg, mapDrawScene, layout);
       if (s.floorEditActive) {
-        drawFloorEditOverlay(ctx, mapImg, s.scene, layout, view.scale);
+        drawFloorEditOverlay(ctx, mapImg, mapDrawScene, layout, view.scale);
       }
     }
 
     const hexPalette = resolveHexPalette(s.mapBackdropTone ?? "none");
     drawHexGridLayer(ctx, {
       gridCells: s.gridCells,
-      hexSize: s.scene.hexSize,
+      hexSize: grid.hexSize,
+      gridOx: grid.ox,
+      gridOy: grid.oy,
       layout,
       showMovement: s.showMovement,
       turnMovePreview: s.turnMovePreview,
@@ -197,7 +205,7 @@ export function useHexCanvas(
       viewScale: view.scale,
     });
 
-    drawDungeonLayer(ctx, s.scene, s.scene.hexSize, layout, {
+    drawDungeonLayer(ctx, s.scene, grid.hexSize, layout, {
       hoverAxial: s.dungeonEditorActive ? s.hoverAxial : null,
       editorPreviewKind:
         s.dungeonEditorActive && (s.dungeonEditorTool === "wall" || s.dungeonEditorTool === "object")
@@ -205,9 +213,21 @@ export function useHexCanvas(
           : null,
       selectedObjectId: s.selectedDungeonObjectId ?? null,
       visibleHexSet: s.visibleHexSet,
+      gridOx: grid.ox,
+      gridOy: grid.oy,
     });
 
-    drawFogLayer(ctx, s.gridCells, s.scene, s.scene.hexSize, layout, s.visibleHexSet, view.scale);
+    drawFogLayer(
+      ctx,
+      s.gridCells,
+      s.scene,
+      grid.hexSize,
+      layout,
+      s.visibleHexSet,
+      view.scale,
+      grid.ox,
+      grid.oy
+    );
 
     const markups = pruneMapMarkups(s.mapMarkups ?? s.scene.mapMarkups ?? []);
     if (markups.length > 0 || s.markupPreview) {
@@ -229,6 +249,9 @@ export function useHexCanvas(
     drawTokensLayer(ctx, {
       scene: s.scene,
       layout,
+      gridOx: grid.ox,
+      gridOy: grid.oy,
+      gridHexSize: grid.hexSize,
       images: imagesRef.current,
       focusByTokenId: s.focusByTokenId,
       selectedId: s.selectedId,
@@ -251,12 +274,16 @@ export function useHexCanvas(
     });
 
     if (s.pings.length > 0) {
-      drawPingLayer(ctx, s.pings, s.scene.hexSize, layout);
+      drawPingLayer(ctx, s.pings, grid.hexSize, layout, grid.ox, grid.oy);
+    }
+
+    if (floorAnchor) {
+      ctx.restore();
     }
 
     ctx.restore();
     return true;
-  }, [canvasRef, wrapRef, imagesRef, imgTick, themeTick, moveAnimRef, viewRef]);
+  }, [canvasRef, wrapRef, imagesRef, imgTick, moveAnimRef, viewRef]);
 
   const drawRef = useRef(draw);
   drawRef.current = draw;

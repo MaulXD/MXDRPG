@@ -24,7 +24,7 @@ const features: Array<{
     icon: "diamond",
     slug: "visual",
     title: "Visual medieval",
-    text: "Pergaminho, pedra e bronze — tema claro ou escuro, sem neon futurista.",
+    text: "Pergaminho, pedra e bronze — visual medieval escuro, sem neon futurista.",
   },
   {
     icon: "sword",

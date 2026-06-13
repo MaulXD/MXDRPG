@@ -81,12 +81,8 @@
 
 /* —— Pergaminho: dupla linha suave, cantos enrolados —— */
 .mf--parchment {
-  --mf-bg: color-mix(in srgb, var(--surface-raised) 92%, #e8dcc8 8%);
-  --mf-radius: 6px;
-}
-
-[data-theme="dark"] .mf--parchment {
   --mf-bg: color-mix(in srgb, var(--surface-raised) 88%, #1a1814 12%);
+  --mf-radius: 6px;
 }
 
 .mf--parchment::before {

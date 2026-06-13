@@ -9,9 +9,10 @@ import { SiteShell } from "@/components/SiteShell";
 import { SiteHeaderWrapper } from "@/components/SiteHeaderWrapper";
 import { SiteFooter } from "@/components/SiteFooter";
 import { ServiceWorkerRegister } from "@/components/pwa/ServiceWorkerRegister";
-import { ThemeScript } from "@/components/ThemeScript";
 import { BackgroundWrapper } from "@/components/backgrounds/BackgroundWrapper";
 import { BackgroundScript } from "@/components/backgrounds/BackgroundScript";
+import { NativeTitleBlockScript } from "@/components/ui/NativeTitleBlockScript";
+import { SiteTooltipLayer } from "@/components/ui/SiteTooltipLayer";
 import "./globals.css";
 import "@/components/nav-motion.css";
 import "@/components/ui/medieval-borders.css";
@@ -68,11 +69,12 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       suppressHydrationWarning
     >
       <head>
-        <ThemeScript />
+        <NativeTitleBlockScript />
         <BackgroundScript />
       </head>
       <body>
         <ServiceWorkerRegister />
+        <SiteTooltipLayer />
         <AuthProvider publishableKey={clerkPublishableKey}>
           <FriendsChatProvider initialUserId={session?.user.id ?? null}>
             <NotificationsProvider initialUserId={session?.user.id ?? null}>

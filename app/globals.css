@@ -1,6 +1,5 @@
-/* Eldarin — design system v5 (docs/DESIGN-ELDARIN-V5-CORES.md) */
+/* Eldarin — design system v5 (tema escuro único) */
 
-[data-theme="dark"],
 :root {
   color-scheme: dark;
 
@@ -124,8 +123,8 @@
   --control-h-sm: 2rem;
   --control-h-xs: 1.75rem;
 
-  --vtt-canvas-bg-0: #eeeeee;
-  --vtt-canvas-bg-1: #eeeeee;
+  --vtt-canvas-bg-0: #7a7a78;
+  --vtt-canvas-bg-1: #7a7a78;
   --vtt-hex-fill: transparent;
   --vtt-hex-stroke: rgba(0, 0, 0, 0.5);
   --vtt-hex-walk-fill: rgba(72, 130, 95, 0.35);

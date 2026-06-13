@@ -3,6 +3,10 @@
 import { useCallback, useRef, type RefObject } from "react";
 import type { Axial } from "@/lib/vtt/hex-math";
 import { axialToPixel, hexDirection, pixelToAxial } from "@/lib/vtt/hex-math";
+import {
+  resolveMapAlignedGridLayout,
+  worldToMapFloorLocal,
+} from "@/lib/vtt/grid-layout";
 import { areaNeedsDirection, areaUsesCasterOrigin, canCastAreaAt } from "@/lib/combat/area-spell";
 import type { CombatActionOption } from "@/lib/combat/types";
 import type { CharacterSheet } from "@/lib/character/types";
@@ -283,9 +287,22 @@ export function useBattlefieldPointer({
       const h = canvas.clientHeight;
       const world = screenToWorld(px, py, w, h, viewRef.current);
       const { ox, oy } = canvasCenter(w, h);
-      return { world, ox, oy, w, h };
+      const grid = resolveMapAlignedGridLayout(scene, ox, oy);
+      return { world, ox, oy, grid, w, h };
     },
-    [canvasRef, viewRef]
+    [canvasRef, viewRef, scene]
+  );
+
+  const axialAtScreen = useCallback(
+    (px: number, py: number): Axial | null => {
+      const c = boardCoords(px, py);
+      if (!c) return null;
+      const local = c.grid.floorAnchor
+        ? worldToMapFloorLocal(c.world.x, c.world.y, c.grid.floorAnchor)
+        : c.world;
+      return pixelToAxial(local.x, local.y, c.grid.hexSize, c.grid.ox, c.grid.oy);
+    },
+    [boardCoords]
   );
 
   const worldAtScreen = useCallback(
@@ -294,15 +311,6 @@ export function useBattlefieldPointer({
       return c ? { x: c.world.x, y: c.world.y } : null;
     },
     [boardCoords]
-  );
-
-  const axialAtScreen = useCallback(
-    (px: number, py: number): Axial | null => {
-      const c = boardCoords(px, py);
-      if (!c) return null;
-      return pixelToAxial(c.world.x, c.world.y, scene.hexSize, c.ox, c.oy);
-    },
-    [boardCoords, scene.hexSize]
   );
 
   const tokenSizeOf = useCallback(
@@ -319,16 +327,19 @@ export function useBattlefieldPointer({
       for (const token of scene.tokens) {
         const pos = tokenDrawPosition?.(token) ?? token.axial;
         const size = tokenSizeOf(token);
-        const r = tokenHitRadius(scene.hexSize, size);
-        const { x, y } = tokenPixelCenter(pos, size, scene.hexSize, c.ox, c.oy);
-        const dist = Math.hypot(c.world.x - x, c.world.y - y);
+        const local = c.grid.floorAnchor
+          ? worldToMapFloorLocal(c.world.x, c.world.y, c.grid.floorAnchor)
+          : c.world;
+        const r = tokenHitRadius(c.grid.hexSize, size);
+        const { x, y } = tokenPixelCenter(pos, size, c.grid.hexSize, c.grid.ox, c.grid.oy);
+        const dist = Math.hypot(local.x - x, local.y - y);
         if (dist < r && (!best || dist < best.dist)) {
           best = { token, dist };
         }
       }
       return best?.token ?? null;
     },
-    [boardCoords, scene.hexSize, scene.tokens, tokenDrawPosition, tokenSizeOf]
+    [boardCoords, scene.tokens, tokenDrawPosition, tokenSizeOf]
   );
 
   const tokenAtAxial = useCallback(
