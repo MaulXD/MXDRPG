@@ -16,6 +16,7 @@ import "@/components/nav-motion.css";
 import "@/components/ui/medieval-borders.css";
 import "@/components/home/home.css";
 import "@/components/vtt/eldarin-v4.css";
+import "@/components/backgrounds/animated-background-site.css";
 
 const lora = Lora({
   subsets: ["latin"],

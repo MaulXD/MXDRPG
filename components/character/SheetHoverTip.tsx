@@ -30,12 +30,19 @@ function portalThemeClass(className?: string): string {
   return "sheet-hover-tip__bubble--ddb";
 }
 
+function isSkillTip(className?: string): boolean {
+  return Boolean(className?.includes("sheet-ddb-skill-tip"));
+}
+
 function portalModifierClass(className?: string): string {
   if (className?.includes("sheet-ddb-header__xp-tip")) {
     return "sheet-hover-tip__bubble--ddb-xp";
   }
   if (className?.includes("sheet-ddb-trait-tip")) {
     return "sheet-hover-tip__bubble--ddb-trait";
+  }
+  if (isSkillTip(className)) {
+    return "sheet-hover-tip__bubble--ddb-skill";
   }
   return "";
 }
@@ -44,10 +51,10 @@ function isTraitTip(className?: string): boolean {
   return Boolean(className?.includes("sheet-ddb-trait-tip"));
 }
 
-/** Ficha DDB: abaixo do alvo — exceto traços (grade compacta). */
+/** Ficha DDB: abaixo do alvo — exceto traços e perícias (linha larga). */
 function prefersBelowAnchor(className?: string): boolean {
   if (!className?.includes("sheet-ddb")) return false;
-  if (isTraitTip(className)) return false;
+  if (isTraitTip(className) || isSkillTip(className)) return false;
   return true;
 }
 
@@ -118,15 +125,48 @@ export function SheetHoverTip({ tip, children, className }: Props) {
         return;
       } else {
         left = clampHorizontal(a.left + a.width / 2, bw / 2, margin);
-        const spaceBelow = window.innerHeight - margin - (a.bottom + gap);
-        const spaceAbove = a.top - gap - margin;
-        if (spaceAbove >= bh && spaceAbove >= spaceBelow) {
+        const spaceBelowFit = window.innerHeight - margin - (a.bottom + gap);
+        const spaceAboveFit = a.top - gap - margin;
+        if (spaceAboveFit >= bh && spaceAboveFit >= spaceBelowFit) {
           top = a.top - gap;
           transform = "translate(-50%, -100%)";
         } else {
           top = a.bottom + gap;
           transform = "translateX(-50%)";
         }
+        setCoords({ top, left, transform });
+        return;
+      }
+
+      const halfH = bh / 2;
+      top = Math.max(margin + halfH, Math.min(window.innerHeight - margin - halfH, top));
+      if (transform === "translate(-100%, -50%)") {
+        left = Math.max(margin + bw, left);
+      } else {
+        left = Math.min(window.innerWidth - margin - bw, left);
+      }
+
+      setCoords({ top, left, transform });
+      return;
+    }
+
+    if (isSkillTip(className)) {
+      const spaceRight = window.innerWidth - margin - (a.right + gap);
+      const spaceLeft = a.left - gap - margin;
+      let left: number;
+      let top = a.top + a.height / 2;
+      let transform: string;
+
+      if (spaceRight >= bw * 0.55) {
+        left = a.right + gap;
+        transform = "translateY(-50%)";
+      } else if (spaceLeft >= bw) {
+        left = a.left - gap;
+        transform = "translate(-100%, -50%)";
+      } else {
+        left = clampHorizontal(a.left + a.width / 2, bw / 2, margin);
+        top = a.bottom + gap;
+        transform = "translateX(-50%)";
         setCoords({ top, left, transform });
         return;
       }

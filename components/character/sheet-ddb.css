@@ -460,6 +460,14 @@
   max-height: min(34vh, 13rem);
 }
 
+.sheet-hover-tip__bubble--portal.sheet-hover-tip__bubble--ddb-skill {
+  min-width: 11.5rem;
+  max-width: min(17rem, calc(100vw - 16px));
+  max-height: min(36vh, 14rem);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
 .sheet-ddb-attr-tip,
 .sheet-ddb-save-tip,
 .sheet-ddb-trait-tip,
