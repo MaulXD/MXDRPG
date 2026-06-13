@@ -13,6 +13,8 @@ import { ServiceWorkerRegister } from "@/components/pwa/ServiceWorkerRegister";
 import { BackgroundWrapper } from "@/components/backgrounds/BackgroundWrapper";
 import { BackgroundScript } from "@/components/backgrounds/BackgroundScript";
 import { NativeTitleBlockScript } from "@/components/ui/NativeTitleBlockScript";
+import { SiteTitleFixScript } from "@/components/ui/SiteTitleFixScript";
+import { SiteTabTitle } from "@/components/ui/SiteTabTitle";
 import { SiteTooltipLayer } from "@/components/ui/SiteTooltipLayer";
 import "./globals.css";
 import "@/components/nav-motion.css";
@@ -73,11 +75,13 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       suppressHydrationWarning
     >
       <head>
+        <SiteTitleFixScript />
         <NativeTitleBlockScript />
         <BackgroundScript />
       </head>
       <body>
         <ServiceWorkerRegister />
+        <SiteTabTitle />
         <SiteTooltipLayer />
         <AuthProvider publishableKey={clerkPublishableKey}>
           <FriendsChatProvider initialUserId={session?.user.id ?? null}>
