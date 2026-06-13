@@ -29,9 +29,7 @@ import { ensureAdventureMembership, getAdventure, joinAdventureByInvite } from "
 import { getRoom } from "@/lib/room/store";
 
 import type { RoomActor } from "@/lib/room/types";
-import { AdventureCoverManager } from "@/components/adventure/AdventureCoverManager";
 import { MedievalFrame } from "@/components/ui/MedievalFrame";
-import { normalizeRoomSettings } from "@/lib/room/settings";
 
 
 
@@ -353,13 +351,6 @@ export default async function AventuraHubPage({ params, searchParams }: Props) {
       {isGm ? (
 
         <>
-
-          {room ? (
-            <AdventureCoverManager
-              roomId={adventure.primaryRoomId}
-              settings={normalizeRoomSettings(room.settings)}
-            />
-          ) : null}
 
           <div className="glass-panel" style={{ padding: "1.25rem", marginBottom: "1rem" }}>
 

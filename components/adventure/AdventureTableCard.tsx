@@ -8,12 +8,10 @@ import {
   portraitFocusToImgStyle,
   sanitizePortraitFocus,
 } from "@/lib/media/portrait-focus";
-import { DEFAULT_RPG_SYSTEM_ID, RPG_SYSTEMS } from "@/lib/rpg/systems";
+import { DEFAULT_RPG_SYSTEM_ID, getDefaultRpgCover } from "@/lib/rpg/systems";
 import "@/components/rpg/mesas-hub.css";
 
-const DEFAULT_COVER =
-  RPG_SYSTEMS.find((s) => s.id === DEFAULT_RPG_SYSTEM_ID)?.coverSrc ??
-  "/brand/rpg/eldarin-cover.svg";
+const DEFAULT_COVER = getDefaultRpgCover(DEFAULT_RPG_SYSTEM_ID);
 
 type Props = {
   adventure: AdventureListItem;
