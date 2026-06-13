@@ -27,6 +27,7 @@ import {
   isDefeatedToken,
   shouldAutoSkipTurn,
   skipUnplayableActives,
+  reconcileCombatOrderPreservingActive,
   syncCombatOrderWithTokens,
 } from "../combat-order";
 import { clearCombatRecharges, clearPerTurnRecharges } from "@/lib/combat/recharge";
@@ -242,7 +243,6 @@ function applyTurnPaTransition(room: RoomState): string[] {
 
   bankEndingToken(room, notices);
   stepToNextCombatant(room, notices);
-  syncCombatOrderWithTokens(room);
 
   const maxSkips = Math.max(1, room.combat.order.length + 1);
   for (let i = 0; i < maxSkips; i++) {
@@ -256,10 +256,10 @@ function applyTurnPaTransition(room: RoomState): string[] {
         notices.push(formatStunSkipNotice(active.name));
       }
       stepToNextCombatant(room, notices);
-      syncCombatOrderWithTokens(room);
       continue;
     }
 
+    reconcileCombatOrderPreservingActive(room);
     pushTurnStartNotice(room, notices);
     break;
   }
@@ -370,10 +370,10 @@ export async function rollRoomInitiative(roomId: string): Promise<RoomSnapshot |
         notices.push(formatStunSkipNotice(active.name));
       }
       stepToNextCombatant(room, notices);
-      syncCombatOrderWithTokens(room);
       continue;
     }
 
+    reconcileCombatOrderPreservingActive(room);
     pushTurnStartNoticeFull(room, notices);
     break;
   }

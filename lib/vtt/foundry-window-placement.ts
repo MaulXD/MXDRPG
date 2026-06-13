@@ -11,6 +11,7 @@ export type MesaWindowId =
   | "spawn"
   | "invite"
   | "character"
+  | "createCharacter"
   | "monsterSheet"
   | "status";
 

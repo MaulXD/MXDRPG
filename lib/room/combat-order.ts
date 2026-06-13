@@ -41,6 +41,48 @@ function activeIndexInAliveOrder(
   return Math.min(Math.max(0, fallbackIndex), aliveOrder.length - 1);
 }
 
+function buildAliveCombatOrder(room: RoomState): string[] {
+  const byId = new Map(room.scene.tokens.map((t) => [t.id, t]));
+  const prevOrder = room.combat.order;
+
+  const aliveOrder = prevOrder.filter((id) => {
+    const t = byId.get(id);
+    return t != null && !isDefeatedToken(t);
+  });
+
+  for (const t of room.scene.tokens) {
+    if (isDefeatedToken(t)) continue;
+    if (!aliveOrder.includes(t.id)) {
+      aliveOrder.push(t.id);
+    }
+  }
+
+  return aliveOrder;
+}
+
+/** Atualiza a fila viva sem desfazer o avanço de turno — mantém o token ativo por ID. */
+export function reconcileCombatOrderPreservingActive(room: RoomState): void {
+  if (!room.combat?.order?.length) return;
+
+  const preferredActiveId = activeTokenId(room.combat);
+  const aliveOrder = buildAliveCombatOrder(room);
+
+  if (!aliveOrder.length) {
+    room.combat = { ...room.combat, order: [], activeIndex: 0, notices: room.combat.notices };
+    return;
+  }
+
+  room.combat = {
+    ...room.combat,
+    order: aliveOrder,
+    activeIndex: activeIndexInAliveOrder(
+      aliveOrder,
+      preferredActiveId,
+      room.combat.activeIndex
+    ),
+  };
+}
+
 /** Remove token da iniciativa sem passar turno (Delete no mapa). */
 export function removeTokenFromCombatOrder(room: RoomState, removedTokenId: string): void {
   if (!room.combat?.order?.length) return;
@@ -86,40 +128,20 @@ export function removeTokenFromCombatOrder(room: RoomState, removedTokenId: stri
 export function syncCombatOrderWithTokens(room: RoomState): void {
   if (!room.combat?.order?.length) return;
 
-  const byId = new Map(room.scene.tokens.map((t) => [t.id, t]));
   const prevOrder = room.combat.order;
   const prevActiveId = prevOrder[room.combat.activeIndex] ?? null;
-
-  const aliveOrder = prevOrder.filter((id) => {
-    const t = byId.get(id);
-    return t != null && !isDefeatedToken(t);
-  });
-
-  for (const t of room.scene.tokens) {
-    if (isDefeatedToken(t)) continue;
-    if (!aliveOrder.includes(t.id)) {
-      aliveOrder.push(t.id);
-    }
-  }
+  const aliveOrder = buildAliveCombatOrder(room);
 
   if (!aliveOrder.length) {
     room.combat = { ...room.combat, order: [], activeIndex: 0, notices: room.combat.notices };
     return;
   }
 
-  let activeIndex = 0;
-  if (prevActiveId) {
-    const idx = aliveOrder.indexOf(prevActiveId);
-    if (idx >= 0) {
-      activeIndex = idx;
-    } else {
-      const prevIdx = prevOrder.indexOf(prevActiveId);
-      const nextIdx = Math.min(prevIdx >= 0 ? prevIdx : room.combat.activeIndex, aliveOrder.length - 1);
-      activeIndex = nextIdx;
-    }
-  } else {
-    activeIndex = Math.min(room.combat.activeIndex, aliveOrder.length - 1);
-  }
+  const activeIndex = activeIndexInAliveOrder(
+    aliveOrder,
+    prevActiveId,
+    room.combat.activeIndex
+  );
 
   room.combat = {
     ...room.combat,
