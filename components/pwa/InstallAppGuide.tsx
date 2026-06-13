@@ -2,6 +2,7 @@
 
 import { InstallAppButton } from "@/components/pwa/InstallAppButton";
 import { usePwaInstall } from "@/hooks/usePwaInstall";
+import { SITE_NAME } from "@/lib/site-metadata";
 import "./pwa-install.css";
 
 export function InstallAppGuide() {
@@ -11,7 +12,7 @@ export function InstallAppGuide() {
     <article className="glass content-card pwa-install-guide">
       <h2>Instalar no Chrome</h2>
       <p className="pwa-install-guide__lead">
-        Use o Eldarin como aplicativo na área de trabalho ou na barra de tarefas — sem aba do
+        Use o {SITE_NAME} como aplicativo na área de trabalho ou na barra de tarefas — sem aba do
         navegador, ícone próprio e abertura em tela cheia.
       </p>
 
@@ -21,7 +22,7 @@ export function InstallAppGuide() {
 
       {state === "installed" ? (
         <p className="pwa-install-guide__ok" role="status">
-          Você já está usando o Eldarin instalado. Abra pelo ícone na área de trabalho ou no menu
+          Você já está usando o {SITE_NAME} instalado. Abra pelo ícone na área de trabalho ou no menu
           Iniciar.
         </p>
       ) : canPrompt ? (
@@ -40,7 +41,7 @@ export function InstallAppGuide() {
           </li>
           <li>
             Ou use o menu <strong>⋮</strong> → <strong>Salvar e compartilhar</strong> →{" "}
-            <strong>Instalar página como aplicativo…</strong> (ou <strong>Instalar Eldarin…</strong>
+            <strong>Instalar página como aplicativo…</strong> (ou <strong>Instalar {SITE_NAME}…</strong>
             ).
           </li>
           <li>Confirme o nome e clique em <strong>Instalar</strong>.</li>

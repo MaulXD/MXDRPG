@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { InstallAppGuide } from "@/components/pwa/InstallAppGuide";
-import { pageMetadata } from "@/lib/site-metadata";
+import { pageMetadata, SITE_NAME } from "@/lib/site-metadata";
 
 export const metadata = pageMetadata(
   "Instalar aplicativo",
@@ -16,7 +16,7 @@ export default function AplicativoPage() {
             ← Sistema
           </Link>
         </p>
-        <h1 className="display-lg text-gradient">Instalar Eldarin</h1>
+        <h1 className="display-lg text-gradient">Instalar {SITE_NAME}</h1>
         <p className="lead">
           Baixe o VTT como aplicativo no Chrome — atalho na área de trabalho, sem barra de abas do
           navegador.

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePwaInstall } from "@/hooks/usePwaInstall";
+import { SITE_NAME } from "@/lib/site-metadata";
 
 type Props = {
   className?: string;
@@ -48,7 +49,7 @@ export function InstallAppButton({
         type="button"
         className={baseClass}
         onClick={() => void install()}
-        aria-label="Instalar Eldarin como aplicativo"
+        aria-label={`Instalar ${SITE_NAME} como aplicativo`}
       >
         Instalar aplicativo
       </button>
