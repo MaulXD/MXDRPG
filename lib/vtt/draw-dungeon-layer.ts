@@ -72,9 +72,12 @@ export function drawDungeonLayer(
     editorPreviewKind?: "wall" | "object" | null;
     selectedObjectId?: string | null;
     visibleHexSet?: Set<string> | null;
+    gridOx?: number;
+    gridOy?: number;
   }
 ): void {
-  const { ox, oy } = layout;
+  const ox = opts?.gridOx ?? layout.ox;
+  const oy = opts?.gridOy ?? layout.oy;
   const objects = dungeonObjectsOf(scene);
 
   ctx.save();

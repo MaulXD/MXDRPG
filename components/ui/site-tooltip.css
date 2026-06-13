@@ -1,0 +1,24 @@
+.site-tooltip {
+  position: fixed;
+  z-index: 10050;
+  max-width: min(300px, calc(100vw - 20px));
+  padding: 0.42rem 0.62rem;
+  border-radius: 6px;
+  border: 1px solid color-mix(in srgb, var(--chrome-accent, #b8922e) 42%, transparent);
+  background: rgba(14, 13, 11, 0.97);
+  box-shadow:
+    0 6px 18px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  font-family: var(--font-ui, system-ui, sans-serif);
+  font-size: 0.74rem;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: 0.02em;
+  color: var(--text-strong, #e8e0d0);
+  pointer-events: none;
+  white-space: pre-line;
+}
+
+.site-tooltip--above {
+  transform: translateY(-4px);
+}

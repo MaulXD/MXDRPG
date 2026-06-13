@@ -35,7 +35,7 @@ html.eldarin-has-animated-bg .cta-band--landing {
 /* —— Painéis padrão (glass) — translúcidos para o movimento aparecer —— */
 html.eldarin-has-animated-bg .site-app-root .glass,
 html.eldarin-has-animated-bg .site-app-root .glass-panel {
-  background-color: rgba(30, 29, 26, 0.52);
+  background-color: color-mix(in srgb, var(--chrome-header) 78%, transparent);
   backdrop-filter: blur(6px);
 }
 
@@ -54,8 +54,9 @@ html.eldarin-has-animated-bg .site-app-root .mf:not(.mf--parchment) {
   backdrop-filter: blur(6px);
 }
 
+/* Pergaminho no tema escuro: mantém tom escuro original, só levemente translúcido */
 html.eldarin-has-animated-bg .site-app-root .mf--parchment {
-  background-color: rgba(232, 222, 204, 0.62);
+  background-color: color-mix(in srgb, var(--chrome-header) 82%, transparent);
   backdrop-filter: blur(6px);
 }
 
@@ -66,7 +67,7 @@ html.eldarin-has-animated-bg .site-app-root .ornament-card:not(.ornament-card--p
 }
 
 html.eldarin-has-animated-bg .site-app-root .ornament-card--parchment {
-  background-color: rgba(246, 240, 228, 0.65);
+  background-color: color-mix(in srgb, var(--content-bg) 72%, transparent);
   backdrop-filter: blur(6px);
 }
 

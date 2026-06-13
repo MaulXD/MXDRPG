@@ -45,14 +45,18 @@ function IconButton({
         e.preventDefault();
         onOpenDock(icon.id);
       }}
-      title={`${icon.label} — clique: abrir/fechar · clique direito: barra lateral`}
-      aria-label={icon.label}
+      aria-label={`${icon.label} — clique: janela flutuante · clique direito: barra lateral`}
       aria-pressed={active}
     >
       <span className="foundry-icon-bar__icon-wrap" data-rail-icon={icon.icon} aria-hidden>
         <MesaRailIcon name={icon.icon} />
       </span>
-      <span className="foundry-icon-bar__label">{icon.label}</span>
+      <span className="foundry-icon-bar__tooltip" role="tooltip">
+        <span className="foundry-icon-bar__tooltip-title">{icon.label}</span>
+        <span className="foundry-icon-bar__tooltip-hint">
+          Clique: janela · direito: barra
+        </span>
+      </span>
     </button>
   );
 }
@@ -82,7 +86,6 @@ export function MesaIconBar({
 
   return (
     <nav className="foundry-icon-bar" aria-label="Atalhos dos painéis">
-      <p className="foundry-icon-bar__section-title">Jogo</p>
       <div className="foundry-icon-bar__section">
         {playIcons.map((icon) => (
           <IconButton
@@ -98,9 +101,6 @@ export function MesaIconBar({
       {gmIcons.length > 0 ? (
         <>
           <div className="foundry-icon-bar__divider" role="separator" aria-hidden />
-          <p className="foundry-icon-bar__section-title foundry-icon-bar__section-title--gm">
-            Mestre
-          </p>
           <div className="foundry-icon-bar__section foundry-icon-bar__section--gm">
             {gmIcons.map((icon) => (
               <IconButton
