@@ -1035,3 +1035,47 @@
   padding-top: 0.75rem;
   border-top: 1px solid var(--glass-border);
 }
+
+/* —— Wizard embutido na mesa VTT —— */
+.char-wizard--mesa-embed {
+  max-width: none;
+  margin: 0;
+  padding: 0.35rem 0.15rem 0.5rem;
+}
+
+.char-wizard--mesa-embed .char-wizard-hero {
+  margin-bottom: 0.85rem;
+}
+
+.char-wizard--mesa-embed .char-wizard-body {
+  grid-template-columns: minmax(0, 1fr) minmax(200px, 240px);
+  gap: 0.85rem;
+}
+
+.char-wizard--mesa-embed .char-wizard-panel {
+  padding: 1rem 1.05rem;
+}
+
+.char-wizard--mesa-embed .char-wizard-preview {
+  position: static;
+  padding: 0.85rem 0.95rem;
+}
+
+.mesa-char-wizard-scroll {
+  height: 100%;
+  min-height: 0;
+}
+
+.foundry-window--create-character .foundry-window__body {
+  padding: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+@media (max-width: 900px) {
+  .char-wizard--mesa-embed .char-wizard-body {
+    grid-template-columns: 1fr;
+  }
+}

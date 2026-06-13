@@ -23,6 +23,7 @@ type Props = {
   spawnAxial: Axial | null;
   onPlaced: (snapshot: RoomSnapshot) => void;
   showCreateLink?: boolean;
+  onCreateCharacter?: () => void;
   canPullBack?: boolean;
   /** Dono da ficha pode retirar o próprio token (além do mestre). */
   allowOwnerPullBack?: boolean;
@@ -74,6 +75,7 @@ export function PlayerSpawnPanel({
   spawnAxial,
   onPlaced,
   showCreateLink = false,
+  onCreateCharacter,
   canPullBack = false,
   allowOwnerPullBack = true,
   showAllActors = false,
@@ -165,20 +167,32 @@ export function PlayerSpawnPanel({
 
   const createHref = `/aventura/${adventureId}/personagem/novo`;
 
+  const createButton =
+    showCreateLink && onCreateCharacter ? (
+      <button
+        type="button"
+        className="btn btn-secondary"
+        style={{ marginTop: "0.5rem", fontSize: "0.8rem" }}
+        onClick={onCreateCharacter}
+      >
+        Criar personagem
+      </button>
+    ) : showCreateLink ? (
+      <Link
+        href={createHref}
+        className="btn btn-secondary"
+        style={{ marginTop: "0.5rem", fontSize: "0.8rem", display: "inline-block" }}
+      >
+        Criar personagem
+      </Link>
+    ) : null;
+
   if (roster.length === 0) {
     return (
       <div className="vtt-spawn-panel vtt-spawn-panel--players">
         <p className="vtt-eyebrow">Personagens</p>
         <p className="vtt-combat-hint">Nenhum personagem nesta mesa ainda.</p>
-        {showCreateLink ? (
-          <Link
-            href={createHref}
-            className="btn btn-secondary"
-            style={{ marginTop: "0.5rem", fontSize: "0.8rem", display: "inline-block" }}
-          >
-            Criar personagem
-          </Link>
-        ) : null}
+        {createButton}
       </div>
     );
   }
@@ -268,7 +282,16 @@ export function PlayerSpawnPanel({
 
       {msg ? <p className="sheet-inline-msg">{msg}</p> : null}
 
-      {showCreateLink ? (
+      {showCreateLink && onCreateCharacter ? (
+        <button
+          type="button"
+          className="btn btn-secondary"
+          style={{ marginTop: "0.5rem", fontSize: "0.8rem", width: "100%" }}
+          onClick={onCreateCharacter}
+        >
+          Criar personagem
+        </button>
+      ) : showCreateLink ? (
         <Link
           href={createHref}
           className="btn btn-secondary"

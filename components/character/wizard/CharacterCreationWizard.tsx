@@ -128,6 +128,10 @@ type Props = {
   roomId?: string | null;
   roomName?: string | null;
   editMode?: EditMode;
+  /** Wizard embutido na mesa VTT — layout compacto, sem sair da página. */
+  variant?: "page" | "mesa";
+  /** Após criar na mesa — não redireciona para hub/aventura. */
+  onCreated?: (result: { characterId: string; name?: string }) => void;
 };
 
 type PointBuyMode = "suggested" | "custom" | "baseline";
@@ -164,6 +168,8 @@ export function CharacterCreationWizard({
   roomId = null,
   roomName = null,
   editMode,
+  variant = "page",
+  onCreated,
 }: Props) {
   const adventureId = adventureIdProp ?? roomId ?? editMode?.existingCharacter.adventureId ?? null;
   const label = adventureName ?? roomName;
@@ -431,13 +437,21 @@ export function CharacterCreationWizard({
       }
       if (!res.ok) throw new Error(data.error ?? "Erro ao criar");
       if (!data.character?.id) throw new Error("Resposta inválida do servidor");
-      const adv = data.adventureId ?? adventureId ?? null;
-      const mesa = data.mesaRoomId ?? null;
       const charId = data.character.id;
 
-      const dest = adv
-        ? `/aventura/${encodeURIComponent(adv)}?personagem=criado&char=${encodeURIComponent(charId)}${mesa ? `&mesa=${encodeURIComponent(mesa)}` : ""}`
-        : `/personagem/${encodeURIComponent(charId)}`;
+      if (onCreated) {
+        onCreated({ characterId: charId, name: data.character.name });
+        return;
+      }
+
+      const adv = data.adventureId ?? adventureId ?? null;
+      const mesa = data.mesaRoomId ?? null;
+
+      const dest = mesa
+        ? `/mesa/${encodeURIComponent(mesa)}`
+        : adv
+          ? `/aventura/${encodeURIComponent(adv)}?personagem=criado&char=${encodeURIComponent(charId)}`
+          : `/personagem/${encodeURIComponent(charId)}`;
 
       router.push(dest);
       router.refresh();
@@ -449,7 +463,7 @@ export function CharacterCreationWizard({
   }
 
   return (
-    <div className="char-wizard">
+    <div className={`char-wizard${variant === "mesa" ? " char-wizard--mesa-embed" : ""}`}>
       <header className="char-wizard-hero">
         <p className="char-wizard-hero__badge">
           Eldarin · <strong>{slotsLeft}</strong> {slotsLeft === 1 ? "vaga" : "vagas"} na conta

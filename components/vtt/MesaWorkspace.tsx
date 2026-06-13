@@ -15,6 +15,7 @@ import type { BattleScene } from "@/lib/vtt/types";
 import type { Axial } from "@/lib/vtt/hex-math";
 import { useCombatTurnFlow } from "@/hooks/vtt/useCombatTurnFlow";
 import { useFoundryWindows, type MesaWindowId } from "@/hooks/vtt/useFoundryWindows";
+import { MAX_CHARACTERS_PER_USER_PER_ADVENTURE } from "@/lib/character/adventure-bind";
 import { useGmPlayerViewMode } from "@/hooks/vtt/useGmPlayerViewMode";
 import { useRoomSync, type RoomMemberOnlineEvent } from "@/hooks/useRoomSync";
 import { useRoomPresence } from "@/hooks/useRoomPresence";
@@ -31,6 +32,7 @@ import { MesaFoundrySidebar } from "@/components/vtt/foundry/MesaFoundrySidebar"
 import { HexBattlefield } from "@/components/vtt/HexBattlefield";
 import { MonsterSheetPopup } from "@/components/compendium/MonsterSheetPopup";
 import { CharacterSheetPopup } from "@/components/vtt/CharacterSheetPopup";
+import { MesaCharacterWizardPopup } from "@/components/vtt/MesaCharacterWizardPopup";
 import { PlayableCharactersPanel } from "@/components/vtt/PlayableCharactersPanel";
 import { RoomChat } from "@/components/vtt/RoomChat";
 import { DiceRoller } from "@/components/vtt/DiceRoller";
@@ -59,6 +61,10 @@ type Props = {
   compendium: Record<CompendiumPackId, CompendiumEntry[]>;
   packs: CompendiumPackMeta[];
   defaultActorId?: string;
+  adventureName?: string;
+  characterSlotsLeft?: number;
+  charactersInAdventure?: number;
+  openCharacterWizardOnLoad?: boolean;
 };
 
 export function MesaWorkspace({
@@ -78,6 +84,10 @@ export function MesaWorkspace({
   compendium,
   packs: _packs,
   defaultActorId = "pc-thrain-ferroescudo",
+  adventureName,
+  characterSlotsLeft = 0,
+  charactersInAdventure = 0,
+  openCharacterWizardOnLoad = false,
 }: Props) {
   const isActualGm = canControlCombat;
   const { playAsPlayer, togglePlayAsPlayer, effectiveIsGm } = useGmPlayerViewMode(
@@ -92,11 +102,13 @@ export function MesaWorkspace({
 
   const [sheetPopupActorId, setSheetPopupActorId] = useState<string | null>(null);
   const [monsterSheetEntryId, setMonsterSheetEntryId] = useState<string | null>(null);
+  const [characterWizardOpen, setCharacterWizardOpen] = useState(false);
   const [spawnAxial, setSpawnAxial] = useState<Axial | null>(null);
   const [combatChatReveal, setCombatChatReveal] = useState<
     Record<string, import("@/lib/combat/chat-display").CombatChatRevealPhase>
   >({});
   const memberOnlineRef = useRef<((event: RoomMemberOnlineEvent) => void) | null>(null);
+  const wizardAutoOpenedRef = useRef(false);
   const presenceUser =
     session && canParticipateInRoom({ roomId, ownerId: roomOwnerId, memberIds }, session)
       ? {
@@ -166,6 +178,26 @@ export function MesaWorkspace({
     setMonsterSheetEntryId(null);
     windows.close("monsterSheet");
   }, [windows]);
+
+  const openCharacterWizard = useCallback(() => {
+    setCharacterWizardOpen(true);
+    windows.openAsPopup("createCharacter");
+    windows.focus("createCharacter");
+  }, [windows]);
+
+  const closeCharacterWizard = useCallback(() => {
+    setCharacterWizardOpen(false);
+    windows.close("createCharacter");
+  }, [windows]);
+
+  const handleCharacterCreated = useCallback(
+    async (result: { characterId: string }) => {
+      closeCharacterWizard();
+      await refresh();
+      openSheet(result.characterId);
+    },
+    [closeCharacterWizard, refresh, openSheet]
+  );
 
   const openDungeonPanel = useCallback(() => {
     windows.openAsPopup("dungeon");
@@ -258,11 +290,22 @@ export function MesaWorkspace({
     ]
   );
 
-  const canCreateCharacter = useMemo(
-    () =>
-      canParticipateInRoom({ roomId, ownerId: roomOwnerId, memberIds }, session),
-    [roomId, roomOwnerId, memberIds, session]
-  );
+  const canCreateCharacter = useMemo(() => {
+    if (roomId === "demo") return false;
+    if (!canParticipateInRoom({ roomId, ownerId: roomOwnerId, memberIds }, session)) {
+      return false;
+    }
+    if (characterSlotsLeft <= 0) return false;
+    if (charactersInAdventure >= MAX_CHARACTERS_PER_USER_PER_ADVENTURE) return false;
+    return true;
+  }, [roomId, roomOwnerId, memberIds, session, characterSlotsLeft, charactersInAdventure]);
+
+  useEffect(() => {
+    if (wizardAutoOpenedRef.current) return;
+    if (!openCharacterWizardOnLoad || !canCreateCharacter) return;
+    wizardAutoOpenedRef.current = true;
+    openCharacterWizard();
+  }, [openCharacterWizardOnLoad, canCreateCharacter, openCharacterWizard]);
 
   const roomSettings = useMemo(
     () => normalizeRoomSettings(snapshot?.settings),
@@ -391,6 +434,7 @@ export function MesaWorkspace({
                     isRoomGm={effectiveIsGm}
                     onOpenSheet={openSheet}
                     onCharactersChanged={refresh}
+                    onCreateCharacter={canCreateCharacter ? openCharacterWizard : undefined}
                   />
                 </div>
               </FoundryDockPanel>
@@ -521,6 +565,7 @@ export function MesaWorkspace({
               onApplySnapshot={applySnapshot}
               onOpenSheet={openSheet}
               onOpenMonsterSheet={openMonsterSheet}
+              onCreateCharacter={canCreateCharacter ? openCharacterWizard : undefined}
               onHoverAxialChange={setSpawnAxial}
               onOpenDungeonPanel={openDungeonPanel}
               showSpawnInSidebar={false}
@@ -625,6 +670,7 @@ export function MesaWorkspace({
                       isRoomGm={effectiveIsGm}
                       onOpenSheet={openSheet}
                       onCharactersChanged={refresh}
+                      onCreateCharacter={canCreateCharacter ? openCharacterWizard : undefined}
                     />
                   </div>
                 </FoundryWindow>
@@ -737,6 +783,25 @@ export function MesaWorkspace({
                       : windows.minimize("character")
                   }
                   onClose={closeSheet}
+                />
+              ) : null}
+
+              {characterWizardOpen && canCreateCharacter ? (
+                <MesaCharacterWizardPopup
+                  adventureId={adventureId}
+                  adventureName={adventureName ?? roomName ?? "Aventura"}
+                  roomId={roomId}
+                  slotsLeft={characterSlotsLeft}
+                  layout={win("createCharacter")}
+                  onLayoutChange={(patch) => windows.patch("createCharacter", patch)}
+                  onFocus={() => windows.focus("createCharacter")}
+                  onMinimize={() =>
+                    win("createCharacter").minimized
+                      ? windows.restore("createCharacter")
+                      : windows.minimize("createCharacter")
+                  }
+                  onClose={closeCharacterWizard}
+                  onCreated={(result) => void handleCharacterCreated(result)}
                 />
               ) : null}
               </div>
