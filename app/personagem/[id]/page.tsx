@@ -1,4 +1,5 @@
 import { redirect, notFound } from "next/navigation";
+import type { Metadata } from "next";
 import { CharacterSheet } from "@/components/character/CharacterSheet";
 import { canEditCharacterWithGrant, resolveCharacter } from "@/lib/character/characters";
 import { isAdventureBoundCharacter } from "@/lib/character/adventure-bind";
@@ -7,8 +8,15 @@ import { signInPath } from "@/lib/auth/post-auth-redirect";
 import { getSession } from "@/lib/auth/session";
 import { getPackEntries } from "@/lib/compendium/registry";
 import type { CompendiumPackId } from "@/lib/compendium/types";
+import { pageMetadata } from "@/lib/site-metadata";
 
 type Props = { params: Promise<{ id: string }> };
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { id } = await params;
+  const character = await resolveCharacter(id);
+  return pageMetadata(character?.name?.trim() || "Ficha");
+}
 
 const PLAYER_PACKS: CompendiumPackId[] = [
   "armas",

@@ -67,6 +67,10 @@ export const COMPENDIUM_PACKS: CompendiumPackMeta[] = [
   },
 ];
 
+export function getCompendiumPackLabel(packId: CompendiumPackId): string {
+  return COMPENDIUM_PACKS.find((p) => p.id === packId)?.label ?? "Compêndios";
+}
+
 function normalizeEntry(packId: CompendiumPackId, raw: CompendiumEntryRaw, index: number): CompendiumEntry {
   const id = raw.id ?? `${packId}-${slugId(raw.name) || index}`;
   return { ...raw, id, packId };

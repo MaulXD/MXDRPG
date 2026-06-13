@@ -11,7 +11,10 @@ import {
   IconSword,
   IconUser,
 } from "@/components/ui/EldarinIcons";
+import { pageMetadata } from "@/lib/site-metadata";
 import "./sistema.css";
+
+export const metadata = pageMetadata("Como jogar");
 
 const LIVE = [
   "Instalar como aplicativo no Chrome (atalho na área de trabalho)",

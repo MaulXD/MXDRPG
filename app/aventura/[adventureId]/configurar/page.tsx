@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import type { Metadata } from "next";
 import { AdventureAccessPanel } from "@/components/adventure/AdventureAccessPanel";
 import { MesaSetupClient } from "@/components/campaign/MesaSetupClient";
 import { canManageAdventure } from "@/lib/auth/adventure-access";
@@ -8,8 +9,15 @@ import { signInPath } from "@/lib/auth/post-auth-redirect";
 import { getSession } from "@/lib/auth/session";
 import { normalizeRoomSettings } from "@/lib/room/settings";
 import { getRoom } from "@/lib/room/store";
+import { pageMetadata } from "@/lib/site-metadata";
 
 type Props = { params: Promise<{ adventureId: string }> };
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { adventureId } = await params;
+  const adventure = await getAdventure(adventureId);
+  return pageMetadata(adventure?.name?.trim() ? `Configurar: ${adventure.name}` : "Configurar mesa");
+}
 
 export default async function ConfigurarAventuraPage({ params }: Props) {
   const { adventureId } = await params;

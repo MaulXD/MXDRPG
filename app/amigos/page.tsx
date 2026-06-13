@@ -5,6 +5,9 @@ import { FriendsPageClient } from "@/components/friends/FriendsPageClient";
 import { MedievalFrame } from "@/components/ui/MedievalFrame";
 import { signInPath } from "@/lib/auth/post-auth-redirect";
 import { getSession } from "@/lib/auth/session";
+import { pageMetadata } from "@/lib/site-metadata";
+
+export const metadata = pageMetadata("Amigos");
 
 export const dynamic = "force-dynamic";
 

@@ -1,5 +1,8 @@
 import { AdminMesasPanel } from "@/components/admin/AdminMesasPanel";
 import { requireRole } from "@/lib/auth/session";
+import { pageMetadata } from "@/lib/site-metadata";
+
+export const metadata = pageMetadata("Mesas e membros");
 
 export default async function AdminMesasPage() {
   await requireRole(["admin"]);

@@ -1,10 +1,9 @@
 import Link from "next/link";
 import fs from "fs";
 import path from "path";
+import { pageMetadata } from "@/lib/site-metadata";
 
-export const metadata = {
-  title: "Privacidade — Eldarin RPG",
-};
+export const metadata = pageMetadata("Privacidade");
 
 export default function PrivacidadePage() {
   const mdPath = path.join(process.cwd(), "docs/PRIVACIDADE-LGPD.md");
