@@ -1,73 +1,94 @@
-'use client'
-import { useEffect, useRef } from 'react'
+"use client";
+
+import { useCallback, useMemo } from "react";
+import { drawVignette, useCanvasAnimation, type CanvasFrame } from "./canvas-loop";
+
+const PALETTE = ["184,146,46", "140,100,200", "80,120,180"];
+
+type Star = {
+  x: number;
+  y: number;
+  r: number;
+  phase: number;
+  speed: number;
+  rgb: string;
+  orbit: number;
+  driftX: number;
+  driftY: number;
+};
 
 export default function VoidArcano() {
-  const canvasRef = useRef<HTMLCanvasElement>(null)
+  const stars = useMemo<Star[]>(
+    () =>
+      Array.from({ length: 80 }, () => ({
+        x: Math.random(),
+        y: Math.random(),
+        r: 0.8 + Math.random() * 2.2,
+        phase: Math.random() * Math.PI * 2,
+        speed: 0.6 + Math.random() * 1.2,
+        rgb: PALETTE[Math.floor(Math.random() * PALETTE.length)]!,
+        orbit: 8 + Math.random() * 20,
+        driftX: (Math.random() - 0.5) * 0.02,
+        driftY: (Math.random() - 0.5) * 0.015,
+      })),
+    []
+  );
 
-  useEffect(() => {
-    const canvas = canvasRef.current
-    if (!canvas) return
-    const ctx = canvas.getContext('2d')!
-    let rafId: number
-    let t = 0
+  const draw = useCallback(({ ctx, width: W, height: H, time: t, dt }: CanvasFrame) => {
+    ctx.fillStyle = "#06060e";
+    ctx.fillRect(0, 0, W, H);
 
-    const palette = ['90,70,190', '50,90,170', '130,100,210']
-    const dots = Array.from({ length: 90 }, () => ({
-      x: Math.random(),
-      y: Math.random(),
-      r: 0.3 + Math.random() * 0.9,
-      ph: Math.random() * Math.PI * 2,
-      sp: 0.05 + Math.random() * 0.09,
-      c: palette[Math.floor(Math.random() * palette.length)],
-    }))
+    const core = ctx.createRadialGradient(W / 2, H / 2, 0, W / 2, H / 2, H * 0.45);
+    core.addColorStop(0, `rgba(60,30,120,${0.15 + 0.06 * Math.sin(t * 0.7)})`);
+    core.addColorStop(1, "rgba(0,0,0,0)");
+    ctx.fillStyle = core;
+    ctx.fillRect(0, 0, W, H);
 
-    function resize() {
-      canvas!.width = window.innerWidth
-      canvas!.height = window.innerHeight
+    for (const s of stars) {
+      s.x += s.driftX * dt;
+      s.y += s.driftY * dt;
+      if (s.x < 0) s.x = 1;
+      if (s.x > 1) s.x = 0;
+      if (s.y < 0) s.y = 1;
+      if (s.y > 1) s.y = 0;
+
+      const ox = Math.sin(t * s.speed + s.phase) * s.orbit;
+      const oy = Math.cos(t * s.speed * 0.8 + s.phase) * s.orbit;
+      const px = s.x * W + ox;
+      const py = s.y * H + oy;
+      const alpha = 0.35 + 0.45 * Math.sin(t * s.speed + s.phase);
+
+      const glow = ctx.createRadialGradient(px, py, 0, px, py, s.r * 5);
+      glow.addColorStop(0, `rgba(${s.rgb},${alpha * 0.45})`);
+      glow.addColorStop(1, "rgba(0,0,0,0)");
+      ctx.fillStyle = glow;
+      ctx.fillRect(px - s.r * 5, py - s.r * 5, s.r * 10, s.r * 10);
+
+      ctx.globalAlpha = alpha;
+      ctx.fillStyle = `rgb(${s.rgb})`;
+      ctx.beginPath();
+      ctx.arc(px, py, s.r, 0, Math.PI * 2);
+      ctx.fill();
     }
-    resize()
+    ctx.globalAlpha = 1;
 
-    let resizeTimer: ReturnType<typeof setTimeout>
-    const onResize = () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(resize, 100) }
-    window.addEventListener('resize', onResize)
-
-    function frame() {
-      t += 0.008
-      const W = canvas!.width, H = canvas!.height
-      ctx.fillStyle = '#040408'
-      ctx.fillRect(0, 0, W, H)
-
-      dots.forEach(d => {
-        ctx.globalAlpha = 0.1 + 0.1 * Math.sin(t * d.sp + d.ph)
-        ctx.fillStyle = `rgb(${d.c})`
-        ctx.beginPath()
-        ctx.arc(d.x * W, d.y * H, d.r, 0, Math.PI * 2)
-        ctx.fill()
-      })
-      ctx.globalAlpha = 1
-
-      const rg = ctx.createRadialGradient(W / 2, H / 2, 0, W / 2, H / 2, H * 0.5)
-      rg.addColorStop(0, 'rgba(25,12,65,0.07)')
-      rg.addColorStop(1, 'rgba(0,0,0,0)')
-      ctx.fillStyle = rg
-      ctx.fillRect(0, 0, W, H)
-
-      const vg = ctx.createRadialGradient(W / 2, H / 2, H * 0.08, W / 2, H / 2, H * 0.82)
-      vg.addColorStop(0, 'rgba(0,0,0,0)')
-      vg.addColorStop(1, 'rgba(2,2,5,0.9)')
-      ctx.fillStyle = vg
-      ctx.fillRect(0, 0, W, H)
-
-      rafId = requestAnimationFrame(frame)
+    const rot = t * 0.15;
+    ctx.save();
+    ctx.translate(W / 2, H / 2);
+    ctx.rotate(rot);
+    ctx.strokeStyle = `rgba(184,146,46,${0.08 + 0.05 * Math.sin(t * 0.6)})`;
+    ctx.lineWidth = 1;
+    for (let i = 0; i < 3; i++) {
+      const a = (i / 3) * Math.PI * 2;
+      ctx.beginPath();
+      ctx.ellipse(0, 0, W * 0.35, H * 0.12, a, 0, Math.PI * 2);
+      ctx.stroke();
     }
-    frame()
+    ctx.restore();
 
-    return () => {
-      cancelAnimationFrame(rafId)
-      window.removeEventListener('resize', onResize)
-      clearTimeout(resizeTimer)
-    }
-  }, [])
+    drawVignette(ctx, W, H, 0.4);
+  }, [stars]);
 
-  return <canvas ref={canvasRef} style={{ width: '100%', height: '100%', display: 'block' }} />
+  const canvasRef = useCanvasAnimation(draw);
+  return <canvas ref={canvasRef} style={{ width: "100%", height: "100%", display: "block" }} />;
 }
