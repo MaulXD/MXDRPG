@@ -15,6 +15,14 @@ export type ActionRechargeState = {
   readyAtRound?: number;
 };
 
+/** Recarga padrão de magias sem campo `recarga` no compêndio — mesma magia 1× por turno. */
+export const DEFAULT_SPELL_RECHARGE: RechargeSpec = { kind: "per_turn", label: "1/turno" };
+
+/** Magias: `recarga` explícita no JSON; ausente → 1/turno. */
+export function resolveSpellRecharge(raw: string | undefined): RechargeSpec {
+  return parseRecharge(raw) ?? DEFAULT_SPELL_RECHARGE;
+}
+
 /** Interpreta recarga do compêndio (ex. "1/turno", "1/combate", "2 rodadas"). */
 export function parseRecharge(raw: string | undefined | null): RechargeSpec | null {
   const s = raw?.trim();

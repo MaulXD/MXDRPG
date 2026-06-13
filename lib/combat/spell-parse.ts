@@ -3,7 +3,7 @@ import type { AttributeKey } from "@/lib/character/rules";
 import { parseAreaShape, type SpellAreaShape } from "@/lib/combat/area-spell";
 import { PA_DEFAULT_ACTION_COST } from "@/lib/combat/pa-economy";
 import { resolveSpellPaCost } from "@/lib/combat/pa-balance";
-import { parseRecharge } from "@/lib/combat/recharge";
+import { parseRecharge, resolveSpellRecharge } from "@/lib/combat/recharge";
 import { parseSpellChannel } from "@/lib/combat/spell-channel";
 import { parseSpellTargetCount } from "@/lib/combat/spell-target-count";
 import type { CombatActionOption } from "@/lib/combat/types";
@@ -212,7 +212,7 @@ export function buildMagiaCombatAction(entry: CompendiumEntry): CombatActionOpti
       : undefined;
 
   const channel = parseSpellChannel(spell?.channel);
-  const recharge = parseRecharge(spell?.recarga);
+  const recharge = resolveSpellRecharge(spell?.recarga);
   const targetCount = parseSpellTargetCount(desc, spell);
 
   const tags: string[] = [];
@@ -254,7 +254,7 @@ export function buildMagiaCombatAction(entry: CompendiumEntry): CombatActionOpti
     areaHexCount: areaShape === "wall" ? spell?.area?.hexCount ?? parsedArea?.hexCount ?? 3 : undefined,
     channelMaxExtraPa: channel?.maxExtraPa,
     channelBonusPerPa: channel?.bonusPerPa,
-    recharge: recharge ?? undefined,
+    recharge,
     selfTarget: selfTarget || undefined,
     allyTarget: allyTarget || undefined,
     spellEffect,
