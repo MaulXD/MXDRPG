@@ -11,6 +11,7 @@ import { SiteFooter } from "@/components/SiteFooter";
 import { ServiceWorkerRegister } from "@/components/pwa/ServiceWorkerRegister";
 import { ThemeScript } from "@/components/ThemeScript";
 import { BackgroundWrapper } from "@/components/backgrounds/BackgroundWrapper";
+import { BackgroundScript } from "@/components/backgrounds/BackgroundScript";
 import "./globals.css";
 import "@/components/nav-motion.css";
 import "@/components/ui/medieval-borders.css";
@@ -68,6 +69,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     >
       <head>
         <ThemeScript />
+        <BackgroundScript />
       </head>
       <body>
         <ServiceWorkerRegister />
