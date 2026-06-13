@@ -430,6 +430,7 @@ function toListItem(adv: Adventure, userId: string): AdventureListItem {
     isOwner: adv.ownerId === userId,
     updatedAt: adv.updatedAt,
     deletedAt: adv.deletedAt ?? null,
+    rpgSystemId: adv.rpgSystemId,
   };
 }
 

@@ -10,9 +10,7 @@ import { fetchUserById } from "@/lib/db/users";
 import { listRoomPresence } from "@/lib/room/presence";
 import { normalizeRoomSettings } from "@/lib/room/settings";
 import { getRoom } from "@/lib/room/store";
-import { DEFAULT_RPG_SYSTEM_ID, getDefaultRpgCover } from "@/lib/rpg/systems";
-
-const DEFAULT_COVER = getDefaultRpgCover(DEFAULT_RPG_SYSTEM_ID);
+import { normalizeRpgSystemId, resolveMesaCoverSrc } from "@/lib/rpg/systems";
 
 type UserRow = {
   id: string;
@@ -131,13 +129,14 @@ export async function enrichAdventureListItems(
 
     const room = await getRoom(item.primaryRoomId);
     const settings = normalizeRoomSettings(room?.settings);
-    const mapThumb = room?.scene?.mapImageUrl?.trim() || null;
-    const coverUrl = settings.coverUrl?.trim() || mapThumb || DEFAULT_COVER;
+    const systemId = normalizeRpgSystemId(adv?.rpgSystemId ?? item.rpgSystemId);
+    const coverUrl = resolveMesaCoverSrc(settings.coverUrl, systemId);
     const coverFocus = settings.coverFocus ?? null;
     const onlineCount = members.filter((m) => m.online).length;
 
     enriched.push({
       ...item,
+      rpgSystemId: systemId,
       coverUrl,
       coverFocus,
       members,

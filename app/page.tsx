@@ -3,7 +3,7 @@ import { EldarinLogo } from "@/components/brand/EldarinLogo";
 import { HomeFeatureIcon, type HomeFeatureIconName } from "@/components/ui/EldarinIcons";
 import { pageMetadata } from "@/lib/site-metadata";
 
-export const metadata = pageMetadata("Início");
+export const metadata = pageMetadata("Seu HUB RPG");
 
 const features: Array<{
   icon: HomeFeatureIconName;

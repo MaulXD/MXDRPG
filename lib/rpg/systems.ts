@@ -8,6 +8,12 @@ export const DEFAULT_RPG_SYSTEM_ID: RpgSystemId = "eldarin";
 /** Capa padrão Eldarin (mesa VTT, hub e seletor de RPG). */
 export const ELDARIN_DEFAULT_COVER_SRC = "/brand/rpg/eldarin-cover.png";
 
+/** Capa padrão D&D (mesa VTT, hub e seletor de RPG). */
+export const DND_DEFAULT_COVER_SRC = "/brand/rpg/dnd-cover.png";
+
+/** Capa padrão Vampiro: A Máscara (mesa VTT, hub e seletor de RPG). */
+export const VTM_DEFAULT_COVER_SRC = "/brand/rpg/vtm-cover.png";
+
 const RPG_SYSTEM_IDS = new Set<RpgSystemId>(["eldarin", "dnd", "vtm"]);
 
 export function normalizeRpgSystemId(raw: unknown): RpgSystemId {
@@ -49,8 +55,8 @@ export const RPG_SYSTEMS: RpgSystem[] = [
     tagline: "Em breve",
     href: null,
     available: false,
-    coverSrc: "/brand/rpg/dnd-cover.svg",
-    coverAlt: "Capa Dungeons & Dragons — em breve no MXDRPG",
+    coverSrc: DND_DEFAULT_COVER_SRC,
+    coverAlt: "Capa Dungeons & Dragons",
   },
   {
     id: "vtm",
@@ -59,13 +65,23 @@ export const RPG_SYSTEMS: RpgSystem[] = [
     tagline: "Em breve",
     href: null,
     available: false,
-    coverSrc: "/brand/rpg/vtm-cover.svg",
-    coverAlt: "Capa Vampiro: A Máscara — em breve no MXDRPG",
+    coverSrc: VTM_DEFAULT_COVER_SRC,
+    coverAlt: "Capa Vampiro: A Máscara",
   },
 ];
 
 export function getDefaultRpgCover(systemId: RpgSystemId = DEFAULT_RPG_SYSTEM_ID): string {
   return RPG_SYSTEMS.find((s) => s.id === systemId)?.coverSrc ?? ELDARIN_DEFAULT_COVER_SRC;
+}
+
+/** Capa exibida na lista/VTT — só mantém upload do mestre; senão usa a capa padrão do sistema. */
+export function resolveMesaCoverSrc(
+  coverUrl?: string | null,
+  systemId: RpgSystemId = DEFAULT_RPG_SYSTEM_ID
+): string {
+  const url = coverUrl?.trim();
+  if (url?.startsWith("data:image/")) return url;
+  return getDefaultRpgCover(systemId);
 }
 
 export function isMesasNavActive(pathname: string): boolean {
