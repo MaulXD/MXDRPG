@@ -21,6 +21,11 @@ import type { CompendiumPackId } from "@/lib/compendium/types";
 import { getAdventure, bindPlayerToAdventure } from "@/lib/adventure/store";
 import { isAdventureClosed } from "@/lib/adventure/access";
 import { shouldAutoJoinRoom } from "@/lib/auth/adventure-room-access";
+import {
+  listCharactersForSessionUser,
+  listCharactersForSessionUserInAdventure,
+  MAX_CHARACTERS_PER_USER,
+} from "@/lib/character/characters";
 import { MesaClosedGate } from "@/components/vtt/MesaClosedGate";
 import { syncAdventureActorsForRoom } from "@/lib/room/adventure-actors";
 import { joinRoomMembers } from "@/lib/room/adventure-room";
@@ -31,7 +36,7 @@ export const dynamic = "force-dynamic";
 
 type Props = {
   params: Promise<{ roomId: string }>;
-  searchParams: Promise<{ invite?: string; joined?: string }>;
+  searchParams: Promise<{ invite?: string; joined?: string; criar?: string }>;
 };
 
 export async function generateMetadata({ params }: Pick<Props, "params">): Promise<Metadata> {
@@ -42,7 +47,7 @@ export async function generateMetadata({ params }: Pick<Props, "params">): Promi
 
 export default async function MesaRoomPage({ params, searchParams }: Props) {
   const { roomId } = await params;
-  const { invite: inviteParam } = await searchParams;
+  const { invite: inviteParam, criar: criarParam } = await searchParams;
   const inviteCode = inviteParam?.trim() || null;
 
   const session = await getSession();
@@ -179,6 +184,20 @@ export default async function MesaRoomPage({ params, searchParams }: Props) {
     (Object.values(room.actors).find((a) => a.ownerId === session.user.id)?.id ??
       Object.keys(room.actors)[0]);
 
+  const advId = room.adventureId ?? roomId;
+  const adventure = await getAdventure(advId);
+  const adventureName = adventure?.name ?? room.name;
+
+  let characterSlotsLeft = 0;
+  let charactersInAdventure = 0;
+  if (session?.user && canParticipate && roomId !== "demo") {
+    const accountUser = await materializeSessionUser(session.user);
+    const myChars = await listCharactersForSessionUser(accountUser);
+    const inAdv = await listCharactersForSessionUserInAdventure(accountUser, advId);
+    characterSlotsLeft = Math.max(0, MAX_CHARACTERS_PER_USER - myChars.length);
+    charactersInAdventure = inAdv.length;
+  }
+
   return (
     <div className="vtt-page vtt-page--mesa">
       {visitor ? <MesaVisitorNotice roomId={roomId} inviteCode={inviteCode} /> : null}
@@ -200,6 +219,10 @@ export default async function MesaRoomPage({ params, searchParams }: Props) {
         compendium={compendium}
         packs={packs}
         defaultActorId={defaultActorId}
+        adventureName={adventureName}
+        characterSlotsLeft={characterSlotsLeft}
+        charactersInAdventure={charactersInAdventure}
+        openCharacterWizardOnLoad={criarParam === "personagem"}
       />
     </div>
   );

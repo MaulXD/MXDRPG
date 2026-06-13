@@ -33,6 +33,7 @@ type Props = {
   memberIds?: string[];
   onPlaced: (snapshot: RoomSnapshot) => void;
   fogHint?: boolean;
+  onCreateCharacter?: () => void;
 };
 
 export function ActiveCharactersPanel({
@@ -57,6 +58,7 @@ export function ActiveCharactersPanel({
   memberIds = [],
   onPlaced,
   fogHint = false,
+  onCreateCharacter,
 }: Props) {
   const canCreateInAdventure = roomId !== "demo" && Boolean(session);
 
@@ -75,7 +77,8 @@ export function ActiveCharactersPanel({
         showAllActors={canControlCombat}
         canPullBack={canControlCombat}
         allowOwnerPullBack
-        showCreateLink={canCreateInAdventure}
+        showCreateLink={Boolean(onCreateCharacter) || canCreateInAdventure}
+        onCreateCharacter={onCreateCharacter}
       />
 
       <p className="vtt-eyebrow vtt-sidebar-map-label">No mapa</p>

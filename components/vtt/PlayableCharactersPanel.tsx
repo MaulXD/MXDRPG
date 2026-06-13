@@ -22,6 +22,7 @@ type Props = {
   isRoomGm?: boolean;
   onOpenSheet: (actorId: string) => void;
   onCharactersChanged?: () => void;
+  onCreateCharacter?: () => void;
 };
 
 type ManageState = {
@@ -58,10 +59,10 @@ export function PlayableCharactersPanel({
   isRoomGm = false,
   onOpenSheet,
   onCharactersChanged,
+  onCreateCharacter,
 }: Props) {
   const roomAuth = { roomId, adventureId };
   const roster = listPlayablePlayerActors(actors, adventureId);
-  const createHref = `/aventura/${adventureId}/personagem/novo`;
   const colorIds = roster.map((a) => a.id);
   const [manage, setManage] = useState<ManageState | null>(null);
 
@@ -191,9 +192,19 @@ export function PlayableCharactersPanel({
       )}
 
       {canCreateCharacter ? (
-        <Link href={createHref} className="btn btn-secondary vtt-playable-create">
-          + Criar novo personagem
-        </Link>
+        onCreateCharacter ? (
+          <button
+            type="button"
+            className="btn btn-secondary vtt-playable-create"
+            onClick={onCreateCharacter}
+          >
+            + Criar novo personagem
+          </button>
+        ) : (
+          <Link href={`/aventura/${adventureId}/personagem/novo`} className="btn btn-secondary vtt-playable-create">
+            + Criar novo personagem
+          </Link>
+        )
       ) : null}
 
       {manage ? (

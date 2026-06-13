@@ -173,6 +173,7 @@ type Props = {
   onRefresh?: () => void;
   onApplySnapshot?: (snap: RoomSnapshot, opts?: { force?: boolean }) => void;
   onOpenSheet?: (actorId?: string) => void;
+  onCreateCharacter?: () => void;
   /** Abre ficha de monstro do compêndio em janela flutuante. */
   onOpenMonsterSheet?: (entryId: string) => void;
   onHoverAxialChange?: (axial: Axial | null) => void;
@@ -247,6 +248,7 @@ export function HexBattlefield({
   onApplySnapshot,
   onOpenSheet,
   onOpenMonsterSheet,
+  onCreateCharacter,
   onHoverAxialChange,
   onOpenDungeonPanel,
   showSpawnInSidebar = true,
@@ -2373,6 +2375,7 @@ export function HexBattlefield({
       roomId={roomId}
       onPlaced={(snap) => syncRoom(snap)}
       fogHint={fogListHint}
+      onCreateCharacter={onCreateCharacter}
     />
   );
 
