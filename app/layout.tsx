@@ -10,6 +10,7 @@ import { SiteHeaderWrapper } from "@/components/SiteHeaderWrapper";
 import { SiteFooter } from "@/components/SiteFooter";
 import { ServiceWorkerRegister } from "@/components/pwa/ServiceWorkerRegister";
 import { ThemeScript } from "@/components/ThemeScript";
+import { BackgroundWrapper } from "@/components/backgrounds/BackgroundWrapper";
 import "./globals.css";
 import "@/components/nav-motion.css";
 import "@/components/ui/medieval-borders.css";
@@ -72,11 +73,14 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <AuthProvider publishableKey={clerkPublishableKey}>
           <FriendsChatProvider initialUserId={session?.user.id ?? null}>
             <NotificationsProvider initialUserId={session?.user.id ?? null}>
-              <div className="site-bg" aria-hidden />
-              <div className="site-noise" aria-hidden />
-              <SiteShell header={<SiteHeaderWrapper />} footer={<SiteFooter />}>
-                {children}
-              </SiteShell>
+              <BackgroundWrapper />
+              <div className="site-app-root">
+                <div className="site-bg" aria-hidden />
+                <div className="site-noise" aria-hidden />
+                <SiteShell header={<SiteHeaderWrapper />} footer={<SiteFooter />}>
+                  {children}
+                </SiteShell>
+              </div>
             </NotificationsProvider>
           </FriendsChatProvider>
         </AuthProvider>

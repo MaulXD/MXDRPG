@@ -72,7 +72,13 @@ export function RoomSettingsPanel({
   }
 
   return (
-    <div className="vtt-map-panel vtt-room-settings">
+    <div
+      className={
+        coverVariant === "hub"
+          ? "vtt-room-settings vtt-room-settings--hub"
+          : "vtt-map-panel vtt-room-settings"
+      }
+    >
       <p className="vtt-eyebrow">Configuração da mesa</p>
       <p className="vtt-combat-hint" style={{ marginTop: 0 }}>
         Você é o mestre desta sala. O convite fica no painel <strong>Convite</strong> da barra lateral.

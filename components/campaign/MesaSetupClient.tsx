@@ -7,6 +7,7 @@ import { RoomSettingsPanel } from "@/components/vtt/RoomSettingsPanel";
 import type { RoomSettings } from "@/lib/room/settings";
 import type { BattleScene } from "@/lib/vtt/types";
 import type { RoomSnapshot } from "@/lib/room/types";
+import "@/components/vtt/vtt.css";
 
 type Props = {
   roomId: string;
