@@ -1,66 +1,63 @@
-'use client'
-import { useEffect, useRef } from 'react'
+"use client";
+
+import { useCallback, useMemo } from "react";
+import { drawVignette, useCanvasAnimation, type CanvasFrame } from "./canvas-loop";
+
+const CHARS = "ᚠᚢᚦᚨᚱᚲᚷᚹᚾᛁᛈᛉᛊᛏᛒᛖᛗᛚᛟᛞ";
 
 export default function Runas() {
-  const canvasRef = useRef<HTMLCanvasElement>(null)
+  const runes = useMemo(
+    () =>
+      Array.from({ length: 32 }, () => ({
+        x: Math.random(),
+        y: Math.random(),
+        c: CHARS[Math.floor(Math.random() * CHARS.length)]!,
+        size: 16 + Math.random() * 22,
+        phase: Math.random() * Math.PI * 2,
+        speed: 0.4 + Math.random() * 0.8,
+        drift: (Math.random() - 0.5) * 0.03,
+        rise: 0.012 + Math.random() * 0.02,
+      })),
+    []
+  );
 
-  useEffect(() => {
-    const canvas = canvasRef.current
-    if (!canvas) return
-    const ctx = canvas.getContext('2d')!
-    let rafId: number
-    let t = 0
+  const draw = useCallback(({ ctx, width: W, height: H, time: t, dt }: CanvasFrame) => {
+    ctx.fillStyle = "#0a0812";
+    ctx.fillRect(0, 0, W, H);
 
-    const chars = 'ᚠᚢᚦᚨᚱᚲᚷᚹᚾᛁᛈᛉᛊᛏᛒᛖᛗᛚᛟᛞ'
-    const runes = Array.from({ length: 28 }, () => ({
-      x: Math.random(),
-      y: Math.random(),
-      c: chars[Math.floor(Math.random() * chars.length)],
-      sz: 13 + Math.random() * 16,
-      ph: Math.random() * Math.PI * 2,
-      sp: 0.08 + Math.random() * 0.12,
-    }))
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
 
-    function resize() {
-      canvas!.width = window.innerWidth
-      canvas!.height = window.innerHeight
+    for (const r of runes) {
+      r.y -= r.rise * dt;
+      r.x += r.drift * dt;
+      if (r.y < -0.05) {
+        r.y = 1.05;
+        r.x = Math.random();
+      }
+      if (r.x < -0.05) r.x = 1.05;
+      if (r.x > 1.05) r.x = -0.05;
+
+      const alpha = 0.15 + 0.25 * Math.sin(t * r.speed + r.phase);
+      const scale = 1 + 0.08 * Math.sin(t * r.speed * 0.7 + r.phase);
+
+      ctx.globalAlpha = alpha;
+      ctx.fillStyle = "#c8a060";
+      ctx.font = `${r.size * scale}px Cinzel, serif`;
+      ctx.fillText(r.c, r.x * W, r.y * H);
     }
-    resize()
+    ctx.globalAlpha = 1;
 
-    let resizeTimer: ReturnType<typeof setTimeout>
-    const onResize = () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(resize, 100) }
-    window.addEventListener('resize', onResize)
+    const ringR = H * (0.15 + 0.04 * Math.sin(t * 0.5));
+    ctx.strokeStyle = `rgba(184,146,46,${0.12 + 0.08 * Math.sin(t)})`;
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.arc(W / 2, H / 2, ringR, 0, Math.PI * 2);
+    ctx.stroke();
 
-    function frame() {
-      t += 0.008
-      const W = canvas!.width, H = canvas!.height
-      ctx.fillStyle = '#07050d'
-      ctx.fillRect(0, 0, W, H)
+    drawVignette(ctx, W, H, 0.42);
+  }, [runes]);
 
-      runes.forEach(r => {
-        ctx.globalAlpha = 0.055 + 0.045 * Math.sin(t * r.sp + r.ph)
-        ctx.fillStyle = '#c0a0f0'
-        ctx.font = `${r.sz}px serif`
-        ctx.fillText(r.c, r.x * W, r.y * H)
-      })
-      ctx.globalAlpha = 1
-
-      const vg = ctx.createRadialGradient(W / 2, H / 2, H * 0.08, W / 2, H / 2, H * 0.82)
-      vg.addColorStop(0, 'rgba(0,0,0,0)')
-      vg.addColorStop(1, 'rgba(3,2,6,0.9)')
-      ctx.fillStyle = vg
-      ctx.fillRect(0, 0, W, H)
-
-      rafId = requestAnimationFrame(frame)
-    }
-    frame()
-
-    return () => {
-      cancelAnimationFrame(rafId)
-      window.removeEventListener('resize', onResize)
-      clearTimeout(resizeTimer)
-    }
-  }, [])
-
-  return <canvas ref={canvasRef} style={{ width: '100%', height: '100%', display: 'block' }} />
+  const canvasRef = useCanvasAnimation(draw);
+  return <canvas ref={canvasRef} style={{ width: "100%", height: "100%", display: "block" }} />;
 }
