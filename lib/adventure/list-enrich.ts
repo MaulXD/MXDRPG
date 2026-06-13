@@ -10,9 +10,9 @@ import { fetchUserById } from "@/lib/db/users";
 import { listRoomPresence } from "@/lib/room/presence";
 import { normalizeRoomSettings } from "@/lib/room/settings";
 import { getRoom } from "@/lib/room/store";
-import { DEFAULT_RPG_SYSTEM_ID, RPG_SYSTEMS } from "@/lib/rpg/systems";
+import { DEFAULT_RPG_SYSTEM_ID, getDefaultRpgCover } from "@/lib/rpg/systems";
 
-const DEFAULT_COVER = RPG_SYSTEMS.find((s) => s.id === DEFAULT_RPG_SYSTEM_ID)?.coverSrc ?? "/brand/rpg/eldarin-cover.svg";
+const DEFAULT_COVER = getDefaultRpgCover(DEFAULT_RPG_SYSTEM_ID);
 
 type UserRow = {
   id: string;
