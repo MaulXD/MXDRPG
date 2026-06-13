@@ -1,10 +1,11 @@
 import type { MetadataRoute } from "next";
+import { SITE_NAME } from "@/lib/site-metadata";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
     id: "/",
-    name: "Eldarin — VTT tático",
-    short_name: "Eldarin",
+    name: SITE_NAME,
+    short_name: SITE_NAME,
     description:
       "Mesa virtual no navegador: combate em grid, Pontos de Ação, fichas e compêndios Eldarin v4.",
     start_url: "/",

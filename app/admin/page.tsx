@@ -2,6 +2,9 @@ import { DashboardCard } from "@/components/portal/DashboardCard";
 import { PermissionGate } from "@/components/portal/PermissionGate";
 import { Permission } from "@/lib/auth/permissions";
 import { requireRole } from "@/lib/auth/session";
+import { pageMetadata } from "@/lib/site-metadata";
+
+export const metadata = pageMetadata("Painel administrador");
 
 export default async function AdminPage() {
   const user = await requireRole(["admin"]);

@@ -4,7 +4,10 @@ import { MedievalFrame } from "@/components/ui/MedievalFrame";
 import { signInPath } from "@/lib/auth/post-auth-redirect";
 import { getSession } from "@/lib/auth/session";
 import { dbEnabled } from "@/lib/db/enabled";
+import { pageMetadata } from "@/lib/site-metadata";
 import { redirect } from "next/navigation";
+
+export const metadata = pageMetadata("Suas mesas");
 
 export default async function EldarinMesasPage() {
   const session = await getSession();

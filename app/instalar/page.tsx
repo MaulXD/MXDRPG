@@ -1,3 +1,7 @@
+import { pageMetadata } from "@/lib/site-metadata";
+
+export const metadata = pageMetadata("Hospedar na Vercel");
+
 export default function InstalarPage() {
   return (
     <div className="page-wrap">

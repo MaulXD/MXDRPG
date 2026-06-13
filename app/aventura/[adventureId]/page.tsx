@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { redirect } from "next/navigation";
+import type { Metadata } from "next";
 
 import { canManageAdventure, isAdventureMember } from "@/lib/auth/adventure-access";
 
@@ -30,6 +31,7 @@ import { getRoom } from "@/lib/room/store";
 
 import type { RoomActor } from "@/lib/room/types";
 import { MedievalFrame } from "@/components/ui/MedievalFrame";
+import { pageMetadata } from "@/lib/site-metadata";
 
 
 
@@ -46,6 +48,14 @@ type Props = {
   }>;
 
 };
+
+
+
+export async function generateMetadata({ params }: Pick<Props, "params">): Promise<Metadata> {
+  const { adventureId } = await params;
+  const adventure = await getAdventure(adventureId);
+  return pageMetadata(adventure?.name?.trim() || "Aventura");
+}
 
 
 

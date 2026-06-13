@@ -1,6 +1,9 @@
 import Link from "next/link";
 import { EldarinLogo } from "@/components/brand/EldarinLogo";
 import { HomeFeatureIcon, type HomeFeatureIconName } from "@/components/ui/EldarinIcons";
+import { pageMetadata } from "@/lib/site-metadata";
+
+export const metadata = pageMetadata("Início");
 
 const features: Array<{
   icon: HomeFeatureIconName;

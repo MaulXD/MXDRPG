@@ -7,7 +7,10 @@ import { getAdventure } from "@/lib/adventure/store";
 import { dbEnabled } from "@/lib/db/enabled";
 import { materializeSessionUser } from "@/lib/auth/session-user";
 import { getSession } from "@/lib/auth/session";
+import { pageMetadata } from "@/lib/site-metadata";
 import { redirect } from "next/navigation";
+
+export const metadata = pageMetadata("Seu perfil");
 
 export default async function ContaPage() {
   const session = await getSession();

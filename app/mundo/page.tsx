@@ -2,12 +2,13 @@ import Link from "next/link";
 import { WorldLoreBrowser } from "@/components/world/WorldLoreBrowser";
 import { PantheonLoreSection } from "@/components/world/PantheonLoreSection";
 import { MedievalFrame } from "@/components/ui/MedievalFrame";
+import { pageMetadata } from "@/lib/site-metadata";
 import "@/components/world/world-lore.css";
 
-export const metadata = {
-  title: "Mundo de Eldarin — Atlas e Panteão",
-  description: "Geografia, vilarejos, cenários e as doze devoções de Eldarin.",
-};
+export const metadata = pageMetadata(
+  "Mundo",
+  "Geografia, vilarejos, cenários e as doze devoções de Eldarin."
+);
 
 export default function MundoPage() {
   return (
