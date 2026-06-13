@@ -6,6 +6,7 @@ import {
   sanitizePortraitFocus,
   type PortraitFocus,
 } from "@/lib/media/portrait-focus";
+import { getDefaultRpgCover } from "@/lib/rpg/systems";
 
 type Props = {
   coverUrl?: string | null;
@@ -14,14 +15,13 @@ type Props = {
 
 /** Capa decorativa da mesa — atrás do mapa, sem capturar cliques. */
 export function RoomCoverBackdrop({ coverUrl, coverFocus }: Props) {
-  if (!coverUrl) return null;
-
+  const src = coverUrl?.trim() || getDefaultRpgCover();
   const focus = sanitizePortraitFocus(coverFocus) ?? DEFAULT_PORTRAIT_FOCUS;
 
   return (
     <div className="mesa-room-cover" aria-hidden>
       <img
-        src={coverUrl}
+        src={src}
         alt=""
         className="mesa-room-cover__img"
         style={portraitFocusToImgStyle(focus)}

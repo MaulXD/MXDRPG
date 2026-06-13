@@ -117,7 +117,7 @@ export function RoomCoverEditor({
       setDraftFocus(DEFAULT_PORTRAIT_FOCUS);
       if (fileRef.current) fileRef.current.value = "";
       onUpdated(snapshot);
-      setMsg("Capa removida.");
+      setMsg("Capa personalizada removida — voltou à capa padrão Eldarin.");
     } catch (e) {
       setMsg(e instanceof Error ? e.message : "Erro ao remover capa");
     } finally {
