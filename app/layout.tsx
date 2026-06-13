@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { SITE_NAME } from "@/lib/site-metadata";
 import { Cinzel, Lora, Source_Sans_3 } from "next/font/google";
 import { AuthProvider } from "@/components/auth/AuthProvider";
 import { FriendsChatProvider } from "@/components/friends/FriendsChatProvider";
@@ -41,13 +42,16 @@ const cinzel = Cinzel({
 });
 
 export const metadata: Metadata = {
-  title: "Eldarin — VTT tático",
+  title: {
+    default: SITE_NAME,
+    template: `${SITE_NAME} — %s`,
+  },
   description:
     "Mesa virtual no navegador: combate em grid, PA, fichas medievais. Admin, Mestre e Jogador.",
-  applicationName: "Eldarin",
+  applicationName: SITE_NAME,
   appleWebApp: {
     capable: true,
-    title: "Eldarin",
+    title: SITE_NAME,
     statusBarStyle: "black-translucent",
   },
   icons: {

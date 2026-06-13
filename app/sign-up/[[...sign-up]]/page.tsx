@@ -7,6 +7,9 @@ import {
   safeRedirectPath,
 } from "@/lib/auth/post-auth-redirect";
 import { getSession } from "@/lib/auth/session";
+import { pageMetadata } from "@/lib/site-metadata";
+
+export const metadata = pageMetadata("Criar conta");
 
 type Props = { searchParams: Promise<{ redirect?: string }> };
 

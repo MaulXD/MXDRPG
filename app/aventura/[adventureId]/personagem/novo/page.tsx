@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import type { Metadata } from "next";
 import { CharacterCreationWizard } from "@/components/character/wizard/CharacterCreationWizard";
 import { MedievalFrame } from "@/components/ui/MedievalFrame";
 import { isAdventureMember } from "@/lib/auth/adventure-access";
@@ -12,11 +13,14 @@ import {
 } from "@/lib/character/characters";
 import { signInPath } from "@/lib/auth/post-auth-redirect";
 import { getSession } from "@/lib/auth/session";
+import { pageMetadata } from "@/lib/site-metadata";
 
 type Props = {
   params: Promise<{ adventureId: string }>;
   searchParams: Promise<{ invite?: string }>;
 };
+
+export const metadata = pageMetadata("Novo personagem");
 
 export default async function AventuraNovoPersonagemPage({ params, searchParams }: Props) {
   const { adventureId } = await params;

@@ -1,5 +1,8 @@
 import Link from "next/link";
 import { getSession } from "@/lib/auth/session";
+import { pageMetadata } from "@/lib/site-metadata";
+
+export const metadata = pageMetadata("Mesa virtual");
 
 export default async function MesaIndexPage() {
   const session = await getSession();

@@ -1,11 +1,11 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import { InstallAppGuide } from "@/components/pwa/InstallAppGuide";
+import { pageMetadata } from "@/lib/site-metadata";
 
-export const metadata: Metadata = {
-  title: "Instalar aplicativo — Eldarin",
-  description: "Instale o Eldarin VTT no Chrome, Edge ou na tela inicial do celular.",
-};
+export const metadata = pageMetadata(
+  "Instalar aplicativo",
+  "Instale o MXDRPG no Chrome, Edge ou na tela inicial do celular."
+);
 
 export default function AplicativoPage() {
   return (

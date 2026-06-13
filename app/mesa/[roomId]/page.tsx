@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import type { Metadata } from "next";
 import { MesaWorkspace } from "@/components/vtt/MesaWorkspace";
 import { MesaVisitorNotice } from "@/components/vtt/MesaVisitorNotice";
 import {
@@ -24,6 +25,7 @@ import { MesaClosedGate } from "@/components/vtt/MesaClosedGate";
 import { syncAdventureActorsForRoom } from "@/lib/room/adventure-actors";
 import { joinRoomMembers } from "@/lib/room/adventure-room";
 import { getRoom, joinRoomByInvite } from "@/lib/room/store";
+import { pageMetadata } from "@/lib/site-metadata";
 
 export const dynamic = "force-dynamic";
 
@@ -31,6 +33,12 @@ type Props = {
   params: Promise<{ roomId: string }>;
   searchParams: Promise<{ invite?: string; joined?: string }>;
 };
+
+export async function generateMetadata({ params }: Pick<Props, "params">): Promise<Metadata> {
+  const { roomId } = await params;
+  const room = await getRoom(roomId);
+  return pageMetadata(room?.name?.trim() || (roomId === "demo" ? "Mesa demo" : "Mesa"));
+}
 
 export default async function MesaRoomPage({ params, searchParams }: Props) {
   const { roomId } = await params;

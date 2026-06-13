@@ -5,7 +5,10 @@ import { MedievalFrame } from "@/components/ui/MedievalFrame";
 import { signInPath } from "@/lib/auth/post-auth-redirect";
 import { getSession } from "@/lib/auth/session";
 import { RPG_SYSTEMS } from "@/lib/rpg/systems";
+import { pageMetadata } from "@/lib/site-metadata";
 import "@/components/rpg/mesas-hub.css";
+
+export const metadata = pageMetadata("Escolher RPG");
 
 export default async function MesasHubPage() {
   const session = await getSession();

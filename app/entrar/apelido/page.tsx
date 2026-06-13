@@ -9,6 +9,9 @@ import {
 } from "@/lib/auth/post-auth-redirect";
 import { dbEnabled } from "@/lib/db/enabled";
 import { getSession } from "@/lib/auth/session";
+import { pageMetadata } from "@/lib/site-metadata";
+
+export const metadata = pageMetadata("Escolher apelido");
 
 type Props = { searchParams: Promise<{ redirect?: string }> };
 

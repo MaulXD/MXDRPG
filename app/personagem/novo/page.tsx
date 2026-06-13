@@ -8,6 +8,9 @@ import {
 } from "@/lib/character/characters";
 import { signInPath } from "@/lib/auth/post-auth-redirect";
 import { getSession } from "@/lib/auth/session";
+import { pageMetadata } from "@/lib/site-metadata";
+
+export const metadata = pageMetadata("Novo personagem");
 
 export default async function NovoPersonagemPage() {
   const session = await getSession();

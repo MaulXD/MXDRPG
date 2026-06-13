@@ -11,11 +11,14 @@ import { prepareCharacterForLastLevelReedit } from "@/lib/character/rebuild-from
 import { getSheetEditRequest } from "@/lib/character/sheet-edit-request-store";
 import { signInPath } from "@/lib/auth/post-auth-redirect";
 import { getSession } from "@/lib/auth/session";
+import { pageMetadata } from "@/lib/site-metadata";
 
 type Props = {
   params: Promise<{ id: string }>;
   searchParams: Promise<{ requestId?: string }>;
 };
+
+export const metadata = pageMetadata("Editar ficha");
 
 export default async function PersonagemEditarPage({ params, searchParams }: Props) {
   const { id } = await params;

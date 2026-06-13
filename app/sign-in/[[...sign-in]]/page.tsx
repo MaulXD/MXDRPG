@@ -9,6 +9,9 @@ import {
   safeRedirectPath,
 } from "@/lib/auth/post-auth-redirect";
 import { getSession } from "@/lib/auth/session";
+import { pageMetadata } from "@/lib/site-metadata";
+
+export const metadata = pageMetadata("Entrar");
 
 type Props = { searchParams: Promise<{ redirect?: string }> };
 
