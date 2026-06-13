@@ -37,11 +37,12 @@ export function RpgSystemCoverCard({ system }: Props) {
     <article className="rpg-hub-card rpg-hub-card--soon" aria-disabled>
       <div className="rpg-hub-card__cover">
         <CoverArt system={system} />
+        <span className="rpg-hub-card__soon-badge">Em breve</span>
       </div>
       <div className="rpg-hub-card__body">
         <h2 className="rpg-hub-card__name">{system.name}</h2>
         <p className="rpg-hub-card__tagline">{system.tagline}</p>
-        <span className="rpg-hub-card__cta">Em breve</span>
+        <span className="rpg-hub-card__cta rpg-hub-card__cta--soon">Indisponível no hub</span>
       </div>
     </article>
   );

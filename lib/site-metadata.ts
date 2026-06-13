@@ -21,7 +21,7 @@ export function pageMetadata(pageTitle: string, description?: string): Metadata 
 
 /** Rotas estáticas — fallback client-side se a aba não atualizar após navegação. */
 export const STATIC_TAB_TITLES: Record<string, string> = {
-  "/": "Início",
+  "/": "Seu HUB RPG",
   "/mesas": "Escolher RPG",
   "/eldarin": "Suas mesas",
   "/mesa": "Mesa virtual",
