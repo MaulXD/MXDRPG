@@ -6,6 +6,8 @@
   min-height: 0;
   display: flex;
   flex-direction: column;
+  /* Permite tooltips da barra de ícones ultrapassarem o clip do workspace */
+  overflow: visible;
 }
 
 .foundry-mesa {
@@ -15,7 +17,8 @@
   min-width: 0;
   display: flex;
   flex-direction: row;
-  overflow: hidden;
+  /* visible: tooltips da barra de ícones estendem sobre o mapa/dock */
+  overflow: visible;
   border-radius: var(--radius);
   background: var(--mesa-stage-bg);
 
@@ -52,6 +55,8 @@
 }
 
 .foundry-sidebar__dock {
+  position: relative;
+  z-index: 1;
   width: 0;
   min-width: 0;
   overflow: hidden;
@@ -194,6 +199,8 @@
 
 /* Barra de ícones — só ícones; rótulo no tooltip ao passar o mouse */
 .foundry-icon-bar {
+  position: relative;
+  z-index: 4;
   flex-shrink: 0;
   width: 2.75rem;
   max-width: 2.75rem;
@@ -245,6 +252,7 @@
 
 .foundry-icon-bar__btn {
   position: relative;
+  overflow: visible;
   width: 100%;
   min-height: 2.35rem;
   padding: 0.28rem;
@@ -599,7 +607,7 @@
   left: calc(100% + 0.45rem);
   top: 50%;
   transform: translateY(-50%) translateX(-4px);
-  z-index: 60;
+  z-index: 120;
   display: flex;
   flex-direction: column;
   gap: 0.12rem;
@@ -654,10 +662,6 @@
 }
 
 /* Painel dock (coluna de conteúdo) */
-.foundry-sidebar__dock {
-  position: relative;
-}
-
 .foundry-dock-panel {
   position: absolute;
   inset: 0;

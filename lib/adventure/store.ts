@@ -7,6 +7,7 @@ import { resolveInviteCodeForCreate } from "@/lib/adventure/invite-code";
 import type { AdventureAccessMode } from "@/lib/adventure/access";
 import {
   canRestoreAdventure,
+  isAdventureDeleted,
   isAdventureJoinable,
   shouldPurgeAdventure,
 } from "./lifecycle";
@@ -177,12 +178,6 @@ async function maybeMigrateLegacyAdventureName(adv: Adventure): Promise<Adventur
 export async function getAdventure(adventureId: string): Promise<Adventure | null> {
   if (adventureId === "demo") return ensureDemoAdventure();
 
-  const cached = adventures().get(adventureId);
-  if (cached) {
-    const purged = await purgeAdventureIfExpired(cached);
-    return purged ? maybeMigrateLegacyAdventureName(purged) : null;
-  }
-
   if (dbEnabled()) {
     const fromDb = await dbAdventures.fetchAdventure(adventureId);
     if (fromDb) {
@@ -191,6 +186,14 @@ export async function getAdventure(adventureId: string): Promise<Adventure | nul
       return purged ? maybeMigrateLegacyAdventureName(purged) : null;
     }
   }
+
+  const cached = adventures().get(adventureId);
+  if (cached) {
+    const purged = await purgeAdventureIfExpired(cached);
+    return purged ? maybeMigrateLegacyAdventureName(purged) : null;
+  }
+
+  if (dbEnabled()) return null;
 
   const room = await getRoom(adventureId);
   if (room) {
@@ -434,6 +437,11 @@ function toListItem(adv: Adventure, userId: string): AdventureListItem {
   };
 }
 
+function adventureVisibleInUserList(adv: Adventure, userId: string): boolean {
+  if (isAdventureDeleted(adv) && adv.ownerId !== userId) return false;
+  return true;
+}
+
 export async function listAdventuresForUser(
   userId: string,
   options?: { rpgSystemId?: RpgSystemId }
@@ -448,6 +456,7 @@ export async function listAdventuresForUser(
     for (const item of fromDb) {
       const full = await getAdventure(item.adventureId);
       if (!full) continue;
+      if (!adventureVisibleInUserList(full, userId)) continue;
       if (rpgFilter && full.rpgSystemId !== rpgFilter) continue;
       adventures().set(full.adventureId, full);
       seenIds.add(item.adventureId);
@@ -464,6 +473,7 @@ export async function listAdventuresForUser(
   for (const adv of adventures().values()) {
     if (rpgFilter && adv.rpgSystemId !== rpgFilter) continue;
     if (adv.ownerId !== userId && !memberIdsHasUser(adv.memberIds, userId, clerkId)) continue;
+    if (!adventureVisibleInUserList(adv, userId)) continue;
     if (seenIds.has(adv.adventureId)) continue;
     if (seenRooms.has(adv.primaryRoomId)) continue;
     if (shouldPurgeAdventure(adv)) continue;
