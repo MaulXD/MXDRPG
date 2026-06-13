@@ -2,7 +2,9 @@
 
 Documento de onboarding para **Claude** (ou outro assistente de código) trabalhar neste repositório com contexto correto, sem reinventar arquitetura nem violar decisões de produto.
 
-**Como usar:** cole este arquivo (ou trechos) no system prompt / Project Knowledge do Claude, ou peça: *“Leia `docs/CLAUDE-PROJETO.md` antes de qualquer alteração.”*
+**Como usar:** cole este arquivo (ou trechos) no system prompt / Project Knowledge do Claude, ou peça: *“Leia `docs/CLAUDE-PROJETO.md` e `docs/CLAUDE-CODIGO-SEGURO.md` antes de qualquer alteração.”*
+
+> **Edição segura:** regras práticas, zonas de risco e checklist → **[CLAUDE-CODIGO-SEGURO.md](./CLAUDE-CODIGO-SEGURO.md)**
 
 ---
 
