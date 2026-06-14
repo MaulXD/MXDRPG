@@ -190,6 +190,10 @@ export function RoomSettingsPanel({
           Desligado = exploração: movimento livre e magias sem PA. Rolar iniciativa liga o combate
           automaticamente.
         </p>
+        <p className="vtt-combat-hint" style={{ margin: "0.25rem 0 0" }}>
+          Atalho no topo do mapa: <strong>Aventura</strong> / <strong>Combate</strong>, ao lado da
+          visão mestre/jogador.
+        </p>
         <label className="vtt-field" style={{ marginTop: "0.75rem" }}>
           <span>Auto-passe quando PA = 0 (ms)</span>
           <input

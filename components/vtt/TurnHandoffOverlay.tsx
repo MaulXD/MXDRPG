@@ -8,6 +8,8 @@ import { activeTokenId } from "@/lib/room/combat";
 type Props = {
   combat: CombatTrack | null | undefined;
   tokens: BattleToken[];
+  /** Só exibe em modo combate. */
+  enabled?: boolean;
 };
 
 const HOLD_MS = 2000;
@@ -19,7 +21,7 @@ function combatTurnKey(combat: CombatTrack): string {
 }
 
 /** Escurece o mapa e anuncia o novo turno ao passar a vez. */
-export function TurnHandoffOverlay({ combat, tokens }: Props) {
+export function TurnHandoffOverlay({ combat, tokens, enabled = true }: Props) {
   const [phase, setPhase] = useState<"hidden" | "visible" | "leaving">("hidden");
   const [name, setName] = useState("");
   const prevKey = useRef<string | null>(null);
@@ -40,6 +42,13 @@ export function TurnHandoffOverlay({ combat, tokens }: Props) {
       for (const id of timers.current) window.clearTimeout(id);
       timers.current = [];
     };
+
+    if (!enabled) {
+      prevKey.current = null;
+      clearTimers();
+      setPhase("hidden");
+      return;
+    }
 
     if (turnKey === null) {
       prevKey.current = null;
@@ -74,7 +83,7 @@ export function TurnHandoffOverlay({ combat, tokens }: Props) {
     );
 
     return clearTimers;
-  }, [turnKey]);
+  }, [turnKey, enabled]);
 
   if (phase === "hidden") return null;
 

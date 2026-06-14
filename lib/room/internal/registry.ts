@@ -15,6 +15,7 @@ import {
   executePendingAutoPassIfDue,
   scheduleAutoPassWhenActivePaZero,
 } from "../handlers/combat-turn";
+import { requiresCombatTurnEconomy } from "@/lib/combat/mesa-mode";
 import { pruneMapMarkups } from "@/lib/vtt/map-markup";
 import { prunePings } from "@/lib/vtt/ping";
 import { getRoomGmCreations } from "../gm-creations";
@@ -187,8 +188,10 @@ export async function persistRoom(
 ): Promise<RoomState> {
   if (state.combat?.order?.length) {
     ensureCombatActiveHasPa(state);
-    if (!opts?.skipAutoPassSchedule) {
-      scheduleAutoPassWhenActivePaZero(state);
+    if (requiresCombatTurnEconomy(state.settings, state.combat)) {
+      if (!opts?.skipAutoPassSchedule) {
+        scheduleAutoPassWhenActivePaZero(state);
+      }
       executePendingAutoPassIfDue(state);
     }
   }
@@ -250,8 +253,11 @@ export async function getRoom(roomId: string): Promise<RoomState | null> {
   }
   if (room?.combat?.order?.length) {
     ensureCombatActiveHasPa(room);
-    if (executePendingAutoPassIfDue(room)) {
-      return persistRoom(roomId, room);
+    if (requiresCombatTurnEconomy(room.settings, room.combat)) {
+      scheduleAutoPassWhenActivePaZero(room);
+      if (executePendingAutoPassIfDue(room)) {
+        return persistRoom(roomId, room);
+      }
     }
   }
   if (room && !room.chat?.length) {
