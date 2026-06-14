@@ -149,7 +149,7 @@ import { canMoveToken, type MovementPathContext } from "@/lib/vtt/movement";
 import { animateTokenAlongPath } from "@/lib/vtt/token-move-animation";
 import { axialToPixel, hexDrawRadius } from "@/lib/vtt/hex-math";
 import { canvasCenter, worldToScreen } from "@/lib/vtt/battlefield-view";
-import { resolveMapAlignedGridLayout, mapFloorLocalToWorld } from "@/lib/vtt/grid-layout";
+import { resolveMapAlignedGridLayout, mapAlignedHexSize } from "@/lib/vtt/grid-layout";
 import "./vtt.css";
 
 type Props = {
@@ -704,12 +704,18 @@ export function HexBattlefield({
   }, [combat?.round, combat?.activeIndex, combat?.order?.length, turnActiveId]);
   const prevCombatTurnFocusKey = useRef<string | null>(null);
 
+  const mapDrawHexSize = useMemo(() => mapAlignedHexSize(canvasScene), [
+    canvasScene.hexSize,
+    canvasScene.mapImageUrl,
+    canvasScene.mapImageScale,
+  ]);
+
   const [displayGridRadius, setDisplayGridRadius] = useState(() =>
     displayHexGridRadius(
       canvasScene.gridRadius,
       canvasWrapSize.w,
       canvasWrapSize.h,
-      canvasScene.hexSize,
+      mapDrawHexSize,
       battlefieldView.view.scale
     )
   );
@@ -720,13 +726,13 @@ export function HexBattlefield({
         canvasScene.gridRadius,
         canvasWrapSize.w,
         canvasWrapSize.h,
-        canvasScene.hexSize,
+        mapDrawHexSize,
         battlefieldView.view.scale
       )
     );
   }, [
     canvasScene.gridRadius,
-    canvasScene.hexSize,
+    mapDrawHexSize,
     canvasWrapSize.w,
     canvasWrapSize.h,
     battlefieldView.view.scale,
@@ -738,7 +744,7 @@ export function HexBattlefield({
         canvasScene.gridRadius,
         canvasWrapSize.w,
         canvasWrapSize.h,
-        canvasScene.hexSize,
+        mapDrawHexSize,
         battlefieldView.viewRef.current.scale
       );
       setDisplayGridRadius((prev) => (prev === next ? prev : next));
@@ -747,7 +753,7 @@ export function HexBattlefield({
     battlefieldView.subscribeViewDraw,
     battlefieldView.viewRef,
     canvasScene.gridRadius,
-    canvasScene.hexSize,
+    mapDrawHexSize,
     canvasWrapSize.w,
     canvasWrapSize.h,
   ]);
@@ -1385,9 +1391,10 @@ export function HexBattlefield({
     if (!canvas || canvas.clientWidth < 10 || canvas.clientHeight < 10) return;
 
     const { ox, oy } = canvasCenter(canvas.clientWidth, canvas.clientHeight);
+    const grid = resolveMapAlignedGridLayout(displayScene, ox, oy);
     const pos = tokenDrawPosition(token);
     const size = creatureSizeOf(token, actorRacas[token.actorId ?? ""]);
-    const { x, y } = tokenPixelCenter(pos, size, displayScene.hexSize, ox, oy);
+    const { x, y } = tokenPixelCenter(pos, size, grid.hexSize, grid.ox, grid.oy);
 
     requestAnimationFrame(() => {
       battlefieldView.centerOnWorld(x, y);
@@ -1514,16 +1521,12 @@ export function HexBattlefield({
     const h = wrap.clientHeight;
     const { ox, oy } = canvasCenter(w, h);
     const grid = resolveMapAlignedGridLayout(displayScene, ox, oy);
-    const floorScale = grid.floorAnchor?.scale ?? 1;
-    const tokenR = hexDrawRadius(grid.hexSize) * floorScale * (battlefieldView.view.scale ?? 1);
+    const tokenR = hexDrawRadius(grid.hexSize) * (battlefieldView.view.scale ?? 1);
     const gap = 10;
 
     const axialToScreen = (q: number, r: number) => {
       const local = axialToPixel(q, r, grid.hexSize, grid.ox, grid.oy);
-      const world = grid.floorAnchor
-        ? mapFloorLocalToWorld(local.x, local.y, grid.floorAnchor)
-        : local;
-      return worldToScreen(world.x, world.y, w, h, battlefieldView.view);
+      return worldToScreen(local.x, local.y, w, h, battlefieldView.view);
     };
 
     if (highlights.showMovement && hoverAxial && isMoveMode(actionMode)) {
@@ -3038,7 +3041,6 @@ export function HexBattlefield({
           hexSize={combatFxGrid.hexSize}
           gridOx={combatFxGrid.ox}
           gridOy={combatFxGrid.oy}
-          floorAnchor={combatFxGrid.floorAnchor}
           fx={combatFx}
           view={battlefieldView.view}
           onApplyState={onCombatApplyState}

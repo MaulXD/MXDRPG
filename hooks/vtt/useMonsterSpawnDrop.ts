@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState, type RefObject } from "react";
 import type { Axial } from "@/lib/vtt/hex-math";
 import { canvasCenter, screenToWorld, type BattlefieldView } from "@/lib/vtt/battlefield-view";
-import { resolveMapAlignedGridLayout, worldToMapFloorLocal } from "@/lib/vtt/grid-layout";
+import { resolveMapAlignedGridLayout } from "@/lib/vtt/grid-layout";
 import { pixelToAxial } from "@/lib/vtt/hex-math";
 import type { RoomSnapshot } from "@/lib/room/types";
 import {
@@ -67,9 +67,7 @@ export function useMonsterSpawnDrop({
       const { ox, oy } = canvasCenter(w, h);
       const world = screenToWorld(px, py, w, h, viewRef.current);
       const grid = resolveMapAlignedGridLayout(scene, ox, oy);
-      const local = grid.floorAnchor
-        ? worldToMapFloorLocal(world.x, world.y, grid.floorAnchor)
-        : world;
+      const local = world;
       return pixelToAxial(local.x, local.y, grid.hexSize, grid.ox, grid.oy);
     },
     [canvasRef, scene, viewRef]

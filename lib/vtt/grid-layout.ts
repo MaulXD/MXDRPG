@@ -78,16 +78,22 @@ export function resolveMapAlignedGridLayout(
     };
   }
 
-  const anchor = resolveMapFloorAnchor(scene, canvasOx, canvasOy);
+  const mapScale = scene.mapImageScale ?? 1;
+  const offX = scene.mapImageOffsetX ?? 0;
+  const offY = scene.mapImageOffsetY ?? 0;
+
+  /** Escala do mapa já no hexSize — zoom da vista (Roll20) afeta mapa + grid juntos. */
   return {
-    hexSize: scene.hexSize,
-    ox: anchor.x,
-    oy: anchor.y,
-    floorAnchor: anchor,
+    hexSize: scene.hexSize * mapScale,
+    ox: canvasOx + offX,
+    oy: canvasOy + offY,
+    floorAnchor: null,
   };
 }
 
-/** Cena com escala 1 para desenho dentro do grupo do piso (escala via transform). */
-export function sceneForMapFloorDraw(scene: BattleScene): BattleScene {
-  return { ...scene, mapImageScale: 1 };
+/** hexSize efetivo para desenho / viewport (inclui escala do piso). */
+export function mapAlignedHexSize(scene: BattleScene): number {
+  const base = scene.hexSize;
+  if (!hasMapFloorImage(scene)) return base;
+  return base * (scene.mapImageScale ?? 1);
 }
