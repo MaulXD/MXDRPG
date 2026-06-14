@@ -1,4 +1,5 @@
-import { applyPaSpend } from "@/lib/combat/pa-turn";
+import { spendPaForRoomAction } from "@/lib/combat/pa-spend-room";
+import { checkEstribilhoLimit, recordEstribilhoCast } from "@/lib/combat/estribilho";
 import { markActionRechargeUsed } from "@/lib/combat/recharge";
 import { resolveSpellUtility } from "@/lib/combat/spell-utility";
 import { isAreaSpellAction } from "@/lib/combat/area-spell";
@@ -54,6 +55,11 @@ export async function executeRoomSpellUtility(
     return { ok: false, error: "Magia não é utilitária" };
   }
 
+  if (opts.entryId) {
+    const lim = checkEstribilhoLimit(caster, opts.entryId);
+    if (!lim.ok) return { ok: false, error: lim.reason };
+  }
+
   const target =
     targetTokenId != null
       ? room.scene.tokens.find((t) => t.id === targetTokenId) ?? null
@@ -66,6 +72,7 @@ export async function executeRoomSpellUtility(
     bypassTurn: opts.bypassTurn,
     combatRound: room.combat.round,
     combatHasOrder: Boolean(room.combat?.order?.length),
+    combatActive: room.settings.combatActive,
   };
 
   let result;
@@ -84,7 +91,10 @@ export async function executeRoomSpellUtility(
   });
 
   const spentCaster = markActionRechargeUsed(
-    applyPaSpend(caster, result.paCost, { actionKind: "spell" }),
+    recordEstribilhoCast(
+      spendPaForRoomAction(room, caster, result.paCost, { actionKind: "spell" }),
+      opts.entryId ?? ""
+    ),
     action,
     room.combat.round
   );

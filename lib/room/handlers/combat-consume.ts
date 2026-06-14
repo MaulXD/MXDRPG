@@ -5,7 +5,7 @@ import {
   type ActorConsumable,
 } from "@/lib/combat/consumables";
 import { prepareCombatToken, syncActorPaFromToken } from "@/lib/combat/combat-token-pa";
-import { applyPaSpend } from "@/lib/combat/pa-turn";
+import { spendPaForRoomAction } from "@/lib/combat/pa-spend-room";
 import { activeTokenId } from "../combat";
 import { appendRoomChatMessage } from "./chat";
 import { getRoom, persistRoom, toSnapshot } from "../internal/registry";
@@ -74,7 +74,7 @@ export async function executeRoomConsume(
     return { ok: false, error: e instanceof Error ? e.message : "Falha ao usar item" };
   }
 
-  const spent = applyPaSpend(token, resolved.paCost);
+  const spent = spendPaForRoomAction(room, token, resolved.paCost);
   syncActorPaFromToken(room, spent);
 
   const healed = patchTokenVitals(

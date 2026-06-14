@@ -13,7 +13,8 @@ import type { AttackResolution } from "@/lib/combat/attack";
 import { patchTokenVitals } from "@/lib/vtt/token-hp-display";
 import type { BattleToken } from "@/lib/vtt/types";
 import { ensureTokenCombatPa, syncActorPaFromToken } from "@/lib/combat/combat-token-pa";
-import { applyPaSpend } from "@/lib/combat/pa-turn";
+import { spendPaForRoomAction } from "@/lib/combat/pa-spend-room";
+import { checkEstribilhoLimit, recordEstribilhoCast } from "@/lib/combat/estribilho";
 import { markActionRechargeUsed } from "@/lib/combat/recharge";
 import type { CombatActionRequest } from "@/lib/combat/types";
 import type { ChatMessage } from "../chat";
@@ -75,6 +76,11 @@ export async function executeRoomAttack(
 
   const action = resolveRoomAttackAction(attacker, actor, opts);
 
+  if (action.kind === "spell" && opts.entryId) {
+    const lim = checkEstribilhoLimit(attacker, opts.entryId);
+    if (!lim.ok) return { ok: false, error: lim.reason };
+  }
+
   if (action.kind === "ability") {
     return executeRoomAbility(roomId, attackerTokenId, defenderTokenId, author, opts);
   }
@@ -92,6 +98,7 @@ export async function executeRoomAttack(
     bypassTurn: opts.bypassTurn,
     combatRound: room.combat.round,
     combatHasOrder: Boolean(room.combat?.order?.length),
+    combatActive: room.settings.combatActive,
   };
 
   const defenderActor =
@@ -116,7 +123,10 @@ export async function executeRoomAttack(
     });
 
     const spentAttacker = markActionRechargeUsed(
-      applyPaSpend(attacker, saveResult.paCost, { actionKind: action.kind }),
+      recordEstribilhoCast(
+        spendPaForRoomAction(room, attacker, saveResult.paCost, { actionKind: action.kind }),
+        opts.entryId ?? ""
+      ),
       action,
       room.combat.round
     );
@@ -214,7 +224,10 @@ export async function executeRoomAttack(
   const finalAttackerHp =
     last.attackerHpAfter ?? attacker.vida ?? null;
   const spentAttacker = markActionRechargeUsed(
-    applyPaSpend(attacker, paCost, { actionKind: action.kind }),
+    recordEstribilhoCast(
+      spendPaForRoomAction(room, attacker, paCost, { actionKind: action.kind }),
+      opts.entryId ?? ""
+    ),
     action,
     room.combat.round
   );
@@ -389,6 +402,7 @@ async function executeRoomMultiTargetAttack(
     bypassTurn: opts.bypassTurn,
     combatRound: room.combat.round,
     combatHasOrder: Boolean(room.combat?.order?.length),
+    combatActive: room.settings.combatActive,
   };
 
   const paCheck = canAttackTarget(attacker, defenders[0]!, action, turn, {
@@ -470,7 +484,7 @@ async function executeRoomMultiTargetAttack(
   const paCost = saveResults[0]?.paCost ?? attackResults[0]?.paCost ?? action.paCost;
 
   let spentAttacker = markActionRechargeUsed(
-    applyPaSpend(attacker, paCost, { actionKind: action.kind }),
+    spendPaForRoomAction(room, attacker, paCost, { actionKind: action.kind }),
     action,
     room.combat.round
   );

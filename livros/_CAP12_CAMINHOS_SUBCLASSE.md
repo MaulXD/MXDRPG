@@ -293,7 +293,7 @@
 
 **Dieta nv.2:** Refeicoes assadas por você maximizam recuperacao de Mana do grupo no descanso; feiticos de fogo +1d6 vs gelo/agua e dispensam componentes de fogo.
 
-**Nv 4 — Chama Controlada:** Truque `Chama de Fogareiro` extra. 1/descanso curto, maximize dano de um feitico de fogo de nivel 3 ou menor.
+**Nv 4 — Chama Controlada:** Truque `Brasa Espectral` extra. 1/descanso curto, maximize dano de um feitico de fogo de nivel 3 ou menor.
 
 **Nv 8 — Forno de Campo (requer Chama Controlada):** Prepara refeicao assada em combaté (10 min) ou ação bônus "lanche carbonizado" (1d8 HP temp a aliado adjacente). Aliados que comem ganham resistência a frio 1 hora.
 

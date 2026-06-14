@@ -28,6 +28,7 @@ export type CostReduceRule = {
   kinds: PaDiscountKind[];
   amount: number;
   firstWeaponHitOnly?: boolean;
+  weaponHitCap?: number;
   firstPerTurn?: boolean;
   rangedOnly?: boolean;
   damageTypes?: string[];

@@ -1,5 +1,6 @@
 import { canManageRoom } from "@/lib/auth/room-access";
 import type { SessionUser } from "@/lib/auth/types";
+import { applyUnconsciousAtZeroHp, clampDeathTrackOnDamage } from "@/lib/combat/death-track";
 import { isMonsterToken } from "@/lib/room/settings";
 import type { RoomActor } from "@/lib/room/types";
 import type { TokenRingStyle } from "@/lib/vtt/token-colors";
@@ -45,15 +46,23 @@ export function isTokenDefeated(token: BattleToken): boolean {
   return (token.vida ?? 0) <= 0;
 }
 
-/** Aplica vida/temp e sincroniza `defeated` quando há vidaMax. */
+/** Aplica vida/temp, inconsciência em 0 HP e sincroniza `defeated` quando morto. */
 export function patchTokenVitals(
   token: BattleToken,
   patch: Partial<Pick<BattleToken, "vida" | "vidaMax" | "vidaTemp">>
 ): BattleToken {
-  const next = { ...token, ...patch };
+  let next = { ...token, ...patch };
   if (next.vidaMax == null) return next;
-  const defeated = (next.vida ?? 0) <= 0;
-  return { ...next, defeated: defeated ? true : undefined };
+  next = clampDeathTrackOnDamage(next, 0);
+  next = applyUnconsciousAtZeroHp(next);
+  const defeated = next.deathTurns != null && next.deathTurns >= 10;
+  if (defeated) {
+    return { ...next, defeated: true };
+  }
+  if ((next.vida ?? 0) > 0) {
+    return { ...next, defeated: undefined };
+  }
+  return { ...next, defeated: undefined };
 }
 
 const HP_BAR_GRAPHITE = "rgb(58, 58, 60)";

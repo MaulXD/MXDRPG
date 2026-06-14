@@ -1,6 +1,7 @@
 ﻿import { formatAttackChatDetail, resolveCombatAction } from "@/lib/combat/attack";
 import { prepareCombatToken, syncActorPaFromToken } from "@/lib/combat/combat-token-pa";
-import { applyPaSpend } from "@/lib/combat/pa-turn";
+import { spendPaForRoomAction } from "@/lib/combat/pa-spend-room";
+import { checkEstribilhoLimit, recordEstribilhoCast } from "@/lib/combat/estribilho";
 import { markActionRechargeUsed } from "@/lib/combat/recharge";
 import {
   formatAreaSpellChatDetail,
@@ -56,11 +57,17 @@ export async function executeRoomAreaSpell(
     return { ok: false, error: "Magia não é de área" };
   }
 
+  if (opts.entryId) {
+    const lim = checkEstribilhoLimit(caster, opts.entryId);
+    if (!lim.ok) return { ok: false, error: lim.reason };
+  }
+
   const turn = {
     activeTokenId: activeTokenId(room.combat),
     bypassTurn: opts.bypassTurn,
     combatRound: room.combat.round,
     combatHasOrder: Boolean(room.combat?.order?.length),
+    combatActive: room.settings.combatActive,
   };
 
   const actorRacas: Record<string, string | undefined> = {};
@@ -104,7 +111,10 @@ export async function executeRoomAreaSpell(
   }
 
   const spentCaster = markActionRechargeUsed(
-    applyPaSpend(caster, areaResult.paCost, { actionKind: "spell" }),
+    recordEstribilhoCast(
+      spendPaForRoomAction(room, caster, areaResult.paCost, { actionKind: "spell" }),
+      opts.entryId ?? ""
+    ),
     action,
     room.combat.round
   );

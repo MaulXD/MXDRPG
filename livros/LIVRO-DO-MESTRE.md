@@ -21,7 +21,7 @@ Cada bioma tem ambiente, perigos e fauna proprios. Ao montar um andar, o Mestre 
 | `CATALOGO-OBJETOS-DE-CENARIO.md` | OBJ-G + OBJ-B01–B20 para montar mapas |
 | `REGRAS-ECOLOGIA-DE-SOBREVIVENCIA.md` | Tres vias (planta / monstro / objeto), pressao ambiental |
 | `CAPITULO-5B-FLORA-DE-ELDARIN.md` | 40 plantas — efeitos 24h |
-| `SUPLEMENTO-BIOMAS-VERTICAIS-LUZ-E-BRASAS.md` | Biomas 9/12 verticais; 12 escuro sem tocha; Brasas; truque Calor de Panela |
+| `SUPLEMENTO-BIOMAS-VERTICAIS-LUZ-E-BRASAS.md` | Biomas 9/12 verticais; escuro sem tocha; cozinha automática + Kit de Brasas |
 | `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` | ESP/MIN/TES; saque 001–060; forrageio por bioma; OBJ-R |
 
 **Principio:** plantas do bioma e carne de monstro **nativo** concedem adaptacao ao ambiente (ex.: Mar de Prata — respirar agua via Guelras após prato de tubarao ou sereia; algas #12 ajudam visao e nado, não substituem guelras).
@@ -84,7 +84,7 @@ Ingredientes Tipicos: Carne de Grifo, Penas de Voo, Asa de Wyvern, Membrana de M
 
 ### BIOMA 10 — PANTANO DA DECOMPOSICAO *(bolsoes sem fogo aberto)*
 Ambiente: Fossa que recebe todo o esgoto do mundo acima. Lagoas quimicas de cores vibrantes (verde ácido, roxo toxico, laranja bioluminescente). Bolhas de gas constantes. Cheiro insuportavel. Chao instavel de lama orgânica.
-Perigos: Ácidos nas lagoas (dano passivo sem protecao), gases letais em bolsoes, afundamento na lama. **Tocha/fogueira/Chama de Fogareiro** em bolsoes de gas: CON CD 13 ou 2d6 fogo. Cozinha: **Calor de Panela** ou **Kit de Brasas Magicas** (Jogador 16.2.1).
+Perigos: Ácidos nas lagoas (dano passivo sem protecao), gases letais em bolsoes, afundamento na lama. **Tocha/fogueira/chama aberta** em bolsoes de gas: CON CD 13 ou 2d6 fogo. Cozinha: **Kit de Brasas** (Jogador 5.2.1 e 16.2.1).
 Fauna Nativa: Amorfos (Slimes Corrosivos, Pudins Negros, Geleias de todas as cores), Aquaticos (Sapos-Engolidor, Serpentes do Abismo), Insetoides (Moscas-Carnica em enxames massivos, Centopeias Causticas).
 Ingredientes Tipicos: Ácido de Slime, Nucleo de Pudim, Glandula Digestiva de Mosca, Suco de Planta Carnivora.
 
@@ -96,7 +96,7 @@ Ingredientes Tipicos: Fluido Mental, Eco de Intencao, Pergaminho Arcano (tempero
 
 ### BIOMA 12 — NINHO CREPUSCULAR *(vertical + escuridao sem tocha)*
 Ambiente: Abismo vertical forrado apenas por seda cinza. Nao ha chao ou paredes visiveis — apenas teias em camadas. Ovos do tamanho de carruagens pendurados em cachos. Silencio perturbador interrompido por sons de coisas se movendo nas teias.
-Perigos: Teia adesiva (movimento reduzido, teste de Força para sair), ovos que eclodem ao menor som alto, perda de orientacao. **Escuridao profunda** (Percepção -6/-8). **Proibido:** tocha, lanterna de oleo, fogueira, **Chama de Fogareiro** (detonacao 2d6). **Camada 2+** exige voo/planagem ou negociar teia. Cozinha: **Calor de Panela** / **Brasas Magicas** apenas. Ver supplemento vertical/luz.
+Perigos: Teia adesiva (movimento reduzido, teste de Força para sair), ovos que eclodem ao menor som alto, perda de orientacao. **Escuridao profunda** (Percepção -6/-8). **Proibido:** tocha, lanterna de oleo, fogueira, **Brasa Espectral** (detonacao 2d6). **Camada 2+** exige voo/planagem ou negociar teia. Cozinha: **Kit de Brasas** (Cap. 5.2.1). Ver supplemento vertical/luz.
 Fauna Nativa: Aracnideos (Super-Aranhas, Matriarcas Tecerrochas, Aranha-Cavaleira), Parasitas (Vermes, Larvas de tamanhos variados), Insetoides (Besouros parasitarios).
 Ingredientes Tipicos: Seda de Matriarca, Veneno Concentrado, Ovos de Aranha (nutritivos), Casulo de Proteina.
 

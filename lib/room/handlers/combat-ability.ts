@@ -9,7 +9,7 @@ import { abilityFromEntry } from "@/lib/combat/compendium-actions";
 import { monsterCombatActions } from "@/lib/vtt/monster-actions";
 import { prepareCombatToken, syncActorPaFromToken } from "@/lib/combat/combat-token-pa";
 import { spendChi } from "@/lib/combat/chi-economy";
-import { applyPaSpend } from "@/lib/combat/pa-turn";
+import { spendPaForRoomAction } from "@/lib/combat/pa-spend-room";
 import { markActionRechargeUsed } from "@/lib/combat/recharge";
 import { enrichBuffsWithTimedEffects } from "@/lib/combat/timed-effects";
 import { getEntry } from "@/lib/compendium/registry";
@@ -66,7 +66,7 @@ function applyAbilityToRoom(
   let spent = attackerBefore;
   if (attackerBefore && resolved.paCost > 0) {
     spent = markActionRechargeUsed(
-      applyPaSpend(attackerBefore, resolved.paCost, { actionKind: "ability" }),
+      spendPaForRoomAction(room, attackerBefore, resolved.paCost, { actionKind: "ability" }),
       action,
       room.combat.round
     );
@@ -217,6 +217,7 @@ export async function executeRoomAbility(
     bypassTurn: opts.bypassTurn,
     combatRound: room.combat.round,
     combatHasOrder: Boolean(room.combat?.order?.length),
+    combatActive: room.settings.combatActive,
   };
 
   if (action.selfTarget) {

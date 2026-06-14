@@ -3,7 +3,7 @@
 
 > Regras, personagem, combate, culinária biomágica, magia. Bestiário e masmorras: *Livro do Mestre*.
 
-**Pontos principais (mesa digital):** combate por **Pontos de Acao (PA)** — inspirado em **Divinity: Original Sin 2** — **recuperacao fixa 5 PA/turno** (talentos podem alterar); **acumula ate 9 PA** no pool se nao gastar; **sem teto de gasto no turno** (bonus de PA permitem gastar mais no mesmo turno); **ataque basico 2 PA**; magias em **1, 2 ou 3 PA** com **recarga** seletiva (`§3.1.1.3–4`); **monstros 6 PA**, **bosses 9 PA**; movimento por faixas (`walk`/`run`); **Atordoado** zera PA; **PA zerado** encerra o turno automaticamente no VTT (`Cap. 2.6`, `Cap. 3.1`).
+**Pontos principais (mesa digital):** combate por **Pontos de Acao (PA)** — inspirado em **Divinity: Original Sin 2** — **recuperacao 5 PA/turno**; **pool ate 9 PA**; **grid quadrado** (1 célula = 1,5 m); **estribilhos** (magias nv. 0) **1 PA**, max. **2 iguais/turno**; **ataque 2 PA**; acoes rapidas de classe em geral **1 PA** (sem slot de acao bonus); **modo combate** ligado pelo mestre; fora de combate: **movimento e magias sem PA** (`Cap. 2.6`, `Cap. 3.1`).
 
 ---
 
@@ -185,7 +185,7 @@ O **nivel do personagem** (1–20) segue o **nivel dos monstros** do bestiário.
 
 ### 2.6 Pontos de Acao (PA) — mesa digital
 
-**PA** medem quantas acoes taticas o personagem executa **no proprio turno** antes de passar a iniciativa. O modelo segue **Divinity: Original Sin (DOS)**: cada acao relevante gasta PA; **sobra nao some** ao passar o turno; no **inicio do seu turno** voce recupera PA **base** somados ao que ficou no pool (com teto). Movimento de hex **reinicia** a cada turno.
+**PA** medem quantas acoes taticas o personagem executa **no proprio turno** antes de passar a iniciativa. O modelo segue **Divinity: Original Sin (DOS)**: cada acao relevante gasta PA; **sobra nao some** ao passar o turno; no **inicio do seu turno** voce recupera PA **base** somados ao que ficou no pool (com teto). Movimento no **grid** **reinicia** a cada turno (em **modo combate** na mesa digital).
 
 #### Pool, recuperacao e Atordoado (estilo DOS 2)
 
@@ -219,7 +219,7 @@ IDs no VTT: `data/character/pa-modifiers.json` (`passivePa`, `onKillPa`).
 |-------|--------|
 | **PA padrao** | Monstros comuns e mini-boss: **6 PA** |
 | **Boss** | **9 PA** |
-| **Movimento** | Mesmas **faixas por hex** que personagens, usando `walk` e `run` do bloco do monstro (ex. walk 4, run 7: hex 1–2 → 1 PA; 3–5 livres; do 6º → PA de corrida) |
+| **Movimento** | Mesmas **faixas por célula** que personagens, usando `walk` e `run` do bloco do monstro (ex. walk 4, run 7: células 1–2 → 1 PA; 3–5 livres; do 6º → PA de corrida) |
 | **Visibilidade** | Jogadores **nao veem** PA de monstros na mesa; o mestre ve e controla |
 
 O *Livro do Mestre* descreve ameaca e tier; o JSON `data/compendiums/monstros.json` e o VTT aplicam estes valores. **Tamanho no grid** (`tactical.tamanho`: `small` … `colossal`) vem de `data/monster-tamanhos.json` — alinhado ao SRD (goblin Pequeno, minotauro Grande, dragão ancião Imenso, etc.); ver **§3.1.3.1**.
@@ -229,10 +229,11 @@ O *Livro do Mestre* descreve ameaca e tier; o JSON `data/compendiums/monstros.js
 | Tipo | Custo tipico |
 |------|----------------|
 | Ataque com arma | **2 PA** por golpe (padrao; compendio pode variar) |
-| Magia | **1, 2 ou 3 PA** conforme poder (`§3.1.1.3`); truques e utilitarios em geral **1 PA** |
-| Habilidade de classe / trilha | **1–3 PA** no compendio; algumas com **recarga** (`§3.1.1.4`) |
-| **Movimentacao basica** (VTT) | **Faixas por hex** no turno (valores `walk` / `run` da ficha ou monstro): **1º bloco** (min. 2 hex, ou 1 se walk=1) → **1 PA**; **faixa livre** ate o hex anterior à corrida → **0 PA**; **corrida** a partir do hex **walk+2** (max. `run`) → **+1 PA a cada 2 hex** (ou 1 PA/hex se sobra 1 hex de corrida) |
-| Orcamento de hex | **Caminhada** ate `walk`; **corrida** ate `run` — ex. walk **4**, run **7**: hex **1–2** → 1 PA; **3–5** livres; do **6º** em diante → PA de corrida |
+| Magia | **1, 2 ou 3 PA** conforme poder (`§3.1.1.3`); **estribilhos** (nv. 0) em geral **1 PA** |
+| Habilidade de classe / trilha | **1–3 PA** no compendio (ex-acoes rapidas de classe: em geral **1 PA**); algumas com **recarga** (`§3.1.1.4`) |
+| **Movimentacao basica** (VTT, modo combate) | **Faixas por célula** no turno (valores `walk` / `run` da ficha ou monstro): **1º bloco** (min. 2 células, ou 1 se walk=1) → **1 PA**; **faixa livre** ate a célula anterior à corrida → **0 PA**; **corrida** a partir da célula **walk+2** (max. `run`) → **+1 PA a cada 2 células** (ou 1 PA/célula se sobra 1 célula de corrida) |
+| Orcamento de células | **Caminhada** ate `walk`; **corrida** ate `run` — ex. walk **4**, run **7**: células **1–2** → 1 PA; **3–5** livres; do **6º** em diante → PA de corrida |
+| Ajudar / Evadir / Disparada (VTT v1) | **1 PA** cada |
 
 Regras completas, exemplos de turno e tabelas de talentos: **Cap. 3.1** e **Cap. 12.0**. Referencia tecnica do VTT: `data/character/pa-modifiers.json`.
 
@@ -244,43 +245,43 @@ Regras completas, exemplos de turno e tabelas de talentos: **Cap. 3.1** e **Cap.
 
 ### 3.1 Sequencia de Turno
 
-1. Rolagem de Iniciativa: 1d20 + MOD DES. Ordem decrescente.
-2. Acao: Atacar, conjurar magia, usar item, Ajudar, Evadir, Correr.
-3. Acao Bonus: Habilidades especificas de classe ou raca.
-4. Movimento: Ate o valor de deslocamento base (normalmente 9m).
-5. Reacao: Uma por turno, em resposta a gatilhos especificos.
+1. **Iniciativa:** 1d20 + MOD DES. Ordem decrescente. **Empate:** d100 ate desempatar (rolagem so para iniciativa).
+2. **Turno do personagem (mesa digital):** todas as acoes — atacar, conjurar, mover, ajudar, evadir, itens, habilidades — **gastam PA** conforme o compendio (`Cap. 2.6`). Nao existe slot separado de “acao bonus”: o que antes era acao rapida de classe custa em geral **1 PA**.
+3. **Movimento:** integrado ao gasto de PA por **faixas de células** (`walk`/`run`) no modo combate; fora de combate, movimento **livre sem PA** (`§3.1.4`).
+4. **Reacao:** uma por rodada, em resposta a gatilhos (`§3.1.5`). Em combate, reacoes **gastam PA** ou geram **debito** de 1 PA na recuperacao do proximo turno se o pool estiver vazio.
 
-**Mesa digital (VTT):** turnos usam **Pontos de Acao (PA)** (`Cap. 2.6`), no estilo **DOS**. No inicio do seu turno voce soma **PA base** ao que sobrou no pool (com teto). **Movimento, ataque, magia e habilidade** gastam PA conforme o compendio; **movimento basico = 1 PA**. Se o token ativo **esgota PA** (chega a 0), o VTT **passa o turno** automaticamente apos breve pausa (~1,5 s), salvo **Atordoado** (que ja zera o pool no inicio do turno).
+**Mesa digital (VTT):** turnos usam **Pontos de Acao (PA)** (`Cap. 2.6`), no estilo **DOS**. No inicio do seu turno voce soma **PA base** ao que sobrou no pool (com teto). Se o token ativo **esgota PA** (chega a 0), o VTT **passa o turno** automaticamente apos pausa **configuravel pelo mestre** (padrao ~1,5 s), salvo **Atordoado** (que zera o pool no inicio do turno).
 
 ### 3.1.1 Economia de PA (mesa digital)
 
 | Regra | Valor |
 |-------|--------|
-| Recuperacao por turno | **5 PA** (fixo; talentos alteram) |
+| Recuperacao por turno | **5 PA** (fixo; talentos alteram; **debito de reacao** reduz em 1) |
 | Acumulo no pool | Ate **9 PA** entre turnos |
 | Gasto no turno | **Sem teto** — bonus podem permitir gastar bem mais no mesmo turno |
-| Ataque / magia / habilidade | Custo no item (`custoPontosAcao`; padrao **2 PA**) |
-| Movimentacao basica (VTT) | **Faixas** conforme `walk`/`run` (1º bloco = 1 PA; meio livre; corrida depois) |
+| Ataque / magia / habilidade | Custo no item (`custoPontosAcao`; padrao **2 PA** para arma) |
+| Movimentacao basica (VTT, combate) | **Faixas** conforme `walk`/`run` (1º bloco = 1 PA; meio livre; corrida depois) |
 | Monstros (VTT) | **6 PA** (comum/mini); **9 PA** (boss) |
 | PA nao gastos (fim do turno) | **Permanecem no pool** (max. **9**); proximo turno **+5** recuperacao |
 | Atordoado | **Perde** todo PA acumulado |
-| Guerreiro nv. 5+ | Cada golpe de **Ataque Extra** custa **1 PA** (excecao; demais ataques com arma seguem o custo do item, em geral **2 PA**) |
+| Guerreiro nv. 5+ | Cada golpe de **Ataque Extra** custa **2 PA** (como ataque normal). **Talentos** podem reduzir PA em **1 ou 2 golpes**, **1× por turno** |
 | Mago, Clérigo, Druida, Bardo, Feiticeiro nv. 5+ | **Afinidade Arcanica** — **1ª magia** do turno com custo **2+ PA**: **−1 PA** (min. 0) |
-| Monstros (VTT) | Custo por acao no compendio (muitas mordidas/garras **1 PA**); pool minimo **6 PA** |
-| Cantrips / utilitarios | Truques e rituais de apoio em geral **1 PA** no compendio |
-| Fim do turno (VTT) | **PA = 0** → passagem automatica de turno (~1,5 s) |
+| **Estribilhos** (magias nv. 0) | **1 PA**; maximo **2 conjuracoes do mesmo estribilho por turno** |
+| Acoes rapidas (ex-acao bonus) | Em geral **1 PA**; ex.: **Segundo Folego** — **1 PA**, **1× por combate** |
+| Ajudar / Evadir / Disparada | **1 PA** cada (v1 VTT) |
+| Fim do turno (VTT) | **PA = 0** → passagem automatica de turno (delay configuravel) |
 
 #### 3.1.1.1 Areas na mesa digital (VTT)
 
-No site, magias e habilidades de **area** usam hex (1 hex = 1,5 m). O mestre ou jogador escolhe o **centro** (e a **direcao**, em cone ou linha); o VTT mostra os hex afetados antes de gastar PA.
+No site, magias e habilidades de **area** usam o **grid quadrado** (**1 célula = 1,5 m**). O mestre ou jogador escolhe o **centro** (e a **direcao**, em cone ou linha); o VTT mostra as **células** afetadas antes de gastar PA. Se um **aliado** estiver na area, **confirmacao obrigatoria** (friendly fire).
 
 | Forma no VTT | Exemplo no livro | Parametro tipico |
 |--------------|------------------|------------------|
-| **burst** (raio) | Bola de Fogo, raio 6 m | `radiusHex` (6 m ≈ 4 hex) |
-| **wall** (muralha) | Muralha Hexagonal | `hexCount` em hex adjacentes |
-| **cone** | Maos Gelidas, cone | `lengthHex` + direcao |
-| **line** (linha) | Relampago em linha, Ventania | `lengthHex` + direcao |
-| **single** | Raio Arcano em um alvo | 1 hex |
+| **burst** (raio) | Bola de Fogo, raio 6 m | `radiusCells` (6 m ≈ 4 células) |
+| **wall** (muralha) | Muralha | `cellCount` em células adjacentes |
+| **cone** | Maos Gelidas, cone | `lengthCells` + direcao |
+| **line** (linha) | Relampago em linha, Ventania | `lengthCells` + direcao |
+| **single** | Raio Arcano em um alvo | 1 célula |
 
 Detalhe tecnico e pipeline livro → JSON: `docs/VTT-ACOES-PA-AREAS.md`.
 
@@ -322,7 +323,7 @@ O custo em PA **nao** espelha o nivel de espaco de magia do grimorio — e o **f
 | **Moderado** | **2 PA** | Dano ou controle nv. 1–2 (Maos Gelidas, Onda de Trovao); animacao, ventania, sono; salto dimensional |
 | **Pesado** | **3 PA** | Burst (Bola de Fogo, Relampago, Cone de Frio); CC forte; cura em massa; magias nv. 5–9 de impacto alto |
 
-**Distribuicao no compendio (64 magias):** **25× 1 PA**, **16× 2 PA**, **23× 3 PA**. Tabela nome a nome: **Parte X, §17.6** (`_parte_x_magias_v4_revisada.md`).
+**Distribuicao no compendio (61 magias):** **21× 1 PA**, **17× 2 PA**, **23× 3 PA**. Tabela nome a nome: **Parte X, §17.6** (`_parte_x_magias_v4_revisada.md`).
 
 #### 3.1.1.4 Recarga (mesa digital)
 
@@ -338,16 +339,16 @@ O seletor de magias/habilidades na mesa exibe a tag quando aplicavel. Sem tag = 
 ### 3.1.2 Exemplos de turno (PA)
 
 **Guerreiro nv. 5 (6 PA), espada, Ataque Extra (2 golpes):**
-1. Caminhar 4 hex → 0 PA (restam 6 PA).
-2. Atacar inimigo adjacente (2 golpes) → **2 PA** (restam 4 PA).
-3. *Investida do Guerreiro* (habilidade 1 PA) → 1 PA (restam 3 PA).
-4. Guardar 3 PA para o proximo turno (volta a 6 PA).
+1. Caminhar 4 células → 0 PA (restam 6 PA).
+2. Atacar inimigo adjacente (2 golpes) → **4 PA** (2 PA cada; restam 2 PA). *Com talento de reducao:* primeiro golpe **1 PA**, segundo **2 PA** → total **3 PA**.
+3. *Investida do Guerreiro* (habilidade 1 PA) → 1 PA (restam 1 PA).
+4. Guardar 1 PA para o proximo turno (volta a 6 PA).
 
 **Mago nv. 5 (6 PA), *Chama Controlada* (nv. 4), Bola de Fogo (3 PA no compendio):**
 1. Correr alem da caminhada → 1 PA (restam 5 PA).
 2. Bola de Fogo (1ª magia do turno) → 3 − 1 (fogo) − 1 (Afinidade) = **1 PA** (restam 4 PA).
-3. Truque *Raio Arcano* (habilidade 1 PA) → 1 PA (restam 3 PA).
-4. Segunda magia no mesmo turno → custo integral (ex. Relampago **3 PA**); sobram 0 PA → VTT passa o turno.
+3. Estribilho *Raio Arcano* (1 PA) → 1 PA (restam 3 PA). Segundo *Raio Arcano* no mesmo turno → **1 PA** (limite: 2 iguais). Terceiro *Raio Arcano* → **bloqueado** ate o proximo turno.
+4. Segunda magia nv. 1+ no mesmo turno → custo integral (ex. Relampago **3 PA**); sobram 0 PA → VTT passa o turno.
 
 **Clérigo nv. 10 (7 PA), sem talentos de reducao:**
 1. Magia 2 PA → Afinidade → **1 PA**.
@@ -375,6 +376,42 @@ Cada token ocupa **uma ou mais células** conforme o tamanho corporal. A escala 
 
 - **Grande+** usa **bloco quadrado** com **âncora no canto NW** (célula `q,r` do token); invocação **Elite** não altera tamanho; **Colossal** sobe **um degrau** (ex. Grande → Gigante).
 - O token na mesa escala visualmente com o tamanho; bloqueio de movimento e alcance consideram **todas as células** ocupadas.
+
+### 3.1.4 Modos da mesa: exploracao e combate (VTT)
+
+| Modo | Quem liga | Movimento | PA | Magias | Iniciativa |
+|------|-----------|-----------|-----|--------|------------|
+| **Exploracao** | Mestre (padrao ao abrir sala) | **Livre**, sem PA | Nao gastam | **Nao gastam PA** | Nao ha ordem de turno |
+| **Combate** | Mestre | Faixas `walk`/`run`, custo PA | Gastam conforme `Cap. 2.6` | Gastam PA | **1d20 + DES**; ver `§3.1.5` |
+
+- **Entrada tardia em combate:** quem entra na cena **depois** da iniciativa rola e entra na ordem, mas so **age no fim da rodada atual**; na **rodada seguinte** age na vez normal.
+- **Ataque de oportunidade fora de combate:** **nao gasta PA** (reacao narrativa/VTT).
+
+### 3.1.5 Reacoes (VTT v1)
+
+| Reacao | Gatilho tipico | PA |
+|--------|----------------|-----|
+| **Ataque de oportunidade** | Inimigo sai do alcance corpo a corpo sem Disparada/Evadir | **1 PA** em combate; **0 PA** fora de combate |
+| **Escudo** (magia) | Acerto contra voce | Custo da magia |
+| **Contramagica** | Inimigo conjura ao alcance | Custo da magia |
+
+- **1 reacao por rodada** por personagem.
+- Se nao houver PA no pool ao reagir **em combate**: **debito** — no **inicio do proximo turno** recupera **4 PA** em vez de 5 (1 PA emprestado).
+- Reacoes **Escudo** e **Contramagica** seguem custo PA da magia no compendio.
+
+### 3.1.6 Inconsciencia e morte (VTT)
+
+| Regra | Valor |
+|-------|--------|
+| **0 HP** | **Inconsciente** imediato (sem testes de morte por dano) |
+| **Contador** | Ao cair em 0 HP, contador de morte inicia em **−1** (dano extra nao reduz abaixo disso) |
+| **Sem cura** | A cada **rodada** sem qualquer cura no inconsciente, contador sobe **+1** |
+| **Morte** | Ao atingir **10** no contador → **morto** |
+| **Estabilizar / cura** | Qualquer cura zera o contador e acorda com HP curado |
+
+**XP (mesa digital):** ao **derrotar** um token inimigo, XP distribui automaticamente (`100 × ameaca`, Cap. 2.5). O mestre pode **desativar XP de monstros**, conceder **XP manual ao grupo**, ou **subir 1 nivel a todos**.
+
+**Desfazer (mestre):** checkpoint das ultimas **20 rodadas**; restauracao gera aviso visivel no chat.
 
 ### 3.2 Ataques
 
@@ -424,7 +461,7 @@ Efeitos de habilidades e posturas recebem duracao automatica na mesa. O contador
 | Forma selvagem | Transformacao no movimento | 1 turno |
 | Tiro certeiro | Vantagem no proximo ataque a distancia | 1 turno (ou ate o ataque) |
 | Inspiracao | Vantagem no proximo ataque do aliado | 1 turno (ou ate o ataque) |
-| Reflexos | Desloca 1 hex como reacao | 1 turno (ou ate usar) |
+| Reflexos | Desloca 1 célula como reacao | 1 turno (ou ate usar) |
 | Marca / Marca do cacador | Bonus ou vantagem contra alvo marcado | 1 turno (ou ate atacar o alvo) |
 | Finta | Desvantagem no proximo ataque do alvo | 1 turno (ou ate o ataque) |
 | Dano extra (ex.: golpe divino) | Dado extra no proximo acerto | 1 turno (ou ate acertar) |
@@ -473,7 +510,7 @@ Cada traço racial segue o mesmo formato usado nas classes (ex.: **Fúria** do B
 
 | Campo | Significado |
 |-------|-------------|
-| **Gatilho** | Quando a habilidade pode ser usada (passivo, reação, ação/ação bônus, 1×/dia, etc.). |
+| **Gatilho** | Quando a habilidade pode ser usada (passivo, reação, ação/ação rápida (**1 PA**), 1×/dia, etc.). |
 | **Duração** | Turnos, minutos, horas ou permanente. |
 | **Efeito** | Bônus, resistências, Vantagem, dano extra, imunidades. |
 | **Na mesa** | Papel tático — tank, scout, suporte, economia de PA, culinária, etc. |
@@ -648,7 +685,7 @@ Cada traço racial segue o mesmo formato usado nas classes (ex.: **Fúria** do B
 
 **Habilidades Comuns a Todos os Meio-Humanos:**
 
-**Herança Bestial:** *Gatilho:* ação bônus. *Recarga:* 1× por dia. *Duração:* 1 minuto (10 rodadas). *Efeito:* ativa o **Instinto** da linhagem (lista abaixo em cada linhagem) — bônus de combate temporários que transformam o personagem em predador. *Na mesa:* botão de “modo combate” racial, comparável em cadência à **Fúria** do Bárbaro, mas com efeitos únicos por animal; use no burst de dano ou para reposicionar (velocidade, voo, visão).
+**Herança Bestial:** *Gatilho:* ação rápida (**1 PA**). *Recarga:* 1× por dia. *Duração:* 1 minuto (10 rodadas). *Efeito:* ativa o **Instinto** da linhagem (lista abaixo em cada linhagem) — bônus de combate temporários que transformam o personagem em predador. *Na mesa:* botão de “modo combate” racial, comparável em cadência à **Fúria** do Bárbaro, mas com efeitos únicos por animal; use no burst de dano ou para reposicionar (velocidade, voo, visão).
 
 **Olfato Aguçado:** *Passivo.* *Efeito:* detecta criaturas ocultas ou camufladas pelo cheiro num raio de 9 m (sem teste). *Na mesa:* counter de invisibilidade e emboscada; sinergia com Ladino e atiradores que precisam revelar alvos.
 
@@ -694,7 +731,7 @@ Atributos: +2 DES, +1 INT. Tracos Fisicos: Pupilas elipticas douradas, lingua li
 
 **Flexibilidade Óssea:** *Passivo.* *Efeito:* passa por aberturas de 15 cm; imune a agarramento. *Na mesa:* infiltração extrema e escape de grapple — não fica preso no tanque inimigo.
 
-**Veneno Natural:** *Ação bônus (mordida).* *Efeito:* +1d4 veneno; CD 12 CON ou Envenenado 1 h (CD sobe com marcos). *Na mesa:* DPS gradual e debuff em alvo único; combina com agarramento da Constrição (nv. 8).
+**Veneno Natural:** *Ação rápida (**1 PA**) (mordida).* *Efeito:* +1d4 veneno; CD 12 CON ou Envenenado 1 h (CD sobe com marcos). *Na mesa:* DPS gradual e debuff em alvo único; combina com agarramento da Constrição (nv. 8).
 
 **Instinto (Herança Bestial):** *Durante 1 min.* *Efeito:* visão térmica 18 m atravessa paredes. *Na mesa:* wallhack tático — coordena ataques à distância e magias de área sem visão direta.
 
@@ -704,7 +741,7 @@ Atributos: +2 DES, +1 INT. Tracos Fisicos: Pupilas elipticas douradas, lingua li
 |-------|-------|
 | 4 | Veneno Aprimorado — CD aumenta para 14, duração para 2 horas |
 | 8 | Constricao — em agarramento, causa 2d6 de esmagamento automaticamente por turno |
-| 12 | Desprendimento — pode sair de qualquer restricao como ação bonus, sem teste |
+| 12 | Desprendimento — pode sair de qualquer restricao como ação rápida (**1 PA**), sem teste |
 | 16 | Veneno Paralisante — o veneno causa Paralisia por 1 turno (CD 17) |
 | 20 | Olhar de Hipnose — como acao, forca SAB CD 16 ou alvo fica Encantado por 1 minuto |
 
@@ -744,13 +781,13 @@ Atributos: +2 DES, +2 FOR (substituem o +1 CON base). Tracos Fisicos: Listras ti
 
 **Habilidades da linhagem:**
 
-**Mordida de Tigre:** *Ação bônus.* *Efeito:* 2d8+FOR perfurante + agarramento automático. *Na mesa:* abertura de combo — morde e segura; alimenta Rip and Tear (nv. 12) e Investida (nv. 8).
+**Mordida de Tigre:** *Ação rápida (**1 PA**).* *Efeito:* 2d8+FOR perfurante + agarramento automático. *Na mesa:* abertura de combo — morde e segura; alimenta Rip and Tear (nv. 12) e Investida (nv. 8).
 
 **Explosão Muscular:** *Gatilho:* 1× por turno. *Efeito:* dobra deslocamento naquele turno. *Na mesa:* reposicionamento explosivo para flanco ou retirada; gasta pouco PA se movimento for separado de ataque.
 
 **Velocidade Felina:** *Passivo.* *Efeito:* deslocamento base 12 m (em vez de 9 m). *Na mesa:* sempre na melhor posição de flanco; ativa Investida Fulminante com menos PA.
 
-**Instinto (Herança Bestial):** *Durante 1 min.* *Efeito:* velocidade 18 m; 1 ataque extra como ação bônus por turno; primeira mordida causa **dano triplo**. *Na mesa:* assassino de alvo único — alpha strike no início do estado; parecido com Fúria + Ataque Extra, mas 1×/dia.
+**Instinto (Herança Bestial):** *Durante 1 min.* *Efeito:* velocidade 18 m; 1 ataque extra como ação rápida (**1 PA**) por turno; primeira mordida causa **dano triplo**. *Na mesa:* assassino de alvo único — alpha strike no início do estado; parecido com Fúria + Ataque Extra, mas 1×/dia.
 
 **Resistência:** *Passivo.* *Efeito:* Vantagem contra lentidão e redução de velocidade. *Na mesa:* ignora terreno difícil mágico e web; mantém pressão no alvo.
 
@@ -828,7 +865,7 @@ Atributos: +2 FOR, +1 CON. Tracos Fisicos: Dentes levemente mais duros, pele com
 
 **Natação Perfeita:** *Passivo.* *Efeito:* nado 15 m; respiração subaquática indefinida; sem penalidade em combate aquático. *Na mesa:* dono de cenários inundados — única linhagem que não sofre em água.
 
-**Mordida Dilacerante:** *Ação bônus.* *Efeito:* 2d8+FOR perfurante; em crítico, hemorragia 3d6/turno até cauterizar. *Na mesa:* bleed stack em alvo único; pressão constante de PA inimigo em cura.
+**Mordida Dilacerante:** *Ação rápida (**1 PA**).* *Efeito:* 2d8+FOR perfurante; em crítico, hemorragia 3d6/turno até cauterizar. *Na mesa:* bleed stack em alvo único; pressão constante de PA inimigo em cura.
 
 **Instinto (Herança Bestial):** *Durante 1 min.* *Efeito:* Frenesi ativa em alvos < 75% HP; mordida causa **dano dobrado**. *Na mesa:* modo caçador — ative quando boss já foi erosionado; burst de finalização.
 
@@ -907,7 +944,7 @@ Metabolismo Focado — Apos uma Refeicao Comum ou melhor, ganha Vantagem em test
 **PA (VTT):** nv. 5+ cada golpe de arma na acao de Ataque custa **1 PA** (nao um unico PA para todos os golpes). Talentos: Cap. 12.0 (Guerreiro).
 
 **Habilidades Base:**
-- Segundo Folego (Nivel 1): Como ação bonus, recupera 1d10 + Nivel do Guerreiro em HP. 1 uso por descanso curto.
+- Segundo Folego (Nivel 1): Como acao rapida (**1 PA**), recupera 1d10 + Nivel do Guerreiro em HP. **1× por combate** (VTT).
 - Estilo de Combaté (Nivel 1): Escolha um: Duelo (+2 dano com arma de uma mao), Grande Arma (rolar dano minimo duas vezes, usar maior), Protecao (reacao: impoe Desvantagem a ataques contra aliado adjacente), Arqueria (+2 em ataques a distancia).
 - Golpe de Veterano (Nivel 14): Acertos críticos em 19 ou 20.
 - Campeao Implacável (Nivel 20): Uma vez por dia, pode declarar falha como sucesso num teste de resistência.
@@ -1025,9 +1062,9 @@ Proficiencias: Armaduras leves e medias (não pesadas), escudos, todas as armas
 Atributos Culinarios Iniciais: Fortitude +4, Extração +2
 
 **Bônus Passivo de Sobrevivência (Nivel 1):**
-Sede de Sangue — Consumir carne crua ou o coracao de um monstro recem-abatido (ação bônus) cura 1d8+CON em HP e estende a duração da Furia em 2 turnos.
+Sede de Sangue — Consumir carne crua ou o coracao de um monstro recem-abatido (ação rápida (**1 PA**)) cura 1d8+CON em HP e estende a duração da Furia em 2 turnos.
 
-**Furia:** Como ação bonus, entra em Furia por 1 minuto. Durante a Furia: +2 dano em ataques de Forca, Vantagem em testes de Força e CON, resistência a dano contundente/cortante/perfurante. Usos: 2 no Nivel 1, crescendo com o nivel.
+**Furia:** Como ação rápida (**1 PA**), entra em Furia por 1 minuto. Durante a Furia: +2 dano em ataques de Forca, Vantagem em testes de Força e CON, resistência a dano contundente/cortante/perfurante. Usos: 2 no Nivel 1, crescendo com o nivel.
 
 **Subclasses do Bárbaro:**
 
@@ -1052,7 +1089,7 @@ Atributos Culinarios Iniciais: Forrageio +5, Coccao +2
 **Bônus Passivo de Sobrevivência (Nivel 1):**
 Harmonia de Sabores — Quando o Bardo come junto do grupo, a duração dos bônus de comida de todos os membros e estendida em 50%.
 
-**Inspiracao de Bardo:** Como ação bonus, concede 1d6 de Inspiracao a um aliado. O aliado pode adicionar esse dado a qualquer teste. Evolui de 1d6 para 1d12 conforme o nivel.
+**Inspiracao de Bardo:** Como ação rápida (**1 PA**), concede 1d6 de Inspiracao a um aliado. O aliado pode adicionar esse dado a qualquer teste. Evolui de 1d6 para 1d12 conforme o nivel.
 
 **Subclasses do Bardo:**
 
@@ -1133,7 +1170,7 @@ Respiração de Combate — Após descanso curto na masmorra, recupera **2 Chi e
 
 Punho do Limiar (Especialidade: Impacto e Predadores): Golpes desarmados +1d6; esquiva +2 por 8h após assimilação de feras.
 
-Tecelão do Vácuo (Especialidade: Fluxo e Distância): Passos não provocam ataques de oportunidade 1× por turno; mobilidade entre hex.
+Tecelão do Vácuo (Especialidade: Fluxo e Distância): Passos não provocam ataques de oportunidade 1× por turno; mobilidade entre célula.
 
 Asceta da Dor (Especialidade: Carne e Sangue): Pode converter PV em Chi (até 2 no combate); técnicas causam dano massivo e autoflagelo.
 
@@ -1269,6 +1306,22 @@ Apos matar um monstro, o grupo tem **1 hora** antes que a carne comece a degrada
 - Kit de Extração (do Feiticeiro): +2 em todos os testes, serve para Dificil.
 - Ferramentas Especializadas (orgânicas ou mágicas): Necessarias para Especialista.
 - Recipiente Magico Selado: Necessario para Espirituais e Elementais.
+
+### 5.2.1 Cozinha automática (sem magias)
+
+**Cozinhar não gasta PA nem espaço de magia.** No **descanso curto ou longo**, o grupo prepara refeições com testes de atributo culinário — magias de cozinha foram removidas do grimório de propósito.
+
+| Passo | Quem | Como |
+|-------|------|------|
+| **1. Extração** | Maior Extração (ou ferramentas) | Teste DES + prof. na hora (Cap. 5.2). **Mãos Estáveis** e **Marca da Caçada** ajudam, mas não são obrigatórias. |
+| **2. Calor** | Qualquer um com equipamento | Escolha **uma** fonte — sem conjuração: fogueira/tocha (bioma normal), **Kit de Brasas** ou **Panela Selada** (gás/escuro, Cap. 16.2.1), **Fogareiro Portátil**, **Núcleo de Chama**, ou ambiente quente (Bioma 4: CD de Coccao −2). |
+| **3. Coccao** | Maior Coccao do grupo | 1 teste INT + prof. (Cap. 5.3). Panelas e especiarias aplicam bônus de item. |
+| **4. Identificar** | Forrageio ou Anatomia | Ingrediente desconhecido: **Estudo de Anatomia** (vantagem após mapear espécie) ou Forrageio CD 12 — não exige magia. |
+| **5. Preservar** | Itens | **Recipiente Isotérmico** (48 h), **Cera de Mumia** (7 dias), **Frasco de Estase** (30 dias, Cap. 16.2). |
+
+**Refeição Gourmet (16+ em Coccao):** além dos efeitos de Cap. 5.3, o grupo ganha **+1 escolha** no d4 de assimilação (substitui a antiga magia de aprimoramento biomágico).
+
+**Comer cru:** Bárbaro (*Estômago Selvagem*), Druida (Ciclo da Vida) e Fortitude 4+ podem pular Coccao com penalidades do Mestre.
 
 ### 5.3 Qualidade da Refeicao
 
@@ -1942,7 +1995,7 @@ Em Eldarin, essa escolha tem custo e recompensa proprias. Sem o amparo de um deu
 - Autoconfianca: Uma vez por descanso longo, pode adicionar 1d6 a qualquer teste ANTES de rolar. Nao e sorte divina — e preparo proprio.
 - Metabolismo Puro: Mutacoes duram o dobro do tempo normal (48h em vez de 24h) — sem um deus "filtrando" a assimilação, o corpo absorve mais completamente.
 - Sem Saving Throw Religiosa: E imune a qualquer efeito de maldade ou bondade divina que exija falta de fe como CD adicional.
-- Orgulho Terreno: Ao chegar a 0 HP sem aliados vivos, pode gastar um Dado de Vida adicional como ação bonus.
+- Orgulho Terreno: Ao chegar a 0 HP sem aliados vivos, pode gastar um Dado de Vida adicional como ação rápida (**1 PA**).
 
 **Penalidade do Sem-Deus:** Sem a bencao de nenhuma divindade, o personagem não pode comprar servicos religiosos, não tem acesso a magias que exijam apelo divino acima do nivel 4, e sera tratado com desconfianca em cidades profundamente religiosas.
 
@@ -2049,7 +2102,7 @@ No **criador de personagem** (passo *Equipamento*), escolha **um kit** entre as 
 | **Guerreiro** | Lâmina leve + couro curtido · Espada longa + cota de malha · Arco longo + couro acolchoado |
 | **Patrulheiro** | Arco curto + couro · Gladius + gibão de peles · Rapieira + meia-armadura |
 | **Ladino** | Rapieira + couro · Adagas gêmeas + couro acolchoado · Arco curto (sem armadura pesada) |
-| **Mago** | Adaga + *Lâmina de Espírito* e *Chama de Fogareiro* · Besta leve + couro (*Raio do Limiar* no grimório) · Adaga + *Onda de Trovão* e *Escudo Arcano* |
+| **Mago** | Adaga + *Lâmina de Espírito* e *Brasa Espectral* · Besta leve + couro (*Raio do Limiar* no grimório) · Adaga + *Onda de Trovão* e *Escudo Arcano* |
 | **Clérigo** | Maça + meia-armadura + cura · Besta + couro + *Curar Ferimentos* · Azagaia + brigandina |
 | **Bárbaro** | Machado grande + gibão · Gladius + couro batido · Maça + couro curtido |
 | **Bardo** | Rapieira + couro + *Inspiração Culinária* · Adaga + couro acolchoado + *Sussurro de Masmorra* · Arco curto + *Ilusão Menor* |
@@ -2057,7 +2110,7 @@ No **criador de personagem** (passo *Equipamento*), escolha **um kit** entre as 
 | **Feiticeiro** | Adaga e *Lâmina de Espírito* · Besta e *Onda de Trovão* · Maça e *Chama de Vinha* |
 | **Espiritualista** | Punhos (sem arma) + *Golpe de Chi* · Bastão + *Passo do Vácuo* · Espada curta + *Ferida Aberta* |
 | **Paladino** | Espada longa + cota + *Curar Ferimentos* e *Raio do Limiar* · Maça + meia-armadura + cura e *Escudo Arcano* · Gladius + brigandina + *Purificar Veneno* |
-| **Bruxo** | Adaga + couro + *Raio do Limiar* e *Sussurro de Masmorra* · Cajado + couro acolchoado + *Chama de Fogareiro* · Besta + *Lâmina de Espírito* e *Ilusão Menor* |
+| **Bruxo** | Adaga + couro + *Raio do Limiar* e *Sussurro de Masmorra* · Cajado + couro acolchoado + *Brasa Espectral* · Besta + *Lâmina de Espírito* e *Ilusão Menor* |
 
 Na mesa virtual, troque arma ou armadura pelo painel **Em uso** na ficha; a CA é recalculada automaticamente ao equipar.
 
@@ -2298,11 +2351,11 @@ Ids em kebab-case no JSON (ex. `chama-controlada`).
 
 **Nv 4 — Corte Limpo:** Ataques contra feras e bestiais ignoram 3 pontos de CA. Acertos críticos causam sangramento (2d4 HP no inicio do turno do alvo, 3 turnos). Criaturas mortas por crítico rendem o triplo de porcoes de carne.
 
-**Nv 8 — Maestria Voraz (requer Corte Limpo):** +4 permanente em Extração ao processar feras. Como ação bonus, pode Extração um monstro bestial vivo acima de 25% HP — o alvo fica Atordoado 1 turno e perde 1d10 HP. Uma vez por combate.
+**Nv 8 — Maestria Voraz (requer Corte Limpo):** +4 permanente em Extração ao processar feras. Como ação rápida (**1 PA**), pode Extração um monstro bestial vivo acima de 25% HP — o alvo fica Atordoado 1 turno e perde 1d10 HP. Uma vez por combate.
 
 **Nv 12 — Abaté Perfeito (requer Maestria Voraz):** Uma vez por turno, se reduzir um inimigo a 0 HP com um único ataque corpo a corpo, todos os ingredientes da carcaca ficam intactos (qualidade superior automatica). Com 2+ ataques por ação (nv. 5+), pode declarar qual ataque e o "abate" antes de rolar.
 
-**Nv 16 — Sangue de Predador (requer Abaté Perfeito):** Como ação bonus, consome coracao de fera (inventário ou extraido na hora): recupera 2d10 HP e ganha +3 em ataques corpo a corpo até o fim do combate. Usos: CON por descanso curto.
+**Nv 16 — Sangue de Predador (requer Abaté Perfeito):** Como ação rápida (**1 PA**), consome coracao de fera (inventário ou extraido na hora): recupera 2d10 HP e ganha +3 em ataques corpo a corpo até o fim do combate. Usos: CON por descanso curto.
 
 **Nv 20 — Ascensao — Legado do Predador:** Mutacoes biomágicas obtidas de feras duram 48 horas em vez de 24. Uma vez por descanso longo, pode assumir por 10 minutos um traco de predador supremo (+4 FOR, garras 2d6, sentido de cheiro 18m). Enquanto ativo, cada acerto crítico em fera ou bestial cura 1d10 HP.
 
@@ -2326,7 +2379,7 @@ Ids em kebab-case no JSON (ex. `chama-controlada`).
 
 ### Cavaleiro Draconico (Guerreiro)
 
-**Dieta nv.2:** Ao consumir repteis ou draconideos, ganha resistência a um tipo elemental (escolha ao comer) e baforada curta 2d6 (ação bônus, cone 4,5m, 1/combate).
+**Dieta nv.2:** Ao consumir repteis ou draconideos, ganha resistência a um tipo elemental (escolha ao comer) e baforada curta 2d6 (ação rápida (**1 PA**), cone 4,5m, 1/combate).
 
 **Nv 4 — Escama de Wyrm:** Armadura ou escudo reforcado com couro draconico concede +1 CA. Imune a medo de dragoes e reptis gigantes.
 
@@ -2348,7 +2401,7 @@ Ids em kebab-case no JSON (ex. `chama-controlada`).
 
 **Nv 8 — Pele Anfibia (requer Combaté Subaquatico):** Ignora terreno dificil molhado/lodoso. Pode agarrar com vantagem em oponentes em superficie molhada.
 
-**Nv 12 — Pressao das Profundezas (requer Pele Anfibia):** Imune a dano de pressao, sufocamento por mergulho e efeitos de "puxar para o fundo". Aliados adjacentes em agua profunda podem respirar se você permitir (ação bônus, 8h).
+**Nv 12 — Pressao das Profundezas (requer Pele Anfibia):** Imune a dano de pressao, sufocamento por mergulho e efeitos de "puxar para o fundo". Aliados adjacentes em agua profunda podem respirar se você permitir (ação rápida (**1 PA**), 8h).
 
 **Nv 16 — Mestre das Aguas Negras (requer Pressao das Profundezas):** Enquanto submerso ou em chuva forte: +2 CA e **+1 ataque** por ação de Ataque (cumulativo com Ataque Extra de nv. 5/11/17). Fora d'agua, mantem +1 ataque se dieta ativa nas ultimas 4h.
 
@@ -2366,7 +2419,7 @@ Ids em kebab-case no JSON (ex. `chama-controlada`).
 
 **Nv 8 — Rastreio Aereo (requer Tiro de Precisao):** Estudo de Anatomia em aves concede ignorar meia cobertura e tres quartos contra aquela especie. Pode localizar criaturas voadoras no mesmo andar por som de asa (Percepção automatica CD 12 para surpresa).
 
-**Nv 12 — Olho de Falcao (requer Rastreio Aereo):** Marca uma Presa (ação bônus, 1/descanso curto): sabe direcao exata no andar; ataques a distancia com Vantagem se a Presa não tiver visto você neste combate.
+**Nv 12 — Olho de Falcao (requer Rastreio Aereo):** Marca uma Presa (ação rápida (**1 PA**), 1/descanso curto): sabe direcao exata no andar; ataques a distancia com Vantagem se a Presa não tiver visto você neste combate.
 
 **Nv 16 — Golpe Celeste (requer Olho de Falcao):** 1/descanso longo: um ataque a distancia ignora CA, resistências e imunidades fisicas; trata como crítico para dano e extracao (penas intactas).
 
@@ -2380,7 +2433,7 @@ Ids em kebab-case no JSON (ex. `chama-controlada`).
 
 **Nv 4 — Identificacao de Flora:** Vantagem em Natureza e Coccao com fungos/plantas. Pode identificar esporos toxicos ou curativos sem kit em 1 minuto.
 
-**Nv 8 — Flechas de Esporo (requer Identificacao de Flora):** Prepara 3 municoes de esporo por descanso longo: ao acertar, alvo testa CON CD 14 ou Envenenado; aliados podem usar esporo curativo (cura 2d8, ação bonus).
+**Nv 8 — Flechas de Esporo (requer Identificacao de Flora):** Prepara 3 municoes de esporo por descanso longo: ao acertar, alvo testa CON CD 14 ou Envenenado; aliados podem usar esporo curativo (cura 2d8, acao rapida **1 PA**).
 
 **Nv 12 — Nuvem de Cura (requer Flechas de Esporo):** No descanso curto, espalha esporos curativos (raio 6m): aliados recuperam 2d8+SAB HP e removem 1 condicao de veneno ou doenca leve.
 
@@ -2402,7 +2455,7 @@ Ids em kebab-case no JSON (ex. `chama-controlada`).
 
 **Nv 16 — Olhar Frio (requer Escamas Adaptativas):** 1/descanso curto: olhar reptiliano (1 alvo, 18m, CON CD 15 ou Lentidão 1 min; falha por 5+ = Paralisado 1 turno). Criaturas ja Envenenadas tem Desvantagem no save.
 
-**Nv 20 — Ascensao — Forma de Reptil:** Transformacao parcial 10 min (1/descanso longo): escamas +2 CA, escalada 9m, mordida 2d6+DES perfurante como ação bonus, imunidade a petrificação. Pode extrair glândula de petrificação de basilisco morto com Vantagem em Extração.
+**Nv 20 — Ascensao — Forma de Reptil:** Transformacao parcial 10 min (1/descanso longo): escamas +2 CA, escalada 9m, mordida 2d6+DES perfurante como ação rápida (**1 PA**), imunidade a petrificação. Pode extrair glândula de petrificação de basilisco morto com Vantagem em Extração.
 
 ---
 
@@ -2450,7 +2503,7 @@ Ids em kebab-case no JSON (ex. `chama-controlada`).
 
 **Nv 12 — Forma Fluida (requer Absorção de Impacto):** 1/descanso curto, 3 turnos: imune a agarrao, crítico contra você vira acerto normal, deslocamento +3m. Ataques furtivos aplicam Desarme leve (objeto cai) em falha de DES CD 14.
 
-**Nv 16 — Corpo de Gel (requer Forma Fluida):** Resistência a ácido e perfurante. Pode se comprimir em espaco de 5cm por 1 rodada (ação bônus). Extrair nucleo de slime morto: Vantagem em Extração, qualidade máxima.
+**Nv 16 — Corpo de Gel (requer Forma Fluida):** Resistência a ácido e perfurante. Pode se comprimir em espaco de 5cm por 1 rodada (ação rápida (**1 PA**)). Extrair nucleo de slime morto: Vantagem em Extração, qualidade máxima.
 
 **Nv 20 — Ascensao — Dissolucao:** 1/descanso longo: dissolve armadura nao-mágica de metal em contato (1 peca, 1 minuto fora de combate) OU em combaté toca alvo — 6d8 ácido e equipamento leve corroi (DES CD 16 metade dano). Ataque Furtivo máximo (10d6 em nv. 20) contra alvo sem armadura pesada ganha +2d6.
 
@@ -2460,7 +2513,7 @@ Ids em kebab-case no JSON (ex. `chama-controlada`).
 
 **Dieta nv.2:** Ao beber veneno purificado de peconhentos, ataques ganham +1d4 veneno passivo e saliva corrosiva (interrogatorio, +2 em Intimidacao com criaturas que sentem dor).
 
-**Nv 4 — Resistência a Veneno:** Imune a veneno comum; metade de veneno magico. Pode aplicar veneno de monstro a arma como ação bônus (3 ataques de duração).
+**Nv 4 — Resistência a Veneno:** Imune a veneno comum; metade de veneno magico. Pode aplicar veneno de monstro a arma como ação rápida (**1 PA**) (3 ataques de duração).
 
 **Nv 8 — Aplicacao Rápida (requer Resistência a Veneno):** Mantem até 3 venenos ativos em armas diferentes. Ataque Furtivo pode dobrar dado de veneno em vez de somar furtivo (escolha ao acertar).
 
@@ -2478,7 +2531,7 @@ Ids em kebab-case no JSON (ex. `chama-controlada`).
 
 **Nv 4 — Sussurro de Tumba:** Comunica com mortos-vivos Int 3+ como se compartilhasse idioma por 1 minuto (não controla). Vantagem em Ataque Furtivo contra mortos-vivos distraidos.
 
-**Nv 8 — Aparencia Cadaverica (requer Sussurro de Tumba):** Parece morto-vivo para inspecao casual. Pode entrar em criptas sem alarme social. Fingir morte agora e ação bonus.
+**Nv 8 — Aparencia Cadaverica (requer Sussurro de Tumba):** Parece morto-vivo para inspecao casual. Pode entrar em criptas sem alarme social. Fingir morte agora e acao rapida (**1 PA**).
 
 **Nv 12 — Aura de Morte (requer Aparencia Cadaverica):** Raio 3m: inimigos vivos tem -1 em ataques (medo visceral). 1/descanso curto, comanda 1 morto-vivo Fraco (HP 15, 1 ataque) por 10 min — ele pode Extração para o grupo.
 
@@ -2494,9 +2547,9 @@ Ids em kebab-case no JSON (ex. `chama-controlada`).
 
 **Dieta nv.2:** Refeicoes assadas por você maximizam recuperacao de Mana do grupo no descanso; feiticos de fogo +1d6 vs gelo/agua e dispensam componentes de fogo.
 
-**Nv 4 — Chama Controlada:** Truque `Chama de Fogareiro` extra. 1/descanso curto, maximize dano de um feitico de fogo de nivel 3 ou menor.
+**Nv 4 — Chama Controlada:** Truque `Brasa Espectral` extra. 1/descanso curto, maximize dano de um feitico de fogo de nivel 3 ou menor.
 
-**Nv 8 — Forno de Campo (requer Chama Controlada):** Prepara refeicao assada em combaté (10 min) ou ação bônus "lanche carbonizado" (1d8 HP temp a aliado adjacente). Aliados que comem ganham resistência a frio 1 hora.
+**Nv 8 — Forno de Campo (requer Chama Controlada):** Prepara refeicao assada em combaté (10 min) ou ação rápida (**1 PA**) "lanche carbonizado" (1d8 HP temp a aliado adjacente). Aliados que comem ganham resistência a frio 1 hora.
 
 **Nv 12 — Combustao Arcana (requer Forno de Campo):** Ao lancar feitico de fogo, pode acender ingrediente inflamavel em alcance — +2d6 no próximo ataque de aliado contra alvo naquele quadrado.
 
@@ -2578,7 +2631,7 @@ Ids em kebab-case no JSON (ex. `chama-controlada`).
 
 **Nv 4 — Purificar Veneno:** `Purificar Veneno` 3x/dia sem espaco nv. 1 (Cap. 19). Toque purifica 1 porcao de carne amaldicoada.
 
-**Nv 8 — Laminas Abencoadas (requer Purificar Veneno):** Armas do grupo contam como mágicas vs mortos-vivos por 1 hora após benzer refeicao (ação bônus). +1d6 radiante em Ataque Furtivo de aliado contra morto-vivo (não empilha com furtivo do Ladino em excesso — use o maior bonus).
+**Nv 8 — Laminas Abencoadas (requer Purificar Veneno):** Armas do grupo contam como mágicas vs mortos-vivos por 1 hora após benzer refeicao (ação rápida (**1 PA**)). +1d6 radiante em Ataque Furtivo de aliado contra morto-vivo (não empilha com furtivo do Ladino em excesso — use o maior bonus).
 
 **Nv 12 — Purificacao Abencoada (requer Laminas Abencoadas):** Magia Cap. 19. 1/descanso longo remove maldicao moderada do grupo após ritual de 10 min e refeicao.
 
@@ -2616,7 +2669,7 @@ Ids em kebab-case no JSON (ex. `chama-controlada`).
 
 **Nv 16 — Bencao do Forno (requer Mesa Abundante):** Aliados a 6m recuperam 1d8 HP no inicio do seu turno se comeram seu pao nas ultimas 8h.
 
-**Nv 20 — Ascensao — Milagre do Pao:** 1/semana: alimenta até 50 criaturas com 1 refeicao — cada uma ganha HP máximo temp igual nivel x5 por 24h e imunidade a fome. Em combate, fragmento de pao como ação bônus cura 4d8+SAB.
+**Nv 20 — Ascensao — Milagre do Pao:** 1/semana: alimenta até 50 criaturas com 1 refeicao — cada uma ganha HP máximo temp igual nivel x5 por 24h e imunidade a fome. Em combate, fragmento de pao como ação rápida (**1 PA**) cura 4d8+SAB.
 
 ---
 
@@ -2658,11 +2711,11 @@ Ids em kebab-case no JSON (ex. `chama-controlada`).
 
 **Dieta nv.2:** Ao comer coracao de predador, assimila traco instintivo da especie (faro, garras, regeneração) por 24h conforme o monstro.
 
-**Nv 4 — Mordida do Coracao:** Em Furia, ação bônus comer coracao (monstro morto na sessao): +1d10 HP e estende Furia 2 turnos.
+**Nv 4 — Mordida do Coracao:** Em Furia, ação rápida (**1 PA**) comer coracao (monstro morto na sessao): +1d10 HP e estende Furia 2 turnos.
 
-**Nv 8 — Instinto Roubado (requer Mordida do Coracao):** Durante Furia, traco assimilado e dobrado (ex.: faro 18m vira 27m). 1 ataque extra como ação bônus com -2 dano (estilo Ataque Frenetico).
+**Nv 8 — Instinto Roubado (requer Mordida do Coracao):** Durante Furia, traco assimilado e dobrado (ex.: faro 18m vira 27m). 1 ataque extra como ação rápida (**1 PA**) com -2 dano (estilo Ataque Frenetico).
 
-**Nv 12 — Coracao Duplo (requer Instinto Roubado):** Pode armazenar 2 tracos de especies diferentes; troca com ação bonus. Críticos em Furia extraem coracao automatico.
+**Nv 12 — Coracao Duplo (requer Instinto Roubado):** Pode armazenar 2 tracos de especies diferentes; troca com acao rapida (**1 PA**). Críticos em Furia extraem coracao automatico.
 
 **Nv 16 — Predador Alfa (requer Coracao Duplo):** Imune a medo em Furia. Ao cair abaixo 50% HP, +2 ataques e +2d6 dano até subir acima de 50%.
 
@@ -2674,7 +2727,7 @@ Ids em kebab-case no JSON (ex. `chama-controlada`).
 
 **Dieta nv.2:** Mastigar exoesqueletos concede +1d6 perfurante em ataques desarmados (estilhacos entre os punhos) por 8h.
 
-**Nv 4 — Mastigador:** Pode morder carapaça como ação bônus em agarramento: 2d6+FOR perfurante e alvo -2 CA até fim do turno dele.
+**Nv 4 — Mastigador:** Pode morder carapaça como ação rápida (**1 PA**) em agarramento: 2d6+FOR perfurante e alvo -2 CA até fim do turno dele.
 
 **Nv 8 — Ossos como Arma (requer Mastigador):** Em Furia, ataques desarmados contam como magicos e +1d8. Pode quebrar escudo inimigo em crítico (DES CD 14).
 
@@ -2704,15 +2757,15 @@ Ids em kebab-case no JSON (ex. `chama-controlada`).
 
 ### Frenetico do Acucar (Bárbaro)
 
-**Dieta nv.2:** Glicose mágica dobra velocidade e concede 1 ação bônus extra por combate; ao terminar, 1 nivel de Exaustao.
+**Dieta nv.2:** Glicose mágica dobra velocidade e concede 1 ação rápida (**1 PA**) extra por combate; ao terminar, 1 nivel de Exaustao.
 
 **Nv 4 — Pico de Acucar:** Acao bônus consumir doce: +3m e próximo ataque +1d6. Nao acumula crash até fim do combate.
 
-**Nv 8 — Rush Doce (requer Pico de Acucar):** Em Furia após doce, ação bônus adicional pode ser ataque ou movimento. Crash reduzido: sem Exaustao se descanso curto apos.
+**Nv 8 — Rush Doce (requer Pico de Acucar):** Em Furia após doce, ação rápida (**1 PA**) adicional pode ser ataque ou movimento. Crash reduzido: sem Exaustao se descanso curto apos.
 
 **Nv 12 — Metabolismo Queimado (requer Rush Doce):** 2 doces por descanso longo sem crash duplo. Furia +2 DES temporario.
 
-**Nv 16 — Sobredose Controlada (requer Metabolismo Queimado):** 1/combate: triplica ação bônus do doce — 2 ataques bônus ou movimento+dash+ataque.
+**Nv 16 — Sobredose Controlada (requer Metabolismo Queimado):** 1/combate: triplica ação rápida (**1 PA**) do doce — 2 ataques bônus ou movimento+dash+ataque.
 
 **Nv 20 — Ascensao — Diabete Arcano:** 1/descanso longo: 5 min de hiper — velocidade dobrada, 2 acoes bônus por turno, +2d6 em todos os ataques em Furia automatica; ao fim, 2 niveis Exaustao recuperaveis 1 por descanso longo. Slimes de fruta mortos por você explodem em doce curativo 4d8 para aliados.
 
@@ -2774,7 +2827,7 @@ Ids em kebab-case no JSON (ex. `chama-controlada`).
 
 **Nv 4 — Nota Picante:** +1 CD em ilusao/encantamento. Truque de ilusao olfativa (nuvem de especiaria).
 
-**Nv 8 — Refrao Queima (requer Nota Picante):** 1/descanso curto: aliado que falhou save mental repete com Vantagem após cheirar especiaria (ação bônus).
+**Nv 8 — Refrao Queima (requer Nota Picante):** 1/descanso curto: aliado que falhou save mental repete com Vantagem após cheirar especiaria (ação rápida (**1 PA**)).
 
 **Nv 12 — Sinfornia de Ervas (requer Refrao Queima):** Contracanto (estilo Cap. 12): reacao interrompe feitico 18m, CD Concentracao 14+CAR.
 
@@ -2860,11 +2913,11 @@ Ids em kebab-case no JSON (ex. `chama-controlada`).
 
 **Nv 8 — Uivo Interior (requer Presa Marcada):** 1/combate: pulso 3m, 3d6 trovão (CON CD 14 metade); aliados em 3m ganham Vantagem no próximo ataque.
 
-**Nv 12 — Corpo do Predador (requer Uivo Interior):** Salto de 6 hex sem provocar oportunidade; imune a medo de bestas.
+**Nv 12 — Corpo do Predador (requer Uivo Interior):** Salto de 6 célula sem provocar oportunidade; imune a medo de bestas.
 
 **Nv 16 — Alfa Inato (requer Corpo do Predador):** Vantagem em ataques contra presa marcada; críticos restauram 1 slot nv.≤2.
 
-**Nv 20 — Ascensão — Forma da Besta Primordial:** 10 min: garras 2d6, corrida +6 hex, uivo recarrega em 1 turno.
+**Nv 20 — Ascensão — Forma da Besta Primordial:** 10 min: garras 2d6, corrida +6 célula, uivo recarrega em 1 turno.
 
 ---
 
@@ -2922,7 +2975,7 @@ Ids em kebab-case no JSON (ex. `chama-controlada`).
 
 **Dieta nv.2:** +2 esquiva e +1d6 em golpes desarmados por 8h.
 
-**Nv 4 — Golpe do Vácuo:** *Golpe de Chi* empurra 1 hex em acerto.
+**Nv 4 — Golpe do Vácuo:** *Golpe de Chi* empurra 1 célula em acerto.
 
 **Nv 8 — Punho Cortante (requer Golpe do Vácuo):** Desarmado conta como mágico; +1 ataque desarmado/turno (1 Chi).
 
@@ -2938,13 +2991,13 @@ Ids em kebab-case no JSON (ex. `chama-controlada`).
 
 **Dieta nv.2:** Passos não provocam ataques de oportunidade 1×/turno.
 
-**Nv 4 — Passo do Vácuo:** Alcance do Passo +1 hex; 1×/turno sem Chi extra.
+**Nv 4 — Passo do Vácuo:** Alcance do Passo +1 célula; 1×/turno sem Chi extra.
 
 **Nv 8 — Rede de Chi (requer Passo do Vácuo):** Prende inimigo em 3m (DES CD 14) 1 turno, 2 Chi.
 
 **Nv 12 — Silêncio Interior (requer Rede de Chi):** Vantagem em Furtividade e em saves vs medo.
 
-**Nv 16 — Ruptura Dimensional (requer Silêncio Interior):** Teleporte 6 hex (2 Chi), 1/turno.
+**Nv 16 — Ruptura Dimensional (requer Silêncio Interior):** Teleporte 6 célula (2 Chi), 1/turno.
 
 **Nv 20 — Ascensão — Mente no Limiar:** 1/combate: duplica movimento e ignora terreno difícil 3 turnos.
 
@@ -2952,11 +3005,11 @@ Ids em kebab-case no JSON (ex. `chama-controlada`).
 
 ### Asceta da Dor (Espiritualista)
 
-**Dieta nv.2:** Pode gastar PV para ganhar até 2 Chi extras no combate (ação bônus, 1d8 PV = 1 Chi).
+**Dieta nv.2:** Pode gastar PV para ganhar até 2 Chi extras no combate (ação rápida (**1 PA**), 1d8 PV = 1 Chi).
 
 **Nv 4 — Ferida Aberta:** Técnica brutal — +2d8+DES; você sofre 1d4.
 
-**Nv 8 — Autoflagelo (requer Ferida Aberta):** Ação bônus: 2d6 PV → próximo golpe +2d10.
+**Nv 8 — Autoflagelo (requer Ferida Aberta):** Ação rápida (**1 PA**): 2d6 PV → próximo golpe +2d10.
 
 **Nv 12 — Ritual de Sangue (requer Autoflagelo):** Aliados em 3m ganham +1 ataque/turno se você estiver abaixo de metade dos HP.
 
@@ -3122,7 +3175,7 @@ Controle de Chama Perfeito — Coccao (Coccao +4, Nivel 8): O resultado minimo e
 
 Estômago Lendário (Fortitude +5, Nivel 8): Imune a debuffs de Gororoba. Pode comer ingredientes de categoria Especialista crus. Uma vez por semana, pode ingerir um ingrediente bruto de Boss e receber 1 mutação aleatoria por 8h.
 
-Cozinheiro de Expedicao (Nivel 4): Pode preparar refeicoes em metade do tempo normal. Em combate, pode preparar uma "refeicao de emergencia" como ação bônus — concede 2d8 HP Temporarios e ativa o Bônus Passivo de Sobrevivência de qualquer aliado que consuma.
+Cozinheiro de Expedicao (Nivel 4): Pode preparar refeicoes em metade do tempo normal. Em combate, pode preparar uma "refeicao de emergencia" como ação rápida (**1 PA**) — concede 2d8 HP Temporarios e ativa o Bônus Passivo de Sobrevivência de qualquer aliado que consuma.
 
 Extrator de Elite (Extração +6, Nivel 12): Ao extrair ingredientes de um monstro com Estudo de Anatomia, extrai automaticamente o dobro de ingredientes normais. Nunca destroca ingredientes de Boss durante extracao.
 
@@ -3132,7 +3185,7 @@ Sentido de Masmorra (Nivel 4): Ao entrar num bioma, recebe automaticamente infor
 
 Metabolismo Acelerado (CON 14, Nivel 4): Mutacoes biomágicas duram 36h em vez de 24h. Pode manter uma mutação "reservada" — ao perder uma mutação, a reservada ativa automaticamente.
 
-Primeiros Socorros Avancados (SAB 13, Nivel 4): Pode estabilizar um aliado a 0 HP como ação bonus. Ao usar kit medico mais ingredientes curativos, cura 3d8 HP como ação (uma vez por descanso curto por aliado).
+Primeiros Socorros Avancados (SAB 13, Nivel 4): Pode estabilizar um aliado a 0 HP como ação rápida (**1 PA**). Ao usar kit medico mais ingredientes curativos, cura 3d8 HP como ação (uma vez por descanso curto por aliado).
 
 Resistência Elemental (CON 16, Nivel 8): Escolhe dois elementos (Fogo, Frio, Ácido, Relâmpago, Veneno). Ganha resistência permanente a ambos. Pode ser escolhido uma segunda vez para imunidade a um dos dois elementos.
 
@@ -3169,7 +3222,7 @@ Alquimista Amador (INT 13, Nivel 4): Pode criar pocoes básicas (Cura Leve, Anti
 | Alcance | Alcance de ataque aumentado para 3m em vez de 1,5m |
 | Arremesso | Pode ser arremessada com as estatisticas indicadas |
 | Munição | Requer munição. Sem munição, não pode ser usada para ataque a distancia |
-| Recarga | Apos cada disparo, requer ação bônus para recarregar |
+| Recarga | Apos cada disparo, requer ação rápida (**1 PA**) para recarregar |
 | Penetrante | Ignora 2 pontos de CA de armaduras metalicas |
 | Esmagadora | Acertos críticos derrubam o alvo Prostrado (CON CD 13) |
 | Cortante | Causa Sangramento em acertos críticos (1d4 dano/turno) |
@@ -3308,7 +3361,7 @@ A garra dianteira de um Dragão Jovem de Gelo. Propriedades: Cortante. Acertos c
 O couro e as garras dianteiras de um Grifo adulto, montados como armadura funcional. Propriedades: Garras contam como armas leves que não ocupam as maos. Ao escalar, não requer teste. Quedas de até 12m sem dano. Preço: 450 po.
 
 **Manopla de Seda Cortante** (Luva Especial | Dano: 1d6 cortante (fios) | CD: 22)
-Criada das glândulas intactas da Matriarca Tecela de Cristal. Lança fios microscopicos invisiveis que cortam qualquer material. Propriedades: Como ação bonus, pode lancar fios em área de 9m — criaturas que passem por eles testam DES CD 15 ou tomam 2d6 cortante e ficam Restringidas. Preço: Inestimavel (unico).
+Criada das glândulas intactas da Matriarca Tecela de Cristal. Lança fios microscopicos invisiveis que cortam qualquer material. Propriedades: Como ação rápida (**1 PA**), pode lancar fios em área de 9m — criaturas que passem por eles testam DES CD 15 ou tomam 2d6 cortante e ficam Restringidas. Preço: Inestimavel (unico).
 
 ### 15.3 Tabela Resumida de Armas Orgânicas
 
@@ -3357,11 +3410,13 @@ Criada das glândulas intactas da Matriarca Tecela de Cristal. Lança fios micro
 | Fogareiro Portátil (Feiticeiro) | Controle de temperatura preciso (+3 Coccao) | 300 po |
 | Nucleo de Chama Primordial | Fonte de calor eterno. Nunca apaga | 800 po |
 | Cera de Mumia (Preservacao) | Ingredientes não estragam por 7 dias | 50 po/bloco |
+| Frasco de Estase | Ingrediente preservado 30 dias (propriedades biomágicas) | 55 po |
+| Frasco de Estase Maior | Preservação 1 ano (requer laboratório ou nv. 4 de espaco equivalente) | 220 po |
 | Frascos de Fermentacao | +2 Forrageio em ingredientes fermentados | 30 po/conjunto |
 
 ### 16.2.1 Kit de Brasas Magicas (biomas sem fogo aberto)
 
-Para **Pantano da Decomposicao**, **Ninho Crepuscular** e trechos de **Engrenagens/Fornalhas** com gas — tocha e `Chama de Fogareiro` **proibidos** (detonam ou apagam). Ver `SUPLEMENTO-BIOMAS-VERTICAIS-LUZ-E-BRASAS.md`.
+Para **Pantano da Decomposicao**, **Ninho Crepuscular** e trechos de **Engrenagens/Fornalhas** com gas — tocha e chama aberta **proibidas** (detonam ou apagam). Ver `SUPLEMENTO-BIOMAS-VERTICAIS-LUZ-E-BRASAS.md`.
 
 | Item | Efeito | Preço |
 |------|--------|-------|
@@ -3372,7 +3427,7 @@ Para **Pantano da Decomposicao**, **Ninho Crepuscular** e trechos de **Engrenage
 | Panela Selada de Masmorra | Coccao segura em gas (tampa vedada) | 20 po |
 | Pano Umido Antifaisca (3 usos) | Evita 1 detonacao por faisca acidental | 8 po |
 
-Conjuradores usam o truque **Calor de Panela** (Cap. 18) em vez do kit.
+**Todo o grupo** usa kit ou equipamento de calor (Cap. 5.2.1) — conjuradores **não** precisam de truque para cozinhar.
 
 ### 16.3 Protecoes e Vestimentas
 
@@ -3504,28 +3559,30 @@ O arquivo `data/character/spell-lists.json` espelha estas listas para o compendi
 
 | Nivel | Nome na mesa | Poder tipico | Qtd. | Quando o grupo costuma ver |
 |------:|--------------|--------------|-----:|----------------------------|
-| 0 | **Truque** | Utilidade, cozinha, 1d4 | 6 | Nv. 1+ (sem gastar espaco) |
-| 1 | **1o circulo** | Cura leve, armadura, identificar | 8 | Nv. 1–3 |
-| 2 | **2o circulo** | Controle, preservar, ilusao menor | 9 | Nv. 3–5 |
-| 3 | **3o circulo** | Area, fogo, necromancia media | 8 | Nv. 5–7 |
-| 4 | **4o circulo** | Mutação, ecossistema, purificacao forte | 6 | Nv. 7–9 |
-| 5 | **5o circulo** | Teleporte, cone de frio, biomancia maior | 6 | Nv. 9–11 |
+| 0 | **Truque** | Luz, lâmina, toxina | 5 | Nv. 1+ (sem gastar espaco) |
+| 1 | **1o circulo** | Cura, armadura, marca, dano | 9 | Nv. 1–3 |
+| 2 | **2o circulo** | Controle, ácido, ilusao | 8 | Nv. 3–5 |
+| 3 | **3o circulo** | Area, fogo, necromancia | 10 | Nv. 5–7 |
+| 4 | **4o circulo** | Mutação, ecossistema, cura area | 5 | Nv. 7–9 |
+| 5 | **5o circulo** | Teleporte, cone de frio, biomancia | 6 | Nv. 9–11 |
 | 6 | **6o circulo** | Praga, desintegrar, cadeia | 3 | Nv. 11–13 |
 | 7 | **7o circulo** | Polimorfismo, prisao de gelo, regeneração | 4 | Nv. 13–15 |
 | 8 | **8o circulo** | Terremoto | 1 | Nv. 15–17 |
-| 9 | **9o circulo / Lenda** | Transcendência, Desejo de Morte | 2 | Nv. 17–20 (Clérigo do Limiar: capstone) |
+| 9 | **9o circulo / Lenda** | Transcendência, Desejo de Morte | 2 | Nv. 17–20 |
 
-**+ 8 magias exclusivas de subclasse** (Cap. 19.3) — não entram na tabela acima; somam-se ao grimorio.
+**+ 8 magias exclusivas de subclasse** (Cap. 19.3) — incluidas no compendio.
 
-**Por escola (lista geral):**
+**Compendio completo (VTT):** **61** entradas em `data/compendiums/magias.json` (53 lista geral + 8 exclusivas). **Cozinha, preservação e identificação de ingrediente** são automáticas (Cap. 5.2.1 e itens Cap. 16.2) — não há magias de cozinha.
+
+**Por escola (lista geral, 53):**
 
 | Escola | Nv.0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | Total |
 |--------|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
-| Biomancia | 0 | 1 | 1 | 1 | 2 | 1 | 0 | 2 | 0 | 1 | 9 |
-| Evocacao | 1 | 1 | 1 | 3 | 1 | 1 | 1 | 0 | 1 | 0 | 10 |
-| Transmutação | 2 | 1 | 3 | 0 | 1 | 1 | 1 | 0 | 0 | 0 | 9 |
-| Necromancia | 0 | 0 | 1 | 2 | 1 | 1 | 1 | 0 | 0 | 1 | 7 |
-| Abjuracao | 1 | 2 | 1 | 0 | 1 | 1 | 0 | 1 | 0 | 0 | 7 |
+| Evocacao | 1 | 3 | 1 | 4 | 1 | 1 | 1 | 1 | 1 | 0 | 14 |
+| Transmutação | 1 | 0 | 2 | 0 | 1 | 1 | 1 | 0 | 0 | 0 | 6 |
+| Biomancia | 0 | 1 | 0 | 2 | 1 | 1 | 0 | 2 | 0 | 1 | 8 |
+| Necromancia | 0 | 0 | 1 | 3 | 1 | 1 | 1 | 0 | 0 | 1 | 8 |
+| Abjuracao | 1 | 3 | 1 | 0 | 1 | 1 | 0 | 0 | 0 | 0 | 7 |
 | Adivinhacao | 1 | 1 | 0 | 1 | 1 | 0 | 0 | 0 | 0 | 0 | 4 |
 | Encantamento | 0 | 0 | 1 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 2 |
 | Ilusao | 0 | 0 | 1 | 0 | 0 | 0 | 0 | 1 | 0 | 0 | 2 |
@@ -3541,34 +3598,31 @@ O arquivo `data/character/spell-lists.json` espelha estas listas para o compendi
 
 ## CAPÍTULO 18 — LISTA DE MAGIAS (GRIMORIO DE ELDARIN)
 
-> **Total:** 53 magias na lista geral (Cap. 18) + 8 exclusivas de subclasse (Cap. 19) = **61** feiticos no sistema.
+> **Total:** **61 feitiços** no compendio (`data/compendiums/magias.json`): **53** na lista geral (Cap. 18) + **8** exclusivas (Cap. 19.3). Cozinha e preservação: **Cap. 5.2.1** e **Cap. 16.2** (sem magias).
 
-### NIVEL 0 — TRUQUES (SEM CUSTO)
+### NIVEL 0 — TRUQUES (SEM CUSTO DE ESPACO)
 
-**Calor de Panela** — Transmutação | Acao | Toque | Concentracao, até 1 hora | Mago, Clérigo, Bardo, Druida, Feiticeiro
-Aquece recipiente fechado sem chama visivel; penumbra 3m. Coccao segura em biomas sem fogo aberto (Cap. 16.2.1). +1 Coccao se unica fonte de calor no prato. **Todo conjurador inicia com este truque.**
+**Brasa Espectral** — Evocacao | Acao | Pessoal | Concentração até 1 h
+Luz fria em penumbra (6 célula). Toque opcional: 1d4 fogo. **Não cozinha.** Proibida como chama aberta em biomas de gás (12, 10, 8, 4) — use Kit de Brasas.
 
-**Chama de Fogareiro** — Evocacao | Acao | Toque | Ate ser apagada | Mago, Clérigo, Bardo, Druida, Feiticeiro
-Chama na ponta dos dedos. **Proibida** em Ninho Crepuscular (12), gas do Pantano (10), vapor oleoso (8), bolsao sulfuroso (4). Use Calor de Panela ou Brasas Magicas.
+**Lâmina de Espirito** — Transmutação | Acao Bonus | Pessoal | 1 minuto
+Lâmina eterea (1d4 forca). +2 em Extração com ela.
 
-**Lâmina de Espirito** — Transmutação | Acao Bonus | Pessoal | 1 minuto | Mago, Bardo, Feiticeiro
-Lâmina eterea (1d4 forca). +2 em testes de Extração com ela.
-
-**Detectar Veneno** — Adivinhacao | Acao | Pessoal | 10 minutos | Mago, Clérigo, Bardo, Druida, Feiticeiro
-Em raio de 3m, detecta toxinas em comida, bebida ou ingrediente (aura avermelhada).
+**Sentir Toxina** — Adivinhacao | Acao | Pessoal | 1 rodada ou 10 min
+Detecta veneno/doença em criaturas e objetos num raio de 3 célula (aura avermelhada).
 
 **Estabilizar** — Abjuracao | Acao | Toque | Instantanea | Clérigo, Druida
 Criatura a 0 HP para de fazer falhas de morte; não cura HP.
 
-**Maos Firmes** — Transmutação | Acao | Toque | 1 hora | Mago, Druida, Feiticeiro
-Alvo (você ou aliado) ganha +2 em Extração e não sofre -2 por falta de treinamento nesta hora.
+**Maos Estaveis** — Transmutação | Acao | Toque | 1 hora | Mago, Druida, Feiticeiro
++2 em testes de Destreza (inclui Extração) por 1 hora; ignora −2 por falta de treinamento em Extração.
 
 ---
 
 ### NIVEL 1
 
-**Extracao Amplificada** — Biomancia | 1 minuto | Toque | Instantanea | Mago, Druida, Feiticeiro
-Monstro morto rende dobro de ingredientes; testes de Extração na proxima 1h tem +4.
+**Marca da Caçada** — Biomancia | Acao Bonus | Pessoal | 1 hora | Mago, Druida, Feiticeiro
+Próxima criatura morta por você ou aliado em 18 m: vantagem em Extração e +2 no teste de rendimento (não dobra loot).
 
 **Maos Gelidas** — Evocacao | Acao | 4,5m | Instantanea | Mago
 Cone 4,5m: 2d6 frio (CON CD ou dobro). Congela ingredientes.
@@ -3578,9 +3632,6 @@ Semente vira planta adulta em 1h com propriedades do bioma.
 
 **Purificar Veneno** — Abjuracao | Acao | Toque | Instantanea | Clérigo, Druida
 Remove Envenenado em criatura ou torna ingrediente toxico seguro para processamento.
-
-**Identificar Ingrediente** — Adivinhacao (R) | 1 minuto | Toque | Instantanea | Mago, Bardo, Feiticeiro
-Origem do monstro, propriedades biomágicas, preparo ideal e riscos.
 
 **Armadura Arcana** — Abjuracao | Acao | Toque | 8 horas | Mago, Feiticeiro
 CA 13 + INT; não interfere com gestos de magia.
@@ -3595,9 +3646,6 @@ Cura 1d8 + mod. de atributo de conjuracao (SAB ou CAR).
 
 ### NIVEL 2
 
-**Aprimoramento Biomagico** — Biomancia | 10 minutos | Toque | 8 horas | Mago, Druida, Feiticeiro
-Proxima refeicao com esse ingrediente concede +1 habilidade de assimilação alem do d4.
-
 **Raios de Enfraquecimento** — Necromancia | Acao | 18m | Concentracao até 1 minuto (C) | Mago, Clérigo
 Tres raios: CON CD ou Desvantagem em ataques e FOR por 1 minuto.
 
@@ -3605,13 +3653,10 @@ Tres raios: CON CD ou Desvantagem em ataques e FOR por 1 minuto.
 Esfera 1m: 4d6 ácido (DES CD); -1 CA em armadura atingida.
 
 **Transmutação de Carne** — Transmutação | 1 hora | Toque | Permanente | Mago, Gnomo, Feiticeiro
-Converte ingrediente em equivalente de mesma raridade (ex.: goblin -> grifo).
+*Só em descanso.* Converte ingrediente em equivalente de mesma raridade (ex.: goblin -> grifo).
 
-**Inspiracao Culinaria** — Encantamento | Acao Bonus | 9m | 1 hora | Bardo
-+3 em Coccao e Forrageio; Prato Perfeito durante efeito da +1d6 HP temp por nivel do Bardo ao grupo.
-
-**Preservação Perfeita** — Transmutação | Acao | Toque | 30 dias | Mago, Clérigo, Druida, Feiticeiro
-Ingrediente preservado 30 dias sem perder propriedades biomágicas.
+**Ímpeto Inspirador** — Encantamento | Acao Bonus | 9m | 1 hora | Bardo
+Aliado ganha +1d6 no próximo teste de atributo, ataque ou resistência em 1 h.
 
 **Forma Menor** — Transmutação | Acao | Pessoal | Concentracao até 1 hora (C) | Druida, Mago
 Transforma-se em besta Minuscula ou Pequena; mantem INT, SAB, CAR; sem magia na forma.
@@ -3630,7 +3675,7 @@ Som ou imagem estática em cubo 1,5m; não causa dano.
 Anima até 2 cadaveres Medios ou menores; podem Extração com proficiencia = metade do nivel do conjurador. Em espaco de nivel 5: 4 Medios ou 2 Grandes.
 
 **Injecao Biomágica** — Biomancia | Acao | Toque | 12 horas | Mago, Feiticeiro
-Uma habilidade de assimilação do ingrediente usado, 12h, sem refeicao (ingrediente consumido).
+Uma habilidade de assimilação do ingrediente usado, 12h, sem refeicao (ingrediente consumido). **2 PA** no VTT.
 
 **Bola de Fogo** — Evocacao | Acao | 45m | Instantanea | Mago
 Raio 6m: 8d6 fogo (DES CD ou metade). *Variante Piromante: Cap. 19.*
@@ -3655,19 +3700,16 @@ Ate 5 criaturas com menos de 90 HP: SAB CD ou Inconsciente (dano acorda).
 ### NIVEL 4
 
 **Visao do Ecossistema** — Adivinhacao (R) | 10 minutos | Pessoal | 1 hora | Druida, Mago
-Ve atraves de criatura no mesmo bioma (SAB CD 15); troca alvo como ação bonus.
+Ve atraves de criatura no mesmo bioma (SAB CD 15); troca alvo como ação rápida (**1 PA**).
 
 **Murcha** — Necromancia | Acao | 4,5m | Instantanea | Mago, Clérigo
 8d8 necrótico (CON CD ou metade); conjurador cura metade do dano.
 
 **Mutação Forcada** — Biomancia | Acao | 18m | Concentracao até 1 hora (C) | Mago
-CON CD ou mutação negativa aleatoria 1h.
+CON CD ou mutação negativa aleatoria 1h. **2 PA** no VTT.
 
 **Parede de Fogo** — Evocacao | Acao | 36m | Concentracao até 1 minuto (C) | Mago, Druida
 Parede até 18m: 5d8 ao atravessar; 2d8 radiante a 3m por turno.
-
-**Preservação Anual** — Transmutação | Acao | Toque | 1 ano | Mago, Clérigo, Druida, Feiticeiro
-Como Preservação Perfeita, mas duração 1 ano (requer espaco de nivel 4).
 
 **Cura em Massa** — Abjuracao | Acao | 18m | Instantanea | Clérigo, Druida
 Ate 6 criaturas em raio de 3m: 3d8 + mod. de conjuracao.
@@ -3746,11 +3788,11 @@ Condicao irrevogavel mata alvo quando satisfeita; preço 4d10 necrótico por niv
 
 ### 19.1 Bonus que NAO sao magias novas
 
-Estes efeitos **não entram** na contagem de 60 feiticos:
+Estes efeitos **não entram** na contagem de **61 feitiços** do compendio:
 
 | Subclasse | Bonus |
 |-----------|--------|
-| **Piromante das Brasas** | Conhece truque `Chama de Fogareiro` extra; feiticos de fogo +1d6 vs criaturas de gelo/agua; sem componentes de fogo |
+| **Piromante das Brasas** | Conhece truque `Brasa Espectral` extra; feiticos de fogo +1d6 vs criaturas de gelo/agua; sem componentes de fogo |
 | **Sacerdote da Purificacao** | `Purificar Veneno` 3x/dia sem gastar espaco de nivel 1 |
 | **Mago dos Encantos** | 1 magia de Encantamento nv. 1–3 por dia sem gastar espaco (escolhida ao preparar) |
 | **Clérigo do Pao da Vida** | Ritual `Pao da Manha` (R, 10 min): paes = nivel do Clérigo; quem come ao amanhecer ganha HP temp = nivel x3 |
@@ -3777,7 +3819,7 @@ Estes efeitos **não entram** na contagem de 60 feiticos:
 | Subclasse | Magia exclusiva (Cap. 19.3) |
 |-----------|----------------------------|
 | Piromante das Brasas | Maos Ardentes |
-| Criomante de Conservacao | Gelo de Conservação |
+| Criomante de Conservacao | Couraça de Gelo |
 | Mago Alquímico | Envelhecer Matéria, Fermentação Acelerada |
 | Sacerdote da Purificacao | Purificacao Abencada |
 | Circulo da Decomposicao | Esporos Necroticos, Grande Decomposicao |
@@ -3790,19 +3832,19 @@ Estes efeitos **não entram** na contagem de 60 feiticos:
 |-----------|------|----------|
 | **Piromante das Brasas** | `Bola de Fogo` (nv. 3) | **Forno Arcano:** mesma área e dano; aliados na área sofrem metade ou nenhum dano (escolha do conjurador); não incendeia comida do grupo |
 
-### 19.3 Magias exclusivas (8 — contam no total de 60)
+### 19.3 Magias exclusivas (8 — no compendio)
 
 **Piromante das Brasas — Maos Ardentes** — Evocacao | Acao | Toque | Instantanea | Nivel 1
 Toque: 3d6 fogo (DES CD ou metade). Ingrediente tocado e selado e assado por dentro em 1 rodada.
 
-**Criomante de Conservacao — Gelo de Conservação** — Transmutação | Acao | Toque | 8 horas | Nivel 2
-Ingrediente fica em estase de gelo seco: propriedades biomágicas preservadas 8h sem recipiente; +2 CA temp ao conjurador enquanto segura o ingrediente.
+**Criomante de Conservacao — Couraça de Gelo** — Abjuracao | Acao | Toque | 8 horas | Nivel 2
+Toque: alvo ganha +2 CA temp (conjurador +3) por 8 h.
 
 **Mago Alquímico — Envelhecer Matéria** — Transmutação | Truque | Toque | Instantanea
-Objeto orgânico inanimado envelhece visualmente (fermentacao aparente); não altera propriedades mágicas até conjurar `Fermentação Acelerada`.
+*Só em descanso/ritual (10 min).* Objeto orgânico inanimado envelhece visualmente até conjurar `Fermentação Acelerada`. *ID:* `magias-envelhecer-materia`.
 
 **Mago Alquímico — Fermentação Acelerada** — Transmutação | 10 minutos | Toque | Instantanea | Nivel 2
-Ingrediente fermenta em 1 minuto com efeito de 1 ano de cura natural; remove doenças leves não mágicas em quem consumir.
+*Só em descanso.* Ingrediente fermenta em 1 minuto; remove doenças leves não mágicas em quem consumir.
 
 **Sacerdote da Purificacao — Purificacao Abencada** — Abjuracao | Acao | Toque | Instantanea | Nivel 4
 Remove maldicao, veneno ou corrupcao mágica em criatura ou ingrediente.
@@ -3818,16 +3860,16 @@ Um humanoide CON CD ou Amedrontado e Desvantagem em Percepção por 1 minuto (sa
 
 ---
 
-### Indice rapido por escola (lista geral, 52)
+### Indice rapido por escola (lista geral, 53)
 
-| Escola | Quantidade (aprox.) |
-|--------|---------------------|
-| Biomancia | 7 |
-| Evocacao | 12 |
-| Transmutação | 8 |
-| Necromancia | 7 |
-| Abjuracao | 8 |
-| Adivinhacao | 5 |
+| Escola | Quantidade |
+|--------|------------|
+| Evocacao | 14 |
+| Biomancia | 8 |
+| Necromancia | 8 |
+| Abjuracao | 7 |
+| Transmutação | 6 |
+| Adivinhacao | 4 |
 | Encantamento | 2 |
 | Ilusao | 2 |
 | Conjuracao | 1 |
@@ -3842,11 +3884,11 @@ Um humanoide CON CD ou Amedrontado e Desvantagem em Percepção por 1 minuto (sa
 
 | Nv | Magias disíponíveis |
 |---:|---|
-| 0 | Calor de Panela; Chama de Fogareiro; Lâmina de Espirito; Detectar Veneno; Maos Firmes; *(excl.)* Envelhecer Matéria |
-| 1 | Extracao Amplificada; Maos Gelidas; Identificar Ingrediente; Armadura Arcana; Onda de Trovao; *(excl.)* Maos Ardentes |
-| 2 | Aprimoramento Biomagico; Raios de Enfraquecimento; Esfera Acida de Monstro; Transmutação de Carne; Preservação Perfeita; Forma Menor; Escudo Arcano; Ilusão Menor; *(excl.)* Gelo de Conservação; *(excl.)* Fermentação Acelerada |
+| 0 | Brasa Espectral; Lâmina de Espirito; Sentir Toxina; Maos Estaveis; *(excl.)* Envelhecer Matéria |
+| 1 | Marca da Caçada; Maos Gelidas; Armadura Arcana; Onda de Trovao; *(excl.)* Maos Ardentes |
+| 2 | Raios de Enfraquecimento; Esfera Acida de Monstro; Transmutação de Carne; Forma Menor; Escudo Arcano; Ilusão Menor; Injecao Biomágica; *(excl.)* Couraça de Gelo; *(excl.)* Fermentação Acelerada |
 | 3 | Animação de Mortos; Injecao Biomágica; Bola de Fogo; Contágio Necrótico; Ventania; Ler Mentes; Relâmpago; Sono |
-| 4 | Visao do Ecossistema; Murcha; Mutação Forcada; Parede de Fogo; Preservação Anual |
+| 4 | Visao do Ecossistema; Murcha; Mutação Forcada; Parede de Fogo |
 | 5 | Grande Transmutação Biomágica; Cone de Frio; Salto Dimensional |
 | 6 | Causar Praga; Disintegrar; Cadeia de Relâmpago |
 | 7 | Forma de Monstro; Prisao de Gelo; Regeneração Biomágica; Invisibilidade Maior |
@@ -3858,11 +3900,11 @@ Um humanoide CON CD ou Amedrontado e Desvantagem em Percepção por 1 minuto (sa
 
 | Nv | Magias disíponíveis |
 |---:|---|
-| 0 | Calor de Panela; Chama de Fogareiro; Detectar Veneno; Estabilizar |
+| 0 | Brasa Espectral; Sentir Toxina; Estabilizar |
 | 1 | Crescimento Acelerado; Purificar Veneno; Curar Ferimentos |
-| 2 | Raios de Enfraquecimento; Preservação Perfeita |
+| 2 | Raios de Enfraquecimento; Animação de Mortos |
 | 3 | Animação de Mortos; Contágio Necrótico; Sono |
-| 4 | Murcha; Preservação Anual; Cura em Massa; *(excl.)* Purificacao Abencada |
+| 4 | Murcha; Cura em Massa; *(excl.)* Purificacao Abencada |
 | 5 | Ressurreicao Incompleta; Restaurar Vigor |
 | 6 | Causar Praga |
 | 7 | Regeneração Biomágica |
@@ -3875,9 +3917,9 @@ Um humanoide CON CD ou Amedrontado e Desvantagem em Percepção por 1 minuto (sa
 
 | Nv | Magias disíponíveis |
 |---:|---|
-| 0 | Calor de Panela; Chama de Fogareiro; Lâmina de Espirito; Detectar Veneno |
-| 1 | Identificar Ingrediente; Onda de Trovao; Curar Ferimentos; *(excl.)* Doce Confuso |
-| 2 | Inspiracao Culinaria; Ilusão Menor |
+| 0 | Brasa Espectral; Lâmina de Espirito; Sentir Toxina |
+| 1 | Chama de Vinha; Onda de Trovao; Curar Ferimentos; *(excl.)* Doce Confuso |
+| 2 | Ímpeto Inspirador; Ilusão Menor |
 | 3 | Ler Mentes; Sono |
 | 5 | Salto Dimensional |
 | 7 | Invisibilidade Maior |
@@ -3886,11 +3928,11 @@ Um humanoide CON CD ou Amedrontado e Desvantagem em Percepção por 1 minuto (sa
 
 | Nv | Magias disíponíveis |
 |---:|---|
-| 0 | Calor de Panela; Chama de Fogareiro; Detectar Veneno; Estabilizar; Maos Firmes; *(excl.)* Esporos Necroticos |
-| 1 | Extracao Amplificada; Crescimento Acelerado; Purificar Veneno; Onda de Trovao; Curar Ferimentos |
-| 2 | Aprimoramento Biomagico; Preservação Perfeita; Forma Menor |
+| 0 | Sentir Toxina; Maos Estaveis; *(excl.)* Esporos Necroticos |
+| 1 | Marca da Caçada; Crescimento Acelerado; Purificar Veneno; Chama de Vinha; Curar Ferimentos |
+| 2 | Forma Menor; Injecao Biomágica; Raios de Enfraquecimento |
 | 3 | Ventania; Relâmpago |
-| 4 | Visao do Ecossistema; Parede de Fogo; Preservação Anual; Cura em Massa |
+| 4 | Visao do Ecossistema; Parede de Fogo; Cura em Massa |
 | 5 | Despertar; Restaurar Vigor; *(excl.)* Grande Decomposicao |
 | 6 | Cadeia de Relâmpago |
 | 7 | Forma de Monstro; Regeneração Biomágica |
@@ -3900,7 +3942,7 @@ Um humanoide CON CD ou Amedrontado e Desvantagem em Percepção por 1 minuto (sa
 
 | Nv | Magias (lista Arcano inato + Cap. 19) |
 |---:|---|
-| 0 | *Lâmina de Espírito*; *Chama de Fogareiro* |
+| 0 | *Lâmina de Espírito*; *Brasa Espectral* |
 | 1 | *Mãos Geladas*; *Onda de Trovão*; *Chama de Vinha* |
 | 2 | *Esfera Ácida de Monstro*; *Escudo Arcano* |
 | 3 | *Esfera Ígnea*; *Relâmpago* |

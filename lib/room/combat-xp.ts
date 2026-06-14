@@ -133,6 +133,8 @@ export async function recordMonsterDefeat(
   const token = room.scene.tokens.find((t) => t.id === opts.defenderTokenId);
   if (!token || !isMonsterToken(token)) return;
 
+  if (room.settings.xpFromMonstersEnabled === false) return;
+
   const award = await distributeMonsterXp(room, token);
   if (!award) return;
 

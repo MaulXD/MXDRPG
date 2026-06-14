@@ -12,7 +12,10 @@ export const BACKGROUND_IDS = [
 
 export type BackgroundId = (typeof BACKGROUND_IDS)[number];
 
-/** Epoch para rotação — altere se quiser reiniciar o ciclo. */
+/** Fundo padrão do site — demais animações permanecem no catálogo. */
+export const DEFAULT_BACKGROUND_ID: BackgroundId = "Brasas";
+
+/** Epoch para rotação horária opcional (dev / override). */
 const ROTATION_EPOCH_MS = new Date("2026-01-01T00:00:00").getTime();
 
 const HOUR_MS = 3_600_000;
@@ -44,12 +47,16 @@ export function msUntilNextBackgroundChange(date: Date = new Date()): number {
   return Math.max(0, nextHour - date.getTime());
 }
 
-/** Sobrescreve a rotação automática (útil em dev). `null` = automático. */
+/** Sobrescreve o fundo padrão. `null` = **Brasas**; defina outro id ou use rotação horária em dev. */
 export const ACTIVE_BACKGROUND_OVERRIDE: BackgroundId | null = null;
+
+/** Se true, usa rotação horária em vez do padrão Brasas. */
+export const USE_HOURLY_BACKGROUND_ROTATION = false;
 
 export function resolveActiveBackgroundId(date?: Date): BackgroundId {
   if (ACTIVE_BACKGROUND_OVERRIDE) return ACTIVE_BACKGROUND_OVERRIDE;
-  return getHourlyBackgroundId(date);
+  if (USE_HOURLY_BACKGROUND_ROTATION) return getHourlyBackgroundId(date);
+  return DEFAULT_BACKGROUND_ID;
 }
 
 /** Grade VTT ao vivo — única rota sem fundo animado (`/mesa/:roomId`). */
