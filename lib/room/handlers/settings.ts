@@ -3,7 +3,9 @@ import type { SessionUser } from "@/lib/auth/types";
 import { normalizeImageDataUrl } from "@/lib/media/image-normalize";
 import { sanitizePortraitFocus } from "@/lib/media/portrait-focus";
 import { normalizeRoomSettings, type RoomSettings } from "@/lib/room/settings";
-import { getRoom, persistRoom, toSnapshot } from "../internal/registry";
+import { applyExplorationPaDisplay } from "@/lib/combat/exploration-pa";
+import { beginCombatTurnEconomyPa } from "./combat-turn";
+import { getRoom, persistRoom, toSnapshot, type PersistRoomOpts } from "../internal/registry";
 import type { RoomSnapshot } from "../types";
 
 export type RoomSettingsPatch = Partial<RoomSettings> & {
@@ -48,6 +50,18 @@ export async function patchRoomSettings(
     ...settingsPatch,
   });
 
-  const updated = await persistRoom(roomId, room);
+  let persistOpts: PersistRoomOpts | undefined;
+  const wasCombat = current.combatActive;
+  const nowCombat = room.settings.combatActive;
+
+  if (!wasCombat && nowCombat && room.combat?.order?.length) {
+    beginCombatTurnEconomyPa(room);
+    persistOpts = { skipAutoPass: true, skipAutoPassSchedule: true };
+  } else if (wasCombat && !nowCombat) {
+    room.combat = { ...room.combat, pendingAutoPass: undefined };
+    applyExplorationPaDisplay(room);
+  }
+
+  const updated = await persistRoom(roomId, room, persistOpts);
   return toSnapshot(updated);
 }
