@@ -138,7 +138,7 @@ export async function executeGmSavingThrows(
       dc != null ? ` · CD ${dc} ${total >= dc ? "✓" : "✗"}` : "";
     const profNote = save.trained ? " · proficiente" : "";
     const success = dc != null ? total >= dc : undefined;
-    const summary = `${actor.name} — Salv. ${save.label}: ${total} (${formatD20Detail(d20)}${formatMod(save.mod)})${modeNote ? ` · ${modeNote}` : ""}${profNote}${dcNote}`;
+    const summary = `${actor.name} — total ${total} (${formatD20Detail(d20)}${formatMod(save.mod)})${modeNote ? ` · ${modeNote}` : ""}${profNote}`;
     const detail = formatGmSaveChatDetail({
       attributeLabel: save.label,
       d20Detail: formatD20Detail(d20),
@@ -160,8 +160,9 @@ export async function executeGmSavingThrows(
           attackerTokenId: token.id,
           defenderTokenId: token.id,
           actionKind: "ability",
-          weaponName: `Salvaguarda · ${save.label}`,
+          weaponName: "Salvaguarda",
           resolution: "save",
+          gmSavingThrow: true,
           saveNatural: d20.natural,
           saveTotal: total,
           saveDc: dc,

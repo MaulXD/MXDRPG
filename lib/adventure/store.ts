@@ -371,25 +371,21 @@ export async function joinAdventureByInvite(
   inviteCode: string,
   userId: string
 ): Promise<Adventure | null> {
-  const code = inviteCode.trim().toUpperCase();
-
-  if (dbEnabled()) {
-    const fromDb = await dbAdventures.fetchAdventureByInvite(code);
-    if (fromDb) {
-      if (!isAdventureJoinable(fromDb)) return null;
-      return joinAdventureRecord(fromDb, userId);
-    }
+  const { resolveMesaByInviteCode } = await import("@/lib/auth/mesa-invite");
+  const resolved = await resolveMesaByInviteCode(inviteCode);
+  if (resolved?.adventure) {
+    if (!isAdventureJoinable(resolved.adventure)) return null;
+    return joinAdventureRecord(resolved.adventure, userId);
   }
-
-  for (const adv of adventures().values()) {
-    if (adv.inviteCode.toUpperCase() === code) {
-      if (!isAdventureJoinable(adv)) return null;
-      return joinAdventureRecord(adv, userId);
-    }
+  if (resolved) {
+    const { joinRoomByInvite } = await import("@/lib/room/handlers/room-lifecycle");
+    const room = await joinRoomByInvite(inviteCode, userId, resolved.room.roomId);
+    if (!room) return null;
+    return getAdventure(room.adventureId ?? room.roomId);
   }
 
   const { joinRoomByInviteLegacy } = await import("@/lib/room/handlers/room-lifecycle");
-  const room = await joinRoomByInviteLegacy(code, userId);
+  const room = await joinRoomByInviteLegacy(inviteCode, userId);
   if (!room) return null;
   return getAdventure(room.adventureId ?? room.roomId);
 }

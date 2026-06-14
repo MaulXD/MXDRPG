@@ -17,8 +17,8 @@ export function createPlayerTokenFromActor(
 ): BattleToken {
   const id = tokenId ?? `tk-${actor.id}`;
   const paMax = paMaxForActor(actor);
-  /** Pool preenchido no início do turno em combate — evita carry fantasma ao spawnar. */
-  const pa = 0;
+  /** Pool preenchido no início do turno em combate; em aventura exibe recuperação cheia. */
+  const pa = paMax;
   const imageUrl = resolveActorTokenImageUrl(actor);
   const focus = resolveLinkedTokenImageFocus(actor);
 

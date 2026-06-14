@@ -521,9 +521,13 @@ export function TurnOrderPanel({
 
               .join(" ");
 
+            const isPlayerToken = resolveTokenRing(token, playerActorIds).kind === "player";
+
             const avatarClass = [
 
               "vtt-turn-avatar",
+
+              isPlayerToken ? "vtt-turn-avatar--player" : "",
 
               active ? "vtt-turn-avatar--active" : "",
 

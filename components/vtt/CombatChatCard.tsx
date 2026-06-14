@@ -12,10 +12,12 @@ import {
   combatChatRollSummary,
   combatChatTargetName,
   isStagedCombatChatMessage,
+  savingThrowHeadline,
   shouldShowCombatDamageInChat,
   type CombatChatRevealPhase,
 } from "@/lib/combat/chat-display";
 import { combatUsageKind } from "@/lib/combat/chat-labels";
+import { SavingThrowHeadline } from "@/components/vtt/SavingThrowHeadline";
 import { hpBarColor } from "@/lib/vtt/token-hp-display";
 import type { BattleToken } from "@/lib/vtt/types";
 
@@ -82,6 +84,10 @@ export function CombatChatCard({ message, revealPhase, tokens, time }: Props) {
   const showHealBar =
     showDamage && isHealEvent && c.defenderHpBefore >= 0;
   const hasDetail = Boolean(c.detail?.trim());
+  const saveHeadline = savingThrowHeadline(c);
+
+  const savePass = saveHeadline?.success === true;
+  const saveFail = saveHeadline?.success === false;
 
   const actionLine = [
     actionName,
@@ -93,7 +99,7 @@ export function CombatChatCard({ message, revealPhase, tokens, time }: Props) {
 
   return (
     <article
-      className={`combat-chat-card combat-chat-card--${tone}${usageKind === "buff" || usageKind === "consumable_effect" ? " combat-chat-card--buff" : ""}${usageKind === "debuff" ? " combat-chat-card--debuff" : ""}`}
+      className={`combat-chat-card combat-chat-card--${tone}${usageKind === "buff" || usageKind === "consumable_effect" ? " combat-chat-card--buff" : ""}${usageKind === "debuff" ? " combat-chat-card--debuff" : ""}${savePass ? " combat-chat-card--save-pass" : ""}${saveFail ? " combat-chat-card--save-fail" : ""}`}
     >
       <header className="combat-chat-card__header">
         <TokenThumb token={focusToken} />
@@ -103,6 +109,8 @@ export function CombatChatCard({ message, revealPhase, tokens, time }: Props) {
         </div>
         <time className="combat-chat-card__time">{time}</time>
       </header>
+
+      {saveHeadline ? <SavingThrowHeadline headline={saveHeadline} /> : null}
 
       <div className="combat-chat-card__body">
         <div className="combat-chat-card__roll" aria-hidden>

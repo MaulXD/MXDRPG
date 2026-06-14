@@ -52,7 +52,7 @@ export function useCombatTurnFlow({ snapshot, roomId, onSnapshot }: Props) {
 
     const delay = Math.max(0, pending.passAt - Date.now());
     const timer = setTimeout(() => {
-      void nextCombatTurn(roomId)
+      void nextCombatTurn(roomId, { force: true })
         .then((snap) => {
           onSnapshot?.(snap);
         })

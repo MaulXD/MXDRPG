@@ -45,7 +45,7 @@ const DEFAULT_LAYOUTS: Record<MesaWindowId, Omit<FoundryWindowLayout, "open" | "
   status: { x: 52, y: 48, width: 400, height: 520 },
 };
 
-const DEFAULT_OPEN: MesaWindowId[] = ["initiative", "spawn"];
+const DEFAULT_OPEN: MesaWindowId[] = ["initiative"];
 
 /** Painéis abertos por padrão como janela flutuante (não na barra lateral). */
 const DEFAULT_FLOATING: MesaWindowId[] = ["initiative"];
@@ -322,12 +322,30 @@ export function useFoundryWindows(roomId?: string) {
     [registry]
   );
 
-  const isDockOpen = useCallback(() => {
-    return FOUNDRY_DOCK_PANEL_IDS.some((id) => {
-      const w = registry[id];
-      return Boolean(w?.open && !floating[id]);
+  const isDockOpen = useCallback(
+    (allowedIds?: ReadonlySet<MesaWindowId>) => {
+      return FOUNDRY_DOCK_PANEL_IDS.some((id) => {
+        if (allowedIds && !allowedIds.has(id)) return false;
+        const w = registry[id];
+        return Boolean(w?.open && !floating[id]);
+      });
+    },
+    [registry, floating]
+  );
+
+  const closePanels = useCallback((ids: MesaWindowId[]) => {
+    setRegistry((prev) => {
+      let changed = false;
+      const next: Registry = { ...prev };
+      for (const id of ids) {
+        const cur = next[id];
+        if (!cur?.open) continue;
+        next[id] = { ...cur, open: false, minimized: false };
+        changed = true;
+      }
+      return changed ? next : prev;
     });
-  }, [registry, floating]);
+  }, []);
 
   return {
     get,
@@ -343,6 +361,7 @@ export function useFoundryWindows(roomId?: string) {
     isActive,
     isFloating,
     isDockOpen,
+    closePanels,
     hydrated,
   };
 }

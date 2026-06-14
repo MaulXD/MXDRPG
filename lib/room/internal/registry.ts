@@ -58,11 +58,12 @@ export function toSnapshot(state: RoomState): RoomSnapshot {
 }
 
 export function bumpRoom(state: RoomState): RoomState {
-  const inCombat = Boolean(state.combat?.order?.length);
+  const inCombatEconomy = requiresCombatTurnEconomy(state.settings, state.combat);
   const backfill = backfillActorPortraitsFromTokens(state.actors, state.scene.tokens);
   const base = backfill.changed ? { ...state, actors: backfill.actors } : state;
   const scene = syncLinkedTokens(base.scene, base.actors, {
-    preserveCombatPa: inCombat,
+    preserveCombatPa: inCombatEconomy,
+    explorationDisplay: !inCombatEconomy,
   });
   return {
     ...base,
@@ -157,8 +158,10 @@ function refreshDemoActorsIfStale(room: RoomState): void {
   }
 
   if (changed) {
+    const inCombatEconomy = requiresCombatTurnEconomy(room.settings, room.combat);
     room.scene = syncLinkedTokens(room.scene, room.actors, {
-      preserveCombatPa: Boolean(room.combat?.order?.length),
+      preserveCombatPa: inCombatEconomy,
+      explorationDisplay: !inCombatEconomy,
     });
   }
 
@@ -266,6 +269,12 @@ export async function getRoom(roomId: string): Promise<RoomState | null> {
   if (room) {
     room.settings = normalizeRoomSettings(room.settings);
     if (!room.adventureId) room.adventureId = room.roomId;
+    const { getAdventure } = await import("@/lib/adventure/store");
+    const adv = await getAdventure(room.adventureId);
+    if (adv && !adv.deletedAt && adv.inviteCode !== room.inviteCode) {
+      room.inviteCode = adv.inviteCode;
+      return persistRoom(roomId, room);
+    }
     const legacyName = migrateLegacyDisplayName(room.name);
     if (legacyName !== room.name) {
       room.name = legacyName;

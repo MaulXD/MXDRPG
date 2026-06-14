@@ -13,7 +13,7 @@ import { DEMO_SCENE } from "@/lib/vtt/demo-scene";
 import type { BattleScene, BattleToken } from "@/lib/vtt/types";
 import { emptyCombat } from "./combat";
 import { welcomeChat } from "./chat";
-import { initCombatPaForRoom } from "./handlers/combat-turn";
+import { applyExplorationPaDisplay } from "@/lib/combat/exploration-pa";
 import { DEFAULT_ROOM_SETTINGS } from "./settings";
 import type { RoomActor, RoomState } from "./types";
 
@@ -21,7 +21,7 @@ import type { RoomActor, RoomState } from "./types";
 export function syncLinkedTokens(
   scene: BattleScene,
   actors: Record<string, RoomActor>,
-  opts?: { preserveCombatPa?: boolean }
+  opts?: { preserveCombatPa?: boolean; explorationDisplay?: boolean }
 ): BattleScene {
   const playerIds = collectPlayerActorIds(scene.tokens);
 
@@ -38,17 +38,23 @@ export function syncLinkedTokens(
     const paSource =
       opts?.preserveCombatPa && typeof token.pa === "number"
         ? token.pa
-        : levelChanged
+        : opts?.explorationDisplay
           ? paMax
-          : typeof token.pa === "number"
-            ? token.pa
-            : paMax;
+          : levelChanged
+            ? paMax
+            : typeof token.pa === "number"
+              ? token.pa
+              : paMax;
     const paFields = normalizeTokenPaFields(
       {
         ...token,
         pa: paSource,
-        bankedPa: opts?.preserveCombatPa ? (token.bankedPa ?? 0) : (token.bankedPa ?? 0),
-        paSpentThisTurn: token.paSpentThisTurn ?? 0,
+        bankedPa: opts?.explorationDisplay
+          ? 0
+          : opts?.preserveCombatPa
+            ? (token.bankedPa ?? 0)
+            : (token.bankedPa ?? 0),
+        paSpentThisTurn: opts?.explorationDisplay ? 0 : (token.paSpentThisTurn ?? 0),
         paMax,
       },
       paMax
@@ -144,6 +150,6 @@ export function createDemoRoom(): RoomState {
     updatedAt: Date.now(),
   };
 
-  initCombatPaForRoom(room);
+  applyExplorationPaDisplay(room);
   return room;
 }
