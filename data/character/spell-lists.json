@@ -1,0 +1,219 @@
+{
+  "version": 1,
+  "meta": {
+    "note": "Listas compartilhadas (Cap. 17.7). Classes acessam uma ou mais listas; truques e círculos definem o que pode aprender/preparar."
+  },
+  "lists": {
+    "truques-comuns": {
+      "label": "Truques comuns",
+      "cantrips": [
+        "magias-chama-de-fogareiro",
+        "magias-detectar-veneno",
+        "magias-estabilizar",
+        "magias-maos-firmes"
+      ]
+    },
+    "arcano-estudo": {
+      "label": "Arcano (estudo)",
+      "levels": {
+        "1": [
+          "magias-extracao-amplificada",
+          "magias-identificar-ingrediente",
+          "magias-armadura-arcana",
+          "magias-curar-ferimentos",
+          "magias-chama-de-vinha",
+          "magias-sussurro-de-masmorra"
+        ],
+        "2": [
+          "magias-aprimoramento-biomagico",
+          "magias-raios-de-enfraquecimento",
+          "magias-esfera-acida-de-monstro",
+          "magias-transmutacao-de-carne",
+          "magias-preservacao-perfeita",
+          "magias-forma-menor",
+          "magias-escudo-arcano",
+          "magias-ilusao-menor",
+          "magias-muralha-de-energia"
+        ],
+        "3": [
+          "magias-bola-de-fogo",
+          "magias-nova-arcana",
+          "magias-ventania",
+          "magias-ler-mentes",
+          "magias-relampago",
+          "magias-sono"
+        ],
+        "4": [
+          "magias-visao-do-ecossistema",
+          "magias-murcha",
+          "magias-mutacao-forcada",
+          "magias-parede-de-fogo",
+          "magias-preservacao-anual",
+          "magias-cura-em-massa"
+        ],
+        "5": [
+          "magias-grande-transmutacao-biomagica",
+          "magias-cone-de-frio",
+          "magias-salto-dimensional",
+          "magias-cadeia-de-relampago"
+        ]
+      }
+    },
+    "arcano-inato": {
+      "label": "Arcano (inato)",
+      "cantrips": ["magias-lamina-de-espirito", "magias-chama-de-fogareiro"],
+      "levels": {
+        "1": [
+          "magias-maos-gelidas",
+          "magias-onda-de-trovao",
+          "magias-chama-de-vinha",
+          "magias-curar-ferimentos"
+        ],
+        "2": [
+          "magias-esfera-acida-de-monstro",
+          "magias-escudo-arcano",
+          "magias-injecao-biomagica"
+        ],
+        "3": [
+          "magias-bola-de-fogo",
+          "magias-relampago",
+          "magias-raio-do-limiar"
+        ],
+        "4": ["magias-murcha", "magias-parede-de-fogo"],
+        "5": ["magias-cone-de-frio", "magias-desintegrar"]
+      }
+    },
+    "divino": {
+      "label": "Divino",
+      "cantrips": ["magias-chama-de-fogareiro", "magias-detectar-veneno", "magias-estabilizar"],
+      "levels": {
+        "1": [
+          "magias-purificar-veneno",
+          "magias-curar-ferimentos",
+          "magias-crescimento-acelerado"
+        ],
+        "2": [
+          "magias-preservacao-perfeita",
+          "magias-inspiracao-culinaria",
+          "magias-animacao-de-mortos"
+        ],
+        "3": ["magias-contagio-necrotico", "magias-raio-do-limiar"],
+        "4": ["magias-cura-em-massa", "magias-preservacao-anual"],
+        "5": ["magias-ressurreicao-incompleta", "magias-restaurar-vigor"]
+      }
+    },
+    "primal": {
+      "label": "Primal",
+      "cantrips": ["magias-detectar-veneno", "magias-maos-firmes"],
+      "levels": {
+        "1": ["magias-crescimento-acelerado", "magias-purificar-veneno", "magias-chama-de-vinha"],
+        "2": [
+          "magias-forma-menor",
+          "magias-preservacao-perfeita",
+          "magias-aprimoramento-biomagico"
+        ],
+        "3": ["magias-ventania", "magias-sono"],
+        "4": ["magias-mutacao-forcada", "magias-murcha"],
+        "5": ["magias-terremoto", "magias-forma-de-monstro"]
+      }
+    },
+    "performance": {
+      "label": "Performance e encanto",
+      "cantrips": ["magias-chama-de-fogareiro", "magias-lamina-de-espirito"],
+      "levels": {
+        "1": ["magias-sussurro-de-masmorra", "magias-curar-ferimentos", "magias-identificar-ingrediente"],
+        "2": ["magias-inspiracao-culinaria", "magias-ilusao-menor", "magias-transmutacao-de-carne"],
+        "3": ["magias-ler-mentes", "magias-sono", "magias-ventania"],
+        "4": ["magias-visao-do-ecossistema"],
+        "5": ["magias-salto-dimensional", "magias-despertar"]
+      }
+    },
+    "pacto": {
+      "label": "Pacto",
+      "cantrips": ["magias-lamina-de-espirito", "magias-detectar-veneno"],
+      "levels": {
+        "1": ["magias-maos-ardentes", "magias-chama-de-vinha", "magias-armadura-arcana"],
+        "2": ["magias-raios-de-enfraquecimento", "magias-escudo-arcano"],
+        "3": ["magias-raio-do-limiar", "magias-contagio-necrotico", "magias-relampago"],
+        "4": ["magias-murcha"],
+        "5": ["magias-desejo-de-morte", "magias-cadeia-de-relampago"]
+      }
+    },
+    "juramento": {
+      "label": "Juramento (paladino)",
+      "levels": {
+        "1": ["magias-curar-ferimentos", "magias-purificar-veneno"],
+        "2": ["magias-preservacao-perfeita", "magias-inspiracao-culinaria"],
+        "3": ["magias-raio-do-limiar"],
+        "4": ["magias-cura-em-massa"]
+      }
+    }
+  },
+  "classAccess": {
+    "Mago": {
+      "lists": ["truques-comuns", "arcano-estudo"],
+      "mode": "learn",
+      "cantripsKnown": 2,
+      "spellsKnownAtLevel1": 6,
+      "spellsPerLevel": 2
+    },
+    "Feiticeiro": {
+      "lists": ["arcano-inato"],
+      "mode": "known",
+      "cantripsKnown": 4,
+      "spellsKnownAtLevel1": 2,
+      "spellsPerLevel": 1
+    },
+    "Clérigo": {
+      "lists": ["divino"],
+      "mode": "prepare",
+      "alsoCantripsFrom": ["truques-comuns"]
+    },
+    "Druida": {
+      "lists": ["primal"],
+      "mode": "prepare"
+    },
+    "Bardo": {
+      "lists": ["performance"],
+      "mode": "learn",
+      "cantripsKnown": 2,
+      "spellsKnownAtLevel1": 4,
+      "spellsPerLevel": 1
+    },
+    "Bruxo": {
+      "lists": ["pacto"],
+      "mode": "known",
+      "cantripsKnown": 2,
+      "spellsKnownAtLevel1": 2,
+      "spellsPerLevel": 1
+    },
+    "Paladino": {
+      "lists": ["juramento"],
+      "mode": "prepare",
+      "halfCaster": true
+    }
+  },
+  "sharedPools": {
+    "arcano-unificado": {
+      "label": "Grimório arcano (Mago + Feiticeiro)",
+      "description": "Magias que ambos podem escolher nas respectivas listas.",
+      "entryIds": [
+        "magias-chama-de-vinha",
+        "magias-curar-ferimentos",
+        "magias-escudo-arcano",
+        "magias-bola-de-fogo",
+        "magias-relampago",
+        "magias-cone-de-frio"
+      ]
+    },
+    "divino-unificado": {
+      "label": "Orações compartilhadas (Clérigo + Paladino)",
+      "entryIds": [
+        "magias-curar-ferimentos",
+        "magias-purificar-veneno",
+        "magias-cura-em-massa",
+        "magias-raio-do-limiar"
+      ]
+    }
+  }
+}

@@ -128,7 +128,8 @@ const CLASS_SAVE_PROFICIENCIES: Partial<Record<ClassId, AttributeKey[]>> = {
   Bárbaro: ["forca", "constituicao"],
   Bardo: ["destreza", "carisma"],
   Druida: ["inteligencia", "sabedoria"],
-  Artífice: ["constituicao", "inteligencia"],
+  Feiticeiro: ["inteligencia", "carisma"],
+  Espiritualista: ["destreza", "sabedoria"],
   Paladino: ["sabedoria", "carisma"],
   Bruxo: ["sabedoria", "carisma"],
 };

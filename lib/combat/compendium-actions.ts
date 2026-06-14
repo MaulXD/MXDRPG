@@ -8,6 +8,15 @@ const ABILITY_BY_ID: Record<string, { effect: AbilityEffect; extras?: Partial<Co
   "habilidades-investida-do-guerreiro": { effect: "charge" },
   "habilidades-investida-barbara": { effect: "charge" },
   "habilidades-passo-das-sombras": { effect: "shadow_step" },
+  "habilidades-golpe-de-chi": {
+    effect: "melee_attack_bonus",
+    extras: { bonusDamageFormula: "1d8", damageType: "contundente", damageAttribute: "destreza" },
+  },
+  "habilidades-passo-do-vacuo": { effect: "shadow_step", extras: { selfTarget: true } },
+  "habilidades-ferida-aberta": {
+    effect: "melee_attack_bonus",
+    extras: { bonusDamageFormula: "2d8", damageType: "contundente", damageAttribute: "destreza" },
+  },
   "habilidades-forma-selvagem": { effect: "wild_shape" },
   "habilidades-reflexos-de-masmorra": { effect: "reaction_shift", extras: { selfTarget: true } },
   "habilidades-golpe-flanqueador": { effect: "melee_attack_bonus", extras: { attackBonus: 0 } },
@@ -290,7 +299,11 @@ function defaultExtras(effect: AbilityEffect): Partial<CombatActionOption> {
 
 export function abilityFromEntry(entry: CompendiumEntry): CombatActionOption | null {
   const tactical = entry.system.tactical as
-    | { alcanceHex?: { value?: number }; custoPontosAcao?: { value?: number } }
+    | {
+        alcanceHex?: { value?: number };
+        custoPontosAcao?: { value?: number };
+        custoChi?: { value?: number };
+      }
     | undefined;
   const abilityMeta = entry.system.ability as { recarga?: string } | undefined;
   const effect = abilityEffectFor(entry);
@@ -301,6 +314,7 @@ export function abilityFromEntry(entry: CompendiumEntry): CombatActionOption | n
 
   const rangeHex = tactical?.alcanceHex?.value ?? 1;
   const paCost = tactical?.custoPontosAcao?.value ?? PA_DEFAULT_ACTION_COST;
+  const chiCost = tactical?.custoChi?.value ?? 0;
   const selfTarget = extras.selfTarget ?? (effect === "defense_buff" || effect === "charge");
   const resolution = extras.resolution ?? (effect === "restrain" ? "save" : "attack");
 
@@ -322,6 +336,7 @@ export function abilityFromEntry(entry: CompendiumEntry): CombatActionOption | n
     attackBonus,
     rangeHex,
     paCost,
+    chiCost: chiCost > 0 ? chiCost : undefined,
     abilityEffect: effect,
     selfTarget,
     allyTarget: extras.allyTarget,
@@ -330,7 +345,7 @@ export function abilityFromEntry(entry: CompendiumEntry): CombatActionOption | n
     bonusDamageFormula: extras.bonusDamageFormula,
     saveAttribute: extras.saveAttribute,
     recharge: parseRecharge(abilityMeta?.recarga) ?? undefined,
-    label: `${entry.name} · ${targetLabel} · PA ${paCost}`,
+    label: `${entry.name} · ${targetLabel} · PA ${paCost}${chiCost > 0 ? ` · Chi ${chiCost}` : ""}`,
   };
 }
 

@@ -794,9 +794,9 @@
       ]
     },
     {
-      "id": "monge-ascetico",
+      "id": "clerigo-contemplativo",
       "classId": "Clérigo",
-      "subclass": "Monge Ascético",
+      "subclass": "Clérigo Contemplativo",
       "specialty": "Energia Interna",
       "diet": "Jejum de masmorra 8h+: +4 esquiva e dano radiante",
       "talents": [
@@ -1498,176 +1498,352 @@
       ]
     },
     {
-      "id": "ferreiro-de-campo",
-      "classId": "Artífice",
-      "subclass": "Ferreiro de Campo",
-      "specialty": "Carapaças",
-      "diet": "Assimilação de exoesqueletos: +2 CA em armadura improvisada",
+      "id": "linhagem-bestial",
+      "classId": "Feiticeiro",
+      "subclass": "Linhagem Bestial",
+      "specialty": "Predadores e Feras",
+      "diet": "Assimilação de fera: instinto de caça e +1d4 em magias ofensivas por 8h",
       "talents": [
         {
           "level": 4,
-          "id": "panela-viva",
-          "name": "Panela Viva",
+          "id": "presa-marcada",
+          "name": "Presa Marcada",
           "kind": "talent",
           "requires": null
         },
         {
           "level": 8,
-          "id": "armadura-de-caldeirao",
-          "name": "Armadura de Caldeirão",
+          "id": "uivo-interior",
+          "name": "Uivo Interior",
           "kind": "talent",
-          "requires": "panela-viva"
+          "requires": "presa-marcada"
         },
         {
           "level": 12,
-          "id": "reforco-de-campo",
-          "name": "Reforço de Campo",
+          "id": "corpo-do-predador",
+          "name": "Corpo do Predador",
           "kind": "talent",
-          "requires": "armadura-de-caldeirao"
+          "requires": "uivo-interior"
         },
         {
           "level": 16,
-          "id": "forja-rapida",
-          "name": "Forja Rápida",
+          "id": "alfa-inato",
+          "name": "Alfa Inato",
           "kind": "talent",
-          "requires": "reforco-de-campo"
+          "requires": "corpo-do-predador"
         },
         {
           "level": 20,
-          "id": "mestre-de-campo",
-          "name": "Mestre de Campo",
+          "id": "forma-da-besta-primordial",
+          "name": "Forma da Besta Primordial",
           "kind": "ascension",
           "requires": null
         }
       ]
     },
     {
-      "id": "engenheiro-de-explosivos",
-      "classId": "Artífice",
-      "subclass": "Engenheiro de Explosivos",
-      "specialty": "Inflamáveis",
-      "diet": "Assimilação inflamável: bombas +2d6 fogo",
+      "id": "sangue-selvagem",
+      "classId": "Feiticeiro",
+      "subclass": "Sangue Selvagem",
+      "specialty": "Mutação Incontrolável",
+      "diet": "Assimilação selvagem: após magia, rola mutação menor 1×/combate",
       "talents": [
         {
           "level": 4,
-          "id": "fogareiro-portatil",
-          "name": "Fogareiro Portátil",
+          "id": "torrente-caotica",
+          "name": "Torrente Caótica",
           "kind": "talent",
           "requires": null
         },
         {
           "level": 8,
-          "id": "bomba-de-glandula",
-          "name": "Bomba de Glândula",
+          "id": "onda-instavel",
+          "name": "Onda Instável",
           "kind": "talent",
-          "requires": "fogareiro-portatil"
+          "requires": "torrente-caotica"
         },
         {
           "level": 12,
-          "id": "caldeira-a-pressao",
-          "name": "Caldeira a Pressão",
+          "id": "tempestade-interna",
+          "name": "Tempestade Interna",
           "kind": "talent",
-          "requires": "bomba-de-glandula"
+          "requires": "onda-instavel"
         },
         {
           "level": 16,
-          "id": "motor-de-vapor-menor",
-          "name": "Motor de Vapor Menor",
+          "id": "cataclismo-inato",
+          "name": "Cataclismo Inato",
           "kind": "talent",
-          "requires": "caldeira-a-pressao"
+          "requires": "tempestade-interna"
         },
         {
           "level": 20,
-          "id": "inferno-controlado",
-          "name": "Inferno Controlado",
+          "id": "furia-primordial",
+          "name": "Fúria Primordial",
           "kind": "ascension",
           "requires": null
         }
       ]
     },
     {
-      "id": "biologo-de-masmorra",
-      "classId": "Artífice",
-      "subclass": "Biólogo de Masmorra",
-      "specialty": "Ácidos e Venenos",
-      "diet": "Assimilação tóxica: imune veneno, +1d6 ácido",
+      "id": "eco-abissal",
+      "classId": "Feiticeiro",
+      "subclass": "Eco Abissal",
+      "specialty": "Pressão e Sombra",
+      "diet": "Assimilação abissal: imune medo, +1 CD magias de controle",
       "talents": [
         {
           "level": 4,
-          "id": "seringa-basica",
-          "name": "Seringa Básica",
+          "id": "voz-do-vacuo",
+          "name": "Voz do Vácuo",
           "kind": "talent",
           "requires": null
         },
         {
           "level": 8,
-          "id": "catalisador",
-          "name": "Catalisador",
+          "id": "manto-de-profundezas",
+          "name": "Manto de Profundezas",
           "kind": "talent",
-          "requires": "seringa-basica"
+          "requires": "voz-do-vacuo"
         },
         {
           "level": 12,
-          "id": "laboratorio-de-campo",
-          "name": "Laboratório de Campo",
+          "id": "corrente-mental",
+          "name": "Corrente Mental",
           "kind": "talent",
-          "requires": "catalisador"
+          "requires": "manto-de-profundezas"
         },
         {
           "level": 16,
-          "id": "mutageno-de-batalha",
-          "name": "Mutágeno de Batalha",
+          "id": "fissura-abissal",
+          "name": "Fissura Abissal",
           "kind": "talent",
-          "requires": "laboratorio-de-campo"
+          "requires": "corrente-mental"
         },
         {
           "level": 20,
-          "id": "mutacao-direcionada",
-          "name": "Mutação Direcionada",
+          "id": "boca-do-abismo",
+          "name": "Boca do Abismo",
           "kind": "ascension",
           "requires": null
         }
       ]
     },
     {
-      "id": "construtor-de-armadilhas",
-      "classId": "Artífice",
-      "subclass": "Construtor de Armadilhas",
-      "specialty": "Caça e Extração",
-      "diet": "Assimilação de caça: vantagem em INT para armadilhas",
+      "id": "chama-inata",
+      "classId": "Feiticeiro",
+      "subclass": "Chama Inata",
+      "specialty": "Calor Vital",
+      "diet": "Assimilação ígnea: truques de fogo +1d4 por 8h",
       "talents": [
         {
           "level": 4,
-          "id": "armadilha-biologica",
-          "name": "Armadilha Biológica",
+          "id": "centelha-persistente",
+          "name": "Centelha Persistente",
           "kind": "talent",
           "requires": null
         },
         {
           "level": 8,
-          "id": "extracao-perfeita",
-          "name": "Extração Perfeita",
+          "id": "brasas-internas",
+          "name": "Brasas Internas",
           "kind": "talent",
-          "requires": "armadilha-biologica"
+          "requires": "centelha-persistente"
         },
         {
           "level": 12,
-          "id": "rede-de-campo",
-          "name": "Rede de Campo",
+          "id": "forno-interior",
+          "name": "Forno Interior",
           "kind": "talent",
-          "requires": "extracao-perfeita"
+          "requires": "brasas-internas"
         },
         {
           "level": 16,
-          "id": "engenho-de-caca",
-          "name": "Engenho de Caça",
+          "id": "combustao-subita",
+          "name": "Combustão Súbita",
           "kind": "talent",
-          "requires": "rede-de-campo"
+          "requires": "forno-interior"
         },
         {
           "level": 20,
-          "id": "arquiteto-da-masmorra",
-          "name": "Arquiteto da Masmorra",
+          "id": "coracao-incandescente",
+          "name": "Coração Incandescente",
+          "kind": "ascension",
+          "requires": null
+        }
+      ]
+    },
+    {
+      "id": "punho-do-limiar",
+      "classId": "Espiritualista",
+      "subclass": "Punho do Limiar",
+      "specialty": "Impacto e Precisão",
+      "diet": "Assimilação de predadores: +2 esquiva e +1d6 em golpes desarmados por 8h",
+      "talents": [
+        {
+          "level": 4,
+          "id": "golpe-do-vacuo",
+          "name": "Golpe do Vácuo",
+          "kind": "talent",
+          "requires": null
+        },
+        {
+          "level": 8,
+          "id": "punho-cortante",
+          "name": "Punho Cortante",
+          "kind": "talent",
+          "requires": "golpe-do-vacuo"
+        },
+        {
+          "level": 12,
+          "id": "tempestade-de-punhos",
+          "name": "Tempestade de Punhos",
+          "kind": "talent",
+          "requires": "punho-cortante"
+        },
+        {
+          "level": 16,
+          "id": "quebra-de-ossos",
+          "name": "Quebra de Ossos",
+          "kind": "talent",
+          "requires": "tempestade-de-punhos"
+        },
+        {
+          "level": 20,
+          "id": "punho-do-colosso",
+          "name": "Punho do Colosso",
+          "kind": "ascension",
+          "requires": null
+        }
+      ]
+    },
+    {
+      "id": "tecelao-do-vacuo",
+      "classId": "Espiritualista",
+      "subclass": "Tecelão do Vácuo",
+      "specialty": "Fluxo e Distância",
+      "diet": "Assimilação etérea: passos não provocam ataques 1×/turno",
+      "talents": [
+        {
+          "level": 4,
+          "id": "passo-do-vacuo",
+          "name": "Passo do Vácuo",
+          "kind": "talent",
+          "requires": null
+        },
+        {
+          "level": 8,
+          "id": "rede-de-chi",
+          "name": "Rede de Chi",
+          "kind": "talent",
+          "requires": "passo-do-vacuo"
+        },
+        {
+          "level": 12,
+          "id": "silencio-interior",
+          "name": "Silêncio Interior",
+          "kind": "talent",
+          "requires": "rede-de-chi"
+        },
+        {
+          "level": 16,
+          "id": "ruptura-dimensional",
+          "name": "Ruptura Dimensional",
+          "kind": "talent",
+          "requires": "silencio-interior"
+        },
+        {
+          "level": 20,
+          "id": "mente-no-limiar",
+          "name": "Mente no Limiar",
+          "kind": "ascension",
+          "requires": null
+        }
+      ]
+    },
+    {
+      "id": "asceta-da-dor",
+      "classId": "Espiritualista",
+      "subclass": "Asceta da Dor",
+      "specialty": "Carne e Sangue",
+      "diet": "Assimilação brutal: pode gastar PV para ganhar Chi extra no combate (até 2)",
+      "talents": [
+        {
+          "level": 4,
+          "id": "ferida-aberta",
+          "name": "Ferida Aberta",
+          "kind": "talent",
+          "requires": null
+        },
+        {
+          "level": 8,
+          "id": "autoflagelo",
+          "name": "Autoflagelo",
+          "kind": "talent",
+          "requires": "ferida-aberta"
+        },
+        {
+          "level": 12,
+          "id": "ritual-de-sangue",
+          "name": "Ritual de Sangue",
+          "kind": "talent",
+          "requires": "autoflagelo"
+        },
+        {
+          "level": 16,
+          "id": "corpo-rasgado",
+          "name": "Corpo Rasgado",
+          "kind": "talent",
+          "requires": "ritual-de-sangue"
+        },
+        {
+          "level": 20,
+          "id": "martirio",
+          "name": "Martírio",
+          "kind": "ascension",
+          "requires": null
+        }
+      ]
+    },
+    {
+      "id": "guardiao-da-respiracao",
+      "classId": "Espiritualista",
+      "subclass": "Guardião da Respiração",
+      "specialty": "Defesa e Sustento",
+      "diet": "Assimilação serena: +2 CON e recupera 1 Chi extra após descanso curto",
+      "talents": [
+        {
+          "level": 4,
+          "id": "muro-de-chi",
+          "name": "Muro de Chi",
+          "kind": "talent",
+          "requires": null
+        },
+        {
+          "level": 8,
+          "id": "respiracao-de-ferro",
+          "name": "Respiração de Ferro",
+          "kind": "talent",
+          "requires": "muro-de-chi"
+        },
+        {
+          "level": 12,
+          "id": "campo-protetor",
+          "name": "Campo Protetor",
+          "kind": "talent",
+          "requires": "respiracao-de-ferro"
+        },
+        {
+          "level": 16,
+          "id": "pele-de-vento",
+          "name": "Pele de Vento",
+          "kind": "talent",
+          "requires": "campo-protetor"
+        },
+        {
+          "level": 20,
+          "id": "templo-vivo",
+          "name": "Templo Vivo",
           "kind": "ascension",
           "requires": null
         }

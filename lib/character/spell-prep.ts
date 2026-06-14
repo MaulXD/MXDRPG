@@ -1,3 +1,10 @@
+import {
+  allSpellEntryIdsForClass,
+  classSpellAccess,
+  isCasterClassId,
+  isSpellAllowedForClass,
+  maxSpellsKnownForClass,
+} from "@/lib/character/spell-lists";
 import { attributeMod, type ClassId } from "@/lib/character/rules";
 import type { CharacterSheet } from "@/lib/character/types";
 import { getEntry } from "@/lib/compendium/registry";
@@ -39,8 +46,11 @@ export function maxPreparedSpells(actor: CharacterSheet): number {
     case "Druida":
       return Math.max(1, nivel + wis);
     case "Mago":
-    case "Artífice":
       return Math.max(4, nivel + int + 3);
+    case "Feiticeiro": {
+      const known = maxSpellsKnownForClass("Feiticeiro", nivel);
+      return known ?? Math.max(2, nivel + cha);
+    }
     case "Bardo":
       return Math.max(3, nivel + 2);
     case "Bruxo":
@@ -53,7 +63,17 @@ export function maxPreparedSpells(actor: CharacterSheet): number {
 }
 
 export function isCasterClass(classe: string): boolean {
-  return ["Mago", "Clérigo", "Druida", "Bardo", "Artífice", "Bruxo", "Paladino"].includes(classe);
+  return isCasterClassId(classe);
+}
+
+/** Filtra magias do grimório às listas da classe (Cap. 17.7). */
+export function spellInClassList(classe: string, entryId: string): boolean {
+  if (!isCasterClassId(classe)) return true;
+  return isSpellAllowedForClass(classe, entryId);
+}
+
+export function classSpellPrepMode(classe: string): "learn" | "known" | "prepare" | null {
+  return classSpellAccess(classe)?.mode ?? null;
 }
 
 /** null = sem lista explícita → todas as magias do inventário ficam disponíveis. */
@@ -64,6 +84,7 @@ export function explicitPreparedIds(actor: CharacterSheet): string[] | null {
 }
 
 export function isSpellCombatReady(actor: CharacterSheet, entryId: string): boolean {
+  if (!spellInClassList(actor.identity.classe, entryId)) return false;
   const prepared = explicitPreparedIds(actor);
   if (!prepared) return true;
   if (isCantrip(entryId)) return true;

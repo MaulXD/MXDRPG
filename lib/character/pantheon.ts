@@ -42,7 +42,7 @@ export const RELIGION_LIST: ReligionDef[] = [
       "Núcleo Resiliente: Forjados +4 CD de destruição do Núcleo",
       "Bênção do Aproveitamento: +1 assimilação garantida em Banquete Lendário de Boss",
     ],
-    favoredClasses: ["Artífice", "Guerreiro", "Clérigo"],
+    favoredClasses: ["Feiticeiro", "Guerreiro", "Clérigo"],
     sacredPlaces: ["Santuário da Mão Forjadora", "Ferromur", "Khaz-Durin"],
   },
   {
@@ -89,7 +89,7 @@ export const RELIGION_LIST: ReligionDef[] = [
       "Conhecimento e Carne: Prato Perfeito com espécie estudada = 2 assimilações garantidas",
     ],
     penalties: ["Extremistas perdem reputação em cidades puritanas"],
-    favoredClasses: ["Mago", "Artífice", "Bardo", "Bruxo"],
+    favoredClasses: ["Mago", "Feiticeiro", "Bardo", "Bruxo"],
     sacredPlaces: ["Universidade de Vesper", "Arquivo Vivo", "Moinho de Pergaminho"],
   },
   {
@@ -205,7 +205,7 @@ export const RELIGION_LIST: ReligionDef[] = [
       "Fervura Interior: +2 em Coccão para pratos assados ou flambados",
       "Brasa Persistente: mutações de fogo/brasas duram +12h",
     ],
-    favoredClasses: ["Mago", "Artífice", "Guerreiro"],
+    favoredClasses: ["Mago", "Espiritualista", "Guerreiro"],
     sacredPlaces: ["Três Forjas", "Kravenholm", "Boca Vermelha"],
   },
   {
