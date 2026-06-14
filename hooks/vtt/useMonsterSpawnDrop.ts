@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useRef, useState, type RefObject } from "react";
+import { useCallback, useEffect, useRef, useState, type RefObject } from "react";
 import type { Axial } from "@/lib/vtt/hex-math";
 import { canvasCenter, screenToWorld, type BattlefieldView } from "@/lib/vtt/battlefield-view";
 import { resolveMapAlignedGridLayout, worldToMapFloorLocal } from "@/lib/vtt/grid-layout";
@@ -10,6 +10,7 @@ import {
   clearActiveActorSpawnDragPayload,
   clearActiveGmCreationSpawnDragPayload,
   clearActiveSpawnDragPayload,
+  getActiveSpawnDragPayload,
   isBoardSpawnDrag,
   readActorSpawnDrag,
   readGmCreationSpawnDrag,
@@ -51,6 +52,7 @@ export function useMonsterSpawnDrop({
   const [spawnDragActive, setSpawnDragActive] = useState(false);
   const dragDepthRef = useRef(0);
   const busyRef = useRef(false);
+  const spawnDragActiveRef = useRef(false);
 
   const axialFromEvent = useCallback(
     (clientX: number, clientY: number): Axial | null => {
@@ -59,6 +61,7 @@ export function useMonsterSpawnDrop({
       const rect = canvas.getBoundingClientRect();
       const px = clientX - rect.left;
       const py = clientY - rect.top;
+      if (px < 0 || py < 0 || px > rect.width || py > rect.height) return null;
       const w = canvas.clientWidth;
       const h = canvas.clientHeight;
       const { ox, oy } = canvasCenter(w, h);
@@ -80,68 +83,49 @@ export function useMonsterSpawnDrop({
     [setHoverAxial, onHoverAxialChange]
   );
 
+  const setSpawnActive = useCallback((active: boolean) => {
+    spawnDragActiveRef.current = active;
+    setSpawnDragActive(active);
+  }, []);
+
   const dropZoneActive = enabled || allowActorDrop;
 
-  const onDragEnter = useCallback(
-    (e: React.DragEvent) => {
-      if (!dropZoneActive || !isBoardSpawnDrag(e.dataTransfer)) return;
-      e.preventDefault();
-      e.stopPropagation();
-      dragDepthRef.current += 1;
-      setSpawnDragActive(true);
+  const pointOnCanvas = useCallback(
+    (clientX: number, clientY: number) => {
+      const canvas = canvasRef.current;
+      if (!canvas) return false;
+      const rect = canvas.getBoundingClientRect();
+      return (
+        clientX >= rect.left &&
+        clientX <= rect.right &&
+        clientY >= rect.top &&
+        clientY <= rect.bottom
+      );
     },
-    [dropZoneActive]
+    [canvasRef]
   );
 
-  const onDragLeave = useCallback(
-    (e: React.DragEvent) => {
-      if (!dropZoneActive || !spawnDragActive) return;
-      const wrap = wrapRef.current;
-      const next = e.relatedTarget;
-      if (wrap && next instanceof Node && wrap.contains(next)) return;
-      dragDepthRef.current = Math.max(0, dragDepthRef.current - 1);
-      if (dragDepthRef.current === 0) {
-        setSpawnDragActive(false);
-        reportHover(null);
-      }
-    },
-    [dropZoneActive, spawnDragActive, wrapRef, reportHover]
-  );
-
-  const onDragOver = useCallback(
-    (e: React.DragEvent) => {
-      if (!dropZoneActive || !isBoardSpawnDrag(e.dataTransfer)) return;
-      e.preventDefault();
-      e.stopPropagation();
-      e.dataTransfer.dropEffect = "copy";
-      const axial = axialFromEvent(e.clientX, e.clientY);
-      if (axial) reportHover(axial);
-    },
-    [dropZoneActive, axialFromEvent, reportHover]
-  );
-
-  const onDrop = useCallback(
-    async (e: React.DragEvent) => {
+  const performDrop = useCallback(
+    async (clientX: number, clientY: number, dataTransfer: DataTransfer | null) => {
       if (!dropZoneActive) return;
-      e.preventDefault();
-      e.stopPropagation();
-      dragDepthRef.current = 0;
-      setSpawnDragActive(false);
 
-      const gmPayload = enabled ? readGmCreationSpawnDrag(e.dataTransfer) : null;
+      const gmPayload = enabled && dataTransfer ? readGmCreationSpawnDrag(dataTransfer) : null;
       const monsterPayload =
-        enabled && !gmPayload ? readMonsterSpawnDrag(e.dataTransfer) : null;
+        enabled && dataTransfer && !gmPayload ? readMonsterSpawnDrag(dataTransfer) : null;
       const actorPayload =
-        allowActorDrop && !gmPayload && !monsterPayload
-          ? readActorSpawnDrag(e.dataTransfer)
+        allowActorDrop && dataTransfer && !gmPayload && !monsterPayload
+          ? readActorSpawnDrag(dataTransfer)
           : null;
 
       clearActiveSpawnDragPayload();
       clearActiveActorSpawnDragPayload();
       clearActiveGmCreationSpawnDragPayload();
 
-      const axial = axialFromEvent(e.clientX, e.clientY);
+      const axial = axialFromEvent(clientX, clientY);
       reportHover(null);
+      dragDepthRef.current = 0;
+      setSpawnActive(false);
+
       if ((!monsterPayload && !actorPayload && !gmPayload) || !axial) {
         if (!monsterPayload && !actorPayload && !gmPayload) {
           onError?.("Solte no mapa (arraste da lista Invocar, Personagens ou Minhas fichas).");
@@ -186,8 +170,118 @@ export function useMonsterSpawnDrop({
         busyRef.current = false;
       }
     },
-    [dropZoneActive, enabled, allowActorDrop, axialFromEvent, reportHover, roomId, scene, onSpawned, onError]
+    [
+      dropZoneActive,
+      enabled,
+      allowActorDrop,
+      axialFromEvent,
+      reportHover,
+      setSpawnActive,
+      roomId,
+      scene,
+      onSpawned,
+      onError,
+    ]
   );
+
+  const onDragEnter = useCallback(
+    (e: React.DragEvent) => {
+      if (!dropZoneActive || !isBoardSpawnDrag(e.dataTransfer)) return;
+      e.preventDefault();
+      e.stopPropagation();
+      dragDepthRef.current += 1;
+      setSpawnActive(true);
+    },
+    [dropZoneActive, setSpawnActive]
+  );
+
+  const onDragLeave = useCallback(
+    (e: React.DragEvent) => {
+      if (!dropZoneActive) return;
+      const wrap = wrapRef.current;
+      const next = e.relatedTarget;
+      if (wrap && next instanceof Node && wrap.contains(next)) return;
+      dragDepthRef.current = Math.max(0, dragDepthRef.current - 1);
+      if (dragDepthRef.current === 0) {
+        setSpawnActive(false);
+        reportHover(null);
+      }
+    },
+    [dropZoneActive, wrapRef, reportHover, setSpawnActive]
+  );
+
+  const onDragOver = useCallback(
+    (e: React.DragEvent) => {
+      if (!dropZoneActive || !isBoardSpawnDrag(e.dataTransfer)) return;
+      e.preventDefault();
+      e.stopPropagation();
+      e.dataTransfer.dropEffect = "copy";
+      const axial = axialFromEvent(e.clientX, e.clientY);
+      if (axial) reportHover(axial);
+    },
+    [dropZoneActive, axialFromEvent, reportHover]
+  );
+
+  const onDrop = useCallback(
+    (e: React.DragEvent) => {
+      if (!dropZoneActive) return;
+      e.preventDefault();
+      e.stopPropagation();
+      void performDrop(e.clientX, e.clientY, e.dataTransfer);
+    },
+    [dropZoneActive, performDrop]
+  );
+
+  /** Fallback global — alguns navegadores não entregam drop ao wrapper do canvas. */
+  useEffect(() => {
+    if (!dropZoneActive) return;
+
+    function onWindowDragOver(e: DragEvent) {
+      const dt = e.dataTransfer;
+      if (!dt || !isBoardSpawnDrag(dt)) return;
+      if (!pointOnCanvas(e.clientX, e.clientY)) return;
+      e.preventDefault();
+      dt.dropEffect = "copy";
+      dragDepthRef.current = Math.max(dragDepthRef.current, 1);
+      setSpawnActive(true);
+      const axial = axialFromEvent(e.clientX, e.clientY);
+      if (axial) reportHover(axial);
+    }
+
+    function onWindowDrop(e: DragEvent) {
+      const dt = e.dataTransfer;
+      if (!dt || !isBoardSpawnDrag(dt)) return;
+      if (!pointOnCanvas(e.clientX, e.clientY)) return;
+      e.preventDefault();
+      void performDrop(e.clientX, e.clientY, dt);
+    }
+
+    function onWindowDragEnd() {
+      dragDepthRef.current = 0;
+      setSpawnActive(false);
+      reportHover(null);
+      if (!getActiveSpawnDragPayload()) return;
+      clearActiveSpawnDragPayload();
+      clearActiveActorSpawnDragPayload();
+      clearActiveGmCreationSpawnDragPayload();
+    }
+
+    window.addEventListener("dragover", onWindowDragOver);
+    window.addEventListener("drop", onWindowDrop);
+    window.addEventListener("dragend", onWindowDragEnd);
+    return () => {
+      window.removeEventListener("dragover", onWindowDragOver);
+      window.removeEventListener("drop", onWindowDrop);
+      window.removeEventListener("dragend", onWindowDragEnd);
+    };
+  }, [
+    dropZoneActive,
+    pointOnCanvas,
+    axialFromEvent,
+    reportHover,
+    performDrop,
+    setSpawnActive,
+  ]);
 
   return {
     spawnDragActive,

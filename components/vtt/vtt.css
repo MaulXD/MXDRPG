@@ -3818,6 +3818,8 @@
 }
 
 .vtt-spawn-drag-card {
+  cursor: grab;
+  -webkit-user-drag: element;
   width: 100%;
   display: flex;
   align-items: flex-start;

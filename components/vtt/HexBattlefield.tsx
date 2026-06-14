@@ -226,6 +226,8 @@ type Props = {
   isRoomGm?: boolean;
   /** Mestre simulando visão/controles de jogador na mesa. */
   simulatePlayerView?: boolean;
+  /** Invocar monstros, reposicionar tokens — permanece ativo mesmo na visão jogador. */
+  canManageBattlefield?: boolean;
 };
 
 export function HexBattlefield({
@@ -293,7 +295,9 @@ export function HexBattlefield({
   ownerDisplayNames,
   isRoomGm: isRoomGmProp,
   simulatePlayerView = false,
+  canManageBattlefield,
 }: Props) {
+  const battlefieldGm = canManageBattlefield ?? canControlCombat;
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
   const [scene, setScene] = useState(initial);
@@ -767,7 +771,7 @@ export function HexBattlefield({
     canvasRef,
     scene: displayScene,
     roomId,
-    enabled: canControlCombat,
+    enabled: battlefieldGm,
     allowActorDrop: canEdit,
     onSpawned: syncRoom,
     setHoverAxial,
@@ -895,7 +899,7 @@ export function HexBattlefield({
       Boolean(
         highlights.showMovement ||
           highlights.isAreaSpellMode ||
-          (spawnDragActive && (canControlCombat || canEdit)) ||
+          (spawnDragActive && (battlefieldGm || canEdit)) ||
           dungeonMapEditing ||
           mapToolMode === "measure" ||
           gmDragTokenId
@@ -933,7 +937,7 @@ export function HexBattlefield({
       areaDirectionSet: highlights.areaDirectionSet,
       hoverAxial: hoverAxialForCanvas,
       hoverMovePreview: highlights.hoverMovePreview,
-      spawnDropHover: spawnDragActive && (canControlCombat || canEdit),
+      spawnDropHover: spawnDragActive && (battlefieldGm || canEdit),
       spawnDropFootprintKeys,
       spawnDropInvalid,
       moveHoverFootprintKeys,
@@ -1887,8 +1891,8 @@ export function HexBattlefield({
   );
 
   const canRepositionToken = useCallback(
-    (_token: BattleToken) => canRepositionTokens,
-    [canRepositionTokens]
+    (_token: BattleToken) => canManageBattlefield ?? canRepositionTokens,
+    [canManageBattlefield, canRepositionTokens]
   );
 
   const onRepositionToken = useCallback(
@@ -2829,6 +2833,7 @@ export function HexBattlefield({
         <canvas
           ref={canvasRef}
           className="vtt-canvas"
+          {...spawnDropHandlers}
           onPointerDown={(e) => {
             if (battlefieldView.onPointerDown(e)) return;
             pointer.onPointerDown(e);

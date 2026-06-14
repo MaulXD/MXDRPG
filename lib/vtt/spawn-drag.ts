@@ -64,9 +64,7 @@ export function readMonsterSpawnDrag(dt: DataTransfer): MonsterSpawnDragPayload 
 export function isMonsterSpawnDrag(dt: DataTransfer): boolean {
   if (activeSpawnDragPayload) return true;
   const types = Array.from(dt.types);
-  if (types.includes(MONSTER_SPAWN_DRAG_MIME)) return true;
-  const plain = dt.getData("text/plain");
-  return plain.startsWith(SPAWN_PLAIN_PREFIX);
+  return types.includes(MONSTER_SPAWN_DRAG_MIME);
 }
 
 export function clearActiveSpawnDragPayload(): void {
@@ -117,9 +115,7 @@ export function readActorSpawnDrag(dt: DataTransfer): ActorSpawnDragPayload | nu
 export function isActorSpawnDrag(dt: DataTransfer): boolean {
   if (activeActorSpawnDragPayload) return true;
   const types = Array.from(dt.types);
-  if (types.includes(ACTOR_SPAWN_DRAG_MIME)) return true;
-  const plain = dt.getData("text/plain");
-  return plain.startsWith(ACTOR_PLAIN_PREFIX);
+  return types.includes(ACTOR_SPAWN_DRAG_MIME);
 }
 
 export function clearActiveActorSpawnDragPayload(): void {
@@ -175,9 +171,7 @@ export function readGmCreationSpawnDrag(dt: DataTransfer): GmCreationSpawnDragPa
 export function isGmCreationSpawnDrag(dt: DataTransfer): boolean {
   if (activeGmCreationSpawnDragPayload) return true;
   const types = Array.from(dt.types);
-  if (types.includes(GM_CREATION_SPAWN_DRAG_MIME)) return true;
-  const plain = dt.getData("text/plain");
-  return plain.startsWith(GM_CREATION_PLAIN_PREFIX);
+  return types.includes(GM_CREATION_SPAWN_DRAG_MIME);
 }
 
 export function clearActiveGmCreationSpawnDragPayload(): void {
