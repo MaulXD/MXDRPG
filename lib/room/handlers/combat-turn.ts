@@ -26,7 +26,6 @@ import {
   getActiveBattleToken,
   isDefeatedToken,
   shouldAutoSkipTurn,
-  skipUnplayableActives,
   reconcileCombatOrderPreservingActive,
   syncCombatOrderWithTokens,
 } from "../combat-order";
@@ -124,12 +123,44 @@ export function initCombatPaForRoom(room: RoomState): void {
   beginCombatTurnEconomyPa(room);
 }
 
-/** Entrada na economia de turnos: zera pools e concede PA cheios só ao ativo (sem acúmulo). */
+/** Entrada na economia de turnos: zera pools, limpa auto-passe e concede PA ao ativo (como iniciativa). */
 export function beginCombatTurnEconomyPa(room: RoomState): void {
   if (!room.combat?.order?.length) return;
-  room.combat = { ...room.combat, paRefreshTurnKey: undefined };
+
+  room.combat = {
+    ...room.combat,
+    paRefreshTurnKey: undefined,
+    pendingAutoPass: undefined,
+    notices: [],
+  };
+
+  const notices: string[] = [];
+  syncCombatOrderWithTokens(room);
+  resetAllTokenMovement(room, notices);
   zeroAllTokenPaPools(room);
-  refreshActiveTokenPa(room, "full");
+  resetChiPoolsForCombat(room);
+
+  const maxSkips = Math.max(1, room.combat.order.length + 1);
+  for (let i = 0; i < maxSkips; i++) {
+    const active = getActiveBattleToken(room);
+    if (!active) break;
+
+    if (shouldAutoSkipTurn(active)) {
+      if (isDefeatedToken(active)) {
+        notices.push(`${active.name} está morto — turno passado.`);
+      } else if (active.conditions?.includes("atordoado")) {
+        notices.push(formatStunSkipNotice(active.name));
+      }
+      stepToNextCombatant(room, notices);
+      continue;
+    }
+
+    reconcileCombatOrderPreservingActive(room);
+    pushTurnStartNoticeFull(room, notices);
+    break;
+  }
+
+  room.combat = { ...room.combat, notices };
 }
 
 function refreshActiveTokenPa(room: RoomState, mode: "full" | "regen" = "regen"): void {
@@ -413,6 +444,7 @@ export async function rollRoomInitiative(roomId: string): Promise<RoomSnapshot |
     naturalOrder: order,
     orderOverridden: false,
     paRefreshTurnKey: undefined,
+    pendingAutoPass: undefined,
   };
   room.combatUndo = [];
   room.scene = {
@@ -453,15 +485,15 @@ export async function rollRoomInitiative(roomId: string): Promise<RoomSnapshot |
 
   room.combat = { ...room.combat, notices };
 
-  return toSnapshot(await persistRoom(roomId, room));
+  return toSnapshot(
+    await persistRoom(roomId, room, { skipAutoPass: true, skipAutoPassSchedule: true })
+  );
 }
 
 /** Garante PA no token ativo (início de turno ou após pular inconsciente/atordoado). */
 export function ensureCombatActiveHasPa(room: RoomState): void {
   if (!room.combat?.order?.length) return;
   if (!requiresCombatTurnEconomy(room.settings, room.combat)) return;
-
-  skipUnplayableActives(room);
 
   const active = getActiveBattleToken(room);
   if (!active || shouldAutoSkipTurn(active)) return;

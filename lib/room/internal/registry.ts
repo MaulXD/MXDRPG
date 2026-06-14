@@ -184,6 +184,8 @@ function refreshDemoActorsIfStale(room: RoomState): void {
 export type PersistRoomOpts = {
   /** Evita reagendar auto-passe logo após avançar turno manualmente/automático. */
   skipAutoPassSchedule?: boolean;
+  /** Não executa nem agenda auto-passe (entrada em combate, reparo de PA no poll). */
+  skipAutoPass?: boolean;
 };
 
 export async function persistRoom(
@@ -192,8 +194,10 @@ export async function persistRoom(
   opts?: PersistRoomOpts
 ): Promise<RoomState> {
   if (state.combat?.order?.length) {
-    ensureCombatActiveHasPa(state);
-    if (requiresCombatTurnEconomy(state.settings, state.combat)) {
+    if (!opts?.skipAutoPass) {
+      ensureCombatActiveHasPa(state);
+    }
+    if (requiresCombatTurnEconomy(state.settings, state.combat) && !opts?.skipAutoPass) {
       if (executePendingAutoPassIfDue(state)) {
         // Turno avançou — PA do novo ativo já veio de applyTurnPaTransition
       } else if (!opts?.skipAutoPassSchedule) {
@@ -271,10 +275,10 @@ export async function getRoom(roomId: string): Promise<RoomState | null> {
     const paRepaired = paBefore !== paAfter;
 
     if (executePendingAutoPassIfDue(room)) {
-      return persistRoom(roomId, room, { skipAutoPassSchedule: true });
+      return persistRoom(roomId, room, { skipAutoPassSchedule: true, skipAutoPass: false });
     }
     if (paRepaired) {
-      return persistRoom(roomId, room, { skipAutoPassSchedule: true });
+      return persistRoom(roomId, room, { skipAutoPassSchedule: true, skipAutoPass: true });
     }
   } else if (room?.combat?.pendingAutoPass) {
     room.combat = { ...room.combat, pendingAutoPass: undefined };

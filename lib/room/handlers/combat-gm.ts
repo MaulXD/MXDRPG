@@ -17,7 +17,7 @@ import { persistActorToAdventureSheet } from "../adventure-actors";
 import { syncLinkedTokens } from "../sync";
 import { appendRoomChatMessage } from "./chat";
 import { patchTokenVitals } from "@/lib/vtt/token-hp-display";
-import { getRoom, persistRoom, toSnapshot } from "../internal/registry";
+import { getRoom, persistRoom, toSnapshot, type PersistRoomOpts } from "../internal/registry";
 import { applyExplorationPaDisplay } from "@/lib/combat/exploration-pa";
 import { beginCombatTurnEconomyPa } from "./combat-turn";
 import type { RoomSnapshot } from "../types";
@@ -61,6 +61,8 @@ export async function executeGmCombatAction(
     authorName: user?.name ?? "Mestre",
     authorRole: "mestre" as const,
   };
+
+  let persistOpts: PersistRoomOpts | undefined;
 
   switch (body.action) {
     case "reset-pa": {
@@ -185,6 +187,7 @@ export async function executeGmCombatAction(
         applyExplorationPaDisplay(room);
       } else if (room.combat?.order?.length) {
         beginCombatTurnEconomyPa(room);
+        persistOpts = { skipAutoPass: true, skipAutoPassSchedule: true };
       }
       appendRoomChatMessage(room, {
         ...author,
@@ -355,5 +358,5 @@ export async function executeGmCombatAction(
       return { ok: false, error: "Ação inválida" };
   }
 
-  return { ok: true, snapshot: toSnapshot(await persistRoom(roomId, room)) };
+  return { ok: true, snapshot: toSnapshot(await persistRoom(roomId, room, persistOpts)) };
 }
