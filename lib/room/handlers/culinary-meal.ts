@@ -4,6 +4,7 @@ import { resolveStructuredMeal } from "@/lib/culinary/apply-meal";
 import type { StructuredMealInput } from "@/lib/culinary/types";
 import { persistActorToAdventureSheet } from "../adventure-actors";
 import { appendRoomChatMessage } from "./chat";
+import { requiresCombatTurnEconomy } from "@/lib/combat/mesa-mode";
 import { getRoom, persistRoom, toSnapshot } from "../internal/registry";
 import { syncLinkedTokens } from "../sync";
 import type { RoomActor, RoomSnapshot } from "../types";
@@ -43,7 +44,10 @@ export async function executeStructuredMeal(
     await persistActorToAdventureSheet(next);
   }
 
-  room.scene = syncLinkedTokens(room.scene, room.actors, { preserveCombatPa: Boolean(room.combat?.order?.length) });
+  room.scene = syncLinkedTokens(room.scene, room.actors, {
+    preserveCombatPa: requiresCombatTurnEconomy(room.settings, room.combat),
+    explorationDisplay: !requiresCombatTurnEconomy(room.settings, room.combat),
+  });
 
   appendRoomChatMessage(room, {
     authorId: user?.id ?? "gm",

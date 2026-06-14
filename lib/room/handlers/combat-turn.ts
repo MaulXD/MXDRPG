@@ -15,6 +15,7 @@ import {
   refreshPaAtTurnStart,
   startTurnPaFull,
   tokenBankedPa,
+  tokenPaSpentThisTurn,
   tokenSpendablePa,
 } from "@/lib/combat/pa-turn";
 import type { BattleToken } from "@/lib/vtt/types";
@@ -45,6 +46,7 @@ import {
 } from "@/lib/combat/chi-economy";
 import { tickDeathTrackOnRound } from "@/lib/combat/death-track";
 import { requiresCombatTurnEconomy } from "@/lib/combat/mesa-mode";
+import { tokenMayActWithZeroSpendablePa } from "@/lib/combat/zero-pa-options";
 import { pushRoundCheckpoint } from "../combat-round-checkpoint";
 import { DEFAULT_AUTO_PASS_DELAY_MS } from "../settings";
 import { getRoom, persistRoom, toSnapshot } from "../internal/registry";
@@ -341,6 +343,11 @@ export function scheduleAutoPassWhenActivePaZero(room: RoomState): boolean {
     return false;
   }
 
+  if (tokenMayActWithZeroSpendablePa(room, active)) {
+    clearPendingAutoPass(room);
+    return false;
+  }
+
   const pending = room.combat.pendingAutoPass;
   if (pending?.tokenId === active.id) {
     return pending.passAt <= Date.now();
@@ -374,12 +381,18 @@ export function executePendingAutoPassIfDue(
     clearPendingAutoPass(room);
     return false;
   }
+  if (tokenMayActWithZeroSpendablePa(room, active)) {
+    clearPendingAutoPass(room);
+    return false;
+  }
 
+  const activeName = active.name;
+  clearPendingAutoPass(room);
   const transitionNotices = applyTurnPaTransition(room);
   room.combat = {
     ...room.combat,
     notices: [
-      `PA esgotados — turno de ${active.name} passou automaticamente.`,
+      `PA esgotados — turno de ${activeName} passou automaticamente.`,
       ...transitionNotices,
     ],
   };
@@ -462,6 +475,9 @@ export function ensureCombatActiveHasPa(room: RoomState): void {
 
   // Já restaurou PA neste turno — não duplica recuperação nem reabastece após gastar tudo
   if (refreshedThisTurn) return;
+
+  // Esgotou PA neste turno — não reabastece (ex.: mestre mudou ativo com set-active)
+  if (tokenSpendablePa(active) === 0 && tokenPaSpentThisTurn(active) > 0) return;
 
   refreshActiveTokenPa(room, "regen");
 }
