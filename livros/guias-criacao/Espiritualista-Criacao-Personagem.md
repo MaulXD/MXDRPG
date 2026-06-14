@@ -106,6 +106,8 @@ Escolha **um kit** abaixo. Todo personagem nv. 1 também recebe: kit de trinchar
 
 Nenhuma vertente é pacifista; **Asceta da Dor** é a mais violenta (autoflagelo e dano extremo).
 
+**Folhetos detalhados:** *Por que Espiritualista?* e um guia por subclasse em `livros/guias-criacao/` (PDFs em `livros/pdf/guias-criacao/`).
+
 ---
 
 ## Kits iniciais (escolha 1)
