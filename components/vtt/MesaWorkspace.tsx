@@ -485,7 +485,7 @@ export function MesaWorkspace({
               </FoundryDockPanel>
             ) : null}
 
-            {effectiveCanControlCombat && !windows.isFloating("spawn") ? (
+            {isActualGm && !windows.isFloating("spawn") ? (
               <FoundryDockPanel
                 title="Invocar monstros"
                 open={win("spawn").open}
@@ -555,7 +555,8 @@ export function MesaWorkspace({
               canEdit={canEdit}
               canUseWhiteboard={canEdit}
               canControlCombat={effectiveCanControlCombat}
-              canRepositionTokens={effectiveCanControlCombat}
+              canManageBattlefield={isActualGm}
+              canRepositionTokens={isActualGm}
               isRoomGm={effectiveIsGm}
               simulatePlayerView={playAsPlayer}
               canBypassTurn={canBypassTurn}
@@ -734,7 +735,7 @@ export function MesaWorkspace({
                 </FoundryWindow>
               ) : null}
 
-              {effectiveCanControlCombat && windows.isFloating("spawn") ? (
+              {isActualGm && windows.isFloating("spawn") ? (
                 <FoundryWindow
                   title="Invocar monstros"
                   layout={win("spawn")}
