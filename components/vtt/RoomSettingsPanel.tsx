@@ -33,6 +33,9 @@ export function RoomSettingsPanel({
   const [showMonsterHpChat, setShowMonsterHpChat] = useState(settings.showMonsterHpInChat);
   const [allowPing, setAllowPing] = useState(settings.allowPlayerPing);
   const [showUsernamePlate, setShowUsernamePlate] = useState(settings.showUsernameOnTokenNameplate);
+  const [combatActive, setCombatActive] = useState(settings.combatActive);
+  const [xpFromMonsters, setXpFromMonsters] = useState(settings.xpFromMonstersEnabled);
+  const [autoPassDelayMs, setAutoPassDelayMs] = useState(settings.autoPassDelayMs);
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState<string | null>(null);
   const [coverEditorOpen, setCoverEditorOpen] = useState(false);
@@ -47,6 +50,9 @@ export function RoomSettingsPanel({
     setShowMonsterHpChat(settings.showMonsterHpInChat);
     setAllowPing(settings.allowPlayerPing);
     setShowUsernamePlate(settings.showUsernameOnTokenNameplate);
+    setCombatActive(settings.combatActive);
+    setXpFromMonsters(settings.xpFromMonstersEnabled);
+    setAutoPassDelayMs(settings.autoPassDelayMs);
   }, [roomName, settings]);
 
   async function save() {
@@ -56,6 +62,9 @@ export function RoomSettingsPanel({
     try {
       const snapshot = await patchRoomSettings(roomId, {
         name: name.trim() || roomName,
+        combatActive,
+        autoPassDelayMs,
+        xpFromMonstersEnabled: xpFromMonsters,
         showMonsterHpToPlayers: showMonsterHp,
         showMonsterHpInChat: showMonsterHpChat,
         allowPlayerPing: allowPing,
@@ -169,9 +178,39 @@ export function RoomSettingsPanel({
 
       <fieldset className="vtt-settings-fieldset">
         <legend className="vtt-eyebrow">Combate</legend>
-        <p className="vtt-combat-hint" style={{ margin: 0 }}>
-          Você pode rolar iniciativa, reordenar a fila e passar turnos. Mover, atacar e usar magia só na
-          vez de cada token (personagens e monstros).
+        <label className="vtt-check">
+          <input
+            type="checkbox"
+            checked={combatActive}
+            onChange={(e) => setCombatActive(e.target.checked)}
+          />
+          Modo combate ativo (PA, turnos e iniciativa)
+        </label>
+        <p className="vtt-combat-hint" style={{ margin: "0.25rem 0 0" }}>
+          Desligado = exploração: movimento livre e magias sem PA. Rolar iniciativa liga o combate
+          automaticamente.
+        </p>
+        <label className="vtt-field" style={{ marginTop: "0.75rem" }}>
+          <span>Auto-passe quando PA = 0 (ms)</span>
+          <input
+            type="number"
+            min={0}
+            max={10000}
+            step={100}
+            value={autoPassDelayMs}
+            onChange={(e) => setAutoPassDelayMs(Number(e.target.value) || 0)}
+          />
+        </label>
+        <label className="vtt-check" style={{ marginTop: "0.5rem" }}>
+          <input
+            type="checkbox"
+            checked={xpFromMonsters}
+            onChange={(e) => setXpFromMonsters(e.target.checked)}
+          />
+          XP automático ao derrotar monstros
+        </label>
+        <p className="vtt-combat-hint" style={{ margin: "0.25rem 0 0" }}>
+          Mover, atacar e usar magia só na vez de cada token quando o combate está ativo.
         </p>
       </fieldset>
 

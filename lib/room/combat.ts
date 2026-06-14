@@ -1,6 +1,8 @@
 import type { BattleToken } from "@/lib/vtt/types";
 import type { RoomState } from "./types";
 
+import type { CombatRoundCheckpoint } from "./combat-round-checkpoint";
+
 export type CombatPendingAutoPass = {
   tokenId: string;
   /** Epoch ms — turno só avança após este instante (PA zerado visível na UI). */
@@ -20,6 +22,8 @@ export type CombatTrack = {
   orderOverridden?: boolean;
   /** Auto-passe agendado após esgotar PA (delay antes de `advanceRoomTurn`). */
   pendingAutoPass?: CombatPendingAutoPass;
+  /** Checkpoints do mestre (início de rodada, até 20). */
+  roundCheckpoints?: CombatRoundCheckpoint[];
 };
 
 export function emptyCombat(tokens: BattleToken[] = []): CombatTrack {
@@ -77,19 +81,27 @@ function agiMod(token: BattleToken, room: RoomState): number {
   return Math.floor(Math.random() * 3) - 1;
 }
 
-/** 1d20 + mod AGI — estilo Foundry combat tracker */
+function tiebreakD100(): number {
+  return Math.floor(Math.random() * 100) + 1;
+}
+
+/** 1d20 + mod AGI — desempate: d100 até separar */
 export function rollInitiative(room: RoomState): { order: string[]; scores: Record<string, number> } {
   const scores: Record<string, number> = {};
+  const tiebreaks: Record<string, number> = {};
 
   for (const token of room.scene.tokens) {
     const roll = Math.floor(Math.random() * 20) + 1;
     scores[token.id] = roll + agiMod(token, room);
+    tiebreaks[token.id] = tiebreakD100();
   }
 
   const order = [...room.scene.tokens]
     .sort((a, b) => {
       const diff = scores[b.id] - scores[a.id];
       if (diff !== 0) return diff;
+      const tb = tiebreaks[b.id] - tiebreaks[a.id];
+      if (tb !== 0) return tb;
       return a.name.localeCompare(b.name);
     })
     .map((t) => t.id);

@@ -1,29 +1,32 @@
 import { sanitizePortraitFocus, type PortraitFocus } from "@/lib/media/portrait-focus";
 import { isTokenDefeated } from "@/lib/vtt/token-hp-display";
 import type { BattleToken } from "@/lib/vtt/types";
-import type { GmCreation } from "@/lib/room/gm-creations";
 
-/** Preferências da mesa — só o mestre (ownerId) altera. */
+/** Configurações da mesa — só o mestre (ownerId) altera. */
 export type RoomSettings = {
-  /** Jogadores veem barra e valores de HP em tokens de monstro. */
+  /** Modo combate: PA, iniciativa e ordem de turno. */
+  combatActive: boolean;
+  /** Delay do auto-passe quando PA = 0 (ms). */
+  autoPassDelayMs: number;
+  /** XP automático ao derrotar monstros. */
+  xpFromMonstersEnabled: boolean;
   showMonsterHpToPlayers: boolean;
-  /** Chat de combate mostra barra HP quando o alvo é monstro. */
   showMonsterHpInChat: boolean;
-  /** Jogadores podem enviar ping no mapa (Alt+clique). */
   allowPlayerPing: boolean;
-  /** Placa do token: username + ficha em duas linhas (sem parênteses). */
   showUsernameOnTokenNameplate: boolean;
   /** @deprecated Sempre falso — ações só na vez de cada token. Mantido no schema do banco. */
   gmBypassInitiative: boolean;
-  /** Fichas criadas pelo mestre (templates editáveis, não são PCs de jogador). */
-  gmCreations?: Record<string, GmCreation>;
-  /** Foto de capa opcional da mesa (data URL WebP ou URL externa). */
+  gmCreations?: Record<string, import("@/lib/room/gm-creations").GmCreation>;
   coverUrl?: string | null;
-  /** Enquadramento da capa no painel/mesa. */
-  coverFocus?: PortraitFocus | null;
+  coverFocus?: import("@/lib/media/portrait-focus").PortraitFocus | null;
 };
 
+export const DEFAULT_AUTO_PASS_DELAY_MS = 1500;
+
 export const DEFAULT_ROOM_SETTINGS: RoomSettings = {
+  combatActive: false,
+  autoPassDelayMs: DEFAULT_AUTO_PASS_DELAY_MS,
+  xpFromMonstersEnabled: true,
   showMonsterHpToPlayers: false,
   showMonsterHpInChat: false,
   allowPlayerPing: true,
@@ -32,7 +35,15 @@ export const DEFAULT_ROOM_SETTINGS: RoomSettings = {
 };
 
 export function normalizeRoomSettings(raw?: Partial<RoomSettings> | null): RoomSettings {
+  const delay =
+    typeof raw?.autoPassDelayMs === "number" && raw.autoPassDelayMs >= 0
+      ? Math.min(10_000, Math.round(raw.autoPassDelayMs))
+      : DEFAULT_ROOM_SETTINGS.autoPassDelayMs;
   return {
+    combatActive: raw?.combatActive ?? DEFAULT_ROOM_SETTINGS.combatActive,
+    autoPassDelayMs: delay,
+    xpFromMonstersEnabled:
+      raw?.xpFromMonstersEnabled ?? DEFAULT_ROOM_SETTINGS.xpFromMonstersEnabled,
     showMonsterHpToPlayers:
       raw?.showMonsterHpToPlayers ?? DEFAULT_ROOM_SETTINGS.showMonsterHpToPlayers,
     showMonsterHpInChat:

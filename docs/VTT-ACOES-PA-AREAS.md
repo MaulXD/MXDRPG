@@ -1,7 +1,7 @@
 # VTT — PA, movimento, habilidades e áreas (spec técnica)
 
-> Complementa **Epic 9** do [PRD-ELDARIN-VTT.md](./PRD-ELDARIN-VTT.md).  
-> Regra de ouro: **livro manda** → dados no compêndio → `lib/` → preview na UI → API confirma.
+> Complementa [PRD-COMBATE-MESA-REFACTOR.md](./PRD-COMBATE-MESA-REFACTOR.md) e **Epic 9** do [PRD-ELDARIN-VTT.md](./PRD-ELDARIN-VTT.md).  
+> **Grid quadrado:** 1 célula = 1,5 m (terminologia usuário). IDs legados `*Hex*` no código → Epic E10.
 
 ---
 

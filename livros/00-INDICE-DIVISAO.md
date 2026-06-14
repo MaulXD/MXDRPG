@@ -7,7 +7,7 @@
 
 | Volume | Arquivo | Conteúdo |
 |--------|---------|----------|
-| **Livro do Jogador** | `LIVRO-DO-JOGADOR.md` | **Cap. 2.6 / 3.1:** Pontos de Acao (PA, mesa digital) · **Cap. 12.0:** talentos ±PA · **Cap. 5B:** 40 plantas · **Cap. 6:** assimilação **por espécime** (001–060, 8 cada) · **61 magias** · **Cap. 14.8** efeitos EFE no VTT |
+| **Livro do Jogador** | `LIVRO-DO-JOGADOR.md` | **Cap. 2.6 / 3.1:** Pontos de Acao (PA, mesa digital) · **Cap. 5.2.1:** cozinha automática · **Cap. 12.0:** talentos ±PA · **Cap. 5B:** 40 plantas · **Cap. 6:** assimilação **por espécime** (001–060, 8 cada) · **61 magias** · **Cap. 14.8** efeitos EFE no VTT |
 | **Efeitos de equipamento** | `CATALOGO-EFEITOS-DE-EQUIPAMENTO.md` | EFE-01–10 · ORG-01–08 · `weapon.special` |
 | **Site / VTT** | `app/`, `components/`, `data/compendiums/` | UI em PT-BR (`lang=pt-BR`); slugs VTT sem acento |
 | **Site jogável (roteiro)** | `docs/ELDARIN-SITE-JOGAVEL.md` | Camadas, rotas, fases MVP→v1, DoD, pipeline livro→JSON |
@@ -17,7 +17,7 @@
 | **Biomas (profundo)** | `BIOMAS-APROFUNDADOS.md` | Origem, sobrevivência flora/fauna, 20 biomas |
 | **Objetos de cenário** | `CATALOGO-OBJETOS-DE-CENARIO.md` | Terreno, props, perigos por bioma (OBJ-G, OBJ-B##) |
 | **Sobrevivencia (regras)** | `REGRAS-ECOLOGIA-DE-SOBREVIVENCIA.md` | 3 vias, pressao ambiental, composicao de mapa |
-| **Vertical, luz, brasas** | `SUPLEMENTO-BIOMAS-VERTICAIS-LUZ-E-BRASAS.md` | Biomas 9 e 12 (voo/plano); 12 sem tocha; Brasas + truque Calor de Panela |
+| **Vertical, luz, brasas** | `SUPLEMENTO-BIOMAS-VERTICAIS-LUZ-E-BRASAS.md` | Biomas 9 e 12; escuro sem tocha; cozinha automática + Kit de Brasas |
 | **Tesouros e minérios** | `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` | 30 ESP · 30 MIN · 20 TES · saque por monstro 001–060 · OBJ-R |
 | **Livro do Mestre** | `LIVRO-DO-MESTRE.md` | Biomas, 11 Bocas, bosses, **Magia na mesa** (NPC), **Comportamentos**, bestiário (~80) |
 

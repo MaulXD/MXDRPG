@@ -11,6 +11,7 @@ export type TokenCondition =
   | "amedrontado"
   | "cego"
   | "atordoado"
+  | "inconsciente"
   | "envenenado"
   | "prostrado"
   | "restringido"
@@ -55,6 +56,19 @@ export function tokenConditions(token: BattleToken): TokenCondition[] {
 
 export function hasCondition(token: BattleToken, c: TokenCondition): boolean {
   return tokenConditions(token).includes(c);
+}
+
+export function addCondition(token: BattleToken, c: TokenCondition): BattleToken {
+  const list = tokenConditions(token);
+  if (list.includes(c)) return token;
+  return { ...token, conditions: [...list, c] };
+}
+
+export function removeCondition(token: BattleToken, c: TokenCondition): BattleToken {
+  const list = tokenConditions(token);
+  if (!list.includes(c)) return token;
+  const next = list.filter((x) => x !== c);
+  return { ...token, conditions: next.length ? next : undefined };
 }
 
 /** Buffs temporários do token (chips da mesa) que afetam o d20 de ataque. */

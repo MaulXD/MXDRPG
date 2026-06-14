@@ -82,8 +82,8 @@ function ruleApplies(
   const discountKind = actionDiscountKind(action);
   if (rule.firstPerTurn !== false && !firstDiscountAvailable(ctx, discountKind)) return false;
   const isWeaponLike = action.kind === "weapon" || action.kind === "unarmed";
-  const firstHitOnly = rule.firstWeaponHitOnly ?? isWeaponLike;
-  if (firstHitOnly && isWeaponLike && (ctx?.attackIndex ?? 1) !== 1) return false;
+  const weaponHitCap = rule.weaponHitCap ?? (rule.firstWeaponHitOnly === false ? 99 : 1);
+  if (isWeaponLike && (ctx?.attackIndex ?? 1) > weaponHitCap) return false;
   if (rule.rangedOnly && action.rangeHex <= 1) return false;
   if (rule.areaOnly && (!action.areaShape || action.areaShape === "single")) return false;
   if (rule.minPaCost != null && action.paCost < rule.minPaCost) return false;
@@ -132,9 +132,9 @@ function classFeatureCostReduction(
   return reduce;
 }
 
-/** Guerreiro nv5+: cada golpe de Ataque Extra custa 1 PA. */
-export function warriorFlatWeaponPaPerHit(classId: string, level: number): boolean {
-  return classId === "Guerreiro" && level >= 5;
+/** Guerreiro nv5+: Ataque Extra — cada golpe custa PA normal (2); talentos reduzem por golpe. */
+export function warriorFlatWeaponPaPerHit(_classId: string, _level: number): boolean {
+  return false;
 }
 
 export function weaponAttackCount(actor: CharacterSheet, action: CombatActionOption): number {
@@ -173,10 +173,6 @@ export function effectivePaCost(
   if (!actor) return Math.max(0, action.paCost);
 
   let cost = action.paCost;
-
-  if (action.kind === "weapon" && warriorFlatWeaponPaPerHit(actor.identity.classe, actor.identity.nivel)) {
-    cost = 1;
-  }
 
   const reduce =
     talentCostReduction(actor, action, ctx) + classFeatureCostReduction(actor, action, ctx);

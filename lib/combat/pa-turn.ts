@@ -4,6 +4,7 @@ import type { PaTurnRules } from "@/lib/combat/pa-economy";
 import { PA_ACCUMULATION_CAP_DEFAULT, PA_RECOVERY_PER_TURN } from "@/lib/combat/pa-economy";
 import { clearPaDiscountUsed, markPaDiscountUsed } from "@/lib/combat/pa-turn-discount";
 import type { CombatActionOption } from "@/lib/combat/types";
+import { clearEstribilhoCastsOnTurnStart } from "@/lib/combat/estribilho";
 import type { BattleToken } from "@/lib/vtt/types";
 
 export type PaSpendOptions = {
@@ -237,24 +238,29 @@ export function startTurnPaFull(token: BattleToken, rules: PaTurnRules): BattleT
   });
 }
 
-/** Início do turno: sobra + recuperação, teto de acúmulo; ou PA fixo (Canhão de Vidro). */
+/** Início do turno: sobra + recuperação (− débito de reação), teto de acúmulo. */
 export function refreshPaAtTurnStart(token: BattleToken, rules: PaTurnRules): BattleToken {
   const cap = accumulationCap(rules);
+  const debt = Math.max(0, token.paRecoveryDebt ?? 0);
   let pa: number;
   if (rules.turnStartPa != null) {
     pa = rules.turnStartPa;
   } else {
     const carry = Math.max(0, token.pa ?? 0) + tokenBankedPa(token);
-    pa = Math.min(cap, carry + rules.recoveryPerTurn);
+    const recovery = Math.max(0, rules.recoveryPerTurn - debt);
+    pa = Math.min(cap, carry + recovery);
   }
-  return clearPaDiscountUsed({
-    ...token,
-    paMax: rules.recoveryPerTurn,
-    pa,
-    bankedPa: 0,
-    paSpentThisTurn: 0,
-    peaoFreeMoveUsed: false,
-  });
+  return clearPaDiscountUsed(
+    clearEstribilhoCastsOnTurnStart({
+      ...token,
+      paMax: rules.recoveryPerTurn,
+      pa,
+      bankedPa: 0,
+      paSpentThisTurn: 0,
+      peaoFreeMoveUsed: false,
+      paRecoveryDebt: 0,
+    })
+  );
 }
 
 /** Bônus de PA no turno (Carrasco, Adrenalina, etc.) — pode ultrapassar o teto de acúmulo. */
@@ -304,6 +310,16 @@ export function applyPaSpend(
     },
     opts?.actionKind
   );
+}
+
+/** Débito de reação: próximo turno recupera 1 PA a menos. */
+export function applyReactionPaDebt(token: BattleToken, cost: number): BattleToken {
+  const spendable = tokenSpendablePa(token);
+  if (spendable >= cost) {
+    return applyPaSpend(token, cost);
+  }
+  const debt = Math.min(cost, 1);
+  return { ...token, paRecoveryDebt: (token.paRecoveryDebt ?? 0) + debt };
 }
 
 export function applyConditionPaRules(token: BattleToken): BattleToken {

@@ -30,8 +30,13 @@ export function isCantrip(entryId: string): boolean {
 }
 
 export function spellLevelLabel(level: number): string {
-  if (level === 0) return "Truques";
+  if (level === 0) return "Estribilho";
   return `${level}º círculo`;
+}
+
+/** @deprecated Use `isEstribilho` de `@/lib/combat/estribilho`. */
+export function isEstribilhoSpell(entryId: string): boolean {
+  return isCantrip(entryId);
 }
 
 /** Limite de magias preparadas (não-truques) — Livro Cap. 17.4 simplificado. */

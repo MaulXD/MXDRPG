@@ -44,11 +44,18 @@ import {
   resetChiSpentThisTurn,
   resetTokenChi,
 } from "@/lib/combat/chi-economy";
+import { tickDeathTrackOnRound } from "@/lib/combat/death-track";
+import { pushRoundCheckpoint } from "../combat-round-checkpoint";
+import { DEFAULT_AUTO_PASS_DELAY_MS } from "../settings";
 import { getRoom, persistRoom, toSnapshot } from "../internal/registry";
 import type { RoomSnapshot, RoomState } from "../types";
 
-/** Pausa entre PA zerado e avanço automático do turno (ms). */
-export const COMBAT_AUTO_PASS_DELAY_MS = 1500;
+/** Pausa padrão entre PA zerado e avanço automático (ms). */
+export const COMBAT_AUTO_PASS_DELAY_MS = DEFAULT_AUTO_PASS_DELAY_MS;
+
+function autoPassDelayMs(room: RoomState): number {
+  return room.settings.autoPassDelayMs ?? DEFAULT_AUTO_PASS_DELAY_MS;
+}
 
 function paRulesForToken(room: RoomState, token: BattleToken) {
   if (token.linked && token.actorId && room.actors[token.actorId]) {
@@ -245,8 +252,10 @@ function stepToNextCombatant(room: RoomState, notices: string[]): void {
   const prevRound = room.combat.round;
   room.combat = nextTurn(room.combat);
   if (room.combat.round > prevRound) {
+    pushRoundCheckpoint(room);
     const tick = tickAllTimedEffectsOnNewRound(room.scene.tokens, prevRound);
-    room.scene = { ...room.scene, tokens: tick.tokens };
+    let tokens = tick.tokens.map((t) => tickDeathTrackOnRound(t));
+    room.scene = { ...room.scene, tokens };
     for (const { tokenId, fx } of tick.expired) {
       const name = room.scene.tokens.find((t) => t.id === tokenId)?.name ?? "Token";
       notices.push(formatExpiredNotice(fx, name));
@@ -317,7 +326,7 @@ export function scheduleAutoPassWhenActivePaZero(room: RoomState): boolean {
     ...room.combat,
     pendingAutoPass: {
       tokenId: active.id,
-      passAt: Date.now() + COMBAT_AUTO_PASS_DELAY_MS,
+      passAt: Date.now() + autoPassDelayMs(room),
     },
   };
   return true;
@@ -358,6 +367,7 @@ export async function rollRoomInitiative(roomId: string): Promise<RoomSnapshot |
   if (!room) return null;
 
   const { order, scores } = rollInitiative(room);
+  room.settings = { ...room.settings, combatActive: true };
   room.combat = {
     order,
     activeIndex: 0,

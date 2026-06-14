@@ -44,9 +44,11 @@ function roomQuery(roomId: string, inviteCode?: string | null): string {
   return s ? `?${s}` : "";
 }
 
+const COMBAT_POLL_INTERVAL_MS = 500;
+
 export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
   const inviteCode = opts.inviteCode ?? null;
-  const pollIntervalMs = opts.pollIntervalMs ?? 4000;
+  const basePollIntervalMs = opts.pollIntervalMs ?? 4000;
   const presenceUser = opts.presenceUser ?? null;
   const onMemberOnline = opts.onMemberOnline;
   const [snapshot, setSnapshot] = useState<RoomSnapshot | null>(null);
@@ -139,6 +141,9 @@ export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
     revisionRef.current = 0;
     void refresh();
   }, [roomId, query, refresh]);
+
+  const pollIntervalMs =
+    snapshot?.settings?.combatActive === true ? COMBAT_POLL_INTERVAL_MS : basePollIntervalMs;
 
   useEffect(() => {
     if (loading || !sseReadyRef.current) return;
@@ -356,6 +361,10 @@ export type GmCombatAction =
   | { action: "set-order"; order: string[]; activeTokenId?: string }
   | { action: "set-active"; tokenId: string }
   | { action: "revert"; undoId: string }
+  | { action: "restore-round"; round: number }
+  | { action: "set-combat-mode"; active: boolean }
+  | { action: "grant-xp-all"; amount: number }
+  | { action: "level-up-all" }
   | { action: "set-hp"; tokenId: string; value: number; max?: number; temp?: number };
 
 export async function postGmCombatAction(roomId: string, body: GmCombatAction) {
@@ -670,6 +679,9 @@ export type ScenePatchBody = {
 
 export type RoomSettingsPatchBody = {
   name?: string;
+  combatActive?: boolean;
+  autoPassDelayMs?: number;
+  xpFromMonstersEnabled?: boolean;
   showMonsterHpToPlayers?: boolean;
   showMonsterHpInChat?: boolean;
   allowPlayerPing?: boolean;

@@ -51,11 +51,13 @@ type TurnOpts = {
 
   tokens?: BattleToken[];
 
+  combatActive?: boolean;
+
 };
 
 
 
-export function useCombatTurn({ combat, canBypassTurn, tokens = [] }: TurnOpts) {
+export function useCombatTurn({ combat, canBypassTurn, tokens = [], combatActive = true }: TurnOpts) {
 
   const activeId = combat
     ? (tokens.length
@@ -68,6 +70,7 @@ export function useCombatTurn({ combat, canBypassTurn, tokens = [] }: TurnOpts) 
     activeTokenId: activeId,
     bypassTurn: effectiveBypassTurn(token, canBypassTurn),
     combatHasOrder,
+    combatActive,
   });
 
   return {
@@ -79,6 +82,8 @@ export function useCombatTurn({ combat, canBypassTurn, tokens = [] }: TurnOpts) 
     combatRound: combat?.round ?? 1,
 
     combatHasOrder,
+
+    combatActive,
 
     isMyTurn: (token: BattleToken) => canActOnCombatTurn(token.id, turnOpts(token)),
 
@@ -110,6 +115,7 @@ export function useCombatActions(
     bypassTurn: attackerBypass,
     combatHasOrder: turn.combatHasOrder,
     combatRound: turn.combatRound,
+    combatActive: turn.combatActive,
   };
 
   const actions = useMemo(() => {

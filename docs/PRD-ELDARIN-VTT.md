@@ -9,8 +9,8 @@
 | **Author** | Raul + assistente IA |
 | **Stakeholders** | Product (Raul), engenharia (Raul + IA), beta ≥ 1 grupo |
 | **Date Created** | 2026-06-02 |
-| **Last Updated** | 2026-06-04 |
-| **Version** | **2.2** |
+| **Last Updated** | 2026-06-12 |
+| **Version** | **2.3** |
 | **Hosting** | Vercel (único por agora) |
 | **Idioma** | PT-BR (UI + PRD + livro manda) |
 
@@ -31,7 +31,7 @@
 | D11 | Até **10 fichas** por conta |
 | D12 | v1 público: **combate fechado**, **todas classes**, **100% bestiário**, **mobile completo**, **todos navegadores** |
 | D13 | Fase Eldarin (culinária, assimilação, loot, bioma, névoa): **fazer tudo** — priorizado após núcleo estável |
-| D14 | PA: base 5, acumular **até 2** PA, teto **11 PA/turno**, **Atordoado** zera acumulo (Cap. 2.6 / 3.1.1) |
+| D14 | ~~PA: base 5, acumular até 2 PA, teto 11 PA/turno~~ **REVOGADO** → ver [PRD-COMBATE-MESA-REFACTOR.md](./PRD-COMBATE-MESA-REFACTOR.md) **R1**: pool máx. **9**, +5/turno, sem teto de gasto no turno |
 | D15 | Métricas formais: **não medir** no lançamento; bugs PA: **zero** tolerados |
 | D16 | Equipe: **Raul + IA**, ~**30 h/semana**; medo #1: **regras erradas** e **mal funcionamento** |
 | D17 | LGPD: rascunho em [PRIVACIDADE-LGPD.md](./PRIVACIDADE-LGPD.md) |
@@ -45,7 +45,12 @@
 | D25 | **PA visível** em movimento, habilidades e magias (`effectivePaCost`) antes de confirmar |
 | D26 | **Áreas** padronizadas livro→JSON→`computeAreaHexes` (burst/wall/cone/line/cube) + UX 2 passos no mapa — ver [VTT-ACOES-PA-AREAS.md](./VTT-ACOES-PA-AREAS.md) |
 | D27 | **Passar turno** visível (`EndTurnBar` + `TurnOrderPanel`) com **modal de confirmação**; aviso de PA guardados **só** se houve descarte de PA no fim do turno |
-| D28 | **Medidor PA** na mesa: `atual/11 · base N`; bolas distinguem **base** vs **acúmulo**; rótulo “Guardados” só quando `pa === 0` e há `bankedPa` |
+| D28 | **Medidor PA** na mesa: `atual/9 · base 5` (exceção talento Lobo Solitário: `/11`); ver PRD combate R1 |
+| D33 | **Refatoração combate/mesa** aprovada — [PRD-COMBATE-MESA-REFACTOR.md](./PRD-COMBATE-MESA-REFACTOR.md) v1.0 |
+| D34 | **Grid quadrado** (1 célula = 1,5 m); terminologia **célula**, não hex — Epic E10 renomeia código legado |
+| D35 | **Estribilho** = magias nv.0 (ex-cantrip); máx. **2 iguais/turno** |
+| D36 | **Sem slot ação bônus**; ações rápidas custam PA (geralmente 1) |
+| D37 | **Sync fase 1:** poll **500 ms** em combate; WebSocket fase 2 (R29–R30) |
 | D29 | **Magias canalizáveis:** conjunto inicial de **10 magias** no compêndio; jogador pode gastar **+1 ou +2 PA extras** no turno → **+1d6** de dano por PA extra (máx. +2 PA extras) |
 | D30 | **Compêndio na mesa:** layout **rail** (lista vertical em painel ~380px), **não** o grid de página (`comp-shell` 220px + coluna) dentro do painel lateral |
 | D31 | **Quem passa turno:** jogador com token ativo, **demo** sem login obrigatório na API, **mestre** sempre (`canAdvanceCombatTurn`) |
@@ -196,7 +201,7 @@ Experiência de RPG virtual **mais interativa, simples e eficaz** — capturar g
 
 **US-3.6** — Livro atualizado (Cap. 2.6, 3.1.1); VTT implementa acúmulo/teto/stun em `lib/combat/pa-economy.ts`, `pa-turn.ts`, `pa-token-state.ts`, handlers de turno.
 
-**US-3.7** — UI de PA na mesa (`PaDotMeter`): teto visual **11**, linha `atual/11 · base N`, sem exibir “5/5 + 2 guardados” ao mesmo tempo (sync ficha ≠ token de combate).
+**US-3.7** — UI de PA na mesa (`PaDotMeter`): pool visual **9** (`atual/9 · base 5`; Lobo Solitário `/11`).
 
 **Acceptance:** zero discrepância livro ↔ VTT em casos de teste documentados; medidor e modal de turno refletem banco/descarte corretamente.
 
@@ -453,7 +458,7 @@ Inalterada — ver [ELDARIN-SITE-JOGAVEL.md](./ELDARIN-SITE-JOGAVEL.md). Livro �
 
 | Regra | Arquivo / nota |
 |-------|----------------|
-| `bankedPa` (0–2), teto 11/turno, stun zera banco | `pa-turn.ts`, `pa-token-state.ts`, `combat-turn.ts` |
+| `bankedPa`, pool máx. 9, stun zera banco | `pa-turn.ts`, `pa-token-state.ts`, `combat-turn.ts` |
 | Sync ficha não sobrescreve `pa` do token em combate | `lib/room/sync.ts` |
 | UI medidor + modal turno | `PaDotMeter.tsx`, `EndTurnConfirmDialog.tsx` |
 | Canalização magias (+PA → +d6) | `spell-channel.ts`, `generate-compendium.mjs` (10 magias) |
@@ -512,7 +517,7 @@ Nenhum teste de beta substitui gate de implementação. Antes de convidar o grup
 | P0 | Neon prod, `db:migrate`, `/api/health` → `db: true` |
 | P1 | Clerk (Google, Discord, e-mail), nickname, reset senha, `/privacidade` + aceite |
 | P2 | SSE (ou fallback acordado), convite código + link, visitante só leitura **sem chat** |
-| P3 | PA acúmulo 2, teto 11/turno, stun zera banco — livro = motor |
+| P3 | PA pool máx. 9, +5/turno, stun zera banco — livro = motor — ver [PRD-COMBATE-MESA-REFACTOR.md](./PRD-COMBATE-MESA-REFACTOR.md) |
 | P4 | Wizard ficha completo, crop retrato→token, até **10 fichas/usuário** |
 | P5 | Combate fechado + **Epic 9** (ataque no mapa, PA movimento/habilidades, áreas) |
 | P6 | 100% bestiário spawnável |
@@ -621,7 +626,7 @@ Arquivo `docs/BETA-P9-CHECKLIST.md` (criar na impl.): data, participantes, `room
 | I2 | ✅ Superar Roll20/Foundry — correto |
 | I3 | ✅ Todos os gates v1 — faz sentido |
 | I4 | ✅ Ordem P0→P10 |
-| I5 | ✅ PA acúmulo 2, teto 11, stun zera |
+| I5 | ✅ PA pool 9, +5/turno, stun zera — ver PRD combate |
 | I6 | ✅ Mestre pilota PC offline |
 | I7 | ✅ Delegação: **dono da ficha e mestre** |
 | I8 | ✅ Visitante **só ver**, sem chat |

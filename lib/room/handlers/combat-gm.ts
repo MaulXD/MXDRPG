@@ -1,6 +1,10 @@
 import { canManageRoom } from "@/lib/auth/room-access";
 import type { SessionUser } from "@/lib/auth/types";
 import { saveCharacter } from "@/lib/character/characters";
+import { normalizeCharacter } from "@/lib/character/normalize";
+import { attributeMod, hpMaxFor, paMaxFor } from "@/lib/character/rules";
+import { MAX_LEVEL, xpTotalForLevel } from "@/lib/character/xp";
+import { restoreRoundCheckpoint } from "@/lib/room/combat-round-checkpoint";
 import {
   applyGmCombatOrder,
   deferTokenToEndOfOrder,
@@ -10,6 +14,7 @@ import {
 import { syncCombatOrderWithTokens } from "../combat-order";
 import { revertCombatUndo } from "../combat-undo";
 import { persistActorToAdventureSheet } from "../adventure-actors";
+import { syncLinkedTokens } from "../sync";
 import { appendRoomChatMessage } from "./chat";
 import { patchTokenVitals } from "@/lib/vtt/token-hp-display";
 import { getRoom, persistRoom, toSnapshot } from "../internal/registry";
@@ -22,6 +27,10 @@ export type GmCombatAction =
   | { action: "set-order"; order: string[]; activeTokenId?: string }
   | { action: "set-active"; tokenId: string }
   | { action: "revert"; undoId: string }
+  | { action: "restore-round"; round: number }
+  | { action: "set-combat-mode"; active: boolean }
+  | { action: "grant-xp-all"; amount: number }
+  | { action: "level-up-all" }
   | { action: "set-hp"; tokenId: string; value: number; max?: number; temp?: number };
 
 function assertGm(
@@ -144,6 +153,122 @@ export async function executeGmCombatAction(
         ...author,
         kind: "system",
         text: `Mestre reverteu: ${entry.tokenName} — ${entry.summary}`,
+      });
+      break;
+    }
+
+    case "restore-round": {
+      const round = Math.floor(Number(body.round));
+      if (!Number.isFinite(round) || round < 1) {
+        return { ok: false, error: "Rodada inválida" };
+      }
+      const entry = restoreRoundCheckpoint(room, round);
+      if (!entry) {
+        return { ok: false, error: `Sem checkpoint do início da rodada ${round}` };
+      }
+      syncCombatOrderWithTokens(room);
+      appendRoomChatMessage(room, {
+        ...author,
+        kind: "system",
+        text: `Mestre restaurou o estado do início da rodada ${round}.`,
+      });
+      break;
+    }
+
+    case "set-combat-mode": {
+      const active = Boolean(body.active);
+      room.settings = { ...room.settings, combatActive: active };
+      if (!active) {
+        room.combat = { ...room.combat, pendingAutoPass: undefined };
+      }
+      appendRoomChatMessage(room, {
+        ...author,
+        kind: "system",
+        text: active
+          ? "Mestre ativou o modo combate (PA e turnos)."
+          : "Mestre encerrou o modo combate — exploração livre.",
+      });
+      break;
+    }
+
+    case "grant-xp-all": {
+      const amount = Math.floor(Number(body.amount));
+      if (!Number.isFinite(amount) || amount <= 0) {
+        return { ok: false, error: "Informe um valor de XP positivo" };
+      }
+      const targets = Object.entries(room.actors).filter(([, a]) => !a.gmAuthored);
+      if (targets.length === 0) {
+        return { ok: false, error: "Nenhum personagem de jogador na sala" };
+      }
+      for (const [actorId, current] of targets) {
+        const prev = current.identity.xpTotal ?? 0;
+        const next = {
+          ...normalizeCharacter(current),
+          identity: { ...current.identity, xpTotal: prev + amount },
+          revision: current.revision + 1,
+        };
+        room.actors[actorId] = next;
+        const { revision: _r, ...sheet } = next;
+        await saveCharacter(sheet);
+        await persistActorToAdventureSheet(next);
+      }
+      room.scene = syncLinkedTokens(room.scene, room.actors, { preserveCombatPa: true });
+      appendRoomChatMessage(room, {
+        ...author,
+        kind: "system",
+        text: `Mestre concedeu +${amount} XP a todos os personagens (${targets.length}).`,
+      });
+      break;
+    }
+
+    case "level-up-all": {
+      const targets = Object.entries(room.actors).filter(([, a]) => !a.gmAuthored);
+      if (targets.length === 0) {
+        return { ok: false, error: "Nenhum personagem de jogador na sala" };
+      }
+      let leveled = 0;
+      for (const [actorId, current] of targets) {
+        const nextLevel = current.identity.nivel + 1;
+        if (nextLevel > MAX_LEVEL) continue;
+        const conMod = attributeMod(current.attributes.constituicao);
+        const hpMax = hpMaxFor(current.identity.classe, nextLevel, conMod);
+        const paMax = paMaxFor(nextLevel, current.resources.pontosAcao.max);
+        const next = {
+          ...normalizeCharacter({
+            ...current,
+            identity: {
+              ...current.identity,
+              nivel: nextLevel,
+              xpTotal: xpTotalForLevel(nextLevel),
+            },
+            resources: {
+              vida: {
+                max: hpMax,
+                value: Math.min(current.resources.vida.value, hpMax),
+              },
+              pontosAcao: {
+                max: paMax,
+                value: Math.min(current.resources.pontosAcao.value, paMax),
+              },
+            },
+          }),
+          revision: current.revision + 1,
+        };
+        room.actors[actorId] = next;
+        const { revision: _r, ...sheet } = next;
+        await saveCharacter(sheet);
+        await persistActorToAdventureSheet(next);
+        leveled += 1;
+      }
+      if (leveled === 0) {
+        return { ok: false, error: "Todos os personagens já estão no nível máximo" };
+      }
+      room.scene = syncLinkedTokens(room.scene, room.actors, { preserveCombatPa: true });
+      syncCombatOrderWithTokens(room);
+      appendRoomChatMessage(room, {
+        ...author,
+        kind: "system",
+        text: `Mestre subiu 1 nível a ${leveled} personagem(ns).`,
       });
       break;
     }

@@ -12,6 +12,7 @@ import { createPlayerTokenFromActor } from "@/lib/vtt/player-token";
 import type { MonsterSpawnOptions } from "@/lib/vtt/monster-scaling";
 import type { BattleToken } from "@/lib/vtt/types";
 import { canActOnCombatTurn, TURN_WAIT_MSG } from "@/lib/combat/turn-guard";
+import { isExplorationMode, requiresCombatTurnEconomy } from "@/lib/combat/mesa-mode";
 import { resolveSpawnAnchor } from "@/lib/vtt/dungeon-layer";
 import { revealAxial } from "@/lib/vtt/fog-of-war";
 import { characterBelongsToAdventure } from "@/lib/character/adventure-bind";
@@ -84,12 +85,15 @@ export async function moveRoomToken(
 
   let token = prepareCombatToken(room, room.scene.tokens[idx]);
   const activeId = opts.activeTokenId ?? activeTokenId(room.combat);
-  const combatHasOrder = Boolean(room.combat?.order?.length);
+  const exploration = isExplorationMode(room.settings, room.combat);
+  const combatHasOrder = requiresCombatTurnEconomy(room.settings, room.combat);
   if (
+    !exploration &&
     !canActOnCombatTurn(token.id, {
       activeTokenId: activeId,
       bypassTurn: opts.bypassTurn,
       combatHasOrder,
+      combatActive: room.settings.combatActive,
     })
   ) {
     return { ok: false, error: TURN_WAIT_MSG };
@@ -100,10 +104,12 @@ export async function moveRoomToken(
     actorRacas[id] = actor.identity.raca;
   }
   const actor = token.linked && token.actorId ? room.actors[token.actorId] : null;
-  const movePaOpts = {
-    ...(actor ? { freeBasicMovePa: paTurnRulesForActor(actor).freeBasicMovePa } : {}),
-    ...(opts.bypassTurn ? { gmBypass: true as const } : {}),
-  };
+  const movePaOpts = exploration
+    ? { gmBypass: true as const, freeBasicMovePa: true }
+    : {
+        ...(actor ? { freeBasicMovePa: paTurnRulesForActor(actor).freeBasicMovePa } : {}),
+        ...(opts.bypassTurn ? { gmBypass: true as const } : {}),
+      };
   const check = canMoveToken(
     token,
     target,
@@ -136,7 +142,7 @@ export async function moveRoomToken(
     axial: dest,
     movementSpentHex: opts.bypassTurn ? token.movementSpentHex ?? 0 : check.nextSpent,
   };
-  if (!opts.bypassTurn) {
+  if (!opts.bypassTurn && !exploration) {
     if (check.paCost > 0) {
       moved = applyPaSpend(moved, check.paCost);
     }
