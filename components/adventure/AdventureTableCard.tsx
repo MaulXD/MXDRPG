@@ -9,6 +9,7 @@ import {
   sanitizePortraitFocus,
 } from "@/lib/media/portrait-focus";
 import { DEFAULT_RPG_SYSTEM_ID, normalizeRpgSystemId, resolveMesaCoverSrc } from "@/lib/rpg/systems";
+import { roomInviteUrl } from "@/lib/auth/room-access";
 import "@/components/rpg/mesas-hub.css";
 
 const DEFAULT_COVER = resolveMesaCoverSrc(null, DEFAULT_RPG_SYSTEM_ID);
@@ -57,15 +58,20 @@ export function AdventureTableCard({ adventure, onDelete, deleteBusy }: Props) {
   const members = adventure.members ?? [];
   const onlineCount = adventure.onlineCount ?? members.filter((m) => m.online).length;
 
-  const copyInviteCode = useCallback(async () => {
+  const inviteLink =
+    typeof window !== "undefined"
+      ? `${window.location.origin}${roomInviteUrl(adventure.primaryRoomId, adventure.inviteCode)}`
+      : roomInviteUrl(adventure.primaryRoomId, adventure.inviteCode);
+
+  const copyInviteLink = useCallback(async () => {
     try {
-      await navigator.clipboard.writeText(adventure.inviteCode);
+      await navigator.clipboard.writeText(inviteLink);
       setInviteCopied(true);
       setTimeout(() => setInviteCopied(false), 2000);
     } catch {
       /* ignore */
     }
-  }, [adventure.inviteCode]);
+  }, [inviteLink]);
   const coverSrc = resolveMesaCoverSrc(
     adventure.coverUrl,
     normalizeRpgSystemId(adventure.rpgSystemId)
@@ -156,9 +162,9 @@ export function AdventureTableCard({ adventure, onDelete, deleteBusy }: Props) {
               <button
                 type="button"
                 className="btn btn-ghost btn-sm adventure-table-card__copy"
-                onClick={() => void copyInviteCode()}
+                onClick={() => void copyInviteLink()}
               >
-                {inviteCopied ? "Copiado" : "Copiar"}
+                {inviteCopied ? "Copiado" : "Copiar link"}
               </button>
             </div>
             {onDelete ? (

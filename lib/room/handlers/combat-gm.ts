@@ -18,7 +18,8 @@ import { syncLinkedTokens } from "../sync";
 import { appendRoomChatMessage } from "./chat";
 import { patchTokenVitals } from "@/lib/vtt/token-hp-display";
 import { getRoom, persistRoom, toSnapshot } from "../internal/registry";
-import { ensureCombatActiveHasPa } from "./combat-turn";
+import { applyExplorationPaDisplay } from "@/lib/combat/exploration-pa";
+import { beginCombatTurnEconomyPa } from "./combat-turn";
 import type { RoomSnapshot } from "../types";
 
 export type GmCombatAction =
@@ -135,7 +136,7 @@ export async function executeGmCombatAction(
       const idx = room.combat.order.indexOf(tokenId);
       if (idx < 0) return { ok: false, error: "Token fora da ordem de combate" };
 
-      room.combat = { ...room.combat, activeIndex: idx };
+      room.combat = { ...room.combat, activeIndex: idx, paRefreshTurnKey: undefined };
       appendRoomChatMessage(room, {
         ...author,
         kind: "system",
@@ -181,8 +182,9 @@ export async function executeGmCombatAction(
       room.settings = { ...room.settings, combatActive: active };
       if (!active) {
         room.combat = { ...room.combat, pendingAutoPass: undefined };
+        applyExplorationPaDisplay(room);
       } else if (room.combat?.order?.length) {
-        ensureCombatActiveHasPa(room);
+        beginCombatTurnEconomyPa(room);
       }
       appendRoomChatMessage(room, {
         ...author,

@@ -2152,6 +2152,10 @@
   flex-shrink: 0;
 }
 
+.vtt-turn-avatar--player {
+  border-width: 1px;
+}
+
 .vtt-turn-avatar img,
 .vtt-turn-avatar .vtt-turn-initial,
 .vtt-turn-avatar span {
@@ -3243,6 +3247,43 @@
   color: #1f1a16;
 }
 
+.combat-chat-card--save-pass .combat-chat-card__name {
+  color: var(--semantic-success, #2a4a2c);
+}
+
+.combat-chat-card--save-fail .combat-chat-card__name {
+  color: var(--semantic-danger, #5e1a0e);
+}
+
+.combat-chat-card__save-headline {
+  margin: 0 0 0.35rem;
+  padding: 0 0.1rem;
+  font-size: 0.72rem;
+  line-height: 1.35;
+  color: rgba(42, 36, 32, 0.82);
+}
+
+.combat-chat-card__save-headline--pass .combat-chat-card__save-verb {
+  color: var(--semantic-success, #2a4a2c);
+}
+
+.combat-chat-card__save-headline--fail .combat-chat-card__save-verb {
+  color: var(--semantic-danger, #5e1a0e);
+}
+
+.combat-chat-card__save-attr {
+  font-weight: 600;
+}
+
+.combat-chat-card__save-attr-mark {
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+.combat-chat-card__save-dc {
+  font-weight: 700;
+}
+
 .combat-chat-card__action-line {
   display: block;
   margin-top: 0.08rem;
@@ -3886,7 +3927,7 @@
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  border: 2px solid rgba(201, 169, 98, 0.45);
+  border: 1px solid rgba(201, 169, 98, 0.45);
   overflow: hidden;
   display: flex;
   align-items: center;

@@ -5,6 +5,9 @@ import {
   combatChatHeroCaption,
   combatUsageKind,
 } from "@/lib/combat/chat-labels";
+import { isGmSavingThrowCombat, savingThrowHeadline } from "@/lib/combat/saving-throw-chat";
+
+export { savingThrowHeadline, isGmSavingThrowCombat } from "@/lib/combat/saving-throw-chat";
 
 export { combatChatActionTags } from "@/lib/combat/chat-labels";
 export { combatChatBonusHealNote, combatChatTargetName } from "@/lib/combat/chat-labels";
@@ -61,6 +64,9 @@ export function combatChatRollSummary(msg: ChatMessage): string {
   if (!c) return msg.text;
 
   if (c.resolution === "save") {
+    if (isGmSavingThrowCombat(c) && c.detail?.trim()) {
+      return c.detail.trim();
+    }
     const m = msg.text.match(
       /^(.+vs CD \d+\s*—\s*(?:resistiu \(metade\)|falhou \(dano pleno\)))/i
     );

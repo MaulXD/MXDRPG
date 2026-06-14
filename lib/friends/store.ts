@@ -471,17 +471,24 @@ export async function listReceivedMesaInvites(userId: string): Promise<MesaInvit
 
   for (const row of rows) {
     const fromUser = await fetchUserById(row.from_user_id);
+    const adv = await getAdventure(row.adventure_id);
+    if (!adv || adv.deletedAt) continue;
+
+    const roomId = adv.primaryRoomId;
+    const inviteCode = adv.inviteCode;
+    const roomName = adv.name;
+
     out.push({
       id: row.id,
       fromUserId: row.from_user_id,
       fromDisplayName: fromUser ? displayName(fromUser) : "Jogador",
       fromAvatarUrl: fromUser ? resolveUserAvatarUrl(fromUser) : null,
-      roomId: row.room_id,
-      adventureId: row.adventure_id,
-      inviteCode: row.invite_code,
-      roomName: row.room_name,
+      roomId,
+      adventureId: adv.adventureId,
+      inviteCode,
+      roomName,
       message: row.message,
-      inviteUrl: roomInviteUrl(row.room_id, row.invite_code),
+      inviteUrl: roomInviteUrl(roomId, inviteCode),
       createdAt: Number(row.created_at),
     });
   }

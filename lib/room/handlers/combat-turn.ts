@@ -119,6 +119,13 @@ function zeroAllTokenPaPools(room: RoomState): void {
 
 /** Garante PA do token ativo na iniciativa (demo / sala nova). */
 export function initCombatPaForRoom(room: RoomState): void {
+  beginCombatTurnEconomyPa(room);
+}
+
+/** Entrada na economia de turnos: zera pools e concede PA cheios só ao ativo (sem acúmulo). */
+export function beginCombatTurnEconomyPa(room: RoomState): void {
+  if (!room.combat?.order?.length) return;
+  room.combat = { ...room.combat, paRefreshTurnKey: undefined };
   zeroAllTokenPaPools(room);
   refreshActiveTokenPa(room, "full");
 }
@@ -263,6 +270,7 @@ function pushTurnStartNoticeFull(room: RoomState, notices: string[]): void {
 
 function stepToNextCombatant(room: RoomState, notices: string[]): void {
   const prevRound = room.combat.round;
+  room.combat = { ...room.combat, paRefreshTurnKey: undefined };
   room.combat = nextTurn(room.combat);
   if (room.combat.round > prevRound) {
     pushRoundCheckpoint(room);
@@ -444,16 +452,16 @@ export function ensureCombatActiveHasPa(room: RoomState): void {
 
   const active = getActiveBattleToken(room);
   if (!active || shouldAutoSkipTurn(active)) return;
-  if (tokenSpendablePa(active) > 0) return;
 
   const turnKey = paRefreshTurnKey(room);
   const pending = room.combat.pendingAutoPass;
+  const refreshedThisTurn = room.combat.paRefreshTurnKey === turnKey;
 
   // Meio do turno: PA esgotado — auto-passe já agendado para este token
   if (pending?.tokenId === active.id) return;
 
-  // Já restaurou PA neste turno e o pool foi gasto
-  if (room.combat.paRefreshTurnKey === turnKey && (active.paSpentThisTurn ?? 0) > 0) return;
+  // Já restaurou PA neste turno — não duplica recuperação nem reabastece após gastar tudo
+  if (refreshedThisTurn) return;
 
   refreshActiveTokenPa(room, "regen");
 }

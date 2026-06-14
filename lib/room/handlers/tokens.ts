@@ -12,6 +12,7 @@ import { createPlayerTokenFromActor } from "@/lib/vtt/player-token";
 import type { MonsterSpawnOptions } from "@/lib/vtt/monster-scaling";
 import type { BattleToken } from "@/lib/vtt/types";
 import { canActOnCombatTurn, TURN_WAIT_MSG } from "@/lib/combat/turn-guard";
+import { applyExplorationPaDisplayToToken } from "@/lib/combat/exploration-pa";
 import { isExplorationMode, requiresCombatTurnEconomy } from "@/lib/combat/mesa-mode";
 import { resolveSpawnAnchor } from "@/lib/vtt/dungeon-layer";
 import { revealAxial } from "@/lib/vtt/fog-of-war";
@@ -188,9 +189,12 @@ export async function spawnRoomMonster(
   if (!anchor) {
     return { ok: false, error: "Célula bloqueada, ocupada ou sem espaço para o tamanho do monstro" };
   }
-  const placed = anchor.q === token.axial.q && anchor.r === token.axial.r
+  let placed = anchor.q === token.axial.q && anchor.r === token.axial.r
     ? token
     : { ...token, axial: anchor };
+  if (isExplorationMode(room.settings, room.combat)) {
+    placed = applyExplorationPaDisplayToToken(room, placed);
+  }
 
   room.scene = {
     ...room.scene,
@@ -284,10 +288,13 @@ export async function placeRoomActorOnHex(
   if (!anchor) {
     return { ok: false, error: "Célula bloqueada, fora do mapa ou sem espaço para o personagem" };
   }
-  const placed =
+  let placed =
     anchor.q === token.axial.q && anchor.r === token.axial.r
       ? token
       : { ...token, axial: anchor };
+  if (isExplorationMode(room.settings, room.combat)) {
+    placed = applyExplorationPaDisplayToToken(room, placed);
+  }
   room.scene = {
     ...room.scene,
     tokens: [...room.scene.tokens, placed],

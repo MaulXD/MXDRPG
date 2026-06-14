@@ -1,4 +1,5 @@
 import type { ChatMessage } from "@/lib/room/chat";
+import { isGmSavingThrowCombat } from "@/lib/combat/saving-throw-chat";
 import { combatHealAmount, isCombatHealEvent } from "@/lib/room/chat-events";
 
 export type CombatUsageKind =
@@ -111,6 +112,15 @@ export function combatChatActionTags(
   c: NonNullable<ChatMessage["combat"]>,
   text?: string
 ): string {
+  if (isGmSavingThrowCombat(c)) {
+    const tags = ["Salvaguarda"];
+    if (c.saveAttribute?.trim()) tags.push(c.saveAttribute.trim());
+    const mode = c.saveRollMode;
+    if (mode === "advantage") tags.push("Vantagem");
+    if (mode === "disadvantage") tags.push("Desvantagem");
+    return tags.join(" · ");
+  }
+
   const kind = combatUsageKind(c, text);
   const tags = [...USAGE_TAG_LABELS[kind]];
   const mode = c.attackRollMode ?? c.saveRollMode;
