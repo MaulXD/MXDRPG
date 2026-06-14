@@ -413,7 +413,7 @@ export function resolveWeaponForActor(actor: CharacterSheet): CombatActionOption
 export function spellcastingAttribute(classId: string): AttributeKey {
   switch (classId) {
     case "Mago":
-    case "Artifice":
+    case "Feiticeiro":
       return "inteligencia";
     case "Clérigo":
     case "Druida":
@@ -447,7 +447,7 @@ function attributeLabel(key: AttributeKey): string {
 export function isProficient(actor: CharacterSheet, action: CombatActionOption): boolean {
   if (action.kind === "unarmed") return true;
   if (action.kind === "spell") {
-    const casters = ["Mago", "Clérigo", "Bardo", "Druida", "Artifice"];
+    const casters = ["Mago", "Clérigo", "Bardo", "Druida", "Feiticeiro"];
     return casters.includes(actor.identity.classe);
   }
   const cls = getClass(actor.identity.classe);

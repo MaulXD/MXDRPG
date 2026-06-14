@@ -71,7 +71,8 @@ const CLASS_ATTRIBUTE_FOCUS: Partial<Record<ClassId, AttributeKey[]>> = {
   Bárbaro: ["forca", "constituicao", "destreza"],
   Bardo: ["carisma", "destreza", "constituicao"],
   Druida: ["sabedoria", "constituicao", "destreza"],
-  Artífice: ["inteligencia", "destreza", "constituicao"],
+  Feiticeiro: ["carisma", "constituicao", "destreza"],
+  Espiritualista: ["destreza", "sabedoria", "constituicao"],
   Paladino: ["forca", "constituicao", "carisma"],
   Bruxo: ["carisma", "constituicao", "destreza"],
 };

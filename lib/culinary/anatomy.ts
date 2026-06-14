@@ -6,7 +6,7 @@ export function anatomyStudyDc(monsterLevel: number): number {
 
 export function anatomyStudyBonus(classe: string): number {
   if (classe === "Patrulheiro") return 3;
-  if (classe === "Artífice") return 5;
+  if (classe === "Feiticeiro") return 4;
   return 0;
 }
 

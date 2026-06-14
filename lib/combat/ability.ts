@@ -38,6 +38,7 @@ import { combineRollModes, type RollMode } from "@/lib/combat/d20";
 
 import { toggleTokenCondition } from "@/lib/combat/conditions";
 import { paCostForToken } from "@/lib/combat/pa-economy";
+import { canSpendChi } from "@/lib/combat/chi-economy";
 import { checkCanSpendPa } from "@/lib/combat/pa-turn";
 import { rechargeBlockReason } from "@/lib/combat/recharge";
 
@@ -1045,6 +1046,11 @@ export function canUseAbility(
   const paNeed = paCostForToken(actor ?? null, action, token);
   const paCheck = checkCanSpendPa(token, paNeed);
   if (!paCheck.ok) return { ok: false, reason: paCheck.reason };
+
+  const chiNeed = action.chiCost ?? 0;
+  if (chiNeed > 0 && !canSpendChi(token, chiNeed)) {
+    return { ok: false, reason: "Chi insuficiente ou limite de 2 por turno" };
+  }
 
   return { ok: true };
 

@@ -100,6 +100,11 @@ export type BattleToken = {
   timedEffects?: import("@/lib/combat/timed-effects").TimedEffect[];
   /** Recargas de magias/habilidades — chave packId:entryId */
   actionRecharge?: Record<string, import("@/lib/combat/recharge").ActionRechargeState>;
+  /** Chi (Espiritualista) — renovado a cada combate */
+  chi?: number;
+  chiMax?: number;
+  /** Chi gasto neste turno (máx. 2) */
+  chiSpentThisTurn?: number;
 };
 
 export type BattlePing = {

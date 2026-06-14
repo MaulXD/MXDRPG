@@ -102,7 +102,7 @@ CA base = 10 + MOD DES (sem armadura)
 | Armadura media (cota de malha) | 13 + DES (max +2) | FOR 11 |
 | Armadura pesada (placas) | 16 | FOR 15 |
 | Escudo | +2 | — |
-| Armadura natural (monstro/Artífice) | variavel | — |
+| Armadura natural (monstro/Feiticeiro) | variavel | — |
 
 ### 2.4 Atributos Culinarios
 
@@ -265,7 +265,7 @@ Regras completas, exemplos de turno e tabelas de talentos: **Cap. 3.1** e **Cap.
 | PA nao gastos (fim do turno) | **Permanecem no pool** (max. **9**); proximo turno **+5** recuperacao |
 | Atordoado | **Perde** todo PA acumulado |
 | Guerreiro nv. 5+ | Cada golpe de **Ataque Extra** custa **1 PA** (excecao; demais ataques com arma seguem o custo do item, em geral **2 PA**) |
-| Mago, Clérigo, Druida, Bardo, Artifice nv. 5+ | **Afinidade Arcanica** — **1ª magia** do turno com custo **2+ PA**: **−1 PA** (min. 0) |
+| Mago, Clérigo, Druida, Bardo, Feiticeiro nv. 5+ | **Afinidade Arcanica** — **1ª magia** do turno com custo **2+ PA**: **−1 PA** (min. 0) |
 | Monstros (VTT) | Custo por acao no compendio (muitas mordidas/garras **1 PA**); pool minimo **6 PA** |
 | Cantrips / utilitarios | Truques e rituais de apoio em geral **1 PA** no compendio |
 | Fim do turno (VTT) | **PA = 0** → passagem automatica de turno (~1,5 s) |
@@ -460,11 +460,10 @@ Efeitos de habilidades e posturas recebem duracao automatica na mesa. O contador
 |------|--------|---------------|
 | Humano | Superficie | Versatil, adaptavel, genericamente competente |
 | Elfo | Florestas engolidas | Magico, sensivel, cozinheiro arcano supremo |
-| Anão | Cidades subterraneas | Artífice, resistente, forjador de Ferramentas Orgânicas |
+| Anão | Cidades subterraneas | Resistente, forjador de Ferramentas Orgânicas |
 | Halfling | Vilas rurais proximas as entradas | Sortudo, furtivo, sensor de perigo |
 | Gnomo | Torres de alquimia | Pocioneiro, curioso, inteligencia explosiva |
 | Meio-Humano | Familias com ancestral bestial | Fisico especializado por linhagem animal |
-| Forjado de Osso | Criado pelos Anaos com partes de monstros | Resiliente, construto vivo, sem necessidade de comer |
 
 ---
 
@@ -553,7 +552,7 @@ Cada traço racial segue o mesmo formato usado nas classes (ex.: **Fúria** do B
 
 **Mestria de Ferramentas:** *Passivo permanente.* *Efeito:* proficiência em todas as ferramentas de Extração (incl. Especialista); +2 em Extração. *Na mesa:* desossa monstros com eficiência — mais loot culinário, ferramentas orgânicas e materiais de craft para o grupo.
 
-**Instinto de Forja:** *Gatilho:* ao criar Ferramenta Orgânica de Boss. *Efeito:* rola duas vezes o resultado e usa o melhor. *Na mesa:* anão “farm” equipamento lendário com menos frustracao; sinergia direta com Artífice e economia de masmorra.
+**Instinto de Forja:** *Gatilho:* ao criar Ferramenta Orgânica de Boss. *Efeito:* rola duas vezes o resultado e usa o melhor. *Na mesa:* anão “farm” equipamento lendário com menos frustracao; sinergia direta com Feiticeiro e economia de masmorra.
 
 **Progressao Racial:**
 
@@ -873,59 +872,6 @@ Atributos: +2 INT, +1 CAR. Tracos Fisicos: Cabelos invariavelmente negros com re
 
 ---
 
-## FORJADO DE OSSO
-
-**Lore:** Ha duzentos anos, os Anaos de Forja enfrentaram um problema etico: como criar um guardiao que não precisasse comer, não sentisse medo e não desobedecesse? A resposta foi os Forjados de Osso — construtos montados com ossos de monstros poderosos, articulados com metal anao, animados por um Nucleo de Alma instalado onde estaria o coracao.
-
-O problema surgiu na terceira geração: eles começaram a ter opiniões. Ninguem sabe ao certo quando um Forjado de Osso adquire consciência plena. Os Forjados de Osso conscientes que habitam Valdremor sao considerados legalmente pessoas — mas de segunda classe, sem direito a propriedade ou voto. Dentro das masmorras, ninguem se importa com isso.
-
-Um Forjado de Osso e feito de peças de monstros diferentes — cada exemplar e único. Alguns tem maxilares de Wyvern. Outros tem caixas torácicas de Basilisco. Essa composicao não e apenas estética: ela determina bônus passivos que variam por personagem.
-
-**Atributos:** +2 CON, +1 FOR ou INT (escolha)
-
-**Habilidades Raciais:**
-
-**Construto Vivo:** *Passivo.* *Efeito:* não precisa respirar, comer ou dormir; imune a Veneno e doenças; imune a Encantado. *Na mesa:* vigia eterno, exploração em gás/água sem penalidade; ignora controle mental — tanque confiável contra feiticeiros.
-
-**Núcleo de Alma:** *Gatilho:* ao chegar a 0 HP. *Duração:* Incapacitado mas estável 1d4 h (1d4 **turnos** em combate no nv. 8). *Efeito:* depois reinicia com 1 HP. *Destruição do Núcleo (narrativo):* morte permanente. *Na mesa:* “segunda vida” — não cai no chão como morte instantânea; grupo tem janela para proteger corpo; diferente de Determinação (1 HP imediato).
-
-**Composição de Monstros:** *Gatilho:* criação do personagem (2 partes; +1 no nv. 4 e 14). *Efeito:* cada parte concede bônus passivo da tabela abaixo. *Na mesa:* customização total — mesmo “raça” pode ser tanque (Dragão+Troll), scout (Basilisco+Grifo) ou vampírico (Dente de Vampiro).
-
-**Manutenção:** *Gatilho:* em vez de descanso longo. *Efeito:* 1 h com Artífice restaura como descanso longo. *Penalidade:* sem manutenção 48 h, −1 em todos os testes (cumulativo). *Na mesa:* dependência de grupo/PNJ — fraco em expedições isoladas; forte em base com artífice.
-
-**Sem Bônus Culinários Passivos:** *Passivo.* *Efeito:* mutações exigem instalar componente no corpo (1 h; 10 min no nv. 10); duração 48 h (12 h no nv. 16). *Na mesa:* culinária mais lenta que orgânicos, mas mutações duram mais — planejamento pré-combate.
-
-**Tabela de Partes de Monstros:**
-
-| Parte | Habilidade | Na mesa |
-|-------|-----------|---------|
-| Osso de Dragão | +2 CA natural | Tanque — reduz hits que passam; stack com armadura. |
-| Mandíbula de Wyvern | Mordida 2d6 perfurante + veneno (CD 13) | DPS corpo a corpo + debuff; ação bônus de mordida. |
-| Garra de Grifo | Escalar superfícies sem teste | Mobilidade 3D; ignora custo de escalada em PA. |
-| Costela de Troll | Regeneração 3 HP/turno | Sustain em combates longos; sinergia com foco inimigo. |
-| Crânio de Basilisco | Vê auras mágicas e invisíveis | Counter invisibilidade; revela armadilhas mágicas. |
-| Espinha de Hidra | +10 HP máx.; em 0 HP, CON CD 14 → 1 HP | Pool extra + terceira camada de sobrevivência. |
-| Fêmur de Gigante | Conta como Grande para agarramento | Controle de campo — agarra humanoides Médios. |
-| Escama de Elemental | Resistência a um elemento (escolha) | Matchup elemental — fogo, gelo, etc. |
-| Dente de Vampiro | Ataques corpo a corpo curam 2 HP/acerto | Sustain ofensivo — menos dependência de cura. |
-
-**Progressao Racial:**
-
-| Nivel | Bonus |
-|-------|-------|
-| 4 | Upgrade de Componente — pode adicionar uma 3a parte de monstro a composicao |
-| 6 | Amortecimento de Impacto — resistência a dano contundente |
-| 8 | Processamento Avancado — modo de emergencia reinicia em 1d4 turnos em combaté |
-| 10 | Instalacao Rápida — instala componentes em 10 minutos em vez de 1 hora |
-| 12 | Estrutura Reforcada — +2 CA permanente adicional |
-| 14 | Quarta Parte — adiciona uma 4a parte de monstro a composicao |
-| 16 | Nucleo Aprimorado — pode consumir ingredientes normalmente sem instalacao (mutação dura 12h) |
-| 18 | Autoreparo — como acao, gasta um componente armazenado para recuperar 4d8 HP |
-| 20 | Obra-Prima dos Anaos — pode substituir qualquer parte do proprio corpo após um Banquete Lendário |
-
-
----
-
 # PARTE IV — CLASSES E SUBCLASSES
 
 ---
@@ -934,7 +880,7 @@ Um Forjado de Osso e feito de peças de monstros diferentes — cada exemplar e 
 
 Cada classe define o papel de combaté no Nivel 1 e o **Bônus Passivo de Sobrevivência** — a vantagem passiva que qualquer boa refeicao ativa, independente do tipo de monstro. No **Nivel 2**, o personagem escolhe sua **Subclasse (Caminho de Assimilação)**.
 
-**PA na mesa digital:** todas as classes comecam com **5 PA** (Cap. 2.6). **Guerreiro** paga **1 PA por golpe** de Ataque Extra a partir do nv. 5. **Mago, Clérigo, Druida, Bardo, Artifice, Paladino e Bruxo** ganham **Afinidade Arcanica/Divina/Pacto** no nv. 5 (**primeira magia** do turno, 2+ PA −1). Demais classes usam o custo do compendio; talentos **−PA** do Cap. 12.0 valem **1× por turno** (Cap. 12.0).
+**PA na mesa digital:** todas as classes comecam com **5 PA** (Cap. 2.6). **Guerreiro** paga **1 PA por golpe** de Ataque Extra a partir do nv. 5. **Mago, Clérigo, Druida, Bardo, Feiticeiro, Paladino e Bruxo** ganham **Afinidade Arcanica/Divina/Pacto** (ou **Centelha Arcana** no Feiticeiro) no nv. 5 (**primeira magia** do turno, 2+ PA −1). **Espiritualista** usa **Chi** (10/combate, máx. 2/turno) nas técnicas. Demais classes usam o custo do compendio; talentos **−PA** do Cap. 12.0 valem **1× por turno** (Cap. 12.0).
 
 ---
 
@@ -1060,7 +1006,7 @@ Comunhao Material — Toda vez que se alimenta de qualquer refeicao, recebe HP T
 
 Sacerdote da Purificacao (Especialidade: Amaldicados e Infectados): Carnes purificadas por reza concedem +3 em ataques contra o mal e curam maldicoes ativas no grupo após a refeicao.
 
-Monge Ascético (Especialidade: Energia Interna): Lutar de barriga vazia por 8h+ concede +4 em esquiva e dano radiante. Quando finalmente come, libera onda de choque (3d8 radiante, área 6m).
+Clérigo Contemplativo (Especialidade: Energia Interna): Lutar de barriga vazia por 8h+ concede +4 em esquiva e dano radiante. Quando finalmente come, libera onda de choque (3d8 radiante, área 6m).
 
 Clérigo do Pao da Vida (Especialidade: Flora Divina): Transforma musgos e plantas em paes que fornecem HP Temporario extra (Nivel x3) a todo o grupo a cada manha.
 
@@ -1147,28 +1093,53 @@ Circulo do Solo Vivo (Especialidade: Minerais e Elementais de Terra): Mastigar p
 
 ---
 
-### ARTIFICE
+### FEITICEIRO
 
-Dado de HP: 1d8 | Atributos Primarios: Inteligencia e Destreza
-Proficiencias: Armaduras leves e medias, escudos, todas as ferramentas, armas simples e bestas
-Atributos Culinarios Iniciais: Coccao +5, Extração +3
+Dado de HP: 1d6 | Atributos Primarios: Carisma
+Proficiencias: Adagas, dardos, fundas, bestas leves
+Atributos Culinarios Iniciais: Harmonização +3, Fabricação +2
 
 **Bônus Passivo de Sobrevivência (Nivel 1):**
-Panela de Pressao — Utensilios criados pelo Artífice fazem qualquer ingrediente render o dobro de porcoes.
+Centelha Inata — Após Refeição Comum ou melhor, a primeira magia ofensiva do próximo combate causa +1d6 de dano do elemento da sua linhagem (fogo, frio, ácido, elétrico ou psíquico conforme subclasse).
 
-**Infusoes:** O Artífice pode criar Infusoes Magicas em itens mundanos — transformando uma espada comum em +1, ou uma mochila em extradimensional.
+**Magia Inata:** Você não estuda grimórios — a magia nasce no sangue, na linhagem ou no pacto com forças primordiais. Conhece truques e magias da **lista Arcano (inato)** (Cap. 17.7); magias conhecidas = nível + CAR (mín. 2). Slots seguem a tabela do Cap. 17.1.
 
-**Subclasses do Artífice:**
+**Subclasses do Feiticeiro:**
 
-Ferreiro de Utensilios (Especialidade: Carapaças e Ingredientes Duros): Comer pratos feitos em panelas forjadas de exoesqueleto aumenta a CA das proprias armaduras em +2.
+Linhagem Bestial (Especialidade: Predadores e Feras): Assimilação de fera concede instinto de caça e +1d4 em truques ofensivos por 8h.
 
-Engenheiro de Explosivos (Especialidade: Inflamaveis e Glandulas de Fogo): Consumir glândulas combustiveis concede resistência a Fogo e aumenta o dano de bombas e engenhocas em +2d6.
+Sangue Selvagem (Especialidade: Mutação e Caos): Após conjurar magia, pode rolar mutação menor 1× por combate — efeito imprevisível mas poderoso.
 
-Biologo Alquimico (Especialidade: Ácidos e Venenos): Micro-doses de toxinas processadas garantem imunidade a envenenamento e a habilidade de revestir armas com ácido corrosivo (+1d6 ácido, 1 minuto).
+Eco Abissal (Especialidade: Pressão e Sombra): Imune a medo; magias de controle ganham +1 na CD.
 
-Construtor de Armadilhas (Especialidade: Caça Intacta e Extracao Perfeita): Comer carne extraída sem dano de batalha concede Vantagem em todos os testes de INT e na criacao de invencoes por 24h.
+Chama Inata (Especialidade: Calor Vital): Truques de fogo causam +1d4 de dano por 8h após assimilação ígnea.
 
-**PA (VTT):** nv. 5 **Afinidade Arcanica**. Bombas, infusoes e habilidades de engenharia — custo no compendio; talentos −PA — Cap. 12.0 (Artifice).
+**PA (VTT):** nv. 5 **Centelha Arcana** — primeira magia do turno com custo 2+ PA custa 1 PA a menos. Talentos — Cap. 12.0 (Feiticeiro).
+
+---
+
+### ESPIRITUALISTA
+
+Dado de HP: 1d8 | Atributos Primarios: Destreza e Sabedoria
+Proficiencias: Armas simples, espadas curtas, bestas leves; sem armadura pesada
+Atributos Culinarios Iniciais: Fortitude +3, Harmonização +2
+
+**Bônus Passivo de Sobrevivência (Nivel 1):**
+Respiração de Combate — Após descanso curto na masmorra, recupera **2 Chi extras** no próximo combate (além do pool padrão).
+
+**Chi:** Recurso próprio renovado a cada combate. **10 Chi** no início do combate; pode gastar no máximo **2 Chi por turno**. Técnicas corporais (habilidades) convertem Chi em dano contundente, mobilidade ou autopunição brutal — nenhuma vertente é pacifista, mas **Asceta da Dor** é a mais violenta (gasta PV para ganhar Chi ou inflige dano extremo).
+
+**Subclasses do Espiritualista:**
+
+Punho do Limiar (Especialidade: Impacto e Predadores): Golpes desarmados +1d6; esquiva +2 por 8h após assimilação de feras.
+
+Tecelão do Vácuo (Especialidade: Fluxo e Distância): Passos não provocam ataques de oportunidade 1× por turno; mobilidade entre hex.
+
+Asceta da Dor (Especialidade: Carne e Sangue): Pode converter PV em Chi (até 2 no combate); técnicas causam dano massivo e autoflagelo.
+
+Guardião da Respiração (Especialidade: Defesa e Sustento): +2 CON; recupera 1 Chi após descanso curto; técnicas de muro e proteção.
+
+**PA (VTT):** técnicas usam PA do compendio + custo em Chi. Talentos — Cap. 12.0 (Espiritualista).
 
 ---
 
@@ -1279,7 +1250,7 @@ Antes de extrair ingredientes de um monstro, o grupo pode fazer um Estudo de Ana
 
 **Bonus de Anatomia por Classe:**
 - Patrulheiro: +3 em testes de Anatomia de feras e bestiais
-- Artífice Biologo Alquimico: +5 em testes de Anatomia de qualquer especie
+- Feiticeiro Biologo Alquimico: +5 em testes de Anatomia de qualquer especie
 - Druida: Automaticamente conhece anatomia de Flora e Fungos
 
 ### 5.2 Extracao de Ingredientes (Extração)
@@ -1295,7 +1266,7 @@ Apos matar um monstro, o grupo tem **1 hora** antes que a carne comece a degrada
 
 **Ferramentas de Extracao:**
 - Faca comum: Serve para Facil e Medio.
-- Kit de Extração (do Artífice): +2 em todos os testes, serve para Dificil.
+- Kit de Extração (do Feiticeiro): +2 em todos os testes, serve para Dificil.
 - Ferramentas Especializadas (orgânicas ou mágicas): Necessarias para Especialista.
 - Recipiente Magico Selado: Necessario para Espirituais e Elementais.
 
@@ -1360,7 +1331,7 @@ Alem de **ingredientes** (carne, glândulas), masmorras geram **riqueza capturav
 
 **Especiaria em prato:** 1 ESP por refeicao = **+1 Forrageio** no teste de Coccao daquela refeicao.
 
-**Minério:** vendido ou usado em craft (Artífice CD 12; 3 unidades Comuns = 1 item +0 orgânico 24h).
+**Minério:** vendido ou usado em craft (Feiticeiro CD 12; 3 unidades Comuns = 1 item +0 orgânico 24h).
 
 **Covil / sala de tesouro:** 2d6 × (10 × nivel do andar) **po** + 1 item TES raro se a sala estiver marcada no mapa.
 
@@ -1948,7 +1919,7 @@ A crenca central de Sorn: **nenhum conhecimento deve ser destruido**. Monstros n
 
 Sorn têm um lado sombrio que seus seguidores moderam com etica pessoal: o deus não distingue entre conhecimento "bom" e "ruim". Os extremistas da fe de Sorn chegam a criar monstros, poluem masmorras com experiencias e manipulam ecossistemas inteiros — pela gloriosa causa do conhecimento.
 
-Sorn e popular entre Magos, Gnomos Arcanistas, Artífices Biologos Alquimicos e qualquer personagem com Inteligencia alta que valoriza o Estudo de Anatomia.
+Sorn e popular entre Magos, Gnomos Arcanistas, Feiticeiros Biologos Alquimicos e qualquer personagem com Inteligencia alta que valoriza o Estudo de Anatomia.
 
 **Cultos:** A Academia Cinzenta e a organizacao de culto legitima e academica de Sorn — mantida dentro da universidade de Vesper, proxima a Masmorra 5. O Convento do Olho Aberto e uma seita clandestina que acredita que as respostas para todos os segredos do submundo estão no Andar 4 da Masmorra 11.
 
@@ -2083,7 +2054,8 @@ No **criador de personagem** (passo *Equipamento*), escolha **um kit** entre as 
 | **Bárbaro** | Machado grande + gibão · Gladius + couro batido · Maça + couro curtido |
 | **Bardo** | Rapieira + couro + *Inspiração Culinária* · Adaga + couro acolchoado + *Sussurro de Masmorra* · Arco curto + *Ilusão Menor* |
 | **Druida** | Cimitarra + gibão + *Crescimento Acelerado* · Azagaia + escamas de dragonete + *Purificar Veneno* · Adaga + couro de troll + *Estabilizar* |
-| **Artífice** | Maça + couro + kit de brasas + *Chama de Fogareiro* · Besta + meia-armadura + *Armadura Arcana* · Adaga + brigandina + *Detectar Veneno* |
+| **Feiticeiro** | Adaga e *Lâmina de Espírito* · Besta e *Onda de Trovão* · Maça e *Chama de Vinha* |
+| **Espiritualista** | Punhos (sem arma) + *Golpe de Chi* · Bastão + *Passo do Vácuo* · Espada curta + *Ferida Aberta* |
 | **Paladino** | Espada longa + cota + *Curar Ferimentos* e *Raio do Limiar* · Maça + meia-armadura + cura e *Escudo Arcano* · Gladius + brigandina + *Purificar Veneno* |
 | **Bruxo** | Adaga + couro + *Raio do Limiar* e *Sussurro de Masmorra* · Cajado + couro acolchoado + *Chama de Fogareiro* · Besta + *Lâmina de Espírito* e *Ilusão Menor* |
 
@@ -2125,7 +2097,7 @@ Alem dos efeitos narrativos de cada talento (Cap. 12), muitos caminhos alteram a
 |---------------|--------------|--------|
 | **+1 PA maximo** | Em geral talentos de nv. **8** (alguns nv. 16) | Soma ao PA maximo da tabela do Cap. 2.6 |
 | **−1 PA no custo** | Talentos de nv. **4** (e alguns 8/12) | Reduz o custo da **primeira** acao elegivel do turno (arma, magia ou habilidade — ver 12.0) |
-| **Afinidade Arcanica** | Mago, Clérigo, Druida, Bardo, Artifice **nv. 5** | **Primeira magia** do turno com custo 2+ PA: −1 PA (min. 1) — nao exige talento |
+| **Afinidade Arcanica** | Mago, Clérigo, Druida, Bardo, Feiticeiro **nv. 5** | **Primeira magia** do turno com custo 2+ PA: −1 PA (min. 1) — nao exige talento |
 
 **Tabela por subclasse:** Cap. **12.0**. O Mestre pode ignorar PA na mesa puramente narrativa (sem VTT); neste caso use acao / acao bonus / movimento do Cap. 3.1 classico.
 
@@ -2166,7 +2138,7 @@ Referencia tecnica: `data/character/pa-modifiers.json` (v3 — `costReduceByKind
 
 | Feature | Classes | Efeito |
 |---------|---------|--------|
-| **Afinidade Arcanica** | Mago, Clérigo, Druida, Bardo, Artifice | **1ª magia** do turno com custo **2+ PA**: **−1 PA** |
+| **Afinidade Arcanica** | Mago, Clérigo, Druida, Bardo, Feiticeiro | **1ª magia** do turno com custo **2+ PA**: **−1 PA** |
 | **Afinidade Divina** | Paladino | Idem |
 | **Afinidade do Pacto** | Bruxo | Idem |
 
@@ -2181,7 +2153,7 @@ Referencia tecnica: `data/character/pa-modifiers.json` (v3 — `costReduceByKind
 | Clérigo | *Fermento Sagrado* (8), *Disciplina Vazia*, *Ecologia Sagrada* (8); *Aura Sagrada*, *Corpo Templo*, *Bencao do Forno*, *Sincretismo*, *Colheita de Alma* (16) |
 | Bardo | *Menu de Expedicao* (8), *Cancao Ebria* (12), *Brinde de Batalha*, *Barril Explosivo*, *Encanto Culinario* (16) |
 | Druida | *Podridao Fertil* (8), *Fusao Biomagica* (8); *Grande Decomposicao*, *Caca Alpha*, *Floresta em Miniatura* (16) |
-| Artifice | *Catalisador*, *Fogareiro Portatil* (8); *Forja Rapida*, *Motor de Vapor Menor*, *Mutageno de Batalha*, *Engenho de Caca* (16) |
+| Feiticeiro | *Catalisador*, *Fogareiro Portatil* (8); *Forja Rapida*, *Motor de Vapor Menor*, *Mutageno de Batalha*, *Engenho de Caca* (16) |
 | Paladino | *Escudo Solar* (8), *Julgamento Ardente* (12); *Coroa de Fogo*, *Pele de Quimera* (16) |
 | Bruxo | *Olhar Entre Dimensoes*, *Corrente Mental* (8); *Pacto de Ferro*, *Mente Partida* (12/16) |
 | Ladino | — (reducoes de custo; ver abaixo) |
@@ -2210,7 +2182,7 @@ Referencia tecnica: `data/character/pa-modifiers.json` (v3 — `costReduceByKind
 | | *Dominio do Limiar*, *Colheita de Alma* | Necrotico |
 | Bardo | *Cancao Ebria*, *Nota Picante*, *Sinfonia de Ervas* | Area em *Sinfonia* |
 | Druida | *Esporos Necroticos*, *Toque de Bolor*, *Vinha Agarradora*, *Semente Guardia*, *Tremor Leve* | Necrotico / trovao-forca |
-| Artifice | *Bomba de Glandula*, *Laboratorio de Campo* | Area / custo **2+ PA** |
+| Feiticeiro | *Bomba de Glandula*, *Laboratorio de Campo* | Area / custo **2+ PA** |
 | Bruxo | *Toque da Voragem*, *Contrato Ardente*, *Sussurro Salino*, *Manto de Bruma*, *Correntes Infernais* | Psiquico, fogo, area |
 
 #### −1 PA no custo — habilidades (`costReduceByKind.ability`)
@@ -2221,7 +2193,7 @@ Referencia tecnica: `data/character/pa-modifiers.json` (v3 — `costReduceByKind
 | Ladino | *Toque Fantasmal* (4), *Passo entre Sombras* (8) |
 | Bardo | *Menu de Expedicao* (8), *Fermento de Masmorra* (8) |
 | Druida | *Forma Aprimorada* (4) |
-| Artifice | *Panela Viva* (4), *Armadilha Biologica* (4) |
+| Feiticeiro | *Panela Viva* (4), *Armadilha Biologica* (4) |
 
 #### −1 PA — arma + magia ou habilidade (`costReduceByKind.multi`)
 
@@ -2269,10 +2241,14 @@ Ids em kebab-case no JSON (ex. `chama-controlada`).
 | | Circulo do Superpredador |
 | | Circulo da Simbiose |
 | | Circulo do Solo Vivo |
-| **Artífice** | Ferreiro de Utensilios |
-| | Engenheiro de Explosivos |
-| | Biologo Alquimico |
-| | Construtor de Armadilhas |
+| **Feiticeiro** | Linhagem Bestial |
+| | Sangue Selvagem |
+| | Eco Abissal |
+| | Chama Inata |
+| **Espiritualista** | Punho do Limiar |
+| | Tecelão do Vácuo |
+| | Asceta da Dor |
+| | Guardião da Respiração |
 | **Paladino** | Jurado do Sol |
 | | Cavaleiro do Limiar |
 | | Guardião da Gorge |
@@ -2302,7 +2278,7 @@ Ids em kebab-case no JSON (ex. `chama-controlada`).
 - **Guerreiro:** Ataque Extra em nv. 5 (2 ataques), 11 (3), 17 (4) — soma-se aos talentos de subclasse.
 - **Ladino:** Ataque Furtivo escala normalmente; talentos de subclasse podem modificar tipo de dano ou condições do furtivo.
 - **Bárbaro:** Furia e talentos de subclasse interagem onde indicado.
-- **Mago / Clérigo / Bardo / Druida / Artífice:** magias exclusivas de subclasse (Cap. 19) **somam-se** ao grimorio ou lista de preparacao e **não** substituem talentos de caminho.
+- **Mago / Clérigo / Bardo / Druida / Feiticeiro:** magias exclusivas de subclasse (Cap. 19) **somam-se** ao grimorio ou lista de preparacao e **não** substituem talentos de caminho.
 
 ### Culinaria em masmorra (estilo expedicao)
 - Muitos talentos referem **Extração**, **Estudo de Anatomia**, **qualidade de ingrediente** e **refeicao de campo** — assumem o sistema de Parte V (Alimentacao e Culinaria Biomágica).
@@ -2874,69 +2850,135 @@ Ids em kebab-case no JSON (ex. `chama-controlada`).
 
 ---
 
-## ARTIFICE
+## FEITICEIRO
 
-### Ferreiro de Utensilios (Artífice)
+### Linhagem Bestial (Feiticeiro)
 
-**Dieta nv.2:** Pratos em panelas de exoesqueleto aumentam CA das proprias armaduras em +2 por 8h.
+**Dieta nv.2:** Assimilação de fera concede instinto de caça, +3m de movimento e +1d4 em magias ofensivas por 8h.
 
-**Nv 4 — Panela Viva:** Infusão em utensilio de cozinha: ingredientes rendem dobro (empilha com Panela de Pressao da classe em +50% total, não triplica). +2 em Coccao com seu kit.
+**Nv 4 — Presa Marcada:** Marca 1 alvo (Percepção CD 12); magias contra ele +1d4 até fim do combate.
 
-**Nv 8 — Armadura de Caldeirao (requer Panela Viva):** Infusão +1 em armadura media que você veste; se forjada com quitina, +2 total.
+**Nv 8 — Uivo Interior (requer Presa Marcada):** 1/combate: pulso 3m, 3d6 trovão (CON CD 14 metade); aliados em 3m ganham Vantagem no próximo ataque.
 
-**Nv 12 — Reforco de Campo (requer Armadura de Caldeirao):** Aliado usa sua panela 1 descanso: +1 CA por 8h. Você repara armadura quebrada em 1 hora com exoesqueleto.
+**Nv 12 — Corpo do Predador (requer Uivo Interior):** Salto de 6 hex sem provocar oportunidade; imune a medo de bestas.
 
-**Nv 16 — Forja Rápida (requer Reforco de Campo):** Cria arma orgânica +1 em 4 horas (dano tipo monstro). 1 arma ativa por vez.
+**Nv 16 — Alfa Inato (requer Corpo do Predador):** Vantagem em ataques contra presa marcada; críticos restauram 1 slot nv.≤2.
 
-**Nv 20 — Ascensao — Mestre de Utensilios:** Armadura que você veste +3 CA permanente (magic). 1/descanso longo: distribui 3 utensilios infundidos (+1 Coccao ou +1 CA) ao grupo por 24h. Constructos de metal ignoram rustico de masmorra.
-
----
-
-### Engenheiro de Explosivos (Artífice)
-
-**Dieta nv.2:** Glandulas combustiveis concedem resistência a Fogo e +2d6 em bombas e engenhocas por 8h.
-
-**Nv 4 — Fogareiro Portátil:** Acende fogueira segura em 1 acao; cozinha em combaté em dobro de velocidade (minimo 5 min por prato simples).
-
-**Nv 8 — Bomba de Glandula (requer Fogareiro Portátil):** 3 bombas/descanso longo (4d6 fogo, 3m, DES CD 14). Nao afeta comida aliada se acertar panela — escolhe ao arremessar.
-
-**Nv 12 — Caldeira a Pressao (requer Bomba de Glandula):** Reacao: explosao controlada reduz dano de fogo em você a 0 e reflete 2d8 fogo ao atacante (alcance 3m).
-
-**Nv 16 — Motor de Vapor Menor (requer Caldeira a Pressao):** Se tiver Construto Auxiliar (Pequeno, 20 HP, CA 13), ele ganha lanca-fogo integrada 2d6+INT; senao, pode criar um em 8 horas de descanso longo.
-
-**Nv 20 — Ascensao — Inferno Controlado:** 1/descanso longo: incendio direcionado 12m linha 10d6 fogo (DES CD 17 metade); aliados na linha sofrem metade automaticamente. Bombas dobram dado até descanso longo. Imune a proprio fogo.
+**Nv 20 — Ascensão — Forma da Besta Primordial:** 10 min: garras 2d6, corrida +6 hex, uivo recarrega em 1 turno.
 
 ---
 
-### Biologo Alquimico (Artífice)
+### Sangue Selvagem (Feiticeiro)
 
-**Dieta nv.2:** Micro-doses de toxina garantem imunidade a envenenamento e revestir arma com +1d6 ácido por 1 minuto (3/combate).
+**Dieta nv.2:** Após conjurar magia, rola mutação menor 1×/combate.
 
-**Nv 4 — Seringa Basica:** 2 seringas/descanso longo — aliado ganha 1 mutação leve 8h ou antidoto a veneno conhecido.
+**Nv 4 — Torrente Caótica:** Primeira magia ofensiva do turno +1d6 aleatório (tabela Mestre).
 
-**Nv 8 — Catalisador (requer Seringa Basica):** Dobrar ingrediente Comum em poção (10 min). Veneno em arma dura 5 ataques.
+**Nv 8 — Onda Instável (requer Torrente Caótica):** 3m pulso 3d6 força (CON CD 13).
 
-**Nv 12 — Laboratorio de Campo (requer Catalisador):** Kit completo sem penalidade; antidoto em 5 min para veneno identificado.
+**Nv 12 — Tempestade Interna (requer Onda Instável):** Recupera 1 slot ao falhar save de CON.
 
-**Nv 16 — Mutageno de Batalha (requer Laboratorio de Campo):** Você injeta mutageno: +2 STR ou +2 DES por 10 min, 1 Exaustao depois. 1/descanso longo.
+**Nv 16 — Cataclismo Inato (requer Tempestade Interna):** Metamágica: dobra dados, 1 Exaustão.
 
-**Nv 20 — Ascensao — Mutação Direcionada:** 1/semana: mutação permanente sintetica para aliado (equivalente Boss medio, aprovacao Mestre). Em combate, nuvem 6m 5d8 ácido+veneno (CON CD 17) 1/descanso longo; aliados imunes.
+**Nv 20 — Ascensão — Fúria Primordial:** 1/descanso longo: 1 min imune controle; magias nv.≤3 sem slot.
 
 ---
 
-### Construtor de Armadilhas (Artífice)
+### Eco Abissal (Feiticeiro)
 
-**Dieta nv.2:** Carne extraída sem dano de batalha concede Vantagem em INT e criacao de invencoes por 24h.
+**Dieta nv.2:** Imune medo; +1 CD em magias de controle.
 
-**Nv 4 — Armadilha Biologica:** Monta armadilha em 5 min com ingrediente (efeito biomagico do monstro, Percepção CD 18 detectar).
+**Nv 4 — Voz do Vácuo:** Sussurro 6m impõe Desvantagem em Percepção 1 rodada.
 
-**Nv 8 — Extracao Perfeita (requer Armadilha Biologica):** Vantagem em Extração se monstro morreu em armadilha sua ou com 0 dano de arma cortante.
+**Nv 8 — Manto de Profundezas (requer Voz do Vácuo):** Invisibilidade parcial 1 turno após magia.
 
-**Nv 12 — Rede de Campo (requer Extracao Perfeita):** 3 armadilhas ativas simultaneas. Armadilha pode ser remota (corda, 9m).
+**Nv 12 — Corrente Mental (requer Manto de Profundezas):** Prende alvo (SAB CD 15) 1 turno.
 
-**Nv 16 — Engenho de Caça (requer Rede de Campo):** 1/descanso longo: armadilha maior (6d8 dano tipo escolhido + condicao do ingrediente, FOR ou DES CD 16).
+**Nv 16 — Fissura Abissal (requer Corrente Mental):** Teleporte 9m deixa névoa 3m 2 turnos.
 
-**Nv 20 — Ascensao — Arquiteto da Masmorra:** 1/descanso longo: converte área 12m em "zona preparada" 1 hora — todas as armadilhas +2d6, Percepção inimiga CD 20, você e aliados Vantagem em Furtividade e INT para invencoes. Ao fim, recupera todos os ingredientes usados (metade porcoes, qualidade preservada).
+**Nv 20 — Ascensão — Boca do Abismo:** 1/combate: 6m 8d10 psíquico (SAB CD 17 metade).
+
+---
+
+### Chama Inata (Feiticeiro)
+
+**Dieta nv.2:** Truques de fogo +1d4 por 8h.
+
+**Nv 4 — Centelha Persistente:** Chamas não se apagam; +2 Coccao com fogo mágico.
+
+**Nv 8 — Brasas Internas (requer Centelha Persistente):** Resistência fogo; toque 1d8 fogo.
+
+**Nv 12 — Forno Interior (requer Brasas Internas):** Magias de fogo ignoram metade resistência.
+
+**Nv 16 — Combustão Súbita (requer Forno Interior):** Reação: 2d8 fogo ao ser atingido corpo a corpo.
+
+**Nv 20 — Ascensão — Coração Incandescente:** Aura 3m 2d6 fogo/turno; imune fogo próprio.
+
+---
+
+## ESPIRITUALISTA
+
+### Punho do Limiar (Espiritualista)
+
+**Dieta nv.2:** +2 esquiva e +1d6 em golpes desarmados por 8h.
+
+**Nv 4 — Golpe do Vácuo:** *Golpe de Chi* empurra 1 hex em acerto.
+
+**Nv 8 — Punho Cortante (requer Golpe do Vácuo):** Desarmado conta como mágico; +1 ataque desarmado/turno (1 Chi).
+
+**Nv 12 — Tempestade de Punhos (requer Punho Cortante):** 3 ataques desarmados como ação (2 Chi total).
+
+**Nv 16 — Quebra de Ossos (requer Tempestade de Punhos):** Crítico desarmado atordoa 1 turno (CON CD 15).
+
+**Nv 20 — Ascensão — Punho do Colosso:** 1/combate: sequência 4 golpes, cada um +2d8.
+
+---
+
+### Tecelão do Vácuo (Espiritualista)
+
+**Dieta nv.2:** Passos não provocam ataques de oportunidade 1×/turno.
+
+**Nv 4 — Passo do Vácuo:** Alcance do Passo +1 hex; 1×/turno sem Chi extra.
+
+**Nv 8 — Rede de Chi (requer Passo do Vácuo):** Prende inimigo em 3m (DES CD 14) 1 turno, 2 Chi.
+
+**Nv 12 — Silêncio Interior (requer Rede de Chi):** Vantagem em Furtividade e em saves vs medo.
+
+**Nv 16 — Ruptura Dimensional (requer Silêncio Interior):** Teleporte 6 hex (2 Chi), 1/turno.
+
+**Nv 20 — Ascensão — Mente no Limiar:** 1/combate: duplica movimento e ignora terreno difícil 3 turnos.
+
+---
+
+### Asceta da Dor (Espiritualista)
+
+**Dieta nv.2:** Pode gastar PV para ganhar até 2 Chi extras no combate (ação bônus, 1d8 PV = 1 Chi).
+
+**Nv 4 — Ferida Aberta:** Técnica brutal — +2d8+DES; você sofre 1d4.
+
+**Nv 8 — Autoflagelo (requer Ferida Aberta):** Ação bônus: 2d6 PV → próximo golpe +2d10.
+
+**Nv 12 — Ritual de Sangue (requer Autoflagelo):** Aliados em 3m ganham +1 ataque/turno se você estiver abaixo de metade dos HP.
+
+**Nv 16 — Corpo Rasgado (requer Ritual de Sangue):** Imune a sangramento; metade dano perfurante.
+
+**Nv 20 — Ascensão — Martírio:** 0 HP: explode 6m 6d10+DES (CON CD 17); você fica a 1 HP 1×/semana.
+
+---
+
+### Guardião da Respiração (Espiritualista)
+
+**Dieta nv.2:** +2 CON; +1 Chi após descanso curto.
+
+**Nv 4 — Muro de Chi:** Reação 2 Chi: +4 CA até início do próximo turno.
+
+**Nv 8 — Respiração de Ferro (requer Muro de Chi):** Regenera 1d6 HP/turno se não gastou Chi no turno anterior.
+
+**Nv 12 — Campo Protetor (requer Respiração de Ferro):** Aliados adjacentes +2 em saves.
+
+**Nv 16 — Pele de Vento (requer Campo Protetor):** Resistência contundente/cortante/perfurante enquanto Chi ≥ 4.
+
+**Nv 20 — Ascensão — Templo Vivo:** 1/combate: zona 6m cura 2d8+SAB e dispensa 1 condição (aliados).
 
 ---
 
@@ -3214,11 +3256,11 @@ Armas forjadas de partes de monstros da masmorra. Cada uma carrega o DNA do ser 
 
 ### 15.1 Regras de Armas Orgânicas
 
-**Criação:** O Artífice (ou ferreiro especializado) cria armas orgânicas durante ou após um Banquete. Tempo de forja: 1d4 dias para armas comuns, 1d6+1 semanas para armas de Boss.
+**Criação:** O Feiticeiro (ou ferreiro especializado) cria armas orgânicas durante ou após um Banquete. Tempo de forja: 1d4 dias para armas comuns, 1d6+1 semanas para armas de Boss.
 
 **Degradação:** Armas orgânicas têm um **Contador de Durabilidade (CD)**. A cada acerto crítico ou exposição a condições extremas, perde 1 de CD. Ao chegar a 0, a arma perde suas propriedades especiais mas ainda funciona como arma mundana.
 
-**Manutenção:** O Artífice pode restaurar CD gastando ingredientes do mesmo tipo do monstro de origem (1 ingrediente por 2 CD restaurados, 1 hora de trabalho).
+**Manutenção:** O Feiticeiro pode restaurar CD gastando ingredientes do mesmo tipo do monstro de origem (1 ingrediente por 2 CD restaurados, 1 hora de trabalho).
 
 **Evolução:** Armas orgânicas de Boss podem ser "aprimoradas" ao serem alimentadas com ingredientes do mesmo tipo de monstro ao longo do tempo — ganham +1 em dano a cada 10 ingredientes absorvidos, máximo +3.
 
@@ -3298,7 +3340,7 @@ Criada das glândulas intactas da Matriarca Tecela de Cristal. Lança fios micro
 | Faca de Campo | +0 | Basica. Serve para Facil | 2 po |
 | Kit de Extração Basico | +1 | Facil e Medio sem penalidade | 15 po |
 | Kit de Extração Avancado | +2 | Ate Dificil sem penalidade | 50 po |
-| Kit de Artífice (Extração) | +3 | Todas as dificuldades, incluindo Especialista | 150 po |
+| Kit de Feiticeiro (Extração) | +3 | Todas as dificuldades, incluindo Especialista | 150 po |
 | Recipiente de Vidro Grosso | Necessario | Para Slimes e Ácidos | 25 po/conjunto |
 | Frasco Selado Magicamente | Necessario | Para Espirituais e Elementais | 80 po/frasco |
 | Luva Resistente a Ácido | Protecao | Necessaria para Centopeias e Pudins | 30 po |
@@ -3312,7 +3354,7 @@ Criada das glândulas intactas da Matriarca Tecela de Cristal. Lança fios micro
 | Panela de Ferro Anão | +1 em Coccao | 40 po |
 | Panela de Escama de Dragão | +2 em Coccao. Resistente a fogo | 200 po |
 | Panela de Carapaça de Escorpião | +2 Coccao. Resistente a ácido | 180 po |
-| Fogareiro Portátil (Artífice) | Controle de temperatura preciso (+3 Coccao) | 300 po |
+| Fogareiro Portátil (Feiticeiro) | Controle de temperatura preciso (+3 Coccao) | 300 po |
 | Nucleo de Chama Primordial | Fonte de calor eterno. Nunca apaga | 800 po |
 | Cera de Mumia (Preservacao) | Ingredientes não estragam por 7 dias | 50 po/bloco |
 | Frascos de Fermentacao | +2 Forrageio em ingredientes fermentados | 30 po/conjunto |
@@ -3382,7 +3424,7 @@ Conjuradores usam o truque **Calor de Panela** (Cap. 18) em vez do kit.
 
 ### 17.1 Espacos de Magia
 
-Classes conjuradoras: **Mago, Clérigo, Bardo, Druida, Artífice**. Possuem **Espacos de Magia** — reservatorios que se renovam após Descanso Longo.
+Classes conjuradoras: **Mago, Clérigo, Bardo, Druida, Feiticeiro**. Possuem **Espacos de Magia** — reservatorios que se renovam após Descanso Longo.
 
 | Nivel do Personagem | Espacos por Nivel de Magia disíponíveis |
 |--------------------|----------------------------------------|
@@ -3398,7 +3440,7 @@ Classes conjuradoras: **Mago, Clérigo, Bardo, Druida, Artífice**. Possuem **Es
 | 17 | + Nivel 9: 1 |
 | 20 | Maximo completo de todos os niveis |
 
-**Artífice:** Usa a mesma tabela de espacos. Prepara apenas magias da lista geral que incluam **Artífice** na linha de classes, mais magias exclusivas de subclasse de Artífice (Cap. 19).
+**Feiticeiro:** Usa a mesma tabela de espacos. Conhece magias da **lista Arcano (inato)** (Cap. 17.7); não prepara — magias conhecidas conforme nível + CAR.
 
 **Gnomo:** Pode aprender magias marcadas com **Gnomo** como se fosse Mago (uma magia a mais por nivel de espaco, a escolha do jogador).
 
@@ -3426,7 +3468,8 @@ Classes conjuradoras: **Mago, Clérigo, Bardo, Druida, Artífice**. Possuem **Es
 
 ### 17.4 Grimorio e magias conhecidas
 
-- **Mago / Artífice:** Escolhem magias da lista geral (Cap. 18) permitidas a sua classe. Mago inicia com 6 magias de nivel 1 + 2 truques; ganha 2 magias por nivel ao subir (nivel da magia <= nivel de espaco disponivel).
+- **Mago:** Escolhem magias da lista **Arcano (estudo)** + truques comuns (Cap. 17.7). Inicia com 6 magias de nivel 1 + 2 truques; ganha 2 magias por nivel ao subir.
+- **Feiticeiro:** Lista **Arcano (inato)**; conhece magias (não prepara). Truques iniciais: 4.
 - **Clérigo / Druida:** Escolhem da lista geral permitida; tem acesso a todas as magias de nivel que possuem espaco (preparacao diaria: nivel + mod. SAB).
 - **Bardo:** Lista geral permitida; aprende como Mago (menos magias de combaté direto, mais encantamento/adivinhacao).
 - **Subclasse:** Magias do Cap. 19 somam-se ao grimorio; não contam no limite de “magias aprendidas” do Mago.
@@ -3434,6 +3477,26 @@ Classes conjuradoras: **Mago, Clérigo, Bardo, Druida, Artífice**. Possuem **Es
 ### 17.5 Variantes de subclasse
 
 Algumas magias da lista geral possuem **variante** anotada no Cap. 19 (ex.: Piromante e `Bola de Fogo`). Lancar a variante gasta o **mesmo espaco** que a magia base; não e uma magia extra na contagem do grimorio.
+
+### 17.7 Listas compartilhadas (mesa digital)
+
+Cada classe conjuradora acessa **uma ou mais listas nomeadas**. Na ficha e no VTT, só aparecem magias **elegíveis** às listas da classe; pools **compartilhados** indicam magias que Mago e Feiticeiro (ou Clérigo e Paladino) podem escolher nas respectivas listas.
+
+| Lista | Classes | Modo |
+|-------|---------|------|
+| **Truques comuns** + **Arcano (estudo)** | Mago | Aprender / preparar |
+| **Arcano (inato)** | Feiticeiro | Conhecidas |
+| **Divino** | Clérigo | Preparar |
+| **Primal** | Druida | Preparar |
+| **Performance e encanto** | Bardo | Aprender |
+| **Pacto** | Bruxo | Conhecidas |
+| **Juramento** | Paladino | Preparar (meio-conjurador) |
+
+**Pools compartilhados:**
+- **Grimório arcano (Mago + Feiticeiro):** *Chama de Vinha*, *Curar Ferimentos*, *Escudo Arcano*, *Esfera Ígnea*, *Relâmpago*, *Cone de Frio*.
+- **Orações compartilhadas (Clérigo + Paladino):** *Curar Ferimentos*, *Purificar Veneno*, *Cura em Massa*, *Raio do Limiar*.
+
+O arquivo `data/character/spell-lists.json` espelha estas listas para o compendio digital.
 
 ### 17.6 Classificacao por nivel e escola
 
@@ -3482,29 +3545,29 @@ Algumas magias da lista geral possuem **variante** anotada no Cap. 19 (ex.: Piro
 
 ### NIVEL 0 — TRUQUES (SEM CUSTO)
 
-**Calor de Panela** — Transmutação | Acao | Toque | Concentracao, até 1 hora | Mago, Clérigo, Bardo, Druida, Artífice
+**Calor de Panela** — Transmutação | Acao | Toque | Concentracao, até 1 hora | Mago, Clérigo, Bardo, Druida, Feiticeiro
 Aquece recipiente fechado sem chama visivel; penumbra 3m. Coccao segura em biomas sem fogo aberto (Cap. 16.2.1). +1 Coccao se unica fonte de calor no prato. **Todo conjurador inicia com este truque.**
 
-**Chama de Fogareiro** — Evocacao | Acao | Toque | Ate ser apagada | Mago, Clérigo, Bardo, Druida, Artífice
+**Chama de Fogareiro** — Evocacao | Acao | Toque | Ate ser apagada | Mago, Clérigo, Bardo, Druida, Feiticeiro
 Chama na ponta dos dedos. **Proibida** em Ninho Crepuscular (12), gas do Pantano (10), vapor oleoso (8), bolsao sulfuroso (4). Use Calor de Panela ou Brasas Magicas.
 
-**Lâmina de Espirito** — Transmutação | Acao Bonus | Pessoal | 1 minuto | Mago, Bardo, Artífice
+**Lâmina de Espirito** — Transmutação | Acao Bonus | Pessoal | 1 minuto | Mago, Bardo, Feiticeiro
 Lâmina eterea (1d4 forca). +2 em testes de Extração com ela.
 
-**Detectar Veneno** — Adivinhacao | Acao | Pessoal | 10 minutos | Mago, Clérigo, Bardo, Druida, Artífice
+**Detectar Veneno** — Adivinhacao | Acao | Pessoal | 10 minutos | Mago, Clérigo, Bardo, Druida, Feiticeiro
 Em raio de 3m, detecta toxinas em comida, bebida ou ingrediente (aura avermelhada).
 
 **Estabilizar** — Abjuracao | Acao | Toque | Instantanea | Clérigo, Druida
 Criatura a 0 HP para de fazer falhas de morte; não cura HP.
 
-**Maos Firmes** — Transmutação | Acao | Toque | 1 hora | Mago, Druida, Artífice
+**Maos Firmes** — Transmutação | Acao | Toque | 1 hora | Mago, Druida, Feiticeiro
 Alvo (você ou aliado) ganha +2 em Extração e não sofre -2 por falta de treinamento nesta hora.
 
 ---
 
 ### NIVEL 1
 
-**Extracao Amplificada** — Biomancia | 1 minuto | Toque | Instantanea | Mago, Druida, Artífice
+**Extracao Amplificada** — Biomancia | 1 minuto | Toque | Instantanea | Mago, Druida, Feiticeiro
 Monstro morto rende dobro de ingredientes; testes de Extração na proxima 1h tem +4.
 
 **Maos Gelidas** — Evocacao | Acao | 4,5m | Instantanea | Mago
@@ -3516,10 +3579,10 @@ Semente vira planta adulta em 1h com propriedades do bioma.
 **Purificar Veneno** — Abjuracao | Acao | Toque | Instantanea | Clérigo, Druida
 Remove Envenenado em criatura ou torna ingrediente toxico seguro para processamento.
 
-**Identificar Ingrediente** — Adivinhacao (R) | 1 minuto | Toque | Instantanea | Mago, Bardo, Artífice
+**Identificar Ingrediente** — Adivinhacao (R) | 1 minuto | Toque | Instantanea | Mago, Bardo, Feiticeiro
 Origem do monstro, propriedades biomágicas, preparo ideal e riscos.
 
-**Armadura Arcana** — Abjuracao | Acao | Toque | 8 horas | Mago, Artífice
+**Armadura Arcana** — Abjuracao | Acao | Toque | 8 horas | Mago, Feiticeiro
 CA 13 + INT; não interfere com gestos de magia.
 
 **Onda de Trovao** — Evocacao | Acao | Pessoal (cubo 4,5m) | Instantanea | Mago, Bardo, Druida
@@ -3532,28 +3595,28 @@ Cura 1d8 + mod. de atributo de conjuracao (SAB ou CAR).
 
 ### NIVEL 2
 
-**Aprimoramento Biomagico** — Biomancia | 10 minutos | Toque | 8 horas | Mago, Druida, Artífice
+**Aprimoramento Biomagico** — Biomancia | 10 minutos | Toque | 8 horas | Mago, Druida, Feiticeiro
 Proxima refeicao com esse ingrediente concede +1 habilidade de assimilação alem do d4.
 
 **Raios de Enfraquecimento** — Necromancia | Acao | 18m | Concentracao até 1 minuto (C) | Mago, Clérigo
 Tres raios: CON CD ou Desvantagem em ataques e FOR por 1 minuto.
 
-**Esfera Acida de Monstro** — Evocacao | Acao | 18m | Concentracao até 1 minuto (C) | Mago, Artífice
+**Esfera Acida de Monstro** — Evocacao | Acao | 18m | Concentracao até 1 minuto (C) | Mago, Feiticeiro
 Esfera 1m: 4d6 ácido (DES CD); -1 CA em armadura atingida.
 
-**Transmutação de Carne** — Transmutação | 1 hora | Toque | Permanente | Mago, Gnomo, Artífice
+**Transmutação de Carne** — Transmutação | 1 hora | Toque | Permanente | Mago, Gnomo, Feiticeiro
 Converte ingrediente em equivalente de mesma raridade (ex.: goblin -> grifo).
 
 **Inspiracao Culinaria** — Encantamento | Acao Bonus | 9m | 1 hora | Bardo
 +3 em Coccao e Forrageio; Prato Perfeito durante efeito da +1d6 HP temp por nivel do Bardo ao grupo.
 
-**Preservação Perfeita** — Transmutação | Acao | Toque | 30 dias | Mago, Clérigo, Druida, Artífice
+**Preservação Perfeita** — Transmutação | Acao | Toque | 30 dias | Mago, Clérigo, Druida, Feiticeiro
 Ingrediente preservado 30 dias sem perder propriedades biomágicas.
 
 **Forma Menor** — Transmutação | Acao | Pessoal | Concentracao até 1 hora (C) | Druida, Mago
 Transforma-se em besta Minuscula ou Pequena; mantem INT, SAB, CAR; sem magia na forma.
 
-**Escudo Arcano** — Abjuracao | Reacao | Pessoal | 1 rodada | Mago, Artífice
+**Escudo Arcano** — Abjuracao | Reacao | Pessoal | 1 rodada | Mago, Feiticeiro
 Quando atingido ou alvo de magia: +5 CA até inicio do próximo turno (inclui contra a magia que disparou).
 
 **Ilusão Menor** — Ilusao | Acao | 18m | 1 minuto | Mago, Bardo
@@ -3566,7 +3629,7 @@ Som ou imagem estática em cubo 1,5m; não causa dano.
 **Animação de Mortos** — Necromancia | 1 minuto | 3m | 24 horas | Mago, Clérigo
 Anima até 2 cadaveres Medios ou menores; podem Extração com proficiencia = metade do nivel do conjurador. Em espaco de nivel 5: 4 Medios ou 2 Grandes.
 
-**Injecao Biomágica** — Biomancia | Acao | Toque | 12 horas | Mago, Artífice
+**Injecao Biomágica** — Biomancia | Acao | Toque | 12 horas | Mago, Feiticeiro
 Uma habilidade de assimilação do ingrediente usado, 12h, sem refeicao (ingrediente consumido).
 
 **Bola de Fogo** — Evocacao | Acao | 45m | Instantanea | Mago
@@ -3603,7 +3666,7 @@ CON CD ou mutação negativa aleatoria 1h.
 **Parede de Fogo** — Evocacao | Acao | 36m | Concentracao até 1 minuto (C) | Mago, Druida
 Parede até 18m: 5d8 ao atravessar; 2d8 radiante a 3m por turno.
 
-**Preservação Anual** — Transmutação | Acao | Toque | 1 ano | Mago, Clérigo, Druida, Artífice
+**Preservação Anual** — Transmutação | Acao | Toque | 1 ano | Mago, Clérigo, Druida, Feiticeiro
 Como Preservação Perfeita, mas duração 1 ano (requer espaco de nivel 4).
 
 **Cura em Massa** — Abjuracao | Acao | 18m | Instantanea | Clérigo, Druida
@@ -3625,7 +3688,7 @@ Ingrediente de Boss concede mutação forte 7 dias (consumido).
 **Despertar** — Transmutação | 8 horas | Toque | Permanente | Druida
 Planta ou besta ganha INT 10 e linguagem.
 
-**Salto Dimensional** — Conjuracao | Acao Bonus | Pessoal | Instantanea | Mago, Bardo, Artífice
+**Salto Dimensional** — Conjuracao | Acao Bonus | Pessoal | Instantanea | Mago, Bardo, Feiticeiro
 Teletransporte até 18m para ponto visivel.
 
 **Restaurar Vigor** — Abjuracao | 1 hora | Toque | Instantanea | Clérigo, Druida
@@ -3704,7 +3767,7 @@ Estes efeitos **não entram** na contagem de 60 feiticos:
 | **Circulo do Superpredador** | Forma Selvagem +HP do ultimo monstro grande comido |
 | **Circulo da Simbiose** | Sementes: armadura de vinhas, 1d6 cortante ao atacante |
 | **Circulo do Solo Vivo** | Pedras elementais: resistência contundente enquanto dieta ativa |
-| **Biologo Alquimico (Artífice)** | Micro-doses: imunidade veneno; arma +1d6 ácido 1 min |
+| **Biologo Alquimico (Feiticeiro)** | Micro-doses: imunidade veneno; arma +1d6 ácido 1 min |
 | **Engenheiro de Explosivos** | Glandulas de fogo: resistência Fogo; bombas +2d6 |
 | **Ferreiro de Utensilios** | Prato em panela de exoesqueleto: +2 CA em armaduras proprias |
 | **Construtor de Armadilhas** | Carne intacta: Vantagem INT e invencoes 24h |
@@ -3833,17 +3896,18 @@ Um humanoide CON CD ou Amedrontado e Desvantagem em Percepção por 1 minuto (sa
 | 7 | Forma de Monstro; Regeneração Biomágica |
 | 8 | Terremoto |
 
-### ARTIFICE
+### Feiticeiro
 
-| Nv | Magias disíponíveis |
+| Nv | Magias (lista Arcano inato + Cap. 19) |
 |---:|---|
-| 0 | Calor de Panela; Chama de Fogareiro; Lâmina de Espirito; Detectar Veneno; Maos Firmes |
-| 1 | Extracao Amplificada; Identificar Ingrediente; Armadura Arcana |
-| 2 | Aprimoramento Biomagico; Esfera Acida de Monstro; Transmutação de Carne; Preservação Perfeita; Escudo Arcano |
-| 3 | Injecao Biomágica |
-| 4 | Preservação Anual |
-| 5 | Salto Dimensional |
+| 0 | *Lâmina de Espírito*; *Chama de Fogareiro* |
+| 1 | *Mãos Geladas*; *Onda de Trovão*; *Chama de Vinha* |
+| 2 | *Esfera Ácida de Monstro*; *Escudo Arcano* |
+| 3 | *Esfera Ígnea*; *Relâmpago* |
+| 4–5 | Conforme lista 17.7 e subclasse |
 
-Poder extra: **Infusoes** (Cap. IV), não lista 19.3.
+### Espiritualista
+
+Sem lista de magias — usa **Chi** e técnicas (Cap. 4 e compêndio de habilidades).
 
 ---

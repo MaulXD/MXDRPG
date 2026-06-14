@@ -71,6 +71,8 @@ export type CombatActionOption = {
   channelBonusPerPa?: string;
   /** Recarga do compêndio (1/turno, 1/combate, …) */
   recharge?: RechargeSpec;
+  /** Custo em Chi (Espiritualista) — máx. 2/turno, pool 10/combate */
+  chiCost?: number;
   /** Efeito utilitário / cura / debuff de magia */
   spellEffect?: SpellEffectKind;
   /** Nível do círculo (0 = truque) */

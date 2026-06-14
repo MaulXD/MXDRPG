@@ -1198,5 +1198,53 @@
         "recarga": "1/turno"
       }
     }
+  },
+  {
+    "id": "habilidades-golpe-de-chi",
+    "name": "Golpe de Chi",
+    "type": "habilidade",
+    "system": {
+      "catalogId": "HAB-golpe-de-chi",
+      "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
+      "description": "<p>Ataque desarmado ou com arma leve: +1d8+DES contundente. Custa <strong>1 Chi</strong> (máx. 2 Chi/turno; pool 10/combate).</p>",
+      "tactical": {
+        "alcanceHex": { "value": 1, "min": 0 },
+        "custoPontosAcao": { "value": 1, "min": 0 },
+        "custoChi": { "value": 1, "min": 0 }
+      },
+      "ability": { "tipo": "ativa", "recarga": "" }
+    }
+  },
+  {
+    "id": "habilidades-passo-do-vacuo",
+    "name": "Passo do Vácuo",
+    "type": "habilidade",
+    "system": {
+      "catalogId": "HAB-passo-do-vacuo",
+      "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
+      "description": "<p>Desloca até 3 hex sem provocar ataques de oportunidade. <strong>1 Chi</strong>.</p>",
+      "tactical": {
+        "alcanceHex": { "value": 0, "min": 0 },
+        "custoPontosAcao": { "value": 1, "min": 0 },
+        "custoChi": { "value": 1, "min": 0 }
+      },
+      "ability": { "tipo": "ativa", "recarga": "1/turno" }
+    }
+  },
+  {
+    "id": "habilidades-ferida-aberta",
+    "name": "Ferida Aberta",
+    "type": "habilidade",
+    "system": {
+      "catalogId": "HAB-ferida-aberta",
+      "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
+      "description": "<p>Golpe brutal: +2d8+DES contundente; você sofre 1d4 de dano. <strong>2 Chi</strong> (caminho Asceta da Dor).</p>",
+      "tactical": {
+        "alcanceHex": { "value": 1, "min": 0 },
+        "custoPontosAcao": { "value": 2, "min": 0 },
+        "custoChi": { "value": 2, "min": 0 }
+      },
+      "ability": { "tipo": "ativa", "recarga": "1/combate" }
+    }
   }
 ]

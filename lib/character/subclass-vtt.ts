@@ -64,7 +64,8 @@ const CLASS_FALLBACK: Record<string, string> = {
   Bardo: "habilidades-inspiracao-de-batalha",
   Bárbaro: "habilidades-furia-controlada",
   Druida: "habilidades-forma-selvagem",
-  Artífice: "habilidades-barreira-de-cobre",
+  Feiticeiro: "habilidades-raio-arcano",
+  Espiritualista: "habilidades-golpe-de-chi",
   Paladino: "habilidades-imposicao-de-maos",
   Bruxo: "habilidades-raio-do-pacto",
 };

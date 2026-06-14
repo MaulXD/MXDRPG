@@ -64,7 +64,6 @@ function racialDripPerk(raceId: string, level: number, linhagem?: string | null)
     Halfling: ["Sorte menor", "Passo leve", "Faro atento", "Reflexo rápido"],
     Gnomo: ["Alquimia +1", "Pocião menor", "Foco arcano", "Estabilidade"],
     "Meio-Humano": ["Instinto bestial", "Olfato +1", "Corpo resistente", "Linhagem desperta"],
-    "Forjado de Osso": ["Componente +1", "Estrutura reforçada", "Autoreparo menor", "Núcleo estável"],
   };
   const list = raceId === "Meio-Humano" && linhagem ? drips["Meio-Humano"] : drips[raceId];
   if (!list?.length) return null;

@@ -1,5 +1,9 @@
 /** Nomes antigos (culinários) → nomes atuais (masmorra/sobrevivência). */
 
+export const LEGACY_CLASS_NAMES: Record<string, string> = {
+  Artífice: "Feiticeiro",
+};
+
 export const LEGACY_SUBCLASS_NAMES: Record<string, string> = {
   "Predador Voraz": "Caçador de Feras",
   "Quebra-Cascos": "Quebrador de Carapaças",
@@ -26,10 +30,21 @@ export const LEGACY_SUBCLASS_NAMES: Record<string, string> = {
   "Círculo da Decomposição": "Círculo da Podridão",
   "Círculo do Superpredador": "Círculo do Predador",
   "Círculo do Solo Vivo": "Círculo da Terra",
-  "Ferreiro de Utensílios": "Ferreiro de Campo",
-  "Engenheiro de Fogareiros": "Engenheiro de Explosivos",
-  "Biólogo Alquímico": "Biólogo de Masmorra",
+  "Monge Ascético": "Clérigo Contemplativo",
+  "Ferreiro de Utensílios": "Linhagem Bestial",
+  "Engenheiro de Fogareiros": "Chama Inata",
+  "Biólogo Alquímico": "Sangue Selvagem",
+  "Construtor de Armadilhas": "Eco Abissal",
+  "Linhagem Dracônica": "Linhagem Bestial",
+  "Ferreiro de Campo": "Linhagem Bestial",
+  "Engenheiro de Explosivos": "Chama Inata",
+  "Biólogo de Masmorra": "Sangue Selvagem",
 };
+
+export function migrateClassName(name: string | null | undefined): string | null | undefined {
+  if (!name) return name;
+  return LEGACY_CLASS_NAMES[name] ?? name;
+}
 
 export function migrateSubclassName(name: string | null | undefined): string | null | undefined {
   if (!name) return name;
