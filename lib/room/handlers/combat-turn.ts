@@ -45,6 +45,7 @@ import {
   resetTokenChi,
 } from "@/lib/combat/chi-economy";
 import { tickDeathTrackOnRound } from "@/lib/combat/death-track";
+import { requiresCombatTurnEconomy } from "@/lib/combat/mesa-mode";
 import { pushRoundCheckpoint } from "../combat-round-checkpoint";
 import { DEFAULT_AUTO_PASS_DELAY_MS } from "../settings";
 import { getRoom, persistRoom, toSnapshot } from "../internal/registry";
@@ -302,6 +303,10 @@ function applyTurnPaTransition(room: RoomState): string[] {
 
 /** Agenda auto-passe quando o ativo esgota PA (não avança até o delay). */
 export function scheduleAutoPassWhenActivePaZero(room: RoomState): boolean {
+  if (!requiresCombatTurnEconomy(room.settings, room.combat)) {
+    clearPendingAutoPass(room);
+    return false;
+  }
   if (!room.combat?.order?.length) return false;
 
   const active = getActiveBattleToken(room);
@@ -318,8 +323,7 @@ export function scheduleAutoPassWhenActivePaZero(room: RoomState): boolean {
 
   const pending = room.combat.pendingAutoPass;
   if (pending?.tokenId === active.id) {
-    if (pending.passAt > Date.now()) return false;
-    return false;
+    return pending.passAt <= Date.now();
   }
 
   room.combat = {
@@ -418,15 +422,27 @@ export async function rollRoomInitiative(roomId: string): Promise<RoomSnapshot |
   return toSnapshot(await persistRoom(roomId, room));
 }
 
-/** Garante PA no token ativo quando a ordem existe mas ninguém rolou iniciativa ainda. */
+/** Garante PA no token ativo (início de turno ou após pular inconsciente/atordoado). */
 export function ensureCombatActiveHasPa(room: RoomState): void {
   if (!room.combat?.order?.length) return;
+  if (!requiresCombatTurnEconomy(room.settings, room.combat)) return;
+
+  const activeIdBefore = activeTokenId(room.combat);
   skipUnplayableActives(room);
+  const activeIdAfter = activeTokenId(room.combat);
+
   const active = getActiveBattleToken(room);
   if (!active || shouldAutoSkipTurn(active)) return;
-  if ((active.pa ?? 0) > 0) return;
-  if ((active.paSpentThisTurn ?? 0) > 0) return;
-  refreshActiveTokenPa(room, "full");
+
+  if (tokenSpendablePa(active) > 0) return;
+
+  const spentThisTurn = active.paSpentThisTurn ?? 0;
+  const skippedToNewActive = activeIdBefore !== activeIdAfter;
+
+  // PA zerado no meio do turno — auto-passe cuida do avanço
+  if (spentThisTurn > 0 && !skippedToNewActive) return;
+
+  refreshActiveTokenPa(room, "regen");
 }
 
 export async function advanceRoomTurn(

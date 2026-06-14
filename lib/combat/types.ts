@@ -87,6 +87,7 @@ export type CombatTurnOptions = {
   bypassTurn?: boolean;
   combatRound?: number;
   combatHasOrder?: boolean;
+  combatActive?: boolean;
 };
 
 export type CombatActionRequest = {

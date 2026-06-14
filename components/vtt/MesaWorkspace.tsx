@@ -25,6 +25,7 @@ import { MesaEditRequestsBell } from "@/components/vtt/MesaEditRequestsBell";
 import { MesaPlayerEditRequestsBell } from "@/components/vtt/MesaPlayerEditRequestsBell";
 import { MesaPlayerInventoryRequestsBell } from "@/components/vtt/MesaPlayerInventoryRequestsBell";
 import { GmPlayerViewToggle } from "@/components/vtt/GmPlayerViewToggle";
+import { GmMesaModeToggle, MesaModeIndicator } from "@/components/vtt/GmMesaModeToggle";
 import { VttToastProvider } from "@/components/vtt/VttToast";
 import { FoundryDockPanel } from "@/components/vtt/foundry/FoundryDockPanel";
 import { FoundryWindow } from "@/components/vtt/foundry/FoundryWindow";
@@ -518,6 +519,15 @@ export function MesaWorkspace({
               coverFocus={roomSettings.coverFocus}
             />
             <div className="foundry-mesa__stage-header">
+              {isActualGm ? (
+                <GmMesaModeToggle
+                  roomId={roomId}
+                  combatActive={roomSettings.combatActive}
+                  onUpdated={applySnapshot}
+                />
+              ) : (
+                <MesaModeIndicator combatActive={roomSettings.combatActive} />
+              )}
               {isActualGm ? (
                 <GmPlayerViewToggle
                   playAsPlayer={playAsPlayer}

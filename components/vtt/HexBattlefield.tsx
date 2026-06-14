@@ -2930,8 +2930,12 @@ export function HexBattlefield({
             />
           </div>
         ) : null}
-        <TurnHandoffOverlay combat={combat} tokens={displayScene.tokens} />
-        {combat && (!hudToken || !hudVisible) ? (
+        <TurnHandoffOverlay
+          combat={combat}
+          tokens={displayScene.tokens}
+          enabled={roomSettings.combatActive}
+        />
+        {combat && roomSettings.combatActive && (!hudToken || !hudVisible) ? (
           <EndTurnBar
             roomId={roomId}
             combat={combat}
