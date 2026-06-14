@@ -14,6 +14,8 @@ import type { CompendiumEntry, CompendiumPackId, CompendiumPackMeta } from "@/li
 import type { BattleScene } from "@/lib/vtt/types";
 import type { Axial } from "@/lib/vtt/hex-math";
 import { useCombatTurnFlow } from "@/hooks/vtt/useCombatTurnFlow";
+import { useCombatModeTransition } from "@/hooks/vtt/useCombatModeTransition";
+import { CombatModeTransition } from "@/components/vtt/CombatModeTransition";
 import { useFoundryWindows, FOUNDRY_DOCK_PANEL_IDS, type MesaWindowId } from "@/hooks/vtt/useFoundryWindows";
 import { MAX_CHARACTERS_PER_USER_PER_ADVENTURE } from "@/lib/character/adventure-bind";
 import { useGmPlayerViewMode } from "@/hooks/vtt/useGmPlayerViewMode";
@@ -316,6 +318,9 @@ export function MesaWorkspace({
     [snapshot?.settings]
   );
 
+  const { phase: combatModePhase, locked: mesaTransitionLocked } =
+    useCombatModeTransition(roomSettings.combatActive);
+
   const canBypassTurn = useMemo(() => {
     return canBypassCombatTurn(
       {
@@ -548,13 +553,15 @@ export function MesaWorkspace({
 
           <MesaPersistenceNotice />
           <div
-            className="foundry-mesa__stage"
+            className={`foundry-mesa__stage${mesaTransitionLocked ? " foundry-mesa__stage--locked" : ""}`}
             onContextMenuCapture={(e) => e.preventDefault()}
+            aria-busy={mesaTransitionLocked || undefined}
           >
             <RoomCoverBackdrop
               coverUrl={roomSettings.coverUrl}
               coverFocus={roomSettings.coverFocus}
             />
+            {combatModePhase ? <CombatModeTransition phase={combatModePhase} /> : null}
             <div className="foundry-mesa__stage-header">
               {isActualGm ? (
                 <GmMesaModeToggle
