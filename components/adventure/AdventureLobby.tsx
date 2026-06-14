@@ -116,18 +116,23 @@ export function AdventureLobby() {
       });
       const data = (await res.json().catch(() => ({}))) as {
         error?: string;
-        adventure?: { adventureId?: string };
+        adventure?: { adventureId?: string; primaryRoomId?: string };
       };
       if (!res.ok) {
         setError(data.error ?? "Código inválido");
         return;
       }
       const adventureId = data.adventure?.adventureId;
+      const primaryRoomId = data.adventure?.primaryRoomId;
       if (!adventureId) {
         setError("Resposta inválida ao ingressar na mesa.");
         return;
       }
-      router.push(`/aventura/${adventureId}?vinculado=1`);
+      if (primaryRoomId) {
+        router.push(`/mesa/${primaryRoomId}?vinculado=1`);
+      } else {
+        router.push(`/aventura/${adventureId}?vinculado=1`);
+      }
     } catch {
       setError("Falha de conexão ao ingressar na mesa. Tente novamente.");
     } finally {

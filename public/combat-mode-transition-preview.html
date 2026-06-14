@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Eldarin — Preview transição Combate / Aventura</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      min-height: 100%;
+      font-family: "Source Sans 3", system-ui, sans-serif;
+      color: #e8e0d0;
+      background: #0e0e0c;
+    }
+    button { font: inherit; cursor: pointer; }
+
+    .page { min-height: 100vh; display: flex; flex-direction: column; }
+
+    .topbar {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1.25rem;
+      padding: 0.85rem 1.25rem;
+      background: rgba(17, 17, 16, 0.95);
+      border-bottom: 1px solid rgba(184, 146, 46, 0.28);
+      backdrop-filter: blur(10px);
+    }
+    .topbar h1 {
+      margin: 0;
+      font-family: Cinzel, serif;
+      font-size: 1.05rem;
+      letter-spacing: 0.08em;
+      color: #b8922e;
+    }
+    .topbar p {
+      margin: 0;
+      font-size: 0.82rem;
+      color: #a89878;
+      flex: 1;
+      min-width: 220px;
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 1.25rem;
+      padding: 1.25rem;
+    }
+
+    .card {
+      border-radius: 12px;
+      border: 1px solid rgba(184, 146, 46, 0.22);
+      background: linear-gradient(165deg, rgba(30, 29, 26, 0.95) 0%, rgba(17, 17, 16, 0.98) 100%);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .card__head {
+      padding: 0.85rem 1rem 0.65rem;
+      border-bottom: 1px solid rgba(184, 146, 46, 0.12);
+    }
+    .card__tag {
+      display: inline-block;
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      margin-bottom: 0.35rem;
+    }
+    .card__tag--in {
+      color: #ffb347;
+      background: rgba(192, 57, 43, 0.18);
+      border: 1px solid rgba(192, 57, 43, 0.35);
+    }
+    .card__tag--out {
+      color: #8ec5a8;
+      background: rgba(72, 130, 95, 0.18);
+      border: 1px solid rgba(72, 130, 95, 0.35);
+    }
+    .card__head h2 {
+      margin: 0;
+      font-family: Cinzel, serif;
+      font-size: 1rem;
+      color: #e8e0d0;
+    }
+    .card__head span {
+      display: block;
+      margin-top: 0.25rem;
+      font-size: 0.78rem;
+      color: #8a7d68;
+    }
+
+    .stage {
+      position: relative;
+      aspect-ratio: 16 / 10;
+      min-height: 200px;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 40%, rgba(184, 146, 46, 0.06) 0%, transparent 70%),
+        linear-gradient(180deg, #1a1814 0%, #0e0e0c 100%);
+      overflow: hidden;
+    }
+    .stage::before {
+      content: "";
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(0,0,0,0.35) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,0,0,0.35) 1px, transparent 1px);
+      background-size: 36px 36px;
+      opacity: 0.45;
+      pointer-events: none;
+    }
+    .stage__mock {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.72rem; color: rgba(168, 152, 120, 0.35);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      pointer-events: none;
+    }
+
+    .overlay {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      pointer-events: none;
+      opacity: 0;
+      visibility: hidden;
+    }
+    .overlay.is-playing {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+
+    .overlay__vignette {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 70% 65% at 50% 50%, transparent 0%, rgba(0,0,0,0.55) 100%);
+      opacity: 0;
+    }
+    .overlay.is-playing .overlay__vignette { animation: vignetteIn 0.5s ease forwards; }
+    .overlay.is-exit .overlay__vignette { animation: vignetteOut 0.8s ease forwards; }
+
+    @keyframes vignetteIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes vignetteOut {
+      from { opacity: 1; }
+      to { opacity: 0; }
+    }
+
+    .overlay__flash {
+      position: absolute; inset: 0;
+      background: radial-gradient(circle at 50% 50%, rgba(255, 220, 140, 0.5) 0%, transparent 55%);
+      opacity: 0;
+      transform: scale(0.6);
+    }
+
+    .overlay__content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .overlay__label {
+      font-family: Cinzel, serif;
+      font-size: clamp(1.1rem, 4vw, 1.55rem);
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #f0e6d0;
+      text-shadow: 0 0 24px rgba(184, 146, 46, 0.6), 0 2px 8px rgba(0,0,0,0.8);
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    .overlay__sub {
+      font-size: 0.75rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #b8922e;
+      opacity: 0;
+    }
+
+    .swords {
+      position: relative;
+      width: 120px;
+      height: 120px;
+      margin: 0.15rem auto 0.2rem;
+      flex-shrink: 0;
+    }
+    .sword {
+      position: absolute;
+      left: 50%; top: 50%;
+      width: 34px;
+      height: 120px;
+      margin: -37px 0 0 -17px;
+      /* Pivô no meio da lâmina — cruzamento centralizado no bloco */
+      transform-origin: 17px 37px;
+      filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.5));
+    }
+    .sword svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+      overflow: visible;
+    }
+    .sword--a { z-index: 1; }
+    .sword--b { z-index: 2; }
+    .sword--b svg { filter: brightness(1.03); }
+
+    .clash-point {
+      position: absolute;
+      left: 50%; top: 50%;
+      width: 16px; height: 16px;
+      margin: -8px 0 0 -8px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 230, 160, 0.95) 0%, rgba(255, 160, 60, 0.4) 40%, transparent 70%);
+      opacity: 0;
+      pointer-events: none;
+      z-index: 3;
+    }
+    .in-clash.is-playing .clash-point,
+    .in-rise.is-playing .clash-point,
+    .in-spin.is-playing .clash-point { animation: clashPoint 0.45s ease 0.42s forwards; }
+    .in-rise.is-playing .clash-point { animation-delay: 0.58s; }
+    @keyframes clashPoint {
+      0% { opacity: 0; transform: scale(0.3); }
+      35% { opacity: 1; transform: scale(1.2); }
+      100% { opacity: 0; transform: scale(1.6); }
+    }
+
+    .card__foot {
+      padding: 0.75rem 1rem;
+      display: flex; gap: 0.5rem;
+      border-top: 1px solid rgba(184, 146, 46, 0.1);
+    }
+    .btn {
+      flex: 1;
+      padding: 0.5rem 0.75rem;
+      border-radius: 8px;
+      border: 1px solid rgba(184, 146, 46, 0.35);
+      background: rgba(184, 146, 46, 0.1);
+      color: #e8e0d0;
+      font-weight: 600;
+      font-size: 0.82rem;
+      transition: background 0.15s, border-color 0.15s, transform 0.1s;
+    }
+    .btn:hover { border-color: #b8922e; background: rgba(184, 146, 46, 0.22); }
+    .btn:active { transform: scale(0.98); }
+    .btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+    .sparks {
+      position: absolute;
+      left: 50%; top: 50%;
+      width: 0; height: 0;
+      pointer-events: none;
+    }
+    .spark {
+      position: absolute;
+      width: 4px; height: 4px;
+      border-radius: 50%;
+      background: #ffd080;
+      box-shadow: 0 0 8px #ff9040;
+      opacity: 0;
+    }
+
+    /* ─── ENTRADA 1: Choque lateral ─── */
+    .in-clash.is-playing .sword--a { animation: inClashA 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+    .in-clash.is-playing .sword--b { animation: inClashB 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+    .in-clash.is-playing .overlay__flash { animation: clashFlash 0.4s ease 0.48s forwards; }
+    .in-clash.is-playing .overlay__label { animation: labelIn 0.45s ease 0.52s forwards; }
+    .in-clash.is-playing .overlay__sub { animation: labelIn 0.4s ease 0.62s forwards; }
+    /* Ângulos finais: lâminas cruzam no pivô (~56°) */
+    @keyframes inClashA {
+      0% { transform: translateX(-120px) rotate(-78deg); opacity: 0; }
+      65% { transform: translateX(4px) rotate(-52deg); opacity: 1; }
+      82% { transform: translateX(-2px) rotate(-58deg); }
+      100% { transform: translateX(0) rotate(-56deg); opacity: 1; }
+    }
+    @keyframes inClashB {
+      0% { transform: translateX(120px) rotate(78deg); opacity: 0; }
+      65% { transform: translateX(-4px) rotate(52deg); opacity: 1; }
+      82% { transform: translateX(2px) rotate(58deg); }
+      100% { transform: translateX(0) rotate(56deg); opacity: 1; }
+    }
+    @keyframes clashFlash {
+      0% { opacity: 0; transform: scale(0.5); }
+      30% { opacity: 0.85; transform: scale(1.1); }
+      100% { opacity: 0; transform: scale(1.4); }
+    }
+
+    /* ─── ENTRADA 2: Ascensão épica ─── */
+    .in-rise.is-playing .sword--a { animation: inRiseA 0.7s cubic-bezier(0.34, 1.2, 0.64, 1) forwards; }
+    .in-rise.is-playing .sword--b { animation: inRiseB 0.7s cubic-bezier(0.34, 1.2, 0.64, 1) 0.08s forwards; }
+    .in-rise.is-playing .overlay__label { animation: labelRise 0.5s ease 0.55s forwards; }
+    .in-rise.is-playing .overlay__sub { animation: labelIn 0.4s ease 0.7s forwards; }
+    .in-rise.is-playing .overlay__vignette { animation: vignettePulse 1.2s ease forwards; }
+    @keyframes inRiseA {
+      0% { transform: translateY(90px) rotate(-84deg) scale(0.35); opacity: 0; }
+      58% { transform: translateY(-8px) rotate(-60deg) scale(1.04); opacity: 1; }
+      100% { transform: translateY(0) rotate(-56deg) scale(1); opacity: 1; }
+    }
+    @keyframes inRiseB {
+      0% { transform: translateY(90px) rotate(84deg) scale(0.35); opacity: 0; }
+      58% { transform: translateY(-8px) rotate(60deg) scale(1.04); opacity: 1; }
+      100% { transform: translateY(0) rotate(56deg) scale(1); opacity: 1; }
+    }
+    @keyframes labelRise {
+      0% { opacity: 0; transform: translateY(24px) scale(0.9); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    @keyframes vignettePulse {
+      0%, 100% { opacity: 0.6; }
+      50% { opacity: 1; }
+    }
+
+    /* ─── ENTRADA 3: Giro e cruzamento ─── */
+    .in-spin.is-playing .swords { animation: swordsSpinWrap 0.85s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+    .in-spin.is-playing .sword--a { animation: inSpinA 0.85s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+    .in-spin.is-playing .sword--b { animation: inSpinB 0.85s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+    .in-spin.is-playing .overlay__flash { animation: clashFlash 0.35s ease 0.5s forwards; }
+    .in-spin.is-playing .overlay__label { animation: labelIn 0.4s ease 0.58s forwards; }
+    .in-spin.is-playing .overlay__sub { animation: labelIn 0.35s ease 0.68s forwards; }
+    .in-spin.is-playing .spark { animation: sparkBurst 0.6s ease 0.5s forwards; }
+    @keyframes swordsSpinWrap {
+      0% { transform: scale(0.3) rotate(-90deg); opacity: 0; }
+      40% { opacity: 1; }
+      100% { transform: scale(1) rotate(0deg); opacity: 1; }
+    }
+    @keyframes inSpinA {
+      0% { transform: rotate(-220deg) scale(0.4); opacity: 0; }
+      100% { transform: rotate(-56deg) scale(1); opacity: 1; }
+    }
+    @keyframes inSpinB {
+      0% { transform: rotate(220deg) scale(0.4); opacity: 0; }
+      100% { transform: rotate(56deg) scale(1); opacity: 1; }
+    }
+    @keyframes sparkBurst {
+      0% { opacity: 1; transform: translate(0,0) scale(1); }
+      100% { opacity: 0; transform: translate(var(--sx), var(--sy)) scale(0); }
+    }
+
+    /* ─── SAÍDA 1: Divisão lateral ─── */
+    .out-split.is-playing .sword--a { animation: outSplitA 0.65s cubic-bezier(0.55, 0, 0.9, 0.4) forwards; }
+    .out-split.is-playing .sword--b { animation: outSplitB 0.65s cubic-bezier(0.55, 0, 0.9, 0.4) forwards; }
+    .out-split.is-playing .overlay__label { animation: labelOut 0.35s ease forwards; }
+    .out-split.is-playing .overlay__sub { animation: labelOut 0.3s ease 0.05s forwards; }
+    .out-split.is-playing .overlay__vignette { animation: vignetteOut 0.7s ease 0.2s forwards; }
+    @keyframes outSplitA {
+      0% { transform: rotate(-56deg); opacity: 1; }
+      100% { transform: translateX(-150px) rotate(-112deg); opacity: 0; }
+    }
+    @keyframes outSplitB {
+      0% { transform: rotate(56deg); opacity: 1; }
+      100% { transform: translateX(150px) rotate(112deg); opacity: 0; }
+    }
+
+    /* ─── SAÍDA 2: Subida e dissolução ─── */
+    .out-ascend.is-playing .swords { animation: outAscendSwords 0.75s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+    .out-ascend.is-playing .overlay__label { animation: labelAscendOut 0.5s ease forwards; }
+    .out-ascend.is-playing .overlay__sub { animation: labelOut 0.4s ease 0.08s forwards; }
+    .out-ascend.is-playing .overlay__vignette { animation: vignetteOut 0.8s ease 0.15s forwards; }
+    @keyframes outAscendSwords {
+      0% { transform: translateY(0) scale(1); opacity: 1; filter: blur(0); }
+      100% { transform: translateY(-140px) scale(0.85); opacity: 0; filter: blur(4px); }
+    }
+    @keyframes labelAscendOut {
+      0% { opacity: 1; transform: translateY(0); }
+      100% { opacity: 0; transform: translateY(-30px); }
+    }
+
+    /* ─── SAÍDA 3: Recuo e encolhimento ─── */
+    .out-shrink.is-playing .sword--a { animation: outShrinkA 0.7s cubic-bezier(0.6, 0, 0.8, 0.4) forwards; }
+    .out-shrink.is-playing .sword--b { animation: outShrinkB 0.7s cubic-bezier(0.6, 0, 0.8, 0.4) forwards; }
+    .out-shrink.is-playing .overlay__content { animation: outShrinkContent 0.65s ease forwards; }
+    .out-shrink.is-playing .overlay__vignette { animation: vignetteOut 0.6s ease 0.25s forwards; }
+    @keyframes outShrinkA {
+      0% { transform: rotate(-56deg) translate(0, 0); opacity: 1; }
+      40% { transform: rotate(-56deg) translate(-22px, 8px); opacity: 1; }
+      100% { transform: rotate(-56deg) translate(-70px, 50px) scale(0.15); opacity: 0; }
+    }
+    @keyframes outShrinkB {
+      0% { transform: rotate(56deg) translate(0, 0); opacity: 1; }
+      40% { transform: rotate(56deg) translate(22px, 8px); opacity: 1; }
+      100% { transform: rotate(56deg) translate(70px, 50px) scale(0.15); opacity: 0; }
+    }
+    @keyframes outShrinkContent {
+      0% { opacity: 1; transform: scale(1); }
+      100% { opacity: 0; transform: scale(0.85); }
+    }
+
+    @keyframes labelIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes labelOut {
+      from { opacity: 1; transform: translateY(0); }
+      to { opacity: 0; transform: translateY(8px); }
+    }
+
+    /* Estado inicial das saídas: lâminas cruzadas, cabos abertos para baixo */
+    .overlay--exit .sword--a { transform: rotate(-56deg); opacity: 1; }
+    .overlay--exit .sword--b { transform: rotate(56deg); opacity: 1; }
+    .overlay--exit .overlay__label { opacity: 1; transform: none; }
+    .overlay--exit .overlay__sub { opacity: 1; transform: none; }
+    .overlay--exit .overlay__vignette { opacity: 1; }
+
+    .legend {
+      padding: 1rem 1.25rem 1.5rem;
+      font-size: 0.8rem;
+      color: #8a7d68;
+      border-top: 1px solid rgba(184, 146, 46, 0.12);
+      line-height: 1.55;
+    }
+    .legend strong { color: #b8922e; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="topbar">
+      <h1>Combate ↔ Aventura</h1>
+      <p>6 animações de preview — 3 entradas (ativar combate) e 3 saídas (voltar à aventura). Clique em Reproduzir em cada cartão.</p>
+    </header>
+
+    <div class="gallery" id="gallery"></div>
+
+    <footer class="legend">
+      <strong>Entrada:</strong> espadas chegam e se cruzam no centro + texto «Modo Combate».<br />
+      <strong>Saída:</strong> espadas já cruzadas se separam / sobem / recuam e saem da tela + «Modo Aventura».<br />
+      Abra este arquivo em <code>/combat-mode-transition-preview.html</code> no navegador. Aprove um modelo de cada e integre na mesa.
+    </footer>
+  </div>
+
+  <script>
+    /** Espada longa — lâmina afiada, guarda dourada, cabo e pommel (Eldarin). */
+    function buildSwordSvg(uid) {
+      const ns = "http://www.w3.org/2000/svg";
+      const svg = document.createElementNS(ns, "svg");
+      svg.setAttribute("viewBox", "0 0 56 200");
+      svg.setAttribute("fill", "none");
+      svg.setAttribute("aria-hidden", "true");
+
+      const defs = document.createElementNS(ns, "defs");
+
+      const bladeGrad = document.createElementNS(ns, "linearGradient");
+      bladeGrad.setAttribute("id", `blade-${uid}`);
+      bladeGrad.setAttribute("x1", "0"); bladeGrad.setAttribute("y1", "0");
+      bladeGrad.setAttribute("x2", "1"); bladeGrad.setAttribute("y2", "0");
+      bladeGrad.innerHTML = `
+        <stop offset="0%" stop-color="#6e7680"/>
+        <stop offset="18%" stop-color="#d8dde8"/>
+        <stop offset="42%" stop-color="#f8fafc"/>
+        <stop offset="58%" stop-color="#c5ccd8"/>
+        <stop offset="82%" stop-color="#9aa3b0"/>
+        <stop offset="100%" stop-color="#5c636c"/>
+      `;
+
+      const edgeGrad = document.createElementNS(ns, "linearGradient");
+      edgeGrad.setAttribute("id", `edge-${uid}`);
+      edgeGrad.setAttribute("x1", "28"); edgeGrad.setAttribute("y1", "4");
+      edgeGrad.setAttribute("x2", "28"); edgeGrad.setAttribute("y2", "118");
+      edgeGrad.setAttribute("gradientUnits", "userSpaceOnUse");
+      edgeGrad.innerHTML = `
+        <stop offset="0%" stop-color="#ffffff" stop-opacity="0.9"/>
+        <stop offset="35%" stop-color="#e8ecf4" stop-opacity="0.5"/>
+        <stop offset="100%" stop-color="#8890a0" stop-opacity="0.15"/>
+      `;
+
+      const goldGrad = document.createElementNS(ns, "linearGradient");
+      goldGrad.setAttribute("id", `gold-${uid}`);
+      goldGrad.setAttribute("x1", "0"); goldGrad.setAttribute("y1", "0");
+      goldGrad.setAttribute("x2", "0"); goldGrad.setAttribute("y2", "1");
+      goldGrad.innerHTML = `
+        <stop offset="0%" stop-color="#f5e6a8"/>
+        <stop offset="45%" stop-color="#d4af37"/>
+        <stop offset="100%" stop-color="#7a5a18"/>
+      `;
+
+      const gripGrad = document.createElementNS(ns, "linearGradient");
+      gripGrad.setAttribute("id", `grip-${uid}`);
+      gripGrad.setAttribute("x1", "0"); gripGrad.setAttribute("y1", "0");
+      gripGrad.setAttribute("x2", "1"); gripGrad.setAttribute("y2", "0");
+      gripGrad.innerHTML = `
+        <stop offset="0%" stop-color="#2a1810"/>
+        <stop offset="50%" stop-color="#4a3020"/>
+        <stop offset="100%" stop-color="#1e1008"/>
+      `;
+
+      defs.append(bladeGrad, edgeGrad, goldGrad, gripGrad);
+      svg.appendChild(defs);
+
+      const g = document.createElementNS(ns, "g");
+
+      const blade = document.createElementNS(ns, "path");
+      blade.setAttribute("d", `
+        M 28 3
+        L 30.2 14 L 31.2 52 L 31.8 98 L 32.4 118
+        L 33.8 126 L 28 130
+        L 22.2 126 L 23.6 118
+        L 24.2 98 L 24.8 52 L 25.8 14 Z
+      `);
+      blade.setAttribute("fill", `url(#blade-${uid})`);
+      blade.setAttribute("stroke", "#3d4450");
+      blade.setAttribute("stroke-width", "0.65");
+      blade.setAttribute("stroke-linejoin", "round");
+
+      const fuller = document.createElementNS(ns, "path");
+      fuller.setAttribute("d", "M 28 18 L 28.6 108 L 27.4 108 L 28 18 Z");
+      fuller.setAttribute("fill", "rgba(30,38,48,0.35)");
+
+      const shine = document.createElementNS(ns, "path");
+      shine.setAttribute("d", "M 27.2 8 L 27.8 95 L 26.8 95 Z");
+      shine.setAttribute("fill", `url(#edge-${uid})`);
+      shine.setAttribute("opacity", "0.85");
+
+      const guard = document.createElementNS(ns, "path");
+      guard.setAttribute("d", `
+        M 8 124 L 12 128 L 48 128 L 52 124
+        L 50 130 L 28 134 L 6 130 Z
+      `);
+      guard.setAttribute("fill", `url(#gold-${uid})`);
+      guard.setAttribute("stroke", "#5a4010");
+      guard.setAttribute("stroke-width", "0.6");
+      guard.setAttribute("stroke-linejoin", "round");
+
+      const grip = document.createElementNS(ns, "rect");
+      grip.setAttribute("x", "24"); grip.setAttribute("y", "134");
+      grip.setAttribute("width", "8"); grip.setAttribute("height", "38");
+      grip.setAttribute("rx", "1.5");
+      grip.setAttribute("fill", `url(#grip-${uid})`);
+      grip.setAttribute("stroke", "#1a0c06");
+      grip.setAttribute("stroke-width", "0.5");
+
+      const pommel = document.createElementNS(ns, "circle");
+      pommel.setAttribute("cx", "28"); pommel.setAttribute("cy", "178");
+      pommel.setAttribute("r", "7");
+      pommel.setAttribute("fill", `url(#gold-${uid})`);
+      pommel.setAttribute("stroke", "#5a4010");
+      pommel.setAttribute("stroke-width", "0.6");
+
+      const pommelGem = document.createElementNS(ns, "circle");
+      pommelGem.setAttribute("cx", "28"); pommelGem.setAttribute("cy", "177");
+      pommelGem.setAttribute("r", "2.2");
+      pommelGem.setAttribute("fill", "#8a2020");
+      pommelGem.setAttribute("stroke", "#4a1010");
+      pommelGem.setAttribute("stroke-width", "0.4");
+
+      g.append(blade, fuller, shine, guard, grip, pommel, pommelGem);
+      for (let i = 0; i < 7; i++) {
+        const wrap = document.createElementNS(ns, "line");
+        wrap.setAttribute("x1", "24.5"); wrap.setAttribute("x2", "31.5");
+        wrap.setAttribute("y1", String(138 + i * 5)); wrap.setAttribute("y2", String(138 + i * 5));
+        wrap.setAttribute("stroke", "rgba(0,0,0,0.35)");
+        wrap.setAttribute("stroke-width", "0.8");
+        g.appendChild(wrap);
+      }
+      svg.appendChild(g);
+      return svg;
+    }
+
+    const VARIANTS = [
+      { id: "in-clash", type: "in", tag: "Entrada", title: "Choque lateral", desc: "Espadas entram dos lados, impacto com flash dourado.", label: "Modo Combate", sub: "Iniciativa e PA ativos", duration: 2200 },
+      { id: "in-rise", type: "in", tag: "Entrada", title: "Ascensão épica", desc: "Subida do chão com bounce; vinheta pulsa.", label: "Modo Combate", sub: "Preparem-se", duration: 2400 },
+      { id: "in-spin", type: "in", tag: "Entrada", title: "Giro e cruzamento", desc: "Rotação dramática + faíscas no impacto.", label: "Modo Combate", sub: "Às armas", duration: 2500 },
+      { id: "out-split", type: "out", tag: "Saída", title: "Divisão lateral", desc: "Cruzadas no centro; se separam e voam para fora.", label: "Modo Aventura", sub: "Exploração livre", duration: 2000 },
+      { id: "out-ascend", type: "out", tag: "Saída", title: "Subida etérea", desc: "Conjunto sobe e dissolve com blur suave.", label: "Modo Aventura", sub: "A calma retorna", duration: 2200 },
+      { id: "out-shrink", type: "out", tag: "Saída", title: "Recuo aos cantos", desc: "Descruzam, recuam e encolhem para fora da cena.", label: "Modo Aventura", sub: "Jornada continua", duration: 2100 },
+    ];
+
+    const gallery = document.getElementById("gallery");
+    let swordUid = 0;
+
+    function buildSparks(container) {
+      const wrap = document.createElement("div");
+      wrap.className = "sparks";
+      for (let i = 0; i < 12; i++) {
+        const s = document.createElement("span");
+        s.className = "spark";
+        const angle = (i / 12) * Math.PI * 2;
+        const dist = 40 + Math.random() * 50;
+        s.style.setProperty("--sx", Math.cos(angle) * dist + "px");
+        s.style.setProperty("--sy", Math.sin(angle) * dist + "px");
+        s.style.left = "0";
+        s.style.top = "0";
+        wrap.appendChild(s);
+      }
+      container.appendChild(wrap);
+    }
+
+    function createSword(className) {
+      const el = document.createElement("div");
+      el.className = className;
+      el.appendChild(buildSwordSvg(++swordUid));
+      return el;
+    }
+
+    VARIANTS.forEach((v) => {
+      const card = document.createElement("article");
+      card.className = "card";
+      card.innerHTML = `
+        <div class="card__head">
+          <span class="card__tag card__tag--${v.type === "in" ? "in" : "out"}">${v.tag}</span>
+          <h2>${v.title}</h2>
+          <span>${v.desc}</span>
+        </div>
+        <div class="stage" data-stage>
+          <span class="stage__mock">Mesa Eldarin</span>
+          <div class="overlay ${v.id} ${v.type === "out" ? "overlay--exit" : ""}" data-overlay>
+            <div class="overlay__vignette"></div>
+            <div class="overlay__flash"></div>
+            <div class="overlay__content">
+              <div class="swords" data-swords>
+                <span class="clash-point" aria-hidden="true"></span>
+              </div>
+              <div class="overlay__label">${v.label}</div>
+              <div class="overlay__sub">${v.sub}</div>
+            </div>
+          </div>
+        </div>
+        <div class="card__foot">
+          <button type="button" class="btn" data-play>Reproduzir</button>
+        </div>
+      `;
+
+      const overlay = card.querySelector("[data-overlay]");
+      const swords = card.querySelector("[data-swords]");
+      const sa = createSword("sword sword--a");
+      const sb = createSword("sword sword--b");
+      swords.appendChild(sa);
+      swords.appendChild(sb);
+      if (v.id === "in-spin") buildSparks(swords);
+
+      const btn = card.querySelector("[data-play]");
+      let timer = null;
+
+      btn.addEventListener("click", () => {
+        if (timer) clearTimeout(timer);
+        overlay.classList.remove("is-playing", "is-exit");
+        void overlay.offsetWidth;
+        overlay.classList.add("is-playing");
+        if (v.type === "out") overlay.classList.add("is-exit");
+        btn.disabled = true;
+        timer = setTimeout(() => {
+          overlay.classList.remove("is-playing", "is-exit");
+          btn.disabled = false;
+          timer = null;
+        }, v.duration);
+      });
+
+      gallery.appendChild(card);
+    });
+  </script>
+</body>
+</html>

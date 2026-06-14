@@ -236,7 +236,7 @@ export function FriendsPageClient({ selfUserId }: Props) {
               </div>
               <div className="friends-hub__actions">
                 <Link
-                  href={`/mesa/${inv.roomId}?invite=${encodeURIComponent(inv.inviteCode)}`}
+                  href={inv.inviteUrl}
                   className="btn btn-sm"
                 >
                   Abrir mesa

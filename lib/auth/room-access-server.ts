@@ -2,15 +2,12 @@ import "server-only";
 
 import { getAdventure } from "@/lib/adventure/store";
 import { isAdventureClosed } from "@/lib/adventure/access";
-import * as dbAdventures from "@/lib/db/adventures";
-import { dbEnabled } from "@/lib/db/enabled";
 import { fetchClerkIdForUser } from "@/lib/db/users";
 import {
   canViewRoom,
-  inviteMatches,
   isRoomMember,
-  normalizeInviteCode,
 } from "@/lib/auth/room-access";
+import { inviteBelongsToRoom } from "@/lib/auth/mesa-invite";
 import type { SessionUser } from "@/lib/auth/types";
 import type { RoomState } from "@/lib/room/types";
 
@@ -19,30 +16,7 @@ export async function inviteMatchesRoom(
   room: RoomState,
   code: string | null | undefined
 ): Promise<boolean> {
-  if (!code?.trim()) return false;
-  if (inviteMatches(room, code)) return true;
-
-  const normalized = normalizeInviteCode(code);
-  const adventureId = room.adventureId ?? room.roomId;
-  const adv = await getAdventure(adventureId);
-  if (
-    adv &&
-    normalizeInviteCode(adv.inviteCode) === normalized &&
-    (adv.primaryRoomId === room.roomId || adv.adventureId === adventureId)
-  ) {
-    return true;
-  }
-
-  if (dbEnabled()) {
-    const byInvite = await dbAdventures.fetchAdventureByInvite(normalized);
-    if (!byInvite) return false;
-    if (byInvite.primaryRoomId === room.roomId) return true;
-    if (room.adventureId === byInvite.adventureId || adventureId === byInvite.adventureId) {
-      return true;
-    }
-  }
-
-  return false;
+  return inviteBelongsToRoom(room, code);
 }
 
 /** Reconhece membership gravada com id efêmero `clerk-*` antes do sync Postgres. */

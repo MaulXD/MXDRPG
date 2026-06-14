@@ -14,7 +14,7 @@ import type { CompendiumEntry, CompendiumPackId, CompendiumPackMeta } from "@/li
 import type { BattleScene } from "@/lib/vtt/types";
 import type { Axial } from "@/lib/vtt/hex-math";
 import { useCombatTurnFlow } from "@/hooks/vtt/useCombatTurnFlow";
-import { useFoundryWindows, type MesaWindowId } from "@/hooks/vtt/useFoundryWindows";
+import { useFoundryWindows, FOUNDRY_DOCK_PANEL_IDS, type MesaWindowId } from "@/hooks/vtt/useFoundryWindows";
 import { MAX_CHARACTERS_PER_USER_PER_ADVENTURE } from "@/lib/character/adventure-bind";
 import { useGmPlayerViewMode } from "@/hooks/vtt/useGmPlayerViewMode";
 import { useRoomSync, type RoomMemberOnlineEvent } from "@/hooks/useRoomSync";
@@ -56,6 +56,7 @@ type Props = {
   canChat?: boolean;
   inviteCode?: string | null;
   roomInviteCode?: string | null;
+  roomInviteRoomId?: string | null;
   roomName?: string;
   isRoomOwner?: boolean;
   session: SessionUser | null;
@@ -79,6 +80,7 @@ export function MesaWorkspace({
   canChat = true,
   inviteCode = null,
   roomInviteCode = null,
+  roomInviteRoomId = null,
   roomName,
   isRoomOwner = false,
   session,
@@ -90,6 +92,7 @@ export function MesaWorkspace({
   charactersInAdventure = 0,
   openCharacterWizardOnLoad = false,
 }: Props) {
+  const shareRoomId = roomInviteRoomId ?? roomId;
   const isActualGm = canControlCombat;
   const { playAsPlayer, togglePlayAsPlayer, effectiveIsGm } = useGmPlayerViewMode(
     roomId,
@@ -334,7 +337,41 @@ export function MesaWorkspace({
   });
 
   const win = windows.get;
-  const dockOpen = windows.isDockOpen();
+
+  const allowedDockPanels = useMemo(() => {
+    const ids = new Set<MesaWindowId>([
+      "actors",
+      "ficha",
+      "chat",
+      "dice",
+      "status",
+      "whiteboard",
+    ]);
+    if (isActualGm) {
+      ids.add("spawn");
+      ids.add("gm");
+      ids.add("dungeon");
+    }
+    if (canParticipate && roomInviteCode) ids.add("invite");
+    if (Boolean(snapshot?.combat?.order?.length)) ids.add("initiative");
+    return ids;
+  }, [
+    isActualGm,
+    canParticipate,
+    roomInviteCode,
+    snapshot?.combat?.order?.length,
+  ]);
+
+  const dockOpen = windows.isDockOpen(allowedDockPanels);
+
+  useEffect(() => {
+    if (!windows.hydrated) return;
+    const disallowed: MesaWindowId[] = [];
+    for (const id of FOUNDRY_DOCK_PANEL_IDS) {
+      if (!allowedDockPanels.has(id)) disallowed.push(id);
+    }
+    if (disallowed.length > 0) windows.closePanels(disallowed);
+  }, [windows.hydrated, allowedDockPanels, windows.closePanels]);
 
   const isPanelActive = useCallback(
     (id: MesaWindowId) => windows.isActive(id),
@@ -455,7 +492,7 @@ export function MesaWorkspace({
                 <div className="mesa-panel-scroll mesa-panel-scroll--invite">
                   <RoomInvitePanel
                     adventureId={adventureId}
-                    roomId={roomId}
+                    roomId={shareRoomId}
                     inviteCode={roomInviteCode}
                     roomName={roomName ?? snapshot?.scene.name ?? "Mesa"}
                     showConfigure={isRoomOwner}
@@ -726,7 +763,7 @@ export function MesaWorkspace({
                   <div className="mesa-panel-scroll mesa-panel-scroll--invite">
                     <RoomInvitePanel
                       adventureId={adventureId}
-                      roomId={roomId}
+                      roomId={shareRoomId}
                       inviteCode={roomInviteCode}
                       roomName={roomName ?? snapshot?.scene.name ?? "Mesa"}
                       showConfigure={isRoomOwner}

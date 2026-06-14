@@ -44,6 +44,15 @@ export function tokenPortraitInset(ringStyle: TokenRingStyle): number {
   return Math.max(0, outerWidth * 0.5 - minOffset);
 }
 
+/** Espessura do anel de identidade no canvas (px). */
+const TIER_RING_WIDTH: Record<PortraitFrameTier, number> = {
+  hero: 1.5,
+  monster: 2.5,
+  elite: 2.5,
+  miniboss: 2.5,
+  boss: 2.5,
+};
+
 function tierRingStyle(tier: PortraitFrameTier): TokenRingStyle {
   const color = TIER_RING_COLORS[tier];
   const kind: TokenRingStyle["kind"] =
@@ -59,7 +68,7 @@ function tierRingStyle(tier: PortraitFrameTier): TokenRingStyle {
 
   return {
     kind,
-    rings: [{ color, width: 2.5, radiusOffset: 0 }],
+    rings: [{ color, width: TIER_RING_WIDTH[tier], radiusOffset: 0 }],
   };
 }
 

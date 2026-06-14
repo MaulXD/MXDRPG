@@ -30,6 +30,8 @@ export type ChatMessage = {
     saveSuccess?: boolean;
     saveAttribute?: string;
     saveRollMode?: "normal" | "advantage" | "disadvantage";
+    /** Salvaguarda do painel do mestre (sem dano de magia). */
+    gmSavingThrow?: boolean;
     areaCenterQ?: number;
     areaCenterR?: number;
     areaHexCount?: number;

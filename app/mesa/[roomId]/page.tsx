@@ -14,6 +14,7 @@ import {
   isRoomMemberResolved,
 } from "@/lib/auth/room-access-server";
 import { entrarPath, mesaRoomPath } from "@/lib/auth/post-auth-redirect";
+import { canonicalInviteForRoom } from "@/lib/auth/mesa-invite";
 import { materializeSessionUser } from "@/lib/auth/session-user";
 import { getSession } from "@/lib/auth/session";
 import { getPackEntries, getVisiblePacks } from "@/lib/compendium/registry";
@@ -90,12 +91,16 @@ export default async function MesaRoomPage({ params, searchParams }: Props) {
   if (accountUser && inviteCode && accountUser.role !== "admin") {
     const alreadyMember = await isRoomMemberResolved(room, accountUser.id, accountUser.clerkId);
     if (!alreadyMember && (await inviteMatchesRoom(room, inviteCode))) {
-      const joined = await joinRoomByInvite(inviteCode, accountUser.id);
-      const fresh =
-        joined?.roomId === roomId ? joined : ((await getRoom(roomId)) ?? room);
+      const joined = await joinRoomByInvite(inviteCode, accountUser.id, roomId);
+      const canonical = await canonicalInviteForRoom(room);
+      const targetRoomId = joined?.roomId ?? canonical.roomId;
+      const fresh = (await getRoom(targetRoomId)) ?? joined ?? room;
       room = fresh;
 
       if (await isRoomMemberResolved(room, accountUser.id, accountUser.clerkId)) {
+        if (targetRoomId !== roomId) {
+          redirect(mesaRoomPath(targetRoomId, inviteCode));
+        }
         redirect(`/mesa/${roomId}?joined=1`);
       }
       joinError =
@@ -187,6 +192,7 @@ export default async function MesaRoomPage({ params, searchParams }: Props) {
   const advId = room.adventureId ?? roomId;
   const adventure = await getAdventure(advId);
   const adventureName = adventure?.name ?? room.name;
+  const mesaInvite = await canonicalInviteForRoom(room);
 
   let characterSlotsLeft = 0;
   let charactersInAdventure = 0;
@@ -212,7 +218,8 @@ export default async function MesaRoomPage({ params, searchParams }: Props) {
         canControlCombat={canControlCombat}
         canChat={canParticipate}
         inviteCode={inviteCode}
-        roomInviteCode={canParticipate ? room.inviteCode : null}
+        roomInviteCode={canParticipate ? mesaInvite.inviteCode : null}
+        roomInviteRoomId={canParticipate ? mesaInvite.roomId : null}
         roomName={room.name}
         isRoomOwner={isRoomGm}
         session={session?.user ?? null}
