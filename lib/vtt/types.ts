@@ -11,8 +11,14 @@ export type BattleToken = {
   run: number;
   pa: number;
   paMax: number;
-  /** PA guardados para o próximo turno (máx. 2) */
+  /** PA guardados para o próximo turno (legado) */
   bankedPa?: number;
+  /** Débito de reação — reduz recuperação no próximo turno. */
+  paRecoveryDebt?: number;
+  /** Estribilhos (nv.0) conjurados neste turno por entryId. */
+  estribilhoCasts?: Record<string, number>;
+  /** Contador de morte (−1 ao cair em 0 HP; +1/rodada sem cura). */
+  deathTurns?: number;
   /** PA já gastos neste turno (informativo; sem teto de gasto) */
   paSpentThisTurn?: number;
   /** Desconto −PA já consumido neste turno, por tipo (Cap. 12.0). */

@@ -46,6 +46,25 @@ export function migrateClassName(name: string | null | undefined): string | null
   return LEGACY_CLASS_NAMES[name] ?? name;
 }
 
+export const LEGACY_SPELL_NAMES: Record<string, string> = {
+  "Chama de Fogareiro": "Brasa Espectral",
+  "Detectar Veneno": "Sentir Toxina",
+  "Mãos Firmes": "Mãos Estáveis",
+  "Extração Amplificada": "Marca da Caçada",
+  "Inspiração Culinária": "Ímpeto Inspirador",
+  "Gelo de Conservação": "Couraça de Gelo",
+  "Identificar Ingrediente": "— (removida; use Anatomia/Forrageio)",
+  "Aprimoramento Biomágico": "— (removida; Gourmet +1 assimilação)",
+  "Preservação Perfeita": "— (item: Frasco de Estase)",
+  "Preservação Anual": "— (item: Frasco de Estase Maior)",
+  "Calor de Panela": "— (removida; Kit de Brasas / Cap. 5.2.1)",
+};
+
+export function migrateSpellName(name: string | null | undefined): string | null | undefined {
+  if (!name) return name;
+  return LEGACY_SPELL_NAMES[name] ?? name;
+}
+
 export function migrateSubclassName(name: string | null | undefined): string | null | undefined {
   if (!name) return name;
   return LEGACY_SUBCLASS_NAMES[name] ?? name;

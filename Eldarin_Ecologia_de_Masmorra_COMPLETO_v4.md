@@ -3463,7 +3463,7 @@ Criada das glândulas intactas da Matriarca Tecela de Cristal. Lança fios micro
 
 ### 17.1 Espacos de Magia
 
-Classes conjuradoras: **Mago, Clérigo, Bardo, Druida, Artífice**. Possuem **Espacos de Magia** — reservatorios que se renovam após Descanso Longo.
+Classes conjuradoras: **Mago, Clérigo, Bardo, Druida, Feiticeiro**. Possuem **Espacos de Magia** — reservatorios que se renovam após Descanso Longo.
 
 | Nivel do Personagem | Espacos por Nivel de Magia disíponíveis |
 |--------------------|----------------------------------------|
@@ -3479,7 +3479,7 @@ Classes conjuradoras: **Mago, Clérigo, Bardo, Druida, Artífice**. Possuem **Es
 | 17 | + Nivel 9: 1 |
 | 20 | Maximo completo de todos os niveis |
 
-**Artífice:** Usa a mesma tabela de espacos. Prepara apenas magias da lista geral que incluam **Artífice** na linha de classes, mais magias exclusivas de subclasse de Artífice (Cap. 19).
+**Feiticeiro:** Usa a mesma tabela de espacos. Conhece magias da **lista Arcano (inato)** (Cap. 17.7); não prepara — magias conhecidas conforme nível + CAR.
 
 **Gnomo:** Pode aprender magias marcadas com **Gnomo** como se fosse Mago (uma magia a mais por nivel de espaco, a escolha do jogador).
 
@@ -3507,7 +3507,8 @@ Classes conjuradoras: **Mago, Clérigo, Bardo, Druida, Artífice**. Possuem **Es
 
 ### 17.4 Grimorio e magias conhecidas
 
-- **Mago / Artífice:** Escolhem magias da lista geral (Cap. 18) permitidas a sua classe. Mago inicia com 6 magias de nivel 1 + 2 truques; ganha 2 magias por nivel ao subir (nivel da magia <= nivel de espaco disponivel).
+- **Mago:** Escolhem magias da lista **Arcano (estudo)** + truques comuns (Cap. 17.7). Inicia com 6 magias de nivel 1 + 2 truques; ganha 2 magias por nivel ao subir.
+- **Feiticeiro:** Lista **Arcano (inato)**; conhece magias (não prepara). Truques iniciais: 4.
 - **Clérigo / Druida:** Escolhem da lista geral permitida; tem acesso a todas as magias de nivel que possuem espaco (preparacao diaria: nivel + mod. SAB).
 - **Bardo:** Lista geral permitida; aprende como Mago (menos magias de combaté direto, mais encantamento/adivinhacao).
 - **Subclasse:** Magias do Cap. 19 somam-se ao grimorio; não contam no limite de “magias aprendidas” do Mago.
@@ -3516,34 +3517,56 @@ Classes conjuradoras: **Mago, Clérigo, Bardo, Druida, Artífice**. Possuem **Es
 
 Algumas magias da lista geral possuem **variante** anotada no Cap. 19 (ex.: Piromante e `Bola de Fogo`). Lancar a variante gasta o **mesmo espaco** que a magia base; não e uma magia extra na contagem do grimorio.
 
+### 17.7 Listas compartilhadas (mesa digital)
+
+Cada classe conjuradora acessa **uma ou mais listas nomeadas**. Na ficha e no VTT, só aparecem magias **elegíveis** às listas da classe; pools **compartilhados** indicam magias que Mago e Feiticeiro (ou Clérigo e Paladino) podem escolher nas respectivas listas.
+
+| Lista | Classes | Modo |
+|-------|---------|------|
+| **Truques comuns** + **Arcano (estudo)** | Mago | Aprender / preparar |
+| **Arcano (inato)** | Feiticeiro | Conhecidas |
+| **Divino** | Clérigo | Preparar |
+| **Primal** | Druida | Preparar |
+| **Performance e encanto** | Bardo | Aprender |
+| **Pacto** | Bruxo | Conhecidas |
+| **Juramento** | Paladino | Preparar (meio-conjurador) |
+
+**Pools compartilhados:**
+- **Grimório arcano (Mago + Feiticeiro):** *Chama de Vinha*, *Curar Ferimentos*, *Escudo Arcano*, *Esfera Ígnea*, *Relâmpago*, *Cone de Frio*.
+- **Orações compartilhadas (Clérigo + Paladino):** *Curar Ferimentos*, *Purificar Veneno*, *Cura em Massa*, *Raio do Limiar*.
+
+O arquivo `data/character/spell-lists.json` espelha estas listas para o compendio digital.
+
 ### 17.6 Classificacao por nivel e escola
 
-**Circulos de poder (lista geral, 52 magias):**
+**Circulos de poder (lista geral, 53 magias):**
 
 | Nivel | Nome na mesa | Poder tipico | Qtd. | Quando o grupo costuma ver |
 |------:|--------------|--------------|-----:|----------------------------|
-| 0 | **Truque** | Utilidade, cozinha, 1d4 | 5 | Nv. 1+ (sem gastar espaco) |
-| 1 | **1o circulo** | Cura leve, armadura, identificar | 8 | Nv. 1–3 |
-| 2 | **2o circulo** | Controle, preservar, ilusao menor | 9 | Nv. 3–5 |
-| 3 | **3o circulo** | Area, fogo, necromancia media | 8 | Nv. 5–7 |
-| 4 | **4o circulo** | Mutação, ecossistema, purificacao forte | 6 | Nv. 7–9 |
-| 5 | **5o circulo** | Teleporte, cone de frio, biomancia maior | 6 | Nv. 9–11 |
+| 0 | **Truque** | Luz, lâmina, toxina | 5 | Nv. 1+ (sem gastar espaco) |
+| 1 | **1o circulo** | Cura, armadura, marca, dano | 9 | Nv. 1–3 |
+| 2 | **2o circulo** | Controle, ácido, ilusao | 8 | Nv. 3–5 |
+| 3 | **3o circulo** | Area, fogo, necromancia | 10 | Nv. 5–7 |
+| 4 | **4o circulo** | Mutação, ecossistema, cura area | 5 | Nv. 7–9 |
+| 5 | **5o circulo** | Teleporte, cone de frio, biomancia | 6 | Nv. 9–11 |
 | 6 | **6o circulo** | Praga, desintegrar, cadeia | 3 | Nv. 11–13 |
 | 7 | **7o circulo** | Polimorfismo, prisao de gelo, regeneração | 4 | Nv. 13–15 |
 | 8 | **8o circulo** | Terremoto | 1 | Nv. 15–17 |
-| 9 | **9o circulo / Lenda** | Transcendência, Desejo de Morte | 2 | Nv. 17–20 (Clérigo do Limiar: capstone) |
+| 9 | **9o circulo / Lenda** | Transcendência, Desejo de Morte | 2 | Nv. 17–20 |
 
-**+ 8 magias exclusivas de subclasse** (Cap. 19.3) — não entram na tabela acima; somam-se ao grimorio.
+**+ 8 magias exclusivas de subclasse** (Cap. 19.3) — incluidas no compendio.
 
-**Por escola (lista geral):**
+**Compendio completo (VTT):** **61** entradas em `data/compendiums/magias.json` (53 lista geral + 8 exclusivas). **Cozinha, preservação e identificação de ingrediente** são automáticas (Cap. 5.2.1 e itens Cap. 16.2) — não há magias de cozinha.
+
+**Por escola (lista geral, 53):**
 
 | Escola | Nv.0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | Total |
 |--------|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
-| Biomancia | 0 | 1 | 1 | 1 | 2 | 1 | 0 | 2 | 0 | 1 | 9 |
-| Evocacao | 1 | 1 | 1 | 3 | 1 | 1 | 1 | 0 | 1 | 0 | 10 |
-| Transmutação | 1 | 1 | 3 | 0 | 1 | 1 | 1 | 0 | 0 | 0 | 8 |
-| Necromancia | 0 | 0 | 1 | 2 | 1 | 1 | 1 | 0 | 0 | 1 | 7 |
-| Abjuracao | 1 | 2 | 1 | 0 | 1 | 1 | 0 | 1 | 0 | 0 | 7 |
+| Evocacao | 1 | 3 | 1 | 4 | 1 | 1 | 1 | 1 | 1 | 0 | 14 |
+| Transmutação | 1 | 0 | 2 | 0 | 1 | 1 | 1 | 0 | 0 | 0 | 6 |
+| Biomancia | 0 | 1 | 0 | 2 | 1 | 1 | 0 | 2 | 0 | 1 | 8 |
+| Necromancia | 0 | 0 | 1 | 3 | 1 | 1 | 1 | 0 | 0 | 1 | 8 |
+| Abjuracao | 1 | 3 | 1 | 0 | 1 | 1 | 0 | 0 | 0 | 0 | 7 |
 | Adivinhacao | 1 | 1 | 0 | 1 | 1 | 0 | 0 | 0 | 0 | 0 | 4 |
 | Encantamento | 0 | 0 | 1 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 2 |
 | Ilusao | 0 | 0 | 1 | 0 | 0 | 0 | 0 | 1 | 0 | 0 | 2 |
@@ -3559,31 +3582,31 @@ Algumas magias da lista geral possuem **variante** anotada no Cap. 19 (ex.: Piro
 
 ## CAPÍTULO 18 — LISTA DE MAGIAS (GRIMORIO DE ELDARIN)
 
-> **Total:** 52 magias na lista geral (Cap. 18) + 8 exclusivas de subclasse (Cap. 19) = **60** feiticos no sistema.
+> **Total:** **61 feitiços** no compendio (`data/compendiums/magias.json`): **53** na lista geral (Cap. 18) + **8** exclusivas (Cap. 19.3). Cozinha e preservação: **Cap. 5.2.1** e **Cap. 16.2** (sem magias).
 
-### NIVEL 0 — TRUQUES (SEM CUSTO)
+### NIVEL 0 — TRUQUES (SEM CUSTO DE ESPACO)
 
-**Chama de Fogareiro** — Evocacao | Acao | Toque | Ate ser apagada | Mago, Clérigo, Bardo, Druida, Artífice
-Chama pequena e controlável na ponta dos dedos; temperatura precisa. Uso culinário: dispensa fogareiro ou lenha.
+**Brasa Espectral** — Evocacao | Acao | Pessoal | Concentração até 1 h
+Luz fria em penumbra (6 hex). Toque opcional: 1d4 fogo. **Não cozinha.** Proibida como chama aberta em biomas de gás (12, 10, 8, 4) — use Kit de Brasas.
 
-**Lâmina de Espirito** — Transmutação | Acao Bonus | Pessoal | 1 minuto | Mago, Bardo, Artífice
-Lâmina eterea (1d4 forca). +2 em testes de Extração com ela.
+**Lâmina de Espirito** — Transmutação | Acao Bonus | Pessoal | 1 minuto
+Lâmina eterea (1d4 forca). +2 em Extração com ela.
 
-**Detectar Veneno** — Adivinhacao | Acao | Pessoal | 10 minutos | Mago, Clérigo, Bardo, Druida, Artífice
-Em raio de 3m, detecta toxinas em comida, bebida ou ingrediente (aura avermelhada).
+**Sentir Toxina** — Adivinhacao | Acao | Pessoal | 1 rodada ou 10 min
+Detecta veneno/doença em criaturas e objetos num raio de 3 hex (aura avermelhada).
 
 **Estabilizar** — Abjuracao | Acao | Toque | Instantanea | Clérigo, Druida
 Criatura a 0 HP para de fazer falhas de morte; não cura HP.
 
-**Maos Firmes** — Transmutação | Acao | Toque | 1 hora | Mago, Druida, Artífice
-Alvo (você ou aliado) ganha +2 em Extração e não sofre -2 por falta de treinamento nesta hora.
+**Maos Estaveis** — Transmutação | Acao | Toque | 1 hora | Mago, Druida, Feiticeiro
++2 em testes de Destreza (inclui Extração) por 1 hora; ignora −2 por falta de treinamento em Extração.
 
 ---
 
 ### NIVEL 1
 
-**Extracao Amplificada** — Biomancia | 1 minuto | Toque | Instantanea | Mago, Druida, Artífice
-Monstro morto rende dobro de ingredientes; testes de Extração na proxima 1h tem +4.
+**Marca da Caçada** — Biomancia | Acao Bonus | Pessoal | 1 hora | Mago, Druida, Feiticeiro
+Próxima criatura morta por você ou aliado em 18 m: vantagem em Extração e +2 no teste de rendimento (não dobra loot).
 
 **Maos Gelidas** — Evocacao | Acao | 4,5m | Instantanea | Mago
 Cone 4,5m: 2d6 frio (CON CD ou dobro). Congela ingredientes.
@@ -3594,10 +3617,7 @@ Semente vira planta adulta em 1h com propriedades do bioma.
 **Purificar Veneno** — Abjuracao | Acao | Toque | Instantanea | Clérigo, Druida
 Remove Envenenado em criatura ou torna ingrediente toxico seguro para processamento.
 
-**Identificar Ingrediente** — Adivinhacao (R) | 1 minuto | Toque | Instantanea | Mago, Bardo, Artífice
-Origem do monstro, propriedades biomágicas, preparo ideal e riscos.
-
-**Armadura Arcana** — Abjuracao | Acao | Toque | 8 horas | Mago, Artífice
+**Armadura Arcana** — Abjuracao | Acao | Toque | 8 horas | Mago, Feiticeiro
 CA 13 + INT; não interfere com gestos de magia.
 
 **Onda de Trovao** — Evocacao | Acao | Pessoal (cubo 4,5m) | Instantanea | Mago, Bardo, Druida
@@ -3610,28 +3630,22 @@ Cura 1d8 + mod. de atributo de conjuracao (SAB ou CAR).
 
 ### NIVEL 2
 
-**Aprimoramento Biomagico** — Biomancia | 10 minutos | Toque | 8 horas | Mago, Druida, Artífice
-Proxima refeicao com esse ingrediente concede +1 habilidade de assimilação alem do d4.
-
 **Raios de Enfraquecimento** — Necromancia | Acao | 18m | Concentracao até 1 minuto (C) | Mago, Clérigo
 Tres raios: CON CD ou Desvantagem em ataques e FOR por 1 minuto.
 
-**Esfera Acida de Monstro** — Evocacao | Acao | 18m | Concentracao até 1 minuto (C) | Mago, Artífice
+**Esfera Acida de Monstro** — Evocacao | Acao | 18m | Concentracao até 1 minuto (C) | Mago, Feiticeiro
 Esfera 1m: 4d6 ácido (DES CD); -1 CA em armadura atingida.
 
-**Transmutação de Carne** — Transmutação | 1 hora | Toque | Permanente | Mago, Gnomo, Artífice
-Converte ingrediente em equivalente de mesma raridade (ex.: goblin -> grifo).
+**Transmutação de Carne** — Transmutação | 1 hora | Toque | Permanente | Mago, Gnomo, Feiticeiro
+*Só em descanso.* Converte ingrediente em equivalente de mesma raridade (ex.: goblin -> grifo).
 
-**Inspiracao Culinaria** — Encantamento | Acao Bonus | 9m | 1 hora | Bardo
-+3 em Coccao e Forrageio; Prato Perfeito durante efeito da +1d6 HP temp por nivel do Bardo ao grupo.
-
-**Preservação Perfeita** — Transmutação | Acao | Toque | 30 dias | Mago, Clérigo, Druida, Artífice
-Ingrediente preservado 30 dias sem perder propriedades biomágicas.
+**Ímpeto Inspirador** — Encantamento | Acao Bonus | 9m | 1 hora | Bardo
+Aliado ganha +1d6 no próximo teste de atributo, ataque ou resistência em 1 h.
 
 **Forma Menor** — Transmutação | Acao | Pessoal | Concentracao até 1 hora (C) | Druida, Mago
 Transforma-se em besta Minuscula ou Pequena; mantem INT, SAB, CAR; sem magia na forma.
 
-**Escudo Arcano** — Abjuracao | Reacao | Pessoal | 1 rodada | Mago, Artífice
+**Escudo Arcano** — Abjuracao | Reacao | Pessoal | 1 rodada | Mago, Feiticeiro
 Quando atingido ou alvo de magia: +5 CA até inicio do próximo turno (inclui contra a magia que disparou).
 
 **Ilusão Menor** — Ilusao | Acao | 18m | 1 minuto | Mago, Bardo
@@ -3644,8 +3658,8 @@ Som ou imagem estática em cubo 1,5m; não causa dano.
 **Animação de Mortos** — Necromancia | 1 minuto | 3m | 24 horas | Mago, Clérigo
 Anima até 2 cadaveres Medios ou menores; podem Extração com proficiencia = metade do nivel do conjurador. Em espaco de nivel 5: 4 Medios ou 2 Grandes.
 
-**Injecao Biomágica** — Biomancia | Acao | Toque | 12 horas | Mago, Artífice
-Uma habilidade de assimilação do ingrediente usado, 12h, sem refeicao (ingrediente consumido).
+**Injecao Biomágica** — Biomancia | Acao | Toque | 12 horas | Mago, Feiticeiro
+Uma habilidade de assimilação do ingrediente usado, 12h, sem refeicao (ingrediente consumido). **2 PA** no VTT.
 
 **Bola de Fogo** — Evocacao | Acao | 45m | Instantanea | Mago
 Raio 6m: 8d6 fogo (DES CD ou metade). *Variante Piromante: Cap. 19.*
@@ -3676,13 +3690,10 @@ Ve atraves de criatura no mesmo bioma (SAB CD 15); troca alvo como ação bonus.
 8d8 necrótico (CON CD ou metade); conjurador cura metade do dano.
 
 **Mutação Forcada** — Biomancia | Acao | 18m | Concentracao até 1 hora (C) | Mago
-CON CD ou mutação negativa aleatoria 1h.
+CON CD ou mutação negativa aleatoria 1h. **2 PA** no VTT.
 
 **Parede de Fogo** — Evocacao | Acao | 36m | Concentracao até 1 minuto (C) | Mago, Druida
 Parede até 18m: 5d8 ao atravessar; 2d8 radiante a 3m por turno.
-
-**Preservação Anual** — Transmutação | Acao | Toque | 1 ano | Mago, Clérigo, Druida, Artífice
-Como Preservação Perfeita, mas duração 1 ano (requer espaco de nivel 4).
 
 **Cura em Massa** — Abjuracao | Acao | 18m | Instantanea | Clérigo, Druida
 Ate 6 criaturas em raio de 3m: 3d8 + mod. de conjuracao.
@@ -3703,7 +3714,7 @@ Ingrediente de Boss concede mutação forte 7 dias (consumido).
 **Despertar** — Transmutação | 8 horas | Toque | Permanente | Druida
 Planta ou besta ganha INT 10 e linguagem.
 
-**Salto Dimensional** — Conjuracao | Acao Bonus | Pessoal | Instantanea | Mago, Bardo, Artífice
+**Salto Dimensional** — Conjuracao | Acao Bonus | Pessoal | Instantanea | Mago, Bardo, Feiticeiro
 Teletransporte até 18m para ponto visivel.
 
 **Restaurar Vigor** — Abjuracao | 1 hora | Toque | Instantanea | Clérigo, Druida
@@ -3761,11 +3772,11 @@ Condicao irrevogavel mata alvo quando satisfeita; preço 4d10 necrótico por niv
 
 ### 19.1 Bonus que NAO sao magias novas
 
-Estes efeitos **nao entram** na contagem de 60 feiticos:
+Estes efeitos **não entram** na contagem de **61 feitiços** do compendio:
 
 | Subclasse | Bonus |
 |-----------|--------|
-| **Piromante das Brasas** | Conhece truque `Chama de Fogareiro` extra; feiticos de fogo +1d6 vs criaturas de gelo/agua; sem componentes de fogo |
+| **Piromante das Brasas** | Conhece truque `Brasa Espectral` extra; feiticos de fogo +1d6 vs criaturas de gelo/agua; sem componentes de fogo |
 | **Sacerdote da Purificacao** | `Purificar Veneno` 3x/dia sem gastar espaco de nivel 1 |
 | **Mago dos Encantos** | 1 magia de Encantamento nv. 1–3 por dia sem gastar espaco (escolhida ao preparar) |
 | **Clérigo do Pao da Vida** | Ritual `Pao da Manha` (R, 10 min): paes = nivel do Clérigo; quem come ao amanhecer ganha HP temp = nivel x3 |
@@ -3782,7 +3793,7 @@ Estes efeitos **nao entram** na contagem de 60 feiticos:
 | **Circulo do Superpredador** | Forma Selvagem +HP do ultimo monstro grande comido |
 | **Circulo da Simbiose** | Sementes: armadura de vinhas, 1d6 cortante ao atacante |
 | **Circulo do Solo Vivo** | Pedras elementais: resistência contundente enquanto dieta ativa |
-| **Biologo Alquimico (Artífice)** | Micro-doses: imunidade veneno; arma +1d6 ácido 1 min |
+| **Biologo Alquimico (Feiticeiro)** | Micro-doses: imunidade veneno; arma +1d6 ácido 1 min |
 | **Engenheiro de Explosivos** | Glandulas de fogo: resistência Fogo; bombas +2d6 |
 | **Ferreiro de Utensilios** | Prato em panela de exoesqueleto: +2 CA em armaduras proprias |
 | **Construtor de Armadilhas** | Carne intacta: Vantagem INT e invencoes 24h |
@@ -3792,7 +3803,7 @@ Estes efeitos **nao entram** na contagem de 60 feiticos:
 | Subclasse | Magia exclusiva (Cap. 19.3) |
 |-----------|----------------------------|
 | Piromante das Brasas | Maos Ardentes |
-| Criomante de Conservacao | Gelo de Conservação |
+| Criomante de Conservacao | Couraça de Gelo |
 | Mago Alquímico | Envelhecer Matéria, Fermentação Acelerada |
 | Sacerdote da Purificacao | Purificacao Abencada |
 | Circulo da Decomposicao | Esporos Necroticos, Grande Decomposicao |
@@ -3805,19 +3816,19 @@ Estes efeitos **nao entram** na contagem de 60 feiticos:
 |-----------|------|----------|
 | **Piromante das Brasas** | `Bola de Fogo` (nv. 3) | **Forno Arcano:** mesma área e dano; aliados na área sofrem metade ou nenhum dano (escolha do conjurador); não incendeia comida do grupo |
 
-### 19.3 Magias exclusivas (8 — contam no total de 60)
+### 19.3 Magias exclusivas (8 — no compendio)
 
 **Piromante das Brasas — Maos Ardentes** — Evocacao | Acao | Toque | Instantanea | Nivel 1
 Toque: 3d6 fogo (DES CD ou metade). Ingrediente tocado e selado e assado por dentro em 1 rodada.
 
-**Criomante de Conservacao — Gelo de Conservação** — Transmutação | Acao | Toque | 8 horas | Nivel 2
-Ingrediente fica em estase de gelo seco: propriedades biomágicas preservadas 8h sem recipiente; +2 CA temp ao conjurador enquanto segura o ingrediente.
+**Criomante de Conservacao — Couraça de Gelo** — Abjuracao | Acao | Toque | 8 horas | Nivel 2
+Toque: alvo ganha +2 CA temp (conjurador +3) por 8 h.
 
 **Mago Alquímico — Envelhecer Matéria** — Transmutação | Truque | Toque | Instantanea
-Objeto orgânico inanimado envelhece visualmente (fermentacao aparente); não altera propriedades mágicas até conjurar `Fermentação Acelerada`.
+*Só em descanso/ritual (10 min).* Objeto orgânico inanimado envelhece visualmente até conjurar `Fermentação Acelerada`. *ID:* `magias-envelhecer-materia`.
 
 **Mago Alquímico — Fermentação Acelerada** — Transmutação | 10 minutos | Toque | Instantanea | Nivel 2
-Ingrediente fermenta em 1 minuto com efeito de 1 ano de cura natural; remove doenças leves não mágicas em quem consumir.
+*Só em descanso.* Ingrediente fermenta em 1 minuto; remove doenças leves não mágicas em quem consumir.
 
 **Sacerdote da Purificacao — Purificacao Abencada** — Abjuracao | Acao | Toque | Instantanea | Nivel 4
 Remove maldicao, veneno ou corrupcao mágica em criatura ou ingrediente.
@@ -3833,19 +3844,21 @@ Um humanoide CON CD ou Amedrontado e Desvantagem em Percepção por 1 minuto (sa
 
 ---
 
-### Indice rapido por escola (lista geral, 52)
+### Indice rapido por escola (lista geral, 53)
 
-| Escola | Quantidade (aprox.) |
-|--------|---------------------|
-| Biomancia | 7 |
-| Evocacao | 12 |
-| Transmutação | 8 |
-| Necromancia | 7 |
-| Abjuracao | 8 |
-| Adivinhacao | 5 |
+| Escola | Quantidade |
+|--------|------------|
+| Evocacao | 14 |
+| Biomancia | 8 |
+| Necromancia | 8 |
+| Abjuracao | 7 |
+| Transmutação | 6 |
+| Adivinhacao | 4 |
 | Encantamento | 2 |
 | Ilusao | 2 |
 | Conjuracao | 1 |
+
+---
 
 ---
 
@@ -3857,11 +3870,11 @@ Um humanoide CON CD ou Amedrontado e Desvantagem em Percepção por 1 minuto (sa
 
 | Nv | Magias disíponíveis |
 |---:|---|
-| 0 | Chama de Fogareiro; Lâmina de Espirito; Detectar Veneno; Maos Firmes; *(excl.)* Envelhecer Matéria |
-| 1 | Extracao Amplificada; Maos Gelidas; Identificar Ingrediente; Armadura Arcana; Onda de Trovao; *(excl.)* Maos Ardentes |
-| 2 | Aprimoramento Biomagico; Raios de Enfraquecimento; Esfera Acida de Monstro; Transmutação de Carne; Preservação Perfeita; Forma Menor; Escudo Arcano; Ilusão Menor; *(excl.)* Gelo de Conservação; *(excl.)* Fermentação Acelerada |
+| 0 | Brasa Espectral; Lâmina de Espirito; Sentir Toxina; Maos Estaveis; *(excl.)* Envelhecer Matéria |
+| 1 | Marca da Caçada; Maos Gelidas; Armadura Arcana; Onda de Trovao; *(excl.)* Maos Ardentes |
+| 2 | Raios de Enfraquecimento; Esfera Acida de Monstro; Transmutação de Carne; Forma Menor; Escudo Arcano; Ilusão Menor; Injecao Biomágica; *(excl.)* Couraça de Gelo; *(excl.)* Fermentação Acelerada |
 | 3 | Animação de Mortos; Injecao Biomágica; Bola de Fogo; Contágio Necrótico; Ventania; Ler Mentes; Relâmpago; Sono |
-| 4 | Visao do Ecossistema; Murcha; Mutação Forcada; Parede de Fogo; Preservação Anual |
+| 4 | Visao do Ecossistema; Murcha; Mutação Forcada; Parede de Fogo |
 | 5 | Grande Transmutação Biomágica; Cone de Frio; Salto Dimensional |
 | 6 | Causar Praga; Disintegrar; Cadeia de Relâmpago |
 | 7 | Forma de Monstro; Prisao de Gelo; Regeneração Biomágica; Invisibilidade Maior |
@@ -3873,26 +3886,26 @@ Um humanoide CON CD ou Amedrontado e Desvantagem em Percepção por 1 minuto (sa
 
 | Nv | Magias disíponíveis |
 |---:|---|
-| 0 | Chama de Fogareiro; Detectar Veneno; Estabilizar |
+| 0 | Brasa Espectral; Sentir Toxina; Estabilizar |
 | 1 | Crescimento Acelerado; Purificar Veneno; Curar Ferimentos |
-| 2 | Raios de Enfraquecimento; Preservação Perfeita |
+| 2 | Raios de Enfraquecimento; Animação de Mortos |
 | 3 | Animação de Mortos; Contágio Necrótico; Sono |
-| 4 | Murcha; Preservação Anual; Cura em Massa; *(excl.)* Purificacao Abencada |
+| 4 | Murcha; Cura em Massa; *(excl.)* Purificacao Abencada |
 | 5 | Ressurreicao Incompleta; Restaurar Vigor |
 | 6 | Causar Praga |
 | 7 | Regeneração Biomágica |
 | 8 | Terremoto |
 | 9 | Desejo de Morte *(Clérigo do Limiar, Ascensao nv. 20)* |
 
-**Talentos (Cap. 12):** 34 caminhos de subclasse (4/8/12/16 + Ascensao 20); **Clérigo do Limiar** = trilha necromantica + `Desejo de Morte`. Magias de 19.3 somam-se ao grimorio e não substituem talentos de caminho.
+**Talentos (Cap. 12):** 44 caminhos de subclasse (4/8/12/16 + Ascensao 20); **Clérigo do Limiar** = trilha necromantica + `Desejo de Morte`. Magias de 19.3 somam-se ao grimorio e não substituem talentos de caminho.
 
 ### BARDO
 
 | Nv | Magias disíponíveis |
 |---:|---|
-| 0 | Chama de Fogareiro; Lâmina de Espirito; Detectar Veneno |
-| 1 | Identificar Ingrediente; Onda de Trovao; Curar Ferimentos; *(excl.)* Doce Confuso |
-| 2 | Inspiracao Culinaria; Ilusão Menor |
+| 0 | Brasa Espectral; Lâmina de Espirito; Sentir Toxina |
+| 1 | Chama de Vinha; Onda de Trovao; Curar Ferimentos; *(excl.)* Doce Confuso |
+| 2 | Ímpeto Inspirador; Ilusão Menor |
 | 3 | Ler Mentes; Sono |
 | 5 | Salto Dimensional |
 | 7 | Invisibilidade Maior |
@@ -3901,30 +3914,29 @@ Um humanoide CON CD ou Amedrontado e Desvantagem em Percepção por 1 minuto (sa
 
 | Nv | Magias disíponíveis |
 |---:|---|
-| 0 | Chama de Fogareiro; Detectar Veneno; Estabilizar; Maos Firmes; *(excl.)* Esporos Necroticos |
-| 1 | Extracao Amplificada; Crescimento Acelerado; Purificar Veneno; Onda de Trovao; Curar Ferimentos |
-| 2 | Aprimoramento Biomagico; Preservação Perfeita; Forma Menor |
+| 0 | Sentir Toxina; Maos Estaveis; *(excl.)* Esporos Necroticos |
+| 1 | Marca da Caçada; Crescimento Acelerado; Purificar Veneno; Chama de Vinha; Curar Ferimentos |
+| 2 | Forma Menor; Injecao Biomágica; Raios de Enfraquecimento |
 | 3 | Ventania; Relâmpago |
-| 4 | Visao do Ecossistema; Parede de Fogo; Preservação Anual; Cura em Massa |
+| 4 | Visao do Ecossistema; Parede de Fogo; Cura em Massa |
 | 5 | Despertar; Restaurar Vigor; *(excl.)* Grande Decomposicao |
 | 6 | Cadeia de Relâmpago |
 | 7 | Forma de Monstro; Regeneração Biomágica |
 | 8 | Terremoto |
 
-### ARTIFICE
+### Feiticeiro
 
-| Nv | Magias disíponíveis |
+| Nv | Magias (lista Arcano inato + Cap. 19) |
 |---:|---|
-| 0 | Chama de Fogareiro; Lâmina de Espirito; Detectar Veneno; Maos Firmes |
-| 1 | Extracao Amplificada; Identificar Ingrediente; Armadura Arcana |
-| 2 | Aprimoramento Biomagico; Esfera Acida de Monstro; Transmutação de Carne; Preservação Perfeita; Escudo Arcano |
-| 3 | Injecao Biomágica |
-| 4 | Preservação Anual |
-| 5 | Salto Dimensional |
+| 0 | *Lâmina de Espírito*; *Brasa Espectral* |
+| 1 | *Mãos Geladas*; *Onda de Trovão*; *Chama de Vinha* |
+| 2 | *Esfera Ácida de Monstro*; *Escudo Arcano* |
+| 3 | *Esfera Ígnea*; *Relâmpago* |
+| 4–5 | Conforme lista 17.7 e subclasse |
 
-Poder extra: **Infusoes** (Cap. IV), não lista 19.3.
+### Espiritualista
 
----
+Sem lista de magias — usa **Chi** e técnicas (Cap. 4 e compêndio de habilidades).
 
 ---
 

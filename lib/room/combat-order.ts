@@ -208,5 +208,6 @@ export function getActiveBattleToken(room: RoomState): BattleToken | null {
 export function shouldAutoSkipTurn(token: BattleToken): boolean {
   if (isDefeatedToken(token)) return true;
   if (hasCondition(token, "atordoado")) return true;
+  if (hasCondition(token, "inconsciente")) return true;
   return false;
 }

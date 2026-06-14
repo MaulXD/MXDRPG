@@ -1,7 +1,7 @@
 {
-  "version": 1,
+  "version": 2,
   "meta": {
-    "note": "Listas compartilhadas (Cap. 17.7). Classes acessam uma ou mais listas; truques e círculos definem o que pode aprender/preparar."
+    "note": "Listas compartilhadas (Cap. 17.7). Cozinha e preservação são automáticas (Cap. 5.3) — sem magias de cozinha."
   },
   "lists": {
     "truques-comuns": {
@@ -18,22 +18,22 @@
       "levels": {
         "1": [
           "magias-extracao-amplificada",
-          "magias-identificar-ingrediente",
           "magias-armadura-arcana",
+          "magias-maos-gelidas",
           "magias-curar-ferimentos",
           "magias-chama-de-vinha",
-          "magias-sussurro-de-masmorra"
+          "magias-sussurro-de-masmorra",
+          "magias-onda-de-trovao"
         ],
         "2": [
-          "magias-aprimoramento-biomagico",
           "magias-raios-de-enfraquecimento",
           "magias-esfera-acida-de-monstro",
           "magias-transmutacao-de-carne",
-          "magias-preservacao-perfeita",
           "magias-forma-menor",
           "magias-escudo-arcano",
           "magias-ilusao-menor",
-          "magias-muralha-de-energia"
+          "magias-muralha-de-energia",
+          "magias-injecao-biomagica"
         ],
         "3": [
           "magias-bola-de-fogo",
@@ -41,14 +41,14 @@
           "magias-ventania",
           "magias-ler-mentes",
           "magias-relampago",
-          "magias-sono"
+          "magias-sono",
+          "magias-animacao-de-mortos"
         ],
         "4": [
           "magias-visao-do-ecossistema",
           "magias-murcha",
           "magias-mutacao-forcada",
           "magias-parede-de-fogo",
-          "magias-preservacao-anual",
           "magias-cura-em-massa"
         ],
         "5": [
@@ -67,7 +67,8 @@
           "magias-maos-gelidas",
           "magias-onda-de-trovao",
           "magias-chama-de-vinha",
-          "magias-curar-ferimentos"
+          "magias-curar-ferimentos",
+          "magias-extracao-amplificada"
         ],
         "2": [
           "magias-esfera-acida-de-monstro",
@@ -93,12 +94,11 @@
           "magias-crescimento-acelerado"
         ],
         "2": [
-          "magias-preservacao-perfeita",
-          "magias-inspiracao-culinaria",
+          "magias-raios-de-enfraquecimento",
           "magias-animacao-de-mortos"
         ],
-        "3": ["magias-contagio-necrotico", "magias-raio-do-limiar"],
-        "4": ["magias-cura-em-massa", "magias-preservacao-anual"],
+        "3": ["magias-contagio-necrotico", "magias-raio-do-limiar", "magias-sono"],
+        "4": ["magias-cura-em-massa", "magias-murcha"],
         "5": ["magias-ressurreicao-incompleta", "magias-restaurar-vigor"]
       }
     },
@@ -106,14 +106,14 @@
       "label": "Primal",
       "cantrips": ["magias-detectar-veneno", "magias-maos-firmes"],
       "levels": {
-        "1": ["magias-crescimento-acelerado", "magias-purificar-veneno", "magias-chama-de-vinha"],
+        "1": ["magias-crescimento-acelerado", "magias-purificar-veneno", "magias-chama-de-vinha", "magias-extracao-amplificada"],
         "2": [
           "magias-forma-menor",
-          "magias-preservacao-perfeita",
-          "magias-aprimoramento-biomagico"
+          "magias-injecao-biomagica",
+          "magias-raios-de-enfraquecimento"
         ],
-        "3": ["magias-ventania", "magias-sono"],
-        "4": ["magias-mutacao-forcada", "magias-murcha"],
+        "3": ["magias-ventania", "magias-sono", "magias-relampago"],
+        "4": ["magias-mutacao-forcada", "magias-murcha", "magias-parede-de-fogo"],
         "5": ["magias-terremoto", "magias-forma-de-monstro"]
       }
     },
@@ -121,10 +121,10 @@
       "label": "Performance e encanto",
       "cantrips": ["magias-chama-de-fogareiro", "magias-lamina-de-espirito"],
       "levels": {
-        "1": ["magias-sussurro-de-masmorra", "magias-curar-ferimentos", "magias-identificar-ingrediente"],
-        "2": ["magias-inspiracao-culinaria", "magias-ilusao-menor", "magias-transmutacao-de-carne"],
-        "3": ["magias-ler-mentes", "magias-sono", "magias-ventania"],
-        "4": ["magias-visao-do-ecossistema"],
+        "1": ["magias-sussurro-de-masmorra", "magias-curar-ferimentos", "magias-chama-de-vinha"],
+        "2": ["magias-inspiracao-culinaria", "magias-ilusao-menor", "magias-sono"],
+        "3": ["magias-ler-mentes", "magias-ventania", "magias-relampago"],
+        "4": ["magias-visao-do-ecossistema", "magias-invisibilidade-maior"],
         "5": ["magias-salto-dimensional", "magias-despertar"]
       }
     },
@@ -143,7 +143,7 @@
       "label": "Juramento (paladino)",
       "levels": {
         "1": ["magias-curar-ferimentos", "magias-purificar-veneno"],
-        "2": ["magias-preservacao-perfeita", "magias-inspiracao-culinaria"],
+        "2": ["magias-escudo-arcano", "magias-raios-de-enfraquecimento"],
         "3": ["magias-raio-do-limiar"],
         "4": ["magias-cura-em-massa"]
       }
@@ -203,7 +203,8 @@
         "magias-escudo-arcano",
         "magias-bola-de-fogo",
         "magias-relampago",
-        "magias-cone-de-frio"
+        "magias-cone-de-frio",
+        "magias-extracao-amplificada"
       ]
     },
     "divino-unificado": {

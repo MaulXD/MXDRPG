@@ -27,9 +27,12 @@ export function canActOnCombatTurn(
     activeTokenId?: string | null;
     bypassTurn?: boolean;
     combatHasOrder?: boolean;
+    /** Modo exploração — sem restrição de turno. */
+    combatActive?: boolean;
   }
 ): boolean {
   if (opts.bypassTurn) return true;
+  if (opts.combatActive === false) return true;
 
   const hasOrder = opts.combatHasOrder ?? combatHasInitiative(opts.combat);
   if (!hasOrder) return true;

@@ -79,6 +79,14 @@ export const CONDITION_META: Record<TokenCondition, ConditionMeta> = {
     description:
       "Incapaz de agir. Falha automática em Força e Destreza. Ataques contra têm vantagem.",
   },
+  inconsciente: {
+    label: "Inconsciente",
+    abbr: "In",
+    icon: "daze",
+    bg: "#2a3040",
+    color: "#e8ecf4",
+    description: "0 HP — incapaz de agir. Sem cura, morte em 10 rodadas de combate.",
+  },
   envenenado: {
     label: "Envenenado",
     abbr: "Ev",

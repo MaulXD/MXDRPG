@@ -1,11 +1,11 @@
 [
   {
     "id": "magias-chama-de-fogareiro",
-    "name": "Chama de Fogareiro",
+    "name": "Brasa Espectral",
     "type": "magia",
     "system": {
       "catalogId": "MAG-chama-de-fogareiro",
-      "description": "<p>Chama pequena e controlável na ponta dos dedos; temperatura precisa. Uso culinário: dispensa fogareiro ou lenha.</p><p><em>Evocacao | Acao | Toque | Ate ser apagada | Mago, Clérigo, Bardo, Druida, Feiticeiro · nv 0 · 1 PA · 1 hex</em></p>",
+      "description": "<p>Luz fria em penumbra (6 hex). Toque opcional: 1d4 fogo. <strong>Não</strong> cozinha nem substitui kit de brasas — proibida em biomas de gás como chama aberta.</p><p><em>Evocação · Truque · Ação · Pessoal · Concentração até 1 h · 1 PA</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 1,
@@ -22,7 +22,16 @@
         "tempo": "1 ação",
         "alcance": "1 hex"
       },
-      "bookRef": "_parte_x_magias_v4_revisada.md"
+      "bookRef": "_parte_x_magias_v4_revisada.md",
+      "weapon": {
+        "dano": {
+          "formula": "1d4",
+          "tipo": "fogo"
+        },
+        "ataque": {
+          "bonus": 0
+        }
+      }
     }
   },
   {
@@ -31,7 +40,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-lamina-de-espirito",
-      "description": "<p>Lâmina etérea 1d4; +2 Trinchar.</p><p><em>Transmutação · nv 0</em></p>",
+      "description": "<p><strong>Ação bônus.</strong> Lâmina etérea 1d4 força por 1 min; +2 em Extração com ela.</p><p><em>Transmutação · Truque · 1 PA</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 1,
@@ -62,11 +71,11 @@
   },
   {
     "id": "magias-detectar-veneno",
-    "name": "Detectar Veneno",
+    "name": "Sentir Toxina",
     "type": "magia",
     "system": {
       "catalogId": "MAG-detectar-veneno",
-      "description": "<p>Em raio de 3m, detecta toxinas em comida, bebida ou ingrediente (aura avermelhada).</p><p><em>Adivinhacao | Acao | Pessoal | 10 minutos | Mago, Clérigo, Bardo, Druida, Feiticeiro · nv 0 · 1 PA · 3 hex</em></p>",
+      "description": "<p>Detecta veneno, doença ou toxina em criaturas e objetos num raio de 3 hex (aura avermelhada). Em combate: dura 1 rodada; fora: até 10 min.</p><p><em>Adivinhação · Truque · Ação · Pessoal · 1 PA</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 3,
@@ -114,11 +123,11 @@
   },
   {
     "id": "magias-maos-firmes",
-    "name": "Mãos Firmes",
+    "name": "Mãos Estáveis",
     "type": "magia",
     "system": {
       "catalogId": "MAG-maos-firmes",
-      "description": "<p>+2 Trinchar por 1 hora.</p><p><em>Transmutação · nv 0</em></p>",
+      "description": "<p>Alvo ganha <strong>+2</strong> em testes de Destreza (inclui Extração) por 1 hora; ignora −2 por falta de treinamento em Extração.</p><p><em>Transmutação · Truque · Ação · Toque · 1 PA</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 1,
@@ -140,11 +149,11 @@
   },
   {
     "id": "magias-extracao-amplificada",
-    "name": "Extração Amplificada",
+    "name": "Marca da Caçada",
     "type": "magia",
     "system": {
       "catalogId": "MAG-extracao-amplificada",
-      "description": "<p>Dobra ingredientes; +4 Trinchar 1h.</p><p><em>Biomancia · nv 1</em></p>",
+      "description": "<p><strong>Ação bônus.</strong> Próxima criatura que você ou um aliado matar em 1 h (18 m): <strong>vantagem</strong> em Extração e <strong>+2</strong> no teste de rendimento. Não dobra loot.</p><p><em>Biomancia · nv 1 · 1 PA</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 1,
@@ -158,7 +167,7 @@
       "spell": {
         "nivel": 1,
         "escola": "Biomancia",
-        "tempo": "1 minuto",
+        "tempo": "1 ação bônus",
         "alcance": "1 hex"
       },
       "bookRef": "_parte_x_magias_v4_revisada.md"
@@ -257,32 +266,6 @@
         "nivel": 1,
         "escola": "Abjuração",
         "tempo": "1 ação",
-        "alcance": "1 hex"
-      },
-      "bookRef": "_parte_x_magias_v4_revisada.md"
-    }
-  },
-  {
-    "id": "magias-identificar-ingrediente",
-    "name": "Identificar Ingrediente",
-    "type": "magia",
-    "system": {
-      "catalogId": "MAG-identificar-ingrediente",
-      "description": "<p>Origem do monstro, propriedades biomágicas, preparo ideal e riscos.</p><p><em>Adivinhacao (R) | 1 minuto | Toque | Instantanea | Mago, Bardo, Feiticeiro · nv 1 · 1 PA · 1 hex</em></p>",
-      "tactical": {
-        "alcanceHex": {
-          "value": 1,
-          "min": 0
-        },
-        "custoPontosAcao": {
-          "value": 1,
-          "min": 0
-        }
-      },
-      "spell": {
-        "nivel": 1,
-        "escola": "Adivinhação",
-        "tempo": "1 minuto",
         "alcance": "1 hex"
       },
       "bookRef": "_parte_x_magias_v4_revisada.md"
@@ -452,32 +435,6 @@
     }
   },
   {
-    "id": "magias-aprimoramento-biomagico",
-    "name": "Aprimoramento Biomágico",
-    "type": "magia",
-    "system": {
-      "catalogId": "MAG-aprimoramento-biomagico",
-      "description": "<p>+1 habilidade assimilacao na próxima refeição.</p><p><em>Biomancia · nv 2</em></p>",
-      "tactical": {
-        "alcanceHex": {
-          "value": 1,
-          "min": 0
-        },
-        "custoPontosAcao": {
-          "value": 2,
-          "min": 0
-        }
-      },
-      "spell": {
-        "nivel": 2,
-        "escola": "Biomancia",
-        "tempo": "10 minutos",
-        "alcance": "1 hex"
-      },
-      "bookRef": "_parte_x_magias_v4_revisada.md"
-    }
-  },
-  {
     "id": "magias-raios-de-enfraquecimento",
     "name": "Raios de Enfraquecimento",
     "type": "magia",
@@ -554,7 +511,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-transmutacao-de-carne",
-      "description": "<p>Converte ingrediente em equivalente de mesma raridade (ex.: goblin -&gt; grifo).</p><p><em>Transmutação | 1 hora | Toque | Permanente | Mago, Gnomo, Feiticeiro · nv 2 · 2 PA · 1 hex</em></p>",
+      "description": "<p><strong>Só em descanso</strong> (1 h, 2 PA). Converte ingrediente em equivalente de mesma raridade (ex.: goblin → grifo).</p><p><em>Transmutação · nv 2 · 2 PA</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 1,
@@ -576,11 +533,11 @@
   },
   {
     "id": "magias-inspiracao-culinaria",
-    "name": "Inspiração Culinária",
+    "name": "Ímpeto Inspirador",
     "type": "magia",
     "system": {
       "catalogId": "MAG-inspiracao-culinaria",
-      "description": "<p>+3 Coccão/Harmonização 1h.</p><p><em>Encantamento · nv 2</em></p>",
+      "description": "<p><strong>Ação bônus.</strong> Aliado a 6 hex ganha <strong>+1d6</strong> no próximo teste de atributo, ataque ou resistência em 1 h.</p><p><em>Encantamento · nv 2 · 1 PA</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 4,
@@ -594,34 +551,8 @@
       "spell": {
         "nivel": 2,
         "escola": "Encantamento",
-        "tempo": "1 ação",
+        "tempo": "1 ação bônus",
         "alcance": "4 hex"
-      },
-      "bookRef": "_parte_x_magias_v4_revisada.md"
-    }
-  },
-  {
-    "id": "magias-preservacao-perfeita",
-    "name": "Preservação Perfeita",
-    "type": "magia",
-    "system": {
-      "catalogId": "MAG-preservacao-perfeita",
-      "description": "<p>Ingrediente preservado 30 dias sem perder propriedades biomágicas.</p><p><em>Transmutação | Acao | Toque | 30 dias | Mago, Clérigo, Druida, Feiticeiro · nv 2 · 1 PA · 1 hex</em></p>",
-      "tactical": {
-        "alcanceHex": {
-          "value": 1,
-          "min": 0
-        },
-        "custoPontosAcao": {
-          "value": 1,
-          "min": 0
-        }
-      },
-      "spell": {
-        "nivel": 2,
-        "escola": "Transmutação",
-        "tempo": "1 ação",
-        "alcance": "1 hex"
       },
       "bookRef": "_parte_x_magias_v4_revisada.md"
     }
@@ -770,14 +701,14 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-injecao-biomagica",
-      "description": "<p>Habilidade assimilacao 12h do ingrediente.</p><p><em>Biomancia · nv 3</em></p>",
+      "description": "<p>Concede uma habilidade de assimilação do ingrediente por 12 h, sem refeição (ingrediente consumido).</p><p><em>Biomancia · nv 3 · 2 PA</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 1,
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -1165,14 +1096,14 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-mutacao-forcada",
-      "description": "<p>Mutação negativa aleatória 1h.</p><p><em>Biomancia · nv 4</em></p>",
+      "description": "<p>Alvo: CON CD ou mutação negativa aleatória por 1 h (concentração).</p><p><em>Biomancia · nv 4 · 2 PA</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 6,
           "min": 0
         },
         "custoPontosAcao": {
-          "value": 1,
+          "value": 2,
           "min": 0
         }
       },
@@ -1221,32 +1152,6 @@
         "ataque": {
           "bonus": 0
         }
-      },
-      "bookRef": "_parte_x_magias_v4_revisada.md"
-    }
-  },
-  {
-    "id": "magias-preservacao-anual",
-    "name": "Preservação Anual",
-    "type": "magia",
-    "system": {
-      "catalogId": "MAG-preservacao-anual",
-      "description": "<p>Como Preservação Perfeita, mas duração 1 ano (requer espaco de nivel 4).</p><p><em>Transmutação | Acao | Toque | 1 ano | Mago, Clérigo, Druida, Feiticeiro · nv 4 · 1 PA · 1 hex</em></p>",
-      "tactical": {
-        "alcanceHex": {
-          "value": 1,
-          "min": 0
-        },
-        "custoPontosAcao": {
-          "value": 1,
-          "min": 0
-        }
-      },
-      "spell": {
-        "nivel": 4,
-        "escola": "Transmutação",
-        "tempo": "1 ação",
-        "alcance": "1 hex"
       },
       "bookRef": "_parte_x_magias_v4_revisada.md"
     }
@@ -1831,11 +1736,11 @@
   },
   {
     "id": "magias-gelo-de-conservacao",
-    "name": "Gelo de Conservação",
+    "name": "Couraça de Gelo",
     "type": "magia",
     "system": {
       "catalogId": "MAG-gelo-de-conservacao",
-      "description": "<p>Criomante: estase de ingrediente 8h.</p><p><em>Transmutação · nv 2</em></p>",
+      "description": "<p>Toque: alvo ganha <strong>+2 CA temporária</strong> por 8 h (criomante: +3). Exclusiva de subclasse.</p><p><em>Abjuração · nv 2 · 1 PA</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 1,
@@ -1848,9 +1753,35 @@
       },
       "spell": {
         "nivel": 2,
-        "escola": "Transmutação",
+        "escola": "Abjuração",
         "tempo": "1 ação",
         "alcance": "1 hex"
+      },
+      "bookRef": "_parte_x_magias_v4_revisada.md"
+    }
+  },
+  {
+    "id": "magias-envelhecer-materia",
+    "name": "Envelhecer Matéria",
+    "type": "magia",
+    "system": {
+      "catalogId": "MAG-envelhecer-materia",
+      "description": "<p><strong>Só em descanso/ritual</strong> (10 min, sem PA em combate). Objeto orgânico inanimado envelhece visualmente até conjurar <em>Fermentação Acelerada</em>.</p><p><em>Transmutação · Truque · Toque · Mago Alquímico (exclusiva)</em></p>",
+      "tactical": {
+        "alcanceHex": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "spell": {
+        "nivel": 0,
+        "escola": "Transmutação",
+        "tempo": "1 ação",
+        "alcance": "Toque"
       },
       "bookRef": "_parte_x_magias_v4_revisada.md"
     }
@@ -1861,7 +1792,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-fermentacao-acelerada",
-      "description": "<p>Mago Fermentador: fermenta em 1 min.</p><p><em>Transmutação · nv 2</em></p>",
+      "description": "<p><strong>Só em descanso/ritual</strong> (10 min). Ingrediente fermenta em 1 min; remove doenças leves não mágicas em quem consumir.</p><p><em>Transmutação · nv 2 · 2 PA fora de combate</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 1,

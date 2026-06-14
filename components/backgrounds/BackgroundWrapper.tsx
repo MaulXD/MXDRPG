@@ -8,6 +8,7 @@ import {
   msUntilNextBackgroundChange,
   resolveActiveBackgroundId,
   shouldShowAnimatedBackground,
+  USE_HOURLY_BACKGROUND_ROTATION,
   type BackgroundId,
 } from "@/lib/backgrounds";
 
@@ -36,7 +37,7 @@ export function BackgroundWrapper() {
   }, [showBackground]);
 
   useEffect(() => {
-    if (!showBackground) return;
+    if (!showBackground || !USE_HOURLY_BACKGROUND_ROTATION) return;
 
     const sync = () => setBackgroundId(resolveActiveBackgroundId());
 

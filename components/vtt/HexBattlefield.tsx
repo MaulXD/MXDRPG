@@ -434,6 +434,7 @@ export function HexBattlefield({
 
   const { imagesRef, imgTick } = useTokenImages(displayScene.tokens);
   const refresh = onRefresh ?? (() => {});
+  const roomSettings = normalizeRoomSettings(snapshot?.settings);
   const turnActiveId = combat
     ? resolveLivingActiveTokenId(combat, displayScene.tokens) ?? activeTokenId(combat)
     : null;
@@ -441,6 +442,7 @@ export function HexBattlefield({
     combat,
     canBypassTurn: canBypassTurnProp,
     tokens: displayScene.tokens,
+    combatActive: roomSettings.combatActive,
   });
   const tokenBypass = useCallback(
     (t: BattleToken) => effectiveBypassTurn(t, canBypassTurnProp),
@@ -464,9 +466,11 @@ export function HexBattlefield({
         return "Você não controla este personagem.";
       }
       const track = combat;
-      if (!track?.order?.length) {
+      if (roomSettings.combatActive && !track?.order?.length) {
         return "Aguarde o mestre rolar a iniciativa para usar ações.";
       }
+      if (!roomSettings.combatActive) return null;
+      if (!track) return null;
       const activeId = activeTokenId(track);
       if (
         !canActOnCombatTurn(t.id, {
@@ -474,6 +478,7 @@ export function HexBattlefield({
           activeTokenId: activeId,
           bypassTurn: false,
           combatHasOrder: true,
+          combatActive: roomSettings.combatActive,
         })
       ) {
         if (!activeId) return "Aguarde a iniciativa.";
@@ -487,7 +492,7 @@ export function HexBattlefield({
       }
       return null;
     },
-    [combat, canOperateToken, canControlCombat, displayScene.tokens]
+    [combat, canOperateToken, canControlCombat, displayScene.tokens, roomSettings.combatActive]
   );
 
   const canPreviewTurnMove = useCallback(
@@ -614,8 +619,6 @@ export function HexBattlefield({
     displayScene.mapImageOffsetX,
     displayScene.mapImageOffsetY,
   ]);
-
-  const roomSettings = normalizeRoomSettings(snapshot?.settings);
 
   const tokenHpDisplay = useMemo(() => {
     const map = new Map<

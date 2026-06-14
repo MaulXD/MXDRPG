@@ -62,7 +62,7 @@ Truques: _________________________ · Magias nv1–3: _________________________
 
 **PA (VTT):** nv1=5 · nv5=6 · nv10=7 · nv15=8 · magias **1/2/3 PA** (compêndio) · ataque arma **2 PA** · recarga `1/turno`/`1/combate` · Guerreiro nv5+ = 1 PA/golpe · conjurador nv5+ = 1ª magia 2+ PA −1 · PA=0 passa turno
 
-**Bioma:** ☐ gas/sem tocha → Brasas ou Calor de Panela · ☐ vertical (9/12) · Brasas restantes ___
+**Bioma:** ☐ gas/sem tocha → Kit de Brasas · ☐ vertical (9/12) · Brasas restantes ___
 
 Condições: ☐ agarrado ☐ atordoado ☐ envenenado ☐ exausto · Exaustão nv ___ · PO ___
 

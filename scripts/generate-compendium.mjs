@@ -1,6 +1,6 @@
 /**
  * Gera compêndios Eldarin a partir do Livro do Mestre / Parte X (magias).
- * Uso: node scripts/generate-compendium.mjs
+ * Uso: node scripts/generate-compendium.mjs [--monsters-only]
  *
  * Variantes Elite/Colossal na mesa são aplicadas em runtime por
  * lib/vtt/monster-scaling.ts (spawn), não duplicam entradas aqui.
@@ -9,6 +9,14 @@
 import { readFileSync, writeFileSync } from "fs";
 import { join, dirname } from "path";
 import { fileURLToPath } from "url";
+import {
+  mod,
+  defaultMonsterHp,
+  defaultMonsterCa,
+  monsterAttackBonus,
+} from "./monster-balance.mjs";
+
+const MONSTERS_ONLY = process.argv.includes("--monsters-only");
 
 const MONSTER_TAMANHOS = JSON.parse(
   readFileSync(join(dirname(fileURLToPath(import.meta.url)), "..", "data", "monster-tamanhos.json"), "utf8")
@@ -91,12 +99,9 @@ function parseSpellLoreBook() {
 const MONSTER_LORE = parseMonsterLoreBook();
 const SPELL_LORE = parseSpellLoreBook();
 
-function mod(n) {
-  return Math.floor((n - 10) / 2);
-}
-
 function monsterActions(name, nivel, tier, attrs) {
   const forMod = mod(attrs.forca);
+  const agiMod = mod(attrs.agilidade);
   const bite = tier === "boss" ? "2d8" : tier === "mini" ? "1d10" : "1d6";
   const actions = [
     {
@@ -107,7 +112,7 @@ function monsterActions(name, nivel, tier, attrs) {
       resolution: "attack",
       damageFormula: bite,
       damageType: "perfurante",
-      attackBonus: nivel >= 4 ? 2 : nivel >= 2 ? 1 : 0,
+      attackBonus: monsterAttackBonus(nivel, tier, "bite"),
       rangeHex: 1,
       paCost: 2,
       label: "Mordida · 1 hex · PA 2",
@@ -122,7 +127,7 @@ function monsterActions(name, nivel, tier, attrs) {
       resolution: "attack",
       damageFormula: tier === "boss" ? "2d6" : "1d8",
       damageType: "cortante",
-      attackBonus: mod(attrs.agilidade),
+      attackBonus: monsterAttackBonus(nivel, tier, "claw", agiMod),
       rangeHex: 1,
       paCost: 2,
       label: "Garras · 1 hex · PA 2",
@@ -137,7 +142,7 @@ function monsterActions(name, nivel, tier, attrs) {
       resolution: "attack",
       damageFormula: tier === "boss" ? "3d10" : "2d8",
       damageType: "mágico",
-      attackBonus: nivel,
+      attackBonus: monsterAttackBonus(nivel, tier, "special"),
       rangeHex: tier === "boss" ? 6 : 4,
       paCost: 2,
       label: `Ataque especial · ${tier === "boss" ? 6 : 4} hex · PA 2`,
@@ -151,7 +156,7 @@ function monsterActions(name, nivel, tier, attrs) {
       resolution: "attack",
       damageFormula: "1d10",
       damageType: "contundente",
-      attackBonus: forMod,
+      attackBonus: Math.max(monsterAttackBonus(nivel, tier, "claw", agiMod), forMod),
       rangeHex: 2,
       paCost: 2,
       label: "Investida · 2 hex · PA 2",
@@ -169,20 +174,24 @@ function slug(name) {
     .replace(/^-|-$/g, "");
 }
 
-/** Template base; Elite/Colossal são multiplicadores no spawn VTT. */
+/**
+ * Template base; HP/CA seguem curvas em monster-balance.mjs (flags opcionais).
+ * Elite/Colossal são multiplicadores no spawn VTT.
+ */
 function mob(
   name,
   nivel,
-  hp,
-  ca,
   tier,
   attrs = { forca: 10, agilidade: 10 },
   move = { walk: 4, run: 6 },
-  pa = 6,
-  desc = ""
+  pa = null,
+  desc = "",
+  flags = {}
 ) {
-  const paMin = 6;
-  const paMax = Math.max(paMin, pa);
+  const hp = defaultMonsterHp(nivel, tier, flags);
+  const ca = defaultMonsterCa(nivel, tier, flags);
+  const paDefault = tier === "boss" ? 9 : 6;
+  const paMax = pa ?? paDefault;
   const entryId = `monstros-${slug(name)}`;
   const tamanho = MONSTER_TAMANHOS[entryId] ?? "medium";
   return {
@@ -210,92 +219,91 @@ function monCod(n) {
   return `MON-${String(n).padStart(3, "0")}`;
 }
 
-/** 001–060 + extras (ordem = LIVRO-DO-JOGADOR §6.2) */
+/** 001–080 + extras (ordem = LIVRO-DO-JOGADOR §6.2). HP/CA: scripts/monster-balance.mjs */
 const MONSTERS = [
-  mob("Zumbi de Masmorra", 2, 26, 10, "mob", { forca: 13, agilidade: 8 }, { walk: 3, run: 5 }, 7),
-  mob("Esqueleto Armado", 2, 20, 13, "mob", { forca: 10, agilidade: 14 }, { walk: 4, run: 6 }, 7),
-  mob("Ghoul", 3, 38, 12, "mob", { forca: 13, agilidade: 15 }, { walk: 4, run: 6 }, 7),
-  mob("Espectro", 4, 28, 14, "mini", { forca: 8, agilidade: 14 }),
-  mob("Lich (Arquiliche)", 18, 285, 17, "boss", { forca: 11, agilidade: 16 }, { walk: 4, run: 6 }, 4),
-  mob("Assombração", 3, 45, 13, "mob", { forca: 6, agilidade: 16 }),
-  mob("Vampiro", 10, 144, 16, "boss", { forca: 18, agilidade: 18 }, { walk: 5, run: 8 }),
-  mob("Cavaleiro Espectral", 5, 45, 14, "mini", { forca: 16, agilidade: 12 }),
-  mob("Múmia", 5, 58, 13, "mini", { forca: 16, agilidade: 10 }),
-  mob("Dragonete de Magma", 6, 68, 15, "mini", { forca: 17, agilidade: 12 }, { walk: 4, run: 7 }),
-  mob("Wyvern", 9, 110, 14, "mini", { forca: 19, agilidade: 14 }, { walk: 4, run: 10 }),
-  mob("Dragão Jovem de Gelo", 13, 178, 17, "boss", { forca: 22, agilidade: 12 }, { walk: 5, run: 9 }),
-  mob("Drake de Pedra", 5, 62, 16, "mini", { forca: 19, agilidade: 10 }),
-  mob("Dragão Ancião de Fogo", 19, 546, 19, "boss", { forca: 27, agilidade: 12 }, { walk: 6, run: 10 }, 5),
-  mob("Golem de Pedra", 8, 92, 17, "mini", { forca: 20, agilidade: 8 }, { walk: 3, run: 5 }),
-  mob("Armadura Animada", 1, 33, 18, "mob", { forca: 14, agilidade: 8 }, { walk: 2, run: 4 }),
-  mob("Golem de Ferro Vulcânico", 10, 105, 18, "mini", { forca: 22, agilidade: 8 }, { walk: 3, run: 5 }),
-  mob("Autômato de Gênio", 7, 76, 16, "mini", { forca: 16, agilidade: 14 }),
-  mob("Minotauro", 6, 52, 14, "mini", { forca: 18, agilidade: 11 }),
-  mob("Basilisco", 7, 52, 15, "mini", { forca: 16, agilidade: 8 }),
-  mob("Manticora", 8, 98, 14, "mini", { forca: 17, agilidade: 15 }, { walk: 5, run: 8 }),
-  mob("Grifo", 5, 59, 13, "mini", { forca: 18, agilidade: 15 }, { walk: 5, run: 10 }),
-  mob("Cocatriz", 4, 27, 12, "mob", { forca: 12, agilidade: 14 }),
-  mob("Aranha Tecerrochas", 2, 26, 13, "mob", { forca: 12, agilidade: 16 }),
-  mob("Escorpião Gigante", 3, 52, 15, "mob", { forca: 15, agilidade: 12 }),
-  mob("Centopeia Cáustica", 4, 65, 13, "mob", { forca: 14, agilidade: 13 }),
-  mob("Besouro-Diamante", 5, 45, 15, "mini", { forca: 16, agilidade: 12 }),
-  mob("Sapo-Engolidor", 6, 75, 12, "mini", { forca: 18, agilidade: 10 }),
-  mob("Kraken Menor", 12, 152, 16, "boss", { forca: 22, agilidade: 10 }, { walk: 3, run: 6 }),
-  mob("Serpente-do-Abismo", 8, 85, 14, "mini", { forca: 18, agilidade: 14 }),
-  mob("Tubarão-Cego", 5, 58, 13, "mini", { forca: 18, agilidade: 14 }, { walk: 5, run: 8 }),
-  mob("Goblin de Caverna", 1, 7, 13, "mob", { forca: 8, agilidade: 14 }, { walk: 4, run: 6 }, 3),
-  mob("Hobgoblin Guerreiro", 3, 11, 15, "mob", { forca: 13, agilidade: 12 }),
-  mob("Orc de Masmorra", 4, 15, 14, "mob", { forca: 16, agilidade: 10 }),
-  mob("Cogumelo-Rei", 7, 68, 12, "mini", { forca: 14, agilidade: 8 }),
-  mob("Treant Podre", 9, 136, 15, "mini", { forca: 20, agilidade: 8 }, { walk: 3, run: 5 }),
-  mob("Planta Carnívora Gigante", 5, 55, 11, "mob", { forca: 17, agilidade: 6 }),
-  mob("Slime Ácido", 2, 22, 8, "mob", { forca: 12, agilidade: 6 }, { walk: 2, run: 3 }),
-  mob("Slime de Cristal", 3, 38, 10, "mob", { forca: 10, agilidade: 8 }),
-  mob("Elemental de Fogo", 6, 72, 13, "mini", { forca: 14, agilidade: 16 }),
-  mob("Elemental de Gelo", 6, 75, 14, "mini", { forca: 16, agilidade: 14 }),
-  mob("Yeti das Profundezas", 8, 114, 13, "mini", { forca: 20, agilidade: 10 }),
-  mob("Lobo do Inverno", 3, 22, 12, "mob", { forca: 14, agilidade: 15 }, { walk: 5, run: 8 }),
-  mob("Mímico de Baú", 4, 52, 12, "mob", { forca: 17, agilidade: 10 }),
-  mob("Doppelganger", 5, 52, 14, "mini", { forca: 14, agilidade: 16 }),
-  mob("Hidra das Cavernas", 9, 168, 15, "boss", { forca: 20, agilidade: 12 }),
-  mob("Quimera", 10, 114, 14, "boss", { forca: 19, agilidade: 14 }, { walk: 5, run: 8 }),
-  mob("Anjo Caído", 14, 220, 18, "boss", { forca: 22, agilidade: 18 }, { walk: 5, run: 10 }),
-  mob("Gárgula de Cristal", 4, 52, 15, "mob", { forca: 14, agilidade: 15 }),
-  mob("Aberração Tentacular", 8, 84, 14, "mini", { forca: 18, agilidade: 10 }),
-  mob("Basilisco de Magma", 8, 88, 15, "mini", { forca: 17, agilidade: 10 }),
-  mob("Sereia das Profundezas", 6, 65, 13, "mini", { forca: 14, agilidade: 14 }),
-  mob("Troll de Pedra", 7, 105, 15, "mini", { forca: 20, agilidade: 8 }),
-  mob("Ciclope", 9, 138, 14, "boss", { forca: 22, agilidade: 8 }),
-  mob("Harpia de Caverna", 4, 38, 12, "mob", { forca: 12, agilidade: 16 }, { walk: 4, run: 8 }),
-  mob("Roper", 5, 93, 20, "mini", { forca: 18, agilidade: 6 }),
-  mob("Aboleth", 16, 195, 17, "boss", { forca: 16, agilidade: 10 }, { walk: 3, run: 5 }),
-  mob("Pudim Negro", 7, 85, 7, "mini", { forca: 14, agilidade: 6 }, { walk: 2, run: 4 }),
-  mob("Lagosta-Gigante Abissal", 4, 52, 16, "mob", { forca: 16, agilidade: 10 }),
-  mob("Caranguejo-Eremita Colossal", 7, 88, 18, "mini", { forca: 18, agilidade: 8 }),
-  mob("Aranha-Cavaleira", 9, 105, 14, "mini", { forca: 14, agilidade: 18 }),
-  mob("Mosca-Carniça Colossal", 2, 8, 11, "mob", { forca: 8, agilidade: 14 }, { walk: 4, run: 6 }),
-  mob("Besouro-Trovão", 5, 45, 15, "mini", { forca: 14, agilidade: 12 }),
-  mob("Verme Gigante de Pedra", 10, 142, 18, "boss", { forca: 22, agilidade: 6 }, { walk: 4, run: 6 }),
-  mob("Salamandra Gigante", 6, 65, 13, "mini", { forca: 15, agilidade: 12 }),
-  mob("Behemoth de Pedra", 14, 230, 19, "boss", { forca: 24, agilidade: 6 }, { walk: 4, run: 6 }),
-  mob("Fera da Sombra", 8, 78, 14, "mini", { forca: 12, agilidade: 16 }),
-  mob("Medusa", 7, 75, 15, "mini", { forca: 14, agilidade: 14 }),
-  mob("Fênix de Caverna", 13, 152, 16, "boss", { forca: 16, agilidade: 18 }, { walk: 5, run: 10 }),
-  mob("Gigante de Pedra", 12, 126, 17, "boss", { forca: 23, agilidade: 8 }, { walk: 4, run: 6 }),
-  mob("Bruxa da Masmorra", 8, 82, 17, "mini", { forca: 12, agilidade: 14 }),
-  mob("Fera Seminal", 11, 108, 13, "boss", { forca: 16, agilidade: 12 }),
-  mob("Carniçal Alado", 9, 104, 15, "mini", { forca: 15, agilidade: 16 }, { walk: 5, run: 10 }),
-  mob("Balor", 19, 262, 19, "boss", { forca: 26, agilidade: 14 }, { walk: 5, run: 8 }, 5),
-  mob("Enxame de Ratos-Cadáveres", 2, 24, 10, "mob", { forca: 10, agilidade: 14 }, { walk: 4, run: 6 }),
-  mob("Elemental de Terra", 8, 126, 17, "mini", { forca: 20, agilidade: 8 }, { walk: 3, run: 5 }),
-  mob("Banshee", 8, 58, 12, "mini", { forca: 8, agilidade: 14 }),
-  mob("Morcego-Tirano", 5, 65, 12, "mini", { forca: 16, agilidade: 14 }, { walk: 5, run: 10 }),
-  mob("Ooze Ocular", 6, 72, 13, "mini", { forca: 12, agilidade: 10 }, { walk: 2, run: 4 }),
-  mob("Tarrasque (Bebê)", 20, 676, 25, "boss", { forca: 30, agilidade: 10 }, { walk: 6, run: 10 }, 5),
-  // aliases mesa spawn (sem codigo 001–080)
-  { ...mob("Goblin", 1, 7, 13, "mob", { forca: 8, agilidade: 14 }, { walk: 4, run: 6 }, 3, "Alias de Goblin de Caverna para spawn rápido."), spawnAlias: true },
-  { ...mob("Esqueleto de Guarda", 2, 22, 14, "mob", { forca: 12, agilidade: 10 }), spawnAlias: true },
-  { ...mob("Slime de Masmorra", 2, 30, 11, "mob", { forca: 14, agilidade: 6 }, { walk: 2, run: 3 }), spawnAlias: true },
+  mob("Zumbi de Masmorra", 2, "mob", { forca: 13, agilidade: 8 }, { walk: 3, run: 5 }, 7),
+  mob("Esqueleto Armado", 2, "mob", { forca: 10, agilidade: 14 }, { walk: 4, run: 6 }, 7, "", { nimble: true }),
+  mob("Ghoul", 3, "mob", { forca: 13, agilidade: 15 }, { walk: 4, run: 6 }, 7),
+  mob("Espectro", 4, "mini", { forca: 8, agilidade: 14 }),
+  mob("Lich (Arquiliche)", 18, "boss", { forca: 11, agilidade: 16 }, { walk: 4, run: 6 }),
+  mob("Assombração", 3, "mob", { forca: 6, agilidade: 16 }),
+  mob("Vampiro", 10, "boss", { forca: 18, agilidade: 18 }, { walk: 5, run: 8 }),
+  mob("Cavaleiro Espectral", 5, "mini", { forca: 16, agilidade: 12 }, { walk: 4, run: 6 }, null, "", { heavy: true }),
+  mob("Múmia", 5, "mini", { forca: 16, agilidade: 10 }, { walk: 3, run: 5 }, null, "", { heavy: true, caDelta: -1 }),
+  mob("Dragonete de Magma", 6, "mini", { forca: 17, agilidade: 12 }, { walk: 4, run: 7 }),
+  mob("Wyvern", 9, "mini", { forca: 19, agilidade: 14 }, { walk: 4, run: 10 }),
+  mob("Dragão Jovem de Gelo", 13, "boss", { forca: 22, agilidade: 12 }, { walk: 5, run: 9 }),
+  mob("Drake de Pedra", 5, "mini", { forca: 19, agilidade: 10 }, { walk: 4, run: 6 }, null, "", { heavy: true }),
+  mob("Dragão Ancião de Fogo", 19, "boss", { forca: 27, agilidade: 12 }, { walk: 6, run: 10 }),
+  mob("Golem de Pedra", 8, "mini", { forca: 20, agilidade: 8 }, { walk: 3, run: 5 }, null, "", { heavy: true, tank: true }),
+  mob("Armadura Animada", 1, "mob", { forca: 14, agilidade: 8 }, { walk: 2, run: 4 }, null, "", { heavy: true, tank: true }),
+  mob("Golem de Ferro Vulcânico", 10, "mini", { forca: 22, agilidade: 8 }, { walk: 3, run: 5 }, null, "", { heavy: true, tank: true }),
+  mob("Autômato de Gênio", 7, "mini", { forca: 16, agilidade: 14 }),
+  mob("Minotauro", 6, "mini", { forca: 18, agilidade: 11 }),
+  mob("Basilisco", 7, "mini", { forca: 16, agilidade: 8 }),
+  mob("Manticora", 8, "mini", { forca: 17, agilidade: 15 }, { walk: 5, run: 8 }),
+  mob("Grifo", 5, "mini", { forca: 18, agilidade: 15 }, { walk: 5, run: 10 }),
+  mob("Cocatriz", 4, "mob", { forca: 12, agilidade: 14 }, { walk: 4, run: 6 }, null, "", { glass: true }),
+  mob("Aranha Tecerrochas", 2, "mob", { forca: 12, agilidade: 16 }, { walk: 4, run: 6 }, null, "", { nimble: true }),
+  mob("Escorpião Gigante", 3, "mob", { forca: 15, agilidade: 12 }, { walk: 4, run: 6 }, null, "", { heavy: true }),
+  mob("Centopeia Cáustica", 4, "mob", { forca: 14, agilidade: 13 }),
+  mob("Besouro-Diamante", 5, "mini", { forca: 16, agilidade: 12 }, { walk: 4, run: 6 }, null, "", { heavy: true }),
+  mob("Sapo-Engolidor", 6, "mini", { forca: 18, agilidade: 10 }),
+  mob("Kraken Menor", 12, "boss", { forca: 22, agilidade: 10 }, { walk: 3, run: 6 }),
+  mob("Serpente-do-Abismo", 8, "mini", { forca: 18, agilidade: 14 }),
+  mob("Tubarão-Cego", 5, "mini", { forca: 18, agilidade: 14 }, { walk: 5, run: 8 }),
+  mob("Goblin de Caverna", 1, "mob", { forca: 8, agilidade: 14 }, { walk: 4, run: 6 }, 3, "", { swarm: true, nimble: true }),
+  mob("Hobgoblin Guerreiro", 3, "mob", { forca: 13, agilidade: 12 }),
+  mob("Orc de Masmorra", 4, "mob", { forca: 16, agilidade: 10 }),
+  mob("Cogumelo-Rei", 7, "mini", { forca: 14, agilidade: 8 }),
+  mob("Treant Podre", 9, "mini", { forca: 20, agilidade: 8 }, { walk: 3, run: 5 }, null, "", { tank: true }),
+  mob("Planta Carnívora Gigante", 5, "mob", { forca: 17, agilidade: 6 }, { walk: 2, run: 3 }, null, "", { soft: true }),
+  mob("Slime Ácido", 2, "mob", { forca: 12, agilidade: 6 }, { walk: 2, run: 3 }, null, "", { soft: true }),
+  mob("Slime de Cristal", 3, "mob", { forca: 10, agilidade: 8 }, { walk: 2, run: 3 }, null, "", { soft: true }),
+  mob("Elemental de Fogo", 6, "mini", { forca: 14, agilidade: 16 }),
+  mob("Elemental de Gelo", 6, "mini", { forca: 16, agilidade: 14 }),
+  mob("Yeti das Profundezas", 8, "mini", { forca: 20, agilidade: 10 }, { walk: 4, run: 6 }, null, "", { tank: true }),
+  mob("Lobo do Inverno", 3, "mob", { forca: 14, agilidade: 15 }, { walk: 5, run: 8 }),
+  mob("Mímico de Baú", 4, "mob", { forca: 17, agilidade: 10 }),
+  mob("Doppelganger", 5, "mini", { forca: 14, agilidade: 16 }),
+  mob("Hidra das Cavernas", 9, "boss", { forca: 20, agilidade: 12 }),
+  mob("Quimera", 10, "boss", { forca: 19, agilidade: 14 }, { walk: 5, run: 8 }),
+  mob("Anjo Caído", 14, "boss", { forca: 22, agilidade: 18 }, { walk: 5, run: 10 }),
+  mob("Gárgula de Cristal", 4, "mob", { forca: 14, agilidade: 15 }, { walk: 4, run: 8 }, null, "", { heavy: true }),
+  mob("Aberração Tentacular", 8, "mini", { forca: 18, agilidade: 10 }),
+  mob("Basilisco de Magma", 8, "mini", { forca: 17, agilidade: 10 }, { walk: 4, run: 6 }, null, "", { heavy: true }),
+  mob("Sereia das Profundezas", 6, "mini", { forca: 14, agilidade: 14 }),
+  mob("Troll de Pedra", 7, "mini", { forca: 20, agilidade: 8 }, { walk: 4, run: 6 }, null, "", { tank: true }),
+  mob("Ciclope", 9, "boss", { forca: 22, agilidade: 8 }),
+  mob("Harpia de Caverna", 4, "mob", { forca: 12, agilidade: 16 }, { walk: 4, run: 8 }, null, "", { nimble: true }),
+  mob("Roper", 5, "mini", { forca: 18, agilidade: 6 }, { walk: 2, run: 3 }, null, "", { heavy: true, tank: true, ca: 15 }),
+  mob("Aboleth", 16, "boss", { forca: 16, agilidade: 10 }, { walk: 3, run: 5 }),
+  mob("Pudim Negro", 7, "mini", { forca: 14, agilidade: 6 }, { walk: 2, run: 4 }, null, "", { soft: true }),
+  mob("Lagosta-Gigante Abissal", 4, "mob", { forca: 16, agilidade: 10 }, { walk: 4, run: 6 }, null, "", { heavy: true }),
+  mob("Caranguejo-Eremita Colossal", 7, "mini", { forca: 18, agilidade: 8 }, { walk: 3, run: 5 }, null, "", { heavy: true, tank: true }),
+  mob("Aranha-Cavaleira", 9, "mini", { forca: 14, agilidade: 18 }),
+  mob("Mosca-Carniça Colossal", 2, "mob", { forca: 8, agilidade: 14 }, { walk: 4, run: 6 }, null, "", { swarm: true }),
+  mob("Besouro-Trovão", 5, "mini", { forca: 14, agilidade: 12 }, { walk: 4, run: 6 }, null, "", { heavy: true }),
+  mob("Verme Gigante de Pedra", 10, "boss", { forca: 22, agilidade: 6 }, { walk: 4, run: 6 }, null, "", { heavy: true }),
+  mob("Salamandra Gigante", 6, "mini", { forca: 15, agilidade: 12 }),
+  mob("Behemoth de Pedra", 14, "boss", { forca: 24, agilidade: 6 }, { walk: 4, run: 6 }, null, "", { tank: true }),
+  mob("Fera da Sombra", 8, "mini", { forca: 12, agilidade: 16 }),
+  mob("Medusa", 7, "mini", { forca: 14, agilidade: 14 }),
+  mob("Fênix de Caverna", 13, "boss", { forca: 16, agilidade: 18 }, { walk: 5, run: 10 }),
+  mob("Gigante de Pedra", 12, "boss", { forca: 23, agilidade: 8 }, { walk: 4, run: 6 }),
+  mob("Bruxa da Masmorra", 8, "mini", { forca: 12, agilidade: 14 }),
+  mob("Fera Seminal", 11, "boss", { forca: 16, agilidade: 12 }),
+  mob("Carniçal Alado", 9, "mini", { forca: 15, agilidade: 16 }, { walk: 5, run: 10 }),
+  mob("Balor", 19, "boss", { forca: 26, agilidade: 14 }, { walk: 5, run: 8 }),
+  mob("Enxame de Ratos-Cadáveres", 2, "mob", { forca: 10, agilidade: 14 }, { walk: 4, run: 6 }, null, "", { swarm: true }),
+  mob("Elemental de Terra", 8, "mini", { forca: 20, agilidade: 8 }, { walk: 3, run: 5 }, null, "", { heavy: true, tank: true }),
+  mob("Banshee", 8, "mini", { forca: 8, agilidade: 14 }, { walk: 4, run: 8 }, null, "", { glass: true }),
+  mob("Morcego-Tirano", 5, "mini", { forca: 16, agilidade: 14 }, { walk: 5, run: 10 }),
+  mob("Ooze Ocular", 6, "mini", { forca: 12, agilidade: 10 }, { walk: 2, run: 4 }, null, "", { soft: true }),
+  mob("Tarrasque (Bebê)", 20, "boss", { forca: 30, agilidade: 10 }, { walk: 6, run: 10 }, null, "", { heavy: true, hp: 480, ca: 22 }),
+  { ...mob("Goblin", 1, "mob", { forca: 8, agilidade: 14 }, { walk: 4, run: 6 }, 3, "Alias de Goblin de Caverna para spawn rápido.", { swarm: true, nimble: true }), spawnAlias: true },
+  { ...mob("Esqueleto de Guarda", 2, "mob", { forca: 12, agilidade: 10 }, { walk: 4, run: 6 }, null, "", { heavy: true }), spawnAlias: true },
+  { ...mob("Slime de Masmorra", 2, "mob", { forca: 14, agilidade: 6 }, { walk: 2, run: 3 }, null, "", { soft: true, hpDelta: 4 }), spawnAlias: true },
 ];
 
 let catalogSeq = 0;
@@ -629,9 +637,13 @@ function stripHtmlTag(html) {
 }
 
 writeFileSync(join(OUT, "monstros.json"), JSON.stringify(MONSTERS, null, 2) + "\n");
-writeFileSync(join(OUT, "magias.json"), JSON.stringify(SPELLS, null, 2) + "\n");
-writeFileSync(join(OUT, "habilidades.json"), JSON.stringify(ABILITIES, null, 2) + "\n");
+if (!MONSTERS_ONLY) {
+  writeFileSync(join(OUT, "magias.json"), JSON.stringify(SPELLS, null, 2) + "\n");
+  writeFileSync(join(OUT, "habilidades.json"), JSON.stringify(ABILITIES, null, 2) + "\n");
+}
 
 console.log(
-  `OK: ${MONSTERS.length} monstros, ${SPELLS.length} magias, ${ABILITIES.length} habilidades (armas/equipamentos: scripts/gen-equipment-compendium.py)`
+  MONSTERS_ONLY
+    ? `OK: ${MONSTERS.length} monstros (magias/habilidades preservados)`
+    : `OK: ${MONSTERS.length} monstros, ${SPELLS.length} magias, ${ABILITIES.length} habilidades (armas/equipamentos: scripts/gen-equipment-compendium.py)`
 );
