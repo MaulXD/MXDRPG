@@ -3,10 +3,7 @@
 import { useCallback, useRef, type RefObject } from "react";
 import type { Axial } from "@/lib/vtt/hex-math";
 import { axialToPixel, hexDirection, pixelToAxial } from "@/lib/vtt/hex-math";
-import {
-  resolveMapAlignedGridLayout,
-  worldToMapFloorLocal,
-} from "@/lib/vtt/grid-layout";
+import { resolveMapAlignedGridLayout } from "@/lib/vtt/grid-layout";
 import { areaNeedsDirection, areaUsesCasterOrigin, canCastAreaAt } from "@/lib/combat/area-spell";
 import type { CombatActionOption } from "@/lib/combat/types";
 import type { CharacterSheet } from "@/lib/character/types";
@@ -297,9 +294,7 @@ export function useBattlefieldPointer({
     (px: number, py: number): Axial | null => {
       const c = boardCoords(px, py);
       if (!c) return null;
-      const local = c.grid.floorAnchor
-        ? worldToMapFloorLocal(c.world.x, c.world.y, c.grid.floorAnchor)
-        : c.world;
+      const local = c.world;
       return pixelToAxial(local.x, local.y, c.grid.hexSize, c.grid.ox, c.grid.oy);
     },
     [boardCoords]
@@ -327,9 +322,7 @@ export function useBattlefieldPointer({
       for (const token of scene.tokens) {
         const pos = tokenDrawPosition?.(token) ?? token.axial;
         const size = tokenSizeOf(token);
-        const local = c.grid.floorAnchor
-          ? worldToMapFloorLocal(c.world.x, c.world.y, c.grid.floorAnchor)
-          : c.world;
+        const local = c.world;
         const r = tokenHitRadius(c.grid.hexSize, size);
         const { x, y } = tokenPixelCenter(pos, size, c.grid.hexSize, c.grid.ox, c.grid.oy);
         const dist = Math.hypot(local.x - x, local.y - y);
