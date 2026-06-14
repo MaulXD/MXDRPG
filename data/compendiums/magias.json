@@ -5,7 +5,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-chama-de-fogareiro",
-      "description": "<p>Chama pequena e controlável na ponta dos dedos; temperatura precisa. Uso culinário: dispensa fogareiro ou lenha.</p><p><em>Evocacao | Acao | Toque | Ate ser apagada | Mago, Clérigo, Bardo, Druida, Artífice · nv 0 · 1 PA · 1 hex</em></p>",
+      "description": "<p>Chama pequena e controlável na ponta dos dedos; temperatura precisa. Uso culinário: dispensa fogareiro ou lenha.</p><p><em>Evocacao | Acao | Toque | Ate ser apagada | Mago, Clérigo, Bardo, Druida, Feiticeiro · nv 0 · 1 PA · 1 hex</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 1,
@@ -66,7 +66,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-detectar-veneno",
-      "description": "<p>Em raio de 3m, detecta toxinas em comida, bebida ou ingrediente (aura avermelhada).</p><p><em>Adivinhacao | Acao | Pessoal | 10 minutos | Mago, Clérigo, Bardo, Druida, Artífice · nv 0 · 1 PA · 3 hex</em></p>",
+      "description": "<p>Em raio de 3m, detecta toxinas em comida, bebida ou ingrediente (aura avermelhada).</p><p><em>Adivinhacao | Acao | Pessoal | 10 minutos | Mago, Clérigo, Bardo, Druida, Feiticeiro · nv 0 · 1 PA · 3 hex</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 3,
@@ -268,7 +268,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-identificar-ingrediente",
-      "description": "<p>Origem do monstro, propriedades biomágicas, preparo ideal e riscos.</p><p><em>Adivinhacao (R) | 1 minuto | Toque | Instantanea | Mago, Bardo, Artífice · nv 1 · 1 PA · 1 hex</em></p>",
+      "description": "<p>Origem do monstro, propriedades biomágicas, preparo ideal e riscos.</p><p><em>Adivinhacao (R) | 1 minuto | Toque | Instantanea | Mago, Bardo, Feiticeiro · nv 1 · 1 PA · 1 hex</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 1,
@@ -294,7 +294,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-armadura-arcana",
-      "description": "<p>CA 13 + INT; não interfere com gestos de magia.</p><p><em>Abjuracao | Acao | Toque | 8 horas | Mago, Artífice · nv 1 · 1 PA · 1 hex</em></p>",
+      "description": "<p>CA 13 + INT; não interfere com gestos de magia.</p><p><em>Abjuracao | Acao | Toque | 8 horas | Mago, Feiticeiro · nv 1 · 1 PA · 1 hex</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 1,
@@ -554,7 +554,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-transmutacao-de-carne",
-      "description": "<p>Converte ingrediente em equivalente de mesma raridade (ex.: goblin -&gt; grifo).</p><p><em>Transmutação | 1 hora | Toque | Permanente | Mago, Gnomo, Artífice · nv 2 · 2 PA · 1 hex</em></p>",
+      "description": "<p>Converte ingrediente em equivalente de mesma raridade (ex.: goblin -&gt; grifo).</p><p><em>Transmutação | 1 hora | Toque | Permanente | Mago, Gnomo, Feiticeiro · nv 2 · 2 PA · 1 hex</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 1,
@@ -606,7 +606,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-preservacao-perfeita",
-      "description": "<p>Ingrediente preservado 30 dias sem perder propriedades biomágicas.</p><p><em>Transmutação | Acao | Toque | 30 dias | Mago, Clérigo, Druida, Artífice · nv 2 · 1 PA · 1 hex</em></p>",
+      "description": "<p>Ingrediente preservado 30 dias sem perder propriedades biomágicas.</p><p><em>Transmutação | Acao | Toque | 30 dias | Mago, Clérigo, Druida, Feiticeiro · nv 2 · 1 PA · 1 hex</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 1,
@@ -658,7 +658,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-escudo-arcano",
-      "description": "<p>Quando atingido ou alvo de magia: +5 CA até inicio do próximo turno (inclui contra a magia que disparou).</p><p><em>Abjuracao | Reacao | Pessoal | 1 rodada | Mago, Artífice · nv 2 · 1 PA · 0 hex</em></p>",
+      "description": "<p>Quando atingido ou alvo de magia: +5 CA até inicio do próximo turno (inclui contra a magia que disparou).</p><p><em>Abjuracao | Reacao | Pessoal | 1 rodada | Mago, Feiticeiro · nv 2 · 1 PA · 0 hex</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 0,
@@ -1231,7 +1231,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-preservacao-anual",
-      "description": "<p>Como Preservação Perfeita, mas duração 1 ano (requer espaco de nivel 4).</p><p><em>Transmutação | Acao | Toque | 1 ano | Mago, Clérigo, Druida, Artífice · nv 4 · 1 PA · 1 hex</em></p>",
+      "description": "<p>Como Preservação Perfeita, mas duração 1 ano (requer espaco de nivel 4).</p><p><em>Transmutação | Acao | Toque | 1 ano | Mago, Clérigo, Druida, Feiticeiro · nv 4 · 1 PA · 1 hex</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 1,
@@ -1411,7 +1411,7 @@
     "type": "magia",
     "system": {
       "catalogId": "MAG-salto-dimensional",
-      "description": "<p>Teletransporte até 18m para ponto visivel.</p><p><em>Conjuracao | Acao Bonus | Pessoal | Instantanea | Mago, Bardo, Artífice · nv 5 · 2 PA · 6 hex</em></p>",
+      "description": "<p>Teletransporte até 18m para ponto visivel.</p><p><em>Conjuracao | Acao Bonus | Pessoal | Instantanea | Mago, Bardo, Feiticeiro · nv 5 · 2 PA · 6 hex</em></p>",
       "tactical": {
         "alcanceHex": {
           "value": 6,

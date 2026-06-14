@@ -9,7 +9,8 @@ export type ClassId =
   | "Bárbaro"
   | "Bardo"
   | "Druida"
-  | "Artífice"
+  | "Feiticeiro"
+  | "Espiritualista"
   | "Paladino"
   | "Bruxo";
 
@@ -20,7 +21,6 @@ export type RaceId =
   | "Halfling"
   | "Gnomo"
   | "Meio-Humano"
-  | "Forjado de Osso";
 
 export type AttributeKey =
   | "forca"
@@ -42,7 +42,8 @@ export const CLASS_CANON_ID: Record<ClassId, string> = {
   Bárbaro: "CLA-bárbaro",
   Bardo: "CLA-bardo",
   Druida: "CLA-druida",
-  Artífice: "CLA-artífice",
+  Feiticeiro: "CLA-feiticeiro",
+  Espiritualista: "CLA-espiritualista",
   Paladino: "CLA-paladino",
   Bruxo: "CLA-bruxo",
 };
@@ -54,7 +55,6 @@ export const RACE_CANON_ID: Record<RaceId, string> = {
   Halfling: "RAC-halfling",
   Gnomo: "RAC-gnomo",
   "Meio-Humano": "RAC-meio-humano",
-  "Forjado de Osso": "RAC-forjado-de-osso",
 };
 
 export const LINHAGEM_CANON_ID: Record<string, string> = {
@@ -182,7 +182,7 @@ export const CLASS_LIST: ClassDef[] = [
     dietBonus: "Comunhão de Masmorra — descanso concede HP temporários = nv×2 ao grupo",
     subclasses: [
       "Sacerdote Purificador",
-      "Monge Ascético",
+      "Clérigo Contemplativo",
       "Clérigo do Sustento",
       "Pastor de Quimeras",
       "Clérigo do Limiar",
@@ -240,20 +240,39 @@ export const CLASS_LIST: ClassDef[] = [
     ],
   },
   {
-    id: "Artífice",
-    canonId: CLASS_CANON_ID["Artífice"],
+    id: "Feiticeiro",
+    canonId: CLASS_CANON_ID.Feiticeiro,
+    hpDie: 6,
+    hpDieMax: 6,
+    hpDieAvg: 4,
+    primary: "Carisma",
+    proficiencies: "Adagas, dardos, fundas, bestas leves",
+    culinary: { harmonizacao: 3, coccao: 2 },
+    dietBonus:
+      "Centelha Inata — após Refeição Comum+, primeira magia ofensiva do combate +1d6 (conforme subclasse)",
+    subclasses: [
+      "Linhagem Bestial",
+      "Sangue Selvagem",
+      "Eco Abissal",
+      "Chama Inata",
+    ],
+  },
+  {
+    id: "Espiritualista",
+    canonId: CLASS_CANON_ID.Espiritualista,
     hpDie: 8,
     hpDieMax: 8,
     hpDieAvg: 5,
-    primary: "Inteligência e Destreza",
-    proficiencies: "Armaduras leves/médias, ferramentas, armas simples e bestas",
-    culinary: { coccao: 5, trinchar: 3 },
-    dietBonus: "Engenho de Campo — equipamento improvisado dobra eficiência de saque",
+    primary: "Destreza e Sabedoria",
+    proficiencies: "Armas simples, espadas curtas, bestas leves; sem armadura pesada",
+    culinary: { estomagoDeFerro: 3, harmonizacao: 2 },
+    dietBonus:
+      "Respiração de Combate — após descanso curto na masmorra, recupera 2 Chi extras no próximo combate",
     subclasses: [
-      "Ferreiro de Campo",
-      "Engenheiro de Explosivos",
-      "Biólogo de Masmorra",
-      "Construtor de Armadilhas",
+      "Punho do Limiar",
+      "Tecelão do Vácuo",
+      "Asceta da Dor",
+      "Guardião da Respiração",
     ],
   },
   {
@@ -453,23 +472,6 @@ export const RACE_LIST: RaceDef[] = [
       },
     ],
   },
-  {
-    id: "Forjado de Osso",
-    canonId: RACE_CANON_ID["Forjado de Osso"],
-    attributeBonus: { constituicao: 2 },
-    traits: ["Construto Vivo", "Núcleo de Alma", "Composição de Monstros", "Manutenção"],
-    milestones: {
-      4: "Upgrade de Componente — 3ª parte",
-      6: "Amortecimento de Impacto",
-      8: "Processamento Avançado",
-      10: "Instalação Rápida",
-      12: "Estrutura Reforçada — +2 CA",
-      14: "Quarta Parte",
-      16: "Núcleo Aprimorado",
-      18: "Autoreparo",
-      20: "Obra-Prima dos Anões",
-    },
-  },
 ];
 
 export const TALENT_LEVELS = [4, 8, 12, 16] as const;
@@ -588,25 +590,38 @@ export function classLevelFeatures(classId: string, level: number): string[] {
   if (classId === "Ladino" && level >= 1) {
     const dice = Math.min(10, 1 + Math.floor((level - 1) / 2));
     if ([1, 3, 5, 7, 9, 11, 13, 15, 17, 19].includes(level) || level === 20) {
-      out.push(`Ataque Furtivo — ${dice}d6`);
+      out.push(`Golpe Oportunista — ${dice}d6`);
     }
   }
   if (classId === "Bárbaro" && level === 1) out.push("Fúria — 2 usos");
   if (classId === "Bardo" && level >= 1) out.push("Inspiração de Bardo evolui com o nível");
-  if (classId === "Druida" && level === 1) out.push("Forma Selvagem");
+  if (classId === "Druida" && level === 1) out.push("Forma de Espécime");
+  if (classId === "Feiticeiro") {
+    if (level === 1) out.push("Magia inata — 4 truques, magias conhecidas (lista arcano-inato)");
+    if (level === 2) out.push("Fonte de Metamorfose — elevar magias (+1 PA = +1d6)");
+    if (level === 5) out.push("Centelha Arcana — 1ª magia 2+ PA custa 1 PA a menos");
+    if (level === 20) out.push("Ascensão da Centelha — metamorfose sem custo extra 1×/combate");
+  }
+  if (classId === "Espiritualista") {
+    if (level === 1) out.push("Chi de Combate — 10 Chi/combate, máx. 2 Chi/turno");
+    if (level === 2) out.push("Caminho do Corpo — técnicas de Chi da subclasse");
+    if (level === 5) out.push("Fluxo Marcial — 1ª técnica de Chi do turno custa 1 Chi a menos");
+    if (level === 11) out.push("Passo do Vácuo — +1 hex de movimento ao gastar Chi");
+    if (level === 20) out.push("Corpo Transcendente — Chi máximo 12 neste combate");
+  }
   if (classId === "Paladino") {
     if (level === 1) {
-      out.push("Imposição de Mãos — cura 1d8+CAR ou 2d8 radiante vs morto-vivo");
+      out.push("Toque Consagrado — cura 1d8+CAR ou 2d8 radiante vs morto-vivo");
       out.push("Aura de Devoção — aliados em 3m +2 em saves vs medo e encantamento");
     }
-    if (level === 2) out.push("Golpe Sagrado — +2d8 radiante (1 PA extra por golpe)");
+    if (level === 2) out.push("Golpe do Juramento — +2d8 radiante (1 PA extra por golpe)");
     if (level === 5) {
-      out.push("Afinidade Divina — magias 2+ PA custam 1 PA a menos");
-      out.push("Golpe Sagrado — 3d8 radiante");
+      out.push("Canto Divino — magias 2+ PA custam 1 PA a menos");
+      out.push("Golpe do Juramento — 3d8 radiante");
     }
-    if (level === 9) out.push("Golpe Sagrado — 4d8 radiante");
-    if (level === 13) out.push("Golpe Sagrado — 5d8 radiante");
-    if (level === 17) out.push("Golpe Sagrado — 6d8 radiante");
+    if (level === 9) out.push("Golpe do Juramento — 4d8 radiante");
+    if (level === 13) out.push("Golpe do Juramento — 5d8 radiante");
+    if (level === 17) out.push("Golpe do Juramento — 6d8 radiante");
     if (level === 20) out.push("Ascensão do Juramento — 1 resistência lendária/dia");
   }
   if (classId === "Bruxo") {
@@ -617,9 +632,10 @@ export function classLevelFeatures(classId: string, level: number): string[] {
     if (level === 17) out.push("Pacto Supremo — +1 slot de Pacto");
     if (level === 20) out.push("Patrono Manifesto — 1 invocação extra ativa");
   }
-  const casters = ["Mago", "Clérigo", "Druida", "Bardo", "Artífice", "Paladino", "Bruxo"];
+  const casters = ["Mago", "Clérigo", "Druida", "Bardo", "Feiticeiro", "Paladino", "Bruxo"];
   if (casters.includes(classId) && level === 5 && classId !== "Paladino" && classId !== "Bruxo") {
-    out.push("Afinidade Arcânica — magias 2+ PA custam 1 PA a menos");
+    if (classId === "Feiticeiro") out.push("Centelha Arcana — magias 2+ PA custam 1 PA a menos");
+    else out.push("Economia Arcana — magias 2+ PA custam 1 PA a menos");
   }
   if (TALENT_LEVELS.includes(level as (typeof TALENT_LEVELS)[number])) {
     out.push(`Talento do Caminho de Subclasse (nv ${level})`);

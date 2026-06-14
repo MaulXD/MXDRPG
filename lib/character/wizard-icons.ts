@@ -7,7 +7,6 @@ export type WizardIconKind =
   | "race-halfling"
   | "race-gnomo"
   | "race-meio-humano"
-  | "race-forjado"
   | "lineage-gato"
   | "lineage-cobra"
   | "lineage-urso"
@@ -24,7 +23,8 @@ export type WizardIconKind =
   | "class-barbaro"
   | "class-bardo"
   | "class-druida"
-  | "class-artifice"
+  | "class-feiticeiro"
+  | "class-espiritualista"
   | "class-paladino"
   | "class-bruxo"
   | "fallback";
@@ -41,8 +41,6 @@ export const WIZARD_ICON_PATHS: Record<WizardIconKind, string> = {
     "M10 5h4v2h-4z M9 7h6v10c0 2-1 3-3 3s-3-1-3-3V7z M11 11h2 M11 14h2",
   "race-meio-humano":
     "M12 5a3 3 0 100 6 3 3 0 000-6z M7 20v-1c0-3 2-5 5-5s5 2 5 5v1 M9 12l-1 2 M15 12l1 2",
-  "race-forjado":
-    "M9 8h6v8H9z M10 5h4v3h-4z M8 18h8 M12 11v3 M10 13h4",
   "lineage-gato": "M8 9l-2-3 2 1 2-2 2 2 2-1-2 3 M10 13a2 2 0 104 0",
   "lineage-cobra": "M6 16c4-6 8-6 12-10 M14 6l2 2-2 2 M8 18h8",
   "lineage-urso": "M8 9a2 2 0 104 0 2 2 0 00-4 0z M14 9a2 2 0 104 0 2 2 0 00-4 0z M12 12c-3 0-5 2-5 5v3h10v-3c0-3-2-5-5-5z",
@@ -59,7 +57,8 @@ export const WIZARD_ICON_PATHS: Record<WizardIconKind, string> = {
   "class-barbaro": "M6 18l4-10 8-2-2 8-10 4z",
   "class-bardo": "M9 18V8l8-2v10 M9 14h8",
   "class-druida": "M12 20V9 M8 12c0-4 2-7 4-8 2 1 4 4 4 8z M16 12c0-4-2-7-4-8-2 1-4 4-4 8z",
-  "class-artifice": "M12 8a4 4 0 100 8 4 4 0 000-8z M12 2v2 M12 20v2 M4 12H2 M22 12h-2",
+  "class-feiticeiro": "M12 2l2 4 4 1-3 3 1 4-4-2-4 2 1-4-3-3-4-1 2-4z",
+  "class-espiritualista": "M12 4c-2 0-4 2-4 5v3l-2 6h12l-2-6V9c0-3-2-5-4-5z",
   "class-paladino": "M12 3l-2 4h4l-2-4z M12 7v14 M8 11h8 M10 8h4",
   "class-bruxo": "M4 12s4-6 8-6 8 6 8 6-4 6-8 6-8-6-8-6z M12 12a2 2 0 100 4 2 2 0 000-4z",
   fallback: "M8 8h8v8H8z",
@@ -72,7 +71,6 @@ export const RACE_ICON_COLOR: Record<RaceId, string> = {
   Halfling: "#8fbc6b",
   Gnomo: "#9b7ed9",
   "Meio-Humano": "#d4845a",
-  "Forjado de Osso": "#a8b4c4",
 };
 
 export const CLASS_ICON_COLOR: Record<ClassId, string> = {
@@ -84,7 +82,8 @@ export const CLASS_ICON_COLOR: Record<ClassId, string> = {
   Bárbaro: "#c04040",
   Bardo: "#e88ca0",
   Druida: "#4a8a5a",
-  Artífice: "#5a9ec9",
+  Feiticeiro: "#c45ae8",
+  Espiritualista: "#d4a574",
   Paladino: "#e8c040",
   Bruxo: "#6b2d8a",
 };
@@ -107,7 +106,6 @@ const RACE_ICON: Record<RaceId, WizardIconKind> = {
   Halfling: "race-halfling",
   Gnomo: "race-gnomo",
   "Meio-Humano": "race-meio-humano",
-  "Forjado de Osso": "race-forjado",
 };
 
 const CLASS_ICON: Record<ClassId, WizardIconKind> = {
@@ -119,7 +117,8 @@ const CLASS_ICON: Record<ClassId, WizardIconKind> = {
   Bárbaro: "class-barbaro",
   Bardo: "class-bardo",
   Druida: "class-druida",
-  Artífice: "class-artifice",
+  Feiticeiro: "class-feiticeiro",
+  Espiritualista: "class-espiritualista",
   Paladino: "class-paladino",
   Bruxo: "class-bruxo",
 };
@@ -166,7 +165,6 @@ export function wizardIconLabel(kind: WizardIconKind): string {
     "race-halfling": "Halfling",
     "race-gnomo": "Gnomo",
     "race-meio-humano": "Meio-humano",
-    "race-forjado": "Forjado de osso",
     "lineage-gato": "Linhagem do Gato",
     "lineage-cobra": "Linhagem da Cobra",
     "lineage-urso": "Linhagem do Urso",
@@ -183,7 +181,8 @@ export function wizardIconLabel(kind: WizardIconKind): string {
     "class-barbaro": "Bárbaro",
     "class-bardo": "Bardo",
     "class-druida": "Druida",
-    "class-artifice": "Artífice",
+    "class-feiticeiro": "Feiticeiro",
+    "class-espiritualista": "Espiritualista",
     "class-paladino": "Paladino",
     "class-bruxo": "Bruxo",
     fallback: "Opção",

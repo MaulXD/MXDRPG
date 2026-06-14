@@ -72,7 +72,7 @@
   "classFeatures": [
     {
       "id": "afinidade-arcanica",
-      "classIds": ["Mago", "Clérigo", "Druida", "Bardo", "Artífice"],
+      "classIds": ["Mago", "Clérigo", "Druida", "Bardo", "Feiticeiro"],
       "minLevel": 5,
       "kinds": ["spell"],
       "amount": 1,

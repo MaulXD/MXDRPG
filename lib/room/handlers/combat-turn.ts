@@ -38,6 +38,12 @@ import {
   type CombatTickContext,
 } from "@/lib/combat/timed-effects";
 import { resetAllTokenMovement } from "../internal/token-reset";
+import {
+  chiMaxForEspiritualista,
+  isEspiritualista,
+  resetChiSpentThisTurn,
+  resetTokenChi,
+} from "@/lib/combat/chi-economy";
 import { getRoom, persistRoom, toSnapshot } from "../internal/registry";
 import type { RoomSnapshot, RoomState } from "../types";
 
@@ -53,6 +59,23 @@ function paRulesForToken(room: RoomState, token: BattleToken) {
 
 function paMaxForToken(room: RoomState, token: BattleToken): number {
   return paRulesForToken(room, token).recoveryPerTurn;
+}
+
+function resetChiPoolsForCombat(room: RoomState): void {
+  const tokens = room.scene.tokens.map((t) => {
+    if (t.linked && t.actorId) {
+      const actor = room.actors[t.actorId];
+      if (actor && isEspiritualista(actor)) {
+        return resetTokenChi(t, chiMaxForEspiritualista());
+      }
+    }
+    if (t.chi != null || t.chiMax != null || t.chiSpentThisTurn) {
+      const { chi: _c, chiMax: _m, chiSpentThisTurn: _s, ...rest } = t;
+      return rest;
+    }
+    return t;
+  });
+  room.scene = { ...room.scene, tokens };
 }
 
 /** Zera pools de todos; só o ativo recebe PA na iniciativa. */
@@ -99,6 +122,7 @@ function refreshActiveTokenPa(room: RoomState, mode: "full" | "regen" = "regen")
   tokens[idx] = clearPerTurnRecharges({
     ...token,
     ...normalizeTokenPaFields(refreshed, paMax),
+    ...resetChiSpentThisTurn(token),
   });
 
   if (actor && token.linked && token.actorId) {
@@ -356,6 +380,7 @@ export async function rollRoomInitiative(roomId: string): Promise<RoomSnapshot |
   const initNotices: string[] = [];
   resetAllTokenMovement(room, initNotices);
   zeroAllTokenPaPools(room);
+  resetChiPoolsForCombat(room);
 
   const notices: string[] = [...initNotices];
   const maxSkips = Math.max(1, room.combat.order.length + 1);

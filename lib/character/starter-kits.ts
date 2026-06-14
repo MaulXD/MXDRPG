@@ -345,43 +345,81 @@ const CLASS_STARTER_KITS: Record<ClassId, StarterKitOption[]> = {
       armorLoadout: { packId: "equipamentos", entryId: "equipamentos-arm-15" },
     },
   ],
-  Artífice: [
+  Feiticeiro: [
     {
-      id: "artifice-maca",
-      label: "Maça e forja de campo",
-      summary: "Ferreiro — maça, couro e chama de fogareiro.",
+      id: "feiticeiro-centelha",
+      label: "Adaga e centelha",
+      summary: "Inato — adaga, couro e lâmina de espírito.",
       items: [
-        { packId: "armas", entryId: "armas-wpn-o05" },
+        { packId: "armas", entryId: "armas-wpn-o01" },
         { packId: "equipamentos", entryId: "equipamentos-arm-01" },
-        { packId: "equipamentos", entryId: "equipamentos-kit-de-brasas-mágicas" },
-        { packId: "magias", entryId: "magias-chama-de-fogareiro" },
+        { packId: "magias", entryId: "magias-lamina-de-espirito" },
+        { packId: "magias", entryId: "magias-maos-gelidas" },
       ],
-      combatLoadout: { packId: "armas", entryId: "armas-wpn-o05" },
+      combatLoadout: { packId: "magias", entryId: "magias-maos-gelidas" },
       armorLoadout: { packId: "equipamentos", entryId: "equipamentos-arm-01" },
     },
     {
-      id: "artifice-bestia",
-      label: "Besta e meia-armadura",
-      summary: "Engenheiro — besta, armadura média e armadura arcana.",
+      id: "feiticeiro-trovao",
+      label: "Besta e trovão",
+      summary: "Burst — besta leve e onda de trovão.",
       items: [
         { packId: "armas", entryId: "armas-bst-01" },
-        { packId: "equipamentos", entryId: "equipamentos-arm-07" },
-        { packId: "magias", entryId: "magias-armadura-arcana" },
+        { packId: "equipamentos", entryId: "equipamentos-arm-01" },
+        { packId: "magias", entryId: "magias-chama-de-fogareiro" },
+        { packId: "magias", entryId: "magias-onda-de-trovao" },
       ],
-      combatLoadout: { packId: "armas", entryId: "armas-bst-01" },
-      armorLoadout: { packId: "equipamentos", entryId: "equipamentos-arm-07" },
+      combatLoadout: { packId: "magias", entryId: "magias-onda-de-trovao" },
+      armorLoadout: { packId: "equipamentos", entryId: "equipamentos-arm-01" },
     },
     {
-      id: "artifice-adaga",
-      label: "Adaga e brigandina",
-      summary: "Inventor — adaga, brigandina e detecção.",
+      id: "feiticeiro-chama",
+      label: "Fundas e chama",
+      summary: "Elemental — funda, brigandina e chama de vinha.",
       items: [
-        { packId: "armas", entryId: "armas-wpn-o01" },
+        { packId: "armas", entryId: "armas-wpn-o03" },
         { packId: "equipamentos", entryId: "equipamentos-arm-10" },
-        { packId: "magias", entryId: "magias-detectar-veneno" },
+        { packId: "magias", entryId: "magias-chama-de-vinha" },
       ],
-      combatLoadout: { packId: "armas", entryId: "armas-wpn-o01" },
+      combatLoadout: { packId: "magias", entryId: "magias-chama-de-vinha" },
       armorLoadout: { packId: "equipamentos", entryId: "equipamentos-arm-10" },
+    },
+  ],
+  Espiritualista: [
+    {
+      id: "espiritualista-punhos",
+      label: "Punhos e foco",
+      summary: "Corpo a corpo — sem arma, gibão; Chi no combate.",
+      items: [
+        { packId: "equipamentos", entryId: "equipamentos-arm-03" },
+        { packId: "habilidades", entryId: "habilidades-golpe-de-chi" },
+      ],
+      combatLoadout: { packId: "habilidades", entryId: "habilidades-golpe-de-chi" },
+      armorLoadout: { packId: "equipamentos", entryId: "equipamentos-arm-03" },
+    },
+    {
+      id: "espiritualista-bastao",
+      label: "Bastão e passo",
+      summary: "Mobilidade — bastão, couro e técnica de vácuo.",
+      items: [
+        { packId: "armas", entryId: "armas-wpn-p01" },
+        { packId: "equipamentos", entryId: "equipamentos-arm-01" },
+        { packId: "habilidades", entryId: "habilidades-passo-do-vacuo" },
+      ],
+      combatLoadout: { packId: "habilidades", entryId: "habilidades-passo-do-vacuo" },
+      armorLoadout: { packId: "equipamentos", entryId: "equipamentos-arm-01" },
+    },
+    {
+      id: "espiritualista-lamina",
+      label: "Espada curta e ferida",
+      summary: "Asceta da Dor — espada curta, couro, técnica brutal.",
+      items: [
+        { packId: "armas", entryId: "armas-wpn-s01" },
+        { packId: "equipamentos", entryId: "equipamentos-arm-01" },
+        { packId: "habilidades", entryId: "habilidades-ferida-aberta" },
+      ],
+      combatLoadout: { packId: "habilidades", entryId: "habilidades-ferida-aberta" },
+      armorLoadout: { packId: "equipamentos", entryId: "equipamentos-arm-01" },
     },
   ],
   Paladino: [
@@ -471,7 +509,6 @@ const CLASS_STARTER_KITS: Record<ClassId, StarterKitOption[]> = {
 const RACE_STARTER: Record<string, StarterItemRef[]> = {
   Anão: [{ packId: "equipamentos", entryId: "equipamentos-kit-de-trinchar", quantity: 1 }],
   Gnomo: [{ packId: "equipamentos", entryId: "equipamentos-kit-de-brasas-mágicas", quantity: 1 }],
-  "Forjado de Osso": [{ packId: "equipamentos", entryId: "equipamentos-corda-de-seda-de-aranha", quantity: 1 }],
 };
 
 const ANTECEDENTE_STARTER: Record<string, StarterItemRef[]> = {

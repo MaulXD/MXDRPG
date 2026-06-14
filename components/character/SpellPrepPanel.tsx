@@ -8,10 +8,17 @@ import {
   isCantrip,
   isCasterClass,
   maxPreparedSpells,
+  spellInClassList,
   spellLevelLabel,
   spellMeta,
   togglePreparedSpell,
+  classSpellPrepMode,
 } from "@/lib/character/spell-prep";
+import {
+  classSpellAccess,
+  sharedSpellPools,
+  spellListsForClass,
+} from "@/lib/character/spell-lists";
 import { patchRoomActor } from "@/hooks/useRoomSync";
 
 type Props = {
@@ -34,14 +41,30 @@ export function SpellPrepPanel({
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
 
+  const classe = actor.identity.classe;
   const limit = maxPreparedSpells(actor);
-  const showLimit = isCasterClass(actor.identity.classe);
+  const showLimit = isCasterClass(classe);
   const prepared = actor.preparedSpellIds ?? [];
   const preparedLeveled = countPreparedLeveled(actor);
+  const prepMode = classSpellPrepMode(classe);
+  const access = classSpellAccess(classe);
+  const listLabels = spellListsForClass(classe).map((l) => l.label);
+
+  const eligibleSpells = useMemo(
+    () => spells.filter(({ entry }) => spellInClassList(classe, entry.id)),
+    [spells, classe]
+  );
+
+  const sharedPools = useMemo(() => {
+    const pools = sharedSpellPools();
+    return Object.values(pools).filter((pool) =>
+      pool.entryIds.some((id) => eligibleSpells.some((s) => s.entry.id === id))
+    );
+  }, [eligibleSpells]);
 
   const grouped = useMemo(() => {
     const map = new Map<number, Array<{ ref: InventoryItem; entry: CompendiumEntry }>>();
-    for (const row of spells) {
+    for (const row of eligibleSpells) {
       const lv = spellMeta(row.entry.id).level;
       const list = map.get(lv) ?? [];
       list.push(row);
@@ -51,7 +74,7 @@ export function SpellPrepPanel({
       list.sort((a, b) => a.entry.name.localeCompare(b.entry.name, "pt-BR"));
     }
     return [...map.entries()].sort(([a], [b]) => a - b);
-  }, [spells]);
+  }, [eligibleSpells]);
 
   async function setPrepared(entryId: string, on: boolean) {
     if (!canEdit || busy) return;
@@ -78,19 +101,52 @@ export function SpellPrepPanel({
     }
   }
 
+  const modeHint =
+    prepMode === "prepare"
+      ? "Marque as magias preparadas para o dia."
+      : prepMode === "known"
+        ? "Magias conhecidas — truques sempre disponíveis."
+        : prepMode === "learn"
+          ? "Grimório — escolha o que preparar entre as magias aprendidas."
+          : null;
+
   return (
     <div className="spell-prep">
       <p className="spell-prep__hint">
-        Estilo D&amp;D: marque as magias <strong>preparadas</strong> para o dia. Truques ficam sempre
-        disponíveis. Na mesa, ao conjurar, você escolhe na lista (não usa mais só a primeira do inventário).
+        {modeHint ?? "Magias da classe."} Truques ficam sempre disponíveis. Na mesa, ao conjurar,
+        escolha na lista preparada.
       </p>
+      {listLabels.length > 0 ? (
+        <p className="spell-prep__hint">
+          Listas: <strong>{listLabels.join(" · ")}</strong>
+        </p>
+      ) : null}
+      {sharedPools.length > 0 ? (
+        <p className="spell-prep__hint">
+          Compartilhadas:{" "}
+          {sharedPools.map((p) => (
+            <span key={p.label}>
+              <strong>{p.label}</strong>
+              {p.description ? ` — ${p.description}` : null}
+              {" · "}
+            </span>
+          ))}
+        </p>
+      ) : null}
       {showLimit ? (
         <p className="spell-prep__count">
-          Preparadas: <strong>{preparedLeveled}</strong> / {limit}
-          {prepared.length === 0 ? " · nenhuma marcada = todas do grimório disponíveis" : null}
+          {access?.mode === "known" ? "Conhecidas" : "Preparadas"}:{" "}
+          <strong>{preparedLeveled}</strong> / {limit}
+          {prepared.length === 0 && access?.mode !== "known"
+            ? " · nenhuma marcada = todas elegíveis disponíveis"
+            : null}
         </p>
       ) : null}
       {err ? <p className="dice-err">{err}</p> : null}
+
+      {grouped.length === 0 ? (
+        <p className="spell-prep__hint">Nenhuma magia elegível no inventário para esta classe.</p>
+      ) : null}
 
       {grouped.map(([level, rows]) => (
         <section key={level} className="spell-prep__level">
@@ -106,7 +162,7 @@ export function SpellPrepPanel({
                     <input
                       type="checkbox"
                       checked={isOn}
-                      disabled={!canEdit || busy || cantrip}
+                      disabled={!canEdit || busy || cantrip || prepMode === "known"}
                       onChange={(e) => void setPrepared(entry.id, e.target.checked)}
                     />
                     <span>

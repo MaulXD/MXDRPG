@@ -22,6 +22,13 @@ const CLASS_ABILITY_BY_LEVEL: Partial<
     };
     return [raioBySubclass[subclassTrackId ?? ""] ?? "habilidades-raio-do-pacto"];
   },
+  Espiritualista(level) {
+    const ids: string[] = [];
+    if (level >= 1) ids.push("habilidades-golpe-de-chi");
+    if (level >= 2) ids.push("habilidades-passo-do-vacuo");
+    if (level >= 3) ids.push("habilidades-ferida-aberta");
+    return ids;
+  },
 };
 
 function addHabilidade(inventory: InventoryItem[], entryId: string): InventoryItem[] {

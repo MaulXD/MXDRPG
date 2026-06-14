@@ -8,6 +8,7 @@ import {
 import { abilityFromEntry } from "@/lib/combat/compendium-actions";
 import { monsterCombatActions } from "@/lib/vtt/monster-actions";
 import { prepareCombatToken, syncActorPaFromToken } from "@/lib/combat/combat-token-pa";
+import { spendChi } from "@/lib/combat/chi-economy";
 import { applyPaSpend } from "@/lib/combat/pa-turn";
 import { markActionRechargeUsed } from "@/lib/combat/recharge";
 import { enrichBuffsWithTimedEffects } from "@/lib/combat/timed-effects";
@@ -71,6 +72,10 @@ function applyAbilityToRoom(
     );
   } else if (attackerBefore && action.recharge) {
     spent = markActionRechargeUsed(attackerBefore, action, room.combat.round);
+  }
+
+  if (spent && attackerBefore && (action.chiCost ?? 0) > 0) {
+    spent = spendChi(spent, action.chiCost!) ?? spent;
   }
 
   if (spent && attackerBefore?.linked) {

@@ -30,6 +30,7 @@ import { ensureAdventureMembership, getAdventure, joinAdventureByInvite } from "
 import { getRoom } from "@/lib/room/store";
 
 import type { RoomActor } from "@/lib/room/types";
+import { AdventurePlayerSheetsList } from "@/components/adventure/AdventurePlayerSheetsList";
 import { MedievalFrame } from "@/components/ui/MedievalFrame";
 import { pageMetadata } from "@/lib/site-metadata";
 
@@ -392,27 +393,7 @@ export default async function AventuraHubPage({ params, searchParams }: Props) {
 
             {allPlayerChars.length > 0 ? (
 
-              <ul style={{ listStyle: "none", padding: 0, margin: "0 0 1rem" }}>
-
-                {allPlayerChars.map((a) => (
-
-                  <li key={a.id} style={{ marginBottom: "0.35rem" }}>
-
-                    <Link href={`/personagem/${a.id}`}>{a.name}</Link>
-
-                    <span style={{ color: "var(--text-muted)", fontSize: "0.85rem" }}>
-
-                      {" "}
-
-                      · nv {a.identity?.nivel ?? "?"} {a.identity?.classe ?? ""}
-
-                    </span>
-
-                  </li>
-
-                ))}
-
-              </ul>
+              <AdventurePlayerSheetsList characters={allPlayerChars} />
 
             ) : (
 
