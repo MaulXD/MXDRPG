@@ -22,6 +22,8 @@ export type CombatTrack = {
   orderOverridden?: boolean;
   /** Auto-passe agendado após esgotar PA (delay antes de `advanceRoomTurn`). */
   pendingAutoPass?: CombatPendingAutoPass;
+  /** Último turno com PA restaurado (`round:tokenId`) — evita re-refresh no meio do turno. */
+  paRefreshTurnKey?: string;
   /** Checkpoints do mestre (início de rodada, até 20). */
   roundCheckpoints?: CombatRoundCheckpoint[];
 };
@@ -62,6 +64,11 @@ export function normalizeCombatTrack(
       ? combat.pendingAutoPass
       : undefined;
 
+  const paRefreshTurnKey =
+    typeof combat.paRefreshTurnKey === "string" && combat.paRefreshTurnKey.length > 0
+      ? combat.paRefreshTurnKey
+      : undefined;
+
   return {
     order,
     activeIndex,
@@ -70,6 +77,7 @@ export function normalizeCombatTrack(
     naturalOrder: combat.naturalOrder,
     orderOverridden: combat.orderOverridden,
     pendingAutoPass,
+    paRefreshTurnKey,
   };
 }
 

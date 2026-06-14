@@ -4,7 +4,6 @@ import {
   paTurnRulesForMonster,
 } from "@/lib/combat/pa-economy";
 import { normalizeTokenPaFields } from "@/lib/combat/pa-token-state";
-import { hasCondition } from "@/lib/combat/conditions";
 import {
   accumulationCap,
   bankPaAtEndOfTurn,
@@ -69,6 +68,18 @@ function paMaxForToken(room: RoomState, token: BattleToken): number {
   return paRulesForToken(room, token).recoveryPerTurn;
 }
 
+function paRefreshTurnKey(room: RoomState): string {
+  const id = activeTokenId(room.combat);
+  if (!id) return "";
+  return `${room.combat.round}:${id}`;
+}
+
+function markActivePaRefreshed(room: RoomState): void {
+  const key = paRefreshTurnKey(room);
+  if (!key) return;
+  room.combat = { ...room.combat, paRefreshTurnKey: key };
+}
+
 function resetChiPoolsForCombat(room: RoomState): void {
   const tokens = room.scene.tokens.map((t) => {
     if (t.linked && t.actorId) {
@@ -129,7 +140,7 @@ function refreshActiveTokenPa(room: RoomState, mode: "full" | "regen" = "regen")
     mode === "full" ? startTurnPaFull(token, rules) : refreshPaAtTurnStart(token, rules);
   tokens[idx] = clearPerTurnRecharges({
     ...token,
-    ...normalizeTokenPaFields(refreshed, paMax),
+    ...normalizeTokenPaFields(refreshed, paMax, rules.accumulationCap),
     ...resetChiSpentThisTurn(token),
   });
 
@@ -145,6 +156,7 @@ function refreshActiveTokenPa(room: RoomState, mode: "full" | "regen" = "regen")
   }
 
   room.scene = { ...room.scene, tokens };
+  markActivePaRefreshed(room);
 }
 
 function bankEndingToken(room: RoomState, notices: string[]): void {
@@ -172,7 +184,7 @@ function bankEndingToken(room: RoomState, notices: string[]): void {
 
   const ended = clearPerTurnRecharges({
     ...before,
-    ...normalizeTokenPaFields(bankPaAtEndOfTurn(before, rules), paMax),
+    ...normalizeTokenPaFields(bankPaAtEndOfTurn(before, rules), paMax, rules.accumulationCap),
   });
   tokens[idx] = ended;
   room.scene = { ...room.scene, tokens };
@@ -311,7 +323,7 @@ export function scheduleAutoPassWhenActivePaZero(room: RoomState): boolean {
 
   const active = getActiveBattleToken(room);
   if (!active) return false;
-  if (hasCondition(active, "atordoado")) {
+  if (shouldAutoSkipTurn(active)) {
     clearPendingAutoPass(room);
     return false;
   }
@@ -350,7 +362,7 @@ export function executePendingAutoPassIfDue(
     clearPendingAutoPass(room);
     return false;
   }
-  if (hasCondition(active, "atordoado") || tokenSpendablePa(active) > 0) {
+  if (shouldAutoSkipTurn(active) || tokenSpendablePa(active) > 0) {
     clearPendingAutoPass(room);
     return false;
   }
@@ -379,6 +391,7 @@ export async function rollRoomInitiative(roomId: string): Promise<RoomSnapshot |
     notices: [],
     naturalOrder: order,
     orderOverridden: false,
+    paRefreshTurnKey: undefined,
   };
   room.combatUndo = [];
   room.scene = {
@@ -427,20 +440,20 @@ export function ensureCombatActiveHasPa(room: RoomState): void {
   if (!room.combat?.order?.length) return;
   if (!requiresCombatTurnEconomy(room.settings, room.combat)) return;
 
-  const activeIdBefore = activeTokenId(room.combat);
   skipUnplayableActives(room);
-  const activeIdAfter = activeTokenId(room.combat);
 
   const active = getActiveBattleToken(room);
   if (!active || shouldAutoSkipTurn(active)) return;
-
   if (tokenSpendablePa(active) > 0) return;
 
-  const spentThisTurn = active.paSpentThisTurn ?? 0;
-  const skippedToNewActive = activeIdBefore !== activeIdAfter;
+  const turnKey = paRefreshTurnKey(room);
+  const pending = room.combat.pendingAutoPass;
 
-  // PA zerado no meio do turno — auto-passe cuida do avanço
-  if (spentThisTurn > 0 && !skippedToNewActive) return;
+  // Meio do turno: PA esgotado — auto-passe já agendado para este token
+  if (pending?.tokenId === active.id) return;
+
+  // Já restaurou PA neste turno e o pool foi gasto
+  if (room.combat.paRefreshTurnKey === turnKey && (active.paSpentThisTurn ?? 0) > 0) return;
 
   refreshActiveTokenPa(room, "regen");
 }
