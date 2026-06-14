@@ -17,6 +17,7 @@ import type { FoundryWindowLayout } from "@/hooks/vtt/useFoundryWindows";
 import { useFoundryWindowDrag } from "@/hooks/vtt/useFoundryWindowDrag";
 
 import type { RoomActor } from "@/lib/room/types";
+import type { RoomActorPatchResult } from "@/lib/character/portrait-persist-client";
 
 import { isAdventureBoundCharacter } from "@/lib/character/adventure-bind";
 import { FoundryWindow } from "@/components/vtt/foundry/FoundryWindow";
@@ -34,6 +35,7 @@ type Props = {
   onFocus: () => void;
   onMinimize: () => void;
   onClose: () => void;
+  onRoomPortraitPatch?: (result: RoomActorPatchResult) => void;
 };
 
 export function CharacterSheetPopup({
@@ -49,6 +51,7 @@ export function CharacterSheetPopup({
   onFocus,
   onMinimize,
   onClose,
+  onRoomPortraitPatch,
 }: Props) {
   const live = actors[actorId];
   const seed = live ?? getCharacter(actorId);
@@ -154,6 +157,7 @@ export function CharacterSheetPopup({
           inventoryEditMode={inventoryEditMode}
           popupToolbarTrailing={toolbarTrailing}
           popupToolbarDrag={toolbarDrag}
+          onRoomPortraitPatch={onRoomPortraitPatch}
         />
       </div>
     </FoundryWindow>

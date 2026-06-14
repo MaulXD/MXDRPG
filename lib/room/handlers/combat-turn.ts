@@ -474,7 +474,13 @@ export function ensureCombatActiveHasPa(room: RoomState): void {
   if (pending?.tokenId === active.id) return;
 
   // Já restaurou PA neste turno — não duplica recuperação nem reabastece após gastar tudo
-  if (refreshedThisTurn) return;
+  if (refreshedThisTurn) {
+    // Chave legada/corrompida: turno marcado mas pool zerado sem gasto — restaura de novo
+    if (tokenSpendablePa(active) === 0 && tokenPaSpentThisTurn(active) === 0) {
+      refreshActiveTokenPa(room, "regen");
+    }
+    return;
+  }
 
   // Esgotou PA neste turno — não reabastece (ex.: mestre mudou ativo com set-active)
   if (tokenSpendablePa(active) === 0 && tokenPaSpentThisTurn(active) > 0) return;

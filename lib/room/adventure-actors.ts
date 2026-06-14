@@ -11,6 +11,10 @@ import {
 import { normalizeCharacter } from "@/lib/character/normalize";
 import type { CharacterSheet } from "@/lib/character/types";
 import { getRoom, persistRoom } from "./internal/registry";
+import {
+  resolveActorTokenImageUrl,
+  resolveLinkedTokenImageFocus,
+} from "./portrait-sync";
 import type { RoomActor, RoomState } from "./types";
 
 function participantIds(room: RoomState): string[] {
@@ -39,6 +43,38 @@ export function actorBelongsToRoom(room: RoomState, actor: RoomActor): boolean {
 
 function mergePortraitFromRoom(sheet: CharacterSheet, prev?: RoomActor): CharacterSheet {
   if (!prev) return sheet;
+
+  const sheetHasPortrait = Boolean(sheet.portraitUrl || sheet.tokenImageUrl);
+  const roomHasPortrait = Boolean(prev.portraitUrl || prev.tokenImageUrl);
+  const portraitChangedOnSheet =
+    sheetHasPortrait &&
+    ((sheet.tokenImageUrl ?? "") !== (prev.tokenImageUrl ?? "") ||
+      (sheet.portraitUrl ?? "") !== (prev.portraitUrl ?? ""));
+
+  // Ficha no DB atualizada (ex.: /personagem) — propaga para a mesa
+  if (portraitChangedOnSheet) {
+    return {
+      ...sheet,
+      portraitUrl: sheet.portraitUrl ?? prev.portraitUrl ?? null,
+      tokenImageUrl: sheet.tokenImageUrl ?? prev.tokenImageUrl ?? null,
+      portraitFocus: sheet.portraitFocus ?? prev.portraitFocus ?? null,
+      coverFocus: sheet.coverFocus ?? prev.coverFocus ?? null,
+      tokenFocus: sheet.tokenFocus ?? prev.tokenFocus ?? null,
+    };
+  }
+
+  // Mesa viva com retrato — não sobrescreve com ficha DB vazia/antiga
+  if (roomHasPortrait && (prev.revision ?? 0) > 0) {
+    return {
+      ...sheet,
+      portraitUrl: prev.portraitUrl ?? sheet.portraitUrl ?? null,
+      tokenImageUrl: prev.tokenImageUrl ?? sheet.tokenImageUrl ?? null,
+      portraitFocus: prev.portraitFocus ?? sheet.portraitFocus ?? null,
+      coverFocus: prev.coverFocus ?? sheet.coverFocus ?? null,
+      tokenFocus: prev.tokenFocus ?? sheet.tokenFocus ?? null,
+    };
+  }
+
   let merged: CharacterSheet = {
     ...sheet,
     portraitUrl: sheet.portraitUrl ?? prev.portraitUrl ?? null,
@@ -66,6 +102,32 @@ function mergePortraitFromRoom(sheet: CharacterSheet, prev?: RoomActor): Charact
   return merged;
 }
 
+function portraitChangedBetween(prev: RoomActor | undefined, next: RoomActor): boolean {
+  if (!prev) return Boolean(next.portraitUrl || next.tokenImageUrl);
+  return (
+    (next.portraitUrl ?? "") !== (prev.portraitUrl ?? "") ||
+    (next.tokenImageUrl ?? "") !== (prev.tokenImageUrl ?? "") ||
+    JSON.stringify(next.portraitFocus ?? null) !== JSON.stringify(prev.portraitFocus ?? null) ||
+    JSON.stringify(next.coverFocus ?? null) !== JSON.stringify(prev.coverFocus ?? null) ||
+    JSON.stringify(next.tokenFocus ?? null) !== JSON.stringify(prev.tokenFocus ?? null)
+  );
+}
+
+function syncLinkedTokenPortraits(room: RoomState, actorId: string, actor: RoomActor): void {
+  const imageUrl = resolveActorTokenImageUrl(actor);
+  const imageFocus = resolveLinkedTokenImageFocus(actor);
+  room.scene = {
+    ...room.scene,
+    tokens: room.scene.tokens.map((t) => {
+      if (!t.linked || t.actorId !== actorId) return t;
+      return {
+        ...t,
+        imageUrl: imageUrl ?? undefined,
+        imageFocus,
+      };
+    }),
+  };
+}
 function portraitBackfillNeeded(sheet: CharacterSheet, prev?: RoomActor): boolean {
   if (!prev) return false;
   return Boolean(
@@ -126,6 +188,9 @@ export async function syncAdventureActorsForRoom(roomId: string): Promise<RoomSt
       const prev = room.actors[sheet.id];
       const next = toRoomActor(sheet, prev);
       room.actors[sheet.id] = next;
+      if (portraitChangedBetween(prev, next)) {
+        syncLinkedTokenPortraits(room, sheet.id, next);
+      }
       changed = true;
       if (portraitBackfillNeeded(sheet, prev)) backfills.push(next);
     }

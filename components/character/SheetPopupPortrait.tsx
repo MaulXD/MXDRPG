@@ -7,6 +7,7 @@ import { IconCamera } from "@/components/character/SheetPopupIcons";
 import { Portrait } from "@/components/vtt/Portrait";
 import { useImageNaturalSize } from "@/hooks/useImageNaturalSize";
 import { persistPortraitBundleToRoom } from "@/lib/character/portrait-persist-client";
+import type { RoomActorPatchResult } from "@/lib/character/portrait-persist-client";
 import { IMAGE_UPLOAD_HINT } from "@/lib/media/image-data-url";
 import {
   DEFAULT_PORTRAIT_FOCUS,
@@ -31,6 +32,8 @@ type Props = {
   tokenFocus?: PortraitFocus | null;
   canEdit: boolean;
   onSaved: () => void;
+  /** Aplica token/ficha na mesa sem esperar poll (só modo room). */
+  onRoomPortraitSaved?: (result: RoomActorPatchResult) => void;
   /** Persistência fora da sala (ex.: página /personagem/:id) */
   onPersistBundle?: (bundle: PortraitBundle) => Promise<void>;
   /** Ficha DDB — um único container, sem moldura dourada */
@@ -68,6 +71,7 @@ export function SheetPopupPortrait({
   tokenFocus,
   canEdit,
   onSaved,
+  onRoomPortraitSaved,
   onPersistBundle,
   layout = "classic",
 }: Props) {
@@ -130,11 +134,12 @@ export function SheetPopupPortrait({
         await onPersistBundle(bundle);
       } else {
         if (!roomId) throw new Error("roomId ausente para salvar retrato na mesa");
-        await persistPortraitBundleToRoom(roomId, actorId, bundle);
+        const result = await persistPortraitBundleToRoom(roomId, actorId, bundle);
+        if (result) onRoomPortraitSaved?.(result);
       }
       onSaved();
     },
-    [actorId, onPersistBundle, onSaved, roomId]
+    [actorId, onPersistBundle, onRoomPortraitSaved, onSaved, roomId]
   );
 
   async function onPickFile(file: File) {
