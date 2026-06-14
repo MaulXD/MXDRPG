@@ -45,7 +45,7 @@ export function paTurnRulesForBattleToken(
 function mayRefreshCombatPa(
   token: BattleToken,
   turn?: CombatTurnOptions,
-  opts?: { combatHasOrder?: boolean }
+  opts?: { combatHasOrder?: boolean; combatActive?: boolean }
 ): boolean {
   const combatHasOrder = opts?.combatHasOrder ?? turn?.combatHasOrder;
   if (!combatHasOrder) {
@@ -55,6 +55,7 @@ function mayRefreshCombatPa(
     activeTokenId: turn?.activeTokenId,
     bypassTurn: turn?.bypassTurn,
     combatHasOrder: true,
+    combatActive: opts?.combatActive ?? turn?.combatActive,
   });
 }
 
@@ -63,7 +64,7 @@ export function attackerForCombatCheck(
   attacker: BattleToken,
   actor: CharacterSheet | null,
   turn?: CombatTurnOptions,
-  opts?: { combatHasOrder?: boolean }
+  opts?: { combatHasOrder?: boolean; combatActive?: boolean }
 ): BattleToken {
   const rules = paTurnRulesForBattleToken(attacker, actor);
   const paMax = rules.recoveryPerTurn;
@@ -71,7 +72,8 @@ export function attackerForCombatCheck(
   prepared = { ...attacker, ...normalizeTokenPaFields(prepared, paMax) };
 
   const combatHasOrder = opts?.combatHasOrder ?? turn?.combatHasOrder ?? true;
-  if (!mayRefreshCombatPa(prepared, turn, opts)) return prepared;
+  const combatActive = opts?.combatActive ?? turn?.combatActive;
+  if (!mayRefreshCombatPa(prepared, turn, { combatHasOrder, combatActive })) return prepared;
   if (tokenSpendablePa(prepared) > 0) return prepared;
   if ((prepared.paSpentThisTurn ?? 0) > 0) {
     if (combatHasOrder || !isMonsterToken(prepared)) return prepared;
@@ -91,6 +93,7 @@ export function ensureTokenCombatPa(
   const actor =
     prepared.linked && prepared.actorId ? room.actors[prepared.actorId] ?? null : null;
   const hasOrder = Boolean(room.combat?.order?.length);
+  const combatActive = room.settings.combatActive;
   return attackerForCombatCheck(
     prepared,
     actor,
@@ -98,8 +101,9 @@ export function ensureTokenCombatPa(
       activeTokenId: activeTokenId(room.combat),
       bypassTurn: opts?.bypassTurn,
       combatHasOrder: hasOrder,
+      combatActive,
     },
-    { combatHasOrder: hasOrder }
+    { combatHasOrder: hasOrder, combatActive }
   );
 }
 

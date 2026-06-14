@@ -1349,6 +1349,78 @@
   line-height: 1.2;
 }
 
+.gm-mesa-mode-toggle {
+  display: inline-flex;
+  align-items: stretch;
+  border-radius: 999px;
+  border: 1px solid var(--mesa-accent-border);
+  background: rgba(30, 29, 26, 0.92);
+  overflow: hidden;
+  pointer-events: auto;
+}
+
+.gm-mesa-mode-toggle[data-busy] {
+  opacity: 0.72;
+  pointer-events: none;
+}
+
+.gm-mesa-mode-toggle__option {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.35rem 0.6rem;
+  border: none;
+  background: transparent;
+  color: var(--text-muted, rgba(232, 228, 220, 0.72));
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  line-height: 1.2;
+}
+
+.gm-mesa-mode-toggle__option + .gm-mesa-mode-toggle__option {
+  border-left: 1px solid var(--mesa-accent-border);
+}
+
+.gm-mesa-mode-toggle__option:hover:not(.gm-mesa-mode-toggle__option--active) {
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.gm-mesa-mode-toggle__option--active {
+  color: var(--text);
+  background: rgba(201, 169, 98, 0.16);
+}
+
+.gm-mesa-mode-toggle__option--active:first-child {
+  background: rgba(120, 168, 140, 0.14);
+}
+
+.mesa-mode-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.65rem;
+  border-radius: 999px;
+  border: 1px solid var(--mesa-accent-border);
+  background: rgba(30, 29, 26, 0.92);
+  font-size: 0.78rem;
+  font-weight: 600;
+  white-space: nowrap;
+  pointer-events: auto;
+}
+
+.mesa-mode-indicator--combat {
+  border-color: rgba(184, 90, 70, 0.45);
+  color: rgba(255, 210, 200, 0.95);
+}
+
+.mesa-mode-indicator--adventure {
+  border-color: rgba(120, 168, 140, 0.4);
+  color: rgba(210, 235, 218, 0.95);
+}
+
 .mesa-stage-pill,
 .mesa-online-menu__trigger {
   display: inline-flex;

@@ -4,10 +4,9 @@ import type { RoomSettings } from "@/lib/room/settings";
 /** Modo combate ativo na mesa (mestre liga ao rolar iniciativa ou manualmente). */
 export function isCombatModeActive(
   settings: Pick<RoomSettings, "combatActive">,
-  combat?: CombatTrack | null
+  _combat?: CombatTrack | null
 ): boolean {
-  if (settings.combatActive) return true;
-  return Boolean(combat?.order?.length);
+  return Boolean(settings.combatActive);
 }
 
 /** Gastar PA / respeitar ordem de turno. */
