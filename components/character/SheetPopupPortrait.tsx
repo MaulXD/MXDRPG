@@ -308,9 +308,10 @@ export function SheetPopupPortrait({
           onClick={() => setOpen(false)}
         >
           <div
-            className="sheet-ddb-portrait-modal sheet-popup-portrait-editor"
+            className="sheet-ddb-portrait-modal"
             role="dialog"
             aria-label="Editor de retrato"
+            aria-modal="true"
             onClick={(e) => e.stopPropagation()}
           >
             {editorInner}
