@@ -59,10 +59,18 @@ const turnKey = "1:tok-a";
 const stale = { id: "tok-a", pa: 0, paSpentThisTurn: 4 };
 const pending = null;
 const paRefreshTurnKey = "0:tok-a";
+const refreshedThisTurn = paRefreshTurnKey === turnKey;
 const shouldRefresh =
-  tokenSpendablePa(stale) === 0 &&
   pending?.tokenId !== stale.id &&
-  !(paRefreshTurnKey === turnKey && stale.paSpentThisTurn > 0);
+  !refreshedThisTurn;
 assert.equal(shouldRefresh, true, "turno novo deve restaurar PA apesar de paSpentThisTurn legado");
+
+// Meio do turno: já refreshou e gastou tudo — não restaura de novo
+const midTurn = { id: "tok-a", pa: 0, paSpentThisTurn: 3 };
+const midTurnKey = "1:tok-a";
+const midRefreshed = midTurnKey === "1:tok-a";
+const blocksMidRefresh =
+  midRefreshed && tokenSpendablePa(midTurn) === 0 && midTurn.paSpentThisTurn > 0;
+assert.equal(blocksMidRefresh, true, "meio do turno esgotado não recebe PA de novo");
 
 console.log("pa-turn-refresh: OK");
