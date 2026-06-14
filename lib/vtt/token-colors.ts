@@ -5,8 +5,6 @@ import {
   type PortraitFrameTier,
 } from "@/lib/vtt/portrait-frame";
 
-const TOKEN_RING_WHITE = "#f5f5f5";
-
 /** Cores de anel por tier v4 (DESIGN-ELDARIN-V4 §4.6) */
 const TIER_RING_COLORS: Record<PortraitFrameTier, string> = {
   hero: "#d4a030",
@@ -59,34 +57,9 @@ function tierRingStyle(tier: PortraitFrameTier): TokenRingStyle {
             ? "elite"
             : "monster";
 
-  if (tier === "boss") {
-    return {
-      kind,
-      rings: [
-        { color: TOKEN_RING_WHITE, width: 2, radiusOffset: 0.6 },
-        { color, width: 2.5, radiusOffset: 1.8 },
-        { color: "#1a1a1a", width: 2, radiusOffset: 3.2 },
-      ],
-    };
-  }
-
-  if (tier === "miniboss") {
-    return {
-      kind,
-      rings: [
-        { color: TOKEN_RING_WHITE, width: 2, radiusOffset: 2.5 },
-        { color, width: 2.5, radiusOffset: 1 },
-        { color: "#2a2040", width: 1.75, radiusOffset: 0 },
-      ],
-    };
-  }
-
   return {
     kind,
-    rings: [
-      { color: TOKEN_RING_WHITE, width: 2, radiusOffset: 0.6 },
-      { color, width: 2.5, radiusOffset: 2.2 },
-    ],
+    rings: [{ color, width: 2.5, radiusOffset: 0 }],
   };
 }
 
