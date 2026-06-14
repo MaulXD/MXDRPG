@@ -35,6 +35,10 @@ import { MesaFoundrySidebar } from "@/components/vtt/foundry/MesaFoundrySidebar"
 import { HexBattlefield } from "@/components/vtt/HexBattlefield";
 import { MonsterSheetPopup } from "@/components/compendium/MonsterSheetPopup";
 import { CharacterSheetPopup } from "@/components/vtt/CharacterSheetPopup";
+import {
+  mergePortraitPatchIntoSnapshot,
+  type RoomActorPatchResult,
+} from "@/lib/character/portrait-persist-client";
 import { MesaCharacterWizardPopup } from "@/components/vtt/MesaCharacterWizardPopup";
 import { PlayableCharactersPanel } from "@/components/vtt/PlayableCharactersPanel";
 import { RoomChat } from "@/components/vtt/RoomChat";
@@ -168,6 +172,17 @@ export function MesaWorkspace({
     setSheetPopupActorId(null);
     windows.close("character");
   }, [windows]);
+
+  const handleRoomPortraitPatch = useCallback(
+    (result: RoomActorPatchResult) => {
+      if (!snapshot) {
+        void refresh();
+        return;
+      }
+      applySnapshot(mergePortraitPatchIntoSnapshot(snapshot, result), { force: true });
+    },
+    [applySnapshot, refresh, snapshot]
+  );
 
   const openMonsterSheet = useCallback(
     (entryId: string) => {
@@ -838,6 +853,7 @@ export function MesaWorkspace({
                       : windows.minimize("character")
                   }
                   onClose={closeSheet}
+                  onRoomPortraitPatch={handleRoomPortraitPatch}
                 />
               ) : null}
 

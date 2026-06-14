@@ -123,7 +123,7 @@ function drawSquareGridLines(
 
   const step = lod === "deep" ? 2 : 1;
   const alpha = lod === "full" ? 0.92 : lod === "light" ? 0.82 : 0.72;
-  const lineWidth = lod === "deep" ? 1 : 1.25;
+  const lineWidth = (lod === "deep" ? 1 : 1.25) / Math.max(p.viewScale ?? 1, 0.25);
 
   ctx.save();
   ctx.beginPath();
@@ -131,15 +131,20 @@ function drawSquareGridLines(
   ctx.lineWidth = lineWidth;
   ctx.globalAlpha = alpha;
 
+  const snap = (v: number) => Math.round(v) + 0.5;
   for (let q = minQ; q <= maxQ + 1; q += step) {
-    const x = ox + q * hexSize;
-    ctx.moveTo(x, oy + minR * hexSize);
-    ctx.lineTo(x, oy + (maxR + 1) * hexSize);
+    const x = snap(ox + q * hexSize);
+    const y0 = snap(oy + minR * hexSize);
+    const y1 = snap(oy + (maxR + 1) * hexSize);
+    ctx.moveTo(x, y0);
+    ctx.lineTo(x, y1);
   }
   for (let r = minR; r <= maxR + 1; r += step) {
-    const y = oy + r * hexSize;
-    ctx.moveTo(ox + minQ * hexSize, y);
-    ctx.lineTo(ox + (maxQ + 1) * hexSize, y);
+    const y = snap(oy + r * hexSize);
+    const x0 = snap(ox + minQ * hexSize);
+    const x1 = snap(ox + (maxQ + 1) * hexSize);
+    ctx.moveTo(x0, y);
+    ctx.lineTo(x1, y);
   }
   ctx.stroke();
   ctx.restore();

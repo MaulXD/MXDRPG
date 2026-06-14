@@ -133,7 +133,6 @@ import { useBattlefieldHighlights } from "@/hooks/vtt/useBattlefieldHighlights";
 import { useBattlefieldView } from "@/hooks/vtt/useBattlefieldView";
 import { useCanvasWrapSize } from "@/hooks/vtt/useCanvasWrapSize";
 import { useHexCanvas, type HexCanvasDrawState } from "@/hooks/vtt/useHexCanvas";
-import { buildHexGrid, displayHexGridRadius } from "@/lib/vtt/hex-grid";
 import {
   mapBackdropTone,
   sampleImageGreenDominance,
@@ -149,7 +148,7 @@ import { canMoveToken, type MovementPathContext } from "@/lib/vtt/movement";
 import { animateTokenAlongPath } from "@/lib/vtt/token-move-animation";
 import { axialToPixel, hexDrawRadius } from "@/lib/vtt/hex-math";
 import { canvasCenter, worldToScreen } from "@/lib/vtt/battlefield-view";
-import { resolveMapAlignedGridLayout, mapAlignedHexSize } from "@/lib/vtt/grid-layout";
+import { resolveMapAlignedGridLayout } from "@/lib/vtt/grid-layout";
 import "./vtt.css";
 
 type Props = {
@@ -704,65 +703,6 @@ export function HexBattlefield({
   }, [combat?.round, combat?.activeIndex, combat?.order?.length, turnActiveId]);
   const prevCombatTurnFocusKey = useRef<string | null>(null);
 
-  const mapDrawHexSize = useMemo(() => mapAlignedHexSize(canvasScene), [
-    canvasScene.hexSize,
-    canvasScene.mapImageUrl,
-    canvasScene.mapImageScale,
-  ]);
-
-  const [displayGridRadius, setDisplayGridRadius] = useState(() =>
-    displayHexGridRadius(
-      canvasScene.gridRadius,
-      canvasWrapSize.w,
-      canvasWrapSize.h,
-      mapDrawHexSize,
-      battlefieldView.view.scale
-    )
-  );
-
-  useEffect(() => {
-    setDisplayGridRadius(
-      displayHexGridRadius(
-        canvasScene.gridRadius,
-        canvasWrapSize.w,
-        canvasWrapSize.h,
-        mapDrawHexSize,
-        battlefieldView.view.scale
-      )
-    );
-  }, [
-    canvasScene.gridRadius,
-    mapDrawHexSize,
-    canvasWrapSize.w,
-    canvasWrapSize.h,
-    battlefieldView.view.scale,
-  ]);
-
-  useEffect(() => {
-    return battlefieldView.subscribeViewDraw(() => {
-      const next = displayHexGridRadius(
-        canvasScene.gridRadius,
-        canvasWrapSize.w,
-        canvasWrapSize.h,
-        mapDrawHexSize,
-        battlefieldView.viewRef.current.scale
-      );
-      setDisplayGridRadius((prev) => (prev === next ? prev : next));
-    });
-  }, [
-    battlefieldView.subscribeViewDraw,
-    battlefieldView.viewRef,
-    canvasScene.gridRadius,
-    mapDrawHexSize,
-    canvasWrapSize.w,
-    canvasWrapSize.h,
-  ]);
-
-  const displayGridCells = useMemo(
-    () => buildHexGrid(displayGridRadius),
-    [displayGridRadius]
-  );
-
   const mapBackdropToneValue = useMemo(() => {
     if (!mapImage?.complete || mapImage.naturalWidth < 1) return "none" as const;
     return mapBackdropTone(
@@ -930,7 +870,6 @@ export function HexBattlefield({
   const canvasState: HexCanvasDrawState = useMemo(
     () => ({
       scene: canvasScene,
-      gridCells: displayGridCells,
       showMovement: highlights.showMovement,
       turnMovePreview: highlights.turnMovePreview,
       walkSet: highlights.walkSet,
@@ -979,7 +918,6 @@ export function HexBattlefield({
     }),
     [
       canvasScene,
-      displayGridCells,
       mapBackdropToneValue,
       displayMarkups,
       markupPreview,

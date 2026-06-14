@@ -1,5 +1,6 @@
 import type { CharacterSheet } from "@/lib/character/types";
 import type { SessionUser } from "@/lib/auth/types";
+import { characterOwnedBySessionUser } from "@/lib/auth/account-ownership";
 import {
   actorForRoomAuth,
   canEditRoomActor,
@@ -29,6 +30,9 @@ export function canEditRoomActorPortrait(
   actor: Pick<CharacterSheet, "id" | "ownerId" | "adventureId" | "campaignRoomId">,
   user: SessionUser | null | undefined
 ): boolean {
+  if (user && characterOwnedBySessionUser(actorForRoomAuth(room, actor), user)) {
+    return true;
+  }
   if (canEditRoomActor(room, actor, user)) return true;
   if (!user || !canParticipateInRoom(room as RoomState, user)) return false;
   const adventureId = room.adventureId ?? room.roomId;

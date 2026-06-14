@@ -5,6 +5,10 @@ import type { IdentityPatch } from "@/lib/character/identity";
 import { validateDisplayName } from "@/lib/moderation/display-name";
 import { mergeIdentityPatch, sanitizeActorPatch } from "../internal/actor-patch";
 import { persistActorToAdventureSheet } from "../adventure-actors";
+import {
+  resolveActorTokenImageUrl,
+  resolveLinkedTokenImageFocus,
+} from "../portrait-sync";
 import { getRoom, persistRoom, toSnapshot } from "../internal/registry";
 import type { RoomActor, RoomSnapshot } from "../types";
 
@@ -43,6 +47,30 @@ export async function updateRoomActor(
 
   next = { ...normalizeCharacter(next), revision: current.revision + 1 };
   room.actors[actorId] = next;
+
+  const portraitTouched =
+    "portraitUrl" in safe ||
+    "tokenImageUrl" in safe ||
+    "portraitFocus" in safe ||
+    "coverFocus" in safe ||
+    "tokenFocus" in safe;
+
+  if (portraitTouched) {
+    const imageUrl = resolveActorTokenImageUrl(next);
+    const imageFocus = resolveLinkedTokenImageFocus(next);
+    room.scene = {
+      ...room.scene,
+      tokens: room.scene.tokens.map((t) => {
+        if (!t.linked || t.actorId !== actorId) return t;
+        return {
+          ...t,
+          imageUrl: imageUrl ?? undefined,
+          imageFocus,
+        };
+      }),
+    };
+  }
+
   await persistActorToAdventureSheet(next);
   return toSnapshot(await persistRoom(roomId, room));
 }

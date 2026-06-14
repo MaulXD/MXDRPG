@@ -14,6 +14,10 @@ import { isConsumableEntry } from "@/lib/compendium/consumables";
 import { getEntry } from "@/lib/compendium/registry";
 import { useImageNaturalSize } from "@/hooks/useImageNaturalSize";
 import { patchRoomActor, useRoomSync } from "@/hooks/useRoomSync";
+import {
+  mergePortraitPatchIntoSnapshot,
+  type RoomActorPatchResult,
+} from "@/lib/character/portrait-persist-client";
 import { firstPortraitDataUrl } from "@/lib/room/portrait-sync";
 import { CharacterSheetCover } from "@/components/character/CharacterSheetCover";
 import { PortraitEditorFields } from "@/components/character/PortraitEditorFields";
@@ -118,6 +122,8 @@ type Props = {
   standalonePage?: boolean;
   /** Popup: layout DDB (padrão) ou V2 estilo Foundry com abas laterais */
   popupLayout?: "ddb" | "v2";
+  /** Mesa VTT — aplica retrato no snapshot compartilhado (mapa + ficha) */
+  onRoomPortraitPatch?: (result: RoomActorPatchResult) => void;
 };
 
 const PLAYER_PACKS: CompendiumPackId[] = [
@@ -144,6 +150,7 @@ export function CharacterSheet({
   popupToolbarDrag,
   standalonePage = false,
   popupLayout = "ddb",
+  onRoomPortraitPatch,
 }: Props) {
   const canEditPortrait = canEditPortraitProp ?? canEdit;
   const inventoryEditMode =
@@ -189,6 +196,8 @@ export function CharacterSheet({
       character.preparedSpellIds,
   };
   const inRoom = Boolean(roomActor);
+  const mesaPopup = variant === "popup" && roomId !== "demo";
+  const portraitOnRoom = mesaPopup || inRoom;
 
   useEffect(() => {
     setLocalSheet(null);
@@ -315,6 +324,34 @@ export function CharacterSheet({
       return data;
     },
     [applyCharacterResponse, character.id]
+  );
+
+  const applyLocalPortraitFromActor = useCallback(
+    (actor: RoomActorPatchResult["actor"]) => {
+      setLocalSheet((prev) => ({
+        ...(prev ?? character),
+        portraitUrl: actor.portraitUrl,
+        tokenImageUrl: actor.tokenImageUrl,
+        portraitFocus: actor.portraitFocus,
+        coverFocus: actor.coverFocus,
+        tokenFocus: actor.tokenFocus,
+      }));
+    },
+    [character]
+  );
+
+  const applyRoomPortraitPatch = useCallback(
+    (result: RoomActorPatchResult) => {
+      if (onRoomPortraitPatch) {
+        onRoomPortraitPatch(result);
+      } else if (snapshot) {
+        applySnapshot(mergePortraitPatchIntoSnapshot(snapshot, result));
+      } else {
+        void refresh();
+      }
+      applyLocalPortraitFromActor(result.actor);
+    },
+    [applyLocalPortraitFromActor, applySnapshot, onRoomPortraitPatch, refresh, snapshot]
   );
 
   const persistPortraitBundle = useCallback(
@@ -873,6 +910,7 @@ export function CharacterSheet({
             tokenImageUrl={live.tokenImageUrl}
             canEdit={canEditPortrait}
             onSaved={refresh}
+            onRoomPortraitSaved={applyRoomPortraitPatch}
           />
         ) : (
           <PortraitEditorFields
@@ -1007,15 +1045,16 @@ export function CharacterSheet({
     const portraitNode = canEditPortrait ? (
       <SheetPopupPortrait
         actorId={character.id}
-        roomId={inRoom ? roomId : undefined}
+        roomId={portraitOnRoom ? roomId : undefined}
         name={live.name}
         portraitUrl={live.portraitUrl ?? character.portraitUrl}
         tokenImageUrl={live.tokenImageUrl ?? character.tokenImageUrl}
         portraitFocus={live.portraitFocus ?? character.portraitFocus}
         tokenFocus={live.tokenFocus ?? character.tokenFocus}
         canEdit={canEditPortrait}
-        onSaved={inRoom ? refresh : () => router.refresh()}
-        onPersistBundle={inRoom ? undefined : persistPortraitBundle}
+        onSaved={portraitOnRoom ? () => undefined : () => router.refresh()}
+        onRoomPortraitSaved={portraitOnRoom ? applyRoomPortraitPatch : undefined}
+        onPersistBundle={portraitOnRoom ? undefined : persistPortraitBundle}
         layout="ddb"
       />
     ) : (

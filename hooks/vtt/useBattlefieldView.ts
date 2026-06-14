@@ -241,7 +241,7 @@ export function useBattlefieldView({ wrapRef, canvasRef }: Params) {
       ...viewRef.current,
       panX: pan.panX + (px - pan.startX),
       panY: pan.panY + (py - pan.startY),
-    });
+    }, { syncState: true });
     return true;
   }, [bumpView, canvasRef]);
 

@@ -1,3 +1,5 @@
+import type { BattlefieldView } from "@/lib/vtt/battlefield-view";
+import { canvasCenter } from "@/lib/vtt/battlefield-view";
 import type { Axial } from "@/lib/vtt/hex-math";
 import { lodDisplayGridRadiusCap } from "@/lib/vtt/canvas-lod";
 
@@ -13,18 +15,28 @@ export function buildHexGrid(gridRadius: number): Axial[] {
   return cells;
 }
 
-/** Raio necessário para cobrir o retângulo visível do canvas (com zoom). */
+/** Raio necessário para cobrir o retângulo visível (zoom + pan — evita borda do grid “andando”). */
 export function viewportGridRadius(
   w: number,
   h: number,
   hexSize: number,
-  viewScale = 1
+  view: Pick<BattlefieldView, "scale" | "panX" | "panY"> | number = 1
 ): number {
-  const effW = Math.max(w, 1) / Math.max(viewScale, 0.01);
-  const effH = Math.max(h, 1) / Math.max(viewScale, 0.01);
-  const cols = effW / hexSize;
-  const rows = effH / hexSize;
-  return Math.ceil(Math.max(cols, rows) / 2) + 2;
+  const scale =
+    typeof view === "number" ? Math.max(view, 0.01) : Math.max(view.scale, 0.01);
+  const panX = typeof view === "number" ? 0 : view.panX;
+  const panY = typeof view === "number" ? 0 : view.panY;
+  const { ox, oy } = canvasCenter(w, h);
+  const size = Math.max(hexSize, 1);
+
+  const relLeft = (panX + ox) / scale;
+  const relRight = (w - panX - ox) / scale;
+  const relTop = (panY + oy) / scale;
+  const relBottom = (h - panY - oy) / scale;
+
+  const cols = Math.max(relLeft, relRight) / size;
+  const rows = Math.max(relTop, relBottom) / size;
+  return Math.ceil(Math.max(cols, rows)) + 2;
 }
 
 /** Limite de raio extra além do da cena — evita dezenas de milhares de células com zoom out. */
@@ -36,9 +48,10 @@ export function displayHexGridRadius(
   w: number,
   h: number,
   hexSize: number,
-  viewScale = 1
+  view: Pick<BattlefieldView, "scale" | "panX" | "panY"> | number = 1
 ): number {
-  const viewportR = viewportGridRadius(w, h, hexSize, viewScale);
+  const viewScale = typeof view === "number" ? view : view.scale;
+  const viewportR = viewportGridRadius(w, h, hexSize, view);
   const radiusCap = lodDisplayGridRadiusCap(viewScale);
   return Math.min(Math.max(sceneRadius, viewportR), Math.max(sceneRadius, radiusCap));
 }
@@ -49,7 +62,7 @@ export function buildDisplayHexGrid(
   w: number,
   h: number,
   hexSize: number,
-  viewScale = 1
+  view: Pick<BattlefieldView, "scale" | "panX" | "panY"> | number = 1
 ): Axial[] {
-  return buildHexGrid(displayHexGridRadius(sceneRadius, w, h, hexSize, viewScale));
+  return buildHexGrid(displayHexGridRadius(sceneRadius, w, h, hexSize, view));
 }

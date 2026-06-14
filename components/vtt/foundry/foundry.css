@@ -6,8 +6,7 @@
   min-height: 0;
   display: flex;
   flex-direction: column;
-  /* Permite tooltips da barra de ícones ultrapassarem o clip do workspace */
-  overflow: visible;
+  overflow: hidden;
 }
 
 .foundry-mesa {
@@ -17,8 +16,7 @@
   min-width: 0;
   display: flex;
   flex-direction: row;
-  /* visible: tooltips da barra de ícones estendem sobre o mapa/dock */
-  overflow: visible;
+  overflow: hidden;
   border-radius: var(--radius);
   background: var(--mesa-stage-bg);
 
@@ -83,7 +81,9 @@
   min-width: 0;
   min-height: 0;
   z-index: 0;
-  overflow: visible;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .mesa-room-cover {
@@ -122,8 +122,10 @@
 }
 
 .foundry-mesa__stage .vtt-shell--foundry {
+  position: absolute;
+  inset: 0;
   display: block;
-  height: 100%;
+  height: auto;
   min-height: 0;
 }
 
@@ -1578,8 +1580,13 @@
   z-index: 1305;
 }
 
-.mesa-online-menu__hover-card--cursor {
+/* Portal em document.body — vence .glass-panel { position: relative } do tema v4 */
+.mesa-online-menu__hover-card.mesa-online-menu__hover-card--cursor,
+.mesa-online-menu__hover-card.mesa-online-menu__hover-card--pinned {
   position: fixed;
+}
+
+.mesa-online-menu__hover-card--cursor {
   transform: none;
 }
 
@@ -1640,7 +1647,6 @@
 }
 
 .mesa-online-menu__hover-card--pinned {
-  position: relative;
   padding-top: 1.5rem;
   border-color: rgba(201, 169, 98, 0.45);
   box-shadow: 0 8px 28px rgba(0, 0, 0, 0.5);
@@ -1878,6 +1884,10 @@
   border: none;
   background: var(--mesa-surface-inset);
   box-shadow: inset 0 0 0 1px var(--mesa-accent-border);
+}
+
+.mesa-workspace--foundry .vtt-shell--foundry {
+  min-height: 0;
 }
 
 .mesa-workspace--foundry .vtt-view-controls {
