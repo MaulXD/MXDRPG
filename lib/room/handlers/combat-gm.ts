@@ -18,6 +18,7 @@ import { syncLinkedTokens } from "../sync";
 import { appendRoomChatMessage } from "./chat";
 import { patchTokenVitals } from "@/lib/vtt/token-hp-display";
 import { getRoom, persistRoom, toSnapshot } from "../internal/registry";
+import { ensureCombatActiveHasPa } from "./combat-turn";
 import type { RoomSnapshot } from "../types";
 
 export type GmCombatAction =
@@ -180,6 +181,8 @@ export async function executeGmCombatAction(
       room.settings = { ...room.settings, combatActive: active };
       if (!active) {
         room.combat = { ...room.combat, pendingAutoPass: undefined };
+      } else if (room.combat?.order?.length) {
+        ensureCombatActiveHasPa(room);
       }
       appendRoomChatMessage(room, {
         ...author,
