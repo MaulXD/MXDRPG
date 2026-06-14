@@ -1256,19 +1256,31 @@
   padding: 1rem;
   background: rgba(12, 8, 10, 0.62);
   backdrop-filter: blur(4px);
+  pointer-events: auto;
 }
 
 .sheet-ddb-portrait-modal {
   position: relative;
+  flex-shrink: 0;
+  z-index: 1;
   width: min(320px, calc(100vw - 2rem));
   max-height: min(90vh, 560px);
   overflow: auto;
   margin: 0;
+  padding: 0.7rem 0.8rem 0.8rem;
   border-radius: 12px;
   border: 1px solid var(--ddb-panel-border);
   background: var(--ddb-panel);
   color: var(--ddb-ink);
   box-shadow: 0 20px 48px rgba(0, 0, 0, 0.45);
+  pointer-events: auto;
+}
+
+/* Legado: se ambas as classes coexistirem, não empurra o painel para fora do viewport */
+.sheet-ddb-portrait-modal.sheet-popup-portrait-editor {
+  position: relative;
+  left: auto;
+  top: auto;
 }
 
 .sheet-ddb-portrait-modal .sheet-popup-portrait-editor__head strong {
