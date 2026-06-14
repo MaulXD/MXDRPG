@@ -25,9 +25,14 @@ export function computeAvatarAnchorPlacement(rect: DOMRect): {
   top: number;
   flipLeft: boolean;
 } {
+  const panelH = 120;
   const fitsLeft = rect.left - AVATAR_GAP - AVATAR_PANEL_MAX_W >= DETAIL_MARGIN;
-  if (fitsLeft) {
-    return { left: rect.left - AVATAR_GAP, top: rect.top, flipLeft: true };
-  }
-  return { left: rect.right + AVATAR_GAP, top: rect.top, flipLeft: false };
+  const flipLeft = fitsLeft;
+  const left = flipLeft ? rect.left - AVATAR_GAP : rect.right + AVATAR_GAP;
+  let top = rect.top;
+  top = Math.max(
+    DETAIL_MARGIN,
+    Math.min(top, window.innerHeight - panelH - DETAIL_MARGIN)
+  );
+  return { left, top, flipLeft };
 }

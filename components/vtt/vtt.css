@@ -2748,7 +2748,7 @@
   }
 
   .vtt-page--mesa {
-    overflow: visible;
+    overflow: hidden;
   }
 
   .mesa-workspace {

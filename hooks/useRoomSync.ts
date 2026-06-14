@@ -280,13 +280,18 @@ export async function patchRoomActor(
   const res = await fetch(`/api/room/${roomId}/actors/${actorId}`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
+    credentials: "same-origin",
     body: JSON.stringify(patch),
   });
   if (!res.ok) {
     const err = (await res.json()) as { error?: string };
     throw new Error(err.error ?? "Falha ao salvar ficha");
   }
-  return res.json();
+  return res.json() as Promise<{
+    actor: RoomActor;
+    scene: RoomSnapshot["scene"];
+    revision: number;
+  }>;
 }
 
 export type LevelUpRoomResponse = {

@@ -47,6 +47,7 @@ export async function PATCH(req: Request, { params }: Params) {
 
   return NextResponse.json({
     actor: snapshot.actors[actorId],
+    scene: snapshot.scene,
     revision: snapshot.revision,
   });
 }

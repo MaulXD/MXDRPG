@@ -192,10 +192,11 @@ export async function persistRoom(
   if (state.combat?.order?.length) {
     ensureCombatActiveHasPa(state);
     if (requiresCombatTurnEconomy(state.settings, state.combat)) {
-      if (!opts?.skipAutoPassSchedule) {
+      if (executePendingAutoPassIfDue(state)) {
+        // Turno avançou — PA do novo ativo já veio de applyTurnPaTransition
+      } else if (!opts?.skipAutoPassSchedule) {
         scheduleAutoPassWhenActivePaZero(state);
       }
-      executePendingAutoPassIfDue(state);
     } else if (state.combat.pendingAutoPass) {
       state.combat = { ...state.combat, pendingAutoPass: undefined };
     }
@@ -256,16 +257,13 @@ export async function getRoom(roomId: string): Promise<RoomState | null> {
     }
     room.combat = normalizeCombatTrack(room.combat, room.scene.tokens);
   }
-  if (room?.combat?.order?.length) {
-    ensureCombatActiveHasPa(room);
-    if (requiresCombatTurnEconomy(room.settings, room.combat)) {
-      scheduleAutoPassWhenActivePaZero(room);
-      if (executePendingAutoPassIfDue(room)) {
-        return persistRoom(roomId, room);
-      }
-    } else if (room.combat.pendingAutoPass) {
-      room.combat = { ...room.combat, pendingAutoPass: undefined };
+  // GET/poll: só executa auto-passe já vencido — não agenda nem restaura PA (evita turnos fantasmas e PA não salvo).
+  if (room?.combat?.order?.length && requiresCombatTurnEconomy(room.settings, room.combat)) {
+    if (executePendingAutoPassIfDue(room)) {
+      return persistRoom(roomId, room, { skipAutoPassSchedule: true });
     }
+  } else if (room?.combat?.pendingAutoPass) {
+    room.combat = { ...room.combat, pendingAutoPass: undefined };
   }
   if (room && !room.chat?.length) {
     room.chat = [welcomeChat()];

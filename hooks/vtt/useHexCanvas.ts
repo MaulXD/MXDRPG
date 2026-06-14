@@ -33,6 +33,7 @@ import { isTargetMode, type TokenActionMode } from "@/lib/vtt/action-mode";
 import type { MoveCheck } from "@/lib/vtt/movement";
 import type { TokenHpDisplay } from "@/lib/vtt/token-hp-display";
 import type { ActiveTokenCastFx } from "@/lib/vtt/token-cast-fx";
+import { buildHexGrid, displayHexGridRadius } from "@/lib/vtt/hex-grid";
 import {
   resolveMapAlignedGridLayout,
 } from "@/lib/vtt/grid-layout";
@@ -42,7 +43,6 @@ import type { BattleScene } from "@/lib/vtt/types";
 
 export type HexCanvasDrawState = {
   scene: BattleScene;
-  gridCells: Axial[];
   showMovement: boolean;
   turnMovePreview: boolean;
   walkSet: Set<string>;
@@ -166,8 +166,11 @@ export function useHexCanvas(
     }
 
     const hexPalette = resolveHexPalette(s.mapBackdropTone ?? "none");
+    const gridCells = buildHexGrid(
+      displayHexGridRadius(s.scene.gridRadius, layout.w, layout.h, grid.hexSize, view)
+    );
     drawHexGridLayer(ctx, {
-      gridCells: s.gridCells,
+      gridCells,
       hexSize: grid.hexSize,
       gridOx: grid.ox,
       gridOy: grid.oy,
@@ -210,7 +213,7 @@ export function useHexCanvas(
 
     drawFogLayer(
       ctx,
-      s.gridCells,
+      gridCells,
       s.scene,
       grid.hexSize,
       layout,

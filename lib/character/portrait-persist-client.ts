@@ -4,6 +4,7 @@ import { patchRoomActor } from "@/hooks/useRoomSync";
 import { patchCharacterRecord } from "@/lib/character/character-persist-client";
 import type { CharacterSheet } from "@/lib/character/types";
 import type { PortraitBundle } from "@/lib/media/image-upload-client";
+import type { RoomActor } from "@/lib/room/types";
 
 export { patchCharacterRecord } from "@/lib/character/character-persist-client";
 
@@ -40,18 +41,39 @@ export async function persistPortraitBundleToCharacter(
   return patchCharacterRecord(characterId, portraitBundleToPatch(bundle));
 }
 
+export type RoomActorPatchResult = {
+  actor: RoomActor;
+  scene: import("@/lib/room/types").RoomSnapshot["scene"];
+  revision: number;
+};
+
+export function mergePortraitPatchIntoSnapshot(
+  snapshot: import("@/lib/room/types").RoomSnapshot,
+  result: RoomActorPatchResult
+): import("@/lib/room/types").RoomSnapshot {
+  return {
+    ...snapshot,
+    revision: result.revision,
+    scene: result.scene,
+    actors: { ...snapshot.actors, [result.actor.id]: result.actor },
+  };
+}
+
 export async function persistPortraitBundleToRoom(
   roomId: string,
   actorId: string,
   bundle: PortraitBundle
-): Promise<void> {
-  await patchRoomActor(roomId, actorId, portraitBundleToPatch(bundle));
+): Promise<RoomActorPatchResult | null> {
+  return patchRoomActor(roomId, actorId, portraitBundleToPatch(bundle));
 }
 
 export async function clearPortraitOnCharacter(characterId: string): Promise<void> {
   await patchCharacterRecord(characterId, CLEAR_PORTRAIT_PATCH);
 }
 
-export async function clearPortraitOnRoom(roomId: string, actorId: string): Promise<void> {
-  await patchRoomActor(roomId, actorId, CLEAR_PORTRAIT_PATCH);
+export async function clearPortraitOnRoom(
+  roomId: string,
+  actorId: string
+): Promise<RoomActorPatchResult | null> {
+  return patchRoomActor(roomId, actorId, CLEAR_PORTRAIT_PATCH);
 }

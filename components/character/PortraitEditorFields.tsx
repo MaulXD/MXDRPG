@@ -8,6 +8,7 @@ import {
   clearPortraitOnRoom,
   persistPortraitBundleToCharacter,
   persistPortraitBundleToRoom,
+  type RoomActorPatchResult,
 } from "@/lib/character/portrait-persist-client";
 import { playerColorForActor } from "@/lib/vtt/token-colors";
 
@@ -19,6 +20,7 @@ type BaseProps = {
   tokenImageUrl?: string | null;
   canEdit: boolean;
   onSaved?: () => void;
+  onRoomPortraitSaved?: (result: RoomActorPatchResult) => void;
 };
 
 type Props = BaseProps &
@@ -37,6 +39,7 @@ export function PortraitEditorFields(props: Props) {
     tokenImageUrl,
     canEdit,
     onSaved,
+    onRoomPortraitSaved,
     mode,
   } = props;
   const router = useRouter();
@@ -62,7 +65,8 @@ export function PortraitEditorFields(props: Props) {
       tokenRingColor={ringColor}
       onPersist={async (bundle) => {
         if (mode === "room") {
-          await persistPortraitBundleToRoom(props.roomId, props.actorId, bundle);
+          const result = await persistPortraitBundleToRoom(props.roomId, props.actorId, bundle);
+          if (result) onRoomPortraitSaved?.(result);
         } else {
           await persistPortraitBundleToCharacter(props.characterId, bundle);
         }
@@ -70,7 +74,8 @@ export function PortraitEditorFields(props: Props) {
       }}
       onClear={async () => {
         if (mode === "room") {
-          await clearPortraitOnRoom(props.roomId, props.actorId);
+          const result = await clearPortraitOnRoom(props.roomId, props.actorId);
+          if (result) onRoomPortraitSaved?.(result);
         } else {
           await clearPortraitOnCharacter(props.characterId);
         }

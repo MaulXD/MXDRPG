@@ -128,6 +128,18 @@ export async function PATCH(request: Request, { params }: Params) {
 
   const saved = await saveCharacter(merged);
 
+  if (isPortraitOnlyPatch(patch as Record<string, unknown>)) {
+    const roomId = saved.campaignRoomId ?? saved.adventureId;
+    if (roomId) {
+      try {
+        const { syncAdventureActorsForRoom } = await import("@/lib/room/adventure-actors");
+        await syncAdventureActorsForRoom(roomId);
+      } catch (e) {
+        console.error("[characters PATCH] sync retrato na mesa:", e);
+      }
+    }
+  }
+
   if (grant && requestId) {
     await consumeSheetEditGrant(requestId);
   }

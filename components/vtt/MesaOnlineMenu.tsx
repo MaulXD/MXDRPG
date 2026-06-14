@@ -164,6 +164,25 @@ export function MesaOnlineMenu({ online, loading = false, selfUserId }: Props) {
 
   useEffect(() => () => clearHideTimer(), [clearHideTimer]);
 
+  useEffect(() => {
+    if (!panel || !open) return;
+    const syncPlacement = () => {
+      const btn = rootRef.current?.querySelector<HTMLElement>(
+        `[data-online-member="${panel.member.userId}"]`
+      );
+      if (!btn) return;
+      const placement = computeAvatarAnchorPlacement(btn.getBoundingClientRect());
+      setPanel((prev) => (prev ? { ...prev, placement } : null));
+    };
+    syncPlacement();
+    window.addEventListener("resize", syncPlacement);
+    window.addEventListener("scroll", syncPlacement, true);
+    return () => {
+      window.removeEventListener("resize", syncPlacement);
+      window.removeEventListener("scroll", syncPlacement, true);
+    };
+  }, [open, panel?.member.userId]);
+
   async function addFriendByUserId(targetUserId: string) {
     if (!canSocialize || targetUserId === selfUserId) return;
     setMemberActions((prev) => ({ ...prev, [targetUserId]: "loading" }));
@@ -333,6 +352,7 @@ export function MesaOnlineMenu({ online, loading = false, selfUserId }: Props) {
                     <button
                       type="button"
                       className="mesa-online-menu__avatar-btn"
+                      data-online-member={member.userId}
                       aria-expanded={isActive}
                       onMouseEnter={(e) => {
                         const pinned =
