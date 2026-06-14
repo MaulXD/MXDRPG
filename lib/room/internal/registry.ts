@@ -196,6 +196,8 @@ export async function persistRoom(
         scheduleAutoPassWhenActivePaZero(state);
       }
       executePendingAutoPassIfDue(state);
+    } else if (state.combat.pendingAutoPass) {
+      state.combat = { ...state.combat, pendingAutoPass: undefined };
     }
   }
   const updated = bumpRoom(state);
@@ -261,6 +263,8 @@ export async function getRoom(roomId: string): Promise<RoomState | null> {
       if (executePendingAutoPassIfDue(room)) {
         return persistRoom(roomId, room);
       }
+    } else if (room.combat.pendingAutoPass) {
+      room.combat = { ...room.combat, pendingAutoPass: undefined };
     }
   }
   if (room && !room.chat?.length) {

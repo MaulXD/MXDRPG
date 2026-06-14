@@ -475,7 +475,7 @@ export function HexBattlefield({
       }
       if (!roomSettings.combatActive) return null;
       if (!track) return null;
-      const activeId = activeTokenId(track);
+      const activeId = turnActiveId ?? activeTokenId(track);
       if (
         !canActOnCombatTurn(t.id, {
           combat: track,
@@ -496,7 +496,7 @@ export function HexBattlefield({
       }
       return null;
     },
-    [combat, canOperateToken, canControlCombat, displayScene.tokens, roomSettings.combatActive]
+    [combat, canOperateToken, canControlCombat, displayScene.tokens, roomSettings.combatActive, turnActiveId]
   );
 
   const canPreviewTurnMove = useCallback(
@@ -1684,6 +1684,7 @@ export function HexBattlefield({
           activeTokenId: turn.activeTokenId,
           bypassTurn: selectedBypass,
           combatHasOrder: turn.combatHasOrder,
+          combatActive: turn.combatActive,
         })
       ) {
         setActionErr(TURN_WAIT_MSG);
@@ -1731,6 +1732,7 @@ export function HexBattlefield({
       playCombatFxFromSnap,
       turn.activeTokenId,
       turn.combatHasOrder,
+      turn.combatActive,
     ]
   );
 
@@ -1802,6 +1804,7 @@ export function HexBattlefield({
           activeTokenId: turn.activeTokenId,
           bypassTurn: selectedBypass,
           combatHasOrder: turn.combatHasOrder,
+          combatActive: turn.combatActive,
         })
       ) {
         setActionErr(TURN_WAIT_MSG);

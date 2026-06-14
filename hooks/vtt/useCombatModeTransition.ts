@@ -3,8 +3,11 @@
 import { useEffect, useRef, useState } from "react";
 import type { CombatModeTransitionPhase } from "@/components/vtt/CombatModeTransition";
 
-/** Tempo sem interação na mesa após troca de modo (ms). */
-export const COMBAT_MODE_TRANSITION_LOCK_MS = 1000;
+/** Duração total da animação (deve bater com --cmt-total no CSS). */
+export const COMBAT_MODE_TRANSITION_DURATION_MS = 2300;
+
+/** Tempo sem interação na mesa — cobre animação completa. */
+export const COMBAT_MODE_TRANSITION_LOCK_MS = COMBAT_MODE_TRANSITION_DURATION_MS;
 
 export function useCombatModeTransition(combatActive: boolean): {
   phase: CombatModeTransitionPhase | null;
