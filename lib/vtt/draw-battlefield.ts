@@ -9,7 +9,7 @@ import {
 import type { MapBackdropTone } from "@/lib/vtt/map-luminance";
 import type { PortraitFocus } from "@/lib/media/portrait-focus";
 import { DEFAULT_PORTRAIT_FOCUS } from "@/lib/media/portrait-focus";
-import { collectPlayerActorIds, resolveTokenRing, tokenPortraitInset } from "@/lib/vtt/token-colors";
+import { collectPlayerActorIds, resolveTokenRing } from "@/lib/vtt/token-colors";
 import {
   creatureSizeOf,
   occupiedHexes,
@@ -454,8 +454,6 @@ function drawSingleToken(
     const hpLayout = hpRingLayout(r, ringStyle);
     const hpVis = p.tokenHpDisplay?.get(token.id);
     const showHpBar = Boolean(hpVis?.bar && token.vidaMax != null && token.vida != null);
-    const ringInset = tokenPortraitInset(ringStyle);
-    const identityR = showHpBar ? hpLayout.identityBase : Math.max(4, r - ringInset);
     const portraitR = showHpBar ? hpLayout.contentRFull : r;
     const defeated = isTokenDefeated(token);
 
@@ -473,17 +471,12 @@ function drawSingleToken(
       drawTokenDefeatedOverlay(ctx, x, y, portraitR);
     }
 
-    drawTokenIdentityRings(ctx, x, y, identityR, ringStyle);
+    drawTokenIdentityRings(ctx, x, y, portraitR, ringStyle);
 
     if (showHpBar) {
       const ratio = hpRatio(token);
       drawTokenHpSegments(ctx, x, y, hpLayout, ratio, hpBarColor(ratio));
     }
-
-    drawTokenIdentityRings(ctx, x, y, hpLayout.identityBase, ringStyle, {
-      skipOutermostRing: showHpBar,
-      outerRingOffset: hpLayout.outerRingOffset,
-    });
 
     if (defeated) {
       drawTokenDefeatedSkull(ctx, x, y, r);
