@@ -17,6 +17,54 @@ THEME_DIR = Path(__file__).resolve().parent / "pdf-theme"
 OUT_DIR = ROOT / "livros" / "pdf"
 ECOLOGY_DIR = ROOT / "livros" / "guias-ecologia"
 ECOLOGY_PDF_DIR = OUT_DIR / "guias-ecologia"
+CRIACAO_DIR = ROOT / "livros" / "guias-criacao"
+CRIACAO_PDF_DIR = OUT_DIR / "guias-criacao"
+
+# Metadados por arquivo em livros/guias-criacao/*.md (stem = nome sem .md)
+CRIACAO_META: dict[str, dict[str, str]] = {
+    "Espiritualista-Criacao-Personagem": {
+        "id": "criacao-espiritualista",
+        "title": "Espiritualista",
+        "subtitle": "Criação de Personagem",
+        "tagline": "Classe, kits, Chi, subclasses e caminhos de talento.",
+        "eyebrow": "Guia de criação · Livro do Jogador",
+    },
+    "Espiritualista-Por-Que": {
+        "id": "espiritualista-por-que",
+        "title": "Por que Espiritualista?",
+        "subtitle": "Folheto de mesa",
+        "tagline": "Papel, Chi, vertentes e sinergia com ecologia.",
+        "eyebrow": "Guia de classe · Livro do Jogador",
+    },
+    "Espiritualista-Punho-do-Limiar": {
+        "id": "espiritualista-punho-do-limiar",
+        "title": "Punho do Limiar",
+        "subtitle": "Subclasse · Espiritualista",
+        "tagline": "Impacto, punhos desarmados e dieta de predadores.",
+        "eyebrow": "Guia de subclasse · Livro do Jogador",
+    },
+    "Espiritualista-Tecelao-do-Vacuo": {
+        "id": "espiritualista-tecelao-do-vacuo",
+        "title": "Tecelão do Vácuo",
+        "subtitle": "Subclasse · Espiritualista",
+        "tagline": "Fluxo, Passo do Vácuo, rede e teleporte.",
+        "eyebrow": "Guia de subclasse · Livro do Jogador",
+    },
+    "Espiritualista-Asceta-da-Dor": {
+        "id": "espiritualista-asceta-da-dor",
+        "title": "Asceta da Dor",
+        "subtitle": "Subclasse · Espiritualista",
+        "tagline": "PV por Chi, Ferida Aberta e Martírio.",
+        "eyebrow": "Guia de subclasse · Livro do Jogador",
+    },
+    "Espiritualista-Guardiao-da-Respiracao": {
+        "id": "espiritualista-guardiao-da-respiracao",
+        "title": "Guardião da Respiração",
+        "subtitle": "Subclasse · Espiritualista",
+        "tagline": "Muro de Chi, sustain e proteção de aliados.",
+        "eyebrow": "Guia de subclasse · Livro do Jogador",
+    },
+}
 
 BOOKS = [
     {
@@ -55,18 +103,6 @@ BOOKS = [
         "css": ["vinite-book.css", "vinite-ficha-compact.css"],
         "body_class": "book ficha-compact",
         "no_cover": True,
-    },
-    {
-        "id": "criacao-espiritualista",
-        "source": ROOT / "livros" / "guias-criacao" / "Espiritualista-Criacao-Personagem.md",
-        "output": OUT_DIR / "Eldarin-Criacao-Espiritualista-v4.pdf",
-        "cover_class": "jogador",
-        "eyebrow": "Guia de criação · Livro do Jogador",
-        "title": "Espiritualista",
-        "subtitle": "Criação de Personagem",
-        "tagline": "Classe, kits, Chi, subclasses e caminhos de talento.",
-        "css": ["vinite-book.css"],
-        "body_class": "book jogador",
     },
     {
         "id": "geral",
@@ -308,6 +344,47 @@ def discover_ecology_books() -> list[dict]:
     return books
 
 
+def criacao_slug(stem: str) -> str:
+    """Espiritualista-Punho-do-Limiar → punho-do-limiar"""
+    prefix = "Espiritualista-"
+    if stem.startswith(prefix):
+        return stem[len(prefix) :].lower().replace("_", "-")
+    return stem.lower().replace("_", "-")
+
+
+def discover_criacao_books() -> list[dict]:
+    guides = sorted(CRIACAO_DIR.glob("*.md"))
+    books: list[dict] = []
+    CRIACAO_PDF_DIR.mkdir(parents=True, exist_ok=True)
+
+    for path in guides:
+        stem = path.stem
+        meta = CRIACAO_META.get(stem)
+        if not meta:
+            print(f"  AVISO: sem metadados em CRIACAO_META para {path.name}", file=sys.stderr)
+            continue
+        slug = criacao_slug(stem)
+        if stem == "Espiritualista-Criacao-Personagem":
+            output = OUT_DIR / "Eldarin-Criacao-Espiritualista-v4.pdf"
+        else:
+            output = CRIACAO_PDF_DIR / f"Eldarin-Espiritualista-{slug}-v4.pdf"
+        books.append(
+            {
+                "id": meta["id"],
+                "source": path,
+                "output": output,
+                "cover_class": "jogador",
+                "eyebrow": meta["eyebrow"],
+                "title": meta["title"],
+                "subtitle": meta["subtitle"],
+                "tagline": meta["tagline"],
+                "css": ["vinite-book.css"],
+                "body_class": "book jogador",
+            }
+        )
+    return books
+
+
 def build_one(book: dict, keep_html: bool = False) -> Path:
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     book.get("output").parent.mkdir(parents=True, exist_ok=True)
@@ -344,16 +421,22 @@ def build_one(book: dict, keep_html: bool = False) -> Path:
 
 
 def all_books() -> list[dict]:
-    return BOOKS + discover_ecology_books()
+    return BOOKS + discover_criacao_books() + discover_ecology_books()
 
 
 def main() -> int:
+    criacao = discover_criacao_books()
     ecology = discover_ecology_books()
-    catalog = BOOKS + ecology
+    catalog = BOOKS + criacao + ecology
     ids = [b["id"] for b in catalog]
 
     parser = argparse.ArgumentParser(description="Gera PDFs Eldarin")
     parser.add_argument("--only", choices=ids, help="Gerar apenas um volume")
+    parser.add_argument(
+        "--criacao",
+        action="store_true",
+        help="Gerar todos os guias de criação (Espiritualista)",
+    )
     parser.add_argument(
         "--ecologia",
         action="store_true",
@@ -380,6 +463,8 @@ def main() -> int:
         targets = catalog
     elif args.geral:
         targets = [b for b in BOOKS if b["id"] == "geral"]
+    elif args.criacao:
+        targets = criacao
     elif args.ecologia:
         targets = ecology
     elif args.only:
