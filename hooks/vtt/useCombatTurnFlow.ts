@@ -44,7 +44,10 @@ export function useCombatTurnFlow({ snapshot, roomId, onSnapshot }: Props) {
 
   useEffect(() => {
     const pending = snapshot?.combat?.pendingAutoPass;
-    if (!pending || !roomId) return;
+    if (!pending || !roomId) {
+      autoPassKeyRef.current = null;
+      return;
+    }
 
     const key = `${pending.tokenId}:${pending.passAt}`;
     if (autoPassKeyRef.current === key) return;
@@ -52,7 +55,8 @@ export function useCombatTurnFlow({ snapshot, roomId, onSnapshot }: Props) {
 
     const delay = Math.max(0, pending.passAt - Date.now());
     const timer = setTimeout(() => {
-      void nextCombatTurn(roomId, { force: true })
+      // Sem force — só executa auto-passe agendado; evita pular dois turnos se o poll do servidor já avançou.
+      void nextCombatTurn(roomId)
         .then((snap) => {
           onSnapshot?.(snap);
         })

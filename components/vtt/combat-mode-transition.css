@@ -1,6 +1,9 @@
 /* Transição Combate ↔ Aventura — Choque lateral (entrada) · Divisão lateral (saída) */
 
 .cmt-overlay {
+  --cmt-total: 2.3s;
+  --cmt-hold-ratio: 0.435; /* ~1s de pausa em animação de 2.3s */
+  --cmt-approach-ratio: 0.3; /* ~0.7s até cruzar */
   position: absolute;
   inset: 0;
   z-index: 120;
@@ -25,11 +28,11 @@
 }
 
 .cmt-overlay--playing .cmt-overlay__vignette {
-  animation: cmt-vignette-in 0.5s ease forwards;
+  animation: cmt-vignette-in 0.65s ease forwards;
 }
 
 .cmt-overlay--exit.cmt-overlay--playing .cmt-overlay__vignette {
-  animation: cmt-vignette-out 0.7s ease 0.2s forwards;
+  animation: cmt-vignette-out 0.8s ease calc(var(--cmt-total) * var(--cmt-hold-ratio)) forwards;
 }
 
 @keyframes cmt-vignette-in {
@@ -57,12 +60,12 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.65rem;
 }
 
 .cmt-overlay__label {
   font-family: var(--font-display, Cinzel, serif);
-  font-size: clamp(1.1rem, 3.2vw, 1.65rem);
+  font-size: clamp(1.25rem, 4vw, 2rem);
   font-weight: 700;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -73,7 +76,7 @@
 }
 
 .cmt-overlay__sub {
-  font-size: 0.75rem;
+  font-size: clamp(0.78rem, 2vw, 0.92rem);
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: #b8922e;
@@ -84,8 +87,10 @@
   position: relative;
   width: 120px;
   height: 120px;
-  margin: 0.15rem auto 0.2rem;
+  margin: 0.35rem auto 0.5rem;
   flex-shrink: 0;
+  transform: scale(1.85);
+  transform-origin: center center;
 }
 
 .cmt-sword {
@@ -96,7 +101,7 @@
   height: 120px;
   margin: -37px 0 0 -17px;
   transform-origin: 17px 37px;
-  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.5));
+  filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.55));
 }
 
 .cmt-sword svg {
@@ -137,42 +142,44 @@
   z-index: 3;
 }
 
-/* ─── Entrada: Choque lateral ─── */
+/* ─── Entrada: Choque lateral — cruza, segura 1s, depois some o overlay ─── */
 .cmt--in-clash.cmt-overlay--playing .cmt-sword--a {
-  animation: cmt-in-clash-a 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation: cmt-in-clash-a var(--cmt-total) cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 .cmt--in-clash.cmt-overlay--playing .cmt-sword--b {
-  animation: cmt-in-clash-b 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation: cmt-in-clash-b var(--cmt-total) cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 .cmt--in-clash.cmt-overlay--playing .cmt-overlay__flash {
-  animation: cmt-clash-flash 0.4s ease 0.48s forwards;
+  animation: cmt-clash-flash 0.55s ease calc(var(--cmt-total) * var(--cmt-approach-ratio)) forwards;
 }
 
 .cmt--in-clash.cmt-overlay--playing .cmt-clash-point {
-  animation: cmt-clash-point 0.45s ease 0.42s forwards;
+  animation: cmt-clash-point 0.55s ease calc(var(--cmt-total) * var(--cmt-approach-ratio) - 0.05s) forwards;
 }
 
 .cmt--in-clash.cmt-overlay--playing .cmt-overlay__label {
-  animation: cmt-label-in 0.45s ease 0.52s forwards;
+  animation: cmt-label-in 0.5s ease calc(var(--cmt-total) * var(--cmt-approach-ratio) + 0.05s) forwards;
 }
 
 .cmt--in-clash.cmt-overlay--playing .cmt-overlay__sub {
-  animation: cmt-label-in 0.4s ease 0.62s forwards;
+  animation: cmt-label-in 0.45s ease calc(var(--cmt-total) * var(--cmt-approach-ratio) + 0.15s) forwards;
 }
 
 @keyframes cmt-in-clash-a {
-  0% { transform: translateX(-120px) rotate(-78deg); opacity: 0; }
-  65% { transform: translateX(4px) rotate(-52deg); opacity: 1; }
-  82% { transform: translateX(-2px) rotate(-58deg); }
+  0% { transform: translateX(-180px) rotate(-78deg); opacity: 0; }
+  22% { transform: translateX(6px) rotate(-52deg); opacity: 1; }
+  28% { transform: translateX(-3px) rotate(-58deg); }
+  30%, 73% { transform: translateX(0) rotate(-56deg); opacity: 1; }
   100% { transform: translateX(0) rotate(-56deg); opacity: 1; }
 }
 
 @keyframes cmt-in-clash-b {
-  0% { transform: translateX(120px) rotate(78deg); opacity: 0; }
-  65% { transform: translateX(-4px) rotate(52deg); opacity: 1; }
-  82% { transform: translateX(2px) rotate(58deg); }
+  0% { transform: translateX(180px) rotate(78deg); opacity: 0; }
+  22% { transform: translateX(-6px) rotate(52deg); opacity: 1; }
+  28% { transform: translateX(3px) rotate(58deg); }
+  30%, 73% { transform: translateX(0) rotate(56deg); opacity: 1; }
   100% { transform: translateX(0) rotate(56deg); opacity: 1; }
 }
 
@@ -188,7 +195,7 @@
   100% { opacity: 0; transform: scale(1.6); }
 }
 
-/* ─── Saída: Divisão lateral ─── */
+/* ─── Saída: Divisão lateral — 1s cruzadas, depois se separam ─── */
 .cmt-overlay--exit .cmt-sword--a {
   transform: rotate(-56deg);
   opacity: 1;
@@ -210,29 +217,29 @@
 }
 
 .cmt--out-split.cmt-overlay--playing .cmt-sword--a {
-  animation: cmt-out-split-a 0.65s cubic-bezier(0.55, 0, 0.9, 0.4) forwards;
+  animation: cmt-out-split-a var(--cmt-total) cubic-bezier(0.55, 0, 0.9, 0.4) forwards;
 }
 
 .cmt--out-split.cmt-overlay--playing .cmt-sword--b {
-  animation: cmt-out-split-b 0.65s cubic-bezier(0.55, 0, 0.9, 0.4) forwards;
+  animation: cmt-out-split-b var(--cmt-total) cubic-bezier(0.55, 0, 0.9, 0.4) forwards;
 }
 
 .cmt--out-split.cmt-overlay--playing .cmt-overlay__label {
-  animation: cmt-label-out 0.35s ease forwards;
+  animation: cmt-label-out 0.45s ease calc(var(--cmt-total) * var(--cmt-hold-ratio)) forwards;
 }
 
 .cmt--out-split.cmt-overlay--playing .cmt-overlay__sub {
-  animation: cmt-label-out 0.3s ease 0.05s forwards;
+  animation: cmt-label-out 0.4s ease calc(var(--cmt-total) * var(--cmt-hold-ratio) + 0.05s) forwards;
 }
 
 @keyframes cmt-out-split-a {
-  0% { transform: rotate(-56deg); opacity: 1; }
-  100% { transform: translateX(-150px) rotate(-112deg); opacity: 0; }
+  0%, 43.5% { transform: rotate(-56deg); opacity: 1; }
+  100% { transform: translateX(-220px) rotate(-112deg); opacity: 0; }
 }
 
 @keyframes cmt-out-split-b {
-  0% { transform: rotate(56deg); opacity: 1; }
-  100% { transform: translateX(150px) rotate(112deg); opacity: 0; }
+  0%, 43.5% { transform: rotate(56deg); opacity: 1; }
+  100% { transform: translateX(220px) rotate(112deg); opacity: 0; }
 }
 
 @keyframes cmt-label-in {

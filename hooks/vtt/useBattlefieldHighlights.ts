@@ -29,6 +29,7 @@ type TurnCtx = {
   bypassTurn: boolean;
   combatRound?: number;
   combatHasOrder?: boolean;
+  combatActive?: boolean;
 };
 
 type Params = {
@@ -87,6 +88,7 @@ export function useBattlefieldHighlights({
         activeTokenId: turn.activeTokenId,
         bypassTurn: effectiveBypassTurn(moveHighlightToken, turn.bypassTurn),
         combatHasOrder: turn.combatHasOrder,
+        combatActive: turn.combatActive,
       })
   );
   const showMovement = Boolean(
@@ -379,9 +381,11 @@ export function useBattlefieldHighlights({
       bypassTurn: effectiveBypassTurn(selected, turn.bypassTurn),
       combatRound: turn.combatRound,
       combatHasOrder: turn.combatHasOrder ?? combatHasOrder,
+      combatActive: turn.combatActive,
     };
     const attacker = attackerForCombatCheck(selected, selectedActor, selectedTurn, {
       combatHasOrder,
+      combatActive: turn.combatActive,
     });
     const ids = new Set<string>();
     for (const t of scene.tokens) {
