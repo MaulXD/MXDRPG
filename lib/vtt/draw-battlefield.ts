@@ -100,8 +100,9 @@ function drawSquareGridLines(
   stroke: string,
   lod: GridLod
 ): void {
-  const { hexSize, layout, gridCells, visibleHexSet } = p;
-  const { ox, oy } = layout;
+  const { hexSize, layout, gridCells, visibleHexSet, gridOx, gridOy } = p;
+  const ox = gridOx ?? layout.ox;
+  const oy = gridOy ?? layout.oy;
 
   let minQ = Infinity;
   let maxQ = -Infinity;

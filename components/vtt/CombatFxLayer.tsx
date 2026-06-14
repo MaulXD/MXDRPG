@@ -4,7 +4,6 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import type { Axial } from "@/lib/vtt/hex-math";
 import { axialToPixel, hexCorners, hexDrawRadius } from "@/lib/vtt/hex-math";
 import { canvasCenter, worldToScreen, type BattlefieldView } from "@/lib/vtt/battlefield-view";
-import { mapFloorLocalToWorld, type MapFloorAnchor } from "@/lib/vtt/grid-layout";
 import type {
   CombatFxPhase,
   CombatFxState,
@@ -23,7 +22,6 @@ type Props = {
   hexSize: number;
   gridOx?: number;
   gridOy?: number;
-  floorAnchor?: MapFloorAnchor | null;
   fx: CombatFxState | null;
   onDone: () => void;
   onApplyState?: () => void;
@@ -52,14 +50,11 @@ function hexPathPoints(
   oy: number,
   w: number,
   h: number,
-  view: BattlefieldView,
-  floorAnchor?: MapFloorAnchor | null
+  view: BattlefieldView
 ): string {
   const local = axialToPixel(axial.q, axial.r, hexSize, ox, oy);
-  const world = floorAnchor ? mapFloorLocalToWorld(local.x, local.y, floorAnchor) : local;
-  const screen = worldToScreen(world.x, world.y, w, h, view);
-  const floorScale = floorAnchor?.scale ?? 1;
-  const r = hexDrawRadius(hexSize) * floorScale * (view.scale ?? 1);
+  const screen = worldToScreen(local.x, local.y, w, h, view);
+  const r = hexDrawRadius(hexSize) * (view.scale ?? 1);
   const corners = hexCorners(screen.x, screen.y, r);
   return corners.map((p, i) => `${i === 0 ? "M" : "L"}${p.x},${p.y}`).join(" ") + " Z";
 }
@@ -108,7 +103,6 @@ export function CombatFxLayer({
   hexSize,
   gridOx,
   gridOy,
-  floorAnchor = null,
   fx,
   onDone,
   onApplyState,
@@ -386,8 +380,7 @@ export function CombatFxLayer({
 
   const markScreen = (axial: Axial) => {
     const local = axialToPixel(axial.q, axial.r, hexSize, ox, oy);
-    const world = floorAnchor ? mapFloorLocalToWorld(local.x, local.y, floorAnchor) : local;
-    return worldToScreen(world.x, world.y, w, h, view);
+    return worldToScreen(local.x, local.y, w, h, view);
   };
 
   const to = markScreen(fx.markAxial);
@@ -433,7 +426,7 @@ export function CombatFxLayer({
     (fx.hit === true || fx.hit === false || fx.saveTotal != null);
 
   const areaHexPaths =
-    fx.areaHexes?.map((hex) => hexPathPoints(hex, hexSize, ox, oy, w, h, view, floorAnchor)) ?? [];
+    fx.areaHexes?.map((hex) => hexPathPoints(hex, hexSize, ox, oy, w, h, view)) ?? [];
 
   return (
     <div className={`combat-fx-layer ${reducedMotion ? "combat-fx-reduced" : ""}`} aria-live="polite">
@@ -449,7 +442,7 @@ export function CombatFxLayer({
           />
         ))}
         <path
-          d={hexPathPoints(fx.markAxial, hexSize, ox, oy, w, h, view, floorAnchor)}
+          d={hexPathPoints(fx.markAxial, hexSize, ox, oy, w, h, view)}
           className={`combat-fx-mark-hex${phase === "damage" ? " combat-fx-mark-hex--pulse" : ""}`}
           fill="none"
           stroke={accent}
@@ -459,7 +452,7 @@ export function CombatFxLayer({
           fx.areaTargets?.map((t) => (
             <path
               key={t.tokenId}
-              d={hexPathPoints(t.axial, hexSize, ox, oy, w, h, view, floorAnchor)}
+              d={hexPathPoints(t.axial, hexSize, ox, oy, w, h, view)}
               className="combat-fx-mark-hex combat-fx-mark-hex--target"
               fill="none"
               stroke={accent}

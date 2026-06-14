@@ -34,9 +34,7 @@ import type { MoveCheck } from "@/lib/vtt/movement";
 import type { TokenHpDisplay } from "@/lib/vtt/token-hp-display";
 import type { ActiveTokenCastFx } from "@/lib/vtt/token-cast-fx";
 import {
-  applyMapFloorTransform,
   resolveMapAlignedGridLayout,
-  sceneForMapFloorDraw,
 } from "@/lib/vtt/grid-layout";
 import { resolveHexPalette } from "@/lib/vtt/hex-highlight-palette";
 import type { MapBackdropTone } from "@/lib/vtt/map-luminance";
@@ -158,19 +156,12 @@ export function useHexCanvas(
     applyBattlefieldViewTransform(ctx, layout.w, layout.h, view);
 
     const grid = resolveMapAlignedGridLayout(s.scene, layout.ox, layout.oy);
-    const floorAnchor = grid.floorAnchor;
-    const mapDrawScene = floorAnchor ? sceneForMapFloorDraw(s.scene) : s.scene;
 
     const mapImg = s.mapImage;
-    if (floorAnchor) {
-      ctx.save();
-      applyMapFloorTransform(ctx, floorAnchor);
-    }
-
     if (mapImg?.complete && mapImg.naturalWidth > 0) {
-      drawMapImageLayer(ctx, mapImg, mapDrawScene, layout);
+      drawMapImageLayer(ctx, mapImg, s.scene, layout);
       if (s.floorEditActive) {
-        drawFloorEditOverlay(ctx, mapImg, mapDrawScene, layout, view.scale);
+        drawFloorEditOverlay(ctx, mapImg, s.scene, layout, view.scale);
       }
     }
 
@@ -275,10 +266,6 @@ export function useHexCanvas(
 
     if (s.pings.length > 0) {
       drawPingLayer(ctx, s.pings, grid.hexSize, layout, grid.ox, grid.oy);
-    }
-
-    if (floorAnchor) {
-      ctx.restore();
     }
 
     ctx.restore();
