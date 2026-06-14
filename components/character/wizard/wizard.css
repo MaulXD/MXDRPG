@@ -845,10 +845,25 @@
   font-weight: 400;
 }
 
-.wizard-hover-tip:hover .wizard-hover-tip__bubble,
-.wizard-hover-tip:focus-visible .wizard-hover-tip__bubble {
+.wizard-hover-tip:hover .wizard-hover-tip__bubble:not(.wizard-hover-tip__bubble--portal),
+.wizard-hover-tip:focus-visible .wizard-hover-tip__bubble:not(.wizard-hover-tip__bubble--portal) {
   opacity: 1;
   visibility: visible;
+}
+
+/* Portal — renderizado em document.body para não ser cortado por overflow do modal */
+.wizard-hover-tip__bubble--portal {
+  position: fixed;
+  z-index: 10050;
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: none;
+  bottom: auto !important;
+  right: auto !important;
+  width: max-content;
+  height: auto;
+  box-sizing: border-box;
+  max-width: min(340px, calc(100vw - 16px));
 }
 
 .char-wizard-pick .wizard-hover-tip {

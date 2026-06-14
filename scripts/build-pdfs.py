@@ -57,6 +57,18 @@ BOOKS = [
         "no_cover": True,
     },
     {
+        "id": "criacao-espiritualista",
+        "source": ROOT / "livros" / "guias-criacao" / "Espiritualista-Criacao-Personagem.md",
+        "output": OUT_DIR / "Eldarin-Criacao-Espiritualista-v4.pdf",
+        "cover_class": "jogador",
+        "eyebrow": "Guia de criação · Livro do Jogador",
+        "title": "Espiritualista",
+        "subtitle": "Criação de Personagem",
+        "tagline": "Classe, kits, Chi, subclasses e caminhos de talento.",
+        "css": ["vinite-book.css"],
+        "body_class": "book jogador",
+    },
+    {
         "id": "geral",
         "source": None,
         "output": OUT_DIR / "Eldarin-Edicao-Geral-v4.pdf",
