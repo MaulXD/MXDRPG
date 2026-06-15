@@ -8,17 +8,8 @@ import { getRoom, rooms, toSnapshot } from "../internal/registry";
 import type { RoomListItem, RoomSnapshot, RoomState } from "../types";
 
 export async function getRoomSnapshot(roomId: string): Promise<RoomSnapshot | null> {
-  let room = await getRoom(roomId);
+  const room = await getRoom(roomId);
   if (!room) return null;
-
-  if (dbRooms.dbEnabled()) {
-    const fromDb = await dbRooms.fetchRoom(roomId);
-    if (fromDb && fromDb.revision > room.revision) {
-      rooms().set(roomId, fromDb);
-      room = fromDb;
-    }
-  }
-
   return toSnapshot(room);
 }
 
