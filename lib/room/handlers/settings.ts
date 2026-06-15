@@ -5,6 +5,7 @@ import { sanitizePortraitFocus } from "@/lib/media/portrait-focus";
 import { normalizeRoomSettings, type RoomSettings } from "@/lib/room/settings";
 import { applyExplorationPaDisplay } from "@/lib/combat/exploration-pa";
 import { beginCombatTurnEconomyPa } from "./combat-turn";
+import { enterCombatPaEconomy } from "@/lib/combat/turn-economy";
 import { getRoom, persistRoom, toSnapshot, type PersistRoomOpts } from "../internal/registry";
 import type { RoomSnapshot } from "../types";
 
@@ -54,8 +55,12 @@ export async function patchRoomSettings(
   const wasCombat = current.combatActive;
   const nowCombat = room.settings.combatActive;
 
-  if (!wasCombat && nowCombat && room.combat?.order?.length) {
-    beginCombatTurnEconomyPa(room);
+  if (!wasCombat && nowCombat) {
+    if (room.combat?.order?.length) {
+      beginCombatTurnEconomyPa(room);
+    } else {
+      enterCombatPaEconomy(room);
+    }
     persistOpts = { skipAutoPass: true, skipAutoPassSchedule: true };
   } else if (wasCombat && !nowCombat) {
     room.combat = { ...room.combat, pendingAutoPass: undefined };

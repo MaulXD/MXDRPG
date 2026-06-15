@@ -10,12 +10,9 @@ import {
 } from "@/lib/vtt/token-integrity";
 import { welcomeChat } from "../chat";
 import { normalizeCombatTrack } from "../combat";
-import {
-  ensureCombatActiveHasPa,
-  executePendingAutoPassIfDue,
-  scheduleAutoPassWhenActivePaZero,
-} from "../handlers/combat-turn";
-import { requiresCombatTurnEconomy } from "@/lib/combat/mesa-mode";
+import { executePendingAutoPassIfDue } from "../handlers/combat-turn";
+import { scheduleAutoPassWhenActivePaZero } from "@/lib/combat/turn-economy";
+import { requiresCombatPaEconomy, requiresCombatTurnEconomy } from "@/lib/combat/mesa-mode";
 import { pruneMapMarkups } from "@/lib/vtt/map-markup";
 import { prunePings } from "@/lib/vtt/ping";
 import { getRoomGmCreations } from "../gm-creations";
@@ -78,7 +75,7 @@ function mirrorCombatTokenPaToActors(state: RoomState): RoomState {
 }
 
 export function bumpRoom(state: RoomState): RoomState {
-  const inCombatEconomy = requiresCombatTurnEconomy(state.settings, state.combat);
+  const inCombatEconomy = requiresCombatPaEconomy(state.settings, state.combat);
   const backfill = backfillActorPortraitsFromTokens(state.actors, state.scene.tokens);
   const base = backfill.changed ? { ...state, actors: backfill.actors } : state;
   const scene = syncLinkedTokens(base.scene, base.actors, {
@@ -213,9 +210,6 @@ export async function persistRoom(
   opts?: PersistRoomOpts
 ): Promise<RoomState> {
   if (state.combat?.order?.length) {
-    if (requiresCombatTurnEconomy(state.settings, state.combat)) {
-      ensureCombatActiveHasPa(state);
-    }
     if (requiresCombatTurnEconomy(state.settings, state.combat) && !opts?.skipAutoPass) {
       if (executePendingAutoPassIfDue(state)) {
         // Turno avançou — PA do novo ativo já veio de applyTurnPaTransition

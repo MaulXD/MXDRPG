@@ -1,5 +1,5 @@
 /**
- * PA: início de turno restaura pool; auto-passe não dispara com PA > 0.
+ * PA: início de turno restaura pool; auto-passe exige gasto real neste turno.
  * node scripts/smoke/pa-turn-refresh.mjs
  */
 import assert from "node:assert/strict";
@@ -32,6 +32,15 @@ function tokenSpendablePa(token) {
   return Math.max(0, token.pa ?? 0);
 }
 
+function tokenPaSpentThisTurn(token) {
+  return Math.max(0, token.paSpentThisTurn ?? 0);
+}
+
+function shouldScheduleAutoPass(token) {
+  if (tokenSpendablePa(token) > 0) return false;
+  return tokenPaSpentThisTurn(token) > 0;
+}
+
 // Monstro: fim de turno → início do próximo
 let monster = { pa: 0, paSpentThisTurn: 2 };
 const mRules = paTurnRulesForMonster();
@@ -54,23 +63,19 @@ assert.equal(pc.pa, 2);
 pc = refreshPlayer(pc);
 assert.equal(pc.pa, 7, "PC: 2 sobra + 5 recuperação");
 
-// Simula ensureCombatActiveHasPa: stale paSpentThisTurn não bloqueia novo turno
+// Turno novo: chave diferente → refresh permitido
 const turnKey = "1:tok-a";
 const stale = { id: "tok-a", pa: 0, paSpentThisTurn: 4 };
-const pending = null;
 const paRefreshTurnKey = "0:tok-a";
 const refreshedThisTurn = paRefreshTurnKey === turnKey;
-const shouldRefresh =
-  pending?.tokenId !== stale.id &&
-  !refreshedThisTurn;
-assert.equal(shouldRefresh, true, "turno novo deve restaurar PA apesar de paSpentThisTurn legado");
+assert.equal(refreshedThisTurn, false, "turno novo deve restaurar PA");
 
-// Meio do turno: já refreshou e gastou tudo — não restaura de novo
-const midTurn = { id: "tok-a", pa: 0, paSpentThisTurn: 3 };
-const midTurnKey = "1:tok-a";
-const midRefreshed = midTurnKey === "1:tok-a";
-const blocksMidRefresh =
-  midRefreshed && tokenSpendablePa(midTurn) === 0 && midTurn.paSpentThisTurn > 0;
-assert.equal(blocksMidRefresh, true, "meio do turno esgotado não recebe PA de novo");
+// Meio do turno esgotado: não auto-passe se nunca gastou (evita loop)
+const neverSpent = { pa: 0, paSpentThisTurn: 0 };
+assert.equal(shouldScheduleAutoPass(neverSpent), false, "0 PA sem gasto não agenda auto-passe");
+
+// Meio do turno esgotado após gasto: auto-passe ok
+const spentAll = { pa: 0, paSpentThisTurn: 3 };
+assert.equal(shouldScheduleAutoPass(spentAll), true, "0 PA após gasto agenda auto-passe");
 
 console.log("pa-turn-refresh: OK");

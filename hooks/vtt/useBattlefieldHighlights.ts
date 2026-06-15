@@ -19,7 +19,9 @@ import { buildHexGrid } from "@/lib/vtt/hex-grid";
 import { tokenAxialDistance } from "@/lib/vtt/creature-size";
 import { reachabilityBundle } from "@/lib/vtt/movement-path";
 import { effectiveRangedMaxHex, isWithinRangedAttackRange } from "@/lib/combat/ranged-attack-range";
-import { paTurnRulesForActor } from "@/lib/combat/pa-economy";
+import { movementPaOptsForRoom } from "@/lib/combat/movement-pa-opts";
+import type { CombatTrack } from "@/lib/room/combat";
+import type { RoomSettings } from "@/lib/room/settings";
 import { canMoveToken, paidMovementHexKeys, type MoveCheck } from "@/lib/vtt/movement";
 import type { BattleScene, BattleToken } from "@/lib/vtt/types";
 import { canActOnCombatTurn, effectiveBypassTurn } from "@/lib/combat/turn-guard";
@@ -48,6 +50,8 @@ type Params = {
   channelExtraPa?: number;
   turn: TurnCtx;
   combatHasOrder?: boolean;
+  roomSettings?: Pick<RoomSettings, "combatActive">;
+  combat?: CombatTrack | null;
   /** Mestre arrastando token livremente — sem preview de PA/movimento de turno. */
   gmRepositionActive?: boolean;
 };
@@ -68,6 +72,8 @@ export function useBattlefieldHighlights({
   channelExtraPa = 0,
   turn,
   combatHasOrder = true,
+  roomSettings,
+  combat,
   gmRepositionActive = false,
 }: Params) {
   const moveMode: "walk" | "run" = actionMode === "move-run" ? "run" : "walk";
@@ -182,13 +188,13 @@ export function useBattlefieldHighlights({
     const moveBypass = moveHighlightToken
       ? effectiveBypassTurn(moveHighlightToken, turn.bypassTurn)
       : false;
-    return {
-      ...(highlightActor
-        ? { freeBasicMovePa: paTurnRulesForActor(highlightActor).freeBasicMovePa }
-        : {}),
-      ...(moveBypass ? { gmBypass: true as const } : {}),
-    };
-  }, [highlightActor, moveHighlightToken, turn.bypassTurn]);
+    return movementPaOptsForRoom(
+      roomSettings ?? { combatActive: turn.combatActive ?? false },
+      combat,
+      highlightActor,
+      moveBypass
+    );
+  }, [highlightActor, moveHighlightToken, turn.bypassTurn, turn.combatActive, roomSettings, combat]);
 
   const paidWalkSet = useMemo(() => {
     if (!moveHighlightToken || !showMovement || !moveCtx) {

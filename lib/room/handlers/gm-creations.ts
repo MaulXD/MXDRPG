@@ -12,7 +12,7 @@ import {
 } from "@/lib/room/gm-creations";
 import { createPlayerTokenFromActor } from "@/lib/vtt/player-token";
 import { nextMonsterDisplayName } from "@/lib/vtt/monster-display-name";
-import { ensureCombatActiveHasPa } from "./combat-turn";
+import { prepareSpawnedTokenPa } from "@/lib/combat/turn-economy";
 import type { Axial } from "@/lib/vtt/hex-math";
 import type { CharacterSheet } from "@/lib/character/types";
 import { resolveSpawnAnchor } from "@/lib/vtt/dungeon-layer";
@@ -118,10 +118,10 @@ export async function spawnRoomGmCreation(
         : placed.name.replace(/\s*\(custom\)\s*$/i, "");
     placed.name = nextMonsterDisplayName(room.scene.tokens, baseName || "Monstro");
     room.scene = { ...room.scene, tokens: [...room.scene.tokens, placed] };
-    if (room.combat?.order) {
+    if (room.combat?.order?.length) {
       room.combat = { ...room.combat, order: [...room.combat.order, placed.id] };
-      ensureCombatActiveHasPa(room);
     }
+    prepareSpawnedTokenPa(room, placed.id);
     const updated = await persistRoom(roomId, room);
     return { ok: true, snapshot: toSnapshot(updated), tokenId: placed.id };
   }
@@ -141,9 +141,10 @@ export async function spawnRoomGmCreation(
       : { ...token, axial: anchor };
   placed.ownerRole = "mestre";
   room.scene = { ...room.scene, tokens: [...room.scene.tokens, placed] };
-  if (room.combat?.order) {
+  if (room.combat?.order?.length) {
     room.combat = { ...room.combat, order: [...room.combat.order, placed.id] };
   }
+  prepareSpawnedTokenPa(room, placed.id);
 
   const updated = await persistRoom(roomId, room);
   return { ok: true, snapshot: toSnapshot(updated), tokenId: token.id };

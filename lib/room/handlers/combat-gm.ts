@@ -20,6 +20,7 @@ import { patchTokenVitals } from "@/lib/vtt/token-hp-display";
 import { getRoom, persistRoom, toSnapshot, type PersistRoomOpts } from "../internal/registry";
 import { applyExplorationPaDisplay } from "@/lib/combat/exploration-pa";
 import { beginCombatTurnEconomyPa } from "./combat-turn";
+import { enterCombatPaEconomy, pushTurnStartNotice } from "@/lib/combat/turn-economy";
 import type { RoomSnapshot } from "../types";
 
 export type GmCombatAction =
@@ -138,7 +139,15 @@ export async function executeGmCombatAction(
       const idx = room.combat.order.indexOf(tokenId);
       if (idx < 0) return { ok: false, error: "Token fora da ordem de combate" };
 
-      room.combat = { ...room.combat, activeIndex: idx, paRefreshTurnKey: undefined };
+      room.combat = {
+        ...room.combat,
+        activeIndex: idx,
+        paRefreshTurnKey: undefined,
+        pendingAutoPass: undefined,
+      };
+      const turnNotices: string[] = [];
+      pushTurnStartNotice(room, turnNotices, "regen");
+      room.combat = { ...room.combat, notices: turnNotices };
       appendRoomChatMessage(room, {
         ...author,
         kind: "system",
@@ -187,6 +196,9 @@ export async function executeGmCombatAction(
         applyExplorationPaDisplay(room);
       } else if (room.combat?.order?.length) {
         beginCombatTurnEconomyPa(room);
+        persistOpts = { skipAutoPass: true, skipAutoPassSchedule: true };
+      } else {
+        enterCombatPaEconomy(room);
         persistOpts = { skipAutoPass: true, skipAutoPassSchedule: true };
       }
       appendRoomChatMessage(room, {
