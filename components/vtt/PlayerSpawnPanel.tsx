@@ -9,6 +9,7 @@ import type { SessionUser } from "@/lib/auth/types";
 import { isActorDowned, isTokenDowned } from "@/lib/vtt/player-tokens";
 import { collectPlayerActorIds, playerColorForActor } from "@/lib/vtt/token-colors";
 import { clearActiveActorSpawnDragPayload, writeActorSpawnDrag } from "@/lib/vtt/spawn-drag";
+import { SpawnCardStatsRow } from "@/components/vtt/SpawnCardStats";
 import { deleteRoomToken, placeRoomActorOnHex } from "@/hooks/useRoomSync";
 import type { BattleToken } from "@/lib/vtt/types";
 
@@ -201,7 +202,7 @@ export function PlayerSpawnPanel({
     <div className="vtt-spawn-panel vtt-spawn-panel--players">
       <p className="vtt-eyebrow">Personagens</p>
       <p className="vtt-combat-hint vtt-spawn-drag-hint">
-        Arraste o seu personagem (vivo) para o mapa ou clique com uma célula selecionada.
+        Arraste a ficha para o mapa ou clique com uma célula selecionada.
       </p>
 
       <ul className="vtt-spawn-drag-list" role="list">
@@ -244,17 +245,30 @@ export function PlayerSpawnPanel({
                     : `${actor.name} inconsciente — não pode entrar no mapa`
                 }
               >
-                <span className="vtt-spawn-drag-grip" aria-hidden>
-                  ⠿
-                </span>
                 <ActorSpawnAvatar actor={actor} ringColor={ringColor} />
                 <span className="vtt-spawn-drag-card-body">
-                  <strong>{actor.name}</strong>
-                  <span>
-                    Nv{actor.identity.nivel} {actor.identity.classe}
-                    {onBoard ? ` · q${onBoard.axial.q}r${onBoard.axial.r}` : " · fora"}
-                    {!placeable ? " · inconsciente" : ""}
+                  <span className="vtt-spawn-drag-card-head">
+                    <strong>{actor.name}</strong>
+                    <span
+                      className={`vtt-spawn-map-dot${onBoard ? " vtt-spawn-map-dot--on" : ""}`}
+                      title={
+                        onBoard
+                          ? `No mapa (q${onBoard.axial.q}, r${onBoard.axial.r})`
+                          : "Fora do mapa"
+                      }
+                    />
                   </span>
+                  <span className="vtt-playable-card__meta">
+                    Nv {actor.identity.nivel} · {actor.identity.raca} · {actor.identity.classe}
+                  </span>
+                  <SpawnCardStatsRow
+                    hp={`${actor.resources.vida.value}/${actor.resources.vida.max}`}
+                    def={actor.tactical.defesa}
+                    pa={`${actor.resources.pontosAcao.value}/${actor.resources.pontosAcao.max}`}
+                  />
+                  {!placeable ? (
+                    <span className="vtt-spawn-drag-card-warn">Inconsciente</span>
+                  ) : null}
                 </span>
               </div>
               {mayPullBack(actor) && onBoard ? (

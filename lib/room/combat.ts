@@ -28,56 +28,85 @@ export type CombatTrack = {
   roundCheckpoints?: CombatRoundCheckpoint[];
 };
 
-export function emptyCombat(tokens: BattleToken[] = []): CombatTrack {
+/** Combate sem iniciativa — ordem vazia até o mestre rolar. */
+export function emptyCombat(): CombatTrack {
   return {
-    order: tokens.map((t) => t.id),
+    order: [],
     activeIndex: 0,
     round: 1,
     notices: [],
   };
 }
 
-/** Garante `order` e índices válidos — evita crash na UI quando o JSON do banco veio incompleto. */
+function validTokenIds(tokens: BattleToken[]): Set<string> {
+  return new Set(tokens.map((t) => t.id));
+}
+
+function clearStaleCombatPaState(
+  combat: Partial<CombatTrack>,
+  order: string[],
+  activeIndex: number
+): Pick<CombatTrack, "pendingAutoPass" | "paRefreshTurnKey"> {
+  const activeId = order[activeIndex] ?? null;
+  let pendingAutoPass = combat.pendingAutoPass;
+  if (pendingAutoPass && pendingAutoPass.tokenId !== activeId) {
+    pendingAutoPass = undefined;
+  }
+
+  let paRefreshTurnKey =
+    typeof combat.paRefreshTurnKey === "string" && combat.paRefreshTurnKey.length > 0
+      ? combat.paRefreshTurnKey
+      : undefined;
+  if (paRefreshTurnKey) {
+    const colon = paRefreshTurnKey.indexOf(":");
+    const tokenId = colon >= 0 ? paRefreshTurnKey.slice(colon + 1) : "";
+    if (!tokenId || !order.includes(tokenId)) {
+      paRefreshTurnKey = undefined;
+    }
+  }
+
+  return { pendingAutoPass, paRefreshTurnKey };
+}
+
+/** Garante `order` e índices válidos — remove IDs órfãos e PA/turno legados. */
 export function normalizeCombatTrack(
   combat: Partial<CombatTrack> | null | undefined,
   tokens: BattleToken[] = []
 ): CombatTrack {
   if (!combat || !Array.isArray(combat.order)) {
-    return emptyCombat(tokens);
+    return emptyCombat();
   }
-  const order = combat.order.filter((id): id is string => typeof id === "string" && id.length > 0);
+
+  const validIds = validTokenIds(tokens);
+  const order = combat.order.filter(
+    (id): id is string => typeof id === "string" && id.length > 0 && validIds.has(id)
+  );
+
   if (!order.length) {
     return {
-      ...emptyCombat(tokens),
+      order: [],
+      activeIndex: 0,
       round: Math.max(1, combat.round ?? 1),
-      notices: Array.isArray(combat.notices) ? combat.notices : [],
-      naturalOrder: combat.naturalOrder,
-      orderOverridden: combat.orderOverridden,
+      notices: [],
     };
   }
+
   const maxIdx = order.length - 1;
   const activeIndex = Math.min(Math.max(0, combat.activeIndex ?? 0), maxIdx);
-  const pendingAutoPass =
-    combat.pendingAutoPass &&
-    typeof combat.pendingAutoPass.tokenId === "string" &&
-    typeof combat.pendingAutoPass.passAt === "number"
-      ? combat.pendingAutoPass
-      : undefined;
-
-  const paRefreshTurnKey =
-    typeof combat.paRefreshTurnKey === "string" && combat.paRefreshTurnKey.length > 0
-      ? combat.paRefreshTurnKey
-      : undefined;
+  const stale = clearStaleCombatPaState(combat, order, activeIndex);
 
   return {
     order,
     activeIndex,
     round: Math.max(1, combat.round ?? 1),
     notices: Array.isArray(combat.notices) ? combat.notices : [],
-    naturalOrder: combat.naturalOrder,
+    naturalOrder: Array.isArray(combat.naturalOrder)
+      ? combat.naturalOrder.filter((id) => validIds.has(id))
+      : undefined,
     orderOverridden: combat.orderOverridden,
-    pendingAutoPass,
-    paRefreshTurnKey,
+    pendingAutoPass: stale.pendingAutoPass,
+    paRefreshTurnKey: stale.paRefreshTurnKey,
+    roundCheckpoints: combat.roundCheckpoints,
   };
 }
 

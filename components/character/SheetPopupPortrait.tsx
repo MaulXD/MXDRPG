@@ -319,12 +319,20 @@ export function SheetPopupPortrait({
         </div>
       ) : editorPos ? (
         <div
-          className="sheet-popup-portrait-editor sheet-popup-portrait-editor--portal"
-          style={{ top: editorPos.top, left: editorPos.left }}
-          role="dialog"
-          aria-label="Editor de retrato"
+          className="sheet-popup-portrait-editor-backdrop"
+          role="presentation"
+          onClick={() => setOpen(false)}
         >
-          {editorInner}
+          <div
+            className="sheet-popup-portrait-editor sheet-popup-portrait-editor--portal"
+            style={{ top: editorPos.top, left: editorPos.left }}
+            role="dialog"
+            aria-label="Editor de retrato"
+            aria-modal="true"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {editorInner}
+          </div>
         </div>
       ) : null
     ) : null;

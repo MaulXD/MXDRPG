@@ -357,7 +357,7 @@ export function HexBattlefield({
   const combat = useMemo(
     () =>
       normalizeCombatTrack(
-        snapshot?.combat ?? emptyCombat(displayScene.tokens),
+        snapshot?.combat ?? emptyCombat(),
         displayScene.tokens
       ),
     [snapshot?.combat, displayScene.tokens]

@@ -1,8 +1,7 @@
 "use client";
 
 import { PA_ACCUMULATION_CAP_DEFAULT } from "@/lib/combat/pa-economy";
-import { tokenSpendablePa } from "@/lib/combat/pa-turn";
-import { normalizeTokenPaFields } from "@/lib/combat/pa-token-state";
+import { materializeCombatPa } from "@/lib/combat/pa-turn";
 
 type Props = {
   current: number;
@@ -48,17 +47,12 @@ export function PaDotMeter({
   compact = false,
 }: Props) {
   const recovery = Math.max(0, max);
-  const normalized = normalizeTokenPaFields(
+  const materialized = materializeCombatPa(
     { pa: current, paMax: recovery, bankedPa: banked } as import("@/lib/vtt/types").BattleToken,
-    recovery,
-    accumulationCap
+    recovery
   );
-  const spendable = tokenSpendablePa({
-    pa: normalized.pa,
-    paMax: recovery,
-    bankedPa: normalized.bankedPa,
-  } as import("@/lib/vtt/types").BattleToken);
-  const dotTotal = Math.max(accumulationCap, spendable);
+  const spendable = Math.max(0, Math.round(materialized.pa ?? 0));
+  const dotTotal = accumulationCap;
   const filled = Math.min(dotTotal, spendable);
   const spent = spentThisTurn != null ? Math.max(0, spentThisTurn) : null;
 

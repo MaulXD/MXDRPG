@@ -131,7 +131,7 @@ export function createDemoRoom(): RoomState {
     [pippin.id]: { ...normalizeCharacter(pippin), revision: 1 },
   };
 
-  const scene = syncLinkedTokens(DEMO_SCENE, actors);
+  const scene = syncLinkedTokens({ ...DEMO_SCENE, tokens: [] }, actors);
 
   const room: RoomState = {
     roomId: "demo",
@@ -143,7 +143,7 @@ export function createDemoRoom(): RoomState {
     settings: { ...DEFAULT_ROOM_SETTINGS },
     scene,
     actors,
-    combat: emptyCombat(scene.tokens),
+    combat: emptyCombat(),
     chat: [welcomeChat()],
     pings: [],
     revision: 1,

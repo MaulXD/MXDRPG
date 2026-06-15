@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useMemo, useRef, useState } from "react";
 import { CharacterManageDialog } from "@/components/character/CharacterManageDialog";
+import { IconEye, IconStar } from "@/components/character/SheetPopupIcons";
 import { deleteRoomToken, placeRoomActorOnHex } from "@/hooks/useRoomSync";
 import { canEditRoomActor } from "@/lib/auth/room-access";
 import type { SessionUser } from "@/lib/auth/types";
@@ -20,6 +21,7 @@ import {
 } from "@/lib/vtt/playable-actors";
 import { playerColorForActor } from "@/lib/vtt/token-colors";
 import type { BattleToken } from "@/lib/vtt/types";
+import { SpawnCardStatsRow } from "@/components/vtt/SpawnCardStats";
 
 type Props = {
   roomId: string;
@@ -61,6 +63,10 @@ function ActorAvatar({ actor, ringColor }: { actor: RoomActor; ringColor: string
       )}
     </span>
   );
+}
+
+function isActionTarget(target: EventTarget | null): boolean {
+  return Boolean((target as HTMLElement | null)?.closest(".vtt-playable-card__actions"));
 }
 
 export function PlayableCharactersPanel({
@@ -125,8 +131,7 @@ export function PlayableCharactersPanel({
     <div className="vtt-playable-panel">
       <p className="vtt-eyebrow">Personagens jogáveis</p>
       <p className="vtt-combat-hint vtt-playable-panel__lead">
-        Arraste o retrato para o mapa ou abra a ficha para consultar. Só o dono edita inventário e
-        nível.
+        Arraste a ficha para o mapa ou abra para consultar.
         {isRoomGm ? " Como mestre, você pode colocar qualquer ficha viva e transferir ou excluir." : ""}
       </p>
 
@@ -145,69 +150,77 @@ export function PlayableCharactersPanel({
             const placeable = canDragActorToMap(actor, tokens, roomAuth, session, isRoomGm);
             const canPullBack = mayPullActorFromBoard(actor, tokens, roomAuth, session, isRoomGm);
             const busy = busyId === actor.id;
+            const dragTitle = placeable
+              ? `Arrastar ${actor.name} para o mapa`
+              : `${actor.name} inconsciente — cure antes de entrar no mapa`;
+            const mapTitle = onBoard
+              ? `No mapa (q${onBoard.axial.q}, r${onBoard.axial.r})`
+              : "Fora do mapa";
 
             return (
               <li key={actor.id}>
-                <div className={`vtt-playable-card${active ? " vtt-playable-card--active" : ""}`}>
-                  <div
-                    className={`vtt-playable-card__drag${placeable ? "" : " vtt-playable-card__drag--disabled"}`}
-                    role="button"
-                    tabIndex={placeable && !busy ? 0 : -1}
-                    draggable={placeable && !busy}
-                    title={
-                      placeable
-                        ? `Arrastar ${actor.name} para o mapa`
-                        : `${actor.name} inconsciente — cure antes de entrar no mapa`
+                <div
+                  className={`vtt-playable-card${active ? " vtt-playable-card--active" : ""}${placeable ? " vtt-playable-card--draggable" : " vtt-playable-card--disabled"}`}
+                  role="button"
+                  tabIndex={placeable && !busy ? 0 : -1}
+                  draggable={placeable && !busy}
+                  title={dragTitle}
+                  onDragStart={(e) => {
+                    if (isActionTarget(e.target) || !placeable || busy) {
+                      e.preventDefault();
+                      return;
                     }
-                    onDragStart={(e) => {
-                      if (!placeable || busy) {
-                        e.preventDefault();
-                        return;
-                      }
-                      startActorSpawnDrag(e, actor.id, actor.name, dragGhostRef);
-                    }}
-                    onDragEnd={() => endActorSpawnDrag(dragGhostRef)}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter" || e.key === " ") {
-                        e.preventDefault();
-                        if (spawnAxial && placeable && !busy) void placeAt(actor.id, spawnAxial);
-                      }
-                    }}
-                    onClick={() => {
+                    startActorSpawnDrag(e, actor.id, actor.name, dragGhostRef);
+                  }}
+                  onDragEnd={() => endActorSpawnDrag(dragGhostRef)}
+                  onKeyDown={(e) => {
+                    if (isActionTarget(e.target)) return;
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
                       if (spawnAxial && placeable && !busy) void placeAt(actor.id, spawnAxial);
-                      else if (!placeable) {
-                        setSpawnMsg(`${actor.name} está inconsciente — cure antes de entrar no mapa.`);
-                      }
-                    }}
-                  >
-                    <span className="vtt-playable-card__grip" aria-hidden>
-                      ⠿
-                    </span>
+                    }
+                  }}
+                  onClick={(e) => {
+                    if (isActionTarget(e.target)) return;
+                    if (spawnAxial && placeable && !busy) void placeAt(actor.id, spawnAxial);
+                    else if (!placeable) {
+                      setSpawnMsg(`${actor.name} está inconsciente — cure antes de entrar no mapa.`);
+                    }
+                  }}
+                >
+                  <div className="vtt-playable-card__main">
                     <ActorAvatar actor={actor} ringColor={ringColor} />
-                  </div>
-                  <div className="vtt-playable-card__body">
-                    <div className="vtt-playable-card__head">
-                      <strong>{actor.name}</strong>
-                      <span
-                        className={`vtt-playable-badge${mine ? " vtt-playable-badge--mine" : ""}`}
-                      >
-                        {mine ? "Seu personagem" : "Somente leitura"}
+                    <div className="vtt-playable-card__body">
+                      <div className="vtt-playable-card__head">
+                        <strong>{actor.name}</strong>
+                        <span
+                          className={`vtt-playable-ownership${mine ? " vtt-playable-ownership--mine" : ""}`}
+                          title={mine ? "Seu personagem" : "Somente leitura"}
+                        >
+                          {mine ? <IconStar size={13} /> : <IconEye size={13} />}
+                        </span>
+                        <span
+                          className={`vtt-spawn-map-dot${onBoard ? " vtt-spawn-map-dot--on" : ""}`}
+                          title={mapTitle}
+                          aria-label={mapTitle}
+                        />
+                      </div>
+                      <span className="vtt-playable-card__meta">
+                        Nv {actor.identity.nivel} · {actor.identity.raca} · {actor.identity.classe}
+                        {actor.identity.subclasse ? ` · ${actor.identity.subclasse}` : ""}
                       </span>
+                      <SpawnCardStatsRow
+                        hp={`${actor.resources.vida.value}/${actor.resources.vida.max}`}
+                        def={actor.tactical.defesa}
+                        pa={`${actor.resources.pontosAcao.value}/${actor.resources.pontosAcao.max}`}
+                      />
                     </div>
-                    <span className="vtt-playable-card__meta">
-                      Nv {actor.identity.nivel} · {actor.identity.raca} · {actor.identity.classe}
-                      {actor.identity.subclasse ? ` · ${actor.identity.subclasse}` : ""}
-                      {onBoard
-                        ? ` · no mapa q${onBoard.axial.q}r${onBoard.axial.r}`
-                        : " · fora do mapa"}
-                    </span>
-                    <span className="vtt-playable-card__stats">
-                      Vida {actor.resources.vida.value}/{actor.resources.vida.max} · Defesa{" "}
-                      {actor.tactical.defesa} · PA {actor.resources.pontosAcao.value}/
-                      {actor.resources.pontosAcao.max}
-                    </span>
                   </div>
-                  <div className="vtt-playable-card__actions">
+                  <div
+                    className="vtt-playable-card__actions"
+                    draggable={false}
+                    onDragStart={(e) => e.preventDefault()}
+                  >
                     {canPullBack && onBoard ? (
                       <button
                         type="button"
@@ -302,13 +315,10 @@ export function PlayableCharactersPanel({
 
       {spawnAxial ? (
         <p className="vtt-combat-hint">
-          Célula alvo no mapa: q{spawnAxial.q}, r{spawnAxial.r} — clique no retrato ou arraste.
+          Célula alvo: q{spawnAxial.q}, r{spawnAxial.r} — clique na ficha ou arraste.
         </p>
       ) : (
-        <p className="vtt-combat-hint">
-          Passe o mouse no mapa e solte o personagem em uma célula, ou clique no retrato com uma
-          célula selecionada.
-        </p>
+        <p className="vtt-combat-hint">Arraste a ficha para uma célula do mapa ou selecione uma célula e clique.</p>
       )}
       {spawnMsg ? <p className="sheet-inline-msg">{spawnMsg}</p> : null}
 
