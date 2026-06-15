@@ -354,6 +354,7 @@
   display: flex;
   align-items: center;
   gap: 5px;
+  flex-wrap: nowrap;
 }
 
 .hud-pa-label {
@@ -363,6 +364,16 @@
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--text-dim);
+}
+
+.hud-pa-value {
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--accent-warn);
+  line-height: 1;
+  min-width: 1ch;
 }
 
 .hud-pa-dots {

@@ -1,8 +1,7 @@
 "use client";
 
 import { PA_ACCUMULATION_CAP_DEFAULT } from "@/lib/combat/pa-economy";
-import { tokenSpendablePa } from "@/lib/combat/pa-turn";
-import { normalizeTokenPaFields } from "@/lib/combat/pa-token-state";
+import { resolvePaHudDisplay } from "@/lib/combat/pa-display";
 import type { BattleToken } from "@/lib/vtt/types";
 
 type Props = {
@@ -16,27 +15,18 @@ export function PaHudMeter({
   accumulationCap = PA_ACCUMULATION_CAP_DEFAULT,
   variant = "default",
 }: Props) {
-  const recovery = Math.max(0, token.paMax ?? 0);
-  const normalized = normalizeTokenPaFields(token, recovery, accumulationCap);
-  const spendable = tokenSpendablePa({
-    pa: normalized.pa,
-    paMax: recovery,
-    bankedPa: normalized.bankedPa,
-  } as BattleToken);
-  const dotTotal = Math.max(accumulationCap, spendable);
-  const filled = Math.min(dotTotal, spendable);
+  const { spendable, dotCapacity, filledDots } = resolvePaHudDisplay(token, accumulationCap);
 
   if (variant === "hud") {
-    const hudDots = PA_ACCUMULATION_CAP_DEFAULT;
-    const hudFilled = Math.min(hudDots, spendable);
     return (
-      <div className="hud-pa" aria-label={`${spendable} de ${hudDots} pontos de ação`}>
+      <div className="hud-pa" aria-label={`${spendable} pontos de ação`}>
         <span className="hud-pa-label">PA</span>
+        <span className="hud-pa-value">{spendable}</span>
         <div className="hud-pa-dots" aria-hidden>
-          {Array.from({ length: hudDots }, (_, i) => (
+          {Array.from({ length: dotCapacity }, (_, i) => (
             <div
               key={i}
-              className={`hud-pa-dot${i < hudFilled ? " hud-pa-dot--on" : ""}`}
+              className={`hud-pa-dot${i < filledDots ? " hud-pa-dot--on" : ""}`}
             />
           ))}
         </div>
@@ -45,16 +35,16 @@ export function PaHudMeter({
   }
 
   return (
-    <div className="pa-hud-meter" aria-label={`${spendable} de ${accumulationCap} pontos de ação`}>
+    <div className="pa-hud-meter" aria-label={`${spendable} de ${dotCapacity} pontos de ação`}>
       <span className="pa-hud-meter__label">PA</span>
       <span className="pa-hud-meter__count">
-        {spendable}/{accumulationCap}
+        {spendable}/{dotCapacity}
       </span>
       <div className="pa-hud-meter__dots" aria-hidden>
-        {Array.from({ length: dotTotal }, (_, i) => (
+        {Array.from({ length: dotCapacity }, (_, i) => (
           <span
             key={i}
-            className={`pa-hud-meter__dot${i < filled ? " pa-hud-meter__dot--on" : ""}`}
+            className={`pa-hud-meter__dot${i < filledDots ? " pa-hud-meter__dot--on" : ""}`}
           />
         ))}
       </div>

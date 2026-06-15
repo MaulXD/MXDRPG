@@ -13,10 +13,10 @@ import { compendiumTypeColor } from "@/lib/compendium/icons";
 import { spawnRoomMonster } from "@/hooks/useRoomSync";
 import {
   DUNGEON_BIOMES,
-  biomeDisplayName,
   resolveMonsterBiomes,
   type DungeonBiomeId,
 } from "@/lib/vtt/monster-biomes";
+import { SpawnCardStatsRow } from "@/components/vtt/SpawnCardStats";
 import "@/components/compendium/monster-sheet.css";
 
 type Props = {
@@ -118,9 +118,15 @@ export function MonsterSpawnPanel({ roomId, scene, spawnAxial, onSpawned, onOpen
   );
 
   const filteredMonsters = useMemo(() => {
-    if (biomeFilter === "all") return monstersWithBiomes;
-    return monstersWithBiomes.filter((m) => (m.biomes ?? []).includes(biomeFilter));
-  }, [monstersWithBiomes, biomeFilter]);
+    const base =
+      biomeFilter === "all"
+        ? monstersWithBiomes
+        : monstersWithBiomes.filter((m) => (m.biomes ?? []).includes(biomeFilter));
+    return base.map((m) => ({
+      ...m,
+      scaled: scaleMonsterTemplate(m, { variant, groupLevelDelta }),
+    }));
+  }, [monstersWithBiomes, biomeFilter, variant, groupLevelDelta]);
 
   useEffect(() => {
     if (!filteredMonsters.some((m) => m.entryId === entryId)) {
@@ -134,8 +140,7 @@ export function MonsterSpawnPanel({ roomId, scene, spawnAxial, onSpawned, onOpen
     <div className="vtt-spawn-panel">
       <p className="vtt-eyebrow">Invocar monstro</p>
       <p className="vtt-combat-hint vtt-spawn-drag-hint">
-        Arraste um monstro da lista para o tabuleiro (solte na célula). O token aparece como o Goblin —
-        com nome, vida, PA e ações do compêndio.
+        Arraste um monstro para o tabuleiro. Solte na célula desejada.
       </p>
 
       <label className="vtt-combat-select">
@@ -203,9 +208,6 @@ export function MonsterSpawnPanel({ roomId, scene, spawnAxial, onSpawned, onOpen
               onDragEnd={onDragEnd}
               title={`Arrastar ${m.name} para o mapa`}
             >
-              <span className="vtt-spawn-drag-grip" aria-hidden>
-                ⠿
-              </span>
               <CompendiumIcon
                 entry={{ id: m.entryId, name: m.name, type: "npc", system: {} }}
                 color={compendiumTypeColor("npc")}
@@ -213,13 +215,12 @@ export function MonsterSpawnPanel({ roomId, scene, spawnAxial, onSpawned, onOpen
               />
               <span className="vtt-spawn-drag-card-body">
                 <strong>{m.name}</strong>
-                <span>
-                  nv{m.ameaca} · {CREATURE_SIZE_PT[m.creatureSize]} ({CREATURE_SIZE_HEX_LABEL[m.creatureSize]}) · CA{" "}
-                  {m.defesa} · {m.vidaMax} HP
-                  {m.biomes.length
-                    ? ` · ${m.biomes.slice(0, 2).map(biomeDisplayName).join(", ")}${m.biomes.length > 2 ? "…" : ""}`
-                    : ""}
-                </span>
+                <SpawnCardStatsRow
+                  threat={m.scaled.ameaca}
+                  hp={m.scaled.vidaMax}
+                  def={m.scaled.defesa}
+                  pa={m.scaled.paMax}
+                />
               </span>
             </div>
           </li>
