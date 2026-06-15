@@ -2356,6 +2356,54 @@
   z-index: 10050;
   max-height: min(90vh, 560px);
   overflow: auto;
+  /* Portal em document.body — tema da ficha popup */
+  --sheet-bg: #121921;
+  --sheet-surface: #161e2a;
+  --sheet-inset: #0f141c;
+  --sheet-border: rgba(122, 163, 201, 0.22);
+  --sheet-border-bright: rgba(122, 163, 201, 0.42);
+  --sheet-accent: #7aa3c9;
+  --sheet-text: #e8ecf4;
+  --sheet-text-muted: rgba(200, 210, 224, 0.62);
+  --text-dim: rgba(200, 210, 224, 0.62);
+  --text-muted: rgba(200, 210, 224, 0.62);
+  --accent: #7aa3c9;
+  background: var(--sheet-surface);
+  border: 1px solid var(--sheet-border-bright);
+  color: var(--sheet-text);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.55);
+}
+
+.sheet-popup-portrait-editor-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 10049;
+  background: rgba(8, 10, 14, 0.55);
+  backdrop-filter: blur(3px);
+  pointer-events: auto;
+}
+
+.sheet-popup-portrait-editor--portal {
+  position: fixed;
+  z-index: 10050;
+  max-height: min(90vh, 560px);
+  overflow: auto;
+  /* Portal em document.body — tema da ficha popup */
+  --sheet-bg: #121921;
+  --sheet-surface: #161e2a;
+  --sheet-inset: #0f141c;
+  --sheet-border: rgba(122, 163, 201, 0.22);
+  --sheet-border-bright: rgba(122, 163, 201, 0.42);
+  --sheet-accent: #7aa3c9;
+  --sheet-text: #e8ecf4;
+  --sheet-text-muted: rgba(200, 210, 224, 0.62);
+  --text-dim: rgba(200, 210, 224, 0.62);
+  --text-muted: rgba(200, 210, 224, 0.62);
+  --accent: #7aa3c9;
+  background: var(--sheet-surface);
+  border: 1px solid var(--sheet-border-bright);
+  color: var(--sheet-text);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.55);
 }
 
 .sheet-popup-portrait-editor__head {

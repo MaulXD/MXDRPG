@@ -28,7 +28,7 @@ export async function createRoomForAdventure(adventure: Adventure): Promise<Room
     settings: { ...DEFAULT_ROOM_SETTINGS },
     scene,
     actors: {},
-    combat: emptyCombat([]),
+    combat: emptyCombat(),
     chat: [welcomeChat()],
     pings: [],
     revision: 1,

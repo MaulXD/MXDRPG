@@ -448,39 +448,35 @@
 }
 
 .vtt-playable-card {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  gap: 0.55rem;
-  align-items: center;
+  display: flex;
+  gap: 0.5rem;
+  align-items: stretch;
   padding: 0.55rem 0.6rem;
   border-radius: 10px;
   border: 1px solid var(--glass-border);
   background: rgba(0, 0, 0, 0.18);
 }
 
-.vtt-playable-card__drag {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.2rem;
+.vtt-playable-card--draggable {
   cursor: grab;
   touch-action: none;
 }
 
-.vtt-playable-card__drag:active {
+.vtt-playable-card--draggable:active {
   cursor: grabbing;
 }
 
-.vtt-playable-card__drag--disabled {
-  cursor: not-allowed;
-  opacity: 0.55;
+.vtt-playable-card--disabled {
+  cursor: default;
+  opacity: 0.72;
 }
 
-.vtt-playable-card__grip {
-  font-size: 0.75rem;
-  line-height: 1;
-  color: color-mix(in srgb, var(--rail-ficha, #c9a86a) 70%, var(--text-muted));
-  user-select: none;
+.vtt-playable-card__main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  gap: 0.55rem;
+  align-items: center;
 }
 
 .foundry-dock-panel--ficha .vtt-playable-card--active,
@@ -587,28 +583,20 @@
   gap: 0.35rem;
 }
 
-.vtt-playable-card__meta,
-.vtt-playable-card__stats {
+.vtt-playable-ownership {
+  display: inline-flex;
+  align-items: center;
+  color: var(--text-muted);
+}
+
+.vtt-playable-ownership--mine {
+  color: var(--mesa-accent);
+}
+
+.vtt-playable-card__meta {
   font-size: 0.72rem;
   color: var(--text-muted);
   line-height: 1.35;
-}
-
-.vtt-playable-badge {
-  font-size: 0.62rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  padding: 0.12rem 0.4rem;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  color: var(--text-muted);
-}
-
-.vtt-playable-badge--mine {
-  color: var(--mesa-accent);
-  border-color: var(--mesa-accent-border);
-  background: var(--mesa-accent-soft);
 }
 
 .vtt-playable-card__actions {
@@ -616,6 +604,7 @@
   flex-direction: column;
   gap: 0.25rem;
   align-items: stretch;
+  flex-shrink: 0;
 }
 
 .vtt-playable-card__open,
