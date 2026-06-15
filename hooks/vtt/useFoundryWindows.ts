@@ -12,7 +12,6 @@ export type { FoundryWindowLayout, MesaWindowId };
 
 /** Painéis fixos na coluna esquerda (um aberto por vez). */
 export const FOUNDRY_DOCK_PANEL_IDS: MesaWindowId[] = [
-  "actors",
   "initiative",
   "ficha",
   "chat",
