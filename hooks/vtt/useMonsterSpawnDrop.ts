@@ -126,7 +126,7 @@ export function useMonsterSpawnDrop({
 
       if ((!monsterPayload && !actorPayload && !gmPayload) || !axial) {
         if (!monsterPayload && !actorPayload && !gmPayload) {
-          onError?.("Solte no mapa (arraste da lista Invocar, Personagens ou Minhas fichas).");
+          onError?.("Solte no mapa (arraste da ficha ou do painel Invocar).");
         } else {
           onError?.("Célula inválida — solte sobre o tabuleiro.");
         }

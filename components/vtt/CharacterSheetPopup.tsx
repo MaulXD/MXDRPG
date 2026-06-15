@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useMemo, useRef } from "react";
 
 import { CharacterSheet } from "@/components/character/CharacterSheet";
 
@@ -16,26 +17,35 @@ import type { SessionUser } from "@/lib/auth/types";
 import type { FoundryWindowLayout } from "@/hooks/vtt/useFoundryWindows";
 import { useFoundryWindowDrag } from "@/hooks/vtt/useFoundryWindowDrag";
 
-import type { RoomActor } from "@/lib/room/types";
+import type { RoomActor, RoomSnapshot } from "@/lib/room/types";
 import type { RoomActorPatchResult } from "@/lib/character/portrait-persist-client";
 
 import { isAdventureBoundCharacter } from "@/lib/character/adventure-bind";
 import { FoundryWindow } from "@/components/vtt/foundry/FoundryWindow";
+import type { Axial } from "@/lib/vtt/hex-math";
+import { canDragActorToMap } from "@/lib/vtt/actor-board-spawn";
+import { endActorSpawnDrag, startActorSpawnDrag } from "@/lib/vtt/actor-spawn-drag-ui";
+import type { BattleToken } from "@/lib/vtt/types";
 
 type Props = {
   actorId: string;
   roomId: string;
   adventureId: string;
   roomOwnerId: string;
+  memberIds?: string[];
   actors: Record<string, RoomActor>;
   session: SessionUser | null;
   compendium: Record<CompendiumPackId, CompendiumEntry[]>;
+  tokens?: BattleToken[];
+  spawnAxial?: Axial | null;
+  isRoomGm?: boolean;
   layout: FoundryWindowLayout;
   onLayoutChange: (patch: Partial<FoundryWindowLayout>) => void;
   onFocus: () => void;
   onMinimize: () => void;
   onClose: () => void;
   onRoomPortraitPatch?: (result: RoomActorPatchResult) => void;
+  onPlaced?: (snapshot: RoomSnapshot) => void;
 };
 
 export function CharacterSheetPopup({
@@ -43,19 +53,29 @@ export function CharacterSheetPopup({
   roomId,
   adventureId,
   roomOwnerId,
+  memberIds = [],
   actors,
   session,
   compendium,
+  tokens = [],
+  spawnAxial = null,
+  isRoomGm = false,
   layout,
   onLayoutChange,
   onFocus,
   onMinimize,
   onClose,
   onRoomPortraitPatch,
+  onPlaced: _onPlaced,
 }: Props) {
   const live = actors[actorId];
   const seed = live ?? getCharacter(actorId);
   const toolbarDrag = useFoundryWindowDrag(layout, onLayoutChange, onFocus);
+  const dragGhostRef = useRef<HTMLElement | null>(null);
+  const roomCtx = useMemo(
+    () => ({ roomId, adventureId, ownerId: roomOwnerId, memberIds: memberIds ?? [] }),
+    [roomId, adventureId, roomOwnerId, memberIds]
+  );
 
   if (!seed) {
     return (
@@ -75,7 +95,6 @@ export function CharacterSheetPopup({
   }
 
   const merged = { ...seed, ...live };
-  const roomCtx = { roomId, adventureId, ownerId: roomOwnerId };
   const isOwner = session?.id === merged.ownerId;
   const campaignBound = isAdventureBoundCharacter(merged);
   const canEdit = canEditRoomActor(roomCtx, merged, session);
@@ -87,6 +106,8 @@ export function CharacterSheetPopup({
     : canEdit
       ? "direct"
       : "readonly";
+
+  const canDragToMap = canDragActorToMap(merged, tokens, roomCtx, session, isRoomGm);
 
   const inventory = live?.inventory ?? seed.inventory ?? [];
   const sheetCharacter = {
@@ -100,6 +121,26 @@ export function CharacterSheetPopup({
 
   const toolbarTrailing = (
     <>
+      {canDragToMap ? (
+        <button
+          type="button"
+          className="sheet-ddb-toolbar__btn sheet-ddb-toolbar__btn--drag"
+          draggable
+          title={
+            spawnAxial
+              ? `Arrastar para o mapa (q${spawnAxial.q}, r${spawnAxial.r})`
+              : "Arrastar para o mapa"
+          }
+          aria-label="Arrastar personagem para o mapa"
+          onPointerDown={(e) => e.stopPropagation()}
+          onDragStart={(e) => {
+            startActorSpawnDrag(e, actorId, merged.name, dragGhostRef);
+          }}
+          onDragEnd={() => endActorSpawnDrag(dragGhostRef)}
+        >
+          ⠿
+        </button>
+      ) : null}
       <Link
         href={`/personagem/${actorId}`}
         className="sheet-ddb-toolbar__btn"

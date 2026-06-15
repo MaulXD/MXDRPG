@@ -45,7 +45,6 @@ import { normalizeRoomSettings } from "@/lib/room/settings";
 import { filterTokensForFog, visibleHexSetForPlayer } from "@/lib/vtt/fog-of-war";
 import { resolveTokenHpDisplay } from "@/lib/vtt/token-hp-display";
 import { shouldIgnoreBattlefieldShortcut } from "@/lib/vtt/keyboard-guard";
-import { ActiveCharactersPanel } from "@/components/vtt/ActiveCharactersPanel";
 import { GmToolsPanel } from "@/components/vtt/GmToolsPanel";
 import { DungeonEditorPanel } from "@/components/vtt/DungeonEditorPanel";
 import { MapToolbar } from "@/components/vtt/MapToolbar";
@@ -184,11 +183,6 @@ type Props = {
   onLeftPanelChange?: (patch: Partial<MesaPanelLayout>) => void;
   /** Mapa em tela cheia; tokens em janela flutuante (Foundry). */
   foundryLayout?: boolean;
-  actorsWindowLayout?: FoundryWindowLayout;
-  onActorsWindowLayoutChange?: (patch: Partial<FoundryWindowLayout>) => void;
-  onActorsWindowClose?: () => void;
-  onActorsWindowMinimize?: () => void;
-  onActorsWindowFocus?: () => void;
   gmWindowLayout?: FoundryWindowLayout;
   onGmWindowLayoutChange?: (patch: Partial<FoundryWindowLayout>) => void;
   onGmWindowClose?: () => void;
@@ -258,11 +252,6 @@ export function HexBattlefield({
   leftPanel,
   onLeftPanelChange,
   foundryLayout = false,
-  actorsWindowLayout,
-  onActorsWindowLayoutChange,
-  onActorsWindowClose,
-  onActorsWindowMinimize,
-  onActorsWindowFocus,
   gmWindowLayout,
   onGmWindowLayoutChange,
   onGmWindowClose,
@@ -2301,35 +2290,6 @@ export function HexBattlefield({
   const shellStyle =
     leftW != null ? { gridTemplateColumns: `${leftW}px minmax(0, 1fr)` } : undefined;
 
-  const fogListHint = Boolean(displayScene.fogEnabled && !canControlCombat);
-
-  const actorsPanel = (
-    <ActiveCharactersPanel
-      tokens={listTokens}
-      allSceneTokens={displayScene.tokens}
-      roomActors={roomActors}
-      session={session}
-      adventureId={adventureIdProp ?? roomId}
-      roomOwnerId={roomOwnerId}
-      memberIds={memberIds}
-      spawnAxial={hoverAxial}
-      selectedId={selectedId}
-      onSelect={setSelectedId}
-      selected={selected}
-      combat={combat}
-      canViewTokenPa={canViewTokenPaFn}
-      canUseToken={Boolean(canUseToken)}
-      canControlCombat={canControlCombat}
-      showMovementLegend={Boolean(selected && highlights.showMovement)}
-      actionMode={actionMode}
-      actionErr={actionErr}
-      roomId={roomId}
-      onPlaced={(snap) => syncRoom(snap)}
-      fogHint={fogListHint}
-      onCreateCharacter={onCreateCharacter}
-    />
-  );
-
   const gmToolsPanel =
     canControlCombat && snapshot ? (
       <GmToolsPanel
@@ -2412,7 +2372,6 @@ export function HexBattlefield({
 
   const legacySidebar = (
     <>
-      {actorsPanel}
       {gmToolsPanel}
       {dungeonPanel}
       {canControlCombat && showSpawnInSidebar ? (
@@ -2461,40 +2420,6 @@ export function HexBattlefield({
     const target = floating ? hudRoot : dockTarget;
     return target ? createPortal(node, target) : node;
   };
-
-  const actorsBody = (
-    <div className="mesa-panel-scroll mesa-panel-scroll--rail">{actorsPanel}</div>
-  );
-
-  const actorsUi =
-    foundryLayout && actorsWindowLayout ? (
-      float("actors") ? (
-        <FoundryWindow
-          title="Personagens"
-          layout={actorsWindowLayout}
-          className="foundry-window--actors"
-          onLayoutChange={onActorsWindowLayoutChange ?? (() => {})}
-          onClose={onActorsWindowClose ?? (() => {})}
-          onMinimize={onActorsWindowMinimize ?? (() => {})}
-          onFocus={onActorsWindowFocus ?? (() => {})}
-        >
-          {actorsBody}
-        </FoundryWindow>
-      ) : (
-        <FoundryDockPanel
-          title="Personagens"
-          open={actorsWindowLayout.open}
-          minimized={actorsWindowLayout.minimized}
-          className="foundry-dock-panel--actors"
-          onClose={onActorsWindowClose ?? (() => {})}
-          onMinimize={onActorsWindowMinimize}
-        >
-          {actorsBody}
-        </FoundryDockPanel>
-      )
-    ) : null;
-
-  const actorsPortal = portalPanel(actorsUi, float("actors"));
 
   const gmBody = (
     <div className="mesa-panel-scroll mesa-panel-scroll--rail">{gmToolsPanel}</div>
@@ -2711,7 +2636,6 @@ export function HexBattlefield({
       className={`vtt-shell${foundryLayout ? " vtt-shell--foundry" : ""}`}
       style={shellStyle}
     >
-      {foundryLayout ? actorsPortal : null}
       {foundryLayout ? gmPortal : null}
       {foundryLayout ? dungeonPortal : null}
       {foundryLayout ? whiteboardPortal : null}
@@ -2720,7 +2644,7 @@ export function HexBattlefield({
       {!foundryLayout && leftPanel && onLeftPanelChange ? (
         <MesaDockPanel
           side="left"
-          label="Personagens"
+          label="Ferramentas"
           layout={leftPanel}
           onLayoutChange={onLeftPanelChange}
         >
