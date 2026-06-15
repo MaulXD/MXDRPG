@@ -46,6 +46,7 @@ import { filterTokensForFog, visibleHexSetForPlayer } from "@/lib/vtt/fog-of-war
 import { resolveTokenHpDisplay } from "@/lib/vtt/token-hp-display";
 import { shouldIgnoreBattlefieldShortcut } from "@/lib/vtt/keyboard-guard";
 import { GmToolsPanel } from "@/components/vtt/GmToolsPanel";
+import { MapTokenList } from "@/components/vtt/MapTokenList";
 import { DungeonEditorPanel } from "@/components/vtt/DungeonEditorPanel";
 import { MapToolbar } from "@/components/vtt/MapToolbar";
 import { MapMarkupTextEditor } from "@/components/vtt/MapMarkupTextEditor";
@@ -67,7 +68,7 @@ import { CombatFxLayer, type TokenCombatFlash } from "@/components/vtt/CombatFxL
 import type { CombatFxState } from "@/lib/vtt/combat-fx-types";
 import { ingestNewCombatFx, isPlayableCombatFxMessage } from "@/lib/vtt/combat-fx-sequence";
 import type { ChatMessage } from "@/lib/room/chat";
-import { activeTokenId, normalizeCombatTrack } from "@/lib/room/combat";
+import { emptyCombat, activeTokenId, normalizeCombatTrack } from "@/lib/room/combat";
 import { resolveLivingActiveTokenId } from "@/lib/room/combat-order";
 import { TurnHandoffOverlay } from "@/components/vtt/TurnHandoffOverlay";
 import {
@@ -355,9 +356,10 @@ export function HexBattlefield({
   const displayScene = scene;
   const combat = useMemo(
     () =>
-      snapshot?.combat
-        ? normalizeCombatTrack(snapshot.combat, displayScene.tokens)
-        : undefined,
+      normalizeCombatTrack(
+        snapshot?.combat ?? emptyCombat(displayScene.tokens),
+        displayScene.tokens
+      ),
     [snapshot?.combat, displayScene.tokens]
   );
   const canvasScene = useMemo(() => {
@@ -2527,7 +2529,7 @@ export function HexBattlefield({
   const whiteboardPortal = portalPanel(whiteboardUi, float("whiteboard"));
 
   const initiativeUi =
-    foundryLayout && initiativeWindowLayout && combat ? (
+    foundryLayout && initiativeWindowLayout ? (
       (() => {
         const initiativeBody = (
           <div className="mesa-panel-scroll mesa-panel-scroll--rail">
@@ -2545,6 +2547,13 @@ export function HexBattlefield({
               rangeTargetIds={highlights.rangeTargetIds}
               hoverAttackTargetId={hoverTargetId}
               onHoverAttackTargetChange={setHoverTargetId}
+            />
+            <MapTokenList
+              tokens={listTokens}
+              selectedId={selectedId}
+              onSelect={setSelectedId}
+              canViewTokenPa={canViewTokenPaFn}
+              fogHint={Boolean(displayScene.fogEnabled && !canControlCombat)}
             />
           </div>
         );
@@ -2592,11 +2601,15 @@ export function HexBattlefield({
       />
     </div>
   ) : (
-    <p className="vtt-combat-hint" style={{ padding: "1rem" }}>
-      {isRoomGm
-        ? "Selecione um token no mapa ou inicie a iniciativa."
-        : "Coloque sua ficha no mapa para ver status."}
-    </p>
+    <div className="mesa-panel-scroll mesa-panel-scroll--rail">
+      <MapTokenList
+        tokens={listTokens}
+        selectedId={selectedId}
+        onSelect={setSelectedId}
+        canViewTokenPa={canViewTokenPaFn}
+        fogHint={Boolean(displayScene.fogEnabled && !canControlCombat)}
+      />
+    </div>
   );
 
   const statusUi =
