@@ -16,8 +16,6 @@ import {
   scheduleAutoPassWhenActivePaZero,
 } from "../handlers/combat-turn";
 import { requiresCombatTurnEconomy } from "@/lib/combat/mesa-mode";
-import { tokenSpendablePa } from "@/lib/combat/pa-turn";
-import { getActiveBattleToken } from "../combat-order";
 import { pruneMapMarkups } from "@/lib/vtt/map-markup";
 import { prunePings } from "@/lib/vtt/ping";
 import { getRoomGmCreations } from "../gm-creations";
@@ -284,24 +282,10 @@ export async function getRoom(roomId: string): Promise<RoomState | null> {
     }
     room.combat = normalizeCombatTrack(room.combat, room.scene.tokens);
   }
-  // GET/poll: repara PA do ativo se faltar; executa auto-passe vencido — não agenda novo passe no read.
+  // GET/poll: só executa auto-passe já vencido — sem reparar PA nem reindexar turno no read.
   if (room?.combat?.order?.length && requiresCombatTurnEconomy(room.settings, room.combat)) {
-    const activeBefore = getActiveBattleToken(room);
-    const paBefore = activeBefore ? tokenSpendablePa(activeBefore) : -1;
-    const idxBefore = room.combat.activeIndex;
-
-    ensureCombatActiveHasPa(room);
-
-    const activeAfter = getActiveBattleToken(room);
-    const paAfter = activeAfter ? tokenSpendablePa(activeAfter) : -1;
-    const paRepaired =
-      paBefore !== paAfter || idxBefore !== room.combat.activeIndex;
-
     if (executePendingAutoPassIfDue(room)) {
       return persistRoom(roomId, room, { skipAutoPassSchedule: true });
-    }
-    if (paRepaired) {
-      return persistRoom(roomId, room, { skipAutoPassSchedule: true, skipAutoPass: true });
     }
   } else if (room?.combat?.pendingAutoPass) {
     room.combat = { ...room.combat, pendingAutoPass: undefined };
