@@ -428,6 +428,12 @@
 }
 
 /* Lista de personagens jogáveis (painel Ficha) */
+.vtt-map-token-list {
+  margin-top: 0.75rem;
+  padding-top: 0.65rem;
+  border-top: 1px solid var(--glass-border);
+}
+
 .vtt-playable-panel__lead {
   margin-bottom: 0.65rem;
 }

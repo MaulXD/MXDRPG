@@ -372,16 +372,30 @@ export function MesaWorkspace({
       ids.add("dungeon");
     }
     if (canParticipate && roomInviteCode) ids.add("invite");
-    if (Boolean(snapshot?.combat?.order?.length)) ids.add("initiative");
+    ids.add("initiative");
     return ids;
   }, [
     isActualGm,
     canParticipate,
     roomInviteCode,
-    snapshot?.combat?.order?.length,
   ]);
 
   const dockOpen = windows.isDockOpen(allowedDockPanels);
+
+  useEffect(() => {
+    if (!windows.hydrated || !isActualGm) return;
+    if (!roomSettings.combatActive) return;
+    if (snapshot?.combat?.order?.length) return;
+    if (windows.isActive("initiative")) return;
+    windows.openAsPopup("initiative");
+  }, [
+    windows.hydrated,
+    isActualGm,
+    roomSettings.combatActive,
+    snapshot?.combat?.order?.length,
+    windows.isActive,
+    windows.openAsPopup,
+  ]);
 
   useEffect(() => {
     if (!windows.hydrated) return;

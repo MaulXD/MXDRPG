@@ -26,7 +26,6 @@ import {
   getActiveBattleToken,
   isDefeatedToken,
   shouldAutoSkipTurn,
-  skipUnplayableActives,
   reconcileCombatOrderPreservingActive,
   syncCombatOrderWithTokens,
 } from "../combat-order";
@@ -496,8 +495,6 @@ export async function rollRoomInitiative(roomId: string): Promise<RoomSnapshot |
 export function ensureCombatActiveHasPa(room: RoomState): void {
   if (!room.combat?.order?.length) return;
   if (!requiresCombatTurnEconomy(room.settings, room.combat)) return;
-
-  skipUnplayableActives(room);
 
   const active = getActiveBattleToken(room);
   if (!active || shouldAutoSkipTurn(active)) return;
