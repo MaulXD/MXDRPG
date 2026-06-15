@@ -9,18 +9,26 @@ export function isCombatModeActive(
   return Boolean(settings.combatActive);
 }
 
-/** Gastar PA / respeitar ordem de turno. */
+/** Gastar PA de verdade (combate ligado, com ou sem iniciativa). */
+export function requiresCombatPaEconomy(
+  settings: Pick<RoomSettings, "combatActive">,
+  _combat?: CombatTrack | null
+): boolean {
+  return isCombatModeActive(settings);
+}
+
+/** Respeitar ordem de turno e auto-passe (combate + fila de iniciativa). */
 export function requiresCombatTurnEconomy(
   settings: Pick<RoomSettings, "combatActive">,
   combat?: CombatTrack | null
 ): boolean {
-  return isCombatModeActive(settings, combat) && Boolean(combat?.order?.length);
+  return requiresCombatPaEconomy(settings, combat) && Boolean(combat?.order?.length);
 }
 
-/** Exploração: movimento e magias sem PA. */
+/** Exploração: movimento e magias sem PA real (só display). */
 export function isExplorationMode(
   settings: Pick<RoomSettings, "combatActive">,
-  combat?: CombatTrack | null
+  _combat?: CombatTrack | null
 ): boolean {
-  return !requiresCombatTurnEconomy(settings, combat);
+  return !requiresCombatPaEconomy(settings);
 }

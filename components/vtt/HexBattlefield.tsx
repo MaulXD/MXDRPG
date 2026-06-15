@@ -143,7 +143,7 @@ import { useMonsterSpawnDrop } from "@/hooks/vtt/useMonsterSpawnDrop";
 import { creatureSizeOf, occupiedHexes, tokenPixelCenter } from "@/lib/vtt/creature-size";
 import { resolveMonsterSpawnPlacement } from "@/lib/vtt/spawn-placement";
 import { getActiveSpawnDragPayload } from "@/lib/vtt/spawn-drag";
-import { paTurnRulesForActor } from "@/lib/combat/pa-economy";
+import { movementPaOptsForRoom } from "@/lib/combat/movement-pa-opts";
 import { canMoveToken, type MovementPathContext } from "@/lib/vtt/movement";
 import { animateTokenAlongPath } from "@/lib/vtt/token-move-animation";
 import { axialToPixel, hexDrawRadius } from "@/lib/vtt/hex-math";
@@ -459,12 +459,9 @@ export function HexBattlefield({
       if (!canOperateToken(t)) {
         return "Você não controla este personagem.";
       }
-      const track = combat;
-      if (roomSettings.combatActive && !track?.order?.length) {
-        return "Aguarde o mestre rolar a iniciativa para usar ações.";
-      }
       if (!roomSettings.combatActive) return null;
-      if (!track) return null;
+      const track = combat;
+      if (!track?.order?.length) return null;
       const activeId = turnActiveId ?? activeTokenId(track);
       if (
         !canActOnCombatTurn(t.id, {
@@ -765,6 +762,8 @@ export function HexBattlefield({
     channelExtraPa,
     turn,
     combatHasOrder: Boolean(combat?.order?.length),
+    roomSettings,
+    combat,
     gmRepositionActive: Boolean(gmDragTokenId),
   });
 
@@ -1365,12 +1364,12 @@ export function HexBattlefield({
   const actionPreview: ActionPreview | null = useMemo(() => {
     if (!selected) return null;
     if (highlights.showMovement && hoverAxial && highlights.hoverMovePreview) {
-      const movePaOpts = {
-        ...(selectedActor
-          ? { freeBasicMovePa: paTurnRulesForActor(selectedActor).freeBasicMovePa }
-          : {}),
-        ...(selectedBypass ? { gmBypass: true as const } : {}),
-      };
+      const movePaOpts = movementPaOptsForRoom(
+        roomSettings,
+        combat,
+        selectedActor,
+        selectedBypass
+      );
       return previewMoveFromCheck(
         highlights.hoverMovePreview,
         selected,
@@ -1745,12 +1744,12 @@ export function HexBattlefield({
         actorRacas,
         dungeonObjects: displayScene.dungeonObjects,
       };
-      const movePaOpts = {
-        ...(selectedActor?.identity
-          ? { freeBasicMovePa: paTurnRulesForActor(selectedActor).freeBasicMovePa }
-          : {}),
-        ...(selectedBypass ? { gmBypass: true as const } : {}),
-      };
+      const movePaOpts = movementPaOptsForRoom(
+        roomSettings,
+        combat,
+        selectedActor,
+        selectedBypass
+      );
       const check = canMoveToken(selected, axial, highlights.moveMode, moveCtx, movePaOpts);
       if (!check.ok) {
         setActionErr(check.reason ?? "Movimento inválido");
