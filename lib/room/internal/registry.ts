@@ -11,7 +11,7 @@ import {
 import { welcomeChat } from "../chat";
 import { normalizeCombatTrack } from "../combat";
 import { executePendingAutoPassIfDue } from "../handlers/combat-turn";
-import { scheduleAutoPassWhenActivePaZero } from "@/lib/combat/turn-economy";
+import { scheduleAutoPassWhenActivePaZero, repairStaleCombatPa } from "@/lib/combat/turn-economy";
 import { requiresCombatPaEconomy, requiresCombatTurnEconomy } from "@/lib/combat/mesa-mode";
 import { pruneMapMarkups } from "@/lib/vtt/map-markup";
 import { prunePings } from "@/lib/vtt/ping";
@@ -275,6 +275,9 @@ export async function getRoom(roomId: string): Promise<RoomState | null> {
       room.scene = { ...room.scene, tokens: [] };
     }
     room.combat = normalizeCombatTrack(room.combat, room.scene.tokens);
+  }
+  if (room && repairStaleCombatPa(room)) {
+    return persistRoom(roomId, room, { skipAutoPassSchedule: true });
   }
   // GET/poll: só executa auto-passe já vencido — sem reparar PA nem reindexar turno no read.
   if (room?.combat?.order?.length && requiresCombatTurnEconomy(room.settings, room.combat)) {

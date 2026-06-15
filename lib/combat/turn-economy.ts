@@ -27,7 +27,7 @@ import { resetChiSpentThisTurn } from "@/lib/combat/chi-economy";
 import { activeTokenId } from "@/lib/room/combat";
 import { isMonsterToken } from "@/lib/room/settings";
 import { DEFAULT_AUTO_PASS_DELAY_MS, MIN_AUTO_PASS_DELAY_MS } from "@/lib/room/settings";
-import { getActiveBattleToken } from "@/lib/room/combat-order";
+import { getActiveBattleToken, shouldAutoSkipTurn } from "@/lib/room/combat-order";
 import type { RoomState } from "@/lib/room/types";
 import type { BattleToken } from "@/lib/vtt/types";
 
@@ -131,14 +131,7 @@ export function zeroAllCombatPaPools(room: RoomState): void {
   }
 }
 
-/** Token precisa de refresh no início da vez (0 gastável, nada gasto neste turno). */
-export function tokenNeedsTurnStartPaRefresh(token: BattleToken): boolean {
-  if (tokenSpendablePa(token) > 0) return false;
-  if (tokenPaSpentThisTurn(token) > 0) return false;
-  return true;
-}
-
-/** Início de turno do token ativo. */
+/** Início de turno do token ativo — idempotente por `paRefreshTurnKey`. */
 export function refreshActiveTokenAtTurnStart(
   room: RoomState,
   mode: "full" | "regen" = "regen"
@@ -152,13 +145,50 @@ export function refreshActiveTokenAtTurnStart(
   const before = room.scene.tokens[idx]!;
   const carryBefore = Math.max(0, before.pa ?? 0);
 
-  if (!tokenNeedsTurnStartPaRefresh(before)) {
+  if (isActiveTurnPaGranted(room)) {
     return { refreshed: false, carryBefore };
   }
 
   applyTokenPaRefresh(room, idx, mode);
   markActiveTurnPaGranted(room);
   return { refreshed: true, carryBefore };
+}
+
+/** Token sem PA e sem gasto neste turno — candidato a refresh. */
+export function tokenNeedsTurnStartPaRefresh(token: BattleToken): boolean {
+  if (tokenSpendablePa(token) > 0) return false;
+  if (tokenPaSpentThisTurn(token) > 0) return false;
+  return true;
+}
+
+/** Repara PA legado (chave de turno sem pool) ao carregar/persistir sala. */
+export function repairStaleCombatPa(room: RoomState): boolean {
+  if (!requiresCombatTurnEconomy(room.settings, room.combat)) return false;
+  if (room.combat.pendingAutoPass) return false;
+
+  const active = getActiveBattleToken(room);
+  if (!active || shouldAutoSkipTurn(active)) return false;
+
+  const idx = room.scene.tokens.findIndex((t) => t.id === active.id);
+  if (idx < 0) return false;
+
+  const token = room.scene.tokens[idx]!;
+  const spendable = tokenSpendablePa(token);
+  const spent = tokenPaSpentThisTurn(token);
+
+  // Meio do turno: esgotou PA — não reparar
+  if (spent > 0 && spendable === 0) return false;
+
+  const staleGrant =
+    isActiveTurnPaGranted(room) && spendable === 0 && spent === 0;
+  const needsGrant = !isActiveTurnPaGranted(room) && spendable === 0 && spent === 0;
+
+  if (!staleGrant && !needsGrant) return false;
+
+  if (staleGrant) clearActiveTurnPaGrant(room);
+  applyTokenPaRefresh(room, idx, "regen");
+  markActiveTurnPaGranted(room);
+  return true;
 }
 
 export function pushTurnStartNotice(
@@ -170,17 +200,6 @@ export function pushTurnStartNotice(
   if (!activeBefore) return;
 
   const { refreshed, carryBefore } = refreshActiveTokenAtTurnStart(room, mode);
-  const active = getActiveBattleToken(room);
-  if (!active) return;
-
-  if (!refreshed && tokenNeedsTurnStartPaRefresh(active)) {
-    const idx = room.scene.tokens.findIndex((t) => t.id === active.id);
-    if (idx >= 0) {
-      applyTokenPaRefresh(room, idx, mode);
-      markActiveTurnPaGranted(room);
-    }
-  }
-
   const finalActive = getActiveBattleToken(room);
   if (!finalActive) return;
 
