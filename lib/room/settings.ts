@@ -22,6 +22,8 @@ export type RoomSettings = {
 };
 
 export const DEFAULT_AUTO_PASS_DELAY_MS = 1500;
+/** Evita auto-passe instantâneo no poll (delay 0 + GET a cada 500ms). */
+export const MIN_AUTO_PASS_DELAY_MS = 500;
 
 export const DEFAULT_ROOM_SETTINGS: RoomSettings = {
   combatActive: false,
@@ -37,7 +39,7 @@ export const DEFAULT_ROOM_SETTINGS: RoomSettings = {
 export function normalizeRoomSettings(raw?: Partial<RoomSettings> | null): RoomSettings {
   const delay =
     typeof raw?.autoPassDelayMs === "number" && raw.autoPassDelayMs >= 0
-      ? Math.min(10_000, Math.round(raw.autoPassDelayMs))
+      ? Math.min(10_000, Math.max(MIN_AUTO_PASS_DELAY_MS, Math.round(raw.autoPassDelayMs)))
       : DEFAULT_ROOM_SETTINGS.autoPassDelayMs;
   return {
     combatActive: raw?.combatActive ?? DEFAULT_ROOM_SETTINGS.combatActive,

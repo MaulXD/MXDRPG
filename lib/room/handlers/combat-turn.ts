@@ -26,6 +26,7 @@ import {
   getActiveBattleToken,
   isDefeatedToken,
   shouldAutoSkipTurn,
+  skipUnplayableActives,
   reconcileCombatOrderPreservingActive,
   syncCombatOrderWithTokens,
 } from "../combat-order";
@@ -47,7 +48,7 @@ import { tickDeathTrackOnRound } from "@/lib/combat/death-track";
 import { requiresCombatTurnEconomy } from "@/lib/combat/mesa-mode";
 import { tokenMayActWithZeroSpendablePa } from "@/lib/combat/zero-pa-options";
 import { pushRoundCheckpoint } from "../combat-round-checkpoint";
-import { DEFAULT_AUTO_PASS_DELAY_MS } from "../settings";
+import { DEFAULT_AUTO_PASS_DELAY_MS, MIN_AUTO_PASS_DELAY_MS } from "../settings";
 import { getRoom, persistRoom, toSnapshot } from "../internal/registry";
 import type { RoomSnapshot, RoomState } from "../types";
 
@@ -55,7 +56,8 @@ import type { RoomSnapshot, RoomState } from "../types";
 export const COMBAT_AUTO_PASS_DELAY_MS = DEFAULT_AUTO_PASS_DELAY_MS;
 
 function autoPassDelayMs(room: RoomState): number {
-  return room.settings.autoPassDelayMs ?? DEFAULT_AUTO_PASS_DELAY_MS;
+  const raw = room.settings.autoPassDelayMs ?? DEFAULT_AUTO_PASS_DELAY_MS;
+  return Math.max(MIN_AUTO_PASS_DELAY_MS, raw);
 }
 
 function paRulesForToken(room: RoomState, token: BattleToken) {
@@ -495,12 +497,16 @@ export function ensureCombatActiveHasPa(room: RoomState): void {
   if (!room.combat?.order?.length) return;
   if (!requiresCombatTurnEconomy(room.settings, room.combat)) return;
 
+  skipUnplayableActives(room);
+
   const active = getActiveBattleToken(room);
   if (!active || shouldAutoSkipTurn(active)) return;
 
   const turnKey = paRefreshTurnKey(room);
   const pending = room.combat.pendingAutoPass;
   const refreshedThisTurn = room.combat.paRefreshTurnKey === turnKey;
+  const needsFullRefresh =
+    tokenSpendablePa(active) === 0 && tokenPaSpentThisTurn(active) === 0;
 
   // Meio do turno: PA esgotado — auto-passe já agendado para este token
   if (pending?.tokenId === active.id) return;
@@ -508,13 +514,13 @@ export function ensureCombatActiveHasPa(room: RoomState): void {
   // Já restaurou PA neste turno
   if (refreshedThisTurn) {
     // Chave legada: turno marcado mas pool zerado sem gasto — restaura de novo
-    if (tokenSpendablePa(active) === 0 && tokenPaSpentThisTurn(active) === 0) {
-      refreshActiveTokenPa(room, "regen");
+    if (needsFullRefresh) {
+      refreshActiveTokenPa(room, "full");
     }
     return;
   }
 
-  refreshActiveTokenPa(room, "regen");
+  refreshActiveTokenPa(room, needsFullRefresh ? "full" : "regen");
 }
 
 export async function advanceRoomTurn(

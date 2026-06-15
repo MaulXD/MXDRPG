@@ -59,6 +59,26 @@ export function toSnapshot(state: RoomState): RoomSnapshot {
   };
 }
 
+function mirrorCombatTokenPaToActors(state: RoomState): RoomState {
+  let actors = state.actors;
+  let changed = false;
+  for (const token of state.scene.tokens) {
+    if (!token.linked || !token.actorId || typeof token.pa !== "number") continue;
+    const actor = actors[token.actorId];
+    if (!actor || actor.resources.pontosAcao.value === token.pa) continue;
+    if (!changed) actors = { ...actors };
+    changed = true;
+    actors[token.actorId] = {
+      ...actor,
+      resources: {
+        ...actor.resources,
+        pontosAcao: { ...actor.resources.pontosAcao, value: token.pa },
+      },
+    };
+  }
+  return changed ? { ...state, actors } : state;
+}
+
 export function bumpRoom(state: RoomState): RoomState {
   const inCombatEconomy = requiresCombatTurnEconomy(state.settings, state.combat);
   const backfill = backfillActorPortraitsFromTokens(state.actors, state.scene.tokens);
@@ -67,12 +87,13 @@ export function bumpRoom(state: RoomState): RoomState {
     preserveCombatPa: inCombatEconomy,
     explorationDisplay: !inCombatEconomy,
   });
-  return {
+  const merged = {
     ...base,
     scene,
     revision: state.revision + 1,
     updatedAt: Date.now(),
   };
+  return inCombatEconomy ? mirrorCombatTokenPaToActors(merged) : merged;
 }
 
 function shouldPersistToDb(roomId: string): boolean {
@@ -194,7 +215,7 @@ export async function persistRoom(
   opts?: PersistRoomOpts
 ): Promise<RoomState> {
   if (state.combat?.order?.length) {
-    if (!opts?.skipAutoPass) {
+    if (requiresCombatTurnEconomy(state.settings, state.combat)) {
       ensureCombatActiveHasPa(state);
     }
     if (requiresCombatTurnEconomy(state.settings, state.combat) && !opts?.skipAutoPass) {
@@ -267,15 +288,17 @@ export async function getRoom(roomId: string): Promise<RoomState | null> {
   if (room?.combat?.order?.length && requiresCombatTurnEconomy(room.settings, room.combat)) {
     const activeBefore = getActiveBattleToken(room);
     const paBefore = activeBefore ? tokenSpendablePa(activeBefore) : -1;
+    const idxBefore = room.combat.activeIndex;
 
     ensureCombatActiveHasPa(room);
 
     const activeAfter = getActiveBattleToken(room);
     const paAfter = activeAfter ? tokenSpendablePa(activeAfter) : -1;
-    const paRepaired = paBefore !== paAfter;
+    const paRepaired =
+      paBefore !== paAfter || idxBefore !== room.combat.activeIndex;
 
     if (executePendingAutoPassIfDue(room)) {
-      return persistRoom(roomId, room, { skipAutoPassSchedule: true, skipAutoPass: false });
+      return persistRoom(roomId, room, { skipAutoPassSchedule: true });
     }
     if (paRepaired) {
       return persistRoom(roomId, room, { skipAutoPassSchedule: true, skipAutoPass: true });
