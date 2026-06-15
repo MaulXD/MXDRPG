@@ -360,7 +360,6 @@ export function MesaWorkspace({
 
   const allowedDockPanels = useMemo(() => {
     const ids = new Set<MesaWindowId>([
-      "actors",
       "ficha",
       "chat",
       "dice",
@@ -490,9 +489,14 @@ export function MesaWorkspace({
                     selectedActorId={sheetPopupActorId}
                     canCreateCharacter={canCreateCharacter}
                     isRoomGm={effectiveIsGm}
+                    roomOwnerId={roomOwnerId}
+                    memberIds={memberIds}
+                    tokens={snapshot?.scene.tokens ?? scene.tokens}
+                    spawnAxial={spawnAxial}
                     onOpenSheet={openSheet}
                     onCharactersChanged={refresh}
                     onCreateCharacter={canCreateCharacter ? openCharacterWizard : undefined}
+                    onPlaced={applySnapshot}
                   />
                 </div>
               </FoundryDockPanel>
@@ -640,13 +644,6 @@ export function MesaWorkspace({
               onOpenDungeonPanel={openDungeonPanel}
               showSpawnInSidebar={false}
               foundryLayout
-              actorsWindowLayout={win("actors")}
-              onActorsWindowLayoutChange={(patch) => windows.patch("actors", patch)}
-              onActorsWindowClose={() => windows.close("actors")}
-              onActorsWindowMinimize={() =>
-                win("actors").minimized ? windows.restore("actors") : windows.minimize("actors")
-              }
-              onActorsWindowFocus={() => windows.focus("actors")}
               gmWindowLayout={win("gm")}
               onGmWindowLayoutChange={(patch) => windows.patch("gm", patch)}
               onGmWindowClose={() => windows.close("gm")}
@@ -738,9 +735,14 @@ export function MesaWorkspace({
                       selectedActorId={sheetPopupActorId}
                       canCreateCharacter={canCreateCharacter}
                       isRoomGm={effectiveIsGm}
+                      roomOwnerId={roomOwnerId}
+                      memberIds={memberIds}
+                      tokens={snapshot?.scene.tokens ?? scene.tokens}
+                      spawnAxial={spawnAxial}
                       onOpenSheet={openSheet}
                       onCharactersChanged={refresh}
                       onCreateCharacter={canCreateCharacter ? openCharacterWizard : undefined}
+                      onPlaced={applySnapshot}
                     />
                   </div>
                 </FoundryWindow>
@@ -841,9 +843,13 @@ export function MesaWorkspace({
                   roomId={roomId}
                   adventureId={adventureId}
                   roomOwnerId={roomOwnerId}
+                  memberIds={memberIds}
                   actors={snapshot.actors}
                   session={session}
                   compendium={compendium}
+                  tokens={snapshot.scene.tokens}
+                  spawnAxial={spawnAxial}
+                  isRoomGm={effectiveIsGm}
                   layout={win("character")}
                   onLayoutChange={(patch) => windows.patch("character", patch)}
                   onFocus={() => windows.focus("character")}
@@ -854,6 +860,7 @@ export function MesaWorkspace({
                   }
                   onClose={closeSheet}
                   onRoomPortraitPatch={handleRoomPortraitPatch}
+                  onPlaced={applySnapshot}
                 />
               ) : null}
 

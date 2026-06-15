@@ -92,8 +92,9 @@ export function VttHelpButton() {
             <HelpSection title="Ícones — Jogo (todos os jogadores)">
               <ul className="vtt-help-panel__list">
                 <li>
-                  <strong>Personagens</strong> — arraste fichas para o mapa, retire do tabuleiro e
-                  selecione tokens na lista (ou clique no mapa). PA e efeitos aparecem quando visíveis.
+                  <strong>Ficha</strong> — lista de personagens da aventura: arraste o retrato para o
+                  mapa, abra a ficha para consultar ou editar (só o dono). No popup da ficha, use o
+                  ícone ⠿ na barra para arrastar também.
                 </li>
                 <li>
                   <strong>Status</strong> — condições e buffs do personagem (jogador: só o próprio;
@@ -103,10 +104,6 @@ export function VttHelpButton() {
                   <strong>Turno</strong> — ordem de iniciativa, rodada atual e quem está na vez.
                   Banner no topo do mapa: <em>Turno de: [nome]</em>. Use <em>Passar turno</em> ao
                   terminar suas ações.
-                </li>
-                <li>
-                  <strong>Ficha</strong> — lista de personagens jogáveis da aventura. Abra qualquer
-                  ficha para consultar; só edite a sua. Crie personagens novos pelo link na lista.
                 </li>
                 <li>
                   <strong>Chat</strong> — mensagens da mesa e do combate (ataques, dano, PA). Todos
@@ -244,8 +241,8 @@ export function VttHelpButton() {
             <HelpSection title="Ficha de personagem">
               <ul className="vtt-help-panel__list">
                 <li>
-                  Abra pela lista <strong>Ficha</strong> ou pelo painel <strong>Personagens</strong>. Popup da ficha
-                  pode ser movido e redimensionado como os outros painéis.
+                  Abra pelo painel <strong>Ficha</strong> — arraste o retrato para o mapa ou use ⠿ no
+                  popup. A janela da ficha pode ser movida e redimensionada como os outros painéis.
                 </li>
                 <li>
                   Inventário separado (armas, equipamento, magias). Subir de nível pela aba dedicada
