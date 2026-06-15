@@ -34,6 +34,15 @@ export async function PATCH(req: Request, { params }: Params) {
   if (typeof body.showUsernameOnTokenNameplate === "boolean") {
     patch.showUsernameOnTokenNameplate = body.showUsernameOnTokenNameplate;
   }
+  if (typeof body.combatActive === "boolean") {
+    patch.combatActive = body.combatActive;
+  }
+  if (typeof body.autoPassDelayMs === "number" && Number.isFinite(body.autoPassDelayMs)) {
+    patch.autoPassDelayMs = body.autoPassDelayMs;
+  }
+  if (typeof body.xpFromMonstersEnabled === "boolean") {
+    patch.xpFromMonstersEnabled = body.xpFromMonstersEnabled;
+  }
   if (body.coverUrl === null) {
     patch.coverUrl = null;
     patch.coverFocus = null;
