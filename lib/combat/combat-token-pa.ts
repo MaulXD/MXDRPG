@@ -4,19 +4,19 @@ import {
   paTurnRulesForActor,
   paTurnRulesForMonster,
   PA_RECOVERY_PER_TURN,
-  type PaTurnRules,
 } from "@/lib/combat/pa-economy";
 import type { CombatTurnOptions } from "@/lib/combat/types";
 import { normalizeTokenPaFields } from "@/lib/combat/pa-token-state";
 import {
   materializeCombatPa,
+  refreshPaAtTurnStart,
   startTurnPaFull,
+  tokenPaSpentThisTurn,
   tokenSpendablePa,
 } from "@/lib/combat/pa-turn";
-import { activeTokenId } from "@/lib/room/combat";
 import { canActOnCombatTurn } from "@/lib/combat/turn-guard";
-import { isMonsterToken } from "@/lib/room/settings";
 import { tryOnKillPaBonus } from "@/lib/combat/pa-passive-effects";
+import { applyCombatSpendablePaIfDue } from "@/lib/combat/turn-economy";
 import type { RoomState } from "@/lib/room/types";
 import type { BattleToken } from "@/lib/vtt/types";
 
@@ -34,29 +34,54 @@ export function prepareCombatToken(room: RoomState, token: BattleToken): BattleT
   return { ...token, ...normalizeTokenPaFields(prepared, paMax) };
 }
 
-export function paTurnRulesForBattleToken(
+function grantSpendablePaForCheck(
   token: BattleToken,
-  actor?: CharacterSheet | null
-): PaTurnRules {
-  if (actor) return paTurnRulesForActor(actor);
-  return paTurnRulesForMonster(token.monsterTier);
+  actor: CharacterSheet | null,
+  ctx: {
+    combatActive?: boolean;
+    combatHasOrder?: boolean;
+    activeTokenId?: string | null;
+    bypassTurn?: boolean;
+  }
+): BattleToken {
+  if (ctx.combatActive === false) {
+    return prepareCombatTokenFromParts(token, actor);
+  }
+
+  const rules = actor ? paTurnRulesForActor(actor) : paTurnRulesForMonster(token.monsterTier);
+  const paMax = rules.recoveryPerTurn;
+  let prepared = materializeCombatPa(token, paMax);
+  prepared = { ...token, ...normalizeTokenPaFields(prepared, paMax) };
+
+  if (tokenSpendablePa(prepared) > 0 || tokenPaSpentThisTurn(prepared) > 0) {
+    return prepared;
+  }
+
+  const hasOrder = ctx.combatHasOrder ?? true;
+  if (hasOrder) {
+    if (
+      !canActOnCombatTurn(token.id, {
+        activeTokenId: ctx.activeTokenId,
+        bypassTurn: ctx.bypassTurn,
+        combatHasOrder: true,
+        combatActive: ctx.combatActive,
+      })
+    ) {
+      return prepared;
+    }
+    const refreshed = refreshPaAtTurnStart(prepared, rules);
+    return { ...prepared, ...normalizeTokenPaFields(refreshed, paMax, rules.accumulationCap) };
+  }
+
+  const refreshed = startTurnPaFull(prepared, rules);
+  return { ...prepared, ...normalizeTokenPaFields(refreshed, paMax, rules.accumulationCap) };
 }
 
-function mayRefreshCombatPa(
-  token: BattleToken,
-  turn?: CombatTurnOptions,
-  opts?: { combatHasOrder?: boolean; combatActive?: boolean }
-): boolean {
-  const combatHasOrder = opts?.combatHasOrder ?? turn?.combatHasOrder;
-  if (!combatHasOrder) {
-    return isMonsterToken(token);
-  }
-  return canActOnCombatTurn(token.id, {
-    activeTokenId: turn?.activeTokenId,
-    bypassTurn: turn?.bypassTurn,
-    combatHasOrder: true,
-    combatActive: opts?.combatActive ?? turn?.combatActive,
-  });
+function prepareCombatTokenFromParts(token: BattleToken, actor: CharacterSheet | null): BattleToken {
+  const rules = actor ? paTurnRulesForActor(actor) : paTurnRulesForMonster(token.monsterTier);
+  const paMax = rules.recoveryPerTurn;
+  const prepared = materializeCombatPa(token, paMax);
+  return { ...token, ...normalizeTokenPaFields(prepared, paMax) };
 }
 
 /** Normaliza PA do atacante antes de validar ataque (UI + servidor). */
@@ -66,45 +91,25 @@ export function attackerForCombatCheck(
   turn?: CombatTurnOptions,
   opts?: { combatHasOrder?: boolean; combatActive?: boolean }
 ): BattleToken {
-  const rules = paTurnRulesForBattleToken(attacker, actor);
-  const paMax = rules.recoveryPerTurn;
-  let prepared = materializeCombatPa(attacker, paMax);
-  prepared = { ...attacker, ...normalizeTokenPaFields(prepared, paMax) };
-
-  const combatHasOrder = opts?.combatHasOrder ?? turn?.combatHasOrder ?? true;
-  const combatActive = opts?.combatActive ?? turn?.combatActive;
-  if (!mayRefreshCombatPa(prepared, turn, { combatHasOrder, combatActive })) return prepared;
-  if (tokenSpendablePa(prepared) > 0) return prepared;
-  if ((prepared.paSpentThisTurn ?? 0) > 0) {
-    if (combatHasOrder || !isMonsterToken(prepared)) return prepared;
-  }
-
-  const refreshed = startTurnPaFull(prepared, rules);
-  return { ...prepared, ...normalizeTokenPaFields(refreshed, paMax) };
+  return grantSpendablePaForCheck(attacker, actor, {
+    activeTokenId: turn?.activeTokenId,
+    bypassTurn: turn?.bypassTurn,
+    combatHasOrder: opts?.combatHasOrder ?? turn?.combatHasOrder,
+    combatActive: opts?.combatActive ?? turn?.combatActive,
+  });
 }
 
-/** Garante PA do atacante no servidor (turno ativo, bypass do mestre ou monstro sem iniciativa). */
+/** Garante PA gastável no servidor antes de validar/debitar. */
 export function ensureTokenCombatPa(
   room: RoomState,
   token: BattleToken,
   opts?: { bypassTurn?: boolean }
 ): BattleToken {
-  const prepared = prepareCombatToken(room, token);
-  const actor =
-    prepared.linked && prepared.actorId ? room.actors[prepared.actorId] ?? null : null;
-  const hasOrder = Boolean(room.combat?.order?.length);
-  const combatActive = room.settings.combatActive;
-  return attackerForCombatCheck(
-    prepared,
-    actor,
-    {
-      activeTokenId: activeTokenId(room.combat),
-      bypassTurn: opts?.bypassTurn,
-      combatHasOrder: hasOrder,
-      combatActive,
-    },
-    { combatHasOrder: hasOrder, combatActive }
-  );
+  const refreshed =
+    applyCombatSpendablePaIfDue(room, token.id, opts) ??
+    room.scene.tokens.find((t) => t.id === token.id) ??
+    token;
+  return prepareCombatToken(room, refreshed);
 }
 
 /** Carrasco e outros bônus de PA ao eliminar inimigo (Cap. 2.6). */
@@ -136,8 +141,8 @@ export function syncActorPaFromToken(room: RoomState, token: BattleToken): void 
     resources: {
       ...a.resources,
       pontosAcao: {
-        value: token.pa,
-        max: token.paMax,
+        value: token.pa ?? 0,
+        max: token.paMax ?? a.resources.pontosAcao.max,
       },
     },
     revision: a.revision + 1,

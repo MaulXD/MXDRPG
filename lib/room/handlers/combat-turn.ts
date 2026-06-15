@@ -1,25 +1,27 @@
+import { formatStunSkipNotice } from "@/lib/combat/pa-turn";
 import {
-  paMaxForActor,
-  paTurnRulesForActor,
-  paTurnRulesForMonster,
-} from "@/lib/combat/pa-economy";
-import { normalizeTokenPaFields } from "@/lib/combat/pa-token-state";
+  bankActiveTokenPa,
+  clearActiveTurnPaGrant,
+  clearPendingAutoPass,
+  enterCombatPaEconomy,
+  executePendingAutoPassIfDue as isAutoPassDue,
+  pushTurnStartNotice,
+  scheduleAutoPassWhenActivePaZero,
+  zeroAllCombatPaPools,
+} from "@/lib/combat/turn-economy";
+import { clearCombatRecharges } from "@/lib/combat/recharge";
 import {
-  accumulationCap,
-  bankPaAtEndOfTurn,
-  clearCombatPaPool,
-  formatEndTurnPaDiscardNotice,
-  formatStunSkipNotice,
-  formatTurnStartCombatNotice,
-  planEndOfTurnPaBank,
-  refreshPaAtTurnStart,
-  startTurnPaFull,
-  tokenBankedPa,
-  tokenPaSpentThisTurn,
-  tokenSpendablePa,
-} from "@/lib/combat/pa-turn";
-import type { BattleToken } from "@/lib/vtt/types";
-import { isMonsterToken } from "../settings";
+  chiMaxForEspiritualista,
+  isEspiritualista,
+  resetTokenChi,
+} from "@/lib/combat/chi-economy";
+import {
+  formatExpiredNotice,
+  tickAllTimedEffectsOnNewRound,
+  tickTokenTimedEffectsOnTurnEnd,
+  type CombatTickContext,
+} from "@/lib/combat/timed-effects";
+import { tickDeathTrackOnRound } from "@/lib/combat/death-track";
 import { activeTokenId, nextTurn, rollInitiative } from "../combat";
 import { applyGmCombatOrder } from "../combat-gm";
 import {
@@ -29,58 +31,16 @@ import {
   reconcileCombatOrderPreservingActive,
   syncCombatOrderWithTokens,
 } from "../combat-order";
-import { clearCombatRecharges, clearPerTurnRecharges } from "@/lib/combat/recharge";
-import {
-  formatExpiredNotice,
-  tickAllTimedEffectsOnNewRound,
-  tickTokenTimedEffectsOnTurnEnd,
-  type CombatTickContext,
-} from "@/lib/combat/timed-effects";
 import { resetAllTokenMovement } from "../internal/token-reset";
-import {
-  chiMaxForEspiritualista,
-  isEspiritualista,
-  resetChiSpentThisTurn,
-  resetTokenChi,
-} from "@/lib/combat/chi-economy";
-import { tickDeathTrackOnRound } from "@/lib/combat/death-track";
-import { requiresCombatTurnEconomy } from "@/lib/combat/mesa-mode";
-import { tokenMayActWithZeroSpendablePa } from "@/lib/combat/zero-pa-options";
 import { pushRoundCheckpoint } from "../combat-round-checkpoint";
-import { DEFAULT_AUTO_PASS_DELAY_MS, MIN_AUTO_PASS_DELAY_MS } from "../settings";
 import { getRoom, persistRoom, toSnapshot } from "../internal/registry";
 import type { RoomSnapshot, RoomState } from "../types";
 
-/** Pausa padrão entre PA zerado e avanço automático (ms). */
-export const COMBAT_AUTO_PASS_DELAY_MS = DEFAULT_AUTO_PASS_DELAY_MS;
-
-function autoPassDelayMs(room: RoomState): number {
-  const raw = room.settings.autoPassDelayMs ?? DEFAULT_AUTO_PASS_DELAY_MS;
-  return Math.max(MIN_AUTO_PASS_DELAY_MS, raw);
-}
-
-function paRulesForToken(room: RoomState, token: BattleToken) {
-  if (token.linked && token.actorId && room.actors[token.actorId]) {
-    return paTurnRulesForActor(room.actors[token.actorId]);
-  }
-  return paTurnRulesForMonster(token.monsterTier);
-}
-
-function paMaxForToken(room: RoomState, token: BattleToken): number {
-  return paRulesForToken(room, token).recoveryPerTurn;
-}
-
-function paRefreshTurnKey(room: RoomState): string {
-  const id = activeTokenId(room.combat);
-  if (!id) return "";
-  return `${room.combat.round}:${id}`;
-}
-
-function markActivePaRefreshed(room: RoomState): void {
-  const key = paRefreshTurnKey(room);
-  if (!key) return;
-  room.combat = { ...room.combat, paRefreshTurnKey: key };
-}
+export { COMBAT_AUTO_PASS_DELAY_MS } from "./combat-turn-constants";
+export {
+  scheduleAutoPassWhenActivePaZero,
+  enterCombatPaEconomy,
+} from "@/lib/combat/turn-economy";
 
 function resetChiPoolsForCombat(room: RoomState): void {
   const tokens = room.scene.tokens.map((t) => {
@@ -99,105 +59,21 @@ function resetChiPoolsForCombat(room: RoomState): void {
   room.scene = { ...room.scene, tokens };
 }
 
-/** Zera pools de todos; só o ativo recebe PA na iniciativa. */
-function zeroAllTokenPaPools(room: RoomState): void {
-  const tokens = room.scene.tokens.map((t) => clearCombatPaPool(t));
-  room.scene = { ...room.scene, tokens };
-
-  for (const token of tokens) {
-    if (!token.linked || !token.actorId) continue;
-    const actor = room.actors[token.actorId];
-    if (!actor) continue;
-    room.actors[token.actorId] = {
-      ...actor,
-      resources: {
-        ...actor.resources,
-        pontosAcao: { ...actor.resources.pontosAcao, value: 0 },
-      },
-      revision: actor.revision + 1,
-    };
-  }
-}
-
-/** Garante PA do token ativo na iniciativa (demo / sala nova). */
-export function initCombatPaForRoom(room: RoomState): void {
-  beginCombatTurnEconomyPa(room);
-}
-
-/** Entrada na economia de turnos: zera pools, limpa auto-passe e concede PA ao ativo (como iniciativa). */
-export function beginCombatTurnEconomyPa(room: RoomState): void {
-  if (!room.combat?.order?.length) return;
-
-  room.combat = {
-    ...room.combat,
-    paRefreshTurnKey: undefined,
-    pendingAutoPass: undefined,
-    notices: [],
-  };
-
-  const notices: string[] = [];
-  syncCombatOrderWithTokens(room);
-  resetAllTokenMovement(room, notices);
-  zeroAllTokenPaPools(room);
-  resetChiPoolsForCombat(room);
-
-  const maxSkips = Math.max(1, room.combat.order.length + 1);
-  for (let i = 0; i < maxSkips; i++) {
-    const active = getActiveBattleToken(room);
-    if (!active) break;
-
-    if (shouldAutoSkipTurn(active)) {
-      if (isDefeatedToken(active)) {
-        notices.push(`${active.name} está morto — turno passado.`);
-      } else if (active.conditions?.includes("atordoado")) {
-        notices.push(formatStunSkipNotice(active.name));
-      }
-      stepToNextCombatant(room, notices);
-      continue;
+function stepToNextCombatant(room: RoomState, notices: string[]): void {
+  const prevRound = room.combat.round;
+  clearActiveTurnPaGrant(room);
+  room.combat = nextTurn(room.combat);
+  if (room.combat.round > prevRound) {
+    pushRoundCheckpoint(room);
+    const tick = tickAllTimedEffectsOnNewRound(room.scene.tokens, prevRound);
+    const tokens = tick.tokens.map((t) => tickDeathTrackOnRound(t));
+    room.scene = { ...room.scene, tokens };
+    for (const { tokenId, fx } of tick.expired) {
+      const name = room.scene.tokens.find((t) => t.id === tokenId)?.name ?? "Token";
+      notices.push(formatExpiredNotice(fx, name));
     }
-
-    reconcileCombatOrderPreservingActive(room);
-    pushTurnStartNoticeFull(room, notices);
-    break;
   }
-
-  room.combat = { ...room.combat, notices };
-}
-
-function refreshActiveTokenPa(room: RoomState, mode: "full" | "regen" = "regen"): void {
-  const startingId = activeTokenId(room.combat);
-  if (!startingId) return;
-
-  const idx = room.scene.tokens.findIndex((t) => t.id === startingId);
-  if (idx < 0) return;
-
-  const token = room.scene.tokens[idx];
-  const actor = token.actorId ? room.actors[token.actorId] : null;
-  const rules = actor ? paTurnRulesForActor(actor) : paTurnRulesForMonster(token.monsterTier);
-  const paMax = rules.recoveryPerTurn;
-
-  const tokens = [...room.scene.tokens];
-  const refreshed =
-    mode === "full" ? startTurnPaFull(token, rules) : refreshPaAtTurnStart(token, rules);
-  tokens[idx] = clearPerTurnRecharges({
-    ...token,
-    ...normalizeTokenPaFields(refreshed, paMax, rules.accumulationCap),
-    ...resetChiSpentThisTurn(token),
-  });
-
-  if (actor && token.linked && token.actorId) {
-    room.actors[token.actorId] = {
-      ...actor,
-      resources: {
-        ...actor.resources,
-        pontosAcao: { ...actor.resources.pontosAcao, value: tokens[idx].pa, max: paMax },
-      },
-      revision: actor.revision + 1,
-    };
-  }
-
-  room.scene = { ...room.scene, tokens };
-  markActivePaRefreshed(room);
+  resetAllTokenMovement(room, notices);
 }
 
 function bankEndingToken(room: RoomState, notices: string[]): void {
@@ -217,111 +93,27 @@ function bankEndingToken(room: RoomState, notices: string[]): void {
     notices.push(formatExpiredNotice(fx, tokens[idx].name));
   }
   tokens[idx] = tickEnd.token;
-
-  const before = tokens[idx];
-  const rules = paRulesForToken(room, before);
-  const paMax = rules.recoveryPerTurn;
-  const bankPlan = planEndOfTurnPaBank(before, rules);
-
-  const ended = clearPerTurnRecharges({
-    ...before,
-    ...normalizeTokenPaFields(bankPaAtEndOfTurn(before, rules), paMax, rules.accumulationCap),
-  });
-  tokens[idx] = ended;
   room.scene = { ...room.scene, tokens };
 
-  if (
-    !isMonsterToken(before) &&
-    bankPlan &&
-    bankPlan.discarded > 0
-  ) {
-    notices.push(
-      formatEndTurnPaDiscardNotice(
-        before.name,
-        bankPlan.discarded,
-        bankPlan.poolCap ?? accumulationCap(rules)
-      )
-    );
-  }
-
-  if (ended.linked && ended.actorId && room.actors[ended.actorId]) {
-    const a = room.actors[ended.actorId];
-    room.actors[ended.actorId] = {
-      ...a,
-      resources: {
-        ...a.resources,
-        pontosAcao: {
-          ...a.resources.pontosAcao,
-          value: ended.pa,
-          max: paMax,
-        },
-      },
-      revision: a.revision + 1,
-    };
-  }
+  bankActiveTokenPa(room, notices);
 }
 
-function pushTurnStartNotice(room: RoomState, notices: string[]): void {
+function skipDeadOrStunnedTurn(room: RoomState, notices: string[]): boolean {
   const active = getActiveBattleToken(room);
-  if (!active) return;
+  if (!active || !shouldAutoSkipTurn(active)) return false;
 
-  const carryBefore = Math.max(0, active.pa ?? 0) + tokenBankedPa(active);
-  refreshActiveTokenPa(room);
-  const refreshed = getActiveBattleToken(room);
-  if (!refreshed) return;
-
-  const rules = paRulesForToken(room, refreshed);
-  notices.push(
-    formatTurnStartCombatNotice(
-      refreshed.name,
-      room.combat.round,
-      refreshed.pa ?? 0,
-      rules,
-      carryBefore
-    )
-  );
-}
-
-function pushTurnStartNoticeFull(room: RoomState, notices: string[]): void {
-  const active = getActiveBattleToken(room);
-  if (!active) return;
-
-  refreshActiveTokenPa(room, "full");
-  const refreshed = getActiveBattleToken(room);
-  if (!refreshed) return;
-
-  const rules = paRulesForToken(room, refreshed);
-  notices.push(
-    formatTurnStartCombatNotice(
-      refreshed.name,
-      room.combat.round,
-      refreshed.pa ?? 0,
-      rules,
-      0
-    )
-  );
-}
-
-function stepToNextCombatant(room: RoomState, notices: string[]): void {
-  const prevRound = room.combat.round;
-  room.combat = { ...room.combat, paRefreshTurnKey: undefined };
-  room.combat = nextTurn(room.combat);
-  if (room.combat.round > prevRound) {
-    pushRoundCheckpoint(room);
-    const tick = tickAllTimedEffectsOnNewRound(room.scene.tokens, prevRound);
-    let tokens = tick.tokens.map((t) => tickDeathTrackOnRound(t));
-    room.scene = { ...room.scene, tokens };
-    for (const { tokenId, fx } of tick.expired) {
-      const name = room.scene.tokens.find((t) => t.id === tokenId)?.name ?? "Token";
-      notices.push(formatExpiredNotice(fx, name));
-    }
+  if (isDefeatedToken(active)) {
+    notices.push(`${active.name} está morto — turno passado.`);
+  } else if (active.conditions?.includes("atordoado")) {
+    notices.push(formatStunSkipNotice(active.name));
   }
-  resetAllTokenMovement(room, notices);
+  stepToNextCombatant(room, notices);
+  return true;
 }
 
-function clearPendingAutoPass(room: RoomState): void {
-  if (!room.combat?.pendingAutoPass) return;
-  room.combat = { ...room.combat, pendingAutoPass: undefined };
+function startActiveTurn(room: RoomState, notices: string[], mode: "full" | "regen"): void {
+  reconcileCombatOrderPreservingActive(room);
+  pushTurnStartNotice(room, notices, mode);
 }
 
 function applyTurnPaTransition(room: RoomState): string[] {
@@ -334,89 +126,55 @@ function applyTurnPaTransition(room: RoomState): string[] {
 
   const maxSkips = Math.max(1, room.combat.order.length + 1);
   for (let i = 0; i < maxSkips; i++) {
-    const active = getActiveBattleToken(room);
-    if (!active) break;
-
-    if (shouldAutoSkipTurn(active)) {
-      if (isDefeatedToken(active)) {
-        notices.push(`${active.name} está morto — turno passado.`);
-      } else if (active.conditions?.includes("atordoado")) {
-        notices.push(formatStunSkipNotice(active.name));
-      }
-      stepToNextCombatant(room, notices);
-      continue;
-    }
-
-    reconcileCombatOrderPreservingActive(room);
-    pushTurnStartNotice(room, notices);
+    if (skipDeadOrStunnedTurn(room, notices)) continue;
+    startActiveTurn(room, notices, "regen");
     break;
   }
 
   return notices;
 }
 
-/** Agenda auto-passe quando o ativo esgota PA (não avança até o delay). */
-export function scheduleAutoPassWhenActivePaZero(room: RoomState): boolean {
-  if (!requiresCombatTurnEconomy(room.settings, room.combat)) {
-    clearPendingAutoPass(room);
-    return false;
-  }
-  if (!room.combat?.order?.length) return false;
+/** Garante PA do token ativo na iniciativa (demo / sala nova). */
+export function initCombatPaForRoom(room: RoomState): void {
+  beginCombatTurnEconomyPa(room);
+}
 
-  const active = getActiveBattleToken(room);
-  if (!active) return false;
-  if (shouldAutoSkipTurn(active)) {
-    clearPendingAutoPass(room);
-    return false;
-  }
-
-  if (tokenSpendablePa(active) > 0) {
-    clearPendingAutoPass(room);
-    return false;
-  }
-
-  if (tokenMayActWithZeroSpendablePa(room, active)) {
-    clearPendingAutoPass(room);
-    return false;
-  }
-
-  const pending = room.combat.pendingAutoPass;
-  if (pending?.tokenId === active.id) {
-    return pending.passAt <= Date.now();
-  }
+/** Entrada na fila de turnos: zera pools, limpa auto-passe e concede PA ao ativo. */
+export function beginCombatTurnEconomyPa(room: RoomState): void {
+  if (!room.combat?.order?.length) return;
 
   room.combat = {
     ...room.combat,
-    pendingAutoPass: {
-      tokenId: active.id,
-      passAt: Date.now() + autoPassDelayMs(room),
-    },
+    paRefreshTurnKey: undefined,
+    pendingAutoPass: undefined,
+    notices: [],
   };
-  return true;
+
+  const notices: string[] = [];
+  syncCombatOrderWithTokens(room);
+  resetAllTokenMovement(room, notices);
+  zeroAllCombatPaPools(room);
+  resetChiPoolsForCombat(room);
+
+  const maxSkips = Math.max(1, room.combat.order.length + 1);
+  for (let i = 0; i < maxSkips; i++) {
+    if (skipDeadOrStunnedTurn(room, notices)) continue;
+    startActiveTurn(room, notices, "full");
+    break;
+  }
+
+  room.combat = { ...room.combat, notices };
 }
 
-/** Executa auto-passe agendado após o delay (chamado por `advanceRoomTurn`). */
+/** Executa auto-passe agendado após o delay. */
 export function executePendingAutoPassIfDue(
   room: RoomState,
   opts?: { force?: boolean }
 ): boolean {
-  const pending = room.combat?.pendingAutoPass;
-  if (!pending) return false;
-  if (!opts?.force && Date.now() < pending.passAt) return false;
+  if (!isAutoPassDue(room, opts)) return false;
 
   const active = getActiveBattleToken(room);
-  if (!active || active.id !== pending.tokenId) {
-    clearPendingAutoPass(room);
-    return false;
-  }
-  if (shouldAutoSkipTurn(active) || tokenSpendablePa(active) > 0) {
-    clearPendingAutoPass(room);
-    return false;
-  }
-  if (tokenMayActWithZeroSpendablePa(room, active)) {
-    clearPendingAutoPass(room);
-    return false;
-  }
+  if (!active) return false;
 
   const activeName = active.name;
   clearPendingAutoPass(room);
@@ -435,12 +193,16 @@ export async function rollRoomInitiative(roomId: string): Promise<RoomSnapshot |
   const room = await getRoom(roomId);
   if (!room) return null;
 
+  const wasCombatActive = room.settings.combatActive;
+  const hadOrder = Boolean(room.combat?.order?.length);
+  const preservePaPools = wasCombatActive && hadOrder;
+
   const { order, scores } = rollInitiative(room);
   room.settings = { ...room.settings, combatActive: true };
   room.combat = {
     order,
     activeIndex: 0,
-    round: 1,
+    round: preservePaPools ? room.combat.round : 1,
     notices: [],
     naturalOrder: order,
     orderOverridden: false,
@@ -458,29 +220,18 @@ export async function rollRoomInitiative(roomId: string): Promise<RoomSnapshot |
     ),
   };
   syncCombatOrderWithTokens(room);
-  const initNotices: string[] = [];
-  resetAllTokenMovement(room, initNotices);
-  zeroAllTokenPaPools(room);
-  resetChiPoolsForCombat(room);
 
-  const notices: string[] = [...initNotices];
+  const notices: string[] = [];
+  resetAllTokenMovement(room, notices);
+  if (!preservePaPools) {
+    zeroAllCombatPaPools(room);
+    resetChiPoolsForCombat(room);
+  }
+
   const maxSkips = Math.max(1, room.combat.order.length + 1);
   for (let i = 0; i < maxSkips; i++) {
-    const active = getActiveBattleToken(room);
-    if (!active) break;
-
-    if (shouldAutoSkipTurn(active)) {
-      if (isDefeatedToken(active)) {
-        notices.push(`${active.name} está morto — turno passado.`);
-      } else if (active.conditions?.includes("atordoado")) {
-        notices.push(formatStunSkipNotice(active.name));
-      }
-      stepToNextCombatant(room, notices);
-      continue;
-    }
-
-    reconcileCombatOrderPreservingActive(room);
-    pushTurnStartNoticeFull(room, notices);
+    if (skipDeadOrStunnedTurn(room, notices)) continue;
+    startActiveTurn(room, notices, preservePaPools ? "regen" : "full");
     break;
   }
 
@@ -489,35 +240,6 @@ export async function rollRoomInitiative(roomId: string): Promise<RoomSnapshot |
   return toSnapshot(
     await persistRoom(roomId, room, { skipAutoPass: true, skipAutoPassSchedule: true })
   );
-}
-
-/** Garante PA no token ativo (início de turno ou após pular inconsciente/atordoado). */
-export function ensureCombatActiveHasPa(room: RoomState): void {
-  if (!room.combat?.order?.length) return;
-  if (!requiresCombatTurnEconomy(room.settings, room.combat)) return;
-
-  const active = getActiveBattleToken(room);
-  if (!active || shouldAutoSkipTurn(active)) return;
-
-  const turnKey = paRefreshTurnKey(room);
-  const pending = room.combat.pendingAutoPass;
-  const refreshedThisTurn = room.combat.paRefreshTurnKey === turnKey;
-  const needsFullRefresh =
-    tokenSpendablePa(active) === 0 && tokenPaSpentThisTurn(active) === 0;
-
-  // Meio do turno: PA esgotado — auto-passe já agendado para este token
-  if (pending?.tokenId === active.id) return;
-
-  // Já restaurou PA neste turno
-  if (refreshedThisTurn) {
-    // Chave legada: turno marcado mas pool zerado sem gasto — restaura de novo
-    if (needsFullRefresh) {
-      refreshActiveTokenPa(room, "full");
-    }
-    return;
-  }
-
-  refreshActiveTokenPa(room, needsFullRefresh ? "full" : "regen");
 }
 
 export async function advanceRoomTurn(

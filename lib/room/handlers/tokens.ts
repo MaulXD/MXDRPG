@@ -1,13 +1,14 @@
 import { prepareCombatToken, syncActorPaFromToken } from "@/lib/combat/combat-token-pa";
-import { paTurnRulesForActor } from "@/lib/combat/pa-economy";
 import { applyConditionPaRules, applyPaSpend } from "@/lib/combat/pa-turn";
+import { movementPaOptsForRoom } from "@/lib/combat/movement-pa-opts";
+import { applyCombatSpendablePaIfDue } from "@/lib/combat/turn-economy";
 import type { Axial } from "@/lib/vtt/hex-math";
 import { canMoveToken, type MoveMode } from "@/lib/vtt/movement";
 import { createMonsterTokenFromEntryId } from "@/lib/vtt/monsters";
 import { nextMonsterDisplayName } from "@/lib/vtt/monster-display-name";
 import { activeTokenId } from "../combat";
 import { removeTokenFromCombatOrder } from "../combat-order";
-import { ensureCombatActiveHasPa } from "./combat-turn";
+import { prepareSpawnedTokenPa } from "@/lib/combat/turn-economy";
 import { createPlayerTokenFromActor } from "@/lib/vtt/player-token";
 import type { MonsterSpawnOptions } from "@/lib/vtt/monster-scaling";
 import type { BattleToken } from "@/lib/vtt/types";
@@ -84,7 +85,9 @@ export async function moveRoomToken(
   const idx = room.scene.tokens.findIndex((t) => t.id === tokenId);
   if (idx < 0) return { ok: false, error: "Token não encontrado" };
 
-  let token = prepareCombatToken(room, room.scene.tokens[idx]);
+  let token = room.scene.tokens[idx];
+  applyCombatSpendablePaIfDue(room, tokenId, { bypassTurn: opts.bypassTurn });
+  token = prepareCombatToken(room, room.scene.tokens[idx]!);
   const activeId = opts.activeTokenId ?? activeTokenId(room.combat);
   const exploration = isExplorationMode(room.settings, room.combat);
   const combatHasOrder = requiresCombatTurnEconomy(room.settings, room.combat);
@@ -105,12 +108,7 @@ export async function moveRoomToken(
     actorRacas[id] = actor.identity.raca;
   }
   const actor = token.linked && token.actorId ? room.actors[token.actorId] : null;
-  const movePaOpts = exploration
-    ? { gmBypass: true as const, freeBasicMovePa: true }
-    : {
-        ...(actor ? { freeBasicMovePa: paTurnRulesForActor(actor).freeBasicMovePa } : {}),
-        ...(opts.bypassTurn ? { gmBypass: true as const } : {}),
-      };
+  const movePaOpts = movementPaOptsForRoom(room.settings, room.combat, actor, opts.bypassTurn);
   const check = canMoveToken(
     token,
     target,
@@ -201,13 +199,13 @@ export async function spawnRoomMonster(
     tokens: [...room.scene.tokens, placed],
   };
 
-  if (room.combat?.order) {
+  if (room.combat?.order?.length) {
     room.combat = {
       ...room.combat,
       order: [...room.combat.order, token.id],
     };
-    ensureCombatActiveHasPa(room);
   }
+  prepareSpawnedTokenPa(room, token.id);
 
   const updated = await persistRoom(roomId, room);
   return { ok: true, snapshot: toSnapshot(updated), tokenId: token.id };
@@ -299,12 +297,13 @@ export async function placeRoomActorOnHex(
     ...room.scene,
     tokens: [...room.scene.tokens, placed],
   };
-  if (room.combat?.order) {
+  if (room.combat?.order?.length) {
     room.combat = {
       ...room.combat,
       order: [...room.combat.order, token.id],
     };
   }
+  prepareSpawnedTokenPa(room, token.id);
 
   const updated = await persistRoom(roomId, room);
   return { ok: true, snapshot: toSnapshot(updated), tokenId: token.id };
