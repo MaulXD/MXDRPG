@@ -1,5 +1,6 @@
 import { prepareCombatToken, syncActorPaFromToken } from "@/lib/combat/combat-token-pa";
-import { applyConditionPaRules, applyPaSpend } from "@/lib/combat/pa-turn";
+import { spendPaForRoomAction } from "@/lib/combat/pa-spend-room";
+import { applyConditionPaRules } from "@/lib/combat/pa-turn";
 import { movementPaOptsForRoom } from "@/lib/combat/movement-pa-opts";
 import { applyCombatSpendablePaIfDue } from "@/lib/combat/turn-economy";
 import type { Axial } from "@/lib/vtt/hex-math";
@@ -143,7 +144,9 @@ export async function moveRoomToken(
   };
   if (!opts.bypassTurn && !exploration) {
     if (check.paCost > 0) {
-      moved = applyPaSpend(moved, check.paCost);
+      moved = spendPaForRoomAction(room, moved, check.paCost, {
+        summary: `Movimento (${mode === "run" ? "corrida" : "caminhada"}) — ${check.paCost} PA`,
+      });
     }
     if (
       movePaOpts.freeBasicMovePa &&

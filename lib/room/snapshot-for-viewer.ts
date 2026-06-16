@@ -65,6 +65,7 @@ export function snapshotForViewer(
 ): RoomSnapshot {
   const isGm = canManageRoom(room, user);
   const combatUndo = isGm ? snapshot.combatUndo : undefined;
+  const combatLog = isGm ? snapshot.combatLog : undefined;
   const gmCreations = isGm ? snapshot.gmCreations : undefined;
   const settings = normalizeRoomSettings(room.settings ?? snapshot.settings);
   const actorIds = user
@@ -107,7 +108,7 @@ export function snapshotForViewer(
     chat === snapshot.chat;
 
   if (tokensUnchanged && settings === snapshot.settings) {
-    return { ...snapshot, combatUndo, gmCreations };
+    return { ...snapshot, combatUndo, combatLog, gmCreations };
   }
 
   const dungeonObjects =
@@ -120,6 +121,7 @@ export function snapshotForViewer(
     settings,
     chat,
     combatUndo,
+    combatLog,
     gmCreations,
     scene: {
       ...snapshot.scene,

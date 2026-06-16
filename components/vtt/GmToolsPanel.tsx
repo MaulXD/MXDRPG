@@ -5,6 +5,7 @@ import type { BattleScene, BattleToken } from "@/lib/vtt/types";
 import type { Axial } from "@/lib/vtt/hex-math";
 import type { RoomSnapshot } from "@/lib/room/types";
 import { GmActionHistoryPanel } from "@/components/vtt/GmActionHistoryPanel";
+import { GmCombatLogPanel } from "@/components/vtt/GmCombatLogPanel";
 import { GmActorProgressPanel } from "@/components/vtt/GmActorProgressPanel";
 import { GmCreationsPanel } from "@/components/vtt/GmCreationsPanel";
 import { GmSavingThrowPanel } from "@/components/vtt/GmSavingThrowPanel";
@@ -24,6 +25,7 @@ type Props = {
   roomActors: RoomSnapshot["actors"];
   spawnAxial: Axial | null;
   combatUndo?: CombatUndoEntry[];
+  combatLog?: RoomSnapshot["combatLog"];
   onSceneUpdated: (snap: RoomSnapshot) => void;
   onRefresh?: () => void;
 };
@@ -33,7 +35,7 @@ const TABS: { id: GmTab; label: string; hint: string }[] = [
   { id: "jogadores", label: "Jogadores", hint: "XP, vida e salvaguardas" },
   { id: "culinaria", label: "Culinária", hint: "Prato estruturado e assimilação" },
   { id: "criaturas", label: "Criaturas", hint: "Templates do mestre" },
-  { id: "combate", label: "Combate", hint: "Desfazer ações" },
+  { id: "combate", label: "Combate", hint: "Histórico de PA e desfazer ações" },
 ];
 
 /** Ferramentas do mestre — menu em abas. */
@@ -46,6 +48,7 @@ export function GmToolsPanel({
   roomActors,
   spawnAxial,
   combatUndo = [],
+  combatLog = [],
   onSceneUpdated,
   onRefresh,
 }: Props) {
@@ -132,11 +135,18 @@ export function GmToolsPanel({
         ) : null}
 
         {tab === "combate" ? (
-          <GmActionHistoryPanel
-            roomId={roomId}
-            combatUndo={combatUndo}
-            onUpdated={onSceneUpdated}
-          />
+          <>
+            <GmCombatLogPanel
+              combatLog={combatLog}
+              tokens={tokens}
+              combat={snapshot.combat}
+            />
+            <GmActionHistoryPanel
+              roomId={roomId}
+              combatUndo={combatUndo}
+              onUpdated={onSceneUpdated}
+            />
+          </>
         ) : null}
       </div>
     </aside>

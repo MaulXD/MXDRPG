@@ -5427,6 +5427,138 @@
   background: rgba(107, 158, 90, 0.12);
 }
 
+.vtt-gm-combat-log {
+  margin-top: 0.75rem;
+}
+
+.vtt-gm-combat-log__snapshot {
+  margin: 0.5rem 0 0.65rem;
+  padding: 0.45rem 0.5rem;
+  border-radius: 8px;
+  border: 1px solid rgba(201, 169, 98, 0.22);
+  background: rgba(8, 10, 14, 0.65);
+}
+
+.vtt-gm-combat-log__snapshot-title {
+  margin: 0 0 0.35rem;
+  font-size: 0.72rem;
+  color: var(--text-dim, #a89f8f);
+}
+
+.vtt-gm-combat-log__pa-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  font-size: 0.72rem;
+}
+
+.vtt-gm-combat-log__pa-list li {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.15rem 0;
+}
+
+.vtt-gm-combat-log__pa-list li.is-active .vtt-gm-combat-log__pa-name {
+  color: #c9a962;
+}
+
+.vtt-gm-combat-log__pa-name {
+  font-weight: 600;
+}
+
+.vtt-gm-combat-log__pa-values {
+  color: var(--text-dim, #8a8070);
+  font-variant-numeric: tabular-nums;
+}
+
+.vtt-gm-combat-log__filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin-bottom: 0.45rem;
+}
+
+.vtt-gm-combat-log__filter {
+  font-size: 0.68rem;
+  padding: 0.2rem 0.45rem;
+  border-radius: 999px;
+  border: 1px solid rgba(201, 169, 98, 0.2);
+  background: transparent;
+  color: var(--text-dim, #a89f8f);
+  cursor: pointer;
+}
+
+.vtt-gm-combat-log__filter.is-active {
+  border-color: rgba(201, 169, 98, 0.5);
+  color: #c9a962;
+  background: rgba(201, 169, 98, 0.1);
+}
+
+.vtt-gm-combat-log__list {
+  max-height: 14rem;
+}
+
+.vtt-gm-combat-log__meta {
+  font-size: 0.65rem;
+  color: var(--text-dim, #7a7268);
+}
+
+.vtt-gm-combat-log__detail {
+  margin: 0.15rem 0 0;
+  font-size: 0.68rem;
+  color: var(--text-dim, #8a8070);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.6rem;
+}
+
+.vtt-gm-combat-log__delta {
+  font-weight: 600;
+  color: #d4a87e;
+  font-variant-numeric: tabular-nums;
+}
+
+.vtt-gm-history-kind--pa_spend,
+.vtt-gm-history-kind--pa_refresh,
+.vtt-gm-history-kind--pa_bank {
+  color: #d4a87e;
+  border-color: rgba(212, 168, 126, 0.35);
+  background: rgba(212, 168, 126, 0.1);
+}
+
+.vtt-gm-history-kind--turn_start,
+.vtt-gm-history-kind--turn_pass {
+  color: #7eb8d4;
+  border-color: rgba(126, 184, 212, 0.35);
+  background: rgba(126, 184, 212, 0.1);
+}
+
+.vtt-gm-history-kind--auto_pass {
+  color: #b89ed4;
+  border-color: rgba(184, 158, 212, 0.35);
+  background: rgba(184, 158, 212, 0.1);
+}
+
+.vtt-gm-history-kind--initiative,
+.vtt-gm-history-kind--combat_on,
+.vtt-gm-history-kind--combat_off {
+  color: #8bc47a;
+  border-color: rgba(139, 196, 122, 0.35);
+  background: rgba(139, 196, 122, 0.1);
+}
+
+.vtt-gm-history-kind--repair,
+.vtt-gm-history-kind--spawn,
+.vtt-gm-history-kind--pools_zero {
+  color: #d4b87e;
+  border-color: rgba(212, 184, 126, 0.35);
+  background: rgba(212, 184, 126, 0.08);
+}
+
 .vtt-gm-progress {
   margin-top: 0.75rem;
 }

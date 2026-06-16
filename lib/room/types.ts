@@ -3,11 +3,13 @@ import type { BattlePing, BattleScene } from "@/lib/vtt/types";
 import type { ChatMessage } from "./chat";
 import type { CombatTrack } from "./combat";
 import type { CombatUndoEntry } from "./combat-undo";
+import type { CombatLogEntry } from "./combat-log";
 import type { GmCreation } from "./gm-creations";
 import type { RoomSettings } from "./settings";
 
 export type { CombatTrack };
 export type { CombatUndoEntry };
+export type { CombatLogEntry };
 
 export type RoomActor = CharacterSheet & {
   revision: number;
@@ -32,6 +34,8 @@ export type RoomState = {
   combat: CombatTrack;
   /** Pilha de desfazer jogadas (só mestre na UI). */
   combatUndo?: CombatUndoEntry[];
+  /** Histórico de PA/combate para o mestre (auditoria e debug). */
+  combatLog?: CombatLogEntry[];
   chat: ChatMessage[];
   pings: BattlePing[];
   revision: number;
@@ -56,6 +60,7 @@ export type RoomSnapshot = {
   combat: CombatTrack;
   /** Presente apenas para o mestre (snapshotForViewer). */
   combatUndo?: CombatUndoEntry[];
+  combatLog?: CombatLogEntry[];
   /** Templates do mestre — só no snapshot do GM. */
   gmCreations?: Record<string, GmCreation>;
   chat: ChatMessage[];
