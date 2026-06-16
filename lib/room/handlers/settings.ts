@@ -6,6 +6,7 @@ import { normalizeRoomSettings, type RoomSettings } from "@/lib/room/settings";
 import { applyExplorationPaDisplay } from "@/lib/combat/exploration-pa";
 import { beginCombatTurnEconomyPa } from "./combat-turn";
 import { enterCombatPaEconomy } from "@/lib/combat/turn-economy";
+import { logCombatEvent } from "../combat-log";
 import { getRoom, persistRoom, toSnapshot, type PersistRoomOpts } from "../internal/registry";
 import type { RoomSnapshot } from "../types";
 
@@ -58,6 +59,9 @@ export async function patchRoomSettings(
   if (!wasCombat && nowCombat) {
     if (room.combat?.order?.length) {
       beginCombatTurnEconomyPa(room);
+      logCombatEvent(room, "combat_on", "Combate ligado — fila de turnos ativa", {
+        detail: `rodada ${room.combat.round}`,
+      });
     } else {
       enterCombatPaEconomy(room);
     }
@@ -65,6 +69,9 @@ export async function patchRoomSettings(
   } else if (wasCombat && !nowCombat) {
     room.combat = { ...room.combat, pendingAutoPass: undefined };
     applyExplorationPaDisplay(room);
+    logCombatEvent(room, "combat_off", "Combate desligado — exploração", {
+      detail: "PA só visual",
+    });
   }
 
   const updated = await persistRoom(roomId, room, persistOpts);

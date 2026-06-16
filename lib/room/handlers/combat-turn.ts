@@ -33,6 +33,7 @@ import {
 import { resetAllTokenMovement } from "../internal/token-reset";
 import { pushRoundCheckpoint } from "../combat-round-checkpoint";
 import { getRoom, persistRoom, toSnapshot } from "../internal/registry";
+import { clearCombatLog, logCombatEvent } from "../combat-log";
 import type { RoomSnapshot, RoomState } from "../types";
 
 export { COMBAT_AUTO_PASS_DELAY_MS } from "./combat-turn-constants";
@@ -78,6 +79,16 @@ function stepToNextCombatant(room: RoomState, notices: string[]): void {
 function bankEndingToken(room: RoomState, notices: string[]): void {
   const endingId = activeTokenId(room.combat);
   if (!endingId) return;
+
+  const ending = getActiveBattleToken(room);
+  if (ending) {
+    logCombatEvent(room, "turn_pass", `Fim da vez — ${ending.name}`, {
+      tokenId: ending.id,
+      tokenName: ending.name,
+      paAfter: ending.pa ?? 0,
+      detail: `gastou ${ending.paSpentThisTurn ?? 0} PA neste turno`,
+    });
+  }
 
   const idx = room.scene.tokens.findIndex((t) => t.id === endingId);
   if (idx < 0) return;
@@ -168,6 +179,11 @@ export function executePendingAutoPassIfDue(
   if (!active) return false;
 
   const activeName = active.name;
+  logCombatEvent(room, "auto_pass", `Auto-passe executado — ${activeName}`, {
+    tokenId: active.id,
+    tokenName: activeName,
+    paAfter: 0,
+  });
   clearPendingAutoPass(room);
   const transitionNotices = applyTurnPaTransition(room);
   room.combat = {
@@ -201,6 +217,15 @@ export async function rollRoomInitiative(roomId: string): Promise<RoomSnapshot |
     pendingAutoPass: undefined,
   };
   room.combatUndo = [];
+  clearCombatLog(room);
+  logCombatEvent(room, "initiative", `Iniciativa rolada — ${order.length} na fila`, {
+    detail: order
+      .map((id) => {
+        const t = room.scene.tokens.find((tok) => tok.id === id);
+        return t ? `${t.name} (${scores[id] ?? "?"})` : id;
+      })
+      .join(" · "),
+  });
   room.scene = {
     ...room.scene,
     tokens: clearCombatRecharges(

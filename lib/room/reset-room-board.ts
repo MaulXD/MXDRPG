@@ -24,6 +24,7 @@ export function resetRoomBoardForFreshStart(room: RoomState): RoomState {
     actors,
     combat: emptyCombat(),
     combatUndo: [],
+    combatLog: [],
     pings: [],
     revision: room.revision + 1,
     updatedAt: Date.now(),

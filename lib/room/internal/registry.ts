@@ -47,6 +47,7 @@ export function toSnapshot(state: RoomState): RoomSnapshot {
     actors: state.actors,
     combat: normalizeCombatTrack(state.combat, tokens),
     combatUndo: state.combatUndo,
+    combatLog: state.combatLog,
     gmCreations: getRoomGmCreations(state),
     chat: state.chat,
     pings: prunePings(state.pings ?? []),
