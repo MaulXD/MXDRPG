@@ -20,7 +20,7 @@ import { patchTokenVitals } from "@/lib/vtt/token-hp-display";
 import { getRoom, persistRoom, toSnapshot, type PersistRoomOpts } from "../internal/registry";
 import { applyExplorationPaDisplay } from "@/lib/combat/exploration-pa";
 import { beginCombatTurnEconomyPa } from "./combat-turn";
-import { enterCombatPaEconomy, pushTurnStartNotice } from "@/lib/combat/turn-economy";
+import { enterCombatPaEconomy, onTurnStart } from "@/lib/combat/combat-pa-engine";
 import type { RoomSnapshot } from "../types";
 
 export type GmCombatAction =
@@ -146,7 +146,7 @@ export async function executeGmCombatAction(
         pendingAutoPass: undefined,
       };
       const turnNotices: string[] = [];
-      pushTurnStartNotice(room, turnNotices, "regen");
+      onTurnStart(room, turnNotices, "regen");
       room.combat = { ...room.combat, notices: turnNotices };
       appendRoomChatMessage(room, {
         ...author,

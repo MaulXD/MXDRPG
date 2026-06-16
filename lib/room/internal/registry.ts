@@ -11,7 +11,7 @@ import {
 import { welcomeChat } from "../chat";
 import { normalizeCombatTrack } from "../combat";
 import { executePendingAutoPassIfDue } from "../handlers/combat-turn";
-import { scheduleAutoPassWhenActivePaZero, repairStaleCombatPa } from "@/lib/combat/turn-economy";
+import { scheduleAutoPassIfNeeded, repairStaleCombatPa } from "@/lib/combat/combat-pa-engine";
 import { requiresCombatPaEconomy, requiresCombatTurnEconomy } from "@/lib/combat/mesa-mode";
 import { pruneMapMarkups } from "@/lib/vtt/map-markup";
 import { prunePings } from "@/lib/vtt/ping";
@@ -214,7 +214,7 @@ export async function persistRoom(
       if (executePendingAutoPassIfDue(state)) {
         // Turno avançou — PA do novo ativo já veio de applyTurnPaTransition
       } else if (!opts?.skipAutoPassSchedule) {
-        scheduleAutoPassWhenActivePaZero(state);
+        scheduleAutoPassIfNeeded(state);
       }
     } else if (state.combat.pendingAutoPass) {
       state.combat = { ...state.combat, pendingAutoPass: undefined };

@@ -3,12 +3,11 @@ import {
   bankActiveTokenPa,
   clearActiveTurnPaGrant,
   clearPendingAutoPass,
-  enterCombatPaEconomy,
-  executePendingAutoPassIfDue as isAutoPassDue,
-  pushTurnStartNotice,
-  scheduleAutoPassWhenActivePaZero,
+  onTurnStart,
+  resetPoolsForTurnCombat,
+  shouldExecuteAutoPass,
   zeroAllCombatPaPools,
-} from "@/lib/combat/turn-economy";
+} from "@/lib/combat/combat-pa-engine";
 import { clearCombatRecharges } from "@/lib/combat/recharge";
 import {
   chiMaxForEspiritualista,
@@ -40,7 +39,7 @@ export { COMBAT_AUTO_PASS_DELAY_MS } from "./combat-turn-constants";
 export {
   scheduleAutoPassWhenActivePaZero,
   enterCombatPaEconomy,
-} from "@/lib/combat/turn-economy";
+} from "@/lib/combat/combat-pa-engine";
 
 function resetChiPoolsForCombat(room: RoomState): void {
   const tokens = room.scene.tokens.map((t) => {
@@ -113,7 +112,7 @@ function skipDeadOrStunnedTurn(room: RoomState, notices: string[]): boolean {
 
 function startActiveTurn(room: RoomState, notices: string[], mode: "full" | "regen"): void {
   reconcileCombatOrderPreservingActive(room);
-  pushTurnStartNotice(room, notices, mode);
+  onTurnStart(room, notices, mode);
 }
 
 function applyTurnPaTransition(room: RoomState): string[] {
@@ -134,7 +133,6 @@ function applyTurnPaTransition(room: RoomState): string[] {
   return notices;
 }
 
-/** Garante PA do token ativo na iniciativa (demo / sala nova). */
 export function initCombatPaForRoom(room: RoomState): void {
   beginCombatTurnEconomyPa(room);
 }
@@ -143,17 +141,11 @@ export function initCombatPaForRoom(room: RoomState): void {
 export function beginCombatTurnEconomyPa(room: RoomState): void {
   if (!room.combat?.order?.length) return;
 
-  room.combat = {
-    ...room.combat,
-    paRefreshTurnKey: undefined,
-    pendingAutoPass: undefined,
-    notices: [],
-  };
-
-  const notices: string[] = [];
+  room.combat = { ...room.combat, notices: [] };
   syncCombatOrderWithTokens(room);
+  const notices: string[] = [];
   resetAllTokenMovement(room, notices);
-  zeroAllCombatPaPools(room);
+  resetPoolsForTurnCombat(room);
   resetChiPoolsForCombat(room);
 
   const maxSkips = Math.max(1, room.combat.order.length + 1);
@@ -166,12 +158,11 @@ export function beginCombatTurnEconomyPa(room: RoomState): void {
   room.combat = { ...room.combat, notices };
 }
 
-/** Executa auto-passe agendado após o delay. */
 export function executePendingAutoPassIfDue(
   room: RoomState,
   opts?: { force?: boolean }
 ): boolean {
-  if (!isAutoPassDue(room, opts)) return false;
+  if (!shouldExecuteAutoPass(room, opts)) return false;
 
   const active = getActiveBattleToken(room);
   if (!active) return false;
