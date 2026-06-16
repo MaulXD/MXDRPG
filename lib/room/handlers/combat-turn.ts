@@ -3,6 +3,7 @@ import {
   bankActiveTokenPa,
   clearActiveTurnPaGrant,
   clearPendingAutoPass,
+  enterCombatPaEconomy,
   onTurnStart,
   resetPoolsForTurnCombat,
   shouldExecuteAutoPass,
@@ -24,6 +25,8 @@ import { tickDeathTrackOnRound } from "@/lib/combat/death-track";
 import { activeTokenId, nextTurn, rollInitiative } from "../combat";
 import { applyGmCombatOrder } from "../combat-gm";
 import {
+  applyMapPlacementCombatOrder,
+  combatHasRolledInitiative,
   getActiveBattleToken,
   isDefeatedToken,
   shouldAutoSkipTurn,
@@ -169,6 +172,28 @@ export function beginCombatTurnEconomyPa(room: RoomState): void {
   room.combat = { ...room.combat, notices };
 }
 
+/** Liga combate: ordem do mapa (sem iniciativa) ou fila já rolada; PA de turno se houver fila. */
+export function activateCombatMode(room: RoomState): { hasTurnOrder: boolean } {
+  if (combatHasRolledInitiative(room.combat)) {
+    syncCombatOrderWithTokens(room);
+  } else if (applyMapPlacementCombatOrder(room)) {
+    const names = room.combat.order
+      .map((id) => room.scene.tokens.find((t) => t.id === id)?.name ?? id)
+      .join(" · ");
+    logCombatEvent(room, "initiative", `Ordem do mapa — ${room.combat.order.length} na fila`, {
+      detail: names,
+    });
+  }
+
+  if (room.combat.order.length) {
+    beginCombatTurnEconomyPa(room);
+    return { hasTurnOrder: true };
+  }
+
+  enterCombatPaEconomy(room);
+  return { hasTurnOrder: false };
+}
+
 export function executePendingAutoPassIfDue(
   room: RoomState,
   opts?: { force?: boolean }
@@ -213,6 +238,7 @@ export async function rollRoomInitiative(roomId: string): Promise<RoomSnapshot |
     notices: [],
     naturalOrder: order,
     orderOverridden: false,
+    initiativeRolled: true,
     paRefreshTurnKey: undefined,
     pendingAutoPass: undefined,
   };

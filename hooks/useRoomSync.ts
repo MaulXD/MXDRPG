@@ -44,7 +44,7 @@ function roomQuery(roomId: string, inviteCode?: string | null): string {
   return s ? `?${s}` : "";
 }
 
-const COMBAT_POLL_INTERVAL_MS = 500;
+const COMBAT_POLL_INTERVAL_MS = 280;
 
 export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
   const inviteCode = opts.inviteCode ?? null;
@@ -61,19 +61,22 @@ export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
   onMemberOnlineRef.current = onMemberOnline;
 
   const applySnapshot = useCallback(
-    (data: RoomSnapshot, opts?: { force?: boolean }) => {
+    (data: RoomSnapshot, opts?: { force?: boolean; immediate?: boolean }) => {
       if (!opts?.force && data.revision < revisionRef.current) return;
       revisionRef.current = Math.max(revisionRef.current, data.revision);
       const tokens = Array.isArray(data.scene?.tokens) ? data.scene.tokens : [];
-      startTransition(() => {
-        setSnapshot({
-          ...data,
-          scene: { ...data.scene, tokens },
-          combat: normalizeCombatTrack(data.combat, tokens),
-        });
+      const next: RoomSnapshot = {
+        ...data,
+        scene: { ...data.scene, tokens },
+        combat: normalizeCombatTrack(data.combat, tokens),
+      };
+      const commit = () => {
+        setSnapshot(next);
         setSyncError(null);
         setLoading(false);
-      });
+      };
+      if (opts?.immediate) commit();
+      else startTransition(commit);
     },
     []
   );

@@ -4,8 +4,7 @@ import { normalizeImageDataUrl } from "@/lib/media/image-normalize";
 import { sanitizePortraitFocus } from "@/lib/media/portrait-focus";
 import { normalizeRoomSettings, type RoomSettings } from "@/lib/room/settings";
 import { applyExplorationPaDisplay } from "@/lib/combat/exploration-pa";
-import { beginCombatTurnEconomyPa } from "./combat-turn";
-import { enterCombatPaEconomy } from "@/lib/combat/turn-economy";
+import { activateCombatMode } from "./combat-turn";
 import { logCombatEvent } from "../combat-log";
 import { getRoom, persistRoom, toSnapshot, type PersistRoomOpts } from "../internal/registry";
 import type { RoomSnapshot } from "../types";
@@ -57,13 +56,11 @@ export async function patchRoomSettings(
   const nowCombat = room.settings.combatActive;
 
   if (!wasCombat && nowCombat) {
-    if (room.combat?.order?.length) {
-      beginCombatTurnEconomyPa(room);
-      logCombatEvent(room, "combat_on", "Combate ligado — fila de turnos ativa", {
+    const { hasTurnOrder } = activateCombatMode(room);
+    if (hasTurnOrder) {
+      logCombatEvent(room, "combat_on", "Combate ligado — ordem do mapa", {
         detail: `rodada ${room.combat.round}`,
       });
-    } else {
-      enterCombatPaEconomy(room);
     }
     persistOpts = { skipAutoPass: true, skipAutoPassSchedule: true };
   } else if (wasCombat && !nowCombat) {

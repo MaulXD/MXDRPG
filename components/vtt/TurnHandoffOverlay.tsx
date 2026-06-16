@@ -12,8 +12,8 @@ type Props = {
   enabled?: boolean;
 };
 
-const HOLD_MS = 2000;
-const FADE_MS = 420;
+const HOLD_MS = 420;
+const FADE_MS = 160;
 
 function combatTurnKey(combat: CombatTrack): string {
   const activeId = activeTokenId(combat);

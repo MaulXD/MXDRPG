@@ -20,6 +20,8 @@ export type CombatTrack = {
   naturalOrder?: string[];
   /** Mestre alterou a fila manualmente. */
   orderOverridden?: boolean;
+  /** Iniciativa já foi rolada (ordem por AGI); senão, ordem = posição no mapa. */
+  initiativeRolled?: boolean;
   /** Auto-passe agendado após esgotar PA (delay antes de `advanceRoomTurn`). */
   pendingAutoPass?: CombatPendingAutoPass;
   /** Último turno com PA restaurado (`round:tokenId`) — evita re-refresh no meio do turno. */
@@ -104,6 +106,7 @@ export function normalizeCombatTrack(
       ? combat.naturalOrder.filter((id) => validIds.has(id))
       : undefined,
     orderOverridden: combat.orderOverridden,
+    initiativeRolled: combat.initiativeRolled,
     pendingAutoPass: stale.pendingAutoPass,
     paRefreshTurnKey: stale.paRefreshTurnKey,
     roundCheckpoints: combat.roundCheckpoints,
