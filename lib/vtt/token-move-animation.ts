@@ -1,6 +1,6 @@
 import type { Axial } from "@/lib/vtt/hex-math";
 
-const DEFAULT_MS_PER_HEX = 160;
+const DEFAULT_MS_PER_HEX = 95;
 
 export type TokenAnimPosition = {
   q: number;

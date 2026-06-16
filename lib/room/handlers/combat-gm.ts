@@ -19,8 +19,8 @@ import { appendRoomChatMessage } from "./chat";
 import { patchTokenVitals } from "@/lib/vtt/token-hp-display";
 import { getRoom, persistRoom, toSnapshot, type PersistRoomOpts } from "../internal/registry";
 import { applyExplorationPaDisplay } from "@/lib/combat/exploration-pa";
-import { beginCombatTurnEconomyPa } from "./combat-turn";
-import { enterCombatPaEconomy, onTurnStart } from "@/lib/combat/combat-pa-engine";
+import { activateCombatMode } from "./combat-turn";
+import { onTurnStart } from "@/lib/combat/combat-pa-engine";
 import type { RoomSnapshot } from "../types";
 
 export type GmCombatAction =
@@ -194,11 +194,8 @@ export async function executeGmCombatAction(
       if (!active) {
         room.combat = { ...room.combat, pendingAutoPass: undefined };
         applyExplorationPaDisplay(room);
-      } else if (room.combat?.order?.length) {
-        beginCombatTurnEconomyPa(room);
-        persistOpts = { skipAutoPass: true, skipAutoPassSchedule: true };
       } else {
-        enterCombatPaEconomy(room);
+        activateCombatMode(room);
         persistOpts = { skipAutoPass: true, skipAutoPassSchedule: true };
       }
       appendRoomChatMessage(room, {

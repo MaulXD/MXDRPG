@@ -146,6 +146,11 @@ export function MesaWorkspace({
       handleMemberOnline(event);
     },
   });
+  const applyActionSnapshot = useCallback(
+    (snap: import("@/lib/room/types").RoomSnapshot) =>
+      applySnapshot(snap, { force: true, immediate: true }),
+    [applySnapshot]
+  );
   const windows = useFoundryWindows(roomId);
   const { close: closeWindow } = windows;
 
@@ -435,7 +440,7 @@ export function MesaWorkspace({
       <MesaWorkspaceCombatFlow
         snapshot={snapshot}
         roomId={roomId}
-        onSnapshot={applySnapshot}
+        onSnapshot={applyActionSnapshot}
       />
       <div className="mesa-workspace mesa-workspace--foundry">
         {syncError ? (
@@ -586,7 +591,7 @@ export function MesaWorkspace({
 
           <MesaPersistenceNotice />
           <div
-            className={`foundry-mesa__stage${mesaTransitionLocked ? " foundry-mesa__stage--locked" : ""}`}
+            className={`foundry-mesa__stage${mesaTransitionLocked ? " foundry-mesa__stage--locked" : ""}${roomSettings.combatActive ? " foundry-mesa__stage--combat" : ""}`}
             onContextMenuCapture={(e) => e.preventDefault()}
             aria-busy={mesaTransitionLocked || undefined}
           >
@@ -650,7 +655,7 @@ export function MesaWorkspace({
               roomActors={snapshot?.actors ?? {}}
               ownerDisplayNames={ownerDisplayNames}
               onRefresh={refresh}
-              onApplySnapshot={applySnapshot}
+              onApplySnapshot={applyActionSnapshot}
               onOpenSheet={openSheet}
               onOpenMonsterSheet={openMonsterSheet}
               onCreateCharacter={canCreateCharacter ? openCharacterWizard : undefined}

@@ -1618,17 +1618,17 @@
 }
 
 .vtt-turn-handoff--visible {
-  animation: vtt-turn-handoff-in 0.42s var(--ease-out) forwards;
+  animation: vtt-turn-handoff-in 0.22s var(--ease-out) forwards;
 }
 
 .vtt-turn-handoff--leaving {
-  animation: vtt-turn-handoff-out 0.42s var(--ease-out) forwards;
+  animation: vtt-turn-handoff-out 0.18s var(--ease-out) forwards;
 }
 
 .vtt-turn-handoff__veil {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.62);
+  background: rgba(0, 0, 0, 0.38);
 }
 
 .vtt-turn-handoff__text {
@@ -2188,6 +2188,10 @@
 
 .vtt-turn-avatar--player {
   border-width: 1px;
+}
+
+.vtt-turn-avatar--monster {
+  border-width: 2px;
 }
 
 .vtt-turn-avatar img,

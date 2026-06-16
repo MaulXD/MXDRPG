@@ -5,6 +5,7 @@ import type { RoomListItem, RoomState } from "@/lib/room/types";
 import type { RoomSettings } from "@/lib/room/settings";
 import { dbEnabled, getSql } from "@/lib/db/client";
 import { withDbTimeout } from "@/lib/db/timeout";
+import { packCombatColumn, unpackCombatColumn } from "@/lib/db/room-combat-meta";
 
 type RoomRow = {
   room_id: string;
@@ -25,6 +26,7 @@ type RoomRow = {
 function rowToState(row: RoomRow): RoomState {
   const tokens = Array.isArray(row.scene?.tokens) ? row.scene.tokens : [];
   const scene = { ...row.scene, tokens };
+  const { combat, combatLog, combatUndo } = unpackCombatColumn(row.combat);
   return {
     roomId: row.room_id,
     adventureId: row.adventure_id ?? row.room_id,
@@ -34,7 +36,9 @@ function rowToState(row: RoomRow): RoomState {
     memberIds: row.member_ids ?? [],
     scene,
     actors: row.actors ?? {},
-    combat: normalizeCombatTrack(row.combat, tokens),
+    combat: normalizeCombatTrack(combat, tokens),
+    combatLog: combatLog ?? [],
+    combatUndo: combatUndo ?? [],
     chat: row.chat?.length ? row.chat : [welcomeChat()],
     pings: [],
     settings: normalizeRoomSettings(row.settings),
@@ -53,7 +57,7 @@ function stateToRow(state: RoomState): RoomRow {
     member_ids: state.memberIds,
     scene: state.scene,
     actors: state.actors,
-    combat: state.combat,
+    combat: packCombatColumn(state),
     chat: state.chat,
     settings: normalizeRoomSettings(state.settings),
     revision: state.revision,
