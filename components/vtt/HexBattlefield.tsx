@@ -2302,6 +2302,7 @@ export function HexBattlefield({
         roomActors={roomActors}
         spawnAxial={hoverAxial}
         combatUndo={snapshot.combatUndo}
+        combatLog={snapshot.combatLog}
         onSceneUpdated={(snap) => syncRoom(snap)}
         onRefresh={refresh}
       />

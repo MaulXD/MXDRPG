@@ -34,6 +34,11 @@ import { activeTokenId } from "@/lib/room/combat";
 import { isMonsterToken } from "@/lib/room/settings";
 import { DEFAULT_AUTO_PASS_DELAY_MS, MIN_AUTO_PASS_DELAY_MS } from "@/lib/room/settings";
 import { getActiveBattleToken, shouldAutoSkipTurn } from "@/lib/room/combat-order";
+import {
+  logCombatEvent,
+  logPaBank,
+  logPaRefresh,
+} from "@/lib/room/combat-log";
 import type { RoomState } from "@/lib/room/types";
 import type { BattleToken } from "@/lib/vtt/types";
 
@@ -79,8 +84,14 @@ export function clearActiveTurnPaGrant(room: RoomState): void {
   room.combat = { ...room.combat, paRefreshTurnKey: undefined };
 }
 
-function applyTokenPaRefresh(room: RoomState, tokenIdx: number, mode: PaRefreshMode): void {
+function applyTokenPaRefresh(
+  room: RoomState,
+  tokenIdx: number,
+  mode: PaRefreshMode,
+  reason: string
+): void {
   const token = room.scene.tokens[tokenIdx];
+  const paBefore = tokenSpendablePa(token);
   const rules = paRulesForRoomToken(room, token);
   const paMax = rules.recoveryPerTurn;
 
@@ -94,6 +105,7 @@ function applyTokenPaRefresh(room: RoomState, tokenIdx: number, mode: PaRefreshM
   tokens[tokenIdx] = clearPerTurnRecharges(resetChiSpentThisTurn(merged));
   room.scene = { ...room.scene, tokens };
   syncActorPaFromToken(room, tokens[tokenIdx]!);
+  logPaRefresh(room, tokens[tokenIdx]!, { mode, paBefore, reason });
 }
 
 // ─── Transições de fase (diagrama: exploration ↔ combat) ───────────────────
@@ -107,6 +119,10 @@ export function onEnterCombatFree(room: RoomState): void {
     notices: [],
   };
   grantCombatPaToAllTokens(room);
+  const count = room.scene.tokens.length;
+  logCombatEvent(room, "combat_on", `Combate livre — PA cheio para ${count} token(s)`, {
+    detail: "combat_free",
+  });
 }
 
 /** combat_turn: zera pools antes de conceder PA ao ativo. */
@@ -126,7 +142,7 @@ export function resetPoolsForTurnCombat(room: RoomState): void {
 export function grantFullCombatPaToToken(room: RoomState, tokenId: string): void {
   const idx = room.scene.tokens.findIndex((t) => t.id === tokenId);
   if (idx < 0) return;
-  applyTokenPaRefresh(room, idx, "full");
+  applyTokenPaRefresh(room, idx, "full", "PA cheio");
 }
 
 export function grantCombatPaToAllTokens(room: RoomState): void {
@@ -162,6 +178,12 @@ export function zeroAllCombatPaPools(room: RoomState): void {
       revision: actor.revision + 1,
     };
   }
+
+  if (tokens.length > 0) {
+    logCombatEvent(room, "pools_zero", `Pools zerados (${tokens.length} token(s))`, {
+      detail: "entrada na fila de turnos",
+    });
+  }
 }
 
 // ─── Ciclo de turno (combat_turn) ──────────────────────────────────────────
@@ -180,12 +202,19 @@ export function onTurnStart(
   const carryBefore = Math.max(0, room.scene.tokens[idx]!.pa ?? 0);
 
   if (!isActiveTurnPaGranted(room)) {
-    applyTokenPaRefresh(room, idx, mode);
+    applyTokenPaRefresh(room, idx, mode, "início da vez");
     markActiveTurnPaGranted(room);
   }
 
   const active = getActiveBattleToken(room);
   if (!active) return;
+
+  logCombatEvent(room, "turn_start", `Rodada ${room.combat.round} — vez de ${active.name}`, {
+    tokenId: active.id,
+    tokenName: active.name,
+    paAfter: active.pa ?? 0,
+    detail: mode === "full" ? "PA cheio" : "refresh",
+  });
 
   const rules = paRulesForRoomToken(room, active);
   notices.push(
@@ -218,6 +247,8 @@ export function onTurnEnd(room: RoomState, notices: string[]): void {
   });
   room.scene = { ...room.scene, tokens };
   syncActorPaFromToken(room, tokens[idx]!);
+
+  logPaBank(room, before, tokens[idx]!, bankPlan?.discarded);
 
   if (!isMonsterToken(before) && bankPlan && bankPlan.discarded > 0) {
     notices.push(
@@ -261,7 +292,7 @@ export function ensureSpendableBeforeAction(
 
   if (!tokenNeedsTurnStartPaRefresh(token)) return token;
 
-  applyTokenPaRefresh(room, idx, phaseHasTurnOrder(phase) ? "regen" : "full");
+  applyTokenPaRefresh(room, idx, phaseHasTurnOrder(phase) ? "regen" : "full", "garantia antes da ação");
   if (phaseHasTurnOrder(phase)) markActiveTurnPaGranted(room);
   return room.scene.tokens[idx] ?? null;
 }
@@ -279,10 +310,23 @@ export function onTokenSpawned(room: RoomState, tokenId: string): void {
     tokens[idx] = cleared;
     room.scene = { ...room.scene, tokens };
     syncActorPaFromToken(room, cleared);
+    logCombatEvent(room, "spawn", `Token no mapa — pool zerado (${cleared.name})`, {
+      tokenId: cleared.id,
+      tokenName: cleared.name,
+      paAfter: 0,
+    });
     return;
   }
 
   grantFullCombatPaToToken(room, tokenId);
+  const spawned = room.scene.tokens.find((t) => t.id === tokenId);
+  if (spawned) {
+    logCombatEvent(room, "spawn", `Token no mapa — PA cheio (${spawned.name})`, {
+      tokenId: spawned.id,
+      tokenName: spawned.name,
+      paAfter: tokenSpendablePa(spawned),
+    });
+  }
 }
 
 // ─── Auto-passe (só combat_turn) ───────────────────────────────────────────
@@ -324,6 +368,12 @@ export function scheduleAutoPassIfNeeded(room: RoomState): boolean {
       passAt: Date.now() + autoPassDelayMs(room),
     },
   };
+  logCombatEvent(room, "auto_pass", `Auto-passe agendado — ${active.name}`, {
+    tokenId: active.id,
+    tokenName: active.name,
+    paAfter: 0,
+    detail: `gastou ${tokenPaSpentThisTurn(active)} PA · delay ${autoPassDelayMs(room)}ms`,
+  });
   return true;
 }
 
@@ -370,8 +420,13 @@ export function repairStaleCombatPa(room: RoomState): boolean {
   if (!staleGrant && !needsGrant) return false;
 
   if (staleGrant) clearActiveTurnPaGrant(room);
-  applyTokenPaRefresh(room, idx, "regen");
+  applyTokenPaRefresh(room, idx, "regen", "reparo estado legado");
   markActiveTurnPaGranted(room);
+  logCombatEvent(room, "repair", `PA reparado — ${active.name}`, {
+    tokenId: active.id,
+    tokenName: active.name,
+    paAfter: tokenSpendablePa(room.scene.tokens[idx]!),
+  });
   return true;
 }
 
@@ -395,7 +450,7 @@ export function refreshActiveTokenAtTurnStart(
   if (idx < 0) return { refreshed: false, carryBefore: 0 };
   const carryBefore = Math.max(0, room.scene.tokens[idx]!.pa ?? 0);
   if (isActiveTurnPaGranted(room)) return { refreshed: false, carryBefore };
-  applyTokenPaRefresh(room, idx, mode);
+  applyTokenPaRefresh(room, idx, mode, "refresh ativo");
   markActiveTurnPaGranted(room);
   return { refreshed: true, carryBefore };
 }
