@@ -140,21 +140,23 @@ export function CombatFxLayer({
     const mode = fx?.mode ?? "single";
     if (reducedMotion) {
       return {
-        mark: 120,
-        roll: 200,
-        resultPanelHold: mode === "area-intro" ? 480 : 620,
-        postPanelDelay: 500,
-        damageFade: 480,
-        areaTargetMark: 160,
+        mark: 60,
+        roll: 120,
+        resultPanelHold: mode === "area-intro" ? 280 : 320,
+        postPanelDelay: 60,
+        damageFade: 280,
+        areaTargetMark: 80,
+        healHold: 240,
       };
     }
     return {
-      mark: mode === "area-intro" ? 380 : 280,
-      roll: 800,
-      resultPanelHold: mode === "area-intro" ? 900 : 1400,
-      postPanelDelay: 500,
-      damageFade: 1500,
-      areaTargetMark: 280,
+      mark: mode === "area-intro" ? 220 : 140,
+      roll: 380,
+      resultPanelHold: mode === "area-intro" ? 520 : 520,
+      postPanelDelay: 80,
+      damageFade: 420,
+      areaTargetMark: 160,
+      healHold: 360,
     };
   }, [fx?.mode, reducedMotion]);
 
@@ -187,10 +189,10 @@ export function CombatFxLayer({
       };
     }
 
-    const schedulePostPanelDamage = (
+    const schedulePostPanelVisuals = (
       panelEndMs: number,
       onPanelHide: () => void,
-      onDamage: () => void
+      onDamageVisual?: () => void
     ) => {
       timeouts.push(
         setTimeout(() => {
@@ -198,11 +200,13 @@ export function CombatFxLayer({
           onPanelHide();
         }, panelEndMs)
       );
-      timeouts.push(
-        setTimeout(() => {
-          onDamage();
-        }, panelEndMs + timings.postPanelDelay)
-      );
+      if (onDamageVisual) {
+        timeouts.push(
+          setTimeout(() => {
+            onDamageVisual();
+          }, panelEndMs + timings.postPanelDelay)
+        );
+      }
       timeouts.push(
         setTimeout(() => {
           revealChat("done");
@@ -213,44 +217,11 @@ export function CombatFxLayer({
       );
     };
 
-    if (data.mode === "area-simultaneous") {
-      const targets = data.areaTargets ?? [];
-      const panelEnd = timings.mark + timings.roll + timings.resultPanelHold;
-      timeouts.push(
-        setTimeout(() => {
-          revealChat("roll");
-          setPhase("roll");
-        }, timings.mark)
-      );
-      timeouts.push(
-        setTimeout(() => {
-          setPhase("result");
-        }, timings.mark + timings.roll)
-      );
-      schedulePostPanelDamage(
-        panelEnd,
-        () => {
-          for (const t of targets) {
-            onTokenFlashRef.current?.(t.tokenId, flashForTarget(t));
-            if (data.castFxKind) {
-              onTokenCastFxRef.current?.(t.tokenId, data.castFxKind);
-            }
-          }
-        },
-        () => {
-          if (!applyStateCalledRef.current) {
-            applyStateCalledRef.current = true;
-            onApplyStateRef.current?.();
-          }
-          revealChat("damage");
-          setShowDamage(true);
-          setPhase("damage");
-        }
-      );
-      return () => {
-        for (const id of timeouts) clearTimeout(id);
-      };
-    }
+    const applyStateNow = () => {
+      if (applyStateCalledRef.current) return;
+      applyStateCalledRef.current = true;
+      onApplyStateRef.current?.();
+    };
 
     const playTokenFx = () => {
       if (data.defenderTokenId) {
@@ -274,10 +245,10 @@ export function CombatFxLayer({
       }
     };
 
-    const applyDamagePhase = () => {
-      if (applyStateCalledRef.current) return;
-      applyStateCalledRef.current = true;
-      onApplyStateRef.current?.();
+    const applyResultBeat = () => {
+      applyStateNow();
+      playTokenFx();
+      revealChat("damage");
       const hasDamage =
         data.damageTotal != null &&
         (data.isHeal || data.hit !== false || data.saveTotal != null);
@@ -286,6 +257,36 @@ export function CombatFxLayer({
         setPhase("damage");
       }
     };
+
+    if (data.mode === "area-simultaneous") {
+      const targets = data.areaTargets ?? [];
+      const panelEnd = timings.mark + timings.roll + timings.resultPanelHold;
+      timeouts.push(
+        setTimeout(() => {
+          revealChat("roll");
+          setPhase("roll");
+        }, timings.mark)
+      );
+      timeouts.push(
+        setTimeout(() => {
+          setPhase("result");
+          applyStateNow();
+          revealChat("damage");
+          for (const t of targets) {
+            onTokenFlashRef.current?.(t.tokenId, flashForTarget(t));
+            if (data.castFxKind) {
+              onTokenCastFxRef.current?.(t.tokenId, data.castFxKind);
+            }
+          }
+          setShowDamage(true);
+          setPhase("damage");
+        }, timings.mark + timings.roll)
+      );
+      schedulePostPanelVisuals(panelEnd, () => {});
+      return () => {
+        for (const id of timeouts) clearTimeout(id);
+      };
+    }
 
     const runRollResultDamageSequence = (markMs: number) => {
       const panelEnd = markMs + timings.roll + timings.resultPanelHold;
@@ -298,39 +299,27 @@ export function CombatFxLayer({
       timeouts.push(
         setTimeout(() => {
           setPhase("result");
+          applyResultBeat();
         }, markMs + timings.roll)
       );
-      schedulePostPanelDamage(
-        panelEnd,
-        () => {
-          playTokenFx();
-        },
-        () => {
-          applyDamagePhase();
-          revealChat("damage");
-        }
+      schedulePostPanelVisuals(panelEnd, () => {});
+    };
+
+    const runHealWithoutRollSequence = (markMs: number) => {
+      const panelEnd = markMs + timings.healHold;
+      timeouts.push(
+        setTimeout(() => {
+          revealChat("roll");
+          setPhase("result");
+          applyResultBeat();
+        }, markMs)
       );
+      schedulePostPanelVisuals(panelEnd, () => {});
     };
 
     if (data.mode === "area-target") {
       if (isHealCastWithoutRoll(data)) {
-        const panelEnd = timings.mark + (reducedMotion ? 420 : 880);
-        timeouts.push(
-          setTimeout(() => {
-            revealChat("roll");
-            setPhase("result");
-          }, timings.areaTargetMark)
-        );
-        schedulePostPanelDamage(
-          panelEnd,
-          () => {
-            playTokenFx();
-          },
-          () => {
-            applyDamagePhase();
-            revealChat("damage");
-          }
-        );
+        runHealWithoutRollSequence(timings.areaTargetMark);
       } else {
         runRollResultDamageSequence(timings.areaTargetMark);
       }
@@ -341,23 +330,7 @@ export function CombatFxLayer({
 
     const t0 = setTimeout(() => {
       if (isHealCastWithoutRoll(data)) {
-        const panelEnd = timings.mark + (reducedMotion ? 420 : 880);
-        timeouts.push(
-          setTimeout(() => {
-            revealChat("roll");
-            setPhase("result");
-          }, timings.mark)
-        );
-        schedulePostPanelDamage(
-          panelEnd,
-          () => {
-            playTokenFx();
-          },
-          () => {
-            applyDamagePhase();
-            revealChat("damage");
-          }
-        );
+        runHealWithoutRollSequence(timings.mark);
       } else {
         runRollResultDamageSequence(timings.mark);
       }

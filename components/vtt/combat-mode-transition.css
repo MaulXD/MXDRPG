@@ -1,4 +1,4 @@
-/* Transição Combate ↔ Aventura — Choque lateral (entrada) · Divisão lateral (saída) */
+/* Transição Combate ↔ Aventura — Choque (entrada) · Bruma se abre (saída) */
 
 .cmt-overlay {
   --cmt-total: 2.3s;
@@ -23,8 +23,34 @@
 .cmt-overlay__vignette {
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse 70% 65% at 50% 50%, transparent 0%, rgba(0, 0, 0, 0.55) 100%);
+  background: radial-gradient(ellipse 72% 68% at 50% 50%, transparent 0%, rgba(0, 0, 0, 0.82) 100%);
   opacity: 0;
+}
+
+.cmt-overlay__dim {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  opacity: 0;
+}
+
+.cmt-overlay--playing .cmt-overlay__dim {
+  animation: cmt-dim-in 0.55s ease forwards;
+}
+
+.cmt--in-clash.cmt-overlay--exit.cmt-overlay--playing .cmt-overlay__dim,
+.cmt-overlay--exit .cmt-overlay__dim {
+  animation: cmt-dim-out 0.75s ease forwards;
+}
+
+@keyframes cmt-dim-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes cmt-dim-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
 }
 
 .cmt-overlay--playing .cmt-overlay__vignette {
@@ -195,51 +221,97 @@
   100% { opacity: 0; transform: scale(1.6); }
 }
 
-/* ─── Saída: Divisão lateral — 1s cruzadas, depois se separam ─── */
-.cmt-overlay--exit .cmt-sword--a {
-  transform: rotate(-56deg);
+/* ─── Saída: Bruma se abre — bússola, calor e névoa dissipando ─── */
+.cmt--out-adventure.cmt-overlay--playing .cmt-adventure__mist {
+  animation: cmt-mist-lift var(--cmt-total) ease-out forwards;
+}
+
+.cmt--out-adventure.cmt-overlay--playing .cmt-adventure__warmth {
+  animation: cmt-warmth-rise var(--cmt-total) ease-out forwards;
+}
+
+.cmt--out-adventure.cmt-overlay--playing .cmt-adventure__compass {
+  animation: cmt-compass-in 0.7s ease calc(var(--cmt-total) * 0.08) forwards;
+}
+
+.cmt--out-adventure.cmt-overlay--playing .cmt-overlay__label {
+  animation-name: cmt-adventure-label-in, cmt-label-out;
+  animation-duration: 0.55s, 0.45s;
+  animation-delay: calc(var(--cmt-total) * 0.18), calc(var(--cmt-total) * var(--cmt-hold-ratio));
+  animation-timing-function: ease, ease;
+  animation-fill-mode: forwards, forwards;
+}
+
+.cmt--out-adventure.cmt-overlay--playing .cmt-overlay__sub {
+  animation-name: cmt-adventure-label-in, cmt-label-out;
+  animation-duration: 0.5s, 0.4s;
+  animation-delay: calc(var(--cmt-total) * 0.28), calc(var(--cmt-total) * var(--cmt-hold-ratio) + 0.05s);
+  animation-timing-function: ease, ease;
+  animation-fill-mode: forwards, forwards;
+}
+
+.cmt-overlay--exit.cmt--out-adventure .cmt-overlay__vignette {
   opacity: 1;
 }
 
-.cmt-overlay--exit .cmt-sword--b {
-  transform: rotate(56deg);
-  opacity: 1;
+.cmt-adventure__mist {
+  position: absolute;
+  inset: 0;
+  opacity: 0.85;
+  background:
+    radial-gradient(ellipse 90% 60% at 50% 100%, rgba(180, 200, 170, 0.35) 0%, transparent 55%),
+    linear-gradient(180deg, rgba(12, 18, 14, 0.75) 0%, rgba(8, 12, 10, 0.45) 45%, transparent 100%);
+  pointer-events: none;
 }
 
-.cmt-overlay--exit .cmt-overlay__label,
-.cmt-overlay--exit .cmt-overlay__sub {
-  opacity: 1;
-  transform: none;
+.cmt-adventure__warmth {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  background: radial-gradient(circle at 50% 42%, rgba(255, 210, 130, 0.42) 0%, transparent 58%);
+  pointer-events: none;
 }
 
-.cmt-overlay--exit .cmt-overlay__vignette {
-  opacity: 1;
+.cmt-overlay__content--adventure {
+  gap: 0.5rem;
 }
 
-.cmt--out-split.cmt-overlay--playing .cmt-sword--a {
-  animation: cmt-out-split-a var(--cmt-total) cubic-bezier(0.55, 0, 0.9, 0.4) forwards;
+.cmt-adventure__compass {
+  color: #d4b87e;
+  opacity: 0;
+  transform: scale(0.82);
+  filter: drop-shadow(0 0 18px rgba(212, 184, 126, 0.45));
 }
 
-.cmt--out-split.cmt-overlay--playing .cmt-sword--b {
-  animation: cmt-out-split-b var(--cmt-total) cubic-bezier(0.55, 0, 0.9, 0.4) forwards;
+.cmt--out-adventure .cmt-overlay__label,
+.cmt--out-adventure .cmt-overlay__sub {
+  color: #e8dcc4;
 }
 
-.cmt--out-split.cmt-overlay--playing .cmt-overlay__label {
-  animation: cmt-label-out 0.45s ease calc(var(--cmt-total) * var(--cmt-hold-ratio)) forwards;
+.cmt--out-adventure .cmt-overlay__sub {
+  color: #9cb88a;
 }
 
-.cmt--out-split.cmt-overlay--playing .cmt-overlay__sub {
-  animation: cmt-label-out 0.4s ease calc(var(--cmt-total) * var(--cmt-hold-ratio) + 0.05s) forwards;
+@keyframes cmt-mist-lift {
+  0% { opacity: 0.85; transform: translateY(0); }
+  45% { opacity: 0.55; }
+  100% { opacity: 0; transform: translateY(-12%); }
 }
 
-@keyframes cmt-out-split-a {
-  0%, 43.5% { transform: rotate(-56deg); opacity: 1; }
-  100% { transform: translateX(-220px) rotate(-112deg); opacity: 0; }
+@keyframes cmt-warmth-rise {
+  0% { opacity: 0; transform: scale(0.9); }
+  35% { opacity: 0.75; transform: scale(1.05); }
+  100% { opacity: 0; transform: scale(1.15); }
 }
 
-@keyframes cmt-out-split-b {
-  0%, 43.5% { transform: rotate(56deg); opacity: 1; }
-  100% { transform: translateX(220px) rotate(112deg); opacity: 0; }
+@keyframes cmt-compass-in {
+  from { opacity: 0; transform: scale(0.82) rotate(-18deg); }
+  to { opacity: 1; transform: scale(1) rotate(0deg); }
+}
+
+@keyframes cmt-adventure-label-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes cmt-label-in {

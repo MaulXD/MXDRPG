@@ -1772,7 +1772,14 @@ export function HexBattlefield({
         );
         if (!snap?.scene) throw new Error("Resposta inválida ao mover token");
 
-        // Anima antes de aplicar o snapshot — evita corrida com SSE que sumia o token.
+        if (snap.revision >= appliedSceneRevisionRef.current) {
+          appliedSceneRevisionRef.current = snap.revision;
+          setScene((prev) => mergeScenePreservingPortraits(prev, snap.scene));
+        }
+        if (onApplySnapshot) onApplySnapshot(snap, { force: true });
+        else void refresh();
+        playCombatFxFromSnapRef.current?.(snap);
+
         moveAnimRef.current = { tokenId, q: origin.q, r: origin.r };
         redraw();
         let lastMoveRedrawMs = performance.now();
@@ -1784,15 +1791,7 @@ export function HexBattlefield({
             redraw();
           }
         });
-        const end = path[path.length - 1];
-        moveAnimRef.current = { tokenId, q: end.q, r: end.r };
-        if (snap.revision >= appliedSceneRevisionRef.current) {
-          appliedSceneRevisionRef.current = snap.revision;
-          setScene((prev) => mergeScenePreservingPortraits(prev, snap.scene));
-        }
-        if (onApplySnapshot) onApplySnapshot(snap, { force: true });
-        else void refresh();
-        playCombatFxFromSnapRef.current?.(snap);
+        moveAnimRef.current = null;
         redraw();
       } catch (e) {
         setActionErr(e instanceof Error ? e.message : "Movimento inválido");

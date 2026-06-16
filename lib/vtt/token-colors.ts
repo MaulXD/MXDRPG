@@ -8,7 +8,7 @@ import {
 /** Cores de anel por tier v4 (DESIGN-ELDARIN-V4 §4.6) */
 const TIER_RING_COLORS: Record<PortraitFrameTier, string> = {
   hero: "#d4a030",
-  monster: "#6a5040",
+  monster: "#c0392b",
   elite: "#7aa3c9",
   miniboss: "#8060c0",
   boss: "#c0392b",
@@ -46,8 +46,8 @@ export function tokenPortraitInset(ringStyle: TokenRingStyle): number {
 
 /** Espessura do anel de identidade no canvas (px). */
 const TIER_RING_WIDTH: Record<PortraitFrameTier, number> = {
-  hero: 1.5,
-  monster: 2.5,
+  hero: 1,
+  monster: 2,
   elite: 2.5,
   miniboss: 2.5,
   boss: 2.5,

@@ -5,6 +5,38 @@ import type { BattleToken } from "@/lib/vtt/types";
 import { activeTokenId, type CombatTrack } from "./combat";
 import type { RoomState } from "./types";
 
+/** Iniciativa já rolada — ordem por teste de AGI. */
+export function combatHasRolledInitiative(combat: CombatTrack): boolean {
+  return Boolean(combat.initiativeRolled);
+}
+
+/** IDs na ordem em que os tokens estão no mapa (`scene.tokens`). */
+export function tokenIdsInMapPlacementOrder(tokens: BattleToken[]): string[] {
+  return tokens.filter((t) => !isDefeatedToken(t)).map((t) => t.id);
+}
+
+/** Fila de turno = ordem de colocação no mapa (sem iniciativa). */
+export function applyMapPlacementCombatOrder(room: RoomState): boolean {
+  const order = tokenIdsInMapPlacementOrder(room.scene.tokens);
+  if (!order.length) return false;
+
+  const prevActiveId = activeTokenId(room.combat);
+  const activeIndex =
+    prevActiveId && order.includes(prevActiveId) ? order.indexOf(prevActiveId) : 0;
+
+  room.combat = {
+    ...room.combat,
+    order,
+    activeIndex,
+    naturalOrder: order,
+    orderOverridden: false,
+    initiativeRolled: false,
+    pendingAutoPass: undefined,
+    paRefreshTurnKey: undefined,
+  };
+  return true;
+}
+
 /** Token derrotado (HP ≤ 0) — fora da ordem até ressuscitar. */
 export function isDefeatedToken(token: BattleToken): boolean {
   return isTokenDefeated(token);

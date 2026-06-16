@@ -502,6 +502,14 @@ export function TurnOrderPanel({
 
         {gmError ? <p className="vtt-turn-gm-error">{gmError}</p> : null}
 
+        {displayOrder.length > 0 && !track.initiativeRolled ? (
+          <p className={`vtt-combat-hint vtt-turn-placement-hint${compact ? " vtt-turn-placement-hint--compact" : ""}`}>
+            {canControl
+              ? "Ordem dos tokens no mapa — role iniciativa para sortear por AGI."
+              : "Ordem provisória do mapa até o mestre rolar iniciativa."}
+          </p>
+        ) : null}
+
         {displayOrder.length === 0 ? (
           <p className={`vtt-combat-hint vtt-turn-empty${compact ? " vtt-turn-empty--compact" : ""}`}>
             {canControl
@@ -568,13 +576,13 @@ export function TurnOrderPanel({
 
               .join(" ");
 
-            const isPlayerToken = resolveTokenRing(token, playerActorIds).kind === "player";
+            const isPlayerToken = ring.kind === "player";
 
             const avatarClass = [
 
               "vtt-turn-avatar",
 
-              isPlayerToken ? "vtt-turn-avatar--player" : "",
+              isPlayerToken ? "vtt-turn-avatar--player" : "vtt-turn-avatar--monster",
 
               active ? "vtt-turn-avatar--active" : "",
 
@@ -595,8 +603,8 @@ export function TurnOrderPanel({
                 <span
                   className={avatarClass}
                   style={{
-                    ...(ringShadow && !active ? { boxShadow: ringShadow } : {}),
-                    borderColor: token.color,
+                    ...(ringShadow && !active && !isPlayerToken ? { boxShadow: ringShadow } : {}),
+                    borderColor: ring.rings[0]?.color ?? token.color,
                   }}
                 >
                   {token.imageUrl ? (
