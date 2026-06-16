@@ -26,7 +26,7 @@ type RoomRow = {
 function rowToState(row: RoomRow): RoomState {
   const tokens = Array.isArray(row.scene?.tokens) ? row.scene.tokens : [];
   const scene = { ...row.scene, tokens };
-  const { combat, combatLog, combatUndo } = unpackCombatColumn(row.combat);
+  const { combat, combatLog } = unpackCombatColumn(row.combat);
   return {
     roomId: row.room_id,
     adventureId: row.adventure_id ?? row.room_id,
@@ -38,7 +38,7 @@ function rowToState(row: RoomRow): RoomState {
     actors: row.actors ?? {},
     combat: normalizeCombatTrack(combat, tokens),
     combatLog: combatLog ?? [],
-    combatUndo: combatUndo ?? [],
+    combatUndo: [],
     chat: row.chat?.length ? row.chat : [welcomeChat()],
     pings: [],
     settings: normalizeRoomSettings(row.settings),
