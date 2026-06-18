@@ -6,12 +6,12 @@
 npm run sync:data:check
 ```
 
-Inclui `scripts/verify-monster-spawn.mjs`: cada monstro em `monstros.json` precisa de vida, PA, defesa, movimento hex, ≥1 ação e `catalogId` MON-*.
+Inclui `scripts/verify-monster-spawn.mjs`: cada monstro em `monstros.json` precisa de vida, PA, defesa, movimento célula, ≥1 ação e `catalogId` MON-*.
 
 ## Mesa
 
 - `MonsterSpawnPanel` + variante Elite/Colossal
-- Mestre da sala invoca em hex clicado
+- Mestre da sala invoca em célula clicado
 - **69** entradas no gerador (`scripts/generate-compendium.mjs`)
 
 ## Próximo

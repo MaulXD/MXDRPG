@@ -1,15 +1,15 @@
-/** Custo em PA por faixa de movimento (hex acumulados no turno). */
+/** Custo em PA por faixa de movimento (células acumuladas no turno). */
 
 export const MOVEMENT_PA_COST = 1;
 
 export type MovementPaBands = {
   walk: number;
   run: number;
-  /** Primeiros N hex do turno: 1 PA ao entrar nesta faixa (min. 2 se walk ≥ 2). */
+  /** Primeiros N célula do turno: 1 PA ao entrar nesta faixa (min. 2 se walk ≥ 2). */
   firstBlock: number;
-  /** A partir deste hex acumulado volta a gastar PA (corrida). */
+  /** A partir deste célula acumulado volta a gastar PA (corrida). */
   runChargeFrom: number;
-  /** Hex na faixa de corrida por cada PA extra. */
+  /** Célula na faixa de corrida por cada PA extra. */
   runBlockSize: number;
 };
 
@@ -36,8 +36,8 @@ export function movementPaBandsForToken(token: {
 }
 
 /**
- * PA deste deslocamento (hex já gastos no turno + distância do clique).
- * Ex. walk 4, run 7: hex 1–2 → 1 PA; 3–5 livres; a partir do 6 → 1 PA a cada 2 hex.
+ * PA deste deslocamento (células já gastas no turno + distância do clique).
+ * Ex. walk 4, run 7: célula 1–2 → 1 PA; 3–5 livres; a partir do 6 → 1 PA a cada 2 célula.
  */
 export function movementPaCost(
   spentBefore: number,
@@ -53,10 +53,10 @@ export function movementPaCost(
   }
 
   if (spentAfter >= bands.runChargeFrom) {
-    const runHexBefore = Math.max(0, spentBefore - bands.runChargeFrom + 1);
-    const runHexAfter = Math.max(0, spentAfter - bands.runChargeFrom + 1);
-    const blocksBefore = Math.ceil(runHexBefore / bands.runBlockSize);
-    const blocksAfter = Math.ceil(runHexAfter / bands.runBlockSize);
+    const runCellBefore = Math.max(0, spentBefore - bands.runChargeFrom + 1);
+    const runCellAfter = Math.max(0, spentAfter - bands.runChargeFrom + 1);
+    const blocksBefore = Math.ceil(runCellBefore / bands.runBlockSize);
+    const blocksAfter = Math.ceil(runCellAfter / bands.runBlockSize);
     cost += MOVEMENT_PA_COST * Math.max(0, blocksAfter - blocksBefore);
   }
 

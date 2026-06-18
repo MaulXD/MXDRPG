@@ -12,7 +12,7 @@ Legenda: ✅ pronto · 🟡 parcial · ❌ falta · 🎬 gravar no vídeo
 |---|-----------------|---------------|---------|
 | 1 | Abrir mundo + cena | Mesa, grid, tokens posicionados | ~1 min |
 | 2 | Selecionar token PC | Nome, vida, PA, portrait no token | ~1 min |
-| 3 | Movimento | Caminhada vs corrida, alcance em hex | ~1,5 min |
+| 3 | Movimento | Caminhada vs corrida, alcance em célula | ~1,5 min |
 | 4 | Ataque corpo a corpo / à distância | Rolagem, dano, chat de combate | ~2 min |
 | 5 | Magia ou habilidade | Alvo, área (se houver), PA | ~1,5 min |
 | 6 | Ficha do personagem | Classe, atributos, inventário, retrato | ~2 min |
@@ -30,7 +30,7 @@ Grave em 1080p, narrando: *“isso o Eldarin web precisa ter igual ou melhor”*
 
 | Item | Foundry (vídeo) | VTT web | Status |
 |------|-----------------|---------|--------|
-| Grid hex | | Canvas hex | ✅ |
+| Grid célula | | Canvas célula | ✅ |
 | Tokens com portrait | | `imageUrl` + foco | ✅ 🟡 polish Passo 2 |
 | Selecionar / listar tokens | | Sidebar + clique | ✅ |
 | Sync multiusuário | | Poll 2s + revision | 🟡 |
@@ -42,7 +42,7 @@ Grave em 1080p, narrando: *“isso o Eldarin web precisa ter igual ou melhor”*
 |------|---------|---------|--------|
 | Caminhada / corrida | | `move-run` | ✅ |
 | PA por ação | | `pa-economy` | ✅ |
-| Preview de alcance | | Hex destacados | ✅ |
+| Preview de alcance | | Célula destacados | ✅ |
 
 ### Combate
 
@@ -90,7 +90,7 @@ Grave em 1080p, narrando: *“isso o Eldarin web precisa ter igual ou melhor”*
 | Login / registro | | `/entrar` | ✅ |
 | Papéis admin/mestre/jogador | | `lib/auth` | 🟡 demo |
 | Persistência de sala | | Memória | ❌ Passo 5 |
-| Deploy | | Vercel `mxdrpg.vercel.app` | ✅ |
+| Deploy | | Contabo `www.mxdrpg.com.br` | ✅ |
 
 ---
 

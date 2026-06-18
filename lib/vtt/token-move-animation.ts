@@ -1,6 +1,6 @@
-import type { Axial } from "@/lib/vtt/hex-math";
+import type { Axial } from "@/lib/vtt/grid-math";
 
-const DEFAULT_MS_PER_HEX = 95;
+const DEFAULT_MS_PER_CELL = 95;
 
 export type TokenAnimPosition = {
   q: number;
@@ -26,7 +26,7 @@ function lerpAxial(a: Axial, b: Axial, t: number): TokenAnimPosition {
 export async function animateTokenAlongPath(
   path: Axial[],
   onStep: (pos: TokenAnimPosition) => void,
-  msPerHex = DEFAULT_MS_PER_HEX
+  msPerCell = DEFAULT_MS_PER_CELL
 ): Promise<void> {
   if (path.length === 0) return;
 
@@ -36,7 +36,7 @@ export async function animateTokenAlongPath(
   for (let i = 0; i < path.length - 1; i++) {
     const from = path[i];
     const to = path[i + 1];
-    const duration = Math.max(80, msPerHex);
+    const duration = Math.max(80, msPerCell);
     const start = performance.now();
 
     await new Promise<void>((resolve) => {

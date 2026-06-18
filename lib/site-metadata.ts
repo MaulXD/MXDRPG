@@ -32,7 +32,7 @@ export const STATIC_TAB_TITLES: Record<string, string> = {
   "/mundo": "Mundo",
   "/privacidade": "Privacidade",
   "/aplicativo": "Instalar aplicativo",
-  "/instalar": "Hospedar na Vercel",
+  "/instalar": "Implantação",
   "/admin": "Painel administrador",
   "/admin/mesas": "Mesas e membros",
   "/sign-in": "Entrar",

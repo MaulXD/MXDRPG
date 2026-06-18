@@ -1,42 +1,42 @@
-import type { Axial } from "@/lib/vtt/hex-math";
-import { hexNeighbors } from "@/lib/vtt/hex-math";
-import { tokenOccupiedHexes } from "@/lib/vtt/creature-size";
+import type { Axial } from "@/lib/vtt/grid-math";
+import { cellNeighbors } from "@/lib/vtt/grid-math";
+import { tokenOccupiedCells } from "@/lib/vtt/creature-size";
 import { axialKey } from "@/lib/vtt/token-occupancy";
 import type { BattleScene, BattleToken } from "@/lib/vtt/types";
 
-export function hexKey(q: number, r: number): string {
+export function cellKey(q: number, r: number): string {
   return axialKey({ q, r });
 }
 
-export function revealHexKeys(scene: BattleScene, keys: string[]): BattleScene {
-  const set = new Set(scene.revealedHexes ?? []);
+export function revealCellKeys(scene: BattleScene, keys: string[]): BattleScene {
+  const set = new Set(scene.revealedCells ?? []);
   for (const k of keys) set.add(k);
-  return { ...scene, revealedHexes: [...set] };
+  return { ...scene, revealedCells: [...set] };
 }
 
 export function revealAxial(scene: BattleScene, axial: Axial): BattleScene {
-  return revealHexKeys(scene, [hexKey(axial.q, axial.r)]);
+  return revealCellKeys(scene, [cellKey(axial.q, axial.r)]);
 }
 
-/** Hexes visíveis para jogador (null = tudo visível). */
-export function visibleHexSetForPlayer(
+/** Células visíveis para jogador (null = tudo visível). */
+export function visibleCellSetForPlayer(
   scene: BattleScene,
   tokens: BattleToken[],
   opts: { userId?: string | null; actorIds?: string[] }
 ): Set<string> | null {
   if (!scene.fogEnabled) return null;
 
-  const set = new Set(scene.revealedHexes ?? []);
+  const set = new Set(scene.revealedCells ?? []);
 
   for (const token of tokens) {
     const isOwn =
       (opts.userId && token.actorId && opts.actorIds?.includes(token.actorId)) ||
       token.ownerRole === "jogador";
     if (!isOwn) continue;
-    for (const hex of tokenOccupiedHexes(token)) {
-      set.add(hexKey(hex.q, hex.r));
-      for (const n of hexNeighbors(hex)) {
-        set.add(hexKey(n.q, n.r));
+    for (const cell of tokenOccupiedCells(token)) {
+      set.add(cellKey(cell.q, cell.r));
+      for (const n of cellNeighbors(cell)) {
+        set.add(cellKey(n.q, n.r));
       }
     }
   }
@@ -44,14 +44,14 @@ export function visibleHexSetForPlayer(
   return set;
 }
 
-export function isHexVisibleToPlayer(
+export function isCellVisibleToPlayer(
   scene: BattleScene,
   q: number,
   r: number,
   visible: Set<string> | null
 ): boolean {
   if (!visible) return true;
-  return visible.has(hexKey(q, r));
+  return visible.has(cellKey(q, r));
 }
 
 export function filterTokensForFog(
@@ -66,6 +66,6 @@ export function filterTokensForFog(
       (opts.userId && t.actorId && opts.actorIds?.includes(t.actorId)) ||
       t.ownerRole === "jogador";
     if (isOwn) return true;
-    return visible.has(hexKey(t.axial.q, t.axial.r));
+    return visible.has(cellKey(t.axial.q, t.axial.r));
   });
 }

@@ -12,7 +12,7 @@ import { normalizeRoomSettings } from "@/lib/room/settings";
 import type { SessionUser } from "@/lib/auth/types";
 import type { CompendiumEntry, CompendiumPackId, CompendiumPackMeta } from "@/lib/compendium/types";
 import type { BattleScene } from "@/lib/vtt/types";
-import type { Axial } from "@/lib/vtt/hex-math";
+import type { Axial } from "@/lib/vtt/grid-math";
 import { useCombatTurnFlow } from "@/hooks/vtt/useCombatTurnFlow";
 import { useCombatModeTransition } from "@/hooks/vtt/useCombatModeTransition";
 import { CombatModeTransition } from "@/components/vtt/CombatModeTransition";
@@ -32,7 +32,7 @@ import { VttToastProvider } from "@/components/vtt/VttToast";
 import { FoundryDockPanel } from "@/components/vtt/foundry/FoundryDockPanel";
 import { FoundryWindow } from "@/components/vtt/foundry/FoundryWindow";
 import { MesaFoundrySidebar } from "@/components/vtt/foundry/MesaFoundrySidebar";
-import { HexBattlefield } from "@/components/vtt/HexBattlefield";
+import { Battlefield } from "@/components/vtt/Battlefield";
 import { MonsterSheetPopup } from "@/components/compendium/MonsterSheetPopup";
 import { CharacterSheetPopup } from "@/components/vtt/CharacterSheetPopup";
 import {
@@ -632,7 +632,7 @@ export function MesaWorkspace({
                 selfUserId={session?.id}
               />
             </div>
-            <HexBattlefield
+            <Battlefield
               scene={scene}
               canEdit={canEdit}
               canUseWhiteboard={canEdit}

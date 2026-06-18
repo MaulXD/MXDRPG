@@ -116,7 +116,7 @@ export function DungeonEditorPanel({
   }
 
   async function clearFog() {
-    await saveScene({ revealedHexes: [] });
+    await saveScene({ revealedCells: [] });
     setMsg("Fog resetada.");
   }
 
@@ -311,20 +311,20 @@ export function DungeonEditorPanel({
   );
 }
 
-export type DungeonHexEditResult = {
+export type DungeonCellEditResult = {
   snapshot?: RoomSnapshot;
   selectedId: string | null;
   error?: string;
 };
 
-/** Aplica edição de hex no mapa (chamado pelo canvas). */
-export async function applyDungeonHexEdit(
+/** Aplica edição de célula no mapa (chamado pelo canvas). */
+export async function applyDungeonCellEdit(
   roomId: string,
   scene: BattleScene,
   tool: DungeonEditorTool,
   axial: { q: number; r: number },
   selectedObjectId: string | null
-): Promise<DungeonHexEditResult> {
+): Promise<DungeonCellEditResult> {
   const objects = dungeonObjectsOf(scene);
 
   if (tool === "erase") {

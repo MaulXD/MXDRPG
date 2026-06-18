@@ -1,7 +1,7 @@
 import type { AreaHit } from "@/lib/combat/area-spell";
 import type { CombatActionOption } from "@/lib/combat/types";
-import { axialDistance } from "@/lib/vtt/hex-math";
-import type { Axial } from "@/lib/vtt/hex-math";
+import { axialDistance } from "@/lib/vtt/grid-math";
+import type { Axial } from "@/lib/vtt/grid-math";
 import type { BattleToken } from "@/lib/vtt/types";
 
 export type AreaCascadeMode = "distance" | "initiative" | "simultaneous";

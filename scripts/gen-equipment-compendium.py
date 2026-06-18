@@ -103,7 +103,7 @@ def weapon_flavor(canon_id: str, name: str) -> str:
     if canon_id.startswith("WPN-S"):
         return "Lâmina balanceada para duelos corpo a corpo nas masmorras."
     if canon_id.startswith("WPN-P"):
-        return "Haste ou lança — mantém inimigos à distância no hex adjacente."
+        return "Haste ou lança — mantém inimigos à distância no célula adjacente."
     if canon_id.startswith("ORG-"):
         return "Arma orgânica forjada de partes de monstro — propriedades únicas na mesa."
     if "machado" in name.lower() or "cutelo" in name.lower():
@@ -152,7 +152,7 @@ def weapon_entry(
     parts = [
         f"<strong>{display}</strong> ({canon_id}).",
         weapon_flavor(canon_id, name),
-        f"Dano {formula} {tipo}, alcance {alcance} hex, 2 PA por ataque.",
+        f"Dano {formula} {tipo}, alcance {alcance} célula, 2 PA por ataque.",
         f"Ataque {bonus + enchant:+d}.",
     ]
     special = weapon_special_for(canon_id, enchant)
@@ -181,7 +181,7 @@ def weapon_entry(
             "bookRef": BOOK_EQUIP,
             "enchant": enchant,
             "tactical": {
-                "alcanceHex": {"value": alcance, "min": 0},
+                "alcanceCells": {"value": alcance, "min": 0},
                 "custoPontosAcao": {"value": 2, "min": 0},
             },
             "weapon": weapon_sys,
@@ -284,7 +284,7 @@ def main() -> int:
         special = organic_special(effect_ids)
         desc = (
             f"<p><strong>{name}</strong> ({cid}). Arma orgânica: dano {dmg} {tipo}, "
-            f"alcance {rng} hex. CD de durabilidade na ficha; efeitos do catálogo ORG.</p>"
+            f"alcance {rng} célula. CD de durabilidade na ficha; efeitos do catálogo ORG.</p>"
         )
         weapon_sys: dict = {
             "dano": {"formula": dmg, "tipo": tipo},
@@ -304,7 +304,7 @@ def main() -> int:
                     "enchant": 0,
                     "organic": True,
                     "tactical": {
-                        "alcanceHex": {"value": rng, "min": 0},
+                        "alcanceCells": {"value": rng, "min": 0},
                         "custoPontosAcao": {"value": 2, "min": 0},
                     },
                     "weapon": weapon_sys,

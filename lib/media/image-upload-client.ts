@@ -213,7 +213,7 @@ export async function buildRoomCoverFromFile(file: File): Promise<string> {
   return encodeWebpFit(img, ROOM_COVER_MAX_EDGE);
 }
 
-/** Imagem de piso do hex — WebP data URL para `mapImageUrl`. */
+/** Imagem de piso do célula — WebP data URL para `mapImageUrl`. */
 export async function buildMapImageFromFile(file: File): Promise<string> {
   if (!INPUT_TYPES.includes(file.type)) {
     throw new Error("Formato inválido. Use JPEG, PNG, WebP ou GIF.");

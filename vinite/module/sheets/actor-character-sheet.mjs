@@ -60,9 +60,9 @@ export class EldarinActorCharacterSheet extends ActorSheet {
     };
 
     context.movement = {
-      walk: system.movement.hex.walk,
-      run: system.movement.hex.run,
-      runApCost: system.movement.hex.runActionPointCost,
+      walk: system.movement.cells.walk,
+      run: system.movement.cells.run,
+      runApCost: system.movement.cells.runActionPointCost,
       mode: system.movement.mode,
       isWalk: system.movement.mode === "walk",
       isRun: system.movement.mode === "run",
@@ -100,10 +100,10 @@ export class EldarinActorCharacterSheet extends ActorSheet {
     if (item.type === "arma") {
       const t = item.system.tactical;
       const w = item.system.weapon;
-      return `${t?.alcanceHex?.value ?? 1} hex · PA ${t?.custoPontosAcao?.value ?? 1} · ${w?.dano?.formula ?? ""}`;
+      return `${t?.alcanceCells?.value ?? 1} célula · PA ${t?.custoPontosAcao?.value ?? 1} · ${w?.dano?.formula ?? ""}`;
     }
     if (item.type === "habilidade") {
-      return `${item.system.tactical?.alcanceHex?.value ?? 0} hex · PA ${item.system.tactical?.custoPontosAcao?.value ?? 0}`;
+      return `${item.system.tactical?.alcanceCells?.value ?? 0} célula · PA ${item.system.tactical?.custoPontosAcao?.value ?? 0}`;
     }
     if (item.type === "equipamento") {
       return item.system.gear?.equipado ? game.i18n.localize("ELDARIN.Sheet.equipped") : "";

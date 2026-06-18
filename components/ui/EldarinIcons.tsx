@@ -72,7 +72,7 @@ export function IconBug({ className, size }: IconProps) {
   );
 }
 
-export function IconHex({ className, size }: IconProps) {
+export function IconGridCell({ className, size }: IconProps) {
   return (
     <Svg className={className} size={size}>
       <path d="M12 3.5l6.5 3.75v7.5L12 18.5l-6.5-3.75v-7.5L12 3.5z" {...S} />

@@ -24,10 +24,10 @@ function movementPaCost(spentBefore, dist, bands) {
     cost += MOVEMENT_PA_COST;
   }
   if (spentAfter >= bands.runChargeFrom) {
-    const runHexBefore = Math.max(0, spentBefore - bands.runChargeFrom + 1);
-    const runHexAfter = Math.max(0, spentAfter - bands.runChargeFrom + 1);
-    const blocksBefore = Math.ceil(runHexBefore / bands.runBlockSize);
-    const blocksAfter = Math.ceil(runHexAfter / bands.runBlockSize);
+    const runCellBefore = Math.max(0, spentBefore - bands.runChargeFrom + 1);
+    const runCellAfter = Math.max(0, spentAfter - bands.runChargeFrom + 1);
+    const blocksBefore = Math.ceil(runCellBefore / bands.runBlockSize);
+    const blocksAfter = Math.ceil(runCellAfter / bands.runBlockSize);
     cost += MOVEMENT_PA_COST * Math.max(0, blocksAfter - blocksBefore);
   }
   return cost;
@@ -37,9 +37,9 @@ const bands47 = movementPaBands(4, 7);
 
 assert.equal(movementPaCost(0, 2, bands47), 1);
 assert.equal(movementPaCost(2, 2, bands47), 0);
-assert.equal(movementPaCost(2, 3, bands47), 0, "hex 3-5 livres");
-assert.equal(movementPaCost(4, 2, bands47), 1, "entra corrida hex 5-6");
-assert.equal(movementPaCost(5, 1, bands47), 1, "hex 6");
+assert.equal(movementPaCost(2, 3, bands47), 0, "células 3-5 livres");
+assert.equal(movementPaCost(4, 2, bands47), 1, "entra corrida célula 5-6");
+assert.equal(movementPaCost(5, 1, bands47), 1, "célula 6");
 
 assert.equal(movementPaBands(3, 6).runChargeFrom, 5);
 assert.equal(movementPaBands(6, 9).runChargeFrom, 8);

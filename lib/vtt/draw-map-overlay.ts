@@ -1,6 +1,6 @@
-import type { Axial } from "@/lib/vtt/hex-math";
-import { axialToPixel, hexCorners, hexDrawRadius } from "@/lib/vtt/hex-math";
-import { isHexVisibleToPlayer } from "@/lib/vtt/fog-of-war";
+import type { Axial } from "@/lib/vtt/grid-math";
+import { axialToPixel, cellCorners, cellDrawRadius } from "@/lib/vtt/grid-math";
+import { isCellVisibleToPlayer } from "@/lib/vtt/fog-of-war";
 import type { BattlePing } from "@/lib/vtt/types";
 import { gridLodLevel } from "@/lib/vtt/canvas-lod";
 import type { BattleScene } from "@/lib/vtt/types";
@@ -43,26 +43,26 @@ export function drawFogLayer(
   ctx: CanvasRenderingContext2D,
   cells: Axial[],
   scene: BattleScene,
-  hexSize: number,
+  cellSize: number,
   layout: CanvasLayout,
-  visibleHexSet: Set<string> | null,
+  visibleCellSet: Set<string> | null,
   viewScale = 1,
   gridOx?: number,
   gridOy?: number
 ): void {
-  if (!visibleHexSet || !scene.fogEnabled) return;
+  if (!visibleCellSet || !scene.fogEnabled) return;
 
   const ox = gridOx ?? layout.ox;
   const oy = gridOy ?? layout.oy;
   const lod = gridLodLevel(viewScale);
   ctx.save();
   for (const cell of cells) {
-    if (isHexVisibleToPlayer(scene, cell.q, cell.r, visibleHexSet)) {
+    if (isCellVisibleToPlayer(scene, cell.q, cell.r, visibleCellSet)) {
       continue;
     }
-    const { x, y } = axialToPixel(cell.q, cell.r, hexSize, ox, oy);
+    const { x, y } = axialToPixel(cell.q, cell.r, cellSize, ox, oy);
     ctx.beginPath();
-    const corners = hexCorners(x, y, hexDrawRadius(hexSize));
+    const corners = cellCorners(x, y, cellDrawRadius(cellSize));
     ctx.moveTo(corners[0].x, corners[0].y);
     for (let i = 1; i < corners.length; i++) ctx.lineTo(corners[i].x, corners[i].y);
     ctx.closePath();
@@ -80,7 +80,7 @@ export function drawFogLayer(
 export function drawPingLayer(
   ctx: CanvasRenderingContext2D,
   pings: BattlePing[],
-  hexSize: number,
+  cellSize: number,
   layout: CanvasLayout,
   gridOx?: number,
   gridOy?: number
@@ -93,7 +93,7 @@ export function drawPingLayer(
     const age = (now - ping.at) / 1000;
     if (age > 5.5) continue;
     const pulse = 1 - age / 5.5;
-    const { x, y } = axialToPixel(ping.q, ping.r, hexSize, ox, oy);
+    const { x, y } = axialToPixel(ping.q, ping.r, cellSize, ox, oy);
     const r = 10 + (1 - pulse) * 18;
 
     ctx.save();

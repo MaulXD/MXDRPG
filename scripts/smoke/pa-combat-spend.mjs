@@ -79,7 +79,7 @@ async function main() {
   const actorId = active.linked ? active.actorId : null;
   const cookie = actorId === "pc-thrain-ferroescudo" ? pl : gm;
 
-  // Move 1 hex (gasta PA em combate)
+  // Move 1 célula (gasta PA em combate)
   const dest = { q: active.axial.q + 1, r: active.axial.r };
   ({ res, data } = await post("/api/room/demo/tokens/move", cookie, {
     tokenId: activeId,

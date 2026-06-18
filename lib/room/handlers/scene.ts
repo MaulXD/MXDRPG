@@ -17,7 +17,7 @@ export type ScenePatch = Partial<
     | "mapImageOffsetX"
     | "mapImageOffsetY"
     | "fogEnabled"
-    | "revealedHexes"
+    | "revealedCells"
     | "dungeonObjects"
     | "mapMarkups"
   >
@@ -62,7 +62,7 @@ export async function patchRoomScene(
   return toSnapshot(updated);
 }
 
-export async function revealRoomHex(
+export async function revealRoomCell(
   roomId: string,
   user: SessionUser | null,
   q: number,

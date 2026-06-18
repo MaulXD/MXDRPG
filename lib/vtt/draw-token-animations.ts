@@ -7,7 +7,7 @@ function ringAnimTime(timeSec: number): number {
   return timeSec * TOKEN_RING_ANIM_SPEED;
 }
 
-/** Anel dourado girando — turno ativo no hex. */
+/** Anel dourado girando — turno ativo no célula. */
 export function drawTurnActiveIndicator(
   ctx: CanvasRenderingContext2D,
   x: number,

@@ -302,7 +302,7 @@ export async function bindPlayerToAdventure(
   return joinAdventureRecord(adv, userId);
 }
 
-/** Garante acesso à aventura (convite, sala HEX ou ficha existente). */
+/** Garante acesso à aventura (convite, sala de mesa ou ficha existente). */
 export async function ensureSessionAdventureAccess(
   adventureId: string,
   user: import("@/lib/auth/types").SessionUser,

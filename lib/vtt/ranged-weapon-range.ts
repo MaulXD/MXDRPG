@@ -1,5 +1,5 @@
 /** 1 célula do grid VTT = 1,5 m (Livro do Jogador §3.1.3). */
-export const METERS_PER_HEX = 1.5;
+export const METERS_PER_CELL = 1.5;
 
 /** Eldarin usa alcances SRD/D&D 5e escalados a 70% (30% menores que a tabela PHB). */
 export const DND_RANGE_SCALE = 0.7;
@@ -16,16 +16,16 @@ export function dndLongRangeMeters(feet: number): number {
   return Math.round(feet * FEET_TO_METERS * DND_RANGE_SCALE);
 }
 
-/** Alcance normal para highlight de ataque no VTT (`rangeHex`). */
-export function dndNormalRangeHex(feet: number): number {
+/** Alcance normal para highlight de ataque no VTT (`rangeCells`). */
+export function dndNormalRangeCells(feet: number): number {
   const meters = feet * FEET_TO_METERS * DND_RANGE_SCALE;
-  return Math.max(1, Math.round(meters / METERS_PER_HEX));
+  return Math.max(1, Math.round(meters / METERS_PER_CELL));
 }
 
-/** Alcance longo para tiro à distância (`rangeLongHex`). */
-export function dndLongRangeHex(feet: number): number {
+/** Alcance longo para tiro à distância (`rangeLongCells`). */
+export function dndLongRangeCells(feet: number): number {
   const meters = feet * FEET_TO_METERS * DND_RANGE_SCALE;
-  return Math.max(1, Math.round(meters / METERS_PER_HEX));
+  return Math.max(1, Math.round(meters / METERS_PER_CELL));
 }
 
 /** Par normal/longo formatado para tabelas do livro (ex.: `32/128m`). */
@@ -46,25 +46,25 @@ export const DND_RANGED = {
   thrownLight: { normal: 20, long: 60 },
 } as const;
 
-export const ELDARIN_RANGED_HEX = {
-  shortbow: dndNormalRangeHex(DND_RANGED.shortbow.normal),
-  longbow: dndNormalRangeHex(DND_RANGED.longbow.normal),
-  lightCrossbow: dndNormalRangeHex(DND_RANGED.lightCrossbow.normal),
-  heavyCrossbow: dndNormalRangeHex(DND_RANGED.heavyCrossbow.normal),
-  handCrossbow: dndNormalRangeHex(DND_RANGED.handCrossbow.normal),
-  thrownLight: dndNormalRangeHex(DND_RANGED.thrownLight.normal),
+export const ELDARIN_RANGED_CELLS = {
+  shortbow: dndNormalRangeCells(DND_RANGED.shortbow.normal),
+  longbow: dndNormalRangeCells(DND_RANGED.longbow.normal),
+  lightCrossbow: dndNormalRangeCells(DND_RANGED.lightCrossbow.normal),
+  heavyCrossbow: dndNormalRangeCells(DND_RANGED.heavyCrossbow.normal),
+  handCrossbow: dndNormalRangeCells(DND_RANGED.handCrossbow.normal),
+  thrownLight: dndNormalRangeCells(DND_RANGED.thrownLight.normal),
 } as const;
 
-export const ELDARIN_RANGED_LONG_HEX = {
-  shortbow: dndLongRangeHex(DND_RANGED.shortbow.long),
-  longbow: dndLongRangeHex(DND_RANGED.longbow.long),
-  lightCrossbow: dndLongRangeHex(DND_RANGED.lightCrossbow.long),
-  heavyCrossbow: dndLongRangeHex(DND_RANGED.heavyCrossbow.long),
-  handCrossbow: dndLongRangeHex(DND_RANGED.handCrossbow.long),
-  thrownLight: dndLongRangeHex(DND_RANGED.thrownLight.long),
+export const ELDARIN_RANGED_LONG_CELLS = {
+  shortbow: dndLongRangeCells(DND_RANGED.shortbow.long),
+  longbow: dndLongRangeCells(DND_RANGED.longbow.long),
+  lightCrossbow: dndLongRangeCells(DND_RANGED.lightCrossbow.long),
+  heavyCrossbow: dndLongRangeCells(DND_RANGED.heavyCrossbow.long),
+  handCrossbow: dndLongRangeCells(DND_RANGED.handCrossbow.long),
+  thrownLight: dndLongRangeCells(DND_RANGED.thrownLight.long),
 } as const;
 
 /** Bônus narrativos em metros (ex.: Osso de Grifo +3 m) → células extras. */
-export function metersBonusToHex(meters: number): number {
-  return Math.round(meters / METERS_PER_HEX);
+export function metersBonusToCells(meters: number): number {
+  return Math.round(meters / METERS_PER_CELL);
 }

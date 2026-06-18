@@ -74,7 +74,7 @@ export function tokenOuterBorderR(tokenR: number, ringStyle: TokenRingStyle): nu
 }
 
 /** @deprecated Use tokenOuterBorderR */
-export const tokenOuterBorderHexR = tokenOuterBorderR;
+export const tokenOuterBorderCellR = tokenOuterBorderR;
 
 /** Anel de vida no limite inscrito; retrato ocupa o interior com o máximo de área possível. */
 export function hpRingLayout(tokenR: number, ringStyle: TokenRingStyle): {
@@ -270,10 +270,10 @@ export function drawTokenWalkRemainingBadge(
   x: number,
   y: number,
   tokenR: number,
-  walkHex: number,
+  walkCells: number,
   metersLabel: string
 ): void {
-  const label = `${walkHex} cél.`;
+  const label = `${walkCells} cél.`;
   const padX = 8;
   const boxH = 26;
   const gap = 10;

@@ -90,7 +90,7 @@ export function syncLinkedTokens(
       imageFocus: focus,
       movementWalkMax: actor.movement.walk,
       movementRunMax: actor.movement.run,
-      movementSpentHex: token.movementSpentHex ?? 0,
+      movementSpentCells: token.movementSpentCells ?? 0,
       creatureSize: creatureSizeOf(token, actor.identity.raca),
     };
   });
@@ -103,7 +103,7 @@ function ensureMovementFields(token: BattleToken): BattleToken {
   const run = Number.isFinite(token.run) ? token.run : (token.movementRunMax ?? 6);
   if (
     token.movementWalkMax != null &&
-    token.movementSpentHex != null &&
+    token.movementSpentCells != null &&
     Number.isFinite(token.walk) &&
     Number.isFinite(token.run)
   ) {

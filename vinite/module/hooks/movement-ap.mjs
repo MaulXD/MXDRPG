@@ -1,5 +1,5 @@
 import { clamp } from "../data/formulas.mjs";
-import { getActorHexMovement } from "../automation/hex-utils.mjs";
+import { getActorCellMovement } from "../automation/grid-utils.mjs";
 
 const FLAG_SCOPE = "vinite";
 const FLAG_TURN_DISTANCE = "turnDistance";
@@ -53,7 +53,7 @@ export function registerMovementApHooks() {
  */
 async function maybeConsumeRunActionPoints(tokenDoc, totalDistance) {
   const actor = tokenDoc.actor;
-  const { walk, runApCost } = getActorHexMovement(actor);
+  const { walk, runApCost } = getActorCellMovement(actor);
 
   if (totalDistance <= walk) return;
 

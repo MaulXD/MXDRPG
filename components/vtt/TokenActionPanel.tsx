@@ -44,7 +44,7 @@ import {
 
   formatMovementLabel,
 
-  hexToMeters,
+  cellsToMeters,
 
   movementPaBandsForToken,
 
@@ -270,7 +270,7 @@ export function TokenActionPanel({
 
       })
 
-      .filter((x) => x.dist <= activeAction.rangeHex);
+      .filter((x) => x.dist <= activeAction.rangeCells);
 
   }, [token, tokens, activeAction, turn, actor, combat?.order?.length]);
 
@@ -476,7 +476,7 @@ export function TokenActionPanel({
 
         <span className="vtt-movement-sub">
 
-          Caminhada {walkRemaining(token)} cél. ({hexToMeters(walkRemaining(token))} m) · Corrida{" "}
+          Caminhada {walkRemaining(token)} cél. ({cellsToMeters(walkRemaining(token))} m) · Corrida{" "}
 
           {runRemaining(token)} cél. restantes · {movePaHint}
 
@@ -718,9 +718,9 @@ export function TokenActionPanel({
       {actionMode === "spell" && activeAction?.areaShape && activeAction.areaShape !== "single" ? (
         <p className="vtt-combat-hint">
           Área {activeAction.areaShape}
-          {activeAction.areaRadiusHex != null ? ` · ${activeAction.areaRadiusHex} células` : ""}
-          {activeAction.areaHexCount != null ? ` · ${activeAction.areaHexCount} células` : ""} — alcance{" "}
-          {activeAction.rangeHex} células no mapa.
+          {activeAction.areaRadiusCells != null ? ` · ${activeAction.areaRadiusCells} células` : ""}
+          {activeAction.areaCellCount != null ? ` · ${activeAction.areaCellCount} células` : ""} — alcance{" "}
+          {activeAction.rangeCells} células no mapa.
           {activeAction.areaShape === "wall"
             ? " Clique o centro da muralha, depois uma célula vizinha para a direção."
             : areaNeedsDirection(activeAction.areaShape) && areaUsesCasterOrigin(activeAction.areaShape)

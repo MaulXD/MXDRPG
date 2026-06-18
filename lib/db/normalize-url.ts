@@ -1,5 +1,5 @@
 /**
- * Ajusta connection strings Neon/Vercel: SSL e aviso de endpoint direto em serverless.
+ * Ajusta connection strings Neon: SSL e aviso de endpoint direto em ambientes serverless.
  */
 export function normalizeDatabaseUrl(raw: string): string {
   const trimmed = raw.trim();

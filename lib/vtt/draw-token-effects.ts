@@ -77,7 +77,7 @@ function drawChipPill(
   }
 }
 
-/** Pilha de chips à direita do token no hex. */
+/** Pilha de chips à direita do token no célula. */
 export function drawTokenEffectBadges(
   ctx: CanvasRenderingContext2D,
   x: number,

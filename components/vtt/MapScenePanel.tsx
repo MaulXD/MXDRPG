@@ -40,7 +40,7 @@ export function MapScenePanel({ roomId, scene, onUpdated }: Props) {
     setBusy(true);
     setMsg(null);
     try {
-      const snapshot = await patchRoomScene(roomId, { revealedHexes: [] });
+      const snapshot = await patchRoomScene(roomId, { revealedCells: [] });
       onUpdated(snapshot);
       setMsg("Fog resetada (nenhuma célula revelada).");
     } catch (e) {

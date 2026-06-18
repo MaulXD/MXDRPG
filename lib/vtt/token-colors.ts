@@ -32,7 +32,7 @@ export function collectPlayerActorIds(tokens: BattleToken[]): string[] {
     .map((t) => t.actorId!);
 }
 
-/** Quanto o retrato deve encolher para os anéis de identidade não passarem do hex. */
+/** Quanto o retrato deve encolher para os anéis de identidade não passarem do célula. */
 export function tokenPortraitInset(ringStyle: TokenRingStyle): number {
   if (!ringStyle.rings.length) return 0;
   const minOffset = Math.min(...ringStyle.rings.map((ring) => ring.radiusOffset));

@@ -1,7 +1,7 @@
 import monstrosData from "@/data/compendiums/monstros.json";
 import { slugId } from "@/lib/compendium/format";
 import type { CompendiumEntryRaw } from "@/lib/compendium/types";
-import type { Axial } from "@/lib/vtt/hex-math";
+import type { Axial } from "@/lib/vtt/grid-math";
 import { defaultMovementFields } from "@/lib/vtt/movement";
 import type { CombatActionOption } from "@/lib/combat/types";
 import type { BattleToken } from "@/lib/vtt/types";
@@ -49,7 +49,7 @@ type MonsterSystem = {
     vida?: { value?: number; max?: number };
     pontosAcao?: { value?: number; max?: number };
   };
-  movement?: { hex?: { walk?: { value?: number }; run?: { value?: number } } };
+  movement?: { cells?: { walk?: { value?: number }; run?: { value?: number } } };
   tactical?: {
     defesa?: { value?: number };
     ameaca?: { value?: number };
@@ -76,7 +76,7 @@ function parseMonster(raw: CompendiumEntryRaw, index: number): MonsterTemplate {
   const sys = raw.system as MonsterSystem;
   const attrs = sys.attributes ?? {};
   const resources = sys.resources ?? {};
-  const movement = sys.movement?.hex ?? {};
+  const movement = sys.movement?.cells ?? {};
   const tactical = sys.tactical ?? {};
   const ameaca = tactical.ameaca?.value ?? 1;
 

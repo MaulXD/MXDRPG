@@ -9,8 +9,8 @@ function finitePositive(n: number, fallback: number): number {
   return Number.isFinite(n) && n > 0 ? n : fallback;
 }
 
-export function tokenRadius(hexSize: number, size: CreatureSize = "medium"): number {
-  return tokenDrawRadius(hexSize, size);
+export function tokenRadius(cellSize: number, size: CreatureSize = "medium"): number {
+  return tokenDrawRadius(cellSize, size);
 }
 
 /** Placeholder quando a imagem ainda não carregou */

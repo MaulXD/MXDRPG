@@ -1,6 +1,6 @@
-import type { Axial } from "@/lib/vtt/hex-math";
+import type { Axial } from "@/lib/vtt/grid-math";
 import { axialKey } from "@/lib/vtt/token-occupancy";
-import { hexNeighbors } from "@/lib/vtt/hex-math";
+import { cellNeighbors } from "@/lib/vtt/grid-math";
 
 export function pathStepCount(path: Axial[]): number {
   return Math.max(0, path.length - 1);
@@ -8,11 +8,11 @@ export function pathStepCount(path: Axial[]): number {
 
 export type PathfindOptions = {
   maxSteps: number;
-  canEnter: (hex: Axial) => boolean;
+  canEnter: (cell: Axial) => boolean;
 };
 
 /** Caminho mais curto no grid (BFS, 8 direções); inclui origem e destino. */
-export function findHexPath(from: Axial, to: Axial, opts: PathfindOptions): Axial[] | null {
+export function findGridPath(from: Axial, to: Axial, opts: PathfindOptions): Axial[] | null {
   if (from.q === to.q && from.r === to.r) return [from];
 
   const startKey = axialKey(from);
@@ -40,7 +40,7 @@ export function findHexPath(from: Axial, to: Axial, opts: PathfindOptions): Axia
     }
     if (curDist >= opts.maxSteps) continue;
 
-    for (const n of hexNeighbors(cur)) {
+    for (const n of cellNeighbors(cur)) {
       const nk = axialKey(n);
       if (dist.has(nk)) continue;
       if (!opts.canEnter(n)) continue;
@@ -57,7 +57,7 @@ export function findHexPath(from: Axial, to: Axial, opts: PathfindOptions): Axia
 function reachableBfsDist(
   from: Axial,
   maxSteps: number,
-  canEnter: (hex: Axial) => boolean
+  canEnter: (cell: Axial) => boolean
 ): Map<string, number> {
   const dist = new Map<string, number>();
   if (maxSteps <= 0) return dist;
@@ -71,7 +71,7 @@ function reachableBfsDist(
     const curDist = dist.get(curKey) ?? 0;
     if (curDist >= maxSteps) continue;
 
-    for (const n of hexNeighbors(cur)) {
+    for (const n of cellNeighbors(cur)) {
       const nk = axialKey(n);
       if (dist.has(nk)) continue;
       if (!canEnter(n)) continue;
@@ -84,10 +84,10 @@ function reachableBfsDist(
 }
 
 /** Células alcançáveis em até maxSteps passos (BFS com bloqueio). */
-export function reachableHexesBfs(
+export function reachableCellsBfs(
   from: Axial,
   maxSteps: number,
-  canEnter: (hex: Axial) => boolean
+  canEnter: (cell: Axial) => boolean
 ): Axial[] {
   const dist = reachableBfsDist(from, maxSteps, canEnter);
   const result: Axial[] = [];
@@ -101,10 +101,10 @@ export function reachableHexesBfs(
 }
 
 /** Distância em passos por célula alcançável (inclui origem com 0). */
-export function reachableHexesBfsWithDist(
+export function reachableCellsBfsWithDist(
   from: Axial,
   maxSteps: number,
-  canEnter: (hex: Axial) => boolean
+  canEnter: (cell: Axial) => boolean
 ): Map<string, number> {
   return reachableBfsDist(from, maxSteps, canEnter);
 }

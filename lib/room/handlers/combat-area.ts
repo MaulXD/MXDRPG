@@ -12,7 +12,7 @@ import { resolveAreaCascadeMode, sortAreaHits } from "@/lib/combat/area-cascade"
 import { createChatId } from "../chat";
 import { formatSaveChatDetail } from "@/lib/combat/spell";
 import type { CombatActionRequest } from "@/lib/combat/types";
-import type { Axial } from "@/lib/vtt/hex-math";
+import type { Axial } from "@/lib/vtt/grid-math";
 import { patchTokenVitals } from "@/lib/vtt/token-hp-display";
 import type { ChatMessage } from "../chat";
 import { activeTokenId } from "../combat";
@@ -174,11 +174,11 @@ export async function executeRoomAreaSpell(
       resolution: action.resolution,
       areaCenterQ: areaResult.center.q,
       areaCenterR: areaResult.center.r,
-      areaHexCount: areaResult.areaHexes.length,
+      areaCellCount: areaResult.areaCells.length,
       areaBatchId,
       areaShape: action.areaShape,
       areaCascade,
-      areaHexList: areaResult.areaHexes,
+      areaCellList: areaResult.areaCells,
       spellDamageType: action.damageType,
       damageTotal: sortedHits.reduce((sum, h) => {
         if (h.kind === "attack") return sum + (h.result.damage?.total ?? 0);

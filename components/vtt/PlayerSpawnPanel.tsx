@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useMemo, useRef, useState } from "react";
-import type { Axial } from "@/lib/vtt/hex-math";
+import type { Axial } from "@/lib/vtt/grid-math";
 import type { RoomActor, RoomSnapshot } from "@/lib/room/types";
 import { canEditRoomActor, canPlaceRoomActorOnBoard } from "@/lib/auth/room-access";
 import type { SessionUser } from "@/lib/auth/types";
@@ -10,7 +10,7 @@ import { isActorDowned, isTokenDowned } from "@/lib/vtt/player-tokens";
 import { collectPlayerActorIds, playerColorForActor } from "@/lib/vtt/token-colors";
 import { clearActiveActorSpawnDragPayload, writeActorSpawnDrag } from "@/lib/vtt/spawn-drag";
 import { SpawnCardStatsRow } from "@/components/vtt/SpawnCardStats";
-import { deleteRoomToken, placeRoomActorOnHex } from "@/hooks/useRoomSync";
+import { deleteRoomToken, placeRoomActorOnCell } from "@/hooks/useRoomSync";
 import type { BattleToken } from "@/lib/vtt/types";
 
 type Props = {
@@ -125,7 +125,7 @@ export function PlayerSpawnPanel({
     setBusyId(actorId);
     setMsg(null);
     try {
-      const snapshot = await placeRoomActorOnHex(roomId, actorId, axial.q, axial.r);
+      const snapshot = await placeRoomActorOnCell(roomId, actorId, axial.q, axial.r);
       const actor = actors[actorId];
       setMsg(`${actor?.name ?? "Personagem"} colocado no mapa.`);
       onPlaced(snapshot);

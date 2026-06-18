@@ -27,7 +27,7 @@ export function slugId(name: string): string {
     .replace(/^-|-$/g, "");
 }
 
-type Tactical = { alcanceHex?: { value?: number }; custoPontosAcao?: { value?: number } };
+type Tactical = { alcanceCells?: { value?: number }; custoPontosAcao?: { value?: number } };
 type Weapon = { dano?: { formula?: string; tipo?: string }; ataque?: { bonus?: number } };
 type Ability = { tipo?: string; recarga?: string };
 type Spell = { nivel?: number; escola?: string; tempo?: string; alcance?: string };
@@ -51,8 +51,8 @@ export function entrySummary(system: Record<string, unknown>, type: string): str
   const lines: string[] = [];
   const tactical = system.tactical as Tactical | undefined;
 
-  if (tactical?.alcanceHex?.value != null) {
-    lines.push(`Alcance ${tactical.alcanceHex.value} cél.`);
+  if (tactical?.alcanceCells?.value != null) {
+    lines.push(`Alcance ${tactical.alcanceCells.value} cél.`);
   }
   if (tactical?.custoPontosAcao?.value != null) {
     lines.push(`PA ${tactical.custoPontosAcao.value}`);

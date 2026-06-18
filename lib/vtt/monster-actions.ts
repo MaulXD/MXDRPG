@@ -30,7 +30,7 @@ function generatedMonsterActions(
     damageFormula: biteDmg,
     damageType: "perfurante",
     attackBonus: t.ameaca >= 4 ? 2 : t.ameaca >= 2 ? 1 : 0,
-    rangeHex: 1,
+    rangeCells: 1,
     paCost: pa,
     label: `Mordida · 1 cél. · PA ${pa}`,
   });
@@ -45,7 +45,7 @@ function generatedMonsterActions(
       damageFormula: clawDmg,
       damageType: "cortante",
       attackBonus: dexMod,
-      rangeHex: 1,
+      rangeCells: 1,
       paCost: pa,
       label: `Garras · 1 cél. · PA ${pa}`,
     });
@@ -61,7 +61,7 @@ function generatedMonsterActions(
       damageFormula: t.tier === "boss" ? "3d10" : "2d8",
       damageType: "mágico",
       attackBonus: t.ameaca,
-      rangeHex: t.tier === "boss" ? 6 : 4,
+      rangeCells: t.tier === "boss" ? 6 : 4,
       paCost: pa,
       label: `Ataque especial · ${t.tier === "boss" ? 6 : 4} cél. · PA ${pa}`,
     });
@@ -75,7 +75,7 @@ function generatedMonsterActions(
       damageFormula: "1d10",
       damageType: "contundente",
       attackBonus: forMod,
-      rangeHex: 2,
+      rangeCells: 2,
       paCost: pa,
       label: `Investida · 2 cél. · PA ${pa}`,
     });
@@ -92,7 +92,7 @@ export function monsterCombatActions(entryId: string): CombatActionOption[] {
     t.actions.length > 0
       ? t.actions.map((a) => ({
           ...a,
-          label: a.label ?? `${a.name} · ${a.rangeHex ?? 1} cél. · PA ${a.paCost}`,
+          label: a.label ?? `${a.name} · ${a.rangeCells ?? 1} cél. · PA ${a.paCost}`,
         }))
       : generatedMonsterActions(entryId, t);
 

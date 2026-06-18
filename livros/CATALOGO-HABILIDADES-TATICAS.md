@@ -9,7 +9,7 @@
 
 | Campo na ficha | Significado |
 |----------------|-------------|
-| **Alcance** | Hexágonos a partir do token (0 = em si) |
+| **Alcance** | Células a partir do token (0 = em si) |
 | **PA** | Pontos de ação gastos ao usar |
 | **Tipo** | `ativa`, `passiva` ou `reacao` |
 | **Recarga** | Limite por turno ou combate (ex.: `1/turno`, `1/combate`) |
@@ -20,17 +20,17 @@
 
 | ID | Nome | Alc. | PA | Tipo | Recarga | Como funciona |
 |----|------|------|----|------|---------|---------------|
-| HAB-investida-hexagonal | Investida Hexagonal | 2 | 1 | ativa | 1/turno | Desloca em linha reta até 2 hex sem provocar oportunidades. |
+| HAB-investida-em-linha | Investida em Linha | 2 | 1 | ativa | 1/turno | Desloca em linha reta até 2 células sem provocar oportunidades. |
 | HAB-golpe-flanqueador | Golpe Flanqueador | 1 | 2 | ativa | — | Próximo ataque corpo a corpo com vantagem se você flanquear o alvo. |
 | HAB-postura-defensiva | Postura Defensiva | 0 | 1 | ativa | — | +2 defesa até o início do seu próximo turno. |
-| HAB-reflexos-de-masmorra | Reflexos de Masmorra | 1 | 1 | reação | — | Reação a um ataque: desloca 1 hex (não provoca). |
+| HAB-reflexos-de-masmorra | Reflexos de Masmorra | 1 | 1 | reação | — | Reação a um ataque: desloca 1 célula (não provoca). |
 | HAB-olhar-do-cacador | Olhar do Caçador | 5 | 1 | ativa | — | Marca um alvo visível; seu próximo ataque à distância contra ele ganha +2. |
 
 ## Guerreiro e combate corpo a corpo
 
 | ID | Nome | Alc. | PA | Tipo | Recarga | Como funciona |
 |----|------|------|----|------|---------|---------------|
-| HAB-investida-do-guerreiro | Investida do Guerreiro | 2 | 1 | ativa | 1/turno | Corrida em linha reta até 2 hex; termine adjacente a um inimigo para atacar no mesmo turno. |
+| HAB-investida-do-guerreiro | Investida do Guerreiro | 2 | 1 | ativa | 1/turno | Corrida em linha reta até 2 células; termine adjacente a um inimigo para atacar no mesmo turno. |
 | HAB-golpe-devastador | Golpe Devastador | 1 | 3 | ativa | — | Próximo ataque corpo a corpo recebe +2 no teste de ataque. |
 | HAB-esquiva-tatica | Esquiva Tática | 0 | 1 | ativa | — | +2 defesa até o início do seu próximo turno. |
 | HAB-canalizar-energia | Canalizar Energia | 1 | 2 | ativa | — | Ataque corpo a corpo sagrado: +2 no ataque e +2d6 radiante no dano. |
@@ -43,7 +43,7 @@
 | HAB-tiro-certeiro | Tiro Certeiro | 5 | 1 | ativa | — | Próximo ataque à distância com vantagem. |
 | HAB-emboscada | Emboscada | 1 | 2 | ativa | — | Ataque furtivo adjacente; vantagem se o alvo não viu você no início do turno. |
 | HAB-finta | Finta | 1 | 1 | ativa | — | Alvo marcado tem desvantagem no próximo ataque contra você. |
-| HAB-passo-das-sombras | Passo das Sombras | 2 | 1 | ativa | 1/turno | Teleporte curto de até 2 hex (conta como movimento). |
+| HAB-passo-das-sombras | Passo das Sombras | 2 | 1 | ativa | 1/turno | Teleporte curto de até 2 células (conta como movimento). |
 
 ## Magia e suporte
 
@@ -59,9 +59,9 @@
 
 | ID | Nome | Alc. | PA | Tipo | Recarga | Como funciona |
 |----|------|------|----|------|---------|---------------|
-| HAB-investida-barbara | Investida Bárbara | 3 | 1 | ativa | 1/turno | Corre até 3 hex em linha reta sem provocar oportunidades. |
+| HAB-investida-barbara | Investida Bárbara | 3 | 1 | ativa | 1/turno | Corre até 3 células em linha reta sem provocar oportunidades. |
 | HAB-forma-selvagem | Forma Selvagem | 0 | 3 | ativa | 1/combate | Prepara transformação biomágica (movimento + ritual; Mestre valida forma). |
-| HAB-raizes-prendentes | Raízes Prendentes | 4 | 2 | ativa | — | Restringe alvo 1 turno (save FOR); raízes no hex do alvo. |
+| HAB-raizes-prendentes | Raízes Prendentes | 4 | 2 | ativa | — | Restringe alvo 1 turno (save FOR); raízes na célula do alvo. |
 
 ## Artilheiro
 

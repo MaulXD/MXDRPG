@@ -20,7 +20,7 @@
 | Nome de exibição | Chat e ficha | Execução de contrato |
 | Ficha de personagem (JSON) | Jogo | Execução de contrato |
 | Retrato / recorte de token | Avatar na mesa | Consentimento (upload voluntário) |
-| Logs de sessão / IP (Vercel) | Segurança, diagnóstico | Legítimo interesse |
+| Logs de sessão / IP (servidor) | Segurança, diagnóstico | Legítimo interesse |
 | Analytics (se ativado) | Melhoria do produto | Consentimento (banner) |
 
 **Não coletamos intencionalmente** dados de crianças sem consentimento do responsável. O serviço é voltado a mesas de RPG; menores só com autorização documentada do responsável.
@@ -31,7 +31,7 @@ Ao entrar com provedor social, recebemos identificador e e-mail conforme permiss
 
 ## 4. Armazenamento
 
-- **Hospedagem:** Vercel (EUA / global edge — ver política Vercel).
+- **Hospedagem:** Contabo (Alemanha) + Neon Postgres (ver políticas dos provedores).
 - **Banco:** Neon Postgres (região configurada no projeto — preferir região próxima ao público BR se disponível).
 - **Retenção:** contas inativas [definir prazo, ex. 24 meses] podem ser anonimizadas após aviso por e-mail.
 
@@ -51,7 +51,7 @@ O usuário pode solicitar:
 
 Dados **não são vendidos**. Compartilhamento apenas com:
 
-- Provedores de infraestrutura (Vercel, Neon) sob contrato de processamento
+- Provedores de infraestrutura (Contabo, Neon) sob contrato de processamento
 - Obrigação legal
 
 ## 7. Segurança
@@ -84,7 +84,7 @@ Versão e data desta política na página `/privacidade`. Mudanças relevantes n
 - [ ] Preencher titular e e-mail de contato
 - [ ] Página `/privacidade` e `/termos` no site
 - [ ] Checkbox de aceite no registro
-- [ ] Região Neon + DPA Vercel/Neon arquivados
+- [ ] Região Neon + DPA Contabo/Neon arquivados
 - [ ] Fluxo de exclusão de conta implementado na API
 
 ---

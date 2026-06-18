@@ -44,7 +44,7 @@ Ver **Parte VI** do Livro do Jogador — texto canônico inalterado.
 
 **Cultos:** Irmandade da Maré Baixa · Faróis de Salmour
 
-**Bônus:** +2 equilíbrio/natação · ignorar terreno difícil em hex alagado 1/dia · vantagem Percepção através de água · rerrolar save afogamento 1/descanso longo
+**Bônus:** +2 equilíbrio/natação · ignorar terreno difícil em célula alagada 1/dia · vantagem Percepção através de água · rerrolar save afogamento 1/descanso longo
 
 ---
 
@@ -88,7 +88,7 @@ Ver **Parte VI** do Livro do Jogador — texto canônico inalterado.
 
 **Cultos:** Círculo de Roda-Lua · Vigias do Véu
 
-**Bônus:** 1 pista de masmorra/descanso longo · teletransporte 1 hex em névoa 1/dia · +2 Arcanismo/História planar · vantagem Furtividade à noite
+**Bônus:** 1 pista de masmorra/descanso longo · teletransporte 1 célula em névoa 1/dia · +2 Arcanismo/História planar · vantagem Furtividade à noite
 
 ---
 

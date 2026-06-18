@@ -1,4 +1,4 @@
-import { getActorHexMovement } from "../automation/hex-utils.mjs";
+import { getActorCellMovement } from "../automation/grid-utils.mjs";
 import { ELDARIN } from "../config.mjs";
 
 /**
@@ -26,7 +26,7 @@ export function registerDragRulerIntegration() {
         const actor = token.actor;
         if (!actor || actor.type === "notype") return [];
 
-        const { walk, run } = getActorHexMovement(actor);
+        const { walk, run } = getActorCellMovement(actor);
         if (walk <= 0 && run <= 0) return [];
 
         const ranges = [];

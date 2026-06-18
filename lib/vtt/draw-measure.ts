@@ -1,5 +1,5 @@
-import { axialDistance } from "@/lib/vtt/hex-math";
-import { hexToMeters } from "@/lib/vtt/movement";
+import { axialDistance } from "@/lib/vtt/grid-math";
+import { cellsToMeters } from "@/lib/vtt/movement";
 import type { MeasurePreview } from "@/lib/vtt/map-toolbar";
 
 export function drawMeasureLayer(
@@ -8,9 +8,9 @@ export function drawMeasureLayer(
 ): void {
   if (!measure) return;
 
-  const hexDist = axialDistance(measure.startAxial, measure.endAxial);
-  const meters = hexToMeters(hexDist);
-  const label = `${hexDist} cél. · ${meters} m`;
+  const cellDist = axialDistance(measure.startAxial, measure.endAxial);
+  const meters = cellsToMeters(cellDist);
+  const label = `${cellDist} cél. · ${meters} m`;
 
   ctx.save();
   ctx.strokeStyle = "#f1c40f";

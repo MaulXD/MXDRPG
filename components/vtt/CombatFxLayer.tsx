@@ -1,8 +1,8 @@
 ﻿"use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import type { Axial } from "@/lib/vtt/hex-math";
-import { axialToPixel, hexCorners, hexDrawRadius } from "@/lib/vtt/hex-math";
+import type { Axial } from "@/lib/vtt/grid-math";
+import { axialToPixel, cellCorners, cellDrawRadius } from "@/lib/vtt/grid-math";
 import { canvasCenter, worldToScreen, type BattlefieldView } from "@/lib/vtt/battlefield-view";
 import type {
   CombatFxPhase,
@@ -19,7 +19,7 @@ export type TokenCombatFlash = "hit" | "miss" | "crit" | "heal" | null;
 
 type Props = {
   wrapRef: React.RefObject<HTMLDivElement | null>;
-  hexSize: number;
+  cellSize: number;
   gridOx?: number;
   gridOy?: number;
   fx: CombatFxState | null;
@@ -43,19 +43,19 @@ function useReducedMotion(): boolean {
   return reduced;
 }
 
-function hexPathPoints(
+function cellPathPoints(
   axial: Axial,
-  hexSize: number,
+  cellSize: number,
   ox: number,
   oy: number,
   w: number,
   h: number,
   view: BattlefieldView
 ): string {
-  const local = axialToPixel(axial.q, axial.r, hexSize, ox, oy);
+  const local = axialToPixel(axial.q, axial.r, cellSize, ox, oy);
   const screen = worldToScreen(local.x, local.y, w, h, view);
-  const r = hexDrawRadius(hexSize) * (view.scale ?? 1);
-  const corners = hexCorners(screen.x, screen.y, r);
+  const r = cellDrawRadius(cellSize) * (view.scale ?? 1);
+  const corners = cellCorners(screen.x, screen.y, r);
   return corners.map((p, i) => `${i === 0 ? "M" : "L"}${p.x},${p.y}`).join(" ") + " Z";
 }
 
@@ -100,7 +100,7 @@ function tokenFlashForFx(fx: CombatFxState): TokenCombatFlash {
 
 export function CombatFxLayer({
   wrapRef,
-  hexSize,
+  cellSize,
   gridOx,
   gridOy,
   fx,
@@ -352,7 +352,7 @@ export function CombatFxLayer({
   const oy = gridOy ?? center.oy;
 
   const markScreen = (axial: Axial) => {
-    const local = axialToPixel(axial.q, axial.r, hexSize, ox, oy);
+    const local = axialToPixel(axial.q, axial.r, cellSize, ox, oy);
     return worldToScreen(local.x, local.y, w, h, view);
   };
 
@@ -398,25 +398,25 @@ export function CombatFxLayer({
     !healCastWithoutRoll &&
     (fx.hit === true || fx.hit === false || fx.saveTotal != null);
 
-  const areaHexPaths =
-    fx.areaHexes?.map((hex) => hexPathPoints(hex, hexSize, ox, oy, w, h, view)) ?? [];
+  const areaGridPaths =
+    fx.areaCells?.map((cell) => cellPathPoints(cell, cellSize, ox, oy, w, h, view)) ?? [];
 
   return (
     <div className={`combat-fx-layer ${reducedMotion ? "combat-fx-reduced" : ""}`} aria-live="polite">
-      <svg className="combat-fx-hex-svg" width={w} height={h}>
-        {areaHexPaths.map((d, i) => (
+      <svg className="combat-fx-cell-svg" width={w} height={h}>
+        {areaGridPaths.map((d, i) => (
           <path
             key={`area-${i}`}
             d={d}
-            className="combat-fx-area-hex"
+            className="combat-fx-area-cell"
             fill={areaFill}
             stroke={accent}
             strokeWidth={fx.mode === "area-intro" ? 2.5 : 1.5}
           />
         ))}
         <path
-          d={hexPathPoints(fx.markAxial, hexSize, ox, oy, w, h, view)}
-          className={`combat-fx-mark-hex${phase === "damage" ? " combat-fx-mark-hex--pulse" : ""}`}
+          d={cellPathPoints(fx.markAxial, cellSize, ox, oy, w, h, view)}
+          className={`combat-fx-mark-cell${phase === "damage" ? " combat-fx-mark-cell--pulse" : ""}`}
           fill="none"
           stroke={accent}
           strokeWidth={3}
@@ -425,8 +425,8 @@ export function CombatFxLayer({
           fx.areaTargets?.map((t) => (
             <path
               key={t.tokenId}
-              d={hexPathPoints(t.axial, hexSize, ox, oy, w, h, view)}
-              className="combat-fx-mark-hex combat-fx-mark-hex--target"
+              d={cellPathPoints(t.axial, cellSize, ox, oy, w, h, view)}
+              className="combat-fx-mark-cell combat-fx-mark-cell--target"
               fill="none"
               stroke={accent}
               strokeWidth={2}
@@ -525,7 +525,7 @@ export function CombatFxLayer({
 
       {showDamage && fx.mode !== "area-simultaneous" && fx.damageTotal != null ? (
         <div
-          className={`combat-fx-damage combat-fx-damage--hex ${fx.critical ? "crit" : ""} ${fx.isHeal ? "heal" : ""}`}
+          className={`combat-fx-damage combat-fx-damage--cell ${fx.critical ? "crit" : ""} ${fx.isHeal ? "heal" : ""}`}
           style={{ left: to.x, top: to.y }}
         >
           <span className="combat-fx-damage-label">{fx.damageTypeLabel ?? "Dano"}</span>
@@ -543,7 +543,7 @@ export function CombatFxLayer({
             return (
               <div
                 key={t.tokenId}
-                className={`combat-fx-damage combat-fx-damage--hex ${t.critical ? "crit" : ""}${heal ? " heal" : ""}`}
+                className={`combat-fx-damage combat-fx-damage--cell ${t.critical ? "crit" : ""}${heal ? " heal" : ""}`}
                 style={{ left: pos.x, top: pos.y }}
               >
                 <span className="combat-fx-damage-label">{heal ? "Cura" : fx.damageTypeLabel ?? "Dano"}</span>

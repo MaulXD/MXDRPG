@@ -1,4 +1,4 @@
-import type { Axial } from "./hex-math";
+import type { Axial } from "./grid-math";
 
 export type TokenId = string;
 
@@ -47,7 +47,7 @@ export type BattleToken = {
   defesa?: number;
   /** Nome no mapa: hover (padrão) ou sempre visível */
   nameplateMode?: "hover" | "always";
-  /** Imagem circular no hex — sync do Actor.tokenImageUrl */
+  /** Imagem circular na célula — sync do Actor.tokenImageUrl */
   imageUrl?: string | null;
   /** Iniciativa rolada (ordem de combate) */
   initiative?: number;
@@ -63,14 +63,14 @@ export type BattleToken = {
   monsterVariant?: import("@/lib/vtt/monster-scaling").MonsterSpawnVariant;
   /** Foco da imagem no token (sync da ficha) */
   imageFocus?: import("@/lib/media/portrait-focus").PortraitFocus;
-  /** Tamanho corporal — Médio 1 hex · Grande 4 · Gigante 7 · … */
+  /** Tamanho corporal — Médio 1 célula · Grande 4 · Gigante 9 · … */
   creatureSize?: import("@/lib/vtt/creature-size").CreatureSize;
   /** @deprecated use creatureSize */
   footprint?: "medium" | "small";
-  /** Criatura que pode dividir hex com outra pequena */
-  sharedHex?: boolean;
-  /** Hex gastos no turno atual */
-  movementSpentHex?: number;
+  /** Criatura que pode dividir célula com outra pequena */
+  sharedCell?: boolean;
+  /** Células gastas no turno atual */
+  movementSpentCells?: number;
   /** Orçamento caminhada do turno (= walk) */
   movementWalkMax?: number;
   /** Orçamento corrida do turno (= run) */
@@ -88,7 +88,7 @@ export type BattleToken = {
   nextAttackBonus?: number;
   /** Inspiração de Batalha — próximo ataque com vantagem */
   allyAttackAdvantage?: boolean;
-  /** Reflexos de Masmorra — pode deslocar 1 hex como reação */
+  /** Reflexos de Masmorra — pode deslocar 1 célula como reação */
   reactionShiftReady?: boolean;
   /** Dano extra no próximo golpe (Canalizar Energia) */
   bonusDamageFormula?: string;
@@ -162,7 +162,7 @@ export type BattleScene = {
   id: string;
   name: string;
   gridRadius: number;
-  hexSize: number;
+  cellSize: number;
   tokens: BattleToken[];
   /** Camada de piso — URL da imagem de fundo abaixo do grid */
   mapImageUrl?: string | null;
@@ -170,11 +170,11 @@ export type BattleScene = {
   mapImageScale?: number;
   mapImageOffsetX?: number;
   mapImageOffsetY?: number;
-  /** Fog of war — jogadores só veem hexes revelados + visão dos próprios tokens */
+  /** Jogadores só veem células reveladas + visão dos próprios tokens */
   fogEnabled?: boolean;
   /** Chaves "q,r" reveladas permanentemente */
-  revealedHexes?: string[];
-  /** Camada de objetos/paredes — mestre edita; tokens não podem ocupar esses hexes */
+  revealedCells?: string[];
+  /** Camada de objetos/paredes — mestre edita; tokens não podem ocupar essas células */
   dungeonObjects?: DungeonObject[];
   /** Lousa — desenhos e anotações sobre o mapa */
   mapMarkups?: MapMarkup[];

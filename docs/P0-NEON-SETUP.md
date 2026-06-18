@@ -1,4 +1,4 @@
-# P0 — Neon + Vercel (gate PRD)
+# P0 — Neon + Postgres (gate PRD)
 
 > **Objetivo:** produção com `GET /api/health` → `{ "db": true, "persistence": "postgres" }`.  
 > Depois: **P1** Clerk, **P9** beta — [PRD-ELDARIN-VTT.md](./PRD-ELDARIN-VTT.md).
@@ -9,7 +9,7 @@
 2. **Connect** → escolha **Connection pooling** (hostname com `-pooler`).
 3. Copie a URL `postgresql://...?sslmode=require`.
 
-> Em **Vercel/serverless** use sempre o endpoint **pooler**. O endpoint direto (sem `-pooler`) estoura limite de conexões.
+> Em **produção (Docker/Contabo)** use sempre o endpoint **pooler**. O endpoint direto (sem `-pooler`) estoura limite de conexões.
 
 ## 2. Local (PowerShell)
 
@@ -37,7 +37,7 @@ Se `db: false`, a resposta em dev inclui `dbError` com a mensagem do Postgres.
 npm run smoke:p0
 ```
 
-## 3. Vercel (mxdrpg)
+## 3. Produção (Contabo / Docker)
 
 | Variável | Onde pegar |
 |----------|------------|
@@ -47,16 +47,14 @@ npm run smoke:p0
 
 Passos:
 
-1. Project **mxdrpg** → Settings → Environment Variables → `DATABASE_URL` (Production + Preview).
-2. Na máquina (com [Vercel CLI](https://vercel.com/docs/cli)):
+1. Defina `DATABASE_URL` e `SESSION_SECRET` no **servidor** (env do container / secrets do cluster).
+2. Na máquina local (com a **mesma** `DATABASE_URL` no `.env.local`):
 
 ```powershell
-npx vercel link
-npx vercel env pull .env.local
 npm run db:migrate
 ```
 
-3. Redeploy → `https://mxdrpg.vercel.app/api/health` → `db: true`.
+3. Rebuild + redeploy → `https://www.mxdrpg.com.br/api/health` → `db: true`.
 4. `/mestre` → criar sala → redeploy → sala ainda existe (não é `demo`).
 
 ## Scripts
@@ -82,14 +80,14 @@ npm run db:migrate
 | Sintoma | Fix |
 |---------|-----|
 | `db: false` + `dbError` | URL errada, SSL, ou migrate não rodou na mesma URL |
-| `too many connections` na Vercel | Troque para connection string **-pooler** |
+| `too many connections` no servidor | Troque para connection string **-pooler** |
 | migrate não acha env | Scripts carregam `.env.local` automaticamente |
 | sala some após deploy | `DATABASE_URL` diferente local vs prod |
 
 ## P0 / A1 concluído quando
 
 - [ ] Local: `npm run test:a1` OK
-- [ ] Prod: `SMOKE_BASE_URL=https://mxdrpg.vercel.app npm run smoke:a1` → health `db: true`
+- [ ] Prod: `SMOKE_BASE_URL=https://www.mxdrpg.com.br npm run smoke:a1` → health `db: true`
 - [ ] Sala criada em `/mestre` sobrevive redeploy
 
 Detalhe gate A1: [A1-NEON-SMOKE.md](./A1-NEON-SMOKE.md). Depois: [BETA-P9-CHECKLIST.md](./BETA-P9-CHECKLIST.md).

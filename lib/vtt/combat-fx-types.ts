@@ -1,5 +1,5 @@
 import type { AreaCascadeMode } from "@/lib/combat/area-cascade";
-import type { Axial } from "@/lib/vtt/hex-math";
+import type { Axial } from "@/lib/vtt/grid-math";
 import type { TokenCastFxKind } from "@/lib/vtt/token-cast-fx";
 
 export type CombatFxPhase = "mark" | "roll" | "result" | "damage" | "done";
@@ -49,7 +49,7 @@ export type CombatFxState = {
   resolveDetail?: string;
   damageTypeLabel?: string;
   spellDamageType?: string;
-  areaHexes?: Axial[];
+  areaCells?: Axial[];
   areaCascade?: AreaCascadeMode;
   areaTargets?: CombatFxTargetBurst[];
   cascadeIndex?: number;

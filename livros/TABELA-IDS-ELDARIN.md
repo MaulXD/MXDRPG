@@ -722,7 +722,7 @@
 
 | entryId | Nome | tipo |
 | --- | --- | --- |
-| habilidades-investida-hexagonal | Investida Hexagonal | habilidade |
+| habilidades-investida-em-linha | Investida em Linha | habilidade |
 | habilidades-golpe-flanqueador | Golpe Flanqueador | habilidade |
 | habilidades-postura-defensiva | Postura Defensiva | habilidade |
 | habilidades-reflexos-de-masmorra | Reflexos de Masmorra | habilidade |
@@ -801,11 +801,11 @@
 | magias-forma-menor | Forma Menor | magia |
 | magias-escudo-arcano | Escudo Arcano | magia |
 | magias-ilusao-menor | Ilusão Menor | magia |
-| magias-muralha-hexagonal | Muralha Hexagonal | magia |
+| magias-muralha-segmentada | Muralha Segmentada | magia |
 | magias-animacao-de-mortos | Animação de Mortos | magia |
 | magias-injecao-biomagica | Injeção Biomágica | magia |
 | magias-bola-de-fogo | Bola de Fogo | magia |
-| magias-nova-hex | Nova Hex | magia |
+| magias-nova-radiante | Nova Radiante | magia |
 | magias-contagio-necrotico | Contágio Necrótico | magia |
 | magias-ventania | Ventania | magia |
 | magias-ler-mentes | Ler Mentes | magia |

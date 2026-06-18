@@ -5,7 +5,7 @@ import { getSql } from "@/lib/db/client";
 let ensured = false;
 let ensuring: Promise<void> | null = null;
 
-/** Aplica patches idempotentes quando migrate não rodou no deploy (ex.: Vercel). */
+/** Aplica patches idempotentes quando migrate não rodou no deploy. */
 export async function ensureDbMigrations(): Promise<void> {
   if (ensured) return;
   if (ensuring) {

@@ -66,7 +66,7 @@ Refatorar **combate**, **economia de PA**, **fluxo de turno** e **shell da mesa*
 | **R25** | **0 HP:** **inconsciente** imediato. Contador de morte: **10 rodadas** sem qualquer cura → morte. Ao chegar em 0, contador mínimo **−1** (dano extra não piora além disso). |
 | **R26** | **XP:** automático ao derrotar token; mestre pode **desativar XP de monstros**, dar **XP manual a todos**, ou **subir 1 nível direto** a todos. |
 | **R27** | **Friendly fire (área):** **confirmação obrigatória** se aliado na área. |
-| **R28** | **Grid:** mapa em **grid quadrado** (não hexagonal); **1 célula = 1,5 m**. Terminologia usuário: **célula** / **grid** (código interno pode manter ids legados `*Hex*` até Epic E10). |
+| **R28** | **Grid:** mapa em **grid quadrado** (não simétrico); **1 célula = 1,5 m**. Terminologia usuário: **célula** / **grid** (código interno pode manter ids legados `*Cell*` até Epic E10). |
 
 ### 2.5 Sync (recomendação técnica — Raul)
 
@@ -75,7 +75,7 @@ Refatorar **combate**, **economia de PA**, **fluxo de turno** e **shell da mesa*
 | **R29** | **Fase 1 (esta refatoração):** manter HTTP + **poll 500 ms em modo combate**, 2 s em exploração — sem WebSocket obrigatório. |
 | **R30** | **Fase 2:** WebSocket (ou SSE) quando houver >3 salas simultâneas ou latência perceptível; prioridade após E1–E4 estáveis. |
 
-**Por que não WebSocket agora:** menor risco para dev solo; poll mais rápido em combate resolve 80% da latência; Neon + Vercel serverless combina bem com REST; WebSocket exige infra extra (Room channel, reconexão, auth).
+**Por que não WebSocket agora:** menor risco para dev solo; poll mais rápido em combate resolve 80% da latência; Neon + REST combina bem com Docker; WebSocket exige infra extra (Room channel, reconexão, auth).
 
 ---
 
@@ -85,7 +85,7 @@ Refatorar **combate**, **economia de PA**, **fluxo de turno** e **shell da mesa*
 |--------|------|
 | Cantrip | **Estribilho** |
 | Ação bônus (slot) | **Ação rápida** — custo **PA** (geralmente 1) |
-| Hex (mapa) | **Célula** / **grid quadrado** |
+| Célula (mapa) | **Célula** / **grid quadrado** |
 | PA /11, teto 11 | **PA /9** pool (talento Lobo Solitário: até 11) |
 
 ---
@@ -103,7 +103,7 @@ Refatorar **combate**, **economia de PA**, **fluxo de turno** e **shell da mesa*
 | E7 | Checkpoint 20 rodadas + undo mestre | P1 |
 | E8 | Poll combate 500 ms | P1 |
 | E9 | Mobile paridade | P1 |
-| E10 | Renomear APIs `*hex*` → `*cell*` + migração geométrica se ainda hex no canvas | P2 |
+| E10 | Renomear APIs legadas → `*cell*` + migração geométrica se ainda célula no canvas | P2 |
 | E11 | Culinária/loot na mesa | P2 (fase 2) |
 
 ---

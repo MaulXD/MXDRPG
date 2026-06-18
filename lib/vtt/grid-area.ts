@@ -1,9 +1,9 @@
-import type { Axial } from "@/lib/vtt/hex-math";
+import type { Axial } from "@/lib/vtt/grid-math";
 import {
   GRID_DIRECTION_COUNT,
-  HEX_DIRECTIONS,
-  hexesInRange,
-} from "@/lib/vtt/hex-math";
+  GRID_DIRECTIONS,
+  cellsInRange,
+} from "@/lib/vtt/grid-math";
 
 export type AreaShape = "single" | "burst" | "wall" | "cone" | "line" | "cube";
 
@@ -17,19 +17,19 @@ export function areaUsesCasterOrigin(shape: AreaShape): boolean {
 }
 
 function axialStep(from: Axial, dirIdx: number, steps = 1): Axial {
-  const d = HEX_DIRECTIONS[dirIdx % GRID_DIRECTION_COUNT]!;
+  const d = GRID_DIRECTIONS[dirIdx % GRID_DIRECTION_COUNT]!;
   return { q: from.q + d.q * steps, r: from.r + d.r * steps };
 }
 
 /** Perpendicular à direção (rotação 90° no grid). */
 function perpDirection(dirIdx: number): Axial {
-  const d = HEX_DIRECTIONS[dirIdx % GRID_DIRECTION_COUNT]!;
+  const d = GRID_DIRECTIONS[dirIdx % GRID_DIRECTION_COUNT]!;
   return { q: -d.r, r: d.q };
 }
 
 /** Linha de células a partir do centro na direção 0–7. */
-export function lineHexes(center: Axial, directionIdx: number, lengthHex: number): Axial[] {
-  const len = Math.max(1, lengthHex);
+export function lineCells(center: Axial, directionIdx: number, lengthCells: number): Axial[] {
+  const len = Math.max(1, lengthCells);
   const out: Axial[] = [];
   for (let i = 1; i <= len; i++) {
     out.push(axialStep(center, directionIdx, i));
@@ -38,8 +38,8 @@ export function lineHexes(center: Axial, directionIdx: number, lengthHex: number
 }
 
 /** Cone no grid quadrado: alarga 1 célula por passo na direção escolhida. */
-export function coneHexes(center: Axial, directionIdx: number, lengthHex: number): Axial[] {
-  const len = Math.max(1, lengthHex);
+export function coneCells(center: Axial, directionIdx: number, lengthCells: number): Axial[] {
+  const len = Math.max(1, lengthCells);
   const map = new Map<string, Axial>();
   const key = (a: Axial) => `${a.q},${a.r}`;
   map.set(key(center), center);
@@ -58,23 +58,23 @@ export function coneHexes(center: Axial, directionIdx: number, lengthHex: number
   return [...map.values()];
 }
 
-export function computeAreaHexes(opts: {
+export function computeAreaCells(opts: {
   center: Axial;
   shape: AreaShape;
-  radiusHex?: number;
-  hexCount?: number;
-  lengthHex?: number;
+  radiusCells?: number;
+  cellCount?: number;
+  lengthCells?: number;
   direction?: number | null;
 }): Axial[] {
   const { center, shape } = opts;
 
   if (shape === "burst" || shape === "cube") {
-    const r = Math.max(1, opts.radiusHex ?? opts.lengthHex ?? 1);
-    return hexesInRange(center, r);
+    const r = Math.max(1, opts.radiusCells ?? opts.lengthCells ?? 1);
+    return cellsInRange(center, r);
   }
 
   if (shape === "wall") {
-    const count = Math.max(1, opts.hexCount ?? 3);
+    const count = Math.max(1, opts.cellCount ?? 3);
     const dir = opts.direction ?? 0;
     const out: Axial[] = [];
     for (let i = 0; i < count; i++) {
@@ -85,12 +85,12 @@ export function computeAreaHexes(opts: {
 
   if (shape === "line") {
     const dir = opts.direction ?? 0;
-    return lineHexes(center, dir, opts.lengthHex ?? opts.radiusHex ?? 3);
+    return lineCells(center, dir, opts.lengthCells ?? opts.radiusCells ?? 3);
   }
 
   if (shape === "cone") {
     const dir = opts.direction ?? 0;
-    return coneHexes(center, dir, opts.lengthHex ?? opts.radiusHex ?? 2);
+    return coneCells(center, dir, opts.lengthCells ?? opts.radiusCells ?? 2);
   }
 
   return [center];

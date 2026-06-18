@@ -1,7 +1,7 @@
 "use client";
 
 import type { BattleToken } from "@/lib/vtt/types";
-import type { Axial } from "@/lib/vtt/hex-math";
+import type { Axial } from "@/lib/vtt/grid-math";
 import type { RoomActor, RoomSnapshot } from "@/lib/room/types";
 import type { CombatTrack } from "@/lib/room/combat";
 import { activeTokenId } from "@/lib/room/combat";

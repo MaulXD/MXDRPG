@@ -130,13 +130,13 @@ O arquivo `data/character/spell-lists.json` espelha estas listas para o compendi
 ### NIVEL 0 — TRUQUES (SEM CUSTO DE ESPACO)
 
 **Brasa Espectral** — Evocacao | Acao | Pessoal | Concentração até 1 h
-Luz fria em penumbra (6 hex). Toque opcional: 1d4 fogo. **Não cozinha.** Proibida como chama aberta em biomas de gás (12, 10, 8, 4) — use Kit de Brasas.
+Luz fria em penumbra (6 células). Toque opcional: 1d4 fogo. **Não cozinha.** Proibida como chama aberta em biomas de gás (12, 10, 8, 4) — use Kit de Brasas.
 
 **Lâmina de Espirito** — Transmutação | Acao Bonus | Pessoal | 1 minuto
 Lâmina eterea (1d4 forca). +2 em Extração com ela.
 
 **Sentir Toxina** — Adivinhacao | Acao | Pessoal | 1 rodada ou 10 min
-Detecta veneno/doença em criaturas e objetos num raio de 3 hex (aura avermelhada).
+Detecta veneno/doença em criaturas e objetos num raio de 3 células (aura avermelhada).
 
 **Estabilizar** — Abjuracao | Acao | Toque | Instantanea | Clérigo, Druida
 Criatura a 0 HP para de fazer falhas de morte; não cura HP.

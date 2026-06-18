@@ -12,7 +12,7 @@
 
 ## UI
 
-`MesaWorkspace` passa `canControlToken` → `HexBattlefield` habilita painel de ações só no token permitido.
+`MesaWorkspace` passa `canControlToken` → `Battlefield` habilita painel de ações só no token permitido.
 
 ## Pendente (P8 completo)
 

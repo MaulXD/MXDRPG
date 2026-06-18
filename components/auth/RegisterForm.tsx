@@ -72,10 +72,10 @@ export function RegisterForm({ redirect = "" }: Props) {
 
   return (
     <form className="auth-form" onSubmit={submit} autoComplete="on">
-      <p className="auth-form__intro">
+        <p className="auth-form__intro">
         Conta nova pode <strong>criar mesas</strong> como mestre — o código de convite é gerado
-        automaticamente para jogadores entrarem. Se você entrou antes com Google/Discord, use o
-        mesmo e-mail aqui para <strong>definir uma senha</strong>.
+        automaticamente para jogadores entrarem. Se você já entrou com Google/Discord, use o mesmo
+        e-mail aqui para <strong>definir uma senha</strong> opcional.
       </p>
       <label className="auth-field">
         <span className="auth-field__label">Nome</span>

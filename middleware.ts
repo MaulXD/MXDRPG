@@ -2,7 +2,7 @@ import { clerkMiddleware } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import { isClerkEnabled } from "@/lib/auth/clerk-config";
 
-/** Só ativa clerkMiddleware com pk + sk — evita 500 se só uma chave existir na Vercel. */
+/** Só ativa clerkMiddleware com pk + sk — evita 500 se só uma chave existir no servidor. */
 export default isClerkEnabled()
   ? clerkMiddleware()
   : () => NextResponse.next();

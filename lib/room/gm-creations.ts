@@ -10,7 +10,7 @@ import {
   type MonsterTier,
 } from "@/lib/vtt/monsters";
 import { monsterCombatActions } from "@/lib/vtt/monster-actions";
-import type { Axial } from "@/lib/vtt/hex-math";
+import type { Axial } from "@/lib/vtt/grid-math";
 import type { BattleToken } from "@/lib/vtt/types";
 import type { RoomActor, RoomState } from "./types";
 import { normalizeRoomSettings } from "./settings";
@@ -289,7 +289,7 @@ export function gmCreationCombatActions(creation: GmCreation): CombatActionOptio
   if (stats.actions.length > 0) {
     return stats.actions.map((a) => ({
       ...a,
-      label: a.label ?? `${a.name} · ${a.rangeHex ?? 1} cél. · PA ${a.paCost}`,
+      label: a.label ?? `${a.name} · ${a.rangeCells ?? 1} cél. · PA ${a.paCost}`,
     }));
   }
   if (creation.source.type === "monster" && creation.source.id) {

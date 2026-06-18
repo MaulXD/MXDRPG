@@ -1,10 +1,10 @@
 import type { BattlefieldView } from "@/lib/vtt/battlefield-view";
 import { canvasCenter } from "@/lib/vtt/battlefield-view";
-import type { Axial } from "@/lib/vtt/hex-math";
+import type { Axial } from "@/lib/vtt/grid-math";
 import { lodDisplayGridRadiusCap } from "@/lib/vtt/canvas-lod";
 
 /** Células do grid quadrado dentro do raio da cena. */
-export function buildHexGrid(gridRadius: number): Axial[] {
+export function buildCellGrid(gridRadius: number): Axial[] {
   const cells: Axial[] = [];
   const R = gridRadius;
   for (let q = -R; q <= R; q++) {
@@ -19,7 +19,7 @@ export function buildHexGrid(gridRadius: number): Axial[] {
 export function viewportGridRadius(
   w: number,
   h: number,
-  hexSize: number,
+  cellSize: number,
   view: Pick<BattlefieldView, "scale" | "panX" | "panY"> | number = 1
 ): number {
   const scale =
@@ -27,7 +27,7 @@ export function viewportGridRadius(
   const panX = typeof view === "number" ? 0 : view.panX;
   const panY = typeof view === "number" ? 0 : view.panY;
   const { ox, oy } = canvasCenter(w, h);
-  const size = Math.max(hexSize, 1);
+  const size = Math.max(cellSize, 1);
 
   const relLeft = (panX + ox) / scale;
   const relRight = (w - panX - ox) / scale;
@@ -43,26 +43,26 @@ export function viewportGridRadius(
 export const DISPLAY_GRID_RADIUS_CAP = 24;
 
 /** Raio efetivo do grid de desenho (cena + viewport, com teto). */
-export function displayHexGridRadius(
+export function displayGridRadius(
   sceneRadius: number,
   w: number,
   h: number,
-  hexSize: number,
+  cellSize: number,
   view: Pick<BattlefieldView, "scale" | "panX" | "panY"> | number = 1
 ): number {
   const viewScale = typeof view === "number" ? view : view.scale;
-  const viewportR = viewportGridRadius(w, h, hexSize, view);
+  const viewportR = viewportGridRadius(w, h, cellSize, view);
   const radiusCap = lodDisplayGridRadiusCap(viewScale);
   return Math.min(Math.max(sceneRadius, viewportR), Math.max(sceneRadius, radiusCap));
 }
 
 /** Grid da cena expandido até preencher o viewport (com teto de performance). */
-export function buildDisplayHexGrid(
+export function buildDisplayGrid(
   sceneRadius: number,
   w: number,
   h: number,
-  hexSize: number,
+  cellSize: number,
   view: Pick<BattlefieldView, "scale" | "panX" | "panY"> | number = 1
 ): Axial[] {
-  return buildHexGrid(displayHexGridRadius(sceneRadius, w, h, hexSize, view));
+  return buildCellGrid(displayGridRadius(sceneRadius, w, h, cellSize, view));
 }

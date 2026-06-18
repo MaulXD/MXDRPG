@@ -16,10 +16,10 @@ import { canAbilityTarget, canUseAbility } from "@/lib/combat/ability";
 import { canCastAreaAt } from "@/lib/combat/area-spell";
 import { estimateTargetCombatPreview } from "@/lib/combat/hit-chance";
 import type { CharacterSheet } from "@/lib/character/types";
-import type { Axial } from "@/lib/vtt/hex-math";
+import type { Axial } from "@/lib/vtt/grid-math";
 import {
   canMoveToken,
-  hexToMeters,
+  cellsToMeters,
   formatMovementLabel,
   movementRunMax,
   movementWalkMax,
@@ -84,7 +84,7 @@ export function previewMoveFromCheck(
       tone: "ok",
     });
     lines.push({
-      text: `Este passo: ${check.dist} cél. · ${hexToMeters(check.dist)} m`,
+      text: `Este passo: ${check.dist} cél. · ${cellsToMeters(check.dist)} m`,
       tone: "ok",
     });
     if (check.path && check.path.length > 1) {

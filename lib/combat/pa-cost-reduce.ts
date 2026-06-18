@@ -84,7 +84,7 @@ function ruleApplies(
   const isWeaponLike = action.kind === "weapon" || action.kind === "unarmed";
   const weaponHitCap = rule.weaponHitCap ?? (rule.firstWeaponHitOnly === false ? 99 : 1);
   if (isWeaponLike && (ctx?.attackIndex ?? 1) > weaponHitCap) return false;
-  if (rule.rangedOnly && action.rangeHex <= 1) return false;
+  if (rule.rangedOnly && action.rangeCells <= 1) return false;
   if (rule.areaOnly && (!action.areaShape || action.areaShape === "single")) return false;
   if (rule.minPaCost != null && action.paCost < rule.minPaCost) return false;
   if (!matchesDamageType(action, rule.damageTypes)) return false;
