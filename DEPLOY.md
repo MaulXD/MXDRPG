@@ -38,6 +38,8 @@ Callbacks a cadastrar nos consoles:
 
 Sem OAuth: login demo (`mestre` / `jogador`, senha `123`) ou e-mail/senha em `/entrar`.
 
+**Recuperar senha:** cadastre em `/conta` os 5 primeiros dígitos do CPF + data de nascimento; use `/entrar/recuperar`.
+
 ## Banco
 
 ```bash

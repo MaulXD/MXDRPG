@@ -220,6 +220,19 @@ export async function ensureDbMigrations(): Promise<void> {
       WHERE lower(trim(data->>'name')) = 'minha rola';
     `);
 
+    await sql.unsafe(`
+      ALTER TABLE eldarin_users ADD COLUMN IF NOT EXISTS cpf_prefix_hash TEXT;
+      ALTER TABLE eldarin_users ADD COLUMN IF NOT EXISTS birth_date DATE;
+      ALTER TABLE eldarin_users ADD COLUMN IF NOT EXISTS oauth_provider TEXT;
+      ALTER TABLE eldarin_users ADD COLUMN IF NOT EXISTS oauth_subject TEXT;
+    `);
+
+    await sql.unsafe(`
+      CREATE UNIQUE INDEX IF NOT EXISTS eldarin_users_oauth_identity
+        ON eldarin_users (oauth_provider, oauth_subject)
+        WHERE oauth_provider IS NOT NULL AND oauth_subject IS NOT NULL;
+    `);
+
     ensured = true;
   })().catch((err) => {
     ensuring = null;

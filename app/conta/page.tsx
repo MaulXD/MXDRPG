@@ -1,10 +1,12 @@
 import Link from "next/link";
 import { AvatarProfileForm } from "@/components/auth/AvatarProfileForm";
+import { RecoveryIdentityForm } from "@/components/auth/RecoveryIdentityForm";
 import { NicknameForm } from "@/components/auth/NicknameForm";
 import { MedievalFrame } from "@/components/ui/MedievalFrame";
 import { listCharactersForSessionUser } from "@/lib/character/characters";
 import { getAdventure } from "@/lib/adventure/store";
 import { dbEnabled } from "@/lib/db/enabled";
+import { userHasRecoveryConfigured } from "@/lib/auth/password-recover";
 import { materializeSessionUser } from "@/lib/auth/session-user";
 import { getSession } from "@/lib/auth/session";
 import { pageMetadata } from "@/lib/site-metadata";
@@ -24,6 +26,7 @@ export default async function ContaPage() {
   }
 
   const accountUser = await materializeSessionUser(session.user);
+  const hasRecovery = await userHasRecoveryConfigured(accountUser.id);
   const displayName = accountUser.nickname ?? accountUser.name;
   const myCharacters = await listCharactersForSessionUser(accountUser);
 
@@ -51,6 +54,15 @@ export default async function ContaPage() {
         </h2>
         <NicknameForm initialNickname={accountUser.nickname ?? ""} />
       </MedievalFrame>
+
+      <div style={{ marginTop: "1.25rem" }}>
+        <MedievalFrame variant="iron" page>
+          <h2 className="eyebrow" style={{ margin: "0 0 0.75rem" }}>
+            Recuperação de senha
+          </h2>
+          <RecoveryIdentityForm initialHasRecovery={hasRecovery} />
+        </MedievalFrame>
+      </div>
 
       <div style={{ marginTop: "1.25rem" }}>
         <MedievalFrame variant="iron" page>

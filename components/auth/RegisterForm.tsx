@@ -14,6 +14,8 @@ export function RegisterForm({ redirect = "", persistentAccounts = true }: Props
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
+  const [cpfPrefix, setCpfPrefix] = useState("");
+  const [birthDate, setBirthDate] = useState("");
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
   const [loading, setLoading] = useState(false);
@@ -24,6 +26,8 @@ export function RegisterForm({ redirect = "", persistentAccounts = true }: Props
     setEmail("");
     setPassword("");
     setPasswordConfirm("");
+    setCpfPrefix("");
+    setBirthDate("");
     setError("");
     setNotice("");
   }
@@ -50,6 +54,8 @@ export function RegisterForm({ redirect = "", persistentAccounts = true }: Props
         email,
         password,
         redirect: redirect || undefined,
+        cpfPrefix: cpfPrefix.trim() || undefined,
+        birthDate: birthDate.trim() || undefined,
       }),
     });
     const data = await res.json();
@@ -138,6 +144,33 @@ export function RegisterForm({ redirect = "", persistentAccounts = true }: Props
         minLength={6}
         placeholder="Repita a senha"
       />
+      <details className="auth-form__intro" style={{ marginTop: "0.5rem" }}>
+        <summary style={{ cursor: "pointer" }}>Recuperação de senha (opcional)</summary>
+        <p style={{ margin: "0.5rem 0", color: "var(--text-muted)", fontSize: "0.85rem" }}>
+          5 primeiros dígitos do CPF + data de nascimento — para redefinir senha depois.
+        </p>
+        <label className="auth-field">
+          <span className="auth-field__label">CPF (5 dígitos)</span>
+          <input
+            type="text"
+            inputMode="numeric"
+            maxLength={5}
+            value={cpfPrefix}
+            onChange={(e) => setCpfPrefix(e.target.value.replace(/\D/g, "").slice(0, 5))}
+            className="auth-field__input"
+            placeholder="12345"
+          />
+        </label>
+        <label className="auth-field">
+          <span className="auth-field__label">Data de nascimento</span>
+          <input
+            type="date"
+            value={birthDate}
+            onChange={(e) => setBirthDate(e.target.value)}
+            className="auth-field__input"
+          />
+        </label>
+      </details>
       {error ? <p className="auth-form__error" role="alert">{error}</p> : null}
       {notice ? <p className="auth-form__success" role="status">{notice}</p> : null}
       <div className="auth-form__actions">
