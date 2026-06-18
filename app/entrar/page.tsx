@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { AuthTabs } from "@/components/auth/AuthTabs";
 import { EldarinLogo } from "@/components/brand/EldarinLogo";
-import { oauthProvidersEnabled } from "@/lib/auth/oauth-config";
+import { authLoginLead, getAuthCapabilities } from "@/lib/auth/auth-capabilities";
 import {
   DEFAULT_POST_AUTH_PATH,
   postAuthRedirect,
@@ -33,7 +33,7 @@ export default async function EntrarPage({ searchParams }: Props) {
     redirect(postAuthRedirect(session.user, afterAuth));
   }
 
-  const oauthProviders = oauthProvidersEnabled();
+  const auth = getAuthCapabilities();
   const initialTab = params.tab === "register" ? "register" : "login";
   const errorCode = params.error?.trim();
   const errorMsg =
@@ -50,7 +50,7 @@ export default async function EntrarPage({ searchParams }: Props) {
         </p>
         <h1 className="display-lg">Entrar ou criar conta</h1>
         <p className="lead" style={{ marginBottom: 0 }}>
-          Uma conta para mesas, fichas e convites — e-mail/senha ou Google/Discord.
+          {authLoginLead(auth)}
         </p>
       </header>
 
@@ -60,19 +60,31 @@ export default async function EntrarPage({ searchParams }: Props) {
             {errorMsg}
           </p>
         ) : null}
+        {!auth.persistentAccounts && auth.emailLogin ? (
+          <p
+            className="auth-form__intro"
+            style={{ marginTop: 0, marginBottom: "1rem", color: "var(--text-muted)" }}
+          >
+            Servidor sem banco — use <strong>Demo Mestre</strong> ou <strong>Demo Jogador</strong>{" "}
+            (senha <code>123</code>). Cadastro com e-mail funciona só enquanto o container estiver no ar.
+          </p>
+        ) : null}
         <AuthTabs
           redirect={afterAuth}
           initialTab={initialTab}
-          oauthProviders={oauthProviders}
+          oauthProviders={auth.oauthProviders}
+          persistentAccounts={auth.persistentAccounts}
         />
       </div>
 
-      <article className="glass content-card" style={{ marginTop: "1.25rem" }}>
-        <h2>Contas demo</h2>
-        <p style={{ margin: 0, color: "var(--text-muted)", lineHeight: 1.8 }}>
-          Usuário <code>mestre</code> ou <code>jogador</code> · senha <code>123</code>
-        </p>
-      </article>
+      {auth.emailLogin ? (
+        <article className="glass content-card" style={{ marginTop: "1.25rem" }}>
+          <h2>Contas demo</h2>
+          <p style={{ margin: 0, color: "var(--text-muted)", lineHeight: 1.8 }}>
+            Usuário <code>mestre</code> ou <code>jogador</code> · senha <code>123</code>
+          </p>
+        </article>
+      ) : null}
     </div>
   );
 }
