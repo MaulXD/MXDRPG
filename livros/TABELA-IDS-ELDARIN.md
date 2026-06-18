@@ -780,32 +780,35 @@
 
 | entryId | Nome | tipo |
 | --- | --- | --- |
-| magias-chama-de-fogareiro | Brasa Espectral | magia |
+| magias-chama-de-fogareiro | Chama de Fogareiro | magia |
 | magias-lamina-de-espirito | Lâmina de Espírito | magia |
-| magias-detectar-veneno | Sentir Toxina | magia |
+| magias-detectar-veneno | Detectar Veneno | magia |
 | magias-estabilizar | Estabilizar | magia |
-| magias-maos-firmes | Mãos Estáveis | magia |
-| magias-extracao-amplificada | Marca da Caçada | magia |
+| magias-maos-firmes | Mãos Firmes | magia |
+| magias-extracao-amplificada | Extração Amplificada | magia |
 | magias-maos-gelidas | Mãos Gelidas | magia |
 | magias-crescimento-acelerado | Crescimento Acelerado | magia |
 | magias-purificar-veneno | Purificar Veneno | magia |
+| magias-identificar-ingrediente | Identificar Ingrediente | magia |
 | magias-armadura-arcana | Armadura Arcana | magia |
 | magias-onda-de-trovao | Onda de Trovão | magia |
 | magias-curar-ferimentos | Curar Ferimentos | magia |
 | magias-chama-de-vinha | Chama de Vinha | magia |
 | magias-sussurro-de-masmorra | Sussurro de Masmorra | magia |
+| magias-aprimoramento-biomagico | Aprimoramento Biomágico | magia |
 | magias-raios-de-enfraquecimento | Raios de Enfraquecimento | magia |
 | magias-esfera-acida-de-monstro | Esfera Ácida de Monstro | magia |
 | magias-transmutacao-de-carne | Transmutação de Carne | magia |
-| magias-inspiracao-culinaria | Ímpeto Inspirador | magia |
+| magias-inspiracao-culinaria | Inspiração Culinária | magia |
+| magias-preservacao-perfeita | Preservação Perfeita | magia |
 | magias-forma-menor | Forma Menor | magia |
 | magias-escudo-arcano | Escudo Arcano | magia |
 | magias-ilusao-menor | Ilusão Menor | magia |
-| magias-muralha-segmentada | Muralha Segmentada | magia |
+| magias-muralha-de-energia | Muralha de Energia | magia |
 | magias-animacao-de-mortos | Animação de Mortos | magia |
 | magias-injecao-biomagica | Injeção Biomágica | magia |
 | magias-bola-de-fogo | Bola de Fogo | magia |
-| magias-nova-radiante | Nova Radiante | magia |
+| magias-nova-arcana | Nova Arcana | magia |
 | magias-contagio-necrotico | Contágio Necrótico | magia |
 | magias-ventania | Ventania | magia |
 | magias-ler-mentes | Ler Mentes | magia |
@@ -816,6 +819,7 @@
 | magias-murcha | Murcha | magia |
 | magias-mutacao-forcada | Mutação Forçada | magia |
 | magias-parede-de-fogo | Parede de Fogo | magia |
+| magias-preservacao-anual | Preservação Anual | magia |
 | magias-cura-em-massa | Cura em Massa | magia |
 | magias-ressurreicao-incompleta | Ressurreição Incompleta | magia |
 | magias-grande-transmutacao-biomagica | Grande Transmutação Biomágica | magia |
@@ -834,7 +838,7 @@
 | magias-biomancia-suprema-transcendencia | Biomancia Suprema — Transcendência | magia |
 | magias-desejo-de-morte | Desejo de Morte | magia |
 | magias-maos-ardentes | Mãos Ardentes | magia |
-| magias-gelo-de-conservacao | Couraça de Gelo | magia |
+| magias-gelo-de-conservacao | Gelo de Conservação | magia |
 | magias-fermentacao-acelerada | Fermentação Acelerada | magia |
 | magias-purificacao-abencoada | Purificação Abençoada | magia |
 | magias-esporos-necroticos | Esporos Necróticos | magia |
