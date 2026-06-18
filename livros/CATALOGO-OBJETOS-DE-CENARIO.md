@@ -107,7 +107,7 @@
 | ID | Nome | Tipo | Mecanica | Sobrevivencia |
 |----|------|------|----------|---------------|
 | OBJ-B06-01 | Parede-Espelho | ME | Percepção passiva metade; 1d4 cortante ao tocar | Flor Espelho (#10) |
-| OBJ-B06-02 | Reflexo Falso (ilusao) | PE | INT CD 13 ou ataca aliado 1 vez | Assim. 045 Doppelganger |
+| OBJ-B06-02 | Reflexo Falso (ilusao) | PE | INT CD 13 ou ataca aliado 1 vez | Assim. 045 Metamorfo Dúbio |
 | OBJ-B06-03 | Cristal Vivo (veio) | RE | Coleta: P28 1x com Extração CD 14 | Cristal-Mel (#28) |
 | OBJ-B06-04 | Camara de Luz Cegante | TE | Sem #10: Desvantagem ataques distancia 1 combaté | — |
 
@@ -211,7 +211,7 @@
 |----|------|------|----------|---------------|
 | OBJ-B15-01 | Duna Muscular | CH | Movimento -3m; furtividade +2 (cor camufla) | Hera Sangrenta (#13) |
 | OBJ-B15-02 | Arteria Rota (teto) | TE | 2d6 sangue/rodada no raio 2m | Estômago Ferro CD 12 |
-| OBJ-B15-03 | Rio de Sangue Coagulado | PE | Doenca CD 12 ou 1d4 necrótico/dia | Ghoul 003 assimilação |
+| OBJ-B15-03 | Rio de Sangue Coagulado | PE | Doenca CD 12 ou 1d4 necrótico/dia | Necrófago 003 assimilação |
 
 ---
 

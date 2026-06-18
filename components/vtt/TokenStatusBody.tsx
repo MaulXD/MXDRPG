@@ -4,6 +4,7 @@ import type { BattleToken } from "@/lib/vtt/types";
 import type { CombatTrack } from "@/lib/room/combat";
 import { TokenStatusList } from "@/components/vtt/TokenStatusList";
 import { TokenConditionsPanel } from "@/components/vtt/TokenConditionsPanel";
+import { TokenDelegatePanel } from "@/components/vtt/TokenDelegatePanel";
 import { PaHudMeter } from "@/components/vtt/PaHudMeter";
 import { formatTokenHpLine, hpBarColor, hpRatio } from "@/lib/vtt/token-hp-display";
 
@@ -14,6 +15,8 @@ type Props = {
   canApplyConditions: boolean;
   onUpdate: () => void;
   compact?: boolean;
+  canDelegate?: boolean;
+  delegateCandidates?: { userId: string; label: string }[];
 };
 
 export function TokenStatusBody({
@@ -23,6 +26,8 @@ export function TokenStatusBody({
   canApplyConditions,
   onUpdate,
   compact = false,
+  canDelegate = false,
+  delegateCandidates = [],
 }: Props) {
   return (
     <div className={`vtt-status-body${compact ? " vtt-status-body--compact" : ""}`}>
@@ -67,6 +72,15 @@ export function TokenStatusBody({
           Condições são aplicadas pelo mestre. Aqui você consulta os efeitos ativos.
         </p>
       )}
+
+      {canDelegate ? (
+        <TokenDelegatePanel
+          roomId={roomId}
+          token={token}
+          candidates={delegateCandidates}
+          onUpdate={onUpdate}
+        />
+      ) : null}
     </div>
   );
 }

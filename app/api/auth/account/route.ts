@@ -15,7 +15,7 @@ export async function PATCH(req: Request) {
   }
   if (!dbEnabled()) {
     return NextResponse.json(
-      { error: "Perfil requer Postgres (DATABASE_URL)" },
+      { error: "Perfil requer MariaDB (DATABASE_URL)" },
       { status: 503 }
     );
   }
@@ -50,7 +50,7 @@ export async function DELETE() {
 
   if (!dbEnabled()) {
     return NextResponse.json(
-      { error: "Exclusão de conta requer Postgres (DATABASE_URL)" },
+      { error: "Exclusão de conta requer MariaDB (DATABASE_URL)" },
       { status: 503 }
     );
   }

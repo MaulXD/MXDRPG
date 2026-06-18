@@ -56,7 +56,7 @@ npm run smoke:a1
 4. **SELECT** — confere revision e tokens
 5. **UPSERT** + **SELECT** em `eldarin_characters`
 6. **DELETE** linhas de teste
-7. **GET /api/health** — `db: true`, `persistence: postgres`
+7. **GET /api/health** — `db: true`, `persistence: mariadb`
 
 ## Comportamento do app
 

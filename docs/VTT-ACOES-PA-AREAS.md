@@ -33,7 +33,7 @@ PA: 2 → 1 (Afinidade) · Restam 4/6
 | Modo | PA | Implementação |
 |------|-----|----------------|
 | Movimentação | **Faixas** | `lib/vtt/movement-pa.ts` — 1º bloco = 1 PA; meio livre; corrida a partir de `walk+2` |
-| Alcance / preview | **Pés (D&D)** | `lib/vtt/movement-feet.ts` — BFS com diagonais 5/10 ft; não quadrado Chebyshev |
+| Alcance / preview | **Pés (fantasia clássica)** | `lib/vtt/movement-feet.ts` — BFS com diagonais 5/10 ft; não quadrado Chebyshev |
 | Caminho | Rota no grid | `lib/vtt/movement-path.ts` + `useBattlefieldHighlights` |
 | Limite | walk / run | Por ficha/monstro; ex. walk 4 run 7: cél. 1–2 → 1 PA; 3–5 livre; 6+ → PA corrida |
 

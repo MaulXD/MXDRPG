@@ -135,7 +135,7 @@
 
 | Necessidade | Flora | Fauna |
 |-------------|-------|-------|
-| Ilusao/orientacao | #10 Flor Espelho · #28 Cristal-Mel | #045 Doppelganger · #049 Gargula |
+| Ilusao/orientacao | #10 Flor Espelho · #28 Cristal-Mel | #045 Metamorfo Dúbio · #049 Gargula |
 | CA/reflexo | #21 Casca-Brilho | #039 Slime Cristal |
 
 **Objetos:** OBJ-B06-01 a 04.
@@ -154,7 +154,7 @@
 
 | Necessidade | Flora | Fauna |
 |-------------|-------|-------|
-| Veneno/necrose | #07 Trevo | #003 Ghoul · #004 Espectro |
+| Veneno/necrose | #07 Trevo | #003 Necrófago · #004 Espectro |
 | Lore/ruinas | #24 Musgo Lareth | #002 Esqueleto |
 | Nutricao escassa | #19 se achar | #054 Ciclope |
 
@@ -324,7 +324,7 @@
 
 | Necessidade | Flora | Fauna |
 |-------------|-------|-------|
-| Doenca/necrose | #13 Hera | #003 Ghoul · vermes |
+| Doenca/necrose | #13 Hera | #003 Necrófago · vermes |
 | Nutricao | #19 se encontrar | carne rica (Extração CD 14) |
 | Medo | #32 Mira | — |
 
@@ -423,7 +423,7 @@
 
 | Necessidade | Flora | Fauna |
 |-------------|-------|-------|
-| Medo/divino | #04 Erva-Sino · #32 Mira | #048 Anjo Caido · boss Balor (nv.19) |
+| Medo/divino | #04 Erva-Sino · #32 Mira | #048 Anjo Caido · boss Arquidemônio Flamejante (nv.19) |
 | Radiante/necrótico | #30 Erva Limiar (Clérigo) | #048 |
 | Moral grupo | #32 | Banquete lendario |
 

@@ -128,8 +128,9 @@ function monsterKind(entry: EntryLike): CompendiumIconKind {
     hasAny(text, [
       "zumbi",
       "esqueleto",
-      "ghoul",
-      "lich",
+      "necrófago",
+      "necrofago",
+      "necroarca",
       "vampiro",
       "espectro",
       "múmia",

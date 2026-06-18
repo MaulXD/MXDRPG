@@ -20,7 +20,6 @@ export const FOUNDRY_DOCK_PANEL_IDS: MesaWindowId[] = [
   "invite",
   "gm",
   "dungeon",
-  "whiteboard",
   "status",
 ];
 
@@ -30,7 +29,7 @@ const DEFAULT_LAYOUTS: Record<MesaWindowId, Omit<FoundryWindowLayout, "open" | "
   actors: { x: 52, y: 48, width: 248, height: 420 },
   gm: { x: 52, y: 48, width: 300, height: 480 },
   dungeon: { x: 52, y: 48, width: 360, height: 540 },
-  whiteboard: { x: 52, y: 48, width: 280, height: 480 },
+  whiteboard: { x: 52, y: 80, width: 260, height: 240 },
   tokens: { x: 52, y: 48, width: 300, height: 480 },
   initiative: { x: 52, y: 500, width: 196, height: 300 },
   chat: { x: 52, y: 48, width: 340, height: 340 },

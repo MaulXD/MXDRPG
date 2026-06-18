@@ -125,7 +125,7 @@ Experiência de RPG virtual **mais interativa, simples e eficaz** — capturar g
 ### Non-Goals
 
 - Substituir livro completo de lore na web.
-- Suportar outros sistemas (D&D 5e, etc.) no curto prazo.
+- Suportar outros sistemas (fantasia tática, etc.) no curto prazo.
 - App nativo iOS/Android (web mobile completo sim).
 
 ---

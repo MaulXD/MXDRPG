@@ -1,6 +1,7 @@
 import "server-only";
 
 import { dbEnabled, getSql } from "@/lib/db/client";
+import { sqlAffected } from "@/lib/db/sql-helpers";
 import {
   newInventoryItemRequestId,
   type InventoryItemRequest,
@@ -104,32 +105,30 @@ export async function insertInventoryItemRequest(input: {
 
   const now = Date.now();
   const id = newInventoryItemRequestId();
-  const rows = await sql<Row[]>`
-    INSERT INTO eldarin_inventory_item_requests (
+
+  await sql.unsafe(
+    `INSERT INTO eldarin_inventory_item_requests (
       id, character_id, adventure_id, room_id, requester_user_id,
       pack_id, entry_id, quantity, merge_existing, instance_id, item_label,
       status, created_at, updated_at
-    )
-    VALUES (
-      ${id},
-      ${input.characterId},
-      ${input.adventureId},
-      ${input.roomId ?? null},
-      ${input.requesterUserId},
-      ${input.packId},
-      ${input.entryId},
-      ${input.quantity},
-      ${input.mergeExisting},
-      ${input.instanceId},
-      ${input.itemLabel},
-      'pending',
-      ${now},
-      ${now}
-    )
-    RETURNING *
-  `;
-  const row = rows[0];
-  return row ? rowToRequest(row) : null;
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending', ?, ?)`,
+    [
+      id,
+      input.characterId,
+      input.adventureId,
+      input.roomId ?? null,
+      input.requesterUserId,
+      input.packId,
+      input.entryId,
+      input.quantity,
+      input.mergeExisting ? 1 : 0,
+      input.instanceId,
+      input.itemLabel,
+      now,
+      now,
+    ]
+  );
+  return fetchInventoryItemRequest(id);
 }
 
 export async function listActiveInventoryRequestsForUser(
@@ -154,13 +153,14 @@ export async function dismissInventoryItemRequest(requestId: string): Promise<bo
   const sql = getSql();
   if (!sql) return false;
   const now = Date.now();
-  const rows = await sql<{ id: string }[]>`
-    UPDATE eldarin_inventory_item_requests
-    SET status = 'consumed', updated_at = ${now}
-    WHERE id = ${requestId} AND status IN ('approved', 'rejected')
-    RETURNING id
-  `;
-  return rows.length > 0;
+  const n = await sqlAffected(
+    sql,
+    `UPDATE eldarin_inventory_item_requests
+     SET status = 'consumed', updated_at = ?
+     WHERE id = ? AND status IN ('approved', 'rejected')`,
+    [now, requestId]
+  );
+  return n > 0;
 }
 
 export async function resolveInventoryItemRequest(
@@ -174,15 +174,14 @@ export async function resolveInventoryItemRequest(
 
   const status: InventoryItemRequestStatus = action === "approve" ? "approved" : "rejected";
   const now = Date.now();
-  const rows = await sql<Row[]>`
-    UPDATE eldarin_inventory_item_requests
-    SET status = ${status},
-        gm_user_id = ${gmUserId},
-        resolved_at = ${now},
-        updated_at = ${now}
-    WHERE id = ${requestId} AND status = 'pending'
-    RETURNING *
-  `;
-  const row = rows[0];
-  return row ? rowToRequest(row) : null;
+
+  const n = await sqlAffected(
+    sql,
+    `UPDATE eldarin_inventory_item_requests
+     SET status = ?, gm_user_id = ?, resolved_at = ?, updated_at = ?
+     WHERE id = ? AND status = 'pending'`,
+    [status, gmUserId, now, now, requestId]
+  );
+  if (n === 0) return null;
+  return fetchInventoryItemRequest(requestId);
 }

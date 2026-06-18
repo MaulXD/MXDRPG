@@ -1,6 +1,7 @@
 import "server-only";
 
 import { dbEnabled, getSql } from "@/lib/db/client";
+import { sqlAffected } from "@/lib/db/sql-helpers";
 
 export type JoinRequestStatus = "pending" | "approved" | "rejected";
 
@@ -106,11 +107,12 @@ export async function resolveJoinRequest(
   const sql = getSql();
   if (!sql) return false;
   const now = Date.now();
-  const rows = await sql`
-    UPDATE eldarin_adventure_join_requests
-    SET status = ${status}, responded_at = ${now}, responded_by = ${respondedBy}
-    WHERE id = ${requestId} AND status = 'pending'
-    RETURNING id
-  `;
-  return rows.length > 0;
+  const n = await sqlAffected(
+    sql,
+    `UPDATE eldarin_adventure_join_requests
+     SET status = ?, responded_at = ?, responded_by = ?
+     WHERE id = ? AND status = 'pending'`,
+    [status, now, respondedBy, requestId]
+  );
+  return n > 0;
 }

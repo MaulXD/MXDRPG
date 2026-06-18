@@ -1,6 +1,7 @@
 import "server-only";
 
 import { dbEnabled, getSql } from "@/lib/db/client";
+import { sqlAffected } from "@/lib/db/sql-helpers";
 
 export type JoinTokenRow = {
   id: string;
@@ -66,11 +67,12 @@ export async function consumeJoinToken(
   const sql = getSql();
   if (!sql) return false;
   const now = Date.now();
-  const rows = await sql`
-    UPDATE eldarin_adventure_join_tokens
-    SET used_by = ${usedBy}, used_at = ${now}
-    WHERE id = ${tokenId} AND used_by IS NULL
-    RETURNING id
-  `;
-  return rows.length > 0;
+  const n = await sqlAffected(
+    sql,
+    `UPDATE eldarin_adventure_join_tokens
+     SET used_by = ?, used_at = ?
+     WHERE id = ? AND used_by IS NULL`,
+    [usedBy, now, tokenId]
+  );
+  return n > 0;
 }

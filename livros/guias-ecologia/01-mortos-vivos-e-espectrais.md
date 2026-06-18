@@ -24,7 +24,7 @@
 |------|--------|----------------|
 | Zumbi | Lento, memória muscular | Pode imitar profissão antiga (ferreiro, cozinheiro) |
 | Esqueleto | Formação, silêncio | Bônus em grupo (falange) |
-| Ghoul | Emboscada, imita voz | Cheiro = Percepção fácil |
+| Necrófago | Emboscada, imita voz | Cheiro = Percepção fácil |
 | Espectro | Passagem por parede | Dano físico reduzido sem magia |
 
 ---
@@ -73,7 +73,7 @@
 |------|------:|----------|-------------------|
 | Zumbi de masmorra | 1 | Fácil | Medula podre, dente |
 | Esqueleto armado | 2 | Médio | Fêmur milenar, cristal de mana ósseo (30%) |
-| Ghoul | 3 | Médio | Carne necrofágica (Forrageio CD 14) |
+| Necrófago | 3 | Médio | Carne necrofágica (Forrageio CD 14) |
 | Espectro | 5+ | Especialista + recipiente | Ectoplasma puro |
 
 **Elite:** versões nos andares profundos (bioma 10+) — dobrar cautela em Podridão em área.

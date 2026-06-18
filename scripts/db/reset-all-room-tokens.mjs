@@ -3,24 +3,36 @@
  * Remove todos os tokens das mesas, zera combate/PA legado e volta ao modo aventura.
  * node scripts/db/reset-all-room-tokens.mjs
  */
-import postgres from "postgres";
 import { loadDotEnv } from "./load-env.mjs";
-import { normalizeDatabaseUrl } from "./normalize-url.mjs";
+import { createMariaPool, mariaDbUrl } from "./mysql-pool.mjs";
 
 loadDotEnv();
 
-const url = normalizeDatabaseUrl(process.env.DATABASE_URL ?? "");
+const rawUrl = process.env.DATABASE_URL ?? "";
+const url = mariaDbUrl(rawUrl);
 if (!url) {
-  console.error("DATABASE_URL não definida.");
+  console.error("DATABASE_URL não definida (use mysql:// ou mariadb://).");
+  process.exit(1);
+}
+if (/^postgres(ql)?:/i.test(rawUrl.trim())) {
+  console.error("Postgres não é suportado — use MariaDB (mysql://).");
   process.exit(1);
 }
 
-const local = url.includes("localhost") || url.includes("127.0.0.1");
-const sql = postgres(url, {
-  max: 1,
-  ssl: local ? false : "require",
-  connect_timeout: 20,
-});
+const pool = await createMariaPool(rawUrl);
+
+function parseJson(value) {
+  if (value == null) return null;
+  if (typeof value === "object") return value;
+  if (typeof value === "string") {
+    try {
+      return JSON.parse(value);
+    } catch {
+      return null;
+    }
+  }
+  return null;
+}
 
 function resetActorsPa(actors) {
   if (!actors || typeof actors !== "object") return {};
@@ -41,36 +53,29 @@ function resetActorsPa(actors) {
 }
 
 function resetRoomRow(row) {
-  const scene = {
-    ...(row.scene ?? {}),
-    tokens: [],
-  };
-  const settings = {
-    ...(row.settings ?? {}),
-    combatActive: false,
-  };
-  const combat = {
-    order: [],
-    activeIndex: 0,
-    round: 1,
-    notices: [],
-  };
+  const scene = parseJson(row.scene) ?? {};
+  const actors = parseJson(row.actors) ?? {};
+  const combat = parseJson(row.combat) ?? {};
+  const settings = parseJson(row.settings) ?? {};
+
+  const nextScene = { ...scene, tokens: [] };
+  const nextSettings = { ...settings, combatActive: false };
+  const nextCombat = { order: [], activeIndex: 0, round: 1, notices: [] };
+
   return {
-    scene: sql.json(scene),
-    actors: sql.json(resetActorsPa(row.actors)),
-    combat: sql.json(combat),
-    settings: sql.json(settings),
+    scene: JSON.stringify(nextScene),
+    actors: JSON.stringify(resetActorsPa(actors)),
+    combat: JSON.stringify(nextCombat),
+    settings: JSON.stringify(nextSettings),
     revision: (row.revision ?? 0) + 1,
     updated_at: Date.now(),
   };
 }
 
 try {
-  const rows = await sql`
-    SELECT room_id, name, scene, actors, combat, settings, revision
-    FROM eldarin_rooms
-    ORDER BY room_id
-  `;
+  const [rows] = await pool.query(
+    "SELECT room_id, name, scene, actors, combat, settings, revision FROM eldarin_rooms ORDER BY room_id"
+  );
 
   if (!rows.length) {
     console.log("Nenhuma mesa no banco.");
@@ -79,33 +84,42 @@ try {
 
   let updated = 0;
   for (const row of rows) {
-    const tokenCount = Array.isArray(row.scene?.tokens) ? row.scene.tokens.length : 0;
-    const orderLen = Array.isArray(row.combat?.order) ? row.combat.order.length : 0;
-    const hadPaKey = Boolean(row.combat?.paRefreshTurnKey);
-    const hadAutoPass = Boolean(row.combat?.pendingAutoPass);
-    const combatOn = Boolean(row.settings?.combatActive);
+    const scene = parseJson(row.scene) ?? {};
+    const combat = parseJson(row.combat) ?? {};
+    const settings = parseJson(row.settings) ?? {};
+    const tokenCount = Array.isArray(scene.tokens) ? scene.tokens.length : 0;
+    const orderLen = Array.isArray(combat.order) ? combat.order.length : 0;
+    const hadPaKey = Boolean(combat.paRefreshTurnKey);
+    const hadAutoPass = Boolean(combat.pendingAutoPass);
+    const combatOn = Boolean(settings.combatActive);
 
     const patch = resetRoomRow(row);
-    await sql`
-      UPDATE eldarin_rooms SET
-        scene = ${patch.scene},
-        actors = ${patch.actors},
-        combat = ${patch.combat},
-        settings = ${patch.settings},
-        revision = ${patch.revision},
-        updated_at = ${patch.updated_at}
-      WHERE room_id = ${row.room_id}
-    `;
+    await pool.query(
+      `UPDATE eldarin_rooms SET
+        scene = ?, actors = ?, combat = ?, settings = ?, revision = ?, updated_at = ?
+      WHERE room_id = ?`,
+      [
+        patch.scene,
+        patch.actors,
+        patch.combat,
+        patch.settings,
+        patch.revision,
+        patch.updated_at,
+        row.room_id,
+      ]
+    );
     updated += 1;
     console.log(
       `✓ ${row.room_id} (${row.name ?? "sem nome"}) — tokens:${tokenCount} ordem:${orderLen} combate:${combatOn ? "on" : "off"} paKey:${hadPaKey} autoPass:${hadAutoPass}`
     );
   }
 
-  console.log(`\nreset-all-room-tokens: ${updated} mesa(s) limpas. Reinicie o servidor dev se estiver rodando.`);
+  console.log(
+    `\nreset-all-room-tokens: ${updated} mesa(s) limpas. Reinicie o servidor dev se estiver rodando.`
+  );
 } catch (e) {
   console.error("Falha:", e instanceof Error ? e.message : e);
   process.exit(1);
 } finally {
-  await sql.end({ timeout: 5 });
+  await pool.end();
 }

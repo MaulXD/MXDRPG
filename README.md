@@ -37,7 +37,7 @@ Detalhes: [docs/DADOS-E-REGRAS.md](docs/DADOS-E-REGRAS.md)
 
 ## Persistência (opcional)
 
-Postgres (Neon): [docs/P0-NEON-SETUP.md](docs/P0-NEON-SETUP.md) — `npm run db:setup` → `npm run smoke:p0`. Pré-beta: [docs/P9-READY.md](docs/P9-READY.md).
+MariaDB: [docs/PERSISTENCIA.md](docs/PERSISTENCIA.md) — `npm run db:setup` → `npm run smoke:p0`. Pré-beta: [docs/P9-READY.md](docs/P9-READY.md).
 
 ## Deploy (Contabo)
 

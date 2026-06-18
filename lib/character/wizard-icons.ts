@@ -68,7 +68,7 @@ export const RACE_ICON_COLOR: Record<RaceId, string> = {
   Humano: "#c9a962",
   Elfo: "#6ec9a8",
   Anão: "#b87333",
-  Halfling: "#8fbc6b",
+  Pequenino: "#8fbc6b",
   Gnomo: "#9b7ed9",
   "Meio-Humano": "#d4845a",
 };
@@ -103,7 +103,7 @@ const RACE_ICON: Record<RaceId, WizardIconKind> = {
   Humano: "race-humano",
   Elfo: "race-elfo",
   Anão: "race-anao",
-  Halfling: "race-halfling",
+  Pequenino: "race-halfling",
   Gnomo: "race-gnomo",
   "Meio-Humano": "race-meio-humano",
 };
@@ -162,7 +162,7 @@ export function wizardIconLabel(kind: WizardIconKind): string {
     "race-humano": "Humano",
     "race-elfo": "Elfo",
     "race-anao": "Anão",
-    "race-halfling": "Halfling",
+    "race-halfling": "Pequenino",
     "race-gnomo": "Gnomo",
     "race-meio-humano": "Meio-humano",
     "lineage-gato": "Linhagem do Gato",

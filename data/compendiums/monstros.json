@@ -407,10 +407,10 @@
   },
   {
     "id": "monstros-ghoul",
-    "name": "Ghoul",
+    "name": "Necrófago",
     "type": "npc",
     "system": {
-      "description": "<p><strong>GHOUL</strong> (ameaça nv 3).</p><p>Ghouls são a prova de que a morte pode piorar. Criados de aventureiros que praticaram canibalismo em desespero, ou de necrófagos que foram consumidos vivos pela masmorra, eles mantêm uma inteligência baixa mas funcional — suficiente para tender armadilhas simples, emboscar grupos descansando e imitar vozes humanas para atrair presas. Dentro das masmorras, formam clãs tribais primitivos nos biomas mais profundos. Têm um odor inconfundível de carne em decomposição avançada misturada com ácido gástrico. Os mais velhos desenvolvem chifres de osso e garras de até 15cm.</p><p><strong>Comportamento na mesa</strong></p><ul><li>Abertura: emboscada — vantagem na 1ª rodada se grupo não detectou (Percepção passiva vs CD 10+n//2).</li><li>Combate: prioriza números — reforços em 1d4 rodadas se 1 aliado cair (ruído/feromônio).</li><li>Tática: foca conjurador ou menor HP; usa cobertura se INT 6+.</li><li>Moral: não foge; persegue o alvo mais próximo até 0 HP (mente ausente).</li><li>Pós-morte: ver habilidades (levante/toxina) — 1 rodada de risco ao grupo.</li></ul>",
+      "description": "<p><strong>NECRÓFAGO</strong> (ameaça nv 3).</p><p>Necrófagos são a prova de que a morte pode piorar. Criados de aventureiros que praticaram canibalismo em desespero, ou de necrófagos que foram consumidos vivos pela masmorra, eles mantêm uma inteligência baixa mas funcional — suficiente para tender armadilhas simples, emboscar grupos descansando e imitar vozes humanas para atrair presas. Dentro das masmorras, formam clãs tribais primitivos nos biomas mais profundos. Têm um odor inconfundível de carne em decomposição avançada misturada com ácido gástrico. Os mais velhos desenvolvem chifres de osso e garras de até 15cm.</p><p><strong>Comportamento na mesa</strong></p><ul><li>Abertura: emboscada — vantagem na 1ª rodada se grupo não detectou (Percepção passiva vs CD 10+n//2).</li><li>Combate: prioriza números — reforços em 1d4 rodadas se 1 aliado cair (ruído/feromônio).</li><li>Tática: foca conjurador ou menor HP; usa cobertura se INT 6+.</li><li>Moral: não foge; persegue o alvo mais próximo até 0 HP (mente ausente).</li><li>Pós-morte: ver habilidades (levante/toxina) — 1 rodada de risco ao grupo.</li></ul>",
       "attributes": {
         "forca": {
           "value": 13,
@@ -813,10 +813,10 @@
   },
   {
     "id": "monstros-lich-arquiliche",
-    "name": "Lich (Arquiliche)",
+    "name": "Necroarca (Arquiliche)",
     "type": "npc",
     "system": {
-      "description": "<p><strong>LICH (ARQUILICHE)</strong> (ameaça nv 18).</p><p>Um Lich não morre — ele *decide* não morrer. O processo de lichificação é a magia mais complexa e proibida da história conhecida: o mago transfere sua própria alma para um objeto físico chamado Phylactery (uma caixa, um anel, uma joia), tornando-se tecnicamente imortal enquanto o objeto existir. O resultado é uma figura de inteligência brilhante aprisionada em carne em decomposição, com milênios de acúmulo de conhecimento e rancor. Os Lichs que habitam as masmorras mais profundas não foram criados recentemente — eles *são* a masmorra, em certos sentidos. Suas câmaras pessoais são laboratórios de magia proibida que evoluíram ao redor deles por séculos.</p><p><strong>Comportamento na mesa</strong></p><ul><li>Padrão: ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).</li><li>Tática: foca conjurador ou menor HP; usa cobertura se INT 6+.</li><li>Moral: não foge por HP; pode sacrificar lacaios.</li><li>Pós-morte: ver habilidades (levante/toxina) — 1 rodada de risco ao grupo.</li></ul>",
+      "description": "<p><strong>NECROARCA (ARQUILICHE)</strong> (ameaça nv 18).</p><p>Um Necroarca não morre — ele *decide* não morrer. O processo de ritual da Âncora é a magia mais complexa e proibida da história conhecida: o mago transfere sua própria alma para um objeto físico chamado Âncora de Alma (uma caixa, um anel, uma joia), tornando-se tecnicamente imortal enquanto o objeto existir. O resultado é uma figura de inteligência brilhante aprisionada em carne em decomposição, com milênios de acúmulo de conhecimento e rancor. Os Necroarcas que habitam as masmorras mais profundas não foram criados recentemente — eles *são* a masmorra, em certos sentidos. Suas câmaras pessoais são laboratórios de magia proibida que evoluíram ao redor deles por séculos.</p><p><strong>Comportamento na mesa</strong></p><ul><li>Padrão: ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).</li><li>Tática: foca conjurador ou menor HP; usa cobertura se INT 6+.</li><li>Moral: não foge por HP; pode sacrificar lacaios.</li><li>Pós-morte: ver habilidades (levante/toxina) — 1 rodada de risco ao grupo.</li></ul>",
       "attributes": {
         "forca": {
           "value": 11,
@@ -984,7 +984,7 @@
         {
           "packId": "habilidades",
           "entryId": "assim-005-7",
-          "name": "Olhos de Lich",
+          "name": "Olhos de Necroarca",
           "kind": "ability",
           "resolution": "attack",
           "damageFormula": "0",
@@ -8923,10 +8923,10 @@
   },
   {
     "id": "monstros-doppelganger",
-    "name": "Doppelganger",
+    "name": "Metamorfo Dúbio",
     "type": "npc",
     "system": {
-      "description": "<p><strong>DOPPELGANGER</strong> (ameaça nv 5).</p><p>Doppelgangers são a evolução inteligente dos Mímicos — em vez de imitar objetos, imitam pessoas. Capazes de copiar aparência, voz e maneirismos de qualquer humanoide que observem por mais de 10 minutos, eles se infiltram em grupos, assumindo a identidade de um membro morto ou afastado. São pacientes, calculistas e genuinamente perigosos porque jogam com a confiança como principal arma. Os que habitam masmorras há muito tempo desenvolvem identidades complexas de personas que já assumiram — alguns chegam ao ponto de esquecer qual é o &quot;eu&quot; original.</p><p><strong>Comportamento na mesa</strong></p><ul><li>Abertura: emboscada — vantagem na 1ª rodada se grupo não detectou (Percepção passiva vs CD 10+n//2).</li><li>Combate: prioriza números — reforços em 1d4 rodadas se 1 aliado cair (ruído/feromônio).</li><li>Tática: foca conjurador ou menor HP; usa cobertura se INT 6+.</li><li>Moral: não foge; persegue o alvo mais próximo até 0 HP (mente ausente).</li></ul>",
+      "description": "<p><strong>METAMORFO DÚBIO</strong> (ameaça nv 5).</p><p>Metamorfos Dúbios são a evolução inteligente dos Mímicos — em vez de imitar objetos, imitam pessoas. Capazes de copiar aparência, voz e maneirismos de qualquer humanoide que observem por mais de 10 minutos, eles se infiltram em grupos, assumindo a identidade de um membro morto ou afastado. São pacientes, calculistas e genuinamente perigosos porque jogam com a confiança como principal arma. Os que habitam masmorras há muito tempo desenvolvem identidades complexas de personas que já assumiram — alguns chegam ao ponto de esquecer qual é o &quot;eu&quot; original.</p><p><strong>Comportamento na mesa</strong></p><ul><li>Abertura: emboscada — vantagem na 1ª rodada se grupo não detectou (Percepção passiva vs CD 10+n//2).</li><li>Combate: prioriza números — reforços em 1d4 rodadas se 1 aliado cair (ruído/feromônio).</li><li>Tática: foca conjurador ou menor HP; usa cobertura se INT 6+.</li><li>Moral: não foge; persegue o alvo mais próximo até 0 HP (mente ausente).</li></ul>",
       "attributes": {
         "forca": {
           "value": 14,
@@ -13396,10 +13396,10 @@
   },
   {
     "id": "monstros-balor",
-    "name": "Balor",
+    "name": "Arquidemônio Flamejante",
     "type": "npc",
     "system": {
-      "description": "<p><strong>Balor</strong> — criatura nv 19 das masmorras de Eldarin.</p>",
+      "description": "<p><strong>Arquidemônio Flamejante</strong> — criatura nv 19 das masmorras de Eldarin.</p>",
       "attributes": {
         "forca": {
           "value": 26,
@@ -13942,10 +13942,10 @@
   },
   {
     "id": "monstros-tarrasque-bebe",
-    "name": "Tarrasque (Bebê)",
+    "name": "Devorador Ancião (Filhote)",
     "type": "npc",
     "system": {
-      "description": "<p><strong>Tarrasque (Bebê)</strong> — criatura nv 20 das masmorras de Eldarin.</p>",
+      "description": "<p><strong>Devorador Ancião (Filhote)</strong> — criatura nv 20 das masmorras de Eldarin.</p>",
       "attributes": {
         "forca": {
           "value": 30,

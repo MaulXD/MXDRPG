@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 560" role="img" aria-label="Espada e Arcano">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="80%" y2="100%">
+      <stop offset="0%" stop-color="#1a2840"/>
+      <stop offset="50%" stop-color="#0f1828"/>
+      <stop offset="100%" stop-color="#080c14"/>
+    </linearGradient>
+    <linearGradient id="fire" x1="50%" y1="100%" x2="50%" y2="0%">
+      <stop offset="0%" stop-color="#8b2020"/>
+      <stop offset="100%" stop-color="#d45820"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="560" fill="url(#bg)"/>
+  <ellipse cx="200" cy="340" rx="120" ry="40" fill="#000" opacity="0.35"/>
+  <path d="M200 120 C160 200 130 260 140 320 C150 380 175 400 200 410 C225 400 250 380 260 320 C270 260 240 200 200 120 Z" fill="url(#fire)" opacity="0.85"/>
+  <text x="200" y="470" text-anchor="middle" fill="#e8ecf4" font-family="Georgia, serif" font-size="28" font-weight="700">ESPADA</text>
+  <text x="200" y="505" text-anchor="middle" fill="#c9a227" font-family="Georgia, serif" font-size="24" font-weight="600">&amp; ARCANO</text>
+  <text x="200" y="538" text-anchor="middle" fill="#8a9ab0" font-family="system-ui, sans-serif" font-size="12" letter-spacing="3">EM BREVE</text>
+</svg>

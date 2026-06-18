@@ -1,4 +1,4 @@
-import { migrateClassName, migrateSubclassName } from "@/lib/character/legacy-names";
+import { migrateClassName, migrateRaceName, migrateSubclassName } from "@/lib/character/legacy-names";
 import { normalizeReligionId } from "@/lib/character/pantheon";
 import type { CharacterAttributes, CharacterSheet, CharacterIdentity } from "@/lib/character/types";
 import { parseCharacterTalents } from "@/lib/character/subclass-tracks";
@@ -59,7 +59,7 @@ export function normalizeIdentity(identity: Partial<CharacterIdentity> & { nivel
   return {
     nivel: identity.nivel,
     xpTotal: identity.xpTotal ?? defaultXpForLevel(identity.nivel),
-    raca: identity.raca ?? "Humano",
+    raca: migrateRaceName(identity.raca ?? "Humano") ?? "Humano",
     classe: migrateClassName(identity.classe ?? "Guerreiro") ?? "Guerreiro",
     subclasse: migrateSubclassName(identity.subclasse ?? null) ?? null,
     linhagem: identity.linhagem ?? null,

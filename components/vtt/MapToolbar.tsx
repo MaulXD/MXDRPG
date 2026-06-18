@@ -1,5 +1,6 @@
 "use client";
 
+import type { MapMarkupDurability } from "@/lib/vtt/types";
 import {
   MARKUP_COLORS,
   MARKUP_WIDTHS,
@@ -16,14 +17,18 @@ type Props = {
   onDrawToolChange: (tool: WhiteboardTool) => void;
   color: string;
   width: number;
+  durability: MapMarkupDurability;
   onColorChange: (color: string) => void;
   onWidthChange: (width: number) => void;
+  onDurabilityChange: (durability: MapMarkupDurability) => void;
   canUseDraw: boolean;
   canManageAll: boolean;
   canPing: boolean;
   showFogTool: boolean;
   busy?: boolean;
   onClearSession?: () => void;
+  onClearPermanent?: () => void;
+  onClearAll?: () => void;
   zoomPercent: number;
   canZoomIn: boolean;
   canZoomOut: boolean;
@@ -72,14 +77,18 @@ export function MapToolbar({
   onDrawToolChange,
   color,
   width,
+  durability,
   onColorChange,
   onWidthChange,
+  onDurabilityChange,
   canUseDraw,
   canManageAll,
   canPing,
   showFogTool,
   busy = false,
   onClearSession,
+  onClearPermanent,
+  onClearAll,
   zoomPercent,
   canZoomIn,
   canZoomOut,
@@ -122,114 +131,114 @@ export function MapToolbar({
       onPointerDown={(e) => e.stopPropagation()}
     >
       <div className="map-toolbar" role="toolbar" aria-label="Ferramentas do mapa">
-      <p className="map-toolbar__foot-hint">Scroll zoom · Alt+arrastar pano</p>
-      <p className="map-toolbar__section-label">Mapa</p>
-      <div className="map-toolbar__group" role="group" aria-label="Ferramentas de mapa">
-        {mapTools.map((t) => {
-          const mode = t.id as MapToolMode;
-          const active = mapToolMode === mode;
-          return (
+        <p className="map-toolbar__section-label">Mapa</p>
+        <div className="map-toolbar__group" role="group" aria-label="Ferramentas de mapa">
+          {mapTools.map((t) => {
+            const mode = t.id as MapToolMode;
+            const active = mapToolMode === mode;
+            return (
+              <button
+                key={t.id}
+                type="button"
+                data-tool-icon={mode}
+                className={`map-toolbar__btn${active ? " map-toolbar__btn--active" : ""}`}
+                title={t.title}
+                aria-label={t.label}
+                aria-pressed={active}
+                disabled={busy || (mode === "ping" && !canPing)}
+                onClick={() => pickMapTool(mode)}
+              >
+                <MapToolbarIcon name={mode} />
+              </button>
+            );
+          })}
+        </div>
+
+        {canUseDraw ? (
+          <>
+            <div className="map-toolbar__divider" aria-hidden />
+            <p className="map-toolbar__section-label">Lousa</p>
+            <div className="map-toolbar__group" role="group" aria-label="Ferramentas de desenho">
+              {DRAW_TOOLS.map((t) => {
+                const tool = t.id as WhiteboardTool;
+                const active = mapToolMode === "draw" && drawTool === tool;
+                return (
+                  <button
+                    key={t.id}
+                    type="button"
+                    data-tool-icon={tool}
+                    className={`map-toolbar__btn${active ? " map-toolbar__btn--active" : ""}`}
+                    title={t.title}
+                    aria-label={t.label}
+                    aria-pressed={active}
+                    disabled={busy}
+                    onClick={() => pickDrawTool(tool)}
+                  >
+                    <MapToolbarIcon name={tool} />
+                  </button>
+                );
+              })}
+            </div>
+          </>
+        ) : null}
+
+        <div className="map-toolbar__divider" aria-hidden />
+
+        {showDungeonEditor && onToggleDungeonEditor ? (
+          <>
             <button
-              key={t.id}
               type="button"
-              data-tool-icon={mode}
-              className={`map-toolbar__btn${active ? " map-toolbar__btn--active" : ""}`}
-              title={t.title}
-              aria-label={t.label}
-              aria-pressed={active}
-              disabled={busy || (mode === "ping" && !canPing)}
-              onClick={() => pickMapTool(mode)}
+              data-tool-icon="dungeon"
+              className={`map-toolbar__btn map-toolbar__btn--wide${dungeonEditorActive ? " map-toolbar__btn--active" : ""}`}
+              title="Editor de mapa — piso, paredes e objetos"
+              aria-label="Editor de masmorra"
+              aria-pressed={dungeonEditorActive}
+              onClick={onToggleDungeonEditor}
             >
-              <MapToolbarIcon name={mode} />
+              <MapToolbarIcon name="dungeon" />
             </button>
-          );
-        })}
-      </div>
+            <div className="map-toolbar__divider" aria-hidden />
+          </>
+        ) : null}
 
-      {canUseDraw ? (
-        <>
-          <div className="map-toolbar__divider" aria-hidden />
-          <p className="map-toolbar__section-label">Desenho</p>
-          <div className="map-toolbar__group" role="group" aria-label="Ferramentas de desenho">
-            {DRAW_TOOLS.map((t) => {
-              const tool = t.id as WhiteboardTool;
-              const active = mapToolMode === "draw" && drawTool === tool;
-              return (
-                <button
-                  key={t.id}
-                  type="button"
-                  data-tool-icon={tool}
-                  className={`map-toolbar__btn${active ? " map-toolbar__btn--active" : ""}`}
-                  title={t.title}
-                  aria-label={t.label}
-                  aria-pressed={active}
-                  disabled={busy}
-                  onClick={() => pickDrawTool(tool)}
-                >
-                  <MapToolbarIcon name={tool} />
-                </button>
-              );
-            })}
-          </div>
-
-        </>
-      ) : null}
-
-      <div className="map-toolbar__divider" aria-hidden />
-
-      {showDungeonEditor && onToggleDungeonEditor ? (
-        <>
+        <p className="map-toolbar__section-label">Zoom</p>
+        <div className="map-toolbar__zoom" role="group" aria-label="Zoom">
           <button
             type="button"
-            data-tool-icon="dungeon"
-            className={`map-toolbar__btn map-toolbar__btn--wide${dungeonEditorActive ? " map-toolbar__btn--active" : ""}`}
-            title="Editor de mapa — piso, paredes e objetos"
-            aria-label="Editor de masmorra"
-            aria-pressed={dungeonEditorActive}
-            onClick={onToggleDungeonEditor}
+            data-tool-icon="zoom-out"
+            className="map-toolbar__btn"
+            onClick={onZoomOut}
+            disabled={!canZoomOut}
+            title="Diminuir zoom"
+            aria-label="Diminuir zoom"
           >
-            <MapToolbarIcon name="dungeon" />
+            <MapToolbarIcon name="zoom-out" />
           </button>
-          <div className="map-toolbar__divider" aria-hidden />
-        </>
-      ) : null}
+          <span className="map-toolbar__zoom-label">{zoomPercent}%</span>
+          <button
+            type="button"
+            data-tool-icon="zoom-in"
+            className="map-toolbar__btn"
+            onClick={onZoomIn}
+            disabled={!canZoomIn}
+            title="Aumentar zoom"
+            aria-label="Aumentar zoom"
+          >
+            <MapToolbarIcon name="zoom-in" />
+          </button>
+          <button
+            type="button"
+            data-tool-icon="reset-view"
+            className="map-toolbar__btn"
+            onClick={onResetView}
+            title="Centralizar e resetar zoom"
+            aria-label="Resetar vista"
+          >
+            <MapToolbarIcon name="reset-view" />
+          </button>
+        </div>
 
-      <p className="map-toolbar__section-label">Zoom</p>
-      <div className="map-toolbar__zoom" role="group" aria-label="Zoom">
-        <button
-          type="button"
-          data-tool-icon="zoom-out"
-          className="map-toolbar__btn"
-          onClick={onZoomOut}
-          disabled={!canZoomOut}
-          title="Diminuir zoom"
-          aria-label="Diminuir zoom"
-        >
-          <MapToolbarIcon name="zoom-out" />
-        </button>
-        <span className="map-toolbar__zoom-label">{zoomPercent}%</span>
-        <button
-          type="button"
-          data-tool-icon="zoom-in"
-          className="map-toolbar__btn"
-          onClick={onZoomIn}
-          disabled={!canZoomIn}
-          title="Aumentar zoom"
-          aria-label="Aumentar zoom"
-        >
-          <MapToolbarIcon name="zoom-in" />
-        </button>
-        <button
-          type="button"
-          data-tool-icon="reset-view"
-          className="map-toolbar__btn"
-          onClick={onResetView}
-          title="Centralizar e resetar zoom"
-          aria-label="Resetar vista"
-        >
-          <MapToolbarIcon name="reset-view" />
-        </button>
-      </div>
+        <p className="map-toolbar__foot-hint">Scroll zoom · Alt pan</p>
       </div>
 
       {canUseDraw && mapToolMode === "draw" ? (
@@ -260,7 +269,26 @@ export function MapToolbar({
               </button>
             ))}
           </div>
-          {canManageAll && onClearSession ? (
+          <p className="map-toolbar__flyout-label">Duração</p>
+          <div className="map-toolbar__flyout-dur" role="group" aria-label="Duração do traço">
+            <button
+              type="button"
+              className={`map-toolbar__dur-btn${durability === "temporary" ? " map-toolbar__dur-btn--active" : ""}`}
+              onClick={() => onDurabilityChange("temporary")}
+            >
+              Sessão
+            </button>
+            <button
+              type="button"
+              className={`map-toolbar__dur-btn${durability === "permanent" ? " map-toolbar__dur-btn--active" : ""}`}
+              disabled={!canManageAll}
+              title={canManageAll ? undefined : "Só o mestre"}
+              onClick={() => onDurabilityChange("permanent")}
+            >
+              Permanente
+            </button>
+          </div>
+          {onClearSession ? (
             <button
               type="button"
               className="map-toolbar__clear"
@@ -269,6 +297,26 @@ export function MapToolbar({
               onClick={onClearSession}
             >
               Limpar sessão
+            </button>
+          ) : null}
+          {canManageAll && onClearPermanent ? (
+            <button
+              type="button"
+              className="map-toolbar__clear"
+              disabled={busy}
+              onClick={onClearPermanent}
+            >
+              Limpar permanentes
+            </button>
+          ) : null}
+          {canManageAll && onClearAll ? (
+            <button
+              type="button"
+              className="map-toolbar__clear"
+              disabled={busy}
+              onClick={onClearAll}
+            >
+              Limpar tudo
             </button>
           ) : null}
           <p className="map-toolbar__hint">{drawHint(drawTool)}</p>

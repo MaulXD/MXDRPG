@@ -5,6 +5,7 @@ import { getAdventure } from "@/lib/adventure/store";
 import { ensureDbMigrations } from "@/lib/db/ensure-migrations";
 import { getSql } from "@/lib/db/client";
 import { dbEnabled } from "@/lib/db/enabled";
+import { queryRowsByIds } from "@/lib/db/sql-helpers";
 import { normalizeAvatarSource, resolveUserAvatarUrl } from "@/lib/db/user-avatar";
 import { fetchUserById } from "@/lib/db/users";
 import { listRoomPresence } from "@/lib/room/presence";
@@ -35,18 +36,20 @@ async function fetchUserRows(userIds: string[]): Promise<Map<string, UserRow>> {
     const sql = getSql();
     if (sql) {
       try {
-        const rows = await sql<UserRow[]>`
-          SELECT id, nickname, name, avatar_url, oauth_avatar_url, avatar_source
-          FROM eldarin_users
-          WHERE id = ANY(${unique})
-        `;
+        const rows = await queryRowsByIds<UserRow>(
+          sql,
+          "eldarin_users",
+          "id, nickname, name, avatar_url, oauth_avatar_url, avatar_source",
+          unique
+        );
         for (const row of rows) out.set(row.id, row);
       } catch {
-        const rows = await sql<UserRow[]>`
-          SELECT id, nickname, name
-          FROM eldarin_users
-          WHERE id = ANY(${unique})
-        `;
+        const rows = await queryRowsByIds<UserRow>(
+          sql,
+          "eldarin_users",
+          "id, nickname, name",
+          unique
+        );
         for (const row of rows) out.set(row.id, row);
       }
     }

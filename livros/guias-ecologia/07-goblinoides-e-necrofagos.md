@@ -5,7 +5,7 @@
 
 ## Biologia
 
-**Humanoides** adaptados ao submundo: tribos, língua própria, culto ao Enxame (Halflings/goblins fúngicos). **Necrofagos** (ghouls, hobgoblins catadores) = competidores de mortos-vivos por cadáver.
+**Humanoides** adaptados ao submundo: tribos, língua própria, culto ao Enxame (Pequeninos/goblins fúngicos). **Necrofagos** (ghouls, hobgoblins catadores) = competidores de mortos-vivos por cadáver.
 
 **Não são só “malvados”:** podem negociar, trocar mapas por comida, ou emboscar por território.
 
@@ -22,7 +22,7 @@ Estômago Botânico (goblins fúngicos), Cemitério de Colossos, Engrenagens, Fl
 | Origem | CD | Nota de mesa |
 |--------|-----|--------------|
 | Goblin / orc caçado | 10–14 | Carne controversa — penalidade social em Valdremor se vendida abertamente |
-| Ghoul | 14 | Mesma linha que mortos-vivos |
+| Necrófago | 14 | Mesma linha que mortos-vivos |
 | “Carne limpa” de humanoide | 17+ | Forrageio CD 16 |
 
 Alguns grupos **recusam** cozinhar humanoides — regra de mesa, não de sistema.

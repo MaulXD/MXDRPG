@@ -222,7 +222,7 @@ IDs no VTT: `data/character/pa-modifiers.json` (`passivePa`, `onKillPa`).
 | **Movimento** | Mesmas **faixas por célula** que personagens, usando `walk` e `run` do bloco do monstro (ex. walk 4, run 7: células 1–2 → 1 PA; 3–5 livres; do 6º → PA de corrida) |
 | **Visibilidade** | Jogadores **nao veem** PA de monstros na mesa; o mestre ve e controla |
 
-O *Livro do Mestre* descreve ameaca e tier; o JSON `data/compendiums/monstros.json` e o VTT aplicam estes valores. **Tamanho no grid** (`tactical.tamanho`: `small` … `colossal`) vem de `data/monster-tamanhos.json` — alinhado ao SRD (goblin Pequeno, minotauro Grande, dragão ancião Imenso, etc.); ver **§3.1.3.1**.
+O *Livro do Mestre* descreve ameaca e tier; o JSON `data/compendiums/monstros.json` e o VTT aplicam estes valores. **Tamanho no grid** (`tactical.tamanho`: `small` … `colossal`) vem de `data/monster-tamanhos.json` — alinhado ao tabela de referência (goblin Pequeno, minotauro Grande, dragão ancião Imenso, etc.); ver **§3.1.3.1**.
 
 #### O que gasta PA
 
@@ -358,14 +358,14 @@ O seletor de magias/habilidades na mesa exibe a tag quando aplicavel. Sem tag = 
 ### 3.1.3 Movimento e PA no grid quadrado (VTT)
 
 - **1 célula = 1,5 m.** Referencia de deslocamento: ~**9 m** por turno ≈ **6 células** de corrida maxima; caminhada tipica ≈ **4 células** com faixas de PA (`Cap. 2.6`).
-- **Rota no mapa:** ao mover, o VTT traca um **caminho pelo grid** (nao linha reta atraves de obstaculos) e anima o token ao longo da rota; células bloqueadas por **tokens medios**; **Halfling**, **Gnomo** e criaturas **pequenas** (mob com deslocamento curto, ou `sharedCell` no token) podem **dividir a mesma célula** com outra criatura pequena (ate 2 no bloco).
+- **Rota no mapa:** ao mover, o VTT traca um **caminho pelo grid** (nao linha reta atraves de obstaculos) e anima o token ao longo da rota; células bloqueadas por **tokens medios**; **Pequenino**, **Gnomo** e criaturas **pequenas** (mob com deslocamento curto, ou `sharedCell` no token) podem **dividir a mesma célula** com outra criatura pequena (ate 2 no bloco).
 - **Modo caminhada / corrida:** orcamento de células e custo de PA conforme faixas `walk`/`run` da ficha; cada passo (ortogonal ou diagonal) conta **1** no orçamento; o alcance mostrado na mesa respeita bloqueios e rotas validas.
 
 #### 3.1.3.1 Tamanho de criaturas no grid (VTT)
 
-Cada token ocupa **uma ou mais células** conforme o tamanho corporal. A escala segue o **SRD / D&D 5e** (Pequeno a Colossal). No VTT, o campo `tactical.tamanho` em `data/compendiums/monstros.json` espelha `data/monster-tamanhos.json` (80 fichas **001–080** + aliases de spawn). Tabela completa por código: *Livro do Mestre*, apêndice **Tamanho no grid (001–080)**; cada ficha lista **Tamanho** nas estatísticas.
+Cada token ocupa **uma ou mais células** conforme o tamanho corporal. A escala segue o **tabela tática Eldarin** (Pequeno a Colossal). No VTT, o campo `tactical.tamanho` em `data/compendiums/monstros.json` espelha `data/monster-tamanhos.json` (80 fichas **001–080** + aliases de spawn). Tabela completa por código: *Livro do Mestre*, apêndice **Tamanho no grid (001–080)**; cada ficha lista **Tamanho** nas estatísticas.
 
-| Tamanho (livro) | Categoria SRD | Células (grid) | Exemplos no bestiário Eldarin |
+| Tamanho (livro) | Categoria tabela de referência | Células (grid) | Exemplos no bestiário Eldarin |
 |-----------------|---------------|----------------|--------------------------------|
 | **Pequeno** | Small | **1×1** (~5 ft) | Goblin, Cocatriz, Besouro-Diamante |
 | **Médio** | Medium | **1×1** (~5 ft) | Zumbi, Orc, Esqueleto, Vampiro, Basilisco |
@@ -498,7 +498,7 @@ Efeitos de habilidades e posturas recebem duracao automatica na mesa. O contador
 | Humano | Superficie | Versatil, adaptavel, genericamente competente |
 | Elfo | Florestas engolidas | Magico, sensivel, cozinheiro arcano supremo |
 | Anão | Cidades subterraneas | Resistente, forjador de Ferramentas Orgânicas |
-| Halfling | Vilas rurais proximas as entradas | Sortudo, furtivo, sensor de perigo |
+| Pequenino | Vilas rurais proximas as entradas | Sortudo, furtivo, sensor de perigo |
 | Gnomo | Torres de alquimia | Pocioneiro, curioso, inteligencia explosiva |
 | Meio-Humano | Familias com ancestral bestial | Fisico especializado por linhagem animal |
 
@@ -605,15 +605,15 @@ Cada traço racial segue o mesmo formato usado nas classes (ex.: **Fúria** do B
 
 ## HALFLING
 
-**Lore:** Os Halflings vivem nas vilas agricolas nos arredores das entradas das masmorras de Eldarin — os unicos loucos o suficiente para construir casas a 500 metros de uma boca de masmorra. Seculos de vida nessa vizinhanca perigosa desenvolveram neles algo inexplicavel pela ciencia: sorte. Nao magia, não habilidade — sorte biologica. Eles escorregam de armadilhas que deveriam te-los matado. Sobrevivem a situacoes que não deveriam sobreviver.
+**Lore:** Os Pequeninos vivem nas vilas agricolas nos arredores das entradas das masmorras de Eldarin — os unicos loucos o suficiente para construir casas a 500 metros de uma boca de masmorra. Seculos de vida nessa vizinhanca perigosa desenvolveram neles algo inexplicavel pela ciencia: sorte. Nao magia, não habilidade — sorte biologica. Eles escorregam de armadilhas que deveriam te-los matado. Sobrevivem a situacoes que não deveriam sobreviver.
 
 **Atributos:** +2 DES, +1 SAB
 
 **Habilidades Raciais:**
 
-**Sorte Inata:** *Gatilho:* ao rolar **1 natural** em qualquer d20. *Recarga:* 1× por descanso longo (2× no nv. 4; sem limite no nv. 20). *Efeito:* rerrola e **deve** usar o segundo resultado. *Na mesa:* evita falhas catastróficas em ataque, furtividade ou armadilha — halfling é o “salva-rolagem” do grupo.
+**Sorte Inata:** *Gatilho:* ao rolar **1 natural** em qualquer d20. *Recarga:* 1× por descanso longo (2× no nv. 4; sem limite no nv. 20). *Efeito:* rerrola e **deve** usar o segundo resultado. *Na mesa:* evita falhas catastróficas em ataque, furtividade ou armadilha — pequenino é o “salva-rolagem” do grupo.
 
-**Bravura Halfling:** *Passivo.* *Efeito:* Vantagem contra Medo; não foge de combate por medo involuntário. *Na mesa:* suporte estável em encontros de horror; não abandona a linha de frente por efeito mental.
+**Bravura Pequenina:** *Passivo.* *Efeito:* Vantagem contra Medo; não foge de combate por medo involuntário. *Na mesa:* suporte estável em encontros de horror; não abandona a linha de frente por efeito mental.
 
 **Furtividade Natural:** *Passivo.* *Efeito:* pode tentar se esconder mesmo coberto só por criatura Média ou maior. *Na mesa:* scout em combate aberto — esconde-se atrás do guerreiro e ataca à distância ou prepara emboscada.
 
@@ -629,7 +629,7 @@ Cada traço racial segue o mesmo formato usado nas classes (ex.: **Fúria** do B
 |-------|-------|
 | 4 | Sorte Dupla — Sorte Inata funciona 2x por descanso longo |
 | 6 | Passo Silencioso — movimento nunca provoca ataques de oportunidade em terreno natural |
-| 8 | Faro de Perigo — no inicio de cada sessao, o Mestre informa ao Halfling se ha uma armadilha mortal no próximo andar |
+| 8 | Faro de Perigo — no inicio de cada sessao, o Mestre informa ao Pequenino se ha uma armadilha mortal no próximo andar |
 | 10 | Sorte Compartilhada — pode gastar um uso de Sorte Inata em favor de um aliado adjacente |
 | 12 | Reflexos de Sobrevivente — nunca pode ser surpreendido em combaté |
 | 14 | +2 em Forrageio |
@@ -657,7 +657,7 @@ Cada traço racial segue o mesmo formato usado nas classes (ex.: **Fúria** do B
 
 **Resistência Mágica:** *Passivo.* *Efeito:* Vantagem em testes contra magias e efeitos mágicos. *Na mesa:* sobrevive melhor a rajadas de mago inimigo; pode ficar na retaguarda exposta sem derreter.
 
-**Tamanho Pequeno:** *Passivo.* *Efeito:* mesmo benefício do Halfling em espaços apertados. *Na mesa:* exploração em galerias estreitas; combina com furtividade e posicionamento.
+**Tamanho Pequeno:** *Passivo.* *Efeito:* mesmo benefício do Pequenino em espaços apertados. *Na mesa:* exploração em galerias estreitas; combina com furtividade e posicionamento.
 
 **Progressao Racial:**
 
@@ -1412,9 +1412,9 @@ Nomes de habilidade **podem repetir** entre espécimes diferentes (ex.: varios t
 |-----|----------|
 | 001 | Zumbi de Masmorra |
 | 002 | Esqueleto Armado |
-| 003 | Ghoul |
+| 003 | Necrófago |
 | 004 | Espectro |
-| 005 | Lich (Arquiliche) |
+| 005 | Necroarca (Arquiliche) |
 | 006 | Assombracao |
 | 007 | Vampiro |
 | 008 | Cavaleiro Espectral |
@@ -1454,7 +1454,7 @@ Nomes de habilidade **podem repetir** entre espécimes diferentes (ex.: varios t
 | 042 | Yeti das Profundezas |
 | 043 | Lobo do Inverno |
 | 044 | Mimico de Baul |
-| 045 | Doppelganger |
+| 045 | Metamorfo Dúbio |
 | 046 | Hidra das Cavernas |
 | 047 | Quimera |
 | 048 | Anjo Caido |
@@ -1483,13 +1483,13 @@ Nomes de habilidade **podem repetir** entre espécimes diferentes (ex.: varios t
 | 071 | Bruxa da Masmorra |
 | 072 | Fera Seminal |
 | 073 | Carniçal Alado |
-| 074 | Balor |
+| 074 | Arquidemônio Flamejante |
 | 075 | Enxame de Ratos-Cadáveres |
 | 076 | Elemental de Terra |
 | 077 | Banshee |
 | 078 | Morcego-Tirano |
 | 079 | Ooze Ocular |
-| 080 | Tarrasque (Bebê) |
+| 080 | Devorador Ancião (Filhote) |
 
 **Espécimes 061–080:** bestiário estendido (Livro do Mestre); invocação no VTT, sem tabela de assimilação 8×1.
 
@@ -1546,7 +1546,7 @@ Espécimes-chave: Aranha Tecerrochas (Nivel 3), Escorpião Gigante (Nivel 4), Ce
 | 8 | Plumagem Furtiva | Passos e equipamentos silenciados. Vantagem em Furtividade. |
 
 ### GOBLINOIDES E NECROFAGOS
-(Goblins, Orcs, Hobgoblins, Ghouls)
+(Goblins, Orcs, Hobgoblins, Necrófagos)
 
 | # | Habilidade | Efeito |
 |---|-----------|--------|
@@ -1602,7 +1602,7 @@ Espécimes-chave: Aranha Tecerrochas (Nivel 3), Escorpião Gigante (Nivel 4), Ce
 | 8 | Sexto Sentido Frio | Nao pode ser surpreendido. Detecta mortos-vivos num raio de 20m. |
 
 ### MIMICOS E METAMORFOS
-(Mimicos de Bau, Doppelgangers, Gargulas de Cristal)
+(Mimicos de Bau, Metamorfos Dúbios, Gargulas de Cristal)
 
 | # | Habilidade | Efeito |
 |---|-----------|--------|
@@ -1731,7 +1731,7 @@ Espécimes-chave: Aranha Tecerrochas (Nivel 3), Escorpião Gigante (Nivel 4), Ce
 **Efeito:** Respiração em ar umido/nevoa; +2 em CON vs gases 24h.
 
 ### 06 — Cogumelo-Bandeira
-**Consumidores:** Goblin, Cogumelo-Rei (simbiose), Ghoul (ocasional).  
+**Consumidores:** Goblin, Cogumelo-Rei (simbiose), Necrófago (ocasional).  
 **Efeito:** +3 Fortitude; imune a podridao leve de ingrediente Comum.
 
 ### 07 — Trevo de Obelisco
@@ -1747,7 +1747,7 @@ Espécimes-chave: Aranha Tecerrochas (Nivel 3), Escorpião Gigante (Nivel 4), Ce
 **Efeito:** Resistência a frio; ignora Exaustao por frio ambiental 24h.
 
 ### 10 — Flor de Espelho
-**Consumidores:** Mimico (polen), Doppelganger (não digere — copia aroma).  
+**Consumidores:** Mimico (polen), Metamorfo Dúbio (não digere — copia aroma).  
 **Efeito:** Vantagem em testes vs ilusao; detecta Mimico adjacente automaticamente.
 
 ### 11 — Palma de Ferromur
@@ -1759,7 +1759,7 @@ Espécimes-chave: Aranha Tecerrochas (Nivel 3), Escorpião Gigante (Nivel 4), Ce
 **Efeito:** Nado 6m; visao 9m em agua turva 24h.
 
 ### 13 — Hera Sangrenta
-**Consumidores:** Ghoul, Vampiro (suco), Dragonete (ninho).  
+**Consumidores:** Necrófago, Vampiro (suco), Dragonete (ninho).  
 **Efeito:** +1d4 necrótico em um ataque por combate; ou cura 2d6 se Druida Circulo Decomposicao.
 
 ### 14 — Samambaia de Cinza
@@ -1882,9 +1882,9 @@ Espécimes-chave: Aranha Tecerrochas (Nivel 3), Escorpião Gigante (Nivel 4), Ce
 |--------|----------|
 | **Produtores** | Musgo-Lanterna, Broto de Veia, Algas |
 | **Herbivoros** | Besouro-Diamante filhote, goblins, lagostas jovens |
-| **Onivoros** | Goblin, Ghoul, Orc, Sapo-Engolidor |
+| **Onivoros** | Goblin, Necrófago, Orc, Sapo-Engolidor |
 | **Predadores** | Aranha, Wyvern, Vampiro, Planta Carnivora |
-| **Apex / Boss** | Hidra, Lich, Chefe Final |
+| **Apex / Boss** | Hidra, Necroarca, Chefe Final |
 
 **Encontro ecologico (opcional):** 1d6 ao explorar bioma com flora — 1-2 herbivoros comendo planta (# da tabela), 3 predador caçando, 4 planta carnivora, 5-6 nada.
 
@@ -2005,7 +2005,7 @@ Em Eldarin, essa escolha tem custo e recompensa proprias. Sem o amparo de um deu
 
 **A Faca Sem Nome:** Entidade adorada por assassinos e Ladinos que cultivam o silencio como pratica religiosa. Nao tem lore, não tem mito — apenas um simbolo (uma faca vertical com a lâmina virada para dentro) e uma pratica: nunca revelar o nome do alvo após o servico. Bonus: +2 em todos os ataques furtivos e imunidade a deteccao mágica de presenca.
 
-**O Enxame:** Deidade insular adorada por tribos de Goblins Fungicos da Masmorra 3 e por algumas familias Halfling. Entidade coletiva, sem forma individual — e a soma de todas as criaturas pequenas do submundo. Bonus: quando rodeado por 3 ou mais aliados, ganha +1 CA e +1 em todos os ataques por aliado adicional acima de 2 (máximo +4).
+**O Enxame:** Deidade insular adorada por tribos de Goblins Fungicos da Masmorra 3 e por algumas familias Pequenino. Entidade coletiva, sem forma individual — e a soma de todas as criaturas pequenas do submundo. Bonus: quando rodeado por 3 ou mais aliados, ganha +1 CA e +1 em todos os ataques por aliado adicional acima de 2 (máximo +4).
 
 **O Primeiro Cozinheiro:** Figura mitica — não exatamente um deus, mas adorado como tal. Teria sido o primeiro ser a preparar um prato de monstro e sobreviver. A Academia de Culinaria de Ossenfurt mantem um altar a ele. Bonus: ao preparar um Prato Perfeito pela primeira vez com uma especie nova, recupera todos os espacos de magia gastos durante o preparo da refeicao.
 
@@ -2699,7 +2699,7 @@ Ids em kebab-case no JSON (ex. `chama-controlada`).
 
 **Nv 12 — Sacrificio Ritual (requer Colheita de Alma):** Transfere HP proprio a aliado na taxa 1:2 (minimo 1 HP transferido). Pode manter Concentracao enquanto transfere. 1/descanso curto, pode sacrificar um servo para curar aliado 4d8 + nivel sem custo de HP.
 
-**Nv 16 — Senhor da Fronteira (requer Sacrificio Ritual):** Imune a morte instantanea. Ao chegar a 0 HP, estado **liminar** 1 minuto: age normalmente, não pode ser curado, ao fim testa CON CD 17 — sucesso fica com 1 HP, falha morre (ou narrativa de Phylactery se campanha permitir).
+**Nv 16 — Senhor da Fronteira (requer Sacrificio Ritual):** Imune a morte instantanea. Ao chegar a 0 HP, estado **liminar** 1 minuto: age normalmente, não pode ser curado, ao fim testa CON CD 17 — sucesso fica com 1 HP, falha morre (ou narrativa de Âncora de Alma se campanha permitir).
 
 **Nv 20 — Ascensao — Desejo do Limiar:** Desbloqueia a magia **Desejo de Morte** (Cap. 18) — pode prepara-la 1x após descanso longo sem gastar espaco de nv. 9. Servos ativos sobem para min(6, mod. SAB + 2) e usam estatisticas de Esqueleto Armado ou Zumbi de Masmorra do bestiário com HP dobrado. Uma vez por descanso longo, `Animação de Mortos` dura 24h sem Concentracao.
 
@@ -3228,7 +3228,7 @@ Alquimista Amador (INT 13, Nivel 4): Pode criar pocoes básicas (Cura Leve, Anti
 | Cortante | Causa Sangramento em acertos críticos (1d4 dano/turno) |
 | Perfurante | Em acertos críticos, o dado de dano e rolado 3 vezes |
 
-**Alcance à distância (livro e VTT):** segue a tabela **SRD / D&D 5e** (alcance normal / longo em pés), convertida para metros e **reduzida a 70%** (30% menor que o PHB). Na mesa digital, o **alcance normal** vira `rangeCells` (1 célula = 1,5 m). Ex.: arco longo SRD 150/600 ft → **32/128 m** → **21 células** de alcance de ataque no mapa. Além do alcance normal, o Mestre pode aplicar **desvantagem** até o alcance longo (regra narrativa).
+**Alcance à distância (livro e VTT):** segue a tabela **tabela tática Eldarin** (alcance normal / longo em pés), convertida para metros e **reduzida a 70%** (30% menor que o manual base). Na mesa digital, o **alcance normal** vira `rangeCells` (1 célula = 1,5 m). Ex.: arco longo tabela de referência 150/600 ft → **32/128 m** → **21 células** de alcance de ataque no mapa. Além do alcance normal, o Mestre pode aplicar **desvantagem** até o alcance longo (regra narrativa).
 
 ### 14.2 Armas Simples (Corpo a Corpo)
 
@@ -3351,7 +3351,7 @@ Tecida da seda da Matriarca Tecela de Cristal. Cada fio resiste a forca de uma m
 **Chicote de Tentaculo de Kraken** (Chicote | Dano: 2d6 cortante + Agarramento | CD: 20)
 Um tentaculo preservado de Kraken Menor. Propriedades: Alcance (6m em vez de 3m). Acertos: alem do dano, o alvo fica Agarrado (FOR CD 15 para escapar). O chicote pode agarrar e puxar objetos de até 50kg a distancia. Preço: 380 po.
 
-**Arco de Costela de Lich** (Arco Curto Magico | Dano: 1d8 perfurante + 1d6 necrótico | CD: 30)
+**Arco de Costela de Necroarca** (Arco Curto Magico | Dano: 1d8 perfurante + 1d6 necrótico | CD: 30)
 Costelas do Arquiliche, curvadas e mantidas em forma por encantamentos. Propriedades: Munição. Nao precisa de flechas fisicas — conjura flechas necróticas automaticamente. Cada flecha reduz o HP máximo do alvo em 2 até descanso longo. Preço: Inestimavel (arma de Boss unica).
 
 **Espada de Garra de Dragão de Gelo** (Espada Longa | Dano: 1d10 cortante + 2d6 frio | CD: 24)
@@ -3377,7 +3377,7 @@ Criada das glândulas intactas da Matriarca Tecela de Cristal. Lança fios micro
 | Cutelo Fornalha | Machado Grande | 2d8+1d6 fogo | Cozinha sem fogo | 28 | Unico |
 | Rede de Seda da Matriarca | Rede | — | Restricao CD17 | 20 | 300 po |
 | Chicote de Tentaculo | Chicote | 2d6+Agarre | Alcance 6m | 20 | 380 po |
-| Arco de Costela de Lich | Arco Curto | 1d8+1d6 necrótico | Reduz HP max | 30 | Unico |
+| Arco de Costela de Necroarca | Arco Curto | 1d8+1d6 necrótico | Reduz HP max | 30 | Unico |
 | Espada de Garra de Dragão de Gelo | Espada Longa | 1d10+2d6 frio | Congelamento crítico | 24 | 600 po |
 | Pelagem-Armadura de Grifo | Armadura Media | CA15 + 1d8 garras | Escalada livre | 18 | 450 po |
 | Manopla de Seda Cortante | Luva | 1d6 (fios) | Armadilha de fios | 22 | Unico |

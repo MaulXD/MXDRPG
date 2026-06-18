@@ -2,6 +2,8 @@ import "server-only";
 
 import { dbEnabled, getSql } from "@/lib/db/client";
 import { isFriendLink } from "@/lib/db/friends";
+import { countSelectExpr } from "@/lib/db/count-expr";
+import { sqlAffected } from "@/lib/db/sql-helpers";
 
 export type FriendMessageRow = {
   id: string;
@@ -95,12 +97,13 @@ export async function countUnreadFriendMessages(userId: string): Promise<number>
   const sql = getSql();
   if (!sql) return 0;
 
-  const rows = await sql<{ count: string }[]>`
-    SELECT COUNT(*)::text AS count
-    FROM eldarin_friend_messages
-    WHERE to_user_id = ${userId}
-      AND read_at IS NULL
-  `;
+  const countExpr = countSelectExpr();
+  const rows = await sql.unsafe(
+    `SELECT ${countExpr} AS count
+     FROM eldarin_friend_messages
+     WHERE to_user_id = ? AND read_at IS NULL`,
+    [userId]
+  ) as { count: string }[];
 
   return Number(rows[0]?.count ?? 0);
 }
@@ -117,17 +120,11 @@ export async function markFriendMessagesRead(
   if (!friends) return 0;
 
   const now = Date.now();
-  const rows = await sql<{ count: string }[]>`
-    WITH updated AS (
-      UPDATE eldarin_friend_messages
-      SET read_at = ${now}
-      WHERE to_user_id = ${userId}
-        AND from_user_id = ${friendId}
-        AND read_at IS NULL
-      RETURNING 1
-    )
-    SELECT COUNT(*)::text AS count FROM updated
-  `;
-
-  return Number(rows[0]?.count ?? 0);
+  return sqlAffected(
+    sql,
+    `UPDATE eldarin_friend_messages
+     SET read_at = ?
+     WHERE to_user_id = ? AND from_user_id = ? AND read_at IS NULL`,
+    [now, userId, friendId]
+  );
 }

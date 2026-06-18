@@ -1,6 +1,7 @@
 import { normalizeCharacter } from "@/lib/character/normalize";
 import type { CharacterSheet } from "@/lib/character/types";
 import { getSql } from "@/lib/db/client";
+import { queryCharactersByOwners } from "@/lib/db/sql-helpers";
 
 export async function fetchCharacter(id: string): Promise<CharacterSheet | null> {
   const sql = getSql();
@@ -20,12 +21,7 @@ export async function listCharactersByOwner(ownerId: string): Promise<CharacterS
 export async function listCharactersByOwners(ownerIds: string[]): Promise<CharacterSheet[]> {
   const sql = getSql();
   if (!sql || ownerIds.length === 0) return [];
-  const unique = [...new Set(ownerIds)];
-  const rows = await sql<{ data: CharacterSheet }[]>`
-    SELECT data FROM eldarin_characters
-    WHERE owner_id = ANY(${unique})
-    ORDER BY updated_at DESC
-  `;
+  const rows = await queryCharactersByOwners<{ data: CharacterSheet }>(sql, ownerIds, "data");
   return rows.map((r) => normalizeCharacter(r.data));
 }
 
@@ -39,24 +35,35 @@ export async function reassignCharacterOwners(
   const aliases = [...new Set(fromOwnerIds.filter((id) => id && id !== toOwnerId))];
   if (aliases.length === 0) return 0;
 
-  const rows = await sql<{ id: string; data: CharacterSheet }[]>`
-    SELECT id, data FROM eldarin_characters WHERE owner_id = ANY(${aliases})
-  `;
+  const rows = await queryCharactersByOwners<{ id: string; data: CharacterSheet }>(
+    sql,
+    aliases,
+    "id_data"
+  );
   if (rows.length === 0) return 0;
 
   const updatedAt = Date.now();
   for (const row of rows) {
     const normalized = normalizeCharacter({ ...row.data, ownerId: toOwnerId });
-    await sql`
-      INSERT INTO eldarin_characters (id, owner_id, data, updated_at)
-      VALUES (${normalized.id}, ${toOwnerId}, ${sql.json(normalized)}, ${updatedAt})
-      ON CONFLICT (id) DO UPDATE SET
-        owner_id = EXCLUDED.owner_id,
-        data = EXCLUDED.data,
-        updated_at = EXCLUDED.updated_at
-    `;
+    await upsertCharacterRow(sql, normalized, updatedAt);
   }
   return rows.length;
+}
+
+async function upsertCharacterRow(
+  sql: NonNullable<ReturnType<typeof getSql>>,
+  normalized: CharacterSheet,
+  updatedAt: number
+): Promise<void> {
+  await sql.unsafe(
+    `INSERT INTO eldarin_characters (id, owner_id, data, updated_at)
+     VALUES (?, ?, ?, ?)
+     ON DUPLICATE KEY UPDATE
+       owner_id = VALUES(owner_id),
+       data = VALUES(data),
+       updated_at = VALUES(updated_at)`,
+    [normalized.id, normalized.ownerId, JSON.stringify(normalized), updatedAt]
+  );
 }
 
 export async function upsertCharacter(sheet: CharacterSheet): Promise<CharacterSheet> {
@@ -64,15 +71,7 @@ export async function upsertCharacter(sheet: CharacterSheet): Promise<CharacterS
   const normalized = normalizeCharacter(sheet);
   if (!sql) return normalized;
 
-  const updatedAt = Date.now();
-  await sql`
-    INSERT INTO eldarin_characters (id, owner_id, data, updated_at)
-    VALUES (${normalized.id}, ${normalized.ownerId}, ${sql.json(normalized)}, ${updatedAt})
-    ON CONFLICT (id) DO UPDATE SET
-      owner_id = EXCLUDED.owner_id,
-      data = EXCLUDED.data,
-      updated_at = EXCLUDED.updated_at
-  `;
+  await upsertCharacterRow(sql, normalized, Date.now());
   return normalized;
 }
 

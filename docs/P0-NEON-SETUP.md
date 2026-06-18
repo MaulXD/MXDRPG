@@ -1,6 +1,6 @@
 # P0 — Neon + Postgres (gate PRD)
 
-> **Objetivo:** produção com `GET /api/health` → `{ "db": true, "persistence": "postgres" }`.  
+> **Objetivo:** produção com `GET /api/health` → `{ "db": true, "persistence": "mariadb" }`.  
 > Depois: **P1** Clerk, **P9** beta — [PRD-ELDARIN-VTT.md](./PRD-ELDARIN-VTT.md).
 
 ## 1. Neon (5 min)

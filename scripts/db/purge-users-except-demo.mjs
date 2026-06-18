@@ -3,63 +3,61 @@
  * Remove todas as contas exceto usr_demo_mestre e usr_demo_jogador.
  * Apaga também fichas, aventuras e salas dos usuários removidos.
  */
-import postgres from "postgres";
 import { loadDotEnv } from "./load-env.mjs";
-import { normalizeDatabaseUrl } from "./normalize-url.mjs";
+import { createMariaPool, mariaDbUrl } from "./mysql-pool.mjs";
 
 const KEEP = ["usr_demo_mestre", "usr_demo_jogador"];
 
 loadDotEnv();
 
-const url = normalizeDatabaseUrl(process.env.DATABASE_URL ?? "");
+const rawUrl = process.env.DATABASE_URL ?? "";
+const url = mariaDbUrl(rawUrl);
 if (!url) {
-  console.error("DATABASE_URL não definida.");
+  console.error("DATABASE_URL não definida (use mysql:// ou mariadb://).");
+  process.exit(1);
+}
+if (/^postgres(ql)?:/i.test(rawUrl.trim())) {
+  console.error("Postgres não é suportado — use MariaDB (mysql://).");
   process.exit(1);
 }
 
-const local = url.includes("localhost") || url.includes("127.0.0.1");
-const sql = postgres(url, {
-  max: 1,
-  ssl: local ? false : "require",
-  connect_timeout: 15,
-});
+const pool = await createMariaPool(rawUrl);
+const conn = await pool.getConnection();
+const inList = KEEP.map(() => "?").join(", ");
 
 try {
-  const before = await sql`SELECT id, email, nickname FROM eldarin_users ORDER BY email`;
+  const [before] = await conn.query(
+    "SELECT id, email, nickname FROM eldarin_users ORDER BY email"
+  );
   console.log(`Usuários antes: ${before.length}`);
   for (const u of before) {
     if (!KEEP.includes(u.id)) console.log(`  - remover: ${u.email} (${u.id})`);
   }
 
-  const removedChars = await sql`
-    DELETE FROM eldarin_characters
-    WHERE owner_id <> ALL(${KEEP})
-    RETURNING id
-  `;
+  const [removedChars] = await conn.query(
+    `DELETE FROM eldarin_characters WHERE owner_id NOT IN (${inList})`,
+    KEEP
+  );
+  const [removedRooms] = await conn.query(
+    `DELETE FROM eldarin_rooms WHERE owner_id NOT IN (${inList})`,
+    KEEP
+  );
+  const [removedAdventures] = await conn.query(
+    `DELETE FROM eldarin_adventures WHERE owner_id NOT IN (${inList})`,
+    KEEP
+  );
+  const [removedUsers] = await conn.query(
+    `DELETE FROM eldarin_users WHERE id NOT IN (${inList})`,
+    KEEP
+  );
 
-  const removedRooms = await sql`
-    DELETE FROM eldarin_rooms
-    WHERE owner_id <> ALL(${KEEP})
-    RETURNING room_id
-  `;
-
-  const removedAdventures = await sql`
-    DELETE FROM eldarin_adventures
-    WHERE owner_id <> ALL(${KEEP})
-    RETURNING adventure_id
-  `;
-
-  const removedUsers = await sql`
-    DELETE FROM eldarin_users
-    WHERE id <> ALL(${KEEP})
-    RETURNING id, email
-  `;
-
-  const after = await sql`SELECT id, email, nickname FROM eldarin_users ORDER BY email`;
-  console.log(`\nRemovidos: ${removedUsers.length} usuário(s)`);
-  console.log(`  fichas: ${removedChars.length}`);
-  console.log(`  salas: ${removedRooms.length}`);
-  console.log(`  aventuras: ${removedAdventures.length}`);
+  const [after] = await conn.query(
+    "SELECT id, email, nickname FROM eldarin_users ORDER BY email"
+  );
+  console.log(`\nRemovidos: ${removedUsers.affectedRows ?? removedUsers.length ?? 0} usuário(s)`);
+  console.log(`  fichas: ${removedChars.affectedRows ?? 0}`);
+  console.log(`  salas: ${removedRooms.affectedRows ?? 0}`);
+  console.log(`  aventuras: ${removedAdventures.affectedRows ?? 0}`);
   console.log(`\nUsuários restantes: ${after.length}`);
   for (const u of after) {
     console.log(`  ✓ ${u.email} (${u.id})`);
@@ -68,5 +66,6 @@ try {
   console.error("Purge falhou:", e instanceof Error ? e.message : e);
   process.exit(1);
 } finally {
-  await sql.end({ timeout: 5 });
+  conn.release();
+  await pool.end();
 }

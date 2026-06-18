@@ -20,7 +20,7 @@ export default async function ContaPage() {
   if (!dbEnabled()) {
     return (
       <div className="page-wrap" style={{ maxWidth: 520, paddingTop: "2rem" }}>
-        <p className="lead">Perfil requer banco Postgres configurado.</p>
+        <p className="lead">Perfil requer banco MariaDB configurado.</p>
       </div>
     );
   }
