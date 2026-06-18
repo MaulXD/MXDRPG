@@ -45,6 +45,7 @@ import { RoomChat } from "@/components/vtt/RoomChat";
 import { DiceRoller } from "@/components/vtt/DiceRoller";
 import { MonsterSpawnPanel } from "@/components/vtt/MonsterSpawnPanel";
 import { RoomInvitePanel } from "@/components/vtt/RoomInvitePanel";
+import { RoomInviteBar } from "@/components/vtt/RoomInviteBar";
 import { MesaPersistenceNotice } from "@/components/vtt/MesaPersistenceNotice";
 import { DemoGuidedTour } from "@/components/vtt/DemoGuidedTour";
 import { RoomCoverBackdrop } from "@/components/vtt/RoomCoverBackdrop";
@@ -100,6 +101,7 @@ export function MesaWorkspace({
 }: Props) {
   const shareRoomId = roomInviteRoomId ?? roomId;
   const isActualGm = canControlCombat;
+  const showInviteUi = Boolean(isActualGm && roomInviteCode && roomInviteRoomId);
   const { playAsPlayer, togglePlayAsPlayer, effectiveIsGm } = useGmPlayerViewMode(
     roomId,
     isActualGm
@@ -376,16 +378,23 @@ export function MesaWorkspace({
       ids.add("gm");
       ids.add("dungeon");
     }
-    if (canParticipate && roomInviteCode) ids.add("invite");
+    if (showInviteUi) ids.add("invite");
     ids.add("initiative");
     return ids;
   }, [
     isActualGm,
-    canParticipate,
-    roomInviteCode,
+    showInviteUi,
   ]);
 
   const dockOpen = windows.isDockOpen(allowedDockPanels);
+
+  useEffect(() => {
+    if (!windows.hydrated || !showInviteUi || !roomInviteCode) return;
+    const key = `eldarin-invite-open-${roomId}`;
+    if (sessionStorage.getItem(key)) return;
+    sessionStorage.setItem(key, "1");
+    windows.openInDock("invite");
+  }, [windows.hydrated, showInviteUi, roomInviteCode, roomId, windows.openInDock]);
 
   useEffect(() => {
     if (!windows.hydrated || !isActualGm) return;
@@ -457,13 +466,22 @@ export function MesaWorkspace({
           </p>
         ) : null}
 
+        {showInviteUi ? (
+          <RoomInviteBar
+            adventureId={adventureId}
+            roomId={roomInviteRoomId!}
+            inviteCode={roomInviteCode!}
+            roomName={roomName ?? adventureName ?? "Mesa"}
+          />
+        ) : null}
+
         <div className="foundry-mesa">
           <MesaFoundrySidebar
             isActive={isPanelActive}
             onOpenDock={handleOpenDock}
             onOpenPopup={handleOpenPopup}
             showGm={effectiveCanControlCombat}
-            showInvite={Boolean(canParticipate && roomInviteCode)}
+            showInvite={showInviteUi}
             dockOpen={dockOpen}
           >
             {!windows.isFloating("chat") ? (
@@ -521,7 +539,7 @@ export function MesaWorkspace({
               </FoundryDockPanel>
             ) : null}
 
-            {canParticipate && roomInviteCode && !windows.isFloating("invite") ? (
+            {showInviteUi && !windows.isFloating("invite") ? (
               <FoundryDockPanel
                 title="Compartilhar mesa"
                 open={win("invite").open}
@@ -536,7 +554,7 @@ export function MesaWorkspace({
                   <RoomInvitePanel
                     adventureId={adventureId}
                     roomId={shareRoomId}
-                    inviteCode={roomInviteCode}
+                    inviteCode={roomInviteCode!}
                     roomName={roomName ?? snapshot?.scene.name ?? "Mesa"}
                     showConfigure={isRoomOwner}
                   />
@@ -789,7 +807,7 @@ export function MesaWorkspace({
                 </FoundryWindow>
               ) : null}
 
-              {canParticipate && roomInviteCode && windows.isFloating("invite") ? (
+              {showInviteUi && windows.isFloating("invite") ? (
                 <FoundryWindow
                   title="Compartilhar mesa"
                   layout={win("invite")}
@@ -807,7 +825,7 @@ export function MesaWorkspace({
                     <RoomInvitePanel
                       adventureId={adventureId}
                       roomId={shareRoomId}
-                      inviteCode={roomInviteCode}
+                      inviteCode={roomInviteCode!}
                       roomName={roomName ?? snapshot?.scene.name ?? "Mesa"}
                       showConfigure={isRoomOwner}
                     />

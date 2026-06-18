@@ -1,5 +1,6 @@
 ﻿"use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { PasswordInput } from "@/components/auth/PasswordInput";
@@ -79,6 +80,9 @@ export function LoginForm({ redirect = "" }: Props) {
           {error}
         </p>
       ) : null}
+      <p style={{ margin: 0, fontSize: "0.8rem" }}>
+        <Link href="/entrar/recuperar">Esqueci a senha</Link>
+      </p>
       <div className="auth-form__actions">
         <button type="submit" className="btn" disabled={loading}>
           {loading ? "Entrando…" : "Entrar"}

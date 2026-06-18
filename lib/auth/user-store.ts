@@ -315,3 +315,19 @@ export async function authenticateDemo(
 ): Promise<SessionUser | null> {
   return authenticateUser(email, password);
 }
+
+export function getLocalUserByEmail(email: string): StoredUser | undefined {
+  return registry().get(slugEmail(email));
+}
+
+export function getLocalUserById(id: string): StoredUser | undefined {
+  for (const u of registry().values()) {
+    if (u.id === id) return u;
+  }
+  return undefined;
+}
+
+export function updateLocalUserRecord(user: StoredUser): void {
+  registry().set(slugEmail(user.email), user);
+  savePersisted(registry().values());
+}
