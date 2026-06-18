@@ -1,7 +1,7 @@
 # VTT — PA, movimento, habilidades e áreas (spec técnica)
 
 > Complementa [PRD-COMBATE-MESA-REFACTOR.md](./PRD-COMBATE-MESA-REFACTOR.md) e **Epic 9** do [PRD-ELDARIN-VTT.md](./PRD-ELDARIN-VTT.md).  
-> **Grid quadrado:** 1 célula = 1,5 m (terminologia usuário). IDs legados `*Hex*` no código → Epic E10.
+> **Grid quadrado:** 1 célula = 1,5 m (terminologia usuário). IDs legados `*Cell*` no código → Epic E10.
 
 ---
 
@@ -64,8 +64,8 @@ Arquivos: `lib/vtt/movement.ts`, `lib/vtt/movement-feet.ts`.
 
 | Tipo | Fluxo mapa |
 |------|------------|
-| Alvo único | Igual ataque: alcance hex → hover preview vantagem → clique alvo |
-| Self / aliado | Alcance 0–1 hex; clique no token aliado |
+| Alvo único | Igual ataque: alcance célula → hover preview vantagem → clique alvo |
+| Self / aliado | Alcance 0–1 célula; clique no token aliado |
 | **Área** | Ver §4 |
 
 **PA:** sempre `effectivePaCost(actor, abilityAction)` no painel e no hover antes de confirmar.
@@ -74,40 +74,40 @@ Arquivos: `lib/vtt/movement.ts`, `lib/vtt/movement-feet.ts`.
 
 ## 4. Áreas — modelo de dados (livro → JSON)
 
-### Conversão livro ↔ hex
+### Conversão livro ↔ célula
 
-| Livro (métrico) | Hex (1 hex = 1,5 m) | Fórmula |
+| Livro (métrico) | Célula (1 célula = 1,5 m) | Fórmula |
 |-----------------|---------------------|---------|
-| 3 m | 2 hex | `round(m / 1.5)` |
-| 6 m raio | 4 hex | `round(6 / 1.5)` |
-| 9 m | 6 hex | idem |
-| 12 m | 8 hex | idem |
+| 3 m | 2 célula | `round(m / 1.5)` |
+| 6 m raio | 4 célula | `round(6 / 1.5)` |
+| 9 m | 6 célula | idem |
+| 12 m | 8 célula | idem |
 
-Constante: `METERS_PER_HEX = 1.5` (`lib/vtt/movement.ts`).
+Constante: `METERS_PER_CELL = 1.5` (`lib/vtt/movement.ts`).
 
 ### Formas suportadas (alvo v2)
 
 | `shape` | Uso no livro | Parâmetros | Motor hoje |
 |---------|--------------|------------|------------|
 | `single` | Alvo único | — | ✅ |
-| `burst` | Raio, esfera, “área X m” | `radiusHex` | ✅ `hexesInRange` |
-| `wall` | Muralha, parede | `hexCount`, origem + vizinhos | ✅ parcial |
-| `cone` | Cone de frio, mordida | `lengthHex`, `direction` (q,r) | ❌ gerar `coneHexes()` |
-| `line` | Raio, ventania, linha | `lengthHex`, `direction` | ❌ gerar `lineHexes()` |
-| `cube` | Cubo (Onda de Trovão) | `sizeHex` (lado) | ❌ tratar como `burst` com raio derivado ou cubo em hex |
+| `burst` | Raio, esfera, “área X m” | `radiusCells` | ✅ `cellsInRange` |
+| `wall` | Muralha, parede | `cellCount`, origem + vizinhos | ✅ parcial |
+| `cone` | Cone de frio, mordida | `lengthCells`, `direction` (q,r) | ❌ gerar `coneCells()` |
+| `line` | Raio, ventania, linha | `lengthCells`, `direction` | ❌ gerar `lineCells()` |
+| `cube` | Cubo (Onda de Trovão) | `sizeCells` (lado) | ❌ tratar como `burst` com raio derivado ou cubo em célula |
 
 **Schema JSON (magias e habilidades):**
 
 ```json
 {
   "tactical": {
-    "alcanceHex": { "value": 6 },
+    "alcanceCells": { "value": 6 },
     "custoPontosAcao": { "value": 2 }
   },
   "spell": {
     "area": {
       "shape": "burst",
-      "radiusHex": 2,
+      "radiusCells": 2,
       "origin": "center",
       "friendlyFire": false
     }
@@ -122,14 +122,14 @@ Constante: `METERS_PER_HEX = 1.5` (`lib/vtt/movement.ts`).
 | Passo | Quem |
 |-------|------|
 | 1 | Texto no `livros/LIVRO-DO-JOGADOR.md` / catálogo (metros + forma) |
-| 2 | `scripts/generate-compendium.mjs` — helper `metersToHex(n)` + `area: { shape, ... }` |
+| 2 | `scripts/generate-compendium.mjs` — helper `metersToCells(n)` + `area: { shape, ... }` |
 | 3 | Habilidades com área: entrada explícita em `habilidades.json` ou mapa em `compendium-actions.ts` |
 | 4 | `npm run sync:data` + `sync:data:check` valida `shape` ∈ enum |
 
 **Exemplos já no gerador:**
 
-- `Muralha Hexagonal` → `wall`, `hexCount: 3`
-- `Bola de Fogo` / `Nova Hex` → `burst`, `radiusHex: 2`
+- `Muralha Segmentada` → `wall`, `cellCount: 3`
+- `Bola de Fogo` / `Nova Radiante` → `burst`, `radiusCells: 2`
 
 **Gap livro:** “Cubo”, “cone”, “linha” no texto — falta `area` no JSON de várias magias (ex. Onda de Trovão só diz “Cubo” na descrição).
 
@@ -143,7 +143,7 @@ Constante: `METERS_PER_HEX = 1.5` (`lib/vtt/movement.ts`).
 flowchart LR
   A[Escolher magia/habilidade] --> B[Pintar alcance de conjuração]
   B --> C[Hover/click centro da área]
-  C --> D[Preview hexes afetados]
+  C --> D[Preview células afetados]
   D --> E[Chip: PA + alvos N + save/ataque]
   E --> F[Confirmar]
   F --> G[POST combat/area]
@@ -151,10 +151,10 @@ flowchart LR
 
 | Passo | UI | Servidor |
 |-------|-----|----------|
-| Alcance | Hexes até `rangeHex` do caster | `canCastAreaAt` |
-| Centro | Clique em hex vazio ou token | `centerQ/R` |
+| Alcance | Células até `rangeCells` do caster | `canCastAreaAt` |
+| Centro | Clique em célula vazio ou token | `centerQ/R` |
 | Cone/linha | 2º clique = direção (vizinho do centro) | `direction` no body |
-| Preview | `computeSpellAreaHexes` + highlight vermelho | Mesma fn |
+| Preview | `computeSpellAreaCells` + highlight vermelho | Mesma fn |
 | Alvos | Tokens em `tokensInArea` — lista + preview save/VD | `resolveAreaSpell` |
 | PA | `effectivePaCost` antes de confirmar | Deduz no handler |
 
@@ -175,13 +175,13 @@ flowchart LR
 
 | Arquivo | Mudança |
 |---------|---------|
-| `lib/vtt/hex-area.ts` | **Novo:** `coneHexes`, `lineHexes`, `cubeHexes`, unificar `computeAreaHexes` |
-| `lib/combat/area-spell.ts` | Usar hex-area; suportar cone/line |
+| `lib/vtt/grid-area.ts` | **Novo:** `coneCells`, `lineCells`, `cubeCells`, unificar `computeAreaCells` |
+| `lib/combat/area-spell.ts` | Usar grid-area; suportar cone/line |
 | `lib/combat/preview-action.ts` | **Novo:** preview ataque + PA + roll mode sem rolar |
 | `lib/combat/preview-move.ts` | **Novo:** wrap `canMoveToken` + labels PA |
 | `hooks/vtt/useActionPreview.ts` | Chip UI: PA, vantagem, movimento |
-| `components/vtt/HexBattlefield.tsx` | Modos unificados; 2-step direction para cone/line |
-| `scripts/generate-compendium.mjs` | `metersToHex`, preencher `area` em todas magias de área do livro |
+| `components/vtt/Battlefield.tsx` | Modos unificados; 2-step direction para cone/line |
+| `scripts/generate-compendium.mjs` | `metersToCells`, preencher `area` em todas magias de área do livro |
 | `data/compendiums/magias.json` | Regenerar |
 | `data/compendiums/habilidades.json` | `area` onde livro indicar |
 | `livros/LIVRO-DO-JOGADOR.md` | Tabela “formas de área na mesa digital” (opcional Cap. 3.1) |
@@ -192,9 +192,9 @@ flowchart LR
 
 Para cada magia/habilidade de área no livro:
 
-- [ ] `shape` + parâmetros em hex
+- [ ] `shape` + parâmetros em célula
 - [ ] `custoPontosAcao` no tactical
-- [ ] `alcanceHex` (distância até o **centro** da área)
+- [ ] `alcanceCells` (distância até o **centro** da área)
 - [ ] `save` ou `attack` + fórmula dano
 - [ ] Teste na `/mesa/demo` com preview laranja
 

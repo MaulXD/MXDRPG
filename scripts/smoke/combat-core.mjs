@@ -17,7 +17,7 @@ function ok(msg) {
   console.log("  ✓", msg);
 }
 
-function hexDist(a, b) {
+function cellDist(a, b) {
   const dq = a.q - b.q;
   const dr = a.r - b.r;
   return (Math.abs(dq) + Math.abs(dq + dr) + Math.abs(dr)) / 2;
@@ -64,7 +64,7 @@ function aliveMonsters(tokens, excludeId) {
 
 function meleeTarget(attacker, tokens) {
   return aliveMonsters(tokens, attacker.id)
-    .map((t) => ({ t, dist: hexDist(attacker, t) }))
+    .map((t) => ({ t, dist: cellDist(attacker, t) }))
     .filter(({ dist }) => dist <= 1)
     .sort((a, b) => a.dist - b.dist)[0]?.t;
 }

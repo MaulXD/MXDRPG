@@ -11,11 +11,11 @@ import {
   applyBattlefieldViewTransform,
   type BattlefieldView,
 } from "@/lib/vtt/battlefield-view";
-import type { Axial } from "@/lib/vtt/hex-math";
+import type { Axial } from "@/lib/vtt/grid-math";
 import type { PortraitFocus } from "@/lib/media/portrait-focus";
 import {
   drawBattlefieldBackground,
-  drawHexGridLayer,
+  drawCellGridLayer,
   drawTokensLayer,
   prepareBattlefieldCanvas,
 } from "@/lib/vtt/draw-battlefield";
@@ -33,15 +33,15 @@ import { isTargetMode, type TokenActionMode } from "@/lib/vtt/action-mode";
 import type { MoveCheck } from "@/lib/vtt/movement";
 import type { TokenHpDisplay } from "@/lib/vtt/token-hp-display";
 import type { ActiveTokenCastFx } from "@/lib/vtt/token-cast-fx";
-import { buildHexGrid, displayHexGridRadius } from "@/lib/vtt/hex-grid";
+import { buildCellGrid, displayGridRadius } from "@/lib/vtt/grid-cells";
 import {
   resolveMapAlignedGridLayout,
 } from "@/lib/vtt/grid-layout";
-import { resolveHexPalette } from "@/lib/vtt/hex-highlight-palette";
+import { resolveGridPalette } from "@/lib/vtt/grid-highlight-palette";
 import type { MapBackdropTone } from "@/lib/vtt/map-luminance";
 import type { BattleScene } from "@/lib/vtt/types";
 
-export type HexCanvasDrawState = {
+export type GridCanvasDrawState = {
   scene: BattleScene;
   showMovement: boolean;
   turnMovePreview: boolean;
@@ -71,7 +71,7 @@ export type HexCanvasDrawState = {
   tokenFlash: { tokenId: string; kind: TokenFlashKind } | null;
   tokenCastFx?: ActiveTokenCastFx[];
   castFxNowMs?: number;
-  visibleHexSet: Set<string> | null;
+  visibleCellSet: Set<string> | null;
   pings: BattlePing[];
   mapImage: HTMLImageElement | null;
   mapBackdropTone?: MapBackdropTone;
@@ -95,11 +95,11 @@ export type TokenMoveAnimRef = RefObject<{
   r: number;
 } | null>;
 
-export function useHexCanvas(
+export function useGridCanvas(
   canvasRef: RefObject<HTMLCanvasElement | null>,
   wrapRef: RefObject<HTMLDivElement | null>,
   imagesRef: RefObject<Map<string, HTMLImageElement>>,
-  state: HexCanvasDrawState,
+  state: GridCanvasDrawState,
   imgTick: number,
   moveAnimRef?: TokenMoveAnimRef,
   viewRef?: RefObject<BattlefieldView>,
@@ -119,7 +119,7 @@ export function useHexCanvas(
   /** ~30 fps — anéis de turno/alvo não precisam de 60 fps e aliviam CPU/GPU. */
   const ANIM_FRAME_MIN_MS = 33;
 
-  const needsCanvasAnimation = useCallback((s: HexCanvasDrawState) => {
+  const needsCanvasAnimation = useCallback((s: GridCanvasDrawState) => {
     const hoverTarget = s.hoverTokenId ? TOKEN_HOVER_SCALE : 1;
     if (Math.abs(tokenHoverScaleRef.current - hoverTarget) > 0.004) return true;
     return (
@@ -165,13 +165,13 @@ export function useHexCanvas(
       }
     }
 
-    const hexPalette = resolveHexPalette(s.mapBackdropTone ?? "none");
-    const gridCells = buildHexGrid(
-      displayHexGridRadius(s.scene.gridRadius, layout.w, layout.h, grid.hexSize, view)
+    const gridPalette = resolveGridPalette(s.mapBackdropTone ?? "none");
+    const gridCells = buildCellGrid(
+      displayGridRadius(s.scene.gridRadius, layout.w, layout.h, grid.cellSize, view)
     );
-    drawHexGridLayer(ctx, {
+    drawCellGridLayer(ctx, {
       gridCells,
-      hexSize: grid.hexSize,
+      cellSize: grid.cellSize,
       gridOx: grid.ox,
       gridOy: grid.oy,
       layout,
@@ -193,20 +193,20 @@ export function useHexCanvas(
       moveHoverFootprintKeys: s.moveHoverFootprintKeys,
       pathCells: s.pathCells,
       pathDashPhase: pathDashPhaseRef.current,
-      visibleHexSet: s.visibleHexSet,
+      visibleCellSet: s.visibleCellSet,
       mapBackdropTone: s.mapBackdropTone,
-      palette: hexPalette,
+      palette: gridPalette,
       viewScale: view.scale,
     });
 
-    drawDungeonLayer(ctx, s.scene, grid.hexSize, layout, {
+    drawDungeonLayer(ctx, s.scene, grid.cellSize, layout, {
       hoverAxial: s.dungeonEditorActive ? s.hoverAxial : null,
       editorPreviewKind:
         s.dungeonEditorActive && (s.dungeonEditorTool === "wall" || s.dungeonEditorTool === "object")
           ? s.dungeonEditorTool
           : null,
       selectedObjectId: s.selectedDungeonObjectId ?? null,
-      visibleHexSet: s.visibleHexSet,
+      visibleCellSet: s.visibleCellSet,
       gridOx: grid.ox,
       gridOy: grid.oy,
     });
@@ -215,9 +215,9 @@ export function useHexCanvas(
       ctx,
       gridCells,
       s.scene,
-      grid.hexSize,
+      grid.cellSize,
       layout,
-      s.visibleHexSet,
+      s.visibleCellSet,
       view.scale,
       grid.ox,
       grid.oy
@@ -245,7 +245,7 @@ export function useHexCanvas(
       layout,
       gridOx: grid.ox,
       gridOy: grid.oy,
-      gridHexSize: grid.hexSize,
+      gridCellSize: grid.cellSize,
       images: imagesRef.current,
       focusByTokenId: s.focusByTokenId,
       selectedId: s.selectedId,
@@ -268,7 +268,7 @@ export function useHexCanvas(
     });
 
     if (s.pings.length > 0) {
-      drawPingLayer(ctx, s.pings, grid.hexSize, layout, grid.ox, grid.oy);
+      drawPingLayer(ctx, s.pings, grid.cellSize, layout, grid.ox, grid.oy);
     }
 
     ctx.restore();

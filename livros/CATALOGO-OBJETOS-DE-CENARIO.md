@@ -200,7 +200,7 @@
 | ID | Nome | Tipo | Mecanica | Sobrevivencia |
 |----|------|------|----------|---------------|
 | OBJ-B14-01 | Poco de Resina Quente | PE | Preso: FOR CD 14 ou 2d6 ácido | — |
-| OBJ-B14-02 | Molde Hexagonal Vazio | PR | 1d4 horas: nasce construto nv.2-4 | Liquen Golem (#38) |
+| OBJ-B14-02 | Molde Simétrico Vazio | PR | 1d4 horas: nasce construto nv.2-4 | Liquen Golem (#38) |
 | OBJ-B14-03 | Resina Fresca (coletavel) | RE | Artífice: +2 craft 24h | — |
 
 ---

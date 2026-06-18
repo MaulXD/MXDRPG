@@ -2,7 +2,7 @@ import { generalDamagePresetLabel } from "@/lib/combat/area-cascade";
 import type { CombatFxState, CombatFxTargetBurst } from "@/lib/vtt/combat-fx-types";
 import type { ChatMessage } from "@/lib/room/chat";
 import { combatHealAmount, combatMessageLooksLikeHeal, isCombatHealEvent } from "@/lib/room/chat-events";
-import type { Axial } from "@/lib/vtt/hex-math";
+import type { Axial } from "@/lib/vtt/grid-math";
 import type { BattleToken } from "@/lib/vtt/types";
 import { resolveCastFxFromCombat } from "@/lib/vtt/token-cast-fx";
 
@@ -11,12 +11,12 @@ function axialFromCombat(c: NonNullable<ChatMessage["combat"]>): Axial | null {
   return { q: c.areaCenterQ, r: c.areaCenterR };
 }
 
-function areaHexesFromCombat(c: NonNullable<ChatMessage["combat"]>): Axial[] {
-  if (!c.areaHexList?.length) {
+function areaCellsFromCombat(c: NonNullable<ChatMessage["combat"]>): Axial[] {
+  if (!c.areaCellList?.length) {
     const center = axialFromCombat(c);
     return center ? [center] : [];
   }
-  return c.areaHexList.map((h) => ({ q: h.q, r: h.r }));
+  return c.areaCellList.map((h) => ({ q: h.q, r: h.r }));
 }
 
 export function isPlayableCombatFxMessage(msg: ChatMessage): boolean {
@@ -106,7 +106,7 @@ function buildAreaIntro(summary: ChatMessage, attackerAxial: Axial): CombatFxSta
     resolveDetail: c.detail,
     damageTypeLabel: isHeal ? "Cura" : generalDamagePresetLabel(),
     spellDamageType: c.spellDamageType,
-    areaHexes: areaHexesFromCombat(c),
+    areaCells: areaCellsFromCombat(c),
     areaCascade: c.areaCascade,
     damageTotal: c.damageTotal,
     isHeal,
@@ -164,7 +164,7 @@ function buildSimultaneousBurst(
     resolveDetail: c.detail,
     damageTypeLabel: isAreaHeal ? "Cura" : generalDamagePresetLabel(),
     spellDamageType: c.spellDamageType,
-    areaHexes: areaHexesFromCombat(c),
+    areaCells: areaCellsFromCombat(c),
     areaCascade: "simultaneous",
     areaTargets: targets,
     damageTotal: c.damageTotal,
@@ -213,7 +213,7 @@ export function buildAreaFxSequence(
       resolveDetail: msg.combat.detail,
       damageTypeLabel: isHeal ? "Cura" : generalDamagePresetLabel(),
       spellDamageType: summary.combat?.spellDamageType,
-      areaHexes: areaHexesFromCombat(summary.combat!),
+      areaCells: areaCellsFromCombat(summary.combat!),
       chatMessageIds: [msg.id],
     });
   }

@@ -22,7 +22,7 @@ import type { RoomActorPatchResult } from "@/lib/character/portrait-persist-clie
 
 import { isAdventureBoundCharacter } from "@/lib/character/adventure-bind";
 import { FoundryWindow } from "@/components/vtt/foundry/FoundryWindow";
-import type { Axial } from "@/lib/vtt/hex-math";
+import type { Axial } from "@/lib/vtt/grid-math";
 import { canDragActorToMap } from "@/lib/vtt/actor-board-spawn";
 import { endActorSpawnDrag, startActorSpawnDrag } from "@/lib/vtt/actor-spawn-drag-ui";
 import type { BattleToken } from "@/lib/vtt/types";

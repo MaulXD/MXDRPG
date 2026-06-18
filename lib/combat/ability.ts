@@ -9,11 +9,11 @@ import { rollDice } from "@/lib/dice/roll";
 import { isMonsterToken } from "@/lib/room/settings";
 import type { BattleToken } from "@/lib/vtt/types";
 
-import { tokenAxialDistance, tokenOccupiedHexes, tokenOccupiesAxial } from "@/lib/vtt/creature-size";
+import { tokenAxialDistance, tokenOccupiedCells, tokenOccupiesAxial } from "@/lib/vtt/creature-size";
 
 import { getMonsterTemplate } from "@/lib/vtt/monsters";
 
-import { axialDistance, hexDirection, HEX_DIRECTIONS } from "@/lib/vtt/hex-math";
+import { axialDistance, cellDirection, GRID_DIRECTIONS } from "@/lib/vtt/grid-math";
 
 import { abilityFromEntry } from "@/lib/combat/compendium-actions";
 
@@ -192,25 +192,25 @@ export function hasFlanking(
 
   const defRaca = defender.actorId ? actorRacas?.[defender.actorId] : undefined;
 
-  const attHexes = tokenOccupiedHexes(attacker, attRaca);
+  const attCells = tokenOccupiedCells(attacker, attRaca);
 
-  const defHexes = tokenOccupiedHexes(defender, defRaca);
+  const defCells = tokenOccupiedCells(defender, defRaca);
 
-  const dirCount = HEX_DIRECTIONS.length;
+  const dirCount = GRID_DIRECTIONS.length;
 
-  for (const dh of defHexes) {
+  for (const dh of defCells) {
 
-    for (const ah of attHexes) {
+    for (const ah of attCells) {
 
       if (axialDistance(ah, dh) !== 1) continue;
 
-      const dir = hexDirection(dh, ah);
+      const dir = cellDirection(dh, ah);
 
       if (dir === null) continue;
 
-      const opp = HEX_DIRECTIONS[(dir + dirCount / 2) % dirCount]!;
+      const opp = GRID_DIRECTIONS[(dir + dirCount / 2) % dirCount]!;
 
-      const oppositeHex = { q: dh.q + opp.q, r: dh.r + opp.r };
+      const oppositeCell = { q: dh.q + opp.q, r: dh.r + opp.r };
 
       if (
 
@@ -226,7 +226,7 @@ export function hasFlanking(
 
               t,
 
-              oppositeHex,
+              oppositeCell,
 
               t.actorId ? actorRacas?.[t.actorId] : undefined
 
@@ -430,7 +430,7 @@ export function resolveAbilityBuff(
 
       paCost: paCostForToken(actor, action, token),
 
-      summary: `${name} usa ${action.name} — teleporte até ${action.rangeHex} cél. (sem provocar).`,
+      summary: `${name} usa ${action.name} — teleporte até ${action.rangeCells} cél. (sem provocar).`,
 
       attackerUpdate: {
 
@@ -456,7 +456,7 @@ export function resolveAbilityBuff(
 
       paCost: paCostForToken(actor, action, token),
 
-      summary: `${name} usa ${action.name} — mova até ${action.rangeHex} cél. em linha reta (sem provocar). Próximo ataque corpo a corpo pode ser feito.`,
+      summary: `${name} usa ${action.name} — mova até ${action.rangeCells} cél. em linha reta (sem provocar). Próximo ataque corpo a corpo pode ser feito.`,
 
       attackerUpdate: { chargeReady: true, chargeNote: undefined },
 
@@ -857,7 +857,7 @@ export function resolveAbilityAttack(
 
   const meleeAction: CombatActionOption =
 
-    weaponAction.kind === "weapon" && weaponAction.rangeHex <= 1
+    weaponAction.kind === "weapon" && weaponAction.rangeCells <= 1
 
       ? { ...weaponAction, attackBonus: weaponAction.attackBonus + bonus }
 
@@ -865,7 +865,7 @@ export function resolveAbilityAttack(
 
           ...weaponAction,
 
-          rangeHex: 1,
+          rangeCells: 1,
 
           attackBonus: weaponAction.attackBonus + bonus,
 
@@ -1078,9 +1078,9 @@ export function canAbilityTarget(
 
   const dist = tokenAxialDistance(attacker, defender);
 
-  if (dist > action.rangeHex) {
+  if (dist > action.rangeCells) {
 
-    return { ok: false, reason: `Fora de alcance (${dist} cél., máx ${action.rangeHex})` };
+    return { ok: false, reason: `Fora de alcance (${dist} cél., máx ${action.rangeCells})` };
 
   }
 

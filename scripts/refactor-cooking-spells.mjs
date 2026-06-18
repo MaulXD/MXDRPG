@@ -20,7 +20,7 @@ const PATCHES = {
   "magias-chama-de-fogareiro": {
     name: "Brasa Espectral",
     description:
-      "<p>Luz fria em penumbra (6 hex). Toque opcional: 1d4 fogo. <strong>Não</strong> cozinha nem substitui kit de brasas — proibida em biomas de gás como chama aberta.</p><p><em>Evocação · Truque · Ação · Pessoal · Concentração até 1 h · 1 PA</em></p>",
+      "<p>Luz fria em penumbra (6 célula). Toque opcional: 1d4 fogo. <strong>Não</strong> cozinha nem substitui kit de brasas — proibida em biomas de gás como chama aberta.</p><p><em>Evocação · Truque · Ação · Pessoal · Concentração até 1 h · 1 PA</em></p>",
     pa: 1,
     weapon: {
       dano: { formula: "1d4", tipo: "fogo" },
@@ -30,7 +30,7 @@ const PATCHES = {
   "magias-detectar-veneno": {
     name: "Sentir Toxina",
     description:
-      "<p>Detecta veneno, doença ou toxina em criaturas e objetos num raio de 3 hex (aura avermelhada). Em combate: dura 1 rodada; fora: até 10 min.</p><p><em>Adivinhação · Truque · Ação · Pessoal · 1 PA</em></p>",
+      "<p>Detecta veneno, doença ou toxina em criaturas e objetos num raio de 3 célula (aura avermelhada). Em combate: dura 1 rodada; fora: até 10 min.</p><p><em>Adivinhação · Truque · Ação · Pessoal · 1 PA</em></p>",
     pa: 1,
   },
   "magias-maos-firmes": {
@@ -49,7 +49,7 @@ const PATCHES = {
   "magias-inspiracao-culinaria": {
     name: "Ímpeto Inspirador",
     description:
-      "<p><strong>Ação bônus.</strong> Aliado a 6 hex ganha <strong>+1d6</strong> no próximo teste de atributo, ataque ou resistência em 1 h.</p><p><em>Encantamento · nv 2 · 1 PA</em></p>",
+      "<p><strong>Ação bônus.</strong> Aliado a 6 célula ganha <strong>+1d6</strong> no próximo teste de atributo, ataque ou resistência em 1 h.</p><p><em>Encantamento · nv 2 · 1 PA</em></p>",
     pa: 1,
     tempo: "1 ação bônus",
   },

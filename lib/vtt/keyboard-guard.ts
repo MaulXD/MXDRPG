@@ -30,7 +30,7 @@ export function isCharacterSheetInventoryDeleteIntent(): boolean {
 }
 
 /**
- * Bloqueia atalhos do hex (Delete no token, etc.) quando a ficha ou UI modal está em uso.
+ * Bloqueia atalhos do célula (Delete no token, etc.) quando a ficha ou UI modal está em uso.
  * Não há atalho de teclado para passar turno — apenas clique explícito.
  */
 export function shouldIgnoreBattlefieldShortcut(target: EventTarget | null): boolean {

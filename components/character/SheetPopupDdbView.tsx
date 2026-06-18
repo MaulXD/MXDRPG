@@ -194,35 +194,35 @@ export function SheetPopupDdbView({
 
       <div className="sheet-ddb-body">
         <aside className="sheet-ddb-col sheet-ddb-col--left">
-          <div className="sheet-ddb-hex-row" aria-label="Combate rápido">
+          <div className="sheet-ddb-stat-row" aria-label="Combate rápido">
             <SheetHoverTip
-              className="sheet-ddb-hex-tip"
+              className="sheet-ddb-stat-tip"
               tip={combatStatTip("iniciativa", { iniciativa: tactical.iniciativa })}
             >
-              <div className="sheet-ddb-hex" tabIndex={0}>
-                <span className="sheet-ddb-hex__label">Inic.</span>
+              <div className="sheet-ddb-stat" tabIndex={0}>
+                <span className="sheet-ddb-stat__label">Inic.</span>
                 <strong>
                   {tactical.iniciativa >= 0 ? `+${tactical.iniciativa}` : tactical.iniciativa}
                 </strong>
               </div>
             </SheetHoverTip>
             <SheetHoverTip
-              className="sheet-ddb-hex-tip"
+              className="sheet-ddb-stat-tip"
               tip={combatStatTip("movement", { walk: movement.walk, run: movement.run })}
             >
-              <div className="sheet-ddb-hex sheet-ddb-hex--center" tabIndex={0}>
-                <span className="sheet-ddb-hex__label">Desloc.</span>
+              <div className="sheet-ddb-stat sheet-ddb-stat--center" tabIndex={0}>
+                <span className="sheet-ddb-stat__label">Desloc.</span>
                 <strong>
                   {movement.walk}/{movement.run}
                 </strong>
               </div>
             </SheetHoverTip>
             <SheetHoverTip
-              className="sheet-ddb-hex-tip"
+              className="sheet-ddb-stat-tip"
               tip={combatStatTip("prof", { prof: profBonus })}
             >
-              <div className="sheet-ddb-hex" tabIndex={0}>
-                <span className="sheet-ddb-hex__label">Prof.</span>
+              <div className="sheet-ddb-stat" tabIndex={0}>
+                <span className="sheet-ddb-stat__label">Prof.</span>
                 <strong>+{profBonus}</strong>
               </div>
             </SheetHoverTip>

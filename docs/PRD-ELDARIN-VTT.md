@@ -11,7 +11,7 @@
 | **Date Created** | 2026-06-02 |
 | **Last Updated** | 2026-06-12 |
 | **Version** | **2.3** |
-| **Hosting** | Vercel (único por agora) |
+| **Hosting** | Contabo (Docker) — www.mxdrpg.com.br |
 | **Idioma** | PT-BR (UI + PRD + livro manda) |
 
 ### Registro de decisões (discovery)
@@ -43,24 +43,24 @@
 | D23 | **10 fichas por usuário** (não global) |
 | D24 | **Modo combate estilo jogo** (§I12): alvo por clique, alcance da arma, preview vantagem/desvantagem no hover, rolagem automática no servidor |
 | D25 | **PA visível** em movimento, habilidades e magias (`effectivePaCost`) antes de confirmar |
-| D26 | **Áreas** padronizadas livro→JSON→`computeAreaHexes` (burst/wall/cone/line/cube) + UX 2 passos no mapa — ver [VTT-ACOES-PA-AREAS.md](./VTT-ACOES-PA-AREAS.md) |
+| D26 | **Áreas** padronizadas livro→JSON→`computeAreaCells` (burst/wall/cone/line/cube) + UX 2 passos no mapa — ver [VTT-ACOES-PA-AREAS.md](./VTT-ACOES-PA-AREAS.md) |
 | D27 | **Passar turno** visível (`EndTurnBar` + `TurnOrderPanel`) com **modal de confirmação**; aviso de PA guardados **só** se houve descarte de PA no fim do turno |
 | D28 | **Medidor PA** na mesa: `atual/9 · base 5` (exceção talento Lobo Solitário: `/11`); ver PRD combate R1 |
 | D33 | **Refatoração combate/mesa** aprovada — [PRD-COMBATE-MESA-REFACTOR.md](./PRD-COMBATE-MESA-REFACTOR.md) v1.0 |
-| D34 | **Grid quadrado** (1 célula = 1,5 m); terminologia **célula**, não hex — Epic E10 renomeia código legado |
+| D34 | **Grid quadrado** (1 célula = 1,5 m); terminologia **célula**, não célula — Epic E10 renomeia código legado |
 | D35 | **Estribilho** = magias nv.0 (ex-cantrip); máx. **2 iguais/turno** |
 | D36 | **Sem slot ação bônus**; ações rápidas custam PA (geralmente 1) |
 | D37 | **Sync fase 1:** poll **500 ms** em combate; WebSocket fase 2 (R29–R30) |
 | D29 | **Magias canalizáveis:** conjunto inicial de **10 magias** no compêndio; jogador pode gastar **+1 ou +2 PA extras** no turno → **+1d6** de dano por PA extra (máx. +2 PA extras) |
 | D30 | **Compêndio na mesa:** layout **rail** (lista vertical em painel ~380px), **não** o grid de página (`comp-shell` 220px + coluna) dentro do painel lateral |
 | D31 | **Quem passa turno:** jogador com token ativo, **demo** sem login obrigatório na API, **mestre** sempre (`canAdvanceCombatTurn`) |
-| D32 | **UX produto (v2.2):** site navegável (header sticky, CTAs claros), painéis laterais sem overflow horizontal, **grid hex legível**, contraste em tags/condições — ver [UX-MESA-E-RAIL.md](./UX-MESA-E-RAIL.md) |
+| D32 | **UX produto (v2.2):** site navegável (header sticky, CTAs claros), painéis laterais sem overflow horizontal, **grid célula legível**, contraste em tags/condições — ver [UX-MESA-E-RAIL.md](./UX-MESA-E-RAIL.md) |
 
 ---
 
 ## Executive Summary
 
-**One-liner:** Eldarin RPG é o VTT gratuito no browser feito para jogar **Eldarin v4** com regras fiéis ao livro, mesa hex interativa e UX mais simples que Roll20/Foundry.
+**One-liner:** Eldarin RPG é o VTT gratuito no browser feito para jogar **Eldarin v4** com regras fiéis ao livro, mesa célula interativa e UX mais simples que Roll20/Foundry.
 
 **Overview:** O produto parte de presencial como hábito do público e abre jornada **online-first** (2–8 jogadores). Já existe motor forte (PA, combate, compêndios, Postgres opcional). A visão v2 exige **lançamento público** com persistência Neon, sync confiável, auth social, criação de personagem completa, combate 100% do livro, bestiário integral e **mobile completo** — escopo ambicioso para um desenvolvedor solo; o roadmap abaixo **sequencia** entregas para reduzir risco de regras erradas e instabilidade.
 
@@ -82,7 +82,7 @@
 
 ### The Problem
 
-Jogadores de Eldarin que migram do **presencial** para online não encontram ferramenta que una **hex, PA v4 (com acúmulo/teto), ficha viva, bestiário e chat de combate** sem configurar VTT genérico. Roll20 e Foundry são amplos mas pesados; manutenção de regras Eldarin fica manual.
+Jogadores de Eldarin que migram do **presencial** para online não encontram ferramenta que una **grid em células, PA v4 (com acúmulo/teto), ficha viva, bestiário e chat de combate** sem configurar VTT genérico. Roll20 e Foundry são amplos mas pesados; manutenção de regras Eldarin fica manual.
 
 ### Current State (antes do produto maduro)
 
@@ -209,7 +209,7 @@ Experiência de RPG virtual **mais interativa, simples e eficaz** — capturar g
 
 ### Epic 4 — Mesa VTT (núcleo)
 
-**US-4.1** — Grid hex, tokens, PA visível, FX de combate **legais** (manter/melhorar `CombatFxLayer`).
+**US-4.1** — Grid célula, tokens, PA visível, FX de combate **legais** (manter/melhorar `CombatFxLayer`).
 
 **US-4.2** — Movimento, ataque, habilidade, magia área, iniciativa, condições.
 
@@ -261,7 +261,7 @@ Experiência **como jogo de tático**: motor em `lib/combat/*` já resolve profi
 
 As a **jogador**, I want **modo ataque → clicar inimigo no mapa**, so that **não dependa só do painel**.
 
-- Alcance = `combatLoadout` → `rangeHex` pintado no hex grid.
+- Alcance = `combatLoadout` → `rangeCells` pintado no célula grid.
 - Hover no alvo: **Normal / Vantagem / Desvantagem** (`buildAttackModifiers`, `attackRollMode`) — sem rolar.
 - Chip: ATK estimado vs CA, **PA efetivo** (`effectivePaCost` / `totalAttackPaCost`).
 - Clique confirma → `POST combat/attack` → servidor rola e aplica PA.
@@ -271,8 +271,8 @@ As a **jogador**, I want **modo ataque → clicar inimigo no mapa**, so that **n
 As a **jogador**, I want **ver PA de corrida antes de mover**, so that **caminhada (0 PA) vs corrida (+1 PA)** fique óbvio.
 
 - Modos `move-walk` / `move-run` (`lib/vtt/movement.ts`).
-- Hover hex: `+0 PA` ou `+1 PA (corrida)` + `3/6 hex` — usa `canMoveToken`.
-- Hex inválido ou `pa < 1` quando precisa PA → feedback vermelho.
+- Hover célula: `+0 PA` ou `+1 PA (corrida)` + `3/6 célula` — usa `canMoveToken`.
+- Célula inválido ou `pa < 1` quando precisa PA → feedback vermelho.
 - Confirma → `POST tokens/move`.
 
 **Hoje:** highlight de movimento existe; **falta chip PA** unificado.
@@ -294,20 +294,20 @@ As a **jogador**, I want **escolher centro (e direção se cone/linha) e ver a �
 
 | `area.shape` | Livro | Parâmetros |
 |--------------|-------|------------|
-| `burst` | raio, esfera, “área X m” | `radiusHex` (= metros ÷ 1,5) |
-| `wall` | muralha, parede | `hexCount` |
-| `cone` | cone de frio, etc. | `lengthHex` + `direction` |
-| `line` | raio, linha, ventania | `lengthHex` + `direction` |
-| `cube` | cubo | `sizeHex` ou burst derivado |
+| `burst` | raio, esfera, “área X m” | `radiusCells` (= metros ÷ 1,5) |
+| `wall` | muralha, parede | `cellCount` |
+| `cone` | cone de frio, etc. | `lengthCells` + `direction` |
+| `line` | raio, linha, ventania | `lengthCells` + `direction` |
+| `cube` | cubo | `sizeCells` ou burst derivado |
 
 - Preencher em `scripts/generate-compendium.mjs` + regenerar `magias.json` / `habilidades.json`.
 - Habilidades de área do livro: bloco `system.tactical.area` ou `spell.area` espelhado.
 
 **UX:**
 
-1. Pintar alcance de conjuração (`rangeHex`).
+1. Pintar alcance de conjuração (`rangeCells`).
 2. Clique = centro da área; **2º clique** = direção (cone/linha).
-3. Hover/click: preview hexes (`computeSpellAreaHexes` → evoluir `lib/vtt/hex-area.ts`).
+3. Hover/click: preview células (`computeSpellAreaCells` → evoluir `lib/vtt/grid-area.ts`).
 4. Listar tokens atingidos; preview save/ataque por alvo; **PA efetivo** no chip.
 5. Confirmar → `POST combat/area`.
 
@@ -353,13 +353,13 @@ Objetivo: o site e a mesa devem ser **navegáveis e legíveis** sem parecer prot
 
 **US-10.3** — Painéis laterais: `min-width: 0`, `overflow-x: hidden`, listas flex **sem** `flex-shrink` em itens de lista (cards do compêndio mantêm altura natural).
 
-**US-10.4** — Mapa: hexágonos com contraste suficiente em tema escuro e claro (`--vtt-hex-stroke`, `--vtt-hex-fill`).
+**US-10.4** — Mapa: polígonos simétricos com contraste suficiente em tema escuro e claro (`--vtt-cell-stroke`, `--vtt-cell-fill`).
 
 **US-10.5** — Controles de mesa: condições e chips com fonte legível (≥0.72rem), área de toque ≥44px em mobile (`max-width: 1100px`).
 
 **Spec:** [UX-MESA-E-RAIL.md](./UX-MESA-E-RAIL.md)
 
-**Estado (2026-06-04):** rail do compêndio, chat/dados/ficha scroll, medidor PA, modal de turno e hex mais visível — **implementados**; ficha popup (US-4.4) e chip PA unificado Epic 9 — **pendentes**.
+**Estado (2026-06-04):** rail do compêndio, chat/dados/ficha scroll, medidor PA, modal de turno e célula mais visível — **implementados**; ficha popup (US-4.4) e chip PA unificado Epic 9 — **pendentes**.
 
 ---
 
@@ -434,7 +434,7 @@ Next.js 15, React 19, Vercel, Neon Postgres, `lib/` motor de regras.
 | **Analytics** | Vercel Web Analytics | Baixo esforço; banner LGPD |
 | **Neon** | Criar projeto novo → `DATABASE_URL` → `npm run db:migrate` | Do zero conforme D14 |
 | **Delegação token** | `token.controllerUserId`; quem pode setar: **owner do actor** ou **mestre** | §I7 |
-| **Combate jogo** | `lib/combat/preview-attack.ts` (novo, puro) + hooks em `HexBattlefield` | Reutiliza `buildAttackModifiers`, `canAttackTarget` |
+| **Combate jogo** | `lib/combat/preview-attack.ts` (novo, puro) + hooks em `Battlefield` | Reutiliza `buildAttackModifiers`, `canAttackTarget` |
 
 #### Auth — por que Clerk (e não Auth.js puro)
 
@@ -545,7 +545,7 @@ Cada grupo beta roda **pelo menos uma sessão de 30+ minutos** (ideal: combate +
 3. Mestre cria sala → convite (código + link).
 4. Jogadores entram (conta ou visitante **só ver**, se testar espectador).
 5. Iniciativa → turnos → **caminhada 0 PA / corrida +1 PA** visível.
-6. Ataque no mapa com preview vantagem/desvantagem; magia/habilidade com PA; **área** com preview de hex.
+6. Ataque no mapa com preview vantagem/desvantagem; magia/habilidade com PA; **área** com preview de célula.
 7. Spawn monstro do compêndio; dano e chat de combate.
 8. **Fechar browser / outro dispositivo** → reentrar no dia seguinte: sala + ficha persistem.
 9. (Opcional) jogador cai → mestre pilota PC; delegação de controle.
@@ -554,7 +554,7 @@ Cada grupo beta roda **pelo menos uma sessão de 30+ minutos** (ideal: combate +
 
 | # | Critério | Como validar |
 |---|----------|--------------|
-| B1 | Sessão **30+ min** sem perder sala/ficha | Mesma `roomId` após restart Vercel |
+| B1 | Sessão **30+ min** sem perder sala/ficha | Mesma `roomId` após restart do container |
 | B2 | **2+ browsers** na mesma sala, sync sem travar | Latência aceitável (&lt; 1 s ou “não trava”) |
 | B3 | **Zero bug P0** de PA/regras na sessão | Nenhum “livro diz X, site fez Y” em combate |
 | B4 | Guerreiro nv5+ **1 PA/golpe**; conjurador **Afinidade** ok | Caso de teste na mesa |

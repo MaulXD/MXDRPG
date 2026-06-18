@@ -19,9 +19,9 @@ import { monsterCombatActions } from "@/lib/vtt/monster-actions";
 import { isMonsterToken } from "@/lib/room/settings";
 import type { BattleToken } from "@/lib/vtt/types";
 import { tokenAxialDistance } from "@/lib/vtt/creature-size";
-import { axialDistance } from "@/lib/vtt/hex-math";
+import { axialDistance } from "@/lib/vtt/grid-math";
 import { resistedDamageAmount } from "@/lib/combat/damage-resist";
-import { effectiveRangedMaxHex } from "@/lib/combat/ranged-attack-range";
+import { effectiveRangedMaxCells } from "@/lib/combat/ranged-attack-range";
 import { applyDamageWithTempHp } from "@/lib/combat/hp-temp";
 import { abilityFromEntry } from "@/lib/combat/compendium-actions";
 import { attackRollMode, canTokenAct } from "@/lib/combat/conditions";
@@ -95,7 +95,7 @@ export type AttackResolution = {
   defenderTokenId: string;
   actionKind: CombatActionKind;
   weaponName: string;
-  rangeHex: number;
+  rangeCells: number;
   paCost: number;
   defenderAc: number;
   attack: AttackRollBreakdown;
@@ -125,7 +125,7 @@ const UNARMED: CombatActionOption = {
   damageFormula: "1d4",
   damageType: "contundente",
   attackBonus: 0,
-  rangeHex: 1,
+  rangeCells: 1,
   paCost: PA_DEFAULT_ACTION_COST,
   label: `Ataque desarmado · 1 cél. · PA ${PA_DEFAULT_ACTION_COST}`,
 };
@@ -175,10 +175,10 @@ function actionFromEntry(
       }
     | undefined;
   const tactical = entry.system.tactical as
-    | { alcanceHex?: { value?: number }; custoPontosAcao?: { value?: number } }
+    | { alcanceCells?: { value?: number }; custoPontosAcao?: { value?: number } }
     | undefined;
 
-  const rangeHex = tactical?.alcanceHex?.value ?? 1;
+  const rangeCells = tactical?.alcanceCells?.value ?? 1;
   const rawPa = tactical?.custoPontosAcao?.value ?? PA_DEFAULT_ACTION_COST;
   const paCost = Math.max(PA_DEFAULT_ACTION_COST, rawPa);
   const damageFormula = weapon?.dano?.formula ?? "1d4";
@@ -193,10 +193,10 @@ function actionFromEntry(
     damageFormula,
     damageType,
     attackBonus: weapon?.ataque?.bonus ?? 0,
-    rangeHex,
+    rangeCells,
     paCost,
     equipmentSpecials: normalizeWeaponSpecial(weapon?.special),
-    label: `${entry.name} · ${rangeHex} cél. · PA ${paCost}`,
+    label: `${entry.name} · ${rangeCells} cél. · PA ${paCost}`,
   };
 }
 
@@ -429,7 +429,7 @@ export function spellcastingAttribute(classId: string): AttributeKey {
 
 export function attackAttribute(actor: CharacterSheet, action: CombatActionOption): AttributeKey {
   if (action.kind === "spell") return spellcastingAttribute(actor.identity.classe);
-  return action.rangeHex > 1 ? "destreza" : "forca";
+  return action.rangeCells > 1 ? "destreza" : "forca";
 }
 
 function attributeLabel(key: AttributeKey): string {
@@ -487,7 +487,7 @@ export function buildAttackModifiers(
 
   if (attackBonus) labels.push(`+${attackBonus}`);
   if (attacker.allyAttackAdvantage) labels.push("inspiração");
-  if (attacker.rangedAttackAdvantage && action.rangeHex > 1) labels.push("tiro certeiro");
+  if (attacker.rangedAttackAdvantage && action.rangeCells > 1) labels.push("tiro certeiro");
 
   const mark: AttackMark | undefined = attacker.attackMark;
   let consumeAttackerMark = false;
@@ -496,7 +496,7 @@ export function buildAttackModifiers(
       labels.push("finta");
       consumeAttackerMark = true;
     } else {
-      if (mark.rangedOnly && action.rangeHex <= 1) {
+      if (mark.rangedOnly && action.rangeCells <= 1) {
         /* mark stays */
       } else {
         if (mark.bonus) attackBonus += mark.bonus;
@@ -537,11 +537,11 @@ export function attackerAfterAttack(
   const patch: Partial<BattleToken> = {};
   if (attacker.nextAttackBonus) patch.nextAttackBonus = undefined;
   if (attacker.allyAttackAdvantage) patch.allyAttackAdvantage = undefined;
-  if (attacker.rangedAttackAdvantage && action.rangeHex > 1) {
+  if (attacker.rangedAttackAdvantage && action.rangeCells > 1) {
     patch.rangedAttackAdvantage = undefined;
   }
   if (consumeAttackerMark) patch.attackMark = undefined;
-  if (attacker.chargeReady && action.rangeHex <= 1) patch.chargeReady = undefined;
+  if (attacker.chargeReady && action.rangeCells <= 1) patch.chargeReady = undefined;
   if (hit && attacker.bonusDamageFormula) patch.bonusDamageFormula = undefined;
 
   const consumed: (keyof import("@/lib/vtt/types").BattleToken)[] = [];
@@ -668,7 +668,7 @@ export function canAttackTarget(
   if (!act.ok) return act;
 
   const dist = tokenAxialDistance(attacker, defender);
-  const maxRange = effectiveRangedMaxHex(action);
+  const maxRange = effectiveRangedMaxCells(action);
   if (!opts?.skipRangeCheck && dist > maxRange) {
     return { ok: false, reason: `Fora de alcance (${dist} cél., máx ${maxRange})` };
   }
@@ -712,11 +712,11 @@ function resolveMonsterAttack(
     : null;
   const gmStats = attackerToken.gmCreatureStats;
   const fixedMod = template
-    ? action.rangeHex > 1
+    ? action.rangeCells > 1
       ? Math.floor((template.agilidade - 10) / 2)
       : Math.floor((template.forca - 10) / 2)
     : gmStats
-      ? action.rangeHex > 1
+      ? action.rangeCells > 1
         ? Math.floor((gmStats.agilidade - 10) / 2)
         : Math.floor((gmStats.forca - 10) / 2)
       : 0;
@@ -776,7 +776,7 @@ function resolveMonsterAttack(
     defenderTokenId: defenderToken.id,
     actionKind: action.kind,
     weaponName: action.name,
-    rangeHex: action.rangeHex,
+    rangeCells: action.rangeCells,
     paCost: action.paCost,
     defenderAc: ac,
     attack: {
@@ -785,7 +785,7 @@ function resolveMonsterAttack(
       profBonus: 0,
       weaponBonus: action.attackBonus,
       total: attackTotal,
-      attributeLabel: action.rangeHex > 1 ? "DES" : "FOR",
+      attributeLabel: action.rangeCells > 1 ? "DES" : "FOR",
       rollMode,
       d20Detail: formatD20Detail(naturalRoll),
     },
@@ -875,7 +875,7 @@ export function resolveAttack(
       defenderTokenId: defenderToken.id,
       actionKind: "spell",
       weaponName: resolved.name,
-      rangeHex: resolved.rangeHex,
+      rangeCells: resolved.rangeCells,
       paCost,
       defenderAc: effectiveDefenderAc(defenderToken),
       attack: {
@@ -969,7 +969,7 @@ export function resolveAttack(
     defenderTokenId: defenderToken.id,
     actionKind: resolved.kind,
     weaponName: resolved.name,
-    rangeHex: resolved.rangeHex,
+    rangeCells: resolved.rangeCells,
     paCost,
     defenderAc: ac,
     attack: {

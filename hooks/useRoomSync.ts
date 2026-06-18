@@ -636,7 +636,7 @@ export async function spawnGmCreation(
   return res.json() as Promise<RoomSnapshot>;
 }
 
-export async function placeRoomActorOnHex(
+export async function placeRoomActorOnCell(
   roomId: string,
   actorId: string,
   q: number,
@@ -680,7 +680,7 @@ export type ScenePatchBody = {
   mapImageOffsetX?: number;
   mapImageOffsetY?: number;
   fogEnabled?: boolean;
-  revealedHexes?: string[];
+  revealedCells?: string[];
   dungeonObjects?: DungeonObject[];
   mapMarkups?: import("@/lib/vtt/types").MapMarkup[];
 };
@@ -728,12 +728,12 @@ export async function patchRoomScene(roomId: string, patch: ScenePatchBody) {
   return res.json() as Promise<RoomSnapshot>;
 }
 
-export async function revealRoomHex(roomId: string, q: number, r: number) {
+export async function revealRoomCell(roomId: string, q: number, r: number) {
   const res = await fetch(`/api/room/${roomId}/scene`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
     credentials: "same-origin",
-    body: JSON.stringify({ revealHex: { q, r } }),
+    body: JSON.stringify({ revealCell: { q, r } }),
   });
   if (!res.ok) {
     const err = (await res.json()) as { error?: string };

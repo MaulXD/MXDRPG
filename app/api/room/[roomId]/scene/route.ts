@@ -1,13 +1,13 @@
 import { NextResponse } from "next/server";
 import { getSession } from "@/lib/auth/session";
 import { snapshotForViewer } from "@/lib/room/snapshot-for-viewer";
-import { getRoom, patchRoomScene, revealRoomHex } from "@/lib/room/store";
+import { getRoom, patchRoomScene, revealRoomCell } from "@/lib/room/store";
 import type { ScenePatch } from "@/lib/room/store";
 
 type Params = { params: Promise<{ roomId: string }> };
 
 type Body = ScenePatch & {
-  revealHex?: { q: number; r: number };
+  revealCell?: { q: number; r: number };
 };
 
 export async function PATCH(req: Request, { params }: Params) {
@@ -22,10 +22,10 @@ export async function PATCH(req: Request, { params }: Params) {
 
   let snapshot = null;
 
-  if (body.revealHex && body.revealHex.q != null && body.revealHex.r != null) {
-    snapshot = await revealRoomHex(roomId, session?.user ?? null, body.revealHex.q, body.revealHex.r);
+  if (body.revealCell && body.revealCell.q != null && body.revealCell.r != null) {
+    snapshot = await revealRoomCell(roomId, session?.user ?? null, body.revealCell.q, body.revealCell.r);
   } else {
-    const { revealHex: _r, ...patch } = body;
+    const { revealCell: _r, ...patch } = body;
     snapshot = await patchRoomScene(roomId, session?.user ?? null, patch);
   }
 

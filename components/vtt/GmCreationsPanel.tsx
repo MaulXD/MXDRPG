@@ -3,7 +3,7 @@
 import { IconClose } from "@/components/ui/EldarinIcons";
 
 import { useEffect, useMemo, useState } from "react";
-import type { Axial } from "@/lib/vtt/hex-math";
+import type { Axial } from "@/lib/vtt/grid-math";
 import type { RoomActor } from "@/lib/room/types";
 import type { GmCreation, GmCreatureStats } from "@/lib/room/gm-creations";
 import { sanitizeCreatureStats } from "@/lib/room/gm-creations";

@@ -6,7 +6,7 @@ Salas e usuários podem ser gravados em **Neon Postgres** (ou Postgres compatív
 
 | Variável | Onde | Descrição |
 |----------|------|-----------|
-| `DATABASE_URL` | Vercel → Settings → Environment Variables | Connection string Postgres (Neon recomendado) |
+| `DATABASE_URL` | Servidor → Settings → Environment Variables | Connection string Postgres (Neon recomendado) |
 
 Exemplo Neon (pooled): `postgresql://user:pass@ep-xxx-pooler.region.aws.neon.tech/neondb?sslmode=require`
 
@@ -29,12 +29,12 @@ npm run db:migrate
 | Personagens | Demo em memória | `eldarin_characters` + seed no 1º acesso |
 | Sync em tempo real | Polling HTTP (como hoje) | Igual — SSE/WebSocket é Passo 5+ |
 
-## Vercel (produção)
+## Produção (Contabo)
 
 1. Criar projeto Neon e copiar `DATABASE_URL`.
-2. Em **mxdrpg** na Vercel: adicionar `DATABASE_URL` em Production (e Preview se quiser).
-3. Rodar migrate uma vez (máquina local com a mesma URL, ou `vercel env pull` + `npm run db:migrate`).
-4. Redeploy.
+2. No **servidor** (env do container): `DATABASE_URL`, `SESSION_SECRET`.
+3. Rodar migrate uma vez (máquina local com a mesma URL, ou copiar env + `npm run db:migrate`).
+4. Rebuild da imagem Docker e redeploy.
 
 ## Código relevante
 

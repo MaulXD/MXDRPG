@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { canManageRoom, canPlaceRoomActorOnBoard } from "@/lib/auth/room-access";
 import { getSession } from "@/lib/auth/session";
 import { snapshotForViewer } from "@/lib/room/snapshot-for-viewer";
-import { getRoom, placeRoomActorOnHex } from "@/lib/room/store";
+import { getRoom, placeRoomActorOnCell } from "@/lib/room/store";
 import { isActorDowned, isTokenDowned } from "@/lib/vtt/player-tokens";
 
 type Params = { params: Promise<{ roomId: string }> };
@@ -47,7 +47,7 @@ export async function POST(req: Request, { params }: Params) {
     }
   }
 
-  const result = await placeRoomActorOnHex(roomId, actorId, { q: body.q, r: body.r });
+  const result = await placeRoomActorOnCell(roomId, actorId, { q: body.q, r: body.r });
   if (!result.ok) {
     return NextResponse.json({ error: result.error }, { status: 400 });
   }

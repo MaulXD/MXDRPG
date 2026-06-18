@@ -1,5 +1,5 @@
 import type { WhiteboardTool } from "@/lib/vtt/map-markup";
-import type { Axial } from "@/lib/vtt/hex-math";
+import type { Axial } from "@/lib/vtt/grid-math";
 
 /** Modos da barra de ferramentas do mapa (modelo Roll20). */
 export type MapToolMode = "token" | "ping" | "measure" | "fog" | "draw";

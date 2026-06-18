@@ -18,7 +18,7 @@ const COMBAT_TRAITS_BY_MON = {
   "MON-032": [
     {
       name: "Fuga Covarde",
-      label: "Reacao: desloca 2 hex ao receber dano (1/combate). Motor: movimento livre do mestre.",
+      label: "Reacao: desloca 2 célula ao receber dano (1/combate). Motor: movimento livre do mestre.",
     },
     {
       name: "Ataque Furtivo",
@@ -32,7 +32,7 @@ const COMBAT_TRAITS_BY_MON = {
   "MON-067": [
     {
       name: "Fuga Covarde",
-      label: "Reacao: desloca 2 hex ao receber dano (1/combate).",
+      label: "Reacao: desloca 2 célula ao receber dano (1/combate).",
     },
     {
       name: "Ataque Furtivo",
@@ -84,7 +84,7 @@ function assimAction(catalogId, row) {
     damageFormula: "0",
     damageType: "—",
     attackBonus: 0,
-    rangeHex: 0,
+    rangeCells: 0,
     paCost: 0,
     selfTarget: true,
     label: `Assimilacao: ${row.effect}`,
@@ -102,7 +102,7 @@ function combatTraitAction(catalogId, trait, idx) {
     damageFormula: "0",
     damageType: "—",
     attackBonus: 0,
-    rangeHex: 0,
+    rangeCells: 0,
     paCost: 0,
     selfTarget: true,
     label: trait.label,

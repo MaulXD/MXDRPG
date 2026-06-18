@@ -1,5 +1,10 @@
 import { NextResponse } from "next/server";
 import { hasClerkPublishableKey, isClerkEnabled } from "@/lib/auth/clerk-config";
+import {
+  isDiscordOAuthConfigured,
+  isGoogleOAuthConfigured,
+  oauthProvidersEnabled,
+} from "@/lib/auth/oauth-config";
 import { dbEnabled, dbPing } from "@/lib/db/client";
 
 export async function GET() {
@@ -18,6 +23,11 @@ export async function GET() {
       publishableKey: clerkPublishable,
       secretKey: Boolean(process.env.CLERK_SECRET_KEY?.trim()),
       ready: clerk,
+    },
+    oauth: {
+      google: isGoogleOAuthConfigured(),
+      discord: isDiscordOAuthConfigured(),
+      ready: oauthProvidersEnabled().length > 0,
     },
   };
 

@@ -1,6 +1,6 @@
 # Divisão do material — Eldarin v4.0
 
-> **Canônico para edição:** `livros/LIVRO-DO-JOGADOR.md` + `livros/LIVRO-DO-MESTRE.md` (depois sincronizar `Eldarin_Ecologia_de_Masmorra_COMPLETO_v4.md`).  
+> **Canônico para edição:** `livros/LIVRO-DO-JOGADOR.md` + `livros/LIVRO-DO-MESTRE.md`.
 > Ficha: `FICHA_PERSONAGEM_ELDARIN_v4.md` (1–2 páginas).
 
 ## Livros principais

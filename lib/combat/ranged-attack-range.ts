@@ -2,8 +2,8 @@ import type { CombatActionOption } from "@/lib/combat/types";
 import {
   DND_RANGED,
   DND_RANGE_SCALE,
-  dndLongRangeHex,
-  METERS_PER_HEX,
+  dndLongRangeCells,
+  METERS_PER_CELL,
 } from "@/lib/vtt/ranged-weapon-range";
 
 const FEET_TO_METERS = 0.3048;
@@ -14,7 +14,7 @@ type RangedKind = keyof typeof DND_RANGED;
 export function isRangedWeaponAttack(action: CombatActionOption): boolean {
   if (action.resolution !== "attack") return false;
   if (action.kind === "spell" || action.kind === "ability") return false;
-  return action.rangeHex > 1;
+  return action.rangeCells > 1;
 }
 
 function rangedKind(action: CombatActionOption): RangedKind | null {
@@ -37,35 +37,35 @@ function rangedKind(action: CombatActionOption): RangedKind | null {
 }
 
 /** Alcance longo SRD (70%) — null se não for tiro com arma. */
-export function rangedLongRangeHex(action: CombatActionOption): number | null {
+export function rangedLongRangeCells(action: CombatActionOption): number | null {
   if (!isRangedWeaponAttack(action)) return null;
   const kind = rangedKind(action);
-  if (kind) return dndLongRangeHex(DND_RANGED[kind].long);
-  const normalMeters = action.rangeHex * METERS_PER_HEX;
+  if (kind) return dndLongRangeCells(DND_RANGED[kind].long);
+  const normalMeters = action.rangeCells * METERS_PER_CELL;
   const normalFeet = normalMeters / (FEET_TO_METERS * DND_RANGE_SCALE);
-  return dndLongRangeHex(Math.round(normalFeet * 4));
+  return dndLongRangeCells(Math.round(normalFeet * 4));
 }
 
 /** Máximo de células para selecionar alvo (normal + faixa longa). */
-export function effectiveRangedMaxHex(action: CombatActionOption): number {
-  if (!isRangedWeaponAttack(action)) return action.rangeHex;
-  return rangedLongRangeHex(action) ?? action.rangeHex;
+export function effectiveRangedMaxCells(action: CombatActionOption): number {
+  if (!isRangedWeaponAttack(action)) return action.rangeCells;
+  return rangedLongRangeCells(action) ?? action.rangeCells;
 }
 
 export function isWithinRangedAttackRange(dist: number, action: CombatActionOption): boolean {
-  return dist <= effectiveRangedMaxHex(action);
+  return dist <= effectiveRangedMaxCells(action);
 }
 
 /** D&D 5e — além do alcance normal, dentro do longo: desvantagem no ataque. */
 export function isRangedLongRange(dist: number, action: CombatActionOption): boolean {
   if (!isRangedWeaponAttack(action)) return false;
-  const longMax = rangedLongRangeHex(action);
+  const longMax = rangedLongRangeCells(action);
   if (longMax == null) return false;
-  return dist > action.rangeHex && dist <= longMax;
+  return dist > action.rangeCells && dist <= longMax;
 }
 
 export function rangedLongRangeLabel(action: CombatActionOption): string | null {
-  const longHex = rangedLongRangeHex(action);
-  if (!isRangedWeaponAttack(action) || longHex == null) return null;
-  return `${action.rangeHex}/${longHex} cél.`;
+  const longCells = rangedLongRangeCells(action);
+  if (!isRangedWeaponAttack(action) || longCells == null) return null;
+  return `${action.rangeCells}/${longCells} cél.`;
 }

@@ -8,6 +8,7 @@ import {
   repairCombatOrderTokenIds,
   repairDuplicateTokenIds,
 } from "@/lib/vtt/token-integrity";
+import { normalizeSceneTokens } from "@/lib/vtt/scene-normalize";
 import { welcomeChat } from "../chat";
 import { normalizeCombatTrack } from "../combat";
 import { executePendingAutoPassIfDue } from "../handlers/combat-turn";
@@ -275,6 +276,7 @@ export async function getRoom(roomId: string): Promise<RoomState | null> {
     if (!Array.isArray(room.scene.tokens)) {
       room.scene = { ...room.scene, tokens: [] };
     }
+    room.scene = normalizeSceneTokens(room.scene);
     room.combat = normalizeCombatTrack(room.combat, room.scene.tokens);
   }
   if (room && repairStaleCombatPa(room)) {

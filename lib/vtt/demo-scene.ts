@@ -3,9 +3,9 @@ import { defaultMovementFields } from "./movement";
 
 export const DEMO_SCENE: BattleScene = {
   id: "demo",
-  name: "Masmorra — Sala Hex",
+  name: "Masmorra — Sala de Combate",
   gridRadius: 8,
-  hexSize: 36,
+  cellSize: 36,
   tokens: [
     {
       id: "t1",

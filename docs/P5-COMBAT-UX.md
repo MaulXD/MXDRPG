@@ -1,26 +1,26 @@
 # P5 — Combate UX (Epic 9)
 
-Preview de ações no tabuleiro hex: PA, alcance, área e alvos antes de confirmar.
+Preview de ações no tabuleiro célula: PA, alcance, área e alvos antes de confirmar.
 
 ## O que foi entregue
 
 | Peça | Arquivo |
 |------|---------|
-| Formas de área (burst, wall, cone, line, cube) | `lib/vtt/hex-area.ts` |
+| Formas de área (burst, wall, cone, line, cube) | `lib/vtt/grid-area.ts` |
 | Preview PA / ataque / área | `lib/combat/action-preview.ts` |
 | HUD flutuante | `components/vtt/BattlefieldActionHud.tsx` |
 | Highlights + direção 2 cliques | `hooks/vtt/useBattlefieldHighlights.ts`, `useBattlefieldPointer.ts` |
-| Hex inválido + chip PA no hover | `lib/vtt/draw-battlefield.ts` |
-| Mesa integrada | `components/vtt/HexBattlefield.tsx` |
+| Célula inválido + chip PA no hover | `lib/vtt/draw-battlefield.ts` |
+| Mesa integrada | `components/vtt/Battlefield.tsx` |
 | API `areaDirection` | `POST /api/room/[id]/combat/area` |
 
 ## Fluxo do jogador
 
 1. Selecionar token → ação (mover, ataque, magia de área).
-2. **Movimento:** hex verde (caminhada) / âmbar (corrida); hover mostra distância, metros e `+0 PA` / `+1 PA`; inválido em vermelho.
+2. **Movimento:** célula verde (caminhada) / âmbar (corrida); hover mostra distância, metros e `+0 PA` / `+1 PA`; inválido em vermelho.
 3. **Ataque / habilidade:** alvos válidos com anel tracejado; hover no token → HUD com PA, modo de d20 e CA estimada.
 4. **Área burst/cube/wall:** clique no centro dentro do alcance → conjura.
-5. **Cone / linha:** 1º clique = centro; 2º clique = hex vizinho (direção 0–5); preview roxo/azul enquanto move o mouse.
+5. **Cone / linha:** 1º clique = centro; 2º clique = célula vizinho (direção 0–5); preview roxo/azul enquanto move o mouse.
 
 ## API
 
@@ -44,7 +44,7 @@ Corpo opcional em magia de área:
 npx tsc --noEmit
 ```
 
-Na mesa: modo corrida com PA insuficiente → hex vermelho; magia cone → dois cliques e chat com hexes corretos.
+Na mesa: modo corrida com PA insuficiente → célula vermelho; magia cone → dois cliques e chat com células corretos.
 
 ## Compêndio (área)
 

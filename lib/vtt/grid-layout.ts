@@ -7,7 +7,7 @@ export type MapFloorAnchor = {
 };
 
 export type MapAlignedGridLayout = {
-  hexSize: number;
+  cellSize: number;
   ox: number;
   oy: number;
   /** Quando há piso, mapa + grid + tokens compartilham esta transformação. */
@@ -71,7 +71,7 @@ export function resolveMapAlignedGridLayout(
 ): MapAlignedGridLayout {
   if (!hasMapFloorImage(scene)) {
     return {
-      hexSize: scene.hexSize,
+      cellSize: scene.cellSize,
       ox: canvasOx,
       oy: canvasOy,
       floorAnchor: null,
@@ -82,18 +82,18 @@ export function resolveMapAlignedGridLayout(
   const offX = scene.mapImageOffsetX ?? 0;
   const offY = scene.mapImageOffsetY ?? 0;
 
-  /** Escala do mapa já no hexSize — zoom da vista (Roll20) afeta mapa + grid juntos. */
+  /** Escala do mapa já no cellSize — zoom da vista (Roll20) afeta mapa + grid juntos. */
   return {
-    hexSize: scene.hexSize * mapScale,
+    cellSize: scene.cellSize * mapScale,
     ox: canvasOx + offX,
     oy: canvasOy + offY,
     floorAnchor: null,
   };
 }
 
-/** hexSize efetivo para desenho / viewport (inclui escala do piso). */
-export function mapAlignedHexSize(scene: BattleScene): number {
-  const base = scene.hexSize;
+/** cellSize efetivo para desenho / viewport (inclui escala do piso). */
+export function mapAlignedCellSize(scene: BattleScene): number {
+  const base = scene.cellSize;
   if (!hasMapFloorImage(scene)) return base;
   return base * (scene.mapImageScale ?? 1);
 }

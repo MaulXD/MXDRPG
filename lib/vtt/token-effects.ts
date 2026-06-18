@@ -51,7 +51,7 @@ export type ConditionMeta = {
   description: string;
 };
 
-/** Fundo sólido + ícone claro (alto contraste no hex e na UI). */
+/** Fundo sólido + ícone claro (alto contraste no célula e na UI). */
 export const CONDITION_META: Record<TokenCondition, ConditionMeta> = {
   amedrontado: {
     label: "Amedrontado",
@@ -367,7 +367,7 @@ export function listTokenEffectChips(token: BattleToken): TokenEffectChip[] {
         "Reflexos",
         "Rf",
         "react",
-        "Pode deslocar 1 hex como reação sem gastar PA. Duração: 1 turno.",
+        "Pode deslocar 1 célula como reação sem gastar PA. Duração: 1 turno.",
         undefined,
         timedMeta(fx)
       )

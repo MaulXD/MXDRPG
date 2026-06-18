@@ -358,7 +358,7 @@ O seletor de magias/habilidades na mesa exibe a tag quando aplicavel. Sem tag = 
 ### 3.1.3 Movimento e PA no grid quadrado (VTT)
 
 - **1 célula = 1,5 m.** Referencia de deslocamento: ~**9 m** por turno ≈ **6 células** de corrida maxima; caminhada tipica ≈ **4 células** com faixas de PA (`Cap. 2.6`).
-- **Rota no mapa:** ao mover, o VTT traca um **caminho pelo grid** (nao linha reta atraves de obstaculos) e anima o token ao longo da rota; células bloqueadas por **tokens medios**; **Halfling**, **Gnomo** e criaturas **pequenas** (mob com deslocamento curto, ou `sharedHex` no token) podem **dividir a mesma célula** com outra criatura pequena (ate 2 no bloco).
+- **Rota no mapa:** ao mover, o VTT traca um **caminho pelo grid** (nao linha reta atraves de obstaculos) e anima o token ao longo da rota; células bloqueadas por **tokens medios**; **Halfling**, **Gnomo** e criaturas **pequenas** (mob com deslocamento curto, ou `sharedCell` no token) podem **dividir a mesma célula** com outra criatura pequena (ate 2 no bloco).
 - **Modo caminhada / corrida:** orcamento de células e custo de PA conforme faixas `walk`/`run` da ficha; cada passo (ortogonal ou diagonal) conta **1** no orçamento; o alcance mostrado na mesa respeita bloqueios e rotas validas.
 
 #### 3.1.3.1 Tamanho de criaturas no grid (VTT)
@@ -3228,7 +3228,7 @@ Alquimista Amador (INT 13, Nivel 4): Pode criar pocoes básicas (Cura Leve, Anti
 | Cortante | Causa Sangramento em acertos críticos (1d4 dano/turno) |
 | Perfurante | Em acertos críticos, o dado de dano e rolado 3 vezes |
 
-**Alcance à distância (livro e VTT):** segue a tabela **SRD / D&D 5e** (alcance normal / longo em pés), convertida para metros e **reduzida a 70%** (30% menor que o PHB). Na mesa digital, o **alcance normal** vira `alcanceHex` (1 célula = 1,5 m). Ex.: arco longo SRD 150/600 ft → **32/128 m** → **21 células** de alcance de ataque no mapa. Além do alcance normal, o Mestre pode aplicar **desvantagem** até o alcance longo (regra narrativa).
+**Alcance à distância (livro e VTT):** segue a tabela **SRD / D&D 5e** (alcance normal / longo em pés), convertida para metros e **reduzida a 70%** (30% menor que o PHB). Na mesa digital, o **alcance normal** vira `rangeCells` (1 célula = 1,5 m). Ex.: arco longo SRD 150/600 ft → **32/128 m** → **21 células** de alcance de ataque no mapa. Além do alcance normal, o Mestre pode aplicar **desvantagem** até o alcance longo (regra narrativa).
 
 ### 14.2 Armas Simples (Corpo a Corpo)
 

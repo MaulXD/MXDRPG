@@ -1,5 +1,5 @@
-import type { Axial } from "@/lib/vtt/hex-math";
-import { axialToPixel, hexCorners, hexDrawRadius } from "@/lib/vtt/hex-math";
+import type { Axial } from "@/lib/vtt/grid-math";
+import { axialToPixel, cellCorners, cellDrawRadius } from "@/lib/vtt/grid-math";
 import { dungeonObjectsOf } from "@/lib/vtt/dungeon-layer";
 import type { CanvasLayout } from "@/lib/vtt/draw-battlefield";
 import type { BattleScene, DungeonObject } from "@/lib/vtt/types";
@@ -12,19 +12,19 @@ const PREVIEW_FILL = "rgba(201, 169, 98, 0.22)";
 const PREVIEW_STROKE = "rgba(201, 169, 98, 0.65)";
 const SELECT_STROKE = "rgba(120, 200, 255, 0.9)";
 
-function drawHexCell(
+function drawGridCell(
   ctx: CanvasRenderingContext2D,
   cell: Axial,
-  hexSize: number,
+  cellSize: number,
   ox: number,
   oy: number,
   fill: string,
   stroke: string,
   lineWidth = 1.5
 ): void {
-  const { x, y } = axialToPixel(cell.q, cell.r, hexSize, ox, oy);
+  const { x, y } = axialToPixel(cell.q, cell.r, cellSize, ox, oy);
   ctx.beginPath();
-  const corners = hexCorners(x, y, hexDrawRadius(hexSize));
+  const corners = cellCorners(x, y, cellDrawRadius(cellSize));
   ctx.moveTo(corners[0].x, corners[0].y);
   for (let i = 1; i < corners.length; i++) ctx.lineTo(corners[i].x, corners[i].y);
   ctx.closePath();
@@ -38,12 +38,12 @@ function drawHexCell(
 function drawObjectGlyph(
   ctx: CanvasRenderingContext2D,
   obj: DungeonObject,
-  hexSize: number,
+  cellSize: number,
   ox: number,
   oy: number
 ): void {
-  const { x, y } = axialToPixel(obj.q, obj.r, hexSize, ox, oy);
-  const r = hexSize * 0.22;
+  const { x, y } = axialToPixel(obj.q, obj.r, cellSize, ox, oy);
+  const r = cellSize * 0.22;
   ctx.save();
   ctx.translate(x, y);
   if (obj.kind === "wall") {
@@ -65,13 +65,13 @@ function drawObjectGlyph(
 export function drawDungeonLayer(
   ctx: CanvasRenderingContext2D,
   scene: BattleScene,
-  hexSize: number,
+  cellSize: number,
   layout: CanvasLayout,
   opts?: {
     hoverAxial?: Axial | null;
     editorPreviewKind?: "wall" | "object" | null;
     selectedObjectId?: string | null;
-    visibleHexSet?: Set<string> | null;
+    visibleCellSet?: Set<string> | null;
     gridOx?: number;
     gridOy?: number;
   }
@@ -83,13 +83,13 @@ export function drawDungeonLayer(
   ctx.save();
   for (const obj of objects) {
     const key = `${obj.q},${obj.r}`;
-    if (opts?.visibleHexSet && !opts.visibleHexSet.has(key)) continue;
+    if (opts?.visibleCellSet && !opts.visibleCellSet.has(key)) continue;
 
     const fill = obj.kind === "wall" ? WALL_FILL : OBJECT_FILL;
     const stroke =
       obj.id === opts?.selectedObjectId ? SELECT_STROKE : obj.kind === "wall" ? WALL_STROKE : OBJECT_STROKE;
-    drawHexCell(ctx, { q: obj.q, r: obj.r }, hexSize, ox, oy, fill, stroke, obj.id === opts?.selectedObjectId ? 2.5 : 1.5);
-    drawObjectGlyph(ctx, obj, hexSize, ox, oy);
+    drawGridCell(ctx, { q: obj.q, r: obj.r }, cellSize, ox, oy, fill, stroke, obj.id === opts?.selectedObjectId ? 2.5 : 1.5);
+    drawObjectGlyph(ctx, obj, cellSize, ox, oy);
   }
 
   if (opts?.hoverAxial && opts.editorPreviewKind) {
@@ -97,10 +97,10 @@ export function drawDungeonLayer(
       (o) => o.q === opts.hoverAxial!.q && o.r === opts.hoverAxial!.r
     );
     if (!at) {
-      drawHexCell(
+      drawGridCell(
         ctx,
         opts.hoverAxial,
-        hexSize,
+        cellSize,
         ox,
         oy,
         PREVIEW_FILL,

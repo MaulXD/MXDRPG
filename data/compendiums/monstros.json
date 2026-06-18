@@ -26,7 +26,7 @@
         }
       },
       "movement": {
-        "hex": {
+        "cells": {
           "walk": {
             "value": 3
           },
@@ -55,9 +55,9 @@
           "damageFormula": "1d6",
           "damageType": "perfurante",
           "attackBonus": 3,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Mordida · 1 hex · PA 2"
+          "label": "Mordida · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -68,9 +68,9 @@
           "damageFormula": "1d8",
           "damageType": "cortante",
           "attackBonus": 2,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Garras · 1 hex · PA 2"
+          "label": "Garras · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -81,9 +81,9 @@
           "damageFormula": "1d10",
           "damageType": "contundente",
           "attackBonus": 2,
-          "rangeHex": 2,
+          "rangeCells": 2,
           "paCost": 2,
-          "label": "Investida · 2 hex · PA 2"
+          "label": "Investida · 2 célula · PA 2"
         }
       ],
       "catalogId": "MON-001",
@@ -117,7 +117,7 @@
         }
       },
       "movement": {
-        "hex": {
+        "cells": {
           "walk": {
             "value": 4
           },
@@ -146,9 +146,9 @@
           "damageFormula": "1d6",
           "damageType": "perfurante",
           "attackBonus": 3,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Mordida · 1 hex · PA 2"
+          "label": "Mordida · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -159,9 +159,9 @@
           "damageFormula": "1d8",
           "damageType": "cortante",
           "attackBonus": 2,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Garras · 1 hex · PA 2"
+          "label": "Garras · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -172,9 +172,9 @@
           "damageFormula": "1d10",
           "damageType": "contundente",
           "attackBonus": 2,
-          "rangeHex": 2,
+          "rangeCells": 2,
           "paCost": 2,
-          "label": "Investida · 2 hex · PA 2"
+          "label": "Investida · 2 célula · PA 2"
         }
       ],
       "catalogId": "MON-002",
@@ -208,7 +208,7 @@
         }
       },
       "movement": {
-        "hex": {
+        "cells": {
           "walk": {
             "value": 4
           },
@@ -237,9 +237,9 @@
           "damageFormula": "1d6",
           "damageType": "perfurante",
           "attackBonus": 3,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Mordida · 1 hex · PA 2"
+          "label": "Mordida · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -250,9 +250,9 @@
           "damageFormula": "1d8",
           "damageType": "cortante",
           "attackBonus": 2,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Garras · 1 hex · PA 2"
+          "label": "Garras · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -263,9 +263,9 @@
           "damageFormula": "1d10",
           "damageType": "contundente",
           "attackBonus": 2,
-          "rangeHex": 2,
+          "rangeCells": 2,
           "paCost": 2,
-          "label": "Investida · 2 hex · PA 2"
+          "label": "Investida · 2 célula · PA 2"
         }
       ],
       "catalogId": "MON-003",
@@ -299,7 +299,7 @@
         }
       },
       "movement": {
-        "hex": {
+        "cells": {
           "walk": {
             "value": 4
           },
@@ -328,9 +328,9 @@
           "damageFormula": "1d10",
           "damageType": "perfurante",
           "attackBonus": 4,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Mordida · 1 hex · PA 2"
+          "label": "Mordida · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -341,9 +341,9 @@
           "damageFormula": "1d8",
           "damageType": "cortante",
           "attackBonus": 3,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Garras · 1 hex · PA 2"
+          "label": "Garras · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -354,9 +354,9 @@
           "damageFormula": "2d8",
           "damageType": "mágico",
           "attackBonus": 6,
-          "rangeHex": 4,
+          "rangeCells": 4,
           "paCost": 2,
-          "label": "Ataque especial · 4 hex · PA 2"
+          "label": "Ataque especial · 4 célula · PA 2"
         }
       ],
       "catalogId": "MON-004",
@@ -390,7 +390,7 @@
         }
       },
       "movement": {
-        "hex": {
+        "cells": {
           "walk": {
             "value": 4
           },
@@ -419,9 +419,9 @@
           "damageFormula": "2d8",
           "damageType": "perfurante",
           "attackBonus": 12,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Mordida · 1 hex · PA 2"
+          "label": "Mordida · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -432,9 +432,9 @@
           "damageFormula": "2d6",
           "damageType": "cortante",
           "attackBonus": 10,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Garras · 1 hex · PA 2"
+          "label": "Garras · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -445,9 +445,9 @@
           "damageFormula": "3d10",
           "damageType": "mágico",
           "attackBonus": 18,
-          "rangeHex": 6,
+          "rangeCells": 6,
           "paCost": 2,
-          "label": "Ataque especial · 6 hex · PA 2"
+          "label": "Ataque especial · 6 célula · PA 2"
         }
       ],
       "catalogId": "MON-005",
@@ -481,7 +481,7 @@
         }
       },
       "movement": {
-        "hex": {
+        "cells": {
           "walk": {
             "value": 4
           },
@@ -510,9 +510,9 @@
           "damageFormula": "1d6",
           "damageType": "perfurante",
           "attackBonus": 3,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Mordida · 1 hex · PA 2"
+          "label": "Mordida · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -523,9 +523,9 @@
           "damageFormula": "1d8",
           "damageType": "cortante",
           "attackBonus": 3,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Garras · 1 hex · PA 2"
+          "label": "Garras · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -536,9 +536,9 @@
           "damageFormula": "1d10",
           "damageType": "contundente",
           "attackBonus": 3,
-          "rangeHex": 2,
+          "rangeCells": 2,
           "paCost": 2,
-          "label": "Investida · 2 hex · PA 2"
+          "label": "Investida · 2 célula · PA 2"
         }
       ],
       "catalogId": "MON-006",
@@ -572,7 +572,7 @@
         }
       },
       "movement": {
-        "hex": {
+        "cells": {
           "walk": {
             "value": 5
           },
@@ -601,9 +601,9 @@
           "damageFormula": "2d8",
           "damageType": "perfurante",
           "attackBonus": 8,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Mordida · 1 hex · PA 2"
+          "label": "Mordida · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -614,9 +614,9 @@
           "damageFormula": "2d6",
           "damageType": "cortante",
           "attackBonus": 6,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Garras · 1 hex · PA 2"
+          "label": "Garras · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -627,9 +627,9 @@
           "damageFormula": "3d10",
           "damageType": "mágico",
           "attackBonus": 11,
-          "rangeHex": 6,
+          "rangeCells": 6,
           "paCost": 2,
-          "label": "Ataque especial · 6 hex · PA 2"
+          "label": "Ataque especial · 6 célula · PA 2"
         }
       ],
       "catalogId": "MON-007",
@@ -663,7 +663,7 @@
         }
       },
       "movement": {
-        "hex": {
+        "cells": {
           "walk": {
             "value": 4
           },
@@ -692,9 +692,9 @@
           "damageFormula": "1d10",
           "damageType": "perfurante",
           "attackBonus": 4,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Mordida · 1 hex · PA 2"
+          "label": "Mordida · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -705,9 +705,9 @@
           "damageFormula": "1d8",
           "damageType": "cortante",
           "attackBonus": 3,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Garras · 1 hex · PA 2"
+          "label": "Garras · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -718,9 +718,9 @@
           "damageFormula": "2d8",
           "damageType": "mágico",
           "attackBonus": 6,
-          "rangeHex": 4,
+          "rangeCells": 4,
           "paCost": 2,
-          "label": "Ataque especial · 4 hex · PA 2"
+          "label": "Ataque especial · 4 célula · PA 2"
         }
       ],
       "catalogId": "MON-008",
@@ -754,7 +754,7 @@
         }
       },
       "movement": {
-        "hex": {
+        "cells": {
           "walk": {
             "value": 3
           },
@@ -783,9 +783,9 @@
           "damageFormula": "1d10",
           "damageType": "perfurante",
           "attackBonus": 4,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Mordida · 1 hex · PA 2"
+          "label": "Mordida · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -796,9 +796,9 @@
           "damageFormula": "1d8",
           "damageType": "cortante",
           "attackBonus": 3,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Garras · 1 hex · PA 2"
+          "label": "Garras · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -809,9 +809,9 @@
           "damageFormula": "2d8",
           "damageType": "mágico",
           "attackBonus": 6,
-          "rangeHex": 4,
+          "rangeCells": 4,
           "paCost": 2,
-          "label": "Ataque especial · 4 hex · PA 2"
+          "label": "Ataque especial · 4 célula · PA 2"
         }
       ],
       "catalogId": "MON-009",
@@ -845,7 +845,7 @@
         }
       },
       "movement": {
-        "hex": {
+        "cells": {
           "walk": {
             "value": 4
           },
@@ -874,9 +874,9 @@
           "damageFormula": "1d10",
           "damageType": "perfurante",
           "attackBonus": 5,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Mordida · 1 hex · PA 2"
+          "label": "Mordida · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -887,9 +887,9 @@
           "damageFormula": "1d8",
           "damageType": "cortante",
           "attackBonus": 4,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Garras · 1 hex · PA 2"
+          "label": "Garras · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -900,9 +900,9 @@
           "damageFormula": "2d8",
           "damageType": "mágico",
           "attackBonus": 8,
-          "rangeHex": 4,
+          "rangeCells": 4,
           "paCost": 2,
-          "label": "Ataque especial · 4 hex · PA 2"
+          "label": "Ataque especial · 4 célula · PA 2"
         }
       ],
       "catalogId": "MON-010",
@@ -936,7 +936,7 @@
         }
       },
       "movement": {
-        "hex": {
+        "cells": {
           "walk": {
             "value": 4
           },
@@ -965,9 +965,9 @@
           "damageFormula": "1d10",
           "damageType": "perfurante",
           "attackBonus": 6,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Mordida · 1 hex · PA 2"
+          "label": "Mordida · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -978,9 +978,9 @@
           "damageFormula": "1d8",
           "damageType": "cortante",
           "attackBonus": 5,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Garras · 1 hex · PA 2"
+          "label": "Garras · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -991,9 +991,9 @@
           "damageFormula": "2d8",
           "damageType": "mágico",
           "attackBonus": 10,
-          "rangeHex": 4,
+          "rangeCells": 4,
           "paCost": 2,
-          "label": "Ataque especial · 4 hex · PA 2"
+          "label": "Ataque especial · 4 célula · PA 2"
         }
       ],
       "catalogId": "MON-011",
@@ -1027,7 +1027,7 @@
         }
       },
       "movement": {
-        "hex": {
+        "cells": {
           "walk": {
             "value": 5
           },
@@ -1056,9 +1056,9 @@
           "damageFormula": "2d8",
           "damageType": "perfurante",
           "attackBonus": 9,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Mordida · 1 hex · PA 2"
+          "label": "Mordida · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -1069,9 +1069,9 @@
           "damageFormula": "2d6",
           "damageType": "cortante",
           "attackBonus": 7,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Garras · 1 hex · PA 2"
+          "label": "Garras · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -1082,9 +1082,9 @@
           "damageFormula": "3d10",
           "damageType": "mágico",
           "attackBonus": 13,
-          "rangeHex": 6,
+          "rangeCells": 6,
           "paCost": 2,
-          "label": "Ataque especial · 6 hex · PA 2"
+          "label": "Ataque especial · 6 célula · PA 2"
         }
       ],
       "catalogId": "MON-012",
@@ -1118,7 +1118,7 @@
         }
       },
       "movement": {
-        "hex": {
+        "cells": {
           "walk": {
             "value": 4
           },
@@ -1147,9 +1147,9 @@
           "damageFormula": "1d10",
           "damageType": "perfurante",
           "attackBonus": 4,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Mordida · 1 hex · PA 2"
+          "label": "Mordida · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -1160,9 +1160,9 @@
           "damageFormula": "1d8",
           "damageType": "cortante",
           "attackBonus": 3,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Garras · 1 hex · PA 2"
+          "label": "Garras · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -1173,9 +1173,9 @@
           "damageFormula": "2d8",
           "damageType": "mágico",
           "attackBonus": 6,
-          "rangeHex": 4,
+          "rangeCells": 4,
           "paCost": 2,
-          "label": "Ataque especial · 4 hex · PA 2"
+          "label": "Ataque especial · 4 célula · PA 2"
         }
       ],
       "catalogId": "MON-013",
@@ -1209,7 +1209,7 @@
         }
       },
       "movement": {
-        "hex": {
+        "cells": {
           "walk": {
             "value": 6
           },
@@ -1238,9 +1238,9 @@
           "damageFormula": "2d8",
           "damageType": "perfurante",
           "attackBonus": 12,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Mordida · 1 hex · PA 2"
+          "label": "Mordida · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -1251,9 +1251,9 @@
           "damageFormula": "2d6",
           "damageType": "cortante",
           "attackBonus": 10,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Garras · 1 hex · PA 2"
+          "label": "Garras · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -1264,9 +1264,9 @@
           "damageFormula": "3d10",
           "damageType": "mágico",
           "attackBonus": 18,
-          "rangeHex": 6,
+          "rangeCells": 6,
           "paCost": 2,
-          "label": "Ataque especial · 6 hex · PA 2"
+          "label": "Ataque especial · 6 célula · PA 2"
         }
       ],
       "catalogId": "MON-014",
@@ -1300,7 +1300,7 @@
         }
       },
       "movement": {
-        "hex": {
+        "cells": {
           "walk": {
             "value": 3
           },
@@ -1329,9 +1329,9 @@
           "damageFormula": "1d10",
           "damageType": "perfurante",
           "attackBonus": 6,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Mordida · 1 hex · PA 2"
+          "label": "Mordida · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -1342,9 +1342,9 @@
           "damageFormula": "1d8",
           "damageType": "cortante",
           "attackBonus": 5,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Garras · 1 hex · PA 2"
+          "label": "Garras · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -1355,9 +1355,9 @@
           "damageFormula": "2d8",
           "damageType": "mágico",
           "attackBonus": 9,
-          "rangeHex": 4,
+          "rangeCells": 4,
           "paCost": 2,
-          "label": "Ataque especial · 4 hex · PA 2"
+          "label": "Ataque especial · 4 célula · PA 2"
         }
       ],
       "catalogId": "MON-015",
@@ -1391,7 +1391,7 @@
         }
       },
       "movement": {
-        "hex": {
+        "cells": {
           "walk": {
             "value": 2
           },
@@ -1420,9 +1420,9 @@
           "damageFormula": "1d6",
           "damageType": "perfurante",
           "attackBonus": 2,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Mordida · 1 hex · PA 2"
+          "label": "Mordida · 1 célula · PA 2"
         }
       ],
       "catalogId": "MON-016",
@@ -1456,7 +1456,7 @@
         }
       },
       "movement": {
-        "hex": {
+        "cells": {
           "walk": {
             "value": 3
           },
@@ -1485,9 +1485,9 @@
           "damageFormula": "1d10",
           "damageType": "perfurante",
           "attackBonus": 7,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Mordida · 1 hex · PA 2"
+          "label": "Mordida · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -1498,9 +1498,9 @@
           "damageFormula": "1d8",
           "damageType": "cortante",
           "attackBonus": 6,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Garras · 1 hex · PA 2"
+          "label": "Garras · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -1511,9 +1511,9 @@
           "damageFormula": "2d8",
           "damageType": "mágico",
           "attackBonus": 11,
-          "rangeHex": 4,
+          "rangeCells": 4,
           "paCost": 2,
-          "label": "Ataque especial · 4 hex · PA 2"
+          "label": "Ataque especial · 4 célula · PA 2"
         }
       ],
       "catalogId": "MON-017",
@@ -1547,7 +1547,7 @@
         }
       },
       "movement": {
-        "hex": {
+        "cells": {
           "walk": {
             "value": 4
           },
@@ -1576,9 +1576,9 @@
           "damageFormula": "1d10",
           "damageType": "perfurante",
           "attackBonus": 5,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Mordida · 1 hex · PA 2"
+          "label": "Mordida · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -1589,9 +1589,9 @@
           "damageFormula": "1d8",
           "damageType": "cortante",
           "attackBonus": 4,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Garras · 1 hex · PA 2"
+          "label": "Garras · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -1602,9 +1602,9 @@
           "damageFormula": "2d8",
           "damageType": "mágico",
           "attackBonus": 8,
-          "rangeHex": 4,
+          "rangeCells": 4,
           "paCost": 2,
-          "label": "Ataque especial · 4 hex · PA 2"
+          "label": "Ataque especial · 4 célula · PA 2"
         }
       ],
       "catalogId": "MON-018",
@@ -1638,7 +1638,7 @@
         }
       },
       "movement": {
-        "hex": {
+        "cells": {
           "walk": {
             "value": 4
           },
@@ -1667,9 +1667,9 @@
           "damageFormula": "1d10",
           "damageType": "perfurante",
           "attackBonus": 5,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Mordida · 1 hex · PA 2"
+          "label": "Mordida · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -1680,9 +1680,9 @@
           "damageFormula": "1d8",
           "damageType": "cortante",
           "attackBonus": 4,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Garras · 1 hex · PA 2"
+          "label": "Garras · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -1693,9 +1693,9 @@
           "damageFormula": "2d8",
           "damageType": "mágico",
           "attackBonus": 8,
-          "rangeHex": 4,
+          "rangeCells": 4,
           "paCost": 2,
-          "label": "Ataque especial · 4 hex · PA 2"
+          "label": "Ataque especial · 4 célula · PA 2"
         }
       ],
       "catalogId": "MON-019",
@@ -1729,7 +1729,7 @@
         }
       },
       "movement": {
-        "hex": {
+        "cells": {
           "walk": {
             "value": 4
           },
@@ -1758,9 +1758,9 @@
           "damageFormula": "1d10",
           "damageType": "perfurante",
           "attackBonus": 5,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Mordida · 1 hex · PA 2"
+          "label": "Mordida · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -1771,9 +1771,9 @@
           "damageFormula": "1d8",
           "damageType": "cortante",
           "attackBonus": 4,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Garras · 1 hex · PA 2"
+          "label": "Garras · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -1784,9 +1784,9 @@
           "damageFormula": "2d8",
           "damageType": "mágico",
           "attackBonus": 8,
-          "rangeHex": 4,
+          "rangeCells": 4,
           "paCost": 2,
-          "label": "Ataque especial · 4 hex · PA 2"
+          "label": "Ataque especial · 4 célula · PA 2"
         }
       ],
       "catalogId": "MON-020",
@@ -1820,7 +1820,7 @@
         }
       },
       "movement": {
-        "hex": {
+        "cells": {
           "walk": {
             "value": 5
           },
@@ -1849,9 +1849,9 @@
           "damageFormula": "1d10",
           "damageType": "perfurante",
           "attackBonus": 6,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Mordida · 1 hex · PA 2"
+          "label": "Mordida · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -1862,9 +1862,9 @@
           "damageFormula": "1d8",
           "damageType": "cortante",
           "attackBonus": 5,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Garras · 1 hex · PA 2"
+          "label": "Garras · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -1875,9 +1875,9 @@
           "damageFormula": "2d8",
           "damageType": "mágico",
           "attackBonus": 9,
-          "rangeHex": 4,
+          "rangeCells": 4,
           "paCost": 2,
-          "label": "Ataque especial · 4 hex · PA 2"
+          "label": "Ataque especial · 4 célula · PA 2"
         }
       ],
       "catalogId": "MON-021",
@@ -1911,7 +1911,7 @@
         }
       },
       "movement": {
-        "hex": {
+        "cells": {
           "walk": {
             "value": 5
           },
@@ -1940,9 +1940,9 @@
           "damageFormula": "1d10",
           "damageType": "perfurante",
           "attackBonus": 4,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Mordida · 1 hex · PA 2"
+          "label": "Mordida · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -1953,9 +1953,9 @@
           "damageFormula": "1d8",
           "damageType": "cortante",
           "attackBonus": 3,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Garras · 1 hex · PA 2"
+          "label": "Garras · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -1966,9 +1966,9 @@
           "damageFormula": "2d8",
           "damageType": "mágico",
           "attackBonus": 6,
-          "rangeHex": 4,
+          "rangeCells": 4,
           "paCost": 2,
-          "label": "Ataque especial · 4 hex · PA 2"
+          "label": "Ataque especial · 4 célula · PA 2"
         }
       ],
       "catalogId": "MON-022",
@@ -2002,7 +2002,7 @@
         }
       },
       "movement": {
-        "hex": {
+        "cells": {
           "walk": {
             "value": 4
           },
@@ -2031,9 +2031,9 @@
           "damageFormula": "1d6",
           "damageType": "perfurante",
           "attackBonus": 4,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Mordida · 1 hex · PA 2"
+          "label": "Mordida · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -2044,9 +2044,9 @@
           "damageFormula": "1d8",
           "damageType": "cortante",
           "attackBonus": 3,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Garras · 1 hex · PA 2"
+          "label": "Garras · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -2057,9 +2057,9 @@
           "damageFormula": "2d8",
           "damageType": "mágico",
           "attackBonus": 6,
-          "rangeHex": 4,
+          "rangeCells": 4,
           "paCost": 2,
-          "label": "Ataque especial · 4 hex · PA 2"
+          "label": "Ataque especial · 4 célula · PA 2"
         }
       ],
       "catalogId": "MON-023",
@@ -2093,7 +2093,7 @@
         }
       },
       "movement": {
-        "hex": {
+        "cells": {
           "walk": {
             "value": 4
           },
@@ -2122,9 +2122,9 @@
           "damageFormula": "1d6",
           "damageType": "perfurante",
           "attackBonus": 3,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Mordida · 1 hex · PA 2"
+          "label": "Mordida · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -2135,9 +2135,9 @@
           "damageFormula": "1d8",
           "damageType": "cortante",
           "attackBonus": 3,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Garras · 1 hex · PA 2"
+          "label": "Garras · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -2148,9 +2148,9 @@
           "damageFormula": "1d10",
           "damageType": "contundente",
           "attackBonus": 3,
-          "rangeHex": 2,
+          "rangeCells": 2,
           "paCost": 2,
-          "label": "Investida · 2 hex · PA 2"
+          "label": "Investida · 2 célula · PA 2"
         }
       ],
       "catalogId": "MON-024",
@@ -2184,7 +2184,7 @@
         }
       },
       "movement": {
-        "hex": {
+        "cells": {
           "walk": {
             "value": 4
           },
@@ -2213,9 +2213,9 @@
           "damageFormula": "1d6",
           "damageType": "perfurante",
           "attackBonus": 3,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Mordida · 1 hex · PA 2"
+          "label": "Mordida · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -2226,9 +2226,9 @@
           "damageFormula": "1d8",
           "damageType": "cortante",
           "attackBonus": 2,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Garras · 1 hex · PA 2"
+          "label": "Garras · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -2239,9 +2239,9 @@
           "damageFormula": "1d10",
           "damageType": "contundente",
           "attackBonus": 2,
-          "rangeHex": 2,
+          "rangeCells": 2,
           "paCost": 2,
-          "label": "Investida · 2 hex · PA 2"
+          "label": "Investida · 2 célula · PA 2"
         }
       ],
       "catalogId": "MON-025",
@@ -2275,7 +2275,7 @@
         }
       },
       "movement": {
-        "hex": {
+        "cells": {
           "walk": {
             "value": 4
           },
@@ -2304,9 +2304,9 @@
           "damageFormula": "1d6",
           "damageType": "perfurante",
           "attackBonus": 4,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Mordida · 1 hex · PA 2"
+          "label": "Mordida · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -2317,9 +2317,9 @@
           "damageFormula": "1d8",
           "damageType": "cortante",
           "attackBonus": 3,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Garras · 1 hex · PA 2"
+          "label": "Garras · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -2330,9 +2330,9 @@
           "damageFormula": "2d8",
           "damageType": "mágico",
           "attackBonus": 6,
-          "rangeHex": 4,
+          "rangeCells": 4,
           "paCost": 2,
-          "label": "Ataque especial · 4 hex · PA 2"
+          "label": "Ataque especial · 4 célula · PA 2"
         }
       ],
       "catalogId": "MON-026",
@@ -2366,7 +2366,7 @@
         }
       },
       "movement": {
-        "hex": {
+        "cells": {
           "walk": {
             "value": 4
           },
@@ -2395,9 +2395,9 @@
           "damageFormula": "1d10",
           "damageType": "perfurante",
           "attackBonus": 4,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Mordida · 1 hex · PA 2"
+          "label": "Mordida · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -2408,9 +2408,9 @@
           "damageFormula": "1d8",
           "damageType": "cortante",
           "attackBonus": 3,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Garras · 1 hex · PA 2"
+          "label": "Garras · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -2421,9 +2421,9 @@
           "damageFormula": "2d8",
           "damageType": "mágico",
           "attackBonus": 6,
-          "rangeHex": 4,
+          "rangeCells": 4,
           "paCost": 2,
-          "label": "Ataque especial · 4 hex · PA 2"
+          "label": "Ataque especial · 4 célula · PA 2"
         }
       ],
       "catalogId": "MON-027",
@@ -2457,7 +2457,7 @@
         }
       },
       "movement": {
-        "hex": {
+        "cells": {
           "walk": {
             "value": 4
           },
@@ -2486,9 +2486,9 @@
           "damageFormula": "1d10",
           "damageType": "perfurante",
           "attackBonus": 5,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Mordida · 1 hex · PA 2"
+          "label": "Mordida · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -2499,9 +2499,9 @@
           "damageFormula": "1d8",
           "damageType": "cortante",
           "attackBonus": 4,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Garras · 1 hex · PA 2"
+          "label": "Garras · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -2512,9 +2512,9 @@
           "damageFormula": "2d8",
           "damageType": "mágico",
           "attackBonus": 8,
-          "rangeHex": 4,
+          "rangeCells": 4,
           "paCost": 2,
-          "label": "Ataque especial · 4 hex · PA 2"
+          "label": "Ataque especial · 4 célula · PA 2"
         }
       ],
       "catalogId": "MON-028",
@@ -2548,7 +2548,7 @@
         }
       },
       "movement": {
-        "hex": {
+        "cells": {
           "walk": {
             "value": 3
           },
@@ -2577,9 +2577,9 @@
           "damageFormula": "2d8",
           "damageType": "perfurante",
           "attackBonus": 9,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Mordida · 1 hex · PA 2"
+          "label": "Mordida · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -2590,9 +2590,9 @@
           "damageFormula": "2d6",
           "damageType": "cortante",
           "attackBonus": 7,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Garras · 1 hex · PA 2"
+          "label": "Garras · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -2603,9 +2603,9 @@
           "damageFormula": "3d10",
           "damageType": "mágico",
           "attackBonus": 13,
-          "rangeHex": 6,
+          "rangeCells": 6,
           "paCost": 2,
-          "label": "Ataque especial · 6 hex · PA 2"
+          "label": "Ataque especial · 6 célula · PA 2"
         }
       ],
       "catalogId": "MON-029",
@@ -2639,7 +2639,7 @@
         }
       },
       "movement": {
-        "hex": {
+        "cells": {
           "walk": {
             "value": 4
           },
@@ -2668,9 +2668,9 @@
           "damageFormula": "1d10",
           "damageType": "perfurante",
           "attackBonus": 6,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Mordida · 1 hex · PA 2"
+          "label": "Mordida · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -2681,9 +2681,9 @@
           "damageFormula": "1d8",
           "damageType": "cortante",
           "attackBonus": 5,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Garras · 1 hex · PA 2"
+          "label": "Garras · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -2694,9 +2694,9 @@
           "damageFormula": "2d8",
           "damageType": "mágico",
           "attackBonus": 9,
-          "rangeHex": 4,
+          "rangeCells": 4,
           "paCost": 2,
-          "label": "Ataque especial · 4 hex · PA 2"
+          "label": "Ataque especial · 4 célula · PA 2"
         }
       ],
       "catalogId": "MON-030",
@@ -2730,7 +2730,7 @@
         }
       },
       "movement": {
-        "hex": {
+        "cells": {
           "walk": {
             "value": 5
           },
@@ -2759,9 +2759,9 @@
           "damageFormula": "1d10",
           "damageType": "perfurante",
           "attackBonus": 4,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Mordida · 1 hex · PA 2"
+          "label": "Mordida · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -2772,9 +2772,9 @@
           "damageFormula": "1d8",
           "damageType": "cortante",
           "attackBonus": 3,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Garras · 1 hex · PA 2"
+          "label": "Garras · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -2785,9 +2785,9 @@
           "damageFormula": "2d8",
           "damageType": "mágico",
           "attackBonus": 6,
-          "rangeHex": 4,
+          "rangeCells": 4,
           "paCost": 2,
-          "label": "Ataque especial · 4 hex · PA 2"
+          "label": "Ataque especial · 4 célula · PA 2"
         }
       ],
       "catalogId": "MON-031",
@@ -2821,7 +2821,7 @@
         }
       },
       "movement": {
-        "hex": {
+        "cells": {
           "walk": {
             "value": 4
           },
@@ -2850,9 +2850,9 @@
           "damageFormula": "1d6",
           "damageType": "perfurante",
           "attackBonus": 2,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Mordida · 1 hex · PA 2"
+          "label": "Mordida · 1 célula · PA 2"
         }
       ],
       "catalogId": "MON-032",
@@ -2886,7 +2886,7 @@
         }
       },
       "movement": {
-        "hex": {
+        "cells": {
           "walk": {
             "value": 4
           },
@@ -2915,9 +2915,9 @@
           "damageFormula": "1d6",
           "damageType": "perfurante",
           "attackBonus": 3,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Mordida · 1 hex · PA 2"
+          "label": "Mordida · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -2928,9 +2928,9 @@
           "damageFormula": "1d8",
           "damageType": "cortante",
           "attackBonus": 2,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Garras · 1 hex · PA 2"
+          "label": "Garras · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -2941,9 +2941,9 @@
           "damageFormula": "1d10",
           "damageType": "contundente",
           "attackBonus": 2,
-          "rangeHex": 2,
+          "rangeCells": 2,
           "paCost": 2,
-          "label": "Investida · 2 hex · PA 2"
+          "label": "Investida · 2 célula · PA 2"
         }
       ],
       "catalogId": "MON-033",
@@ -2977,7 +2977,7 @@
         }
       },
       "movement": {
-        "hex": {
+        "cells": {
           "walk": {
             "value": 4
           },
@@ -3006,9 +3006,9 @@
           "damageFormula": "1d6",
           "damageType": "perfurante",
           "attackBonus": 4,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Mordida · 1 hex · PA 2"
+          "label": "Mordida · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -3019,9 +3019,9 @@
           "damageFormula": "1d8",
           "damageType": "cortante",
           "attackBonus": 3,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Garras · 1 hex · PA 2"
+          "label": "Garras · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -3032,9 +3032,9 @@
           "damageFormula": "2d8",
           "damageType": "mágico",
           "attackBonus": 6,
-          "rangeHex": 4,
+          "rangeCells": 4,
           "paCost": 2,
-          "label": "Ataque especial · 4 hex · PA 2"
+          "label": "Ataque especial · 4 célula · PA 2"
         }
       ],
       "catalogId": "MON-034",
@@ -3068,7 +3068,7 @@
         }
       },
       "movement": {
-        "hex": {
+        "cells": {
           "walk": {
             "value": 4
           },
@@ -3097,9 +3097,9 @@
           "damageFormula": "1d10",
           "damageType": "perfurante",
           "attackBonus": 5,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Mordida · 1 hex · PA 2"
+          "label": "Mordida · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -3110,9 +3110,9 @@
           "damageFormula": "1d8",
           "damageType": "cortante",
           "attackBonus": 4,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Garras · 1 hex · PA 2"
+          "label": "Garras · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -3123,9 +3123,9 @@
           "damageFormula": "2d8",
           "damageType": "mágico",
           "attackBonus": 8,
-          "rangeHex": 4,
+          "rangeCells": 4,
           "paCost": 2,
-          "label": "Ataque especial · 4 hex · PA 2"
+          "label": "Ataque especial · 4 célula · PA 2"
         }
       ],
       "catalogId": "MON-035",
@@ -3159,7 +3159,7 @@
         }
       },
       "movement": {
-        "hex": {
+        "cells": {
           "walk": {
             "value": 3
           },
@@ -3188,9 +3188,9 @@
           "damageFormula": "1d10",
           "damageType": "perfurante",
           "attackBonus": 6,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Mordida · 1 hex · PA 2"
+          "label": "Mordida · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -3201,9 +3201,9 @@
           "damageFormula": "1d8",
           "damageType": "cortante",
           "attackBonus": 5,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Garras · 1 hex · PA 2"
+          "label": "Garras · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -3214,9 +3214,9 @@
           "damageFormula": "2d8",
           "damageType": "mágico",
           "attackBonus": 10,
-          "rangeHex": 4,
+          "rangeCells": 4,
           "paCost": 2,
-          "label": "Ataque especial · 4 hex · PA 2"
+          "label": "Ataque especial · 4 célula · PA 2"
         }
       ],
       "catalogId": "MON-036",
@@ -3250,7 +3250,7 @@
         }
       },
       "movement": {
-        "hex": {
+        "cells": {
           "walk": {
             "value": 2
           },
@@ -3279,9 +3279,9 @@
           "damageFormula": "1d6",
           "damageType": "perfurante",
           "attackBonus": 4,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Mordida · 1 hex · PA 2"
+          "label": "Mordida · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -3292,9 +3292,9 @@
           "damageFormula": "1d8",
           "damageType": "cortante",
           "attackBonus": 3,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Garras · 1 hex · PA 2"
+          "label": "Garras · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -3305,9 +3305,9 @@
           "damageFormula": "2d8",
           "damageType": "mágico",
           "attackBonus": 6,
-          "rangeHex": 4,
+          "rangeCells": 4,
           "paCost": 2,
-          "label": "Ataque especial · 4 hex · PA 2"
+          "label": "Ataque especial · 4 célula · PA 2"
         }
       ],
       "catalogId": "MON-037",
@@ -3341,7 +3341,7 @@
         }
       },
       "movement": {
-        "hex": {
+        "cells": {
           "walk": {
             "value": 2
           },
@@ -3370,9 +3370,9 @@
           "damageFormula": "1d6",
           "damageType": "perfurante",
           "attackBonus": 3,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Mordida · 1 hex · PA 2"
+          "label": "Mordida · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -3383,9 +3383,9 @@
           "damageFormula": "1d8",
           "damageType": "cortante",
           "attackBonus": 2,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Garras · 1 hex · PA 2"
+          "label": "Garras · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -3396,9 +3396,9 @@
           "damageFormula": "1d10",
           "damageType": "contundente",
           "attackBonus": 2,
-          "rangeHex": 2,
+          "rangeCells": 2,
           "paCost": 2,
-          "label": "Investida · 2 hex · PA 2"
+          "label": "Investida · 2 célula · PA 2"
         }
       ],
       "catalogId": "MON-038",
@@ -3432,7 +3432,7 @@
         }
       },
       "movement": {
-        "hex": {
+        "cells": {
           "walk": {
             "value": 2
           },
@@ -3461,9 +3461,9 @@
           "damageFormula": "1d6",
           "damageType": "perfurante",
           "attackBonus": 3,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Mordida · 1 hex · PA 2"
+          "label": "Mordida · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -3474,9 +3474,9 @@
           "damageFormula": "1d8",
           "damageType": "cortante",
           "attackBonus": 2,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Garras · 1 hex · PA 2"
+          "label": "Garras · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -3487,9 +3487,9 @@
           "damageFormula": "1d10",
           "damageType": "contundente",
           "attackBonus": 2,
-          "rangeHex": 2,
+          "rangeCells": 2,
           "paCost": 2,
-          "label": "Investida · 2 hex · PA 2"
+          "label": "Investida · 2 célula · PA 2"
         }
       ],
       "catalogId": "MON-039",
@@ -3523,7 +3523,7 @@
         }
       },
       "movement": {
-        "hex": {
+        "cells": {
           "walk": {
             "value": 4
           },
@@ -3552,9 +3552,9 @@
           "damageFormula": "1d10",
           "damageType": "perfurante",
           "attackBonus": 5,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Mordida · 1 hex · PA 2"
+          "label": "Mordida · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -3565,9 +3565,9 @@
           "damageFormula": "1d8",
           "damageType": "cortante",
           "attackBonus": 4,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Garras · 1 hex · PA 2"
+          "label": "Garras · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -3578,9 +3578,9 @@
           "damageFormula": "2d8",
           "damageType": "mágico",
           "attackBonus": 8,
-          "rangeHex": 4,
+          "rangeCells": 4,
           "paCost": 2,
-          "label": "Ataque especial · 4 hex · PA 2"
+          "label": "Ataque especial · 4 célula · PA 2"
         }
       ],
       "catalogId": "MON-040",
@@ -3614,7 +3614,7 @@
         }
       },
       "movement": {
-        "hex": {
+        "cells": {
           "walk": {
             "value": 4
           },
@@ -3643,9 +3643,9 @@
           "damageFormula": "1d10",
           "damageType": "perfurante",
           "attackBonus": 5,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Mordida · 1 hex · PA 2"
+          "label": "Mordida · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -3656,9 +3656,9 @@
           "damageFormula": "1d8",
           "damageType": "cortante",
           "attackBonus": 4,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Garras · 1 hex · PA 2"
+          "label": "Garras · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -3669,9 +3669,9 @@
           "damageFormula": "2d8",
           "damageType": "mágico",
           "attackBonus": 8,
-          "rangeHex": 4,
+          "rangeCells": 4,
           "paCost": 2,
-          "label": "Ataque especial · 4 hex · PA 2"
+          "label": "Ataque especial · 4 célula · PA 2"
         }
       ],
       "catalogId": "MON-041",
@@ -3705,7 +3705,7 @@
         }
       },
       "movement": {
-        "hex": {
+        "cells": {
           "walk": {
             "value": 4
           },
@@ -3734,9 +3734,9 @@
           "damageFormula": "1d10",
           "damageType": "perfurante",
           "attackBonus": 6,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Mordida · 1 hex · PA 2"
+          "label": "Mordida · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -3747,9 +3747,9 @@
           "damageFormula": "1d8",
           "damageType": "cortante",
           "attackBonus": 5,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Garras · 1 hex · PA 2"
+          "label": "Garras · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -3760,9 +3760,9 @@
           "damageFormula": "2d8",
           "damageType": "mágico",
           "attackBonus": 9,
-          "rangeHex": 4,
+          "rangeCells": 4,
           "paCost": 2,
-          "label": "Ataque especial · 4 hex · PA 2"
+          "label": "Ataque especial · 4 célula · PA 2"
         }
       ],
       "catalogId": "MON-042",
@@ -3796,7 +3796,7 @@
         }
       },
       "movement": {
-        "hex": {
+        "cells": {
           "walk": {
             "value": 5
           },
@@ -3825,9 +3825,9 @@
           "damageFormula": "1d6",
           "damageType": "perfurante",
           "attackBonus": 3,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Mordida · 1 hex · PA 2"
+          "label": "Mordida · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -3838,9 +3838,9 @@
           "damageFormula": "1d8",
           "damageType": "cortante",
           "attackBonus": 2,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Garras · 1 hex · PA 2"
+          "label": "Garras · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -3851,9 +3851,9 @@
           "damageFormula": "1d10",
           "damageType": "contundente",
           "attackBonus": 2,
-          "rangeHex": 2,
+          "rangeCells": 2,
           "paCost": 2,
-          "label": "Investida · 2 hex · PA 2"
+          "label": "Investida · 2 célula · PA 2"
         }
       ],
       "catalogId": "MON-043",
@@ -3887,7 +3887,7 @@
         }
       },
       "movement": {
-        "hex": {
+        "cells": {
           "walk": {
             "value": 4
           },
@@ -3916,9 +3916,9 @@
           "damageFormula": "1d6",
           "damageType": "perfurante",
           "attackBonus": 4,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Mordida · 1 hex · PA 2"
+          "label": "Mordida · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -3929,9 +3929,9 @@
           "damageFormula": "1d8",
           "damageType": "cortante",
           "attackBonus": 3,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Garras · 1 hex · PA 2"
+          "label": "Garras · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -3942,9 +3942,9 @@
           "damageFormula": "2d8",
           "damageType": "mágico",
           "attackBonus": 6,
-          "rangeHex": 4,
+          "rangeCells": 4,
           "paCost": 2,
-          "label": "Ataque especial · 4 hex · PA 2"
+          "label": "Ataque especial · 4 célula · PA 2"
         }
       ],
       "catalogId": "MON-044",
@@ -3978,7 +3978,7 @@
         }
       },
       "movement": {
-        "hex": {
+        "cells": {
           "walk": {
             "value": 4
           },
@@ -4007,9 +4007,9 @@
           "damageFormula": "1d10",
           "damageType": "perfurante",
           "attackBonus": 4,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Mordida · 1 hex · PA 2"
+          "label": "Mordida · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -4020,9 +4020,9 @@
           "damageFormula": "1d8",
           "damageType": "cortante",
           "attackBonus": 4,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Garras · 1 hex · PA 2"
+          "label": "Garras · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -4033,9 +4033,9 @@
           "damageFormula": "2d8",
           "damageType": "mágico",
           "attackBonus": 6,
-          "rangeHex": 4,
+          "rangeCells": 4,
           "paCost": 2,
-          "label": "Ataque especial · 4 hex · PA 2"
+          "label": "Ataque especial · 4 célula · PA 2"
         }
       ],
       "catalogId": "MON-045",
@@ -4069,7 +4069,7 @@
         }
       },
       "movement": {
-        "hex": {
+        "cells": {
           "walk": {
             "value": 4
           },
@@ -4098,9 +4098,9 @@
           "damageFormula": "2d8",
           "damageType": "perfurante",
           "attackBonus": 7,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Mordida · 1 hex · PA 2"
+          "label": "Mordida · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -4111,9 +4111,9 @@
           "damageFormula": "2d6",
           "damageType": "cortante",
           "attackBonus": 5,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Garras · 1 hex · PA 2"
+          "label": "Garras · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -4124,9 +4124,9 @@
           "damageFormula": "3d10",
           "damageType": "mágico",
           "attackBonus": 10,
-          "rangeHex": 6,
+          "rangeCells": 6,
           "paCost": 2,
-          "label": "Ataque especial · 6 hex · PA 2"
+          "label": "Ataque especial · 6 célula · PA 2"
         }
       ],
       "catalogId": "MON-046",
@@ -4160,7 +4160,7 @@
         }
       },
       "movement": {
-        "hex": {
+        "cells": {
           "walk": {
             "value": 5
           },
@@ -4189,9 +4189,9 @@
           "damageFormula": "2d8",
           "damageType": "perfurante",
           "attackBonus": 8,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Mordida · 1 hex · PA 2"
+          "label": "Mordida · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -4202,9 +4202,9 @@
           "damageFormula": "2d6",
           "damageType": "cortante",
           "attackBonus": 6,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Garras · 1 hex · PA 2"
+          "label": "Garras · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -4215,9 +4215,9 @@
           "damageFormula": "3d10",
           "damageType": "mágico",
           "attackBonus": 11,
-          "rangeHex": 6,
+          "rangeCells": 6,
           "paCost": 2,
-          "label": "Ataque especial · 6 hex · PA 2"
+          "label": "Ataque especial · 6 célula · PA 2"
         }
       ],
       "catalogId": "MON-047",
@@ -4251,7 +4251,7 @@
         }
       },
       "movement": {
-        "hex": {
+        "cells": {
           "walk": {
             "value": 5
           },
@@ -4280,9 +4280,9 @@
           "damageFormula": "2d8",
           "damageType": "perfurante",
           "attackBonus": 10,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Mordida · 1 hex · PA 2"
+          "label": "Mordida · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -4293,9 +4293,9 @@
           "damageFormula": "2d6",
           "damageType": "cortante",
           "attackBonus": 8,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Garras · 1 hex · PA 2"
+          "label": "Garras · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -4306,9 +4306,9 @@
           "damageFormula": "3d10",
           "damageType": "mágico",
           "attackBonus": 14,
-          "rangeHex": 6,
+          "rangeCells": 6,
           "paCost": 2,
-          "label": "Ataque especial · 6 hex · PA 2"
+          "label": "Ataque especial · 6 célula · PA 2"
         }
       ],
       "catalogId": "MON-048",
@@ -4342,7 +4342,7 @@
         }
       },
       "movement": {
-        "hex": {
+        "cells": {
           "walk": {
             "value": 4
           },
@@ -4371,9 +4371,9 @@
           "damageFormula": "1d6",
           "damageType": "perfurante",
           "attackBonus": 4,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Mordida · 1 hex · PA 2"
+          "label": "Mordida · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -4384,9 +4384,9 @@
           "damageFormula": "1d8",
           "damageType": "cortante",
           "attackBonus": 3,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Garras · 1 hex · PA 2"
+          "label": "Garras · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -4397,9 +4397,9 @@
           "damageFormula": "2d8",
           "damageType": "mágico",
           "attackBonus": 6,
-          "rangeHex": 4,
+          "rangeCells": 4,
           "paCost": 2,
-          "label": "Ataque especial · 4 hex · PA 2"
+          "label": "Ataque especial · 4 célula · PA 2"
         }
       ],
       "catalogId": "MON-049",
@@ -4433,7 +4433,7 @@
         }
       },
       "movement": {
-        "hex": {
+        "cells": {
           "walk": {
             "value": 4
           },
@@ -4462,9 +4462,9 @@
           "damageFormula": "1d10",
           "damageType": "perfurante",
           "attackBonus": 6,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Mordida · 1 hex · PA 2"
+          "label": "Mordida · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -4475,9 +4475,9 @@
           "damageFormula": "1d8",
           "damageType": "cortante",
           "attackBonus": 5,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Garras · 1 hex · PA 2"
+          "label": "Garras · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -4488,9 +4488,9 @@
           "damageFormula": "2d8",
           "damageType": "mágico",
           "attackBonus": 9,
-          "rangeHex": 4,
+          "rangeCells": 4,
           "paCost": 2,
-          "label": "Ataque especial · 4 hex · PA 2"
+          "label": "Ataque especial · 4 célula · PA 2"
         }
       ],
       "catalogId": "MON-050",
@@ -4524,7 +4524,7 @@
         }
       },
       "movement": {
-        "hex": {
+        "cells": {
           "walk": {
             "value": 4
           },
@@ -4553,9 +4553,9 @@
           "damageFormula": "1d10",
           "damageType": "perfurante",
           "attackBonus": 6,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Mordida · 1 hex · PA 2"
+          "label": "Mordida · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -4566,9 +4566,9 @@
           "damageFormula": "1d8",
           "damageType": "cortante",
           "attackBonus": 5,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Garras · 1 hex · PA 2"
+          "label": "Garras · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -4579,9 +4579,9 @@
           "damageFormula": "2d8",
           "damageType": "mágico",
           "attackBonus": 9,
-          "rangeHex": 4,
+          "rangeCells": 4,
           "paCost": 2,
-          "label": "Ataque especial · 4 hex · PA 2"
+          "label": "Ataque especial · 4 célula · PA 2"
         }
       ],
       "catalogId": "MON-051",
@@ -4615,7 +4615,7 @@
         }
       },
       "movement": {
-        "hex": {
+        "cells": {
           "walk": {
             "value": 4
           },
@@ -4644,9 +4644,9 @@
           "damageFormula": "1d10",
           "damageType": "perfurante",
           "attackBonus": 5,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Mordida · 1 hex · PA 2"
+          "label": "Mordida · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -4657,9 +4657,9 @@
           "damageFormula": "1d8",
           "damageType": "cortante",
           "attackBonus": 4,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Garras · 1 hex · PA 2"
+          "label": "Garras · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -4670,9 +4670,9 @@
           "damageFormula": "2d8",
           "damageType": "mágico",
           "attackBonus": 8,
-          "rangeHex": 4,
+          "rangeCells": 4,
           "paCost": 2,
-          "label": "Ataque especial · 4 hex · PA 2"
+          "label": "Ataque especial · 4 célula · PA 2"
         }
       ],
       "catalogId": "MON-052",
@@ -4706,7 +4706,7 @@
         }
       },
       "movement": {
-        "hex": {
+        "cells": {
           "walk": {
             "value": 4
           },
@@ -4735,9 +4735,9 @@
           "damageFormula": "1d10",
           "damageType": "perfurante",
           "attackBonus": 5,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Mordida · 1 hex · PA 2"
+          "label": "Mordida · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -4748,9 +4748,9 @@
           "damageFormula": "1d8",
           "damageType": "cortante",
           "attackBonus": 4,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Garras · 1 hex · PA 2"
+          "label": "Garras · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -4761,9 +4761,9 @@
           "damageFormula": "2d8",
           "damageType": "mágico",
           "attackBonus": 8,
-          "rangeHex": 4,
+          "rangeCells": 4,
           "paCost": 2,
-          "label": "Ataque especial · 4 hex · PA 2"
+          "label": "Ataque especial · 4 célula · PA 2"
         }
       ],
       "catalogId": "MON-053",
@@ -4797,7 +4797,7 @@
         }
       },
       "movement": {
-        "hex": {
+        "cells": {
           "walk": {
             "value": 4
           },
@@ -4826,9 +4826,9 @@
           "damageFormula": "2d8",
           "damageType": "perfurante",
           "attackBonus": 7,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Mordida · 1 hex · PA 2"
+          "label": "Mordida · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -4839,9 +4839,9 @@
           "damageFormula": "2d6",
           "damageType": "cortante",
           "attackBonus": 5,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Garras · 1 hex · PA 2"
+          "label": "Garras · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -4852,9 +4852,9 @@
           "damageFormula": "3d10",
           "damageType": "mágico",
           "attackBonus": 10,
-          "rangeHex": 6,
+          "rangeCells": 6,
           "paCost": 2,
-          "label": "Ataque especial · 6 hex · PA 2"
+          "label": "Ataque especial · 6 célula · PA 2"
         }
       ],
       "catalogId": "MON-054",
@@ -4888,7 +4888,7 @@
         }
       },
       "movement": {
-        "hex": {
+        "cells": {
           "walk": {
             "value": 4
           },
@@ -4917,9 +4917,9 @@
           "damageFormula": "1d6",
           "damageType": "perfurante",
           "attackBonus": 4,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Mordida · 1 hex · PA 2"
+          "label": "Mordida · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -4930,9 +4930,9 @@
           "damageFormula": "1d8",
           "damageType": "cortante",
           "attackBonus": 4,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Garras · 1 hex · PA 2"
+          "label": "Garras · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -4943,9 +4943,9 @@
           "damageFormula": "2d8",
           "damageType": "mágico",
           "attackBonus": 6,
-          "rangeHex": 4,
+          "rangeCells": 4,
           "paCost": 2,
-          "label": "Ataque especial · 4 hex · PA 2"
+          "label": "Ataque especial · 4 célula · PA 2"
         }
       ],
       "catalogId": "MON-055",
@@ -4979,7 +4979,7 @@
         }
       },
       "movement": {
-        "hex": {
+        "cells": {
           "walk": {
             "value": 2
           },
@@ -5008,9 +5008,9 @@
           "damageFormula": "1d10",
           "damageType": "perfurante",
           "attackBonus": 4,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Mordida · 1 hex · PA 2"
+          "label": "Mordida · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -5021,9 +5021,9 @@
           "damageFormula": "1d8",
           "damageType": "cortante",
           "attackBonus": 3,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Garras · 1 hex · PA 2"
+          "label": "Garras · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -5034,9 +5034,9 @@
           "damageFormula": "2d8",
           "damageType": "mágico",
           "attackBonus": 6,
-          "rangeHex": 4,
+          "rangeCells": 4,
           "paCost": 2,
-          "label": "Ataque especial · 4 hex · PA 2"
+          "label": "Ataque especial · 4 célula · PA 2"
         }
       ],
       "catalogId": "MON-056",
@@ -5070,7 +5070,7 @@
         }
       },
       "movement": {
-        "hex": {
+        "cells": {
           "walk": {
             "value": 3
           },
@@ -5099,9 +5099,9 @@
           "damageFormula": "2d8",
           "damageType": "perfurante",
           "attackBonus": 11,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Mordida · 1 hex · PA 2"
+          "label": "Mordida · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -5112,9 +5112,9 @@
           "damageFormula": "2d6",
           "damageType": "cortante",
           "attackBonus": 9,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Garras · 1 hex · PA 2"
+          "label": "Garras · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -5125,9 +5125,9 @@
           "damageFormula": "3d10",
           "damageType": "mágico",
           "attackBonus": 16,
-          "rangeHex": 6,
+          "rangeCells": 6,
           "paCost": 2,
-          "label": "Ataque especial · 6 hex · PA 2"
+          "label": "Ataque especial · 6 célula · PA 2"
         }
       ],
       "catalogId": "MON-057",
@@ -5161,7 +5161,7 @@
         }
       },
       "movement": {
-        "hex": {
+        "cells": {
           "walk": {
             "value": 2
           },
@@ -5190,9 +5190,9 @@
           "damageFormula": "1d10",
           "damageType": "perfurante",
           "attackBonus": 5,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Mordida · 1 hex · PA 2"
+          "label": "Mordida · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -5203,9 +5203,9 @@
           "damageFormula": "1d8",
           "damageType": "cortante",
           "attackBonus": 4,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Garras · 1 hex · PA 2"
+          "label": "Garras · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -5216,9 +5216,9 @@
           "damageFormula": "2d8",
           "damageType": "mágico",
           "attackBonus": 8,
-          "rangeHex": 4,
+          "rangeCells": 4,
           "paCost": 2,
-          "label": "Ataque especial · 4 hex · PA 2"
+          "label": "Ataque especial · 4 célula · PA 2"
         }
       ],
       "catalogId": "MON-058",
@@ -5252,7 +5252,7 @@
         }
       },
       "movement": {
-        "hex": {
+        "cells": {
           "walk": {
             "value": 4
           },
@@ -5281,9 +5281,9 @@
           "damageFormula": "1d6",
           "damageType": "perfurante",
           "attackBonus": 4,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Mordida · 1 hex · PA 2"
+          "label": "Mordida · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -5294,9 +5294,9 @@
           "damageFormula": "1d8",
           "damageType": "cortante",
           "attackBonus": 3,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Garras · 1 hex · PA 2"
+          "label": "Garras · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -5307,9 +5307,9 @@
           "damageFormula": "2d8",
           "damageType": "mágico",
           "attackBonus": 6,
-          "rangeHex": 4,
+          "rangeCells": 4,
           "paCost": 2,
-          "label": "Ataque especial · 4 hex · PA 2"
+          "label": "Ataque especial · 4 célula · PA 2"
         }
       ],
       "catalogId": "MON-059",
@@ -5343,7 +5343,7 @@
         }
       },
       "movement": {
-        "hex": {
+        "cells": {
           "walk": {
             "value": 3
           },
@@ -5372,9 +5372,9 @@
           "damageFormula": "1d10",
           "damageType": "perfurante",
           "attackBonus": 5,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Mordida · 1 hex · PA 2"
+          "label": "Mordida · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -5385,9 +5385,9 @@
           "damageFormula": "1d8",
           "damageType": "cortante",
           "attackBonus": 4,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Garras · 1 hex · PA 2"
+          "label": "Garras · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -5398,9 +5398,9 @@
           "damageFormula": "2d8",
           "damageType": "mágico",
           "attackBonus": 8,
-          "rangeHex": 4,
+          "rangeCells": 4,
           "paCost": 2,
-          "label": "Ataque especial · 4 hex · PA 2"
+          "label": "Ataque especial · 4 célula · PA 2"
         }
       ],
       "catalogId": "MON-060",
@@ -5434,7 +5434,7 @@
         }
       },
       "movement": {
-        "hex": {
+        "cells": {
           "walk": {
             "value": 4
           },
@@ -5463,9 +5463,9 @@
           "damageFormula": "1d10",
           "damageType": "perfurante",
           "attackBonus": 6,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Mordida · 1 hex · PA 2"
+          "label": "Mordida · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -5476,9 +5476,9 @@
           "damageFormula": "1d8",
           "damageType": "cortante",
           "attackBonus": 6,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Garras · 1 hex · PA 2"
+          "label": "Garras · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -5489,9 +5489,9 @@
           "damageFormula": "2d8",
           "damageType": "mágico",
           "attackBonus": 10,
-          "rangeHex": 4,
+          "rangeCells": 4,
           "paCost": 2,
-          "label": "Ataque especial · 4 hex · PA 2"
+          "label": "Ataque especial · 4 célula · PA 2"
         }
       ],
       "catalogId": "MON-061",
@@ -5525,7 +5525,7 @@
         }
       },
       "movement": {
-        "hex": {
+        "cells": {
           "walk": {
             "value": 4
           },
@@ -5554,9 +5554,9 @@
           "damageFormula": "1d6",
           "damageType": "perfurante",
           "attackBonus": 3,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Mordida · 1 hex · PA 2"
+          "label": "Mordida · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -5567,9 +5567,9 @@
           "damageFormula": "1d8",
           "damageType": "cortante",
           "attackBonus": 2,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Garras · 1 hex · PA 2"
+          "label": "Garras · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -5580,9 +5580,9 @@
           "damageFormula": "1d10",
           "damageType": "contundente",
           "attackBonus": 2,
-          "rangeHex": 2,
+          "rangeCells": 2,
           "paCost": 2,
-          "label": "Investida · 2 hex · PA 2"
+          "label": "Investida · 2 célula · PA 2"
         }
       ],
       "catalogId": "MON-062",
@@ -5616,7 +5616,7 @@
         }
       },
       "movement": {
-        "hex": {
+        "cells": {
           "walk": {
             "value": 4
           },
@@ -5645,9 +5645,9 @@
           "damageFormula": "1d10",
           "damageType": "perfurante",
           "attackBonus": 4,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Mordida · 1 hex · PA 2"
+          "label": "Mordida · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -5658,9 +5658,9 @@
           "damageFormula": "1d8",
           "damageType": "cortante",
           "attackBonus": 3,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Garras · 1 hex · PA 2"
+          "label": "Garras · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -5671,9 +5671,9 @@
           "damageFormula": "2d8",
           "damageType": "mágico",
           "attackBonus": 6,
-          "rangeHex": 4,
+          "rangeCells": 4,
           "paCost": 2,
-          "label": "Ataque especial · 4 hex · PA 2"
+          "label": "Ataque especial · 4 célula · PA 2"
         }
       ],
       "catalogId": "MON-063",
@@ -5707,7 +5707,7 @@
         }
       },
       "movement": {
-        "hex": {
+        "cells": {
           "walk": {
             "value": 4
           },
@@ -5736,9 +5736,9 @@
           "damageFormula": "2d8",
           "damageType": "perfurante",
           "attackBonus": 8,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Mordida · 1 hex · PA 2"
+          "label": "Mordida · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -5749,9 +5749,9 @@
           "damageFormula": "2d6",
           "damageType": "cortante",
           "attackBonus": 6,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Garras · 1 hex · PA 2"
+          "label": "Garras · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -5762,9 +5762,9 @@
           "damageFormula": "3d10",
           "damageType": "mágico",
           "attackBonus": 11,
-          "rangeHex": 6,
+          "rangeCells": 6,
           "paCost": 2,
-          "label": "Ataque especial · 6 hex · PA 2"
+          "label": "Ataque especial · 6 célula · PA 2"
         }
       ],
       "catalogId": "MON-064",
@@ -5798,7 +5798,7 @@
         }
       },
       "movement": {
-        "hex": {
+        "cells": {
           "walk": {
             "value": 4
           },
@@ -5827,9 +5827,9 @@
           "damageFormula": "1d10",
           "damageType": "perfurante",
           "attackBonus": 5,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Mordida · 1 hex · PA 2"
+          "label": "Mordida · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -5840,9 +5840,9 @@
           "damageFormula": "1d8",
           "damageType": "cortante",
           "attackBonus": 4,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Garras · 1 hex · PA 2"
+          "label": "Garras · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -5853,9 +5853,9 @@
           "damageFormula": "2d8",
           "damageType": "mágico",
           "attackBonus": 8,
-          "rangeHex": 4,
+          "rangeCells": 4,
           "paCost": 2,
-          "label": "Ataque especial · 4 hex · PA 2"
+          "label": "Ataque especial · 4 célula · PA 2"
         }
       ],
       "catalogId": "MON-065",
@@ -5889,7 +5889,7 @@
         }
       },
       "movement": {
-        "hex": {
+        "cells": {
           "walk": {
             "value": 4
           },
@@ -5918,9 +5918,9 @@
           "damageFormula": "2d8",
           "damageType": "perfurante",
           "attackBonus": 10,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Mordida · 1 hex · PA 2"
+          "label": "Mordida · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -5931,9 +5931,9 @@
           "damageFormula": "2d6",
           "damageType": "cortante",
           "attackBonus": 8,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Garras · 1 hex · PA 2"
+          "label": "Garras · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -5944,9 +5944,9 @@
           "damageFormula": "3d10",
           "damageType": "mágico",
           "attackBonus": 14,
-          "rangeHex": 6,
+          "rangeCells": 6,
           "paCost": 2,
-          "label": "Ataque especial · 6 hex · PA 2"
+          "label": "Ataque especial · 6 célula · PA 2"
         }
       ],
       "catalogId": "MON-066",
@@ -5980,7 +5980,7 @@
         }
       },
       "movement": {
-        "hex": {
+        "cells": {
           "walk": {
             "value": 4
           },
@@ -6009,9 +6009,9 @@
           "damageFormula": "1d10",
           "damageType": "perfurante",
           "attackBonus": 6,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Mordida · 1 hex · PA 2"
+          "label": "Mordida · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -6022,9 +6022,9 @@
           "damageFormula": "1d8",
           "damageType": "cortante",
           "attackBonus": 5,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Garras · 1 hex · PA 2"
+          "label": "Garras · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -6035,9 +6035,9 @@
           "damageFormula": "2d8",
           "damageType": "mágico",
           "attackBonus": 9,
-          "rangeHex": 4,
+          "rangeCells": 4,
           "paCost": 2,
-          "label": "Ataque especial · 4 hex · PA 2"
+          "label": "Ataque especial · 4 célula · PA 2"
         }
       ],
       "catalogId": "MON-067",
@@ -6071,7 +6071,7 @@
         }
       },
       "movement": {
-        "hex": {
+        "cells": {
           "walk": {
             "value": 4
           },
@@ -6100,9 +6100,9 @@
           "damageFormula": "1d10",
           "damageType": "perfurante",
           "attackBonus": 5,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Mordida · 1 hex · PA 2"
+          "label": "Mordida · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -6113,9 +6113,9 @@
           "damageFormula": "1d8",
           "damageType": "cortante",
           "attackBonus": 4,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Garras · 1 hex · PA 2"
+          "label": "Garras · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -6126,9 +6126,9 @@
           "damageFormula": "2d8",
           "damageType": "mágico",
           "attackBonus": 8,
-          "rangeHex": 4,
+          "rangeCells": 4,
           "paCost": 2,
-          "label": "Ataque especial · 4 hex · PA 2"
+          "label": "Ataque especial · 4 célula · PA 2"
         }
       ],
       "catalogId": "MON-068",
@@ -6162,7 +6162,7 @@
         }
       },
       "movement": {
-        "hex": {
+        "cells": {
           "walk": {
             "value": 5
           },
@@ -6191,9 +6191,9 @@
           "damageFormula": "2d8",
           "damageType": "perfurante",
           "attackBonus": 9,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Mordida · 1 hex · PA 2"
+          "label": "Mordida · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -6204,9 +6204,9 @@
           "damageFormula": "2d6",
           "damageType": "cortante",
           "attackBonus": 7,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Garras · 1 hex · PA 2"
+          "label": "Garras · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -6217,9 +6217,9 @@
           "damageFormula": "3d10",
           "damageType": "mágico",
           "attackBonus": 13,
-          "rangeHex": 6,
+          "rangeCells": 6,
           "paCost": 2,
-          "label": "Ataque especial · 6 hex · PA 2"
+          "label": "Ataque especial · 6 célula · PA 2"
         }
       ],
       "catalogId": "MON-069",
@@ -6253,7 +6253,7 @@
         }
       },
       "movement": {
-        "hex": {
+        "cells": {
           "walk": {
             "value": 4
           },
@@ -6282,9 +6282,9 @@
           "damageFormula": "2d8",
           "damageType": "perfurante",
           "attackBonus": 9,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Mordida · 1 hex · PA 2"
+          "label": "Mordida · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -6295,9 +6295,9 @@
           "damageFormula": "2d6",
           "damageType": "cortante",
           "attackBonus": 7,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Garras · 1 hex · PA 2"
+          "label": "Garras · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -6308,9 +6308,9 @@
           "damageFormula": "3d10",
           "damageType": "mágico",
           "attackBonus": 13,
-          "rangeHex": 6,
+          "rangeCells": 6,
           "paCost": 2,
-          "label": "Ataque especial · 6 hex · PA 2"
+          "label": "Ataque especial · 6 célula · PA 2"
         }
       ],
       "catalogId": "MON-070",
@@ -6344,7 +6344,7 @@
         }
       },
       "movement": {
-        "hex": {
+        "cells": {
           "walk": {
             "value": 4
           },
@@ -6373,9 +6373,9 @@
           "damageFormula": "1d10",
           "damageType": "perfurante",
           "attackBonus": 6,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Mordida · 1 hex · PA 2"
+          "label": "Mordida · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -6386,9 +6386,9 @@
           "damageFormula": "1d8",
           "damageType": "cortante",
           "attackBonus": 5,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Garras · 1 hex · PA 2"
+          "label": "Garras · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -6399,9 +6399,9 @@
           "damageFormula": "2d8",
           "damageType": "mágico",
           "attackBonus": 9,
-          "rangeHex": 4,
+          "rangeCells": 4,
           "paCost": 2,
-          "label": "Ataque especial · 4 hex · PA 2"
+          "label": "Ataque especial · 4 célula · PA 2"
         }
       ],
       "catalogId": "MON-071",
@@ -6435,7 +6435,7 @@
         }
       },
       "movement": {
-        "hex": {
+        "cells": {
           "walk": {
             "value": 4
           },
@@ -6464,9 +6464,9 @@
           "damageFormula": "2d8",
           "damageType": "perfurante",
           "attackBonus": 8,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Mordida · 1 hex · PA 2"
+          "label": "Mordida · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -6477,9 +6477,9 @@
           "damageFormula": "2d6",
           "damageType": "cortante",
           "attackBonus": 6,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Garras · 1 hex · PA 2"
+          "label": "Garras · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -6490,9 +6490,9 @@
           "damageFormula": "3d10",
           "damageType": "mágico",
           "attackBonus": 11,
-          "rangeHex": 6,
+          "rangeCells": 6,
           "paCost": 2,
-          "label": "Ataque especial · 6 hex · PA 2"
+          "label": "Ataque especial · 6 célula · PA 2"
         }
       ],
       "catalogId": "MON-072",
@@ -6526,7 +6526,7 @@
         }
       },
       "movement": {
-        "hex": {
+        "cells": {
           "walk": {
             "value": 5
           },
@@ -6555,9 +6555,9 @@
           "damageFormula": "1d10",
           "damageType": "perfurante",
           "attackBonus": 6,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Mordida · 1 hex · PA 2"
+          "label": "Mordida · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -6568,9 +6568,9 @@
           "damageFormula": "1d8",
           "damageType": "cortante",
           "attackBonus": 5,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Garras · 1 hex · PA 2"
+          "label": "Garras · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -6581,9 +6581,9 @@
           "damageFormula": "2d8",
           "damageType": "mágico",
           "attackBonus": 10,
-          "rangeHex": 4,
+          "rangeCells": 4,
           "paCost": 2,
-          "label": "Ataque especial · 4 hex · PA 2"
+          "label": "Ataque especial · 4 célula · PA 2"
         }
       ],
       "catalogId": "MON-073",
@@ -6617,7 +6617,7 @@
         }
       },
       "movement": {
-        "hex": {
+        "cells": {
           "walk": {
             "value": 5
           },
@@ -6646,9 +6646,9 @@
           "damageFormula": "2d8",
           "damageType": "perfurante",
           "attackBonus": 12,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Mordida · 1 hex · PA 2"
+          "label": "Mordida · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -6659,9 +6659,9 @@
           "damageFormula": "2d6",
           "damageType": "cortante",
           "attackBonus": 10,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Garras · 1 hex · PA 2"
+          "label": "Garras · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -6672,9 +6672,9 @@
           "damageFormula": "3d10",
           "damageType": "mágico",
           "attackBonus": 18,
-          "rangeHex": 6,
+          "rangeCells": 6,
           "paCost": 2,
-          "label": "Ataque especial · 6 hex · PA 2"
+          "label": "Ataque especial · 6 célula · PA 2"
         }
       ],
       "catalogId": "MON-074",
@@ -6708,7 +6708,7 @@
         }
       },
       "movement": {
-        "hex": {
+        "cells": {
           "walk": {
             "value": 4
           },
@@ -6737,9 +6737,9 @@
           "damageFormula": "1d6",
           "damageType": "perfurante",
           "attackBonus": 3,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Mordida · 1 hex · PA 2"
+          "label": "Mordida · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -6750,9 +6750,9 @@
           "damageFormula": "1d8",
           "damageType": "cortante",
           "attackBonus": 2,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Garras · 1 hex · PA 2"
+          "label": "Garras · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -6763,9 +6763,9 @@
           "damageFormula": "1d10",
           "damageType": "contundente",
           "attackBonus": 2,
-          "rangeHex": 2,
+          "rangeCells": 2,
           "paCost": 2,
-          "label": "Investida · 2 hex · PA 2"
+          "label": "Investida · 2 célula · PA 2"
         }
       ],
       "catalogId": "MON-075",
@@ -6799,7 +6799,7 @@
         }
       },
       "movement": {
-        "hex": {
+        "cells": {
           "walk": {
             "value": 3
           },
@@ -6828,9 +6828,9 @@
           "damageFormula": "1d10",
           "damageType": "perfurante",
           "attackBonus": 6,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Mordida · 1 hex · PA 2"
+          "label": "Mordida · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -6841,9 +6841,9 @@
           "damageFormula": "1d8",
           "damageType": "cortante",
           "attackBonus": 5,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Garras · 1 hex · PA 2"
+          "label": "Garras · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -6854,9 +6854,9 @@
           "damageFormula": "2d8",
           "damageType": "mágico",
           "attackBonus": 9,
-          "rangeHex": 4,
+          "rangeCells": 4,
           "paCost": 2,
-          "label": "Ataque especial · 4 hex · PA 2"
+          "label": "Ataque especial · 4 célula · PA 2"
         }
       ],
       "catalogId": "MON-076",
@@ -6890,7 +6890,7 @@
         }
       },
       "movement": {
-        "hex": {
+        "cells": {
           "walk": {
             "value": 4
           },
@@ -6919,9 +6919,9 @@
           "damageFormula": "1d10",
           "damageType": "perfurante",
           "attackBonus": 6,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Mordida · 1 hex · PA 2"
+          "label": "Mordida · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -6932,9 +6932,9 @@
           "damageFormula": "1d8",
           "damageType": "cortante",
           "attackBonus": 5,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Garras · 1 hex · PA 2"
+          "label": "Garras · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -6945,9 +6945,9 @@
           "damageFormula": "2d8",
           "damageType": "mágico",
           "attackBonus": 9,
-          "rangeHex": 4,
+          "rangeCells": 4,
           "paCost": 2,
-          "label": "Ataque especial · 4 hex · PA 2"
+          "label": "Ataque especial · 4 célula · PA 2"
         }
       ],
       "catalogId": "MON-077",
@@ -6981,7 +6981,7 @@
         }
       },
       "movement": {
-        "hex": {
+        "cells": {
           "walk": {
             "value": 5
           },
@@ -7010,9 +7010,9 @@
           "damageFormula": "1d10",
           "damageType": "perfurante",
           "attackBonus": 4,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Mordida · 1 hex · PA 2"
+          "label": "Mordida · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -7023,9 +7023,9 @@
           "damageFormula": "1d8",
           "damageType": "cortante",
           "attackBonus": 3,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Garras · 1 hex · PA 2"
+          "label": "Garras · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -7036,9 +7036,9 @@
           "damageFormula": "2d8",
           "damageType": "mágico",
           "attackBonus": 6,
-          "rangeHex": 4,
+          "rangeCells": 4,
           "paCost": 2,
-          "label": "Ataque especial · 4 hex · PA 2"
+          "label": "Ataque especial · 4 célula · PA 2"
         }
       ],
       "catalogId": "MON-078",
@@ -7072,7 +7072,7 @@
         }
       },
       "movement": {
-        "hex": {
+        "cells": {
           "walk": {
             "value": 2
           },
@@ -7101,9 +7101,9 @@
           "damageFormula": "1d10",
           "damageType": "perfurante",
           "attackBonus": 5,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Mordida · 1 hex · PA 2"
+          "label": "Mordida · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -7114,9 +7114,9 @@
           "damageFormula": "1d8",
           "damageType": "cortante",
           "attackBonus": 4,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Garras · 1 hex · PA 2"
+          "label": "Garras · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -7127,9 +7127,9 @@
           "damageFormula": "2d8",
           "damageType": "mágico",
           "attackBonus": 8,
-          "rangeHex": 4,
+          "rangeCells": 4,
           "paCost": 2,
-          "label": "Ataque especial · 4 hex · PA 2"
+          "label": "Ataque especial · 4 célula · PA 2"
         }
       ],
       "catalogId": "MON-079",
@@ -7163,7 +7163,7 @@
         }
       },
       "movement": {
-        "hex": {
+        "cells": {
           "walk": {
             "value": 6
           },
@@ -7192,9 +7192,9 @@
           "damageFormula": "2d8",
           "damageType": "perfurante",
           "attackBonus": 13,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Mordida · 1 hex · PA 2"
+          "label": "Mordida · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -7205,9 +7205,9 @@
           "damageFormula": "2d6",
           "damageType": "cortante",
           "attackBonus": 11,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Garras · 1 hex · PA 2"
+          "label": "Garras · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -7218,9 +7218,9 @@
           "damageFormula": "3d10",
           "damageType": "mágico",
           "attackBonus": 19,
-          "rangeHex": 6,
+          "rangeCells": 6,
           "paCost": 2,
-          "label": "Ataque especial · 6 hex · PA 2"
+          "label": "Ataque especial · 6 célula · PA 2"
         }
       ],
       "catalogId": "MON-080",
@@ -7254,7 +7254,7 @@
         }
       },
       "movement": {
-        "hex": {
+        "cells": {
           "walk": {
             "value": 4
           },
@@ -7283,9 +7283,9 @@
           "damageFormula": "1d6",
           "damageType": "perfurante",
           "attackBonus": 2,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Mordida · 1 hex · PA 2"
+          "label": "Mordida · 1 célula · PA 2"
         }
       ],
       "catalogId": "MON-SPAWN-goblin",
@@ -7320,7 +7320,7 @@
         }
       },
       "movement": {
-        "hex": {
+        "cells": {
           "walk": {
             "value": 4
           },
@@ -7349,9 +7349,9 @@
           "damageFormula": "1d6",
           "damageType": "perfurante",
           "attackBonus": 3,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Mordida · 1 hex · PA 2"
+          "label": "Mordida · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -7362,9 +7362,9 @@
           "damageFormula": "1d8",
           "damageType": "cortante",
           "attackBonus": 2,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Garras · 1 hex · PA 2"
+          "label": "Garras · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -7375,9 +7375,9 @@
           "damageFormula": "1d10",
           "damageType": "contundente",
           "attackBonus": 2,
-          "rangeHex": 2,
+          "rangeCells": 2,
           "paCost": 2,
-          "label": "Investida · 2 hex · PA 2"
+          "label": "Investida · 2 célula · PA 2"
         }
       ],
       "catalogId": "MON-SPAWN-esqueleto-de-guarda",
@@ -7412,7 +7412,7 @@
         }
       },
       "movement": {
-        "hex": {
+        "cells": {
           "walk": {
             "value": 2
           },
@@ -7441,9 +7441,9 @@
           "damageFormula": "1d6",
           "damageType": "perfurante",
           "attackBonus": 3,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Mordida · 1 hex · PA 2"
+          "label": "Mordida · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -7454,9 +7454,9 @@
           "damageFormula": "1d8",
           "damageType": "cortante",
           "attackBonus": 2,
-          "rangeHex": 1,
+          "rangeCells": 1,
           "paCost": 2,
-          "label": "Garras · 1 hex · PA 2"
+          "label": "Garras · 1 célula · PA 2"
         },
         {
           "packId": "unarmed",
@@ -7467,9 +7467,9 @@
           "damageFormula": "1d10",
           "damageType": "contundente",
           "attackBonus": 2,
-          "rangeHex": 2,
+          "rangeCells": 2,
           "paCost": 2,
-          "label": "Investida · 2 hex · PA 2"
+          "label": "Investida · 2 célula · PA 2"
         }
       ],
       "catalogId": "MON-SPAWN-slime-de-masmorra",

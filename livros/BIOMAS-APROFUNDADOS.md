@@ -297,7 +297,7 @@
 
 ### BIOMA 14 — MATRIZ DE EXTRUSAO
 
-**Origem:** Máquina biológica que **imprime** vida em hexágonos — resina quente é “tinta”.
+**Origem:** Máquina biológica que **imprime** vida em polígonos simétricos — resina quente é “tinta”.
 
 **Ciclo:** resina → construtos novos → aberrações nos erros de impressão.
 

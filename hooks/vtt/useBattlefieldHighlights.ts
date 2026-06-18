@@ -1,12 +1,12 @@
 "use client";
 
 import { useMemo } from "react";
-import type { Axial } from "@/lib/vtt/hex-math";
-import { axialDistance, hexDirection, hexNeighbors, hexesInRange } from "@/lib/vtt/hex-math";
+import type { Axial } from "@/lib/vtt/grid-math";
+import { axialDistance, cellDirection, cellNeighbors, cellsInRange } from "@/lib/vtt/grid-math";
 import {
   areaUsesCasterOrigin,
   canCastAreaAt,
-  computeSpellAreaHexes,
+  computeSpellAreaCells,
 } from "@/lib/combat/area-spell";
 import { canAbilityTarget } from "@/lib/combat/ability";
 import { canAttackTarget, isHealingSpell } from "@/lib/combat/attack";
@@ -15,14 +15,14 @@ import { attackerForCombatCheck } from "@/lib/combat/combat-token-pa";
 import type { CombatActionOption } from "@/lib/combat/types";
 import type { CharacterSheet } from "@/lib/character/types";
 import { isMoveMode, isTargetMode, type TokenActionMode } from "@/lib/vtt/action-mode";
-import { buildHexGrid } from "@/lib/vtt/hex-grid";
+import { buildCellGrid } from "@/lib/vtt/grid-cells";
 import { tokenAxialDistance } from "@/lib/vtt/creature-size";
 import { reachabilityBundle } from "@/lib/vtt/movement-path";
-import { effectiveRangedMaxHex, isWithinRangedAttackRange } from "@/lib/combat/ranged-attack-range";
+import { effectiveRangedMaxCells, isWithinRangedAttackRange } from "@/lib/combat/ranged-attack-range";
 import { movementPaOptsForRoom } from "@/lib/combat/movement-pa-opts";
 import type { CombatTrack } from "@/lib/room/combat";
 import type { RoomSettings } from "@/lib/room/settings";
-import { canMoveToken, paidMovementHexKeys, type MoveCheck } from "@/lib/vtt/movement";
+import { canMoveToken, paidMovementCellKeys, type MoveCheck } from "@/lib/vtt/movement";
 import type { BattleScene, BattleToken } from "@/lib/vtt/types";
 import { canActOnCombatTurn, effectiveBypassTurn } from "@/lib/combat/turn-guard";
 
@@ -121,7 +121,7 @@ export function useBattlefieldHighlights({
         (isWallSpell && areaCenter != null))
   );
 
-  const gridCells = useMemo(() => buildHexGrid(scene.gridRadius), [scene.gridRadius]);
+  const gridCells = useMemo(() => buildCellGrid(scene.gridRadius), [scene.gridRadius]);
 
   const sceneMoveKey = useMemo(
     () =>
@@ -202,7 +202,7 @@ export function useBattlefieldHighlights({
     }
     const bundle = effectiveMoveMode === "run" ? runReach : walkReach;
     if (!bundle) return new Set<string>();
-    return paidMovementHexKeys(
+    return paidMovementCellKeys(
       moveHighlightToken,
       effectiveMoveMode,
       moveCtx,
@@ -224,17 +224,17 @@ export function useBattlefieldHighlights({
     if (!selected || !activeCombatAction || !isTargetMode(actionMode)) return new Set<string>();
     if (isAreaSpellMode && !needsAreaDirection) {
       return new Set(
-        hexesInRange(selected.axial, activeCombatAction.rangeHex).map((c) => `${c.q},${c.r}`)
+        cellsInRange(selected.axial, activeCombatAction.rangeCells).map((c) => `${c.q},${c.r}`)
       );
     }
     if (isAreaSpellMode && needsAreaDirection && areaUsesCasterOrigin(activeCombatAction.areaShape ?? "burst") && selected) {
       return new Set([`${selected.axial.q},${selected.axial.r}`]);
     }
     if (isAreaSpellMode && wallAwaitingDirection && areaCenter) {
-      return new Set(hexNeighbors(areaCenter).map((c) => `${c.q},${c.r}`));
+      return new Set(cellNeighbors(areaCenter).map((c) => `${c.q},${c.r}`));
     }
     return new Set(
-      hexesInRange(selected.axial, effectiveRangedMaxHex(activeCombatAction))
+      cellsInRange(selected.axial, effectiveRangedMaxCells(activeCombatAction))
         .filter((c) => axialDistance(selected.axial, c) > 0)
         .map((c) => `${c.q},${c.r}`)
     );
@@ -243,10 +243,10 @@ export function useBattlefieldHighlights({
   const areaDirectionSet = useMemo(() => {
     if (!needsAreaDirection) return new Set<string>();
     if (wallAwaitingDirection && areaCenter) {
-      return new Set(hexNeighbors(areaCenter).map((c) => `${c.q},${c.r}`));
+      return new Set(cellNeighbors(areaCenter).map((c) => `${c.q},${c.r}`));
     }
     if (selected) {
-      return new Set(hexNeighbors(selected.axial).map((c) => `${c.q},${c.r}`));
+      return new Set(cellNeighbors(selected.axial).map((c) => `${c.q},${c.r}`));
     }
     return new Set<string>();
   }, [needsAreaDirection, wallAwaitingDirection, areaCenter, selected]);
@@ -259,7 +259,7 @@ export function useBattlefieldHighlights({
         ? areaCenter
         : selected?.axial ?? null;
     if (!origin) return null;
-    return hexDirection(origin, hoverAxial);
+    return cellDirection(origin, hoverAxial);
   }, [areaDirection, needsAreaDirection, wallAwaitingDirection, areaCenter, selected, hoverAxial]);
 
   const areaPreviewSet = useMemo(() => {
@@ -287,15 +287,15 @@ export function useBattlefieldHighlights({
     if (needsAreaDirection && previewDirection == null) {
       return new Set([`${previewCenter.q},${previewCenter.r}`]);
     }
-    const hexes = computeSpellAreaHexes(
+    const cells = computeSpellAreaCells(
       previewCenter,
       activeCombatAction.areaShape ?? "burst",
-      activeCombatAction.areaRadiusHex ?? 1,
-      activeCombatAction.areaHexCount,
+      activeCombatAction.areaRadiusCells ?? 1,
+      activeCombatAction.areaCellCount,
       previewDirection,
-      activeCombatAction.areaRadiusHex ?? 1
+      activeCombatAction.areaRadiusCells ?? 1
     );
-    return new Set(hexes.map((c) => `${c.q},${c.r}`));
+    return new Set(cells.map((c) => `${c.q},${c.r}`));
   }, [
     selected,
     activeCombatAction,
@@ -336,14 +336,14 @@ export function useBattlefieldHighlights({
   const areaTargetIds = useMemo(() => {
     if (!selected || !activeCombatAction || !isAreaSpellMode) return new Set<string>();
     if (areaPreviewSet.size === 0) return new Set<string>();
-    const hexes: Axial[] = [];
+    const cells: Axial[] = [];
     for (const key of areaPreviewSet) {
       const [q, r] = key.split(",").map(Number);
-      hexes.push({ q, r });
+      cells.push({ q, r });
     }
     const areaHeal = isHealingSpell(activeCombatAction);
     return new Set(
-      tokensInArea(scene.tokens, hexes, actorRacas)
+      tokensInArea(scene.tokens, cells, actorRacas)
         .filter((t) => areaHeal || t.id !== selected.id)
         .map((t) => t.id)
     );

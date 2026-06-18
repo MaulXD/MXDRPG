@@ -31,8 +31,8 @@ for (const entry of raw) {
   const vida = sys.resources?.vida?.max ?? sys.resources?.vida?.value;
   const pa = sys.resources?.pontosAcao?.max ?? sys.resources?.pontosAcao?.value;
   const defesa = sys.tactical?.defesa?.value;
-  const walk = sys.movement?.hex?.walk?.value;
-  const run = sys.movement?.hex?.run?.value;
+  const walk = sys.movement?.cells?.walk?.value;
+  const run = sys.movement?.cells?.run?.value;
   const actions = sys.actions;
 
   if (vida == null || vida < 1) fail(`${id}: vida inválida`);
@@ -40,7 +40,7 @@ for (const entry of raw) {
   const paVal = sys.resources?.pontosAcao?.value;
   if (paVal != null && paVal < 6) fail(`${id}: PA value abaixo de 6`);
   if (defesa == null) fail(`${id}: defesa ausente`);
-  if (walk == null || run == null) fail(`${id}: movimento hex ausente`);
+  if (walk == null || run == null) fail(`${id}: movimento célula ausente`);
   if (!Array.isArray(actions) || actions.length < 1) {
     fail(`${id}: precisa de ao menos 1 ação em system.actions`);
   } else {
@@ -48,8 +48,8 @@ for (const entry of raw) {
       if (!a.name || a.paCost == null) {
         fail(`${id}: ação ${a.entryId ?? "?"} incompleta`);
       }
-      if (a.kind !== "ability" && a.rangeHex == null) {
-        fail(`${id}: ação ${a.entryId ?? "?"} sem rangeHex`);
+      if (a.kind !== "ability" && a.rangeCells == null) {
+        fail(`${id}: ação ${a.entryId ?? "?"} sem rangeCells`);
       }
     }
   }

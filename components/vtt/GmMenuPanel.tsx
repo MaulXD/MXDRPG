@@ -1,7 +1,7 @@
 "use client";
 
 import type { BattleScene } from "@/lib/vtt/types";
-import type { Axial } from "@/lib/vtt/hex-math";
+import type { Axial } from "@/lib/vtt/grid-math";
 import type { RoomSnapshot } from "@/lib/room/types";
 import type { SessionUser } from "@/lib/auth/types";
 import { GmActionHistoryPanel } from "@/components/vtt/GmActionHistoryPanel";

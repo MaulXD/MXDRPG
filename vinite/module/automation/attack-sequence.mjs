@@ -1,8 +1,8 @@
 import { clamp } from "../data/formulas.mjs";
-import { isTargetInHexRange } from "./hex-utils.mjs";
+import { isTargetInCellRange } from "./grid-utils.mjs";
 
 /**
- * Executa ataque tático com validação hex, consumo de PA e VFX (Sequencer + Token Magic).
+ * Executa ataque tático com validação célula, consumo de PA e VFX (Sequencer + Token Magic).
  * @param {object} options
  * @param {Token} options.attackerToken
  * @param {Token} options.targetToken
@@ -15,13 +15,13 @@ export async function executeAttack({ attackerToken, targetToken, item, actor })
     return;
   }
 
-  const rangeHex = item.system.tactical?.alcanceHex?.value ?? 1;
+  const rangeCells = item.system.tactical?.alcanceCells?.value ?? 1;
   const apCost = item.system.tactical?.custoPontosAcao?.value ?? 1;
   const pa = actor.system.resources.pontosAcao;
 
-  if (!isTargetInHexRange(attackerToken, targetToken, rangeHex)) {
+  if (!isTargetInCellRange(attackerToken, targetToken, rangeCells)) {
     ui.notifications.warn(
-      game.i18n.format("ELDARIN.Attack.outOfRange", { range: rangeHex })
+      game.i18n.format("ELDARIN.Attack.outOfRange", { range: rangeCells })
     );
     return;
   }

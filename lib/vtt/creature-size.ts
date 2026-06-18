@@ -1,8 +1,8 @@
-import type { Axial } from "@/lib/vtt/hex-math";
+import type { Axial } from "@/lib/vtt/grid-math";
 import {
   axialDistance,
   axialToPixel,
-} from "@/lib/vtt/hex-math";
+} from "@/lib/vtt/grid-math";
 import type { BattleToken } from "@/lib/vtt/types";
 import { resolveMonsterCreatureSize } from "@/lib/vtt/monster-sizes";
 import type { MonsterSpawnVariant } from "@/lib/vtt/monster-scaling";
@@ -19,7 +19,7 @@ export type CreatureSize =
 const SMALL_RACES = new Set(["Halfling", "Gnomo"]);
 
 /** Células ocupadas por tamanho — SRD/D&D 5e (1 célula ≈ 5 ft / 1,5 m). */
-export const SIZE_HEX_COUNT: Record<CreatureSize, number> = {
+export const SIZE_CELL_COUNT: Record<CreatureSize, number> = {
   small: 1,
   medium: 1,
   large: 4,
@@ -76,29 +76,29 @@ function footprintSide(size: CreatureSize): number {
 }
 
 /** Raio visual que preenche o footprint multi-célula (centroide + alcance). */
-function footprintFillRadius(hexSize: number, hexes: Axial[]): number {
-  if (hexes.length <= 1) return hexInscribedRadius(hexSize);
+function footprintFillRadius(cellSize: number, cells: Axial[]): number {
+  if (cells.length <= 1) return cellInscribedRadius(cellSize);
 
   let sx = 0;
   let sy = 0;
-  for (const h of hexes) {
-    const p = axialToPixel(h.q, h.r, hexSize, 0, 0);
+  for (const h of cells) {
+    const p = axialToPixel(h.q, h.r, cellSize, 0, 0);
     sx += p.x;
     sy += p.y;
   }
-  const cx = sx / hexes.length;
-  const cy = sy / hexes.length;
+  const cx = sx / cells.length;
+  const cy = sy / cells.length;
 
   let maxCenterDist = 0;
-  for (const h of hexes) {
-    const p = axialToPixel(h.q, h.r, hexSize, 0, 0);
+  for (const h of cells) {
+    const p = axialToPixel(h.q, h.r, cellSize, 0, 0);
     maxCenterDist = Math.max(maxCenterDist, Math.hypot(p.x - cx, p.y - cy));
   }
 
-  return maxCenterDist + hexInscribedRadius(hexSize) * 0.92;
+  return maxCenterDist + cellInscribedRadius(cellSize) * 0.92;
 }
 
-export function occupiedHexes(anchor: Axial, size: CreatureSize): Axial[] {
+export function occupiedCells(anchor: Axial, size: CreatureSize): Axial[] {
   const side = footprintSide(size);
   if (side === 1) return [{ q: anchor.q, r: anchor.r }];
   return squareFootprint(anchor, side);
@@ -146,7 +146,7 @@ export function bumpCreatureSize(size: CreatureSize, steps = 1): CreatureSize {
 export function creatureSizeOf(token: BattleToken, actorRaca?: string | null): CreatureSize {
   if (token.creatureSize) return token.creatureSize;
   if (token.footprint === "small") return "small";
-  if (token.sharedHex) return "small";
+  if (token.sharedCell) return "small";
   if (actorRaca && SMALL_RACES.has(actorRaca)) return "small";
   if (token.monsterEntryId) {
     return resolveMonsterCreatureSize(token.monsterEntryId, token.name, {
@@ -159,8 +159,8 @@ export function creatureSizeOf(token: BattleToken, actorRaca?: string | null): C
   return "medium";
 }
 
-export function tokenOccupiedHexes(token: BattleToken, actorRaca?: string | null): Axial[] {
-  return occupiedHexes(token.axial, creatureSizeOf(token, actorRaca));
+export function tokenOccupiedCells(token: BattleToken, actorRaca?: string | null): Axial[] {
+  return occupiedCells(token.axial, creatureSizeOf(token, actorRaca));
 }
 
 export function tokenOccupiesAxial(
@@ -168,7 +168,7 @@ export function tokenOccupiesAxial(
   axial: Axial,
   actorRaca?: string | null
 ): boolean {
-  return tokenOccupiedHexes(token, actorRaca).some((h) => h.q === axial.q && h.r === axial.r);
+  return tokenOccupiedCells(token, actorRaca).some((h) => h.q === axial.q && h.r === axial.r);
 }
 
 export function tokenAxialDistance(
@@ -178,49 +178,49 @@ export function tokenAxialDistance(
 ): number {
   const aRaca = a.actorId ? actorRacas?.[a.actorId] : undefined;
   const bRaca = b.actorId ? actorRacas?.[b.actorId] : undefined;
-  const aHexes = tokenOccupiedHexes(a, aRaca);
-  const bHexes = tokenOccupiedHexes(b, bRaca);
+  const aCells = tokenOccupiedCells(a, aRaca);
+  const bCells = tokenOccupiedCells(b, bRaca);
   let min = Infinity;
-  for (const ah of aHexes) {
-    for (const bh of bHexes) {
+  for (const ah of aCells) {
+    for (const bh of bCells) {
       min = Math.min(min, axialDistance(ah, bh));
     }
   }
   return min === Infinity ? axialDistance(a.axial, b.axial) : min;
 }
 
-/** hexSize = lado da célula; círculo inscrito ≈ metade do quadrado. */
-export const HEX_INSCRIBED_RATIO = 0.48;
+/** cellSize = lado da célula; círculo inscrito ≈ metade do quadrado. */
+export const CELL_INSCRIBED_RATIO = 0.48;
 
 /** Legado — raio médio inscrito com folga mínima anti-alias. */
-export const TOKEN_RADIUS_RATIO = HEX_INSCRIBED_RATIO - 0.01;
+export const TOKEN_RADIUS_RATIO = CELL_INSCRIBED_RATIO - 0.01;
 
-export function hexInscribedRadius(hexSize: number): number {
-  return hexSize * HEX_INSCRIBED_RATIO;
+export function cellInscribedRadius(cellSize: number): number {
+  return cellSize * CELL_INSCRIBED_RATIO;
 }
 
-/** Raio de desenho do token — inscrito no hex (pequeno/médio) ou preenchendo o footprint. */
-export function tokenDrawRadius(hexSize: number, size: CreatureSize): number {
-  const hs = Number.isFinite(hexSize) && hexSize > 0 ? hexSize : 36;
+/** Raio de desenho do token — inscrito no célula (pequeno/médio) ou preenchendo o footprint. */
+export function tokenDrawRadius(cellSize: number, size: CreatureSize): number {
+  const hs = Number.isFinite(cellSize) && cellSize > 0 ? cellSize : 36;
   const edgePad = Math.max(0.5, hs * 0.004);
   if (size === "small" || size === "medium") {
-    return hexInscribedRadius(hs) - edgePad;
+    return cellInscribedRadius(hs) - edgePad;
   }
-  const hexes = occupiedHexes({ q: 0, r: 0 }, size);
-  return Math.max(4, footprintFillRadius(hs, hexes)) - edgePad;
+  const cells = occupiedCells({ q: 0, r: 0 }, size);
+  return Math.max(4, footprintFillRadius(hs, cells)) - edgePad;
 }
 
-export function isMultiHexCreatureSize(size: CreatureSize): boolean {
+export function isMultiCellCreatureSize(size: CreatureSize): boolean {
   return size !== "small" && size !== "medium";
 }
 
 /**
  * Raio de clique/hover — disco do retrato, não o footprint inteiro.
- * Evita inimigos grandes “roubarem” cliques nos hexes vizinhos.
+ * Evita inimigos grandes “roubarem” cliques nos células vizinhos.
  */
-export function tokenHitRadius(hexSize: number, size: CreatureSize): number {
-  const inscribed = hexInscribedRadius(hexSize);
-  const pad = Math.max(2, hexSize * 0.045);
+export function tokenHitRadius(cellSize: number, size: CreatureSize): number {
+  const inscribed = cellInscribedRadius(cellSize);
+  const pad = Math.max(2, cellSize * 0.045);
   switch (size) {
     case "small":
       return Math.max(4, inscribed * 0.92 + pad);
@@ -242,18 +242,18 @@ export function tokenHitRadius(hexSize: number, size: CreatureSize): number {
 export function tokenPixelCenter(
   anchor: Axial,
   size: CreatureSize,
-  hexSize: number,
+  cellSize: number,
   ox: number,
   oy: number
 ): { x: number; y: number } {
-  const hexes = occupiedHexes(anchor, size);
+  const cells = occupiedCells(anchor, size);
   let sx = 0;
   let sy = 0;
-  for (const h of hexes) {
-    const p = axialToPixel(h.q, h.r, hexSize, ox, oy);
+  for (const h of cells) {
+    const p = axialToPixel(h.q, h.r, cellSize, ox, oy);
     sx += p.x;
     sy += p.y;
   }
-  const n = hexes.length;
+  const n = cells.length;
   return { x: sx / n, y: sy / n };
 }

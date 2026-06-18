@@ -135,9 +135,9 @@ function slotRadialPosition(angle: number, radius: number) {
   };
 }
 
-function nextHexPaLabel(token: BattleToken, actor: RoomActor | null): string {
+function nextCellPaLabel(token: BattleToken, actor: RoomActor | null): string {
   const bands = movementPaBandsForToken(token);
-  const spent = token.movementSpentHex ?? 0;
+  const spent = token.movementSpentCells ?? 0;
   const raw = movementPaCost(spent, 1, bands);
   const freeBasic = actor ? paTurnRulesForActor(actor).freeBasicMovePa : false;
   const cost = effectiveMovementPaCost(token, raw, freeBasic);
@@ -220,7 +220,7 @@ export function TokenActionRing({
   const turnBlocked = turn.isTurnBlockedForToken(token);
   const consumablePa = consumablePaCost();
 
-  const movePa = useMemo(() => nextHexPaLabel(token, actor), [token, actor]);
+  const movePa = useMemo(() => nextCellPaLabel(token, actor), [token, actor]);
 
   const tokenRingColor = useMemo(() => {
     const playerActorIds = collectPlayerActorIds(allTokens);

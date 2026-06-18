@@ -1,10 +1,10 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState, type RefObject } from "react";
-import type { Axial } from "@/lib/vtt/hex-math";
+import type { Axial } from "@/lib/vtt/grid-math";
 import { canvasCenter, screenToWorld, type BattlefieldView } from "@/lib/vtt/battlefield-view";
 import { resolveMapAlignedGridLayout } from "@/lib/vtt/grid-layout";
-import { pixelToAxial } from "@/lib/vtt/hex-math";
+import { pixelToAxial } from "@/lib/vtt/grid-math";
 import type { RoomSnapshot } from "@/lib/room/types";
 import {
   clearActiveActorSpawnDragPayload,
@@ -17,7 +17,7 @@ import {
   readMonsterSpawnDrag,
 } from "@/lib/vtt/spawn-drag";
 import { resolveMonsterSpawnPlacement } from "@/lib/vtt/spawn-placement";
-import { placeRoomActorOnHex, spawnGmCreation, spawnRoomMonster } from "@/hooks/useRoomSync";
+import { placeRoomActorOnCell, spawnGmCreation, spawnRoomMonster } from "@/hooks/useRoomSync";
 import type { BattleScene } from "@/lib/vtt/types";
 
 type Params = {
@@ -68,7 +68,7 @@ export function useMonsterSpawnDrop({
       const world = screenToWorld(px, py, w, h, viewRef.current);
       const grid = resolveMapAlignedGridLayout(scene, ox, oy);
       const local = world;
-      return pixelToAxial(local.x, local.y, grid.hexSize, grid.ox, grid.oy);
+      return pixelToAxial(local.x, local.y, grid.cellSize, grid.ox, grid.oy);
     },
     [canvasRef, scene, viewRef]
   );
@@ -159,7 +159,7 @@ export function useMonsterSpawnDrop({
         } else {
           const snapshot = gmPayload
             ? await spawnGmCreation(roomId, gmPayload.creationId, axial.q, axial.r)
-            : await placeRoomActorOnHex(roomId, actorPayload!.actorId, axial.q, axial.r);
+            : await placeRoomActorOnCell(roomId, actorPayload!.actorId, axial.q, axial.r);
           onSpawned(snapshot);
         }
       } catch (err) {

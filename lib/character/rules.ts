@@ -606,7 +606,7 @@ export function classLevelFeatures(classId: string, level: number): string[] {
     if (level === 1) out.push("Chi de Combate — 10 Chi/combate, máx. 2 Chi/turno");
     if (level === 2) out.push("Caminho do Corpo — técnicas de Chi da subclasse");
     if (level === 5) out.push("Fluxo Marcial — 1ª técnica de Chi do turno custa 1 Chi a menos");
-    if (level === 11) out.push("Passo do Vácuo — +1 hex de movimento ao gastar Chi");
+    if (level === 11) out.push("Passo do Vácuo — +1 célula de movimento ao gastar Chi");
     if (level === 20) out.push("Corpo Transcendente — Chi máximo 12 neste combate");
   }
   if (classId === "Paladino") {

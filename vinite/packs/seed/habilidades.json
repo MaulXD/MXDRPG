@@ -1,12 +1,12 @@
 [
   {
-    "name": "Investida Hexagonal",
+    "name": "Investida em Linha",
     "type": "habilidade",
     "img": "icons/skills/movement/arrow-dodge-blue.webp",
     "system": {
-      "description": "<p>Movimento em linha reta até 2 hex sem provocar. Custa 1 PA além do movimento.</p>",
+      "description": "<p>Movimento em linha reta até 2 célula sem provocar. Custa 1 PA além do movimento.</p>",
       "tactical": {
-        "alcanceHex": { "value": 2, "min": 0 },
+        "alcanceCells": { "value": 2, "min": 0 },
         "custoPontosAcao": { "value": 1, "min": 0 }
       },
       "ability": { "tipo": "ativa", "recarga": "1/turno" }
@@ -19,7 +19,7 @@
     "system": {
       "description": "<p>Ataque corpo a corpo com vantagem se alvo tiver inimigo adjacente oposto.</p>",
       "tactical": {
-        "alcanceHex": { "value": 1, "min": 0 },
+        "alcanceCells": { "value": 1, "min": 0 },
         "custoPontosAcao": { "value": 2, "min": 0 }
       },
       "ability": { "tipo": "ativa", "recarga": "" }
@@ -32,7 +32,7 @@
     "system": {
       "description": "<p>+2 defesa até início do próximo turno.</p>",
       "tactical": {
-        "alcanceHex": { "value": 0, "min": 0 },
+        "alcanceCells": { "value": 0, "min": 0 },
         "custoPontosAcao": { "value": 1, "min": 0 }
       },
       "ability": { "tipo": "ativa", "recarga": "" }
@@ -43,9 +43,9 @@
     "type": "habilidade",
     "img": "icons/skills/movement/feet-winged-sandals-tan.webp",
     "system": {
-      "description": "<p>Reação: desloca 1 hex quando alvo de ataque corpo a corpo.</p>",
+      "description": "<p>Reação: desloca 1 célula quando alvo de ataque corpo a corpo.</p>",
       "tactical": {
-        "alcanceHex": { "value": 1, "min": 0 },
+        "alcanceCells": { "value": 1, "min": 0 },
         "custoPontosAcao": { "value": 1, "min": 0 }
       },
       "ability": { "tipo": "reacao", "recarga": "1/rodada" }
@@ -56,9 +56,9 @@
     "type": "habilidade",
     "img": "icons/skills/targeting/target-strike-gray.webp",
     "system": {
-      "description": "<p>Marca alvo em alcance 5 hex. Próximo ataque à distância +2.</p>",
+      "description": "<p>Marca alvo em alcance 5 célula. Próximo ataque à distância +2.</p>",
       "tactical": {
-        "alcanceHex": { "value": 5, "min": 0 },
+        "alcanceCells": { "value": 5, "min": 0 },
         "custoPontosAcao": { "value": 1, "min": 0 }
       },
       "ability": { "tipo": "ativa", "recarga": "1/turno" }

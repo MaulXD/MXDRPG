@@ -9,7 +9,7 @@ import { formatCombatActionTooltipLines } from "@/lib/combat/action-tooltip";
 import type { CombatActionOption } from "@/lib/combat/types";
 import { biomeDisplayName, resolveMonsterBiomes } from "@/lib/vtt/monster-biomes";
 import { getMonsterTemplate } from "@/lib/vtt/monsters";
-import { CREATURE_SIZE_HEX_LABEL, CREATURE_SIZE_PT } from "@/lib/vtt/monster-sizes";
+import { CREATURE_SIZE_CELL_LABEL, CREATURE_SIZE_PT } from "@/lib/vtt/monster-sizes";
 import { monsterXpRewardsForThreat, XP_LEVEL_GAP_HINTS } from "@/lib/character/xp";
 import { OrnamentCard } from "@/components/ui/OrnamentCard";
 import "./monster-sheet.css";
@@ -107,7 +107,7 @@ export function MonsterCompendiumSheet({ entryId, onClose, variant = "dialog" }:
               <span className="monster-sheet__tag">{TIER_LABEL[template.tier]}</span>
               <span className="monster-sheet__tag">Ameaça nv {template.ameaca}</span>
               <span className="monster-sheet__tag">
-                {CREATURE_SIZE_PT[template.creatureSize]} ({CREATURE_SIZE_HEX_LABEL[template.creatureSize]})
+                {CREATURE_SIZE_PT[template.creatureSize]} ({CREATURE_SIZE_CELL_LABEL[template.creatureSize]})
               </span>
             </div>
           </div>

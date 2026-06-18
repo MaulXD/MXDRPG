@@ -3,65 +3,65 @@
 
 from __future__ import annotations
 
-METERS_PER_HEX = 1.5
+METERS_PER_CELL = 1.5
 DND_RANGE_SCALE = 0.7
 FEET_TO_METERS = 0.3048
 
 
-def dnd_normal_range_hex(feet: int) -> int:
-    """Alcance normal SRD/D&D 5e em pes, escalado a 70% e arredondado em hex."""
+def dnd_normal_range_cells(feet: int) -> int:
+    """Alcance normal SRD/D&D 5e em pes, escalado a 70% e arredondado em célula."""
     meters = feet * FEET_TO_METERS * DND_RANGE_SCALE
-    return max(1, round(meters / METERS_PER_HEX))
+    return max(1, round(meters / METERS_PER_CELL))
 
 
-def meters_bonus_hex(meters: float) -> int:
-    return round(meters / METERS_PER_HEX)
+def meters_bonus_cells(meters: float) -> int:
+    return round(meters / METERS_PER_CELL)
 
 
 # Referencia SRD (pes) — ver lib/vtt/ranged-weapon-range.ts
-_HEX_LONG_BOW = dnd_normal_range_hex(150)  # 21
-_HEX_SHORT_BOW = dnd_normal_range_hex(80)  # 11
-_HEX_LIGHT_CROSSBOW = dnd_normal_range_hex(80)  # 11
-_HEX_HEAVY_CROSSBOW = dnd_normal_range_hex(100)  # 14
-_HEX_HAND_CROSSBOW = dnd_normal_range_hex(30)  # 4
-_HEX_THROWN = dnd_normal_range_hex(20)  # 4
+_CELL_LONG_BOW = dnd_normal_range_cells(150)  # 21
+_CELL_SHORT_BOW = dnd_normal_range_cells(80)  # 11
+_CELL_LIGHT_CROSSBOW = dnd_normal_range_cells(80)  # 11
+_CELL_HEAVY_CROSSBOW = dnd_normal_range_cells(100)  # 14
+_CELL_HAND_CROSSBOW = dnd_normal_range_cells(30)  # 4
+_CELL_THROWN = dnd_normal_range_cells(20)  # 4
 
 # Arcos longos (9) — ID ARC-L01 … ARC-L09
 ARCOS_LONGOS = [
-    ("ARC-L01", "Arco Longo de Vinha", "1d8", _HEX_LONG_BOW),
-    ("ARC-L02", "Arco Longo de Teixo", "1d8", _HEX_LONG_BOW),
-    ("ARC-L03", "Arco Longo de Grimwald", "1d8", _HEX_LONG_BOW),
-    ("ARC-L04", "Arco Longo de Prata", "1d8", _HEX_LONG_BOW),
-    ("ARC-L05", "Arco Longo de Cripta", "1d8", _HEX_LONG_BOW),
-    ("ARC-L06", "Arco Longo de Osso de Grifo", "1d10", _HEX_LONG_BOW + meters_bonus_hex(3)),
-    ("ARC-L07", "Arco Longo de Dragão", "1d10", _HEX_LONG_BOW),
-    ("ARC-L08", "Arco Longo de Abismo", "1d8", _HEX_LONG_BOW + 3),
-    ("ARC-L09", "Arco Longo de Valdrun", "1d10", _HEX_LONG_BOW + 1),
+    ("ARC-L01", "Arco Longo de Vinha", "1d8", _CELL_LONG_BOW),
+    ("ARC-L02", "Arco Longo de Teixo", "1d8", _CELL_LONG_BOW),
+    ("ARC-L03", "Arco Longo de Grimwald", "1d8", _CELL_LONG_BOW),
+    ("ARC-L04", "Arco Longo de Prata", "1d8", _CELL_LONG_BOW),
+    ("ARC-L05", "Arco Longo de Cripta", "1d8", _CELL_LONG_BOW),
+    ("ARC-L06", "Arco Longo de Osso de Grifo", "1d10", _CELL_LONG_BOW + meters_bonus_cells(3)),
+    ("ARC-L07", "Arco Longo de Dragão", "1d10", _CELL_LONG_BOW),
+    ("ARC-L08", "Arco Longo de Abismo", "1d8", _CELL_LONG_BOW + 3),
+    ("ARC-L09", "Arco Longo de Valdrun", "1d10", _CELL_LONG_BOW + 1),
 ]
 
 # Arcos curtos (9) — ID ARC-C01 … ARC-C09
 ARCOS_CURTOS = [
-    ("ARC-C01", "Arco Curto de Caçador", "1d6", _HEX_SHORT_BOW),
-    ("ARC-C02", "Arco Curto de Teixo", "1d6", _HEX_SHORT_BOW),
-    ("ARC-C03", "Arco Curto de Goblin", "1d6", _HEX_SHORT_BOW - 2),
-    ("ARC-C04", "Arco Curto de Cripta", "1d6", _HEX_SHORT_BOW),
-    ("ARC-C05", "Arco Curto de Costela", "1d8", _HEX_SHORT_BOW),
-    ("ARC-C06", "Arco Curto de Matriarca", "1d6", _HEX_SHORT_BOW + 1),
-    ("ARC-C07", "Arco Curto de Ninho", "1d6", _HEX_SHORT_BOW),
-    ("ARC-C08", "Arco Curto de Marfim", "1d6", _HEX_SHORT_BOW),
-    ("ARC-C09", "Arco Curto de Valdrun", "1d8", _HEX_SHORT_BOW + 1),
+    ("ARC-C01", "Arco Curto de Caçador", "1d6", _CELL_SHORT_BOW),
+    ("ARC-C02", "Arco Curto de Teixo", "1d6", _CELL_SHORT_BOW),
+    ("ARC-C03", "Arco Curto de Goblin", "1d6", _CELL_SHORT_BOW - 2),
+    ("ARC-C04", "Arco Curto de Cripta", "1d6", _CELL_SHORT_BOW),
+    ("ARC-C05", "Arco Curto de Costela", "1d8", _CELL_SHORT_BOW),
+    ("ARC-C06", "Arco Curto de Matriarca", "1d6", _CELL_SHORT_BOW + 1),
+    ("ARC-C07", "Arco Curto de Ninho", "1d6", _CELL_SHORT_BOW),
+    ("ARC-C08", "Arco Curto de Marfim", "1d6", _CELL_SHORT_BOW),
+    ("ARC-C09", "Arco Curto de Valdrun", "1d8", _CELL_SHORT_BOW + 1),
 ]
 
 # Bestas (8) — ID BST-01 … BST-08
 BESTAS = [
-    ("BST-01", "Besta Leve", "1d8", _HEX_LIGHT_CROSSBOW),
-    ("BST-02", "Besta de Mão", "1d6", _HEX_HAND_CROSSBOW),
-    ("BST-03", "Besta Pesada", "1d10", _HEX_HEAVY_CROSSBOW),
-    ("BST-04", "Besta de Repetição", "1d8", _HEX_LIGHT_CROSSBOW),
-    ("BST-05", "Besta de Assalto", "1d10", _HEX_LIGHT_CROSSBOW),
-    ("BST-06", "Besta de Caverna", "1d8", _HEX_LIGHT_CROSSBOW - 2),
-    ("BST-07", "Besta de Alcance", "1d10", _HEX_LONG_BOW),
-    ("BST-08", "Besta de Engenharia", "1d10", _HEX_HEAVY_CROSSBOW),
+    ("BST-01", "Besta Leve", "1d8", _CELL_LIGHT_CROSSBOW),
+    ("BST-02", "Besta de Mão", "1d6", _CELL_HAND_CROSSBOW),
+    ("BST-03", "Besta Pesada", "1d10", _CELL_HEAVY_CROSSBOW),
+    ("BST-04", "Besta de Repetição", "1d8", _CELL_LIGHT_CROSSBOW),
+    ("BST-05", "Besta de Assalto", "1d10", _CELL_LIGHT_CROSSBOW),
+    ("BST-06", "Besta de Caverna", "1d8", _CELL_LIGHT_CROSSBOW - 2),
+    ("BST-07", "Besta de Alcance", "1d10", _CELL_LONG_BOW),
+    ("BST-08", "Besta de Engenharia", "1d10", _CELL_HEAVY_CROSSBOW),
 ]
 
 # Armaduras (20) — ID ARM-01 … ARM-20
@@ -163,11 +163,11 @@ LANCAS = [
     ("WPN-P01", "Lança Curta", "1d6", 1, "perfurante"),
     ("WPN-P02", "Lança Longa", "1d10", 2, "perfurante"),
     ("WPN-P03", "Pique de Falange", "1d10", 2, "perfurante"),
-    ("WPN-P04", "Azagaia", "1d6", _HEX_THROWN, "perfurante"),
+    ("WPN-P04", "Azagaia", "1d6", _CELL_THROWN, "perfurante"),
     ("WPN-P05", "Tridente", "1d6", 1, "perfurante"),
     ("WPN-P06", "Alabarda", "1d10", 2, "cortante"),
     ("WPN-P07", "Lança de Cavalaria", "1d8", 2, "perfurante"),
-    ("WPN-P08", "Javelin de Caça", "1d6", _HEX_THROWN, "perfurante"),
+    ("WPN-P08", "Javelin de Caça", "1d6", _CELL_THROWN, "perfurante"),
     ("WPN-P09", "Lança de Teixo", "1d8", 2, "perfurante"),
     ("WPN-P10", "Lança de Valdrun", "1d10", 2, "perfurante"),
 ]

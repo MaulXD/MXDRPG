@@ -22,7 +22,7 @@ export function tokenMayActWithZeroSpendablePa(
   token: BattleToken
 ): boolean {
   if (walkRemaining(token) <= 0) return false;
-  const spent = token.movementSpentHex ?? 0;
+  const spent = token.movementSpentCells ?? 0;
   const bands = movementPaBandsForToken(token);
   const rules = paRulesForToken(room, token);
   const rawCost = movementPaCost(spent, 1, bands);

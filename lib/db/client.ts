@@ -18,7 +18,7 @@ export function getSql(): ReturnType<typeof postgres> | null {
     if (serverless && isNeonDirectHost(url) && !warnedDirectNeon) {
       warnedDirectNeon = true;
       console.warn(
-        "[eldarin-db] Neon: use a pooled connection string (-pooler host) on Vercel to avoid connection limits."
+        "[eldarin-db] Neon: use a pooled connection string (-pooler host) to avoid connection limits."
       );
     }
 

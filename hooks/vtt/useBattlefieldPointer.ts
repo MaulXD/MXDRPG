@@ -1,8 +1,8 @@
 "use client";
 
 import { useCallback, useRef, type RefObject } from "react";
-import type { Axial } from "@/lib/vtt/hex-math";
-import { axialToPixel, hexDirection, pixelToAxial } from "@/lib/vtt/hex-math";
+import type { Axial } from "@/lib/vtt/grid-math";
+import { axialToPixel, cellDirection, pixelToAxial } from "@/lib/vtt/grid-math";
 import { resolveMapAlignedGridLayout } from "@/lib/vtt/grid-layout";
 import { areaNeedsDirection, areaUsesCasterOrigin, canCastAreaAt } from "@/lib/combat/area-spell";
 import type { CombatActionOption } from "@/lib/combat/types";
@@ -17,7 +17,7 @@ import {
 } from "@/lib/vtt/battlefield-view";
 import {
   creatureSizeOf,
-  isMultiHexCreatureSize,
+  isMultiCellCreatureSize,
   tokenHitRadius,
   tokenOccupiesAxial,
   tokenPixelCenter,
@@ -84,7 +84,7 @@ type Params = {
   onAreaSpell: (center: Axial, direction?: number) => void;
   onAreaSpellError: (msg: string) => void;
   onPing?: (axial: Axial) => void;
-  onRevealHex?: (axial: Axial) => void;
+  onRevealCell?: (axial: Axial) => void;
   fogEnabled?: boolean;
   viewRef: RefObject<BattlefieldView>;
   /** Clique direito no token da vez → action ring */
@@ -103,7 +103,7 @@ type Params = {
     tool: DungeonEditorTool;
     selectedObjectId: string | null;
     onSelectObject: (id: string | null) => void;
-    onHexEdit: (axial: Axial, dragObjectId?: string) => void;
+    onCellEdit: (axial: Axial, dragObjectId?: string) => void;
     floorOffsetX?: number;
     floorOffsetY?: number;
     floorScale?: number;
@@ -168,7 +168,7 @@ export function useBattlefieldPointer({
   onAreaSpell,
   onAreaSpellError,
   onPing,
-  onRevealHex,
+  onRevealCell,
   fogEnabled = false,
   viewRef,
   onActionRingRequest,
@@ -295,7 +295,7 @@ export function useBattlefieldPointer({
       const c = boardCoords(px, py);
       if (!c) return null;
       const local = c.world;
-      return pixelToAxial(local.x, local.y, c.grid.hexSize, c.grid.ox, c.grid.oy);
+      return pixelToAxial(local.x, local.y, c.grid.cellSize, c.grid.ox, c.grid.oy);
     },
     [boardCoords]
   );
@@ -323,8 +323,8 @@ export function useBattlefieldPointer({
         const pos = tokenDrawPosition?.(token) ?? token.axial;
         const size = tokenSizeOf(token);
         const local = c.world;
-        const r = tokenHitRadius(c.grid.hexSize, size);
-        const { x, y } = tokenPixelCenter(pos, size, c.grid.hexSize, c.grid.ox, c.grid.oy);
+        const r = tokenHitRadius(c.grid.cellSize, size);
+        const { x, y } = tokenPixelCenter(pos, size, c.grid.cellSize, c.grid.ox, c.grid.oy);
         const dist = Math.hypot(local.x - x, local.y - y);
         if (dist < r && (!best || dist < best.dist)) {
           best = { token, dist };
@@ -341,7 +341,7 @@ export function useBattlefieldPointer({
       for (const token of scene.tokens) {
         const pos = tokenDrawPosition?.(token) ?? token.axial;
         const size = tokenSizeOf(token);
-        const matches = isMultiHexCreatureSize(size)
+        const matches = isMultiCellCreatureSize(size)
           ? pos.q === axial.q && pos.r === axial.r
           : tokenOccupiesAxial(
               { ...token, axial: pos },
@@ -365,12 +365,12 @@ export function useBattlefieldPointer({
       if (!c) return null;
       const pos = tokenDrawPosition?.(token) ?? token.axial;
       const size = tokenSizeOf(token);
-      const { x, y } = tokenPixelCenter(pos, size, scene.hexSize, c.ox, c.oy);
+      const { x, y } = tokenPixelCenter(pos, size, scene.cellSize, c.ox, c.oy);
       const screen = worldToScreen(x, y, c.w, c.h, viewRef.current);
       const rect = canvas.getBoundingClientRect();
       return { x: rect.left + screen.x, y: rect.top + screen.y };
     },
-    [canvasRef, boardCoords, tokenDrawPosition, scene.hexSize, viewRef, tokenSizeOf]
+    [canvasRef, boardCoords, tokenDrawPosition, scene.cellSize, viewRef, tokenSizeOf]
   );
 
   const pointerPos = useCallback(
@@ -1044,7 +1044,7 @@ export function useBattlefieldPointer({
         const start = clickStartRef.current;
         clickStartRef.current = null;
         if (!start || Math.hypot(px - start.x, py - start.y) <= 8 || dng) {
-          dungeonEditor.onHexEdit(axial, dng?.objectId);
+          dungeonEditor.onCellEdit(axial, dng?.objectId);
         }
         return;
       }
@@ -1061,7 +1061,7 @@ export function useBattlefieldPointer({
         if (clickAxial) hit = tokenAtAxial(clickAxial);
       }
 
-      const castAreaAtHex = (targetAxial: Axial): boolean => {
+      const castAreaAtCell = (targetAxial: Axial): boolean => {
         if (!selectedId || !areaMode || !activeCombatAction || !selected) return false;
         const turnCtx = {
           activeTokenId: turn.activeTokenId,
@@ -1085,7 +1085,7 @@ export function useBattlefieldPointer({
             else onAreaSpellError(check.reason ?? "Centro de área inválido");
             return true;
           }
-          const dir = hexDirection(areaCenter, targetAxial);
+          const dir = cellDirection(areaCenter, targetAxial);
           if (dir == null) {
             onAreaSpellError("Clique numa célula vizinha ao centro da muralha para definir a direção");
             return true;
@@ -1106,7 +1106,7 @@ export function useBattlefieldPointer({
         }
 
         if (areaNeedsDirection(shape) && areaUsesCasterOrigin(shape)) {
-          const dir = hexDirection(selected.axial, targetAxial);
+          const dir = cellDirection(selected.axial, targetAxial);
           if (dir == null) {
             onAreaSpellError("Clique numa célula vizinha ao conjurador para definir a direção");
             return true;
@@ -1138,7 +1138,7 @@ export function useBattlefieldPointer({
       };
 
       if (hit) {
-        if (castAreaAtHex(axial)) return;
+        if (castAreaAtCell(axial)) return;
         if (
           isTargetMode(actionMode) &&
           selectedId &&
@@ -1157,8 +1157,8 @@ export function useBattlefieldPointer({
         return;
       }
 
-      if (mapTools?.mode === "fog" && onRevealHex && !whiteboard?.active) {
-        onRevealHex(axial);
+      if (mapTools?.mode === "fog" && onRevealCell && !whiteboard?.active) {
+        onRevealCell(axial);
         return;
       }
 
@@ -1167,8 +1167,8 @@ export function useBattlefieldPointer({
         return;
       }
 
-      if (e.ctrlKey && fogEnabled && onRevealHex && mapTools?.mode !== "measure") {
-        onRevealHex(axial);
+      if (e.ctrlKey && fogEnabled && onRevealCell && mapTools?.mode !== "measure") {
+        onRevealCell(axial);
         return;
       }
 
@@ -1177,7 +1177,7 @@ export function useBattlefieldPointer({
         return;
       }
 
-      castAreaAtHex(axial);
+      castAreaAtCell(axial);
     },
     [
       pointerPos,
@@ -1197,7 +1197,7 @@ export function useBattlefieldPointer({
       onAreaSpell,
       onAreaSpellError,
       onPing,
-      onRevealHex,
+      onRevealCell,
       fogEnabled,
       needsAreaDirection,
       areaCenter,

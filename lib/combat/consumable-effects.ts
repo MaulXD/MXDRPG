@@ -21,16 +21,16 @@ export type ConsumableEffectDef = {
   bonus?: number;
   rounds?: number;
   turns?: number;
-  /** Alcance em hex para cura em área (POC-23: 6 m ≈ 4 hex). */
-  aoeHex?: number;
+  /** Alcance em célula para cura em área (POC-23: 6 m ≈ 4 célula). */
+  aoeCells?: number;
   /** Tag de tipo de dano para resistência (POC-10 … POC-12). */
   resistTag?: string;
   label?: string;
   hint: string;
 };
 
-/** 6 m no grid tático Eldarin (1 hex = 1,5 m). */
-export const GROUP_HEAL_AOE_HEX = 4;
+/** 6 m no grid tático Eldarin (1 célula = 1,5 m). */
+export const GROUP_HEAL_AOE_CELLS = 4;
 
 /** Efeitos por catalogId (POC-01 … POC-24). Durações longas viram rodadas de combate. */
 export const CONSUMABLE_CATALOG_EFFECTS: Record<string, ConsumableEffectDef> = {
@@ -154,7 +154,7 @@ export const CONSUMABLE_CATALOG_EFFECTS: Record<string, ConsumableEffectDef> = {
   "POC-23": {
     kind: "group_heal",
     formula: "1d8",
-    aoeHex: GROUP_HEAL_AOE_HEX,
+    aoeCells: GROUP_HEAL_AOE_CELLS,
     hint: "Cura 1d8 HP em aliados num raio de 6 m",
   },
   "POC-24": {

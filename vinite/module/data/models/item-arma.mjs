@@ -21,7 +21,7 @@ export class EldarinArmaDataModel extends foundry.abstract.TypeDataModel {
 
 function tacticalSchema() {
   return new SchemaField({
-    alcanceHex: new SchemaField({
+    alcanceCells: new SchemaField({
       value: new NumberField({ integer: true, initial: 1, min: 0 }),
       min: new NumberField({ integer: true, initial: 0 }),
     }),

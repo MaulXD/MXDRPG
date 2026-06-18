@@ -18,10 +18,10 @@ export function mesaRoomPath(roomId: string, inviteCode?: string | null): string
   return `${base}?invite=${encodeURIComponent(code)}`;
 }
 
-/** URL de login Clerk com destino pós-auth (inclui query no destino, ex. `?invite=`). */
+/** URL de login com destino pós-auth (inclui query no destino, ex. `?invite=`). */
 export function signInPath(dest: string): string {
   const safe = safeRedirectPath(dest) ?? DEFAULT_POST_AUTH_PATH;
-  return `/sign-in?redirect=${encodeURIComponent(safe)}`;
+  return `/entrar?redirect=${encodeURIComponent(safe)}`;
 }
 
 /** @deprecated Use signInPath — mantido para links antigos que redirecionam via /entrar. */

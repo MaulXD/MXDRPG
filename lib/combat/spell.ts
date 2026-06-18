@@ -33,7 +33,7 @@ export type SaveSpellResolution = {
   defenderTokenId: string;
   actionKind: "spell";
   weaponName: string;
-  rangeHex: number;
+  rangeCells: number;
   paCost: number;
   save: SaveRollBreakdown;
   damage: DamageBreakdown;
@@ -156,7 +156,7 @@ export function resolveSaveSpell(
     defenderTokenId: defenderToken.id,
     actionKind: "spell",
     weaponName: resolved.name,
-    rangeHex: resolved.rangeHex,
+    rangeCells: resolved.rangeCells,
     paCost: totalChannelPaCost(actor, action, channelExtra, attackerToken),
     save: {
       natural,

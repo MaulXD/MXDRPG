@@ -113,9 +113,9 @@ function monsterActions(name, nivel, tier, attrs) {
       damageFormula: bite,
       damageType: "perfurante",
       attackBonus: monsterAttackBonus(nivel, tier, "bite"),
-      rangeHex: 1,
+      rangeCells: 1,
       paCost: 2,
-      label: "Mordida · 1 hex · PA 2",
+      label: "Mordida · 1 célula · PA 2",
     },
   ];
   if (tier !== "mob" || nivel >= 2) {
@@ -128,9 +128,9 @@ function monsterActions(name, nivel, tier, attrs) {
       damageFormula: tier === "boss" ? "2d6" : "1d8",
       damageType: "cortante",
       attackBonus: monsterAttackBonus(nivel, tier, "claw", agiMod),
-      rangeHex: 1,
+      rangeCells: 1,
       paCost: 2,
-      label: "Garras · 1 hex · PA 2",
+      label: "Garras · 1 célula · PA 2",
     });
   }
   if (nivel >= 4) {
@@ -143,9 +143,9 @@ function monsterActions(name, nivel, tier, attrs) {
       damageFormula: tier === "boss" ? "3d10" : "2d8",
       damageType: "mágico",
       attackBonus: monsterAttackBonus(nivel, tier, "special"),
-      rangeHex: tier === "boss" ? 6 : 4,
+      rangeCells: tier === "boss" ? 6 : 4,
       paCost: 2,
-      label: `Ataque especial · ${tier === "boss" ? 6 : 4} hex · PA 2`,
+      label: `Ataque especial · ${tier === "boss" ? 6 : 4} célula · PA 2`,
     });
   } else if (nivel >= 2) {
     actions.push({
@@ -157,9 +157,9 @@ function monsterActions(name, nivel, tier, attrs) {
       damageFormula: "1d10",
       damageType: "contundente",
       attackBonus: Math.max(monsterAttackBonus(nivel, tier, "claw", agiMod), forMod),
-      rangeHex: 2,
+      rangeCells: 2,
       paCost: 2,
-      label: "Investida · 2 hex · PA 2",
+      label: "Investida · 2 célula · PA 2",
     });
   }
   return actions;
@@ -208,7 +208,7 @@ function mob(
         vida: { value: hp, max: hp },
         pontosAcao: { value: paMax, max: paMax },
       },
-      movement: { hex: { walk: { value: move.walk }, run: { value: move.run } } },
+      movement: { cells: { walk: { value: move.walk }, run: { value: move.run } } },
       tactical: { defesa: { value: ca }, ameaca: { value: nivel }, tier, tamanho },
       actions: monsterActions(name, nivel, tier, attrs),
     },
@@ -326,7 +326,7 @@ function spell(
   name,
   nivel,
   escola,
-  alcanceHex,
+  alcanceCells,
   pa,
   desc,
   opts = {}
@@ -338,12 +338,12 @@ function spell(
     system: {
       catalogId: `MAG-${slug(name)}`,
       description: `<p>${desc}</p>`,
-      tactical: { alcanceHex: { value: alcanceHex, min: 0 }, custoPontosAcao: { value: pa, min: 0 } },
+      tactical: { alcanceCells: { value: alcanceCells, min: 0 }, custoPontosAcao: { value: pa, min: 0 } },
       spell: {
         nivel,
         escola,
         tempo: opts.tempo ?? "1 ação",
-        alcance: `${alcanceHex} hex`,
+        alcance: `${alcanceCells} célula`,
         ...(opts.save ? { save: { attribute: opts.save } } : {}),
         ...(opts.area ? { area: opts.area } : {}),
         ...(opts.channel ? { channel: { maxExtraPa: 2, bonusPerPa: "1d6" } } : {}),
@@ -363,7 +363,7 @@ function spell(
 const SPELLS = [
   spell("Chama de Fogareiro", 0, "Evocação", 1, 1, "Chama controlável; uso culinário.", { tempo: "1 ação" }),
   spell("Lâmina de Espírito", 0, "Transmutação", 1, 1, "Lâmina etérea 1d4; +2 Trinchar.", { dano: "1d4", tipo: "força" }),
-  spell("Detectar Veneno", 0, "Adivinhação", 3, 1, "Detecta toxinas em 3 hex.", { tempo: "1 ação" }),
+  spell("Detectar Veneno", 0, "Adivinhação", 3, 1, "Detecta toxinas em 3 célula.", { tempo: "1 ação" }),
   spell("Estabilizar", 0, "Abjuração", 1, 1, "Criatura a 0 HP para de falhar morte."),
   spell("Mãos Firmes", 0, "Transmutação", 1, 1, "+2 Trinchar por 1 hora."),
   spell("Extração Amplificada", 1, "Biomancia", 1, 1, "Dobra ingredientes; +4 Trinchar 1h.", { tempo: "1 minuto" }),
@@ -371,7 +371,7 @@ const SPELLS = [
     dano: "2d6",
     tipo: "frio",
     save: "constituicao",
-    area: { shape: "cone", lengthHex: 3 },
+    area: { shape: "cone", lengthCells: 3 },
     channel: true,
   }),
   spell("Crescimento Acelerado", 1, "Transmutação", 1, 1, "Semente vira planta em 1h.", { tempo: "1 hora" }),
@@ -382,7 +382,7 @@ const SPELLS = [
     dano: "2d8",
     tipo: "trovão",
     save: "constituicao",
-    area: { shape: "cube", radiusHex: 1 },
+    area: { shape: "cube", radiusCells: 1 },
     channel: true,
   }),
   spell("Curar Ferimentos", 1, "Abjuração", 1, 1, "Cura 1d8 + mod conjuração."),
@@ -405,34 +405,34 @@ const SPELLS = [
   spell("Preservação Perfeita", 2, "Transmutação", 1, 1, "Ingrediente preservado 30 dias."),
   spell("Forma Menor", 2, "Transmutação", 0, 1, "Polimorfo em besta pequena."),
   spell("Escudo Arcano", 2, "Abjuração", 0, 1, "Reação: +5 CA 1 rodada.", { tempo: "reação" }),
-  spell("Ilusão Menor", 2, "Ilusão", 6, 1, "Som ou imagem estática em cubo 1 hex.", {
-    area: { shape: "cube", radiusHex: 1 },
+  spell("Ilusão Menor", 2, "Ilusão", 6, 1, "Som ou imagem estática em cubo 1 célula.", {
+    area: { shape: "cube", radiusCells: 1 },
   }),
-  spell("Muralha de Energia", 2, "Abjuração", 3, 2, "Barreira reta em 3 células.", { area: { shape: "wall", hexCount: 3 } }),
+  spell("Muralha de Energia", 2, "Abjuração", 3, 2, "Barreira reta em 3 células.", { area: { shape: "wall", cellCount: 3 } }),
   spell("Animação de Mortos", 3, "Necromancia", 3, 2, "Anima 2 cadáveres por 24h.", { tempo: "1 minuto" }),
   spell("Injeção Biomágica", 3, "Biomancia", 1, 1, "Habilidade assimilacao 12h do ingrediente."),
   spell("Bola de Fogo", 3, "Evocação", 10, 3, "Raio 6 m: 8d6 fogo; save DES. Canalizável.", {
     dano: "8d6",
     tipo: "fogo",
     save: "destreza",
-    area: { shape: "burst", radiusHex: 4 },
+    area: { shape: "burst", radiusCells: 4 },
     channel: true,
   }),
   spell("Nova Arcana", 3, "Evocação", 5, 3, "Explosão 3d6 fogo em área (raio 3 m).", {
     dano: "3d6",
     tipo: "fogo",
     save: "destreza",
-    area: { shape: "burst", radiusHex: 2 },
+    area: { shape: "burst", radiusCells: 2 },
   }),
   spell("Contágio Necrótico", 3, "Necromancia", 1, 3, "Save CON ou envenenado prolongado.", {
     save: "constituicao",
     recarga: "1/turno",
   }),
-  spell("Ventania", 3, "Evocação", 6, 2, "Linha 6 hex empurra; save FOR.", {
+  spell("Ventania", 3, "Evocação", 6, 2, "Linha 6 célula empurra; save FOR.", {
     dano: "2d6",
     tipo: "contundente",
     save: "forca",
-    area: { shape: "line", lengthHex: 12 },
+    area: { shape: "line", lengthCells: 12 },
   }),
   spell("Ler Mentes", 3, "Adivinhação", 4, 1, "Lê pensamentos superficiais."),
   spell("Relâmpago", 3, "Evocação", 8, 3, "Um alvo: 4d8 relâmpago; save DES. Canalizável.", {
@@ -460,7 +460,7 @@ const SPELLS = [
   spell("Parede de Fogo", 4, "Evocação", 8, 3, "Parede até 18 m: 5d8 fogo.", {
     dano: "5d8",
     tipo: "fogo",
-    area: { shape: "wall", hexCount: 12 },
+    area: { shape: "wall", cellCount: 12 },
     recarga: "1/turno",
   }),
   spell("Preservação Anual", 4, "Transmutação", 1, 1, "Preserva ingrediente 1 ano."),
@@ -474,7 +474,7 @@ const SPELLS = [
     dano: "8d8",
     tipo: "frio",
     save: "constituicao",
-    area: { shape: "cone", lengthHex: 12 },
+    area: { shape: "cone", lengthCells: 12 },
     channel: true,
     recarga: "1/turno",
   }),
@@ -482,7 +482,7 @@ const SPELLS = [
     tempo: "8 horas",
     recarga: "1/combate",
   }),
-  spell("Salto Dimensional", 5, "Conjuração", 6, 2, "Teletransporte 6 hex.", {
+  spell("Salto Dimensional", 5, "Conjuração", 6, 2, "Teletransporte 6 célula.", {
     tempo: "ação bônus",
     recarga: "1/turno",
   }),
@@ -517,11 +517,11 @@ const SPELLS = [
   }),
   spell("Regeneração Biomágica", 7, "Biomancia", 1, 2, "4d8+15 HP no início de cada turno."),
   spell("Invisibilidade Maior", 7, "Ilusão", 1, 1, "Até 6 aliados invisíveis."),
-  spell("Terremoto", 8, "Evocação", 20, 3, "Área 30 hex; save DES prostrado.", {
+  spell("Terremoto", 8, "Evocação", 20, 3, "Área 30 célula; save DES prostrado.", {
     dano: "6d6",
     tipo: "contundente",
     save: "destreza",
-    area: { shape: "burst", radiusHex: 10 },
+    area: { shape: "burst", radiusCells: 10 },
   }),
   spell("Biomancia Suprema — Transcendência", 9, "Biomancia", 0, 3, "Integra DNA de 3 bosses.", {
     tempo: "1 hora",
@@ -537,10 +537,10 @@ const SPELLS = [
     dano: "1d6",
     tipo: "necrótico",
     save: "constituicao",
-    area: { shape: "burst", radiusHex: 1 },
+    area: { shape: "burst", radiusCells: 1 },
   }),
-  spell("Grande Decomposição", 5, "Transmutação", 4, 3, "Decompõe orgânico em cubo 3 hex.", {
-    area: { shape: "cube", radiusHex: 1 },
+  spell("Grande Decomposição", 5, "Transmutação", 4, 3, "Decompõe orgânico em cubo 3 célula.", {
+    area: { shape: "cube", radiusCells: 1 },
     recarga: "1/turno",
   }),
   spell("Doce Confuso", 1, "Encantamento", 6, 2, "Save CON ou amedrontado.", { save: "constituicao" }),
@@ -549,32 +549,32 @@ const SPELLS = [
 const BOOK_HAB = "CATALOGO-HABILIDADES-TATICAS.md";
 
 const ABILITY_CATALOG = [
-  ["Investida Hexagonal", 2, 1, "ativa", "1/turno", "Desloca em linha reta até 2 hex sem provocar ataques de oportunidade durante o movimento."],
+  ["Investida em Linha", 2, 1, "ativa", "1/turno", "Desloca em linha reta até 2 célula sem provocar ataques de oportunidade durante o movimento."],
   ["Golpe Flanqueador", 1, 2, "ativa", "", "Gasta 2 PA: próximo ataque corpo a corpo com vantagem se você flanquear o alvo."],
   ["Postura Defensiva", 0, 1, "ativa", "", "+2 defesa até o início do seu próximo turno."],
-  ["Reflexos de Masmorra", 1, 1, "reacao", "", "Reação a um ataque: desloca 1 hex imediatamente (não provoca oportunidades)."],
-  ["Olhar do Caçador", 5, 1, "ativa", "", "Marca um alvo visível a até 5 hex; seu próximo ataque à distância contra ele ganha +2."],
-  ["Investida do Guerreiro", 2, 1, "ativa", "1/turno", "Corrida em linha reta até 2 hex; ideal terminar adjacente a um inimigo para atacar no mesmo turno."],
+  ["Reflexos de Masmorra", 1, 1, "reacao", "", "Reação a um ataque: desloca 1 célula imediatamente (não provoca oportunidades)."],
+  ["Olhar do Caçador", 5, 1, "ativa", "", "Marca um alvo visível a até 5 célula; seu próximo ataque à distância contra ele ganha +2."],
+  ["Investida do Guerreiro", 2, 1, "ativa", "1/turno", "Corrida em linha reta até 2 célula; ideal terminar adjacente a um inimigo para atacar no mesmo turno."],
   ["Golpe Devastador", 1, 3, "ativa", "", "Próximo ataque corpo a corpo recebe +2 no teste de ataque."],
   ["Esquiva Tática", 0, 1, "ativa", "", "+2 defesa até o início do seu próximo turno."],
   ["Tiro Certeiro", 5, 1, "ativa", "", "Próximo ataque à distância contra alvo visível é feito com vantagem."],
   ["Emboscada", 1, 2, "ativa", "", "Ataque furtivo adjacente; vantagem se o alvo não viu você no início do turno."],
   ["Finta", 1, 1, "ativa", "", "Alvo marcado tem desvantagem no próximo ataque contra você."],
-  ["Passo das Sombras", 2, 1, "ativa", "1/turno", "Teleporte curto de até 2 hex; conta como movimento."],
-  ["Raio Arcano", 6, 1, "ativa", "", "Truque ofensivo: 1d10+INT de dano mágico em um alvo a até 6 hex."],
+  ["Passo das Sombras", 2, 1, "ativa", "1/turno", "Teleporte curto de até 2 célula; conta como movimento."],
+  ["Raio Arcano", 6, 1, "ativa", "", "Truque ofensivo: 1d10+INT de dano mágico em um alvo a até 6 célula."],
   ["Escudo Mágico", 0, 1, "ativa", "", "+3 defesa até o início do seu próximo turno."],
   ["Canalizar Energia", 1, 2, "ativa", "", "Ataque corpo a corpo sagrado: +2 no ataque e +2d6 radiante no dano."],
   ["Fúria Controlada", 0, 1, "ativa", "", "Resistência a dano contundente até o fim do seu próximo turno."],
-  ["Investida Bárbara", 3, 1, "ativa", "1/turno", "Corre até 3 hex em linha reta sem provocar oportunidades."],
-  ["Inspiração de Batalha", 4, 1, "ativa", "", "Aliado visível a até 4 hex ganha vantagem no próximo ataque."],
+  ["Investida Bárbara", 3, 1, "ativa", "1/turno", "Corre até 3 célula em linha reta sem provocar oportunidades."],
+  ["Inspiração de Batalha", 4, 1, "ativa", "", "Aliado visível a até 4 célula ganha vantagem no próximo ataque."],
   ["Canção de Cura", 1, 1, "ativa", "", "Aliado adjacente recupera 1d6 HP."],
   ["Forma Selvagem", 0, 3, "ativa", "1/combate", "Prepara transformação biomágica (3 PA; Mestre valida a forma)."],
-  ["Raízes Prendentes", 4, 2, "ativa", "", "Restringe alvo 1 turno (save FOR); raízes no hex do alvo."],
+  ["Raízes Prendentes", 4, 2, "ativa", "", "Restringe alvo 1 turno (save FOR); raízes no célula do alvo."],
   ["Disparo de Artilheiro", 6, 1, "ativa", "", "Projétil concentrado: 2d8 de dano à distância."],
   ["Barreira de Cobre", 0, 1, "ativa", "", "+2 defesa contra efeitos mágicos até seu próximo turno."],
   ["Imposição de Mãos", 1, 1, "ativa", "", "Aliado adjacente recupera 1d8+CAR HP, ou 2d8 radiante vs morto-vivo."],
   ["Golpe Sagrado", 1, 1, "ativa", "", "Próximo ataque corpo a corpo +2d8 radiante (PA extra)."],
-  ["Raio do Pacto", 6, 1, "ativa", "", "Truque: 1d10+CAR de dano mágico em um alvo a até 6 hex."],
+  ["Raio do Pacto", 6, 1, "ativa", "", "Truque: 1d10+CAR de dano mágico em um alvo a até 6 célula."],
   ["Raio do Pacto Psíquico", 6, 1, "ativa", "", "Raio psíquico 1d10+CAR; empurra 1,5m em acerto (FOR CD 13)."],
   ["Raio do Pacto Ardente", 6, 1, "ativa", "", "Raio de fogo 1d10+CAR; marca Sangue no acerto (+2d6 fogo depois)."],
   ["Raio do Pacto Salino", 6, 1, "ativa", "", "Raio de frio 1d10+CAR."],
@@ -609,7 +609,7 @@ const ABILITIES = ABILITY_CATALOG.map(([name, range, pa, tipo, recarga, desc]) =
     catalogId: `HAB-${slug(name)}`,
     bookRef: BOOK_HAB,
     description: `<p>${desc}</p>`,
-    tactical: { alcanceHex: { value: range, min: 0 }, custoPontosAcao: { value: pa, min: 0 } },
+    tactical: { alcanceCells: { value: range, min: 0 }, custoPontosAcao: { value: pa, min: 0 } },
     ability: { tipo, recarga },
   },
 }));
@@ -620,8 +620,8 @@ for (const s of SPELLS) {
     const escola = s.system.spell?.escola ?? "";
     const nv = s.system.spell?.nivel ?? 0;
     const pa = s.system.tactical?.custoPontosAcao?.value ?? 1;
-    const hex = s.system.tactical?.alcanceHex?.value ?? 0;
-    s.system.description = `<p>${escapeHtml(lore.desc)}</p><p><em>${escapeHtml(lore.meta)} · nv ${nv} · ${pa} PA · ${hex} hex</em></p>`;
+    const cell = s.system.tactical?.alcanceCells?.value ?? 0;
+    s.system.description = `<p>${escapeHtml(lore.desc)}</p><p><em>${escapeHtml(lore.meta)} · nv ${nv} · ${pa} PA · ${cell} células</em></p>`;
     s.system.bookRef = "_parte_x_magias_v4_revisada.md";
   } else {
     const escola = s.system.spell?.escola ?? "Magia";

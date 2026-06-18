@@ -34,11 +34,11 @@ export type ChatMessage = {
     gmSavingThrow?: boolean;
     areaCenterQ?: number;
     areaCenterR?: number;
-    areaHexCount?: number;
+    areaCellCount?: number;
     areaBatchId?: string;
     areaShape?: string;
     areaCascade?: "distance" | "initiative" | "simultaneous";
-    areaHexList?: { q: number; r: number }[];
+    areaCellList?: { q: number; r: number }[];
     spellDamageType?: string;
     damageTotal: number | null;
     defenderHpBefore: number;

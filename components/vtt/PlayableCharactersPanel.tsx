@@ -4,10 +4,10 @@ import Link from "next/link";
 import { useMemo, useRef, useState } from "react";
 import { CharacterManageDialog } from "@/components/character/CharacterManageDialog";
 import { IconEye, IconStar } from "@/components/character/SheetPopupIcons";
-import { deleteRoomToken, placeRoomActorOnHex } from "@/hooks/useRoomSync";
+import { deleteRoomToken, placeRoomActorOnCell } from "@/hooks/useRoomSync";
 import { canEditRoomActor } from "@/lib/auth/room-access";
 import type { SessionUser } from "@/lib/auth/types";
-import type { Axial } from "@/lib/vtt/hex-math";
+import type { Axial } from "@/lib/vtt/grid-math";
 import type { RoomActor, RoomSnapshot } from "@/lib/room/types";
 import {
   canDragActorToMap,
@@ -101,7 +101,7 @@ export function PlayableCharactersPanel({
     setBusyId(actorId);
     setSpawnMsg(null);
     try {
-      const snapshot = await placeRoomActorOnHex(roomId, actorId, axial.q, axial.r);
+      const snapshot = await placeRoomActorOnCell(roomId, actorId, axial.q, axial.r);
       const actor = actors[actorId];
       setSpawnMsg(`${actor?.name ?? "Personagem"} colocado no mapa.`);
       onPlaced?.(snapshot);

@@ -6,7 +6,7 @@ export class EldarinHabilidadeDataModel extends foundry.abstract.TypeDataModel {
       description: new StringField({ blank: true, initial: "" }),
       enabled: new BooleanField({ initial: true }),
       tactical: new SchemaField({
-        alcanceHex: new SchemaField({
+        alcanceCells: new SchemaField({
           value: new NumberField({ integer: true, initial: 1, min: 0 }),
           min: new NumberField({ integer: true, initial: 0 }),
         }),

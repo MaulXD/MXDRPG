@@ -45,7 +45,7 @@ Tarefa: [descreva]
 ```bash
 npm run build          # obrigatório se mexeu em TS/TSX
 npm run lint           # se alterou vários arquivos
-npm run test           # se mexeu em PA, movimento ou hex
+npm run test           # se mexeu em PA, movimento ou grid
 npm run sync:data:check # só se mexeu em livros/ ou scripts de dados
 ```
 
@@ -80,7 +80,7 @@ npm run sync:data:check # só se mexeu em livros/ ou scripts de dados
 | Área | Risco | O que preservar |
 |------|-------|-----------------|
 | `components/vtt/MesaWorkspace.tsx` | Layout mesa quebra fácil | Permissões GM/jogador, convite, sync |
-| `components/vtt/HexBattlefield.tsx` | Canvas + zoom + grid | `lib/vtt/grid-layout.ts` — mapa e grid no mesmo transform |
+| `components/vtt/Battlefield.tsx` | Canvas + zoom + grid | `lib/vtt/grid-layout.ts` — mapa e grid no mesmo transform |
 | `lib/adventure/` | Convites e membros | `memberIds` **só cresce**; não remover jogador |
 | `lib/room/settings.ts` | Settings mestre | `coverUrl`, HP monstro, ping |
 | `lib/rpg/systems.ts` | Capas e hub RPG | `resolveMesaCoverSrc()`, IDs `eldarin`/`dnd`/`vtm` |
@@ -93,7 +93,7 @@ npm run sync:data:check # só se mexeu em livros/ ou scripts de dados
 |------|---------|
 | `lib/combat/**`, `lib/room/handlers/combat-*` | PA, dano, áreas — bugs P0 |
 | `lib/combat/pa-*.ts` | Acúmulo, teto 11, Atordoado |
-| `lib/vtt/hex-*.ts`, `movement-pa.ts` | Movimento e custo PA |
+| `lib/vtt/grid-*.ts`, `movement-pa.ts` | Movimento e custo PA |
 | `lib/room/store.ts` + `handlers/*` | Única via correta de mutar sala |
 | `lib/room/snapshot-for-viewer.ts` | Jogador não vê HP de monstro sem setting |
 | `data/compendiums/*.json` | **Gerados** — usar `npm run sync:data` |
@@ -176,10 +176,10 @@ public/brand/rpg/*.png
 ### Mesa VTT (mapa + tokens)
 
 ```
-components/vtt/HexBattlefield.tsx
+components/vtt/Battlefield.tsx
 lib/vtt/grid-layout.ts
 lib/vtt/draw-battlefield.ts
-hooks/vtt/useHexCanvas.ts
+hooks/vtt/useGridCanvas.ts
 hooks/useRoomSync.ts
 ```
 

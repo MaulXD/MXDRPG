@@ -3,7 +3,7 @@ import { spendPaForRoomAction } from "@/lib/combat/pa-spend-room";
 import { applyConditionPaRules } from "@/lib/combat/pa-turn";
 import { movementPaOptsForRoom } from "@/lib/combat/movement-pa-opts";
 import { applyCombatSpendablePaIfDue } from "@/lib/combat/turn-economy";
-import type { Axial } from "@/lib/vtt/hex-math";
+import type { Axial } from "@/lib/vtt/grid-math";
 import { canMoveToken, type MoveMode } from "@/lib/vtt/movement";
 import { createMonsterTokenFromEntryId } from "@/lib/vtt/monsters";
 import { nextMonsterDisplayName } from "@/lib/vtt/monster-display-name";
@@ -140,7 +140,7 @@ export async function moveRoomToken(
   let moved: BattleToken = {
     ...token,
     axial: dest,
-    movementSpentHex: opts.bypassTurn ? token.movementSpentHex ?? 0 : check.nextSpent,
+    movementSpentCells: opts.bypassTurn ? token.movementSpentCells ?? 0 : check.nextSpent,
   };
   if (!opts.bypassTurn && !exploration) {
     if (check.paCost > 0) {
@@ -214,7 +214,7 @@ export async function spawnRoomMonster(
   return { ok: true, snapshot: toSnapshot(updated), tokenId: token.id };
 }
 
-/** Mestre: move token para qualquer hex livre, sem PA nem turno. */
+/** Mestre: move token para qualquer célula livre, sem PA nem turno. */
 export async function repositionRoomToken(
   roomId: string,
   tokenId: string,
@@ -247,8 +247,8 @@ export async function repositionRoomToken(
   return { ok: true, snapshot: toSnapshot(updated) };
 }
 
-/** Jogador ou mestre: coloca ficha no hex (move token existente ou cria um novo). */
-export async function placeRoomActorOnHex(
+/** Jogador ou mestre: coloca ficha no célula (move token existente ou cria um novo). */
+export async function placeRoomActorOnCell(
   roomId: string,
   actorId: string,
   target: Axial

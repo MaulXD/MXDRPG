@@ -1,40 +1,74 @@
-# Deploy Vercel — Eldarin
+# Deploy — MXDRPG (Contabo / Docker)
 
-O app Next.js está na **raiz** do repositório (não em `web/`).
+Produção: **https://www.mxdrpg.com.br**  
+Saúde: **https://www.mxdrpg.com.br/api/health**
 
-## Configuração
+O app Next.js fica na **raiz** do repositório. Imagem Docker publicada no push em `main` (GitHub Actions → GHCR → restart no cluster).
 
-1. [vercel.com/new](https://vercel.com/new) → **MaulXD/MXDRPG**
-2. **Root Directory:** *(deixe vazio)*
-3. **Framework:** Next.js
-4. **Output Directory:** *(vazio)*
-5. **Environment Variables** (Production):
-   - `DATABASE_URL` — Neon **pooled** connection string (`?sslmode=require`)
-   - `SESSION_SECRET` — aleatório 32+ caracteres
-   - Clerk — ver [docs/P1-CLERK-SETUP.md](docs/P1-CLERK-SETUP.md)
-6. Local: `npx vercel link` → `npx vercel env pull .env.local` → `npm run db:migrate`
-7. Deploy → `https://mxdrpg.vercel.app/api/health` → `"db": true`, `"persistence": "postgres"`
+## Pipeline (automático)
 
-## Qual URL abrir?
+1. Push em `main` → workflow `.github/workflows/build-image.yml`
+2. Build da imagem (`Dockerfile`) → `ghcr.io/<repo>`
+3. Webhook reinicia o deployment `mxdrpg` no cluster
 
-| URL | O que é |
-|-----|---------|
-| **https://mxdrpg.vercel.app** | Eldarin (MXDRPG) — correto |
-| https://drpg.vercel.app | Outro app (Create React App) — errado |
+## Variáveis de ambiente (servidor)
 
-## Se ainda falhar
+Obrigatórias para produção real (usuários + salas persistentes):
 
-- **Clear Build Cache** no redeploy
-- Confirme commit recente em **Deployments**
-- `drpg.vercel.app` com "React App" = projeto errado no dashboard
+| Variável | Descrição |
+|----------|-----------|
+| `DATABASE_URL` | Postgres (Neon ou self-hosted) — use endpoint **pooler** se serverless |
+| `SESSION_SECRET` | String aleatória 32+ caracteres |
+| `NODE_ENV` | `production` |
 
-## Local
+Opcional — login social (OAuth manual, sem Clerk):
+
+| Variável | Descrição |
+|----------|-----------|
+| `AUTH_URL` | `https://www.mxdrpg.com.br` (redirect OAuth) |
+| `GOOGLE_CLIENT_ID` | OAuth 2.0 Client (Google Cloud) |
+| `GOOGLE_CLIENT_SECRET` | Secret do client Google |
+| `DISCORD_CLIENT_ID` | Application ID (Discord Developer) |
+| `DISCORD_CLIENT_SECRET` | Secret do app Discord |
+
+Callbacks a cadastrar nos consoles:
+
+- `https://www.mxdrpg.com.br/api/auth/oauth/google/callback`
+- `https://www.mxdrpg.com.br/api/auth/oauth/discord/callback`
+
+Sem OAuth: login demo (`mestre` / `jogador`, senha `123`) ou e-mail/senha em `/entrar`.
+
+## Banco
+
+```bash
+# Local, com a mesma DATABASE_URL de produção no .env.local:
+npm run db:setup
+npm run db:migrate
+```
+
+Confirme em produção: `"db": true`, `"persistence": "postgres"` no `/api/health`.
+
+## DNS
+
+| Host | Deve apontar para |
+|------|-------------------|
+| `www.mxdrpg.com.br` | Load balancer / VPS (Contabo) |
+| `mxdrpg.com.br` (apex) | Mesmo destino — **não** deixar estacionado na Hostinger |
+
+## Build local (teste)
 
 ```bash
 npm ci
-npm run db:setup   # após colar DATABASE_URL em .env.local
-npm run dev
+npm run build
+npm start
+# http://localhost:3000
+```
+
+## Smoke
+
+```bash
+SMOKE_BASE_URL=https://www.mxdrpg.com.br npm run smoke:a1
 npm run smoke:p0
 ```
 
-Gate P0: [docs/P0-NEON-SETUP.md](docs/P0-NEON-SETUP.md) · Beta: [docs/BETA-P9-CHECKLIST.md](docs/BETA-P9-CHECKLIST.md)
+Gate Postgres: [docs/P0-NEON-SETUP.md](docs/P0-NEON-SETUP.md) · Clerk: [docs/P1-CLERK-SETUP.md](docs/P1-CLERK-SETUP.md)

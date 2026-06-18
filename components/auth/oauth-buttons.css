@@ -1,0 +1,24 @@
+.oauth-buttons {
+  margin-bottom: 1rem;
+}
+
+.oauth-buttons__eyebrow {
+  margin: 0 0 0.5rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.oauth-buttons__row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.oauth-buttons__btn {
+  flex: 1;
+  min-width: 7rem;
+  text-align: center;
+  text-decoration: none;
+}

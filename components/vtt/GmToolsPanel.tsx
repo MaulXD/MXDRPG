@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import type { BattleScene, BattleToken } from "@/lib/vtt/types";
-import type { Axial } from "@/lib/vtt/hex-math";
+import type { Axial } from "@/lib/vtt/grid-math";
 import type { RoomSnapshot } from "@/lib/room/types";
 import { GmActionHistoryPanel } from "@/components/vtt/GmActionHistoryPanel";
 import { GmCombatLogPanel } from "@/components/vtt/GmCombatLogPanel";

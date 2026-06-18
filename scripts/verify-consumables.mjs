@@ -34,7 +34,7 @@ for (const id of healIds) {
 }
 
 assert.match(effectsSrc, /"POC-23"[^}]+kind: "group_heal"/);
-assert.match(effectsSrc, /"POC-23"[^}]+aoeHex/);
+assert.match(effectsSrc, /"POC-23"[^}]+aoeCells/);
 
 assert.match(effectsSrc, /"POC-04"[^}]+clear_condition/);
 assert.match(effectsSrc, /"POC-20"[^}]+defesa_bonus/);

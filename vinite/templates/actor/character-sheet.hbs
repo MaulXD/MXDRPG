@@ -72,7 +72,7 @@
       </div>
 
       <section class="glass-panel movement-panel">
-        <h2 class="panel-title"><i class="fas fa-draw-polygon"></i> {{localize 'ELDARIN.Sheet.hexMovement'}}</h2>
+        <h2 class="panel-title"><i class="fas fa-draw-polygon"></i> {{localize 'ELDARIN.Sheet.cellMovement'}}</h2>
         <div class="movement-modes">
           <button type="button" class="movement-mode neon-chip {{#if movement.isWalk}}active{{/if}}" data-mode="walk">
             <span class="chip-dot walk-dot"></span> {{localize 'ELDARIN.Movement.modeWalk'}}
@@ -83,11 +83,11 @@
         </div>
         <div class="movement-stats">
           <label class="movement-stat"><span>{{localize 'ELDARIN.Movement.walk'}}</span>
-            <input type="number" name="system.movement.hex.walk.value" value="{{movement.walk.value}}" min="0" /></label>
+            <input type="number" name="system.movement.cells.walk.value" value="{{movement.walk.value}}" min="0" /></label>
           <label class="movement-stat"><span>{{localize 'ELDARIN.Movement.run'}}</span>
-            <input type="number" name="system.movement.hex.run.value" value="{{movement.run.value}}" min="0" /></label>
+            <input type="number" name="system.movement.cells.run.value" value="{{movement.run.value}}" min="0" /></label>
           <label class="movement-stat"><span>{{localize 'ELDARIN.Movement.runApCost'}}</span>
-            <input type="number" name="system.movement.hex.runActionPointCost" value="{{movement.runApCost}}" min="0" /></label>
+            <input type="number" name="system.movement.cells.runActionPointCost" value="{{movement.runApCost}}" min="0" /></label>
         </div>
         <p class="movement-hint">{{localize 'ELDARIN.Movement.dragRulerHint'}}</p>
       </section>

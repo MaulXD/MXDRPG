@@ -14,7 +14,7 @@ export class EldarinCharacterDataModel extends foundry.abstract.TypeDataModel {
         pontosAcao: resourceSchema(5),
       }),
       movement: new SchemaField({
-        hex: new SchemaField({
+        cells: new SchemaField({
           walk: labeledValueSchema(4),
           run: labeledValueSchema(7),
           runActionPointCost: new NumberField({ integer: true, initial: 1, min: 0 }),

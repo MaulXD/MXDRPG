@@ -1,7 +1,7 @@
 import { resolveSpawnAnchor } from "@/lib/vtt/dungeon-layer";
 import { createMonsterTokenFromEntryId } from "@/lib/vtt/monsters";
 import type { MonsterSpawnOptions } from "@/lib/vtt/monster-scaling";
-import type { Axial } from "@/lib/vtt/hex-math";
+import type { Axial } from "@/lib/vtt/grid-math";
 import type { BattleScene, BattleToken } from "@/lib/vtt/types";
 
 export type SpawnPlacementResult =

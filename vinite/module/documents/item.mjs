@@ -7,8 +7,8 @@ export class EldarinItem extends Item {
     super.prepareDerivedData();
     const system = this.system;
 
-    if (system.tactical?.alcanceHex) {
-      const a = system.tactical.alcanceHex;
+    if (system.tactical?.alcanceCells) {
+      const a = system.tactical.alcanceCells;
       a.value = Math.max(a.min ?? 0, Number(a.value) || 0);
     }
     if (system.tactical?.custoPontosAcao) {

@@ -9,7 +9,7 @@
 ## Camada 1 — `chrome-*`
 > Navbar, rail, sidebar, header de janelas flutuantes, dock
 
-| Token | Hex | Uso |
+| Token | Célula | Uso |
 |---|---|---|
 | `--chrome-bg` | `#111110` | Fundo base do app, sidebar, dock |
 | `--chrome-surface` | `#1e1d1a` | Painéis laterais, rails, tooltips de UI |
@@ -42,7 +42,7 @@
 ## Camada 2 — `content-*`
 > Fichas de personagem, compêndio, modais de lore, painéis de leitura
 
-| Token | Hex | Uso |
+| Token | Célula | Uso |
 |---|---|---|
 | `--content-bg` | `#f6f0e4` | Fundo pergaminho principal |
 | `--content-bg-elevated` | `#faf6ee` | Cards e painéis elevados sobre pergaminho |
@@ -67,7 +67,7 @@
 
 **Regras de uso:**
 - Todo texto sobre `--content-bg` usa `--content-text` ou `--content-ink` — nunca preto puro `#000`
-- `--content-accent` e `--chrome-accent` são o mesmo hex `#b8922e` — isso é intencional, cria unidade visual entre contextos
+- `--content-accent` e `--chrome-accent` são o mesmo célula `#b8922e` — isso é intencional, cria unidade visual entre contextos
 - `--content-bg-elevated` apenas para elevação real (cards sobre pergaminho), não como variação decorativa
 
 ---
@@ -75,7 +75,7 @@
 ## Camada 3 — `stage-*`
 > Canvas do mapa, grid, fog of war — manter escuro, não alterar
 
-| Token | Hex | Uso |
+| Token | Célula | Uso |
 |---|---|---|
 | `--stage-bg` | `#0e0e0c` | Fundo do canvas de jogo |
 | `--stage-grid` | `#1c1c18` | Linhas de grid |
@@ -99,7 +99,7 @@
 ## Camada 4 — `semantic-*`
 > HP, defesa, estados de jogo, feedback de UI — cores sóbrias, WCAG AA sobre `--content-bg`
 
-| Token | Hex | Contraste s/ `#f6f0e4` | Uso |
+| Token | Célula | Contraste s/ `#f6f0e4` | Uso |
 |---|---|---|---|
 | `--semantic-hp` | `#7a1e1e` | 8.2:1 ✓ | HP, dano, vida |
 | `--semantic-pa` | `#8b3228` | 6.8:1 ✓ | PA, combate, recurso tático |
@@ -130,7 +130,7 @@
 
 ## Tipos de Compêndio — substituindo neon
 
-| Tipo | Token | Hex | Regra de uso |
+| Tipo | Token | Célula | Regra de uso |
 |---|---|---|---|
 | Arma | `--type-weapon` | `#8b3a22` | `border-left: 3px solid` apenas |
 | Magia | `--type-magic` | `#6e3a52` | `border-left: 3px solid` + ícone |
@@ -165,7 +165,7 @@ Padrão de card compêndio:
 
 ## Aliases legados — texto no chrome
 
-| Token | Hex | Uso |
+| Token | Célula | Uso |
 |---|---|---|
 | `--text` | `var(--chrome-text)` | Corpo de UI no chrome |
 | `--text-strong` | `#e8e0d0` | Títulos, nomes, ênfase |
@@ -179,7 +179,7 @@ Padrão de card compêndio:
 
 ## Checklist de QA — Cores
 
-- [ ] Nenhum hex hardcoded fora dos arquivos de token
+- [ ] Nenhum célula hardcoded fora dos arquivos de token
 - [ ] Todo `--semantic-*` com contraste ≥ 4.5:1 sobre `--content-bg` (testar com Stark / Colour Contrast)
 - [ ] `--chrome-accent` e `--content-accent` mantidos como `#b8922e` — não divergir
 - [ ] `icons.ts` sem nenhum valor com saturação HSL > 70% (neon check)
