@@ -18,7 +18,7 @@ export type RaceId =
   | "Humano"
   | "Elfo"
   | "Anão"
-  | "Halfling"
+  | "Pequenino"
   | "Gnomo"
   | "Meio-Humano"
 
@@ -52,7 +52,7 @@ export const RACE_CANON_ID: Record<RaceId, string> = {
   Humano: "RAC-humano",
   Elfo: "RAC-elfo",
   Anão: "RAC-anao",
-  Halfling: "RAC-halfling",
+  Pequenino: "RAC-pequenino",
   Gnomo: "RAC-gnomo",
   "Meio-Humano": "RAC-meio-humano",
 };
@@ -354,10 +354,10 @@ export const RACE_LIST: RaceDef[] = [
     },
   },
   {
-    id: "Halfling",
-    canonId: RACE_CANON_ID.Halfling,
+    id: "Pequenino",
+    canonId: RACE_CANON_ID.Pequenino,
     attributeBonus: { destreza: 2, sabedoria: 1 },
-    traits: ["Sorte Inata", "Bravura Halfling", "Furtividade Natural", "Instinto de Sobrevivente"],
+    traits: ["Sorte Inata", "Bravura Pequenina", "Furtividade Natural", "Instinto de Sobrevivente"],
     milestones: {
       4: "Sorte Dupla — Sorte Inata 2×/descanso",
       6: "Passo Silencioso",

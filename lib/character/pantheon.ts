@@ -240,9 +240,9 @@ export const RELIGION_LIST: ReligionDef[] = [
     symbol: "Três pontos em triângulo que se multiplicam em espiral",
     alignment: "Neutro Bom",
     clergy: "Vozes — sempre em grupo de três ou mais ao rezar",
-    summary: "Nenhum indivíduo importa; a colônia sim. Popular entre halflings e goblinoides.",
+    summary: "Nenhum indivíduo importa; a colônia sim. Popular entre pequeninos e goblinoides.",
     lore:
-      "Deidade sem forma única — é a soma de todas as criaturas pequenas do submundo. Tribos da Masmorra 3 e famílias halfling do Vale Podre oferecem fungos e migalhas em círculo. Valdrunistas acham vulgar; seguidores de Mira veem parentesco ecológico.",
+      "Deidade sem forma única — é a soma de todas as criaturas pequenas do submundo. Tribos da Masmorra 3 e famílias pequenino do Vale Podre oferecem fungos e migalhas em círculo. Valdrunistas acham vulgar; seguidores de Mira veem parentesco ecológico.",
     cults: ["Colônia do Vale Podre", "Tribos fúngicas (Masmorra 3)"],
     bonuses: [
       "Com 3+ aliados adjacentes: +1 CA",

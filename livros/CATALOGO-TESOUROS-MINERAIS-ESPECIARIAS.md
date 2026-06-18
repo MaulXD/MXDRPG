@@ -90,7 +90,7 @@
 | MIN-11 | Madreperola Abissal | Raro | 200 po | Kraken, Aboleth |
 | MIN-12 | Obsidiana Vitrificada | Incomum | 48 po | Fornalhas, Basilisco |
 | MIN-13 | Lodo Solidificado | Comum | 12 po | Pantano, Slimes |
-| MIN-14 | Hematita Podre | Comum | 14 po | Ghoul, Deserto Carne |
+| MIN-14 | Hematita Podre | Comum | 14 po | Necrófago, Deserto Carne |
 | MIN-15 | Enxofre Amarelo | Comum | 9 po | Fornalhas (gas) |
 | MIN-16 | Gelo Eterno | Raro | 220 po | Prisao Gelida |
 | MIN-17 | Diamante Bruto (besouro) | Raro | 300 po | Besouro-Diamante |
@@ -128,7 +128,7 @@
 | TES-12 | Pergaminho selado (mapa/ritual) | Raro | 300 po + plot | Arquivos, Automato |
 | TES-13 | Carteira de seda cheia | Incomum | 250 po | Doppel, Aberracao |
 | TES-14 | Obra de arte portable | Raro | 500–900 po | Kraken, Quimera, Dragão Gelo |
-| TES-15 | Coroa fragmentada | Lendário | 2 000+ po | Lich |
+| TES-15 | Coroa fragmentada | Lendário | 2 000+ po | Necroarca |
 | TES-16 | Hoard draconico (mesa) | Lendário | 5 000+ po | Dragão Anciao |
 | TES-17 | Kit de joias de Matriarca | Raro | 600 po | Ninho (covil) |
 | TES-18 | Barra de platina | Lendário | 1 000 po | Boss andar |
@@ -145,9 +145,9 @@ Apos Extração com sucesso, cada criatura concede **1 linha** abaixo (alem dos 
 |-----|----------|------------|---------|------------------|
 | 001 | Zumbi | ESP-12 | MIN-03 | 2d6 po |
 | 002 | Esqueleto | ESP-19 | MIN-03 | 1d4×10 po + broche |
-| 003 | Ghoul | ESP-12 | MIN-14 | 3d6 po + amuleto |
+| 003 | Necrófago | ESP-12 | MIN-14 | 3d6 po + amuleto |
 | 004 | Espectro | ESP-24 | MIN-07 | TES-08 (80 po) |
-| 005 | Lich | ESP-30 | MIN-22 | TES-15 (2 500 po) |
+| 005 | Necroarca | ESP-30 | MIN-22 | TES-15 (2 500 po) |
 | 006 | Assombracao | ESP-24 | MIN-07 | TES-06 (120 po) |
 | 007 | Vampiro | ESP-13 | MIN-14 | TES-11 (400 po) |
 | 008 | Cavaleiro Espectral | ESP-02 | MIN-06 | TES-09 (200 po) |
@@ -187,7 +187,7 @@ Apos Extração com sucesso, cada criatura concede **1 linha** abaixo (alem dos 
 | 042 | Yeti | ESP-04 | MIN-16 | 3d8 po (pele) |
 | 043 | Lobo do Inverno | ESP-10 | MIN-04 | 2d8 po |
 | 044 | Mimico | ESP-19 | MIN-06 | TES-04 (conteudo imitado) |
-| 045 | Doppelganger | ESP-26 | MIN-07 | TES-13 (250 po) |
+| 045 | Metamorfo Dúbio | ESP-26 | MIN-07 | TES-13 (250 po) |
 | 046 | Hidra | ESP-02 | MIN-11 | TES-11 (6d10 po) |
 | 047 | Quimera | ESP-09 | MIN-08 | TES-14 (400 po) |
 | 048 | Anjo Caido | ESP-27 | MIN-23 | TES-16 (1 200 po) |

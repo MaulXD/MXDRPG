@@ -144,11 +144,11 @@ export const DEMO_CHARACTERS: CharacterSheet[] = [
     adventureId: "demo",
     name: "Pippin Sussurro",
     biography:
-      "Halfling ladino nv.6 — Assassino Venenoso. Trilha nv.4: Resistência a Veneno; furtividade e emboscada.",
+      "Pequenino ladino nv.6 — Assassino Venenoso. Trilha nv.4: Resistência a Veneno; furtividade e emboscada.",
     identity: {
       nivel: 6,
       xpTotal: 1500,
-      raca: "Halfling",
+      raca: "Pequenino",
       classe: "Ladino",
       subclasse: "Assassino Venenoso",
       antecedente: "Criminoso",
@@ -162,7 +162,7 @@ export const DEMO_CHARACTERS: CharacterSheet[] = [
       sabedoria: 14,
       carisma: 12,
     },
-    culinary: computeCulinary("Ladino", "Halfling"),
+    culinary: computeCulinary("Ladino", "Pequenino"),
     resources: {
       vida: { value: 39, max: 39 },
       pontosAcao: { value: 5, max: 5 },

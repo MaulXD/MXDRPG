@@ -19,7 +19,7 @@ Documento de onboarding para **Claude** (ou outro assistente de código) trabalh
 | **Idioma** | PT-BR (UI, docs, livros) |
 | **Sistema de regras** | **Eldarin v4** (grid em células, PA com acúmulo/teto, bestiário, classes do livro) |
 
-**Missão:** ser o melhor lugar para jogar **Eldarin online** — não um VTT genérico (D&D, etc.). Regras do **livro mandam**; código e VTT corrigem para bater com o livro.
+**Missão:** ser o melhor lugar para jogar **Eldarin online** — não um VTT genérico (fantasia clássica, etc.). Regras do **livro mandam**; código e VTT corrigem para bater com o livro.
 
 **Público:** grupos 2–8, presencial → online; mestre cria campanha; jogadores entram por convite.
 

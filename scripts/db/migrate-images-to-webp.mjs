@@ -1,26 +1,41 @@
 #!/usr/bin/env node
 /**
- * Converte imagens JPEG/PNG/GIF embutidas (data URLs) para WebP no Postgres.
- * Substitui o valor no JSONB — não há arquivo separado para apagar.
+ * Converte imagens JPEG/PNG/GIF embutidas (data URLs) para WebP no MariaDB.
  *
  * Uso: npm run db:migrate-images
  */
 import sharp from "sharp";
-import postgres from "postgres";
 import { loadDotEnv } from "./load-env.mjs";
-import { normalizeDatabaseUrl } from "./normalize-url.mjs";
+import { createMariaPool, mariaDbUrl } from "./mysql-pool.mjs";
 
 loadDotEnv();
 
-const url = normalizeDatabaseUrl(process.env.DATABASE_URL ?? "");
+const rawUrl = process.env.DATABASE_URL ?? "";
+const url = mariaDbUrl(rawUrl);
 if (!url) {
-  console.error("DATABASE_URL não definida.");
+  console.error("DATABASE_URL não definida (use mysql:// ou mariadb://).");
+  process.exit(1);
+}
+if (/^postgres(ql)?:/i.test(rawUrl.trim())) {
+  console.error("Postgres não é suportado — use MariaDB (mysql://).");
   process.exit(1);
 }
 
 const MAX_CHARS = 600_000 * 1.4;
-const local = url.includes("localhost") || url.includes("127.0.0.1");
-const sql = postgres(url, { max: 1, ssl: local ? false : "require", connect_timeout: 20 });
+const pool = await createMariaPool(rawUrl);
+
+function parseJson(value) {
+  if (value == null) return null;
+  if (typeof value === "object") return value;
+  if (typeof value === "string") {
+    try {
+      return JSON.parse(value);
+    } catch {
+      return null;
+    }
+  }
+  return null;
+}
 
 function mimeOf(dataUrl) {
   if (typeof dataUrl !== "string" || !dataUrl.startsWith("data:image/")) return null;
@@ -63,9 +78,9 @@ async function maybeConvert(value, maxEdge) {
 let converted = 0;
 
 try {
-  const chars = await sql`SELECT id, data FROM eldarin_characters`;
+  const [chars] = await pool.query("SELECT id, data FROM eldarin_characters");
   for (const row of chars) {
-    const data = row.data;
+    const data = parseJson(row.data);
     if (!data || typeof data !== "object") continue;
     let changed = false;
     const next = { ...data };
@@ -82,17 +97,20 @@ try {
       }
     }
     if (changed) {
-      await sql`UPDATE eldarin_characters SET data = ${sql.json(next)} WHERE id = ${row.id}`;
+      await pool.query("UPDATE eldarin_characters SET data = ? WHERE id = ?", [
+        JSON.stringify(next),
+        row.id,
+      ]);
       console.log(`  ficha ${row.id}`);
     }
   }
 
-  const rooms = await sql`SELECT room_id, scene, actors FROM eldarin_rooms`;
+  const [rooms] = await pool.query("SELECT room_id, scene, actors FROM eldarin_rooms");
   for (const row of rooms) {
     let sceneChanged = false;
     let actorsChanged = false;
-    const scene = structuredClone(row.scene ?? {});
-    const actors = structuredClone(row.actors ?? {});
+    const scene = structuredClone(parseJson(row.scene) ?? {});
+    const actors = structuredClone(parseJson(row.actors) ?? {});
 
     if (scene.mapImageUrl) {
       const r = await maybeConvert(scene.mapImageUrl, 1920);
@@ -131,11 +149,11 @@ try {
     }
 
     if (sceneChanged || actorsChanged) {
-      await sql`
-        UPDATE eldarin_rooms
-        SET scene = ${sql.json(scene)}, actors = ${sql.json(actors)}
-        WHERE room_id = ${row.room_id}
-      `;
+      await pool.query("UPDATE eldarin_rooms SET scene = ?, actors = ? WHERE room_id = ?", [
+        JSON.stringify(scene),
+        JSON.stringify(actors),
+        row.room_id,
+      ]);
       console.log(`  sala ${row.room_id}`);
     }
   }
@@ -145,5 +163,5 @@ try {
   console.error("Falha:", e instanceof Error ? e.message : e);
   process.exit(1);
 } finally {
-  await sql.end({ timeout: 5 });
+  await pool.end();
 }

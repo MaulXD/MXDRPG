@@ -89,7 +89,7 @@
 **Efeito:** Respiração em ar umido/nevoa; +2 em CON vs gases 24h.
 
 ### 06 — Cogumelo-Bandeira
-**Consumidores:** Goblin, Cogumelo-Rei (simbiose), Ghoul (ocasional).  
+**Consumidores:** Goblin, Cogumelo-Rei (simbiose), Necrófago (ocasional).  
 **Efeito:** +3 Fortitude; imune a podridao leve de ingrediente Comum.
 
 ### 07 — Trevo de Obelisco
@@ -105,7 +105,7 @@
 **Efeito:** Resistência a frio; ignora Exaustao por frio ambiental 24h.
 
 ### 10 — Flor de Espelho
-**Consumidores:** Mimico (polen), Doppelganger (não digere — copia aroma).  
+**Consumidores:** Mimico (polen), Metamorfo Dúbio (não digere — copia aroma).  
 **Efeito:** Vantagem em testes vs ilusao; detecta Mimico adjacente automaticamente.
 
 ### 11 — Palma de Ferromur
@@ -117,7 +117,7 @@
 **Efeito:** Nado 6m; visao 9m em agua turva 24h.
 
 ### 13 — Hera Sangrenta
-**Consumidores:** Ghoul, Vampiro (suco), Dragonete (ninho).  
+**Consumidores:** Necrófago, Vampiro (suco), Dragonete (ninho).  
 **Efeito:** +1d4 necrótico em um ataque por combate; ou cura 2d6 se Druida Circulo Decomposicao.
 
 ### 14 — Samambaia de Cinza
@@ -240,9 +240,9 @@
 |--------|----------|
 | **Produtores** | Musgo-Lanterna, Broto de Veia, Algas |
 | **Herbivoros** | Besouro-Diamante filhote, goblins, lagostas jovens |
-| **Onivoros** | Goblin, Ghoul, Orc, Sapo-Engolidor |
+| **Onivoros** | Goblin, Necrófago, Orc, Sapo-Engolidor |
 | **Predadores** | Aranha, Wyvern, Vampiro, Planta Carnivora |
-| **Apex / Boss** | Hidra, Lich, Chefe Final |
+| **Apex / Boss** | Hidra, Necroarca, Chefe Final |
 
 **Encontro ecologico (opcional):** 1d6 ao explorar bioma com flora — 1-2 herbivoros comendo planta (# da tabela), 3 predador caçando, 4 planta carnivora, 5-6 nada.
 

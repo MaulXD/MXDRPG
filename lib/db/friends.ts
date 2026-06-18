@@ -1,6 +1,7 @@
 import "server-only";
 
 import { dbEnabled, getSql } from "@/lib/db/client";
+import { sqlAffected } from "@/lib/db/sql-helpers";
 
 type FriendRow = {
   friend_id: string;
@@ -25,23 +26,22 @@ export async function insertFriendLink(userId: string, friendId: string): Promis
   const sql = getSql();
   if (!sql) return;
   const now = Date.now();
-  await sql`
-    INSERT INTO eldarin_user_friends (user_id, friend_id, created_at)
-    VALUES (${userId}, ${friendId}, ${now})
-    ON CONFLICT (user_id, friend_id) DO NOTHING
-  `;
+  await sql.unsafe(
+    `INSERT IGNORE INTO eldarin_user_friends (user_id, friend_id, created_at) VALUES (?, ?, ?)`,
+    [userId, friendId, now]
+  );
 }
 
 export async function deleteFriendLink(userId: string, friendId: string): Promise<boolean> {
   if (!dbEnabled()) return false;
   const sql = getSql();
   if (!sql) return false;
-  const rows = await sql`
-    DELETE FROM eldarin_user_friends
-    WHERE user_id = ${userId} AND friend_id = ${friendId}
-    RETURNING friend_id
-  `;
-  return rows.length > 0;
+  const n = await sqlAffected(
+    sql,
+    `DELETE FROM eldarin_user_friends WHERE user_id = ? AND friend_id = ?`,
+    [userId, friendId]
+  );
+  return n > 0;
 }
 
 export async function listFriendIds(userId: string): Promise<{ friendId: string; addedAt: number }[]> {
@@ -124,11 +124,10 @@ export async function dismissMesaInvite(inviteId: string, userId: string): Promi
   const sql = getSql();
   if (!sql) return false;
   const now = Date.now();
-  const rows = await sql`
-    UPDATE eldarin_mesa_invites
-    SET dismissed_at = ${now}
-    WHERE id = ${inviteId} AND to_user_id = ${userId} AND dismissed_at IS NULL
-    RETURNING id
-  `;
-  return rows.length > 0;
+  const n = await sqlAffected(
+    sql,
+    `UPDATE eldarin_mesa_invites SET dismissed_at = ? WHERE id = ? AND to_user_id = ? AND dismissed_at IS NULL`,
+    [now, inviteId, userId]
+  );
+  return n > 0;
 }

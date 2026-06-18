@@ -61,7 +61,7 @@ function racialDripPerk(raceId: string, level: number, linhagem?: string | null)
     ],
     Elfo: ["Harmonia +1", "Visão aguçada", "Transe leve", "Purificação menor"],
     Anão: ["Forja +1", "Resistência térmica menor", "Estômago de pedra", "Instinto de mina"],
-    Halfling: ["Sorte menor", "Passo leve", "Faro atento", "Reflexo rápido"],
+    Pequenino: ["Sorte menor", "Passo leve", "Faro atento", "Reflexo rápido"],
     Gnomo: ["Alquimia +1", "Pocião menor", "Foco arcano", "Estabilidade"],
     "Meio-Humano": ["Instinto bestial", "Olfato +1", "Corpo resistente", "Linhagem desperta"],
   };

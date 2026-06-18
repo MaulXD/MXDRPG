@@ -9,7 +9,7 @@ Ao preparar um monstro especifico, o Prato Estruturado usa **esta tabela**, não
 
 **Foco:** o Cozinheiro escolhe **1** habilidade da tabela do monstro preparado (garantida). **Rolagem do 1d4** (Cap. 5) define quantas escolhas extras o Cozinheiro faz, até **4 habilidades totais** no máximo.
 
-**Duracao padrão:** 24 horas ou até o próximo descansó longo, salvo indicacao contraria. Efeitos estilo D&D; mutacoes não acumulam duplicatas do mesmo tipo.
+**Duracao padrão:** 24 horas ou até o próximo descansó longo, salvo indicacao contraria. Efeitos estilo fantasia clássica; mutacoes não acumulam duplicatas do mesmo tipo.
 
 ---
 
@@ -36,7 +36,7 @@ monsters = [
 ("Garras de Ossudo", "Ataques desarmados causam 1d6 cortante (24h)."),
 ("Medula Comprimida", "+2 em testes de Constituicao contra fadiga, sono forcado e exaustao (24h)."),
 ]),
-("003", "GHOUL", [
+("003", "NECRÓFAGO", [
 ("Mordida Paralisante", "Mordidas: CD 13 CON ou Paralisado por 1 turno (1/alvo/combate)."),
 ("Faro Cadavérico", "Detecta criaturas vivas até 30m, inclusive atras de paredes finas (24h)."),
 ("Instinto de Horda", "+2 em dano quando um aliado tambem ataca o mesmo alvo (24h)."),
@@ -56,14 +56,14 @@ monsters = [
 ("Corpo Translucido", "Quase invisivel em luz fraca; Vantagem em Furtividade em sombra (24h)."),
 ("Sexto Sentido Frio", "Nao pode ser surpreendido; detecta mortos-vivos num raio de 20m (24h)."),
 ]),
-("005", "LICH (ARQUILICHE)", [
+("005", "NECROARCA (ARQUILICHE)", [
 ("Resistência Lendaria", "Uma vez por combate, transforma falha em teste de resistência em sucessó (24h)."),
 ("Toque Paralisante", "Toque: CD 18 CON ou Paralisado por 1 minuto (1/alvo/combate)."),
 ("Consciencia Estendida", "Uma vez por dia, faz pergunta ao Mestre sobre segredo da masmorra atual (resposta criptica mas verdadeira) (24h)."),
 ("Imunidade Arcana", "Imune a medo, charm, exaustao e veneno (24h)."),
 ("Regeneração Necrotica", "Recupera 2d8 HP no inicio de cada turno enquanto a mutação estiver ativa (24h)."),
 ("Voo do Limiar", "Voo 9m por turno (24h)."),
-("Olhos de Lich", "Enxerga ilusoes, invisibilidade e auras mágicas (24h)."),
+("Olhos de Necroarca", "Enxerga ilusoes, invisibilidade e auras mágicas (24h)."),
 ("Disrupcao do Turno", "Reacao quando morto-vivo aliado a 30m cai a 0 HP: conjura truque ou magia de nv. 1 (1/combate)."),
 ]),
 ("006", "ASSOMBRACAO", [
@@ -456,7 +456,7 @@ monsters = [
 ("Bolsa Dimensional Gastrica", "Engole itens pequenos sem ganhar peso, max 10 kg (24h)."),
 ("Metabolismo de Material", "Resistência fisica baseada no ultimo material imitado (24h)."),
 ]),
-("045", "DOPPELGANGER", [
+("045", "METAMORFO DÚBIO", [
 ("Pele Mutavel", "Copia aparência e voz de humanoide observado 10 min (24h)."),
 ("Leitura Mental", "18m: le pensamentos superficiais do alvo focado (24h)."),
 ("Ataque Surpresa", "+3d6 se alvo não souber da mutação/identidade (24h)."),

@@ -1,5 +1,14 @@
 /** Nomes antigos (culinários) → nomes atuais (masmorra/sobrevivência). */
 
+export const LEGACY_RACE_NAMES: Record<string, string> = {
+  Pequenino: "Pequenino",
+};
+
+export function migrateRaceName(name: string | null | undefined): string | null | undefined {
+  if (!name) return name;
+  return LEGACY_RACE_NAMES[name] ?? name;
+}
+
 export const LEGACY_CLASS_NAMES: Record<string, string> = {
   Artífice: "Feiticeiro",
 };

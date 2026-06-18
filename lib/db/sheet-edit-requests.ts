@@ -1,6 +1,7 @@
 import "server-only";
 
 import { dbEnabled, getSql } from "@/lib/db/client";
+import { sqlAffected } from "@/lib/db/sql-helpers";
 import {
   newSheetEditRequestId,
   type SheetEditRequest,
@@ -114,26 +115,24 @@ export async function insertSheetEditRequest(input: {
 
   const now = Date.now();
   const id = newSheetEditRequestId();
-  const rows = await sql<Row[]>`
-    INSERT INTO eldarin_sheet_edit_requests (
+
+  await sql.unsafe(
+    `INSERT INTO eldarin_sheet_edit_requests (
       id, character_id, adventure_id, room_id, requester_user_id,
       scope, status, created_at, updated_at
-    )
-    VALUES (
-      ${id},
-      ${input.characterId},
-      ${input.adventureId},
-      ${input.roomId ?? null},
-      ${input.requesterUserId},
-      ${input.scope},
-      'pending',
-      ${now},
-      ${now}
-    )
-    RETURNING *
-  `;
-  const row = rows[0];
-  return row ? rowToRequest(row) : null;
+    ) VALUES (?, ?, ?, ?, ?, ?, 'pending', ?, ?)`,
+    [
+      id,
+      input.characterId,
+      input.adventureId,
+      input.roomId ?? null,
+      input.requesterUserId,
+      input.scope,
+      now,
+      now,
+    ]
+  );
+  return fetchSheetEditRequest(id);
 }
 
 export async function resolveSheetEditRequest(
@@ -147,17 +146,16 @@ export async function resolveSheetEditRequest(
 
   const status: SheetEditRequestStatus = action === "approve" ? "approved" : "rejected";
   const now = Date.now();
-  const rows = await sql<Row[]>`
-    UPDATE eldarin_sheet_edit_requests
-    SET status = ${status},
-        gm_user_id = ${gmUserId},
-        resolved_at = ${now},
-        updated_at = ${now}
-    WHERE id = ${requestId} AND status = 'pending'
-    RETURNING *
-  `;
-  const row = rows[0];
-  return row ? rowToRequest(row) : null;
+
+  const n = await sqlAffected(
+    sql,
+    `UPDATE eldarin_sheet_edit_requests
+     SET status = ?, gm_user_id = ?, resolved_at = ?, updated_at = ?
+     WHERE id = ? AND status = 'pending'`,
+    [status, gmUserId, now, now, requestId]
+  );
+  if (n === 0) return null;
+  return fetchSheetEditRequest(requestId);
 }
 
 export async function listActiveRequestsForUser(
@@ -182,13 +180,14 @@ export async function dismissRejectedSheetEditRequest(requestId: string): Promis
   const sql = getSql();
   if (!sql) return false;
   const now = Date.now();
-  const rows = await sql<{ id: string }[]>`
-    UPDATE eldarin_sheet_edit_requests
-    SET status = 'consumed', updated_at = ${now}
-    WHERE id = ${requestId} AND status = 'rejected'
-    RETURNING id
-  `;
-  return rows.length > 0;
+  const n = await sqlAffected(
+    sql,
+    `UPDATE eldarin_sheet_edit_requests
+     SET status = 'consumed', updated_at = ?
+     WHERE id = ? AND status = 'rejected'`,
+    [now, requestId]
+  );
+  return n > 0;
 }
 
 export async function consumeSheetEditRequest(requestId: string): Promise<boolean> {
@@ -196,11 +195,12 @@ export async function consumeSheetEditRequest(requestId: string): Promise<boolea
   const sql = getSql();
   if (!sql) return false;
   const now = Date.now();
-  const rows = await sql<{ id: string }[]>`
-    UPDATE eldarin_sheet_edit_requests
-    SET status = 'consumed', updated_at = ${now}
-    WHERE id = ${requestId} AND status = 'approved'
-    RETURNING id
-  `;
-  return rows.length > 0;
+  const n = await sqlAffected(
+    sql,
+    `UPDATE eldarin_sheet_edit_requests
+     SET status = 'consumed', updated_at = ?
+     WHERE id = ? AND status = 'approved'`,
+    [now, requestId]
+  );
+  return n > 0;
 }

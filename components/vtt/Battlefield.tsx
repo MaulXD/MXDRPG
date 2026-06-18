@@ -50,7 +50,6 @@ import { MapTokenList } from "@/components/vtt/MapTokenList";
 import { DungeonEditorPanel } from "@/components/vtt/DungeonEditorPanel";
 import { MapToolbar } from "@/components/vtt/MapToolbar";
 import { MapMarkupTextEditor } from "@/components/vtt/MapMarkupTextEditor";
-import { WhiteboardPanel } from "@/components/vtt/WhiteboardPanel";
 import { FoundryDockPanel } from "@/components/vtt/foundry/FoundryDockPanel";
 import type { RoomSnapshot } from "@/lib/room/types";
 import { TokenActionRing } from "@/components/vtt/TokenActionRing";
@@ -201,11 +200,6 @@ type Props = {
   onDungeonWindowFocus?: () => void;
   /** Revelação em fases das mensagens de combate no chat (dado → dano). */
   onCombatChatReveal?: (messageIds: string[], phase: "roll" | "damage" | "done") => void;
-  whiteboardWindowLayout?: FoundryWindowLayout;
-  onWhiteboardWindowLayoutChange?: (patch: Partial<FoundryWindowLayout>) => void;
-  onWhiteboardWindowClose?: () => void;
-  onWhiteboardWindowMinimize?: () => void;
-  onWhiteboardWindowFocus?: () => void;
   statusWindowLayout?: FoundryWindowLayout;
   onStatusWindowLayoutChange?: (patch: Partial<FoundryWindowLayout>) => void;
   onStatusWindowClose?: () => void;
@@ -269,11 +263,6 @@ export function Battlefield({
   onDungeonWindowMinimize,
   onDungeonWindowFocus,
   onCombatChatReveal,
-  whiteboardWindowLayout,
-  onWhiteboardWindowLayoutChange,
-  onWhiteboardWindowClose,
-  onWhiteboardWindowMinimize,
-  onWhiteboardWindowFocus,
   statusWindowLayout,
   onStatusWindowLayoutChange,
   onStatusWindowClose,
@@ -369,10 +358,6 @@ export function Battlefield({
   const displayMarkups = useMemo(
     () => pruneMapMarkups(mapMarkupsOf(displayScene)),
     [displayScene]
-  );
-  const tempMarkupCount = useMemo(
-    () => displayMarkups.filter((m) => m.durability === "temporary").length,
-    [displayMarkups]
   );
   const displayPings = snapshot?.pings ?? [];
 
@@ -2151,6 +2136,22 @@ export function Battlefield({
     void persistMapMarkups(next);
   }, [displayScene, persistMapMarkups]);
 
+  const clearPermanentMarkups = useCallback(() => {
+    if (!canManageMarkups) return;
+    const markups = mapMarkupsOf(displayScene);
+    const perm = markups.filter((m) => m.durability === "permanent").length;
+    if (!perm) return;
+    if (!window.confirm(`Remover ${perm} marcação(ões) permanente(s)?`)) return;
+    void persistMapMarkups(markups.filter((m) => m.durability !== "permanent"));
+  }, [canManageMarkups, displayScene, persistMapMarkups]);
+
+  const clearAllMarkups = useCallback(() => {
+    if (!canManageMarkups) return;
+    if (!displayMarkups.length) return;
+    if (!window.confirm("Limpar toda a lousa (temporária + permanente)?")) return;
+    void persistMapMarkups([]);
+  }, [canManageMarkups, displayMarkups.length, persistMapMarkups]);
+
   const canViewTokenPaFn =
     canViewTokenPa ?? (() => canControlCombat || Boolean(selected?.linked));
 
@@ -2307,42 +2308,6 @@ export function Battlefield({
       />
     ) : null;
 
-  const whiteboardPanel =
-    canUseWhiteboard && snapshot ? (
-      <WhiteboardPanel
-        roomId={roomId}
-        scene={displayScene}
-        active={whiteboardActive}
-        tool={whiteboardTool}
-        color={markupColor}
-        width={markupWidth}
-        durability={markupDurability}
-        markupCount={displayMarkups.length}
-        tempCount={tempMarkupCount}
-        canManageAll={canManageMarkups}
-        onActiveChange={(active) => {
-          setWhiteboardActive(active);
-          setMapToolMode(active ? "draw" : "token");
-          if (active) {
-            setDungeonEditorActive(false);
-            setMarkupPreview(null);
-          } else {
-            setSelectedMarkupId(null);
-            setMeasurePreview(null);
-            pointer.cancelWhiteboardDraft();
-          }
-        }}
-        onToolChange={handleDrawToolChange}
-        onColorChange={setMarkupColor}
-        onWidthChange={setMarkupWidth}
-        onDurabilityChange={(d) => {
-          if (d === "permanent" && !canManageMarkups) return;
-          setMarkupDurability(d);
-        }}
-        onUpdated={(snap) => syncRoom(snap)}
-      />
-    ) : null;
-
   const dungeonPanel =
     isRoomGm && snapshot ? (
       <DungeonEditorPanel
@@ -2492,41 +2457,6 @@ export function Battlefield({
 
   const dungeonPortal = portalPanel(dungeonUi, float("dungeon"));
 
-  const whiteboardBody = (
-    <div className="mesa-panel-scroll mesa-panel-scroll--rail">{whiteboardPanel}</div>
-  );
-
-  const whiteboardUi =
-    foundryLayout && whiteboardWindowLayout && whiteboardPanel ? (
-      float("whiteboard") ? (
-        <FoundryWindow
-          title="Lousa do mapa"
-          layout={whiteboardWindowLayout}
-          className="foundry-window--whiteboard"
-          minHeight={200}
-          onLayoutChange={onWhiteboardWindowLayoutChange ?? (() => {})}
-          onClose={onWhiteboardWindowClose ?? (() => {})}
-          onMinimize={onWhiteboardWindowMinimize ?? (() => {})}
-          onFocus={onWhiteboardWindowFocus ?? (() => {})}
-        >
-          {whiteboardBody}
-        </FoundryWindow>
-      ) : (
-        <FoundryDockPanel
-          title="Lousa do mapa"
-          open={whiteboardWindowLayout.open}
-          minimized={whiteboardWindowLayout.minimized}
-          className="foundry-dock-panel--whiteboard"
-          onClose={onWhiteboardWindowClose ?? (() => {})}
-          onMinimize={onWhiteboardWindowMinimize}
-        >
-          {whiteboardBody}
-        </FoundryDockPanel>
-      )
-    ) : null;
-
-  const whiteboardPortal = portalPanel(whiteboardUi, float("whiteboard"));
-
   const initiativeUi =
     foundryLayout && initiativeWindowLayout ? (
       (() => {
@@ -2586,6 +2516,26 @@ export function Battlefield({
 
   const initiativePortal = portalPanel(initiativeUi, float("initiative"));
 
+  const statusTokenOwnerId =
+    modalStatusToken?.linked && modalStatusToken.actorId
+      ? roomActors[modalStatusToken.actorId]?.ownerId
+      : undefined;
+
+  const statusCanDelegate = Boolean(
+    modalStatusToken &&
+      modalStatusToken.linked &&
+      !isMonsterToken(modalStatusToken) &&
+      statusTokenOwnerId &&
+      (isRoomGm || session?.id === statusTokenOwnerId)
+  );
+
+  const statusDelegateCandidates = (memberIds ?? [])
+    .filter((id) => id !== statusTokenOwnerId)
+    .map((id) => ({
+      userId: id,
+      label: ownerDisplayNames?.get(id) ?? "Jogador",
+    }));
+
   const statusTitle = modalStatusToken ? `Status · ${modalStatusToken.name}` : "Status";
 
   const statusBody = modalStatusToken ? (
@@ -2597,6 +2547,8 @@ export function Battlefield({
         canApplyConditions={isRoomGm}
         onUpdate={refresh}
         compact
+        canDelegate={statusCanDelegate}
+        delegateCandidates={statusDelegateCandidates}
       />
     </div>
   ) : (
@@ -2650,7 +2602,6 @@ export function Battlefield({
     >
       {foundryLayout ? gmPortal : null}
       {foundryLayout ? dungeonPortal : null}
-      {foundryLayout ? whiteboardPortal : null}
       {foundryLayout ? initiativePortal : null}
       {foundryLayout ? statusPortal : null}
       {!foundryLayout && leftPanel && onLeftPanelChange ? (
@@ -2681,13 +2632,20 @@ export function Battlefield({
           onDrawToolChange={handleDrawToolChange}
           color={markupColor}
           width={markupWidth}
+          durability={markupDurability}
           onColorChange={setMarkupColor}
           onWidthChange={setMarkupWidth}
+          onDurabilityChange={(d) => {
+            if (d === "permanent" && !canManageMarkups) return;
+            setMarkupDurability(d);
+          }}
           canUseDraw={canUseWhiteboard}
           canManageAll={canManageMarkups}
           canPing={isRoomGm || roomSettings.allowPlayerPing}
           showFogTool={isRoomGm && Boolean(displayScene.fogEnabled)}
           onClearSession={canUseWhiteboard ? clearSessionMarkups : undefined}
+          onClearPermanent={canManageMarkups ? clearPermanentMarkups : undefined}
+          onClearAll={canManageMarkups ? clearAllMarkups : undefined}
           zoomPercent={battlefieldView.zoomPercent}
           canZoomIn={battlefieldView.canZoomIn}
           canZoomOut={battlefieldView.canZoomOut}

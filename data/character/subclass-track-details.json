@@ -793,7 +793,7 @@
         },
         "16": {
           "name": "Senhor da Fronteira (requer Sacrificio Ritual)",
-          "summary": "Imune a morte instantanea. Ao chegar a 0 HP, estado **liminar** 1 minuto: age normalmente, não pode ser curado, ao fim testa CON CD 17 — sucesso fica com 1 HP, falha morre (ou narrativa de Phylactery se campanha permitir)."
+          "summary": "Imune a morte instantanea. Ao chegar a 0 HP, estado **liminar** 1 minuto: age normalmente, não pode ser curado, ao fim testa CON CD 17 — sucesso fica com 1 HP, falha morre (ou narrativa de Âncora de Alma se campanha permitir)."
         },
         "20": {
           "name": "Ascensao — Desejo do Limiar",

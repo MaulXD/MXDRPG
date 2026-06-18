@@ -33,7 +33,7 @@ import type {
 
 function requireDb(): { ok: true } | { ok: false; error: string } {
   if (!dbEnabled()) {
-    return { ok: false, error: "Amigos e convites exigem Postgres (DATABASE_URL)." };
+    return { ok: false, error: "Amigos e convites exigem MariaDB (DATABASE_URL)." };
   }
   return { ok: true };
 }

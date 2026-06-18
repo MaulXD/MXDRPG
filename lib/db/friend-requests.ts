@@ -1,6 +1,8 @@
 import "server-only";
 
 import { dbEnabled, getSql } from "@/lib/db/client";
+import { countSelectExpr } from "@/lib/db/count-expr";
+import { sqlAffected } from "@/lib/db/sql-helpers";
 
 export type FriendRequestStatus = "pending" | "accepted" | "rejected";
 
@@ -88,11 +90,13 @@ export async function countPendingIncomingFriendRequests(userId: string): Promis
   if (!dbEnabled()) return 0;
   const sql = getSql();
   if (!sql) return 0;
-  const rows = await sql<{ count: string }[]>`
-    SELECT COUNT(*)::text AS count
-    FROM eldarin_friend_requests
-    WHERE to_user_id = ${userId} AND status = 'pending'
-  `;
+  const countExpr = countSelectExpr();
+  const rows = await sql.unsafe(
+    `SELECT ${countExpr} AS count
+     FROM eldarin_friend_requests
+     WHERE to_user_id = ? AND status = 'pending'`,
+    [userId]
+  ) as { count: string }[];
   return Number(rows[0]?.count ?? 0);
 }
 
@@ -104,11 +108,12 @@ export async function resolveFriendRequest(
   const sql = getSql();
   if (!sql) return false;
   const now = Date.now();
-  const rows = await sql`
-    UPDATE eldarin_friend_requests
-    SET status = ${status}, responded_at = ${now}
-    WHERE id = ${requestId} AND status = 'pending'
-    RETURNING id
-  `;
-  return rows.length > 0;
+  const n = await sqlAffected(
+    sql,
+    `UPDATE eldarin_friend_requests
+     SET status = ?, responded_at = ?
+     WHERE id = ? AND status = 'pending'`,
+    [status, now, requestId]
+  );
+  return n > 0;
 }

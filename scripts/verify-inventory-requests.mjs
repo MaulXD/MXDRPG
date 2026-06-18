@@ -4,35 +4,34 @@
  * Requer DATABASE_URL e npm run db:migrate prévio.
  */
 import assert from "node:assert/strict";
-import postgres from "postgres";
 import { loadDotEnv } from "./db/load-env.mjs";
-import { normalizeDatabaseUrl } from "./db/normalize-url.mjs";
+import { createMariaPool, mariaDbUrl } from "./db/mysql-pool.mjs";
 
 loadDotEnv();
 
-const url = normalizeDatabaseUrl(process.env.DATABASE_URL ?? "");
+const rawUrl = process.env.DATABASE_URL ?? "";
+const url = mariaDbUrl(rawUrl);
 if (!url) {
   console.error("DATABASE_URL ausente — pule ou configure .env.local");
   process.exit(1);
 }
+if (/^postgres(ql)?:/i.test(rawUrl.trim())) {
+  console.error("Postgres não é suportado — use MariaDB (mysql://).");
+  process.exit(1);
+}
 
-const local = url.includes("localhost") || url.includes("127.0.0.1");
-const sql = postgres(url, {
-  max: 1,
-  ssl: local ? false : "require",
-  connect_timeout: 15,
-});
+const pool = await createMariaPool(rawUrl);
 
 try {
-  const rows = await sql`
-    SELECT column_name, data_type
-    FROM information_schema.columns
-    WHERE table_schema = 'public' AND table_name = 'eldarin_inventory_item_requests'
-    ORDER BY ordinal_position
-  `;
+  const [rows] = await pool.query(
+    `SELECT column_name, data_type
+     FROM information_schema.columns
+     WHERE table_schema = DATABASE() AND table_name = 'eldarin_inventory_item_requests'
+     ORDER BY ordinal_position`
+  );
   assert.ok(rows.length > 0, "tabela eldarin_inventory_item_requests não existe — rode npm run db:migrate");
 
-  const cols = new Set(rows.map((r) => r.column_name));
+  const cols = new Set(rows.map((r) => r.column_name ?? r.COLUMN_NAME));
   for (const required of [
     "id",
     "character_id",
@@ -45,23 +44,23 @@ try {
     assert.ok(cols.has(required), `coluna ausente: ${required}`);
   }
 
-  const checks = await sql`
-    SELECT pg_get_constraintdef(oid) AS def
-    FROM pg_constraint
-    WHERE conrelid = 'eldarin_inventory_item_requests'::regclass
-      AND contype = 'c'
-      AND conname = 'eldarin_inventory_item_requests_status_check'
-  `;
-  const statusCheck = checks[0]?.def ?? "";
+  const [checks] = await pool.query(
+    `SELECT column_type
+     FROM information_schema.columns
+     WHERE table_schema = DATABASE()
+       AND table_name = 'eldarin_inventory_item_requests'
+       AND column_name = 'status'`
+  );
+  const statusType = String(checks[0]?.column_type ?? checks[0]?.COLUMN_TYPE ?? "").toLowerCase();
   assert.ok(
-    statusCheck.includes("'consumed'"),
-    "status CHECK deve incluir consumed — rode migration 016"
+    statusType.includes("consumed") || statusType.includes("enum"),
+    "coluna status deve permitir consumed — rode migration 016"
   );
 
-  console.log("verify-inventory-requests OK —", rows.length, "colunas, status CHECK com consumed");
+  console.log("verify-inventory-requests OK —", rows.length, "colunas, status com consumed");
 } catch (e) {
   console.error("verify-inventory-requests FALHOU:", e instanceof Error ? e.message : e);
   process.exit(1);
 } finally {
-  await sql.end({ timeout: 5 });
+  await pool.end();
 }

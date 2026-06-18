@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { rollDice, formatRollMessage } from "@/lib/dice/roll";
-import { canChatInRoom } from "@/lib/auth/room-access";
+import { canChatInRoomSession } from "@/lib/auth/mesa-watch-session";
 import { getSession } from "@/lib/auth/session";
 import { getRoom } from "@/lib/room/store";
 import { addRoomChatMessage } from "@/lib/room/store";
@@ -25,9 +25,9 @@ export async function POST(req: Request, { params }: Params) {
   if (!room) {
     return NextResponse.json({ error: "Sala não encontrada" }, { status: 404 });
   }
-  if (!canChatInRoom(room, session.user)) {
+  if (!(await canChatInRoomSession(room, session.user))) {
     return NextResponse.json(
-      { error: "Visitantes só podem assistir — entre na mesa pelo painel com o código" },
+      { error: "Modo só assistir — sem enviar mensagens ou rolar dados" },
       { status: 403 }
     );
   }

@@ -2,7 +2,7 @@ import type { Axial } from "@/lib/vtt/grid-math";
 import { cellNeighbors } from "@/lib/vtt/grid-math";
 import { footprintCenter, type CreatureSize } from "@/lib/vtt/creature-size";
 
-/** D&D 5e — 1 célula do grid ≈ 5 ft (mesa: 1,5 m). */
+/** 1 célula do grid ≈ 5 ft táticos (mesa: 1,5 m). */
 export const FEET_PER_CELL = 5;
 
 export type FeetPathOptions = {
@@ -138,7 +138,7 @@ function reconstructPath(
   return path;
 }
 
-/** Caminho mais curto em pés (D&D: ortogonal 5 ft; diagonais alternam 5 ft / 10 ft). */
+/** Caminho mais curto em pés (ortogonal 5 ft; diagonais alternam 5 ft / 10 ft). */
 export function findPathByFeet(from: Axial, to: Axial, opts: FeetPathOptions): Axial[] | null {
   if (!isValidFeetOpts(opts)) return null;
   if (from.q === to.q && from.r === to.r) return [from];

@@ -82,6 +82,7 @@ export function canControlToken(
   if (!user) return false;
   if (hasGmView(room, user, opts)) return true;
   if (isMonsterToken(token)) return false;
+  if (token.delegatedToUserId && token.delegatedToUserId === user.id) return true;
   if (token.linked && token.actorId) {
     const actor = room.actors[token.actorId];
     return actor ? characterOwnedBySessionUser(actor, user) : false;

@@ -29,7 +29,7 @@ Refatorar **combate**, **economia de PA**, **fluxo de turno** e **shell da mesa*
 | **R3** | Automação máxima no servidor |
 | **R4** | Iniciativa 1d20+DES + fim de turno por PA esgotado |
 | **R5** | Mestre liga/desliga **modo combate** |
-| **R6** | Movimento: pés D&D, faixas walk/run, 1º bloco = 1 PA |
+| **R6** | Movimento: pés fantasia clássica, faixas walk/run, 1º bloco = 1 PA |
 | **R7** | Reações v1: ataque de oportunidade, Escudo, Contramágica |
 | **R8** | **Sem slot “ação bônus”** — tudo via **PA** |
 | **R9** | Undo: só mestre; **checkpoint 20 rodadas** |

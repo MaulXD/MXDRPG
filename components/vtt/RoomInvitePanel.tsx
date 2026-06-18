@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useCallback, useState } from "react";
 import { SendMesaInvitePicker } from "@/components/friends/SendMesaInvitePicker";
-import { roomInviteUrl } from "@/lib/auth/room-access";
+import { roomInviteUrl, roomSpectatorUrl } from "@/lib/auth/room-access";
 
 type Props = {
   adventureId: string;
@@ -23,14 +23,19 @@ export function RoomInvitePanel({
   showConfigure = false,
   className = "",
 }: Props) {
-  const [copied, setCopied] = useState<"code" | "link" | null>(null);
+  const [copied, setCopied] = useState<"code" | "link" | "watch" | null>(null);
 
   const magicLink =
     typeof window !== "undefined"
       ? `${window.location.origin}/mesa/${roomId}?invite=${encodeURIComponent(inviteCode)}`
       : roomInviteUrl(roomId, inviteCode);
 
-  const copy = useCallback(async (text: string, kind: "code" | "link") => {
+  const spectatorLink =
+    typeof window !== "undefined"
+      ? `${window.location.origin}/mesa/${roomId}?invite=${encodeURIComponent(inviteCode)}&watch=1`
+      : roomSpectatorUrl(roomId, inviteCode);
+
+  const copy = useCallback(async (text: string, kind: "code" | "link" | "watch") => {
     try {
       await navigator.clipboard.writeText(text);
       setCopied(kind);
@@ -71,6 +76,26 @@ export function RoomInvitePanel({
           {copied === "link" ? "Copiado" : "Copiar"}
         </button>
       </label>
+
+      <label className="room-invite-panel__link-field room-invite-panel__link-field--watch">
+        <span className="room-invite-panel__label">Só assistir</span>
+        <input
+          readOnly
+          className="room-invite-panel__link"
+          value={spectatorLink}
+          aria-label="Link espectador"
+        />
+        <button
+          type="button"
+          className="vtt-btn vtt-btn--ghost vtt-btn--compact"
+          onClick={() => void copy(spectatorLink, "watch")}
+        >
+          {copied === "watch" ? "Copiado" : "Copiar"}
+        </button>
+      </label>
+      <p className="room-invite-panel__hint room-invite-panel__hint--watch">
+        Espectadores veem mapa e chat, sem mover tokens — ideal para stream ou quem chega tarde.
+      </p>
 
       <SendMesaInvitePicker adventureId={adventureId} />
 

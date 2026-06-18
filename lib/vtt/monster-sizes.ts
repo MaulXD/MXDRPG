@@ -2,7 +2,7 @@ import type { CreatureSize } from "@/lib/vtt/creature-size";
 import monsterTamanhos from "@/data/monster-tamanhos.json";
 import type { MonsterSpawnVariant } from "@/lib/vtt/monster-scaling";
 
-/** Tamanho VTT por entryId — alinhado a D&D 5e / SRD e nomes do bestiário Eldarin. */
+/** Tamanho VTT por entryId — alinhado a fantasia tática / tabela de referência e nomes do bestiário Eldarin. */
 export const MONSTER_SIZE_BY_ENTRY_ID = monsterTamanhos as Record<string, CreatureSize>;
 
 export const CREATURE_SIZE_PT: Record<CreatureSize, string> = {
@@ -60,7 +60,14 @@ export function resolveMonsterCreatureSize(
 
   const lower = name.toLowerCase();
   if (lower.includes("colossal") || opts?.variant === "colossal") return "colossal";
-  if (lower.includes("behemoth") || lower.includes("kraken") || lower.includes("dragão ancião") || lower.includes("dragao anciao")) {
+  if (
+    lower.includes("behemoth") ||
+    lower.includes("kraken") ||
+    lower.includes("dragão ancião") ||
+    lower.includes("dragao anciao") ||
+    lower.includes("devorador ancião") ||
+    lower.includes("devorador anciao")
+  ) {
     return "gargantuan";
   }
   if (
@@ -86,7 +93,7 @@ export function resolveMonsterCreatureSize(
     lower.includes("grifo") ||
     lower.includes("manticora") ||
     lower.includes("elemental") ||
-    lower.includes("balor") ||
+    lower.includes("arquidemônio") ||
     lower.includes("escorpião gigante") ||
     lower.includes("escorpiao gigante")
   ) {

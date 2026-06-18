@@ -10,7 +10,7 @@ export type AuthCapabilities = {
   /** E-mail/senha + demo (Clerk desligado). */
   emailLogin: boolean;
   oauthProviders: OAuthProviderId[];
-  /** Contas sobrevivem restart (Postgres). */
+  /** Contas sobrevivem restart (MariaDB). */
   persistentAccounts: boolean;
   clerkActive: boolean;
 };

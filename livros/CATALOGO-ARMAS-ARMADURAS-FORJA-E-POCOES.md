@@ -31,7 +31,7 @@ Cada entrada do compêndio inclui **descrição de uso** gerada por `scripts/gen
 
 **Referência na ficha:** `catalogId` (ex.: `WPN-S02`, `ARM-01-E2`) e `bookRef` apontando para este catálogo.
 
-**Alcance à distância (células):** derivado do SRD/D&D 5e a **70%** — arco longo **21 células** (32 m), arco curto **11 células** (17 m), besta leve **11 células**, besta pesada **14 células**, besta de mão **4 células**. Ver `lib/vtt/ranged-weapon-range.ts` e Livro do Jogador §14.1.
+**Alcance à distância (células):** derivado do tabela tática Eldarin a **70%** — arco longo **21 células** (32 m), arco curto **11 células** (17 m), besta leve **11 células**, besta pesada **14 células**, besta de mão **4 células**. Ver `lib/vtt/ranged-weapon-range.ts` e Livro do Jogador §14.1.
 
 ---
 

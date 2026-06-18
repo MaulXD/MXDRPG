@@ -31,7 +31,7 @@ Cada bioma tem ambiente, perigos e fauna proprios. Ao montar um andar, o Mestre 
 ### BIOMA 1 — CIDADELA PALIDA
 Ambiente: Castelos abandonados, saloes de baile submersos, torres inclinadas sustentadas por estalactites. Chao de paralelepipedo coberto por limo azul bioluminescente. Som constante de correntes e ventos impossiveis.
 Perigos: Paredes que colapsam, armadilhas medievais ainda ativas, nevoa que desorenta.
-Fauna Nativa: Espirituais (Ghouls, Cavaleiros Espectrais, Espectros, Assombracoes), Mimicos (Gargulas de Cristal, Mimicos de Bau e de Estatua), Aracnideos (Aranhas Tecerrochas), Mortos-Vivos (Esqueletos Armados, Mumias).
+Fauna Nativa: Espirituais (Necrófagos, Cavaleiros Espectrais, Espectros, Assombracoes), Mimicos (Gargulas de Cristal, Mimicos de Bau e de Estatua), Aracnideos (Aranhas Tecerrochas), Mortos-Vivos (Esqueletos Armados, Mumias).
 Ingredientes Tipicos: Ectoplasma, Aco Encantado, Seda de Tecerrochas, Osso Milenar.
 
 ### BIOMA 2 — MAR DE PRATA CEGA
@@ -67,7 +67,7 @@ Ingredientes Tipicos: Cristal Vivo de Gargula, Gel Cristalino, Exoesqueleto de D
 ### BIOMA 7 — CEMITERIO DE COLOSSOS
 Ambiente: Deserto inteiramente feito de ossos e po de osso triturado. Colinas que sao cranios de bestas do tamanho de montanhas. Vento carrega po de osso que irrita os olhos. Nenhuma planta, nenhuma agua.
 Perigos: Po de osso toxico em concentracao alta (Fortitude CD 10 por hora ou Envenenamento leve), instabilidade de estruturas osseas colapsindo.
-Fauna Nativa: Mortos-Vivos (Espectros Antigos, Ghouls Ancioes), Goblinoides (Necrofagos catadores de medula), Insetoides (Vermes Gigantes de Pedra), Gigantes (Ciclopes solitarios).
+Fauna Nativa: Mortos-Vivos (Espectros Antigos, Necrófagos Ancioes), Goblinoides (Necrofagos catadores de medula), Insetoides (Vermes Gigantes de Pedra), Gigantes (Ciclopes solitarios).
 Ingredientes Tipicos: Fêmur Milenar, Po de Osso Necrotico, Cristal de Mana Osseo, Medula Podre.
 
 ### BIOMA 8 — ENGRENAGENS ESQUECIDAS
@@ -139,13 +139,13 @@ Ingredientes Tipicos: Fio de Aracnideo (material de artesanato premium), Glandul
 ### BIOMA 19 — FOSSO DAS EMOCOES ECOANTES
 Ambiente: Cavernas de quartzo acustico que amplificam e distorcem sons. Os medos, pensamentos e emocoes das criaturas criam ecos audiveis — você pode literalmente ouvir o medo dos companheiros. Camaras onde o silencio total e impossivel.
 Perigos: Exposicao prolongada causa alucinacoes auditivas (Sabedoria CD 13 por hora ou escuta vozes), grito de Banshee amplificado e fatal em raio dobrado.
-Fauna Nativa: Espirituais (Fantasmas do Desespero, Banshees), Bestiais (Morcegos Sonicos Rastreadores), Elementais (Elementais de Vento), Aberracoes (Doppelgangers usam o caos auditivo para se infiltrar).
+Fauna Nativa: Espirituais (Fantasmas do Desespero, Banshees), Bestiais (Morcegos Sonicos Rastreadores), Elementais (Elementais de Vento), Aberracoes (Metamorfos Dúbios usam o caos auditivo para se infiltrar).
 Ingredientes Tipicos: Eco de Emocao, Cristal Acustico (instrumento perfeito do Bardo), Membrana de Morcego Sonico.
 
 ### BIOMA 20 — ABATEDOURO CELESTIAL
 Ambiente: Templo divino de marmore impecavel, mas com marcas de garras colossais nas colunas e rios de agua benta corrompida. Estatuas de deuses com rostos rasgados. Altares que ainda funcionam, mas para algo diferente. Luz dourada que parece errada.
 Perigos: Energia divina corrompida (Sabedoria CD 14 por hora ou desenvolve devocao forcada a entidade desconhecida), altares que ativam rituais aleatorios.
-Fauna Nativa: Celestiais Corrompidos (Anjos Caidos), Bestiais Sagrados (Quimeras de origem divina), Mortos-Vivos Sagrados (Paladinos caidos como Cavaleiros Espectrais de nivel superior), Aberracoes (Vrocks, Balors que chegaram por portais).
+Fauna Nativa: Celestiais Corrompidos (Anjos Caidos), Bestiais Sagrados (Quimeras de origem divina), Mortos-Vivos Sagrados (Paladinos caidos como Cavaleiros Espectrais de nivel superior), Aberracoes (Carniçais Alados, Arquidemônio Flamejantes que chegaram por portais).
 Ingredientes Tipicos: Pena Angelical, Sangue Divino, Coracao Corrompido, Fragmento de Altar.
 
 
@@ -207,9 +207,9 @@ Ingredientes Tipicos: Pena Angelical, Sangue Divino, Coracao Corrompido, Fragmen
 | 6 | 6 | 8–10 | Dragão Jovem de Gelo (Nivel 13) |
 | 7 | 6 | 10–12 | Aboleth (Nivel 16) |
 | 8 | 5 | 12–14 | Anjo Caido (Nivel 14) |
-| 9 | 6 | 14–17 | Lich (Nivel 18) |
-| 10 | 6 | 17–19 | Balor (Nivel 19) |
-| 11 (Anomalia) | 4 | 19–20 | Chefe Final (1d6) + Tarrasque Bebe (opcional) |
+| 9 | 6 | 14–17 | Necroarca (Nivel 18) |
+| 10 | 6 | 17–19 | Arquidemônio Flamejante (Nivel 19) |
+| 11 (Anomalia) | 4 | 19–20 | Chefe Final (1d6) + Devorador Ancião Bebe (opcional) |
 
 ---
 
@@ -271,8 +271,8 @@ Lore: Exploradores que voltam desta masmorra relatam sonhos com oceanos sem fim 
 Localizacao: Deserto a leste, onde a areia tem cor levemente roxa.
 Biomas Dominantes: Labirinto Prismatico, Floresta de Fios de Prata, Fosso das Emocoes Ecoantes.
 Especialidade Ecologica: Mimicos, metamorfos, aberracoes psiquicas, insetoides de cristal.
-Ingredientes Raros: Cristais de Slime raros, Pele Camaleonica de Doppelganger, Gel Cristalino puro.
-Boss Tipico: Matriarca Tecela de Cristal (variante espelho) ou Doppelganger Supremo.
+Ingredientes Raros: Cristais de Slime raros, Pele Camaleonica de Metamorfo Dúbio, Gel Cristalino puro.
+Boss Tipico: Matriarca Tecela de Cristal (variante espelho) ou Metamorfo Dúbio Supremo.
 Caracteristica Unica: A identidade visual do grupo pode ser "copiada" — em andares profundos, existem doppelgangers perfeitos de cada membro (mesmas estatisticas, mesmos equipamentos).
 Lore: Ha um dito em Eldarin: "Se você vir a si mesmo vindo do outro lado do corredor, corra para a direita."
 
@@ -401,9 +401,9 @@ Nivel: 18 | Tipo: Morto-Vivo Arcano | Bioma: Arquivos Soterrados
 
 Mutação Permanente: +15 HP Maximo. Consciencia Estendida: Uma vez por dia, qualquer membro pode fazer uma pergunta sobre a historia ou segredos da masmorra atual e receber resposta verdadeira.
 
-Ferramenta Orgânica: Grimorio Vivo (do Phylactery) — Livro que aprende e copia automaticamente qualquer magia lancada na presenca do portador. Pode armazenar até 20 magias.
+Ferramenta Orgânica: Grimorio Vivo (do Âncora de Alma) — Livro que aprende e copia automaticamente qualquer magia lancada na presenca do portador. Pode armazenar até 20 magias.
 
-### Boss 6 — O Balor
+### Boss 6 — O Arquidemônio Flamejante
 Nivel: 19 | Tipo: Demonio Maior | Bioma: Abatedouro Celestial
 
 Mutação Permanente: +15 HP Maximo. Resistência a Fogo e Relâmpago permanente. Aura de Terror: Criaturas com CR menor que 5 fogem automaticamente da presenca do grupo.
@@ -520,7 +520,7 @@ Cada monstro possui uma **versão Elite** desbloqueada quando encontrado nos and
 - **HP:** Pontos de vida totais
 - **CA:** Classe de Armadura (10 = sem proteção; 20+ = praticamente impenetrável)
 - **Dano:** Dado de dano por ataque base
-- **Tamanho:** Categoria corporal no grid quadrado (SRD/D&D 5e: Pequeno a Colossal; ver Livro do Jogador §3.1.3.1)
+- **Tamanho:** Categoria corporal no grid quadrado (tabela tática Eldarin: Pequeno a Colossal; ver Livro do Jogador §3.1.3.1)
 - **Resistências:** Tipos de dano que o monstro sofre metade
 - **Imunidades:** Tipos de dano que não surtem efeito
 - **Nível de Extração:** Dificuldade de Extração (Fácil / Médio / Difícil / Especialista)
@@ -618,11 +618,11 @@ HP 60 | CA 16 | Dano 2d6+2
 
 ---
 
-## 003 — GHOUL
+## 003 — NECRÓFAGO
 003**Tipo:** Morto-Vivo Carnívoro | **Nível:** 3 | **XP:** 300 | **Faixa:** Comum
 
 **Lore:**
-Ghouls são a prova de que a morte pode piorar. Criados de aventureiros que praticaram canibalismo em desespero, ou de necrófagos que foram consumidos vivos pela masmorra, eles mantêm uma inteligência baixa mas funcional — suficiente para tender armadilhas simples, emboscar grupos descansando e imitar vozes humanas para atrair presas. Dentro das masmorras, formam clãs tribais primitivos nos biomas mais profundos. Têm um odor inconfundível de carne em decomposição avançada misturada com ácido gástrico. Os mais velhos desenvolvem chifres de osso e garras de até 15cm.
+Necrófagos são a prova de que a morte pode piorar. Criados de aventureiros que praticaram canibalismo em desespero, ou de necrófagos que foram consumidos vivos pela masmorra, eles mantêm uma inteligência baixa mas funcional — suficiente para tender armadilhas simples, emboscar grupos descansando e imitar vozes humanas para atrair presas. Dentro das masmorras, formam clãs tribais primitivos nos biomas mais profundos. Têm um odor inconfundível de carne em decomposição avançada misturada com ácido gástrico. Os mais velhos desenvolvem chifres de osso e garras de até 15cm.
 
 **Comportamento na mesa:**
 - **Abertura:** emboscada — vantagem na 1ª rodada se grupo não detectou (Percepção passiva vs CD 10+n//2).
@@ -651,11 +651,11 @@ Ghouls são a prova de que a morte pode piorar. Criados de aventureiros que prat
 
 **Ingredientes (Extração):**
 - Glândula Paralisante (Difícil): Localizada sob a língua. Extraída intacta, produz veneno de paralisia de alta qualidade.
-- Sebo de Ghoul (Fácil): Gordura com propriedades térmicas. Usada como combustível natural de fogareiros.
+- Sebo de Necrófago (Fácil): Gordura com propriedades térmicas. Usada como combustível natural de fogareiros.
 
 **Saque (Extração com sucesso):** ESP-12 · MIN-14 · 3d6 po + amuleto — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 003).
 
-**Versão Elite — Ghoul Ancião (Nível 8):**
+**Versão Elite — Necrófago Ancião (Nível 8):**
 HP 110 | CA 14 | Dano 2d6+4 (garras) + Paralisia automática na mordida
 *Banquete de Ossos:* Ao matar uma criatura, o Ancião a devora completamente em 1 turno, recuperando 3d8 HP.
 *Corno de Osso Antigo:* Pode ser destilado em uma poção que garante imunidade à paralisia por 48h.
@@ -703,11 +703,11 @@ HP 85 | CA 14 | Dano 3d8 necrótico + redução permanente de 5 no HP máximo at
 
 ---
 
-## 005 — LICH (ARQUILICHE)
+## 005 — NECROARCA (ARQUILICHE)
 005**Tipo:** Morto-Vivo Arcano | **Nível:** 18 | **XP:** 1800 | **Faixa:** Lendário
 
 **Lore:**
-Um Lich não morre — ele *decide* não morrer. O processo de lichificação é a magia mais complexa e proibida da história conhecida: o mago transfere sua própria alma para um objeto físico chamado Phylactery (uma caixa, um anel, uma joia), tornando-se tecnicamente imortal enquanto o objeto existir. O resultado é uma figura de inteligência brilhante aprisionada em carne em decomposição, com milênios de acúmulo de conhecimento e rancor. Os Lichs que habitam as masmorras mais profundas não foram criados recentemente — eles *são* a masmorra, em certos sentidos. Suas câmaras pessoais são laboratórios de magia proibida que evoluíram ao redor deles por séculos.
+Um Necroarca não morre — ele *decide* não morrer. O processo de ritual da Âncora é a magia mais complexa e proibida da história conhecida: o mago transfere sua própria alma para um objeto físico chamado Âncora de Alma (uma caixa, um anel, uma joia), tornando-se tecnicamente imortal enquanto o objeto existir. O resultado é uma figura de inteligência brilhante aprisionada em carne em decomposição, com milênios de acúmulo de conhecimento e rancor. Os Necroarcas que habitam as masmorras mais profundas não foram criados recentemente — eles *são* a masmorra, em certos sentidos. Suas câmaras pessoais são laboratórios de magia proibida que evoluíram ao redor deles por séculos.
 
 **Comportamento na mesa:**
 - **Padrão:** ataca mais próximo; recua se 2+ inimigos no corpo (DES CD 12).
@@ -732,18 +732,18 @@ Um Lich não morre — ele *decide* não morrer. O processo de lichificação é
 **Habilidades:**
 - *Resistência Lendária (3/dia):* Quando falha num teste de resistência, pode escolher ter sucesso.
 - *Toque Paralisante:* Alvo testa Constituição CD 18 ou fica Paralisado por 1 minuto.
-- *Disrupção de Turno:* Se um morto-vivo dentro de 30m for destruído, o Lich pode conjurar uma magia de nível 3 ou inferior como reação.
-- *Regresso do Phylactery:* Se morto sem que o Phylactery seja destruído, ressurge em 1d10 dias.
+- *Disrupção de Turno:* Se um morto-vivo dentro de 30m for destruído, o Necroarca pode conjurar uma magia de nível 3 ou inferior como reação.
+- *Regresso do Âncora de Alma:* Se morto sem que o Âncora de Alma seja destruído, ressurge em 1d10 dias.
 - *Magia Suprema:* Tem acesso a todas as magias de nível 1-9. Conjura sem componentes.
 
 **Ingredientes — Banquete Lendário:**
-- Ossos de Lich (Extração Especialista, 3 turnos de grupo): Pó de osso milenar capaz de ser transformado em Elixir de Consciência Imortal — concede ao grupo imunidade permanente a efeitos de medo e charme.
-- Coração Cristalizado (Difícil, requer ferramenta mágica): O coração de um Lich é um cristal sólido de mana. Triturado como tempero, qualquer refeição preparada com ele restaura todos os espaços de magia do grupo.
-- Phylactery (Não comestível — Ferramenta Lendária): O Artífice pode reforjar o Phylactery destruído em um **Grimório Vivo** — um livro de feitiços que aprende e copia automaticamente qualquer magia lançada na presença do portador.
+- Ossos de Necroarca (Extração Especialista, 3 turnos de grupo): Pó de osso milenar capaz de ser transformado em Elixir de Consciência Imortal — concede ao grupo imunidade permanente a efeitos de medo e charme.
+- Coração Cristalizado (Difícil, requer ferramenta mágica): O coração de um Necroarca é um cristal sólido de mana. Triturado como tempero, qualquer refeição preparada com ele restaura todos os espaços de magia do grupo.
+- Âncora de Alma (Não comestível — Ferramenta Lendária): O Artífice pode reforjar o Âncora de Alma destruído em um **Grimório Vivo** — um livro de feitiços que aprende e copia automaticamente qualquer magia lançada na presença do portador.
 
 **Mutação Permanente do Banquete:**
 - +15 HP Máximo para todos
-- *Consciência Estendida:* O grupo pode usar Memória de Lich — uma vez por dia, qualquer membro pode fazer uma pergunta sobre a história ou segredos da masmorra atual e receber uma resposta verdadeira (fragmentada e críptica, mas verdadeira).
+- *Consciência Estendida:* O grupo pode usar Memória de Necroarca — uma vez por dia, qualquer membro pode fazer uma pergunta sobre a história ou segredos da masmorra atual e receber uma resposta verdadeira (fragmentada e críptica, mas verdadeira).
 
 ---
 **Saque (Extração com sucesso):** ESP-30 · MIN-22 · TES-15 (2 500 po) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 005).
@@ -2272,11 +2272,11 @@ O Mímico clássico — disfarçado de baú de tesouro, esperando pacientemente 
 ---
 **Saque (Extração com sucesso):** ESP-19 · MIN-06 · TES-04 (conteudo imitado) — ver `CATALOGO-TESOUROS-MINERAIS-ESPECIARIAS.md` (cod. 044).
 
-## 045 — DOPPELGANGER
+## 045 — METAMORFO DÚBIO
 045**Tipo:** Metamorfo Inteligente | **Nível:** 7 | **XP:** 700 | **Faixa:** Intermediário
 
 **Lore:**
-Doppelgangers são a evolução inteligente dos Mímicos — em vez de imitar objetos, imitam pessoas. Capazes de copiar aparência, voz e maneirismos de qualquer humanoide que observem por mais de 10 minutos, eles se infiltram em grupos, assumindo a identidade de um membro morto ou afastado. São pacientes, calculistas e genuinamente perigosos porque jogam com a confiança como principal arma. Os que habitam masmorras há muito tempo desenvolvem identidades complexas de personas que já assumiram — alguns chegam ao ponto de esquecer qual é o "eu" original.
+Metamorfos Dúbios são a evolução inteligente dos Mímicos — em vez de imitar objetos, imitam pessoas. Capazes de copiar aparência, voz e maneirismos de qualquer humanoide que observem por mais de 10 minutos, eles se infiltram em grupos, assumindo a identidade de um membro morto ou afastado. São pacientes, calculistas e genuinamente perigosos porque jogam com a confiança como principal arma. Os que habitam masmorras há muito tempo desenvolvem identidades complexas de personas que já assumiram — alguns chegam ao ponto de esquecer qual é o "eu" original.
 
 **Comportamento na mesa:**
 - **Abertura:** emboscada — vantagem na 1ª rodada se grupo não detectou (Percepção passiva vs CD 10+n//2).
@@ -2300,7 +2300,7 @@ Doppelgangers são a evolução inteligente dos Mímicos — em vez de imitar ob
 **Habilidades:**
 - *Polimorfismo:* Transforma-se em qualquer humanoide de tamanho similar. Cópia perfeita incluindo voz.
 - *Leitura Mental:* Alcance 18m. Lê pensamentos superficiais — sabe o nome, aparência e fatos básicos de qualquer pessoa que o alvo esteja pensando.
-- *Ataque Surpresa:* +3d6 dano se o alvo não souber que é um Doppelganger.
+- *Ataque Surpresa:* +3d6 dano se o alvo não souber que é um Metamorfo Dúbio.
 
 **Ingredientes (Extração):**
 - Glândula de Polimorfismo (Especialista): Órgão de alteração de forma. Consumida como capsula, concede Pele Mutável completa por 24h — cópia perfeita de qualquer humanoide.
@@ -3016,7 +3016,7 @@ Harpias de caverna perderam o canto encantador de suas primas da superfície —
 - **Moral:** não foge; persegue o alvo mais próximo até 0 HP (mente ausente).
 - **Culinária:** janela 1h pós-morte; Extração conforme Nível de Extração.
 
-## 073 — CARNIÇAL ALADO (VROCK)
+## 073 — CARNIÇAL ALADO
 **Tipo:** Demônio Menor | **Nível:** 9 | **XP:** 900 | **Faixa:** Perigoso
 **Lore:** Não é nativo da masmorra — veio de outro plano e ficou preso. Demônio com corpo de abutre humanoide, penas negras e cheiro de enxofre. Caótico e destrutivo por natureza, mas com inteligência suficiente para ser imprevisível.
 | HP | CA | Dano | Tamanho | Biomas |
@@ -3024,7 +3024,7 @@ Harpias de caverna perderam o canto encantador de suas primas da superfície —
 | 104 | 15 | 2d6+5 (garras) + 1d6+5 (bico) | Grande | Abatedouro Celestial, Cemitério de Colossos, Abismo Invertido |
 **Resistências:** Fogo, Relâmpago, Frio, não-mágico. **Imunidades:** Veneno.
 **Habilidades:** *Esporos Demônicos* (nuvem de área que, em 1 minuto, imobiliza criaturas com crescimento de fungos — 5d10 de dano se não tratado) • *Grito Ensurdecedor* (CD 14 Constituição, Atordoado 1 turno) • *Resiliente ao Plano* (ressurge no plano de origem se morto, a não ser que seja morto com arma sagrada ou bênção ativa).
-**Ingredientes:** Pena de Vrock (Médio — material resistente a fogo e relâmpago) • Bico de Vrock (Difícil — ferramenta de corte que funciona em qualquer material) • Esporos (Especialista — extremamente perigosos sem processamento).
+**Ingredientes:** Pena de Carniçal Alado (Médio — material resistente a fogo e relâmpago) • Bico de Carniçal Alado (Difícil — ferramenta de corte que funciona em qualquer material) • Esporos (Especialista — extremamente perigosos sem processamento).
 
 ---
 
@@ -3035,15 +3035,15 @@ Harpias de caverna perderam o canto encantador de suas primas da superfície —
 - **Moral:** não foge; persegue o alvo mais próximo até 0 HP (mente ausente).
 - **Culinária:** janela 1h pós-morte; Extração conforme Nível de Extração.
 
-## 074 — BALOR (ARQUIDEMÔNIO)
+## 074 — ARQUIDEMÔNIO FLAMEJANTE
 **Tipo:** Demônio Maior | **Nível:** 19 | **XP:** 1900 | **Faixa:** Lendário
-**Lore:** Os Balors são generais do Abismo — criaturas de poder colossal que raramente chegam ao plano material. Quando chegam à masmorra, é porque foram convocados por algo poderoso o suficiente para abrir uma fenda planar, e então abandonados. Um Balor de masmorra é uma catástrofe ambulante de 6 metros de altura com asas flamejantes e uma espada que queima em vorpal.
+**Lore:** Os Arquidemônio Flamejantes são generais do Abismo — criaturas de poder colossal que raramente chegam ao plano material. Quando chegam à masmorra, é porque foram convocados por algo poderoso o suficiente para abrir uma fenda planar, e então abandonados. Um Arquidemônio Flamejante de masmorra é uma catástrofe ambulante de 6 metros de altura com asas flamejantes e uma espada que queima em vorpal.
 | HP | CA | Dano | Tamanho | Biomas |
 |----|-----|------|---------|--------|
 | 262 | 19 | 3d6+12 fogo (espada vorpal) + 2d8+12 relâmpago (chicote de relâmpago) | Grande | Abatedouro Celestial, Fornalhas Douradas |
 **Resistências:** Frio, Relâmpago, Fogo. **Imunidades:** Veneno, Fogo Extremo, Não-mágico.
 **Habilidades:** *Resistência Lendária (3/dia)* • *Ações Lendárias (3)* • *Explosão da Morte* (ao morrer, explode — 20d6 fogo em raio 9m) • *Aura Flamejante* (criaturas adjacentes tomam 2d8 fogo automaticamente) • *Teleporte* (como ação bônus, 30m).
-**Ingredientes (Banquete Lendário — requer purificação prévia do Sacerdote):** Núcleo Demoníaco (Especialista — fonte de poder planar do Balor; o Artífice usa para criar um Portal Portátil de uso único) • Espada Vorpal de Fogo (Ferramenta Lendária — arma +4, decapita automaticamente em acerto crítico, causa 3d6 fogo extra).
+**Ingredientes (Banquete Lendário — requer purificação prévia do Sacerdote):** Núcleo Demoníaco (Especialista — fonte de poder planar do Arquidemônio Flamejante; o Artífice usa para criar um Portal Portátil de uso único) • Espada Vorpal de Fogo (Ferramenta Lendária — arma +4, decapita automaticamente em acerto crítico, causa 3d6 fogo extra).
 **Mutação Permanente:** +15 HP Máximo + Resistência a Fogo e Relâmpago permanente + Aura de Terror (criaturas com CR menor que 5 fogem automaticamente da presença do grupo).
 
 ---
@@ -3150,9 +3150,9 @@ Harpias de caverna perderam o canto encantador de suas primas da superfície —
 - **Moral:** não foge; persegue o alvo mais próximo até 0 HP (mente ausente).
 - **Culinária:** janela 1h pós-morte; Extração conforme Nível de Extração.
 
-## 080 — TARRASQUE (BEBÊ)
+## 080 — DEVORADOR ANCIÃO (FILHOTE)
 **Tipo:** Besta Titânica | **Nível:** 20 | **XP:** 2000 | **Faixa:** Lendário
-**Lore:** O Tarrasque adulto é uma calamidade civilizacional — invulnerável, regenerativo, devastador. O "bebê" que ocasionalmente aparece na Masmorra 11 tem "apenas" 8 metros de altura e é jovem demais para ter regeneração completa. Ainda assim, é o maior desafio concebível para qualquer grupo. Sua carne é a mais densamente mágica de qualquer ser vivo — mas isso é secundário quando você está tentando sobreviver ao encontro.
+**Lore:** O Devorador Ancião adulto é uma calamidade civilizacional — invulnerável, regenerativo, devastador. O "bebê" que ocasionalmente aparece na Masmorra 11 tem "apenas" 8 metros de altura e é jovem demais para ter regeneração completa. Ainda assim, é o maior desafio concebível para qualquer grupo. Sua carne é a mais densamente mágica de qualquer ser vivo — mas isso é secundário quando você está tentando sobreviver ao encontro.
 | HP | CA | Dano | Tamanho | Biomas |
 |----|-----|------|---------|--------|
 | 676 | 25 | 4d12+19 (mordida) + 4d8+19 (garras × 2) + 4d10+19 (chifres) + 4d12+19 (cauda) | Imenso | Masmorra 11 — Andar 4 exclusivo |
@@ -3166,9 +3166,9 @@ Harpias de caverna perderam o canto encantador de suas primas da superfície —
 |-----|----------|---------|------|
 | 001 | Zumbi de Masmorra | Médio | 1×1 |
 | 002 | Esqueleto Armado | Médio | 1×1 |
-| 003 | Ghoul | Médio | 1×1 |
+| 003 | Necrófago | Médio | 1×1 |
 | 004 | Espectro | Médio | 1×1 |
-| 005 | Lich (Arquiliche) | Médio | 1×1 |
+| 005 | Necroarca (Arquiliche) | Médio | 1×1 |
 | 006 | Assombração | Médio | 1×1 |
 | 007 | Vampiro | Médio | 1×1 |
 | 008 | Cavaleiro Espectral | Médio | 1×1 |
@@ -3208,7 +3208,7 @@ Harpias de caverna perderam o canto encantador de suas primas da superfície —
 | 042 | Yeti das Profundezas | Grande | 2×2 |
 | 043 | Lobo do Inverno | Grande | 2×2 |
 | 044 | Mímico de Baú | Médio | 1×1 |
-| 045 | Doppelganger | Médio | 1×1 |
+| 045 | Metamorfo Dúbio | Médio | 1×1 |
 | 046 | Hidra das Cavernas | Gigante | 3×3 |
 | 047 | Quimera | Grande | 2×2 |
 | 048 | Anjo Caído | Médio | 1×1 |
@@ -3237,13 +3237,13 @@ Harpias de caverna perderam o canto encantador de suas primas da superfície —
 | 071 | Bruxa da Masmorra | Médio | 1×1 |
 | 072 | Fera Seminal | Grande | 2×2 |
 | 073 | Carniçal Alado | Grande | 2×2 |
-| 074 | Balor | Grande | 2×2 |
+| 074 | Arquidemônio Flamejante | Grande | 2×2 |
 | 075 | Enxame de Ratos-Cadáveres | Médio | 1×1 |
 | 076 | Elemental de Terra | Grande | 2×2 |
 | 077 | Banshee | Médio | 1×1 |
 | 078 | Morcego-Tirano | Gigante | 3×3 |
 | 079 | Ooze Ocular | Grande | 2×2 |
-| 080 | Tarrasque (Bebê) | Imenso | 4×4 |
+| 080 | Devorador Ancião (Filhote) | Imenso | 4×4 |
 
 ---
 
@@ -3253,13 +3253,13 @@ Harpias de caverna perderam o canto encantador de suas primas da superfície —
 |-------|----------|
 | 1 | Zumbi de Masmorra, Goblin de Caverna |
 | 2 | Esqueleto Armado, Besouro-Diamante, Mosca-Carniça Colossal, Enxame de Ratos-Cadáveres, Slime Ácido |
-| 3 | Ghoul, Dragonete de Magma, Aranha Tecerrochas, Cocatriz, Hobgoblin Guerreiro |
+| 3 | Necrófago, Dragonete de Magma, Aranha Tecerrochas, Cocatriz, Hobgoblin Guerreiro |
 | 4 | Espectro, Armadura Animada, Escorpião Gigante, Orc de Masmorra, Slime de Cristal, Harpia de Caverna, Lagosta Abissal |
 | 5 | Assombração, Drake de Pedra, Minotauro, Centopeia Cáustica, Cogumelo-Rei, Roper, Planta Carnívora, Yeti das Profundezas, Besouro-Trovão, Salamandra Gigante, Morcego-Tirano |
 | 6 | Múmia, Basilisco, Sapo-Engolidor, Gárgula de Cristal, Troll de Pedra, Fera da Sombra... (nível 7), Harpia de Caverna |
-| 7 | Cavaleiro Espectral, Grifo, Elemental de Fogo, Elemental de Gelo, Lobo do Inverno, Doppelganger, Caranguejo-Eremita, Bruxa da Masmorra |
+| 7 | Cavaleiro Espectral, Grifo, Elemental de Fogo, Elemental de Gelo, Lobo do Inverno, Metamorfo Dúbio, Caranguejo-Eremita, Bruxa da Masmorra |
 | 8 | Golem de Pedra, Manticora, Treant Podre, Pudim Negro, Basilisco de Magma, Banshee, Elemental de Terra, Ooze Ocular |
-| 9 | Dragão Jovem de Gelo (13)... Wyvern, Hidra, Ciclope, Aranha-Cavaleira, Verme Gigante, Vrock |
+| 9 | Dragão Jovem de Gelo (13)... Wyvern, Hidra, Ciclope, Aranha-Cavaleira, Verme Gigante, Carniçal Alado |
 | 10 | Vampiro, Kraken Menor, Aberração Tentacular |
 | 11 | Quimera, Sereia das Profundezas |
 | 12 | Golem de Ferro Vulcânico, Gigante de Pedra |
@@ -3267,9 +3267,9 @@ Harpias de caverna perderam o canto encantador de suas primas da superfície —
 | 14 | Anjo Caído, Behemoth de Pedra |
 | 15 | Lorde Vampiro, Wyvern-Rei |
 | 16 | Aboleth |
-| 17–18 | Lich |
-| 19 | Balor |
-| 20 | Dragão Ancião de Fogo, Tarrasque Bebê |
+| 17–18 | Necroarca |
+| 19 | Arquidemônio Flamejante |
+| 20 | Dragão Ancião de Fogo, Devorador Ancião Filhote |
 
 ---
 
@@ -3282,8 +3282,8 @@ Cada masmorra principal têm um Boss exclusivo gerado com base no Chefe Final so
 - Masmorra 3-4 (Níveis 5-8): Drake de Pedra (Nível 5), Hidra (Nível 9), Vampiro (Nível 10)
 - Masmorra 5-6 (Níveis 9-12): Dragão Jovem (Nível 13), Aboleth (Nível 16)
 - Masmorra 7-8 (Níveis 13-16): Anjo Caído (Nível 14), Behemoth (Nível 14)
-- Masmorra 9-10 (Níveis 17-19): Balor (Nível 19), Lich (Nível 18)
-- Masmorra 11 — Andar 4: Tarrasque Bebê ou Chefe Final do D6
+- Masmorra 9-10 (Níveis 17-19): Arquidemônio Flamejante (Nível 19), Necroarca (Nível 18)
+- Masmorra 11 — Andar 4: Devorador Ancião Filhote ou Chefe Final do D6
 
 
 
