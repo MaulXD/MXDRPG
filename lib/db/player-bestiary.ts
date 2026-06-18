@@ -42,10 +42,10 @@ export async function listPlayerBestiaryEntries(
 
   const sql = getSql();
   if (sql && dbEnabled()) {
-    const rows = await sql<{ data: PlayerBestiaryEntry }[]>`
-      SELECT data FROM eldarin_player_bestiary
-      WHERE user_id = ${userId} AND adventure_id = ${adventureId}
-      ORDER BY updated_at DESC
+    const rows = await sql<{ data: PlayerBestiaryEntry }[]>`
+      SELECT data FROM eldarin_player_bestiary
+      WHERE user_id = ${userId} AND adventure_id = ${adventureId}
+      ORDER BY updated_at DESC
     `;
     for (const row of rows) {
       byType.set(row.data.typeKey, row.data);
@@ -65,17 +65,10 @@ export async function savePlayerBestiaryEntry(
   const sql = getSql();
   if (!sql || !dbEnabled()) return;
 
-  await sql`
-    INSERT INTO eldarin_player_bestiary (user_id, adventure_id, type_key, data, updated_at)
-    VALUES (
-      ${userId},
-      ${adventureId},
-      ${entry.typeKey},
-      ${sql.json(entry)},
-      ${entry.updatedAt}
-    )
-    ON CONFLICT (user_id, adventure_id, type_key) DO UPDATE SET
-      data = EXCLUDED.data,
-      updated_at = EXCLUDED.updated_at
-  `;
+  await sql.unsafe(
+    `INSERT INTO eldarin_player_bestiary (user_id, adventure_id, type_key, data, updated_at)
+     VALUES (?, ?, ?, ?, ?)
+     ON DUPLICATE KEY UPDATE data = VALUES(data), updated_at = VALUES(updated_at)`,
+    [userId, adventureId, entry.typeKey, JSON.stringify(entry), entry.updatedAt]
+  );
 }

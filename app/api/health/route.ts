@@ -6,6 +6,7 @@ import {
   isGoogleOAuthConfigured,
 } from "@/lib/auth/oauth-config";
 import { dbEnabled, dbPing } from "@/lib/db/client";
+import { persistenceLabel } from "@/lib/db/dialect";
 import { ensureDbMigrations } from "@/lib/db/ensure-migrations";
 
 export async function GET() {
@@ -27,7 +28,7 @@ export async function GET() {
     ok: true,
     app: "eldarin-rpg",
     db,
-    persistence: hasUrl ? "postgres" : "memory",
+    persistence: hasUrl ? persistenceLabel() : "memory",
     clerk: {
       publishableKey: clerkPublishable,
       secretKey: Boolean(process.env.CLERK_SECRET_KEY?.trim()),

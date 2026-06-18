@@ -19,7 +19,7 @@ if (!process.env.DATABASE_URL?.trim()) {
     fs.copyFileSync(example, envLocal);
     console.log("Criado .env.local a partir de .env.example — edite DATABASE_URL e rode de novo.");
   } else {
-    console.error("Defina DATABASE_URL em .env.local (Neon → Connection string → pooled).");
+    console.error("Defina DATABASE_URL em .env.local (MariaDB: mysql://user:pass@host:3306/eldarin).");
     console.error("Guia: docs/P0-NEON-SETUP.md");
   }
   process.exit(1);

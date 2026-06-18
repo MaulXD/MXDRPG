@@ -109,7 +109,7 @@ npm run sync:data:check # só se mexeu em livros/ ou scripts de dados
 | Tema | Regra atual |
 |------|-------------|
 | **Marca do site** | Nome **MXDRPG** (`lib/site-metadata.ts`, `app/manifest.ts`) |
-| **Sistema de regras** | **Eldarin v4** no VTT ativo; D&D e VTM no hub = **Em breve** |
+| **Sistema de regras** | **Eldarin v4** no VTT ativo; fantasia clássica e VTM no hub = **Em breve** |
 | **Tema** | Só **escuro** — sem alternância claro/escuro |
 | **Fundos animados** | Em todo o site **exceto** grade VTT em `/mesa/:roomId` |
 | **Rotação de fundos** | A cada **hora** (`lib/backgrounds.ts`) |

@@ -1,6 +1,7 @@
 import type { Adventure, AdventureListItem } from "@/lib/adventure/types";
 import { getSql } from "@/lib/db/client";
 import { withDbTimeout } from "@/lib/db/timeout";
+import { memberIdsHasUser } from "@/lib/db/sql-helpers";
 import { normalizeRpgSystemId, type RpgSystemId } from "@/lib/rpg/systems";
 
 type AdventureRow = {
@@ -140,29 +141,37 @@ export async function saveAdventure(adventure: Adventure): Promise<void> {
   if (!sql) return;
   const row = adventureToRow(adventure);
   await withDbTimeout(
-    sql`
-    INSERT INTO eldarin_adventures (
-      adventure_id, owner_id, name, synopsis, rpg_system, access_mode, invite_code, member_ids,
-      primary_room_id, created_at, updated_at, deleted_at
-    ) VALUES (
-      ${row.adventure_id}, ${row.owner_id}, ${row.name}, ${row.synopsis},
-      ${row.rpg_system ?? "eldarin"},
-      ${row.access_mode ?? "public"},
-      ${row.invite_code}, ${sql.json(row.member_ids)}, ${row.primary_room_id},
-      ${row.created_at}, ${row.updated_at}, ${row.deleted_at}
-    )
-    ON CONFLICT (adventure_id) DO UPDATE SET
-      owner_id = EXCLUDED.owner_id,
-      name = EXCLUDED.name,
-      synopsis = EXCLUDED.synopsis,
-      rpg_system = EXCLUDED.rpg_system,
-      access_mode = EXCLUDED.access_mode,
-      invite_code = EXCLUDED.invite_code,
-      member_ids = EXCLUDED.member_ids,
-      primary_room_id = EXCLUDED.primary_room_id,
-      updated_at = EXCLUDED.updated_at,
-      deleted_at = EXCLUDED.deleted_at
-  `,
+    sql.unsafe(
+      `INSERT INTO eldarin_adventures (
+        adventure_id, owner_id, name, synopsis, rpg_system, access_mode, invite_code, member_ids,
+        primary_room_id, created_at, updated_at, deleted_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      ON DUPLICATE KEY UPDATE
+        owner_id = VALUES(owner_id),
+        name = VALUES(name),
+        synopsis = VALUES(synopsis),
+        rpg_system = VALUES(rpg_system),
+        access_mode = VALUES(access_mode),
+        invite_code = VALUES(invite_code),
+        member_ids = VALUES(member_ids),
+        primary_room_id = VALUES(primary_room_id),
+        updated_at = VALUES(updated_at),
+        deleted_at = VALUES(deleted_at)`,
+      [
+        row.adventure_id,
+        row.owner_id,
+        row.name,
+        row.synopsis,
+        row.rpg_system ?? "eldarin",
+        row.access_mode ?? "public",
+        row.invite_code,
+        JSON.stringify(row.member_ids),
+        row.primary_room_id,
+        row.created_at,
+        row.updated_at,
+        row.deleted_at,
+      ]
+    ),
     5000,
     "saveAdventure"
   );
@@ -176,28 +185,30 @@ export async function listAdventuresForOwnerOrMember(
   if (!sql) return [];
   let rows: AdventureRow[];
   try {
-    rows = await withDbTimeout(
-      rpgSystemId
-        ? sql<AdventureRow[]>`
-        SELECT adventure_id, owner_id, name, synopsis, rpg_system, access_mode, invite_code, member_ids,
-               primary_room_id, created_at, updated_at, deleted_at
-        FROM eldarin_adventures
-        WHERE rpg_system = ${rpgSystemId}
-          AND (owner_id = ${userId}
-           OR member_ids @> ${sql.json([userId])}::jsonb)
-        ORDER BY updated_at DESC
-      `
-        : sql<AdventureRow[]>`
-        SELECT adventure_id, owner_id, name, synopsis, rpg_system, access_mode, invite_code, member_ids,
-               primary_room_id, created_at, updated_at, deleted_at
-        FROM eldarin_adventures
-        WHERE owner_id = ${userId}
-           OR member_ids @> ${sql.json([userId])}::jsonb
-        ORDER BY updated_at DESC
-      `,
-      5000,
-      "listAdventures"
-    );
+    const member = memberIdsHasUser(userId);
+    const base = `SELECT adventure_id, owner_id, name, synopsis, rpg_system, access_mode, invite_code, member_ids,
+             primary_room_id, created_at, updated_at, deleted_at
+      FROM eldarin_adventures`;
+    const order = `ORDER BY updated_at DESC`;
+    if (rpgSystemId) {
+      rows = await withDbTimeout(
+        sql.unsafe(
+          `${base} WHERE rpg_system = ? AND (owner_id = ? OR ${member.sql}) ${order}`,
+          [rpgSystemId, userId, ...member.params]
+        ) as Promise<AdventureRow[]>,
+        5000,
+        "listAdventures"
+      );
+    } else {
+      rows = await withDbTimeout(
+        sql.unsafe(`${base} WHERE owner_id = ? OR ${member.sql} ${order}`, [
+          userId,
+          ...member.params,
+        ]) as Promise<AdventureRow[]>,
+        5000,
+        "listAdventures"
+      );
+    }
   } catch {
     return [];
   }

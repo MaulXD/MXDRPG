@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useCallback, useState } from "react";
-import { roomInviteUrl } from "@/lib/auth/room-access";
+import { roomInviteUrl, roomSpectatorUrl } from "@/lib/auth/room-access";
 
 type Props = {
   adventureId: string;
@@ -12,14 +12,19 @@ type Props = {
 };
 
 export function RoomInviteBar({ adventureId, roomId, inviteCode, roomName }: Props) {
-  const [copied, setCopied] = useState<"code" | "link" | null>(null);
+  const [copied, setCopied] = useState<"code" | "link" | "watch" | null>(null);
 
   const magicLink =
     typeof window !== "undefined"
       ? `${window.location.origin}/mesa/${roomId}?invite=${encodeURIComponent(inviteCode)}`
       : roomInviteUrl(roomId, inviteCode);
 
-  const copy = useCallback(async (text: string, kind: "code" | "link") => {
+  const spectatorLink =
+    typeof window !== "undefined"
+      ? `${window.location.origin}/mesa/${roomId}?invite=${encodeURIComponent(inviteCode)}&watch=1`
+      : roomSpectatorUrl(roomId, inviteCode);
+
+  const copy = useCallback(async (text: string, kind: "code" | "link" | "watch") => {
     try {
       await navigator.clipboard.writeText(text);
       setCopied(kind);
@@ -53,6 +58,14 @@ export function RoomInviteBar({ adventureId, roomId, inviteCode, roomName }: Pro
         onClick={() => copy(magicLink, "link")}
       >
         {copied === "link" ? "OK" : "Link"}
+      </button>
+      <button
+        type="button"
+        className="btn btn-ghost room-invite-btn"
+        title="Espectador — só assistir"
+        onClick={() => copy(spectatorLink, "watch")}
+      >
+        {copied === "watch" ? "OK" : "Assistir"}
       </button>
       <Link
         href={`/aventura/${adventureId}/configurar`}

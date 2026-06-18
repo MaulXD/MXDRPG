@@ -362,6 +362,53 @@
   font-size: 0.72rem !important;
 }
 
+.room-invite-panel__hint--watch {
+  margin-top: -0.25rem;
+  font-size: 0.68rem;
+}
+
+.vtt-token-delegate {
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.vtt-token-delegate-hint {
+  margin-bottom: 0.5rem;
+}
+
+.vtt-token-delegate-active {
+  font-size: 0.82rem;
+  margin: 0 0 0.5rem;
+}
+
+.vtt-token-delegate-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.vtt-token-delegate-label {
+  font-size: 0.68rem;
+  color: var(--text-muted, #9aa3ad);
+}
+
+.vtt-token-delegate-select {
+  width: 100%;
+  padding: 0.4rem 0.5rem;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(0, 0, 0, 0.25);
+  color: inherit;
+  font-size: 0.85rem;
+}
+
+.vtt-token-delegate-err {
+  color: #f08080;
+  font-size: 0.78rem;
+  margin-top: 0.35rem;
+}
+
 .mesa-panel-scroll--invite {
   display: flex;
   align-items: center;

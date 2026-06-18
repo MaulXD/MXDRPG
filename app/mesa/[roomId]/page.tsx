@@ -1,12 +1,11 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import type { Metadata } from "next";
-import { MesaWorkspace } from "@/components/vtt/MesaWorkspace";
+import type { Metadata } from "next";import { MesaWorkspace } from "@/components/vtt/MesaWorkspace";
 import { MesaVisitorNotice } from "@/components/vtt/MesaVisitorNotice";
 import {
   canManageRoom,
-  canParticipateInRoom,
-  isRoomVisitor,
+  parseWatchOnly,
+  resolveRoomAccess,
 } from "@/lib/auth/room-access";
 import {
   canViewRoomServer,
@@ -32,12 +31,11 @@ import { syncAdventureActorsForRoom } from "@/lib/room/adventure-actors";
 import { joinRoomMembers } from "@/lib/room/adventure-room";
 import { getRoom, joinRoomByInvite } from "@/lib/room/store";
 import { pageMetadata } from "@/lib/site-metadata";
-
 export const dynamic = "force-dynamic";
 
 type Props = {
   params: Promise<{ roomId: string }>;
-  searchParams: Promise<{ invite?: string; joined?: string; criar?: string }>;
+  searchParams: Promise<{ invite?: string; joined?: string; criar?: string; watch?: string }>;
 };
 
 export async function generateMetadata({ params }: Pick<Props, "params">): Promise<Metadata> {
@@ -48,8 +46,9 @@ export async function generateMetadata({ params }: Pick<Props, "params">): Promi
 
 export default async function MesaRoomPage({ params, searchParams }: Props) {
   const { roomId } = await params;
-  const { invite: inviteParam, criar: criarParam } = await searchParams;
+  const { invite: inviteParam, criar: criarParam, watch: watchParam } = await searchParams;
   const inviteCode = inviteParam?.trim() || null;
+  const watchOnly = parseWatchOnly(watchParam);
 
   const session = await getSession();
   let room = await getRoom(roomId);
@@ -74,7 +73,7 @@ export default async function MesaRoomPage({ params, searchParams }: Props) {
 
   const accountUser = session?.user ? await materializeSessionUser(session.user) : null;
 
-  if (accountUser && roomId !== "demo") {
+  if (accountUser && roomId !== "demo" && !watchOnly) {
     const isMember = await isRoomMemberResolved(room, accountUser.id, accountUser.clerkId);
     if (!room.memberIds.includes(accountUser.id) && isMember) {
       await joinRoomMembers(roomId, accountUser.id);
@@ -88,7 +87,7 @@ export default async function MesaRoomPage({ params, searchParams }: Props) {
     }
   }
 
-  if (accountUser && inviteCode && accountUser.role !== "admin") {
+  if (accountUser && inviteCode && !watchOnly && accountUser.role !== "admin") {
     const alreadyMember = await isRoomMemberResolved(room, accountUser.id, accountUser.clerkId);
     if (!alreadyMember && (await inviteMatchesRoom(room, inviteCode))) {
       const joined = await joinRoomByInvite(inviteCode, accountUser.id, roomId);
@@ -111,6 +110,7 @@ export default async function MesaRoomPage({ params, searchParams }: Props) {
   if (
     accountUser &&
     roomId !== "demo" &&
+    !watchOnly &&
     (await isRoomMemberResolved(room, accountUser.id, accountUser.clerkId))
   ) {
     const advId = room.adventureId ?? roomId;
@@ -169,9 +169,11 @@ export default async function MesaRoomPage({ params, searchParams }: Props) {
     );
   }
 
-  const visitor = isRoomVisitor(room, session?.user ?? null, inviteCode);
+  const access = resolveRoomAccess(room, session?.user ?? null, inviteCode, { watchOnly });
+  const visitor = access.isVisitor;
   const isRoomGm = canManageRoom(room, session?.user ?? null);
-  const canParticipate = canParticipateInRoom(room, session?.user ?? null);
+  const canParticipate = access.canParticipate;
+  const canChat = access.canChat;
   const role = session?.user.role ?? null;
   const packs = getVisiblePacks(role, { isRoomGm });
   const compendium = Object.fromEntries(
@@ -181,7 +183,6 @@ export default async function MesaRoomPage({ params, searchParams }: Props) {
     ])
   ) as Record<CompendiumPackId, ReturnType<typeof getPackEntries>>;
 
-  const canEdit = canParticipate;
   const isDemoRoom = roomId === "demo";
   const canControlCombat = isRoomGm;
   const defaultActorId =
@@ -204,9 +205,18 @@ export default async function MesaRoomPage({ params, searchParams }: Props) {
     charactersInAdventure = inAdv.length;
   }
 
+  const canEdit = canParticipate;
+
   return (
     <div className="vtt-page vtt-page--mesa">
-      {visitor ? <MesaVisitorNotice roomId={roomId} inviteCode={inviteCode} /> : null}
+      {visitor ? (
+        <MesaVisitorNotice
+          roomId={roomId}
+          inviteCode={inviteCode}
+          watchOnly={access.watchOnly}
+          isDemo={isDemoRoom}
+        />
+      ) : null}
 
       <MesaWorkspace
         roomId={roomId}
@@ -216,7 +226,8 @@ export default async function MesaRoomPage({ params, searchParams }: Props) {
         scene={room.scene}
         canEdit={canEdit}
         canControlCombat={canControlCombat}
-        canChat={canParticipate}
+        canChat={canChat}
+        watchOnly={access.watchOnly}
         inviteCode={inviteCode}
         roomInviteCode={canParticipate ? mesaInvite.inviteCode : null}
         roomInviteRoomId={canParticipate ? mesaInvite.roomId : null}

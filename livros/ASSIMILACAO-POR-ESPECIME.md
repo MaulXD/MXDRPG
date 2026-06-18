@@ -4,7 +4,7 @@ Ao preparar um monstro especifico, o Prato Estruturado usa **esta tabela**, não
 
 **Foco:** o Cozinheiro escolhe **1** habilidade da tabela do monstro preparado (garantida). **Rolagem do 1d4** (Cap. 5) define quantas escolhas extras o Cozinheiro faz, até **4 habilidades totais** no máximo.
 
-**Duracao padrão:** 24 horas ou até o próximo descanso longo, salvo indicacao contraria. Efeitos estilo D&D; mutacoes não acumulam duplicatas do mesmo tipo.
+**Duracao padrão:** 24 horas ou até o próximo descanso longo, salvo indicacao contraria. Efeitos estilo fantasia clássica; mutacoes não acumulam duplicatas do mesmo tipo.
 
 ---
 
@@ -34,7 +34,7 @@ Ao preparar um monstro especifico, o Prato Estruturado usa **esta tabela**, não
 | 7 | Garras de Ossudo | Ataques desarmados causam 1d6 cortante (24h). |
 | 8 | Medula Comprimida | +2 em testes de Constituicao contra fadiga, sono forcado e exaustao (24h). |
 
-## 003 — GHOUL
+## 003 — NECRÓFAGO
 
 | # | Habilidade | Efeito |
 |---|-----------|--------|
@@ -60,7 +60,7 @@ Ao preparar um monstro especifico, o Prato Estruturado usa **esta tabela**, não
 | 7 | Corpo Translucido | Quase invisivel em luz fraca; Vantagem em Furtividade em sombra (24h). |
 | 8 | Sexto Sentido Frio | Nao pode ser surpreendido; detecta mortos-vivos num raio de 20m (24h). |
 
-## 005 — LICH (ARQUILICHE)
+## 005 — NECROARCA (ARQUILICHE)
 
 | # | Habilidade | Efeito |
 |---|-----------|--------|
@@ -70,7 +70,7 @@ Ao preparar um monstro especifico, o Prato Estruturado usa **esta tabela**, não
 | 4 | Imunidade Arcana | Imune a medo, charm, exaustao e veneno (24h). |
 | 5 | Regeneração Necrotica | Recupera 2d8 HP no inicio de cada turno enquanto a mutação estiver ativa (24h). |
 | 6 | Voo do Limiar | Voo 9m por turno (24h). |
-| 7 | Olhos de Lich | Enxerga ilusoes, invisibilidade e auras mágicas (24h). |
+| 7 | Olhos de Necroarca | Enxerga ilusoes, invisibilidade e auras mágicas (24h). |
 | 8 | Disrupcao do Turno | Reacao quando morto-vivo aliado a 30m cai a 0 HP: conjura truque ou magia de nv. 1 (1/combate). |
 
 ## 006 — ASSOMBRACAO
@@ -580,7 +580,7 @@ Ao preparar um monstro especifico, o Prato Estruturado usa **esta tabela**, não
 | 7 | Bolsa Dimensional Gastrica | Engole itens pequenos sem ganhar peso, max 10 kg (24h). |
 | 8 | Metabolismo de Material | Resistência fisica baseada no ultimo material imitado (24h). |
 
-## 045 — DOPPELGANGER
+## 045 — METAMORFO DÚBIO
 
 | # | Habilidade | Efeito |
 |---|-----------|--------|
@@ -796,9 +796,9 @@ Ao preparar um monstro especifico, o Prato Estruturado usa **esta tabela**, não
 |-----|---------|-------|
 | 001 | ZUMBI DE MASMORRA | ## 001 |
 | 002 | ESQUELETO ARMADO | ## 002 |
-| 003 | GHOUL | ## 003 |
+| 003 | NECRÓFAGO | ## 003 |
 | 004 | ESPECTRO | ## 004 |
-| 005 | LICH (ARQUILICHE) | ## 005 |
+| 005 | NECROARCA (ARQUILICHE) | ## 005 |
 | 006 | ASSOMBRACAO | ## 006 |
 | 007 | VAMPIRO | ## 007 |
 | 008 | CAVALEIRO ESPECTRAL | ## 008 |
@@ -838,7 +838,7 @@ Ao preparar um monstro especifico, o Prato Estruturado usa **esta tabela**, não
 | 042 | YETI | ## 042 |
 | 043 | LOBO DO INVERNO | ## 043 |
 | 044 | MIMICO DE BAUL | ## 044 |
-| 045 | DOPPELGANGER | ## 045 |
+| 045 | METAMORFO DÚBIO | ## 045 |
 | 046 | HIDRA DAS CAVERNAS | ## 046 |
 | 047 | QUIMERA | ## 047 |
 | 048 | ANJO CAIDO | ## 048 |

@@ -17,7 +17,7 @@ Obrigatórias para produção real (usuários + salas persistentes):
 
 | Variável | Descrição |
 |----------|-----------|
-| `DATABASE_URL` | Postgres (Neon ou self-hosted) — use endpoint **pooler** se serverless |
+| `DATABASE_URL` | MariaDB — salas, usuários, personagens, aventuras |
 | `SESSION_SECRET` | String aleatória 32+ caracteres |
 | `NODE_ENV` | `production` |
 
@@ -48,7 +48,7 @@ npm run db:setup
 npm run db:migrate
 ```
 
-Confirme em produção: `"db": true`, `"persistence": "postgres"` no `/api/health`.
+Confirme em produção: `"db": true`, `"persistence": "mariadb"` no `/api/health`.
 
 ## DNS
 

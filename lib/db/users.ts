@@ -425,13 +425,17 @@ export async function updateUserAvatar(
 
   const focusJson = avatarFocus ? JSON.stringify(avatarFocus) : null;
 
-  await sql`
-    UPDATE eldarin_users
-    SET avatar_source = ${avatarSource},
-        avatar_url = ${avatarSource === "custom" ? customUrl : row.avatar_url},
-        avatar_focus = ${focusJson}::jsonb
-    WHERE id = ${userId}
-  `;
+  await sql.unsafe(
+    `UPDATE eldarin_users
+     SET avatar_source = ?, avatar_url = ?, avatar_focus = ?
+     WHERE id = ?`,
+    [
+      avatarSource,
+      avatarSource === "custom" ? customUrl : row.avatar_url,
+      focusJson,
+      userId,
+    ]
+  );
 
   const updated = await fetchUserById(userId);
   if (!updated) throw new Error("Conta não encontrada");
@@ -603,22 +607,23 @@ export async function deleteUserAccount(userId: string): Promise<void> {
 export async function upsertSeedUser(user: StoredUser): Promise<void> {
   const sql = getSql();
   if (!sql) return;
-  await sql`
-    INSERT INTO eldarin_users (id, clerk_id, email, nickname, name, password_hash, role, created_at)
-    VALUES (
-      ${user.id},
-      ${user.clerkId ?? null},
-      ${slugEmail(user.email)},
-      ${user.nickname ?? null},
-      ${user.name},
-      ${user.passwordHash},
-      ${user.role},
-      ${user.createdAt}
-    )
-    ON CONFLICT (id) DO UPDATE SET
-      nickname = EXCLUDED.nickname,
-      name = EXCLUDED.name,
-      password_hash = EXCLUDED.password_hash,
-      role = EXCLUDED.role
-  `;
+  await sql.unsafe(
+    `INSERT INTO eldarin_users (id, clerk_id, email, nickname, name, password_hash, role, created_at)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+     ON DUPLICATE KEY UPDATE
+       nickname = VALUES(nickname),
+       name = VALUES(name),
+       password_hash = VALUES(password_hash),
+       role = VALUES(role)`,
+    [
+      user.id,
+      user.clerkId ?? null,
+      slugEmail(user.email),
+      user.nickname ?? null,
+      user.name,
+      user.passwordHash,
+      user.role,
+      user.createdAt,
+    ]
+  );
 }

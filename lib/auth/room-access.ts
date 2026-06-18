@@ -310,3 +310,64 @@ export function roomInviteUrl(roomId: string, inviteCode: string, basePath?: str
   const path = `/mesa/${roomId}?invite=${encodeURIComponent(inviteCode)}`;
   return origin ? `${origin}${path}` : path;
 }
+
+export function parseWatchOnly(raw: string | null | undefined): boolean {
+  const t = (raw ?? "").trim().toLowerCase();
+  return t === "1" || t === "true" || t === "watch";
+}
+
+export type RoomAccessFlags = {
+  canView: boolean;
+  isVisitor: boolean;
+  canParticipate: boolean;
+  canChat: boolean;
+  watchOnly: boolean;
+};
+
+export function resolveRoomAccess(
+  room: RoomState,
+  user: SessionUser | null | undefined,
+  inviteCode?: string | null,
+  opts?: { watchOnly?: boolean; adventureInviteCode?: string | null }
+): RoomAccessFlags {
+  const watchOnly = Boolean(opts?.watchOnly);
+  const adventureInviteCode = opts?.adventureInviteCode ?? null;
+  const canView = canViewRoom(room, user, inviteCode, adventureInviteCode);
+
+  if (watchOnly && canView) {
+    return {
+      canView: true,
+      isVisitor: true,
+      canParticipate: false,
+      canChat: false,
+      watchOnly: true,
+    };
+  }
+
+  return {
+    canView,
+    isVisitor: isRoomVisitor(room, user, inviteCode, adventureInviteCode),
+    canParticipate: canParticipateInRoom(room, user),
+    canChat: canChatInRoom(room, user),
+    watchOnly: false,
+  };
+}
+
+/** Link espectador — mapa + chat leitura, sem entrar na mesa (D7/D22). */
+export function roomSpectatorUrl(
+  roomId: string,
+  inviteCode: string,
+  basePath?: string
+): string {
+  const join = roomInviteUrl(roomId, inviteCode, basePath);
+  const sep = join.includes("?") ? "&" : "?";
+  return `${join}${sep}watch=1`;
+}
+
+export function hasValidInviteForRoom(
+  room: Pick<RoomState, "inviteCode">,
+  inviteCode?: string | null,
+  adventureInviteCode?: string | null
+): boolean {
+  return inviteMatches(room, inviteCode, adventureInviteCode);
+}

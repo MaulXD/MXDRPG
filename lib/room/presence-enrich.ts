@@ -5,6 +5,7 @@ import { ensureDbMigrations } from "@/lib/db/ensure-migrations";
 import { parseAvatarFocus, resolveUserAvatarUrl } from "@/lib/db/user-avatar";
 import { getSql } from "@/lib/db/client";
 import { dbEnabled } from "@/lib/db/enabled";
+import { queryRowsByIds } from "@/lib/db/sql-helpers";
 import { fetchClerkIdForUser, fetchUserByClerkId, fetchUserById } from "@/lib/db/users";
 import { dedupePresenceByUser } from "@/lib/room/presence-identity";
 import { resolveActorTokenImageUrl } from "@/lib/room/portrait-sync";
@@ -82,17 +83,14 @@ async function fetchUserPresenceRows(userIds: string[]): Promise<Map<string, Use
 
   let rows: UserPresenceRow[] = [];
   try {
-    rows = await sql<UserPresenceRow[]>`
-      SELECT ${sql.unsafe(fullSelect)}
-      FROM eldarin_users
-      WHERE id = ANY(${userIds})
-    `;
+    rows = await queryRowsByIds<UserPresenceRow>(
+      sql,
+      "eldarin_users",
+      fullSelect,
+      userIds
+    );
   } catch {
-    rows = await sql<UserPresenceRow[]>`
-      SELECT ${sql.unsafe(baseSelect)}
-      FROM eldarin_users
-      WHERE id = ANY(${userIds})
-    `;
+    rows = await queryRowsByIds<UserPresenceRow>(sql, "eldarin_users", baseSelect, userIds);
   }
 
   for (const row of rows) {

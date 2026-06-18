@@ -11,7 +11,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Faça login" }, { status: 401 });
   }
   if (!dbEnabled()) {
-    return NextResponse.json({ error: "Apelido requer Postgres (DATABASE_URL)" }, { status: 503 });
+    return NextResponse.json({ error: "Apelido requer MariaDB (DATABASE_URL)" }, { status: 503 });
   }
 
   const body = await request.json();
@@ -28,7 +28,7 @@ export async function POST(request: Request) {
   } catch (e) {
     const raw = e instanceof Error ? e.message : "Apelido inválido";
     const safe =
-      /column|relation|does not exist|postgres/i.test(raw)
+      /column|relation|does not exist|mariadb|mysql/i.test(raw)
         ? "Banco desatualizado — tente de novo em alguns segundos ou avise o suporte."
         : raw;
     return NextResponse.json({ error: safe }, { status: 400 });

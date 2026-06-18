@@ -1,41 +1,43 @@
 #!/usr/bin/env node
-import postgres from "postgres";
 import { loadDotEnv } from "./load-env.mjs";
-import { normalizeDatabaseUrl } from "./normalize-url.mjs";
+import { createMariaPool, mariaDbUrl, maskUrl } from "./mysql-pool.mjs";
 
 loadDotEnv();
 
-const url = normalizeDatabaseUrl(process.env.DATABASE_URL ?? "");
+const rawUrl = process.env.DATABASE_URL ?? "";
+const url = mariaDbUrl(rawUrl);
 if (!url) {
-  console.error("DATABASE_URL não definida. Crie .env.local — ver docs/P0-NEON-SETUP.md");
+  console.error("DATABASE_URL não definida. Crie .env.local — ver .env.example");
   process.exit(1);
 }
 
-const local = url.includes("localhost") || url.includes("127.0.0.1");
-const sql = postgres(url, {
-  max: 1,
-  ssl: local ? false : "require",
-  connect_timeout: 15,
-});
+if (/^postgres(ql)?:/i.test(rawUrl.trim())) {
+  console.error("Postgres não é suportado. Use MariaDB (mysql://...).");
+  process.exit(1);
+}
+
+const pool = await createMariaPool(rawUrl);
 
 try {
-  await sql`SELECT 1 AS ok`;
-  const tables = await sql`
-    SELECT table_name FROM information_schema.tables
-    WHERE table_schema = 'public' AND table_name LIKE 'eldarin_%'
-    ORDER BY table_name
-  `;
-  console.log("OK — Postgres acessível");
+  await pool.execute("SELECT 1 AS ok");
+  const [tables] = await pool.execute(
+    `SELECT table_name FROM information_schema.tables
+     WHERE table_schema = DATABASE() AND table_name LIKE 'eldarin_%'
+     ORDER BY table_name`
+  );
+  console.log("OK — MariaDB acessível");
   console.log("Host:", new URL(url).hostname);
-  console.log("Tabelas:", tables.map((r) => r.table_name).join(", ") || "(nenhuma — rode npm run db:migrate)");
+  console.log(
+    "Tabelas:",
+    tables.map((r) => r.table_name).join(", ") || "(nenhuma — rode npm run db:migrate)"
+  );
   if (tables.length < 3) {
     console.warn("Aviso: esperado eldarin_users, eldarin_characters, eldarin_rooms");
     process.exit(2);
   }
 } catch (e) {
   console.error("Falha:", e instanceof Error ? e.message : e);
-  console.error("Neon: use string com ?sslmode=require e endpoint -pooler em produção.");
   process.exit(1);
 } finally {
-  await sql.end({ timeout: 5 });
+  await pool.end();
 }

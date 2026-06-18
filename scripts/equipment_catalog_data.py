@@ -4,13 +4,13 @@
 from __future__ import annotations
 
 METERS_PER_CELL = 1.5
-DND_RANGE_SCALE = 0.7
+TACTICAL_RANGE_SCALE = 0.7
 FEET_TO_METERS = 0.3048
 
 
-def dnd_normal_range_cells(feet: int) -> int:
-    """Alcance normal SRD/D&D 5e em pes, escalado a 70% e arredondado em célula."""
-    meters = feet * FEET_TO_METERS * DND_RANGE_SCALE
+def tactical_normal_range_cells(feet: int) -> int:
+    """Alcance normal tabela tática Eldarin em pes, escalado a 70% e arredondado em célula."""
+    meters = feet * FEET_TO_METERS * TACTICAL_RANGE_SCALE
     return max(1, round(meters / METERS_PER_CELL))
 
 
@@ -18,13 +18,13 @@ def meters_bonus_cells(meters: float) -> int:
     return round(meters / METERS_PER_CELL)
 
 
-# Referencia SRD (pes) — ver lib/vtt/ranged-weapon-range.ts
-_CELL_LONG_BOW = dnd_normal_range_cells(150)  # 21
-_CELL_SHORT_BOW = dnd_normal_range_cells(80)  # 11
-_CELL_LIGHT_CROSSBOW = dnd_normal_range_cells(80)  # 11
-_CELL_HEAVY_CROSSBOW = dnd_normal_range_cells(100)  # 14
-_CELL_HAND_CROSSBOW = dnd_normal_range_cells(30)  # 4
-_CELL_THROWN = dnd_normal_range_cells(20)  # 4
+# Referencia tabela de referência (pes) — ver lib/vtt/ranged-weapon-range.ts
+_CELL_LONG_BOW = tactical_normal_range_cells(150)  # 21
+_CELL_SHORT_BOW = tactical_normal_range_cells(80)  # 11
+_CELL_LIGHT_CROSSBOW = tactical_normal_range_cells(80)  # 11
+_CELL_HEAVY_CROSSBOW = tactical_normal_range_cells(100)  # 14
+_CELL_HAND_CROSSBOW = tactical_normal_range_cells(30)  # 4
+_CELL_THROWN = tactical_normal_range_cells(20)  # 4
 
 # Arcos longos (9) — ID ARC-L01 … ARC-L09
 ARCOS_LONGOS = [

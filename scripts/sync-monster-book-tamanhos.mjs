@@ -1,5 +1,5 @@
 /**
- * Sincroniza Tamanho (grid VTT / SRD D&D 5e) nas fichas do LIVRO-DO-MESTRE.
+ * Sincroniza Tamanho (grid VTT / tabela de referência fantasia tática) nas fichas do LIVRO-DO-MESTRE.
  * Fonte: data/monster-tamanhos.json + data/compendiums/monstros.json
  * Uso: node scripts/sync-monster-book-tamanhos.mjs
  */
@@ -105,7 +105,7 @@ lm = patched.join("");
 
 lm = lm.replace(
   /- \*\*Tamanho:\*\* Categoria corporal[^\n]+\n/,
-  "- **Tamanho:** Categoria corporal no grid quadrado (SRD/D&D 5e: Pequeno a Colossal; ver Livro do Jogador §3.1.3.1)\n"
+  "- **Tamanho:** Categoria corporal no grid quadrado (tabela tática Eldarin: Pequeno a Colossal; ver Livro do Jogador §3.1.3.1)\n"
 );
 
 const appendixEnd = "\n\n---\n\n# ÍNDICE RÁPIDO — TODOS OS MONSTROS POR NÍVEL";

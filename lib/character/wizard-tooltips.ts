@@ -47,7 +47,7 @@ export const RACIAL_TRAIT_DESCRIPTIONS: Record<string, string> = {
 
   "Sorte Inata":
     "Uma vez por descanso longo, ao rolar 1 natural pode rerrolar e usar o segundo resultado.",
-  "Bravura Halfling":
+  "Bravura Pequenina":
     "Vantagem contra Medo. Não foge de combate por efeitos de medo involuntários.",
   "Furtividade Natural":
     "Pode se esconder mesmo coberto só por uma criatura Média ou maior.",

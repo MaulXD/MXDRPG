@@ -28,7 +28,7 @@ export function MesaPersistenceNotice() {
   }, []);
 
   const memoryMode = health?.persistence === "memory";
-  const dbDown = health?.persistence === "postgres" && health.db === false;
+  const dbDown = health?.persistence === "mariadb" && health.db === false;
 
   if (!memoryMode && !dbDown) return null;
 

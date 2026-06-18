@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
-import { canBypassCombatTurn, canParticipateInRoom } from "@/lib/auth/room-access";
+import { canBypassCombatTurn } from "@/lib/auth/room-access";
+import { canParticipateInRoomSession } from "@/lib/auth/mesa-watch-session";
 import { canMoveToken } from "@/lib/auth/authorize-room";
 import { getSession } from "@/lib/auth/session";
 import { snapshotForViewer } from "@/lib/room/snapshot-for-viewer";
@@ -43,7 +44,7 @@ export async function POST(req: Request, { params }: Params) {
     return NextResponse.json({ error: "Sala não encontrada" }, { status: 404 });
   }
 
-  if (!canParticipateInRoom(room, session?.user ?? null)) {
+  if (!(await canParticipateInRoomSession(room, session?.user ?? null))) {
     return NextResponse.json({ error: "Sem permissão" }, { status: 403 });
   }
 

@@ -17,7 +17,7 @@
 
 Escolha uma das sete raças jogáveis (ou uma linhagem Meio-Humano). Anote bônus de atributo e traços de nível 1.
 
-**Sugestão para Espiritualista:** raças com **Destreza** ou **Sabedoria** (Elfo, Humano, Halfling, linhagens ágeis).
+**Sugestão para Espiritualista:** raças com **Destreza** ou **Sabedoria** (Elfo, Humano, Pequenino, linhagens ágeis).
 
 ### Passo 3 — Atributos
 

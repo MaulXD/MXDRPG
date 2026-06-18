@@ -15,7 +15,7 @@ $env:SMOKE_BASE_URL="https://www.mxdrpg.com.br"
 npm run smoke:p0
 ```
 
-Esperado com `DATABASE_URL` no servidor: `"db": true`, `"persistence": "postgres"`.
+Esperado com `DATABASE_URL` no servidor: `"db": true`, `"persistence": "mariadb"`.
 
 ## Env produção (mínimo beta)
 

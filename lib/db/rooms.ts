@@ -6,6 +6,7 @@ import type { RoomSettings } from "@/lib/room/settings";
 import { dbEnabled, getSql } from "@/lib/db/client";
 import { withDbTimeout } from "@/lib/db/timeout";
 import { packCombatColumn, unpackCombatColumn } from "@/lib/db/room-combat-meta";
+import { memberIdsHasUser } from "@/lib/db/sql-helpers";
 
 type RoomRow = {
   room_id: string;
@@ -90,31 +91,43 @@ export async function saveRoom(state: RoomState): Promise<void> {
   const sql = getSql();
   if (!sql) return;
   const row = stateToRow(state);
+  const revGuard = (col: string) =>
+    `${col} = IF(revision <= VALUES(revision), VALUES(${col}), ${col})`;
   await withDbTimeout(
-    sql`
-    INSERT INTO eldarin_rooms (
-      room_id, adventure_id, owner_id, name, invite_code, member_ids,
-      scene, actors, combat, chat, settings, revision, updated_at
-    ) VALUES (
-      ${row.room_id}, ${row.adventure_id}, ${row.owner_id}, ${row.name}, ${row.invite_code}, ${sql.json(row.member_ids)},
-      ${sql.json(row.scene)}, ${sql.json(row.actors)}, ${sql.json(row.combat)}, ${sql.json(row.chat)},
-      ${sql.json(row.settings ?? {})}, ${row.revision}, ${row.updated_at}
-    )
-    ON CONFLICT (room_id) DO UPDATE SET
-      adventure_id = EXCLUDED.adventure_id,
-      owner_id = EXCLUDED.owner_id,
-      name = EXCLUDED.name,
-      invite_code = EXCLUDED.invite_code,
-      member_ids = EXCLUDED.member_ids,
-      scene = EXCLUDED.scene,
-      actors = EXCLUDED.actors,
-      combat = EXCLUDED.combat,
-      chat = EXCLUDED.chat,
-      settings = EXCLUDED.settings,
-      revision = EXCLUDED.revision,
-      updated_at = EXCLUDED.updated_at
-    WHERE eldarin_rooms.revision <= EXCLUDED.revision
-  `,
+    sql.unsafe(
+      `INSERT INTO eldarin_rooms (
+        room_id, adventure_id, owner_id, name, invite_code, member_ids,
+        scene, actors, combat, chat, settings, revision, updated_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      ON DUPLICATE KEY UPDATE
+        ${revGuard("adventure_id")},
+        ${revGuard("owner_id")},
+        ${revGuard("name")},
+        ${revGuard("invite_code")},
+        ${revGuard("member_ids")},
+        ${revGuard("scene")},
+        ${revGuard("actors")},
+        ${revGuard("combat")},
+        ${revGuard("chat")},
+        ${revGuard("settings")},
+        ${revGuard("revision")},
+        ${revGuard("updated_at")}`,
+      [
+        row.room_id,
+        row.adventure_id,
+        row.owner_id,
+        row.name,
+        row.invite_code,
+        JSON.stringify(row.member_ids),
+        JSON.stringify(row.scene),
+        JSON.stringify(row.actors),
+        JSON.stringify(row.combat),
+        JSON.stringify(row.chat),
+        JSON.stringify(row.settings ?? {}),
+        row.revision,
+        row.updated_at,
+      ]
+    ),
     5000,
     "saveRoom"
   );
@@ -185,23 +198,15 @@ export async function listRoomsForOwnerOrMember(userId: string): Promise<RoomLis
     updated_at: number;
   }[];
   try {
+    const member = memberIdsHasUser(userId);
     rows = await withDbTimeout(
-      sql<
-        {
-          room_id: string;
-          adventure_id: string | null;
-          name: string;
-          owner_id: string;
-          invite_code: string;
-          updated_at: number;
-        }[]
-      >`
-        SELECT room_id, adventure_id, name, owner_id, invite_code, updated_at
-        FROM eldarin_rooms
-        WHERE owner_id = ${userId}
-           OR member_ids @> ${sql.json([userId])}::jsonb
-        ORDER BY updated_at DESC
-      `,
+      sql.unsafe(
+        `SELECT room_id, adventure_id, name, owner_id, invite_code, updated_at
+         FROM eldarin_rooms
+         WHERE owner_id = ? OR ${member.sql}
+         ORDER BY updated_at DESC`,
+        [userId, ...member.params]
+      ) as Promise<typeof rows>,
       5000,
       "listRooms"
     );

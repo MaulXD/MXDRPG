@@ -19,7 +19,7 @@ import { CombatModeTransition } from "@/components/vtt/CombatModeTransition";
 import { useFoundryWindows, FOUNDRY_DOCK_PANEL_IDS, type MesaWindowId } from "@/hooks/vtt/useFoundryWindows";
 import { MAX_CHARACTERS_PER_USER_PER_ADVENTURE } from "@/lib/character/adventure-bind";
 import { useGmPlayerViewMode } from "@/hooks/vtt/useGmPlayerViewMode";
-import { useRoomSync, type RoomMemberOnlineEvent } from "@/hooks/useRoomSync";
+import { useRoomSync, type RoomMemberOnlineEvent, nextCombatTurn } from "@/hooks/useRoomSync";
 import { useRoomPresence } from "@/hooks/useRoomPresence";
 import { MesaPresenceAlerts } from "@/components/vtt/MesaPresenceAlerts";
 import { MesaOnlineMenu } from "@/components/vtt/MesaOnlineMenu";
@@ -48,6 +48,8 @@ import { RoomInvitePanel } from "@/components/vtt/RoomInvitePanel";
 import { RoomInviteBar } from "@/components/vtt/RoomInviteBar";
 import { MesaPersistenceNotice } from "@/components/vtt/MesaPersistenceNotice";
 import { DemoGuidedTour } from "@/components/vtt/DemoGuidedTour";
+import { MesaGuidedTour } from "@/components/vtt/MesaGuidedTour";
+import { MesaMobileBar } from "@/components/vtt/MesaMobileBar";
 import { RoomCoverBackdrop } from "@/components/vtt/RoomCoverBackdrop";
 import { useSheetPdfDeepLink } from "@/hooks/useSheetPdfDeepLink";
 import "@/components/vtt/foundry/foundry.css";
@@ -74,6 +76,7 @@ type Props = {
   characterSlotsLeft?: number;
   charactersInAdventure?: number;
   openCharacterWizardOnLoad?: boolean;
+  watchOnly?: boolean;
 };
 
 export function MesaWorkspace({
@@ -98,6 +101,7 @@ export function MesaWorkspace({
   characterSlotsLeft = 0,
   charactersInAdventure = 0,
   openCharacterWizardOnLoad = false,
+  watchOnly = false,
 }: Props) {
   const shareRoomId = roomInviteRoomId ?? roomId;
   const isActualGm = canControlCombat;
@@ -116,6 +120,7 @@ export function MesaWorkspace({
   const [monsterSheetEntryId, setMonsterSheetEntryId] = useState<string | null>(null);
   const [characterWizardOpen, setCharacterWizardOpen] = useState(false);
   const [spawnAxial, setSpawnAxial] = useState<Axial | null>(null);
+  const [mobileEndTurnBusy, setMobileEndTurnBusy] = useState(false);
   const [combatChatReveal, setCombatChatReveal] = useState<
     Record<string, import("@/lib/combat/chat-display").CombatChatRevealPhase>
   >({});
@@ -371,7 +376,6 @@ export function MesaWorkspace({
       "chat",
       "dice",
       "status",
-      "whiteboard",
     ]);
     if (isActualGm) {
       ids.add("spawn");
@@ -439,6 +443,24 @@ export function MesaWorkspace({
         return;
       }
       windows.openAsPopup(id);
+    },
+    [windows]
+  );
+
+  const handleMobileEndTurn = useCallback(async () => {
+    setMobileEndTurnBusy(true);
+    try {
+      const snap = await nextCombatTurn(roomId, { force: true });
+      applyActionSnapshot(snap);
+    } finally {
+      setMobileEndTurnBusy(false);
+    }
+  }, [roomId, applyActionSnapshot]);
+
+  const openMobilePanel = useCallback(
+    (id: MesaWindowId) => {
+      windows.openAsPopup(id);
+      windows.focus(id);
     },
     [windows]
   );
@@ -644,6 +666,12 @@ export function MesaWorkspace({
                 session={session}
                 isRoomGm={isActualGm}
               />
+              <MesaGuidedTour
+                roomId={roomId}
+                session={session}
+                isRoomGm={isActualGm}
+                watchOnly={watchOnly}
+              />
               <MesaOnlineMenu
                 online={presenceOnline}
                 loading={presenceLoading}
@@ -696,15 +724,6 @@ export function MesaWorkspace({
               }
               onDungeonWindowFocus={() => windows.focus("dungeon")}
               onCombatChatReveal={onCombatChatReveal}
-              whiteboardWindowLayout={win("whiteboard")}
-              onWhiteboardWindowLayoutChange={(patch) => windows.patch("whiteboard", patch)}
-              onWhiteboardWindowClose={() => windows.close("whiteboard")}
-              onWhiteboardWindowMinimize={() =>
-                win("whiteboard").minimized
-                  ? windows.restore("whiteboard")
-                  : windows.minimize("whiteboard")
-              }
-              onWhiteboardWindowFocus={() => windows.focus("whiteboard")}
               initiativeWindowLayout={win("initiative")}
               onInitiativeWindowLayoutChange={(patch) => windows.patch("initiative", patch)}
               onInitiativeWindowClose={() => windows.close("initiative")}
@@ -922,6 +941,17 @@ export function MesaWorkspace({
               </div>
             </div>
           </div>
+
+          <MesaMobileBar
+            onOpenChat={() => openMobilePanel("chat")}
+            onOpenInitiative={() => openMobilePanel("initiative")}
+            onOpenDice={() => openMobilePanel("dice")}
+            onEndTurn={() => void handleMobileEndTurn()}
+            canEndTurn={canEndTurn || effectiveCanControlCombat}
+            canRollDice={canChat}
+            endTurnBusy={mobileEndTurnBusy}
+            combatActive={roomSettings.combatActive}
+          />
         </div>
       </div>
     </VttToastProvider>

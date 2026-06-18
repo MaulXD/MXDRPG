@@ -33,6 +33,8 @@ export type BattleToken = {
   paReduceAbilityUsed?: boolean;
   /** O Peão: 1 PA de movimento básico já isento neste turno */
   peaoFreeMoveUsed?: boolean;
+  /** Usuário delegado pode pilotar este token (D9/D21). */
+  delegatedToUserId?: string | null;
   ownerRole: "mestre" | "jogador";
   /** Foundry: token linkado ao Actor — stats vêm da ficha */
   actorId?: string;

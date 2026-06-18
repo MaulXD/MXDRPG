@@ -57,7 +57,7 @@ Yetis, lobos do inverno, elementais de gelo — **termorregulação invertida**,
 | Alvo | CD | Loot |
 |------|-----|------|
 | Mímico morto | 14 | Gel/adhesivo, “carne” elástica |
-| Doppelganger | 17 | Carne que muda sabor (Forrageio 18) |
+| Metamorfo Dúbio | 17 | Carne que muda sabor (Forrageio 18) |
 | Gárgula | 16 | Cristal vivo |
 
 ## Assimilação — Mímicos e Metamorfos

@@ -16,9 +16,9 @@ export type CreatureSize =
   | "gargantuan"
   | "colossal";
 
-const SMALL_RACES = new Set(["Halfling", "Gnomo"]);
+const SMALL_RACES = new Set(["Pequenino", "Gnomo", "Pequenino"]);
 
-/** Células ocupadas por tamanho — SRD/D&D 5e (1 célula ≈ 5 ft / 1,5 m). */
+/** Células ocupadas por tamanho — tabela tática Eldarin (1 célula ≈ 1,5 m). */
 export const SIZE_CELL_COUNT: Record<CreatureSize, number> = {
   small: 1,
   medium: 1,

@@ -20,12 +20,12 @@ export async function touchRoomPresenceDb(
 
   const now = Date.now();
   const label = displayName.trim() || "Jogador";
-  await sql`
-    INSERT INTO eldarin_room_presence (room_id, user_id, display_name, last_seen)
-    VALUES (${roomId}, ${userId}, ${label}, ${now})
-    ON CONFLICT (room_id, user_id)
-    DO UPDATE SET display_name = EXCLUDED.display_name, last_seen = EXCLUDED.last_seen
-  `;
+  await sql.unsafe(
+    `INSERT INTO eldarin_room_presence (room_id, user_id, display_name, last_seen)
+     VALUES (?, ?, ?, ?)
+     ON DUPLICATE KEY UPDATE display_name = VALUES(display_name), last_seen = VALUES(last_seen)`,
+    [roomId, userId, label, now]
+  );
 }
 
 export async function listRoomPresenceDb(

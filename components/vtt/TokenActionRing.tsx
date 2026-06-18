@@ -104,7 +104,7 @@ type Props = {
   /** Mestre: ajustar vida do token (personagem ou monstro). */
   showGmHpEdit?: boolean;
   onOpenGmHpEdit?: () => void;
-  /** Abre seletor de magias estilo D&D (em vez do submenu radial). */
+  /** Abre seletor de magias estilo fantasia clássica (em vez do submenu radial). */
   onOpenSpellPicker?: () => void;
 };
 
