@@ -22,6 +22,14 @@ function mod(n) {
   return Math.floor((Number(n) - 10) / 2);
 }
 
+/** Espelha lib/vtt/monster-pa.ts — compendium pode ter PA baixo (ex.: goblin 3). */
+function normalizeMonsterPa(rawMax, rawVal, tier) {
+  const floor = tier === "boss" ? 9 : 6;
+  const max = Math.max(floor, Math.floor(rawMax ?? floor));
+  const value = Math.max(floor, Math.min(max, Math.floor(rawVal ?? max)));
+  return { pa: value, paMax: max };
+}
+
 for (const entry of raw) {
   const id = entry.id ?? entry.name;
   if (ids.has(id)) fail(`duplicate id ${id}`);
@@ -29,16 +37,18 @@ for (const entry of raw) {
 
   const sys = entry.system ?? {};
   const vida = sys.resources?.vida?.max ?? sys.resources?.vida?.value;
-  const pa = sys.resources?.pontosAcao?.max ?? sys.resources?.pontosAcao?.value;
+  const tier = sys.tactical?.tier ?? "mob";
+  const rawPaMax = sys.resources?.pontosAcao?.max ?? sys.resources?.pontosAcao?.value;
+  const rawPa = sys.resources?.pontosAcao?.value ?? rawPaMax;
+  const { pa, paMax } = normalizeMonsterPa(rawPaMax, rawPa, tier);
   const defesa = sys.tactical?.defesa?.value;
   const walk = sys.movement?.cells?.walk?.value;
   const run = sys.movement?.cells?.run?.value;
   const actions = sys.actions;
 
   if (vida == null || vida < 1) fail(`${id}: vida inválida`);
-  if (pa == null || pa < 6) fail(`${id}: PA inválido (mínimo 6)`);
-  const paVal = sys.resources?.pontosAcao?.value;
-  if (paVal != null && paVal < 6) fail(`${id}: PA value abaixo de 6`);
+  if (pa == null || pa < 6) fail(`${id}: PA inválido após normalização (mínimo 6)`);
+  if (paMax == null || paMax < 6) fail(`${id}: PA max inválido após normalização (mínimo 6)`);
   if (defesa == null) fail(`${id}: defesa ausente`);
   if (walk == null || run == null) fail(`${id}: movimento célula ausente`);
   if (!Array.isArray(actions) || actions.length < 1) {
