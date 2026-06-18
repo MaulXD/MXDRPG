@@ -5,9 +5,9 @@ import { useRouter } from "next/navigation";
 import { PasswordInput } from "@/components/auth/PasswordInput";
 import "./auth-forms.css";
 
-type Props = { redirect?: string };
+type Props = { redirect?: string; persistentAccounts?: boolean };
 
-export function RegisterForm({ redirect = "" }: Props) {
+export function RegisterForm({ redirect = "", persistentAccounts = true }: Props) {
   const router = useRouter();
   const [name, setName] = useState("");
   const [nickname, setNickname] = useState("");
@@ -66,13 +66,19 @@ export function RegisterForm({ redirect = "" }: Props) {
       setNotice("Conta já existia — você entrou com sucesso. Redirecionando…");
     }
 
-    router.push(data.redirect ?? "/rpg");
+    router.push(data.redirect ?? "/eldarin");
     router.refresh();
   }
 
   return (
     <form className="auth-form" onSubmit={submit} autoComplete="on">
-        <p className="auth-form__intro">
+      {!persistentAccounts ? (
+        <p className="auth-form__intro" role="status">
+          Sem banco no servidor: a conta criada pode sumir se o site reiniciar. Para produção,
+          configure <code>DATABASE_URL</code> no Contabo.
+        </p>
+      ) : null}
+      <p className="auth-form__intro">
         Conta nova pode <strong>criar mesas</strong> como mestre — o código de convite é gerado
         automaticamente para jogadores entrarem. Se você já entrou com Google/Discord, use o mesmo
         e-mail aqui para <strong>definir uma senha</strong> opcional.

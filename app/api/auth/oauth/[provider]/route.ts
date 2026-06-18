@@ -1,7 +1,7 @@
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import {
-  isOAuthProviderConfigured,
+  isOAuthProviderReady,
   parseOAuthProvider,
 } from "@/lib/auth/oauth-config";
 import { buildAuthorizationUrl } from "@/lib/auth/oauth/providers";
@@ -14,7 +14,7 @@ type Params = { params: Promise<{ provider: string }> };
 export async function GET(request: Request, { params }: Params) {
   const { provider: raw } = await params;
   const provider = parseOAuthProvider(raw);
-  if (!provider || !isOAuthProviderConfigured(provider)) {
+  if (!provider || !isOAuthProviderReady(provider)) {
     return oauthErrorRedirect("oauth_unconfigured");
   }
 
