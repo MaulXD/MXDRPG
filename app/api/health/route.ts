@@ -6,9 +6,17 @@ import {
   isGoogleOAuthConfigured,
 } from "@/lib/auth/oauth-config";
 import { dbEnabled, dbPing } from "@/lib/db/client";
+import { ensureDbMigrations } from "@/lib/db/ensure-migrations";
 
 export async function GET() {
   const hasUrl = dbEnabled();
+  if (hasUrl) {
+    try {
+      await ensureDbMigrations();
+    } catch {
+      /* ping below may still report error */
+    }
+  }
   const ping = hasUrl ? await dbPing() : { ok: false as const, error: "DATABASE_URL not set" };
   const db = ping.ok;
   const clerkPublishable = hasClerkPublishableKey();

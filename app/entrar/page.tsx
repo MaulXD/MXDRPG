@@ -40,15 +40,13 @@ export default async function EntrarPage({ searchParams }: Props) {
     (errorCode && ERROR_LABELS[errorCode]) ||
     params.msg?.trim() ||
     (errorCode ? "Erro no login social." : null);
+  const successMsg = !errorCode && params.msg?.trim() ? params.msg.trim() : null;
 
   return (
     <div className="page-wrap" style={{ maxWidth: 480, paddingTop: "2rem" }}>
       <header className="page-header" style={{ paddingBottom: "1.25rem" }}>
         <EldarinLogo variant="full" href="/" className="eldarin-logo--hero" />
-        <p className="eyebrow" style={{ marginTop: "1rem" }}>
-          Conta Eldarin
-        </p>
-        <h1 className="display-lg">Entrar ou criar conta</h1>
+        <h1 className="display-lg" style={{ marginTop: "1rem" }}>Entrar ou criar conta</h1>
         <p className="lead" style={{ marginBottom: 0 }}>
           {authLoginLead(auth)}
         </p>
@@ -58,6 +56,11 @@ export default async function EntrarPage({ searchParams }: Props) {
         {errorMsg ? (
           <p className="auth-form__error" role="alert" style={{ marginTop: 0 }}>
             {errorMsg}
+          </p>
+        ) : null}
+        {successMsg ? (
+          <p className="auth-form__success" role="status" style={{ marginTop: 0 }}>
+            {successMsg}
           </p>
         ) : null}
         {!auth.persistentAccounts && auth.emailLogin ? (

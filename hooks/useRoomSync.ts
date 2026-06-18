@@ -34,8 +34,12 @@ type SyncOpts = {
 };
 
 const PRESENCE_HEARTBEAT_MS = 15_000;
-/** Agrupa rajadas de revision SSE em um único fetch — evita sensação de “sistema pesado”. */
-const REFRESH_DEBOUNCE_MS = 220;
+/** Agrupa rajadas de revision SSE em um único fetch. */
+const REFRESH_DEBOUNCE_MS = 180;
+const REFRESH_DEBOUNCE_COMBAT_MS = 100;
+/** Poll de segurança mesmo com SSE aberto (ms). */
+const SSE_BACKUP_POLL_MS = 2500;
+const SSE_BACKUP_POLL_COMBAT_MS = 500;
 
 function roomQuery(roomId: string, inviteCode?: string | null): string {
   const q = new URLSearchParams();
@@ -44,11 +48,11 @@ function roomQuery(roomId: string, inviteCode?: string | null): string {
   return s ? `?${s}` : "";
 }
 
-const COMBAT_POLL_INTERVAL_MS = 280;
+const COMBAT_POLL_INTERVAL_MS = 500;
 
 export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
   const inviteCode = opts.inviteCode ?? null;
-  const basePollIntervalMs = opts.pollIntervalMs ?? 4000;
+  const basePollIntervalMs = opts.pollIntervalMs ?? 2000;
   const presenceUser = opts.presenceUser ?? null;
   const onMemberOnline = opts.onMemberOnline;
   const [snapshot, setSnapshot] = useState<RoomSnapshot | null>(null);
@@ -131,11 +135,15 @@ export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
 
   const scheduleRefresh = useCallback(() => {
     if (refreshDebounceRef.current) return;
+    const delay =
+      snapshot?.settings?.combatActive === true
+        ? REFRESH_DEBOUNCE_COMBAT_MS
+        : REFRESH_DEBOUNCE_MS;
     refreshDebounceRef.current = setTimeout(() => {
       refreshDebounceRef.current = null;
       void refresh();
-    }, REFRESH_DEBOUNCE_MS);
-  }, [refresh]);
+    }, delay);
+  }, [refresh, snapshot?.settings?.combatActive]);
 
   useEffect(() => {
     setLoading(true);
@@ -147,10 +155,10 @@ export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
 
   const pollIntervalMs =
     snapshot?.settings?.combatActive === true ? COMBAT_POLL_INTERVAL_MS : basePollIntervalMs;
+  const backupPollMs =
+    snapshot?.settings?.combatActive === true ? SSE_BACKUP_POLL_COMBAT_MS : SSE_BACKUP_POLL_MS;
 
   useEffect(() => {
-    if (loading || !sseReadyRef.current) return;
-
     if (typeof EventSource === "undefined") {
       const id = setInterval(refresh, pollIntervalMs);
       return () => clearInterval(id);
@@ -159,12 +167,13 @@ export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
     let es: EventSource | null = null;
     let pollId: ReturnType<typeof setInterval> | null = null;
 
-    const startPoll = () => {
-      if (pollId) return;
-      pollId = setInterval(refresh, pollIntervalMs);
+    const startPoll = (ms: number) => {
+      if (pollId) clearInterval(pollId);
+      pollId = setInterval(refresh, ms);
     };
 
     const connect = () => {
+      es?.close();
       const since = revisionRef.current;
       const eventsQ = new URLSearchParams();
       eventsQ.set("since", String(since));
@@ -208,11 +217,12 @@ export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
       es.onerror = () => {
         es?.close();
         es = null;
-        startPoll();
+        startPoll(pollIntervalMs);
       };
     };
 
     connect();
+    startPoll(backupPollMs);
 
     return () => {
       es?.close();
@@ -222,7 +232,7 @@ export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
         refreshDebounceRef.current = null;
       }
     };
-  }, [roomId, inviteCode, refresh, scheduleRefresh, pollIntervalMs, loading]);
+  }, [roomId, inviteCode, refresh, scheduleRefresh, pollIntervalMs, backupPollMs]);
 
   useEffect(() => {
     if (!presenceUser?.id) return;
