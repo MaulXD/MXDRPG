@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
+import { getAuthCapabilities } from "@/lib/auth/auth-capabilities";
 import { hasClerkPublishableKey, isClerkEnabled } from "@/lib/auth/clerk-config";
 import {
   isDiscordOAuthConfigured,
   isGoogleOAuthConfigured,
-  oauthProvidersEnabled,
 } from "@/lib/auth/oauth-config";
 import { dbEnabled, dbPing } from "@/lib/db/client";
 
@@ -13,6 +13,7 @@ export async function GET() {
   const db = ping.ok;
   const clerkPublishable = hasClerkPublishableKey();
   const clerk = isClerkEnabled();
+  const auth = getAuthCapabilities();
 
   const body: Record<string, unknown> = {
     ok: true,
@@ -27,7 +28,12 @@ export async function GET() {
     oauth: {
       google: isGoogleOAuthConfigured(),
       discord: isDiscordOAuthConfigured(),
-      ready: oauthProvidersEnabled().length > 0,
+      ready: auth.oauthProviders.length > 0,
+    },
+    auth: {
+      emailLogin: auth.emailLogin,
+      persistentAccounts: auth.persistentAccounts,
+      demoAccounts: auth.emailLogin,
     },
   };
 

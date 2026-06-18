@@ -11,12 +11,14 @@ type Props = {
   redirect?: string;
   initialTab?: "login" | "register";
   oauthProviders?: OAuthProviderId[];
+  persistentAccounts?: boolean;
 };
 
 export function AuthTabs({
   redirect = "",
   initialTab = "login",
   oauthProviders = [],
+  persistentAccounts = true,
 }: Props) {
   const [tab, setTab] = useState<"login" | "register">(initialTab);
 
@@ -41,7 +43,11 @@ export function AuthTabs({
       {oauthProviders.length > 0 && tab === "login" ? (
         <OAuthSignInButtons redirect={redirect} providers={oauthProviders} />
       ) : null}
-      {tab === "login" ? <LoginForm redirect={redirect} /> : <RegisterForm redirect={redirect} />}
+      {tab === "login" ? (
+        <LoginForm redirect={redirect} />
+      ) : (
+        <RegisterForm redirect={redirect} persistentAccounts={persistentAccounts} />
+      )}
       <p style={{ marginTop: "1rem", fontSize: "0.8rem", color: "var(--text-muted)" }}>
         <a href="/privacidade">Política de privacidade</a>
       </p>

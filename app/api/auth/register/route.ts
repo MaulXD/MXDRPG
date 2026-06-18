@@ -1,9 +1,17 @@
+import { isClerkEnabled } from "@/lib/auth/clerk-config";
 import { registerUser } from "@/lib/auth/user-store";
 import { postAuthRedirect } from "@/lib/auth/post-auth-redirect";
 import { createSession } from "@/lib/auth/session";
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
+  if (isClerkEnabled()) {
+    return NextResponse.json(
+      { error: "Cadastro local desativado. Use /sign-in (Google ou Discord)." },
+      { status: 410 }
+    );
+  }
+
   const body = await request.json();
   const email = String(body.email ?? "").trim();
   const name = String(body.name ?? "").trim();

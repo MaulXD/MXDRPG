@@ -24,6 +24,20 @@ export function oauthProvidersEnabled(): OAuthProviderId[] {
   return PROVIDERS.filter(isOAuthProviderConfigured);
 }
 
+/** Provider configurado e infra OAuth pronta (AUTH_URL + SESSION_SECRET). */
+export function isOAuthProviderReady(provider: OAuthProviderId): boolean {
+  if (!isOAuthProviderConfigured(provider)) return false;
+  const secret =
+    process.env.SESSION_SECRET?.trim() || process.env.OAUTH_STATE_SECRET?.trim();
+  if (!secret || secret.length < 16) return false;
+  try {
+    authAppOrigin();
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 export function parseOAuthProvider(raw: string): OAuthProviderId | null {
   const id = raw.trim().toLowerCase();
   if (id === "google" || id === "discord") return id;
