@@ -11,7 +11,7 @@
 ┌─────────────────────────────────────────────────────────────┐
 │ vtt-topbar: ELDARIN | Mesas · Compêndios · Minhas mesas | ☀  │
 ├──────────────────────────────┬──────────────────────────────┤
-│ HexBattlefield + sidebar VTT │ mesa-rail (~380px)           │
+│ Battlefield + sidebar VTT │ mesa-rail (~380px)           │
 │                              │  tabs: Chat | Dados | Ficha  │
 │                              │  painel ativo (flex column)  │
 └──────────────────────────────┴──────────────────────────────┘
@@ -68,7 +68,7 @@ Scrollbars: finas, `scrollbar-color` ouro em `vtt.css`.
 
 ## 5. Legibilidade (checklist visual)
 
-- [ ] Grid hex visível (`--vtt-hex-stroke` ≥ 0.4 opacidade no escuro)
+- [ ] Grid célula visível (`--vtt-cell-stroke` ≥ 0.4 opacidade no escuro)
 - [ ] Tags do compêndio rail: wrap, contraste `text-muted` legível
 - [ ] Condições: fonte ≥0.72rem, chip com borda visível
 - [ ] Nenhum `overflow-x: auto` involuntário no rail
@@ -85,7 +85,7 @@ Scrollbars: finas, `scrollbar-color` ouro em `vtt.css`.
 | `components/vtt/MesaCompendiumPanel.tsx` | Wrapper `mesa-compendium-rail` |
 | `components/vtt/MesaSideRail.tsx` | Tabs |
 | `components/vtt/vtt.css` | `mesa-rail`, scrollbars, condições |
-| `app/globals.css` | Tokens VTT hex, nav, tema |
+| `app/globals.css` | Tokens VTT célula, nav, tema |
 
 ---
 

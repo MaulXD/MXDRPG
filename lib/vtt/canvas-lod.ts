@@ -1,4 +1,4 @@
-import { DISPLAY_GRID_RADIUS_CAP } from "@/lib/vtt/hex-grid";
+import { DISPLAY_GRID_RADIUS_CAP } from "@/lib/vtt/grid-cells";
 
 /** Abaixo disso: grade e névoa em modo leve (menos traços/preenchimentos). */
 export const LOD_LIGHT_SCALE = 0.7;

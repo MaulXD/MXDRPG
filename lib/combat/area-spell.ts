@@ -1,12 +1,12 @@
-import type { Axial } from "@/lib/vtt/hex-math";
-import { axialDistance } from "@/lib/vtt/hex-math";
+import type { Axial } from "@/lib/vtt/grid-math";
+import { axialDistance } from "@/lib/vtt/grid-math";
 import {
   areaNeedsDirection,
   areaUsesCasterOrigin,
-  computeAreaHexes,
+  computeAreaCells,
   type AreaShape,
-} from "@/lib/vtt/hex-area";
-import { tokenOccupiedHexes } from "@/lib/vtt/creature-size";
+} from "@/lib/vtt/grid-area";
+import { tokenOccupiedCells } from "@/lib/vtt/creature-size";
 import { axialKey } from "@/lib/vtt/token-occupancy";
 import type { BattleToken } from "@/lib/vtt/types";
 import type { CharacterSheet } from "@/lib/character/types";
@@ -48,20 +48,20 @@ export function parseAreaShape(raw: string | undefined): SpellAreaShape {
   return "single";
 }
 
-export function computeSpellAreaHexes(
+export function computeSpellAreaCells(
   center: Axial,
   shape: SpellAreaShape,
-  radiusHex: number,
-  hexCount?: number,
+  radiusCells: number,
+  cellCount?: number,
   direction?: number | null,
-  lengthHex?: number
+  lengthCells?: number
 ): Axial[] {
-  return computeAreaHexes({
+  return computeAreaCells({
     center,
     shape,
-    radiusHex,
-    hexCount,
-    lengthHex: lengthHex ?? radiusHex,
+    radiusCells,
+    cellCount,
+    lengthCells: lengthCells ?? radiusCells,
     direction,
   });
 }
@@ -73,7 +73,7 @@ function actorRacaOf(
   return token.actorId ? actorRacas?.[token.actorId] : undefined;
 }
 
-/** Qualquer sobreposição entre footprint do token e hex da área conta como alvo. */
+/** Qualquer sobreposição entre footprint do token e célula da área conta como alvo. */
 export function tokensInArea(
   tokens: BattleToken[],
   area: Axial[],
@@ -84,8 +84,8 @@ export function tokensInArea(
   const out: BattleToken[] = [];
   for (const t of tokens) {
     if (seen.has(t.id)) continue;
-    const hexes = tokenOccupiedHexes(t, actorRacaOf(t, actorRacas));
-    if (hexes.some((h) => areaKeys.has(axialKey(h)))) {
+    const cells = tokenOccupiedCells(t, actorRacaOf(t, actorRacas));
+    if (cells.some((h) => areaKeys.has(axialKey(h)))) {
       seen.add(t.id);
       out.push(t);
     }
@@ -138,8 +138,8 @@ export function canCastAreaAt(
 
   if (!directed) {
     const dist = axialDistance(caster.axial, center);
-    if (dist > action.rangeHex) {
-      return { ok: false, reason: `Centro fora de alcance (${dist}/${action.rangeHex} células)` };
+    if (dist > action.rangeCells) {
+      return { ok: false, reason: `Centro fora de alcance (${dist}/${action.rangeCells} células)` };
     }
   }
 
@@ -154,7 +154,7 @@ export type AreaHit =
 export type AreaSpellResolution = {
   casterTokenId: string;
   center: Axial;
-  areaHexes: Axial[];
+  areaCells: Axial[];
   actionName: string;
   paCost: number;
   hits: AreaHit[];
@@ -189,29 +189,29 @@ export function resolveAreaSpell(
         : "Escolha a direção da área (célula vizinha ao conjurador)"
     );
   }
-  const areaHexes = computeSpellAreaHexes(
+  const areaCells = computeSpellAreaCells(
     areaOrigin,
     shape,
-    resolved.areaRadiusHex ?? 1,
-    resolved.areaHexCount,
+    resolved.areaRadiusCells ?? 1,
+    resolved.areaCellCount,
     areaDirection ?? null,
-    resolved.areaRadiusHex ?? 1
+    resolved.areaRadiusCells ?? 1
   );
 
   if (shape === "wall" && resolved.resolution !== "attack" && !resolved.damageFormula) {
     return {
       casterTokenId: caster.id,
       center,
-      areaHexes,
+      areaCells,
       actionName: resolved.name,
       paCost: totalChannelPaCost(actor, action, extra, caster),
       hits: [],
-      summary: `${actor.name} conjura ${resolved.name} em ${areaHexes.length} células (${areaHexes.map((h) => `q${h.q}r${h.r}`).join(", ")}).`,
+      summary: `${actor.name} conjura ${resolved.name} em ${areaCells.length} células (${areaCells.map((h) => `q${h.q}r${h.r}`).join(", ")}).`,
     };
   }
 
   const isAreaHeal = isHealingSpell(resolved);
-  let targets = tokensInArea(allTokens, areaHexes, actorRacas);
+  let targets = tokensInArea(allTokens, areaCells, actorRacas);
   if (isAreaHeal) {
     targets = targets.filter((t) => isAreaHealAlly(caster, t));
   } else {
@@ -250,12 +250,12 @@ export function resolveAreaSpell(
   const summary =
     hits.length === 0
       ? `${actor.name} conjura ${resolved.name}${channelTag} — nenhum alvo na área.`
-      : `${actor.name} conjura ${resolved.name}${channelTag} (${areaHexes.length} células) — ${hits.length} alvo(s), ${totalEffect} ${effectLabel}.`;
+      : `${actor.name} conjura ${resolved.name}${channelTag} (${areaCells.length} células) — ${hits.length} alvo(s), ${totalEffect} ${effectLabel}.`;
 
   return {
     casterTokenId: caster.id,
     center: areaOrigin,
-    areaHexes,
+    areaCells,
     actionName: resolved.name,
     paCost: totalChannelPaCost(actor, action, extra, caster),
     hits,
@@ -267,10 +267,10 @@ export function formatAreaSpellChatDetail(
   res: AreaSpellResolution,
   damageType = "mágico"
 ): string {
-  const hexLabel = res.areaHexes.map((h) => `q${h.q}r${h.r}`).join(", ");
+  const cellLabel = res.areaCells.map((h) => `q${h.q}r${h.r}`).join(", ");
   const tipo = damageType.trim() || "mágico";
   if (res.hits.length === 0) {
-    return `Centro q${res.center.q}r${res.center.r} · ${hexLabel}`;
+    return `Centro q${res.center.q}r${res.center.r} · ${cellLabel}`;
   }
   const lines = res.hits.map((h) => {
     const target = h.tokenId;
@@ -286,5 +286,5 @@ export function formatAreaSpellChatDetail(
     }
     return h.summary;
   });
-  return [`Área q${res.center.q}r${res.center.r} · ${res.areaHexes.length} células`, ...lines].join(" · ");
+  return [`Área q${res.center.q}r${res.center.r} · ${res.areaCells.length} células`, ...lines].join(" · ");
 }

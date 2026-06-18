@@ -12,6 +12,7 @@ import {
 import { normalizeImageDataUrl } from "@/lib/media/image-normalize";
 import { sanitizePortraitFocus, type PortraitFocus } from "@/lib/media/portrait-focus";
 import { getSql } from "@/lib/db/client";
+import type { OAuthProviderId } from "@/lib/auth/oauth-config";
 
 export type StoredUser = {
   id: string;
@@ -27,6 +28,8 @@ export type StoredUser = {
   oauthAvatarUrl?: string | null;
   avatarSource?: AvatarSource;
   avatarFocus?: PortraitFocus | null;
+  oauthProvider?: string | null;
+  oauthSubject?: string | null;
   createdAt: number;
 };
 
@@ -48,11 +51,13 @@ type UserRow = {
   oauth_avatar_url: string | null;
   avatar_source: string | null;
   avatar_focus: unknown;
+  oauth_provider: string | null;
+  oauth_subject: string | null;
   created_at: number;
 };
 
 const USER_SELECT =
-  "id, clerk_id, email, nickname, name, password_hash, cpf_prefix_hash, birth_date, role, avatar_url, oauth_avatar_url, avatar_source, avatar_focus, created_at";
+  "id, clerk_id, oauth_provider, oauth_subject, email, nickname, name, password_hash, cpf_prefix_hash, birth_date, role, avatar_url, oauth_avatar_url, avatar_source, avatar_focus, created_at";
 
 function formatBirthDate(value: string | Date | null | undefined): string | null {
   if (value == null) return null;
@@ -71,6 +76,8 @@ function rowToStored(r: UserRow): StoredUser {
   return {
     id: r.id,
     clerkId: r.clerk_id,
+    oauthProvider: r.oauth_provider,
+    oauthSubject: r.oauth_subject,
     email: r.email,
     nickname: r.nickname,
     name: r.name,
@@ -135,6 +142,118 @@ export async function fetchUserByNickname(nickname: string): Promise<StoredUser 
   `;
   const r = rows[0];
   return r ? rowToStored(r) : null;
+}
+
+export async function fetchUserByOAuthIdentity(
+  provider: OAuthProviderId,
+  subject: string
+): Promise<StoredUser | null> {
+  const sql = getSql();
+  if (!sql) return null;
+  const rows = await sql<UserRow[]>`
+    SELECT ${sql.unsafe(USER_SELECT)}
+    FROM eldarin_users
+    WHERE oauth_provider = ${provider} AND oauth_subject = ${subject}
+    LIMIT 1
+  `;
+  const r = rows[0];
+  return r ? rowToStored(r) : null;
+}
+
+function oauthSessionFallback(input: {
+  provider: OAuthProviderId;
+  subject: string;
+  email: string;
+  name: string;
+  oauthAvatarUrl?: string | null;
+}): SessionUser {
+  return {
+    id: `${input.provider}-${input.subject}`,
+    email: input.email,
+    name: input.name,
+    nickname: null,
+    role: "member",
+    oauthAvatarUrl: input.oauthAvatarUrl ?? null,
+  };
+}
+
+export async function ensureUserFromOAuth(input: {
+  provider: OAuthProviderId;
+  subject: string;
+  email: string;
+  name: string;
+  oauthAvatarUrl?: string | null;
+}): Promise<SessionUser> {
+  const sql = getSql();
+  if (!sql) return oauthSessionFallback(input);
+
+  const oauthAvatar = input.oauthAvatarUrl?.trim() || null;
+
+  const existing = await fetchUserByOAuthIdentity(input.provider, input.subject);
+  if (existing) {
+    if (oauthAvatar && oauthAvatar !== existing.oauthAvatarUrl) {
+      await sql`
+        UPDATE eldarin_users
+        SET oauth_avatar_url = ${oauthAvatar}, name = ${input.name.slice(0, 80)}
+        WHERE id = ${existing.id}
+      `;
+    }
+    const refreshed = await fetchUserById(existing.id);
+    if (refreshed) return refreshed;
+    return storedToSession(existing);
+  }
+
+  const email = slugEmail(input.email);
+  const byEmail = await fetchUserByEmail(email);
+  if (byEmail) {
+    await sql`
+      UPDATE eldarin_users
+      SET oauth_provider = ${input.provider},
+          oauth_subject = ${input.subject},
+          name = ${input.name.slice(0, 80)},
+          oauth_avatar_url = COALESCE(${oauthAvatar}, oauth_avatar_url),
+          avatar_source = COALESCE(avatar_source, 'oauth')
+      WHERE id = ${byEmail.id}
+    `;
+    const linked = await fetchUserById(byEmail.id);
+    if (!linked) return oauthSessionFallback(input);
+    return linked;
+  }
+
+  const user: StoredUser = {
+    id: `usr_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 8)}`,
+    oauthProvider: input.provider,
+    oauthSubject: input.subject,
+    email,
+    nickname: null,
+    name: input.name.slice(0, 80),
+    passwordHash: null,
+    role: "member",
+    oauthAvatarUrl: oauthAvatar,
+    avatarSource: "oauth",
+    createdAt: Date.now(),
+  };
+
+  await sql`
+    INSERT INTO eldarin_users (
+      id, oauth_provider, oauth_subject, email, nickname, name, password_hash, role,
+      oauth_avatar_url, avatar_source, created_at
+    )
+    VALUES (
+      ${user.id},
+      ${input.provider},
+      ${input.subject},
+      ${user.email},
+      ${user.nickname ?? null},
+      ${user.name},
+      ${user.passwordHash},
+      ${user.role},
+      ${user.oauthAvatarUrl ?? null},
+      ${user.avatarSource ?? "oauth"},
+      ${user.createdAt}
+    )
+  `;
+  return storedToSession(user);
 }
 
 export async function fetchUserByClerkId(clerkId: string): Promise<StoredUser | null> {

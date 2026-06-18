@@ -236,7 +236,7 @@ test("lch is unsafe", () => {
 test("lab is unsafe", () => {
   assert.ok(isUnsafeColor("lab(50% 20 -10)"));
 });
-test("#hex is safe", () => {
+test("# color literal is safe", () => {
   assert.ok(!isUnsafeColor("#c9a962"));
   assert.ok(!isUnsafeColor("#fff"));
 });

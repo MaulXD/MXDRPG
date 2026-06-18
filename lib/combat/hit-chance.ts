@@ -105,14 +105,14 @@ function monsterAttackBonus(
   const gm = attacker.gmCreatureStats;
   if (template) {
     const mod =
-      action.rangeHex > 1
+      action.rangeCells > 1
         ? Math.floor((template.agilidade - 10) / 2)
         : Math.floor((template.forca - 10) / 2);
     return mod + action.attackBonus;
   }
   if (gm) {
     const mod =
-      action.rangeHex > 1
+      action.rangeCells > 1
         ? Math.floor((gm.agilidade - 10) / 2)
         : Math.floor((gm.forca - 10) / 2);
     return mod + action.attackBonus;

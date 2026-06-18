@@ -40,7 +40,7 @@ export type CombatActionOption = {
   damageFormula: string;
   damageType: string;
   attackBonus: number;
-  rangeHex: number;
+  rangeCells: number;
   paCost: number;
   label: string;
   /** Magia com save — alvo rola vs CD */
@@ -60,8 +60,8 @@ export type CombatActionOption = {
   bonusDamageFormula?: string;
   /** Área da magia */
   areaShape?: SpellAreaShape;
-  areaRadiusHex?: number;
-  areaHexCount?: number;
+  areaRadiusCells?: number;
+  areaCellCount?: number;
   /** Alvos individuais (ex.: 3 raios) — seleção múltipla na mesa */
   targetCount?: number;
   /** Propriedades mágicas / orgânicas (Cap. 14.8) */

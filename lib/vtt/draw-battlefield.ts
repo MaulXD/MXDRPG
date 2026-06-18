@@ -1,18 +1,18 @@
-import type { Axial } from "@/lib/vtt/hex-math";
-import { axialToPixel, hexCorners, hexDrawRadius } from "@/lib/vtt/hex-math";
+import type { Axial } from "@/lib/vtt/grid-math";
+import { axialToPixel, cellCorners, cellDrawRadius } from "@/lib/vtt/grid-math";
 import type { MoveCheck } from "@/lib/vtt/movement";
 import { readThemeColor } from "@/lib/theme";
 import {
-  resolveHexPalette,
-  type HexHighlightPalette,
-} from "@/lib/vtt/hex-highlight-palette";
+  resolveGridPalette,
+  type GridHighlightPalette,
+} from "@/lib/vtt/grid-highlight-palette";
 import type { MapBackdropTone } from "@/lib/vtt/map-luminance";
 import type { PortraitFocus } from "@/lib/media/portrait-focus";
 import { DEFAULT_PORTRAIT_FOCUS } from "@/lib/media/portrait-focus";
 import { collectPlayerActorIds, resolveTokenRing } from "@/lib/vtt/token-colors";
 import {
   creatureSizeOf,
-  occupiedHexes,
+  occupiedCells,
   tokenDrawRadius,
   tokenPixelCenter,
 } from "@/lib/vtt/creature-size";
@@ -100,7 +100,7 @@ function drawSquareGridLines(
   stroke: string,
   lod: GridLod
 ): void {
-  const { hexSize, layout, gridCells, visibleHexSet, gridOx, gridOy } = p;
+  const { cellSize, layout, gridCells, visibleCellSet, gridOx, gridOy } = p;
   const ox = gridOx ?? layout.ox;
   const oy = gridOy ?? layout.oy;
 
@@ -112,7 +112,7 @@ function drawSquareGridLines(
 
   for (const cell of gridCells) {
     const key = `${cell.q},${cell.r}`;
-    if (visibleHexSet && !visibleHexSet.has(key)) continue;
+    if (visibleCellSet && !visibleCellSet.has(key)) continue;
     any = true;
     minQ = Math.min(minQ, cell.q);
     maxQ = Math.max(maxQ, cell.q);
@@ -133,16 +133,16 @@ function drawSquareGridLines(
 
   const snap = (v: number) => Math.round(v) + 0.5;
   for (let q = minQ; q <= maxQ + 1; q += step) {
-    const x = snap(ox + q * hexSize);
-    const y0 = snap(oy + minR * hexSize);
-    const y1 = snap(oy + (maxR + 1) * hexSize);
+    const x = snap(ox + q * cellSize);
+    const y0 = snap(oy + minR * cellSize);
+    const y1 = snap(oy + (maxR + 1) * cellSize);
     ctx.moveTo(x, y0);
     ctx.lineTo(x, y1);
   }
   for (let r = minR; r <= maxR + 1; r += step) {
-    const y = snap(oy + r * hexSize);
-    const x0 = snap(ox + minQ * hexSize);
-    const x1 = snap(ox + (maxQ + 1) * hexSize);
+    const y = snap(oy + r * cellSize);
+    const x0 = snap(ox + minQ * cellSize);
+    const x1 = snap(ox + (maxQ + 1) * cellSize);
     ctx.moveTo(x0, y);
     ctx.lineTo(x1, y);
   }
@@ -152,7 +152,7 @@ function drawSquareGridLines(
 
 type GridDrawParams = {
   gridCells: Axial[];
-  hexSize: number;
+  cellSize: number;
   layout: CanvasLayout;
   /** Origem do grid (alinhada ao mapa quando há piso). */
   gridOx?: number;
@@ -170,17 +170,17 @@ type GridDrawParams = {
   hoverAxial: Axial | null;
   hoverMovePreview: MoveCheck | null;
   spawnDropHover: boolean;
-  /** Hexes do footprint ao arrastar spawn multi-hex (null = só hex sob cursor). */
+  /** Células do footprint ao arrastar spawn multi-célula (null = só célula sob cursor). */
   spawnDropFootprintKeys?: Set<string> | null;
-  /** Footprint de destino ao mover monstro/criatura multi-hex. */
+  /** Footprint de destino ao mover monstro/criatura multi-célula. */
   moveHoverFootprintKeys?: Set<string> | null;
   spawnDropInvalid?: boolean;
   pathCells: Axial[];
   pathDashPhase: number;
-  /** null = todos os hexes visíveis (mestre ou fog desligado) */
-  visibleHexSet: Set<string> | null;
+  /** null = todos os células visíveis (mestre ou fog desligado) */
+  visibleCellSet: Set<string> | null;
   mapBackdropTone?: MapBackdropTone;
-  palette?: HexHighlightPalette;
+  palette?: GridHighlightPalette;
   viewScale?: number;
 };
 
@@ -189,12 +189,12 @@ function baseGridStroke(_tone: MapBackdropTone, _fallback: string): string {
   return "rgba(0, 0, 0, 0.9)";
 }
 
-export function drawHexGridLayer(ctx: CanvasRenderingContext2D, p: GridDrawParams): void {
-  const { layout, hexSize, gridOx, gridOy } = p;
+export function drawCellGridLayer(ctx: CanvasRenderingContext2D, p: GridDrawParams): void {
+  const { layout, cellSize, gridOx, gridOy } = p;
   const ox = gridOx ?? layout.ox;
   const oy = gridOy ?? layout.oy;
   const pal =
-    p.palette ?? resolveHexPalette(p.mapBackdropTone ?? "none");
+    p.palette ?? resolveGridPalette(p.mapBackdropTone ?? "none");
   const lod: GridLod = gridLodLevel(p.viewScale ?? 1);
   const tone = p.mapBackdropTone ?? "none";
 
@@ -202,9 +202,9 @@ export function drawHexGridLayer(ctx: CanvasRenderingContext2D, p: GridDrawParam
 
   for (const cell of p.gridCells) {
     const key = `${cell.q},${cell.r}`;
-    if (p.visibleHexSet && !p.visibleHexSet.has(key)) continue;
+    if (p.visibleCellSet && !p.visibleCellSet.has(key)) continue;
 
-    const { x, y } = axialToPixel(cell.q, cell.r, hexSize, ox, oy);
+    const { x, y } = axialToPixel(cell.q, cell.r, cellSize, ox, oy);
     let fill = pal.fill;
     let stroke = pal.stroke;
     let lineWidth = 1;
@@ -307,12 +307,12 @@ export function drawHexGridLayer(ctx: CanvasRenderingContext2D, p: GridDrawParam
     const isMoveHighlight =
       p.showMovement &&
       (p.walkSet.has(key) || p.paidWalkSet.has(key) || p.rangeSet.has(key));
-    const isBaseHex = fill === pal.fill && stroke === pal.stroke && lineWidth === 1;
+    const isBaseCell = fill === pal.fill && stroke === pal.stroke && lineWidth === 1;
 
-    if (isBaseHex) continue;
+    if (isBaseCell) continue;
 
     ctx.beginPath();
-    const corners = hexCorners(x, y, hexDrawRadius(hexSize));
+    const corners = cellCorners(x, y, cellDrawRadius(cellSize));
     ctx.moveTo(corners[0].x, corners[0].y);
     for (let i = 1; i < corners.length; i++) ctx.lineTo(corners[i].x, corners[i].y);
     ctx.closePath();
@@ -339,16 +339,16 @@ export function drawHexGridLayer(ctx: CanvasRenderingContext2D, p: GridDrawParam
 export function drawMovementPathLayer(ctx: CanvasRenderingContext2D, p: GridDrawParams): void {
   if (!p.showMovement || p.pathCells.length < 2) return;
 
-  const { hexSize, layout, pathDashPhase } = p;
+  const { cellSize, layout, pathDashPhase } = p;
   const ox = p.gridOx ?? layout.ox;
   const oy = p.gridOy ?? layout.oy;
   const pal =
-    p.palette ?? resolveHexPalette(p.mapBackdropTone ?? "none");
+    p.palette ?? resolveGridPalette(p.mapBackdropTone ?? "none");
   const stroke = pal.pathStroke;
   const glow = pal.pathGlow;
 
   const points = p.pathCells.map((cell) => {
-    const { x, y } = axialToPixel(cell.q, cell.r, hexSize, ox, oy);
+    const { x, y } = axialToPixel(cell.q, cell.r, cellSize, ox, oy);
     return { x, y };
   });
 
@@ -384,7 +384,7 @@ type TokenDrawParams = {
   layout: CanvasLayout;
   gridOx?: number;
   gridOy?: number;
-  gridHexSize?: number;
+  gridCellSize?: number;
   images: Map<string, HTMLImageElement>;
   focusByTokenId: Map<string, PortraitFocus>;
   selectedId: string | null;
@@ -439,9 +439,9 @@ function drawSingleToken(
   if (creatureSize !== "small" && creatureSize !== "medium") {
       ctx.save();
       const isLargeFootprint = creatureSize === "large";
-      for (const hex of occupiedHexes(pos, creatureSize)) {
-        const { x: hx, y: hy } = axialToPixel(hex.q, hex.r, size, ox, oy);
-        const corners = hexCorners(hx, hy, size * 0.92);
+      for (const cell of occupiedCells(pos, creatureSize)) {
+        const { x: hx, y: hy } = axialToPixel(cell.q, cell.r, size, ox, oy);
+        const corners = cellCorners(hx, hy, size * 0.92);
         ctx.beginPath();
         ctx.moveTo(corners[0].x, corners[0].y);
         for (let i = 1; i < corners.length; i++) ctx.lineTo(corners[i].x, corners[i].y);
@@ -577,8 +577,8 @@ export function drawTokensLayer(ctx: CanvasRenderingContext2D, p: TokenDrawParam
   const { scene, layout } = p;
   const playerActorIds = collectPlayerActorIds(scene.tokens);
   const size =
-    p.gridHexSize ??
-    (Number.isFinite(scene.hexSize) && scene.hexSize > 0 ? scene.hexSize : 36);
+    p.gridCellSize ??
+    (Number.isFinite(scene.cellSize) && scene.cellSize > 0 ? scene.cellSize : 36);
   const ox = p.gridOx ?? layout.ox;
   const oy = p.gridOy ?? layout.oy;
   const hoverId = p.hoverTokenId;

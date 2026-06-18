@@ -1,6 +1,6 @@
 import type { RollMode } from "@/lib/combat/d20";
 import type { AttackModifier } from "@/lib/combat/types";
-import { axialDistance } from "@/lib/vtt/hex-math";
+import { axialDistance } from "@/lib/vtt/grid-math";
 import type { BattleToken } from "@/lib/vtt/types";
 
 const GOBLIN_MONSTER_IDS = new Set([

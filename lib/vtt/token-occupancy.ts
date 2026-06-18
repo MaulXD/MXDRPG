@@ -1,8 +1,8 @@
-import type { Axial } from "@/lib/vtt/hex-math";
-import { inSquareGrid } from "@/lib/vtt/hex-math";
+import type { Axial } from "@/lib/vtt/grid-math";
+import { inSquareGrid } from "@/lib/vtt/grid-math";
 import {
   creatureSizeOf,
-  occupiedHexes,
+  occupiedCells,
   type CreatureSize,
 } from "@/lib/vtt/creature-size";
 import type { BattleToken } from "@/lib/vtt/types";
@@ -22,12 +22,12 @@ export function tokenFootprint(
   return size === "small" ? "small" : "medium";
 }
 
-export type HexOccupants = {
+export type CellOccupants = {
   tokenIds: string[];
   sizes: CreatureSize[];
 };
 
-export type OccupancyMap = Map<string, HexOccupants>;
+export type OccupancyMap = Map<string, CellOccupants>;
 
 export function buildOccupancy(
   tokens: BattleToken[],
@@ -39,9 +39,9 @@ export function buildOccupancy(
   for (const t of tokens) {
     if (excludeTokenId && t.id === excludeTokenId) continue;
     const size = sizeOf(t);
-    const hexes = occupiedHexes(t.axial, size);
-    for (const hex of hexes) {
-      const key = axialKey(hex);
+    const cells = occupiedCells(t.axial, size);
+    for (const cell of cells) {
+      const key = axialKey(cell);
       const prev = map.get(key);
       if (prev) {
         prev.tokenIds.push(t.id);
@@ -54,18 +54,18 @@ export function buildOccupancy(
   return map;
 }
 
-export function inGrid(hex: Axial, gridRadius: number): boolean {
-  return inSquareGrid(hex, gridRadius);
+export function inGrid(cell: Axial, gridRadius: number): boolean {
+  return inSquareGrid(cell, gridRadius);
 }
 
 const MAX_SMALL_PER_CELL = 2;
 
 function cellAllowsMover(
-  hex: Axial,
+  cell: Axial,
   moverSize: CreatureSize,
   occupancy: OccupancyMap
 ): boolean {
-  const occ = occupancy.get(axialKey(hex));
+  const occ = occupancy.get(axialKey(cell));
   if (!occ || occ.tokenIds.length === 0) return true;
   if (moverSize !== "small") return false;
   return (
@@ -74,17 +74,17 @@ function cellAllowsMover(
   );
 }
 
-/** Pode ancorar o token nesta célula (todos os hexes do corpo devem caber). */
-export function canEnterHex(
+/** Pode ancorar o token nesta célula (todos os células do corpo devem caber). */
+export function canEnterCell(
   anchor: Axial,
   moverSize: CreatureSize,
   occupancy: OccupancyMap,
   gridRadius: number
 ): boolean {
-  const body = occupiedHexes(anchor, moverSize);
-  for (const hex of body) {
-    if (!inGrid(hex, gridRadius)) return false;
-    if (!cellAllowsMover(hex, moverSize, occupancy)) return false;
+  const body = occupiedCells(anchor, moverSize);
+  for (const cell of body) {
+    if (!inGrid(cell, gridRadius)) return false;
+    if (!cellAllowsMover(cell, moverSize, occupancy)) return false;
   }
   return true;
 }

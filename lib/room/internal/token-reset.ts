@@ -3,7 +3,7 @@ import { resetTokenMovement } from "@/lib/vtt/movement";
 import type { RoomState } from "../types";
 
 /**
- * Reinicia movimento (hex gastos) no início de cada turno.
+ * Reinicia movimento (células gastas) no início de cada turno.
  * PA (pool, bankedPa, paSpentThisTurn) é tratado só em `handlers/combat-turn.ts`.
  */
 export function resetAllTokenMovement(room: RoomState, notices?: string[]): void {

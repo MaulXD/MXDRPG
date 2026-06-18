@@ -20,7 +20,7 @@ export function AuthProvider({ children, publishableKey }: Props) {
     console.warn(
       "[Eldarin] Clerk usa chave de desenvolvimento (pk_test_) fora de localhost. " +
         "Configure NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_live_… e CLERK_SECRET_KEY=sk_live_… " +
-        "no ambiente Production da Vercel."
+        "no ambiente de produção (Contabo)."
     );
   }, [key]);
 

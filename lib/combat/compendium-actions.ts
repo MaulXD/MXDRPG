@@ -4,7 +4,7 @@ import { parseRecharge } from "@/lib/combat/recharge";
 import type { AbilityEffect, CombatActionOption } from "@/lib/combat/types";
 
 const ABILITY_BY_ID: Record<string, { effect: AbilityEffect; extras?: Partial<CombatActionOption> }> = {
-  "habilidades-investida-hexagonal": { effect: "charge" },
+  "habilidades-investida-em-linha": { effect: "charge" },
   "habilidades-investida-do-guerreiro": { effect: "charge" },
   "habilidades-investida-barbara": { effect: "charge" },
   "habilidades-passo-das-sombras": { effect: "shadow_step" },
@@ -204,7 +204,7 @@ const ABILITY_BY_ID: Record<string, { effect: AbilityEffect; extras?: Partial<Co
 };
 
 const NAME_EFFECT: Record<string, AbilityEffect> = {
-  "Investida Hexagonal": "charge",
+  "Investida em Linha": "charge",
   "Investida do Guerreiro": "charge",
   "Investida Bárbara": "charge",
   "Passo das Sombras": "shadow_step",
@@ -300,7 +300,7 @@ function defaultExtras(effect: AbilityEffect): Partial<CombatActionOption> {
 export function abilityFromEntry(entry: CompendiumEntry): CombatActionOption | null {
   const tactical = entry.system.tactical as
     | {
-        alcanceHex?: { value?: number };
+        alcanceCells?: { value?: number };
         custoPontosAcao?: { value?: number };
         custoChi?: { value?: number };
       }
@@ -312,7 +312,7 @@ export function abilityFromEntry(entry: CompendiumEntry): CombatActionOption | n
   const mapped = ABILITY_BY_ID[entry.id];
   const extras = { ...defaultExtras(effect), ...mapped?.extras };
 
-  const rangeHex = tactical?.alcanceHex?.value ?? 1;
+  const rangeCells = tactical?.alcanceCells?.value ?? 1;
   const paCost = tactical?.custoPontosAcao?.value ?? PA_DEFAULT_ACTION_COST;
   const chiCost = tactical?.custoChi?.value ?? 0;
   const selfTarget = extras.selfTarget ?? (effect === "defense_buff" || effect === "charge");
@@ -323,7 +323,7 @@ export function abilityFromEntry(entry: CompendiumEntry): CombatActionOption | n
     attackBonus = 0;
   }
 
-  const targetLabel = selfTarget ? "self" : extras.allyTarget ? "aliado" : `${rangeHex} cél.`;
+  const targetLabel = selfTarget ? "self" : extras.allyTarget ? "aliado" : `${rangeCells} cél.`;
 
   return {
     packId: "habilidades",
@@ -334,7 +334,7 @@ export function abilityFromEntry(entry: CompendiumEntry): CombatActionOption | n
     damageFormula: extras.damageFormula ?? "0",
     damageType: extras.damageType ?? "",
     attackBonus,
-    rangeHex,
+    rangeCells,
     paCost,
     chiCost: chiCost > 0 ? chiCost : undefined,
     abilityEffect: effect,

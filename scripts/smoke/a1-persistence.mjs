@@ -7,7 +7,7 @@
  *   npm run smoke:a1
  *
  * Produção (health apenas):
- *   SMOKE_BASE_URL=https://mxdrpg.vercel.app npm run smoke:a1
+ *   SMOKE_BASE_URL=https://www.mxdrpg.com.br npm run smoke:a1
  *
  * Local completo (DB + health):
  *   npm run dev   # outro terminal
@@ -91,7 +91,7 @@ async function smokeDbRoundtrip() {
     id: roomId,
     name: "Smoke A1",
     gridRadius: 8,
-    hexSize: 36,
+    cellSize: 36,
     tokens: [],
   };
 
@@ -139,7 +139,7 @@ async function smokeDbRoundtrip() {
           pa: 5,
           paMax: 5,
           ownerRole: "mestre",
-          movementSpentHex: 0,
+          movementSpentCells: 0,
           movementWalkMax: 4,
           movementRunMax: 6,
         },

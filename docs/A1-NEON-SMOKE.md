@@ -13,12 +13,12 @@
 - [ ] `npm run smoke:a1` → `smoke:a1 OK`
 - [ ] `/mestre` → criar mesa (não demo) → mover token → `Ctrl+C` no dev → `npm run dev` → mesa ainda existe
 
-### Produção (Vercel)
+### Produção (Contabo)
 
 - [ ] `DATABASE_URL` em Production (mesma URL do migrate)
-- [ ] `npm run db:migrate` com URL de prod (`vercel env pull` ou copiar do dashboard)
+- [ ] `npm run db:migrate` com URL de prod (`copiar env do servidor` ou copiar do dashboard)
 - [ ] Redeploy
-- [ ] `SMOKE_BASE_URL=https://mxdrpg.vercel.app npm run smoke:a1` → health `db: true`
+- [ ] `SMOKE_BASE_URL=https://www.mxdrpg.com.br npm run smoke:a1` → health `db: true`
 - [ ] Criar sala em `/mestre` → redeploy → sala continua listada
 
 ## Comandos
@@ -33,11 +33,11 @@
 ### Só produção (sem DB local)
 
 ```powershell
-$env:SMOKE_BASE_URL="https://mxdrpg.vercel.app"
+$env:SMOKE_BASE_URL="https://www.mxdrpg.com.br"
 npm run smoke:a1
 ```
 
-(Requer `DATABASE_URL` no servidor Vercel; o script pula roundtrip SQL local.)
+(Requer `DATABASE_URL` no servidor; o script pula roundtrip SQL local.)
 
 ### Local completo
 
@@ -69,9 +69,9 @@ npm run smoke:a1
 
 | Sintoma | Ação |
 |---------|------|
-| `db: false` em prod | Migrate na **mesma** URL da Vercel; usar pooler |
+| `db: false` em prod | Migrate na **mesma** URL do servidor; usar pooler |
 | `too many connections` | URL com `-pooler` |
-| Sala some após deploy | `DATABASE_URL` ausente ou diferente entre migrate e Vercel |
+| Sala some após deploy | `DATABASE_URL` ausente ou diferente entre migrate e produção |
 | smoke:a1 falha no health | Subir `npm run dev` ou setar `SMOKE_BASE_URL` |
 
 ## Próximo gate

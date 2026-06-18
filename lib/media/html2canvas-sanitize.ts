@@ -105,7 +105,7 @@ export function stripStylesheetsFromClone(doc: Document): void {
   doc.querySelectorAll('style, link[rel="stylesheet"]').forEach((el) => el.remove());
 }
 
-/** CSS só com hex/rgba — reaplicado após remover folhas com color-mix(). */
+/** CSS só com cores #/rgba — reaplicado após remover folhas com color-mix(). */
 export const PDF_CAPTURE_SAFE_CSS = `
 .sheet-pdf-capture-host { visibility: visible !important; opacity: 1 !important; width: 794px !important; }
 .sheet-pdf-doc {

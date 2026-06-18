@@ -471,7 +471,7 @@
 .sheet-ddb-attr-tip,
 .sheet-ddb-save-tip,
 .sheet-ddb-trait-tip,
-.sheet-ddb-hex-tip,
+.sheet-ddb-stat-tip,
 .sheet-ddb-shield-tip,
 .sheet-ddb-resource-tip,
 .sheet-ddb-skill-tip,
@@ -487,7 +487,7 @@
 .sheet-ddb-attr-tip .sheet-ddb-attr,
 .sheet-ddb-save-tip .sheet-ddb-save,
 .sheet-ddb-trait-tip .sheet-ddb-trait,
-.sheet-ddb-hex-tip .sheet-ddb-hex,
+.sheet-ddb-stat-tip .sheet-ddb-stat,
 .sheet-ddb-shield-tip .sheet-ddb-shield-ac,
 .sheet-ddb-resource-tip .sheet-ddb-resource,
 .sheet-ddb-culinary-tip .sheet-ddb-culinary__item {
@@ -498,7 +498,7 @@
 .sheet-ddb-attr:focus-visible,
 .sheet-ddb-save:focus-visible,
 .sheet-ddb-trait:focus-visible,
-.sheet-ddb-hex:focus-visible,
+.sheet-ddb-stat:focus-visible,
 .sheet-ddb-shield-ac:focus-visible,
 .sheet-ddb-resource:focus-visible,
 .sheet-ddb-culinary__item:focus-visible,
@@ -544,7 +544,7 @@
   width: 100%;
 }
 
-.sheet-ddb-hex-tip.sheet-hover-tip,
+.sheet-ddb-stat-tip.sheet-hover-tip,
 .sheet-ddb-shield-tip.sheet-hover-tip {
   display: flex;
   min-width: 0;
@@ -552,7 +552,7 @@
   height: 100%;
 }
 
-.sheet-ddb-hex-tip .sheet-ddb-hex,
+.sheet-ddb-stat-tip .sheet-ddb-stat,
 .sheet-ddb-shield-tip .sheet-ddb-shield-ac {
   flex: 1;
   width: 100%;
@@ -808,7 +808,7 @@
   object-fit: cover;
 }
 
-.sheet-ddb-hex-row {
+.sheet-ddb-stat-row {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-auto-rows: 1fr;
@@ -817,7 +817,7 @@
   flex-shrink: 0;
 }
 
-.sheet-ddb-hex {
+.sheet-ddb-stat {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -831,7 +831,7 @@
   color: #1e1814;
 }
 
-.sheet-ddb-hex__label {
+.sheet-ddb-stat__label {
   font-size: 0.52rem;
   font-weight: 800;
   letter-spacing: 0.04em;
@@ -840,7 +840,7 @@
   white-space: nowrap;
 }
 
-.sheet-ddb-hex strong {
+.sheet-ddb-stat strong {
   font-size: 0.72rem;
   font-weight: 800;
   line-height: 1.1;

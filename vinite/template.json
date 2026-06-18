@@ -31,7 +31,7 @@
           }
         },
         "movement": {
-          "hex": {
+          "cells": {
             "walk": {
               "value": 4,
               "label": "Caminhada"
@@ -99,7 +99,7 @@
       },
       "combativel": {
         "tactical": {
-          "alcanceHex": {
+          "alcanceCells": {
             "value": 1,
             "min": 0
           },
@@ -140,7 +140,7 @@
       "templates": ["base"],
       "effect": {
         "duracao": "",
-        "alcanceHex": {
+        "alcanceCells": {
           "value": 0,
           "min": 0
         }

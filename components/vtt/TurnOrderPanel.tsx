@@ -52,14 +52,14 @@ type Props = {
   /** Aplica snapshot retornado pela API (turno/PA imediato). */
   onSnapshot?: (snap: RoomSnapshot) => void;
 
-  /** Tokens válidos no modo ataque (espelha o hex). */
+  /** Tokens válidos no modo ataque (espelha o célula). */
 
   attackableIds?: ReadonlySet<string>;
 
   /** Tokens no alcance (anel no mapa) — pode incluir alvos bloqueados por turno/PA. */
   rangeTargetIds?: ReadonlySet<string>;
 
-  /** Alvo sob o cursor no hex ou na lista de turnos. */
+  /** Alvo sob o cursor no célula ou na lista de turnos. */
 
   hoverAttackTargetId?: string | null;
 

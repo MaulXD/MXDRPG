@@ -15,11 +15,11 @@ npm run smoke:p0
 
 `GET /api/health` → `{ ok, app, db, persistence }`. Em desenvolvimento, se `db` for `false`, vem `dbError` com o motivo.
 
-## Neon na Vercel
+## Neon no servidor
 
 - Use a connection string **pooled** (`-pooler` no host).
 - `lib/db/client.ts` limita `max: 1` em `VERCEL` e desliga `prepare` no pooler.
-- Rode `npm run db:migrate` uma vez com a **mesma** URL que está na Vercel.
+- Rode `npm run db:migrate` uma vez com a **mesma** URL que está no servidor.
 
 ## Tabelas
 

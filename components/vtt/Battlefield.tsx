@@ -11,7 +11,7 @@ import {
   type ReactNode,
 } from "react";
 import { createPortal } from "react-dom";
-import type { Axial } from "@/lib/vtt/hex-math";
+import type { Axial } from "@/lib/vtt/grid-math";
 import type { BattleScene, BattleToken, MapMarkup, MapMarkupDurability } from "@/lib/vtt/types";
 import {
   moveRoomTokenBudget,
@@ -20,7 +20,7 @@ import {
   postRoomAbility,
   postRoomAreaSpell,
   postRoomPing,
-  revealRoomHex,
+  revealRoomCell,
   repositionRoomToken,
   deleteRoomToken,
 } from "@/hooks/useRoomSync";
@@ -42,7 +42,7 @@ import {
   mapMarkupAuthorId,
 } from "@/lib/auth/room-access";
 import { normalizeRoomSettings } from "@/lib/room/settings";
-import { filterTokensForFog, visibleHexSetForPlayer } from "@/lib/vtt/fog-of-war";
+import { filterTokensForFog, visibleCellSetForPlayer } from "@/lib/vtt/fog-of-war";
 import { resolveTokenHpDisplay } from "@/lib/vtt/token-hp-display";
 import { shouldIgnoreBattlefieldShortcut } from "@/lib/vtt/keyboard-guard";
 import { GmToolsPanel } from "@/components/vtt/GmToolsPanel";
@@ -116,7 +116,7 @@ import { TokenStatusBody } from "@/components/vtt/TokenStatusBody";
 import { EndTurnBar } from "@/components/vtt/EndTurnBar";
 import { TurnOrderPanel } from "@/components/vtt/TurnOrderPanel";
 import {
-  applyDungeonHexEdit,
+  applyDungeonCellEdit,
   type DungeonEditLayer,
   type DungeonEditorTool,
 } from "@/components/vtt/DungeonEditorPanel";
@@ -132,7 +132,7 @@ import { usePortraitFocusByToken } from "@/hooks/vtt/usePortraitFocusByToken";
 import { useBattlefieldHighlights } from "@/hooks/vtt/useBattlefieldHighlights";
 import { useBattlefieldView } from "@/hooks/vtt/useBattlefieldView";
 import { useCanvasWrapSize } from "@/hooks/vtt/useCanvasWrapSize";
-import { useHexCanvas, type HexCanvasDrawState } from "@/hooks/vtt/useHexCanvas";
+import { useGridCanvas, type GridCanvasDrawState } from "@/hooks/vtt/useGridCanvas";
 import {
   mapBackdropTone,
   sampleImageGreenDominance,
@@ -140,13 +140,13 @@ import {
 } from "@/lib/vtt/map-luminance";
 import { useBattlefieldPointer } from "@/hooks/vtt/useBattlefieldPointer";
 import { useMonsterSpawnDrop } from "@/hooks/vtt/useMonsterSpawnDrop";
-import { creatureSizeOf, occupiedHexes, tokenPixelCenter } from "@/lib/vtt/creature-size";
+import { creatureSizeOf, occupiedCells, tokenPixelCenter } from "@/lib/vtt/creature-size";
 import { resolveMonsterSpawnPlacement } from "@/lib/vtt/spawn-placement";
 import { getActiveSpawnDragPayload } from "@/lib/vtt/spawn-drag";
 import { movementPaOptsForRoom } from "@/lib/combat/movement-pa-opts";
 import { canMoveToken, type MovementPathContext } from "@/lib/vtt/movement";
 import { animateTokenAlongPath } from "@/lib/vtt/token-move-animation";
-import { axialToPixel, hexDrawRadius } from "@/lib/vtt/hex-math";
+import { axialToPixel, cellDrawRadius } from "@/lib/vtt/grid-math";
 import { canvasCenter, worldToScreen } from "@/lib/vtt/battlefield-view";
 import { resolveMapAlignedGridLayout } from "@/lib/vtt/grid-layout";
 import "./vtt.css";
@@ -224,7 +224,7 @@ type Props = {
   canManageBattlefield?: boolean;
 };
 
-export function HexBattlefield({
+export function Battlefield({
   scene: initial,
   canEdit,
   canControlCombat = false,
@@ -404,9 +404,9 @@ export function HexBattlefield({
     [roomActors, session?.id]
   );
 
-  const visibleHexSet = useMemo(() => {
+  const visibleCellSet = useMemo(() => {
     if (canControlCombat) return null;
-    return visibleHexSetForPlayer(displayScene, displayScene.tokens, {
+    return visibleCellSetForPlayer(displayScene, displayScene.tokens, {
       userId: session?.id,
       actorIds: playerActorIds,
     });
@@ -414,11 +414,11 @@ export function HexBattlefield({
 
   const listTokens = useMemo(() => {
     if (canControlCombat) return displayScene.tokens;
-    return filterTokensForFog(displayScene.tokens, displayScene, visibleHexSet, {
+    return filterTokensForFog(displayScene.tokens, displayScene, visibleCellSet, {
       userId: session?.id,
       actorIds: playerActorIds,
     });
-  }, [canControlCombat, displayScene, visibleHexSet, session?.id, playerActorIds]);
+  }, [canControlCombat, displayScene, visibleCellSet, session?.id, playerActorIds]);
 
   useEffect(() => {
     if (!selectedId) return;
@@ -732,7 +732,7 @@ export function HexBattlefield({
     return {
       valid: true as const,
       footprintKeys: new Set(
-        occupiedHexes(placement.anchor, size).map((h) => `${h.q},${h.r}`)
+        occupiedCells(placement.anchor, size).map((h) => `${h.q},${h.r}`)
       ),
     };
   }, [spawnDragActive, hoverAxial, displayScene]);
@@ -780,7 +780,7 @@ export function HexBattlefield({
     const raca = mover.actorId ? actorRacas[mover.actorId] : undefined;
     const size = creatureSizeOf(mover, raca);
     if (size === "small" || size === "medium") return null;
-    return new Set(occupiedHexes(dest, size).map((h) => `${h.q},${h.r}`));
+    return new Set(occupiedCells(dest, size).map((h) => `${h.q},${h.r}`));
   }, [
     actionMode,
     selected,
@@ -857,7 +857,7 @@ export function HexBattlefield({
     return hoverAxial;
   }, [trackGridHover, hoverAxial]);
 
-  const canvasState: HexCanvasDrawState = useMemo(
+  const canvasState: GridCanvasDrawState = useMemo(
     () => ({
       scene: canvasScene,
       showMovement: highlights.showMovement,
@@ -888,7 +888,7 @@ export function HexBattlefield({
       hoverTokenId,
       tokenFlash,
       tokenCastFx,
-      visibleHexSet,
+      visibleCellSet,
       pings: displayPings,
       mapImage,
       mapBackdropTone: mapBackdropToneValue,
@@ -941,7 +941,7 @@ export function HexBattlefield({
       hoverTokenId,
       tokenFlash,
       tokenCastFx,
-      visibleHexSet,
+      visibleCellSet,
       displayPings,
       mapImage,
       tokenHpDisplay,
@@ -956,7 +956,7 @@ export function HexBattlefield({
     ]
   );
 
-  const { redraw } = useHexCanvas(
+  const { redraw } = useGridCanvas(
     canvasRef,
     wrapRef,
     imagesRef,
@@ -1322,7 +1322,7 @@ export function HexBattlefield({
     const grid = resolveMapAlignedGridLayout(displayScene, ox, oy);
     const pos = tokenDrawPosition(token);
     const size = creatureSizeOf(token, actorRacas[token.actorId ?? ""]);
-    const { x, y } = tokenPixelCenter(pos, size, grid.hexSize, grid.ox, grid.oy);
+    const { x, y } = tokenPixelCenter(pos, size, grid.cellSize, grid.ox, grid.oy);
 
     requestAnimationFrame(() => {
       battlefieldView.centerOnWorld(x, y);
@@ -1333,7 +1333,7 @@ export function HexBattlefield({
     isRoomGm,
     canControlCombat,
     displayScene.tokens,
-    displayScene.hexSize,
+    displayScene.cellSize,
     actorRacas,
     tokenDrawPosition,
     battlefieldView.centerOnWorld,
@@ -1449,11 +1449,11 @@ export function HexBattlefield({
     const h = wrap.clientHeight;
     const { ox, oy } = canvasCenter(w, h);
     const grid = resolveMapAlignedGridLayout(displayScene, ox, oy);
-    const tokenR = hexDrawRadius(grid.hexSize) * (battlefieldView.view.scale ?? 1);
+    const tokenR = cellDrawRadius(grid.cellSize) * (battlefieldView.view.scale ?? 1);
     const gap = 10;
 
     const axialToScreen = (q: number, r: number) => {
-      const local = axialToPixel(q, r, grid.hexSize, grid.ox, grid.oy);
+      const local = axialToPixel(q, r, grid.cellSize, grid.ox, grid.oy);
       return worldToScreen(local.x, local.y, w, h, battlefieldView.view);
     };
 
@@ -1503,7 +1503,7 @@ export function HexBattlefield({
     const { ox, oy } = canvasCenter(w, h);
     return resolveMapAlignedGridLayout(displayScene, ox, oy);
   }, [
-    displayScene.hexSize,
+    displayScene.cellSize,
     displayScene.mapImageUrl,
     displayScene.mapImageScale,
     displayScene.mapImageOffsetX,
@@ -1890,12 +1890,12 @@ export function HexBattlefield({
     [roomId, selected?.color, syncRoom]
   );
 
-  const onDungeonHexEdit = useCallback(
+  const onDungeonCellEdit = useCallback(
     async (axial: Axial, dragObjectId?: string) => {
       if (!dungeonMapEditing) return;
       setActionErr(null);
       try {
-        const result = await applyDungeonHexEdit(
+        const result = await applyDungeonCellEdit(
           roomId,
           displayScene,
           dungeonTool,
@@ -1925,12 +1925,12 @@ export function HexBattlefield({
     ]
   );
 
-  const onRevealHex = useCallback(
+  const onRevealCell = useCallback(
     async (axial: Axial) => {
       if (!canControlCombat || !displayScene.fogEnabled) return;
       setActionErr(null);
       try {
-        const snap = await revealRoomHex(roomId, axial.q, axial.r);
+        const snap = await revealRoomCell(roomId, axial.q, axial.r);
         syncRoom(snap);
       } catch (e) {
         setActionErr(e instanceof Error ? e.message : "Falha ao revelar célula");
@@ -2036,7 +2036,7 @@ export function HexBattlefield({
     onAreaSpell: (c, d) => void castAreaSpell(c, d),
     onAreaSpellError: setActionErr,
     onPing: (a) => void onMapPing(a),
-    onRevealHex: canControlCombat ? (a) => void onRevealHex(a) : undefined,
+    onRevealCell: canControlCombat ? (a) => void onRevealCell(a) : undefined,
     fogEnabled: Boolean(displayScene.fogEnabled),
     viewRef: battlefieldView.viewRef,
     onActionRingRequest: (token, clientX, clientY) => {
@@ -2063,7 +2063,7 @@ export function HexBattlefield({
           tool: dungeonTool,
           selectedObjectId: selectedDungeonObjectId,
           onSelectObject: setSelectedDungeonObjectId,
-          onHexEdit: (a, dragId) => void onDungeonHexEdit(a, dragId),
+          onCellEdit: (a, dragId) => void onDungeonCellEdit(a, dragId),
           floorOffsetX: canvasScene.mapImageOffsetX ?? 0,
           floorOffsetY: canvasScene.mapImageOffsetY ?? 0,
           floorScale: canvasScene.mapImageScale ?? 1,
@@ -2915,7 +2915,7 @@ export function HexBattlefield({
         />
         <CombatFxLayer
           wrapRef={wrapRef}
-          hexSize={combatFxGrid.hexSize}
+          cellSize={combatFxGrid.cellSize}
           gridOx={combatFxGrid.ox}
           gridOy={combatFxGrid.oy}
           fx={combatFx}

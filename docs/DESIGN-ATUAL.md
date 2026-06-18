@@ -16,7 +16,7 @@ O Eldarin usa **dois shells de interface**:
 | Contexto     | Rota                                                | Shell                         | Objetivo                                             |
 | ------------ | --------------------------------------------------- | ----------------------------- | ---------------------------------------------------- |
 | **Site**     | `/`, `/biblioteca`, `/entrar`, fichas fora da mesa… | Header + footer clássicos     | Marketing, compêndio, criação de personagem, portais |
-| **Mesa VTT** | `/mesa/[roomId]`                                    | `vtt-chrome` + layout Foundry | Jogo em tempo real: mapa hex, tokens, combate, chat  |
+| **Mesa VTT** | `/mesa/[roomId]`                                    | `vtt-chrome` + layout Foundry | Jogo em tempo real: mapa célula, tokens, combate, chat  |
 
 
 Ambos compartilham **tokens CSS globais** (`app/globals.css`), mas a mesa aplica um **tema próprio** via `mesa-theme.css`.
@@ -146,7 +146,7 @@ Cantos decorativos SVG (`.mf-corner`) + corpo `.mf-body`. Sem emojis decorativos
 ┌──────────────────────────────────────────────────────────────────┐
 │ vtt-topbar: ELDARIN | Mesas · Compêndios · Minhas mesas | sol    │
 ├──────────┬─────────────────────────────────────────────────────┤
-│ Icon bar │  Mapa hex (stage — foundry-mesa__stage)              │
+│ Icon bar │  Mapa célula (stage — foundry-mesa__stage)              │
 │ + dock   │  · MapToolbar (esquerda)                             │
 │ (altura  │  · TurnHandoffOverlay (anúncio de turno)              │
 │  100%)   │  · Toasts (#foundry-mesa-toasts, acima do HUD)       │
@@ -184,7 +184,7 @@ Cantos decorativos SVG (`.mf-corner`) + corpo `.mf-body`. Sem emojis decorativos
 
 ```
 ┌─────────────────────────────────────────────────────────┐
-│ BANNER (100px) — bg da classe + nome + nível hex        │
+│ BANNER (100px) — bg da classe + nome + nível célula        │
 ├──────────┬──────────────────────┬──────────────────────┤
 │ Avatar   │ Faixa de atributos   │                      │
 │ 158×178  │ FOR DES CON INT SAB  │                      │
@@ -314,7 +314,7 @@ Pill do modificador:
 
 - **Fonte de verdade:** `actor.tokenImageUrl` → `actor.portraitUrl` → `token.imageUrl` (ver `lib/room/portrait-sync.ts`).
 - **Sync ao salvar mesa:** `syncLinkedTokens` + `backfillActorPortraitsFromTokens` em `bumpRoom` evitam perder imagem ao passar turno.
-- **Cliente:** `mergeScenePreservingPortraits` no `HexBattlefield` preserva `imageUrl` entre snapshots parciais de combate.
+- **Cliente:** `mergeScenePreservingPortraits` no `Battlefield` preserva `imageUrl` entre snapshots parciais de combate.
 - **Enquadramento:** mesmo motor da ficha (`PortraitFocusFill` / `computeFocusImgLayout`); HUD usa `shape="square"`.
 
 ---
@@ -351,7 +351,7 @@ Disparado quando `activeIndex` ou rodada mudam (não na carga inicial da mesa).
 
 ## 8. Tokens no mapa
 
-- Moldura hexagonal SVG com duplo anel (jogador) ou triplo anel (inimigo grande)
+- Moldura angular SVG com duplo anel (jogador) ou triplo anel (inimigo grande)
 - Jogadores: cor da classe define o esquema do anel
 - Inimigos: anel vermelho — inimigos grandes recebem terceiro anel para peso visual
 - Nameplate: fita em `clip-path` rômbico embaixo do token, fundo na cor da facção
@@ -363,11 +363,11 @@ Disparado quando `activeIndex` ou rodada mudam (não na carga inicial da mesa).
 
 ## 9. Convenções para novos componentes
 
-1. **Cores:** sempre `var(--token)` — nunca hex fixo em componentes; na mesa, respeitar `--mesa-`* dentro de `.vtt-chrome`.
+1. **Cores:** sempre `var(--token)` — nunca célula fixo em componentes; na mesa, respeitar `--mesa-`* dentro de `.vtt-chrome`.
 2. **Emojis:** proibidos em qualquer componente de UI — usar SVG inline ou `MesaRailIcon`.
 3. **Contraste:** texto que o jogador lê durante sessão deve ter contraste mínimo 4.5:1 (WCAG AA) — verificar sempre que usar `--text-muted` sobre fundos escuros.
 4. **Atributos:** seguir spec "opção C" — valor base 28px Cinzel `--text`, pill de modificador colorida por sinal.
-5. **Canvas:** novos highlights devem ganhar par `--vtt-hex-`* em `globals.css` + `mesa-theme.css`, lidos via `readThemeColor`.
+5. **Canvas:** novos highlights devem ganhar par `--vtt-cell-`* em `globals.css` + `mesa-theme.css`, lidos via `readThemeColor`.
 6. **Painéis na mesa:** usar `glass-panel` ou classes `foundry-dock-panel--`*; scroll com `mesa-panel-scroll`.
 7. **Tooltips de regras:** reutilizar `effectTipAttrs` / padrão `data-tip`.
 8. **Tipografia:** Cinzel para títulos e valores de jogo; Lora para regras e lore; Source Sans 3 para controles densos.
@@ -436,7 +436,7 @@ lib/room/adventure-actors.ts   ← merge retratos ao sync ficha DB
 | Versão | Data     | Mudanças                                                                                                                            |
 | ------ | -------- | ----------------------------------------------------------------------------------------------------------------------------------- |
 | v3     | jun/2026 | Dock preenche altura; toasts acima do HUD; overlay de turno; retratos persistentes; HUD com PortraitFocusFill e fundo em `::before` |
-| v2     | jun/2026 | Contraste WCAG, sem emojis, atributos opção C, tokens hex, ficha Foundry                                                            |
+| v2     | jun/2026 | Contraste WCAG, sem emojis, atributos opção C, tokens célula, ficha Foundry                                                            |
 | v1     | —        | Paleta ardósia/azul, shell Foundry inicial                                                                                          |
 
 

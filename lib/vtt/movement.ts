@@ -1,13 +1,13 @@
 import { effectiveMovementPaCost } from "@/lib/combat/pa-economy";
 import { applyPaSpend, checkCanSpendPa } from "@/lib/combat/pa-turn";
-import type { Axial } from "@/lib/vtt/hex-math";
-import { axialDistance } from "@/lib/vtt/hex-math";
-import { pathStepCount } from "@/lib/vtt/hex-path";
+import type { Axial } from "@/lib/vtt/grid-math";
+import { axialDistance } from "@/lib/vtt/grid-math";
+import { pathStepCount } from "@/lib/vtt/grid-path";
 import { cellsToFeet, pathFeetCost } from "@/lib/vtt/movement-feet";
 import {
   creatureSizeOf,
-  isMultiHexCreatureSize,
-  occupiedHexes,
+  isMultiCellCreatureSize,
+  occupiedCells,
 } from "@/lib/vtt/creature-size";
 import {
   movementPathTo,
@@ -33,24 +33,20 @@ export {
 } from "@/lib/vtt/movement-pa";
 
 /** Eldarin tactical grid: 1 célula = 1,5 m (9 m base ≈ 6 células) */
-export const METERS_PER_HEX = 1.5;
+export const METERS_PER_CELL = 1.5;
 export const BASE_MOVEMENT_METERS = 9;
 
-export function hexToMeters(hex: number): number {
-  return Math.round(hex * METERS_PER_HEX * 10) / 10;
-}
-
-export function hexToFeet(hex: number): number {
-  return cellsToFeet(hex);
+export function cellsToMeters(cells: number): number {
+  return Math.round(cells * METERS_PER_CELL * 10) / 10;
 }
 
 export function formatMovementLabel(spent: number, max: number): string {
   const left = Math.max(0, max - spent);
-  return `${left}/${max} células (${hexToFeet(left)}/${hexToFeet(max)} ft)`;
+  return `${left}/${max} células (${cellsToFeet(left)}/${cellsToFeet(max)} ft)`;
 }
 
 export function movementSpent(token: BattleToken): number {
-  return token.movementSpentHex ?? 0;
+  return token.movementSpentCells ?? 0;
 }
 
 export function movementWalkMax(token: BattleToken): number {
@@ -189,7 +185,7 @@ export function canMoveToken(
     if (dist > walkLeft) {
       return {
         ok: false,
-        reason: `Caminhada: faltam ${dist - walkLeft} células (${hexToMeters(dist - walkLeft)} m) — use corrida`,
+        reason: `Caminhada: faltam ${dist - walkLeft} células (${cellsToMeters(dist - walkLeft)} m) — use corrida`,
         dist,
         paCost,
         needsPa: paCost > 0,
@@ -246,21 +242,21 @@ export function canMoveToken(
 }
 
 export function resetTokenMovement(token: BattleToken): BattleToken {
-  return { ...token, movementSpentHex: 0 };
+  return { ...token, movementSpentCells: 0 };
 }
 
 export function defaultMovementFields(token: Pick<BattleToken, "walk" | "run">): Pick<
   BattleToken,
-  "movementSpentHex" | "movementWalkMax" | "movementRunMax"
+  "movementSpentCells" | "movementWalkMax" | "movementRunMax"
 > {
   return {
-    movementSpentHex: 0,
+    movementSpentCells: 0,
     movementWalkMax: token.walk,
     movementRunMax: token.run,
   };
 }
 
-export function reachableHexes(token: BattleToken, mode: MoveMode): number {
+export function reachableCells(token: BattleToken, mode: MoveMode): number {
   return mode === "walk" ? walkRemaining(token) : runRemaining(token);
 }
 
@@ -268,19 +264,19 @@ function expandAnchorKeysToFootprint(
   anchorKeys: Iterable<string>,
   size: ReturnType<typeof creatureSizeOf>
 ): Set<string> {
-  if (!isMultiHexCreatureSize(size)) return new Set(anchorKeys);
+  if (!isMultiCellCreatureSize(size)) return new Set(anchorKeys);
   const set = new Set<string>();
   for (const key of anchorKeys) {
     const [q, r] = key.split(",").map(Number);
-    for (const hex of occupiedHexes({ q, r }, size)) {
-      set.add(`${hex.q},${hex.r}`);
+    for (const cell of occupiedCells({ q, r }, size)) {
+      set.add(`${cell.q},${cell.r}`);
     }
   }
   return set;
 }
 
 /** Células cujo movimento exige PA (BFS + faixas, sem pathfind por célula). */
-export function paidMovementHexKeys(
+export function paidMovementCellKeys(
   token: BattleToken,
   mode: MoveMode,
   ctx: MovementPathContext,

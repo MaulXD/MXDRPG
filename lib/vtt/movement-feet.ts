@@ -1,5 +1,5 @@
-import type { Axial } from "@/lib/vtt/hex-math";
-import { hexNeighbors } from "@/lib/vtt/hex-math";
+import type { Axial } from "@/lib/vtt/grid-math";
+import { cellNeighbors } from "@/lib/vtt/grid-math";
 import { footprintCenter, type CreatureSize } from "@/lib/vtt/creature-size";
 
 /** D&D 5e — 1 célula do grid ≈ 5 ft (mesa: 1,5 m). */
@@ -9,7 +9,7 @@ export type FeetPathOptions = {
   maxFeet: number;
   /** Teto em passos (walk/run da ficha) — PA e orçamento de células. */
   maxSteps: number;
-  canEnter: (hex: Axial) => boolean;
+  canEnter: (cell: Axial) => boolean;
 };
 
 export type ReachByFeet = Map<string, { feet: number; steps: number }>;
@@ -163,7 +163,7 @@ export function findPathByFeet(from: Axial, to: Axial, opts: FeetPathOptions): A
       return reconstructPath(parent, to, cur.parity, from);
     }
 
-    for (const n of hexNeighbors({ q: cur.q, r: cur.r })) {
+    for (const n of cellNeighbors({ q: cur.q, r: cur.r })) {
       if (!opts.canEnter(n)) continue;
       const { feet: edgeFeet, nextParity } = stepFeetAndParity(
         { q: cur.q, r: cur.r },
@@ -214,7 +214,7 @@ export function reachableAnchorsByFeet(from: Axial, opts: FeetPathOptions): Reac
       }
     }
 
-    for (const n of hexNeighbors({ q: cur.q, r: cur.r })) {
+    for (const n of cellNeighbors({ q: cur.q, r: cur.r })) {
       if (!opts.canEnter(n)) continue;
       const { feet: edgeFeet, nextParity } = stepFeetAndParity(
         { q: cur.q, r: cur.r },

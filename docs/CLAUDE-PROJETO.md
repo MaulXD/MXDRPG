@@ -14,10 +14,10 @@ Documento de onboarding para **Claude** (ou outro assistente de código) trabalh
 |------|--------|
 | **Nome** | Eldarin RPG — VTT web proprietário |
 | **Pacote npm** | `eldarin-vtt` |
-| **Produção** | https://mxdrpg.vercel.app |
+| **Produção** | https://www.mxdrpg.com.br |
 | **Repositório** | https://github.com/MaulXD/MXDRPG.git |
 | **Idioma** | PT-BR (UI, docs, livros) |
-| **Sistema de regras** | **Eldarin v4** (hex, PA com acúmulo/teto, bestiário, classes do livro) |
+| **Sistema de regras** | **Eldarin v4** (grid em células, PA com acúmulo/teto, bestiário, classes do livro) |
 
 **Missão:** ser o melhor lugar para jogar **Eldarin online** — não um VTT genérico (D&D, etc.). Regras do **livro mandam**; código e VTT corrigem para bater com o livro.
 
@@ -33,7 +33,7 @@ Documento de onboarding para **Claude** (ou outro assistente de código) trabalh
 |-------------|--------|
 | `archive/web/` | Legado React — **não editar** |
 | `vinite/` | Módulo **Foundry** — referência de paridade UX, **não** runtime do produto |
-| `drpg.vercel.app` | **Outro projeto** — não confundir com mxdrpg |
+| `(legado — ignorar)` | **Outro projeto** — não confundir com mxdrpg |
 | `data/compendiums/*.json` | **Gerados** — não editar à mão (use `npm run sync:data`) |
 | `livros/*.md` | Fonte de verdade das regras — editar aqui, depois sync |
 
@@ -46,11 +46,11 @@ Documento de onboarding para **Claude** (ou outro assistente de código) trabalh
 | Framework | **Next.js 15** (App Router), React 19 |
 | Linguagem | TypeScript strict |
 | Estilo | CSS em `app/globals.css` + `components/**/sheet.css` (sem Tailwind no core VTT) |
-| Canvas VTT | **Three.js** (`lib/vtt/draw-battlefield.ts`, `hooks/vtt/useHexCanvas.ts`) |
+| Canvas VTT | **Three.js** (`lib/vtt/draw-battlefield.ts`, `hooks/vtt/useGridCanvas.ts`) |
 | Auth produção | **Clerk** (`@clerk/nextjs`) + usuário espelhado em Postgres |
 | Auth legado | Cookie `vinite_session` (e-mail/senha demo) |
 | DB opcional | **Neon Postgres** via `DATABASE_URL` |
-| Hosting | **Vercel** — Root Directory **vazio** (raiz do repo) |
+| Hosting | **Contabo** — Docker (`Dockerfile`) + GHCR, domínio **www.mxdrpg.com.br** |
 
 ### Comandos essenciais
 
@@ -63,7 +63,7 @@ npm run lint
 npm run sync:data        # livros → JSON/TS
 npm run sync:data:check
 npm run db:migrate       # precisa DATABASE_URL em .env.local
-npm run test             # PA, movimento, hex path
+npm run test             # PA, movimento, célula path
 ```
 
 ### Variáveis de ambiente (resumo)
@@ -81,11 +81,11 @@ Saúde: `GET /api/health` → `{ ok, db, persistence }`.
 ## 4. Estrutura de pastas (mapa mental)
 
 ```
-RPG/                          ← raiz = app Next.js (deploy Vercel)
+RPG/                          ← raiz = app Next.js (deploy Docker / Contabo)
 ├── app/                      → rotas App Router + Route Handlers (API)
 ├── components/               → UI React (character/, vtt/, adventure/)
 ├── lib/                      → domínio server-first ("server-only" onde aplicável)
-├── hooks/                    → client hooks (useRoomSync, useHexCanvas, …)
+├── hooks/                    → client hooks (useRoomSync, useGridCanvas, …)
 ├── data/                     → JSON gerados (compêndios, subclass-tracks)
 ├── livros/                   → regras Eldarin v4 (fonte)
 ├── scripts/                  → geradores + migrate DB + smoke tests
@@ -103,7 +103,7 @@ RPG/                          ← raiz = app Next.js (deploy Vercel)
 | `/aventura/[adventureId]` | Hub da campanha (mesa, ficha, convite) |
 | `/aventura/[id]/configurar` | Mestre: settings da mesa |
 | `/aventura/[id]/personagem/novo` | Wizard de criação vinculado à aventura |
-| `/mesa/[roomId]` | **VTT ao vivo** (hex, combate, chat) |
+| `/mesa/[roomId]` | **VTT ao vivo** (grid, combate, chat) |
 | `/mesa/demo` | Demo pública (visitante pode jogar PC demo) |
 | `/personagem/[id]` | Ficha fora da mesa |
 | `/personagem/novo` | Wizard global (legado) |
@@ -122,7 +122,7 @@ Redirects legados: `/mesa/[id]/configurar` → `/aventura/.../configurar`, etc.
 | `lib/room/` | Estado da mesa, handlers HTTP, sync atores↔fichas |
 | `lib/character/` | Ficha, wizard, level-up, inventário, XP |
 | `lib/combat/` | PA, ataque, magia, área, condições, preview |
-| `lib/vtt/` | Hex, tokens, desenho canvas, movimento, fog of war |
+| `lib/vtt/` | Célula, tokens, desenho canvas, movimento, fog of war |
 | `lib/compendium/` | Registry de packs (armas, magias, monstros, …) |
 | `lib/auth/` | Sessão, Clerk, permissões sala/aventura |
 | `lib/db/` | Postgres client, CRUD rooms/users/characters/adventures |
@@ -147,7 +147,7 @@ Mesa (RoomState)
   ├── adventureId
   ├── ownerId (mestre **desta sala** — poderes GM)
   ├── memberIds[] (sync com aventura ao entrar por convite)
-  ├── scene (hex, tokens, fog)
+  ├── scene (células, tokens, fog)
   ├── actors: Record<actorId, RoomActor>  // RoomActor = ficha + revision
   ├── combat (ordem de turno, PA por token)
   ├── chat, pings, settings, revision
@@ -229,7 +229,7 @@ Cliente: `hooks/useRoomSync.ts` — `EventSource`; fallback poll ~4s.
 
 `globalThis.__eldarinRooms` — `lib/room/internal/registry.ts`.
 
-Com DB: leitura/escrita Postgres + cache no Map. **Cold start Vercel** perde memória se não houver DB.
+Com DB: leitura/escrita Postgres + cache no Map. **Restart do container** perde memória se não houver DB.
 
 ### Revisão
 
@@ -254,9 +254,9 @@ Documentação HTTP: `docs/API-SALA.md`.
 
 ## 8. VTT e combate (onde mexer com cuidado)
 
-### Mapa hex
+### Mapa grid
 
-- `lib/vtt/hex-math.ts`, `hex-grid.ts`, `hex-path.ts`, `hex-area.ts`
+- `lib/vtt/grid-math.ts`, `grid-cells.ts`, `grid-path.ts`, `grid-area.ts`
 - Movimento consome PA: `lib/vtt/movement-pa.ts`
 - Desenho: `lib/vtt/draw-battlefield.ts` + hooks em `hooks/vtt/`
 
@@ -271,14 +271,14 @@ Documentação HTTP: `docs/API-SALA.md`.
 
 - Alvo por clique, preview vantagem/desvantagem (`lib/combat/action-preview.ts`).
 - Ataque/magia/habilidade/área → rotas POST em `app/api/room/.../combat/`.
-- Áreas: burst, cone, line, wall, cube — `computeAreaHexes`.
+- Áreas: burst, cone, line, wall, cube — `computeAreaCells`.
 
 ### Componentes UI mesa
 
 | Componente | Papel |
 |------------|--------|
 | `components/vtt/MesaWorkspace.tsx` | Layout principal |
-| `components/vtt/HexBattlefield.tsx` | Orquestra canvas |
+| `components/vtt/Battlefield.tsx` | Orquestra canvas |
 | `components/vtt/TurnOrderPanel.tsx` | Ordem de turno |
 | `components/vtt/RoomInviteBar.tsx` | Convite mestre |
 | `components/vtt/RoomCharacterPrompt.tsx` | Vincular ficha à mesa |
@@ -382,7 +382,7 @@ Detalhes: `docs/PERSISTENCIA.md`, setup: `docs/P0-NEON-SETUP.md`.
 ```bash
 npm run build
 npm run lint
-npm run test          # PA + movimento + hex
+npm run test          # PA + movimento + grid
 npm run sync:data:check   # se mexeu em livros/scripts
 ```
 
@@ -450,7 +450,7 @@ npm run sync:data:check   # se mexeu em livros/scripts
 Copie e adapte:
 
 ```
-Você trabalha no repositório Eldarin VTT (MXDRPG), Next.js 15 + TypeScript, VTT hex Eldarin v4.
+Você trabalha no repositório Eldarin VTT (MXDRPG), Next.js 15 + TypeScript, VTT célula Eldarin v4.
 
 Regras:
 1. Leia docs/CLAUDE-PROJETO.md e siga o modelo Aventura → Mesa → Atores.
@@ -472,7 +472,7 @@ Tarefa: [descreva aqui]
 | Aventura | Campanha persistente (`Adventure`) |
 | Mesa / Sala | `RoomState` — sessão VTT ao vivo |
 | Ator | Ficha instanciada na sala (`RoomActor`) |
-| Token | Peça no mapa hex (`BattleToken`) |
+| Token | Peça no mapa célula (`BattleToken`) |
 | PA | Pontos de ação (combate) |
 | Pack | Coleção do compêndio (ex.: `monstros`) |
 | Convite | `inviteCode` — liga jogador à aventura e sala |

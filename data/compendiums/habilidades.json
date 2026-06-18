@@ -1,14 +1,14 @@
 [
   {
-    "id": "habilidades-investida-hexagonal",
-    "name": "Investida Hexagonal",
+    "id": "habilidades-investida-em-linha",
+    "name": "Investida em Linha",
     "type": "habilidade",
     "system": {
-      "catalogId": "HAB-investida-hexagonal",
+      "catalogId": "HAB-investida-em-linha",
       "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
-      "description": "<p>Desloca em linha reta até 2 hex sem provocar ataques de oportunidade durante o movimento.</p>",
+      "description": "<p>Desloca em linha reta até 2 célula sem provocar ataques de oportunidade durante o movimento.</p>",
       "tactical": {
-        "alcanceHex": {
+        "alcanceCells": {
           "value": 2,
           "min": 0
         },
@@ -32,7 +32,7 @@
       "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
       "description": "<p>Gasta 2 PA: próximo ataque corpo a corpo com vantagem se você flanquear o alvo.</p>",
       "tactical": {
-        "alcanceHex": {
+        "alcanceCells": {
           "value": 1,
           "min": 0
         },
@@ -56,7 +56,7 @@
       "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
       "description": "<p>+2 defesa até o início do seu próximo turno.</p>",
       "tactical": {
-        "alcanceHex": {
+        "alcanceCells": {
           "value": 0,
           "min": 0
         },
@@ -78,9 +78,9 @@
     "system": {
       "catalogId": "HAB-reflexos-de-masmorra",
       "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
-      "description": "<p>Reação a um ataque: desloca 1 hex imediatamente (não provoca oportunidades).</p>",
+      "description": "<p>Reação a um ataque: desloca 1 célula imediatamente (não provoca oportunidades).</p>",
       "tactical": {
-        "alcanceHex": {
+        "alcanceCells": {
           "value": 1,
           "min": 0
         },
@@ -102,9 +102,9 @@
     "system": {
       "catalogId": "HAB-olhar-do-cacador",
       "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
-      "description": "<p>Marca um alvo visível a até 5 hex; seu próximo ataque à distância contra ele ganha +2.</p>",
+      "description": "<p>Marca um alvo visível a até 5 célula; seu próximo ataque à distância contra ele ganha +2.</p>",
       "tactical": {
-        "alcanceHex": {
+        "alcanceCells": {
           "value": 5,
           "min": 0
         },
@@ -126,9 +126,9 @@
     "system": {
       "catalogId": "HAB-investida-do-guerreiro",
       "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
-      "description": "<p>Corrida em linha reta até 2 hex; ideal terminar adjacente a um inimigo para atacar no mesmo turno.</p>",
+      "description": "<p>Corrida em linha reta até 2 célula; ideal terminar adjacente a um inimigo para atacar no mesmo turno.</p>",
       "tactical": {
-        "alcanceHex": {
+        "alcanceCells": {
           "value": 2,
           "min": 0
         },
@@ -152,7 +152,7 @@
       "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
       "description": "<p>Próximo ataque corpo a corpo recebe +2 no teste de ataque.</p>",
       "tactical": {
-        "alcanceHex": {
+        "alcanceCells": {
           "value": 1,
           "min": 0
         },
@@ -176,7 +176,7 @@
       "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
       "description": "<p>+2 defesa até o início do seu próximo turno.</p>",
       "tactical": {
-        "alcanceHex": {
+        "alcanceCells": {
           "value": 0,
           "min": 0
         },
@@ -200,7 +200,7 @@
       "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
       "description": "<p>Próximo ataque à distância contra alvo visível é feito com vantagem.</p>",
       "tactical": {
-        "alcanceHex": {
+        "alcanceCells": {
           "value": 5,
           "min": 0
         },
@@ -224,7 +224,7 @@
       "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
       "description": "<p>Ataque furtivo adjacente; vantagem se o alvo não viu você no início do turno.</p>",
       "tactical": {
-        "alcanceHex": {
+        "alcanceCells": {
           "value": 1,
           "min": 0
         },
@@ -248,7 +248,7 @@
       "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
       "description": "<p>Alvo marcado tem desvantagem no próximo ataque contra você.</p>",
       "tactical": {
-        "alcanceHex": {
+        "alcanceCells": {
           "value": 1,
           "min": 0
         },
@@ -270,9 +270,9 @@
     "system": {
       "catalogId": "HAB-passo-das-sombras",
       "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
-      "description": "<p>Teleporte curto de até 2 hex; conta como movimento.</p>",
+      "description": "<p>Teleporte curto de até 2 célula; conta como movimento.</p>",
       "tactical": {
-        "alcanceHex": {
+        "alcanceCells": {
           "value": 2,
           "min": 0
         },
@@ -294,9 +294,9 @@
     "system": {
       "catalogId": "HAB-raio-arcano",
       "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
-      "description": "<p>Truque ofensivo: 1d10+INT de dano mágico em um alvo a até 6 hex.</p>",
+      "description": "<p>Truque ofensivo: 1d10+INT de dano mágico em um alvo a até 6 célula.</p>",
       "tactical": {
-        "alcanceHex": {
+        "alcanceCells": {
           "value": 6,
           "min": 0
         },
@@ -320,7 +320,7 @@
       "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
       "description": "<p>+3 defesa até o início do seu próximo turno.</p>",
       "tactical": {
-        "alcanceHex": {
+        "alcanceCells": {
           "value": 0,
           "min": 0
         },
@@ -344,7 +344,7 @@
       "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
       "description": "<p>Ataque corpo a corpo sagrado: +2 no ataque e +2d6 radiante no dano.</p>",
       "tactical": {
-        "alcanceHex": {
+        "alcanceCells": {
           "value": 1,
           "min": 0
         },
@@ -368,7 +368,7 @@
       "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
       "description": "<p>Resistência a dano contundente até o fim do seu próximo turno.</p>",
       "tactical": {
-        "alcanceHex": {
+        "alcanceCells": {
           "value": 0,
           "min": 0
         },
@@ -390,9 +390,9 @@
     "system": {
       "catalogId": "HAB-investida-barbara",
       "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
-      "description": "<p>Corre até 3 hex em linha reta sem provocar oportunidades.</p>",
+      "description": "<p>Corre até 3 célula em linha reta sem provocar oportunidades.</p>",
       "tactical": {
-        "alcanceHex": {
+        "alcanceCells": {
           "value": 3,
           "min": 0
         },
@@ -414,9 +414,9 @@
     "system": {
       "catalogId": "HAB-inspiracao-de-batalha",
       "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
-      "description": "<p>Aliado visível a até 4 hex ganha vantagem no próximo ataque.</p>",
+      "description": "<p>Aliado visível a até 4 célula ganha vantagem no próximo ataque.</p>",
       "tactical": {
-        "alcanceHex": {
+        "alcanceCells": {
           "value": 4,
           "min": 0
         },
@@ -440,7 +440,7 @@
       "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
       "description": "<p>Aliado adjacente recupera 1d6 HP.</p>",
       "tactical": {
-        "alcanceHex": {
+        "alcanceCells": {
           "value": 1,
           "min": 0
         },
@@ -464,7 +464,7 @@
       "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
       "description": "<p>Prepara transformação biomágica (3 PA; Mestre valida a forma).</p>",
       "tactical": {
-        "alcanceHex": {
+        "alcanceCells": {
           "value": 0,
           "min": 0
         },
@@ -486,9 +486,9 @@
     "system": {
       "catalogId": "HAB-raizes-prendentes",
       "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
-      "description": "<p>Restringe alvo 1 turno (save FOR); raízes no hex do alvo.</p>",
+      "description": "<p>Restringe alvo 1 turno (save FOR); raízes no célula do alvo.</p>",
       "tactical": {
-        "alcanceHex": {
+        "alcanceCells": {
           "value": 4,
           "min": 0
         },
@@ -512,7 +512,7 @@
       "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
       "description": "<p>Projétil concentrado: 2d8 de dano à distância.</p>",
       "tactical": {
-        "alcanceHex": {
+        "alcanceCells": {
           "value": 6,
           "min": 0
         },
@@ -536,7 +536,7 @@
       "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
       "description": "<p>+2 defesa contra efeitos mágicos até seu próximo turno.</p>",
       "tactical": {
-        "alcanceHex": {
+        "alcanceCells": {
           "value": 0,
           "min": 0
         },
@@ -560,7 +560,7 @@
       "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
       "description": "<p>Aliado adjacente recupera 1d8+CAR HP, ou 2d8 radiante vs morto-vivo.</p>",
       "tactical": {
-        "alcanceHex": {
+        "alcanceCells": {
           "value": 1,
           "min": 0
         },
@@ -584,7 +584,7 @@
       "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
       "description": "<p>Próximo ataque corpo a corpo +2d8 radiante (PA extra).</p>",
       "tactical": {
-        "alcanceHex": {
+        "alcanceCells": {
           "value": 1,
           "min": 0
         },
@@ -606,9 +606,9 @@
     "system": {
       "catalogId": "HAB-raio-do-pacto",
       "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
-      "description": "<p>Truque: 1d10+CAR de dano mágico em um alvo a até 6 hex.</p>",
+      "description": "<p>Truque: 1d10+CAR de dano mágico em um alvo a até 6 célula.</p>",
       "tactical": {
-        "alcanceHex": {
+        "alcanceCells": {
           "value": 6,
           "min": 0
         },
@@ -632,7 +632,7 @@
       "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
       "description": "<p>Raio psíquico 1d10+CAR; empurra 1,5m em acerto (FOR CD 13).</p>",
       "tactical": {
-        "alcanceHex": {
+        "alcanceCells": {
           "value": 6,
           "min": 0
         },
@@ -656,7 +656,7 @@
       "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
       "description": "<p>Raio de fogo 1d10+CAR; marca Sangue no acerto (+2d6 fogo depois).</p>",
       "tactical": {
-        "alcanceHex": {
+        "alcanceCells": {
           "value": 6,
           "min": 0
         },
@@ -680,7 +680,7 @@
       "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
       "description": "<p>Raio de frio 1d10+CAR.</p>",
       "tactical": {
-        "alcanceHex": {
+        "alcanceCells": {
           "value": 6,
           "min": 0
         },
@@ -704,7 +704,7 @@
       "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
       "description": "<p>Flash radiante 3m: mortos-vivos sofrem 2d8 radiante (sem save).</p>",
       "tactical": {
-        "alcanceHex": {
+        "alcanceCells": {
           "value": 2,
           "min": 0
         },
@@ -728,7 +728,7 @@
       "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
       "description": "<p>Reação: aliado adjacente reduz dano sofrido em 1d10+CAR (mín. 1).</p>",
       "tactical": {
-        "alcanceHex": {
+        "alcanceCells": {
           "value": 1,
           "min": 0
         },
@@ -752,7 +752,7 @@
       "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
       "description": "<p>Marca inimigo visível 9m; Golpe Sagrado contra ele não gasta PA extra 1×/turno.</p>",
       "tactical": {
-        "alcanceHex": {
+        "alcanceCells": {
           "value": 9,
           "min": 0
         },
@@ -776,7 +776,7 @@
       "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
       "description": "<p>Explosão solar 4,5m: 4d8 radiante (DES CD 15 metade); aliados imunes.</p>",
       "tactical": {
-        "alcanceHex": {
+        "alcanceCells": {
           "value": 3,
           "min": 0
         },
@@ -800,7 +800,7 @@
       "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
       "description": "<p>Próximo ataque vs morto-vivo +1d8 radiante ou necrótico.</p>",
       "tactical": {
-        "alcanceHex": {
+        "alcanceCells": {
           "value": 1,
           "min": 0
         },
@@ -824,7 +824,7 @@
       "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
       "description": "<p>Marca tipo de morto-vivo declarado; +3 dano e vantagem em Percepção vs esse tipo.</p>",
       "tactical": {
-        "alcanceHex": {
+        "alcanceCells": {
           "value": 9,
           "min": 0
         },
@@ -848,7 +848,7 @@
       "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
       "description": "<p>Marca liminar: próximo morto-vivo que atacar aliado marcado sofre 2d8 necrótico.</p>",
       "tactical": {
-        "alcanceHex": {
+        "alcanceCells": {
           "value": 6,
           "min": 0
         },
@@ -872,7 +872,7 @@
       "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
       "description": "<p>Forma espectral 10 min: atravessa portas, +10 Furtividade vs mortos-vivos.</p>",
       "tactical": {
-        "alcanceHex": {
+        "alcanceCells": {
           "value": 2,
           "min": 0
         },
@@ -896,7 +896,7 @@
       "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
       "description": "<p>Ação bônus: +2 FOR e +3m movimento por 1 minuto; oportunidades têm desvantagem.</p>",
       "tactical": {
-        "alcanceHex": {
+        "alcanceCells": {
           "value": 1,
           "min": 0
         },
@@ -920,7 +920,7 @@
       "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
       "description": "<p>Primeiro ataque corpo a corpo do turno +1d8 perfurante.</p>",
       "tactical": {
-        "alcanceHex": {
+        "alcanceCells": {
           "value": 1,
           "min": 0
         },
@@ -944,7 +944,7 @@
       "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
       "description": "<p>Investida 12m: vantagem no primeiro ataque; derruba em acerto (FOR CD 14).</p>",
       "tactical": {
-        "alcanceHex": {
+        "alcanceCells": {
           "value": 6,
           "min": 0
         },
@@ -968,7 +968,7 @@
       "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
       "description": "<p>Retalho 2d6+FOR (tipo da quimera); usos = CON/descanso curto.</p>",
       "tactical": {
-        "alcanceHex": {
+        "alcanceCells": {
           "value": 1,
           "min": 0
         },
@@ -992,7 +992,7 @@
       "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
       "description": "<p>Reação: 2d6 psíquico a quem faz aliado falhar save mental.</p>",
       "tactical": {
-        "alcanceHex": {
+        "alcanceCells": {
           "value": 6,
           "min": 0
         },
@@ -1016,7 +1016,7 @@
       "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
       "description": "<p>Tentáculos 9m: até 2 alvos Restringidos (FOR CD 15).</p>",
       "tactical": {
-        "alcanceHex": {
+        "alcanceCells": {
           "value": 5,
           "min": 0
         },
@@ -1040,7 +1040,7 @@
       "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
       "description": "<p>Confusão 1 min (INT CD 16); aberrações INT ≤ 8 falham automaticamente.</p>",
       "tactical": {
-        "alcanceHex": {
+        "alcanceCells": {
           "value": 6,
           "min": 0
         },
@@ -1064,7 +1064,7 @@
       "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
       "description": "<p>Sacrifica 1d8 HP para recuperar 1 slot de Pacto.</p>",
       "tactical": {
-        "alcanceHex": {
+        "alcanceCells": {
           "value": 0,
           "min": 0
         },
@@ -1088,7 +1088,7 @@
       "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
       "description": "<p>Correntes 3d8 fogo + Restringir alvo (FOR CD 15).</p>",
       "tactical": {
-        "alcanceHex": {
+        "alcanceCells": {
           "value": 5,
           "min": 0
         },
@@ -1112,7 +1112,7 @@
       "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
       "description": "<p>Selo de sangue 3m: 3d6 fogo a quem entrar; fogo ignora resistência.</p>",
       "tactical": {
-        "alcanceHex": {
+        "alcanceCells": {
           "value": 3,
           "min": 0
         },
@@ -1136,7 +1136,7 @@
       "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
       "description": "<p>Eco mental: repete encantamento nv.1 sem slot.</p>",
       "tactical": {
-        "alcanceHex": {
+        "alcanceCells": {
           "value": 6,
           "min": 0
         },
@@ -1160,7 +1160,7 @@
       "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
       "description": "<p>Névoa 6m 1 min: aliados furtivos; inimigos −2 em ataques à distância.</p>",
       "tactical": {
-        "alcanceHex": {
+        "alcanceCells": {
           "value": 3,
           "min": 0
         },
@@ -1184,7 +1184,7 @@
       "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
       "description": "<p>Puxa alvo 9m e 2d8 frio (FOR CD 15).</p>",
       "tactical": {
-        "alcanceHex": {
+        "alcanceCells": {
           "value": 5,
           "min": 0
         },
@@ -1197,54 +1197,6 @@
         "tipo": "ativa",
         "recarga": "1/turno"
       }
-    }
-  },
-  {
-    "id": "habilidades-golpe-de-chi",
-    "name": "Golpe de Chi",
-    "type": "habilidade",
-    "system": {
-      "catalogId": "HAB-golpe-de-chi",
-      "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
-      "description": "<p>Ataque desarmado ou com arma leve: +1d8+DES contundente. Custa <strong>1 Chi</strong> (máx. 2 Chi/turno; pool 10/combate).</p>",
-      "tactical": {
-        "alcanceHex": { "value": 1, "min": 0 },
-        "custoPontosAcao": { "value": 1, "min": 0 },
-        "custoChi": { "value": 1, "min": 0 }
-      },
-      "ability": { "tipo": "ativa", "recarga": "" }
-    }
-  },
-  {
-    "id": "habilidades-passo-do-vacuo",
-    "name": "Passo do Vácuo",
-    "type": "habilidade",
-    "system": {
-      "catalogId": "HAB-passo-do-vacuo",
-      "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
-      "description": "<p>Desloca até 3 hex sem provocar ataques de oportunidade. <strong>1 Chi</strong>.</p>",
-      "tactical": {
-        "alcanceHex": { "value": 0, "min": 0 },
-        "custoPontosAcao": { "value": 1, "min": 0 },
-        "custoChi": { "value": 1, "min": 0 }
-      },
-      "ability": { "tipo": "ativa", "recarga": "1/turno" }
-    }
-  },
-  {
-    "id": "habilidades-ferida-aberta",
-    "name": "Ferida Aberta",
-    "type": "habilidade",
-    "system": {
-      "catalogId": "HAB-ferida-aberta",
-      "bookRef": "CATALOGO-HABILIDADES-TATICAS.md",
-      "description": "<p>Golpe brutal: +2d8+DES contundente; você sofre 1d4 de dano. <strong>2 Chi</strong> (caminho Asceta da Dor).</p>",
-      "tactical": {
-        "alcanceHex": { "value": 1, "min": 0 },
-        "custoPontosAcao": { "value": 2, "min": 0 },
-        "custoChi": { "value": 2, "min": 0 }
-      },
-      "ability": { "tipo": "ativa", "recarga": "1/combate" }
     }
   }
 ]

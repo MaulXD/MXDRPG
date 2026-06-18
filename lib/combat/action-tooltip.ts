@@ -124,19 +124,19 @@ function areaLine(action: CombatActionOption): string | null {
   if (!action.areaShape || action.areaShape === "single") return null;
   const shape = AREA_LABELS[action.areaShape] ?? action.areaShape;
   const parts = [shape];
-  if (action.areaRadiusHex != null) parts.push(`${action.areaRadiusHex} células`);
-  if (action.areaHexCount != null) parts.push(`${action.areaHexCount} células`);
+  if (action.areaRadiusCells != null) parts.push(`${action.areaRadiusCells} células`);
+  if (action.areaCellCount != null) parts.push(`${action.areaCellCount} células`);
   return `Área: ${parts.join(" · ")}`;
 }
 
 function targetLine(action: CombatActionOption): string {
   if (action.selfTarget) return "Alvo: você";
-  if (action.allyTarget) return `Alvo: aliado · alcance ${action.rangeHex} células`;
+  if (action.allyTarget) return `Alvo: aliado · alcance ${action.rangeCells} células`;
   const ranged = rangedLongRangeLabel(action);
   if (ranged) {
     return `Alcance: ${ranged} (desvantagem além do normal)`;
   }
-  return `Alcance: ${action.rangeHex} células`;
+  return `Alcance: ${action.rangeCells} células`;
 }
 
 /** Linhas de detalhe para UI e tooltip. */

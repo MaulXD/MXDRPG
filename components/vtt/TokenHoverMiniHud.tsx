@@ -8,7 +8,7 @@ import {
   obscuredHpBarColor,
   turnOrderHint,
 } from "@/lib/vtt/combat-hud";
-import { hexToMeters, walkRemaining } from "@/lib/vtt/movement";
+import { cellsToMeters, walkRemaining } from "@/lib/vtt/movement";
 import { hpBarColor, hpRatio, isTokenDefeated } from "@/lib/vtt/token-hp-display";
 
 type Props = {
@@ -79,7 +79,7 @@ export function TokenHoverMiniHud({
 
       {showMovement ? (
         <span className="vtt-mini-hud__move">
-          {walkRemaining(token)} cél. · {hexToMeters(walkRemaining(token))} m
+          {walkRemaining(token)} cél. · {cellsToMeters(walkRemaining(token))} m
         </span>
       ) : null}
 

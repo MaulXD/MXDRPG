@@ -107,7 +107,7 @@ Fauna Nativa: Amorfos (Slimes Fluorescentes, Geleias de Cristal), Elementais (El
 Ingredientes Tipicos: Slime Fluorescente (ilumina refeicoes, concede visao no escuro aprimorada), Cristais de Neon (tempero que intensifica mutacoes).
 
 ### BIOMA 14 — MATRIZ DE EXTRUSAO
-Ambiente: Topologia geometrica perfeita onde tudo e simetrico. Pocos de resina orgânica quente "imprimem" vida em moldes de geometria impossivel. Paredes com padroes de hexagonos perfeitos. Cheiro de resina quente e algo vivo.
+Ambiente: Topologia geometrica perfeita onde tudo e simetrico. Pocos de resina orgânica quente "imprimem" vida em moldes de geometria impossivel. Paredes com padroes de poligonos simetricos perfeitos. Cheiro de resina quente e algo vivo.
 Perigos: Resina que solidifica ao redor de membros em contato, criaturas recem-"impressas" que agem erraticamente.
 Fauna Nativa: Construtos (Construtos de Resina, Automatos recem-criados), Amorfos (Amorfos Densos), Aberracoes (Aberracoes Tentaculares que emergem dos pocos).
 Ingredientes Tipicos: Resina de Construto (usada pelo Artífice como material base), Fluido de Criação.

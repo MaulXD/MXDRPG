@@ -129,7 +129,7 @@ export async function loginUser(login: string, password: string): Promise<LoginR
     return {
       ok: false,
       error:
-        "Esta conta foi criada com Google/Discord. Use o login social acima ou vá em Criar conta com o mesmo e-mail para definir uma senha.",
+        "Esta conta usa login social. Entre com Google/Discord ou crie uma senha em Criar conta com o mesmo e-mail.",
     };
   }
 

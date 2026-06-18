@@ -30,7 +30,7 @@ Uma sessão **mínima viável** precisa cobrir este fluxo sem planilha externa o
 
 | Bloco | Status | Onde no repo |
 |-------|--------|----------------|
-| Mesa hex + tokens | ✅ | `components/vtt/HexBattlefield.tsx`, `lib/vtt/` |
+| Mesa célula + tokens | ✅ | `components/vtt/Battlefield.tsx`, `lib/vtt/` |
 | PA + movimento + combate | ✅ | `lib/combat/pa-economy.ts`, `lib/room/handlers/combat-*` |
 | Ficha personagem | ✅ | `components/character/`, `/personagem/[id]` |
 | Compêndios (armas, magias, monstros…) | ✅ | `data/compendiums/*.json` |
@@ -61,7 +61,7 @@ Detalhe item a item: `docs/PARIDADE-FOUNDRY.md`.
 │  livros/       regras humanas (editar → regerar data)   │
 │  scripts/      geradores                                │
 └─────────────────────────────────────────────────────────┘
-         Deploy: Vercel (ver DEPLOY.md, PRODUTO.md)
+         Deploy: Contabo/Docker (ver DEPLOY.md, PRODUTO.md)
 ```
 
 ---
@@ -108,7 +108,7 @@ Trate o projeto em **5 camadas**. Cada feature nova deve dizer em qual camada mo
 
 - **Pasta:** `app/`, `components/`
 - **Rotas principais:** tabela na seção 4
-- **VTT:** `HexBattlefield` + painéis (`TokenActionPanel`, `MonsterSpawnPanel`, …)
+- **VTT:** `Battlefield` + painéis (`TokenActionPanel`, `MonsterSpawnPanel`, …)
 
 **Regra de ouro:** UI só exibe e dispara; números vêm do snapshot após ação.
 
@@ -253,7 +253,7 @@ Organize sprints por **módulo**, não por “página bonita”.
 |--------|--------------|------------|
 | **Auth & contas** | `lib/auth/`, `app/api/auth/` | DB usuários |
 | **Ficha** | `components/character/`, `lib/character/normalize.ts` | DB personagem |
-| **VTT core** | `HexBattlefield`, hooks `hooks/vtt/` | Snapshot sala |
+| **VTT core** | `Battlefield`, hooks `hooks/vtt/` | Snapshot sala |
 | **Combate** | `lib/combat/*`, handlers `combat-*` | Compêndio + PA |
 | **Compêndio UI** | painel biblioteca na mesa | `data/compendiums` |
 | **Mestre** | spawn, iniciativa, condições | VTT core |
@@ -274,7 +274,7 @@ Campos críticos para mesa:
 | `resources.pontosAcao` | Sync token `pa` / `paMax` |
 | `resources.vida` | HP token linkado |
 | `combatLoadout` | Ação padrão no painel |
-| `movement.walk` / `run` | Orçamento hex |
+| `movement.walk` / `run` | Orçamento célula |
 | `revision` | Conflito de edição |
 
 ### 8.2 Token (`BattleToken`)
@@ -283,7 +283,7 @@ Campos críticos para mesa:
 |-------|-----|
 | `linked` + `actorId` | Stats vêm da ficha |
 | `pa`, `paMax` | Economia de turno |
-| `movementSpentHex` | Caminhada/corrida |
+| `movementSpentCells` | Caminhada/corrida |
 | `conditions` | Cap. 3.4 condições |
 
 ### 8.3 Ação de combate (`CombatActionOption`)
@@ -381,4 +381,4 @@ Quando Fase 1 fechar, o RPG passa de **demo técnico** para **mesa online funcio
 
 ---
 
-*Versão 1.0 — alinhado ao repo Eldarin v4 (PA base 5, `pa-modifiers.json`, VTT hex).*
+*Versão 1.0 — alinhado ao repo Eldarin v4 (PA base 5, `pa-modifiers.json`, VTT célula).*

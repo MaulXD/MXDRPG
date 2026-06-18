@@ -17,6 +17,6 @@
   <rect width="400" height="560" fill="url(#hex)"/>
   <circle cx="200" cy="210" r="88" fill="none" stroke="url(#gold)" stroke-width="3" opacity="0.55"/>
   <text x="200" y="225" text-anchor="middle" fill="#f8f2ea" font-family="Georgia, serif" font-size="42" font-weight="700" letter-spacing="6">ELDARIN</text>
-  <text x="200" y="268" text-anchor="middle" fill="#d4b356" font-family="system-ui, sans-serif" font-size="13" letter-spacing="4">GRID HEX · PA</text>
+  <text x="200" y="268" text-anchor="middle" fill="#d4b356" font-family="system-ui, sans-serif" font-size="13" letter-spacing="4">GRID PA ï¿½ PA</text>
   <rect x="48" y="480" width="304" height="4" rx="2" fill="#b8922e" opacity="0.45"/>
 </svg>

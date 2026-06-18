@@ -1,7 +1,7 @@
 {
   "id": "vinite",
-  "title": "Eldarin — Combate Tático Hexagonal",
-  "description": "Sistema proprietário de fantasia com combate tático em grid hexagonal, UI glass/neon e integrações Drag Ruler, Terrain Ruler, Sequencer, Token Magic FX e socketlib.",
+  "title": "Eldarin — Combate Tático Simétrico",
+  "description": "Sistema proprietário de fantasia com combate tático em grid quadrado, UI glass/neon e integrações Drag Ruler, Terrain Ruler, Sequencer, Token Magic FX e socketlib.",
   "version": "0.4.0",
   "compatibility": {
     "minimum": "11",
@@ -65,7 +65,7 @@
   },
   "grid": {
     "distance": 1,
-    "units": "hex"
+    "units": "cell"
   },
   "primaryTokenAttribute": "resources.vida",
   "secondaryTokenAttribute": "resources.pontosAcao",

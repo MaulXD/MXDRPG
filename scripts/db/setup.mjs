@@ -39,4 +39,4 @@ run("migrate.mjs");
 console.log("→ check");
 run("check.mjs");
 console.log("\nP0 local OK. Próximo: npm run dev → http://localhost:3000/api/health");
-console.log("Produção: Vercel → DATABASE_URL → npm run db:migrate (mesma URL) → redeploy.");
+console.log("Produção: DATABASE_URL no servidor → npm run db:migrate (mesma URL) → redeploy.");

@@ -11,7 +11,7 @@ export {
   moveRoomToken,
   spawnRoomMonster,
   repositionRoomToken,
-  placeRoomActorOnHex,
+  placeRoomActorOnCell,
   removeRoomToken,
   type MoveExecuteResult,
   type SpawnExecuteResult,
@@ -36,7 +36,7 @@ export { executeGmSavingThrows,
 export { executeStructuredMeal } from "./handlers/culinary-meal";
 export { executeRoomConsume, type ConsumeExecuteResult } from "./handlers/combat-consume";
 export { addRoomPing } from "./handlers/ping";
-export { patchRoomScene, revealRoomHex, type ScenePatch } from "./handlers/scene";
+export { patchRoomScene, revealRoomCell, type ScenePatch } from "./handlers/scene";
 export { patchRoomSettings, type RoomSettingsPatch } from "./handlers/settings";
 export {
   createRoomGmCreation,

@@ -13,7 +13,7 @@ import {
 import { createPlayerTokenFromActor } from "@/lib/vtt/player-token";
 import { nextMonsterDisplayName } from "@/lib/vtt/monster-display-name";
 import { prepareSpawnedTokenPa } from "@/lib/combat/turn-economy";
-import type { Axial } from "@/lib/vtt/hex-math";
+import type { Axial } from "@/lib/vtt/grid-math";
 import type { CharacterSheet } from "@/lib/character/types";
 import { resolveSpawnAnchor } from "@/lib/vtt/dungeon-layer";
 import { getRoom, persistRoom, toSnapshot } from "../internal/registry";

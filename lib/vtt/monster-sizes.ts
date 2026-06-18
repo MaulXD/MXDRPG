@@ -15,7 +15,7 @@ export const CREATURE_SIZE_PT: Record<CreatureSize, string> = {
 };
 
 /** @deprecated Use CREATURE_SIZE_GRID_LABEL */
-export const CREATURE_SIZE_HEX_LABEL: Record<CreatureSize, string> = {
+export const CREATURE_SIZE_CELL_LABEL: Record<CreatureSize, string> = {
   small: "1 célula",
   medium: "1 célula",
   large: "2×2 (4 células)",

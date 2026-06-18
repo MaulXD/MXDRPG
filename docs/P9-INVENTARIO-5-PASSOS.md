@@ -11,7 +11,7 @@ npm run smoke:p9-inventory
 npm run smoke:level-up-pa
 ```
 
-Produção exige contas Clerk reais — o smoke de login demo não roda em `mxdrpg.vercel.app`.
+Produção exige contas Clerk reais — o smoke de login demo não roda em `www.mxdrpg.com.br`.
 
 ## Manual (2 browsers)
 

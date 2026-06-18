@@ -7,7 +7,7 @@ import {
   consumableEffectDef,
   consumableHealFormula,
   CONSUMABLE_CATALOG_EFFECTS,
-  GROUP_HEAL_AOE_HEX,
+  GROUP_HEAL_AOE_CELLS,
 } from "@/lib/combat/consumable-effects";
 import type { CombatTickContext } from "@/lib/combat/timed-effects";
 import { isAllyToken } from "@/lib/combat/ability";
@@ -15,7 +15,7 @@ import { PA_DEFAULT_ACTION_COST } from "@/lib/combat/pa-economy";
 import { canActOnCombatTurn, TURN_WAIT_MSG } from "@/lib/combat/turn-guard";
 import { checkCanSpendPa } from "@/lib/combat/pa-turn";
 import type { CombatTrack } from "@/lib/room/combat";
-import { axialDistance } from "@/lib/vtt/hex-math";
+import { axialDistance } from "@/lib/vtt/grid-math";
 import type { BattleToken } from "@/lib/vtt/types";
 
 export type ActorConsumable = {
@@ -161,12 +161,12 @@ export function resolveConsumableUse(
     );
 
     if (effectDef?.kind === "group_heal" && opts?.sceneTokens?.length) {
-      const rangeHex = effectDef.aoeHex ?? GROUP_HEAL_AOE_HEX;
+      const rangeCells = effectDef.aoeCells ?? GROUP_HEAL_AOE_CELLS;
       aoeHeals = [];
       for (const ally of opts.sceneTokens) {
         if (ally.id === token.id) continue;
         if (!isAllyToken(token, ally)) continue;
-        if (axialDistance(token.axial, ally.axial) > rangeHex) continue;
+        if (axialDistance(token.axial, ally.axial) > rangeCells) continue;
         const allyHpBefore = ally.vida ?? ally.vidaMax ?? 0;
         const allyHpMax = ally.vidaMax ?? allyHpBefore;
         const allyHpAfter = Math.min(allyHpMax, allyHpBefore + healRoll.total);

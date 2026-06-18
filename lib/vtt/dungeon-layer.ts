@@ -1,16 +1,16 @@
-import type { Axial } from "@/lib/vtt/hex-math";
-import { inSquareGrid } from "@/lib/vtt/hex-math";
+import type { Axial } from "@/lib/vtt/grid-math";
+import { inSquareGrid } from "@/lib/vtt/grid-math";
 import {
   anchorCandidatesForCell,
   creatureSizeOf,
-  occupiedHexes,
+  occupiedCells,
   tokenOccupiesAxial,
   type CreatureSize,
 } from "@/lib/vtt/creature-size";
 import {
   axialKey,
   buildOccupancy,
-  canEnterHex,
+  canEnterCell,
 } from "@/lib/vtt/token-occupancy";
 import type { BattleScene, BattleToken, DungeonObject, DungeonObjectKind } from "@/lib/vtt/types";
 
@@ -22,7 +22,7 @@ export function dungeonObjectsOf(scene: Pick<BattleScene, "dungeonObjects">): Du
   return scene.dungeonObjects ?? [];
 }
 
-export function blockedHexSet(scene: Pick<BattleScene, "dungeonObjects">): Set<string> {
+export function blockedCellSet(scene: Pick<BattleScene, "dungeonObjects">): Set<string> {
   const set = new Set<string>();
   for (const obj of dungeonObjectsOf(scene)) {
     set.add(axialKey({ q: obj.q, r: obj.r }));
@@ -30,11 +30,11 @@ export function blockedHexSet(scene: Pick<BattleScene, "dungeonObjects">): Set<s
   return set;
 }
 
-export function isHexBlocked(
+export function isCellBlocked(
   scene: Pick<BattleScene, "dungeonObjects">,
   axial: Axial
 ): boolean {
-  return blockedHexSet(scene).has(axialKey(axial));
+  return blockedCellSet(scene).has(axialKey(axial));
 }
 
 export function dungeonObjectAt(
@@ -45,7 +45,7 @@ export function dungeonObjectAt(
   return dungeonObjectsOf(scene).find((o) => axialKey({ q: o.q, r: o.r }) === key) ?? null;
 }
 
-export function hexInDungeonGrid(axial: Axial, gridRadius: number): boolean {
+export function cellInGridBounds(axial: Axial, gridRadius: number): boolean {
   return inSquareGrid(axial, gridRadius);
 }
 
@@ -70,7 +70,7 @@ type AnchorTokenOpts = {
   actorRacas?: Record<string, string | undefined>;
 };
 
-/** Tokens não podem entrar nem ser posicionados em hexes bloqueados ou ocupados. */
+/** Tokens não podem entrar nem ser posicionados em células bloqueados ou ocupados. */
 export function canAnchorTokenAt(
   scene: Pick<BattleScene, "dungeonObjects" | "gridRadius" | "tokens">,
   axial: Axial,
@@ -97,12 +97,12 @@ export function canAnchorTokenAt(
   };
   const occupancy = buildOccupancy(scene.tokens, exceptTokenId, sizeOf, actorRacas);
 
-  for (const hex of occupiedHexes(axial, moverSize)) {
-    if (!hexInDungeonGrid(hex, scene.gridRadius)) return false;
-    if (isHexBlocked(scene, hex)) return false;
+  for (const cell of occupiedCells(axial, moverSize)) {
+    if (!cellInGridBounds(cell, scene.gridRadius)) return false;
+    if (isCellBlocked(scene, cell)) return false;
   }
 
-  return canEnterHex(axial, moverSize, occupancy, scene.gridRadius);
+  return canEnterCell(axial, moverSize, occupancy, scene.gridRadius);
 }
 
 /**
@@ -133,7 +133,7 @@ export function canPlaceDungeonObjectAt(
   axial: Axial,
   exceptObjectId?: string
 ): boolean {
-  if (!hexInDungeonGrid(axial, scene.gridRadius)) return false;
+  if (!cellInGridBounds(axial, scene.gridRadius)) return false;
   const existing = dungeonObjectAt(scene, axial);
   if (existing && existing.id !== exceptObjectId) return false;
   if (tokenOccupiesAxialSimple(scene.tokens, axial)) return false;
@@ -185,10 +185,10 @@ export function moveDungeonObject(
 
 export function filterDungeonObjectsForFog(
   scene: Pick<BattleScene, "dungeonObjects">,
-  visibleHexSet: Set<string>
+  visibleCellSet: Set<string>
 ): DungeonObject[] {
   return dungeonObjectsOf(scene).filter((o) =>
-    visibleHexSet.has(axialKey({ q: o.q, r: o.r }))
+    visibleCellSet.has(axialKey({ q: o.q, r: o.r }))
   );
 }
 
@@ -200,7 +200,7 @@ export function sanitizeDungeonObjects(
   for (const obj of dungeonObjectsOf(scene)) {
     const axial = { q: obj.q, r: obj.r };
     const key = axialKey(axial);
-    if (!hexInDungeonGrid(axial, scene.gridRadius)) continue;
+    if (!cellInGridBounds(axial, scene.gridRadius)) continue;
     if (seen.has(key)) continue;
     if (tokenOccupiesAxialSimple(scene.tokens, axial)) continue;
     seen.add(key);

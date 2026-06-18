@@ -63,22 +63,22 @@ export function parseHealFromText(text: string): string | null {
 
 export function parseAreaFromText(text: string): {
   shape: SpellAreaShape;
-  radiusHex?: number;
-  hexCount?: number;
-  lengthHex?: number;
+  radiusCells?: number;
+  cellCount?: number;
+  lengthCells?: number;
 } | null {
   const plain = text.replace(/<[^>]+>/g, " ").toLowerCase();
-  if (/cubo\s+(\d+)\s*hex/.test(plain)) {
-    const n = Number(plain.match(/cubo\s+(\d+)\s*hex/)?.[1] ?? 1);
-    return { shape: "cube", radiusHex: Math.max(1, Math.ceil(n / 2)) };
+  if (/cubo\s+(\d+)\s*c[eé]lula/.test(plain)) {
+    const n = Number(plain.match(/cubo\s+(\d+)\s*c[eé]lula/)?.[1] ?? 1);
+    return { shape: "cube", radiusCells: Math.max(1, Math.ceil(n / 2)) };
   }
   if (/raio\s+de\s+(\d+)\s*m/.test(plain) || /em\s+raio/.test(plain)) {
-    return { shape: "burst", radiusHex: 2 };
+    return { shape: "burst", radiusCells: 2 };
   }
-  if (/cone/.test(plain)) return { shape: "cone", lengthHex: 2, radiusHex: 2 };
-  if (/linha/.test(plain)) return { shape: "line", lengthHex: 3, radiusHex: 3 };
-  if (/parede|muralha|wall/.test(plain)) return { shape: "wall", hexCount: 3 };
-  if (/esfera|burst|explos/.test(plain)) return { shape: "burst", radiusHex: 2 };
+  if (/cone/.test(plain)) return { shape: "cone", lengthCells: 2, radiusCells: 2 };
+  if (/linha/.test(plain)) return { shape: "line", lengthCells: 3, radiusCells: 3 };
+  if (/parede|muralha|wall/.test(plain)) return { shape: "wall", cellCount: 3 };
+  if (/esfera|burst|explos/.test(plain)) return { shape: "burst", radiusCells: 2 };
   return null;
 }
 
@@ -105,8 +105,8 @@ export function inferSpellEffect(entry: CompendiumEntry, desc: string): SpellEff
   return "utility";
 }
 
-export function inferSelfTarget(rangeHex: number, desc: string): boolean {
-  if (rangeHex <= 0) return true;
+export function inferSelfTarget(rangeCells: number, desc: string): boolean {
+  if (rangeCells <= 0) return true;
   const lower = desc.toLowerCase();
   return (
     lower.includes("em si") ||
@@ -146,15 +146,15 @@ export function buildMagiaCombatAction(entry: CompendiumEntry): CombatActionOpti
         recarga?: string;
         area?: {
           shape?: string;
-          radiusHex?: number;
-          hexCount?: number;
-          lengthHex?: number;
+          radiusCells?: number;
+          cellCount?: number;
+          lengthCells?: number;
         };
         targets?: number;
       }
     | undefined;
   const tactical = entry.system.tactical as
-    | { alcanceHex?: { value?: number }; custoPontosAcao?: { value?: number } }
+    | { alcanceCells?: { value?: number }; custoPontosAcao?: { value?: number } }
     | undefined;
 
   const desc = spellPlainDescription(entry);
@@ -187,19 +187,19 @@ export function buildMagiaCombatAction(entry: CompendiumEntry): CombatActionOpti
   const isSaveSpell = Boolean(saveAttr) && !isHealSpell;
   const resolution = isSaveSpell ? "save" : "attack";
 
-  const rangeHex = tactical?.alcanceHex?.value ?? 1;
+  const rangeCells = tactical?.alcanceCells?.value ?? 1;
   const rawPa = tactical?.custoPontosAcao?.value ?? PA_DEFAULT_ACTION_COST;
   const paCost = resolveSpellPaCost(entry.id, rawPa);
 
   const areaSize =
-    spell?.area?.lengthHex ??
-    spell?.area?.radiusHex ??
-    parsedArea?.lengthHex ??
-    parsedArea?.radiusHex ??
+    spell?.area?.lengthCells ??
+    spell?.area?.radiusCells ??
+    parsedArea?.lengthCells ??
+    parsedArea?.radiusCells ??
     (areaShape === "wall" ? undefined : 2);
 
   const spellEffect = inferSpellEffect(entry, desc);
-  const selfTarget = inferSelfTarget(rangeHex, desc) || spellEffect === "ac_buff";
+  const selfTarget = inferSelfTarget(rangeCells, desc) || spellEffect === "ac_buff";
   const allyTarget =
     inferAllyTarget(desc, spellEffect) ||
     (isHealSpell && !isAreaSpell && !selfTarget);
@@ -239,19 +239,19 @@ export function buildMagiaCombatAction(entry: CompendiumEntry): CombatActionOpti
     damageFormula,
     damageType,
     attackBonus: weapon?.ataque?.bonus ?? 0,
-    rangeHex,
+    rangeCells,
     paCost,
     saveAttribute: saveAttr,
     saveDc: spell?.save?.cd,
     areaShape: isAreaSpell ? areaShape : undefined,
-    areaRadiusHex:
+    areaRadiusCells:
       areaShape === "burst" ||
       areaShape === "cube" ||
       areaShape === "cone" ||
       areaShape === "line"
         ? (areaSize ?? 2)
         : undefined,
-    areaHexCount: areaShape === "wall" ? spell?.area?.hexCount ?? parsedArea?.hexCount ?? 3 : undefined,
+    areaCellCount: areaShape === "wall" ? spell?.area?.cellCount ?? parsedArea?.cellCount ?? 3 : undefined,
     channelMaxExtraPa: channel?.maxExtraPa,
     channelBonusPerPa: channel?.bonusPerPa,
     recharge,
@@ -260,6 +260,6 @@ export function buildMagiaCombatAction(entry: CompendiumEntry): CombatActionOpti
     spellEffect,
     defesaBuffAmount,
     targetCount: targetCount > 1 ? targetCount : undefined,
-    label: `${entry.name} · ${selfTarget ? "self" : allyTarget ? "aliado" : `${rangeHex} células`} · PA ${paCost}${tags.length ? ` · ${tags.join(", ")}` : ""}`,
+    label: `${entry.name} · ${selfTarget ? "self" : allyTarget ? "aliado" : `${rangeCells} células`} · PA ${paCost}${tags.length ? ` · ${tags.join(", ")}` : ""}`,
   };
 }

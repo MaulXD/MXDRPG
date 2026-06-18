@@ -1,19 +1,17 @@
 # MXDRPG — Eldarin
 
-**Site no ar:** https://mxdrpg.vercel.app  
-**Saúde:** https://mxdrpg.vercel.app/api/health  
-
-Não use `drpg.vercel.app` — é outro projeto (React App antigo), não este VTT.
+**Site no ar:** https://www.mxdrpg.com.br  
+**Saúde:** https://www.mxdrpg.com.br/api/health  
 
 | Pasta | O quê |
 |-------|--------|
-| **`app/`, `components/`, `lib/`** | App Next.js (VTT) — deploy na Vercel na **raiz** do repo |
+| **`app/`, `components/`, `lib/`** | App Next.js (VTT) — deploy via **Docker** (Contabo) |
 | **[docs/CLAUDE-PROJETO.md](docs/CLAUDE-PROJETO.md)** | Guia completo para ensinar Claude / outros agentes de IA |
 | **[docs/CLAUDE-CODIGO-SEGURO.md](docs/CLAUDE-CODIGO-SEGURO.md)** | **Checklist para editar sem quebrar** — leia antes de mexer no código |
 | `livros/` | Regras e lore |
 | `vinite/` | Módulo Foundry |
 | `archive/web/` | Legado — não editar; app canônico na raiz |
-| `REFATORACAO.md` | Plano de refatoração passo a passo |
+| `docs/ELDARIN-SITE-JOGAVEL.md` | Roteiro técnico e fases do VTT |
 
 ## Local
 
@@ -41,12 +39,8 @@ Detalhes: [docs/DADOS-E-REGRAS.md](docs/DADOS-E-REGRAS.md)
 
 Postgres (Neon): [docs/P0-NEON-SETUP.md](docs/P0-NEON-SETUP.md) — `npm run db:setup` → `npm run smoke:p0`. Pré-beta: [docs/P9-READY.md](docs/P9-READY.md).
 
-## Vercel
+## Deploy (Contabo)
 
-- **Root Directory:** *(vazio)*
-- **Framework:** Next.js
-- **Output Directory:** *(vazio — nunca `public`)*
-
-[VERCEL.md](VERCEL.md) · [DEPLOY.md](DEPLOY.md)
+Imagem Docker + GHCR no push em `main`. Ver [DEPLOY.md](DEPLOY.md).
 
 GitHub: https://github.com/MaulXD/MXDRPG.git

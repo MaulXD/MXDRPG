@@ -2,13 +2,15 @@
 
 > Depois de [P0-NEON-SETUP.md](./P0-NEON-SETUP.md). Sem Clerk configurado, o site continua com login demo (cookie `vinite_session`).
 
-## 1. Vercel Marketplace (recomendado)
+## 1. Chaves Clerk (Dashboard)
 
-1. Vercel → projeto **Eldarin RPG** → **Integrations** → **Clerk** → Install.
-2. Confirme variáveis provisionadas:
-   - `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY`
-   - `CLERK_SECRET_KEY`
-3. Redeploy.
+1. [Clerk Dashboard](https://dashboard.clerk.com) → **API Keys**
+2. Copie para o **servidor** (Contabo / `.env` do container):
+   - `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` (`pk_live_…` em produção)
+   - `CLERK_SECRET_KEY` (`sk_live_…`)
+3. **Rebuild** a imagem Docker (variáveis `NEXT_PUBLIC_*` entram no build).
+
+**Domínios** no Clerk: `https://www.mxdrpg.com.br` (e apex quando DNS estiver ok).
 
 ## 2. URLs no Clerk Dashboard
 
@@ -25,7 +27,7 @@ Ative provedores **Google** e **Discord** no Clerk. E-mail/senha com recuperaç�
 
 1. Clerk → **Webhooks** → endpoint: `https://SEU_DOMINIO/api/webhooks/clerk`
 2. Eventos: `user.created`, `user.updated`
-3. Copie **Signing Secret** → Vercel env `CLERK_WEBHOOK_SIGNING_SECRET`
+3. Copie **Signing Secret** → env `CLERK_WEBHOOK_SIGNING_SECRET` no servidor
 4. `npm run db:migrate` (colunas `clerk_id`, `nickname`)
 
 ## 4. Login híbrido

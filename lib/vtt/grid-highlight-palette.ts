@@ -1,7 +1,7 @@
 import { readThemeColor } from "@/lib/theme";
 import type { MapBackdropTone } from "@/lib/vtt/map-luminance";
 
-export type HexHighlightPalette = {
+export type GridHighlightPalette = {
   fill: string;
   stroke: string;
   walkFill: string;
@@ -31,7 +31,7 @@ export type HexHighlightPalette = {
   tokenText: string;
 };
 
-type PaletteKey = keyof HexHighlightPalette;
+type PaletteKey = keyof GridHighlightPalette;
 
 const VAR_SUFFIX: Record<PaletteKey, string> = {
   fill: "fill",
@@ -63,7 +63,7 @@ const VAR_SUFFIX: Record<PaletteKey, string> = {
   tokenText: "token-text",
 };
 
-const FALLBACKS: HexHighlightPalette = {
+const FALLBACKS: GridHighlightPalette = {
   fill: "transparent",
   stroke: "rgba(0, 0, 0, 0.5)",
   walkFill: "rgba(72, 130, 95, 0.35)",
@@ -93,7 +93,7 @@ const FALLBACKS: HexHighlightPalette = {
   tokenText: "#1a1a1a",
 };
 
-function readHexVar(tone: MapBackdropTone, key: PaletteKey): string {
+function readPaletteCssVar(tone: MapBackdropTone, key: PaletteKey): string {
   const suffix = VAR_SUFFIX[key];
   const fallback = FALLBACKS[key];
 
@@ -101,25 +101,25 @@ function readHexVar(tone: MapBackdropTone, key: PaletteKey): string {
     if (key === "pathStroke") return readThemeColor("--vtt-path-stroke", fallback);
     if (key === "pathGlow") return readThemeColor("--vtt-path-glow", fallback);
     if (key === "tokenText") return readThemeColor("--vtt-token-text", fallback);
-    return readThemeColor(`--vtt-hex-${suffix}`, fallback);
+    return readThemeColor(`--vtt-cell-${suffix}`, fallback);
   }
 
   const tonePrefix =
     tone === "light"
-      ? "--vtt-hex-on-light-"
+      ? "--vtt-cell-on-light-"
       : tone === "green"
-        ? "--vtt-hex-on-green-"
-        : "--vtt-hex-on-dark-";
+        ? "--vtt-cell-on-green-"
+        : "--vtt-cell-on-dark-";
   const onMap = readThemeColor(`${tonePrefix}${suffix}`, "");
   if (onMap) return onMap;
 
-  return readHexVar("none", key);
+  return readPaletteCssVar("none", key);
 }
 
-export function resolveHexPalette(tone: MapBackdropTone): HexHighlightPalette {
-  const palette = {} as HexHighlightPalette;
+export function resolveGridPalette(tone: MapBackdropTone): GridHighlightPalette {
+  const palette = {} as GridHighlightPalette;
   for (const key of Object.keys(FALLBACKS) as PaletteKey[]) {
-    palette[key] = readHexVar(tone, key);
+    palette[key] = readPaletteCssVar(tone, key);
   }
   return palette;
 }

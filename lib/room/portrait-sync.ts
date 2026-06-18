@@ -30,7 +30,7 @@ export function resolveLinkedTokenImageUrl(
   return firstPortraitDataUrl(actor.tokenImageUrl, actor.portraitUrl, token.imageUrl);
 }
 
-/** Foco no hex/HUD: padrão quando a imagem do token já foi recortada no upload. */
+/** Foco na célula/HUD: padrão quando a imagem do token já foi recortada no upload. */
 export function resolveLinkedTokenImageFocus(actor: PortraitActor): PortraitFocus {
   if (typeof actor.tokenImageUrl === "string" && actor.tokenImageUrl.length > 0) {
     return DEFAULT_PORTRAIT_FOCUS;

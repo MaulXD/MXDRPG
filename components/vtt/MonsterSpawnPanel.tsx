@@ -1,10 +1,10 @@
 ﻿"use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import type { Axial } from "@/lib/vtt/hex-math";
+import type { Axial } from "@/lib/vtt/grid-math";
 import type { RoomSnapshot } from "@/lib/room/types";
 import { listMonsterTemplates, scaleMonsterTemplate } from "@/lib/vtt/monsters";
-import { CREATURE_SIZE_HEX_LABEL, CREATURE_SIZE_PT } from "@/lib/vtt/monster-sizes";
+import { CREATURE_SIZE_CELL_LABEL, CREATURE_SIZE_PT } from "@/lib/vtt/monster-sizes";
 import type { MonsterSpawnVariant } from "@/lib/vtt/monster-scaling";
 import { clearActiveSpawnDragPayload, writeMonsterSpawnDrag } from "@/lib/vtt/spawn-drag";
 import { resolveMonsterSpawnPlacement } from "@/lib/vtt/spawn-placement";
@@ -242,7 +242,7 @@ export function MonsterSpawnPanel({ roomId, scene, spawnAxial, onSpawned, onOpen
         <>
           <p className="vtt-spawn-meta">
             Preview: {preview.name} · {CREATURE_SIZE_PT[preview.creatureSize]} (
-            {CREATURE_SIZE_HEX_LABEL[preview.creatureSize]}) · ameaça {preview.ameaca} ·{" "}
+            {CREATURE_SIZE_CELL_LABEL[preview.creatureSize]}) · ameaça {preview.ameaca} ·{" "}
             {preview.vidaMax} HP · PA {preview.paMax} · CA {preview.defesa}
           </p>
           <button

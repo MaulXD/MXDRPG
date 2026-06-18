@@ -1,7 +1,7 @@
 import type { CombatActionOption } from "@/lib/combat/types";
 import { hasFlanking } from "@/lib/combat/ability";
 import { combineRollModes, formatRollMode, type RollMode } from "@/lib/combat/d20";
-import { axialDistance } from "@/lib/vtt/hex-math";
+import { axialDistance } from "@/lib/vtt/grid-math";
 import { tokenAxialDistance } from "@/lib/vtt/creature-size";
 import { isRangedLongRange } from "@/lib/combat/ranged-attack-range";
 import type { BattleToken } from "@/lib/vtt/types";
@@ -79,13 +79,13 @@ export function tokenBuffAttackRollMode(
 ): { mode: RollMode; sources: string[] } {
   const modes: RollMode[] = [];
   const sources: string[] = [];
-  const rangeHex = action?.rangeHex ?? 1;
+  const rangeCells = action?.rangeCells ?? 1;
 
   if (attacker.allyAttackAdvantage) {
     modes.push("advantage");
     sources.push("inspiração");
   }
-  if (attacker.rangedAttackAdvantage && rangeHex > 1) {
+  if (attacker.rangedAttackAdvantage && rangeCells > 1) {
     modes.push("advantage");
     sources.push("tiro certeiro");
   }
@@ -100,7 +100,7 @@ export function tokenBuffAttackRollMode(
 
   const mark = attacker.attackMark;
   if (mark && mark.targetId === defender.id && !mark.attackerDisadvantage) {
-    const melee = rangeHex <= 1;
+    const melee = rangeCells <= 1;
     if (!mark.rangedOnly || !melee) {
       if (mark.advantage || mark.bonus) {
         modes.push("advantage");

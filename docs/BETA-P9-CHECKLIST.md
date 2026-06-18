@@ -9,7 +9,7 @@
 | Data | |
 | Grupo / campanha | |
 | `roomId` | |
-| URL Vercel | |
+| URL produção | |
 | Participantes (apelidos) | |
 | Mestre | |
 | Duração (min) | |
@@ -18,7 +18,7 @@
 
 - [ ] `GET /api/health` → `db: true`
 - [ ] `DATABASE_URL` Neon prod configurada
-- [ ] Build Vercel verde
+- [ ] Build CI/Docker verde
 
 ## Roteiro sessão (marcar feito)
 

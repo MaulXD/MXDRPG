@@ -4,9 +4,9 @@
     "type": "arma",
     "img": "icons/weapons/swords/sword-guard-worn.webp",
     "system": {
-      "description": "<p>Espada curta forjada com aço de masmorra e cabo em cipó seco. Alcance corpo a corpo em hex adjacente.</p>",
+      "description": "<p>Espada curta forjada com aço de masmorra e cabo em cipó seco. Alcance corpo a corpo em célula adjacente.</p>",
       "tactical": {
-        "alcanceHex": { "value": 1, "min": 0 },
+        "alcanceCells": { "value": 1, "min": 0 },
         "custoPontosAcao": { "value": 1, "min": 0 }
       },
       "weapon": {
@@ -20,9 +20,9 @@
     "type": "arma",
     "img": "icons/weapons/polearms/halberd-crescent-engraved.webp",
     "system": {
-      "description": "<p>Alcance estendido em linha hex. Ideal para formações táticas.</p>",
+      "description": "<p>Alcance estendido em linha célula. Ideal para formações táticas.</p>",
       "tactical": {
-        "alcanceHex": { "value": 2, "min": 0 },
+        "alcanceCells": { "value": 2, "min": 0 },
         "custoPontosAcao": { "value": 1, "min": 0 }
       },
       "weapon": {
@@ -36,9 +36,9 @@
     "type": "arma",
     "img": "icons/weapons/bows/longbow-recurve-brown.webp",
     "system": {
-      "description": "<p>Arco longo de madeira escura. Alcance à distância em grid hex.</p>",
+      "description": "<p>Arco longo de madeira escura. Alcance à distância em grid célula.</p>",
       "tactical": {
-        "alcanceHex": { "value": 5, "min": 0 },
+        "alcanceCells": { "value": 5, "min": 0 },
         "custoPontosAcao": { "value": 1, "min": 0 }
       },
       "weapon": {
@@ -54,7 +54,7 @@
     "system": {
       "description": "<p>Golpes pesados. Custo maior em PA, dano alto.</p>",
       "tactical": {
-        "alcanceHex": { "value": 1, "min": 0 },
+        "alcanceCells": { "value": 1, "min": 0 },
         "custoPontosAcao": { "value": 2, "min": 0 }
       },
       "weapon": {
@@ -68,9 +68,9 @@
     "type": "arma",
     "img": "icons/weapons/daggers/dagger-paired-black.webp",
     "system": {
-      "description": "<p>Par de adagas para duelo em hex. Ataque rápido.</p>",
+      "description": "<p>Par de adagas para duelo em célula. Ataque rápido.</p>",
       "tactical": {
-        "alcanceHex": { "value": 1, "min": 0 },
+        "alcanceCells": { "value": 1, "min": 0 },
         "custoPontosAcao": { "value": 1, "min": 0 }
       },
       "weapon": {

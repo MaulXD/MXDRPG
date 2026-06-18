@@ -24,20 +24,20 @@ Cada entrada do compêndio inclui **descrição de uso** gerada por `scripts/gen
 
 | Variante | Arma (texto na ficha) | Armadura (texto na ficha) |
 |----------|----------------------|---------------------------|
-| **+0** | Dano, alcance hex, PA 1, efeito base (se houver) | Categoria, CA base, nota especial (se houver) |
+| **+0** | Dano, alcance (células), PA 1, efeito base (se houver) | Categoria, CA base, nota especial (se houver) |
 | **+1** | Herda efeitos de +0 · **+1 ataque e +1 dano** | Herda nota de +0 · **+1 CA mágica** |
 | **+2** | Herda efeitos · **+2 ataque e +2 dano** | **+2 CA mágica** |
 | **+3** | Herda efeitos · **+3 ataque e +3 dano** (+ propriedade menor, Mestre) | **+3 CA mágica** (+ resistência menor, Mestre) |
 
 **Referência na ficha:** `catalogId` (ex.: `WPN-S02`, `ARM-01-E2`) e `bookRef` apontando para este catálogo.
 
-**Alcance à distância (hex):** derivado do SRD/D&D 5e a **70%** — arco longo **21 hex** (32 m), arco curto **11 hex** (17 m), besta leve **11 hex**, besta pesada **14 hex**, besta de mão **4 hex**. Ver `lib/vtt/ranged-weapon-range.ts` e Livro do Jogador §14.1.
+**Alcance à distância (células):** derivado do SRD/D&D 5e a **70%** — arco longo **21 células** (32 m), arco curto **11 células** (17 m), besta leve **11 células**, besta pesada **14 células**, besta de mão **4 células**. Ver `lib/vtt/ranged-weapon-range.ts` e Livro do Jogador §14.1.
 
 ---
 
 ## Arcos longos (9) — ARC-L01 a ARC-L09
 
-| ID | Nome | Dano | Alcance hex |
+| ID | Nome | Dano | Alcance (cél.) |
 |----|------|------|-------------|
 | ARC-L01 | Arco Longo de Vinha | 1d8 | 21 |
 | ARC-L02 | Arco Longo de Teixo | 1d8 | 21 |
@@ -55,7 +55,7 @@ Cada linha existe em **+0, +1, +2, +3** (36 entradas VTT).
 
 ## Arcos curtos (9) — ARC-C01 a ARC-C09
 
-| ID | Nome | Dano | Alcance hex |
+| ID | Nome | Dano | Alcance (cél.) |
 |----|------|------|-------------|
 | ARC-C01 | Arco Curto de Caçador | 1d6 | 11 |
 | ARC-C02 | Arco Curto de Teixo | 1d6 | 11 |
@@ -73,7 +73,7 @@ Cada linha em **+0 a +3** (36 entradas VTT).
 
 ## Bestas (8) — BST-01 a BST-08
 
-| ID | Nome | Dano | Alcance hex | Nota |
+| ID | Nome | Dano | Alcance (cél.) | Nota |
 |----|------|------|-------------|------|
 | BST-01 | Besta Leve | 1d8 | 11 | Recarga |
 | BST-02 | Besta de Mao | 1d6 | 4 | Leve |
@@ -90,7 +90,7 @@ Cada linha em **+0 a +3** (32 entradas VTT).
 
 ## Espadas clássicas (12) — WPN-S01 a WPN-S12
 
-| ID | Nome | Dano | Alcance hex |
+| ID | Nome | Dano | Alcance (cél.) |
 |----|------|------|-------------|
 | WPN-S01 | Lâmina de Vinha | 1d6 perf. | 1 |
 | WPN-S02 | Espada Longa | 1d8 cort. | 1 |
@@ -111,7 +111,7 @@ Cada linha em **+0 a +3** (48 entradas VTT).
 
 ## Lanças e variações (10) — WPN-P01 a WPN-P10
 
-| ID | Nome | Dano | Alcance hex |
+| ID | Nome | Dano | Alcance (cél.) |
 |----|------|------|-------------|
 | WPN-P01 | Lança Curta | 1d6 perf. | 1 |
 | WPN-P02 | Lança Longa | 1d10 perf. | 2 |

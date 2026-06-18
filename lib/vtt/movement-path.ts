@@ -1,12 +1,12 @@
 import {
   anchorCandidatesForCell,
   creatureSizeOf,
-  isMultiHexCreatureSize,
-  occupiedHexes,
+  isMultiCellCreatureSize,
+  occupiedCells,
   type CreatureSize,
 } from "@/lib/vtt/creature-size";
-import type { Axial } from "@/lib/vtt/hex-math";
-import { pathStepCount } from "@/lib/vtt/hex-path";
+import type { Axial } from "@/lib/vtt/grid-math";
+import { pathStepCount } from "@/lib/vtt/grid-path";
 import {
   cellsToFeet,
   findPathByFeet,
@@ -15,11 +15,11 @@ import {
   type FeetPathOptions,
 } from "@/lib/vtt/movement-feet";
 import {
-  canEnterHex,
+  canEnterCell,
   occupancyContext,
   type OccupancyMap,
 } from "@/lib/vtt/token-occupancy";
-import { blockedHexSet } from "@/lib/vtt/dungeon-layer";
+import { blockedCellSet } from "@/lib/vtt/dungeon-layer";
 import { axialKey } from "@/lib/vtt/token-occupancy";
 import type { BattleScene, BattleToken } from "@/lib/vtt/types";
 import { runRemaining, walkRemaining, type MoveMode } from "@/lib/vtt/movement";
@@ -39,17 +39,17 @@ function canEnterFactory(
   moverSize: ReturnType<typeof occupancyContext>["moverSize"],
   gridRadius: number,
   blocked?: Set<string>
-): (hex: Axial) => boolean {
-  return (hex) => {
-    if (blocked?.has(axialKey(hex))) return false;
-    return canEnterHex(hex, moverSize, occupancy, gridRadius);
+): (cell: Axial) => boolean {
+  return (cell) => {
+    if (blocked?.has(axialKey(cell))) return false;
+    return canEnterCell(cell, moverSize, occupancy, gridRadius);
   };
 }
 
 function feetPathOpts(
   token: BattleToken,
   mode: MoveMode,
-  canEnter: (hex: Axial) => boolean
+  canEnter: (cell: Axial) => boolean
 ): FeetPathOptions {
   const rawSteps = mode === "walk" ? walkRemaining(token) : runRemaining(token);
   const bounded = Number.isFinite(rawSteps) ? Math.max(0, Math.floor(rawSteps)) : 0;
@@ -89,7 +89,7 @@ export function reachabilityBundle(
   const moverRaca = token.actorId ? actorRacas?.[token.actorId] : undefined;
   const size = creatureSizeOf(token, moverRaca);
   const footprintKeys = new Set(
-    expandAnchorsToFootprintHexes(anchors, size).map((hex) => axialKey(hex))
+    expandAnchorsToFootprintCells(anchors, size).map((cell) => axialKey(cell))
   );
   return { distMap, footprintKeys };
 }
@@ -126,15 +126,15 @@ export function resolveMovementAnchor(
   return path[path.length - 1] ?? null;
 }
 
-function expandAnchorsToFootprintHexes(
+function expandAnchorsToFootprintCells(
   anchors: Iterable<Axial>,
   size: CreatureSize
 ): Axial[] {
-  if (!isMultiHexCreatureSize(size)) return [...anchors];
+  if (!isMultiCellCreatureSize(size)) return [...anchors];
   const map = new Map<string, Axial>();
   for (const anchor of anchors) {
-    for (const hex of occupiedHexes(anchor, size)) {
-      map.set(axialKey(hex), hex);
+    for (const cell of occupiedCells(anchor, size)) {
+      map.set(axialKey(cell), cell);
     }
   }
   return [...map.values()];
@@ -147,7 +147,7 @@ export function movementPathTo(
   ctx: MovementPathContext
 ): Axial[] | null {
   const { occupancy, moverSize } = occupancyContext(ctx.tokens, token, ctx.actorRacas);
-  const blocked = blockedHexSet({ dungeonObjects: ctx.dungeonObjects });
+  const blocked = blockedCellSet({ dungeonObjects: ctx.dungeonObjects });
   const canEnter = canEnterFactory(occupancy, moverSize, ctx.gridRadius, blocked);
   const opts = feetPathOpts(token, mode, canEnter);
   const maxFeet = opts.maxFeet;
@@ -187,12 +187,12 @@ function movementReachContext(
   actorRacas?: Record<string, string | undefined>
 ) {
   const { occupancy, moverSize } = occupancyContext(scene.tokens, token, actorRacas);
-  const blocked = blockedHexSet(scene);
+  const blocked = blockedCellSet(scene);
   const canEnter = canEnterFactory(occupancy, moverSize, scene.gridRadius, blocked);
   return { canEnter, moverSize };
 }
 
-export function reachableMovementHexes(
+export function reachableMovementCells(
   token: BattleToken,
   mode: MoveMode,
   scene: Pick<BattleScene, "tokens" | "gridRadius" | "dungeonObjects">,
@@ -201,17 +201,17 @@ export function reachableMovementHexes(
   return reachableAnchorsWithinFeet(token, mode, scene, actorRacas);
 }
 
-/** Células do corpo alcançáveis (pés ao redor do centro) — PCs e monstros multi-hex. */
-export function reachableMovementFootprintHexes(
+/** Células do corpo alcançáveis (pés ao redor do centro) — PCs e monstros multi-célula. */
+export function reachableMovementFootprintCells(
   token: BattleToken,
   mode: MoveMode,
   scene: Pick<BattleScene, "tokens" | "gridRadius" | "dungeonObjects">,
   actorRacas?: Record<string, string | undefined>
 ): Axial[] {
-  const anchors = reachableMovementHexes(token, mode, scene, actorRacas);
+  const anchors = reachableMovementCells(token, mode, scene, actorRacas);
   const moverRaca = token.actorId ? actorRacas?.[token.actorId] : undefined;
   const size = creatureSizeOf(token, moverRaca);
-  return expandAnchorsToFootprintHexes(anchors, size);
+  return expandAnchorsToFootprintCells(anchors, size);
 }
 
 /** Distância em passos por célula-âncora alcançável (orçamento em pés + centro do corpo). */

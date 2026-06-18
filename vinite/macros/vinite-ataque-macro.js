@@ -1,5 +1,5 @@
 /**
- * Macro de exemplo — Ataque tático Eldarin (Sequencer + alcance hex + PA).
+ * Macro de exemplo — Ataque tático Eldarin (Sequencer + alcance célula + PA).
  *
  * Uso: selecione 1 alvo (Target), tenha um token do atacante selecionado ou assignado,
  * e execute com um item de arma equipado na ficha (ou passe itemId no argumento).

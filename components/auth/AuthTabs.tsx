@@ -2,14 +2,23 @@
 
 import { useState } from "react";
 import "./auth-forms.css";
-import { ClerkSignInLinks } from "@/components/auth/ClerkSignInLinks";
+import { OAuthSignInButtons } from "@/components/auth/OAuthSignInButtons";
 import { LoginForm } from "@/components/auth/LoginForm";
 import { RegisterForm } from "@/components/auth/RegisterForm";
+import type { OAuthProviderId } from "@/lib/auth/oauth-config";
 
-type Props = { redirect?: string; clerkEnabled?: boolean };
+type Props = {
+  redirect?: string;
+  initialTab?: "login" | "register";
+  oauthProviders?: OAuthProviderId[];
+};
 
-export function AuthTabs({ redirect = "", clerkEnabled = false }: Props) {
-  const [tab, setTab] = useState<"login" | "register">("login");
+export function AuthTabs({
+  redirect = "",
+  initialTab = "login",
+  oauthProviders = [],
+}: Props) {
+  const [tab, setTab] = useState<"login" | "register">(initialTab);
 
   return (
     <div>
@@ -29,28 +38,12 @@ export function AuthTabs({ redirect = "", clerkEnabled = false }: Props) {
           Criar conta
         </button>
       </div>
-      {clerkEnabled ? (
-        <p className="auth-form__intro" style={{ marginBottom: "0.25rem" }}>
-          Login com e-mail/senha abaixo funciona junto com Google/Discord. Conta social sem senha?
-          Use <strong>Criar conta</strong> com o mesmo e-mail para definir uma.
-        </p>
+      {oauthProviders.length > 0 && tab === "login" ? (
+        <OAuthSignInButtons redirect={redirect} providers={oauthProviders} />
       ) : null}
-      {clerkEnabled && tab === "login" ? <ClerkSignInLinks /> : null}
       {tab === "login" ? <LoginForm redirect={redirect} /> : <RegisterForm redirect={redirect} />}
       <p style={{ marginTop: "1rem", fontSize: "0.8rem", color: "var(--text-muted)" }}>
         <a href="/privacidade">Política de privacidade</a>
-        {clerkEnabled ? (
-          <>
-            {" "}
-            · <a href="/sign-in">Login Clerk</a>
-            {tab === "register" ? (
-              <>
-                {" "}
-                · <a href="/sign-up">Cadastro Clerk</a>
-              </>
-            ) : null}
-          </>
-        ) : null}
       </p>
     </div>
   );

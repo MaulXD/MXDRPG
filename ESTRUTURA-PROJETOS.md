@@ -1,7 +1,7 @@
 # Estrutura do repositório MXDRPG
 
 ```
-RPG/                          ← raiz = app Next.js (deploy Vercel)
+RPG/                          ← raiz = app Next.js (deploy Docker / Contabo)
 ├── app/                      → rotas (mesa, ficha, auth, API)
 ├── components/               → UI + VTT
 ├── lib/                      → regras, sala, combate, auth
@@ -10,15 +10,15 @@ RPG/                          ← raiz = app Next.js (deploy Vercel)
 ├── scripts/                  → geradores
 ├── vinite/                   → módulo Foundry (referência / vídeo paridade)
 ├── archive/web/              → legado (não editar)
-└── REFATORACAO.md            → plano de refatoração
+└── docs/ELDARIN-SITE-JOGAVEL.md → roteiro do VTT web
 ```
 
 ## Deploy
 
 | Parte | Onde |
 |-------|------|
-| Raiz (`package.json`) | Vercel — Framework Next.js, Root Directory **vazio** |
-| `vinite/` | Foundry local ou release ZIP (fora da Vercel) |
+| Raiz (`package.json`) | Docker — imagem Next.js (`Dockerfile`) |
+| `vinite/` | Foundry local ou release ZIP (fora do deploy web) |
 
 ## Site — papéis
 
@@ -26,4 +26,4 @@ RPG/                          ← raiz = app Next.js (deploy Vercel)
 - **Mestre** — dono da sala, convite, spawn
 - **Jogador** — ficha + mesa
 
-Auth atual: demo (`lib/auth/`). Produção: fase posterior do [REFATORACAO.md](REFATORACAO.md).
+Auth atual: Clerk + demo (`lib/auth/`). Persistência: Postgres (`docs/POSTGRES.md`).

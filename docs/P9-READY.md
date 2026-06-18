@@ -11,13 +11,13 @@ npm run dev
 npm run smoke:p0
 
 # Produção
-$env:SMOKE_BASE_URL="https://mxdrpg.vercel.app"
+$env:SMOKE_BASE_URL="https://www.mxdrpg.com.br"
 npm run smoke:p0
 ```
 
 Esperado com `DATABASE_URL` no servidor: `"db": true`, `"persistence": "postgres"`.
 
-## Env Vercel (mínimo beta)
+## Env produção (mínimo beta)
 
 | Variável | Obrigatório beta |
 |----------|------------------|

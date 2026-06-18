@@ -73,7 +73,7 @@ export function CombatActionBar({
             : canAttackTarget(prepared, t, action, attackerTurn, { actor });
         return { token: t, dist: tokenAxialDistance(prepared, t), ...check };
       })
-      .filter((t) => t.dist <= action.rangeHex);
+      .filter((t) => t.dist <= action.rangeCells);
   }, [attacker, actor, tokens, action, turn]);
 
   if (!actor || !action) {
@@ -209,7 +209,7 @@ export function CombatActionBar({
           )}
         </button>
       ) : isAreaSpell ? null : !targets.length ? (
-        <p className="vtt-combat-hint">Nenhum alvo no alcance ({action.rangeHex} células).</p>
+        <p className="vtt-combat-hint">Nenhum alvo no alcance ({action.rangeCells} células).</p>
       ) : (
         <ul className="vtt-combat-targets">
           {targets.map(({ token, ok, reason }) => (

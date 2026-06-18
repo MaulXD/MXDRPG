@@ -2,7 +2,7 @@
 
 ## O que é
 
-**Virtual Tabletop proprietário** no browser (React + Tailwind via Next.js), hospedado na Vercel.
+**Virtual Tabletop proprietário** no browser (React + Tailwind via Next.js), hospedado em **Contabo** (Docker, www.mxdrpg.com.br).
 
 Não é módulo Foundry. Não exige instalar Foundry VTT.
 
@@ -10,7 +10,7 @@ Não é módulo Foundry. Não exige instalar Foundry VTT.
 
 | Pasta | Função |
 |-------|--------|
-| `app/`, `components/`, `lib/` | **Produto** — site, auth, mesa hex, combate, ficha |
+| `app/`, `components/`, `lib/` | **Produto** — site, auth, mesa célula, combate, ficha |
 | `livros/` | Regras / lore em Markdown |
 | `data/` | Compêndios e trilhas gerados |
 | `scripts/` | Geradores livros → JSON/TS |
@@ -23,11 +23,11 @@ Não é módulo Foundry. Não exige instalar Foundry VTT.
 - **Backend hoje:** API Routes + salas em memória; **Postgres opcional** com `DATABASE_URL` ([docs/POSTGRES.md](docs/POSTGRES.md), [docs/PERSISTENCIA.md](docs/PERSISTENCIA.md))
 - **Backend depois:** sync em tempo real (WebSocket / SSE)
 - **Auth:** demo cookie hoje → produção quando priorizar
-- **Deploy:** Vercel, raiz do repo (Root Directory vazio)
+- **Deploy:** Docker + GHCR → Contabo ([DEPLOY.md](DEPLOY.md))
 
 ## Mesa
 
-`/mesa/[roomId]` — grid hex, tokens, PA, chat, compêndio no painel direito.
+`/mesa/[roomId]` — grid célula, tokens, PA, chat, compêndio no painel direito.
 
 ## Papéis
 
@@ -37,7 +37,7 @@ Não é módulo Foundry. Não exige instalar Foundry VTT.
 
 ## Refatoração
 
-Plano passo a passo: [REFATORACAO.md](REFATORACAO.md)
+Plano e fases: [docs/ELDARIN-SITE-JOGAVEL.md](docs/ELDARIN-SITE-JOGAVEL.md)
 
 ## Estruturar RPG jogável no site
 
