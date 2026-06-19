@@ -167,7 +167,7 @@ export function MesaClosedGate({ roomId, adventureId, roomName }: Props) {
         )}
       </div>
 
-      <Link href="/eldarin" className="btn btn-ghost" style={{ marginTop: "1rem" }}>
+      <Link href="/rpg/eldarin" className="btn btn-ghost" style={{ marginTop: "1rem" }}>
         Voltar às mesas
       </Link>
     </div>

@@ -23,7 +23,7 @@ export function pageMetadata(pageTitle: string, description?: string): Metadata 
 export const STATIC_TAB_TITLES: Record<string, string> = {
   "/": "Seu HUB RPG",
   "/mesas": "Escolher RPG",
-  "/eldarin": "Suas mesas",
+  "/rpg/eldarin": "Eldarin — suas mesas",
   "/mesa": "Mesa virtual",
   "/compendios": "Compêndios",
   "/amigos": "Amigos",

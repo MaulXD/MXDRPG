@@ -20,8 +20,8 @@ export default async function AmigosPage() {
     <div className="page-wrap friends-page-wrap" style={{ maxWidth: 1120, paddingTop: "1.75rem", paddingBottom: "3rem" }}>
       <header className="page-header" style={{ paddingBottom: "1.25rem" }}>
         <p className="eyebrow">
-          <Link href="/eldarin" style={{ color: "var(--text-muted)" }}>
-            ← Mesas
+          <Link href="/mesas" style={{ color: "var(--text-muted)" }}>
+            ← MXDRPG
           </Link>{" "}
           · Social
         </p>
