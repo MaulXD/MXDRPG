@@ -10,6 +10,7 @@ import { UserAvatar } from "@/components/ui/UserAvatar";
 import { portalPathForRole, roleMeta } from "@/lib/auth/roles";
 import type { SessionUser } from "@/lib/auth/types";
 import type { PortraitFocus } from "@/lib/media/portrait-focus";
+import { ENTRAR_PATH } from "@/lib/site-paths";
 
 type Props = {
   user?: SessionUser | null;
@@ -104,7 +105,7 @@ export function HeaderUserMenu({ user: initialUser, onSignOut }: Props) {
       return;
     }
     await fetch("/api/auth/logout", { method: "POST" });
-    window.location.href = "/sign-in";
+    window.location.href = ENTRAR_PATH;
   }, [onSignOut]);
 
   if (!user) return null;

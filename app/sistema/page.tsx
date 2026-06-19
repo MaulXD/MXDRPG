@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ENTRAR_PATH, ELDARIN_MESAS_PATH, MESAS_HUB_PATH } from "@/lib/site-paths";
 import {
   IconBook,
   IconChat,
@@ -43,7 +44,7 @@ const STEPS = [
         Na primeira vez, você pode escolher um apelido para aparecer na mesa.
       </>
     ),
-    href: "/sign-in",
+    href: ENTRAR_PATH,
     linkLabel: "Entrar",
   },
   {
@@ -65,7 +66,7 @@ const STEPS = [
         mestre enviou. Mesas ingressadas ficam na sua conta.
       </>
     ),
-    href: "/rpg/eldarin",
+    href: ELDARIN_MESAS_PATH,
     linkLabel: "Suas mesas",
   },
   {
@@ -114,9 +115,15 @@ const NAV_ITEMS = [
   },
   {
     icon: IconShield,
-    label: "Suas mesas",
-    path: "/rpg/eldarin",
-    text: "Aventuras, convites, lobby de mesa e acesso à sala VTT de cada campanha.",
+    label: "Mesas",
+    path: MESAS_HUB_PATH,
+    text: "Hub MXDRPG — escolha o RPG e abra suas mesas.",
+  },
+  {
+    icon: IconShield,
+    label: "Eldarin",
+    path: ELDARIN_MESAS_PATH,
+    text: "Mesas do RPG Eldarin: aventuras, convites e sala VTT.",
   },
 ] as const;
 
@@ -269,8 +276,11 @@ export default function SistemaPage() {
         <Link href="/personagem/novo" className="btn btn-ghost">
           Nova ficha
         </Link>
-        <Link href="/rpg/eldarin" className="btn btn-ghost">
-          Suas mesas
+        <Link href={MESAS_HUB_PATH} className="btn btn-ghost">
+          Hub de mesas
+        </Link>
+        <Link href={ELDARIN_MESAS_PATH} className="btn btn-ghost">
+          Eldarin
         </Link>
         <Link href="/compendios" className="btn btn-ghost">
           Compêndios

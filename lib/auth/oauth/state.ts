@@ -1,5 +1,6 @@
 import { createHmac, randomBytes, timingSafeEqual } from "crypto";
 import { cookies } from "next/headers";
+import { NextResponse } from "next/server";
 import type { OAuthProviderId } from "@/lib/auth/oauth-config";
 import { safeRedirectPath } from "@/lib/auth/post-auth-redirect";
 import { MESAS_HUB_PATH } from "@/lib/rpg/systems";
@@ -64,21 +65,40 @@ export async function beginOAuthState(
   return { state: bundle.state, setCookie: value };
 }
 
+export type OAuthStateFailure =
+  | "missing"
+  | "invalid"
+  | "provider"
+  | "expired"
+  | "mismatch";
+
 export async function consumeOAuthState(
   provider: OAuthProviderId,
   stateFromQuery: string
-): Promise<{ redirect: string } | null> {
+): Promise<{ redirect: string } | { failure: OAuthStateFailure }> {
   const store = await cookies();
   const raw = store.get(COOKIE)?.value;
-  store.delete(COOKIE);
-  if (!raw) return null;
+  if (!raw) return { failure: "missing" };
 
   const bundle = decode(raw);
-  if (!bundle) return null;
-  if (bundle.provider !== provider) return null;
-  if (bundle.exp < Date.now()) return null;
-  if (bundle.state !== stateFromQuery) return null;
+  if (!bundle) {
+    store.delete(COOKIE);
+    return { failure: "invalid" };
+  }
+  if (bundle.provider !== provider) {
+    store.delete(COOKIE);
+    return { failure: "provider" };
+  }
+  if (bundle.exp < Date.now()) {
+    store.delete(COOKIE);
+    return { failure: "expired" };
+  }
+  if (bundle.state !== stateFromQuery) {
+    store.delete(COOKIE);
+    return { failure: "mismatch" };
+  }
 
+  store.delete(COOKIE);
   return { redirect: bundle.redirect };
 }
 
@@ -92,4 +112,9 @@ export function oauthStateCookieOptions(value: string) {
     path: "/",
     maxAge: TTL_MS / 1000,
   };
+}
+
+/** Anexa cookie OAuth ao redirect (mais confiável que cookies().set + redirect). */
+export function applyOAuthStateCookie(response: NextResponse, value: string): void {
+  response.cookies.set(oauthStateCookieOptions(value));
 }

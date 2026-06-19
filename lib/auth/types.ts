@@ -14,7 +14,7 @@ export interface SessionUser {
   /** Foto do provedor OAuth — usada quando avatarSource é oauth. */
   oauthAvatarUrl?: string | null;
   /** Preferência de avatar — só relevante na edição de perfil. */
-  avatarSource?: "oauth" | "custom";
+  avatarSource?: "oauth" | "custom" | "generated";
   /** Enquadramento da foto personalizada (crop/zoom). */
   avatarFocus?: PortraitFocus | null;
   /** Clerk user id — reconcilia `clerk-{id}` legado em memberIds. */

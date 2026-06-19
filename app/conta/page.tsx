@@ -8,6 +8,7 @@ import { getAdventure } from "@/lib/adventure/store";
 import { dbEnabled } from "@/lib/db/enabled";
 import { userHasRecoveryConfigured } from "@/lib/auth/password-recover";
 import { materializeSessionUser } from "@/lib/auth/session-user";
+import { signInPath } from "@/lib/auth/post-auth-redirect";
 import { getSession } from "@/lib/auth/session";
 import { pageMetadata } from "@/lib/site-metadata";
 import { redirect } from "next/navigation";
@@ -16,7 +17,7 @@ export const metadata = pageMetadata("Seu perfil");
 
 export default async function ContaPage() {
   const session = await getSession();
-  if (!session) redirect("/sign-in?redirect=/conta");
+  if (!session) redirect(signInPath("/conta"));
   if (!dbEnabled()) {
     return (
       <div className="page-wrap" style={{ maxWidth: 520, paddingTop: "2rem" }}>

@@ -2,6 +2,7 @@
 
 import { useClerk } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
+import { ENTRAR_PATH } from "@/lib/site-paths";
 
 export function LogoutButton() {
   const router = useRouter();
@@ -14,7 +15,7 @@ export function LogoutButton() {
     } catch {
       /* sessão Clerk pode já ter expirado */
     }
-    router.push("/sign-in");
+    router.push(ENTRAR_PATH);
     router.refresh();
   }
 

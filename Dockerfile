@@ -12,10 +12,15 @@ RUN npm ci
 COPY . .
 
 # Constrói a aplicação Next.js
-RUN npm run build
+RUN npm run build \
+  && mkdir -p .next/cache/images .next/cache/fetch-cache
 
 # Expõe a porta padrão do Next.js
 EXPOSE 3000
 
-# Executa o projeto (conforme solicitado, usando o ambiente de desenvolvimento)
+COPY docker-entrypoint.sh /app/docker-entrypoint.sh
+RUN chmod +x /app/docker-entrypoint.sh
+
+ENTRYPOINT ["/app/docker-entrypoint.sh"]
+# Executa o projeto em produção
 CMD ["npm", "start"]

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ENTRAR_PATH, ELDARIN_MESAS_PATH, MESAS_HUB_PATH } from "@/lib/site-paths";
 import { getSession } from "@/lib/auth/session";
 import { pageMetadata } from "@/lib/site-metadata";
 
@@ -23,14 +24,14 @@ export default async function MesaIndexPage() {
             Hub de mesas
           </Link>
         ) : (
-          <Link href="/sign-in" className="btn btn-secondary">
+          <Link href={ENTRAR_PATH} className="btn btn-secondary">
             Criar conta
           </Link>
         )}
       </div>
       {!session ? (
         <p style={{ marginTop: "1rem", fontSize: "0.85rem", color: "var(--text-muted)" }}>
-          Já tem conta? <Link href="/sign-in">Entrar</Link>
+          Já tem conta? <Link href={ENTRAR_PATH}>Entrar</Link>
         </p>
       ) : null}
     </div>

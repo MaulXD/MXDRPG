@@ -1,4 +1,5 @@
 import { cookies } from "next/headers";
+import { NextResponse } from "next/server";
 import { resolveClerkSessionUser } from "@/lib/auth/clerk-sync";
 import { isClerkEnabled } from "@/lib/auth/clerk-config";
 import { ensureDbMigrations } from "@/lib/db/ensure-migrations";
@@ -25,15 +26,33 @@ function decode(raw: string): SessionPayload | null {
 }
 
 export async function createSession(user: SessionUser): Promise<void> {
-  const payload: SessionPayload = { user, issuedAt: Date.now() };
   const store = await cookies();
-  store.set(SESSION_COOKIE, encode(payload), {
+  const c = buildSessionCookie(user);
+  store.set(c.name, c.value, {
+    httpOnly: c.httpOnly,
+    secure: c.secure,
+    sameSite: c.sameSite,
+    path: c.path,
+    maxAge: c.maxAge,
+  });
+}
+
+export function buildSessionCookie(user: SessionUser) {
+  const payload: SessionPayload = { user, issuedAt: Date.now() };
+  return {
+    name: SESSION_COOKIE,
+    value: encode(payload),
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
+    sameSite: "lax" as const,
     path: "/",
     maxAge: 60 * 60 * 24 * 7,
-  });
+  };
+}
+
+/** Grava sessão em resposta de redirect (cookies() sozinho pode não anexar ao 302). */
+export function applySessionCookie(response: NextResponse, user: SessionUser): void {
+  response.cookies.set(buildSessionCookie(user));
 }
 
 export async function destroySession(): Promise<void> {

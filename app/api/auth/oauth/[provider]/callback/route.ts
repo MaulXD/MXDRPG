@@ -30,7 +30,8 @@ export async function GET(request: Request, { params }: Params) {
   }
 
   const pending = await consumeOAuthState(provider, state);
-  if (!pending) {
+  if ("failure" in pending) {
+    console.warn("[oauth callback] state inválido:", provider, pending.failure);
     return oauthErrorRedirect("oauth_state");
   }
 
