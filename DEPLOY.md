@@ -11,7 +11,24 @@ O app Next.js fica na **raiz** do repositório. Imagem Docker publicada no push 
 2. Build da imagem (`Dockerfile`) → `ghcr.io/<repo>`
 3. Webhook reinicia o deployment `mxdrpg` no cluster com a imagem `ghcr.io/maulxd/mxdrpg:sha-<commit>` (evita cache da tag `main`)
 
-Confirme o deploy: `GET /api/health` deve retornar `buildSha` com o commit em execução.
+Confirme o deploy: `GET /api/health` deve retornar `buildSha` com o commit em execução. Se `deployHint` aparecer, o pod ainda usa imagem antiga.
+
+## Deploy não atualizou? (erros SQL / Promise / cache)
+
+Sintomas nos logs: `ER_PARSE_ERROR` perto de `id, clerk_id…`, `Received an instance of Promise`, ou `/api/health` **sem** `buildSha`.
+
+O restart automático pode reutilizar imagem em cache. **Force a imagem pelo SHA:**
+
+```bash
+# Substitua 48c2f48 pelo short SHA do último commit em main
+kubectl -n raul set image deployment/mxdrpg \
+  mxdrpg=ghcr.io/maulxd/mxdrpg:sha-48c2f48
+
+kubectl -n raul rollout status deployment/mxdrpg
+curl -s https://www.mxdrpg.com.br/api/health | jq .
+```
+
+`buildSha` deve bater com o commit. `db` deve ser `true`.
 
 ## Variáveis de ambiente (servidor)
 
@@ -40,7 +57,7 @@ Callbacks a cadastrar nos consoles:
 
 **Importante:** `AUTH_URL` deve usar **exatamente** o mesmo host que o usuário abre no navegador (ex.: `https://www.mxdrpg.com.br`, com `www`). O cookie OAuth é por host — se `AUTH_URL` for sem `www` mas o site abrir com `www`, o login Google falha com *Sessão OAuth expirada*. O middleware redireciona apex ↔ www para o host de `AUTH_URL`.
 
-**MariaDB SSL (Contabo):** use `MARIADB_SSL_REJECT_UNAUTHORIZED=0` no env do container. Não use `sslaccept` na URL — o mysql2 ignora e o app já aplica SSL via código.
+**MariaDB SSL (Contabo):** por padrão o app aceita certificado self-signed em hosts remotos. Para exigir verificação estrita: `MARIADB_SSL_REJECT_UNAUTHORIZED=1`.
 
 Sem OAuth: login demo (`mestre` / `jogador`, senha `123`) ou e-mail/senha em `/entrar`.
 
