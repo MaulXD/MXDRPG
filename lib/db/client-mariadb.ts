@@ -86,7 +86,17 @@ function createMariaSql(p: Pool): EldarinSql {
 }
 
 function mariadbPoolUrl(raw: string): string {
-  return raw.replace(/^mariadb:/i, "mysql:");
+  let url = raw.replace(/^mariadb:/i, "mysql:");
+  try {
+    const u = new URL(url);
+    // mysql2 não aceita estes params na URI — SSL via pool `ssl` option
+    u.searchParams.delete("sslaccept");
+    u.searchParams.delete("ssl_mode");
+    u.searchParams.delete("sslmode");
+    return u.toString();
+  } catch {
+    return url;
+  }
 }
 
 function poolSslOption(url: string): { rejectUnauthorized: boolean } | undefined {

@@ -38,6 +38,8 @@ Callbacks a cadastrar nos consoles:
 
 **Importante:** `AUTH_URL` deve usar **exatamente** o mesmo host que o usuário abre no navegador (ex.: `https://www.mxdrpg.com.br`, com `www`). O cookie OAuth é por host — se `AUTH_URL` for sem `www` mas o site abrir com `www`, o login Google falha com *Sessão OAuth expirada*. O middleware redireciona apex ↔ www para o host de `AUTH_URL`.
 
+**MariaDB SSL (Contabo):** use `MARIADB_SSL_REJECT_UNAUTHORIZED=0` no env do container. Não use `sslaccept` na URL — o mysql2 ignora e o app já aplica SSL via código.
+
 Sem OAuth: login demo (`mestre` / `jogador`, senha `123`) ou e-mail/senha em `/entrar`.
 
 **Recuperar senha:** cadastre em `/conta` os 5 primeiros dígitos do CPF + data de nascimento; use `/entrar/recuperar`.
