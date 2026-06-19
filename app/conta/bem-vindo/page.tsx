@@ -7,9 +7,8 @@ import {
   safeRedirectPath,
   signInPath,
 } from "@/lib/auth/post-auth-redirect";
-import { materializeSessionUser } from "@/lib/auth/session-user";
-import { dbSqlReady } from "@/lib/db/sql-ready";
 import { getSession } from "@/lib/auth/session";
+import { dbSqlReady } from "@/lib/db/sql-ready";
 import { pageMetadata } from "@/lib/site-metadata";
 
 export const metadata = pageMetadata("Configure seu perfil");
@@ -25,8 +24,6 @@ export default async function ContaBemVindoPage({ searchParams }: Props) {
   if (!dbSqlReady()) redirect(dest);
   if (session.user.nickname?.trim()) redirect(dest);
 
-  const accountUser = await materializeSessionUser(session.user);
-
   return (
     <div className="page-wrap" style={{ maxWidth: 520, paddingTop: "2rem" }}>
       <header className="page-header" style={{ paddingBottom: "1.25rem" }}>
@@ -41,7 +38,7 @@ export default async function ContaBemVindoPage({ searchParams }: Props) {
         </p>
       </header>
       <div className="glass" style={{ padding: "1.5rem" }}>
-        <ProfileOnboardingForm initialUser={accountUser} redirectAfter={dest} />
+        <ProfileOnboardingForm initialUser={session.user} redirectAfter={dest} />
       </div>
     </div>
   );
