@@ -31,6 +31,10 @@ export async function GET() {
     ok: true,
     app: "eldarin-rpg",
     buildSha: process.env.BUILD_SHA?.trim() || null,
+    deployHint:
+      process.env.BUILD_SHA?.trim() ?
+        null
+      : "Imagem antiga — atualize o deployment para ghcr.io/maulxd/mxdrpg:sha-<commit>",
     db,
     persistence: hasUrl ? persistenceLabel() : "memory",
     authOrigin: (() => {
