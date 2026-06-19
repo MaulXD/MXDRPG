@@ -304,6 +304,8 @@ export function Battlefield({
   const [actionErr, setActionErr] = useState<string | null>(null);
   const [channelExtraPa, setChannelExtraPa] = useState(0);
   const [actionRingAt, setActionRingAt] = useState<{ x: number; y: number } | null>(null);
+  /** Guarda posição do ring a abrir quando selectedId muda junto (concurrent mode). */
+  const pendingRingRef = useRef<{ x: number; y: number } | null>(null);
   const [spellPickerOpen, setSpellPickerOpen] = useState(false);
   const [gmHpEditTokenId, setGmHpEditTokenId] = useState<string | null>(null);
   const [friendlyFireTargetId, setFriendlyFireTargetId] = useState<string | null>(null);
@@ -1126,7 +1128,9 @@ export function Battlefield({
   const selectedBypass = selected ? tokenBypass(selected) : false;
 
   useEffect(() => {
-    setActionRingAt(null);
+    const pendingRing = pendingRingRef.current;
+    pendingRingRef.current = null;
+    setActionRingAt(pendingRing ?? null);
     setActionMode("idle");
     setSelectedCombatAction(null);
     setChannelExtraPa(0);
@@ -2029,6 +2033,8 @@ export function Battlefield({
         onActionRingBlocked(token);
         return;
       }
+      // Sinaliza para o effect [selectedId] que um ring foi agendado neste mesmo batch.
+      pendingRingRef.current = { x: clientX, y: clientY };
       setActionRingAt({ x: clientX, y: clientY });
       setActionErr(null);
     },

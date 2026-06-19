@@ -194,6 +194,7 @@ export function TokenActionRing({
   const [exiting, setExiting] = useState(false);
   const [introDone, setIntroDone] = useState(false);
   const [viewSwap, setViewSwap] = useState(false);
+  const [backdropReady, setBackdropReady] = useState(false);
   const exitingRef = useRef(false);
   const ringViewRef = useRef(ringView);
   const exitTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -241,6 +242,12 @@ export function TokenActionRing({
       if (exitTimerRef.current) clearTimeout(exitTimerRef.current);
       if (introTimerRef.current) clearTimeout(introTimerRef.current);
     };
+  }, []);
+
+  // Pequeno delay para evitar que o click que abre o ring feche o backdrop imediatamente.
+  useEffect(() => {
+    const t = setTimeout(() => setBackdropReady(true), 150);
+    return () => clearTimeout(t);
   }, []);
 
   useEffect(() => {
@@ -719,10 +726,10 @@ export function TokenActionRing({
     <div
       className={`token-action-ring-backdrop${exiting ? " token-action-ring-backdrop--exiting" : ""}`}
       role="presentation"
-      onClick={beginClose}
+      onClick={backdropReady ? beginClose : undefined}
       onContextMenu={(e) => {
         e.preventDefault();
-        beginClose();
+        if (backdropReady) beginClose();
       }}
     >
       <div
