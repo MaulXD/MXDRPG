@@ -49,7 +49,7 @@ Ao concluir (ou pausar) um bloco de trabalho, **sempre** acrescentar uma entrada
 | **Hosting** | Contabo — Docker + GHCR (`Dockerfile` + `docker-entrypoint.sh`) |
 | **Branch principal** | `main` |
 | **Marca / hub** | **MXDRPG** — landing e pós-login em `/mesas`; Eldarin é um RPG em `/rpg/eldarin` |
-| **Auth** | OAuth nativo Google/Discord em `/entrar` (principal); Clerk opcional; demo `mestre`/`jogador` senha `123` |
+| **Auth** | OAuth Google/Discord + e-mail/senha em `/entrar`; demo `mestre`/`jogador` senha `123` — **sem Clerk** |
 | **DB** | MariaDB (`DATABASE_URL=mysql://…`) — em produção: SSL self-signed exige `MARIADB_SSL_REJECT_UNAUTHORIZED=0` ou `?sslaccept=accept_invalid_certs` |
 | **Stack** | Next.js 15, React 19, TypeScript strict |
 | **Rotas canônicas** | Login `/entrar` · Onboarding `/conta/bem-vindo` · Hub `/mesas` · Eldarin `/rpg/eldarin` |
@@ -588,6 +588,39 @@ npm run sync:data:check       # após editar livros/
 **Como testar:** **Sair** → entrar de novo com Google → `/conta/bem-vindo` → salvar apelido. Exige `db: true` no health.
 
 **Commits:** pendente local
+
+---
+
+### 2026-06-12 — Remoção do Clerk + estabilização da mesa em produção
+
+**Pedido:** remover Clerk de vez; corrigir mesa que não abre (erro SSR) e deploy desatualizado em www.mxdrpg.com.br.
+
+**Passo a passo:**
+1. **Diagnóstico** — pod em imagem antiga (`/api/health` sem `buildSha`); erros SQL (`ER_PARSE_ERROR`, `Promise` em queries); mesa derrubava SSR ao sincronizar fichas incompletas (`inventory`/`identity` undefined); 404 em `arcane-cover.png` (cosmético).
+2. **Decisão** — auth só OAuth manual + cookie `vinite_session`; manter coluna `clerk_id` e aliases `clerk-*` só como legado de dados; sync da mesa tolerante a fichas inválidas; `releaseId` no health para confirmar deploy.
+3. **Implementação:**
+   - Removido `@clerk/nextjs`, componentes `Clerk*`, webhook `/api/webhooks/clerk`, `clerk-sync`, docs `P1-CLERK-SETUP.md`.
+   - `middleware.ts` sem `clerkMiddleware`; sessão só `vinite_session`.
+   - SQL usuários: `queryOneUserRow` com `sql.unsafe`; SSL MariaDB Contabo por padrão.
+   - Mesa: `listCharactersForSessionUserSafe`, `safeMaterializeSessionUser`; `arcane-cover.png` em `public/brand/rpg/`.
+   - Sync atores: `mergePortraitFromRoom` com `inventory?.length`; `toRoomActor` e `syncAdventureActorsForRoom` com try/catch; página `/mesa/[roomId]` não derruba em join/bind.
+   - Capa da mesa: fallback para `eldarin-cover.png` se imagem 404.
+4. **Validação** — `npm run build` ✅ em cada commit.
+
+**Arquivos tocados (principais):**
+- `package.json`, `middleware.ts`, `lib/auth/session.ts`, `lib/db/users.ts`
+- `app/mesa/[roomId]/page.tsx`, `lib/room/adventure-actors.ts`
+- `components/vtt/RoomCoverBackdrop.tsx`, `lib/release.ts`
+- `.env.example`, `DEPLOY.md`
+
+**Commits / deploy:** `f11d1f9` (remove Clerk) · `dd9b457` (mesa SSR segura) — **push em `main`** · imagem `ghcr.io/maulxd/mxdrpg:sha-dd9b457` · `releaseId`: `mesa-sync-safe-2026-06-12`
+
+**Como testar:**
+```bash
+curl -s https://www.mxdrpg.com.br/api/health   # buildSha=dd9b457, db=true
+# Login Google → criar/abrir mesa → mapa e painéis carregam
+kubectl -n raul set image deployment/mxdrpg mxdrpg=ghcr.io/maulxd/mxdrpg:sha-dd9b457   # se health antigo
+```
 
 ---
 
