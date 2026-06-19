@@ -6,7 +6,7 @@ import type { Metadata } from "next";
 import { canManageAdventure, isAdventureMember } from "@/lib/auth/adventure-access";
 
 import { signInPath } from "@/lib/auth/post-auth-redirect";
-import { materializeSessionUser } from "@/lib/auth/session-user";
+import { safeMaterializeSessionUser } from "@/lib/auth/session-user";
 import { getSession } from "@/lib/auth/session";
 
 import {
@@ -93,7 +93,7 @@ export default async function AventuraHubPage({ params, searchParams }: Props) {
 
   if (!session) redirect(signInPath(`/aventura/${adventureId}`));
 
-  const accountUser = await materializeSessionUser(session.user);
+  const accountUser = await safeMaterializeSessionUser(session.user);
 
 
 
