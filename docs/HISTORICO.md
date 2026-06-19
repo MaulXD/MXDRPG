@@ -626,30 +626,34 @@ kubectl -n raul set image deployment/mxdrpg mxdrpg=ghcr.io/maulxd/mxdrpg:sha-dd9
 
 ---
 
-### 2026-06-19 — Fix: action ring aparece e desaparece
+### 2026-06-19 — Fix: action ring aparece e desaparece (v2 — causa raiz SSE)
 
 **Pedido:** o action ring abre e fecha imediatamente sem o jogador fazer nada.
 
 **Passo a passo:**
-1. **Diagnóstico** — Em React 18+ concurrent mode, o re-render do `onPointerDown` (`setSelectedId`) pode não acontecer antes do `onPointerUp`. Resultado: `onPointerUp` encontra o `selectedId` antigo na closure, chama `setSelectedId` + `setActionRingAt` no mesmo batch, o effect `[selectedId, turnActiveId, round]` dispara e limpa `actionRingAt`. O ring some em 1 frame.
-   Segundo vetor: o evento `click` pode chegar ao backdrop do ring (position:fixed) imediatamente após o commit React, fechando o ring via `beginClose`.
-2. **Decisão** — (a) `pendingRingRef` em `Battlefield`: quando `onActionRingRequest` é chamado, grava a posição no ref. O effect `[selectedId]` usa o ref em vez de setar null — preserva o ring mesmo que `selectedId` tenha mudado no mesmo batch. (b) `backdropReady` em `TokenActionRing`: o backdrop não responde a click nos primeiros 150ms após montagem — absorve o click fantasma que abriu o ring.
-3. **Implementação:**
-   - `Battlefield.tsx` — `pendingRingRef = useRef(null)`; `onActionRingRequest` seta o ref; effect `[selectedId]` usa `pendingRingRef.current ?? null` em vez de `null`.
-   - `TokenActionRing.tsx` — `backdropReady` state; effect com 150ms delay; backdrop `onClick` condicional em `backdropReady`.
-4. **Validação** — `npm run build` ✅ (sem erros TS).
+1. **Diagnóstico v1** — Race condition concurrent mode: `setSelectedId` + `setActionRingAt` no mesmo batch → effect `[selectedId]` limpava `actionRingAt`. Fix inicial: `pendingRingRef` para preservar o ring por um ciclo.
+2. **Diagnóstico v2 (causa raiz real)** — SSE/sync da sala muda `turnActiveId` (ou `round`) durante ou logo após a abertura do ring. O effect `[selectedId, turnActiveId, round]` dispara uma **segunda vez** com `pendingRingRef.current = null` (já consumido na primeira vez) e chama `setActionRingAt(null)` — fechando o ring mesmo que o token ainda pudesse agir.
+3. **Decisão** — Separar responsabilidades dos effects:
+   - `useEffect([selectedId])`: só fecha o ring se o token selecionado mudou para um token **diferente** do que abriu o ring (`ringTokenIdRef.current !== selectedId`).
+   - `useEffect([selectedId, turnActiveId, round])`: só reseta modo de combate (idle/ação/PA) — não toca mais em `actionRingAt`.
+   - `useEffect([actionRingAt, selected, canOpenActionRing])`: já existia — fecha ring se o token perder permissão de agir.
+   - Removido `pendingRingRef` (não mais necessário).
+4. **Implementação:**
+   - `Battlefield.tsx` — `ringTokenIdRef = useRef(null)`; `onActionRingRequest` seta `ringTokenIdRef.current = token.id`; effect `[selectedId]` fecha ring só se `ringTokenIdRef.current !== selectedId`; effect `[turnActiveId, round]` não limpa mais `actionRingAt`.
+   - `TokenActionRing.tsx` — `backdropReady` guard 150ms mantido (proteção contra click fantasma).
+5. **Validação** — `npx tsc --noEmit` ✅ zero erros.
 
 **Arquivos tocados:**
-- `components/vtt/Battlefield.tsx` — `pendingRingRef`, `onActionRingRequest`, effect `[selectedId]`
-- `components/vtt/TokenActionRing.tsx` — `backdropReady`, guard 150ms
+- `components/vtt/Battlefield.tsx` — substituído `pendingRingRef` por `ringTokenIdRef`, effects refatorados
 
-**Commits / deploy:** pendente local
+**Commits / deploy:** `d0ec533` → `main` (push em 2026-06-19)
 
 **Como testar:**
-1. `/mesa/demo` → colocar token no mapa → clicar uma vez com botão esquerdo
-2. Ring deve abrir e FICAR aberto (não fechar sozinho)
+1. `/mesa/demo` → clicar token com turno ativo
+2. Ring deve abrir e **ficar aberto** — mesmo com SSE ativo atualizando a sala
 3. Clicar fora do ring → fecha normalmente
-4. ESC → fecha normalmente
+4. Clicar **outro token** → ring fecha, token novo seleciona
+5. ESC → fecha normalmente
 
 <!--
 ### AAAA-MM-DD — Título
