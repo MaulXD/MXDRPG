@@ -567,6 +567,26 @@ npm run sync:data:check       # após editar livros/
 
 **Como testar:** login Google → salvar apelido → sem “Conta não encontrada”; cookie atualizado; `/api/notifications` retorna `{ items: [], count: 0 }` se DB off.
 
+**Commits:** `2e78ac0` (bundle anterior)
+
+---
+
+### 2026-06-19 — Fix reforçado: apelido após OAuth (sessão órfã)
+
+**Pedido:** ainda “Conta não encontrada” ao salvar apelido (ex.: MaulXD).
+
+**Passo a passo:**
+1. **Diagnóstico** — `fetchUserById` usava `safeDbRead` e devolvia `null` em falha SSL; `usr_*` órfão caía sem recriar usuário OAuth; cookie sem `oauthProvider`/`oauthSubject`.
+2. **Decisão** — priorizar identidade OAuth na materialização; gravar provider/subject na sessão; leitura strict antes de UPDATE.
+3. **Implementação:**
+   - `SessionUser` + cookie: `oauthProvider`, `oauthSubject`.
+   - `oauthIdentityFromSession()` — id efêmero ou campos da sessão.
+   - `materializeSessionUser` — OAuth primeiro; sem retorno silencioso de id inválido.
+   - `fetchUserByIdStrict` + `setUserNickname` usa leitura direta (erro real do MariaDB).
+4. **Validação** — `npm run build` ✅.
+
+**Como testar:** **Sair** → entrar de novo com Google → `/conta/bem-vindo` → salvar apelido. Exige `db: true` no health.
+
 **Commits:** pendente local
 
 ---

@@ -1,4 +1,5 @@
 import type { PortraitFocus } from "@/lib/media/portrait-focus";
+import type { OAuthProviderId } from "@/lib/auth/oauth-config";
 
 /** Papéis da plataforma — sem “mestre/jogador” global */
 export type UserRole = "member" | "admin";
@@ -13,6 +14,10 @@ export interface SessionUser {
   avatarUrl?: string | null;
   /** Foto do provedor OAuth — usada quando avatarSource é oauth. */
   oauthAvatarUrl?: string | null;
+  /** Provedor OAuth — permite recriar conta no MariaDB após sessão efêmera. */
+  oauthProvider?: OAuthProviderId | null;
+  /** Subject OAuth (sub Google / id Discord). */
+  oauthSubject?: string | null;
   /** Preferência de avatar — só relevante na edição de perfil. */
   avatarSource?: "oauth" | "custom" | "generated";
   /** Enquadramento da foto personalizada (crop/zoom). */
