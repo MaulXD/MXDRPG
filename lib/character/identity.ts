@@ -26,7 +26,15 @@ export type IdentityPatch = {
 };
 
 export function applyIdentityPatch(actor: CharacterSheet, patch: IdentityPatch): CharacterSheet {
-  const identity: CharacterIdentity = { ...actor.identity };
+  const prior = actor.identity ?? {
+    nivel: 1,
+    xpTotal: 0,
+    raca: "Humano",
+    classe: "Guerreiro",
+    antecedente: "Explorador",
+    talentos: [],
+  };
+  const identity: CharacterIdentity = { ...prior };
 
   if (patch.raca !== undefined) identity.raca = patch.raca;
   if (patch.classe !== undefined) identity.classe = patch.classe;
@@ -35,7 +43,7 @@ export function applyIdentityPatch(actor: CharacterSheet, patch: IdentityPatch):
   if (patch.antecedente !== undefined) identity.antecedente = patch.antecedente;
   if (patch.religiao !== undefined) identity.religiao = patch.religiao;
 
-  if (patch.classe && patch.classe !== actor.identity.classe) {
+  if (patch.classe && patch.classe !== prior.classe) {
     const cls = getClass(patch.classe);
     if (cls && identity.subclasse && !cls.subclasses.includes(identity.subclasse)) {
       identity.subclasse = null;
@@ -43,7 +51,7 @@ export function applyIdentityPatch(actor: CharacterSheet, patch: IdentityPatch):
     }
   }
 
-  if (patch.subclasse !== undefined && patch.subclasse !== actor.identity.subclasse) {
+  if (patch.subclasse !== undefined && patch.subclasse !== prior.subclasse) {
     identity.talentos = [];
   }
 
