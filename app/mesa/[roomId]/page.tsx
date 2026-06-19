@@ -14,7 +14,7 @@ import {
 } from "@/lib/auth/room-access-server";
 import { entrarPath, mesaRoomPath } from "@/lib/auth/post-auth-redirect";
 import { canonicalInviteForRoom } from "@/lib/auth/mesa-invite";
-import { materializeSessionUser } from "@/lib/auth/session-user";
+import { safeMaterializeSessionUser } from "@/lib/auth/session-user";
 import { getSession } from "@/lib/auth/session";
 import { getPackEntries, getVisiblePacks } from "@/lib/compendium/registry";
 import type { CompendiumPackId } from "@/lib/compendium/types";
@@ -71,7 +71,7 @@ export default async function MesaRoomPage({ params, searchParams }: Props) {
     );
   }
 
-  const accountUser = session?.user ? await materializeSessionUser(session.user) : null;
+  const accountUser = session?.user ? await safeMaterializeSessionUser(session.user) : null;
 
   if (accountUser && roomId !== "demo" && !watchOnly) {
     const isMember = await isRoomMemberResolved(room, accountUser.id, accountUser.clerkId);
@@ -198,7 +198,7 @@ export default async function MesaRoomPage({ params, searchParams }: Props) {
   let characterSlotsLeft = 0;
   let charactersInAdventure = 0;
   if (session?.user && canParticipate && roomId !== "demo") {
-    const accountUser = await materializeSessionUser(session.user);
+    const accountUser = await safeMaterializeSessionUser(session.user);
     const myChars = await listCharactersForSessionUser(accountUser);
     const inAdv = await listCharactersForSessionUserInAdventure(accountUser, advId);
     characterSlotsLeft = Math.max(0, MAX_CHARACTERS_PER_USER - myChars.length);

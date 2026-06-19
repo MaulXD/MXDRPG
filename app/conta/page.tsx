@@ -7,7 +7,7 @@ import { listCharactersForSessionUser } from "@/lib/character/characters";
 import { getAdventure } from "@/lib/adventure/store";
 import { dbEnabled } from "@/lib/db/enabled";
 import { userHasRecoveryConfigured } from "@/lib/auth/password-recover";
-import { materializeSessionUser } from "@/lib/auth/session-user";
+import { safeMaterializeSessionUser } from "@/lib/auth/session-user";
 import { signInPath } from "@/lib/auth/post-auth-redirect";
 import { getSession } from "@/lib/auth/session";
 import { pageMetadata } from "@/lib/site-metadata";
@@ -26,7 +26,7 @@ export default async function ContaPage() {
     );
   }
 
-  const accountUser = await materializeSessionUser(session.user);
+  const accountUser = await safeMaterializeSessionUser(session.user);
   const hasRecovery = await userHasRecoveryConfigured(accountUser.id);
   const displayName = accountUser.nickname ?? accountUser.name;
   const myCharacters = await listCharactersForSessionUser(accountUser);

@@ -107,3 +107,13 @@ export async function materializeSessionUser(user: SessionUser): Promise<Session
     throw err instanceof Error ? err : new Error("Conta não encontrada — saia e entre de novo");
   }
 }
+
+/** SSR / páginas — nunca derruba o render; APIs usam `materializeSessionUser` (strict). */
+export async function safeMaterializeSessionUser(user: SessionUser): Promise<SessionUser> {
+  try {
+    return await materializeSessionUser(user);
+  } catch (err) {
+    console.error("[safeMaterializeSessionUser]", err);
+    return user;
+  }
+}
