@@ -90,7 +90,9 @@ function mariadbPoolUrl(raw: string): string {
 }
 
 export function getMariaSql(): EldarinSql | null {
-  const url = mariadbPoolUrl(normalizeDatabaseUrl(process.env.DATABASE_URL ?? ""));
+  const raw = normalizeDatabaseUrl(process.env.DATABASE_URL ?? "");
+  if (/^postgres(ql)?:\/\//i.test(raw)) return null; // protocolo errado — não é MariaDB
+  const url = mariadbPoolUrl(raw);
   if (!url) return null;
 
   if (!pool) {
@@ -99,6 +101,7 @@ export function getMariaSql(): EldarinSql | null {
       uri: url,
       waitForConnections: true,
       connectionLimit: 10,
+      connectTimeout: 3000,
       enableKeepAlive: true,
       ssl: local ? undefined : { rejectUnauthorized: true },
     });

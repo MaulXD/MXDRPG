@@ -12,8 +12,8 @@ export const PA_ACCUMULATION_CAP_DEFAULT = 9;
 /** PA de recuperação / pool para monstros comuns. */
 export const MONSTER_PA_DEFAULT = 6;
 
-/** PA de recuperação / pool para bosses. */
-export const MONSTER_PA_BOSS = 9;
+/** PA de recuperação / pool para minibosses e bosses (acumulam até 8). */
+export const MONSTER_PA_BOSS = 8;
 
 /** Custo padrão de ataque (arma), magia de combate e habilidade (livro Cap. 3.1). */
 export const PA_DEFAULT_ACTION_COST = 2;
