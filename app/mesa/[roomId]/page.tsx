@@ -22,8 +22,8 @@ import { getAdventure, bindPlayerToAdventure } from "@/lib/adventure/store";
 import { isAdventureClosed } from "@/lib/adventure/access";
 import { shouldAutoJoinRoom } from "@/lib/auth/adventure-room-access";
 import {
-  listCharactersForSessionUser,
-  listCharactersForSessionUserInAdventure,
+  listCharactersForSessionUserSafe,
+  listCharactersForSessionUserInAdventureSafe,
   MAX_CHARACTERS_PER_USER,
 } from "@/lib/character/characters";
 import { MesaClosedGate } from "@/components/vtt/MesaClosedGate";
@@ -199,8 +199,8 @@ export default async function MesaRoomPage({ params, searchParams }: Props) {
   let charactersInAdventure = 0;
   if (session?.user && canParticipate && roomId !== "demo") {
     const accountUser = await safeMaterializeSessionUser(session.user);
-    const myChars = await listCharactersForSessionUser(accountUser);
-    const inAdv = await listCharactersForSessionUserInAdventure(accountUser, advId);
+    const myChars = await listCharactersForSessionUserSafe(accountUser);
+    const inAdv = await listCharactersForSessionUserInAdventureSafe(accountUser, advId);
     characterSlotsLeft = Math.max(0, MAX_CHARACTERS_PER_USER - myChars.length);
     charactersInAdventure = inAdv.length;
   }

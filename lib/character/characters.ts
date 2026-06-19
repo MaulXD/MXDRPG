@@ -3,6 +3,7 @@ import type { SessionUser } from "@/lib/auth/types";
 import {
   resolveCharacterAccount,
   resolveSessionCharacterAccount,
+  resolveSessionCharacterAccountSafe,
   type CharacterAccount,
 } from "@/lib/auth/account-user";
 import type { CharacterSheet } from "./types";
@@ -142,6 +143,19 @@ export async function listCharactersForSessionUser(user: SessionUser): Promise<C
   return listCharactersForUser(account.canonicalId, { clerkId: account.clerkId });
 }
 
+/** SSR — não derruba página se DB falhar. */
+export async function listCharactersForSessionUserSafe(
+  user: SessionUser
+): Promise<CharacterSheet[]> {
+  try {
+    const account = await resolveSessionCharacterAccountSafe(user);
+    return await listCharactersForUser(account.canonicalId, { clerkId: account.clerkId });
+  } catch (err) {
+    console.error("[listCharactersForSessionUserSafe]", err);
+    return [];
+  }
+}
+
 export async function listCharactersForUserInAdventure(
   userId: string,
   adventureId: string,
@@ -159,6 +173,22 @@ export async function listCharactersForSessionUserInAdventure(
   return listCharactersForUserInAdventure(account.canonicalId, adventureId, {
     clerkId: account.clerkId,
   });
+}
+
+/** SSR — não derruba página se DB falhar. */
+export async function listCharactersForSessionUserInAdventureSafe(
+  user: SessionUser,
+  adventureId: string
+): Promise<CharacterSheet[]> {
+  try {
+    const account = await resolveSessionCharacterAccountSafe(user);
+    return await listCharactersForUserInAdventure(account.canonicalId, adventureId, {
+      clerkId: account.clerkId,
+    });
+  } catch (err) {
+    console.error("[listCharactersForSessionUserInAdventureSafe]", err);
+    return [];
+  }
 }
 
 export async function countCharactersForUserInAdventure(

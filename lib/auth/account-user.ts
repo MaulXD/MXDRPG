@@ -2,7 +2,7 @@ import "server-only";
 
 import type { SessionUser } from "@/lib/auth/types";
 import { fetchClerkIdForUser, fetchUserByClerkId } from "@/lib/db/users";
-import { materializeSessionUser } from "@/lib/auth/session-user";
+import { materializeSessionUser, safeMaterializeSessionUser } from "@/lib/auth/session-user";
 
 export type CharacterAccount = {
   /** ID estável em `eldarin_users` (ou legado se DB indisponível). */
@@ -50,6 +50,14 @@ export async function resolveSessionCharacterAccount(
   user: SessionUser
 ): Promise<CharacterAccount> {
   const materialized = await materializeSessionUser(user);
+  return resolveCharacterAccount(materialized.id, materialized.clerkId ?? user.clerkId);
+}
+
+/** SSR — não derruba render se MariaDB/OAuth falhar. */
+export async function resolveSessionCharacterAccountSafe(
+  user: SessionUser
+): Promise<CharacterAccount> {
+  const materialized = await safeMaterializeSessionUser(user);
   return resolveCharacterAccount(materialized.id, materialized.clerkId ?? user.clerkId);
 }
 
