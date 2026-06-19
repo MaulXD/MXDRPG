@@ -36,6 +36,8 @@ Callbacks a cadastrar nos consoles:
 - `https://www.mxdrpg.com.br/api/auth/oauth/google/callback`
 - `https://www.mxdrpg.com.br/api/auth/oauth/discord/callback`
 
+**Importante:** `AUTH_URL` deve usar **exatamente** o mesmo host que o usuário abre no navegador (ex.: `https://www.mxdrpg.com.br`, com `www`). O cookie OAuth é por host — se `AUTH_URL` for sem `www` mas o site abrir com `www`, o login Google falha com *Sessão OAuth expirada*. O middleware redireciona apex ↔ www para o host de `AUTH_URL`.
+
 Sem OAuth: login demo (`mestre` / `jogador`, senha `123`) ou e-mail/senha em `/entrar`.
 
 **Recuperar senha:** cadastre em `/conta` os 5 primeiros dígitos do CPF + data de nascimento; use `/entrar/recuperar`.
@@ -65,6 +67,10 @@ npm run build
 npm start
 # http://localhost:3000
 ```
+
+### Erro `mkdir '/app/.next/cache/images'`
+
+O otimizador de imagens do Next precisa gravar em `.next/cache` dentro do container. O `docker-entrypoint.sh` cria essa pasta na subida. Se o cluster usar **filesystem somente leitura**, monte um volume gravável em `/app/.next/cache` (ex.: `emptyDir` no Kubernetes).
 
 ## Smoke
 

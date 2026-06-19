@@ -22,12 +22,14 @@ export function pageMetadata(pageTitle: string, description?: string): Metadata 
 /** Rotas estáticas — fallback client-side se a aba não atualizar após navegação. */
 export const STATIC_TAB_TITLES: Record<string, string> = {
   "/": "Seu HUB RPG",
+  "/entrar": "Entrar",
   "/mesas": "Escolher RPG",
   "/rpg/eldarin": "Eldarin — suas mesas",
   "/mesa": "Mesa virtual",
   "/compendios": "Compêndios",
   "/amigos": "Amigos",
   "/conta": "Seu perfil",
+  "/conta/bem-vindo": "Configure seu perfil",
   "/sistema": "Como jogar",
   "/mundo": "Mundo",
   "/privacidade": "Privacidade",
@@ -35,9 +37,10 @@ export const STATIC_TAB_TITLES: Record<string, string> = {
   "/instalar": "Implantação",
   "/admin": "Painel administrador",
   "/admin/mesas": "Mesas e membros",
+  "/painel": "Escolher RPG",
   "/sign-in": "Entrar",
   "/sign-up": "Criar conta",
-  "/entrar/apelido": "Escolher apelido",
+  "/entrar/apelido": "Configure seu perfil",
   "/personagem/novo": "Novo personagem",
 };
 
@@ -45,6 +48,7 @@ export function resolveStaticTabTitle(pathname: string): string | null {
   const path = pathname.split("?")[0].replace(/\/$/, "") || "/";
   const pageTitle = STATIC_TAB_TITLES[path];
   if (pageTitle) return formatTabTitle(pageTitle);
+  if (path.startsWith("/entrar")) return formatTabTitle("Entrar");
   if (path.startsWith("/sign-in")) return formatTabTitle("Entrar");
   if (path.startsWith("/sign-up")) return formatTabTitle("Criar conta");
   return null;

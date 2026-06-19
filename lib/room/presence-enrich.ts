@@ -186,6 +186,7 @@ export async function buildEnrichedRoomPresence(room: RoomState): Promise<RoomPr
             avatarSource: profile.avatar_source,
             avatarUrl: profile.avatar_url,
             oauthAvatarUrl: profile.oauth_avatar_url,
+            nickname: profile.nickname,
           })
         : null,
       avatarFocus: profile ? parseAvatarFocus(profile.avatar_focus) : null,

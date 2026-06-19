@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { ENTRAR_PATH } from "@/lib/site-paths";
 
 export function DeleteAccountButton() {
   const router = useRouter();
@@ -24,7 +25,7 @@ export function DeleteAccountButton() {
       return;
     }
     const data = await res.json();
-    router.push(data.redirect ?? "/sign-in");
+    router.push(data.redirect ?? ENTRAR_PATH);
     router.refresh();
   }
 

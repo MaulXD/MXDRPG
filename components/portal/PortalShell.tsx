@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { MESAS_HUB_PATH } from "@/lib/site-paths";
 import type { SessionUser } from "@/lib/auth/types";
 import { roleMeta } from "@/lib/auth/roles";
 import { LogoutButton } from "./LogoutButton";
@@ -28,7 +29,7 @@ export function PortalShell({ user, children }: Props) {
               Admin
             </Link>
           )}
-          <Link href="/painel" className="btn btn-secondary btn-sm">
+          <Link href={MESAS_HUB_PATH} className="btn btn-secondary btn-sm">
             Mesas
           </Link>
           <Link href="/mesa/demo" prefetch={false} className="btn btn-secondary btn-sm">

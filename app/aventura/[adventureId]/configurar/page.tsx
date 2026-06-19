@@ -6,6 +6,7 @@ import { MesaSetupClient } from "@/components/campaign/MesaSetupClient";
 import { canManageAdventure } from "@/lib/auth/adventure-access";
 import { getAdventure } from "@/lib/adventure/store";
 import { signInPath } from "@/lib/auth/post-auth-redirect";
+import { MESAS_HUB_PATH } from "@/lib/site-paths";
 import { getSession } from "@/lib/auth/session";
 import { normalizeRoomSettings } from "@/lib/room/settings";
 import { getRoom } from "@/lib/room/store";
@@ -29,7 +30,7 @@ export default async function ConfigurarAventuraPage({ params }: Props) {
     return (
       <div className="page-wrap">
         <p>Aventura não encontrada.</p>
-        <Link href="/painel">Painel</Link>
+        <Link href={MESAS_HUB_PATH}>Mesas</Link>
       </div>
     );
   }
@@ -50,7 +51,7 @@ export default async function ConfigurarAventuraPage({ params }: Props) {
     return (
       <div className="page-wrap">
         <p>Mesa da aventura não encontrada.</p>
-        <Link href="/painel">Painel</Link>
+        <Link href={MESAS_HUB_PATH}>Mesas</Link>
       </div>
     );
   }

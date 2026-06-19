@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ENTRAR_PATH } from "@/lib/site-paths";
 import fs from "fs";
 import path from "path";
 import { pageMetadata } from "@/lib/site-metadata";
@@ -20,7 +21,7 @@ export default function PrivacidadePage() {
       <header className="page-header" style={{ paddingBottom: "1rem" }}>
         <p className="eyebrow">LGPD</p>
         <h1 className="display-lg">Privacidade</h1>
-        <p className="lead">Eldarin RPG — mesa virtual gratuita.</p>
+        <p className="lead">MXDRPG — mesa virtual gratuita.</p>
       </header>
       <article
         style={{
@@ -33,7 +34,7 @@ export default function PrivacidadePage() {
         {body}
       </article>
       <p style={{ marginTop: "2rem" }}>
-        <Link href="/sign-in">Voltar ao login</Link>
+        <Link href={ENTRAR_PATH}>Voltar ao login</Link>
       </p>
     </div>
   );

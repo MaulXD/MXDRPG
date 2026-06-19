@@ -64,7 +64,7 @@ export function NicknameForm({ initialNickname, redirectAfterSave }: Props) {
           autoComplete="username"
           minLength={3}
           maxLength={24}
-          pattern="[a-zA-Z0-9_-]*"
+          pattern="[a-zA-Z0-9_\-]{3,24}"
           disabled={busy}
           placeholder="ex: meu_apelido"
         />

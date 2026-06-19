@@ -30,7 +30,37 @@ function applyMesaWatchCookie(request: NextRequest, response: NextResponse): Nex
   return response;
 }
 
+function bareHost(host: string): string {
+  return host.toLowerCase().replace(/^www\./, "");
+}
+
+/** Redireciona apex ↔ www para o host de AUTH_URL (cookie OAuth é host-specific). */
+function canonicalHostRedirect(request: NextRequest): NextResponse | null {
+  if (process.env.NODE_ENV !== "production") return null;
+  const raw = process.env.AUTH_URL?.trim();
+  if (!raw) return null;
+
+  let canonical: URL;
+  try {
+    canonical = new URL(raw);
+  } catch {
+    return null;
+  }
+
+  const reqHost = request.nextUrl.host;
+  const canonHost = canonical.host;
+  if (reqHost.toLowerCase() === canonHost.toLowerCase()) return null;
+  if (bareHost(reqHost) !== bareHost(canonHost)) return null;
+
+  const url = request.nextUrl.clone();
+  url.protocol = canonical.protocol;
+  url.host = canonical.host;
+  return NextResponse.redirect(url, 308);
+}
+
 function withMesaWatchCookie(request: NextRequest): NextResponse {
+  const canon = canonicalHostRedirect(request);
+  if (canon) return applyMesaWatchCookie(request, canon);
   return applyMesaWatchCookie(request, NextResponse.next());
 }
 

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { EldarinLogo } from "@/components/brand/EldarinLogo";
+import { ENTRAR_PATH } from "@/lib/site-paths";
 import { HomeFeatureIcon, type HomeFeatureIconName } from "@/components/ui/EldarinIcons";
 import { pageMetadata } from "@/lib/site-metadata";
 
@@ -51,7 +52,7 @@ export default function HomePage() {
             identidade visual única — direto no navegador.
           </p>
           <div className="hero-actions landing-hero__actions">
-            <Link href="/sign-in" className="btn btn-primary">
+            <Link href={ENTRAR_PATH} className="btn btn-primary">
               Entrar e jogar
             </Link>
             <Link href="/mesa/demo" prefetch={false} className="btn btn-secondary">

@@ -7,7 +7,7 @@ import { createSession } from "@/lib/auth/session";
 export async function POST(request: Request) {
   if (isClerkEnabled()) {
     return NextResponse.json(
-      { error: "Cadastro local desativado. Use /sign-in (Google ou Discord)." },
+      { error: "Cadastro local desativado. Use /entrar (Google ou Discord)." },
       { status: 410 }
     );
   }

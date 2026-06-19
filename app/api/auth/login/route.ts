@@ -10,7 +10,7 @@ import { loginUser } from "@/lib/auth/user-store";
 export async function POST(request: Request) {
   if (isClerkEnabled()) {
     return NextResponse.json(
-      { error: "Login local desativado. Use /sign-in (Google ou Discord)." },
+      { error: "Login local desativado. Use /entrar (Google ou Discord)." },
       { status: 410 }
     );
   }

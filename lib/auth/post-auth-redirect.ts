@@ -1,5 +1,8 @@
-import { dbNicknameFlowEnabled } from "@/lib/db/enabled";
 import type { SessionUser } from "@/lib/auth/types";
+import {
+  needsProfileOnboarding,
+  profileOnboardingPath,
+} from "@/lib/auth/profile-onboarding";
 
 import { MESAS_HUB_PATH } from "@/lib/rpg/systems";
 
@@ -31,18 +34,13 @@ export function entrarPath(dest: string): string {
   return signInPath(dest);
 }
 
-/** Após autenticação: apelido (se MariaDB ativo) e depois mesas ou URL pedida. */
+/** Após autenticação: perfil (apelido + foto) no primeiro acesso, depois destino pedido. */
 export function postAuthRedirect(user: SessionUser, requested?: string | null): string {
   const dest = safeRedirectPath(requested) ?? DEFAULT_POST_AUTH_PATH;
-  if (dbNicknameFlowEnabled() && !user.nickname) {
-    return `/entrar/apelido?redirect=${encodeURIComponent(dest)}`;
+  if (needsProfileOnboarding(user)) {
+    return profileOnboardingPath(dest);
   }
   return dest;
 }
 
-/** Caminho do fluxo de apelido preservando destino final. */
-export function apelidoPathWithRedirect(dest: string): string {
-  const safe = safeRedirectPath(dest) ?? DEFAULT_POST_AUTH_PATH;
-  if (safe === DEFAULT_POST_AUTH_PATH) return "/entrar/apelido";
-  return `/entrar/apelido?redirect=${encodeURIComponent(safe)}`;
-}
+export { profileOnboardingPath, apelidoPathWithRedirect } from "@/lib/auth/profile-onboarding";

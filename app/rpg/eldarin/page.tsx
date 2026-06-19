@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { AdventureLobby } from "@/components/adventure/AdventureLobby";
 import { MedievalFrame } from "@/components/ui/MedievalFrame";
-import { signInPath } from "@/lib/auth/post-auth-redirect";
+import { signInPath, profileOnboardingPath } from "@/lib/auth/post-auth-redirect";
 import { getSession } from "@/lib/auth/session";
 import { dbNicknameFlowEnabled } from "@/lib/db/enabled";
 import { ELDARIN_MESAS_PATH, MESAS_HUB_PATH } from "@/lib/rpg/systems";
@@ -15,7 +15,7 @@ export default async function EldarinMesasPage() {
   if (!session) redirect(signInPath(ELDARIN_MESAS_PATH));
   const user = session.user;
   if (dbNicknameFlowEnabled() && !user.nickname) {
-    redirect(`/entrar/apelido?redirect=${encodeURIComponent(ELDARIN_MESAS_PATH)}`);
+    redirect(profileOnboardingPath(ELDARIN_MESAS_PATH));
   }
 
   return (

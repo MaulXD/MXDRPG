@@ -6,6 +6,7 @@ import { FriendsNavIcon } from "@/components/friends/FriendsNavIcon";
 import { FriendsNavMessages } from "@/components/friends/FriendsNavMessages";
 import { NotificationsBell } from "@/components/notifications/NotificationsBell";
 import type { SessionUser } from "@/lib/auth/types";
+import { PROFILE_ONBOARDING_PATH } from "@/lib/auth/profile-onboarding";
 
 type Props = {
   session: { user: SessionUser } | null;
@@ -26,12 +27,12 @@ export function ClerkHeaderAuth({ session }: Props) {
 
   return (
     <>
-      <SignInButton mode="redirect" forceRedirectUrl="/entrar/apelido">
+      <SignInButton mode="redirect" forceRedirectUrl={PROFILE_ONBOARDING_PATH}>
         <button type="button" className="btn nav-cta">
           Entrar
         </button>
       </SignInButton>
-      <SignUpButton mode="redirect" forceRedirectUrl="/entrar/apelido">
+      <SignUpButton mode="redirect" forceRedirectUrl={PROFILE_ONBOARDING_PATH}>
         <button type="button" className="btn btn-secondary btn-sm">
           Criar conta
         </button>
