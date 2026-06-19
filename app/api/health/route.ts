@@ -45,7 +45,7 @@ export async function GET() {
     },
     auth: {
       emailLogin: auth.emailLogin,
-      persistentAccounts: auth.persistentAccounts,
+      persistentAccounts: db,
       demoAccounts: auth.emailLogin,
     },
   };

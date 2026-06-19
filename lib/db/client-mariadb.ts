@@ -89,6 +89,27 @@ function mariadbPoolUrl(raw: string): string {
   return raw.replace(/^mariadb:/i, "mysql:");
 }
 
+function poolSslOption(url: string): { rejectUnauthorized: boolean } | undefined {
+  const local = url.includes("localhost") || url.includes("127.0.0.1");
+  if (local) return undefined;
+
+  if (process.env.MARIADB_SSL_REJECT_UNAUTHORIZED === "0") {
+    return { rejectUnauthorized: false };
+  }
+
+  try {
+    const u = new URL(url);
+    const accept = u.searchParams.get("sslaccept")?.toLowerCase();
+    if (accept === "accept_invalid_certs" || accept === "skip_verify") {
+      return { rejectUnauthorized: false };
+    }
+  } catch {
+    /* keep default */
+  }
+
+  return { rejectUnauthorized: true };
+}
+
 export function getMariaSql(): EldarinSql | null {
   const raw = normalizeDatabaseUrl(process.env.DATABASE_URL ?? "");
   if (/^postgres(ql)?:\/\//i.test(raw)) return null; // protocolo errado — não é MariaDB
@@ -96,14 +117,13 @@ export function getMariaSql(): EldarinSql | null {
   if (!url) return null;
 
   if (!pool) {
-    const local = url.includes("localhost") || url.includes("127.0.0.1");
     pool = mysql.createPool({
       uri: url,
       waitForConnections: true,
       connectionLimit: 10,
       connectTimeout: 3000,
       enableKeepAlive: true,
-      ssl: local ? undefined : { rejectUnauthorized: true },
+      ssl: poolSslOption(url),
     });
   }
 
