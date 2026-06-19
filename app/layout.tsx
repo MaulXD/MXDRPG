@@ -4,7 +4,6 @@ import { Cinzel, Lora, Source_Sans_3 } from "next/font/google";
 import { AuthProvider } from "@/components/auth/AuthProvider";
 import { FriendsChatProvider } from "@/components/friends/FriendsChatProvider";
 import { NotificationsProvider } from "@/components/notifications/NotificationsProvider";
-import { hasClerkPublishableKey } from "@/lib/auth/clerk-config";
 import { getSession } from "@/lib/auth/session";
 import { SiteShell } from "@/components/SiteShell";
 import { SiteHeaderWrapper } from "@/components/SiteHeaderWrapper";
@@ -63,9 +62,6 @@ export const metadata: Metadata = {
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const clerkPublishableKey = hasClerkPublishableKey()
-    ? process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY!.trim()
-    : "";
   const session = await getSession();
 
   return (
@@ -83,7 +79,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <ServiceWorkerRegister />
         <SiteTabTitle />
         <SiteTooltipLayer />
-        <AuthProvider publishableKey={clerkPublishableKey}>
+        <AuthProvider>
           <FriendsChatProvider initialUserId={session?.user.id ?? null}>
             <NotificationsProvider initialUserId={session?.user.id ?? null}>
               <BackgroundWrapper />

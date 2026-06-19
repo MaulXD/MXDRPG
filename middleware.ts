@@ -1,7 +1,5 @@
-import { clerkMiddleware } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { isClerkEnabled } from "@/lib/auth/clerk-config";
 import {
   MESA_WATCH_COOKIE_MAX_AGE,
   mesaWatchCookieName,
@@ -58,21 +56,15 @@ function canonicalHostRedirect(request: NextRequest): NextResponse | null {
   return NextResponse.redirect(url, 308);
 }
 
-function withMesaWatchCookie(request: NextRequest): NextResponse {
+export default function middleware(request: NextRequest): NextResponse {
   const canon = canonicalHostRedirect(request);
   if (canon) return applyMesaWatchCookie(request, canon);
   return applyMesaWatchCookie(request, NextResponse.next());
 }
 
-/** Só ativa clerkMiddleware com pk + sk — evita 500 se só uma chave existir no servidor. */
-export default isClerkEnabled()
-  ? clerkMiddleware((_auth, request) => withMesaWatchCookie(request))
-  : withMesaWatchCookie;
-
 export const config = {
   matcher: [
     "/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",
     "/(api|trpc)(.*)",
-    "/__clerk/:path*",
   ],
 };

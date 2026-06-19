@@ -100,4 +100,4 @@ SMOKE_BASE_URL=https://www.mxdrpg.com.br npm run smoke:a1
 npm run smoke:p0
 ```
 
-Gate Postgres: [docs/P0-NEON-SETUP.md](docs/P0-NEON-SETUP.md) · Clerk: [docs/P1-CLERK-SETUP.md](docs/P1-CLERK-SETUP.md)
+Gate Postgres: [docs/P0-NEON-SETUP.md](docs/P0-NEON-SETUP.md) · OAuth: [docs/P2-OAUTH-MANUAL.md](docs/P2-OAUTH-MANUAL.md)
