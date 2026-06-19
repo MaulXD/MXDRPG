@@ -7,7 +7,7 @@ import {
   safeRedirectPath,
   signInPath,
 } from "@/lib/auth/post-auth-redirect";
-import { dbEnabled } from "@/lib/db/enabled";
+import { dbSqlReady } from "@/lib/db/sql-ready";
 import { getSession } from "@/lib/auth/session";
 import { pageMetadata } from "@/lib/site-metadata";
 
@@ -22,7 +22,7 @@ export default async function ApelidoPage({ searchParams }: Props) {
 
   if (!session) redirect(signInPath(apelidoPathWithRedirect(dest)));
   if (session.user.nickname) redirect(dest);
-  if (!dbEnabled()) redirect(dest);
+  if (!dbSqlReady()) redirect(dest);
 
   return (
     <div className="page-wrap" style={{ maxWidth: 420, paddingTop: "2rem" }}>

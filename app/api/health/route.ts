@@ -4,6 +4,7 @@ import { hasClerkPublishableKey, isClerkEnabled } from "@/lib/auth/clerk-config"
 import {
   isDiscordOAuthConfigured,
   isGoogleOAuthConfigured,
+  oauthSetupStatus,
 } from "@/lib/auth/oauth-config";
 import { dbEnabled, dbPing } from "@/lib/db/client";
 import { persistenceLabel } from "@/lib/db/dialect";
@@ -23,6 +24,7 @@ export async function GET() {
   const clerkPublishable = hasClerkPublishableKey();
   const clerk = isClerkEnabled();
   const auth = getAuthCapabilities();
+  const oauthStatus = oauthSetupStatus();
 
   const body: Record<string, unknown> = {
     ok: true,
@@ -37,7 +39,9 @@ export async function GET() {
     oauth: {
       google: isGoogleOAuthConfigured(),
       discord: isDiscordOAuthConfigured(),
-      ready: auth.oauthProviders.length > 0,
+      ready: oauthStatus.ready,
+      providers: oauthStatus.providers,
+      ...(oauthStatus.missing.length > 0 ? { missing: oauthStatus.missing } : {}),
     },
     auth: {
       emailLogin: auth.emailLogin,
