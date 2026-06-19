@@ -304,8 +304,8 @@ export function Battlefield({
   const [actionErr, setActionErr] = useState<string | null>(null);
   const [channelExtraPa, setChannelExtraPa] = useState(0);
   const [actionRingAt, setActionRingAt] = useState<{ x: number; y: number } | null>(null);
-  /** Guarda posição do ring a abrir quando selectedId muda junto (concurrent mode). */
-  const pendingRingRef = useRef<{ x: number; y: number } | null>(null);
+  /** ID do token que abriu o ring — fecha ring só quando selectedId muda para outro token. */
+  const ringTokenIdRef = useRef<string | null>(null);
   const [spellPickerOpen, setSpellPickerOpen] = useState(false);
   const [gmHpEditTokenId, setGmHpEditTokenId] = useState<string | null>(null);
   const [friendlyFireTargetId, setFriendlyFireTargetId] = useState<string | null>(null);
@@ -1127,10 +1127,16 @@ export function Battlefield({
 
   const selectedBypass = selected ? tokenBypass(selected) : false;
 
+  // Fecha ring apenas quando o token selecionado muda para um token diferente do que abriu o ring.
   useEffect(() => {
-    const pendingRing = pendingRingRef.current;
-    pendingRingRef.current = null;
-    setActionRingAt(pendingRing ?? null);
+    if (ringTokenIdRef.current !== null && ringTokenIdRef.current !== selectedId) {
+      setActionRingAt(null);
+      ringTokenIdRef.current = null;
+    }
+  }, [selectedId]);
+
+  // Reseta estado de combate quando token, turno ou rodada mudam.
+  useEffect(() => {
     setActionMode("idle");
     setSelectedCombatAction(null);
     setChannelExtraPa(0);
@@ -1138,9 +1144,11 @@ export function Battlefield({
     setSpellTargetIds([]);
   }, [selectedId, turnActiveId, snapshot?.combat?.round]);
 
+  // Fecha ring se o token selecionado perdeu permissão de agir (ex: turno passou).
   useEffect(() => {
     if (actionRingAt && selected && !canOpenActionRing(selected)) {
       setActionRingAt(null);
+      ringTokenIdRef.current = null;
     }
   }, [actionRingAt, selected, canOpenActionRing]);
 
@@ -2033,8 +2041,7 @@ export function Battlefield({
         onActionRingBlocked(token);
         return;
       }
-      // Sinaliza para o effect [selectedId] que um ring foi agendado neste mesmo batch.
-      pendingRingRef.current = { x: clientX, y: clientY };
+      ringTokenIdRef.current = token.id;
       setActionRingAt({ x: clientX, y: clientY });
       setActionErr(null);
     },
