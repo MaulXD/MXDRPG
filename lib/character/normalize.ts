@@ -55,24 +55,42 @@ function defaultXpForLevel(nivel: number): number {
   return xpTotalForLevel(Math.max(1, nivel));
 }
 
-export function normalizeIdentity(identity: Partial<CharacterIdentity> & { nivel: number }): CharacterIdentity {
+function defaultIdentity(): CharacterIdentity {
   return {
-    nivel: identity.nivel,
-    xpTotal: identity.xpTotal ?? defaultXpForLevel(identity.nivel),
-    raca: migrateRaceName(identity.raca ?? "Humano") ?? "Humano",
-    classe: migrateClassName(identity.classe ?? "Guerreiro") ?? "Guerreiro",
-    subclasse: migrateSubclassName(identity.subclasse ?? null) ?? null,
-    linhagem: identity.linhagem ?? null,
-    antecedente: identity.antecedente ?? "Explorador",
-    religiao: normalizeReligionId(identity.religiao),
-    talentos: parseCharacterTalents(identity.talentos),
+    nivel: 1,
+    xpTotal: defaultXpForLevel(1),
+    raca: "Humano",
+    classe: "Guerreiro",
+    subclasse: null,
+    linhagem: null,
+    antecedente: "Explorador",
+    religiao: null,
+    talentos: [],
+  };
+}
+
+export function normalizeIdentity(
+  identity?: Partial<CharacterIdentity> | null
+): CharacterIdentity {
+  const base = identity ?? {};
+  const nivel = Math.max(1, Number(base.nivel) || 1);
+  return {
+    nivel,
+    xpTotal: base.xpTotal ?? defaultXpForLevel(nivel),
+    raca: migrateRaceName(base.raca ?? "Humano") ?? "Humano",
+    classe: migrateClassName(base.classe ?? "Guerreiro") ?? "Guerreiro",
+    subclasse: migrateSubclassName(base.subclasse ?? null) ?? null,
+    linhagem: base.linhagem ?? null,
+    antecedente: base.antecedente ?? "Explorador",
+    religiao: normalizeReligionId(base.religiao),
+    talentos: parseCharacterTalents(base.talentos),
   };
 }
 
 export function normalizeCharacter(sheet: CharacterSheet): CharacterSheet {
   const adventureId =
     sheet.adventureId?.trim() || sheet.campaignRoomId?.trim() || null;
-  const identity = normalizeIdentity(sheet.identity);
+  const identity = normalizeIdentity(sheet.identity ?? defaultIdentity());
   const attributes = migrateAttributes(sheet.attributes as unknown as Record<string, number>);
   const conMod = attributeMod(attributes.constituicao);
   const hpMax = hpMaxFor(identity.classe, identity.nivel, conMod);
