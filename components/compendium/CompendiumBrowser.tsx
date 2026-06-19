@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import { ENTRAR_PATH } from "@/lib/site-paths";
 import type { UserRole } from "@/lib/auth/types";
 import type { CompendiumEntry, CompendiumPackId, CompendiumPackMeta } from "@/lib/compendium/types";
 import { CompendiumIcon } from "@/components/compendium/CompendiumIcon";
@@ -69,7 +70,7 @@ export function CompendiumBrowser({
     return (
       <div className="comp-locked">
         <p>Nenhum compêndio disponível.</p>
-        <Link href="/sign-in">Entrar como mestre</Link>
+        <Link href={ENTRAR_PATH}>Entrar</Link>
       </div>
     );
   }

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { postAuthRedirect } from "@/lib/auth/post-auth-redirect";
-import { createSession } from "@/lib/auth/session";
+import { applySessionCookie } from "@/lib/auth/session";
 import { ensureUserFromOAuth } from "@/lib/db/users";
 import type { OAuthProfile } from "@/lib/auth/oauth/providers";
 import { authAppOrigin } from "@/lib/auth/oauth-config";
@@ -16,9 +16,10 @@ export async function completeOAuthLogin(
     name: profile.name,
     oauthAvatarUrl: profile.oauthAvatarUrl,
   });
-  await createSession(user);
   const target = postAuthRedirect(user, redirect);
-  return NextResponse.redirect(new URL(target, authAppOrigin()));
+  const response = NextResponse.redirect(new URL(target, authAppOrigin()));
+  applySessionCookie(response, user);
+  return response;
 }
 
 export function oauthErrorRedirect(code: string, detail?: string): NextResponse {

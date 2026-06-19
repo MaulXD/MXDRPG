@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { PasswordInput } from "@/components/auth/PasswordInput";
+import { MESAS_HUB_PATH } from "@/lib/site-paths";
 import "./auth-forms.css";
 
 type Props = { redirect?: string; persistentAccounts?: boolean };
@@ -72,7 +73,7 @@ export function RegisterForm({ redirect = "", persistentAccounts = true }: Props
       setNotice("Conta já existia — você entrou com sucesso. Redirecionando…");
     }
 
-    router.push(data.redirect ?? "/mesas");
+    router.push(data.redirect ?? MESAS_HUB_PATH);
     router.refresh();
   }
 
@@ -109,7 +110,7 @@ export function RegisterForm({ redirect = "", persistentAccounts = true }: Props
           onChange={(e) => setNickname(e.target.value)}
           minLength={3}
           maxLength={24}
-          pattern="[a-zA-Z0-9_-]*"
+          pattern="[a-zA-Z0-9_\-]{3,24}"
           autoComplete="nickname"
           className="auth-field__input"
           placeholder="ex: meu_apelido"

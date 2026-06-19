@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { signInPath } from "@/lib/auth/post-auth-redirect";
+import { signInPath, profileOnboardingPath } from "@/lib/auth/post-auth-redirect";
 import { getSession } from "@/lib/auth/session";
 import { dbEnabled } from "@/lib/db/enabled";
 
@@ -9,7 +9,7 @@ export default async function PainelPage() {
   if (!session) redirect(signInPath("/mesas"));
   const user = session.user;
   if (dbEnabled() && !user.nickname) {
-    redirect("/entrar/apelido?redirect=/mesas");
+    redirect(profileOnboardingPath("/mesas"));
   }
   redirect("/mesas");
 }

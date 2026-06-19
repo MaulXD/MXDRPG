@@ -84,6 +84,7 @@ function memberFromRow(
       avatarSource: normalizeAvatarSource(row.avatar_source),
       avatarUrl: row.avatar_url,
       oauthAvatarUrl: row.oauth_avatar_url,
+      nickname: row.nickname,
     }),
     isOwner,
     online,

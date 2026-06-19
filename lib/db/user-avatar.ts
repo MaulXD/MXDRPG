@@ -1,14 +1,17 @@
 import { validateImageDataUrl } from "@/lib/media/image-data-url";
 import { sanitizePortraitFocus, type PortraitFocus } from "@/lib/media/portrait-focus";
+import { nicknameAvatarUrl } from "@/lib/avatar/nickname-avatar";
 
-export type AvatarSource = "oauth" | "custom";
+export type AvatarSource = "oauth" | "custom" | "generated";
 
 export function parseAvatarFocus(value: unknown): PortraitFocus | null {
   return sanitizePortraitFocus(value);
 }
 
 export function normalizeAvatarSource(raw: unknown): AvatarSource {
-  return raw === "custom" ? "custom" : "oauth";
+  if (raw === "custom") return "custom";
+  if (raw === "generated") return "generated";
+  return "oauth";
 }
 
 /** URL exibida conforme preferência do usuário. */
@@ -16,11 +19,17 @@ export function resolveUserAvatarUrl(input: {
   avatarSource?: string | null;
   avatarUrl?: string | null;
   oauthAvatarUrl?: string | null;
+  nickname?: string | null;
 }): string | null {
   const source = normalizeAvatarSource(input.avatarSource);
   if (source === "custom") {
     const custom = input.avatarUrl?.trim();
     return custom || input.oauthAvatarUrl?.trim() || null;
+  }
+  if (source === "generated") {
+    const nick = input.nickname?.trim();
+    if (nick) return nicknameAvatarUrl(nick);
+    return input.oauthAvatarUrl?.trim() || input.avatarUrl?.trim() || null;
   }
   return input.oauthAvatarUrl?.trim() || input.avatarUrl?.trim() || null;
 }

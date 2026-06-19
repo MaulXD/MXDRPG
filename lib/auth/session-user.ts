@@ -1,11 +1,18 @@
 import "server-only";
 
+import { isOAuthEphemeralSessionId, parseOAuthEphemeralSessionId } from "@/lib/auth/oauth-session-id";
 import { getUserById } from "@/lib/auth/user-store";
 import type { SessionUser } from "@/lib/auth/types";
 import { dbEnabled } from "@/lib/db/enabled";
-import { ensureUserFromClerk, fetchUserByClerkId, fetchUserById } from "@/lib/db/users";
+import {
+  ensureUserFromClerk,
+  ensureUserFromOAuth,
+  fetchUserByClerkId,
+  fetchUserByEmail,
+  fetchUserById,
+} from "@/lib/db/users";
 
-/** Garante linha em `eldarin_users` para o usuário da sessão (resolve ids `clerk-*`). */
+/** Garante linha em `eldarin_users` para o usuário da sessão (OAuth efêmero, Clerk, usr_*). */
 export async function materializeSessionUser(user: SessionUser): Promise<SessionUser> {
   if (user.id.startsWith("usr_")) {
     try {
@@ -15,10 +22,45 @@ export async function materializeSessionUser(user: SessionUser): Promise<Session
       console.error("[materializeSessionUser] fetchUserById failed:", err);
     }
 
+    try {
+      const byEmail = await fetchUserByEmail(user.email);
+      if (byEmail) {
+        const row = await fetchUserById(byEmail.id);
+        if (row) return { ...row, clerkId: user.clerkId ?? row.clerkId ?? null };
+      }
+    } catch (err) {
+      console.error("[materializeSessionUser] fetchUserByEmail failed:", err);
+    }
+
     const local = await getUserById(user.id);
     if (local) return { ...local, clerkId: user.clerkId ?? local.clerkId ?? null };
 
     if (!dbEnabled()) return user;
+  }
+
+  const oauth = parseOAuthEphemeralSessionId(user.id);
+  if (oauth) {
+    try {
+      const row = await ensureUserFromOAuth(
+        {
+          provider: oauth.provider,
+          subject: oauth.subject,
+          email: user.email,
+          name: user.name,
+          oauthAvatarUrl: user.oauthAvatarUrl,
+        },
+        { strict: true }
+      );
+      if (isOAuthEphemeralSessionId(row.id)) {
+        throw new Error("Não foi possível criar sua conta no banco — saia e entre de novo");
+      }
+      return { ...row, clerkId: user.clerkId ?? row.clerkId ?? null };
+    } catch (err) {
+      console.error("[materializeSessionUser] oauth materialize failed:", err);
+      throw err instanceof Error
+        ? err
+        : new Error("Não foi possível criar sua conta no banco — saia e entre de novo");
+    }
   }
 
   const clerkId =

@@ -12,14 +12,20 @@ import {
   type PortraitFocus,
 } from "@/lib/media/portrait-focus";
 import type { SessionUser } from "@/lib/auth/types";
+import type { AvatarSource } from "@/lib/db/user-avatar";
+import { nicknameAvatarUrl } from "@/lib/avatar/nickname-avatar";
 
 type Props = {
   initialUser: SessionUser;
 };
 
 export function AvatarProfileForm({ initialUser }: Props) {
-  const [avatarSource, setAvatarSource] = useState<"oauth" | "custom">(
-    initialUser.avatarSource === "custom" ? "custom" : "oauth"
+  const [avatarSource, setAvatarSource] = useState<AvatarSource>(
+    initialUser.avatarSource === "custom"
+      ? "custom"
+      : initialUser.avatarSource === "generated"
+        ? "generated"
+        : "oauth"
   );
   const [customUrl, setCustomUrl] = useState(
     initialUser.avatarSource === "custom" ? (initialUser.avatarUrl ?? "") : ""
@@ -34,7 +40,13 @@ export function AvatarProfileForm({ initialUser }: Props) {
   const [msg, setMsg] = useState<string | null>(null);
 
   useEffect(() => {
-    setAvatarSource(initialUser.avatarSource === "custom" ? "custom" : "oauth");
+    setAvatarSource(
+      initialUser.avatarSource === "custom"
+        ? "custom"
+        : initialUser.avatarSource === "generated"
+          ? "generated"
+          : "oauth"
+    );
     setCustomUrl(initialUser.avatarSource === "custom" ? (initialUser.avatarUrl ?? "") : "");
     setFocus(initialUser.avatarFocus ?? DEFAULT_PORTRAIT_FOCUS);
     setEditorSrc(
@@ -45,7 +57,9 @@ export function AvatarProfileForm({ initialUser }: Props) {
   const previewUrl =
     avatarSource === "oauth"
       ? initialUser.oauthAvatarUrl ?? initialUser.avatarUrl ?? null
-      : customUrl || editorSrc;
+      : avatarSource === "generated" && initialUser.nickname?.trim()
+        ? nicknameAvatarUrl(initialUser.nickname)
+        : customUrl || editorSrc;
 
   const previewFocus = avatarSource === "custom" ? focus : null;
 
@@ -106,15 +120,28 @@ export function AvatarProfileForm({ initialUser }: Props) {
 
         <fieldset className="avatar-profile-form__source">
           <legend className="eyebrow">Foto de perfil</legend>
-          <label className="avatar-profile-form__radio">
-            <input
-              type="radio"
-              name="avatarSource"
-              checked={avatarSource === "oauth"}
-              onChange={() => setAvatarSource("oauth")}
-            />
-            <span>Usar foto do login social</span>
-          </label>
+          {initialUser.oauthAvatarUrl?.trim() ? (
+            <label className="avatar-profile-form__radio">
+              <input
+                type="radio"
+                name="avatarSource"
+                checked={avatarSource === "oauth"}
+                onChange={() => setAvatarSource("oauth")}
+              />
+              <span>Usar foto do login social</span>
+            </label>
+          ) : null}
+          {initialUser.nickname?.trim() ? (
+            <label className="avatar-profile-form__radio">
+              <input
+                type="radio"
+                name="avatarSource"
+                checked={avatarSource === "generated"}
+                onChange={() => setAvatarSource("generated")}
+              />
+              <span>Avatar sugerido (do apelido)</span>
+            </label>
+          ) : null}
           <label className="avatar-profile-form__radio">
             <input
               type="radio"

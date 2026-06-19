@@ -1,11 +1,10 @@
-import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import {
   isOAuthProviderReady,
   parseOAuthProvider,
 } from "@/lib/auth/oauth-config";
 import { buildAuthorizationUrl } from "@/lib/auth/oauth/providers";
-import { beginOAuthState, oauthStateCookieOptions } from "@/lib/auth/oauth/state";
+import { applyOAuthStateCookie, beginOAuthState } from "@/lib/auth/oauth/state";
 import { oauthErrorRedirect } from "@/lib/auth/oauth/complete-login";
 
 type Params = { params: Promise<{ provider: string }> };
@@ -23,10 +22,10 @@ export async function GET(request: Request, { params }: Params) {
 
   try {
     const { state, setCookie } = await beginOAuthState(provider, redirect);
-    const store = await cookies();
-    store.set(oauthStateCookieOptions(setCookie));
     const authUrl = buildAuthorizationUrl(provider, state);
-    return NextResponse.redirect(authUrl);
+    const response = NextResponse.redirect(authUrl);
+    applyOAuthStateCookie(response, setCookie);
+    return response;
   } catch (e) {
     const msg = e instanceof Error ? e.message : "Falha ao iniciar OAuth";
     return oauthErrorRedirect("oauth_start", msg);

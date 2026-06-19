@@ -7,6 +7,7 @@ import {
   MAX_CHARACTERS_PER_USER,
 } from "@/lib/character/characters";
 import { signInPath } from "@/lib/auth/post-auth-redirect";
+import { MESAS_HUB_PATH } from "@/lib/site-paths";
 import { getSession } from "@/lib/auth/session";
 import { pageMetadata } from "@/lib/site-metadata";
 
@@ -26,7 +27,7 @@ export default async function NovoPersonagemPage() {
         <p className="lead">
           Você já tem {MAX_CHARACTERS_PER_USER} personagens. Exclua uma ficha ou use o painel.
         </p>
-        <Link href="/painel" className="btn">
+        <Link href={MESAS_HUB_PATH} className="btn">
           Voltar ao painel
         </Link>
       </div>

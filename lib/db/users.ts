@@ -102,6 +102,7 @@ function storedToSession(row: StoredUser | UserRow): SessionUser {
     avatarSource,
     avatarUrl: "avatar_url" in row ? row.avatar_url : row.avatarUrl,
     oauthAvatarUrl: "oauth_avatar_url" in row ? row.oauth_avatar_url : row.oauthAvatarUrl,
+    nickname: row.nickname,
   });
   return {
     id: row.id,
@@ -201,15 +202,21 @@ function oauthSessionFallback(input: {
   };
 }
 
-export async function ensureUserFromOAuth(input: {
-  provider: OAuthProviderId;
-  subject: string;
-  email: string;
-  name: string;
-  oauthAvatarUrl?: string | null;
-}): Promise<SessionUser> {
+export async function ensureUserFromOAuth(
+  input: {
+    provider: OAuthProviderId;
+    subject: string;
+    email: string;
+    name: string;
+    oauthAvatarUrl?: string | null;
+  },
+  opts?: { strict?: boolean }
+): Promise<SessionUser> {
   const sql = getSql();
-  if (!sql) return oauthSessionFallback(input);
+  if (!sql) {
+    if (opts?.strict) throw new Error("Banco indisponível — tente de novo em instantes");
+    return oauthSessionFallback(input);
+  }
 
   try {
     const oauthAvatar = input.oauthAvatarUrl?.trim() || null;
@@ -281,6 +288,9 @@ export async function ensureUserFromOAuth(input: {
     return storedToSession(user);
   } catch (err) {
     console.error("[auth] ensureUserFromOAuth falhou, sessão efêmera:", err);
+    if (opts?.strict) {
+      throw err instanceof Error ? err : new Error("Falha ao criar conta no banco");
+    }
     return oauthSessionFallback(input);
   }
 }
@@ -450,22 +460,21 @@ export async function updateUserAvatar(
     if (opts.avatarFocus !== undefined) {
       avatarFocus = opts.avatarFocus ? sanitizePortraitFocus(opts.avatarFocus) : null;
     }
+  } else if (avatarSource === "generated") {
+    customUrl = null;
+    avatarFocus = null;
   } else if (opts.avatarFocus !== undefined) {
     avatarFocus = opts.avatarFocus ? sanitizePortraitFocus(opts.avatarFocus) : null;
   }
 
   const focusJson = avatarFocus ? JSON.stringify(avatarFocus) : null;
+  const storedCustomUrl = avatarSource === "custom" ? customUrl : row.avatar_url;
 
   await sql.unsafe(
     `UPDATE eldarin_users
      SET avatar_source = ?, avatar_url = ?, avatar_focus = ?
      WHERE id = ?`,
-    [
-      avatarSource,
-      avatarSource === "custom" ? customUrl : row.avatar_url,
-      focusJson,
-      userId,
-    ]
+    [avatarSource, storedCustomUrl, focusJson, userId]
   );
 
   const updated = await fetchUserById(userId);

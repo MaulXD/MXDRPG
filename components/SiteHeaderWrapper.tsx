@@ -7,6 +7,7 @@ import { NotificationsBell } from "@/components/notifications/NotificationsBell"
 import { hasClerkPublishableKey } from "@/lib/auth/clerk-config";
 import { getSession } from "@/lib/auth/session";
 import Link from "next/link";
+import { ENTRAR_PATH } from "@/lib/site-paths";
 import { SiteNavLinks } from "@/components/SiteNavLinks";
 
 export async function SiteHeaderWrapper() {
@@ -31,7 +32,7 @@ export async function SiteHeaderWrapper() {
               <HeaderUserMenu user={session.user} />
             </div>
           ) : (
-            <Link href="/sign-in" className="btn nav-cta">
+            <Link href={ENTRAR_PATH} className="btn nav-cta">
               Entrar
             </Link>
           )}

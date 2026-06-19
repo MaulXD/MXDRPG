@@ -1,9 +1,43 @@
 # Histórico de sessões — Eldarin VTT (MXDRPG)
 
-Documento vivo. Atualizado a cada sessão de trabalho com Claude.  
+Documento vivo. **Atualizado a cada sessão de trabalho** (Cursor / Claude).  
 Serve como continuidade de contexto caso o chat seja perdido.
 
 Referências completas: [CLAUDE-PROJETO.md](./CLAUDE-PROJETO.md) · [CLAUDE-CODIGO-SEGURO.md](./CLAUDE-CODIGO-SEGURO.md)
+
+---
+
+## Padrão obrigatório — toda sessão
+
+Ao concluir (ou pausar) um bloco de trabalho, **sempre** acrescentar uma entrada no [Log de sessões](#log-de-sessões) abaixo.
+
+### Formato da entrada
+
+```markdown
+### AAAA-MM-DD — Título curto do que foi feito
+
+**Pedido:** o que o usuário pediu (1–2 frases).
+
+**Passo a passo:**
+1. Diagnóstico — o que estava errado ou faltando
+2. Decisão — abordagem escolhida e por quê
+3. Implementação — mudanças concretas (rotas, libs, env, deploy…)
+4. Validação — build, smoke, o que conferir em produção
+
+**Arquivos tocados:**
+- `caminho/arquivo.ts` — o que mudou em uma linha
+
+**Commits / deploy:** hash ou “pendente local” (push só quando o usuário pedir).
+
+**Como testar:** comandos ou URLs.
+```
+
+### Checklist rápido
+
+- [ ] Entrada nova com data de hoje
+- [ ] Passo a passo numerado (não só lista de arquivos)
+- [ ] Tabela **Estado atual** atualizada se mudou auth, URL, deploy ou DB
+- [ ] `npm run build` mencionado se houve alteração em `.ts` / `.tsx`
 
 ---
 
@@ -12,11 +46,13 @@ Referências completas: [CLAUDE-PROJETO.md](./CLAUDE-PROJETO.md) · [CLAUDE-CODI
 | Item | Status |
 |------|--------|
 | **URL produção** | https://www.mxdrpg.com.br |
-| **Hosting** | Contabo — Docker + GHCR |
+| **Hosting** | Contabo — Docker + GHCR (`Dockerfile` + `docker-entrypoint.sh`) |
 | **Branch principal** | `main` |
-| **Auth** | Clerk (produção) + cookie legado (fallback) |
-| **DB** | MariaDB exclusivo (`DATABASE_URL=mysql://…`) — Postgres removido |
+| **Marca / hub** | **MXDRPG** — landing e pós-login em `/mesas`; Eldarin é um RPG em `/rpg/eldarin` |
+| **Auth** | OAuth nativo Google/Discord em `/entrar` (principal); Clerk opcional; demo `mestre`/`jogador` senha `123` |
+| **DB** | MariaDB (`DATABASE_URL=mysql://…`) — em produção: SSL self-signed exige `MARIADB_SSL_REJECT_UNAUTHORIZED=0` ou `?sslaccept=accept_invalid_certs` |
 | **Stack** | Next.js 15, React 19, TypeScript strict |
+| **Rotas canônicas** | Login `/entrar` · Onboarding `/conta/bem-vindo` · Hub `/mesas` · Eldarin `/rpg/eldarin` |
 
 ---
 
@@ -64,8 +100,7 @@ npm run sync:data:check       # após editar livros/
 
 ## Log de sessões
 
-<!-- Formato: ## AAAA-MM-DD — Título resumido -->
-<!-- Dentro: o que foi pedido, o que mudou, arquivos tocados, como testar -->
+<!-- Ver "Padrão obrigatório" no topo: Pedido → Passo a passo → Arquivos → Commits → Como testar -->
 
 ---
 
@@ -304,16 +339,250 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-06-19 — Login quebrado com MariaDB inacessível
+
+**Pedido:** login não funcionava em produção.
+
+**Passo a passo:**
+1. **Diagnóstico** — com `DATABASE_URL` definida mas MariaDB fora/SSL inválido, `resolveUserForLogin` só consultava o DB e não caía no registry demo (`mestre`/`jogador`).
+2. **Decisão** — manter DB como fonte principal, mas **fallback** para registry local quando a query falha ou retorna vazio.
+3. **Implementação** — `fetchUserByLogin` aceita apelido; helper `dbSqlReady()` (`lib/db/sql-ready.ts`) para saber se SQL está utilizável; fluxo de login com fallback explícito.
+4. **Validação** — login demo e e-mail quando DB degradado.
+
+**Arquivos tocados:**
+- `lib/auth/user-store.ts`, `lib/db/sql-ready.ts`
+
+**Commits:** `c9be247` (login fallback)
+
+**Como testar:** sem DB → `/entrar` com `mestre`/`123`; com DB → usuário persistido.
+
+---
+
+### 2026-06-19 — OAuth Google/Discord em destaque + health
+
+**Pedido:** confirmar OAuth nativo (sem Clerk) e melhorar UX/docs.
+
+**Passo a passo:**
+1. Botões Google/Discord no topo de `/entrar` (`OAuthSignInButtons`, `AuthTabs`).
+2. `oauthSetupStatus()` em `/api/health` — `oauth.ready`, `oauth.missing`, flags por provedor.
+3. Guia manual: `docs/P2-OAUTH-MANUAL.md` (credenciais Google Cloud, callbacks, env).
+
+**Env necessária:** `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `AUTH_URL`, `SESSION_SECRET`.
+
+**Commits:** `5d33c0d`
+
+**Como testar:** `/api/health` → `oauth.ready: true`; `/entrar` → botão Google.
+
+---
+
+### 2026-06-19 — Erro 500 após login (APIs + loop de rotas)
+
+**Pedido:** site 500 depois do login Google.
+
+**Passo a passo:**
+1. **Diagnóstico** — APIs de amigos/aventuras sem try/catch quando MariaDB falha; possível loop `/eldarin` ↔ `/entrar/apelido`.
+2. **Implementação** — `lib/db/safe-query.ts`; APIs degradam para listas vazias; `/eldarin` usa `dbNicknameFlowEnabled()` antes de forçar apelido.
+3. **Validação** — login não derruba o app com `db: false`.
+
+**Commits:** `521240f`
+
+**Como testar:** login com `db: false` no health → `/mesas` carrega sem 500.
+
+---
+
+### 2026-06-19 — MariaDB SSL (Contabo)
+
+**Pedido:** `db: false` em produção (`self-signed certificate in certificate chain`).
+
+**Passo a passo:**
+1. Cliente MariaDB aceita certificado self-signed via `MARIADB_SSL_REJECT_UNAUTHORIZED=0` ou `?sslaccept=accept_invalid_certs` na URL.
+2. Health usa ping real para `persistentAccounts`.
+
+**Commits:** `af674b7`
+
+**Pendente no servidor:** setar env SSL + `npm run db:migrate` no container.
+
+**Como testar:** `/api/health` → `db: true`, `persistentAccounts: true`.
+
+---
+
+### 2026-06-19 — Eldarin deixa de ser “o site” → hub MXDRPG
+
+**Pedido:** Eldarin é RPG dentro do hub, não nome do site.
+
+**Passo a passo:**
+1. Mesas Eldarin: **`/rpg/eldarin`** (antes `/eldarin`).
+2. Pós-login padrão: **`/mesas`** (hub de RPGs).
+3. `/eldarin` legado → redirect para `/rpg/eldarin`.
+4. Constantes em `lib/rpg/systems.ts`: `MESAS_HUB_PATH`, `ELDARIN_MESAS_PATH`, `rpgMesasPath()`.
+5. `DEFAULT_POST_AUTH_PATH = /mesas` em `lib/auth/post-auth-redirect.ts`.
+
+**Commits:** `ad76c51`
+
+**Como testar:** login → `/mesas` → card Eldarin → `/rpg/eldarin`.
+
+---
+
+### 2026-06-19 — Ajuste de links do site
+
+**Pedido:** unificar links para rotas canônicas do hub.
+
+**Passo a passo:**
+1. Criado `lib/site-paths.ts` — `ENTRAR_PATH`, re-export de paths do hub/Eldarin.
+2. Substituído `/sign-in` → `/entrar` (home, header, footer, mesa, privacidade, conta, compêndios…).
+3. Substituído `/painel` → `/mesas` (configurar aventura, personagem/novo, `PortalShell`).
+4. Rotas legadas `/painel`, `/jogador`, `/mestre` redirecionam para `/mesas`.
+5. Footer ganhou link **Mesas**; página `/sistema` separa hub e Eldarin.
+6. `STATIC_TAB_TITLES` em `lib/site-metadata.ts` alinhado.
+
+**Arquivos tocados (principal):**
+- `lib/site-paths.ts` (novo)
+- `components/SiteFooter.tsx`, `SiteHeaderWrapper.tsx`, `HeaderUserMenu.tsx`
+- `app/page.tsx`, `app/sistema/page.tsx`, `app/privacidade/page.tsx`
+- `app/painel/*`, `app/jogador/*`, `app/mestre/*`
+- APIs login/register — mensagens com `/entrar`
+
+**Commits:** pendente local (junto com fixes Docker/OAuth abaixo)
+
+**Como testar:** navegar site logado/deslogado — nenhum link público deve apontar para `/sign-in` ou `/painel`.
+
+---
+
+### 2026-06-19 — Docker: cache de imagens Next.js
+
+**Pedido:** erro `ENOENT mkdir '/app/.next/cache/images'` no container.
+
+**Passo a passo:**
+1. **Diagnóstico** — otimizador de imagens do Next precisa gravar em `.next/cache/images`; pasta não existia ou não era gravável no runtime.
+2. **`docker-entrypoint.sh`** — cria `.next/cache/images` e `.next/cache/fetch-cache` antes de `npm start`.
+3. **`Dockerfile`** — `mkdir -p` após `npm run build` + `ENTRYPOINT` do script.
+4. **`DEPLOY.md`** — nota sobre volume `emptyDir` em `/app/.next/cache` se filesystem for read-only.
+
+**Arquivos tocados:**
+- `docker-entrypoint.sh` (novo), `Dockerfile`, `DEPLOY.md`
+
+**Como testar:** rebuild imagem → abrir página com `next/image` → sem erro no log.
+
+---
+
+### 2026-06-19 — OAuth: “Sessão expirada” + 401 no console
+
+**Pedido:** após Google, mensagem *Sessão OAuth expirada* e 401 em `/api/auth/me`, `/api/friends/*`.
+
+**Passo a passo:**
+1. **Diagnóstico** — cookie `eldarin_oauth` não voltava no callback (host `www` ≠ apex, ou `cookies().set()` não anexado ao redirect 302 no App Router).
+2. **Cookies no redirect** — `applyOAuthStateCookie()` no início OAuth; `applySessionCookie()` no fim do callback (`completeOAuthLogin`).
+3. **Host canônico** — `middleware.ts` redireciona apex ↔ `www` para o host de `AUTH_URL` (cookie é host-specific).
+4. **`consumeOAuthState`** — falhas tipadas (`missing`, `expired`, `mismatch`) + log no servidor.
+5. **Ruído no console** — `/api/auth/me` retorna `200` + `{ user: null }` quando deslogado (amigos ainda 401 — esperado).
+6. **Health** — campo `authOrigin` para conferir `AUTH_URL` em produção.
+
+**Arquivos tocados:**
+- `lib/auth/oauth/state.ts`, `lib/auth/oauth/complete-login.ts`
+- `lib/auth/session.ts` — `buildSessionCookie`, `applySessionCookie`
+- `app/api/auth/oauth/[provider]/route.ts`, `callback/route.ts`
+- `app/api/auth/me/route.ts`, `app/api/health/route.ts`
+- `middleware.ts`, `DEPLOY.md`
+
+**Checklist produção:**
+- `AUTH_URL=https://www.mxdrpg.com.br` (mesmo host que o usuário abre)
+- Callback Google = `https://www.mxdrpg.com.br/api/auth/oauth/google/callback`
+- `SESSION_SECRET` estável (não rotacionar no meio do fluxo)
+
+**Commits:** pendente local
+
+**Como testar:** `/entrar` → Google → cair em `/mesas` ou `/entrar/apelido` sem `error=oauth_state`; `/api/health` → `authOrigin` correto.
+
+---
+
+### 2026-06-19 — Padrão de histórico passo a passo
+
+**Pedido:** melhorar o arquivo de atualizações e **sempre** documentar assim.
+
+**Passo a passo:**
+1. Seção **Padrão obrigatório — toda sessão** no topo deste arquivo (formato + checklist).
+2. Tabela **Estado atual** atualizada (MXDRPG hub, OAuth, rotas canônicas, Docker).
+3. Entradas retroativas da sessão 2026-06-19 com passo a passo numerado.
+
+**Arquivos tocados:**
+- `docs/HISTORICO.md`
+
+**Como testar:** ao fim de cada chat, verificar se há entrada nova com data, passos e “como testar”.
+
+---
+
+### 2026-06-19 — Onboarding de perfil no primeiro acesso
+
+**Pedido:** após criar conta/login, no primeiro acesso ir para perfil: apelido obrigatório + foto (Google, sugerida pelo apelido ou upload).
+
+**Passo a passo:**
+1. **Diagnóstico** — fluxo antigo só pedia apelido em `/entrar/apelido`, sem escolha de avatar no mesmo passo.
+2. **Decisão** — página única de onboarding em `/conta/bem-vindo`; após salvar, redireciona para `/mesas` (ou destino pedido).
+3. **Implementação:**
+   - `ProfileOnboardingForm` — apelido + 3 opções de foto: Google, avatar sugerido (DiceBear por apelido), upload/URL.
+   - `POST /api/auth/onboarding` — salva apelido + avatar e atualiza sessão numa chamada.
+   - `avatarSource: generated` em `user-avatar.ts` — URL derivada do apelido em runtime.
+   - `postAuthRedirect` → `/conta/bem-vindo` quando sem apelido (MariaDB ativo).
+   - `/entrar/apelido` legado → redirect para `/conta/bem-vindo`.
+   - `/conta` — `AvatarProfileForm` ganhou opção “Avatar sugerido”.
+4. **Validação** — `npm run build` ✅.
+
+**Arquivos tocados:**
+- `app/conta/bem-vindo/page.tsx`, `components/auth/ProfileOnboardingForm.tsx`
+- `app/api/auth/onboarding/route.ts`, `lib/auth/profile-onboarding.ts`
+- `lib/avatar/nickname-avatar.ts`, `lib/db/user-avatar.ts`, `lib/auth/post-auth-redirect.ts`
+- `app/entrar/apelido/page.tsx` (legado), `components/auth/AvatarProfileForm.tsx`
+
+**Como testar:**
+1. Login Google (conta nova ou sem apelido) → deve abrir `/conta/bem-vindo`.
+2. Digitar apelido → preview do avatar sugerido atualiza.
+3. Escolher Google / sugerido / upload → **Continuar** → `/mesas`.
+4. Editar depois em `/conta`.
+
+**Commits:** pendente local
+
+---
+
+### 2026-06-19 — Fix: “Conta não encontrada” ao salvar apelido (OAuth)
+
+**Pedido:** screenshot em `/entrar/apelido` — erro ao salvar apelido; 400 em `/api/auth/nickname`; 500 em `/api/notifications`; regex inválido no `pattern` do input.
+
+**Passo a passo:**
+1. **Diagnóstico** — login Google com DB falhando deixava sessão com id efêmero `google-…` / `discord-…`. `materializeSessionUser` não criava linha em `eldarin_users`; `setUserNickname` falhava com “Conta não encontrada”.
+2. **Decisão** — ao materializar sessão OAuth, chamar `ensureUserFromOAuth` em modo **strict** (erro claro se DB cair, sem fallback silencioso).
+3. **Implementação:**
+   - `lib/auth/oauth-session-id.ts` — parse de ids `google-*` / `discord-*`.
+   - `materializeSessionUser` — cria/recupera usuário OAuth no MariaDB; fallback por e-mail para `usr_*` órfão.
+   - `POST /api/auth/nickname` — `createSession` após salvar (cookie passa a `usr_*`).
+   - `/api/notifications` — `safeDbRead` (sem 500 quando DB falha).
+   - `pattern` do apelido: `[a-zA-Z0-9_\-]{3,24}` (hífen escapado — Chrome `/v` quebrava `[a-zA-Z0-9_-]*`).
+4. **Validação** — `npm run build` ✅.
+
+**Arquivos tocados:**
+- `lib/auth/session-user.ts`, `lib/auth/oauth-session-id.ts`, `lib/db/users.ts`
+- `app/api/auth/nickname/route.ts`, `app/api/notifications/route.ts`
+- `components/auth/NicknameForm.tsx`, `ProfileOnboardingForm.tsx`, `RegisterForm.tsx`
+
+**Produção ainda precisa:** `db: true` no health (SSL MariaDB) + deploy com `/conta/bem-vindo`.
+
+**Como testar:** login Google → salvar apelido → sem “Conta não encontrada”; cookie atualizado; `/api/notifications` retorna `{ items: [], count: 0 }` se DB off.
+
+**Commits:** pendente local
+
+---
+
 <!--
 ### AAAA-MM-DD — Título
 
 **Pedido:** …
 
-**O que mudou:**
-- …
+**Passo a passo:**
+1. …
 
 **Arquivos tocados:**
 - `caminho/arquivo.ts`
+
+**Commits / deploy:** …
 
 **Como testar:** …
 -->

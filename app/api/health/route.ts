@@ -4,6 +4,7 @@ import { hasClerkPublishableKey, isClerkEnabled } from "@/lib/auth/clerk-config"
 import {
   isDiscordOAuthConfigured,
   isGoogleOAuthConfigured,
+  authAppOrigin,
   oauthSetupStatus,
 } from "@/lib/auth/oauth-config";
 import { dbEnabled, dbPing } from "@/lib/db/client";
@@ -31,6 +32,13 @@ export async function GET() {
     app: "eldarin-rpg",
     db,
     persistence: hasUrl ? persistenceLabel() : "memory",
+    authOrigin: (() => {
+      try {
+        return authAppOrigin();
+      } catch {
+        return null;
+      }
+    })(),
     clerk: {
       publishableKey: clerkPublishable,
       secretKey: Boolean(process.env.CLERK_SECRET_KEY?.trim()),

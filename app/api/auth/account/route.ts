@@ -72,5 +72,5 @@ export async function DELETE() {
   await deleteUserAccount(userId);
   await destroySession();
 
-  return NextResponse.json({ ok: true, redirect: "/sign-in" });
+  return NextResponse.json({ ok: true, redirect: "/entrar" });
 }
