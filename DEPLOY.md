@@ -9,7 +9,9 @@ O app Next.js fica na **raiz** do repositório. Imagem Docker publicada no push 
 
 1. Push em `main` → workflow `.github/workflows/build-image.yml`
 2. Build da imagem (`Dockerfile`) → `ghcr.io/<repo>`
-3. Webhook reinicia o deployment `mxdrpg` no cluster
+3. Webhook reinicia o deployment `mxdrpg` no cluster com a imagem `ghcr.io/maulxd/mxdrpg:sha-<commit>` (evita cache da tag `main`)
+
+Confirme o deploy: `GET /api/health` deve retornar `buildSha` com o commit em execução.
 
 ## Variáveis de ambiente (servidor)
 
