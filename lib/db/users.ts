@@ -112,6 +112,10 @@ function storedToSession(row: StoredUser | UserRow): SessionUser {
     role: normalizeUserRole(row.role),
     avatarUrl,
     oauthAvatarUrl: "oauth_avatar_url" in row ? row.oauth_avatar_url : row.oauthAvatarUrl ?? null,
+    oauthProvider:
+      ("oauth_provider" in row ? row.oauth_provider : row.oauthProvider) as OAuthProviderId | null,
+    oauthSubject:
+      ("oauth_subject" in row ? row.oauth_subject : row.oauthSubject) ?? null,
     avatarSource,
     avatarFocus:
       parseAvatarFocus("avatar_focus" in row ? row.avatar_focus : row.avatarFocus) ?? null,
@@ -199,6 +203,8 @@ function oauthSessionFallback(input: {
     nickname: null,
     role: "member",
     oauthAvatarUrl: input.oauthAvatarUrl ?? null,
+    oauthProvider: input.provider,
+    oauthSubject: input.subject,
   };
 }
 
@@ -317,6 +323,18 @@ export async function fetchUserById(id: string): Promise<SessionUser | null> {
     const r = rows[0];
     return r ? toSessionUser(r) : null;
   });
+}
+
+/** Leitura sem fallback silencioso — usada antes de gravar apelido/perfil. */
+export async function fetchUserByIdStrict(id: string): Promise<SessionUser | null> {
+  const sql = getSql();
+  if (!sql) throw new Error("DATABASE_URL não configurada");
+  const rows = await sql<UserRow[]>`
+    SELECT ${sql.unsafe(USER_SELECT)}
+    FROM eldarin_users WHERE id = ${id} LIMIT 1
+  `;
+  const r = rows[0];
+  return r ? toSessionUser(r) : null;
 }
 
 export async function fetchClerkIdForUser(userId: string): Promise<string | null> {
@@ -542,7 +560,7 @@ export async function setUserNickname(userId: string, nickname: string): Promise
     resolvedId = stored.id;
   }
 
-  const existing = await fetchUserById(resolvedId);
+  const existing = await fetchUserByIdStrict(resolvedId);
   if (!existing) throw new Error("Conta não encontrada — saia e entre de novo");
 
   const taken = await fetchUserByNickname(v.nickname);
