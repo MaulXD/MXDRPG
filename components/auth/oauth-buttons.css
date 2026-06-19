@@ -1,5 +1,5 @@
 .oauth-buttons {
-  margin-bottom: 1rem;
+  margin-bottom: 1.25rem;
 }
 
 .oauth-buttons__eyebrow {
@@ -18,7 +18,47 @@
 
 .oauth-buttons__btn {
   flex: 1;
-  min-width: 7rem;
+  min-width: 8.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
   text-align: center;
   text-decoration: none;
+  font-weight: 600;
+}
+
+.oauth-buttons__icon {
+  width: 1.1rem;
+  height: 1.1rem;
+  flex-shrink: 0;
+}
+
+.oauth-buttons__btn--google {
+  background: #fff;
+  color: #3c4043;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.oauth-buttons__btn--google:hover {
+  background: #f8f9fa;
+  color: #202124;
+}
+
+.oauth-buttons__btn--discord {
+  background: #5865f2;
+  color: #fff;
+  border-color: #5865f2;
+}
+
+.oauth-buttons__btn--discord:hover {
+  background: #4752c4;
+  border-color: #4752c4;
+  color: #fff;
+}
+
+.oauth-buttons__hint {
+  margin: 0.5rem 0 0;
+  font-size: 0.75rem;
+  color: var(--text-muted);
 }

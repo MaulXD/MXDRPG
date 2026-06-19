@@ -59,3 +59,54 @@ export function authAppOrigin(): string {
 export function oauthCallbackUrl(provider: OAuthProviderId): string {
   return `${authAppOrigin()}/api/auth/oauth/${provider}/callback`;
 }
+
+export type OAuthSetupStatus = {
+  ready: boolean;
+  providers: OAuthProviderId[];
+  missing: string[];
+};
+
+/** Diagnóstico para `/api/health` e deploy — não expõe secrets. */
+export function oauthSetupStatus(): OAuthSetupStatus {
+  const missing: string[] = [];
+  const secret =
+    process.env.SESSION_SECRET?.trim() || process.env.OAUTH_STATE_SECRET?.trim();
+  if (!secret) {
+    missing.push("SESSION_SECRET");
+  } else if (secret.length < 16) {
+    missing.push("SESSION_SECRET (mín. 16 caracteres)");
+  }
+
+  try {
+    authAppOrigin();
+  } catch {
+    missing.push("AUTH_URL ou NEXT_PUBLIC_APP_URL");
+  }
+
+  const google = isGoogleOAuthConfigured();
+  const discord = isDiscordOAuthConfigured();
+  if (!google && !discord) {
+    missing.push("GOOGLE_CLIENT_ID+SECRET e/ou DISCORD_CLIENT_ID+SECRET");
+  } else {
+    if (!google && process.env.GOOGLE_CLIENT_ID?.trim()) {
+      missing.push("GOOGLE_CLIENT_SECRET");
+    }
+    if (!google && process.env.GOOGLE_CLIENT_SECRET?.trim()) {
+      missing.push("GOOGLE_CLIENT_ID");
+    }
+    if (!discord && process.env.DISCORD_CLIENT_ID?.trim()) {
+      missing.push("DISCORD_CLIENT_SECRET");
+    }
+    if (!discord && process.env.DISCORD_CLIENT_SECRET?.trim()) {
+      missing.push("DISCORD_CLIENT_ID");
+    }
+  }
+
+  const providers = oauthProvidersEnabled().filter((p) => isOAuthProviderReady(p));
+  const infraOk = missing.length === 0;
+  return {
+    ready: infraOk && providers.length > 0,
+    providers,
+    missing: infraOk ? [] : missing,
+  };
+}

@@ -1,4 +1,4 @@
-import { dbEnabled } from "@/lib/db/enabled";
+import { dbNicknameFlowEnabled } from "@/lib/db/enabled";
 import type { SessionUser } from "@/lib/auth/types";
 
 /** Destino padrão após login/cadastro — mesas Eldarin. */
@@ -32,7 +32,7 @@ export function entrarPath(dest: string): string {
 /** Após autenticação: apelido (se MariaDB ativo) e depois mesas ou URL pedida. */
 export function postAuthRedirect(user: SessionUser, requested?: string | null): string {
   const dest = safeRedirectPath(requested) ?? DEFAULT_POST_AUTH_PATH;
-  if (dbEnabled() && !user.nickname) {
+  if (dbNicknameFlowEnabled() && !user.nickname) {
     return `/entrar/apelido?redirect=${encodeURIComponent(dest)}`;
   }
   return dest;

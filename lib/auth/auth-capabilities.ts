@@ -49,20 +49,19 @@ export function authLoginLead(cap: AuthCapabilities): string {
   if (cap.clerkActive) {
     return "Use Google ou Discord — uma conta para mesas, fichas e convites.";
   }
-  const parts: string[] = [];
   if (cap.oauthProviders.length > 0) {
-    parts.push(
+    const social =
       cap.oauthProviders.includes("google") && cap.oauthProviders.includes("discord")
-        ? "Google, Discord"
+        ? "Google ou Discord"
         : cap.oauthProviders.includes("google")
           ? "Google"
-          : "Discord"
-    );
+          : "Discord";
+    return `Entre com ${social} em um clique — ou use e-mail e senha abaixo.`;
   }
+  const parts: string[] = [];
   parts.push("e-mail e senha");
-  const methods = parts.join(" ou ");
   if (!cap.persistentAccounts) {
-    return `${methods} — contas demo sempre disponíveis; cadastros novos exigem banco configurado no servidor.`;
+    return `${parts[0]} — contas demo sempre disponíveis; cadastros novos exigem MariaDB no servidor.`;
   }
-  return `Entre com ${methods} — uma conta para mesas, fichas e convites.`;
+  return `Entre com ${parts[0]} — uma conta para mesas, fichas e convites.`;
 }
