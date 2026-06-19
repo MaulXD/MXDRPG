@@ -1,11 +1,12 @@
 import fs from "fs";
 import path from "path";
-import { dbEnabled } from "@/lib/db/enabled";
+import { dbSqlReady } from "@/lib/db/sql-ready";
 import { normalizeNickname, validateNickname } from "@/lib/auth/nickname";
 import {
   completeUserPasswordRegistration,
   fetchUserByEmail,
   fetchUserById,
+  fetchUserByLogin,
   fetchUserByNickname,
   insertUser,
   updateUserProfile,
@@ -69,11 +70,15 @@ function registry(): Map<string, StoredUser> {
 }
 
 async function ensureDbUsersSeeded(): Promise<void> {
-  if (!dbEnabled() || globalThis.__eldarinDbUsersSeeded) return;
-  for (const u of loadSeed()) {
-    await upsertSeedUser(u);
+  if (!dbSqlReady() || globalThis.__eldarinDbUsersSeeded) return;
+  try {
+    for (const u of loadSeed()) {
+      await upsertSeedUser(u);
+    }
+    globalThis.__eldarinDbUsersSeeded = true;
+  } catch (err) {
+    console.error("[auth] seed demo users no MariaDB falhou:", err);
   }
-  globalThis.__eldarinDbUsersSeeded = true;
 }
 
 function toSessionUser(u: StoredUser): SessionUser {
@@ -104,14 +109,18 @@ export type LoginResult =
   | { ok: true; user: SessionUser }
   | { ok: false; error: string };
 
-async function resolveUserForLogin(login: string): Promise<StoredUser | null | undefined> {
+async function resolveUserForLogin(login: string): Promise<StoredUser | null> {
   const trimmed = login.trim();
   if (!trimmed) return null;
-  const byEmail = trimmed.includes("@");
 
-  if (dbEnabled()) {
-    await ensureDbUsersSeeded();
-    return byEmail ? await fetchUserByEmail(trimmed) : await fetchUserByNickname(trimmed);
+  if (dbSqlReady()) {
+    try {
+      await ensureDbUsersSeeded();
+      const fromDb = await fetchUserByLogin(trimmed);
+      if (fromDb) return fromDb;
+    } catch (err) {
+      console.error("[auth] login via MariaDB falhou, tentando registry local:", err);
+    }
   }
 
   return findLocalUser(trimmed) ?? null;
@@ -177,7 +186,7 @@ async function loginExistingWithPassword(
     return { ok: false, error: existingAccountError(existing) };
   }
 
-  if (dbEnabled()) {
+  if (dbSqlReady()) {
     try {
       const user = await updateUserProfile(existing.id, {
         name: displayName,
@@ -222,7 +231,7 @@ export async function registerUser(
     return { ok: false, error: "Informe seu nome" };
   }
 
-  if (dbEnabled()) {
+  if (dbSqlReady()) {
     await ensureDbUsersSeeded();
     const existing = await fetchUserByEmail(key);
     if (existing) {
@@ -299,8 +308,9 @@ export async function registerUser(
 }
 
 export async function getUserById(id: string): Promise<SessionUser | null> {
-  if (dbEnabled()) {
-    return fetchUserById(id);
+  if (dbSqlReady()) {
+    const fromDb = await fetchUserById(id);
+    if (fromDb) return fromDb;
   }
   for (const u of registry().values()) {
     if (u.id === id) return toSessionUser(u);
