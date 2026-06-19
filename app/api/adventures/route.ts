@@ -5,17 +5,22 @@ import { getSession } from "@/lib/auth/session";
 import { DEFAULT_RPG_SYSTEM_ID, normalizeRpgSystemId } from "@/lib/rpg/systems";
 
 export async function GET(request: Request) {
-  const session = await getSession();
-  if (!session) {
-    return NextResponse.json({ error: "Faça login" }, { status: 401 });
+  try {
+    const session = await getSession();
+    if (!session) {
+      return NextResponse.json({ error: "Faça login" }, { status: 401 });
+    }
+    const { searchParams } = new URL(request.url);
+    const rpgSystemParam = searchParams.get("rpgSystem");
+    const rpgSystemId = rpgSystemParam ? normalizeRpgSystemId(rpgSystemParam) : undefined;
+    const adventures = await enrichAdventureListItems(
+      await listAdventuresForUser(session.user.id, { rpgSystemId })
+    );
+    return NextResponse.json({ adventures });
+  } catch (e) {
+    console.error("[api/adventures GET]", e);
+    return NextResponse.json({ adventures: [], degraded: true });
   }
-  const { searchParams } = new URL(request.url);
-  const rpgSystemParam = searchParams.get("rpgSystem");
-  const rpgSystemId = rpgSystemParam ? normalizeRpgSystemId(rpgSystemParam) : undefined;
-  const adventures = await enrichAdventureListItems(
-    await listAdventuresForUser(session.user.id, { rpgSystemId })
-  );
-  return NextResponse.json({ adventures });
 }
 
 export async function POST(request: Request) {

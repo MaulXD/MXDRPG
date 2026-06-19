@@ -1,6 +1,7 @@
 import "server-only";
 
 import { dbEnabled, getSql } from "@/lib/db/client";
+import { safeDbRead } from "@/lib/db/safe-query";
 import { countSelectExpr } from "@/lib/db/count-expr";
 import { sqlAffected } from "@/lib/db/sql-helpers";
 
@@ -68,36 +69,40 @@ export async function listPendingFriendRequestsForUser(
   if (!dbEnabled()) return [];
   const sql = getSql();
   if (!sql) return [];
-  if (direction === "incoming") {
+  return safeDbRead(`listFriendRequests:${direction}`, [], async () => {
+    if (direction === "incoming") {
+      return sql<FriendRequestRow[]>`
+        SELECT id, from_user_id, to_user_id, status, created_at, responded_at
+        FROM eldarin_friend_requests
+        WHERE to_user_id = ${userId} AND status = 'pending'
+        ORDER BY created_at DESC
+        LIMIT 50
+      `;
+    }
     return sql<FriendRequestRow[]>`
       SELECT id, from_user_id, to_user_id, status, created_at, responded_at
       FROM eldarin_friend_requests
-      WHERE to_user_id = ${userId} AND status = 'pending'
+      WHERE from_user_id = ${userId} AND status = 'pending'
       ORDER BY created_at DESC
       LIMIT 50
     `;
-  }
-  return sql<FriendRequestRow[]>`
-    SELECT id, from_user_id, to_user_id, status, created_at, responded_at
-    FROM eldarin_friend_requests
-    WHERE from_user_id = ${userId} AND status = 'pending'
-    ORDER BY created_at DESC
-    LIMIT 50
-  `;
+  });
 }
 
 export async function countPendingIncomingFriendRequests(userId: string): Promise<number> {
   if (!dbEnabled()) return 0;
   const sql = getSql();
   if (!sql) return 0;
-  const countExpr = countSelectExpr();
-  const rows = await sql.unsafe(
-    `SELECT ${countExpr} AS count
-     FROM eldarin_friend_requests
-     WHERE to_user_id = ? AND status = 'pending'`,
-    [userId]
-  ) as { count: string }[];
-  return Number(rows[0]?.count ?? 0);
+  return safeDbRead("countFriendRequests", 0, async () => {
+    const countExpr = countSelectExpr();
+    const rows = await sql.unsafe(
+      `SELECT ${countExpr} AS count
+       FROM eldarin_friend_requests
+       WHERE to_user_id = ? AND status = 'pending'`,
+      [userId]
+    ) as { count: string }[];
+    return Number(rows[0]?.count ?? 0);
+  });
 }
 
 export async function resolveFriendRequest(
