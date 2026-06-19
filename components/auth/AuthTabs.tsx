@@ -40,8 +40,17 @@ export function AuthTabs({
           Criar conta
         </button>
       </div>
-      {oauthProviders.length > 0 && tab === "login" ? (
-        <OAuthSignInButtons redirect={redirect} providers={oauthProviders} />
+      {oauthProviders.length > 0 ? (
+        <OAuthSignInButtons
+          redirect={redirect}
+          providers={oauthProviders}
+          mode={tab === "register" ? "register" : "login"}
+        />
+      ) : null}
+      {oauthProviders.length > 0 ? (
+        <p className="auth-form__divider" aria-hidden>
+          ou
+        </p>
       ) : null}
       {tab === "login" ? (
         <LoginForm redirect={redirect} />

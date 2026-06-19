@@ -84,6 +84,34 @@
   line-height: 1.55;
 }
 
+.auth-form__divider {
+  margin: 0 0 1rem;
+  text-align: center;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  position: relative;
+}
+
+.auth-form__divider::before,
+.auth-form__divider::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 38%;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.auth-form__divider::before {
+  left: 0;
+}
+
+.auth-form__divider::after {
+  right: 0;
+}
+
 .auth-form__error {
   margin: 0;
   font-size: 0.85rem;
