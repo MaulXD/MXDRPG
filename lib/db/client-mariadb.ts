@@ -1,7 +1,13 @@
 import mysql from "mysql2/promise";
 import type { Pool, QueryResult } from "mysql2/promise";
 import type { EldarinSql } from "@/lib/db/sql-types";
-import { isJsonMarker, markJson, serializeSqlValue } from "@/lib/db/sql-types";
+import {
+  isExecutableSql,
+  isSqlFragment,
+  markJson,
+  markSqlFragment,
+  serializeSqlValue,
+} from "@/lib/db/sql-types";
 import { normalizeDatabaseUrl } from "@/lib/db/normalize-url";
 
 let pool: Pool | null = null;
@@ -40,8 +46,13 @@ function buildQuery(strings: TemplateStringsArray, values: unknown[]) {
   const params: unknown[] = [];
   for (let i = 0; i < values.length; i++) {
     text += strings[i];
+    const value = values[i];
+    if (isSqlFragment(value)) {
+      text += value.sql;
+      continue;
+    }
     text += "?";
-    params.push(serializeSqlValue(values[i]));
+    params.push(serializeSqlValue(value));
   }
   text += strings[strings.length - 1];
   return { text, params };
@@ -62,17 +73,26 @@ function createMariaSql(p: Pool): EldarinSql {
 
   tag.json = (value: unknown) => markJson(value);
 
-  tag.unsafe = async (query: string, params: unknown[] = []) => {
-    const statements = query
-      .split(";")
-      .map((s) => s.trim())
-      .filter((s) => s.length > 0);
-    let last: unknown = undefined;
-    for (const stmt of statements) {
-      const [rows] = await p.execute(stmt, params as (string | number | boolean | null | Buffer)[]);
-      last = rows;
+  tag.unsafe = (query: string, params: unknown[] = []) => {
+    const trimmed = query.trim();
+    if (!isExecutableSql(trimmed)) {
+      return markSqlFragment(query);
     }
-    return last;
+    return (async () => {
+      const statements = query
+        .split(";")
+        .map((s) => s.trim())
+        .filter((s) => s.length > 0);
+      let last: unknown = undefined;
+      for (const stmt of statements) {
+        const [rows] = await p.execute(
+          stmt,
+          params as (string | number | boolean | null | Buffer)[]
+        );
+        last = rows;
+      }
+      return last;
+    })();
   };
 
   tag.end = async () => {

@@ -52,15 +52,18 @@ jobs:
           push: true
           provenance: true
           sbom: true
+          build-args: |
+            GIT_SHA=${{ github.sha }}
           annotations: ${{ steps.meta.outputs.annotations }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
       - name: Send restart request
         run: |
-          curl \
+          SHORT_SHA=$(echo "${{ github.sha }}" | cut -c1-7)
+          curl -fsS \
             -H "Authorization: Bearer ${{ secrets.WEBHOOK_TOKEN }}" \
-            -d '{"namespace": "raul", "deployment_name": "mxdrpg" }' \
+            -d "{\"namespace\":\"raul\",\"deployment_name\":\"mxdrpg\",\"image\":\"ghcr.io/maulxd/mxdrpg:sha-${SHORT_SHA}\"}" \
             https://workflows.psychomantys.xyz/api/v1/events/raul/restart-mxdrpg
 
 # vim: nu ts=2 fdm=indent et ft=yaml shiftwidth=2 softtabstop=2:
