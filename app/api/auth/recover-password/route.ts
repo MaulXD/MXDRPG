@@ -1,15 +1,7 @@
 import { NextResponse } from "next/server";
-import { isClerkEnabled } from "@/lib/auth/clerk-config";
 import { checkPasswordRecovery, recoverPassword } from "@/lib/auth/password-recover";
 
 export async function POST(request: Request) {
-  if (isClerkEnabled()) {
-    return NextResponse.json(
-      { error: "Recuperação local desativada — use a opção do Clerk." },
-      { status: 410 }
-    );
-  }
-
   const body = await request.json();
   const action = String(body.action ?? "reset").trim();
 

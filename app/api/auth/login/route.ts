@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import { isClerkEnabled } from "@/lib/auth/clerk-config";
 import { dbEnabled } from "@/lib/db/enabled";
 import { ensureDbMigrations } from "@/lib/db/ensure-migrations";
 import { portalPathForRole } from "@/lib/auth/roles";
@@ -8,13 +7,6 @@ import { createSession } from "@/lib/auth/session";
 import { loginUser } from "@/lib/auth/user-store";
 
 export async function POST(request: Request) {
-  if (isClerkEnabled()) {
-    return NextResponse.json(
-      { error: "Login local desativado. Use /entrar (Google ou Discord)." },
-      { status: 410 }
-    );
-  }
-
   if (dbEnabled()) {
     try {
       await ensureDbMigrations();

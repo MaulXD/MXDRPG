@@ -1,6 +1,4 @@
 import { NextResponse } from "next/server";
-import { auth, clerkClient } from "@clerk/nextjs/server";
-import { isClerkEnabled } from "@/lib/auth/clerk-config";
 import { dbEnabled } from "@/lib/db/enabled";
 import { ensureDbMigrations } from "@/lib/db/ensure-migrations";
 import { deleteUserAccount, updateUserAvatar } from "@/lib/db/users";
@@ -55,21 +53,7 @@ export async function DELETE() {
     );
   }
 
-  const userId = session.user.id;
-
-  if (isClerkEnabled()) {
-    const { userId: clerkId } = await auth();
-    if (clerkId) {
-      const client = await clerkClient();
-      try {
-        await client.users.deleteUser(clerkId);
-      } catch {
-        /* conta Clerk pode já ter sido removida */
-      }
-    }
-  }
-
-  await deleteUserAccount(userId);
+  await deleteUserAccount(session.user.id);
   await destroySession();
 
   return NextResponse.json({ ok: true, redirect: "/entrar" });
