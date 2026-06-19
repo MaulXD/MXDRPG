@@ -27,9 +27,9 @@ export async function GET(req: Request) {
     characters: characters.map((c) => ({
       id: c.id,
       name: c.name,
-      nivel: c.identity.nivel,
-      classe: c.identity.classe,
-      raca: c.identity.raca,
+      nivel: c.identity?.nivel ?? 1,
+      classe: c.identity?.classe ?? "",
+      raca: c.identity?.raca ?? "",
       portraitUrl: c.portraitUrl ?? null,
       adventureId: c.adventureId ?? null,
     })),

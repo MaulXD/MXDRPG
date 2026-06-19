@@ -3,6 +3,19 @@ import type { CharacterSheet } from "@/lib/character/types";
 import { getSql } from "@/lib/db/client";
 import { queryCharactersByOwners } from "@/lib/db/sql-helpers";
 
+function safeNormalizeStoredCharacter(raw: unknown): CharacterSheet | null {
+  if (!raw || typeof raw !== "object") return null;
+  try {
+    return normalizeCharacter(raw as CharacterSheet);
+  } catch (err) {
+    console.warn(
+      "[db] ficha ignorada (JSON inválido):",
+      err instanceof Error ? err.message : err
+    );
+    return null;
+  }
+}
+
 export async function fetchCharacter(id: string): Promise<CharacterSheet | null> {
   const sql = getSql();
   if (!sql) return null;
@@ -11,7 +24,7 @@ export async function fetchCharacter(id: string): Promise<CharacterSheet | null>
   `;
   const row = rows[0];
   if (!row) return null;
-  return normalizeCharacter(row.data);
+  return safeNormalizeStoredCharacter(row.data);
 }
 
 export async function listCharactersByOwner(ownerId: string): Promise<CharacterSheet[]> {
@@ -22,7 +35,9 @@ export async function listCharactersByOwners(ownerIds: string[]): Promise<Charac
   const sql = getSql();
   if (!sql || ownerIds.length === 0) return [];
   const rows = await queryCharactersByOwners<{ data: CharacterSheet }>(sql, ownerIds, "data");
-  return rows.map((r) => normalizeCharacter(r.data));
+  return rows
+    .map((r) => safeNormalizeStoredCharacter(r.data))
+    .filter((sheet): sheet is CharacterSheet => sheet != null);
 }
 
 /** Migra fichas de ids legados (`clerk-*`) para o dono canônico da conta. */
@@ -44,7 +59,8 @@ export async function reassignCharacterOwners(
 
   const updatedAt = Date.now();
   for (const row of rows) {
-    const normalized = normalizeCharacter({ ...row.data, ownerId: toOwnerId });
+    const normalized = safeNormalizeStoredCharacter({ ...row.data, ownerId: toOwnerId });
+    if (!normalized) continue;
     await upsertCharacterRow(sql, normalized, updatedAt);
   }
   return rows.length;
