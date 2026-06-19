@@ -30,6 +30,7 @@ export async function GET() {
   const body: Record<string, unknown> = {
     ok: true,
     app: "eldarin-rpg",
+    buildSha: process.env.BUILD_SHA?.trim() || null,
     db,
     persistence: hasUrl ? persistenceLabel() : "memory",
     authOrigin: (() => {

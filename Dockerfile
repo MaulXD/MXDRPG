@@ -2,6 +2,9 @@ FROM node:26-alpine3.23
 
 WORKDIR /app
 
+ARG GIT_SHA=dev
+ENV BUILD_SHA=${GIT_SHA}
+
 # Copia os arquivos de dependências
 COPY package.json package-lock.json ./
 
