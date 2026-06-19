@@ -19,7 +19,7 @@ import {
 
 import {
 
-  listCharactersForSessionUserInAdventure,
+  listCharactersForSessionUserInAdventureSafe,
 
   MAX_CHARACTERS_PER_USER_PER_ADVENTURE,
 
@@ -203,11 +203,11 @@ export default async function AventuraHubPage({ params, searchParams }: Props) {
     if (fresh) room = await getRoom(fresh.primaryRoomId);
   }
 
-  let myChars: Awaited<ReturnType<typeof listCharactersForSessionUserInAdventure>> = [];
+  let myChars: Awaited<ReturnType<typeof listCharactersForSessionUserInAdventureSafe>> = [];
 
   try {
 
-    myChars = await listCharactersForSessionUserInAdventure(accountUser, adventureId);
+    myChars = await listCharactersForSessionUserInAdventureSafe(accountUser, adventureId);
 
   } catch (e) {
 
