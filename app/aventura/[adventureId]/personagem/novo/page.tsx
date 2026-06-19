@@ -42,7 +42,7 @@ export default async function AventuraNovoPersonagemPage({ params, searchParams 
     return (
       <div className="page-wrap">
         <p>Aventura não encontrada.</p>
-        <Link href="/eldarin">Suas mesas</Link>
+        <Link href="/rpg/eldarin">Suas mesas</Link>
       </div>
     );
   }
@@ -59,7 +59,7 @@ export default async function AventuraNovoPersonagemPage({ params, searchParams 
             Voltar à mesa
           </Link>
         ) : null}
-        <Link href="/eldarin" className="btn btn--ghost" style={{ marginTop: "0.75rem", marginLeft: "0.5rem" }}>
+        <Link href="/rpg/eldarin" className="btn btn--ghost" style={{ marginTop: "0.75rem", marginLeft: "0.5rem" }}>
           Suas mesas
         </Link>
       </div>

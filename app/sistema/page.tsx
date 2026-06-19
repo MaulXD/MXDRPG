@@ -65,7 +65,7 @@ const STEPS = [
         mestre enviou. Mesas ingressadas ficam na sua conta.
       </>
     ),
-    href: "/eldarin",
+    href: "/rpg/eldarin",
     linkLabel: "Suas mesas",
   },
   {
@@ -115,7 +115,7 @@ const NAV_ITEMS = [
   {
     icon: IconShield,
     label: "Suas mesas",
-    path: "/eldarin",
+    path: "/rpg/eldarin",
     text: "Aventuras, convites, lobby de mesa e acesso à sala VTT de cada campanha.",
   },
 ] as const;
@@ -269,7 +269,7 @@ export default function SistemaPage() {
         <Link href="/personagem/novo" className="btn btn-ghost">
           Nova ficha
         </Link>
-        <Link href="/eldarin" className="btn btn-ghost">
+        <Link href="/rpg/eldarin" className="btn btn-ghost">
           Suas mesas
         </Link>
         <Link href="/compendios" className="btn btn-ghost">

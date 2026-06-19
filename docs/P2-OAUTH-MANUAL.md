@@ -57,7 +57,7 @@ Mesmo e-mail já cadastrado com senha: conta **vincula** ao Google (não duplica
 
 - [ ] `/api/health` → `oauth.ready: true`
 - [ ] `/entrar` mostra botão Google
-- [ ] Login Google → redireciona para `/eldarin` ou apelido
+- [ ] Login Google → redireciona para `/mesas` ou apelido
 - [ ] Linha em `eldarin_users` com `oauth_provider = 'google'`
 
 ## 7. Local (.env.local)

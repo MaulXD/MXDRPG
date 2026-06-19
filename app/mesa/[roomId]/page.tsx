@@ -62,9 +62,9 @@ export default async function MesaRoomPage({ params, searchParams }: Props) {
           gravação falhou ao criar a aventura.
         </p>
         <p style={{ color: "var(--text-muted)", fontSize: "0.9rem" }}>
-          Tente abrir de novo em <Link href="/eldarin">Suas mesas</Link> ou recrie a mesa na aventura.
+          Tente abrir de novo em <Link href="/rpg/eldarin">Suas mesas</Link> ou recrie a mesa na aventura.
         </p>
-        <Link href="/eldarin" className="btn" style={{ marginTop: "1rem" }}>
+        <Link href="/rpg/eldarin" className="btn" style={{ marginTop: "1rem" }}>
           Ir para Suas mesas
         </Link>
       </div>
@@ -133,7 +133,7 @@ export default async function MesaRoomPage({ params, searchParams }: Props) {
           <Link href={mesaRoomPath(roomId, inviteCode)} className="btn" style={{ marginTop: "1rem" }}>
             Tentar de novo
           </Link>
-          <Link href="/eldarin" className="btn btn--ghost" style={{ marginTop: "0.75rem", marginLeft: "0.5rem" }}>
+          <Link href="/rpg/eldarin" className="btn btn--ghost" style={{ marginTop: "0.75rem", marginLeft: "0.5rem" }}>
             Inserir código em Suas mesas
           </Link>
         </div>
@@ -161,7 +161,7 @@ export default async function MesaRoomPage({ params, searchParams }: Props) {
             Entrar para participar
           </Link>
         ) : (
-          <Link href="/eldarin" className="btn" style={{ marginTop: "1rem" }}>
+          <Link href="/rpg/eldarin" className="btn" style={{ marginTop: "1rem" }}>
             Inserir código em Suas mesas
           </Link>
         )}

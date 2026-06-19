@@ -1,8 +1,10 @@
 import { dbNicknameFlowEnabled } from "@/lib/db/enabled";
 import type { SessionUser } from "@/lib/auth/types";
 
-/** Destino padrão após login/cadastro — mesas Eldarin. */
-export const DEFAULT_POST_AUTH_PATH = "/eldarin";
+import { MESAS_HUB_PATH } from "@/lib/rpg/systems";
+
+/** Destino padrão após login/cadastro — hub MXDRPG. */
+export const DEFAULT_POST_AUTH_PATH = MESAS_HUB_PATH;
 
 export function safeRedirectPath(raw: string | undefined | null): string | null {
   const t = (raw ?? "").trim();

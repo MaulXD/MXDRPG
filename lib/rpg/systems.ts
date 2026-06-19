@@ -38,13 +38,21 @@ export type RpgSystem = {
 
 export const MESAS_HUB_PATH = "/mesas";
 
+/** Mesas do sistema Eldarin (não confundir com o hub MXDRPG). */
+export const ELDARIN_MESAS_PATH = "/rpg/eldarin";
+
+export function rpgMesasPath(systemId: RpgSystemId = DEFAULT_RPG_SYSTEM_ID): string {
+  const sys = RPG_SYSTEMS.find((s) => s.id === systemId);
+  return sys?.href ?? MESAS_HUB_PATH;
+}
+
 export const RPG_SYSTEMS: RpgSystem[] = [
   {
     id: "eldarin",
     name: "Eldarin",
     shortName: "Eldarin",
     tagline: "Fantasia tática · grid quadrado · PA por turno",
-    href: "/eldarin",
+    href: ELDARIN_MESAS_PATH,
     available: true,
     coverSrc: ELDARIN_DEFAULT_COVER_SRC,
     coverAlt: "Capa Eldarin — logotipo com dragão",
@@ -87,6 +95,7 @@ export function resolveMesaCoverSrc(
 
 export function isMesasNavActive(pathname: string): boolean {
   if (pathname === MESAS_HUB_PATH || pathname.startsWith(`${MESAS_HUB_PATH}/`)) return true;
+  if (pathname === ELDARIN_MESAS_PATH || pathname.startsWith(`${ELDARIN_MESAS_PATH}/`)) return true;
   if (pathname === "/eldarin" || pathname.startsWith("/eldarin/")) return true;
   if (pathname === "/rpg" || pathname.startsWith("/rpg/")) return true;
   if (pathname.startsWith("/aventura/")) return true;
