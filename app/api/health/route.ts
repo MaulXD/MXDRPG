@@ -1,3 +1,4 @@
+import { RELEASE_ID } from "@/lib/release";
 import { NextResponse } from "next/server";
 import { getAuthCapabilities } from "@/lib/auth/auth-capabilities";
 import { hasClerkPublishableKey, isClerkEnabled } from "@/lib/auth/clerk-config";
@@ -30,6 +31,7 @@ export async function GET() {
   const body: Record<string, unknown> = {
     ok: true,
     app: "eldarin-rpg",
+    releaseId: RELEASE_ID,
     buildSha: process.env.BUILD_SHA?.trim() || null,
     deployHint:
       process.env.BUILD_SHA?.trim() ?

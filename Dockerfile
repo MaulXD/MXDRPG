@@ -14,8 +14,10 @@ RUN npm ci
 # Copia o restante do código do projeto
 COPY . .
 
-# Constrói a aplicação Next.js
-RUN npm run build \
+# Invalida cache do npm run build a cada commit
+ARG GIT_SHA=dev
+RUN echo "build-sha=${GIT_SHA}" > /app/.build-id \
+  && npm run build \
   && mkdir -p .next/cache/images .next/cache/fetch-cache
 
 # Expõe a porta padrão do Next.js
