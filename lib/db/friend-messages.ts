@@ -1,6 +1,7 @@
 import "server-only";
 
 import { dbEnabled, getSql } from "@/lib/db/client";
+import { safeDbRead } from "@/lib/db/safe-query";
 import { isFriendLink } from "@/lib/db/friends";
 import { countSelectExpr } from "@/lib/db/count-expr";
 import { sqlAffected } from "@/lib/db/sql-helpers";
@@ -97,15 +98,16 @@ export async function countUnreadFriendMessages(userId: string): Promise<number>
   const sql = getSql();
   if (!sql) return 0;
 
-  const countExpr = countSelectExpr();
-  const rows = await sql.unsafe(
-    `SELECT ${countExpr} AS count
-     FROM eldarin_friend_messages
-     WHERE to_user_id = ? AND read_at IS NULL`,
-    [userId]
-  ) as { count: string }[];
-
-  return Number(rows[0]?.count ?? 0);
+  return safeDbRead("countUnreadMessages", 0, async () => {
+    const countExpr = countSelectExpr();
+    const rows = await sql.unsafe(
+      `SELECT ${countExpr} AS count
+       FROM eldarin_friend_messages
+       WHERE to_user_id = ? AND read_at IS NULL`,
+      [userId]
+    ) as { count: string }[];
+    return Number(rows[0]?.count ?? 0);
+  });
 }
 
 export async function markFriendMessagesRead(

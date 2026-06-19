@@ -25,8 +25,7 @@ export async function materializeSessionUser(user: SessionUser): Promise<Session
     user.clerkId?.trim() ||
     (user.id.startsWith("clerk-") ? user.id.slice("clerk-".length) : null);
   if (!clerkId) {
-    if (!dbEnabled()) return user;
-    throw new Error("Conta não encontrada — saia e entre de novo");
+    return user;
   }
 
   try {
@@ -44,7 +43,6 @@ export async function materializeSessionUser(user: SessionUser): Promise<Session
     });
   } catch (err) {
     console.error("[materializeSessionUser] clerk sync failed:", err);
-    if (!dbEnabled()) return user;
-    throw err;
+    return user;
   }
 }
