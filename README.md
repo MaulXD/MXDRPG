@@ -24,7 +24,7 @@ http://localhost:3000
 
 **CSS quebrado?** `npm run dev:clean`
 
-## Dados (livros → app)
+## Dados (livros → app).
 
 Depois de editar `livros/`:
 
