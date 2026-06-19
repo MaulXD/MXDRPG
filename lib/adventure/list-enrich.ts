@@ -98,9 +98,10 @@ async function onlineUserIdsForRoom(roomId: string): Promise<Set<string>> {
 export async function enrichAdventureListItems(
   items: AdventureListItem[]
 ): Promise<AdventureListItem[]> {
-  const enriched: AdventureListItem[] = [];
+  try {
+    const enriched: AdventureListItem[] = [];
 
-  for (const item of items) {
+    for (const item of items) {
     if (item.deletedAt) {
       enriched.push(item);
       continue;
@@ -147,5 +148,9 @@ export async function enrichAdventureListItems(
     });
   }
 
-  return enriched;
+    return enriched;
+  } catch (err) {
+    console.error("[enrichAdventureListItems]", err);
+    return items;
+  }
 }

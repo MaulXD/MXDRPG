@@ -12,6 +12,7 @@ import {
 import { normalizeImageDataUrl } from "@/lib/media/image-normalize";
 import { sanitizePortraitFocus, type PortraitFocus } from "@/lib/media/portrait-focus";
 import { getSql } from "@/lib/db/client";
+import { safeDbRead } from "@/lib/db/safe-query";
 import type { OAuthProviderId } from "@/lib/auth/oauth-config";
 
 export type StoredUser = {
@@ -210,73 +211,78 @@ export async function ensureUserFromOAuth(input: {
   const sql = getSql();
   if (!sql) return oauthSessionFallback(input);
 
-  const oauthAvatar = input.oauthAvatarUrl?.trim() || null;
+  try {
+    const oauthAvatar = input.oauthAvatarUrl?.trim() || null;
 
-  const existing = await fetchUserByOAuthIdentity(input.provider, input.subject);
-  if (existing) {
-    if (oauthAvatar && oauthAvatar !== existing.oauthAvatarUrl) {
+    const existing = await fetchUserByOAuthIdentity(input.provider, input.subject);
+    if (existing) {
+      if (oauthAvatar && oauthAvatar !== existing.oauthAvatarUrl) {
+        await sql`
+          UPDATE eldarin_users
+          SET oauth_avatar_url = ${oauthAvatar}, name = ${input.name.slice(0, 80)}
+          WHERE id = ${existing.id}
+        `;
+      }
+      const refreshed = await fetchUserById(existing.id);
+      if (refreshed) return refreshed;
+      return storedToSession(existing);
+    }
+
+    const email = slugEmail(input.email);
+    const byEmail = await fetchUserByEmail(email);
+    if (byEmail) {
       await sql`
         UPDATE eldarin_users
-        SET oauth_avatar_url = ${oauthAvatar}, name = ${input.name.slice(0, 80)}
-        WHERE id = ${existing.id}
+        SET oauth_provider = ${input.provider},
+            oauth_subject = ${input.subject},
+            name = ${input.name.slice(0, 80)},
+            oauth_avatar_url = COALESCE(${oauthAvatar}, oauth_avatar_url),
+            avatar_source = COALESCE(avatar_source, 'oauth')
+        WHERE id = ${byEmail.id}
       `;
+      const linked = await fetchUserById(byEmail.id);
+      if (!linked) return oauthSessionFallback(input);
+      return linked;
     }
-    const refreshed = await fetchUserById(existing.id);
-    if (refreshed) return refreshed;
-    return storedToSession(existing);
-  }
 
-  const email = slugEmail(input.email);
-  const byEmail = await fetchUserByEmail(email);
-  if (byEmail) {
+    const user: StoredUser = {
+      id: `usr_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 8)}`,
+      oauthProvider: input.provider,
+      oauthSubject: input.subject,
+      email,
+      nickname: null,
+      name: input.name.slice(0, 80),
+      passwordHash: null,
+      role: "member",
+      oauthAvatarUrl: oauthAvatar,
+      avatarSource: "oauth",
+      createdAt: Date.now(),
+    };
+
     await sql`
-      UPDATE eldarin_users
-      SET oauth_provider = ${input.provider},
-          oauth_subject = ${input.subject},
-          name = ${input.name.slice(0, 80)},
-          oauth_avatar_url = COALESCE(${oauthAvatar}, oauth_avatar_url),
-          avatar_source = COALESCE(avatar_source, 'oauth')
-      WHERE id = ${byEmail.id}
+      INSERT INTO eldarin_users (
+        id, oauth_provider, oauth_subject, email, nickname, name, password_hash, role,
+        oauth_avatar_url, avatar_source, created_at
+      )
+      VALUES (
+        ${user.id},
+        ${input.provider},
+        ${input.subject},
+        ${user.email},
+        ${user.nickname ?? null},
+        ${user.name},
+        ${user.passwordHash},
+        ${user.role},
+        ${user.oauthAvatarUrl ?? null},
+        ${user.avatarSource ?? "oauth"},
+        ${user.createdAt}
+      )
     `;
-    const linked = await fetchUserById(byEmail.id);
-    if (!linked) return oauthSessionFallback(input);
-    return linked;
+    return storedToSession(user);
+  } catch (err) {
+    console.error("[auth] ensureUserFromOAuth falhou, sessão efêmera:", err);
+    return oauthSessionFallback(input);
   }
-
-  const user: StoredUser = {
-    id: `usr_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 8)}`,
-    oauthProvider: input.provider,
-    oauthSubject: input.subject,
-    email,
-    nickname: null,
-    name: input.name.slice(0, 80),
-    passwordHash: null,
-    role: "member",
-    oauthAvatarUrl: oauthAvatar,
-    avatarSource: "oauth",
-    createdAt: Date.now(),
-  };
-
-  await sql`
-    INSERT INTO eldarin_users (
-      id, oauth_provider, oauth_subject, email, nickname, name, password_hash, role,
-      oauth_avatar_url, avatar_source, created_at
-    )
-    VALUES (
-      ${user.id},
-      ${input.provider},
-      ${input.subject},
-      ${user.email},
-      ${user.nickname ?? null},
-      ${user.name},
-      ${user.passwordHash},
-      ${user.role},
-      ${user.oauthAvatarUrl ?? null},
-      ${user.avatarSource ?? "oauth"},
-      ${user.createdAt}
-    )
-  `;
-  return storedToSession(user);
 }
 
 export async function fetchUserByClerkId(clerkId: string): Promise<StoredUser | null> {
@@ -293,12 +299,14 @@ export async function fetchUserByClerkId(clerkId: string): Promise<StoredUser | 
 export async function fetchUserById(id: string): Promise<SessionUser | null> {
   const sql = getSql();
   if (!sql) return null;
-  const rows = await sql<UserRow[]>`
-    SELECT ${sql.unsafe(USER_SELECT)}
-    FROM eldarin_users WHERE id = ${id} LIMIT 1
-  `;
-  const r = rows[0];
-  return r ? toSessionUser(r) : null;
+  return safeDbRead("fetchUserById", null, async () => {
+    const rows = await sql<UserRow[]>`
+      SELECT ${sql.unsafe(USER_SELECT)}
+      FROM eldarin_users WHERE id = ${id} LIMIT 1
+    `;
+    const r = rows[0];
+    return r ? toSessionUser(r) : null;
+  });
 }
 
 export async function fetchClerkIdForUser(userId: string): Promise<string | null> {

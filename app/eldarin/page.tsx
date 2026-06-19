@@ -3,7 +3,7 @@ import { AdventureLobby } from "@/components/adventure/AdventureLobby";
 import { MedievalFrame } from "@/components/ui/MedievalFrame";
 import { signInPath } from "@/lib/auth/post-auth-redirect";
 import { getSession } from "@/lib/auth/session";
-import { dbEnabled } from "@/lib/db/enabled";
+import { dbNicknameFlowEnabled } from "@/lib/db/enabled";
 import { pageMetadata } from "@/lib/site-metadata";
 import { redirect } from "next/navigation";
 
@@ -13,7 +13,7 @@ export default async function EldarinMesasPage() {
   const session = await getSession();
   if (!session) redirect(signInPath("/eldarin"));
   const user = session.user;
-  if (dbEnabled() && !user.nickname) {
+  if (dbNicknameFlowEnabled() && !user.nickname) {
     redirect("/entrar/apelido?redirect=/eldarin");
   }
 

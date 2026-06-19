@@ -1,6 +1,7 @@
 import "server-only";
 
 import { dbEnabled, getSql } from "@/lib/db/client";
+import { safeDbRead } from "@/lib/db/safe-query";
 import { sqlAffected } from "@/lib/db/sql-helpers";
 
 type FriendRow = {
@@ -48,16 +49,18 @@ export async function listFriendIds(userId: string): Promise<{ friendId: string;
   if (!dbEnabled()) return [];
   const sql = getSql();
   if (!sql) return [];
-  const rows = await sql<FriendRow[]>`
-    SELECT friend_id, created_at
-    FROM eldarin_user_friends
-    WHERE user_id = ${userId}
-    ORDER BY created_at DESC
-  `;
-  return rows.map((r) => ({
-    friendId: r.friend_id,
-    addedAt: Number(r.created_at),
-  }));
+  return safeDbRead("listFriendIds", [], async () => {
+    const rows = await sql<FriendRow[]>`
+      SELECT friend_id, created_at
+      FROM eldarin_user_friends
+      WHERE user_id = ${userId}
+      ORDER BY created_at DESC
+    `;
+    return rows.map((r) => ({
+      friendId: r.friend_id,
+      addedAt: Number(r.created_at),
+    }));
+  });
 }
 
 export async function isFriendLink(userId: string, friendId: string): Promise<boolean> {
@@ -110,13 +113,15 @@ export async function listPendingMesaInvitesForUser(
   if (!dbEnabled()) return [];
   const sql = getSql();
   if (!sql) return [];
-  return sql<MesaInviteRow[]>`
-    SELECT id, from_user_id, to_user_id, room_id, adventure_id, invite_code, room_name, message, created_at, dismissed_at
-    FROM eldarin_mesa_invites
-    WHERE to_user_id = ${userId} AND dismissed_at IS NULL
-    ORDER BY created_at DESC
-    LIMIT 50
-  `;
+  return safeDbRead("listPendingMesaInvites", [], async () =>
+    sql<MesaInviteRow[]>`
+      SELECT id, from_user_id, to_user_id, room_id, adventure_id, invite_code, room_name, message, created_at, dismissed_at
+      FROM eldarin_mesa_invites
+      WHERE to_user_id = ${userId} AND dismissed_at IS NULL
+      ORDER BY created_at DESC
+      LIMIT 50
+    `
+  );
 }
 
 export async function dismissMesaInvite(inviteId: string, userId: string): Promise<boolean> {
