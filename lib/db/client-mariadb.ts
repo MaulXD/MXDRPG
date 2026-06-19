@@ -123,8 +123,8 @@ function poolSslOption(url: string): { rejectUnauthorized: boolean } | undefined
   const local = url.includes("localhost") || url.includes("127.0.0.1");
   if (local) return undefined;
 
-  if (process.env.MARIADB_SSL_REJECT_UNAUTHORIZED === "0") {
-    return { rejectUnauthorized: false };
+  if (process.env.MARIADB_SSL_REJECT_UNAUTHORIZED === "1") {
+    return { rejectUnauthorized: true };
   }
 
   try {
@@ -137,7 +137,8 @@ function poolSslOption(url: string): { rejectUnauthorized: boolean } | undefined
     /* keep default */
   }
 
-  return { rejectUnauthorized: true };
+  // Contabo e outros MariaDB gerenciados usam cert self-signed — aceita por padrão.
+  return { rejectUnauthorized: false };
 }
 
 export function getMariaSql(): EldarinSql | null {
