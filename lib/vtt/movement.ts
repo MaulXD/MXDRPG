@@ -32,9 +32,9 @@ export {
   describeMovementPaBands,
 } from "@/lib/vtt/movement-pa";
 
-/** Eldarin tactical grid: 1 célula = 1,5 m (9 m base ≈ 6 células) */
+/** Eldarin tactical grid: 1 célula = 1,5 m (6 m caminhada ≈ 4 células; 12 m corrida ≈ 8 células) */
 export const METERS_PER_CELL = 1.5;
-export const BASE_MOVEMENT_METERS = 9;
+export const BASE_MOVEMENT_METERS = 6;
 
 export function cellsToMeters(cells: number): number {
   return Math.round(cells * METERS_PER_CELL * 10) / 10;
@@ -56,7 +56,7 @@ export function movementWalkMax(token: BattleToken): number {
 
 export function movementRunMax(token: BattleToken): number {
   const v = token.movementRunMax ?? token.run;
-  return Number.isFinite(v) && v >= 0 ? v : 6;
+  return Number.isFinite(v) && v >= 0 ? v : 8;
 }
 
 export function walkRemaining(token: BattleToken): number {
