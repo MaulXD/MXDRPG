@@ -1,5 +1,5 @@
 import { isClerkEnabled } from "@/lib/auth/clerk-config";
-import { dbEnabled } from "@/lib/db/enabled";
+import { dbSqlReady } from "@/lib/db/sql-ready";
 import {
   authAppOrigin,
   oauthProvidersEnabled,
@@ -39,7 +39,7 @@ export function getAuthCapabilities(): AuthCapabilities {
   return {
     emailLogin: !isClerkEnabled(),
     oauthProviders: oauthProvidersReady(),
-    persistentAccounts: dbEnabled(),
+    persistentAccounts: dbSqlReady(),
     clerkActive: isClerkEnabled(),
   };
 }

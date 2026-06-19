@@ -29,7 +29,7 @@ export function entrarPath(dest: string): string {
   return signInPath(dest);
 }
 
-/** Após autenticação: apelido (se Postgres) e depois mesas ou URL pedida. */
+/** Após autenticação: apelido (se MariaDB ativo) e depois mesas ou URL pedida. */
 export function postAuthRedirect(user: SessionUser, requested?: string | null): string {
   const dest = safeRedirectPath(requested) ?? DEFAULT_POST_AUTH_PATH;
   if (dbEnabled() && !user.nickname) {
