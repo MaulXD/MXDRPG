@@ -13,6 +13,7 @@ import { normalizeImageDataUrl } from "@/lib/media/image-normalize";
 import { sanitizePortraitFocus, type PortraitFocus } from "@/lib/media/portrait-focus";
 import { getSql } from "@/lib/db/client";
 import { safeDbRead } from "@/lib/db/safe-query";
+import type { EldarinSql } from "@/lib/db/sql-types";
 import type { OAuthProviderId } from "@/lib/auth/oauth-config";
 
 export type StoredUser = {
@@ -59,6 +60,18 @@ type UserRow = {
 
 const USER_SELECT =
   "id, clerk_id, oauth_provider, oauth_subject, email, nickname, name, password_hash, cpf_prefix_hash, birth_date, role, avatar_url, oauth_avatar_url, avatar_source, avatar_focus, created_at";
+
+async function queryOneUserRow(
+  sql: EldarinSql,
+  whereSql: string,
+  params: unknown[] = []
+): Promise<UserRow | null> {
+  const rows = (await sql.unsafe(
+    `SELECT ${USER_SELECT} FROM eldarin_users WHERE ${whereSql} LIMIT 1`,
+    params
+  )) as UserRow[];
+  return Array.isArray(rows) && rows[0] ? rows[0] : null;
+}
 
 function formatBirthDate(value: string | Date | null | undefined): string | null {
   if (value == null) return null;
@@ -130,11 +143,7 @@ export async function fetchUserByEmail(email: string): Promise<StoredUser | null
   const sql = getSql();
   if (!sql) return null;
   const key = slugEmail(email);
-  const rows = await sql<UserRow[]>`
-    SELECT ${sql.unsafe(USER_SELECT)}
-    FROM eldarin_users WHERE LOWER(email) = ${key} LIMIT 1
-  `;
-  const r = rows[0];
+  const r = await queryOneUserRow(sql, "LOWER(email) = ?", [key]);
   return r ? rowToStored(r) : null;
 }
 
@@ -142,11 +151,7 @@ export async function fetchUserByNickname(nickname: string): Promise<StoredUser 
   const sql = getSql();
   if (!sql) return null;
   const key = normalizeNickname(nickname);
-  const rows = await sql<UserRow[]>`
-    SELECT ${sql.unsafe(USER_SELECT)}
-    FROM eldarin_users WHERE LOWER(nickname) = ${key} LIMIT 1
-  `;
-  const r = rows[0];
+  const r = await queryOneUserRow(sql, "LOWER(nickname) = ?", [key]);
   return r ? rowToStored(r) : null;
 }
 
@@ -179,13 +184,10 @@ export async function fetchUserByOAuthIdentity(
 ): Promise<StoredUser | null> {
   const sql = getSql();
   if (!sql) return null;
-  const rows = await sql<UserRow[]>`
-    SELECT ${sql.unsafe(USER_SELECT)}
-    FROM eldarin_users
-    WHERE oauth_provider = ${provider} AND oauth_subject = ${subject}
-    LIMIT 1
-  `;
-  const r = rows[0];
+  const r = await queryOneUserRow(sql, "oauth_provider = ? AND oauth_subject = ?", [
+    provider,
+    subject,
+  ]);
   return r ? rowToStored(r) : null;
 }
 
@@ -304,11 +306,7 @@ export async function ensureUserFromOAuth(
 export async function fetchUserByClerkId(clerkId: string): Promise<StoredUser | null> {
   const sql = getSql();
   if (!sql) return null;
-  const rows = await sql<UserRow[]>`
-    SELECT ${sql.unsafe(USER_SELECT)}
-    FROM eldarin_users WHERE clerk_id = ${clerkId} LIMIT 1
-  `;
-  const r = rows[0];
+  const r = await queryOneUserRow(sql, "clerk_id = ?", [clerkId]);
   return r ? rowToStored(r) : null;
 }
 
@@ -316,11 +314,7 @@ export async function fetchUserById(id: string): Promise<SessionUser | null> {
   const sql = getSql();
   if (!sql) return null;
   return safeDbRead("fetchUserById", null, async () => {
-    const rows = await sql<UserRow[]>`
-      SELECT ${sql.unsafe(USER_SELECT)}
-      FROM eldarin_users WHERE id = ${id} LIMIT 1
-    `;
-    const r = rows[0];
+    const r = await queryOneUserRow(sql, "id = ?", [id]);
     return r ? toSessionUser(r) : null;
   });
 }
@@ -329,11 +323,7 @@ export async function fetchUserById(id: string): Promise<SessionUser | null> {
 export async function fetchUserByIdStrict(id: string): Promise<SessionUser | null> {
   const sql = getSql();
   if (!sql) throw new Error("DATABASE_URL não configurada");
-  const rows = await sql<UserRow[]>`
-    SELECT ${sql.unsafe(USER_SELECT)}
-    FROM eldarin_users WHERE id = ${id} LIMIT 1
-  `;
-  const r = rows[0];
+  const r = await queryOneUserRow(sql, "id = ?", [id]);
   return r ? toSessionUser(r) : null;
 }
 
@@ -453,10 +443,7 @@ export async function updateUserAvatar(
 
   const avatarSource = normalizeAvatarSource(opts.avatarSource);
 
-  const existing = await sql<UserRow[]>`
-    SELECT ${sql.unsafe(USER_SELECT)} FROM eldarin_users WHERE id = ${userId} LIMIT 1
-  `;
-  const row = existing[0];
+  const row = await queryOneUserRow(sql, "id = ?", [userId]);
   if (!row) throw new Error("Conta não encontrada");
 
   let customUrl = row.avatar_url;
@@ -581,12 +568,9 @@ export async function completeUserPasswordRegistration(
   if (!sql) throw new Error("DATABASE_URL não configurada");
   if (password.length < 6) throw new Error("Senha deve ter pelo menos 6 caracteres");
 
-  const existing = await sql<UserRow[]>`
-    SELECT ${sql.unsafe(USER_SELECT)}
-    FROM eldarin_users WHERE id = ${userId} LIMIT 1
-  `;
-  const row = existing[0];
-  if (!row) throw new Error("Conta não encontrada");
+  const existing = await queryOneUserRow(sql, "id = ?", [userId]);
+  if (!existing) throw new Error("Conta não encontrada");
+  const row = existing;
   if (row.password_hash) throw new Error("Esta conta já possui senha — faça login");
 
   let nick = row.nickname;
@@ -607,11 +591,9 @@ export async function completeUserPasswordRegistration(
     WHERE id = ${userId}
   `;
 
-  const updated = await sql<UserRow[]>`
-    SELECT ${sql.unsafe(USER_SELECT)}
-    FROM eldarin_users WHERE id = ${userId} LIMIT 1
-  `;
-  return rowToStored(updated[0]!);
+  const updated = await queryOneUserRow(sql, "id = ?", [userId]);
+  if (!updated) throw new Error("Conta não encontrada");
+  return rowToStored(updated);
 }
 
 export async function updateUserProfile(
@@ -621,12 +603,9 @@ export async function updateUserProfile(
   const sql = getSql();
   if (!sql) throw new Error("DATABASE_URL não configurada");
 
-  const existing = await sql<UserRow[]>`
-    SELECT ${sql.unsafe(USER_SELECT)}
-    FROM eldarin_users WHERE id = ${userId} LIMIT 1
-  `;
-  const row = existing[0];
-  if (!row) throw new Error("Conta não encontrada");
+  const existing = await queryOneUserRow(sql, "id = ?", [userId]);
+  if (!existing) throw new Error("Conta não encontrada");
+  const row = existing;
 
   let nick = row.nickname;
   if (opts.nickname !== undefined) {
@@ -647,11 +626,9 @@ export async function updateUserProfile(
     UPDATE eldarin_users SET name = ${name}, nickname = ${nick} WHERE id = ${userId}
   `;
 
-  const updated = await sql<UserRow[]>`
-    SELECT ${sql.unsafe(USER_SELECT)}
-    FROM eldarin_users WHERE id = ${userId} LIMIT 1
-  `;
-  return rowToStored(updated[0]!);
+  const updated = await queryOneUserRow(sql, "id = ?", [userId]);
+  if (!updated) throw new Error("Conta não encontrada");
+  return rowToStored(updated);
 }
 
 export async function deleteUserAccount(userId: string): Promise<void> {
