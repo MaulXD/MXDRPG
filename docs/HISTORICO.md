@@ -624,6 +624,33 @@ kubectl -n raul set image deployment/mxdrpg mxdrpg=ghcr.io/maulxd/mxdrpg:sha-dd9
 
 ---
 
+---
+
+### 2026-06-19 — Fix: action ring aparece e desaparece
+
+**Pedido:** o action ring abre e fecha imediatamente sem o jogador fazer nada.
+
+**Passo a passo:**
+1. **Diagnóstico** — Em React 18+ concurrent mode, o re-render do `onPointerDown` (`setSelectedId`) pode não acontecer antes do `onPointerUp`. Resultado: `onPointerUp` encontra o `selectedId` antigo na closure, chama `setSelectedId` + `setActionRingAt` no mesmo batch, o effect `[selectedId, turnActiveId, round]` dispara e limpa `actionRingAt`. O ring some em 1 frame.
+   Segundo vetor: o evento `click` pode chegar ao backdrop do ring (position:fixed) imediatamente após o commit React, fechando o ring via `beginClose`.
+2. **Decisão** — (a) `pendingRingRef` em `Battlefield`: quando `onActionRingRequest` é chamado, grava a posição no ref. O effect `[selectedId]` usa o ref em vez de setar null — preserva o ring mesmo que `selectedId` tenha mudado no mesmo batch. (b) `backdropReady` em `TokenActionRing`: o backdrop não responde a click nos primeiros 150ms após montagem — absorve o click fantasma que abriu o ring.
+3. **Implementação:**
+   - `Battlefield.tsx` — `pendingRingRef = useRef(null)`; `onActionRingRequest` seta o ref; effect `[selectedId]` usa `pendingRingRef.current ?? null` em vez de `null`.
+   - `TokenActionRing.tsx` — `backdropReady` state; effect com 150ms delay; backdrop `onClick` condicional em `backdropReady`.
+4. **Validação** — `npm run build` ✅ (sem erros TS).
+
+**Arquivos tocados:**
+- `components/vtt/Battlefield.tsx` — `pendingRingRef`, `onActionRingRequest`, effect `[selectedId]`
+- `components/vtt/TokenActionRing.tsx` — `backdropReady`, guard 150ms
+
+**Commits / deploy:** pendente local
+
+**Como testar:**
+1. `/mesa/demo` → colocar token no mapa → clicar uma vez com botão esquerdo
+2. Ring deve abrir e FICAR aberto (não fechar sozinho)
+3. Clicar fora do ring → fecha normalmente
+4. ESC → fecha normalmente
+
 <!--
 ### AAAA-MM-DD — Título
 
