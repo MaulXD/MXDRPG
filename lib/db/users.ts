@@ -144,6 +144,29 @@ export async function fetchUserByNickname(nickname: string): Promise<StoredUser 
   return r ? rowToStored(r) : null;
 }
 
+/** E-mail completo ou apelido / parte local do e-mail (ex.: `mestre` → `mestre@…`). */
+export async function fetchUserByLogin(login: string): Promise<StoredUser | null> {
+  const sql = getSql();
+  if (!sql) return null;
+  const trimmed = login.trim();
+  if (!trimmed) return null;
+
+  if (trimmed.includes("@")) {
+    return fetchUserByEmail(trimmed);
+  }
+
+  const key = normalizeNickname(trimmed);
+  const rows = (await sql.unsafe(
+    `SELECT ${USER_SELECT} FROM eldarin_users
+     WHERE LOWER(nickname) = ?
+        OR LOWER(SUBSTRING_INDEX(email, '@', 1)) = ?
+     LIMIT 1`,
+    [key, key]
+  )) as UserRow[];
+  const r = rows[0];
+  return r ? rowToStored(r) : null;
+}
+
 export async function fetchUserByOAuthIdentity(
   provider: OAuthProviderId,
   subject: string
