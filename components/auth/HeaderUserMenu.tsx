@@ -14,7 +14,7 @@ import { ENTRAR_PATH } from "@/lib/site-paths";
 
 type Props = {
   user?: SessionUser | null;
-  /** Clerk: passa signOut do useClerk no componente pai. */
+  /** Callback opcional de logout (ex.: limpar estado local). */
   onSignOut?: () => void | Promise<void>;
 };
 

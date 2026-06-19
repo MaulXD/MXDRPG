@@ -8,7 +8,6 @@ import { getUserById } from "@/lib/auth/user-store";
 import type { SessionUser } from "@/lib/auth/types";
 import { dbEnabled } from "@/lib/db/enabled";
 import {
-  ensureUserFromClerk,
   ensureUserFromOAuth,
   fetchUserByClerkId,
   fetchUserByEmail,
@@ -41,7 +40,7 @@ async function materializeOAuthUser(user: SessionUser): Promise<SessionUser> {
   return { ...row, clerkId: user.clerkId ?? row.clerkId ?? null };
 }
 
-/** Garante linha em `eldarin_users` para o usuário da sessão (OAuth efêmero, Clerk, usr_*). */
+/** Garante linha em `eldarin_users` para o usuário da sessão (OAuth efêmero, usr_*). */
 export async function materializeSessionUser(user: SessionUser): Promise<SessionUser> {
   const oauth = oauthIdentityFromSession(user);
   if (oauth) {
@@ -84,28 +83,20 @@ export async function materializeSessionUser(user: SessionUser): Promise<Session
   const clerkId =
     user.clerkId?.trim() ||
     (user.id.startsWith("clerk-") ? user.id.slice("clerk-".length) : null);
-  if (!clerkId) {
-    if (!dbEnabled()) return user;
-    throw new Error("Conta não encontrada — saia e entre de novo");
-  }
-
-  try {
-    const existing = await fetchUserByClerkId(clerkId);
-    if (existing) {
-      const row = await fetchUserByIdStrict(existing.id);
-      if (row) return { ...row, clerkId };
+  if (clerkId) {
+    try {
+      const existing = await fetchUserByClerkId(clerkId);
+      if (existing) {
+        const row = await fetchUserByIdStrict(existing.id);
+        if (row) return { ...row, clerkId };
+      }
+    } catch (err) {
+      console.error("[materializeSessionUser] legacy clerk_id lookup failed:", err);
     }
-
-    return await ensureUserFromClerk({
-      clerkId,
-      email: user.email,
-      name: user.name,
-      oauthAvatarUrl: user.oauthAvatarUrl ?? null,
-    });
-  } catch (err) {
-    console.error("[materializeSessionUser] clerk sync failed:", err);
-    throw err instanceof Error ? err : new Error("Conta não encontrada — saia e entre de novo");
   }
+
+  if (!dbEnabled()) return user;
+  throw new Error("Conta não encontrada — saia e entre de novo");
 }
 
 /** SSR / páginas — nunca derruba o render; APIs usam `materializeSessionUser` (strict). */

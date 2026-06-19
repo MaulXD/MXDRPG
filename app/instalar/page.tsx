@@ -22,7 +22,7 @@ docker build -t mxdrpg .
 docker run -p 3000:3000 --env-file .env.production mxdrpg`}</pre>
         <p style={{ color: "var(--text-muted)", fontSize: "0.9rem", margin: "1rem 0 0" }}>
           Env mínimo: <code>DATABASE_URL</code>, <code>SESSION_SECRET</code>, <code>NODE_ENV=production</code>.
-          Clerk opcional — ver <code>DEPLOY.md</code>.
+          OAuth Google/Discord opcional — ver <code>DEPLOY.md</code>.
         </p>
       </article>
 

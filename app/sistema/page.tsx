@@ -26,7 +26,7 @@ const LIVE = [
   "Wizard de ficha (8 passos, com religião) e compêndios sincronizados do livro",
   "Atlas e panteão em /mundo — lore com tooltips",
   "Convite de sala + modo visitante (só leitura)",
-  "Login Clerk + apelido (opcional) ou demo local",
+  "Login Google + e-mail/senha ou demo local",
 ];
 
 const NEXT = [
@@ -40,7 +40,7 @@ const STEPS = [
     title: "Crie sua conta",
     text: (
       <>
-        Clique em <strong>Entrar</strong> no topo e faça login (Clerk) ou use o modo demo local.
+        Clique em <strong>Entrar</strong> no topo e faça login com Google ou e-mail/senha.
         Na primeira vez, você pode escolher um apelido para aparecer na mesa.
       </>
     ),
