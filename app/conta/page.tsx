@@ -34,8 +34,8 @@ export default async function ContaPage() {
     <div className="page-wrap" style={{ maxWidth: 720, paddingTop: "1.75rem", paddingBottom: "3rem" }}>
       <header className="page-header" style={{ paddingBottom: "1.25rem" }}>
         <p className="eyebrow">
-          <Link href="/eldarin" style={{ color: "var(--text-muted)" }}>
-            ← Mesas
+          <Link href="/mesas" style={{ color: "var(--text-muted)" }}>
+            ← MXDRPG
           </Link>{" "}
           · Conta
         </p>

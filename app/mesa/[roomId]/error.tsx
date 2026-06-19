@@ -27,7 +27,7 @@ export default function MesaRoomError({
         <button type="button" className="btn" onClick={() => reset()}>
           Tentar de novo
         </button>
-        <Link href="/eldarin" className="btn btn-secondary">
+        <Link href="/rpg/eldarin" className="btn btn-secondary">
           Suas mesas
         </Link>
       </div>

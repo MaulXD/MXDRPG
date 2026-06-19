@@ -72,7 +72,7 @@ export function RegisterForm({ redirect = "", persistentAccounts = true }: Props
       setNotice("Conta já existia — você entrou com sucesso. Redirecionando…");
     }
 
-    router.push(data.redirect ?? "/eldarin");
+    router.push(data.redirect ?? "/mesas");
     router.refresh();
   }
 

@@ -2,6 +2,7 @@ import { createHmac, randomBytes, timingSafeEqual } from "crypto";
 import { cookies } from "next/headers";
 import type { OAuthProviderId } from "@/lib/auth/oauth-config";
 import { safeRedirectPath } from "@/lib/auth/post-auth-redirect";
+import { MESAS_HUB_PATH } from "@/lib/rpg/systems";
 
 const COOKIE = "eldarin_oauth";
 const TTL_MS = 10 * 60 * 1000;
@@ -56,7 +57,7 @@ export async function beginOAuthState(
   const bundle: PendingOAuth = {
     state: randomBytes(24).toString("base64url"),
     provider,
-    redirect: safeRedirectPath(redirect) ?? "/eldarin",
+    redirect: safeRedirectPath(redirect) ?? MESAS_HUB_PATH,
     exp: Date.now() + TTL_MS,
   };
   const value = encode(bundle);

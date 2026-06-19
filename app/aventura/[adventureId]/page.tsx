@@ -107,7 +107,7 @@ export default async function AventuraHubPage({ params, searchParams }: Props) {
 
         <p>Mesa não encontrada ou prazo de restauração expirou.</p>
 
-        <Link href="/eldarin">Suas mesas</Link>
+        <Link href="/rpg/eldarin">Suas mesas</Link>
 
       </div>
 
@@ -131,7 +131,7 @@ export default async function AventuraHubPage({ params, searchParams }: Props) {
 
           <p>Esta mesa foi encerrada pelo mestre.</p>
 
-          <Link href="/eldarin" className="btn">
+          <Link href="/rpg/eldarin" className="btn">
 
             Voltar às mesas
 
@@ -151,7 +151,7 @@ export default async function AventuraHubPage({ params, searchParams }: Props) {
 
         <p className="lead">Mesa na lixeira — restaure em até 30 dias para reativar.</p>
 
-        <Link href="/eldarin" className="btn">
+        <Link href="/rpg/eldarin" className="btn">
 
           Restaurar em Suas mesas
 
@@ -187,7 +187,7 @@ export default async function AventuraHubPage({ params, searchParams }: Props) {
         <p style={{ color: "var(--text-muted)", fontSize: "0.9rem" }}>
           Use o link do mestre (com <code>?invite=</code>) ou cole o código em Suas mesas.
         </p>
-        <Link href="/eldarin" className="btn">
+        <Link href="/rpg/eldarin" className="btn">
           Suas mesas
         </Link>
       </div>
@@ -235,7 +235,7 @@ export default async function AventuraHubPage({ params, searchParams }: Props) {
 
         <p className="eyebrow">
 
-          <Link href="/eldarin" style={{ color: "var(--text-muted)" }}>
+          <Link href="/rpg/eldarin" style={{ color: "var(--text-muted)" }}>
 
             ← Mesas Eldarin
 
@@ -327,7 +327,7 @@ export default async function AventuraHubPage({ params, searchParams }: Props) {
 
           Você ingressou nesta mesa. Ela permanece salva em{" "}
 
-          <Link href="/eldarin">Suas mesas</Link> — crie seu personagem e entre na sala VTT.
+          <Link href="/rpg/eldarin">Suas mesas</Link> — crie seu personagem e entre na sala VTT.
 
         </div>
 
@@ -505,7 +505,7 @@ export default async function AventuraHubPage({ params, searchParams }: Props) {
 
 
 
-      <Link href="/eldarin" className="btn btn-ghost" style={{ marginTop: "1.25rem" }}>
+      <Link href="/rpg/eldarin" className="btn btn-ghost" style={{ marginTop: "1.25rem" }}>
 
         Voltar às mesas
 
