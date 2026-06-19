@@ -438,7 +438,7 @@ export const bankActiveTokenPa = onTurnEnd;
 export const applyCombatSpendablePaIfDue = ensureSpendableBeforeAction;
 export const prepareSpawnedTokenPa = onTokenSpawned;
 export const scheduleAutoPassWhenActivePaZero = scheduleAutoPassIfNeeded;
-export const executePendingAutoPassIfDue = shouldExecuteAutoPass;
+export const executePendingAutoPassIfDue = shouldExecuteAutoPass; // NÃO importar daqui — usar handlers/combat-turn.ts
 
 export function refreshActiveTokenAtTurnStart(
   room: RoomState,

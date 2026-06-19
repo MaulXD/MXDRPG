@@ -262,7 +262,11 @@ Documentação HTTP: `docs/API-SALA.md`.
 
 ### PA (pontos de ação) — regras críticas
 
-- Base, acúmulo (até 2), teto **11 PA/turno**, Atordoado zera acúmulo.
+- **Jogadores:** base 5 PA/turno, acúmulo de até 5 PA não usados, pool total máxima **9 PA**, Atordoado zera acúmulo.
+- **Monstros comuns:** 6 PA/turno, **não acumulam** (pool = recuperação).
+- **Minibosses / Bosses:** acumulam até **8 PA** (`MONSTER_PA_BOSS = 8` em `lib/combat/pa-economy.ts`).
+- **Movimento:** 1 PA → 6 m (4 células); corrida 2 PA → 12 m (8 células). 1 célula = 1,5 m.
+- **Fases de PA:** `exploration` (PA visual, sem débito) → `combat_free` (PA real, sem fila) → `combat_turn` (PA real + turno ativo). Controlado por `settings.combatActive` + `combat.order`.
 - Implementação: `lib/combat/pa-economy.ts`, `pa-turn.ts`, `pa-token-state.ts`, `combat-token-pa.ts`
 - UI mesa: medidor PA, `EndTurnBar`, confirmação ao passar turno.
 - **Nunca** “simplificar” PA sem ler livro Cap. 2.6 / 3.1.1 e `docs/VTT-ACOES-PA-AREAS.md`.
@@ -438,7 +442,7 @@ npm run sync:data:check   # se mexeu em livros/scripts
 | D8 | Convite código + link |
 | D10 | Wizard completo + recorte retrato → token |
 | D11/D23 | Até 10 fichas por conta; 1 por aventura |
-| D14 | PA: base 5, acúmulo ≤2, teto 11/turno |
+| D14 | PA jogadores: base 5, acúmulo até 5, pool máx 9 — Monstros: 6 PA sem acúmulo — Miniboss/Boss: acúmulo até 8 |
 | D22 | Visitante só visualiza, sem chat |
 | D24–D27 | Combate por clique, PA visível, áreas padronizadas, passar turno com confirmação |
 | Modelo conta | Uma conta = pode mestrear **suas** aventuras e jogar **outras** via convite |
