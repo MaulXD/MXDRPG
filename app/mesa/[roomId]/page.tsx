@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import type { Metadata } from "next";import { MesaWorkspace } from "@/components/vtt/MesaWorkspace";
+import type { Metadata } from "next";
+import { MesaWorkspace } from "@/components/vtt/MesaWorkspace";
 import { MesaVisitorNotice } from "@/components/vtt/MesaVisitorNotice";
 import {
   canManageRoom,
@@ -74,34 +75,41 @@ export default async function MesaRoomPage({ params, searchParams }: Props) {
   const accountUser = session?.user ? await safeMaterializeSessionUser(session.user) : null;
 
   if (accountUser && roomId !== "demo" && !watchOnly) {
-    const isMember = await isRoomMemberResolved(room, accountUser.id, accountUser.clerkId);
-    if (!room.memberIds.includes(accountUser.id) && isMember) {
-      await joinRoomMembers(roomId, accountUser.id);
-      room = (await getRoom(roomId)) ?? room;
-    } else if (
-      !isMember &&
-      (await shouldAutoJoinRoom(room, accountUser))
-    ) {
-      await joinRoomMembers(roomId, accountUser.id);
-      room = (await getRoom(roomId)) ?? room;
+    try {
+      const isMember = await isRoomMemberResolved(room, accountUser.id, accountUser.clerkId);
+      if (!room.memberIds.includes(accountUser.id) && isMember) {
+        await joinRoomMembers(roomId, accountUser.id);
+        room = (await getRoom(roomId)) ?? room;
+      } else if (!isMember && (await shouldAutoJoinRoom(room, accountUser))) {
+        await joinRoomMembers(roomId, accountUser.id);
+        room = (await getRoom(roomId)) ?? room;
+      }
+    } catch (err) {
+      console.error("[mesa] auto-join membro:", err);
     }
   }
 
   if (accountUser && inviteCode && !watchOnly && accountUser.role !== "admin") {
-    const alreadyMember = await isRoomMemberResolved(room, accountUser.id, accountUser.clerkId);
-    if (!alreadyMember && (await inviteMatchesRoom(room, inviteCode))) {
-      const joined = await joinRoomByInvite(inviteCode, accountUser.id, roomId);
-      const canonical = await canonicalInviteForRoom(room);
-      const targetRoomId = joined?.roomId ?? canonical.roomId;
-      const fresh = (await getRoom(targetRoomId)) ?? joined ?? room;
-      room = fresh;
+    try {
+      const alreadyMember = await isRoomMemberResolved(room, accountUser.id, accountUser.clerkId);
+      if (!alreadyMember && (await inviteMatchesRoom(room, inviteCode))) {
+        const joined = await joinRoomByInvite(inviteCode, accountUser.id, roomId);
+        const canonical = await canonicalInviteForRoom(room);
+        const targetRoomId = joined?.roomId ?? canonical.roomId;
+        const fresh = (await getRoom(targetRoomId)) ?? joined ?? room;
+        room = fresh;
 
-      if (await isRoomMemberResolved(room, accountUser.id, accountUser.clerkId)) {
-        if (targetRoomId !== roomId) {
-          redirect(mesaRoomPath(targetRoomId, inviteCode));
+        if (await isRoomMemberResolved(room, accountUser.id, accountUser.clerkId)) {
+          if (targetRoomId !== roomId) {
+            redirect(mesaRoomPath(targetRoomId, inviteCode));
+          }
+          redirect(`/mesa/${roomId}?joined=1`);
         }
-        redirect(`/mesa/${roomId}?joined=1`);
+        joinError =
+          "Não foi possível entrar na mesa com este convite. Tente novamente ou peça um novo link ao mestre.";
       }
+    } catch (err) {
+      console.error("[mesa] join por convite:", err);
       joinError =
         "Não foi possível entrar na mesa com este convite. Tente novamente ou peça um novo link ao mestre.";
     }
@@ -115,7 +123,11 @@ export default async function MesaRoomPage({ params, searchParams }: Props) {
   ) {
     const advId = room.adventureId ?? roomId;
     if (room.ownerId !== accountUser.id) {
-      await bindPlayerToAdventure(advId, accountUser.id);
+      try {
+        await bindPlayerToAdventure(advId, accountUser.id);
+      } catch (err) {
+        console.error("[mesa] bindPlayerToAdventure:", err);
+      }
     }
     try {
       const synced = await syncAdventureActorsForRoom(roomId);

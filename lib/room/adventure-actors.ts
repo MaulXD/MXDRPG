@@ -85,7 +85,9 @@ function mergePortraitFromRoom(sheet: CharacterSheet, prev?: RoomActor): Charact
   };
 
   const sheetHasGear =
-    sheet.inventory.length > 0 || sheet.combatLoadout != null || sheet.armorLoadout != null;
+    (sheet.inventory?.length ?? 0) > 0 ||
+    sheet.combatLoadout != null ||
+    sheet.armorLoadout != null;
   const prevMissingGear =
     !prev.inventory?.length && prev.combatLoadout == null && prev.armorLoadout == null;
 
@@ -135,11 +137,16 @@ function portraitBackfillNeeded(sheet: CharacterSheet, prev?: RoomActor): boolea
   );
 }
 
-function toRoomActor(sheet: CharacterSheet, prev?: RoomActor): RoomActor {
-  return {
-    ...normalizeCharacter(mergePortraitFromRoom(sheet, prev)),
-    revision: prev?.revision ?? 1,
-  };
+function toRoomActor(sheet: CharacterSheet, prev?: RoomActor): RoomActor | null {
+  try {
+    return {
+      ...normalizeCharacter(mergePortraitFromRoom(sheet, prev)),
+      revision: prev?.revision ?? 1,
+    };
+  } catch (err) {
+    console.warn("[toRoomActor] ficha ignorada:", sheet.id, err);
+    return null;
+  }
 }
 
 export function attachCharacterToRoomState(
@@ -149,59 +156,71 @@ export function attachCharacterToRoomState(
   const adventureId = room.adventureId ?? room.roomId;
   if (!characterBelongsToAdventure(sheet, adventureId)) return false;
   const prev = room.actors[sheet.id];
-  room.actors[sheet.id] = toRoomActor(sheet, prev);
+  const actor = toRoomActor(sheet, prev);
+  if (!actor) return false;
+  room.actors[sheet.id] = actor;
   return true;
 }
 
 /** Sincroniza fichas da aventura para a mesa ao vivo. */
 export async function syncAdventureActorsForRoom(roomId: string): Promise<RoomState | null> {
-  const room = await getRoom(roomId);
-  if (!room || roomId === "demo") return room;
+  try {
+    const room = await getRoom(roomId);
+    if (!room || roomId === "demo") return room;
 
-  const adventureId = room.adventureId ?? room.roomId;
-  let changed = false;
-  const backfills: RoomActor[] = [];
+    const adventureId = room.adventureId ?? room.roomId;
+    let changed = false;
+    const backfills: RoomActor[] = [];
 
-  for (const [actorId, actor] of Object.entries(room.actors)) {
-    if (actorBelongsToRoom(room, actor)) continue;
-    delete room.actors[actorId];
-    room.scene = {
-      ...room.scene,
-      tokens: room.scene.tokens.filter((t) => t.actorId !== actorId),
-    };
-    if (room.combat?.order) {
-      room.combat = {
-        ...room.combat,
-        order: room.combat.order.filter((id) => {
-          const tok = room.scene.tokens.find((t) => t.id === id);
-          return tok?.actorId !== actorId;
-        }),
+    for (const [actorId, actor] of Object.entries(room.actors)) {
+      if (actorBelongsToRoom(room, actor)) continue;
+      delete room.actors[actorId];
+      room.scene = {
+        ...room.scene,
+        tokens: room.scene.tokens.filter((t) => t.actorId !== actorId),
       };
-    }
-    changed = true;
-  }
-
-  for (const userId of await resolvedParticipantIds(room)) {
-    const sheets = await listCharactersForUserInAdventure(userId, adventureId);
-    for (const sheet of sheets) {
-      if (!characterBelongsToAdventure(sheet, adventureId)) continue;
-      const prev = room.actors[sheet.id];
-      const next = toRoomActor(sheet, prev);
-      room.actors[sheet.id] = next;
-      if (portraitChangedBetween(prev, next)) {
-        syncLinkedTokenPortraits(room, sheet.id, next);
+      if (room.combat?.order) {
+        room.combat = {
+          ...room.combat,
+          order: room.combat.order.filter((id) => {
+            const tok = room.scene.tokens.find((t) => t.id === id);
+            return tok?.actorId !== actorId;
+          }),
+        };
       }
       changed = true;
-      if (portraitBackfillNeeded(sheet, prev)) backfills.push(next);
     }
-  }
 
-  if (!changed) return room;
-  const saved = await persistRoom(roomId, room);
-  for (const actor of backfills) {
-    await persistActorToAdventureSheet(actor);
+    for (const userId of await resolvedParticipantIds(room)) {
+      const sheets = await listCharactersForUserInAdventure(userId, adventureId);
+      for (const sheet of sheets) {
+        if (!characterBelongsToAdventure(sheet, adventureId)) continue;
+        const prev = room.actors[sheet.id];
+        const next = toRoomActor(sheet, prev);
+        if (!next) continue;
+        room.actors[sheet.id] = next;
+        if (portraitChangedBetween(prev, next)) {
+          syncLinkedTokenPortraits(room, sheet.id, next);
+        }
+        changed = true;
+        if (portraitBackfillNeeded(sheet, prev)) backfills.push(next);
+      }
+    }
+
+    if (!changed) return room;
+    const saved = await persistRoom(roomId, room);
+    for (const actor of backfills) {
+      try {
+        await persistActorToAdventureSheet(actor);
+      } catch (err) {
+        console.warn("[syncAdventureActorsForRoom] backfill ficha:", actor.id, err);
+      }
+    }
+    return saved;
+  } catch (err) {
+    console.error("[syncAdventureActorsForRoom]", roomId, err);
+    return getRoom(roomId);
   }
-  return saved;
 }
 
 export async function persistActorToAdventureSheet(actor: RoomActor): Promise<void> {
