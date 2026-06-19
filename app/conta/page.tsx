@@ -3,7 +3,7 @@ import { AvatarProfileForm } from "@/components/auth/AvatarProfileForm";
 import { RecoveryIdentityForm } from "@/components/auth/RecoveryIdentityForm";
 import { NicknameForm } from "@/components/auth/NicknameForm";
 import { MedievalFrame } from "@/components/ui/MedievalFrame";
-import { listCharactersForSessionUser } from "@/lib/character/characters";
+import { listCharactersForSessionUserSafe } from "@/lib/character/characters";
 import { getAdventure } from "@/lib/adventure/store";
 import { dbEnabled } from "@/lib/db/enabled";
 import { userHasRecoveryConfigured } from "@/lib/auth/password-recover";
@@ -29,7 +29,7 @@ export default async function ContaPage() {
   const accountUser = await safeMaterializeSessionUser(session.user);
   const hasRecovery = await userHasRecoveryConfigured(accountUser.id);
   const displayName = accountUser.nickname ?? accountUser.name;
-  const myCharacters = await listCharactersForSessionUser(accountUser);
+  const myCharacters = await listCharactersForSessionUserSafe(accountUser);
 
   return (
     <div className="page-wrap" style={{ maxWidth: 720, paddingTop: "1.75rem", paddingBottom: "3rem" }}>

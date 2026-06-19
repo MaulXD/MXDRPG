@@ -6,8 +6,8 @@ import { MedievalFrame } from "@/components/ui/MedievalFrame";
 import { isAdventureMember } from "@/lib/auth/adventure-access";
 import { ensureSessionAdventureAccess } from "@/lib/adventure/store";
 import {
-  listCharactersForSessionUser,
-  listCharactersForSessionUserInAdventure,
+  listCharactersForSessionUserSafe,
+  listCharactersForSessionUserInAdventureSafe,
   MAX_CHARACTERS_PER_USER,
   MAX_CHARACTERS_PER_USER_PER_ADVENTURE,
 } from "@/lib/character/characters";
@@ -66,8 +66,8 @@ export default async function AventuraNovoPersonagemPage({ params, searchParams 
     );
   }
 
-  const myChars = await listCharactersForSessionUser(accountUser);
-  const inAdvChars = await listCharactersForSessionUserInAdventure(accountUser, adventureId);
+  const myChars = await listCharactersForSessionUserSafe(accountUser);
+  const inAdvChars = await listCharactersForSessionUserInAdventureSafe(accountUser, adventureId);
   const total = myChars.length;
   const inAdv = inAdvChars.length;
 
