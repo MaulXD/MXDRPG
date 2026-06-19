@@ -67,7 +67,11 @@ export async function joinRoomMembers(roomId: string, userId: string): Promise<v
     room.revision += 1;
     rooms().set(roomId, room);
     if (dbRooms.dbEnabled()) {
-      await dbRooms.saveRoom(room);
+      try {
+        await dbRooms.saveRoom(room);
+      } catch (err) {
+        console.error("[joinRoomMembers] saveRoom falhou:", roomId, err);
+      }
     }
   }
 }

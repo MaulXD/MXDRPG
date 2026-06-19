@@ -1,12 +1,13 @@
 "use client";
 
+import { useState } from "react";
 import {
   DEFAULT_PORTRAIT_FOCUS,
   portraitFocusToImgStyle,
   sanitizePortraitFocus,
   type PortraitFocus,
 } from "@/lib/media/portrait-focus";
-import { resolveMesaCoverSrc } from "@/lib/rpg/systems";
+import { ELDARIN_DEFAULT_COVER_SRC, resolveMesaCoverSrc } from "@/lib/rpg/systems";
 
 type Props = {
   coverUrl?: string | null;
@@ -15,7 +16,8 @@ type Props = {
 
 /** Capa decorativa da mesa — atrás do mapa, sem capturar cliques. */
 export function RoomCoverBackdrop({ coverUrl, coverFocus }: Props) {
-  const src = resolveMesaCoverSrc(coverUrl);
+  const primary = resolveMesaCoverSrc(coverUrl);
+  const [src, setSrc] = useState(primary);
   const focus = sanitizePortraitFocus(coverFocus) ?? DEFAULT_PORTRAIT_FOCUS;
 
   return (
@@ -26,6 +28,9 @@ export function RoomCoverBackdrop({ coverUrl, coverFocus }: Props) {
         className="mesa-room-cover__img"
         style={portraitFocusToImgStyle(focus)}
         decoding="async"
+        onError={() => {
+          if (src !== ELDARIN_DEFAULT_COVER_SRC) setSrc(ELDARIN_DEFAULT_COVER_SRC);
+        }}
       />
       <div className="mesa-room-cover__veil" />
     </div>

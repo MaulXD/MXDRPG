@@ -409,13 +409,17 @@ export async function joinAdventureRecord(adventure: Adventure, userId: string):
     }
   }
   adventures().set(adventure.adventureId, adventure);
-  await joinRoomMembers(adventure.primaryRoomId, userId);
-  await syncAdventureMembersToRoom(adventure);
-  if (dbEnabled() && adventure.adventureId !== "demo") {
-    await dbAdventures.saveAdventure(adventure);
+  try {
+    await joinRoomMembers(adventure.primaryRoomId, userId);
+    await syncAdventureMembersToRoom(adventure);
+    if (dbEnabled() && adventure.adventureId !== "demo") {
+      await dbAdventures.saveAdventure(adventure);
+    }
+    const { syncAdventureActorsForRoom } = await import("@/lib/room/adventure-actors");
+    await syncAdventureActorsForRoom(adventure.primaryRoomId);
+  } catch (err) {
+    console.error("[joinAdventureRecord]", adventure.adventureId, userId, err);
   }
-  const { syncAdventureActorsForRoom } = await import("@/lib/room/adventure-actors");
-  await syncAdventureActorsForRoom(adventure.primaryRoomId);
   return adventure;
 }
 
