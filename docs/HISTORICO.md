@@ -104,6 +104,44 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-06-20 — Remove auto-abertura do painel de convite ao entrar na mesa
+
+**Pedido:** ao abrir a mesa, o painel de "CONVITE" abre automaticamente; usuário quer mesa limpa ao entrar.
+
+**Passo a passo:**
+1. Diagnóstico — `useEffect` em `MesaWorkspace.tsx` (~linha 395) abria `windows.openInDock("invite")` uma vez por sessão via `sessionStorage` quando o mestre entrava numa sala com código de convite.
+2. Decisão — remover o `useEffect` inteiro; o painel continua acessível pelo dock quando o mestre quiser.
+3. Implementação — deleção do bloco de 7 linhas do `useEffect`.
+4. Validação — sem mudança em `.ts` de lógica; sem build necessário.
+
+**Arquivos tocados:**
+- `components/vtt/MesaWorkspace.tsx` — removido `useEffect` que abria painel de convite automaticamente
+
+**Commits / deploy:** pendente.
+
+**Como testar:** entrar na mesa como mestre → painel de convite não deve abrir; acessar pelo ícone no dock ainda deve funcionar.
+
+---
+
+### 2026-06-20 — Refatoração CSS da toolbar lateral (MapToolbar)
+
+**Pedido:** sidebar do VTT com espaçamento estranho e layout bugado; refatorar `whiteboard.css` para ficar bonita e responsiva sem criar novos containers.
+
+**Passo a passo:**
+1. Diagnóstico — CSS tinha três problemas: `max-width: min(3.25rem, 14vw)` que colapsava em viewports pequenas; `.map-toolbar__btn` com `display: inline-flex` e `display: grid` duplicado (a segunda declaração sobrescreve a primeira); `gap: 0.3rem` uniforme em `.map-toolbar` criava ritmo irregular entre labels, grupos e divisores.
+2. Decisão — reescrever `whiteboard.css` inteiro com: largura fixa `2.75rem` no lugar do `min()` problemático; `gap: 0` no container + `margin` semântica nos filhos; `.map-toolbar__btn` com `display: grid; place-items: center` único; efeito visual de separação nos `section-label` via `::before`/`::after` (hairlines laterais) sem alterar HTML.
+3. Implementação — reescrita completa do arquivo mantendo todos os nomes de classe; botões passaram a `2.15rem × 2.15rem` (caem exato no padding do container); espaçamento hierárquico: `margin-top: 0.5rem` no section-label (exceto `:first-child`), `margin: 0.35rem 0` no divisor; seção flyout preservada com os mesmos seletores do MapToolbar.tsx.
+4. Validação — CSS puro, sem mudança em `.tsx`; nenhum build TypeScript necessário; verificar visualmente na mesa.
+
+**Arquivos tocados:**
+- `components/vtt/whiteboard.css` — reescrita completa; mesma API de classes, layout e espaçamento corrigidos
+
+**Commits / deploy:** pendente.
+
+**Como testar:** abrir mesa → toolbar aparece na lateral esquerda → seções MAPA / LOUSA / ZOOM alinhadas com ritmo uniforme; seção-labels exibem `━━ MAPA ━━` com hairlines laterais; botões quadrados sem corte; flyout de lousa abre ao lado do toolbar sem overlap.
+
+---
+
 ### 2026-06-19 — Fix ataques retornando HTTP 500
 
 **Pedido:** ataques não funcionam; console mostra 20+ erros 500 em `/api/room/[roomId]/combat/attack`.
