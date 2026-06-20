@@ -104,6 +104,33 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-06-20 — Correções críticas de auditoria UX (privacidade, navbar, compêndio, demo)
+
+**Pedido:** corrigir os 4 bugs críticos apontados pela auditoria de agente: página de privacidade exposta com texto de dev, `/mundo` ausente na navbar, cards do compêndio sem detalhe visível, e mesa demo sem tokens de monstros.
+
+**Passo a passo:**
+1. **Privacidade** — `docs/PRIVACIDADE-LGPD.md` tinha campos `[placeholder]` expostos publicamente na rota `/privacidade`. Substituído por política completa em PT-BR com dados reais do controlador (ti@thep.com.br), bases legais LGPD corretas e direitos do titular.
+2. **Navbar `/mundo`** — Criado `IconGlobe` em `EldarinIcons.tsx` (círculo + meridianos SVG). Adicionado link `{ href: "/mundo", label: "Mundo", icon: IconGlobe }` entre Compêndios e Sistema em `SiteNavLinks.tsx`.
+3. **Compêndio clicável** — Cards eram `<button>` mas `CompendiumDetail` renderizava abaixo de 200+ cards, impossível de ver sem scroll. Adicionado `useRef` + `useEffect` para `scrollIntoView({ behavior: "smooth" })` ao selecionar card na view page.
+4. **Demo tokens** — `createDemoRoom()` passava `tokens: []` para `syncLinkedTokens`, zerando os tokens de monstros do `DEMO_SCENE`. `syncLinkedTokens` preserva tokens não-linkados, então basta passar `DEMO_SCENE` sem sobrescrever tokens.
+
+**Arquivos tocados:**
+- `docs/PRIVACIDADE-LGPD.md` — política real substituindo rascunho com placeholders
+- `components/ui/EldarinIcons.tsx` — novo `IconGlobe`
+- `components/SiteNavLinks.tsx` — link `/mundo` adicionado
+- `components/compendium/CompendiumBrowser.tsx` — `useRef` + scroll-to-detail, `useRef` no import
+- `lib/room/sync.ts` — `createDemoRoom`: `{ ...DEMO_SCENE, tokens: [] }` → `DEMO_SCENE`
+
+**Commits / deploy:** pendente local.
+
+**Como testar:**
+- `/privacidade` — deve mostrar política limpa sem "[placeholder]"
+- Navbar — deve exibir link "Mundo" com ícone de globo entre Compêndios e Sistema
+- `/compendios` → clicar num card → página scrolla suavemente para o detalhe
+- `/mesa/demo` → tokens de Goblin, Esqueleto, Minotauro e Escorpião devem aparecer no grid
+
+---
+
 ### 2026-06-20 — Remove auto-abertura do painel de convite ao entrar na mesa
 
 **Pedido:** ao abrir a mesa, o painel de "CONVITE" abre automaticamente; usuário quer mesa limpa ao entrar.
