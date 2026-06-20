@@ -5,6 +5,7 @@ import { parsePrimaryDie } from "@/lib/room/chat-events";
 import { Dice2DFallback } from "@/components/vtt/Dice2DFallback";
 import { Dice3DCSS } from "@/components/vtt/Dice3DCSS";
 import { DiceWebGL, type DiceWebGLProps } from "@/components/vtt/DiceWebGL";
+import { DICE_LANDING_MS, DICE_LANDING_MS_REDUCED } from "@/lib/vtt/combat-fx-timings";
 
 type Props = {
   formula: string;
@@ -12,6 +13,7 @@ type Props = {
   rolling?: boolean;
   size?: "sm" | "md" | "lg";
   variant?: DiceWebGLProps["variant"];
+  reducedMotion?: boolean;
 };
 
 const SIZE_PX: Record<NonNullable<Props["size"]>, number> = {
@@ -34,7 +36,14 @@ function supportsWebGL(): boolean {
   }
 }
 
-export function DiceMiniature({ formula, value, rolling = false, size = "md", variant = "attack" }: Props) {
+export function DiceMiniature({
+  formula,
+  value,
+  rolling = false,
+  size = "md",
+  variant = "attack",
+  reducedMotion = false,
+}: Props) {
   const sides = parsePrimaryDie(formula) as DiceWebGLProps["sides"];
   const [webGLOk, setWebGLOk] = useState<boolean | null>(null); // null = ainda verificando
   const [landed, setLanded] = useState(false);
@@ -48,9 +57,10 @@ export function DiceMiniature({ formula, value, rolling = false, size = "md", va
   useEffect(() => {
     if (rolling) { setLanded(false); return; }
     if (value == null) return;
-    const t = setTimeout(() => setLanded(true), 40);
+    const landingMs = reducedMotion ? DICE_LANDING_MS_REDUCED : DICE_LANDING_MS;
+    const t = setTimeout(() => setLanded(true), landingMs);
     return () => clearTimeout(t);
-  }, [rolling, value]);
+  }, [rolling, value, reducedMotion]);
 
   const display = value != null ? String(value) : "?";
   const isNat20 = value === 20 && sides === 20;
@@ -84,6 +94,7 @@ export function DiceMiniature({ formula, value, rolling = false, size = "md", va
           rolling={rolling}
           sizePx={px}
           variant={resolvedVariant}
+          reducedMotion={reducedMotion}
         />
       </div>
     );
@@ -91,7 +102,7 @@ export function DiceMiniature({ formula, value, rolling = false, size = "md", va
 
   // Fallback CSS D20 (para d20 sem WebGL)
   if (isLarge && sides === 20) {
-    return <Dice3DCSS value={value} rolling={rolling} sizePx={px} />;
+    return <Dice3DCSS value={value} rolling={rolling} sizePx={px} reducedMotion={reducedMotion} />;
   }
 
   // Fallback 2D para sm/md ou dados sem modelo WebGL

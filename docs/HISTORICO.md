@@ -104,6 +104,46 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-06-20 — Ritmo combate: 2s D20 + 2s dano, painel dual, chat e token juntos
+
+**Pedido:** visualização combate bugada e lenta/confusa; reorganizar dados — 2s rolando e parando no número; se acertou +2s dado de dano (D20 fica); ao fim dados saem, token anima dano e chat mostra dano no mesmo instante.
+
+**Passo a passo:**
+1. **Diagnóstico** — tempos espalhados (700 ms / 420 ms / 360 ms); D20 sumia ao iniciar dano; número flutuante no hex sumia antes do CSS; `applyState` no meio da animação; rolagem WebGL mecânica (Euler fixo).
+2. **Decisão** — fonte única `lib/vtt/combat-fx-timings.ts`; janelas fixas **2000 ms** ataque e **2000 ms** dano; pouso nos últimos 450 ms de cada janela; single attack sem número flutuante no mapa (chat + flash no token); resolve único no fim.
+3. **Implementação:**
+   - `combat-fx-timings.ts` — `COMBAT_ATTACK_ROLL_MS`, `COMBAT_DAMAGE_ROLL_MS`, `DICE_LANDING_MS`, `attackLandAt` / `damageLandAt`
+   - `CombatFxLayer.tsx` — sequência: mark 180 ms → roll 2s → result + dano 2s (painel dual) → resolve: esconde dados + `applyState` + `playTokenFx` + `revealChat("damage")`
+   - `DiceWebGL.tsx` — tumble quaternion + ease-out-back no pouso + bounce escala; `reducedMotion` prop
+   - `DiceMiniature` / `Dice3DCSS` — pouso alinhado a `DICE_LANDING_MS`
+   - `vtt.css` — `.combat-fx-dice-row`, `.combat-fx-panel--dual-dice`
+4. **Validação** — `npm run build` ✅
+
+**Arquivos tocados:**
+- `lib/vtt/combat-fx-timings.ts` — NOVO
+- `components/vtt/CombatFxLayer.tsx`, `DiceWebGL.tsx`, `DiceMiniature.tsx`, `Dice3DCSS.tsx`, `vtt.css`
+
+**Commits / deploy:** `62db330` → `main`
+
+**Como testar:** `/mesa/demo` ou mesa real → combate → atacar → 2s D20 → ACERTO → D20 + D8 lado a lado 2s → dados somem + token flash + card chat com dano/HP. Erro: 2s D20 → ERROU ~0,5s → resolve.
+
+---
+
+### 2026-06-20 — Fix dado WebGL idle + lock transição combate
+
+**Pedido:** ajuste fino pós-WebGL — D12 textura errada; UI bloqueada 2,3s na transição combate.
+
+**Passo a passo:**
+1. **Diagnóstico** — D12 `vertsPerFace` 3 (certo 9); dado parado sem animação idle; `COMBAT_MODE_TRANSITION_LOCK_MS` = duração total CSS.
+2. **Implementação** — modo `idle` no `DiceWebGL`; lock 400 ms, animação CSS segue 2,3 s.
+3. **Validação** — build ✅
+
+**Commits / deploy:** `0c71d62` → `main`
+
+**Como testar:** entrar/sair combate — UI clicável em ~400 ms; D12 e idle visíveis no painel.
+
+---
+
 ### 2026-06-20 — Dados 3D WebGL: Three.js IcosahedronGeometry + OctahedronGeometry para D20 e dado de dano
 
 **Pedido:** "Cada dado tem que ser 3D" — o usuário queria modelos 3D reais para os dados de combate.
@@ -122,9 +162,9 @@ npm run sync:data:check       # após editar livros/
 - `components/vtt/CombatFxLayer.tsx` — DamageDiePanel agora usa DiceWebGL D8 em vez de CSS gem
 - `components/vtt/vtt.css` — CSS dmg-die simplificado (gem CSS removida, canvas WebGL estilizado)
 
-**Commits / deploy:** pendente local.
+**Commits / deploy:** `8ca7a4e` → `main`
 
-**Como testar:** Atacar em mesa → D20 3D real girando (tumbling) → pousa com ease-out mostrando resultado na face frontal → D8 3D aparece girando → pousa com dano → número flutuante no canvas hex. Nat20: dado dourado. Dano crítico: D8 dourado. Cura: D8 verde. Se WebGL falhar: fallback CSS/2D automático.
+**Como testar:** Atacar em mesa → D20 3D WebGL; fallback CSS/2D se sem WebGL. Nat20/crit: variantes douradas.
 
 ---
 
@@ -150,9 +190,9 @@ npm run sync:data:check       # após editar livros/
 - `components/vtt/CombatFxLayer.tsx` — remove ProbPanel; adiciona DamageDiePanel; refatora timing BG3-style com showDamageRoll
 - `components/vtt/vtt.css` — remove combat-prob-* CSS; adiciona dmg-die-* CSS; fix fill:none em d20-css-inner-line
 
-**Commits / deploy:** pendente local.
+**Commits / deploy:** `f8ee5c7` → `main`
 
-**Como testar:** Mesa VTT → combate → atacar → sequência: D20 girando com números randômicos (700ms) → D20 para com resultado + ACERTO/ERROU (420ms) → se acertou: gem octagonal com números (620ms) → gem para e flash → dano flutuante no alvo (360ms). Nat20: D20 dourado com glow. Crit: gem dourada. Cura: gem verde.
+**Como testar:** (supersedido pelo fluxo 2s+2s — ver entrada “Ritmo combate” acima.) Histórico: removeu fase prob; D20 decagonal CSS; DamageDiePanel.
 
 ---
 
@@ -182,9 +222,7 @@ npm run sync:data:check       # após editar livros/
 - `components/vtt/CombatFxLayer.tsx` — reescrito: fase prob, painel ProbPanel, ProjectileAnim SVG, AoeExplosion, timing médio
 - `components/vtt/vtt.css` — 500+ linhas adicionadas: D20 CSS, prob panel, projétil SVG; 62 rgba(ouro) → verdigris
 
-**Commits / deploy:** pendente local.
-
-**Como testar:** Iniciar combate na mesa → atacar → observar sequência: painel de probabilidade (1.2s) → D20 girando (1s) → resultado com acerto/erro (0.8s) → dano flutuante + chat atualizado (0.6s). Verificar que flecha aparece em ataques à distância, raio em magias de relâmpago, orbe em outras magias, talho em ataques corpo-a-corpo.
+**Commits / deploy:** `9c04e2a` → `main`
 
 ---
 

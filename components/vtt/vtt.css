@@ -4740,6 +4740,21 @@
   animation: combat-fx-panel-in 0.28s ease-out;
 }
 
+.combat-fx-panel--dual-dice {
+  min-width: 15rem;
+}
+
+.combat-fx-dice-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.combat-fx-dice-row .dmg-die-panel {
+  gap: 0.25rem;
+}
+
 .combat-fx-panel--revealed {
   border-color: rgba(107, 158, 140, 0.55);
 }
@@ -4931,7 +4946,7 @@
   text-shadow:
     0 0 22px rgba(255, 80, 80, 0.65),
     0 4px 16px rgba(0, 0, 0, 0.85);
-  animation: combat-damage-float 3.6s ease-out forwards;
+  animation: combat-damage-float var(--combat-damage-float-ms, 2s) ease-out forwards;
   pointer-events: none;
   z-index: 12;
 }
@@ -4996,7 +5011,7 @@
   transform: translate(-50%, -50%);
   font-size: 0.85rem;
   color: var(--text-dim);
-  animation: combat-damage-float 2s ease-out forwards;
+  animation: combat-damage-float var(--combat-damage-float-ms, 2s) ease-out forwards;
   pointer-events: none;
   z-index: 7;
 }
@@ -7224,11 +7239,11 @@
 }
 
 .d20-css--rolling .d20-css-stage {
-  animation: d20-rolling 0.65s linear infinite;
+  animation: d20-rolling 0.95s linear infinite;
 }
 
 .d20-css--landing .d20-css-stage {
-  animation: d20-land 0.5s cubic-bezier(0.12, 0.8, 0.35, 1) forwards;
+  animation: d20-land 0.65s cubic-bezier(0.22, 1.15, 0.36, 1) forwards;
 }
 
 .d20-css--settled .d20-css-stage {
@@ -7386,6 +7401,16 @@
 /* ═══════════════════════════════════════════════════════════════
    Animações de projétil — SVG overlay sobre o grid hex
    ═══════════════════════════════════════════════════════════════ */
+
+.proj-anim--entering {
+  opacity: 0;
+  animation: proj-enter 0.28s ease-out forwards;
+}
+
+@keyframes proj-enter {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
 
 /* Flecha */
 .proj-arrow-path {
