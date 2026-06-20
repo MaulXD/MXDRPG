@@ -90,7 +90,7 @@ function buildGeometry(sides: DiceWebGLProps["sides"]) {
     faceCount = 20; vertsPerFace = 3;
   } else if (sides === 12) {
     base = new THREE.DodecahedronGeometry(1, 0);
-    faceCount = 12; vertsPerFace = 3;
+    faceCount = 12; vertsPerFace = 9; // cada face pentagonal = 3 triângulos × 3 verts
   } else if (sides === 8) {
     base = new THREE.OctahedronGeometry(1, 0);
     faceCount = 8; vertsPerFace = 3;
@@ -155,7 +155,7 @@ export function DiceWebGL({
     landingQuats: THREE.Quaternion[];
     faceCount: number;
     rafId: number;
-    mode: "rolling" | "landing" | "settled";
+    mode: "idle" | "rolling" | "landing" | "settled";
     rollTime: number;
     landingStart: number;
     landingFrom: THREE.Quaternion;
@@ -213,7 +213,7 @@ export function DiceWebGL({
       landingQuats: THREE.Quaternion[];
       faceCount: number;
       rafId: number;
-      mode: "rolling" | "landing" | "settled";
+      mode: "idle" | "rolling" | "landing" | "settled";
       rollTime: number;
       landingStart: number;
       landingFrom: THREE.Quaternion;
@@ -222,7 +222,7 @@ export function DiceWebGL({
     } = {
       renderer, scene, camera, mesh, materials, landingQuats, faceCount,
       rafId,
-      mode: "rolling",
+      mode: rolling ? "rolling" : "idle",
       rollTime: 0,
       landingStart: 0,
       landingFrom: new THREE.Quaternion(),
@@ -237,6 +237,12 @@ export function DiceWebGL({
         mesh.rotation.x = state.rollTime * 1.9;
         mesh.rotation.y = state.rollTime * 2.7;
         mesh.rotation.z = state.rollTime * 1.1;
+      } else if (state.mode === "idle") {
+        // rotação lenta de exibição — mostra o dado sem rolar
+        state.rollTime += 0.003;
+        mesh.rotation.x = state.rollTime * 0.4;
+        mesh.rotation.y = state.rollTime * 0.7;
+        mesh.rotation.z = state.rollTime * 0.2;
       } else if (state.mode === "landing") {
         const elapsed = performance.now() - state.landingStart;
         const t = Math.min(elapsed / 420, 1);
