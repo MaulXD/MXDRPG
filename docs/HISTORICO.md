@@ -104,6 +104,30 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-06-20 — Dados 3D WebGL: Three.js IcosahedronGeometry + OctahedronGeometry para D20 e dado de dano
+
+**Pedido:** "Cada dado tem que ser 3D" — o usuário queria modelos 3D reais para os dados de combate.
+
+**Passo a passo:**
+1. **Pesquisa** — Avaliou 3 opções: (a) `@3d-dice/dice-box-threejs` (lib pronta, mas overlay complexo de integrar); (b) modelos GLTF do Sketchfab (download manual, licença incerta por modelo); (c) Three.js programático com geometrias nativas. Escolheu opção (c): Three.js já está no projeto (`^0.184.0`), zero dependência nova, controle total de timing e aparência.
+2. **Design das texturas** — Canvas 2D de 256×256 por face, fundo escuro, triângulo decorativo interno, número grande com sombra, sublinhado automático para 6 e 9. 4 variantes de cor: `attack` (verdigris), `damage` (vermelho), `heal` (verde), `crit` (dourado).
+3. **Geometria** — `IcosahedronGeometry(1,0).toNonIndexed()` para D20 (20 faces triangulares planas), `OctahedronGeometry(1,0).toNonIndexed()` para dado de dano (D8, 8 faces). Grupos adicionados com `addGroup()` para material por face.
+4. **Animação** — Rolling: incremento de Euler X/Y/Z em velocidades diferentes (1.9×, 2.7×, 1.1×) para tumbling realista. Landing: `slerpQuaternions()` em 420ms com ease-out cúbico. Quaternion de pouso calculado por `setFromUnitVectors(faceNormal, cameraDir)`.
+5. **Fallback** — `DiceMiniature` verifica WebGL com `getContext("webgl2")` antes de renderizar. Se indisponível: usa `Dice3DCSS` para D20, `Dice2DFallback` para outros.
+6. **Integração** — `DamageDiePanel` (antes CSS) agora usa `DiceWebGL` com D8. `DiceMiniature` usa `DiceWebGL` para size="lg". CSS simplificado para apenas wrapper + label.
+
+**Arquivos tocados:**
+- `components/vtt/DiceWebGL.tsx` — NOVO: Three.js D20/D8/D6/D12/D4 com texturas canvas por face, animação rolling/landing via RAF
+- `components/vtt/DiceMiniature.tsx` — detecta WebGL, usa DiceWebGL para lg, fallback CSS/2D
+- `components/vtt/CombatFxLayer.tsx` — DamageDiePanel agora usa DiceWebGL D8 em vez de CSS gem
+- `components/vtt/vtt.css` — CSS dmg-die simplificado (gem CSS removida, canvas WebGL estilizado)
+
+**Commits / deploy:** pendente local.
+
+**Como testar:** Atacar em mesa → D20 3D real girando (tumbling) → pousa com ease-out mostrando resultado na face frontal → D8 3D aparece girando → pousa com dano → número flutuante no canvas hex. Nat20: dado dourado. Dano crítico: D8 dourado. Cura: D8 verde. Se WebGL falhar: fallback CSS/2D automático.
+
+---
+
 ### 2026-06-20 — Animações de combate BG3-style: dado de dano rolando, D20 decagon, sem painel de probabilidade
 
 **Pedido:** O usuário reportou que: (1) o painel de % de chance ao clicar era redundante — já aparece no hover; (2) o timing de ~3.6s estava cansativo; (3) os dados estavam feios. Queria algo como Baldur's Gate 3: dado de ataque rolando → dado de dano rolando → dano aparecendo animado no mapa.
