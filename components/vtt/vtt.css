@@ -4727,8 +4727,8 @@
   position: absolute;
   transform: translate(-50%, -58%);
   z-index: 6;
-  min-width: 11.5rem;
-  padding: 0.85rem 1rem 0.95rem;
+  min-width: min(20rem, 92vw);
+  padding: 0.5rem 0.65rem 0.6rem;
   text-align: center;
   background: rgba(30, 29, 26, 0.94);
   border: 1px solid rgba(107, 158, 140, 0.38);
@@ -4741,7 +4741,7 @@
 }
 
 .combat-fx-panel--dual-dice {
-  min-width: 15rem;
+  min-width: min(22rem, 96vw);
 }
 
 .combat-fx-dice-row {
@@ -4760,12 +4760,17 @@
   align-items: stretch;
   justify-content: center;
   gap: 0.45rem;
+  width: 100%;
+}
+
+.combat-dice-box-row--dual .combat-dice-slot {
+  max-width: 50%;
 }
 
 .combat-dice-slot {
   flex: 1;
   min-width: 0;
-  max-width: 50%;
+  max-width: 100%;
   position: relative;
 }
 
@@ -4773,11 +4778,16 @@
   width: 100%;
   height: 130px;
   min-height: 130px;
+  position: relative;
   border-radius: 8px;
   overflow: hidden;
   background:
     linear-gradient(180deg, rgba(8, 10, 14, 0.2) 0%, rgba(8, 10, 14, 0.55) 68%, rgba(22, 18, 14, 0.92) 100%),
-    radial-gradient(ellipse 90% 40% at 50% 88%, rgba(201, 169, 98, 0.1), transparent 70%);
+    radial-gradient(ellipse 90% 40% at 50% 88%, color-mix(in srgb, var(--dice-tier-color, #c9a962) 18%, transparent), transparent 70%);
+  box-shadow:
+    inset 0 0 0 2px var(--dice-tier-border, rgba(201, 169, 98, 0.35)),
+    0 0 18px color-mix(in srgb, var(--dice-tier-color, #c9a962) 22%, transparent);
+  transition: box-shadow 0.2s, filter 0.2s;
 }
 
 .combat-dice-box-host canvas {
@@ -4794,8 +4804,10 @@
   bottom: 22%;
   height: 2px;
   border-radius: 999px;
-  background: linear-gradient(90deg, transparent, rgba(201, 169, 98, 0.28), transparent);
+  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--dice-tier-color, #c9a962) 45%, transparent), transparent);
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.45);
   pointer-events: none;
+  z-index: 1;
 }
 
 .combat-dice-slot__label {
@@ -4817,7 +4829,10 @@
 }
 
 .combat-dice-slot--locked .combat-dice-box-host {
-  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.12);
+  box-shadow:
+    inset 0 0 0 2px rgba(255, 255, 255, 0.18),
+    0 0 12px color-mix(in srgb, var(--dice-tier-color, #fff) 15%, transparent);
+  filter: saturate(0.92);
 }
 
 .combat-dice-slot__lock {
@@ -5009,9 +5024,21 @@
 
 .combat-fx-rolling,
 .combat-fx-result {
-  margin: 0.2rem 0 0;
-  font-size: 0.88rem;
+  margin: 0.35rem 0 0;
+  font-size: 0.72rem;
   font-family: var(--font-display);
+  letter-spacing: 0.08em;
+  font-weight: 600;
+}
+
+.combat-fx-rolling {
+  text-transform: uppercase;
+  color: rgba(180, 170, 150, 0.85);
+  font-weight: 500;
+}
+
+.combat-fx-result {
+  font-size: 0.88rem;
   letter-spacing: 0.06em;
   font-weight: 700;
 }
