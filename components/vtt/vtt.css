@@ -4755,6 +4755,111 @@
   gap: 0.25rem;
 }
 
+.combat-dice-box-row {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  gap: 0.45rem;
+}
+
+.combat-dice-slot {
+  flex: 1;
+  min-width: 0;
+  max-width: 50%;
+  position: relative;
+}
+
+.combat-dice-box-host {
+  width: 100%;
+  height: 130px;
+  min-height: 130px;
+  border-radius: 8px;
+  overflow: hidden;
+  background:
+    linear-gradient(180deg, rgba(8, 10, 14, 0.2) 0%, rgba(8, 10, 14, 0.55) 68%, rgba(22, 18, 14, 0.92) 100%),
+    radial-gradient(ellipse 90% 40% at 50% 88%, rgba(201, 169, 98, 0.1), transparent 70%);
+}
+
+.combat-dice-box-host canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.combat-dice-box-host::after {
+  content: "";
+  position: absolute;
+  left: 6%;
+  right: 6%;
+  bottom: 22%;
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, transparent, rgba(201, 169, 98, 0.28), transparent);
+  pointer-events: none;
+}
+
+.combat-dice-slot__label {
+  display: block;
+  margin-top: 0.2rem;
+  font-size: 0.58rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.combat-dice-slot__dot {
+  display: inline-block;
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 50%;
+  margin-right: 0.25rem;
+  vertical-align: middle;
+}
+
+.combat-dice-slot--locked .combat-dice-box-host {
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.12);
+}
+
+.combat-dice-slot__lock {
+  position: absolute;
+  top: 0.35rem;
+  right: 0.35rem;
+  font-size: 0.58rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.1rem 0.35rem;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.55);
+  color: rgba(255, 255, 255, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.combat-dice-box-row--evicting .combat-dice-box-host {
+  animation: combat-dice-evict 0.34s cubic-bezier(0.55, 0.085, 0.68, 0.53) forwards;
+}
+
+.combat-dice-box-row--evicting {
+  animation: combat-dice-panel-flash 0.34s ease-out;
+}
+
+@keyframes combat-dice-evict {
+  0% { transform: scale(1) translateY(0); opacity: 1; filter: brightness(1); }
+  20% { transform: scale(1.08) translateY(-4px); filter: brightness(1.45); }
+  100% { transform: scale(0.25) translateY(-48px); opacity: 0; filter: brightness(2) blur(4px); }
+}
+
+@keyframes combat-dice-panel-flash {
+  0%, 100% { filter: none; }
+  35% { filter: drop-shadow(0 0 12px rgba(224, 80, 64, 0.35)); }
+}
+
+.combat-fx-reduced .combat-dice-box-host {
+  height: 96px;
+  min-height: 96px;
+}
+
 .combat-fx-panel--revealed {
   border-color: rgba(107, 158, 140, 0.55);
 }

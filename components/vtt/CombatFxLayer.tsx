@@ -9,14 +9,19 @@ import type {
   CombatFxState,
   CombatFxTargetBurst,
 } from "@/lib/vtt/combat-fx-types";
-import { DiceMiniature } from "@/components/vtt/DiceMiniature";
-import { DiceWebGL } from "@/components/vtt/DiceWebGL";
-import { splitCombatChatDetail } from "@/lib/combat/chat-display";
-import type { TokenCastFxKind } from "@/lib/vtt/token-cast-fx";
+import { DiceCombatPanel } from "@/components/vtt/DiceCombatPanel";
+import type { BattleToken } from "@/lib/vtt/types";
+import {
+  resolvePortraitFrameTier,
+  type PortraitFrameTier,
+} from "@/lib/vtt/portrait-frame";
+import { DICE_COMBAT_EVICT_MS } from "@/lib/vtt/dice-combat-box";
 import {
   COMBAT_FX_TIMINGS,
   COMBAT_FX_TIMINGS_REDUCED,
 } from "@/lib/vtt/combat-fx-timings";
+import { splitCombatChatDetail } from "@/lib/combat/chat-display";
+import type { TokenCastFxKind } from "@/lib/vtt/token-cast-fx";
 
 export type { CombatFxState, CombatFxTargetBurst } from "@/lib/vtt/combat-fx-types";
 
@@ -28,6 +33,7 @@ type Props = {
   gridOx?: number;
   gridOy?: number;
   fx: CombatFxState | null;
+  tokens?: BattleToken[];
   onDone: () => void;
   onApplyState?: () => void;
   onTokenFlash?: (tokenId: string | null, flash: TokenCombatFlash) => void;
@@ -101,37 +107,14 @@ function tokenFlashForFx(fx: CombatFxState): TokenCombatFlash {
   return "miss";
 }
 
-// ─── Dado de dano — wrapper WebGL ────────────────────────────────
-
-function DamageDiePanel({
-  value,
-  rolling,
-  isHeal,
-  isCrit,
-  damageTypeLabel,
-  reducedMotion,
-}: {
-  value: number | null;
-  rolling: boolean;
-  isHeal?: boolean;
-  isCrit?: boolean;
-  damageTypeLabel?: string | null;
-  reducedMotion?: boolean;
-}) {
-  const variant = isCrit ? "crit" : isHeal ? "heal" : "damage";
-  return (
-    <div className="dmg-die-panel">
-      <DiceWebGL
-        sides={8}
-        value={rolling ? null : value}
-        rolling={rolling}
-        sizePx={96}
-        variant={variant}
-        reducedMotion={reducedMotion}
-      />
-      <p className="dmg-die-label">{isHeal ? "Cura" : (damageTypeLabel ?? "Dano")}</p>
-    </div>
-  );
+function resolveAttackerTier(
+  fx: CombatFxState,
+  tokens: BattleToken[]
+): PortraitFrameTier {
+  const id = fx.attackerTokenId;
+  if (!id) return "hero";
+  const token = tokens.find((t) => t.id === id);
+  return token ? resolvePortraitFrameTier(token) : "hero";
 }
 
 // ─── Animações de projétil SVG ────────────────────────────────────
@@ -358,6 +341,7 @@ export function CombatFxLayer({
   gridOx,
   gridOy,
   fx,
+  tokens = [],
   onDone,
   onApplyState,
   onTokenFlash,
@@ -372,6 +356,7 @@ export function CombatFxLayer({
   const [attackRolling, setAttackRolling] = useState(true);
   const [damageDieRolling, setDamageDieRolling] = useState(true);
   const [showDamage, setShowDamage] = useState(false);
+  const [diceEvicting, setDiceEvicting] = useState(false);
 
   const fxRef = useRef(fx);
   const onDoneRef = useRef(onDone);
@@ -412,6 +397,7 @@ export function CombatFxLayer({
     setShowDamageRoll(false);
     setAttackRolling(true);
     setDamageDieRolling(true);
+    setDiceEvicting(false);
     castFxTriggeredRef.current = false;
     applyStateCalledRef.current = false;
     onTokenFlashRef.current?.(null, null);
@@ -541,11 +527,17 @@ export function CombatFxLayer({
     }
 
     const finishResolve = () => {
-      setPanelVisible(false);
-      setShowDamageRoll(false);
+      setDiceEvicting(true);
       applyStateNow();
       playTokenFx();
       if (hasDamage) revealChat("damage");
+      timeouts.push(
+        setTimeout(() => {
+          setDiceEvicting(false);
+          setPanelVisible(false);
+          setShowDamageRoll(false);
+        }, DICE_COMBAT_EVICT_MS)
+      );
     };
 
     timeouts.push(setTimeout(() => {
@@ -638,10 +630,12 @@ export function CombatFxLayer({
     !healCastWithoutRoll && (fx.mode === "single" || fx.mode === "area-target");
 
   const showAttackPanel =
-    showDicePanel && panelVisible && (phase === "roll" || phase === "result");
+    showDicePanel &&
+    panelVisible &&
+    (phase === "roll" || phase === "result" || phase === "damage");
 
   const showResultText =
-    showDicePanel && panelVisible && phase === "result";
+    showDicePanel && panelVisible && (phase === "result" || phase === "damage");
 
   const showRoll = showDicePanel && attackRolling;
 
@@ -747,23 +741,23 @@ export function CombatFxLayer({
         >
           <div className="combat-fx-panel-inner">
             <div className="combat-fx-dice-row">
-              <DiceMiniature
-                formula="1d20"
-                value={showRoll ? null : (fx.attackNatural ?? fx.saveTotal ?? null)}
-                rolling={showRoll}
-                size="lg"
+              <DiceCombatPanel
+                key={fx.id}
+                sequenceKey={fx.id}
+                attackSides={20}
+                attackValue={fx.attackNatural ?? fx.saveTotal ?? null}
+                attackRolling={showRoll}
+                attackLocked={!showRoll}
+                showDamageSlot={showDamageRoll}
+                damageSides={8}
+                damageValue={fx.damageTotal}
+                damageRolling={damageDieRolling}
+                attackerTier={resolveAttackerTier(fx, tokens)}
+                isHeal={fx.isHeal}
+                isCrit={fx.critical}
+                evicting={diceEvicting}
                 reducedMotion={reducedMotion}
               />
-              {showDamageRoll ? (
-                <DamageDiePanel
-                  value={fx.damageTotal}
-                  rolling={damageDieRolling}
-                  isHeal={fx.isHeal}
-                  isCrit={fx.critical}
-                  damageTypeLabel={fx.damageTypeLabel}
-                  reducedMotion={reducedMotion}
-                />
-              ) : null}
             </div>
             {showResultText ? (
               <div className="combat-fx-panel-result">

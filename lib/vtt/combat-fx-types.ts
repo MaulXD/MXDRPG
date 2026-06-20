@@ -29,6 +29,7 @@ export type CombatFxState = {
   markAxial: Axial;
   defenderAxial: Axial;
   attackerAxial?: Axial;
+  attackerTokenId?: string;
   defenderTokenId?: string;
   actionKind: "weapon" | "spell" | "unarmed" | "ability";
   attackNatural?: number;
