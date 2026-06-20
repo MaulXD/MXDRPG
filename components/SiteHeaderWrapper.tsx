@@ -11,13 +11,10 @@ import { SiteNavLinks } from "@/components/SiteNavLinks";
 
 export async function SiteHeaderWrapper() {
   const session = await getSession();
-  // Re-read from DB if session cookie stripped the avatar (data URL → null).
-  // Always read fresh from DB for custom-avatar users so the navbar reflects
-  // the user's selection even when the cookie has a stale or stripped avatarUrl.
+  // Sempre relê do DB — o cookie pode estar desatualizado (avatar trocado após o login,
+  // data URL cortada pelo limite de tamanho, ou avatarSource diferente do atual no banco).
   const navUser = session
-    ? session.user.avatarSource === "custom"
-      ? await safeMaterializeSessionUser(session.user)
-      : session.user
+    ? await safeMaterializeSessionUser(session.user)
     : null;
 
   return (

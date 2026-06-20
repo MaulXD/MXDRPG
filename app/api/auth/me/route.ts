@@ -7,9 +7,6 @@ export async function GET() {
   if (!session) {
     return NextResponse.json({ user: null });
   }
-  const user =
-    session.user.avatarSource === "custom"
-      ? await safeMaterializeSessionUser(session.user)
-      : session.user;
+  const user = await safeMaterializeSessionUser(session.user);
   return NextResponse.json({ user });
 }
