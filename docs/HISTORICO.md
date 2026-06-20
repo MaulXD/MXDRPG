@@ -123,7 +123,7 @@ npm run sync:data:check       # após editar livros/
 - `lib/vtt/combat-fx-timings.ts` — NOVO
 - `components/vtt/CombatFxLayer.tsx`, `DiceWebGL.tsx`, `DiceMiniature.tsx`, `Dice3DCSS.tsx`, `vtt.css`
 
-**Commits / deploy:** `62db330` → `main`
+**Commits / deploy:** `9bc6782` → `main`
 
 **Como testar:** `/mesa/demo` ou mesa real → combate → atacar → 2s D20 → ACERTO → D20 + D8 lado a lado 2s → dados somem + token flash + card chat com dano/HP. Erro: 2s D20 → ERROU ~0,5s → resolve.
 
