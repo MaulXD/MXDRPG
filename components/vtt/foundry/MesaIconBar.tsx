@@ -51,6 +51,7 @@ function IconButton({
       <span className="foundry-icon-bar__icon-wrap" data-rail-icon={icon.icon} aria-hidden>
         <MesaRailIcon name={icon.icon} />
       </span>
+      <span className="foundry-icon-bar__label" aria-hidden>{icon.label}</span>
       <span className="foundry-icon-bar__tooltip" role="tooltip">
         <span className="foundry-icon-bar__tooltip-title">{icon.label}</span>
         <span className="foundry-icon-bar__tooltip-hint">
