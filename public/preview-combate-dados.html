@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Preview — Combate com dice-box 3D (MXDRPG)</title>
+  <link rel="stylesheet" href="/vendor/dice-box/style.css" />
+  <style>
+    :root {
+      --bg: #0e0c0a;
+      --surface: #1a1714;
+      --border: rgba(201, 169, 98, 0.22);
+      --border-active: rgba(107, 158, 140, 0.55);
+      --text: #e8e2d6;
+      --text-muted: rgba(232, 226, 214, 0.58);
+      --accent: #c9a962;
+      --verdigris: #6b9e8c;
+      --hit: #6dbf6d;
+      --miss: #c9a962;
+      --damage: #e05040;
+      --crit: #ffc840;
+      --font-display: Georgia, serif;
+      --dice-player: #4a90d9;
+      --dice-monster: #d4b84a;
+      --dice-elite: #9b59d4;
+      --dice-miniboss: #e88832;
+      --dice-boss: #d43838;
+      --dice-damage: #e05040;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: radial-gradient(ellipse at 50% 0%, #1a1510 0%, var(--bg) 55%);
+      color: var(--text);
+      font-family: "Segoe UI", system-ui, sans-serif;
+      min-height: 100vh;
+      padding: 1.5rem;
+    }
+
+    h1 {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      margin-bottom: 0.35rem;
+    }
+
+    .lead {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      max-width: 52rem;
+      margin-bottom: 1.25rem;
+      line-height: 1.5;
+    }
+
+    .badge {
+      display: inline-block;
+      font-size: 0.65rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.15rem 0.45rem;
+      border-radius: 4px;
+      background: rgba(107, 158, 140, 0.18);
+      color: var(--verdigris);
+      border: 1px solid rgba(107, 158, 140, 0.35);
+      vertical-align: middle;
+      margin-left: 0.35rem;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
+      gap: 1rem;
+      max-width: 1100px;
+    }
+
+    @media (max-width: 900px) {
+      .layout { grid-template-columns: 1fr; }
+    }
+
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1rem;
+    }
+
+    .panel h2 {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+      margin-bottom: 0.75rem;
+    }
+
+    .arena {
+      position: relative;
+      aspect-ratio: 16 / 10;
+      background:
+        linear-gradient(rgba(107, 158, 140, 0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(107, 158, 140, 0.06) 1px, transparent 1px),
+        #12100e;
+      background-size: 48px 48px;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .hex-mark {
+      position: absolute;
+      left: 58%;
+      top: 52%;
+      width: 72px;
+      height: 72px;
+      transform: translate(-50%, -50%);
+      clip-path: polygon(50% 0%, 95% 25%, 95% 75%, 50% 100%, 5% 75%, 5% 25%);
+      border: 3px solid rgba(200, 80, 60, 0.7);
+      background: rgba(200, 80, 60, 0.12);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .hex-mark.on { opacity: 1; }
+
+    .token {
+      position: absolute;
+      left: 58%;
+      top: 52%;
+      width: 44px;
+      height: 44px;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      background: linear-gradient(145deg, #4a3028, #2a1810);
+      border: 2px solid rgba(201, 169, 98, 0.5);
+      display: grid;
+      place-items: center;
+      font-size: 0.65rem;
+      font-weight: 700;
+      z-index: 2;
+    }
+
+    .token.flash-hit {
+      animation: token-hit 0.55s ease-out;
+      box-shadow: 0 0 24px rgba(224, 80, 64, 0.7);
+    }
+
+    .token.flash-miss {
+      animation: token-miss 0.45s ease-out;
+      opacity: 0.65;
+    }
+
+    @keyframes token-hit {
+      0%, 100% { transform: translate(-50%, -50%) scale(1); }
+      35% { transform: translate(-50%, -50%) scale(1.12); filter: brightness(1.4); }
+    }
+
+    @keyframes token-miss {
+      0%, 100% { transform: translate(-50%, -50%); }
+      50% { transform: translate(calc(-50% + 8px), -50%); opacity: 0.4; }
+    }
+
+    .dice-panel {
+      position: absolute;
+      left: 58%;
+      top: 52%;
+      transform: translate(-50%, -74%);
+      width: min(20rem, 88%);
+      padding: 0.5rem 0.65rem 0.6rem;
+      background: rgba(30, 29, 26, 0.94);
+      border: 1px solid var(--border-active);
+      border-radius: 14px;
+      text-align: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s, transform 0.25s;
+      z-index: 5;
+    }
+
+    .dice-panel.on {
+      opacity: 1;
+      transform: translate(-50%, -82%);
+    }
+
+    .dice-row {
+      display: flex;
+      gap: 0.45rem;
+      align-items: stretch;
+      justify-content: center;
+    }
+
+    .die-slot {
+      flex: 1;
+      min-width: 0;
+      max-width: 50%;
+      position: relative;
+    }
+
+    .die-slot[hidden] { display: none !important; }
+
+    .die-slot.locked .dice-box-host {
+      box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.12);
+    }
+
+    .die-label {
+      display: block;
+      margin-top: 0.2rem;
+      font-size: 0.58rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .die-label .tier-dot {
+      display: inline-block;
+      width: 0.45rem;
+      height: 0.45rem;
+      border-radius: 50%;
+      margin-right: 0.25rem;
+      vertical-align: middle;
+    }
+
+    .die-lock {
+      position: absolute;
+      top: 0.35rem;
+      right: 0.35rem;
+      font-size: 0.62rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 0.1rem 0.35rem;
+      border-radius: 4px;
+      background: rgba(0, 0, 0, 0.55);
+      color: rgba(255, 255, 255, 0.75);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .die-lock[hidden] { display: none; }
+
+    .dice-box-host {
+      width: 100%;
+      height: 130px;
+      min-height: 130px;
+      position: relative;
+      border-radius: 8px;
+      overflow: hidden;
+      background:
+        linear-gradient(180deg, rgba(8, 10, 14, 0.2) 0%, rgba(8, 10, 14, 0.55) 68%, rgba(22, 18, 14, 0.92) 100%),
+        radial-gradient(ellipse 90% 40% at 50% 88%, rgba(201, 169, 98, 0.12), transparent 70%);
+      transition: box-shadow 0.2s, filter 0.2s;
+    }
+
+    .dice-box-host::after {
+      content: "";
+      position: absolute;
+      left: 6%;
+      right: 6%;
+      bottom: 22%;
+      height: 2px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, transparent, rgba(201, 169, 98, 0.28), transparent);
+      box-shadow: 0 1px 8px rgba(0, 0, 0, 0.45);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .dice-box-host canvas {
+      display: block;
+      width: 100% !important;
+      height: 100% !important;
+    }
+
+    .dice-panel.evicting .dice-box-host {
+      animation: dice-evict 0.34s cubic-bezier(0.55, 0.085, 0.68, 0.53) forwards;
+    }
+
+    .dice-panel.evicting .result-text,
+    .dice-panel.evicting .damage-sum,
+    .dice-panel.evicting .rolling-caption {
+      animation: dice-evict 0.28s ease-in forwards;
+    }
+
+    .dice-panel.evicting {
+      animation: panel-evict-flash 0.34s ease-out;
+    }
+
+    @keyframes dice-evict {
+      0% { transform: scale(1) translateY(0); opacity: 1; filter: brightness(1) blur(0); }
+      20% { transform: scale(1.08) translateY(-4px); filter: brightness(1.45); }
+      100% { transform: scale(0.25) translateY(-48px); opacity: 0; filter: brightness(2) blur(4px); }
+    }
+
+    @keyframes panel-evict-flash {
+      0%, 100% { box-shadow: none; }
+      35% { box-shadow: 0 0 32px rgba(224, 80, 64, 0.5); border-color: rgba(224, 80, 64, 0.65); }
+    }
+
+    .result-text.locked::after {
+      content: " · fixo";
+      font-size: 0.72em;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      color: var(--text-muted);
+    }
+
+    .tier-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem 0.65rem;
+      margin-bottom: 0.75rem;
+      font-size: 0.68rem;
+      color: var(--text-muted);
+    }
+
+    .tier-legend span {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .tier-legend i {
+      width: 0.55rem;
+      height: 0.55rem;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .tier-picks {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.65rem 1rem;
+      margin-bottom: 0.65rem;
+      font-size: 0.78rem;
+    }
+
+    .tier-picks label {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      color: var(--text-muted);
+    }
+
+    .tier-picks select {
+      font: inherit;
+      font-size: 0.78rem;
+      padding: 0.25rem 0.4rem;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: rgba(0, 0, 0, 0.25);
+      color: var(--text);
+    }
+
+    .result-text {
+      margin-top: 0.45rem;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 0.95rem;
+      letter-spacing: 0.06em;
+      min-height: 1.2em;
+    }
+
+    .result-text.hit { color: var(--hit); }
+    .result-text.miss { color: var(--miss); }
+    .result-text.crit { color: var(--crit); }
+
+    .damage-sum {
+      margin-top: 0.35rem;
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--damage);
+      min-height: 1.3em;
+    }
+
+    .rolling-caption {
+      margin-top: 0.35rem;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      min-height: 1em;
+    }
+
+    .timeline {
+      display: flex;
+      height: 8px;
+      border-radius: 999px;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.06);
+      margin: 0.75rem 0 0.5rem;
+    }
+
+    .timeline-seg {
+      height: 100%;
+      opacity: 0.25;
+      transition: opacity 0.15s, box-shadow 0.15s;
+    }
+
+    .timeline-seg.active {
+      opacity: 1;
+      box-shadow: 0 0 10px currentColor;
+    }
+
+    .seg-mark { width: 4%; background: #888; color: #888; }
+    .seg-attack { width: 44%; background: var(--verdigris); color: var(--verdigris); }
+    .seg-damage { width: 44%; background: var(--damage); color: var(--damage); }
+    .seg-miss { width: 12%; background: var(--miss); color: var(--miss); }
+    .seg-resolve { width: 8%; background: var(--accent); color: var(--accent); }
+
+    .phase-list {
+      list-style: none;
+      font-size: 0.78rem;
+      line-height: 1.55;
+      color: var(--text-muted);
+    }
+
+    .phase-list li {
+      padding: 0.35rem 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .phase-list li.active {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .phase-list .t {
+      min-width: 3.2rem;
+      color: var(--accent);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .chat-card {
+      border: 1px solid rgba(107, 158, 140, 0.25);
+      border-radius: 10px;
+      padding: 0.65rem 0.75rem;
+      background: rgba(0, 0, 0, 0.25);
+      font-size: 0.78rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .chat-card.reveal-damage {
+      border-color: rgba(224, 80, 64, 0.45);
+      box-shadow: 0 0 16px rgba(224, 80, 64, 0.15);
+    }
+
+    .chat-card__head {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.35rem;
+      font-size: 0.68rem;
+      color: var(--text-muted);
+    }
+
+    .chat-card__roll {
+      font-weight: 700;
+      color: var(--verdigris);
+    }
+
+    .chat-card__damage {
+      margin-top: 0.35rem;
+      padding-top: 0.35rem;
+      border-top: 1px dashed rgba(255, 255, 255, 0.08);
+      color: var(--damage);
+      opacity: 0;
+      max-height: 0;
+      overflow: hidden;
+      transition: opacity 0.3s, max-height 0.3s;
+    }
+
+    .chat-card.reveal-damage .chat-card__damage {
+      opacity: 1;
+      max-height: 4rem;
+    }
+
+    .hp-bar {
+      margin-top: 0.35rem;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .hp-fill {
+      height: 100%;
+      width: 66%;
+      background: linear-gradient(90deg, var(--damage), #8a3028);
+      border-radius: inherit;
+    }
+
+    .clock {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .clock span { color: var(--text); }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 0.75rem;
+    }
+
+    button {
+      font: inherit;
+      font-size: 0.78rem;
+      padding: 0.45rem 0.75rem;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text);
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s;
+    }
+
+    button:hover:not(:disabled) {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(201, 169, 98, 0.35);
+    }
+
+    button:disabled {
+      opacity: 0.45;
+      cursor: wait;
+    }
+
+    button.primary {
+      border-color: rgba(107, 158, 140, 0.45);
+      background: rgba(107, 158, 140, 0.12);
+    }
+
+    .diagram {
+      margin-top: 1rem;
+      padding: 0.75rem;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 8px;
+      font-family: ui-monospace, monospace;
+      font-size: 0.68rem;
+      line-height: 1.6;
+      color: var(--text-muted);
+      white-space: pre;
+      overflow-x: auto;
+    }
+
+    .status {
+      margin-top: 0.5rem;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+
+    .status.ready { color: var(--verdigris); }
+    .status.error { color: var(--damage); }
+  </style>
+</head>
+<body>
+  <h1>Preview — Ataque e dados de combate <span class="badge">dice-box 3D</span></h1>
+  <p class="lead">
+    Simula o fluxo do <code>CombatFxLayer</code> com dados 3D reais via
+    <a href="https://fantasticdice.games" target="_blank" rel="noopener">@3d-dice/dice-box</a>.
+    Timings: <strong>2s D20</strong> → se acertou <strong>+2s dano</strong> (slots separados; ataque trava) → expulsão forçada → token + chat.
+    Abra em <code>http://localhost:3000/preview-combate-dados.html</code> (<code>npm run dev</code>).
+  </p>
+
+  <div class="tier-legend" aria-hidden="true">
+    <span><i style="background:var(--dice-player)"></i>Jogador</span>
+    <span><i style="background:var(--dice-monster)"></i>Monstro</span>
+    <span><i style="background:var(--dice-elite)"></i>Elite</span>
+    <span><i style="background:var(--dice-miniboss)"></i>Miniboss</span>
+    <span><i style="background:var(--dice-boss)"></i>Boss</span>
+    <span><i style="background:var(--dice-damage)"></i>Dano</span>
+  </div>
+
+  <div class="layout">
+    <section class="panel">
+      <h2>Mapa (simulação)</h2>
+      <div class="arena" id="arena">
+        <div class="hex-mark" id="hexMark"></div>
+        <div class="token" id="token">GOBL</div>
+        <div class="dice-panel" id="dicePanel">
+          <div class="dice-row">
+            <div class="die-slot" id="attackSlot">
+              <div class="dice-box-host" id="diceBoxAttack"></div>
+              <span class="die-label" id="attackLabel"><span class="tier-dot"></span>Ataque d20</span>
+              <span class="die-lock" id="attackLock" hidden>fixo</span>
+            </div>
+            <div class="die-slot" id="damageSlot" hidden>
+              <div class="dice-box-host" id="diceBoxDamage"></div>
+              <span class="die-label" id="damageLabel"><span class="tier-dot" style="background:var(--dice-damage)"></span>Dano</span>
+            </div>
+          </div>
+          <p class="result-text" id="resultText"></p>
+          <p class="damage-sum" id="damageSum"></p>
+          <p class="rolling-caption" id="rollingCaption">Aguardando…</p>
+        </div>
+      </div>
+
+      <div class="timeline" id="timeline">
+        <div class="timeline-seg seg-mark" data-seg="mark"></div>
+        <div class="timeline-seg seg-attack" data-seg="attack"></div>
+        <div class="timeline-seg seg-damage" data-seg="damage" hidden></div>
+        <div class="timeline-seg seg-miss" data-seg="miss" hidden></div>
+        <div class="timeline-seg seg-resolve" data-seg="resolve"></div>
+      </div>
+
+      <p class="clock">Tempo: <span id="clock">0.00</span>s · Fase: <span id="phaseLabel">—</span></p>
+      <p class="status" id="diceStatus">Inicializando dice-box…</p>
+
+      <div class="tier-picks">
+        <label>Atacante
+          <select id="attackerTier">
+            <option value="player" selected>Jogador (azul)</option>
+            <option value="monster">Monstro (amarelo)</option>
+            <option value="elite">Elite (roxo)</option>
+            <option value="miniboss">Miniboss (laranja)</option>
+            <option value="boss">Boss (vermelho)</option>
+          </select>
+        </label>
+        <label>Alvo
+          <select id="defenderTier">
+            <option value="monster" selected>Monstro</option>
+            <option value="player">Jogador</option>
+            <option value="elite">Elite</option>
+            <option value="miniboss">Miniboss</option>
+            <option value="boss">Boss</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="controls">
+        <button class="primary" id="btnHit" disabled>▶ Simular acerto (17 → 8 dano)</button>
+        <button id="btnMiss" disabled>▶ Simular erro (d20 = 4)</button>
+        <button id="btnCrit" disabled>▶ Simular crítico (20 → 14)</button>
+        <button id="btnStop" disabled>■ Parar</button>
+      </div>
+
+      <pre class="diagram" id="diagram"></pre>
+    </section>
+
+    <aside class="panel">
+      <h2>Fases (hit)</h2>
+      <ul class="phase-list" id="phaseList"></ul>
+
+      <h2 style="margin-top: 1rem;">Chat (staged)</h2>
+      <div class="chat-card" id="chatCard">
+        <div class="chat-card__head">
+          <span>Arqueiro → Goblin</span>
+          <span id="chatTime">—</span>
+        </div>
+        <div class="chat-card__roll" id="chatRoll">Rolagem oculta…</div>
+        <div class="chat-card__damage" id="chatDamage">
+          Dano 8 (perfurante) · HP 24 → 16
+          <div class="hp-bar"><div class="hp-fill"></div></div>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <script type="module">
+    import DiceBox from "/vendor/dice-box/dice-box.es.min.js";
+
+    const T = {
+      mark: 180,
+      attackRoll: 2000,
+      damageRoll: 2000,
+      missHold: 550,
+      afterResolve: 400,
+      evictMs: 340,
+    };
+
+    const ACTOR_TIERS = {
+      player:   { label: "Jogador",  short: "PLYR", color: "#4a90d9", border: "rgba(74,144,217,0.65)" },
+      monster:  { label: "Monstro",  short: "GOBL", color: "#d4b84a", border: "rgba(212,184,74,0.65)" },
+      elite:    { label: "Elite",    short: "ELIT", color: "#9b59d4", border: "rgba(155,89,212,0.65)" },
+      miniboss: { label: "Miniboss", short: "MINI", color: "#e88832", border: "rgba(232,136,50,0.65)" },
+      boss:     { label: "Boss",     short: "BOSS", color: "#d43838", border: "rgba(212,56,56,0.65)" },
+    };
+
+    const DAMAGE_COLOR = "#e05040";
+    const DICE_BOX_OPTS = {
+      assetPath: "/assets/dice-box/",
+      origin: window.location.origin,
+      theme: "default",
+      scale: 16,
+      // física mais “mesa”: queda de cima, pouca flutuação, pouso seco
+      startingHeight: 9,
+      throwForce: 4,
+      spinForce: 3.5,
+      gravity: 1.15,
+      mass: 1.1,
+      friction: 1,
+      restitution: 0,
+      linearDamping: 0.55,
+      angularDamping: 0.55,
+      settleTimeout: 4500,
+      enableShadows: true,
+      shadowTransparency: 0.72,
+      lightIntensity: 1.05,
+      offscreen: true,
+    };
+
+    const $ = (id) => document.getElementById(id);
+    const els = {
+      hexMark: $("hexMark"),
+      token: $("token"),
+      dicePanel: $("dicePanel"),
+      attackSlot: $("attackSlot"),
+      damageSlot: $("damageSlot"),
+      attackLock: $("attackLock"),
+      attackLabel: $("attackLabel"),
+      damageLabel: $("damageLabel"),
+      resultText: $("resultText"),
+      damageSum: $("damageSum"),
+      rollingCaption: $("rollingCaption"),
+      clock: $("clock"),
+      phaseLabel: $("phaseLabel"),
+      chatCard: $("chatCard"),
+      chatRoll: $("chatRoll"),
+      chatDamage: $("chatDamage"),
+      chatTime: $("chatTime"),
+      phaseList: $("phaseList"),
+      diagram: $("diagram"),
+      timeline: $("timeline"),
+      diceStatus: $("diceStatus"),
+      attackerTier: $("attackerTier"),
+      defenderTier: $("defenderTier"),
+      btnHit: $("btnHit"),
+      btnMiss: $("btnMiss"),
+      btnCrit: $("btnCrit"),
+      btnStop: $("btnStop"),
+    };
+
+    let attackBox = null;
+    let damageBox = null;
+    let attackBoxReady = false;
+    let damageBoxReady = false;
+    let diceReady = false;
+    let attackLocked = false;
+    let timers = [];
+    let t0 = 0;
+    let raf = 0;
+    let running = false;
+
+    function tier(id) {
+      return ACTOR_TIERS[id] ?? ACTOR_TIERS.monster;
+    }
+
+    function getAttacker() {
+      return tier(els.attackerTier.value);
+    }
+
+    function getDefender() {
+      return tier(els.defenderTier.value);
+    }
+
+    function setAttackLabel(actor) {
+      els.attackLabel.innerHTML = `<span class="tier-dot" style="background:${actor.color}"></span>Ataque d20 · ${actor.label}`;
+    }
+
+    function applyTokenLook(defender) {
+      els.token.textContent = defender.short;
+      els.token.style.borderColor = defender.border;
+      els.token.style.background = `linear-gradient(145deg, ${defender.color}33, #1a1410)`;
+    }
+
+    function setButtonsEnabled(on) {
+      const canRun = on && diceReady && !running;
+      els.btnHit.disabled = !canRun;
+      els.btnMiss.disabled = !canRun;
+      els.btnCrit.disabled = !canRun;
+      els.btnStop.disabled = !running;
+      els.attackerTier.disabled = running;
+      els.defenderTier.disabled = running;
+    }
+
+    function clearAll() {
+      timers.forEach(clearTimeout);
+      timers = [];
+      cancelAnimationFrame(raf);
+    }
+
+    function at(ms, fn) {
+      timers.push(setTimeout(fn, ms));
+    }
+
+    function setSeg(name) {
+      els.timeline.querySelectorAll(".timeline-seg").forEach((el) => {
+        el.classList.toggle("active", el.dataset.seg === name);
+      });
+    }
+
+    function setPhase(id, label, tMs) {
+      els.phaseLabel.textContent = label;
+      els.phaseList.querySelectorAll("li").forEach((li) => {
+        li.classList.toggle("active", li.dataset.id === id);
+      });
+      setSeg(id);
+      els.clock.textContent = (tMs / 1000).toFixed(2);
+    }
+
+    function tickClock() {
+      const elapsed = performance.now() - t0;
+      els.clock.textContent = (elapsed / 1000).toFixed(2);
+      raf = requestAnimationFrame(tickClock);
+    }
+
+    function lockAttackResult() {
+      if (attackLocked) return;
+      attackLocked = true;
+      els.attackSlot.classList.add("locked");
+      els.attackLock.hidden = false;
+      if (els.resultText.textContent) {
+        els.resultText.classList.add("locked");
+      }
+    }
+
+    function waitLayout() {
+      return new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+    }
+
+    async function clearBothBoxes() {
+      await Promise.all([
+        attackBoxReady && attackBox ? attackBox.clear().catch(() => {}) : Promise.resolve(),
+        damageBoxReady && damageBox ? damageBox.clear().catch(() => {}) : Promise.resolve(),
+      ]);
+    }
+
+    /** Mesmo fluxo do dano: painel visível → layout → init/resize → roll */
+    async function ensureAttackBox() {
+      els.dicePanel.classList.add("on");
+      await waitLayout();
+      await new Promise((r) => setTimeout(r, 120));
+      if (attackBoxReady) {
+        attackBox?.resizeWorld?.();
+        return;
+      }
+      attackBox = new DiceBox({
+        ...DICE_BOX_OPTS,
+        container: "#diceBoxAttack",
+      });
+      await attackBox.init();
+      attackBoxReady = true;
+    }
+
+    async function showDamageSlot() {
+      els.damageSlot.hidden = false;
+      await waitLayout();
+      if (damageBoxReady && damageBox?.resizeWorld) {
+        damageBox.resizeWorld();
+      }
+    }
+
+    async function ensureDamageBox() {
+      await showDamageSlot();
+      if (damageBoxReady) {
+        if (damageBox?.resizeWorld) damageBox.resizeWorld();
+        return;
+      }
+      damageBox = new DiceBox({
+        ...DICE_BOX_OPTS,
+        container: "#diceBoxDamage",
+      });
+      await damageBox.init();
+      damageBoxReady = true;
+    }
+
+    async function forceEvictDice() {
+      els.dicePanel.classList.add("evicting");
+      await new Promise((r) => setTimeout(r, T.evictMs));
+      await clearBothBoxes();
+      els.dicePanel.classList.remove("evicting");
+    }
+
+    function resetUI() {
+      clearAll();
+      running = false;
+      attackLocked = false;
+      setButtonsEnabled(true);
+      els.hexMark.classList.remove("on");
+      els.dicePanel.classList.remove("on", "evicting");
+      els.attackSlot.classList.remove("locked");
+      els.attackLock.hidden = true;
+      els.damageSlot.hidden = true;
+      els.token.classList.remove("flash-hit", "flash-miss");
+      els.resultText.textContent = "";
+      els.resultText.className = "result-text";
+      els.damageSum.textContent = "";
+      els.rollingCaption.textContent = "Aguardando…";
+      els.chatCard.classList.remove("reveal-damage");
+      els.chatRoll.textContent = "Rolagem oculta…";
+      els.chatTime.textContent = "—";
+      els.timeline.querySelector('[data-seg="damage"]').hidden = true;
+      els.timeline.querySelector('[data-seg="miss"]').hidden = true;
+      setSeg(null);
+      clearBothBoxes();
+    }
+
+    function buildPhaseList(mode) {
+      const hit = mode !== "miss";
+      const rows = [
+        { id: "mark", t: 0, label: "Marca no alvo (+ projétil)" },
+        { id: "attack", t: T.mark, label: "D20 no slot do atacante (cor do tier)" },
+      ];
+      if (hit) {
+        rows.push({ id: "damage", t: T.mark + T.attackRoll, label: "Ataque trava · dano em slot separado" });
+        rows.push({ id: "resolve", t: T.mark + T.attackRoll + T.damageRoll, label: "Expulsão forçada · token + chat" });
+      } else {
+        rows.push({ id: "miss", t: T.mark + T.attackRoll, label: "ERROU · ataque fixo ~0,55s" });
+        rows.push({ id: "resolve", t: T.mark + T.attackRoll + T.missHold, label: "Expulsão · token miss" });
+      }
+      els.phaseList.innerHTML = rows
+        .map((r) => `<li data-id="${r.id}"><span class="t">${(r.t / 1000).toFixed(2)}s</span>${r.label}</li>`)
+        .join("");
+    }
+
+    function updateDiagram(mode, nat, dmg, attacker, defender) {
+      const hit = mode !== "miss";
+      const tResolve = hit
+        ? T.mark + T.attackRoll + T.damageRoll
+        : T.mark + T.attackRoll + T.missHold;
+      const tDone = tResolve + T.afterResolve;
+      els.diagram.textContent = hit
+        ? `FLUXO ACERTO (~${(tDone / 1000).toFixed(1)}s)
+
+Atacante: ${attacker.label} (${attacker.color})
+Alvo: ${defender.label}
+
+0ms      mark · token ${defender.short}
+${T.mark}ms     attackBox.roll d20 · themeColor atacante
+${T.mark + T.attackRoll}ms  LOCK ataque · damageBox.roll d8 · vermelho dano
+         (slots separados — d8 não altera d20)
+${tResolve}ms  forceEvict() · applyState · chat damage
+${tDone}ms     done`
+        : `FLUXO ERRO (~${(tDone / 1000).toFixed(1)}s)
+
+Atacante: ${attacker.label} → ${defender.label}
+
+${T.mark}ms     d20 ${attacker.color}
+${T.mark + T.attackRoll}ms  LOCK · ERROU (d20=${nat})
+${tResolve}ms  forceEvict()`;
+    }
+
+    function rollAttack(spec) {
+      if (attackLocked) return Promise.resolve();
+      return ensureAttackBox()
+        .then(() => attackBox.roll(spec))
+        .catch((err) => console.error("attack roll:", err));
+    }
+
+    function rollDamage(spec) {
+      return ensureDamageBox()
+        .then(() => damageBox.roll(spec))
+        .catch((err) => console.error("damage roll:", err));
+    }
+
+    function runSequence(mode, nat, dmg, isCrit) {
+      if (!diceReady) return;
+      resetUI();
+      running = true;
+      setButtonsEnabled(false);
+
+      const attacker = getAttacker();
+      const defender = getDefender();
+      setAttackLabel(attacker);
+      applyTokenLook(defender);
+
+      t0 = performance.now();
+      raf = requestAnimationFrame(tickClock);
+      buildPhaseList(mode);
+      updateDiagram(mode, nat, dmg, attacker, defender);
+
+      const hit = mode !== "miss";
+      if (hit) {
+        els.timeline.querySelector('[data-seg="damage"]').hidden = false;
+      } else {
+        els.timeline.querySelector('[data-seg="miss"]').hidden = false;
+      }
+
+      const attackSpec = { qty: 1, sides: 20, value: nat, themeColor: attacker.color };
+      const damageSpec = { qty: 1, sides: 8, value: dmg, themeColor: DAMAGE_COLOR };
+
+      at(0, () => {
+        setPhase("mark", "mark", 0);
+        els.hexMark.classList.add("on");
+      });
+
+      at(T.mark, () => {
+        setPhase("attack", "roll · D20", T.mark);
+        els.chatRoll.textContent = `${attacker.label} · ataque d20… (${nat})`;
+        els.chatTime.textContent = "roll";
+        els.rollingCaption.textContent = "Rolando ataque…";
+        rollAttack(attackSpec);
+      });
+
+      at(T.mark + T.attackRoll, () => {
+        lockAttackResult();
+        if (hit) {
+          setPhase("damage", "result + dano", T.mark + T.attackRoll);
+          els.resultText.textContent = isCrit ? "CRÍTICO!" : "ACERTO";
+          els.resultText.className = "result-text locked " + (isCrit ? "crit" : "hit");
+          els.rollingCaption.textContent = "Rolando dano…";
+          rollDamage(damageSpec);
+        } else {
+          setPhase("miss", "ERROU", T.mark + T.attackRoll);
+          els.resultText.textContent = "ERROU";
+          els.resultText.className = "result-text locked miss";
+          els.rollingCaption.textContent = "";
+        }
+      });
+
+      if (hit) {
+        const tResolve = T.mark + T.attackRoll + T.damageRoll;
+        at(tResolve, async () => {
+          setPhase("resolve", "resolve", tResolve);
+          els.damageSum.textContent = "−" + dmg;
+          els.rollingCaption.textContent = "";
+          await forceEvictDice();
+          els.dicePanel.classList.remove("on");
+          els.token.classList.add("flash-hit");
+          els.chatCard.classList.add("reveal-damage");
+          els.chatRoll.textContent = `${isCrit ? "CRÍTICO! " : ""}${attacker.label} acerta ${defender.label} · natural ${nat}`;
+          els.chatTime.textContent = "damage";
+          els.chatDamage.innerHTML = `Dano ${dmg} · HP 24 → ${24 - dmg}<div class="hp-bar"><div class="hp-fill" style="width:${((24 - dmg) / 24) * 100}%"></div></div>`;
+        });
+
+        at(tResolve + T.afterResolve, () => {
+          cancelAnimationFrame(raf);
+          els.phaseLabel.textContent = "done";
+          els.clock.textContent = ((tResolve + T.afterResolve) / 1000).toFixed(2);
+          running = false;
+          setButtonsEnabled(true);
+        });
+      } else {
+        const tResolve = T.mark + T.attackRoll + T.missHold;
+        at(tResolve, async () => {
+          setPhase("resolve", "resolve miss", tResolve);
+          await forceEvictDice();
+          els.dicePanel.classList.remove("on");
+          els.token.classList.add("flash-miss");
+          els.chatRoll.textContent = `${attacker.label} errou ${defender.label} · natural ${nat}`;
+          els.chatTime.textContent = "done";
+        });
+        at(tResolve + T.afterResolve, () => {
+          cancelAnimationFrame(raf);
+          els.phaseLabel.textContent = "done";
+          running = false;
+          setButtonsEnabled(true);
+        });
+      }
+    }
+
+    async function initDiceBoxes() {
+      try {
+        diceReady = true;
+        setAttackLabel(getAttacker());
+        applyTokenLook(getDefender());
+        els.diceStatus.textContent = "dice-box pronto — init lazy com painel aberto (mesma física nos dois slots)";
+        els.diceStatus.className = "status ready";
+        setButtonsEnabled(true);
+      } catch (err) {
+        console.error(err);
+        els.diceStatus.textContent = "Erro ao carregar dice-box (use npm run dev + HTTP)";
+        els.diceStatus.className = "status error";
+      }
+    }
+
+    els.attackerTier.onchange = () => { if (!running) setAttackLabel(getAttacker()); };
+    els.defenderTier.onchange = () => { if (!running) applyTokenLook(getDefender()); };
+
+    els.btnHit.onclick = () => runSequence("hit", 17, 8, false);
+    els.btnMiss.onclick = () => runSequence("miss", 4, 0, false);
+    els.btnCrit.onclick = () => runSequence("hit", 20, 14, true);
+    els.btnStop.onclick = resetUI;
+
+    buildPhaseList("hit");
+    updateDiagram("hit", 17, 8, getAttacker(), getDefender());
+    initDiceBoxes();
+  </script>
+</body>
+</html>
