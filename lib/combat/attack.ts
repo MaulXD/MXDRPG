@@ -8,6 +8,7 @@ import {
   proficiencyBonus,
   type AttributeKey,
 } from "@/lib/character/rules";
+import { syncCombatAbilitiesToInventory } from "@/lib/character/combat-inventory-sync";
 import type { CharacterSheet } from "@/lib/character/types";
 import { getMonsterTemplate } from "@/lib/vtt/monsters";
 import {
@@ -259,8 +260,9 @@ function applyHitSpecialsToResolution(
 
 export function listCombatActions(actor: CharacterSheet): CombatActionOption[] {
   const out: CombatActionOption[] = [];
+  const prepared = syncCombatAbilitiesToInventory(actor);
 
-  for (const item of actor.inventory ?? []) {
+  for (const item of prepared.inventory ?? []) {
     if (item.quantity <= 0) continue;
     if (item.packId === "armas" || item.packId === "magias") {
       const entry = getEntry(item.packId, item.entryId);
@@ -277,7 +279,7 @@ export function listCombatActions(actor: CharacterSheet): CombatActionOption[] {
     }
   }
 
-  for (const trackAction of listSubclassCombatActions(actor)) {
+  for (const trackAction of listSubclassCombatActions(prepared)) {
     if (!out.some((a) => a.packId === trackAction.packId && a.entryId === trackAction.entryId)) {
       out.push(trackAction);
     }
@@ -393,6 +395,22 @@ export function resolveCombatAction(
   if (packId && entryId) {
     const found = actions.find((a) => a.packId === packId && a.entryId === entryId);
     if (found) return found;
+
+    const entry = getEntry(packId, entryId);
+    if (entry) {
+      if (packId === "habilidades") {
+        const ability = abilityFromEntry(entry);
+        if (ability) return ability;
+      } else if (packId === "armas" || packId === "magias") {
+        if (packId === "magias" && !isSpellCombatReady(actor, entryId)) {
+          /* magia não preparada */
+        } else {
+          const action = actionFromEntry(entry, packId);
+          if (action) return action;
+        }
+      }
+    }
+
     // Ação solicitada não encontrada — fallback para ação padrão
     console.warn(`[resolveCombatAction] ação "${entryId}" não encontrada para ${actor.id}, usando fallback`);
   }

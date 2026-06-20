@@ -269,8 +269,12 @@ export function TokenActionRing({
   const saveLoadout = useCallback(
     async (packId: "armas" | "magias" | "habilidades", entryId: string) => {
       if (!actor || !token.actorId) return;
-      await patchRoomActor(roomId, token.actorId, { combatLoadout: { packId, entryId } });
-      onRoomSync();
+      try {
+        await patchRoomActor(roomId, token.actorId, { combatLoadout: { packId, entryId } });
+        onRoomSync();
+      } catch {
+        /* loadout opcional — ataque envia actionEntryId na requisição */
+      }
     },
     [actor, token.actorId, roomId, onRoomSync]
   );
