@@ -1,6 +1,6 @@
 ﻿"use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { ENTRAR_PATH } from "@/lib/site-paths";
 import type { UserRole } from "@/lib/auth/types";
@@ -38,6 +38,7 @@ export function CompendiumBrowser({
   const [query, setQuery] = useState("");
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [monsterSheetId, setMonsterSheetId] = useState<string | null>(null);
+  const detailRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!initialPackId || !packs.some((p) => p.id === initialPackId)) return;
@@ -45,6 +46,10 @@ export function CompendiumBrowser({
     setSelectedId(null);
     setQuery("");
   }, [initialPackId, packs]);
+
+  useEffect(() => {
+    if (selectedId) detailRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }, [selectedId]);
 
   const activePack = packs.find((p) => p.id === packId) ?? packs[0];
 
@@ -202,11 +207,13 @@ export function CompendiumBrowser({
             </div>
 
             {selected ? (
-              <CompendiumDetail
-                entry={selected}
-                layout="page"
-                onOpenMonsterSheet={setMonsterSheetId}
-              />
+              <div ref={detailRef}>
+                <CompendiumDetail
+                  entry={selected}
+                  layout="page"
+                  onOpenMonsterSheet={setMonsterSheetId}
+                />
+              </div>
             ) : null}
           </>
         ) : null}
