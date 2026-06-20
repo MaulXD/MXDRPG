@@ -1,16 +1,17 @@
 "use client";
 
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, type CSSProperties } from "react";
 import {
   DICE_COMBAT_EVICT_MS,
+  DICE_TIER_LABELS,
   dieFaceValue,
   getAttackDieColor,
+  getAttackSlotBorder,
   getDamageDieColor,
   getDiceBoxBaseOptions,
   type DiceSides,
 } from "@/lib/vtt/dice-combat-box";
 import type { PortraitFrameTier } from "@/lib/vtt/portrait-frame";
-import "@3d-dice/dice-box/dist/style.css";
 
 type DiceBoxInstance = {
   init(): Promise<boolean | void>;
@@ -38,6 +39,9 @@ type Props = {
   reducedMotion?: boolean;
 };
 
+const VENDOR_DICE_BOX = "/vendor/dice-box/dice-box.es.min.js";
+const VENDOR_DICE_CSS = "/vendor/dice-box/style.css";
+
 function waitLayout(): Promise<void> {
   return new Promise((resolve) => {
     requestAnimationFrame(() => requestAnimationFrame(() => resolve()));
@@ -46,6 +50,14 @@ function waitLayout(): Promise<void> {
 
 function waitMs(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+/** Mesmo bundle do preview — evita worker/asset quebrado no bundle Next. */
+async function loadVendorDiceBox(): Promise<DiceBoxCtor> {
+  const mod = (await import(/* webpackIgnore: true */ VENDOR_DICE_BOX)) as {
+    default: DiceBoxCtor;
+  };
+  return mod.default;
 }
 
 export function DiceCombatPanel({
@@ -76,6 +88,21 @@ export function DiceCombatPanel({
   const DiceBoxRef = useRef<DiceBoxCtor | null>(null);
   const evictingRef = useRef(false);
 
+  const attackColor = getAttackDieColor(attackerTier);
+  const attackBorder = getAttackSlotBorder(attackerTier);
+  const damageColor = getDamageDieColor({ isHeal, isCrit });
+  const tierLabel = DICE_TIER_LABELS[attackerTier];
+
+  useEffect(() => {
+    const id = "mxdrpg-dice-box-css";
+    if (document.getElementById(id)) return;
+    const link = document.createElement("link");
+    link.id = id;
+    link.rel = "stylesheet";
+    link.href = VENDOR_DICE_CSS;
+    document.head.appendChild(link);
+  }, []);
+
   const clearBoth = useCallback(async () => {
     await Promise.all([
       attackReadyRef.current
@@ -89,8 +116,7 @@ export function DiceCombatPanel({
 
   const loadDiceBox = useCallback(async (): Promise<DiceBoxCtor> => {
     if (DiceBoxRef.current) return DiceBoxRef.current;
-    const mod = await import("@3d-dice/dice-box");
-    DiceBoxRef.current = mod.default as DiceBoxCtor;
+    DiceBoxRef.current = await loadVendorDiceBox();
     return DiceBoxRef.current;
   }, []);
 
@@ -140,11 +166,10 @@ export function DiceCombatPanel({
 
   useEffect(() => {
     if (!attackRolling || attackValue == null) return;
-    const key = `${sequenceKey}-atk`;
+    const key = `${sequenceKey}-atk-${attackValue}`;
     if (attackRollKeyRef.current === key) return;
     attackRollKeyRef.current = key;
 
-    const color = getAttackDieColor(attackerTier);
     const face = dieFaceValue(attackValue, attackSides);
     void ensureAttackBox()
       .then(() =>
@@ -152,7 +177,7 @@ export function DiceCombatPanel({
           qty: 1,
           sides: attackSides,
           ...(face != null ? { value: face } : {}),
-          themeColor: color,
+          themeColor: attackColor,
         })
       )
       .catch((err) => console.error("[DiceCombatPanel] attack roll", err));
@@ -160,18 +185,17 @@ export function DiceCombatPanel({
     attackRolling,
     attackValue,
     attackSides,
-    attackerTier,
+    attackColor,
     ensureAttackBox,
     sequenceKey,
   ]);
 
   useEffect(() => {
-    if (!showDamageSlot || !damageRolling) return;
-    const key = `${sequenceKey}-dmg`;
+    if (!showDamageSlot || !damageRolling || damageValue == null) return;
+    const key = `${sequenceKey}-dmg-${damageValue}`;
     if (damageRollKeyRef.current === key) return;
     damageRollKeyRef.current = key;
 
-    const color = getDamageDieColor({ isHeal, isCrit });
     const face = dieFaceValue(damageValue, damageSides);
     void ensureDamageBox()
       .then(() =>
@@ -179,7 +203,7 @@ export function DiceCombatPanel({
           qty: 1,
           sides: damageSides,
           ...(face != null ? { value: face } : {}),
-          themeColor: color,
+          themeColor: damageColor,
         })
       )
       .catch((err) => console.error("[DiceCombatPanel] damage roll", err));
@@ -188,8 +212,7 @@ export function DiceCombatPanel({
     damageRolling,
     damageValue,
     damageSides,
-    isHeal,
-    isCrit,
+    damageColor,
     ensureDamageBox,
     sequenceKey,
   ]);
@@ -206,18 +229,21 @@ export function DiceCombatPanel({
 
   return (
     <div
-      className={`combat-dice-box-row${evicting ? " combat-dice-box-row--evicting" : ""}`}
+      className={`combat-dice-box-row${evicting ? " combat-dice-box-row--evicting" : ""}${showDamageSlot ? " combat-dice-box-row--dual" : ""}`}
     >
       <div
         className={`combat-dice-slot${attackLocked ? " combat-dice-slot--locked" : ""}`}
+        style={
+          {
+            "--dice-tier-color": attackColor,
+            "--dice-tier-border": attackBorder,
+          } as CSSProperties
+        }
       >
         <div id={attackHostId} className="combat-dice-box-host" />
         <span className="combat-dice-slot__label">
-          <span
-            className="combat-dice-slot__dot"
-            style={{ background: getAttackDieColor(attackerTier) }}
-          />
-          {attackSides === 20 ? "d20" : `d${attackSides}`}
+          <span className="combat-dice-slot__dot" style={{ background: attackColor }} />
+          Ataque {attackSides === 20 ? "d20" : `d${attackSides}`} · {tierLabel}
         </span>
         {attackLocked ? (
           <span className="combat-dice-slot__lock" aria-hidden>
@@ -226,16 +252,23 @@ export function DiceCombatPanel({
         ) : null}
       </div>
       {showDamageSlot ? (
-        <div className="combat-dice-slot combat-dice-slot--damage">
+        <div
+          className="combat-dice-slot combat-dice-slot--damage"
+          style={
+            {
+              "--dice-tier-color": damageColor,
+              "--dice-tier-border": isCrit
+                ? "rgba(255, 200, 48, 0.72)"
+                : isHeal
+                  ? "rgba(70, 200, 120, 0.65)"
+                  : "rgba(224, 80, 64, 0.65)",
+            } as CSSProperties
+          }
+        >
           <div id={damageHostId} className="combat-dice-box-host" />
           <span className="combat-dice-slot__label">
-            <span
-              className="combat-dice-slot__dot"
-              style={{
-                background: getDamageDieColor({ isHeal, isCrit }),
-              }}
-            />
-            {isHeal ? "Cura" : `d${damageSides}`}
+            <span className="combat-dice-slot__dot" style={{ background: damageColor }} />
+            {isHeal ? "Cura" : isCrit ? "Crítico" : `Dano d${damageSides}`}
           </span>
         </div>
       ) : null}

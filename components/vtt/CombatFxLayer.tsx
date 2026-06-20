@@ -786,7 +786,11 @@ export function CombatFxLayer({
               </div>
             ) : (
               <p className="combat-fx-rolling">
-                {showDamageRoll && damageDieRolling ? "Rolando dano…" : "Rolando…"}
+                {showDamageRoll && damageDieRolling
+                  ? "Rolando dano…"
+                  : showRoll
+                    ? "Rolando ataque…"
+                    : "Aguardando…"}
               </p>
             )}
           </div>
