@@ -353,6 +353,18 @@ export function IconChat({ className, size }: IconProps) {
   );
 }
 
+export function IconGlobe({ className, size }: IconProps) {
+  return (
+    <Svg className={className} size={size}>
+      <circle cx="12" cy="12" r="8.5" {...S} />
+      <path d="M12 3.5c-2 3-3 5.5-3 8.5s1 5.5 3 8.5" {...S} />
+      <path d="M12 3.5c2 3 3 5.5 3 8.5s-1 5.5-3 8.5" {...S} />
+      <path d="M3.5 12h17" {...S} />
+      <path d="M4.5 8h15M4.5 16h15" {...S} opacity={0.5} />
+    </Svg>
+  );
+}
+
 export type HomeFeatureIconName = "target" | "move" | "diamond" | "sword";
 
 export function HomeFeatureIcon({ name, className, size = 28 }: IconProps & { name: HomeFeatureIconName }) {
