@@ -3,7 +3,7 @@ import { dbEnabled } from "@/lib/db/enabled";
 import { ensureDbMigrations } from "@/lib/db/ensure-migrations";
 import { deleteUserAccount, updateUserAvatar } from "@/lib/db/users";
 import { normalizeAvatarSource } from "@/lib/db/user-avatar";
-import { destroySession, getSession } from "@/lib/auth/session";
+import { applySessionCookie, destroySession, getSession } from "@/lib/auth/session";
 import { sanitizePortraitFocus } from "@/lib/media/portrait-focus";
 
 export async function PATCH(req: Request) {
@@ -31,7 +31,9 @@ export async function PATCH(req: Request) {
       avatarUrl: body.avatarUrl,
       avatarFocus: sanitizePortraitFocus(body.avatarFocus) ?? undefined,
     });
-    return NextResponse.json({ ok: true, user });
+    const response = NextResponse.json({ ok: true, user });
+    applySessionCookie(response, user);
+    return response;
   } catch (e) {
     return NextResponse.json(
       { error: e instanceof Error ? e.message : "Erro ao salvar avatar" },
