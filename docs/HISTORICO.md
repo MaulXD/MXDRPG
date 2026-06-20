@@ -104,6 +104,34 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-06-20 — Animações de combate BG3-style: dado de dano rolando, D20 decagon, sem painel de probabilidade
+
+**Pedido:** O usuário reportou que: (1) o painel de % de chance ao clicar era redundante — já aparece no hover; (2) o timing de ~3.6s estava cansativo; (3) os dados estavam feios. Queria algo como Baldur's Gate 3: dado de ataque rolando → dado de dano rolando → dano aparecendo animado no mapa.
+
+**Passo a passo:**
+1. **Diagnóstico** — Fase `"prob"` adicionada anteriormente exibia um painel de probabilidade por 1.2s antes do D20, mas essa info já existe no hover do alvo. O D20 usava triângulo SVG simples (pouco reconhecível). Não havia dado de dano — após o D20 o dano aparecia diretamente flutuante.
+2. **Decisão BG3-style** — Remover completamente a fase `"prob"` e seus dados. Novo fluxo: mark (80ms) → D20 girando (700ms) → D20 mostra resultado (420ms) → dado de dano girando (620ms) → dano flutuante (360ms). Total ~2.1s para acerto com dano, ~1.2s para erro.
+3. **Implementação:**
+   - `combat-fx-types.ts`: removeu `"prob"` do `CombatFxPhase` e os 6 campos `prob*` de `CombatFxState`
+   - `combat-fx-sequence.ts`: removeu funções `simpleHitChance()` e `extractModsLabel()`, e os campos `prob*` do objeto base
+   - `Dice3DCSS.tsx`: D20 redesenhado — polígono decagonal (10 lados, mais parecido com d20 real) + números ciclando via `setInterval` a 75ms durante o roll (efeito caça-níquel)
+   - `CombatFxLayer.tsx`: reescrito — removeu `ProbPanel`, adicionou `DamageDiePanel` (componente inline com gem octagonal, scramble de números e flash ao revelar), novo estado `showDamageRoll`, timing limpo por modo (single/area-target/area-simultaneous/area-intro)
+   - `vtt.css`: removidos todos os `.combat-prob-*` (barra, fórmula, %, label); adicionados `.dmg-die-*` (gem octagonal com clip-path, flash colorido por tipo, label); `fill: none` no `.d20-css-inner-line` para o polígono interno do decagon não ser preenchido
+4. **Validação** — `tsc --noEmit` sem erros. Testar em mesa ativa: atacar → D20 gira com números mudando rapidamente → D20 para mostrando ACERTO/ERROU → gem octagonal aparece e gira com números → gem para e flash → número flutuante no alvo.
+
+**Arquivos tocados:**
+- `lib/vtt/combat-fx-types.ts` — remove fase "prob" e campos prob* do type
+- `lib/vtt/combat-fx-sequence.ts` — remove simpleHitChance, extractModsLabel, campos prob* do base
+- `components/vtt/Dice3DCSS.tsx` — polígono decagonal + scramble por setInterval (sem Math.random no ciclo)
+- `components/vtt/CombatFxLayer.tsx` — remove ProbPanel; adiciona DamageDiePanel; refatora timing BG3-style com showDamageRoll
+- `components/vtt/vtt.css` — remove combat-prob-* CSS; adiciona dmg-die-* CSS; fix fill:none em d20-css-inner-line
+
+**Commits / deploy:** pendente local.
+
+**Como testar:** Mesa VTT → combate → atacar → sequência: D20 girando com números randômicos (700ms) → D20 para com resultado + ACERTO/ERROU (420ms) → se acertou: gem octagonal com números (620ms) → gem para e flash → dano flutuante no alvo (360ms). Nat20: D20 dourado com glow. Crit: gem dourada. Cura: gem verde.
+
+---
+
 ### 2026-06-20 — Redesign combate: D20 CSS, fluxo sequencial, animações de projétil
 
 **Pedido:** Tela de combate estava bugada e a animação dos dados ruim. Usuário queria: D20 3D em CSS (sem WebGL), fluxo visual sequencial (probabilidade → dado → resultado → chat) com timing Médio (~3.5s), e animações de ataque sobrepostas ao canvas: talho, flecha, orbe mágico (fogo/arcano), raio ziguezague, área (explosão radial), cura, e texto "ERROU!" com desvio para erros.
