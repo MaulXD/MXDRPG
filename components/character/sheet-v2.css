@@ -1,4 +1,4 @@
-/* Ficha V2 — layout estilo Foundry (abas laterais, CA sob retrato) */
+﻿/* Ficha V2 â€” layout estilo Foundry (abas laterais, CA sob retrato) */
 
 .page-wrap--sheet-v2 {
   width: 100%;
@@ -15,7 +15,7 @@
   --v2-panel-border: #c8bca8;
   --v2-ink: #1e1814;
   --v2-muted: #6a5c4e;
-  --v2-gold: #b8922e;
+  --v2-gold: #6B9E8C;
   --v2-hp: #3a9d55;
   --v2-pa: #a83232;
   --text: var(--v2-ink);
@@ -364,7 +364,7 @@
   min-width: 0;
 }
 
-/* Inventário / abas — herdam estilos DDB dentro do painel claro */
+/* InventÃ¡rio / abas â€” herdam estilos DDB dentro do painel claro */
 .sheet-shell--v2 .sheet-toolbar {
   margin-bottom: 0.45rem;
 }
@@ -407,3 +407,4 @@
     grid-template-columns: 1fr;
   }
 }
+

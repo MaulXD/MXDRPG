@@ -1,4 +1,4 @@
-.sheet-pdf-capture-host {
+﻿.sheet-pdf-capture-host {
   position: fixed;
   left: -10000px;
   top: 0;
@@ -16,7 +16,7 @@
 
 .sheet-pdf-capture__frame.mf {
   --mf-bg: #e8e2d6;
-  --mf-accent: #b8922e;
+  --mf-accent: #6B9E8C;
   --mf-pad: 0.65rem;
   --mf-inset: 10px;
   width: 100%;
@@ -58,3 +58,4 @@
 .sheet-pdf-capture__footer-links {
   color: #8a6020;
 }
+

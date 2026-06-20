@@ -1,6 +1,6 @@
-/* ══════════════════════════════════════════════════
-   Toolbar lateral do mapa — seções MAPA / LOUSA / ZOOM
-   ══════════════════════════════════════════════════ */
+﻿/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   Toolbar lateral do mapa â€” seÃ§Ãµes MAPA / LOUSA / ZOOM
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 
 .map-toolbar-shell {
   position: absolute;
@@ -20,7 +20,7 @@
   pointer-events: auto;
 }
 
-/* ── coluna principal ─────────────────────────── */
+/* â”€â”€ coluna principal â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .map-toolbar {
   position: static;
   transform: none;
@@ -45,7 +45,7 @@
   display: none;
 }
 
-/* ── section labels (━━ LABEL ━━) ─────────────── */
+/* â”€â”€ section labels (â”â” LABEL â”â”) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .map-toolbar__section-label {
   margin: 0.35rem 0 0.12rem;
   padding: 0 0.08rem;
@@ -73,7 +73,7 @@
   flex-shrink: 0;
 }
 
-/* ── grupos de botões ─────────────────────────── */
+/* â”€â”€ grupos de botÃµes â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .map-toolbar__group,
 .map-toolbar__zoom {
   display: flex;
@@ -85,14 +85,14 @@
   align-items: stretch;
 }
 
-/* ── divisor entre seções ─────────────────────── */
+/* â”€â”€ divisor entre seÃ§Ãµes â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .map-toolbar__divider {
   height: 1px;
   margin: 0.22rem 0;
   background: rgba(255, 255, 255, 0.07);
 }
 
-/* ── botões ───────────────────────────────────── */
+/* â”€â”€ botÃµes â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .map-toolbar__btn {
   width: 2.04rem;
   height: 2.04rem;
@@ -140,7 +140,7 @@
   cursor: not-allowed;
 }
 
-/* ── cores por ferramenta ─────────────────────── */
+/* â”€â”€ cores por ferramenta â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .map-toolbar__btn[data-tool-icon] .map-toolbar__icon {
   color: var(--tool-icon-color, currentColor);
 }
@@ -159,9 +159,9 @@
 .map-toolbar__btn[data-tool-icon="dungeon"]    { --tool-icon-color: #c9927a; }
 .map-toolbar__btn[data-tool-icon="zoom-in"],
 .map-toolbar__btn[data-tool-icon="zoom-out"]   { --tool-icon-color: #a8b8c8; }
-.map-toolbar__btn[data-tool-icon="reset-view"] { --tool-icon-color: #b8922e; }
+.map-toolbar__btn[data-tool-icon="reset-view"] { --tool-icon-color: #6B9E8C; }
 
-/* ── ícone SVG ─────────────────────────────────── */
+/* â”€â”€ Ã­cone SVG â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .map-toolbar__icon {
   width: 1.1rem;
   height: 1.1rem;
@@ -170,7 +170,7 @@
   transition: filter 0.12s;
 }
 
-/* ── zoom label ────────────────────────────────── */
+/* â”€â”€ zoom label â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .map-toolbar__zoom-label {
   font-size: 0.6rem;
   font-weight: 700;
@@ -180,7 +180,7 @@
   letter-spacing: 0.02em;
 }
 
-/* ── dica de rodapé ────────────────────────────── */
+/* â”€â”€ dica de rodapÃ© â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .map-toolbar__foot-hint {
   margin: 0.3rem 0 0;
   padding: 0.18rem 0.05rem 0;
@@ -192,9 +192,9 @@
   border-top: 1px solid rgba(255, 255, 255, 0.06);
 }
 
-/* ══════════════════════════════════════════════════
-   Flyout — opções de cor / espessura / duração
-   ══════════════════════════════════════════════════ */
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   Flyout â€” opÃ§Ãµes de cor / espessura / duraÃ§Ã£o
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 .map-toolbar__flyout {
   display: flex;
   flex-direction: column;
@@ -227,7 +227,7 @@
   border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-/* ── paleta de cores ─────────────────────────── */
+/* â”€â”€ paleta de cores â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .map-toolbar__flyout .map-toolbar__colors {
   display: grid;
   grid-template-columns: repeat(4, 1.2rem);
@@ -258,7 +258,7 @@
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.5);
 }
 
-/* ── espessura ────────────────────────────────── */
+/* â”€â”€ espessura â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .map-toolbar__flyout .map-toolbar__widths {
   display: flex;
   flex-direction: row;
@@ -291,7 +291,7 @@
   background: var(--mesa-accent-soft, rgba(184, 149, 80, 0.1));
 }
 
-/* ── duração ──────────────────────────────────── */
+/* â”€â”€ duraÃ§Ã£o â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .map-toolbar__flyout-dur {
   display: flex;
   flex-direction: column;
@@ -324,7 +324,7 @@
   cursor: not-allowed;
 }
 
-/* ── limpar ───────────────────────────────────── */
+/* â”€â”€ limpar â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .map-toolbar__flyout .map-toolbar__clear {
   width: 100%;
 }
@@ -349,7 +349,7 @@
   color: rgba(232, 93, 93, 0.75);
 }
 
-/* ── dica ─────────────────────────────────────── */
+/* â”€â”€ dica â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .map-toolbar__flyout .map-toolbar__hint {
   max-width: none;
   text-align: left;
@@ -364,7 +364,7 @@
   max-width: 3.2rem;
 }
 
-/* ── input de texto do markup ─────────────────── */
+/* â”€â”€ input de texto do markup â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .map-markup-text-input {
   position: absolute;
   z-index: 14;
@@ -389,9 +389,9 @@
   box-shadow: 0 0 0 1px color-mix(in srgb, var(--mesa-accent, #b89550) 35%, transparent);
 }
 
-/* ══════════════════════════════════════════════════
-   Responsivo — telas pequenas
-   ══════════════════════════════════════════════════ */
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   Responsivo â€” telas pequenas
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 @media (max-width: 640px) {
   .map-toolbar-shell {
     top: auto;
@@ -411,3 +411,4 @@
     min-width: 5.25rem;
   }
 }
+
