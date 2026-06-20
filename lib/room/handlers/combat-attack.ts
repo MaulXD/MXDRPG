@@ -74,7 +74,12 @@ export async function executeRoomAttack(
     return { ok: false, error: "Ficha do atacante não encontrada" };
   }
 
-  const action = resolveRoomAttackAction(attacker, actor, opts);
+  let action: ReturnType<typeof resolveRoomAttackAction>;
+  try {
+    action = resolveRoomAttackAction(attacker, actor, opts);
+  } catch (e) {
+    return { ok: false, error: e instanceof Error ? e.message : "Ação de combate inválida" };
+  }
 
   if (action.kind === "spell" && opts.entryId) {
     const lim = checkEstribilhoLimit(attacker, opts.entryId);
@@ -377,7 +382,12 @@ async function executeRoomMultiTargetAttack(
     return { ok: false, error: "Ficha do conjurador não encontrada" };
   }
 
-  const action = resolveRoomAttackAction(attacker, actor, opts);
+  let action: ReturnType<typeof resolveRoomAttackAction>;
+  try {
+    action = resolveRoomAttackAction(attacker, actor, opts);
+  } catch (e) {
+    return { ok: false, error: e instanceof Error ? e.message : "Ação de combate inválida" };
+  }
   if (action.kind !== "spell") {
     return { ok: false, error: "Seleção múltipla só se aplica a magias" };
   }

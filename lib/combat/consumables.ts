@@ -60,7 +60,7 @@ function isPotionCatalogId(catalogId: string): boolean {
 export function listActorConsumables(actor: CharacterSheet): ActorConsumable[] {
   const out: ActorConsumable[] = [];
 
-  for (const item of actor.inventory) {
+  for (const item of actor.inventory ?? []) {
     if (item.quantity <= 0) continue;
     if (item.packId !== "equipamentos" && item.packId !== "consumiveis") continue;
 
