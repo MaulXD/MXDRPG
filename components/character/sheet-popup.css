@@ -1,4 +1,4 @@
-.sr-only {
+﻿.sr-only {
 
   position: absolute;
 
@@ -22,7 +22,7 @@
 
 
 
-/* Pop-up ficha — overlay leve; cartão estilo VTT */
+/* Pop-up ficha â€” overlay leve; cartÃ£o estilo VTT */
 
 
 
@@ -247,7 +247,7 @@
   align-items: stretch;
 }
 
-/* Tema escuro legado — NÃO aplicar na ficha DDB (sheet-shell--ddb) */
+/* Tema escuro legado â€” NÃƒO aplicar na ficha DDB (sheet-shell--ddb) */
 .sheet-shell--popup:not(.sheet-shell--ddb) {
 
   --sheet-bg: #121921;
@@ -329,7 +329,7 @@
 
 
 
-/* Topo da ficha — retrato | identidade / combate | atributos */
+/* Topo da ficha â€” retrato | identidade / combate | atributos */
 
 .sheet-popup-top {
   --sheet-popup-portrait-size: 132px;
@@ -718,14 +718,14 @@
   visibility: visible;
 }
 
-/* Portal — renderizado em document.body para não ser cortado por overflow */
+/* Portal â€” renderizado em document.body para nÃ£o ser cortado por overflow */
 .sheet-hover-tip__bubble--portal {
   position: fixed;
   z-index: 10050;
   opacity: 1 !important;
   visibility: visible !important;
   pointer-events: none;
-  /* Neutraliza regras do tooltip inline (absolute + bottom) que esmagavam o balão */
+  /* Neutraliza regras do tooltip inline (absolute + bottom) que esmagavam o balÃ£o */
   bottom: auto !important;
   right: auto !important;
   width: max-content;
@@ -896,7 +896,7 @@
 
 
 
-/* Legado — removido do layout */
+/* Legado â€” removido do layout */
 
 .sheet-popup-hero {
 
@@ -1116,7 +1116,7 @@
 
   border-radius: 50%;
 
-  border: 2px solid #c9a962;
+  border: 2px solid #6B9E8C;
 
   display: grid;
 
@@ -1128,7 +1128,7 @@
 
   font-weight: 700;
 
-  color: #c9a962;
+  color: #6B9E8C;
 
   background: rgba(12, 10, 8, 0.65);
 
@@ -1170,7 +1170,7 @@
 
   height: 100%;
 
-  background: linear-gradient(90deg, #8b7355, #c9a962);
+  background: linear-gradient(90deg, #4A7A6A, #6B9E8C);
 
 }
 
@@ -1208,7 +1208,7 @@
 
 
 
-/* Corpo: 1 coluna por padrão; expande com a largura da janela */
+/* Corpo: 1 coluna por padrÃ£o; expande com a largura da janela */
 
 .sheet-popup-body {
 
@@ -1756,7 +1756,7 @@
 
 
 
-/* Gestão (nível, trilha, loadout) — recolhível */
+/* GestÃ£o (nÃ­vel, trilha, loadout) â€” recolhÃ­vel */
 
 .sheet-popup-advanced {
 
@@ -1808,7 +1808,7 @@
 
 .sheet-popup-advanced > summary::before {
 
-  content: "▸ ";
+  content: "â–¸ ";
 
   color: rgba(201, 169, 98, 0.75);
 
@@ -1818,7 +1818,7 @@
 
 .sheet-popup-advanced[open] > summary::before {
 
-  content: "▾ ";
+  content: "â–¾ ";
 
 }
 
@@ -1924,7 +1924,7 @@
 
   border-color: rgba(201, 169, 98, 0.35);
 
-  color: #c9a962;
+  color: #6B9E8C;
 
 }
 
@@ -2056,7 +2056,7 @@
 
 .sheet-popup-talent-item--available .sheet-popup-talent-name {
 
-  color: #c9a962;
+  color: #6B9E8C;
 
 }
 
@@ -2103,12 +2103,12 @@
 }
 
 .sheet-shell--popup:not(.sheet-shell--ddb) .inv-section {
-  border-color: color-mix(in srgb, var(--sheet-accent, #c9a962) 28%, transparent);
+  border-color: color-mix(in srgb, var(--sheet-accent, #6B9E8C) 28%, transparent);
 }
 
 
 
-/* Trilha completa só no modal de level-up (.lu-overlay), não na sidebar compacta */
+/* Trilha completa sÃ³ no modal de level-up (.lu-overlay), nÃ£o na sidebar compacta */
 .sheet-popup-advanced__body .lu-tree {
   display: none;
 }
@@ -2160,7 +2160,7 @@
 
 
 
-/* Responsivo — janela larga (mesa Foundry) */
+/* Responsivo â€” janela larga (mesa Foundry) */
 @container foundry-sheet (min-width: 640px) {
   .sheet-popup-top {
     grid-template-columns: var(--sheet-popup-portrait-size) minmax(0, 1.25fr) minmax(0, 1fr);
@@ -2195,7 +2195,7 @@
   }
 }
 
-/* Responsivo — topo da ficha (estreito) */
+/* Responsivo â€” topo da ficha (estreito) */
 
 @container sheet-popup (max-width: 560px) {
 
@@ -2255,7 +2255,7 @@
 
 }
 
-/* —— Retrato interativo —— */
+/* â€”â€” Retrato interativo â€”â€” */
 .sheet-popup-portrait-wrap {
   position: relative;
   width: var(--sheet-popup-portrait-size, 132px);
@@ -2356,7 +2356,7 @@
   z-index: 10050;
   max-height: min(90vh, 560px);
   overflow: auto;
-  /* Portal em document.body — tema da ficha popup */
+  /* Portal em document.body â€” tema da ficha popup */
   --sheet-bg: #121921;
   --sheet-surface: #161e2a;
   --sheet-inset: #0f141c;
@@ -2388,7 +2388,7 @@
   z-index: 10050;
   max-height: min(90vh, 560px);
   overflow: auto;
-  /* Portal em document.body — tema da ficha popup */
+  /* Portal em document.body â€” tema da ficha popup */
   --sheet-bg: #121921;
   --sheet-surface: #161e2a;
   --sheet-inset: #0f141c;
@@ -2440,7 +2440,7 @@
   color: var(--sheet-accent);
 }
 
-/* —— Combate (escudo + pills) —— */
+/* â€”â€” Combate (escudo + pills) â€”â€” */
 .sheet-popup-combat-strip {
   display: flex;
   flex-direction: column;
@@ -2544,7 +2544,7 @@
   gap: 0.25rem;
 }
 
-/* —— XP / Ascensão —— */
+/* â€”â€” XP / AscensÃ£o â€”â€” */
 .sheet-popup-identity__xp-primary {
   margin: 0;
   font-size: 0.7rem;
@@ -2565,7 +2565,7 @@
   color: var(--sheet-accent);
 }
 
-/* —— Ações rápidas —— */
+/* â€”â€” AÃ§Ãµes rÃ¡pidas â€”â€” */
 .sheet-popup-quickbar {
   display: flex;
   flex-direction: column;
@@ -2649,7 +2649,7 @@
   font-variant-numeric: tabular-nums;
 }
 
-/* —— Loadout arma / armadura —— */
+/* â€”â€” Loadout arma / armadura â€”â€” */
 .sheet-popup-loadout {
   padding: 0.55rem 0.85rem;
   border-bottom: 1px solid var(--sheet-border);
@@ -2810,5 +2810,6 @@
 .sheet-structural-edit__hint {
   margin: 0.45rem 0 0.55rem;
 }
+
 
 

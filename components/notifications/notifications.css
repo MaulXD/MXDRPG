@@ -1,4 +1,4 @@
-.notifications-bell {
+﻿.notifications-bell {
   display: inline-flex;
   flex-shrink: 0;
 }
@@ -34,7 +34,7 @@
   height: 1.1rem;
   padding: 0 0.25rem;
   border-radius: 999px;
-  background: var(--accent, #c9a227);
+  background: var(--accent, #6B9E8C);
   color: #1a1208;
   font-size: 0.65rem;
   font-weight: 700;
@@ -52,7 +52,7 @@
   box-shadow: 0 12px 36px rgba(0, 0, 0, 0.45);
 }
 
-/* Portal em document.body — fora da navbar (evita overflow/z-index da barra) */
+/* Portal em document.body â€” fora da navbar (evita overflow/z-index da barra) */
 .notifications-bell__panel--portal {
   position: fixed !important;
   z-index: 10450;
@@ -138,7 +138,7 @@
 
 .notifications-bell__link {
   font-size: 0.8rem;
-  color: var(--accent, #c9a227);
+  color: var(--accent, #6B9E8C);
   text-decoration: none;
 }
 
@@ -192,7 +192,7 @@
 .mesa-closed-gate__success {
   margin: 0;
   font-size: 0.9rem;
-  color: var(--accent, #c9a227);
+  color: var(--accent, #6B9E8C);
 }
 
 .adventure-access-panel {
@@ -221,7 +221,7 @@
   padding: 0.5rem 0.75rem;
   border-radius: 8px;
   background: rgba(0, 0, 0, 0.4);
-  border: 1px dashed var(--accent, #c9a227);
+  border: 1px dashed var(--accent, #6B9E8C);
 }
 
 .adventure-access-panel__requests {
@@ -243,3 +243,4 @@
   background: rgba(0, 0, 0, 0.25);
   border: 1px solid var(--glass-border);
 }
+

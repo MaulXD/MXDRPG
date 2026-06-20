@@ -2,7 +2,7 @@ import type { AreaCascadeMode } from "@/lib/combat/area-cascade";
 import type { Axial } from "@/lib/vtt/grid-math";
 import type { TokenCastFxKind } from "@/lib/vtt/token-cast-fx";
 
-export type CombatFxPhase = "mark" | "roll" | "result" | "damage" | "done";
+export type CombatFxPhase = "prob" | "mark" | "roll" | "result" | "damage" | "done";
 
 export type CombatFxMode = "single" | "area-intro" | "area-target" | "area-simultaneous";
 
@@ -56,4 +56,11 @@ export type CombatFxState = {
   cascadeTotal?: number;
   /** IDs de mensagens do chat vinculadas a esta animação (revelação em fases). */
   chatMessageIds?: string[];
+  /** Dados de probabilidade para a fase "prob" (calculados retroativamente). */
+  probHitChance?: number | null;
+  probSaveFailChance?: number | null;
+  probBonus?: number;
+  probAc?: number;
+  probDc?: number;
+  probModsLabel?: string;
 };

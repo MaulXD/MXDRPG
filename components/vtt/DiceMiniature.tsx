@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { parsePrimaryDie } from "@/lib/room/chat-events";
 import { Dice2DFallback } from "@/components/vtt/Dice2DFallback";
-import { Dice3DScene } from "@/components/vtt/Dice3DScene";
+import { Dice3DCSS } from "@/components/vtt/Dice3DCSS";
 
 type Props = {
   formula: string;
@@ -48,22 +48,24 @@ export function DiceMiniature({ formula, value, rolling = false, size = "md" }: 
     .filter(Boolean)
     .join(" ");
 
-  /** WebGL só no dado grande (combate / roller) — chat sm não consome contexto. */
-  const useWebGL = size === "lg";
-  const showOverlay = !useWebGL && (rolling || value == null);
+  // D20 combate (lg) usa CSS 3D — sem WebGL, sem contexto, sem bugs
+  const useCSSd20 = size === "lg" && sides === 20;
 
   return (
     <div className={wrapClass} role="img" aria-label={`d${sides}: ${display}`}>
       <div className="dice-3d-stage">
-        <Dice2DFallback display={display} rolling={rolling} />
-        {useWebGL ? (
-          <Dice3DScene sides={sides} value={value} rolling={rolling} sizePx={px} />
-        ) : null}
-        {showOverlay ? (
-          <span className="dice-3d-face dice-3d-face--overlay" aria-hidden>
-            {display}
-          </span>
-        ) : null}
+        {useCSSd20 ? (
+          <Dice3DCSS value={value} rolling={rolling} sizePx={px} />
+        ) : (
+          <>
+            <Dice2DFallback display={display} rolling={rolling} />
+            {(!rolling && value != null) ? (
+              <span className="dice-3d-face dice-3d-face--overlay" aria-hidden>
+                {display}
+              </span>
+            ) : null}
+          </>
+        )}
       </div>
       <span className="dice-3d-label">d{sides}</span>
     </div>

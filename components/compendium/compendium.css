@@ -1,4 +1,4 @@
-.comp-shell {
+﻿.comp-shell {
   display: grid;
   grid-template-columns: 220px 1fr;
   gap: 1.25rem;
@@ -125,10 +125,10 @@
   color: inherit;
   box-sizing: border-box;
   position: relative;
-  --v4-corner: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18' overflow='visible'%3E%3Cpolyline points='16,2 2,2 2,16' fill='none' stroke='%23d4a030' stroke-width='2' stroke-linecap='square'/%3E%3C/svg%3E");
-  --v4-corner-tr: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18' overflow='visible'%3E%3Cpolyline points='2,2 16,2 16,16' fill='none' stroke='%23d4a030' stroke-width='2' stroke-linecap='square'/%3E%3C/svg%3E");
-  --v4-corner-bl: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18' overflow='visible'%3E%3Cpolyline points='16,16 2,16 2,2' fill='none' stroke='%23d4a030' stroke-width='2' stroke-linecap='square'/%3E%3C/svg%3E");
-  --v4-corner-br: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18' overflow='visible'%3E%3Cpolyline points='2,16 16,16 16,2' fill='none' stroke='%23d4a030' stroke-width='2' stroke-linecap='square'/%3E%3C/svg%3E");
+  --v4-corner: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18' overflow='visible'%3E%3Cpolyline points='16,2 2,2 2,16' fill='none' stroke='%236B9E8C' stroke-width='2' stroke-linecap='square'/%3E%3C/svg%3E");
+  --v4-corner-tr: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18' overflow='visible'%3E%3Cpolyline points='2,2 16,2 16,16' fill='none' stroke='%236B9E8C' stroke-width='2' stroke-linecap='square'/%3E%3C/svg%3E");
+  --v4-corner-bl: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18' overflow='visible'%3E%3Cpolyline points='16,16 2,16 2,2' fill='none' stroke='%236B9E8C' stroke-width='2' stroke-linecap='square'/%3E%3C/svg%3E");
+  --v4-corner-br: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18' overflow='visible'%3E%3Cpolyline points='2,16 16,16 16,2' fill='none' stroke='%236B9E8C' stroke-width='2' stroke-linecap='square'/%3E%3C/svg%3E");
   background-image: var(--v4-corner), var(--v4-corner-tr), var(--v4-corner-bl), var(--v4-corner-br);
   background-size: 18px 18px;
   background-position: top left, top right, bottom left, bottom right;
@@ -197,7 +197,7 @@
   color: var(--text-strong);
 }
 
-/* —— Mesa: painel lateral estreito —— */
+/* â€”â€” Mesa: painel lateral estreito â€”â€” */
 .comp-shell--rail {
   display: flex;
   flex-direction: column;
@@ -457,3 +457,4 @@
 .comp-locked a {
   color: var(--neon-cyan);
 }
+

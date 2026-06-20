@@ -1,4 +1,4 @@
-/* Página /mesas — hub de RPGs com capas */
+﻿/* PÃ¡gina /mesas â€” hub de RPGs com capas */
 
 .rpg-hub-grid {
   display: grid;
@@ -118,7 +118,7 @@
   text-transform: uppercase;
 }
 
-/* ── Cartão de mesa (estilo lobby Roll20, cores Eldarin) ── */
+/* â”€â”€ CartÃ£o de mesa (estilo lobby Roll20, cores Eldarin) â”€â”€ */
 
 .adventure-table-list {
   list-style: none;
@@ -244,7 +244,7 @@
   font-family: var(--font-display);
   font-size: 0.92rem;
   font-weight: 700;
-  color: #c9a962;
+  color: #6B9E8C;
   text-decoration: none;
   letter-spacing: 0.03em;
 }
@@ -409,3 +409,4 @@
     margin: 0 auto;
   }
 }
+
