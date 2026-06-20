@@ -2,15 +2,18 @@
 
 import React, { useEffect, useRef, useState } from "react";
 
+import { DICE_LANDING_MS, DICE_LANDING_MS_REDUCED } from "@/lib/vtt/combat-fx-timings";
+
 type Props = {
   value: number | null;
   rolling: boolean;
   sizePx: number;
+  reducedMotion?: boolean;
 };
 
 const SCRAMBLE = [20, 7, 13, 4, 17, 2, 11, 18, 6, 15, 9, 3, 16, 8, 1, 19, 5, 14, 12, 10];
 
-export function Dice3DCSS({ value, rolling, sizePx }: Props) {
+export function Dice3DCSS({ value, rolling, sizePx, reducedMotion = false }: Props) {
   const isNat20 = value === 20;
   const isNat1 = value === 1;
 
@@ -29,13 +32,14 @@ export function Dice3DCSS({ value, rolling, sizePx }: Props) {
     } else {
       if (intervalRef.current) clearInterval(intervalRef.current);
       setRotState("landing");
-      const t = setTimeout(() => setRotState("settled"), 480);
+      const landingMs = reducedMotion ? DICE_LANDING_MS_REDUCED : DICE_LANDING_MS;
+      const t = setTimeout(() => setRotState("settled"), landingMs);
       return () => clearTimeout(t);
     }
     return () => {
       if (intervalRef.current) clearInterval(intervalRef.current);
     };
-  }, [rolling]);
+  }, [rolling, reducedMotion]);
 
   const display = rolling ? String(SCRAMBLE[scramIdx]) : String(value ?? "?");
 

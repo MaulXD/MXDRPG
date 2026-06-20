@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
+import { DICE_LANDING_MS, DICE_LANDING_MS_REDUCED } from "@/lib/vtt/combat-fx-timings";
 
 export interface DiceWebGLProps {
   /** d4 | d6 | d8 | d12 | d20 */
@@ -12,9 +13,10 @@ export interface DiceWebGLProps {
   sizePx: number;
   /** variante de cor: "attack" (verdigris) | "damage" (vermelho) | "heal" (verde) | "crit" (dourado) */
   variant?: "attack" | "damage" | "heal" | "crit";
+  /** Pouso em ms — alinhado ao ritmo do combate */
+  landingMs?: number;
+  reducedMotion?: boolean;
 }
-
-// ── Cores por variante ───────────────────────────────────────────
 
 const VARIANT_COLORS = {
   attack: { face: "#0d1118", border: "rgba(107,158,140,0.32)", text: "#dde4ef", glow: "rgba(107,158,140,0.5)" },
@@ -23,7 +25,14 @@ const VARIANT_COLORS = {
   crit:   { face: "#141000", border: "rgba(232,190,50,0.42)", text: "#ffe880", glow: "rgba(232,190,50,0.65)" },
 };
 
-// ── Gera textura canvas para uma face ───────────────────────────
+const SPIN_AXIS = new THREE.Vector3();
+const DELTA_Q = new THREE.Quaternion();
+
+function easeOutBack(t: number): number {
+  const c1 = 1.70158;
+  const c3 = c1 + 1;
+  return 1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2);
+}
 
 function makeFaceTex(
   num: number,
@@ -35,16 +44,13 @@ function makeFaceTex(
   const ctx = c.getContext("2d")!;
   const col = VARIANT_COLORS[variant];
 
-  // Fundo
   ctx.fillStyle = col.face;
   ctx.fillRect(0, 0, S, S);
 
-  // Borda/brilho sutil
   ctx.strokeStyle = col.border;
   ctx.lineWidth = 8;
   ctx.strokeRect(4, 4, S - 8, S - 8);
 
-  // Triângulo interno (decorativo, evoca a face icosaédrica)
   ctx.strokeStyle = col.border.replace(/[\d.]+\)$/, "0.18)");
   ctx.lineWidth = 2;
   ctx.beginPath();
@@ -54,7 +60,6 @@ function makeFaceTex(
   ctx.closePath();
   ctx.stroke();
 
-  // Número
   const s = String(num);
   ctx.font = `900 ${s.length > 1 ? 90 : 110}px Georgia, serif`;
   ctx.textAlign = "center";
@@ -65,7 +70,6 @@ function makeFaceTex(
   ctx.fillText(s, S / 2, S / 2 + 8);
   ctx.shadowBlur = 0;
 
-  // Sublinhado para 6 e 9
   if (num === 6 || num === 9) {
     ctx.strokeStyle = col.text;
     ctx.lineWidth = 4;
@@ -78,8 +82,6 @@ function makeFaceTex(
   return new THREE.CanvasTexture(c);
 }
 
-// ── Constrói geometria por tipo de dado ─────────────────────────
-
 function buildGeometry(sides: DiceWebGLProps["sides"]) {
   let base: THREE.BufferGeometry;
   let faceCount: number;
@@ -90,7 +92,7 @@ function buildGeometry(sides: DiceWebGLProps["sides"]) {
     faceCount = 20; vertsPerFace = 3;
   } else if (sides === 12) {
     base = new THREE.DodecahedronGeometry(1, 0);
-    faceCount = 12; vertsPerFace = 9; // cada face pentagonal = 3 triângulos × 3 verts
+    faceCount = 12; vertsPerFace = 9;
   } else if (sides === 8) {
     base = new THREE.OctahedronGeometry(1, 0);
     faceCount = 8; vertsPerFace = 3;
@@ -98,7 +100,6 @@ function buildGeometry(sides: DiceWebGLProps["sides"]) {
     base = new THREE.TetrahedronGeometry(1.2, 0);
     faceCount = 4; vertsPerFace = 3;
   } else {
-    // D6 — BoxGeometry tem 6 faces, cada uma com 2 triângulos
     base = new THREE.BoxGeometry(1, 1, 1);
     faceCount = 6; vertsPerFace = 6;
   }
@@ -110,7 +111,6 @@ function buildGeometry(sides: DiceWebGLProps["sides"]) {
     geom.addGroup(i * vertsPerFace, vertsPerFace, i);
   }
 
-  // Normal de cada face (primeiro vértice da face)
   const normals = geom.attributes.normal;
   const faceNormals: THREE.Vector3[] = [];
   for (let i = 0; i < faceCount; i++) {
@@ -123,7 +123,6 @@ function buildGeometry(sides: DiceWebGLProps["sides"]) {
     );
   }
 
-  // Quaternion de pouso: rotaciona para que a face i aponte para a câmera (+Z)
   const cameraDir = new THREE.Vector3(0, 0, 1);
   const landingQuats = faceNormals.map((n) => {
     const q = new THREE.Quaternion();
@@ -134,18 +133,19 @@ function buildGeometry(sides: DiceWebGLProps["sides"]) {
   return { geom, faceCount, landingQuats };
 }
 
-// ── Componente ───────────────────────────────────────────────────
-
 export function DiceWebGL({
   sides,
   value,
   rolling,
   sizePx,
   variant = "attack",
+  landingMs: landingMsProp,
+  reducedMotion = false,
 }: DiceWebGLProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const landingMs =
+    landingMsProp ?? (reducedMotion ? DICE_LANDING_MS_REDUCED : DICE_LANDING_MS);
 
-  // Estado interno da animação — não causa re-render
   const stateRef = useRef<{
     renderer: THREE.WebGLRenderer;
     scene: THREE.Scene;
@@ -157,13 +157,14 @@ export function DiceWebGL({
     rafId: number;
     mode: "idle" | "rolling" | "landing" | "settled";
     rollTime: number;
+    lastFrame: number;
     landingStart: number;
     landingFrom: THREE.Quaternion;
     landingTarget: THREE.Quaternion;
+    landingMs: number;
     currentVariant: DiceWebGLProps["variant"];
   } | null>(null);
 
-  // ── Setup inicial ──────────────────────────────────────────────
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -175,12 +176,10 @@ export function DiceWebGL({
     renderer.setClearColor(0x000000, 0);
 
     const scene = new THREE.Scene();
-
     const camera = new THREE.PerspectiveCamera(40, 1, 0.1, 20);
     camera.position.set(0, 0, 4);
     camera.lookAt(0, 0, 0);
 
-    // Iluminação
     scene.add(new THREE.AmbientLight(0xffffff, 0.45));
     const dir = new THREE.DirectionalLight(0xffffff, 1.2);
     dir.position.set(1.5, 2, 3);
@@ -189,7 +188,6 @@ export function DiceWebGL({
     rim.position.set(-2, -1, 1);
     scene.add(rim);
 
-    // Geometria e materiais
     const { geom, faceCount, landingQuats } = buildGeometry(sides);
     const materials = Array.from({ length: faceCount }, (_, i) =>
       new THREE.MeshStandardMaterial({
@@ -202,58 +200,68 @@ export function DiceWebGL({
     const mesh = new THREE.Mesh(geom, materials);
     scene.add(mesh);
 
-    // Loop de renderização
-    let rafId = 0;
-    const state: {
-      renderer: THREE.WebGLRenderer;
-      scene: THREE.Scene;
-      camera: THREE.PerspectiveCamera;
-      mesh: THREE.Mesh;
-      materials: THREE.MeshStandardMaterial[];
-      landingQuats: THREE.Quaternion[];
-      faceCount: number;
-      rafId: number;
-      mode: "idle" | "rolling" | "landing" | "settled";
-      rollTime: number;
-      landingStart: number;
-      landingFrom: THREE.Quaternion;
-      landingTarget: THREE.Quaternion;
-      currentVariant: DiceWebGLProps["variant"];
-    } = {
-      renderer, scene, camera, mesh, materials, landingQuats, faceCount,
-      rafId,
-      mode: rolling ? "rolling" : "idle",
-      rollTime: 0,
+    const state = {
+      renderer,
+      scene,
+      camera,
+      mesh,
+      materials,
+      landingQuats,
+      faceCount,
+      rafId: 0,
+      mode: (rolling ? "rolling" : "idle") as "idle" | "rolling" | "landing" | "settled",
+      rollTime: Math.random() * 10,
+      lastFrame: performance.now(),
       landingStart: 0,
       landingFrom: new THREE.Quaternion(),
       landingTarget: new THREE.Quaternion(),
+      landingMs,
       currentVariant: variant,
     };
 
-    function animate() {
+    function animate(now: number) {
       state.rafId = requestAnimationFrame(animate);
+      const dt = Math.min((now - state.lastFrame) / 1000, 0.05);
+      state.lastFrame = now;
+
       if (state.mode === "rolling") {
-        state.rollTime += 0.055;
-        mesh.rotation.x = state.rollTime * 1.9;
-        mesh.rotation.y = state.rollTime * 2.7;
-        mesh.rotation.z = state.rollTime * 1.1;
+        const speed = reducedMotion ? 14 : 8.5 + Math.sin(state.rollTime * 2.1) * 2.8;
+        SPIN_AXIS.set(
+          Math.sin(state.rollTime * 1.35) * 0.65 + 0.22,
+          Math.cos(state.rollTime * 1.85) * 0.58 + 0.28,
+          Math.sin(state.rollTime * 2.25) * 0.52 + 0.24
+        ).normalize();
+        DELTA_Q.setFromAxisAngle(SPIN_AXIS, speed * dt);
+        mesh.quaternion.multiply(DELTA_Q);
+        state.rollTime += dt;
+        mesh.scale.setScalar(1);
       } else if (state.mode === "idle") {
-        // rotação lenta de exibição — mostra o dado sem rolar
-        state.rollTime += 0.003;
-        mesh.rotation.x = state.rollTime * 0.4;
-        mesh.rotation.y = state.rollTime * 0.7;
-        mesh.rotation.z = state.rollTime * 0.2;
+        state.rollTime += dt * 0.35;
+        mesh.rotation.set(
+          state.rollTime * 0.35,
+          state.rollTime * 0.55,
+          state.rollTime * 0.18
+        );
+        mesh.scale.setScalar(1);
       } else if (state.mode === "landing") {
-        const elapsed = performance.now() - state.landingStart;
-        const t = Math.min(elapsed / 420, 1);
-        const ease = 1 - Math.pow(1 - t, 3);
+        const elapsed = now - state.landingStart;
+        const t = Math.min(elapsed / state.landingMs, 1);
+        const ease = easeOutBack(t);
         mesh.quaternion.slerpQuaternions(state.landingFrom, state.landingTarget, ease);
-        if (t >= 1) state.mode = "settled";
+        const bounce = 1 + Math.sin(t * Math.PI) * 0.1 * (1 - t);
+        mesh.scale.setScalar(bounce);
+        if (t >= 1) {
+          mesh.scale.setScalar(1);
+          state.mode = "settled";
+        }
+      } else {
+        mesh.scale.setScalar(1);
       }
+
       renderer.render(scene, camera);
     }
-    animate();
 
+    state.rafId = requestAnimationFrame(animate);
     stateRef.current = state;
 
     return () => {
@@ -265,12 +273,12 @@ export function DiceWebGL({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sides, sizePx]);
 
-  // ── Reage a mudanças de variant/value/rolling ──────────────────
   useEffect(() => {
     const s = stateRef.current;
     if (!s) return;
 
-    // Se a variante mudou, regenera texturas
+    s.landingMs = landingMs;
+
     if (s.currentVariant !== variant) {
       s.currentVariant = variant;
       s.materials.forEach((mat, i) => {
@@ -282,24 +290,24 @@ export function DiceWebGL({
 
     if (rolling) {
       s.mode = "rolling";
+      s.lastFrame = performance.now();
     } else if (value != null) {
-      // Face cujo índice corresponde ao valor
       const faceIdx = Math.max(0, Math.min(value - 1, s.faceCount - 1));
       s.landingFrom = s.mesh.quaternion.clone();
       s.landingTarget = s.landingQuats[faceIdx].clone();
       s.landingStart = performance.now();
       s.mode = "landing";
 
-      // Atualiza a textura da face alvo para mostrar o valor real
-      // (útil quando valor > faceCount, ex: dano 18 num D8)
       if (value !== faceIdx + 1) {
         const mat = s.materials[faceIdx];
         mat.map?.dispose();
         mat.map = makeFaceTex(value, variant);
         mat.needsUpdate = true;
       }
+    } else if (s.mode !== "settled") {
+      s.mode = "idle";
     }
-  }, [rolling, value, variant]);
+  }, [rolling, value, variant, landingMs]);
 
   return (
     <canvas
