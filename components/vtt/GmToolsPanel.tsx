@@ -12,6 +12,14 @@ import { GmSavingThrowPanel } from "@/components/vtt/GmSavingThrowPanel";
 import { CulinaryMealPanel } from "@/components/vtt/CulinaryMealPanel";
 import { RoomSettingsPanel } from "@/components/vtt/RoomSettingsPanel";
 import type { CombatUndoEntry } from "@/lib/room/types";
+import {
+  IconHome,
+  IconPot,
+  IconSkull,
+  IconSword,
+  IconUsers,
+} from "@/components/ui/EldarinIcons";
+import type { ReactNode } from "react";
 import "./gm-tools.css";
 
 type GmTab = "sala" | "jogadores" | "culinaria" | "criaturas" | "combate";
@@ -30,12 +38,12 @@ type Props = {
   onRefresh?: () => void;
 };
 
-const TABS: { id: GmTab; label: string; hint: string }[] = [
-  { id: "sala", label: "Sala", hint: "Nome, visibilidade e convite" },
-  { id: "jogadores", label: "Jogadores", hint: "XP, vida e salvaguardas" },
-  { id: "culinaria", label: "Culinária", hint: "Prato estruturado e assimilação" },
-  { id: "criaturas", label: "Criaturas", hint: "Templates do mestre" },
-  { id: "combate", label: "Combate", hint: "Histórico de PA e desfazer ações" },
+const TABS: { id: GmTab; label: string; hint: string; icon: ReactNode }[] = [
+  { id: "sala", label: "Sala", hint: "Nome, visibilidade e convite", icon: <IconHome size={17} /> },
+  { id: "jogadores", label: "Jogadores", hint: "XP, vida e salvaguardas", icon: <IconUsers size={17} /> },
+  { id: "culinaria", label: "Culinária", hint: "Prato estruturado e assimilação", icon: <IconPot size={17} /> },
+  { id: "criaturas", label: "Criaturas", hint: "Templates do mestre", icon: <IconSkull size={17} /> },
+  { id: "combate", label: "Combate", hint: "Histórico de PA e desfazer ações", icon: <IconSword size={17} /> },
 ];
 
 /** Ferramentas do mestre — menu em abas. */
@@ -75,7 +83,10 @@ export function GmToolsPanel({
             aria-current={tab === t.id ? "page" : undefined}
             onClick={() => setTab(t.id)}
           >
-            {t.label}
+            <span className="vtt-gm-tools__tab-icon" aria-hidden>
+              {t.icon}
+            </span>
+            <span className="vtt-gm-tools__tab-label">{t.label}</span>
           </button>
         ))}
       </nav>
