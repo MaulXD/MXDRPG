@@ -392,13 +392,6 @@ export function MesaWorkspace({
 
   const dockOpen = windows.isDockOpen(allowedDockPanels);
 
-  useEffect(() => {
-    if (!windows.hydrated || !showInviteUi || !roomInviteCode) return;
-    const key = `eldarin-invite-open-${roomId}`;
-    if (sessionStorage.getItem(key)) return;
-    sessionStorage.setItem(key, "1");
-    windows.openInDock("invite");
-  }, [windows.hydrated, showInviteUi, roomInviteCode, roomId, windows.openInDock]);
 
   useEffect(() => {
     if (!windows.hydrated || !isActualGm) return;
@@ -488,14 +481,6 @@ export function MesaWorkspace({
           </p>
         ) : null}
 
-        {showInviteUi ? (
-          <RoomInviteBar
-            adventureId={adventureId}
-            roomId={roomInviteRoomId!}
-            inviteCode={roomInviteCode!}
-            roomName={roomName ?? adventureName ?? "Mesa"}
-          />
-        ) : null}
 
         <div className="foundry-mesa">
           <MesaFoundrySidebar
