@@ -10,6 +10,26 @@ export const DICE_TIER_COLORS: Record<PortraitFrameTier, string> = {
   boss: "#d43838",
 };
 
+export const DICE_TIER_LABELS: Record<PortraitFrameTier, string> = {
+  hero: "Jogador",
+  monster: "Monstro",
+  elite: "Elite",
+  miniboss: "Miniboss",
+  boss: "Boss",
+};
+
+/** Borda/glow do slot — igual ao preview HTML. */
+export function getAttackSlotBorder(tier: PortraitFrameTier): string {
+  const map: Record<PortraitFrameTier, string> = {
+    hero: "rgba(74,144,217,0.65)",
+    monster: "rgba(212,184,74,0.65)",
+    elite: "rgba(155,89,212,0.65)",
+    miniboss: "rgba(232,136,50,0.65)",
+    boss: "rgba(212,56,56,0.65)",
+  };
+  return map[tier];
+}
+
 export const DICE_DAMAGE_COLOR = "#e05040";
 export const DICE_HEAL_COLOR = "#46c878";
 export const DICE_CRIT_COLOR = "#ffc840";
@@ -34,7 +54,7 @@ export function getDiceBoxBaseOptions(reducedMotion: boolean) {
     assetPath: "/assets/dice-box/",
     origin: typeof window !== "undefined" ? window.location.origin : "",
     theme: "default" as const,
-    scale: reducedMotion ? 14 : 16,
+    scale: reducedMotion ? 15 : 18,
     startingHeight: 9,
     throwForce: reducedMotion ? 3 : 4,
     spinForce: reducedMotion ? 2.5 : 3.5,
