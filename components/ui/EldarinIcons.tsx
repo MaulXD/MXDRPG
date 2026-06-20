@@ -342,6 +342,28 @@ export function IconUser({ className, size }: IconProps) {
   );
 }
 
+export function IconUsers({ className, size }: IconProps) {
+  return (
+    <Svg className={className} size={size}>
+      <circle cx="9" cy="9.5" r="2.5" {...S} />
+      <path d="M5 19c.5-2.2 1.8-3.5 4-3.5" {...S} />
+      <circle cx="16" cy="9" r="2.5" {...S} />
+      <path d="M13.5 19c.4-2.2 1.5-3.5 3.5-3.5" {...S} />
+    </Svg>
+  );
+}
+
+export function IconPot({ className, size }: IconProps) {
+  return (
+    <Svg className={className} size={size}>
+      <path d="M6 10h12l-1.2 8.5a2 2 0 01-2 1.7H9.2a2 2 0 01-2-1.7L6 10z" {...S} />
+      <path d="M8 10V7.5a4 4 0 018 0V10" {...S} />
+      <path d="M5 10h14" {...S} />
+      <path d="M4 7.5h2M18 7.5h2" {...S} opacity={0.75} />
+    </Svg>
+  );
+}
+
 export function IconChat({ className, size }: IconProps) {
   return (
     <Svg className={className} size={size}>
