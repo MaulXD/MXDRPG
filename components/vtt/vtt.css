@@ -7364,73 +7364,13 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.45rem;
+  gap: 0.4rem;
 }
 
-.dmg-die-gem {
-  width: 72px;
-  height: 72px;
-  background: rgba(10, 13, 20, 0.95);
-  border: 1.5px solid rgba(200, 80, 60, 0.65);
-  border-radius: 6px;
-  clip-path: polygon(18% 0%, 82% 0%, 100% 18%, 100% 82%, 82% 100%, 18% 100%, 0% 82%, 0% 18%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow:
-    0 8px 28px rgba(0, 0, 0, 0.7),
-    inset 0 1px 0 rgba(255, 255, 255, 0.06);
-}
-
-.dmg-die-panel--heal .dmg-die-gem {
-  border-color: rgba(80, 210, 130, 0.7);
-}
-.dmg-die-panel--crit .dmg-die-gem {
-  border-color: rgba(232, 190, 50, 0.8);
-  box-shadow:
-    0 8px 28px rgba(0, 0, 0, 0.7),
-    0 0 18px rgba(232, 190, 50, 0.35),
-    inset 0 1px 0 rgba(255, 255, 255, 0.08);
-}
-
-.dmg-die-panel--settled .dmg-die-gem {
-  animation: dmg-die-flash 0.38s ease-out;
-}
-.dmg-die-panel--dmg.dmg-die-panel--settled .dmg-die-gem {
-  --flash-color: rgba(200, 80, 60, 0.7);
-}
-.dmg-die-panel--heal.dmg-die-panel--settled .dmg-die-gem {
-  --flash-color: rgba(80, 210, 130, 0.7);
-}
-.dmg-die-panel--crit.dmg-die-panel--settled .dmg-die-gem {
-  --flash-color: rgba(232, 190, 50, 0.7);
-}
-
-@keyframes dmg-die-flash {
-  0%   { box-shadow: 0 0 0 3px var(--flash-color, rgba(200,80,60,0.7)), 0 8px 28px rgba(0,0,0,0.7); }
-  100% { box-shadow: 0 8px 28px rgba(0,0,0,0.7); }
-}
-
-.dmg-die-num {
-  font-family: var(--font-display, serif);
-  font-size: 1.85rem;
-  font-weight: 800;
-  color: rgba(240, 220, 210, 0.95);
-  letter-spacing: -0.03em;
-  line-height: 1;
-  transition: opacity 0.08s;
-}
-
-.dmg-die-panel--heal .dmg-die-num {
-  color: rgba(100, 230, 150, 0.95);
-}
-.dmg-die-panel--crit .dmg-die-num {
-  color: rgba(255, 210, 60, 0.98);
-}
-
-.dmg-die-num--rolling {
-  opacity: 0.55;
-  filter: blur(0.5px);
+/* canvas WebGL do dado de dano — sombra de profundidade */
+.dmg-die-panel canvas {
+  filter: drop-shadow(0 6px 18px rgba(0, 0, 0, 0.65));
+  border-radius: 4px;
 }
 
 .dmg-die-label {
@@ -7579,7 +7519,7 @@
   .proj-slash-line-2,
   .proj-miss-text,
   .proj-aoe-ring,
-  .dmg-die-gem {
+  .dmg-die-panel canvas {
     animation: none !important;
     transition: none !important;
   }
