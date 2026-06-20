@@ -4,12 +4,19 @@ import { FriendsNavIcon } from "@/components/friends/FriendsNavIcon";
 import { FriendsNavMessages } from "@/components/friends/FriendsNavMessages";
 import { NotificationsBell } from "@/components/notifications/NotificationsBell";
 import { getSession } from "@/lib/auth/session";
+import { safeMaterializeSessionUser } from "@/lib/auth/session-user";
 import Link from "next/link";
 import { ENTRAR_PATH } from "@/lib/site-paths";
 import { SiteNavLinks } from "@/components/SiteNavLinks";
 
 export async function SiteHeaderWrapper() {
   const session = await getSession();
+  // Re-read from DB if session cookie stripped the avatar (data URL → null).
+  const navUser = session
+    ? session.user.avatarSource === "custom" && !session.user.avatarUrl
+      ? await safeMaterializeSessionUser(session.user)
+      : session.user
+    : null;
 
   return (
     <header className="glass site-header">
@@ -24,7 +31,7 @@ export async function SiteHeaderWrapper() {
               <NotificationsBell />
               <FriendsNavIcon />
               <FriendsNavMessages />
-              <HeaderUserMenu user={session.user} />
+              <HeaderUserMenu user={navUser} />
             </div>
           ) : (
             <Link href={ENTRAR_PATH} className="btn nav-cta">

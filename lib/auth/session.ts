@@ -6,7 +6,13 @@ import type { SessionPayload, SessionUser, UserRole } from "./types";
 export const SESSION_COOKIE = "vinite_session";
 
 function encode(payload: SessionPayload): string {
-  return Buffer.from(JSON.stringify(payload), "utf8").toString("base64url");
+  // Data URLs can be hundreds of KB — exceeds browser cookie limit (~4KB).
+  // Strip them here so the cookie never blows up; the actual image stays in DB.
+  const safe: SessionPayload =
+    payload.user.avatarUrl?.startsWith("data:")
+      ? { ...payload, user: { ...payload.user, avatarUrl: null } }
+      : payload;
+  return Buffer.from(JSON.stringify(safe), "utf8").toString("base64url");
 }
 
 function decode(raw: string): SessionPayload | null {
