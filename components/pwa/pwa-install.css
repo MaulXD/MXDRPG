@@ -1,4 +1,4 @@
-.pwa-install-wrap {
+﻿.pwa-install-wrap {
   display: inline-flex;
   flex-direction: column;
   align-items: flex-start;
@@ -14,7 +14,7 @@
 .pwa-install-status {
   font-size: 0.82rem;
   font-weight: 600;
-  color: var(--accent-gold, #c9a962);
+  color: var(--accent-gold, #6B9E8C);
 }
 
 .pwa-install-link {
@@ -29,7 +29,7 @@
 }
 
 .pwa-install-link:hover {
-  color: var(--accent-gold, #c9a962);
+  color: var(--accent-gold, #6B9E8C);
 }
 
 .pwa-install-guide__lead {
@@ -52,7 +52,7 @@
 }
 
 .pwa-install-guide__ok {
-  color: var(--accent-gold, #c9a962);
+  color: var(--accent-gold, #6B9E8C);
 }
 
 .pwa-install-steps {
@@ -83,3 +83,4 @@
   margin: 0.5rem 0 0;
   line-height: 1.55;
 }
+

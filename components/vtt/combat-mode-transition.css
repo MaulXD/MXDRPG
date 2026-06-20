@@ -1,9 +1,9 @@
-/* Transição Combate ↔ Aventura — Choque (entrada) · Bruma se abre (saída) */
+﻿/* TransiÃ§Ã£o Combate â†” Aventura â€” Choque (entrada) Â· Bruma se abre (saÃ­da) */
 
 .cmt-overlay {
   --cmt-total: 2.3s;
-  --cmt-hold-ratio: 0.435; /* ~1s de pausa em animação de 2.3s */
-  --cmt-approach-ratio: 0.3; /* ~0.7s até cruzar */
+  --cmt-hold-ratio: 0.435; /* ~1s de pausa em animaÃ§Ã£o de 2.3s */
+  --cmt-approach-ratio: 0.3; /* ~0.7s atÃ© cruzar */
   position: absolute;
   inset: 0;
   z-index: 120;
@@ -105,7 +105,7 @@
   font-size: clamp(0.78rem, 2vw, 0.92rem);
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: #b8922e;
+  color: #6B9E8C;
   opacity: 0;
 }
 
@@ -168,7 +168,7 @@
   z-index: 3;
 }
 
-/* ─── Entrada: Choque lateral — cruza, segura 1s, depois some o overlay ─── */
+/* â”€â”€â”€ Entrada: Choque lateral â€” cruza, segura 1s, depois some o overlay â”€â”€â”€ */
 .cmt--in-clash.cmt-overlay--playing .cmt-sword--a {
   animation: cmt-in-clash-a var(--cmt-total) cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
@@ -221,7 +221,7 @@
   100% { opacity: 0; transform: scale(1.6); }
 }
 
-/* ─── Saída: Bruma se abre — bússola, calor e névoa dissipando ─── */
+/* â”€â”€â”€ SaÃ­da: Bruma se abre â€” bÃºssola, calor e nÃ©voa dissipando â”€â”€â”€ */
 .cmt--out-adventure.cmt-overlay--playing .cmt-adventure__mist {
   animation: cmt-mist-lift var(--cmt-total) ease-out forwards;
 }
@@ -324,9 +324,10 @@
   to { opacity: 0; transform: translateY(8px); }
 }
 
-/* Bloqueio da mesa durante transição */
+/* Bloqueio da mesa durante transiÃ§Ã£o */
 .foundry-mesa__stage--locked .vtt-shell--foundry,
 .foundry-mesa__stage--locked .vtt-canvas-wrap,
 .foundry-mesa__stage--locked .foundry-mesa__windows {
   pointer-events: none !important;
 }
+

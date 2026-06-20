@@ -104,6 +104,38 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-06-20 — Redesign combate: D20 CSS, fluxo sequencial, animações de projétil
+
+**Pedido:** Tela de combate estava bugada e a animação dos dados ruim. Usuário queria: D20 3D em CSS (sem WebGL), fluxo visual sequencial (probabilidade → dado → resultado → chat) com timing Médio (~3.5s), e animações de ataque sobrepostas ao canvas: talho, flecha, orbe mágico (fogo/arcano), raio ziguezague, área (explosão radial), cura, e texto "ERROU!" com desvio para erros.
+
+**Passo a passo:**
+1. **Diagnóstico** — D20 usava Three.js WebGL (`Dice3DScene.tsx`) com limites de contexto, causando bugs visuais. O `CombatFxLayer` não tinha fase de probabilidade e o timing era muito rápido (~1s total). Animações de projétil inexistentes — só efeito no token após impacto.
+2. **Decisão** — Substituir WebGL por CSS puro (preserve-3d + keyframes). Adicionar fase `"prob"` ao `CombatFxPhase`. Calcular chance de acerto retroativamente (attackTotal - attackNatural = bonus, então simpleHitChance). Adicionar SVG projectile overlay no `CombatFxLayer`. Detectar tipo de animação por `castFxKind` estendido com `"arrow"` e `"lightning"`.
+3. **Implementação:**
+   - `token-cast-fx.ts`: novos kinds `"arrow"` e `"lightning"`, detecção por keywords no nome da arma/magia
+   - `combat-fx-types.ts`: fase `"prob"` adicionada; campos `probHitChance`, `probBonus`, `probAc`, `probDc`, `probModsLabel`, `probSaveFailChance`
+   - `combat-fx-sequence.ts`: função `simpleHitChance()` + `extractModsLabel()` + população dos campos `prob*`
+   - `Dice3DCSS.tsx` (NOVO): D20 triangular CSS puro, rotação 3D com preserve-3d, Nat20 dourado, Nat1 vermelho
+   - `DiceMiniature.tsx`: usa `Dice3DCSS` para tamanho "lg" (combate), mantém 2D fallback para sm/md
+   - `CombatFxLayer.tsx`: fase `"prob"` (1.2s) antes do `"mark"`, painel de probabilidade com barra animada, animações SVG de projétil (flecha, orbe, raio, talho, miss), timing atualizado (prob:1200ms + mark:150ms + roll:1000ms + result:720ms + done:480ms ≈ 3.6s)
+   - `vtt.css`: CSS para `.d20-css*` (rotação 3D), `.combat-prob-panel` (painel prob com barra), `.proj-*` (animações projétil SVG); 62 ocorrências de `rgba(201,169,98,...)` → `rgba(107,158,140,...)` (verdigris)
+4. **Validação** — `tsc --noEmit` sem erros. Testar em mesa ativa: verificar que sequência prob→dado→resultado→chat aparece, D20 gira suavemente, flechas/orbes/raios aparecem sobre o grid.
+
+**Arquivos tocados:**
+- `lib/vtt/token-cast-fx.ts` — novos kinds arrow/lightning + detecção por keywords + castFxDuration atualizado
+- `lib/vtt/combat-fx-types.ts` — fase "prob" + 6 novos campos probData
+- `lib/vtt/combat-fx-sequence.ts` — funções simpleHitChance + extractModsLabel + população prob
+- `components/vtt/Dice3DCSS.tsx` — NOVO componente D20 CSS puro 3D
+- `components/vtt/DiceMiniature.tsx` — usa Dice3DCSS para lg/d20 em vez de Three.js
+- `components/vtt/CombatFxLayer.tsx` — reescrito: fase prob, painel ProbPanel, ProjectileAnim SVG, AoeExplosion, timing médio
+- `components/vtt/vtt.css` — 500+ linhas adicionadas: D20 CSS, prob panel, projétil SVG; 62 rgba(ouro) → verdigris
+
+**Commits / deploy:** pendente local.
+
+**Como testar:** Iniciar combate na mesa → atacar → observar sequência: painel de probabilidade (1.2s) → D20 girando (1s) → resultado com acerto/erro (0.8s) → dano flutuante + chat atualizado (0.6s). Verificar que flecha aparece em ataques à distância, raio em magias de relâmpago, orbe em outras magias, talho em ataques corpo-a-corpo.
+
+---
+
 ### 2026-06-20 — Correções críticas de auditoria UX (privacidade, navbar, compêndio, demo)
 
 **Pedido:** corrigir os 4 bugs críticos apontados pela auditoria de agente: página de privacidade exposta com texto de dev, `/mundo` ausente na navbar, cards do compêndio sem detalhe visível, e mesa demo sem tokens de monstros.
@@ -147,6 +179,49 @@ npm run sync:data:check       # após editar livros/
 **Commits / deploy:** pendente.
 
 **Como testar:** entrar na mesa como mestre → painel de convite não deve abrir; acessar pelo ícone no dock ainda deve funcionar.
+
+---
+
+### 2026-06-20 — Fix avatar não refletia seleção do usuário na navbar
+
+**Pedido:** navbar mostrava avatar automático (OAuth/gerado) mesmo após usuário salvar foto personalizada.
+
+**Passo a passo:**
+1. Diagnóstico — `SiteHeaderWrapper` só chamava `safeMaterializeSessionUser` quando `avatarSource === "custom" && !avatarUrl`; para usuários custom com URL https:// (não data URL), a condição era FALSE e usava o cookie diretamente, que poderia estar stale. Além disso, `/api/auth/me` retornava apenas o cookie sem material DB.
+2. Decisão — ampliar a condição: sempre chamar `safeMaterializeSessionUser` para `avatarSource === "custom"` (independente de ter URL no cookie); atualizar `/api/auth/me` com a mesma lógica para cobrir o fallback client-side.
+3. Implementação — `SiteHeaderWrapper.tsx`: removida a parte `&& !session.user.avatarUrl`; `app/api/auth/me/route.ts`: importado `safeMaterializeSessionUser` e aplicado para usuários custom.
+4. Validação — fluxo: salvar foto custom → PATCH atualiza cookie + DB → `router.refresh()` → SiteHeaderWrapper lê cookie (custom) → DB fetch → avatar correto na navbar.
+
+**Arquivos tocados:**
+- `components/SiteHeaderWrapper.tsx` — condição broadened: qualquer custom source sempre lê do DB
+- `app/api/auth/me/route.ts` — materializa user do DB para custom avatar
+
+**Commits / deploy:** pendente.
+
+**Como testar:** `/conta` → selecionar "Foto personalizada" → salvar → navbar deve mostrar o avatar escolhido imediatamente.
+
+---
+
+### 2026-06-20 — Redesign Phase 1: tokens Verdigris + sweep de dourado
+
+**Pedido:** iniciar redesign do site conforme `docs/REDESIGN-2026.md`; fase 1 = trocar sistema de cores.
+
+**Passo a passo:**
+1. Decisão — acento primário `#6B9E8C` (Verdigris, bronze envelhecido) substituindo `#b8922e` (dourado genérico); fundos chrome mais escuros; escala tipográfica + cores semânticas novas.
+2. Implementação — reescrita completa do bloco `:root` em `app/globals.css`: novos tokens de chrome, acento verdigris, `--accent-dim`, `--accent-warn` (#C97A4A cobre quente), `--accent-glow`, escala `--text-xs` a `--text-4xl`, cores `--color-hp/pa/magic/success/danger`; substituição de todos os `rgba(184, 146, 46, ...)` no corpo do arquivo.
+3. Sweep — grep de `b8922e|c9a962|d4a030|a07c28|c9a84c|c9a227` em 15+ arquivos CSS; PowerShell replace para → `#6B9E8C`; SVG data URLs URL-encoded (`%23d4a030` → `%236B9E8C`) em `compendium.css` e `eldarin-v4.css`.
+4. Validação — grep final retornou 0 ocorrências hardcoded fora de `var()` fallbacks.
+
+**Arquivos tocados:**
+- `app/globals.css` — bloco `:root` completo reescrito; rgba no corpo substituídos
+- `components/character/sheet-ddb.css`, `sheet-popup.css`, `sheet.css`, `sheet-v2.css`, `sheet-pdf.css`, `sheet-pdf-capture.css`, `level-up.css` — sweep de dourado → verdigris
+- `components/auth/auth-forms.css`, `components/friends/friends.css`, `components/notifications/notifications.css`, `components/pwa/pwa-install.css`, `components/rpg/mesas-hub.css` — sweep
+- `components/ui/site-tooltip.css`, `components/vtt/combat-mode-transition.css`, `components/vtt/eldarin-v4.css`, `components/vtt/mesa-theme.css`, `components/vtt/vtt.css`, `components/vtt/whiteboard.css` — sweep incluindo SVG URL-encoded
+- `components/compendium/compendium.css` — SVG corner URLs atualizadas
+
+**Commits / deploy:** pendente.
+
+**Como testar:** abrir qualquer página → todos os acentos aparecem em verde-patina Verdigris `#6B9E8C` em vez de dourado; mesa com tokens tem ring verdigris.
 
 ---
 

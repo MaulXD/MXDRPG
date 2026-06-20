@@ -4,122 +4,144 @@
   color-scheme: dark;
 
   /* chrome — navbar, rail, dock, UI estrutural */
-  --chrome-bg: #111110;
-  --chrome-surface: #1e1d1a;
-  --chrome-header: #2a2820;
-  --chrome-border: #38342a;
-  --chrome-accent: #b8922e;
-  --chrome-accent-hover: #d4aa52;
-  --chrome-text: #c8bfa8;
-  --chrome-text-muted: #a89878;
-  --chrome-nav-link: #a89878;
-  --chrome-nav-link-hover: #e8e0d0;
+  --chrome-bg:             #0e0d0b;
+  --chrome-surface:        #1a1916;
+  --chrome-header:         #242220;
+  --chrome-border:         rgba(255, 255, 255, 0.06);
+  --chrome-border-bright:  rgba(255, 255, 255, 0.12);
+  --chrome-accent:         #6B9E8C;
+  --chrome-accent-hover:   #7db8a4;
+  --chrome-text:           #c4bbaa;
+  --chrome-text-muted:     #8a7d68;
+  --chrome-nav-link:       #8a7d68;
+  --chrome-nav-link-hover: #ede6d8;
 
   /* content — pergaminho, fichas, compêndio */
-  --content-bg: #f6f0e4;
-  --content-bg-elevated: #faf6ee;
-  --content-border: #c8b48a;
+  --content-bg:            #f6f0e4;
+  --content-bg-elevated:   #faf6ee;
+  --content-border:        #c8b48a;
   --content-border-strong: #8c7a5e;
-  --content-text: #1e1a14;
-  --content-text-muted: #5a4e38;
-  --content-ink: #3d2e1a;
-  --content-accent: #b8922e;
+  --content-text:          #1e1a14;
+  --content-text-muted:    #5a4e38;
+  --content-ink:           #3d2e1a;
+  --content-accent:        #6B9E8C;
 
-  /* stage — canvas (mesa-theme reforça na mesa) */
-  --stage-bg: #0e0e0c;
-  --stage-grid: #1c1c18;
-  --stage-fog: rgba(10, 10, 8, 0.85);
-  --stage-token-ring: #b8922e;
-  --stage-ruler: #c8bfa8;
+  /* stage — canvas */
+  --stage-bg:         #0e0e0c;
+  --stage-grid:       #1c1c18;
+  --stage-fog:        rgba(10, 10, 8, 0.85);
+  --stage-token-ring: #6B9E8C;
+  --stage-ruler:      #c4bbaa;
 
   /* semantic — HP, estados, feedback */
-  --semantic-hp: #7a1e1e;
-  --semantic-pa: #8b3228;
+  --semantic-hp:      #7a1e1e;
+  --semantic-pa:      #8b3228;
   --semantic-success: #2a4a2c;
-  --semantic-warn: #6e4800;
-  --semantic-danger: #5e1a0e;
-  --semantic-info: #5a4e38;
-  --semantic-gm: #3a1e52;
+  --semantic-warn:    #6e4800;
+  --semantic-danger:  #5e1a0e;
+  --semantic-info:    #5a4e38;
+  --semantic-gm:      #3a1e52;
 
   /* type — compêndio (border-left / ícone) */
-  --type-weapon: #8b3a22;
-  --type-magic: #6e3a52;
-  --type-gear: #4a3820;
-  --type-ability: #6e4800;
-  --type-effect: #2a4a2c;
+  --type-weapon:   #8b3a22;
+  --type-magic:    #6e3a52;
+  --type-gear:     #4a3820;
+  --type-ability:  #6e4800;
+  --type-effect:   #2a4a2c;
   --type-creature: #5e1a0e;
 
   /* Legacy aliases — componentes existentes */
-  --bg-deep: var(--chrome-bg);
-  --bg-mid: var(--chrome-surface);
-  --bg-elevated: var(--chrome-header);
-  --surface: var(--chrome-surface);
+  --bg-deep:        var(--chrome-bg);
+  --bg-mid:         var(--chrome-surface);
+  --bg-elevated:    var(--chrome-header);
+  --surface:        var(--chrome-surface);
   --surface-raised: var(--chrome-header);
-  --surface-inset: var(--chrome-bg);
-  --border: var(--chrome-border);
-  --border-accent: var(--chrome-accent);
+  --surface-inset:  var(--chrome-bg);
+  --border:         var(--chrome-border);
+  --border-accent:  var(--chrome-accent);
 
-  --glass: rgba(30, 29, 26, 0.94);
-  --glass-strong: rgba(17, 17, 16, 0.98);
-  --glass-border: rgba(56, 52, 42, 0.65);
-  --glass-border-bright: rgba(184, 146, 46, 0.45);
-  --accent-soft: rgba(184, 146, 46, 0.14);
+  --glass:               rgba(26, 25, 22, 0.94);
+  --glass-strong:        rgba(14, 13, 11, 0.98);
+  --glass-border:        rgba(255, 255, 255, 0.07);
+  --glass-border-bright: rgba(107, 158, 140, 0.30);
+  --accent-soft:         rgba(107, 158, 140, 0.12);
   --blur: 12px;
 
-  --accent: var(--chrome-accent);
-  --accent-muted: var(--chrome-text-muted);
-  --accent-primary: var(--chrome-accent);
+  /* Acento principal: Verdigris (bronze envelhecido) */
+  --accent:           #6B9E8C;
+  --accent-dim:       #4A7A6A;
+  --accent-warn:      #C97A4A;
+  --accent-glow:      rgba(107, 158, 140, 0.18);
+  --accent-muted:     var(--chrome-text-muted);
+  --accent-primary:   var(--chrome-accent);
   --accent-secondary: var(--type-weapon);
-  --accent-success: var(--semantic-success);
-  --accent-warn: var(--semantic-warn);
-  --accent-violet: var(--semantic-gm);
-  --accent-gold: var(--chrome-accent);
-  --accent-green: var(--semantic-success);
-  --accent-danger: var(--semantic-danger);
-  --accent-info: var(--semantic-info);
+  --accent-success:   var(--semantic-success);
+  --accent-violet:    var(--semantic-gm);
+  --accent-gold:      var(--chrome-accent);
+  --accent-green:     var(--semantic-success);
+  --accent-danger:    var(--semantic-danger);
+  --accent-info:      var(--semantic-info);
 
-  --neon-cyan: var(--chrome-accent);
+  --neon-cyan:    var(--chrome-accent);
   --neon-magenta: var(--type-weapon);
-  --neon-lime: var(--semantic-success);
-  --neon-amber: var(--semantic-warn);
-  --neon-violet: var(--semantic-gm);
+  --neon-lime:    var(--semantic-success);
+  --neon-amber:   var(--semantic-warn);
+  --neon-violet:  var(--semantic-gm);
 
-  --text: var(--chrome-text);
-  --text-strong: #e8e0d0;
-  --text-muted: var(--chrome-text-muted);
-  --text-dim: #9a9080;
+  --text:        #c4bbaa;
+  --text-strong: #ede6d8;
+  --text-muted:  #8a7d68;
+  --text-dim:    #5a5045;
+
+  /* Escala tipográfica */
+  --text-xs:   0.7rem;
+  --text-sm:   0.82rem;
+  --text-base: 0.9rem;
+  --text-md:   1rem;
+  --text-lg:   1.15rem;
+  --text-xl:   1.4rem;
+  --text-2xl:  1.75rem;
+  --text-3xl:  2.25rem;
+  --text-4xl:  3rem;
+
+  /* Cores semânticas */
+  --color-hp:      #e05c5c;
+  --color-pa:      #6B9E8C;
+  --color-magic:   #9b75d4;
+  --color-success: #4a9e6a;
+  --color-danger:  #c94a4a;
 
   /* chrome — campos (input, busca) em fundo escuro; sem azul */
-  --chrome-field-bg: #1c1b18;
-  --chrome-field-bg-focus: #252420;
-  --chrome-field-border: var(--chrome-border);
-  --chrome-field-text: var(--chrome-text);
-  --chrome-field-placeholder: #9a9080;
+  --chrome-field-bg:          #151412;
+  --chrome-field-bg-focus:    #1e1c18;
+  --chrome-field-border:      var(--chrome-border);
+  --chrome-field-text:        var(--chrome-text);
+  --chrome-field-placeholder: #5a5045;
 
-  --parchment: var(--content-bg);
+  --parchment:      var(--content-bg);
   --parchment-deep: var(--content-bg-elevated);
 
   /* landing — acentos semânticos (marketing) */
-  --landing-accent-vtt: #8a6840;
-  --landing-accent-grid: #c88c1a;
+  --landing-accent-vtt:    #8a6840;
+  --landing-accent-grid:   #c88c1a;
   --landing-accent-visual: #d4c4a0;
-  --landing-accent-roles: var(--type-weapon);
-  --landing-cta-surface: #1a1814;
-  --landing-hero-glow: rgba(80, 30, 50, 0.25);
+  --landing-accent-roles:  var(--type-weapon);
+  --landing-cta-surface:   #1a1814;
+  --landing-hero-glow:     rgba(80, 30, 50, 0.25);
 
-  --radius: 8px;
-  --radius-lg: 12px;
-  --radius-pill: 6px;
+  --radius:       8px;
+  --radius-lg:    12px;
+  --radius-pill:  6px;
 
-  --font-body: "Lora", "Palatino Linotype", "Book Antiqua", Georgia, serif;
+  --font-body:    "Lora", "Palatino Linotype", "Book Antiqua", Georgia, serif;
   --font-display: "Cinzel", "Times New Roman", serif;
-  --font-ui: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+  --font-ui:      "Source Sans 3", "Segoe UI", system-ui, sans-serif;
 
-  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-out:    cubic-bezier(0.22, 1, 0.36, 1);
   --shadow-soft: 0 2px 12px rgba(0, 0, 0, 0.35);
   --shadow-glow: 0 4px 20px rgba(0, 0, 0, 0.4);
-  --header-h: 64px;
-  --control-h: 2.25rem;
+  --header-h:    64px;
+  --control-h:   2.25rem;
   --control-h-sm: 2rem;
   --control-h-xs: 1.75rem;
 
@@ -141,7 +163,7 @@
   --vtt-grid-area-stroke: rgba(0, 0, 0, 0.65);
   --vtt-grid-area-center-fill: rgba(160, 100, 220, 0.45);
   --vtt-grid-area-center-stroke: rgba(0, 0, 0, 0.75);
-  --vtt-token-turn-glow: rgba(184, 146, 46, 0.5);
+  --vtt-token-turn-glow: rgba(107, 158, 140, 0.5);
   --vtt-cell-run-fill: rgba(220, 170, 40, 0.32);
   --vtt-cell-run-stroke: rgba(0, 0, 0, 0.55);
   --vtt-cell-hover-fill: rgba(0, 0, 0, 0.08);
@@ -184,7 +206,7 @@ body {
   inset: 0;
   z-index: -2;
   background:
-    radial-gradient(ellipse 80% 50% at 50% 0%, rgba(184, 146, 46, 0.08), transparent 55%),
+    radial-gradient(ellipse 80% 50% at 50% 0%, rgba(107, 158, 140, 0.07), transparent 55%),
     linear-gradient(180deg, var(--bg-mid) 0%, var(--bg-deep) 100%);
 }
 
@@ -365,7 +387,7 @@ a {
   outline: none;
   border-color: var(--chrome-accent);
   background: var(--chrome-field-bg-focus);
-  box-shadow: 0 0 0 2px rgba(184, 146, 46, 0.22);
+  box-shadow: 0 0 0 2px rgba(107, 158, 140, 0.20);
 }
 
 .btn,
@@ -403,7 +425,7 @@ button.btn {
 }
 
 .btn-secondary {
-  border-color: rgba(184, 146, 46, 0.45);
+  border-color: var(--glass-border-bright);
   background: transparent;
   box-shadow: none;
   color: var(--text);
@@ -474,7 +496,7 @@ button.btn {
   gap: 1rem;
   background: rgba(17, 17, 16, 0.92);
   backdrop-filter: blur(8px);
-  border-bottom: 1px solid rgba(184, 146, 46, 0.18);
+  border-bottom: 1px solid rgba(107, 158, 140, 0.16);
 }
 
 .site-logo {
@@ -520,7 +542,7 @@ button.btn {
   gap: 0.15rem;
   flex-shrink: 0;
   padding-left: 0.4rem;
-  border-left: 1px solid rgba(184, 146, 46, 0.16);
+  border-left: 1px solid rgba(107, 158, 140, 0.14);
 }
 
 .nav-link {
@@ -898,7 +920,7 @@ select.vtt-input:focus,
 textarea.vtt-input:focus {
   outline: none;
   border-color: var(--accent);
-  box-shadow: 0 0 0 2px rgba(184, 146, 46, 0.22);
+  box-shadow: 0 0 0 2px rgba(107, 158, 140, 0.20);
 }
 
 select.vtt-input {
@@ -935,14 +957,14 @@ select optgroup {
   border: none;
   background: var(--chrome-accent);
   color: var(--chrome-bg);
-  box-shadow: 0 2px 14px rgba(184, 146, 46, 0.28);
+  box-shadow: 0 2px 14px rgba(107, 158, 140, 0.24);
 }
 
 .btn-primary:hover {
   background: var(--chrome-accent-hover);
   border: none;
   color: var(--chrome-bg);
-  box-shadow: 0 4px 18px rgba(184, 146, 46, 0.35);
+  box-shadow: 0 4px 18px rgba(107, 158, 140, 0.32);
 }
 
 .vtt-token-panel {

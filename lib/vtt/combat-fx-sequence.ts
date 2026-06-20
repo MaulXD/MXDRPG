@@ -6,6 +6,27 @@ import type { Axial } from "@/lib/vtt/grid-math";
 import type { BattleToken } from "@/lib/vtt/types";
 import { resolveCastFxFromCombat } from "@/lib/vtt/token-cast-fx";
 
+/** Calcula chance de acerto simples (d20 + bonus vs AC), sem vantagem/desvantagem. */
+function simpleHitChance(bonus: number, ac: number): number {
+  let hits = 0;
+  for (let n = 1; n <= 20; n++) {
+    if (n === 1) continue;
+    if (n === 20) { hits++; continue; }
+    if (n + bonus >= ac) hits++;
+  }
+  return Math.round((hits / 20) * 100);
+}
+
+/** Extrai lista de modificadores do detail string, ex: "+4 +3 -1". */
+function extractModsLabel(detail: string | undefined): string {
+  if (!detail) return "";
+  const chunk = detail.split(" · ")[0] ?? detail;
+  const m = chunk.match(/1d20\s*=\s*\d+((?:\s*[+-]\d+)+)\s*=/i);
+  if (!m) return "";
+  const mods = m[1].match(/[+-]\d+/g);
+  return mods ? mods.join(" ") : "";
+}
+
 function axialFromCombat(c: NonNullable<ChatMessage["combat"]>): Axial | null {
   if (c.areaCenterQ == null || c.areaCenterR == null) return null;
   return { q: c.areaCenterQ, r: c.areaCenterR };
@@ -43,6 +64,21 @@ function combatFxFromMessage(
   const castResolved = resolveCastFxFromCombat(msg);
   const castFxKind = castResolved?.kind ?? (isHeal ? "heal" : null);
 
+  // Probabilidade retroativa: calculada a partir do resultado do servidor
+  const probBonus =
+    c.attackNatural != null && c.attackTotal != null
+      ? c.attackTotal - c.attackNatural
+      : undefined;
+  const probHitChance =
+    probBonus != null && c.defenderAc != null
+      ? simpleHitChance(probBonus, c.defenderAc)
+      : null;
+  const probSaveFailChance =
+    c.resolution === "save" && c.saveDc != null && c.saveTotal != null && c.saveNatural != null
+      ? Math.round(Math.max(0, Math.min(100, ((c.saveDc - c.saveNatural - (c.saveTotal - c.saveNatural)) / 20) * 100)))
+      : null;
+  const probModsLabel = extractModsLabel(c.detail);
+
   const base = {
     id: msg.id,
     mode: "single" as const,
@@ -60,6 +96,12 @@ function combatFxFromMessage(
     spellDamageType: c.spellDamageType,
     damageTypeLabel: isHeal ? "Cura" : generalDamagePresetLabel(),
     chatMessageIds: [msg.id],
+    probHitChance,
+    probSaveFailChance,
+    probBonus,
+    probAc: c.defenderAc,
+    probDc: c.saveDc,
+    probModsLabel,
   };
 
   if (c.resolution === "save") {

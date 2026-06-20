@@ -1,7 +1,7 @@
 import type { ChatMessage } from "@/lib/room/chat";
 import { combatMessageLooksLikeHeal } from "@/lib/room/chat-events";
 
-export type TokenCastFxKind = "heal" | "fire" | "slash" | "buff";
+export type TokenCastFxKind = "heal" | "fire" | "slash" | "buff" | "arrow" | "lightning";
 
 export type ActiveTokenCastFx = {
   id: string;
@@ -13,9 +13,13 @@ export type ActiveTokenCastFx = {
 
 const FIRE_KEYWORDS = ["fogo", "chama", "incêndio", "incendio", "piro", "ardente", "brasas"];
 const HEAL_KEYWORDS = ["cura", "curar", "curou", "restaura", "restaurou", "poção", "pocao", "poção de vida"];
+const LIGHTNING_KEYWORDS = ["raio", "relâmpago", "relampago", "trovão", "trovao", "lightning", "choque", "eletrico", "elétrico", "tempestade"];
+const ARROW_KEYWORDS = ["arco", "flecha", "besta", "crossbow", "arrow", "arcana shot", "disparo", "projétil", "projetil", "zarabatana"];
 
 export function castFxDuration(kind: TokenCastFxKind): number {
-  return kind === "slash" ? 1000 : 3000;
+  if (kind === "slash" || kind === "arrow") return 1000;
+  if (kind === "lightning") return 1200;
+  return 3000;
 }
 
 function nameLooksFire(name: string): boolean {
@@ -68,8 +72,9 @@ export function resolveCastFxFromCombat(msg: ChatMessage): {
   }
 
   if (c.actionKind === "weapon" || c.actionKind === "unarmed") {
-    if (c.hit && c.defenderTokenId) {
-      return { kind: "slash", tokenId: c.defenderTokenId };
+    if (c.defenderTokenId) {
+      const isRanged = ARROW_KEYWORDS.some((k) => name.toLowerCase().includes(k));
+      return { kind: isRanged ? "arrow" : "slash", tokenId: c.defenderTokenId };
     }
     return null;
   }
@@ -77,6 +82,10 @@ export function resolveCastFxFromCombat(msg: ChatMessage): {
   if (c.actionKind === "spell") {
     if (nameLooksHeal(name, detail) && c.defenderTokenId) {
       return { kind: "heal", tokenId: c.defenderTokenId };
+    }
+    const nameLower = name.toLowerCase();
+    if (LIGHTNING_KEYWORDS.some((k) => nameLower.includes(k)) && c.defenderTokenId) {
+      return { kind: "lightning", tokenId: c.defenderTokenId };
     }
     if (nameLooksFire(name) && c.defenderTokenId && (c.hit !== false || c.saveTotal != null)) {
       return { kind: "fire", tokenId: c.defenderTokenId };
@@ -270,10 +279,25 @@ export function drawTokenCastFx(
       drawFireCastFx(ctx, x, y, r, t);
       break;
     case "slash":
+    case "arrow":
       drawSlashCastFx(ctx, x, y, r, t);
       break;
     case "buff":
       drawBuffCastFx(ctx, x, y, r, t);
+      break;
+    case "lightning":
+      // Lightning impact on token — flash ring
+      {
+        const fade = 1 - t;
+        ctx.save();
+        ctx.globalAlpha = fade * 0.7;
+        ctx.beginPath();
+        ctx.arc(x, y, r * (0.8 + t * 0.4), 0, Math.PI * 2);
+        ctx.strokeStyle = `rgba(160, 200, 255, ${0.8 + Math.sin(t * Math.PI * 8) * 0.2})`;
+        ctx.lineWidth = 3;
+        ctx.stroke();
+        ctx.restore();
+      }
       break;
   }
 }
