@@ -50,6 +50,7 @@ function combatFxFromMessage(
     markAxial: defenderAxial,
     defenderAxial,
     attackerAxial,
+    attackerTokenId: c.attackerTokenId,
     defenderTokenId: c.defenderTokenId,
     damageTotal: isHeal ? healAmount ?? c.damageTotal : c.damageTotal,
     isHeal,

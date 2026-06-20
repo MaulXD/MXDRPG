@@ -908,6 +908,28 @@ kubectl -n raul set image deployment/mxdrpg mxdrpg=ghcr.io/maulxd/mxdrpg:sha-dd9
 4. Clicar **outro token** → ring fecha, token novo seleciona
 5. ESC → fecha normalmente
 
+---
+
+### 2026-06-20 — Combate na mesa com @3d-dice/dice-box
+
+**Pedido:** levar o preview dice-box 3D para a mesa, com cores por tier (jogador/monstro/elite/miniboss/boss), slot de dano só no acerto, ataque travado, expulsão forçada no resolve — mantendo timings e regras de acerto do `CombatFxLayer`.
+
+**Passo a passo:**
+1. **Preview** — `public/preview-combate-dados.html` com dois slots lazy-init, física ajustada, expulsão animada.
+2. **Mesa** — `DiceCombatPanel` + `lib/vtt/dice-combat-box.ts` substituem `DiceWebGL`/`DiceMiniature` no painel de combate.
+3. **Regras** — timings `COMBAT_FX_TIMINGS` intactos; dano só se `showDamageRoll`; resolve = applyState + token + chat + evict 340ms; `attackerTokenId` no FX state para cor do d20.
+4. **Validação** — `npm run build` ✅
+
+**Arquivos tocados:**
+- `components/vtt/DiceCombatPanel.tsx` — dice-box ataque/dano
+- `components/vtt/CombatFxLayer.tsx` — integração + evict
+- `lib/vtt/dice-combat-box.ts` — cores tier e opts física
+- `public/assets/dice-box/` — assets WASM/tema
+
+**Commits / deploy:** pendente push branch `cursor/dice-box-combat`
+
+**Como testar:** `/mesa/[roomId]` → ataque no combate; preview em `/preview-combate-dados.html`
+
 <!--
 ### AAAA-MM-DD — Título
 

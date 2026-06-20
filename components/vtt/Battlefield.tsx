@@ -2890,6 +2890,7 @@ export function Battlefield({
           gridOx={combatFxGrid.ox}
           gridOy={combatFxGrid.oy}
           fx={combatFx}
+          tokens={displayScene.tokens}
           view={battlefieldView.view}
           onApplyState={onCombatApplyState}
           onTokenFlash={onCombatTokenFlash}
