@@ -10,6 +10,7 @@ import type {
   CombatFxTargetBurst,
 } from "@/lib/vtt/combat-fx-types";
 import { DiceMiniature } from "@/components/vtt/DiceMiniature";
+import { DiceWebGL } from "@/components/vtt/DiceWebGL";
 import { splitCombatChatDetail } from "@/lib/combat/chat-display";
 import type { TokenCastFxKind } from "@/lib/vtt/token-cast-fx";
 
@@ -96,9 +97,7 @@ function tokenFlashForFx(fx: CombatFxState): TokenCombatFlash {
   return "miss";
 }
 
-// ─── Dado de dano (após o D20) ────────────────────────────────────
-
-const DMG_SCRAMBLE = [6, 3, 8, 1, 5, 4, 7, 2, 6, 5, 8, 3, 7, 1, 4, 6];
+// ─── Dado de dano — wrapper WebGL ────────────────────────────────
 
 function DamageDiePanel({
   value,
@@ -113,37 +112,16 @@ function DamageDiePanel({
   isCrit?: boolean;
   damageTypeLabel?: string | null;
 }) {
-  const [scramIdx, setScramIdx] = useState(0);
-  const [settled, setSettled] = useState(false);
-  const iRef = useRef<ReturnType<typeof setInterval> | null>(null);
-
-  useEffect(() => {
-    setSettled(false);
-    if (rolling) {
-      let i = 0;
-      iRef.current = setInterval(() => {
-        i = (i + 1) % DMG_SCRAMBLE.length;
-        setScramIdx(i);
-      }, 80);
-    } else {
-      if (iRef.current) clearInterval(iRef.current);
-      const t = setTimeout(() => setSettled(true), 360);
-      return () => clearTimeout(t);
-    }
-    return () => {
-      if (iRef.current) clearInterval(iRef.current);
-    };
-  }, [rolling]);
-
-  const display = rolling ? String(DMG_SCRAMBLE[scramIdx]) : String(value ?? "—");
-
-  const mod = isCrit ? "crit" : isHeal ? "heal" : "dmg";
-
+  const variant = isCrit ? "crit" : isHeal ? "heal" : "damage";
   return (
-    <div className={`dmg-die-panel dmg-die-panel--${mod} ${settled ? "dmg-die-panel--settled" : ""}`}>
-      <div className="dmg-die-gem">
-        <span className={`dmg-die-num ${rolling ? "dmg-die-num--rolling" : ""}`}>{display}</span>
-      </div>
+    <div className="dmg-die-panel">
+      <DiceWebGL
+        sides={8}
+        value={rolling ? null : value}
+        rolling={rolling}
+        sizePx={96}
+        variant={variant}
+      />
       <p className="dmg-die-label">{isHeal ? "Cura" : (damageTypeLabel ?? "Dano")}</p>
     </div>
   );
