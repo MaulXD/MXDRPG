@@ -272,6 +272,21 @@ export function requiresInventoryGmApproval(
   return characterBelongsToAdventure(authActor, adventureId);
 }
 
+/** Loadout de combate/armadura na mesa — dono da ficha ou mestre/admin. */
+export function canPatchRoomActorLoadout(
+  room: RoomAuthContext,
+  actor: Pick<CharacterSheet, "id" | "ownerId" | "adventureId" | "campaignRoomId">,
+  user: SessionUser | null | undefined
+): boolean {
+  if (canEditRoomActor(room, actor, user)) return true;
+  if (!user || !canParticipateInRoom(room, user)) return false;
+  const adventureId = room.adventureId ?? room.roomId;
+  const authActor = actorForRoomAuth(room, actor);
+  if (!characterBelongsToAdventure(authActor, adventureId)) return false;
+  if (user.role === "admin") return true;
+  return Boolean(room.ownerId && isRoomOwner(room, user.id));
+}
+
 /** Editar ficha na mesa (level-up, identidade, retrato) — alinhado a `canParticipateInRoom`. */
 export function canEditRoomActor(
   room: RoomAuthContext,

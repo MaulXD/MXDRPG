@@ -147,3 +147,10 @@ export function mergeIdentityPatch(
   if (!identityPatch) return current;
   return applyIdentityPatch(current, identityPatch);
 }
+
+/** PATCH contém só loadout de combate ou armadura (sem identidade/retrato). */
+export function isLoadoutOnlyPatch(body: Record<string, unknown>): boolean {
+  const keys = Object.keys(body).filter((k) => body[k] !== undefined);
+  if (!keys.length) return false;
+  return keys.every((k) => k === "combatLoadout" || k === "armorLoadout");
+}

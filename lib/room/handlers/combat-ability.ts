@@ -298,6 +298,8 @@ export async function executeRoomAbility(
         defenderName: defender.name,
         attackerTokenId,
         hpBefore: result.defenderHpBefore,
+      }).catch((e) => {
+        console.error("[ability] recordDefeat failed:", e);
       });
     }
   } else if (resolved.kind === "spell_save") {
@@ -330,6 +332,8 @@ export async function executeRoomAbility(
         defenderName: defender.name,
         attackerTokenId,
         hpBefore: save.defenderHpBefore,
+      }).catch((e) => {
+        console.error("[ability] recordDefeat failed:", e);
       });
     }
   } else {
@@ -362,5 +366,13 @@ export async function executeRoomAbility(
   }
 
   syncCombatOrderWithTokens(room);
-  return { ok: true, snapshot: toSnapshot(await persistRoom(roomId, room)) };
+  try {
+    return { ok: true, snapshot: toSnapshot(await persistRoom(roomId, room)) };
+  } catch (e) {
+    console.error("[ability] persistRoom failed:", e);
+    return {
+      ok: false,
+      error: e instanceof Error ? e.message : "Falha ao salvar a mesa após a habilidade",
+    };
+  }
 }
