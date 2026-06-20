@@ -22,6 +22,8 @@ import { canActOnCombatTurn, TURN_WAIT_MSG } from "@/lib/combat/turn-guard";
 
 import {
 
+  listCombatActions,
+
   resolveAttack,
 
   resolveCombatAction,
@@ -843,20 +845,16 @@ export function resolveAbilityAttack(
 
   if (bonus > 0) labels.push(`+${bonus}`);
 
-
-
-  const weaponAction = resolveCombatAction(actor, {
-
-    packId: "armas",
-
-    entryId: actor.combatLoadout?.packId === "armas" ? actor.combatLoadout.entryId : undefined,
-
-  });
-
-
+  const weaponAction =
+    actor.combatLoadout?.packId === "armas"
+      ? resolveCombatAction(actor, {
+          packId: "armas",
+          entryId: actor.combatLoadout.entryId,
+        })
+      : (listCombatActions(actor).find((a) => a.kind === "weapon") ??
+        resolveCombatAction(actor));
 
   const meleeAction: CombatActionOption =
-
     weaponAction.kind === "weapon" && weaponAction.rangeCells <= 1
 
       ? { ...weaponAction, attackBonus: weaponAction.attackBonus + bonus }

@@ -20,7 +20,7 @@ import type { CombatActionRequest } from "@/lib/combat/types";
 import type { ChatMessage } from "../chat";
 import { activeTokenId } from "../combat";
 import { getRoom, persistRoom, toSnapshot } from "../internal/registry";
-import type { RoomSnapshot } from "../types";
+import type { RoomSnapshot, RoomState } from "../types";
 import { syncCombatOrderWithTokens } from "../combat-order";
 import { shouldAnnounceDefeat } from "../combat-chat-events";
 import { recordDefeatWithPaRewards } from "../combat-defeat-rewards";
@@ -33,6 +33,18 @@ import { executeRoomSpellUtility, isSpellUtilityAction } from "./combat-spell-ut
 export type AttackExecuteResult =
   | { ok: true; snapshot: RoomSnapshot }
   | { ok: false; error: string };
+
+async function finishCombatAttack(roomId: string, room: RoomState): Promise<AttackExecuteResult> {
+  try {
+    return { ok: true, snapshot: toSnapshot(await persistRoom(roomId, room)) };
+  } catch (e) {
+    console.error("[attack] persistRoom failed:", e);
+    return {
+      ok: false,
+      error: e instanceof Error ? e.message : "Falha ao salvar a mesa após o ataque",
+    };
+  }
+}
 
 export async function executeRoomAttack(
   roomId: string,
@@ -198,11 +210,13 @@ export async function executeRoomAttack(
         defenderName: defender.name,
         attackerTokenId,
         hpBefore: saveResult.defenderHpBefore,
+      }).catch((e) => {
+        console.error("[attack] recordDefeat failed:", e);
       });
     }
 
     syncCombatOrderWithTokens(room);
-    return { ok: true, snapshot: toSnapshot(await persistRoom(roomId, room)) };
+    return finishCombatAttack(roomId, room);
   }
 
   let results;
@@ -336,11 +350,13 @@ export async function executeRoomAttack(
       defenderName: defender.name,
       attackerTokenId,
       hpBefore: last.defenderHpBefore,
+    }).catch((e) => {
+      console.error("[attack] recordDefeat failed:", e);
     });
   }
 
   syncCombatOrderWithTokens(room);
-  return { ok: true, snapshot: toSnapshot(await persistRoom(roomId, room)) };
+  return finishCombatAttack(roomId, room);
 }
 
 async function executeRoomMultiTargetAttack(
@@ -588,6 +604,8 @@ async function executeRoomMultiTargetAttack(
         defenderName: def?.name ?? "Alvo",
         attackerTokenId,
         hpBefore: res.defenderHpBefore,
+      }).catch((e) => {
+        console.error("[attack] recordDefeat failed:", e);
       });
     }
   }
@@ -628,10 +646,12 @@ async function executeRoomMultiTargetAttack(
         defenderName: def?.name ?? "Alvo",
         attackerTokenId,
         hpBefore: result.defenderHpBefore,
+      }).catch((e) => {
+        console.error("[attack] recordDefeat failed:", e);
       });
     }
   }
 
   syncCombatOrderWithTokens(room);
-  return { ok: true, snapshot: toSnapshot(await persistRoom(roomId, room)) };
+  return finishCombatAttack(roomId, room);
 }

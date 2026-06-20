@@ -13,31 +13,39 @@ type Body = {
 };
 
 export async function POST(req: Request, { params }: Params) {
-  const { roomId } = await params;
-  const auth = await requireRoomMember(roomId);
-  if ("error" in auth) {
-    return NextResponse.json({ error: auth.error }, { status: auth.status });
-  }
+  try {
+    const { roomId } = await params;
+    const auth = await requireRoomMember(roomId);
+    if ("error" in auth) {
+      return NextResponse.json({ error: auth.error }, { status: auth.status });
+    }
 
-  const body = (await req.json()) as Body;
-  const tokenId = body.tokenId?.trim();
-  if (!tokenId || body.q == null || body.r == null) {
-    return NextResponse.json({ error: "Parâmetros inválidos" }, { status: 400 });
-  }
+    const body = (await req.json()) as Body;
+    const tokenId = body.tokenId?.trim();
+    if (!tokenId || body.q == null || body.r == null) {
+      return NextResponse.json({ error: "Parâmetros inválidos" }, { status: 400 });
+    }
 
-  if (!canManageRoom(auth.room, auth.user)) {
-    return NextResponse.json({ error: "Só o mestre pode reposicionar tokens" }, { status: 403 });
-  }
+    if (!canManageRoom(auth.room, auth.user)) {
+      return NextResponse.json({ error: "Só o mestre pode reposicionar tokens" }, { status: 403 });
+    }
 
-  const token = auth.room.scene.tokens.find((t) => t.id === tokenId);
-  if (!token) {
-    return NextResponse.json({ error: "Token não encontrado" }, { status: 404 });
-  }
+    const token = auth.room.scene.tokens.find((t) => t.id === tokenId);
+    if (!token) {
+      return NextResponse.json({ error: "Token não encontrado" }, { status: 404 });
+    }
 
-  const result = await repositionRoomToken(roomId, tokenId, { q: body.q, r: body.r });
-  if (!result.ok) {
-    return NextResponse.json({ error: result.error }, { status: 400 });
-  }
+    const result = await repositionRoomToken(roomId, tokenId, { q: body.q, r: body.r });
+    if (!result.ok) {
+      return NextResponse.json({ error: result.error }, { status: 400 });
+    }
 
-  return NextResponse.json(snapshotForViewer(result.snapshot, auth.room, auth.user));
+    return NextResponse.json(snapshotForViewer(result.snapshot, auth.room, auth.user));
+  } catch (e) {
+    console.error("[tokens/reposition] erro interno:", e);
+    return NextResponse.json(
+      { error: e instanceof Error ? e.message : "Erro interno ao reposicionar token" },
+      { status: 500 }
+    );
+  }
 }

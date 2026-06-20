@@ -71,7 +71,9 @@ export async function updateRoomActor(
     };
   }
 
-  await persistActorToAdventureSheet(next);
+  await persistActorToAdventureSheet(next).catch((e) => {
+    console.error("[updateRoomActor] persist sheet failed:", actorId, e);
+  });
   return toSnapshot(await persistRoom(roomId, room));
 }
 
