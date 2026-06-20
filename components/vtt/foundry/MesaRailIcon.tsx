@@ -196,14 +196,11 @@ export function MesaRailIcon({ name, className = "foundry-icon-bar__icon" }: Pro
     case "invite":
       return (
         <RailSvg className={className}>
-          <circle cx="7.5" cy="12" r="3.25" {...S} />
-          <circle cx="16.5" cy="12" r="3.25" {...S} />
-          <path d="M10.75 12h2.5" {...S} strokeWidth="2" />
-          <path
-            d="M4.5 19.5c0-2.4 1.4-4 3-4M19.5 19.5c0-2.4-1.4-4-3-4"
-            {...S}
-            opacity="0.65"
-          />
+          <circle cx="5.5" cy="12" r="2.75" {...S} />
+          <circle cx="18.5" cy="4.5" r="2.75" {...S} />
+          <circle cx="18.5" cy="19.5" r="2.75" {...S} />
+          <path d="M8.1 10.6 15.9 5.9" {...S} />
+          <path d="M8.1 13.4 15.9 18.1" {...S} />
         </RailSvg>
       );
 
