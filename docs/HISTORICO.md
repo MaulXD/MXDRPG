@@ -104,6 +104,29 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-06-19 — Fix ataques retornando HTTP 500
+
+**Pedido:** ataques não funcionam; console mostra 20+ erros 500 em `/api/room/[roomId]/combat/attack`.
+
+**Passo a passo:**
+1. Diagnóstico — prints do console confirmaram que o ataque chega ao servidor mas retorna 500 (não 400). A rota não tinha try/catch, então qualquer exceção virava 500 silencioso sem mensagem de erro.
+2. Causas identificadas — três pontos de falha: (a) `actor.inventory` podendo ser `undefined` em dados legados → `TypeError` no `for...of` de `listCombatActions`; (b) `resolveRoomAttackAction` fora de try/catch na função `executeRoomAttack` → qualquer throw virava 500; (c) `resolveCombatAction` jogava exceção quando a ação específica (packId+entryId) não era encontrada, em vez de fazer fallback.
+3. Implementação — (a) `actor.inventory ?? []` em `listCombatActions`, `listCombatAbilities` e `listActorConsumables`; (b) try/catch envolvendo `resolveRoomAttackAction` nos dois fluxos de `combat-attack.ts`, retornando `{ok: false}` em vez de propagar; (c) `resolveCombatAction` agora loga aviso e faz fallback para ação default em vez de jogar exceção; (d) try/catch global na rota com `console.error` para logar causa real no servidor.
+4. Validação — `tsc --noEmit` sem erros.
+
+**Arquivos tocados:**
+- `app/api/room/[roomId]/combat/attack/route.ts` — try/catch global + console.error para debug
+- `lib/room/handlers/combat-attack.ts` — try/catch em `resolveRoomAttackAction` nos dois fluxos
+- `lib/combat/attack.ts` — `inventory ?? []` em `listCombatActions`; fallback em `resolveCombatAction`
+- `lib/combat/ability.ts` — `inventory ?? []` em `listCombatAbilities`
+- `lib/combat/consumables.ts` — `inventory ?? []` em `listActorConsumables`
+
+**Commits / deploy:** pendente push.
+
+**Como testar:** abrir mesa real → selecionar token PC → ring de ação → Atacar → selecionar alvo → ataque deve processar (resultado no chat); se ainda falhar, erro agora aparece na UI em vez de 500 silencioso.
+
+---
+
 ### 2026-06-18 — Leitura inicial e criação do histórico
 
 **Pedido:** estudar o documento completo do projeto e criar histórico vivo.

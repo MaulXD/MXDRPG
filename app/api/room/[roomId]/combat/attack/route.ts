@@ -45,55 +45,63 @@ function authorFromSession(
 }
 
 export async function POST(req: Request, { params }: Params) {
-  const { roomId } = await params;
-  const session = await getSession();
-  const room = await getRoom(roomId);
-  const author = authorFromSession(session, room);
-  const body = (await req.json()) as Body;
+  try {
+    const { roomId } = await params;
+    const session = await getSession();
+    const room = await getRoom(roomId);
+    const author = authorFromSession(session, room);
+    const body = (await req.json()) as Body;
 
-  const attackerTokenId = body.attackerTokenId?.trim();
-  const defenderTokenIds = body.defenderTokenIds?.map((id) => id.trim()).filter(Boolean);
-  const defenderTokenId = body.defenderTokenId?.trim();
+    const attackerTokenId = body.attackerTokenId?.trim();
+    const defenderTokenIds = body.defenderTokenIds?.map((id) => id.trim()).filter(Boolean);
+    const defenderTokenId = body.defenderTokenId?.trim();
 
-  if (!attackerTokenId) {
-    return NextResponse.json({ error: "Conjurador inválido" }, { status: 400 });
-  }
-  if (!defenderTokenIds?.length && !defenderTokenId) {
-    return NextResponse.json({ error: "Alvo inválido" }, { status: 400 });
-  }
-
-  if (!room) {
-    return NextResponse.json({ error: "Sala não encontrada" }, { status: 404 });
-  }
-
-  const attacker = room.scene.tokens.find((t) => t.id === attackerTokenId);
-  const ctrl = assertTokenControl(room, session?.user ?? null, attacker);
-  if (ctrl) {
-    return NextResponse.json({ error: ctrl.error }, { status: ctrl.status });
-  }
-
-  const canBypass = canBypassCombatTurn(room, session?.user ?? null);
-  const bypassTurn = Boolean(body.bypassTurn && attacker && effectiveBypassTurn(attacker, canBypass));
-
-  const result = await executeRoomAttack(
-    roomId,
-    attackerTokenId,
-    defenderTokenId ?? defenderTokenIds![0]!,
-    author,
-    {
-      packId: body.actionPack,
-      entryId: body.actionEntryId?.trim(),
-      bypassTurn,
-      channelExtraPa: body.channelExtraPa,
-      defenderTokenIds: defenderTokenIds?.length ? defenderTokenIds : undefined,
+    if (!attackerTokenId) {
+      return NextResponse.json({ error: "Conjurador inválido" }, { status: 400 });
     }
-  );
+    if (!defenderTokenIds?.length && !defenderTokenId) {
+      return NextResponse.json({ error: "Alvo inválido" }, { status: 400 });
+    }
 
-  if (!result.ok) {
-    return NextResponse.json({ error: result.error }, { status: 400 });
+    if (!room) {
+      return NextResponse.json({ error: "Sala não encontrada" }, { status: 404 });
+    }
+
+    const attacker = room.scene.tokens.find((t) => t.id === attackerTokenId);
+    const ctrl = assertTokenControl(room, session?.user ?? null, attacker);
+    if (ctrl) {
+      return NextResponse.json({ error: ctrl.error }, { status: ctrl.status });
+    }
+
+    const canBypass = canBypassCombatTurn(room, session?.user ?? null);
+    const bypassTurn = Boolean(body.bypassTurn && attacker && effectiveBypassTurn(attacker, canBypass));
+
+    const result = await executeRoomAttack(
+      roomId,
+      attackerTokenId,
+      defenderTokenId ?? defenderTokenIds![0]!,
+      author,
+      {
+        packId: body.actionPack,
+        entryId: body.actionEntryId?.trim(),
+        bypassTurn,
+        channelExtraPa: body.channelExtraPa,
+        defenderTokenIds: defenderTokenIds?.length ? defenderTokenIds : undefined,
+      }
+    );
+
+    if (!result.ok) {
+      return NextResponse.json({ error: result.error }, { status: 400 });
+    }
+
+    return NextResponse.json(
+      snapshotForViewer(result.snapshot, room, session?.user ?? null)
+    );
+  } catch (e) {
+    console.error("[attack] erro interno:", e);
+    return NextResponse.json(
+      { error: e instanceof Error ? e.message : "Erro interno no ataque" },
+      { status: 500 }
+    );
   }
-
-  return NextResponse.json(
-    snapshotForViewer(result.snapshot, room, session?.user ?? null)
-  );
 }

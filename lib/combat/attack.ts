@@ -260,7 +260,7 @@ function applyHitSpecialsToResolution(
 export function listCombatActions(actor: CharacterSheet): CombatActionOption[] {
   const out: CombatActionOption[] = [];
 
-  for (const item of actor.inventory) {
+  for (const item of actor.inventory ?? []) {
     if (item.quantity <= 0) continue;
     if (item.packId === "armas" || item.packId === "magias") {
       const entry = getEntry(item.packId, item.entryId);
@@ -393,7 +393,8 @@ export function resolveCombatAction(
   if (packId && entryId) {
     const found = actions.find((a) => a.packId === packId && a.entryId === entryId);
     if (found) return found;
-    throw new Error(`Ação "${entryId}" não está disponível no combate`);
+    // Ação solicitada não encontrada — fallback para ação padrão
+    console.warn(`[resolveCombatAction] ação "${entryId}" não encontrada para ${actor.id}, usando fallback`);
   }
 
   const fallback = actions.find((a) => a.kind === "weapon" || a.kind === "spell") ?? actions[0];

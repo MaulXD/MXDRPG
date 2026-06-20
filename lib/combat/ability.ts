@@ -142,7 +142,7 @@ export function listCombatAbilities(actor: CharacterSheet): CombatActionOption[]
 
   const out: CombatActionOption[] = [];
 
-  for (const item of actor.inventory) {
+  for (const item of actor.inventory ?? []) {
 
     if (item.quantity <= 0 || item.packId !== "habilidades") continue;
 
