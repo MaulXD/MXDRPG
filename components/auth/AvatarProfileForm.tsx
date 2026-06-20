@@ -4,6 +4,7 @@ import "./avatar-profile.css";
 import { PortraitFocusEditor } from "@/components/character/PortraitFocusEditor";
 import { UserAvatar } from "@/components/ui/UserAvatar";
 import { useCallback, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { IMAGE_UPLOAD_HINT } from "@/lib/media/image-data-url";
 import { readAvatarImageFile } from "@/lib/media/image-upload-client";
 import {
@@ -20,6 +21,7 @@ type Props = {
 };
 
 export function AvatarProfileForm({ initialUser }: Props) {
+  const router = useRouter();
   const [avatarSource, setAvatarSource] = useState<AvatarSource>(
     initialUser.avatarSource === "custom"
       ? "custom"
@@ -85,12 +87,13 @@ export function AvatarProfileForm({ initialUser }: Props) {
         setEditorSrc(data.user.avatarUrl);
       }
       setMsg("Foto salva.");
+      router.refresh();
     } catch (e) {
       setMsg(e instanceof Error ? e.message : "Erro ao salvar");
     } finally {
       setBusy(false);
     }
-  }, [avatarSource, busy, customUrl, editorSrc, focus]);
+  }, [avatarSource, busy, customUrl, editorSrc, focus, router]);
 
   async function onFileChange(file: File | null) {
     if (!file) return;
