@@ -215,13 +215,13 @@
   position: relative;
   z-index: 4;
   flex-shrink: 0;
-  width: 2.75rem;
-  max-width: 2.75rem;
+  width: 3.25rem;
+  max-width: 3.25rem;
   display: flex;
   flex-direction: column;
   align-items: stretch;
   gap: 0.1rem;
-  padding: 0.35rem 0.2rem 0.45rem;
+  padding: 0.35rem 0.25rem 0.45rem;
   background: rgba(18, 17, 15, 0.94);
   box-sizing: border-box;
   overflow: visible;
@@ -298,23 +298,21 @@
 }
 
 .foundry-icon-bar__label {
-  font-size: 0.42rem;
-  font-weight: 600;
-  letter-spacing: 0.05em;
+  font-size: 0.44rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
   text-transform: uppercase;
-  color: rgba(232, 226, 214, 0.38);
+  color: rgba(200, 192, 178, 0.55);
   line-height: 1;
   text-align: center;
   width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
   white-space: nowrap;
   transition: color 0.18s;
 }
 
 .foundry-icon-bar__btn:hover .foundry-icon-bar__label,
 .foundry-icon-bar__btn--active .foundry-icon-bar__label {
-  color: rgba(232, 226, 214, 0.75);
+  color: rgba(232, 226, 214, 0.88);
 }
 
 .foundry-icon-bar__icon-wrap {
@@ -2030,8 +2028,8 @@
 
 @media (max-width: 640px) {
   .foundry-icon-bar {
-    width: 2.5rem;
-    max-width: 2.5rem;
+    width: 3rem;
+    max-width: 3rem;
   }
 
   .foundry-icon-bar__btn {
