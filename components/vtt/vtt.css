@@ -7278,6 +7278,7 @@
 }
 
 .d20-css-inner-line {
+  fill: none;
   stroke: var(--accent, #6B9E8C);
   stroke-width: 0.6;
   opacity: 0.3;
@@ -7344,109 +7345,103 @@
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   Painel de probabilidade de acerto (fase "prob")
+   Dado de dano — aparece após o D20 resolver o ataque
    ═══════════════════════════════════════════════════════════════ */
 
-.combat-prob-wrap {
+.combat-dmg-die-wrap {
   position: absolute;
-  transform: translate(-50%, -58%);
-  z-index: 7;
-  animation: combat-prob-in 0.32s ease-out;
+  transform: translate(-50%, -56%);
+  z-index: 8;
+  animation: dmg-die-in 0.28s cubic-bezier(0.22, 1.4, 0.5, 1) both;
 }
 
-@keyframes combat-prob-in {
-  from {
-    opacity: 0;
-    transform: translate(-50%, -54%) scale(0.9);
-  }
-  to {
-    opacity: 1;
-    transform: translate(-50%, -58%) scale(1);
-  }
+@keyframes dmg-die-in {
+  from { opacity: 0; transform: translate(-50%, -52%) scale(0.82); }
+  to   { opacity: 1; transform: translate(-50%, -56%) scale(1); }
 }
 
-.combat-prob-panel {
-  min-width: 13rem;
-  padding: 0.85rem 1.1rem 0.9rem;
-  background: rgba(14, 13, 11, 0.96);
-  border: 1px solid rgba(107, 158, 140, 0.4);
-  border-radius: 14px;
+.dmg-die-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.dmg-die-gem {
+  width: 72px;
+  height: 72px;
+  background: rgba(10, 13, 20, 0.95);
+  border: 1.5px solid rgba(200, 80, 60, 0.65);
+  border-radius: 6px;
+  clip-path: polygon(18% 0%, 82% 0%, 100% 18%, 100% 82%, 82% 100%, 18% 100%, 0% 82%, 0% 18%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   box-shadow:
-    0 16px 48px rgba(0, 0, 0, 0.7),
-    0 0 0 1px rgba(107, 158, 140, 0.12),
-    inset 0 1px 0 rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(12px);
-  text-align: center;
+    0 8px 28px rgba(0, 0, 0, 0.7),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 
-.combat-prob-formula {
-  margin: 0;
-  font-family: var(--font-display);
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  color: var(--text-muted, #8a7d68);
-  white-space: nowrap;
+.dmg-die-panel--heal .dmg-die-gem {
+  border-color: rgba(80, 210, 130, 0.7);
+}
+.dmg-die-panel--crit .dmg-die-gem {
+  border-color: rgba(232, 190, 50, 0.8);
+  box-shadow:
+    0 8px 28px rgba(0, 0, 0, 0.7),
+    0 0 18px rgba(232, 190, 50, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
-.combat-prob-divider {
-  height: 1px;
-  background: rgba(107, 158, 140, 0.2);
-  margin: 0.45rem 0;
+.dmg-die-panel--settled .dmg-die-gem {
+  animation: dmg-die-flash 0.38s ease-out;
+}
+.dmg-die-panel--dmg.dmg-die-panel--settled .dmg-die-gem {
+  --flash-color: rgba(200, 80, 60, 0.7);
+}
+.dmg-die-panel--heal.dmg-die-panel--settled .dmg-die-gem {
+  --flash-color: rgba(80, 210, 130, 0.7);
+}
+.dmg-die-panel--crit.dmg-die-panel--settled .dmg-die-gem {
+  --flash-color: rgba(232, 190, 50, 0.7);
 }
 
-.combat-prob-vs {
-  margin: 0 0 0.55rem;
-  font-family: var(--font-display);
-  font-size: 0.68rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--text-dim, #5a5045);
+@keyframes dmg-die-flash {
+  0%   { box-shadow: 0 0 0 3px var(--flash-color, rgba(200,80,60,0.7)), 0 8px 28px rgba(0,0,0,0.7); }
+  100% { box-shadow: 0 8px 28px rgba(0,0,0,0.7); }
 }
 
-.combat-prob-bar-wrap {
-  width: 100%;
-  height: 5px;
-  background: rgba(255, 255, 255, 0.08);
-  border-radius: 3px;
-  overflow: hidden;
-  margin-bottom: 0.55rem;
-}
-
-.combat-prob-bar-fill {
-  height: 100%;
-  border-radius: 3px;
-  transition: width 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
-  animation: prob-bar-grow 0.75s cubic-bezier(0.25, 0.8, 0.25, 1);
-}
-
-@keyframes prob-bar-grow {
-  from { width: 0 !important; }
-}
-
-.combat-prob-pct {
-  margin: 0 0 0.15rem;
-  font-family: var(--font-display);
-  font-size: 2.2rem;
+.dmg-die-num {
+  font-family: var(--font-display, serif);
+  font-size: 1.85rem;
   font-weight: 800;
+  color: rgba(240, 220, 210, 0.95);
+  letter-spacing: -0.03em;
   line-height: 1;
-  letter-spacing: -0.02em;
-  animation: prob-pct-pop 0.35s 0.65s cubic-bezier(0.18, 0.89, 0.32, 1.28) both;
+  transition: opacity 0.08s;
 }
 
-@keyframes prob-pct-pop {
-  from { transform: scale(0.7); opacity: 0.3; }
-  to   { transform: scale(1);   opacity: 1; }
+.dmg-die-panel--heal .dmg-die-num {
+  color: rgba(100, 230, 150, 0.95);
+}
+.dmg-die-panel--crit .dmg-die-num {
+  color: rgba(255, 210, 60, 0.98);
 }
 
-.combat-prob-label {
+.dmg-die-num--rolling {
+  opacity: 0.55;
+  filter: blur(0.5px);
+}
+
+.dmg-die-label {
   margin: 0;
-  font-size: 0.62rem;
+  font-size: 0.6rem;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--text-dim, #5a5045);
 }
+
 
 /* ═══════════════════════════════════════════════════════════════
    Animações de projétil — SVG overlay sobre o grid hex
@@ -7584,8 +7579,7 @@
   .proj-slash-line-2,
   .proj-miss-text,
   .proj-aoe-ring,
-  .combat-prob-wrap,
-  .combat-prob-bar-fill {
+  .dmg-die-gem {
     animation: none !important;
     transition: none !important;
   }

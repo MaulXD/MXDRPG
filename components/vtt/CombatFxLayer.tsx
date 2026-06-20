@@ -62,9 +62,7 @@ function cellPathPoints(
 function resultLabelFor(fx: CombatFxState): string {
   if (fx.isHeal) return "CURA";
   if (fx.saveTotal != null) {
-    if (fx.saveDc == null || fx.saveSuccess === undefined) {
-      return String(fx.saveTotal);
-    }
+    if (fx.saveDc == null || fx.saveSuccess === undefined) return String(fx.saveTotal);
     return fx.saveSuccess ? "TESTE OK" : "TESTE FALHOU";
   }
   if (fx.criticalFail) return "FALHA CRÍTICA";
@@ -98,58 +96,60 @@ function tokenFlashForFx(fx: CombatFxState): TokenCombatFlash {
   return "miss";
 }
 
-// ─── Painel de probabilidade ──────────────────────────────────────────────
+// ─── Dado de dano (após o D20) ────────────────────────────────────
 
-function ProbPanel({ fx }: { fx: CombatFxState }) {
-  const isSave = fx.probDc != null && fx.saveTotal != null;
-  const pct = isSave ? (fx.probSaveFailChance ?? null) : (fx.probHitChance ?? null);
-  const bonus = fx.probBonus;
-  const ac = fx.probAc;
-  const dc = fx.probDc;
-  const mods = fx.probModsLabel;
+const DMG_SCRAMBLE = [6, 3, 8, 1, 5, 4, 7, 2, 6, 5, 8, 3, 7, 1, 4, 6];
 
-  const formulaStr = isSave
-    ? `Teste vs CD ${dc ?? "—"}`
-    : bonus != null
-      ? mods
-        ? `d20 ${mods} = ${bonus >= 0 ? "+" : ""}${bonus} total`
-        : `d20 ${bonus >= 0 ? "+" : ""}${bonus} total`
-      : "d20";
+function DamageDiePanel({
+  value,
+  rolling,
+  isHeal,
+  isCrit,
+  damageTypeLabel,
+}: {
+  value: number | null;
+  rolling: boolean;
+  isHeal?: boolean;
+  isCrit?: boolean;
+  damageTypeLabel?: string | null;
+}) {
+  const [scramIdx, setScramIdx] = useState(0);
+  const [settled, setSettled] = useState(false);
+  const iRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  const vsStr = isSave ? `CD ${dc ?? "—"}` : `CA ${ac ?? "—"}`;
-  const pctLabel = isSave ? "chance de falha" : "chance de acerto";
-  const pctVal = pct != null ? `${pct}%` : "—";
-  const barWidth = pct != null ? Math.max(4, Math.min(100, pct)) : 0;
+  useEffect(() => {
+    setSettled(false);
+    if (rolling) {
+      let i = 0;
+      iRef.current = setInterval(() => {
+        i = (i + 1) % DMG_SCRAMBLE.length;
+        setScramIdx(i);
+      }, 80);
+    } else {
+      if (iRef.current) clearInterval(iRef.current);
+      const t = setTimeout(() => setSettled(true), 360);
+      return () => clearTimeout(t);
+    }
+    return () => {
+      if (iRef.current) clearInterval(iRef.current);
+    };
+  }, [rolling]);
 
-  const pctColor =
-    pct == null
-      ? "var(--text-muted)"
-      : pct >= 70
-        ? "#6ee7a0"
-        : pct >= 40
-          ? "#e8c840"
-          : "#ff6b6b";
+  const display = rolling ? String(DMG_SCRAMBLE[scramIdx]) : String(value ?? "—");
+
+  const mod = isCrit ? "crit" : isHeal ? "heal" : "dmg";
 
   return (
-    <div className="combat-prob-panel">
-      <p className="combat-prob-formula">{formulaStr}</p>
-      <div className="combat-prob-divider" />
-      <p className="combat-prob-vs">{vsStr}</p>
-      <div className="combat-prob-bar-wrap">
-        <div
-          className="combat-prob-bar-fill"
-          style={{ width: `${barWidth}%`, background: pctColor }}
-        />
+    <div className={`dmg-die-panel dmg-die-panel--${mod} ${settled ? "dmg-die-panel--settled" : ""}`}>
+      <div className="dmg-die-gem">
+        <span className={`dmg-die-num ${rolling ? "dmg-die-num--rolling" : ""}`}>{display}</span>
       </div>
-      <p className="combat-prob-pct" style={{ color: pctColor }}>
-        {pctVal}
-      </p>
-      <p className="combat-prob-label">{pctLabel}</p>
+      <p className="dmg-die-label">{isHeal ? "Cura" : (damageTypeLabel ?? "Dano")}</p>
     </div>
   );
 }
 
-// ─── Animações de projétil SVG ────────────────────────────────────────────
+// ─── Animações de projétil SVG ────────────────────────────────────
 
 type ScreenPt = { x: number; y: number };
 
@@ -168,15 +168,12 @@ function ProjectileAnim({ from, to, kind, phase, hit, isHeal, actionKind }: Proj
   const dy = to.y - from.y;
   const dist = Math.sqrt(dx * dx + dy * dy);
 
-  // Não animar se attacker e defender na mesma célula
   if (dist < 20) return null;
-  // Não animar em fases sem projétil
   if (phase !== "mark" && phase !== "roll") return null;
 
   const animClass = phase === "mark" ? "proj-anim--entering" : "proj-anim--traveling";
 
   if (kind === "arrow") {
-    // Flecha: linha com ponta de seta, viaja do ponto from ao to
     const ux = dx / dist;
     const uy = dy / dist;
     const arrowLen = 28;
@@ -185,7 +182,6 @@ function ProjectileAnim({ from, to, kind, phase, hit, isHeal, actionKind }: Proj
     const perpX = -uy * 6;
     const perpY = ux * 6;
 
-    // Miss: desvia para a direita no final da trajetória
     const missOffX = hit === false ? perpX * 4 + ux * 20 : 0;
     const missOffY = hit === false ? perpY * 4 + uy * 20 : 0;
     const finalX = to.x + missOffX;
@@ -205,7 +201,6 @@ function ProjectileAnim({ from, to, kind, phase, hit, isHeal, actionKind }: Proj
           className="proj-arrow-path"
           style={{ "--proj-len": `${totalLen}px` } as React.CSSProperties}
         />
-        {/* Ponta da flecha */}
         <polygon
           points={`${finalX},${finalY} ${ax1 + perpX},${ay1 + perpY} ${ax1 - perpX},${ay1 - perpY}`}
           fill="rgba(220,190,130,0.9)"
@@ -219,7 +214,6 @@ function ProjectileAnim({ from, to, kind, phase, hit, isHeal, actionKind }: Proj
   }
 
   if (kind === "lightning") {
-    // Raio: ziguezague SVG entre from e to
     const segs = 8;
     const points: string[] = [];
     const ux = dx / dist;
@@ -237,7 +231,6 @@ function ProjectileAnim({ from, to, kind, phase, hit, isHeal, actionKind }: Proj
 
     return (
       <g className={`proj-anim proj-anim--lightning ${animClass}`}>
-        {/* Glow layer */}
         <polyline
           points={points.join(" ")}
           fill="none"
@@ -247,7 +240,6 @@ function ProjectileAnim({ from, to, kind, phase, hit, isHeal, actionKind }: Proj
           strokeLinejoin="round"
           className="proj-lightning-glow"
         />
-        {/* Core */}
         <polyline
           points={points.join(" ")}
           fill="none"
@@ -265,7 +257,6 @@ function ProjectileAnim({ from, to, kind, phase, hit, isHeal, actionKind }: Proj
   }
 
   if (kind === "fire" || kind === "heal" || (actionKind === "spell" && kind !== "slash")) {
-    // Orb: círculo que viaja de from a to
     const color =
       isHeal
         ? "rgba(80,220,140,0.9)"
@@ -279,14 +270,12 @@ function ProjectileAnim({ from, to, kind, phase, hit, isHeal, actionKind }: Proj
           ? "rgba(255,60,0,0.35)"
           : "rgba(100,120,255,0.3)";
 
-    // Miss: orb passa pelo alvo e continua além
     const missOffset = hit === false ? 0.35 : 0;
     const endX = to.x + dx * missOffset;
     const endY = to.y + dy * missOffset;
 
     return (
       <g className={`proj-anim proj-anim--orb ${animClass}`}>
-        {/* Glows */}
         <circle cx={from.x} cy={from.y} r="16" fill={glowColor} className="proj-orb-glow" />
         <circle cx={from.x} cy={from.y} r="7" fill={color} className="proj-orb-core" />
         <line
@@ -298,19 +287,12 @@ function ProjectileAnim({ from, to, kind, phase, hit, isHeal, actionKind }: Proj
           className="proj-orb-trail"
         />
         {hit === false ? (
-          <text
-            x={endX}
-            y={endY - 14}
-            className="proj-miss-text"
-          >
-            ERROU!
-          </text>
+          <text x={endX} y={endY - 14} className="proj-miss-text">ERROU!</text>
         ) : null}
       </g>
     );
   }
 
-  // Slash: apenas marca no alvo (sem projétil viajante)
   if (kind === "slash" && phase === "roll") {
     const r = 28;
     return (
@@ -341,7 +323,7 @@ function ProjectileAnim({ from, to, kind, phase, hit, isHeal, actionKind }: Proj
   return null;
 }
 
-// ─── AoE Explosion ───────────────────────────────────────────────────────
+// ─── AoE Explosion ───────────────────────────────────────────────
 
 function AoeExplosion({
   center,
@@ -366,18 +348,14 @@ function AoeExplosion({
   return (
     <g className="proj-aoe-explosion">
       <circle
-        cx={center.x}
-        cy={center.y}
-        r="8"
+        cx={center.x} cy={center.y} r="8"
         fill={`${color}0.25)`}
         stroke={`${color}0.7)`}
         strokeWidth="2"
         className="proj-aoe-ring proj-aoe-ring--1"
       />
       <circle
-        cx={center.x}
-        cy={center.y}
-        r="8"
+        cx={center.x} cy={center.y} r="8"
         fill="none"
         stroke={`${color}0.45)`}
         strokeWidth="1.5"
@@ -387,7 +365,7 @@ function AoeExplosion({
   );
 }
 
-// ─── Componente principal ─────────────────────────────────────────────────
+// ─── Componente principal ─────────────────────────────────────────
 
 export function CombatFxLayer({
   wrapRef,
@@ -405,7 +383,9 @@ export function CombatFxLayer({
   const reducedMotion = useReducedMotion();
   const [phase, setPhase] = useState<CombatFxPhase>("mark");
   const [panelVisible, setPanelVisible] = useState(true);
+  const [showDamageRoll, setShowDamageRoll] = useState(false);
   const [showDamage, setShowDamage] = useState(false);
+
   const fxRef = useRef(fx);
   const onDoneRef = useRef(onDone);
   const onApplyStateRef = useRef(onApplyState);
@@ -414,6 +394,7 @@ export function CombatFxLayer({
   const onChatRevealRef = useRef(onChatReveal);
   const castFxTriggeredRef = useRef(false);
   const applyStateCalledRef = useRef(false);
+
   fxRef.current = fx;
   onDoneRef.current = onDone;
   onApplyStateRef.current = onApplyState;
@@ -421,108 +402,56 @@ export function CombatFxLayer({
   onTokenCastFxRef.current = onTokenCastFx;
   onChatRevealRef.current = onChatReveal;
 
-  const revealChat = (phase: "roll" | "damage" | "done") => {
-    const ids = fxRef.current?.chatMessageIds;
-    if (!ids?.length) return;
-    onChatRevealRef.current?.(ids, phase);
-  };
-
   const timings = useMemo(() => {
-    const mode = fx?.mode ?? "single";
     if (reducedMotion) {
       return {
-        prob: 0,
         mark: 60,
         roll: 120,
-        resultPanelHold: mode === "area-intro" ? 280 : 320,
-        postPanelDelay: 60,
-        damageFade: 280,
+        result: 200,
+        damageRoll: 80,
+        cleanup: 240,
+        healHold: 200,
         areaTargetMark: 80,
-        healHold: 240,
+        areaSimulResult: 280,
+        areaSimulCleanup: 200,
       };
     }
-    // Timing escolhido: Médio — prob 1.2s → dado 1.0s → resultado 0.8s → chat 0.6s
     return {
-      prob: 1200,
-      mark: 150,
-      roll: 1000,
-      resultPanelHold: mode === "area-intro" ? 520 : 720,
-      postPanelDelay: 80,
-      damageFade: 480,
-      areaTargetMark: 160,
-      healHold: 360,
+      mark: 80,
+      roll: 700,
+      result: 420,
+      damageRoll: 620,
+      cleanup: 360,
+      healHold: 320,
+      areaTargetMark: 120,
+      areaSimulResult: 600,
+      areaSimulCleanup: 360,
     };
-  }, [fx?.mode, reducedMotion]);
+  }, [reducedMotion]);
 
   const fxId = fx?.id ?? null;
 
-  const hasProbData =
-    fx != null &&
-    fx.mode === "single" &&
-    (fx.probHitChance != null || fx.probSaveFailChance != null);
+  const revealChat = (p: "roll" | "damage" | "done") => {
+    const ids = fxRef.current?.chatMessageIds;
+    if (!ids?.length) return;
+    onChatRevealRef.current?.(ids, p);
+  };
 
   useEffect(() => {
     const data = fxRef.current;
     if (!fxId || !data) return;
 
-    // Fase inicial: "prob" se tiver dados, senão "mark"
-    const startPhase: CombatFxPhase =
-      !reducedMotion && hasProbData ? "prob" : "mark";
-
-    setPhase(startPhase);
+    setPhase("mark");
     setPanelVisible(true);
     setShowDamage(false);
+    setShowDamageRoll(false);
     castFxTriggeredRef.current = false;
     applyStateCalledRef.current = false;
     onTokenFlashRef.current?.(null, null);
-    if (data.chatMessageIds?.length) {
-      revealChat("roll");
-    }
+
+    if (data.chatMessageIds?.length) revealChat("roll");
+
     const timeouts: ReturnType<typeof setTimeout>[] = [];
-
-    if (data.mode === "area-intro") {
-      const offset = startPhase === "prob" ? timings.prob : 0;
-      timeouts.push(
-        setTimeout(() => setPhase("mark"), offset > 0 ? offset : 0)
-      );
-      timeouts.push(
-        setTimeout(() => {
-          setPhase("done");
-          onDoneRef.current();
-        }, offset + timings.mark + timings.resultPanelHold)
-      );
-      return () => {
-        for (const id of timeouts) clearTimeout(id);
-      };
-    }
-
-    const schedulePostPanelVisuals = (
-      panelEndMs: number,
-      onPanelHide: () => void,
-      onDamageVisual?: () => void
-    ) => {
-      timeouts.push(
-        setTimeout(() => {
-          setPanelVisible(false);
-          onPanelHide();
-        }, panelEndMs)
-      );
-      if (onDamageVisual) {
-        timeouts.push(
-          setTimeout(() => {
-            onDamageVisual();
-          }, panelEndMs + timings.postPanelDelay)
-        );
-      }
-      timeouts.push(
-        setTimeout(() => {
-          revealChat("done");
-          setPhase("done");
-          onTokenFlashRef.current?.(null, null);
-          onDoneRef.current();
-        }, panelEndMs + timings.postPanelDelay + timings.damageFade)
-      );
-    };
 
     const applyStateNow = () => {
       if (applyStateCalledRef.current) return;
@@ -552,34 +481,27 @@ export function CombatFxLayer({
       }
     };
 
-    const applyResultBeat = () => {
-      applyStateNow();
-      playTokenFx();
-      revealChat("damage");
-      const hasDamage =
-        data.damageTotal != null &&
-        (data.isHeal || data.hit !== false || data.saveTotal != null);
-      if (hasDamage) {
-        setShowDamage(true);
-        setPhase("damage");
-      }
-    };
+    const hasDamage =
+      data.damageTotal != null &&
+      data.damageTotal > 0 &&
+      (data.isHeal || data.hit !== false || data.saveTotal != null);
 
-    // Offset da fase prob (antes de tudo)
-    const probOffset = startPhase === "prob" ? timings.prob : 0;
-
-    if (data.mode === "area-simultaneous") {
-      const targets = data.areaTargets ?? [];
-      const panelEnd = probOffset + timings.mark + timings.roll + timings.resultPanelHold;
-      if (startPhase === "prob") {
-        timeouts.push(setTimeout(() => setPhase("mark"), probOffset));
-      }
+    // ── area-intro: rápido, sem dado ──
+    if (data.mode === "area-intro") {
+      timeouts.push(setTimeout(() => setPhase("mark"), 0));
       timeouts.push(
         setTimeout(() => {
-          revealChat("roll");
-          setPhase("roll");
-        }, probOffset + timings.mark)
+          setPhase("done");
+          onDoneRef.current();
+        }, timings.mark + timings.areaSimulResult)
       );
+      return () => { for (const id of timeouts) clearTimeout(id); };
+    }
+
+    // ── area-simultaneous: burst em todos os alvos ──
+    if (data.mode === "area-simultaneous") {
+      const targets = data.areaTargets ?? [];
+      timeouts.push(setTimeout(() => setPhase("roll"), timings.mark));
       timeouts.push(
         setTimeout(() => {
           setPhase("result");
@@ -587,83 +509,99 @@ export function CombatFxLayer({
           revealChat("damage");
           for (const t of targets) {
             onTokenFlashRef.current?.(t.tokenId, flashForTarget(t));
-            if (data.castFxKind) {
-              onTokenCastFxRef.current?.(t.tokenId, data.castFxKind);
-            }
+            if (data.castFxKind) onTokenCastFxRef.current?.(t.tokenId, data.castFxKind);
           }
           setShowDamage(true);
           setPhase("damage");
-        }, probOffset + timings.mark + timings.roll)
+        }, timings.mark + timings.roll)
       );
-      schedulePostPanelVisuals(panelEnd, () => {});
-      return () => {
-        for (const id of timeouts) clearTimeout(id);
-      };
+      timeouts.push(
+        setTimeout(() => {
+          revealChat("done");
+          setPhase("done");
+          onTokenFlashRef.current?.(null, null);
+          onDoneRef.current();
+        }, timings.mark + timings.roll + timings.areaSimulResult + timings.areaSimulCleanup)
+      );
+      return () => { for (const id of timeouts) clearTimeout(id); };
     }
 
-    const runRollResultDamageSequence = (markMs: number) => {
-      const panelEnd = markMs + timings.roll + timings.resultPanelHold;
+    // ── single / area-target: fluxo BG3 ──
+    const tMark = 0;
+    const tRoll = timings.mark;
+    const tResult = tRoll + timings.roll;
+    const tPanelEnd = tResult + timings.result;
+    const tDamageRollEnd = tPanelEnd + (hasDamage ? timings.damageRoll : 0);
+    const tDone = tDamageRollEnd + timings.cleanup;
+
+    const startMarkMs = data.mode === "area-target" ? timings.areaTargetMark : 0;
+
+    const healWithoutRoll = isHealCastWithoutRoll(data);
+
+    if (healWithoutRoll) {
+      // Cura direta: sem dado de ataque, mostra resultado logo
       timeouts.push(
         setTimeout(() => {
           revealChat("roll");
-          setPhase("roll");
-        }, markMs)
+          setPhase("result");
+          applyStateNow();
+          playTokenFx();
+          revealChat("damage");
+          if (hasDamage) setShowDamage(true);
+          setPhase("damage");
+        }, startMarkMs)
       );
       timeouts.push(
         setTimeout(() => {
-          setPhase("result");
-          applyResultBeat();
-        }, markMs + timings.roll)
+          setPanelVisible(false);
+        }, startMarkMs + timings.healHold)
       );
-      schedulePostPanelVisuals(panelEnd, () => {});
-    };
-
-    const runHealWithoutRollSequence = (markMs: number) => {
-      const panelEnd = markMs + timings.healHold;
       timeouts.push(
         setTimeout(() => {
-          revealChat("roll");
-          setPhase("result");
-          applyResultBeat();
-        }, markMs)
+          revealChat("done");
+          setPhase("done");
+          onTokenFlashRef.current?.(null, null);
+          onDoneRef.current();
+        }, startMarkMs + timings.healHold + timings.cleanup)
       );
-      schedulePostPanelVisuals(panelEnd, () => {});
-    };
-
-    if (data.mode === "area-target") {
-      if (startPhase === "prob") {
-        timeouts.push(setTimeout(() => setPhase("mark"), probOffset));
-      }
-      if (isHealCastWithoutRoll(data)) {
-        runHealWithoutRollSequence(probOffset + timings.areaTargetMark);
-      } else {
-        runRollResultDamageSequence(probOffset + timings.areaTargetMark);
-      }
-      return () => {
-        for (const id of timeouts) clearTimeout(id);
-      };
+      return () => { for (const id of timeouts) clearTimeout(id); };
     }
 
-    // Modo "single" (default)
-    if (startPhase === "prob") {
-      timeouts.push(
-        setTimeout(() => setPhase("mark"), probOffset)
-      );
+    // Fluxo padrão: D20 → resultado → dado de dano → número flutuante
+    timeouts.push(setTimeout(() => {
+      revealChat("roll");
+      setPhase("roll");
+    }, tMark + startMarkMs));
+
+    timeouts.push(setTimeout(() => {
+      setPhase("result");
+    }, tResult + startMarkMs));
+
+    timeouts.push(setTimeout(() => {
+      setPanelVisible(false);
+      applyStateNow();
+      playTokenFx();
+      revealChat("damage");
+      if (hasDamage) setShowDamageRoll(true);
+    }, tPanelEnd + startMarkMs));
+
+    if (hasDamage) {
+      timeouts.push(setTimeout(() => {
+        setShowDamageRoll(false);
+        setShowDamage(true);
+        setPhase("damage");
+      }, tDamageRollEnd + startMarkMs));
     }
 
-    const t0 = setTimeout(() => {
-      if (isHealCastWithoutRoll(data)) {
-        runHealWithoutRollSequence(probOffset + timings.mark);
-      } else {
-        runRollResultDamageSequence(probOffset + timings.mark);
-      }
-    }, 0);
-    timeouts.push(t0);
+    timeouts.push(setTimeout(() => {
+      revealChat("done");
+      setPhase("done");
+      onTokenFlashRef.current?.(null, null);
+      onDoneRef.current();
+    }, tDone + startMarkMs));
 
-    return () => {
-      for (const id of timeouts) clearTimeout(id);
-    };
-  }, [fxId, reducedMotion, timings, hasProbData]);
+    return () => { for (const id of timeouts) clearTimeout(id); };
+  }, [fxId, reducedMotion, timings]);
 
   if (!fx || phase === "done") return null;
 
@@ -700,23 +638,22 @@ export function CombatFxLayer({
 
   const resultLabel = resultLabelFor(fx);
   const healCastWithoutRoll = isHealCastWithoutRoll(fx);
+
   const showDicePanel =
     !healCastWithoutRoll && (fx.mode === "single" || fx.mode === "area-target");
-  const showPanel =
-    fx.mode === "area-intro" ||
-    ((showDicePanel || healCastWithoutRoll) &&
-      panelVisible &&
-      (phase === "roll" || phase === "result"));
+
+  const showAttackPanel =
+    showDicePanel && panelVisible && (phase === "roll" || phase === "result");
+
   const showResultText =
-    fx.mode === "area-intro" ||
-    ((showDicePanel || healCastWithoutRoll) && panelVisible && phase === "result");
+    showDicePanel && panelVisible && phase === "result";
+
   const showRoll = showDicePanel && phase === "roll";
+
   const detailParts = fx.resolveDetail
-    ? splitCombatChatDetail(
-        fx.resolveDetail,
-        fx.saveTotal != null ? "save" : "attack"
-      )
+    ? splitCombatChatDetail(fx.resolveDetail, fx.saveTotal != null ? "save" : "attack")
     : { roll: "", damage: null };
+
   const showRollDetail =
     showDicePanel &&
     phase === "result" &&
@@ -727,30 +664,34 @@ export function CombatFxLayer({
   const areaGridPaths =
     fx.areaCells?.map((cell) => cellPathPoints(cell, cellSize, ox, oy, w, h, view)) ?? [];
 
-  // Determinar se mostramos a animação de projétil
   const showProjectile =
     fromPt != null &&
     fx.mode === "single" &&
     !healCastWithoutRoll &&
     (phase === "mark" || phase === "roll");
 
-  // Projétil para área: o centro da área
   const showAoeExplosion =
     fx.mode === "area-intro" &&
     (phase === "result" || phase === "damage");
 
+  // Resultado da área sem dado
+  const showAreaIntroPanel =
+    fx.mode === "area-intro" &&
+    (phase === "mark" || phase === "roll" || phase === "result");
+
+  // Cura sem rolagem
+  const showHealPanel =
+    healCastWithoutRoll && panelVisible && (phase === "result" || phase === "damage");
+
+  const resultTone =
+    fx.isHeal
+      ? "heal"
+      : fx.saveSuccess !== false && (fx.hit || fx.saveTotal != null)
+        ? "hit"
+        : "miss";
+
   return (
     <div className={`combat-fx-layer ${reducedMotion ? "combat-fx-reduced" : ""}`} aria-live="polite">
-
-      {/* Painel de probabilidade — fase "prob" */}
-      {phase === "prob" && hasProbData ? (
-        <div
-          className="combat-prob-wrap"
-          style={{ left: panelAt.x, top: panelAt.y }}
-        >
-          <ProbPanel fx={fx} />
-        </div>
-      ) : null}
 
       {/* SVG: hex cells + projéteis */}
       <svg className="combat-fx-cell-svg" width={w} height={h}>
@@ -764,15 +705,13 @@ export function CombatFxLayer({
             strokeWidth={fx.mode === "area-intro" ? 2.5 : 1.5}
           />
         ))}
-        {phase !== "prob" ? (
-          <path
-            d={cellPathPoints(fx.markAxial, cellSize, ox, oy, w, h, view)}
-            className={`combat-fx-mark-cell${phase === "damage" ? " combat-fx-mark-cell--pulse" : ""}`}
-            fill="none"
-            stroke={accent}
-            strokeWidth={3}
-          />
-        ) : null}
+        <path
+          d={cellPathPoints(fx.markAxial, cellSize, ox, oy, w, h, view)}
+          className={`combat-fx-mark-cell${phase === "damage" ? " combat-fx-mark-cell--pulse" : ""}`}
+          fill="none"
+          stroke={accent}
+          strokeWidth={3}
+        />
         {fx.mode === "area-simultaneous" &&
           fx.areaTargets?.map((t) => (
             <path
@@ -785,7 +724,6 @@ export function CombatFxLayer({
             />
           ))}
 
-        {/* Animação de projétil */}
         {showProjectile && fromPt ? (
           <ProjectileAnim
             from={fromPt}
@@ -798,99 +736,102 @@ export function CombatFxLayer({
           />
         ) : null}
 
-        {/* Explosão AoE */}
         {showAoeExplosion ? (
           <AoeExplosion center={to} phase={phase} kind={fx.castFxKind} />
         ) : null}
       </svg>
 
-      {/* Painel de dado / resultado */}
-      {showPanel ? (
+      {/* Painel de ataque — D20 rolando + resultado */}
+      {showAttackPanel ? (
         <div
-          className={`combat-fx-panel${showResultText ? " combat-fx-panel--revealed" : ""}${fx.mode === "area-intro" ? " combat-fx-panel--area" : ""}`}
+          className={`combat-fx-panel${showResultText ? " combat-fx-panel--revealed" : ""}`}
           style={{ left: panelAt.x, top: panelAt.y }}
         >
           <div className="combat-fx-panel-inner">
-            {fx.mode === "area-intro" ? (
-              <div className="combat-fx-panel-area">
-                <p className="combat-fx-area-title">{fx.spellName ?? "Magia de área"}</p>
-                <p className="combat-fx-area-damage-label">{fx.damageTypeLabel ?? "Dano"}</p>
-                {fx.spellDamageType ? (
-                  <p className="combat-fx-area-damage-type">{fx.spellDamageType}</p>
+            <DiceMiniature
+              formula="1d20"
+              value={showRoll ? null : (fx.attackNatural ?? fx.saveTotal ?? null)}
+              rolling={showRoll}
+              size="lg"
+            />
+            {showResultText ? (
+              <div className="combat-fx-panel-result">
+                <p className={`combat-fx-result ${resultTone}`}>{resultLabel}</p>
+                {fx.saveTotal != null || fx.attackTotal != null || fx.defenderAc != null ? (
+                  <p className="combat-fx-panel-vs">
+                    {fx.saveTotal != null
+                      ? `${fx.saveTotal} vs CD ${fx.saveDc ?? "—"}`
+                      : `${fx.attackTotal ?? "—"} vs CA ${fx.defenderAc ?? "—"}`}
+                  </p>
                 ) : null}
-                {fx.resolveDetail ? (
-                  <p className="combat-fx-area-detail">{fx.resolveDetail}</p>
+                {fx.spellDamageType ? (
+                  <p className="combat-fx-panel-dmg-type">{fx.spellDamageType}</p>
+                ) : null}
+                {showRollDetail ? (
+                  <p className="combat-fx-panel-detail">{detailParts.roll}</p>
                 ) : null}
               </div>
-            ) : healCastWithoutRoll ? (
-              <>
-                {showResultText && !showRoll ? (
-                  <div className="combat-fx-panel-result">
-                    <p className="combat-fx-result heal">{resultLabel}</p>
-                    {fx.damageTotal != null && fx.damageTotal > 0 ? (
-                      <p className="combat-fx-panel-damage combat-fx-panel-damage--heal">
-                        +{fx.damageTotal}
-                        <span className="combat-fx-panel-damage__type">Cura</span>
-                      </p>
-                    ) : null}
-                  </div>
-                ) : showRoll ? (
-                  <p className="combat-fx-rolling">Curando…</p>
-                ) : null}
-              </>
             ) : (
-              <>
-                <DiceMiniature
-                  formula="1d20"
-                  value={
-                    showRoll ? null : (fx.attackNatural ?? fx.saveTotal ?? null)
-                  }
-                  rolling={showRoll}
-                  size="lg"
-                />
-                {showResultText && !showRoll ? (
-                  <div className="combat-fx-panel-result">
-                    <p
-                      className={`combat-fx-result ${
-                        fx.isHeal
-                          ? "heal"
-                          : fx.saveSuccess !== false && (fx.hit || fx.saveTotal != null)
-                            ? "hit"
-                            : "miss"
-                      }`}
-                    >
-                      {resultLabel}
-                    </p>
-                    {fx.saveTotal != null || (fx.attackTotal != null && !fx.isHeal) || fx.defenderAc != null ? (
-                      <p className="combat-fx-panel-vs">
-                        {fx.saveTotal != null
-                          ? `${fx.saveTotal} vs CD ${fx.saveDc ?? "—"}`
-                          : `${fx.attackTotal ?? "—"} vs CA ${fx.defenderAc ?? "—"}`}
-                      </p>
-                    ) : null}
-                    {fx.spellDamageType ? (
-                      <p className="combat-fx-panel-dmg-type">{fx.spellDamageType}</p>
-                    ) : null}
-                    {showRollDetail ? (
-                      <p className="combat-fx-panel-detail">{detailParts.roll}</p>
-                    ) : null}
-                    {fx.damageTotal != null && fx.damageTotal > 0 ? (
-                      <p
-                        className={`combat-fx-panel-damage${fx.critical ? " combat-fx-panel-damage--crit" : ""}${fx.isHeal ? " combat-fx-panel-damage--heal" : ""}`}
-                      >
-                        {fx.isHeal ? `+${fx.damageTotal}` : `−${fx.damageTotal}`}
-                        {fx.damageTypeLabel ? (
-                          <span className="combat-fx-panel-damage__type">{fx.damageTypeLabel}</span>
-                        ) : null}
-                      </p>
-                    ) : null}
-                  </div>
-                ) : showRoll ? (
-                  <p className="combat-fx-rolling">Rolando…</p>
-                ) : null}
-              </>
+              <p className="combat-fx-rolling">Rolando…</p>
             )}
           </div>
+        </div>
+      ) : null}
+
+      {/* Painel de cura (sem rolagem de ataque) */}
+      {showHealPanel ? (
+        <div
+          className="combat-fx-panel combat-fx-panel--revealed"
+          style={{ left: panelAt.x, top: panelAt.y }}
+        >
+          <div className="combat-fx-panel-inner">
+            <div className="combat-fx-panel-result">
+              <p className="combat-fx-result heal">{resultLabel}</p>
+              {fx.damageTotal != null && fx.damageTotal > 0 ? (
+                <p className="combat-fx-panel-damage combat-fx-panel-damage--heal">
+                  +{fx.damageTotal}
+                  <span className="combat-fx-panel-damage__type">Cura</span>
+                </p>
+              ) : null}
+            </div>
+          </div>
+        </div>
+      ) : null}
+
+      {/* Painel de área (area-intro) */}
+      {showAreaIntroPanel ? (
+        <div
+          className="combat-fx-panel combat-fx-panel--revealed combat-fx-panel--area"
+          style={{ left: panelAt.x, top: panelAt.y }}
+        >
+          <div className="combat-fx-panel-inner">
+            <div className="combat-fx-panel-area">
+              <p className="combat-fx-area-title">{fx.spellName ?? "Magia de área"}</p>
+              <p className="combat-fx-area-damage-label">{fx.damageTypeLabel ?? "Dano"}</p>
+              {fx.spellDamageType ? (
+                <p className="combat-fx-area-damage-type">{fx.spellDamageType}</p>
+              ) : null}
+              {fx.resolveDetail ? (
+                <p className="combat-fx-area-detail">{fx.resolveDetail}</p>
+              ) : null}
+            </div>
+          </div>
+        </div>
+      ) : null}
+
+      {/* Dado de dano rolando */}
+      {showDamageRoll ? (
+        <div
+          className="combat-dmg-die-wrap"
+          style={{ left: panelAt.x, top: panelAt.y }}
+        >
+          <DamageDiePanel
+            value={fx.damageTotal}
+            rolling={true}
+            isHeal={fx.isHeal}
+            isCrit={fx.critical}
+            damageTypeLabel={fx.damageTypeLabel}
+          />
         </div>
       ) : null}
 
