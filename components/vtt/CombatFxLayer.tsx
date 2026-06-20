@@ -13,6 +13,10 @@ import { DiceMiniature } from "@/components/vtt/DiceMiniature";
 import { DiceWebGL } from "@/components/vtt/DiceWebGL";
 import { splitCombatChatDetail } from "@/lib/combat/chat-display";
 import type { TokenCastFxKind } from "@/lib/vtt/token-cast-fx";
+import {
+  COMBAT_FX_TIMINGS,
+  COMBAT_FX_TIMINGS_REDUCED,
+} from "@/lib/vtt/combat-fx-timings";
 
 export type { CombatFxState, CombatFxTargetBurst } from "@/lib/vtt/combat-fx-types";
 
@@ -105,12 +109,14 @@ function DamageDiePanel({
   isHeal,
   isCrit,
   damageTypeLabel,
+  reducedMotion,
 }: {
   value: number | null;
   rolling: boolean;
   isHeal?: boolean;
   isCrit?: boolean;
   damageTypeLabel?: string | null;
+  reducedMotion?: boolean;
 }) {
   const variant = isCrit ? "crit" : isHeal ? "heal" : "damage";
   return (
@@ -121,6 +127,7 @@ function DamageDiePanel({
         rolling={rolling}
         sizePx={96}
         variant={variant}
+        reducedMotion={reducedMotion}
       />
       <p className="dmg-die-label">{isHeal ? "Cura" : (damageTypeLabel ?? "Dano")}</p>
     </div>
@@ -362,6 +369,8 @@ export function CombatFxLayer({
   const [phase, setPhase] = useState<CombatFxPhase>("mark");
   const [panelVisible, setPanelVisible] = useState(true);
   const [showDamageRoll, setShowDamageRoll] = useState(false);
+  const [attackRolling, setAttackRolling] = useState(true);
+  const [damageDieRolling, setDamageDieRolling] = useState(true);
   const [showDamage, setShowDamage] = useState(false);
 
   const fxRef = useRef(fx);
@@ -380,32 +389,10 @@ export function CombatFxLayer({
   onTokenCastFxRef.current = onTokenCastFx;
   onChatRevealRef.current = onChatReveal;
 
-  const timings = useMemo(() => {
-    if (reducedMotion) {
-      return {
-        mark: 60,
-        roll: 120,
-        result: 200,
-        damageRoll: 80,
-        cleanup: 240,
-        healHold: 200,
-        areaTargetMark: 80,
-        areaSimulResult: 280,
-        areaSimulCleanup: 200,
-      };
-    }
-    return {
-      mark: 80,
-      roll: 700,
-      result: 420,
-      damageRoll: 620,
-      cleanup: 360,
-      healHold: 320,
-      areaTargetMark: 120,
-      areaSimulResult: 600,
-      areaSimulCleanup: 360,
-    };
-  }, [reducedMotion]);
+  const timings = useMemo(
+    () => (reducedMotion ? COMBAT_FX_TIMINGS_REDUCED : COMBAT_FX_TIMINGS),
+    [reducedMotion]
+  );
 
   const fxId = fx?.id ?? null;
 
@@ -423,11 +410,11 @@ export function CombatFxLayer({
     setPanelVisible(true);
     setShowDamage(false);
     setShowDamageRoll(false);
+    setAttackRolling(true);
+    setDamageDieRolling(true);
     castFxTriggeredRef.current = false;
     applyStateCalledRef.current = false;
     onTokenFlashRef.current?.(null, null);
-
-    if (data.chatMessageIds?.length) revealChat("roll");
 
     const timeouts: ReturnType<typeof setTimeout>[] = [];
 
@@ -479,10 +466,17 @@ export function CombatFxLayer({
     // ── area-simultaneous: burst em todos os alvos ──
     if (data.mode === "area-simultaneous") {
       const targets = data.areaTargets ?? [];
-      timeouts.push(setTimeout(() => setPhase("roll"), timings.mark));
+      timeouts.push(setTimeout(() => {
+        revealChat("roll");
+        setPhase("roll");
+      }, timings.mark));
       timeouts.push(
         setTimeout(() => {
           setPhase("result");
+        }, timings.mark + timings.attackRoll)
+      );
+      timeouts.push(
+        setTimeout(() => {
           applyStateNow();
           revealChat("damage");
           for (const t of targets) {
@@ -491,7 +485,7 @@ export function CombatFxLayer({
           }
           setShowDamage(true);
           setPhase("damage");
-        }, timings.mark + timings.roll)
+        }, timings.mark + timings.attackRoll + timings.damageRoll)
       );
       timeouts.push(
         setTimeout(() => {
@@ -499,25 +493,26 @@ export function CombatFxLayer({
           setPhase("done");
           onTokenFlashRef.current?.(null, null);
           onDoneRef.current();
-        }, timings.mark + timings.roll + timings.areaSimulResult + timings.areaSimulCleanup)
+        }, timings.mark + timings.areaSimulResult + timings.areaSimulCleanup)
       );
       return () => { for (const id of timeouts) clearTimeout(id); };
     }
 
-    // ── single / area-target: fluxo BG3 ──
-    const tMark = 0;
-    const tRoll = timings.mark;
-    const tResult = tRoll + timings.roll;
-    const tPanelEnd = tResult + timings.result;
-    const tDamageRollEnd = tPanelEnd + (hasDamage ? timings.damageRoll : 0);
-    const tDone = tDamageRollEnd + timings.cleanup;
-
+    // ── single / area-target ──
+    // 2s D20 → (se acertou) +2s dado de dano com D20 visível → dados saem + token + chat juntos
     const startMarkMs = data.mode === "area-target" ? timings.areaTargetMark : 0;
+    const tRollStart = timings.mark;
+    const tAttackLand = tRollStart + timings.attackLandAt;
+    const tAttackEnd = tRollStart + timings.attackRoll;
+    const tDamageLand = tAttackEnd + timings.damageLandAt;
+    const tResolveHit = tAttackEnd + timings.damageRoll;
+    const tResolveMiss = tAttackEnd + timings.missHold;
+    const tDoneHit = tResolveHit + timings.afterResolve;
+    const tDoneMiss = tResolveMiss + timings.afterResolve;
 
     const healWithoutRoll = isHealCastWithoutRoll(data);
 
     if (healWithoutRoll) {
-      // Cura direta: sem dado de ataque, mostra resultado logo
       timeouts.push(
         setTimeout(() => {
           revealChat("roll");
@@ -540,43 +535,65 @@ export function CombatFxLayer({
           setPhase("done");
           onTokenFlashRef.current?.(null, null);
           onDoneRef.current();
-        }, startMarkMs + timings.healHold + timings.cleanup)
+        }, startMarkMs + timings.healHold + timings.afterResolve)
       );
       return () => { for (const id of timeouts) clearTimeout(id); };
     }
 
-    // Fluxo padrão: D20 → resultado → dado de dano → número flutuante
+    const finishResolve = () => {
+      setPanelVisible(false);
+      setShowDamageRoll(false);
+      applyStateNow();
+      playTokenFx();
+      if (hasDamage) revealChat("damage");
+    };
+
     timeouts.push(setTimeout(() => {
       revealChat("roll");
       setPhase("roll");
-    }, tMark + startMarkMs));
+      setAttackRolling(true);
+    }, tRollStart + startMarkMs));
+
+    timeouts.push(setTimeout(() => {
+      setAttackRolling(false);
+    }, tAttackLand + startMarkMs));
 
     timeouts.push(setTimeout(() => {
       setPhase("result");
-    }, tResult + startMarkMs));
-
-    timeouts.push(setTimeout(() => {
-      setPanelVisible(false);
-      applyStateNow();
-      playTokenFx();
-      revealChat("damage");
-      if (hasDamage) setShowDamageRoll(true);
-    }, tPanelEnd + startMarkMs));
+      if (hasDamage) {
+        setShowDamageRoll(true);
+        setDamageDieRolling(true);
+      }
+    }, tAttackEnd + startMarkMs));
 
     if (hasDamage) {
       timeouts.push(setTimeout(() => {
-        setShowDamageRoll(false);
-        setShowDamage(true);
-        setPhase("damage");
-      }, tDamageRollEnd + startMarkMs));
-    }
+        setDamageDieRolling(false);
+      }, tDamageLand + startMarkMs));
 
-    timeouts.push(setTimeout(() => {
-      revealChat("done");
-      setPhase("done");
-      onTokenFlashRef.current?.(null, null);
-      onDoneRef.current();
-    }, tDone + startMarkMs));
+      timeouts.push(setTimeout(() => {
+        finishResolve();
+        setPhase("damage");
+      }, tResolveHit + startMarkMs));
+
+      timeouts.push(setTimeout(() => {
+        revealChat("done");
+        setPhase("done");
+        onTokenFlashRef.current?.(null, null);
+        onDoneRef.current();
+      }, tDoneHit + startMarkMs));
+    } else {
+      timeouts.push(setTimeout(() => {
+        finishResolve();
+      }, tResolveMiss + startMarkMs));
+
+      timeouts.push(setTimeout(() => {
+        revealChat("done");
+        setPhase("done");
+        onTokenFlashRef.current?.(null, null);
+        onDoneRef.current();
+      }, tDoneMiss + startMarkMs));
+    }
 
     return () => { for (const id of timeouts) clearTimeout(id); };
   }, [fxId, reducedMotion, timings]);
@@ -626,7 +643,7 @@ export function CombatFxLayer({
   const showResultText =
     showDicePanel && panelVisible && phase === "result";
 
-  const showRoll = showDicePanel && phase === "roll";
+  const showRoll = showDicePanel && attackRolling;
 
   const detailParts = fx.resolveDetail
     ? splitCombatChatDetail(fx.resolveDetail, fx.saveTotal != null ? "save" : "attack")
@@ -669,7 +686,10 @@ export function CombatFxLayer({
         : "miss";
 
   return (
-    <div className={`combat-fx-layer ${reducedMotion ? "combat-fx-reduced" : ""}`} aria-live="polite">
+    <div
+      className={`combat-fx-layer ${reducedMotion ? "combat-fx-reduced" : ""}`}
+      aria-live="polite"
+    >
 
       {/* SVG: hex cells + projéteis */}
       <svg className="combat-fx-cell-svg" width={w} height={h}>
@@ -719,22 +739,43 @@ export function CombatFxLayer({
         ) : null}
       </svg>
 
-      {/* Painel de ataque — D20 rolando + resultado */}
+      {/* Painel de ataque — D20 + (se acertou) dado de dano ao lado */}
       {showAttackPanel ? (
         <div
-          className={`combat-fx-panel${showResultText ? " combat-fx-panel--revealed" : ""}`}
+          className={`combat-fx-panel${showResultText ? " combat-fx-panel--revealed" : ""}${showDamageRoll ? " combat-fx-panel--dual-dice" : ""}`}
           style={{ left: panelAt.x, top: panelAt.y }}
         >
           <div className="combat-fx-panel-inner">
-            <DiceMiniature
-              formula="1d20"
-              value={showRoll ? null : (fx.attackNatural ?? fx.saveTotal ?? null)}
-              rolling={showRoll}
-              size="lg"
-            />
+            <div className="combat-fx-dice-row">
+              <DiceMiniature
+                formula="1d20"
+                value={showRoll ? null : (fx.attackNatural ?? fx.saveTotal ?? null)}
+                rolling={showRoll}
+                size="lg"
+                reducedMotion={reducedMotion}
+              />
+              {showDamageRoll ? (
+                <DamageDiePanel
+                  value={fx.damageTotal}
+                  rolling={damageDieRolling}
+                  isHeal={fx.isHeal}
+                  isCrit={fx.critical}
+                  damageTypeLabel={fx.damageTypeLabel}
+                  reducedMotion={reducedMotion}
+                />
+              ) : null}
+            </div>
             {showResultText ? (
               <div className="combat-fx-panel-result">
                 <p className={`combat-fx-result ${resultTone}`}>{resultLabel}</p>
+                {showDamageRoll && !damageDieRolling && fx.damageTotal != null ? (
+                  <p className={`combat-fx-panel-damage${fx.critical ? " combat-fx-panel-damage--crit" : ""}${fx.isHeal ? " combat-fx-panel-damage--heal" : ""}`}>
+                    {fx.isHeal ? `+${fx.damageTotal}` : `−${fx.damageTotal}`}
+                    {fx.damageTypeLabel ? (
+                      <span className="combat-fx-panel-damage__type"> {fx.damageTypeLabel}</span>
+                    ) : null}
+                  </p>
+                ) : null}
                 {fx.saveTotal != null || fx.attackTotal != null || fx.defenderAc != null ? (
                   <p className="combat-fx-panel-vs">
                     {fx.saveTotal != null
@@ -750,7 +791,9 @@ export function CombatFxLayer({
                 ) : null}
               </div>
             ) : (
-              <p className="combat-fx-rolling">Rolando…</p>
+              <p className="combat-fx-rolling">
+                {showDamageRoll && damageDieRolling ? "Rolando dano…" : "Rolando…"}
+              </p>
             )}
           </div>
         </div>
@@ -794,35 +837,6 @@ export function CombatFxLayer({
               ) : null}
             </div>
           </div>
-        </div>
-      ) : null}
-
-      {/* Dado de dano rolando */}
-      {showDamageRoll ? (
-        <div
-          className="combat-dmg-die-wrap"
-          style={{ left: panelAt.x, top: panelAt.y }}
-        >
-          <DamageDiePanel
-            value={fx.damageTotal}
-            rolling={true}
-            isHeal={fx.isHeal}
-            isCrit={fx.critical}
-            damageTypeLabel={fx.damageTypeLabel}
-          />
-        </div>
-      ) : null}
-
-      {/* Número de dano flutuante */}
-      {showDamage && fx.mode !== "area-simultaneous" && fx.damageTotal != null ? (
-        <div
-          className={`combat-fx-damage combat-fx-damage--cell ${fx.critical ? "crit" : ""} ${fx.isHeal ? "heal" : ""}`}
-          style={{ left: to.x, top: to.y }}
-        >
-          <span className="combat-fx-damage-label">{fx.damageTypeLabel ?? "Dano"}</span>
-          <span className="combat-fx-damage-value">
-            {fx.isHeal ? `+${fx.damageTotal}` : `−${fx.damageTotal}`}
-          </span>
         </div>
       ) : null}
 
