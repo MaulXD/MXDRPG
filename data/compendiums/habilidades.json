@@ -168,6 +168,90 @@
     }
   },
   {
+    "id": "habilidades-golpe-de-chi",
+    "name": "Golpe de Chi",
+    "type": "habilidade",
+    "system": {
+      "catalogId": "HAB-golpe-de-chi",
+      "bookRef": "LIVRO-DO-JOGADOR.md",
+      "description": "<p>Ataque corpo a corpo canalizando Chi: <strong>+1d8+DES</strong> contundente no próximo golpe (1 PA + 1 Chi).</p>",
+      "tactical": {
+        "alcanceCells": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        },
+        "custoChi": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "ability": {
+        "tipo": "ativa",
+        "recarga": ""
+      }
+    }
+  },
+  {
+    "id": "habilidades-passo-do-vacuo",
+    "name": "Passo do Vácuo",
+    "type": "habilidade",
+    "system": {
+      "catalogId": "HAB-passo-do-vacuo",
+      "bookRef": "LIVRO-DO-JOGADOR.md",
+      "description": "<p>Teleporte curto pelo fluxo de Chi até <strong>2 células</strong> (1 PA + 1 Chi).</p>",
+      "tactical": {
+        "alcanceCells": {
+          "value": 2,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        },
+        "custoChi": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "ability": {
+        "tipo": "ativa",
+        "recarga": "1/turno"
+      }
+    }
+  },
+  {
+    "id": "habilidades-ferida-aberta",
+    "name": "Ferida Aberta",
+    "type": "habilidade",
+    "system": {
+      "catalogId": "HAB-ferida-aberta",
+      "bookRef": "LIVRO-DO-JOGADOR.md",
+      "description": "<p>Técnica brutal: <strong>+2d8+DES</strong> contundente; você sofre <strong>1d4</strong> (2 PA + 2 Chi).</p>",
+      "tactical": {
+        "alcanceCells": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 2,
+          "min": 0
+        },
+        "custoChi": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "ability": {
+        "tipo": "ativa",
+        "recarga": "1/combate"
+      }
+    }
+  },
+  {
     "id": "habilidades-esquiva-tatica",
     "name": "Esquiva Tática",
     "type": "habilidade",

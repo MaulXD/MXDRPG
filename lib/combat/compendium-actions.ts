@@ -349,3 +349,35 @@ export function abilityFromEntry(entry: CompendiumEntry): CombatActionOption | n
   };
 }
 
+/** Metadados mínimos quando a entrada ainda não está no JSON do compêndio. */
+const KNOWN_ABILITY_META: Record<
+  string,
+  { name: string; pa?: number; chi?: number; range?: number; recarga?: string }
+> = {
+  "habilidades-golpe-de-chi": { name: "Golpe de Chi", pa: 1, chi: 1, range: 1 },
+  "habilidades-passo-do-vacuo": { name: "Passo do Vácuo", pa: 1, chi: 1, range: 2, recarga: "1/turno" },
+  "habilidades-ferida-aberta": { name: "Ferida Aberta", pa: 2, chi: 2, range: 1, recarga: "1/combate" },
+};
+
+/** Resolve habilidade só pelo id (ABILITY_BY_ID) — fallback se o JSON ainda não carregou. */
+export function abilityFromKnownId(entryId: string): CombatActionOption | null {
+  const mapped = ABILITY_BY_ID[entryId];
+  const meta = KNOWN_ABILITY_META[entryId];
+  if (!mapped || !meta) return null;
+
+  return abilityFromEntry({
+    id: entryId,
+    packId: "habilidades",
+    name: meta.name,
+    type: "habilidade",
+    system: {
+      tactical: {
+        alcanceCells: { value: meta.range ?? 1, min: 0 },
+        custoPontosAcao: { value: meta.pa ?? 1, min: 0 },
+        ...(meta.chi != null ? { custoChi: { value: meta.chi, min: 0 } } : {}),
+      },
+      ability: { tipo: "ativa", recarga: meta.recarga ?? "" },
+    },
+  } as CompendiumEntry);
+}
+
