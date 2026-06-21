@@ -4,7 +4,8 @@ import { canParticipateInRoomSession } from "@/lib/auth/mesa-watch-session";
 import { canMoveToken } from "@/lib/auth/authorize-room";
 import { getSession } from "@/lib/auth/session";
 import { snapshotForViewer } from "@/lib/room/snapshot-for-viewer";
-import { moveRoomToken, getRoom, getRoomSnapshot } from "@/lib/room/store";
+import { toSnapshot } from "@/lib/room/internal/registry";
+import { moveRoomToken, getRoom } from "@/lib/room/store";
 import { activeTokenId } from "@/lib/room/combat";
 import { effectiveBypassTurn } from "@/lib/combat/turn-guard";
 import type { MoveMode } from "@/lib/vtt/movement";
@@ -29,19 +30,15 @@ export async function POST(req: Request, { params }: Params) {
     return NextResponse.json({ error: "Parâmetros inválidos" }, { status: 400 });
   }
 
-  const snapshotBefore = await getRoomSnapshot(roomId);
-  if (!snapshotBefore) {
+  const room = await getRoom(roomId, { skipAutoPass: true });
+  if (!room) {
     return NextResponse.json({ error: "Sala não encontrada" }, { status: 404 });
   }
 
+  const snapshotBefore = toSnapshot(room);
   const token = snapshotBefore.scene.tokens.find((t) => t.id === tokenId);
   if (!token) {
     return NextResponse.json({ error: "Token não encontrado" }, { status: 404 });
-  }
-
-  const room = await getRoom(roomId);
-  if (!room) {
-    return NextResponse.json({ error: "Sala não encontrada" }, { status: 404 });
   }
 
   if (!(await canParticipateInRoomSession(room, session?.user ?? null))) {

@@ -3,12 +3,12 @@ export const DICE_LANDING_MS = 450;
 export const DICE_LANDING_MS_REDUCED = 140;
 
 /** Janela de rolagem do D20 / save (spin + pouso). */
-export const COMBAT_ATTACK_ROLL_MS = 1200;
-export const COMBAT_ATTACK_ROLL_MS_REDUCED = 550;
+export const COMBAT_ATTACK_ROLL_MS = 1000;
+export const COMBAT_ATTACK_ROLL_MS_REDUCED = 500;
 
 /** Janela de rolagem do dado de dano (D20 permanece visível). */
-export const COMBAT_DAMAGE_ROLL_MS = 1200;
-export const COMBAT_DAMAGE_ROLL_MS_REDUCED = 550;
+export const COMBAT_DAMAGE_ROLL_MS = 1000;
+export const COMBAT_DAMAGE_ROLL_MS_REDUCED = 500;
 
 /** Quando parar de girar e iniciar pouso (ms desde o início da rolagem). */
 export function rollLandAtMs(rollMs: number, landingMs: number): number {
@@ -60,9 +60,9 @@ export const COMBAT_FX_TIMINGS = buildTimings(
   COMBAT_DAMAGE_ROLL_MS,
   DICE_LANDING_MS,
   {
-    mark: 180,
-    missHold: 550,
-    afterResolve: 400,
+    mark: 120,
+    missHold: 450,
+    afterResolve: 280,
     healHold: 700,
     areaTargetMark: 160,
     areaSimulResult: COMBAT_ATTACK_ROLL_MS + COMBAT_DAMAGE_ROLL_MS,

@@ -14,6 +14,7 @@ import { normalizeCombatTrack } from "../combat";
 import { executePendingAutoPassIfDue } from "../handlers/combat-turn";
 import { scheduleAutoPassIfNeeded, repairStaleCombatPa } from "@/lib/combat/combat-pa-engine";
 import { requiresCombatPaEconomy, requiresCombatTurnEconomy } from "@/lib/combat/mesa-mode";
+import { readCachedRevision, writeCachedRevision } from "../revision-cache";
 import { pruneMapMarkups } from "@/lib/vtt/map-markup";
 import { prunePings } from "@/lib/vtt/ping";
 import { getRoomGmCreations } from "../gm-creations";
@@ -224,6 +225,7 @@ export async function persistRoom(
   }
   const updated = bumpRoom(state);
   rooms().set(roomId, updated);
+  writeCachedRevision(roomId, updated.revision);
   if (shouldPersistToDb(roomId)) {
     await dbRooms.saveRoom(updated);
   }
@@ -259,19 +261,27 @@ export async function getRoom(roomId: string, opts?: GetRoomOpts): Promise<RoomS
 
   if (shouldPersistToDb(roomId)) {
     if (room) {
-      const dbRev = await dbRooms.fetchRoomRevision(roomId);
+      let dbRev = readCachedRevision(roomId);
+      if (dbRev == null) {
+        dbRev = await dbRooms.fetchRoomRevision(roomId);
+        if (dbRev != null) writeCachedRevision(roomId, dbRev);
+      }
       if (dbRev == null || dbRev > room.revision) {
         const fromDb = await dbRooms.fetchRoom(roomId);
         if (fromDb && fromDb.revision > room.revision) {
           map.set(roomId, fromDb);
           room = fromDb;
+          writeCachedRevision(roomId, fromDb.revision);
         }
+      } else {
+        writeCachedRevision(roomId, room.revision);
       }
     } else {
       const fromDb = await dbRooms.fetchRoom(roomId);
       if (fromDb) {
         map.set(roomId, fromDb);
         room = fromDb;
+        writeCachedRevision(roomId, fromDb.revision);
       } else {
         room = await backfillRoomFromAdventure(roomId);
         if (room) map.set(roomId, room);
@@ -299,16 +309,8 @@ export async function getRoom(roomId: string, opts?: GetRoomOpts): Promise<RoomS
   if (room && repairStaleCombatPa(room)) {
     return persistRoom(roomId, room, { skipAutoPassSchedule: true });
   }
-  // Auto-passe roda no SSE (/events) — não no read quente de mutações (ataque, etc.).
-  if (
-    !opts?.skipAutoPass &&
-    room?.combat?.order?.length &&
-    requiresCombatTurnEconomy(room.settings, room.combat)
-  ) {
-    if (executePendingAutoPassIfDue(room)) {
-      return persistRoom(roomId, room, { skipAutoPassSchedule: true });
-    }
-  } else if (room?.combat?.pendingAutoPass) {
+  // Auto-passe só via tickRoomAutoPassThrottled (SSE / GET poll) — nunca no getRoom quente.
+  if (room?.combat?.pendingAutoPass && !requiresCombatPaEconomy(room.settings, room.combat)) {
     room.combat = { ...room.combat, pendingAutoPass: undefined };
   }
   if (room && !room.chat?.length) {
