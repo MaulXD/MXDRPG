@@ -76,8 +76,15 @@ function normalizeEntry(packId: CompendiumPackId, raw: CompendiumEntryRaw, index
   return { ...raw, id, packId };
 }
 
+const packCache = new Map<CompendiumPackId, CompendiumEntry[]>();
+
 function entriesForPack(packId: CompendiumPackId): CompendiumEntry[] {
-  return PACK_DATA[packId].map((raw, i) => normalizeEntry(packId, raw, i));
+  let cached = packCache.get(packId);
+  if (!cached) {
+    cached = PACK_DATA[packId].map((raw, i) => normalizeEntry(packId, raw, i));
+    packCache.set(packId, cached);
+  }
+  return cached;
 }
 
 export function canViewPack(

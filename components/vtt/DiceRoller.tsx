@@ -33,7 +33,7 @@ export function DiceRoller({ roomId, onUpdate }: Props) {
       setErr(e instanceof Error ? e.message : "Erro");
     } finally {
       setBusy(false);
-      setTimeout(() => setRolling(false), 2000);
+      setTimeout(() => setRolling(false), 1100);
     }
   }
 
