@@ -122,7 +122,7 @@ export function getDiceBoxCombatPanelOptions(reducedMotion: boolean) {
     ...getDiceBoxOptionsForHost(COMBAT_DICE_HOST_PX, reducedMotion),
     lightIntensity: 1.28,
     shadowTransparency: 0.68,
-    settleTimeout: reducedMotion ? 450 : 650,
+    settleTimeout: reducedMotion ? 480 : 900,
   };
 }
 

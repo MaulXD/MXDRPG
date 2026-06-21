@@ -4878,15 +4878,15 @@
 }
 
 .combat-dice-box-row--evicting .combat-dice-box-host {
-  animation: combat-dice-evict 0.34s cubic-bezier(0.55, 0.085, 0.68, 0.53) forwards;
+  animation: combat-dice-evict 0.58s cubic-bezier(0.55, 0.085, 0.68, 0.53) forwards;
 }
 
 .combat-dice-box-row--evicting .combat-dice-result-box {
-  animation: combat-dice-evict 0.28s ease-in forwards;
+  animation: combat-dice-evict 0.48s ease-in forwards;
 }
 
 .combat-dice-box-row--evicting {
-  animation: combat-dice-panel-flash 0.34s ease-out;
+  animation: combat-dice-panel-flash 0.58s ease-out;
 }
 
 @keyframes combat-dice-evict {

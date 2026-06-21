@@ -6,19 +6,19 @@
 export const COMBAT_DICE_TIMINGS = {
   mark: 40,
   attackRoll: 950,
-  damageRoll: 800,
-  missHold: 250,
-  afterResolve: 150,
-  evictMs: 340,
+  damageRoll: 750,
+  missHold: 320,
+  afterResolve: 220,
+  evictMs: 650,
 };
 
 export const COMBAT_DICE_TIMINGS_REDUCED = {
   mark: 20,
   attackRoll: 420,
   damageRoll: 360,
-  missHold: 120,
-  afterResolve: 100,
-  evictMs: 200,
+  missHold: 160,
+  afterResolve: 120,
+  evictMs: 280,
 };
 
 export const DAMAGE_DICE_COLOR = "#e05040";
@@ -26,10 +26,10 @@ export const HEAL_DICE_COLOR = "#46c878";
 export const CRIT_DICE_COLOR = "#ffc840";
 export const DICE_ROLLER_COLOR = "#6b9e8c";
 
-export const DICE_LANDING_MS = 280;
-export const DICE_LANDING_MS_REDUCED = 100;
-export const COMBAT_ATTACK_MIN_SPIN_MS = 480;
-export const COMBAT_ATTACK_MIN_SPIN_MS_REDUCED = 180;
+export const DICE_LANDING_MS = 320;
+export const DICE_LANDING_MS_REDUCED = 120;
+export const COMBAT_ATTACK_MIN_SPIN_MS = 820;
+export const COMBAT_ATTACK_MIN_SPIN_MS_REDUCED = 340;
 
 export const ACTOR_TIER_VISUAL = {
   hero: {
