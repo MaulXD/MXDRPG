@@ -19,7 +19,7 @@ export function MesasNavLink({ variant = "site" }: Props) {
       href={MESAS_HUB_PATH}
       className={`nav-link${active ? " nav-link--active" : ""}${variant === "vtt" ? " mesas-nav-link--vtt" : ""}`}
       aria-current={active ? "page" : undefined}
-      title="Hub de mesas e RPGs"
+      data-site-tip="Hub de mesas e RPGs"
     >
       <IconShield size={18} className="nav-link__icon" />
       <span className="nav-link__label">Mesas</span>

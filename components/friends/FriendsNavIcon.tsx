@@ -24,7 +24,7 @@ export function FriendsNavIcon() {
       href="/amigos"
       className={`friends-nav-icon friends-nav-messages__trigger${pathname === "/amigos" ? " is-active" : ""}`}
       aria-label={badgeLabel ? `Amigos, ${badgeLabel}` : "Amigos"}
-      title="Amigos"
+      data-site-tip="Amigos"
     >
       <IconUser size={18} />
       {pending > 0 ? (
