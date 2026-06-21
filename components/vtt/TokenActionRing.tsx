@@ -96,7 +96,7 @@ type Props = {
   roomId: string;
   onPickMode: (mode: TokenActionMode, action: CombatActionOption | null) => void;
   onClose: () => void;
-  onRoomSync: (snapshot?: RoomSnapshot) => void;
+  onRoomSync: (payload?: import("@/hooks/useRoomSync").RoomApiPayload) => void;
   showTokenSheet?: boolean;
   onOpenTokenSheet?: () => void;
   showPlayerBestiary?: boolean;

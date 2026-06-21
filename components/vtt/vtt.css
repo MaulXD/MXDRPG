@@ -2555,6 +2555,34 @@
   border-radius: 8px;
 }
 
+.mesa-sync-status {
+  flex-shrink: 0;
+  margin: 0 !important;
+  padding: 0.28rem 0.55rem;
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border-radius: 999px;
+  width: fit-content;
+}
+
+.mesa-sync-status--live {
+  color: var(--verdigris, #6b9e8c);
+  background: rgba(107, 158, 140, 0.12);
+  border: 1px solid rgba(107, 158, 140, 0.28);
+}
+
+.mesa-sync-status--loading,
+.mesa-sync-status--polling {
+  color: var(--accent-warn, #c9a962);
+  background: rgba(201, 169, 98, 0.1);
+  border: 1px solid rgba(201, 169, 98, 0.28);
+}
+
+.mesa-sync-status--error {
+  display: none;
+}
+
 .mesa-stage {
   position: relative;
   flex: 1;

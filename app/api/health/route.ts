@@ -8,6 +8,7 @@ import {
   oauthSetupStatus,
 } from "@/lib/auth/oauth-config";
 import { dbEnabled, dbPing } from "@/lib/db/client";
+import { databaseUrlIssue } from "@/lib/db/enabled";
 import { persistenceLabel } from "@/lib/db/dialect";
 import { ensureDbMigrations } from "@/lib/db/ensure-migrations";
 
@@ -35,7 +36,7 @@ export async function GET() {
         null
       : "Imagem antiga — atualize o deployment para ghcr.io/maulxd/mxdrpg:sha-<commit>",
     db,
-    persistence: hasUrl ? persistenceLabel() : "memory",
+    persistence: persistenceLabel(),
     authOrigin: (() => {
       try {
         return authAppOrigin();
@@ -60,6 +61,11 @@ export async function GET() {
 
   if (hasUrl && !db && ping.error) {
     body.dbError = ping.error;
+  }
+
+  const urlIssue = databaseUrlIssue();
+  if (urlIssue) {
+    body.dbUrlIssue = urlIssue;
   }
 
   return NextResponse.json(body);

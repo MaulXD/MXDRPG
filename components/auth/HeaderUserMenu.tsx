@@ -170,7 +170,7 @@ export function HeaderUserMenu({ user: initialUser, onSignOut }: Props) {
           className="header-user-menu__trigger"
           aria-expanded={open}
           aria-haspopup="menu"
-          title={label}
+          data-site-tip={label}
           onClick={toggleMenu}
         >
           <UserAvatar

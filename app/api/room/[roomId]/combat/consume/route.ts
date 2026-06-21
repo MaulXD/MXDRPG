@@ -3,7 +3,8 @@ import { assertTokenControl, chatRoleForUser } from "@/lib/auth/authorize-room";
 import { canBypassCombatTurn } from "@/lib/auth/room-access";
 import { effectiveBypassTurn } from "@/lib/combat/turn-guard";
 import { getSession } from "@/lib/auth/session";
-import { snapshotForViewer } from "@/lib/room/snapshot-for-viewer";
+import { mutationDeltaResponse } from "@/lib/room/mutation-response";
+import { toSnapshot } from "@/lib/room/internal/registry";
 import { executeRoomConsume, getRoom } from "@/lib/room/store";
 
 export const runtime = "nodejs";
@@ -68,11 +69,14 @@ export async function POST(req: Request, { params }: Params) {
   const canBypass = canBypassCombatTurn(room, session?.user ?? null);
   const bypassTurn = Boolean(body.bypassTurn && token && effectiveBypassTurn(token, canBypass));
 
+  const beforeSnap = toSnapshot(room);
   const result = await executeRoomConsume(roomId, tokenId, instanceId, author, { bypassTurn });
 
   if (!result.ok) {
     return NextResponse.json({ error: result.error }, { status: 400 });
   }
 
-  return NextResponse.json(snapshotForViewer(result.snapshot, room, session?.user ?? null));
+  return NextResponse.json(
+    mutationDeltaResponse(beforeSnap, result.snapshot, room, session?.user ?? null)
+  );
 }

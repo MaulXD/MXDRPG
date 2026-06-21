@@ -14,6 +14,11 @@ import type { CharacterSheet } from "@/lib/character/types";
 import { normalizeCombatTrack } from "@/lib/room/combat";
 import type { RoomActor, RoomSnapshot } from "@/lib/room/types";
 import type { DungeonObject } from "@/lib/vtt/types";
+import {
+  applyRoomApiPayload,
+  isRoomDelta,
+  type RoomApiPayload,
+} from "@/lib/room/room-delta";
 
 const FETCH_TIMEOUT_MS = 12_000;
 
@@ -25,6 +30,8 @@ export type RoomMemberOnlineEvent = {
 type SyncOpts = {
   /** Código na URL (?invite=) — visitante assiste com SSE/GET */
   inviteCode?: string | null;
+  /** Snapshot SSR — evita tela vazia ao abrir mesa (Fase 4) */
+  initialSnapshot?: RoomSnapshot | null;
   /** Fallback poll se SSE falhar (ms) */
   pollIntervalMs?: number;
   /** Jogador logado na mesa — heartbeat de presença */
@@ -41,6 +48,8 @@ const REFRESH_DEBOUNCE_COMBAT_MS = 100;
 const SSE_BACKUP_POLL_MS = 10_000;
 const SSE_BACKUP_POLL_COMBAT_MS = 2000;
 
+export type RoomSyncStatus = "loading" | "live" | "polling" | "error";
+
 function roomQuery(roomId: string, inviteCode?: string | null, sinceRev?: number): string {
   const q = new URLSearchParams();
   if (inviteCode?.trim()) q.set("invite", inviteCode.trim());
@@ -53,15 +62,19 @@ const COMBAT_POLL_INTERVAL_MS = 500;
 
 export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
   const inviteCode = opts.inviteCode ?? null;
+  const initialSnapshot = opts.initialSnapshot ?? null;
   const basePollIntervalMs = opts.pollIntervalMs ?? 2000;
   const presenceUser = opts.presenceUser ?? null;
   const onMemberOnline = opts.onMemberOnline;
-  const [snapshot, setSnapshot] = useState<RoomSnapshot | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [snapshot, setSnapshot] = useState<RoomSnapshot | null>(initialSnapshot);
+  const [loading, setLoading] = useState(!initialSnapshot);
+  const snapshotRef = useRef<RoomSnapshot | null>(initialSnapshot);
   const [syncError, setSyncError] = useState<string | null>(null);
+  const [syncStatus, setSyncStatus] = useState<RoomSyncStatus>("loading");
   const revisionRef = useRef(0);
   const query = useMemo(() => roomQuery(roomId, inviteCode), [roomId, inviteCode]);
   const sseReadyRef = useRef(false);
+  const sseLiveRef = useRef(false);
   const onMemberOnlineRef = useRef(onMemberOnline);
   onMemberOnlineRef.current = onMemberOnline;
 
@@ -75,6 +88,7 @@ export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
         scene: { ...data.scene, tokens },
         combat: normalizeCombatTrack(data.combat, tokens),
       };
+      snapshotRef.current = next;
       const commit = () => {
         setSnapshot(next);
         setSyncError(null);
@@ -84,6 +98,14 @@ export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
       else startTransition(commit);
     },
     []
+  );
+
+  const applyRoomResponse = useCallback(
+    (payload: RoomApiPayload, opts?: { force?: boolean; immediate?: boolean }) => {
+      const merged = applyRoomApiPayload(snapshotRef.current, payload);
+      applySnapshot(merged, opts);
+    },
+    [applySnapshot]
   );
 
   const refreshImplRef = useRef<(() => Promise<void>) | null>(null);
@@ -110,6 +132,7 @@ export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
         const rev = hdr ? parseInt(hdr, 10) : revisionRef.current;
         if (Number.isFinite(rev) && rev > 0) revisionRef.current = Math.max(revisionRef.current, rev);
         setSyncError(null);
+        setSyncStatus(sseLiveRef.current ? "live" : "polling");
         sseReadyRef.current = true;
         return;
       }
@@ -120,6 +143,7 @@ export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
       }
       const data = (await res.json()) as RoomSnapshot;
       setSyncError(null);
+      setSyncStatus(sseLiveRef.current ? "live" : "polling");
       applySnapshot(data);
       sseReadyRef.current = true;
     } catch (e) {
@@ -130,6 +154,7 @@ export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
             ? e.message
             : "Falha de rede";
       setSyncError(msg);
+      setSyncStatus("error");
     } finally {
       clearTimeout(timer);
       setLoading(false);
@@ -155,13 +180,25 @@ export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
     }, delay);
   }, [refresh, snapshot?.settings?.combatActive]);
 
+  const initialSnapshotRef = useRef(initialSnapshot);
+  initialSnapshotRef.current = initialSnapshot;
+
   useEffect(() => {
-    setLoading(true);
+    const init = initialSnapshotRef.current;
+    if (init) {
+      revisionRef.current = init.revision;
+      snapshotRef.current = init;
+      applySnapshot(init, { force: true, immediate: true });
+    } else {
+      setLoading(true);
+      revisionRef.current = 0;
+    }
     setSyncError(null);
+    setSyncStatus(init ? "polling" : "loading");
     sseReadyRef.current = false;
-    revisionRef.current = 0;
+    sseLiveRef.current = false;
     void refresh();
-  }, [roomId, query, refresh]);
+  }, [roomId, query, refresh, applySnapshot]);
 
   const pollIntervalMs =
     snapshot?.settings?.combatActive === true ? COMBAT_POLL_INTERVAL_MS : basePollIntervalMs;
@@ -200,11 +237,15 @@ export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
             displayName?: string;
           };
           if (data.type === "revision" && typeof data.revision === "number") {
+            sseLiveRef.current = true;
+            setSyncStatus("live");
             if (data.revision > revisionRef.current) {
               scheduleRefresh();
             }
           }
           if (data.type === "connected" && typeof data.revision === "number") {
+            sseLiveRef.current = true;
+            setSyncStatus("live");
             if (data.revision > revisionRef.current) {
               scheduleRefresh();
             }
@@ -225,6 +266,8 @@ export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
       };
 
       es.onerror = () => {
+        sseLiveRef.current = false;
+        setSyncStatus("polling");
         es?.close();
         es = null;
         startPoll(pollIntervalMs);
@@ -263,7 +306,7 @@ export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
     return () => clearInterval(id);
   }, [roomId, query, presenceUser?.id]);
 
-  return { snapshot, loading, syncError, refresh, applySnapshot };
+  return { snapshot, loading, syncError, syncStatus, refresh, applySnapshot, applyRoomResponse };
 }
 
 export async function patchRoomToken(
@@ -411,6 +454,9 @@ export async function postGmCombatAction(roomId: string, body: GmCombatAction) {
   return res.json() as Promise<RoomSnapshot>;
 }
 
+export type { RoomApiPayload };
+export { applyRoomApiPayload, isRoomDelta };
+
 export async function postRoomAttack(
   roomId: string,
   attackerTokenId: string,
@@ -438,7 +484,7 @@ export async function postRoomAttack(
     const err = (await res.json()) as { error?: string };
     throw new Error(err.error ?? "Falha no ataque");
   }
-  return res.json() as Promise<RoomSnapshot>;
+  return res.json() as Promise<RoomApiPayload>;
 }
 
 export async function postRoomAbility(
@@ -460,7 +506,7 @@ export async function postRoomAbility(
     const err = (await res.json()) as { error?: string };
     throw new Error(err.error ?? "Falha na habilidade");
   }
-  return res.json() as Promise<RoomSnapshot>;
+  return res.json() as Promise<RoomApiPayload>;
 }
 
 export async function consumeRoomItem(
@@ -479,7 +525,7 @@ export async function consumeRoomItem(
     const err = (await res.json()) as { error?: string };
     throw new Error(err.error ?? "Falha ao usar consumível");
   }
-  return res.json() as Promise<RoomSnapshot>;
+  return res.json() as Promise<RoomApiPayload>;
 }
 
 export async function moveRoomTokenBudget(
@@ -500,7 +546,7 @@ export async function moveRoomTokenBudget(
     const err = (await res.json()) as { error?: string };
     throw new Error(err.error ?? "Movimento inválido");
   }
-  return res.json() as Promise<RoomSnapshot>;
+  return res.json() as Promise<RoomApiPayload>;
 }
 
 export async function postRoomAreaSpell(

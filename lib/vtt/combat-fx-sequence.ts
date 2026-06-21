@@ -51,6 +51,44 @@ export function isPendingCombatFx(fx: CombatFxState | null | undefined): boolean
   return Boolean(fx?.id.startsWith("pending-"));
 }
 
+/** Última msg de combate 1:1 que bate com o pending (ataque ainda não visto). */
+export function findPendingAttackMessage(
+  chat: ChatMessage[],
+  pending: CombatFxState,
+  seen: Set<string>
+): ChatMessage | null {
+  for (let i = chat.length - 1; i >= 0; i--) {
+    const msg = chat[i];
+    if (!msg || msg.kind !== "combat" || !msg.combat || seen.has(msg.id)) continue;
+    if (!isPlayableCombatFxMessage(msg)) continue;
+    if (msg.combat.attackerTokenId !== pending.attackerTokenId) continue;
+    if (msg.combat.defenderTokenId !== pending.defenderTokenId) continue;
+    return msg;
+  }
+  return null;
+}
+
+/** Mescla resultado do servidor no FX pending — mantém id estável (não reinicia animação). */
+export function resolvePendingCombatFx(
+  pending: CombatFxState,
+  msg: ChatMessage,
+  tokens: BattleToken[]
+): CombatFxState | null {
+  if (!isPendingCombatFx(pending)) return null;
+  const defender = tokens.find((t) => t.id === msg.combat?.defenderTokenId);
+  const attacker = tokens.find((t) => t.id === msg.combat?.attackerTokenId);
+  if (!defender || !attacker) return null;
+  const resolved = combatFxFromMessage(msg, attacker.axial, defender.axial, {
+    deferStateApply: pending.deferStateApply ?? true,
+  });
+  if (!resolved) return null;
+  return {
+    ...resolved,
+    id: pending.id,
+    chatMessageIds: resolved.chatMessageIds ?? [msg.id],
+  };
+}
+
 function combatFxFromMessage(
   msg: ChatMessage,
   attackerAxial: Axial,
