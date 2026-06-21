@@ -403,28 +403,25 @@ function resolveCombatPackAndEntry(
   return { packId, entryId };
 }
 
-export function resolveCombatAction(
+function resolveRequestedCombatAction(
   actor: CharacterSheet,
-  request?: CombatActionRequest
-): CombatActionOption {
-  const actions = listCombatActions(actor);
-  const { packId, entryId } = resolveCombatPackAndEntry(actor, request);
+  actions: CombatActionOption[],
+  packId: CombatLoadout["packId"] | undefined,
+  entryId: string | undefined
+): CombatActionOption | null {
+  if (!entryId) return null;
 
-  if (entryId?.startsWith("habilidades-")) {
-    const byEntry = actions.find((a) => a.entryId === entryId && a.kind === "ability");
-    if (byEntry) return byEntry;
+  if (entryId.startsWith("habilidades-")) {
     const known = abilityFromKnownId(entryId);
     if (known) return known;
   }
 
-  if (packId && entryId) {
+  const byEntry = actions.find((a) => a.entryId === entryId);
+  if (byEntry) return byEntry;
+
+  if (packId) {
     const found = actions.find((a) => a.packId === packId && a.entryId === entryId);
     if (found) return found;
-
-    if (!entryId.startsWith("habilidades-")) {
-      const byEntry = actions.find((a) => a.entryId === entryId);
-      if (byEntry) return byEntry;
-    }
 
     const entry = getEntry(packId, entryId);
     if (entry) {
@@ -445,8 +442,21 @@ export function resolveCombatAction(
       const known = abilityFromKnownId(entryId);
       if (known) return known;
     }
+  }
 
-    // Ação solicitada não encontrada — fallback para ação padrão
+  return null;
+}
+
+export function resolveCombatAction(
+  actor: CharacterSheet,
+  request?: CombatActionRequest
+): CombatActionOption {
+  const actions = listCombatActions(actor);
+  const { packId, entryId } = resolveCombatPackAndEntry(actor, request);
+  const resolved = resolveRequestedCombatAction(actor, actions, packId, entryId);
+  if (resolved) return resolved;
+
+  if (packId && entryId) {
     console.warn(`[resolveCombatAction] ação "${entryId}" não encontrada para ${actor.id}, usando fallback`);
   }
 
