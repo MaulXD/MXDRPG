@@ -14,6 +14,11 @@ import {
   findPendingAttackMessage,
   resolvePendingCombatFx,
 } from "@/lib/vtt/combat-fx-sequence";
+import {
+  filterLiveCombatFxMessages,
+  isLiveCombatFxMessage,
+  markHistoricalCombatChat,
+} from "@/lib/vtt/combat-fx-live";
 import type { RoomApiPayload } from "@/lib/room/room-delta";
 import { useMesaChat } from "@/hooks/vtt/useMesaRoomSlice";
 
@@ -41,6 +46,8 @@ export function useBattlefieldCombatFxQueue({
 
   const seenCombatRef = useRef<Set<string>>(new Set());
   const combatChatSeededRef = useRef(false);
+  const joinedAtRef = useRef(Date.now());
+  const fxLiveGateRef = useRef({ seeded: false, joinedAt: Date.now() });
   const combatFxQueueRef = useRef<CombatFxState[]>([]);
   const combatFxIdRef = useRef<string | null>(null);
   const pendingCombatSnapRefInternal = useRef<RoomSnapshot | null>(null);
@@ -49,12 +56,27 @@ export function useBattlefieldCombatFxQueue({
   const chat = useMesaChat(roomId);
   const chatTokens = snapshot?.scene.tokens ?? [];
 
+  const seedHistoricalChat = useCallback((messages: ChatMessage[]) => {
+    if (combatChatSeededRef.current) return;
+    if (!messages.length) return;
+    markHistoricalCombatChat(messages, seenCombatRef.current);
+    combatChatSeededRef.current = true;
+    joinedAtRef.current = Date.now();
+    fxLiveGateRef.current = { seeded: true, joinedAt: joinedAtRef.current };
+  }, []);
+
   const enqueueCombatFxFromChat = useCallback(
-    (chat: ChatMessage[], tokens: BattleToken[]) => {
-      const newMsgs = chat.filter(
-        (m) => m.kind === "combat" && m.combat && !seenCombatRef.current.has(m.id)
+    (messages: ChatMessage[], tokens: BattleToken[]) => {
+      seedHistoricalChat(messages);
+      if (!combatChatSeededRef.current) return;
+
+      const newMsgs = filterLiveCombatFxMessages(
+        messages,
+        seenCombatRef.current,
+        joinedAtRef.current
       );
       if (!newMsgs.length) return;
+
       const { sequence, markSeen } = ingestNewCombatFx(newMsgs, seenCombatRef.current, tokens, {
         deferStateApplyForToken: () => true,
       });
@@ -67,15 +89,18 @@ export function useBattlefieldCombatFxQueue({
         setCombatFx(next);
       }
     },
-    [combatFx]
+    [combatFx, seedHistoricalChat]
   );
 
   const playCombatFxFromSnap = useCallback(
     (payload: RoomApiPayload) => {
       const snap = resolveRoomPayload(payload);
+      seedHistoricalChat(snap.chat);
+      if (!combatChatSeededRef.current) return;
+
       if (combatFx && isPendingCombatFx(combatFx)) {
         const msg = findPendingAttackMessage(snap.chat, combatFx, seenCombatRef.current);
-        if (msg) {
+        if (msg && isLiveCombatFxMessage(msg, joinedAtRef.current)) {
           const resolved = resolvePendingCombatFx(combatFx, msg, snap.scene.tokens);
           if (resolved) {
             seenCombatRef.current.add(msg.id);
@@ -87,25 +112,20 @@ export function useBattlefieldCombatFxQueue({
       }
       enqueueCombatFxFromChat(snap.chat, snap.scene.tokens);
     },
-    [enqueueCombatFxFromChat, combatFx, resolveRoomPayload]
+    [enqueueCombatFxFromChat, combatFx, resolveRoomPayload, seedHistoricalChat]
   );
 
   playCombatFxFromSnapRef.current = playCombatFxFromSnap;
 
   useEffect(() => {
     if (!chat.length) return;
-    if (!combatChatSeededRef.current) {
-      for (const msg of chat) {
-        if (msg.kind === "combat" && msg.combat) seenCombatRef.current.add(msg.id);
-      }
-      combatChatSeededRef.current = true;
-      return;
-    }
     enqueueCombatFxFromChat(chat, chatTokens);
   }, [chat, chatTokens, enqueueCombatFxFromChat]);
 
   useEffect(() => {
     combatChatSeededRef.current = false;
+    joinedAtRef.current = Date.now();
+    fxLiveGateRef.current = { seeded: false, joinedAt: joinedAtRef.current };
     seenCombatRef.current = new Set();
     combatFxQueueRef.current = [];
     combatFxIdRef.current = null;
@@ -174,6 +194,7 @@ export function useBattlefieldCombatFxQueue({
     combatFxQueueRef,
     combatFxIdRef,
     seenCombatRef,
+    fxLiveGateRef,
     tokenFlash,
     tokenCastFx,
     pendingCombatSnapRef,

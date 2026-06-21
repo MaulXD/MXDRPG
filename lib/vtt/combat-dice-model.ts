@@ -34,31 +34,31 @@ export type CombatDiceTimings = {
   evictMs: number;
 };
 
-/** Timings de combate — ritmo ágil na mesa (~1,2s acerto, ~0,8s erro). */
+/** Timings de combate — tempo para o dado cair e ler o resultado. */
 export const COMBAT_DICE_TIMINGS: CombatDiceTimings = {
   mark: 40,
-  attackRoll: 550,
-  damageRoll: 450,
-  missHold: 180,
-  afterResolve: 120,
-  evictMs: 280,
+  attackRoll: 950,
+  damageRoll: 750,
+  missHold: 320,
+  afterResolve: 220,
+  evictMs: 650,
 };
 
 export const COMBAT_DICE_TIMINGS_REDUCED: CombatDiceTimings = {
   mark: 20,
-  attackRoll: 280,
-  damageRoll: 240,
-  missHold: 100,
-  afterResolve: 80,
-  evictMs: 160,
+  attackRoll: 420,
+  damageRoll: 360,
+  missHold: 160,
+  afterResolve: 120,
+  evictMs: 280,
 };
 
-export const DICE_LANDING_MS = 280;
-export const DICE_LANDING_MS_REDUCED = 100;
+export const DICE_LANDING_MS = 320;
+export const DICE_LANDING_MS_REDUCED = 120;
 
 /** Mínimo de “giro” do d20 antes de revelar resultado (ms). */
-export const COMBAT_ATTACK_MIN_SPIN_MS = 180;
-export const COMBAT_ATTACK_MIN_SPIN_MS_REDUCED = 80;
+export const COMBAT_ATTACK_MIN_SPIN_MS = 820;
+export const COMBAT_ATTACK_MIN_SPIN_MS_REDUCED = 340;
 
 export const DAMAGE_DICE_COLOR = "#e05040";
 export const HEAL_DICE_COLOR = "#46c878";
@@ -335,7 +335,7 @@ export function getDiceBoxRuntimeOptions(reducedMotion = false) {
     restitution: 0,
     linearDamping: 0.55,
     angularDamping: 0.55,
-    settleTimeout: reducedMotion ? 550 : 850,
+    settleTimeout: reducedMotion ? 500 : 920,
     enableShadows: !reducedMotion,
     shadowTransparency: 0.72,
     lightIntensity: 1.05,
@@ -350,7 +350,7 @@ export function getDiceBoxCombatOptions(reducedMotion = false) {
     scale: reducedMotion ? 16 : 20,
     lightIntensity: 1.35,
     shadowTransparency: 0.65,
-    settleTimeout: reducedMotion ? 450 : 700,
+    settleTimeout: reducedMotion ? 480 : 900,
   };
 }
 

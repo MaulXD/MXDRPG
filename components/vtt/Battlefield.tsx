@@ -66,6 +66,7 @@ import { effectiveMesaPanelWidth } from "@/lib/vtt/mesa-panel-layout";
 import type { TokenCombatFlash } from "@/components/vtt/CombatFxLayer";
 import type { CombatFxState } from "@/lib/vtt/combat-fx-types";
 import { ingestNewCombatFx, isPlayableCombatFxMessage, createPendingAttackFx, findPendingAttackMessage, isPendingCombatFx, resolvePendingCombatFx } from "@/lib/vtt/combat-fx-sequence";
+import { isLiveCombatFxMessage } from "@/lib/vtt/combat-fx-live";
 import type { ChatMessage } from "@/lib/room/chat";
 import { emptyCombat, activeTokenId, normalizeCombatTrack } from "@/lib/room/combat";
 import { resolveLivingActiveTokenId } from "@/lib/room/combat-order";
@@ -674,6 +675,7 @@ export function Battlefield({
     combatFxQueueRef,
     combatFxIdRef,
     seenCombatRef,
+    fxLiveGateRef,
     tokenFlash,
     tokenCastFx,
     playCombatFxFromSnapRef,
@@ -1112,9 +1114,12 @@ export function Battlefield({
       settings: snap.settings,
     };
 
-    const pendingFx = snap.chat.some(
-      (m) => isPlayableCombatFxMessage(m) && !seenCombatRef.current.has(m.id)
-    );
+    const pendingFx = snap.chat.some((m) => {
+      if (!isPlayableCombatFxMessage(m) || seenCombatRef.current.has(m.id)) return false;
+      const gate = fxLiveGateRef.current;
+      if (!gate.seeded) return false;
+      return isLiveCombatFxMessage(m, gate.joinedAt);
+    });
     if (
       pendingFx ||
       combatFx !== null ||
