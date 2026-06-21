@@ -343,6 +343,17 @@ export function getDiceBoxRuntimeOptions(reducedMotion = false) {
   };
 }
 
+/** Opções do painel de combate — faces legíveis como no preview. */
+export function getDiceBoxCombatOptions(reducedMotion = false) {
+  return {
+    ...getDiceBoxRuntimeOptions(reducedMotion),
+    scale: reducedMotion ? 16 : 20,
+    lightIntensity: 1.35,
+    shadowTransparency: 0.65,
+    settleTimeout: reducedMotion ? 650 : 1100,
+  };
+}
+
 /** Compat — cores/labels derivados do tier visual. */
 export const DICE_TIER_COLORS: Record<PortraitFrameTier, string> = {
   hero: ACTOR_TIER_VISUAL.hero.color,

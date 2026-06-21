@@ -10,6 +10,7 @@ import {
   getAttackSlotBorder,
   getDamageDieColor,
   getDiceBoxRuntimeOptions,
+  getDiceBoxCombatOptions,
   DICE_TIER_COLORS,
   DICE_TIER_LABELS,
   DICE_ROLLER_COLOR,
@@ -114,6 +115,10 @@ export function getDiceBoxOptionsForHost(hostPx: number, reducedMotion: boolean)
     ...getDiceBoxRuntimeOptions(reducedMotion),
     scale: diceBoxScaleForHost(hostPx, reducedMotion),
   };
+}
+
+export function getDiceBoxCombatPanelOptions(reducedMotion: boolean) {
+  return getDiceBoxCombatOptions(reducedMotion);
 }
 
 /** Pré-carrega o bundle JS/WASM sem criar contextos WebGL extras. */
