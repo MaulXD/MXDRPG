@@ -518,8 +518,6 @@ export function CombatFxLayer({
     const startMarkMs = data.mode === "area-target" ? timings.areaTargetMark : 0;
     const tRollStart = timings.mark;
     const tAttackEnd = tRollStart + timings.attackRoll;
-    const tResolveHit = tAttackEnd + timings.damageRoll;
-    const tResolveMiss = tAttackEnd + timings.missHold;
 
     const healWithoutRoll = isHealCastWithoutRoll(data);
 
@@ -803,7 +801,7 @@ export function CombatFxLayer({
       </svg>
 
       {/* Painel de ataque — D20 + (se acertou) dado de dano ao lado */}
-      {showAttackPanel ? (
+      {showAttackPanel && diceSequence ? (
         <div
           className={`combat-fx-panel${showResultText ? " combat-fx-panel--revealed" : ""}${showDamageRoll ? " combat-fx-panel--dual-dice" : ""}`}
           style={{ left: panelAt.x, top: panelAt.y }}
@@ -812,7 +810,7 @@ export function CombatFxLayer({
             <div className="combat-fx-dice-row">
               <DiceCombatPanel
                 key={fx.id}
-                sequence={diceSequence!}
+                sequence={diceSequence}
                 ui={{
                   attackRolling: showRoll,
                   attackLocked: !showRoll,

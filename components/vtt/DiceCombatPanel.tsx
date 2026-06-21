@@ -7,6 +7,7 @@ import {
   COMBAT_DICE_HOST_PX,
   getDiceBoxOptionsForHost,
   loadVendorDiceBox,
+  scheduleCombatDiceWarm,
   type DiceBoxInstance,
 } from "@/lib/vtt/dice-combat-box";
 
@@ -37,6 +38,7 @@ export function DiceCombatPanel({ sequence, ui, reducedMotion = false }: Props) 
   const damageReadyRef = useRef(false);
   const attackSeqRef = useRef<string | null>(null);
   const damageSeqRef = useRef<string | null>(null);
+  const attackFaceRef = useRef<string | null>(null);
   const evictingRef = useRef(false);
 
   const { attack, attacker, damage, attackSlotLabel, damageSlotLabel, damageSlotBorder } =
@@ -88,8 +90,14 @@ export function DiceCombatPanel({ sequence, ui, reducedMotion = false }: Props) 
   }, [reducedMotion]);
 
   useEffect(() => {
+    void loadVendorDiceBox();
+    scheduleCombatDiceWarm(reducedMotion);
+  }, [reducedMotion]);
+
+  useEffect(() => {
     attackSeqRef.current = null;
     damageSeqRef.current = null;
+    attackFaceRef.current = null;
     evictingRef.current = false;
   }, [sequence.id]);
 
@@ -116,6 +124,19 @@ export function DiceCombatPanel({ sequence, ui, reducedMotion = false }: Props) 
       .then(() => damageBoxRef.current?.roll(toDiceBoxRoll(damage, face)))
       .catch((err) => console.error("[DiceCombatPanel] damage roll", err));
   }, [ui.showDamage, ui.damageRolling, damage, ensureDamageBox, sequence.id]);
+
+  /** Após lock, fixa face quando o servidor preenche o natural (pending → resolved). */
+  useEffect(() => {
+    if (!ui.attackLocked || attack.value == null) return;
+    const key = `${sequence.id}-face-${attack.value}`;
+    if (attackFaceRef.current === key) return;
+    attackFaceRef.current = key;
+    const face = dieFaceValue(attack.value, attack.sides);
+    if (!attackReadyRef.current || face == null) return;
+    void attackBoxRef.current
+      ?.roll(toDiceBoxRoll(attack, face))
+      .catch((err) => console.error("[DiceCombatPanel] attack face", err));
+  }, [ui.attackLocked, attack, sequence.id]);
 
   useEffect(() => {
     if (!ui.evicting || evictingRef.current) return;

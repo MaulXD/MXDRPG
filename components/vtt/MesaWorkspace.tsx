@@ -214,6 +214,13 @@ export function MesaWorkspace({
 
   const windows = useFoundryWindows(roomId);
   const { close: closeWindow } = windows;
+  const dicePanelOpen = windows.get("dice").open;
+
+  useEffect(() => {
+    if (!dicePanelOpen) return;
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    scheduleCombatDiceWarm(reduced);
+  }, [dicePanelOpen]);
 
   const GM_ONLY_WINDOW_IDS: MesaWindowId[] = ["spawn", "dungeon", "gm"];
 
