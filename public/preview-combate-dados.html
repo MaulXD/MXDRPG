@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Preview — Combate com dice-box 3D (MXDRPG)</title>
-  <link rel="stylesheet" href="/vendor/dice-box/style.css" />
+  <link rel="stylesheet" href="vendor/dice-box/style.css" />
   <style>
     :root {
       --bg: #0e0c0a;
@@ -194,6 +194,8 @@
       min-width: 0;
       max-width: 50%;
       position: relative;
+      border-radius: 8px;
+      box-shadow: inset 0 0 0 1px var(--dice-tier-border, rgba(201, 169, 98, 0.35));
     }
 
     .die-slot[hidden] { display: none !important; }
@@ -559,7 +561,7 @@
     Simula o fluxo do <code>CombatFxLayer</code> com dados 3D reais via
     <a href="https://fantasticdice.games" target="_blank" rel="noopener">@3d-dice/dice-box</a>.
     Timings: <strong>2s D20</strong> → se acertou <strong>+2s dano</strong> (slots separados; ataque trava) → expulsão forçada → token + chat.
-    Abra em <code>http://localhost:3000/preview-combate-dados.html</code> (<code>npm run dev</code>).
+    Abra via <strong><code id="previewUrl">http://localhost:3000/preview-combate-dados.html</code></strong> com <code>npm run dev</code> — não abra o arquivo direto no Explorer (file:// quebra o módulo 3D).
   </p>
 
   <div class="tier-legend" aria-hidden="true">
@@ -657,7 +659,10 @@
   </div>
 
   <script type="module">
-    import DiceBox from "/vendor/dice-box/dice-box.es.min.js";
+    const PAGE_BASE = new URL(".", window.location.href);
+    const VENDOR_DICE_BOX = new URL("vendor/dice-box/dice-box.es.min.js", PAGE_BASE).href;
+
+    let DiceBox = null;
 
     const T = {
       mark: 180,
@@ -677,11 +682,12 @@
     };
 
     const DAMAGE_COLOR = "#e05040";
+    /** assetPath tem que ser path relativo — dice-box faz origin + assetPath + themes/… */
     const DICE_BOX_OPTS = {
       assetPath: "/assets/dice-box/",
       origin: window.location.origin,
       theme: "default",
-      scale: 16,
+      scale: 18,
       // física mais “mesa”: queda de cima, pouca flutuação, pouso seco
       startingHeight: 9,
       throwForce: 4,
@@ -692,7 +698,7 @@
       restitution: 0,
       linearDamping: 0.55,
       angularDamping: 0.55,
-      settleTimeout: 4500,
+      settleTimeout: 1400,
       enableShadows: true,
       shadowTransparency: 0.72,
       lightIntensity: 1.05,
@@ -755,6 +761,9 @@
 
     function setAttackLabel(actor) {
       els.attackLabel.innerHTML = `<span class="tier-dot" style="background:${actor.color}"></span>Ataque d20 · ${actor.label}`;
+      els.attackSlot.style.setProperty("--dice-tier-color", actor.color);
+      els.attackSlot.style.setProperty("--dice-tier-border", actor.border);
+      els.attackSlot.style.boxShadow = `inset 0 0 0 1px ${actor.border}, 0 0 18px ${actor.color}33`;
     }
 
     function applyTokenLook(defender) {
@@ -820,8 +829,12 @@
 
     async function clearBothBoxes() {
       await Promise.all([
-        attackBoxReady && attackBox ? attackBox.clear().catch(() => {}) : Promise.resolve(),
-        damageBoxReady && damageBox ? damageBox.clear().catch(() => {}) : Promise.resolve(),
+        attackBoxReady && attackBox
+          ? Promise.resolve(attackBox.clear()).catch(() => {})
+          : Promise.resolve(),
+        damageBoxReady && damageBox
+          ? Promise.resolve(damageBox.clear()).catch(() => {})
+          : Promise.resolve(),
       ]);
     }
 
@@ -829,17 +842,24 @@
     async function ensureAttackBox() {
       els.dicePanel.classList.add("on");
       await waitLayout();
-      await new Promise((r) => setTimeout(r, 120));
       if (attackBoxReady) {
         attackBox?.resizeWorld?.();
         return;
       }
-      attackBox = new DiceBox({
-        ...DICE_BOX_OPTS,
-        container: "#diceBoxAttack",
-      });
-      await attackBox.init();
-      attackBoxReady = true;
+      try {
+        attackBox = new DiceBox({
+          ...DICE_BOX_OPTS,
+          container: "#diceBoxAttack",
+        });
+        await attackBox.init();
+        attackBox.show?.();
+        attackBoxReady = true;
+      } catch (err) {
+        console.error(err);
+        els.diceStatus.textContent = "init ataque falhou: " + (err?.message || err);
+        els.diceStatus.className = "status error";
+        throw err;
+      }
     }
 
     async function showDamageSlot() {
@@ -861,6 +881,7 @@
         container: "#diceBoxDamage",
       });
       await damageBox.init();
+      damageBox.show?.();
       damageBoxReady = true;
     }
 
@@ -892,7 +913,7 @@
       els.timeline.querySelector('[data-seg="damage"]').hidden = true;
       els.timeline.querySelector('[data-seg="miss"]').hidden = true;
       setSeg(null);
-      clearBothBoxes();
+      void clearBothBoxes();
     }
 
     function buildPhaseList(mode) {
@@ -944,17 +965,25 @@ ${tResolve}ms  forceEvict()`;
       if (attackLocked) return Promise.resolve();
       return ensureAttackBox()
         .then(() => attackBox.roll(spec))
-        .catch((err) => console.error("attack roll:", err));
+        .catch((err) => {
+          console.error("attack roll:", err);
+          els.diceStatus.textContent = "Erro na rolagem: " + (err?.message || err);
+          els.diceStatus.className = "status error";
+        });
     }
 
     function rollDamage(spec) {
       return ensureDamageBox()
         .then(() => damageBox.roll(spec))
-        .catch((err) => console.error("damage roll:", err));
+        .catch((err) => {
+          console.error("damage roll:", err);
+          els.diceStatus.textContent = "Erro no dano: " + (err?.message || err);
+          els.diceStatus.className = "status error";
+        });
     }
 
     function runSequence(mode, nat, dmg, isCrit) {
-      if (!diceReady) return;
+      if (!diceReady || !DiceBox) return;
       resetUI();
       running = true;
       setButtonsEnabled(false);
@@ -1050,16 +1079,30 @@ ${tResolve}ms  forceEvict()`;
     }
 
     async function initDiceBoxes() {
+      const urlEl = document.getElementById("previewUrl");
+      if (urlEl) urlEl.textContent = `${window.location.origin}/preview-combate-dados.html`;
+
+      if (window.location.protocol === "file:") {
+        els.diceStatus.textContent =
+          "Abra com npm run dev — file:// não carrega o dice-box (use o link acima).";
+        els.diceStatus.className = "status error";
+        return;
+      }
+
       try {
+        const mod = await import(/* @vite-ignore */ VENDOR_DICE_BOX);
+        DiceBox = mod.default;
+        if (!DiceBox) throw new Error("export default ausente no dice-box");
         diceReady = true;
         setAttackLabel(getAttacker());
         applyTokenLook(getDefender());
-        els.diceStatus.textContent = "dice-box pronto — init lazy com painel aberto (mesma física nos dois slots)";
+        els.diceStatus.textContent = "dice-box pronto — clique em Simular acerto";
         els.diceStatus.className = "status ready";
         setButtonsEnabled(true);
       } catch (err) {
         console.error(err);
-        els.diceStatus.textContent = "Erro ao carregar dice-box (use npm run dev + HTTP)";
+        els.diceStatus.textContent =
+          "Erro ao carregar dice-box — confira npm run dev e /vendor + /assets/dice-box";
         els.diceStatus.className = "status error";
       }
     }
