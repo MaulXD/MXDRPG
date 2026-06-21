@@ -121,10 +121,6 @@ export function DiceCombatPanel({ sequence, ui, reducedMotion = false }: Props) 
   }, [reducedMotion]);
 
   useEffect(() => {
-    void ensureAttackBox().catch(() => {});
-  }, [ensureAttackBox]);
-
-  useEffect(() => {
     attackSeqRef.current = null;
     damageSeqRef.current = null;
     evictingRef.current = false;

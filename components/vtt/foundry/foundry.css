@@ -1223,6 +1223,20 @@
   width: 100%;
 }
 
+.foundry-sheet-body--loading {
+  display: grid;
+  place-items: center;
+  min-height: 12rem;
+  padding: 2rem;
+}
+
+.foundry-sheet-body__loading {
+  margin: 0;
+  font-size: 0.82rem;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+}
+
 .foundry-window--character .foundry-sheet-body > .mf {
   flex: 0 1 auto;
   min-width: 0;

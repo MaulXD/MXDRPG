@@ -21,7 +21,7 @@ import { useFoundryWindows, FOUNDRY_DOCK_PANEL_IDS, type MesaWindowId } from "@/
 import { MAX_CHARACTERS_PER_USER_PER_ADVENTURE } from "@/lib/character/adventure-bind";
 import { useGmPlayerViewMode } from "@/hooks/vtt/useGmPlayerViewMode";
 import type { RoomSnapshot } from "@/lib/room/types";
-import { useRoomSync, type RoomMemberOnlineEvent, type RoomApiPayload } from "@/hooks/useRoomSync";
+import { useRoomSync, type RoomMemberOnlineEvent, type RoomApiPayload, type RoomSyncBridge } from "@/hooks/useRoomSync";
 import { usePassTurn } from "@/hooks/vtt/usePassTurn";
 import { scheduleCombatDiceWarm } from "@/lib/vtt/dice-combat-box";
 import { useRoomPresence } from "@/hooks/useRoomPresence";
@@ -173,15 +173,22 @@ export function MesaWorkspace({
     [applyRoomResponse]
   );
 
-  const roomSyncBridge = useMemo(
-    () => ({ snapshot, refresh, applySnapshot }),
-    [snapshot, refresh, applySnapshot]
-  );
+  const roomSyncBridgeRef = useRef<RoomSyncBridge>({
+    snapshot: null,
+    refresh: async () => {},
+    applySnapshot: () => {},
+  });
+  roomSyncBridgeRef.current.snapshot = snapshot;
+  roomSyncBridgeRef.current.refresh = refresh;
+  roomSyncBridgeRef.current.applySnapshot = applySnapshot;
 
+  const diceWarmStartedRef = useRef(false);
   useEffect(() => {
+    if (!snapshot?.settings?.combatActive || diceWarmStartedRef.current) return;
+    diceWarmStartedRef.current = true;
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     scheduleCombatDiceWarm(reduced);
-  }, []);
+  }, [snapshot?.settings?.combatActive]);
 
   useEffect(() => {
     if (roomId === "demo" || watchOnly || !session?.id) return;
@@ -935,7 +942,7 @@ export function MesaWorkspace({
                   memberIds={memberIds}
                   actors={snapshot.actors}
                   session={session}
-                  roomSync={roomSyncBridge}
+                  roomSync={roomSyncBridgeRef.current}
                   tokens={snapshot.scene.tokens}
                   spawnAxial={spawnAxial}
                   isRoomGm={effectiveIsGm}

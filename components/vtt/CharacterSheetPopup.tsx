@@ -1,9 +1,20 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import Link from "next/link";
-import { useMemo, useRef } from "react";
+import { memo, useMemo, useRef } from "react";
 
-import { CharacterSheet } from "@/components/character/CharacterSheet";
+const CharacterSheet = dynamic(
+  () => import("@/components/character/CharacterSheet").then((m) => m.CharacterSheet),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="foundry-sheet-body foundry-sheet-body--loading" aria-busy>
+        <p className="foundry-sheet-body__loading">Carregando ficha…</p>
+      </div>
+    ),
+  }
+);
 
 import { getCharacter } from "@/lib/character/demo-characters";
 
@@ -47,7 +58,7 @@ type Props = {
   onPlaced?: (snapshot: RoomSnapshot) => void;
 };
 
-export function CharacterSheetPopup({
+export const CharacterSheetPopup = memo(function CharacterSheetPopup({
   actorId,
   roomId,
   adventureId,
@@ -193,7 +204,7 @@ export function CharacterSheetPopup({
           compendiumRole={session?.role ?? null}
           compendiumIsRoomGm={isRoomGm}
           roomId={roomId}
-          roomSync={roomSync}
+          sync={roomSync}
           variant="popup"
           showEditRequest={showEditRequest}
           inventoryEditMode={inventoryEditMode}
@@ -204,4 +215,4 @@ export function CharacterSheetPopup({
       </div>
     </FoundryWindow>
   );
-}
+});

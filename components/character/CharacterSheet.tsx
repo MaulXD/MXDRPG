@@ -109,8 +109,8 @@ type Props = {
   compendiumRole?: UserRole | null;
   compendiumIsRoomGm?: boolean;
   roomId?: string;
-  /** Sync da mesa — evita segundo SSE/poll no popup */
-  roomSync?: RoomSyncBridge;
+  /** Sync da mesa — injetado pelo wrapper (popup) ou hook interno (/personagem) */
+  sync?: RoomSyncBridge;
   embedded?: boolean;
   /** Pop-up na mesa (layout estilo VTT) vs página inteira */
   variant?: "page" | "popup";
@@ -142,7 +142,20 @@ const PLAYER_PACKS: CompendiumPackId[] = [
   "consumiveis",
 ];
 
-export function CharacterSheet({
+export function CharacterSheet(props: Props) {
+  if (props.sync) {
+    return <CharacterSheetLoaded {...props} sync={props.sync} />;
+  }
+  return <CharacterSheetAutoSync {...props} />;
+}
+
+function CharacterSheetAutoSync(props: Omit<Props, "sync">) {
+  const sync = useRoomSync(props.roomId ?? "demo");
+  return <CharacterSheetLoaded {...props} sync={sync} />;
+}
+
+function CharacterSheetLoaded({
+  sync,
   character,
   canEdit,
   canEditPortrait: canEditPortraitProp,
@@ -150,7 +163,6 @@ export function CharacterSheet({
   compendiumRole = null,
   compendiumIsRoomGm = false,
   roomId = "demo",
-  roomSync,
   embedded = false,
   variant = "page",
   hidePdfExport = false,
@@ -162,7 +174,7 @@ export function CharacterSheet({
   standalonePage = false,
   popupLayout = "ddb",
   onRoomPortraitPatch,
-}: Props) {
+}: Omit<Props, "sync"> & { sync: RoomSyncBridge }) {
   const canEditPortrait = canEditPortraitProp ?? canEdit;
   const inventoryEditMode =
     inventoryEditModeProp ?? (canEdit ? "direct" : "readonly");
@@ -182,12 +194,7 @@ export function CharacterSheet({
   const adventureId = character.adventureId?.trim() || null;
   const showBestiaryTab = Boolean(adventureId);
 
-  const { snapshot, refresh, applySnapshot } = useRoomSync(roomId, {
-    disabled: Boolean(roomSync),
-  });
-  const liveSnapshot = roomSync?.snapshot ?? snapshot;
-  const liveRefresh = roomSync?.refresh ?? refresh;
-  const liveApplySnapshot = roomSync?.applySnapshot ?? applySnapshot;
+  const { snapshot: liveSnapshot, refresh: liveRefresh, applySnapshot: liveApplySnapshot } = sync;
   const sheetBase = localSheet ?? character;
   const roomActor = liveSnapshot?.actors[character.id];
   const liveRaw = roomActor ?? sheetBase;
