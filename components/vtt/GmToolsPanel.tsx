@@ -4,6 +4,7 @@ import { useState } from "react";
 import type { BattleScene, BattleToken } from "@/lib/vtt/types";
 import type { Axial } from "@/lib/vtt/grid-math";
 import type { RoomSnapshot } from "@/lib/room/types";
+import type { RoomApiPayload } from "@/hooks/useRoomSync";
 import { GmActionHistoryPanel } from "@/components/vtt/GmActionHistoryPanel";
 import { GmCombatLogPanel } from "@/components/vtt/GmCombatLogPanel";
 import { GmActorProgressPanel } from "@/components/vtt/GmActorProgressPanel";
@@ -34,7 +35,7 @@ type Props = {
   spawnAxial: Axial | null;
   combatUndo?: CombatUndoEntry[];
   combatLog?: RoomSnapshot["combatLog"];
-  onSceneUpdated: (snap: RoomSnapshot) => void;
+  onSceneUpdated: (payload: RoomApiPayload) => void;
   onRefresh?: () => void;
 };
 

@@ -2,13 +2,13 @@
 
 import { useMemo, useState } from "react";
 import type { CombatUndoKind } from "@/lib/room/combat-undo";
-import type { CombatUndoEntry, RoomSnapshot } from "@/lib/room/types";
-import { postGmCombatAction } from "@/hooks/useRoomSync";
+import type { CombatUndoEntry } from "@/lib/room/types";
+import { postGmCombatAction, type RoomApiPayload } from "@/hooks/useRoomSync";
 
 type Props = {
   roomId: string;
   combatUndo?: CombatUndoEntry[];
-  onUpdated: (snapshot: RoomSnapshot) => void;
+  onUpdated: (payload: RoomApiPayload) => void;
 };
 
 const KIND_LABEL: Record<CombatUndoKind, string> = {

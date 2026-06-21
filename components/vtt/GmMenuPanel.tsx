@@ -3,6 +3,7 @@
 import type { BattleScene } from "@/lib/vtt/types";
 import type { Axial } from "@/lib/vtt/grid-math";
 import type { RoomSnapshot } from "@/lib/room/types";
+import type { RoomApiPayload } from "@/hooks/useRoomSync";
 import type { SessionUser } from "@/lib/auth/types";
 import { GmActionHistoryPanel } from "@/components/vtt/GmActionHistoryPanel";
 import { GmCombatLogPanel } from "@/components/vtt/GmCombatLogPanel";
@@ -27,7 +28,7 @@ type Props = {
   canEdit: boolean;
   canEditScene?: boolean;
   adventureId?: string;
-  onSceneUpdated: (snap: RoomSnapshot) => void;
+  onSceneUpdated: (payload: RoomApiPayload) => void;
   dungeonLayer?: DungeonEditLayer;
   dungeonModeOpen?: boolean;
   dungeonEditorActive?: boolean;
