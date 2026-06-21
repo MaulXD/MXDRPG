@@ -406,7 +406,7 @@
     }
   },
   {
-    "id": "monstros-ghoul",
+    "id": "monstros-necrofago",
     "name": "Necrófago",
     "type": "npc",
     "system": {
@@ -454,7 +454,7 @@
       "actions": [
         {
           "packId": "unarmed",
-          "entryId": "ghoul-mordida",
+          "entryId": "necrofago-mordida",
           "name": "Mordida",
           "kind": "weapon",
           "resolution": "attack",
@@ -467,7 +467,7 @@
         },
         {
           "packId": "unarmed",
-          "entryId": "ghoul-garras",
+          "entryId": "necrofago-garras",
           "name": "Garras",
           "kind": "weapon",
           "resolution": "attack",
@@ -480,7 +480,7 @@
         },
         {
           "packId": "unarmed",
-          "entryId": "ghoul-special",
+          "entryId": "necrofago-special",
           "name": "Investida",
           "kind": "weapon",
           "resolution": "attack",
@@ -812,7 +812,7 @@
     }
   },
   {
-    "id": "monstros-lich-arquiliche",
+    "id": "monstros-necroarca-arquiliche",
     "name": "Necroarca (Arquiliche)",
     "type": "npc",
     "system": {
@@ -860,7 +860,7 @@
       "actions": [
         {
           "packId": "unarmed",
-          "entryId": "lich-arquiliche-mordida",
+          "entryId": "necroarca-arquiliche-mordida",
           "name": "Mordida",
           "kind": "weapon",
           "resolution": "attack",
@@ -873,7 +873,7 @@
         },
         {
           "packId": "unarmed",
-          "entryId": "lich-arquiliche-garras",
+          "entryId": "necroarca-arquiliche-garras",
           "name": "Garras",
           "kind": "weapon",
           "resolution": "attack",
@@ -886,7 +886,7 @@
         },
         {
           "packId": "unarmed",
-          "entryId": "lich-arquiliche-special",
+          "entryId": "necroarca-arquiliche-special",
           "name": "Ataque especial",
           "kind": "spell",
           "resolution": "attack",
@@ -8922,7 +8922,7 @@
     }
   },
   {
-    "id": "monstros-doppelganger",
+    "id": "monstros-metamorfo-dubio",
     "name": "Metamorfo Dúbio",
     "type": "npc",
     "system": {
@@ -8970,7 +8970,7 @@
       "actions": [
         {
           "packId": "unarmed",
-          "entryId": "doppelganger-mordida",
+          "entryId": "metamorfo-dubio-mordida",
           "name": "Mordida",
           "kind": "weapon",
           "resolution": "attack",
@@ -8983,7 +8983,7 @@
         },
         {
           "packId": "unarmed",
-          "entryId": "doppelganger-garras",
+          "entryId": "metamorfo-dubio-garras",
           "name": "Garras",
           "kind": "weapon",
           "resolution": "attack",
@@ -8996,7 +8996,7 @@
         },
         {
           "packId": "unarmed",
-          "entryId": "doppelganger-special",
+          "entryId": "metamorfo-dubio-special",
           "name": "Ataque especial",
           "kind": "spell",
           "resolution": "attack",
@@ -13395,7 +13395,7 @@
     }
   },
   {
-    "id": "monstros-balor",
+    "id": "monstros-arquidemonio-flamejante",
     "name": "Arquidemônio Flamejante",
     "type": "npc",
     "system": {
@@ -13438,12 +13438,12 @@
           "value": 19
         },
         "tier": "boss",
-        "tamanho": "large"
+        "tamanho": "medium"
       },
       "actions": [
         {
           "packId": "unarmed",
-          "entryId": "balor-mordida",
+          "entryId": "arquidemonio-flamejante-mordida",
           "name": "Mordida",
           "kind": "weapon",
           "resolution": "attack",
@@ -13456,7 +13456,7 @@
         },
         {
           "packId": "unarmed",
-          "entryId": "balor-garras",
+          "entryId": "arquidemonio-flamejante-garras",
           "name": "Garras",
           "kind": "weapon",
           "resolution": "attack",
@@ -13469,7 +13469,7 @@
         },
         {
           "packId": "unarmed",
-          "entryId": "balor-special",
+          "entryId": "arquidemonio-flamejante-special",
           "name": "Ataque especial",
           "kind": "spell",
           "resolution": "attack",
@@ -13941,7 +13941,7 @@
     }
   },
   {
-    "id": "monstros-tarrasque-bebe",
+    "id": "monstros-devorador-anciao-filhote",
     "name": "Devorador Ancião (Filhote)",
     "type": "npc",
     "system": {
@@ -13984,12 +13984,12 @@
           "value": 20
         },
         "tier": "boss",
-        "tamanho": "gargantuan"
+        "tamanho": "medium"
       },
       "actions": [
         {
           "packId": "unarmed",
-          "entryId": "tarrasque-bebe-mordida",
+          "entryId": "devorador-anciao-filhote-mordida",
           "name": "Mordida",
           "kind": "weapon",
           "resolution": "attack",
@@ -14002,7 +14002,7 @@
         },
         {
           "packId": "unarmed",
-          "entryId": "tarrasque-bebe-garras",
+          "entryId": "devorador-anciao-filhote-garras",
           "name": "Garras",
           "kind": "weapon",
           "resolution": "attack",
@@ -14015,7 +14015,7 @@
         },
         {
           "packId": "unarmed",
-          "entryId": "tarrasque-bebe-special",
+          "entryId": "devorador-anciao-filhote-special",
           "name": "Ataque especial",
           "kind": "spell",
           "resolution": "attack",
