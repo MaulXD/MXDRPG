@@ -659,51 +659,21 @@
   </div>
 
   <script type="module">
+    import {
+      COMBAT_DICE_TIMINGS,
+      previewTierVisual,
+      buildPreviewSequence,
+      toDiceBoxRoll,
+      getDiceBoxRuntimeOptions,
+    } from "./combat-dice-model.mjs";
+
     const PAGE_BASE = new URL(".", window.location.href);
     const VENDOR_DICE_BOX = new URL("vendor/dice-box/dice-box.es.min.js", PAGE_BASE).href;
 
     let DiceBox = null;
 
-    const T = {
-      mark: 180,
-      attackRoll: 2000,
-      damageRoll: 2000,
-      missHold: 550,
-      afterResolve: 400,
-      evictMs: 340,
-    };
-
-    const ACTOR_TIERS = {
-      player:   { label: "Jogador",  short: "PLYR", color: "#4a90d9", border: "rgba(74,144,217,0.65)" },
-      monster:  { label: "Monstro",  short: "GOBL", color: "#d4b84a", border: "rgba(212,184,74,0.65)" },
-      elite:    { label: "Elite",    short: "ELIT", color: "#9b59d4", border: "rgba(155,89,212,0.65)" },
-      miniboss: { label: "Miniboss", short: "MINI", color: "#e88832", border: "rgba(232,136,50,0.65)" },
-      boss:     { label: "Boss",     short: "BOSS", color: "#d43838", border: "rgba(212,56,56,0.65)" },
-    };
-
-    const DAMAGE_COLOR = "#e05040";
-    /** assetPath tem que ser path relativo — dice-box faz origin + assetPath + themes/… */
-    const DICE_BOX_OPTS = {
-      assetPath: "/assets/dice-box/",
-      origin: window.location.origin,
-      theme: "default",
-      scale: 18,
-      // física mais “mesa”: queda de cima, pouca flutuação, pouso seco
-      startingHeight: 9,
-      throwForce: 4,
-      spinForce: 3.5,
-      gravity: 1.15,
-      mass: 1.1,
-      friction: 1,
-      restitution: 0,
-      linearDamping: 0.55,
-      angularDamping: 0.55,
-      settleTimeout: 1400,
-      enableShadows: true,
-      shadowTransparency: 0.72,
-      lightIntensity: 1.05,
-      offscreen: true,
-    };
+    const T = COMBAT_DICE_TIMINGS;
+    const DICE_BOX_OPTS = getDiceBoxRuntimeOptions();
 
     const $ = (id) => document.getElementById(id);
     const els = {
@@ -748,7 +718,7 @@
     let running = false;
 
     function tier(id) {
-      return ACTOR_TIERS[id] ?? ACTOR_TIERS.monster;
+      return previewTierVisual(id);
     }
 
     function getAttacker() {
@@ -1005,8 +975,10 @@ ${tResolve}ms  forceEvict()`;
         els.timeline.querySelector('[data-seg="miss"]').hidden = false;
       }
 
-      const attackSpec = { qty: 1, sides: 20, value: nat, themeColor: attacker.color };
-      const damageSpec = { qty: 1, sides: 8, value: dmg, themeColor: DAMAGE_COLOR };
+      const previewMode = mode === "miss" ? "miss" : isCrit ? "crit" : "hit";
+      const seq = buildPreviewSequence(previewMode, nat, dmg, els.attackerTier.value);
+      const attackSpec = toDiceBoxRoll(seq.attack);
+      const damageSpec = seq.damage ? toDiceBoxRoll(seq.damage) : null;
 
       at(0, () => {
         setPhase("mark", "mark", 0);
@@ -1028,7 +1000,7 @@ ${tResolve}ms  forceEvict()`;
           els.resultText.textContent = isCrit ? "CRÍTICO!" : "ACERTO";
           els.resultText.className = "result-text locked " + (isCrit ? "crit" : "hit");
           els.rollingCaption.textContent = "Rolando dano…";
-          rollDamage(damageSpec);
+          if (damageSpec) rollDamage(damageSpec);
         } else {
           setPhase("miss", "ERROU", T.mark + T.attackRoll);
           els.resultText.textContent = "ERROU";
