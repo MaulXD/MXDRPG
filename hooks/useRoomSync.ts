@@ -42,11 +42,11 @@ type SyncOpts = {
 
 const PRESENCE_HEARTBEAT_MS = 15_000;
 /** Agrupa rajadas de revision SSE em um único fetch. */
-const REFRESH_DEBOUNCE_MS = 180;
-const REFRESH_DEBOUNCE_COMBAT_MS = 100;
+const REFRESH_DEBOUNCE_MS = 120;
+const REFRESH_DEBOUNCE_COMBAT_MS = 0;
 /** Poll de segurança mesmo com SSE aberto (ms). */
 const SSE_BACKUP_POLL_MS = 10_000;
-const SSE_BACKUP_POLL_COMBAT_MS = 2000;
+const SSE_BACKUP_POLL_COMBAT_MS = 1500;
 
 export type RoomSyncStatus = "loading" | "live" | "polling" | "error";
 
@@ -93,6 +93,7 @@ export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
         setSnapshot(next);
         setSyncError(null);
         setLoading(false);
+        if (opts?.immediate) setSyncStatus("live");
       };
       if (opts?.immediate) commit();
       else startTransition(commit);
@@ -144,7 +145,8 @@ export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
       const data = (await res.json()) as RoomSnapshot;
       setSyncError(null);
       setSyncStatus(sseLiveRef.current ? "live" : "polling");
-      applySnapshot(data);
+      const inCombat = data.settings?.combatActive === true;
+      applySnapshot(data, { immediate: inCombat });
       sseReadyRef.current = true;
     } catch (e) {
       const msg =
@@ -169,16 +171,21 @@ export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
   refreshImplRef.current = refresh;
 
   const scheduleRefresh = useCallback(() => {
+    const inCombat = snapshotRef.current?.settings?.combatActive === true;
+    if (inCombat) {
+      if (refreshDebounceRef.current) {
+        clearTimeout(refreshDebounceRef.current);
+        refreshDebounceRef.current = null;
+      }
+      void refreshImplRef.current?.();
+      return;
+    }
     if (refreshDebounceRef.current) return;
-    const delay =
-      snapshot?.settings?.combatActive === true
-        ? REFRESH_DEBOUNCE_COMBAT_MS
-        : REFRESH_DEBOUNCE_MS;
     refreshDebounceRef.current = setTimeout(() => {
       refreshDebounceRef.current = null;
-      void refresh();
-    }, delay);
-  }, [refresh, snapshot?.settings?.combatActive]);
+      void refreshImplRef.current?.();
+    }, REFRESH_DEBOUNCE_MS);
+  }, [refresh]);
 
   const initialSnapshotRef = useRef(initialSnapshot);
   initialSnapshotRef.current = initialSnapshot;
@@ -410,7 +417,7 @@ export async function rollInitiative(roomId: string) {
     const err = (await res.json().catch(() => ({}))) as { error?: string };
     throw new Error(err.error ?? "Falha ao rolar iniciativa");
   }
-  return res.json() as Promise<RoomSnapshot>;
+  return res.json() as Promise<RoomApiPayload>;
 }
 
 export async function nextCombatTurn(roomId: string, opts?: { force?: boolean }) {
@@ -424,7 +431,7 @@ export async function nextCombatTurn(roomId: string, opts?: { force?: boolean })
     const err = (await res.json().catch(() => ({}))) as { error?: string };
     throw new Error(err.error ?? "Falha ao avançar turno");
   }
-  return res.json() as Promise<RoomSnapshot>;
+  return res.json() as Promise<RoomApiPayload>;
 }
 
 export type GmCombatAction =

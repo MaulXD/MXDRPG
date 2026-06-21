@@ -1,33 +1,33 @@
 "use client";
 
-import { useState } from "react";
 import type { CombatTrack } from "@/lib/room/combat";
 import { activeTokenId, normalizeCombatTrack } from "@/lib/room/combat";
 import { resolveLivingActiveTokenId } from "@/lib/room/combat-order";
+import type { RoomSnapshot } from "@/lib/room/types";
 import type { BattleToken } from "@/lib/vtt/types";
-import { nextCombatTurn } from "@/hooks/useRoomSync";
+import { usePassTurn } from "@/hooks/vtt/usePassTurn";
+import type { RoomApiPayload } from "@/hooks/useRoomSync";
 
 type Props = {
   roomId: string;
+  snapshot: RoomSnapshot | null | undefined;
   combat: CombatTrack;
   tokens: BattleToken[];
   canEndTurn: boolean;
   isGm?: boolean;
-  onUpdate: () => void;
-  onSnapshot?: (snap: import("@/lib/room/types").RoomSnapshot) => void;
+  onApplySnapshot: (payload: RoomApiPayload, opts?: { force?: boolean; immediate?: boolean }) => void;
 };
 
 export function EndTurnBar({
   roomId,
+  snapshot,
   combat,
   tokens,
   canEndTurn,
   isGm = false,
-  onUpdate,
-  onSnapshot,
+  onApplySnapshot,
 }: Props) {
-  const [busy, setBusy] = useState(false);
-  const [err, setErr] = useState<string | null>(null);
+  const { passTurn, busy, err } = usePassTurn(roomId, snapshot, onApplySnapshot);
 
   const track = normalizeCombatTrack(combat, tokens);
   const activeId = resolveLivingActiveTokenId(track, tokens) ?? activeTokenId(track);
@@ -35,19 +35,6 @@ export function EndTurnBar({
   const hasOrder = track.order.length > 0;
 
   if (!canEndTurn || !hasOrder) return null;
-
-  async function handleEndTurn() {
-    setBusy(true);
-    setErr(null);
-    try {
-      const snap = await nextCombatTurn(roomId, { force: true });
-      onSnapshot?.(snap);
-    } catch (e) {
-      setErr(e instanceof Error ? e.message : "Não foi possível passar o turno");
-    } finally {
-      setBusy(false);
-    }
-  }
 
   return (
     <div className="vtt-end-turn-bar" role="region" aria-label="Passar turno">
@@ -63,7 +50,7 @@ export function EndTurnBar({
         type="button"
         className="btn vtt-end-turn-btn"
         disabled={busy}
-        onClick={() => void handleEndTurn()}
+        onClick={() => void passTurn()}
       >
         {busy ? "Passando…" : "Passar turno"}
       </button>

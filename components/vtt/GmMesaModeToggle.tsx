@@ -1,37 +1,31 @@
 "use client";
 
-import { useState } from "react";
 import { IconScroll, IconSword } from "@/components/ui/EldarinIcons";
 import { useVttToast } from "@/components/vtt/VttToast";
-import { postGmCombatAction } from "@/hooks/useRoomSync";
+import type { RoomApiPayload } from "@/hooks/useRoomSync";
+import { useCombatModeToggle } from "@/hooks/vtt/useCombatModeToggle";
 import type { RoomSnapshot } from "@/lib/room/types";
 
 type Props = {
   roomId: string;
+  snapshot: RoomSnapshot | null | undefined;
   combatActive: boolean;
-  onUpdated: (snapshot: RoomSnapshot) => void;
+  onApplyUpdate: (payload: RoomApiPayload, opts?: { force?: boolean; immediate?: boolean }) => void;
 };
 
-export function GmMesaModeToggle({ roomId, combatActive, onUpdated }: Props) {
-  const [busy, setBusy] = useState(false);
+export function GmMesaModeToggle({ roomId, snapshot, combatActive, onApplyUpdate }: Props) {
   const toast = useVttToast();
+  const { setCombatMode, busy } = useCombatModeToggle(roomId, snapshot, onApplyUpdate);
 
   async function setMode(active: boolean) {
     if (busy || active === combatActive) return;
-    setBusy(true);
     try {
-      const snapshot = await postGmCombatAction(roomId, {
-        action: "set-combat-mode",
-        active,
-      });
-      onUpdated(snapshot);
+      await setCombatMode(active);
     } catch (e) {
       toast.push(
         e instanceof Error ? e.message : "Não foi possível alterar o modo da mesa",
         "warn"
       );
-    } finally {
-      setBusy(false);
     }
   }
 

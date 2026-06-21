@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import type { CombatTrack } from "@/lib/room/combat";
 import { activeTokenId } from "@/lib/room/combat";
 import { resolveLivingActiveTokenId } from "@/lib/room/combat-order";
@@ -8,7 +7,8 @@ import type { RoomSnapshot } from "@/lib/room/types";
 import type { BattleToken } from "@/lib/vtt/types";
 import { hpRatio, isTokenDefeated } from "@/lib/vtt/token-hp-display";
 import { listTokenEffectChips } from "@/lib/vtt/token-effects";
-import { nextCombatTurn } from "@/hooks/useRoomSync";
+import type { RoomApiPayload } from "@/hooks/useRoomSync";
+import { usePassTurn } from "@/hooks/vtt/usePassTurn";
 import { useImageNaturalSize } from "@/hooks/useImageNaturalSize";
 import { PaHudMeter } from "@/components/vtt/PaHudMeter";
 import { TokenEffectsRow } from "@/components/vtt/TokenEffectsRow";
@@ -29,6 +29,7 @@ import {
 type Props = {
   token: BattleToken;
   sceneTokens?: BattleToken[];
+  snapshot?: RoomSnapshot | null;
   combat: CombatTrack | null | undefined;
   isGmView: boolean;
   isControlled: boolean;
@@ -38,8 +39,10 @@ type Props = {
   roomId: string;
   onOpenSheet?: (actorId?: string) => void;
   onOpenMonsterSheet?: (entryId: string) => void;
+  onApplySnapshot?: (payload: RoomApiPayload, opts?: { force?: boolean; immediate?: boolean }) => void;
+  /** @deprecated use onApplySnapshot */
   onSnapshot?: (snap: RoomSnapshot) => void;
-  onUpdate: () => void;
+  onUpdate?: () => void;
   onHide: () => void;
   portraitFallback?: string | null;
   portraitFocus?: PortraitFocus | null;
@@ -67,6 +70,7 @@ function HudCaShield({ value }: { value: number }) {
 export function CharacterCombatHud({
   token,
   sceneTokens,
+  snapshot,
   combat,
   isGmView,
   isControlled,
@@ -76,14 +80,20 @@ export function CharacterCombatHud({
   roomId,
   onOpenSheet,
   onOpenMonsterSheet,
+  onApplySnapshot,
   onSnapshot,
-  onUpdate,
   onHide,
   portraitFallback = null,
   portraitFocus = null,
 }: Props) {
-  const [busy, setBusy] = useState(false);
-  const [err, setErr] = useState<string | null>(null);
+  const applyUpdate =
+    onApplySnapshot ??
+    (onSnapshot ? (payload: RoomApiPayload) => onSnapshot(payload as RoomSnapshot) : undefined);
+  const { passTurn, busy, err, clearErr: clearPassErr } = usePassTurn(
+    roomId,
+    snapshot,
+    applyUpdate ?? (() => {})
+  );
 
   const activeId = combat
     ? resolveLivingActiveTokenId(combat, sceneTokens ?? [token]) ?? activeTokenId(combat)
@@ -123,15 +133,11 @@ export function CharacterCombatHud({
   }
 
   async function handleEndTurn() {
-    setBusy(true);
-    setErr(null);
+    clearPassErr();
     try {
-      const snap = await nextCombatTurn(roomId, { force: true });
-      onSnapshot?.(snap);
-    } catch (e) {
-      setErr(e instanceof Error ? e.message : "Não foi possível passar o turno");
-    } finally {
-      setBusy(false);
+      await passTurn();
+    } catch {
+      /* err já definido no hook */
     }
   }
 

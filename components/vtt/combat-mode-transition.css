@@ -4,7 +4,7 @@
   --cmt-total: 2.3s;
   position: absolute;
   inset: 0;
-  z-index: 120;
+  z-index: 1500;
   display: flex;
   align-items: center;
   justify-content: center;

@@ -172,7 +172,7 @@ type Props = {
   inviteCode?: string | null;
   snapshot?: RoomSnapshot | null;
   onRefresh?: () => void;
-  onApplySnapshot?: (payload: RoomApiPayload, opts?: { force?: boolean }) => void;
+  onApplySnapshot?: (payload: RoomApiPayload, opts?: { force?: boolean; immediate?: boolean }) => void;
   onOpenSheet?: (actorId?: string) => void;
   onCreateCharacter?: () => void;
   /** Abre ficha de monstro do compêndio em janela flutuante. */
@@ -650,9 +650,7 @@ export function Battlefield({
   const combatFxIdRef = useRef<string | null>(null);
   const combatFxQueueRef = useRef<CombatFxState[]>([]);
   const pendingCombatSnapRef = useRef<RoomSnapshot | null>(null);
-  const playCombatFxFromSnapRef = useRef<
-    ((payload: RoomApiPayload, opts?: { deferSnap?: boolean }) => void) | null
-  >(null);
+  const playCombatFxFromSnapRef = useRef<((payload: RoomApiPayload) => void) | null>(null);
 
   const resolveRoomPayload = useCallback(
     (payload: RoomApiPayload): RoomSnapshot =>
@@ -675,7 +673,7 @@ export function Battlefield({
   );
 
   const syncRoom = useCallback(
-    (payload?: RoomApiPayload) => {
+    (payload?: RoomApiPayload, opts?: { force?: boolean; immediate?: boolean }) => {
       if (!payload) {
         refresh();
         return;
@@ -687,11 +685,12 @@ export function Battlefield({
       if (snap.scene) {
         setScene((prev) => mergeScenePreservingPortraits(prev, snap.scene));
       }
-      if (onApplySnapshot) onApplySnapshot(payload, { force: true });
+      const immediate = opts?.immediate ?? roomSettings.combatActive;
+      if (onApplySnapshot) onApplySnapshot(payload, { force: opts?.force ?? true, immediate });
       else refresh();
       playCombatFxFromSnapRef.current?.(payload);
     },
-    [onApplySnapshot, refresh, resolveRoomPayload]
+    [onApplySnapshot, refresh, resolveRoomPayload, roomSettings.combatActive]
   );
 
   const battlefieldView = useBattlefieldView({ wrapRef, canvasRef });
@@ -1017,7 +1016,7 @@ export function Battlefield({
   );
 
   const playCombatFxFromSnap = useCallback(
-    (payload: RoomApiPayload, opts?: { deferSnap?: boolean }) => {
+    (payload: RoomApiPayload) => {
       const snap = resolveRoomPayload(payload);
       if (combatFx && isPendingCombatFx(combatFx)) {
         const msg = findPendingAttackMessage(snap.chat, combatFx, seenCombatRef.current);
@@ -1027,28 +1026,14 @@ export function Battlefield({
             seenCombatRef.current.add(msg.id);
             combatFxIdRef.current = resolved.id;
             setCombatFx(resolved);
-            if (opts?.deferSnap) pendingCombatSnapRef.current = snap;
-            else {
-              pendingCombatSnapRef.current = null;
-              syncRoom(payload);
-            }
             return;
           }
         }
       }
 
-      const queueBefore = combatFxQueueRef.current.length;
-      const activeFxBefore = combatFxIdRef.current;
-      if (opts?.deferSnap) pendingCombatSnapRef.current = snap;
       enqueueCombatFxFromChat(snap.chat, snap.scene.tokens);
-      const queuedFx =
-        combatFxQueueRef.current.length > queueBefore || combatFxIdRef.current !== activeFxBefore;
-      if (opts?.deferSnap && !queuedFx) {
-        pendingCombatSnapRef.current = null;
-        syncRoom(payload);
-      }
     },
-    [enqueueCombatFxFromChat, syncRoom, combatFx, resolveRoomPayload]
+    [enqueueCombatFxFromChat, combatFx, resolveRoomPayload]
   );
 
   playCombatFxFromSnapRef.current = playCombatFxFromSnap;
@@ -1135,7 +1120,9 @@ export function Battlefield({
       gmRepositionBusyRef.current
     ) {
       pendingCombatSnapRef.current = snap;
-      if (onApplySnapshot) onApplySnapshot(snap);
+      if (onApplySnapshot) {
+        onApplySnapshot(snap, { force: true, immediate: roomSettings.combatActive });
+      }
       startTransition(() => {
         setScene((prev) => ({
           ...prev,
@@ -1152,7 +1139,7 @@ export function Battlefield({
     startTransition(() => {
       setScene((prev) => mergeScenePreservingPortraits(prev, snap.scene));
     });
-  }, [snapshotRevision, combatFx, mergeTokenCombatFields, onApplySnapshot]);
+  }, [snapshotRevision, combatFx, mergeTokenCombatFields, onApplySnapshot, roomSettings.combatActive]);
 
   useEffect(() => {
     setActionMode("idle");
@@ -1387,14 +1374,14 @@ export function Battlefield({
           areaDirection: direction,
           channelExtraPa,
         });
-        playCombatFxFromSnap(snap, { deferSnap: true });
+        syncRoom(snap, { force: true, immediate: true });
         setActionMode("idle");
         setAreaCenter(null);
       } catch (e) {
         setActionErr(e instanceof Error ? e.message : "Falha na magia de área");
       }
     },
-    [selected, selectedBypass, activeCombatAction, roomId, channelExtraPa, syncRoom, playCombatFxFromSnap]
+    [selected, selectedBypass, activeCombatAction, roomId, channelExtraPa, syncRoom]
   );
 
   const actionPreview: ActionPreview | null = useMemo(() => {
@@ -1565,7 +1552,7 @@ export function Battlefield({
                 token.id,
                 combatAttackRequestOpts(action, token, { bypassTurn: bypass })
               );
-        playCombatFxFromSnap(snap, { deferSnap: true });
+        syncRoom(snap, { force: true, immediate: true });
         setActionMode("idle");
         setSelectedCombatAction(null);
         setActionRingAt(null);
@@ -1573,7 +1560,7 @@ export function Battlefield({
         setActionErr(e instanceof Error ? e.message : "Falha na ação");
       }
     },
-    [selected, roomId, tokenBypass, playCombatFxFromSnap]
+    [selected, roomId, tokenBypass, syncRoom]
   );
 
   const executeMultiTargetCast = useCallback(
@@ -1594,7 +1581,7 @@ export function Battlefield({
             defenderTokenIds: targetIds,
           }
         );
-        playCombatFxFromSnap(snap, { deferSnap: true });
+        syncRoom(snap, { force: true, immediate: true });
         setSpellTargetIds([]);
         setActionMode("idle");
         setSelectedCombatAction(null);
@@ -1693,7 +1680,7 @@ export function Battlefield({
             break;
           } catch (e) {
             lastErr = e;
-            if (attempt < 2) await new Promise((r) => setTimeout(r, 400 * (attempt + 1)));
+            if (attempt < 2) await new Promise((r) => setTimeout(r, 120 * (attempt + 1)));
           }
         }
         if (lastErr) {
@@ -1703,7 +1690,7 @@ export function Battlefield({
               await new Promise((r) => setTimeout(r, 1500 * (bg + 1)));
               try {
                 const retry = await runPost();
-                playCombatFxFromSnap(retry, { deferSnap: true });
+                syncRoom(retry, { force: true, immediate: true });
                 setActionErr(null);
                 return;
               } catch {
@@ -1714,7 +1701,7 @@ export function Battlefield({
           })();
           return;
         }
-        playCombatFxFromSnap(response!, { deferSnap: true });
+        syncRoom(response!, { force: true, immediate: true });
         setSpellTargetIds([]);
         // Mantém modo ataque para permitir outro alvo no mesmo turno (Esc cancela).
       } catch (e) {
@@ -1868,7 +1855,7 @@ export function Battlefield({
           appliedSceneRevisionRef.current = snap.revision;
           setScene((prev) => mergeScenePreservingPortraits(prev, snap.scene));
         }
-        if (onApplySnapshot) onApplySnapshot(payload, { force: true });
+        if (onApplySnapshot) onApplySnapshot(payload, { force: true, immediate: true });
         else void refresh();
         playCombatFxFromSnapRef.current?.(payload);
 
@@ -2567,12 +2554,13 @@ export function Battlefield({
             <TurnOrderPanel
               compact
               roomId={roomId}
+              snapshot={snapshot}
               combat={combat}
               tokens={listTokens}
               canControl={canControlCombat}
               canEndTurn={canEndTurnProp}
               combatUndo={snapshot?.combatUndo}
-              onSnapshot={syncRoom}
+              onApplySnapshot={syncRoom}
               onUpdate={refresh}
               attackableIds={highlights.attackableIds}
               rangeTargetIds={highlights.rangeTargetIds}
@@ -2883,12 +2871,12 @@ export function Battlefield({
         {combat && roomSettings.combatActive && (!hudToken || !hudVisible) ? (
           <EndTurnBar
             roomId={roomId}
+            snapshot={snapshot}
             combat={combat}
             tokens={displayScene.tokens}
             canEndTurn={canEndTurn || canControlCombat}
             isGm={canControlCombat}
-            onSnapshot={syncRoom}
-            onUpdate={refresh}
+            onApplySnapshot={syncRoom}
           />
         ) : null}
         {(() => {
@@ -2898,6 +2886,7 @@ export function Battlefield({
               <CharacterCombatHud
                 token={hudToken}
                 sceneTokens={displayScene.tokens}
+                snapshot={snapshot}
                 combat={combat}
                 isGmView={isRoomGm && !hudIsControlled}
                 isControlled={hudIsControlled}
@@ -2907,8 +2896,7 @@ export function Battlefield({
                 roomId={roomId}
                 onOpenSheet={onOpenSheet}
                 onOpenMonsterSheet={onOpenMonsterSheet}
-                onSnapshot={syncRoom}
-                onUpdate={refresh}
+                onApplySnapshot={syncRoom}
                 onHide={() => setHudVisible(false)}
                 portraitFallback={hudPortraitFallback}
                 portraitFocus={focusByTokenId.get(hudToken.id)}
