@@ -39,11 +39,11 @@ export function useCombatModeToggle(
           action: "set-combat-mode",
           active,
         });
-        applyUpdate(payload, { force: true, immediate: true });
+        applyUpdate(payload, { force: true, immediate: false });
         revertRef.current = null;
       } catch (e) {
         const prev = revertRef.current;
-        if (prev) applyUpdate(prev, { force: true, immediate: true });
+        if (prev) applyUpdate(prev, { force: true, immediate: false });
         revertRef.current = null;
         throw e;
       } finally {

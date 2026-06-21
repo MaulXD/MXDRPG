@@ -36,7 +36,6 @@ import { VttToastProvider } from "@/components/vtt/VttToast";
 import { FoundryDockPanel } from "@/components/vtt/foundry/FoundryDockPanel";
 import { FoundryWindow } from "@/components/vtt/foundry/FoundryWindow";
 import { MesaFoundrySidebar } from "@/components/vtt/foundry/MesaFoundrySidebar";
-import { Battlefield } from "@/components/vtt/Battlefield";
 import {
   mergePortraitPatchIntoSnapshot,
   type RoomActorPatchResult,
@@ -67,6 +66,17 @@ const MonsterSheetPopup = dynamic(
 const DiceRoller = dynamic(
   () => import("@/components/vtt/DiceRoller").then((m) => m.DiceRoller),
   { ssr: false }
+);
+const Battlefield = dynamic(
+  () => import("@/components/vtt/Battlefield").then((m) => m.Battlefield),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="foundry-mesa__battlefield-loading" aria-busy aria-label="Carregando mapa">
+        <span className="foundry-mesa__battlefield-loading-pulse" />
+      </div>
+    ),
+  }
 );
 
 type Props = {
@@ -169,7 +179,10 @@ export function MesaWorkspace({
   });
   const applyActionSnapshot = useCallback(
     (payload: RoomApiPayload, opts?: { force?: boolean; immediate?: boolean }) =>
-      applyRoomResponse(payload, { force: opts?.force ?? true, immediate: opts?.immediate ?? true }),
+      applyRoomResponse(payload, {
+        force: opts?.force ?? true,
+        immediate: opts?.immediate ?? false,
+      }),
     [applyRoomResponse]
   );
 
@@ -184,16 +197,23 @@ export function MesaWorkspace({
 
   const diceWarmStartedRef = useRef(false);
   useEffect(() => {
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    scheduleCombatDiceWarm(reduced);
+  }, []);
+
+  useEffect(() => {
     if (!snapshot?.settings?.combatActive || diceWarmStartedRef.current) return;
     diceWarmStartedRef.current = true;
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    scheduleCombatDiceWarm(reduced);
+    void import("@/lib/vtt/dice-combat-box").then(({ warmCombatDiceBoxes }) =>
+      warmCombatDiceBoxes(reduced)
+    );
   }, [snapshot?.settings?.combatActive]);
 
   useEffect(() => {
     if (roomId === "demo" || watchOnly || !session?.id) return;
     let cancelled = false;
-    const timer = setTimeout(() => {
+    const runSync = () => {
       const q = inviteCode?.trim() ? `?invite=${encodeURIComponent(inviteCode.trim())}` : "";
       void fetch(`/api/room/${roomId}/sync-actors${q}`, {
         method: "POST",
@@ -212,10 +232,26 @@ export function MesaWorkspace({
         .catch(() => {
           /* sync em background — mesa segue com snapshot inicial */
         });
-    }, 3000);
+    };
+    let idleId: number | ReturnType<typeof setTimeout> | undefined;
+    if (typeof window !== "undefined" && "requestIdleCallback" in window) {
+      idleId = (
+        window as Window & {
+          requestIdleCallback: (cb: () => void, opts?: { timeout: number }) => number;
+        }
+      ).requestIdleCallback(runSync, { timeout: 8000 });
+    } else {
+      idleId = setTimeout(runSync, 6000);
+    }
     return () => {
       cancelled = true;
-      clearTimeout(timer);
+      if (typeof idleId === "number" && typeof window !== "undefined" && "requestIdleCallback" in window) {
+        (
+          window as Window & { cancelIdleCallback: (id: number) => void }
+        ).cancelIdleCallback(idleId);
+      } else if (idleId != null) {
+        clearTimeout(idleId as ReturnType<typeof setTimeout>);
+      }
     };
   }, [roomId, inviteCode, watchOnly, session?.id, refresh, snapshot?.revision]);
 
