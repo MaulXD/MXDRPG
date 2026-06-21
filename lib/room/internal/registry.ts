@@ -21,6 +21,7 @@ import { getRoomGmCreations } from "../gm-creations";
 import { normalizeRoomSettings } from "../settings";
 import { backfillActorPortraitsFromTokens } from "../portrait-sync";
 import { migrateLegacyDisplayName } from "@/lib/moderation/display-name";
+import { ensureJournalBaseline, recordSnapshotAtRevision } from "../revision-journal";
 import { createDemoRoom, syncLinkedTokens } from "../sync";
 import type { RoomSnapshot, RoomState } from "../types";
 
@@ -226,6 +227,7 @@ export async function persistRoom(
   const updated = bumpRoom(state);
   rooms().set(roomId, updated);
   writeCachedRevision(roomId, updated.revision);
+  recordSnapshotAtRevision(roomId, toSnapshot(updated));
   if (shouldPersistToDb(roomId)) {
     await dbRooms.saveRoom(updated);
   }
@@ -299,6 +301,7 @@ export async function getRoom(roomId: string, opts?: GetRoomOpts): Promise<RoomS
   }
 
   if (room) refreshDemoActorsIfStale(room);
+  if (room) ensureJournalBaseline(roomId, toSnapshot(room));
   if (room) {
     if (!Array.isArray(room.scene.tokens)) {
       room.scene = { ...room.scene, tokens: [] };
