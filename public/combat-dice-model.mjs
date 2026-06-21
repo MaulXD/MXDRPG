@@ -4,21 +4,21 @@
  */
 
 export const COMBAT_DICE_TIMINGS = {
-  mark: 180,
-  attackRoll: 2000,
-  damageRoll: 2000,
-  missHold: 550,
-  afterResolve: 400,
+  mark: 40,
+  attackRoll: 950,
+  damageRoll: 800,
+  missHold: 250,
+  afterResolve: 150,
   evictMs: 340,
 };
 
 export const COMBAT_DICE_TIMINGS_REDUCED = {
-  mark: 60,
-  attackRoll: 550,
-  damageRoll: 550,
-  missHold: 220,
-  afterResolve: 200,
-  evictMs: 340,
+  mark: 20,
+  attackRoll: 420,
+  damageRoll: 360,
+  missHold: 120,
+  afterResolve: 100,
+  evictMs: 200,
 };
 
 export const DAMAGE_DICE_COLOR = "#e05040";
@@ -191,7 +191,7 @@ export function getDiceBoxRuntimeOptions(reducedMotion = false) {
     restitution: 0,
     linearDamping: 0.55,
     angularDamping: 0.55,
-    settleTimeout: reducedMotion ? 900 : 1400,
+    settleTimeout: reducedMotion ? 550 : 850,
     enableShadows: !reducedMotion,
     shadowTransparency: 0.72,
     lightIntensity: 1.05,

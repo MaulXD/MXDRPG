@@ -58,7 +58,7 @@ function roomQuery(roomId: string, inviteCode?: string | null, sinceRev?: number
   return s ? `?${s}` : "";
 }
 
-const COMBAT_POLL_INTERVAL_MS = 500;
+const COMBAT_POLL_INTERVAL_MS = 280;
 
 export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
   const inviteCode = opts.inviteCode ?? null;
@@ -196,15 +196,15 @@ export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
       revisionRef.current = init.revision;
       snapshotRef.current = init;
       applySnapshot(init, { force: true, immediate: true });
+      setSyncStatus("live");
     } else {
       setLoading(true);
       revisionRef.current = 0;
+      void refresh();
     }
     setSyncError(null);
-    setSyncStatus(init ? "polling" : "loading");
     sseReadyRef.current = false;
     sseLiveRef.current = false;
-    void refresh();
   }, [roomId, query, refresh, applySnapshot]);
 
   const pollIntervalMs =
@@ -282,9 +282,12 @@ export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
     };
 
     connect();
-    startPoll(backupPollMs);
+    const backupDelay = setTimeout(() => {
+      if (!sseLiveRef.current) startPoll(backupPollMs);
+    }, 8000);
 
     return () => {
+      clearTimeout(backupDelay);
       es?.close();
       if (pollId) clearInterval(pollId);
       if (refreshDebounceRef.current) {

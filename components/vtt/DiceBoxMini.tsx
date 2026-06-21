@@ -9,7 +9,6 @@ import {
   getDiceBoxOptionsForHost,
   loadVendorDiceBox,
   preloadCombatDiceBox,
-  warmCombatDiceBoxes,
   type DiceBoxInstance,
   type DiceHostSize,
 } from "@/lib/vtt/dice-combat-box";
@@ -49,8 +48,7 @@ export function DiceBoxMini({
 
   useEffect(() => {
     preloadCombatDiceBox();
-    void warmCombatDiceBoxes(reducedMotion);
-  }, [reducedMotion]);
+  }, []);
 
   useEffect(() => {
     if (failed) return;

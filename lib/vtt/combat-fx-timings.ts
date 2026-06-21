@@ -57,20 +57,20 @@ function buildTimings(
 }
 
 export const COMBAT_FX_TIMINGS = buildTimings(COMBAT_DICE_TIMINGS, DICE_LANDING_MS, {
-  healHold: 700,
-  areaTargetMark: 160,
+  healHold: 380,
+  areaTargetMark: 40,
   areaSimulResult: COMBAT_DICE_TIMINGS.attackRoll + COMBAT_DICE_TIMINGS.damageRoll,
-  areaSimulCleanup: 500,
+  areaSimulCleanup: 260,
 });
 
 export const COMBAT_FX_TIMINGS_REDUCED = buildTimings(
   COMBAT_DICE_TIMINGS_REDUCED,
   DICE_LANDING_MS_REDUCED,
   {
-    healHold: 280,
-    areaTargetMark: 60,
+    healHold: 160,
+    areaTargetMark: 20,
     areaSimulResult:
       COMBAT_DICE_TIMINGS_REDUCED.attackRoll + COMBAT_DICE_TIMINGS_REDUCED.damageRoll,
-    areaSimulCleanup: 240,
+    areaSimulCleanup: 140,
   }
 );

@@ -13,6 +13,8 @@ import { DiceCombatPanel } from "@/components/vtt/DiceCombatPanel";
 import type { BattleToken } from "@/lib/vtt/types";
 import {
   combatFxToDiceSequence,
+  COMBAT_ATTACK_MIN_SPIN_MS,
+  COMBAT_ATTACK_MIN_SPIN_MS_REDUCED,
   resolveCombatDiceTimings,
 } from "@/lib/vtt/combat-dice-model";
 import { isPendingCombatFx } from "@/lib/vtt/combat-fx-sequence";
@@ -105,6 +107,26 @@ function tokenFlashForFx(fx: CombatFxState): TokenCombatFlash {
   if (fx.hit === false && fx.saveTotal == null) return "miss";
   if (fx.hit || fx.saveTotal != null) return "hit";
   return "miss";
+}
+
+function fxResultKnown(fx: CombatFxState | null | undefined): boolean {
+  return Boolean(
+    fx &&
+      (fx.hit === true ||
+        fx.hit === false ||
+        fx.attackNatural != null ||
+        fx.saveTotal != null ||
+        fx.criticalFail)
+  );
+}
+
+function fxHasDamage(fx: CombatFxState | null | undefined): boolean {
+  return Boolean(
+    fx &&
+      fx.damageTotal != null &&
+      fx.damageTotal > 0 &&
+      (fx.isHeal || fx.hit !== false || fx.saveTotal != null)
+  );
 }
 
 // ─── Animações de projétil SVG ────────────────────────────────────
@@ -356,6 +378,9 @@ export function CombatFxLayer({
   const onChatRevealRef = useRef(onChatReveal);
   const castFxTriggeredRef = useRef(false);
   const applyStateCalledRef = useRef(false);
+  const seqStartedAtRef = useRef(0);
+  const resultPhaseDoneRef = useRef(false);
+  const triggerResultPhaseRef = useRef<(() => void) | null>(null);
 
   fxRef.current = fx;
   onDoneRef.current = onDone;
@@ -390,6 +415,10 @@ export function CombatFxLayer({
   useEffect(() => {
     const data = fxRef.current;
     if (!fxId || !data) return;
+
+    resultPhaseDoneRef.current = false;
+    triggerResultPhaseRef.current = null;
+    seqStartedAtRef.current = Date.now();
 
     setPhase("mark");
     setPanelVisible(true);
@@ -485,16 +514,12 @@ export function CombatFxLayer({
     }
 
     // ── single / area-target ──
-    // 2s D20 → (se acertou) +2s dado de dano com D20 visível → dados saem + token + chat juntos
+    // ~1s D20 → (se acertou) +0,8s dano → expulsão + token + chat
     const startMarkMs = data.mode === "area-target" ? timings.areaTargetMark : 0;
     const tRollStart = timings.mark;
-    const tAttackLand = tRollStart + timings.attackLandAt;
     const tAttackEnd = tRollStart + timings.attackRoll;
-    const tDamageLand = tAttackEnd + timings.damageLandAt;
     const tResolveHit = tAttackEnd + timings.damageRoll;
     const tResolveMiss = tAttackEnd + timings.missHold;
-    const tDoneHit = tResolveHit + timings.afterResolve;
-    const tDoneMiss = tResolveMiss + timings.afterResolve;
 
     const healWithoutRoll = isHealCastWithoutRoll(data);
 
@@ -530,7 +555,7 @@ export function CombatFxLayer({
       setDiceEvicting(true);
       applyStateNow();
       playTokenFx();
-      if (hasDamage) revealChat("damage");
+      if (fxHasDamage(fxRef.current)) revealChat("damage");
       timeouts.push(
         setTimeout(() => {
           setDiceEvicting(false);
@@ -545,28 +570,6 @@ export function CombatFxLayer({
       setPhase("roll");
       setAttackRolling(true);
     }, tRollStart + startMarkMs));
-
-    timeouts.push(setTimeout(() => {
-      setAttackRolling(false);
-    }, tAttackLand + startMarkMs));
-
-    const hasDamageAt = (d: CombatFxState | null | undefined) =>
-      Boolean(
-        d &&
-          d.damageTotal != null &&
-          d.damageTotal > 0 &&
-          (d.isHeal || d.hit !== false || d.saveTotal != null)
-      );
-
-    const resultKnown = (d: CombatFxState | null | undefined) =>
-      Boolean(
-        d &&
-          (d.hit === true ||
-            d.hit === false ||
-            d.attackNatural != null ||
-            d.saveTotal != null ||
-            d.criticalFail)
-      );
 
     const scheduleAfterResult = (hd: boolean) => {
       if (hd) {
@@ -599,18 +602,20 @@ export function CombatFxLayer({
       }
     };
 
-    timeouts.push(setTimeout(() => {
+    const triggerResultPhase = () => {
+      if (resultPhaseDoneRef.current) return;
+      resultPhaseDoneRef.current = true;
       setPhase("result");
       setAttackRolling(false);
 
       const tryResult = (attempt = 0) => {
         const live = fxRef.current;
         if (!live) return;
-        if (!resultKnown(live) && isPendingCombatFx(live) && attempt < 30) {
-          timeouts.push(setTimeout(() => tryResult(attempt + 1), 100));
+        if (!fxResultKnown(live) && isPendingCombatFx(live) && attempt < 24) {
+          timeouts.push(setTimeout(() => tryResult(attempt + 1), 50));
           return;
         }
-        const hd = hasDamageAt(live);
+        const hd = fxHasDamage(live);
         if (hd) {
           setShowDamageRoll(true);
           setDamageDieRolling(true);
@@ -618,10 +623,41 @@ export function CombatFxLayer({
         scheduleAfterResult(hd);
       };
       tryResult();
+    };
+
+    triggerResultPhaseRef.current = triggerResultPhase;
+
+    timeouts.push(setTimeout(() => {
+      triggerResultPhase();
     }, tAttackEnd + startMarkMs));
 
-    return () => { for (const id of timeouts) clearTimeout(id); };
+    return () => {
+      triggerResultPhaseRef.current = null;
+      for (const id of timeouts) clearTimeout(id);
+    };
   }, [fxId, reducedMotion, timings, diceEvictMs]);
+
+  const minSpinMs = reducedMotion ? COMBAT_ATTACK_MIN_SPIN_MS_REDUCED : COMBAT_ATTACK_MIN_SPIN_MS;
+
+  useEffect(() => {
+    if (!fx || phase === "done" || phase === "result" || phase === "damage") return;
+    if (!fxResultKnown(fx)) return;
+    if (resultPhaseDoneRef.current) return;
+
+    const elapsed = Date.now() - seqStartedAtRef.current;
+    const delay = Math.max(0, minSpinMs - elapsed);
+    const id = setTimeout(() => triggerResultPhaseRef.current?.(), delay);
+    return () => clearTimeout(id);
+  }, [
+    fx?.attackNatural,
+    fx?.hit,
+    fx?.saveTotal,
+    fx?.criticalFail,
+    fx?.damageTotal,
+    fxId,
+    minSpinMs,
+    phase,
+  ]);
 
   if (!fx || phase === "done") return null;
 

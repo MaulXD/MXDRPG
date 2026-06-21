@@ -24,7 +24,7 @@ import { useGmPlayerViewMode } from "@/hooks/vtt/useGmPlayerViewMode";
 import type { RoomSnapshot } from "@/lib/room/types";
 import { useRoomSync, type RoomMemberOnlineEvent, type RoomApiPayload } from "@/hooks/useRoomSync";
 import { usePassTurn } from "@/hooks/vtt/usePassTurn";
-import { preloadCombatDiceBox, warmCombatDiceBoxes, verifyDiceBoxAssets } from "@/lib/vtt/dice-combat-box";
+import { scheduleCombatDiceWarm } from "@/lib/vtt/dice-combat-box";
 import { useRoomPresence } from "@/hooks/useRoomPresence";
 import { MesaPresenceAlerts } from "@/components/vtt/MesaPresenceAlerts";
 import { MesaOnlineMenu } from "@/components/vtt/MesaOnlineMenu";
@@ -116,13 +116,6 @@ export function MesaWorkspace({
     isActualGm
   );
   const effectiveCanControlCombat = effectiveIsGm;
-  const compendium = useMemo(() => {
-    const role = session?.role ?? null;
-    const packs = getVisiblePacks(role, { isRoomGm: effectiveIsGm });
-    return Object.fromEntries(
-      packs.map((p) => [p.id, getPackEntries(p.id, { role, isRoomGm: effectiveIsGm })])
-    ) as Record<CompendiumPackId, CompendiumEntry[]>;
-  }, [session?.role, effectiveIsGm]);
   const combatAccessOpts = useMemo(
     () => ({ simulatePlayerView: playAsPlayer }),
     [playAsPlayer]
@@ -135,6 +128,14 @@ export function MesaWorkspace({
   const [combatChatReveal, setCombatChatReveal] = useState<
     Record<string, import("@/lib/combat/chat-display").CombatChatRevealPhase>
   >({});
+  const compendium = useMemo(() => {
+    if (!sheetPopupActorId) return {} as Record<CompendiumPackId, CompendiumEntry[]>;
+    const role = session?.role ?? null;
+    const packs = getVisiblePacks(role, { isRoomGm: effectiveIsGm });
+    return Object.fromEntries(
+      packs.map((p) => [p.id, getPackEntries(p.id, { role, isRoomGm: effectiveIsGm })])
+    ) as Record<CompendiumPackId, CompendiumEntry[]>;
+  }, [sheetPopupActorId, session?.role, effectiveIsGm]);
   const memberOnlineRef = useRef<((event: RoomMemberOnlineEvent) => void) | null>(null);
   const wizardAutoOpenedRef = useRef(false);
   const presenceUser =
@@ -177,40 +178,39 @@ export function MesaWorkspace({
   );
 
   useEffect(() => {
-    preloadCombatDiceBox();
-  }, []);
-
-  useEffect(() => {
     if (!snapshot?.settings?.combatActive) return;
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    preloadCombatDiceBox();
-    void warmCombatDiceBoxes(reduced);
-    if (process.env.NODE_ENV === "development") {
-      void verifyDiceBoxAssets().then(({ ok, missing }) => {
-        if (!ok) console.warn("[dice-box] assets ausentes:", missing);
-      });
-    }
+    scheduleCombatDiceWarm(reduced);
   }, [snapshot?.settings?.combatActive]);
 
   useEffect(() => {
     if (roomId === "demo" || watchOnly || !session?.id) return;
-    const q = inviteCode?.trim() ? `?invite=${encodeURIComponent(inviteCode.trim())}` : "";
     let cancelled = false;
-    void fetch(`/api/room/${roomId}/sync-actors${q}`, {
-      method: "POST",
-      credentials: "same-origin",
-    })
-      .then((res) => (res.ok ? res.json() : null))
-      .then((data: { revision?: number } | null) => {
-        if (!cancelled && data?.revision != null) void refresh();
+    const timer = setTimeout(() => {
+      const q = inviteCode?.trim() ? `?invite=${encodeURIComponent(inviteCode.trim())}` : "";
+      void fetch(`/api/room/${roomId}/sync-actors${q}`, {
+        method: "POST",
+        credentials: "same-origin",
       })
-      .catch(() => {
-        /* sync em background — mesa segue com snapshot inicial */
-      });
+        .then((res) => (res.ok ? res.json() : null))
+        .then((data: { revision?: number } | null) => {
+          if (
+            !cancelled &&
+            data?.revision != null &&
+            data.revision > (snapshot?.revision ?? 0)
+          ) {
+            void refresh();
+          }
+        })
+        .catch(() => {
+          /* sync em background — mesa segue com snapshot inicial */
+        });
+    }, 3000);
     return () => {
       cancelled = true;
+      clearTimeout(timer);
     };
-  }, [roomId, inviteCode, watchOnly, session?.id, refresh]);
+  }, [roomId, inviteCode, watchOnly, session?.id, refresh, snapshot?.revision]);
 
   const windows = useFoundryWindows(roomId);
   const { close: closeWindow } = windows;

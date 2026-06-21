@@ -1,6 +1,6 @@
 import type { Axial } from "@/lib/vtt/grid-math";
 
-const DEFAULT_MS_PER_CELL = 95;
+const DEFAULT_MS_PER_CELL = 72;
 
 export type TokenAnimPosition = {
   q: number;
