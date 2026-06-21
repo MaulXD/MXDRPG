@@ -1,9 +1,7 @@
-﻿/* TransiÃ§Ã£o Combate â†” Aventura â€” Choque (entrada) Â· Bruma se abre (saÃ­da) */
+/* Transição Combate ↔ Aventura — Névoa Vermelha + brasas (combate) · Névoa Azul (aventura) */
 
 .cmt-overlay {
   --cmt-total: 2.3s;
-  --cmt-hold-ratio: 0.435; /* ~1s de pausa em animaÃ§Ã£o de 2.3s */
-  --cmt-approach-ratio: 0.3; /* ~0.7s atÃ© cruzar */
   position: absolute;
   inset: 0;
   z-index: 120;
@@ -13,6 +11,7 @@
   pointer-events: auto;
   opacity: 0;
   visibility: hidden;
+  overflow: hidden;
 }
 
 .cmt-overlay--playing {
@@ -20,314 +19,133 @@
   visibility: visible;
 }
 
-.cmt-overlay__vignette {
+/* ─── Background layer ─── */
+
+.cmt-overlay__bg {
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse 72% 68% at 50% 50%, transparent 0%, rgba(0, 0, 0, 0.82) 100%);
   opacity: 0;
 }
 
-.cmt-overlay__dim {
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.7);
-  opacity: 0;
+.cmt--combat .cmt-overlay__bg {
+  background:
+    radial-gradient(ellipse 90% 55% at 50% 100%, rgba(190, 20, 8, 0.8) 0%, transparent 60%),
+    radial-gradient(ellipse 100% 100% at 50% 55%, rgba(95, 8, 4, 0.9) 0%, transparent 70%),
+    rgba(12, 0, 0, 0.92);
 }
 
-.cmt-overlay--playing .cmt-overlay__dim {
-  animation: cmt-dim-in 0.55s ease forwards;
+.cmt--combat.cmt-overlay--playing .cmt-overlay__bg {
+  animation: cmt-combat-bg var(--cmt-total) ease forwards;
 }
 
-.cmt--in-clash.cmt-overlay--exit.cmt-overlay--playing .cmt-overlay__dim,
-.cmt-overlay--exit .cmt-overlay__dim {
-  animation: cmt-dim-out 0.75s ease forwards;
+@keyframes cmt-combat-bg {
+  0%   { opacity: 0; transform: scale(1.06); }
+  14%  { opacity: 1; transform: scale(1); }
+  68%  { opacity: 1; }
+  100% { opacity: 0; }
 }
 
-@keyframes cmt-dim-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
+.cmt--adventure .cmt-overlay__bg {
+  background:
+    radial-gradient(ellipse 85% 55% at 50% 100%, rgba(20, 70, 165, 0.65) 0%, transparent 60%),
+    radial-gradient(ellipse 100% 100% at 50% 50%, rgba(8, 22, 72, 0.88) 0%, transparent 72%),
+    rgba(0, 4, 22, 0.90);
 }
 
-@keyframes cmt-dim-out {
-  from { opacity: 1; }
-  to { opacity: 0; }
+.cmt--adventure.cmt-overlay--playing .cmt-overlay__bg {
+  animation: cmt-adventure-bg var(--cmt-total) ease forwards;
 }
 
-.cmt-overlay--playing .cmt-overlay__vignette {
-  animation: cmt-vignette-in 0.65s ease forwards;
+@keyframes cmt-adventure-bg {
+  0%   { opacity: 0; }
+  20%  { opacity: 1; }
+  68%  { opacity: 1; }
+  100% { opacity: 0; }
 }
 
-.cmt-overlay--exit.cmt-overlay--playing .cmt-overlay__vignette {
-  animation: cmt-vignette-out 0.8s ease calc(var(--cmt-total) * var(--cmt-hold-ratio)) forwards;
-}
-
-@keyframes cmt-vignette-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@keyframes cmt-vignette-out {
-  from { opacity: 1; }
-  to { opacity: 0; }
-}
-
-.cmt-overlay__flash {
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at 50% 50%, rgba(255, 220, 140, 0.5) 0%, transparent 55%);
-  opacity: 0;
-  transform: scale(0.6);
-}
+/* ─── Label ─── */
 
 .cmt-overlay__content {
   position: relative;
   z-index: 2;
   text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.65rem;
 }
 
 .cmt-overlay__label {
   font-family: var(--font-display, Cinzel, serif);
-  font-size: clamp(1.25rem, 4vw, 2rem);
+  font-size: clamp(1.5rem, 5vw, 2.4rem);
   font-weight: 700;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: #f0e6d0;
-  text-shadow: 0 0 24px rgba(184, 146, 46, 0.6), 0 2px 8px rgba(0, 0, 0, 0.8);
-  opacity: 0;
-  transform: translateY(12px);
-}
-
-.cmt-overlay__sub {
-  font-size: clamp(0.78rem, 2vw, 0.92rem);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: #6B9E8C;
   opacity: 0;
 }
 
-.cmt-swords {
-  position: relative;
-  width: 120px;
-  height: 120px;
-  margin: 0.35rem auto 0.5rem;
-  flex-shrink: 0;
-  transform: scale(1.85);
-  transform-origin: center center;
+.cmt--combat .cmt-overlay__label {
+  color: #f5c060;
+  text-shadow:
+    0 0 32px rgba(255, 90, 20, 0.9),
+    0 0 64px rgba(200, 40, 8, 0.55),
+    0 2px 8px rgba(0, 0, 0, 0.95);
 }
 
-.cmt-sword {
+.cmt--combat.cmt-overlay--playing .cmt-overlay__label {
+  animation: cmt-combat-label var(--cmt-total) ease forwards;
+}
+
+@keyframes cmt-combat-label {
+  0%   { opacity: 0; transform: translateY(18px) scale(0.93); }
+  22%  { opacity: 1; transform: translateY(0) scale(1); }
+  68%  { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-10px); }
+}
+
+.cmt--adventure .cmt-overlay__label {
+  color: #c8e4f8;
+  text-shadow:
+    0 0 28px rgba(80, 160, 230, 0.7),
+    0 2px 10px rgba(0, 0, 0, 0.95);
+}
+
+.cmt--adventure.cmt-overlay--playing .cmt-overlay__label {
+  animation: cmt-adventure-label var(--cmt-total) ease forwards;
+}
+
+@keyframes cmt-adventure-label {
+  0%   { opacity: 0; transform: translateY(10px); }
+  26%  { opacity: 1; transform: translateY(0); }
+  65%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* ─── Brasas (modo combate) ─── */
+
+.cmt-ember {
   position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 34px;
-  height: 120px;
-  margin: -37px 0 0 -17px;
-  transform-origin: 17px 37px;
-  filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.55));
-}
-
-.cmt-sword svg {
-  width: 100%;
-  height: 100%;
-  display: block;
-  overflow: visible;
-}
-
-.cmt-sword--a {
-  z-index: 1;
-}
-
-.cmt-sword--b {
-  z-index: 2;
-}
-
-.cmt-sword--b svg {
-  filter: brightness(1.03);
-}
-
-.cmt-clash-point {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 16px;
-  height: 16px;
-  margin: -8px 0 0 -8px;
+  bottom: 0;
   border-radius: 50%;
-  background: radial-gradient(
-    circle,
-    rgba(255, 230, 160, 0.95) 0%,
-    rgba(255, 160, 60, 0.4) 40%,
-    transparent 70%
-  );
+  background: radial-gradient(circle, #ffe080 0%, #ff6010 55%, transparent 100%);
+  box-shadow: 0 0 6px 2px rgba(255, 110, 16, 0.65);
   opacity: 0;
   pointer-events: none;
-  z-index: 3;
+  animation-timing-function: ease-out;
+  animation-fill-mode: forwards;
 }
 
-/* â”€â”€â”€ Entrada: Choque lateral â€” cruza, segura 1s, depois some o overlay â”€â”€â”€ */
-.cmt--in-clash.cmt-overlay--playing .cmt-sword--a {
-  animation: cmt-in-clash-a var(--cmt-total) cubic-bezier(0.22, 1, 0.36, 1) forwards;
+.cmt--combat.cmt-overlay--playing .cmt-ember {
+  animation-name: cmt-ember-rise;
 }
 
-.cmt--in-clash.cmt-overlay--playing .cmt-sword--b {
-  animation: cmt-in-clash-b var(--cmt-total) cubic-bezier(0.22, 1, 0.36, 1) forwards;
+@keyframes cmt-ember-rise {
+  0%   { opacity: 0;   transform: translateY(0) translateX(0); }
+  8%   { opacity: 0.9; }
+  80%  { opacity: 0.4; }
+  100% { opacity: 0;   transform: translateY(-90vh) translateX(var(--cmt-ember-dx, 0px)); }
 }
 
-.cmt--in-clash.cmt-overlay--playing .cmt-overlay__flash {
-  animation: cmt-clash-flash 0.55s ease calc(var(--cmt-total) * var(--cmt-approach-ratio)) forwards;
-}
+/* ─── Mesa bloqueada durante transição ─── */
 
-.cmt--in-clash.cmt-overlay--playing .cmt-clash-point {
-  animation: cmt-clash-point 0.55s ease calc(var(--cmt-total) * var(--cmt-approach-ratio) - 0.05s) forwards;
-}
-
-.cmt--in-clash.cmt-overlay--playing .cmt-overlay__label {
-  animation: cmt-label-in 0.5s ease calc(var(--cmt-total) * var(--cmt-approach-ratio) + 0.05s) forwards;
-}
-
-.cmt--in-clash.cmt-overlay--playing .cmt-overlay__sub {
-  animation: cmt-label-in 0.45s ease calc(var(--cmt-total) * var(--cmt-approach-ratio) + 0.15s) forwards;
-}
-
-@keyframes cmt-in-clash-a {
-  0% { transform: translateX(-180px) rotate(-78deg); opacity: 0; }
-  22% { transform: translateX(6px) rotate(-52deg); opacity: 1; }
-  28% { transform: translateX(-3px) rotate(-58deg); }
-  30%, 73% { transform: translateX(0) rotate(-56deg); opacity: 1; }
-  100% { transform: translateX(0) rotate(-56deg); opacity: 1; }
-}
-
-@keyframes cmt-in-clash-b {
-  0% { transform: translateX(180px) rotate(78deg); opacity: 0; }
-  22% { transform: translateX(-6px) rotate(52deg); opacity: 1; }
-  28% { transform: translateX(3px) rotate(58deg); }
-  30%, 73% { transform: translateX(0) rotate(56deg); opacity: 1; }
-  100% { transform: translateX(0) rotate(56deg); opacity: 1; }
-}
-
-@keyframes cmt-clash-flash {
-  0% { opacity: 0; transform: scale(0.5); }
-  30% { opacity: 0.85; transform: scale(1.1); }
-  100% { opacity: 0; transform: scale(1.4); }
-}
-
-@keyframes cmt-clash-point {
-  0% { opacity: 0; transform: scale(0.3); }
-  35% { opacity: 1; transform: scale(1.2); }
-  100% { opacity: 0; transform: scale(1.6); }
-}
-
-/* â”€â”€â”€ SaÃ­da: Bruma se abre â€” bÃºssola, calor e nÃ©voa dissipando â”€â”€â”€ */
-.cmt--out-adventure.cmt-overlay--playing .cmt-adventure__mist {
-  animation: cmt-mist-lift var(--cmt-total) ease-out forwards;
-}
-
-.cmt--out-adventure.cmt-overlay--playing .cmt-adventure__warmth {
-  animation: cmt-warmth-rise var(--cmt-total) ease-out forwards;
-}
-
-.cmt--out-adventure.cmt-overlay--playing .cmt-adventure__compass {
-  animation: cmt-compass-in 0.7s ease calc(var(--cmt-total) * 0.08) forwards;
-}
-
-.cmt--out-adventure.cmt-overlay--playing .cmt-overlay__label {
-  animation-name: cmt-adventure-label-in, cmt-label-out;
-  animation-duration: 0.55s, 0.45s;
-  animation-delay: calc(var(--cmt-total) * 0.18), calc(var(--cmt-total) * var(--cmt-hold-ratio));
-  animation-timing-function: ease, ease;
-  animation-fill-mode: forwards, forwards;
-}
-
-.cmt--out-adventure.cmt-overlay--playing .cmt-overlay__sub {
-  animation-name: cmt-adventure-label-in, cmt-label-out;
-  animation-duration: 0.5s, 0.4s;
-  animation-delay: calc(var(--cmt-total) * 0.28), calc(var(--cmt-total) * var(--cmt-hold-ratio) + 0.05s);
-  animation-timing-function: ease, ease;
-  animation-fill-mode: forwards, forwards;
-}
-
-.cmt-overlay--exit.cmt--out-adventure .cmt-overlay__vignette {
-  opacity: 1;
-}
-
-.cmt-adventure__mist {
-  position: absolute;
-  inset: 0;
-  opacity: 0.85;
-  background:
-    radial-gradient(ellipse 90% 60% at 50% 100%, rgba(180, 200, 170, 0.35) 0%, transparent 55%),
-    linear-gradient(180deg, rgba(12, 18, 14, 0.75) 0%, rgba(8, 12, 10, 0.45) 45%, transparent 100%);
-  pointer-events: none;
-}
-
-.cmt-adventure__warmth {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  background: radial-gradient(circle at 50% 42%, rgba(255, 210, 130, 0.42) 0%, transparent 58%);
-  pointer-events: none;
-}
-
-.cmt-overlay__content--adventure {
-  gap: 0.5rem;
-}
-
-.cmt-adventure__compass {
-  color: #d4b87e;
-  opacity: 0;
-  transform: scale(0.82);
-  filter: drop-shadow(0 0 18px rgba(212, 184, 126, 0.45));
-}
-
-.cmt--out-adventure .cmt-overlay__label,
-.cmt--out-adventure .cmt-overlay__sub {
-  color: #e8dcc4;
-}
-
-.cmt--out-adventure .cmt-overlay__sub {
-  color: #9cb88a;
-}
-
-@keyframes cmt-mist-lift {
-  0% { opacity: 0.85; transform: translateY(0); }
-  45% { opacity: 0.55; }
-  100% { opacity: 0; transform: translateY(-12%); }
-}
-
-@keyframes cmt-warmth-rise {
-  0% { opacity: 0; transform: scale(0.9); }
-  35% { opacity: 0.75; transform: scale(1.05); }
-  100% { opacity: 0; transform: scale(1.15); }
-}
-
-@keyframes cmt-compass-in {
-  from { opacity: 0; transform: scale(0.82) rotate(-18deg); }
-  to { opacity: 1; transform: scale(1) rotate(0deg); }
-}
-
-@keyframes cmt-adventure-label-in {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes cmt-label-in {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes cmt-label-out {
-  from { opacity: 1; transform: translateY(0); }
-  to { opacity: 0; transform: translateY(8px); }
-}
-
-/* Bloqueio da mesa durante transiÃ§Ã£o */
 .foundry-mesa__stage--locked .vtt-shell--foundry,
 .foundry-mesa__stage--locked .vtt-canvas-wrap,
 .foundry-mesa__stage--locked .foundry-mesa__windows {
   pointer-events: none !important;
 }
-
