@@ -18,6 +18,7 @@ type Props = {
   ui: DiceCombatUiState;
   reducedMotion?: boolean;
   onAttackRollBegin?: () => void;
+  onAttackRollSettled?: () => void;
   onDamageRollBegin?: () => void;
 };
 
@@ -44,6 +45,7 @@ export function DiceCombatPanel({
   ui,
   reducedMotion = false,
   onAttackRollBegin,
+  onAttackRollSettled,
   onDamageRollBegin,
 }: Props) {
   const attackBoxRef = useRef<DiceBoxInstance | null>(null);
@@ -144,8 +146,18 @@ export function DiceCombatPanel({
         onAttackRollBegin?.();
         return attackBoxRef.current?.roll(toDiceBoxRoll(attack));
       })
+      .then(() => {
+        onAttackRollSettled?.();
+      })
       .catch((err) => console.error("[DiceCombatPanel] attack roll", err));
-  }, [ui.attackRolling, attack, ensureAttackBox, onAttackRollBegin, sequence.id]);
+  }, [
+    ui.attackRolling,
+    attack,
+    ensureAttackBox,
+    onAttackRollBegin,
+    onAttackRollSettled,
+    sequence.id,
+  ]);
 
   useEffect(() => {
     if (!ui.showDamage || !ui.damageRolling || !damage) return;

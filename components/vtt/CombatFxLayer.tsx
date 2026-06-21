@@ -186,9 +186,6 @@ function ProjectileAnim({ from, to, kind, phase, hit, isHeal, actionKind }: Proj
           fill="rgba(220,190,130,0.9)"
           className="proj-arrow-head"
         />
-        {hit === false ? (
-          <text x={finalX} y={finalY - 14} className="proj-miss-text">ERROU!</text>
-        ) : null}
       </g>
     );
   }
@@ -229,9 +226,6 @@ function ProjectileAnim({ from, to, kind, phase, hit, isHeal, actionKind }: Proj
           strokeLinejoin="round"
           className="proj-lightning-core"
         />
-        {hit === false ? (
-          <text x={to.x} y={to.y - 16} className="proj-miss-text">ERROU!</text>
-        ) : null}
       </g>
     );
   }
@@ -266,9 +260,6 @@ function ProjectileAnim({ from, to, kind, phase, hit, isHeal, actionKind }: Proj
           strokeLinecap="round"
           className="proj-orb-trail"
         />
-        {hit === false ? (
-          <text x={endX} y={endY - 14} className="proj-miss-text">ERROU!</text>
-        ) : null}
       </g>
     );
   }
@@ -293,9 +284,6 @@ function ProjectileAnim({ from, to, kind, phase, hit, isHeal, actionKind }: Proj
           strokeLinecap="round"
           className="proj-slash-line-2"
         />
-        {hit === false ? (
-          <text x={to.x} y={to.y - 18} className="proj-miss-text">ERROU!</text>
-        ) : null}
       </g>
     );
   }
@@ -383,6 +371,9 @@ export function CombatFxLayer({
   const damageRollStartedAtRef = useRef<number | null>(null);
   const resultPhaseDoneRef = useRef(false);
   const triggerResultPhaseRef = useRef<(() => void) | null>(null);
+  const attackRevealFallbackRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const onAttackRollBeginRef = useRef<(() => void) | null>(null);
+  const onAttackRollSettledRef = useRef<(() => void) | null>(null);
 
   fxRef.current = fx;
   onDoneRef.current = onDone;
@@ -521,7 +512,6 @@ export function CombatFxLayer({
     // ~1s D20 → (se acertou) +0,8s dano → expulsão + token + chat
     const startMarkMs = data.mode === "area-target" ? timings.areaTargetMark : 0;
     const tRollStart = timings.mark;
-    const tAttackEnd = tRollStart + timings.attackRoll;
 
     const healWithoutRoll = isHealCastWithoutRoll(data);
 
@@ -575,12 +565,19 @@ export function CombatFxLayer({
 
     const diceSettleMs = reducedMotion ? COMBAT_DICE_SETTLE_MS_REDUCED : COMBAT_DICE_SETTLE_MS;
 
-    const computeAttackRevealDelay = () => {
-      const seqDeadline = seqStartedAtRef.current + timings.mark + timings.attackRoll;
-      const rollStart = attackRollStartedAtRef.current;
-      const rollDeadline =
-        rollStart != null ? rollStart + diceSettleMs : seqDeadline;
-      return Math.max(0, Math.max(seqDeadline, rollDeadline) - Date.now());
+    const clearAttackRevealFallback = () => {
+      if (attackRevealFallbackRef.current != null) {
+        clearTimeout(attackRevealFallbackRef.current);
+        attackRevealFallbackRef.current = null;
+      }
+    };
+
+    const scheduleAttackRevealFallback = (delayMs: number) => {
+      clearAttackRevealFallback();
+      attackRevealFallbackRef.current = setTimeout(() => {
+        attackRevealFallbackRef.current = null;
+        triggerResultPhase();
+      }, delayMs);
     };
 
     const computeDamageSettleDelay = (fromMs = Date.now()) => {
@@ -646,17 +643,27 @@ export function CombatFxLayer({
     const triggerResultPhase = () => {
       if (resultPhaseDoneRef.current) return;
       resultPhaseDoneRef.current = true;
-      timeouts.push(setTimeout(revealAttackResult, computeAttackRevealDelay()));
+      clearAttackRevealFallback();
+      revealAttackResult();
     };
 
     triggerResultPhaseRef.current = triggerResultPhase;
 
-    timeouts.push(setTimeout(() => {
+    onAttackRollBeginRef.current = () => {
+      attackRollStartedAtRef.current = Date.now();
+      scheduleAttackRevealFallback(diceSettleMs + 400);
+    };
+    onAttackRollSettledRef.current = () => {
       triggerResultPhase();
-    }, tAttackEnd + startMarkMs));
+    };
+
+    scheduleAttackRevealFallback(startMarkMs + 6000);
 
     return () => {
       triggerResultPhaseRef.current = null;
+      onAttackRollBeginRef.current = null;
+      onAttackRollSettledRef.current = null;
+      clearAttackRevealFallback();
       for (const id of timeouts) clearTimeout(id);
     };
   }, [fxId, reducedMotion, timings, diceEvictMs]);
@@ -838,7 +845,10 @@ export function CombatFxLayer({
                 }}
                 reducedMotion={reducedMotion}
                 onAttackRollBegin={() => {
-                  attackRollStartedAtRef.current = Date.now();
+                  onAttackRollBeginRef.current?.();
+                }}
+                onAttackRollSettled={() => {
+                  onAttackRollSettledRef.current?.();
                 }}
                 onDamageRollBegin={() => {
                   damageRollStartedAtRef.current = Date.now();
