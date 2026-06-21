@@ -122,7 +122,6 @@ export function DiceCombatPanel({
 
   const ensureAttackBox = useCallback(async () => {
     await waitLayout();
-    await waitMs(reducedMotion ? 40 : 120);
     if (attackReadyRef.current) {
       attackBoxRef.current?.resizeWorld?.();
       return;
@@ -138,7 +137,6 @@ export function DiceCombatPanel({
 
   const ensureDamageBox = useCallback(async () => {
     await waitLayout();
-    await waitMs(reducedMotion ? 40 : 80);
     if (damageReadyRef.current) {
       damageBoxRef.current?.resizeWorld?.();
       return;
@@ -151,6 +149,12 @@ export function DiceCombatPanel({
     await damageBoxRef.current.init();
     damageReadyRef.current = true;
   }, [damageHostId, loadDiceBox, reducedMotion]);
+
+  // Pré-carrega o bundle dice-box assim que o painel monta — elimina delay na 1ª luta
+  useEffect(() => {
+    void loadDiceBox();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     attackRollKeyRef.current = null;
