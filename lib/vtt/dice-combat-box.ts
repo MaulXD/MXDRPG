@@ -51,6 +51,9 @@ export const DICE_HOST_HEIGHT = {
 
 export type DiceHostSize = keyof typeof DICE_HOST_HEIGHT;
 
+/** Altura do host de combate (`.combat-dice-box-host` em vtt.css). */
+export const COMBAT_DICE_HOST_PX = 130;
+
 export const DICE_COMBAT_EVICT_MS = COMBAT_DICE_TIMINGS.evictMs;
 
 export const DICE_BOX_REQUIRED_ASSETS = [
@@ -63,14 +66,15 @@ export const DICE_BOX_REQUIRED_ASSETS = [
 export const VENDOR_DICE_BOX = "/vendor/dice-box/dice-box.es.min.js";
 export const VENDOR_DICE_CSS = "/vendor/dice-box/style.css";
 
-let combatDicePreloadStarted = false;
+let cssInjected = false;
 let vendorCtor: DiceBoxCtor | null = null;
 let vendorLoad: Promise<DiceBoxCtor> | null = null;
 let warmPromise: Promise<void> | null = null;
 
+/** Só injeta CSS — não baixa WASM/vendor na abertura da mesa. */
 export function preloadCombatDiceBox(): void {
-  if (typeof window === "undefined" || combatDicePreloadStarted) return;
-  combatDicePreloadStarted = true;
+  if (typeof window === "undefined" || cssInjected) return;
+  cssInjected = true;
   const id = "mxdrpg-dice-box-css";
   if (!document.getElementById(id)) {
     const link = document.createElement("link");
@@ -79,7 +83,6 @@ export function preloadCombatDiceBox(): void {
     link.href = VENDOR_DICE_CSS;
     document.head.appendChild(link);
   }
-  void loadVendorDiceBox().catch((err) => console.error("[dice-combat-box] preload", err));
 }
 
 export async function loadVendorDiceBox(): Promise<DiceBoxCtor> {
@@ -97,13 +100,13 @@ export async function loadVendorDiceBox(): Promise<DiceBoxCtor> {
 }
 
 export function diceBoxScaleForHost(hostPx: number, reducedMotion: boolean): number {
-  const ref = 130;
+  const ref = COMBAT_DICE_HOST_PX;
   const base = reducedMotion ? 15 : 18;
   return Math.max(6, Math.round(base * (hostPx / ref)));
 }
 
 export function getDiceBoxBaseOptions(reducedMotion: boolean) {
-  return getDiceBoxRuntimeOptions(reducedMotion);
+  return getDiceBoxOptionsForHost(COMBAT_DICE_HOST_PX, reducedMotion);
 }
 
 export function getDiceBoxOptionsForHost(hostPx: number, reducedMotion: boolean) {
@@ -113,49 +116,36 @@ export function getDiceBoxOptionsForHost(hostPx: number, reducedMotion: boolean)
   };
 }
 
-function ensureWarmDom(): { attackId: string; damageId: string } {
-  const rootId = "mxdrpg-dice-warm-root";
-  if (!document.getElementById(rootId)) {
-    const root = document.createElement("div");
-    root.id = rootId;
-    root.setAttribute("aria-hidden", "true");
-    root.style.cssText =
-      "position:fixed;left:-9999px;top:0;width:130px;height:280px;overflow:hidden;opacity:0;pointer-events:none;z-index:-1";
-    const attack = document.createElement("div");
-    attack.id = "mxdrpg-dice-warm-attack";
-    attack.style.cssText = "width:130px;height:130px";
-    const damage = document.createElement("div");
-    damage.id = "mxdrpg-dice-warm-damage";
-    damage.style.cssText = "width:130px;height:130px";
-    root.append(attack, damage);
-    document.body.appendChild(root);
-  }
-  return { attackId: "mxdrpg-dice-warm-attack", damageId: "mxdrpg-dice-warm-damage" };
-}
-
-export async function warmCombatDiceBoxes(reducedMotion = false): Promise<void> {
+/** Pré-carrega o bundle JS/WASM sem criar contextos WebGL extras. */
+export async function warmCombatDiceBoxes(_reducedMotion = false): Promise<void> {
   if (typeof window === "undefined") return;
   if (warmPromise) return warmPromise;
 
-  warmPromise = (async () => {
-    const { attackId, damageId } = ensureWarmDom();
-    const DiceBox = await loadVendorDiceBox();
-    const opts = getDiceBoxRuntimeOptions(reducedMotion);
-
-    const attack = new DiceBox({ ...opts, container: `#${attackId}` });
-    await attack.init();
-    attack.show?.();
-
-    const damage = new DiceBox({ ...opts, container: `#${damageId}` });
-    await damage.init();
-    damage.show?.();
-  })().catch((err) => {
-    warmPromise = null;
-    console.error("[dice-combat-box] warm failed", err);
-    throw err;
-  });
+  warmPromise = loadVendorDiceBox()
+    .then(() => {})
+    .catch((err) => {
+      warmPromise = null;
+      console.error("[dice-combat-box] warm failed", err);
+      throw err;
+    });
 
   return warmPromise;
+}
+
+/** Adia warm-up para idle — não bloqueia paint da mesa. */
+export function scheduleCombatDiceWarm(reducedMotion = false): void {
+  if (typeof window === "undefined") return;
+  preloadCombatDiceBox();
+  const run = () => void warmCombatDiceBoxes(reducedMotion);
+  if ("requestIdleCallback" in window) {
+    (
+      window as Window & {
+        requestIdleCallback: (cb: () => void, opts?: { timeout: number }) => number;
+      }
+    ).requestIdleCallback(run, { timeout: 5000 });
+  } else {
+    setTimeout(run, 2500);
+  }
 }
 
 export async function verifyDiceBoxAssets(): Promise<{ ok: boolean; missing: string[] }> {

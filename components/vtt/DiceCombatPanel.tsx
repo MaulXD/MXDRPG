@@ -4,11 +4,15 @@ import { useCallback, useEffect, useRef, type CSSProperties } from "react";
 import type { CombatDiceSequence, DiceCombatUiState } from "@/lib/vtt/combat-dice-model";
 import { dieFaceValue, toDiceBoxRoll } from "@/lib/vtt/combat-dice-model";
 import {
-  getDiceBoxBaseOptions,
+  COMBAT_DICE_HOST_PX,
+  getDiceBoxOptionsForHost,
   loadVendorDiceBox,
-  warmCombatDiceBoxes,
   type DiceBoxInstance,
 } from "@/lib/vtt/dice-combat-box";
+
+/** Hosts fixos — reutiliza instâncias WebGL entre ataques. */
+const ATTACK_HOST_ID = "combat-dice-panel-attack";
+const DAMAGE_HOST_ID = "combat-dice-panel-damage";
 
 type Props = {
   sequence: CombatDiceSequence;
@@ -27,15 +31,12 @@ function waitMs(ms: number): Promise<void> {
 }
 
 export function DiceCombatPanel({ sequence, ui, reducedMotion = false }: Props) {
-  const safeKey = sequence.id.replace(/[^a-zA-Z0-9_-]/g, "_");
-  const attackHostId = `combat-dice-attack-${safeKey}`;
-  const damageHostId = `combat-dice-damage-${safeKey}`;
   const attackBoxRef = useRef<DiceBoxInstance | null>(null);
   const damageBoxRef = useRef<DiceBoxInstance | null>(null);
   const attackReadyRef = useRef(false);
   const damageReadyRef = useRef(false);
-  const attackRollKeyRef = useRef<string | null>(null);
-  const damageRollKeyRef = useRef<string | null>(null);
+  const attackSeqRef = useRef<string | null>(null);
+  const damageSeqRef = useRef<string | null>(null);
   const evictingRef = useRef(false);
 
   const { attack, attacker, damage, attackSlotLabel, damageSlotLabel, damageSlotBorder } =
@@ -53,7 +54,6 @@ export function DiceCombatPanel({ sequence, ui, reducedMotion = false }: Props) 
   }, []);
 
   const ensureAttackBox = useCallback(async () => {
-    await warmCombatDiceBoxes(reducedMotion);
     await waitLayout();
     if (attackReadyRef.current) {
       attackBoxRef.current?.resizeWorld?.();
@@ -62,16 +62,15 @@ export function DiceCombatPanel({ sequence, ui, reducedMotion = false }: Props) 
     }
     const DiceBox = await loadVendorDiceBox();
     attackBoxRef.current = new DiceBox({
-      ...getDiceBoxBaseOptions(reducedMotion),
-      container: `#${attackHostId}`,
+      ...getDiceBoxOptionsForHost(COMBAT_DICE_HOST_PX, reducedMotion),
+      container: `#${ATTACK_HOST_ID}`,
     });
     await attackBoxRef.current.init();
     attackBoxRef.current.show?.();
     attackReadyRef.current = true;
-  }, [attackHostId, reducedMotion]);
+  }, [reducedMotion]);
 
   const ensureDamageBox = useCallback(async () => {
-    await warmCombatDiceBoxes(reducedMotion);
     await waitLayout();
     if (damageReadyRef.current) {
       damageBoxRef.current?.resizeWorld?.();
@@ -80,37 +79,24 @@ export function DiceCombatPanel({ sequence, ui, reducedMotion = false }: Props) 
     }
     const DiceBox = await loadVendorDiceBox();
     damageBoxRef.current = new DiceBox({
-      ...getDiceBoxBaseOptions(reducedMotion),
-      container: `#${damageHostId}`,
+      ...getDiceBoxOptionsForHost(COMBAT_DICE_HOST_PX, reducedMotion),
+      container: `#${DAMAGE_HOST_ID}`,
     });
     await damageBoxRef.current.init();
     damageBoxRef.current.show?.();
     damageReadyRef.current = true;
-  }, [damageHostId, reducedMotion]);
+  }, [reducedMotion]);
 
   useEffect(() => {
-    void loadVendorDiceBox();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    attackRollKeyRef.current = null;
-    damageRollKeyRef.current = null;
-    attackReadyRef.current = false;
-    damageReadyRef.current = false;
-    attackBoxRef.current = null;
-    damageBoxRef.current = null;
-    return () => {
-      void clearBoth();
-    };
-  }, [sequence.id, clearBoth]);
+    attackSeqRef.current = null;
+    damageSeqRef.current = null;
+    evictingRef.current = false;
+  }, [sequence.id]);
 
   useEffect(() => {
     if (!ui.attackRolling) return;
-    const spin = attack.value == null;
-    const key = spin ? `${sequence.id}-atk-spin` : `${sequence.id}-atk-${attack.value}`;
-    if (attackRollKeyRef.current === key) return;
-    attackRollKeyRef.current = key;
+    if (attackSeqRef.current === sequence.id) return;
+    attackSeqRef.current = sequence.id;
 
     const face =
       attack.value != null ? dieFaceValue(attack.value, attack.sides) : undefined;
@@ -121,9 +107,8 @@ export function DiceCombatPanel({ sequence, ui, reducedMotion = false }: Props) 
 
   useEffect(() => {
     if (!ui.showDamage || !ui.damageRolling || !damage) return;
-    const key = `${sequence.id}-dmg-${damage.value ?? "spin"}`;
-    if (damageRollKeyRef.current === key) return;
-    damageRollKeyRef.current = key;
+    if (damageSeqRef.current === sequence.id) return;
+    damageSeqRef.current = sequence.id;
 
     const face =
       damage.value != null ? dieFaceValue(damage.value, damage.sides) : undefined;
@@ -142,6 +127,12 @@ export function DiceCombatPanel({ sequence, ui, reducedMotion = false }: Props) 
     })();
   }, [ui.evicting, clearBoth, sequence.timings.evictMs]);
 
+  useEffect(() => {
+    return () => {
+      void clearBoth();
+    };
+  }, [clearBoth]);
+
   return (
     <div
       className={`combat-dice-box-row${ui.evicting ? " combat-dice-box-row--evicting" : ""}${ui.showDamage && damage ? " combat-dice-box-row--dual" : ""}`}
@@ -155,7 +146,7 @@ export function DiceCombatPanel({ sequence, ui, reducedMotion = false }: Props) 
           } as CSSProperties
         }
       >
-        <div id={attackHostId} className="combat-dice-box-host" />
+        <div id={ATTACK_HOST_ID} className="combat-dice-box-host" />
         <span className="combat-dice-slot__label">
           <span className="combat-dice-slot__dot" style={{ background: attacker.color }} />
           {attackSlotLabel}
@@ -176,7 +167,7 @@ export function DiceCombatPanel({ sequence, ui, reducedMotion = false }: Props) 
             } as CSSProperties
           }
         >
-          <div id={damageHostId} className="combat-dice-box-host" />
+          <div id={DAMAGE_HOST_ID} className="combat-dice-box-host" />
           <span className="combat-dice-slot__label">
             <span className="combat-dice-slot__dot" style={{ background: damage.themeColor }} />
             {damageSlotLabel ?? `Dano d${damage.sides}`}

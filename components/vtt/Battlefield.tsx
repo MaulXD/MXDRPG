@@ -68,7 +68,6 @@ import { effectiveMesaPanelWidth } from "@/lib/vtt/mesa-panel-layout";
 import { CombatFxLayer, type TokenCombatFlash } from "@/components/vtt/CombatFxLayer";
 import type { CombatFxState } from "@/lib/vtt/combat-fx-types";
 import { ingestNewCombatFx, isPlayableCombatFxMessage, createPendingAttackFx, findPendingAttackMessage, isPendingCombatFx, resolvePendingCombatFx } from "@/lib/vtt/combat-fx-sequence";
-import { preloadCombatDiceBox } from "@/lib/vtt/dice-combat-box";
 import type { ChatMessage } from "@/lib/room/chat";
 import { emptyCombat, activeTokenId, normalizeCombatTrack } from "@/lib/room/combat";
 import { resolveLivingActiveTokenId } from "@/lib/room/combat-order";
@@ -419,10 +418,6 @@ export function Battlefield({
   const { imagesRef, imgTick } = useTokenImages(displayScene.tokens);
   const refresh = onRefresh ?? (() => {});
   const roomSettings = normalizeRoomSettings(snapshot?.settings);
-
-  useEffect(() => {
-    if (roomSettings.combatActive) preloadCombatDiceBox();
-  }, [roomSettings.combatActive]);
 
   const turnActiveId = combat
     ? resolveLivingActiveTokenId(combat, displayScene.tokens) ?? activeTokenId(combat)
