@@ -23,3 +23,17 @@ export function isAdventureBoundCharacter(
 ): boolean {
   return Boolean(resolveAdventureId(sheet));
 }
+
+/** Ficha pertence à aventura/mesa atual (slug da aventura ou roomId de campanha). */
+export function characterBelongsToRoom(
+  room: { roomId: string; adventureId?: string },
+  actor: Pick<CharacterSheet, "adventureId" | "campaignRoomId">
+): boolean {
+  const roomAdventureId = room.adventureId ?? room.roomId;
+  const bound = resolveAdventureId(actor);
+  if (bound && bound === roomAdventureId) return true;
+  if (actor.campaignRoomId === room.roomId) return true;
+  if (bound === room.roomId) return true;
+  if (!bound) return roomAdventureId === "demo";
+  return false;
+}

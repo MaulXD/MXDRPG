@@ -3,7 +3,7 @@ import {
   type CharacterEditAccessOptions,
 } from "@/lib/character/edit-access";
 import {
-  characterBelongsToAdventure,
+  characterBelongsToRoom,
   isAdventureBoundCharacter,
   resolveAdventureId,
 } from "@/lib/character/adventure-bind";
@@ -244,9 +244,8 @@ export function canPlaceRoomActorOnBoard(
   if (!user) return false;
   if (canManageRoom(room, user)) return true;
   if (!canParticipateInRoom(room, user)) return false;
-  const adventureId = room.adventureId ?? room.roomId;
   const authActor = actorForRoomAuth(room, actor);
-  if (!characterBelongsToAdventure(authActor, adventureId)) return false;
+  if (!characterBelongsToRoom(room, authActor)) return false;
   if (
     room.roomId === "demo" &&
     DEMO_PLAYABLE_ACTOR_IDS.includes(actor.id as (typeof DEMO_PLAYABLE_ACTOR_IDS)[number])
@@ -265,11 +264,10 @@ export function requiresInventoryGmApproval(
   if (!user || !canParticipateInRoom(room, user)) return false;
   if (user.role === "admin") return false;
   if (room.ownerId && isRoomOwner(room, user.id)) return false;
-  const adventureId = room.adventureId ?? room.roomId;
   const authActor = actorForRoomAuth(room, actor);
   if (authActor.ownerId !== user.id) return false;
   if (!isAdventureBoundCharacter(authActor)) return false;
-  return characterBelongsToAdventure(authActor, adventureId);
+  return characterBelongsToRoom(room, authActor);
 }
 
 /** Loadout de combate/armadura na mesa — dono da ficha ou mestre/admin. */
@@ -280,12 +278,11 @@ export function canPatchRoomActorLoadout(
 ): boolean {
   if (canEditRoomActor(room, actor, user)) return true;
   if (!user || !canParticipateInRoom(room, user)) return false;
-  const adventureId = room.adventureId ?? room.roomId;
-  const authActor = actorForRoomAuth(room, actor);
-  if (!characterBelongsToAdventure(authActor, adventureId)) return false;
   if (user.role === "admin") return true;
-  if (characterOwnedBySessionUser(authActor, user)) return true;
-  return Boolean(room.ownerId && isRoomOwner(room, user.id));
+  if (room.ownerId && isRoomOwner(room, user.id)) return true;
+  const authActor = actorForRoomAuth(room, actor);
+  if (!characterBelongsToRoom(room, authActor)) return false;
+  return characterOwnedBySessionUser(authActor, user);
 }
 
 /** Editar ficha na mesa (level-up, identidade, retrato) — alinhado a `canParticipateInRoom`. */
@@ -296,9 +293,8 @@ export function canEditRoomActor(
   options?: CharacterEditAccessOptions
 ): boolean {
   if (!canParticipateInRoom(room, user)) return false;
-  const adventureId = room.adventureId ?? room.roomId;
   const authActor = actorForRoomAuth(room, actor);
-  if (!characterBelongsToAdventure(authActor, adventureId)) return false;
+  if (!characterBelongsToRoom(room, authActor)) return false;
   if (user) {
     if (user.role === "admin") return true;
     if (characterOwnedBySessionUser(authActor, user)) return true;

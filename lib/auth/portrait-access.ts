@@ -7,7 +7,7 @@ import {
   canManageRoom,
   canParticipateInRoom,
 } from "@/lib/auth/room-access";
-import { characterBelongsToAdventure } from "@/lib/character/adventure-bind";
+import { characterBelongsToRoom } from "@/lib/character/adventure-bind";
 import type { RoomState } from "@/lib/room/types";
 
 export const PORTRAIT_PATCH_KEYS = [
@@ -35,9 +35,8 @@ export function canEditRoomActorPortrait(
   }
   if (canEditRoomActor(room, actor, user)) return true;
   if (!user || !canParticipateInRoom(room as RoomState, user)) return false;
-  const adventureId = room.adventureId ?? room.roomId;
   const authActor = actorForRoomAuth(room, actor);
-  if (!characterBelongsToAdventure(authActor, adventureId)) return false;
+  if (!characterBelongsToRoom(room, authActor)) return false;
   return canManageRoom(room, user);
 }
 
