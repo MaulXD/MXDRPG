@@ -201,6 +201,9 @@ export function onTurnStart(
 
   const carryBefore = Math.max(0, room.scene.tokens[idx]!.pa ?? 0);
 
+  if (isActiveTurnPaGranted(room) && tokenNeedsTurnStartPaRefresh(room.scene.tokens[idx]!)) {
+    clearActiveTurnPaGrant(room);
+  }
   if (!isActiveTurnPaGranted(room)) {
     applyTokenPaRefresh(room, idx, mode, "início da vez");
     markActiveTurnPaGranted(room);
