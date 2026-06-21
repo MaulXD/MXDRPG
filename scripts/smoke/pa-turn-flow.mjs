@@ -80,10 +80,14 @@ async function main() {
   ({ res, data } = await post("/api/room/demo/combat/next-turn", gm, { force: true }));
   if (!res.ok) fail(`passar turno: ${data.error ?? res.status}`);
 
-  const nextId = data.combat?.order?.[data.combat?.activeIndex];
-  const next = data.scene?.tokens?.find((t) => t.id === nextId);
+  const tokensAfter = data.scene?.tokens ?? data.tokens ?? [];
+  const combatAfter = data.combat;
+  if (!combatAfter?.order?.length) fail("resposta sem combate");
+
+  const nextId = combatAfter.order[combatAfter.activeIndex];
+  const next = tokensAfter.find((t) => t.id === nextId);
   if (!next) fail("próximo ativo ausente");
-  if (data.combat.activeIndex === idxBefore && data.combat.order.length > 1) {
+  if (combatAfter.activeIndex === idxBefore && combatAfter.order.length > 1) {
     fail("turno não avançou");
   }
   if ((next.pa ?? 0) < 1) fail(`próximo ativo sem PA (pa=${next.pa}, ${next.name})`);

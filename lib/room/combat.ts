@@ -61,8 +61,16 @@ function clearStaleCombatPaState(
       : undefined;
   if (paRefreshTurnKey) {
     const colon = paRefreshTurnKey.indexOf(":");
+    const keyRound = colon >= 0 ? paRefreshTurnKey.slice(0, colon) : "";
     const tokenId = colon >= 0 ? paRefreshTurnKey.slice(colon + 1) : "";
-    if (!tokenId || !order.includes(tokenId)) {
+    const activeId = order[activeIndex] ?? "";
+    const roundStr = String(Math.max(1, combat.round ?? 1));
+    if (
+      !tokenId ||
+      !order.includes(tokenId) ||
+      tokenId !== activeId ||
+      keyRound !== roundStr
+    ) {
       paRefreshTurnKey = undefined;
     }
   }
