@@ -3040,7 +3040,7 @@ Harpias de caverna perderam o canto encantador de suas primas da superfície —
 **Lore:** Os Arquidemônio Flamejantes são generais do Abismo — criaturas de poder colossal que raramente chegam ao plano material. Quando chegam à masmorra, é porque foram convocados por algo poderoso o suficiente para abrir uma fenda planar, e então abandonados. Um Arquidemônio Flamejante de masmorra é uma catástrofe ambulante de 6 metros de altura com asas flamejantes e uma espada que queima em vorpal.
 | HP | CA | Dano | Tamanho | Biomas |
 |----|-----|------|---------|--------|
-| 262 | 19 | 3d6+12 fogo (espada vorpal) + 2d8+12 relâmpago (chicote de relâmpago) | Grande | Abatedouro Celestial, Fornalhas Douradas |
+| 262 | 19 | 3d6+12 fogo (espada vorpal) + 2d8+12 relâmpago (chicote de relâmpago) | Médio | Abatedouro Celestial, Fornalhas Douradas |
 **Resistências:** Frio, Relâmpago, Fogo. **Imunidades:** Veneno, Fogo Extremo, Não-mágico.
 **Habilidades:** *Resistência Lendária (3/dia)* • *Ações Lendárias (3)* • *Explosão da Morte* (ao morrer, explode — 20d6 fogo em raio 9m) • *Aura Flamejante* (criaturas adjacentes tomam 2d8 fogo automaticamente) • *Teleporte* (como ação bônus, 30m).
 **Ingredientes (Banquete Lendário — requer purificação prévia do Sacerdote):** Núcleo Demoníaco (Especialista — fonte de poder planar do Arquidemônio Flamejante; o Artífice usa para criar um Portal Portátil de uso único) • Espada Vorpal de Fogo (Ferramenta Lendária — arma +4, decapita automaticamente em acerto crítico, causa 3d6 fogo extra).
@@ -3155,7 +3155,7 @@ Harpias de caverna perderam o canto encantador de suas primas da superfície —
 **Lore:** O Devorador Ancião adulto é uma calamidade civilizacional — invulnerável, regenerativo, devastador. O "bebê" que ocasionalmente aparece na Masmorra 11 tem "apenas" 8 metros de altura e é jovem demais para ter regeneração completa. Ainda assim, é o maior desafio concebível para qualquer grupo. Sua carne é a mais densamente mágica de qualquer ser vivo — mas isso é secundário quando você está tentando sobreviver ao encontro.
 | HP | CA | Dano | Tamanho | Biomas |
 |----|-----|------|---------|--------|
-| 676 | 25 | 4d12+19 (mordida) + 4d8+19 (garras × 2) + 4d10+19 (chifres) + 4d12+19 (cauda) | Imenso | Masmorra 11 — Andar 4 exclusivo |
+| 676 | 25 | 4d12+19 (mordida) + 4d8+19 (garras × 2) + 4d10+19 (chifres) + 4d12+19 (cauda) | Médio | Masmorra 11 — Andar 4 exclusivo |
 **Resistências:** Fogo, Relâmpago, Frio, Ácido, Trovão. **Imunidades:** Veneno, Exaustão, Assustado.
 **Habilidades:** *Resistência Lendária (5/dia)* • *Ações Lendárias (5/turno)* • *Carapaça Mágica* (imune a magias de nível 6 ou inferior — magias mais altas são refletidas de volta) • *Regeneração Parcial* (recupera 30 HP/turno — ataques de fogo e ácido suprimem por 1 turno) • *Investida Demolidora* (move 30m em linha reta, empurrando tudo no caminho — estruturas menores são destruídas).
 **Ingredientes (Banquete Lendário — o maior da campanha):** Todos os ingredientes de todos os outros tipos disponíveis em quantidades imensas + Coração Titânico (Mutação Permanente definitiva: +20 HP Máximo, Resistência a todos os elementos, e uma habilidade lendária exclusiva escolhida por cada jogador baseada em sua classe).
@@ -3237,13 +3237,13 @@ Harpias de caverna perderam o canto encantador de suas primas da superfície —
 | 071 | Bruxa da Masmorra | Médio | 1×1 |
 | 072 | Fera Seminal | Grande | 2×2 |
 | 073 | Carniçal Alado | Grande | 2×2 |
-| 074 | Arquidemônio Flamejante | Grande | 2×2 |
+| 074 | Arquidemônio Flamejante | Médio | 1×1 |
 | 075 | Enxame de Ratos-Cadáveres | Médio | 1×1 |
 | 076 | Elemental de Terra | Grande | 2×2 |
 | 077 | Banshee | Médio | 1×1 |
 | 078 | Morcego-Tirano | Gigante | 3×3 |
 | 079 | Ooze Ocular | Grande | 2×2 |
-| 080 | Devorador Ancião (Filhote) | Imenso | 4×4 |
+| 080 | Devorador Ancião (Filhote) | Médio | 1×1 |
 
 ---
 
