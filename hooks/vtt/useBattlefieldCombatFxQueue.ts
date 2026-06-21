@@ -15,6 +15,7 @@ import {
   resolvePendingCombatFx,
 } from "@/lib/vtt/combat-fx-sequence";
 import type { RoomApiPayload } from "@/lib/room/room-delta";
+import { useMesaChat } from "@/hooks/vtt/useMesaRoomSlice";
 
 type TokenFlashState = { tokenId: string; kind: NonNullable<TokenCombatFlash> } | null;
 
@@ -45,6 +46,8 @@ export function useBattlefieldCombatFxQueue({
   const pendingCombatSnapRefInternal = useRef<RoomSnapshot | null>(null);
   const pendingCombatSnapRef = pendingCombatSnapRefProp ?? pendingCombatSnapRefInternal;
   const playCombatFxFromSnapRef = useRef<(payload: RoomApiPayload) => void>(() => {});
+  const chat = useMesaChat(roomId);
+  const chatTokens = snapshot?.scene.tokens ?? [];
 
   const enqueueCombatFxFromChat = useCallback(
     (chat: ChatMessage[], tokens: BattleToken[]) => {
@@ -90,16 +93,16 @@ export function useBattlefieldCombatFxQueue({
   playCombatFxFromSnapRef.current = playCombatFxFromSnap;
 
   useEffect(() => {
-    if (!snapshot?.chat) return;
+    if (!chat.length) return;
     if (!combatChatSeededRef.current) {
-      for (const msg of snapshot.chat) {
+      for (const msg of chat) {
         if (msg.kind === "combat" && msg.combat) seenCombatRef.current.add(msg.id);
       }
       combatChatSeededRef.current = true;
       return;
     }
-    enqueueCombatFxFromChat(snapshot.chat, snapshot.scene.tokens);
-  }, [snapshot?.chat, snapshot?.scene.tokens, enqueueCombatFxFromChat]);
+    enqueueCombatFxFromChat(chat, chatTokens);
+  }, [chat, chatTokens, enqueueCombatFxFromChat]);
 
   useEffect(() => {
     combatChatSeededRef.current = false;

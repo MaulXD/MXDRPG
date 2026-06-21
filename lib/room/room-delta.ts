@@ -139,7 +139,7 @@ export function mergeRoomDelta(base: RoomSnapshot, delta: RoomDelta): RoomSnapsh
     return revision === base.revision ? base : { ...base, revision };
   }
 
-  return {
+  const next: RoomSnapshot = {
     ...base,
     revision,
     settings,
@@ -149,6 +149,20 @@ export function mergeRoomDelta(base: RoomSnapshot, delta: RoomDelta): RoomSnapsh
     pings,
     scene: sceneChanged ? { ...base.scene, tokens } : base.scene,
   };
+
+  if (
+    next.revision === base.revision &&
+    next.settings === base.settings &&
+    next.combat === base.combat &&
+    next.actors === base.actors &&
+    next.chat === base.chat &&
+    next.pings === base.pings &&
+    next.scene === base.scene
+  ) {
+    return base;
+  }
+
+  return next;
 }
 
 export function applyRoomApiPayload(
