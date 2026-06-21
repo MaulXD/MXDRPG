@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect, useId, useState } from "react";
-import { CombatModeSword } from "@/components/vtt/CombatModeSword";
+import { type CSSProperties, useEffect, useState } from "react";
 import "./combat-mode-transition.css";
 
 export type CombatModeTransitionPhase = "in" | "out";
@@ -10,8 +9,28 @@ type Props = {
   phase: CombatModeTransitionPhase;
 };
 
+const EMBERS: Array<{ left: number; size: number; dur: number; delay: number; dx: number }> = [
+  { left:  5, size: 4, dur: 1.80, delay: 0.30, dx: -10 },
+  { left: 12, size: 3, dur: 2.10, delay: 0.50, dx:  14 },
+  { left: 20, size: 4, dur: 1.60, delay: 0.15, dx:  -6 },
+  { left: 28, size: 5, dur: 2.30, delay: 0.70, dx:  10 },
+  { left: 35, size: 4, dur: 1.90, delay: 0.40, dx: -14 },
+  { left: 42, size: 3, dur: 1.70, delay: 0.20, dx:   8 },
+  { left: 50, size: 4, dur: 2.00, delay: 0.60, dx:  -4 },
+  { left: 58, size: 5, dur: 1.85, delay: 0.35, dx:  12 },
+  { left: 65, size: 4, dur: 2.20, delay: 0.55, dx: -10 },
+  { left: 73, size: 3, dur: 1.65, delay: 0.25, dx:   6 },
+  { left: 80, size: 4, dur: 2.10, delay: 0.45, dx: -12 },
+  { left: 88, size: 4, dur: 1.75, delay: 0.10, dx:  10 },
+  { left: 93, size: 3, dur: 2.00, delay: 0.65, dx:  -8 },
+  { left: 15, size: 3, dur: 1.90, delay: 0.80, dx:   6 },
+  { left: 45, size: 4, dur: 2.15, delay: 0.90, dx: -14 },
+  { left: 62, size: 3, dur: 1.70, delay: 0.75, dx:  10 },
+  { left: 78, size: 4, dur: 2.05, delay: 0.85, dx:  -6 },
+  { left: 32, size: 5, dur: 1.95, delay: 0.95, dx:   8 },
+];
+
 export function CombatModeTransition({ phase }: Props) {
-  const uid = useId().replace(/:/g, "");
   const [playing, setPlaying] = useState(false);
   const isIn = phase === "in";
 
@@ -21,60 +40,46 @@ export function CombatModeTransition({ phase }: Props) {
     return () => cancelAnimationFrame(raf);
   }, [phase]);
 
-  const variantClass = isIn ? "cmt--in-clash" : "cmt--out-adventure";
-
   return (
     <div
       className={[
         "cmt-overlay",
-        variantClass,
+        isIn ? "cmt--combat" : "cmt--adventure",
         playing ? "cmt-overlay--playing" : "",
-        !isIn ? "cmt-overlay--exit" : "",
       ]
         .filter(Boolean)
         .join(" ")}
       role="status"
       aria-live="polite"
-      aria-label={isIn ? "Modo combate ativado" : "Modo aventura ativado"}
+      aria-label={isIn ? "Combate ativado" : "Modo aventura ativado"}
     >
-      <div className="cmt-overlay__vignette" aria-hidden />
-      {isIn ? <div className="cmt-overlay__dim" aria-hidden /> : null}
-      {!isIn ? <div className="cmt-adventure__mist" aria-hidden /> : null}
-      {!isIn ? <div className="cmt-adventure__warmth" aria-hidden /> : null}
+      <div className="cmt-overlay__bg" aria-hidden />
 
-      {isIn ? (
-        <>
-          <div className="cmt-overlay__flash" aria-hidden />
-          <div className="cmt-overlay__content">
-            <div className="cmt-swords">
-              <span className="cmt-clash-point" aria-hidden />
-              <div className="cmt-sword cmt-sword--a">
-                <CombatModeSword idPrefix={`${uid}-a`} />
-              </div>
-              <div className="cmt-sword cmt-sword--b">
-                <CombatModeSword idPrefix={`${uid}-b`} />
-              </div>
-            </div>
-            <div className="cmt-overlay__label">Modo Combate</div>
-            <div className="cmt-overlay__sub">Iniciativa e PA ativos</div>
-          </div>
-        </>
-      ) : (
-        <div className="cmt-overlay__content cmt-overlay__content--adventure">
-          <div className="cmt-adventure__compass" aria-hidden>
-            <svg viewBox="0 0 64 64" width="72" height="72" role="presentation">
-              <circle cx="32" cy="32" r="28" fill="none" stroke="currentColor" strokeWidth="1.2" opacity="0.55" />
-              <circle cx="32" cy="32" r="4" fill="currentColor" opacity="0.85" />
-              <path d="M32 8 L35 26 L32 32 L29 26 Z" fill="currentColor" opacity="0.9" />
-              <path d="M32 56 L29 38 L32 32 L35 38 Z" fill="currentColor" opacity="0.35" />
-              <path d="M8 32 L26 29 L32 32 L26 35 Z" fill="currentColor" opacity="0.45" />
-              <path d="M56 32 L38 35 L32 32 L38 29 Z" fill="currentColor" opacity="0.45" />
-            </svg>
-          </div>
-          <div className="cmt-overlay__label">Modo Aventura</div>
-          <div className="cmt-overlay__sub">A bruma se abre — exploração livre</div>
+      {isIn
+        ? EMBERS.map((e, i) => (
+            <span
+              key={i}
+              className="cmt-ember"
+              style={
+                {
+                  left: `${e.left}%`,
+                  width: `${e.size}px`,
+                  height: `${e.size}px`,
+                  animationDuration: `${e.dur}s`,
+                  animationDelay: `${e.delay}s`,
+                  "--cmt-ember-dx": `${e.dx}px`,
+                } as CSSProperties
+              }
+              aria-hidden
+            />
+          ))
+        : null}
+
+      <div className="cmt-overlay__content">
+        <div className="cmt-overlay__label">
+          {isIn ? "Combate Ativado" : "Modo Aventura"}
         </div>
-      )}
+      </div>
     </div>
   );
 }
