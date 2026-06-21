@@ -1,35 +1,18 @@
 "use client";
 
 import { useCallback, useEffect, useRef, type CSSProperties } from "react";
+import type { CombatDiceSequence, DiceCombatUiState } from "@/lib/vtt/combat-dice-model";
+import { dieFaceValue, toDiceBoxRoll } from "@/lib/vtt/combat-dice-model";
 import {
-  DICE_COMBAT_EVICT_MS,
-  DICE_TIER_LABELS,
-  dieFaceValue,
-  getAttackDieColor,
-  getAttackSlotBorder,
-  getDamageDieColor,
   getDiceBoxBaseOptions,
   loadVendorDiceBox,
   warmCombatDiceBoxes,
   type DiceBoxInstance,
-  type DiceSides,
 } from "@/lib/vtt/dice-combat-box";
-import type { PortraitFrameTier } from "@/lib/vtt/portrait-frame";
 
 type Props = {
-  sequenceKey: string;
-  attackSides: DiceSides;
-  attackValue: number | null;
-  attackRolling: boolean;
-  attackLocked: boolean;
-  showDamageSlot: boolean;
-  damageSides: DiceSides;
-  damageValue: number | null;
-  damageRolling: boolean;
-  attackerTier: PortraitFrameTier;
-  isHeal?: boolean;
-  isCrit?: boolean;
-  evicting: boolean;
+  sequence: CombatDiceSequence;
+  ui: DiceCombatUiState;
   reducedMotion?: boolean;
 };
 
@@ -43,23 +26,8 @@ function waitMs(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-export function DiceCombatPanel({
-  sequenceKey,
-  attackSides,
-  attackValue,
-  attackRolling,
-  attackLocked,
-  showDamageSlot,
-  damageSides,
-  damageValue,
-  damageRolling,
-  attackerTier,
-  isHeal,
-  isCrit,
-  evicting,
-  reducedMotion = false,
-}: Props) {
-  const safeKey = sequenceKey.replace(/[^a-zA-Z0-9_-]/g, "_");
+export function DiceCombatPanel({ sequence, ui, reducedMotion = false }: Props) {
+  const safeKey = sequence.id.replace(/[^a-zA-Z0-9_-]/g, "_");
   const attackHostId = `combat-dice-attack-${safeKey}`;
   const damageHostId = `combat-dice-damage-${safeKey}`;
   const attackBoxRef = useRef<DiceBoxInstance | null>(null);
@@ -70,10 +38,8 @@ export function DiceCombatPanel({
   const damageRollKeyRef = useRef<string | null>(null);
   const evictingRef = useRef(false);
 
-  const attackColor = getAttackDieColor(attackerTier);
-  const attackBorder = getAttackSlotBorder(attackerTier);
-  const damageColor = getDamageDieColor({ isHeal, isCrit });
-  const tierLabel = DICE_TIER_LABELS[attackerTier];
+  const { attack, attacker, damage, attackSlotLabel, damageSlotLabel, damageSlotBorder } =
+    sequence;
 
   const clearBoth = useCallback(async () => {
     await Promise.all([
@@ -137,116 +103,83 @@ export function DiceCombatPanel({
     return () => {
       void clearBoth();
     };
-  }, [sequenceKey, clearBoth]);
+  }, [sequence.id, clearBoth]);
 
   useEffect(() => {
-    if (!attackRolling) return;
-    const spin = attackValue == null;
-    const key = spin
-      ? `${sequenceKey}-atk-spin`
-      : `${sequenceKey}-atk-${attackValue}`;
+    if (!ui.attackRolling) return;
+    const spin = attack.value == null;
+    const key = spin ? `${sequence.id}-atk-spin` : `${sequence.id}-atk-${attack.value}`;
     if (attackRollKeyRef.current === key) return;
     attackRollKeyRef.current = key;
 
-    const face = attackValue != null ? dieFaceValue(attackValue, attackSides) : undefined;
+    const face =
+      attack.value != null ? dieFaceValue(attack.value, attack.sides) : undefined;
     void ensureAttackBox()
-      .then(() =>
-        attackBoxRef.current?.roll({
-          qty: 1,
-          sides: attackSides,
-          ...(face != null ? { value: face } : {}),
-          themeColor: attackColor,
-        })
-      )
+      .then(() => attackBoxRef.current?.roll(toDiceBoxRoll(attack, face)))
       .catch((err) => console.error("[DiceCombatPanel] attack roll", err));
-  }, [
-    attackRolling,
-    attackValue,
-    attackSides,
-    attackColor,
-    ensureAttackBox,
-    sequenceKey,
-  ]);
+  }, [ui.attackRolling, attack, ensureAttackBox, sequence.id]);
 
   useEffect(() => {
-    if (!showDamageSlot || !damageRolling || damageValue == null) return;
-    const key = `${sequenceKey}-dmg-${damageValue}`;
+    if (!ui.showDamage || !ui.damageRolling || !damage) return;
+    const key = `${sequence.id}-dmg-${damage.value ?? "spin"}`;
     if (damageRollKeyRef.current === key) return;
     damageRollKeyRef.current = key;
 
-    const face = dieFaceValue(damageValue, damageSides);
+    const face =
+      damage.value != null ? dieFaceValue(damage.value, damage.sides) : undefined;
     void ensureDamageBox()
-      .then(() =>
-        damageBoxRef.current?.roll({
-          qty: 1,
-          sides: damageSides,
-          ...(face != null ? { value: face } : {}),
-          themeColor: damageColor,
-        })
-      )
+      .then(() => damageBoxRef.current?.roll(toDiceBoxRoll(damage, face)))
       .catch((err) => console.error("[DiceCombatPanel] damage roll", err));
-  }, [
-    showDamageSlot,
-    damageRolling,
-    damageValue,
-    damageSides,
-    damageColor,
-    ensureDamageBox,
-    sequenceKey,
-  ]);
+  }, [ui.showDamage, ui.damageRolling, damage, ensureDamageBox, sequence.id]);
 
   useEffect(() => {
-    if (!evicting || evictingRef.current) return;
+    if (!ui.evicting || evictingRef.current) return;
     evictingRef.current = true;
     void (async () => {
-      await waitMs(DICE_COMBAT_EVICT_MS);
+      await waitMs(sequence.timings.evictMs);
       await clearBoth();
       evictingRef.current = false;
     })();
-  }, [evicting, clearBoth]);
+  }, [ui.evicting, clearBoth, sequence.timings.evictMs]);
 
   return (
     <div
-      className={`combat-dice-box-row${evicting ? " combat-dice-box-row--evicting" : ""}${showDamageSlot ? " combat-dice-box-row--dual" : ""}`}
+      className={`combat-dice-box-row${ui.evicting ? " combat-dice-box-row--evicting" : ""}${ui.showDamage && damage ? " combat-dice-box-row--dual" : ""}`}
     >
       <div
-        className={`combat-dice-slot${attackLocked ? " combat-dice-slot--locked" : ""}`}
+        className={`combat-dice-slot${ui.attackLocked ? " combat-dice-slot--locked" : ""}`}
         style={
           {
-            "--dice-tier-color": attackColor,
-            "--dice-tier-border": attackBorder,
+            "--dice-tier-color": attacker.color,
+            "--dice-tier-border": attacker.border,
           } as CSSProperties
         }
       >
         <div id={attackHostId} className="combat-dice-box-host" />
         <span className="combat-dice-slot__label">
-          <span className="combat-dice-slot__dot" style={{ background: attackColor }} />
-          Ataque {attackSides === 20 ? "d20" : `d${attackSides}`} · {tierLabel}
+          <span className="combat-dice-slot__dot" style={{ background: attacker.color }} />
+          {attackSlotLabel}
         </span>
-        {attackLocked ? (
+        {ui.attackLocked ? (
           <span className="combat-dice-slot__lock" aria-hidden>
             fixo
           </span>
         ) : null}
       </div>
-      {showDamageSlot ? (
+      {ui.showDamage && damage ? (
         <div
           className="combat-dice-slot combat-dice-slot--damage"
           style={
             {
-              "--dice-tier-color": damageColor,
-              "--dice-tier-border": isCrit
-                ? "rgba(255, 200, 48, 0.72)"
-                : isHeal
-                  ? "rgba(70, 200, 120, 0.65)"
-                  : "rgba(224, 80, 64, 0.65)",
+              "--dice-tier-color": damage.themeColor,
+              "--dice-tier-border": damageSlotBorder ?? damage.themeColor,
             } as CSSProperties
           }
         >
           <div id={damageHostId} className="combat-dice-box-host" />
           <span className="combat-dice-slot__label">
-            <span className="combat-dice-slot__dot" style={{ background: damageColor }} />
-            {isHeal ? "Cura" : isCrit ? "Crítico" : `Dano d${damageSides}`}
+            <span className="combat-dice-slot__dot" style={{ background: damage.themeColor }} />
+            {damageSlotLabel ?? `Dano d${damage.sides}`}
           </span>
         </div>
       ) : null}

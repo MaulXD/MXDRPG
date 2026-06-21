@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import type { ChatMessage } from "@/lib/room/chat";
 import { postRoomChat } from "@/hooks/useRoomSync";
 import { DiceBoxMini } from "@/components/vtt/DiceBoxMini";
+import { diceRollSpecFromFormula } from "@/lib/vtt/combat-dice-model";
 import { CombatChatCard } from "@/components/vtt/CombatChatCard";
 import type { CombatChatRevealPhase } from "@/lib/combat/chat-display";
 import type { BattleToken } from "@/lib/vtt/types";
@@ -120,7 +121,11 @@ function ChatEvent({
     return (
       <article className="room-chat-event room-chat-event--roll">
         <div className="room-chat-event-head">
-          <DiceBoxMini formula={message.roll.formula} value={natural} size="sm" />
+          <DiceBoxMini
+            spec={diceRollSpecFromFormula(message.roll.formula, natural)}
+            formula={message.roll.formula}
+            size="sm"
+          />
           <div className="room-chat-event-meta">
             <span className="room-chat-time">{time}</span>
             <strong className="room-chat-author">{message.authorName}</strong>

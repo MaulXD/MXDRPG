@@ -2,11 +2,10 @@
 
 import { useEffect, useId, useRef, useState, type CSSProperties } from "react";
 import { DiceMiniature } from "@/components/vtt/DiceMiniature";
+import type { DiceRollSpec } from "@/lib/vtt/combat-dice-model";
+import { dieFaceValue, toDiceBoxRoll } from "@/lib/vtt/combat-dice-model";
 import {
   DICE_HOST_HEIGHT,
-  DICE_ROLLER_COLOR,
-  dieFaceValue,
-  formulaToDiceSides,
   getDiceBoxOptionsForHost,
   loadVendorDiceBox,
   preloadCombatDiceBox,
@@ -16,12 +15,12 @@ import {
 } from "@/lib/vtt/dice-combat-box";
 
 type Props = {
-  formula: string;
-  value: number | null;
+  spec: DiceRollSpec;
   rolling?: boolean;
   size?: DiceHostSize;
-  themeColor?: string;
   reducedMotion?: boolean;
+  /** Fallback DiceMiniature quando WebGL/dice-box falha. */
+  formula?: string;
 };
 
 function waitLayout(): Promise<void> {
@@ -31,22 +30,22 @@ function waitLayout(): Promise<void> {
 }
 
 export function DiceBoxMini({
-  formula,
-  value,
+  spec,
   rolling = false,
   size = "md",
-  themeColor = DICE_ROLLER_COLOR,
   reducedMotion = false,
+  formula,
 }: Props) {
   const reactId = useId();
   const hostId = `dice-box-mini-${reactId.replace(/:/g, "")}`;
   const hostPx = DICE_HOST_HEIGHT[size];
-  const sides = formulaToDiceSides(formula, 20);
   const boxRef = useRef<DiceBoxInstance | null>(null);
   const initDoneRef = useRef(false);
   const rollKeyRef = useRef<string | null>(null);
   const [ready, setReady] = useState(false);
   const [failed, setFailed] = useState(false);
+
+  const fallbackFormula = formula ?? `1d${spec.sides}`;
 
   useEffect(() => {
     preloadCombatDiceBox();
@@ -89,27 +88,23 @@ export function DiceBoxMini({
 
   useEffect(() => {
     if (failed || !ready) return;
-    const spin = rolling || value == null;
-    const key = spin ? `${formula}-spin` : `${formula}-${value}`;
+    const spin = rolling || spec.value == null;
+    const key = spin ? `${spec.sides}-spin` : `${spec.sides}-${spec.value}`;
     if (rollKeyRef.current === key) return;
     rollKeyRef.current = key;
 
-    const face = value != null ? dieFaceValue(value, sides) : undefined;
+    const face =
+      spec.value != null ? dieFaceValue(spec.value, spec.sides) : undefined;
     void boxRef.current
-      ?.roll({
-        qty: 1,
-        sides,
-        ...(face != null ? { value: face } : {}),
-        themeColor,
-      })
+      ?.roll(toDiceBoxRoll(spec, face))
       .catch((err) => console.error("[DiceBoxMini] roll", err));
-  }, [failed, ready, formula, rolling, value, sides, themeColor]);
+  }, [failed, ready, rolling, spec]);
 
   if (failed) {
     return (
       <DiceMiniature
-        formula={formula}
-        value={value}
+        formula={fallbackFormula}
+        value={spec.value ?? null}
         rolling={rolling}
         size={size === "lg" ? "lg" : size === "sm" ? "sm" : "md"}
         reducedMotion={reducedMotion}
@@ -120,7 +115,7 @@ export function DiceBoxMini({
   return (
     <div
       className={`dice-box-mini dice-box-mini--${size}`}
-      style={{ "--dice-mini-color": themeColor } as CSSProperties}
+      style={{ "--dice-mini-color": spec.themeColor } as CSSProperties}
     >
       <div id={hostId} className="dice-box-mini__host" />
     </div>
