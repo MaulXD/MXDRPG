@@ -2,13 +2,14 @@ import { canTrackRoomPresence } from "@/lib/auth/presence-access";
 import { requireRoomView } from "@/lib/auth/authorize-room-view";
 import { presenceEventsAfter, touchRoomPresence } from "@/lib/room/presence";
 import { getRoomRevision } from "@/lib/room/revision";
+import { tickRoomAutoPass } from "@/lib/room/handlers/combat-turn";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 type Params = { params: Promise<{ roomId: string }> };
 
-const POLL_MS = 500;
+const POLL_MS = 800;
 const HEARTBEAT_MS = 15_000;
 
 export async function GET(request: Request, { params }: Params) {
@@ -60,11 +61,9 @@ export async function GET(request: Request, { params }: Params) {
 
       const interval = setInterval(async () => {
         try {
-          if (tracksPresence && user) {
-            await touchRoomPresence(roomId, user.id, presenceLabel);
-          }
           flushPresence();
 
+          await tickRoomAutoPass(roomId);
           const rev = await getRoomRevision(roomId);
           if (rev == null) {
             push({ type: "gone" });
@@ -78,6 +77,10 @@ export async function GET(request: Request, { params }: Params) {
           }
           if (Date.now() - lastHeartbeat >= HEARTBEAT_MS) {
             lastHeartbeat = Date.now();
+            if (tracksPresence && user) {
+              await touchRoomPresence(roomId, user.id, presenceLabel);
+            }
+            flushPresence();
             controller.enqueue(encoder.encode(": heartbeat\n\n"));
           }
         } catch {

@@ -48,8 +48,6 @@ export async function POST(req: Request, { params }: Params) {
   try {
     const { roomId } = await params;
     const session = await getSession();
-    const room = await getRoom(roomId);
-    const author = authorFromSession(session, room);
     const body = (await req.json()) as Body;
 
     const attackerTokenId = body.attackerTokenId?.trim();
@@ -63,9 +61,12 @@ export async function POST(req: Request, { params }: Params) {
       return NextResponse.json({ error: "Alvo inválido" }, { status: 400 });
     }
 
+    const room = await getRoom(roomId, { skipAutoPass: true });
     if (!room) {
       return NextResponse.json({ error: "Sala não encontrada" }, { status: 404 });
     }
+
+    const author = authorFromSession(session, room);
 
     const attacker = room.scene.tokens.find((t) => t.id === attackerTokenId);
     const ctrl = assertTokenControl(room, session?.user ?? null, attacker);
@@ -87,6 +88,7 @@ export async function POST(req: Request, { params }: Params) {
         bypassTurn,
         channelExtraPa: body.channelExtraPa,
         defenderTokenIds: defenderTokenIds?.length ? defenderTokenIds : undefined,
+        room,
       }
     );
 

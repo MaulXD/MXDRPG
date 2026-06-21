@@ -178,6 +178,15 @@ async function maybeMigrateLegacyAdventureName(adv: Adventure): Promise<Adventur
 export async function getAdventure(adventureId: string): Promise<Adventure | null> {
   if (adventureId === "demo") return ensureDemoAdventure();
 
+  const cached = adventures().get(adventureId);
+  if (cached && dbEnabled()) {
+    const dbUpdated = await dbAdventures.fetchAdventureUpdatedAt(adventureId);
+    if (dbUpdated != null && dbUpdated <= cached.updatedAt) {
+      const purged = await purgeAdventureIfExpired(cached);
+      return purged ? maybeMigrateLegacyAdventureName(purged) : null;
+    }
+  }
+
   if (dbEnabled()) {
     const fromDb = await dbAdventures.fetchAdventure(adventureId);
     if (fromDb) {
@@ -187,9 +196,9 @@ export async function getAdventure(adventureId: string): Promise<Adventure | nul
     }
   }
 
-  const cached = adventures().get(adventureId);
-  if (cached) {
-    const purged = await purgeAdventureIfExpired(cached);
+  const memCached = adventures().get(adventureId);
+  if (memCached) {
+    const purged = await purgeAdventureIfExpired(memCached);
     return purged ? maybeMigrateLegacyAdventureName(purged) : null;
   }
 

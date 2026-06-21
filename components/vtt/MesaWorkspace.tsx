@@ -10,7 +10,8 @@ import {
 import { canBypassCombatTurn, canParticipateInRoom } from "@/lib/auth/room-access";
 import { normalizeRoomSettings } from "@/lib/room/settings";
 import type { SessionUser } from "@/lib/auth/types";
-import type { CompendiumEntry, CompendiumPackId, CompendiumPackMeta } from "@/lib/compendium/types";
+import type { CompendiumEntry, CompendiumPackId } from "@/lib/compendium/types";
+import { getPackEntries, getVisiblePacks } from "@/lib/compendium/registry";
 import type { BattleScene } from "@/lib/vtt/types";
 import type { Axial } from "@/lib/vtt/grid-math";
 import { useCombatTurnFlow } from "@/hooks/vtt/useCombatTurnFlow";
@@ -69,8 +70,6 @@ type Props = {
   roomName?: string;
   isRoomOwner?: boolean;
   session: SessionUser | null;
-  compendium: Record<CompendiumPackId, CompendiumEntry[]>;
-  packs: CompendiumPackMeta[];
   defaultActorId?: string;
   adventureName?: string;
   characterSlotsLeft?: number;
@@ -94,8 +93,6 @@ export function MesaWorkspace({
   roomName,
   isRoomOwner = false,
   session,
-  compendium,
-  packs: _packs,
   defaultActorId = "pc-thrain-ferroescudo",
   adventureName,
   characterSlotsLeft = 0,
@@ -111,6 +108,13 @@ export function MesaWorkspace({
     isActualGm
   );
   const effectiveCanControlCombat = effectiveIsGm;
+  const compendium = useMemo(() => {
+    const role = session?.role ?? null;
+    const packs = getVisiblePacks(role, { isRoomGm: effectiveIsGm });
+    return Object.fromEntries(
+      packs.map((p) => [p.id, getPackEntries(p.id, { role, isRoomGm: effectiveIsGm })])
+    ) as Record<CompendiumPackId, CompendiumEntry[]>;
+  }, [session?.role, effectiveIsGm]);
   const combatAccessOpts = useMemo(
     () => ({ simulatePlayerView: playAsPlayer }),
     [playAsPlayer]
@@ -158,6 +162,27 @@ export function MesaWorkspace({
       applySnapshot(snap, { force: true, immediate: true }),
     [applySnapshot]
   );
+
+  useEffect(() => {
+    if (roomId === "demo" || watchOnly || !session?.id) return;
+    const q = inviteCode?.trim() ? `?invite=${encodeURIComponent(inviteCode.trim())}` : "";
+    let cancelled = false;
+    void fetch(`/api/room/${roomId}/sync-actors${q}`, {
+      method: "POST",
+      credentials: "same-origin",
+    })
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data: { revision?: number } | null) => {
+        if (!cancelled && data?.revision != null) void refresh();
+      })
+      .catch(() => {
+        /* sync em background — mesa segue com snapshot inicial */
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [roomId, inviteCode, watchOnly, session?.id, refresh]);
+
   const windows = useFoundryWindows(roomId);
   const { close: closeWindow } = windows;
 

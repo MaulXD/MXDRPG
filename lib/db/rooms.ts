@@ -66,6 +66,25 @@ function stateToRow(state: RoomState): RoomRow {
   };
 }
 
+/** Só a revisão — evita carregar JSON gigante da mesa a cada poll/SSE. */
+export async function fetchRoomRevision(roomId: string): Promise<number | null> {
+  const sql = getSql();
+  if (!sql) return null;
+  try {
+    const rows = await withDbTimeout(
+      sql<{ revision: number }[]>`
+        SELECT revision FROM eldarin_rooms WHERE room_id = ${roomId} LIMIT 1
+      `,
+      3000,
+      "fetchRoomRevision"
+    );
+    const rev = rows[0]?.revision;
+    return typeof rev === "number" ? rev : null;
+  } catch {
+    return null;
+  }
+}
+
 export async function fetchRoom(roomId: string): Promise<RoomState | null> {
   const sql = getSql();
   if (!sql) return null;

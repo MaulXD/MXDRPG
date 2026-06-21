@@ -75,6 +75,25 @@ export async function fetchAdventureByPrimaryRoom(roomId: string): Promise<Adven
   return row ? rowToAdventure(row) : null;
 }
 
+/** Só updated_at — evita SELECT completo quando cache em memória ainda vale. */
+export async function fetchAdventureUpdatedAt(adventureId: string): Promise<number | null> {
+  const sql = getSql();
+  if (!sql) return null;
+  try {
+    const rows = await withDbTimeout(
+      sql<{ updated_at: number }[]>`
+        SELECT updated_at FROM eldarin_adventures WHERE adventure_id = ${adventureId} LIMIT 1
+      `,
+      3000,
+      "fetchAdventureUpdatedAt"
+    );
+    const ts = rows[0]?.updated_at;
+    return ts != null ? Number(ts) : null;
+  } catch {
+    return null;
+  }
+}
+
 export async function fetchAdventure(adventureId: string): Promise<Adventure | null> {
   const sql = getSql();
   if (!sql) return null;

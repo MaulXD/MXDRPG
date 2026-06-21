@@ -27,6 +27,30 @@ export function isPlayableCombatFxMessage(msg: ChatMessage): boolean {
   return c.resolution === "attack" || c.resolution === "save";
 }
 
+/** Feedback imediato enquanto POST /combat/attack responde. */
+export function createPendingAttackFx(
+  attacker: BattleToken,
+  defender: BattleToken
+): CombatFxState {
+  return {
+    id: `pending-${Date.now()}`,
+    mode: "single",
+    phase: "mark",
+    markAxial: defender.axial,
+    defenderAxial: defender.axial,
+    attackerAxial: attacker.axial,
+    attackerTokenId: attacker.id,
+    defenderTokenId: defender.id,
+    actionKind: "weapon",
+    damageTotal: null,
+    deferStateApply: true,
+  };
+}
+
+export function isPendingCombatFx(fx: CombatFxState | null | undefined): boolean {
+  return Boolean(fx?.id.startsWith("pending-"));
+}
+
 function combatFxFromMessage(
   msg: ChatMessage,
   attackerAxial: Axial,
