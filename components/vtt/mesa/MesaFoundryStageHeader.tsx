@@ -1,0 +1,88 @@
+"use client";
+
+import type { SessionUser } from "@/lib/auth/types";
+import type { RoomSnapshot } from "@/lib/room/types";
+import type { RoomApiPayload } from "@/lib/room/room-delta";
+import type { RoomSyncStatus } from "@/hooks/useRoomSync";
+import { MesaSyncIndicator } from "@/components/vtt/MesaSyncIndicator";
+import { GmMesaModeToggle, MesaModeIndicator } from "@/components/vtt/GmMesaModeToggle";
+import { GmPlayerViewToggle } from "@/components/vtt/GmPlayerViewToggle";
+import { MesaEditRequestsBell } from "@/components/vtt/MesaEditRequestsBell";
+import { MesaPlayerEditRequestsBell } from "@/components/vtt/MesaPlayerEditRequestsBell";
+import { MesaPlayerInventoryRequestsBell } from "@/components/vtt/MesaPlayerInventoryRequestsBell";
+import { DemoGuidedTour } from "@/components/vtt/DemoGuidedTour";
+import { MesaGuidedTour } from "@/components/vtt/MesaGuidedTour";
+import { MesaOnlineMenu } from "@/components/vtt/MesaOnlineMenu";
+import type { RoomPresenceMember } from "@/hooks/useRoomPresence";
+
+type Props = {
+  roomId: string;
+  adventureId: string;
+  mapSnapshot: RoomSnapshot | null;
+  combatActive: boolean;
+  syncStatus: RoomSyncStatus;
+  syncError: string | null;
+  isActualGm: boolean;
+  playAsPlayer: boolean;
+  watchOnly: boolean;
+  session: SessionUser | null;
+  presenceOnline: RoomPresenceMember[];
+  presenceLoading: boolean;
+  onRetrySync: () => void;
+  onApplyUpdate: (payload: RoomApiPayload, opts?: { force?: boolean; immediate?: boolean }) => void;
+  onTogglePlayAsPlayer: () => void;
+};
+
+export function MesaFoundryStageHeader({
+  roomId,
+  adventureId,
+  mapSnapshot,
+  combatActive,
+  syncStatus,
+  syncError,
+  isActualGm,
+  playAsPlayer,
+  watchOnly,
+  session,
+  presenceOnline,
+  presenceLoading,
+  onRetrySync,
+  onApplyUpdate,
+  onTogglePlayAsPlayer,
+}: Props) {
+  return (
+    <div className="foundry-mesa__stage-header">
+      <MesaSyncIndicator syncStatus={syncStatus} syncError={syncError} onRetry={onRetrySync} />
+      <div className="foundry-mesa__stage-tools">
+        {isActualGm ? (
+          <GmMesaModeToggle
+            roomId={roomId}
+            snapshot={mapSnapshot}
+            combatActive={combatActive}
+            onApplyUpdate={onApplyUpdate}
+          />
+        ) : (
+          <MesaModeIndicator combatActive={combatActive} />
+        )}
+        {isActualGm ? (
+          <GmPlayerViewToggle playAsPlayer={playAsPlayer} onToggle={onTogglePlayAsPlayer} />
+        ) : null}
+        {isActualGm ? <MesaEditRequestsBell adventureId={adventureId} roomId={roomId} /> : null}
+        {session ? <MesaPlayerEditRequestsBell adventureId={adventureId} /> : null}
+        {session ? <MesaPlayerInventoryRequestsBell adventureId={adventureId} /> : null}
+        <DemoGuidedTour roomId={roomId} session={session} isRoomGm={isActualGm} />
+        <MesaGuidedTour
+          roomId={roomId}
+          session={session}
+          isRoomGm={isActualGm}
+          watchOnly={watchOnly}
+        />
+        <MesaOnlineMenu
+          online={presenceOnline}
+          loading={presenceLoading}
+          selfUserId={session?.id}
+        />
+      </div>
+    </div>
+  );
+}

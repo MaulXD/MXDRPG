@@ -1,8 +1,6 @@
 ﻿"use client";
 
-import dynamic from "next/dynamic";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { isStagedCombatChatMessage } from "@/lib/combat/chat-display";
 import {
   canAdvanceCombatTurn,
   canControlToken as canControlTokenCheck,
@@ -13,7 +11,6 @@ import { normalizeRoomSettings } from "@/lib/room/settings";
 import type { SessionUser } from "@/lib/auth/types";
 import type { BattleScene } from "@/lib/vtt/types";
 import type { Axial } from "@/lib/vtt/grid-math";
-import { useCombatTurnFlow } from "@/hooks/vtt/useCombatTurnFlow";
 import { useCombatModeTransition } from "@/hooks/vtt/useCombatModeTransition";
 import { CombatModeTransition } from "@/components/vtt/CombatModeTransition";
 import "@/components/vtt/combat-mode-transition.css";
@@ -21,63 +18,36 @@ import { useFoundryWindows, FOUNDRY_DOCK_PANEL_IDS, type MesaWindowId } from "@/
 import { MAX_CHARACTERS_PER_USER_PER_ADVENTURE } from "@/lib/character/adventure-bind";
 import { useGmPlayerViewMode } from "@/hooks/vtt/useGmPlayerViewMode";
 import type { RoomSnapshot } from "@/lib/room/types";
-import { useRoomSync, type RoomMemberOnlineEvent, type RoomApiPayload, type RoomSyncBridge } from "@/hooks/useRoomSync";
+import type { RoomMemberOnlineEvent, RoomApiPayload, RoomSyncBridge } from "@/hooks/useRoomSync";
+import { MesaSyncProvider, useMesaSyncActions } from "@/components/vtt/MesaSyncProvider";
+import {
+  useMesaActors,
+  useMesaMapSnapshot,
+  useMesaMeta,
+  useMesaSettings,
+} from "@/hooks/vtt/useMesaRoomSlice";
+import { getMesaRoomStore } from "@/hooks/vtt/mesa-room-store";
+import { MesaBattlefieldStage } from "@/components/vtt/mesa/MesaBattlefieldStage";
+import { MesaCombatChatRevealBridge } from "@/components/vtt/mesa/MesaCombatChatRevealBridge";
+import { MesaCombatFlowHost } from "@/components/vtt/mesa/MesaCombatFlowHost";
+import { MesaFoundryDockRail } from "@/components/vtt/mesa/MesaFoundryDockRail";
+import { MesaFoundryFloatingWindows } from "@/components/vtt/mesa/MesaFoundryFloatingWindows";
+import { MesaFoundryStageHeader } from "@/components/vtt/mesa/MesaFoundryStageHeader";
 import { usePassTurn } from "@/hooks/vtt/usePassTurn";
 import { scheduleCombatDiceWarm } from "@/lib/vtt/dice-combat-box";
 import { useRoomPresence } from "@/hooks/useRoomPresence";
 import { MesaPresenceAlerts } from "@/components/vtt/MesaPresenceAlerts";
-import { MesaOnlineMenu } from "@/components/vtt/MesaOnlineMenu";
-import { MesaEditRequestsBell } from "@/components/vtt/MesaEditRequestsBell";
-import { MesaPlayerEditRequestsBell } from "@/components/vtt/MesaPlayerEditRequestsBell";
-import { MesaPlayerInventoryRequestsBell } from "@/components/vtt/MesaPlayerInventoryRequestsBell";
-import { GmPlayerViewToggle } from "@/components/vtt/GmPlayerViewToggle";
-import { GmMesaModeToggle, MesaModeIndicator } from "@/components/vtt/GmMesaModeToggle";
-import { VttToastProvider } from "@/components/vtt/VttToast";
-import { FoundryDockPanel } from "@/components/vtt/foundry/FoundryDockPanel";
-import { FoundryWindow } from "@/components/vtt/foundry/FoundryWindow";
-import { MesaFoundrySidebar } from "@/components/vtt/foundry/MesaFoundrySidebar";
+import { RoomInviteBar } from "@/components/vtt/RoomInviteBar";
+import { MesaPersistenceNotice } from "@/components/vtt/MesaPersistenceNotice";
+import { MesaMobileBar } from "@/components/vtt/MesaMobileBar";
+import { RoomCoverBackdrop } from "@/components/vtt/RoomCoverBackdrop";
 import {
   mergePortraitPatchIntoSnapshot,
   type RoomActorPatchResult,
 } from "@/lib/character/portrait-persist-client";
-import { MesaCharacterWizardPopup } from "@/components/vtt/MesaCharacterWizardPopup";
-import { PlayableCharactersPanel } from "@/components/vtt/PlayableCharactersPanel";
-import { RoomChat } from "@/components/vtt/RoomChat";
-import { MonsterSpawnPanel } from "@/components/vtt/MonsterSpawnPanel";
-import { RoomInvitePanel } from "@/components/vtt/RoomInvitePanel";
-import { RoomInviteBar } from "@/components/vtt/RoomInviteBar";
-import { MesaPersistenceNotice } from "@/components/vtt/MesaPersistenceNotice";
-import { DemoGuidedTour } from "@/components/vtt/DemoGuidedTour";
-import { MesaGuidedTour } from "@/components/vtt/MesaGuidedTour";
-import { MesaMobileBar } from "@/components/vtt/MesaMobileBar";
-import { MesaSyncIndicator } from "@/components/vtt/MesaSyncIndicator";
-import { RoomCoverBackdrop } from "@/components/vtt/RoomCoverBackdrop";
+import { VttToastProvider } from "@/components/vtt/VttToast";
 import { useSheetPdfDeepLink } from "@/hooks/useSheetPdfDeepLink";
 import "@/components/vtt/foundry/foundry.css";
-
-const CharacterSheetPopup = dynamic(
-  () => import("@/components/vtt/CharacterSheetPopup").then((m) => m.CharacterSheetPopup),
-  { ssr: false }
-);
-const MonsterSheetPopup = dynamic(
-  () => import("@/components/compendium/MonsterSheetPopup").then((m) => m.MonsterSheetPopup),
-  { ssr: false }
-);
-const DiceRoller = dynamic(
-  () => import("@/components/vtt/DiceRoller").then((m) => m.DiceRoller),
-  { ssr: false }
-);
-const Battlefield = dynamic(
-  () => import("@/components/vtt/Battlefield").then((m) => m.Battlefield),
-  {
-    ssr: false,
-    loading: () => (
-      <div className="foundry-mesa__battlefield-loading" aria-busy aria-label="Carregando mapa">
-        <span className="foundry-mesa__battlefield-loading-pulse" />
-      </div>
-    ),
-  }
-);
 
 type Props = {
   roomId: string;
@@ -102,9 +72,39 @@ type Props = {
   watchOnly?: boolean;
   /** Snapshot SSR (Fase 4) — mesa interativa sem esperar 1º GET */
   initialSnapshot?: RoomSnapshot | null;
+  memberOnlineRef?: import("react").MutableRefObject<((event: RoomMemberOnlineEvent) => void) | null>;
 };
 
-export function MesaWorkspace({
+export function MesaWorkspace(props: Props) {
+  const presenceUser =
+    props.session &&
+    canParticipateInRoom(
+      { roomId: props.roomId, ownerId: props.roomOwnerId, memberIds: props.memberIds },
+      props.session
+    )
+      ? {
+          id: props.session.id,
+          name: props.session.nickname?.trim() || props.session.name,
+          avatarUrl: props.session.avatarUrl ?? props.session.oauthAvatarUrl ?? null,
+        }
+      : null;
+
+  const memberOnlineRef = useRef<((event: RoomMemberOnlineEvent) => void) | null>(null);
+
+  return (
+    <MesaSyncProvider
+      roomId={props.roomId}
+      inviteCode={props.inviteCode}
+      initialSnapshot={props.initialSnapshot}
+      presenceUser={presenceUser}
+      onMemberOnline={(event) => memberOnlineRef.current?.(event)}
+    >
+      <MesaWorkspaceInner {...props} memberOnlineRef={memberOnlineRef} />
+    </MesaSyncProvider>
+  );
+}
+
+function MesaWorkspaceInner({
   roomId,
   adventureId,
   roomOwnerId,
@@ -126,6 +126,7 @@ export function MesaWorkspace({
   openCharacterWizardOnLoad = false,
   watchOnly = false,
   initialSnapshot = null,
+  memberOnlineRef,
 }: Props) {
   const shareRoomId = roomInviteRoomId ?? roomId;
   const isActualGm = canControlCombat;
@@ -147,8 +148,15 @@ export function MesaWorkspace({
   const [combatChatReveal, setCombatChatReveal] = useState<
     Record<string, import("@/lib/combat/chat-display").CombatChatRevealPhase>
   >({});
-  const memberOnlineRef = useRef<((event: RoomMemberOnlineEvent) => void) | null>(null);
+  const memberOnlineRefLocal = useRef<((event: RoomMemberOnlineEvent) => void) | null>(null);
   const wizardAutoOpenedRef = useRef(false);
+  const mapSnapshot = useMesaMapSnapshot(roomId);
+  const mesaActors = useMesaActors(roomId);
+  const mesaSettingsRaw = useMesaSettings(roomId);
+  const { syncError, syncStatus } = useMesaMeta(roomId);
+  const { refresh, applySnapshot, applyRoomResponse } = useMesaSyncActions();
+  const snapshot = mapSnapshot;
+
   const presenceUser =
     session && canParticipateInRoom({ roomId, ownerId: roomOwnerId, memberIds }, session)
       ? {
@@ -168,15 +176,16 @@ export function MesaWorkspace({
     presenceUser,
     isRoomOwner: isActualGm,
   });
-  const { snapshot, syncError, syncStatus, refresh, applySnapshot, applyRoomResponse } = useRoomSync(roomId, {
-    inviteCode,
-    initialSnapshot,
-    presenceUser,
-    onMemberOnline: (event) => {
-      memberOnlineRef.current?.(event);
+
+  useEffect(() => {
+    const bridge = memberOnlineRef ?? memberOnlineRefLocal;
+    bridge.current = (event: RoomMemberOnlineEvent) => {
       handleMemberOnline(event);
-    },
-  });
+    };
+    return () => {
+      bridge.current = null;
+    };
+  }, [handleMemberOnline, memberOnlineRef]);
   const applyActionSnapshot = useCallback(
     (payload: RoomApiPayload, opts?: { force?: boolean; immediate?: boolean }) =>
       applyRoomResponse(payload, {
@@ -191,7 +200,7 @@ export function MesaWorkspace({
     refresh: async () => {},
     applySnapshot: () => {},
   });
-  roomSyncBridgeRef.current.snapshot = snapshot;
+  roomSyncBridgeRef.current.snapshot = getMesaRoomStore(roomId).getSnapshotFull();
   roomSyncBridgeRef.current.refresh = refresh;
   roomSyncBridgeRef.current.applySnapshot = applySnapshot;
 
@@ -290,13 +299,14 @@ export function MesaWorkspace({
 
   const handleRoomPortraitPatch = useCallback(
     (result: RoomActorPatchResult) => {
-      if (!snapshot) {
+      const full = getMesaRoomStore(roomId).getSnapshotFull();
+      if (!full) {
         void refresh();
         return;
       }
-      applySnapshot(mergePortraitPatchIntoSnapshot(snapshot, result), { force: true });
+      applySnapshot(mergePortraitPatchIntoSnapshot(full, result), { force: true });
     },
-    [applySnapshot, refresh, snapshot]
+    [applySnapshot, refresh, roomId]
   );
 
   const openMonsterSheet = useCallback(
@@ -339,11 +349,6 @@ export function MesaWorkspace({
     windows.openAsPopup("dungeon");
   }, [windows]);
 
-  const chat = snapshot?.chat ?? [];
-
-  const combatChatSeenRef = useRef<Set<string>>(new Set());
-  const combatChatSeededRef = useRef(false);
-
   const onCombatChatReveal = useCallback(
     (messageIds: string[], phase: "roll" | "damage" | "done") => {
       setCombatChatReveal((prev) => {
@@ -359,30 +364,8 @@ export function MesaWorkspace({
   );
 
   useEffect(() => {
-    combatChatSeededRef.current = false;
-    combatChatSeenRef.current = new Set();
     setCombatChatReveal({});
   }, [roomId]);
-
-  useEffect(() => {
-    const msgs = snapshot?.chat ?? [];
-    if (!combatChatSeededRef.current) {
-      for (const m of msgs) {
-        if (isStagedCombatChatMessage(m)) combatChatSeenRef.current.add(m.id);
-      }
-      combatChatSeededRef.current = true;
-      return;
-    }
-    const freshIds: string[] = [];
-    for (const m of msgs) {
-      if (!isStagedCombatChatMessage(m)) continue;
-      if (!combatChatSeenRef.current.has(m.id)) {
-        freshIds.push(m.id);
-        combatChatSeenRef.current.add(m.id);
-      }
-    }
-    if (freshIds.length) onCombatChatReveal(freshIds, "roll");
-  }, [snapshot?.revision, onCombatChatReveal]);
 
   const turnRoom = useMemo(
     () => ({
@@ -390,9 +373,9 @@ export function MesaWorkspace({
       ownerId: roomOwnerId,
       memberIds,
       scene: snapshot?.scene ?? scene,
-      actors: snapshot?.actors ?? {},
+      actors: mesaActors,
     }),
-    [roomId, roomOwnerId, memberIds, snapshot, scene]
+    [roomId, roomOwnerId, memberIds, snapshot, scene, mesaActors]
   );
 
   const canControlToken = useCallback(
@@ -444,8 +427,8 @@ export function MesaWorkspace({
   }, [openCharacterWizardOnLoad, canCreateCharacter, openCharacterWizard]);
 
   const roomSettings = useMemo(
-    () => normalizeRoomSettings(snapshot?.settings),
-    [snapshot?.settings]
+    () => normalizeRoomSettings(mesaSettingsRaw ?? snapshot?.settings),
+    [mesaSettingsRaw, snapshot?.settings]
   );
 
   const combatActive = roomSettings.combatActive;
@@ -466,7 +449,7 @@ export function MesaWorkspace({
     roomId,
     combat: snapshot?.combat,
     tokens: snapshot?.scene.tokens ?? scene.tokens,
-    actors: snapshot?.actors,
+    actors: mesaActors,
     bypassTurn: canBypassTurn,
     openSheet,
     onRolled: refresh,
@@ -495,6 +478,7 @@ export function MesaWorkspace({
   ]);
 
   const dockOpen = windows.isDockOpen(allowedDockPanels);
+  const mapScene = snapshot?.scene ?? scene;
 
 
   useEffect(() => {
@@ -558,144 +542,49 @@ export function MesaWorkspace({
 
   return (
     <VttToastProvider>
-      <MesaPresenceAlerts bridgeRef={memberOnlineRef} selfUserId={session?.id} />
-      <MesaWorkspaceCombatFlow
-        snapshot={snapshot}
-        roomId={roomId}
-        onSnapshot={applyActionSnapshot}
-      />
+      <MesaPresenceAlerts bridgeRef={memberOnlineRefLocal} selfUserId={session?.id} />
+      <MesaCombatFlowHost roomId={roomId} />
+      <MesaCombatChatRevealBridge roomId={roomId} onReveal={onCombatChatReveal} />
       <div className="mesa-workspace mesa-workspace--foundry">
         <div className="foundry-mesa">
-          <MesaFoundrySidebar
-            isActive={isPanelActive}
+          <MesaFoundryDockRail
+            roomId={roomId}
+            adventureId={adventureId}
+            shareRoomId={shareRoomId}
+            roomOwnerId={roomOwnerId}
+            memberIds={memberIds}
+            roomName={roomName}
+            fallbackScene={scene}
+            mapScene={mapScene}
+            mesaActors={mesaActors}
+            session={session}
+            inviteCode={inviteCode}
+            roomInviteCode={roomInviteCode}
+            showInviteUi={showInviteUi}
+            isRoomOwner={isRoomOwner}
+            isActualGm={isActualGm}
+            effectiveIsGm={effectiveIsGm}
+            effectiveCanControlCombat={effectiveCanControlCombat}
+            canChat={canChat}
+            canCreateCharacter={canCreateCharacter}
+            sheetPopupActorId={sheetPopupActorId}
+            spawnAxial={spawnAxial}
+            combatChatReveal={combatChatReveal}
+            dockOpen={dockOpen}
+            isPanelActive={isPanelActive}
+            isFloating={windows.isFloating}
+            win={win}
             onOpenDock={handleOpenDock}
             onOpenPopup={handleOpenPopup}
-            showGm={effectiveCanControlCombat}
-            showInvite={showInviteUi}
-            dockOpen={dockOpen}
-          >
-            {!windows.isFloating("chat") ? (
-              <FoundryDockPanel
-                title="Chat"
-                open={win("chat").open}
-                minimized={win("chat").minimized}
-                className="foundry-dock-panel--chat"
-                onClose={() => windows.close("chat")}
-                onMinimize={() =>
-                  win("chat").minimized ? windows.restore("chat") : windows.minimize("chat")
-                }
-              >
-                <RoomChat
-                  roomId={roomId}
-                  messages={chat}
-                  tokens={scene.tokens}
-                  combatReveal={combatChatReveal}
-                  onUpdate={refresh}
-                  readOnly={!canChat}
-                />
-              </FoundryDockPanel>
-            ) : null}
-
-            {!windows.isFloating("ficha") ? (
-              <FoundryDockPanel
-                title="Personagens jogáveis"
-                open={win("ficha").open}
-                minimized={win("ficha").minimized}
-                className="foundry-dock-panel--ficha"
-                onClose={() => windows.close("ficha")}
-                onMinimize={() =>
-                  win("ficha").minimized ? windows.restore("ficha") : windows.minimize("ficha")
-                }
-              >
-                <div className="mesa-panel-scroll mesa-panel-scroll--rail">
-                  <PlayableCharactersPanel
-                    roomId={roomId}
-                    adventureId={adventureId}
-                    actors={snapshot?.actors ?? {}}
-                    session={session}
-                    selectedActorId={sheetPopupActorId}
-                    canCreateCharacter={canCreateCharacter}
-                    isRoomGm={effectiveIsGm}
-                    roomOwnerId={roomOwnerId}
-                    memberIds={memberIds}
-                    tokens={snapshot?.scene.tokens ?? scene.tokens}
-                    spawnAxial={spawnAxial}
-                    onOpenSheet={openSheet}
-                    onCharactersChanged={refresh}
-                    onCreateCharacter={canCreateCharacter ? openCharacterWizard : undefined}
-                    onPlaced={applySnapshot}
-                  />
-                </div>
-              </FoundryDockPanel>
-            ) : null}
-
-            {showInviteUi && !windows.isFloating("invite") ? (
-              <FoundryDockPanel
-                title="Compartilhar mesa"
-                open={win("invite").open}
-                minimized={win("invite").minimized}
-                className="foundry-dock-panel--invite"
-                onClose={() => windows.close("invite")}
-                onMinimize={() =>
-                  win("invite").minimized ? windows.restore("invite") : windows.minimize("invite")
-                }
-              >
-                <div className="mesa-panel-scroll mesa-panel-scroll--invite">
-                  <RoomInvitePanel
-                    adventureId={adventureId}
-                    roomId={shareRoomId}
-                    inviteCode={roomInviteCode!}
-                    roomName={roomName ?? snapshot?.scene.name ?? "Mesa"}
-                    showConfigure={isRoomOwner}
-                  />
-                </div>
-              </FoundryDockPanel>
-            ) : null}
-
-            {!windows.isFloating("dice") ? (
-              <FoundryDockPanel
-                title="Rolador de dados"
-                open={win("dice").open}
-                minimized={win("dice").minimized}
-                className="foundry-dock-panel--dice"
-                onClose={() => windows.close("dice")}
-                onMinimize={() =>
-                  win("dice").minimized ? windows.restore("dice") : windows.minimize("dice")
-                }
-              >
-                {canChat ? (
-                  <DiceRoller roomId={roomId} onUpdate={refresh} />
-                ) : (
-                  <p className="vtt-combat-hint" style={{ padding: "1rem" }}>
-                    Visitantes não rolam dados no chat.
-                  </p>
-                )}
-              </FoundryDockPanel>
-            ) : null}
-
-            {isActualGm && !windows.isFloating("spawn") ? (
-              <FoundryDockPanel
-                title="Invocar monstros"
-                open={win("spawn").open}
-                minimized={win("spawn").minimized}
-                className="foundry-dock-panel--spawn"
-                onClose={() => windows.close("spawn")}
-                onMinimize={() =>
-                  win("spawn").minimized ? windows.restore("spawn") : windows.minimize("spawn")
-                }
-              >
-                <div className="mesa-panel-scroll mesa-panel-scroll--rail">
-                  <MonsterSpawnPanel
-                    roomId={roomId}
-                    scene={snapshot?.scene ?? scene}
-                    spawnAxial={spawnAxial}
-                    onSpawned={(snap) => applySnapshot(snap)}
-                    onOpenMonsterSheet={openMonsterSheet}
-                  />
-                </div>
-              </FoundryDockPanel>
-            ) : null}
-          </MesaFoundrySidebar>
+            onClosePanel={windows.close}
+            onMinimizePanel={windows.minimize}
+            onRestorePanel={windows.restore}
+            onOpenSheet={openSheet}
+            onOpenMonsterSheet={openMonsterSheet}
+            onOpenCharacterWizard={canCreateCharacter ? openCharacterWizard : undefined}
+            onRefresh={refresh}
+            onApplySnapshot={applySnapshot}
+          />
 
           <MesaPersistenceNotice />
           <div
@@ -708,83 +597,47 @@ export function MesaWorkspace({
               coverFocus={roomSettings.coverFocus}
             />
             {combatModePhase ? <CombatModeTransition phase={combatModePhase} /> : null}
-            <div className="foundry-mesa__stage-header">
-              <MesaSyncIndicator
-                syncStatus={syncStatus}
-                syncError={syncError}
-                onRetry={() => refresh()}
-              />
-              <div className="foundry-mesa__stage-tools">
-                {isActualGm ? (
-                  <GmMesaModeToggle
-                    roomId={roomId}
-                    snapshot={snapshot}
-                    combatActive={roomSettings.combatActive}
-                    onApplyUpdate={applyActionSnapshot}
-                  />
-                ) : (
-                  <MesaModeIndicator combatActive={roomSettings.combatActive} />
-                )}
-                {isActualGm ? (
-                  <GmPlayerViewToggle
-                    playAsPlayer={playAsPlayer}
-                    onToggle={togglePlayAsPlayer}
-                  />
-                ) : null}
-                {isActualGm ? (
-                  <MesaEditRequestsBell adventureId={adventureId} roomId={roomId} />
-                ) : null}
-                {session ? <MesaPlayerEditRequestsBell adventureId={adventureId} /> : null}
-                {session ? <MesaPlayerInventoryRequestsBell adventureId={adventureId} /> : null}
-                <DemoGuidedTour
-                  roomId={roomId}
-                  session={session}
-                  isRoomGm={isActualGm}
-                />
-                <MesaGuidedTour
-                  roomId={roomId}
-                  session={session}
-                  isRoomGm={isActualGm}
-                  watchOnly={watchOnly}
-                />
-                <MesaOnlineMenu
-                  online={presenceOnline}
-                  loading={presenceLoading}
-                  selfUserId={session?.id}
-                />
-              </div>
-            </div>
-            <Battlefield
-              scene={scene}
-              canEdit={canEdit}
-              canUseWhiteboard={canEdit}
-              canControlCombat={effectiveCanControlCombat}
-              canManageBattlefield={isActualGm}
-              canRepositionTokens={isActualGm}
-              isRoomGm={effectiveIsGm}
-              simulatePlayerView={playAsPlayer}
-              canBypassTurn={canBypassTurn}
-              canEndTurn={canEndTurn}
-              roomOwnerId={roomOwnerId}
-              memberIds={memberIds}
-              canControlToken={canControlToken}
-              canViewTokenPa={canViewTokenPaCb}
+            <MesaFoundryStageHeader
               roomId={roomId}
               adventureId={adventureId}
-              inviteCode={inviteCode}
-              snapshot={snapshot}
+              mapSnapshot={snapshot}
+              combatActive={roomSettings.combatActive}
+              syncStatus={syncStatus}
+              syncError={syncError}
+              isActualGm={isActualGm}
+              playAsPlayer={playAsPlayer}
+              watchOnly={watchOnly}
               session={session}
-              roomActors={snapshot?.actors ?? {}}
+              presenceOnline={presenceOnline}
+              presenceLoading={presenceLoading}
+              onRetrySync={() => void refresh()}
+              onApplyUpdate={applyActionSnapshot}
+              onTogglePlayAsPlayer={togglePlayAsPlayer}
+            />
+            <MesaBattlefieldStage
+              roomId={roomId}
+              adventureId={adventureId}
+              roomOwnerId={roomOwnerId}
+              memberIds={memberIds}
+              fallbackScene={scene}
+              canEdit={canEdit}
+              effectiveCanControlCombat={effectiveCanControlCombat}
+              isActualGm={isActualGm}
+              effectiveIsGm={effectiveIsGm}
+              playAsPlayer={playAsPlayer}
+              canBypassTurn={canBypassTurn}
+              canEndTurn={canEndTurn}
+              inviteCode={inviteCode}
+              session={session}
               ownerDisplayNames={ownerDisplayNames}
-              onRefresh={refresh}
-              onApplySnapshot={applyActionSnapshot}
+              canControlToken={canControlToken}
+              canViewTokenPa={canViewTokenPaCb}
               onOpenSheet={openSheet}
               onOpenMonsterSheet={openMonsterSheet}
               onCreateCharacter={canCreateCharacter ? openCharacterWizard : undefined}
               onHoverAxialChange={setSpawnAxial}
               onOpenDungeonPanel={openDungeonPanel}
-              showSpawnInSidebar={false}
-              foundryLayout
+              onCombatChatReveal={onCombatChatReveal}
               gmWindowLayout={win("gm")}
               onGmWindowLayoutChange={(patch) => windows.patch("gm", patch)}
               onGmWindowClose={() => windows.close("gm")}
@@ -799,7 +652,6 @@ export function MesaWorkspace({
                 win("dungeon").minimized ? windows.restore("dungeon") : windows.minimize("dungeon")
               }
               onDungeonWindowFocus={() => windows.focus("dungeon")}
-              onCombatChatReveal={onCombatChatReveal}
               initiativeWindowLayout={win("initiative")}
               onInitiativeWindowLayoutChange={(patch) => windows.patch("initiative", patch)}
               onInitiativeWindowClose={() => windows.close("initiative")}
@@ -822,198 +674,51 @@ export function MesaWorkspace({
             <div id="foundry-mesa-toasts" className="foundry-mesa__toasts" aria-live="polite" />
             <div id="foundry-mesa-hud" className="foundry-mesa__hud">
               <div id="foundry-mesa-windows" className="foundry-mesa__windows">
-              {windows.isFloating("chat") ? (
-                <FoundryWindow
-                  title="Chat"
-                  layout={win("chat")}
-                  className="foundry-window--chat"
-                  onLayoutChange={(patch) => windows.patch("chat", patch)}
-                  onFocus={() => windows.focus("chat")}
-                  onMinimize={() =>
-                    win("chat").minimized ? windows.restore("chat") : windows.minimize("chat")
-                  }
-                  onClose={() => windows.close("chat")}
-                >
-                  <RoomChat
-                    roomId={roomId}
-                    messages={chat}
-                    tokens={scene.tokens}
-                    combatReveal={combatChatReveal}
-                    onUpdate={refresh}
-                    readOnly={!canChat}
-                  />
-                </FoundryWindow>
-              ) : null}
-
-              {windows.isFloating("ficha") ? (
-                <FoundryWindow
-                  title="Personagens jogáveis"
-                  layout={win("ficha")}
-                  className="foundry-window--ficha"
-                  minHeight={280}
-                  onLayoutChange={(patch) => windows.patch("ficha", patch)}
-                  onFocus={() => windows.focus("ficha")}
-                  onMinimize={() =>
-                    win("ficha").minimized ? windows.restore("ficha") : windows.minimize("ficha")
-                  }
-                  onClose={() => windows.close("ficha")}
-                >
-                  <div className="mesa-panel-scroll mesa-panel-scroll--rail">
-                    <PlayableCharactersPanel
-                      roomId={roomId}
-                      adventureId={adventureId}
-                      actors={snapshot?.actors ?? {}}
-                      session={session}
-                      selectedActorId={sheetPopupActorId}
-                      canCreateCharacter={canCreateCharacter}
-                      isRoomGm={effectiveIsGm}
-                      roomOwnerId={roomOwnerId}
-                      memberIds={memberIds}
-                      tokens={snapshot?.scene.tokens ?? scene.tokens}
-                      spawnAxial={spawnAxial}
-                      onOpenSheet={openSheet}
-                      onCharactersChanged={refresh}
-                      onCreateCharacter={canCreateCharacter ? openCharacterWizard : undefined}
-                      onPlaced={applySnapshot}
-                    />
-                  </div>
-                </FoundryWindow>
-              ) : null}
-
-              {windows.isFloating("dice") ? (
-                <FoundryWindow
-                  title="Rolador de dados"
-                  layout={win("dice")}
-                  className="foundry-window--dice"
-                  onLayoutChange={(patch) => windows.patch("dice", patch)}
-                  onFocus={() => windows.focus("dice")}
-                  onMinimize={() =>
-                    win("dice").minimized ? windows.restore("dice") : windows.minimize("dice")
-                  }
-                  onClose={() => windows.close("dice")}
-                >
-                  {canChat ? (
-                    <DiceRoller roomId={roomId} onUpdate={refresh} />
-                  ) : (
-                    <p className="vtt-combat-hint" style={{ padding: "1rem" }}>
-                      Visitantes não rolam dados no chat.
-                    </p>
-                  )}
-                </FoundryWindow>
-              ) : null}
-
-              {showInviteUi && windows.isFloating("invite") ? (
-                <FoundryWindow
-                  title="Compartilhar mesa"
-                  layout={win("invite")}
-                  className="foundry-window--invite"
-                  minWidth={260}
-                  minHeight={260}
-                  onLayoutChange={(patch) => windows.patch("invite", patch)}
-                  onFocus={() => windows.focus("invite")}
-                  onMinimize={() =>
-                    win("invite").minimized ? windows.restore("invite") : windows.minimize("invite")
-                  }
-                  onClose={() => windows.close("invite")}
-                >
-                  <div className="mesa-panel-scroll mesa-panel-scroll--invite">
-                    <RoomInvitePanel
-                      adventureId={adventureId}
-                      roomId={shareRoomId}
-                      inviteCode={roomInviteCode!}
-                      roomName={roomName ?? snapshot?.scene.name ?? "Mesa"}
-                      showConfigure={isRoomOwner}
-                    />
-                  </div>
-                </FoundryWindow>
-              ) : null}
-
-              {isActualGm && windows.isFloating("spawn") ? (
-                <FoundryWindow
-                  title="Invocar monstros"
-                  layout={win("spawn")}
-                  className="foundry-window--spawn"
-                  minHeight={200}
-                  onLayoutChange={(patch) => windows.patch("spawn", patch)}
-                  onFocus={() => windows.focus("spawn")}
-                  onMinimize={() =>
-                    win("spawn").minimized ? windows.restore("spawn") : windows.minimize("spawn")
-                  }
-                  onClose={() => windows.close("spawn")}
-                >
-                  <div className="mesa-panel-scroll mesa-panel-scroll--rail">
-                    <MonsterSpawnPanel
-                      roomId={roomId}
-                      scene={snapshot?.scene ?? scene}
-                      spawnAxial={spawnAxial}
-                      onSpawned={(snap) => applySnapshot(snap)}
-                      onOpenMonsterSheet={openMonsterSheet}
-                    />
-                  </div>
-                </FoundryWindow>
-              ) : null}
-
-              {monsterSheetEntryId ? (
-                <MonsterSheetPopup
-                  entryId={monsterSheetEntryId}
-                  onEntryChange={setMonsterSheetEntryId}
-                  layout={win("monsterSheet")}
-                  onLayoutChange={(patch) => windows.patch("monsterSheet", patch)}
-                  onFocus={() => windows.focus("monsterSheet")}
-                  onMinimize={() =>
-                    win("monsterSheet").minimized
-                      ? windows.restore("monsterSheet")
-                      : windows.minimize("monsterSheet")
-                  }
-                  onClose={closeMonsterSheet}
-                />
-              ) : null}
-
-              {sheetPopupActorId && snapshot ? (
-                <CharacterSheetPopup
-                  actorId={sheetPopupActorId}
+                <MesaFoundryFloatingWindows
                   roomId={roomId}
                   adventureId={adventureId}
+                  shareRoomId={shareRoomId}
                   roomOwnerId={roomOwnerId}
                   memberIds={memberIds}
-                  actors={snapshot.actors}
+                  roomName={roomName}
+                  adventureName={adventureName}
+                  mapScene={mapScene}
+                  mapSnapshot={snapshot}
+                  mesaActors={mesaActors}
                   session={session}
-                  roomSync={roomSyncBridgeRef.current}
-                  tokens={snapshot.scene.tokens}
+                  roomInviteCode={roomInviteCode}
+                  showInviteUi={showInviteUi}
+                  isRoomOwner={isRoomOwner}
+                  isActualGm={isActualGm}
+                  effectiveIsGm={effectiveIsGm}
+                  canChat={canChat}
+                  canCreateCharacter={canCreateCharacter}
+                  characterSlotsLeft={characterSlotsLeft}
+                  sheetPopupActorId={sheetPopupActorId}
+                  monsterSheetEntryId={monsterSheetEntryId}
+                  setMonsterSheetEntryId={setMonsterSheetEntryId}
+                  characterWizardOpen={characterWizardOpen}
                   spawnAxial={spawnAxial}
-                  isRoomGm={effectiveIsGm}
-                  layout={win("character")}
-                  onLayoutChange={(patch) => windows.patch("character", patch)}
-                  onFocus={() => windows.focus("character")}
-                  onMinimize={() =>
-                    win("character").minimized
-                      ? windows.restore("character")
-                      : windows.minimize("character")
-                  }
-                  onClose={closeSheet}
+                  combatChatReveal={combatChatReveal}
+                  roomSyncBridge={roomSyncBridgeRef.current}
+                  isFloating={windows.isFloating}
+                  win={win}
+                  onPatchWindow={windows.patch}
+                  onFocusWindow={windows.focus}
+                  onCloseWindow={windows.close}
+                  onRestoreWindow={windows.restore}
+                  onMinimizeWindow={windows.minimize}
+                  onOpenSheet={openSheet}
+                  onCloseSheet={closeSheet}
+                  onOpenMonsterSheet={openMonsterSheet}
+                  onCloseMonsterSheet={closeMonsterSheet}
+                  onOpenCharacterWizard={canCreateCharacter ? openCharacterWizard : undefined}
+                  onCloseCharacterWizard={closeCharacterWizard}
+                  onCharacterCreated={(result) => void handleCharacterCreated(result)}
+                  onRefresh={refresh}
+                  onApplySnapshot={applySnapshot}
                   onRoomPortraitPatch={handleRoomPortraitPatch}
-                  onPlaced={applySnapshot}
                 />
-              ) : null}
-
-              {characterWizardOpen && canCreateCharacter ? (
-                <MesaCharacterWizardPopup
-                  adventureId={adventureId}
-                  adventureName={adventureName ?? roomName ?? "Aventura"}
-                  roomId={roomId}
-                  slotsLeft={characterSlotsLeft}
-                  layout={win("createCharacter")}
-                  onLayoutChange={(patch) => windows.patch("createCharacter", patch)}
-                  onFocus={() => windows.focus("createCharacter")}
-                  onMinimize={() =>
-                    win("createCharacter").minimized
-                      ? windows.restore("createCharacter")
-                      : windows.minimize("createCharacter")
-                  }
-                  onClose={closeCharacterWizard}
-                  onCreated={(result) => void handleCharacterCreated(result)}
-                />
-              ) : null}
               </div>
             </div>
           </div>
@@ -1032,17 +737,4 @@ export function MesaWorkspace({
       </div>
     </VttToastProvider>
   );
-}
-
-function MesaWorkspaceCombatFlow({
-  snapshot,
-  roomId,
-  onSnapshot,
-}: {
-  snapshot: import("@/lib/room/types").RoomSnapshot | null;
-  roomId: string;
-  onSnapshot: (snap: import("@/lib/room/types").RoomSnapshot) => void;
-}) {
-  useCombatTurnFlow({ snapshot, roomId, onSnapshot });
-  return null;
 }

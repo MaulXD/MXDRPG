@@ -16,6 +16,7 @@ import type { RoomActor, RoomSnapshot } from "@/lib/room/types";
 import type { DungeonObject } from "@/lib/vtt/types";
 import {
   applyRoomApiPayload,
+  deltaAffectsBattlefield,
   isRoomDelta,
   type RoomApiPayload,
 } from "@/lib/room/room-delta";
@@ -53,8 +54,8 @@ export type RoomSyncBridge = {
 
 const PRESENCE_HEARTBEAT_MS = 15_000;
 /** Agrupa rajadas de revision SSE em um único fetch. */
-const REFRESH_DEBOUNCE_MS = 120;
-const REFRESH_DEBOUNCE_COMBAT_MS = 180;
+const REFRESH_DEBOUNCE_MS = 80;
+const REFRESH_DEBOUNCE_COMBAT_MS = 120;
 /** Poll de segurança mesmo com SSE aberto (ms). */
 const SSE_BACKUP_POLL_MS = 10_000;
 const SSE_BACKUP_POLL_COMBAT_MS = 6000;
@@ -127,7 +128,10 @@ export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
   const applyRoomResponse = useCallback(
     (payload: RoomApiPayload, opts?: { force?: boolean; immediate?: boolean }) => {
       const merged = applyRoomApiPayload(snapshotRef.current, payload);
-      applySnapshot(merged, opts);
+      const immediate =
+        opts?.immediate ??
+        (isRoomDelta(payload) ? deltaAffectsBattlefield(payload) : true);
+      applySnapshot(merged, { force: opts?.force, immediate });
     },
     [applySnapshot]
   );
@@ -168,7 +172,7 @@ export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
       const data = (await res.json()) as RoomApiPayload;
       setSyncError(null);
       setSyncStatus(sseLiveRef.current ? "live" : "polling");
-      applyRoomResponse(data, { immediate: isRoomDelta(data) });
+      applyRoomResponse(data);
       sseReadyRef.current = true;
     } catch (e) {
       const msg =
@@ -191,9 +195,6 @@ export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
   }, [roomId, query, applyRoomResponse]);
 
   refreshImplRef.current = refresh;
-
-  const applyRoomResponseRef = useRef(applyRoomResponse);
-  applyRoomResponseRef.current = applyRoomResponse;
 
   const scheduleRefresh = useCallback(() => {
     const inCombat = snapshotRef.current?.settings?.combatActive === true;
@@ -285,24 +286,7 @@ export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
             revision?: number;
             userId?: string;
             displayName?: string;
-            delta?: RoomApiPayload;
           };
-          if (data.type === "delta" && data.delta && isRoomDelta(data.delta)) {
-            sseLiveRef.current = true;
-            setSyncStatus("live");
-            stopFallbackPoll();
-            applyRoomResponseRef.current(data.delta, { immediate: true });
-            return;
-          }
-          if (data.type === "refresh" && typeof data.revision === "number") {
-            sseLiveRef.current = true;
-            setSyncStatus("live");
-            stopFallbackPoll();
-            if (data.revision > revisionRef.current) {
-              scheduleRefresh();
-            }
-            return;
-          }
           if (data.type === "revision" && typeof data.revision === "number") {
             sseLiveRef.current = true;
             setSyncStatus("live");
