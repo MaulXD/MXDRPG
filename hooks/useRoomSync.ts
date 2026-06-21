@@ -165,10 +165,10 @@ export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
         setSyncError(err.error ?? `Sync falhou (${res.status})`);
         return;
       }
-      const data = (await res.json()) as RoomSnapshot;
+      const data = (await res.json()) as RoomApiPayload;
       setSyncError(null);
       setSyncStatus(sseLiveRef.current ? "live" : "polling");
-      applySnapshot(data);
+      applyRoomResponse(data, { immediate: isRoomDelta(data) });
       sseReadyRef.current = true;
     } catch (e) {
       const msg =
@@ -188,9 +188,12 @@ export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
         void refreshImplRef.current?.();
       }
     }
-  }, [roomId, query, applySnapshot]);
+  }, [roomId, query, applyRoomResponse]);
 
   refreshImplRef.current = refresh;
+
+  const applyRoomResponseRef = useRef(applyRoomResponse);
+  applyRoomResponseRef.current = applyRoomResponse;
 
   const scheduleRefresh = useCallback(() => {
     const inCombat = snapshotRef.current?.settings?.combatActive === true;
@@ -282,7 +285,24 @@ export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
             revision?: number;
             userId?: string;
             displayName?: string;
+            delta?: RoomApiPayload;
           };
+          if (data.type === "delta" && data.delta && isRoomDelta(data.delta)) {
+            sseLiveRef.current = true;
+            setSyncStatus("live");
+            stopFallbackPoll();
+            applyRoomResponseRef.current(data.delta, { immediate: true });
+            return;
+          }
+          if (data.type === "refresh" && typeof data.revision === "number") {
+            sseLiveRef.current = true;
+            setSyncStatus("live");
+            stopFallbackPoll();
+            if (data.revision > revisionRef.current) {
+              scheduleRefresh();
+            }
+            return;
+          }
           if (data.type === "revision" && typeof data.revision === "number") {
             sseLiveRef.current = true;
             setSyncStatus("live");

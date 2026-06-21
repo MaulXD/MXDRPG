@@ -63,3 +63,7 @@ Ver [HOMOLOG.md](./HOMOLOG.md). Validação oficial = Contabo.
 ## Infra BR
 
 Ver [INFRA-BR-AVALIACAO.md](./INFRA-BR-AVALIACAO.md).
+
+## Sync incremental (Fase A)
+
+Ver [MESA-SYNC-INCREMENTAL.md](./MESA-SYNC-INCREMENTAL.md) — delta via SSE/GET `?since=`, journal de revisions.
