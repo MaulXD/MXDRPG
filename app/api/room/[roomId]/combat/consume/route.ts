@@ -45,7 +45,7 @@ function authorFromSession(
 export async function POST(req: Request, { params }: Params) {
   const { roomId } = await params;
   const session = await getSession();
-  const room = await getRoom(roomId);
+  const room = await getRoom(roomId, { skipAutoPass: true });
   const author = authorFromSession(session, room);
   const body = (await req.json()) as Body;
 
@@ -74,6 +74,5 @@ export async function POST(req: Request, { params }: Params) {
     return NextResponse.json({ error: result.error }, { status: 400 });
   }
 
-  const fresh = (await getRoom(roomId)) ?? room;
-  return NextResponse.json(snapshotForViewer(result.snapshot, fresh, session?.user ?? null));
+  return NextResponse.json(snapshotForViewer(result.snapshot, room, session?.user ?? null));
 }
