@@ -1,7 +1,9 @@
 import { NextResponse } from "next/server";
 import { requireRoomView } from "@/lib/auth/authorize-room-view";
+import { tickRoomAutoPassThrottled } from "@/lib/room/auto-pass-tick";
+import { toSnapshot } from "@/lib/room/internal/registry";
 import { snapshotForViewer } from "@/lib/room/snapshot-for-viewer";
-import { getRoomSnapshot } from "@/lib/room/store";
+import { getRoom } from "@/lib/room/store";
 
 type Params = { params: Promise<{ roomId: string }> };
 
@@ -14,21 +16,20 @@ export async function GET(req: Request, { params }: Params) {
     return NextResponse.json({ error: auth.error }, { status: auth.status });
   }
 
+  await tickRoomAutoPassThrottled(roomId);
+
+  const room = (await getRoom(roomId, { skipAutoPass: true })) ?? auth.room;
+
   const sinceRev = Math.max(0, parseInt(new URL(req.url).searchParams.get("since") ?? "0", 10) || 0);
-  if (sinceRev > 0 && auth.room.revision <= sinceRev) {
+  if (sinceRev > 0 && room.revision <= sinceRev) {
     return new NextResponse(null, {
       status: 304,
       headers: {
-        "X-Room-Revision": String(auth.room.revision),
+        "X-Room-Revision": String(room.revision),
         "Cache-Control": "private, no-cache",
       },
     });
   }
 
-  const snapshot = await getRoomSnapshot(roomId);
-  if (!snapshot) {
-    return NextResponse.json({ error: "Sala não encontrada" }, { status: 404 });
-  }
-
-  return NextResponse.json(snapshotForViewer(snapshot, auth.room, auth.user));
+  return NextResponse.json(snapshotForViewer(toSnapshot(room), room, auth.user));
 }

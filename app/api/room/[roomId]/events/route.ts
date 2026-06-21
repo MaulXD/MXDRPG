@@ -2,7 +2,7 @@ import { canTrackRoomPresence } from "@/lib/auth/presence-access";
 import { requireRoomView } from "@/lib/auth/authorize-room-view";
 import { presenceEventsAfter, touchRoomPresence } from "@/lib/room/presence";
 import { getRoomRevision } from "@/lib/room/revision";
-import { tickRoomAutoPass } from "@/lib/room/handlers/combat-turn";
+import { tickRoomAutoPassThrottled } from "@/lib/room/auto-pass-tick";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -63,7 +63,7 @@ export async function GET(request: Request, { params }: Params) {
         try {
           flushPresence();
 
-          await tickRoomAutoPass(roomId);
+          await tickRoomAutoPassThrottled(roomId);
           const rev = await getRoomRevision(roomId);
           if (rev == null) {
             push({ type: "gone" });

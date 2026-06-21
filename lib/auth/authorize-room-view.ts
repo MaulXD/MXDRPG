@@ -17,7 +17,7 @@ export async function requireRoomView(
   roomId: string,
   inviteCode?: string | null
 ): Promise<RoomViewOk | RoomViewFail> {
-  let room = await getRoom(roomId);
+  let room = await getRoom(roomId, { skipAutoPass: true });
   if (!room) return { status: 404, error: "Sala não encontrada" };
 
   const session = await getSession();
@@ -35,7 +35,7 @@ export async function requireRoomView(
     (await shouldAutoJoinRoom(room, user))
   ) {
     await joinRoomMembers(roomId, user.id);
-    room = (await getRoom(roomId)) ?? room;
+    room = (await getRoom(roomId, { skipAutoPass: true })) ?? room;
   }
 
   if (!(await canViewRoomServer(room, user, invite))) {

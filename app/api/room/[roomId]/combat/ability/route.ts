@@ -46,7 +46,7 @@ export async function POST(req: Request, { params }: Params) {
   try {
     const { roomId } = await params;
     const session = await getSession();
-    const room = await getRoom(roomId);
+    const room = await getRoom(roomId, { skipAutoPass: true });
     const author = authorFromSession(session, room);
     const body = (await req.json()) as Body;
 
