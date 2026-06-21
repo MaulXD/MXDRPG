@@ -200,6 +200,7 @@ export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
     } else {
       setLoading(true);
       revisionRef.current = 0;
+      setSyncStatus("loading");
       void refresh();
     }
     setSyncError(null);

@@ -98,6 +98,9 @@ export function useRoomPresence({
 
   useEffect(() => {
     if (!enabled || !presenceUser?.id) return;
+    /* Com SSE ativo, GET /presence já faz touch — evita POST duplicado a cada 10s */
+    if (typeof EventSource !== "undefined") return;
+
     void heartbeat();
     const id = setInterval(() => void heartbeat(), PRESENCE_POLL_MS);
     return () => clearInterval(id);

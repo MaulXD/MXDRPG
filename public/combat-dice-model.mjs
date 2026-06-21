@@ -26,6 +26,11 @@ export const HEAL_DICE_COLOR = "#46c878";
 export const CRIT_DICE_COLOR = "#ffc840";
 export const DICE_ROLLER_COLOR = "#6b9e8c";
 
+export const DICE_LANDING_MS = 280;
+export const DICE_LANDING_MS_REDUCED = 100;
+export const COMBAT_ATTACK_MIN_SPIN_MS = 480;
+export const COMBAT_ATTACK_MIN_SPIN_MS_REDUCED = 180;
+
 export const ACTOR_TIER_VISUAL = {
   hero: {
     label: "Jogador",
