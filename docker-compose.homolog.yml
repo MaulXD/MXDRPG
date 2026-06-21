@@ -1,0 +1,27 @@
+# MXDRPG — MariaDB local para homolog / testes (não usar em produção).
+# Schema `eldarin` = módulo Eldarin VTT dentro do hub.
+# Uso: npm run homolog:up
+
+services:
+  mariadb:
+    image: mariadb:11.4
+    container_name: mxdrpg-homolog-db
+    restart: unless-stopped
+    ports:
+      - "3306:3306"
+    environment:
+      MARIADB_ROOT_PASSWORD: root_homolog
+      MARIADB_DATABASE: eldarin
+      MARIADB_USER: eldarin
+      MARIADB_PASSWORD: eldarin_homolog
+    volumes:
+      - mxdrpg_homolog_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+      start_period: 20s
+
+volumes:
+  mxdrpg_homolog_data:

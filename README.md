@@ -1,11 +1,13 @@
-# MXDRPG — Eldarin
+# MXDRPG
+
+Hub de RPGs — **Eldarin** é um dos sistemas/módulos (VTT) dentro do hub.
 
 **Site no ar:** https://www.mxdrpg.com.br  
 **Saúde:** https://www.mxdrpg.com.br/api/health  
 
 | Pasta | O quê |
 |-------|--------|
-| **`app/`, `components/`, `lib/`** | App Next.js (VTT) — deploy via **Docker** (Contabo) |
+| **`app/`, `components/`, `lib/`** | App Next.js (MXDRPG / VTT Eldarin) — deploy via **Docker** (Contabo) |
 | **[docs/CLAUDE-PROJETO.md](docs/CLAUDE-PROJETO.md)** | Guia completo para ensinar Claude / outros agentes de IA |
 | **[docs/CLAUDE-CODIGO-SEGURO.md](docs/CLAUDE-CODIGO-SEGURO.md)** | **Checklist para editar sem quebrar** — leia antes de mexer no código |
 | `livros/` | Regras e lore |
@@ -23,6 +25,17 @@ npm run dev
 http://localhost:3000
 
 **CSS quebrado?** `npm run dev:clean`
+
+### Homolog MXDRPG (MariaDB local via Docker)
+
+Para testar o hub localmente (mesa Eldarin, login) com banco interno — sem Contabo:
+
+```bash
+npm run homolog:up
+npm run dev:homolog
+```
+
+Guia: [docs/HOMOLOG.md](docs/HOMOLOG.md)
 
 ## Dados (livros → app).
 

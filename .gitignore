@@ -19,6 +19,7 @@ web/.next/
 .env
 .env.*
 !.env.example
+!.env.homolog.example
 **/.env*.local
 
 # OS / IDE / Python

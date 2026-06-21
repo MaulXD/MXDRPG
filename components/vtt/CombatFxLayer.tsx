@@ -16,6 +16,7 @@ import {
   type PortraitFrameTier,
 } from "@/lib/vtt/portrait-frame";
 import { DICE_COMBAT_EVICT_MS } from "@/lib/vtt/dice-combat-box";
+import { isPendingCombatFx } from "@/lib/vtt/combat-fx-sequence";
 import {
   COMBAT_FX_TIMINGS,
   COMBAT_FX_TIMINGS_REDUCED,
@@ -550,42 +551,75 @@ export function CombatFxLayer({
       setAttackRolling(false);
     }, tAttackLand + startMarkMs));
 
+    const hasDamageAt = (d: CombatFxState | null | undefined) =>
+      Boolean(
+        d &&
+          d.damageTotal != null &&
+          d.damageTotal > 0 &&
+          (d.isHeal || d.hit !== false || d.saveTotal != null)
+      );
+
+    const resultKnown = (d: CombatFxState | null | undefined) =>
+      Boolean(
+        d &&
+          (d.hit === true ||
+            d.hit === false ||
+            d.attackNatural != null ||
+            d.saveTotal != null ||
+            d.criticalFail)
+      );
+
+    const scheduleAfterResult = (hd: boolean) => {
+      if (hd) {
+        timeouts.push(setTimeout(() => {
+          setDamageDieRolling(false);
+        }, timings.damageLandAt));
+
+        timeouts.push(setTimeout(() => {
+          finishResolve();
+          setPhase("damage");
+        }, timings.damageRoll));
+
+        timeouts.push(setTimeout(() => {
+          revealChat("done");
+          setPhase("done");
+          onTokenFlashRef.current?.(null, null);
+          onDoneRef.current();
+        }, timings.damageRoll + timings.afterResolve));
+      } else {
+        timeouts.push(setTimeout(() => {
+          finishResolve();
+        }, timings.missHold));
+
+        timeouts.push(setTimeout(() => {
+          revealChat("done");
+          setPhase("done");
+          onTokenFlashRef.current?.(null, null);
+          onDoneRef.current();
+        }, timings.missHold + timings.afterResolve));
+      }
+    };
+
     timeouts.push(setTimeout(() => {
       setPhase("result");
-      if (hasDamage) {
-        setShowDamageRoll(true);
-        setDamageDieRolling(true);
-      }
+      setAttackRolling(false);
+
+      const tryResult = (attempt = 0) => {
+        const live = fxRef.current;
+        if (!live) return;
+        if (!resultKnown(live) && isPendingCombatFx(live) && attempt < 30) {
+          timeouts.push(setTimeout(() => tryResult(attempt + 1), 100));
+          return;
+        }
+        const hd = hasDamageAt(live);
+        if (hd) {
+          setShowDamageRoll(true);
+          setDamageDieRolling(true);
+        }
+        scheduleAfterResult(hd);
+      };
+      tryResult();
     }, tAttackEnd + startMarkMs));
-
-    if (hasDamage) {
-      timeouts.push(setTimeout(() => {
-        setDamageDieRolling(false);
-      }, tDamageLand + startMarkMs));
-
-      timeouts.push(setTimeout(() => {
-        finishResolve();
-        setPhase("damage");
-      }, tResolveHit + startMarkMs));
-
-      timeouts.push(setTimeout(() => {
-        revealChat("done");
-        setPhase("done");
-        onTokenFlashRef.current?.(null, null);
-        onDoneRef.current();
-      }, tDoneHit + startMarkMs));
-    } else {
-      timeouts.push(setTimeout(() => {
-        finishResolve();
-      }, tResolveMiss + startMarkMs));
-
-      timeouts.push(setTimeout(() => {
-        revealChat("done");
-        setPhase("done");
-        onTokenFlashRef.current?.(null, null);
-        onDoneRef.current();
-      }, tDoneMiss + startMarkMs));
-    }
 
     return () => { for (const id of timeouts) clearTimeout(id); };
   }, [fxId, reducedMotion, timings]);

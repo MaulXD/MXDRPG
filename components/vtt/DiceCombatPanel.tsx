@@ -162,12 +162,15 @@ export function DiceCombatPanel({
   }, [sequenceKey, clearBoth]);
 
   useEffect(() => {
-    if (!attackRolling || attackValue == null) return;
-    const key = `${sequenceKey}-atk-${attackValue}`;
+    if (!attackRolling) return;
+    const spin = attackValue == null;
+    const key = spin
+      ? `${sequenceKey}-atk-spin`
+      : `${sequenceKey}-atk-${attackValue}`;
     if (attackRollKeyRef.current === key) return;
     attackRollKeyRef.current = key;
 
-    const face = dieFaceValue(attackValue, attackSides);
+    const face = attackValue != null ? dieFaceValue(attackValue, attackSides) : undefined;
     void ensureAttackBox()
       .then(() =>
         attackBoxRef.current?.roll({

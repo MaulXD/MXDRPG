@@ -71,7 +71,7 @@ import {
 } from "@/lib/vtt/action-mode";
 
 import { listSubclassCombatActions } from "@/lib/character/subclass-vtt";
-import { patchRoomActor, postRoomAttack, postRoomAbility } from "@/hooks/useRoomSync";
+import { patchRoomActor, postRoomAttack, postRoomAbility, isRoomDelta, type RoomApiPayload } from "@/hooks/useRoomSync";
 import { CombatActionDetail } from "@/components/vtt/CombatActionDetail";
 import { SpellChannelControl } from "@/components/vtt/SpellChannelControl";
 
@@ -111,7 +111,7 @@ type Props = {
 
   onAttackResult: (msg: ChatMessage) => void;
 
-  onRoomSync: (snap?: import("@/lib/room/types").RoomSnapshot) => void;
+  onRoomSync: (payload?: RoomApiPayload) => void;
 
 };
 
@@ -310,15 +310,15 @@ export function TokenActionPanel({
     setErr(null);
 
     try {
-      let snapshot: import("@/lib/room/types").RoomSnapshot;
+      let payload: RoomApiPayload;
 
       if (activeAction.kind === "ability") {
-        snapshot = await postRoomAbility(roomId, token.id, defenderId, {
+        payload = await postRoomAbility(roomId, token.id, defenderId, {
           actionEntryId: activeAction.entryId,
           bypassTurn: tokenBypass,
         });
       } else {
-        snapshot = await postRoomAttack(
+        payload = await postRoomAttack(
           roomId,
           token.id,
           defenderId,
@@ -329,12 +329,14 @@ export function TokenActionPanel({
         );
       }
 
-      const combatMsgs = snapshot.chat.filter((m) => m.kind === "combat");
+      const combatMsgs = (
+        isRoomDelta(payload) ? payload.chatAppend ?? [] : payload.chat
+      ).filter((m) => m.kind === "combat");
       const last = combatMsgs[combatMsgs.length - 1];
       if (last?.kind === "combat") onAttackResult(last);
 
       onActionModeChange("idle");
-      onRoomSync(snapshot);
+      onRoomSync(payload);
     } catch (e) {
       setErr(e instanceof Error ? e.message : "Falha na ação");
     } finally {
@@ -362,7 +364,7 @@ export function TokenActionPanel({
     setErr(null);
 
     try {
-      const snapshot =
+      const payload =
         activeAction.kind === "ability"
           ? await postRoomAbility(roomId, token.id, null, {
               actionEntryId: activeAction.entryId,
@@ -375,7 +377,9 @@ export function TokenActionPanel({
               combatAttackRequestOpts(activeAction, token, { bypassTurn: tokenBypass })
             );
 
-      const combatMsgs = snapshot.chat.filter((m) => m.kind === "combat");
+      const combatMsgs = (
+        isRoomDelta(payload) ? payload.chatAppend ?? [] : payload.chat
+      ).filter((m) => m.kind === "combat");
 
       const last = combatMsgs[combatMsgs.length - 1];
 
@@ -383,7 +387,7 @@ export function TokenActionPanel({
 
       onActionModeChange("idle");
 
-      onRoomSync(snapshot);
+      onRoomSync(payload);
 
     } catch (e) {
 

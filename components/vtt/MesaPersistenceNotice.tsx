@@ -7,6 +7,7 @@ type Health = {
   db?: boolean;
   persistence?: string;
   dbError?: string;
+  dbUrlIssue?: string;
 };
 
 export function MesaPersistenceNotice() {
@@ -29,12 +30,25 @@ export function MesaPersistenceNotice() {
 
   const memoryMode = health?.persistence === "memory";
   const dbDown = health?.persistence === "mariadb" && health.db === false;
+  const urlIssue = health?.dbUrlIssue?.trim();
 
-  if (!memoryMode && !dbDown) return null;
+  if (!memoryMode && !dbDown && !urlIssue) return null;
 
   return (
     <>
-      {memoryMode ? (
+      {urlIssue ? (
+        <DismissibleMesaBanner
+          bannerId="persistence:url-issue"
+          className="mesa-persistence-notice"
+          role="status"
+          aria-label="DATABASE_URL inválida"
+        >
+          <p>
+            <strong>DATABASE_URL ignorada</strong> — {urlIssue}
+          </p>
+        </DismissibleMesaBanner>
+      ) : null}
+      {memoryMode && !urlIssue ? (
         <DismissibleMesaBanner
           bannerId="persistence:memory"
           className="mesa-persistence-notice"
@@ -42,8 +56,8 @@ export function MesaPersistenceNotice() {
           aria-label="Aviso de persistência"
         >
           <p>
-            <strong>Sem banco de dados</strong> — nada fica salvo após reinício do servidor. Configure{" "}
-            <code>DATABASE_URL</code> e rode <code>npm run db:setup</code>.
+            <strong>Sem banco de dados</strong> — nada fica salvo após reinício. Local:{" "}
+            <code>npm run homolog:up</code> (Docker) e <code>npm run dev</code>.
           </p>
         </DismissibleMesaBanner>
       ) : null}

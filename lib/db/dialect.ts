@@ -1,5 +1,6 @@
-/** Persistência — MariaDB exclusivo (Contabo / local). */
+import { dbEnabled } from "./enabled";
+
+/** Persistência — MariaDB exclusivo (Contabo / homolog local). */
 export function persistenceLabel(): "mariadb" | "memory" {
-  if (!process.env.DATABASE_URL?.trim()) return "memory";
-  return "mariadb";
+  return dbEnabled() ? "mariadb" : "memory";
 }

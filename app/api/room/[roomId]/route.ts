@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { requireRoomView } from "@/lib/auth/authorize-room-view";
 import { tickRoomAutoPassThrottled } from "@/lib/room/auto-pass-tick";
 import { toSnapshot } from "@/lib/room/internal/registry";
+import { trimSnapshotForSync } from "@/lib/room/snapshot-trim";
 import { snapshotForViewer } from "@/lib/room/snapshot-for-viewer";
 import { getRoom } from "@/lib/room/store";
 
@@ -31,5 +32,6 @@ export async function GET(req: Request, { params }: Params) {
     });
   }
 
-  return NextResponse.json(snapshotForViewer(toSnapshot(room), room, auth.user));
+  const viewed = snapshotForViewer(toSnapshot(room), room, auth.user);
+  return NextResponse.json(trimSnapshotForSync(viewed, { user: auth.user, room }));
 }

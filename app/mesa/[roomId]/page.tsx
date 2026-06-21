@@ -29,6 +29,9 @@ import { MesaClosedGate } from "@/components/vtt/MesaClosedGate";
 import { joinRoomMembers } from "@/lib/room/adventure-room";
 import { joinRoomByInvite } from "@/lib/room/store";
 import { getRoomCached } from "@/lib/room/get-room-cached";
+import { toSnapshot } from "@/lib/room/internal/registry";
+import { snapshotForViewer } from "@/lib/room/snapshot-for-viewer";
+import { trimSnapshotForSync } from "@/lib/room/snapshot-trim";
 import { pageMetadata } from "@/lib/site-metadata";
 export const dynamic = "force-dynamic";
 
@@ -204,6 +207,14 @@ export default async function MesaRoomPage({ params, searchParams }: Props) {
   const { characterSlotsLeft, charactersInAdventure } = characterCounts;
   const canEdit = canParticipate;
 
+  const initialSnapshot =
+    room ?
+      trimSnapshotForSync(snapshotForViewer(toSnapshot(room), room, accountUser), {
+        user: accountUser,
+        room,
+      })
+    : null;
+
   return (
     <div className="vtt-page vtt-page--mesa">
       {visitor ? (
@@ -236,6 +247,7 @@ export default async function MesaRoomPage({ params, searchParams }: Props) {
         characterSlotsLeft={characterSlotsLeft}
         charactersInAdventure={charactersInAdventure}
         openCharacterWizardOnLoad={criarParam === "personagem"}
+        initialSnapshot={initialSnapshot}
       />
     </div>
   );
