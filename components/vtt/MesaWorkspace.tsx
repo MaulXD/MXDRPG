@@ -1,5 +1,6 @@
 ﻿"use client";
 
+import dynamic from "next/dynamic";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { isStagedCombatChatMessage } from "@/lib/combat/chat-display";
 import {
@@ -10,8 +11,6 @@ import {
 import { canBypassCombatTurn, canParticipateInRoom } from "@/lib/auth/room-access";
 import { normalizeRoomSettings } from "@/lib/room/settings";
 import type { SessionUser } from "@/lib/auth/types";
-import type { CompendiumEntry, CompendiumPackId } from "@/lib/compendium/types";
-import { getPackEntries, getVisiblePacks } from "@/lib/compendium/registry";
 import type { BattleScene } from "@/lib/vtt/types";
 import type { Axial } from "@/lib/vtt/grid-math";
 import { useCombatTurnFlow } from "@/hooks/vtt/useCombatTurnFlow";
@@ -38,8 +37,6 @@ import { FoundryDockPanel } from "@/components/vtt/foundry/FoundryDockPanel";
 import { FoundryWindow } from "@/components/vtt/foundry/FoundryWindow";
 import { MesaFoundrySidebar } from "@/components/vtt/foundry/MesaFoundrySidebar";
 import { Battlefield } from "@/components/vtt/Battlefield";
-import { MonsterSheetPopup } from "@/components/compendium/MonsterSheetPopup";
-import { CharacterSheetPopup } from "@/components/vtt/CharacterSheetPopup";
 import {
   mergePortraitPatchIntoSnapshot,
   type RoomActorPatchResult,
@@ -47,7 +44,6 @@ import {
 import { MesaCharacterWizardPopup } from "@/components/vtt/MesaCharacterWizardPopup";
 import { PlayableCharactersPanel } from "@/components/vtt/PlayableCharactersPanel";
 import { RoomChat } from "@/components/vtt/RoomChat";
-import { DiceRoller } from "@/components/vtt/DiceRoller";
 import { MonsterSpawnPanel } from "@/components/vtt/MonsterSpawnPanel";
 import { RoomInvitePanel } from "@/components/vtt/RoomInvitePanel";
 import { RoomInviteBar } from "@/components/vtt/RoomInviteBar";
@@ -59,6 +55,19 @@ import { MesaSyncIndicator } from "@/components/vtt/MesaSyncIndicator";
 import { RoomCoverBackdrop } from "@/components/vtt/RoomCoverBackdrop";
 import { useSheetPdfDeepLink } from "@/hooks/useSheetPdfDeepLink";
 import "@/components/vtt/foundry/foundry.css";
+
+const CharacterSheetPopup = dynamic(
+  () => import("@/components/vtt/CharacterSheetPopup").then((m) => m.CharacterSheetPopup),
+  { ssr: false }
+);
+const MonsterSheetPopup = dynamic(
+  () => import("@/components/compendium/MonsterSheetPopup").then((m) => m.MonsterSheetPopup),
+  { ssr: false }
+);
+const DiceRoller = dynamic(
+  () => import("@/components/vtt/DiceRoller").then((m) => m.DiceRoller),
+  { ssr: false }
+);
 
 type Props = {
   roomId: string;
@@ -128,14 +137,6 @@ export function MesaWorkspace({
   const [combatChatReveal, setCombatChatReveal] = useState<
     Record<string, import("@/lib/combat/chat-display").CombatChatRevealPhase>
   >({});
-  const compendium = useMemo(() => {
-    if (!sheetPopupActorId) return {} as Record<CompendiumPackId, CompendiumEntry[]>;
-    const role = session?.role ?? null;
-    const packs = getVisiblePacks(role, { isRoomGm: effectiveIsGm });
-    return Object.fromEntries(
-      packs.map((p) => [p.id, getPackEntries(p.id, { role, isRoomGm: effectiveIsGm })])
-    ) as Record<CompendiumPackId, CompendiumEntry[]>;
-  }, [sheetPopupActorId, session?.role, effectiveIsGm]);
   const memberOnlineRef = useRef<((event: RoomMemberOnlineEvent) => void) | null>(null);
   const wizardAutoOpenedRef = useRef(false);
   const presenceUser =
@@ -171,17 +172,16 @@ export function MesaWorkspace({
       applyRoomResponse(payload, { force: opts?.force ?? true, immediate: opts?.immediate ?? true }),
     [applyRoomResponse]
   );
-  const { passTurn: passMobileTurn, busy: mobileEndTurnBusy } = usePassTurn(
-    roomId,
-    snapshot,
-    applyActionSnapshot
+
+  const roomSyncBridge = useMemo(
+    () => ({ snapshot, refresh, applySnapshot }),
+    [snapshot, refresh, applySnapshot]
   );
 
   useEffect(() => {
-    if (!snapshot?.settings?.combatActive) return;
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     scheduleCombatDiceWarm(reduced);
-  }, [snapshot?.settings?.combatActive]);
+  }, []);
 
   useEffect(() => {
     if (roomId === "demo" || watchOnly || !session?.id) return;
@@ -212,15 +212,14 @@ export function MesaWorkspace({
     };
   }, [roomId, inviteCode, watchOnly, session?.id, refresh, snapshot?.revision]);
 
+  const { passTurn: passMobileTurn, busy: mobileEndTurnBusy } = usePassTurn(
+    roomId,
+    snapshot,
+    applyActionSnapshot
+  );
+
   const windows = useFoundryWindows(roomId);
   const { close: closeWindow } = windows;
-  const dicePanelOpen = windows.get("dice").open;
-
-  useEffect(() => {
-    if (!dicePanelOpen) return;
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    scheduleCombatDiceWarm(reduced);
-  }, [dicePanelOpen]);
 
   const GM_ONLY_WINDOW_IDS: MesaWindowId[] = ["spawn", "dungeon", "gm"];
 
@@ -936,7 +935,7 @@ export function MesaWorkspace({
                   memberIds={memberIds}
                   actors={snapshot.actors}
                   session={session}
-                  compendium={compendium}
+                  roomSync={roomSyncBridge}
                   tokens={snapshot.scene.tokens}
                   spawnAxial={spawnAxial}
                   isRoomGm={effectiveIsGm}

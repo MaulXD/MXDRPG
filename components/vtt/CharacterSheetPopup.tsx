@@ -10,9 +10,8 @@ import { getCharacter } from "@/lib/character/demo-characters";
 import { canEditRoomActor, requiresInventoryGmApproval } from "@/lib/auth/room-access";
 import { canEditRoomActorPortrait } from "@/lib/auth/portrait-access";
 
-import type { CompendiumEntry, CompendiumPackId } from "@/lib/compendium/types";
-
 import type { SessionUser } from "@/lib/auth/types";
+import type { RoomSyncBridge } from "@/hooks/useRoomSync";
 
 import type { FoundryWindowLayout } from "@/hooks/vtt/useFoundryWindows";
 import { useFoundryWindowDrag } from "@/hooks/vtt/useFoundryWindowDrag";
@@ -35,7 +34,7 @@ type Props = {
   memberIds?: string[];
   actors: Record<string, RoomActor>;
   session: SessionUser | null;
-  compendium: Record<CompendiumPackId, CompendiumEntry[]>;
+  roomSync: RoomSyncBridge;
   tokens?: BattleToken[];
   spawnAxial?: Axial | null;
   isRoomGm?: boolean;
@@ -56,7 +55,7 @@ export function CharacterSheetPopup({
   memberIds = [],
   actors,
   session,
-  compendium,
+  roomSync,
   tokens = [],
   spawnAxial = null,
   isRoomGm = false,
@@ -191,8 +190,10 @@ export function CharacterSheetPopup({
           character={sheetCharacter}
           canEdit={canEdit}
           canEditPortrait={canEditPortrait}
-          compendium={compendium}
+          compendiumRole={session?.role ?? null}
+          compendiumIsRoomGm={isRoomGm}
           roomId={roomId}
+          roomSync={roomSync}
           variant="popup"
           showEditRequest={showEditRequest}
           inventoryEditMode={inventoryEditMode}
