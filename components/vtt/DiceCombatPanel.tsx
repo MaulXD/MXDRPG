@@ -2,11 +2,10 @@
 
 import { useCallback, useEffect, useRef, type CSSProperties } from "react";
 import type { CombatDiceSequence, DiceCombatUiState } from "@/lib/vtt/combat-dice-model";
-import { dieFaceValue, toDiceBoxRoll } from "@/lib/vtt/combat-dice-model";
+import { toDiceBoxRoll } from "@/lib/vtt/combat-dice-model";
 import {
   getDiceBoxCombatPanelOptions,
   loadVendorDiceBox,
-  scheduleCombatDiceWarm,
   type DiceBoxInstance,
 } from "@/lib/vtt/dice-combat-box";
 
@@ -43,9 +42,10 @@ export function DiceCombatPanel({ sequence, ui, reducedMotion = false }: Props) 
   const damageBoxRef = useRef<DiceBoxInstance | null>(null);
   const attackReadyRef = useRef(false);
   const damageReadyRef = useRef(false);
+  const attackInitRef = useRef<Promise<void> | null>(null);
+  const damageInitRef = useRef<Promise<void> | null>(null);
   const attackSeqRef = useRef<string | null>(null);
   const damageSeqRef = useRef<string | null>(null);
-  const attackFaceRef = useRef<string | null>(null);
   const evictingRef = useRef(false);
 
   const { attack, attacker, damage, attackSlotLabel, damageSlotLabel, damageSlotBorder } =
@@ -69,14 +69,26 @@ export function DiceCombatPanel({ sequence, ui, reducedMotion = false }: Props) 
       attackBoxRef.current?.show?.();
       return;
     }
-    const DiceBox = await loadVendorDiceBox();
-    attackBoxRef.current = new DiceBox({
-      ...getDiceBoxCombatPanelOptions(reducedMotion),
-      container: `#${ATTACK_HOST_ID}`,
-    });
-    await attackBoxRef.current.init();
-    attackBoxRef.current.show?.();
-    attackReadyRef.current = true;
+    if (attackInitRef.current) {
+      await attackInitRef.current;
+      return;
+    }
+    attackInitRef.current = (async () => {
+      const DiceBox = await loadVendorDiceBox();
+      attackBoxRef.current = new DiceBox({
+        ...getDiceBoxCombatPanelOptions(reducedMotion),
+        container: `#${ATTACK_HOST_ID}`,
+      });
+      await attackBoxRef.current.init();
+      attackBoxRef.current.show?.();
+      attackReadyRef.current = true;
+    })();
+    try {
+      await attackInitRef.current;
+    } catch (err) {
+      attackInitRef.current = null;
+      throw err;
+    }
   }, [reducedMotion]);
 
   const ensureDamageBox = useCallback(async () => {
@@ -86,25 +98,35 @@ export function DiceCombatPanel({ sequence, ui, reducedMotion = false }: Props) 
       damageBoxRef.current?.show?.();
       return;
     }
-    const DiceBox = await loadVendorDiceBox();
-    damageBoxRef.current = new DiceBox({
-      ...getDiceBoxCombatPanelOptions(reducedMotion),
-      container: `#${DAMAGE_HOST_ID}`,
-    });
-    await damageBoxRef.current.init();
-    damageBoxRef.current.show?.();
-    damageReadyRef.current = true;
+    if (damageInitRef.current) {
+      await damageInitRef.current;
+      return;
+    }
+    damageInitRef.current = (async () => {
+      const DiceBox = await loadVendorDiceBox();
+      damageBoxRef.current = new DiceBox({
+        ...getDiceBoxCombatPanelOptions(reducedMotion),
+        container: `#${DAMAGE_HOST_ID}`,
+      });
+      await damageBoxRef.current.init();
+      damageBoxRef.current.show?.();
+      damageReadyRef.current = true;
+    })();
+    try {
+      await damageInitRef.current;
+    } catch (err) {
+      damageInitRef.current = null;
+      throw err;
+    }
   }, [reducedMotion]);
 
   useEffect(() => {
-    void loadVendorDiceBox();
-    scheduleCombatDiceWarm(reducedMotion);
-  }, [reducedMotion]);
+    void ensureAttackBox().catch(() => {});
+  }, [ensureAttackBox]);
 
   useEffect(() => {
     attackSeqRef.current = null;
     damageSeqRef.current = null;
-    attackFaceRef.current = null;
     evictingRef.current = false;
   }, [sequence.id]);
 
@@ -113,10 +135,8 @@ export function DiceCombatPanel({ sequence, ui, reducedMotion = false }: Props) 
     if (attackSeqRef.current === sequence.id) return;
     attackSeqRef.current = sequence.id;
 
-    const face =
-      attack.value != null ? dieFaceValue(attack.value, attack.sides) : undefined;
     void ensureAttackBox()
-      .then(() => attackBoxRef.current?.roll(toDiceBoxRoll(attack, face)))
+      .then(() => attackBoxRef.current?.roll(toDiceBoxRoll(attack)))
       .catch((err) => console.error("[DiceCombatPanel] attack roll", err));
   }, [ui.attackRolling, attack, ensureAttackBox, sequence.id]);
 
@@ -125,25 +145,10 @@ export function DiceCombatPanel({ sequence, ui, reducedMotion = false }: Props) 
     if (damageSeqRef.current === sequence.id) return;
     damageSeqRef.current = sequence.id;
 
-    const face =
-      damage.value != null ? dieFaceValue(damage.value, damage.sides) : undefined;
     void ensureDamageBox()
-      .then(() => damageBoxRef.current?.roll(toDiceBoxRoll(damage, face)))
+      .then(() => damageBoxRef.current?.roll(toDiceBoxRoll(damage)))
       .catch((err) => console.error("[DiceCombatPanel] damage roll", err));
   }, [ui.showDamage, ui.damageRolling, damage, ensureDamageBox, sequence.id]);
-
-  /** Após lock, fixa face quando o servidor preenche o natural (pending → resolved). */
-  useEffect(() => {
-    if (!ui.attackLocked || attack.value == null) return;
-    const key = `${sequence.id}-face-${attack.value}`;
-    if (attackFaceRef.current === key) return;
-    attackFaceRef.current = key;
-    const face = dieFaceValue(attack.value, attack.sides);
-    if (!attackReadyRef.current || face == null) return;
-    void attackBoxRef.current
-      ?.roll(toDiceBoxRoll(attack, face))
-      .catch((err) => console.error("[DiceCombatPanel] attack face", err));
-  }, [ui.attackLocked, attack, sequence.id]);
 
   useEffect(() => {
     if (!ui.evicting || evictingRef.current) return;
