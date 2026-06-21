@@ -33,6 +33,8 @@ type Props = {
   actor: CharacterSheet;
   /** Visual do modal — padrão segue a ficha DDB (creme + bordô). */
   theme?: "ddb" | "classic";
+  /** `compact`: só botão (header); `full`: caixa grande legada. */
+  variant?: "compact" | "full";
   roomId?: string;
   canEdit: boolean;
   onDone: () => void | Promise<void>;
@@ -54,6 +56,7 @@ const STEP_LABEL: Record<LevelUpWizardStep["type"], string> = {
 export function LevelUpWizard({
   actor,
   theme = "ddb",
+  variant = "full",
   roomId,
   canEdit,
   onDone,
@@ -365,6 +368,125 @@ export function LevelUpWizard({
     }
   }
 
+  const levelUpModal =
+    open && typeof document !== "undefined"
+      ? createPortal(
+          <div
+            className={`lu-overlay${theme === "ddb" ? " lu-overlay--ddb" : ""}`}
+            role="presentation"
+            onClick={() => !busy && setOpen(false)}
+          >
+            <div
+              className={`lu-shell${theme === "ddb" ? " lu-shell--ddb" : ""}`}
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="lu-title"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <header className="lu-header">
+                <div>
+                  <h2 id="lu-title">Subir de nível — {actor.name}</h2>
+                  <p className="lu-header-meta">
+                    {actor.identity.classe} · Nv {actor.identity.nivel} → {nextLevel}
+                    {actor.identity.subclasse ? ` · ${actor.identity.subclasse}` : ""}
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  className="btn btn-ghost lu-close"
+                  disabled={busy}
+                  onClick={() => setOpen(false)}
+                >
+                  Fechar
+                </button>
+              </header>
+
+              <nav className="lu-stepper" aria-label="Passos do level up">
+                {steps.map((s, i) => (
+                  <span
+                    key={`${s.type}-${i}`}
+                    className={`lu-step-pill ${i === stepIndex ? "lu-step-pill--active" : ""} ${i < stepIndex ? "lu-step-pill--done" : ""}`}
+                  >
+                    {i + 1}. {STEP_LABEL[s.type]}
+                  </span>
+                ))}
+              </nav>
+
+              <div className="lu-body">
+                <div className="lu-main">{renderStep()}</div>
+                <aside className="lu-aside">
+                  <p className="lu-aside-title">Bônus aplicáveis</p>
+                  {previewGroups.map((g) => (
+                    <div key={g.id} className="lu-bonus-group">
+                      <h5>{g.title}</h5>
+                      <ul>
+                        {g.lines.map((line) => (
+                          <li key={line}>{line}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                </aside>
+              </div>
+
+              <footer className="lu-footer">
+                <span className="sheet-xp-line" style={{ margin: 0 }}>
+                  {formatXpProgress(actor.identity.nivel, actor.identity.xpTotal)}
+                </span>
+                <div className="lu-footer-actions">
+                  <button
+                    type="button"
+                    className="btn btn-ghost"
+                    disabled={busy || stepIndex === 0}
+                    onClick={goBack}
+                  >
+                    Voltar
+                  </button>
+                  {currentStep?.type === "confirm" ? (
+                    <button type="button" className="btn" disabled={busy} onClick={confirm}>
+                      {busy ? "Aplicando…" : `Aplicar nível ${nextLevel}`}
+                    </button>
+                  ) : (
+                    <button
+                      type="button"
+                      className="btn"
+                      disabled={!canAdvanceStep()}
+                      onClick={goNext}
+                    >
+                      Próximo
+                    </button>
+                  )}
+                </div>
+              </footer>
+              {msg ? (
+                <p className="lu-err" style={{ padding: "0 1rem 0.75rem" }}>
+                  {msg}
+                </p>
+              ) : null}
+            </div>
+          </div>,
+          document.body
+        )
+      : null;
+
+  if (variant === "compact") {
+    if (!ready) return null;
+    return (
+      <>
+        <button
+          type="button"
+          className="btn sheet-level-up-trigger sheet-level-up-trigger--compact btn--level-ready btn--level-ready--alert"
+          onClick={() => setOpen(true)}
+          title={`Subir para nível ${nextLevel} — ${xpDetail.secondary}`}
+          aria-label={`Subir para nível ${nextLevel}`}
+        >
+          Subir nv {nextLevel}
+        </button>
+        {levelUpModal}
+      </>
+    );
+  }
+
   return (
     <div className={`sheet-level-box${ready ? " sheet-level-box--ready" : ""}`}>
       <div className="sheet-level-box__head">
@@ -405,103 +527,7 @@ export function LevelUpWizard({
         )}
       </div>
 
-      {open && typeof document !== "undefined"
-        ? createPortal(
-            <div
-              className={`lu-overlay${theme === "ddb" ? " lu-overlay--ddb" : ""}`}
-              role="presentation"
-              onClick={() => !busy && setOpen(false)}
-            >
-          <div
-            className={`lu-shell${theme === "ddb" ? " lu-shell--ddb" : ""}`}
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="lu-title"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <header className="lu-header">
-              <div>
-                <h2 id="lu-title">
-                  Subir de nível — {actor.name}
-                </h2>
-                <p className="lu-header-meta">
-                  {actor.identity.classe} · Nv {actor.identity.nivel} → {nextLevel}
-                  {actor.identity.subclasse ? ` · ${actor.identity.subclasse}` : ""}
-                </p>
-              </div>
-              <button
-                type="button"
-                className="btn btn-ghost lu-close"
-                disabled={busy}
-                onClick={() => setOpen(false)}
-              >
-                Fechar
-              </button>
-            </header>
-
-            <nav className="lu-stepper" aria-label="Passos do level up">
-              {steps.map((s, i) => (
-                <span
-                  key={`${s.type}-${i}`}
-                  className={`lu-step-pill ${i === stepIndex ? "lu-step-pill--active" : ""} ${i < stepIndex ? "lu-step-pill--done" : ""}`}
-                >
-                  {i + 1}. {STEP_LABEL[s.type]}
-                </span>
-              ))}
-            </nav>
-
-            <div className="lu-body">
-              <div className="lu-main">{renderStep()}</div>
-              <aside className="lu-aside">
-                <p className="lu-aside-title">Bônus aplicáveis</p>
-                {previewGroups.map((g) => (
-                  <div key={g.id} className="lu-bonus-group">
-                    <h5>{g.title}</h5>
-                    <ul>
-                      {g.lines.map((line) => (
-                        <li key={line}>{line}</li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
-              </aside>
-            </div>
-
-            <footer className="lu-footer">
-              <span className="sheet-xp-line" style={{ margin: 0 }}>
-                {formatXpProgress(actor.identity.nivel, actor.identity.xpTotal)}
-              </span>
-              <div className="lu-footer-actions">
-                <button
-                  type="button"
-                  className="btn btn-ghost"
-                  disabled={busy || stepIndex === 0}
-                  onClick={goBack}
-                >
-                  Voltar
-                </button>
-                {currentStep?.type === "confirm" ? (
-                  <button type="button" className="btn" disabled={busy} onClick={confirm}>
-                    {busy ? "Aplicando…" : `Aplicar nível ${nextLevel}`}
-                  </button>
-                ) : (
-                  <button
-                    type="button"
-                    className="btn"
-                    disabled={!canAdvanceStep()}
-                    onClick={goNext}
-                  >
-                    Próximo
-                  </button>
-                )}
-              </div>
-            </footer>
-            {msg ? <p className="lu-err" style={{ padding: "0 1rem 0.75rem" }}>{msg}</p> : null}
-          </div>
-        </div>,
-            document.body
-          )
-        : null}
+      {levelUpModal}
     </div>
   );
 }
