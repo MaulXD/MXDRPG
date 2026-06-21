@@ -118,7 +118,12 @@ export function getDiceBoxOptionsForHost(hostPx: number, reducedMotion: boolean)
 }
 
 export function getDiceBoxCombatPanelOptions(reducedMotion: boolean) {
-  return getDiceBoxCombatOptions(reducedMotion);
+  return {
+    ...getDiceBoxOptionsForHost(COMBAT_DICE_HOST_PX, reducedMotion),
+    lightIntensity: 1.28,
+    shadowTransparency: 0.68,
+    settleTimeout: reducedMotion ? 450 : 650,
+  };
 }
 
 /** Pré-carrega o bundle JS/WASM sem criar contextos WebGL extras. */

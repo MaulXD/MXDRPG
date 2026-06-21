@@ -686,12 +686,12 @@ export function Battlefield({
       if (snap.scene) {
         setScene((prev) => mergeScenePreservingPortraits(prev, snap.scene));
       }
-      const immediate = opts?.immediate ?? roomSettings.combatActive;
+      const immediate = opts?.immediate === true;
       if (onApplySnapshot) onApplySnapshot(payload, { force: opts?.force ?? true, immediate });
       else refresh();
       playCombatFxFromSnapRef.current?.(payload);
     },
-    [onApplySnapshot, refresh, resolveRoomPayload, roomSettings.combatActive]
+    [onApplySnapshot, refresh, resolveRoomPayload]
   );
 
   const battlefieldView = useBattlefieldView({ wrapRef, canvasRef });
@@ -1122,7 +1122,7 @@ export function Battlefield({
     ) {
       pendingCombatSnapRef.current = snap;
       if (onApplySnapshot) {
-        onApplySnapshot(snap, { force: true, immediate: roomSettings.combatActive });
+        onApplySnapshot(snap, { force: true, immediate: false });
       }
       startTransition(() => {
         setScene((prev) => ({

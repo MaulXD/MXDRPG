@@ -54,10 +54,10 @@ export type RoomSyncBridge = {
 const PRESENCE_HEARTBEAT_MS = 15_000;
 /** Agrupa rajadas de revision SSE em um único fetch. */
 const REFRESH_DEBOUNCE_MS = 120;
-const REFRESH_DEBOUNCE_COMBAT_MS = 0;
+const REFRESH_DEBOUNCE_COMBAT_MS = 180;
 /** Poll de segurança mesmo com SSE aberto (ms). */
 const SSE_BACKUP_POLL_MS = 10_000;
-const SSE_BACKUP_POLL_COMBAT_MS = 1500;
+const SSE_BACKUP_POLL_COMBAT_MS = 4000;
 
 export type RoomSyncStatus = "loading" | "live" | "polling" | "error";
 
@@ -69,7 +69,7 @@ function roomQuery(roomId: string, inviteCode?: string | null, sinceRev?: number
   return s ? `?${s}` : "";
 }
 
-const COMBAT_POLL_INTERVAL_MS = 280;
+const COMBAT_POLL_INTERVAL_MS = 1200;
 
 export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
   const disabled = opts.disabled ?? false;
@@ -160,8 +160,7 @@ export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
       const data = (await res.json()) as RoomSnapshot;
       setSyncError(null);
       setSyncStatus(sseLiveRef.current ? "live" : "polling");
-      const inCombat = data.settings?.combatActive === true;
-      applySnapshot(data, { immediate: inCombat });
+      applySnapshot(data);
       sseReadyRef.current = true;
     } catch (e) {
       const msg =
@@ -187,19 +186,12 @@ export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
 
   const scheduleRefresh = useCallback(() => {
     const inCombat = snapshotRef.current?.settings?.combatActive === true;
-    if (inCombat) {
-      if (refreshDebounceRef.current) {
-        clearTimeout(refreshDebounceRef.current);
-        refreshDebounceRef.current = null;
-      }
-      void refreshImplRef.current?.();
-      return;
-    }
+    const debounceMs = inCombat ? REFRESH_DEBOUNCE_COMBAT_MS : REFRESH_DEBOUNCE_MS;
     if (refreshDebounceRef.current) return;
     refreshDebounceRef.current = setTimeout(() => {
       refreshDebounceRef.current = null;
       void refreshImplRef.current?.();
-    }, REFRESH_DEBOUNCE_MS);
+    }, debounceMs);
   }, [refresh]);
 
   const initialSnapshotRef = useRef(initialSnapshot);
