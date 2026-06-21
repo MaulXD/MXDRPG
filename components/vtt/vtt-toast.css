@@ -24,6 +24,13 @@
   transform: translateX(-50%);
 }
 
+@media (max-width: 720px) {
+  .foundry-mesa__toasts .vtt-toast-stack {
+    z-index: 55;
+    max-width: min(94%, 480px);
+  }
+}
+
 /* Fora da mesa: posição fixa no viewport (fallback global) */
 :not(.foundry-mesa__toasts) > .vtt-toast-stack {
   position: fixed;
