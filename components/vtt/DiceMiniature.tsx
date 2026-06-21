@@ -45,13 +45,17 @@ export function DiceMiniature({
   reducedMotion = false,
 }: Props) {
   const sides = parsePrimaryDie(formula) as DiceWebGLProps["sides"];
-  const [webGLOk, setWebGLOk] = useState<boolean | null>(null); // null = ainda verificando
+  // Lazy init sincroniza no cliente (evita re-render em navegação CSR);
+  // useEffect fica como fallback para o primeiro carregamento via SSR.
+  const [webGLOk, setWebGLOk] = useState<boolean | null>(() =>
+    typeof window === "undefined" ? null : supportsWebGL()
+  );
   const [landed, setLanded] = useState(false);
   const px = SIZE_PX[size];
 
-  // Verifica WebGL uma vez no cliente
   useEffect(() => {
-    setWebGLOk(supportsWebGL());
+    if (webGLOk === null) setWebGLOk(supportsWebGL());
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
