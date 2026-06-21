@@ -17,6 +17,8 @@ type Props = {
   sequence: CombatDiceSequence;
   ui: DiceCombatUiState;
   reducedMotion?: boolean;
+  onAttackRollBegin?: () => void;
+  onDamageRollBegin?: () => void;
 };
 
 function waitLayout(): Promise<void> {
@@ -37,7 +39,13 @@ function slotGlowStyle(color: string, border: string): CSSProperties {
   } as CSSProperties;
 }
 
-export function DiceCombatPanel({ sequence, ui, reducedMotion = false }: Props) {
+export function DiceCombatPanel({
+  sequence,
+  ui,
+  reducedMotion = false,
+  onAttackRollBegin,
+  onDamageRollBegin,
+}: Props) {
   const attackBoxRef = useRef<DiceBoxInstance | null>(null);
   const damageBoxRef = useRef<DiceBoxInstance | null>(null);
   const attackReadyRef = useRef(false);
@@ -132,9 +140,12 @@ export function DiceCombatPanel({ sequence, ui, reducedMotion = false }: Props) 
     attackSeqRef.current = sequence.id;
 
     void ensureAttackBox()
-      .then(() => attackBoxRef.current?.roll(toDiceBoxRoll(attack)))
+      .then(() => {
+        onAttackRollBegin?.();
+        return attackBoxRef.current?.roll(toDiceBoxRoll(attack));
+      })
       .catch((err) => console.error("[DiceCombatPanel] attack roll", err));
-  }, [ui.attackRolling, attack, ensureAttackBox, sequence.id]);
+  }, [ui.attackRolling, attack, ensureAttackBox, onAttackRollBegin, sequence.id]);
 
   useEffect(() => {
     if (!ui.showDamage || !ui.damageRolling || !damage) return;
@@ -142,9 +153,12 @@ export function DiceCombatPanel({ sequence, ui, reducedMotion = false }: Props) 
     damageSeqRef.current = sequence.id;
 
     void ensureDamageBox()
-      .then(() => damageBoxRef.current?.roll(toDiceBoxRoll(damage)))
+      .then(() => {
+        onDamageRollBegin?.();
+        return damageBoxRef.current?.roll(toDiceBoxRoll(damage));
+      })
       .catch((err) => console.error("[DiceCombatPanel] damage roll", err));
-  }, [ui.showDamage, ui.damageRolling, damage, ensureDamageBox, sequence.id]);
+  }, [ui.showDamage, ui.damageRolling, damage, ensureDamageBox, onDamageRollBegin, sequence.id]);
 
   useEffect(() => {
     if (!ui.evicting || evictingRef.current) return;

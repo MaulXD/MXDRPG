@@ -13,8 +13,8 @@ import { DiceCombatPanel } from "@/components/vtt/DiceCombatPanel";
 import type { BattleToken } from "@/lib/vtt/types";
 import {
   combatFxToDiceSequence,
-  COMBAT_ATTACK_MIN_SPIN_MS,
-  COMBAT_ATTACK_MIN_SPIN_MS_REDUCED,
+  COMBAT_DICE_SETTLE_MS,
+  COMBAT_DICE_SETTLE_MS_REDUCED,
   resolveCombatDiceTimings,
 } from "@/lib/vtt/combat-dice-model";
 import { isPendingCombatFx } from "@/lib/vtt/combat-fx-sequence";
@@ -379,6 +379,8 @@ export function CombatFxLayer({
   const castFxTriggeredRef = useRef(false);
   const applyStateCalledRef = useRef(false);
   const seqStartedAtRef = useRef(0);
+  const attackRollStartedAtRef = useRef<number | null>(null);
+  const damageRollStartedAtRef = useRef<number | null>(null);
   const resultPhaseDoneRef = useRef(false);
   const triggerResultPhaseRef = useRef<(() => void) | null>(null);
 
@@ -419,6 +421,8 @@ export function CombatFxLayer({
     resultPhaseDoneRef.current = false;
     triggerResultPhaseRef.current = null;
     seqStartedAtRef.current = Date.now();
+    attackRollStartedAtRef.current = null;
+    damageRollStartedAtRef.current = null;
 
     setPhase("mark");
     setPanelVisible(true);
@@ -569,23 +573,41 @@ export function CombatFxLayer({
       setAttackRolling(true);
     }, tRollStart + startMarkMs));
 
+    const diceSettleMs = reducedMotion ? COMBAT_DICE_SETTLE_MS_REDUCED : COMBAT_DICE_SETTLE_MS;
+
+    const computeAttackRevealDelay = () => {
+      const seqDeadline = seqStartedAtRef.current + timings.mark + timings.attackRoll;
+      const rollStart = attackRollStartedAtRef.current;
+      const rollDeadline =
+        rollStart != null ? rollStart + diceSettleMs : seqDeadline;
+      return Math.max(0, Math.max(seqDeadline, rollDeadline) - Date.now());
+    };
+
+    const computeDamageSettleDelay = (fromMs = Date.now()) => {
+      const rollStart = damageRollStartedAtRef.current ?? fromMs;
+      return Math.max(timings.damageRoll, rollStart + diceSettleMs - fromMs);
+    };
+
     const scheduleAfterResult = (hd: boolean) => {
       if (hd) {
+        const scheduledAt = Date.now();
+        const damageDoneDelay = computeDamageSettleDelay(scheduledAt);
+
         timeouts.push(setTimeout(() => {
           setDamageDieRolling(false);
-        }, timings.damageLandAt));
+        }, damageDoneDelay));
 
         timeouts.push(setTimeout(() => {
           finishResolve();
           setPhase("damage");
-        }, timings.damageRoll));
+        }, damageDoneDelay + 80));
 
         timeouts.push(setTimeout(() => {
           revealChat("done");
           setPhase("done");
           onTokenFlashRef.current?.(null, null);
           onDoneRef.current();
-        }, timings.damageRoll + timings.afterResolve));
+        }, damageDoneDelay + timings.afterResolve + 80));
       } else {
         timeouts.push(setTimeout(() => {
           finishResolve();
@@ -600,9 +622,7 @@ export function CombatFxLayer({
       }
     };
 
-    const triggerResultPhase = () => {
-      if (resultPhaseDoneRef.current) return;
-      resultPhaseDoneRef.current = true;
+    const revealAttackResult = () => {
       setPhase("result");
       setAttackRolling(false);
 
@@ -623,6 +643,12 @@ export function CombatFxLayer({
       tryResult();
     };
 
+    const triggerResultPhase = () => {
+      if (resultPhaseDoneRef.current) return;
+      resultPhaseDoneRef.current = true;
+      timeouts.push(setTimeout(revealAttackResult, computeAttackRevealDelay()));
+    };
+
     triggerResultPhaseRef.current = triggerResultPhase;
 
     timeouts.push(setTimeout(() => {
@@ -634,28 +660,6 @@ export function CombatFxLayer({
       for (const id of timeouts) clearTimeout(id);
     };
   }, [fxId, reducedMotion, timings, diceEvictMs]);
-
-  const minSpinMs = reducedMotion ? COMBAT_ATTACK_MIN_SPIN_MS_REDUCED : COMBAT_ATTACK_MIN_SPIN_MS;
-
-  useEffect(() => {
-    if (!fx || phase === "done" || phase === "result" || phase === "damage") return;
-    if (!fxResultKnown(fx)) return;
-    if (resultPhaseDoneRef.current) return;
-
-    const elapsed = Date.now() - seqStartedAtRef.current;
-    const delay = Math.max(0, minSpinMs - elapsed);
-    const id = setTimeout(() => triggerResultPhaseRef.current?.(), delay);
-    return () => clearTimeout(id);
-  }, [
-    fx?.attackNatural,
-    fx?.hit,
-    fx?.saveTotal,
-    fx?.criticalFail,
-    fx?.damageTotal,
-    fxId,
-    minSpinMs,
-    phase,
-  ]);
 
   if (!fx || phase === "done") return null;
 
@@ -702,7 +706,10 @@ export function CombatFxLayer({
     (phase === "roll" || phase === "result" || phase === "damage");
 
   const showResultText =
-    showDicePanel && panelVisible && (phase === "result" || phase === "damage");
+    showDicePanel &&
+    panelVisible &&
+    !attackRolling &&
+    (phase === "result" || phase === "damage");
 
   const showRoll = showDicePanel && attackRolling;
 
@@ -824,12 +831,18 @@ export function CombatFxLayer({
                 sequence={diceSequence}
                 ui={{
                   attackRolling: showRoll,
-                  attackLocked: !showRoll,
+                  attackLocked: !showRoll && (phase === "result" || phase === "damage"),
                   showDamage: showDamageRoll,
                   damageRolling: damageDieRolling,
                   evicting: diceEvicting,
                 }}
                 reducedMotion={reducedMotion}
+                onAttackRollBegin={() => {
+                  attackRollStartedAtRef.current = Date.now();
+                }}
+                onDamageRollBegin={() => {
+                  damageRollStartedAtRef.current = Date.now();
+                }}
               />
             </div>
             {showResultText ? (
