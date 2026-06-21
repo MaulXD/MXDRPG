@@ -24,7 +24,10 @@ type QueuedPresenceEvent = RoomPresenceEvent & { id: number };
 type PresenceEntry = {
   displayName: string;
   lastSeen: number;
+  lastDbTouch?: number;
 };
+
+const PRESENCE_DB_WRITE_MS = 15_000;
 
 declare global {
   // eslint-disable-next-line no-var
@@ -108,9 +111,15 @@ export async function touchRoomPresence(
   const prev = map.get(userId);
   const wasOnline = prev != null && now - prev.lastSeen < PRESENCE_TTL_MS;
   const label = displayName(name);
-  map.set(userId, { displayName: label, lastSeen: now });
+  const lastDbTouch = prev?.lastDbTouch ?? 0;
+  const touchDb = !prev || now - lastDbTouch >= PRESENCE_DB_WRITE_MS;
+  map.set(userId, {
+    displayName: label,
+    lastSeen: now,
+    lastDbTouch: touchDb ? now : lastDbTouch,
+  });
 
-  if (dbEnabled()) {
+  if (dbEnabled() && touchDb) {
     try {
       await touchRoomPresenceDb(roomId, userId, label);
       void pruneRoomPresenceDb(roomId);

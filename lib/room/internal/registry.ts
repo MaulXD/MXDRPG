@@ -245,20 +245,37 @@ async function backfillRoomFromAdventure(roomId: string): Promise<RoomState | nu
   }
 }
 
-export async function getRoom(roomId: string): Promise<RoomState | null> {
+const inviteSyncCheckedAt = new Map<string, number>();
+const INVITE_SYNC_INTERVAL_MS = 60_000;
+
+export type GetRoomOpts = {
+  /** Antes de mutação (ataque/mover) — não dispara auto-passe com persist no read. */
+  skipAutoPass?: boolean;
+};
+
+export async function getRoom(roomId: string, opts?: GetRoomOpts): Promise<RoomState | null> {
   const map = rooms();
   let room = map.get(roomId) ?? null;
 
   if (shouldPersistToDb(roomId)) {
-    const fromDb = await dbRooms.fetchRoom(roomId);
-    if (fromDb) {
-      if (!room || fromDb.revision > room.revision) {
+    if (room) {
+      const dbRev = await dbRooms.fetchRoomRevision(roomId);
+      if (dbRev == null || dbRev > room.revision) {
+        const fromDb = await dbRooms.fetchRoom(roomId);
+        if (fromDb && fromDb.revision > room.revision) {
+          map.set(roomId, fromDb);
+          room = fromDb;
+        }
+      }
+    } else {
+      const fromDb = await dbRooms.fetchRoom(roomId);
+      if (fromDb) {
         map.set(roomId, fromDb);
         room = fromDb;
+      } else {
+        room = await backfillRoomFromAdventure(roomId);
+        if (room) map.set(roomId, room);
       }
-    } else if (!room) {
-      room = await backfillRoomFromAdventure(roomId);
-      if (room) map.set(roomId, room);
     }
   }
 
@@ -282,8 +299,12 @@ export async function getRoom(roomId: string): Promise<RoomState | null> {
   if (room && repairStaleCombatPa(room)) {
     return persistRoom(roomId, room, { skipAutoPassSchedule: true });
   }
-  // GET/poll: só executa auto-passe já vencido — sem reparar PA nem reindexar turno no read.
-  if (room?.combat?.order?.length && requiresCombatTurnEconomy(room.settings, room.combat)) {
+  // Auto-passe roda no SSE (/events) — não no read quente de mutações (ataque, etc.).
+  if (
+    !opts?.skipAutoPass &&
+    room?.combat?.order?.length &&
+    requiresCombatTurnEconomy(room.settings, room.combat)
+  ) {
     if (executePendingAutoPassIfDue(room)) {
       return persistRoom(roomId, room, { skipAutoPassSchedule: true });
     }
@@ -296,11 +317,15 @@ export async function getRoom(roomId: string): Promise<RoomState | null> {
   if (room) {
     room.settings = normalizeRoomSettings(room.settings);
     if (!room.adventureId) room.adventureId = room.roomId;
-    const { getAdventure } = await import("@/lib/adventure/store");
-    const adv = await getAdventure(room.adventureId);
-    if (adv && !adv.deletedAt && adv.inviteCode !== room.inviteCode) {
-      room.inviteCode = adv.inviteCode;
-      return persistRoom(roomId, room);
+    const inviteCheckedAt = inviteSyncCheckedAt.get(roomId) ?? 0;
+    if (Date.now() - inviteCheckedAt >= INVITE_SYNC_INTERVAL_MS) {
+      inviteSyncCheckedAt.set(roomId, Date.now());
+      const { getAdventure } = await import("@/lib/adventure/store");
+      const adv = await getAdventure(room.adventureId);
+      if (adv && !adv.deletedAt && adv.inviteCode !== room.inviteCode) {
+        room.inviteCode = adv.inviteCode;
+        return persistRoom(roomId, room);
+      }
     }
     const legacyName = migrateLegacyDisplayName(room.name);
     if (legacyName !== room.name) {

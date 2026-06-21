@@ -17,8 +17,6 @@ import { entrarPath, mesaRoomPath } from "@/lib/auth/post-auth-redirect";
 import { canonicalInviteForRoom } from "@/lib/auth/mesa-invite";
 import { safeMaterializeSessionUser } from "@/lib/auth/session-user";
 import { getSession } from "@/lib/auth/session";
-import { getPackEntries, getVisiblePacks } from "@/lib/compendium/registry";
-import type { CompendiumPackId } from "@/lib/compendium/types";
 import { getAdventure, bindPlayerToAdventure } from "@/lib/adventure/store";
 import { isAdventureClosed } from "@/lib/adventure/access";
 import { shouldAutoJoinRoom } from "@/lib/auth/adventure-room-access";
@@ -28,9 +26,9 @@ import {
   MAX_CHARACTERS_PER_USER,
 } from "@/lib/character/characters";
 import { MesaClosedGate } from "@/components/vtt/MesaClosedGate";
-import { syncAdventureActorsForRoom } from "@/lib/room/adventure-actors";
 import { joinRoomMembers } from "@/lib/room/adventure-room";
-import { getRoom, joinRoomByInvite } from "@/lib/room/store";
+import { joinRoomByInvite } from "@/lib/room/store";
+import { getRoomCached } from "@/lib/room/get-room-cached";
 import { pageMetadata } from "@/lib/site-metadata";
 export const dynamic = "force-dynamic";
 
@@ -41,7 +39,7 @@ type Props = {
 
 export async function generateMetadata({ params }: Pick<Props, "params">): Promise<Metadata> {
   const { roomId } = await params;
-  const room = await getRoom(roomId);
+  const room = await getRoomCached(roomId);
   return pageMetadata(room?.name?.trim() || (roomId === "demo" ? "Mesa demo" : "Mesa"));
 }
 
@@ -52,7 +50,7 @@ export default async function MesaRoomPage({ params, searchParams }: Props) {
   const watchOnly = parseWatchOnly(watchParam);
 
   const session = await getSession();
-  let room = await getRoom(roomId);
+  let room = await getRoomCached(roomId);
   let joinError: string | null = null;
 
   if (!room) {
@@ -79,10 +77,10 @@ export default async function MesaRoomPage({ params, searchParams }: Props) {
       const isMember = await isRoomMemberResolved(room, accountUser.id, accountUser.clerkId);
       if (!room.memberIds.includes(accountUser.id) && isMember) {
         await joinRoomMembers(roomId, accountUser.id);
-        room = (await getRoom(roomId)) ?? room;
+        room = (await getRoomCached(roomId)) ?? room;
       } else if (!isMember && (await shouldAutoJoinRoom(room, accountUser))) {
         await joinRoomMembers(roomId, accountUser.id);
-        room = (await getRoom(roomId)) ?? room;
+        room = (await getRoomCached(roomId)) ?? room;
       }
     } catch (err) {
       console.error("[mesa] auto-join membro:", err);
@@ -96,7 +94,7 @@ export default async function MesaRoomPage({ params, searchParams }: Props) {
         const joined = await joinRoomByInvite(inviteCode, accountUser.id, roomId);
         const canonical = await canonicalInviteForRoom(room);
         const targetRoomId = joined?.roomId ?? canonical.roomId;
-        const fresh = (await getRoom(targetRoomId)) ?? joined ?? room;
+        const fresh = (await getRoomCached(targetRoomId)) ?? joined ?? room;
         room = fresh;
 
         if (await isRoomMemberResolved(room, accountUser.id, accountUser.clerkId)) {
@@ -128,12 +126,6 @@ export default async function MesaRoomPage({ params, searchParams }: Props) {
       } catch (err) {
         console.error("[mesa] bindPlayerToAdventure:", err);
       }
-    }
-    try {
-      const synced = await syncAdventureActorsForRoom(roomId);
-      if (synced) room = synced;
-    } catch (e) {
-      console.error("[mesa] sync fichas da aventura:", e);
     }
   }
 
@@ -186,14 +178,6 @@ export default async function MesaRoomPage({ params, searchParams }: Props) {
   const isRoomGm = canManageRoom(room, session?.user ?? null);
   const canParticipate = access.canParticipate;
   const canChat = access.canChat;
-  const role = session?.user.role ?? null;
-  const packs = getVisiblePacks(role, { isRoomGm });
-  const compendium = Object.fromEntries(
-    packs.map((p) => [
-      p.id,
-      getPackEntries(p.id, { role, isRoomGm }),
-    ])
-  ) as Record<CompendiumPackId, ReturnType<typeof getPackEntries>>;
 
   const isDemoRoom = roomId === "demo";
   const canControlCombat = isRoomGm;
@@ -203,20 +187,21 @@ export default async function MesaRoomPage({ params, searchParams }: Props) {
       Object.keys(room.actors)[0]);
 
   const advId = room.adventureId ?? roomId;
-  const adventure = await getAdventure(advId);
+  const [adventure, mesaInvite, characterCounts] = await Promise.all([
+    getAdventure(advId),
+    canonicalInviteForRoom(room),
+    accountUser && canParticipate && roomId !== "demo"
+      ? Promise.all([
+          listCharactersForSessionUserSafe(accountUser),
+          listCharactersForSessionUserInAdventureSafe(accountUser, advId),
+        ]).then(([myChars, inAdv]) => ({
+          characterSlotsLeft: Math.max(0, MAX_CHARACTERS_PER_USER - myChars.length),
+          charactersInAdventure: inAdv.length,
+        }))
+      : Promise.resolve({ characterSlotsLeft: 0, charactersInAdventure: 0 }),
+  ]);
   const adventureName = adventure?.name ?? room.name;
-  const mesaInvite = await canonicalInviteForRoom(room);
-
-  let characterSlotsLeft = 0;
-  let charactersInAdventure = 0;
-  if (session?.user && canParticipate && roomId !== "demo") {
-    const accountUser = await safeMaterializeSessionUser(session.user);
-    const myChars = await listCharactersForSessionUserSafe(accountUser);
-    const inAdv = await listCharactersForSessionUserInAdventureSafe(accountUser, advId);
-    characterSlotsLeft = Math.max(0, MAX_CHARACTERS_PER_USER - myChars.length);
-    charactersInAdventure = inAdv.length;
-  }
-
+  const { characterSlotsLeft, charactersInAdventure } = characterCounts;
   const canEdit = canParticipate;
 
   return (
@@ -246,8 +231,6 @@ export default async function MesaRoomPage({ params, searchParams }: Props) {
         roomName={room.name}
         isRoomOwner={isRoomGm}
         session={session?.user ?? null}
-        compendium={compendium}
-        packs={packs}
         defaultActorId={defaultActorId}
         adventureName={adventureName}
         characterSlotsLeft={characterSlotsLeft}

@@ -327,14 +327,22 @@ export async function fetchUserByIdStrict(id: string): Promise<SessionUser | nul
   return r ? toSessionUser(r) : null;
 }
 
+const clerkIdCache = new Map<string, { value: string | null; at: number }>();
+const CLERK_ID_CACHE_MS = 60_000;
+
 export async function fetchClerkIdForUser(userId: string): Promise<string | null> {
+  const hit = clerkIdCache.get(userId);
+  if (hit && Date.now() - hit.at < CLERK_ID_CACHE_MS) return hit.value;
+
   const sql = getSql();
   if (!sql) return null;
   try {
     const rows = await sql<{ clerk_id: string | null }[]>`
       SELECT clerk_id FROM eldarin_users WHERE id = ${userId} LIMIT 1
     `;
-    return rows[0]?.clerk_id ?? null;
+    const value = rows[0]?.clerk_id ?? null;
+    clerkIdCache.set(userId, { value, at: Date.now() });
+    return value;
   } catch {
     return null;
   }

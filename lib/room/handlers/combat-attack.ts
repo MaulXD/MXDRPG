@@ -46,19 +46,25 @@ async function finishCombatAttack(roomId: string, room: RoomState): Promise<Atta
   }
 }
 
+export type AttackExecuteOpts = CombatActionRequest & {
+  bypassTurn?: boolean;
+  /** Sala já carregada — evita segundo getRoom no POST /combat/attack. */
+  room?: RoomState;
+};
+
 export async function executeRoomAttack(
   roomId: string,
   attackerTokenId: string,
   defenderTokenId: string,
   author: { authorId: string; authorName: string; authorRole: ChatMessage["authorRole"] },
-  opts: CombatActionRequest & { bypassTurn?: boolean } = {}
+  opts: AttackExecuteOpts = {}
 ): Promise<AttackExecuteResult> {
   const multiIds = opts.defenderTokenIds?.map((id) => id.trim()).filter(Boolean);
   if (multiIds && multiIds.length > 0) {
     return executeRoomMultiTargetAttack(roomId, attackerTokenId, multiIds, author, opts);
   }
 
-  const room = await getRoom(roomId);
+  const room = opts.room ?? (await getRoom(roomId, { skipAutoPass: true }));
   if (!room) return { ok: false, error: "Sala não encontrada" };
 
   let attacker = room.scene.tokens.find((t) => t.id === attackerTokenId);
@@ -364,14 +370,14 @@ async function executeRoomMultiTargetAttack(
   attackerTokenId: string,
   defenderTokenIds: string[],
   author: { authorId: string; authorName: string; authorRole: ChatMessage["authorRole"] },
-  opts: CombatActionRequest & { bypassTurn?: boolean } = {}
+  opts: AttackExecuteOpts = {}
 ): Promise<AttackExecuteResult> {
   const uniqueIds = [...new Set(defenderTokenIds)];
   if (uniqueIds.length === 0) {
     return { ok: false, error: "Selecione pelo menos um alvo" };
   }
 
-  const room = await getRoom(roomId);
+  const room = opts.room ?? (await getRoom(roomId, { skipAutoPass: true }));
   if (!room) return { ok: false, error: "Sala não encontrada" };
 
   let attacker = room.scene.tokens.find((t) => t.id === attackerTokenId);

@@ -221,6 +221,15 @@ export function executePendingAutoPassIfDue(
   return true;
 }
 
+/** Auto-passe vencido — chamado pelo SSE da mesa (não bloqueia mutações como ataque). */
+export async function tickRoomAutoPass(roomId: string): Promise<boolean> {
+  const room = await getRoom(roomId, { skipAutoPass: true });
+  if (!room?.combat?.order?.length) return false;
+  if (!executePendingAutoPassIfDue(room)) return false;
+  await persistRoom(roomId, room, { skipAutoPassSchedule: true });
+  return true;
+}
+
 export async function rollRoomInitiative(roomId: string): Promise<RoomSnapshot | null> {
   const room = await getRoom(roomId);
   if (!room) return null;
