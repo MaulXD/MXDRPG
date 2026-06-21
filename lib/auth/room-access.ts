@@ -284,6 +284,7 @@ export function canPatchRoomActorLoadout(
   const authActor = actorForRoomAuth(room, actor);
   if (!characterBelongsToAdventure(authActor, adventureId)) return false;
   if (user.role === "admin") return true;
+  if (characterOwnedBySessionUser(authActor, user)) return true;
   return Boolean(room.ownerId && isRoomOwner(room, user.id));
 }
 

@@ -41,7 +41,11 @@ async function presenceResponse(
     if (!user || !(await canTrackRoomPresence(auth.room, user))) {
       return NextResponse.json({ error: "Participantes logados apenas" }, { status: 403 });
     }
-    await touchRoomPresence(roomId, touch.userId, touch.label);
+    try {
+      await touchRoomPresence(roomId, touch.userId, touch.label);
+    } catch (err) {
+      console.error("[presence] touch failed:", err);
+    }
   }
 
   try {

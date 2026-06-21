@@ -38,13 +38,16 @@ export function EldarinLogo({
         priority={variant === "full"}
       />
     ) : image === "navbar" ? (
-      <Image
+      // img nativo evita preload automático do next/image na mesa (topbar pode ficar oculta)
+      <img
         src={BRAND_LOGO_NAVBAR}
         alt={name}
         width={534}
         height={213}
         className="eldarin-logo__img eldarin-logo__img--navbar"
-        sizes="(max-width: 520px) 168px, 208px"
+        loading="lazy"
+        decoding="async"
+        fetchPriority="low"
       />
     ) : (
       <span className="eldarin-logo__name">{name}</span>

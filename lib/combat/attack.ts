@@ -381,19 +381,50 @@ export function defaultCombatLoadout(actor: CharacterSheet): CombatLoadout | nul
   return null;
 }
 
+/** Infere pack a partir do prefixo do id (ex.: habilidades-golpe-de-chi). */
+export function inferCombatPackId(entryId: string): CombatLoadout["packId"] | null {
+  if (entryId.startsWith("habilidades-")) return "habilidades";
+  if (entryId.startsWith("magias-")) return "magias";
+  if (entryId.startsWith("armas-")) return "armas";
+  return null;
+}
+
+function resolveCombatPackAndEntry(
+  actor: CharacterSheet,
+  request?: CombatActionRequest
+): { packId?: CombatLoadout["packId"]; entryId?: string } {
+  const loadout = actor.combatLoadout ?? defaultCombatLoadout(actor);
+  const entryId = (request?.entryId ?? loadout?.entryId)?.trim();
+  let packId = request?.packId ?? loadout?.packId;
+  if (entryId) {
+    const inferred = inferCombatPackId(entryId);
+    if (inferred) packId = inferred;
+  }
+  return { packId, entryId };
+}
+
 export function resolveCombatAction(
   actor: CharacterSheet,
   request?: CombatActionRequest
 ): CombatActionOption {
   const actions = listCombatActions(actor);
-  const loadout = actor.combatLoadout ?? defaultCombatLoadout(actor);
+  const { packId, entryId } = resolveCombatPackAndEntry(actor, request);
 
-  const packId = request?.packId ?? loadout?.packId;
-  const entryId = request?.entryId ?? loadout?.entryId;
+  if (entryId?.startsWith("habilidades-")) {
+    const byEntry = actions.find((a) => a.entryId === entryId && a.kind === "ability");
+    if (byEntry) return byEntry;
+    const known = abilityFromKnownId(entryId);
+    if (known) return known;
+  }
 
   if (packId && entryId) {
     const found = actions.find((a) => a.packId === packId && a.entryId === entryId);
     if (found) return found;
+
+    if (!entryId.startsWith("habilidades-")) {
+      const byEntry = actions.find((a) => a.entryId === entryId);
+      if (byEntry) return byEntry;
+    }
 
     const entry = getEntry(packId, entryId);
     if (entry) {

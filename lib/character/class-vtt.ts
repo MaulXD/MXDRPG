@@ -1,7 +1,6 @@
 import type { CharacterSheet, InventoryItem } from "@/lib/character/types";
 import { newInstanceId } from "@/lib/character/inventory-storage";
 import { getSubclassTrack } from "@/lib/character/subclass-tracks";
-import { getEntry } from "@/lib/compendium/registry";
 
 /** Habilidades de classe concedidas por nível (mesa / combate). */
 const CLASS_ABILITY_BY_LEVEL: Partial<
@@ -32,7 +31,6 @@ const CLASS_ABILITY_BY_LEVEL: Partial<
 };
 
 function addHabilidade(inventory: InventoryItem[], entryId: string): InventoryItem[] {
-  if (!getEntry("habilidades", entryId)) return inventory;
   if (inventory.some((i) => i.packId === "habilidades" && i.entryId === entryId)) return inventory;
   return [
     ...inventory,

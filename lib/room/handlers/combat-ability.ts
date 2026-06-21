@@ -180,9 +180,9 @@ export async function executeRoomAbility(
   attackerTokenId: string,
   defenderTokenId: string | null,
   author: { authorId: string; authorName: string; authorRole: ChatMessage["authorRole"] },
-  opts: CombatActionRequest & { bypassTurn?: boolean } = {}
+  opts: CombatActionRequest & { bypassTurn?: boolean; room?: RoomState } = {}
 ): Promise<AbilityExecuteResult> {
-  const room = await getRoom(roomId);
+  const room = opts.room ?? (await getRoom(roomId, { skipAutoPass: true }));
   if (!room) return { ok: false, error: "Sala não encontrada" };
 
   let attacker = room.scene.tokens.find((t) => t.id === attackerTokenId);

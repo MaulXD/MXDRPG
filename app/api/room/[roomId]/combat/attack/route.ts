@@ -3,7 +3,7 @@ import { assertTokenControl, chatRoleForUser } from "@/lib/auth/authorize-room";
 import { canBypassCombatTurn } from "@/lib/auth/room-access";
 import { effectiveBypassTurn } from "@/lib/combat/turn-guard";
 import { getSession } from "@/lib/auth/session";
-import { mutationDeltaResponse } from "@/lib/room/mutation-response";
+import { safeMutationDeltaResponse } from "@/lib/room/mutation-response";
 import { toSnapshot } from "@/lib/room/internal/registry";
 import { executeRoomAttack, getRoom } from "@/lib/room/store";
 import type { ChatMessage } from "@/lib/room/chat";
@@ -100,7 +100,7 @@ export async function POST(req: Request, { params }: Params) {
     }
 
     return NextResponse.json(
-      mutationDeltaResponse(beforeSnap, result.snapshot, room, session?.user ?? null)
+      safeMutationDeltaResponse(beforeSnap, result.snapshot, room, session?.user ?? null)
     );
   } catch (e) {
     console.error("[attack] erro interno:", e);
