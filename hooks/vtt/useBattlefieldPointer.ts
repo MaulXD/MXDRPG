@@ -1149,12 +1149,6 @@ export function useBattlefieldPointer({
           return;
         }
         if (hit.id !== selectedId) setSelectedId(hit.id);
-        if (canOpenActionRing?.(hit)) {
-          const center = tokenScreenCenter(hit);
-          onActionRingRequest?.(hit, center?.x ?? e.clientX, center?.y ?? e.clientY);
-        } else {
-          onActionRingBlocked?.(hit);
-        }
         return;
       }
 
@@ -1215,10 +1209,6 @@ export function useBattlefieldPointer({
       whiteboard,
       worldAtScreen,
       mapTools,
-      canOpenActionRing,
-      onActionRingRequest,
-      onActionRingBlocked,
-      tokenScreenCenter,
     ]
   );
 
