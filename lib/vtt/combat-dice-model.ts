@@ -60,6 +60,10 @@ export const DICE_LANDING_MS_REDUCED = 120;
 export const COMBAT_ATTACK_MIN_SPIN_MS = 820;
 export const COMBAT_ATTACK_MIN_SPIN_MS_REDUCED = 340;
 
+/** Tempo físico do dice-box até o dado pousar — alinhado ao painel de combate. */
+export const COMBAT_DICE_SETTLE_MS = 920;
+export const COMBAT_DICE_SETTLE_MS_REDUCED = 500;
+
 export const DAMAGE_DICE_COLOR = "#e05040";
 export const HEAL_DICE_COLOR = "#46c878";
 export const CRIT_DICE_COLOR = "#ffc840";
