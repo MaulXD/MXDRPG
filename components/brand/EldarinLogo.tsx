@@ -44,7 +44,7 @@ export function EldarinLogo({
         width={534}
         height={213}
         className="eldarin-logo__img eldarin-logo__img--navbar"
-        priority
+        sizes="(max-width: 520px) 168px, 208px"
       />
     ) : (
       <span className="eldarin-logo__name">{name}</span>
