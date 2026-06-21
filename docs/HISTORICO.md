@@ -926,9 +926,78 @@ kubectl -n raul set image deployment/mxdrpg mxdrpg=ghcr.io/maulxd/mxdrpg:sha-dd9
 - `lib/vtt/dice-combat-box.ts` — cores tier e opts física
 - `public/assets/dice-box/` — assets WASM/tema
 
-**Commits / deploy:** pendente push branch `cursor/dice-box-combat`
+**Commits / deploy:** `bd7ed03` — branch `cursor/dice-box-combat` (push origin)
 
 **Como testar:** `/mesa/[roomId]` → ataque no combate; preview em `/preview-combate-dados.html`
+
+---
+
+### 2026-06-20 — Fix ataque ao alvo e sync da mesa (500/403)
+
+**Pedido:** erros ao atacar alvo na mesa — `500` em `/combat/attack`, `/tokens/spawn`, `/tokens/reposition`; `403` ao salvar loadout; aviso `habilidades-golpe-de-chi não encontrada`; toast “Sync demorou demais”.
+
+**Passo a passo:**
+1. **Diagnóstico** — Golpe de Chi no `combatLoadout` sem entrada no inventário da ficha; mestre tentava salvar loadout de jogador (403); `persistRoom`/XP pós-derrota sem tratamento gerava 500 em cascata.
+2. **Decisão** — sincronizar habilidades de classe em `listCombatActions`; permitir PATCH só de loadout para mestre; falhas de persistência não derrubam o ataque.
+3. **Implementação** — `syncCombatAbilitiesToInventory` + fallback compêndio em `resolveCombatAction`; `canPatchRoomActorLoadout`; try/catch em rotas spawn/reposition/ability e `finishCombatAttack`.
+4. **Validação** — `npm run build` ✅
+
+**Arquivos tocados:**
+- `lib/combat/attack.ts` — sync classe + resolve compêndio
+- `lib/auth/room-access.ts` — permissão loadout mestre
+- `lib/room/handlers/combat-attack.ts` — persistência segura
+- `app/api/room/[roomId]/actors/[actorId]/route.ts` — PATCH loadout
+
+**Commits / deploy:** `b8b4626` — `origin/cursor/dice-box-combat`
+
+**Como testar:** mesa real → Espiritualista com Golpe de Chi → atacar alvo; mestre escolhe habilidade no token do jogador (sem 403).
+
+---
+
+### 2026-06-20 — Dice-box da mesa alinhado ao preview (cores por tier)
+
+**Pedido:** combate na mesa mostrava d20 escuro genérico (`Dice3DCSS`/fallback), diferente do preview com slots coloridos separados (ataque por tier + dano vermelho).
+
+**Passo a passo:**
+1. **Diagnóstico** — `main` ainda usa `DiceMiniature`; na branch dice-box, import npm quebrava workers/assets; faltavam bordas, labels e glow por tier do preview.
+2. **Decisão** — carregar o **mesmo bundle** do preview (`/vendor/dice-box/`), estilizar slots com `--dice-tier-color` e labels “Ataque d20 · Jogador” / “Dano d8”.
+3. **Implementação** — `DiceCombatPanel` via vendor; `DICE_TIER_LABELS` + bordas em `dice-combat-box.ts`; CSS slots com glow; legenda “Rolando ataque…” discreta.
+4. **Validação** — `npm run build` ✅
+
+**Arquivos tocados:**
+- `components/vtt/DiceCombatPanel.tsx` — vendor + slots tier/dano
+- `lib/vtt/dice-combat-box.ts` — labels e bordas por tier
+- `components/vtt/vtt.css` — painel e slots como preview
+- `components/vtt/CombatFxLayer.tsx` — legenda de rolagem
+
+**Commits / deploy:** `1095931` — `origin/cursor/dice-box-combat` (PR pendente merge → `main`)
+
+**Como testar:** deploy branch → `/mesa/[roomId]` combate vs `/preview-combate-dados.html` (mesmas cores: azul jogador, amarelo monstro, vermelho dano).
+
+### 2026-06-20 — Reduz delay de dados + fix WebGL idle + preview transições redesenhado
+
+**Pedido:** (1) Dado fica rolando o tempo todo — precisa girar e parar no número tirado. (2) Muito delay entre atacar e o dado aparecer. (3) Prévia de animações de modo ficou feia — recriar com visual de qualidade.
+
+**Passo a passo:**
+1. **Diagnóstico dado girando** — `DiceWebGL` iniciava com `mode: "rolling"` hardcoded; quando `sides` muda (nova fórmula), componente remonta e reinicia em rolling. D12 usava `vertsPerFace=3` mas dodecaedro tem faces pentagonais = 9 verts cada.
+2. **Fix DiceWebGL** — modo inicial `rolling ? "rolling" : "idle"`; modo `"idle"` com rotação lenta decorativa (× 0.003 vs 0.055); D12 `vertsPerFace=9`; type union inclui `"idle"`.
+3. **Diagnóstico delay** — `DiceMiniature`: `webGLOk` inicia `null` via `useState(null)` e só é resolvido depois de um `useEffect` → primeiro render monta div vazia, DiceWebGL só aparece no segundo render. `DiceCombatPanel`: `waitMs(120)` hardcoded antes de inicializar o dice-box; bundle `/vendor/dice-box/dice-box.es.min.js` é importado dinamicamente só quando o primeiro ataque dispara.
+4. **Fix delay** — `DiceMiniature`: lazy initializer `useState(() => typeof window === "undefined" ? null : supportsWebGL())` elimina re-render extra em navegação CSR; `useEffect` permanece como fallback SSR mas só roda se `null`. `DiceCombatPanel`: removido `waitMs(120)` e `waitMs(80)` dos `ensure*Box`; adicionado `useEffect([], void loadDiceBox)` que pré-carrega o módulo no mount do painel antes de qualquer ataque.
+5. **Transition lock** — `COMBAT_MODE_TRANSITION_LOCK_MS` separado de `DURATION_MS`; UI libera em 400ms, animação CSS segue até 2300ms.
+6. **Preview animações** — redesenhado com estética de códex arcano: fundo `#08080e`, título em Georgia dourado, seções com ◆, cards com número em Courier New, preview 192px com ambient gradient por animação, labels com bloom multi-camada; 16 animações CSS preservadas (C1–C8 + A1–A8).
+7. **Validação** — `npm run build` ✅ (a executar)
+
+**Arquivos tocados:**
+- `components/vtt/DiceWebGL.tsx` — modo `"idle"`, initial mode closure, D12 vertsPerFace=9
+- `components/vtt/DiceMiniature.tsx` — webGLOk lazy init, useEffect condicional
+- `components/vtt/DiceCombatPanel.tsx` — remove waitMs, pré-carrega dice-box no mount
+- `hooks/vtt/useCombatModeTransition.ts` — lock 400ms, animação 2300ms
+
+**Commits / deploy:** pendente local.
+
+**Como testar:** Mesa → combate → atacar — dado deve aparecer sem delay visível (< 50ms extra); dado de dano rola e para no número; fora do combate dado gira lentamente; D12 com faces corretas; UI interativa 400ms após transição modo combate/aventura.
+
+---
 
 <!--
 ### AAAA-MM-DD — Título
