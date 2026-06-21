@@ -1217,9 +1217,9 @@
 
 .vtt-help-trigger {
   position: absolute;
-  top: 10px;
-  left: 10px;
-  z-index: 5;
+  top: clamp(0.45rem, 1.5vh, 0.75rem);
+  left: calc(var(--map-toolbar-left) + var(--map-toolbar-width) + var(--map-toolbar-gap));
+  z-index: 13;
   width: 2rem;
   height: 2rem;
   padding: 0;
