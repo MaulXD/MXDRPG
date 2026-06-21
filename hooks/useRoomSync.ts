@@ -38,6 +38,17 @@ type SyncOpts = {
   presenceUser?: { id: string; name: string } | null;
   /** Outro participante entrou online (via SSE) */
   onMemberOnline?: (event: RoomMemberOnlineEvent) => void;
+  /** Não abre SSE/poll — mesa já fornece sync (ex.: ficha popup) */
+  disabled?: boolean;
+};
+
+export type RoomSyncBridge = {
+  snapshot: RoomSnapshot | null;
+  refresh: () => Promise<void>;
+  applySnapshot: (
+    data: RoomSnapshot,
+    opts?: { force?: boolean; immediate?: boolean }
+  ) => void;
 };
 
 const PRESENCE_HEARTBEAT_MS = 15_000;
@@ -61,6 +72,7 @@ function roomQuery(roomId: string, inviteCode?: string | null, sinceRev?: number
 const COMBAT_POLL_INTERVAL_MS = 280;
 
 export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
+  const disabled = opts.disabled ?? false;
   const inviteCode = opts.inviteCode ?? null;
   const initialSnapshot = opts.initialSnapshot ?? null;
   const basePollIntervalMs = opts.pollIntervalMs ?? 2000;
@@ -75,6 +87,9 @@ export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
   const query = useMemo(() => roomQuery(roomId, inviteCode), [roomId, inviteCode]);
   const sseReadyRef = useRef(false);
   const sseLiveRef = useRef(false);
+  const fallbackPollIdRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const pollIntervalRef = useRef(basePollIntervalMs);
+  const backupPollRef = useRef(SSE_BACKUP_POLL_MS);
   const onMemberOnlineRef = useRef(onMemberOnline);
   onMemberOnlineRef.current = onMemberOnline;
 
@@ -191,6 +206,7 @@ export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
   initialSnapshotRef.current = initialSnapshot;
 
   useEffect(() => {
+    if (disabled) return;
     const init = initialSnapshotRef.current;
     if (init) {
       revisionRef.current = init.revision;
@@ -206,29 +222,51 @@ export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
     setSyncError(null);
     sseReadyRef.current = false;
     sseLiveRef.current = false;
-  }, [roomId, query, refresh, applySnapshot]);
-
-  const pollIntervalMs =
-    snapshot?.settings?.combatActive === true ? COMBAT_POLL_INTERVAL_MS : basePollIntervalMs;
-  const backupPollMs =
-    snapshot?.settings?.combatActive === true ? SSE_BACKUP_POLL_COMBAT_MS : SSE_BACKUP_POLL_MS;
+  }, [roomId, query, refresh, applySnapshot, disabled]);
 
   useEffect(() => {
+    pollIntervalRef.current =
+      snapshotRef.current?.settings?.combatActive === true
+        ? COMBAT_POLL_INTERVAL_MS
+        : basePollIntervalMs;
+    backupPollRef.current =
+      snapshotRef.current?.settings?.combatActive === true
+        ? SSE_BACKUP_POLL_COMBAT_MS
+        : SSE_BACKUP_POLL_MS;
+
+    if (disabled || sseLiveRef.current || !fallbackPollIdRef.current) return;
+    clearInterval(fallbackPollIdRef.current);
+    fallbackPollIdRef.current = setInterval(() => {
+      void refreshImplRef.current?.();
+    }, pollIntervalRef.current);
+  }, [snapshot?.settings?.combatActive, basePollIntervalMs, disabled]);
+
+  useEffect(() => {
+    if (disabled) return;
     if (typeof EventSource === "undefined") {
-      const id = setInterval(refresh, pollIntervalMs);
+      const id = setInterval(refresh, pollIntervalRef.current);
       return () => clearInterval(id);
     }
 
     let es: EventSource | null = null;
-    let pollId: ReturnType<typeof setInterval> | null = null;
 
-    const startPoll = (ms: number) => {
-      if (pollId) clearInterval(pollId);
-      pollId = setInterval(refresh, ms);
+    const stopFallbackPoll = () => {
+      if (fallbackPollIdRef.current) {
+        clearInterval(fallbackPollIdRef.current);
+        fallbackPollIdRef.current = null;
+      }
+    };
+
+    const startFallbackPoll = () => {
+      stopFallbackPoll();
+      fallbackPollIdRef.current = setInterval(() => {
+        void refreshImplRef.current?.();
+      }, pollIntervalRef.current);
     };
 
     const connect = () => {
       es?.close();
+      stopFallbackPoll();
       const since = revisionRef.current;
       const eventsQ = new URLSearchParams();
       eventsQ.set("since", String(since));
@@ -247,6 +285,7 @@ export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
           if (data.type === "revision" && typeof data.revision === "number") {
             sseLiveRef.current = true;
             setSyncStatus("live");
+            stopFallbackPoll();
             if (data.revision > revisionRef.current) {
               scheduleRefresh();
             }
@@ -254,6 +293,7 @@ export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
           if (data.type === "connected" && typeof data.revision === "number") {
             sseLiveRef.current = true;
             setSyncStatus("live");
+            stopFallbackPoll();
             if (data.revision > revisionRef.current) {
               scheduleRefresh();
             }
@@ -278,27 +318,28 @@ export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
         setSyncStatus("polling");
         es?.close();
         es = null;
-        startPoll(pollIntervalMs);
+        startFallbackPoll();
       };
     };
 
     connect();
     const backupDelay = setTimeout(() => {
-      if (!sseLiveRef.current) startPoll(backupPollMs);
+      if (!sseLiveRef.current) startFallbackPoll();
     }, 8000);
 
     return () => {
       clearTimeout(backupDelay);
       es?.close();
-      if (pollId) clearInterval(pollId);
+      stopFallbackPoll();
       if (refreshDebounceRef.current) {
         clearTimeout(refreshDebounceRef.current);
         refreshDebounceRef.current = null;
       }
     };
-  }, [roomId, inviteCode, refresh, scheduleRefresh, pollIntervalMs, backupPollMs]);
+  }, [roomId, inviteCode, refresh, scheduleRefresh, disabled]);
 
   useEffect(() => {
+    if (disabled) return;
     if (!presenceUser?.id) return;
     /* SSE (/events) envia heartbeat de presença — evita POST duplicado a cada 15s */
     if (typeof EventSource !== "undefined") return;
@@ -315,7 +356,7 @@ export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
     ping();
     const id = setInterval(ping, PRESENCE_HEARTBEAT_MS);
     return () => clearInterval(id);
-  }, [roomId, query, presenceUser?.id]);
+  }, [roomId, query, presenceUser?.id, disabled]);
 
   return { snapshot, loading, syncError, syncStatus, refresh, applySnapshot, applyRoomResponse };
 }

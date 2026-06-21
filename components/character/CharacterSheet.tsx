@@ -7,13 +7,15 @@ import type { CharacterSheet as CharacterSheetData, InventoryItem } from "@/lib/
 import { formatXpProgress } from "@/lib/character/xp";
 import { loadInventory, newInstanceId, saveInventory } from "@/lib/character/inventory-storage";
 import type { CompendiumEntry, CompendiumPackId } from "@/lib/compendium/types";
+import { getPackEntries } from "@/lib/compendium/registry";
 import { CompendiumIcon } from "@/components/compendium/CompendiumIcon";
 import { entryBookRef, entryDescriptionHtml, entrySummary, stripHtml } from "@/lib/compendium/format";
 import { compendiumTypeColor } from "@/lib/compendium/icons";
 import { isConsumableEntry } from "@/lib/compendium/consumables";
 import { getEntry } from "@/lib/compendium/registry";
 import { useImageNaturalSize } from "@/hooks/useImageNaturalSize";
-import { patchRoomActor, useRoomSync } from "@/hooks/useRoomSync";
+import { patchRoomActor, useRoomSync, type RoomSyncBridge } from "@/hooks/useRoomSync";
+import type { UserRole } from "@/lib/auth/types";
 import {
   mergePortraitPatchIntoSnapshot,
   type RoomActorPatchResult,
@@ -101,8 +103,14 @@ type Props = {
   canEdit: boolean;
   /** Retrato/token — pode ser true para o mestre mesmo com ficha somente leitura */
   canEditPortrait?: boolean;
-  compendium: Record<CompendiumPackId, CompendiumEntry[]>;
+  /** Compêndio completo (página /personagem). Na mesa, omitir — picker carrega por aba. */
+  compendium?: Record<CompendiumPackId, CompendiumEntry[]>;
+  /** Lazy compendium na mesa quando `compendium` omitido */
+  compendiumRole?: UserRole | null;
+  compendiumIsRoomGm?: boolean;
   roomId?: string;
+  /** Sync da mesa — evita segundo SSE/poll no popup */
+  roomSync?: RoomSyncBridge;
   embedded?: boolean;
   /** Pop-up na mesa (layout estilo VTT) vs página inteira */
   variant?: "page" | "popup";
@@ -139,7 +147,10 @@ export function CharacterSheet({
   canEdit,
   canEditPortrait: canEditPortraitProp,
   compendium,
+  compendiumRole = null,
+  compendiumIsRoomGm = false,
   roomId = "demo",
+  roomSync,
   embedded = false,
   variant = "page",
   hidePdfExport = false,
@@ -171,9 +182,14 @@ export function CharacterSheet({
   const adventureId = character.adventureId?.trim() || null;
   const showBestiaryTab = Boolean(adventureId);
 
-  const { snapshot, refresh, applySnapshot } = useRoomSync(roomId);
+  const { snapshot, refresh, applySnapshot } = useRoomSync(roomId, {
+    disabled: Boolean(roomSync),
+  });
+  const liveSnapshot = roomSync?.snapshot ?? snapshot;
+  const liveRefresh = roomSync?.refresh ?? refresh;
+  const liveApplySnapshot = roomSync?.applySnapshot ?? applySnapshot;
   const sheetBase = localSheet ?? character;
-  const roomActor = snapshot?.actors[character.id];
+  const roomActor = liveSnapshot?.actors[character.id];
   const liveRaw = roomActor ?? sheetBase;
   const live: CharacterSheetData = {
     ...liveRaw,
@@ -239,7 +255,7 @@ export function CharacterSheet({
 
     void (async () => {
       if (inRoom) {
-        await refresh();
+        await liveRefresh();
         return;
       }
       const res = await fetch(`/api/characters/${character.id}`, { credentials: "same-origin" });
@@ -251,7 +267,7 @@ export function CharacterSheet({
       saveInventory(character.id, normalized);
       setLocalSheet(data.character);
     })();
-  }, [inventoryNotifications, character.id, inRoom, refresh]);
+  }, [inventoryNotifications, character.id, inRoom, liveRefresh]);
 
   const persistInventory = useCallback(
     (items: InventoryItem[]) => {
@@ -262,7 +278,7 @@ export function CharacterSheet({
         try {
           if (inRoom) {
             await patchRoomActor(roomId, character.id, { inventory: items });
-            await refresh();
+            await liveRefresh();
             return;
           }
           const data = await persistInventoryToCharacter(character.id, items);
@@ -275,7 +291,7 @@ export function CharacterSheet({
         }
       })();
     },
-    [character.id, inRoom, roomId, refresh]
+    [character.id, inRoom, roomId, liveRefresh]
   );
 
   const persistLootEconomy = useCallback(
@@ -292,7 +308,7 @@ export function CharacterSheet({
     async (patch: LoadoutPatch) => {
       if (inRoom) {
         await patchRoomActor(roomId, character.id, patch);
-        await refresh();
+        await liveRefresh();
         return;
       }
       const res = await fetch(`/api/characters/${character.id}`, {
@@ -307,7 +323,7 @@ export function CharacterSheet({
       const data = (await res.json()) as { character?: CharacterSheetData };
       if (data.character) setLocalSheet(data.character);
     },
-    [character.id, inRoom, roomId, refresh]
+    [character.id, inRoom, roomId, liveRefresh]
   );
 
   const applyCharacterResponse = useCallback((data: { character?: CharacterSheetData }) => {
@@ -344,14 +360,14 @@ export function CharacterSheet({
     (result: RoomActorPatchResult) => {
       if (onRoomPortraitPatch) {
         onRoomPortraitPatch(result);
-      } else if (snapshot) {
-        applySnapshot(mergePortraitPatchIntoSnapshot(snapshot, result));
+      } else if (liveSnapshot) {
+        liveApplySnapshot(mergePortraitPatchIntoSnapshot(liveSnapshot, result));
       } else {
-        void refresh();
+        void liveRefresh();
       }
       applyLocalPortraitFromActor(result.actor);
     },
-    [applyLocalPortraitFromActor, applySnapshot, onRoomPortraitPatch, refresh, snapshot]
+    [applyLocalPortraitFromActor, liveApplySnapshot, onRoomPortraitPatch, liveRefresh, liveSnapshot]
   );
 
   const persistPortraitBundle = useCallback(
@@ -410,14 +426,14 @@ export function CharacterSheet({
       variant="compact"
       roomId={inRoom ? roomId : undefined}
       canEdit={canEdit}
-      onDone={inRoom ? refresh : () => router.refresh()}
+      onDone={inRoom ? liveRefresh : () => router.refresh()}
       onApplied={
         inRoom
           ? (patch) => {
-              if (!snapshot) return;
-              applySnapshot({
-                ...snapshot,
-                actors: { ...snapshot.actors, [patch.actor.id]: patch.actor },
+              if (!liveSnapshot) return;
+              liveApplySnapshot({
+                ...liveSnapshot,
+                actors: { ...liveSnapshot.actors, [patch.actor.id]: patch.actor },
                 scene: patch.scene,
                 revision: patch.revision,
               });
@@ -595,7 +611,7 @@ export function CharacterSheet({
       : 0;
   const prof = proficiencyBonus(identity.nivel);
   const portraitFocus = sanitizePortraitFocus(live.portraitFocus);
-  const linkedToken = snapshot?.scene.tokens.find(
+  const linkedToken = liveSnapshot?.scene.tokens.find(
     (t) => t.linked && t.actorId === character.id
   );
   const popupPortraitSrc = firstPortraitDataUrl(
@@ -623,11 +639,11 @@ export function CharacterSheet({
   useSheetPdfDeepLink({
     enabled: isPopup && !onMesaPage,
     roomId: inRoom ? roomId : undefined,
-    combat: snapshot?.combat,
-    tokens: snapshot?.scene.tokens,
-    actors: snapshot?.actors,
+    combat: liveSnapshot?.combat,
+    tokens: liveSnapshot?.scene.tokens,
+    actors: liveSnapshot?.actors,
     openSheet: scrollToQuickBar,
-    onRolled: refresh,
+    onRolled: liveRefresh,
   });
 
   const tabTitles: Record<Tab, string> = {
@@ -803,7 +819,7 @@ export function CharacterSheet({
           spells={filtered}
           canEdit={canEdit}
           roomId={inRoom ? roomId : undefined}
-          onSaved={() => void refresh()}
+          onSaved={() => void liveRefresh()}
           onPersistLocal={
             !inRoom
               ? (next) => {
@@ -886,7 +902,7 @@ export function CharacterSheet({
       {inRoom ? (
         <div className={isPopup ? "sheet-popup-live" : "sheet-live"}>
           <span className="sheet-live-dot" aria-hidden />
-          Sync mesa · rev {snapshot?.revision ?? 0}
+          Sync mesa · rev {liveSnapshot?.revision ?? 0}
         </div>
       ) : null}
 
@@ -910,7 +926,7 @@ export function CharacterSheet({
             tokenFocus={live.tokenFocus}
             tokenImageUrl={live.tokenImageUrl}
             canEdit={canEditPortrait}
-            onSaved={refresh}
+            onSaved={liveRefresh}
             onRoomPortraitSaved={applyRoomPortraitPatch}
           />
         ) : (
@@ -944,7 +960,7 @@ export function CharacterSheet({
           actor={live}
           inventory={inventory}
           canEdit={canEdit}
-          onSaved={inRoom ? refresh : () => undefined}
+          onSaved={inRoom ? liveRefresh : () => undefined}
           savePatch={saveLoadoutPatch}
           eyebrow={inRoom ? "Em uso na mesa" : "Equipamento ativo"}
         />
@@ -967,7 +983,7 @@ export function CharacterSheet({
           actor={live}
           roomId={inRoom ? roomId : undefined}
           canEdit={canEdit}
-          onSaved={inRoom ? refresh : () => router.refresh()}
+          onSaved={inRoom ? liveRefresh : () => router.refresh()}
           onSaveLoadout={!inRoom ? persistCombatLoadout : undefined}
         />
       ) : null}
@@ -977,7 +993,7 @@ export function CharacterSheet({
           actor={live}
           roomId={inRoom ? roomId : undefined}
           canEdit={canEdit}
-          onSaved={inRoom ? refresh : () => router.refresh()}
+          onSaved={inRoom ? liveRefresh : () => router.refresh()}
           onSaveIdentity={!inRoom ? persistIdentityPatch : undefined}
         />
       ) : null}
@@ -1036,8 +1052,8 @@ export function CharacterSheet({
           adventureId={adventureId}
           inRoom={inRoom}
           canEdit={canEdit}
-          snapshotRevision={snapshot?.revision}
-          onRefresh={inRoom ? refresh : () => router.refresh()}
+          snapshotRevision={liveSnapshot?.revision}
+          onRefresh={inRoom ? liveRefresh : () => router.refresh()}
           onSaveIdentity={!inRoom ? persistIdentityPatch : undefined}
           onSaveCombatLoadout={!inRoom ? persistCombatLoadout : undefined}
         />
@@ -1113,7 +1129,7 @@ export function CharacterSheet({
           standalone={isStandalonePopup}
           inRoom={inRoom}
           roomId={roomId}
-          onRoll={refresh}
+          onRoll={liveRefresh}
           levelUp={levelUpControl}
           loadout={
             canEdit ? (
@@ -1121,7 +1137,7 @@ export function CharacterSheet({
                 actor={live}
                 inventory={inventory}
                 canEdit={canEdit}
-                onSaved={inRoom ? refresh : () => undefined}
+                onSaved={inRoom ? liveRefresh : () => undefined}
                 savePatch={saveLoadoutPatch}
                 eyebrow={inRoom ? "Em uso na mesa" : "Equipamento ativo"}
               />
@@ -1137,6 +1153,8 @@ export function CharacterSheet({
             pack={pickerPack}
             packs={PLAYER_PACKS}
             compendium={compendium}
+            compendiumRole={compendiumRole}
+            compendiumIsRoomGm={compendiumIsRoomGm}
             onPickPack={setPickerPack}
             onPick={addFromCompendium}
             onClose={() => setPickerOpen(false)}
@@ -1164,6 +1182,8 @@ export function CharacterSheet({
           pack={pickerPack}
           packs={PLAYER_PACKS}
           compendium={compendium}
+          compendiumRole={compendiumRole}
+          compendiumIsRoomGm={compendiumIsRoomGm}
           onPickPack={setPickerPack}
           onPick={addFromCompendium}
           onClose={() => setPickerOpen(false)}
@@ -1267,13 +1287,17 @@ function CompendiumPicker({
   pack,
   packs,
   compendium,
+  compendiumRole = null,
+  compendiumIsRoomGm = false,
   onPickPack,
   onPick,
   onClose,
 }: {
   pack: CompendiumPackId;
   packs: CompendiumPackId[];
-  compendium: Record<CompendiumPackId, CompendiumEntry[]>;
+  compendium?: Record<CompendiumPackId, CompendiumEntry[]>;
+  compendiumRole?: UserRole | null;
+  compendiumIsRoomGm?: boolean;
   onPickPack: (p: CompendiumPackId) => void;
   onPick: (e: CompendiumEntry) => void;
   onClose: () => void;
@@ -1287,7 +1311,10 @@ function CompendiumPicker({
     monstros: "Monstros",
   };
 
-  const entries = compendium[pack] ?? [];
+  const entries = useMemo(() => {
+    if (compendium?.[pack]) return compendium[pack]!;
+    return getPackEntries(pack, { role: compendiumRole, isRoomGm: compendiumIsRoomGm });
+  }, [compendium, pack, compendiumRole, compendiumIsRoomGm]);
 
   return (
     <div className="picker-overlay" onClick={onClose} role="presentation">

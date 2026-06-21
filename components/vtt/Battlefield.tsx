@@ -1,5 +1,6 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import {
   startTransition,
   useCallback,
@@ -65,13 +66,18 @@ import { FoundryWindow } from "@/components/vtt/foundry/FoundryWindow";
 import type { FoundryWindowLayout, MesaWindowId } from "@/hooks/vtt/useFoundryWindows";
 import type { MesaPanelLayout } from "@/lib/vtt/mesa-panel-layout";
 import { effectiveMesaPanelWidth } from "@/lib/vtt/mesa-panel-layout";
-import { CombatFxLayer, type TokenCombatFlash } from "@/components/vtt/CombatFxLayer";
+import type { TokenCombatFlash } from "@/components/vtt/CombatFxLayer";
 import type { CombatFxState } from "@/lib/vtt/combat-fx-types";
 import { ingestNewCombatFx, isPlayableCombatFxMessage, createPendingAttackFx, findPendingAttackMessage, isPendingCombatFx, resolvePendingCombatFx } from "@/lib/vtt/combat-fx-sequence";
 import type { ChatMessage } from "@/lib/room/chat";
 import { emptyCombat, activeTokenId, normalizeCombatTrack } from "@/lib/room/combat";
 import { resolveLivingActiveTokenId } from "@/lib/room/combat-order";
 import { TurnHandoffOverlay } from "@/components/vtt/TurnHandoffOverlay";
+
+const CombatFxLayer = dynamic(
+  () => import("@/components/vtt/CombatFxLayer").then((m) => m.CombatFxLayer),
+  { ssr: false }
+);
 import {
   firstPortraitDataUrl,
   mergeScenePreservingPortraits,
