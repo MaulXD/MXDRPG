@@ -50,6 +50,7 @@ export type CombatFxState = {
   resolveDetail?: string;
   damageTypeLabel?: string;
   spellDamageType?: string;
+  damageFormula?: string;
   areaCells?: Axial[];
   areaCascade?: AreaCascadeMode;
   areaTargets?: CombatFxTargetBurst[];

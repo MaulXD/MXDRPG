@@ -40,6 +40,7 @@ export type ChatMessage = {
     areaCascade?: "distance" | "initiative" | "simultaneous";
     areaCellList?: { q: number; r: number }[];
     spellDamageType?: string;
+    damageFormula?: string;
     damageTotal: number | null;
     defenderHpBefore: number;
     defenderHpAfter: number;

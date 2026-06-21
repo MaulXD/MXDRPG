@@ -24,7 +24,7 @@ import { useGmPlayerViewMode } from "@/hooks/vtt/useGmPlayerViewMode";
 import type { RoomSnapshot } from "@/lib/room/types";
 import { useRoomSync, type RoomMemberOnlineEvent, type RoomApiPayload } from "@/hooks/useRoomSync";
 import { usePassTurn } from "@/hooks/vtt/usePassTurn";
-import { preloadCombatDiceBox } from "@/lib/vtt/dice-combat-box";
+import { preloadCombatDiceBox, warmCombatDiceBoxes, verifyDiceBoxAssets } from "@/lib/vtt/dice-combat-box";
 import { useRoomPresence } from "@/hooks/useRoomPresence";
 import { MesaPresenceAlerts } from "@/components/vtt/MesaPresenceAlerts";
 import { MesaOnlineMenu } from "@/components/vtt/MesaOnlineMenu";
@@ -177,7 +177,19 @@ export function MesaWorkspace({
   );
 
   useEffect(() => {
-    if (snapshot?.settings?.combatActive) preloadCombatDiceBox();
+    preloadCombatDiceBox();
+  }, []);
+
+  useEffect(() => {
+    if (!snapshot?.settings?.combatActive) return;
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    preloadCombatDiceBox();
+    void warmCombatDiceBoxes(reduced);
+    if (process.env.NODE_ENV === "development") {
+      void verifyDiceBoxAssets().then(({ ok, missing }) => {
+        if (!ok) console.warn("[dice-box] assets ausentes:", missing);
+      });
+    }
   }, [snapshot?.settings?.combatActive]);
 
   useEffect(() => {

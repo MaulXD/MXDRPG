@@ -2,9 +2,8 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { ChatMessage } from "@/lib/room/chat";
-import { parsePrimaryDie } from "@/lib/room/chat-events";
 import { postRoomChat } from "@/hooks/useRoomSync";
-import { DiceMiniature } from "@/components/vtt/DiceMiniature";
+import { DiceBoxMini } from "@/components/vtt/DiceBoxMini";
 import { CombatChatCard } from "@/components/vtt/CombatChatCard";
 import type { CombatChatRevealPhase } from "@/lib/combat/chat-display";
 import type { BattleToken } from "@/lib/vtt/types";
@@ -118,11 +117,10 @@ function ChatEvent({
 
   if (message.kind === "roll" && message.roll) {
     const natural = message.roll.rolls[0] ?? message.roll.total;
-    const sides = parsePrimaryDie(message.roll.formula);
     return (
       <article className="room-chat-event room-chat-event--roll">
         <div className="room-chat-event-head">
-          <DiceMiniature formula={message.roll.formula} value={natural} size="sm" />
+          <DiceBoxMini formula={message.roll.formula} value={natural} size="sm" />
           <div className="room-chat-event-meta">
             <span className="room-chat-time">{time}</span>
             <strong className="room-chat-author">{message.authorName}</strong>
@@ -136,7 +134,6 @@ function ChatEvent({
             <span className="room-chat-roll-parts"> [{message.roll.rolls.join(", ")}]</span>
           ) : null}
         </p>
-        <span className="room-chat-roll-die-hint">d{sides}</span>
       </article>
     );
   }
