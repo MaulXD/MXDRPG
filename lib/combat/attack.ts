@@ -24,7 +24,7 @@ import { axialDistance } from "@/lib/vtt/grid-math";
 import { resistedDamageAmount } from "@/lib/combat/damage-resist";
 import { effectiveRangedMaxCells } from "@/lib/combat/ranged-attack-range";
 import { applyDamageWithTempHp } from "@/lib/combat/hp-temp";
-import { abilityFromEntry } from "@/lib/combat/compendium-actions";
+import { abilityFromEntry, abilityFromKnownId } from "@/lib/combat/compendium-actions";
 import { attackRollMode, canTokenAct } from "@/lib/combat/conditions";
 import { clearTimedEffectsForFields } from "@/lib/combat/timed-effects";
 import { combineRollModes, formatD20Detail, formatRollMode, rollD20, type RollMode } from "@/lib/combat/d20";
@@ -273,8 +273,7 @@ export function listCombatActions(actor: CharacterSheet): CombatActionOption[] {
     }
     if (item.packId === "habilidades") {
       const entry = getEntry("habilidades", item.entryId);
-      if (!entry) continue;
-      const ability = abilityFromEntry(entry);
+      const ability = entry ? abilityFromEntry(entry) : abilityFromKnownId(item.entryId);
       if (ability) out.push(ability);
     }
   }
@@ -409,6 +408,11 @@ export function resolveCombatAction(
           if (action) return action;
         }
       }
+    }
+
+    if (packId === "habilidades") {
+      const known = abilityFromKnownId(entryId);
+      if (known) return known;
     }
 
     // Ação solicitada não encontrada — fallback para ação padrão

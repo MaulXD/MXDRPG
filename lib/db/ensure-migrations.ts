@@ -43,6 +43,17 @@ async function ensureMariaDbPatches(sql: NonNullable<ReturnType<typeof getSql>>)
     `UPDATE eldarin_adventures SET rpg_system = 'eldarin'
      WHERE rpg_system IS NULL OR TRIM(rpg_system) = ''`
   );
+
+  await sql.unsafe(`
+    CREATE TABLE IF NOT EXISTS eldarin_room_presence (
+      room_id VARCHAR(64) NOT NULL,
+      user_id VARCHAR(64) NOT NULL,
+      display_name VARCHAR(120) NOT NULL DEFAULT 'Jogador',
+      last_seen BIGINT NOT NULL,
+      PRIMARY KEY (room_id, user_id),
+      KEY idx_eldarin_room_presence_room_last_seen (room_id, last_seen)
+    )
+  `);
 }
 
 /** Aplica patches idempotentes quando migrate não rodou no deploy. */
