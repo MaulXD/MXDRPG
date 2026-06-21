@@ -407,6 +407,7 @@ export function CharacterSheet({
     <LevelUpWizard
       actor={live}
       theme="ddb"
+      variant="compact"
       roomId={inRoom ? roomId : undefined}
       canEdit={canEdit}
       onDone={inRoom ? refresh : () => router.refresh()}
@@ -1113,7 +1114,7 @@ export function CharacterSheet({
           inRoom={inRoom}
           roomId={roomId}
           onRoll={refresh}
-          progression={levelUpControl}
+          levelUp={levelUpControl}
           loadout={
             canEdit ? (
               <SheetPopupLoadoutBar
