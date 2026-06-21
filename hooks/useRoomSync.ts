@@ -38,12 +38,13 @@ const PRESENCE_HEARTBEAT_MS = 15_000;
 const REFRESH_DEBOUNCE_MS = 180;
 const REFRESH_DEBOUNCE_COMBAT_MS = 100;
 /** Poll de segurança mesmo com SSE aberto (ms). */
-const SSE_BACKUP_POLL_MS = 2500;
-const SSE_BACKUP_POLL_COMBAT_MS = 500;
+const SSE_BACKUP_POLL_MS = 10_000;
+const SSE_BACKUP_POLL_COMBAT_MS = 2000;
 
-function roomQuery(roomId: string, inviteCode?: string | null): string {
+function roomQuery(roomId: string, inviteCode?: string | null, sinceRev?: number): string {
   const q = new URLSearchParams();
   if (inviteCode?.trim()) q.set("invite", inviteCode.trim());
+  if (sinceRev != null && sinceRev > 0) q.set("since", String(sinceRev));
   const s = q.toString();
   return s ? `?${s}` : "";
 }
@@ -99,10 +100,19 @@ export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
     const ac = new AbortController();
     const timer = setTimeout(() => ac.abort(), FETCH_TIMEOUT_MS);
     try {
-      const res = await fetch(`/api/room/${roomId}${query}`, {
+      const syncQuery = roomQuery(roomId, inviteCode, revisionRef.current);
+      const res = await fetch(`/api/room/${roomId}${syncQuery}`, {
         cache: "no-store",
         signal: ac.signal,
       });
+      if (res.status === 304) {
+        const hdr = res.headers.get("X-Room-Revision");
+        const rev = hdr ? parseInt(hdr, 10) : revisionRef.current;
+        if (Number.isFinite(rev) && rev > 0) revisionRef.current = Math.max(revisionRef.current, rev);
+        setSyncError(null);
+        sseReadyRef.current = true;
+        return;
+      }
       if (!res.ok) {
         const err = (await res.json().catch(() => ({}))) as { error?: string };
         setSyncError(err.error ?? `Sync falhou (${res.status})`);
@@ -236,6 +246,8 @@ export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
 
   useEffect(() => {
     if (!presenceUser?.id) return;
+    /* SSE (/events) envia heartbeat de presença — evita POST duplicado a cada 15s */
+    if (typeof EventSource !== "undefined") return;
 
     const ping = () => {
       void fetch(`/api/room/${roomId}/presence${query}`, {

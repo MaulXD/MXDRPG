@@ -64,7 +64,7 @@ export function getDiceBoxBaseOptions(reducedMotion: boolean) {
     restitution: 0,
     linearDamping: 0.55,
     angularDamping: 0.55,
-    settleTimeout: 4500,
+    settleTimeout: reducedMotion ? 900 : 1400,
     enableShadows: !reducedMotion,
     shadowTransparency: 0.72,
     lightIntensity: 1.05,

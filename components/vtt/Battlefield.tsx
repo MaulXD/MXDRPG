@@ -65,7 +65,7 @@ import type { MesaPanelLayout } from "@/lib/vtt/mesa-panel-layout";
 import { effectiveMesaPanelWidth } from "@/lib/vtt/mesa-panel-layout";
 import { CombatFxLayer, type TokenCombatFlash } from "@/components/vtt/CombatFxLayer";
 import type { CombatFxState } from "@/lib/vtt/combat-fx-types";
-import { ingestNewCombatFx, isPlayableCombatFxMessage } from "@/lib/vtt/combat-fx-sequence";
+import { ingestNewCombatFx, isPlayableCombatFxMessage, createPendingAttackFx } from "@/lib/vtt/combat-fx-sequence";
 import type { ChatMessage } from "@/lib/room/chat";
 import { emptyCombat, activeTokenId, normalizeCombatTrack } from "@/lib/room/combat";
 import { resolveLivingActiveTokenId } from "@/lib/room/combat-order";
@@ -646,6 +646,19 @@ export function Battlefield({
     ((snap: RoomSnapshot, opts?: { deferSnap?: boolean }) => void) | null
   >(null);
 
+  const applyCombatSnapshot = useCallback(
+    (snap: RoomSnapshot) => {
+      if (snap.revision >= appliedSceneRevisionRef.current) {
+        appliedSceneRevisionRef.current = snap.revision;
+      }
+      startTransition(() => {
+        setScene((prev) => mergeScenePreservingPortraits(prev, snap.scene));
+      });
+      if (onApplySnapshot) onApplySnapshot(snap, { force: true });
+    },
+    [onApplySnapshot]
+  );
+
   const syncRoom = useCallback(
     (snap?: RoomSnapshot) => {
       if (snap?.scene) {
@@ -994,6 +1007,11 @@ export function Battlefield({
 
   const playCombatFxFromSnap = useCallback(
     (snap: RoomSnapshot, opts?: { deferSnap?: boolean }) => {
+      if (combatFxIdRef.current?.startsWith("pending-")) {
+        combatFxQueueRef.current = [];
+        combatFxIdRef.current = null;
+        setCombatFx(null);
+      }
       const queueBefore = combatFxQueueRef.current.length;
       const activeFxBefore = combatFxIdRef.current;
       if (opts?.deferSnap) pendingCombatSnapRef.current = snap;
@@ -1230,24 +1248,20 @@ export function Battlefield({
     const snap = pendingCombatSnapRef.current;
     if (!snap) return;
     pendingCombatSnapRef.current = null;
-    appliedSceneRevisionRef.current = snap.revision;
-    setScene((prev) => mergeScenePreservingPortraits(prev, snap.scene));
-    syncRoom(snap);
-  }, [syncRoom]);
+    applyCombatSnapshot(snap);
+  }, [applyCombatSnapshot]);
 
   const onCombatFxDone = useCallback(() => {
     setTokenFlash(null);
     if (pendingCombatSnapRef.current) {
       const snap = pendingCombatSnapRef.current;
       pendingCombatSnapRef.current = null;
-      appliedSceneRevisionRef.current = snap.revision;
-      setScene((prev) => mergeScenePreservingPortraits(prev, snap.scene));
-      syncRoom(snap);
+      applyCombatSnapshot(snap);
     }
     const next = combatFxQueueRef.current.shift() ?? null;
     combatFxIdRef.current = next?.id ?? null;
     setCombatFx(next);
-  }, [syncRoom]);
+  }, [applyCombatSnapshot]);
 
   const onCombatTokenFlash = useCallback((tokenId: string | null, kind: import("@/lib/vtt/draw-battlefield").TokenFlashKind | null) => {
     if (tokenId && kind) setTokenFlash({ tokenId, kind });
@@ -1621,6 +1635,12 @@ export function Battlefield({
       }
       setActionErr(null);
       attackBusyRef.current = true;
+      const defender = displayScene.tokens.find((t) => t.id === defenderId);
+      if (defender) {
+        const pending = createPendingAttackFx(selected, defender);
+        combatFxIdRef.current = pending.id;
+        setCombatFx(pending);
+      }
       try {
         let snap: RoomSnapshot;
         if (activeCombatAction.kind === "ability") {
@@ -1644,6 +1664,10 @@ export function Battlefield({
         // Mantém modo ataque para permitir outro alvo no mesmo turno (Esc cancela).
       } catch (e) {
         setActionErr(e instanceof Error ? e.message : "Falha no ataque");
+        if (combatFxIdRef.current?.startsWith("pending-")) {
+          combatFxIdRef.current = null;
+          setCombatFx(null);
+        }
       } finally {
         attackBusyRef.current = false;
       }

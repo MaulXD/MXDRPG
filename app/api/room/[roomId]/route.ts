@@ -14,9 +14,21 @@ export async function GET(req: Request, { params }: Params) {
     return NextResponse.json({ error: auth.error }, { status: auth.status });
   }
 
+  const sinceRev = Math.max(0, parseInt(new URL(req.url).searchParams.get("since") ?? "0", 10) || 0);
+  if (sinceRev > 0 && auth.room.revision <= sinceRev) {
+    return new NextResponse(null, {
+      status: 304,
+      headers: {
+        "X-Room-Revision": String(auth.room.revision),
+        "Cache-Control": "private, no-cache",
+      },
+    });
+  }
+
   const snapshot = await getRoomSnapshot(roomId);
   if (!snapshot) {
     return NextResponse.json({ error: "Sala não encontrada" }, { status: 404 });
   }
+
   return NextResponse.json(snapshotForViewer(snapshot, auth.room, auth.user));
 }

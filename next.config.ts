@@ -2,6 +2,20 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
+  async headers() {
+    return [
+      {
+        source: "/vendor/:path*",
+        headers: [
+          { key: "Cache-Control", value: "public, max-age=604800, immutable" },
+        ],
+      },
+      {
+        source: "/:path*.woff2",
+        headers: [{ key: "Cache-Control", value: "public, max-age=604800, immutable" }],
+      },
+    ];
+  },
   async redirects() {
     return [
       { source: "/compendio", destination: "/compendios", permanent: true },
