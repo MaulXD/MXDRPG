@@ -203,3 +203,14 @@ export function getDiceBoxRuntimeOptions(reducedMotion = false) {
     offscreen: true,
   };
 }
+
+/** Opções do painel de combate — faces legíveis como no preview. */
+export function getDiceBoxCombatOptions(reducedMotion = false) {
+  return {
+    ...getDiceBoxRuntimeOptions(reducedMotion),
+    scale: reducedMotion ? 16 : 20,
+    lightIntensity: 1.35,
+    shadowTransparency: 0.65,
+    settleTimeout: reducedMotion ? 650 : 1100,
+  };
+}

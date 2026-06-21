@@ -4,8 +4,7 @@ import { useCallback, useEffect, useRef, type CSSProperties } from "react";
 import type { CombatDiceSequence, DiceCombatUiState } from "@/lib/vtt/combat-dice-model";
 import { dieFaceValue, toDiceBoxRoll } from "@/lib/vtt/combat-dice-model";
 import {
-  COMBAT_DICE_HOST_PX,
-  getDiceBoxOptionsForHost,
+  getDiceBoxCombatPanelOptions,
   loadVendorDiceBox,
   scheduleCombatDiceWarm,
   type DiceBoxInstance,
@@ -29,6 +28,14 @@ function waitLayout(): Promise<void> {
 
 function waitMs(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function slotGlowStyle(color: string, border: string): CSSProperties {
+  return {
+    "--dice-tier-color": color,
+    "--dice-tier-border": border,
+    boxShadow: `inset 0 0 0 1px ${border}, 0 0 18px ${color}33`,
+  } as CSSProperties;
 }
 
 export function DiceCombatPanel({ sequence, ui, reducedMotion = false }: Props) {
@@ -64,7 +71,7 @@ export function DiceCombatPanel({ sequence, ui, reducedMotion = false }: Props) 
     }
     const DiceBox = await loadVendorDiceBox();
     attackBoxRef.current = new DiceBox({
-      ...getDiceBoxOptionsForHost(COMBAT_DICE_HOST_PX, reducedMotion),
+      ...getDiceBoxCombatPanelOptions(reducedMotion),
       container: `#${ATTACK_HOST_ID}`,
     });
     await attackBoxRef.current.init();
@@ -81,7 +88,7 @@ export function DiceCombatPanel({ sequence, ui, reducedMotion = false }: Props) 
     }
     const DiceBox = await loadVendorDiceBox();
     damageBoxRef.current = new DiceBox({
-      ...getDiceBoxOptionsForHost(COMBAT_DICE_HOST_PX, reducedMotion),
+      ...getDiceBoxCombatPanelOptions(reducedMotion),
       container: `#${DAMAGE_HOST_ID}`,
     });
     await damageBoxRef.current.init();
@@ -154,18 +161,16 @@ export function DiceCombatPanel({ sequence, ui, reducedMotion = false }: Props) 
     };
   }, [clearBoth]);
 
+  const damageBorder = damageSlotBorder ?? damage?.themeColor ?? "#e05040";
+  const damageColor = damage?.themeColor ?? "#e05040";
+
   return (
     <div
       className={`combat-dice-box-row${ui.evicting ? " combat-dice-box-row--evicting" : ""}${ui.showDamage && damage ? " combat-dice-box-row--dual" : ""}`}
     >
       <div
         className={`combat-dice-slot${ui.attackLocked ? " combat-dice-slot--locked" : ""}`}
-        style={
-          {
-            "--dice-tier-color": attacker.color,
-            "--dice-tier-border": attacker.border,
-          } as CSSProperties
-        }
+        style={slotGlowStyle(attacker.color, attacker.border)}
       >
         <div id={ATTACK_HOST_ID} className="combat-dice-box-host" />
         <span className="combat-dice-slot__label">
@@ -181,16 +186,11 @@ export function DiceCombatPanel({ sequence, ui, reducedMotion = false }: Props) 
       {ui.showDamage && damage ? (
         <div
           className="combat-dice-slot combat-dice-slot--damage"
-          style={
-            {
-              "--dice-tier-color": damage.themeColor,
-              "--dice-tier-border": damageSlotBorder ?? damage.themeColor,
-            } as CSSProperties
-          }
+          style={slotGlowStyle(damageColor, damageBorder)}
         >
           <div id={DAMAGE_HOST_ID} className="combat-dice-box-host" />
           <span className="combat-dice-slot__label">
-            <span className="combat-dice-slot__dot" style={{ background: damage.themeColor }} />
+            <span className="combat-dice-slot__dot" style={{ background: damageColor }} />
             {damageSlotLabel ?? `Dano d${damage.sides}`}
           </span>
         </div>
