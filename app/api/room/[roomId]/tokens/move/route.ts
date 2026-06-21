@@ -3,7 +3,7 @@ import { canBypassCombatTurn } from "@/lib/auth/room-access";
 import { canParticipateInRoomSession } from "@/lib/auth/mesa-watch-session";
 import { canMoveToken } from "@/lib/auth/authorize-room";
 import { getSession } from "@/lib/auth/session";
-import { snapshotForViewer } from "@/lib/room/snapshot-for-viewer";
+import { mutationDeltaResponse } from "@/lib/room/mutation-response";
 import { toSnapshot } from "@/lib/room/internal/registry";
 import { moveRoomToken, getRoom } from "@/lib/room/store";
 import { activeTokenId } from "@/lib/room/combat";
@@ -72,6 +72,6 @@ export async function POST(req: Request, { params }: Params) {
   }
 
   return NextResponse.json(
-    snapshotForViewer(result.snapshot, room, session?.user ?? null)
+    mutationDeltaResponse(snapshotBefore, result.snapshot, room, session?.user ?? null)
   );
 }

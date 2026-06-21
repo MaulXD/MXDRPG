@@ -157,7 +157,7 @@ export function NotificationsBell() {
           aria-expanded={open}
           aria-haspopup="dialog"
           aria-label={badge ? `${notif.count} notificações` : "Notificações"}
-          title="Notificações"
+          data-site-tip="Notificações"
           onClick={toggleOpen}
         >
           <IconBell size={18} />

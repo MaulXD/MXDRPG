@@ -20,7 +20,9 @@ import { CombatModeTransition } from "@/components/vtt/CombatModeTransition";
 import { useFoundryWindows, FOUNDRY_DOCK_PANEL_IDS, type MesaWindowId } from "@/hooks/vtt/useFoundryWindows";
 import { MAX_CHARACTERS_PER_USER_PER_ADVENTURE } from "@/lib/character/adventure-bind";
 import { useGmPlayerViewMode } from "@/hooks/vtt/useGmPlayerViewMode";
-import { useRoomSync, type RoomMemberOnlineEvent, nextCombatTurn } from "@/hooks/useRoomSync";
+import type { RoomSnapshot } from "@/lib/room/types";
+import { useRoomSync, type RoomMemberOnlineEvent, type RoomApiPayload, nextCombatTurn } from "@/hooks/useRoomSync";
+import { preloadCombatDiceBox } from "@/lib/vtt/dice-combat-box";
 import { useRoomPresence } from "@/hooks/useRoomPresence";
 import { MesaPresenceAlerts } from "@/components/vtt/MesaPresenceAlerts";
 import { MesaOnlineMenu } from "@/components/vtt/MesaOnlineMenu";
@@ -76,6 +78,8 @@ type Props = {
   charactersInAdventure?: number;
   openCharacterWizardOnLoad?: boolean;
   watchOnly?: boolean;
+  /** Snapshot SSR (Fase 4) — mesa interativa sem esperar 1º GET */
+  initialSnapshot?: RoomSnapshot | null;
 };
 
 export function MesaWorkspace({
@@ -99,6 +103,7 @@ export function MesaWorkspace({
   charactersInAdventure = 0,
   openCharacterWizardOnLoad = false,
   watchOnly = false,
+  initialSnapshot = null,
 }: Props) {
   const shareRoomId = roomInviteRoomId ?? roomId;
   const isActualGm = canControlCombat;
@@ -149,8 +154,9 @@ export function MesaWorkspace({
     presenceUser,
     isRoomOwner: isActualGm,
   });
-  const { snapshot, syncError, refresh, applySnapshot } = useRoomSync(roomId, {
+  const { snapshot, syncError, syncStatus, refresh, applySnapshot, applyRoomResponse } = useRoomSync(roomId, {
     inviteCode,
+    initialSnapshot,
     presenceUser,
     onMemberOnline: (event) => {
       memberOnlineRef.current?.(event);
@@ -158,10 +164,14 @@ export function MesaWorkspace({
     },
   });
   const applyActionSnapshot = useCallback(
-    (snap: import("@/lib/room/types").RoomSnapshot) =>
-      applySnapshot(snap, { force: true, immediate: true }),
-    [applySnapshot]
+    (payload: RoomApiPayload) =>
+      applyRoomResponse(payload, { force: true, immediate: true }),
+    [applyRoomResponse]
   );
+
+  useEffect(() => {
+    if (snapshot?.settings?.combatActive) preloadCombatDiceBox();
+  }, [snapshot?.settings?.combatActive]);
 
   useEffect(() => {
     if (roomId === "demo" || watchOnly || !session?.id) return;
@@ -504,7 +514,21 @@ export function MesaWorkspace({
               Tentar de novo
             </button>
           </p>
-        ) : null}
+        ) : (
+          <p
+            className={`mesa-sync-status mesa-sync-status--${syncStatus}`}
+            aria-live="polite"
+            title="Estado da conexão ao vivo com a mesa"
+          >
+            {syncStatus === "loading"
+              ? "Carregando mesa…"
+              : syncStatus === "live"
+                ? "Ao vivo"
+                : syncStatus === "polling"
+                  ? "Reconectando…"
+                  : null}
+          </p>
+        )}
 
 
         <div className="foundry-mesa">

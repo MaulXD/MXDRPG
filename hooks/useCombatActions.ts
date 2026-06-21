@@ -37,7 +37,7 @@ import type { CombatActionOption } from "@/lib/combat/types";
 
 import { isAreaSpellAction } from "@/lib/combat/area-spell";
 
-import { patchRoomActor, postRoomAttack, postRoomAbility } from "@/hooks/useRoomSync";
+import { patchRoomActor, postRoomAttack, postRoomAbility, isRoomDelta } from "@/hooks/useRoomSync";
 
 import type { ChatMessage } from "@/lib/room/chat";
 
@@ -231,7 +231,7 @@ export function usePerformAttack() {
 
       try {
 
-        const snapshot = await postRoomAttack(
+        const payload = await postRoomAttack(
           roomId,
           attacker.id,
           defenderId,
@@ -241,7 +241,9 @@ export function usePerformAttack() {
           })
         );
 
-        const combatMsgs = snapshot.chat.filter((m) => m.kind === "combat");
+        const combatMsgs = (
+          isRoomDelta(payload) ? payload.chatAppend ?? [] : payload.chat
+        ).filter((m) => m.kind === "combat");
 
         const last = combatMsgs[combatMsgs.length - 1];
 
@@ -293,7 +295,7 @@ export function usePerformAttack() {
 
       try {
 
-        const snapshot = await postRoomAbility(roomId, attackerId, defenderId, {
+        const payload = await postRoomAbility(roomId, attackerId, defenderId, {
 
           actionEntryId: action.entryId,
 
@@ -301,7 +303,9 @@ export function usePerformAttack() {
 
         });
 
-        const combatMsgs = snapshot.chat.filter((m) => m.kind === "combat");
+        const combatMsgs = (
+          isRoomDelta(payload) ? payload.chatAppend ?? [] : payload.chat
+        ).filter((m) => m.kind === "combat");
 
         const last = combatMsgs[combatMsgs.length - 1];
 

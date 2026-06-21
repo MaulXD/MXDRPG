@@ -23,6 +23,8 @@ import {
   revealRoomCell,
   repositionRoomToken,
   deleteRoomToken,
+  applyRoomApiPayload,
+  type RoomApiPayload,
 } from "@/hooks/useRoomSync";
 import {
   appendMapMarkup,
@@ -65,7 +67,7 @@ import type { MesaPanelLayout } from "@/lib/vtt/mesa-panel-layout";
 import { effectiveMesaPanelWidth } from "@/lib/vtt/mesa-panel-layout";
 import { CombatFxLayer, type TokenCombatFlash } from "@/components/vtt/CombatFxLayer";
 import type { CombatFxState } from "@/lib/vtt/combat-fx-types";
-import { ingestNewCombatFx, isPlayableCombatFxMessage, createPendingAttackFx } from "@/lib/vtt/combat-fx-sequence";
+import { ingestNewCombatFx, isPlayableCombatFxMessage, createPendingAttackFx, findPendingAttackMessage, isPendingCombatFx, resolvePendingCombatFx } from "@/lib/vtt/combat-fx-sequence";
 import { preloadCombatDiceBox } from "@/lib/vtt/dice-combat-box";
 import type { ChatMessage } from "@/lib/room/chat";
 import { emptyCombat, activeTokenId, normalizeCombatTrack } from "@/lib/room/combat";
@@ -170,7 +172,7 @@ type Props = {
   inviteCode?: string | null;
   snapshot?: RoomSnapshot | null;
   onRefresh?: () => void;
-  onApplySnapshot?: (snap: RoomSnapshot, opts?: { force?: boolean }) => void;
+  onApplySnapshot?: (payload: RoomApiPayload, opts?: { force?: boolean }) => void;
   onOpenSheet?: (actorId?: string) => void;
   onCreateCharacter?: () => void;
   /** Abre ficha de monstro do compêndio em janela flutuante. */
@@ -649,44 +651,47 @@ export function Battlefield({
   const combatFxQueueRef = useRef<CombatFxState[]>([]);
   const pendingCombatSnapRef = useRef<RoomSnapshot | null>(null);
   const playCombatFxFromSnapRef = useRef<
-    ((snap: RoomSnapshot, opts?: { deferSnap?: boolean }) => void) | null
+    ((payload: RoomApiPayload, opts?: { deferSnap?: boolean }) => void) | null
   >(null);
 
+  const resolveRoomPayload = useCallback(
+    (payload: RoomApiPayload): RoomSnapshot =>
+      applyRoomApiPayload(snapshot ?? pendingCombatSnapRef.current, payload),
+    [snapshot]
+  );
+
   const applyCombatSnapshot = useCallback(
-    (snap: RoomSnapshot) => {
+    (payload: RoomApiPayload) => {
+      const snap = resolveRoomPayload(payload);
       if (snap.revision >= appliedSceneRevisionRef.current) {
         appliedSceneRevisionRef.current = snap.revision;
       }
       startTransition(() => {
         setScene((prev) => mergeScenePreservingPortraits(prev, snap.scene));
       });
-      if (onApplySnapshot) onApplySnapshot(snap, { force: true });
+      onApplySnapshot?.(payload, { force: true });
     },
-    [onApplySnapshot]
+    [onApplySnapshot, resolveRoomPayload]
   );
 
   const syncRoom = useCallback(
-    (snap?: RoomSnapshot) => {
-      if (snap?.scene) {
-        if (snap.revision >= appliedSceneRevisionRef.current) {
-          appliedSceneRevisionRef.current = snap.revision;
-          setScene((prev) => mergeScenePreservingPortraits(prev, snap.scene));
-        }
-        if (onApplySnapshot) onApplySnapshot(snap, { force: true });
-        else refresh();
-        playCombatFxFromSnapRef.current?.(snap);
-      } else if (snap) {
-        if (snap.revision >= appliedSceneRevisionRef.current) {
-          appliedSceneRevisionRef.current = snap.revision;
-        }
-        if (onApplySnapshot) onApplySnapshot(snap, { force: true });
-        else refresh();
-        playCombatFxFromSnapRef.current?.(snap);
-      } else {
+    (payload?: RoomApiPayload) => {
+      if (!payload) {
         refresh();
+        return;
       }
+      const snap = resolveRoomPayload(payload);
+      if (snap.revision >= appliedSceneRevisionRef.current) {
+        appliedSceneRevisionRef.current = snap.revision;
+      }
+      if (snap.scene) {
+        setScene((prev) => mergeScenePreservingPortraits(prev, snap.scene));
+      }
+      if (onApplySnapshot) onApplySnapshot(payload, { force: true });
+      else refresh();
+      playCombatFxFromSnapRef.current?.(payload);
     },
-    [onApplySnapshot, refresh]
+    [onApplySnapshot, refresh, resolveRoomPayload]
   );
 
   const battlefieldView = useBattlefieldView({ wrapRef, canvasRef });
@@ -1012,12 +1017,26 @@ export function Battlefield({
   );
 
   const playCombatFxFromSnap = useCallback(
-    (snap: RoomSnapshot, opts?: { deferSnap?: boolean }) => {
-      if (combatFxIdRef.current?.startsWith("pending-")) {
-        combatFxQueueRef.current = [];
-        combatFxIdRef.current = null;
-        setCombatFx(null);
+    (payload: RoomApiPayload, opts?: { deferSnap?: boolean }) => {
+      const snap = resolveRoomPayload(payload);
+      if (combatFx && isPendingCombatFx(combatFx)) {
+        const msg = findPendingAttackMessage(snap.chat, combatFx, seenCombatRef.current);
+        if (msg) {
+          const resolved = resolvePendingCombatFx(combatFx, msg, snap.scene.tokens);
+          if (resolved) {
+            seenCombatRef.current.add(msg.id);
+            combatFxIdRef.current = resolved.id;
+            setCombatFx(resolved);
+            if (opts?.deferSnap) pendingCombatSnapRef.current = snap;
+            else {
+              pendingCombatSnapRef.current = null;
+              syncRoom(payload);
+            }
+            return;
+          }
+        }
       }
+
       const queueBefore = combatFxQueueRef.current.length;
       const activeFxBefore = combatFxIdRef.current;
       if (opts?.deferSnap) pendingCombatSnapRef.current = snap;
@@ -1026,10 +1045,10 @@ export function Battlefield({
         combatFxQueueRef.current.length > queueBefore || combatFxIdRef.current !== activeFxBefore;
       if (opts?.deferSnap && !queuedFx) {
         pendingCombatSnapRef.current = null;
-        syncRoom(snap);
+        syncRoom(payload);
       }
     },
-    [enqueueCombatFxFromChat, syncRoom, combatFx]
+    [enqueueCombatFxFromChat, syncRoom, combatFx, resolveRoomPayload]
   );
 
   playCombatFxFromSnapRef.current = playCombatFxFromSnap;
@@ -1648,14 +1667,15 @@ export function Battlefield({
         setCombatFx(pending);
       }
       try {
-        let snap: RoomSnapshot;
-        if (activeCombatAction.kind === "ability") {
-          snap = await postRoomAbility(roomId, selected.id, defenderId, {
-            actionEntryId: activeCombatAction.entryId,
-            bypassTurn: selectedBypass,
-          });
-        } else {
-          snap = await postRoomAttack(
+        let response: RoomApiPayload;
+        const runPost = async (): Promise<RoomApiPayload> => {
+          if (activeCombatAction.kind === "ability") {
+            return postRoomAbility(roomId, selected.id, defenderId, {
+              actionEntryId: activeCombatAction.entryId,
+              bypassTurn: selectedBypass,
+            });
+          }
+          return postRoomAttack(
             roomId,
             selected.id,
             defenderId,
@@ -1664,16 +1684,41 @@ export function Battlefield({
               channelExtraPa,
             })
           );
+        };
+        let lastErr: unknown;
+        for (let attempt = 0; attempt <= 2; attempt++) {
+          try {
+            response = await runPost();
+            lastErr = null;
+            break;
+          } catch (e) {
+            lastErr = e;
+            if (attempt < 2) await new Promise((r) => setTimeout(r, 400 * (attempt + 1)));
+          }
         }
-        playCombatFxFromSnap(snap, { deferSnap: true });
+        if (lastErr) {
+          setActionErr("Servidor lento — sincronizando em segundo plano…");
+          void (async () => {
+            for (let bg = 0; bg < 4; bg++) {
+              await new Promise((r) => setTimeout(r, 1500 * (bg + 1)));
+              try {
+                const retry = await runPost();
+                playCombatFxFromSnap(retry, { deferSnap: true });
+                setActionErr(null);
+                return;
+              } catch {
+                /* continua pendente */
+              }
+            }
+            setActionErr("Falha no ataque — recarregue a mesa ou tente de novo");
+          })();
+          return;
+        }
+        playCombatFxFromSnap(response!, { deferSnap: true });
         setSpellTargetIds([]);
         // Mantém modo ataque para permitir outro alvo no mesmo turno (Esc cancela).
       } catch (e) {
         setActionErr(e instanceof Error ? e.message : "Falha no ataque");
-        if (combatFxIdRef.current?.startsWith("pending-")) {
-          combatFxIdRef.current = null;
-          setCombatFx(null);
-        }
       } finally {
         attackBusyRef.current = false;
       }
@@ -1788,8 +1833,27 @@ export function Battlefield({
       const origin = selected.axial;
       const path = check.path ?? [origin, axial];
       const dest = path[path.length - 1] ?? axial;
+      const sceneBeforeMove = displayScene;
+      const optimisticScene: BattleScene = {
+        ...displayScene,
+        tokens: displayScene.tokens.map((t) =>
+          t.id === tokenId ? { ...t, axial: dest } : t
+        ),
+      };
+      setScene((prev) => mergeScenePreservingPortraits(prev, optimisticScene));
+      moveAnimRef.current = { tokenId, q: origin.q, r: origin.r };
+      redraw();
+      let lastMoveRedrawMs = performance.now();
+      const animPromise = animateTokenAlongPath(path, (step) => {
+        moveAnimRef.current = { tokenId, q: step.q, r: step.r };
+        const now = performance.now();
+        if (now - lastMoveRedrawMs >= 33) {
+          lastMoveRedrawMs = now;
+          redraw();
+        }
+      });
       try {
-        const snap = await moveRoomTokenBudget(
+        const payload = await moveRoomTokenBudget(
           roomId,
           tokenId,
           dest.q,
@@ -1797,34 +1861,26 @@ export function Battlefield({
           highlights.moveMode,
           selectedBypass
         );
+        const snap = resolveRoomPayload(payload);
         if (!snap?.scene) throw new Error("Resposta inválida ao mover token");
 
         if (snap.revision >= appliedSceneRevisionRef.current) {
           appliedSceneRevisionRef.current = snap.revision;
           setScene((prev) => mergeScenePreservingPortraits(prev, snap.scene));
         }
-        if (onApplySnapshot) onApplySnapshot(snap, { force: true });
+        if (onApplySnapshot) onApplySnapshot(payload, { force: true });
         else void refresh();
-        playCombatFxFromSnapRef.current?.(snap);
+        playCombatFxFromSnapRef.current?.(payload);
 
-        moveAnimRef.current = { tokenId, q: origin.q, r: origin.r };
-        redraw();
-        let lastMoveRedrawMs = performance.now();
-        await animateTokenAlongPath(path, (step) => {
-          moveAnimRef.current = { tokenId, q: step.q, r: step.r };
-          const now = performance.now();
-          if (now - lastMoveRedrawMs >= 33) {
-            lastMoveRedrawMs = now;
-            redraw();
-          }
-        });
+        await animPromise;
         moveAnimRef.current = null;
         redraw();
       } catch (e) {
         setActionErr(e instanceof Error ? e.message : "Movimento inválido");
+        setScene((prev) => mergeScenePreservingPortraits(prev, sceneBeforeMove));
         moveAnimRef.current = null;
         redraw();
-        refresh();
+        void refresh();
       } finally {
         moveBusyRef.current = false;
         flushPendingSceneSnapshot();
@@ -1843,10 +1899,13 @@ export function Battlefield({
       redraw,
       refresh,
       flushPendingSceneSnapshot,
+      displayScene,
       displayScene.tokens,
       displayScene.gridRadius,
       displayScene.dungeonObjects,
       actorRacas,
+      roomSettings,
+      combat,
     ]
   );
 
