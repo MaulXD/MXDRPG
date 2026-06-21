@@ -9,7 +9,7 @@ export const dynamic = "force-dynamic";
 
 type Params = { params: Promise<{ roomId: string }> };
 
-const POLL_MS = 800;
+const POLL_MS = 400;
 const HEARTBEAT_MS = 15_000;
 
 export async function GET(request: Request, { params }: Params) {

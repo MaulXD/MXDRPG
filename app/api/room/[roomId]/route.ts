@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import { requireRoomView } from "@/lib/auth/authorize-room-view";
-import { tickRoomAutoPassThrottled } from "@/lib/room/auto-pass-tick";
 import { toSnapshot } from "@/lib/room/internal/registry";
 import { trimSnapshotForSync } from "@/lib/room/snapshot-trim";
 import { snapshotForViewer } from "@/lib/room/snapshot-for-viewer";
@@ -16,8 +15,6 @@ export async function GET(req: Request, { params }: Params) {
   if ("error" in auth) {
     return NextResponse.json({ error: auth.error }, { status: auth.status });
   }
-
-  await tickRoomAutoPassThrottled(roomId);
 
   const room = (await getRoom(roomId, { skipAutoPass: true })) ?? auth.room;
 

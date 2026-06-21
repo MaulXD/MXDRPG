@@ -17,11 +17,13 @@ import type { Axial } from "@/lib/vtt/grid-math";
 import { useCombatTurnFlow } from "@/hooks/vtt/useCombatTurnFlow";
 import { useCombatModeTransition } from "@/hooks/vtt/useCombatModeTransition";
 import { CombatModeTransition } from "@/components/vtt/CombatModeTransition";
+import "@/components/vtt/combat-mode-transition.css";
 import { useFoundryWindows, FOUNDRY_DOCK_PANEL_IDS, type MesaWindowId } from "@/hooks/vtt/useFoundryWindows";
 import { MAX_CHARACTERS_PER_USER_PER_ADVENTURE } from "@/lib/character/adventure-bind";
 import { useGmPlayerViewMode } from "@/hooks/vtt/useGmPlayerViewMode";
 import type { RoomSnapshot } from "@/lib/room/types";
-import { useRoomSync, type RoomMemberOnlineEvent, type RoomApiPayload, nextCombatTurn } from "@/hooks/useRoomSync";
+import { useRoomSync, type RoomMemberOnlineEvent, type RoomApiPayload } from "@/hooks/useRoomSync";
+import { usePassTurn } from "@/hooks/vtt/usePassTurn";
 import { preloadCombatDiceBox } from "@/lib/vtt/dice-combat-box";
 import { useRoomPresence } from "@/hooks/useRoomPresence";
 import { MesaPresenceAlerts } from "@/components/vtt/MesaPresenceAlerts";
@@ -129,7 +131,6 @@ export function MesaWorkspace({
   const [monsterSheetEntryId, setMonsterSheetEntryId] = useState<string | null>(null);
   const [characterWizardOpen, setCharacterWizardOpen] = useState(false);
   const [spawnAxial, setSpawnAxial] = useState<Axial | null>(null);
-  const [mobileEndTurnBusy, setMobileEndTurnBusy] = useState(false);
   const [combatChatReveal, setCombatChatReveal] = useState<
     Record<string, import("@/lib/combat/chat-display").CombatChatRevealPhase>
   >({});
@@ -164,9 +165,14 @@ export function MesaWorkspace({
     },
   });
   const applyActionSnapshot = useCallback(
-    (payload: RoomApiPayload) =>
-      applyRoomResponse(payload, { force: true, immediate: true }),
+    (payload: RoomApiPayload, opts?: { force?: boolean; immediate?: boolean }) =>
+      applyRoomResponse(payload, { force: opts?.force ?? true, immediate: opts?.immediate ?? true }),
     [applyRoomResponse]
+  );
+  const { passTurn: passMobileTurn, busy: mobileEndTurnBusy } = usePassTurn(
+    roomId,
+    snapshot,
+    applyActionSnapshot
   );
 
   useEffect(() => {
@@ -380,8 +386,9 @@ export function MesaWorkspace({
     [snapshot?.settings]
   );
 
+  const combatActive = roomSettings.combatActive;
   const { phase: combatModePhase, locked: mesaTransitionLocked } =
-    useCombatModeTransition(roomSettings.combatActive);
+    useCombatModeTransition(combatActive);
 
   const canBypassTurn = useMemo(() => {
     return canBypassCombatTurn(
@@ -475,15 +482,9 @@ export function MesaWorkspace({
     [windows]
   );
 
-  const handleMobileEndTurn = useCallback(async () => {
-    setMobileEndTurnBusy(true);
-    try {
-      const snap = await nextCombatTurn(roomId, { force: true });
-      applyActionSnapshot(snap);
-    } finally {
-      setMobileEndTurnBusy(false);
-    }
-  }, [roomId, applyActionSnapshot]);
+  const handleMobileEndTurn = useCallback(() => {
+    void passMobileTurn();
+  }, [passMobileTurn]);
 
   const openMobilePanel = useCallback(
     (id: MesaWindowId) => {
@@ -678,8 +679,9 @@ export function MesaWorkspace({
               {isActualGm ? (
                 <GmMesaModeToggle
                   roomId={roomId}
+                  snapshot={snapshot}
                   combatActive={roomSettings.combatActive}
-                  onUpdated={applySnapshot}
+                  onApplyUpdate={applyActionSnapshot}
                 />
               ) : (
                 <MesaModeIndicator combatActive={roomSettings.combatActive} />

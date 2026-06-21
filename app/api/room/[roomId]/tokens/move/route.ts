@@ -64,6 +64,7 @@ export async function POST(req: Request, { params }: Params) {
     {
       activeTokenId: activeTokenId(snapshotBefore.combat),
       bypassTurn: Boolean(body.bypassTurn && token && effectiveBypassTurn(token, canBypass)),
+      room,
     }
   );
 
