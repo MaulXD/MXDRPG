@@ -1,9 +1,7 @@
 import { canTrackRoomPresence } from "@/lib/auth/presence-access";
 import { requireRoomView } from "@/lib/auth/authorize-room-view";
-import { getRoom } from "@/lib/room/store";
 import { presenceEventsAfter, touchRoomPresence } from "@/lib/room/presence";
 import { getRoomRevision } from "@/lib/room/revision";
-import { resolveRoomSync } from "@/lib/room/sync-response";
 import { tickRoomAutoPassThrottled } from "@/lib/room/auto-pass-tick";
 
 export const runtime = "nodejs";
@@ -74,20 +72,8 @@ export async function GET(request: Request, { params }: Params) {
             return;
           }
           if (rev > lastSent) {
-            const room = await getRoom(roomId, { skipAutoPass: true });
-            if (room) {
-              const sync = resolveRoomSync(room, lastSent, user);
-              if (sync.mode === "delta") {
-                push({ type: "delta", delta: sync.delta, revision: sync.revision });
-              } else if (sync.mode === "full") {
-                push({ type: "refresh", revision: sync.revision });
-              } else {
-                push({ type: "revision", revision: rev });
-              }
-            } else {
-              push({ type: "revision", revision: rev });
-            }
             lastSent = rev;
+            push({ type: "revision", revision: rev });
           }
           if (Date.now() - lastHeartbeat >= HEARTBEAT_MS) {
             lastHeartbeat = Date.now();

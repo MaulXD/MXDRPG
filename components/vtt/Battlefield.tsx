@@ -51,8 +51,6 @@ import { shouldIgnoreBattlefieldShortcut } from "@/lib/vtt/keyboard-guard";
 import { GmToolsPanel } from "@/components/vtt/GmToolsPanel";
 import { MapTokenList } from "@/components/vtt/MapTokenList";
 import { DungeonEditorPanel } from "@/components/vtt/DungeonEditorPanel";
-import { MapToolbar } from "@/components/vtt/MapToolbar";
-import { MapMarkupTextEditor } from "@/components/vtt/MapMarkupTextEditor";
 import { FoundryDockPanel } from "@/components/vtt/foundry/FoundryDockPanel";
 import type { RoomSnapshot } from "@/lib/room/types";
 import { TokenActionRing } from "@/components/vtt/TokenActionRing";
@@ -60,7 +58,6 @@ import { SpellPickerPanel } from "@/components/vtt/SpellPickerPanel";
 import { SpellChannelControl } from "@/components/vtt/SpellChannelControl";
 import { MonsterSpawnPanel } from "@/components/vtt/MonsterSpawnPanel";
 import type { MapToolMode, MeasurePreview } from "@/lib/vtt/map-toolbar";
-import { VttHelpButton } from "@/components/vtt/VttHelpButton";
 import { MesaDockPanel } from "@/components/vtt/MesaDockPanel";
 import { FoundryWindow } from "@/components/vtt/foundry/FoundryWindow";
 import type { FoundryWindowLayout, MesaWindowId } from "@/hooks/vtt/useFoundryWindows";
@@ -73,11 +70,10 @@ import type { ChatMessage } from "@/lib/room/chat";
 import { emptyCombat, activeTokenId, normalizeCombatTrack } from "@/lib/room/combat";
 import { resolveLivingActiveTokenId } from "@/lib/room/combat-order";
 import { TurnHandoffOverlay } from "@/components/vtt/TurnHandoffOverlay";
+import { useBattlefieldCombatFxQueue } from "@/hooks/vtt/useBattlefieldCombatFxQueue";
+import { BattlefieldMapCanvas } from "@/components/vtt/battlefield/BattlefieldMapCanvas";
+import { BattlefieldCombatFxHost } from "@/components/vtt/battlefield/BattlefieldCombatFxHost";
 
-const CombatFxLayer = dynamic(
-  () => import("@/components/vtt/CombatFxLayer").then((m) => m.CombatFxLayer),
-  { ssr: false }
-);
 import {
   firstPortraitDataUrl,
   mergeScenePreservingPortraits,
@@ -303,12 +299,6 @@ export function Battlefield({
     ownerId: string;
   } | null>(null);
   const [areaCenter, setAreaCenter] = useState<Axial | null>(null);
-  const [combatFx, setCombatFx] = useState<CombatFxState | null>(null);
-  const [tokenFlash, setTokenFlash] = useState<{
-    tokenId: string;
-    kind: NonNullable<TokenCombatFlash>;
-  } | null>(null);
-  const [tokenCastFx, setTokenCastFx] = useState<ActiveTokenCastFx[]>([]);
   const [actionErr, setActionErr] = useState<string | null>(null);
   const [channelExtraPa, setChannelExtraPa] = useState(0);
   const [actionRingAt, setActionRingAt] = useState<{ x: number; y: number } | null>(null);
@@ -326,8 +316,6 @@ export function Battlefield({
   const [modalStatusToken, setModalStatusToken] = useState<BattleToken | null>(null);
   const { visible: hudVisible, setHudVisible } = useCombatHudVisible(roomId);
   const toast = useVttToast();
-  const seenCombatRef = useRef<Set<string>>(new Set());
-  const combatChatSeededRef = useRef(false);
   const [mapImage, setMapImage] = useState<HTMLImageElement | null>(null);
   const [mapImgTick, setMapImgTick] = useState(0);
   const [dungeonLayer, setDungeonLayer] = useState<DungeonEditLayer>("floor");
@@ -651,10 +639,7 @@ export function Battlefield({
   const moveBusyRef = useRef(false);
   const gmRepositionBusyRef = useRef(false);
   const appliedSceneRevisionRef = useRef(0);
-  const combatFxIdRef = useRef<string | null>(null);
-  const combatFxQueueRef = useRef<CombatFxState[]>([]);
   const pendingCombatSnapRef = useRef<RoomSnapshot | null>(null);
-  const playCombatFxFromSnapRef = useRef<((payload: RoomApiPayload) => void) | null>(null);
 
   const resolveRoomPayload = useCallback(
     (payload: RoomApiPayload): RoomSnapshot =>
@@ -675,6 +660,34 @@ export function Battlefield({
     },
     [onApplySnapshot, resolveRoomPayload]
   );
+
+  const applyPendingCombatSnap = useCallback(
+    (snap: RoomSnapshot) => {
+      applyCombatSnapshot(snap);
+    },
+    [applyCombatSnapshot]
+  );
+
+  const {
+    combatFx,
+    setCombatFx,
+    combatFxQueueRef,
+    combatFxIdRef,
+    seenCombatRef,
+    tokenFlash,
+    tokenCastFx,
+    playCombatFxFromSnapRef,
+    onCombatApplyState,
+    onCombatFxDone,
+    onCombatTokenFlash,
+    onTokenCastFx,
+  } = useBattlefieldCombatFxQueue({
+    roomId,
+    snapshot,
+    applyCombatSnapshot: applyPendingCombatSnap,
+    resolveRoomPayload,
+    pendingCombatSnapRef,
+  });
 
   const shouldDeferSceneSync = useCallback(() => {
     return (
@@ -1027,76 +1040,6 @@ export function Battlefield({
     if (floorPreview) redraw();
   }, [floorPreview, redraw]);
 
-  const enqueueCombatFxFromChat = useCallback(
-    (chat: ChatMessage[], tokens: BattleToken[]) => {
-      const newMsgs = chat.filter(
-        (m) => m.kind === "combat" && m.combat && !seenCombatRef.current.has(m.id)
-      );
-      if (!newMsgs.length) return;
-      const { sequence, markSeen } = ingestNewCombatFx(newMsgs, seenCombatRef.current, tokens, {
-        deferStateApplyForToken: () => true,
-      });
-      for (const id of markSeen) seenCombatRef.current.add(id);
-      if (!sequence.length) return;
-      combatFxQueueRef.current.push(...sequence);
-      if (!combatFx) {
-        const next = combatFxQueueRef.current.shift() ?? null;
-        combatFxIdRef.current = next?.id ?? null;
-        setCombatFx(next);
-      }
-    },
-    [combatFx]
-  );
-
-  const playCombatFxFromSnap = useCallback(
-    (payload: RoomApiPayload) => {
-      const snap = resolveRoomPayload(payload);
-      if (combatFx && isPendingCombatFx(combatFx)) {
-        const msg = findPendingAttackMessage(snap.chat, combatFx, seenCombatRef.current);
-        if (msg) {
-          const resolved = resolvePendingCombatFx(combatFx, msg, snap.scene.tokens);
-          if (resolved) {
-            seenCombatRef.current.add(msg.id);
-            combatFxIdRef.current = resolved.id;
-            setCombatFx(resolved);
-            return;
-          }
-        }
-      }
-
-      enqueueCombatFxFromChat(snap.chat, snap.scene.tokens);
-    },
-    [enqueueCombatFxFromChat, combatFx, resolveRoomPayload]
-  );
-
-  playCombatFxFromSnapRef.current = playCombatFxFromSnap;
-
-  useEffect(() => {
-    if (!snapshot?.chat) return;
-    if (!combatChatSeededRef.current) {
-      for (const msg of snapshot.chat) {
-        if (msg.kind === "combat" && msg.combat) seenCombatRef.current.add(msg.id);
-      }
-      combatChatSeededRef.current = true;
-      return;
-    }
-    enqueueCombatFxFromChat(snapshot.chat, snapshot.scene.tokens);
-  }, [snapshot?.chat, snapshot?.scene.tokens, enqueueCombatFxFromChat]);
-
-  useEffect(() => {
-    appliedSceneRevisionRef.current = 0;
-    combatChatSeededRef.current = false;
-    seenCombatRef.current = new Set();
-    combatFxQueueRef.current = [];
-    combatFxIdRef.current = null;
-    pendingCombatSnapRef.current = null;
-    moveAnimRef.current = null;
-    moveBusyRef.current = false;
-    gmRepositionBusyRef.current = false;
-    setCombatFx(null);
-    setTokenFlash(null);
-  }, [roomId]);
-
   const mergeTokenCombatFields = useCallback(
     (local: BattleToken, remote: BattleToken): BattleToken => ({
       ...local,
@@ -1132,14 +1075,42 @@ export function Battlefield({
     syncRoom(snap);
   }, [syncRoom]);
 
+  useEffect(() => {
+    appliedSceneRevisionRef.current = 0;
+    moveAnimRef.current = null;
+    moveBusyRef.current = false;
+    gmRepositionBusyRef.current = false;
+  }, [roomId]);
+
   const snapshotRef = useRef(snapshot);
   snapshotRef.current = snapshot;
   const snapshotRevision = snapshot?.revision ?? 0;
+  const mapSyncRef = useRef({
+    scene: null as BattleScene | null,
+    combat: snapshot?.combat ?? null,
+    settings: snapshot?.settings ?? null,
+  });
 
   useEffect(() => {
     const snap = snapshotRef.current;
     if (!snap) return;
     if (snap.revision <= appliedSceneRevisionRef.current) return;
+
+    const mapUnchanged =
+      snap.scene === mapSyncRef.current.scene &&
+      snap.combat === mapSyncRef.current.combat &&
+      snap.settings === mapSyncRef.current.settings;
+
+    if (mapUnchanged) {
+      appliedSceneRevisionRef.current = snap.revision;
+      return;
+    }
+
+    mapSyncRef.current = {
+      scene: snap.scene,
+      combat: snap.combat,
+      settings: snap.settings,
+    };
 
     const pendingFx = snap.chat.some(
       (m) => isPlayableCombatFxMessage(m) && !seenCombatRef.current.has(m.id)
@@ -1285,56 +1256,6 @@ export function Battlefield({
     deleteTokenBusy,
     toast,
   ]);
-
-  const onCombatApplyState = useCallback(() => {
-    const snap = pendingCombatSnapRef.current;
-    if (!snap) return;
-    pendingCombatSnapRef.current = null;
-    applyCombatSnapshot(snap);
-  }, [applyCombatSnapshot]);
-
-  const onCombatFxDone = useCallback(() => {
-    setTokenFlash(null);
-    if (pendingCombatSnapRef.current) {
-      const snap = pendingCombatSnapRef.current;
-      pendingCombatSnapRef.current = null;
-      applyCombatSnapshot(snap);
-    }
-    const next = combatFxQueueRef.current.shift() ?? null;
-    combatFxIdRef.current = next?.id ?? null;
-    setCombatFx(next);
-  }, [applyCombatSnapshot]);
-
-  const onCombatTokenFlash = useCallback((tokenId: string | null, kind: import("@/lib/vtt/draw-battlefield").TokenFlashKind | null) => {
-    if (tokenId && kind) setTokenFlash({ tokenId, kind });
-    else setTokenFlash(null);
-  }, []);
-
-  const onTokenCastFx = useCallback((tokenId: string, kind: TokenCastFxKind) => {
-    const startedAt = Date.now();
-    setTokenCastFx((prev) => [
-      ...prev.filter((fx) => !(fx.tokenId === tokenId && fx.kind === kind)),
-      {
-        id: `castfx-${tokenId}-${startedAt}`,
-        tokenId,
-        kind,
-        startedAt,
-        durationMs: castFxDuration(kind),
-      },
-    ]);
-  }, []);
-
-  useEffect(() => {
-    if (!tokenCastFx.length) return;
-    const id = window.setInterval(() => {
-      const now = Date.now();
-      setTokenCastFx((prev) => {
-        const next = prev.filter((fx) => now - fx.startedAt < fx.durationMs);
-        return next.length === prev.length ? prev : next;
-      });
-    }, 120);
-    return () => window.clearInterval(id);
-  }, [tokenCastFx.length]);
 
   const tokenDrawPosition = useCallback(
     (token: import("@/lib/vtt/types").BattleToken) => {
@@ -1627,7 +1548,7 @@ export function Battlefield({
       activeCombatAction,
       roomId,
       channelExtraPa,
-      playCombatFxFromSnap,
+      syncRoom,
     ]
   );
 
@@ -1746,7 +1667,9 @@ export function Battlefield({
       activeCombatAction,
       roomId,
       channelExtraPa,
-      playCombatFxFromSnap,
+      setCombatFx,
+      displayScene.tokens,
+      syncRoom,
       turn.activeTokenId,
       turn.combatHasOrder,
       turn.combatActive,
@@ -2737,100 +2660,69 @@ export function Battlefield({
         legacySidebar
       ) : null}
 
-      <div
-        ref={wrapRef}
-        className={`vtt-canvas-wrap${attackTargetCursor ? " vtt-canvas-wrap--attack-target" : ""}${spawnDragActive ? " vtt-canvas-wrap--spawn-drop" : ""}${battlefieldView.isPanning ? " vtt-canvas-wrap--panning" : ""}`}
-        onContextMenu={(e) => e.preventDefault()}
-        onContextMenuCapture={(e) => e.preventDefault()}
-        {...spawnDropHandlers}
+      <BattlefieldMapCanvas
+        wrapRef={wrapRef}
+        canvasRef={canvasRef}
+        attackTargetCursor={Boolean(attackTargetCursor)}
+        spawnDragActive={Boolean(spawnDragActive)}
+        battlefieldView={battlefieldView}
+        canvasWrapSize={canvasWrapSize}
+        mapToolMode={mapToolMode}
+        onMapToolModeChange={handleMapToolModeChange}
+        whiteboardTool={whiteboardTool}
+        onDrawToolChange={handleDrawToolChange}
+        markupColor={markupColor}
+        markupWidth={markupWidth}
+        markupDurability={markupDurability}
+        onColorChange={setMarkupColor}
+        onWidthChange={setMarkupWidth}
+        onDurabilityChange={(d) => {
+          if (d === "permanent" && !canManageMarkups) return;
+          setMarkupDurability(d);
+        }}
+        canUseWhiteboard={canUseWhiteboard}
+        canManageMarkups={canManageMarkups}
+        canPing={isRoomGm || roomSettings.allowPlayerPing}
+        showFogTool={isRoomGm && Boolean(displayScene.fogEnabled)}
+        onClearSession={canUseWhiteboard ? clearSessionMarkups : undefined}
+        onClearPermanent={canManageMarkups ? clearPermanentMarkups : undefined}
+        onClearAll={canManageMarkups ? clearAllMarkups : undefined}
+        showDungeonEditor={isRoomGm}
+        dungeonEditorActive={dungeonModeOpen || dungeonMapEditing}
+        onToggleDungeonEditor={() => {
+          handleMapToolModeChange("token");
+          setDungeonModeOpen((open) => {
+            if (!open) {
+              setDungeonLayer("floor");
+              setDungeonEditorActive(hasFloorImage);
+              onOpenDungeonPanel?.();
+            } else {
+              setDungeonEditorActive(false);
+            }
+            return !open;
+          });
+        }}
+        spawnDropHandlers={spawnDropHandlers}
+        pointerHandlers={{
+          onPointerDown: pointer.onPointerDown,
+          onPointerMove: pointer.onPointerMove,
+          onPointerUp: pointer.onPointerUp,
+          onPointerLeave: pointer.onPointerLeave,
+          onContextMenu: pointer.onContextMenu,
+        }}
+        markupTextDraft={markupTextDraft}
+        onMarkupTextCommit={(text) => {
+          onMarkupCommit(
+            createWhiteboardMarkup(
+              "text",
+              [{ x: markupTextDraft!.wx, y: markupTextDraft!.wy }],
+              text
+            )
+          );
+          setMarkupTextDraft(null);
+        }}
+        onMarkupDraftCancel={() => setMarkupTextDraft(null)}
       >
-        <VttHelpButton />
-        <MapToolbar
-          mapToolMode={mapToolMode}
-          onMapToolModeChange={handleMapToolModeChange}
-          drawTool={whiteboardTool}
-          onDrawToolChange={handleDrawToolChange}
-          color={markupColor}
-          width={markupWidth}
-          durability={markupDurability}
-          onColorChange={setMarkupColor}
-          onWidthChange={setMarkupWidth}
-          onDurabilityChange={(d) => {
-            if (d === "permanent" && !canManageMarkups) return;
-            setMarkupDurability(d);
-          }}
-          canUseDraw={canUseWhiteboard}
-          canManageAll={canManageMarkups}
-          canPing={isRoomGm || roomSettings.allowPlayerPing}
-          showFogTool={isRoomGm && Boolean(displayScene.fogEnabled)}
-          onClearSession={canUseWhiteboard ? clearSessionMarkups : undefined}
-          onClearPermanent={canManageMarkups ? clearPermanentMarkups : undefined}
-          onClearAll={canManageMarkups ? clearAllMarkups : undefined}
-          zoomPercent={battlefieldView.zoomPercent}
-          canZoomIn={battlefieldView.canZoomIn}
-          canZoomOut={battlefieldView.canZoomOut}
-          onZoomIn={battlefieldView.zoomIn}
-          onZoomOut={battlefieldView.zoomOut}
-          onResetView={battlefieldView.resetView}
-          showDungeonEditor={isRoomGm}
-          dungeonEditorActive={dungeonModeOpen || dungeonMapEditing}
-          onToggleDungeonEditor={() => {
-            handleMapToolModeChange("token");
-            setDungeonModeOpen((open) => {
-              if (!open) {
-                setDungeonLayer("floor");
-                setDungeonEditorActive(hasFloorImage);
-                onOpenDungeonPanel?.();
-              } else {
-                setDungeonEditorActive(false);
-              }
-              return !open;
-            });
-          }}
-        />
-        <canvas
-          ref={canvasRef}
-          className="vtt-canvas"
-          {...spawnDropHandlers}
-          onPointerDown={(e) => {
-            if (battlefieldView.onPointerDown(e)) return;
-            pointer.onPointerDown(e);
-          }}
-          onPointerMove={(e) => {
-            if (battlefieldView.onPointerMove(e)) return;
-            pointer.onPointerMove(e);
-          }}
-          onPointerUp={(e) => {
-            if (battlefieldView.endPan(e)) return;
-            pointer.onPointerUp(e);
-          }}
-          onPointerLeave={(e) => {
-            battlefieldView.endPan(e);
-            pointer.onPointerLeave();
-          }}
-          onContextMenu={pointer.onContextMenu}
-        />
-        {markupTextDraft && canvasWrapSize.w > 0 && canvasWrapSize.h > 0 ? (
-          <MapMarkupTextEditor
-            wx={markupTextDraft.wx}
-            wy={markupTextDraft.wy}
-            wrapW={canvasWrapSize.w}
-            wrapH={canvasWrapSize.h}
-            view={battlefieldView.view}
-            color={markupColor}
-            onCommit={(text) => {
-              onMarkupCommit(
-                createWhiteboardMarkup(
-                  "text",
-                  [{ x: markupTextDraft.wx, y: markupTextDraft.wy }],
-                  text
-                )
-              );
-              setMarkupTextDraft(null);
-            }}
-            onCancel={() => setMarkupTextDraft(null)}
-          />
-        ) : null}
         {actionRingAt && selected && canOpenActionRing(selected) ? (
           <TokenActionRing
             x={actionRingAt.x}
@@ -2991,14 +2883,12 @@ export function Battlefield({
           viewerToken={playerToken}
           showMonsterHpToPlayers={roomSettings.showMonsterHpToPlayers}
         />
-        <CombatFxLayer
+        <BattlefieldCombatFxHost
           wrapRef={wrapRef}
-          cellSize={combatFxGrid.cellSize}
-          gridOx={combatFxGrid.ox}
-          gridOy={combatFxGrid.oy}
+          combatFxGrid={combatFxGrid}
+          view={battlefieldView.view}
           fx={combatFx}
           tokens={displayScene.tokens}
-          view={battlefieldView.view}
           onApplyState={onCombatApplyState}
           onTokenFlash={onCombatTokenFlash}
           onTokenCastFx={onTokenCastFx}
@@ -3053,7 +2943,7 @@ export function Battlefield({
             }}
           />
         ) : null}
-      </div>
+      </BattlefieldMapCanvas>
     </div>
   );
 }

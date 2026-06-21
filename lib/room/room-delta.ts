@@ -29,6 +29,29 @@ export function isRoomDelta(v: unknown): v is RoomDelta {
   );
 }
 
+/** Delta que só acrescenta chat — não deve remontar mapa/combate. */
+export function isChatOnlyDelta(delta: RoomDelta): boolean {
+  return (
+    Boolean(delta.chatAppend?.length) &&
+    !delta.tokens?.length &&
+    !delta.actors &&
+    !delta.combat &&
+    !delta.settings &&
+    !delta.pings
+  );
+}
+
+/** Campos que afetam canvas, turno ou HUD de combate. */
+export function deltaAffectsBattlefield(delta: RoomDelta): boolean {
+  return (
+    Boolean(delta.tokens?.length) ||
+    Boolean(delta.actors) ||
+    Boolean(delta.combat) ||
+    Boolean(delta.settings) ||
+    Boolean(delta.pings?.length)
+  );
+}
+
 function jsonEq(a: unknown, b: unknown): boolean {
   return JSON.stringify(a) === JSON.stringify(b);
 }
@@ -83,27 +106,48 @@ export function mergeRoomDelta(base: RoomSnapshot, delta: RoomDelta): RoomSnapsh
   if (delta.revision < base.revision) return base;
 
   let tokens = base.scene.tokens;
+  let sceneChanged = false;
   if (delta.tokens?.length) {
     const map = new Map(tokens.map((t) => [t.id, t]));
     for (const t of delta.tokens) map.set(t.id, t);
     tokens = Array.from(map.values());
+    sceneChanged = true;
   }
 
   let chat = base.chat;
   if (delta.chatAppend?.length) {
     const ids = new Set(chat.map((m) => m.id));
-    chat = [...chat, ...delta.chatAppend.filter((m) => !ids.has(m.id))];
+    const appended = delta.chatAppend.filter((m) => !ids.has(m.id));
+    if (appended.length) chat = [...chat, ...appended];
+  }
+
+  const settings = delta.settings ?? base.settings;
+  const combat = delta.combat ?? base.combat;
+  const actors = delta.actors ? { ...base.actors, ...delta.actors } : base.actors;
+  const pings = delta.pings ?? base.pings;
+  const revision = Math.max(base.revision, delta.revision);
+
+  const changed =
+    sceneChanged ||
+    settings !== base.settings ||
+    combat !== base.combat ||
+    actors !== base.actors ||
+    chat !== base.chat ||
+    pings !== base.pings;
+
+  if (!changed) {
+    return revision === base.revision ? base : { ...base, revision };
   }
 
   return {
     ...base,
-    revision: Math.max(base.revision, delta.revision),
-    settings: delta.settings ?? base.settings,
-    combat: delta.combat ?? base.combat,
-    actors: delta.actors ? { ...base.actors, ...delta.actors } : base.actors,
+    revision,
+    settings,
+    combat,
+    actors,
     chat,
-    pings: delta.pings ?? base.pings,
-    scene: { ...base.scene, tokens },
+    pings,
+    scene: sceneChanged ? { ...base.scene, tokens } : base.scene,
   };
 }
 
