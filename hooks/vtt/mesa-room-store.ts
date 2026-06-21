@@ -33,6 +33,7 @@ export class MesaRoomStore {
     syncStatus: "loading",
   };
   private mapCache: MesaMapSlice | null = null;
+  private mapSnapshotOut: RoomSnapshot | null = null;
   private listeners = new Map<MesaRoomSlice, Set<SliceListener>>();
 
   subscribe(slice: MesaRoomSlice, onStoreChange: SliceListener): () => void {
@@ -107,8 +108,26 @@ export class MesaRoomStore {
 
   /** Monta RoomSnapshot mínimo para APIs que ainda esperam snapshot completo. */
   toRoomSnapshotFromMap(map: MesaMapSlice | null): RoomSnapshot | null {
-    if (!map) return this.snapshot;
-    return {
+    if (!map) {
+      this.mapSnapshotOut = null;
+      return this.snapshot;
+    }
+    const cached = this.mapSnapshotOut;
+    if (
+      cached &&
+      cached.revision === map.revision &&
+      cached.scene === map.scene &&
+      cached.combat === map.combat &&
+      cached.settings === map.settings &&
+      cached.actors === map.actors &&
+      cached.pings === map.pings &&
+      cached.combatUndo === map.combatUndo &&
+      cached.combatLog === map.combatLog &&
+      cached.gmCreations === map.gmCreations
+    ) {
+      return cached;
+    }
+    this.mapSnapshotOut = {
       roomId: map.roomId,
       revision: map.revision,
       settings: map.settings,
@@ -121,6 +140,7 @@ export class MesaRoomStore {
       combatLog: map.combatLog,
       gmCreations: map.gmCreations,
     };
+    return this.mapSnapshotOut;
   }
 
   patchSync(next: {
@@ -133,33 +153,41 @@ export class MesaRoomStore {
     const nextSnap = next.snapshot !== undefined ? next.snapshot : prev;
 
     if (next.loading !== undefined || next.syncError !== undefined || next.syncStatus !== undefined) {
-      this.meta = {
+      const nextMeta: MesaMetaSlice = {
         loading: next.loading ?? this.meta.loading,
         syncError: next.syncError !== undefined ? next.syncError : this.meta.syncError,
         syncStatus: next.syncStatus ?? this.meta.syncStatus,
       };
-      this.emit("meta");
+      if (
+        nextMeta.loading !== this.meta.loading ||
+        nextMeta.syncError !== this.meta.syncError ||
+        nextMeta.syncStatus !== this.meta.syncStatus
+      ) {
+        this.meta = nextMeta;
+        this.emit("meta");
+      }
     }
 
-    if (nextSnap === prev && next.snapshot !== undefined) return;
+    if (nextSnap === prev) return;
 
     this.snapshot = nextSnap;
-    this.mapCache = null;
 
-    if (prev?.chat !== nextSnap?.chat) this.emit("chat");
-    if (
+    const mapDataChanged =
       prev?.scene !== nextSnap?.scene ||
       prev?.combat !== nextSnap?.combat ||
       prev?.settings !== nextSnap?.settings ||
       prev?.actors !== nextSnap?.actors ||
       prev?.pings !== nextSnap?.pings ||
-      prev?.revision !== nextSnap?.revision ||
       prev?.combatUndo !== nextSnap?.combatUndo ||
       prev?.combatLog !== nextSnap?.combatLog ||
-      prev?.gmCreations !== nextSnap?.gmCreations
-    ) {
+      prev?.gmCreations !== nextSnap?.gmCreations;
+
+    if (mapDataChanged) {
+      this.mapCache = null;
+      this.mapSnapshotOut = null;
       this.emit("map");
     }
+    if (prev?.chat !== nextSnap?.chat) this.emit("chat");
     if (prev?.combat !== nextSnap?.combat) this.emit("combat");
     if (prev?.actors !== nextSnap?.actors) this.emit("actors");
     if (prev?.settings !== nextSnap?.settings) this.emit("settings");
@@ -168,6 +196,7 @@ export class MesaRoomStore {
   reset(): void {
     this.snapshot = null;
     this.mapCache = null;
+    this.mapSnapshotOut = null;
     this.meta = { loading: true, syncError: null, syncStatus: "loading" };
     for (const slice of this.listeners.keys()) this.emit(slice);
   }
