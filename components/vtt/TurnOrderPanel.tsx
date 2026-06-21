@@ -2,7 +2,7 @@
 
 
 
-import { useState, type DragEvent } from "react";
+import { useState, useCallback, type DragEvent } from "react";
 
 import type { BattleToken } from "@/lib/vtt/types";
 
@@ -10,7 +10,8 @@ import { activeTokenId, normalizeCombatTrack, type CombatTrack } from "@/lib/roo
 import { resolveLivingActiveTokenId } from "@/lib/room/combat-order";
 import type { CombatUndoEntry, RoomSnapshot } from "@/lib/room/types";
 
-import { nextCombatTurn, postGmCombatAction, rollInitiative } from "@/hooks/useRoomSync";
+import { postGmCombatAction, rollInitiative, type RoomApiPayload } from "@/hooks/useRoomSync";
+import { usePassTurn } from "@/hooks/vtt/usePassTurn";
 
 import { collectPlayerActorIds, resolveTokenRing } from "@/lib/vtt/token-colors";
 import { hpBarColor, hpRatio, isTokenDefeated } from "@/lib/vtt/token-hp-display";
@@ -39,6 +40,8 @@ type Props = {
 
   roomId: string;
 
+  snapshot?: RoomSnapshot | null;
+
   combat: CombatTrack;
 
   tokens: BattleToken[];
@@ -49,7 +52,10 @@ type Props = {
 
   onUpdate: () => void;
 
-  /** Aplica snapshot retornado pela API (turno/PA imediato). */
+  /** Aplica snapshot/delta retornado pela API (turno/PA imediato). */
+  onApplySnapshot?: (payload: RoomApiPayload, opts?: { force?: boolean; immediate?: boolean }) => void;
+
+  /** @deprecated use onApplySnapshot */
   onSnapshot?: (snap: RoomSnapshot) => void;
 
   /** Tokens válidos no modo ataque (espelha o célula). */
@@ -105,6 +111,8 @@ export function TurnOrderPanel({
 
   roomId,
 
+  snapshot,
+
   combat,
 
   tokens,
@@ -114,6 +122,7 @@ export function TurnOrderPanel({
   canEndTurn = canControl,
 
   onUpdate,
+  onApplySnapshot,
   onSnapshot,
 
   attackableIds,
@@ -131,7 +140,15 @@ export function TurnOrderPanel({
 }: Props) {
   const track = normalizeCombatTrack(combat, tokens);
 
-  const [busy, setBusy] = useState(false);
+  const applyUpdate = useCallback(
+    (payload: RoomApiPayload, opts?: { force?: boolean; immediate?: boolean }) => {
+      if (onApplySnapshot) onApplySnapshot(payload, opts);
+      else onSnapshot?.(payload as RoomSnapshot);
+    },
+    [onApplySnapshot, onSnapshot]
+  );
+  const { passTurn, busy: passTurnBusy } = usePassTurn(roomId, snapshot, applyUpdate);
+
   const [gmBusy, setGmBusy] = useState<string | null>(null);
   const [gmError, setGmError] = useState<string | null>(null);
   const [dragId, setDragId] = useState<string | null>(null);
@@ -158,7 +175,7 @@ export function TurnOrderPanel({
     setGmError(null);
     try {
       const snap = await rollInitiative(roomId);
-      onSnapshot?.(snap);
+      applyUpdate?.(snap);
       onUpdate();
     } catch (e) {
       setGmError(e instanceof Error ? e.message : "Falha ao rolar iniciativa");
@@ -168,15 +185,11 @@ export function TurnOrderPanel({
 
 
   async function handleNext() {
-    setBusy(true);
     setGmError(null);
     try {
-      const snap = await nextCombatTurn(roomId, { force: true });
-      onSnapshot?.(snap);
+      await passTurn();
     } catch (e) {
       setGmError(e instanceof Error ? e.message : "Falha ao passar turno");
-    } finally {
-      setBusy(false);
     }
   }
 
@@ -201,7 +214,7 @@ export function TurnOrderPanel({
     setGmError(null);
     try {
       const snap = await postGmCombatAction(roomId, body);
-      onSnapshot?.(snap);
+      applyUpdate?.(snap);
       onUpdate();
     } catch (e) {
       setGmError(e instanceof Error ? e.message : "Falha");
@@ -340,14 +353,14 @@ export function TurnOrderPanel({
                     type="button"
                     className="vtt-turn-compact-nav-btn vtt-turn-compact-nav-btn--next"
                     title="Próximo turno"
-                    disabled={busy || !track.order.length}
+                    disabled={passTurnBusy || !track.order.length}
                     onClick={(e) => {
                       e.stopPropagation();
                       void handleNext();
                     }}
                   >
-                    <span>{busy ? "…" : "Próximo"}</span>
-                    {!busy ? (
+                    <span>{passTurnBusy ? "…" : "Próximo"}</span>
+                    {!passTurnBusy ? (
                       <TurnOrderChevronRightIcon className="vtt-turn-compact-nav-icon" />
                     ) : null}
                   </button>
@@ -463,14 +476,14 @@ export function TurnOrderPanel({
                 <button
                   type="button"
                   className="btn vtt-turn-next-btn vtt-turn-control-btn"
-                  disabled={busy || !track.order.length}
+                  disabled={passTurnBusy || !track.order.length}
                   onClick={(e) => {
                     e.stopPropagation();
                     void handleNext();
                   }}
                 >
-                  <span>{busy ? "…" : "Próximo"}</span>
-                  {!busy ? <TurnOrderChevronRightIcon size={15} /> : null}
+                  <span>{passTurnBusy ? "…" : "Próximo"}</span>
+                  {!passTurnBusy ? <TurnOrderChevronRightIcon size={15} /> : null}
                 </button>
               ) : null}
             </div>

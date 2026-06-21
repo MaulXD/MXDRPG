@@ -23,7 +23,7 @@ import { ensureAdventureActorInRoom } from "@/lib/room/adventure-actors";
 import { maybeRecordCombatUndo } from "../combat-undo";
 import { normalizeImageDataUrl } from "@/lib/media/image-normalize";
 import { getRoom, persistRoom, toSnapshot } from "../internal/registry";
-import type { RoomSnapshot } from "../types";
+import type { RoomSnapshot, RoomState } from "../types";
 
 export async function updateRoomToken(
   roomId: string,
@@ -78,9 +78,9 @@ export async function moveRoomToken(
   tokenId: string,
   target: Axial,
   mode: MoveMode,
-  opts: { activeTokenId?: string | null; bypassTurn?: boolean } = {}
+  opts: { activeTokenId?: string | null; bypassTurn?: boolean; room?: RoomState } = {}
 ): Promise<MoveExecuteResult> {
-  const room = await getRoom(roomId);
+  const room = opts.room ?? (await getRoom(roomId));
   if (!room) return { ok: false, error: "Sala não encontrada" };
 
   const idx = room.scene.tokens.findIndex((t) => t.id === tokenId);

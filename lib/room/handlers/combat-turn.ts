@@ -295,9 +295,9 @@ export async function rollRoomInitiative(roomId: string): Promise<RoomSnapshot |
 
 export async function advanceRoomTurn(
   roomId: string,
-  opts?: { force?: boolean }
+  opts?: { force?: boolean; room?: RoomState }
 ): Promise<RoomSnapshot | null> {
-  const room = await getRoom(roomId);
+  const room = opts?.room ?? (await getRoom(roomId, { skipAutoPass: true }));
   if (!room) return null;
 
   if (!opts?.force) {
