@@ -22,6 +22,11 @@ import { syncCombatOrderWithTokens } from "../combat-order";
 import { shouldAnnounceDefeat } from "../combat-chat-events";
 import { recordDefeatWithPaRewards } from "../combat-defeat-rewards";
 import { appendRoomChatMessage } from "./chat";
+import {
+  damageFormulaFromAction,
+  damageFormulaFromAttackResult,
+  damageFormulaFromSaveResult,
+} from "@/lib/room/combat-chat-damage";
 import type { AttackExecuteResult } from "./combat-attack";
 
 export async function executeRoomAreaSpell(
@@ -188,6 +193,7 @@ export async function executeRoomAreaSpell(
       defenderHpBefore: 0,
       defenderHpAfter: 0,
       detail: formatAreaSpellChatDetail(areaResult, action.damageType),
+      damageFormula: damageFormulaFromAction(action),
     },
   });
 
@@ -216,6 +222,7 @@ export async function executeRoomAreaSpell(
           defenderHpBefore: r.defenderHpBefore,
           defenderHpAfter: r.defenderHpAfter,
           detail: formatSaveChatDetail(r),
+          damageFormula: damageFormulaFromSaveResult(r),
         },
       });
     } else if (hit.kind === "attack") {
@@ -243,6 +250,7 @@ export async function executeRoomAreaSpell(
           defenderHpBefore: r.defenderHpBefore,
           defenderHpAfter: r.defenderHpAfter,
           detail: formatAttackChatDetail(r),
+          damageFormula: damageFormulaFromAttackResult(r),
         },
       });
     }

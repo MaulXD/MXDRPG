@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { postRoomChat } from "@/hooks/useRoomSync";
-import { DiceMiniature } from "@/components/vtt/DiceMiniature";
+import { DiceBoxMini } from "@/components/vtt/DiceBoxMini";
 
 const QUICK = ["1d20", "1d12", "1d10", "1d8", "1d6", "1d4", "2d6"];
 
@@ -32,7 +32,7 @@ export function DiceRoller({ roomId, onUpdate }: Props) {
       setErr(e instanceof Error ? e.message : "Erro");
     } finally {
       setBusy(false);
-      setTimeout(() => setRolling(false), 480);
+      setTimeout(() => setRolling(false), 2000);
     }
   }
 
@@ -41,7 +41,7 @@ export function DiceRoller({ roomId, onUpdate }: Props) {
   return (
     <div className="dice-roller dice-roller--rail">
       <div className="dice-roller-stage">
-        <DiceMiniature formula={formula} value={displayValue} rolling={rolling} size="lg" />
+        <DiceBoxMini formula={formula} value={displayValue} rolling={rolling} size="lg" />
         {lastTotal != null && !rolling ? (
           <p className="dice-roller-result">
             Total <strong>{lastTotal}</strong>

@@ -26,6 +26,11 @@ import { shouldAnnounceDefeat } from "../combat-chat-events";
 import { recordDefeatWithPaRewards } from "../combat-defeat-rewards";
 import { maybeRecordCombatUndo } from "../combat-undo";
 import { isMonsterToken } from "@/lib/room/settings";
+import {
+  damageFormulaFromAction,
+  damageFormulaFromAttackResult,
+  damageFormulaFromSaveResult,
+} from "@/lib/room/combat-chat-damage";
 import { appendRoomChatMessage } from "./chat";
 import { executeRoomAbility } from "./combat-ability";
 import { executeRoomSpellUtility, isSpellUtilityAction } from "./combat-spell-utility";
@@ -207,6 +212,7 @@ export async function executeRoomAttack(
         defenderHpBefore: saveResult.defenderHpBefore,
         defenderHpAfter: saveResult.defenderHpAfter,
         detail: formatSaveChatDetail(saveResult),
+        damageFormula: damageFormulaFromSaveResult(saveResult),
       },
     });
 
@@ -346,6 +352,7 @@ export async function executeRoomAttack(
         attackIndex: result.attackIndex,
         attackCount: result.attackCount,
         ...(result.actionKind === "spell" ? { spellDamageType: action.damageType } : {}),
+        damageFormula: damageFormulaFromAttackResult(result),
       },
     });
   }
@@ -600,6 +607,7 @@ async function executeRoomMultiTargetAttack(
         defenderHpBefore: res.defenderHpBefore,
         defenderHpAfter: res.defenderHpAfter,
         detail: formatSaveChatDetail(res),
+        damageFormula: damageFormulaFromSaveResult(res),
       },
     });
 
@@ -642,6 +650,7 @@ async function executeRoomMultiTargetAttack(
         attackerHeal: result.attackerHeal,
         detail: formatAttackChatDetail(result),
         ...(result.actionKind === "spell" ? { spellDamageType: action.damageType } : {}),
+        damageFormula: damageFormulaFromAttackResult(result),
       },
     });
 
