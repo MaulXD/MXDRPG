@@ -1083,6 +1083,40 @@ kubectl -n raul set image deployment/mxdrpg mxdrpg=ghcr.io/maulxd/mxdrpg:sha-dd9
 
 ---
 
+### 2026-06-21 — Merge `cursor/dice-box-combat` → main (dice-box + mesa rápida)
+
+**Pedido:** mergear PR #3, deploy Contabo e checklist de validação pós-deploy.
+
+**Entregas (branch → main @ `e90d38b`):**
+- Dice-box 3D no combate (cores por tier, fila FX, pending ≤300 ms)
+- Sync incremental (delta GET/SSE, journal de revisions)
+- Store particionada da mesa (`MesaSyncProvider`, slices chat/mapa/combate)
+- Shell Foundry extraído + `BattlefieldMapCanvas` / fila FX
+- Fix re-render do mapa em sync só-chat (`e5f97e6`)
+- `sync:data` — IDs monstros PT-BR canônicos (`e90d38b`)
+
+**Commits / deploy:** `e90d38b` → **`main`** (push 2026-06-21) · imagem `ghcr.io/maulxd/mxdrpg:sha-e90d38b` · workflow build-image #284
+
+**Como testar (grupo 2–3 jogadores, www.mxdrpg.com.br):**
+
+| # | Cenário | Passa se… |
+|---|---------|-----------|
+| A1 | Primeiro ataque | Dado visível ≤ 300 ms do clique |
+| A2 | Ataque acerto | HP no mapa ≤ 1 s após POST |
+| A4 | 3 ataques seguidos | FX enfileirados |
+| A5 | Mover token | Token na célula ≤ 200 ms |
+| A7 | Jogador B vê A | ≤ 2 s |
+| Chat | Mensagens/dados no chat | **Mapa não trava** (fix slice) |
+
+```bash
+curl -s https://www.mxdrpg.com.br/api/health   # buildSha=e90d38b, db=true
+# Se buildSha antigo:
+kubectl -n raul set image deployment/mxdrpg mxdrpg=ghcr.io/maulxd/mxdrpg:sha-e90d38b
+kubectl -n raul rollout status deployment/mxdrpg
+```
+
+---
+
 <!--
 ### AAAA-MM-DD — Título
 
