@@ -1,34 +1,34 @@
-/** Pouso do dado — encaixa no fim de cada janela de rolagem. */
-export const DICE_LANDING_MS = 450;
-export const DICE_LANDING_MS_REDUCED = 140;
+import {
+  COMBAT_DICE_TIMINGS,
+  COMBAT_DICE_TIMINGS_REDUCED,
+  DICE_LANDING_MS,
+  DICE_LANDING_MS_REDUCED,
+} from "@/lib/vtt/combat-dice-model";
 
-/** Janela de rolagem do D20 / save (spin + pouso) — igual ao preview-combate-dados.html */
-export const COMBAT_ATTACK_ROLL_MS = 2000;
-export const COMBAT_ATTACK_ROLL_MS_REDUCED = 550;
+export {
+  DICE_LANDING_MS,
+  DICE_LANDING_MS_REDUCED,
+} from "@/lib/vtt/combat-dice-model";
 
-/** Janela de rolagem do dado de dano (D20 permanece visível). */
-export const COMBAT_DAMAGE_ROLL_MS = 2000;
-export const COMBAT_DAMAGE_ROLL_MS_REDUCED = 550;
+/** Janela de rolagem do D20 / save — derivada do modelo único. */
+export const COMBAT_ATTACK_ROLL_MS = COMBAT_DICE_TIMINGS.attackRoll;
+export const COMBAT_ATTACK_ROLL_MS_REDUCED = COMBAT_DICE_TIMINGS_REDUCED.attackRoll;
 
-/** Quando parar de girar e iniciar pouso (ms desde o início da rolagem). */
+/** Janela de rolagem do dado de dano. */
+export const COMBAT_DAMAGE_ROLL_MS = COMBAT_DICE_TIMINGS.damageRoll;
+export const COMBAT_DAMAGE_ROLL_MS_REDUCED = COMBAT_DICE_TIMINGS_REDUCED.damageRoll;
+
 export function rollLandAtMs(rollMs: number, landingMs: number): number {
   return Math.max(0, rollMs - landingMs);
 }
 
 export type CombatFxTimings = {
-  /** Marca/projétil antes do dado */
   mark: number;
-  /** Rolagem de ataque (total) */
   attackRoll: number;
-  /** Quando o D20 para de girar */
   attackLandAt: number;
-  /** ERROU visível antes de sair (sem dano) */
   missHold: number;
-  /** Rolagem de dano (total) */
   damageRoll: number;
-  /** Quando o dado de dano para de girar */
   damageLandAt: number;
-  /** Após resolver (token + chat) antes do próximo FX */
   afterResolve: number;
   healHold: number;
   areaTargetMark: number;
@@ -37,50 +37,40 @@ export type CombatFxTimings = {
 };
 
 function buildTimings(
-  attackRoll: number,
-  damageRoll: number,
+  dice: typeof COMBAT_DICE_TIMINGS,
   landingMs: number,
   extras: Pick<
     CombatFxTimings,
-    "mark" | "missHold" | "afterResolve" | "healHold" | "areaTargetMark" | "areaSimulResult" | "areaSimulCleanup"
+    "healHold" | "areaTargetMark" | "areaSimulResult" | "areaSimulCleanup"
   >
 ): CombatFxTimings {
   return {
+    mark: dice.mark,
+    attackRoll: dice.attackRoll,
+    attackLandAt: rollLandAtMs(dice.attackRoll, landingMs),
+    missHold: dice.missHold,
+    damageRoll: dice.damageRoll,
+    damageLandAt: rollLandAtMs(dice.damageRoll, landingMs),
+    afterResolve: dice.afterResolve,
     ...extras,
-    attackRoll,
-    attackLandAt: rollLandAtMs(attackRoll, landingMs),
-    damageRoll,
-    damageLandAt: rollLandAtMs(damageRoll, landingMs),
   };
 }
 
-/** Hit completo ≈ mark + 2s ataque + 2s dano + afterResolve (~4,5s) — preview. */
-export const COMBAT_FX_TIMINGS = buildTimings(
-  COMBAT_ATTACK_ROLL_MS,
-  COMBAT_DAMAGE_ROLL_MS,
-  DICE_LANDING_MS,
-  {
-    mark: 180,
-    missHold: 550,
-    afterResolve: 400,
-    healHold: 700,
-    areaTargetMark: 160,
-    areaSimulResult: COMBAT_ATTACK_ROLL_MS + COMBAT_DAMAGE_ROLL_MS,
-    areaSimulCleanup: 500,
-  }
-);
+export const COMBAT_FX_TIMINGS = buildTimings(COMBAT_DICE_TIMINGS, DICE_LANDING_MS, {
+  healHold: 700,
+  areaTargetMark: 160,
+  areaSimulResult: COMBAT_DICE_TIMINGS.attackRoll + COMBAT_DICE_TIMINGS.damageRoll,
+  areaSimulCleanup: 500,
+});
 
 export const COMBAT_FX_TIMINGS_REDUCED = buildTimings(
-  COMBAT_ATTACK_ROLL_MS_REDUCED,
-  COMBAT_DAMAGE_ROLL_MS_REDUCED,
+  COMBAT_DICE_TIMINGS_REDUCED,
   DICE_LANDING_MS_REDUCED,
   {
-    mark: 60,
-    missHold: 220,
-    afterResolve: 200,
     healHold: 280,
     areaTargetMark: 60,
-    areaSimulResult: COMBAT_ATTACK_ROLL_MS_REDUCED + COMBAT_DAMAGE_ROLL_MS_REDUCED,
+    areaSimulResult:
+      COMBAT_DICE_TIMINGS_REDUCED.attackRoll + COMBAT_DICE_TIMINGS_REDUCED.damageRoll,
     areaSimulCleanup: 240,
   }
 );

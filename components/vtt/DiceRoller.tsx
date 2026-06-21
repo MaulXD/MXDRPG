@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { postRoomChat } from "@/hooks/useRoomSync";
 import { DiceBoxMini } from "@/components/vtt/DiceBoxMini";
+import { diceRollSpecFromFormula } from "@/lib/vtt/combat-dice-model";
 
 const QUICK = ["1d20", "1d12", "1d10", "1d8", "1d6", "1d4", "2d6"];
 
@@ -41,7 +42,12 @@ export function DiceRoller({ roomId, onUpdate }: Props) {
   return (
     <div className="dice-roller dice-roller--rail">
       <div className="dice-roller-stage">
-        <DiceBoxMini formula={formula} value={displayValue} rolling={rolling} size="lg" />
+        <DiceBoxMini
+          spec={diceRollSpecFromFormula(formula, displayValue)}
+          formula={formula}
+          rolling={rolling}
+          size="lg"
+        />
         {lastTotal != null && !rolling ? (
           <p className="dice-roller-result">
             Total <strong>{lastTotal}</strong>

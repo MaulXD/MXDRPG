@@ -12,10 +12,9 @@ import type {
 import { DiceCombatPanel } from "@/components/vtt/DiceCombatPanel";
 import type { BattleToken } from "@/lib/vtt/types";
 import {
-  resolvePortraitFrameTier,
-  type PortraitFrameTier,
-} from "@/lib/vtt/portrait-frame";
-import { DICE_COMBAT_EVICT_MS, formulaToDiceSides } from "@/lib/vtt/dice-combat-box";
+  combatFxToDiceSequence,
+  resolveCombatDiceTimings,
+} from "@/lib/vtt/combat-dice-model";
 import { isPendingCombatFx } from "@/lib/vtt/combat-fx-sequence";
 import {
   COMBAT_FX_TIMINGS,
@@ -106,16 +105,6 @@ function tokenFlashForFx(fx: CombatFxState): TokenCombatFlash {
   if (fx.hit === false && fx.saveTotal == null) return "miss";
   if (fx.hit || fx.saveTotal != null) return "hit";
   return "miss";
-}
-
-function resolveAttackerTier(
-  fx: CombatFxState,
-  tokens: BattleToken[]
-): PortraitFrameTier {
-  const id = fx.attackerTokenId;
-  if (!id) return "hero";
-  const token = tokens.find((t) => t.id === id);
-  return token ? resolvePortraitFrameTier(token) : "hero";
 }
 
 // ─── Animações de projétil SVG ────────────────────────────────────
@@ -380,6 +369,16 @@ export function CombatFxLayer({
     [reducedMotion]
   );
 
+  const diceSequence = useMemo(
+    () => (fx ? combatFxToDiceSequence(fx, tokens, reducedMotion) : null),
+    [fx, tokens, reducedMotion]
+  );
+
+  const diceEvictMs = useMemo(
+    () => resolveCombatDiceTimings(reducedMotion).evictMs,
+    [reducedMotion]
+  );
+
   const fxId = fx?.id ?? null;
 
   const revealChat = (p: "roll" | "damage" | "done") => {
@@ -537,7 +536,7 @@ export function CombatFxLayer({
           setDiceEvicting(false);
           setPanelVisible(false);
           setShowDamageRoll(false);
-        }, DICE_COMBAT_EVICT_MS)
+        }, diceEvictMs)
       );
     };
 
@@ -622,7 +621,7 @@ export function CombatFxLayer({
     }, tAttackEnd + startMarkMs));
 
     return () => { for (const id of timeouts) clearTimeout(id); };
-  }, [fxId, reducedMotion, timings]);
+  }, [fxId, reducedMotion, timings, diceEvictMs]);
 
   if (!fx || phase === "done") return null;
 
@@ -777,19 +776,14 @@ export function CombatFxLayer({
             <div className="combat-fx-dice-row">
               <DiceCombatPanel
                 key={fx.id}
-                sequenceKey={fx.id}
-                attackSides={20}
-                attackValue={fx.attackNatural ?? fx.saveTotal ?? null}
-                attackRolling={showRoll}
-                attackLocked={!showRoll}
-                showDamageSlot={showDamageRoll}
-                damageSides={formulaToDiceSides(fx.damageFormula, 8)}
-                damageValue={fx.damageTotal}
-                damageRolling={damageDieRolling}
-                attackerTier={resolveAttackerTier(fx, tokens)}
-                isHeal={fx.isHeal}
-                isCrit={fx.critical}
-                evicting={diceEvicting}
+                sequence={diceSequence!}
+                ui={{
+                  attackRolling: showRoll,
+                  attackLocked: !showRoll,
+                  showDamage: showDamageRoll,
+                  damageRolling: damageDieRolling,
+                  evicting: diceEvicting,
+                }}
                 reducedMotion={reducedMotion}
               />
             </div>
