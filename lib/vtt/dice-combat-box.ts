@@ -152,9 +152,9 @@ export function scheduleCombatDiceWarm(reducedMotion = false): void {
       window as Window & {
         requestIdleCallback: (cb: () => void, opts?: { timeout: number }) => number;
       }
-    ).requestIdleCallback(run, { timeout: 5000 });
+    ).requestIdleCallback(run, { timeout: 2500 });
   } else {
-    setTimeout(run, 2500);
+    setTimeout(run, 800);
   }
 }
 
