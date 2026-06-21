@@ -29,6 +29,10 @@ import { syncCombatOrderWithTokens } from "../combat-order";
 import { shouldAnnounceDefeat } from "../combat-chat-events";
 import { recordDefeatWithPaRewards } from "../combat-defeat-rewards";
 import { appendRoomChatMessage } from "./chat";
+import {
+  damageFormulaFromAttackResult,
+  damageFormulaFromSaveResult,
+} from "@/lib/room/combat-chat-damage";
 
 export type AbilityExecuteResult =
   | { ok: true; snapshot: RoomSnapshot }
@@ -290,6 +294,7 @@ export async function executeRoomAbility(
         defenderHpBefore: result.defenderHpBefore,
         defenderHpAfter: result.defenderHpAfter,
         detail: formatAttackChatDetail(result),
+        damageFormula: damageFormulaFromAttackResult(result),
       },
     });
     if (defender && shouldAnnounceDefeat(result.defenderHpBefore, result.defenderHpAfter)) {
@@ -324,6 +329,7 @@ export async function executeRoomAbility(
         defenderHpBefore: save.defenderHpBefore,
         defenderHpAfter: save.defenderHpAfter,
         detail: formatSaveChatDetail(save),
+        damageFormula: damageFormulaFromSaveResult(save),
       },
     });
     if (defender && shouldAnnounceDefeat(save.defenderHpBefore, save.defenderHpAfter)) {

@@ -121,6 +121,7 @@ function combatFxFromMessage(
     deferStateApply: opts?.deferStateApply,
     resolveDetail: c.detail,
     spellDamageType: c.spellDamageType,
+    damageFormula: c.damageFormula,
     damageTypeLabel: isHeal ? "Cura" : generalDamagePresetLabel(),
     chatMessageIds: [msg.id],
   };

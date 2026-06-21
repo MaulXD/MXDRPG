@@ -15,7 +15,7 @@ import {
   resolvePortraitFrameTier,
   type PortraitFrameTier,
 } from "@/lib/vtt/portrait-frame";
-import { DICE_COMBAT_EVICT_MS } from "@/lib/vtt/dice-combat-box";
+import { DICE_COMBAT_EVICT_MS, formulaToDiceSides } from "@/lib/vtt/dice-combat-box";
 import { isPendingCombatFx } from "@/lib/vtt/combat-fx-sequence";
 import {
   COMBAT_FX_TIMINGS,
@@ -783,7 +783,7 @@ export function CombatFxLayer({
                 attackRolling={showRoll}
                 attackLocked={!showRoll}
                 showDamageSlot={showDamageRoll}
-                damageSides={8}
+                damageSides={formulaToDiceSides(fx.damageFormula, 8)}
                 damageValue={fx.damageTotal}
                 damageRolling={damageDieRolling}
                 attackerTier={resolveAttackerTier(fx, tokens)}

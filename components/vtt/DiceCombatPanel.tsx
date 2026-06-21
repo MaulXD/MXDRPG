@@ -4,26 +4,17 @@ import { useCallback, useEffect, useRef, type CSSProperties } from "react";
 import {
   DICE_COMBAT_EVICT_MS,
   DICE_TIER_LABELS,
-  VENDOR_DICE_BOX,
   dieFaceValue,
   getAttackDieColor,
   getAttackSlotBorder,
   getDamageDieColor,
   getDiceBoxBaseOptions,
-  preloadCombatDiceBox,
+  loadVendorDiceBox,
+  warmCombatDiceBoxes,
+  type DiceBoxInstance,
   type DiceSides,
 } from "@/lib/vtt/dice-combat-box";
 import type { PortraitFrameTier } from "@/lib/vtt/portrait-frame";
-
-type DiceBoxInstance = {
-  init(): Promise<boolean | void>;
-  roll(notation: unknown): Promise<unknown>;
-  clear(): unknown;
-  show?(): DiceBoxInstance;
-  resizeWorld?(): void;
-};
-
-type DiceBoxCtor = new (config: Record<string, unknown>) => DiceBoxInstance;
 
 type Props = {
   sequenceKey: string;
@@ -52,14 +43,6 @@ function waitMs(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-async function loadVendorDiceBox(): Promise<DiceBoxCtor> {
-  preloadCombatDiceBox();
-  const mod = (await import(/* webpackIgnore: true */ VENDOR_DICE_BOX)) as {
-    default: DiceBoxCtor;
-  };
-  return mod.default;
-}
-
 export function DiceCombatPanel({
   sequenceKey,
   attackSides,
@@ -85,7 +68,6 @@ export function DiceCombatPanel({
   const damageReadyRef = useRef(false);
   const attackRollKeyRef = useRef<string | null>(null);
   const damageRollKeyRef = useRef<string | null>(null);
-  const DiceBoxRef = useRef<DiceBoxCtor | null>(null);
   const evictingRef = useRef(false);
 
   const attackColor = getAttackDieColor(attackerTier);
@@ -104,20 +86,15 @@ export function DiceCombatPanel({
     ]);
   }, []);
 
-  const loadDiceBox = useCallback(async (): Promise<DiceBoxCtor> => {
-    if (DiceBoxRef.current) return DiceBoxRef.current;
-    DiceBoxRef.current = await loadVendorDiceBox();
-    return DiceBoxRef.current;
-  }, []);
-
   const ensureAttackBox = useCallback(async () => {
+    await warmCombatDiceBoxes(reducedMotion);
     await waitLayout();
     if (attackReadyRef.current) {
       attackBoxRef.current?.resizeWorld?.();
       attackBoxRef.current?.show?.();
       return;
     }
-    const DiceBox = await loadDiceBox();
+    const DiceBox = await loadVendorDiceBox();
     attackBoxRef.current = new DiceBox({
       ...getDiceBoxBaseOptions(reducedMotion),
       container: `#${attackHostId}`,
@@ -125,16 +102,17 @@ export function DiceCombatPanel({
     await attackBoxRef.current.init();
     attackBoxRef.current.show?.();
     attackReadyRef.current = true;
-  }, [attackHostId, loadDiceBox, reducedMotion]);
+  }, [attackHostId, reducedMotion]);
 
   const ensureDamageBox = useCallback(async () => {
+    await warmCombatDiceBoxes(reducedMotion);
     await waitLayout();
     if (damageReadyRef.current) {
       damageBoxRef.current?.resizeWorld?.();
       damageBoxRef.current?.show?.();
       return;
     }
-    const DiceBox = await loadDiceBox();
+    const DiceBox = await loadVendorDiceBox();
     damageBoxRef.current = new DiceBox({
       ...getDiceBoxBaseOptions(reducedMotion),
       container: `#${damageHostId}`,
@@ -142,10 +120,10 @@ export function DiceCombatPanel({
     await damageBoxRef.current.init();
     damageBoxRef.current.show?.();
     damageReadyRef.current = true;
-  }, [damageHostId, loadDiceBox, reducedMotion]);
+  }, [damageHostId, reducedMotion]);
 
   useEffect(() => {
-    void loadDiceBox();
+    void loadVendorDiceBox();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
