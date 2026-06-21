@@ -4,6 +4,7 @@ import { IconScroll, IconSword } from "@/components/ui/EldarinIcons";
 import { useVttToast } from "@/components/vtt/VttToast";
 import type { RoomApiPayload } from "@/hooks/useRoomSync";
 import { useCombatModeToggle } from "@/hooks/vtt/useCombatModeToggle";
+import { normalizeRoomSettings } from "@/lib/room/settings";
 import type { RoomSnapshot } from "@/lib/room/types";
 
 type Props = {
@@ -16,9 +17,12 @@ type Props = {
 export function GmMesaModeToggle({ roomId, snapshot, combatActive, onApplyUpdate }: Props) {
   const toast = useVttToast();
   const { setCombatMode, busy } = useCombatModeToggle(roomId, snapshot, onApplyUpdate);
+  const resolvedCombatActive = snapshot
+    ? normalizeRoomSettings(snapshot.settings).combatActive
+    : combatActive;
 
   async function setMode(active: boolean) {
-    if (busy || active === combatActive) return;
+    if (busy || active === resolvedCombatActive) return;
     try {
       await setCombatMode(active);
     } catch (e) {
@@ -38,8 +42,8 @@ export function GmMesaModeToggle({ roomId, snapshot, combatActive, onApplyUpdate
     >
       <button
         type="button"
-        className={`gm-mesa-mode-toggle__option${!combatActive ? " gm-mesa-mode-toggle__option--active" : ""}`}
-        aria-pressed={!combatActive}
+        className={`gm-mesa-mode-toggle__option${!resolvedCombatActive ? " gm-mesa-mode-toggle__option--active" : ""}`}
+        aria-pressed={!resolvedCombatActive}
         disabled={busy}
         title="Exploração livre: movimento sem PA, magias sem custo de turno"
         onClick={() => void setMode(false)}
@@ -49,8 +53,8 @@ export function GmMesaModeToggle({ roomId, snapshot, combatActive, onApplyUpdate
       </button>
       <button
         type="button"
-        className={`gm-mesa-mode-toggle__option${combatActive ? " gm-mesa-mode-toggle__option--active" : ""}`}
-        aria-pressed={combatActive}
+        className={`gm-mesa-mode-toggle__option${resolvedCombatActive ? " gm-mesa-mode-toggle__option--active" : ""}`}
+        aria-pressed={resolvedCombatActive}
         disabled={busy}
         title="Combate: PA, iniciativa e ações só na vez de cada token"
         onClick={() => void setMode(true)}

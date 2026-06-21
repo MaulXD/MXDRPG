@@ -1,8 +1,10 @@
 "use client";
 
 import { useCallback, useRef, useState } from "react";
+import { previewExplorationPaTokens } from "@/lib/combat/exploration-pa";
 import type { RoomSnapshot } from "@/lib/room/types";
 import { normalizeRoomSettings } from "@/lib/room/settings";
+import { setCombatModeTogglePending } from "@/lib/vtt/combat-mode-pending";
 import { postGmCombatAction, type RoomApiPayload } from "@/hooks/useRoomSync";
 
 type ApplyFn = (
@@ -18,19 +20,32 @@ export function useCombatModeToggle(
 ) {
   const [busy, setBusy] = useState(false);
   const revertRef = useRef<RoomSnapshot | null>(null);
+  const inFlightRef = useRef(false);
 
   const setCombatMode = useCallback(
     async (active: boolean) => {
-      if (!snapshot || busy) return;
+      if (!snapshot || busy || inFlightRef.current) return;
       const current = normalizeRoomSettings(snapshot.settings).combatActive;
       if (current === active) return;
 
+      inFlightRef.current = true;
       setBusy(true);
       revertRef.current = snapshot;
+      setCombatModeTogglePending(roomId, active);
 
+      const settings = normalizeRoomSettings({ ...snapshot.settings, combatActive: active });
       const optimistic: RoomSnapshot = {
         ...snapshot,
-        settings: normalizeRoomSettings({ ...snapshot.settings, combatActive: active }),
+        settings,
+        combat: active
+          ? snapshot.combat
+          : { ...snapshot.combat, pendingAutoPass: undefined },
+        scene: active
+          ? snapshot.scene
+          : {
+              ...snapshot.scene,
+              tokens: previewExplorationPaTokens(snapshot.scene.tokens, snapshot.actors),
+            },
       };
       applyUpdate(optimistic, { force: true, immediate: true });
 
@@ -39,14 +54,16 @@ export function useCombatModeToggle(
           action: "set-combat-mode",
           active,
         });
-        applyUpdate(payload, { force: true, immediate: false });
+        applyUpdate(payload, { force: true, immediate: true });
         revertRef.current = null;
       } catch (e) {
         const prev = revertRef.current;
-        if (prev) applyUpdate(prev, { force: true, immediate: false });
+        if (prev) applyUpdate(prev, { force: true, immediate: true });
         revertRef.current = null;
         throw e;
       } finally {
+        setCombatModeTogglePending(roomId, null);
+        inFlightRef.current = false;
         setBusy(false);
       }
     },

@@ -20,6 +20,7 @@ import {
   isRoomDelta,
   type RoomApiPayload,
 } from "@/lib/room/room-delta";
+import { clampSnapshotCombatMode } from "@/lib/vtt/combat-mode-pending";
 
 const FETCH_TIMEOUT_MS = 12_000;
 
@@ -74,11 +75,11 @@ const COMBAT_POLL_INTERVAL_MS = 2500;
 
 function prepareSnapshot(data: RoomSnapshot): RoomSnapshot {
   const tokens = Array.isArray(data.scene?.tokens) ? data.scene.tokens : [];
-  return {
+  return clampSnapshotCombatMode({
     ...data,
     scene: { ...data.scene, tokens },
     combat: normalizeCombatTrack(data.combat, tokens),
-  };
+  });
 }
 
 export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
