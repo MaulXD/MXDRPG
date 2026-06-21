@@ -423,7 +423,10 @@ export function Battlefield({
 
   const { imagesRef, imgTick } = useTokenImages(displayScene.tokens);
   const refresh = onRefresh ?? (() => {});
-  const roomSettings = normalizeRoomSettings(snapshot?.settings);
+  const roomSettings = useMemo(
+    () => normalizeRoomSettings(snapshot?.settings),
+    [snapshot?.settings]
+  );
 
   const turnActiveId = combat
     ? resolveLivingActiveTokenId(combat, displayScene.tokens) ?? activeTokenId(combat)
@@ -673,6 +676,16 @@ export function Battlefield({
     [onApplySnapshot, resolveRoomPayload]
   );
 
+  const shouldDeferSceneSync = useCallback(() => {
+    return (
+      combatFxIdRef.current != null ||
+      combatFxQueueRef.current.length > 0 ||
+      moveAnimRef.current != null ||
+      moveBusyRef.current ||
+      gmRepositionBusyRef.current
+    );
+  }, []);
+
   const syncRoom = useCallback(
     (payload?: RoomApiPayload, opts?: { force?: boolean; immediate?: boolean }) => {
       if (!payload) {
@@ -683,15 +696,34 @@ export function Battlefield({
       if (snap.revision >= appliedSceneRevisionRef.current) {
         appliedSceneRevisionRef.current = snap.revision;
       }
+
+      const deferScene = shouldDeferSceneSync();
+
+      if (deferScene) {
+        pendingCombatSnapRef.current = snap;
+        if (onApplySnapshot) {
+          onApplySnapshot(payload, {
+            force: opts?.force ?? true,
+            immediate: opts?.immediate === true,
+          });
+        } else {
+          refresh();
+        }
+        playCombatFxFromSnapRef.current?.(payload);
+        return;
+      }
+
       if (snap.scene) {
-        setScene((prev) => mergeScenePreservingPortraits(prev, snap.scene));
+        startTransition(() => {
+          setScene((prev) => mergeScenePreservingPortraits(prev, snap.scene));
+        });
       }
       const immediate = opts?.immediate === true;
       if (onApplySnapshot) onApplySnapshot(payload, { force: opts?.force ?? true, immediate });
       else refresh();
       playCombatFxFromSnapRef.current?.(payload);
     },
-    [onApplySnapshot, refresh, resolveRoomPayload]
+    [onApplySnapshot, refresh, resolveRoomPayload, shouldDeferSceneSync]
   );
 
   const battlefieldView = useBattlefieldView({ wrapRef, canvasRef });
@@ -1121,9 +1153,6 @@ export function Battlefield({
       gmRepositionBusyRef.current
     ) {
       pendingCombatSnapRef.current = snap;
-      if (onApplySnapshot) {
-        onApplySnapshot(snap, { force: true, immediate: false });
-      }
       startTransition(() => {
         setScene((prev) => ({
           ...prev,
@@ -1140,7 +1169,7 @@ export function Battlefield({
     startTransition(() => {
       setScene((prev) => mergeScenePreservingPortraits(prev, snap.scene));
     });
-  }, [snapshotRevision, combatFx, mergeTokenCombatFields, onApplySnapshot, roomSettings.combatActive]);
+  }, [snapshotRevision, combatFx, mergeTokenCombatFields, roomSettings.combatActive]);
 
   useEffect(() => {
     setActionMode("idle");
@@ -1375,7 +1404,7 @@ export function Battlefield({
           areaDirection: direction,
           channelExtraPa,
         });
-        syncRoom(snap, { force: true, immediate: true });
+        syncRoom(snap, { force: true });
         setActionMode("idle");
         setAreaCenter(null);
       } catch (e) {
@@ -1553,7 +1582,7 @@ export function Battlefield({
                 token.id,
                 combatAttackRequestOpts(action, token, { bypassTurn: bypass })
               );
-        syncRoom(snap, { force: true, immediate: true });
+        syncRoom(snap, { force: true });
         setActionMode("idle");
         setSelectedCombatAction(null);
         setActionRingAt(null);
@@ -1582,7 +1611,7 @@ export function Battlefield({
             defenderTokenIds: targetIds,
           }
         );
-        syncRoom(snap, { force: true, immediate: true });
+        syncRoom(snap, { force: true });
         setSpellTargetIds([]);
         setActionMode("idle");
         setSelectedCombatAction(null);
@@ -1691,7 +1720,7 @@ export function Battlefield({
               await new Promise((r) => setTimeout(r, 1500 * (bg + 1)));
               try {
                 const retry = await runPost();
-                syncRoom(retry, { force: true, immediate: true });
+                syncRoom(retry, { force: true });
                 setActionErr(null);
                 return;
               } catch {
@@ -1702,7 +1731,7 @@ export function Battlefield({
           })();
           return;
         }
-        syncRoom(response!, { force: true, immediate: true });
+        syncRoom(response!, { force: true });
         setSpellTargetIds([]);
         // Mantém modo ataque para permitir outro alvo no mesmo turno (Esc cancela).
       } catch (e) {

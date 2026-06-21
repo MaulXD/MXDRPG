@@ -57,7 +57,7 @@ const REFRESH_DEBOUNCE_MS = 120;
 const REFRESH_DEBOUNCE_COMBAT_MS = 180;
 /** Poll de segurança mesmo com SSE aberto (ms). */
 const SSE_BACKUP_POLL_MS = 10_000;
-const SSE_BACKUP_POLL_COMBAT_MS = 4000;
+const SSE_BACKUP_POLL_COMBAT_MS = 6000;
 
 export type RoomSyncStatus = "loading" | "live" | "polling" | "error";
 
@@ -69,7 +69,16 @@ function roomQuery(roomId: string, inviteCode?: string | null, sinceRev?: number
   return s ? `?${s}` : "";
 }
 
-const COMBAT_POLL_INTERVAL_MS = 1200;
+const COMBAT_POLL_INTERVAL_MS = 2500;
+
+function prepareSnapshot(data: RoomSnapshot): RoomSnapshot {
+  const tokens = Array.isArray(data.scene?.tokens) ? data.scene.tokens : [];
+  return {
+    ...data,
+    scene: { ...data.scene, tokens },
+    combat: normalizeCombatTrack(data.combat, tokens),
+  };
+}
 
 export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
   const disabled = opts.disabled ?? false;
@@ -78,12 +87,16 @@ export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
   const basePollIntervalMs = opts.pollIntervalMs ?? 2000;
   const presenceUser = opts.presenceUser ?? null;
   const onMemberOnline = opts.onMemberOnline;
-  const [snapshot, setSnapshot] = useState<RoomSnapshot | null>(initialSnapshot);
+  const [snapshot, setSnapshot] = useState<RoomSnapshot | null>(() =>
+    initialSnapshot ? prepareSnapshot(initialSnapshot) : null
+  );
   const [loading, setLoading] = useState(!initialSnapshot);
-  const snapshotRef = useRef<RoomSnapshot | null>(initialSnapshot);
+  const snapshotRef = useRef<RoomSnapshot | null>(
+    initialSnapshot ? prepareSnapshot(initialSnapshot) : null
+  );
   const [syncError, setSyncError] = useState<string | null>(null);
   const [syncStatus, setSyncStatus] = useState<RoomSyncStatus>("loading");
-  const revisionRef = useRef(0);
+  const revisionRef = useRef(initialSnapshot?.revision ?? 0);
   const query = useMemo(() => roomQuery(roomId, inviteCode), [roomId, inviteCode]);
   const sseReadyRef = useRef(false);
   const sseLiveRef = useRef(false);
@@ -97,12 +110,7 @@ export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
     (data: RoomSnapshot, opts?: { force?: boolean; immediate?: boolean }) => {
       if (!opts?.force && data.revision < revisionRef.current) return;
       revisionRef.current = Math.max(revisionRef.current, data.revision);
-      const tokens = Array.isArray(data.scene?.tokens) ? data.scene.tokens : [];
-      const next: RoomSnapshot = {
-        ...data,
-        scene: { ...data.scene, tokens },
-        combat: normalizeCombatTrack(data.combat, tokens),
-      };
+      const next = prepareSnapshot(data);
       snapshotRef.current = next;
       const commit = () => {
         setSnapshot(next);
@@ -201,10 +209,11 @@ export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
     if (disabled) return;
     const init = initialSnapshotRef.current;
     if (init) {
-      revisionRef.current = init.revision;
-      snapshotRef.current = init;
-      applySnapshot(init, { force: true, immediate: true });
+      const prepared = prepareSnapshot(init);
+      revisionRef.current = prepared.revision;
+      snapshotRef.current = prepared;
       setSyncStatus("live");
+      setLoading(false);
     } else {
       setLoading(true);
       revisionRef.current = 0;
