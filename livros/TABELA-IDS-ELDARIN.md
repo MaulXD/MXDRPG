@@ -55,9 +55,9 @@
 | --- | --- | --- | --- | --- |
 | 001 | MON-001 | Zumbi de Masmorra | `monstros-zumbi-de-masmorra` | ASSIM-001-1 … 8 |
 | 002 | MON-002 | Esqueleto Armado | `monstros-esqueleto-armado` | ASSIM-002-1 … 8 |
-| 003 | MON-003 | Necrófago | `monstros-ghoul` | ASSIM-003-1 … 8 |
+| 003 | MON-003 | Necrófago | `monstros-necrofago` | ASSIM-003-1 … 8 |
 | 004 | MON-004 | Espectro | `monstros-espectro` | ASSIM-004-1 … 8 |
-| 005 | MON-005 | Necroarca (Arquiliche) | `monstros-lich-arquiliche` | ASSIM-005-1 … 8 |
+| 005 | MON-005 | Necroarca (Arquiliche) | `monstros-necroarca-arquiliche` | ASSIM-005-1 … 8 |
 | 006 | MON-006 | Assombracao | `monstros-assombracao` | ASSIM-006-1 … 8 |
 | 007 | MON-007 | Vampiro | `monstros-vampiro` | ASSIM-007-1 … 8 |
 | 008 | MON-008 | Cavaleiro Espectral | `monstros-cavaleiro-espectral` | ASSIM-008-1 … 8 |
@@ -97,7 +97,7 @@
 | 042 | MON-042 | Yeti das Profundezas | `monstros-yeti-das-profundezas` | ASSIM-042-1 … 8 |
 | 043 | MON-043 | Lobo do Inverno | `monstros-lobo-do-inverno` | ASSIM-043-1 … 8 |
 | 044 | MON-044 | Mimico de Baul | `monstros-mimico-de-baul` | ASSIM-044-1 … 8 |
-| 045 | MON-045 | Metamorfo Dúbio | `monstros-doppelganger` | ASSIM-045-1 … 8 |
+| 045 | MON-045 | Metamorfo Dúbio | `monstros-metamorfo-dubio` | ASSIM-045-1 … 8 |
 | 046 | MON-046 | Hidra das Cavernas | `monstros-hidra-das-cavernas` | ASSIM-046-1 … 8 |
 | 047 | MON-047 | Quimera | `monstros-quimera` | ASSIM-047-1 … 8 |
 | 048 | MON-048 | Anjo Caido | `monstros-anjo-caido` | ASSIM-048-1 … 8 |
@@ -126,13 +126,13 @@
 | 071 | MON-071 | Bruxa da Masmorra | `monstros-bruxa-da-masmorra` | ASSIM-071-1 … 8 |
 | 072 | MON-072 | Fera Seminal | `monstros-fera-seminal` | ASSIM-072-1 … 8 |
 | 073 | MON-073 | Carniçal Alado | `monstros-carnical-alado` | ASSIM-073-1 … 8 |
-| 074 | MON-074 | Arquidemônio Flamejante | `monstros-balor` | ASSIM-074-1 … 8 |
+| 074 | MON-074 | Arquidemônio Flamejante | `monstros-arquidemonio-flamejante` | ASSIM-074-1 … 8 |
 | 075 | MON-075 | Enxame de Ratos-Cadáveres | `monstros-enxame-de-ratos-cadaveres` | ASSIM-075-1 … 8 |
 | 076 | MON-076 | Elemental de Terra | `monstros-elemental-de-terra` | ASSIM-076-1 … 8 |
 | 077 | MON-077 | Banshee | `monstros-banshee` | ASSIM-077-1 … 8 |
 | 078 | MON-078 | Morcego-Tirano | `monstros-morcego-tirano` | ASSIM-078-1 … 8 |
 | 079 | MON-079 | Ooze Ocular | `monstros-ooze-ocular` | ASSIM-079-1 … 8 |
-| 080 | MON-080 | Devorador Ancião (Filhote) | `monstros-tarrasque-bebe` | ASSIM-080-1 … 8 |
+| 080 | MON-080 | Devorador Ancião (Filhote) | `monstros-devorador-anciao-filhote` | ASSIM-080-1 … 8 |
 
 ---
 
@@ -983,9 +983,9 @@
 | --- | --- | --- |
 | monstros-zumbi-de-masmorra | Zumbi de Masmorra | npc |
 | monstros-esqueleto-armado | Esqueleto Armado | npc |
-| monstros-ghoul | Necrófago | npc |
+| monstros-necrofago | Necrófago | npc |
 | monstros-espectro | Espectro | npc |
-| monstros-lich-arquiliche | Necroarca (Arquiliche) | npc |
+| monstros-necroarca-arquiliche | Necroarca (Arquiliche) | npc |
 | monstros-assombracao | Assombração | npc |
 | monstros-vampiro | Vampiro | npc |
 | monstros-cavaleiro-espectral | Cavaleiro Espectral | npc |
@@ -1025,7 +1025,7 @@
 | monstros-yeti-das-profundezas | Yeti das Profundezas | npc |
 | monstros-lobo-do-inverno | Lobo do Inverno | npc |
 | monstros-mimico-de-bau | Mímico de Baú | npc |
-| monstros-doppelganger | Metamorfo Dúbio | npc |
+| monstros-metamorfo-dubio | Metamorfo Dúbio | npc |
 | monstros-hidra-das-cavernas | Hidra das Cavernas | npc |
 | monstros-quimera | Quimera | npc |
 | monstros-anjo-caido | Anjo Caído | npc |
@@ -1054,13 +1054,13 @@
 | monstros-bruxa-da-masmorra | Bruxa da Masmorra | npc |
 | monstros-fera-seminal | Fera Seminal | npc |
 | monstros-carnical-alado | Carniçal Alado | npc |
-| monstros-balor | Arquidemônio Flamejante | npc |
+| monstros-arquidemonio-flamejante | Arquidemônio Flamejante | npc |
 | monstros-enxame-de-ratos-cadaveres | Enxame de Ratos-Cadáveres | npc |
 | monstros-elemental-de-terra | Elemental de Terra | npc |
 | monstros-banshee | Banshee | npc |
 | monstros-morcego-tirano | Morcego-Tirano | npc |
 | monstros-ooze-ocular | Ooze Ocular | npc |
-| monstros-tarrasque-bebe | Devorador Ancião (Filhote) | npc |
+| monstros-devorador-anciao-filhote | Devorador Ancião (Filhote) | npc |
 | monstros-goblin | Goblin | npc |
 | monstros-esqueleto-de-guarda | Esqueleto de Guarda | npc |
 | monstros-slime-de-masmorra | Slime de Masmorra | npc |
