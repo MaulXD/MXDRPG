@@ -62,7 +62,11 @@ export function SiteShell({ children, header, footer }: Props) {
       >
         <div className="vtt-topbar-shell">
           <header className="vtt-topbar glass">
-            <EldarinLogo variant="header" image="navbar" />
+            {topbarReady && !topbarHidden ? (
+              <EldarinLogo variant="header" image="navbar" />
+            ) : (
+              <span className="eldarin-logo eldarin-logo--header" aria-hidden />
+            )}
             <div className="vtt-topbar__end">
               <nav className="vtt-nav">
                 <MesasNavLink variant="vtt" />

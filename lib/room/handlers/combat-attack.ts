@@ -110,7 +110,7 @@ export async function executeRoomAttack(
   }
 
   if (action.kind === "ability") {
-    return executeRoomAbility(roomId, attackerTokenId, defenderTokenId, author, opts);
+    return executeRoomAbility(roomId, attackerTokenId, defenderTokenId, author, { ...opts, room });
   }
 
   if (isSpellUtilityAction(action)) {
