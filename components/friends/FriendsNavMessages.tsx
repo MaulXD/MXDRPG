@@ -23,7 +23,7 @@ export function FriendsNavMessages() {
       onClick={() => chat.toggleMessenger()}
       aria-pressed={chat.messengerOpen && !chat.messengerMinimized}
       aria-label={badgeLabel ? `Mensagens, ${badgeLabel}` : "Mensagens"}
-      title="Mensagens"
+      data-site-tip="Mensagens"
     >
       <IconChat size={18} />
       {unread > 0 ? (
