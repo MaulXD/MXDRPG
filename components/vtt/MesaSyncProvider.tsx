@@ -43,8 +43,19 @@ type Props = {
   children: ReactNode;
 };
 
-/** Ponte useRoomSync → mesa-room-store (slices) + actions estáveis. */
-export function MesaSyncProvider({
+type EngineProps = {
+  roomId: string;
+  inviteCode?: string | null;
+  initialSnapshot?: RoomSnapshot | null;
+  presenceUser?: { id: string; name: string } | null;
+  onMemberOnline?: (event: RoomMemberOnlineEvent) => void;
+  disabled?: boolean;
+  pollIntervalMs?: number;
+  actionsRef: React.MutableRefObject<MesaSyncActions>;
+};
+
+/** Roda useRoomSync sem re-renderizar filhos — só alimenta mesa-room-store. */
+function MesaSyncEngine({
   roomId,
   inviteCode = null,
   initialSnapshot = null,
@@ -52,8 +63,8 @@ export function MesaSyncProvider({
   onMemberOnline,
   disabled = false,
   pollIntervalMs,
-  children,
-}: Props) {
+  actionsRef,
+}: EngineProps) {
   const store = useMemo(() => getMesaRoomStore(roomId), [roomId]);
 
   useEffect(() => {
@@ -76,6 +87,12 @@ export function MesaSyncProvider({
     pollIntervalMs,
   });
 
+  actionsRef.current = {
+    refresh: sync.refresh,
+    applySnapshot: sync.applySnapshot,
+    applyRoomResponse: sync.applyRoomResponse,
+  };
+
   useEffect(() => {
     store.patchSync({
       snapshot: sync.snapshot,
@@ -85,16 +102,25 @@ export function MesaSyncProvider({
     });
   }, [store, sync.snapshot, sync.loading, sync.syncError, sync.syncStatus]);
 
+  return null;
+}
+
+/** Ponte useRoomSync → mesa-room-store (slices) + actions estáveis. */
+export function MesaSyncProvider({
+  roomId,
+  inviteCode = null,
+  initialSnapshot = null,
+  presenceUser = null,
+  onMemberOnline,
+  disabled = false,
+  pollIntervalMs,
+  children,
+}: Props) {
   const actionsRef = useRef<MesaSyncActions>({
-    refresh: sync.refresh,
-    applySnapshot: sync.applySnapshot,
-    applyRoomResponse: sync.applyRoomResponse,
+    refresh: async () => {},
+    applySnapshot: () => {},
+    applyRoomResponse: () => {},
   });
-  actionsRef.current = {
-    refresh: sync.refresh,
-    applySnapshot: sync.applySnapshot,
-    applyRoomResponse: sync.applyRoomResponse,
-  };
 
   const actions = useMemo<MesaSyncActions>(
     () => ({
@@ -107,7 +133,21 @@ export function MesaSyncProvider({
 
   const value = useMemo(() => ({ roomId, actions }), [roomId, actions]);
 
-  return <MesaSyncContext.Provider value={value}>{children}</MesaSyncContext.Provider>;
+  return (
+    <MesaSyncContext.Provider value={value}>
+      <MesaSyncEngine
+        roomId={roomId}
+        inviteCode={inviteCode}
+        initialSnapshot={initialSnapshot}
+        presenceUser={presenceUser}
+        onMemberOnline={onMemberOnline}
+        disabled={disabled}
+        pollIntervalMs={pollIntervalMs}
+        actionsRef={actionsRef}
+      />
+      {children}
+    </MesaSyncContext.Provider>
+  );
 }
 
 export function useMesaSyncActions(): MesaSyncActions {
