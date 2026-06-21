@@ -999,6 +999,28 @@ kubectl -n raul set image deployment/mxdrpg mxdrpg=ghcr.io/maulxd/mxdrpg:sha-dd9
 
 ---
 
+### 2026-06-20 — Ficha DDB: XP compacto no header + botão de level-up piscando
+
+**Pedido:** remover a barra gigante de “Progressão de nível” (duplicava o XP do header); manter só o indicador ao lado do nível; botão “Subir de nível” no header, piscando quando pronto.
+
+**Passo a passo:**
+1. **Diagnóstico** — `LevelUpWizard` renderizava `sheet-ddb-progression` com barra + botão largo; header já tinha nível + `400/100` + barra fina.
+2. **Decisão** — `LevelUpWizard` com `variant="compact"`: só botão + modal; botão visível apenas quando `canLevelUp`.
+3. **Implementação** — botão no `sheet-ddb-header__meta`; animação `sheet-level-up-pulse`; bloco `progression` removido de `SheetPopupDdbView`.
+4. **Validação** — `npm run build` ✅
+
+**Arquivos tocados:**
+- `components/character/LevelUpWizard.tsx` — variant compact + modal extraído
+- `components/character/SheetPopupDdbView.tsx` — prop `levelUp` no header
+- `components/character/CharacterSheet.tsx` — `variant="compact"`
+- `components/character/sheet-ddb.css` — botão header + pulse
+
+**Commits / deploy:** pendente push branch `cursor/dice-box-combat`
+
+**Como testar:** ficha popup DDB com XP ≥ threshold (ex. 400/100 nv1) → botão verde “Subir nv 2” piscando ao lado do XP; sem caixa verde no meio.
+
+---
+
 <!--
 ### AAAA-MM-DD — Título
 

@@ -22,6 +22,30 @@
   box-shadow: 0 0 28px rgba(184, 255, 60, 0.35);
 }
 
+.sheet-level-up-trigger--compact {
+  flex-shrink: 0;
+}
+
+.btn--level-ready--alert {
+  animation: sheet-level-up-pulse 1.15s ease-in-out infinite;
+}
+
+@keyframes sheet-level-up-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 8px rgba(120, 220, 90, 0.35);
+  }
+  50% {
+    box-shadow: 0 0 22px rgba(120, 220, 90, 0.75);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn--level-ready--alert {
+    animation: none;
+  }
+}
+
 .lu-overlay {
   position: fixed;
   inset: 0;
