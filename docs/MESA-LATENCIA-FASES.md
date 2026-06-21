@@ -67,3 +67,7 @@ Ver [INFRA-BR-AVALIACAO.md](./INFRA-BR-AVALIACAO.md).
 ## Sync incremental (Fase A)
 
 Ver [MESA-SYNC-INCREMENTAL.md](./MESA-SYNC-INCREMENTAL.md) — delta via SSE/GET `?since=`, journal de revisions.
+
+## Arquitetura mesa (Fases B–C)
+
+Ver [MESA-ARQUITETURA.md](./MESA-ARQUITETURA.md) — store por slices, `MesaSyncProvider`, `MesaBattlefieldStage`.

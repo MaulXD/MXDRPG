@@ -4,85 +4,51 @@ Plano técnico para substituir **GET snapshot completo** por **delta incremental
 
 ## Problema
 
-1. SSE envia `{ type: "revision", revision: N }`.
-2. Cliente debounce → `GET /api/room/:id?since=N`.
-3. Servidor responde **snapshot JSON inteiro** (mesmo trimado).
-4. Jogador B paga RTT + parse + re-render de `MesaWorkspace` / `Battlefield`.
+1. SSE avisa `{ revision }` → cliente faz `GET ?since=R`.
+2. Resposta **snapshot JSON inteiro** (mesmo trimado) ou delta mal aplicado remontando mapa.
+3. Jogador B paga RTT + parse + re-render de `Battlefield` (~3k linhas).
 
-POST do autor já retorna `kind: "delta"`; observadores ainda pagam snapshot full.
-
-## Solução
+## Solução (v2 — pós-regressão)
 
 | Camada | Comportamento |
 |--------|----------------|
-| **Journal** | Ring buffer (~80 rev) de `RoomSnapshot` por `revision` após cada `persistRoom` |
-| **GET `?since=R`** | Se `R` no journal → `RoomDelta` viewer-safe; senão → snapshot full |
-| **SSE** | Envia `{ type: "delta", delta }` em vez de só revision |
-| **Cliente** | `applyRoomApiPayload` local; GET full só no connect / gap / fallback |
+| **Journal** | Ring buffer (~80 rev): snapshot + **delta canonico** gravados em `persistRoom` |
+| **SSE** | Só `{ type: "revision" }` — **leve** (sem `getRoom` + diff por tick) |
+| **GET `?since=R`** | Delta viewer-safe quando `R` está no journal; senão snapshot full |
+| **mergeRoomDelta** | Preserva refs de `scene` / `combat` / `settings` se inalterados |
+| **Battlefield** | Ignora bump de revision se mapa/combate/settings iguais (delta só-chat) |
+| **useRoomSync** | `immediate` só quando delta toca mapa/combate; chat usa `startTransition` |
+
+### Por que SSE não envia delta
+
+Enviar delta no SSE (v1) executava `getRoom()` + `buildViewerSyncDelta()` **a cada 400 ms × N clientes** — pior que o modelo anterior. O delta vai no **GET debounced** (1× por mudança por cliente).
 
 ## Tipos
 
-Reutiliza `RoomDelta` / `RoomApiPayload` em `lib/room/room-delta.ts`.
+Reutiliza `RoomDelta` em `lib/room/room-delta.ts`.
 
-Resposta GET:
+Helpers:
 
-- **304** — `room.revision <= since`
-- **200 + JSON snapshot** — connect, gap no journal, `since=0`
-- **200 + JSON delta** — `{ kind: "delta", revision, tokens?, combat?, ... }`
-
-Evento SSE:
-
-```json
-{ "type": "delta", "delta": { "kind": "delta", "roomId": "...", "revision": 42, ... } }
-```
-
-Fallback SSE (journal miss):
-
-```json
-{ "type": "refresh", "revision": 42 }
-```
-
-Header opcional: `X-Sync-Mode: delta | full`.
-
-## Viewer-safe delta
-
-Delta calculado com o mesmo pipeline do GET:
-
-```
-trimSnapshotForSync(snapshotForViewer(before), user)
-  → buildRoomDelta
-  → trimSnapshotForSync(snapshotForViewer(after), user)
-```
-
-Garante PA redigido, fog, HP de monstro e fichas alheias mínimas.
-
-## Journal
-
-```typescript
-recordSnapshotAtRevision(roomId, snapshot)  // após persistRoom
-getSnapshotAtRevision(roomId, revision)     // null se expirado
-ensureJournalBaseline(roomId, snapshot)     // seed no load DB
-```
-
-Cap: **80 revisions** por sala. `since` apontando para rev expirada → snapshot full.
+- `isChatOnlyDelta(delta)` — só `chatAppend`
+- `deltaAffectsBattlefield(delta)` — tokens, combat, settings, actors, pings
 
 ## Fluxo cliente
 
 ```
-SSR / connect     → snapshot full (since=0 ou sem header)
-SSE delta         → merge local, revisionRef = delta.revision
-GET ?since=R      → delta ou 304 ou full
-POST mutação      → delta (já existente)
-Reconnect / gap   → refresh() → full
+Connect / SSR     → snapshot full
+SSE revision      → debounce 80–120 ms → GET ?since=R → delta ou full
+POST mutação      → delta (autor)
+Chat remoto       → merge sem remontar scene (refs estáveis)
+Combate remoto    → merge immediate no mapa
 ```
 
 ## Critérios de aceite
 
-- A7: jogador B vê ação de A **sem GET full** quando `since` está no journal.
-- Reconnect após >80 mutações: full snapshot, sem crash.
-- GM e jogador recebem deltas coerentes com visibilidade (PA/HP/fog).
+- A7: jogador B vê ação de A via GET delta (payload pequeno).
+- Chat/combat log não remonta grid quando só mensagem nova.
+- SSE não dispara `getRoom` pesado no poll.
 
-## Próximas fases (fora deste PR)
+## Próximas fases
 
-- **Fase B:** estado particionado no cliente (slices scene/combat/chat).
-- **Fase C:** quebra de `Battlefield` / `MesaWorkspace`.
+- **Fase B:** Context/slices (`scene` | `combat` | `chat`) com subscribe seletivo.
+- **Fase C:** Quebra de `Battlefield` / `MesaWorkspace`.
