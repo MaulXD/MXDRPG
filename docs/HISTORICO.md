@@ -104,6 +104,68 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-06-20 — Redesign transição Combate/Aventura: névoa vermelha + brasas / névoa azul suave
+
+**Pedido:** substituir animação de espadas cruzando + bússola por: (1) modo combate = névoa vermelha + "Combate Ativado" centralizado + brasas subindo; (2) modo aventura = névoa azul + "Modo Aventura" fade-in suave → fade-out suave. Sem as animações antigas.
+
+**Passo a passo:**
+1. **Diagnóstico** — `CombatModeTransition.tsx` usava `CombatModeSword` (espadas cruzando) + bússola SVG, vignette, dim, flash e múltiplas camadas de background. CSS complexo com ~20 keyframes.
+2. **Decisão** — reescrever do zero. Estrutura nova: apenas `.cmt-overlay__bg` (camada de névoa), 18× `.cmt-ember` (brasas, somente no combate) e `.cmt-overlay__label`. Ember positions, durations e delays variados inline via `style={}`.
+3. **Implementação** — `CombatModeTransition.tsx`: removidos `CombatModeSword`, `useId`; adicionado array `EMBERS` com 18 entradas `{ left, size, dur, delay, dx }`; embers renderizados só em `isIn`. CSS: névoa crimson para combate (`radial-gradient` vermelho+escuro), névoa índigo para aventura; `cmt-ember-rise` usa `--cmt-ember-dx` CSS var para drift horizontal por partícula; embers só animam quando `.cmt-overlay--playing` está ativo.
+4. **Validação** — sem mudanças em tipos/lógica; `npm run build` a executar.
+
+**Arquivos tocados:**
+- `components/vtt/CombatModeTransition.tsx` — reescrito: sem espadas, brasas via array EMBERS
+- `components/vtt/combat-mode-transition.css` — reescrito: névoa vermelha/azul, brasas, sem keyframes antigos
+
+**Commits / deploy:** pendente push.
+
+**Como testar:** mesa → ativar combate → overlay vermelho com brasas subindo + "Combate Ativado"; sair do combate → overlay azul + "Modo Aventura" fade suave.
+
+---
+
+### 2026-06-20 — Assets dice-box, tema default, skills Clerk, tooltips nav
+
+**Pedido:** "suba tudin" — commitar tudo que estava pendente.
+
+**Passo a passo:**
+1. Identificados 3 arquivos modificados (title→data-site-tip em FriendsNavIcon, FriendsNavMessages, MesasNavLink) e 4 untracked (`.agents/`, `public/assets/ammo/`, `public/assets/themes/`, `skills-lock.json`).
+2. `public/assets/ammo/ammo.wasm.wasm` — binário Bullet Physics necessário para dice-box funcionar offline (sem CDN).
+3. `public/assets/themes/default/` — tema visual padrão do dice-box (textures PBR + config JSON).
+4. `.agents/skills/clerk-*` + `skills-lock.json` — skills do agente para integração Clerk (auto-gerados pelo ambiente).
+5. `title=` → `data-site-tip=` nos três ícones de navegação (regra de ouro do projeto: nunca usar `title` nativo).
+
+**Arquivos tocados:**
+- `components/friends/FriendsNavIcon.tsx` — title → data-site-tip
+- `components/friends/FriendsNavMessages.tsx` — title → data-site-tip
+- `components/nav/MesasNavLink.tsx` — title → data-site-tip
+- `public/assets/ammo/ammo.wasm.wasm` — NOVO binário Bullet Physics
+- `public/assets/themes/default/*` — NOVO tema dice-box (textures + config)
+- `.agents/skills/clerk-*/` — NOVO skills Clerk (~160 arquivos)
+- `skills-lock.json` — NOVO lock de versão das skills
+
+**Commits / deploy:** `f145d1c` → `cursor/dice-box-combat` → pushed.
+
+---
+
+### 2026-06-20 — Reduz delay de dados no combate + pré-carga dice-box
+
+**Pedido:** delay muito grande entre atacar e o dado aparecer.
+
+**Passo a passo:**
+1. **Diagnóstico** — três causas independentes: (a) `DiceMiniature` usava `useState(null)` + `useEffect` para detectar WebGL — 1 ciclo de render extra; (b) `ensureAttackBox` tinha `waitMs(120)` artificial antes de criar a instância; (c) bundle `/vendor/dice-box/dice-box.es.min.js` era carregado com `dynamic import` só na 1ª luta (200–500ms).
+2. **Fix (a)** — lazy init: `useState(() => typeof window === "undefined" ? null : supportsWebGL())` + `useEffect` condicional só dispara em SSR.
+3. **Fix (b)** — removidos `await waitMs(120)` de `ensureAttackBox` e `await waitMs(80)` de `ensureDamageBox`.
+4. **Fix (c)** — `useEffect(() => { void loadDiceBox(); }, [])` no mount do `DiceCombatPanel` pré-carrega o bundle imediatamente.
+
+**Arquivos tocados:**
+- `components/vtt/DiceMiniature.tsx` — lazy init WebGL detection
+- `components/vtt/DiceCombatPanel.tsx` — removidos waitMs + pre-load useEffect
+
+**Commits / deploy:** `e70cc6b` → `cursor/dice-box-combat` → pushed. PR #3 criado.
+
+---
+
 ### 2026-06-20 — Ritmo combate: 2s D20 + 2s dano, painel dual, chat e token juntos
 
 **Pedido:** visualização combate bugada e lenta/confusa; reorganizar dados — 2s rolando e parando no número; se acertou +2s dado de dano (D20 fica); ao fim dados saem, token anima dano e chat mostra dano no mesmo instante.
