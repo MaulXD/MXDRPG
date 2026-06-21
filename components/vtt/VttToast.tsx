@@ -35,19 +35,25 @@ export function syncMesaToastPosition(): void {
   const stage = anchor?.closest(".foundry-mesa__stage");
   if (!anchor || !stage) return;
 
+  const mobileBar = document.querySelector<HTMLElement>(".mesa-mobile-bar");
+  const mobileBarVisible =
+    mobileBar != null && getComputedStyle(mobileBar).display !== "none";
+  const mobileBarHeight = mobileBarVisible ? mobileBar.offsetHeight : 0;
+
   const hud =
     stage.querySelector<HTMLElement>(".vtt-hud-wrapper") ??
     stage.querySelector<HTMLElement>(".vtt-combat-hud-restore");
 
   if (!hud || hud.offsetHeight === 0) {
+    const lift = `${Math.max(20, mobileBarHeight + 12)}px`;
     if (anchor.dataset.toastAnchor !== "fallback") {
       anchor.dataset.toastAnchor = "fallback";
     }
     if (anchor.style.getPropertyValue("--vtt-toast-top")) {
       anchor.style.removeProperty("--vtt-toast-top");
     }
-    if (anchor.style.getPropertyValue("--vtt-toast-lift") !== "1.25rem") {
-      anchor.style.setProperty("--vtt-toast-lift", "1.25rem");
+    if (anchor.style.getPropertyValue("--vtt-toast-lift") !== lift) {
+      anchor.style.setProperty("--vtt-toast-lift", lift);
     }
     return;
   }
@@ -89,12 +95,17 @@ function useMesaToastLift(itemCount: number) {
     const mo = new MutationObserver(sync);
     mo.observe(stage, { childList: true, subtree: true });
 
+    const mobileBar = document.querySelector<HTMLElement>(".mesa-mobile-bar");
+    const roBar = mobileBar ? new ResizeObserver(sync) : null;
+    roBar?.observe(mobileBar!);
+
     window.addEventListener("resize", sync);
     window.addEventListener("scroll", sync, true);
 
     return () => {
       ro.disconnect();
       mo.disconnect();
+      roBar?.disconnect();
       window.removeEventListener("resize", sync);
       window.removeEventListener("scroll", sync, true);
     };

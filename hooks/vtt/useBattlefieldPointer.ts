@@ -185,6 +185,15 @@ export function useBattlefieldPointer({
   mapTools,
 }: Params) {
   const clickStartRef = useRef<{ x: number; y: number } | null>(null);
+  const longPressRef = useRef<{
+    pointerId: number;
+    startX: number;
+    startY: number;
+    clientX: number;
+    clientY: number;
+    fired: boolean;
+    timer: number;
+  } | null>(null);
   const gmDragRef = useRef<{
     tokenId: string;
     startX: number;
@@ -608,6 +617,37 @@ export function useBattlefieldPointer({
           return;
         }
 
+        if (
+          e.pointerType === "touch" &&
+          onActionRingRequest &&
+          actionMode === "idle" &&
+          !dungeonEditor?.active &&
+          !whiteboard?.active &&
+          canOpenActionRing?.(hit)
+        ) {
+          longPressRef.current = {
+            pointerId: e.pointerId,
+            startX: px,
+            startY: py,
+            clientX: e.clientX,
+            clientY: e.clientY,
+            fired: false,
+            timer: window.setTimeout(() => {
+              const lp = longPressRef.current;
+              if (!lp || lp.fired) return;
+              lp.fired = true;
+              navigator.vibrate?.(12);
+              if (hit.id !== selectedId) setSelectedId(hit.id);
+              const center = tokenScreenCenter(hit);
+              onActionRingRequest(
+                hit,
+                center?.x ?? lp.clientX,
+                center?.y ?? lp.clientY
+              );
+            }, 520),
+          };
+        }
+
         if (hit.id !== selectedId) {
           if (
             selectedId &&
@@ -674,12 +714,22 @@ export function useBattlefieldPointer({
       onOpenMonsterKnowledge,
       onOpenPlayerBestiary,
       canOpenPlayerBestiary,
+      onActionRingRequest,
+      canOpenActionRing,
+      tokenScreenCenter,
     ]
   );
 
   const onPointerMove = useCallback(
     (e: React.PointerEvent<HTMLCanvasElement>) => {
       const { px, py } = pointerPos(e);
+      const lp = longPressRef.current;
+      if (lp && lp.pointerId === e.pointerId && !lp.fired) {
+        if (Math.hypot(px - lp.startX, py - lp.startY) > 10) {
+          clearTimeout(lp.timer);
+          longPressRef.current = null;
+        }
+      }
       publishHoverPointer({ x: px, y: py });
       const axial = axialAtScreen(px, py);
       const world = worldAtScreen(px, py);
@@ -971,6 +1021,16 @@ export function useBattlefieldPointer({
       }
       const gm = gmDragRef.current;
       gmDragRef.current = null;
+      const lpUp = longPressRef.current;
+      if (lpUp?.pointerId === e.pointerId) {
+        clearTimeout(lpUp.timer);
+        const consumed = lpUp.fired;
+        longPressRef.current = null;
+        if (consumed) {
+          clickStartRef.current = null;
+          return;
+        }
+      }
       const { px, py } = pointerPos(e);
       const axial = axialAtScreen(px, py);
       const world = worldAtScreen(px, py);
@@ -1213,6 +1273,11 @@ export function useBattlefieldPointer({
   );
 
   const onPointerLeave = useCallback(() => {
+    const lp = longPressRef.current;
+    if (lp) {
+      clearTimeout(lp.timer);
+      longPressRef.current = null;
+    }
     const gm = gmDragRef.current;
     gmDragRef.current = null;
     if (gm) onGmDragPreview?.(gm.tokenId, null);

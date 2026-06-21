@@ -55,6 +55,7 @@ import { MesaPersistenceNotice } from "@/components/vtt/MesaPersistenceNotice";
 import { DemoGuidedTour } from "@/components/vtt/DemoGuidedTour";
 import { MesaGuidedTour } from "@/components/vtt/MesaGuidedTour";
 import { MesaMobileBar } from "@/components/vtt/MesaMobileBar";
+import { MesaSyncIndicator } from "@/components/vtt/MesaSyncIndicator";
 import { RoomCoverBackdrop } from "@/components/vtt/RoomCoverBackdrop";
 import { useSheetPdfDeepLink } from "@/hooks/useSheetPdfDeepLink";
 import "@/components/vtt/foundry/foundry.css";
@@ -503,35 +504,6 @@ export function MesaWorkspace({
         onSnapshot={applyActionSnapshot}
       />
       <div className="mesa-workspace mesa-workspace--foundry">
-        {syncError ? (
-          <p className="mesa-sync-err" role="alert">
-            {syncError}{" "}
-            <button
-              type="button"
-              className="btn btn-ghost"
-              style={{ fontSize: "0.8rem" }}
-              onClick={() => refresh()}
-            >
-              Tentar de novo
-            </button>
-          </p>
-        ) : (
-          <p
-            className={`mesa-sync-status mesa-sync-status--${syncStatus}`}
-            aria-live="polite"
-            title="Estado da conexão ao vivo com a mesa"
-          >
-            {syncStatus === "loading"
-              ? "Carregando mesa…"
-              : syncStatus === "live"
-                ? "Ao vivo"
-                : syncStatus === "polling"
-                  ? "Reconectando…"
-                  : null}
-          </p>
-        )}
-
-
         <div className="foundry-mesa">
           <MesaFoundrySidebar
             isActive={isPanelActive}
@@ -676,43 +648,50 @@ export function MesaWorkspace({
             />
             {combatModePhase ? <CombatModeTransition phase={combatModePhase} /> : null}
             <div className="foundry-mesa__stage-header">
-              {isActualGm ? (
-                <GmMesaModeToggle
+              <MesaSyncIndicator
+                syncStatus={syncStatus}
+                syncError={syncError}
+                onRetry={() => refresh()}
+              />
+              <div className="foundry-mesa__stage-tools">
+                {isActualGm ? (
+                  <GmMesaModeToggle
+                    roomId={roomId}
+                    snapshot={snapshot}
+                    combatActive={roomSettings.combatActive}
+                    onApplyUpdate={applyActionSnapshot}
+                  />
+                ) : (
+                  <MesaModeIndicator combatActive={roomSettings.combatActive} />
+                )}
+                {isActualGm ? (
+                  <GmPlayerViewToggle
+                    playAsPlayer={playAsPlayer}
+                    onToggle={togglePlayAsPlayer}
+                  />
+                ) : null}
+                {isActualGm ? (
+                  <MesaEditRequestsBell adventureId={adventureId} roomId={roomId} />
+                ) : null}
+                {session ? <MesaPlayerEditRequestsBell adventureId={adventureId} /> : null}
+                {session ? <MesaPlayerInventoryRequestsBell adventureId={adventureId} /> : null}
+                <DemoGuidedTour
                   roomId={roomId}
-                  snapshot={snapshot}
-                  combatActive={roomSettings.combatActive}
-                  onApplyUpdate={applyActionSnapshot}
+                  session={session}
+                  isRoomGm={isActualGm}
                 />
-              ) : (
-                <MesaModeIndicator combatActive={roomSettings.combatActive} />
-              )}
-              {isActualGm ? (
-                <GmPlayerViewToggle
-                  playAsPlayer={playAsPlayer}
-                  onToggle={togglePlayAsPlayer}
+                <MesaGuidedTour
+                  roomId={roomId}
+                  session={session}
+                  isRoomGm={isActualGm}
+                  watchOnly={watchOnly}
                 />
-              ) : null}
-              {isActualGm ? (
-                <MesaEditRequestsBell adventureId={adventureId} roomId={roomId} />
-              ) : null}
-              {session ? <MesaPlayerEditRequestsBell adventureId={adventureId} /> : null}
-              {session ? <MesaPlayerInventoryRequestsBell adventureId={adventureId} /> : null}
-              <DemoGuidedTour
-                roomId={roomId}
-                session={session}
-                isRoomGm={isActualGm}
-              />
-              <MesaGuidedTour
-                roomId={roomId}
-                session={session}
-                isRoomGm={isActualGm}
-                watchOnly={watchOnly}
-              />
-              <MesaOnlineMenu
-                online={presenceOnline}
-                loading={presenceLoading}
-                selfUserId={session?.id}
-              />
+                <MesaOnlineMenu
+                  online={presenceOnline}
+                  loading={presenceLoading}
+                  selfUserId={session?.id}
+                />
+              </div>
             </div>
             <Battlefield
               scene={scene}

@@ -1339,12 +1339,103 @@
 .foundry-mesa__stage-header {
   position: absolute;
   top: 0.65rem;
+  left: 0.75rem;
   right: 0.75rem;
   z-index: 25;
   display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
+  pointer-events: none;
+}
+
+.foundry-mesa__stage-tools {
+  display: flex;
   align-items: center;
+  flex-wrap: wrap;
+  justify-content: flex-end;
   gap: 0.45rem;
   pointer-events: auto;
+  margin-left: auto;
+}
+
+.mesa-sync-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin: 0;
+  padding: 0.28rem 0.55rem;
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+  border-radius: 999px;
+  pointer-events: auto;
+  flex-shrink: 0;
+  max-width: min(240px, 42vw);
+}
+
+.mesa-sync-indicator__text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mesa-sync-indicator__dot {
+  width: 0.42rem;
+  height: 0.42rem;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.mesa-sync-indicator--loading,
+.mesa-sync-indicator--polling {
+  color: var(--accent-warn, #c9a962);
+  background: rgba(201, 169, 98, 0.12);
+  border: 1px solid rgba(201, 169, 98, 0.28);
+}
+
+.mesa-sync-indicator--loading .mesa-sync-indicator__dot,
+.mesa-sync-indicator--polling .mesa-sync-indicator__dot {
+  background: var(--accent-warn, #c9a962);
+  animation: mesa-sync-pulse 1.2s ease-in-out infinite;
+}
+
+.mesa-sync-indicator--error {
+  color: #ffb4b4;
+  background: rgba(120, 40, 40, 0.35);
+  border: 1px solid rgba(255, 120, 120, 0.35);
+  max-width: min(320px, 55vw);
+}
+
+.mesa-sync-indicator--error .mesa-sync-indicator__dot {
+  background: #ff6b6b;
+}
+
+.mesa-sync-indicator__retry {
+  flex-shrink: 0;
+  padding: 0.12rem 0.35rem;
+  border: none;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  color: inherit;
+  font-size: 0.62rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.mesa-sync-indicator__retry:hover {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+@keyframes mesa-sync-pulse {
+  0%,
+  100% {
+    opacity: 0.45;
+    transform: scale(0.92);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 .gm-player-view-toggle {
@@ -2173,12 +2264,31 @@
   }
 
   .mesa-mobile-bar__icon {
-    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.35rem;
+    height: 1.35rem;
     line-height: 1;
+  }
+
+  .mesa-mobile-bar__icon .foundry-icon-bar__icon,
+  .mesa-mobile-bar__icon .vtt-turn-icon {
+    width: 1.2rem;
+    height: 1.2rem;
   }
 
   .foundry-mesa__stage-header {
     flex-wrap: wrap;
+    gap: 0.25rem;
+  }
+
+  .mesa-sync-indicator {
+    max-width: min(180px, 38vw);
+    font-size: 0.62rem;
+  }
+
+  .foundry-mesa__stage-tools {
     gap: 0.25rem;
   }
 
