@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import type { BattleToken } from "@/lib/vtt/types";
-import { postGmCombatAction } from "@/hooks/useRoomSync";
+import { postGmCombatAction, type RoomApiPayload } from "@/hooks/useRoomSync";
 import { formatTokenHpLine } from "@/lib/vtt/token-hp-display";
 
 type Props = {
@@ -11,7 +11,7 @@ type Props = {
   token: BattleToken | null;
   roomId: string;
   onClose: () => void;
-  onApplied: () => void;
+  onApplied: (payload: RoomApiPayload) => void;
 };
 
 function stopWheelBubble(e: React.WheelEvent) {
@@ -55,14 +55,14 @@ export function TokenGmHpDialog({ open, token, roomId, onClose, onApplied }: Pro
     setBusy(true);
     setErr(null);
     try {
-      await postGmCombatAction(roomId, {
+      const payload = await postGmCombatAction(roomId, {
         action: "set-hp",
         tokenId: token.id,
         value: Number(hpValue),
         max: Number(hpMax),
         temp: showTemp ? Number(tempValue) : 0,
       });
-      onApplied();
+      onApplied(payload);
       onClose();
     } catch (e) {
       setErr(e instanceof Error ? e.message : "Falha ao aplicar vida");

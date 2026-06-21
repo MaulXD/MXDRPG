@@ -3014,7 +3014,7 @@ export function Battlefield({
           }
           roomId={roomId}
           onClose={() => setGmHpEditTokenId(null)}
-          onApplied={() => refresh()}
+          onApplied={(payload) => syncRoom(payload, { force: true })}
         />
         <FriendlyFireConfirmDialog
           open={friendlyFireTargetId !== null}

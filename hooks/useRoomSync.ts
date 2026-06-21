@@ -504,7 +504,7 @@ export async function postGmCombatAction(roomId: string, body: GmCombatAction) {
     const err = (await res.json().catch(() => ({}))) as { error?: string };
     throw new Error(err.error ?? "Falha no controle do mestre");
   }
-  return res.json() as Promise<RoomSnapshot>;
+  return res.json() as Promise<RoomApiPayload>;
 }
 
 export type { RoomApiPayload };

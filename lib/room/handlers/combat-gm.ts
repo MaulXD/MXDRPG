@@ -49,9 +49,10 @@ function assertGm(
 export async function executeGmCombatAction(
   roomId: string,
   body: GmCombatAction,
-  user: SessionUser | null | undefined
+  user: SessionUser | null | undefined,
+  opts?: { room?: NonNullable<Awaited<ReturnType<typeof getRoom>>> }
 ): Promise<{ ok: true; snapshot: RoomSnapshot } | { ok: false; error: string }> {
-  const room = await getRoom(roomId);
+  const room = opts?.room ?? (await getRoom(roomId, { skipAutoPass: true }));
   if (!room) return { ok: false, error: "Sala não encontrada" };
 
   const denied = assertGm(room, user);
@@ -344,8 +345,12 @@ export async function executeGmCombatAction(
         };
         room.actors[before.actorId] = nextActor;
         const { revision: _r, ...sheet } = nextActor;
-        await saveCharacter(sheet);
-        await persistActorToAdventureSheet(nextActor);
+        void saveCharacter(sheet).catch((e) => {
+          console.error("[set-hp] saveCharacter failed:", e);
+        });
+        void persistActorToAdventureSheet(nextActor).catch((e) => {
+          console.error("[set-hp] persistActorToAdventureSheet failed:", e);
+        });
       }
 
       syncCombatOrderWithTokens(room);
