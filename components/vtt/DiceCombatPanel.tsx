@@ -4,11 +4,13 @@ import { useCallback, useEffect, useRef, type CSSProperties } from "react";
 import {
   DICE_COMBAT_EVICT_MS,
   DICE_TIER_LABELS,
+  VENDOR_DICE_BOX,
   dieFaceValue,
   getAttackDieColor,
   getAttackSlotBorder,
   getDamageDieColor,
   getDiceBoxBaseOptions,
+  preloadCombatDiceBox,
   type DiceSides,
 } from "@/lib/vtt/dice-combat-box";
 import type { PortraitFrameTier } from "@/lib/vtt/portrait-frame";
@@ -17,6 +19,7 @@ type DiceBoxInstance = {
   init(): Promise<boolean | void>;
   roll(notation: unknown): Promise<unknown>;
   clear(): unknown;
+  show?(): DiceBoxInstance;
   resizeWorld?(): void;
 };
 
@@ -39,9 +42,6 @@ type Props = {
   reducedMotion?: boolean;
 };
 
-const VENDOR_DICE_BOX = "/vendor/dice-box/dice-box.es.min.js";
-const VENDOR_DICE_CSS = "/vendor/dice-box/style.css";
-
 function waitLayout(): Promise<void> {
   return new Promise((resolve) => {
     requestAnimationFrame(() => requestAnimationFrame(() => resolve()));
@@ -52,8 +52,8 @@ function waitMs(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-/** Mesmo bundle do preview — evita worker/asset quebrado no bundle Next. */
 async function loadVendorDiceBox(): Promise<DiceBoxCtor> {
+  preloadCombatDiceBox();
   const mod = (await import(/* webpackIgnore: true */ VENDOR_DICE_BOX)) as {
     default: DiceBoxCtor;
   };
@@ -93,16 +93,6 @@ export function DiceCombatPanel({
   const damageColor = getDamageDieColor({ isHeal, isCrit });
   const tierLabel = DICE_TIER_LABELS[attackerTier];
 
-  useEffect(() => {
-    const id = "mxdrpg-dice-box-css";
-    if (document.getElementById(id)) return;
-    const link = document.createElement("link");
-    link.id = id;
-    link.rel = "stylesheet";
-    link.href = VENDOR_DICE_CSS;
-    document.head.appendChild(link);
-  }, []);
-
   const clearBoth = useCallback(async () => {
     await Promise.all([
       attackReadyRef.current
@@ -124,6 +114,7 @@ export function DiceCombatPanel({
     await waitLayout();
     if (attackReadyRef.current) {
       attackBoxRef.current?.resizeWorld?.();
+      attackBoxRef.current?.show?.();
       return;
     }
     const DiceBox = await loadDiceBox();
@@ -132,6 +123,7 @@ export function DiceCombatPanel({
       container: `#${attackHostId}`,
     });
     await attackBoxRef.current.init();
+    attackBoxRef.current.show?.();
     attackReadyRef.current = true;
   }, [attackHostId, loadDiceBox, reducedMotion]);
 
@@ -139,6 +131,7 @@ export function DiceCombatPanel({
     await waitLayout();
     if (damageReadyRef.current) {
       damageBoxRef.current?.resizeWorld?.();
+      damageBoxRef.current?.show?.();
       return;
     }
     const DiceBox = await loadDiceBox();
@@ -147,10 +140,10 @@ export function DiceCombatPanel({
       container: `#${damageHostId}`,
     });
     await damageBoxRef.current.init();
+    damageBoxRef.current.show?.();
     damageReadyRef.current = true;
   }, [damageHostId, loadDiceBox, reducedMotion]);
 
-  // Pré-carrega o bundle dice-box assim que o painel monta — elimina delay na 1ª luta
   useEffect(() => {
     void loadDiceBox();
   // eslint-disable-next-line react-hooks/exhaustive-deps
