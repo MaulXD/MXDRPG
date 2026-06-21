@@ -7,7 +7,7 @@ import {
 } from "@/lib/combat/pa-economy";
 import { normalizeTokenPaFields } from "@/lib/combat/pa-token-state";
 import { clearCombatPaPool } from "@/lib/combat/pa-turn";
-import type { RoomState } from "@/lib/room/types";
+import type { RoomActor, RoomState } from "@/lib/room/types";
 import type { BattleToken } from "@/lib/vtt/types";
 
 export function paTurnRulesForRoomToken(
@@ -44,6 +44,32 @@ export function applyExplorationPaDisplayToToken(
       rules.accumulationCap
     ),
   };
+}
+
+/** Preview client-side ao ligar modo aventura (antes do POST). */
+export function previewExplorationPaTokens(
+  tokens: BattleToken[],
+  actors: Record<string, RoomActor>
+): BattleToken[] {
+  return tokens.map((token) => {
+    const rules =
+      token.linked && token.actorId && actors[token.actorId]
+        ? paTurnRulesForActor(actors[token.actorId])
+        : paTurnRulesForMonster(token.monsterTier);
+    const cleared = clearCombatPaPool(token);
+    return {
+      ...cleared,
+      ...normalizeTokenPaFields(
+        {
+          ...cleared,
+          pa: rules.recoveryPerTurn,
+          paMax: rules.recoveryPerTurn,
+        },
+        rules.recoveryPerTurn,
+        rules.accumulationCap
+      ),
+    };
+  });
 }
 
 /** Normaliza todos os tokens para PA de exploração e sincroniza fichas linkadas. */
