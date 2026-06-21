@@ -4766,7 +4766,6 @@
   box-shadow:
     0 16px 48px rgba(0, 0, 0, 0.65),
     inset 0 1px 0 rgba(255, 255, 255, 0.06);
-  backdrop-filter: blur(10px);
   animation: combat-fx-panel-in 0.28s ease-out;
 }
 
@@ -4803,6 +4802,8 @@
   min-width: 0;
   max-width: 100%;
   position: relative;
+  border-radius: 8px;
+  transition: box-shadow 0.2s;
 }
 
 .combat-dice-box-host {
@@ -4814,11 +4815,8 @@
   overflow: hidden;
   background:
     linear-gradient(180deg, rgba(8, 10, 14, 0.2) 0%, rgba(8, 10, 14, 0.55) 68%, rgba(22, 18, 14, 0.92) 100%),
-    radial-gradient(ellipse 90% 40% at 50% 88%, color-mix(in srgb, var(--dice-tier-color, #c9a962) 18%, transparent), transparent 70%);
-  box-shadow:
-    inset 0 0 0 2px var(--dice-tier-border, rgba(201, 169, 98, 0.35)),
-    0 0 18px color-mix(in srgb, var(--dice-tier-color, #c9a962) 22%, transparent);
-  transition: box-shadow 0.2s, filter 0.2s;
+    radial-gradient(ellipse 90% 40% at 50% 88%, rgba(201, 169, 98, 0.12), transparent 70%);
+  transition: box-shadow 0.2s;
 }
 
 .combat-dice-box-host canvas {
@@ -4835,7 +4833,7 @@
   bottom: 22%;
   height: 2px;
   border-radius: 999px;
-  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--dice-tier-color, #c9a962) 45%, transparent), transparent);
+  background: linear-gradient(90deg, transparent, rgba(201, 169, 98, 0.28), transparent);
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.45);
   pointer-events: none;
   z-index: 1;
@@ -4860,10 +4858,7 @@
 }
 
 .combat-dice-slot--locked .combat-dice-box-host {
-  box-shadow:
-    inset 0 0 0 2px rgba(255, 255, 255, 0.18),
-    0 0 12px color-mix(in srgb, var(--dice-tier-color, #fff) 15%, transparent);
-  filter: saturate(0.92);
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.12);
 }
 
 .combat-dice-slot__lock {
@@ -4884,6 +4879,10 @@
 
 .combat-dice-box-row--evicting .combat-dice-box-host {
   animation: combat-dice-evict 0.34s cubic-bezier(0.55, 0.085, 0.68, 0.53) forwards;
+}
+
+.combat-dice-box-row--evicting .combat-dice-result-box {
+  animation: combat-dice-evict 0.28s ease-in forwards;
 }
 
 .combat-dice-box-row--evicting {
@@ -5074,7 +5073,102 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.35rem;
+  gap: 0;
+  width: 100%;
+}
+
+.combat-dice-result-box {
+  margin-top: 0.45rem;
+  width: 100%;
+  padding: 0.55rem 0.7rem 0.5rem;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.32);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.combat-dice-result-text {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.06em;
+  min-height: 1.2em;
+}
+
+.combat-dice-result-text.hit {
+  color: var(--accent-success);
+}
+
+.combat-dice-result-text.miss {
+  color: var(--accent-secondary);
+}
+
+.combat-dice-result-text.crit {
+  color: #ffc840;
+}
+
+.combat-dice-result-text.heal {
+  color: #6ee7a0;
+}
+
+.combat-dice-result-text--locked::after {
+  content: " · fixo";
+  font-size: 0.72em;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+}
+
+.combat-dice-damage-sum {
+  margin: 0.35rem 0 0;
+  font-size: 1.1rem;
+  font-weight: 800;
+  line-height: 1.2;
+  color: #ff6b6b;
+  min-height: 1.3em;
+}
+
+.combat-dice-damage-sum--crit {
+  color: #ffc040;
+}
+
+.combat-dice-damage-sum--heal {
+  color: #6ee7a0;
+}
+
+.combat-dice-damage-sum__type {
+  display: block;
+  margin-top: 0.2rem;
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.combat-dice-result-vs,
+.combat-dice-result-detail,
+.combat-dice-result-dmg-type {
+  margin: 0.25rem 0 0;
+  font-size: 0.72rem;
+  font-family: var(--font-display);
+  letter-spacing: 0.05em;
+  color: var(--text-dim);
+}
+
+.combat-dice-result-detail,
+.combat-dice-result-dmg-type {
+  font-size: 0.62rem;
+  line-height: 1.35;
+  color: var(--text-muted);
+}
+
+.combat-dice-rolling-caption {
+  margin: 0.35rem 0 0;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  min-height: 1em;
 }
 
 .combat-fx-panel-result {

@@ -742,9 +742,20 @@ export function CombatFxLayer({
   const resultTone =
     fx.isHeal
       ? "heal"
-      : fx.saveSuccess !== false && (fx.hit || fx.saveTotal != null)
-        ? "hit"
-        : "miss";
+      : fx.critical && fx.hit
+        ? "crit"
+        : fx.saveSuccess !== false && (fx.hit || fx.saveTotal != null)
+          ? "hit"
+          : "miss";
+
+  const rollingCaption =
+    showDamageRoll && damageDieRolling
+      ? "Rolando dano…"
+      : showRoll
+        ? "Rolando ataque…"
+        : showResultText
+          ? ""
+          : "Aguardando…";
 
   return (
     <div
@@ -822,38 +833,43 @@ export function CombatFxLayer({
               />
             </div>
             {showResultText ? (
-              <div className="combat-fx-panel-result">
-                <p className={`combat-fx-result ${resultTone}`}>{resultLabel}</p>
+              <div className="combat-dice-result-box">
+                <p
+                  className={`combat-dice-result-text ${resultTone}${!showRoll ? " combat-dice-result-text--locked" : ""}`}
+                >
+                  {resultLabel}
+                </p>
                 {showDamageRoll && !damageDieRolling && fx.damageTotal != null ? (
-                  <p className={`combat-fx-panel-damage${fx.critical ? " combat-fx-panel-damage--crit" : ""}${fx.isHeal ? " combat-fx-panel-damage--heal" : ""}`}>
+                  <p
+                    className={`combat-dice-damage-sum${fx.critical ? " combat-dice-damage-sum--crit" : ""}${fx.isHeal ? " combat-dice-damage-sum--heal" : ""}`}
+                  >
                     {fx.isHeal ? `+${fx.damageTotal}` : `−${fx.damageTotal}`}
                     {fx.damageTypeLabel ? (
-                      <span className="combat-fx-panel-damage__type"> {fx.damageTypeLabel}</span>
+                      <span className="combat-dice-damage-sum__type">{fx.damageTypeLabel}</span>
                     ) : null}
                   </p>
                 ) : null}
                 {fx.saveTotal != null || fx.attackTotal != null || fx.defenderAc != null ? (
-                  <p className="combat-fx-panel-vs">
+                  <p className="combat-dice-result-vs">
                     {fx.saveTotal != null
                       ? `${fx.saveTotal} vs CD ${fx.saveDc ?? "—"}`
                       : `${fx.attackTotal ?? "—"} vs CA ${fx.defenderAc ?? "—"}`}
                   </p>
                 ) : null}
                 {fx.spellDamageType ? (
-                  <p className="combat-fx-panel-dmg-type">{fx.spellDamageType}</p>
+                  <p className="combat-dice-result-dmg-type">{fx.spellDamageType}</p>
                 ) : null}
                 {showRollDetail ? (
-                  <p className="combat-fx-panel-detail">{detailParts.roll}</p>
+                  <p className="combat-dice-result-detail">{detailParts.roll}</p>
+                ) : null}
+                {rollingCaption ? (
+                  <p className="combat-dice-rolling-caption">{rollingCaption}</p>
                 ) : null}
               </div>
             ) : (
-              <p className="combat-fx-rolling">
-                {showDamageRoll && damageDieRolling
-                  ? "Rolando dano…"
-                  : showRoll
-                    ? "Rolando ataque…"
-                    : "Aguardando…"}
-              </p>
+              <div className="combat-dice-result-box">
+                <p className="combat-dice-rolling-caption">{rollingCaption}</p>
+              </div>
             )}
           </div>
         </div>
