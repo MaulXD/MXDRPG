@@ -61,8 +61,16 @@ const REFRESH_DEBOUNCE_COMBAT_MS = 120;
 /** Poll de segurança mesmo com SSE aberto (ms). */
 const SSE_BACKUP_POLL_MS = 10_000;
 const SSE_BACKUP_POLL_COMBAT_MS = 6000;
+/** Reconexão SSE após queda (ms) — backoff até SSE_RECONNECT_MAX_MS. */
+const SSE_RECONNECT_BASE_MS = 2000;
+const SSE_RECONNECT_MAX_MS = 30_000;
 
 export type RoomSyncStatus = "loading" | "live" | "polling" | "error";
+
+function resolveSyncStatus(sseLive: boolean, hasSnapshot: boolean): RoomSyncStatus {
+  if (sseLive || hasSnapshot) return "live";
+  return "polling";
+}
 
 function roomQuery(roomId: string, inviteCode?: string | null, sinceRev?: number): string {
   const q = new URLSearchParams();
@@ -162,7 +170,7 @@ export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
         const rev = hdr ? parseInt(hdr, 10) : revisionRef.current;
         if (Number.isFinite(rev) && rev > 0) revisionRef.current = Math.max(revisionRef.current, rev);
         setSyncError(null);
-        setSyncStatus(sseLiveRef.current ? "live" : "polling");
+        setSyncStatus(resolveSyncStatus(sseLiveRef.current, Boolean(snapshotRef.current)));
         sseReadyRef.current = true;
         return;
       }
@@ -173,8 +181,8 @@ export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
       }
       const data = (await res.json()) as RoomApiPayload;
       setSyncError(null);
-      setSyncStatus(sseLiveRef.current ? "live" : "polling");
       applyRoomResponse(data);
+      setSyncStatus(resolveSyncStatus(sseLiveRef.current, Boolean(snapshotRef.current)));
       sseReadyRef.current = true;
     } catch (e) {
       const msg =
@@ -256,6 +264,8 @@ export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
     }
 
     let es: EventSource | null = null;
+    let reconnectTimer: ReturnType<typeof setTimeout> | null = null;
+    let reconnectAttempt = 0;
 
     const stopFallbackPoll = () => {
       if (fallbackPollIdRef.current) {
@@ -269,6 +279,19 @@ export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
       fallbackPollIdRef.current = setInterval(() => {
         void refreshImplRef.current?.();
       }, pollIntervalRef.current);
+    };
+
+    const scheduleReconnect = () => {
+      if (reconnectTimer) return;
+      const delay = Math.min(
+        SSE_RECONNECT_MAX_MS,
+        SSE_RECONNECT_BASE_MS * 2 ** Math.min(reconnectAttempt, 4)
+      );
+      reconnectAttempt += 1;
+      reconnectTimer = setTimeout(() => {
+        reconnectTimer = null;
+        connect();
+      }, delay);
     };
 
     const connect = () => {
@@ -290,6 +313,7 @@ export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
             displayName?: string;
           };
           if (data.type === "revision" && typeof data.revision === "number") {
+            reconnectAttempt = 0;
             sseLiveRef.current = true;
             setSyncStatus("live");
             stopFallbackPoll();
@@ -298,6 +322,7 @@ export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
             }
           }
           if (data.type === "connected" && typeof data.revision === "number") {
+            reconnectAttempt = 0;
             sseLiveRef.current = true;
             setSyncStatus("live");
             stopFallbackPoll();
@@ -322,10 +347,11 @@ export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
 
       es.onerror = () => {
         sseLiveRef.current = false;
-        setSyncStatus("polling");
+        setSyncStatus(resolveSyncStatus(false, Boolean(snapshotRef.current)));
         es?.close();
         es = null;
         startFallbackPoll();
+        scheduleReconnect();
       };
     };
 
@@ -336,6 +362,7 @@ export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
 
     return () => {
       clearTimeout(backupDelay);
+      if (reconnectTimer) clearTimeout(reconnectTimer);
       es?.close();
       stopFallbackPoll();
       if (refreshDebounceRef.current) {
