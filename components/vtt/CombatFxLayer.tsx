@@ -23,6 +23,7 @@ import {
   COMBAT_FX_TIMINGS_REDUCED,
 } from "@/lib/vtt/combat-fx-timings";
 import { splitCombatChatDetail } from "@/lib/combat/chat-display";
+import { buildCombatRollVersus } from "@/lib/vtt/combat-roll-display";
 import type { TokenCastFxKind } from "@/lib/vtt/token-cast-fx";
 
 export type { CombatFxState, CombatFxTargetBurst } from "@/lib/vtt/combat-fx-types";
@@ -702,6 +703,7 @@ export function CombatFxLayer({
   const areaFill = accent.replace(/[\d.]+\)$/, "0.2)");
 
   const resultLabel = resultLabelFor(fx);
+  const rollVersus = useMemo(() => buildCombatRollVersus(fx), [fx]);
   const healCastWithoutRoll = isHealCastWithoutRoll(fx);
 
   const showDicePanel =
@@ -832,6 +834,16 @@ export function CombatFxLayer({
           style={{ left: panelAt.x, top: panelAt.y }}
         >
           <div className="combat-fx-panel-inner">
+            {showResultText && rollVersus?.natural != null ? (
+              <p className="combat-dice-natural-hero" aria-hidden>
+                {rollVersus.natural}
+              </p>
+            ) : null}
+            {showResultText ? (
+              <span className="combat-dice-panel-lock" aria-hidden>
+                FIXO
+              </span>
+            ) : null}
             <div className="combat-fx-dice-row">
               <DiceCombatPanel
                 key={fx.id}
@@ -857,11 +869,36 @@ export function CombatFxLayer({
             </div>
             {showResultText ? (
               <div className="combat-dice-result-box">
-                <p
-                  className={`combat-dice-result-text ${resultTone}${!showRoll ? " combat-dice-result-text--locked" : ""}`}
-                >
-                  {resultLabel}
-                </p>
+                {rollVersus ? (
+                  <>
+                    <div className="combat-dice-result-versus">
+                      <span className="combat-dice-result-versus__total">
+                        {rollVersus.total}
+                      </span>
+                      <span className="combat-dice-result-versus__sep">VS</span>
+                      <span className="combat-dice-result-versus__target">
+                        <span className="combat-dice-result-versus__target-label">
+                          {rollVersus.difficultyLabel}
+                        </span>
+                        {rollVersus.difficulty}
+                      </span>
+                    </div>
+                    <div className="combat-dice-result-bar">
+                      <p className="combat-dice-result-bar__formula">
+                        {rollVersus.formulaLine}
+                      </p>
+                      <p className={`combat-dice-result-bar__outcome ${resultTone}`}>
+                        {resultLabel}
+                      </p>
+                    </div>
+                  </>
+                ) : (
+                  <p
+                    className={`combat-dice-result-text ${resultTone}${!showRoll ? " combat-dice-result-text--locked" : ""}`}
+                  >
+                    {resultLabel}
+                  </p>
+                )}
                 {showDamageRoll && !damageDieRolling && fx.damageTotal != null ? (
                   <p
                     className={`combat-dice-damage-sum${fx.critical ? " combat-dice-damage-sum--crit" : ""}${fx.isHeal ? " combat-dice-damage-sum--heal" : ""}`}
@@ -872,17 +909,10 @@ export function CombatFxLayer({
                     ) : null}
                   </p>
                 ) : null}
-                {fx.saveTotal != null || fx.attackTotal != null || fx.defenderAc != null ? (
-                  <p className="combat-dice-result-vs">
-                    {fx.saveTotal != null
-                      ? `${fx.saveTotal} vs CD ${fx.saveDc ?? "—"}`
-                      : `${fx.attackTotal ?? "—"} vs CA ${fx.defenderAc ?? "—"}`}
-                  </p>
-                ) : null}
                 {fx.spellDamageType ? (
                   <p className="combat-dice-result-dmg-type">{fx.spellDamageType}</p>
                 ) : null}
-                {showRollDetail ? (
+                {showRollDetail && !rollVersus ? (
                   <p className="combat-dice-result-detail">{detailParts.roll}</p>
                 ) : null}
                 {rollingCaption ? (
