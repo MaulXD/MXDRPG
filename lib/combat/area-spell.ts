@@ -120,6 +120,7 @@ export function canCastAreaAt(
       activeTokenId: turn?.activeTokenId,
       bypassTurn: turn?.bypassTurn,
       combatHasOrder: turn?.combatHasOrder,
+      combatActive: turn?.combatActive,
     })
   ) {
     return { ok: false, reason: TURN_WAIT_MSG };

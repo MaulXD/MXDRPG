@@ -100,7 +100,8 @@ export function canUseConsumable(
   token: BattleToken,
   combat: CombatTrack | null | undefined,
   activeTokenId: string | null | undefined,
-  bypassTurn?: boolean
+  bypassTurn?: boolean,
+  combatActive?: boolean
 ): { ok: true } | { ok: false; reason: string } {
   if (!token.linked || !token.actorId) {
     return { ok: false, reason: "Token sem ficha vinculada" };
@@ -110,6 +111,7 @@ export function canUseConsumable(
     activeTokenId,
     bypassTurn,
     combatHasOrder: Boolean(combat?.order?.length),
+    combatActive,
   })) {
     return { ok: false, reason: TURN_WAIT_MSG };
   }
