@@ -7,7 +7,7 @@ import type { Axial } from "@/lib/vtt/grid-math";
 import { canMoveToken, type MoveMode } from "@/lib/vtt/movement";
 import { createMonsterTokenFromEntryId } from "@/lib/vtt/monsters";
 import { nextMonsterDisplayName } from "@/lib/vtt/monster-display-name";
-import { activeTokenId } from "../combat";
+import { effectiveCombatActiveTokenId } from "../combat-turn-context";
 import { removeTokenFromCombatOrder } from "../combat-order";
 import { prepareSpawnedTokenPa } from "@/lib/combat/turn-economy";
 import { createPlayerTokenFromActor } from "@/lib/vtt/player-token";
@@ -89,7 +89,7 @@ export async function moveRoomToken(
   let token = room.scene.tokens[idx];
   applyCombatSpendablePaIfDue(room, tokenId, { bypassTurn: opts.bypassTurn });
   token = prepareCombatToken(room, room.scene.tokens[idx]!);
-  const activeId = opts.activeTokenId ?? activeTokenId(room.combat);
+  const activeId = opts.activeTokenId ?? effectiveCombatActiveTokenId(room.combat, room.scene.tokens);
   const exploration = isExplorationMode(room.settings, room.combat);
   const combatHasOrder = requiresCombatTurnEconomy(room.settings, room.combat);
   if (

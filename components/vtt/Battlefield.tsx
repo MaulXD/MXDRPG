@@ -88,6 +88,7 @@ import {
 import {
   listTokenCombatActions,
   combatAttackRequestOpts,
+  canAttackTarget,
   needsFriendlyFireConfirm,
   resolveCombatAction,
 } from "@/lib/combat/attack";
@@ -1604,14 +1605,24 @@ export function Battlefield({
         setActionErr("Magia de área: clique o centro da área no mapa (não um alvo único).");
         return;
       }
+      const defender = displayScene.tokens.find((t) => t.id === defenderId);
+      if (!defender) {
+        setActionErr("Alvo não encontrado");
+        return;
+      }
+      const attackCheck = canAttackTarget(selected, defender, activeCombatAction, turn, {
+        actor: selectedActor,
+        channelExtraPa,
+      });
+      if (!attackCheck.ok) {
+        setActionErr(attackCheck.reason ?? "Ataque indisponível");
+        return;
+      }
       setActionErr(null);
       attackBusyRef.current = true;
-      const defender = displayScene.tokens.find((t) => t.id === defenderId);
-      if (defender) {
-        const pending = createPendingAttackFx(selected, defender);
-        combatFxIdRef.current = pending.id;
-        setCombatFx(pending);
-      }
+      const pending = createPendingAttackFx(selected, defender);
+      combatFxIdRef.current = pending.id;
+      setCombatFx(pending);
       const clearPendingAttackFx = () => {
         combatFxIdRef.current = null;
         setCombatFx(null);
@@ -1689,12 +1700,11 @@ export function Battlefield({
       activeCombatAction,
       roomId,
       channelExtraPa,
+      selectedActor,
       setCombatFx,
       displayScene.tokens,
       syncRoom,
-      turn.activeTokenId,
-      turn.combatHasOrder,
-      turn.combatActive,
+      turn,
     ]
   );
 
