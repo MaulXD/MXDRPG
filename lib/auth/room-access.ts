@@ -12,6 +12,7 @@ import { characterOwnedBySessionUser } from "@/lib/auth/account-ownership";
 import type { SessionUser } from "@/lib/auth/types";
 import { normalizeRoomSettings, type RoomSettings } from "@/lib/room/settings";
 import { memberIdsHasUser } from "@/lib/auth/member-ids";
+import { isHomologPublicRoom } from "@/lib/env/homolog";
 import type { RoomState } from "@/lib/room/types";
 
 /** PCs jogáveis na mesa demo sem login (visitante). */
@@ -125,6 +126,7 @@ export function canViewRoom(
   adventureInviteCode?: string | null
 ): boolean {
   if (room.roomId === "demo") return true;
+  if (isHomologPublicRoom(room.roomId)) return true;
   if (user?.role === "admin") return true;
   if (user && isRoomMember(room, user.id, user.clerkId)) return true;
   if (inviteMatches(room, inviteCode, adventureInviteCode)) return true;
@@ -140,6 +142,11 @@ export function isRoomVisitor(
 ): boolean {
   if (!canViewRoom(room, user, inviteCode, adventureInviteCode)) return false;
   if (room.roomId === "demo") return !user;
+  if (isHomologPublicRoom(room.roomId)) {
+    if (!user) return true;
+    if (user.role === "admin" || isRoomMember(room, user.id, user.clerkId)) return false;
+    return true;
+  }
   if (!user) return inviteMatches(room, inviteCode, adventureInviteCode);
   if (user.role === "admin" || isRoomMember(room, user.id, user.clerkId)) return false;
   return inviteMatches(room, inviteCode, adventureInviteCode);

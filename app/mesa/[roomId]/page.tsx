@@ -60,8 +60,8 @@ export default async function MesaRoomPage({ params, searchParams }: Props) {
     return (
       <div className="page-wrap" style={{ maxWidth: 520, paddingTop: "2rem" }}>
         <p>
-          Sala <code>{roomId}</code> não foi encontrada. Pode ter sido criada em outro ambiente ou a
-          gravação falhou ao criar a aventura.
+          Sala <code>{roomId}</code> não foi encontrada. Rode <code>npm run homolog:up</code> ou{" "}
+          <code>npm run local</code> com <code>npm run dev:homolog</code> (MariaDB local).
         </p>
         <p style={{ color: "var(--text-muted)", fontSize: "0.9rem" }}>
           Tente abrir de novo em <Link href="/rpg/eldarin">Suas mesas</Link> ou recrie a mesa na aventura.

@@ -49,7 +49,9 @@ Abra http://localhost:3000 — `/api/health` deve retornar `db: true` e `persist
 | http://localhost:3000/mesa/mesa-local | Combate, sync, tokens — **grava no DB** |
 | http://localhost:3000/mesa/demo | Demo rápida em memória (não persiste) |
 
-Login demo: `mestre` ou `jogador`, senha `123`. Convite da mesa local: **LOCALTST**.
+Login demo: `mestre` ou `jogador`, senha `123`. Convite da mesa local: **LOCALTST** (opcional em localhost).
+
+Em **localhost**, `/mesa/mesa-local` abre sem login (só assistir). Para mover tokens e combate, entre como `mestre` ou `jogador`.
 
 O script carrega **`.env.homolog` antes de `.env.local`**, então o MariaDB local tem prioridade sobre qualquer `DATABASE_URL` de produção.
 

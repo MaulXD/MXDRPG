@@ -2,6 +2,7 @@ import "server-only";
 
 import { getAdventure } from "@/lib/adventure/store";
 import { isAdventureClosed } from "@/lib/adventure/access";
+import { isHomologPublicRoom } from "@/lib/env/homolog";
 import { fetchClerkIdForUser } from "@/lib/db/users";
 import {
   canViewRoom,
@@ -39,6 +40,7 @@ export async function canViewRoomServer(
   inviteCode?: string | null
 ): Promise<boolean> {
   if (room.roomId === "demo") return true;
+  if (isHomologPublicRoom(room.roomId)) return true;
   if (user?.role === "admin") return true;
 
   if (user && (await isRoomMemberResolved(room, user.id, user.clerkId))) return true;
