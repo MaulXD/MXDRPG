@@ -198,17 +198,44 @@ export function toDiceBoxRoll(spec: DiceRollSpec, faceOverride?: number) {
 
 export function buildAttackRollSpec(
   tier: PortraitFrameTier,
-  natural: number | null | undefined,
-  saveNatural?: number | null
+  natural: number | null | undefined
 ): DiceRollSpec {
   const attacker = tierVisual(tier);
-  const value = natural ?? saveNatural ?? undefined;
   return {
     qty: 1,
     sides: 20,
-    ...(value != null ? { value } : {}),
+    ...(natural != null ? { value: natural } : {}),
     themeColor: attacker.color,
   };
+}
+
+/** Assinatura estável — dispara nova rolagem quando o servidor preenche o pending. */
+export function combatFxRollSignature(fx: CombatFxState): string {
+  return [
+    fx.attackNatural ?? "",
+    fx.attackTotal ?? "",
+    fx.defenderAc ?? "",
+    fx.saveTotal ?? "",
+    fx.saveDc ?? "",
+    fx.hit === true ? "1" : fx.hit === false ? "0" : "",
+    fx.criticalFail ? "cf" : "",
+  ].join(":");
+}
+
+/** Só rola/revela quando o chat trouxe natural + total + CA/CD (ou save). */
+export function isCombatFxRollReady(fx: CombatFxState): boolean {
+  if (fx.isHeal && fx.attackNatural == null && fx.attackTotal == null && fx.saveTotal == null) {
+    return true;
+  }
+  if (fx.saveTotal != null && fx.saveDc != null) {
+    return fx.attackNatural != null || fx.saveTotal != null;
+  }
+  return (
+    fx.attackNatural != null &&
+    fx.attackTotal != null &&
+    fx.defenderAc != null &&
+    (fx.hit === true || fx.hit === false || fx.criticalFail === true)
+  );
 }
 
 export function buildDamageRollSpec(
@@ -276,7 +303,7 @@ export function combatFxToDiceSequence(
     id: fx.id,
     timings: resolveCombatDiceTimings(reducedMotion),
     attacker,
-    attack: buildAttackRollSpec(tier, fx.attackNatural, fx.saveTotal),
+    attack: buildAttackRollSpec(tier, fx.attackNatural),
     attackSlotLabel: `Ataque d20 · ${attacker.label}`,
     ...(damage
       ? {

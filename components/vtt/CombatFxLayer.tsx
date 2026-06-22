@@ -13,8 +13,10 @@ import { DiceCombatPanel } from "@/components/vtt/DiceCombatPanel";
 import type { BattleToken } from "@/lib/vtt/types";
 import {
   combatFxToDiceSequence,
+  combatFxRollSignature,
   COMBAT_DICE_SETTLE_MS,
   COMBAT_DICE_SETTLE_MS_REDUCED,
+  isCombatFxRollReady,
   resolveCombatDiceTimings,
 } from "@/lib/vtt/combat-dice-model";
 import { isPendingCombatFx } from "@/lib/vtt/combat-fx-sequence";
@@ -74,14 +76,16 @@ function cellPathPoints(
 }
 
 function resultLabelFor(fx: CombatFxState): string {
+  if (isPendingCombatFx(fx) && !isCombatFxRollReady(fx)) return "Aguardando…";
   if (fx.isHeal) return "CURA";
   if (fx.saveTotal != null) {
     if (fx.saveDc == null || fx.saveSuccess === undefined) return String(fx.saveTotal);
     return fx.saveSuccess ? "TESTE OK" : "TESTE FALHOU";
   }
   if (fx.criticalFail) return "FALHA CRÍTICA";
-  if (fx.hit) return fx.critical ? "CRÍTICO!" : "ACERTO";
-  return "ERROU";
+  if (fx.hit === true) return fx.critical ? "CRÍTICO!" : "ACERTO";
+  if (fx.hit === false) return "ERROU";
+  return "Aguardando…";
 }
 
 function isPureHealCast(fx: CombatFxState): boolean {
@@ -400,6 +404,9 @@ export function CombatFxLayer({
 
   const rollVersus = buildCombatRollVersus(fx);
 
+  const rollSignature = combatFxRollSignature(fx);
+  const rollReady = isCombatFxRollReady(fx);
+
   const fxId = fx.id;
 
   const revealChat = (p: "roll" | "damage" | "done") => {
@@ -411,6 +418,13 @@ export function CombatFxLayer({
   useEffect(() => {
     const data = fxRef.current;
     if (!fxId || !data) return;
+
+    if (isPendingCombatFx(data) && !isCombatFxRollReady(data)) {
+      setPhase("mark");
+      setPanelVisible(true);
+      setAttackRolling(false);
+      return;
+    }
 
     resultPhaseDoneRef.current = false;
     triggerResultPhaseRef.current = null;
@@ -629,7 +643,11 @@ export function CombatFxLayer({
       const tryResult = (attempt = 0) => {
         const live = fxRef.current;
         if (!live) return;
-        if (!fxResultKnown(live) && isPendingCombatFx(live) && attempt < 24) {
+        if (!isCombatFxRollReady(live) && isPendingCombatFx(live) && attempt < 80) {
+          timeouts.push(setTimeout(() => tryResult(attempt + 1), 50));
+          return;
+        }
+        if (!isCombatFxRollReady(live) && !isPendingCombatFx(live) && attempt < 12) {
           timeouts.push(setTimeout(() => tryResult(attempt + 1), 50));
           return;
         }
@@ -669,7 +687,7 @@ export function CombatFxLayer({
       clearAttackRevealFallback();
       for (const id of timeouts) clearTimeout(id);
     };
-  }, [fxId, reducedMotion, timings, diceEvictMs]);
+  }, [fxId, rollSignature, reducedMotion, timings, diceEvictMs]);
 
   if (phase === "done") return null;
 
@@ -713,15 +731,16 @@ export function CombatFxLayer({
   const showAttackPanel =
     showDicePanel &&
     panelVisible &&
-    (phase === "roll" || phase === "result" || phase === "damage");
+    (phase === "mark" || phase === "roll" || phase === "result" || phase === "damage");
 
   const showResultText =
     showDicePanel &&
     panelVisible &&
     !attackRolling &&
-    (phase === "result" || phase === "damage");
+    (phase === "result" || phase === "damage") &&
+    (rollVersus != null || healCastWithoutRoll);
 
-  const showRoll = showDicePanel && attackRolling;
+  const showRoll = showDicePanel && attackRolling && rollReady;
 
   const detailParts = fx.resolveDetail
     ? splitCombatChatDetail(fx.resolveDetail, fx.saveTotal != null ? "save" : "attack")
@@ -772,7 +791,9 @@ export function CombatFxLayer({
         ? "Rolando ataque…"
         : showResultText
           ? ""
-          : "Aguardando…";
+          : isPendingCombatFx(fx) && !rollReady
+            ? "Aguardando servidor…"
+            : "Aguardando…";
 
   return (
     <div
