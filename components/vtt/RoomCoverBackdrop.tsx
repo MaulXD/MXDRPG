@@ -16,7 +16,10 @@ type Props = {
 
 /** Capa decorativa da mesa — atrás do mapa, sem capturar cliques. */
 export function RoomCoverBackdrop({ coverUrl, coverFocus }: Props) {
-  const primary = resolveMesaCoverSrc(coverUrl);
+  const custom = coverUrl?.trim();
+  if (!custom) return null;
+
+  const primary = resolveMesaCoverSrc(custom);
   const [src, setSrc] = useState(primary);
   const focus = sanitizePortraitFocus(coverFocus) ?? DEFAULT_PORTRAIT_FOCUS;
 

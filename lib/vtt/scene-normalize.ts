@@ -20,10 +20,14 @@ export function normalizeBattleScene(scene: BattleScene): BattleScene {
     legacyNum(raw, "cellSize") ??
     legacyNum(raw, LEGACY.size) ??
     36;
+  const gridRadius =
+    typeof scene.gridRadius === "number" && Number.isFinite(scene.gridRadius) && scene.gridRadius > 0
+      ? scene.gridRadius
+      : 8;
   const revealedCells =
     scene.revealedCells ??
     (Array.isArray(raw[LEGACY.revealed]) ? (raw[LEGACY.revealed] as string[]) : undefined);
-  return { ...scene, cellSize, revealedCells };
+  return { ...scene, cellSize, gridRadius, revealedCells };
 }
 
 export function normalizeBattleToken(token: BattleToken): BattleToken {
