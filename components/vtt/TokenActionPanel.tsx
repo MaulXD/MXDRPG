@@ -96,7 +96,7 @@ type Props = {
   combat: CombatTrack | null | undefined;
 
   canBypassTurn: boolean;
-
+  combatActive?: boolean;
   actionMode: TokenActionMode;
 
   onActionModeChange: (mode: TokenActionMode) => void;
@@ -131,6 +131,8 @@ export function TokenActionPanel({
 
   canBypassTurn,
 
+  combatActive = true,
+
   actionMode,
 
   onActionModeChange,
@@ -155,13 +157,14 @@ export function TokenActionPanel({
 
   const [friendlyFireTargetId, setFriendlyFireTargetId] = useState<string | null>(null);
 
-  const turn = useCombatTurn({ combat, canBypassTurn, tokens });
+  const turn = useCombatTurn({ combat, canBypassTurn, tokens, combatActive });
   const tokenBypass = effectiveBypassTurn(token, canBypassTurn);
   const tokenTurn = {
     activeTokenId: turn.activeTokenId,
     bypassTurn: tokenBypass,
     combatHasOrder: turn.combatHasOrder,
     combatRound: turn.combatRound,
+    combatActive: turn.combatActive,
   };
 
   const weapons = useMemo(

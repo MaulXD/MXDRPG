@@ -130,6 +130,7 @@ import {
   effectiveBypassTurn,
   TURN_WAIT_MSG,
 } from "@/lib/combat/turn-guard";
+import { isRoomClientError } from "@/lib/room/api-error";
 import { useCombatHudVisible } from "@/hooks/vtt/useCombatHudVisible";
 import { useTokenImages } from "@/hooks/vtt/useTokenImages";
 import { usePortraitFocusByToken } from "@/hooks/vtt/usePortraitFocusByToken";
@@ -1609,6 +1610,10 @@ export function Battlefield({
         combatFxIdRef.current = pending.id;
         setCombatFx(pending);
       }
+      const clearPendingAttackFx = () => {
+        combatFxIdRef.current = null;
+        setCombatFx(null);
+      };
       try {
         let response: RoomApiPayload;
         const runPost = async (): Promise<RoomApiPayload> => {
@@ -1636,10 +1641,16 @@ export function Battlefield({
             break;
           } catch (e) {
             lastErr = e;
+            if (isRoomClientError(e)) break;
             if (attempt < 2) await new Promise((r) => setTimeout(r, 120 * (attempt + 1)));
           }
         }
         if (lastErr) {
+          clearPendingAttackFx();
+          if (isRoomClientError(lastErr)) {
+            setActionErr(lastErr.message);
+            return;
+          }
           setActionErr("Servidor lento — sincronizando em segundo plano…");
           void (async () => {
             for (let bg = 0; bg < 4; bg++) {
@@ -1649,8 +1660,11 @@ export function Battlefield({
                 syncRoom(retry, { force: true });
                 setActionErr(null);
                 return;
-              } catch {
-                /* continua pendente */
+              } catch (e) {
+                if (isRoomClientError(e)) {
+                  setActionErr(e.message);
+                  return;
+                }
               }
             }
             setActionErr("Falha no ataque — recarregue a mesa ou tente de novo");
@@ -1661,6 +1675,7 @@ export function Battlefield({
         setSpellTargetIds([]);
         // Mantém modo ataque para permitir outro alvo no mesmo turno (Esc cancela).
       } catch (e) {
+        clearPendingAttackFx();
         setActionErr(e instanceof Error ? e.message : "Falha no ataque");
       } finally {
         attackBusyRef.current = false;
@@ -2737,6 +2752,7 @@ export function Battlefield({
             actor={selectedActor}
             combat={combat}
             canBypassTurn={canBypassTurnProp}
+            combatActive={roomSettings.combatActive}
             roomId={roomId}
             showTokenSheet={canShowSheetInActionRing(selected, {
               isRoomGm,

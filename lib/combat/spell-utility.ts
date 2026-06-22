@@ -32,6 +32,7 @@ function assertTurn(token: BattleToken, turn?: CombatTurnOptions): void {
       activeTokenId: turn?.activeTokenId,
       bypassTurn: turn?.bypassTurn,
       combatHasOrder: turn?.combatHasOrder,
+      combatActive: turn?.combatActive,
     })
   ) {
     throw new Error(TURN_WAIT_MSG);

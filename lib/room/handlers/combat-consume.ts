@@ -45,7 +45,8 @@ export async function executeRoomConsume(
     token,
     room.combat,
     activeTokenId(room.combat),
-    opts.bypassTurn
+    opts.bypassTurn,
+    room.settings.combatActive
   );
   if (!turnCheck.ok) return { ok: false, error: turnCheck.reason };
 
@@ -54,7 +55,8 @@ export async function executeRoomConsume(
     token,
     room.combat,
     activeTokenId(room.combat),
-    opts.bypassTurn
+    opts.bypassTurn,
+    room.settings.combatActive
   );
   if (!turnRecheck.ok) return { ok: false, error: turnRecheck.reason };
 

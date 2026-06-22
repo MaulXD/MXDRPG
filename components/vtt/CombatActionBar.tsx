@@ -27,6 +27,7 @@ type Props = {
   actors: Record<string, RoomActor>;
   combat: CombatTrack | null | undefined;
   canBypassTurn: boolean;
+  combatActive?: boolean;
   onAttackResult: (msg: ChatMessage) => void;
   onUpdate: () => void;
 };
@@ -38,16 +39,18 @@ export function CombatActionBar({
   actors,
   combat,
   canBypassTurn,
+  combatActive = true,
   onAttackResult,
   onUpdate,
 }: Props) {
-  const turn = useCombatTurn({ combat, canBypassTurn, tokens });
+  const turn = useCombatTurn({ combat, canBypassTurn, tokens, combatActive });
   const attackerBypass = effectiveBypassTurn(attacker, canBypassTurn);
   const attackerTurn = {
     activeTokenId: turn.activeTokenId,
     bypassTurn: attackerBypass,
     combatHasOrder: turn.combatHasOrder,
     combatRound: turn.combatRound,
+    combatActive: turn.combatActive,
   };
   const { actor, actions, action, extraAttacks, selfAbilityOk } = useCombatActions(
     attacker,

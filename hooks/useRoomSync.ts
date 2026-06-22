@@ -21,6 +21,7 @@ import {
   type RoomApiPayload,
 } from "@/lib/room/room-delta";
 import { clampSnapshotCombatMode } from "@/lib/vtt/combat-mode-pending";
+import { RoomApiHttpError } from "@/lib/room/api-error";
 
 const FETCH_TIMEOUT_MS = 12_000;
 
@@ -381,6 +382,11 @@ export async function patchRoomToken(
   return res.json();
 }
 
+async function throwRoomApiError(res: Response, fallback: string): Promise<never> {
+  const err = (await res.json().catch(() => ({}))) as { error?: string };
+  throw new RoomApiHttpError(err.error ?? fallback, res.status);
+}
+
 export async function patchRoomActor(
   roomId: string,
   actorId: string,
@@ -409,10 +415,7 @@ export async function patchRoomActor(
     credentials: "same-origin",
     body: JSON.stringify(patch),
   });
-  if (!res.ok) {
-    const err = (await res.json()) as { error?: string };
-    throw new Error(err.error ?? "Falha ao salvar ficha");
-  }
+  if (!res.ok) await throwRoomApiError(res, "Falha ao salvar ficha");
   return res.json() as Promise<{
     actor: RoomActor;
     scene: RoomSnapshot["scene"];
@@ -437,10 +440,7 @@ export async function levelUpRoomActor(
     credentials: "same-origin",
     body: JSON.stringify(choices),
   });
-  if (!res.ok) {
-    const err = (await res.json()) as { error?: string };
-    throw new Error(err.error ?? "Falha ao subir nível");
-  }
+  if (!res.ok) await throwRoomApiError(res, "Falha ao subir nível");
   return res.json() as Promise<LevelUpRoomResponse>;
 }
 
@@ -454,20 +454,14 @@ export async function postStructuredMeal(
     credentials: "same-origin",
     body: JSON.stringify(body),
   });
-  if (!res.ok) {
-    const err = (await res.json().catch(() => ({}))) as { error?: string };
-    throw new Error(err.error ?? "Falha ao preparar refeição");
-  }
+  if (!res.ok) await throwRoomApiError(res, "Falha ao preparar refeição");
   const data = (await res.json()) as { snapshot: RoomSnapshot };
   return data.snapshot;
 }
 
 export async function rollInitiative(roomId: string) {
   const res = await fetch(`/api/room/${roomId}/combat/roll-initiative`, { method: "POST" });
-  if (!res.ok) {
-    const err = (await res.json().catch(() => ({}))) as { error?: string };
-    throw new Error(err.error ?? "Falha ao rolar iniciativa");
-  }
+  if (!res.ok) await throwRoomApiError(res, "Falha ao rolar iniciativa");
   return res.json() as Promise<RoomApiPayload>;
 }
 
@@ -478,10 +472,7 @@ export async function nextCombatTurn(roomId: string, opts?: { force?: boolean })
     headers: opts?.force ? { "Content-Type": "application/json" } : undefined,
     body: opts?.force ? JSON.stringify({ force: true }) : undefined,
   });
-  if (!res.ok) {
-    const err = (await res.json().catch(() => ({}))) as { error?: string };
-    throw new Error(err.error ?? "Falha ao avançar turno");
-  }
+  if (!res.ok) await throwRoomApiError(res, "Falha ao avançar turno");
   return res.json() as Promise<RoomApiPayload>;
 }
 
@@ -505,10 +496,7 @@ export async function postGmCombatAction(roomId: string, body: GmCombatAction) {
     credentials: "same-origin",
     body: JSON.stringify(body),
   });
-  if (!res.ok) {
-    const err = (await res.json().catch(() => ({}))) as { error?: string };
-    throw new Error(err.error ?? "Falha no controle do mestre");
-  }
+  if (!res.ok) await throwRoomApiError(res, "Falha no controle do mestre");
   return res.json() as Promise<RoomApiPayload>;
 }
 
@@ -538,10 +526,7 @@ export async function postRoomAttack(
       ...opts,
     }),
   });
-  if (!res.ok) {
-    const err = (await res.json()) as { error?: string };
-    throw new Error(err.error ?? "Falha no ataque");
-  }
+  if (!res.ok) await throwRoomApiError(res, "Falha no ataque");
   return res.json() as Promise<RoomApiPayload>;
 }
 
@@ -560,10 +545,7 @@ export async function postRoomAbility(
     credentials: "same-origin",
     body: JSON.stringify({ attackerTokenId, defenderTokenId, ...opts }),
   });
-  if (!res.ok) {
-    const err = (await res.json()) as { error?: string };
-    throw new Error(err.error ?? "Falha na habilidade");
-  }
+  if (!res.ok) await throwRoomApiError(res, "Falha na habilidade");
   return res.json() as Promise<RoomApiPayload>;
 }
 
@@ -579,10 +561,7 @@ export async function consumeRoomItem(
     credentials: "same-origin",
     body: JSON.stringify({ tokenId, instanceId, ...opts }),
   });
-  if (!res.ok) {
-    const err = (await res.json()) as { error?: string };
-    throw new Error(err.error ?? "Falha ao usar consumível");
-  }
+  if (!res.ok) await throwRoomApiError(res, "Falha ao usar consumível");
   return res.json() as Promise<RoomApiPayload>;
 }
 
@@ -600,10 +579,7 @@ export async function moveRoomTokenBudget(
     credentials: "same-origin",
     body: JSON.stringify({ tokenId, q, r, mode, bypassTurn }),
   });
-  if (!res.ok) {
-    const err = (await res.json()) as { error?: string };
-    throw new Error(err.error ?? "Movimento inválido");
-  }
+  if (!res.ok) await throwRoomApiError(res, "Movimento inválido");
   return res.json() as Promise<RoomApiPayload>;
 }
 
@@ -625,10 +601,7 @@ export async function postRoomAreaSpell(
     credentials: "same-origin",
     body: JSON.stringify({ casterTokenId, centerQ, centerR, ...opts }),
   });
-  if (!res.ok) {
-    const err = (await res.json()) as { error?: string };
-    throw new Error(err.error ?? "Falha na magia de área");
-  }
+  if (!res.ok) await throwRoomApiError(res, "Falha na magia de área");
   return res.json() as Promise<RoomSnapshot>;
 }
 
@@ -645,10 +618,7 @@ export async function spawnRoomMonster(
     credentials: "same-origin",
     body: JSON.stringify({ monsterEntryId, q, r, ...opts }),
   });
-  if (!res.ok) {
-    const err = (await res.json()) as { error?: string };
-    throw new Error(err.error ?? "Falha ao invocar monstro");
-  }
+  if (!res.ok) await throwRoomApiError(res, "Falha ao invocar monstro");
   return res.json() as Promise<RoomSnapshot>;
 }
 
@@ -657,10 +627,7 @@ export async function deleteRoomToken(roomId: string, tokenId: string) {
     method: "DELETE",
     credentials: "same-origin",
   });
-  if (!res.ok) {
-    const err = (await res.json()) as { error?: string };
-    throw new Error(err.error ?? "Falha ao remover token");
-  }
+  if (!res.ok) await throwRoomApiError(res, "Falha ao remover token");
   return res.json() as Promise<RoomSnapshot>;
 }
 
@@ -676,10 +643,7 @@ export async function repositionRoomToken(
     credentials: "same-origin",
     body: JSON.stringify({ tokenId, q, r }),
   });
-  if (!res.ok) {
-    const err = (await res.json()) as { error?: string };
-    throw new Error(err.error ?? "Falha ao reposicionar");
-  }
+  if (!res.ok) await throwRoomApiError(res, "Falha ao reposicionar");
   return res.json() as Promise<RoomSnapshot>;
 }
 
@@ -699,10 +663,7 @@ export async function createGmCreation(
     credentials: "same-origin",
     body: JSON.stringify(body),
   });
-  if (!res.ok) {
-    const err = (await res.json()) as { error?: string };
-    throw new Error(err.error ?? "Falha ao criar template");
-  }
+  if (!res.ok) await throwRoomApiError(res, "Falha ao criar template");
   return res.json() as Promise<{
     creation: import("@/lib/room/gm-creations").GmCreation;
     snapshot: RoomSnapshot;
@@ -720,10 +681,7 @@ export async function updateGmCreation(
     credentials: "same-origin",
     body: JSON.stringify(patch),
   });
-  if (!res.ok) {
-    const err = (await res.json()) as { error?: string };
-    throw new Error(err.error ?? "Falha ao salvar template");
-  }
+  if (!res.ok) await throwRoomApiError(res, "Falha ao salvar template");
   return res.json() as Promise<{
     creation: import("@/lib/room/gm-creations").GmCreation;
     snapshot: RoomSnapshot;
@@ -735,10 +693,7 @@ export async function deleteGmCreation(roomId: string, creationId: string) {
     method: "DELETE",
     credentials: "same-origin",
   });
-  if (!res.ok) {
-    const err = (await res.json()) as { error?: string };
-    throw new Error(err.error ?? "Falha ao excluir template");
-  }
+  if (!res.ok) await throwRoomApiError(res, "Falha ao excluir template");
   const data = (await res.json()) as { snapshot: RoomSnapshot };
   return data.snapshot;
 }
@@ -755,10 +710,7 @@ export async function spawnGmCreation(
     credentials: "same-origin",
     body: JSON.stringify({ creationId, q, r }),
   });
-  if (!res.ok) {
-    const err = (await res.json()) as { error?: string };
-    throw new Error(err.error ?? "Falha ao colocar na mesa");
-  }
+  if (!res.ok) await throwRoomApiError(res, "Falha ao colocar na mesa");
   return res.json() as Promise<RoomSnapshot>;
 }
 
@@ -774,10 +726,7 @@ export async function placeRoomActorOnCell(
     credentials: "same-origin",
     body: JSON.stringify({ actorId, q, r }),
   });
-  if (!res.ok) {
-    const err = (await res.json()) as { error?: string };
-    throw new Error(err.error ?? "Falha ao posicionar personagem");
-  }
+  if (!res.ok) await throwRoomApiError(res, "Falha ao posicionar personagem");
   return res.json() as Promise<RoomSnapshot>;
 }
 
@@ -793,10 +742,7 @@ export async function postRoomPing(
     credentials: "same-origin",
     body: JSON.stringify({ q, r, color }),
   });
-  if (!res.ok) {
-    const err = (await res.json()) as { error?: string };
-    throw new Error(err.error ?? "Falha ao pingar");
-  }
+  if (!res.ok) await throwRoomApiError(res, "Falha ao pingar");
   return res.json() as Promise<RoomSnapshot>;
 }
 
@@ -832,10 +778,7 @@ export async function patchRoomSettings(roomId: string, patch: RoomSettingsPatch
     credentials: "same-origin",
     body: JSON.stringify(patch),
   });
-  if (!res.ok) {
-    const err = (await res.json()) as { error?: string };
-    throw new Error(err.error ?? "Falha ao salvar configurações");
-  }
+  if (!res.ok) await throwRoomApiError(res, "Falha ao salvar configurações");
   const data = (await res.json()) as { snapshot: RoomSnapshot };
   return data.snapshot;
 }
@@ -847,10 +790,7 @@ export async function patchRoomScene(roomId: string, patch: ScenePatchBody) {
     credentials: "same-origin",
     body: JSON.stringify(patch),
   });
-  if (!res.ok) {
-    const err = (await res.json()) as { error?: string };
-    throw new Error(err.error ?? "Falha ao atualizar mapa");
-  }
+  if (!res.ok) await throwRoomApiError(res, "Falha ao atualizar mapa");
   return res.json() as Promise<RoomSnapshot>;
 }
 
@@ -861,10 +801,7 @@ export async function revealRoomCell(roomId: string, q: number, r: number) {
     credentials: "same-origin",
     body: JSON.stringify({ revealCell: { q, r } }),
   });
-  if (!res.ok) {
-    const err = (await res.json()) as { error?: string };
-    throw new Error(err.error ?? "Falha ao revelar célula");
-  }
+  if (!res.ok) await throwRoomApiError(res, "Falha ao revelar célula");
   return res.json() as Promise<RoomSnapshot>;
 }
 
@@ -877,10 +814,7 @@ export async function postRoomChat(
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
   });
-  if (!res.ok) {
-    const err = (await res.json()) as { error?: string };
-    throw new Error(err.error ?? "Falha ao enviar");
-  }
+  if (!res.ok) await throwRoomApiError(res, "Falha ao enviar");
   return res.json() as Promise<RoomSnapshot>;
 }
 
@@ -897,10 +831,7 @@ export async function gmActorProgress(
     credentials: "same-origin",
     body: JSON.stringify(body),
   });
-  if (!res.ok) {
-    const err = (await res.json()) as { error?: string };
-    throw new Error(err.error ?? "Falha ao ajustar progresso");
-  }
+  if (!res.ok) await throwRoomApiError(res, "Falha ao ajustar progresso");
   return res.json() as Promise<RoomSnapshot>;
 }
 
@@ -916,9 +847,6 @@ export async function gmSavingThrows(
     credentials: "same-origin",
     body: JSON.stringify(body),
   });
-  if (!res.ok) {
-    const err = (await res.json()) as { error?: string };
-    throw new Error(err.error ?? "Falha ao rolar salvaguarda");
-  }
+  if (!res.ok) await throwRoomApiError(res, "Falha ao rolar salvaguarda");
   return res.json() as Promise<RoomSnapshot>;
 }
