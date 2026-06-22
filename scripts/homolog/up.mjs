@@ -3,6 +3,7 @@ import { spawnSync } from "child_process";
 import path from "path";
 import { ensureHomologEnv, composeFile } from "./env.mjs";
 import { ensureNativeMariaDb } from "./native-mariadb.mjs";
+import { seedLocalMesa } from "./seed-local.mjs";
 
 ensureHomologEnv();
 
@@ -53,7 +54,9 @@ if (dockerProbe.status === 0) {
 }
 
 runMigrate();
+await seedLocalMesa();
 
 console.log("\nMXDRPG homolog OK.");
-console.log("  npm run dev  → http://localhost:3000");
+console.log("  npm run local       → DB + mesa de teste + dev");
+console.log("  npm run dev:homolog → só o Next (DB já deve estar up)");
 console.log("  npm run homolog:down → para Docker (se usado)");

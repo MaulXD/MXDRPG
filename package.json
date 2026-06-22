@@ -20,6 +20,8 @@
     "homolog:up": "node scripts/homolog/up.mjs",
     "homolog:down": "node scripts/homolog/down.mjs",
     "homolog:reset": "node scripts/homolog/reset.mjs",
+    "local": "node scripts/homolog/local.mjs",
+    "local:seed": "node scripts/homolog/seed-local.mjs",
     "dev:homolog": "node scripts/homolog/dev.mjs",
     "db:migrate-images": "node scripts/db/migrate-images-to-webp.mjs",
     "db:reset-room-tokens": "node scripts/db/reset-all-room-tokens.mjs",

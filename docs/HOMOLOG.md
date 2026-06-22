@@ -20,26 +20,47 @@ npm run homolog:up
 Isso:
 
 1. Cria `.env.homolog` a partir de `.env.homolog.example` (se ainda não existir)
-2. Sobe MariaDB 11 em `docker-compose.homolog.yml` (porta **3306**, container `mxdrpg-homolog-db`)
+2. Sobe MariaDB (Docker ou nativo no Windows, porta **3306**)
 3. Aguarda o banco ficar saudável
-4. Roda `npm run db:migrate` (schema + seeds)
+4. Roda `npm run db:migrate` (schema + usuários demo)
+5. Cria a mesa **`mesa-local`** persistida no banco
 
 ## Rodar o app
 
+**Um comando (recomendado):**
+
 ```bash
+npm run local
+```
+
+Ou em dois passos:
+
+```bash
+npm run homolog:up
 npm run dev:homolog
 ```
 
 Abra http://localhost:3000 — `/api/health` deve retornar `db: true` e `persistence: "mariadb"`.
 
-O script carrega **`.env.homolog` antes de `.env.local`**, então o MariaDB local tem prioridade sobre qualquer `DATABASE_URL` que você tenha no `.env.local` de produção.
+**Mesa de teste no MariaDB local:**
+
+| URL | Uso |
+|-----|-----|
+| http://localhost:3000/mesa/mesa-local | Combate, sync, tokens — **grava no DB** |
+| http://localhost:3000/mesa/demo | Demo rápida em memória (não persiste) |
+
+Login demo: `mestre` ou `jogador`, senha `123`. Convite da mesa local: **LOCALTST**.
+
+O script carrega **`.env.homolog` antes de `.env.local`**, então o MariaDB local tem prioridade sobre qualquer `DATABASE_URL` de produção.
 
 ## Comandos úteis
 
 | Comando | Ação |
 |---------|------|
-| `npm run homolog:up` | Sobe DB + migrate |
+| `npm run local` | **Recomendado** — DB + mesa de teste + Next dev |
+| `npm run homolog:up` | Sobe DB + migrate + mesa-local |
 | `npm run dev:homolog` | Next dev com env homolog |
+| `npm run local:seed` | Recria só a mesa `mesa-local` no DB |
 | `npm run homolog:down` | Para o container (dados no volume) |
 | `npm run homolog:reset` | Apaga volume e recria DB do zero |
 

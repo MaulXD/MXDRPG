@@ -1,0 +1,115 @@
+{
+  "adventure": {
+    "adventureId": "mesa-local",
+    "ownerId": "usr_demo_mestre",
+    "name": "Mesa local (homolog)",
+    "synopsis": "Mesa persistida no MariaDB local para testar combate, sync e fichas.",
+    "rpgSystemId": "eldarin",
+    "accessMode": "public",
+    "inviteCode": "LOCALTST",
+    "memberIds": ["usr_demo_jogador"],
+    "primaryRoomId": "mesa-local"
+  },
+  "room": {
+    "roomId": "mesa-local",
+    "adventureId": "mesa-local",
+    "ownerId": "usr_demo_mestre",
+    "name": "Mesa local (homolog)",
+    "inviteCode": "LOCALTST",
+    "memberIds": ["usr_demo_jogador"],
+    "settings": {
+      "combatActive": false,
+      "autoPassDelayMs": 280,
+      "xpFromMonstersEnabled": true,
+      "showMonsterHpToPlayers": false,
+      "showMonsterHpInChat": false,
+      "allowPlayerPing": true,
+      "showUsernameOnTokenNameplate": false,
+      "gmBypassInitiative": false
+    },
+    "scene": {
+      "id": "mesa-local",
+      "name": "Masmorra — teste local",
+      "gridRadius": 8,
+      "cellSize": 36,
+      "tokens": [
+        {
+          "id": "t2",
+          "name": "Goblin 1",
+          "axial": { "q": 1, "r": 0 },
+          "color": "#8b4513",
+          "walk": 4,
+          "run": 6,
+          "pa": 6,
+          "paMax": 6,
+          "ownerRole": "mestre",
+          "nivel": 1,
+          "vida": 7,
+          "vidaMax": 7,
+          "defesa": 13,
+          "monsterEntryId": "monstros-goblin",
+          "monsterTier": "mob",
+          "creatureSize": "small",
+          "movementSpentCells": 0,
+          "movementWalkMax": 4,
+          "movementRunMax": 6
+        },
+        {
+          "id": "t4",
+          "name": "Goblin 2",
+          "axial": { "q": 3, "r": 0 },
+          "color": "#8b4513",
+          "walk": 4,
+          "run": 6,
+          "pa": 6,
+          "paMax": 6,
+          "ownerRole": "mestre",
+          "nivel": 1,
+          "vida": 7,
+          "vidaMax": 7,
+          "defesa": 13,
+          "monsterEntryId": "monstros-goblin",
+          "monsterTier": "mob",
+          "creatureSize": "small",
+          "movementSpentCells": 0,
+          "movementWalkMax": 4,
+          "movementRunMax": 6
+        },
+        {
+          "id": "t7",
+          "name": "Minotauro",
+          "axial": { "q": -3, "r": 1 },
+          "color": "#6b5344",
+          "walk": 4,
+          "run": 6,
+          "pa": 6,
+          "paMax": 6,
+          "ownerRole": "mestre",
+          "nivel": 6,
+          "vida": 52,
+          "vidaMax": 52,
+          "defesa": 14,
+          "monsterEntryId": "monstros-minotauro",
+          "monsterTier": "mini",
+          "creatureSize": "large",
+          "movementSpentCells": 0,
+          "movementWalkMax": 4,
+          "movementRunMax": 6
+        }
+      ]
+    },
+    "actors": {},
+    "combat": { "order": [], "activeIndex": 0, "round": 1 },
+    "chat": [
+      {
+        "id": "welcome-mesa-local",
+        "at": 0,
+        "authorId": "system",
+        "authorName": "Mesa",
+        "authorRole": "guest",
+        "kind": "system",
+        "text": "Mesa local (MariaDB). Convite: LOCALTST — use mestre/jogador senha 123."
+      }
+    ]
+  }
+}
