@@ -312,9 +312,11 @@ export function MesaOnlineMenu({ online, loading = false, selfUserId }: Props) {
     <div className="mesa-online-menu" ref={rootRef}>
       <button
         type="button"
-        className="mesa-online-menu__trigger"
+        className={`mesa-online-menu__trigger${loading ? " mesa-online-menu__trigger--loading" : ""}`}
         aria-expanded={open}
         aria-haspopup="listbox"
+        aria-busy={loading || undefined}
+        title={loading ? "Carregando jogadores online…" : "Jogadores online na mesa"}
         onClick={() => setOpen((v) => !v)}
       >
         <span className="mesa-online-menu__dot" aria-hidden />

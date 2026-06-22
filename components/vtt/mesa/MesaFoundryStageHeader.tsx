@@ -52,8 +52,8 @@ export function MesaFoundryStageHeader({
 }: Props) {
   return (
     <div className="foundry-mesa__stage-header">
-      <MesaSyncIndicator syncStatus={syncStatus} syncError={syncError} onRetry={onRetrySync} />
       <div className="foundry-mesa__stage-tools">
+        <MesaSyncIndicator syncStatus={syncStatus} syncError={syncError} onRetry={onRetrySync} />
         {isActualGm ? (
           <GmMesaModeToggle
             roomId={roomId}
