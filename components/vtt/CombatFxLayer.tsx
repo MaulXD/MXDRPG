@@ -398,6 +398,11 @@ export function CombatFxLayer({
     [reducedMotion]
   );
 
+  const rollVersus = useMemo(
+    () => (fx ? buildCombatRollVersus(fx) : null),
+    [fx]
+  );
+
   const fxId = fx?.id ?? null;
 
   const revealChat = (p: "roll" | "damage" | "done") => {
@@ -703,7 +708,6 @@ export function CombatFxLayer({
   const areaFill = accent.replace(/[\d.]+\)$/, "0.2)");
 
   const resultLabel = resultLabelFor(fx);
-  const rollVersus = useMemo(() => buildCombatRollVersus(fx), [fx]);
   const healCastWithoutRoll = isHealCastWithoutRoll(fx);
 
   const showDicePanel =
