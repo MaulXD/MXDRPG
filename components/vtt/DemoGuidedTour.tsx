@@ -16,6 +16,8 @@ type Props = {
   roomId: string;
   session: SessionUser | null;
   isRoomGm: boolean;
+  /** pill no header (legado) | círculo ao lado do ? no mapa */
+  triggerVariant?: "pill" | "map";
 };
 
 const MODE_LABEL: Record<DemoTourMode, string> = {
@@ -24,7 +26,12 @@ const MODE_LABEL: Record<DemoTourMode, string> = {
   gm: "Mestre",
 };
 
-export function DemoGuidedTour({ roomId, session, isRoomGm }: Props) {
+export function DemoGuidedTour({
+  roomId,
+  session,
+  isRoomGm,
+  triggerVariant = "pill",
+}: Props) {
   const mode = useMemo(
     () => getDemoTourMode(session, isRoomGm),
     [session, isRoomGm]
@@ -77,12 +84,12 @@ export function DemoGuidedTour({ roomId, session, isRoomGm }: Props) {
     <>
       <button
         type="button"
-        className="demo-guided-tour__trigger"
+        className={`demo-guided-tour__trigger${triggerVariant === "map" ? " demo-guided-tour__trigger--map" : ""}`}
         onClick={openTour}
         title="Tour guiado da demo"
         aria-label="Tour guiado da demo"
       >
-        Tour
+        {triggerVariant === "map" ? "T" : "Tour"}
       </button>
 
       {open && step ? (

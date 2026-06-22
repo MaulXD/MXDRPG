@@ -15,6 +15,7 @@ type Props = {
   session: SessionUser | null;
   isRoomGm: boolean;
   watchOnly?: boolean;
+  triggerVariant?: "pill" | "map";
 };
 
 const MODE_LABEL: Record<MesaTourMode, string> = {
@@ -23,7 +24,13 @@ const MODE_LABEL: Record<MesaTourMode, string> = {
   gm: "Mestre",
 };
 
-export function MesaGuidedTour({ roomId, session, isRoomGm, watchOnly = false }: Props) {
+export function MesaGuidedTour({
+  roomId,
+  session,
+  isRoomGm,
+  watchOnly = false,
+  triggerVariant = "pill",
+}: Props) {
   const mode = useMemo(
     () => getMesaTourMode(session, isRoomGm, watchOnly),
     [session, isRoomGm, watchOnly]
@@ -76,12 +83,12 @@ export function MesaGuidedTour({ roomId, session, isRoomGm, watchOnly = false }:
     <>
       <button
         type="button"
-        className="demo-guided-tour__trigger"
+        className={`demo-guided-tour__trigger${triggerVariant === "map" ? " demo-guided-tour__trigger--map" : ""}`}
         onClick={openTour}
         title="Tour da mesa"
         aria-label="Tour da mesa"
       >
-        Tour
+        {triggerVariant === "map" ? "T" : "Tour"}
       </button>
 
       {open && step ? (
