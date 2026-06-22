@@ -138,11 +138,14 @@ export function DiceCombatPanel({
 
   useEffect(() => {
     if (!ui.attackRolling) return;
-    if (attackSeqRef.current === sequence.id) return;
-    attackSeqRef.current = sequence.id;
+    if (attack.value == null) return;
+    const rollKey = `${sequence.id}:${attack.value}`;
+    if (attackSeqRef.current === rollKey) return;
+    attackSeqRef.current = rollKey;
 
     void ensureAttackBox()
-      .then(() => {
+      .then(async () => {
+        await Promise.resolve(attackBoxRef.current?.clear()).catch(() => {});
         onAttackRollBegin?.();
         return attackBoxRef.current?.roll(toDiceBoxRoll(attack));
       })
