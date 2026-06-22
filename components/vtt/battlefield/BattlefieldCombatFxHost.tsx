@@ -48,6 +48,8 @@ export function BattlefieldCombatFxHost({
   onChatReveal,
   onDone,
 }: Props) {
+  if (!fx) return null;
+
   return (
     <CombatFxLayer
       wrapRef={wrapRef}

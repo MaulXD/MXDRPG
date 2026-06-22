@@ -35,7 +35,7 @@ type Props = {
   cellSize: number;
   gridOx?: number;
   gridOy?: number;
-  fx: CombatFxState | null;
+  fx: CombatFxState;
   tokens?: BattleToken[];
   onDone: () => void;
   onApplyState?: () => void;
@@ -389,7 +389,7 @@ export function CombatFxLayer({
   );
 
   const diceSequence = useMemo(
-    () => (fx ? combatFxToDiceSequence(fx, tokens, reducedMotion) : null),
+    () => combatFxToDiceSequence(fx, tokens, reducedMotion),
     [fx, tokens, reducedMotion]
   );
 
@@ -398,12 +398,9 @@ export function CombatFxLayer({
     [reducedMotion]
   );
 
-  const rollVersus = useMemo(
-    () => (fx ? buildCombatRollVersus(fx) : null),
-    [fx]
-  );
+  const rollVersus = buildCombatRollVersus(fx);
 
-  const fxId = fx?.id ?? null;
+  const fxId = fx.id;
 
   const revealChat = (p: "roll" | "damage" | "done") => {
     const ids = fxRef.current?.chatMessageIds;
@@ -674,7 +671,7 @@ export function CombatFxLayer({
     };
   }, [fxId, reducedMotion, timings, diceEvictMs]);
 
-  if (!fx || phase === "done") return null;
+  if (phase === "done") return null;
 
   const wrap = wrapRef.current;
   const w = wrap?.clientWidth ?? 800;
