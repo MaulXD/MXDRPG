@@ -23,7 +23,9 @@ import {
 import { clampSnapshotCombatMode } from "@/lib/vtt/combat-mode-pending";
 import { RoomApiHttpError } from "@/lib/room/api-error";
 
-const FETCH_TIMEOUT_MS = 12_000;
+const FETCH_TIMEOUT_MS = 20_000;
+const SYNC_TRANSIENT_MAX = 4;
+const SYNC_RETRY_BASE_MS = 1_500;
 
 export type RoomMemberOnlineEvent = {
   userId: string;
@@ -66,6 +68,22 @@ const SSE_RECONNECT_BASE_MS = 2000;
 const SSE_RECONNECT_MAX_MS = 30_000;
 
 export type RoomSyncStatus = "loading" | "live" | "polling" | "error";
+
+function isTransientHttpStatus(status: number): boolean {
+  return status === 408 || status === 429 || status >= 500;
+}
+
+function isTransientSyncError(e: unknown): boolean {
+  if (!(e instanceof Error)) return false;
+  if (e.name === "AbortError") return true;
+  const msg = e.message.toLowerCase();
+  return (
+    msg.includes("failed to fetch") ||
+    msg.includes("network") ||
+    msg.includes("load failed") ||
+    msg.includes("networkerror")
+  );
+}
 
 function resolveSyncStatus(sseLive: boolean, hasSnapshot: boolean): RoomSyncStatus {
   if (sseLive || hasSnapshot) return "live";
@@ -150,6 +168,58 @@ export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
   const refreshDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const refreshInFlightRef = useRef(false);
   const refreshQueuedRef = useRef(false);
+  const syncFailStreakRef = useRef(0);
+  const syncRetryTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const clearSyncRetryTimer = useCallback(() => {
+    if (syncRetryTimerRef.current) {
+      clearTimeout(syncRetryTimerRef.current);
+      syncRetryTimerRef.current = null;
+    }
+  }, []);
+
+  const noteSyncSuccess = useCallback(() => {
+    syncFailStreakRef.current = 0;
+    clearSyncRetryTimer();
+    setSyncError(null);
+  }, [clearSyncRetryTimer]);
+
+  const scheduleSyncRetry = useCallback((delayMs: number) => {
+    clearSyncRetryTimer();
+    syncRetryTimerRef.current = setTimeout(() => {
+      syncRetryTimerRef.current = null;
+      void refreshImplRef.current?.();
+    }, delayMs);
+  }, [clearSyncRetryTimer]);
+
+  const noteSyncFailure = useCallback(
+    (message: string, opts?: { transient?: boolean; forceFull?: boolean }) => {
+      const hasSnapshot = Boolean(snapshotRef.current);
+      const transient = opts?.transient ?? false;
+
+      if (transient && hasSnapshot) {
+        syncFailStreakRef.current += 1;
+        if (opts?.forceFull && syncFailStreakRef.current >= SYNC_TRANSIENT_MAX) {
+          revisionRef.current = 0;
+          syncFailStreakRef.current = 0;
+          scheduleSyncRetry(400);
+          setSyncStatus(resolveSyncStatus(sseLiveRef.current, true));
+          return;
+        }
+        if (syncFailStreakRef.current < SYNC_TRANSIENT_MAX) {
+          scheduleSyncRetry(
+            Math.min(10_000, SYNC_RETRY_BASE_MS * syncFailStreakRef.current)
+          );
+          setSyncStatus(resolveSyncStatus(sseLiveRef.current, true));
+          return;
+        }
+      }
+
+      setSyncError(message);
+      setSyncStatus("error");
+    },
+    [scheduleSyncRetry]
+  );
 
   const refresh = useCallback(async () => {
     if (refreshInFlightRef.current) {
@@ -169,30 +239,43 @@ export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
         const hdr = res.headers.get("X-Room-Revision");
         const rev = hdr ? parseInt(hdr, 10) : revisionRef.current;
         if (Number.isFinite(rev) && rev > 0) revisionRef.current = Math.max(revisionRef.current, rev);
-        setSyncError(null);
+        noteSyncSuccess();
         setSyncStatus(resolveSyncStatus(sseLiveRef.current, Boolean(snapshotRef.current)));
         sseReadyRef.current = true;
         return;
       }
       if (!res.ok) {
         const err = (await res.json().catch(() => ({}))) as { error?: string };
-        setSyncError(err.error ?? `Sync falhou (${res.status})`);
+        const msg = err.error ?? `Sync falhou (${res.status})`;
+        if (isTransientHttpStatus(res.status) && snapshotRef.current) {
+          noteSyncFailure(msg, {
+            transient: true,
+            forceFull: res.status >= 500,
+          });
+        } else {
+          setSyncError(msg);
+          setSyncStatus("error");
+        }
         return;
       }
       const data = (await res.json()) as RoomApiPayload;
-      setSyncError(null);
+      noteSyncSuccess();
       applyRoomResponse(data);
       setSyncStatus(resolveSyncStatus(sseLiveRef.current, Boolean(snapshotRef.current)));
       sseReadyRef.current = true;
     } catch (e) {
       const msg =
         e instanceof Error && e.name === "AbortError"
-          ? "Sync demorou demais — recarregue a página"
+          ? "Sync demorou demais — tentando de novo…"
           : e instanceof Error
             ? e.message
             : "Falha de rede";
-      setSyncError(msg);
-      setSyncStatus("error");
+      if (isTransientSyncError(e) && snapshotRef.current) {
+        noteSyncFailure(msg, { transient: true, forceFull: true });
+      } else {
+        setSyncError(msg);
+        setSyncStatus("error");
+      }
     } finally {
       clearTimeout(timer);
       setLoading(false);
@@ -202,7 +285,7 @@ export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
         void refreshImplRef.current?.();
       }
     }
-  }, [roomId, query, applyRoomResponse]);
+  }, [roomId, inviteCode, applyRoomResponse, noteSyncSuccess, noteSyncFailure]);
 
   refreshImplRef.current = refresh;
 
@@ -237,7 +320,9 @@ export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
     setSyncError(null);
     sseReadyRef.current = false;
     sseLiveRef.current = false;
-  }, [roomId, query, refresh, applySnapshot, disabled]);
+    syncFailStreakRef.current = 0;
+    clearSyncRetryTimer();
+  }, [roomId, inviteCode, disabled, clearSyncRetryTimer]);
 
   useEffect(() => {
     pollIntervalRef.current =
@@ -296,7 +381,6 @@ export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
 
     const connect = () => {
       es?.close();
-      stopFallbackPoll();
       const since = revisionRef.current;
       const eventsQ = new URLSearchParams();
       eventsQ.set("since", String(since));
@@ -365,12 +449,23 @@ export function useRoomSync(roomId: string, opts: SyncOpts = {}) {
       if (reconnectTimer) clearTimeout(reconnectTimer);
       es?.close();
       stopFallbackPoll();
+      clearSyncRetryTimer();
       if (refreshDebounceRef.current) {
         clearTimeout(refreshDebounceRef.current);
         refreshDebounceRef.current = null;
       }
     };
-  }, [roomId, inviteCode, refresh, scheduleRefresh, disabled]);
+  }, [roomId, inviteCode, refresh, scheduleRefresh, disabled, clearSyncRetryTimer]);
+
+  useEffect(() => {
+    if (disabled) return;
+    const onVisible = () => {
+      if (document.visibilityState !== "visible") return;
+      void refreshImplRef.current?.();
+    };
+    document.addEventListener("visibilitychange", onVisible);
+    return () => document.removeEventListener("visibilitychange", onVisible);
+  }, [disabled]);
 
   useEffect(() => {
     if (disabled) return;
