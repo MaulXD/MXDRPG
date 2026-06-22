@@ -2162,7 +2162,8 @@
 .mesa-workspace--foundry .vtt-end-turn-bar,
 .mesa-workspace--foundry .battlefield-action-hud,
 .mesa-workspace--foundry .token-action-ring,
-.mesa-workspace--foundry .vtt-help-trigger {
+.mesa-workspace--foundry .vtt-map-guide-cluster .vtt-help-trigger,
+.mesa-workspace--foundry .vtt-map-guide-cluster .demo-guided-tour__trigger--map {
   z-index: 30;
   background: rgba(10, 9, 8, 0.94);
   border-color: rgba(107, 158, 140, 0.55);
@@ -2170,6 +2171,10 @@
   box-shadow:
     0 2px 12px rgba(0, 0, 0, 0.45),
     inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.mesa-workspace--foundry .vtt-map-guide-cluster {
+  z-index: 30;
 }
 
 .mesa-workspace--foundry .vtt-end-turn-label,

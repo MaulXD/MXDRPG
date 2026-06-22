@@ -1215,6 +1215,25 @@
   cursor: grabbing;
 }
 
+.vtt-map-guide-cluster {
+  position: absolute;
+  top: clamp(0.45rem, 1.5vh, 0.75rem);
+  left: calc(var(--map-toolbar-left) + var(--map-toolbar-width) + var(--map-toolbar-gap));
+  z-index: 13;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  pointer-events: none;
+}
+
+.vtt-map-guide-cluster > * {
+  pointer-events: auto;
+}
+
+.vtt-map-guide-cluster .vtt-help-trigger {
+  position: static;
+}
+
 .vtt-help-trigger {
   position: absolute;
   top: clamp(0.45rem, 1.5vh, 0.75rem);
@@ -7596,6 +7615,16 @@
   border-color: rgba(107, 158, 140, 0.65);
   background: rgba(24, 20, 14, 0.96);
   transform: scale(1.03);
+}
+
+.demo-guided-tour__trigger--map {
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  border-radius: 50%;
+  font-size: 0.72rem;
+  letter-spacing: 0;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
 }
 
 .demo-guided-tour {

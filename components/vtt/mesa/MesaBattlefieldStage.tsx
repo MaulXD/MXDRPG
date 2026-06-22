@@ -38,6 +38,7 @@ export type MesaBattlefieldStageProps = {
   canEndTurn: boolean;
   inviteCode?: string | null;
   session: SessionUser | null;
+  watchOnly?: boolean;
   ownerDisplayNames?: Map<string, string>;
   canControlToken: (token: import("@/lib/vtt/types").BattleToken) => boolean;
   canViewTokenPa: (token: import("@/lib/vtt/types").BattleToken) => boolean;
@@ -117,6 +118,7 @@ function MesaBattlefieldStageInner(props: MesaBattlefieldStageProps) {
       onOpenDungeonPanel={props.onOpenDungeonPanel}
       showSpawnInSidebar={false}
       foundryLayout
+      watchOnly={props.watchOnly}
       gmWindowLayout={props.gmWindowLayout}
       onGmWindowLayoutChange={props.onGmWindowLayoutChange}
       onGmWindowClose={props.onGmWindowClose}

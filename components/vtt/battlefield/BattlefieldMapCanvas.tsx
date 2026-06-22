@@ -7,6 +7,8 @@ import type { WhiteboardTool } from "@/lib/vtt/map-markup";
 import { MapToolbar } from "@/components/vtt/MapToolbar";
 import { MapMarkupTextEditor } from "@/components/vtt/MapMarkupTextEditor";
 import { VttHelpButton } from "@/components/vtt/VttHelpButton";
+import { VttMapGuideCluster } from "@/components/vtt/VttMapGuideCluster";
+import type { SessionUser } from "@/lib/auth/types";
 
 type BattlefieldViewHandle = {
   view: { scale: number; panX: number; panY: number };
@@ -63,6 +65,12 @@ export type BattlefieldMapCanvasProps = {
   onMarkupTextCommit: (text: string) => void;
   onMarkupDraftCancel: () => void;
   children?: ReactNode;
+  mapGuide?: {
+    roomId: string;
+    session: SessionUser | null;
+    isRoomGm: boolean;
+    watchOnly?: boolean;
+  };
 };
 
 /** Toolbar + canvas 2D — camada de desenho do tabuleiro. */
@@ -99,6 +107,7 @@ export function BattlefieldMapCanvas({
   onMarkupTextCommit,
   onMarkupDraftCancel,
   children,
+  mapGuide,
 }: BattlefieldMapCanvasProps) {
   return (
     <div
@@ -108,7 +117,16 @@ export function BattlefieldMapCanvas({
       onContextMenuCapture={(e) => e.preventDefault()}
       {...spawnDropHandlers}
     >
-      <VttHelpButton />
+      {mapGuide ? (
+        <VttMapGuideCluster
+          roomId={mapGuide.roomId}
+          session={mapGuide.session}
+          isRoomGm={mapGuide.isRoomGm}
+          watchOnly={mapGuide.watchOnly}
+        />
+      ) : (
+        <VttHelpButton />
+      )}
       <MapToolbar
         mapToolMode={mapToolMode}
         onMapToolModeChange={onMapToolModeChange}

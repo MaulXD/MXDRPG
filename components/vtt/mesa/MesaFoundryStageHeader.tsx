@@ -10,8 +10,6 @@ import { GmPlayerViewToggle } from "@/components/vtt/GmPlayerViewToggle";
 import { MesaEditRequestsBell } from "@/components/vtt/MesaEditRequestsBell";
 import { MesaPlayerEditRequestsBell } from "@/components/vtt/MesaPlayerEditRequestsBell";
 import { MesaPlayerInventoryRequestsBell } from "@/components/vtt/MesaPlayerInventoryRequestsBell";
-import { DemoGuidedTour } from "@/components/vtt/DemoGuidedTour";
-import { MesaGuidedTour } from "@/components/vtt/MesaGuidedTour";
 import { MesaOnlineMenu } from "@/components/vtt/MesaOnlineMenu";
 import type { RoomPresenceMember } from "@/hooks/useRoomPresence";
 
@@ -24,7 +22,6 @@ type Props = {
   syncError: string | null;
   isActualGm: boolean;
   playAsPlayer: boolean;
-  watchOnly: boolean;
   session: SessionUser | null;
   presenceOnline: RoomPresenceMember[];
   presenceLoading: boolean;
@@ -42,7 +39,6 @@ export function MesaFoundryStageHeader({
   syncError,
   isActualGm,
   playAsPlayer,
-  watchOnly,
   session,
   presenceOnline,
   presenceLoading,
@@ -70,13 +66,6 @@ export function MesaFoundryStageHeader({
         {isActualGm ? <MesaEditRequestsBell adventureId={adventureId} roomId={roomId} /> : null}
         {session ? <MesaPlayerEditRequestsBell adventureId={adventureId} /> : null}
         {session ? <MesaPlayerInventoryRequestsBell adventureId={adventureId} /> : null}
-        <DemoGuidedTour roomId={roomId} session={session} isRoomGm={isActualGm} />
-        <MesaGuidedTour
-          roomId={roomId}
-          session={session}
-          isRoomGm={isActualGm}
-          watchOnly={watchOnly}
-        />
         <MesaOnlineMenu
           online={presenceOnline}
           loading={presenceLoading}

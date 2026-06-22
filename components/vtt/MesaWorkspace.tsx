@@ -606,7 +606,6 @@ function MesaWorkspaceInner({
               syncError={syncError}
               isActualGm={isActualGm}
               playAsPlayer={playAsPlayer}
-              watchOnly={watchOnly}
               session={session}
               presenceOnline={presenceOnline}
               presenceLoading={presenceLoading}
@@ -629,6 +628,7 @@ function MesaWorkspaceInner({
               canEndTurn={canEndTurn}
               inviteCode={inviteCode}
               session={session}
+              watchOnly={watchOnly}
               ownerDisplayNames={ownerDisplayNames}
               canControlToken={canControlToken}
               canViewTokenPa={canViewTokenPaCb}

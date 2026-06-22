@@ -189,6 +189,7 @@ type Props = {
   onLeftPanelChange?: (patch: Partial<MesaPanelLayout>) => void;
   /** Mapa em tela cheia; tokens em janela flutuante (Foundry). */
   foundryLayout?: boolean;
+  watchOnly?: boolean;
   gmWindowLayout?: FoundryWindowLayout;
   onGmWindowLayoutChange?: (patch: Partial<FoundryWindowLayout>) => void;
   onGmWindowClose?: () => void;
@@ -253,6 +254,7 @@ export function Battlefield({
   leftPanel,
   onLeftPanelChange,
   foundryLayout = false,
+  watchOnly = false,
   gmWindowLayout,
   onGmWindowLayoutChange,
   onGmWindowClose,
@@ -2742,6 +2744,16 @@ export function Battlefield({
           setMarkupTextDraft(null);
         }}
         onMarkupDraftCancel={() => setMarkupTextDraft(null)}
+        mapGuide={
+          foundryLayout
+            ? {
+                roomId,
+                session,
+                isRoomGm,
+                watchOnly,
+              }
+            : undefined
+        }
       >
         {actionRingAt && selected && canOpenActionRing(selected) ? (
           <TokenActionRing
