@@ -15,7 +15,7 @@ import type { CombatActionRequest } from "@/lib/combat/types";
 import type { Axial } from "@/lib/vtt/grid-math";
 import { patchTokenVitals } from "@/lib/vtt/token-hp-display";
 import type { ChatMessage } from "../chat";
-import { activeTokenId } from "../combat";
+import { combatTurnOptionsFromRoom } from "../combat-turn-context";
 import { maybeRecordCombatUndo } from "../combat-undo";
 import { getRoom, persistRoom, toSnapshot } from "../internal/registry";
 import { syncCombatOrderWithTokens } from "../combat-order";
@@ -67,13 +67,7 @@ export async function executeRoomAreaSpell(
     if (!lim.ok) return { ok: false, error: lim.reason };
   }
 
-  const turn = {
-    activeTokenId: activeTokenId(room.combat),
-    bypassTurn: opts.bypassTurn,
-    combatRound: room.combat.round,
-    combatHasOrder: Boolean(room.combat?.order?.length),
-    combatActive: room.settings.combatActive,
-  };
+  const turn = combatTurnOptionsFromRoom(room, { bypassTurn: opts.bypassTurn });
 
   const actorRacas: Record<string, string | undefined> = {};
   for (const [actorId, sheet] of Object.entries(room.actors)) {

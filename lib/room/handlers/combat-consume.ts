@@ -6,7 +6,7 @@ import {
 } from "@/lib/combat/consumables";
 import { prepareCombatToken, syncActorPaFromToken } from "@/lib/combat/combat-token-pa";
 import { spendPaForRoomAction } from "@/lib/combat/pa-spend-room";
-import { activeTokenId } from "../combat";
+import { effectiveCombatActiveTokenId } from "../combat-turn-context";
 import { appendRoomChatMessage } from "./chat";
 import { getRoom, persistRoom, toSnapshot } from "../internal/registry";
 import type { RoomSnapshot, RoomState } from "../types";
@@ -41,10 +41,11 @@ export async function executeRoomConsume(
   const item = consumables.find((c) => c.instanceId === instanceId);
   if (!item) return { ok: false, error: "Poção não disponível no inventário" };
 
+  const activeId = effectiveCombatActiveTokenId(room.combat, room.scene.tokens);
   const turnCheck = canUseConsumable(
     token,
     room.combat,
-    activeTokenId(room.combat),
+    activeId,
     opts.bypassTurn,
     room.settings.combatActive
   );
@@ -54,14 +55,14 @@ export async function executeRoomConsume(
   const turnRecheck = canUseConsumable(
     token,
     room.combat,
-    activeTokenId(room.combat),
+    activeId,
     opts.bypassTurn,
     room.settings.combatActive
   );
   if (!turnRecheck.ok) return { ok: false, error: turnRecheck.reason };
 
   const combat = room.combat;
-  const activeIdx = combat?.order?.findIndex((id) => id === activeTokenId(combat)) ?? 0;
+  const activeIdx = combat?.order?.findIndex((id) => id === activeId) ?? 0;
   const tickCtx = {
     round: combat?.round ?? 1,
     activeIndex: activeIdx >= 0 ? activeIdx : 0,

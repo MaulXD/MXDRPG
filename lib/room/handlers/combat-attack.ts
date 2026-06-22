@@ -18,7 +18,7 @@ import { checkEstribilhoLimit, recordEstribilhoCast } from "@/lib/combat/estribi
 import { markActionRechargeUsed } from "@/lib/combat/recharge";
 import type { CombatActionRequest } from "@/lib/combat/types";
 import type { ChatMessage } from "../chat";
-import { activeTokenId } from "../combat";
+import { combatTurnOptionsFromRoom } from "../combat-turn-context";
 import { getRoom, persistRoom, toSnapshot } from "../internal/registry";
 import type { RoomSnapshot, RoomState } from "../types";
 import { syncCombatOrderWithTokens } from "../combat-order";
@@ -121,13 +121,7 @@ export async function executeRoomAttack(
     return { ok: false, error: "Magia de área deve ser conjurada no mapa (centro da área)" };
   }
 
-  const turn = {
-    activeTokenId: activeTokenId(room.combat),
-    bypassTurn: opts.bypassTurn,
-    combatRound: room.combat.round,
-    combatHasOrder: Boolean(room.combat?.order?.length),
-    combatActive: room.settings.combatActive,
-  };
+  const turn = combatTurnOptionsFromRoom(room, { bypassTurn: opts.bypassTurn });
 
   const defenderActor =
     defender.linked && defender.actorId ? room.actors[defender.actorId] ?? null : null;
@@ -436,13 +430,7 @@ async function executeRoomMultiTargetAttack(
     defenders.push(d);
   }
 
-  const turn = {
-    activeTokenId: activeTokenId(room.combat),
-    bypassTurn: opts.bypassTurn,
-    combatRound: room.combat.round,
-    combatHasOrder: Boolean(room.combat?.order?.length),
-    combatActive: room.settings.combatActive,
-  };
+  const turn = combatTurnOptionsFromRoom(room, { bypassTurn: opts.bypassTurn });
 
   const paCheck = canAttackTarget(attacker, defenders[0]!, action, turn, {
     actor,

@@ -21,7 +21,7 @@ import type { CombatActionRequest } from "@/lib/combat/types";
 import type { CharacterSheet } from "@/lib/character/types";
 import type { BattleToken } from "@/lib/vtt/types";
 import type { ChatMessage } from "../chat";
-import { activeTokenId } from "../combat";
+import { combatTurnOptionsFromRoom } from "../combat-turn-context";
 import { maybeRecordCombatUndo } from "../combat-undo";
 import { getRoom, persistRoom, toSnapshot } from "../internal/registry";
 import type { RoomSnapshot, RoomState } from "../types";
@@ -216,13 +216,7 @@ export async function executeRoomAbility(
     return { ok: false, error: "Ação não é habilidade" };
   }
 
-  const turn = {
-    activeTokenId: activeTokenId(room.combat),
-    bypassTurn: opts.bypassTurn,
-    combatRound: room.combat.round,
-    combatHasOrder: Boolean(room.combat?.order?.length),
-    combatActive: room.settings.combatActive,
-  };
+  const turn = combatTurnOptionsFromRoom(room, { bypassTurn: opts.bypassTurn });
 
   if (action.selfTarget) {
     const check = canUseAbility(attacker, action, turn, actor);
