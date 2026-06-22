@@ -26,13 +26,12 @@ http://localhost:3000
 
 **CSS quebrado?** `npm run dev:clean`
 
-### Homolog MXDRPG (MariaDB local via Docker)
+### Homolog MXDRPG (MariaDB local)
 
-Para testar o hub localmente (mesa Eldarin, login) com banco interno — sem Contabo:
+Para testar o hub localmente (mesa Eldarin, login, combate) **com banco interno** — sem Contabo:
 
 ```bash
-npm run homolog:up
-npm run dev:homolog
+npm run local
 ```
 
 Guia: [docs/HOMOLOG.md](docs/HOMOLOG.md)
