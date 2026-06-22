@@ -158,13 +158,15 @@
 .foundry-mesa__stage .vtt-shell--foundry {
   position: absolute;
   inset: 0;
+  z-index: 1;
   display: block;
-  height: auto;
   min-height: 0;
 }
 
 .foundry-mesa__stage .vtt-canvas-wrap {
-  height: 100%;
+  position: absolute;
+  inset: 0;
+  height: auto;
   min-height: 0;
   border-radius: 0;
 }
@@ -2068,7 +2070,9 @@
 }
 
 .mesa-workspace--foundry .vtt-canvas-wrap {
-  height: 100%;
+  position: absolute;
+  inset: 0;
+  height: auto;
   min-height: 0;
   border-radius: 0;
   border: none;
@@ -2077,6 +2081,9 @@
 }
 
 .mesa-workspace--foundry .vtt-shell--foundry {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
   min-height: 0;
 }
 
