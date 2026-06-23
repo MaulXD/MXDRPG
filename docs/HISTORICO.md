@@ -122,7 +122,7 @@ npm run sync:data:check       # após editar livros/
 - `components/vtt/foundry/foundry.css`, `RoomCoverBackdrop.tsx`, `lib/vtt/scene-normalize.ts` — rodada 1 canvas (commit `02afd3e`)
 - `foundry.css`, `lib/vtt/draw-battlefield.ts`, `hooks/vtt/useGridCanvas.ts`, `BattlefieldMapCanvas.tsx`, `Battlefield.tsx` — rodada 2 canvas
 
-**Commits / deploy:** `8cdacd2`, `a179727`, `ae4808e`, `02afd3e` em `main`; rodada 2 neste commit.
+**Commits / deploy:** `8cdacd2`, `a179727`, `ae4808e`, `02afd3e`, `0eed5a5` (rodada 2 canvas) em `main`.
 
 **Como testar:**
 ```bash
