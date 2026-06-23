@@ -60,17 +60,41 @@ export type CanvasLayout = {
   dpr: number;
 };
 
+function measureBattlefieldCanvasSize(
+  canvas: HTMLCanvasElement,
+  wrapEl: HTMLElement | null
+): { w: number; h: number } | null {
+  const candidates: Array<{ w: number; h: number }> = [
+    { w: canvas.clientWidth, h: canvas.clientHeight },
+  ];
+  if (wrapEl) {
+    candidates.push({ w: wrapEl.clientWidth, h: wrapEl.clientHeight });
+    const rect = wrapEl.getBoundingClientRect();
+    candidates.push({ w: rect.width, h: rect.height });
+    const shell = wrapEl.parentElement;
+    if (shell) {
+      candidates.push({ w: shell.clientWidth, h: shell.clientHeight });
+      const stage = shell.parentElement;
+      if (stage) {
+        candidates.push({ w: stage.clientWidth, h: stage.clientHeight });
+      }
+    }
+  }
+  for (const size of candidates) {
+    if (size.w >= 10 && size.h >= 10) {
+      return { w: Math.floor(size.w), h: Math.floor(size.h) };
+    }
+  }
+  return null;
+}
+
 export function prepareBattlefieldCanvas(
   canvas: HTMLCanvasElement,
   wrapEl: HTMLElement | null
 ): CanvasLayout | null {
-  let w = canvas.clientWidth;
-  let h = canvas.clientHeight;
-  if (w < 10 || h < 10) {
-    w = wrapEl?.clientWidth ?? 800;
-    h = wrapEl?.clientHeight ?? 640;
-  }
-  if (w < 10 || h < 10) return null;
+  const measured = measureBattlefieldCanvasSize(canvas, wrapEl);
+  if (!measured) return null;
+  const { w, h } = measured;
 
   const dpr = Math.min(window.devicePixelRatio || 1, 2);
   const bw = Math.floor(w * dpr);

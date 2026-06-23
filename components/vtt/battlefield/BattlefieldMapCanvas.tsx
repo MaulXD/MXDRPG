@@ -65,6 +65,7 @@ export type BattlefieldMapCanvasProps = {
   onMarkupTextCommit: (text: string) => void;
   onMarkupDraftCancel: () => void;
   children?: ReactNode;
+  foundryLayout?: boolean;
   mapGuide?: {
     roomId: string;
     session: SessionUser | null;
@@ -107,12 +108,13 @@ export function BattlefieldMapCanvas({
   onMarkupTextCommit,
   onMarkupDraftCancel,
   children,
+  foundryLayout = false,
   mapGuide,
 }: BattlefieldMapCanvasProps) {
   return (
     <div
       ref={wrapRef}
-      className={`vtt-canvas-wrap${attackTargetCursor ? " vtt-canvas-wrap--attack-target" : ""}${spawnDragActive ? " vtt-canvas-wrap--spawn-drop" : ""}${battlefieldView.isPanning ? " vtt-canvas-wrap--panning" : ""}`}
+      className={`vtt-canvas-wrap${foundryLayout ? " vtt-canvas-wrap--foundry" : ""}${attackTargetCursor ? " vtt-canvas-wrap--attack-target" : ""}${spawnDragActive ? " vtt-canvas-wrap--spawn-drop" : ""}${battlefieldView.isPanning ? " vtt-canvas-wrap--panning" : ""}`}
       onContextMenu={(e) => e.preventDefault()}
       onContextMenuCapture={(e) => e.preventDefault()}
       {...spawnDropHandlers}

@@ -358,11 +358,34 @@ export function useGridCanvas(
   );
 
   useLayoutEffect(() => {
-    draw();
-    const ro = new ResizeObserver(() => drawRef.current());
-    if (wrapRef.current) ro.observe(wrapRef.current);
-    return () => ro.disconnect();
-  }, [draw, wrapRef]);
+    let cancelled = false;
+    let layoutRetries = 0;
+
+    const scheduleLayoutDraw = () => {
+      if (cancelled) return;
+      const ok = drawRef.current();
+      if (!ok && layoutRetries < 90) {
+        layoutRetries += 1;
+        requestAnimationFrame(scheduleLayoutDraw);
+      }
+    };
+
+    scheduleLayoutDraw();
+
+    const ro = new ResizeObserver(() => {
+      layoutRetries = 0;
+      drawRef.current();
+    });
+    const wrap = wrapRef.current;
+    const canvas = canvasRef.current;
+    if (wrap) ro.observe(wrap);
+    if (canvas) ro.observe(canvas);
+
+    return () => {
+      cancelled = true;
+      ro.disconnect();
+    };
+  }, [draw, wrapRef, canvasRef]);
 
   return { draw, redraw: () => drawRef.current() };
 }
