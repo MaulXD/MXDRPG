@@ -2695,6 +2695,7 @@ export function Battlefield({
       <BattlefieldMapCanvas
         wrapRef={wrapRef}
         canvasRef={canvasRef}
+        foundryLayout={foundryLayout}
         attackTargetCursor={Boolean(attackTargetCursor)}
         spawnDragActive={Boolean(spawnDragActive)}
         battlefieldView={battlefieldView}

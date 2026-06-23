@@ -104,6 +104,36 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-06-22 — Homolog local, fix ataque 400 e grid Foundry na mesa-local
+
+**Pedido:** testar MXDRPG localmente — corrigir HTTP 400 em `/combat/attack`, lentidão em produção, e **mesa sem grade/tokens** (só UI Foundry + logo/capa ELDARIN). Após primeiro fix CSS, usuário reportou **“mesma coisa”**.
+
+**Passo a passo:**
+1. **Diagnóstico — ambiente** — MariaDB homolog + seed `mesa-local`; rotas `npm run local` / `dev:homolog`; localhost abre mesa sem convite (`lib/env/homolog.ts`). API `GET /api/room/mesa-local` retorna `gridRadius: 8` e 3 tokens — dados OK no servidor.
+2. **Diagnóstico — 400 ataque** — cliente usava `resolveLivingActiveTokenId`; servidor usava `activeTokenId` bruto → “Aguarde seu turno…”. Preflight `canAttackTarget` no cliente alinhado.
+3. **Diagnóstico — grid invisível** — UI Foundry (toolbar MAPA/LOUSA/ZOOM, turno, HUD) carregava, mas área central vazia. Causa: `.vtt-canvas-wrap` com `height: min(80vh, 760px)` em `globals.css` / `vtt.css` conflitando com layout Foundry (`position: absolute; inset: 0`); canvas com altura efetiva ~0; capa ELDARIN (`RoomCoverBackdrop`) aparecia quando não havia desenho.
+4. **Decisão — rodada 1 (commit `02afd3e`)** — CSS Foundry no stage; default `gridRadius: 8` em `scene-normalize.ts`; capa só com `coverUrl` custom (não fallback ELDARIN).
+5. **Decisão — rodada 2 (pendente local)** — regras CSS com `!important` via `[data-vtt-mesa="foundry"]`; canvas/wrap/shell com `width/height: 100%`; `prepareBattlefieldCanvas` mede wrap + `getBoundingClientRect` + stage pai; `useGridCanvas` re-tenta draw até layout > 10px; classe `vtt-canvas-wrap--foundry`.
+6. **Validação** — `GET /api/room/mesa-local` → `coverUrl: null`, tokens presentes. Testar em **uma** porta (`localhost:3000`), `npm run dev:homolog`, hard refresh Ctrl+Shift+R.
+
+**Arquivos tocados:**
+- `scripts/homolog/*`, `data/homolog/mesa-local.seed.json`, `lib/env/homolog.ts`, `docs/HOMOLOG.md` — ambiente local (commits `a179727`, `ae4808e`)
+- `lib/room/combat-turn-context.ts`, `Battlefield.tsx` — turno + preflight ataque (commit `8cdacd2`)
+- `components/vtt/foundry/foundry.css`, `RoomCoverBackdrop.tsx`, `lib/vtt/scene-normalize.ts` — rodada 1 canvas (commit `02afd3e`)
+- `foundry.css`, `lib/vtt/draw-battlefield.ts`, `hooks/vtt/useGridCanvas.ts`, `BattlefieldMapCanvas.tsx`, `Battlefield.tsx` — rodada 2 canvas
+
+**Commits / deploy:** `8cdacd2`, `a179727`, `ae4808e`, `02afd3e` em `main`; rodada 2 neste commit.
+
+**Como testar:**
+```bash
+npm run local          # ou homolog:up + dev:homolog
+```
+- http://localhost:3000/mesa/mesa-local — login `mestre` / `123`
+- Grade cinza + 3 tokens (2 goblins + minotauro); sem capa ELDARIN se `coverUrl` null
+- F12 → inspecionar `.vtt-canvas` — `clientWidth` / `clientHeight` > 0
+
+---
+
 ### 2026-06-20 — Redesign transição Combate/Aventura: névoa vermelha + brasas / névoa azul suave
 
 **Pedido:** substituir animação de espadas cruzando + bússola por: (1) modo combate = névoa vermelha + "Combate Ativado" centralizado + brasas subindo; (2) modo aventura = névoa azul + "Modo Aventura" fade-in suave → fade-out suave. Sem as animações antigas.
