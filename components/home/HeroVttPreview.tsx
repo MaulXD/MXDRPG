@@ -1,136 +1,151 @@
-// Pré-computado: hexágono flat-top, r=26, h/2=22.5, toolbar=44px, row=45px
-// Centros: col par → y = row*45 + 22.5 + 44; col ímpar → y = row*45 + 45 + 44
-// x = col*39 + 26
+// Grid quadrado tático — cell=30px, step=31px (30 + 1px de gap)
+// 8 colunas × 6 linhas, toolbar de 40px no topo
+// Herói em (col=2, row=3), Monstro em (col=5, row=2)
 
-type HexState = "normal" | "walk" | "run" | "target";
+type CellState = "normal" | "walk" | "run" | "target";
 
-const hexPts = (cx: number, cy: number) =>
-  `${cx + 26},${cy} ${cx + 13},${cy + 22.5} ${cx - 13},${cy + 22.5} ${cx - 26},${cy} ${cx - 13},${cy - 22.5} ${cx + 13},${cy - 22.5}`;
+const CELL = 30;
+const GAP  = 1;
+const STEP = CELL + GAP; // 31
+const OX   = 2;  // offset x da grade
+const OY   = 42; // offset y (abaixo da toolbar)
 
-const hexFill: Record<HexState, string> = {
-  normal: "rgba(0,0,0,0.18)",
-  walk:   "rgba(72,130,95,0.38)",
-  run:    "rgba(180,150,50,0.36)",
-  target: "rgba(200,85,45,0.42)",
+function cx(col: number) { return OX + col * STEP + CELL / 2; }
+function cy(row: number) { return OY + row * STEP + CELL / 2; }
+function rx(col: number) { return OX + col * STEP; }
+function ry(row: number) { return OY + row * STEP; }
+
+const FILL: Record<CellState, string> = {
+  normal: "rgba(255,255,255,0.03)",
+  walk:   "rgba(72,140,100,0.42)",
+  run:    "rgba(185,155,50,0.40)",
+  target: "rgba(205,80,45,0.48)",
 };
-const hexStroke: Record<HexState, string> = {
-  normal: "rgba(255,255,255,0.05)",
-  walk:   "rgba(72,150,100,0.55)",
-  run:    "rgba(200,160,50,0.55)",
-  target: "rgba(210,90,50,0.65)",
+const STROKE: Record<CellState, string> = {
+  normal: "rgba(255,255,255,0.09)",
+  walk:   "rgba(90,170,115,0.75)",
+  run:    "rgba(210,170,55,0.75)",
+  target: "rgba(220,90,50,0.85)",
 };
 
-const grid: Array<{ cx: number; cy: number; state: HexState }> = [
-  // col 0
-  { cx: 26, cy: 66.5,  state: "normal" },
-  { cx: 26, cy: 111.5, state: "normal" },
-  { cx: 26, cy: 156.5, state: "normal" },
-  { cx: 26, cy: 201.5, state: "normal" },
-  // col 1
-  { cx: 65, cy: 89,    state: "normal" },
-  { cx: 65, cy: 134,   state: "walk"   },
-  { cx: 65, cy: 179,   state: "walk"   },
-  { cx: 65, cy: 224,   state: "normal" },
-  // col 2  ← hero em (104, 156.5)
-  { cx: 104, cy: 66.5,  state: "normal" },
-  { cx: 104, cy: 111.5, state: "walk"   },
-  { cx: 104, cy: 156.5, state: "normal" },
-  { cx: 104, cy: 201.5, state: "run"    },
-  // col 3
-  { cx: 143, cy: 89,    state: "normal" },
-  { cx: 143, cy: 134,   state: "walk"   },
-  { cx: 143, cy: 179,   state: "walk"   },
-  { cx: 143, cy: 224,   state: "normal" },
-  // col 4  ← monstro em (182, 111.5)
-  { cx: 182, cy: 66.5,  state: "normal" },
-  { cx: 182, cy: 111.5, state: "target" },
-  { cx: 182, cy: 156.5, state: "run"    },
-  { cx: 182, cy: 201.5, state: "normal" },
-  // col 5
-  { cx: 221, cy: 89,    state: "normal" },
-  { cx: 221, cy: 134,   state: "normal" },
-  { cx: 221, cy: 179,   state: "normal" },
-];
+// 8 colunas × 6 linhas
+const COLS = 8;
+const ROWS = 6;
 
-const HERO  = { cx: 104, cy: 156.5 };
-const ENEMY = { cx: 182, cy: 111.5 };
+// Estados das células (não-normais)
+const STATES: Record<string, CellState> = {
+  "1,2": "walk", "2,2": "walk", "3,2": "walk",
+  "1,3": "walk",               "3,3": "walk",
+  "1,4": "walk", "2,4": "walk", "3,4": "walk",
+  "4,2": "run",  "4,3": "run",  "4,4": "run",
+  "5,2": "target",
+};
+
+const cells = Array.from({ length: COLS * ROWS }, (_, i) => {
+  const col = i % COLS;
+  const row = Math.floor(i / COLS);
+  return { col, row, state: (STATES[`${col},${row}`] ?? "normal") as CellState };
+});
+
+// Herói e monstro
+const HERO  = { cx: cx(2), cy: cy(3) };
+const ENEMY = { cx: cx(5), cy: cy(2) };
+
+// Caminho do herói ao monstro
+const PATH = `${HERO.cx},${HERO.cy} ${cx(3)},${cy(2)} ${cx(4)},${cy(2)} ${ENEMY.cx},${ENEMY.cy}`;
+
+// ViewBox: 2 + 8*31 - 1 + 3 = 252 wide; 42 + 6*31 - 1 + 4 = 231 tall
+const VW = 252;
+const VH = 230;
 
 export function HeroVttPreview() {
   return (
-    <div className="hero-vtt-preview" aria-hidden>
+    <div className="hero-vtt-preview" aria-hidden="true">
       <svg
-        viewBox="0 0 252 258"
+        viewBox={`0 0 ${VW} ${VH}`}
         xmlns="http://www.w3.org/2000/svg"
         className="hero-vtt-preview__svg"
         role="presentation"
       >
         <defs>
-          {/* Glow radial para o token ativo */}
-          <radialGradient id="hvp-glow" cx="50%" cy="50%" r="50%">
-            <stop offset="0%"   stopColor="#6B9E8C" stopOpacity="0.45" />
+          <radialGradient id="hvp-hero-glow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%"   stopColor="#6B9E8C" stopOpacity="0.55" />
             <stop offset="100%" stopColor="#6B9E8C" stopOpacity="0"   />
           </radialGradient>
-          {/* Fundo do campo de batalha */}
           <linearGradient id="hvp-bg" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%"   stopColor="#161512" />
+            <stop offset="0%"   stopColor="#181614" />
             <stop offset="100%" stopColor="#0f0e0c" />
           </linearGradient>
-          {/* Clip para a janela */}
           <clipPath id="hvp-clip">
-            <rect x="0" y="0" width="252" height="258" rx="12" />
+            <rect x="0" y="0" width={VW} height={VH} rx="12" />
           </clipPath>
         </defs>
 
         <g clipPath="url(#hvp-clip)">
-          {/* ── Fundo ── */}
-          <rect x="0" y="0" width="252" height="258" fill="url(#hvp-bg)" />
+          {/* Fundo */}
+          <rect x="0" y="0" width={VW} height={VH} fill="url(#hvp-bg)" />
 
-          {/* ── Topbar UI chrome ── */}
-          <rect x="0" y="0" width="252" height="40" fill="#1e1c18" />
-          <line x1="0" y1="40" x2="252" y2="40" stroke="rgba(107,158,140,0.18)" strokeWidth="1" />
+          {/* ── Toolbar ── */}
+          <rect x="0" y="0" width={VW} height="40" fill="#1d1b17" />
+          <line x1="0" y1="40" x2={VW} y2="40" stroke="rgba(107,158,140,0.22)" strokeWidth="1" />
 
-          {/* Rodada */}
-          <text x="12" y="25" fontFamily="Georgia,serif" fontSize="10" fill="#8a7d68" letterSpacing="0.5">
+          <text x="12" y="15" fontFamily="Georgia,serif" fontSize="8.5" fill="#6e6458" letterSpacing="1">
             RODADA
           </text>
-          <text x="58" y="25" fontFamily="Georgia,serif" fontSize="12" fontWeight="bold" fill="#c4bbaa">
+          <text x="58" y="15" fontFamily="Georgia,serif" fontSize="11" fontWeight="bold" fill="#c4bbaa">
             1
           </text>
 
-          {/* PA dots (4 dots, 3 cheios) */}
+          {/* Iniciativa: dois nomes */}
+          <rect x="12" y="21" width="8" height="8" rx="2" fill="#6B9E8C" opacity="0.85" />
+          <text x="24" y="28.5" fontFamily="Georgia,serif" fontSize="8" fill="#c4bbaa">Aventureiro</text>
+          <rect x="88" y="21" width="8" height="8" rx="2" fill="#c94a4a" opacity="0.7" />
+          <text x="100" y="28.5" fontFamily="Georgia,serif" fontSize="8" fill="#8a7d68">Monstro</text>
+
+          {/* PA dots */}
+          <text x="190" y="15" fontFamily="Georgia,serif" fontSize="8" fill="#6e6458" letterSpacing="0.5">
+            PA
+          </text>
           {[0, 1, 2, 3].map((i) => (
             <circle
               key={i}
-              cx={220 - i * 11}
-              cy={21}
-              r={4}
+              cx={VW - 12 - i * 11}
+              cy={12}
+              r="3.5"
               fill={i < 3 ? "#6B9E8C" : "none"}
               stroke="#6B9E8C"
-              strokeWidth="1.5"
+              strokeWidth="1.25"
+              opacity={i < 3 ? 1 : 0.5}
             />
           ))}
-          <text x={165} y={25} fontFamily="Georgia,serif" fontSize="9" fill="#5a5045" letterSpacing="0.5">
-            PA
+          {/* HP bar herói na toolbar */}
+          <text x="190" y="30" fontFamily="Georgia,serif" fontSize="8" fill="#6e6458" letterSpacing="0.5">
+            HP
           </text>
+          <rect x="207" y="24" width="36" height="5" rx="2" fill="rgba(0,0,0,0.5)" />
+          <rect x="207" y="24" width="28" height="5" rx="2" fill="#4a9e6a" />
 
-          {/* ── Grade de hexágonos ── */}
-          {grid.map(({ cx, cy, state }, i) => (
-            <polygon
-              key={i}
-              points={hexPts(cx, cy)}
-              fill={hexFill[state]}
-              stroke={hexStroke[state]}
-              strokeWidth={state === "normal" ? "0.75" : "1.25"}
+          {/* ── Células da grade ── */}
+          {cells.map(({ col, row, state }) => (
+            <rect
+              key={`${col}-${row}`}
+              x={rx(col)}
+              y={ry(row)}
+              width={CELL}
+              height={CELL}
+              fill={FILL[state]}
+              stroke={STROKE[state]}
+              strokeWidth={state === "normal" ? "0.5" : "1"}
             />
           ))}
 
-          {/* ── Linha de caminho (herói → monstro) ── */}
+          {/* ── Caminho (dashed) ── */}
           <polyline
-            points={`${HERO.cx},${HERO.cy} 143,134 ${ENEMY.cx},${ENEMY.cy}`}
+            points={PATH}
             fill="none"
-            stroke="rgba(107,158,140,0.45)"
+            stroke="rgba(107,158,140,0.55)"
             strokeWidth="1.5"
-            strokeDasharray="5 3"
+            strokeDasharray="4 3"
             strokeLinecap="round"
             strokeLinejoin="round"
           />
@@ -139,79 +154,89 @@ export function HeroVttPreview() {
           <circle
             cx={HERO.cx}
             cy={HERO.cy}
-            r={32}
-            fill="url(#hvp-glow)"
+            r="26"
+            fill="url(#hvp-hero-glow)"
             className="hvp-glow"
           />
 
           {/* ── Token herói ── */}
-          <circle cx={HERO.cx} cy={HERO.cy} r={17} fill="#1a2e28" />
-          <circle
-            cx={HERO.cx}
-            cy={HERO.cy}
-            r={17}
+          <rect
+            x={HERO.cx - 13}
+            y={HERO.cy - 13}
+            width="26"
+            height="26"
+            rx="5"
+            fill="#1a2e28"
+          />
+          <rect
+            x={HERO.cx - 13}
+            y={HERO.cy - 13}
+            width="26"
+            height="26"
+            rx="5"
             fill="none"
             stroke="#6B9E8C"
-            strokeWidth="2.5"
+            strokeWidth="2"
             className="hvp-ring"
           />
           <text
             x={HERO.cx}
-            y={HERO.cy + 4.5}
+            y={HERO.cy + 4}
             textAnchor="middle"
             fontFamily="Georgia,serif"
-            fontSize="13"
+            fontSize="12"
             fontWeight="bold"
             fill="#c4bbaa"
           >
             A
           </text>
 
-          {/* HP bar — herói */}
-          <rect x={HERO.cx - 19} y={HERO.cy + 22} width="38" height="4" rx="2" fill="rgba(0,0,0,0.5)" />
-          <rect x={HERO.cx - 19} y={HERO.cy + 22} width="30" height="4" rx="2" fill="#4a9e6a" />
-
           {/* ── Token monstro ── */}
-          <circle cx={ENEMY.cx} cy={ENEMY.cy} r={17} fill="#2a1414" />
-          <circle
-            cx={ENEMY.cx}
-            cy={ENEMY.cy}
-            r={17}
+          <rect
+            x={ENEMY.cx - 13}
+            y={ENEMY.cy - 13}
+            width="26"
+            height="26"
+            rx="5"
+            fill="#2a1414"
+          />
+          <rect
+            x={ENEMY.cx - 13}
+            y={ENEMY.cy - 13}
+            width="26"
+            height="26"
+            rx="5"
             fill="none"
             stroke="#c94a4a"
-            strokeWidth="2"
+            strokeWidth="1.75"
           />
           <text
             x={ENEMY.cx}
-            y={ENEMY.cy + 4.5}
+            y={ENEMY.cy + 4}
             textAnchor="middle"
             fontFamily="Georgia,serif"
-            fontSize="13"
+            fontSize="12"
             fontWeight="bold"
             fill="#e07070"
           >
             M
           </text>
 
-          {/* HP bar — monstro */}
-          <rect x={ENEMY.cx - 19} y={ENEMY.cy + 22} width="38" height="4" rx="2" fill="rgba(0,0,0,0.5)" />
-          <rect x={ENEMY.cx - 19} y={ENEMY.cy + 22} width="16" height="4" rx="2" fill="#c94a4a" />
+          {/* ── Legenda ── */}
+          <rect x="12" y={VH - 18} width="10" height="10" rx="2" fill={FILL.walk}   stroke={STROKE.walk}   strokeWidth="1" />
+          <text x="26" y={VH - 9}  fontFamily="Georgia,serif" fontSize="8.5" fill="#8a7d68">Caminhada</text>
+          <rect x="88" y={VH - 18} width="10" height="10" rx="2" fill={FILL.run}    stroke={STROKE.run}    strokeWidth="1" />
+          <text x="102" y={VH - 9} fontFamily="Georgia,serif" fontSize="8.5" fill="#8a7d68">Corrida</text>
+          <rect x="152" y={VH - 18} width="10" height="10" rx="2" fill={FILL.target} stroke={STROKE.target} strokeWidth="1" />
+          <text x="166" y={VH - 9} fontFamily="Georgia,serif" fontSize="8.5" fill="#8a7d68">Alvo</text>
 
-          {/* ── Legenda dos caminhos ── */}
-          <circle cx={14} cy={243} r={5} fill="rgba(72,130,95,0.5)" stroke="rgba(72,150,100,0.65)" strokeWidth="1" />
-          <text x={24} y={247} fontFamily="Georgia,serif" fontSize="9" fill="#6e6458">Caminhada</text>
-          <circle cx={88} cy={243} r={5} fill="rgba(180,150,50,0.5)" stroke="rgba(200,160,50,0.65)" strokeWidth="1" />
-          <text x={98} y={247} fontFamily="Georgia,serif" fontSize="9" fill="#6e6458">Corrida</text>
-          <circle cx={148} cy={243} r={5} fill="rgba(200,85,45,0.5)" stroke="rgba(210,90,50,0.75)" strokeWidth="1" />
-          <text x={158} y={247} fontFamily="Georgia,serif" fontSize="9" fill="#6e6458">Ataque</text>
-
-          {/* ── Borda da janela ── */}
+          {/* Borda da janela */}
           <rect
             x="0.5" y="0.5"
-            width="251" height="257"
+            width={VW - 1} height={VH - 1}
             rx="11.5"
             fill="none"
-            stroke="rgba(107,158,140,0.22)"
+            stroke="rgba(107,158,140,0.28)"
             strokeWidth="1"
           />
         </g>
