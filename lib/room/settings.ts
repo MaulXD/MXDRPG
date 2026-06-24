@@ -21,9 +21,9 @@ export type RoomSettings = {
   coverFocus?: import("@/lib/media/portrait-focus").PortraitFocus | null;
 };
 
-export const DEFAULT_AUTO_PASS_DELAY_MS = 280;
-/** Evita auto-passe instantâneo no poll (delay 0 + GET a cada ~280ms). */
-export const MIN_AUTO_PASS_DELAY_MS = 200;
+export const DEFAULT_AUTO_PASS_DELAY_MS = 150;
+/** Evita auto-passe instantâneo no poll (delay 0 + GET a cada ~250ms). */
+export const MIN_AUTO_PASS_DELAY_MS = 100;
 
 export const DEFAULT_ROOM_SETTINGS: RoomSettings = {
   combatActive: false,

@@ -36,12 +36,12 @@ export type CombatDiceTimings = {
 
 /** Timings de combate — tempo para o dado cair e ler o resultado. */
 export const COMBAT_DICE_TIMINGS: CombatDiceTimings = {
-  mark: 40,
-  attackRoll: 950,
-  damageRoll: 750,
-  missHold: 320,
-  afterResolve: 220,
-  evictMs: 650,
+  mark: 20,
+  attackRoll: 200,
+  damageRoll: 200,
+  missHold: 120,
+  afterResolve: 80,
+  evictMs: 240,
 };
 
 export const COMBAT_DICE_TIMINGS_REDUCED: CombatDiceTimings = {
@@ -53,16 +53,16 @@ export const COMBAT_DICE_TIMINGS_REDUCED: CombatDiceTimings = {
   evictMs: 280,
 };
 
-export const DICE_LANDING_MS = 320;
-export const DICE_LANDING_MS_REDUCED = 120;
+export const DICE_LANDING_MS = 100;
+export const DICE_LANDING_MS_REDUCED = 80;
 
 /** Mínimo de “giro” do d20 antes de revelar resultado (ms). */
-export const COMBAT_ATTACK_MIN_SPIN_MS = 820;
-export const COMBAT_ATTACK_MIN_SPIN_MS_REDUCED = 340;
+export const COMBAT_ATTACK_MIN_SPIN_MS = 120;
+export const COMBAT_ATTACK_MIN_SPIN_MS_REDUCED = 80;
 
 /** Tempo físico do dice-box até o dado pousar — alinhado ao painel de combate. */
-export const COMBAT_DICE_SETTLE_MS = 920;
-export const COMBAT_DICE_SETTLE_MS_REDUCED = 500;
+export const COMBAT_DICE_SETTLE_MS = 200;
+export const COMBAT_DICE_SETTLE_MS_REDUCED = 160;
 
 export const DAMAGE_DICE_COLOR = "#e05040";
 export const HEAL_DICE_COLOR = "#46c878";
@@ -366,7 +366,7 @@ export function getDiceBoxRuntimeOptions(reducedMotion = false) {
     restitution: 0,
     linearDamping: 0.55,
     angularDamping: 0.55,
-    settleTimeout: reducedMotion ? 500 : 920,
+    settleTimeout: reducedMotion ? 160 : 200,
     enableShadows: !reducedMotion,
     shadowTransparency: 0.72,
     lightIntensity: 1.05,
@@ -381,7 +381,7 @@ export function getDiceBoxCombatOptions(reducedMotion = false) {
     scale: reducedMotion ? 16 : 20,
     lightIntensity: 1.35,
     shadowTransparency: 0.65,
-    settleTimeout: reducedMotion ? 480 : 900,
+    settleTimeout: reducedMotion ? 160 : 200,
   };
 }
 
