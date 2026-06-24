@@ -104,6 +104,48 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-06-24 — Auditoria de design e correções de UX/acessibilidade
+
+**Pedido:** avaliar o design/UX do site e corrigir todos os problemas encontrados.
+
+**Passo a passo:**
+1. **Auditoria** — exploração completa do projeto + análise de `globals.css`, landing page, mobile responsivo, acessibilidade e design system.
+2. **Relatório** — 17 achados classificados (4 críticos, 7 atenção, 6 melhorias, 6 pontos fortes).
+3. **Correções aplicadas:**
+   - Typo "Combaté" → "Combate" na stats strip da landing
+   - Stats strip reescrita com valores mais claros ("Hex"/"Grid tático", "Zero"/"Instalação necessária", "3"/"Papéis de mesa")
+   - `--text-xs: 0.7rem` → `0.75rem`, `--text-sm: 0.82rem` → `0.875rem`, `--text-base: 0.9rem` → `1rem`
+   - `--text-dim: #5a5045` → `#6e6458` (contraste WCAG AA corrigido)
+   - `btn-ghost`: `font-family` trocado de `--font-body` para `--font-ui` (consistência de botões)
+   - Adicionado `:focus-visible` global; inputs/selects suprimem outline duplo (já têm border+shadow)
+   - Canvas VTT: `min(72vh)` → `min(72dvh)`, `min(80vh)` → `min(80dvh)` — fix barra de endereço mobile
+   - `landing-hero`: `100vh` → `100dvh`
+   - Criado `components/MobileNav.tsx` — hamburger + drawer com todos os links de nav (fecha em rota change e Escape)
+   - `SiteHeaderWrapper.tsx`: integrado `<MobileNav>` — oculta `.site-nav__links` ≤768px, mostra toggle
+   - `app/mesas/page.tsx`: removidos todos os inline styles → classes CSS
+   - `mesas-hub.css`: adicionadas `.mesas-hub-wrap`, `.mesas-hub-header`, `.rpg-hub-demo-banner`
+   - Link demo promovido de texto pequeno para banner com botão visível
+
+4. **Não alterado (intencionalmente):** variáveis `--neon-*` e `--accent-gold` (usadas em centenas de linhas em `vtt.css` e `sheet.css` — renomear exige refatoração dedicada); variáveis VTT no `:root` (mover para `.vtt-chrome` é seguro mas extenso).
+
+**Arquivos tocados:**
+- `app/page.tsx` — stats strip reescrita, typo corrigido
+- `app/globals.css` — font-sizes, --text-dim, btn-ghost font, :focus-visible global, dvh, CSS mobile nav
+- `components/home/home.css` — dvh no landing hero
+- `components/MobileNav.tsx` — novo componente hamburger
+- `components/SiteHeaderWrapper.tsx` — integrado MobileNav
+- `app/mesas/page.tsx` — inline styles removidos, demo banner
+- `components/rpg/mesas-hub.css` — classes novas para wrap, header e demo banner
+
+**Commits / deploy:** pendente local.
+
+**Como testar:**
+- Landing: verificar stats strip e typo corrigido
+- Mobile ≤768px: hamburger aparece, links desktop somem, drawer funciona
+- `npm run build` para verificar tipos
+
+---
+
 ### 2026-06-22 — Homolog local, fix ataque 400 e grid Foundry na mesa-local
 
 **Pedido:** testar MXDRPG localmente — corrigir HTTP 400 em `/combat/attack`, lentidão em produção, e **mesa sem grade/tokens** (só UI Foundry + logo/capa ELDARIN). Após primeiro fix CSS, usuário reportou **“mesma coisa”**.
