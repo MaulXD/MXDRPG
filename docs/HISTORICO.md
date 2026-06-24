@@ -104,6 +104,34 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-06-24 — Performance: redução de delays na mesa VTT
+
+**Pedido:** investigar delay absurdo na mesa e corrigir.
+
+**Passo a passo:**
+1. **Auditoria** — agente varreu `lib/vtt/`, `hooks/vtt/`, `components/vtt/`, `app/api/room/` e `lib/room/`. Mapeou 40+ fontes de delay em 6 categorias (animação, rede, canvas, polling, combate, banco).
+2. **Priorização** — top 5 por impacto percebido: animações dos dados (950ms + 750ms = 1,7s por ataque), SSE polling (400ms de lag de sync), transição combate/aventura (UI bloqueada 2,3s), auto-pass (280ms × N turnos/rodada).
+3. **Decisão** — resultado imediato nos dados (200ms), SSE 250ms, transição 1400ms, auto-pass 150ms. Zero alteração em lógica de combate ou banco.
+4. **Implementação** — 5 arquivos, 15 constantes numéricas.
+5. **Validação** — `npm run build` ✅. Branch `fix/mesa-performance-delays` criada e pushed.
+
+**Arquivos tocados:**
+- `lib/vtt/combat-dice-model.ts` — attackRoll 950→200ms, damageRoll 750→200ms, evictMs 650→240ms, DICE_LANDING_MS 320→100ms, COMBAT_DICE_SETTLE_MS 920→200ms, settleTimeout WebGL 920→200ms
+- `app/api/room/[roomId]/events/route.ts` — POLL_MS 400→250ms
+- `hooks/vtt/useCombatModeTransition.ts` — DURATION_MS 2300→1400ms
+- `components/vtt/combat-mode-transition.css` — --cmt-total 2.3s→1.4s
+- `lib/room/settings.ts` — DEFAULT_AUTO_PASS_DELAY_MS 280→150ms, MIN 200→100ms
+
+**Commits / deploy:** `ed3bc81` em `fix/mesa-performance-delays` — PR pendente (gh CLI sem auth; abrir em https://github.com/MaulXD/MXDRPG/pull/new/fix/mesa-performance-delays).
+
+**Como testar:**
+- `/mesa/demo` → atacar → dado para e mostra resultado em ≤200ms
+- Dois navegadores → ação aparece para o segundo em ≤250ms
+- Ativar combate → névoa some em 1,4s (era 2,3s)
+- PA = 0 → turno passa em ~150ms por token
+
+---
+
 ### 2026-06-24 — Auditoria de design e correções de UX/acessibilidade
 
 **Pedido:** avaliar o design/UX do site e corrigir todos os problemas encontrados.
