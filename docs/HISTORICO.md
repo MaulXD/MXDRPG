@@ -146,6 +146,20 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-06-24 — Redesign visual da landing (revertido)
+
+**Pedido:** melhorar visualmente a landing — menos genérica, mais visual do produto.
+
+**Passo a passo:**
+1. Criado `HeroVttPreview.tsx` — SVG de grid hexagonal → depois corrigido para grid quadrado após confirmação que o VTT não usa mais hexágonos.
+2. Hero reestruturado em duas colunas (texto + preview SVG), feature cards redesenhados com ícone e título lado a lado e bordas de acento por tipo, CTA band com dois botões e glow, stats strip convertida para linha horizontal com separadores.
+3. Resultado rejeitado pelo usuário — visual considerado ruim/carregado.
+4. **Revertido:** `app/page.tsx`, `components/home/home.css` e `HeroVttPreview.tsx` removidos.
+
+**Commits:** `4242457` (redesign), `58eaea4` (fix grid quadrado), revert no commit seguinte.
+
+---
+
 ### 2026-06-22 — Homolog local, fix ataque 400 e grid Foundry na mesa-local
 
 **Pedido:** testar MXDRPG localmente — corrigir HTTP 400 em `/combat/attack`, lentidão em produção, e **mesa sem grade/tokens** (só UI Foundry + logo/capa ELDARIN). Após primeiro fix CSS, usuário reportou **“mesma coisa”**.
