@@ -8,6 +8,7 @@ import { safeMaterializeSessionUser } from "@/lib/auth/session-user";
 import Link from "next/link";
 import { ENTRAR_PATH } from "@/lib/site-paths";
 import { SiteNavLinks } from "@/components/SiteNavLinks";
+import { MobileNav } from "@/components/MobileNav";
 
 export async function SiteHeaderWrapper() {
   const session = await getSession();
@@ -37,6 +38,7 @@ export async function SiteHeaderWrapper() {
               Entrar
             </Link>
           )}
+          <MobileNav isLoggedIn={!!session} />
         </div>
       </nav>
     </header>

@@ -1,5 +1,35 @@
 ﻿/* PÃ¡gina /mesas â€” hub de RPGs com capas */
 
+.mesas-hub-wrap {
+  max-width: 920px;
+  padding-top: 2rem;
+  padding-bottom: 3rem;
+}
+
+.mesas-hub-header {
+  padding-bottom: 1.5rem;
+}
+
+.rpg-hub-demo-banner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1rem;
+  margin-top: 1.35rem;
+  padding: 0.85rem 1rem;
+  background: var(--surface-inset);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+}
+
+.rpg-hub-demo-banner__text {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  flex: 1;
+  min-width: 0;
+}
+
 .rpg-hub-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr));

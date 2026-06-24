@@ -12,7 +12,7 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  min-height: calc(100vh - var(--header-h) - 4rem);
+  min-height: calc(100dvh - var(--header-h) - 4rem);
   padding: 2rem 0 3rem;
 }
 

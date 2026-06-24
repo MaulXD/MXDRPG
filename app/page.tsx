@@ -65,20 +65,20 @@ export default function HomePage() {
       <section className="page-wrap section-tight">
         <div className="glass stats-strip">
           <div>
-            <div className="stat-value">Grid</div>
-            <div className="stat-label">Combate tático</div>
+            <div className="stat-value">Hex</div>
+            <div className="stat-label">Grid tático</div>
           </div>
           <div>
             <div className="stat-value">PA</div>
-            <div className="stat-label">Combaté por turnos</div>
+            <div className="stat-label">Combate por turnos</div>
           </div>
           <div>
             <div className="stat-value">3</div>
-            <div className="stat-label">Papéis de acesso</div>
+            <div className="stat-label">Papéis de mesa</div>
           </div>
           <div>
-            <div className="stat-value">100%</div>
-            <div className="stat-label">Web</div>
+            <div className="stat-value">Zero</div>
+            <div className="stat-label">Instalação necessária</div>
           </div>
         </div>
       </section>

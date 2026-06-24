@@ -91,12 +91,12 @@
   --text:        #c4bbaa;
   --text-strong: #ede6d8;
   --text-muted:  #8a7d68;
-  --text-dim:    #5a5045;
+  --text-dim:    #6e6458;
 
   /* Escala tipográfica */
-  --text-xs:   0.7rem;
-  --text-sm:   0.82rem;
-  --text-base: 0.9rem;
+  --text-xs:   0.75rem;
+  --text-sm:   0.875rem;
+  --text-base: 1rem;
   --text-md:   1rem;
   --text-lg:   1.15rem;
   --text-xl:   1.4rem;
@@ -447,7 +447,7 @@ button.btn {
   color: var(--text-muted);
   text-transform: none;
   letter-spacing: 0.02em;
-  font-family: var(--font-body);
+  font-family: var(--font-ui);
   font-weight: 500;
 }
 
@@ -600,10 +600,16 @@ button.btn {
   color: var(--chrome-nav-link-hover, var(--text-strong));
 }
 
-.nav-link:focus-visible,
-.vtt-nav a:focus-visible {
+:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
+}
+
+/* Inputs e selects: foco já sinalizado via border + box-shadow — sem outline duplo */
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: none;
 }
 
 .nav-cta {
@@ -848,7 +854,7 @@ button.btn {
   grid-template-columns: minmax(240px, 280px) 1fr;
   gap: 1.25rem;
   align-items: stretch;
-  min-height: min(80vh, 760px);
+  min-height: min(80dvh, 760px);
 }
 
 .mesa-stage .vtt-shell {
@@ -1002,8 +1008,8 @@ select optgroup {
 
 .vtt-canvas-wrap {
   position: relative;
-  min-height: min(72vh, 720px);
-  height: min(80vh, 760px);
+  min-height: min(72dvh, 720px);
+  height: min(80dvh, 760px);
   overflow: hidden;
   border-radius: var(--radius-lg);
   padding: 0;
@@ -1286,4 +1292,80 @@ pre {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
+}
+
+/* ── Menu mobile (hamburger + drawer) ── */
+
+.mobile-nav__toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  padding: 0;
+  border: 1px solid var(--glass-border-bright);
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: color 0.2s, background 0.2s;
+}
+
+.mobile-nav__toggle:hover {
+  color: var(--text);
+  background: var(--accent-soft);
+}
+
+.mobile-nav__backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  background: rgba(0, 0, 0, 0.45);
+}
+
+.mobile-nav__drawer {
+  position: fixed;
+  top: calc(var(--header-h) + 1.4rem);
+  left: 0.5rem;
+  right: 0.5rem;
+  z-index: 91;
+  background: var(--chrome-surface);
+  border: 1px solid var(--glass-border-bright);
+  border-radius: var(--radius-lg);
+  padding: 0.75rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.mobile-nav__links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.mobile-nav__links .nav-link {
+  justify-content: flex-start;
+  padding: 0.6rem 0.75rem;
+  font-size: 0.9rem;
+  border-radius: var(--radius);
+  min-height: auto;
+}
+
+.mobile-nav__footer {
+  margin-top: 0.5rem;
+  padding-top: 0.65rem;
+  border-top: 1px solid var(--glass-border);
+}
+
+@media (max-width: 768px) {
+  .site-nav__links {
+    display: none;
+  }
+
+  .mobile-nav__toggle {
+    display: inline-flex;
+  }
 }

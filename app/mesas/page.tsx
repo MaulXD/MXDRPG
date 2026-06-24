@@ -15,8 +15,8 @@ export default async function MesasHubPage() {
   if (!session) redirect(signInPath("/mesas"));
 
   return (
-    <div className="page-wrap" style={{ maxWidth: 920, paddingTop: "2rem", paddingBottom: "3rem" }}>
-      <header className="page-header" style={{ paddingBottom: "1.5rem" }}>
+    <div className="page-wrap mesas-hub-wrap">
+      <header className="page-header mesas-hub-header">
         <p className="eyebrow">MXDRPG · sistemas</p>
         <h1 className="display-lg">Escolha seu RPG</h1>
       </header>
@@ -28,12 +28,14 @@ export default async function MesasHubPage() {
           ))}
         </div>
 
-        <p style={{ marginTop: "1.35rem", fontSize: "0.85rem", color: "var(--text-muted)", marginBottom: 0 }}>
-          <Link href="/mesa/demo" prefetch={false}>
-            Experimentar demo pública do Eldarin
-          </Link>{" "}
-          sem criar mesa.
-        </p>
+        <div className="rpg-hub-demo-banner">
+          <p className="rpg-hub-demo-banner__text">
+            Quer testar antes de criar uma mesa?
+          </p>
+          <Link href="/mesa/demo" prefetch={false} className="btn btn-secondary btn-sm">
+            Abrir demo pública do Eldarin
+          </Link>
+        </div>
       </MedievalFrame>
     </div>
   );
