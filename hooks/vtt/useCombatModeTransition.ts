@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import type { CombatModeTransitionPhase } from "@/components/vtt/CombatModeTransition";
 
 /** Duração total da animação (deve bater com --cmt-total no CSS). */
-export const COMBAT_MODE_TRANSITION_DURATION_MS = 2300;
+export const COMBAT_MODE_TRANSITION_DURATION_MS = 1400;
 
 /** Tempo sem interação na mesa após iniciar a transição. Menor que a duração para liberar a UI mais cedo. */
 export const COMBAT_MODE_TRANSITION_LOCK_MS = 400;

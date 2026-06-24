@@ -1,7 +1,7 @@
 /* Transição Combate ↔ Aventura — Névoa Vermelha + brasas (combate) · Névoa Azul (aventura) */
 
 .cmt-overlay {
-  --cmt-total: 2.3s;
+  --cmt-total: 1.4s;
   position: absolute;
   inset: 0;
   z-index: 1500;
