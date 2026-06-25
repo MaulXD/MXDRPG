@@ -2884,6 +2884,21 @@
   overflow-x: hidden;
 }
 
+.mesa-rail-panel > * {
+  animation: mesa-panel-in 0.18s var(--ease-out);
+}
+
+@keyframes mesa-panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .mesa-compendium-rail {
   flex: 1;
   min-height: 0;
@@ -3903,6 +3918,44 @@
   margin-top: 0.65rem;
   padding-top: 0.65rem;
   border-top: 1px solid var(--glass-border);
+}
+
+/* Spinner de loading para aÃ§Ãµes */
+.vtt-action-panel--busy::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(14, 13, 11, 0.6);
+  z-index: 1;
+  border-radius: 8px;
+  pointer-events: auto;
+}
+
+.vtt-action-panel {
+  position: relative;
+}
+
+.vtt-action-panel--busy::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 24px;
+  height: 24px;
+  margin: -12px 0 0 -12px;
+  border: 2px solid color-mix(in srgb, var(--accent) 30%, transparent);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  z-index: 2;
+  animation: vtt-spin 0.6s linear infinite;
+}
+
+@keyframes vtt-spin {
+  to { transform: rotate(360deg); }
+}
+
+.pointer-events-none {
+  pointer-events: none;
 }
 
 .combat-action-detail {
@@ -5298,7 +5351,7 @@
 }
 
 .combat-dice-result-text--locked::after {
-  content: " · fixo";
+  content: " ï¿½ fixo";
   font-family: var(--font-ui);
   font-size: 0.72em;
   font-weight: 600;
@@ -7752,7 +7805,7 @@
 }
 
 /* ---------------------------------------------------------------
-   D20 CSS 3D — substitui Three.js WebGL no painel de combate
+   D20 CSS 3D ï¿½ substitui Three.js WebGL no painel de combate
    --------------------------------------------------------------- */
 
 .d20-css {
@@ -7895,7 +7948,7 @@
 }
 
 /* ---------------------------------------------------------------
-   Dado de dano — aparece após o D20 resolver o ataque
+   Dado de dano ï¿½ aparece apï¿½s o D20 resolver o ataque
    --------------------------------------------------------------- */
 
 .combat-dmg-die-wrap {
@@ -7917,7 +7970,7 @@
   gap: 0.4rem;
 }
 
-/* canvas WebGL do dado de dano — sombra de profundidade */
+/* canvas WebGL do dado de dano ï¿½ sombra de profundidade */
 .dmg-die-panel canvas {
   filter: drop-shadow(0 6px 18px rgba(0, 0, 0, 0.65));
   border-radius: 4px;
@@ -7934,7 +7987,7 @@
 
 
 /* ---------------------------------------------------------------
-   Animações de projétil — SVG overlay sobre o grid hex
+   Animaï¿½ï¿½es de projï¿½til ï¿½ SVG overlay sobre o grid hex
    --------------------------------------------------------------- */
 
 .proj-anim--entering {
@@ -8066,7 +8119,7 @@
   to   { r: 58px; opacity: 0; }
 }
 
-/* Desabilita animações com prefers-reduced-motion */
+/* Desabilita animaï¿½ï¿½es com prefers-reduced-motion */
 @media (prefers-reduced-motion: reduce) {
   .proj-arrow-path,
   .proj-arrow-head,

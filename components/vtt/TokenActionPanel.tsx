@@ -452,7 +452,7 @@ export function TokenActionPanel({
 
   return (
 
-    <div className="vtt-action-panel">
+    <div className={`vtt-action-panel${busy ? " vtt-action-panel--busy" : ""}`}>
 
       <p className="vtt-eyebrow">Ações</p>
 
