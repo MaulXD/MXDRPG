@@ -22,7 +22,7 @@ import { normalizeRoomSettings } from "../settings";
 import { backfillActorPortraitsFromTokens } from "../portrait-sync";
 import { migrateLegacyDisplayName } from "@/lib/moderation/display-name";
 import { ensureJournalBaseline, recordRevisionEntry } from "../revision-journal";
-import { buildRoomDelta, buildRoomDeltaFromState } from "../room-delta";
+import { buildRoomDelta } from "../room-delta";
 import { createDemoRoom, syncLinkedTokens } from "../sync";
 import type { RoomSnapshot, RoomState } from "../types";
 
@@ -225,12 +225,12 @@ export async function persistRoom(
       state.combat = { ...state.combat, pendingAutoPass: undefined };
     }
   }
+  const beforeSnap = toSnapshot(state);
   const updated = bumpRoom(state);
   const afterSnap = toSnapshot(updated);
-  const delta = buildRoomDeltaFromState(state, updated);
   rooms().set(roomId, updated);
   writeCachedRevision(roomId, updated.revision);
-  recordRevisionEntry(roomId, afterSnap, delta);
+  recordRevisionEntry(roomId, afterSnap, buildRoomDelta(beforeSnap, afterSnap));
   if (shouldPersistToDb(roomId)) {
     try {
       await dbRooms.saveRoom(updated);
