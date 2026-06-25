@@ -1,4 +1,4 @@
-﻿.auth-field {
+.auth-field {
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
@@ -56,7 +56,7 @@
   font-size: 0.72rem;
   font-weight: 600;
   letter-spacing: 0.02em;
-  color: var(--gold, #6B9E8C);
+  color: var(--gold, #8B7BB8);
   background: rgba(0, 0, 0, 0.35);
   cursor: pointer;
 }
@@ -150,7 +150,7 @@
   overflow: visible;
 }
 
-/* ReforÃ§o: esconder login por e-mail no Clerk */
+/* Reforço: esconder login por e-mail no Clerk */
 .clerk-social-only .cl-dividerRow,
 .clerk-social-only .cl-dividerText,
 .clerk-social-only .cl-formFieldRow,

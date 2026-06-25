@@ -1,4 +1,4 @@
-﻿.friends-hub {
+.friends-hub {
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
@@ -220,7 +220,7 @@
   pointer-events: none;
 }
 
-/* Popup compacto (portal em document.body) â€” estilo messenger, nÃ£o painel de pÃ¡gina */
+/* Popup compacto (portal em document.body) — estilo messenger, não painel de página */
 .friends-chat-float {
   position: fixed !important;
   z-index: 10401;
@@ -248,7 +248,7 @@
 }
 
 .friends-chat-float--popup {
-  /* v4 .glass-panel forÃ§a position:relative â€” popup ignora moldura de pÃ¡gina */
+  /* v4 .glass-panel força position:relative — popup ignora moldura de página */
 }
 
 .friends-chat-float__resize {
@@ -279,7 +279,7 @@
 .friends-chat-float__resize:hover::after,
 .friends-chat-float__resize:active::after {
   opacity: 1;
-  border-color: var(--accent, #6B9E8C);
+  border-color: var(--accent, #8B7BB8);
 }
 
 .friends-chat-float__head {
@@ -1064,7 +1064,7 @@
   }
 }
 
-/* Nav â€” Ã­cone Amigos (link compacto, alinhado ao sino) */
+/* Nav — ícone Amigos (link compacto, alinhado ao sino) */
 .friends-nav-icon {
   display: inline-flex;
   flex-shrink: 0;
@@ -1077,7 +1077,7 @@
   border-color: rgba(184, 146, 46, 0.28);
 }
 
-/* Nav â€” botÃ£o Mensagens (Ã­cone compacto, alinhado ao sino) */
+/* Nav — botão Mensagens (ícone compacto, alinhado ao sino) */
 .friends-nav-messages {
   display: inline-flex;
   flex-shrink: 0;
@@ -1119,7 +1119,7 @@
   height: 1.1rem;
   padding: 0 0.25rem;
   border-radius: 999px;
-  background: var(--accent, #6B9E8C);
+  background: var(--accent, #8B7BB8);
   color: #1a1208;
   font-size: 0.65rem;
   font-weight: 700;

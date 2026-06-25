@@ -1,6 +1,6 @@
-﻿/* Eldarin design v4 â€” molduras, HUD, chips, cards (complementa DESIGN-ELDARIN-V4.md) */
+/* Eldarin design v4 — molduras, HUD, chips, cards (complementa DESIGN-ELDARIN-V4.md) */
 
-/* â€”â€” Retratos (viewBox moldura 80Ã—80; inset 7px = 8.75%) â€”â€” */
+/* —— Retratos (viewBox moldura 80×80; inset 7px = 8.75%) —— */
 .portrait {
   --portrait-inset: 8.75%;
   position: relative;
@@ -27,7 +27,7 @@
   );
 }
 
-/* HerÃ³i: recorte alinhado aos cantos em lanÃ§a (sem losangos nos eixos) */
+/* Herói: recorte alinhado aos cantos em lança (sem losangos nos eixos) */
 .portrait:has(.portrait-frame--hero) .portrait-inner {
   clip-path: polygon(
     20% 0%,
@@ -103,18 +103,18 @@
   user-select: none;
 }
 
-/* HUD â€” 1:1 com viewBox 80Ã—80 */
+/* HUD — 1:1 com viewBox 80×80 */
 .portrait--hud {
   width: 80px;
   flex: 0 0 80px;
 }
 
-/* Ficha (pÃ¡gina) */
+/* Ficha (página) */
 .portrait--sheet {
   width: clamp(72px, 14vw, 88px);
 }
 
-/* Ficha (popup na mesa) â€” tamanho fixo evita â€œpuloâ€ ao abrir a janela */
+/* Ficha (popup na mesa) — tamanho fixo evita “pulo” ao abrir a janela */
 .portrait--sheet-popup {
   width: var(--sheet-popup-portrait-size, 132px);
   height: var(--sheet-popup-portrait-size, 132px);
@@ -123,7 +123,7 @@
   aspect-ratio: 1;
 }
 
-/* â€”â€” HUD wrapper â€”â€” */
+/* —— HUD wrapper —— */
 .vtt-hud-wrapper {
   position: absolute;
   left: 50%;
@@ -151,7 +151,7 @@
   flex-wrap: wrap;
 }
 
-/* â€”â€” Combat HUD v4 â€”â€” */
+/* —— Combat HUD v4 —— */
 .vtt-hud-wrapper .vtt-combat-hud {
   position: relative;
   background: var(--surface);
@@ -177,7 +177,7 @@
   border-color: var(--accent-warn);
 }
 
-/* Camada de cantos â€” fora do flex para nÃ£o deslocar ornamentos */
+/* Camada de cantos — fora do flex para não deslocar ornamentos */
 .vtt-hud-wrapper .vtt-combat-hud > .hud-corners-layer {
   position: absolute;
   inset: 0;
@@ -455,7 +455,7 @@
   text-align: center;
 }
 
-/* â€”â€” Chips de condiÃ§Ã£o v4 â€”â€” */
+/* —— Chips de condição v4 —— */
 .condition-chip {
   position: relative;
   display: inline-flex;
@@ -535,16 +535,16 @@
 .condition-chip--warn {
   background: #1a1000;
   border-color: #4a3010;
-  color: #6B9E8C;
+  color: #8B7BB8;
 }
 
 .condition-chip--info {
   background: #0a1020;
   border-color: #1a3050;
-  color: #6B9E8C;
+  color: #8B7BB8;
 }
 
-/* â€”â€” Cards ornamentais â€”â€” */
+/* —— Cards ornamentais —— */
 .ornament-card {
   position: relative;
   background: var(--surface);
@@ -645,7 +645,7 @@
   font-size: 11px;
 }
 
-/* â€”â€” Site v4: quinas em L em .glass / .glass-panel â€”â€” */
+/* —— Site v4: quinas em L em .glass / .glass-panel —— */
 .glass,
 .glass-panel {
   position: relative;
@@ -664,7 +664,7 @@
   background-repeat: no-repeat;
 }
 
-/* NÃ£o duplicar quinas quando jÃ¡ hÃ¡ OrnamentCard */
+/* Não duplicar quinas quando já há OrnamentCard */
 .ornament-card.glass,
 .ornament-card.glass-panel,
 .ornament-card {
