@@ -232,7 +232,11 @@ export async function persistRoom(
   writeCachedRevision(roomId, updated.revision);
   recordRevisionEntry(roomId, afterSnap, buildRoomDelta(beforeSnap, afterSnap));
   if (shouldPersistToDb(roomId)) {
-    await dbRooms.saveRoom(updated);
+    try {
+      await dbRooms.saveRoom(updated);
+    } catch (e) {
+      console.error("[persistRoom] falha ao salvar no DB (estado em memória preservado):", roomId, e);
+    }
   }
   return updated;
 }
