@@ -1,4 +1,4 @@
-﻿/* Ficha popup â€” layout estilo fantasia clÃ¡ssica Beyond (tema Eldarin) */
+/* Ficha popup — layout estilo fantasia clássica Beyond (tema Eldarin) */
 
 .page-wrap--sheet-ddb {
   width: 100%;
@@ -49,15 +49,15 @@
   --ddb-panel-border: #d8cfc0;
   --ddb-ink: #1e1814;
   --ddb-muted: #6a5c4e;
-  --ddb-prof: #6B9E8C;
+  --ddb-prof: #8B7BB8;
   --ddb-hp: #3a9d55;
   --ddb-pa: #a83232;
   --ddb-xp: #8b2830;
   --ddb-xp-bright: #d4535c;
-  --ddb-gold: #6B9E8C;
+  --ddb-gold: #8B7BB8;
   --ddb-level-ready: #4a6b18;
   --ddb-level-ready-bright: #6fa318;
-  /* BotÃµes globais usam var(--text) e var(--surface); na mesa o chrome Ã© escuro */
+  /* Botões globais usam var(--text) e var(--surface); na mesa o chrome é escuro */
   --text: var(--ddb-ink);
   --text-muted: var(--ddb-muted);
   --surface: #ebe4d8;
@@ -416,7 +416,7 @@
   visibility: visible;
 }
 
-/* Portal DDB â€” tema escuro da ficha popup */
+/* Portal DDB — tema escuro da ficha popup */
 .sheet-hover-tip__bubble--portal.sheet-hover-tip__bubble--ddb {
   min-width: 12.5rem;
   max-width: min(18.5rem, calc(100vw - 16px));
@@ -705,7 +705,7 @@
 
 .sheet-ddb-body {
   display: grid;
-  /* Esquerda fixa (alinha com retrato do hero) Â· perÃ­cias Â· direita */
+  /* Esquerda fixa (alinha com retrato do hero) · perícias · direita */
   grid-template-columns: 108px minmax(0, 12rem) minmax(9.5rem, 1fr);
   gap: 0.45rem;
   padding: 0.45rem 0.5rem;
@@ -941,7 +941,7 @@
 }
 
 .sheet-ddb-shield-ac__rim {
-  stroke: #6B9E8C;
+  stroke: #8B7BB8;
   stroke-width: 1.6;
 }
 
@@ -1183,7 +1183,7 @@
   min-width: 0;
 }
 
-/* ReligiÃ£o costuma ser longa â€” ocupa a linha inteira */
+/* Religião costuma ser longa — ocupa a linha inteira */
 .sheet-ddb-trait-tip:last-child,
 .sheet-ddb-trait:last-child {
   grid-column: 1 / -1;
@@ -1297,7 +1297,7 @@
   z-index: 1;
 }
 
-/* Editor de retrato â€” modal centralizado (nÃ£o sobrepÃµe a ficha) */
+/* Editor de retrato — modal centralizado (não sobrepõe a ficha) */
 .sheet-ddb-portrait-modal-backdrop {
   position: fixed;
   inset: 0;
@@ -1309,20 +1309,20 @@
   background: rgba(12, 8, 10, 0.62);
   backdrop-filter: blur(4px);
   pointer-events: auto;
-  /* Portal em document.body â€” variÃ¡veis nÃ£o herdam de .sheet-shell--ddb */
+  /* Portal em document.body — variáveis não herdam de .sheet-shell--ddb */
   --ddb-header: #4a1520;
   --ddb-header-deep: #2d0c12;
   --ddb-panel: #faf7f0;
   --ddb-panel-border: #d8cfc0;
   --ddb-ink: #1e1814;
   --ddb-muted: #6a5c4e;
-  --ddb-prof: #6B9E8C;
+  --ddb-prof: #8B7BB8;
   --ddb-hp: #3a9d55;
   --ddb-pa: #a83232;
-  --ddb-gold: #6B9E8C;
+  --ddb-gold: #8B7BB8;
   --text-dim: #6a5c4e;
   --text-muted: #6a5c4e;
-  --accent: #6B9E8C;
+  --accent: #8B7BB8;
 }
 
 .sheet-ddb-portrait-modal {
@@ -1344,13 +1344,13 @@
   --ddb-panel-border: #d8cfc0;
   --ddb-ink: #1e1814;
   --ddb-muted: #6a5c4e;
-  --ddb-gold: #6B9E8C;
+  --ddb-gold: #8B7BB8;
   --text-dim: var(--ddb-muted);
   --text-muted: var(--ddb-muted);
   --accent: var(--ddb-gold);
 }
 
-/* Legado: se ambas as classes coexistirem, nÃ£o empurra o painel para fora do viewport */
+/* Legado: se ambas as classes coexistirem, não empurra o painel para fora do viewport */
 .sheet-ddb-portrait-modal.sheet-popup-portrait-editor {
   position: relative;
   left: auto;
@@ -1752,7 +1752,7 @@
   font-size: 0.75rem;
 }
 
-/* Uma rolagem sÃ³ â€” na janela Foundry / painel; sem scroll interno nas abas */
+/* Uma rolagem só — na janela Foundry / painel; sem scroll interno nas abas */
 .sheet-shell--ddb .sheet-bestiary,
 .sheet-shell--ddb .sheet-future-levels__list,
 .sheet-shell--ddb .personal-bestiary,
@@ -1947,7 +1947,7 @@
   border-color: transparent;
 }
 
-/* â”€â”€ Level-up wizard â€” mesmo esquema da ficha DDB â”€â”€ */
+/* ── Level-up wizard — mesmo esquema da ficha DDB ── */
 
 .lu-overlay--ddb {
   --ddb-header: #4a1520;
@@ -1956,7 +1956,7 @@
   --ddb-panel-border: #d8cfc0;
   --ddb-ink: #1e1814;
   --ddb-muted: #6a5c4e;
-  --ddb-gold: #6B9E8C;
+  --ddb-gold: #8B7BB8;
   --ddb-level-ready: #4a6b18;
   --ddb-level-ready-bright: #6fa318;
   background: rgba(16, 14, 11, 0.28);

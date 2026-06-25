@@ -1,4 +1,4 @@
-﻿.sheet-shell {
+.sheet-shell {
   display: grid;
   grid-template-columns: minmax(0, 280px) minmax(0, 1fr);
   grid-template-areas:
@@ -31,7 +31,7 @@
   }
 }
 
-/* CabeÃ§alho v4 â€” OrnamentCard + retrato com moldura gÃ³tica */
+/* Cabeçalho v4 — OrnamentCard + retrato com moldura gótica */
 .sheet-header {
   grid-area: header;
   display: flex;
@@ -140,7 +140,7 @@
   color: var(--accent-success);
 }
 
-/* CÃ©lula de atributo â€” opÃ§Ã£o C (valor base + pill de modificador) */
+/* Célula de atributo — opção C (valor base + pill de modificador) */
 .sheet-attr-cell {
   display: flex;
   flex-direction: column;
@@ -344,7 +344,7 @@
   grid-row: 1 / 3;
   align-self: center;
   flex-shrink: 0;
-  color: var(--accent, #6B9E8C);
+  color: var(--accent, #8B7BB8);
   opacity: 0.9;
 }
 
@@ -1258,7 +1258,7 @@
   color: var(--text-muted);
 }
 
-/* â€”â€” NÃ­veis futuros (colapsÃ¡vel) â€”â€” */
+/* —— Níveis futuros (colapsável) —— */
 .sheet-future-levels {
   margin: 0.85rem 0;
   border-radius: 12px;
@@ -1612,7 +1612,7 @@
 
 .sheet-inventory-pending__icon {
   flex-shrink: 0;
-  color: #6B9E8C;
+  color: #8B7BB8;
 }
 
 .sheet-inventory-pending__list {
@@ -1729,7 +1729,7 @@
   color: var(--text);
 }
 
-/* BestiÃ¡rio pessoal (aba da ficha) */
+/* Bestiário pessoal (aba da ficha) */
 .sheet-bestiary {
   display: flex;
   flex-direction: column;

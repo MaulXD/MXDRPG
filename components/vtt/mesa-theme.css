@@ -1,20 +1,20 @@
-﻿/**
- * Tema mesa Eldarin v5 â€” chrome escuro + stage (Foundry).
+/**
+ * Tema mesa Eldarin v5 — chrome escuro + stage (Foundry).
  * docs/DESIGN-ELDARIN-V5-CORES.md
- * Aplicado em `.vtt-chrome[data-vtt-mesa="foundry"]` (pÃ¡gina /mesa/[id]).
+ * Aplicado em `.vtt-chrome[data-vtt-mesa="foundry"]` (página /mesa/[id]).
  */
 
 .vtt-chrome[data-vtt-mesa="foundry"] {
   color-scheme: dark;
 
-  /* stage â€” canvas */
+  /* stage — canvas */
   --stage-bg: #0e0e0c;
   --stage-grid: #1c1c18;
   --stage-fog: rgba(10, 10, 8, 0.85);
-  --stage-token-ring: #6B9E8C;
+  --stage-token-ring: #8B7BB8;
   --stage-ruler: #c8bfa8;
 
-  /* Chrome v5 â€” aliases legados na mesa */
+  /* Chrome v5 — aliases legados na mesa */
   --bg-deep: var(--chrome-bg);
   --bg-mid: var(--chrome-surface);
   --bg-elevated: var(--chrome-header);
@@ -54,7 +54,7 @@
   --mesa-text: var(--chrome-text);
   --mesa-text-dim: var(--chrome-text-muted);
 
-  /* Mapa cÃ©lula (lidos por readThemeColor no canvas) */
+  /* Mapa célula (lidos por readThemeColor no canvas) */
   --vtt-canvas-bg-0: #7a7a78;
   --vtt-canvas-bg-1: #7a7a78;
   --vtt-cell-fill: transparent;
@@ -78,7 +78,7 @@
   --vtt-grid-area-center-fill: rgba(160, 100, 220, 0.45);
   --vtt-grid-area-center-stroke: rgba(0, 0, 0, 0.75);
 
-  /* Grid sobre mapa escuro â€” linhas pretas finas */
+  /* Grid sobre mapa escuro — linhas pretas finas */
   --vtt-cell-on-dark-fill: transparent;
   --vtt-cell-on-dark-stroke: rgba(0, 0, 0, 0.55);
   --vtt-cell-on-dark-walk-fill: rgba(130, 210, 150, 0.55);
@@ -104,7 +104,7 @@
   --vtt-cell-on-dark-path-stroke: rgba(255, 220, 120, 0.95);
   --vtt-cell-on-dark-path-glow: rgba(255, 200, 80, 0.38);
 
-  /* Grid sobre mapa claro â€” linhas pretas */
+  /* Grid sobre mapa claro — linhas pretas */
   --vtt-cell-on-light-fill: transparent;
   --vtt-cell-on-light-stroke: rgba(0, 0, 0, 0.5);
   --vtt-cell-on-light-walk-fill: rgba(30, 110, 70, 0.52);
@@ -130,7 +130,7 @@
   --vtt-cell-on-light-path-stroke: rgba(160, 110, 20, 0.95);
   --vtt-cell-on-light-path-glow: rgba(184, 146, 46, 0.32);
 
-  /* Mapas com fundo verde â€” grafite escuro para nÃ£o sumir no terreno */
+  /* Mapas com fundo verde — grafite escuro para não sumir no terreno */
   --vtt-cell-on-green-fill: transparent;
   --vtt-cell-on-green-stroke: rgba(0, 0, 0, 0.52);
   --vtt-cell-on-green-walk-fill: rgba(255, 252, 235, 0.72);
@@ -208,7 +208,7 @@
   border-color: var(--mesa-accent-border);
 }
 
-/* PainÃ©is VTT â€” substitui dourado hardcoded por azul */
+/* Painéis VTT — substitui dourado hardcoded por azul */
 .vtt-chrome[data-vtt-mesa="foundry"] .vtt-sidebar,
 .vtt-chrome[data-vtt-mesa="foundry"] .vtt-action-panel,
 .vtt-chrome[data-vtt-mesa="foundry"] .vtt-dungeon-panel,
@@ -440,7 +440,7 @@
   background: var(--mesa-accent-soft);
 }
 
-/* Editor de mapa â€” painel no dock/janela */
+/* Editor de mapa — painel no dock/janela */
 .vtt-chrome[data-vtt-mesa="foundry"] .vtt-dungeon-layer-tab--on,
 .vtt-chrome[data-vtt-mesa="foundry"] .vtt-dungeon-tool--on {
   border-color: var(--mesa-accent-border);

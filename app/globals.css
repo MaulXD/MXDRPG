@@ -9,9 +9,9 @@
   --chrome-header:         #242220;
   --chrome-border:         rgba(255, 255, 255, 0.06);
   --chrome-border-bright:  rgba(255, 255, 255, 0.12);
-  --chrome-accent:         #6B9E8C;
-  --chrome-accent-hover:   #7db8a4;
-  --chrome-text:           #c4bbaa;
+  --chrome-accent:         #8B7BB8;
+  --chrome-accent-hover:   #9E8CC6;
+  --chrome-text:           #d4ccbe;
   --chrome-text-muted:     #8a7d68;
   --chrome-nav-link:       #8a7d68;
   --chrome-nav-link-hover: #ede6d8;
@@ -24,13 +24,13 @@
   --content-text:          #1e1a14;
   --content-text-muted:    #5a4e38;
   --content-ink:           #3d2e1a;
-  --content-accent:        #6B9E8C;
+  --content-accent:        #8B7BB8;
 
   /* stage — canvas */
   --stage-bg:         #0e0e0c;
   --stage-grid:       #1c1c18;
   --stage-fog:        rgba(10, 10, 8, 0.85);
-  --stage-token-ring: #6B9E8C;
+  --stage-token-ring: #8B7BB8;
   --stage-ruler:      #c4bbaa;
 
   /* semantic — HP, estados, feedback */
@@ -63,15 +63,15 @@
   --glass:               rgba(26, 25, 22, 0.94);
   --glass-strong:        rgba(14, 13, 11, 0.98);
   --glass-border:        rgba(255, 255, 255, 0.07);
-  --glass-border-bright: rgba(107, 158, 140, 0.30);
-  --accent-soft:         rgba(107, 158, 140, 0.12);
+  --glass-border-bright: color-mix(in srgb, var(--chrome-accent) 30%, transparent);
+  --accent-soft:         color-mix(in srgb, var(--chrome-accent) 12%, transparent);
   --blur: 12px;
 
   /* Acento principal: Verdigris (bronze envelhecido) */
-  --accent:           #6B9E8C;
-  --accent-dim:       #4A7A6A;
+  --accent:           #8B7BB8;
+  --accent-dim:       #6B5F96;
   --accent-warn:      #C97A4A;
-  --accent-glow:      rgba(107, 158, 140, 0.18);
+  --accent-glow:      color-mix(in srgb, var(--accent) 18%, transparent);
   --accent-muted:     var(--chrome-text-muted);
   --accent-primary:   var(--chrome-accent);
   --accent-secondary: var(--type-weapon);
@@ -88,7 +88,7 @@
   --neon-amber:   var(--semantic-warn);
   --neon-violet:  var(--semantic-gm);
 
-  --text:        #c4bbaa;
+  --text:        #d4ccbe;
   --text-strong: #ede6d8;
   --text-muted:  #8a7d68;
   --text-dim:    #6e6458;
@@ -106,7 +106,7 @@
 
   /* Cores semânticas */
   --color-hp:      #e05c5c;
-  --color-pa:      #6B9E8C;
+  --color-pa:      #8B7BB8;
   --color-magic:   #9b75d4;
   --color-success: #4a9e6a;
   --color-danger:  #c94a4a;
@@ -163,7 +163,7 @@
   --vtt-grid-area-stroke: rgba(0, 0, 0, 0.65);
   --vtt-grid-area-center-fill: rgba(160, 100, 220, 0.45);
   --vtt-grid-area-center-stroke: rgba(0, 0, 0, 0.75);
-  --vtt-token-turn-glow: rgba(107, 158, 140, 0.5);
+  --vtt-token-turn-glow: color-mix(in srgb, var(--stage-token-ring) 50%, transparent);
   --vtt-cell-run-fill: rgba(220, 170, 40, 0.32);
   --vtt-cell-run-stroke: rgba(0, 0, 0, 0.55);
   --vtt-cell-hover-fill: rgba(0, 0, 0, 0.08);
@@ -192,6 +192,7 @@ body {
   min-height: 100%;
   font-family: var(--font-ui);
   font-size: 16px;
+  font-weight: 500;
   line-height: 1.6;
   color: var(--text);
   background: var(--bg-deep);
@@ -206,7 +207,7 @@ body {
   inset: 0;
   z-index: -2;
   background:
-    radial-gradient(ellipse 80% 50% at 50% 0%, rgba(107, 158, 140, 0.07), transparent 55%),
+    radial-gradient(ellipse 80% 50% at 50% 0%, rgba(139, 123, 184, 0.07), transparent 55%),
     linear-gradient(180deg, var(--bg-mid) 0%, var(--bg-deep) 100%);
 }
 
@@ -387,7 +388,7 @@ a {
   outline: none;
   border-color: var(--chrome-accent);
   background: var(--chrome-field-bg-focus);
-  box-shadow: 0 0 0 2px rgba(107, 158, 140, 0.20);
+  box-shadow: 0 0 0 2px rgba(139, 123, 184, 0.20);
 }
 
 .btn,
@@ -496,7 +497,7 @@ button.btn {
   gap: 1rem;
   background: rgba(17, 17, 16, 0.92);
   backdrop-filter: blur(8px);
-  border-bottom: 1px solid rgba(107, 158, 140, 0.16);
+  border-bottom: 1px solid rgba(139, 123, 184, 0.16);
 }
 
 .site-logo {
@@ -542,7 +543,7 @@ button.btn {
   gap: 0.15rem;
   flex-shrink: 0;
   padding-left: 0.4rem;
-  border-left: 1px solid rgba(107, 158, 140, 0.14);
+  border-left: 1px solid rgba(139, 123, 184, 0.14);
 }
 
 .nav-link {
@@ -926,7 +927,7 @@ select.vtt-input:focus,
 textarea.vtt-input:focus {
   outline: none;
   border-color: var(--accent);
-  box-shadow: 0 0 0 2px rgba(107, 158, 140, 0.20);
+  box-shadow: 0 0 0 2px rgba(139, 123, 184, 0.20);
 }
 
 select.vtt-input {
@@ -963,14 +964,14 @@ select optgroup {
   border: none;
   background: var(--chrome-accent);
   color: var(--chrome-bg);
-  box-shadow: 0 2px 14px rgba(107, 158, 140, 0.24);
+  box-shadow: 0 2px 14px rgba(139, 123, 184, 0.24);
 }
 
 .btn-primary:hover {
   background: var(--chrome-accent-hover);
   border: none;
   color: var(--chrome-bg);
-  box-shadow: 0 4px 18px rgba(107, 158, 140, 0.32);
+  box-shadow: 0 4px 18px rgba(139, 123, 184, 0.32);
 }
 
 .vtt-token-panel {

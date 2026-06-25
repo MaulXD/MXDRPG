@@ -1,4 +1,4 @@
-﻿/* Level-up wizard â€” estilo Foundry (passos + trilha + bÃ´nus) */
+/* Level-up wizard — estilo Foundry (passos + trilha + bônus) */
 
 .lu-trigger-row {
   display: flex;
@@ -84,7 +84,7 @@
   font-family: var(--font-display);
   font-size: 1.35rem;
   font-weight: 400;
-  color: var(--accent, #6B9E8C);
+  color: var(--accent, #8B7BB8);
 }
 
 .lu-header-meta {
@@ -154,7 +154,7 @@
 .lu-aside {
   padding: 1rem;
   border-left: 1px solid var(--glass-border);
-  background: color-mix(in srgb, var(--accent-primary, #6B9E8C) 6%, rgba(0, 0, 0, 0.32));
+  background: color-mix(in srgb, var(--accent-primary, #8B7BB8) 6%, rgba(0, 0, 0, 0.32));
   overflow-y: auto;
   min-height: 0;
 }
@@ -300,7 +300,7 @@
   margin-top: 0.5rem;
 }
 
-/* Escolha rÃ¡pida de talento (acima da Ã¡rvore) */
+/* Escolha rápida de talento (acima da árvore) */
 .lu-talent-picks {
   display: flex;
   flex-wrap: wrap;
@@ -324,11 +324,11 @@
 }
 
 .lu-talent-pick:hover {
-  border-color: var(--accent, #6B9E8C);
+  border-color: var(--accent, #8B7BB8);
 }
 
 .lu-talent-pick--on {
-  border-color: var(--accent, #6B9E8C);
+  border-color: var(--accent, #8B7BB8);
   box-shadow: 0 0 0 2px rgba(201, 169, 98, 0.22);
   background: rgba(201, 169, 98, 0.1);
 }
