@@ -16,17 +16,15 @@ export type CombatUndoEntry = {
   combat: CombatTrack;
 };
 
-const MAX_UNDO_STACK = 24;
+const MAX_UNDO_STACK = 12;
 
-function cloneState<T>(value: T): T {
-  return structuredClone(value);
-}
-
+/** Clone raso proposital — handlers criam novos objetos via spread,
+ *  então o clone preserva as referências antigas sem structuredClone profundo. */
 export function captureCombatUndoState(room: RoomState): Pick<CombatUndoEntry, "scene" | "actors" | "combat"> {
   return {
-    scene: cloneState(room.scene),
-    actors: cloneState(room.actors),
-    combat: cloneState(room.combat),
+    scene: { ...room.scene, tokens: [...room.scene.tokens] },
+    actors: { ...room.actors },
+    combat: { ...room.combat },
   };
 }
 
@@ -89,9 +87,9 @@ export function revertCombatUndo(room: RoomState, undoId: string): CombatUndoEnt
   if (idx < 0) return null;
 
   const entry = stack[idx]!;
-  room.scene = cloneState(entry.scene);
-  room.actors = cloneState(entry.actors);
-  room.combat = cloneState(entry.combat);
+  room.scene = { ...entry.scene, tokens: [...entry.scene.tokens] };
+  room.actors = { ...entry.actors };
+  room.combat = { ...entry.combat };
   room.combatUndo = stack.slice(0, idx);
   return entry;
 }
