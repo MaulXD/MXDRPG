@@ -11,8 +11,6 @@ type Params = { params: Promise<{ roomId: string }> };
 
 const POLL_MS = 500;
 const HEARTBEAT_MS = 15_000;
-/** Intervalo mínimo entre pushes de revisão — agrupa rajadas. */
-const REVISION_PUSH_MIN_MS = 200;
 
 export async function GET(request: Request, { params }: Params) {
   const { roomId } = await params;
@@ -26,7 +24,6 @@ export async function GET(request: Request, { params }: Params) {
   }
 
   let lastSent = since;
-  let lastSentAt = Date.now();
   let lastHeartbeat = Date.now();
   const user = auth.user;
   const presenceLabel = user?.nickname?.trim() || user?.name?.trim() || "Jogador";
@@ -74,10 +71,8 @@ export async function GET(request: Request, { params }: Params) {
             controller.close();
             return;
           }
-          const now = Date.now();
-          if (rev > lastSent && now - lastSentAt >= REVISION_PUSH_MIN_MS) {
+          if (rev > lastSent) {
             lastSent = rev;
-            lastSentAt = now;
             push({ type: "revision", revision: rev });
           }
           if (Date.now() - lastHeartbeat >= HEARTBEAT_MS) {
