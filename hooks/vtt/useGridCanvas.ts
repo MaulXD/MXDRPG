@@ -124,7 +124,6 @@ export function useGridCanvas(
     if (Math.abs(tokenHoverScaleRef.current - hoverTarget) > 0.004) return true;
     return (
       Boolean(s.hoverTokenId) ||
-      Boolean(s.turnActiveId) ||
       s.attackableIds.size > 0 ||
       (s.rangeTargetIds?.size ?? 0) > 0 ||
       Boolean(s.hoverAttackTargetId) ||
@@ -328,7 +327,6 @@ export function useGridCanvas(
     frameAnimRef.current = requestAnimationFrame(loop);
     return stopLoop;
   }, [
-    state.turnActiveId,
     state.hoverAttackTargetId,
     state.hoverTokenId,
     state.turnMovePreview,

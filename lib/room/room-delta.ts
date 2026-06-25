@@ -1,7 +1,7 @@
 import type { BattleToken } from "@/lib/vtt/types";
 import type { ChatMessage } from "@/lib/room/chat";
 import { normalizeRoomSettings } from "@/lib/room/settings";
-import type { RoomSnapshot } from "@/lib/room/types";
+import type { RoomSnapshot, RoomState } from "@/lib/room/types";
 
 export const ROOM_DELTA_KIND = "delta" as const;
 
@@ -53,6 +53,7 @@ export function deltaAffectsBattlefield(delta: RoomDelta): boolean {
 }
 
 function jsonEq(a: unknown, b: unknown): boolean {
+  if (a === b) return true;
   return JSON.stringify(a) === JSON.stringify(b);
 }
 
@@ -163,6 +164,29 @@ export function mergeRoomDelta(base: RoomSnapshot, delta: RoomDelta): RoomSnapsh
   }
 
   return next;
+}
+
+/** buildRoomDelta otimizado para RoomState — evita toSnapshot desnecessário. */
+export function buildRoomDeltaFromState(before: RoomState, after: RoomState): RoomDelta {
+  const tokens = changedTokens(before.scene.tokens, after.scene.tokens);
+  const actors = changedActors(before.actors, after.actors);
+  const chatAppend =
+    after.chat.length > before.chat.length ? after.chat.slice(before.chat.length) : undefined;
+
+  const delta: RoomDelta = {
+    kind: ROOM_DELTA_KIND,
+    roomId: after.roomId,
+    revision: after.revision,
+  };
+
+  if (tokens.length) delta.tokens = tokens;
+  if (actors) delta.actors = actors;
+  if (!jsonEq(before.combat, after.combat)) delta.combat = after.combat;
+  if (!jsonEq(before.settings, after.settings)) delta.settings = after.settings;
+  if (chatAppend?.length) delta.chatAppend = chatAppend;
+  if (!jsonEq(before.pings ?? [], after.pings ?? [])) delta.pings = after.pings;
+
+  return delta;
 }
 
 export function applyRoomApiPayload(
