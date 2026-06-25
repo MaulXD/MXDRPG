@@ -57,9 +57,9 @@ export type RoomSyncBridge = {
 };
 
 const PRESENCE_HEARTBEAT_MS = 15_000;
-/** Agrupa rajadas de revision SSE em um único fetch. */
-const REFRESH_DEBOUNCE_MS = 150;
-const REFRESH_DEBOUNCE_COMBAT_MS = 200;
+/** Agrupa rajadas de revision SSE em um único fetch — SSE já faz NATURAL batch. */
+const REFRESH_DEBOUNCE_MS = 0;
+const REFRESH_DEBOUNCE_COMBAT_MS = 0;
 /** Poll de segurança mesmo com SSE aberto (ms). */
 const SSE_BACKUP_POLL_MS = 10_000;
 const SSE_BACKUP_POLL_COMBAT_MS = 6000;
