@@ -3,14 +3,15 @@ import { requireRoomView } from "@/lib/auth/authorize-room-view";
 import { presenceEventsAfter, touchRoomPresence } from "@/lib/room/presence";
 import { getRoomRevision } from "@/lib/room/revision";
 import { tickRoomAutoPassThrottled } from "@/lib/room/auto-pass-tick";
+import { onRoomUpdated } from "@/lib/room/notifier";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 type Params = { params: Promise<{ roomId: string }> };
 
-const POLL_MS = 250;
 const HEARTBEAT_MS = 15_000;
+const TICK_MS = 5_000;
 
 export async function GET(request: Request, { params }: Params) {
   const { roomId } = await params;
@@ -51,6 +52,17 @@ export async function GET(request: Request, { params }: Params) {
         lastPresenceEventId = lastId;
       };
 
+      const cleanup = () => {
+        clearInterval(tickInterval);
+        clearInterval(heartbeatInterval);
+        unsubNotifier();
+        try {
+          controller.close();
+        } catch {
+          /* already closed */
+        }
+      };
+
       if (tracksPresence && user) {
         void touchRoomPresence(roomId, user.id, presenceLabel).then(() => flushPresence());
       } else {
@@ -59,44 +71,42 @@ export async function GET(request: Request, { params }: Params) {
 
       push({ type: "connected", revision: auth.room.revision });
 
-      const interval = setInterval(async () => {
-        try {
-          flushPresence();
+      // Revision pushed instantly via EventEmitter — no POLL
+      const unsubNotifier = onRoomUpdated(roomId, (revision) => {
+        if (revision > lastSent) {
+          lastSent = revision;
+          push({ type: "revision", revision });
+        }
+      });
 
+      const tickInterval = setInterval(async () => {
+        try {
           await tickRoomAutoPassThrottled(roomId);
           const rev = await getRoomRevision(roomId);
           if (rev == null) {
             push({ type: "gone" });
-            clearInterval(interval);
-            controller.close();
-            return;
-          }
-          if (rev > lastSent) {
-            lastSent = rev;
-            push({ type: "revision", revision: rev });
-          }
-          if (Date.now() - lastHeartbeat >= HEARTBEAT_MS) {
-            lastHeartbeat = Date.now();
-            if (tracksPresence && user) {
-              await touchRoomPresence(roomId, user.id, presenceLabel);
-            }
-            flushPresence();
-            controller.enqueue(encoder.encode(": heartbeat\n\n"));
+            cleanup();
           }
         } catch {
-          clearInterval(interval);
-          controller.close();
+          cleanup();
         }
-      }, POLL_MS);
+      }, TICK_MS);
 
-      request.signal.addEventListener("abort", () => {
-        clearInterval(interval);
+      const heartbeatInterval = setInterval(() => {
         try {
-          controller.close();
+          flushPresence();
+          if (tracksPresence && user) {
+            void touchRoomPresence(roomId, user.id, presenceLabel);
+          }
+          flushPresence();
+          controller.enqueue(encoder.encode(": heartbeat\n\n"));
+          lastHeartbeat = Date.now();
         } catch {
-          /* already closed */
+          cleanup();
         }
-      });
+      }, HEARTBEAT_MS);
+
+      request.signal.addEventListener("abort", cleanup);
     },
   });
 

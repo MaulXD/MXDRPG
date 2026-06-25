@@ -23,6 +23,7 @@ import { backfillActorPortraitsFromTokens } from "../portrait-sync";
 import { migrateLegacyDisplayName } from "@/lib/moderation/display-name";
 import { ensureJournalBaseline, recordRevisionEntry } from "../revision-journal";
 import { buildRoomDelta } from "../room-delta";
+import { notifyRoomUpdated } from "../notifier";
 import { createDemoRoom, syncLinkedTokens } from "../sync";
 import type { RoomSnapshot, RoomState } from "../types";
 
@@ -231,6 +232,7 @@ export async function persistRoom(
   rooms().set(roomId, updated);
   writeCachedRevision(roomId, updated.revision);
   recordRevisionEntry(roomId, afterSnap, buildRoomDelta(beforeSnap, afterSnap));
+  notifyRoomUpdated(roomId, updated.revision);
   if (shouldPersistToDb(roomId)) {
     try {
       await dbRooms.saveRoom(updated);
