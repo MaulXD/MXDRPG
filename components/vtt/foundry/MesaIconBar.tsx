@@ -40,12 +40,12 @@ function IconButton({
       type="button"
       data-rail-icon={icon.icon}
       className={`foundry-icon-bar__btn${active ? " foundry-icon-bar__btn--active" : ""}${gm ? " foundry-icon-bar__btn--gm" : ""}`}
-      onClick={() => onOpenPopup(icon.id)}
+      onClick={() => onOpenDock(icon.id)}
       onContextMenu={(e) => {
         e.preventDefault();
-        onOpenDock(icon.id);
+        onOpenPopup(icon.id);
       }}
-      aria-label={`${icon.label} — clique: janela flutuante · clique direito: barra lateral`}
+      aria-label={`${icon.label} — clique: barra lateral · clique direito: janela flutuante`}
       aria-pressed={active}
     >
       <span className="foundry-icon-bar__icon-wrap" data-rail-icon={icon.icon} aria-hidden>
@@ -55,7 +55,7 @@ function IconButton({
       <span className="foundry-icon-bar__tooltip" role="tooltip">
         <span className="foundry-icon-bar__tooltip-title">{icon.label}</span>
         <span className="foundry-icon-bar__tooltip-hint">
-          Clique: janela · direito: barra
+          Clique: barra · direito: janela
         </span>
       </span>
     </button>
