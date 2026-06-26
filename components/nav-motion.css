@@ -118,7 +118,9 @@
   .vtt-topbar,
   .page-enter,
   .vtt-main.page-enter,
-  .foundry-sidebar--dock-open .foundry-dock-panel {
+  .foundry-sidebar--dock-open .foundry-dock-panel,
+  .site-mode--exiting,
+  .vtt-chrome--entering {
     animation: none;
   }
 
@@ -132,5 +134,37 @@
 
   .nav-link::after {
     transition: none;
+  }
+}
+
+/* Site → VTT fade transition */
+.site-mode--exiting {
+  animation: site-mode-exit 0.35s var(--ease-out) both;
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+}
+
+@keyframes site-mode-exit {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-40px);
+  }
+}
+
+.vtt-chrome--entering {
+  animation: vtt-enter 0.35s var(--ease-out) both;
+}
+
+@keyframes vtt-enter {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
   }
 }
