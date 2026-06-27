@@ -58,7 +58,6 @@ export function useBattlefieldCombatFxQueue({
 
   const seedHistoricalChat = useCallback((messages: ChatMessage[]) => {
     if (combatChatSeededRef.current) return;
-    if (!messages.length) return;
     markHistoricalCombatChat(messages, seenCombatRef.current);
     combatChatSeededRef.current = true;
     joinedAtRef.current = Date.now();
@@ -95,21 +94,25 @@ export function useBattlefieldCombatFxQueue({
   const playCombatFxFromSnap = useCallback(
     (payload: RoomApiPayload) => {
       const snap = resolveRoomPayload(payload);
-      seedHistoricalChat(snap.chat);
-      if (!combatChatSeededRef.current) return;
 
+      // Resolve pending ANTES de semear: seedHistoricalChat marca todas as msgs como vistas
+      // (incluindo a nova msg do ataque), impedindo que findPendingAttackMessage a encontre.
       if (combatFx && isPendingCombatFx(combatFx)) {
         const msg = findPendingAttackMessage(snap.chat, combatFx, seenCombatRef.current);
         if (msg && isLiveCombatFxMessage(msg, joinedAtRef.current)) {
+          seenCombatRef.current.add(msg.id);
+          seedHistoricalChat(snap.chat);
           const resolved = resolvePendingCombatFx(combatFx, msg, snap.scene.tokens);
           if (resolved) {
-            seenCombatRef.current.add(msg.id);
             combatFxIdRef.current = resolved.id;
             setCombatFx(resolved);
             return;
           }
         }
       }
+
+      seedHistoricalChat(snap.chat);
+      if (!combatChatSeededRef.current) return;
       enqueueCombatFxFromChat(snap.chat, snap.scene.tokens);
     },
     [enqueueCombatFxFromChat, combatFx, resolveRoomPayload, seedHistoricalChat]
@@ -118,7 +121,6 @@ export function useBattlefieldCombatFxQueue({
   playCombatFxFromSnapRef.current = playCombatFxFromSnap;
 
   useEffect(() => {
-    if (!chat.length) return;
     enqueueCombatFxFromChat(chat, chatTokens);
   }, [chat, chatTokens, enqueueCombatFxFromChat]);
 
