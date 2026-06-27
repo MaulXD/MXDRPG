@@ -20,11 +20,7 @@ import { getSession } from "@/lib/auth/session";
 import { getAdventure, bindPlayerToAdventure } from "@/lib/adventure/store";
 import { isAdventureClosed } from "@/lib/adventure/access";
 import { shouldAutoJoinRoom } from "@/lib/auth/adventure-room-access";
-import {
-  listCharactersForSessionUserSafe,
-  listCharactersForSessionUserInAdventureSafe,
-  MAX_CHARACTERS_PER_USER,
-} from "@/lib/character/characters";
+import { MAX_CHARACTERS_PER_USER } from "@/lib/character/characters";
 import { MesaClosedGate } from "@/components/vtt/MesaClosedGate";
 import { joinRoomMembers } from "@/lib/room/adventure-room";
 import { joinRoomByInvite } from "@/lib/room/store";
@@ -190,21 +186,14 @@ export default async function MesaRoomPage({ params, searchParams }: Props) {
       Object.keys(room.actors)[0]);
 
   const advId = room.adventureId ?? roomId;
-  const [adventure, mesaInvite, characterCounts] = await Promise.all([
+  const [adventure, mesaInvite] = await Promise.all([
     getAdventure(advId),
     canonicalInviteForRoom(room),
-    accountUser && canParticipate && roomId !== "demo"
-      ? Promise.all([
-          listCharactersForSessionUserSafe(accountUser),
-          listCharactersForSessionUserInAdventureSafe(accountUser, advId),
-        ]).then(([myChars, inAdv]) => ({
-          characterSlotsLeft: Math.max(0, MAX_CHARACTERS_PER_USER - myChars.length),
-          charactersInAdventure: inAdv.length,
-        }))
-      : Promise.resolve({ characterSlotsLeft: 0, charactersInAdventure: 0 }),
   ]);
   const adventureName = adventure?.name ?? room.name;
-  const { characterSlotsLeft, charactersInAdventure } = characterCounts;
+  // Contagens carregadas no cliente — removidas do SSR para reduzir latência inicial
+  const characterSlotsLeft = canParticipate && roomId !== "demo" ? MAX_CHARACTERS_PER_USER : 0;
+  const charactersInAdventure = 0;
   const canEdit = canParticipate;
 
   const initialSnapshot =
