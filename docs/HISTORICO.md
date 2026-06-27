@@ -104,6 +104,28 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-06-26 — Reconciliar branch + fix animação dados WebGL
+
+**Pedido:** dados sem animação visível no combate; consolidar branch `fix/mesa-performance-delays` com `main`.
+
+**Passo a passo:**
+1. **Diagnóstico — dados invisíveis** — timings haviam sido baixados para 200ms em sessão anterior. WebGL `dice-box` precisa de ≥480ms para `settleTimeout` física; resultado aparecia antes do dado pousar na tela.
+2. **Fix timings** — `combat-dice-model.ts`: `attackRoll` 200→620ms, `damageRoll` 200→520ms, `DICE_LANDING_MS` 100→220ms, `COMBAT_ATTACK_MIN_SPIN_MS` 120→420ms, `COMBAT_DICE_SETTLE_MS` 200→480ms, `settleTimeout` WebGL 200→480ms. ~45% mais rápido que original, mínimo visível para física 3D.
+3. **Diagnóstico — branch divergida** — filter-branch da sessão anterior reescreveu hashes do `local/main`; `fix/mesa-performance-delays` estava baseado no `origin/main` antigo (hashes pré-reescrita). `git log origin/main ^HEAD` = vazio (fix branch era ancestral de origin/main).
+4. **Rebase** — `git rebase --onto main origin/main fix/mesa-performance-delays` aplicou os 12 commits sobre `local/main` limpo (sem conflitos — conteúdo idêntico, só hashes diferentes).
+5. **Fast-forward + push** — `git merge --ff-only`, `git push --force main` e `fix/mesa-performance-delays` sincronizados.
+
+**Arquivos tocados:**
+- `lib/vtt/combat-dice-model.ts` — timings dados ajustados: 620ms ataque, 520ms dano, 480ms settle WebGL
+
+**Commits / deploy:** `ddd42a1` em `main` e `fix/mesa-performance-delays`. Force push em ambos (necessário pós filter-branch).
+
+**Como testar:**
+- `git checkout main && npm run dev`
+- `/mesa/demo` → iniciar combate → atacar — dado d20 deve girar visivelmente (~0,6s) antes de parar e mostrar resultado
+
+---
+
 ### 2026-06-24 — Performance: redução de delays na mesa VTT
 
 **Pedido:** investigar delay absurdo na mesa e corrigir.
