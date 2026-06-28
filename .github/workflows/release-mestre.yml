@@ -1,6 +1,9 @@
 name: Release — Assistente do Mestre
 
 on:
+  push:
+    tags:
+      - "v*-mestre"
   release:
     types: [published]
 
@@ -48,4 +51,8 @@ jobs:
       - name: Upload asset
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ github.ref_name }}
+          name: "Assistente do Mestre ${{ github.ref_name }}"
+          draft: false
+          prerelease: false
           files: ${{ matrix.asset }}
