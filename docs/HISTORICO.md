@@ -104,6 +104,32 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-06-28 — Executável com docker auto-install + página /download com instruções integradas
+
+**Pedido:** exe do mestre deve instalar o Docker automaticamente se não encontrado (com progress bar); página `/download` com instruções integradas em vez de link para guia separado.
+
+**Passo a passo:**
+
+1. **cmd/mestre/main.go reescrito** — `ensureDocker()` cobre 3 casos: daemon rodando → ok; CLI instalada mas parado → polling a cada 5s até 3min com contador `\r Aguardando Docker iniciar... (Xs)`; não instalado → `downloadAndInstallDocker()`.
+2. **Download com progress bar** — `downloadWithProgress()`: HTTP GET com barra `█░` de 20 chars calculada por `pct/5`. URLs: Docker Desktop Windows (~600MB), Mac Silicon/Intel DMG. Linux: exibe URL manual e sai.
+3. **Instalação automática** — Windows: `exec.Command(tmpPath, "install").Start()` abre instalador UAC; Mac: `open Docker.dmg`. Após instalação instrui reabrir o exe; exe não continua (precisa reiniciar daemon).
+4. **Página /download reestruturada** — removida seção "O que você precisa" (Docker é automático); removido "Ver guia completo"; instrucões lado a lado: card ngrok (1 passo manual, 3 sub-passos numerados) + card automático (4 emoji steps); callout verde "Mesa pronta" embaixo.
+5. **CSS novo** — `download.css` completamente reescrito com todas as classes novas: `.dl-setup`, `.dl-setup-card`, `.dl-setup-badge`, `.dl-ngrok-steps`, `.dl-auto-list`, `.dl-result`, `.dl-divider`, `.dl-platform-note`; responsivo mobile (1 coluna).
+6. **Build + push** — `npm run build` limpo; commit `6dd01d3` em `main`.
+
+**Arquivos tocados:**
+- `cmd/mestre/main.go` — reescrito: `ensureDocker`, `downloadAndInstallDocker`, `downloadWithProgress`, `waitForDocker`
+- `app/download/page.tsx` — reestruturado: instrucões integradas, sem link para guia externo
+- `app/download/download.css` — reescrito completo para nova estrutura da página
+
+**Commits / deploy:** `6dd01d3` em `main`. Push ok.
+
+**Como testar:**
+- `/download` — ver layout lado a lado (ngrok + automático), callout verde no final
+- `cmd/mestre/main.go`: compilar `CGO_ENABLED=0 go build -o mxdrpg-mestre.exe` e rodar sem Docker instalado
+
+---
+
 ### 2026-06-27 — Fix combate preso + hospedagem local pelo mestre + guia passo a passo
 
 **Pedido (1):** ataque consumia PAs mas sem resultado no dado/chat/tela ("Aguardando servidor...").  
