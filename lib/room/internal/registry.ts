@@ -24,6 +24,7 @@ import { migrateLegacyDisplayName } from "@/lib/moderation/display-name";
 import { ensureJournalBaseline, recordRevisionEntry } from "../revision-journal";
 import { buildRoomDelta } from "../room-delta";
 import { notifyRoomUpdated } from "../notifier";
+import { scheduleSave } from "./periodic-save";
 import { createDemoRoom, syncLinkedTokens } from "../sync";
 import type { RoomSnapshot, RoomState } from "../types";
 
@@ -234,11 +235,7 @@ export async function persistRoom(
   recordRevisionEntry(roomId, afterSnap, buildRoomDelta(beforeSnap, afterSnap));
   notifyRoomUpdated(roomId, updated.revision);
   if (shouldPersistToDb(roomId)) {
-    try {
-      await dbRooms.saveRoom(updated);
-    } catch (e) {
-      console.error("[persistRoom] falha ao salvar no DB (estado em memória preservado):", roomId, e);
-    }
+    scheduleSave(roomId, updated);
   }
   return updated;
 }

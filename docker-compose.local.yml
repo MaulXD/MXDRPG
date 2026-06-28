@@ -1,0 +1,74 @@
+# MXDRPG — Hospedagem local pelo mestre.
+# Requisitos: Docker Desktop instalado + NGROK_AUTHTOKEN no .env.local
+#
+# Início rápido:
+#   1. Copie .env.local.example → .env.local e preencha
+#   2. docker compose -f docker-compose.local.yml up --build
+#   3. Acesse http://localhost:4040 para ver o link público do ngrok
+#   4. Compartilhe o link com os jogadores
+
+services:
+
+  # ── Banco de dados ──────────────────────────────────────────────────────────
+  db:
+    image: mariadb:11.4
+    container_name: mxdrpg-local-db
+    restart: unless-stopped
+    environment:
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-mxdrpg_root}
+      MARIADB_DATABASE: eldarin
+      MARIADB_USER: eldarin
+      MARIADB_PASSWORD: ${DB_PASSWORD:-mxdrpg_local}
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./scripts/db/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 5s
+      timeout: 5s
+      retries: 15
+      start_period: 30s
+
+  # ── Aplicação ───────────────────────────────────────────────────────────────
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mxdrpg-local-app
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: mysql://eldarin:${DB_PASSWORD:-mxdrpg_local}@db:3306/eldarin
+      SESSION_SECRET: ${SESSION_SECRET:?SESSION_SECRET obrigatorio — rode scripts/local/setup.bat}
+      AUTH_URL: ${AUTH_URL:-http://localhost:3000}
+      # OAuth opcional — deixe em branco para desabilitar Google/Discord
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET:-}
+      DISCORD_CLIENT_ID: ${DISCORD_CLIENT_ID:-}
+      DISCORD_CLIENT_SECRET: ${DISCORD_CLIENT_SECRET:-}
+    volumes:
+      - app_logs:/app/logs
+
+  # ── Túnel ngrok (link público para jogadores remotos) ───────────────────────
+  ngrok:
+    image: ngrok/ngrok:latest
+    container_name: mxdrpg-local-ngrok
+    restart: unless-stopped
+    depends_on:
+      - app
+    command: http app:3000 --log=stdout --log-format=json
+    environment:
+      NGROK_AUTHTOKEN: ${NGROK_AUTHTOKEN:?NGROK_AUTHTOKEN obrigatorio — crie conta gratis em ngrok.com}
+    ports:
+      - "4040:4040"   # painel ngrok: http://localhost:4040
+
+volumes:
+  db_data:
+    name: mxdrpg_local_db
+  app_logs:
+    name: mxdrpg_local_logs
