@@ -126,12 +126,9 @@ export default function HomePage() {
               Baixar para Windows
             </a>
             <div className="download-other">
-              <span className="download-other__label">Outras plataformas:</span>
-              <a href="https://github.com/MaulXD/MXDRPG/releases/latest/download/mxdrpg-mestre-mac-silicon" className="download-other__link" download>Mac (Apple Silicon)</a>
+              <Link href="/download" className="download-other__link">Todas as plataformas</Link>
               <span className="download-other__sep" aria-hidden="true">·</span>
-              <a href="https://github.com/MaulXD/MXDRPG/releases/latest/download/mxdrpg-mestre-mac-intel" className="download-other__link" download>Mac (Intel)</a>
-              <span className="download-other__sep" aria-hidden="true">·</span>
-              <a href="https://github.com/MaulXD/MXDRPG/releases/latest/download/mxdrpg-mestre-linux" className="download-other__link" download>Linux</a>
+              <Link href="/download/guia" className="download-other__link">Ver guia</Link>
             </div>
           </div>
         </div>
