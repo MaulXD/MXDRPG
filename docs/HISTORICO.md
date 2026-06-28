@@ -48,7 +48,7 @@ Ao concluir (ou pausar) um bloco de trabalho, **sempre** acrescentar uma entrada
 | **URL produção** | https://www.mxdrpg.com.br |
 | **Hosting** | Contabo — Docker + GHCR (`Dockerfile` + `docker-entrypoint.sh`) |
 | **Branch principal** | `main` |
-| **Marca / hub** | **MXDRPG** — landing e pós-login em `/mesas`; Eldarin é um RPG em `/rpg/eldarin` |
+| **Marca / hub** | **MXDRPG** — landing em `/`; `/mesas` redireciona para `/rpg/eldarin` (único sistema ativo) |
 | **Auth** | OAuth Google/Discord + e-mail/senha em `/entrar`; demo `mestre`/`jogador` senha `123` — **sem Clerk** |
 | **DB** | MariaDB (`DATABASE_URL=mysql://…`) — em produção: SSL self-signed exige `MARIADB_SSL_REJECT_UNAUTHORIZED=0` ou `?sslaccept=accept_invalid_certs` |
 | **Stack** | Next.js 15, React 19, TypeScript strict |
@@ -101,6 +101,34 @@ npm run sync:data:check       # após editar livros/
 ## Log de sessões
 
 <!-- Ver "Padrão obrigatório" no topo: Pedido → Passo a passo → Arquivos → Commits → Como testar -->
+
+---
+
+### 2026-06-28 — Fix criação de personagem + refactor landing/hub + CI workflow
+
+**Pedido:** criação de ficha não funcionando; refatorar o site como hub otimizado com foco no funcionamento da mesa.
+
+**Passo a passo:**
+
+1. **Fix btn-primary-cta** — botão "Criar personagem" aparecia sem estilo roxo (neutro) porque `.btn-primary-cta` não herdava as cores de `.btn-primary`. Adicionado como alias no `globals.css`: `border: none; background: var(--chrome-accent); color: var(--chrome-bg)`.
+2. **Fix precedência JS em `finish()`** — `setErr(message ?? isEdit ? "A" : "B")` era parseado como `(message ?? isEdit) ? "A" : "B"`, mostrando mensagem errada. Corrigido com parênteses explícitos.
+3. **Landing page** — hero centralizado com SVG preview do VTT, seção "Recursos" com 4 cards e seção "Para o Mestre" com download direto em vez da antiga CTA band redundante. Estilos: `landing-hero`, `landing-preview`, `download-band` adicionados ao `globals.css`.
+4. **Hub `/mesas`** — redireciona diretamente para `/rpg/eldarin` (único sistema disponível), eliminando clique extra desnecessário. Cabeçalho da página Eldarin simplificado.
+5. **Build** — `npm run build` limpo, zero erros TypeScript.
+
+**Arquivos tocados:**
+- `app/globals.css` — alias `btn-primary-cta` + estilos `landing-hero`, `landing-preview`, `download-band`, `download-other`
+- `components/character/wizard/CharacterCreationWizard.tsx` — precedência `??` / `?:` em `setErr`
+- `app/page.tsx` — landing page reescrita (hero SVG, recursos, banda download)
+- `app/mesas/page.tsx` — redireciona para `/rpg/eldarin`
+- `app/rpg/eldarin/page.tsx` — cabeçalho simplificado sem breadcrumb circular
+
+**Commits / deploy:** `9cf2a39` (fix wizard) · `f41393f` (refactor site). Push pendente.
+
+**Como testar:**
+- `/personagem/novo` — botão roxo visível; criar personagem com campos válidos deve funcionar
+- `/` — hero com preview SVG, feature cards, banda download
+- `/mesas` — redireciona para `/rpg/eldarin`
 
 ---
 
