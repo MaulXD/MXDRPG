@@ -1,4 +1,5 @@
 .page-hero--landing {
+  position: relative;
   background:
     radial-gradient(ellipse 60% 40% at 50% 60%, var(--landing-hero-glow) 0%, transparent 70%),
     var(--bg-deep);
@@ -38,6 +39,77 @@
 .landing-hero__actions {
   justify-content: center;
   margin-top: 1.75rem;
+}
+
+/* Botão primário — glow dourado no hero para destacar do fundo escuro */
+.landing-cta-primary {
+  background: var(--landing-accent-grid) !important;
+  color: #0e0d0b !important;
+  border: none !important;
+  box-shadow: 0 0 0 1px rgba(200, 140, 26, 0.3), 0 4px 20px rgba(200, 140, 26, 0.35) !important;
+  font-weight: 700;
+}
+
+.landing-cta-primary:hover {
+  background: #dca030 !important;
+  box-shadow: 0 0 0 1px rgba(200, 140, 26, 0.5), 0 6px 28px rgba(200, 140, 26, 0.45) !important;
+  transform: translateY(-2px);
+}
+
+/* Preview do produto */
+.landing-preview {
+  margin-top: 2.5rem;
+  width: 100%;
+  max-width: 460px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(139, 123, 184, 0.12);
+}
+
+.landing-preview__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Scroll hint — seta com bounce */
+.landing-scroll-hint {
+  position: absolute;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  color: var(--text-dim);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--glass-border);
+  background: var(--glass);
+  text-decoration: none;
+  transition: color 0.2s, border-color 0.2s;
+  animation: scroll-bounce 2.2s ease-in-out infinite;
+}
+
+.landing-scroll-hint:hover {
+  color: var(--accent);
+  border-color: var(--accent-dim);
+}
+
+@keyframes scroll-bounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50%       { transform: translateX(-50%) translateY(6px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .landing-scroll-hint { animation: none; }
+}
+
+@media (max-width: 600px) {
+  .landing-preview { max-width: 100%; }
+  .landing-scroll-hint { display: none; }
 }
 
 /* Download band — hospedagem local pelo mestre */

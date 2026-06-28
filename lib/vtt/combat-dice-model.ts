@@ -39,18 +39,18 @@ export const COMBAT_DICE_TIMINGS: CombatDiceTimings = {
   mark: 30,
   attackRoll: 620,
   damageRoll: 520,
-  missHold: 200,
-  afterResolve: 120,
-  evictMs: 380,
+  missHold: 800,
+  afterResolve: 2800,
+  evictMs: 600,
 };
 
 export const COMBAT_DICE_TIMINGS_REDUCED: CombatDiceTimings = {
   mark: 20,
   attackRoll: 420,
   damageRoll: 360,
-  missHold: 160,
-  afterResolve: 120,
-  evictMs: 280,
+  missHold: 600,
+  afterResolve: 1600,
+  evictMs: 500,
 };
 
 export const DICE_LANDING_MS = 220;

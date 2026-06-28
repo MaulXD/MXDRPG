@@ -38,6 +38,88 @@ const features: Array<{
   },
 ];
 
+function VttPreview() {
+  return (
+    <svg
+      viewBox="0 0 420 200"
+      xmlns="http://www.w3.org/2000/svg"
+      className="landing-preview__svg"
+      role="img"
+      aria-label="Preview do VTT — grid tático com tokens e painel de combate"
+    >
+      {/* Fundo */}
+      <rect width="420" height="200" rx="8" fill="#0e0d0b" />
+
+      {/* Grid — 12 colunas × 6 linhas de 32px */}
+      <g stroke="#242018" strokeWidth="1">
+        {[32,64,96,128,160,192,224,256,288,320,352,384].map(x => (
+          <line key={x} x1={x} y1="4" x2={x} y2="196" />
+        ))}
+        {[32,64,96,128,160,192].map(y => (
+          <line key={y} x1="4" y1={y} x2="416" y2={y} />
+        ))}
+      </g>
+
+      {/* Célula ativa (atacante) */}
+      <rect x="97" y="65" width="32" height="32" rx="2" fill="#8B7BB8" fillOpacity="0.12" stroke="#8B7BB8" strokeWidth="1" strokeOpacity="0.4" />
+
+      {/* Linha de ataque */}
+      <line x1="129" y1="81" x2="255" y2="81" stroke="#d4b84a" strokeWidth="1.5" strokeDasharray="5 3" opacity="0.55" />
+
+      {/* Token herói (azul) */}
+      <circle cx="113" cy="81" r="13" fill="#0e1524" stroke="#4a90d9" strokeWidth="2" />
+      <text x="113" y="86" textAnchor="middle" fill="#4a90d9" fontSize="11" fontWeight="700" fontFamily="ui-sans-serif,system-ui,sans-serif">G</text>
+      {/* HP bar herói */}
+      <rect x="97" y="60" width="32" height="4" rx="2" fill="#1a1813" />
+      <rect x="97" y="60" width="28" height="4" rx="2" fill="#4a9e6c" />
+
+      {/* Token monstro (âmbar) */}
+      <circle cx="271" cy="81" r="13" fill="#1c1508" stroke="#d4b84a" strokeWidth="2" />
+      <text x="271" y="86" textAnchor="middle" fill="#d4b84a" fontSize="10" fontWeight="700" fontFamily="ui-sans-serif,system-ui,sans-serif">M</text>
+      {/* HP bar monstro — quase vazio */}
+      <rect x="255" y="60" width="32" height="4" rx="2" fill="#1a1813" />
+      <rect x="255" y="60" width="8" height="4" rx="2" fill="#e05040" />
+
+      {/* Token aliado */}
+      <circle cx="113" cy="145" r="11" fill="#0e1524" stroke="#4a90d9" strokeWidth="1.5" opacity="0.6" />
+      <text x="113" y="150" textAnchor="middle" fill="#4a90d9" fontSize="9" fontWeight="700" fontFamily="ui-sans-serif,system-ui,sans-serif" opacity="0.7">A</text>
+
+      {/* Marca de impacto no monstro */}
+      <circle cx="262" cy="72" r="7" fill="none" stroke="#e05040" strokeWidth="1.5" opacity="0.9" />
+      <line x1="258" y1="68" x2="266" y2="76" stroke="#e05040" strokeWidth="1.5" opacity="0.9" />
+      <line x1="266" y1="68" x2="258" y2="76" stroke="#e05040" strokeWidth="1.5" opacity="0.9" />
+
+      {/* Painel de dados (floating) */}
+      <rect x="298" y="28" width="112" height="82" rx="6" fill="#16140f" stroke="#8B7BB8" strokeWidth="1.5" />
+      {/* Cabeçalho do painel */}
+      <rect x="298" y="28" width="112" height="22" rx="6" fill="#8B7BB8" fillOpacity="0.18" />
+      <rect x="298" y="40" width="112" height="10" fill="#8B7BB8" fillOpacity="0.18" />
+      <text x="354" y="43" textAnchor="middle" fill="#b0a0d4" fontSize="9" fontWeight="600" fontFamily="ui-sans-serif,system-ui,sans-serif" letterSpacing="0.08em">ATAQUE d20</text>
+      {/* Número do dado */}
+      <text x="330" y="74" textAnchor="middle" fill="#e8e2d8" fontSize="26" fontWeight="700" fontFamily="ui-monospace,monospace">18</text>
+      {/* Label acerto */}
+      <rect x="310" y="78" width="38" height="14" rx="3" fill="#4a9e6c" fillOpacity="0.2" />
+      <text x="329" y="88" textAnchor="middle" fill="#4a9e6c" fontSize="8" fontWeight="700" fontFamily="ui-sans-serif,system-ui,sans-serif" letterSpacing="0.1em">ACERTO</text>
+      {/* Dano */}
+      <text x="378" y="74" textAnchor="middle" fill="#e05040" fontSize="20" fontWeight="700" fontFamily="ui-monospace,monospace">7</text>
+      <text x="378" y="86" textAnchor="middle" fill="#e05040" fontSize="7.5" fontFamily="ui-sans-serif,system-ui,sans-serif" opacity="0.8">DANO</text>
+      {/* Divisor */}
+      <line x1="356" y1="52" x2="356" y2="100" stroke="#2e2b24" strokeWidth="1" />
+
+      {/* PA (pontos de ação) — barra de indicadores */}
+      <rect x="6" y="178" width="408" height="16" rx="4" fill="#16140f" stroke="#242018" strokeWidth="1" />
+      <text x="14" y="189" fill="#6e6458" fontSize="7.5" fontFamily="ui-sans-serif,system-ui,sans-serif" letterSpacing="0.08em">PA</text>
+      {[28,38,48,58].map((x) => (
+        <rect key={x} x={x} y="182" width="7" height="7" rx="1.5" fill="#8B7BB8" fillOpacity="0.8" />
+      ))}
+      {[68,78].map((x) => (
+        <rect key={x} x={x} y="182" width="7" height="7" rx="1.5" fill="#2e2b24" />
+      ))}
+      <text x="106" y="189" fill="#6e6458" fontSize="7.5" fontFamily="ui-sans-serif,system-ui,sans-serif">·  TURNO 3  ·  GRIMLOCK</text>
+    </svg>
+  );
+}
+
 export default function HomePage() {
   return (
     <>
@@ -52,17 +134,27 @@ export default function HomePage() {
             identidade visual única — direto no navegador.
           </p>
           <div className="hero-actions landing-hero__actions">
-            <Link href={ENTRAR_PATH} className="btn btn-primary">
+            <Link href={ENTRAR_PATH} className="btn btn-primary landing-cta-primary">
               Entrar e jogar
             </Link>
             <Link href="/mesa/demo" prefetch={false} className="btn btn-secondary">
               Demo ao vivo
             </Link>
           </div>
+
+          <div className="landing-preview" aria-hidden="true">
+            <VttPreview />
+          </div>
+
+          <a href="#features" className="landing-scroll-hint" aria-label="Ver mais">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+          </a>
         </div>
       </section>
 
-      <section className="page-wrap section-tight">
+      <section id="features" className="page-wrap section-tight">
         <div className="glass stats-strip">
           <div>
             <div className="stat-value">Hex</div>
