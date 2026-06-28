@@ -389,7 +389,7 @@ export function CharacterCreationWizard({
       setShowValidation(true);
       const message = stepError(invalidAt) ?? validateWizardDraft(draft);
       setStep(invalidAt);
-      setErr(message ?? isEdit ? "Revise os passos antes de salvar" : "Revise os passos antes de criar");
+      setErr(message ?? (isEdit ? "Revise os passos antes de salvar" : "Revise os passos antes de criar"));
       return;
     }
     setBusy(true);
