@@ -40,6 +40,103 @@
   margin-top: 1.75rem;
 }
 
+/* Download band — hospedagem local pelo mestre */
+.download-band {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2.5rem;
+  padding: 2rem 2.5rem;
+  border-left: 3px solid var(--accent);
+}
+
+.download-band__copy {
+  flex: 1;
+  min-width: 0;
+}
+
+.download-band__copy .eyebrow {
+  margin-bottom: 0.5rem;
+}
+
+.download-band__copy .display-lg {
+  font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+  margin: 0 0 0.6rem;
+}
+
+.download-band__copy .lead {
+  margin: 0;
+  font-size: 0.9rem;
+  max-width: 38rem;
+}
+
+.download-band__actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.9rem;
+  flex-shrink: 0;
+}
+
+.btn--download {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  white-space: nowrap;
+}
+
+.download-other {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.download-other__label {
+  font-size: 0.78rem;
+  color: var(--text-dim);
+}
+
+.download-other__link {
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.15s;
+}
+
+.download-other__link:hover {
+  color: var(--accent);
+}
+
+.download-other__sep {
+  color: var(--border);
+  font-size: 0.78rem;
+}
+
+@media (max-width: 768px) {
+  .download-band {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1.5rem;
+  }
+
+  .download-band__actions {
+    align-items: flex-start;
+    width: 100%;
+  }
+
+  .btn--download {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .download-other {
+    justify-content: flex-start;
+  }
+}
+
 /* Cards de feature — ícone por semântica */
 .feature-card--vtt .feature-icon {
   color: var(--landing-accent-vtt);

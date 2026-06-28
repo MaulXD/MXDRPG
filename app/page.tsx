@@ -102,6 +102,41 @@ export default function HomePage() {
         </div>
       </section>
 
+      <section className="page-wrap section-tight">
+        <div className="glass download-band">
+          <div className="download-band__copy">
+            <p className="eyebrow">Para o Mestre</p>
+            <h2 className="display-lg">Rode a mesa no seu PC</h2>
+            <p className="lead">
+              Baixe o assistente, clique duas vezes e a mesa sobe com túnel automático para
+              os jogadores — sem conta em servidor, sem mensalidade.
+            </p>
+          </div>
+          <div className="download-band__actions">
+            <a
+              href="https://github.com/MaulXD/MXDRPG/releases/latest/download/mxdrpg-mestre-windows.exe"
+              className="btn btn-primary btn--download"
+              download
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="7 10 12 15 17 10"/>
+                <line x1="12" y1="15" x2="12" y2="3"/>
+              </svg>
+              Baixar para Windows
+            </a>
+            <div className="download-other">
+              <span className="download-other__label">Outras plataformas:</span>
+              <a href="https://github.com/MaulXD/MXDRPG/releases/latest/download/mxdrpg-mestre-mac-silicon" className="download-other__link" download>Mac (Apple Silicon)</a>
+              <span className="download-other__sep" aria-hidden="true">·</span>
+              <a href="https://github.com/MaulXD/MXDRPG/releases/latest/download/mxdrpg-mestre-mac-intel" className="download-other__link" download>Mac (Intel)</a>
+              <span className="download-other__sep" aria-hidden="true">·</span>
+              <a href="https://github.com/MaulXD/MXDRPG/releases/latest/download/mxdrpg-mestre-linux" className="download-other__link" download>Linux</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section className="page-wrap">
         <div className="glass cta-band cta-band--landing">
           <h2 className="display-lg">Pronto para a masmorra?</h2>
