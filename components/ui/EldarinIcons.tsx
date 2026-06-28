@@ -387,6 +387,16 @@ export function IconGlobe({ className, size }: IconProps) {
   );
 }
 
+export function IconDownload({ className, size }: IconProps) {
+  return (
+    <Svg className={className} size={size}>
+      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" {...S} />
+      <polyline points="7 10 12 15 17 10" {...S} />
+      <line x1="12" y1="15" x2="12" y2="3" {...S} />
+    </Svg>
+  );
+}
+
 export type HomeFeatureIconName = "target" | "move" | "diamond" | "sword";
 
 export function HomeFeatureIcon({ name, className, size = 28 }: IconProps & { name: HomeFeatureIconName }) {
