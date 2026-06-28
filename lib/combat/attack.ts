@@ -770,7 +770,16 @@ function resolveMonsterAttack(
   allTokens: BattleToken[] = []
 ): AttackResolution {
   const check = canAttackTarget(attackerToken, defenderToken, action, turn);
-  if (!check.ok) throw new Error(check.reason ?? "Ataque inválido");
+  if (!check.ok) {
+    console.log("[monsterAttack] canAttackTarget FAILED", {
+      attacker: attackerToken.name,
+      id: attackerToken.id,
+      pa: attackerToken.pa,
+      paMax: attackerToken.paMax,
+      reason: check.reason,
+    });
+    throw new Error(check.reason ?? "Ataque inválido");
+  }
 
   const template = attackerToken.monsterEntryId
     ? getMonsterTemplate(attackerToken.monsterEntryId)
@@ -876,6 +885,23 @@ function resolveMonsterAttack(
     summary = `${name} CRÍTICO${modeTag} em ${defenderToken.name}! ${damage!.total} ${action.damageType}`;
   } else {
     summary = `${name} acerta${modeTag} ${defenderToken.name}: ${attackTotal} vs CA ${ac} — ${damage!.total} ${action.damageType}`;
+  }
+
+  if (hit && damage) {
+    console.log("[monsterAttack] HIT", {
+      attacker: attackerToken.name,
+      defender: defenderToken.name,
+      ac,
+      attackTotal,
+      damageTotal: damage.total,
+      damageType: action.damageType,
+      hpBefore: hpBefore,
+      hpAfter: hpAfter,
+      tempBefore,
+      tempAfter,
+    });
+  } else {
+    console.log("[monsterAttack] MISS", { attacker: attackerToken.name, defender: defenderToken.name, ac, attackTotal, hit, criticalFail });
   }
 
   baseRes.summary = summary;

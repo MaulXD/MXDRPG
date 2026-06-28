@@ -1346,18 +1346,46 @@ kubectl -n raul rollout status deployment/mxdrpg
 
 ---
 
-<!--
-### AAAA-MM-DD — Título
+### 2026-06-28 — Design: EventEmitter SSE, Amethyst Dusk, micro-interactions, transition/dock + bug monstro
 
-**Pedido:** …
+**Pedido:** "Continue" da sessão anterior (performance VTT) + relato de que dano de monstro não é computado.
 
 **Passo a passo:**
-1. …
+
+1. **EventEmitter SSE** — criado `lib/room/notifier.ts` com `EventEmitter`; `persistRoom` em `registry.ts` emite `"room-updated"`; rota `app/api/room/[roomId]/events/route.ts` escuta e envia revisões via SSE, eliminando polling e debounce do cliente.
+2. **Accent Amethyst Dusk** — `#6B9E8C` → `#8B7BB8` em 19 arquivos CSS; texto base `#c4bbaa` → `#d4ccbe`; `font-weight: 500` no body; hardcoded rgba convertido para `color-mix()`.
+3. **Micro-interactions** — spinner overlay no `TokenActionPanel`; fade-in nas abas `mesa-rail-panel`; ripple de clique no canvas (`BattlefieldMapCanvas`).
+4. **Transition + Dock** — `SiteShell` refatorado com fade site→VTT; `MesaIconBar` abrindo dock no clique esquerdo e popup menu no direito.
+5. **Bug: dano de monstro** — análise estática completa do fluxo `resolveMonsterAttack` → `executeRoomAttack` → `patchTokenVitals` → `persistRoom` → `syncLinkedTokens` → SSE. O código aparentemente está correto: `resolveMonsterAttack` calcula dano, o handler atualiza token (L277-282) e actor (L302-319), `persistRoom` persiste, e o delta captura a diferença. **Não foi identificada causa raiz definitiva.** Suspeitas:
+   - Condição de corrida no SSE (notificação chega antes do `recordRevisionEntry`)
+   - PA insuficiente do monstro (`canAttackTarget` falha com "PA insuficiente" no servidor)
+   - Erro silencioso em `canActOnCombatTurn` para monstros fora de iniciativa
+   - Bug no frontend ao aplicar delta (`useRoomSync.ts`)
 
 **Arquivos tocados:**
-- `caminho/arquivo.ts`
+- `lib/room/notifier.ts` — NOVO: EventEmitter + notificação SSE
+- `app/api/room/[roomId]/events/route.ts` — NOVA: rota SSE
+- `lib/room/internal/registry.ts` — `persistRoom` emite `"room-updated"`
+- `app/globals.css` — Amethyst Dusk + peso 500 + `color-mix()`
+- `components/vtt/foundry/SiteShell.tsx` — transição fade
+- `components/vtt/foundry/MesaIconBar.tsx` — dock esquerdo/popup direito
+- `components/vtt/panels/TokenActionPanel.tsx` — spinner
+- `components/vtt/panels/rail/mesa-rail-panel.css` — fade-in
+- `components/vtt/BattlefieldMapCanvas.tsx` — ripple
+- +16 arquivos CSS com substituição de cor
 
-**Commits / deploy:** …
+**Commits / deploy:** `91caf4e` (EventEmitter) · `4934b09` (Amethyst Dusk) · `bc2fb67` (micro-interactions) · `b2b35e1` (transition+dock). Push pendente junto com correção do bug do monstro.
 
-**Como testar:** …
--->
+**Como testar (design):**
+- Abrir VTT → verificar cor roxa `#8B7BB8` em botões, links, acentos
+- Atacar → spinner aparece no `TokenActionPanel` durante resolução
+- Clicar ícone na `MesaIconBar` → dock abre; botão direito → popup menu
+- Navegar site→VTT → fade suave
+
+**Bug monstro — como reproduzir:**
+1. Criar sala com monstro e PC
+2. Iniciar combate, dar PA ao monstro
+3. Atacar PC com o monstro
+4. Observar: chat mostra "acerta N dano" mas HP do PC não reduz
+
+---
