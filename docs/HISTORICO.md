@@ -104,6 +104,45 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-06-27 — Fix combate preso + hospedagem local pelo mestre + guia passo a passo
+
+**Pedido (1):** ataque consumia PAs mas sem resultado no dado/chat/tela ("Aguardando servidor...").  
+**Pedido (2):** loading VTT demorando ~10s — investigar.  
+**Pedido (3):** refatorar para funcionar com hospedagem no PC do mestre (Foundry-style).  
+**Pedido (4):** preparar guia passo a passo completo para o mestre configurar.
+
+**Passo a passo:**
+
+1. **Diagnóstico — combate preso** — race condition em `useBattlefieldCombatFxQueue.ts`: `seedHistoricalChat` marcava a nova mensagem de ataque como "vista" (`seenCombatRef`) antes de `findPendingAttackMessage` conseguir encontrá-la. Resultado: sistema aguardava para sempre uma mensagem que já estava invisível.
+2. **Fix combate** — invertida a ordem: busca a mensagem pendente ANTES de chamar `seedHistoricalChat`; marca como vista ANTES do seed. Também removido o guard `if (!messages.length) return` que impedia o seeding quando o chat estava vazio (primeiro ataque da sessão).
+3. **Diagnóstico — loading lento** — SSR do `page.tsx` fazia 3 queries sequenciais ao banco (aventura + convite + count de personagens). Root cause real: servidor em Contabo Alemanha → Brasil ~200ms RTT × N queries.
+4. **Fix loading** — removidas as 2 queries de count de personagens do SSR; loading.tsx melhorado com spinner escuro (#0e0d0b + roxo) em vez de texto branco vazio.
+5. **Arquitetura local** — criado `docker-compose.local.yml`: 3 serviços (MariaDB 11.4, Next.js app, ngrok). Dados persistem em volume Docker `mxdrpg_local_db`.
+6. **Save periódico** — `lib/room/internal/periodic-save.ts`: batch non-blocking a cada 60s via `globalThis.__eldarinPeriodicSave`. `persistRoom` em `registry.ts` não bloqueia mais o game loop — chama `scheduleSave`.
+7. **Scripts setup** — `scripts/local/setup.bat` e `setup.sh` reescritos como assistente guiado: verificam Docker, geram SESSION_SECRET, pedem token ngrok, criam `.env.local`, sobem `docker compose` e aguardam o link ngrok automaticamente (polling `localhost:4040/api/tunnels`), exibem o link em destaque.
+8. **Guia visual** — `docs/HOSTING-LOCAL.md` + Artifact HTML publicado (checklist interativo, 7 passos, troubleshooting).
+
+**Arquivos tocados:**
+- `hooks/vtt/useBattlefieldCombatFxQueue.ts` — invertida ordem seed/search; removido guard `if (!messages.length)`
+- `app/mesa/[roomId]/loading.tsx` — spinner dark em vez de texto
+- `app/mesa/[roomId]/page.tsx` — removidas queries de count de personagens do SSR
+- `lib/room/internal/periodic-save.ts` — novo: save batch 60s non-blocking
+- `lib/room/internal/registry.ts` — `persistRoom` → `scheduleSave` (não bloqueia)
+- `docker-compose.local.yml` — novo: db + app + ngrok
+- `.env.local.example` — novo: template variáveis para mestre local
+- `scripts/local/setup.bat` — reescrito como assistente completo (detecta ngrok URL)
+- `scripts/local/setup.sh` — equivalente para Mac/Linux
+- `docs/HOSTING-LOCAL.md` — novo: doc técnico de hospedagem local
+
+**Commits / deploy:** `bd3d70f` (docker local + save periódico) em `main`. Scripts setup e guia: pendente commit.
+
+**Como testar:**
+- Combate: `/mesa/demo` → atacar → resultado aparece no dado, tela e chat (sem "Aguardando...")
+- Hospedagem local: `scripts\local\setup.bat` → seguir passos → link ngrok exibido ao final
+- Loading: abrir `/mesa/[roomId]` — spinner escuro aparece imediatamente
+
+---
+
 ### 2026-06-26 — Reconciliar branch + fix animação dados WebGL
 
 **Pedido:** dados sem animação visível no combate; consolidar branch `fix/mesa-performance-delays` com `main`.
