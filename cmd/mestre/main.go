@@ -6,6 +6,7 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
 	"os"
 	"os/exec"
@@ -20,6 +21,10 @@ import (
 const (
 	repoURL     = "https://github.com/MaulXD/MXDRPG.git"
 	composeFile = "docker-compose.local.yml"
+
+	dockerWinURL       = "https://desktop.docker.com/win/main/amd64/Docker%20Desktop%20Installer.exe"
+	dockerMacSilURL    = "https://desktop.docker.com/mac/main/arm64/Docker.dmg"
+	dockerMacIntelURL  = "https://desktop.docker.com/mac/main/amd64/Docker.dmg"
 )
 
 // ── Ponto de entrada ──────────────────────────────────────────────────────────
@@ -41,17 +46,9 @@ func main() {
 
 	// ── 1. Docker ─────────────────────────────────────────────────────────────
 	printStep(1, 5, "Verificando Docker Desktop")
-	if err := runSilent("docker", "info"); err != nil {
+	if err := ensureDocker(); err != nil {
 		fmt.Println()
-		printError("Docker Desktop não está rodando.")
-		fmt.Println()
-		fmt.Println("  O que fazer:")
-		fmt.Println("    1. Procure o ícone da baleia na barra de tarefas")
-		fmt.Println("    2. Clique nele e aguarde o status ficar \"Running\"")
-		fmt.Println("    3. Abra este programa novamente")
-		fmt.Println()
-		fmt.Println("  Não tem Docker? Baixe em:")
-		fmt.Println("  https://www.docker.com/products/docker-desktop/")
+		printError(err.Error())
 		waitEnter()
 		os.Exit(1)
 	}
@@ -133,7 +130,7 @@ func main() {
 	}
 	printOK()
 
-	// Banner final — interior 54 chars: │  conteúdo(52 max)  │
+	// Banner final
 	url := ngrokURL
 	if len(url) > 50 {
 		url = url[:47] + "..."
@@ -157,6 +154,135 @@ func main() {
 	openBrowser("http://localhost:3000")
 
 	srv.Wait()
+}
+
+// ── Docker ────────────────────────────────────────────────────────────────────
+
+func ensureDocker() error {
+	// Daemon rodando? → tudo certo
+	if runSilent("docker", "info") == nil {
+		return nil
+	}
+
+	// CLI instalada mas daemon parado → espera iniciar
+	if _, err := exec.LookPath("docker"); err == nil {
+		fmt.Printf("\n  Docker está instalado mas não está rodando.\n")
+		fmt.Printf("  Abra o Docker Desktop (ícone da baleia na barra de tarefas)\n")
+		fmt.Printf("  e aguarde o status ficar \"Running\".\n\n")
+		return waitForDocker(180)
+	}
+
+	// Não instalado → baixa e instala automaticamente
+	return downloadAndInstallDocker()
+}
+
+func waitForDocker(maxSecs int) error {
+	for elapsed := 5; elapsed <= maxSecs; elapsed += 5 {
+		time.Sleep(5 * time.Second)
+		if runSilent("docker", "info") == nil {
+			fmt.Printf("\r  Docker iniciado!                        \n")
+			return nil
+		}
+		fmt.Printf("\r  Aguardando Docker iniciar... (%ds)   ", elapsed)
+	}
+	fmt.Println()
+	return fmt.Errorf("Docker não iniciou após %ds — verifique o Docker Desktop", maxSecs)
+}
+
+func downloadAndInstallDocker() error {
+	fmt.Println()
+	fmt.Println("  Docker Desktop não encontrado.")
+	fmt.Println("  Baixando automaticamente... (arquivo ~600MB)")
+	fmt.Println()
+
+	var url, installerName string
+	switch runtime.GOOS {
+	case "windows":
+		url = dockerWinURL
+		installerName = "DockerDesktopInstaller.exe"
+	case "darwin":
+		if runtime.GOARCH == "arm64" {
+			url = dockerMacSilURL
+		} else {
+			url = dockerMacIntelURL
+		}
+		installerName = "Docker.dmg"
+	default:
+		fmt.Println("  Linux: instale Docker Engine manualmente.")
+		fmt.Println("  https://docs.docker.com/engine/install/")
+		waitEnter()
+		os.Exit(1)
+	}
+
+	tmpPath := filepath.Join(os.TempDir(), installerName)
+	if err := downloadWithProgress(url, tmpPath); err != nil {
+		return fmt.Errorf("falha ao baixar Docker Desktop: %s", err)
+	}
+
+	fmt.Println()
+	fmt.Println("  Iniciando instalador do Docker Desktop...")
+
+	switch runtime.GOOS {
+	case "windows":
+		// install flag reduz o número de telas; ainda pede confirmação UAC
+		exec.Command(tmpPath, "install").Start()
+	case "darwin":
+		exec.Command("open", tmpPath).Start()
+	}
+
+	fmt.Println()
+	fmt.Println("  Siga as instruções do instalador.")
+	fmt.Println("  Após a instalação (e reiniciar se pedido), abra este programa novamente.")
+	waitEnter()
+	os.Exit(0)
+	return nil
+}
+
+func downloadWithProgress(url, dest string) error {
+	resp, err := http.Get(url)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+
+	f, err := os.Create(dest)
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+
+	total := resp.ContentLength
+	var downloaded int64
+	buf := make([]byte, 64*1024)
+
+	for {
+		n, readErr := resp.Body.Read(buf)
+		if n > 0 {
+			if _, werr := f.Write(buf[:n]); werr != nil {
+				return werr
+			}
+			downloaded += int64(n)
+			mb := downloaded / 1024 / 1024
+			if total > 0 {
+				pct := downloaded * 100 / total
+				totalMb := total / 1024 / 1024
+				// barra de 20 chars
+				filled := int(pct / 5)
+				bar := strings.Repeat("█", filled) + strings.Repeat("░", 20-filled)
+				fmt.Printf("\r  [%s] %d%% (%dMB / %dMB)   ", bar, pct, mb, totalMb)
+			} else {
+				fmt.Printf("\r  Baixando... %dMB   ", mb)
+			}
+		}
+		if readErr == io.EOF {
+			break
+		}
+		if readErr != nil {
+			return readErr
+		}
+	}
+	fmt.Println()
+	return nil
 }
 
 // ── Repo ──────────────────────────────────────────────────────────────────────
@@ -185,7 +311,7 @@ func ensureEnvFile(path string) error {
 		if strings.Contains(string(content), "NGROK_AUTHTOKEN=") &&
 			!strings.Contains(string(content), "NGROK_AUTHTOKEN=\n") &&
 			!strings.Contains(string(content), "NGROK_AUTHTOKEN=cole_") {
-			return nil // já configurado
+			return nil
 		}
 	}
 
@@ -193,8 +319,8 @@ func ensureEnvFile(path string) error {
 	fmt.Println()
 	fmt.Println("  Configuração inicial — só precisa fazer isso uma vez.")
 	fmt.Println()
-	fmt.Println("  Para que os jogadores acessem de fora, precisamos de um")
-	fmt.Println("  token gratuito do ngrok. Siga os passos:")
+	fmt.Println("  Precisamos de um token gratuito do ngrok para gerar")
+	fmt.Println("  o link público dos jogadores.")
 	fmt.Println()
 	fmt.Println("    1. Abra: https://ngrok.com/signup")
 	fmt.Println("    2. Crie a conta (sem cartão de crédito)")
@@ -267,8 +393,7 @@ func queryNgrok() string {
 // ── Utilitários ───────────────────────────────────────────────────────────────
 
 func runSilent(name string, args ...string) error {
-	cmd := exec.Command(name, args...)
-	return cmd.Run()
+	return exec.Command(name, args...).Run()
 }
 
 func generateSecret() (string, error) {
