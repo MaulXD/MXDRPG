@@ -4,7 +4,7 @@ import { MedievalFrame } from "@/components/ui/MedievalFrame";
 import { signInPath, profileOnboardingPath } from "@/lib/auth/post-auth-redirect";
 import { getSession } from "@/lib/auth/session";
 import { dbNicknameFlowEnabled } from "@/lib/db/enabled";
-import { ELDARIN_MESAS_PATH, MESAS_HUB_PATH } from "@/lib/rpg/systems";
+import { ELDARIN_MESAS_PATH } from "@/lib/rpg/systems";
 import { pageMetadata } from "@/lib/site-metadata";
 import { redirect } from "next/navigation";
 
@@ -21,19 +21,13 @@ export default async function EldarinMesasPage() {
   return (
     <div className="page-wrap" style={{ maxWidth: 920, paddingTop: "1.75rem", paddingBottom: "3rem" }}>
       <header className="page-header" style={{ paddingBottom: "1.25rem" }}>
-        <p className="eyebrow">
-          <Link href={MESAS_HUB_PATH} style={{ color: "var(--text-muted)" }}>
-            ← MXDRPG
-          </Link>{" "}
-          · Eldarin
-        </p>
-        <h1 className="display-lg">Suas mesas</h1>
+        <p className="eyebrow">Eldarin · suas mesas</p>
+        <h1 className="display-lg">Mesas</h1>
         <p className="lead">
-          Crie uma mesa como mestre ou entre com o código de convite. Mesas ingressadas ficam salvas
-          na sua conta — só o mestre pode excluir (com 30 dias para restaurar).{" "}
-          <Link href="/amigos">Amigos e mensagens</Link>
+          Crie uma mesa como mestre ou entre com o código de convite.{" "}
+          <Link href="/amigos">Amigos</Link>
           {" · "}
-          <Link href="/conta">Editar perfil</Link>
+          <Link href="/conta">Perfil</Link>
         </p>
       </header>
 
