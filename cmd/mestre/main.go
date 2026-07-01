@@ -19,12 +19,13 @@ import (
 )
 
 const (
-	repoURL     = "https://github.com/MaulXD/MXDRPG.git"
-	composeFile = "docker-compose.local.yml"
+	// URL do compose file distribuído (imagem pré-compilada, sem git clone)
+	composeURL  = "https://raw.githubusercontent.com/MaulXD/MXDRPG/main/docker-compose.mestre.yml"
+	composeFile = "docker-compose.mestre.yml"
 
-	dockerWinURL       = "https://desktop.docker.com/win/main/amd64/Docker%20Desktop%20Installer.exe"
-	dockerMacSilURL    = "https://desktop.docker.com/mac/main/arm64/Docker.dmg"
-	dockerMacIntelURL  = "https://desktop.docker.com/mac/main/amd64/Docker.dmg"
+	dockerWinURL      = "https://desktop.docker.com/win/main/amd64/Docker%20Desktop%20Installer.exe"
+	dockerMacSilURL   = "https://desktop.docker.com/mac/main/arm64/Docker.dmg"
+	dockerMacIntelURL = "https://desktop.docker.com/mac/main/amd64/Docker.dmg"
 )
 
 // ── Ponto de entrada ──────────────────────────────────────────────────────────
@@ -43,9 +44,12 @@ func main() {
 		fatal("Não foi possível determinar o diretório home: " + err.Error())
 	}
 	dir := filepath.Join(home, "MXDRPG")
+	if err := os.MkdirAll(dir, 0755); err != nil {
+		fatal("Não foi possível criar pasta MXDRPG: " + err.Error())
+	}
 
 	// ── 1. Docker ─────────────────────────────────────────────────────────────
-	printStep(1, 5, "Verificando Docker Desktop")
+	printStep(1, 4, "Verificando Docker Desktop")
 	if err := ensureDocker(); err != nil {
 		fmt.Println()
 		printError(err.Error())
@@ -54,19 +58,16 @@ func main() {
 	}
 	printOK()
 
-	// ── 2. Repo ───────────────────────────────────────────────────────────────
-	printStep(2, 5, "Atualizando MXDRPG")
-	if err := cloneOrUpdate(dir); err != nil {
+	// ── 2. Arquivos ───────────────────────────────────────────────────────────
+	printStep(2, 4, "Atualizando configuração")
+	composePath := filepath.Join(dir, composeFile)
+	if err := downloadFile(composeURL, composePath); err != nil {
 		fmt.Println()
-		printError(err.Error())
+		printError("Falha ao baixar configuração: " + err.Error())
 		waitEnter()
 		os.Exit(1)
 	}
-	printOK()
-
-	// ── 3. Configuração ───────────────────────────────────────────────────────
-	printStep(3, 5, "Configurando")
-	envFile := filepath.Join(dir, ".env.local")
+	envFile := filepath.Join(dir, ".env")
 	if err := ensureEnvFile(envFile); err != nil {
 		fmt.Println()
 		printError(err.Error())
@@ -75,21 +76,16 @@ func main() {
 	}
 	printOK()
 
-	// ── 4. Servidores ─────────────────────────────────────────────────────────
-	printStep(4, 5, "Iniciando servidores")
+	// ── 3. Servidores ─────────────────────────────────────────────────────────
+	printStep(3, 4, "Iniciando servidores")
 
 	firstRunFile := filepath.Join(dir, ".first_run_done")
 	isFirst := !fileExists(firstRunFile)
 	if isFirst {
-		fmt.Printf("\n  \033[2mPrimeira execução — build inicial (~5 minutos). Aguarde...\033[0m\n")
+		fmt.Printf("\n  \033[2mPrimeira execução — baixando imagem (~200MB). Aguarde...\033[0m\n")
 	}
 
-	args := []string{"compose", "-f", filepath.Join(dir, composeFile), "up"}
-	if isFirst {
-		args = append(args, "--build")
-	}
-
-	srv := exec.Command("docker", args...)
+	srv := exec.Command("docker", "compose", "--env-file", envFile, "-f", composePath, "up", "--pull", "always")
 	srv.Dir = dir
 	if err := srv.Start(); err != nil {
 		fmt.Println()
@@ -109,16 +105,16 @@ func main() {
 	go func() {
 		<-sigs
 		fmt.Println("\n\n  Encerrando servidores...")
-		exec.Command("docker", "compose", "-f", filepath.Join(dir, composeFile), "down").Run()
+		exec.Command("docker", "compose", "--env-file", envFile, "-f", composePath, "down").Run()
 		srv.Process.Kill()
 		fmt.Println("  Dados salvos. Até a próxima sessão!")
 		os.Exit(0)
 	}()
 
-	// ── 5. Link ngrok ─────────────────────────────────────────────────────────
-	printStep(5, 5, "Aguardando link dos jogadores")
+	// ── 4. Link ngrok ─────────────────────────────────────────────────────────
+	printStep(4, 4, "Aguardando link dos jogadores")
 
-	ngrokURL, err := waitForNgrok(180)
+	ngrokURL, err := waitForNgrok(240)
 	if err != nil {
 		fmt.Println()
 		fmt.Println("  \033[33m[AVISO]\033[0m Timeout aguardando o ngrok.")
@@ -132,8 +128,8 @@ func main() {
 
 	// Banner final
 	url := ngrokURL
-	if len(url) > 50 {
-		url = url[:47] + "..."
+	if len(url) > 52 {
+		url = url[:49] + "..."
 	}
 	fmt.Println()
 	fmt.Println("  ┌──────────────────────────────────────────────────────┐")
@@ -148,7 +144,6 @@ func main() {
 	fmt.Println("  └──────────────────────────────────────────────────────┘")
 	fmt.Println()
 	fmt.Println("  Pressione \033[1mCtrl+C\033[0m para encerrar a sessão.")
-	fmt.Println("  Dados salvos automaticamente a cada 60 segundos.")
 	fmt.Println()
 
 	openBrowser("http://localhost:3000")
@@ -159,20 +154,16 @@ func main() {
 // ── Docker ────────────────────────────────────────────────────────────────────
 
 func ensureDocker() error {
-	// Daemon rodando? → tudo certo
 	if runSilent("docker", "info") == nil {
 		return nil
 	}
 
-	// CLI instalada mas daemon parado → espera iniciar
 	if _, err := exec.LookPath("docker"); err == nil {
 		fmt.Printf("\n  Docker está instalado mas não está rodando.\n")
-		fmt.Printf("  Abra o Docker Desktop (ícone da baleia na barra de tarefas)\n")
-		fmt.Printf("  e aguarde o status ficar \"Running\".\n\n")
+		fmt.Printf("  Abra o Docker Desktop e aguarde o status ficar \"Running\".\n\n")
 		return waitForDocker(180)
 	}
 
-	// Não instalado → baixa e instala automaticamente
 	return downloadAndInstallDocker()
 }
 
@@ -224,7 +215,6 @@ func downloadAndInstallDocker() error {
 
 	switch runtime.GOOS {
 	case "windows":
-		// install flag reduz o número de telas; ainda pede confirmação UAC
 		exec.Command(tmpPath, "install").Start()
 	case "darwin":
 		exec.Command("open", tmpPath).Start()
@@ -232,10 +222,28 @@ func downloadAndInstallDocker() error {
 
 	fmt.Println()
 	fmt.Println("  Siga as instruções do instalador.")
-	fmt.Println("  Após a instalação (e reiniciar se pedido), abra este programa novamente.")
+	fmt.Println("  Após a instalação, abra este programa novamente.")
 	waitEnter()
 	os.Exit(0)
 	return nil
+}
+
+// ── Download ──────────────────────────────────────────────────────────────────
+
+func downloadFile(url, dest string) error {
+	resp, err := http.Get(url)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != 200 {
+		return fmt.Errorf("HTTP %d", resp.StatusCode)
+	}
+	data, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return err
+	}
+	return os.WriteFile(dest, data, 0644)
 }
 
 func downloadWithProgress(url, dest string) error {
@@ -266,7 +274,6 @@ func downloadWithProgress(url, dest string) error {
 			if total > 0 {
 				pct := downloaded * 100 / total
 				totalMb := total / 1024 / 1024
-				// barra de 20 chars
 				filled := int(pct / 5)
 				bar := strings.Repeat("█", filled) + strings.Repeat("░", 20-filled)
 				fmt.Printf("\r  [%s] %d%% (%dMB / %dMB)   ", bar, pct, mb, totalMb)
@@ -285,32 +292,16 @@ func downloadWithProgress(url, dest string) error {
 	return nil
 }
 
-// ── Repo ──────────────────────────────────────────────────────────────────────
-
-func cloneOrUpdate(dir string) error {
-	gitDir := filepath.Join(dir, ".git")
-	if fileExists(gitDir) {
-		out, err := exec.Command("git", "-C", dir, "pull", "--ff-only").CombinedOutput()
-		if err != nil {
-			return fmt.Errorf("git pull falhou: %s", strings.TrimSpace(string(out)))
-		}
-		return nil
-	}
-	out, err := exec.Command("git", "clone", "--depth", "1", repoURL, dir).CombinedOutput()
-	if err != nil {
-		return fmt.Errorf("git clone falhou: %s", strings.TrimSpace(string(out)))
-	}
-	return nil
-}
-
-// ── .env.local ────────────────────────────────────────────────────────────────
+// ── .env ──────────────────────────────────────────────────────────────────────
 
 func ensureEnvFile(path string) error {
 	if fileExists(path) {
 		content, _ := os.ReadFile(path)
-		if strings.Contains(string(content), "NGROK_AUTHTOKEN=") &&
-			!strings.Contains(string(content), "NGROK_AUTHTOKEN=\n") &&
-			!strings.Contains(string(content), "NGROK_AUTHTOKEN=cole_") {
+		s := string(content)
+		hasToken := strings.Contains(s, "NGROK_AUTHTOKEN=") &&
+			!strings.Contains(s, "NGROK_AUTHTOKEN=\n") &&
+			!strings.Contains(s, "NGROK_AUTHTOKEN=cole_")
+		if hasToken {
 			return nil
 		}
 	}
@@ -323,9 +314,9 @@ func ensureEnvFile(path string) error {
 	fmt.Println("  o link público dos jogadores.")
 	fmt.Println()
 	fmt.Println("    1. Abra: https://ngrok.com/signup")
-	fmt.Println("    2. Crie a conta (sem cartão de crédito)")
-	fmt.Println("    3. Vá em: Dashboard > Your Authtoken")
-	fmt.Println("    4. Copie o token")
+	fmt.Println("    2. Crie a conta (gratuito, sem cartão)")
+	fmt.Println("    3. Acesse: Dashboard → Your Authtoken")
+	fmt.Println("    4. Copie o token e cole abaixo")
 	fmt.Println()
 	fmt.Print("  Cole o token aqui: ")
 

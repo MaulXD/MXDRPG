@@ -1,0 +1,57 @@
+# MXDRPG — Compose distribuído para o mestre (usado pelo assistente).
+# A imagem já está pré-compilada no GHCR — não requer git nem build local.
+
+services:
+
+  db:
+    image: mariadb:11.4
+    container_name: mxdrpg-db
+    restart: unless-stopped
+    environment:
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-mxdrpg_root}
+      MARIADB_DATABASE: eldarin
+      MARIADB_USER: eldarin
+      MARIADB_PASSWORD: ${DB_PASSWORD:-mxdrpg_local}
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 40s
+
+  app:
+    image: ghcr.io/maulxd/mxdrpg:main
+    container_name: mxdrpg-app
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: mysql://eldarin:${DB_PASSWORD:-mxdrpg_local}@db:3306/eldarin
+      SESSION_SECRET: ${SESSION_SECRET:?SESSION_SECRET obrigatorio}
+      AUTH_URL: ${AUTH_URL:-http://localhost:3000}
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET:-}
+      DISCORD_CLIENT_ID: ${DISCORD_CLIENT_ID:-}
+      DISCORD_CLIENT_SECRET: ${DISCORD_CLIENT_SECRET:-}
+
+  ngrok:
+    image: ngrok/ngrok:latest
+    container_name: mxdrpg-ngrok
+    restart: unless-stopped
+    depends_on:
+      - app
+    command: http app:3000 --log=stdout --log-format=json
+    environment:
+      NGROK_AUTHTOKEN: ${NGROK_AUTHTOKEN:?NGROK_AUTHTOKEN obrigatorio}
+    ports:
+      - "4040:4040"
+
+volumes:
+  db_data:
+    name: mxdrpg_data
