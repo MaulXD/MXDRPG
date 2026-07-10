@@ -53,6 +53,26 @@ const TALENT_HABILIDADE: Record<string, string> = {
   "corrente-mental": "habilidades-corrente-mental",
   "manto-de-bruma": "habilidades-manto-de-bruma",
   "puxao-abissal": "habilidades-puxao-abissal",
+  // Punho do Limiar
+  "golpe-do-vacuo": "chi-golpe-do-vacuo",
+  "punho-cortante": "chi-golpe-do-vacuo",
+  "tempestade-de-punhos": "chi-golpe-do-vacuo",
+  "quebra-de-ossos": "chi-golpe-do-vacuo",
+  // Tecelão do Vácuo
+  "passo-do-vacuo": "chi-passo-do-vacuo",
+  "rede-de-chi": "chi-passo-do-vacuo",
+  "silencio-interior": "chi-passo-do-vacuo",
+  "ruptura-dimensional": "chi-passo-do-vacuo",
+  // Asceta da Dor
+  "ferida-aberta": "chi-ferida-aberta",
+  "autoflagelo": "chi-ferida-aberta",
+  "ritual-de-sangue": "chi-ferida-aberta",
+  "corpo-rasgado": "chi-ferida-aberta",
+  // Guardião da Respiração
+  "muro-de-chi": "chi-muro-de-chi",
+  "respiracao-de-ferro": "chi-muro-de-chi",
+  "campo-protetor": "chi-muro-de-chi",
+  "pele-de-vento": "chi-muro-de-chi",
 };
 
 const CLASS_FALLBACK: Record<string, string> = {
@@ -65,7 +85,7 @@ const CLASS_FALLBACK: Record<string, string> = {
   Bárbaro: "habilidades-furia-controlada",
   Druida: "habilidades-forma-selvagem",
   Feiticeiro: "habilidades-raio-arcano",
-  Espiritualista: "habilidades-golpe-de-chi",
+  Espiritualista: "chi-golpe-de-chi",
   Paladino: "habilidades-imposicao-de-maos",
   Bruxo: "habilidades-raio-do-pacto",
 };

@@ -308,7 +308,9 @@
 .hud-stats {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
+  flex-wrap: wrap;
+  row-gap: 4px;
 }
 
 .hud-ca {
@@ -392,6 +394,67 @@
 .hud-pa-dot--on {
   background: var(--accent-warn);
   border-color: var(--accent-warn);
+}
+
+/* ── Chi pool (Espiritualista) ─────────────────────────────── */
+.hud-chi {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: nowrap;
+}
+
+.hud-chi-label {
+  font-family: var(--font-display);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent);
+  opacity: 0.7;
+}
+
+.hud-chi-value {
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--accent);
+  line-height: 1;
+  min-width: 1ch;
+}
+
+.hud-chi-value--spent {
+  opacity: 0.45;
+}
+
+.hud-chi-turn {
+  display: flex;
+  gap: 3px;
+}
+
+.hud-chi-pip {
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  transform: rotate(45deg);
+  border: 1.5px solid color-mix(in srgb, var(--accent) 45%, transparent);
+  flex-shrink: 0;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.hud-chi-pip--used {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.hud-chi-max {
+  font-family: var(--font-display);
+  font-size: 9px;
+  font-weight: 500;
+  color: var(--accent);
+  opacity: 0.45;
+  line-height: 1;
 }
 
 .hud-actions {

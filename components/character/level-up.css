@@ -538,3 +538,66 @@ button.lu-tree-node {
   margin-bottom: 0.25rem;
 }
 
+/* ── Universal Feat Grid ─────────────────────────────────────────── */
+
+.lu-feat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.lu-feat-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.25rem;
+  padding: 0.55rem 0.65rem;
+  border-radius: 6px;
+  border: 1px solid rgba(139, 123, 184, 0.3);
+  background: rgba(20, 18, 28, 0.55);
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.15s, background 0.15s, box-shadow 0.15s;
+}
+
+.lu-feat-card:hover {
+  border-color: rgba(139, 123, 184, 0.65);
+  background: rgba(139, 123, 184, 0.1);
+}
+
+.lu-feat-card--on {
+  border-color: var(--accent);
+  background: rgba(139, 123, 184, 0.2);
+  box-shadow: 0 0 10px rgba(139, 123, 184, 0.25);
+}
+
+.lu-feat-badge {
+  display: inline-block;
+  font-size: 0.6rem;
+  font-family: var(--font-display);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.1em 0.45em;
+  border-radius: 3px;
+  font-weight: 700;
+}
+
+.lu-feat-badge--combate      { background: rgba(200, 60, 60, 0.22);  color: #e08080; }
+.lu-feat-badge--culinario    { background: rgba(200, 150, 60, 0.22); color: #e0b870; }
+.lu-feat-badge--sobrevivencia{ background: rgba(60, 160, 80, 0.22);  color: #80c888; }
+.lu-feat-badge--social       { background: rgba(60, 120, 200, 0.22); color: #80a8e0; }
+
+.lu-feat-name {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--foreground, #e8e0f0);
+  line-height: 1.25;
+}
+
+.lu-feat-prereq {
+  font-size: 0.67rem;
+  color: rgba(232, 224, 240, 0.5);
+  font-style: italic;
+}
+

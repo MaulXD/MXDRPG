@@ -1,6 +1,7 @@
 import { paNeedForCombatAction } from "@/lib/combat/attack";
 import { describePaDiscountNote, listPaModifiersForActor, paCostContextFromToken } from "@/lib/combat/pa-cost-reduce";
 import { tokenSpendablePa } from "@/lib/combat/pa-turn";
+import { chiAvailable, chiSpentThisTurn, CHI_SPEND_CAP_PER_TURN } from "@/lib/combat/chi-economy";
 import type { CombatActionOption } from "@/lib/combat/types";
 import type { CharacterSheet } from "@/lib/character/types";
 import type { MoveCheck, MovePaOptions } from "@/lib/vtt/movement";
@@ -68,7 +69,17 @@ export function unifiedPaChipForAction(
       ? action.paCost + channelExtraPa
       : action.paCost;
   const effective = paNeedForCombatAction(token, actor, action, channelExtraPa);
-  return formatUnifiedPaChip(token, base, effective, actionModifierNote(actor, action, token));
+  const paChip = formatUnifiedPaChip(token, base, effective, actionModifierNote(actor, action, token));
+
+  if (action.chiCost) {
+    const chiAfter = Math.max(0, chiAvailable(token) - action.chiCost);
+    const chiMax = token.chiMax ?? 10;
+    const spentTurn = chiSpentThisTurn(token) + action.chiCost;
+    const turnLeft = CHI_SPEND_CAP_PER_TURN - spentTurn;
+    return `${paChip}  ·  Chi: ${action.chiCost} · χ ${chiAfter}/${chiMax} · turno ${turnLeft < 0 ? "excede limite" : `${Math.max(0, turnLeft)} restante`}`;
+  }
+
+  return paChip;
 }
 
 export function unifiedPaChipForMove(

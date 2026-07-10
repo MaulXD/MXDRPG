@@ -1,0 +1,262 @@
+[
+  {
+    "id": "talento-especialista-armas-organicas",
+    "name": "Especialista em Armas Orgânicas",
+    "type": "talento",
+    "system": {
+      "catalogId": "TAL-especialista-armas-organicas",
+      "bookRef": "LIVRO-DO-JOGADOR.md",
+      "category": "combate",
+      "levelMin": 4,
+      "prerequisites": "",
+      "description": "<p>Proficiência em armas orgânicas (presas, garras, tentáculos extraídos como arma). Ao acertar com arma orgânica, causa +1d4 do tipo de dano da origem do monstro além do dano normal.</p>"
+    }
+  },
+  {
+    "id": "talento-pele-grossa",
+    "name": "Pele Grossa",
+    "type": "talento",
+    "system": {
+      "catalogId": "TAL-pele-grossa",
+      "bookRef": "LIVRO-DO-JOGADOR.md",
+      "category": "combate",
+      "levelMin": 4,
+      "prerequisites": "CON 14",
+      "description": "<p>+1 CA permanente. Quando receber dano que o reduziria a 0 HP, faça um teste de CON (CD 12): sucesso → fica com 1 HP em vez de cair. Pode usar 1×/descanso curto.</p>"
+    }
+  },
+  {
+    "id": "talento-reflexos-de-combate",
+    "name": "Reflexos de Combate",
+    "type": "talento",
+    "system": {
+      "catalogId": "TAL-reflexos-de-combate",
+      "bookRef": "LIVRO-DO-JOGADOR.md",
+      "category": "combate",
+      "levelMin": 8,
+      "prerequisites": "DES 16",
+      "description": "<p>Reação: quando um inimigo entrar voluntariamente no seu alcance de ameaça, você pode fazer um ataque contra ele. Não é ataque de oportunidade — não consome a reação de oportunidade.</p>"
+    }
+  },
+  {
+    "id": "talento-golpe-brutal",
+    "name": "Golpe Brutal",
+    "type": "talento",
+    "system": {
+      "catalogId": "TAL-golpe-brutal",
+      "bookRef": "LIVRO-DO-JOGADOR.md",
+      "category": "combate",
+      "levelMin": 12,
+      "prerequisites": "FOR 18",
+      "description": "<p>1×/turno: ao acertar um ataque corpo a corpo, o alvo é derrubado (Prostrado) automaticamente sem teste de resistência, além de receber dano extra igual ao seu modificador de FOR.</p>"
+    }
+  },
+  {
+    "id": "talento-maos-de-mestre-extracao",
+    "name": "Mãos de Mestre — Extração",
+    "type": "talento",
+    "system": {
+      "catalogId": "TAL-maos-de-mestre-extracao",
+      "bookRef": "LIVRO-DO-JOGADOR.md",
+      "category": "culinario",
+      "levelMin": 4,
+      "prerequisites": "Extração +4",
+      "description": "<p>+3 nos testes de Extração. Pode extrair ingredientes sem possuir Estudo de Anatomia da criatura sem sofrer penalidade por falta de conhecimento.</p>"
+    }
+  },
+  {
+    "id": "talento-paladar-apurado-forrageio",
+    "name": "Paladar Apurado — Forrageio",
+    "type": "talento",
+    "system": {
+      "catalogId": "TAL-paladar-apurado-forrageio",
+      "bookRef": "LIVRO-DO-JOGADOR.md",
+      "category": "culinario",
+      "levelMin": 4,
+      "prerequisites": "Forrageio +5",
+      "description": "<p>+3 nos testes de Forrageio. Uma vez por refeição preparada, pode rolar o teste de Forrageio com Vantagem para coletar ingredientes.</p>"
+    }
+  },
+  {
+    "id": "talento-controle-de-chama-perfeito",
+    "name": "Controle de Chama Perfeito",
+    "type": "talento",
+    "system": {
+      "catalogId": "TAL-controle-de-chama-perfeito",
+      "bookRef": "LIVRO-DO-JOGADOR.md",
+      "category": "culinario",
+      "levelMin": 8,
+      "prerequisites": "Coccão +4",
+      "description": "<p>O mínimo de resultado em testes de Coccão é 10 (trate resultados abaixo disso como 10). Para fazer um Prato Perfeito, o resultado mínimo exigido é 18 em vez de 20.</p>"
+    }
+  },
+  {
+    "id": "talento-estomago-lendario",
+    "name": "Estômago Lendário",
+    "type": "talento",
+    "system": {
+      "catalogId": "TAL-estomago-lendario",
+      "bookRef": "LIVRO-DO-JOGADOR.md",
+      "category": "culinario",
+      "levelMin": 8,
+      "prerequisites": "Fortitude +5",
+      "description": "<p>Imune a debuffs causados por Gororoba. Pode consumir ingredientes de qualidade Especialista crus sem penalidades. 1×/semana: pode ingerir um ingrediente Boss bruto — ganha uma mutação aleatória por 8 horas.</p>"
+    }
+  },
+  {
+    "id": "talento-cozinheiro-de-expedicao",
+    "name": "Cozinheiro de Expedição",
+    "type": "talento",
+    "system": {
+      "catalogId": "TAL-cozinheiro-de-expedicao",
+      "bookRef": "LIVRO-DO-JOGADOR.md",
+      "category": "culinario",
+      "levelMin": 4,
+      "prerequisites": "",
+      "description": "<p>Prepara refeições em metade do tempo normal. Em combate, como ação rápida (1 PA), pode distribuir uma porção emergencial: aliado adjacente recupera 2d8 HP Temporários e ativa imediatamente o Bônus Passivo da dieta dele.</p>"
+    }
+  },
+  {
+    "id": "talento-extrator-de-elite",
+    "name": "Extrator de Elite",
+    "type": "talento",
+    "system": {
+      "catalogId": "TAL-extrator-de-elite",
+      "bookRef": "LIVRO-DO-JOGADOR.md",
+      "category": "culinario",
+      "levelMin": 12,
+      "prerequisites": "Extração +6",
+      "description": "<p>Ao extrair com Estudo de Anatomia ativo: obtém o dobro da quantidade de ingredientes. Nunca destrói ingredientes Boss ao extrair, mesmo em falha crítica.</p>"
+    }
+  },
+  {
+    "id": "talento-sentido-de-masmorra",
+    "name": "Sentido de Masmorra",
+    "type": "talento",
+    "system": {
+      "catalogId": "TAL-sentido-de-masmorra",
+      "bookRef": "LIVRO-DO-JOGADOR.md",
+      "category": "sobrevivencia",
+      "levelMin": 4,
+      "prerequisites": "",
+      "description": "<p>Ao entrar em um bioma ou andar não visitado, percebe automaticamente: nível geral de perigo, armadilhas óbvias e criaturas predominantes. Nunca se perde em andares que já visitou.</p>"
+    }
+  },
+  {
+    "id": "talento-metabolismo-acelerado",
+    "name": "Metabolismo Acelerado",
+    "type": "talento",
+    "system": {
+      "catalogId": "TAL-metabolismo-acelerado",
+      "bookRef": "LIVRO-DO-JOGADOR.md",
+      "category": "sobrevivencia",
+      "levelMin": 4,
+      "prerequisites": "CON 14",
+      "description": "<p>Mutações duram 36h em vez de 24h. Pode manter uma mutação \"reservada\": ao perder uma mutação ativa, a reservada entra automaticamente sem ação.</p>"
+    }
+  },
+  {
+    "id": "talento-primeiros-socorros-avancados",
+    "name": "Primeiros Socorros Avançados",
+    "type": "talento",
+    "system": {
+      "catalogId": "TAL-primeiros-socorros-avancados",
+      "bookRef": "LIVRO-DO-JOGADOR.md",
+      "category": "sobrevivencia",
+      "levelMin": 4,
+      "prerequisites": "SAB 13",
+      "description": "<p>Estabiliza aliado a 0 HP como ação rápida (1 PA) sem teste. Com kit médico e ingredientes adequados: cura 3d8 HP (1×/descanso curto por aliado).</p>"
+    }
+  },
+  {
+    "id": "talento-resistencia-elemental",
+    "name": "Resistência Elemental",
+    "type": "talento",
+    "system": {
+      "catalogId": "TAL-resistencia-elemental",
+      "bookRef": "LIVRO-DO-JOGADOR.md",
+      "category": "sobrevivencia",
+      "levelMin": 8,
+      "prerequisites": "CON 16",
+      "description": "<p>Escolha 2 tipos de dano elemental: ganha resistência permanente a eles. Pode escolher este talento duas vezes — na segunda escolha, pode converter uma das resistências em imunidade.</p>"
+    }
+  },
+  {
+    "id": "talento-visao-no-escuro",
+    "name": "Visão no Escuro",
+    "type": "talento",
+    "system": {
+      "catalogId": "TAL-visao-no-escuro",
+      "bookRef": "LIVRO-DO-JOGADOR.md",
+      "category": "sobrevivencia",
+      "levelMin": 4,
+      "prerequisites": "",
+      "description": "<p>Se não possuía visão no escuro: ganha visão no escuro de 12m. Se já possuía: dobra o alcance e passa a enxergar cores normais na escuridão.</p>"
+    }
+  },
+  {
+    "id": "talento-estudioso-de-bestiario",
+    "name": "Estudioso de Bestiário",
+    "type": "talento",
+    "system": {
+      "catalogId": "TAL-estudioso-de-bestiario",
+      "bookRef": "LIVRO-DO-JOGADOR.md",
+      "category": "social",
+      "levelMin": 4,
+      "prerequisites": "INT 14",
+      "description": "<p>Escolha 3 categorias de monstros: possui Estudo de Anatomia automático para todas as criaturas dessas categorias. Para monstros de outras categorias, pode tentar INT (CD 10) para identificá-los na hora.</p>"
+    }
+  },
+  {
+    "id": "talento-negociador-do-submundo",
+    "name": "Negociador do Submundo",
+    "type": "talento",
+    "system": {
+      "catalogId": "TAL-negociador-do-submundo",
+      "bookRef": "LIVRO-DO-JOGADOR.md",
+      "category": "social",
+      "levelMin": 4,
+      "prerequisites": "CAR 15",
+      "description": "<p>Pode tentar negociar com monstros de INT 6 ou mais usando CAR (Persuasão) vs CD igual a 8 + nível do monstro. Em caso de sucesso, a criatura fica Hesitante por 1 turno.</p>"
+    }
+  },
+  {
+    "id": "talento-mercador-de-ingredientes",
+    "name": "Mercador de Ingredientes",
+    "type": "talento",
+    "system": {
+      "catalogId": "TAL-mercador-de-ingredientes",
+      "bookRef": "LIVRO-DO-JOGADOR.md",
+      "category": "social",
+      "levelMin": 4,
+      "prerequisites": "",
+      "description": "<p>Vende ingredientes por 150% do valor de mercado em vez de 100%. Antes de entrar em qualquer masmorra, conhece automaticamente quais ingredientes têm maior demanda naquele ciclo.</p>"
+    }
+  },
+  {
+    "id": "talento-especializacao-de-inimigo",
+    "name": "Especialização de Inimigo",
+    "type": "talento",
+    "system": {
+      "catalogId": "TAL-especializacao-de-inimigo",
+      "bookRef": "LIVRO-DO-JOGADOR.md",
+      "category": "social",
+      "levelMin": 8,
+      "prerequisites": "",
+      "description": "<p>Escolha 1 tipo de monstro: +2 nos testes de ataque, +2d6 de dano e Vantagem em testes de Extração contra criaturas desse tipo. Pode escolher este talento múltiplas vezes para tipos diferentes.</p>"
+    }
+  },
+  {
+    "id": "talento-alquimista-amador",
+    "name": "Alquimista Amador",
+    "type": "talento",
+    "system": {
+      "catalogId": "TAL-alquimista-amador",
+      "bookRef": "LIVRO-DO-JOGADOR.md",
+      "category": "social",
+      "levelMin": 4,
+      "prerequisites": "INT 13",
+      "description": "<p>Pode criar poções básicas sem ser Gnomo: Poção de Cura Leve (2d4+2 HP), Antídoto (remove um veneno) e Poção de Resistência Elemental (1 elemento, 1h). Requer ingredientes adequados e descanso curto.</p>"
+    }
+  }
+]

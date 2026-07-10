@@ -26,6 +26,13 @@ import {
 } from "@/lib/character/xp";
 import { levelUpRoomActor, type LevelUpRoomResponse } from "@/hooks/useRoomSync";
 import { TalentTreeGraph } from "@/components/character/TalentTreeGraph";
+import {
+  getFeatName,
+  listFeatsForLevel,
+  FEAT_CATEGORY_LABELS,
+  type UniversalFeat,
+} from "@/lib/character/feats";
+import type { LevelUpRequirement } from "@/lib/character/level-up";
 import "./level-up.css";
 import "./sheet-ddb.css";
 
@@ -49,6 +56,7 @@ const STEP_LABEL: Record<LevelUpWizardStep["type"], string> = {
   subclass: "Subclasse",
   asi: "Atributos",
   talent: "Talento",
+  feat: "Talento Universal",
   ascension: "Ascensão",
   confirm: "Confirmar",
 };
@@ -70,6 +78,7 @@ export function LevelUpWizard({
 
   const [subclasse, setSubclasse] = useState(actor.identity.subclasse ?? "");
   const [talentoId, setTalentoId] = useState("");
+  const [featId, setFeatId] = useState("");
   const [asi, setAsi] = useState<Partial<Record<AttributeKey, number>>>({});
 
   const nextLevel = actor.identity.nivel + 1;
@@ -86,9 +95,10 @@ export function LevelUpWizard({
     () => ({
       subclasse: subclasse || undefined,
       talentoId: talentoId || undefined,
+      featId: featId || undefined,
       asi: Object.keys(asi).length ? asi : undefined,
     }),
-    [subclasse, talentoId, asi]
+    [subclasse, talentoId, featId, asi]
   );
 
   const previewGroups = useMemo(
@@ -101,11 +111,17 @@ export function LevelUpWizard({
     [actor]
   );
 
+  const featReq = useMemo(
+    () => getLevelUpRequirements(actor).find((r) => r.kind === "feat") as Extract<LevelUpRequirement, { kind: "feat" }> | undefined,
+    [actor]
+  );
+
   useEffect(() => {
     if (!open) return;
     setStepIndex(0);
     setSubclasse(actor.identity.subclasse ?? "");
     setTalentoId("");
+    setFeatId("");
     setAsi({});
     setMsg(null);
   }, [open, actor.identity.subclasse]);
@@ -133,6 +149,7 @@ export function LevelUpWizard({
       if (!talentReq?.options.length) return false;
       return Boolean(talentoId);
     }
+    if (currentStep.type === "feat") return Boolean(featId);
     return true;
   }
 
@@ -163,6 +180,7 @@ export function LevelUpWizard({
       await onDone();
       setOpen(false);
       setTalentoId("");
+      setFeatId("");
     } catch (e) {
       setMsg(e instanceof Error ? e.message : "Erro ao subir nível");
     } finally {
@@ -312,6 +330,40 @@ export function LevelUpWizard({
           </>
         );
 
+      case "feat": {
+        const available = featReq?.options ?? [];
+        return (
+          <>
+            <p className="lu-hint">
+              Escolha um <strong>talento universal</strong> do nível{" "}
+              <strong>{currentStep.level}</strong> — disponível para todas as classes.
+            </p>
+            {available.length === 0 ? (
+              <p className="lu-err">Nenhum talento disponível para este nível.</p>
+            ) : (
+              <div className="lu-feat-grid" role="group" aria-label="Talentos universais">
+                {available.map((feat: UniversalFeat) => (
+                  <button
+                    key={feat.id}
+                    type="button"
+                    className={`lu-feat-card${featId === feat.id ? " lu-feat-card--on" : ""}`}
+                    onClick={() => setFeatId(feat.id)}
+                  >
+                    <span className={`lu-feat-badge lu-feat-badge--${feat.category}`}>
+                      {FEAT_CATEGORY_LABELS[feat.category] ?? feat.category}
+                    </span>
+                    <span className="lu-feat-name">{feat.name}</span>
+                    {feat.prerequisites ? (
+                      <span className="lu-feat-prereq">Req.: {feat.prerequisites}</span>
+                    ) : null}
+                  </button>
+                ))}
+              </div>
+            )}
+          </>
+        );
+      }
+
       case "ascension":
         return (
           <>
@@ -348,6 +400,11 @@ export function LevelUpWizard({
                 <li>
                   <strong>Talento:</strong>{" "}
                   {track.talents.find((t) => t.id === choices.talentoId)?.name ?? choices.talentoId}
+                </li>
+              ) : null}
+              {choices.featId ? (
+                <li>
+                  <strong>Talento universal:</strong> {getFeatName(choices.featId)}
                 </li>
               ) : null}
               {choices.asi ? (

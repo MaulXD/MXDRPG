@@ -4,6 +4,7 @@ import type { CharacterSheet } from "@/lib/character/types";
 import { CharacterIdentityEditor } from "@/components/character/CharacterIdentityEditor";
 import { FutureLevelsPanel } from "@/components/character/FutureLevelsPanel";
 import { SubclassTrackPanel } from "@/components/character/SubclassTrackPanel";
+import { UniversalFeatsPanel } from "@/components/character/UniversalFeatsPanel";
 import { CombatLoadoutPanel } from "@/components/character/CombatLoadoutPanel";
 import { SheetEditRequestButton } from "@/components/character/SheetEditRequestButton";
 import type { IdentityPatch } from "@/lib/character/identity";
@@ -47,6 +48,7 @@ export function SheetDdbManagePanel({
       ) : null}
 
       <SubclassTrackPanel actor={live} popup />
+      <UniversalFeatsPanel actor={live} popup />
       <FutureLevelsPanel actor={live} compact />
 
       {canEdit ? (

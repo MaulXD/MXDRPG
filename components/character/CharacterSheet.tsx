@@ -33,6 +33,7 @@ import { CharacterReligionEditor } from "@/components/character/CharacterReligio
 import { ReligionSheetPanel } from "@/components/character/ReligionSheetPanel";
 import { WizardHoverTip } from "@/components/character/wizard/WizardHoverTip";
 import { SubclassTrackPanel } from "@/components/character/SubclassTrackPanel";
+import { UniversalFeatsPanel } from "@/components/character/UniversalFeatsPanel";
 import { CombatLoadoutPanel } from "@/components/character/CombatLoadoutPanel";
 import { SpellPrepPanel } from "@/components/character/SpellPrepPanel";
 import { LootEconomyPanel } from "@/components/character/LootEconomyPanel";
@@ -961,6 +962,7 @@ function CharacterSheetLoaded({
       ) : null}
 
       <SubclassTrackPanel actor={live} popup={isPopup} />
+      <UniversalFeatsPanel actor={live} popup={isPopup} />
 
       {canEdit ? (
         <SheetPopupLoadoutBar

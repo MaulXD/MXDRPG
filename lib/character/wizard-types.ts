@@ -36,6 +36,8 @@ export type CharacterWizardDraft = {
   portraitFocus?: PortraitFocus | null;
   coverFocus?: PortraitFocus | null;
   tokenFocus?: PortraitFocus | null;
+  /** Perícia escolhida pelo antecedente Aventureiro ("Uma perícia à escolha"). */
+  escolhaPericiaAntecedente?: string | null;
 };
 
 export const EMPTY_WIZARD_DRAFT: CharacterWizardDraft = {
@@ -61,4 +63,5 @@ export const EMPTY_WIZARD_DRAFT: CharacterWizardDraft = {
   portraitFocus: null,
   coverFocus: null,
   tokenFocus: null,
+  escolhaPericiaAntecedente: null,
 };

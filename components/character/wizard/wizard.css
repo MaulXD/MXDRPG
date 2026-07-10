@@ -1094,3 +1094,48 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* ── Aventureiro skill picker ──────────────────────────────────── */
+
+.char-wizard-aventureiro-pick {
+  margin-top: 1rem;
+  padding: 0.85rem 1rem;
+  border: 1px dashed rgba(139, 123, 184, 0.4);
+  border-radius: 6px;
+  background: rgba(139, 123, 184, 0.06);
+}
+
+.char-wizard-aventureiro-pick__label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--accent, #8B7BB8);
+  margin-bottom: 0.6rem;
+}
+
+.char-wizard-aventureiro-pick__grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.char-wizard-aventureiro-btn {
+  padding: 0.3rem 0.75rem;
+  border-radius: 4px;
+  border: 1px solid rgba(139, 123, 184, 0.3);
+  background: rgba(20, 18, 28, 0.55);
+  font-size: 0.78rem;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+  color: inherit;
+}
+
+.char-wizard-aventureiro-btn:hover {
+  border-color: rgba(139, 123, 184, 0.7);
+  background: rgba(139, 123, 184, 0.12);
+}
+
+.char-wizard-aventureiro-btn--on {
+  border-color: var(--accent, #8B7BB8);
+  background: rgba(139, 123, 184, 0.22);
+  font-weight: 700;
+}

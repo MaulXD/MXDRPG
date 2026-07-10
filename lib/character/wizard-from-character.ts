@@ -37,5 +37,6 @@ export function characterToWizardDraft(character: CharacterSheet): CharacterWiza
     portraitFocus: character.portraitFocus ?? null,
     coverFocus: character.coverFocus ?? null,
     tokenFocus: character.tokenFocus ?? null,
+    escolhaPericiaAntecedente: character.identity.escolhaPericiaAntecedente ?? null,
   };
 }

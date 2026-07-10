@@ -105,6 +105,11 @@ export function buildCharacterFromWizard(
       antecedente: safeDraft.antecedente,
       religiao: safeDraft.religiao,
       talentos: [],
+      featIds: [],
+      escolhaPericiaAntecedente:
+        safeDraft.antecedente === "Aventureiro"
+          ? (safeDraft.escolhaPericiaAntecedente ?? null)
+          : null,
     },
     attributes,
     culinary: { trinchar: 0, harmonizacao: 0, coccao: 0, estomagoDeFerro: 0 },

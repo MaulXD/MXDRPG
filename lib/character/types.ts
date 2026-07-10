@@ -31,6 +31,10 @@ export type CharacterIdentity = {
   religiao?: string | null;
   /** Talentos de subclasse (nv 4/8/12/16) + ascensão nv20 */
   talentos?: Array<{ level: number; id: string; name: string }>;
+  /** Talentos universais (feats) escolhidos nos níveis 4/8/12/16 */
+  featIds?: string[];
+  /** Perícia livre escolhida pelo antecedente Aventureiro */
+  escolhaPericiaAntecedente?: string | null;
 };
 
 /** Especiarias, minerios, tesouros (Cap. 5.6) */

@@ -48,17 +48,23 @@ export function computeDefesaFromArmor(desMod: number, entry: CompendiumEntry | 
   );
 }
 
+function featDefesaBonus(actor: CharacterSheet): number {
+  const feats = actor.identity.featIds ?? [];
+  return feats.includes("talento-pele-grossa") ? 1 : 0;
+}
+
 export function resolveActorDefesa(actor: CharacterSheet): number {
   const desMod = attributeMod(actor.attributes.destreza);
+  const featBonus = featDefesaBonus(actor);
   const loadout = actor.armorLoadout;
   if (!loadout?.entryId) {
-    return actor.tactical?.defesa ?? 10 + desMod;
+    return (actor.tactical?.defesa ?? 10 + desMod) + featBonus;
   }
   const entry = getEntry("equipamentos", loadout.entryId);
   if (!entry || entry.type !== "equipamento") {
-    return actor.tactical?.defesa ?? 10 + desMod;
+    return (actor.tactical?.defesa ?? 10 + desMod) + featBonus;
   }
-  return computeDefesaFromArmor(desMod, entry);
+  return computeDefesaFromArmor(desMod, entry) + featBonus;
 }
 
 export function isArmorEntry(entry: CompendiumEntry): boolean {

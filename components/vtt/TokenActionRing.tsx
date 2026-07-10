@@ -107,6 +107,8 @@ type Props = {
   onOpenGmHpEdit?: () => void;
   /** Abre seletor de magias estilo fantasia clássica (em vez do submenu radial). */
   onOpenSpellPicker?: () => void;
+  /** Abre seletor de habilidades em lista (em vez do submenu radial). */
+  onOpenAbilityPicker?: () => void;
 };
 
 const RING_RADIUS_BASE = 152;
@@ -151,6 +153,10 @@ function combatActionPaLabel(
   action: CombatActionOption | undefined
 ): string {
   if (!action) return "—";
+  if (action.chiCost) {
+    const pa = actor ? totalChannelPaCost(actor, action, 0, token) : action.paCost;
+    return `${pa}PA · ${action.chiCost}χ`;
+  }
   if (action.channelMaxExtraPa) {
     const base = totalChannelPaCost(actor, action, 0, token);
     return `${base}+ PA`;
@@ -191,6 +197,7 @@ export function TokenActionRing({
   showGmHpEdit = false,
   onOpenGmHpEdit,
   onOpenSpellPicker,
+  onOpenAbilityPicker,
 }: Props) {
   const [ringView, setRingView] = useState<RingView>("main");
   const [exiting, setExiting] = useState(false);
@@ -321,6 +328,15 @@ export function TokenActionRing({
       }
       if (mode === "ability") {
         if (abilities.length === 0) return;
+        if (abilities.length === 1) {
+          pickCombatAction("ability", abilities[0]!);
+          return;
+        }
+        if (onOpenAbilityPicker) {
+          onOpenAbilityPicker();
+          beginClose();
+          return;
+        }
         setRingView("ability");
         return;
       }
@@ -352,6 +368,7 @@ export function TokenActionRing({
       onPickMode,
       beginClose,
       onOpenSpellPicker,
+      onOpenAbilityPicker,
       pickCombatAction,
       resolveRingAttackAction,
       saveLoadout,
@@ -398,7 +415,7 @@ export function TokenActionRing({
       return {
         id: `${tone}-${action.entryId}`,
         tone,
-        label: truncateRingLabel(action.label || action.name),
+        label: truncateRingLabel(action.label || action.name, 22),
         glyph,
         paLabel: combatActionPaLabel(token, actor, action),
         longLabel: true,
@@ -473,8 +490,7 @@ export function TokenActionRing({
         glyph: <IconMove size={16} />,
         paLabel: movePa,
         disabled: turnBlocked,
-        title: "Próxima célula · caminhada",
-        detailHint: "Caminhada — próxima célula na faixa gratuita ou com PA conforme distância já percorrida.",
+        detailHint: "Caminhada — as primeiras células do turno são gratuitas ou baratas em PA. O custo sobe progressivamente com a distância percorrida. Use para reposicionamento seguro.",
         onClick: () => pickMain("move-walk"),
       },
       {
@@ -484,8 +500,7 @@ export function TokenActionRing({
         glyph: <IconRun size={16} />,
         paLabel: movePa,
         disabled: turnBlocked,
-        title: "Próxima célula · corrida",
-        detailHint: "Corrida — deslocamento extra com custo de PA maior que a caminhada.",
+        detailHint: "Corrida — gasta mais PA por célula que a caminhada, mas não tem limite de distância por turno. Use quando precisar cobrir terreno rápido a custo de ações.",
         onClick: () => pickMain("move-run"),
       },
       {
@@ -786,7 +801,10 @@ export function TokenActionRing({
           {ringView === "main" ? (
             <>
               <span className="token-action-ring__center-name">{token.name}</span>
-              <span className="token-action-ring__center-hint">{token.pa ?? 0} PA</span>
+              <span className="token-action-ring__center-hint">
+                {token.pa ?? 0} PA
+                {token.chi != null ? ` · ${token.chi}χ` : ""}
+              </span>
             </>
           ) : (
             <>
@@ -830,7 +848,7 @@ export function TokenActionRing({
                   slot.rechargeHint ? " token-action-ring__slot--cooldown" : ""
                 }`}
                 disabled={slot.disabled}
-                title={`${slot.label} · ${slot.paLabel}`}
+                aria-label={`${slot.label} · ${slot.paLabel}`}
                 onClick={slot.onClick}
               >
                 <span className="token-action-ring__glyph" aria-hidden>

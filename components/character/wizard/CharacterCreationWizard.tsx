@@ -53,6 +53,7 @@ import {
   classAttributeFocusSummary,
 } from "@/lib/character/class-scales";
 import { ANTECEDENTE_META } from "@/lib/character/wizard-meta";
+import { ANTECEDENTE_SKILL_DEFS } from "@/lib/character/sheet-skills";
 import { subclassTrackIntroTooltip } from "@/lib/character/subclass-wizard-tooltips";
 import {
   antecedenteGainDescription,
@@ -296,6 +297,9 @@ export function CharacterCreationWizard({
     if (index === 3) return validatePointBuy(draft.pointBuy);
     if (index === 4) {
       if (!draft.antecedente) return "Escolha antecedente";
+      if (draft.antecedente === "Aventureiro" && !draft.escolhaPericiaAntecedente) {
+        return "Aventureiro: escolha a perícia";
+      }
       return null;
     }
     if (index === 5) {
@@ -851,7 +855,7 @@ export function CharacterCreationWizard({
                   role="option"
                   aria-selected={draft.antecedente === a.id}
                   className={`char-wizard-pick ${draft.antecedente === a.id ? "char-wizard-pick--on" : ""}`}
-                  onClick={() => patch({ antecedente: a.id })}
+                  onClick={() => patch({ antecedente: a.id, escolhaPericiaAntecedente: a.id !== "Aventureiro" ? null : draft.escolhaPericiaAntecedente })}
                 >
                   <div style={{ display: "flex", width: "100%", alignItems: "flex-start" }}>
                     <span className="char-wizard-pick__icon">{pickInitial(a.title)}</span>
@@ -873,6 +877,25 @@ export function CharacterCreationWizard({
                 </button>
               ))}
             </div>
+            {draft.antecedente === "Aventureiro" ? (
+              <div className="char-wizard-aventureiro-pick">
+                <p className="char-wizard-aventureiro-pick__label">
+                  Escolha a perícia que o Aventureiro traz:
+                </p>
+                <div className="char-wizard-aventureiro-pick__grid" role="group" aria-label="Perícia do Aventureiro">
+                  {ANTECEDENTE_SKILL_DEFS.map((s) => (
+                    <button
+                      key={s.id}
+                      type="button"
+                      className={`char-wizard-aventureiro-btn${draft.escolhaPericiaAntecedente === s.id ? " char-wizard-aventureiro-btn--on" : ""}`}
+                      onClick={() => patch({ escolhaPericiaAntecedente: s.id })}
+                    >
+                      {s.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            ) : null}
           </>
         ) : null}
 

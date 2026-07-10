@@ -40,6 +40,7 @@ export type LevelUpWizardStep =
   | { type: "subclass" }
   | { type: "asi"; points: number }
   | { type: "talent"; level: number }
+  | { type: "feat"; level: number }
   | { type: "ascension"; name: string }
   | { type: "confirm" };
 
@@ -128,6 +129,8 @@ export function getLevelUpWizardSteps(actor: CharacterSheet): LevelUpWizardStep[
   if (asi) steps.push({ type: "asi", points: asi.points });
   const talent = reqs.find((r) => r.kind === "talento");
   if (talent) steps.push({ type: "talent", level: talent.level });
+  const feat = reqs.find((r) => r.kind === "feat");
+  if (feat) steps.push({ type: "feat", level: (feat as { kind: "feat"; level: number }).level });
   const asc = reqs.find((r) => r.kind === "ascension");
   if (asc) steps.push({ type: "ascension", name: asc.name });
   steps.push({ type: "confirm" });
@@ -167,7 +170,7 @@ export function previewLevelUpGroups(
       line.startsWith("Talento do Caminho")
     ) {
       groups[1].lines.push(line);
-    } else if (line.startsWith("Talento:")) {
+    } else if (line.startsWith("Talento:") || line.startsWith("Talento universal:")) {
       groups[2].lines.push(line);
     } else {
       groups[1].lines.push(line);

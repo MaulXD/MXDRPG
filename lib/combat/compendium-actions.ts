@@ -17,6 +17,23 @@ const ABILITY_BY_ID: Record<string, { effect: AbilityEffect; extras?: Partial<Co
     effect: "melee_attack_bonus",
     extras: { bonusDamageFormula: "2d8", damageType: "contundente", damageAttribute: "destreza" },
   },
+  "chi-golpe-de-chi": {
+    effect: "melee_attack_bonus",
+    extras: { bonusDamageFormula: "1d8", damageType: "contundente", damageAttribute: "destreza" },
+  },
+  "chi-passo-do-vacuo": { effect: "shadow_step", extras: { selfTarget: true } },
+  "chi-ferida-aberta": {
+    effect: "melee_attack_bonus",
+    extras: { bonusDamageFormula: "2d8", damageType: "contundente", damageAttribute: "destreza" },
+  },
+  "chi-golpe-do-vacuo": {
+    effect: "melee_attack_bonus",
+    extras: { bonusDamageFormula: "1d6", damageType: "contundente", damageAttribute: "destreza" },
+  },
+  "chi-muro-de-chi": {
+    effect: "defense_buff",
+    extras: { defesaBuffAmount: 2, selfTarget: true },
+  },
   "habilidades-forma-selvagem": { effect: "wild_shape" },
   "habilidades-reflexos-de-masmorra": { effect: "reaction_shift", extras: { selfTarget: true } },
   "habilidades-golpe-flanqueador": { effect: "melee_attack_bonus", extras: { attackBonus: 0 } },

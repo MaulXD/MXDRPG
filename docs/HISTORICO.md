@@ -104,6 +104,115 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-07-10 — Sistema de talentos universais + Chi HUD + AbilityPicker + TokenActionRing
+
+**Pedido:** implementar todas as funcionalidades sugeridas — sistema de talentos universais selecionável no level up, seletor flutuante de habilidades no VTT, Chi pool display no HUD, correções no TokenActionRing, e picker de perícia para o antecedente Aventureiro.
+
+**Passo a passo:**
+
+1. **TokenActionRing melhorias** — custo Chi exibido no label (e.g. "1PA · 1χ"); `title` nativo removido → `aria-label`; labels truncados a 22 chars (de 11); detailHint explicando progressão PA para Mover/Correr; prop `onOpenAbilityPicker` adicionada.
+2. **AbilityPickerPanel** — novo painel flutuante (pattern SpellPickerPanel) com grade de habilidades, busca por nome, badge de recarga, target icon e painel de detalhe com descrição completa; backdrop com blur z-1200. Arquivo `ability-picker.css` criado.
+3. **Battlefield** — `abilityPickerOpen` state; `onOpenAbilityPicker` passado ao ring; `AbilityPickerPanel` renderizado condicionalmente.
+4. **Chi HUD** — `ChiHudMeter.tsx` criado com pips diamante para budget de turno; integrado ao `CharacterCombatHud.tsx` (condicional `token.chi != null`); CSS `.hud-chi` adicionado ao `eldarin-v4.css` com layout amethyst + rotate 45° para diamantes. Ring center mostra "4 PA · 7χ".
+5. **pa-chip.ts** — quando `action.chiCost`, o chip preview mostra pool restante e limite de turno.
+6. **action-tooltip.ts** — `effectiveCostLine` inclui sufixo "X Chi" quando custo Chi existe.
+7. **Sistema de talentos universais** — `feats.ts` criado (`listAllFeats`, `listFeatsForLevel`, `getFeat`); `types.ts` — `featIds` e `escolhaPericiaAntecedente` em `CharacterIdentity`; `level-up.ts` — `LevelUpChoices.featId`, `LevelUpRequirement` feat, validation, apply; `level-up-ui.ts` — step "feat"; `LevelUpWizard.tsx` — passo "Talento Universal" com grid de cards + CSS `.lu-feat-grid/.lu-feat-card`.
+8. **Aventureiro background** — `wizard-types.ts` + `build-from-wizard.ts` + `wizard-from-character.ts` — campo `escolhaPericiaAntecedente`; `CharacterCreationWizard.tsx` — picker de perícia exibido ao selecionar "Aventureiro", validação obrigatória antes de avançar; `sheet-skills.ts` — `ANTECEDENTE_SKILL_DEFS` exportado + `buildSheetBackgroundSkills` trata Aventureiro via `identity.escolhaPericiaAntecedente`.
+9. **UniversalFeatsPanel** — componente de display dos feats adquiridos; integrado em `CharacterSheet.tsx` e `SheetDdbManagePanel.tsx` após `SubclassTrackPanel`.
+10. **Build** — `npm run build` limpo em todos os pontos.
+
+**Arquivos tocados:**
+- `lib/character/feats.ts` — NOVO: utilitários de talentos universais
+- `components/character/UniversalFeatsPanel.tsx` — NOVO: display de feats na ficha
+- `components/vtt/AbilityPickerPanel.tsx` — NOVO: seletor flutuante de habilidades
+- `components/vtt/ChiHudMeter.tsx` — NOVO: medidor Chi no HUD
+- `components/vtt/ability-picker.css` — NOVO: estilos do ability picker
+- `lib/character/types.ts` — CharacterIdentity +featIds +escolhaPericiaAntecedente
+- `lib/character/level-up.ts` — feat em LevelUpChoices, requirements, validate, apply
+- `lib/character/level-up-ui.ts` — step "feat" + previewLevelUpGroups
+- `lib/character/wizard-types.ts` — escolhaPericiaAntecedente em draft
+- `lib/character/build-from-wizard.ts` — propaga escolhaPericiaAntecedente
+- `lib/character/wizard-from-character.ts` — reverse transform
+- `lib/character/sheet-skills.ts` — ANTECEDENTE_SKILL_DEFS exportado + Aventureiro handler
+- `components/character/LevelUpWizard.tsx` — step feat UI
+- `components/character/level-up.css` — .lu-feat-grid/.lu-feat-card/.lu-feat-badge
+- `components/character/wizard/wizard.css` — .char-wizard-aventureiro-* styles
+- `components/character/wizard/CharacterCreationWizard.tsx` — skill picker Aventureiro
+- `components/character/CharacterSheet.tsx` — UniversalFeatsPanel wired
+- `components/character/SheetDdbManagePanel.tsx` — UniversalFeatsPanel wired
+- `components/vtt/TokenActionRing.tsx` — 4 melhorias + onOpenAbilityPicker
+- `components/vtt/CharacterCombatHud.tsx` — ChiHudMeter integrado
+- `components/vtt/Battlefield.tsx` — AbilityPickerPanel wired
+- `components/vtt/eldarin-v4.css` — .hud-chi block
+- `lib/combat/pa-chip.ts` — Chi preview no chip
+- `lib/combat/action-tooltip.ts` — Chi suffix no tooltip
+
+**Commits / deploy:** pendente local.
+
+**Como testar:**
+- Level up personagem até nível 4 → deve aparecer step "Talento Universal" no wizard com grid de feats
+- Criar personagem com antecedente "Aventureiro" → step Antecedente deve mostrar picker de perícia; ficha deve exibir a perícia escolhida no painel "Antecedente"
+- Mesa VTT com Espiritualista → HUD deve mostrar χ com diamantes + pool; ring center "PA · χ"; ability picker abre ao clicar em "Habilidades"
+
+---
+
+### 2026-07-10 — Subclasses Espiritualista no VTT + efeito mecânico Pele Grossa
+
+**Pedido:** implementar habilidades de subclasse Chi no ring de ações VTT e efeitos mecânicos dos feats de combate.
+
+**Passo a passo:**
+1. **Diagnóstico** — `CLASS_FALLBACK["Espiritualista"]` apontava para `"habilidades-golpe-de-chi"` mas o ID real no compêndio é `"chi-golpe-de-chi"`, causando `getEntry()` null; `TALENT_HABILIDADE` não tinha nenhum dos 16 talentos das 4 subclasses; `ABILITY_BY_ID` não tinha entradas com prefixo `chi-`, então `abilityFromEntry` retornava null mesmo se o ID fosse corrigido.
+2. **Decisão** — criar entradas `chi-*` no ABILITY_BY_ID para os 5 IDs novos; criar 2 novas entradas no compêndio (`chi-golpe-do-vacuo`, `chi-muro-de-chi`); mapear os 16 talentos de subclasse no TALENT_HABILIDADE usando dedup por entry (talentos lv8-16 mapeiam para o mesmo entry do lv4 → aparecem como 1 ação por subclasse no ring).
+3. **habilidades.json** — adicionado campo `custoChi` às 3 entradas chi existentes; criadas entradas `chi-golpe-do-vacuo` (1d6, PA1, Chi1) e `chi-muro-de-chi` (defense_buff, PA1, Chi1).
+4. **compendium-actions.ts** — adicionadas 5 entradas ao ABILITY_BY_ID com prefixo `chi-`.
+5. **subclass-vtt.ts** — corrigido `CLASS_FALLBACK["Espiritualista"]`; adicionados 16 mapeamentos TALENT_HABILIDADE (Punho do Limiar, Tecelão do Vácuo, Asceta da Dor, Guardião da Respiração).
+6. **armor-defense.ts** — `featDefesaBonus()` implementada: se `featIds` contém `"talento-pele-grossa"`, +1 CA; `resolveActorDefesa` somam o bônus.
+7. **Build** — `npm run build` limpo.
+
+**Arquivos tocados:**
+- `data/compendiums/habilidades.json` — custoChi nas 3 entradas chi + 2 novas entradas
+- `lib/combat/compendium-actions.ts` — 5 entradas chi- em ABILITY_BY_ID
+- `lib/character/subclass-vtt.ts` — fix CLASS_FALLBACK + 16 TALENT_HABILIDADE
+- `lib/character/armor-defense.ts` — +1 CA mecânico para feat Pele Grossa
+
+**Commits / deploy:** pendente local.
+
+**Como testar:**
+- Personagem Espiritualista com qualquer subclasse → ring de combate deve mostrar ação da trilha (ex: "Golpe do Vácuo (trilha) · 1 cél. · PA 1 · Chi 1")
+- Personagem com feat "Pele Grossa" → CA deve ser 1 ponto acima do que seria sem o feat
+
+---
+
+### 2026-07-09 — Compêndio Chi/talentos + perícias de antecedente roláveis + prompts de ícones
+
+**Pedido:** implementar todas as melhorias pendentes — técnicas Chi no compêndio, talentos universais em JSON, perícias de background roláveis na ficha, card de habilidade no VTT, prompts de ícones AI para todos os itens.
+
+**Passo a passo:**
+
+1. **Técnicas Chi no compêndio** — Espiritualista já tinha subclasses em `subclass-tracks.json`; faltavam as 3 técnicas do kit inicial. Adicionadas ao `habilidades.json` como entradas tipo `"habilidade"`: Golpe de Chi (1 Chi, PA 1, alcance 1), Passo do Vácuo (1 Chi, PA 1, alcance 3), Ferida Aberta (2 Chi, PA 1, alcance 1, recarga 1/turno). Custo em Chi codificado no `<strong>` do `description` (o schema não tem campo Chi).
+2. **talentos.json criado** — novo arquivo `data/compendiums/talentos.json` com 20 talentos universais (Cap. 13 do Livro do Jogador), schema: `id`, `name`, `type: "talento"`, `system.category` (combate/culinario/sobrevivencia/social), `system.levelMin`, `system.prerequisites`, `system.description` (HTML). Categorias: 4 combate, 6 culinários, 5 sobrevivência, 5 sociais.
+3. **Perícias de antecedente roláveis** — `sheet-skills.ts` estendido com `ANTECEDENTE_SKILL_DEFS` (8 perícias: Sobrevivência, Arcanismo, História, Persuasão, Intuição, Intimidação, Medicina, Enganação) + `buildSheetBackgroundSkills(actor)` que filtra o antecedente via `mentionsSkill` e retorna `SheetQuickSkill[]` sempre treinadas. `SheetDdbSkillsPanel` exibe as extras em subseção "Antecedente" com botão rollável idêntico ao padrão.
+4. **Card de habilidade VTT** — verificado: `CombatActionDetail` já renderiza para `actionMode === "ability"` (`TokenActionPanel.tsx:716-719`). Mostra descrição do compêndio (strip HTML), dano, custo PA, alcance e recarga. Nenhuma mudança necessária.
+5. **CSS** — adicionados `.sheet-ddb-panel__subhead` e `.sheet-ddb-panel__sub-label` ao `sheet-ddb.css` para separador visual da subseção de antecedente.
+6. **Prompts de ícones AI** — artifact publicado com 166 prompts organizados em 4 abas (Habilidades 50, Magias 64, Chi 23, Classes+Subclasses 29); formato estrito: gold border `#c4a44a`, amethyst glow `#8B7BB8`, dark bg `#0e0d0b`, square 1:1.
+7. **Build** — `npm run build` limpo em todos os pontos.
+
+**Arquivos tocados:**
+- `data/compendiums/habilidades.json` — +3 entradas Chi (golpe-de-chi, passo-do-vacuo, ferida-aberta)
+- `data/compendiums/talentos.json` — NOVO: 20 talentos universais
+- `lib/character/sheet-skills.ts` — SheetSkillId +8 ids; ANTECEDENTE_SKILL_DEFS; buildSheetBackgroundSkills()
+- `components/character/SheetDdbSkillsPanel.tsx` — importa buildSheetBackgroundSkills; subseção Antecedente
+- `components/character/sheet-ddb.css` — classes __subhead e __sub-label
+
+**Commits / deploy:** pendente local.
+
+**Como testar:**
+- Criar personagem com antecedente "Erudito" → abrir ficha → painel Perícias deve mostrar "Antecedente" com Arcanismo e História roláveis (dot preenchido)
+- Criar personagem com antecedente "Soldado" → Atletismo (já no painel) e Intimidação (subseção Antecedente)
+- Mesa VTT → modo Habilidade → selecionar Golpe de Chi → `CombatActionDetail` mostra "Custo: 1 Chi" na descrição
+
+---
+
 ### 2026-06-28 — Fix criação de personagem + refactor landing/hub + CI workflow
 
 **Pedido:** criação de ficha não funcionando; refatorar o site como hub otimizado com foco no funcionamento da mesa.

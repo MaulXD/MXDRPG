@@ -55,6 +55,7 @@ import { FoundryDockPanel } from "@/components/vtt/foundry/FoundryDockPanel";
 import type { RoomSnapshot } from "@/lib/room/types";
 import { TokenActionRing } from "@/components/vtt/TokenActionRing";
 import { SpellPickerPanel } from "@/components/vtt/SpellPickerPanel";
+import { AbilityPickerPanel } from "@/components/vtt/AbilityPickerPanel";
 import { SpellChannelControl } from "@/components/vtt/SpellChannelControl";
 import { MonsterSpawnPanel } from "@/components/vtt/MonsterSpawnPanel";
 import type { MapToolMode, MeasurePreview } from "@/lib/vtt/map-toolbar";
@@ -310,6 +311,7 @@ export function Battlefield({
   /** ID do token que abriu o ring — fecha ring só quando selectedId muda para outro token. */
   const ringTokenIdRef = useRef<string | null>(null);
   const [spellPickerOpen, setSpellPickerOpen] = useState(false);
+  const [abilityPickerOpen, setAbilityPickerOpen] = useState(false);
   const [gmHpEditTokenId, setGmHpEditTokenId] = useState<string | null>(null);
   const [friendlyFireTargetId, setFriendlyFireTargetId] = useState<string | null>(null);
   const [friendlyFireBusy, setFriendlyFireBusy] = useState(false);
@@ -2797,6 +2799,7 @@ export function Battlefield({
               if (mode !== "spell") setChannelExtraPa(0);
             }}
             onOpenSpellPicker={() => setSpellPickerOpen(true)}
+            onOpenAbilityPicker={() => setAbilityPickerOpen(true)}
             onClose={() => setActionRingAt(null)}
             onRoomSync={(snap) => (snap ? syncRoom(snap) : refresh())}
           />
@@ -2813,6 +2816,21 @@ export function Battlefield({
               setActionRingAt(null);
             }}
             onClose={() => setSpellPickerOpen(false)}
+          />
+        ) : null}
+        {abilityPickerOpen && selected ? (
+          <AbilityPickerPanel
+            abilities={listTokenCombatActions(selected, selectedActor, "ability")}
+            actor={selectedActor}
+            token={selected}
+            combat={combat}
+            onPick={(ability) => {
+              setSelectedCombatAction(ability);
+              setActionMode("ability");
+              setAbilityPickerOpen(false);
+              setActionRingAt(null);
+            }}
+            onClose={() => setAbilityPickerOpen(false)}
           />
         ) : null}
         {actionMode === "spell" &&

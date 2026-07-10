@@ -15,7 +15,15 @@ export type SheetSkillId =
   | "religiao"
   | "iniciativa"
   | "furtividade"
-  | "atletismo";
+  | "atletismo"
+  | "sobrevivencia"
+  | "arcanismo"
+  | "historia"
+  | "persuasao"
+  | "intuicao"
+  | "intimidacao"
+  | "medicina"
+  | "enganacao";
 
 export type SheetSkillDef = {
   id: SheetSkillId;
@@ -103,6 +111,49 @@ export function buildSheetQuickSkills(actor: CharacterSheet): SheetQuickSkill[] 
       rollFormula: skillRollFormula(mod),
       passive: def.passive ? passiveScore(mod) : undefined,
       trained: isSkillTrained(actor, def),
+    };
+  });
+}
+
+/** Skills that can be granted by antecedente but aren't in the fixed quick-skills list. */
+export const ANTECEDENTE_SKILL_DEFS: SheetSkillDef[] = [
+  { id: "sobrevivencia", label: "Sobrevivência", short: "Sobrev.", attr: "sabedoria" },
+  { id: "arcanismo",     label: "Arcanismo",     short: "Arcanism.", attr: "inteligencia" },
+  { id: "historia",      label: "História",       short: "Histór.", attr: "inteligencia" },
+  { id: "persuasao",     label: "Persuasão",      short: "Persuas.", attr: "carisma" },
+  { id: "intuicao",      label: "Intuição",        short: "Intuição", attr: "sabedoria" },
+  { id: "intimidacao",   label: "Intimidação",    short: "Intimid.", attr: "carisma" },
+  { id: "medicina",      label: "Medicina",        short: "Medic.", attr: "sabedoria" },
+  { id: "enganacao",     label: "Enganação",       short: "Engan.", attr: "carisma" },
+];
+
+/** Returns trained skills granted by the character's antecedente that aren't in the fixed panel. */
+export function buildSheetBackgroundSkills(actor: CharacterSheet): SheetQuickSkill[] {
+  const ant = antecedenteMeta(actor.identity.antecedente);
+  if (!ant) return [];
+  const prof = proficiencyBonus(actor.identity.nivel);
+
+  if (actor.identity.antecedente === "Aventureiro") {
+    const chosenId = actor.identity.escolhaPericiaAntecedente;
+    if (!chosenId) return [];
+    const def = ANTECEDENTE_SKILL_DEFS.find((d) => d.id === chosenId);
+    if (!def) return [];
+    const base = attributeMod(actor.attributes[def.attr]);
+    const total = base + prof;
+    return [{ def, mod: total, display: formatSkillMod(total), rollFormula: skillRollFormula(total), trained: true }];
+  }
+
+  return ANTECEDENTE_SKILL_DEFS.filter((def) =>
+    ant.gains.some((g) => mentionsSkill(g, def.label))
+  ).map((def) => {
+    const base = attributeMod(actor.attributes[def.attr]);
+    const total = base + prof;
+    return {
+      def,
+      mod: total,
+      display: formatSkillMod(total),
+      rollFormula: skillRollFormula(total),
+      trained: true,
     };
   });
 }

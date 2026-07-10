@@ -1,5 +1,6 @@
 import type { CharacterSheet } from "@/lib/character/types";
 import type { AttributeKey } from "@/lib/character/rules";
+import { listFeatsForLevel, getFeat, type UniversalFeat } from "@/lib/character/feats";
 import {
   attributeMod,
   classLevelFeatures,
@@ -38,12 +39,15 @@ export type LevelUpChoices = {
   asi?: Partial<Record<AttributeKey, number>>;
   /** id do talento na trilha de subclasse */
   talentoId?: string;
+  /** id do talento universal (feats.ts) */
+  featId?: string;
 };
 
 export type LevelUpRequirement =
   | { kind: "subclasse" }
   | { kind: "asi"; points: number }
   | { kind: "talento"; level: number; options: CharacterTalent[] }
+  | { kind: "feat"; level: number; options: UniversalFeat[] }
   | { kind: "ascension"; name: string };
 
 function ownedTalents(actor: CharacterSheet): CharacterTalent[] {
@@ -94,6 +98,11 @@ export function getLevelUpRequirements(actor: CharacterSheet): LevelUpRequiremen
         });
       }
     }
+
+    const featOptions = listFeatsForLevel(next, actor.identity.featIds ?? []);
+    if (featOptions.length > 0) {
+      req.push({ kind: "feat", level: next, options: featOptions });
+    }
   }
 
   if (next === ASCENSION_LEVEL && track) {
@@ -140,6 +149,12 @@ export function validateLevelUpChoices(
         choices.talentoId
       );
       if (err) return err;
+    }
+    if (r.kind === "feat") {
+      if (!choices.featId) return `Escolha um talento universal (nv ${r.level}).`;
+      if (!r.options.some((f) => f.id === choices.featId)) {
+        return "Talento universal inválido ou indisponível para este nível.";
+      }
     }
   }
 
@@ -196,6 +211,11 @@ export function previewLevelUp(actor: CharacterSheet, choices?: LevelUpChoices):
     if (t) lines.push(`Talento: ${t.name}`);
   }
 
+  if (choices?.featId) {
+    const feat = getFeat(choices.featId);
+    if (feat) lines.push(`Talento universal: ${feat.name}`);
+  }
+
   if (next === ASCENSION_LEVEL && track) {
     const asc = getAscension(track);
     if (asc) lines.push(`Ascensão: ${asc.name}`);
@@ -219,6 +239,7 @@ export function applyLevelUp(actor: CharacterSheet, choices: LevelUpChoices = {}
   const subclasse = choices.subclasse ?? actor.identity.subclasse;
   const track = getSubclassTrack(subclasse);
   let talentos = [...ownedTalents(actor)];
+  const featIds = [...(actor.identity.featIds ?? [])];
 
   if (choices.asi) {
     for (const [k, v] of Object.entries(choices.asi) as [AttributeKey, number][]) {
@@ -231,6 +252,10 @@ export function applyLevelUp(actor: CharacterSheet, choices: LevelUpChoices = {}
     if (t && t.kind === "talent") {
       talentos.push({ level: t.level, id: t.id, name: t.name });
     }
+  }
+
+  if (choices.featId && !featIds.includes(choices.featId)) {
+    featIds.push(choices.featId);
   }
 
   if (nivel === ASCENSION_LEVEL && track) {
@@ -263,6 +288,7 @@ export function applyLevelUp(actor: CharacterSheet, choices: LevelUpChoices = {}
       nivel,
       subclasse,
       talentos,
+      featIds,
     },
     attributes,
     culinary,

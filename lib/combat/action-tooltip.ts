@@ -61,15 +61,16 @@ function effectiveCostLine(
   actor?: CharacterSheet | null,
   token?: BattleToken | null
 ): string {
-  if (!actor) return `Custo: ${action.paCost} PA`;
+  const chiSuffix = action.chiCost ? ` + ${action.chiCost} Chi` : "";
+  if (!actor) return `Custo: ${action.paCost} PA${chiSuffix}`;
   const base = action.paCost;
   const ctx = paCostContextFromToken(token);
   const eff =
     action.kind === "weapon"
       ? totalAttackPaCost(actor, action, token)
       : effectivePaCost(actor, action, ctx);
-  if (eff === base) return `Custo: ${eff} PA`;
-  return `Custo: ${base} → ${eff} PA (talentos/classe)`;
+  if (eff === base) return `Custo: ${eff} PA${chiSuffix}`;
+  return `Custo: ${base} → ${eff} PA${chiSuffix} (talentos/classe)`;
 }
 
 function damageOrHealLine(action: CombatActionOption): string | null {

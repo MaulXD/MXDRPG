@@ -11,6 +11,7 @@ import type { RoomApiPayload } from "@/hooks/useRoomSync";
 import { usePassTurn } from "@/hooks/vtt/usePassTurn";
 import { useImageNaturalSize } from "@/hooks/useImageNaturalSize";
 import { PaHudMeter } from "@/components/vtt/PaHudMeter";
+import { ChiHudMeter } from "@/components/vtt/ChiHudMeter";
 import { TokenEffectsRow } from "@/components/vtt/TokenEffectsRow";
 import { firstPortraitDataUrl } from "@/lib/room/portrait-sync";
 import {
@@ -208,6 +209,7 @@ export function CharacterCombatHud({
           <div className="hud-stats">
             {token.defesa != null ? <HudCaShield value={token.defesa} /> : null}
             {canViewPa ? <PaHudMeter token={token} variant="hud" /> : null}
+            {token.chi != null ? <ChiHudMeter token={token} /> : null}
           </div>
         </div>
 

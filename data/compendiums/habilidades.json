@@ -1198,5 +1198,145 @@
         "recarga": "1/turno"
       }
     }
+  },
+  {
+    "id": "chi-golpe-de-chi",
+    "name": "Golpe de Chi",
+    "type": "habilidade",
+    "system": {
+      "catalogId": "CHI-golpe-de-chi",
+      "bookRef": "ESPIRITUALISTA-CRIACAO-PERSONAGEM.md",
+      "description": "<p><strong>Custo: 1 Chi.</strong> Ataque desarmado aprimorado: causa +1d6 de dano de força além do dano normal. O alvo é empurrado 1 célula na direção oposta se falhar em um teste de FOR (CD 12 + mod SAB).</p>",
+      "tactical": {
+        "alcanceCells": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        },
+        "custoChi": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "ability": {
+        "tipo": "ativa",
+        "recarga": ""
+      }
+    }
+  },
+  {
+    "id": "chi-passo-do-vacuo",
+    "name": "Passo do Vácuo",
+    "type": "habilidade",
+    "system": {
+      "catalogId": "CHI-passo-do-vacuo",
+      "bookRef": "ESPIRITUALISTA-CRIACAO-PERSONAGEM.md",
+      "description": "<p><strong>Custo: 1 Chi.</strong> Move até 3 células sem provocar ataques de oportunidade. Se terminar adjacente a um inimigo, o próximo ataque feito contra ele neste turno tem vantagem.</p>",
+      "tactical": {
+        "alcanceCells": {
+          "value": 3,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        },
+        "custoChi": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "ability": {
+        "tipo": "ativa",
+        "recarga": ""
+      }
+    }
+  },
+  {
+    "id": "chi-ferida-aberta",
+    "name": "Ferida Aberta",
+    "type": "habilidade",
+    "system": {
+      "catalogId": "CHI-ferida-aberta",
+      "bookRef": "ESPIRITUALISTA-CRIACAO-PERSONAGEM.md",
+      "description": "<p><strong>Custo: 2 Chi.</strong> Golpe preciso em ponto de pressão vital: o alvo fica <em>Vulnerável</em> até o fim do próximo turno do Espiritualista (todos os danos recebidos são acrescidos de +1d6 enquanto durar o efeito). Não funciona contra criaturas sem anatomia discernível (construtos, elementais sem forma).</p>",
+      "tactical": {
+        "alcanceCells": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        },
+        "custoChi": {
+          "value": 2,
+          "min": 0
+        }
+      },
+      "ability": {
+        "tipo": "ativa",
+        "recarga": "1/turno"
+      }
+    }
+  },
+  {
+    "id": "chi-golpe-do-vacuo",
+    "name": "Golpe do Vácuo",
+    "type": "habilidade",
+    "system": {
+      "catalogId": "CHI-golpe-do-vacuo",
+      "bookRef": "ESPIRITUALISTA-CRIACAO-PERSONAGEM.md",
+      "description": "<p><strong>Custo: 1 Chi.</strong> Golpe desarmado canalizado com Chi: causa +1d6 de dano de força além do dano normal, abalando a resistência interna do alvo.</p>",
+      "tactical": {
+        "alcanceCells": {
+          "value": 1,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        },
+        "custoChi": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "ability": {
+        "tipo": "ativa",
+        "recarga": ""
+      }
+    }
+  },
+  {
+    "id": "chi-muro-de-chi",
+    "name": "Muro de Chi",
+    "type": "habilidade",
+    "system": {
+      "catalogId": "CHI-muro-de-chi",
+      "bookRef": "ESPIRITUALISTA-CRIACAO-PERSONAGEM.md",
+      "description": "<p><strong>Custo: 1 Chi.</strong> Concentra Chi ao redor do corpo como um escudo: ganha +2 CA até o início do próximo turno.</p>",
+      "tactical": {
+        "alcanceCells": {
+          "value": 0,
+          "min": 0
+        },
+        "custoPontosAcao": {
+          "value": 1,
+          "min": 0
+        },
+        "custoChi": {
+          "value": 1,
+          "min": 0
+        }
+      },
+      "ability": {
+        "tipo": "ativa",
+        "recarga": ""
+      }
+    }
   }
 ]
