@@ -104,6 +104,27 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-07-14 — Fix regressão: featIds e escolhaPericiaAntecedente apagados ao salvar ficha
+
+**Pedido:** "a criação de fichas está bugada".
+
+**Passo a passo:**
+1. **Diagnóstico** — agente de exploração mapeou o fluxo de criação/edição de ficha e comparou com o diff do commit anterior (60893e0, sistema de talentos universais). Achado: `lib/character/types.ts` ganhou os campos `featIds` (talentos universais) e `escolhaPericiaAntecedente` (perícia livre do antecedente Aventureiro) em `CharacterIdentity`, mas `normalizeIdentity()` em `lib/character/normalize.ts` reconstrói o objeto `CharacterIdentity` campo a campo e nunca foi atualizada para incluir os dois novos campos.
+2. **Impacto** — `normalizeCharacter`/`normalizeIdentity` roda em praticamente todo save/leitura de ficha (`build-from-wizard.ts`, `identity.ts` applyIdentityPatch, `characters.ts` saveCharacter, `character-registry.ts`, `rebuild-from-wizard.ts`). Resultado: a perícia extra do antecedente Aventureiro era apagada no instante em que a ficha era criada; o talento universal escolhido no level-up (níveis 4/8/12/16) era apagado a cada save subsequente. Efeito colateral concreto: `lib/character/armor-defense.ts:52` lê `identity.featIds` para aplicar o bônus de +1 CA do talento "Pele Grossa" — como o campo sempre voltava vazio, o bônus nunca era aplicado mesmo com o talento escolhido corretamente.
+3. **Correção** — `normalizeIdentity()` agora preserva `featIds` (filtra para array de strings, default `[]`) e `escolhaPericiaAntecedente` (default `null`); `defaultIdentity()` também recebeu os mesmos defaults para consistência.
+4. **Validação** — `npx tsc --noEmit` limpo.
+
+**Arquivos tocados:**
+- `lib/character/normalize.ts` — `normalizeIdentity()` e `defaultIdentity()` passam a preservar `featIds`/`escolhaPericiaAntecedente`
+
+**Commits / deploy:** pendente local.
+
+**Como testar:**
+- Criar personagem com antecedente "Aventureiro" escolhendo uma perícia → recarregar a ficha → perícia deve continuar aparecendo no painel "Antecedente"
+- Escolher talento universal "Pele Grossa" no level-up (nível 4+) → CA da ficha deve mostrar +1 permanente após salvar/recarregar
+
+---
+
 ### 2026-07-10 — Sistema de talentos universais + Chi HUD + AbilityPicker + TokenActionRing
 
 **Pedido:** implementar todas as funcionalidades sugeridas — sistema de talentos universais selecionável no level up, seletor flutuante de habilidades no VTT, Chi pool display no HUD, correções no TokenActionRing, e picker de perícia para o antecedente Aventureiro.

@@ -66,6 +66,8 @@ function defaultIdentity(): CharacterIdentity {
     antecedente: "Explorador",
     religiao: null,
     talentos: [],
+    featIds: [],
+    escolhaPericiaAntecedente: null,
   };
 }
 
@@ -84,6 +86,10 @@ export function normalizeIdentity(
     antecedente: base.antecedente ?? "Explorador",
     religiao: normalizeReligionId(base.religiao),
     talentos: parseCharacterTalents(base.talentos),
+    featIds: Array.isArray(base.featIds)
+      ? base.featIds.filter((x): x is string => typeof x === "string")
+      : [],
+    escolhaPericiaAntecedente: base.escolhaPericiaAntecedente ?? null,
   };
 }
 
