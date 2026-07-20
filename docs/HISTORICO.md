@@ -104,6 +104,28 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-07-14 — Fix CI: job data-sync falhando (técnicas de Chi editadas a mão)
+
+**Pedido:** "conserte isso" — screenshot de notificação do GitHub mostrando `CI / data-sync` falhando.
+
+**Passo a passo:**
+1. **Diagnóstico** — `data/compendiums/habilidades.json` é um arquivo **derivado**: `scripts/generate-compendium.mjs` o gera a partir de um array `ABILITY_CATALOG` hardcoded no próprio script (não lê markdown pra habilidades — só usa `BOOK_HAB` como metadado de citação). O job `data-sync` da CI roda `npm run sync:data` (regenera tudo) e depois `git diff --exit-code` nos arquivos derivados — se a regeneração não bater com o que está commitado, falha com "Run npm run sync:data locally and commit generated files."
+2. **Causa raiz** — o commit anterior (`60893e0`, sessão de trabalho antes desta) adicionou 5 técnicas de Chi do Espiritualista (Golpe de Chi, Passo do Vácuo, Ferida Aberta, Golpe do Vácuo, Muro de Chi) direto no JSON, sem tocar no gerador. Rodando `npm run sync:data` localmente, essas 5 entradas eram apagadas (confirmei via `git diff` antes de corrigir).
+3. **Correção** — `scripts/generate-compendium.mjs`: novo array `CHI_ABILITY_CATALOG` (mesmo formato de `ABILITY_CATALOG`, mais o campo `chi` pro custo) gerando as mesmas 5 entradas com `id`/`catalogId`/`bookRef` idênticos aos que já estavam commitados (`chi-*`, `CHI-*`, `ESPIRITUALISTA-CRIACAO-PERSONAGEM.md`), incluindo `tactical.custoChi` que o catálogo genérico de habilidades não tinha.
+4. **Validação** — revertido os arquivos derivados pro estado commitado, rodado `npm run sync:data` de novo: `habilidades.json`/`monstros.json`/`LIVRO-DO-MESTRE.md` regeneraram byte-a-byte iguais ao commitado; só `livros/TABELA-IDS-ELDARIN.md` mudou de fato (passou a listar os 5 novos `catalogId` CHI-*, contagem 50→55) — exatamente o esperado, e esse arquivo faz parte do que a CI compara. `npm run sync:data:check` e o `git diff --exit-code` simulado localmente (nos mesmos paths que o workflow checa) confirmaram zero diferença antes do commit.
+
+**Arquivos tocados:**
+- `scripts/generate-compendium.mjs` — `CHI_ABILITY_CATALOG` novo, `ABILITIES` passa a concatenar os dois catálogos
+- `livros/TABELA-IDS-ELDARIN.md` — regenerado (5 novos catalogIds)
+
+**Commits / deploy:** `b7e2c15`, enviado. CI disparada de novo pro commit novo — acompanhar em https://github.com/MaulXD/MXDRPG/actions.
+
+**Como testar:**
+- `npm run sync:data && git status --short` não deve mostrar nenhum arquivo em `data/compendiums/`, `livros/TABELA-IDS-ELDARIN.md`, `data/character/subclass-tracks.json` ou `lib/character/loot-catalog.ts`
+- Job `CI / data-sync` no GitHub Actions deve passar verde no próximo push que toque `data/compendiums/**` ou `livros/**`
+
+---
+
 ### 2026-07-14 — Quarta leva: render caro da ficha (objeto `live` sem memo)
 
 **Pedido:** continuação de "coloque tudo isso em prática" — último item do relatório de render de componentes React da rodada anterior.
