@@ -47,7 +47,7 @@ export async function POST(req: Request, { params }: Params) {
     }
   }
 
-  const result = await placeRoomActorOnCell(roomId, actorId, { q: body.q, r: body.r });
+  const result = await placeRoomActorOnCell(roomId, actorId, { q: body.q, r: body.r }, { room });
   if (!result.ok) {
     return NextResponse.json({ error: result.error }, { status: 400 });
   }

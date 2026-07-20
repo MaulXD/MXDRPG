@@ -35,7 +35,7 @@ export async function POST(req: Request, { params }: Params) {
       return NextResponse.json({ error: "Token não encontrado" }, { status: 404 });
     }
 
-    const result = await repositionRoomToken(roomId, tokenId, { q: body.q, r: body.r });
+    const result = await repositionRoomToken(roomId, tokenId, { q: body.q, r: body.r }, { room: auth.room });
     if (!result.ok) {
       return NextResponse.json({ error: result.error }, { status: 400 });
     }

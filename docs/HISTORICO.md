@@ -104,6 +104,45 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-07-14 — Terceira leva: lazy-load restante + N+1 sistêmico em rotas de sala
+
+**Pedido:** "coloque tudo isso em prática" — implementar os achados de 3 novas auditorias em paralelo (render de componentes React pesados, N+1 restante nas rotas de API, bundle/lazy-load restante).
+
+**Achados e o que foi feito:**
+
+1. **`MesaCharacterWizardPopup` importado estático** (`MesaFoundryFloatingWindows.tsx`) enquanto os 3 vizinhos do mesmo arquivo (`DiceRoller`, `CharacterSheetPopup`, `MonsterSheetPopup`) já usavam `next/dynamic`. Corrigido, e o mesmo para `MonsterSpawnPanel` (ferramenta só do mestre) nos dois arquivos que o usam. **Resultado medido:** `/mesa/[roomId]` caiu de 331 kB → 268 kB de First Load JS.
+2. **`CharacterSheet.tsx`** importava estático `LevelUpWizard` (+`TalentTreeGraph`), `LootEconomyPanel`, `PersonalBestiaryPanel`, `SpellPrepPanel` — todos só renderizados sob aba/condição específica. Convertidos para `next/dynamic`. `/personagem/[id]`: 311 kB → 305 kB.
+3. **`getRoom(roomId)` chamado 2-3x por request** — padrão sistêmico: rotas que já autorizam via `requireRoomManage`/`requireRoomSpawn`/`requireRoomMember` (e já recebem `room` de volta) chamavam funções em `lib/room/handlers/tokens.ts`/`actors.ts`/`room-lifecycle.ts` que refaziam o fetch internamente. Só `moveRoomToken` já tinha o padrão certo (`opts.room ?? await getRoom(roomId)`). Estendido esse padrão para: `spawnRoomMonster`, `repositionRoomToken`, `placeRoomActorOnCell`, `updateRoomToken`, `removeRoomToken`, `getRoomActor`, `getRoomSnapshot`, `updateRoomActor`, `levelUpRoomActor` — e atualizadas as rotas que já tinham o `room`/`auth.room` em mãos pra passar adiante em vez de deixar refazer o fetch.
+4. **`lib/character/characters.ts:saveCharacter`** — mesmo anti-padrão já corrigido em `resolveCharacter` na sessão anterior: fazia `resolveCharacter(saved.id)` só para confirmar existência e descartava o resultado. Removido (roda em todo write de personagem: PATCH, level-up, edit-save, wizard).
+5. **`lib/room/adventure-actors.ts`** — dois loops `for...of` com `await` sequencial por participante da mesa (`resolveCharacterAccount`, `listCharactersForUserInAdventure`), chamados por `syncAdventureActorsForRoom` (entrar na mesa, criar ficha, level-up, sync de retrato). Paralelizados com `Promise.all`.
+6. **`app/api/adventures/[adventureId]/members/route.ts`** — N+1 real: resolvia conta canônica de cada membro em sequência. Reescrito para resolver todos em paralelo e só depois aplicar a deduplicação (por id bruto e por id canônico, preservando a lógica original).
+7. **`app/api/room/[roomId]/gm/saving-throw/route.ts`** — buscava a sala de novo só para repassar `roomId/ownerId/memberIds/settings` ao `snapshotForViewer`, já disponíveis em `auth.room`. Removido o fetch extra.
+8. **`app/api/characters/[id]/route.ts` GET** — `resolveCharacter` e a busca do grant de edição aprovado eram sequenciais sem depender um do outro. Paralelizados. (O mesmo no PATCH tinha ramificação condicional mais arriscada de tocar — deixado como está.)
+9. **Validação** — `npx tsc --noEmit`, `npm run build`, `npm test` limpos. Além disso, smoke test manual ao vivo (script descartável, script/curl direto contra servidor local em memória) cobrindo spawn/reposition/patch/delete de token, patch de ator, place-actor, saving-throw e level-up — todos os endpoints tocados responderam corretamente (a única rejeição foi uma regra de negócio legítima: personagem sem XP suficiente pra subir de nível).
+
+**Não feito ainda (fica pra próxima):**
+- Render caro em `CharacterSheet.tsx` (objeto `live` reconstruído em todo render, sem memo — acumulado ao longo desta sessão para uma leva dedicada de otimização de render).
+- Índice de banco (`JSON_CONTAINS`+`OR` em `member_ids`) e consolidação do `ensureDbMigrations` — ainda exigem decisão de schema.
+
+**Arquivos tocados:**
+- `components/vtt/mesa/MesaFoundryFloatingWindows.tsx`, `MesaFoundryDockRail.tsx` — `MesaCharacterWizardPopup`/`MonsterSpawnPanel` como `next/dynamic`
+- `components/character/CharacterSheet.tsx` — 4 painéis como `next/dynamic`
+- `lib/room/handlers/tokens.ts`, `actors.ts`, `room-lifecycle.ts` — `opts.room` opcional em 9 funções
+- `app/api/room/[roomId]/tokens/{place-actor,reposition,spawn,[tokenId],[tokenId]/delegate}/route.ts`, `app/api/room/[roomId]/actors/[actorId]/{route,level-up/route}.ts`, `app/api/room/[roomId]/gm/saving-throw/route.ts` — passam `room`/`auth.room` já obtido
+- `lib/character/characters.ts` — `saveCharacter` sem releitura descartada
+- `lib/room/adventure-actors.ts` — dois loops paralelizados
+- `app/api/adventures/[adventureId]/members/route.ts` — resolução de membros paralelizada
+- `app/api/characters/[id]/route.ts` — GET paralelizado
+
+**Commits / deploy:** local, aguardando push.
+
+**Como testar:**
+- Mestre invocar monstro, reposicionar, editar cor do token e remover → tudo deve continuar funcionando normalmente
+- Jogador editar biografia da própria ficha, subir de nível → sem mudança de comportamento
+- `/mesa/[roomId]` e `/personagem/[id]` devem carregar visivelmente mais rápido (bundle menor)
+
+---
+
 ### 2026-07-14 — Lista de melhorias + segunda leva de correções
 
 **Pedido:** "me faça lista de coisas que podem melhorar e comece a por em prática" — continuação da varredura de performance da sessão anterior.

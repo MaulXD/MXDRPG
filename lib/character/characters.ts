@@ -230,11 +230,6 @@ export async function saveCharacter(sheet: CharacterSheet): Promise<CharacterShe
     }
   }
 
-  const verified = await resolveCharacter(saved.id);
-  if (!verified) {
-    throw new Error("Ficha criada mas não encontrada ao salvar — tente novamente");
-  }
-
   return saved;
 }
 

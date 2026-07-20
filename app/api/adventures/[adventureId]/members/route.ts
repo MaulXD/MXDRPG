@@ -36,24 +36,31 @@ export async function GET(req: Request, { params }: Params) {
     ...adventure.memberIds,
     ...(room ? [room.ownerId, ...room.memberIds] : []),
   ];
-  const seen = new Set<string>();
-  const members = [];
-  for (const rawId of rawIds) {
-    if (!rawId?.trim() || seen.has(rawId)) continue;
-    const account = await resolveCharacterAccount(rawId);
-    const userId = account.canonicalId;
+  const uniqueRawIds = [...new Set(rawIds.filter((id) => id?.trim()))];
+  const accounts = await Promise.all(
+    uniqueRawIds.map((rawId) => resolveCharacterAccount(rawId))
+  );
+
+  const seenCanonical = new Set<string>();
+  const toFetch: Array<{ rawId: string; userId: string }> = [];
+  for (let i = 0; i < uniqueRawIds.length; i++) {
+    const userId = accounts[i].canonicalId;
     if (excludeCanonical && userId === excludeCanonical) continue;
-    if (seen.has(userId)) continue;
-    seen.add(rawId);
-    seen.add(userId);
-    const user = await fetchUserById(userId);
-    members.push({
+    if (seenCanonical.has(userId)) continue;
+    seenCanonical.add(userId);
+    toFetch.push({ rawId: uniqueRawIds[i], userId });
+  }
+
+  const users = await Promise.all(toFetch.map(({ userId }) => fetchUserById(userId)));
+  const members = toFetch.map(({ rawId, userId }, i) => {
+    const user = users[i];
+    return {
       userId,
       nickname: user?.nickname ?? null,
       name: user?.name ?? userId,
       isOwner: userId === adventure.ownerId || rawId === adventure.ownerId,
-    });
-  }
+    };
+  });
 
   return NextResponse.json({ members });
 }

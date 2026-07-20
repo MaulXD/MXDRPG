@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { canManageRoom } from "@/lib/auth/room-access";
 import { requireRoomView } from "@/lib/auth/authorize-room-view";
 import { snapshotForViewer } from "@/lib/room/snapshot-for-viewer";
-import { executeGmSavingThrows, getRoom, type GmSavingThrowRequest } from "@/lib/room/store";
+import { executeGmSavingThrows, type GmSavingThrowRequest } from "@/lib/room/store";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -29,6 +29,5 @@ export async function POST(req: Request, { params }: Params) {
     return NextResponse.json({ error: result.error }, { status: 400 });
   }
 
-  const room = (await getRoom(roomId)) ?? auth.room;
-  return NextResponse.json(snapshotForViewer(result.snapshot, room, auth.user ?? null));
+  return NextResponse.json(snapshotForViewer(result.snapshot, auth.room, auth.user ?? null));
 }

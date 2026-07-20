@@ -7,8 +7,11 @@ import * as dbRooms from "@/lib/db/rooms";
 import { getRoom, rooms, toSnapshot } from "../internal/registry";
 import type { RoomListItem, RoomSnapshot, RoomState } from "../types";
 
-export async function getRoomSnapshot(roomId: string): Promise<RoomSnapshot | null> {
-  const room = await getRoom(roomId);
+export async function getRoomSnapshot(
+  roomId: string,
+  opts?: { room?: RoomState }
+): Promise<RoomSnapshot | null> {
+  const room = opts?.room ?? (await getRoom(roomId));
   if (!room) return null;
   return toSnapshot(room);
 }
@@ -116,7 +119,11 @@ export async function getRoomMeta(roomId: string): Promise<Pick<
   };
 }
 
-export async function getRoomActor(roomId: string, actorId: string) {
-  const room = await getRoom(roomId);
+export async function getRoomActor(
+  roomId: string,
+  actorId: string,
+  opts?: { room?: RoomState }
+) {
+  const room = opts?.room ?? (await getRoom(roomId));
   return room?.actors[actorId] ?? null;
 }

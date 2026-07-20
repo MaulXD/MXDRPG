@@ -4,7 +4,7 @@ import { canManageRoom } from "@/lib/auth/room-access";
 import { memberIdsHasUser } from "@/lib/auth/member-ids";
 import { canParticipateInRoomSession } from "@/lib/auth/mesa-watch-session";
 import { getSession } from "@/lib/auth/session";
-import { getRoom, getRoomSnapshot, updateRoomToken } from "@/lib/room/store";
+import { getRoom, updateRoomToken } from "@/lib/room/store";
 import { isMonsterToken } from "@/lib/room/settings";
 
 type Params = { params: Promise<{ roomId: string; tokenId: string }> };
@@ -25,8 +25,7 @@ export async function POST(req: Request, { params }: Params) {
     return NextResponse.json({ error: "Modo só assistir" }, { status: 403 });
   }
 
-  const snapshotBefore = await getRoomSnapshot(roomId);
-  const token = snapshotBefore?.scene.tokens.find((t) => t.id === tokenId);
+  const token = room.scene.tokens.find((t) => t.id === tokenId);
   if (!token) {
     return NextResponse.json({ error: "Token não encontrado" }, { status: 404 });
   }
@@ -61,7 +60,7 @@ export async function POST(req: Request, { params }: Params) {
     }
   }
 
-  const snapshot = await updateRoomToken(roomId, tokenId, { delegatedToUserId });
+  const snapshot = await updateRoomToken(roomId, tokenId, { delegatedToUserId }, { room });
   if (!snapshot) {
     return NextResponse.json({ error: "Falha ao delegar" }, { status: 500 });
   }

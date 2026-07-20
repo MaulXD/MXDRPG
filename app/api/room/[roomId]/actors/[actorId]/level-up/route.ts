@@ -20,7 +20,7 @@ export async function POST(req: Request, { params }: Params) {
     return NextResponse.json({ error: "Personagem inválido" }, { status: 404 });
   }
 
-  const current = await getRoomActor(roomId, actorId);
+  const current = await getRoomActor(roomId, actorId, { room });
   const actorForAuth = actorForRoomAuth(room, { ...seed, ...current });
 
   if (!canEditRoomActor(room, actorForAuth, session?.user ?? null)) {
@@ -48,7 +48,7 @@ export async function POST(req: Request, { params }: Params) {
     return NextResponse.json({ error: err }, { status: 400 });
   }
 
-  const snapshot = await levelUpRoomActor(roomId, actorId, choices);
+  const snapshot = await levelUpRoomActor(roomId, actorId, choices, { room });
   if (!snapshot) {
     return NextResponse.json({ error: "Falha ao subir nível" }, { status: 500 });
   }

@@ -29,13 +29,15 @@ export async function GET(_req: Request, { params }: Params) {
     return NextResponse.json({ error: "Faça login" }, { status: 401 });
   }
 
-  const character = await resolveCharacter(id);
+  const [character, grantReq] = await Promise.all([
+    resolveCharacter(id),
+    import("@/lib/character/sheet-edit-request-store").then((m) =>
+      m.getApprovedGrantForCharacter(id, session.user.id)
+    ),
+  ]);
   if (!character) {
     return NextResponse.json({ error: "Ficha não encontrada" }, { status: 404 });
   }
-  const grantReq = await import("@/lib/character/sheet-edit-request-store").then((m) =>
-    m.getApprovedGrantForCharacter(id, session.user.id)
-  );
   const grant = grantFromRequest(grantReq);
   if (!canEditCharacterWithGrant(character, session.user.id, session.user.role, { grant })) {
     return NextResponse.json({ error: "Sem permissão" }, { status: 403 });

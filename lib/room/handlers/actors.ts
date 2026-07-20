@@ -10,14 +10,15 @@ import {
   resolveLinkedTokenImageFocus,
 } from "../portrait-sync";
 import { getRoom, persistRoom, toSnapshot } from "../internal/registry";
-import type { RoomActor, RoomSnapshot } from "../types";
+import type { RoomActor, RoomSnapshot, RoomState } from "../types";
 
 export async function updateRoomActor(
   roomId: string,
   actorId: string,
-  patch: Partial<CharacterSheet> & { identityPatch?: IdentityPatch }
+  patch: Partial<CharacterSheet> & { identityPatch?: IdentityPatch },
+  opts?: { room?: RoomState }
 ): Promise<RoomSnapshot | null> {
-  const room = await getRoom(roomId);
+  const room = opts?.room ?? (await getRoom(roomId));
   if (!room) return null;
 
   const current = room.actors[actorId];
@@ -80,9 +81,10 @@ export async function updateRoomActor(
 export async function levelUpRoomActor(
   roomId: string,
   actorId: string,
-  choices: LevelUpChoices = {}
+  choices: LevelUpChoices = {},
+  opts?: { room?: RoomState }
 ): Promise<RoomSnapshot | null> {
-  const room = await getRoom(roomId);
+  const room = opts?.room ?? (await getRoom(roomId));
   if (!room) return null;
 
   const current = room.actors[actorId];

@@ -22,12 +22,10 @@ function participantIds(room: RoomState): string[] {
 }
 
 async function resolvedParticipantIds(room: RoomState): Promise<string[]> {
-  const canonical = new Set<string>();
-  for (const userId of participantIds(room)) {
-    const account = await resolveCharacterAccount(userId);
-    canonical.add(account.canonicalId);
-  }
-  return [...canonical];
+  const accounts = await Promise.all(
+    participantIds(room).map((userId) => resolveCharacterAccount(userId))
+  );
+  return [...new Set(accounts.map((a) => a.canonicalId))];
 }
 
 /** Ator ainda pertence a esta mesa/aventura (tolerante a legado sem adventureId). */
@@ -191,8 +189,11 @@ export async function syncAdventureActorsForRoom(roomId: string): Promise<RoomSt
       changed = true;
     }
 
-    for (const userId of await resolvedParticipantIds(room)) {
-      const sheets = await listCharactersForUserInAdventure(userId, adventureId);
+    const resolvedIds = await resolvedParticipantIds(room);
+    const sheetsByParticipant = await Promise.all(
+      resolvedIds.map((userId) => listCharactersForUserInAdventure(userId, adventureId))
+    );
+    for (const sheets of sheetsByParticipant) {
       for (const sheet of sheets) {
         if (!characterBelongsToAdventure(sheet, adventureId)) continue;
         const prev = room.actors[sheet.id];

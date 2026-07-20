@@ -30,7 +30,7 @@ export async function PATCH(req: Request, { params }: Params) {
     return NextResponse.json({ error: "Personagem inválido" }, { status: 404 });
   }
 
-  const live = await getRoomActor(roomId, actorId);
+  const live = await getRoomActor(roomId, actorId, { room });
   const actorForAuth = actorForRoomAuth(room, { ...seed, ...live });
 
   const body = (await req.json()) as Record<string, unknown>;
@@ -43,7 +43,7 @@ export async function PATCH(req: Request, { params }: Params) {
   if (!canEdit && !canPortrait && !canLoadout) {
     return NextResponse.json({ error: "Sem permissão para editar esta ficha" }, { status: 403 });
   }
-  const snapshot = await updateRoomActor(roomId, actorId, body);
+  const snapshot = await updateRoomActor(roomId, actorId, body, { room });
   if (!snapshot) {
     return NextResponse.json({ error: "Sala ou personagem não encontrado" }, { status: 404 });
   }

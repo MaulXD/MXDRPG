@@ -34,7 +34,8 @@ export async function POST(req: Request, { params }: Params) {
       {
         variant: body.variant ?? "normal",
         groupLevelDelta: body.groupLevelDelta,
-      }
+      },
+      { room: auth.room }
     );
     if (!result.ok) {
       return NextResponse.json({ error: result.error }, { status: 400 });

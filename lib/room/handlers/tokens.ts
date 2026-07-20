@@ -28,9 +28,10 @@ import type { RoomSnapshot, RoomState } from "../types";
 export async function updateRoomToken(
   roomId: string,
   tokenId: string,
-  patch: Partial<BattleToken>
+  patch: Partial<BattleToken>,
+  opts?: { room?: RoomState }
 ): Promise<RoomSnapshot | null> {
-  const room = await getRoom(roomId);
+  const room = opts?.room ?? (await getRoom(roomId));
   if (!room) return null;
 
   const idx = room.scene.tokens.findIndex((t) => t.id === tokenId);
@@ -176,9 +177,10 @@ export async function spawnRoomMonster(
   roomId: string,
   monsterEntryId: string,
   axial: Axial,
-  options?: MonsterSpawnOptions
+  options?: MonsterSpawnOptions,
+  opts?: { room?: RoomState }
 ): Promise<SpawnExecuteResult> {
-  const room = await getRoom(roomId);
+  const room = opts?.room ?? (await getRoom(roomId));
   if (!room) return { ok: false, error: "Sala não encontrada" };
 
   const token = createMonsterTokenFromEntryId(monsterEntryId, axial, options);
@@ -218,9 +220,10 @@ export async function spawnRoomMonster(
 export async function repositionRoomToken(
   roomId: string,
   tokenId: string,
-  target: Axial
+  target: Axial,
+  opts?: { room?: RoomState }
 ): Promise<MoveExecuteResult> {
-  const room = await getRoom(roomId);
+  const room = opts?.room ?? (await getRoom(roomId));
   if (!room) return { ok: false, error: "Sala não encontrada" };
 
   const idx = room.scene.tokens.findIndex((t) => t.id === tokenId);
@@ -251,9 +254,10 @@ export async function repositionRoomToken(
 export async function placeRoomActorOnCell(
   roomId: string,
   actorId: string,
-  target: Axial
+  target: Axial,
+  opts?: { room?: RoomState }
 ): Promise<SpawnExecuteResult> {
-  const room = await getRoom(roomId);
+  const room = opts?.room ?? (await getRoom(roomId));
   if (!room) return { ok: false, error: "Sala não encontrada" };
 
   const actor = room.actors[actorId];
@@ -319,9 +323,10 @@ export type RemoveTokenResult =
 /** Mestre: remove token do mapa (ficha do ator permanece na aventura). */
 export async function removeRoomToken(
   roomId: string,
-  tokenId: string
+  tokenId: string,
+  opts?: { room?: RoomState }
 ): Promise<RemoveTokenResult> {
-  const room = await getRoom(roomId);
+  const room = opts?.room ?? (await getRoom(roomId));
   if (!room) return { ok: false, error: "Sala não encontrada" };
 
   const idx = room.scene.tokens.findIndex((t) => t.id === tokenId);
