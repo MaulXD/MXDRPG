@@ -104,6 +104,31 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-07-14 — Quarta leva: render caro da ficha (objeto `live` sem memo)
+
+**Pedido:** continuação de "coloque tudo isso em prática" — último item do relatório de render de componentes React da rodada anterior.
+
+**Passo a passo:**
+1. **`components/character/CharacterSheet.tsx`** — o objeto `live` (ficha "efetiva", mesclando `roomActor`/`sheetBase`/`character`) era reconstruído via spread literal em **todo** render, nunca memoizado. Como `live` é passado como prop `actor` pra ~10 painéis filhos, qualquer mudança de estado local não relacionada (trocar aba, abrir picker, selecionar item) invalidava a identidade de `live` e propagava recomputação cara pra baixo (`listCombatActions` em `CombatLoadoutPanel`/`SheetPopupLoadoutBar`, roadmap de níveis futuros, preview de identidade). Envolvido em `useMemo` com deps `[roomActor, sheetBase, character]` — resolve os itens filhos automaticamente, já que eles dependem da mesma referência de `actor`.
+2. **`FutureLevelsPanel.tsx`** e **`CharacterIdentityEditor.tsx`** — além de dependerem de `actor` (agora estável), os dois recalculavam (`buildFutureLevelRoadmap`/`upcomingRacialMilestones`/`describeIdentity`) mesmo com o painel colapsado/fechado. Adicionado gate por `open` nas duas — só computa quando expandido.
+3. **`Battlefield.tsx`** — `statusDelegateCandidates` (filter+map sobre membros da sala) recalculava em todo render do componente mais "quente" da mesa, mesmo quando o modal de status nem estava aberto. Envolvido em `useMemo` gateado por `modalStatusToken`.
+4. **Decidido não tocar** — o efeito de `keydown` global em `CharacterSheet.tsx` tem `inventory` nas deps mas só o lê via closure de `removeItem`; remover a dependência sem também memoizar `removeItem` corretamente introduziria um bug de closure obsoleta (deletar item baseado em inventário desatualizado). O ganho seria mínimo (só evita um re-subscribe de listener, operação barata) — risco não compensa.
+5. **Validação** — `npx tsc --noEmit`, `npm run build`, `npm test` limpos. Verificação visual ao vivo (Chrome real via Puppeteer) na ficha de `/personagem/pc-thrain-ferroescudo`: abri o painel "Níveis futuros" e confirmei via DOM que `aria-expanded="true"` e o corpo do painel (`.sheet-future-levels__body`) renderiza corretamente — sem erros novos de console.
+
+**Arquivos tocados:**
+- `components/character/CharacterSheet.tsx` — `live` memoizado
+- `components/character/FutureLevelsPanel.tsx` — roadmap/marcos raciais gateados por `open`
+- `components/character/CharacterIdentityEditor.tsx` — preview de identidade gateado por `open`
+- `components/vtt/Battlefield.tsx` — `statusDelegateCandidates` memoizado e gateado
+
+**Commits / deploy:** local, aguardando push.
+
+**Como testar:**
+- Abrir a ficha de um personagem, trocar de aba várias vezes → painéis de combate/talentos não devem "piscar"/recalcular visivelmente
+- Abrir e fechar "Níveis futuros" e "Editar raça/classe/atributos" → devem continuar funcionando normalmente
+
+---
+
 ### 2026-07-14 — Terceira leva: lazy-load restante + N+1 sistêmico em rotas de sala
 
 **Pedido:** "coloque tudo isso em prática" — implementar os achados de 3 novas auditorias em paralelo (render de componentes React pesados, N+1 restante nas rotas de API, bundle/lazy-load restante).

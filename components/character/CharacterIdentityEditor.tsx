@@ -53,11 +53,21 @@ export function CharacterIdentityEditor({
 
   const notes = useMemo(
     () =>
-      describeIdentity({
-        ...actor,
-        identity: { ...actor.identity, raca, classe, subclasse, linhagem, antecedente, religiao },
-      }),
-    [actor, raca, classe, subclasse, linhagem, antecedente, religiao]
+      open
+        ? describeIdentity({
+            ...actor,
+            identity: {
+              ...actor.identity,
+              raca,
+              classe,
+              subclasse,
+              linhagem,
+              antecedente,
+              religiao,
+            },
+          })
+        : [],
+    [open, actor, raca, classe, subclasse, linhagem, antecedente, religiao]
   );
 
   const previewTrack = useMemo(() => getSubclassTrack(subclasse || null), [subclasse]);

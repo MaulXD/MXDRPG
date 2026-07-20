@@ -2652,12 +2652,15 @@ export function Battlefield({
       (isRoomGm || session?.id === statusTokenOwnerId)
   );
 
-  const statusDelegateCandidates = (memberIds ?? [])
-    .filter((id) => id !== statusTokenOwnerId)
-    .map((id) => ({
-      userId: id,
-      label: ownerDisplayNames?.get(id) ?? "Jogador",
-    }));
+  const statusDelegateCandidates = useMemo(() => {
+    if (!modalStatusToken) return [];
+    return (memberIds ?? [])
+      .filter((id) => id !== statusTokenOwnerId)
+      .map((id) => ({
+        userId: id,
+        label: ownerDisplayNames?.get(id) ?? "Jogador",
+      }));
+  }, [modalStatusToken, memberIds, statusTokenOwnerId, ownerDisplayNames]);
 
   const statusTitle = modalStatusToken ? `Status · ${modalStatusToken.name}` : "Status";
 

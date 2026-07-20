@@ -216,27 +216,29 @@ function CharacterSheetLoaded({
   const { snapshot: liveSnapshot, refresh: liveRefresh, applySnapshot: liveApplySnapshot } = sync;
   const sheetBase = localSheet ?? character;
   const roomActor = liveSnapshot?.actors[character.id];
-  const liveRaw = roomActor ?? sheetBase;
-  const live: CharacterSheetData = {
-    ...liveRaw,
-    inventory: roomActor?.inventory?.length
-      ? roomActor.inventory
-      : (sheetBase.inventory ?? character.inventory),
-    combatLoadout:
-      roomActor?.combatLoadout ??
-      sheetBase.combatLoadout ??
-      character.combatLoadout ??
-      null,
-    armorLoadout:
-      roomActor?.armorLoadout ??
-      sheetBase.armorLoadout ??
-      character.armorLoadout ??
-      null,
-    preparedSpellIds:
-      roomActor?.preparedSpellIds ??
-      sheetBase.preparedSpellIds ??
-      character.preparedSpellIds,
-  };
+  const live: CharacterSheetData = useMemo(() => {
+    const liveRaw = roomActor ?? sheetBase;
+    return {
+      ...liveRaw,
+      inventory: roomActor?.inventory?.length
+        ? roomActor.inventory
+        : (sheetBase.inventory ?? character.inventory),
+      combatLoadout:
+        roomActor?.combatLoadout ??
+        sheetBase.combatLoadout ??
+        character.combatLoadout ??
+        null,
+      armorLoadout:
+        roomActor?.armorLoadout ??
+        sheetBase.armorLoadout ??
+        character.armorLoadout ??
+        null,
+      preparedSpellIds:
+        roomActor?.preparedSpellIds ??
+        sheetBase.preparedSpellIds ??
+        character.preparedSpellIds,
+    };
+  }, [roomActor, sheetBase, character]);
   const inRoom = Boolean(roomActor);
   const mesaPopup = variant === "popup" && roomId !== "demo";
   const portraitOnRoom = mesaPopup || inRoom;

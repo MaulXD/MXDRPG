@@ -14,8 +14,11 @@ type Props = {
 
 export function FutureLevelsPanel({ actor, compact }: Props) {
   const [open, setOpen] = useState(false);
-  const roadmap = useMemo(() => buildFutureLevelRoadmap(actor), [actor]);
-  const racialNext = useMemo(() => upcomingRacialMilestones(actor), [actor]);
+  const roadmap = useMemo(() => (open ? buildFutureLevelRoadmap(actor) : []), [actor, open]);
+  const racialNext = useMemo(
+    () => (open ? upcomingRacialMilestones(actor) : []),
+    [actor, open]
+  );
 
   if (actor.identity.nivel >= 20) {
     return (
