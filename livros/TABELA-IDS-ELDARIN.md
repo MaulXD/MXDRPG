@@ -718,7 +718,7 @@
 
 ---
 
-## Compêndio VTT — Habilidades (50)
+## Compêndio VTT — Habilidades (55)
 
 | entryId | Nome | tipo |
 | --- | --- | --- |
@@ -772,6 +772,11 @@
 | habilidades-corrente-mental | Corrente Mental | habilidade |
 | habilidades-manto-de-bruma | Manto de Bruma | habilidade |
 | habilidades-puxao-abissal | Puxão Abissal | habilidade |
+| chi-golpe-de-chi | Golpe de Chi | habilidade |
+| chi-passo-do-vacuo | Passo do Vácuo | habilidade |
+| chi-ferida-aberta | Ferida Aberta | habilidade |
+| chi-golpe-do-vacuo | Golpe do Vácuo | habilidade |
+| chi-muro-de-chi | Muro de Chi | habilidade |
 
 
 ---

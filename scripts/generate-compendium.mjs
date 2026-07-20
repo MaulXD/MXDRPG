@@ -601,18 +601,47 @@ const ABILITY_CATALOG = [
   ["Puxão Abissal", 5, 3, "ativa", "1/turno", "Puxa alvo 9m e 2d8 frio (FOR CD 15)."],
 ];
 
-const ABILITIES = ABILITY_CATALOG.map(([name, range, pa, tipo, recarga, desc]) => ({
-  id: `habilidades-${slug(name)}`,
-  name,
-  type: "habilidade",
-  system: {
-    catalogId: `HAB-${slug(name)}`,
-    bookRef: BOOK_HAB,
-    description: `<p>${desc}</p>`,
-    tactical: { alcanceCells: { value: range, min: 0 }, custoPontosAcao: { value: pa, min: 0 } },
-    ability: { tipo, recarga },
-  },
-}));
+const BOOK_CHI = "ESPIRITUALISTA-CRIACAO-PERSONAGEM.md";
+
+// Técnicas de Chi (Espiritualista) — custo em PA + Chi, ver guias-criacao/Espiritualista-*.md
+const CHI_ABILITY_CATALOG = [
+  ["Golpe de Chi", 1, 1, 1, "ativa", "", "Ataque desarmado aprimorado: causa +1d6 de dano de força além do dano normal. O alvo é empurrado 1 célula na direção oposta se falhar em um teste de FOR (CD 12 + mod SAB)."],
+  ["Passo do Vácuo", 3, 1, 1, "ativa", "", "Move até 3 células sem provocar ataques de oportunidade. Se terminar adjacente a um inimigo, o próximo ataque feito contra ele neste turno tem vantagem."],
+  ["Ferida Aberta", 1, 1, 2, "ativa", "1/turno", "Golpe preciso em ponto de pressão vital: o alvo fica <em>Vulnerável</em> até o fim do próximo turno do Espiritualista (todos os danos recebidos são acrescidos de +1d6 enquanto durar o efeito). Não funciona contra criaturas sem anatomia discernível (construtos, elementais sem forma)."],
+  ["Golpe do Vácuo", 1, 1, 1, "ativa", "", "Golpe desarmado canalizado com Chi: causa +1d6 de dano de força além do dano normal, abalando a resistência interna do alvo."],
+  ["Muro de Chi", 0, 1, 1, "ativa", "", "Concentra Chi ao redor do corpo como um escudo: ganha +2 CA até o início do próximo turno."],
+];
+
+const ABILITIES = [
+  ...ABILITY_CATALOG.map(([name, range, pa, tipo, recarga, desc]) => ({
+    id: `habilidades-${slug(name)}`,
+    name,
+    type: "habilidade",
+    system: {
+      catalogId: `HAB-${slug(name)}`,
+      bookRef: BOOK_HAB,
+      description: `<p>${desc}</p>`,
+      tactical: { alcanceCells: { value: range, min: 0 }, custoPontosAcao: { value: pa, min: 0 } },
+      ability: { tipo, recarga },
+    },
+  })),
+  ...CHI_ABILITY_CATALOG.map(([name, range, pa, chi, tipo, recarga, desc]) => ({
+    id: `chi-${slug(name)}`,
+    name,
+    type: "habilidade",
+    system: {
+      catalogId: `CHI-${slug(name)}`,
+      bookRef: BOOK_CHI,
+      description: `<p><strong>Custo: ${chi} Chi.</strong> ${desc}</p>`,
+      tactical: {
+        alcanceCells: { value: range, min: 0 },
+        custoPontosAcao: { value: pa, min: 0 },
+        custoChi: { value: chi, min: 0 },
+      },
+      ability: { tipo, recarga },
+    },
+  })),
+];
 
 for (const s of SPELLS) {
   const lore = SPELL_LORE[s.name];
