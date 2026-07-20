@@ -98,7 +98,9 @@ function roomQuery(roomId: string, inviteCode?: string | null, sinceRev?: number
   return s ? `?${s}` : "";
 }
 
-const COMBAT_POLL_INTERVAL_MS = 2500;
+// Mais curto que o poll base (2000ms) — combate é o momento mais sensível a
+// latência (turno, PA, HP); antes estava invertido (2500ms, mais lento).
+const COMBAT_POLL_INTERVAL_MS = 1200;
 
 function prepareSnapshot(data: RoomSnapshot): RoomSnapshot {
   const tokens = Array.isArray(data.scene?.tokens) ? data.scene.tokens : [];

@@ -24,6 +24,7 @@ export function usePassTurn(
   const passTurn = useCallback(async () => {
     if (!snapshot?.combat?.order?.length || inFlightRef.current) return;
     inFlightRef.current = true;
+    setBusy(true);
     setErr(null);
     revertRef.current = snapshot;
 
@@ -38,7 +39,6 @@ export function usePassTurn(
       scene: { ...snapshot.scene, tokens: preview.tokens },
     };
     applyUpdate(optimistic, { force: true, immediate: true });
-    setBusy(false);
 
     try {
       const payload = await nextCombatTurn(roomId, { force: true });

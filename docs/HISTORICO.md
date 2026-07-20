@@ -104,6 +104,52 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-07-14 — Lista de melhorias + segunda leva de correções
+
+**Pedido:** "me faça lista de coisas que podem melhorar e comece a por em prática" — continuação da varredura de performance da sessão anterior.
+
+**Lista levantada (com base nas 4 auditorias da sessão anterior + nova checagem):**
+
+Feitas nesta sessão:
+1. Poll de combate mais lento que o de exploração (2500ms vs 2000ms) — invertido, devia ser mais rápido
+2. `usePassTurn`: flag `busy` nunca ficava `true` — botão "Passar turno" nunca mostrava estado de carregamento
+3. `getEntry` do compêndio fazia busca linear (`.find()`) a cada chamada — hot path usado por item de inventário
+4. Escrita de sala + escrita de aventura sequenciais na criação de mesa — paralelizadas
+5. `CampaignLobby.tsx` — componente morto, zero imports em todo o repo — removido
+6. Erro de banco na listagem de mesas era mascarado como "0 mesas" (`degraded:true` nunca lido pelo cliente) — agora mostra aviso
+
+Levantadas, não feitas (maior risco/esforço, ficam para depois):
+7. `listRoomsForOwnerOrMember`/`adventures` usa `JSON_CONTAINS` + `OR` em `member_ids` — sem índice usável, gera full table scan; hoje rápido (tabela pequena), primeiro ponto a degradar com o crescimento da base. Precisa de migration (coluna gerada + índice, ou tabela de junção).
+8. `ensureDbMigrations` importado/chamado em 23 rotas diferentes — sinal de migration temporária que devia ser uma migration de verdade e sair do hot path.
+9. `CharacterCreationWizard.tsx`: `previewLines`/`invalidSteps` recalculam a cada tecla digitada (nome/biografia), porque dependem do objeto `draft` inteiro. Baixo impacto real (cálculo barato), mas seria mais correto memoizar só nos campos que de fato mudam o preview.
+10. Cascata de normalizações redundantes no save de ficha (já anotado na sessão anterior) — não mexido, área sensível.
+
+**Passo a passo:**
+1. `hooks/useRoomSync.ts` — `COMBAT_POLL_INTERVAL_MS` 2500→1200ms (mais rápido que o poll base de exploração, como já era o caso do backup poll via SSE).
+2. `hooks/vtt/usePassTurn.ts` — adicionado `setBusy(true)` no início de `passTurn()`; antes ele ia direto pra `false` sem nunca ter sido `true`.
+3. `lib/compendium/registry.ts` — `getEntry` passou a usar um `Map` por pack (`indexForPack`, lazy) em vez de `.find()` linear no array.
+4. `lib/adventure/store.ts` — `createAdventure` agora dispara `createRoomForAdventure` e `dbAdventures.saveAdventure` com `Promise.all` (confirmado: sem foreign key entre as tabelas, seguro paralelizar; rollback em caso de erro continua igual).
+5. `components/campaign/CampaignLobby.tsx` — removido (confirmado zero referências no repo).
+6. `components/adventure/AdventureLobby.tsx` — `load()` agora seta `error` quando a API responde `degraded:true`, em vez de mostrar silenciosamente "nenhuma mesa".
+7. **Validação** — `npx tsc --noEmit` limpo, `npm run build` limpo, `npm test` (verify-pa-bank, verify-movement-pa, verify-grid-path, verify-sheet-pdf, verify-consumables, sync:data:check) todos OK.
+
+**Arquivos tocados:**
+- `hooks/useRoomSync.ts` — poll de combate mais rápido
+- `hooks/vtt/usePassTurn.ts` — `busy` reflete o request de verdade
+- `lib/compendium/registry.ts` — `getEntry` com índice O(1)
+- `lib/adventure/store.ts` — escritas paralelas na criação de mesa
+- `components/campaign/CampaignLobby.tsx` — removido (morto)
+- `components/adventure/AdventureLobby.tsx` — erro visível quando a listagem degrada
+
+**Commits / deploy:** local, aguardando push.
+
+**Como testar:**
+- Passar o turno na mesa → botão deve mostrar "Passando…"/"…" brevemente
+- Criar uma mesa nova → sem mudança visível esperada (só mais rápido internamente)
+- `npm test` deve passar limpo
+
+---
+
 ### 2026-07-14 — Varredura de performance: "lento pra jogar" + ataques travando na mesa
 
 **Pedido:** depois do fix de featIds, o usuário pediu uma varredura completa — revisar criação de mesa, criação de personagem e o tempo de jogatina, já que a mesa estava "tão lenta pra jogar".

@@ -48,6 +48,11 @@ export function AdventureLobby() {
     if (res.ok) {
       const data = await res.json();
       setAdventures(data.adventures ?? []);
+      if (data.degraded) {
+        setError(
+          "Não foi possível carregar suas mesas agora — a lista pode estar incompleta. Tente recarregar a página."
+        );
+      }
     }
   }, []);
 

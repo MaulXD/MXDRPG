@@ -77,6 +77,7 @@ function normalizeEntry(packId: CompendiumPackId, raw: CompendiumEntryRaw, index
 }
 
 const packCache = new Map<CompendiumPackId, CompendiumEntry[]>();
+const packIndexCache = new Map<CompendiumPackId, Map<string, CompendiumEntry>>();
 
 function entriesForPack(packId: CompendiumPackId): CompendiumEntry[] {
   let cached = packCache.get(packId);
@@ -85,6 +86,15 @@ function entriesForPack(packId: CompendiumPackId): CompendiumEntry[] {
     packCache.set(packId, cached);
   }
   return cached;
+}
+
+function indexForPack(packId: CompendiumPackId): Map<string, CompendiumEntry> {
+  let index = packIndexCache.get(packId);
+  if (!index) {
+    index = new Map(entriesForPack(packId).map((e) => [e.id, e]));
+    packIndexCache.set(packId, index);
+  }
+  return index;
 }
 
 export function canViewPack(
@@ -130,5 +140,5 @@ export function getPackEntries(
 }
 
 export function getEntry(packId: CompendiumPackId, entryId: string): CompendiumEntry | null {
-  return entriesForPack(packId).find((e) => e.id === entryId) ?? null;
+  return indexForPack(packId).get(entryId) ?? null;
 }

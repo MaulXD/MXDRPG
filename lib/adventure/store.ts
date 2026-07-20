@@ -274,10 +274,10 @@ export async function createAdventure(
 
   adventures().set(adventureId, adventure);
   try {
-    await createRoomForAdventure(adventure);
-    if (dbEnabled()) {
-      await dbAdventures.saveAdventure(adventure);
-    }
+    await Promise.all([
+      createRoomForAdventure(adventure),
+      dbEnabled() ? dbAdventures.saveAdventure(adventure) : Promise.resolve(),
+    ]);
   } catch (e) {
     adventures().delete(adventureId);
     rooms().delete(adventureId);
