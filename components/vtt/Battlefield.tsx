@@ -323,6 +323,9 @@ export function Battlefield({
   const [modalStatusToken, setModalStatusToken] = useState<BattleToken | null>(null);
   const { visible: hudVisible, setHudVisible } = useCombatHudVisible(roomId);
   const toast = useVttToast();
+  useEffect(() => {
+    if (actionErr) toast.push(actionErr, "warn");
+  }, [actionErr, toast]);
   const [mapImage, setMapImage] = useState<HTMLImageElement | null>(null);
   const [mapImgTick, setMapImgTick] = useState(0);
   const [dungeonLayer, setDungeonLayer] = useState<DungeonEditLayer>("floor");
@@ -1266,7 +1269,6 @@ export function Battlefield({
     } catch (e) {
       const msg = e instanceof Error ? e.message : "Falha ao remover token";
       setActionErr(msg);
-      toast.push(msg, "warn");
     } finally {
       setDeleteTokenBusy(false);
     }

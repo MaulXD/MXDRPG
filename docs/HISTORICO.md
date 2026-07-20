@@ -104,6 +104,32 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-07-20 — Diagnóstico "combate cagado" + habilidades cortadas na ficha popup
+
+**Pedido:** "sobre o combate ainda ta cagado" (screenshots de `/combat/ability` e `/combat/attack` retornando 400 em produção) + "as habilidades ainda tão com tooltips cortados" (fix anterior de `fullLabel`/aria-label não resolveu).
+
+**Passo a passo:**
+1. **Reprodução em produção** — com Puppeteer-core logado como `mestre` em `www.mxdrpg.com.br/mesa/demo`, cheguei à conclusão de que existem duas UIs de habilidade distintas (sub-menu interno do `TokenActionRing` vs. `AbilityPickerPanel` externo); confirmei que `onOpenAbilityPicker`/`onOpenSpellPicker` são sempre passados em `Battlefield.tsx`, então o sub-menu interno (`ringView === "ability"/"spell"`, com truncamento JS + `-webkit-line-clamp`) é **código morto** — não é o que o usuário vê.
+2. **Bug real das habilidades cortadas** — testei o `AbilityPickerPanel` (sem truncamento, texto completo) e depois a ficha popup flutuante na mesa (ícone "Ficha" → aba "Habilidades"). Via `getBoundingClientRect` + `elementFromPoint`, confirmei que a lista de habilidades renderiza **abaixo da área visível** da janela flutuante (`.foundry-window__body`, `overflow:auto`, mas altura padrão de 680px insuficiente pro conteúdo do cabeçalho+atributos+traços+culinária que fica **acima** das abas) — sem scroll visível óbvio, a lista fica invisível/não-hoverável, exatamente como "cortada".
+3. **Fix 1** — `hooks/vtt/useFoundryWindows.ts`: altura padrão do popup `character` 680→820px. `components/character/CharacterSheet.tsx`: ao clicar numa aba (`Habilidades`/`Magias`/etc.) na variante popup, `tabStripRef.current.scrollIntoView({block:"start", behavior:"smooth"})` — traz a lista pra vista sem precisar o usuário descobrir que precisa rolar a janela inteira.
+4. **Bug real dos 400 em combate** — testei `/api/room/demo/combat/attack` direto (via `fetch` autenticado como mestre) com atacante fora do turno ativo → `400 "Aguarde seu turno na iniciativa"`; com atacante certo mas alvo fora de alcance → `400 "Fora de alcance (2 cél., máx 1)"`. Ambos são **validações corretas do jogo**, não bugs de lógica.
+5. **Causa raiz real** — `grep` em `components/vtt/Battlefield.tsx` mostrou `actionErr`/`setActionErr` usado em **~30 pontos** (toda falha de ataque/habilidade/magia/movimento/mapa seta essa state), mas **nunca lido/renderizado** em lugar nenhum do componente — só o path de "remover token" também chamava `toast.push` manualmente. Ou seja: toda rejeição de ação (fora de alcance, fora do turno, alvo inválido etc.) era computada corretamente pelo servidor, capturada no cliente, e **descartada silenciosamente** — o jogador só via um 400 genérico no Network tab, sem nenhuma mensagem visível na tela. Essa é a explicação mais provável pra "combate cagado".
+6. **Fix 2** — `components/vtt/Battlefield.tsx`: `useEffect` que dispara `toast.push(actionErr, "warn")` sempre que `actionErr` muda pra um valor não-nulo, cobrindo todos os ~30 call sites de uma vez; removida a chamada manual duplicada de toast no path de remover token (agora coberta pelo efeito).
+7. **Validação** — `tsc --noEmit` limpo. Reprodução local (Puppeteer contra `localhost:3000`) confirmou visualmente que a aba Habilidades agora aparece cheia e hoverável sem scroll manual, com o tooltip completo (`sheet-hover-tip__bubble--portal`) sem nenhum recorte.
+
+**Arquivos tocados:**
+- `hooks/vtt/useFoundryWindows.ts` — altura padrão do popup de ficha 680→820
+- `components/character/CharacterSheet.tsx` — scroll automático da aba pro topo visível na variante popup
+- `components/vtt/Battlefield.tsx` — toast automático para qualquer `actionErr` não-nulo; remove duplicação no path de remover token
+
+**Commits / deploy:** pendente local (aguardando push).
+
+**Como testar:**
+- Na mesa, abrir a ficha de um personagem pelo ícone lateral "Ficha" → clicar em "Habilidades"/"Magias": a lista deve aparecer cheia, sem precisar rolar manualmente.
+- Em combate, tentar atacar fora do turno ou um alvo fora de alcance: deve aparecer um toast (canto da tela, perto do HUD) com a razão exata, não só falhar em silêncio.
+
+---
+
 ### 2026-07-14 — Fix CI: job data-sync falhando (técnicas de Chi editadas a mão)
 
 **Pedido:** "conserte isso" — screenshot de notificação do GitHub mostrando `CI / data-sync` falhando.

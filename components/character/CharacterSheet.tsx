@@ -630,6 +630,7 @@ function CharacterSheetLoaded({
     return () => window.removeEventListener("keydown", onKey, true);
   }, [canEditInventory, tab, pickerOpen, selectedInvId, filtered, inventory]);
 
+  const tabStripRef = useRef<HTMLDivElement>(null);
   const { identity, resources, movement, tactical } = live;
   const isPopup = variant === "popup";
   const isStandalonePopup = isPopup && standalonePage;
@@ -731,7 +732,7 @@ function CharacterSheetLoaded({
   };
 
   const tabStrip = (
-    <div className="sheet-tabs" role="tablist" aria-label="Inventário e recursos">
+    <div ref={tabStripRef} className="sheet-tabs" role="tablist" aria-label="Inventário e recursos">
       {sheetTabs.map((t) => (
         <button
           key={t.id}
@@ -739,7 +740,12 @@ function CharacterSheetLoaded({
           role="tab"
           aria-selected={tab === t.id}
           className={`sheet-tab ${tab === t.id ? "active" : ""}`}
-          onClick={() => setTab(t.id)}
+          onClick={() => {
+            setTab(t.id);
+            if (isPopup) {
+              tabStripRef.current?.scrollIntoView({ block: "start", behavior: "smooth" });
+            }
+          }}
         >
           {t.icon}
           <span className="sheet-tab__label">{t.label}</span>
