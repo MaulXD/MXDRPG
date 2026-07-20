@@ -729,7 +729,16 @@
   border-right-color: rgba(14, 13, 11, 0.96);
 }
 
-.foundry-icon-bar__btn:hover .foundry-icon-bar__tooltip,
+/* :hover só em ponteiro fino (mouse) — em touch o :hover não desfaz ao
+   tirar o dedo, e o tooltip fica "grudado" duplicando o texto do label. */
+@media (hover: hover) and (pointer: fine) {
+  .foundry-icon-bar__btn:hover .foundry-icon-bar__tooltip {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(-50%) translateX(0);
+  }
+}
+
 .foundry-icon-bar__btn:focus-visible .foundry-icon-bar__tooltip {
   opacity: 1;
   visibility: visible;

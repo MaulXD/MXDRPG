@@ -118,8 +118,10 @@ npm run sync:data:check       # após editar livros/
 6. **Leitura de ficha descartada** — `lib/character/characters.ts`: `resolveCharacter` parava de consultar (e normalizar) o registry em memória incondicionalmente; agora só faz isso quando o Postgres está desligado ou falhou.
 7. **Bundle do chat** — `components/vtt/RoomChat.tsx`: `DiceBoxMini` (que arrasta `DiceMiniature` → `DiceWebGL` → `three`) passou a ser `next/dynamic({ssr:false})`, igual ao padrão já usado em `DiceRoller`. Deixa de ir no bundle inicial da mesa.
 8. **Tooltip truncado no anel de ações** — investigando o bug visual reportado ("Golpe de C..." cortado), achei que `TokenActionRing.tsx` usava o `label` já truncado (11/14/22 chars, pensado pro círculo pequeno) também no `aria-label` do slot — que pode aparecer como tooltip visível via leitor de tela ou extensão de acessibilidade. Adicionado `fullLabel` (nome completo, sem corte) ao `DisplaySlot`, usado agora no `aria-label` do slot e do botão de info.
-9. **Não resolvido nesta sessão** — o bug de layout duplicado/ícones enormes ("Personagens Jogáveis") relatado por screenshot não foi reproduzido (testei em 899×1400 sem sucesso). Precisa do device/viewport exato do usuário para reproduzir antes de arriscar mudança de CSS. A cascata de normalizações redundantes no save de ficha (achado #2 da auditoria) também não foi tocada — é uma refatoração de maior risco em área que já teve uma regressão hoje; fica para uma sessão dedicada com mais tempo de teste.
-10. **Validação** — `npx tsc --noEmit` limpo, `npm run build` limpo. Fluxo de ataque re-testado de ponta a ponta com Chrome real (Puppeteer) após as mudanças — sem novos erros de console; `scripts/smoke/combat-core.mjs` continua falhando por bug pré-existente do próprio script (não entende respostas delta), não é regressão desta sessão.
+9. **Layout duplicado — "Personagens Jogáveis"** — não reproduzi o print exato (testei em 899×1400 sem sucesso), mas ao ler o código encontrei a causa real por inspeção: `PlayableCharactersPanel.tsx` renderizava seu próprio `<p className="vtt-eyebrow">Personagens jogáveis</p>`, só que os DOIS lugares que o usam (`MesaFoundryDockRail.tsx` e `MesaFoundryFloatingWindows.tsx`) já passam `title="Personagens jogáveis"` para a moldura (`FoundryDockPanel`/`FoundryWindow`), que renderiza isso num `<h2>` próprio — cabeçalho genuinamente duplicado, um por cima do outro. Removido o eyebrow interno (redundante nos dois usos).
+10. **Ícones da barra lateral com texto "grudado"** — `MesaIconBar.tsx` mostra label + tooltip (com o mesmo nome de novo) por CSS puro `:hover`/`:focus-visible`. Em navegador touch, `:hover` pode não desfazer ao soltar o dedo (bug clássico de mobile web) — cada ícone tocado anteriormente fica com o tooltip "grudado", parecendo texto duplicado. Corrigido: o gatilho `:hover` só ativa quando `@media (hover: hover) and (pointer: fine)` (mouse de verdade); `:focus-visible` continua funcionando para teclado em qualquer dispositivo. Mesmo padrão corrigido em `.condition-chip__tooltip` (ícones de condição/status no token) em `eldarin-v4.css`.
+11. **Cascata de normalizações redundantes no save de ficha** — não tocada nesta sessão (achado #2 da auditoria de personagem). É uma refatoração de maior risco em área que já teve uma regressão hoje; fica para uma sessão dedicada com mais tempo de teste.
+12. **Validação** — `npx tsc --noEmit` limpo, `npm run build` limpo (duas rodadas, uma por leva de fixes). Fluxo de ataque re-testado de ponta a ponta com Chrome real (Puppeteer) após as mudanças — sem novos erros de console; `scripts/smoke/combat-core.mjs` continua falhando por bug pré-existente do próprio script (não entende respostas delta), não é regressão desta sessão.
 
 **Arquivos tocados:**
 - `components/vtt/Battlefield.tsx` — `collectProtectedTokenIds` + `syncRoom` aplica cena parcial durante defer
@@ -128,6 +130,9 @@ npm run sync:data:check       # após editar livros/
 - `lib/character/characters.ts` — `resolveCharacter` só lê o registry quando precisa
 - `components/vtt/RoomChat.tsx` — `DiceBoxMini` como `next/dynamic`
 - `components/vtt/TokenActionRing.tsx` — `fullLabel` sem corte no `aria-label`
+- `components/vtt/PlayableCharactersPanel.tsx` — removido eyebrow duplicado do título
+- `components/vtt/foundry/foundry.css` — tooltip do icon bar só em `(hover: hover) and (pointer: fine)`
+- `components/vtt/eldarin-v4.css` — mesmo guard em `.condition-chip__tooltip`
 
 **Commits / deploy:** local, aguardando push.
 
@@ -136,6 +141,8 @@ npm run sync:data:check       # após editar livros/
 - Com dois tokens de jogadores diferentes em combate, um atacando não deve mais congelar a posição/HP de tokens não envolvidos na FX
 - Abrir "Suas mesas" com várias mesas cadastradas → carregamento deve ser sensivelmente mais rápido
 - Abrir o chat da mesa sem rolar nenhum dado → bundle inicial não deve mais incluir `three.js`
+- Abrir "Personagens Jogáveis" (dock ou janela flutuante) → só um cabeçalho "Personagens Jogáveis", não dois empilhados
+- Em celular/tablet (touch), tocar os ícones da barra lateral um por um → nenhum tooltip deve ficar "grudado" atrás do próximo
 
 ---
 

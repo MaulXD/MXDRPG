@@ -129,7 +129,7 @@ export function PlayableCharactersPanel({
 
   return (
     <div className="vtt-playable-panel">
-      <p className="vtt-eyebrow">Personagens jogáveis</p>
+      {/* Título já vem da moldura (FoundryDockPanel/FoundryWindow title="Personagens jogáveis") — repetir aqui duplicava o cabeçalho. */}
       <p className="vtt-combat-hint vtt-playable-panel__lead">
         Arraste a ficha para o mapa ou abra para consultar.
         {isRoomGm ? " Como mestre, você pode colocar qualquer ficha viva e transferir ou excluir." : ""}

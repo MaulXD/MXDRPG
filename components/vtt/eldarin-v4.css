@@ -555,8 +555,11 @@
   pointer-events: none;
 }
 
-.condition-chip:hover .condition-chip__tooltip {
-  display: block;
+/* Só em ponteiro fino — em touch o :hover não desfaz ao soltar o dedo. */
+@media (hover: hover) and (pointer: fine) {
+  .condition-chip:hover .condition-chip__tooltip {
+    display: block;
+  }
 }
 
 .condition-chip__tooltip-name {
