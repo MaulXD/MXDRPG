@@ -60,8 +60,6 @@ async function ensureDbCharactersSeeded(): Promise<void> {
 }
 
 export async function resolveCharacter(id: string): Promise<CharacterSheet | null> {
-  const fromRegistry = getCharacterFromRegistry(id);
-
   if (dbEnabled()) {
     await ensureDbCharactersSeeded();
     try {
@@ -76,7 +74,9 @@ export async function resolveCharacter(id: string): Promise<CharacterSheet | nul
     }
   }
 
-  return fromRegistry;
+  // Só consulta (e normaliza) o registry em memória quando o DB está
+  // desligado ou falhou — antes isso rodava sempre e era descartado.
+  return getCharacterFromRegistry(id);
 }
 
 async function reconcileCharacterOwners(account: CharacterAccount): Promise<void> {

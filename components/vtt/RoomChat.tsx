@@ -1,13 +1,20 @@
 ﻿"use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import dynamic from "next/dynamic";
 import type { ChatMessage } from "@/lib/room/chat";
 import { postRoomChat } from "@/hooks/useRoomSync";
-import { DiceBoxMini } from "@/components/vtt/DiceBoxMini";
 import { diceRollSpecFromFormula } from "@/lib/vtt/combat-dice-model";
 import { CombatChatCard } from "@/components/vtt/CombatChatCard";
 import type { CombatChatRevealPhase } from "@/lib/combat/chat-display";
 import type { BattleToken } from "@/lib/vtt/types";
+
+// DiceBoxMini arrasta DiceMiniature -> DiceWebGL -> three (~600KB) — carrega
+// só quando uma mensagem de rolagem aparece, não no bundle inicial da mesa.
+const DiceBoxMini = dynamic(
+  () => import("@/components/vtt/DiceBoxMini").then((m) => m.DiceBoxMini),
+  { ssr: false }
+);
 
 type Props = {
   roomId: string;

@@ -104,6 +104,41 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-07-14 — Varredura de performance: "lento pra jogar" + ataques travando na mesa
+
+**Pedido:** depois do fix de featIds, o usuário pediu uma varredura completa — revisar criação de mesa, criação de personagem e o tempo de jogatina, já que a mesa estava "tão lenta pra jogar".
+
+**Passo a passo:**
+
+1. **Auditoria em paralelo** — 4 agentes investigaram simultaneamente: criação de mesa, criação/edição de ficha, loop de jogatina (combate/turnos/sync) e a camada transversal de DB/API/build. Achados principais: N+1 sequencial em `enrichAdventureListItems` (tela "Suas mesas"), cascata de 5-10 normalizações redundantes por save de ficha, `resolveCharacter` lendo e normalizando o registry mesmo quando o Postgres já respondeu, bundle do chat carregando `three` (~600KB) sempre, e — o achado de maior impacto — a fila de FX de combate bloqueando a sincronização de **toda a mesa** (não só do token atacando) enquanto a animação de ataque tocava (~4s por ação).
+2. **Bug crítico relatado ("ataques e habilidades não funcionam")** — reproduzido de ponta a ponta com Chrome real via Puppeteer (login, abrir anel de ação, atacar). O ataque **funciona** — PA é gasto, dano é aplicado — mas a UI trava em "Aguardando servidor…" por ~4-12s porque (a) `afterResolve` estava em 2800ms e (b) `Battlefield.tsx` congelava a sincronização de TODOS os tokens da sala enquanto qualquer FX local tocava, não só do atacante/defensor envolvidos. Some das duas causas explica a sensação de "não funciona" quando na verdade só está lento.
+3. **Correção do bloqueio de sync** — `Battlefield.tsx`: nova `collectProtectedTokenIds()` reúne os tokens presos na FX de combate ativa/na fila (`attackerTokenId`, `defenderTokenId`, `areaTargets`) e no token em animação de movimento. Em `syncRoom`, quando a cena é "deferida", agora aplica o snapshot novo imediatamente para todos os tokens EXCETO os protegidos — só esses continuam com o estado antigo até a FX terminar (`onCombatFxDone` já cuidava do flush final, isso não mudou).
+4. **Redução moderada de delays** — `lib/vtt/combat-dice-model.ts`: `afterResolve` 2800→1400ms, `missHold` 800→500ms. Mantém tempo de leitura do resultado, corta a espera morta depois que ele já apareceu na tela.
+5. **N+1 na lista de mesas** — `lib/adventure/list-enrich.ts`: loop sequencial `for...of` (4 operações por mesa) virou `Promise.all(items.map(...))`, com `getAdventure`/`getRoom` e `fetchUserRows`/`onlineUserIdsForRoom` também paralelizados dentro de cada item.
+6. **Leitura de ficha descartada** — `lib/character/characters.ts`: `resolveCharacter` parava de consultar (e normalizar) o registry em memória incondicionalmente; agora só faz isso quando o Postgres está desligado ou falhou.
+7. **Bundle do chat** — `components/vtt/RoomChat.tsx`: `DiceBoxMini` (que arrasta `DiceMiniature` → `DiceWebGL` → `three`) passou a ser `next/dynamic({ssr:false})`, igual ao padrão já usado em `DiceRoller`. Deixa de ir no bundle inicial da mesa.
+8. **Tooltip truncado no anel de ações** — investigando o bug visual reportado ("Golpe de C..." cortado), achei que `TokenActionRing.tsx` usava o `label` já truncado (11/14/22 chars, pensado pro círculo pequeno) também no `aria-label` do slot — que pode aparecer como tooltip visível via leitor de tela ou extensão de acessibilidade. Adicionado `fullLabel` (nome completo, sem corte) ao `DisplaySlot`, usado agora no `aria-label` do slot e do botão de info.
+9. **Não resolvido nesta sessão** — o bug de layout duplicado/ícones enormes ("Personagens Jogáveis") relatado por screenshot não foi reproduzido (testei em 899×1400 sem sucesso). Precisa do device/viewport exato do usuário para reproduzir antes de arriscar mudança de CSS. A cascata de normalizações redundantes no save de ficha (achado #2 da auditoria) também não foi tocada — é uma refatoração de maior risco em área que já teve uma regressão hoje; fica para uma sessão dedicada com mais tempo de teste.
+10. **Validação** — `npx tsc --noEmit` limpo, `npm run build` limpo. Fluxo de ataque re-testado de ponta a ponta com Chrome real (Puppeteer) após as mudanças — sem novos erros de console; `scripts/smoke/combat-core.mjs` continua falhando por bug pré-existente do próprio script (não entende respostas delta), não é regressão desta sessão.
+
+**Arquivos tocados:**
+- `components/vtt/Battlefield.tsx` — `collectProtectedTokenIds` + `syncRoom` aplica cena parcial durante defer
+- `lib/vtt/combat-dice-model.ts` — `afterResolve`/`missHold` reduzidos
+- `lib/adventure/list-enrich.ts` — `enrichAdventureListItems` paralelizado com `Promise.all`
+- `lib/character/characters.ts` — `resolveCharacter` só lê o registry quando precisa
+- `components/vtt/RoomChat.tsx` — `DiceBoxMini` como `next/dynamic`
+- `components/vtt/TokenActionRing.tsx` — `fullLabel` sem corte no `aria-label`
+
+**Commits / deploy:** local, aguardando push.
+
+**Como testar:**
+- Atacar um monstro na mesa demo → resultado deve aparecer mais rápido (~2,7s em vez de ~4,1s por acerto)
+- Com dois tokens de jogadores diferentes em combate, um atacando não deve mais congelar a posição/HP de tokens não envolvidos na FX
+- Abrir "Suas mesas" com várias mesas cadastradas → carregamento deve ser sensivelmente mais rápido
+- Abrir o chat da mesa sem rolar nenhum dado → bundle inicial não deve mais incluir `three.js`
+
+---
+
 ### 2026-07-14 — Fix regressão: featIds e escolhaPericiaAntecedente apagados ao salvar ficha
 
 **Pedido:** "a criação de fichas está bugada".

@@ -96,60 +96,56 @@ async function onlineUserIdsForRoom(roomId: string): Promise<Set<string>> {
   return new Set(presence.map((p) => p.userId));
 }
 
+async function enrichAdventureListItem(item: AdventureListItem): Promise<AdventureListItem> {
+  if (item.deletedAt) return item;
+
+  const [adv, room] = await Promise.all([getAdventure(item.adventureId), getRoom(item.primaryRoomId)]);
+  const memberIds = adv
+    ? [adv.ownerId, ...adv.memberIds.filter((id) => id !== adv.ownerId)]
+    : [item.ownerId];
+
+  const [profiles, onlineIds] = await Promise.all([
+    fetchUserRows(memberIds),
+    onlineUserIdsForRoom(item.primaryRoomId),
+  ]);
+
+  const members: AdventureListMember[] = [];
+  for (const userId of memberIds) {
+    const row = profiles.get(userId);
+    if (row) {
+      members.push(memberFromRow(row, userId === item.ownerId, onlineIds.has(userId)));
+      continue;
+    }
+    members.push({
+      userId,
+      displayName: "Jogador",
+      avatarUrl: null,
+      isOwner: userId === item.ownerId,
+      online: onlineIds.has(userId),
+    });
+  }
+
+  const settings = normalizeRoomSettings(room?.settings);
+  const systemId = normalizeRpgSystemId(adv?.rpgSystemId ?? item.rpgSystemId);
+  const coverUrl = resolveMesaCoverSrc(settings.coverUrl, systemId);
+  const coverFocus = settings.coverFocus ?? null;
+  const onlineCount = members.filter((m) => m.online).length;
+
+  return {
+    ...item,
+    rpgSystemId: systemId,
+    coverUrl,
+    coverFocus,
+    members,
+    onlineCount,
+  };
+}
+
 export async function enrichAdventureListItems(
   items: AdventureListItem[]
 ): Promise<AdventureListItem[]> {
   try {
-    const enriched: AdventureListItem[] = [];
-
-    for (const item of items) {
-    if (item.deletedAt) {
-      enriched.push(item);
-      continue;
-    }
-
-    const adv = await getAdventure(item.adventureId);
-    const memberIds = adv
-      ? [adv.ownerId, ...adv.memberIds.filter((id) => id !== adv.ownerId)]
-      : [item.ownerId];
-
-    const profiles = await fetchUserRows(memberIds);
-    const onlineIds = await onlineUserIdsForRoom(item.primaryRoomId);
-
-    const members: AdventureListMember[] = [];
-    for (const userId of memberIds) {
-      const row = profiles.get(userId);
-      if (row) {
-        members.push(memberFromRow(row, userId === item.ownerId, onlineIds.has(userId)));
-        continue;
-      }
-      members.push({
-        userId,
-        displayName: "Jogador",
-        avatarUrl: null,
-        isOwner: userId === item.ownerId,
-        online: onlineIds.has(userId),
-      });
-    }
-
-    const room = await getRoom(item.primaryRoomId);
-    const settings = normalizeRoomSettings(room?.settings);
-    const systemId = normalizeRpgSystemId(adv?.rpgSystemId ?? item.rpgSystemId);
-    const coverUrl = resolveMesaCoverSrc(settings.coverUrl, systemId);
-    const coverFocus = settings.coverFocus ?? null;
-    const onlineCount = members.filter((m) => m.online).length;
-
-    enriched.push({
-      ...item,
-      rpgSystemId: systemId,
-      coverUrl,
-      coverFocus,
-      members,
-      onlineCount,
-    });
-  }
-
-    return enriched;
+    return await Promise.all(items.map(enrichAdventureListItem));
   } catch (err) {
     console.error("[enrichAdventureListItems]", err);
     return items;

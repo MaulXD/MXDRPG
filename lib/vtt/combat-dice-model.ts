@@ -34,13 +34,17 @@ export type CombatDiceTimings = {
   evictMs: number;
 };
 
-/** Timings de combate — tempo para o dado cair e ler o resultado. */
+/**
+ * Timings de combate — tempo para o dado cair e ler o resultado.
+ * afterResolve/missHold reduzidos (2800→1400 / 800→500): o resultado já fica
+ * visível nesse tempo; o excedente era espera morta antes do controle voltar.
+ */
 export const COMBAT_DICE_TIMINGS: CombatDiceTimings = {
   mark: 30,
   attackRoll: 620,
   damageRoll: 520,
-  missHold: 800,
-  afterResolve: 2800,
+  missHold: 500,
+  afterResolve: 1400,
   evictMs: 600,
 };
 

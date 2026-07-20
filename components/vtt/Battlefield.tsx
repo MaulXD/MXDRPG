@@ -707,6 +707,25 @@ export function Battlefield({
     );
   }, []);
 
+  /**
+   * Tokens cuja posição/HP não devem ser sobrescritos enquanto uma FX de
+   * combate local ainda está tocando — só eles "esperam", o resto da mesa
+   * (outros jogadores, monstros não envolvidos) sincroniza na hora.
+   */
+  const collectProtectedTokenIds = useCallback(() => {
+    const ids = new Set<string>();
+    const collect = (fx: CombatFxState | null | undefined) => {
+      if (!fx) return;
+      if (fx.attackerTokenId) ids.add(fx.attackerTokenId);
+      if (fx.defenderTokenId) ids.add(fx.defenderTokenId);
+      fx.areaTargets?.forEach((t) => ids.add(t.tokenId));
+    };
+    collect(combatFx);
+    combatFxQueueRef.current.forEach(collect);
+    if (moveAnimRef.current?.tokenId) ids.add(moveAnimRef.current.tokenId);
+    return ids;
+  }, [combatFx, combatFxQueueRef]);
+
   const syncRoom = useCallback(
     (payload?: RoomApiPayload, opts?: { force?: boolean; immediate?: boolean }) => {
       if (!payload) {
@@ -730,6 +749,27 @@ export function Battlefield({
         } else {
           refresh();
         }
+        // Aplica o resto da mesa imediatamente — só os tokens presos na FX
+        // local (ou em animação de movimento) mantêm o estado antigo até a
+        // FX terminar. Evita que uma única animação de ataque congele o
+        // tabuleiro inteiro por ~4s para todos os jogadores.
+        if (snap.scene && !moveBusyRef.current && !gmRepositionBusyRef.current) {
+          const protectedIds = collectProtectedTokenIds();
+          if (protectedIds.size > 0) {
+            startTransition(() => {
+              setScene((prev) => {
+                const held = new Map(
+                  prev.tokens.filter((t) => protectedIds.has(t.id)).map((t) => [t.id, t])
+                );
+                const partialNext: BattleScene = {
+                  ...snap.scene,
+                  tokens: snap.scene.tokens.map((t) => held.get(t.id) ?? t),
+                };
+                return mergeScenePreservingPortraits(prev, partialNext);
+              });
+            });
+          }
+        }
         playCombatFxFromSnapRef.current?.(payload);
         return;
       }
@@ -744,7 +784,13 @@ export function Battlefield({
       else refresh();
       playCombatFxFromSnapRef.current?.(payload);
     },
-    [onApplySnapshot, refresh, resolveRoomPayload, shouldDeferSceneSync]
+    [
+      collectProtectedTokenIds,
+      onApplySnapshot,
+      refresh,
+      resolveRoomPayload,
+      shouldDeferSceneSync,
+    ]
   );
 
   const battlefieldView = useBattlefieldView({ wrapRef, canvasRef });

@@ -73,6 +73,8 @@ type DisplaySlot = {
   id: string;
   tone: SlotTone;
   label: string;
+  /** Nome completo, sem o corte de 11/14/22 chars usado no texto visível do slot. */
+  fullLabel?: string;
   glyph: ReactNode;
   paLabel: string;
   disabled?: boolean;
@@ -416,6 +418,7 @@ export function TokenActionRing({
         id: `${tone}-${action.entryId}`,
         tone,
         label: truncateRingLabel(action.label || action.name, 22),
+        fullLabel: action.label || action.name,
         glyph,
         paLabel: combatActionPaLabel(token, actor, action),
         longLabel: true,
@@ -453,6 +456,7 @@ export function TokenActionRing({
         id: `poc-${item.instanceId}`,
         tone: "consumable" as const,
         label: truncateRingLabel(item.name, 14),
+        fullLabel: item.name,
         glyph: <IconFlask size={16} />,
         paLabel: `${consumablePa} PA`,
         longLabel: true,
@@ -848,7 +852,7 @@ export function TokenActionRing({
                   slot.rechargeHint ? " token-action-ring__slot--cooldown" : ""
                 }`}
                 disabled={slot.disabled}
-                aria-label={`${slot.label} · ${slot.paLabel}`}
+                aria-label={`${slot.fullLabel ?? slot.label} · ${slot.paLabel}`}
                 onClick={slot.onClick}
               >
                 <span className="token-action-ring__glyph" aria-hidden>
@@ -879,7 +883,7 @@ export function TokenActionRing({
                       ? " token-action-ring__info--on"
                       : ""
                   }`}
-                  aria-label={`Informações: ${slot.label}`}
+                  aria-label={`Informações: ${slot.fullLabel ?? slot.label}`}
                   onMouseDown={(e) => e.stopPropagation()}
                   onMouseEnter={(e) => {
                     syncInfoPointer(e);
