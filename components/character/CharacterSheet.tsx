@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import type { CharacterSheet as CharacterSheetData, InventoryItem } from "@/lib/character/types";
 import { formatXpProgress } from "@/lib/character/xp";
@@ -27,7 +28,6 @@ import {
   CharacterIdentityEditor,
   CharacterStatsGrid,
 } from "@/components/character/CharacterIdentityEditor";
-import { LevelUpWizard } from "@/components/character/LevelUpWizard";
 import { FutureLevelsPanel } from "@/components/character/FutureLevelsPanel";
 import { CharacterReligionEditor } from "@/components/character/CharacterReligionEditor";
 import { ReligionSheetPanel } from "@/components/character/ReligionSheetPanel";
@@ -35,8 +35,6 @@ import { WizardHoverTip } from "@/components/character/wizard/WizardHoverTip";
 import { SubclassTrackPanel } from "@/components/character/SubclassTrackPanel";
 import { UniversalFeatsPanel } from "@/components/character/UniversalFeatsPanel";
 import { CombatLoadoutPanel } from "@/components/character/CombatLoadoutPanel";
-import { SpellPrepPanel } from "@/components/character/SpellPrepPanel";
-import { LootEconomyPanel } from "@/components/character/LootEconomyPanel";
 import {
   SheetPopupLoadoutBar,
   type LoadoutPatch,
@@ -49,7 +47,6 @@ import { SheetDdbDrawer } from "@/components/character/SheetDdbDrawer";
 import { SheetDdbManagePanel } from "@/components/character/SheetDdbManagePanel";
 import { SheetHoverTip } from "@/components/character/SheetHoverTip";
 import { compendiumEntryTip } from "@/lib/character/sheet-tooltips";
-import { PersonalBestiaryPanel } from "@/components/character/PersonalBestiaryPanel";
 import {
   IconArmor,
   IconBackpack,
@@ -96,6 +93,27 @@ import { isTypingTarget } from "@/lib/vtt/keyboard-guard";
 import type { FoundryWindowDragHandlers } from "@/hooks/vtt/useFoundryWindowDrag";
 import "./sheet.css";
 import "./sheet-popup.css";
+
+// Painéis por aba/estado — evita puxar todos pro bundle inicial da ficha.
+const LevelUpWizard = dynamic(
+  () => import("@/components/character/LevelUpWizard").then((m) => m.LevelUpWizard),
+  { ssr: false }
+);
+const LootEconomyPanel = dynamic(
+  () => import("@/components/character/LootEconomyPanel").then((m) => m.LootEconomyPanel),
+  { ssr: false }
+);
+const PersonalBestiaryPanel = dynamic(
+  () =>
+    import("@/components/character/PersonalBestiaryPanel").then(
+      (m) => m.PersonalBestiaryPanel
+    ),
+  { ssr: false }
+);
+const SpellPrepPanel = dynamic(
+  () => import("@/components/character/SpellPrepPanel").then((m) => m.SpellPrepPanel),
+  { ssr: false }
+);
 
 type Tab = "inventário" | "tesouro" | "habilidades" | "magias" | "bestiário";
 

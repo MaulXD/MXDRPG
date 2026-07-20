@@ -11,7 +11,11 @@ import { MesaFoundrySidebar } from "@/components/vtt/foundry/MesaFoundrySidebar"
 import { MesaRoomChatPanel } from "@/components/vtt/mesa/MesaRoomChatPanel";
 import { PlayableCharactersPanel } from "@/components/vtt/PlayableCharactersPanel";
 import { RoomInvitePanel } from "@/components/vtt/RoomInvitePanel";
-import { MonsterSpawnPanel } from "@/components/vtt/MonsterSpawnPanel";
+// Ferramenta só do mestre, uso pouco frequente por sessão.
+const MonsterSpawnPanel = dynamic(
+  () => import("@/components/vtt/MonsterSpawnPanel").then((m) => m.MonsterSpawnPanel),
+  { ssr: false }
+);
 import type { CombatChatRevealPhase } from "@/lib/combat/chat-display";
 
 const DiceRoller = dynamic(

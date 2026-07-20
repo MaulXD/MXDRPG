@@ -13,9 +13,6 @@ import { FoundryWindow } from "@/components/vtt/foundry/FoundryWindow";
 import { MesaRoomChatPanel } from "@/components/vtt/mesa/MesaRoomChatPanel";
 import { PlayableCharactersPanel } from "@/components/vtt/PlayableCharactersPanel";
 import { RoomInvitePanel } from "@/components/vtt/RoomInvitePanel";
-import { MonsterSpawnPanel } from "@/components/vtt/MonsterSpawnPanel";
-import { MesaCharacterWizardPopup } from "@/components/vtt/MesaCharacterWizardPopup";
-
 const DiceRoller = dynamic(
   () => import("@/components/vtt/DiceRoller").then((m) => m.DiceRoller),
   { ssr: false }
@@ -26,6 +23,21 @@ const CharacterSheetPopup = dynamic(
 );
 const MonsterSheetPopup = dynamic(
   () => import("@/components/compendium/MonsterSheetPopup").then((m) => m.MonsterSheetPopup),
+  { ssr: false }
+);
+// Wizard de criação de personagem dentro da mesa — fluxo raro (GM criando
+// ficha na sala), mas arrastava ~2000 linhas (CharacterCreationWizard +
+// subárvore wizard/*) pro bundle inicial de toda mesa.
+const MesaCharacterWizardPopup = dynamic(
+  () =>
+    import("@/components/vtt/MesaCharacterWizardPopup").then(
+      (m) => m.MesaCharacterWizardPopup
+    ),
+  { ssr: false }
+);
+// Ferramenta só do mestre, uso pouco frequente por sessão.
+const MonsterSpawnPanel = dynamic(
+  () => import("@/components/vtt/MonsterSpawnPanel").then((m) => m.MonsterSpawnPanel),
   { ssr: false }
 );
 
