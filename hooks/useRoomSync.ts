@@ -26,6 +26,10 @@ import { RoomApiHttpError } from "@/lib/room/api-error";
 const FETCH_TIMEOUT_MS = 20_000;
 const SYNC_TRANSIENT_MAX = 4;
 const SYNC_RETRY_BASE_MS = 1_500;
+/** Timeout das mutações (ataque, habilidade, mover, etc.) — sem isso o fetch
+ * pode ficar pendurado indefinidamente (sem erro, sem retry, sem toast) se o
+ * servidor travar. 10s é generoso vs. o normal (~200-300ms), mas finito. */
+const MUTATION_TIMEOUT_MS = 10_000;
 
 export type RoomMemberOnlineEvent = {
   userId: string;
@@ -497,18 +501,51 @@ export async function patchRoomToken(
   tokenId: string,
   patch: Record<string, unknown>
 ) {
-  const res = await fetch(`/api/room/${roomId}/tokens/${tokenId}`, {
-    method: "PATCH",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(patch),
-  });
-  if (!res.ok) throw new Error("Falha ao sync token");
+  const res = await roomFetch(
+    `/api/room/${roomId}/tokens/${tokenId}`,
+    {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(patch),
+    },
+    "Falha ao sync token"
+  );
   return res.json();
 }
 
 async function throwRoomApiError(res: Response, fallback: string): Promise<never> {
   const err = (await res.json().catch(() => ({}))) as { error?: string };
   throw new RoomApiHttpError(err.error ?? fallback, res.status);
+}
+
+/**
+ * fetch com timeout pra mutações de sala — usado por todo POST/PATCH/DELETE
+ * abaixo. Sem isto, um servidor lento deixa o fetch pendurado sem erro, sem
+ * retry, sem toast (attackBusyRef etc. nunca liberam). Timeout usa status 504
+ * (não é erro 4xx de validação) pra cair no mesmo caminho de retry + "servidor
+ * lento" que já existe em Battlefield.tsx pra erros 5xx — timeout é transiente,
+ * repetir pode funcionar, diferente de "fora de alcance" (4xx, não repete).
+ */
+async function roomFetch(
+  url: string,
+  init: RequestInit,
+  fallback: string
+): Promise<Response> {
+  const ac = new AbortController();
+  const timer = setTimeout(() => ac.abort(), MUTATION_TIMEOUT_MS);
+  try {
+    const res = await fetch(url, { ...init, signal: ac.signal });
+    if (!res.ok) await throwRoomApiError(res, fallback);
+    return res;
+  } catch (e) {
+    if (e instanceof RoomApiHttpError) throw e;
+    if (e instanceof Error && e.name === "AbortError") {
+      throw new RoomApiHttpError(`${fallback} — servidor demorou demais`, 504);
+    }
+    throw e;
+  } finally {
+    clearTimeout(timer);
+  }
 }
 
 export async function patchRoomActor(
@@ -533,13 +570,16 @@ export async function patchRoomActor(
     identityPatch?: IdentityPatch;
   }
 ) {
-  const res = await fetch(`/api/room/${roomId}/actors/${actorId}`, {
-    method: "PATCH",
-    headers: { "Content-Type": "application/json" },
-    credentials: "same-origin",
-    body: JSON.stringify(patch),
-  });
-  if (!res.ok) await throwRoomApiError(res, "Falha ao salvar ficha");
+  const res = await roomFetch(
+    `/api/room/${roomId}/actors/${actorId}`,
+    {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      credentials: "same-origin",
+      body: JSON.stringify(patch),
+    },
+    "Falha ao salvar ficha"
+  );
   return res.json() as Promise<{
     actor: RoomActor;
     scene: RoomSnapshot["scene"];
@@ -558,13 +598,16 @@ export async function levelUpRoomActor(
   actorId: string,
   choices: LevelUpChoices = {}
 ): Promise<LevelUpRoomResponse> {
-  const res = await fetch(`/api/room/${roomId}/actors/${actorId}/level-up`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    credentials: "same-origin",
-    body: JSON.stringify(choices),
-  });
-  if (!res.ok) await throwRoomApiError(res, "Falha ao subir nível");
+  const res = await roomFetch(
+    `/api/room/${roomId}/actors/${actorId}/level-up`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "same-origin",
+      body: JSON.stringify(choices),
+    },
+    "Falha ao subir nível"
+  );
   return res.json() as Promise<LevelUpRoomResponse>;
 }
 
@@ -572,31 +615,40 @@ export async function postStructuredMeal(
   roomId: string,
   body: import("@/lib/culinary/types").StructuredMealInput
 ): Promise<RoomSnapshot> {
-  const res = await fetch(`/api/room/${roomId}/culinary/meal`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    credentials: "same-origin",
-    body: JSON.stringify(body),
-  });
-  if (!res.ok) await throwRoomApiError(res, "Falha ao preparar refeição");
+  const res = await roomFetch(
+    `/api/room/${roomId}/culinary/meal`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "same-origin",
+      body: JSON.stringify(body),
+    },
+    "Falha ao preparar refeição"
+  );
   const data = (await res.json()) as { snapshot: RoomSnapshot };
   return data.snapshot;
 }
 
 export async function rollInitiative(roomId: string) {
-  const res = await fetch(`/api/room/${roomId}/combat/roll-initiative`, { method: "POST" });
-  if (!res.ok) await throwRoomApiError(res, "Falha ao rolar iniciativa");
+  const res = await roomFetch(
+    `/api/room/${roomId}/combat/roll-initiative`,
+    { method: "POST" },
+    "Falha ao rolar iniciativa"
+  );
   return res.json() as Promise<RoomApiPayload>;
 }
 
 export async function nextCombatTurn(roomId: string, opts?: { force?: boolean }) {
-  const res = await fetch(`/api/room/${roomId}/combat/next-turn`, {
-    method: "POST",
-    credentials: "same-origin",
-    headers: opts?.force ? { "Content-Type": "application/json" } : undefined,
-    body: opts?.force ? JSON.stringify({ force: true }) : undefined,
-  });
-  if (!res.ok) await throwRoomApiError(res, "Falha ao avançar turno");
+  const res = await roomFetch(
+    `/api/room/${roomId}/combat/next-turn`,
+    {
+      method: "POST",
+      credentials: "same-origin",
+      headers: opts?.force ? { "Content-Type": "application/json" } : undefined,
+      body: opts?.force ? JSON.stringify({ force: true }) : undefined,
+    },
+    "Falha ao avançar turno"
+  );
   return res.json() as Promise<RoomApiPayload>;
 }
 
@@ -614,13 +666,16 @@ export type GmCombatAction =
   | { action: "set-hp"; tokenId: string; value: number; max?: number; temp?: number };
 
 export async function postGmCombatAction(roomId: string, body: GmCombatAction) {
-  const res = await fetch(`/api/room/${roomId}/combat/gm`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    credentials: "same-origin",
-    body: JSON.stringify(body),
-  });
-  if (!res.ok) await throwRoomApiError(res, "Falha no controle do mestre");
+  const res = await roomFetch(
+    `/api/room/${roomId}/combat/gm`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "same-origin",
+      body: JSON.stringify(body),
+    },
+    "Falha no controle do mestre"
+  );
   return res.json() as Promise<RoomApiPayload>;
 }
 
@@ -639,18 +694,21 @@ export async function postRoomAttack(
     defenderTokenIds?: string[];
   } = {}
 ) {
-  const res = await fetch(`/api/room/${roomId}/combat/attack`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    credentials: "same-origin",
-    body: JSON.stringify({
-      attackerTokenId,
-      defenderTokenId,
-      defenderTokenIds: opts.defenderTokenIds,
-      ...opts,
-    }),
-  });
-  if (!res.ok) await throwRoomApiError(res, "Falha no ataque");
+  const res = await roomFetch(
+    `/api/room/${roomId}/combat/attack`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "same-origin",
+      body: JSON.stringify({
+        attackerTokenId,
+        defenderTokenId,
+        defenderTokenIds: opts.defenderTokenIds,
+        ...opts,
+      }),
+    },
+    "Falha no ataque"
+  );
   return res.json() as Promise<RoomApiPayload>;
 }
 
@@ -663,13 +721,16 @@ export async function postRoomAbility(
     bypassTurn?: boolean;
   } = {}
 ) {
-  const res = await fetch(`/api/room/${roomId}/combat/ability`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    credentials: "same-origin",
-    body: JSON.stringify({ attackerTokenId, defenderTokenId, ...opts }),
-  });
-  if (!res.ok) await throwRoomApiError(res, "Falha na habilidade");
+  const res = await roomFetch(
+    `/api/room/${roomId}/combat/ability`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "same-origin",
+      body: JSON.stringify({ attackerTokenId, defenderTokenId, ...opts }),
+    },
+    "Falha na habilidade"
+  );
   return res.json() as Promise<RoomApiPayload>;
 }
 
@@ -679,13 +740,16 @@ export async function consumeRoomItem(
   instanceId: string,
   opts: { bypassTurn?: boolean } = {}
 ) {
-  const res = await fetch(`/api/room/${roomId}/combat/consume`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    credentials: "same-origin",
-    body: JSON.stringify({ tokenId, instanceId, ...opts }),
-  });
-  if (!res.ok) await throwRoomApiError(res, "Falha ao usar consumível");
+  const res = await roomFetch(
+    `/api/room/${roomId}/combat/consume`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "same-origin",
+      body: JSON.stringify({ tokenId, instanceId, ...opts }),
+    },
+    "Falha ao usar consumível"
+  );
   return res.json() as Promise<RoomApiPayload>;
 }
 
@@ -697,13 +761,16 @@ export async function moveRoomTokenBudget(
   mode: "walk" | "run",
   bypassTurn = false
 ) {
-  const res = await fetch(`/api/room/${roomId}/tokens/move`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    credentials: "same-origin",
-    body: JSON.stringify({ tokenId, q, r, mode, bypassTurn }),
-  });
-  if (!res.ok) await throwRoomApiError(res, "Movimento inválido");
+  const res = await roomFetch(
+    `/api/room/${roomId}/tokens/move`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "same-origin",
+      body: JSON.stringify({ tokenId, q, r, mode, bypassTurn }),
+    },
+    "Movimento inválido"
+  );
   return res.json() as Promise<RoomApiPayload>;
 }
 
@@ -719,13 +786,16 @@ export async function postRoomAreaSpell(
     channelExtraPa?: number;
   } = {}
 ) {
-  const res = await fetch(`/api/room/${roomId}/combat/area`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    credentials: "same-origin",
-    body: JSON.stringify({ casterTokenId, centerQ, centerR, ...opts }),
-  });
-  if (!res.ok) await throwRoomApiError(res, "Falha na magia de área");
+  const res = await roomFetch(
+    `/api/room/${roomId}/combat/area`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "same-origin",
+      body: JSON.stringify({ casterTokenId, centerQ, centerR, ...opts }),
+    },
+    "Falha na magia de área"
+  );
   return res.json() as Promise<RoomSnapshot>;
 }
 
@@ -736,22 +806,25 @@ export async function spawnRoomMonster(
   r: number,
   opts?: { variant?: "normal" | "elite" | "colossal"; groupLevelDelta?: number }
 ) {
-  const res = await fetch(`/api/room/${roomId}/tokens/spawn`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    credentials: "same-origin",
-    body: JSON.stringify({ monsterEntryId, q, r, ...opts }),
-  });
-  if (!res.ok) await throwRoomApiError(res, "Falha ao invocar monstro");
+  const res = await roomFetch(
+    `/api/room/${roomId}/tokens/spawn`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "same-origin",
+      body: JSON.stringify({ monsterEntryId, q, r, ...opts }),
+    },
+    "Falha ao invocar monstro"
+  );
   return res.json() as Promise<RoomSnapshot>;
 }
 
 export async function deleteRoomToken(roomId: string, tokenId: string) {
-  const res = await fetch(`/api/room/${roomId}/tokens/${tokenId}`, {
-    method: "DELETE",
-    credentials: "same-origin",
-  });
-  if (!res.ok) await throwRoomApiError(res, "Falha ao remover token");
+  const res = await roomFetch(
+    `/api/room/${roomId}/tokens/${tokenId}`,
+    { method: "DELETE", credentials: "same-origin" },
+    "Falha ao remover token"
+  );
   return res.json() as Promise<RoomSnapshot>;
 }
 
@@ -761,13 +834,16 @@ export async function repositionRoomToken(
   q: number,
   r: number
 ) {
-  const res = await fetch(`/api/room/${roomId}/tokens/reposition`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    credentials: "same-origin",
-    body: JSON.stringify({ tokenId, q, r }),
-  });
-  if (!res.ok) await throwRoomApiError(res, "Falha ao reposicionar");
+  const res = await roomFetch(
+    `/api/room/${roomId}/tokens/reposition`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "same-origin",
+      body: JSON.stringify({ tokenId, q, r }),
+    },
+    "Falha ao reposicionar"
+  );
   return res.json() as Promise<RoomSnapshot>;
 }
 
@@ -781,13 +857,16 @@ export async function createGmCreation(
     actorId?: string;
   }
 ) {
-  const res = await fetch(`/api/room/${roomId}/gm/creations`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    credentials: "same-origin",
-    body: JSON.stringify(body),
-  });
-  if (!res.ok) await throwRoomApiError(res, "Falha ao criar template");
+  const res = await roomFetch(
+    `/api/room/${roomId}/gm/creations`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "same-origin",
+      body: JSON.stringify(body),
+    },
+    "Falha ao criar template"
+  );
   return res.json() as Promise<{
     creation: import("@/lib/room/gm-creations").GmCreation;
     snapshot: RoomSnapshot;
@@ -799,13 +878,16 @@ export async function updateGmCreation(
   creationId: string,
   patch: Record<string, unknown>
 ) {
-  const res = await fetch(`/api/room/${roomId}/gm/creations/${creationId}`, {
-    method: "PATCH",
-    headers: { "Content-Type": "application/json" },
-    credentials: "same-origin",
-    body: JSON.stringify(patch),
-  });
-  if (!res.ok) await throwRoomApiError(res, "Falha ao salvar template");
+  const res = await roomFetch(
+    `/api/room/${roomId}/gm/creations/${creationId}`,
+    {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      credentials: "same-origin",
+      body: JSON.stringify(patch),
+    },
+    "Falha ao salvar template"
+  );
   return res.json() as Promise<{
     creation: import("@/lib/room/gm-creations").GmCreation;
     snapshot: RoomSnapshot;
@@ -813,11 +895,11 @@ export async function updateGmCreation(
 }
 
 export async function deleteGmCreation(roomId: string, creationId: string) {
-  const res = await fetch(`/api/room/${roomId}/gm/creations/${creationId}`, {
-    method: "DELETE",
-    credentials: "same-origin",
-  });
-  if (!res.ok) await throwRoomApiError(res, "Falha ao excluir template");
+  const res = await roomFetch(
+    `/api/room/${roomId}/gm/creations/${creationId}`,
+    { method: "DELETE", credentials: "same-origin" },
+    "Falha ao excluir template"
+  );
   const data = (await res.json()) as { snapshot: RoomSnapshot };
   return data.snapshot;
 }
@@ -828,13 +910,16 @@ export async function spawnGmCreation(
   q: number,
   r: number
 ) {
-  const res = await fetch(`/api/room/${roomId}/tokens/spawn-gm`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    credentials: "same-origin",
-    body: JSON.stringify({ creationId, q, r }),
-  });
-  if (!res.ok) await throwRoomApiError(res, "Falha ao colocar na mesa");
+  const res = await roomFetch(
+    `/api/room/${roomId}/tokens/spawn-gm`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "same-origin",
+      body: JSON.stringify({ creationId, q, r }),
+    },
+    "Falha ao colocar na mesa"
+  );
   return res.json() as Promise<RoomSnapshot>;
 }
 
@@ -844,13 +929,16 @@ export async function placeRoomActorOnCell(
   q: number,
   r: number
 ) {
-  const res = await fetch(`/api/room/${roomId}/tokens/place-actor`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    credentials: "same-origin",
-    body: JSON.stringify({ actorId, q, r }),
-  });
-  if (!res.ok) await throwRoomApiError(res, "Falha ao posicionar personagem");
+  const res = await roomFetch(
+    `/api/room/${roomId}/tokens/place-actor`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "same-origin",
+      body: JSON.stringify({ actorId, q, r }),
+    },
+    "Falha ao posicionar personagem"
+  );
   return res.json() as Promise<RoomSnapshot>;
 }
 
@@ -860,13 +948,16 @@ export async function postRoomPing(
   r: number,
   color?: string
 ) {
-  const res = await fetch(`/api/room/${roomId}/ping`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    credentials: "same-origin",
-    body: JSON.stringify({ q, r, color }),
-  });
-  if (!res.ok) await throwRoomApiError(res, "Falha ao pingar");
+  const res = await roomFetch(
+    `/api/room/${roomId}/ping`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "same-origin",
+      body: JSON.stringify({ q, r, color }),
+    },
+    "Falha ao pingar"
+  );
   return res.json() as Promise<RoomSnapshot>;
 }
 
@@ -896,36 +987,45 @@ export type RoomSettingsPatchBody = {
 };
 
 export async function patchRoomSettings(roomId: string, patch: RoomSettingsPatchBody) {
-  const res = await fetch(`/api/room/${roomId}/settings`, {
-    method: "PATCH",
-    headers: { "Content-Type": "application/json" },
-    credentials: "same-origin",
-    body: JSON.stringify(patch),
-  });
-  if (!res.ok) await throwRoomApiError(res, "Falha ao salvar configurações");
+  const res = await roomFetch(
+    `/api/room/${roomId}/settings`,
+    {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      credentials: "same-origin",
+      body: JSON.stringify(patch),
+    },
+    "Falha ao salvar configurações"
+  );
   const data = (await res.json()) as { snapshot: RoomSnapshot };
   return data.snapshot;
 }
 
 export async function patchRoomScene(roomId: string, patch: ScenePatchBody) {
-  const res = await fetch(`/api/room/${roomId}/scene`, {
-    method: "PATCH",
-    headers: { "Content-Type": "application/json" },
-    credentials: "same-origin",
-    body: JSON.stringify(patch),
-  });
-  if (!res.ok) await throwRoomApiError(res, "Falha ao atualizar mapa");
+  const res = await roomFetch(
+    `/api/room/${roomId}/scene`,
+    {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      credentials: "same-origin",
+      body: JSON.stringify(patch),
+    },
+    "Falha ao atualizar mapa"
+  );
   return res.json() as Promise<RoomSnapshot>;
 }
 
 export async function revealRoomCell(roomId: string, q: number, r: number) {
-  const res = await fetch(`/api/room/${roomId}/scene`, {
-    method: "PATCH",
-    headers: { "Content-Type": "application/json" },
-    credentials: "same-origin",
-    body: JSON.stringify({ revealCell: { q, r } }),
-  });
-  if (!res.ok) await throwRoomApiError(res, "Falha ao revelar célula");
+  const res = await roomFetch(
+    `/api/room/${roomId}/scene`,
+    {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      credentials: "same-origin",
+      body: JSON.stringify({ revealCell: { q, r } }),
+    },
+    "Falha ao revelar célula"
+  );
   return res.json() as Promise<RoomSnapshot>;
 }
 
@@ -933,12 +1033,16 @@ export async function postRoomChat(
   roomId: string,
   body: { text?: string; kind?: "chat" | "roll"; formula?: string }
 ) {
-  const res = await fetch(`/api/room/${roomId}/chat`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(body),
-  });
-  if (!res.ok) await throwRoomApiError(res, "Falha ao enviar");
+  const res = await roomFetch(
+    `/api/room/${roomId}/chat`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "same-origin",
+      body: JSON.stringify(body),
+    },
+    "Falha ao enviar"
+  );
   return res.json() as Promise<RoomSnapshot>;
 }
 
@@ -949,13 +1053,16 @@ export async function gmActorProgress(
     | { action: "set-level"; actorId: string; level: number }
     | { action: "set-hp"; actorId: string; value: number; max?: number }
 ): Promise<RoomSnapshot> {
-  const res = await fetch(`/api/room/${roomId}/gm/actor-progress`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    credentials: "same-origin",
-    body: JSON.stringify(body),
-  });
-  if (!res.ok) await throwRoomApiError(res, "Falha ao ajustar progresso");
+  const res = await roomFetch(
+    `/api/room/${roomId}/gm/actor-progress`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "same-origin",
+      body: JSON.stringify(body),
+    },
+    "Falha ao ajustar progresso"
+  );
   return res.json() as Promise<RoomSnapshot>;
 }
 
@@ -965,12 +1072,15 @@ export async function gmSavingThrows(
   inviteCode?: string | null
 ): Promise<RoomSnapshot> {
   const q = inviteCode?.trim() ? `?invite=${encodeURIComponent(inviteCode.trim())}` : "";
-  const res = await fetch(`/api/room/${roomId}/gm/saving-throw${q}`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    credentials: "same-origin",
-    body: JSON.stringify(body),
-  });
-  if (!res.ok) await throwRoomApiError(res, "Falha ao rolar salvaguarda");
+  const res = await roomFetch(
+    `/api/room/${roomId}/gm/saving-throw${q}`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "same-origin",
+      body: JSON.stringify(body),
+    },
+    "Falha ao rolar salvaguarda"
+  );
   return res.json() as Promise<RoomSnapshot>;
 }

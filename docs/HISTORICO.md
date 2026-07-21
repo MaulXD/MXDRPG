@@ -104,6 +104,27 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-07-20 (3) — Timeout nas mutações de sala (ataque/habilidade podiam pendurar pra sempre)
+
+**Pedido:** "o problema maior tem sido timeout, corrige ai deixa tudo bem organizado".
+
+**Passo a passo:**
+1. **Diagnóstico** — `refresh()` (o GET de polling em `hooks/useRoomSync.ts`) já tinha timeout de 20s com `AbortController` + retry/backoff. Mas as ~27 funções de **mutação** (`postRoomAttack`, `postRoomAbility`, `nextCombatTurn`, `moveRoomTokenBudget`, `patchRoomSettings`, etc.) faziam `fetch()` puro, **sem timeout algum**. Se o servidor travasse numa dessas (pool de conexão do banco esgotado, cold start, blip de rede), o fetch ficava pendurado indefinidamente — sem erro, sem retry, sem toast (o `attackBusyRef`/`inFlightRef` correspondente nunca liberava), o que bate exatamente com "trava sem avisar nada".
+2. **Correção** — um helper único `roomFetch(url, init, fallback)` em `hooks/useRoomSync.ts`, com `AbortController` + timeout de 10s (generoso vs. o ~200-300ms medido em produção). Timeout vira `RoomApiHttpError` com status **504** (não 408/4xx) de propósito: `isRoomClientError` só considera 400-499 "erro de validação, não repetir" — um timeout é transiente (repetir pode funcionar), então cair no status 5xx faz ele automaticamente usar o mesmo caminho de retry + "servidor lento — sincronizando em segundo plano" que `Battlefield.tsx` já tinha pra erros de servidor.
+3. **Organização** — as 27 funções de mutação (incluindo `patchRoomToken`, que nem usava `throwRoomApiError`, lançava `Error` genérico) foram todas refatoradas pra usar `roomFetch`, eliminando a duplicação do `if (!res.ok) await throwRoomApiError(...)` repetida em cada uma. `postRoomChat` ganhou `credentials: "same-origin"` que faltava, por consistência com todo o resto.
+4. **Validação** — `tsc --noEmit` limpo. `refresh()` (polling) não foi tocado — já tinha seu próprio timeout/retry dedicado.
+
+**Arquivos tocados:**
+- `hooks/useRoomSync.ts` — helper `roomFetch` novo; todas as mutações de sala refatoradas pra usá-lo
+
+**Commits / deploy:** pendente local (aguardando push).
+
+**Como testar:**
+- Fluxo normal de combate (atacar, usar habilidade, mover, passar turno) continua igual — o timeout só entra em ação se o servidor não responder em 10s.
+- Não há como simular timeout real sem derrubar o servidor de propósito; a garantia é de código (nenhum `fetch` de mutação sem `AbortController` mais).
+
+---
+
 ### 2026-07-20 (2) — Segunda leva de corte nos timings de FX de combate
 
 **Pedido:** "acho que o tempo de execução do combate ta mto lento ainda, muito lento mesmo" — depois de confirmar que o motor de combate em si (turno, alcance, PA, dano) funciona certo em produção.
