@@ -104,6 +104,27 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-07-20 (2) — Segunda leva de corte nos timings de FX de combate
+
+**Pedido:** "acho que o tempo de execução do combate ta mto lento ainda, muito lento mesmo" — depois de confirmar que o motor de combate em si (turno, alcance, PA, dano) funciona certo em produção.
+
+**Passo a passo:**
+1. **Diagnóstico** — medi o round-trip real da API contra produção (`/combat/attack`, `/combat/ability`, `/combat/next-turn`): ~200-270ms, rápido. A lentidão não é servidor — é o cliente.
+2. **Causa raiz** — `components/vtt/CombatFxLayer.tsx` roda uma máquina de estado (mark→roll→result→damage→done) usando `COMBAT_DICE_TIMINGS`; somando os passos (settle do d20 + settle do dano + `afterResolve` + `evictMs`) dava ~2.7s por ação **com dano**, e `useBattlefieldCombatFxQueue.ts` toca essa sequência **uma de cada vez, em fila estrita** (`combatFxQueueRef`) — ou seja, cada corte nesses timings multiplica pelo número de ações no round (várias habilidades/ataques em sequência, monstros do mestre, etc.), o que explica a sensação de lentidão acumulada mesmo com o servidor respondendo rápido.
+3. **Correção** — segunda leva de corte em `lib/vtt/combat-dice-model.ts` (a primeira leva, na sessão anterior, já tinha cortado `afterResolve` 2800→1400 e `missHold` 800→500): `afterResolve` 1400→650, `missHold` 500→320, `evictMs` 600→350 (tempos de espera pura, sem física — seguros). `COMBAT_DICE_SETTLE_MS` cortado com mais moderação (480→400) por depender da física real do dice-box (gravity/damping não tocados, pra não revelar o resultado antes do dado parar de rolar visualmente). Corrigida também uma inconsistência: a variante `_REDUCED` (motion reduzido) tinha `afterResolve`/`missHold` **maiores** que a normal — agora é sempre mais rápida. `settleTimeout` do dice-box (antes número mágico duplicado) passou a referenciar a constante.
+4. **Validação** — `tsc --noEmit` limpo. Estimativa: sequência de acerto+dano cai de ~2,77s para ~1,5s (~46% mais rápido); um erro (miss) cai de ~2,4s para ~1,3s. Sem mudança de lógica — só constantes de tempo.
+
+**Arquivos tocados:**
+- `lib/vtt/combat-dice-model.ts` — timings de FX de combate cortados pela segunda vez; `settleTimeout` referenciando constante em vez de número mágico
+
+**Commits / deploy:** pendente local (aguardando push).
+
+**Como testar:**
+- Em combate, executar um ataque/habilidade com dano e cronometrar do clique até o painel de resultado desaparecer — deve ficar bem mais rápido que antes.
+- Testar com "reduzir movimento" (prefers-reduced-motion) ativado no SO/navegador — deve ficar ainda mais rápido, nunca mais lento que o modo normal.
+
+---
+
 ### 2026-07-20 — Diagnóstico "combate cagado" + habilidades cortadas na ficha popup
 
 **Pedido:** "sobre o combate ainda ta cagado" (screenshots de `/combat/ability` e `/combat/attack` retornando 400 em produção) + "as habilidades ainda tão com tooltips cortados" (fix anterior de `fullLabel`/aria-label não resolveu).

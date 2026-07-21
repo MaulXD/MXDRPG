@@ -36,37 +36,43 @@ export type CombatDiceTimings = {
 
 /**
  * Timings de combate — tempo para o dado cair e ler o resultado.
- * afterResolve/missHold reduzidos (2800→1400 / 800→500): o resultado já fica
- * visível nesse tempo; o excedente era espera morta antes do controle voltar.
+ * Segunda leva de corte (afterResolve 1400→650, missHold 500→320,
+ * settle 480→400, evict 600→350): a fila de FX toca uma animação por vez,
+ * então cada corte aqui multiplica pelo número de ações no round — o
+ * resultado ainda fica visível, só sem a espera morta depois dele.
+ * Variante REDUCED corrigida pra ser sempre <= a normal (estava invertida).
  */
 export const COMBAT_DICE_TIMINGS: CombatDiceTimings = {
-  mark: 30,
-  attackRoll: 620,
-  damageRoll: 520,
-  missHold: 500,
-  afterResolve: 1400,
-  evictMs: 600,
+  mark: 20,
+  attackRoll: 450,
+  damageRoll: 380,
+  missHold: 320,
+  afterResolve: 650,
+  evictMs: 350,
 };
 
 export const COMBAT_DICE_TIMINGS_REDUCED: CombatDiceTimings = {
-  mark: 20,
-  attackRoll: 420,
-  damageRoll: 360,
-  missHold: 600,
-  afterResolve: 1600,
-  evictMs: 500,
+  mark: 10,
+  attackRoll: 320,
+  damageRoll: 260,
+  missHold: 220,
+  afterResolve: 400,
+  evictMs: 250,
 };
 
-export const DICE_LANDING_MS = 220;
-export const DICE_LANDING_MS_REDUCED = 120;
+export const DICE_LANDING_MS = 180;
+export const DICE_LANDING_MS_REDUCED = 100;
 
 /** Mínimo de “giro” do d20 antes de revelar resultado (ms). */
-export const COMBAT_ATTACK_MIN_SPIN_MS = 420;
-export const COMBAT_ATTACK_MIN_SPIN_MS_REDUCED = 240;
+export const COMBAT_ATTACK_MIN_SPIN_MS = 360;
+export const COMBAT_ATTACK_MIN_SPIN_MS_REDUCED = 200;
 
-/** Tempo físico do dice-box até o dado pousar — alinhado ao painel de combate. */
-export const COMBAT_DICE_SETTLE_MS = 480;
-export const COMBAT_DICE_SETTLE_MS_REDUCED = 280;
+/** Tempo físico do dice-box até o dado pousar — alinhado ao painel de combate.
+ * Cortado com moderação (480→400): depende da física real do dice-box
+ * (gravity/damping intactos), cortar mais forte arriscava revelar o
+ * resultado antes do dado parar de rolar visualmente. */
+export const COMBAT_DICE_SETTLE_MS = 400;
+export const COMBAT_DICE_SETTLE_MS_REDUCED = 220;
 
 export const DAMAGE_DICE_COLOR = "#e05040";
 export const HEAL_DICE_COLOR = "#46c878";
@@ -370,7 +376,7 @@ export function getDiceBoxRuntimeOptions(reducedMotion = false) {
     restitution: 0,
     linearDamping: 0.55,
     angularDamping: 0.55,
-    settleTimeout: reducedMotion ? 280 : 480,
+    settleTimeout: reducedMotion ? COMBAT_DICE_SETTLE_MS_REDUCED : COMBAT_DICE_SETTLE_MS,
     enableShadows: !reducedMotion,
     shadowTransparency: 0.72,
     lightIntensity: 1.05,
@@ -385,7 +391,7 @@ export function getDiceBoxCombatOptions(reducedMotion = false) {
     scale: reducedMotion ? 16 : 20,
     lightIntensity: 1.35,
     shadowTransparency: 0.65,
-    settleTimeout: reducedMotion ? 280 : 480,
+    settleTimeout: reducedMotion ? COMBAT_DICE_SETTLE_MS_REDUCED : COMBAT_DICE_SETTLE_MS,
   };
 }
 
