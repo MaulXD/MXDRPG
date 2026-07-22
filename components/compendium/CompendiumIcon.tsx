@@ -69,7 +69,7 @@ export function CompendiumIcon({ entry, color, className, fallbackLetter }: Prop
     return (
       <span className={rootClass} style={{ background: `${tint}22`, color: tint }} title={label}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={imgUrl} alt="" />
+        <img src={imgUrl} alt="" draggable={false} />
       </span>
     );
   }

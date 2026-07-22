@@ -104,6 +104,29 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-07-21 — Fix: arrastar personagem/monstro pro mapa não fazia nada (img sem draggable=false)
+
+**Pedido:** "não estou conseguindo arrastar os personagens para a mesa nem monstros" — testado como mestre e como jogador, no Chrome, sem erro no console, sem nenhum feedback visual (cursor não muda, sem miniatura acompanhando o mouse).
+
+**Passo a passo:**
+1. **Diagnóstico** — reproduzi drag-and-drop de personagem e de monstro contra produção via eventos `DragEvent` sintéticos direto no elemento `[draggable='true']` do card inteiro: os dois funcionaram (`/tokens/place-actor` e `/tokens/spawn` retornaram 200). Isso descartou bug na lógica de `useMonsterSpawnDrop`/`spawn-drag.ts`/permissões — a mecânica em si está correta.
+2. **Causa raiz** — mas o usuário relatou "nenhum feedback visual" ao tentar arrastar, o que só acontece se o `dragstart` nunca dispara no elemento certo. `ActorAvatar` (`PlayableCharactersPanel.tsx`), o avatar do painel de spawn de personagem (`PlayerSpawnPanel.tsx`) e `CompendiumIcon` (usado no ícone do monstro em `MonsterSpawnPanel.tsx`, quando a entrada tem imagem própria) renderizam um `<img>` **sem `draggable={false}`** dentro do card que já é `draggable`. `<img>` é nativamente arrastável no navegador — ao segurar o drag bem em cima do retrato/ícone (o alvo mais natural e visualmente óbvio do card), o Chrome inicia o drag nativo da IMAGEM em vez de deixar o `dragstart` do card pai (que grava o payload customizado) assumir — resultado: nenhum ghost visível do app, nenhuma mudança de cursor do app, e nenhum erro no console, batendo exatamente com o relato.
+3. **Por que meus testes não pegaram isso** — simulei o drag mirando no centro do card (`getBoundingClientRect` do container inteiro), que na prática caía fora da área do avatar/ícone (posicionado à esquerda, menor que o card). Um usuário real, ao pegar visualmente "o personagem", naturalmente clica no retrato.
+4. **Correção** — `draggable={false}` explícito nas 3 tags `<img>` (`ActorAvatar`, `PlayerSpawnPanel`'s avatar, `CompendiumIcon`) — com isso o navegador corretamente ignora a imagem e deixa o `draggable="true"` do card ancestral assumir o drag, como já acontecia quando o clique começava fora da imagem.
+5. **Validação** — `tsc --noEmit` limpo. Comportamento é padrão de plataforma bem documentado (MDN): `draggable="false"` num filho reverte pro comportamento de arraste do ancestral mais próximo.
+
+**Arquivos tocados:**
+- `components/vtt/PlayableCharactersPanel.tsx` — avatar do personagem, `draggable={false}`
+- `components/vtt/PlayerSpawnPanel.tsx` — avatar do personagem no painel de spawn, `draggable={false}`
+- `components/compendium/CompendiumIcon.tsx` — ícone/imagem do compêndio (usado por monstros e outras entradas), `draggable={false}`
+
+**Commits / deploy:** pendente local (aguardando push).
+
+**Como testar:**
+- Na mesa, abrir o painel "Personagens Jogáveis" ou "Invocar", segurar o clique **bem em cima do retrato/ícone** do personagem/monstro (não só no texto ao lado) e arrastar pro mapa — deve funcionar normalmente agora, com o ghost/cursor de arraste do app aparecendo.
+
+---
+
 ### 2026-07-20 (3) — Timeout nas mutações de sala (ataque/habilidade podiam pendurar pra sempre)
 
 **Pedido:** "o problema maior tem sido timeout, corrige ai deixa tudo bem organizado".

@@ -55,7 +55,7 @@ function ActorAvatar({ actor, ringColor }: { actor: RoomActor; ringColor: string
     <span className="vtt-playable-avatar" style={{ borderColor: ringColor }}>
       {img ? (
         // eslint-disable-next-line @next/next/no-img-element
-        <img src={img} alt="" />
+        <img src={img} alt="" draggable={false} />
       ) : (
         <span className="vtt-playable-avatar__initial" style={{ background: `${ringColor}33`, color: ringColor }}>
           {actor.name.slice(0, 1).toUpperCase()}

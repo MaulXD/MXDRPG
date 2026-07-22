@@ -55,7 +55,7 @@ function ActorSpawnAvatar({
     <span className="vtt-spawn-drag-avatar" style={{ borderColor: ringColor }}>
       {img ? (
         // eslint-disable-next-line @next/next/no-img-element
-        <img src={img} alt="" />
+        <img src={img} alt="" draggable={false} />
       ) : (
         <span className="vtt-spawn-drag-initial" style={{ background: `${ringColor}33`, color: ringColor }}>
           {actor.name.slice(0, 1).toUpperCase()}
