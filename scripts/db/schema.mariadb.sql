@@ -61,6 +61,7 @@ CREATE TABLE IF NOT EXISTS eldarin_rooms (
   adventure_id VARCHAR(64) NOT NULL,
   owner_id VARCHAR(64) NOT NULL,
   name VARCHAR(200) NOT NULL,
+  rpg_system VARCHAR(64) NOT NULL DEFAULT 'eldarin',
   invite_code VARCHAR(32) NOT NULL,
   member_ids JSON NOT NULL,
   scene JSON NOT NULL,
@@ -75,6 +76,9 @@ CREATE TABLE IF NOT EXISTS eldarin_rooms (
   KEY eldarin_rooms_owner (owner_id),
   KEY eldarin_rooms_updated (updated_at)
 );
+
+-- Upgrade incremental pra bancos existentes (fresh installs já ganham a coluna no CREATE TABLE acima).
+ALTER TABLE eldarin_rooms ADD COLUMN IF NOT EXISTS rpg_system VARCHAR(64) NOT NULL DEFAULT 'eldarin';
 
 CREATE TABLE IF NOT EXISTS eldarin_player_bestiary (
   user_id VARCHAR(64) NOT NULL,

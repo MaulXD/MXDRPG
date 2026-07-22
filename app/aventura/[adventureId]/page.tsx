@@ -33,6 +33,7 @@ import type { RoomActor } from "@/lib/room/types";
 import { AdventurePlayerSheetsList } from "@/components/adventure/AdventurePlayerSheetsList";
 import { MedievalFrame } from "@/components/ui/MedievalFrame";
 import { pageMetadata } from "@/lib/site-metadata";
+import { MESAS_HUB_PATH, RPG_SYSTEMS, rpgMesasPath } from "@/lib/rpg/systems";
 
 
 
@@ -107,7 +108,7 @@ export default async function AventuraHubPage({ params, searchParams }: Props) {
 
         <p>Mesa não encontrada ou prazo de restauração expirou.</p>
 
-        <Link href="/rpg/eldarin">Suas mesas</Link>
+        <Link href={MESAS_HUB_PATH}>Suas mesas</Link>
 
       </div>
 
@@ -118,6 +119,10 @@ export default async function AventuraHubPage({ params, searchParams }: Props) {
 
 
   const isGm = canManageAdventure(adventure, accountUser);
+  const rpgSystemId = adventure.rpgSystemId;
+  const mesasPath = rpgMesasPath(rpgSystemId);
+  const systemShortName =
+    RPG_SYSTEMS.find((s) => s.id === rpgSystemId)?.shortName ?? "Eldarin";
 
 
 
@@ -131,7 +136,7 @@ export default async function AventuraHubPage({ params, searchParams }: Props) {
 
           <p>Esta mesa foi encerrada pelo mestre.</p>
 
-          <Link href="/rpg/eldarin" className="btn">
+          <Link href={mesasPath} className="btn">
 
             Voltar às mesas
 
@@ -151,7 +156,7 @@ export default async function AventuraHubPage({ params, searchParams }: Props) {
 
         <p className="lead">Mesa na lixeira — restaure em até 30 dias para reativar.</p>
 
-        <Link href="/rpg/eldarin" className="btn">
+        <Link href={mesasPath} className="btn">
 
           Restaurar em Suas mesas
 
@@ -187,7 +192,7 @@ export default async function AventuraHubPage({ params, searchParams }: Props) {
         <p style={{ color: "var(--text-muted)", fontSize: "0.9rem" }}>
           Use o link do mestre (com <code>?invite=</code>) ou cole o código em Suas mesas.
         </p>
-        <Link href="/rpg/eldarin" className="btn">
+        <Link href={mesasPath} className="btn">
           Suas mesas
         </Link>
       </div>
@@ -235,9 +240,9 @@ export default async function AventuraHubPage({ params, searchParams }: Props) {
 
         <p className="eyebrow">
 
-          <Link href="/rpg/eldarin" style={{ color: "var(--text-muted)" }}>
+          <Link href={mesasPath} style={{ color: "var(--text-muted)" }}>
 
-            ← Mesas Eldarin
+            ← Mesas {systemShortName}
 
           </Link>
 
@@ -327,7 +332,7 @@ export default async function AventuraHubPage({ params, searchParams }: Props) {
 
           Você ingressou nesta mesa. Ela permanece salva em{" "}
 
-          <Link href="/rpg/eldarin">Suas mesas</Link> — crie seu personagem e entre na sala VTT.
+          <Link href={mesasPath}>Suas mesas</Link> — crie seu personagem e entre na sala VTT.
 
         </div>
 
@@ -505,7 +510,7 @@ export default async function AventuraHubPage({ params, searchParams }: Props) {
 
 
 
-      <Link href="/rpg/eldarin" className="btn btn-ghost" style={{ marginTop: "1.25rem" }}>
+      <Link href={mesasPath} className="btn btn-ghost" style={{ marginTop: "1.25rem" }}>
 
         Voltar às mesas
 

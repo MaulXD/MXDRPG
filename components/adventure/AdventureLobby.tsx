@@ -7,7 +7,12 @@ import { AdventureTableCard } from "@/components/adventure/AdventureTableCard";
 import { adventureRestoreDeadline } from "@/lib/adventure/lifecycle";
 import type { AdventureListItem } from "@/lib/adventure/types";
 import { validateDisplayName } from "@/lib/moderation/display-name";
+import { DEFAULT_RPG_SYSTEM_ID, type RpgSystemId } from "@/lib/rpg/systems";
 import "@/components/rpg/mesas-hub.css";
+
+type Props = {
+  rpgSystemId?: RpgSystemId;
+};
 
 function formatRestoreDeadline(deletedAt: number): string {
   const deadline = adventureRestoreDeadline({
@@ -32,7 +37,7 @@ function formatRestoreDeadline(deletedAt: number): string {
   });
 }
 
-export function AdventureLobby() {
+export function AdventureLobby({ rpgSystemId = DEFAULT_RPG_SYSTEM_ID }: Props) {
   const router = useRouter();
   const [adventures, setAdventures] = useState<AdventureListItem[]>([]);
   const [newName, setNewName] = useState("");
@@ -44,7 +49,7 @@ export function AdventureLobby() {
   const creatingRef = useRef(false);
 
   const load = useCallback(async () => {
-    const res = await fetch("/api/adventures?rpgSystem=eldarin");
+    const res = await fetch(`/api/adventures?rpgSystem=${rpgSystemId}`);
     if (res.ok) {
       const data = await res.json();
       setAdventures(data.adventures ?? []);
@@ -54,7 +59,7 @@ export function AdventureLobby() {
         );
       }
     }
-  }, []);
+  }, [rpgSystemId]);
 
   useEffect(() => {
     load();
@@ -85,7 +90,7 @@ export function AdventureLobby() {
       const res = await fetch("/api/adventures", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: checked.name, accessMode, rpgSystem: "eldarin" }),
+        body: JSON.stringify({ name: checked.name, accessMode, rpgSystem: rpgSystemId }),
       });
       const data = (await res.json().catch(() => ({}))) as {
         error?: string;
@@ -314,9 +319,11 @@ export function AdventureLobby() {
         </p>
       ) : null}
 
-      <Link href="/mesa/demo" prefetch={false} className="btn btn-secondary">
-        Demo pública (sem conta)
-      </Link>
+      {rpgSystemId === "eldarin" ? (
+        <Link href="/mesa/demo" prefetch={false} className="btn btn-secondary">
+          Demo pública (sem conta)
+        </Link>
+      ) : null}
     </div>
   );
 }

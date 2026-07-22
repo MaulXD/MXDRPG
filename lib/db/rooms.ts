@@ -7,12 +7,14 @@ import { dbEnabled, getSql } from "@/lib/db/client";
 import { withDbTimeout } from "@/lib/db/timeout";
 import { packCombatColumn, unpackCombatColumn } from "@/lib/db/room-combat-meta";
 import { memberIdsHasUser } from "@/lib/db/sql-helpers";
+import { normalizeRpgSystemId } from "@/lib/rpg/systems";
 
 type RoomRow = {
   room_id: string;
   adventure_id: string;
   owner_id: string;
   name: string;
+  rpg_system?: string | null;
   invite_code: string;
   member_ids: string[];
   scene: RoomState["scene"];
@@ -31,6 +33,7 @@ function rowToState(row: RoomRow): RoomState {
   return {
     roomId: row.room_id,
     adventureId: row.adventure_id ?? row.room_id,
+    rpgSystemId: normalizeRpgSystemId(row.rpg_system),
     ownerId: row.owner_id,
     name: row.name,
     inviteCode: row.invite_code,
@@ -52,6 +55,7 @@ function stateToRow(state: RoomState): RoomRow {
   return {
     room_id: state.roomId,
     adventure_id: state.adventureId ?? state.roomId,
+    rpg_system: state.rpgSystemId,
     owner_id: state.ownerId,
     name: state.name,
     invite_code: state.inviteCode,
@@ -91,6 +95,9 @@ export async function fetchRoom(roomId: string): Promise<RoomState | null> {
   let rows: RoomRow[];
   try {
     rows = await withDbTimeout(
+      // TODO(um-anel): incluir "rpg_system" nesta SELECT depois que a migration
+      // 018_room_rpg_system.sql rodar em produção (ver scripts/db/schema.mariadb.sql).
+      // Até lá, normalizeRpgSystemId(undefined) resolve pra "eldarin" — seguro.
       sql<RoomRow[]>`
         SELECT room_id, adventure_id, owner_id, name, invite_code, member_ids, scene, actors, combat, chat, settings, revision, updated_at
         FROM eldarin_rooms WHERE room_id = ${roomId} LIMIT 1
@@ -114,6 +121,8 @@ export async function saveRoom(state: RoomState): Promise<void> {
     `${col} = IF(revision <= VALUES(revision), VALUES(${col}), ${col})`;
   await withDbTimeout(
     sql.unsafe(
+      // TODO(um-anel): incluir "rpg_system" neste INSERT depois que a migration
+      // 018_room_rpg_system.sql rodar em produção (ver scripts/db/schema.mariadb.sql).
       `INSERT INTO eldarin_rooms (
         room_id, adventure_id, owner_id, name, invite_code, member_ids,
         scene, actors, combat, chat, settings, revision, updated_at

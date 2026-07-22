@@ -21,6 +21,7 @@ export async function createRoomForAdventure(adventure: Adventure): Promise<Room
   const state: RoomState = {
     roomId,
     adventureId: adventure.adventureId,
+    rpgSystemId: adventure.rpgSystemId,
     ownerId: adventure.ownerId,
     name: adventure.name,
     inviteCode: adventure.inviteCode,

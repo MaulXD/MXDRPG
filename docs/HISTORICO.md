@@ -104,6 +104,37 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-07-22 — Fase 1 de "O Um Anel" (hub multi-sistema) + fix do seletor de RPG em /mesas
+
+**Pedido:** "adicione agora a possibilidade de um RPG de O Um Anel também" — planejado antes de codar (ver `C:\Users\Raul\.claude\plans\peaceful-puzzling-hopper.md`). Depois, ainda na mesma leva: "tem que colocar também, pra escolher qual o RPG que vai jogar no hub, ta abrindo diretamente o Eldarin sem sequer antes selecionar a mesa".
+
+**Passo a passo:**
+1. **Investigação (3 agentes de exploração + 1 de design, plan mode)** — mapeado o quanto do código é genérico vs. específico do Eldarin: `RoomState`/chat/presença/revisão são reaproveitáveis; `CharacterSheet`, o wizard de criação, `lib/character/rules.ts` e `lib/combat/` são 100% Eldarin, sem camada de abstração. Já existia um scaffold cosmético de multi-sistema (`lib/rpg/systems.ts`: `RpgSystemId`, `Adventure.rpgSystemId`) nunca ligado a sala/ficha/combate. Plano completo em 5 fases aprovado antes de implementar.
+2. **Fase 1 implementada** — novo membro `"um-anel"` em `RpgSystemId`/`RPG_SYSTEMS` (`available: true`, capa SVG própria); `app/rpg/um-anel/{layout,page}.tsx` espelhando `app/rpg/eldarin/`; `AdventureLobby` generalizado pra aceitar `rpgSystemId` como prop em vez de fixar `"eldarin"`; `RoomState.rpgSystemId` novo (copiado da aventura na criação da sala, tratado como imutável); links "voltar às mesas" em `app/aventura/[adventureId]/page.tsx` corrigidos pra apontar pro sistema certo (antes todos hardcoded pra `/rpg/eldarin`).
+3. **Achado à parte — bug real no `/mesas`** — ao testar, o usuário notou que o hub abria direto no Eldarin sem escolher sistema. Investigação (workflow com 3 agentes: investigar → implementar → verificar) achou a causa: commit `f41393f` (28/06) tinha removido de propósito um seletor que já existia (`RpgSystemCoverCard` + `mesas-hub.css`, ambos ainda no código mas órfãos), justificado por "único sistema disponível" — premissa que deixou de valer com "um-anel" disponível. `app/mesas/page.tsx` restaurado como seletor real, mas agora inteligente: só redireciona direto se houver exatamente 1 sistema `available`, senão mostra o grid de cartas (Eldarin, O Um Anel, + "Em breve" pros placeholders).
+4. **Risco de produção identificado e contido** — a coluna nova `eldarin_rooms.rpg_system` (pra Fase 1) não tem migration automática no deploy (`npm run db:migrate` roda só manual, o pipeline de CI não chama). Pra não quebrar a leitura de toda mesa em produção (Eldarin incluído) até a migration rodar, a leitura/escrita real do SQL em `lib/db/rooms.ts` foi deixada **defensiva de propósito** (TODO marcado no código): a coluna existe no tipo `RoomState` e é copiada em memória, mas o SELECT/INSERT ainda não referenciam `rpg_system` — `normalizeRpgSystemId(undefined)` resolve pra `"eldarin"` com segurança. Ativar de verdade é uma mudança de 2 linhas depois que a migration `018_room_rpg_system.sql` (já escrita, também embutida em `scripts/db/schema.mariadb.sql` via `ALTER TABLE ... ADD COLUMN IF NOT EXISTS`) rodar em produção.
+5. **Validação** — `tsc --noEmit` limpo em cada etapa. Testado em memória (`ELDARIN_DISABLE_DB=1`) via Puppeteer: criação de aventura "O Um Anel" com o sistema certo persistido, navegação `/aventura/[id]` voltando pro hub certo, `/mesas` mostrando as duas opções lado a lado, clique em cada uma levando pro lugar certo, mesa demo do Eldarin sem nenhuma regressão visual ou funcional.
+
+**Arquivos tocados:**
+- `lib/rpg/systems.ts` — sistema `"um-anel"` novo
+- `app/rpg/um-anel/{layout,page}.tsx` — novo
+- `app/mesas/page.tsx` — seletor restaurado (era redirect fixo pro Eldarin)
+- `components/adventure/AdventureLobby.tsx` — `rpgSystemId` como prop
+- `app/aventura/[adventureId]/page.tsx` — links "voltar às mesas" dinâmicos
+- `lib/room/types.ts`, `lib/room/adventure-room.ts`, `lib/room/sync.ts` — `RoomState.rpgSystemId`
+- `lib/db/rooms.ts` — plumbing pronto, SQL ainda defensivo (ver TODO no código)
+- `scripts/db/schema.mariadb.sql`, `scripts/db/migrations/018_room_rpg_system.sql` — coluna nova (fresh installs + upgrade incremental)
+- `public/brand/rpg/um-anel-cover.svg` — capa placeholder simples (mesmo padrão dos outros sistemas "em breve")
+
+**Commits / deploy:** pendente local (aguardando push). **Pendência real:** rodar a migration `018_room_rpg_system.sql` (ou `npm run db:migrate`) em produção antes de ativar a leitura/escrita de `rpg_system` em `lib/db/rooms.ts` — combinar com o usuário antes desse próximo passo específico.
+
+**Como testar:**
+- `/mesas` autenticado deve mostrar as duas capas (Eldarin, O Um Anel) lado a lado, não redirecionar direto.
+- Criar uma aventura em cada sistema e confirmar que "voltar às mesas" leva pro hub certo em cada caso.
+- Mesa demo do Eldarin (`/mesa/demo`) continua idêntica.
+
+---
+
 ### 2026-07-21 — Fix: arrastar personagem/monstro pro mapa não fazia nada (img sem draggable=false)
 
 **Pedido:** "não estou conseguindo arrastar os personagens para a mesa nem monstros" — testado como mestre e como jogador, no Chrome, sem erro no console, sem nenhum feedback visual (cursor não muda, sem miniatura acompanhando o mouse).

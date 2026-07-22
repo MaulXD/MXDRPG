@@ -1,6 +1,6 @@
 /** Sistemas de RPG disponíveis no hub MXDRPG. */
 
-export type RpgSystemId = "eldarin" | "arcane" | "vtm";
+export type RpgSystemId = "eldarin" | "arcane" | "vtm" | "um-anel";
 
 /** Sistema padrão — mesas legadas e criação atual no hub Eldarin. */
 export const DEFAULT_RPG_SYSTEM_ID: RpgSystemId = "eldarin";
@@ -14,7 +14,10 @@ export const ARCANE_DEFAULT_COVER_SRC = "/brand/rpg/arcane-cover.png";
 /** Capa padrão Vampiro: A Máscara (mesa VTT, hub e seletor de RPG). */
 export const VTM_DEFAULT_COVER_SRC = "/brand/rpg/vtm-cover.png";
 
-const RPG_SYSTEM_IDS = new Set<RpgSystemId>(["eldarin", "arcane", "vtm"]);
+/** Capa padrão O Um Anel (mesa VTT, hub e seletor de RPG). */
+export const UM_ANEL_DEFAULT_COVER_SRC = "/brand/rpg/um-anel-cover.svg";
+
+const RPG_SYSTEM_IDS = new Set<RpgSystemId>(["eldarin", "arcane", "vtm", "um-anel"]);
 
 export function normalizeRpgSystemId(raw: unknown): RpgSystemId {
   if (typeof raw === "string") {
@@ -41,6 +44,9 @@ export const MESAS_HUB_PATH = "/mesas";
 /** Mesas do sistema Eldarin (não confundir com o hub MXDRPG). */
 export const ELDARIN_MESAS_PATH = "/rpg/eldarin";
 
+/** Mesas do sistema O Um Anel. */
+export const UM_ANEL_MESAS_PATH = "/rpg/um-anel";
+
 export function rpgMesasPath(systemId: RpgSystemId = DEFAULT_RPG_SYSTEM_ID): string {
   const sys = RPG_SYSTEMS.find((s) => s.id === systemId);
   return sys?.href ?? MESAS_HUB_PATH;
@@ -56,6 +62,16 @@ export const RPG_SYSTEMS: RpgSystem[] = [
     available: true,
     coverSrc: ELDARIN_DEFAULT_COVER_SRC,
     coverAlt: "Capa Eldarin — logotipo com dragão",
+  },
+  {
+    id: "um-anel",
+    name: "O Um Anel",
+    shortName: "Um Anel",
+    tagline: "Terra-média · perícias + Feat die · esperança e sombra",
+    href: UM_ANEL_MESAS_PATH,
+    available: true,
+    coverSrc: UM_ANEL_DEFAULT_COVER_SRC,
+    coverAlt: "Capa O Um Anel — anel dourado sobre fundo escuro",
   },
   {
     id: "arcane",

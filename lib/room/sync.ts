@@ -136,6 +136,7 @@ export function createDemoRoom(): RoomState {
   const room: RoomState = {
     roomId: "demo",
     adventureId: "demo",
+    rpgSystemId: "eldarin",
     ownerId: "usr_demo_mestre",
     name: "Mesa demonstração",
     inviteCode: "DEMOELDR",

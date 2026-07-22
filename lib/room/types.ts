@@ -6,6 +6,7 @@ import type { CombatUndoEntry } from "./combat-undo";
 import type { CombatLogEntry } from "./combat-log";
 import type { GmCreation } from "./gm-creations";
 import type { RoomSettings } from "./settings";
+import type { RpgSystemId } from "@/lib/rpg/systems";
 
 export type { CombatTrack };
 export type { CombatUndoEntry };
@@ -22,6 +23,8 @@ export type RoomState = {
   roomId: string;
   /** Aventura à qual esta mesa pertence. */
   adventureId: string;
+  /** Sistema de RPG desta mesa — copiado da aventura na criação, imutável depois. */
+  rpgSystemId: RpgSystemId;
   /** Dono da mesa — único com poderes de mestre nesta sala */
   ownerId: string;
   name: string;
