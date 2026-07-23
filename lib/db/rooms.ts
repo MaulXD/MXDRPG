@@ -95,11 +95,8 @@ export async function fetchRoom(roomId: string): Promise<RoomState | null> {
   let rows: RoomRow[];
   try {
     rows = await withDbTimeout(
-      // TODO(um-anel): incluir "rpg_system" nesta SELECT depois que a migration
-      // 018_room_rpg_system.sql rodar em produção (ver scripts/db/schema.mariadb.sql).
-      // Até lá, normalizeRpgSystemId(undefined) resolve pra "eldarin" — seguro.
       sql<RoomRow[]>`
-        SELECT room_id, adventure_id, owner_id, name, invite_code, member_ids, scene, actors, combat, chat, settings, revision, updated_at
+        SELECT room_id, adventure_id, rpg_system, owner_id, name, invite_code, member_ids, scene, actors, combat, chat, settings, revision, updated_at
         FROM eldarin_rooms WHERE room_id = ${roomId} LIMIT 1
       `,
       5000,
@@ -121,12 +118,10 @@ export async function saveRoom(state: RoomState): Promise<void> {
     `${col} = IF(revision <= VALUES(revision), VALUES(${col}), ${col})`;
   await withDbTimeout(
     sql.unsafe(
-      // TODO(um-anel): incluir "rpg_system" neste INSERT depois que a migration
-      // 018_room_rpg_system.sql rodar em produção (ver scripts/db/schema.mariadb.sql).
       `INSERT INTO eldarin_rooms (
-        room_id, adventure_id, owner_id, name, invite_code, member_ids,
+        room_id, adventure_id, rpg_system, owner_id, name, invite_code, member_ids,
         scene, actors, combat, chat, settings, revision, updated_at
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       ON DUPLICATE KEY UPDATE
         ${revGuard("adventure_id")},
         ${revGuard("owner_id")},
@@ -143,6 +138,7 @@ export async function saveRoom(state: RoomState): Promise<void> {
       [
         row.room_id,
         row.adventure_id,
+        row.rpg_system,
         row.owner_id,
         row.name,
         row.invite_code,

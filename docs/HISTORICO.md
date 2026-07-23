@@ -104,6 +104,20 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-07-22 (2) — Ativar rpg_system em lib/db/rooms.ts (migration confirmada em produção)
+
+**Pedido:** usuário rodou `npm run db:migrate` direto num pod de produção (`kubectl exec`) — saída confirmou schema aplicado sem erro. Ativar a leitura/escrita real da coluna, conforme TODO deixado na sessão anterior.
+
+**Passo a passo:** removidos os 2 comentários TODO e reincluído `rpg_system` no SELECT de `fetchRoom` e no INSERT/VALUES de `saveRoom` em `lib/db/rooms.ts` — sem esses TODOs a coluna já existe em produção, então a leitura/escrita real é segura agora.
+
+**Arquivos tocados:** `lib/db/rooms.ts`.
+
+**Commits / deploy:** pendente local (aguardando push).
+
+**Como testar:** criar uma mesa em "O Um Anel", recarregar a página e confirmar que o sistema persiste como `"um-anel"` (não regride pra `"eldarin"`); confirmar que mesas Eldarin existentes continuam carregando normalmente.
+
+---
+
 ### 2026-07-22 — Fase 1 de "O Um Anel" (hub multi-sistema) + fix do seletor de RPG em /mesas
 
 **Pedido:** "adicione agora a possibilidade de um RPG de O Um Anel também" — planejado antes de codar (ver `C:\Users\Raul\.claude\plans\peaceful-puzzling-hopper.md`). Depois, ainda na mesma leva: "tem que colocar também, pra escolher qual o RPG que vai jogar no hub, ta abrindo diretamente o Eldarin sem sequer antes selecionar a mesa".
