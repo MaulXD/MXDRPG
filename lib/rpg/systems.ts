@@ -1,6 +1,6 @@
 /** Sistemas de RPG disponíveis no hub MXDRPG. */
 
-export type RpgSystemId = "eldarin" | "arcane" | "vtm" | "um-anel";
+export type RpgSystemId = "eldarin" | "dnd" | "vtm" | "um-anel";
 
 /** Sistema padrão — mesas legadas e criação atual no hub Eldarin. */
 export const DEFAULT_RPG_SYSTEM_ID: RpgSystemId = "eldarin";
@@ -8,8 +8,8 @@ export const DEFAULT_RPG_SYSTEM_ID: RpgSystemId = "eldarin";
 /** Capa padrão Eldarin (mesa VTT, hub e seletor de RPG). */
 export const ELDARIN_DEFAULT_COVER_SRC = "/brand/rpg/eldarin-cover.png";
 
-/** Capa placeholder — fantasia clássica (em breve). */
-export const ARCANE_DEFAULT_COVER_SRC = "/brand/rpg/arcane-cover.png";
+/** Capa padrão Dungeons & Dragons (mesa VTT, hub e seletor de RPG). */
+export const DND_DEFAULT_COVER_SRC = "/brand/rpg/dnd-cover.png";
 
 /** Capa padrão Vampiro: A Máscara (mesa VTT, hub e seletor de RPG). */
 export const VTM_DEFAULT_COVER_SRC = "/brand/rpg/vtm-cover.png";
@@ -17,11 +17,11 @@ export const VTM_DEFAULT_COVER_SRC = "/brand/rpg/vtm-cover.png";
 /** Capa padrão O Um Anel (mesa VTT, hub e seletor de RPG). */
 export const UM_ANEL_DEFAULT_COVER_SRC = "/brand/rpg/um-anel-cover.webp";
 
-const RPG_SYSTEM_IDS = new Set<RpgSystemId>(["eldarin", "arcane", "vtm", "um-anel"]);
+const RPG_SYSTEM_IDS = new Set<RpgSystemId>(["eldarin", "dnd", "vtm", "um-anel"]);
 
 export function normalizeRpgSystemId(raw: unknown): RpgSystemId {
   if (typeof raw === "string") {
-    if (raw === "dnd") return "arcane";
+    if (raw === "arcane") return "dnd";
     if (RPG_SYSTEM_IDS.has(raw as RpgSystemId)) return raw as RpgSystemId;
   }
   return DEFAULT_RPG_SYSTEM_ID;
@@ -74,14 +74,14 @@ export const RPG_SYSTEMS: RpgSystem[] = [
     coverAlt: "Capa O Um Anel — anel dourado sobre fundo escuro",
   },
   {
-    id: "arcane",
-    name: "Espada & Arcano",
-    shortName: "Espada & Arcano",
+    id: "dnd",
+    name: "Dungeons & Dragons",
+    shortName: "D&D",
     tagline: "Em breve",
     href: null,
     available: false,
-    coverSrc: ARCANE_DEFAULT_COVER_SRC,
-    coverAlt: "Capa Espada & Arcano — fantasia clássica",
+    coverSrc: DND_DEFAULT_COVER_SRC,
+    coverAlt: "Capa Dungeons & Dragons",
   },
   {
     id: "vtm",
@@ -115,6 +115,6 @@ export function isMesasNavActive(pathname: string): boolean {
   if (pathname === "/eldarin" || pathname.startsWith("/eldarin/")) return true;
   if (pathname === "/rpg" || pathname.startsWith("/rpg/")) return true;
   if (pathname.startsWith("/aventura/")) return true;
-  if (pathname.startsWith("/mesa/") && pathname !== "/mesa" && pathname !== "/mesa/demo") return true;
+  if (pathname.startsWith("/mesa/")) return true;
   return false;
 }
