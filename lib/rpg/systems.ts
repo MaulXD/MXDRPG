@@ -15,7 +15,7 @@ export const ARCANE_DEFAULT_COVER_SRC = "/brand/rpg/arcane-cover.png";
 export const VTM_DEFAULT_COVER_SRC = "/brand/rpg/vtm-cover.png";
 
 /** Capa padrão O Um Anel (mesa VTT, hub e seletor de RPG). */
-export const UM_ANEL_DEFAULT_COVER_SRC = "/brand/rpg/um-anel-cover.svg";
+export const UM_ANEL_DEFAULT_COVER_SRC = "/brand/rpg/um-anel-cover.webp";
 
 const RPG_SYSTEM_IDS = new Set<RpgSystemId>(["eldarin", "arcane", "vtm", "um-anel"]);
 

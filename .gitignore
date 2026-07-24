@@ -34,3 +34,8 @@ public/uploads/
 
 # Previews locais de design (não versionar)
 preview-ficha.html
+
+# Livros originais comprados pelo usuário (PDFs comerciais) — nunca versionar,
+# é redistribuição de material com direitos autorais. O conteúdo extraído/
+# transcrito em livros/um-anel/*.md é versionado à parte, por decisão do usuário.
+/the one ring/

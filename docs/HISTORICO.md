@@ -104,6 +104,25 @@ npm run sync:data:check       # após editar livros/
 
 ---
 
+### 2026-07-24 — Extração dos livros do "O Um Anel" + capa real do sistema
+
+**Pedido:** "subi dentro da pasta os livros do TOR ou the one ring, quero que extraia tudo para montar o RPG dele também... quando você exportar toda essa parte a gente trabalha na tradução" + depois "usa essa imagem como capa do RPG de o um anel, recorte a imagem pra deixar perfeitamente quadrada".
+
+**Passo a passo:**
+1. **Extração** — usuário subiu 11 PDFs em `the one ring/` (Core Rules 248p, Rivendell 16p, Starter Set Rules 28p, Pre-generated Characters 16p, Stance/Journey Card 2p, + módulos de aventura/mapas fora do escopo desta leva). Lido o sumário do Core Rules pra mapear capítulos por página, e disparados 5 agentes em paralelo cobrindo o essencial pra ficha/habilidades/personagens/combate (capítulos 2 a 8 do Core Rules + Starter Set + Rivendell + personagens de exemplo) — módulos de aventura e o capítulo de lore do mundo ficaram de fora por enquanto (não pedidos explicitamente). Resultado: 10 arquivos markdown em `livros/um-anel/`, ~450KB, quase 7 mil linhas, conteúdo em inglês (tradução é etapa colaborativa futura). Confirmado que a discrepância de fórmula de TN entre as fichas de exemplo (TN=18−Atributo) e o livro de regras (TN=20−Atributo) não é erro — é uma variante oficial pra campanhas curtas que o Starter Set escolheu usar.
+2. **Capa do sistema** — usuário mandou uma foto do Um Anel dourado no chat (sem arquivo acessível em disco) e depois subiu um arquivo diferente (`the one ring/capatheonering.png`, a capa oficial do livro "The One Ring", já 524×524px quadrada). Usado `sharp` (já instalado no projeto) pra recomprimir/normalizar (448KB→146KB, compatível com o tamanho das outras capas do hub) e salvo em `public/brand/rpg/um-anel-cover.png`, substituindo o placeholder SVG genérico criado na Fase 1.
+
+**Arquivos tocados:**
+- `livros/um-anel/02-*.md` a `livros/um-anel/11-*.md` — extração dos livros (novo)
+- `public/brand/rpg/um-anel-cover.png` — capa real (novo, substitui `um-anel-cover.svg` removido)
+- `lib/rpg/systems.ts` — `UM_ANEL_DEFAULT_COVER_SRC` apontando pro PNG novo
+
+**Commits / deploy:** pendente local (aguardando push).
+
+**Como testar:** `/mesas` deve mostrar a capa oficial do livro no card "O Um Anel" em vez do placeholder genérico.
+
+---
+
 ### 2026-07-22 (2) — Ativar rpg_system em lib/db/rooms.ts (migration confirmada em produção)
 
 **Pedido:** usuário rodou `npm run db:migrate` direto num pod de produção (`kubectl exec`) — saída confirmou schema aplicado sem erro. Ativar a leitura/escrita real da coluna, conforme TODO deixado na sessão anterior.
