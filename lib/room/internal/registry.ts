@@ -1,13 +1,5 @@
 import * as dbAdventures from "@/lib/db/adventures";
 import * as dbRooms from "@/lib/db/rooms";
-import { getCharacterFromRegistry } from "@/lib/character/character-registry";
-import { getEntry } from "@/lib/compendium/registry";
-import { DEMO_SCENE } from "@/lib/vtt/demo-scene";
-import {
-  alignDemoPcTokenIds,
-  repairCombatOrderTokenIds,
-  repairDuplicateTokenIds,
-} from "@/lib/vtt/token-integrity";
 import { normalizeSceneTokens } from "@/lib/vtt/scene-normalize";
 import { welcomeChat } from "../chat";
 import { normalizeCombatTrack } from "../combat";
@@ -25,7 +17,7 @@ import { ensureJournalBaseline, recordRevisionEntry } from "../revision-journal"
 import { buildRoomDelta } from "../room-delta";
 import { notifyRoomUpdated } from "../notifier";
 import { scheduleSave } from "./periodic-save";
-import { createDemoRoom, syncLinkedTokens } from "../sync";
+import { syncLinkedTokens } from "../sync";
 import type { RoomSnapshot, RoomState } from "../types";
 
 declare global {
@@ -98,110 +90,8 @@ export function bumpRoom(state: RoomState): RoomState {
   return inCombatEconomy ? mirrorCombatTokenPaToActors(merged) : merged;
 }
 
-function shouldPersistToDb(roomId: string): boolean {
-  return dbRooms.dbEnabled() && roomId !== "demo";
-}
-
-const DEMO_ACTOR_IDS = [
-  "pc-thrain-ferroescudo",
-  "pc-lyanna-umbral",
-  "pc-maelis-purificador",
-  "pc-pippin-sussurro",
-] as const;
-
-function mergeDemoSceneTokens(room: RoomState, freshScene: RoomState["scene"]): void {
-  const existingIds = new Set(room.scene.tokens.map((t) => t.id));
-  const added = freshScene.tokens.filter((t) => !existingIds.has(t.id));
-  if (added.length === 0) return;
-  room.scene = { ...room.scene, tokens: [...room.scene.tokens, ...added] };
-}
-
-/** Inventário demo antigo (ids slug) quebrava listagem de armas na UI. */
-function refreshDemoActorsIfStale(room: RoomState): void {
-  if (room.roomId !== "demo") return;
-
-  const fresh = createDemoRoom();
-  let changed = false;
-
-  for (const actorId of DEMO_ACTOR_IDS) {
-    const adv = room.actors[actorId];
-    const template = getCharacterFromRegistry(actorId);
-    if (!template) continue;
-
-    if (!adv) {
-      room.actors[actorId] = fresh.actors[actorId];
-      changed = true;
-      continue;
-    }
-
-    const brokenEntry = adv.inventory.some(
-      (i) =>
-        (i.packId === "armas" || i.packId === "magias" || i.packId === "habilidades") &&
-        i.quantity > 0 &&
-        !getEntry(i.packId, i.entryId)
-    );
-    if (brokenEntry) {
-      room.actors[actorId] = fresh.actors[actorId];
-      changed = true;
-      continue;
-    }
-
-    const xpStale = adv.identity.xpTotal !== template.identity.xpTotal;
-    const nivelStale = adv.identity.nivel !== template.identity.nivel;
-    if (xpStale || nivelStale) {
-      room.actors[actorId] = {
-        ...adv,
-        identity: {
-          ...adv.identity,
-          xpTotal: template.identity.xpTotal,
-          nivel: template.identity.nivel,
-        },
-        revision: adv.revision + 1,
-      };
-      changed = true;
-    }
-  }
-
-  mergeDemoSceneTokens(room, fresh.scene);
-
-  let repairedScene = repairDuplicateTokenIds(room.scene);
-  const alignedScene = alignDemoPcTokenIds(repairedScene, fresh.scene);
-  if (alignedScene !== room.scene) {
-    room.scene = alignedScene;
-    changed = true;
-  } else if (repairedScene !== room.scene) {
-    room.scene = repairedScene;
-    changed = true;
-  }
-
-  if (room.combat?.order?.length) {
-    const fixedOrder = repairCombatOrderTokenIds(room.combat.order, room.scene.tokens);
-    if (fixedOrder.join(",") !== room.combat.order.join(",")) {
-      room.combat = { ...room.combat, order: fixedOrder };
-      changed = true;
-    }
-  }
-
-  if (changed) {
-    const inCombatEconomy = requiresCombatTurnEconomy(room.settings, room.combat);
-    room.scene = syncLinkedTokens(room.scene, room.actors, {
-      preserveCombatPa: inCombatEconomy,
-      explorationDisplay: !inCombatEconomy,
-    });
-  }
-
-  for (const seed of DEMO_SCENE.tokens) {
-    if (!seed.monsterEntryId || seed.vidaMax == null) continue;
-    room.scene = {
-      ...room.scene,
-      tokens: room.scene.tokens.map((t) => {
-        if (t.monsterEntryId !== seed.monsterEntryId || t.id !== seed.id) return t;
-        const vidaMax = seed.vidaMax!;
-        const vida = Math.min(t.vida ?? vidaMax, vidaMax);
-        return { ...t, vidaMax, vida, defesa: seed.defesa ?? t.defesa };
-      }),
-    };
-  }
+function shouldPersistToDb(): boolean {
+  return dbRooms.dbEnabled();
 }
 
 export type PersistRoomOpts = {
@@ -234,14 +124,14 @@ export async function persistRoom(
   writeCachedRevision(roomId, updated.revision);
   recordRevisionEntry(roomId, afterSnap, buildRoomDelta(beforeSnap, afterSnap));
   notifyRoomUpdated(roomId, updated.revision);
-  if (shouldPersistToDb(roomId)) {
+  if (shouldPersistToDb()) {
     scheduleSave(roomId, updated);
   }
   return updated;
 }
 
 async function backfillRoomFromAdventure(roomId: string): Promise<RoomState | null> {
-  if (!shouldPersistToDb(roomId)) return null;
+  if (!shouldPersistToDb()) return null;
   let adventure = await dbAdventures.fetchAdventure(roomId);
   if (!adventure) adventure = await dbAdventures.fetchAdventureByPrimaryRoom(roomId);
   if (!adventure || adventure.deletedAt) return null;
@@ -267,7 +157,7 @@ export async function getRoom(roomId: string, opts?: GetRoomOpts): Promise<RoomS
   const map = rooms();
   let room = map.get(roomId) ?? null;
 
-  if (shouldPersistToDb(roomId)) {
+  if (shouldPersistToDb()) {
     if (room) {
       let dbRev = readCachedRevision(roomId);
       if (dbRev == null) {
@@ -297,16 +187,6 @@ export async function getRoom(roomId: string, opts?: GetRoomOpts): Promise<RoomS
     }
   }
 
-  if (!room && roomId === "demo") {
-    const demo = createDemoRoom();
-    map.set("demo", demo);
-    room = demo;
-    if (shouldPersistToDb("demo")) {
-      await dbRooms.insertRoom(demo);
-    }
-  }
-
-  if (room) refreshDemoActorsIfStale(room);
   if (room) ensureJournalBaseline(roomId, toSnapshot(room));
   if (room) {
     if (!Array.isArray(room.scene.tokens)) {

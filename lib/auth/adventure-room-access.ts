@@ -11,7 +11,6 @@ export async function shouldAutoJoinRoom(
   room: RoomState,
   user: SessionUser
 ): Promise<boolean> {
-  if (room.roomId === "demo") return true;
   if (user.role === "admin") return true;
   if (isRoomMember(room, user.id, user.clerkId)) return false;
 

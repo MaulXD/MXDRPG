@@ -54,10 +54,10 @@ npm run sync:data:check # só se mexeu em livros/ ou scripts de dados
 | Área alterada | Testar em |
 |---------------|-----------|
 | Site / layout | `/`, `/mesas`, `/eldarin` |
-| VTT | `/mesa/demo` — mover token, combate, chat |
+| VTT | `/mesa/[roomId]` — mover token, combate, chat |
 | Ficha | `/personagem/[id]` ou wizard em aventura |
 | API sala | DevTools → rede ao agir na mesa |
-| Fundos animados | site qualquer exceto `/mesa/demo`; preview em `/backgrounds-preview.html` |
+| Fundos animados | site qualquer; preview em `/backgrounds-preview.html` |
 
 ---
 
@@ -118,7 +118,6 @@ npm run sync:data:check # só se mexeu em livros/ ou scripts de dados
 | **Barra ícones mesa** | Só ícones + tooltip `.foundry-icon-bar__tooltip` |
 | **Grid do mapa** | Alinhado à imagem de piso (`lib/vtt/grid-layout.ts`) |
 | **Mestre vs jogador** | `ownerId` da aventura/sala — **sem** role global mestre/jogador |
-| **Demo** | `roomId === "demo"` — regras especiais, não misturar com salas reais |
 | **Git** | **Não** commit/push até o usuário pedir |
 
 ---

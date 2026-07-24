@@ -1,5 +1,3 @@
-import { getCharacter } from "@/lib/character/demo-characters";
-import { normalizeCharacter } from "@/lib/character/normalize";
 import { paMaxForActor } from "@/lib/combat/pa-economy";
 import { normalizeTokenPaFields } from "@/lib/combat/pa-token-state";
 import { defaultMovementFields } from "@/lib/vtt/movement";
@@ -9,13 +7,8 @@ import {
   resolveLinkedTokenImageFocus,
   resolveLinkedTokenImageUrl,
 } from "@/lib/room/portrait-sync";
-import { DEMO_SCENE } from "@/lib/vtt/demo-scene";
 import type { BattleScene, BattleToken } from "@/lib/vtt/types";
-import { emptyCombat } from "./combat";
-import { welcomeChat } from "./chat";
-import { applyExplorationPaDisplay } from "@/lib/combat/exploration-pa";
-import { DEFAULT_ROOM_SETTINGS } from "./settings";
-import type { RoomActor, RoomState } from "./types";
+import type { RoomActor } from "./types";
 
 /** Foundry: token linkado herda stats + imagem do Actor */
 export function syncLinkedTokens(
@@ -115,42 +108,4 @@ function ensureMovementFields(token: BattleToken): BattleToken {
     run,
     ...defaultMovementFields({ walk, run }),
   };
-}
-
-export function createDemoRoom(): RoomState {
-  const thrain = getCharacter("pc-thrain-ferroescudo");
-  const lyanna = getCharacter("pc-lyanna-umbral");
-  const maelis = getCharacter("pc-maelis-purificador");
-  const pippin = getCharacter("pc-pippin-sussurro");
-  if (!thrain || !lyanna || !maelis || !pippin) throw new Error("Demo character missing");
-
-  const actors: Record<string, RoomActor> = {
-    [thrain.id]: { ...normalizeCharacter(thrain), revision: 1 },
-    [lyanna.id]: { ...normalizeCharacter(lyanna), revision: 1 },
-    [maelis.id]: { ...normalizeCharacter(maelis), revision: 1 },
-    [pippin.id]: { ...normalizeCharacter(pippin), revision: 1 },
-  };
-
-  const scene = syncLinkedTokens(DEMO_SCENE, actors);
-
-  const room: RoomState = {
-    roomId: "demo",
-    adventureId: "demo",
-    rpgSystemId: "eldarin",
-    ownerId: "usr_demo_mestre",
-    name: "Mesa demonstração",
-    inviteCode: "DEMOELDR",
-    memberIds: [],
-    settings: { ...DEFAULT_ROOM_SETTINGS },
-    scene,
-    actors,
-    combat: emptyCombat(),
-    chat: [welcomeChat()],
-    pings: [],
-    revision: 1,
-    updatedAt: Date.now(),
-  };
-
-  applyExplorationPaDisplay(room);
-  return room;
 }

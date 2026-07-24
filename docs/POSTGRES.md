@@ -20,4 +20,3 @@ npm run smoke:a1
 - Rodar `npm run db:migrate` após deploy
 - `/api/health` → `"db": true`, `"persistence": "mariadb"`
 
-Sala `demo` não grava no banco.

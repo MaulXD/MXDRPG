@@ -19,13 +19,11 @@ export async function POST(req: Request, { params }: Params) {
     return NextResponse.json({ error: "Sala não encontrada" }, { status: 404 });
   }
 
-  if (room.roomId !== "demo") {
-    if (!session?.user) {
-      return NextResponse.json({ error: "Faça login para passar o turno" }, { status: 401 });
-    }
-    if (!(await isRoomMemberResolved(room, session.user.id, session.user.clerkId))) {
-      return NextResponse.json({ error: "Você não participa desta mesa" }, { status: 403 });
-    }
+  if (!session?.user) {
+    return NextResponse.json({ error: "Faça login para passar o turno" }, { status: 401 });
+  }
+  if (!(await isRoomMemberResolved(room, session.user.id, session.user.clerkId))) {
+    return NextResponse.json({ error: "Você não participa desta mesa" }, { status: 403 });
   }
 
   if (!canAdvanceCombatTurn(room, session?.user ?? null, room.combat)) {

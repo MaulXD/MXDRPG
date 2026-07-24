@@ -32,9 +32,6 @@ export function PortalShell({ user, children }: Props) {
           <Link href={MESAS_HUB_PATH} className="btn btn-secondary btn-sm">
             Mesas
           </Link>
-          <Link href="/mesa/demo" prefetch={false} className="btn btn-secondary btn-sm">
-            VTT demo
-          </Link>
           <LogoutButton />
         </nav>
       </header>

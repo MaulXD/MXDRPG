@@ -6,11 +6,6 @@ import { useRouter } from "next/navigation";
 import { PasswordInput } from "@/components/auth/PasswordInput";
 import "./auth-forms.css";
 
-const DEMO = [
-  { login: "jogador", label: "Jogador" },
-  { login: "mestre", label: "Mestre" },
-] as const;
-
 type Props = { redirect?: string };
 
 export function LoginForm({ redirect = "" }: Props) {
@@ -90,20 +85,6 @@ export function LoginForm({ redirect = "" }: Props) {
         <button type="button" className="auth-form__clear" onClick={clearFields} disabled={loading}>
           Limpar campos
         </button>
-      </div>
-      <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
-        {DEMO.map((q) => (
-          <button
-            key={q.login}
-            type="button"
-            className="btn btn-secondary"
-            style={{ fontSize: "0.75rem", padding: "0.35rem 0.65rem" }}
-            disabled={loading}
-            onClick={() => submitLogin(q.login, "123")}
-          >
-            {loading ? "…" : `Demo ${q.label}`}
-          </button>
-        ))}
       </div>
     </form>
   );

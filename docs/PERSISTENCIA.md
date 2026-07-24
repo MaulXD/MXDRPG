@@ -1,6 +1,6 @@
 # Persistência — Eldarin VTT
 
-Salas e usuários podem ser gravados em **MariaDB** (Contabo ou local). Sem `DATABASE_URL`, o app continua em **memória + arquivos locais** (modo demo).
+Salas e usuários podem ser gravados em **MariaDB** (Contabo ou local). Sem `DATABASE_URL`, o app continua em **memória + arquivos locais**.
 
 ## Variável de ambiente
 
@@ -23,10 +23,9 @@ npm run db:migrate
 
 | Recurso | Sem `DATABASE_URL` | Com `DATABASE_URL` |
 |---------|-------------------|-------------------|
-| Sala `demo` | Sempre em memória (reset no restart) | Igual — não persiste |
-| Outras salas | Memória do processo (perde no restart) | MariaDB + cache em memória |
+| Salas | Memória do processo (perde no restart) | MariaDB + cache em memória |
 | Usuários | `data/users/registry.json` + seed | MariaDB (`eldarin_users`) + seed no primeiro login |
-| Personagens | Demo em memória | `eldarin_characters` + seed no 1º acesso |
+| Personagens | Memória do processo (perde no restart) | `eldarin_characters` + seed no 1º acesso |
 | Sync em tempo real | Polling HTTP (como hoje) | Igual — SSE/WebSocket é Passo 5+ |
 
 ## Produção (Contabo)

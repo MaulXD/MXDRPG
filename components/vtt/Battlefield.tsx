@@ -237,7 +237,7 @@ export function Battlefield({
   canEndTurn: canEndTurnProp = false,
   canControlToken,
   canViewTokenPa,
-  roomId = "demo",
+  roomId = "",
   roomOwnerId = "",
   memberIds = [],
   adventureId: adventureIdProp,
@@ -590,8 +590,8 @@ export function Battlefield({
   }, []);
 
   const canManageMarkups = useMemo(
-    () => (session ? canManageAllMapMarkups({ ownerId: roomOwnerId }, session) : roomId === "demo"),
-    [session, roomOwnerId, roomId]
+    () => (session ? canManageAllMapMarkups({ ownerId: roomOwnerId }, session) : false),
+    [session, roomOwnerId]
   );
 
   const dungeonMapEditing = isRoomGm && dungeonEditorActive && dungeonLayer === "objects";

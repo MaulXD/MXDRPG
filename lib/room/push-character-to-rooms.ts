@@ -2,18 +2,12 @@ import { resolveAdventureId } from "@/lib/character/adventure-bind";
 import type { CharacterSheet } from "@/lib/character/types";
 import { getAdventure } from "@/lib/adventure/store";
 import { attachCharacterToRoomState } from "./adventure-actors";
-import { attachCharacterToDemoRoom } from "./demo-character-sync";
 import { getRoom, persistRoom } from "./internal/registry";
 
-/** Propaga ficha salva para salas ao vivo (demo + mesa da aventura). */
+/** Propaga ficha salva para a mesa ao vivo da aventura. */
 export async function pushCharacterSheetToLiveRooms(sheet: CharacterSheet): Promise<void> {
   const adventureId = resolveAdventureId(sheet) ?? sheet.adventureId ?? null;
-
-  if (adventureId === "demo") {
-    await attachCharacterToDemoRoom(sheet);
-  }
-
-  if (!adventureId || adventureId === "demo") return;
+  if (!adventureId) return;
 
   const adv = await getAdventure(adventureId);
   const roomId = adv?.primaryRoomId?.trim();

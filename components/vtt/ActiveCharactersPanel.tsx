@@ -60,7 +60,7 @@ export function ActiveCharactersPanel({
   fogHint = false,
   onCreateCharacter,
 }: Props) {
-  const canCreateInAdventure = roomId !== "demo" && Boolean(session);
+  const canCreateInAdventure = Boolean(session);
 
   return (
     <aside className="vtt-sidebar vtt-sidebar--actors">

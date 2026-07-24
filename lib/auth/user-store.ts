@@ -318,14 +318,6 @@ export async function getUserById(id: string): Promise<SessionUser | null> {
   return null;
 }
 
-/** Compat: login demo legado */
-export async function authenticateDemo(
-  email: string,
-  password: string
-): Promise<SessionUser | null> {
-  return authenticateUser(email, password);
-}
-
 export function getLocalUserByEmail(email: string): StoredUser | undefined {
   return registry().get(slugEmail(email));
 }

@@ -22,7 +22,7 @@ Isso:
 1. Cria `.env.homolog` a partir de `.env.homolog.example` (se ainda não existir)
 2. Sobe MariaDB (Docker ou nativo no Windows, porta **3306**)
 3. Aguarda o banco ficar saudável
-4. Roda `npm run db:migrate` (schema + usuários demo)
+4. Roda `npm run db:migrate` (schema)
 5. Cria a mesa **`mesa-local`** persistida no banco
 
 ## Rodar o app
@@ -47,11 +47,15 @@ Abra http://localhost:3000 — `/api/health` deve retornar `db: true` e `persist
 | URL | Uso |
 |-----|-----|
 | http://localhost:3000/mesa/mesa-local | Combate, sync, tokens — **grava no DB** |
-| http://localhost:3000/mesa/demo | Demo rápida em memória (não persiste) |
 
-Login demo: `mestre` ou `jogador`, senha `123`. Convite da mesa local: **LOCALTST** (opcional em localhost).
+Convite da mesa local: **LOCALTST** (opcional em localhost).
 
-Em **localhost**, `/mesa/mesa-local` abre sem login (só assistir). Para mover tokens e combate, entre como `mestre` ou `jogador`.
+Em **localhost**, `/mesa/mesa-local` abre sem login (só assistir). Para mover tokens e combate, cadastre uma conta
+(e-mail/senha) e vincule-a à mesa pelo código de convite — não há mais login rápido sem cadastro.
+
+> **Pendente:** `data/homolog/mesa-local.seed.json` ainda referencia os ids `usr_demo_mestre`/`usr_demo_jogador`
+> como dono/membro (removidos do seed de usuários). Cadastre uma conta e ajuste `ownerId`/`memberIds` no arquivo
+> (ou use `npm run admin` para trocar o dono da mesa) antes de depender deste fixture localmente.
 
 O script carrega **`.env.homolog` antes de `.env.local`**, então o MariaDB local tem prioridade sobre qualquer `DATABASE_URL` de produção.
 

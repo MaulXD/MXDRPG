@@ -37,6 +37,16 @@ CREATE TABLE IF NOT EXISTS eldarin_characters (
   KEY eldarin_characters_owner (owner_id)
 );
 
+-- Fichas do sistema "O Um Anel" — tabela própria, nunca mistura com
+-- eldarin_characters (formatos de dados incompatíveis).
+CREATE TABLE IF NOT EXISTS um_anel_characters (
+  id VARCHAR(64) PRIMARY KEY,
+  owner_id VARCHAR(64) NOT NULL,
+  data JSON NOT NULL,
+  updated_at BIGINT NOT NULL,
+  KEY um_anel_characters_owner (owner_id)
+);
+
 CREATE TABLE IF NOT EXISTS eldarin_adventures (
   adventure_id VARCHAR(64) PRIMARY KEY,
   owner_id VARCHAR(64) NOT NULL,

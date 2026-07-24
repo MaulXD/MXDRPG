@@ -13,7 +13,9 @@ export type MesaWindowId =
   | "character"
   | "createCharacter"
   | "monsterSheet"
-  | "status";
+  | "status"
+  | "torParty"
+  | "torFicha";
 
 export type FoundryWindowLayout = {
   open: boolean;

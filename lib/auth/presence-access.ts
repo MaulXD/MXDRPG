@@ -9,7 +9,6 @@ export async function canTrackRoomPresence(
   user: SessionUser | null | undefined
 ): Promise<boolean> {
   if (!user) return false;
-  if (room.roomId === "demo") return true;
   if (user.role === "admin") return true;
   if (canManageRoom(room, user)) return true;
   if (canParticipateInRoom(room, user)) return true;

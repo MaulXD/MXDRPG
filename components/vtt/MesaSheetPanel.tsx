@@ -1,7 +1,6 @@
 "use client";
 
 import { CharacterSheet } from "@/components/character/CharacterSheet";
-import { getCharacter } from "@/lib/character/demo-characters";
 import { canEditRoomActor } from "@/lib/auth/room-access";
 import type { CompendiumEntry, CompendiumPackId } from "@/lib/compendium/types";
 import type { SessionUser } from "@/lib/auth/types";
@@ -18,7 +17,7 @@ type Props = {
 
 export function MesaSheetPanel({ actorId, roomId, actors, session, compendium }: Props) {
   const live = actors[actorId];
-  const seed = live ?? getCharacter(actorId);
+  const seed = live;
   if (!seed) {
     return <p className="inv-empty">Personagem não encontrado.</p>;
   }

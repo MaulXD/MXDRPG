@@ -55,7 +55,7 @@ npm run db:migrate
 ```
 
 3. Rebuild + redeploy → `https://www.mxdrpg.com.br/api/health` → `db: true`.
-4. `/mestre` → criar sala → redeploy → sala ainda existe (não é `demo`).
+4. `/mestre` → criar sala → redeploy → sala ainda existe.
 
 ## Scripts
 
@@ -73,7 +73,7 @@ npm run db:migrate
 | URL Neon (SSL, pooler warn) | `lib/db/normalize-url.ts`, `lib/db/client.ts` |
 | Schema | `scripts/db/schema.sql` |
 | Health | `app/api/health/route.ts` |
-| Salas | `lib/db/rooms.ts` — sala `demo` **nunca** no Postgres |
+| Salas | `lib/db/rooms.ts` |
 
 ## Falhas comuns
 

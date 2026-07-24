@@ -18,7 +18,7 @@ export async function POST(req: Request, { params }: Params) {
     return NextResponse.json({ error: auth.error }, { status: auth.status });
   }
 
-  if (auth.room.roomId !== "demo" && !canManageRoom(auth.room, auth.user)) {
+  if (!canManageRoom(auth.room, auth.user)) {
     return NextResponse.json({ error: "Só o mestre pode rolar salvaguardas" }, { status: 403 });
   }
 

@@ -2,7 +2,6 @@
 
 import type { SessionUser } from "@/lib/auth/types";
 import { VttHelpButton } from "@/components/vtt/VttHelpButton";
-import { DemoGuidedTour } from "@/components/vtt/DemoGuidedTour";
 import { MesaGuidedTour } from "@/components/vtt/MesaGuidedTour";
 
 type Props = {
@@ -17,12 +16,6 @@ export function VttMapGuideCluster({ roomId, session, isRoomGm, watchOnly = fals
   return (
     <div className="vtt-map-guide-cluster">
       <VttHelpButton />
-      <DemoGuidedTour
-        roomId={roomId}
-        session={session}
-        isRoomGm={isRoomGm}
-        triggerVariant="map"
-      />
       <MesaGuidedTour
         roomId={roomId}
         session={session}

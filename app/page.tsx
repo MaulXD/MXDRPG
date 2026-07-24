@@ -131,9 +131,6 @@ export default function HomePage() {
             <Link href={ENTRAR_PATH} className="btn btn-primary landing-cta-primary">
               Entrar e jogar
             </Link>
-            <Link href="/mesa/demo" prefetch={false} className="btn btn-secondary">
-              Demo ao vivo
-            </Link>
           </div>
 
           <div className="landing-preview" aria-hidden="true">

@@ -14,7 +14,7 @@ export function characterBelongsToAdventure(
   adventureId: string
 ): boolean {
   const bound = resolveAdventureId(sheet);
-  if (!bound) return adventureId === "demo";
+  if (!bound) return false;
   return bound === adventureId;
 }
 
@@ -34,6 +34,5 @@ export function characterBelongsToRoom(
   if (bound && bound === roomAdventureId) return true;
   if (actor.campaignRoomId === room.roomId) return true;
   if (bound === room.roomId) return true;
-  if (!bound) return roomAdventureId === "demo";
   return false;
 }

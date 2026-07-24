@@ -2,6 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import type { Metadata } from "next";
 import { CharacterCreationWizard } from "@/components/character/wizard/CharacterCreationWizard";
+import { TorCharacterCreationWizard } from "@/components/character/wizard/TorCharacterCreationWizard";
 import { MedievalFrame } from "@/components/ui/MedievalFrame";
 import { isAdventureMember } from "@/lib/auth/adventure-access";
 import { ensureSessionAdventureAccess } from "@/lib/adventure/store";
@@ -11,6 +12,10 @@ import {
   MAX_CHARACTERS_PER_USER,
   MAX_CHARACTERS_PER_USER_PER_ADVENTURE,
 } from "@/lib/character/characters";
+import {
+  listTorCharactersForSessionUserSafe,
+  MAX_TOR_CHARACTERS_PER_USER,
+} from "@/lib/character/um-anel/characters";
 import { signInPath } from "@/lib/auth/post-auth-redirect";
 import { getSession } from "@/lib/auth/session";
 import { pageMetadata } from "@/lib/site-metadata";
@@ -47,7 +52,7 @@ export default async function AventuraNovoPersonagemPage({ params, searchParams 
     );
   }
 
-  if (!isAdventureMember(adventure, accountUser.id, accountUser.clerkId) && adventureId !== "demo") {
+  if (!isAdventureMember(adventure, accountUser.id, accountUser.clerkId)) {
     return (
       <div className="page-wrap">
         <p>Entre na aventura com o código de convite antes de criar o personagem.</p>
@@ -62,6 +67,40 @@ export default async function AventuraNovoPersonagemPage({ params, searchParams 
         <Link href="/rpg/eldarin" className="btn btn--ghost" style={{ marginTop: "0.75rem", marginLeft: "0.5rem" }}>
           Suas mesas
         </Link>
+      </div>
+    );
+  }
+
+  if (adventure.rpgSystemId === "um-anel") {
+    const torChars = await listTorCharactersForSessionUserSafe(accountUser);
+    const torSlotsLeft = MAX_TOR_CHARACTERS_PER_USER - torChars.length;
+
+    if (torSlotsLeft <= 0) {
+      return (
+        <div className="page-wrap" style={{ maxWidth: 520, paddingTop: "2rem" }}>
+          <h1 className="display-lg">Limite de fichas</h1>
+          <p className="lead">Limite de {MAX_TOR_CHARACTERS_PER_USER} fichas do Um Anel na conta.</p>
+          <Link href={`/mesa/${adventure.primaryRoomId}`} className="btn">
+            Voltar à mesa
+          </Link>
+        </div>
+      );
+    }
+
+    return (
+      <div className="page-wrap" style={{ paddingTop: "1.5rem", paddingBottom: "3rem" }}>
+        <MedievalFrame variant="celtic" page>
+          <header className="page-header" style={{ paddingBottom: "1rem" }}>
+            <p className="eyebrow">Aventura · {adventure.name}</p>
+            <h1 className="display-lg">Novo aventureiro</h1>
+            <p className="lead">Ficha do Um Anel — Cultura, Vocação e Perícias, seguindo as regras da 2ª edição.</p>
+          </header>
+          <TorCharacterCreationWizard
+            slotsLeft={torSlotsLeft}
+            adventureId={adventureId}
+            adventureName={adventure.name}
+          />
+        </MedievalFrame>
       </div>
     );
   }

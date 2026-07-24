@@ -1848,3 +1848,78 @@ kubectl -n raul rollout status deployment/mxdrpg
 4. Observar: chat mostra "acerta N dano" mas HP do PC não reduz
 
 ---
+
+### 2026-07-24 — O Um Anel: extração de regras + Fase 2 (personagem mínimo)
+
+**Pedido:** extrair 100% das regras de criação de personagem do PDF "The One Ring 2e Core Rules" (Culturas, Vocações, Perícias, Proficiências de Combate, Armas/Armaduras) e, em paralelo ("faça ambos se puder"), implementar a Fase 2 do plano aprovado (`peaceful-puzzling-hopper.md`): tipo de ficha, wizard de criação e ficha de visualização do Um Anel — corrigindo também o bug em que uma mesa "tor" abria o wizard/ficha do Eldarin.
+
+**Extração (livros/um-anel/):**
+- `00-glossario-termos.md` — glossário PT-BR construído do zero (não reaproveita a terminologia 1e dos livros já traduzidos por Mateus Soares — mecanicamente incompatível com a 2e).
+- `03-aventureiros.md` / `04-caracteristicas.md` — já extraídos em rodada anterior, usados como fonte dos números abaixo.
+- `12-o-mundo-eriador.md` / `13-apendice-patronos-e-ficha.md` — Cap.9 (Eriador/Bree) + Apêndice A (Patronos, Landmarks) + layout oficial da Ficha de Personagem (p.239) e do Journey Log (p.240), campo por campo.
+
+**Engenharia (Fase 2 — personagem mínimo, zero regressão no Eldarin):**
+1. `lib/character/types.ts` — extraído `BaseCharacterFields` (id/ownerId/adventureId/nome/retrato...); `CharacterSheet` passa a estendê-lo e ganha discriminante opcional `system?: RpgSystemId` (default `"eldarin"` em `normalizeCharacter`).
+2. `lib/character/um-anel/{types,data,rules,normalize,wizard-types,build-from-wizard}.ts` — `TorCharacterSheet` completo (Cultura, Vocação, 3 Atributos+TN, 18 Perícias, 4 Proficiências de Combate, Resistência/Esperança/Aparar/Carga, Sombra/Fadiga/Condições, Valor/Sabedoria/Recompensas/Virtudes, Equipamento de Guerra); dados reais das 6 Culturas e 6 Vocações (atributos, perícias base, bônus de Cultura, traços distintivos, armas/armaduras/escudos); fórmula de NA (`20 − Atributo`) e derivados por Cultura.
+3. **Storage isolado, tabela própria** — `um_anel_characters` (schema + `scripts/db/migrations/019_um_anel_characters.sql`), `lib/db/um-anel-characters.ts` + `lib/character/um-anel/{registry,characters}.ts`: descartada a ideia inicial de reaproveitar `eldarin_characters` (arriscava fichas TOR contaminarem a listagem/normalize do Eldarin já que o `normalizeCharacter` eldarin não sabe ler atributos de outro formato).
+4. `app/api/tor-characters/route.ts` (POST) — espelha `app/api/characters/route.ts`.
+5. `components/character/wizard/TorCharacterCreationWizard.tsx` — casco reaproveitado do CSS/padrão do wizard Eldarin (`wizard.css`, `WizardProgress`), 8 passos próprios (Conceito → Cultura → Atributos → Vocação → Combate → Traços → Dádivas → Revisão).
+6. `components/character/sheet/TorCharacterSheetView.tsx` — ficha de leitura própria (CSS dedicado `tor-sheet.css`).
+7. **Dispatch por `rpgSystemId`** em 3 pontos, sem branch dentro do código Eldarin: `/personagem/[id]` (prefixo de id `tor-` vs `pc-`), `/aventura/[id]/personagem/novo` (via `adventure.rpgSystemId`), popup de criação na mesa (`rpgSystemId` propagado `mesa/[roomId]/page.tsx` → `MesaWorkspace` → `MesaFoundryFloatingWindows` → `MesaCharacterWizardPopup`).
+
+**Escopo explicitamente fora desta fase:** personagem Um Anel ainda não vira `RoomActor`/token na mesa (isso é Fase 4 — combate); ao criar pela mesa, abre a ficha em nova aba em vez de popup na mesa.
+
+**Verificação:**
+- `tsc --noEmit` limpo.
+- Teste de lógica pura (`tsx` temporário, script descartado) cobrindo `buildTorCharacterFromWizard`/`normalizeTorCharacter`/`attributeTN` para Hobbit e Ranger (bônus de atributo condicional) + integridade das 6 Culturas/6 Vocações — todas as asserções passaram.
+- Teste E2E via Puppeteer (Chrome local, `ELDARIN_DISABLE_DB=1`): login → criar mesa "O Um Anel" → wizard completo (8 passos, validação bloqueando passo incompleto corretamente) → submit. A chamada `POST /api/tor-characters` falhou com 400 nesse modo específico — rastreado até `materializeSessionUser` (variante que lança, não a "safe") lançando `DATABASE_URL não configurada`; confirmado que `POST /api/characters` (Eldarin) usa a **mesma** função e falharia da mesma forma nesse modo — não é regressão, é limitação pré-existente do modo sem banco para rotas de criação de personagem (não coberta antes). Fluxo completo requer MariaDB real (`npm run local`, indisponível neste ambiente por falta de Docker).
+
+**Pendente para a próxima sessão:** validar a criação ponta-a-ponta contra um MariaDB real; Fase 3 (compêndio) e Fase 4 (combate/token na mesa) do plano; tradução PT-BR do conteúdo já extraído em `livros/um-anel/*.md`.
+
+---
+
+### 2026-07-24 (cont.) — Remoção completa da mesa demo + correção de nome "Espada & Arcano"→D&D
+
+**Pedido:** "cada tipo de RPG tem que ter seu VTT, sua mesa, fichas separados... remova a mesa demo, cada um que quiser testar crie a sua, se achar algo de mesa demo no site, remova!" — e, à parte, reverter o placeholder "Espada & Arcano" de volta para "Dungeons & Dragons" (decisão informada do usuário, ciente do risco de marca registrada da Wizards of the Coast).
+
+**Pesquisa prévia (workflow com 3 agentes paralelos):** mapeamento completo confirmou que "demo" não era um recurso isolado — estava hard-coded em ~50 arquivos em 4 camadas: bypass de autenticação (>15 pontos com `roomId === "demo"` liberando ações sem login/dono), dado semeado (`DEMO_CHARACTERS`/`DEMO_SCENE` reaproveitados como infraestrutura geral — não só da demo), pontos de entrada de UI (7 CTAs), e scripts/docs de QA.
+
+**Correção do nome do sistema:** `lib/rpg/systems.ts` — `RpgSystemId` volta a ter `"dnd"` (era `"arcane"` desde o commit `1cb4420` de 18/06, que renomeou por precaução de marca registrada); `name`/`shortName`/`coverAlt` voltam a "Dungeons & Dragons"/"D&D"; assets `dnd-cover.png/svg` já existiam no repo. `normalizeRpgSystemId` mantém compat reversa (`"arcane"` → `"dnd"`).
+
+**Remoção da mesa demo — por camada:**
+1. **Núcleo (risco alto, tratado à mão, não deletado):** `lib/room/internal/registry.ts` (`shouldPersistToDb`, criação automática de sala demo, `refreshDemoActorsIfStale` — ~100 linhas), `lib/adventure/store.ts` (`ensureDemoAdventure` e sua injeção forçada em toda listagem de mesas — o ponto de maior impacto pra "a demo aparecer pra todo mundo"), `lib/room/sync.ts` (`createDemoRoom`), `lib/character/character-registry.ts` (parou de usar `DEMO_CHARACTERS` como seed-base do registro em memória), `lib/character/adventure-bind.ts` (`!bound ? adventureId === "demo" : ...` → `false` — essa era a convenção que fazia fichas avulsas serem editáveis; ajustado junto em `CharacterSheet.tsx`/`app/personagem/[id]/page.tsx` pra usar `roomId` genuinamente opcional com `useRoomSync(..., {disabled: true})` em vez de fingir uma sala "demo").
+2. **Bypasses de autenticação:** removidos de `lib/auth/{room-access,room-access-server,combat-turn-access,adventure-room-access,presence-access}.ts`, `lib/room/handlers/{combat-gm,gm-actor-progress,gm-saving-throw,culinary-meal}.ts`, e 6 rotas `app/api/room/[roomId]/...` — cada um era um `if (roomId === "demo")` adicional antes da checagem normal de dono/membro, que permanece intacta.
+3. **Componentes de UI da mesa:** `Battlefield.tsx`, `MesaWorkspace.tsx`, `ActiveCharactersPanel.tsx`, `EndTurnBar.tsx`, `MesaVisitorNotice.tsx` (prop `isDemo` removida), `app/mesa/[roomId]/page.tsx`.
+4. **Arquivos deletados** (após checar/limpar todos os consumidores): `lib/character/demo-characters.ts`, `lib/vtt/demo-scene.ts` (template de grid/cellSize extraído pra `DEFAULT_SCENE_TEMPLATE` em `lib/room/adventure-room.ts` antes de apagar), `lib/room/demo-character-sync.ts`, `components/vtt/DemoGuidedTour.tsx` + `lib/vtt/demo-guided-tour.ts` (guards mortos removidos de `MesaGuidedTour.tsx`/`VttMapGuideCluster.tsx` — CSS `.demo-guided-tour__*` **mantido**, é reaproveitado pelo tour real), `lib/auth/demo-users.ts`, `docs/DEMO-GUIADO.md`, `scripts/db/purge-users-except-demo.mjs` + entrada `db:purge-users` do `package.json`.
+5. **Login "Demo Mestre"/"Demo Jogador"** (decisão à parte, confirmada explicitamente pelo usuário — "remover tudo junto"): botões removidos de `LoginForm.tsx`, seção "Contas demo" removida de `app/entrar/page.tsx`, `authenticateDemo` (dead code) removido de `user-store.ts`, `data/users/registry.seed.json` esvaziado (`[]`).
+6. **CTAs de UI** removidos de `app/page.tsx`, `app/mesa/page.tsx`, `app/sistema/page.tsx` (4º passo do guia repontado pro hub de mesas em vez de deletado, preservando "Quatro etapas"), `app/mesas/page.tsx` (+ CSS morto), `SiteFooter.tsx`, `PortalShell.tsx`, `AdventureLobby.tsx`.
+7. **Docs vivos** atualizados: `CLAUDE-PROJETO.md`, `COMBATE-MESA.md`, `CLAUDE-CODIGO-SEGURO.md`, `PERSISTENCIA.md`, `API-SALA.md`, `POSTGRES.md`, `P0-NEON-SETUP.md`, `A1-NEON-SMOKE.md`, `P8-PILOTO-TOKEN.md`, `HOMOLOG.md`. Docs de fase histórica (P2/P9/PRD/UX-MESA-E-RAIL/PARIDADE-FOUNDRY/ELDARIN-SITE-JOGAVEL, que também citam a demo) foram **deixados intactos** — são registro histórico de quando cada fase foi construída, mesma convenção do changelog.
+
+**Débito técnico sinalizado (não corrigido nesta sessão):**
+- 6 scripts em `scripts/smoke/*.mjs` (`combat-core`, `inventory-request-flow`, `level-up-pa-sync`, `p9-inventory-five-steps`, `pa-combat-spend`, `pa-turn-flow`) dependiam funcionalmente da sala/login demo via HTTP — vão quebrar (404/401) até serem reescritos pra criar uma aventura/mesa real + conta real antes de rodar.
+- `data/homolog/mesa-local.seed.json` (fixture de teste local MariaDB, não relacionado à sala demo mas com o mesmo `ownerId: usr_demo_mestre`) precisa de uma conta real cadastrada antes de continuar funcionando — anotado em `docs/HOMOLOG.md`.
+
+**Verificação:** `tsc --noEmit` limpo após cada etapa (núcleo, auth, UI, deleções, login, docs); grep final em todo `app/lib/components/scripts/data` por `"demo"`/`usr_demo` não encontrou nenhuma referência restante em código (só nos 6 smoke scripts sinalizados acima e nos docs históricos).
+
+---
+
+### 2026-07-24 (cont.) — O Um Anel: mesa jogável em modo narrado (sem combate tático)
+
+**Pedido:** "deixe a mesa pronta pra pelo menos jogar narrado" — sem grid tático/tokens, mas com ficha visível na mesa, rolagem de dados do sistema e ajuste de recursos (Resistência/Esperança/Sombra) durante a sessão.
+
+**Pesquisa prévia (2 workflows paralelos, ver journal.jsonl em subagents/workflows/wf_2386aff6-074 e wf_88647256-008):** mecânica exata de resolução (Dado de Proeza d12 + Dados de Sucesso d6, extraída de `livros/um-anel/02-resolucao-de-acoes.md` linha a linha) e mapeamento de risco de duas integrações possíveis com a mesa (RoomActor como union vs. painel/API totalmente separados) — confirmado que `RoomActor` tem acoplamento profundo (226 acessos a `identity`/`attributes`/`resources` em 48 arquivos do motor Eldarin), então a fase foi implementada com painel e storage 100% isolados, sem tocar `RoomActor`/`Battlefield.tsx`.
+
+**Engenharia:**
+1. `lib/character/um-anel/dice.ts` — motor de resolução: Feat Die (1-10 numérico, 11=Olho de Sauron=0, 12=Runa de Gandalf=sucesso automático), Dados de Sucesso somam valor de face (6 conta como "ícone de sucesso" pro grau), Favorecida/Desfavorecida (2 dados de proeza, cancelam se ambas se aplicam), Cansado zera dados de sucesso 1-3, Deplorável vira falha automática no Olho de Sauron. Testado com script de lógica pura (20k rolagens, distribuição de faces ~1/12 cada, todas as regras de cancelamento/auto-sucesso/auto-falha validadas).
+2. `lib/character/um-anel/normalize.ts` — Cansado (`Resistência ≤ Carga`) e Deplorável (`Sombra ≥ Esperança atual`) passam a ser **derivados automaticamente**, não mais um toggle manual — evita ficha desatualizada.
+3. `lib/character/um-anel/characters.ts` — `listTorCharactersForAdventure` (fan-out por todos os membros da aventura, espelha `lib/room/adventure-actors.ts::resolvedParticipantIds`) e `patchTorCharacterResources` (dono da ficha ou mestre da aventura podem ajustar Resistência/Esperança/Sombra/Fadiga/Ferido/Tesouro/Companhia, com clamps).
+4. `app/api/tor-characters/route.ts` (GET por `adventureId`, checa membership) e `app/api/tor-characters/[id]/route.ts` (novo — GET individual + PATCH de recursos).
+5. `TorCharacterSheetView` ganhou modo `interactive` (opt-in via prop — a página solo `/personagem/[id]` continua só-leitura): botão "Rolar" por Perícia/Proficiência de Combate, steppers +/- pra Resistência/Esperança/Sombra/Fadiga/Tesouro, toggle de Ferido.
+6. `TorPlayableCharactersPanel.tsx` (lista os aventureiros da aventura) e `TorCharacterSheetPopup.tsx` (ficha interativa em janela — busca/PATCH via as rotas acima, posta resultado de rolagem no chat via `postRoomChat` já existente, **sem** criar um novo `kind` de mensagem nem tocar no motor de dados 3D do Eldarin).
+7. Duas janelas novas registradas em `lib/vtt/foundry-window-placement.ts`/`hooks/vtt/useFoundryWindows.ts` (`torParty`, `torFicha`) — renderizadas em `MesaFoundryFloatingWindows.tsx` só quando `rpgSystemId === "um-anel"`; `MesaWorkspace.tsx` ganhou `openTorSheet`/`closeTorSheet` espelhando `openSheet`/`closeSheet` do Eldarin. Criar personagem pela mesa agora abre a ficha no popup próprio (antes abria em aba nova).
+
+**Fora de escopo (proposital):** combate tático, tokens no mapa, iniciativa — nada disso foi tocado; a mesa do Um Anel continua sem grid, adequada só pra jogo narrado/theater-of-mind.
+
+**Verificação:** `tsc --noEmit` limpo; teste de lógica pura do motor de dados (12 grupos de asserção, 0 falhas); smoke test via Puppeteer confirmou que a mesa carrega sem erro de página com o novo painel presente (o único 500 observado foi o mesmo problema pré-existente de `materializeSessionUser` em modo sem banco, já documentado na entrada anterior — não uma regressão nova).
+
+---

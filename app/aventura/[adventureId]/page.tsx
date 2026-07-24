@@ -178,14 +178,11 @@ export default async function AventuraHubPage({ params, searchParams }: Props) {
     if (joined) adventure = joined;
   }
 
-  if (
-    !isAdventureMember(adventure, accountUser.id, accountUser.clerkId) &&
-    adventureId !== "demo"
-  ) {
+  if (!isAdventureMember(adventure, accountUser.id, accountUser.clerkId)) {
     adventure = (await ensureAdventureMembership(adventureId, accountUser.id)) ?? adventure;
   }
 
-  if (!isAdventureMember(adventure, accountUser.id, accountUser.clerkId) && adventureId !== "demo") {
+  if (!isAdventureMember(adventure, accountUser.id, accountUser.clerkId)) {
     return (
       <div className="page-wrap">
         <p>Entre na mesa com o código de convite.</p>

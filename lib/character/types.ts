@@ -1,6 +1,29 @@
 import type { CompendiumPackId } from "@/lib/compendium/types";
 import type { AttributeKey, CulinaryKey } from "@/lib/character/rules";
 import type { CombatLoadout } from "@/lib/combat/types";
+import type { RpgSystemId } from "@/lib/rpg/systems";
+
+/** Campos comuns a qualquer ficha, independente do sistema de RPG. */
+export type BaseCharacterFields = {
+  id: string;
+  ownerId: string;
+  /** Aventura à qual a ficha pertence (null = legado sem campanha). */
+  adventureId?: string | null;
+  /** @deprecated use adventureId — migrado em normalizeCharacter */
+  campaignRoomId?: string | null;
+  name: string;
+  biography: string;
+  /** Retrato na ficha (Foundry: Actor artwork) */
+  portraitUrl?: string | null;
+  /** Ponto focal do retrato (0–1) */
+  portraitFocus?: import("@/lib/media/portrait-focus").PortraitFocus | null;
+  /** Enquadramento da capa larga (fallback: portraitFocus) */
+  coverFocus?: import("@/lib/media/portrait-focus").PortraitFocus | null;
+  /** Enquadramento do token na mesa (fallback: portraitFocus) */
+  tokenFocus?: import("@/lib/media/portrait-focus").PortraitFocus | null;
+  /** Gerado automaticamente do retrato + foco */
+  tokenImageUrl?: string | null;
+};
 
 export type CharacterAttributes = Record<AttributeKey, number>;
 
@@ -53,25 +76,9 @@ export type InventoryItem = {
   quantity: number;
 };
 
-export type CharacterSheet = {
-  id: string;
-  ownerId: string;
-  /** Aventura à qual a ficha pertence (null = legado sem campanha). */
-  adventureId?: string | null;
-  /** @deprecated use adventureId — migrado em normalizeCharacter */
-  campaignRoomId?: string | null;
-  name: string;
-  biography: string;
-  /** Retrato na ficha (Foundry: Actor artwork) */
-  portraitUrl?: string | null;
-  /** Ponto focal do retrato (0–1) */
-  portraitFocus?: import("@/lib/media/portrait-focus").PortraitFocus | null;
-  /** Enquadramento da capa larga (fallback: portraitFocus) */
-  coverFocus?: import("@/lib/media/portrait-focus").PortraitFocus | null;
-  /** Enquadramento do token na mesa (fallback: portraitFocus) */
-  tokenFocus?: import("@/lib/media/portrait-focus").PortraitFocus | null;
-  /** Gerado automaticamente do retrato + foco */
-  tokenImageUrl?: string | null;
+export type CharacterSheet = BaseCharacterFields & {
+  /** Discriminante de sistema de RPG — default "eldarin" (normalizeCharacter). */
+  system?: RpgSystemId;
   identity: CharacterIdentity;
   attributes: CharacterAttributes;
   culinary: CharacterCulinary;

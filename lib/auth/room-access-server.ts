@@ -39,7 +39,6 @@ export async function canViewRoomServer(
   user: SessionUser | null | undefined,
   inviteCode?: string | null
 ): Promise<boolean> {
-  if (room.roomId === "demo") return true;
   if (isHomologPublicRoom(room.roomId)) return true;
   if (user?.role === "admin") return true;
 

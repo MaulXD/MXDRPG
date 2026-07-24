@@ -9,6 +9,7 @@ next-env.d.ts
 # Runtime user registry (seed stays in git)
 data/users/registry.json
 data/characters/registry.json
+data/characters/um-anel-registry.json
 data/bug-reports/*.json
 
 # Legacy web/ (app na raiz)

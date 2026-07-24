@@ -13,9 +13,6 @@ export function SiteFooter() {
       <nav className="site-footer__nav" aria-label="Links do site">
         <Link href={MESAS_HUB_PATH}>Mesas</Link>
         <Link href="/sistema">Sistema</Link>
-        <Link href="/mesa/demo" prefetch={false}>
-          Mesa demo
-        </Link>
         <Link href={ENTRAR_PATH}>Entrar</Link>
         <Link href="/aplicativo">Instalar app</Link>
         <Link href="/privacidade">Privacidade</Link>

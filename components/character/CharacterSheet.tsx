@@ -169,7 +169,7 @@ export function CharacterSheet(props: Props) {
 }
 
 function CharacterSheetAutoSync(props: Omit<Props, "sync">) {
-  const sync = useRoomSync(props.roomId ?? "demo");
+  const sync = useRoomSync(props.roomId ?? "", { disabled: !props.roomId });
   return <CharacterSheetLoaded {...props} sync={sync} />;
 }
 
@@ -181,7 +181,7 @@ function CharacterSheetLoaded({
   compendium,
   compendiumRole = null,
   compendiumIsRoomGm = false,
-  roomId = "demo",
+  roomId,
   embedded = false,
   variant = "page",
   hidePdfExport = false,
@@ -240,7 +240,7 @@ function CharacterSheetLoaded({
     };
   }, [roomActor, sheetBase, character]);
   const inRoom = Boolean(roomActor);
-  const mesaPopup = variant === "popup" && roomId !== "demo";
+  const mesaPopup = variant === "popup" && Boolean(roomId);
   const portraitOnRoom = mesaPopup || inRoom;
 
   useEffect(() => {
@@ -305,7 +305,7 @@ function CharacterSheetLoaded({
       void (async () => {
         try {
           if (inRoom) {
-            await patchRoomActor(roomId, character.id, { inventory: items });
+            await patchRoomActor(roomId!, character.id, { inventory: items });
             await liveRefresh();
             return;
           }
@@ -335,7 +335,7 @@ function CharacterSheetLoaded({
   const saveLoadoutPatch = useCallback(
     async (patch: LoadoutPatch) => {
       if (inRoom) {
-        await patchRoomActor(roomId, character.id, patch);
+        await patchRoomActor(roomId!, character.id, patch);
         await liveRefresh();
         return;
       }
@@ -830,7 +830,7 @@ function CharacterSheetLoaded({
       ) : tab === "bestiário" && adventureId ? (
         <PersonalBestiaryPanel
           adventureId={adventureId}
-          roomId={roomId}
+          roomId={roomId ?? adventureId}
           characterName={live.name}
           onCountChange={setBestiaryCount}
         />
@@ -952,7 +952,7 @@ function CharacterSheetLoaded({
         inRoom ? (
           <PortraitEditorFields
             mode="room"
-            roomId={roomId}
+            roomId={roomId!}
             actorId={character.id}
             portraitUrl={live.portraitUrl}
             portraitFocus={live.portraitFocus}
@@ -1063,7 +1063,7 @@ function CharacterSheetLoaded({
         </>
       ) : null}
 
-      {!embedded && !isPopup ? (
+      {!embedded && !isPopup && adventureId ? (
         <Link href={`/mesa/${roomId}`} className="btn btn-ghost" style={{ width: "100%", marginBottom: "0.75rem" }}>
           Ver na mesa
         </Link>
@@ -1083,7 +1083,7 @@ function CharacterSheetLoaded({
         <SheetDdbManagePanel
           character={character}
           live={live}
-          roomId={roomId}
+          roomId={roomId ?? ""}
           adventureId={adventureId}
           inRoom={inRoom}
           canEdit={canEdit}

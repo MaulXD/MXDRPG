@@ -16,8 +16,6 @@ const CharacterSheet = dynamic(
   }
 );
 
-import { getCharacter } from "@/lib/character/demo-characters";
-
 import { canEditRoomActor, requiresInventoryGmApproval } from "@/lib/auth/room-access";
 import { canEditRoomActorPortrait } from "@/lib/auth/portrait-access";
 
@@ -79,7 +77,7 @@ export const CharacterSheetPopup = memo(function CharacterSheetPopup({
   onPlaced: _onPlaced,
 }: Props) {
   const live = actors[actorId];
-  const seed = live ?? getCharacter(actorId);
+  const seed = live;
   const toolbarDrag = useFoundryWindowDrag(layout, onLayoutChange, onFocus);
   const dragGhostRef = useRef<HTMLElement | null>(null);
   const roomCtx = useMemo(

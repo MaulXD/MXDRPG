@@ -108,6 +108,7 @@ export function normalizeCharacter(sheet: CharacterSheet): CharacterSheet {
     ...sheet,
     adventureId,
     campaignRoomId: undefined,
+    system: "eldarin" as const,
     identity,
     attributes,
     culinary,

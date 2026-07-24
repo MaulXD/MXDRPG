@@ -12,13 +12,9 @@ export default async function MesaIndexPage() {
     <div className="page-wrap">
       <h1 className="neon-title">Mesa virtual</h1>
       <p style={{ color: "var(--text-muted)", maxWidth: 560, lineHeight: 1.6 }}>
-        Grade quadrada, tokens, PA e combaté Eldarin no navegador. Experimente a demo pública ou crie sua mesa com
-        conta.
+        Grade quadrada, tokens, PA e combate Eldarin no navegador. Crie sua mesa com conta.
       </p>
       <div className="action-row" style={{ marginTop: "1rem" }}>
-        <Link href="/mesa/demo" prefetch={false} className="btn">
-          Mesa demo (pública)
-        </Link>
         {session ? (
           <Link href="/mesas" className="btn btn-secondary">
             Hub de mesas

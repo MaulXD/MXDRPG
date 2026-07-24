@@ -17,11 +17,9 @@ export async function POST(req: Request, { params }: Params) {
       return NextResponse.json({ error: "Sala não encontrada" }, { status: 404 });
     }
 
-    if (room.roomId !== "demo") {
-      const auth = await requireRoomManage(roomId);
-      if ("error" in auth) {
-        return NextResponse.json({ error: auth.error }, { status: auth.status });
-      }
+    const auth = await requireRoomManage(roomId);
+    if ("error" in auth) {
+      return NextResponse.json({ error: auth.error }, { status: auth.status });
     }
 
     const body = (await req.json()) as GmCombatAction;

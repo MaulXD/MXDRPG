@@ -15,16 +15,6 @@ import { memberIdsHasUser } from "@/lib/auth/member-ids";
 import { isHomologPublicRoom } from "@/lib/env/homolog";
 import type { RoomState } from "@/lib/room/types";
 
-/** PCs jogáveis na mesa demo sem login (visitante). */
-export const DEMO_PLAYABLE_ACTOR_IDS = [
-  "pc-thrain-ferroescudo",
-  "pc-lyanna-umbral",
-  "pc-maelis-purificador",
-  "pc-pippin-sussurro",
-] as const;
-/** @deprecated Use DEMO_PLAYABLE_ACTOR_IDS */
-export const DEMO_PLAYABLE_ACTOR_ID = DEMO_PLAYABLE_ACTOR_IDS[0];
-
 export function normalizeInviteCode(code: string): string {
   return code.trim().toUpperCase();
 }
@@ -125,7 +115,6 @@ export function canViewRoom(
   inviteCode?: string | null,
   adventureInviteCode?: string | null
 ): boolean {
-  if (room.roomId === "demo") return true;
   if (isHomologPublicRoom(room.roomId)) return true;
   if (user?.role === "admin") return true;
   if (user && isRoomMember(room, user.id, user.clerkId)) return true;
@@ -141,7 +130,6 @@ export function isRoomVisitor(
   adventureInviteCode?: string | null
 ): boolean {
   if (!canViewRoom(room, user, inviteCode, adventureInviteCode)) return false;
-  if (room.roomId === "demo") return !user;
   if (isHomologPublicRoom(room.roomId)) {
     if (!user) return true;
     if (user.role === "admin" || isRoomMember(room, user.id, user.clerkId)) return false;
@@ -152,12 +140,11 @@ export function isRoomVisitor(
   return inviteMatches(room, inviteCode, adventureInviteCode);
 }
 
-/** Editar tokens, combate, chat, dados — membro da mesa (demo: exige login). */
+/** Editar tokens, combate, chat, dados — membro da mesa. */
 export function canParticipateInRoom(
   room: Pick<RoomState, "roomId"> & { ownerId?: string; memberIds?: string[] },
   user: SessionUser | null | undefined
 ): boolean {
-  if (room.roomId === "demo") return Boolean(user);
   if (!user) return false;
   if (user.role === "admin") return true;
   if (room.ownerId && canManageRoom({ ownerId: room.ownerId }, user)) return true;
@@ -212,12 +199,11 @@ export function canRepositionTokensInRoom(
   return canManageRoom(room, user);
 }
 
-/** Invocar monstros no tabuleiro (mesma regra que controle de combate na demo). */
+/** Invocar monstros no tabuleiro — mestre/admin. */
 export function canSpawnMonstersInRoom(
   room: Pick<RoomState, "roomId" | "ownerId">,
   user: SessionUser | null | undefined
 ): boolean {
-  if (room.roomId === "demo") return true;
   if (!user) return false;
   if (user.role === "admin") return true;
   return canManageRoom(room, user);
@@ -242,7 +228,7 @@ export function actorForRoomAuth(
   };
 }
 
-/** Colocar ou mover token de personagem no mapa — dono da ficha, demo jogável ou mestre. */
+/** Colocar ou mover token de personagem no mapa — dono da ficha ou mestre. */
 export function canPlaceRoomActorOnBoard(
   room: Pick<RoomState, "roomId" | "ownerId" | "memberIds"> & { adventureId?: string },
   actor: Pick<CharacterSheet, "id" | "ownerId" | "adventureId" | "campaignRoomId">,
@@ -253,12 +239,6 @@ export function canPlaceRoomActorOnBoard(
   if (!canParticipateInRoom(room, user)) return false;
   const authActor = actorForRoomAuth(room, actor);
   if (!characterBelongsToRoom(room, authActor)) return false;
-  if (
-    room.roomId === "demo" &&
-    DEMO_PLAYABLE_ACTOR_IDS.includes(actor.id as (typeof DEMO_PLAYABLE_ACTOR_IDS)[number])
-  ) {
-    return true;
-  }
   return characterOwnedBySessionUser(authActor, user);
 }
 
@@ -307,10 +287,7 @@ export function canEditRoomActor(
     if (characterOwnedBySessionUser(authActor, user)) return true;
     return false;
   }
-  return (
-    room.roomId === "demo" &&
-    DEMO_PLAYABLE_ACTOR_IDS.includes(actor.id as (typeof DEMO_PLAYABLE_ACTOR_IDS)[number])
-  );
+  return false;
 }
 
 export function canViewMonsterCompendium(

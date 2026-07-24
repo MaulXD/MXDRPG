@@ -164,7 +164,7 @@ export function attachCharacterToRoomState(
 export async function syncAdventureActorsForRoom(roomId: string): Promise<RoomState | null> {
   try {
     const room = await getRoom(roomId);
-    if (!room || roomId === "demo") return room;
+    if (!room) return room;
 
     const adventureId = room.adventureId ?? room.roomId;
     let changed = false;

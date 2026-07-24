@@ -318,12 +318,6 @@ export function AdventureLobby({ rpgSystemId = DEFAULT_RPG_SYSTEM_ID }: Props) {
           Nenhuma mesa ainda — crie uma ou entre com o código do mestre.
         </p>
       ) : null}
-
-      {rpgSystemId === "eldarin" ? (
-        <Link href="/mesa/demo" prefetch={false} className="btn btn-secondary">
-          Demo pública (sem conta)
-        </Link>
-      ) : null}
     </div>
   );
 }

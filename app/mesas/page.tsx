@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { redirect } from "next/navigation";
 import { RpgSystemCoverCard } from "@/components/rpg/RpgSystemCoverCard";
 import { MedievalFrame } from "@/components/ui/MedievalFrame";
@@ -31,15 +30,6 @@ export default async function MesasHubPage() {
           {RPG_SYSTEMS.map((sys) => (
             <RpgSystemCoverCard key={sys.id} system={sys} />
           ))}
-        </div>
-
-        <div className="rpg-hub-demo-banner">
-          <p className="rpg-hub-demo-banner__text">
-            Quer testar antes de criar uma mesa?
-          </p>
-          <Link href="/mesa/demo" prefetch={false} className="btn btn-secondary btn-sm">
-            Abrir demo pública do Eldarin
-          </Link>
         </div>
       </MedievalFrame>
     </div>

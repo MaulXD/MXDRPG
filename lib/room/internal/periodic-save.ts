@@ -42,7 +42,6 @@ function getStore() {
 
 /** Agenda gravação da sala. Substitui o await dbRooms.saveRoom() inline. */
 export function scheduleSave(roomId: string, state: RoomState): void {
-  if (roomId === "demo") return;
   getStore().pending.set(roomId, state);
 }
 

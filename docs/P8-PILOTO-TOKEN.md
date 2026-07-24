@@ -8,7 +8,6 @@
 | Jogador só token linkado à **sua** ficha | `actor.ownerId === user.id` |
 | Monstros: só mestre | `monsterEntryId` + UI `canControlCombat` |
 | API combate valida token | `assertTokenControl` em attack/ability/area |
-| Demo: todos os tokens | `roomId === "demo"` |
 
 ## UI
 

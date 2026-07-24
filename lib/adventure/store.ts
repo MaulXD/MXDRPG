@@ -57,13 +57,8 @@ function normalizeAdventureName(name: string): string {
 
 function dedupeAdventureListItems(items: AdventureListItem[]): AdventureListItem[] {
   const byRoom = new Map<string, AdventureListItem>();
-  let demo: AdventureListItem | null = null;
 
   for (const item of items) {
-    if (item.adventureId === "demo") {
-      demo = item;
-      continue;
-    }
     const roomKey = item.primaryRoomId || item.adventureId;
     const prev = byRoom.get(roomKey);
     if (!prev || item.updatedAt >= prev.updatedAt) {
@@ -84,9 +79,7 @@ function dedupeAdventureListItems(items: AdventureListItem[]): AdventureListItem
     }
   }
 
-  const out = [...byOwnerName.values()];
-  if (demo) out.push(demo);
-  return out;
+  return [...byOwnerName.values()];
 }
 
 async function findRecentOwnedAdventure(
@@ -128,28 +121,10 @@ function slugAdventureId(name: string): string {
   return `${base}-${Date.now().toString(36).slice(-5)}`;
 }
 
-function ensureDemoAdventure(): Adventure {
-  const demo: Adventure = {
-    adventureId: "demo",
-    ownerId: "usr_demo_mestre",
-    name: "Mesa demonstração",
-    synopsis: "Aventura pública para testar o VTT.",
-    rpgSystemId: DEFAULT_RPG_SYSTEM_ID,
-    accessMode: "public",
-    inviteCode: "DEMOELDR",
-    memberIds: [],
-    primaryRoomId: "demo",
-    createdAt: Date.now(),
-    updatedAt: Date.now(),
-  };
-  adventures().set("demo", demo);
-  return demo;
-}
-
 async function purgeAdventureIfExpired(adv: Adventure): Promise<Adventure | null> {
   if (!shouldPurgeAdventure(adv)) return adv;
   adventures().delete(adv.adventureId);
-  if (dbEnabled() && adv.adventureId !== "demo") {
+  if (dbEnabled()) {
     await dbAdventures.deleteAdventurePermanent(adv.adventureId);
   }
   return null;
@@ -160,7 +135,7 @@ async function maybeMigrateLegacyAdventureName(adv: Adventure): Promise<Adventur
   if (next === adv.name) return adv;
   const updated: Adventure = { ...adv, name: next, updatedAt: Date.now() };
   adventures().set(updated.adventureId, updated);
-  if (dbEnabled() && updated.adventureId !== "demo") {
+  if (dbEnabled()) {
     await dbAdventures.saveAdventure(updated);
   }
   const room = await getRoom(updated.primaryRoomId);
@@ -176,8 +151,6 @@ async function maybeMigrateLegacyAdventureName(adv: Adventure): Promise<Adventur
 }
 
 export async function getAdventure(adventureId: string): Promise<Adventure | null> {
-  if (adventureId === "demo") return ensureDemoAdventure();
-
   const cached = adventures().get(adventureId);
   if (cached && dbEnabled()) {
     const dbUpdated = await dbAdventures.fetchAdventureUpdatedAt(adventureId);
@@ -347,10 +320,7 @@ export async function ensureSessionAdventureAccess(
     }
   }
 
-  if (
-    !isAdventureMember(adventure, accountUser.id, accountUser.clerkId) &&
-    adventureId !== "demo"
-  ) {
+  if (!isAdventureMember(adventure, accountUser.id, accountUser.clerkId)) {
     adventure = (await ensureAdventureMembership(adventureId, accountUser.id)) ?? adventure;
   }
 
@@ -421,7 +391,7 @@ export async function joinAdventureRecord(adventure: Adventure, userId: string):
   try {
     await joinRoomMembers(adventure.primaryRoomId, userId);
     await syncAdventureMembersToRoom(adventure);
-    if (dbEnabled() && adventure.adventureId !== "demo") {
+    if (dbEnabled()) {
       await dbAdventures.saveAdventure(adventure);
     }
     const { syncAdventureActorsForRoom } = await import("@/lib/room/adventure-actors");
@@ -491,19 +461,6 @@ export async function listAdventuresForUser(
     seenRooms.add(adv.primaryRoomId);
   }
 
-  if (!out.some((a) => a.adventureId === "demo")) {
-    const demo = ensureDemoAdventure();
-    out.push({
-      adventureId: demo.adventureId,
-      name: demo.name,
-      ownerId: demo.ownerId,
-      inviteCode: demo.inviteCode,
-      primaryRoomId: demo.primaryRoomId,
-      isOwner: demo.ownerId === userId,
-      updatedAt: demo.updatedAt,
-    });
-  }
-
   return dedupeAdventureListItems(out).sort((a, b) => b.updatedAt - a.updatedAt);
 }
 
@@ -515,7 +472,6 @@ export async function softDeleteAdventure(
   adventureId: string,
   ownerId: string
 ): Promise<AdventureMutationResult> {
-  if (adventureId === "demo") return { ok: false, error: "A demo não pode ser excluída" };
   const adv = await getAdventure(adventureId);
   if (!adv) return { ok: false, error: "Mesa não encontrada" };
   if (adv.ownerId !== ownerId) return { ok: false, error: "Só o mestre pode excluir a mesa" };
@@ -558,7 +514,7 @@ export async function updateAdventureMeta(
   if (patch.synopsis !== undefined) adv.synopsis = patch.synopsis.trim().slice(0, 2000);
   adv.updatedAt = Date.now();
   adventures().set(adventureId, adv);
-  if (dbEnabled() && adventureId !== "demo") await dbAdventures.saveAdventure(adv);
+  if (dbEnabled()) await dbAdventures.saveAdventure(adv);
   const room = await getRoom(adv.primaryRoomId);
   if (room && patch.name?.trim()) {
     room.name = adv.name;

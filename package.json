@@ -14,7 +14,6 @@
     "sync:data": "node scripts/generate-compendium.mjs && node scripts/sync-monster-book-tamanhos.mjs && node scripts/sync-monster-assimilation-abilities.mjs && python scripts/gen-equipment-compendium.py && python scripts/gen-tabela-ids.py && node scripts/generate-subclass-tracks.mjs && python scripts/gen-loot-catalog-ts.py",
     "sync:data:check": "node scripts/verify-compendium-ids.mjs && node scripts/verify-monster-spawn.mjs",
     "db:migrate": "node scripts/db/migrate.mjs",
-    "db:purge-users": "node scripts/db/purge-users-except-demo.mjs",
     "db:check": "node scripts/db/check.mjs",
     "db:setup": "node scripts/db/setup.mjs",
     "homolog:up": "node scripts/homolog/up.mjs",

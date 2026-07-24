@@ -58,7 +58,6 @@ export function MesaGuidedTour({
   }, [mode]);
 
   useEffect(() => {
-    if (roomId === "demo") return;
     if (isMesaTourCompleted(userId)) return;
     const timer = window.setTimeout(() => setOpen(true), 1800);
     return () => window.clearTimeout(timer);
@@ -72,8 +71,6 @@ export function MesaGuidedTour({
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [open, close]);
-
-  if (roomId === "demo") return null;
 
   const step = steps[stepIndex];
   const isFirst = stepIndex === 0;

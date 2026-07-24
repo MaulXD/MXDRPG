@@ -19,13 +19,11 @@ export async function POST(req: Request, { params }: Params) {
     return NextResponse.json({ error: "Sala não encontrada" }, { status: 404 });
   }
 
-  if (room.roomId !== "demo") {
-    if (!session?.user) {
-      return NextResponse.json({ error: "Faça login" }, { status: 401 });
-    }
-    if (!canParticipateInRoom(room, session.user)) {
-      return NextResponse.json({ error: "Sem permissão" }, { status: 403 });
-    }
+  if (!session?.user) {
+    return NextResponse.json({ error: "Faça login" }, { status: 401 });
+  }
+  if (!canParticipateInRoom(room, session.user)) {
+    return NextResponse.json({ error: "Sem permissão" }, { status: 403 });
   }
 
   const body = (await req.json()) as GmActorProgressAction;

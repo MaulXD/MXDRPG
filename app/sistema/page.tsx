@@ -26,7 +26,7 @@ const LIVE = [
   "Wizard de ficha (8 passos, com religião) e compêndios sincronizados do livro",
   "Atlas e panteão em /mundo — lore com tooltips",
   "Convite de sala + modo visitante (só leitura)",
-  "Login Google + e-mail/senha ou demo local",
+  "Login Google + e-mail/senha",
 ];
 
 const NEXT = [
@@ -77,8 +77,8 @@ const STEPS = [
         jogadores ou visitantes (somente leitura).
       </>
     ),
-    href: "/mesa/demo",
-    linkLabel: "Mesa demo",
+    href: ELDARIN_MESAS_PATH,
+    linkLabel: "Suas mesas",
   },
 ] as const;
 
@@ -87,7 +87,7 @@ const NAV_ITEMS = [
     icon: IconHome,
     label: "Início",
     path: "/",
-    text: "Página principal com visão geral do VTT e atalho para a demo.",
+    text: "Página principal com visão geral do VTT.",
   },
   {
     icon: IconScroll,
@@ -270,9 +270,6 @@ export default function SistemaPage() {
       </section>
 
       <div className="action-row" style={{ marginTop: "2rem" }}>
-        <Link href="/mesa/demo" prefetch={false} className="btn">
-          Mesa demo
-        </Link>
         <Link href="/personagem/novo" className="btn btn-ghost">
           Nova ficha
         </Link>

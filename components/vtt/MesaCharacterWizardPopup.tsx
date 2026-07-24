@@ -1,13 +1,16 @@
 "use client";
 
 import { CharacterCreationWizard } from "@/components/character/wizard/CharacterCreationWizard";
+import { TorCharacterCreationWizard } from "@/components/character/wizard/TorCharacterCreationWizard";
 import { FoundryWindow } from "@/components/vtt/foundry/FoundryWindow";
 import type { FoundryWindowLayout } from "@/hooks/vtt/useFoundryWindows";
+import type { RpgSystemId } from "@/lib/rpg/systems";
 
 type Props = {
   adventureId: string;
   adventureName: string;
   roomId: string;
+  rpgSystemId?: RpgSystemId;
   slotsLeft: number;
   layout: FoundryWindowLayout;
   onLayoutChange: (patch: Partial<FoundryWindowLayout>) => void;
@@ -21,6 +24,7 @@ export function MesaCharacterWizardPopup({
   adventureId,
   adventureName,
   roomId,
+  rpgSystemId = "eldarin",
   slotsLeft,
   layout,
   onLayoutChange,
@@ -42,14 +46,24 @@ export function MesaCharacterWizardPopup({
       minHeight={420}
     >
       <div className="mesa-panel-scroll mesa-panel-scroll--rail mesa-char-wizard-scroll">
-        <CharacterCreationWizard
-          variant="mesa"
-          slotsLeft={slotsLeft}
-          adventureId={adventureId}
-          adventureName={adventureName}
-          roomId={roomId}
-          onCreated={onCreated}
-        />
+        {rpgSystemId === "um-anel" ? (
+          <TorCharacterCreationWizard
+            variant="mesa"
+            slotsLeft={slotsLeft}
+            adventureId={adventureId}
+            adventureName={adventureName}
+            onCreated={onCreated}
+          />
+        ) : (
+          <CharacterCreationWizard
+            variant="mesa"
+            slotsLeft={slotsLeft}
+            adventureId={adventureId}
+            adventureName={adventureName}
+            roomId={roomId}
+            onCreated={onCreated}
+          />
+        )}
       </div>
     </FoundryWindow>
   );

@@ -17,10 +17,8 @@ export async function executeStructuredMeal(
   const room = await getRoom(roomId);
   if (!room) return { ok: false, error: "Sala não encontrada" };
 
-  if (roomId !== "demo") {
-    if (!user) return { ok: false, error: "Faça login" };
-    if (!canManageRoom(room, user)) return { ok: false, error: "Só o mestre pode preparar refeições" };
-  }
+  if (!user) return { ok: false, error: "Faça login" };
+  if (!canManageRoom(room, user)) return { ok: false, error: "Só o mestre pode preparar refeições" };
 
   const actorSheets = Object.fromEntries(
     Object.entries(room.actors).map(([id, a]) => [id, a as import("@/lib/character/types").CharacterSheet])

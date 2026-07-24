@@ -4,10 +4,6 @@ import { readCachedRevision, writeCachedRevision } from "@/lib/room/revision-cac
 
 /** Revisão leve para SSE/poll — não carrega scene/actors/combat inteiros. */
 export async function getRoomRevision(roomId: string): Promise<number | null> {
-  if (roomId === "demo") {
-    return (await getRoom(roomId, { skipAutoPass: true }))?.revision ?? null;
-  }
-
   const cached = readCachedRevision(roomId);
   if (cached != null) return cached;
 

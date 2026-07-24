@@ -1,6 +1,6 @@
 # API da sala
 
-> Estado: memória por padrão; com `DATABASE_URL`, salas (exceto `demo`) persistem em Postgres — ver [POSTGRES.md](POSTGRES.md).
+> Estado: memória por padrão; com `DATABASE_URL`, salas persistem em Postgres — ver [POSTGRES.md](POSTGRES.md).
 
 Estado: `globalThis.__eldarinRooms` — reinicia a cada deploy/serverless cold start.
 

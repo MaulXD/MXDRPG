@@ -2,7 +2,6 @@ import * as dbAdventures from "@/lib/db/adventures";
 import type { Adventure } from "@/lib/adventure/types";
 import { dbEnabled } from "@/lib/db/enabled";
 import { fetchClerkIdForUser } from "@/lib/db/users";
-import { DEMO_SCENE } from "@/lib/vtt/demo-scene";
 import { DEFAULT_ROOM_SETTINGS } from "@/lib/room/settings";
 import { emptyCombat } from "./combat";
 import { welcomeChat } from "./chat";
@@ -10,10 +9,13 @@ import * as dbRooms from "@/lib/db/rooms";
 import { getRoom, persistRoom, rooms } from "./internal/registry";
 import type { RoomState } from "./types";
 
+/** Grid/tamanho de célula default de uma mesa nova (sem tokens de exemplo). */
+const DEFAULT_SCENE_TEMPLATE = { gridRadius: 8, cellSize: 36 };
+
 export async function createRoomForAdventure(adventure: Adventure): Promise<RoomState> {
   const roomId = adventure.primaryRoomId;
   const scene = {
-    ...DEMO_SCENE,
+    ...DEFAULT_SCENE_TEMPLATE,
     id: roomId,
     name: adventure.name,
     tokens: [],

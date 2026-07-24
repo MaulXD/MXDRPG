@@ -1,0 +1,247 @@
+.tor-sheet {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  color: var(--text, #e8e4da);
+}
+
+.tor-sheet__header h1 {
+  margin: 0.15rem 0;
+  font-size: 1.9rem;
+}
+
+.tor-sheet__eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 0.75rem;
+  opacity: 0.7;
+  margin: 0;
+}
+
+.tor-sheet__sub {
+  margin: 0;
+  opacity: 0.85;
+}
+
+.tor-sheet__bio {
+  opacity: 0.9;
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+
+.tor-sheet__resources {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap: 0.6rem;
+}
+
+.tor-sheet__resource {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 0.55rem 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.tor-sheet__resource span {
+  font-size: 0.72rem;
+  opacity: 0.7;
+  text-transform: uppercase;
+}
+
+.tor-sheet__resource strong {
+  font-size: 1.15rem;
+}
+
+.tor-sheet__conditions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.tor-sheet__pill {
+  background: rgba(200, 60, 60, 0.25);
+  border: 1px solid rgba(200, 60, 60, 0.5);
+  border-radius: 999px;
+  padding: 0.2rem 0.75rem;
+  font-size: 0.8rem;
+}
+
+.tor-sheet__attrs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.tor-sheet__attr-col h3 {
+  margin: 0 0 0.15rem;
+}
+
+.tor-sheet__attr-col h3 span {
+  opacity: 0.7;
+  font-weight: 400;
+}
+
+.tor-sheet__tn {
+  margin: 0 0 0.5rem;
+  font-size: 0.8rem;
+  opacity: 0.7;
+}
+
+.tor-sheet__attr-col ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.tor-sheet__attr-col li {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.15rem 0.4rem;
+  border-radius: 6px;
+}
+
+.tor-sheet__attr-col li.is-favoured {
+  background: rgba(255, 210, 100, 0.12);
+}
+
+.tor-sheet__roll-btn {
+  background: rgba(120, 170, 255, 0.16);
+  border: 1px solid rgba(120, 170, 255, 0.4);
+  border-radius: 6px;
+  padding: 0.1rem 0.5rem;
+  font-size: 0.72rem;
+  cursor: pointer;
+  color: inherit;
+}
+
+.tor-sheet__roll-btn:hover {
+  background: rgba(120, 170, 255, 0.28);
+}
+
+.tor-sheet__last-roll {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 8px;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.88rem;
+}
+
+.tor-sheet__resource--stepper {
+  min-width: 130px;
+}
+
+.tor-sheet__stepper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.tor-sheet__stepper button {
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.06);
+  color: inherit;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.tor-sheet__stepper button:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.tor-sheet__stepper--inline {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.tor-sheet__stepper--inline button {
+  width: 18px;
+  height: 18px;
+  font-size: 0.75rem;
+}
+
+.tor-sheet__wound-toggle {
+  background: rgba(200, 60, 60, 0.15);
+  border: 1px solid rgba(200, 60, 60, 0.4);
+  border-radius: 999px;
+  padding: 0.2rem 0.75rem;
+  font-size: 0.8rem;
+  cursor: pointer;
+  color: inherit;
+}
+
+.tor-sheet__combat-list {
+  list-style: none;
+  margin: 0.4rem 0 0;
+  padding: 0;
+  display: flex;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.tor-sheet__combat-list li {
+  display: flex;
+  gap: 0.4rem;
+  align-items: baseline;
+}
+
+.tor-sheet__grid-2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem;
+}
+
+.tor-sheet__tag-list {
+  list-style: none;
+  margin: 0.3rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.tor-sheet__tag-list li {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  padding: 0.25rem 0.6rem;
+  font-size: 0.85rem;
+}
+
+.tor-sheet__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.tor-sheet__table th,
+.tor-sheet__table td {
+  text-align: left;
+  padding: 0.35rem 0.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.tor-sheet__empty {
+  opacity: 0.6;
+  font-style: italic;
+}
+
+.tor-sheet__footer {
+  display: flex;
+  gap: 1.5rem;
+  opacity: 0.75;
+  font-size: 0.85rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 0.75rem;
+}

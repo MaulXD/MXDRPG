@@ -5,6 +5,7 @@ import type { SessionUser } from "@/lib/auth/types";
 import type { BattleScene } from "@/lib/vtt/types";
 import type { Axial } from "@/lib/vtt/grid-math";
 import type { RoomSnapshot } from "@/lib/room/types";
+import type { RpgSystemId } from "@/lib/rpg/systems";
 import type { FoundryWindowLayout, MesaWindowId } from "@/hooks/vtt/useFoundryWindows";
 import type { RoomSyncBridge } from "@/hooks/useRoomSync";
 import type { RoomActorPatchResult } from "@/lib/character/portrait-persist-client";
@@ -40,10 +41,20 @@ const MonsterSpawnPanel = dynamic(
   () => import("@/components/vtt/MonsterSpawnPanel").then((m) => m.MonsterSpawnPanel),
   { ssr: false }
 );
+// Só carregado em mesas do sistema "O Um Anel" — nunca no bundle de mesas Eldarin.
+const TorPlayableCharactersPanel = dynamic(
+  () => import("@/components/vtt/TorPlayableCharactersPanel").then((m) => m.TorPlayableCharactersPanel),
+  { ssr: false }
+);
+const TorCharacterSheetPopup = dynamic(
+  () => import("@/components/vtt/TorCharacterSheetPopup").then((m) => m.TorCharacterSheetPopup),
+  { ssr: false }
+);
 
 export type MesaFoundryFloatingWindowsProps = {
   roomId: string;
   adventureId: string;
+  rpgSystemId?: RpgSystemId;
   shareRoomId: string;
   roomOwnerId: string;
   memberIds: string[];
@@ -65,6 +76,9 @@ export type MesaFoundryFloatingWindowsProps = {
   monsterSheetEntryId: string | null;
   setMonsterSheetEntryId: (id: string) => void;
   characterWizardOpen: boolean;
+  torSheetId?: string | null;
+  onOpenTorSheet?: (characterId: string) => void;
+  onCloseTorSheet?: () => void;
   spawnAxial: Axial | null;
   combatChatReveal: Record<string, CombatChatRevealPhase>;
   roomSyncBridge: RoomSyncBridge;
@@ -91,6 +105,7 @@ export function MesaFoundryFloatingWindows(props: MesaFoundryFloatingWindowsProp
   const {
     roomId,
     adventureId,
+    rpgSystemId = "eldarin",
     shareRoomId,
     roomOwnerId,
     memberIds,
@@ -112,6 +127,9 @@ export function MesaFoundryFloatingWindows(props: MesaFoundryFloatingWindowsProp
     monsterSheetEntryId,
     setMonsterSheetEntryId,
     characterWizardOpen,
+    torSheetId = null,
+    onOpenTorSheet,
+    onCloseTorSheet,
     spawnAxial,
     combatChatReveal,
     roomSyncBridge,
@@ -192,6 +210,42 @@ export function MesaFoundryFloatingWindows(props: MesaFoundryFloatingWindowsProp
             />
           </div>
         </FoundryWindow>
+      ) : null}
+
+      {rpgSystemId === "um-anel" && panel("torParty").open ? (
+        <FoundryWindow
+          title="Personagens (Um Anel)"
+          layout={panel("torParty")}
+          className="foundry-window--ficha"
+          minHeight={280}
+          onLayoutChange={(patch) => onPatchWindow("torParty", patch)}
+          onFocus={() => onFocusWindow("torParty")}
+          onMinimize={() =>
+            panel("torParty").minimized ? onRestoreWindow("torParty") : onMinimizeWindow("torParty")
+          }
+          onClose={() => onCloseWindow("torParty")}
+        >
+          <div className="mesa-panel-scroll mesa-panel-scroll--rail">
+            <TorPlayableCharactersPanel
+              adventureId={adventureId}
+              onOpenSheet={(id) => onOpenTorSheet?.(id)}
+            />
+          </div>
+        </FoundryWindow>
+      ) : null}
+
+      {rpgSystemId === "um-anel" && torSheetId ? (
+        <TorCharacterSheetPopup
+          characterId={torSheetId}
+          roomId={roomId}
+          layout={panel("torFicha")}
+          onLayoutChange={(patch) => onPatchWindow("torFicha", patch)}
+          onFocus={() => onFocusWindow("torFicha")}
+          onMinimize={() =>
+            panel("torFicha").minimized ? onRestoreWindow("torFicha") : onMinimizeWindow("torFicha")
+          }
+          onClose={() => onCloseTorSheet?.()}
+        />
       ) : null}
 
       {isFloating("dice") ? (
@@ -315,6 +369,7 @@ export function MesaFoundryFloatingWindows(props: MesaFoundryFloatingWindowsProp
           adventureId={adventureId}
           adventureName={adventureName ?? roomName ?? "Aventura"}
           roomId={roomId}
+          rpgSystemId={rpgSystemId}
           slotsLeft={characterSlotsLeft}
           layout={panel("createCharacter")}
           onLayoutChange={(patch) => onPatchWindow("createCharacter", patch)}

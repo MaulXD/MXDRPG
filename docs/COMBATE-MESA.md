@@ -283,8 +283,6 @@ Condições gerais: `lib/combat/conditions.ts`. Efeitos com duração: `lib/comb
 
 **Delegação:** `token.delegatedToUserId` permite outro jogador controlar o token (`TokenDelegatePanel`, rota `tokens/[tokenId]/delegate`).
 
-**Demo:** `roomId === "demo"` — regras especiais; atores jogáveis fixos (`DEMO_PLAYABLE_ACTOR_IDS`).
-
 Snapshot filtrado: `lib/room/snapshot-for-viewer.ts` esconde `combatUndo`, `combatLog`, HP/PA de monstros conforme permissão.
 
 ---

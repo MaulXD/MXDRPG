@@ -39,7 +39,7 @@ type Props = {
 export async function generateMetadata({ params }: Pick<Props, "params">): Promise<Metadata> {
   const { roomId } = await params;
   const room = await getRoomCached(roomId);
-  return pageMetadata(room?.name?.trim() || (roomId === "demo" ? "Mesa demo" : "Mesa"));
+  return pageMetadata(room?.name?.trim() || "Mesa");
 }
 
 export default async function MesaRoomPage({ params, searchParams }: Props) {
@@ -71,7 +71,7 @@ export default async function MesaRoomPage({ params, searchParams }: Props) {
 
   const accountUser = session?.user ? await safeMaterializeSessionUser(session.user) : null;
 
-  if (accountUser && roomId !== "demo" && !watchOnly) {
+  if (accountUser && !watchOnly) {
     try {
       const isMember = await isRoomMemberResolved(room, accountUser.id, accountUser.clerkId);
       if (!room.memberIds.includes(accountUser.id) && isMember) {
@@ -114,7 +114,6 @@ export default async function MesaRoomPage({ params, searchParams }: Props) {
 
   if (
     accountUser &&
-    roomId !== "demo" &&
     !watchOnly &&
     (await isRoomMemberResolved(room, accountUser.id, accountUser.clerkId))
   ) {
@@ -178,7 +177,6 @@ export default async function MesaRoomPage({ params, searchParams }: Props) {
   const canParticipate = access.canParticipate;
   const canChat = access.canChat;
 
-  const isDemoRoom = roomId === "demo";
   const canControlCombat = isRoomGm;
   const defaultActorId =
     session?.user &&
@@ -192,7 +190,7 @@ export default async function MesaRoomPage({ params, searchParams }: Props) {
   ]);
   const adventureName = adventure?.name ?? room.name;
   // Contagens carregadas no cliente — removidas do SSR para reduzir latência inicial
-  const characterSlotsLeft = canParticipate && roomId !== "demo" ? MAX_CHARACTERS_PER_USER : 0;
+  const characterSlotsLeft = canParticipate ? MAX_CHARACTERS_PER_USER : 0;
   const charactersInAdventure = 0;
   const canEdit = canParticipate;
 
@@ -211,7 +209,6 @@ export default async function MesaRoomPage({ params, searchParams }: Props) {
           roomId={roomId}
           inviteCode={inviteCode}
           watchOnly={access.watchOnly}
-          isDemo={isDemoRoom}
         />
       ) : null}
 
@@ -221,6 +218,7 @@ export default async function MesaRoomPage({ params, searchParams }: Props) {
         roomOwnerId={room.ownerId}
         memberIds={room.memberIds}
         scene={room.scene}
+        rpgSystemId={room.rpgSystemId}
         canEdit={canEdit}
         canControlCombat={canControlCombat}
         canChat={canChat}

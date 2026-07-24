@@ -56,8 +56,6 @@ export function EndTurnBar({
       </button>
       {isGm ? (
         <span className="vtt-end-turn-hint">Mestre · ou jogador na vez</span>
-      ) : roomId === "demo" ? (
-        <span className="vtt-end-turn-hint">Demo — avança o combate para todos</span>
       ) : (
         <span className="vtt-end-turn-hint">Encerra sua vez</span>
       )}

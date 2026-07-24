@@ -48,7 +48,7 @@ Documento de onboarding para **Claude** (ou outro assistente de código) trabalh
 | Estilo | CSS em `app/globals.css` + `components/**/sheet.css` (sem Tailwind no core VTT) |
 | Canvas VTT | **Three.js** (`lib/vtt/draw-battlefield.ts`, `hooks/vtt/useGridCanvas.ts`) |
 | Auth produção | **Clerk** (`@clerk/nextjs`) + usuário espelhado em Postgres |
-| Auth legado | Cookie `vinite_session` (e-mail/senha demo) |
+| Auth legado | Cookie `vinite_session` (e-mail/senha) |
 | DB opcional | **Neon Postgres** via `DATABASE_URL` |
 | Hosting | **Contabo** — Docker (`Dockerfile`) + GHCR, domínio **www.mxdrpg.com.br** |
 
@@ -104,7 +104,6 @@ RPG/                          ← raiz = app Next.js (deploy Docker / Contabo)
 | `/aventura/[id]/configurar` | Mestre: settings da mesa |
 | `/aventura/[id]/personagem/novo` | Wizard de criação vinculado à aventura |
 | `/mesa/[roomId]` | **VTT ao vivo** (grid, combate, chat) |
-| `/mesa/demo` | Demo pública (visitante pode jogar PC demo) |
 | `/personagem/[id]` | Ficha fora da mesa |
 | `/personagem/novo` | Wizard global (legado) |
 | `/biblioteca` | Compêndio leitura |
@@ -171,12 +170,6 @@ Arquivos-chave: `lib/adventure/store.ts`, `lib/adventure/invite-code.ts`, `lib/r
 - Retrato: `portraitUrl` (WebP data URL), `portraitFocus` `{ x, y, scale? }`, `tokenImageUrl` gerado no browser.
 - Na mesa, ator na sala espelha a ficha (`lib/room/adventure-actors.ts`, `lib/room/sync.ts`).
 
-### Sala `demo`
-
-- `roomId === "demo"` — sempre em memória, não persiste no DB.
-- Visitante sem login pode jogar `DEMO_PLAYABLE_ACTOR_ID`.
-- Não misturar regras de demo com salas reais nos handlers.
-
 ---
 
 ## 6. Autenticação e permissões
@@ -201,7 +194,7 @@ Não existe role global `mestre`/`jogador` — isso é **por sala/aventura**.
 |--------|-------------|
 | `canManageRoom` | Dono da sala ou admin — spawn, settings, combate GM |
 | `canParticipateInRoom` | Membro — mover token, chat, editar própria ficha na mesa |
-| `canViewRoom` | Membro, admin, demo, ou convite na URL |
+| `canViewRoom` | Membro, admin, ou convite na URL |
 | `isRoomVisitor` | Viu com convite mas ainda não é membro — sem chat |
 
 Rotas API usam `lib/auth/authorize-room.ts` — sempre validar antes de mutar sala.

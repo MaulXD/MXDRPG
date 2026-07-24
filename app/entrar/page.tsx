@@ -68,8 +68,7 @@ export default async function EntrarPage({ searchParams }: Props) {
             className="auth-form__intro"
             style={{ marginTop: 0, marginBottom: "1rem", color: "var(--text-muted)" }}
           >
-            Servidor sem banco — use <strong>Demo Mestre</strong> ou <strong>Demo Jogador</strong>{" "}
-            (senha <code>123</code>). Cadastro com e-mail funciona só enquanto o container estiver no ar.
+            Servidor sem banco — cadastro com e-mail funciona só enquanto o container estiver no ar.
           </p>
         ) : null}
         <AuthTabs
@@ -79,15 +78,6 @@ export default async function EntrarPage({ searchParams }: Props) {
           persistentAccounts={auth.persistentAccounts}
         />
       </div>
-
-      {auth.emailLogin ? (
-        <article className="glass content-card" style={{ marginTop: "1.25rem" }}>
-          <h2>Contas demo</h2>
-          <p style={{ margin: 0, color: "var(--text-muted)", lineHeight: 1.8 }}>
-            Usuário <code>mestre</code> ou <code>jogador</code> · senha <code>123</code>
-          </p>
-        </article>
-      ) : null}
     </div>
   );
 }

@@ -2,13 +2,10 @@ import "server-only";
 
 import fs from "fs";
 import path from "path";
-import { DEMO_CHARACTERS } from "@/lib/character/demo-characters";
 import { normalizeCharacter } from "@/lib/character/normalize";
 import type { CharacterSheet } from "@/lib/character/types";
 
 const REGISTRY_PATH = path.join(process.cwd(), "data/characters/registry.json");
-
-const SEED_CHARACTER_IDS = new Set(DEMO_CHARACTERS.map((c) => c.id));
 
 declare global {
   // eslint-disable-next-line no-var
@@ -41,7 +38,7 @@ function canWriteRegistryFile(): boolean {
 function savePersisted(registry: Map<string, CharacterSheet>): void {
   if (!canWriteRegistryFile()) return;
   try {
-    const list = [...registry.values()].filter((c) => !SEED_CHARACTER_IDS.has(c.id));
+    const list = [...registry.values()];
     fs.writeFileSync(REGISTRY_PATH, `${JSON.stringify(list, null, 2)}\n`, "utf8");
   } catch (e) {
     console.warn(
@@ -55,9 +52,6 @@ function savePersisted(registry: Map<string, CharacterSheet>): void {
 export function characterRegistry(): Map<string, CharacterSheet> {
   if (!globalThis.__eldarinCharacterRegistry) {
     const map = new Map<string, CharacterSheet>();
-    for (const sheet of DEMO_CHARACTERS) {
-      map.set(sheet.id, normalizeCharacter({ ...sheet }));
-    }
     for (const sheet of loadPersisted()) {
       map.set(sheet.id, sheet);
     }
@@ -100,24 +94,12 @@ export function reassignRegistryCharacterOwners(
 
 export function removeCharacterFromRegistry(id: string): void {
   characterRegistry().delete(id);
-  const idx = DEMO_CHARACTERS.findIndex((c) => c.id === id);
-  if (idx >= 0) DEMO_CHARACTERS.splice(idx, 1);
   savePersisted(characterRegistry());
 }
 
 export function upsertCharacterRegistry(sheet: CharacterSheet): CharacterSheet {
   const normalized = normalizeCharacter(sheet);
   characterRegistry().set(normalized.id, normalized);
-
-  const idx = DEMO_CHARACTERS.findIndex((c) => c.id === normalized.id);
-  if (idx >= 0) DEMO_CHARACTERS[idx] = normalized;
-  else if (SEED_CHARACTER_IDS.has(normalized.id)) {
-    /* seed ids are fixed */
-  } else {
-    DEMO_CHARACTERS.push(normalized);
-  }
-
   savePersisted(characterRegistry());
-
   return normalized;
 }

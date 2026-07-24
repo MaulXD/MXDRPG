@@ -11,7 +11,7 @@
 - [ ] `npm run db:setup` (migrate + check)
 - [ ] `npm run dev` (terminal separado)
 - [ ] `npm run smoke:a1` → `smoke:a1 OK`
-- [ ] `/mestre` → criar mesa (não demo) → mover token → `Ctrl+C` no dev → `npm run dev` → mesa ainda existe
+- [ ] `/mestre` → criar mesa → mover token → `Ctrl+C` no dev → `npm run dev` → mesa ainda existe
 
 ### Produção (Contabo)
 
@@ -60,10 +60,7 @@ npm run smoke:a1
 
 ## Comportamento do app
 
-| Sala | Postgres |
-|------|----------|
-| `demo` | Nunca grava |
-| Outras | `createRoom` e `persistRoom` gravam; falha de DB **propaga erro** (não cria sala “fantasma” só em memória) |
+`createRoom` e `persistRoom` gravam no Postgres; falha de DB **propaga erro** (não cria sala “fantasma” só em memória).
 
 ## Falhas comuns
 

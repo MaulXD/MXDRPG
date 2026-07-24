@@ -51,7 +51,7 @@ export function authLoginLead(cap: AuthCapabilities): string {
     return `Entre com ${social} em um clique — ou use e-mail e senha abaixo.`;
   }
   if (!cap.persistentAccounts) {
-    return "E-mail e senha — contas demo sempre disponíveis; cadastros novos exigem MariaDB no servidor.";
+    return "E-mail e senha — cadastros novos exigem MariaDB no servidor.";
   }
   return "Entre com e-mail e senha — uma conta para mesas, fichas e convites.";
 }

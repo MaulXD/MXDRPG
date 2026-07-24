@@ -23,7 +23,6 @@ import {
   reassignRegistryCharacterOwners,
   upsertCharacterRegistry,
 } from "./character-registry";
-import { canEditCharacter } from "./demo-characters";
 import {
   canEditCharacterWithGrant,
   canStructuralSheetEditWithGrant,
@@ -31,7 +30,6 @@ import {
 } from "./edit-access";
 
 export {
-  canEditCharacter,
   canEditCharacterWithGrant,
   canStructuralSheetEditWithGrant,
   grantFromRequest,
@@ -277,9 +275,6 @@ export async function createCharacterFromWizard(
   const normalizedDraft = await normalizeWizardDraftImages(draft);
   const sheet = buildCharacterFromWizard(ownerId, normalizedDraft, undefined, adventureId);
   const saved = await saveCharacter(sheet);
-
-  const { attachCharacterToDemoRoom } = await import("@/lib/room/demo-character-sync");
-  await attachCharacterToDemoRoom(saved);
 
   let mesaRoomId: string | null = null;
   if (adventureId) {

@@ -40,7 +40,6 @@ function assertGm(
   room: NonNullable<Awaited<ReturnType<typeof getRoom>>>,
   user: SessionUser | null | undefined
 ): string | null {
-  if (room.roomId === "demo") return null;
   if (!user) return "Faça login";
   if (!canManageRoom(room, user)) return "Só o mestre pode usar este controle";
   return null;

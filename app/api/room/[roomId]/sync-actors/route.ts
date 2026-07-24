@@ -11,10 +11,6 @@ type Params = { params: Promise<{ roomId: string }> };
 /** Sincroniza fichas da aventura em background (não bloqueia SSR da mesa). */
 export async function POST(req: Request, { params }: Params) {
   const { roomId } = await params;
-  if (roomId === "demo") {
-    return NextResponse.json({ ok: true, skipped: true });
-  }
-
   const invite = new URL(req.url).searchParams.get("invite");
   const auth = await requireRoomView(roomId, invite);
   if ("error" in auth) {

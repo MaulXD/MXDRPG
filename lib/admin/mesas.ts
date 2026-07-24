@@ -109,7 +109,7 @@ async function resolveUserIdFromInput(
 async function persistAdventureAndRoom(adv: Adventure): Promise<Adventure> {
   const { cacheAdventure } = await import("@/lib/adventure/store");
   cacheAdventure(adv);
-  if (dbEnabled() && adv.adventureId !== "demo") {
+  if (dbEnabled()) {
     await dbAdventures.saveAdventure(adv);
   }
   const room = await getRoom(adv.primaryRoomId);
@@ -174,7 +174,6 @@ export async function adminSetMesaOwner(
 ): Promise<AdminMesaMutationResult> {
   const adv = await getAdventure(adventureId);
   if (!adv) return { ok: false, error: "Mesa não encontrada" };
-  if (adventureId === "demo") return { ok: false, error: "A demo não pode ser alterada" };
 
   const resolved = await resolveUserIdFromInput(input.userId, input.nickname);
   if ("error" in resolved) return { ok: false, error: resolved.error };

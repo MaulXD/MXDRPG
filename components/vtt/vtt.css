@@ -7638,7 +7638,7 @@
   font-size: 0.68rem;
 }
 
-/* —— Demo guided tour (/mesa/demo) —— */
+/* —— Tour guiado da mesa (classes reaproveitadas por MesaGuidedTour) —— */
 .demo-guided-tour__trigger {
   display: inline-flex;
   align-items: center;

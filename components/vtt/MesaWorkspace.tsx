@@ -10,6 +10,7 @@ import { canBypassCombatTurn, canParticipateInRoom } from "@/lib/auth/room-acces
 import { normalizeRoomSettings } from "@/lib/room/settings";
 import type { SessionUser } from "@/lib/auth/types";
 import type { BattleScene } from "@/lib/vtt/types";
+import type { RpgSystemId } from "@/lib/rpg/systems";
 import type { Axial } from "@/lib/vtt/grid-math";
 import { useCombatModeTransition } from "@/hooks/vtt/useCombatModeTransition";
 import { CombatModeTransition } from "@/components/vtt/CombatModeTransition";
@@ -55,6 +56,8 @@ type Props = {
   roomOwnerId: string;
   memberIds: string[];
   scene: BattleScene;
+  /** Sistema de RPG desta mesa — decide qual wizard/ficha renderizar. Default "eldarin". */
+  rpgSystemId?: RpgSystemId;
   canEdit: boolean;
   canControlCombat: boolean;
   canChat?: boolean;
@@ -110,6 +113,7 @@ function MesaWorkspaceInner({
   roomOwnerId,
   memberIds,
   scene,
+  rpgSystemId = "eldarin",
   canEdit,
   canControlCombat,
   canChat = true,
@@ -142,6 +146,7 @@ function MesaWorkspaceInner({
   );
 
   const [sheetPopupActorId, setSheetPopupActorId] = useState<string | null>(null);
+  const [torSheetId, setTorSheetId] = useState<string | null>(null);
   const [monsterSheetEntryId, setMonsterSheetEntryId] = useState<string | null>(null);
   const [characterWizardOpen, setCharacterWizardOpen] = useState(false);
   const [spawnAxial, setSpawnAxial] = useState<Axial | null>(null);
@@ -220,7 +225,7 @@ function MesaWorkspaceInner({
   }, [snapshot?.settings?.combatActive]);
 
   useEffect(() => {
-    if (roomId === "demo" || watchOnly || !session?.id) return;
+    if (watchOnly || !session?.id) return;
     let cancelled = false;
     const runSync = () => {
       const q = inviteCode?.trim() ? `?invite=${encodeURIComponent(inviteCode.trim())}` : "";
@@ -297,6 +302,20 @@ function MesaWorkspaceInner({
     windows.close("character");
   }, [windows]);
 
+  const openTorSheet = useCallback(
+    (characterId: string) => {
+      setTorSheetId(characterId);
+      windows.openAsPopup("torFicha");
+      windows.focus("torFicha");
+    },
+    [windows]
+  );
+
+  const closeTorSheet = useCallback(() => {
+    setTorSheetId(null);
+    windows.close("torFicha");
+  }, [windows]);
+
   const handleRoomPortraitPatch = useCallback(
     (result: RoomActorPatchResult) => {
       const full = getMesaRoomStore(roomId).getSnapshotFull();
@@ -339,10 +358,16 @@ function MesaWorkspaceInner({
   const handleCharacterCreated = useCallback(
     async (result: { characterId: string }) => {
       closeCharacterWizard();
+      // Fichas do Um Anel não viram RoomActor (Fase 4/combate) — abrem no popup próprio,
+      // sem passar pelo refresh de mesaActors (que é 100% Eldarin).
+      if (result.characterId.startsWith("tor-")) {
+        openTorSheet(result.characterId);
+        return;
+      }
       await refresh();
       openSheet(result.characterId);
     },
-    [closeCharacterWizard, refresh, openSheet]
+    [closeCharacterWizard, refresh, openSheet, openTorSheet]
   );
 
   const openDungeonPanel = useCallback(() => {
@@ -410,7 +435,6 @@ function MesaWorkspaceInner({
   );
 
   const canCreateCharacter = useMemo(() => {
-    if (roomId === "demo") return false;
     if (!canParticipateInRoom({ roomId, ownerId: roomOwnerId, memberIds }, session)) {
       return false;
     }
@@ -677,6 +701,7 @@ function MesaWorkspaceInner({
                 <MesaFoundryFloatingWindows
                   roomId={roomId}
                   adventureId={adventureId}
+                  rpgSystemId={rpgSystemId}
                   shareRoomId={shareRoomId}
                   roomOwnerId={roomOwnerId}
                   memberIds={memberIds}
@@ -698,6 +723,9 @@ function MesaWorkspaceInner({
                   monsterSheetEntryId={monsterSheetEntryId}
                   setMonsterSheetEntryId={setMonsterSheetEntryId}
                   characterWizardOpen={characterWizardOpen}
+                  torSheetId={torSheetId}
+                  onOpenTorSheet={openTorSheet}
+                  onCloseTorSheet={closeTorSheet}
                   spawnAxial={spawnAxial}
                   combatChatReveal={combatChatReveal}
                   roomSyncBridge={roomSyncBridgeRef.current}

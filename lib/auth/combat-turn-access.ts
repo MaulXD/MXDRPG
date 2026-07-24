@@ -1,5 +1,5 @@
 import { characterOwnedBySessionUser } from "@/lib/auth/account-ownership";
-import { canManageRoom, DEMO_PLAYABLE_ACTOR_IDS } from "@/lib/auth/room-access";
+import { canManageRoom } from "@/lib/auth/room-access";
 import type { SessionUser } from "@/lib/auth/types";
 import { activeTokenId, type CombatTrack } from "@/lib/room/combat";
 import type { RoomActor } from "@/lib/room/types";
@@ -54,7 +54,6 @@ export function canViewTokenPa(
   if (hasGmView(room, user, opts)) return true;
   if (isMonsterToken(token) && !token.linked) return false;
   if (token.linked && token.actorId) {
-    if (room.roomId === "demo") return true;
     if (!user) return false;
     const actor = room.actors[token.actorId];
     return actor ? characterOwnedBySessionUser(actor, user) : false;
@@ -68,17 +67,6 @@ export function canControlToken(
   token: BattleToken,
   opts?: Pick<CombatTurnAccessOpts, "simulatePlayerView">
 ): boolean {
-  if (room.roomId === "demo") {
-    if (!user) return false;
-    if (hasGmView(room, user, opts)) return true;
-    if (isMonsterToken(token)) return false;
-    if (token.linked && token.actorId) {
-      return DEMO_PLAYABLE_ACTOR_IDS.includes(
-        token.actorId as (typeof DEMO_PLAYABLE_ACTOR_IDS)[number]
-      );
-    }
-    return false;
-  }
   if (!user) return false;
   if (hasGmView(room, user, opts)) return true;
   if (isMonsterToken(token)) return false;
@@ -90,7 +78,7 @@ export function canControlToken(
   return false;
 }
 
-/** Mestre, dono do token na vez, ou qualquer um na mesa demo. */
+/** Mestre ou dono do token na vez. */
 export function canAdvanceCombatTurn(
   room: CombatTurnRoom,
   user: SessionUser | null,
