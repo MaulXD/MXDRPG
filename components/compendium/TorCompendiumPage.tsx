@@ -14,9 +14,10 @@ import {
 } from "@/lib/character/um-anel/data";
 import { TOR_ADVERSARIES } from "@/lib/character/um-anel/adversaries";
 import { TOR_BLESSINGS, TOR_CURSED_ITEMS, TOR_ENCHANTED_REWARDS, TOR_HOARD_TABLE } from "@/lib/character/um-anel/treasure";
-import { TOR_CULTURAL_VIRTUES } from "@/lib/character/um-anel/cultural-virtues";
+import { TOR_CULTURAL_VIRTUES_BY_CULTURE } from "@/lib/character/um-anel/cultural-virtues";
 import { TOR_UNDERTAKINGS } from "@/lib/character/um-anel/undertakings";
 import { TOR_PATRONS } from "@/lib/character/um-anel/patrons";
+import { TOR_NOTABLE_NPCS } from "@/lib/character/um-anel/notable-npcs";
 import {
   TOR_NAMELESS_ATTACK_FORMS,
   TOR_NAMELESS_CHARACTERISTICS,
@@ -259,7 +260,7 @@ export function TorCompendiumPage() {
             <article key={c.id} className="tor-compendium__card">
               <h3>{c.name}</h3>
               <ul className="tor-compendium__blessing-list">
-                {TOR_CULTURAL_VIRTUES.filter((v) => v.cultureId === c.id).map((v) => (
+                {(TOR_CULTURAL_VIRTUES_BY_CULTURE[c.id] ?? []).map((v) => (
                   <li key={v.id}>
                     <strong>{v.name}:</strong> {v.description}
                   </li>
@@ -386,6 +387,28 @@ export function TorCompendiumPage() {
               <p className="tor-compendium__blessing">
                 <strong>{p.advantageName}</strong> — {p.advantageText}
               </p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section>
+        <h2>PNJs Notáveis de Valfenda</h2>
+        <p className="tor-compendium__lead">
+          Diferente dos Patronos, não têm bônus de Companhia formal (exceto Elrond, listado acima) —
+          referência de mesa pro Mestre.
+        </p>
+        <div className="tor-compendium__grid">
+          {TOR_NOTABLE_NPCS.map((n) => (
+            <article key={n.id} className="tor-compendium__card">
+              <h3>{n.name}</h3>
+              <p className="tor-compendium__meta">
+                {n.roles} · {n.distinctiveFeatures.join(", ")}
+              </p>
+              <p>{n.description}</p>
+              {n.specialRule ? (
+                <p className="tor-compendium__blessing">{n.specialRule}</p>
+              ) : null}
             </article>
           ))}
         </div>

@@ -455,6 +455,38 @@ export const CULTURES: TorCultureDef[] = [
     combatProficiencyChoiceB: { options: ["machados", "arcos", "lancas", "espadas"], rating: 1 },
     distinctiveFeatureOptions: ["audacioso", "honrado", "reservado", "severo", "sutil", "veloz", "alto", "coracao-verdadeiro"],
   },
+  {
+    id: "altos-elfos-de-valfenda",
+    name: "Altos-Elfos de Valfenda",
+    blessingName: "Sábio-Élfico",
+    blessingText: "Se você não estiver Arrasado, pode gastar 1 ponto de Esperança pra obter um sucesso Mágico numa rolagem de perícia. Além disso, some 1 ponto a um Atributo à sua escolha.",
+    extraTraitName: "Marcado pelo Pesar",
+    extraTraitText: "Você só pode remover pontos de Sombra acumulados durante uma Fase de Companhia de Yule.",
+    standardOfLiving: "prospero",
+    attributeOptions: [
+      { forca: 5, coracao: 2, argucia: 7 },
+      { forca: 4, coracao: 3, argucia: 7 },
+      { forca: 5, coracao: 3, argucia: 6 },
+      { forca: 4, coracao: 4, argucia: 6 },
+      { forca: 5, coracao: 4, argucia: 5 },
+      { forca: 6, coracao: 2, argucia: 6 },
+    ],
+    enduranceBonus: 22,
+    hopeBonus: 6,
+    parryBonus: 12,
+    skillBase: {
+      imponencia: 2, encorajar: 0, persuasao: 0,
+      atletismo: 2, viajar: 1, furtividade: 0,
+      percepcao: 2, perspicacia: 0, vasculhar: 0,
+      caca: 0, cura: 2, explorar: 0,
+      canto: 2, cortesia: 1, enigma: 0,
+      oficio: 2, batalha: 2, saber: 3,
+    },
+    favouredChoice: ["percepcao", "cura"],
+    combatProficiencyChoiceA: { options: ["lancas", "espadas"], rating: 2 },
+    combatProficiencyChoiceB: { options: ["machados", "arcos", "lancas", "espadas"], rating: 1 },
+    distinctiveFeatureOptions: ["belo", "olhos-de-lince", "nobre", "curioso", "jovial", "orgulhoso", "sutil", "obstinado"],
+  },
 ];
 
 export const CULTURE_BY_ID: Record<TorCultureId, TorCultureDef> = Object.fromEntries(

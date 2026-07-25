@@ -2036,3 +2036,24 @@ kubectl -n raul rollout status deployment/mxdrpg
 **Arquivos tocados:** novos — `lib/character/um-anel/{cultural-virtues,undertakings,patrons,nameless-things}.ts`; editado — `components/compendium/TorCompendiumPage.tsx`.
 
 ---
+
+### 2026-07-25 (cont.) — 7ª Cultura jogável (Altos-Elfos de Valfenda) + PNJs notáveis + Elrond como Patrono
+
+**Pedido:** continuação de "puxe tudo que sobrou do livro" — chegou a vez de `10-rivendell.md`, que tinha ficado marcado como pendente na entrada anterior por envolver risco maior (nova Cultura mexe em `TorCultureId`, tipo usado no wizard/normalize/rules).
+
+**Verificação de risco antes de mexer:** `grep` confirmou que só existe UMA especialização por Cultura em todo o código (`cultureId === "anoes"`, redução de Carga de armadura, em `rules.ts`) — nem o wizard (mapeia `CULTURES` genericamente), nem `normalize.ts` têm qualquer lógica hardcoded pra Cultura específica. Adicionar uma 7ª Cultura era, portanto, uma mudança aditiva de baixo risco, confirmada por `tsc --noEmit` limpo (nenhum switch exaustivo quebrou) logo depois de editar `TorCultureId`.
+
+**Passo a passo:**
+1. `TorCultureId` ganhou `"altos-elfos-de-valfenda"`; nova entrada em `CULTURES` (`data.ts`) com todos os campos do livro — Bênção Cultural (Sábio-Élfico: sucesso Mágico gastando Esperança se não Arrasado + 1 ponto extra de Atributo), traço extra (Marcado pelo Pesar: só remove Sombra em Yule), Padrão de Vida Próspero, 6 conjuntos de Atributos, perícias-base, e as mesmas 8 opções de Traço Distintivo do livro (todas já existiam no sistema — Belo, Olhos de Lince, Nobre, Curioso, Jovial, Orgulhoso, Sutil, Obstinado).
+2. 4 Virtudes Culturais próprias (Artífice de Eregion, Beleza das Estrelas, Poder dos Primogênitos, Habilidade dos Eldar) em `cultural-virtues.ts` — mais uma 5ª habilidade de Conselho que o livro descreve na mesma seção sem nome próprio claro, anexada como parágrafo extra em vez de inventar um nome. O livro diz que Altos-Elfos **também** escolhem da lista dos Elfos de Lindon — em vez de duplicar as 6 entradas, `TOR_CULTURAL_VIRTUES_BY_CULTURE["altos-elfos-de-valfenda"]` concatena as duas listas na leitura.
+3. Elrond adicionado como **7º Patrono** em `patrons.ts` (é o único PNJ do capítulo com tabela formal de Patrono no livro — Nível de Companhia +1, vantagem "Maior dos Mestres do Saber").
+4. Os outros PNJs notáveis do capítulo (Arwen, Elladan e Elrohir, Erestor, Glorfindel) — sem tabela de Patrono, só descrição — foram pra um tipo novo e mais simples, `lib/character/um-anel/notable-npcs.ts`.
+5. `TorCompendiumPage.tsx`: seção "Culturas" e "Virtudes Culturais" já eram genéricas (mapeiam `CULTURES`) — passaram a mostrar a 7ª Cultura sem nenhuma edição além de trocar o filtro raso por `TOR_CULTURAL_VIRTUES_BY_CULTURE` (pra herdar as virtudes dos Elfos de Lindon corretamente). Nova seção "PNJs Notáveis de Valfenda".
+
+**Deferido:** `11-personagens-exemplo.md` (8 pré-prontos: Drogo Bolseiro, Esmeralda Took, Lobelia Sacola-Luva, Paladin Took II, Primula Brandebuque, Rorimac Brandebuque, Balin, Bilbo) e o "Landmarks"/"Star of the Mist" — ambos ficam pra uma próxima passada.
+
+**Verificação:** `tsc --noEmit` + `npm run build` limpos (confirmando que nenhuma lógica de Cultura hardcoded quebrou em lugar nenhum do wizard/normalize/rules).
+
+**Arquivos tocados:** novo — `lib/character/um-anel/notable-npcs.ts`; editados — `lib/character/um-anel/{types,data,patrons,cultural-virtues}.ts`, `components/compendium/TorCompendiumPage.tsx`.
+
+---

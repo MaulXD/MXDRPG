@@ -89,6 +89,18 @@ export const TOR_PATRONS: TorPatron[] = [
     advantageName: "Senhores da Madeira, Água e Colina",
     advantageText: "Pode gastar toda a sua Companhia restante pra invocar a intervenção de Tom ou Baga de Ouro em qualquer lugar da terra de Tom.",
   },
+  {
+    id: "elrond",
+    name: "Elrond Meio-Elfo",
+    roles: "Curandeiro, Mestre do Saber",
+    distinctiveFeatures: ["Bem-falante", "Senhorial", "Sutil"],
+    description: "O Senhor de Valfenda habita a Terra-média há milhares de anos. Chamado \"Meio-Elfo\" por descender tanto de Elfos quanto de Homens; tendo a escolha entre o caminho dos Primogênitos ou o destino dos Homens, Elrond escolheu o povo Élfico. É portador de Vilya, o Anel do Ar, um dos três Anéis forjados em Eregion por Celebrimbor.",
+    encountering: "Não parece nem jovem nem velho, combinando a força de um jovem guerreiro com a sabedoria de um rei venerável. Raramente deixa o vale, mas envia muitos batedores pela terra, então está sempre bem informado. Faz a maioria de seus conselhos na varanda leste de sua casa.",
+    asPatron: "Desde a virada da era, Elrond vem se preparando pra guerra final com o Senhor do Escuro. Está sempre buscando aliados e apoiará todos que vierem a ele por ajuda contra a Sombra — é generoso ouvinte, mas raramente oferece ajuda direta, valorizando a segurança e o sigilo de sua terra acima de tudo. Chamados favorecidos: Erudito, Guardião.",
+    fellowshipBonus: 1,
+    advantageName: "Maior dos Mestres do Saber",
+    advantageText: "Ao escolher Encontrar Patrono pra visitar Elrond, você também aplica +1 em todas as rolagens de Dado de Proeza pra determinar eventos de jornada, e aprende tudo sobre as qualidades de todos os Artefatos Maravilhosos e Itens Prodigiosos na posse da Companhia.",
+  },
 ];
 
 export const TOR_PATRON_BY_ID: Record<string, TorPatron> = Object.fromEntries(

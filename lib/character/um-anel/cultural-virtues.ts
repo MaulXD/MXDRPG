@@ -241,6 +241,32 @@ export const TOR_CULTURAL_VIRTUES: TorCulturalVirtue[] = [
     cultureId: "rangers",
     description: "Numa rolagem de Caçada, Exploração ou Viagem, pode gastar 1 Esperança pra obter um sucesso Mágico. Sempre pode cobrir mais de um papel durante uma jornada.",
   },
+
+  // ——— Altos-Elfos de Valfenda (também podem escolher da lista dos Elfos de Lindon) ———
+  {
+    id: "artifice-de-eregion",
+    name: "Artífice de Eregion",
+    cultureId: "altos-elfos-de-valfenda",
+    description: "No próximo Yule, adicione uma Recompensa Encantada de fabricação Élfica a uma arma à escolha, ou crie um Artefato Maravilhoso. Além disso, numa Fase de Companhia, uma rolagem de Ofício ou História bem-sucedida revela tudo sobre um Artefato Maravilhoso ou Item Prodigioso na posse da Companhia.",
+  },
+  {
+    id: "beleza-das-estrelas",
+    name: "Beleza das Estrelas",
+    cultureId: "altos-elfos-de-valfenda",
+    description: "Aumente sua Esperança máxima em 1.",
+  },
+  {
+    id: "poder-dos-primogenitos",
+    name: "Poder dos Primogênitos",
+    cultureId: "altos-elfos-de-valfenda",
+    description: "Quando um adversário gasta 1 ponto de Ódio ou Resolução pra ativar uma Habilidade Sinistra, você pode gastar 1 ponto de Esperança pra cancelar o efeito.",
+  },
+  {
+    id: "habilidade-dos-eldar",
+    name: "Habilidade dos Eldar",
+    cultureId: "altos-elfos-de-valfenda",
+    description: "Ao rolar um ícone de sucesso no Dado de Proeza, o resultado conta como sucesso Mágico sem precisar gastar Esperança. (A fonte também descreve, na mesma seção, uma habilidade adicional de Conselho: como porta-voz, você aumenta o limite de tempo do Conselho em 1, ou faz com que os Mortais presentes retenham só uma lembrança vaga do que foi dito — conta como efeito mágico menor pra Consciência do Olho.)",
+  },
 ];
 
 export const TOR_CULTURAL_VIRTUES_BY_CULTURE: Record<TorCultureId, TorCulturalVirtue[]> = {
@@ -250,4 +276,9 @@ export const TOR_CULTURAL_VIRTUES_BY_CULTURE: Record<TorCultureId, TorCulturalVi
   hobbits: TOR_CULTURAL_VIRTUES.filter((v) => v.cultureId === "hobbits"),
   "homens-de-bri": TOR_CULTURAL_VIRTUES.filter((v) => v.cultureId === "homens-de-bri"),
   rangers: TOR_CULTURAL_VIRTUES.filter((v) => v.cultureId === "rangers"),
+  // Altos-Elfos escolhem tanto da lista própria quanto da lista dos Elfos de Lindon (regra do livro).
+  "altos-elfos-de-valfenda": [
+    ...TOR_CULTURAL_VIRTUES.filter((v) => v.cultureId === "altos-elfos-de-valfenda"),
+    ...TOR_CULTURAL_VIRTUES.filter((v) => v.cultureId === "elfos"),
+  ],
 };

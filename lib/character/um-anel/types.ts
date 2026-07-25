@@ -39,7 +39,8 @@ export type TorCultureId =
   | "elfos"
   | "hobbits"
   | "homens-de-bri"
-  | "rangers";
+  | "rangers"
+  | "altos-elfos-de-valfenda";
 
 export type TorCallingId =
   | "capitao"
