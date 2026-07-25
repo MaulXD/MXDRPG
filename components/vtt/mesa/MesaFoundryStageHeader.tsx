@@ -4,6 +4,7 @@ import type { SessionUser } from "@/lib/auth/types";
 import type { RoomSnapshot } from "@/lib/room/types";
 import type { RoomApiPayload } from "@/lib/room/room-delta";
 import type { RoomSyncStatus } from "@/hooks/useRoomSync";
+import type { RpgSystemId } from "@/lib/rpg/systems";
 import { MesaSyncIndicator } from "@/components/vtt/MesaSyncIndicator";
 import { GmMesaModeToggle, MesaModeIndicator } from "@/components/vtt/GmMesaModeToggle";
 import { GmPlayerViewToggle } from "@/components/vtt/GmPlayerViewToggle";
@@ -16,6 +17,7 @@ import type { RoomPresenceMember } from "@/hooks/useRoomPresence";
 type Props = {
   roomId: string;
   adventureId: string;
+  rpgSystemId?: RpgSystemId;
   mapSnapshot: RoomSnapshot | null;
   combatActive: boolean;
   syncStatus: RoomSyncStatus;
@@ -33,6 +35,7 @@ type Props = {
 export function MesaFoundryStageHeader({
   roomId,
   adventureId,
+  rpgSystemId = "eldarin",
   mapSnapshot,
   combatActive,
   syncStatus,
@@ -55,10 +58,11 @@ export function MesaFoundryStageHeader({
             roomId={roomId}
             snapshot={mapSnapshot}
             combatActive={combatActive}
+            rpgSystemId={rpgSystemId}
             onApplyUpdate={onApplyUpdate}
           />
         ) : (
-          <MesaModeIndicator combatActive={combatActive} />
+          <MesaModeIndicator combatActive={combatActive} rpgSystemId={rpgSystemId} />
         )}
         {isActualGm ? (
           <GmPlayerViewToggle playAsPlayer={playAsPlayer} onToggle={onTogglePlayAsPlayer} />

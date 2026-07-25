@@ -30,6 +30,10 @@ export function applyExplorationPaDisplayToToken(
   room: RoomState,
   token: BattleToken
 ): BattleToken {
+  // O Um Anel não tem economia de PA — token.pa/paMax ficam numa constante alta fixa
+  // (TOR_TOKEN_PA, ver lib/vtt/tor-player-token.ts) só pra não travar checkCanSpendPa.
+  // Sobrescrever aqui com regras de recuperação de PA do Eldarin quebraria essa garantia.
+  if (token.torCombat) return token;
   const rules = paTurnRulesForRoomToken(room, token);
   const cleared = clearCombatPaPool(token);
   return {
@@ -52,6 +56,7 @@ export function previewExplorationPaTokens(
   actors: Record<string, RoomActor>
 ): BattleToken[] {
   return tokens.map((token) => {
+    if (token.torCombat) return token;
     const rules =
       token.linked && token.actorId && actors[token.actorId]
         ? paTurnRulesForActor(actors[token.actorId])

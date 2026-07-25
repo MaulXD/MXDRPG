@@ -625,6 +625,7 @@ function MesaWorkspaceInner({
             <MesaFoundryStageHeader
               roomId={roomId}
               adventureId={adventureId}
+              rpgSystemId={rpgSystemId}
               mapSnapshot={snapshot}
               combatActive={roomSettings.combatActive}
               syncStatus={syncStatus}

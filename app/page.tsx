@@ -2,6 +2,7 @@ import Link from "next/link";
 import { EldarinLogo } from "@/components/brand/EldarinLogo";
 import { ENTRAR_PATH } from "@/lib/site-paths";
 import { HomeFeatureIcon, type HomeFeatureIconName } from "@/components/ui/EldarinIcons";
+import { RPG_SYSTEMS } from "@/lib/rpg/systems";
 import { pageMetadata } from "@/lib/site-metadata";
 
 export const metadata = pageMetadata("Seu HUB RPG");
@@ -22,7 +23,7 @@ const features: Array<{
     icon: "move",
     slug: "grid",
     title: "Grid tático",
-    text: "Movimento com faixas visuais: caminhada verde, corrida âmbar, PA automático.",
+    text: "Movimento com faixas visuais e regras do sistema aplicadas automaticamente — cada RPG com sua própria economia de ações.",
   },
   {
     icon: "diamond",
@@ -122,10 +123,11 @@ export default function HomePage() {
           <h1 className="landing-hero__brand">
             <EldarinLogo variant="full" href={null} image="landing" className="eldarin-logo--hero" />
           </h1>
-          <p className="eyebrow landing-hero__eyebrow">VTT proprietário</p>
+          <p className="eyebrow landing-hero__eyebrow">Hub de VTTs proprietário</p>
           <p className="lead landing-hero__lead">
-            Mesa virtual de fantasia com combate tático em grid, pontos de ação e fichas de personagem
-            — direto no navegador, sem instalação.
+            Mesa virtual tática com grid, fichas de personagem e chat de dados — direto no
+            navegador, sem instalação. Cada sistema de RPG com sua própria ficha e suas próprias
+            regras de combate.
           </p>
           <div className="hero-actions landing-hero__actions">
             <Link href={ENTRAR_PATH} className="btn btn-primary landing-cta-primary">
@@ -133,9 +135,21 @@ export default function HomePage() {
             </Link>
           </div>
 
+          <ul className="landing-hero__systems" aria-label="Sistemas de RPG disponíveis">
+            {RPG_SYSTEMS.filter((s) => s.available).map((s) => (
+              <li key={s.id}>
+                <Link href={s.href ?? "/mesas"} className="landing-hero__system-chip">
+                  {s.name}
+                  <span>{s.tagline}</span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+
           <div className="landing-preview" aria-hidden="true">
             <VttPreview />
           </div>
+          <p className="landing-preview__caption">Exemplo: combate tático do sistema Eldarin</p>
 
           <a href="#recursos" className="landing-scroll-hint" aria-label="Ver mais">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

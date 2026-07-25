@@ -10,7 +10,7 @@ export default function manifest(): MetadataRoute.Manifest {
     name: SITE_NAME,
     short_name: SITE_NAME,
     description:
-      "Mesa virtual no navegador: combate em grid, Pontos de Ação, fichas e compêndios Eldarin v4.",
+      "Hub de mesas virtuais no navegador: Eldarin e O Um Anel, combate tático em grid, fichas e compêndios.",
     start_url: "/",
     scope: "/",
     display: "standalone",

@@ -48,7 +48,7 @@ export const metadata: Metadata = {
     template: `${SITE_NAME} — %s`,
   },
   description:
-    "Mesa virtual no navegador: combate em grid, PA, fichas medievais. Admin, Mestre e Jogador.",
+    "Hub de mesas virtuais no navegador: Eldarin e O Um Anel, combate em grid, fichas de personagem. Admin, Mestre e Jogador.",
   applicationName: SITE_NAME,
   appleWebApp: {
     capable: true,

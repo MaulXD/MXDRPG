@@ -1,5 +1,7 @@
 import Link from "next/link";
+import { RpgSystemContentTabs } from "@/components/rpg/RpgSystemContentTabs";
 import { ENTRAR_PATH, ELDARIN_MESAS_PATH, MESAS_HUB_PATH } from "@/lib/site-paths";
+import { UM_ANEL_MESAS_PATH, normalizeRpgSystemId } from "@/lib/rpg/systems";
 import {
   IconBook,
   IconChat,
@@ -17,7 +19,11 @@ import "./sistema.css";
 
 export const metadata = pageMetadata("Como jogar");
 
-const LIVE = [
+type Props = {
+  searchParams: Promise<{ sistema?: string }>;
+};
+
+const ELDARIN_LIVE = [
   "Instalar como aplicativo no Chrome (atalho na área de trabalho)",
   "Mesa VTT ao vivo com sync SSE (fallback poll)",
   "Combate: PA, movimento, ataque, habilidade, magias de área (cone/linha)",
@@ -29,13 +35,13 @@ const LIVE = [
   "Login Google + e-mail/senha",
 ];
 
-const NEXT = [
+const ELDARIN_NEXT = [
   "Persistência Neon em produção (salas e fichas na nuvem)",
   "Delegação explícita de token entre jogadores",
   "Névoa de guerra e macros",
 ];
 
-const STEPS = [
+const ELDARIN_STEPS = [
   {
     title: "Crie sua conta",
     text: (
@@ -82,18 +88,18 @@ const STEPS = [
   },
 ] as const;
 
-const NAV_ITEMS = [
+const ELDARIN_NAV_ITEMS = [
   {
     icon: IconHome,
     label: "Início",
     path: "/",
-    text: "Página principal com visão geral do VTT.",
+    text: "Página principal com visão geral do hub MXDRPG.",
   },
   {
     icon: IconScroll,
     label: "Sistema",
     path: "/sistema",
-    text: "Este guia — como jogar, navegar e o que já está disponível.",
+    text: "Este guia — como jogar, navegar e o que já está disponível no Eldarin.",
   },
   {
     icon: IconBook,
@@ -117,17 +123,17 @@ const NAV_ITEMS = [
     icon: IconShield,
     label: "Mesas",
     path: MESAS_HUB_PATH,
-    text: "Hub MXDRPG — escolha o RPG e abra suas mesas.",
+    text: "Hub MXDRPG — escolha o sistema de RPG e abra suas mesas.",
   },
   {
     icon: IconShield,
     label: "Eldarin",
     path: ELDARIN_MESAS_PATH,
-    text: "Mesas do RPG Eldarin: aventuras, convites e sala VTT.",
+    text: "Mesas do sistema Eldarin: aventuras, convites e sala VTT.",
   },
 ] as const;
 
-const VTT_BASICS = [
+const ELDARIN_VTT_BASICS = [
   {
     icon: IconMove,
     title: "Tokens no mapa",
@@ -160,15 +166,175 @@ const VTT_BASICS = [
   },
 ] as const;
 
-export default function SistemaPage() {
+const UM_ANEL_LIVE = [
+  "Mesa VTT tática com mapa em grid — ordem de turno pela posição no mapa, sem rolagem de iniciativa",
+  "Combate com a matemática do livro: Dado de Proeza (d12) + Dados de Sucesso (d6), Golpe Perfurante e Feridas",
+  "Assistente de ficha em 9 passos: Cultura (7, incl. Altos-Elfos de Valfenda), Vocação, atributos, Perícias e Equipamento de Guerra",
+  "Retrato e token com recorte, igual ao Eldarin",
+  "Compêndio completo: bestiário (22 adversários), Tesouro/Bênçãos/Itens Amaldiçoados, Virtudes Culturais, Patronos, Coisas Sem Nome, Marcos e os 8 pré-gerados do Starter Set",
+  "Chat com o ícone do Dado de Proeza (d12) nas rolagens de Perícia e ataque",
+  "Convite de sala + modo visitante (só leitura)",
+  "Login Google + e-mail/senha",
+];
+
+const UM_ANEL_NEXT = [
+  "Posturas de Combate e Dano Especial completo (Golpe Pesado, Aparar, Investida de Escudo)",
+  "Engajamento por contagem — hoje qualquer token ataca qualquer outro dentro do alcance da arma",
+  "Fase de Companhia (Empreitadas) mecanizada — hoje é referência de compêndio, aplicada manualmente pelo Mestre",
+  "Jornada (hex-crawl de Eriador)",
+];
+
+const UM_ANEL_STEPS = [
+  {
+    title: "Crie sua conta",
+    text: (
+      <>
+        Clique em <strong>Entrar</strong> no topo e faça login com Google ou e-mail/senha.
+        Na primeira vez, você pode escolher um apelido para aparecer na mesa.
+      </>
+    ),
+    href: ENTRAR_PATH,
+    linkLabel: "Entrar",
+  },
+  {
+    title: "Crie ou entre numa aventura",
+    text: (
+      <>
+        Em <strong>Suas mesas</strong>, crie uma aventura do Um Anel como mestre ou entre com o
+        código que o mestre enviou.
+      </>
+    ),
+    href: UM_ANEL_MESAS_PATH,
+    linkLabel: "Suas mesas",
+  },
+  {
+    title: "Monte seu aventureiro",
+    text: (
+      <>
+        Dentro da aventura, use o assistente de 9 passos: Cultura, Vocação, atributos, Perícias e
+        Equipamento de Guerra. A ficha fica salva na sua conta.
+      </>
+    ),
+    href: UM_ANEL_MESAS_PATH,
+    linkLabel: "Suas mesas",
+  },
+  {
+    title: "Abra a sala VTT",
+    text: (
+      <>
+        Na aventura, abra a mesa VTT. Compartilhe o link de convite para os jogadores colocarem o
+        aventureiro no mapa; o Mestre invoca adversários direto do bestiário.
+      </>
+    ),
+    href: UM_ANEL_MESAS_PATH,
+    linkLabel: "Suas mesas",
+  },
+] as const;
+
+const UM_ANEL_NAV_ITEMS = [
+  {
+    icon: IconHome,
+    label: "Início",
+    path: "/",
+    text: "Página principal com visão geral do hub MXDRPG.",
+  },
+  {
+    icon: IconScroll,
+    label: "Sistema",
+    path: "/sistema?sistema=um-anel",
+    text: "Este guia — como jogar, navegar e o que já está disponível no Um Anel.",
+  },
+  {
+    icon: IconBook,
+    label: "Compêndios",
+    path: "/compendios?sistema=um-anel",
+    text: "Culturas, bestiário, Tesouro, Marcos e demais regras da 2ª edição, sempre sincronizados.",
+  },
+  {
+    icon: IconUser,
+    label: "Perfil",
+    path: "/conta",
+    text: "Foto, apelido, amigos e preferências da conta.",
+  },
+  {
+    icon: IconChat,
+    label: "Mensagens",
+    path: null,
+    text: "Chat privado com amigos — ícone no topo da barra, ao lado do perfil.",
+  },
+  {
+    icon: IconShield,
+    label: "Mesas",
+    path: MESAS_HUB_PATH,
+    text: "Hub MXDRPG — escolha o sistema de RPG e abra suas mesas.",
+  },
+  {
+    icon: IconShield,
+    label: "O Um Anel",
+    path: UM_ANEL_MESAS_PATH,
+    text: "Mesas do sistema O Um Anel: aventuras, convites e sala VTT.",
+  },
+] as const;
+
+const UM_ANEL_VTT_BASICS = [
+  {
+    icon: IconMove,
+    title: "Tokens no mapa",
+    text: "Aventureiros e adversários aparecem como tokens no grid. Selecione pra ver Resistência, Bloqueio e Proteção. Quem está na vez tem anel dourado.",
+  },
+  {
+    icon: IconMove,
+    title: "Movimento",
+    text: "No seu turno, clique e mova o token pelo mapa — o Um Anel não usa Pontos de Ação, o combate é posicional.",
+  },
+  {
+    icon: IconSword,
+    title: "Combate",
+    text: "Atacar abre um popup próprio: escolha a arma equipada e o alvo. O motor resolve Dado de Proeza + Dados de Sucesso, Golpe Perfurante e Ferida automaticamente.",
+  },
+  {
+    icon: IconSheet,
+    title: "Ficha",
+    text: "Abra pelo painel Personagens jogáveis. Resistência, Esperança, Sombra e Fadiga ficam sempre visíveis, com ajuste direto na ficha popup.",
+  },
+  {
+    icon: IconChat,
+    title: "Chat e dados",
+    text: "Rolagens de Perícia e ataques aparecem no chat com o resultado narrativo completo e o ícone do Dado de Proeza (d12).",
+  },
+  {
+    icon: IconRun,
+    title: "Ferramentas do mestre",
+    text: "Invoque adversários do bestiário completo, consulte Coisas Sem Nome pra criar um monstro único, e Marcos/Patronos direto no compêndio da mesa.",
+  },
+] as const;
+
+export default async function SistemaPage({ searchParams }: Props) {
+  const { sistema } = await searchParams;
+  const systemId = normalizeRpgSystemId(sistema);
+  const isTor = systemId === "um-anel";
+
+  const STEPS = isTor ? UM_ANEL_STEPS : ELDARIN_STEPS;
+  const NAV_ITEMS = isTor ? UM_ANEL_NAV_ITEMS : ELDARIN_NAV_ITEMS;
+  const VTT_BASICS = isTor ? UM_ANEL_VTT_BASICS : ELDARIN_VTT_BASICS;
+  const LIVE = isTor ? UM_ANEL_LIVE : ELDARIN_LIVE;
+  const NEXT = isTor ? UM_ANEL_NEXT : ELDARIN_NEXT;
+  const novaFichaHref = isTor ? UM_ANEL_MESAS_PATH : "/personagem/novo";
+  const sistemaHref = isTor ? ELDARIN_MESAS_PATH : UM_ANEL_MESAS_PATH;
+  const sistemaLabel = isTor ? "Eldarin" : "O Um Anel";
+
   return (
     <div className="page-wrap">
+      <RpgSystemContentTabs current={systemId} basePath="/sistema" />
       <header className="page-header">
-        <p className="eyebrow">Guia do jogador</p>
-        <h1 className="display-lg text-gradient">Como jogar no Eldarin VTT</h1>
+        <p className="eyebrow">Guia do jogador · hub MXDRPG</p>
+        <h1 className="display-lg text-gradient">
+          Como jogar {isTor ? "O Um Anel" : "Eldarin"} no MXDRPG
+        </h1>
         <p className="lead">
-          Do cadastro à mesa VTT: aprenda a navegar o site, entrar numa aventura e usar tokens,
-          movimento e combate por Pontos de Ação — alinhado ao livro Eldarin v4.
+          {isTor
+            ? "Do cadastro à mesa VTT: aprenda a navegar o site, entrar numa aventura e usar tokens, movimento e combate por Dado de Proeza — alinhado à 2ª edição de The One Ring."
+            : "Do cadastro à mesa VTT: aprenda a navegar o site, entrar numa aventura e usar tokens, movimento e combate por Pontos de Ação — alinhado ao livro Eldarin v4."}
         </p>
       </header>
 
@@ -232,7 +398,9 @@ export default function SistemaPage() {
       <section className="glass sistema-section" style={{ padding: "1.25rem 1.5rem" }}>
         <h2>Na mesa VTT</h2>
         <p className="sistema-section__lead">
-          O essencial do jogo tático: grid quadrado, turnos e fichas integradas ao combate.
+          {isTor
+            ? "O essencial do jogo tático do Um Anel: grid quadrado, turnos por posição e ficha integrada ao combate."
+            : "O essencial do jogo tático: grid quadrado, turnos e fichas integradas ao combate."}
         </p>
         <div className="sistema-vtt-grid">
           {VTT_BASICS.map((card) => {
@@ -270,22 +438,22 @@ export default function SistemaPage() {
       </section>
 
       <div className="action-row" style={{ marginTop: "2rem" }}>
-        <Link href="/personagem/novo" className="btn btn-ghost">
-          Nova ficha
+        <Link href={novaFichaHref} className="btn btn-ghost">
+          {isTor ? "Suas mesas" : "Nova ficha"}
         </Link>
         <Link href={MESAS_HUB_PATH} className="btn btn-ghost">
           Hub de mesas
         </Link>
-        <Link href={ELDARIN_MESAS_PATH} className="btn btn-ghost">
-          Eldarin
+        <Link href={sistemaHref} className="btn btn-ghost">
+          {sistemaLabel}
         </Link>
-        <Link href="/compendios" className="btn btn-ghost">
+        <Link href={isTor ? "/compendios?sistema=um-anel" : "/compendios"} className="btn btn-ghost">
           Compêndios
         </Link>
         <Link href="/aplicativo" className="btn btn-ghost">
           Instalar app
         </Link>
-        <Link href="/mundo" className="btn btn-ghost">
+        <Link href={isTor ? "/mundo?sistema=um-anel" : "/mundo"} className="btn btn-ghost">
           Atlas e panteão
         </Link>
       </div>

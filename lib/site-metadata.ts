@@ -25,6 +25,7 @@ export const STATIC_TAB_TITLES: Record<string, string> = {
   "/entrar": "Entrar",
   "/mesas": "Escolher RPG",
   "/rpg/eldarin": "Eldarin — suas mesas",
+  "/rpg/um-anel": "O Um Anel — suas mesas",
   "/mesa": "Mesa virtual",
   "/compendios": "Compêndios",
   "/amigos": "Amigos",

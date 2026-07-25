@@ -73,6 +73,48 @@
   height: auto;
 }
 
+.landing-preview__caption {
+  margin: 0.6rem 0 0;
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  text-align: center;
+}
+
+.landing-hero__systems {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.6rem;
+  list-style: none;
+  margin: 1.5rem 0 0;
+  padding: 0;
+}
+
+.landing-hero__system-chip {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--glass-border);
+  background: var(--glass);
+  color: var(--text);
+  text-decoration: none;
+  font-weight: 600;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.landing-hero__system-chip:hover {
+  border-color: var(--accent-dim);
+  background: var(--glass-hover, var(--glass));
+}
+
+.landing-hero__system-chip span {
+  font-size: 0.72rem;
+  font-weight: 400;
+  color: var(--text-muted);
+}
+
 /* Scroll hint — seta com bounce */
 .landing-scroll-hint {
   position: absolute;

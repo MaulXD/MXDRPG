@@ -208,7 +208,7 @@ export function CharacterCombatHud({
 
           <div className="hud-stats">
             {token.defesa != null ? <HudCaShield value={token.defesa} /> : null}
-            {canViewPa ? <PaHudMeter token={token} variant="hud" /> : null}
+            {canViewPa && !token.torCombat ? <PaHudMeter token={token} variant="hud" /> : null}
             {token.chi != null ? <ChiHudMeter token={token} /> : null}
           </div>
         </div>

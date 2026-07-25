@@ -6,15 +6,24 @@ import type { RoomApiPayload } from "@/hooks/useRoomSync";
 import { useCombatModeToggle } from "@/hooks/vtt/useCombatModeToggle";
 import { normalizeRoomSettings } from "@/lib/room/settings";
 import type { RoomSnapshot } from "@/lib/room/types";
+import type { RpgSystemId } from "@/lib/rpg/systems";
 
 type Props = {
   roomId: string;
   snapshot: RoomSnapshot | null | undefined;
   combatActive: boolean;
+  rpgSystemId?: RpgSystemId;
   onApplyUpdate: (payload: RoomApiPayload, opts?: { force?: boolean; immediate?: boolean }) => void;
 };
 
-export function GmMesaModeToggle({ roomId, snapshot, combatActive, onApplyUpdate }: Props) {
+export function GmMesaModeToggle({
+  roomId,
+  snapshot,
+  combatActive,
+  rpgSystemId = "eldarin",
+  onApplyUpdate,
+}: Props) {
+  const isTor = rpgSystemId === "um-anel";
   const toast = useVttToast();
   const { setCombatMode, busy } = useCombatModeToggle(roomId, snapshot, onApplyUpdate);
   const resolvedCombatActive = snapshot
@@ -45,7 +54,11 @@ export function GmMesaModeToggle({ roomId, snapshot, combatActive, onApplyUpdate
         className={`gm-mesa-mode-toggle__option${!resolvedCombatActive ? " gm-mesa-mode-toggle__option--active" : ""}`}
         aria-pressed={!resolvedCombatActive}
         disabled={busy}
-        title="Exploração livre: movimento sem PA, magias sem custo de turno"
+        title={
+          isTor
+            ? "Exploração livre: movimento sem restrição de turno"
+            : "Exploração livre: movimento sem PA, magias sem custo de turno"
+        }
         onClick={() => void setMode(false)}
       >
         <IconScroll size={15} />
@@ -56,7 +69,11 @@ export function GmMesaModeToggle({ roomId, snapshot, combatActive, onApplyUpdate
         className={`gm-mesa-mode-toggle__option${resolvedCombatActive ? " gm-mesa-mode-toggle__option--active" : ""}`}
         aria-pressed={resolvedCombatActive}
         disabled={busy}
-        title="Combate: PA, iniciativa e ações só na vez de cada token"
+        title={
+          isTor
+            ? "Combate: ordem de turno por posição no mapa, ações só na vez de cada token"
+            : "Combate: PA, iniciativa e ações só na vez de cada token"
+        }
         onClick={() => void setMode(true)}
       >
         <IconSword size={15} />
@@ -68,17 +85,21 @@ export function GmMesaModeToggle({ roomId, snapshot, combatActive, onApplyUpdate
 
 type IndicatorProps = {
   combatActive: boolean;
+  rpgSystemId?: RpgSystemId;
 };
 
 /** Indicador somente leitura para jogadores. */
-export function MesaModeIndicator({ combatActive }: IndicatorProps) {
+export function MesaModeIndicator({ combatActive, rpgSystemId = "eldarin" }: IndicatorProps) {
+  const isTor = rpgSystemId === "um-anel";
   return (
     <span
       className={`mesa-mode-indicator${combatActive ? " mesa-mode-indicator--combat" : " mesa-mode-indicator--adventure"}`}
       title={
         combatActive
           ? "Modo combate — aguarde sua vez para mover e agir"
-          : "Modo aventura — movimento e magias livres"
+          : isTor
+            ? "Modo aventura — movimento livre"
+            : "Modo aventura — movimento e magias livres"
       }
     >
       {combatActive ? (
