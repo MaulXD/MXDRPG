@@ -19,32 +19,37 @@ export type TorSkillDef = {
   id: TorSkillId;
   label: string;
   group: TorSkillGroup;
+  description: string;
 };
 
 export const SKILLS: TorSkillDef[] = [
-  { id: "imponencia", label: "Imponência", group: "forca" },
-  { id: "atletismo", label: "Atletismo", group: "forca" },
-  { id: "percepcao", label: "Percepção", group: "forca" },
-  { id: "caca", label: "Caça", group: "forca" },
-  { id: "canto", label: "Canto", group: "forca" },
-  { id: "oficio", label: "Ofício", group: "forca" },
-  { id: "encorajar", label: "Encorajar", group: "coracao" },
-  { id: "viajar", label: "Viajar", group: "coracao" },
-  { id: "perspicacia", label: "Perspicácia", group: "coracao" },
-  { id: "cura", label: "Cura", group: "coracao" },
-  { id: "cortesia", label: "Cortesia", group: "coracao" },
-  { id: "batalha", label: "Batalha", group: "coracao" },
-  { id: "persuasao", label: "Persuasão", group: "argucia" },
-  { id: "furtividade", label: "Furtividade", group: "argucia" },
-  { id: "vasculhar", label: "Vasculhar", group: "argucia" },
-  { id: "explorar", label: "Explorar", group: "argucia" },
-  { id: "enigma", label: "Enigma", group: "argucia" },
-  { id: "saber", label: "Saber", group: "argucia" },
+  { id: "imponencia", label: "Imponência", group: "forca", description: "Causar respeito, admiração ou temor em quem te vê pela primeira vez — carisma nato ou uma entrada dramática." },
+  { id: "atletismo", label: "Atletismo", group: "forca", description: "Correr, saltar, escalar e nadar — a habilidade física geral de um aventureiro." },
+  { id: "percepcao", label: "Percepção", group: "forca", description: "Notar algo inesperado ou fora do comum — reação e sentidos aguçados, ótima pra vigia da Companhia." },
+  { id: "caca", label: "Caça", group: "forca", description: "Perseguir uma criatura, seguir rastros, armar armadilhas e treinar cães/aves de caça." },
+  { id: "canto", label: "Canto", group: "forca", description: "Recitar poemas, cantar, tocar instrumentos e compor obras novas." },
+  { id: "oficio", label: "Ofício", group: "forca", description: "Fabricar ou consertar coisas com as mãos — de uma roda de carroça a uma jangada improvisada." },
+  { id: "encorajar", label: "Encorajar", group: "coracao", description: "Instilar sentimentos positivos nos outros pelo exemplo, carisma e convicção pessoal — especialmente eficaz em multidões." },
+  { id: "viajar", label: "Viajar", group: "coracao", description: "Estimar a duração de uma jornada, ler mapas e avaliar se um grupo de estranhos na estrada é seguro." },
+  { id: "perspicacia", label: "Perspicácia", group: "coracao", description: "Enxergar além das aparências e reconhecer pensamentos e crenças ocultas de outra pessoa." },
+  { id: "cura", label: "Cura", group: "coracao", description: "Aliviar dor e aplicar remédios — ossos, ervas e unguentos — pra restaurar a saúde de quem sofre." },
+  { id: "cortesia", label: "Cortesia", group: "coracao", description: "Observar as normas de decência e convenções dos Povos Livres — cria uma base amistosa até com estranhos." },
+  { id: "batalha", label: "Batalha", group: "coracao", description: "Noção tática de combate e capacidade de manobrar em confronto — ganhar vantagem contra grupos ou liderar tropas." },
+  { id: "persuasao", label: "Persuasão", group: "argucia", description: "Convencer outros de uma ideia ou curso de ação com raciocínio — mais lento que Encorajar, mas com efeito mais duradouro." },
+  { id: "furtividade", label: "Furtividade", group: "argucia", description: "Agir de forma furtiva ou secreta — esconder-se, mover-se em silêncio e seguir outros sem ser notado." },
+  { id: "vasculhar", label: "Vasculhar", group: "argucia", description: "Examinar algo de perto e com atenção — vasculhar um livro, procurar portas escondidas ou rastros no chão." },
+  { id: "explorar", label: "Explorar", group: "argucia", description: "Orientar-se em território desconhecido — encontrar o caminho, lidar com mau tempo e escolher onde acampar." },
+  { id: "enigma", label: "Enigma", group: "argucia", description: "Tirar conclusões de informações desconexas por dedução e intuição — também usada pra falar por enigmas." },
+  { id: "saber", label: "Saber", group: "argucia", description: "Amor pelo conhecimento — terras distantes, genealogias, histórias antigas — qualquer ação que envolva erudição." },
 ];
 
 export const SKILL_LABEL: Record<TorSkillId, string> = Object.fromEntries(
   SKILLS.map((s) => [s.id, s.label])
 ) as Record<TorSkillId, string>;
+
+export const SKILL_BY_ID: Record<TorSkillId, TorSkillDef> = Object.fromEntries(
+  SKILLS.map((s) => [s.id, s])
+) as Record<TorSkillId, TorSkillDef>;
 
 export const ATTRIBUTE_LABEL: Record<TorAttributeKey, string> = {
   forca: "Força",
@@ -516,3 +521,24 @@ export const CALLING_BY_ID: Record<TorCallingId, TorCallingDef> = Object.fromEnt
 ) as Record<TorCallingId, TorCallingDef>;
 
 export const ENEMY_LORE_OPTIONS = ["Homens Maus", "Orcs", "Aranhas", "Trolls", "Wargs", "Mortos-Vivos"];
+
+function weaponAllowedForCulture(weapon: TorWeaponDef, culture: TorCultureDef): boolean {
+  if (culture.allowedWeaponIdsOnly && !culture.allowedWeaponIdsOnly.includes(weapon.id)) return false;
+  if (culture.restrictedWeaponIds?.includes(weapon.id)) return false;
+  return true;
+}
+
+/** Armas de uma Proficiência de Combate, já filtradas pelas restrições da Cultura. */
+export function weaponsForProficiency(
+  prof: TorCombatProficiencyId,
+  cultureId: TorCultureId
+): TorWeaponDef[] {
+  const culture = CULTURE_BY_ID[cultureId];
+  return WEAPONS.filter((w) => w.proficiency === prof && weaponAllowedForCulture(w, culture));
+}
+
+/** Escudos disponíveis pra uma Cultura (Hobbits/Anões não usam Grande Escudo). */
+export function shieldsForCulture(cultureId: TorCultureId): TorShieldDef[] {
+  const culture = CULTURE_BY_ID[cultureId];
+  return SHIELDS.filter((s) => !culture.restrictedWeaponIds?.includes(s.id));
+}

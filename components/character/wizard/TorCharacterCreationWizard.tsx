@@ -3,26 +3,46 @@
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { WizardProgress } from "@/components/character/wizard/WizardProgress";
+import { WizardHoverTip } from "@/components/character/wizard/WizardHoverTip";
 import {
+  ARMOUR_BY_ID,
+  ARMOURS,
   CALLINGS,
   CULTURES,
   DISTINCTIVE_FEATURE_BY_ID,
   ENEMY_LORE_OPTIONS,
+  HELM,
+  SHIELD_BY_ID,
+  SKILL_BY_ID,
   SKILL_LABEL,
   STARTING_REWARDS,
   STARTING_VIRTUES,
   COMBAT_PROFICIENCY_LABEL,
   ATTRIBUTE_LABEL,
+  WEAPON_BY_ID,
+  shieldsForCulture,
+  weaponsForProficiency,
 } from "@/lib/character/um-anel/data";
 import type { TorCombatProficiencyId } from "@/lib/character/um-anel/types";
 import {
+  activeCombatProficiencies,
   EMPTY_TOR_WIZARD_DRAFT,
   validateTorWizardDraft,
   type TorCharacterWizardDraft,
 } from "@/lib/character/um-anel/wizard-types";
 import "@/components/character/wizard/wizard.css";
 
-const STEPS = ["Conceito", "Cultura", "Atributos", "Vocação", "Combate", "Traços", "Dádivas", "Revisão"] as const;
+const STEPS = [
+  "Conceito",
+  "Cultura",
+  "Atributos",
+  "Vocação",
+  "Combate",
+  "Traços",
+  "Dádivas",
+  "Equipamento",
+  "Revisão",
+] as const;
 
 const STEP_HINTS: Record<(typeof STEPS)[number], string> = {
   Conceito: "Nome do aventureiro — biografia é opcional.",
@@ -32,8 +52,17 @@ const STEP_HINTS: Record<(typeof STEPS)[number], string> = {
   Combate: "Escolha suas Proficiências de Combate iniciais.",
   Traços: "Escolha 2 Traços Distintivos da lista da Cultura.",
   Dádivas: "Toda ficha começa com 1 Recompensa e 1 Virtude.",
+  Equipamento: "Uma arma por Proficiência de Combate e uma armadura inicial.",
   Revisão: "Confira tudo e crie — você pode editar depois.",
 };
+
+function SkillPickLabel({ skillId }: { skillId: import("@/lib/character/um-anel/types").TorSkillId }) {
+  return (
+    <WizardHoverTip text={SKILL_BY_ID[skillId]?.description}>
+      <strong>{SKILL_LABEL[skillId]}</strong>
+    </WizardHoverTip>
+  );
+}
 
 type Props = {
   slotsLeft: number;
@@ -111,6 +140,13 @@ export function TorCharacterCreationWizard({
         if (!draft.reward) return "Escolha uma Recompensa";
         if (!draft.virtue) return "Escolha uma Virtude";
         return null;
+      case "Equipamento": {
+        for (const prof of activeCombatProficiencies(draft)) {
+          if (!draft.weaponChoices[prof]) return "Escolha uma arma pra cada Proficiência de Combate";
+        }
+        if (!draft.armourId) return "Escolha uma armadura inicial";
+        return null;
+      }
       default:
         return null;
     }
@@ -303,7 +339,7 @@ export function TorCharacterCreationWizard({
                           className={`char-wizard-pick${draft.cultureFavouredSkill === skillId ? " char-wizard-pick--on" : ""}`}
                           onClick={() => patch({ cultureFavouredSkill: skillId })}
                         >
-                          <strong>{SKILL_LABEL[skillId]}</strong>
+                          <SkillPickLabel skillId={skillId} />
                         </button>
                       ))}
                     </div>
@@ -395,7 +431,7 @@ export function TorCharacterCreationWizard({
                               }
                             }}
                           >
-                            <strong>{SKILL_LABEL[skillId]}</strong>
+                            <SkillPickLabel skillId={skillId} />
                           </button>
                         );
                       })}
@@ -437,7 +473,11 @@ export function TorCharacterCreationWizard({
                             className={`char-wizard-pick${draft.combatProficiencyChoiceA === id ? " char-wizard-pick--on" : ""}`}
                             onClick={() => patch({ combatProficiencyChoiceA: id })}
                           >
-                            <strong>{COMBAT_PROFICIENCY_LABEL[id]}</strong>
+                            <WizardHoverTip
+                              text={`Armas: ${weaponsForProficiency(id, culture.id).map((w) => w.label).join(", ")}`}
+                            >
+                              <strong>{COMBAT_PROFICIENCY_LABEL[id]}</strong>
+                            </WizardHoverTip>
                           </button>
                         ))}
                       </div>
@@ -452,7 +492,11 @@ export function TorCharacterCreationWizard({
                             className={`char-wizard-pick${draft.combatProficiencyChoiceB === id ? " char-wizard-pick--on" : ""}`}
                             onClick={() => patch({ combatProficiencyChoiceB: id })}
                           >
-                            <strong>{COMBAT_PROFICIENCY_LABEL[id]}</strong>
+                            <WizardHoverTip
+                              text={`Armas: ${weaponsForProficiency(id, culture.id).map((w) => w.label).join(", ")}`}
+                            >
+                              <strong>{COMBAT_PROFICIENCY_LABEL[id]}</strong>
+                            </WizardHoverTip>
                           </button>
                         ))}
                       </div>
@@ -535,9 +579,106 @@ export function TorCharacterCreationWizard({
               </>
             ) : null}
 
+            {stepLabel === "Equipamento" ? (
+              <>
+                <StepHead index={7} title="Equipamento" />
+                {culture ? (
+                  <>
+                    {activeCombatProficiencies(draft).map((prof) => (
+                      <div key={prof} className="char-wizard-field">
+                        <label>Arma — {COMBAT_PROFICIENCY_LABEL[prof]}</label>
+                        <div className="char-wizard-pick-grid">
+                          {weaponsForProficiency(prof, culture.id).map((w) => (
+                            <button
+                              key={w.id}
+                              type="button"
+                              className={`char-wizard-pick${draft.weaponChoices[prof] === w.id ? " char-wizard-pick--on" : ""}`}
+                              onClick={() =>
+                                patch({ weaponChoices: { ...draft.weaponChoices, [prof]: w.id } })
+                              }
+                            >
+                              <strong>{w.label}</strong>
+                              <span>
+                                Dano {w.damage} · Ferimento {w.injury ?? "—"} · Carga {w.load}
+                                {w.ranged ? " · À distância" : ""}
+                              </span>
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+
+                    <div className="char-wizard-field">
+                      <label>Armadura inicial</label>
+                      <div className="char-wizard-pick-grid">
+                        {ARMOURS.map((a) => (
+                          <button
+                            key={a.id}
+                            type="button"
+                            className={`char-wizard-pick${draft.armourId === a.id ? " char-wizard-pick--on" : ""}`}
+                            onClick={() => patch({ armourId: a.id })}
+                          >
+                            <strong>{a.label}</strong>
+                            <span>Proteção {a.protection} · Carga {a.load}</span>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="char-wizard-field">
+                      <label>Elmo</label>
+                      <div className="char-wizard-pick-grid">
+                        <button
+                          type="button"
+                          className={`char-wizard-pick${!draft.helm ? " char-wizard-pick--on" : ""}`}
+                          onClick={() => patch({ helm: false })}
+                        >
+                          <strong>Sem elmo</strong>
+                        </button>
+                        <button
+                          type="button"
+                          className={`char-wizard-pick${draft.helm ? " char-wizard-pick--on" : ""}`}
+                          onClick={() => patch({ helm: true })}
+                        >
+                          <strong>{HELM.label}</strong>
+                          <span>Proteção {HELM.protection} · Carga {HELM.load}</span>
+                        </button>
+                      </div>
+                    </div>
+
+                    <div className="char-wizard-field">
+                      <label>Escudo</label>
+                      <div className="char-wizard-pick-grid">
+                        <button
+                          type="button"
+                          className={`char-wizard-pick${!draft.shieldId ? " char-wizard-pick--on" : ""}`}
+                          onClick={() => patch({ shieldId: null })}
+                        >
+                          <strong>Sem escudo</strong>
+                        </button>
+                        {shieldsForCulture(culture.id).map((s) => (
+                          <button
+                            key={s.id}
+                            type="button"
+                            className={`char-wizard-pick${draft.shieldId === s.id ? " char-wizard-pick--on" : ""}`}
+                            onClick={() => patch({ shieldId: s.id })}
+                          >
+                            <strong>{s.label}</strong>
+                            <span>Aparar +{s.parryModifier} · Carga {s.load}</span>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  <p className="char-wizard-meta">Escolha uma Cultura primeiro.</p>
+                )}
+              </>
+            ) : null}
+
             {stepLabel === "Revisão" ? (
               <>
-                <StepHead index={7} title="Revisão" />
+                <StepHead index={8} title="Revisão" />
                 {(() => {
                   const invalid = validateTorWizardDraft(draft);
                   if (invalid) {
@@ -560,6 +701,15 @@ export function TorCharacterCreationWizard({
                       </dd>
                       <dt>Traços Distintivos</dt>
                       <dd>{draft.distinctiveFeatures.map((id) => DISTINCTIVE_FEATURE_BY_ID[id]?.label).join(", ")}</dd>
+                      <dt>Equipamento</dt>
+                      <dd>
+                        {Object.values(draft.weaponChoices)
+                          .map((id) => WEAPON_BY_ID[id!]?.label)
+                          .join(", ")}
+                        {draft.armourId ? ` · ${ARMOUR_BY_ID[draft.armourId]?.label}` : ""}
+                        {draft.helm ? ` · ${HELM.label}` : ""}
+                        {draft.shieldId ? ` · ${SHIELD_BY_ID[draft.shieldId]?.label}` : ""}
+                      </dd>
                     </dl>
                   );
                 })()}

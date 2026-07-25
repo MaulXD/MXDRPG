@@ -17,6 +17,13 @@ export type TorCharacterWizardDraft = {
   distinctiveFeatures: string[];
   reward: string | null;
   virtue: string | null;
+  /** Uma arma por Proficiência de Combate com rating > 0 (livro: "one weapon for each
+   * Combat Proficiency for which they have a rating"). */
+  weaponChoices: Partial<Record<TorCombatProficiencyId, string>>;
+  /** Toda ficha inicial vem com uma armadura (livro: "starts with one suit of armour"). */
+  armourId: string | null;
+  helm: boolean;
+  shieldId: string | null;
   biography: string;
 };
 
@@ -35,8 +42,19 @@ export const EMPTY_TOR_WIZARD_DRAFT: TorCharacterWizardDraft = {
   distinctiveFeatures: [],
   reward: null,
   virtue: null,
+  weaponChoices: {},
+  armourId: null,
+  helm: false,
+  shieldId: null,
   biography: "",
 };
+
+/** Proficiências ativas (rating > 0) — deduplica quando A e B caem na mesma. */
+export function activeCombatProficiencies(
+  draft: Pick<TorCharacterWizardDraft, "combatProficiencyChoiceA" | "combatProficiencyChoiceB">
+): TorCombatProficiencyId[] {
+  return [...new Set([draft.combatProficiencyChoiceA, draft.combatProficiencyChoiceB].filter((x): x is TorCombatProficiencyId => Boolean(x)))];
+}
 
 export function validateTorWizardDraft(draft: TorCharacterWizardDraft): string | null {
   if (!draft.name.trim()) return "Escolha um nome para o aventureiro";
@@ -56,5 +74,9 @@ export function validateTorWizardDraft(draft: TorCharacterWizardDraft): string |
   if (draft.distinctiveFeatures.length !== 2) return "Escolha 2 Traços Distintivos";
   if (!draft.reward) return "Escolha uma Recompensa inicial";
   if (!draft.virtue) return "Escolha uma Virtude inicial";
+  for (const prof of activeCombatProficiencies(draft)) {
+    if (!draft.weaponChoices[prof]) return "Escolha uma arma pra cada Proficiência de Combate";
+  }
+  if (!draft.armourId) return "Escolha uma armadura inicial";
   return null;
 }

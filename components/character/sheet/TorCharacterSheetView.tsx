@@ -15,6 +15,7 @@ import {
   STARTING_REWARDS,
   STARTING_VIRTUES,
   WEAPON_BY_ID,
+  WEAPONS,
 } from "@/lib/character/um-anel/data";
 import { rollTorCombatProficiencyCheck, rollTorSkillCheck } from "@/lib/character/um-anel/dice";
 import { attributeTN } from "@/lib/character/um-anel/rules";
@@ -186,7 +187,11 @@ export function TorCharacterSheetView({ character, interactive = false, onRoll, 
             <p className="tor-sheet__tn">NA {attributeTN(character.attributes[attr])}</p>
             <ul>
               {SKILLS.filter((s) => s.group === attr).map((s) => (
-                <li key={s.id} className={character.favouredSkills.includes(s.id) ? "is-favoured" : ""}>
+                <li
+                  key={s.id}
+                  className={character.favouredSkills.includes(s.id) ? "is-favoured" : ""}
+                  title={s.description}
+                >
                   <span>{s.label}</span>
                   <strong>{character.skills[s.id]}</strong>
                   {interactive ? (
@@ -205,7 +210,7 @@ export function TorCharacterSheetView({ character, interactive = false, onRoll, 
         <h3>Proficiências de Combate</h3>
         <ul className="tor-sheet__combat-list">
           {(Object.keys(COMBAT_PROFICIENCY_LABEL) as TorCombatProficiencyId[]).map((id) => (
-            <li key={id}>
+            <li key={id} title={`Armas: ${WEAPONS.filter((w) => w.proficiency === id).map((w) => w.label).join(", ")}`}>
               <span>{COMBAT_PROFICIENCY_LABEL[id]}</span>
               <strong>{character.combatProficiencies[id]}</strong>
               {interactive ? (
@@ -279,7 +284,7 @@ export function TorCharacterSheetView({ character, interactive = false, onRoll, 
               {character.warGear.map((item) => {
                 const weapon = WEAPON_BY_ID[item.weaponId];
                 return (
-                  <tr key={item.instanceId}>
+                  <tr key={item.instanceId} title={weapon?.notes}>
                     <td>{weapon?.label ?? item.weaponId}</td>
                     <td>{weapon?.damage}</td>
                     <td>{weapon?.injury ?? "—"}</td>

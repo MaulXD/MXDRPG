@@ -1,0 +1,30 @@
+.tor-world-lore__lead {
+  color: var(--text-muted);
+  max-width: 62ch;
+  margin-bottom: 1.25rem;
+}
+
+.tor-world-lore__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1rem;
+}
+
+.tor-world-lore__card {
+  background: var(--surface-inset);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  padding: 1rem 1.15rem;
+}
+
+.tor-world-lore__card h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1.05rem;
+}
+
+.tor-world-lore__card p {
+  margin: 0;
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}

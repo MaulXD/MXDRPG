@@ -1,8 +1,13 @@
-import { CALLING_BY_ID, CULTURE_BY_ID, SKILLS, STANDARDS_OF_LIVING } from "./data";
-import { computeDerivedStats } from "./rules";
-import type { TorCharacterSheet, TorCombatProficiencyRatings, TorSkillRatings } from "./types";
+import { CALLING_BY_ID, CULTURE_BY_ID, SKILLS, STANDARDS_OF_LIVING, WEAPON_BY_ID } from "./data";
+import { computeDerivedStats, computeLoad, shieldParryBonus } from "./rules";
+import type {
+  TorCharacterSheet,
+  TorCombatProficiencyRatings,
+  TorSkillRatings,
+  TorWarGearItem,
+} from "./types";
 import type { TorCharacterWizardDraft } from "./wizard-types";
-import { validateTorWizardDraft } from "./wizard-types";
+import { activeCombatProficiencies, validateTorWizardDraft } from "./wizard-types";
 
 function newId(prefix: string): string {
   return `${prefix}-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
@@ -51,6 +56,21 @@ export function buildTorCharacterFromWizard(
     distinctiveFeatures.push(`${calling.traitId}:${draft.enemyLoreChoice}`);
   }
 
+  const warGear: TorWarGearItem[] = activeCombatProficiencies(draft).map((prof) => {
+    const weaponId = draft.weaponChoices[prof]!;
+    const weapon = WEAPON_BY_ID[weaponId];
+    return {
+      instanceId: newId("gear"),
+      weaponId,
+      twoHanded: weapon?.twoHanded || undefined,
+    };
+  });
+  const armour = {
+    armourId: draft.armourId,
+    helm: draft.helm,
+    shieldId: draft.shieldId,
+  };
+
   const sheet: TorCharacterSheet = {
     id: newId("tor"),
     ownerId,
@@ -79,8 +99,8 @@ export function buildTorCharacterFromWizard(
     endurance: { value: derived.enduranceMax, max: derived.enduranceMax },
     hope: { value: derived.hopeMax, max: derived.hopeMax },
     parry: derived.parry,
-    shieldParryBonus: 0,
-    load: 0,
+    shieldParryBonus: shieldParryBonus(armour.shieldId),
+    load: computeLoad(warGear, armour, culture.id),
 
     shadow: 0,
     shadowScars: 0,
@@ -98,8 +118,8 @@ export function buildTorCharacterFromWizard(
     skillPoints: 0,
     fellowship: 1,
 
-    warGear: [],
-    armour: { armourId: null, helm: false, shieldId: null },
+    warGear,
+    armour,
     travellingGear: "",
     usefulItems: [],
   };

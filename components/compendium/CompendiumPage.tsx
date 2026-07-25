@@ -18,9 +18,10 @@ export function isCompendiumPackId(value: string): value is CompendiumPackId {
 
 type Props = {
   initialPackId?: CompendiumPackId;
+  topSlot?: import("react").ReactNode;
 };
 
-export async function CompendiumPage({ initialPackId }: Props) {
+export async function CompendiumPage({ initialPackId, topSlot }: Props) {
   const session = await getSession();
   const role = session?.user.role ?? null;
   const packs = getVisiblePacks(role);
@@ -34,6 +35,7 @@ export async function CompendiumPage({ initialPackId }: Props) {
 
   return (
     <div className="page-wrap page-hero">
+      {topSlot}
       <p className="eyebrow">Biblioteca Eldarin</p>
       <h1 className="display-lg">Compêndios</h1>
       <p style={{ color: "var(--text-muted)", maxWidth: "52ch", marginBottom: "2rem" }}>
