@@ -11,9 +11,19 @@ import { MesaFoundrySidebar } from "@/components/vtt/foundry/MesaFoundrySidebar"
 import { MesaRoomChatPanel } from "@/components/vtt/mesa/MesaRoomChatPanel";
 import { PlayableCharactersPanel } from "@/components/vtt/PlayableCharactersPanel";
 import { RoomInvitePanel } from "@/components/vtt/RoomInvitePanel";
+import type { RpgSystemId } from "@/lib/rpg/systems";
 // Ferramenta só do mestre, uso pouco frequente por sessão.
 const MonsterSpawnPanel = dynamic(
   () => import("@/components/vtt/MonsterSpawnPanel").then((m) => m.MonsterSpawnPanel),
+  { ssr: false }
+);
+// Compêndio — cada sistema tem o seu, carregado só quando o painel abre.
+const MesaEldarinCompendiumPanel = dynamic(
+  () => import("@/components/vtt/MesaEldarinCompendiumPanel").then((m) => m.MesaEldarinCompendiumPanel),
+  { ssr: false }
+);
+const TorCompendiumPage = dynamic(
+  () => import("@/components/compendium/TorCompendiumPage").then((m) => m.TorCompendiumPage),
   { ssr: false }
 );
 import type { CombatChatRevealPhase } from "@/lib/combat/chat-display";
@@ -30,6 +40,7 @@ export type MesaFoundryDockRailProps = {
   roomOwnerId: string;
   memberIds: string[];
   roomName?: string;
+  rpgSystemId?: RpgSystemId;
   fallbackScene: BattleScene;
   mapScene: BattleScene;
   mesaActors: RoomSnapshot["actors"];
@@ -70,6 +81,7 @@ export function MesaFoundryDockRail({
   roomOwnerId,
   memberIds,
   roomName,
+  rpgSystemId = "eldarin",
   fallbackScene,
   mapScene,
   mesaActors,
@@ -227,6 +239,27 @@ export function MesaFoundryDockRail({
               onSpawned={(snap) => onApplySnapshot(snap)}
               onOpenMonsterSheet={onOpenMonsterSheet}
             />
+          </div>
+        </FoundryDockPanel>
+      ) : null}
+
+      {!isFloating("compendium") ? (
+        <FoundryDockPanel
+          title="Compêndio"
+          open={panel("compendium").open}
+          minimized={panel("compendium").minimized}
+          className="foundry-dock-panel--compendium"
+          onClose={() => onClosePanel("compendium")}
+          onMinimize={() =>
+            panel("compendium").minimized ? onRestorePanel("compendium") : onMinimizePanel("compendium")
+          }
+        >
+          <div className="mesa-panel-scroll mesa-panel-scroll--rail">
+            {rpgSystemId === "um-anel" ? (
+              <TorCompendiumPage />
+            ) : (
+              <MesaEldarinCompendiumPanel roomId={roomId} />
+            )}
           </div>
         </FoundryDockPanel>
       ) : null}

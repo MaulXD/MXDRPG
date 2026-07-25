@@ -2001,3 +2001,21 @@ kubectl -n raul rollout status deployment/mxdrpg
 **Arquivos tocados:** `lib/character/um-anel/adversaries.ts` (4→21 entradas), `lib/character/um-anel/{treasure-types,treasure}.ts` (novos), `components/compendium/{TorCompendiumPage.tsx,tor-compendium.css}`, `components/vtt/vtt.css` (fix painel de convite).
 
 ---
+
+### 2026-07-25 (cont.) — Compêndio dentro da mesa (painel "Compêndio" no rail, Eldarin + Um Anel)
+
+**Pedido:** usuário reportou "compêndio não funcional pros jogadores verem o que precisarem dos personagens" — na prática, "não acho o menu"/"não carrega" dentro da mesa.
+
+**Diagnóstico:** `/compendios` (página avulsa) sempre funcionou sem trava de acesso. O problema real: existe desde antes desta sessão um componente `components/vtt/MesaCompendiumPanel.tsx` (wrapper de `CompendiumBrowser` pro rail da mesa), mas ele ficava pendurado num rail antigo (`MesaSideRail.tsx`) que não é mais renderizado em lugar nenhum — sobrou órfão quando a mesa foi redesenhada pro layout "Foundry" atual (`MesaFoundryDockRail`/`MesaFoundryFloatingWindows`). Ou seja: o acesso ao compêndio *de dentro da mesa* foi derrubado silenciosamente numa refatoração anterior, pro Eldarin e pro Um Anel igual — não é bug desta sessão, mas a causa raiz da reclamação.
+
+**Correção:**
+1. Novo ícone "Compêndio" no rail (`MesaRailIcon.tsx`/`MesaIconBar.tsx`), sempre visível (jogador e mestre, sem gate de `showGm`).
+2. Novo `MesaWindowId` `"compendium"` (`foundry-window-placement.ts`/`useFoundryWindows.ts`, dockável e flutuante — clique normal abre no rail, clique direito abre janela).
+3. Conteúdo despachado por `rpgSystemId` em `MesaFoundryDockRail.tsx` e `MesaFoundryFloatingWindows.tsx`: Um Anel → `TorCompendiumPage` direto (zero dependência de servidor, já é só dado estático); Eldarin → `MesaEldarinCompendiumPanel.tsx` (novo) buscando `/api/compendium?roomId=...` (nova rota, novo) — reaproveita `getVisiblePacks`/`getPackEntries` já existentes, mas calcula `isRoomGm` **por sala** (`canManageRoom`) em vez de só o papel global, porque o pacote "monstros" só aparece pro mestre daquela mesa especificamente (mesma regra da página avulsa).
+4. Verificado que isso não reabre a porta pro Um Anel puxar dado do Eldarin: o branch é `rpgSystemId === "um-anel" ? <TorCompendiumPage/> : <MesaEldarinCompendiumPanel/>` — cada um só importa o próprio lado.
+
+**Verificação:** `tsc --noEmit` + `npm run build` limpos.
+
+**Arquivos tocados:** novos — `app/api/compendium/route.ts`, `components/vtt/MesaEldarinCompendiumPanel.tsx`; editados — `components/vtt/foundry/{MesaRailIcon,MesaIconBar}.tsx`, `components/vtt/mesa/{MesaFoundryDockRail,MesaFoundryFloatingWindows}.tsx`, `components/vtt/MesaWorkspace.tsx`, `hooks/vtt/useFoundryWindows.ts`, `lib/vtt/foundry-window-placement.ts`.
+
+---

@@ -21,6 +21,7 @@ export const FOUNDRY_DOCK_PANEL_IDS: MesaWindowId[] = [
   "gm",
   "dungeon",
   "status",
+  "compendium",
 ];
 
 type Registry = Partial<Record<MesaWindowId, FoundryWindowLayout>>;
@@ -43,6 +44,7 @@ const DEFAULT_LAYOUTS: Record<MesaWindowId, Omit<FoundryWindowLayout, "open" | "
   status: { x: 52, y: 48, width: 400, height: 520 },
   torParty: { x: 52, y: 48, width: 280, height: 420 },
   torFicha: { x: 360, y: 48, width: 460, height: 640 },
+  compendium: { x: 72, y: 40, width: 560, height: 620 },
 };
 
 // torParty abre por padrão em toda mesa, mas só é renderizado quando a mesa é

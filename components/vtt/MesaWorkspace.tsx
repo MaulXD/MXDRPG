@@ -578,6 +578,7 @@ function MesaWorkspaceInner({
             roomOwnerId={roomOwnerId}
             memberIds={memberIds}
             roomName={roomName}
+            rpgSystemId={rpgSystemId}
             fallbackScene={scene}
             mapScene={mapScene}
             mesaActors={mesaActors}

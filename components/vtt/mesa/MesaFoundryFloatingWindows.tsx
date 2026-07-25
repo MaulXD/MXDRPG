@@ -41,6 +41,15 @@ const MonsterSpawnPanel = dynamic(
   () => import("@/components/vtt/MonsterSpawnPanel").then((m) => m.MonsterSpawnPanel),
   { ssr: false }
 );
+// Compêndio — cada sistema tem o seu, carregado só quando o painel abre.
+const MesaEldarinCompendiumPanel = dynamic(
+  () => import("@/components/vtt/MesaEldarinCompendiumPanel").then((m) => m.MesaEldarinCompendiumPanel),
+  { ssr: false }
+);
+const TorCompendiumPage = dynamic(
+  () => import("@/components/compendium/TorCompendiumPage").then((m) => m.TorCompendiumPage),
+  { ssr: false }
+);
 // Só carregado em mesas do sistema "O Um Anel" — nunca no bundle de mesas Eldarin.
 const TorPlayableCharactersPanel = dynamic(
   () => import("@/components/vtt/TorPlayableCharactersPanel").then((m) => m.TorPlayableCharactersPanel),
@@ -321,6 +330,30 @@ export function MesaFoundryFloatingWindows(props: MesaFoundryFloatingWindowsProp
               onSpawned={(snap) => onApplySnapshot(snap)}
               onOpenMonsterSheet={onOpenMonsterSheet}
             />
+          </div>
+        </FoundryWindow>
+      ) : null}
+
+      {isFloating("compendium") ? (
+        <FoundryWindow
+          title="Compêndio"
+          layout={panel("compendium")}
+          className="foundry-window--compendium"
+          minWidth={420}
+          minHeight={320}
+          onLayoutChange={(patch) => onPatchWindow("compendium", patch)}
+          onFocus={() => onFocusWindow("compendium")}
+          onMinimize={() =>
+            panel("compendium").minimized ? onRestoreWindow("compendium") : onMinimizeWindow("compendium")
+          }
+          onClose={() => onCloseWindow("compendium")}
+        >
+          <div className="mesa-panel-scroll mesa-panel-scroll--rail">
+            {rpgSystemId === "um-anel" ? (
+              <TorCompendiumPage />
+            ) : (
+              <MesaEldarinCompendiumPanel roomId={roomId} />
+            )}
           </div>
         </FoundryWindow>
       ) : null}

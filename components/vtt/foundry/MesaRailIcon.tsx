@@ -11,7 +11,8 @@ export type MesaRailIconName =
   | "gm"
   | "spawn"
   | "invite"
-  | "status";
+  | "status"
+  | "compendium";
 
 type Props = {
   name: MesaRailIconName;
@@ -201,6 +202,23 @@ export function MesaRailIcon({ name, className = "foundry-icon-bar__icon" }: Pro
           <circle cx="18.5" cy="19.5" r="2.75" {...S} />
           <path d="M8.1 10.6 15.9 5.9" {...S} />
           <path d="M8.1 13.4 15.9 18.1" {...S} />
+        </RailSvg>
+      );
+
+    case "compendium":
+      return (
+        <RailSvg className={className}>
+          <path
+            d="M12 6.2c-1.5-1.1-3.6-1.7-5.8-1.7-.9 0-1.7.1-2.2.3v13.4c.5-.2 1.3-.3 2.2-.3 2.2 0 4.3.6 5.8 1.7"
+            {...S}
+            fill="color-mix(in srgb, currentColor 9%, transparent)"
+          />
+          <path
+            d="M12 6.2c1.5-1.1 3.6-1.7 5.8-1.7.9 0 1.7.1 2.2.3v13.4c-.5-.2-1.3-.3-2.2-.3-2.2 0-4.3.6-5.8 1.7"
+            {...S}
+            fill="color-mix(in srgb, currentColor 6%, transparent)"
+          />
+          <path d="M12 6.2V19.9" {...S} opacity="0.6" />
         </RailSvg>
       );
 
