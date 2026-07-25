@@ -30,7 +30,7 @@ export function normalizeTorCharacter(raw: TorCharacterSheet): TorCharacterSheet
     parry: raw.parry ?? derived.parry,
     shieldParryBonus: raw.shieldParryBonus ?? 0,
     conditions: {
-      // Cansado/Deplorável são derivados das regras (Carga vs Resistência, Sombra vs Esperança
+      // Exausto/Arrasado são derivados das regras (Carga vs Resistência, Sombra vs Esperança
       // atual) — não ficam a cargo de um toggle manual. Ferido continua manual (evento de jogo).
       weary: endurance.value <= load,
       miserable: shadow >= hope.value,

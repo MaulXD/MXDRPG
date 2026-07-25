@@ -35,6 +35,22 @@ type Props = {
   onResourceChange?: (patch: TorResourcePatch) => void;
 };
 
+const PIP_MAX = 6;
+
+/** Losangos de graduação, no estilo da ficha impressa oficial (favorecida = losangos vermelhos). */
+function RatingPips({ value, favoured }: { value: number; favoured?: boolean }) {
+  const filled = Math.min(value, PIP_MAX);
+  const overflow = value - PIP_MAX;
+  return (
+    <span className={`tor-pips${favoured ? " is-favoured" : ""}`} aria-label={`Graduação ${value}`}>
+      {Array.from({ length: PIP_MAX }, (_, i) => (
+        <span key={i} className={`tor-pip${i < filled ? " tor-pip--on" : ""}`} aria-hidden />
+      ))}
+      {overflow > 0 ? <em className="tor-pips__overflow">+{overflow}</em> : null}
+    </span>
+  );
+}
+
 function Stepper({
   label,
   value,
@@ -96,18 +112,42 @@ export function TorCharacterSheetView({ character, interactive = false, onRoll, 
 
   return (
     <div className="tor-sheet">
-      <header className="tor-sheet__header">
-        <div>
-          <p className="tor-sheet__eyebrow">O Um Anel · {culture?.name}</p>
-          <h1>{character.name}</h1>
-          <p className="tor-sheet__sub">
-            {calling?.name}
-            {character.age ? ` · ${character.age} anos` : ""} · Padrão de Vida: {standard?.label}
-          </p>
-        </div>
+      <header className="tor-sheet__masthead">
+        <h1>{character.name}</h1>
+        <p className="tor-sheet__masthead-meta">
+          <span>{culture?.name}</span>
+          <span aria-hidden>·</span>
+          <span>{calling?.name}</span>
+          {character.age ? (
+            <>
+              <span aria-hidden>·</span>
+              <span>{character.age} anos</span>
+            </>
+          ) : null}
+          <span aria-hidden>·</span>
+          <span>Padrão de Vida: {standard?.label}</span>
+        </p>
       </header>
 
       {character.biography ? <p className="tor-sheet__bio">{character.biography}</p> : null}
+
+      <section className="tor-sheet__grid-2">
+        <div className="tor-sheet__lore-card">
+          <h3>{culture?.blessingName}</h3>
+          <p>{culture?.blessingText}</p>
+          {culture?.extraTraitName ? (
+            <p className="tor-sheet__lore-extra">
+              <strong>{culture.extraTraitName}:</strong> {culture.extraTraitText}
+            </p>
+          ) : null}
+        </div>
+        <div className="tor-sheet__lore-card">
+          <h3>Caminho da Sombra</h3>
+          <p>
+            <strong>{shadowPath?.label}</strong> — {shadowPath?.description}
+          </p>
+        </div>
+      </section>
 
       <section className="tor-sheet__resources">
         {interactive && onResourceChange ? (
@@ -152,7 +192,7 @@ export function TorCharacterSheetView({ character, interactive = false, onRoll, 
           </>
         )}
         <div className="tor-sheet__resource">
-          <span>Aparar</span>
+          <span>Bloqueio</span>
           <strong>{character.parry + character.shieldParryBonus}</strong>
         </div>
         <div className="tor-sheet__resource">
@@ -162,8 +202,8 @@ export function TorCharacterSheetView({ character, interactive = false, onRoll, 
       </section>
 
       <section className="tor-sheet__conditions">
-        {character.conditions.weary ? <span className="tor-sheet__pill">Cansado</span> : null}
-        {character.conditions.miserable ? <span className="tor-sheet__pill">Deplorável</span> : null}
+        {character.conditions.weary ? <span className="tor-sheet__pill">Exausto</span> : null}
+        {character.conditions.miserable ? <span className="tor-sheet__pill">Arrasado</span> : null}
         {character.conditions.wounded ? <span className="tor-sheet__pill">Ferido</span> : null}
         {interactive && onResourceChange ? (
           <button
@@ -181,26 +221,28 @@ export function TorCharacterSheetView({ character, interactive = false, onRoll, 
       <section className="tor-sheet__attrs">
         {(["forca", "coracao", "argucia"] as const).map((attr) => (
           <div key={attr} className="tor-sheet__attr-col">
-            <h3>
-              {ATTRIBUTE_LABEL[attr]} <span>{character.attributes[attr]}</span>
-            </h3>
-            <p className="tor-sheet__tn">NA {attributeTN(character.attributes[attr])}</p>
+            <div className="tor-sheet__attr-badge">
+              <span className="tor-sheet__attr-diamond">{character.attributes[attr]}</span>
+              <div>
+                <h3>{ATTRIBUTE_LABEL[attr]}</h3>
+                <p className="tor-sheet__tn">NA {attributeTN(character.attributes[attr])}</p>
+              </div>
+            </div>
             <ul>
-              {SKILLS.filter((s) => s.group === attr).map((s) => (
-                <li
-                  key={s.id}
-                  className={character.favouredSkills.includes(s.id) ? "is-favoured" : ""}
-                  title={s.description}
-                >
-                  <span>{s.label}</span>
-                  <strong>{character.skills[s.id]}</strong>
-                  {interactive ? (
-                    <button type="button" className="tor-sheet__roll-btn" onClick={() => rollSkill(s.id)}>
-                      Rolar
-                    </button>
-                  ) : null}
-                </li>
-              ))}
+              {SKILLS.filter((s) => s.group === attr).map((s) => {
+                const favoured = character.favouredSkills.includes(s.id);
+                return (
+                  <li key={s.id} className={favoured ? "is-favoured" : ""} title={s.description}>
+                    <span className="tor-sheet__skill-name">{s.label}</span>
+                    <RatingPips value={character.skills[s.id]} favoured={favoured} />
+                    {interactive ? (
+                      <button type="button" className="tor-sheet__roll-btn" onClick={() => rollSkill(s.id)}>
+                        Rolar
+                      </button>
+                    ) : null}
+                  </li>
+                );
+              })}
             </ul>
           </div>
         ))}
@@ -211,8 +253,8 @@ export function TorCharacterSheetView({ character, interactive = false, onRoll, 
         <ul className="tor-sheet__combat-list">
           {(Object.keys(COMBAT_PROFICIENCY_LABEL) as TorCombatProficiencyId[]).map((id) => (
             <li key={id} title={`Armas: ${WEAPONS.filter((w) => w.proficiency === id).map((w) => w.label).join(", ")}`}>
-              <span>{COMBAT_PROFICIENCY_LABEL[id]}</span>
-              <strong>{character.combatProficiencies[id]}</strong>
+              <span className="tor-sheet__skill-name">{COMBAT_PROFICIENCY_LABEL[id]}</span>
+              <RatingPips value={character.combatProficiencies[id]} />
               {interactive ? (
                 <button type="button" className="tor-sheet__roll-btn" onClick={() => rollCombat(id)}>
                   Rolar
@@ -248,21 +290,6 @@ export function TorCharacterSheetView({ character, interactive = false, onRoll, 
               </li>
             ))}
           </ul>
-        </div>
-      </section>
-
-      <section className="tor-sheet__grid-2">
-        <div>
-          <h3>Cultura</h3>
-          <p>
-            <strong>{culture?.blessingName}</strong> — {culture?.blessingText}
-          </p>
-        </div>
-        <div>
-          <h3>Caminho da Sombra</h3>
-          <p>
-            <strong>{shadowPath?.label}</strong> — {shadowPath?.description}
-          </p>
         </div>
       </section>
 

@@ -1923,3 +1923,35 @@ kubectl -n raul rollout status deployment/mxdrpg
 **Verificação:** `tsc --noEmit` limpo; teste de lógica pura do motor de dados (12 grupos de asserção, 0 falhas); smoke test via Puppeteer confirmou que a mesa carrega sem erro de página com o novo painel presente (o único 500 observado foi o mesmo problema pré-existente de `materializeSessionUser` em modo sem banco, já documentado na entrada anterior — não uma regressão nova).
 
 ---
+
+### 2026-07-24 (cont.) — Correção da criação de personagem + tooltips + compêndio/mundo por sistema (commit `c8b0ed2`)
+
+**Pedido:** usuário reportou erro em produção (`Table 'mxdrpg.um_anel_characters' doesn't exist` — resolvido via migração rodada pelo administrador de infra do usuário) e que "a criação de personagem tá meio fraca, tá bem diferente a ficha"; também pediu tooltips em tudo (classes/vocações, armas, perícias) e reforçou que compêndio/mundo precisam ser separados por sistema (MXDRPG é hub, não só Eldarin).
+
+**Passo a passo:**
+1. Diagnóstico — o wizard nunca coletava arma/armadura/elmo/escudo iniciais: toda ficha nascia com `warGear: []` e `armour` vazia, por isso a ficha parecia "fraca" comparada à ficha completa esperada.
+2. Adicionado passo **"Equipamento"** ao wizard (`TorCharacterCreationWizard.tsx`, 8→9 passos): grades de escolha por Proficiência de Combate (`weaponsForProficiency`), armadura/elmo/escudo (`ARMOURS`/`HELM`/`shieldsForCulture`), respeitando restrições de Cultura (Anões sem grande arco/lança/escudo, Hobbits só com armas pequenas).
+3. Tooltips nativos (`title`) em nomes de Perícia, Proficiência de Combate e linhas de Equipamento de Guerra na ficha e no wizard, via `WizardHoverTip` já existente.
+4. `/compendios` e `/mundo` reescritos para despachar por `?sistema=` (`RpgSystemContentTabs` novo, reaproveitável) — `TorCompendiumPage`/`TorWorldLore` novos, conteúdo curado de Eriador (Condado, Bri, Lago Evendim etc.) só aparecem quando `sistema=um-anel`; Eldarin continua como estava.
+
+**Verificação:** `tsc --noEmit` + `npm run build` limpos antes do push (CSS import faltante de `tor-compendium.css` pego a tempo pelo build, não pelo tsc).
+
+**Commits:** `c8b0ed2`.
+
+---
+
+### 2026-07-24 (cont.) — Ficha do Um Anel: reconciliação de termos PT-BR + redesign visual pergaminho/tinta vermelha
+
+**Pedido:** usuário subiu a ficha editável oficial (fã-tradução PT-BR) do Um Anel como referência e pediu "veja o que precisa pra fazer uma ficha bonita e funcional" no mesmo estilo visual.
+
+**Passo a passo:**
+1. Comparação da ficha de referência com o glossário próprio (`livros/um-anel/00-glossario-termos.md`) revelou termos divergentes — decisão: adotar os termos da ficha oficial onde os dois glossários conflitavam (é a referência que o usuário quer replicar). Trocados **apenas labels visíveis** (`data.ts`, mensagens de validação do wizard, glossário) — ids internos (`argucia`, `imponencia` etc.) não mudaram, zero risco de migração de dados: Argúcia→Astúcia, Aparar→Bloqueio, Vocação→Chamado, Cansado→Exausto, Deplorável→Arrasado, e 9 nomes de Perícia (Imponência→Fascínio, Percepção→Vigilância, Caça→Caçada, Canto→Música, Encorajar→Indução, Viajar→Viagem, Perspicácia→Discernimento, Vasculhar→Busca, Explorar→Exploração, Saber→História).
+2. Descoberto que `app/globals.css` já reserva tokens `--content-bg`/`--content-bg-elevated`/`--content-border`/`--content-ink` explicitamentente pra "pergaminho, fichas, compêndio" — nunca usados em nenhum componente. `TorCharacterSheetView`/`tor-sheet.css` reescritos pra usá-los: folha clara com tinta vermelha (`--tor-red: #7a1e1e`) sempre, independente do tema escuro do resto do site (igual um PDF impresso sobre uma mesa escura).
+3. Layout reorganizado mais perto do original: cabeçalho com regra dupla, bênção da Cultura + Caminho da Sombra logo abaixo do nome, 3 colunas de Atributo com selo em losango (valor do Atributo) + NA, Perícias com **losangos de graduação** (`RatingPips`, até 6 losangos preenchidos + "+N" se exceder) em vez de número cru — Perícia/Proficiência Favorecida ganha destaque (fundo rosado + losangos com glow).
+4. Verificação visual: HTML estático espelhando a marcação real + `tor-sheet.css` real, screenshot via Puppeteer/Chrome local (padrão já usado na sessão) — confirmado visualmente antes de finalizar; puppeteer-core removido depois (`git status` limpo em package.json/lock).
+
+**Arquivos tocados:** `components/character/sheet/{TorCharacterSheetView.tsx,tor-sheet.css}` (reescrita), `lib/character/um-anel/{data,types,normalize,dice,wizard-types}.ts`, `components/character/wizard/TorCharacterCreationWizard.tsx`, `components/compendium/TorCompendiumPage.tsx`, `app/aventura/[adventureId]/personagem/novo/page.tsx`, `livros/um-anel/00-glossario-termos.md`.
+
+**Verificação:** `tsc --noEmit` limpo, `npm run build` limpo, screenshot conferido visualmente.
+
+---

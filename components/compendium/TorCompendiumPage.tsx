@@ -26,7 +26,7 @@ export function TorCompendiumPage() {
                 <strong>{c.blessingName}</strong> — {c.blessingText}
               </p>
               <p className="tor-compendium__meta">
-                Resistência FOR+{c.enduranceBonus} · Esperança COR+{c.hopeBonus} · Aparar ARG+{c.parryBonus}
+                Resistência FOR+{c.enduranceBonus} · Esperança COR+{c.hopeBonus} · Bloqueio AST+{c.parryBonus}
               </p>
               <p className="tor-compendium__meta">
                 Traços: {c.distinctiveFeatureOptions.map((id) => DISTINCTIVE_FEATURE_BY_ID[id]?.label).join(", ")}
@@ -58,7 +58,7 @@ export function TorCompendiumPage() {
         <div className="tor-compendium__attrs">
           {(["forca", "coracao", "argucia"] as const).map((attr) => (
             <div key={attr}>
-              <h3>{attr === "forca" ? "Força" : attr === "coracao" ? "Coração" : "Argúcia"}</h3>
+              <h3>{attr === "forca" ? "Força" : attr === "coracao" ? "Coração" : "Astúcia"}</h3>
               <ul>
                 {SKILLS.filter((s) => s.group === attr).map((s) => (
                   <li key={s.id}>{s.label}</li>
@@ -110,7 +110,7 @@ export function TorCompendiumPage() {
           <thead>
             <tr>
               <th>Item</th>
-              <th>Proteção / Aparar</th>
+              <th>Proteção / Bloqueio</th>
               <th>Carga</th>
             </tr>
           </thead>
@@ -125,7 +125,7 @@ export function TorCompendiumPage() {
             {SHIELDS.map((s) => (
               <tr key={s.id}>
                 <td>{s.label}</td>
-                <td>+{s.parryModifier} Aparar</td>
+                <td>+{s.parryModifier} Bloqueio</td>
                 <td>{s.load}</td>
               </tr>
             ))}

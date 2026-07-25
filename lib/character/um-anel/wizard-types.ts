@@ -10,7 +10,7 @@ export type TorCharacterWizardDraft = {
   cultureFavouredSkill: TorSkillId | null;
   calling: TorCallingId | null;
   favouredCallingSkills: TorSkillId[];
-  /** Só usado pela Vocação Campeão (Conhecimento do Inimigo). */
+  /** Só usado pelo Chamado Campeão (Conhecimento do Inimigo). */
   enemyLoreChoice: string | null;
   combatProficiencyChoiceA: TorCombatProficiencyId | null;
   combatProficiencyChoiceB: TorCombatProficiencyId | null;
@@ -64,8 +64,8 @@ export function validateTorWizardDraft(draft: TorCharacterWizardDraft): string |
     return "Escolha em qual Atributo aplicar o bônus de Rangers do Norte";
   }
   if (!draft.cultureFavouredSkill) return "Escolha a Perícia Favorecida da Cultura";
-  if (!draft.calling) return "Escolha uma Vocação";
-  if (draft.favouredCallingSkills.length !== 2) return "Escolha 2 Perícias Favorecidas da Vocação";
+  if (!draft.calling) return "Escolha um Chamado";
+  if (draft.favouredCallingSkills.length !== 2) return "Escolha 2 Perícias Favorecidas do Chamado";
   if (draft.calling === "campeao" && !draft.enemyLoreChoice) {
     return "Escolha o tipo de inimigo do Conhecimento do Inimigo";
   }

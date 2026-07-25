@@ -36,7 +36,7 @@ const STEPS = [
   "Conceito",
   "Cultura",
   "Atributos",
-  "Vocação",
+  "Chamado",
   "Combate",
   "Traços",
   "Dádivas",
@@ -48,7 +48,7 @@ const STEP_HINTS: Record<(typeof STEPS)[number], string> = {
   Conceito: "Nome do aventureiro — biografia é opcional.",
   Cultura: "A Cultura define bônus, perícias iniciais e proficiências de combate.",
   Atributos: "Escolha um dos seis conjuntos pré-definidos da Cultura.",
-  Vocação: "A Vocação define o motivo do aventureiro estar na estrada.",
+  Chamado: "O Chamado define o motivo do aventureiro estar na estrada.",
   Combate: "Escolha suas Proficiências de Combate iniciais.",
   Traços: "Escolha 2 Traços Distintivos da lista da Cultura.",
   Dádivas: "Toda ficha começa com 1 Recompensa e 1 Virtude.",
@@ -125,8 +125,8 @@ export function TorCharacterCreationWizard({
           return "Escolha o Atributo que recebe o bônus de Rangers";
         }
         return null;
-      case "Vocação":
-        if (!draft.calling) return "Escolha uma Vocação";
+      case "Chamado":
+        if (!draft.calling) return "Escolha um Chamado";
         if (draft.favouredCallingSkills.length !== 2) return "Escolha 2 Perícias Favorecidas";
         if (draft.calling === "campeao" && !draft.enemyLoreChoice) return "Escolha o tipo de inimigo";
         return null;
@@ -362,7 +362,7 @@ export function TorCharacterCreationWizard({
                       >
                         <strong>Conjunto {i + 1}</strong>
                         <span>
-                          Força {opt.forca} · Coração {opt.coracao} · Argúcia {opt.argucia}
+                          Força {opt.forca} · Coração {opt.coracao} · Astúcia {opt.argucia}
                         </span>
                       </button>
                     ))}
@@ -390,9 +390,9 @@ export function TorCharacterCreationWizard({
               </>
             ) : null}
 
-            {stepLabel === "Vocação" ? (
+            {stepLabel === "Chamado" ? (
               <>
-                <StepHead index={3} title="Vocação" />
+                <StepHead index={3} title="Chamado" />
                 <div className="char-wizard-pick-grid char-wizard-pick-grid--wide">
                   {CALLINGS.map((c) => (
                     <button
@@ -664,7 +664,7 @@ export function TorCharacterCreationWizard({
                             onClick={() => patch({ shieldId: s.id })}
                           >
                             <strong>{s.label}</strong>
-                            <span>Aparar +{s.parryModifier} · Carga {s.load}</span>
+                            <span>Bloqueio +{s.parryModifier} · Carga {s.load}</span>
                           </button>
                         ))}
                       </div>
@@ -690,7 +690,7 @@ export function TorCharacterCreationWizard({
                       <dd>{draft.name}</dd>
                       <dt>Cultura</dt>
                       <dd>{culture?.name}</dd>
-                      <dt>Vocação</dt>
+                      <dt>Chamado</dt>
                       <dd>{calling?.name}</dd>
                       <dt>Perícias Favorecidas</dt>
                       <dd>

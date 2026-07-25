@@ -119,7 +119,7 @@ export function formatTorRollMessage(actionLabel: string, outcome: TorRollOutcom
     return `${actionLabel}${modifierTag} — ${featTxt} → SUCESSO AUTOMÁTICO${outcome.successIcons > 0 ? ` (${DEGREE_LABEL[outcome.degree]})` : ""}`;
   }
   if (outcome.autoFail) {
-    return `${actionLabel}${modifierTag} — ${featTxt} (Deplorável) → FALHA AUTOMÁTICA`;
+    return `${actionLabel}${modifierTag} — ${featTxt} (Arrasado) → FALHA AUTOMÁTICA`;
   }
   return `${actionLabel}${modifierTag} — ${featTxt}${successDiceTxt} = ${outcome.total} vs NA ${outcome.tn} → ${DEGREE_LABEL[outcome.degree]}`;
 }

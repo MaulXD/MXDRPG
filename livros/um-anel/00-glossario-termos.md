@@ -7,6 +7,11 @@
 > implementando aqui).
 >
 > Lista viva — ajustar conforme o uso real revelar problemas.
+>
+> **Atualização:** termos abaixo foram reconciliados com a ficha oficial
+> editável em PT-BR (trad. comunitária, Diemis L. Kist) usada como referência
+> visual da ficha — ver `components/character/sheet/TorCharacterSheetView.tsx`.
+> Onde os dois glossários divergiam, adotamos o da ficha oficial.
 
 ## Atributos
 
@@ -15,7 +20,7 @@
 | Attribute | Atributo |
 | Strength | Força |
 | Heart | Coração |
-| Wits | Argúcia |
+| Wits | Astúcia |
 | Attribute TN (Target Number) | Número-Alvo do Atributo (NA) |
 
 ## Identidade do personagem
@@ -23,7 +28,7 @@
 | Inglês | PT-BR |
 |---|---|
 | Culture | Cultura |
-| Calling | Vocação |
+| Calling | Chamado |
 | Distinctive Feature | Traço Distintivo |
 | Standard of Living | Padrão de Vida |
 | Shadow Path | Caminho da Sombra |
@@ -51,7 +56,7 @@
 | Skill | Perícia |
 | Favoured (Skill) | Favorecida |
 | Combat Proficiency | Proficiência de Combate |
-| Parry | Aparar |
+| Parry | Bloqueio |
 | Load | Carga |
 | War Gear / Weapon | Equipamento de Guerra / Arma |
 | Armour / Shield | Armadura / Escudo |
@@ -67,8 +72,8 @@
 | Favoured / Ill-favoured (roll) | Favorecida / Desfavorecida |
 | Gandalf rune | Runa de Gandalf |
 | Eye of Sauron | Olho de Sauron |
-| Miserable | Deplorável |
-| Weary | Cansado |
+| Miserable | Arrasado |
+| Weary | Exausto |
 | Wounded | Ferido |
 
 ## Combate (posturas e tarefas)
@@ -128,7 +133,7 @@
 | Men of Bree | Homens de Bri |
 | Rangers of the North | Rangers do Norte |
 
-## Vocações
+## Chamados
 
 | Inglês | PT-BR |
 |---|---|
@@ -138,3 +143,26 @@
 | Scholar | Erudito |
 | Treasure Hunter | Caçador de Tesouros |
 | Warden | Guardião |
+
+## Perícias (nomes individuais)
+
+| Inglês | PT-BR |
+|---|---|
+| Awe | Fascínio |
+| Athletics | Atletismo |
+| Awareness | Vigilância |
+| Hunting | Caçada |
+| Song | Música |
+| Craft | Ofício |
+| Enhearten | Indução |
+| Travel | Viagem |
+| Insight | Discernimento |
+| Healing | Cura |
+| Courtesy | Cortesia |
+| Battle | Batalha |
+| Persuade | Persuasão |
+| Stealth | Furtividade |
+| Search | Busca |
+| Explore | Exploração |
+| Riddle | Enigma |
+| Lore | História |

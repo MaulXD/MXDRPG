@@ -23,24 +23,24 @@ export type TorSkillDef = {
 };
 
 export const SKILLS: TorSkillDef[] = [
-  { id: "imponencia", label: "Imponência", group: "forca", description: "Causar respeito, admiração ou temor em quem te vê pela primeira vez — carisma nato ou uma entrada dramática." },
+  { id: "imponencia", label: "Fascínio", group: "forca", description: "Causar respeito, admiração ou temor em quem te vê pela primeira vez — carisma nato ou uma entrada dramática." },
   { id: "atletismo", label: "Atletismo", group: "forca", description: "Correr, saltar, escalar e nadar — a habilidade física geral de um aventureiro." },
-  { id: "percepcao", label: "Percepção", group: "forca", description: "Notar algo inesperado ou fora do comum — reação e sentidos aguçados, ótima pra vigia da Companhia." },
-  { id: "caca", label: "Caça", group: "forca", description: "Perseguir uma criatura, seguir rastros, armar armadilhas e treinar cães/aves de caça." },
-  { id: "canto", label: "Canto", group: "forca", description: "Recitar poemas, cantar, tocar instrumentos e compor obras novas." },
+  { id: "percepcao", label: "Vigilância", group: "forca", description: "Notar algo inesperado ou fora do comum — reação e sentidos aguçados, ótima pra vigia da Companhia." },
+  { id: "caca", label: "Caçada", group: "forca", description: "Perseguir uma criatura, seguir rastros, armar armadilhas e treinar cães/aves de caça." },
+  { id: "canto", label: "Música", group: "forca", description: "Recitar poemas, cantar, tocar instrumentos e compor obras novas." },
   { id: "oficio", label: "Ofício", group: "forca", description: "Fabricar ou consertar coisas com as mãos — de uma roda de carroça a uma jangada improvisada." },
-  { id: "encorajar", label: "Encorajar", group: "coracao", description: "Instilar sentimentos positivos nos outros pelo exemplo, carisma e convicção pessoal — especialmente eficaz em multidões." },
-  { id: "viajar", label: "Viajar", group: "coracao", description: "Estimar a duração de uma jornada, ler mapas e avaliar se um grupo de estranhos na estrada é seguro." },
-  { id: "perspicacia", label: "Perspicácia", group: "coracao", description: "Enxergar além das aparências e reconhecer pensamentos e crenças ocultas de outra pessoa." },
+  { id: "encorajar", label: "Indução", group: "coracao", description: "Instilar sentimentos positivos nos outros pelo exemplo, carisma e convicção pessoal — especialmente eficaz em multidões." },
+  { id: "viajar", label: "Viagem", group: "coracao", description: "Estimar a duração de uma jornada, ler mapas e avaliar se um grupo de estranhos na estrada é seguro." },
+  { id: "perspicacia", label: "Discernimento", group: "coracao", description: "Enxergar além das aparências e reconhecer pensamentos e crenças ocultas de outra pessoa." },
   { id: "cura", label: "Cura", group: "coracao", description: "Aliviar dor e aplicar remédios — ossos, ervas e unguentos — pra restaurar a saúde de quem sofre." },
   { id: "cortesia", label: "Cortesia", group: "coracao", description: "Observar as normas de decência e convenções dos Povos Livres — cria uma base amistosa até com estranhos." },
   { id: "batalha", label: "Batalha", group: "coracao", description: "Noção tática de combate e capacidade de manobrar em confronto — ganhar vantagem contra grupos ou liderar tropas." },
-  { id: "persuasao", label: "Persuasão", group: "argucia", description: "Convencer outros de uma ideia ou curso de ação com raciocínio — mais lento que Encorajar, mas com efeito mais duradouro." },
+  { id: "persuasao", label: "Persuasão", group: "argucia", description: "Convencer outros de uma ideia ou curso de ação com raciocínio — mais lento que Indução, mas com efeito mais duradouro." },
   { id: "furtividade", label: "Furtividade", group: "argucia", description: "Agir de forma furtiva ou secreta — esconder-se, mover-se em silêncio e seguir outros sem ser notado." },
-  { id: "vasculhar", label: "Vasculhar", group: "argucia", description: "Examinar algo de perto e com atenção — vasculhar um livro, procurar portas escondidas ou rastros no chão." },
-  { id: "explorar", label: "Explorar", group: "argucia", description: "Orientar-se em território desconhecido — encontrar o caminho, lidar com mau tempo e escolher onde acampar." },
+  { id: "vasculhar", label: "Busca", group: "argucia", description: "Examinar algo de perto e com atenção — vasculhar um livro, procurar portas escondidas ou rastros no chão." },
+  { id: "explorar", label: "Exploração", group: "argucia", description: "Orientar-se em território desconhecido — encontrar o caminho, lidar com mau tempo e escolher onde acampar." },
   { id: "enigma", label: "Enigma", group: "argucia", description: "Tirar conclusões de informações desconexas por dedução e intuição — também usada pra falar por enigmas." },
-  { id: "saber", label: "Saber", group: "argucia", description: "Amor pelo conhecimento — terras distantes, genealogias, histórias antigas — qualquer ação que envolva erudição." },
+  { id: "saber", label: "História", group: "argucia", description: "Amor pelo conhecimento — terras distantes, genealogias, histórias antigas — qualquer ação que envolva erudição." },
 ];
 
 export const SKILL_LABEL: Record<TorSkillId, string> = Object.fromEntries(
@@ -54,7 +54,7 @@ export const SKILL_BY_ID: Record<TorSkillId, TorSkillDef> = Object.fromEntries(
 export const ATTRIBUTE_LABEL: Record<TorAttributeKey, string> = {
   forca: "Força",
   coracao: "Coração",
-  argucia: "Argúcia",
+  argucia: "Astúcia",
 };
 
 export const COMBAT_PROFICIENCY_LABEL: Record<TorCombatProficiencyId, string> = {
@@ -186,7 +186,7 @@ export const DISTINCTIVE_FEATURES: TorDistinctiveFeatureDef[] = [
   { id: "coracao-verdadeiro", label: "Coração Verdadeiro", description: "Você é sincero, e suas palavras e ações revelam suas intenções honestas." },
   { id: "cauteloso", label: "Cauteloso", description: "Você está sempre atento ao seu redor e observa a fala e o comportamento de estranhos." },
   { id: "obstinado", label: "Obstinado", description: "Você é firme em temperamento e convicção, e costuma basear suas ações apenas no próprio julgamento." },
-  // Traços concedidos por Vocação (não escolhíveis livremente):
+  // Traços concedidos por Chamado (não escolhíveis livremente):
   { id: "lideranca", label: "Liderança", description: "Você possui a capacidade de dirigir outros à ação. Sob pressão, as pessoas naturalmente recorrem a você em busca de orientação." },
   { id: "conhecimento-do-inimigo", label: "Conhecimento do Inimigo", description: "Você conhece as características, hábitos, forças e fraquezas de um tipo de inimigo à sua escolha (Homens Maus, Orcs, Aranhas, Trolls, Wargs ou Mortos-Vivos)." },
   { id: "saber-popular", label: "Saber Popular", description: "Você possui algum conhecimento dos muitos costumes, crenças e histórias tradicionais das várias comunidades que compõem os Povos Livres." },
@@ -222,7 +222,7 @@ export const STARTING_REWARDS: TorRewardDef[] = [
   { id: "cruel", label: "Cruel", description: "(arma) Aumente em 2 o valor de Ferimento da arma." },
   { id: "grave", label: "Grave", description: "(arma) Aumente em 1 o valor de Dano da arma." },
   { id: "afiado", label: "Afiado", description: "(arma) Rolagens de ataque causam Golpe Perfurante com 9+." },
-  { id: "reforcado", label: "Reforçado", description: "(escudo) Aumente em +1 o bônus de Aparar do escudo." },
+  { id: "reforcado", label: "Reforçado", description: "(escudo) Aumente em +1 o bônus de Bloqueio do escudo." },
 ];
 
 export const STARTING_VIRTUES: TorRewardDef[] = [
@@ -230,7 +230,7 @@ export const STARTING_VIRTUES: TorRewardDef[] = [
   { id: "mao-firme", label: "Mão Firme", description: "Some +1 ao dano infligido em um Golpe Pesado." },
   { id: "robustez", label: "Robustez", description: "Aumente sua Resistência em 2." },
   { id: "maestria", label: "Maestria", description: "Escolha duas Perícias e torne-as Favorecidas." },
-  { id: "agilidade-de-aparar", label: "Agilidade", description: "Aumente seu valor de Aparar em 1." },
+  { id: "agilidade-de-aparar", label: "Agilidade", description: "Aumente seu valor de Bloqueio em 1." },
   { id: "proeza", label: "Proeza", description: "Reduza o NA de um Atributo em 1." },
 ];
 
@@ -331,7 +331,7 @@ export const CULTURES: TorCultureDef[] = [
     id: "elfos",
     name: "Elfos de Lindon",
     blessingName: "Talento Élfico",
-    blessingText: "Se você não estiver Deplorável, pode gastar 1 ponto de Esperança para obter um sucesso Mágico numa rolagem de perícia.",
+    blessingText: "Se você não estiver Arrasado, pode gastar 1 ponto de Esperança para obter um sucesso Mágico numa rolagem de perícia.",
     extraTraitName: "A Longa Derrota",
     extraTraitText: "Ao remover Sombra acumulada durante a Fase de Companhia, você só pode remover no máximo 1 ponto.",
     standardOfLiving: "frugal",

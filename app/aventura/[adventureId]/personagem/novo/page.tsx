@@ -93,7 +93,7 @@ export default async function AventuraNovoPersonagemPage({ params, searchParams 
           <header className="page-header" style={{ paddingBottom: "1rem" }}>
             <p className="eyebrow">Aventura · {adventure.name}</p>
             <h1 className="display-lg">Novo aventureiro</h1>
-            <p className="lead">Ficha do Um Anel — Cultura, Vocação e Perícias, seguindo as regras da 2ª edição.</p>
+            <p className="lead">Ficha do Um Anel — Cultura, Chamado e Perícias, seguindo as regras da 2ª edição.</p>
           </header>
           <TorCharacterCreationWizard
             slotsLeft={torSlotsLeft}

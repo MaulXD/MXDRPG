@@ -1,6 +1,6 @@
 import type { BaseCharacterFields } from "@/lib/character/types";
 
-/** Os três Atributos do Um Anel — Força, Coração, Argúcia. */
+/** Os três Atributos do Um Anel — Força, Coração, Astúcia. */
 export type TorAttributeKey = "forca" | "coracao" | "argucia";
 
 export type TorAttributes = Record<TorAttributeKey, number>;
