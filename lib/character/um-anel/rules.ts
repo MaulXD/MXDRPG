@@ -1,5 +1,6 @@
 import { ARMOUR_BY_ID, CULTURE_BY_ID, SHIELD_BY_ID, WEAPON_BY_ID } from "./data";
 import type { TorArmourLoadout, TorAttributes, TorCultureId, TorWarGearItem } from "./types";
+import type { TorWeaponDef } from "./data";
 
 /** NA (Número-Alvo) de um Atributo = 20 - valor do Atributo (Core Rules p.29). */
 export function attributeTN(score: number): number {
@@ -59,4 +60,31 @@ export function computeLoad(
 export function shieldParryBonus(shieldId?: string | null): number {
   if (!shieldId) return 0;
   return SHIELD_BY_ID[shieldId]?.parryModifier ?? 0;
+}
+
+function parseProtectionDice(value: string | undefined): number {
+  const match = value?.match(/(\d+)d/);
+  return match ? Number(match[1]) : 0;
+}
+
+/** Nº de Dados de Proteção (armadura + elmo) pro teste de Golpe Perfurante. */
+export function computeProtectionDice(armour: TorArmourLoadout): number {
+  let total = 0;
+  if (armour.armourId) total += parseProtectionDice(ARMOUR_BY_ID[armour.armourId]?.protection);
+  if (armour.helm) total += parseProtectionDice(ARMOUR_BY_ID.elmo.protection);
+  return total;
+}
+
+/**
+ * Ferimento (Injury) da arma pra TN do teste de Golpe Perfurante. `null` = arma
+ * não pode causar Golpe Perfurante (ex.: Desarmado). Algumas armas têm valores
+ * diferentes por empunhadura ("16 (1m) / 18 (2m)") — escolhe conforme `twoHanded`.
+ */
+export function resolveWeaponInjury(weapon: TorWeaponDef, twoHanded?: boolean): number | null {
+  if (weapon.injury == null) return null;
+  const dual = weapon.injury.match(/(\d+)\s*\(1m\)\s*\/\s*(\d+)\s*\(2m\)/);
+  if (dual) return Number(dual[twoHanded ? 2 : 1]);
+  const plain = weapon.injury.match(/^\d+$/);
+  if (plain) return Number(weapon.injury);
+  return null;
 }

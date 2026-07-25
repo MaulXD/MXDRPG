@@ -113,6 +113,34 @@ export type BattleToken = {
   chiMax?: number;
   /** Chi gasto neste turno (máx. 2) */
   chiSpentThisTurn?: number;
+  /** O Um Anel — presente só em tokens de mesas com rpgSystemId "um-anel". */
+  torCombat?: TorCombatTokenFields;
+};
+
+/**
+ * Bag leve do Um Anel embutido direto no token — espelha o padrão já usado por
+ * `gmCreatureStats` pra criaturas sem ficha completa, mas com tipo próprio
+ * (Bloqueio/Proteção/Nível de Atributo não fazem sentido no vocabulário Eldarin).
+ * `vida`/`vidaMax`/`defeated` (campos genéricos acima) representam a Resistência.
+ */
+export type TorCombatTokenFields = {
+  kind: "hero" | "adversary";
+  /** Só kind:"hero" — FK pra um_anel_characters, nunca pra room.actors. */
+  torCharacterId?: string;
+  /** Bloqueio — vira TN de quem ataca este token. */
+  parry: number;
+  /** Nº de Dados de Proteção da armadura vestida (teste de Golpe Perfurante). */
+  protectionDice: number;
+  /** Só herói — TN de ataque = 20 - força + Bloqueio do alvo. */
+  strength?: number;
+  /** Só adversário — graduação de sucesso no ataque dele. */
+  attributeLevel?: number;
+  /** Só adversário — ações de ataque embutidas do compêndio (evita 2ª consulta). */
+  actions?: import("@/lib/character/um-anel/adversary-types").TorAdversaryAction[];
+  /** Herói já com 1 Ferida marcada — a próxima é fatal. */
+  wounded: boolean;
+  /** Adversário eliminado (Ferida ou Resistência 0). */
+  eliminated: boolean;
 };
 
 export type BattlePing = {

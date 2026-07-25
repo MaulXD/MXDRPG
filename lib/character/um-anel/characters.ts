@@ -136,6 +136,7 @@ export async function patchTorCharacterResources(
     fatigue: patch.fatigue !== undefined ? Math.max(0, patch.fatigue) : sheet.fatigue,
     treasure: patch.treasure !== undefined ? Math.max(0, patch.treasure) : sheet.treasure,
     fellowship: patch.fellowship !== undefined ? Math.max(0, patch.fellowship) : sheet.fellowship,
+    injury: patch.injury !== undefined ? patch.injury : sheet.injury,
     conditions: {
       ...sheet.conditions,
       wounded: patch.wounded !== undefined ? patch.wounded : sheet.conditions.wounded,

@@ -18,6 +18,12 @@ export {
   type RemoveTokenResult,
 } from "./handlers/tokens";
 export {
+  placeRoomTorCharacterOnCell,
+  spawnRoomTorAdversary,
+  canPlaceTorCharacterOnBoard,
+  type TorSpawnExecuteResult,
+} from "./handlers/tor-tokens";
+export {
   rollRoomInitiative,
   advanceRoomTurn,
   setRoomCombatOrder,
@@ -25,6 +31,7 @@ export {
 } from "./handlers/combat-turn";
 export { addRoomChatMessage } from "./handlers/chat";
 export { executeRoomAttack, type AttackExecuteResult } from "./handlers/combat-attack";
+export { executeRoomTorAttack, type TorAttackExecuteResult } from "./handlers/tor-combat-attack";
 export { executeRoomAbility, type AbilityExecuteResult } from "./handlers/combat-ability";
 export { executeRoomAreaSpell } from "./handlers/combat-area";
 export { executeGmCombatAction, type GmCombatAction } from "./handlers/combat-gm";

@@ -5,7 +5,7 @@ import { effectiveBypassTurn } from "@/lib/combat/turn-guard";
 import { getSession } from "@/lib/auth/session";
 import { safeMutationDeltaResponse } from "@/lib/room/mutation-response";
 import { toSnapshot } from "@/lib/room/internal/registry";
-import { executeRoomAttack, getRoom } from "@/lib/room/store";
+import { executeRoomAttack, executeRoomTorAttack, getRoom } from "@/lib/room/store";
 import type { ChatMessage } from "@/lib/room/chat";
 
 type Params = { params: Promise<{ roomId: string }> };
@@ -18,6 +18,9 @@ type Body = {
   actionEntryId?: string;
   bypassTurn?: boolean;
   channelExtraPa?: number;
+  /** O Um Anel — arma equipada (herói) ou ação do adversário. */
+  torWeaponId?: string;
+  torActionId?: string;
 };
 
 function authorFromSession(
@@ -80,20 +83,29 @@ export async function POST(req: Request, { params }: Params) {
 
     const beforeSnap = toSnapshot(room);
 
-    const result = await executeRoomAttack(
-      roomId,
-      attackerTokenId,
-      defenderTokenId ?? defenderTokenIds![0]!,
-      author,
-      {
-        packId: body.actionPack,
-        entryId: body.actionEntryId?.trim(),
-        bypassTurn,
-        channelExtraPa: body.channelExtraPa,
-        defenderTokenIds: defenderTokenIds?.length ? defenderTokenIds : undefined,
-        room,
-      }
-    );
+    // O Um Anel nunca passa pelo motor d20/CA do Eldarin — dispatch antes de
+    // qualquer lógica abaixo (early return), ver plano da Fase 4.
+    const result =
+      room.rpgSystemId === "um-anel"
+        ? await executeRoomTorAttack(roomId, attackerTokenId, defenderTokenId ?? defenderTokenIds![0]!, author, {
+            weaponId: body.torWeaponId?.trim(),
+            actionId: body.torActionId?.trim(),
+            room,
+          })
+        : await executeRoomAttack(
+            roomId,
+            attackerTokenId,
+            defenderTokenId ?? defenderTokenIds![0]!,
+            author,
+            {
+              packId: body.actionPack,
+              entryId: body.actionEntryId?.trim(),
+              bypassTurn,
+              channelExtraPa: body.channelExtraPa,
+              defenderTokenIds: defenderTokenIds?.length ? defenderTokenIds : undefined,
+              room,
+            }
+          );
 
     if (!result.ok) {
       return NextResponse.json({ error: result.error }, { status: 400 });

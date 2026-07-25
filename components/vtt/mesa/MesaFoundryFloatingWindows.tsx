@@ -229,6 +229,10 @@ export function MesaFoundryFloatingWindows(props: MesaFoundryFloatingWindowsProp
             <TorPlayableCharactersPanel
               adventureId={adventureId}
               onOpenSheet={(id) => onOpenTorSheet?.(id)}
+              roomId={roomId}
+              spawnAxial={spawnAxial}
+              onPlaced={onApplySnapshot}
+              isRoomGm={effectiveIsGm}
             />
           </div>
         </FoundryWindow>

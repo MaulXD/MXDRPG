@@ -640,6 +640,7 @@ function MesaWorkspaceInner({
             <MesaBattlefieldStage
               roomId={roomId}
               adventureId={adventureId}
+              rpgSystemId={rpgSystemId}
               roomOwnerId={roomOwnerId}
               memberIds={memberIds}
               fallbackScene={scene}

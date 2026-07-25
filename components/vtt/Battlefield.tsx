@@ -54,6 +54,7 @@ import { DungeonEditorPanel } from "@/components/vtt/DungeonEditorPanel";
 import { FoundryDockPanel } from "@/components/vtt/foundry/FoundryDockPanel";
 import type { RoomSnapshot } from "@/lib/room/types";
 import { TokenActionRing } from "@/components/vtt/TokenActionRing";
+import { TorAttackPopup } from "@/components/vtt/TorAttackPopup";
 import { SpellPickerPanel } from "@/components/vtt/SpellPickerPanel";
 import { AbilityPickerPanel } from "@/components/vtt/AbilityPickerPanel";
 import { SpellChannelControl } from "@/components/vtt/SpellChannelControl";
@@ -225,6 +226,8 @@ type Props = {
   simulatePlayerView?: boolean;
   /** Invocar monstros, reposicionar tokens — permanece ativo mesmo na visão jogador. */
   canManageBattlefield?: boolean;
+  /** Mesas do Um Anel abrem TorAttackPopup em vez do TokenActionRing Eldarin. */
+  rpgSystemId?: import("@/lib/rpg/systems").RpgSystemId;
 };
 
 export function Battlefield({
@@ -284,6 +287,7 @@ export function Battlefield({
   isRoomGm: isRoomGmProp,
   simulatePlayerView = false,
   canManageBattlefield,
+  rpgSystemId = "eldarin",
 }: Props) {
   const battlefieldGm = canManageBattlefield ?? canControlCombat;
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -2601,6 +2605,7 @@ export function Battlefield({
               rangeTargetIds={highlights.rangeTargetIds}
               hoverAttackTargetId={hoverTargetId}
               onHoverAttackTargetChange={setHoverTargetId}
+              rpgSystemId={rpgSystemId}
             />
             <MapTokenList
               tokens={listTokens}
@@ -2820,40 +2825,54 @@ export function Battlefield({
         }
       >
         {actionRingAt && selected && canOpenActionRing(selected) ? (
-          <TokenActionRing
-            x={actionRingAt.x}
-            y={actionRingAt.y}
-            token={selected}
-            allTokens={snapshot?.scene.tokens ?? []}
-            actor={selectedActor}
-            combat={combat}
-            canBypassTurn={canBypassTurnProp}
-            combatActive={roomSettings.combatActive}
-            roomId={roomId}
-            showTokenSheet={canShowSheetInActionRing(selected, {
-              isRoomGm,
-              userId: session?.id,
-              roomActors,
-            })}
-            onOpenTokenSheet={() => openMonsterSheetForToken(selected)}
-            showPlayerBestiary={canOpenPlayerBestiary(selected)}
-            onOpenPlayerBestiary={() => openPlayerBestiary(selected)}
-            showGmHpEdit={canControlCombat && selected.vidaMax != null}
-            onOpenGmHpEdit={() => setGmHpEditTokenId(selected.id)}
-            onPickMode={(mode, action) => {
-              if (action?.selfTarget) {
-                void fireSelfAbility(action);
-                return;
-              }
-              setActionMode(mode);
-              setSelectedCombatAction(action);
-              if (mode !== "spell") setChannelExtraPa(0);
-            }}
-            onOpenSpellPicker={() => setSpellPickerOpen(true)}
-            onOpenAbilityPicker={() => setAbilityPickerOpen(true)}
-            onClose={() => setActionRingAt(null)}
-            onRoomSync={(snap) => (snap ? syncRoom(snap) : refresh())}
-          />
+          selected.torCombat ? (
+            // O Um Anel nunca usa o anel de ação Eldarin — resolveTokenAttack (d20 vs
+            // defesa) não faz sentido pra torCombat. Ver plano da Fase 4, risco #1.
+            <TorAttackPopup
+              x={actionRingAt.x}
+              y={actionRingAt.y}
+              token={selected}
+              allTokens={snapshot?.scene.tokens ?? []}
+              roomId={roomId}
+              onClose={() => setActionRingAt(null)}
+              onRoomSync={(snap) => (snap ? syncRoom(snap) : refresh())}
+            />
+          ) : (
+            <TokenActionRing
+              x={actionRingAt.x}
+              y={actionRingAt.y}
+              token={selected}
+              allTokens={snapshot?.scene.tokens ?? []}
+              actor={selectedActor}
+              combat={combat}
+              canBypassTurn={canBypassTurnProp}
+              combatActive={roomSettings.combatActive}
+              roomId={roomId}
+              showTokenSheet={canShowSheetInActionRing(selected, {
+                isRoomGm,
+                userId: session?.id,
+                roomActors,
+              })}
+              onOpenTokenSheet={() => openMonsterSheetForToken(selected)}
+              showPlayerBestiary={canOpenPlayerBestiary(selected)}
+              onOpenPlayerBestiary={() => openPlayerBestiary(selected)}
+              showGmHpEdit={canControlCombat && selected.vidaMax != null}
+              onOpenGmHpEdit={() => setGmHpEditTokenId(selected.id)}
+              onPickMode={(mode, action) => {
+                if (action?.selfTarget) {
+                  void fireSelfAbility(action);
+                  return;
+                }
+                setActionMode(mode);
+                setSelectedCombatAction(action);
+                if (mode !== "spell") setChannelExtraPa(0);
+              }}
+              onOpenSpellPicker={() => setSpellPickerOpen(true)}
+              onOpenAbilityPicker={() => setAbilityPickerOpen(true)}
+              onClose={() => setActionRingAt(null)}
+              onRoomSync={(snap) => (snap ? syncRoom(snap) : refresh())}
+            />
+          )
         ) : null}
         {spellPickerOpen && selected ? (
           <SpellPickerPanel

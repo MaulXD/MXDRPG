@@ -692,6 +692,9 @@ export async function postRoomAttack(
     bypassTurn?: boolean;
     channelExtraPa?: number;
     defenderTokenIds?: string[];
+    /** O Um Anel — arma equipada (herói) ou ação do adversário. */
+    torWeaponId?: string;
+    torActionId?: string;
   } = {}
 ) {
   const res = await roomFetch(
@@ -938,6 +941,44 @@ export async function placeRoomActorOnCell(
       body: JSON.stringify({ actorId, q, r }),
     },
     "Falha ao posicionar personagem"
+  );
+  return res.json() as Promise<RoomSnapshot>;
+}
+
+export async function placeRoomTorCharacterOnCell(
+  roomId: string,
+  torCharacterId: string,
+  q: number,
+  r: number
+) {
+  const res = await roomFetch(
+    `/api/room/${roomId}/tokens/place-tor-character`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "same-origin",
+      body: JSON.stringify({ torCharacterId, q, r }),
+    },
+    "Falha ao posicionar personagem"
+  );
+  return res.json() as Promise<RoomSnapshot>;
+}
+
+export async function spawnRoomTorAdversary(
+  roomId: string,
+  adversaryId: string,
+  q: number,
+  r: number
+) {
+  const res = await roomFetch(
+    `/api/room/${roomId}/tokens/spawn-tor-adversary`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "same-origin",
+      body: JSON.stringify({ adversaryId, q, r }),
+    },
+    "Falha ao invocar adversário"
   );
   return res.json() as Promise<RoomSnapshot>;
 }

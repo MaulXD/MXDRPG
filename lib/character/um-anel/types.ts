@@ -79,6 +79,8 @@ export type TorResourcePatch = Partial<{
   shadowScars: number;
   fatigue: number;
   wounded: boolean;
+  /** Texto da Severidade da Ferida (ex.: "Ferimento Grave — 6 dias pra curar"). */
+  injury: string;
   treasure: number;
   fellowship: number;
 }>;

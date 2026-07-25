@@ -11,7 +11,14 @@ import {
   STARTING_VIRTUES,
   WEAPONS,
 } from "@/lib/character/um-anel/data";
+import { TOR_ADVERSARIES } from "@/lib/character/um-anel/adversaries";
 import "./tor-compendium.css";
+
+const ADVERSARY_TIER_LABEL: Record<string, string> = {
+  mob: "Bando",
+  elite: "Elite",
+  boss: "Chefe",
+};
 
 export function TorCompendiumPage() {
   return (
@@ -131,6 +138,37 @@ export function TorCompendiumPage() {
             ))}
           </tbody>
         </table>
+      </section>
+
+      <section>
+        <h2>Adversários</h2>
+        <div className="tor-compendium__grid">
+          {TOR_ADVERSARIES.map((a) => (
+            <article key={a.id} className="tor-compendium__card">
+              <h3>
+                {a.name} <span className="tor-compendium__tier">{ADVERSARY_TIER_LABEL[a.tier] ?? a.tier}</span>
+              </h3>
+              {a.traits ? <p className="tor-compendium__blessing">{a.traits}</p> : null}
+              <p className="tor-compendium__meta">
+                Nível de Atributo {a.attributeLevel} · Resistência {a.endurance} · Vigor {a.might} ·{" "}
+                {a.hateKind === "hate" ? "Ódio" : "Resolução"} {a.hate} · Bloqueio {a.parry || "—"} · Proteção{" "}
+                {a.armour}d
+              </p>
+              <p className="tor-compendium__meta">
+                Proficiências:{" "}
+                {a.actions
+                  .map((act) => `${act.label} ${act.rating} (${act.damage}/${act.injury}${act.specialDamage ? `, ${act.specialDamage.join(", ")}` : ""})`)
+                  .join(" · ")}
+              </p>
+              {a.fellAbilities?.length ? (
+                <p className="tor-compendium__meta">
+                  Habilidades Sinistras: {a.fellAbilities.map((f) => f.name).join(", ")}
+                </p>
+              ) : null}
+              {a.description ? <p>{a.description}</p> : null}
+            </article>
+          ))}
+        </div>
       </section>
 
       <section>

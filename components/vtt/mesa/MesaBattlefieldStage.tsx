@@ -10,6 +10,7 @@ import type { RoomSnapshot } from "@/lib/room/types";
 import { useMesaMapSnapshot } from "@/hooks/vtt/useMesaRoomSlice";
 import { useMesaSyncActions } from "@/components/vtt/MesaSyncProvider";
 import type { FoundryWindowLayout, MesaWindowId } from "@/hooks/vtt/useFoundryWindows";
+import type { RpgSystemId } from "@/lib/rpg/systems";
 
 const Battlefield = dynamic(
   () => import("@/components/vtt/Battlefield").then((m) => m.Battlefield),
@@ -28,6 +29,7 @@ export type MesaBattlefieldStageProps = {
   adventureId: string;
   roomOwnerId: string;
   memberIds: string[];
+  rpgSystemId?: RpgSystemId;
   fallbackScene: BattleScene;
   canEdit: boolean;
   effectiveCanControlCombat: boolean;
@@ -104,6 +106,7 @@ function MesaBattlefieldStageInner(props: MesaBattlefieldStageProps) {
       canViewTokenPa={props.canViewTokenPa}
       roomId={props.roomId}
       adventureId={props.adventureId}
+      rpgSystemId={props.rpgSystemId}
       inviteCode={props.inviteCode}
       snapshot={mapSnapshot}
       session={props.session}

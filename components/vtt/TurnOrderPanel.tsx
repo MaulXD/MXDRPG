@@ -17,6 +17,7 @@ import { collectPlayerActorIds, resolveTokenRing } from "@/lib/vtt/token-colors"
 import { hpBarColor, hpRatio, isTokenDefeated } from "@/lib/vtt/token-hp-display";
 
 import { TokenEffectsRow } from "@/components/vtt/TokenEffectsRow";
+import type { RpgSystemId } from "@/lib/rpg/systems";
 import {
   TurnOrderChevronLeftIcon,
   TurnOrderChevronRightIcon,
@@ -76,6 +77,9 @@ type Props = {
 
   /** Layout estilo Roll20 — avatar + iniciativa, controles no rodapé. */
   compact?: boolean;
+
+  /** O Um Anel usa ordem por colocação no mapa — esconde "Rolar iniciativa" (d20+AGI). */
+  rpgSystemId?: RpgSystemId;
 
 };
 
@@ -137,7 +141,10 @@ export function TurnOrderPanel({
 
   compact = false,
 
+  rpgSystemId = "eldarin",
+
 }: Props) {
+  const showRollInitiative = rpgSystemId !== "um-anel";
   const track = normalizeCombatTrack(combat, tokens);
 
   const applyUpdate = useCallback(
@@ -373,17 +380,19 @@ export function TurnOrderPanel({
               </span>
               {canControl ? (
                 <div className="vtt-turn-compact-tools">
-                  <button
-                    type="button"
-                    className="vtt-turn-compact-icon-btn"
-                    title="Rolar iniciativa"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      void handleRoll();
-                    }}
-                  >
-                    <TurnOrderRollIcon />
-                  </button>
+                  {showRollInitiative ? (
+                    <button
+                      type="button"
+                      className="vtt-turn-compact-icon-btn"
+                      title="Rolar iniciativa"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        void handleRoll();
+                      }}
+                    >
+                      <TurnOrderRollIcon />
+                    </button>
+                  ) : null}
                   <div className="vtt-turn-compact-settings">
                     <button
                       type="button"
@@ -399,16 +408,18 @@ export function TurnOrderPanel({
                     </button>
                     {settingsOpen ? (
                       <div className="vtt-turn-compact-settings-menu" role="menu">
-                        <button
-                          type="button"
-                          role="menuitem"
-                          onClick={() => {
-                            setSettingsOpen(false);
-                            void handleRoll();
-                          }}
-                        >
-                          Rolar iniciativa
-                        </button>
+                        {showRollInitiative ? (
+                          <button
+                            type="button"
+                            role="menuitem"
+                            onClick={() => {
+                              setSettingsOpen(false);
+                              void handleRoll();
+                            }}
+                          >
+                            Rolar iniciativa
+                          </button>
+                        ) : null}
                         {track.orderOverridden ? (
                           <button
                             type="button"
@@ -515,7 +526,7 @@ export function TurnOrderPanel({
 
         {gmError ? <p className="vtt-turn-gm-error">{gmError}</p> : null}
 
-        {displayOrder.length > 0 && !track.initiativeRolled ? (
+        {displayOrder.length > 0 && !track.initiativeRolled && showRollInitiative ? (
           <p className={`vtt-combat-hint vtt-turn-placement-hint${compact ? " vtt-turn-placement-hint--compact" : ""}`}>
             {canControl
               ? "Ordem dos tokens no mapa — role iniciativa para sortear por AGI."
@@ -525,11 +536,13 @@ export function TurnOrderPanel({
 
         {displayOrder.length === 0 ? (
           <p className={`vtt-combat-hint vtt-turn-empty${compact ? " vtt-turn-empty--compact" : ""}`}>
-            {canControl
-              ? compact
-                ? "Rolar iniciativa para começar."
-                : "Nenhum combatente na fila — use Rolar iniciativa para começar."
-              : "Aguardando o mestre rolar a iniciativa."}
+            {showRollInitiative
+              ? canControl
+                ? compact
+                  ? "Rolar iniciativa para começar."
+                  : "Nenhum combatente na fila — use Rolar iniciativa para começar."
+                : "Aguardando o mestre rolar a iniciativa."
+              : "Coloque personagens/adversários no mapa e ligue Combate Ativo para começar."}
           </p>
         ) : null}
 

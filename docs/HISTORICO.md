@@ -1955,3 +1955,30 @@ kubectl -n raul rollout status deployment/mxdrpg
 **Verificação:** `tsc --noEmit` limpo, `npm run build` limpo, screenshot conferido visualmente.
 
 ---
+
+### 2026-07-25 — O Um Anel: Fase 4, combate tático no mapa (v1)
+
+**Pedido:** usuário confirmou querer "tudo do Um Anel" — a última peça faltante pro sistema ser jogável de ponta a ponta era combate tático (tokens no mapa hex existente, resolução de ataque com a matemática do livro), que ainda não existia (só a mesa narrada sem grid, da sessão anterior).
+
+**Pesquisa/plano prévio:** Explore agent + leitura direta de código confirmaram que não existe nenhum ponto de dispatch por sistema no pipeline tático (`RoomActor`/`BattleToken`/motor de ataque/iniciativa são um único tipo "gordo" 100% Eldarin). Decisão de arquitetura (validada por um Plan agent + leitura direta): `BattleToken` ganha `torCombat?: TorCombatTokenFields` opcional — um "bag" leve no mesmo espírito de `gmCreatureStats` (criaturas de mestre sem ficha completa), em vez de unionizar `RoomActor`/`CharacterSheet` (custaria dezenas de callsites em `lib/combat/attack.ts` sem ganho, já que o resto do pipeline — canvas, `CombatTrack` — já é agnóstico o bastante). Plano salvo em `C:\Users\Raul\.claude\plans\peaceful-puzzling-hopper.md`.
+
+**Risco de segurança identificado e neutralizado (não era só polimento):** `canOpenActionRing`/`onActionRingRequest` em `Battlefield.tsx` não checavam sistema — `listTokenCombatActions` cai em `[UNARMED]` pra qualquer token sem `actor`/`gmCreationId`/`monsterEntryId` (exatamente a forma de um token do Um Anel). Sem gate, o anel de ação **Eldarin** abriria num token do Um Anel e rodaria `resolveTokenAttack` (d20 vs `defesa`) errado. Corrigido no ponto de renderização do ring: `selected.torCombat ? <TorAttackPopup> : <TokenActionRing>` — tratado como bloqueante da mesma sub-fase em que tokens do Um Anel passam a existir no mapa, não deixado pra depois.
+
+**Engenharia (mecânica RAW extraída de `livros/um-anel/06-fases-de-aventura-combate.md` e `08-mestre-e-adversarios.md`):**
+1. `lib/character/um-anel/{adversary-types,adversaries}.ts` — 4 Adversários de exemplo (Soldado Orc, Cacique Orc, Warg, Grande Troll das Cavernas) com Nível de Atributo/Vigor/Ódio/Bloqueio/Proteção/Habilidades Sinistras (texto, não mecanizadas no v1).
+2. `lib/vtt/types.ts` — `BattleToken.torCombat?` (kind hero/adversary, parry, protectionDice, strength/attributeLevel, wounded, eliminated, actions[] pra adversário).
+3. `lib/vtt/tor-player-token.ts` / `lib/character/um-anel/adversary-token.ts` — adapters `TorCharacterSheet`/`TorAdversaryStats` → `BattleToken` (PA fixado em 999 — Um Anel não tem orçamento de PA de movimento, e sem isso o token trava no mapa via `checkCanSpendPa`).
+4. `lib/room/handlers/tor-tokens.ts` + 2 rotas novas (`tokens/place-tor-character`, `tokens/spawn-tor-adversary`) — colocar herói/invocar adversário, espelhando `placeRoomActorOnCell`/`spawnRoomMonster` sem editá-los.
+5. `lib/combat/um-anel/resolve-attack.ts` (puro) — TN = `20-Força+Bloqueio do alvo` (herói atacando) ou `Bloqueio do alvo` puro (adversário atacando); Golpe Perfurante em Proeza 10 ou Runa (`numeric===10` cobre os dois, já codificado em `dice.ts`); teste de Proteção; tabela de Severidade da Ferida (Moderado/Grave+dias/Gravíssimo); adversário eliminado em qualquer Ferida. Testado com 6 cenários do livro via script descartável (18 asserções, `Math.random` mockado) — não commitado.
+6. `lib/combat/um-anel/vitals.ts` — aplica resultado direto em `vida`/`defeated`/`torCombat`, **nunca** via `patchTokenVitals` (injeta condição Eldarin `"inconsciente"` + contador de morte de 10 rodadas que não existem no livro).
+7. `lib/room/handlers/tor-combat-attack.ts` + branch de 1 linha em `app/api/room/[roomId]/combat/attack/route.ts` (`room.rpgSystemId === "um-anel" ? executeRoomTorAttack : executeRoomAttack`) — sincroniza Resistência/Ferida de volta pra `um_anel_characters` via `patchTorCharacterResources` (ganhou campo `injury` novo).
+8. `components/vtt/TorAttackPopup.tsx` — escolher arma/ação + alvo, mostra resultado formatado no chat.
+9. `TurnOrderPanel.tsx` — esconde "Rolar iniciativa" (Um Anel usa ordem por colocação no mapa, já suportado sem código novo via `applyMapPlacementCombatOrder`).
+
+**Verificação:** `tsc --noEmit` + `npm run build` limpos a cada sub-fase. Regressão Eldarin testada **de ponta a ponta com um smoke test real** (não só análise estática): `ELDARIN_DISABLE_DB=1 npm run dev` + Puppeteer/Chrome local — criou conta, criou mesa Eldarin, invocou 2 Goblins, confirmou visualmente que o `TokenActionRing` original abre normalmente (não `TorAttackPopup`) num token sem `torCombat`, ativou modo Combate, e resolveu um ataque de verdade via API (`Goblin 1 acerta Goblin 2: 12 vs CA 12`, d20+CA+dano 1d6 intactos) — zero erros de página em toda a sessão. Ambiente de teste limpo depois (puppeteer-core desinstalado, scripts/screenshots descartados, dev server encerrado).
+
+**Fora de escopo (deferido pra v1.1, documentado no plano — não omitido em silêncio):** Posturas de Combate (Forward/Open/Defensive/Rearward) e suas Tarefas de Combate, Dano Especial completo (Golpe Pesado/Aparar/Perfurar/Investida de Escudo), Recuo, regras de Engajamento por contagem (v1 é "levemente posicional" — qualquer token ataca qualquer outro no mapa), bestiário arrastável (v1 usa lista simples com botão "Invocar" dentro do painel de personagens).
+
+**Arquivos tocados:** ver lista completa no plano; novos principais — `lib/character/um-anel/{adversary-types,adversaries,adversary-token}.ts`, `lib/combat/um-anel/{resolve-attack,vitals}.ts`, `lib/room/handlers/{tor-tokens,tor-combat-attack}.ts`, `lib/vtt/tor-player-token.ts`, `components/vtt/TorAttackPopup.tsx`, 2 rotas de API novas; editados — `lib/vtt/types.ts`, `lib/room/store.ts`, `app/api/room/[roomId]/combat/attack/route.ts`, `components/vtt/{Battlefield,MesaWorkspace,TurnOrderPanel,TorPlayableCharactersPanel}.tsx`, `components/vtt/mesa/{MesaBattlefieldStage,MesaFoundryFloatingWindows}.tsx`, `hooks/useRoomSync.ts`, `lib/character/um-anel/{characters,rules,types}.ts`.
+
+---
