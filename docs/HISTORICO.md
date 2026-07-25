@@ -2019,3 +2019,20 @@ kubectl -n raul rollout status deployment/mxdrpg
 **Arquivos tocados:** novos — `app/api/compendium/route.ts`, `components/vtt/MesaEldarinCompendiumPanel.tsx`; editados — `components/vtt/foundry/{MesaRailIcon,MesaIconBar}.tsx`, `components/vtt/mesa/{MesaFoundryDockRail,MesaFoundryFloatingWindows}.tsx`, `components/vtt/MesaWorkspace.tsx`, `hooks/vtt/useFoundryWindows.ts`, `lib/vtt/foundry-window-placement.ts`.
 
 ---
+
+### 2026-07-25 (cont.) — Mais 4 capítulos do livro extraídos: Virtudes Culturais, Empreitadas, Patronos, Coisas Sem Nome
+
+**Pedido:** usuário confirmou querer a extração de "tudo que sobrou do livro" pro compêndio.
+
+**Passo a passo:**
+1. Releitura de `05-valor-e-sabedoria.md` — Recompensas/Virtudes genéricas já estavam 100% capturadas (`STARTING_REWARDS`/`STARTING_VIRTUES`, 6+6). O que faltava: **36 Virtudes Culturais** (6 por Cultura, escolhidas a partir de Sabedoria 2) — novo `lib/character/um-anel/cultural-virtues.ts`.
+2. `07-fases-de-companhia-jornada.md` — 9 Empreitadas da Fase de Companhia (Reunir Boatos, Curar Cicatrizes, Encontrar Patrono etc., algumas só-Yule, algumas grátis por Chamado) + tabela de custo em XP — novo `lib/character/um-anel/undertakings.ts`.
+3. `13-apendice-patronos-e-ficha.md` — 6 Patronos (Balin, Bilbo, Círdan, Gandalf, Gilraen, Tom Bombadil/Baga de Ouro, cada um com bônus de Companhia + vantagem nomeada) — novo `lib/character/um-anel/patrons.ts`. Também o gerador de "Coisas Sem Nome" (adversário único procedural — 8 tabelas de Dado de Proeza/Sucesso) — novo `lib/character/um-anel/nameless-things.ts`. **Não** extraído: a seção "Landmarks"/"The Star of the Mist" (uma mini-aventura específica, não é catálogo de sistema) e o Índice alfabético (nota do próprio livro dizendo que não tem regra nova).
+4. `TorCompendiumPage.tsx` ganhou 4 seções novas (Virtudes Culturais, Coisas Sem Nome, Empreitadas da Fase de Companhia, Patronos) lendo os arrays acima.
+5. **Achado importante durante a releitura de `10-rivendell.md` (ainda não extraído):** o capítulo tem uma **7ª Cultura jogável completa** (Altos-Elfos de Valfenda, com atributos/perícias/proficiências/traços/virtudes próprios) que não existe no sistema, mais PNJs notáveis (Elrond, Arwen, Elladan/Elrohir, Erestor, Glorfindel) com stat blocks. `11-personagens-exemplo.md` tem 8 pré-prontos (Drogo Bolseiro, Esmeralda Took, Lobelia Sacola-Luva, Paladin Took II, Primula Brandebuque, Rorimac Brandebuque, Balin, Bilbo). Nenhum dos dois foi extraído ainda nesta entrada — fica pra próxima, porque uma 7ª Cultura mexe em `TorCultureId` (tipo usado no wizard/normalize/rules), risco maior que as adições puramente aditivas de compêndio feitas até aqui.
+
+**Verificação:** `tsc --noEmit` + `npm run build` limpos.
+
+**Arquivos tocados:** novos — `lib/character/um-anel/{cultural-virtues,undertakings,patrons,nameless-things}.ts`; editado — `components/compendium/TorCompendiumPage.tsx`.
+
+---
