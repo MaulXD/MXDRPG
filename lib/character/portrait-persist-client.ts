@@ -3,6 +3,7 @@
 import { patchRoomActor } from "@/hooks/useRoomSync";
 import { patchCharacterRecord } from "@/lib/character/character-persist-client";
 import type { CharacterSheet } from "@/lib/character/types";
+import type { TorCharacterSheet } from "@/lib/character/um-anel/types";
 import type { PortraitBundle } from "@/lib/media/image-upload-client";
 import type { RoomActor } from "@/lib/room/types";
 
@@ -69,6 +70,34 @@ export async function persistPortraitBundleToRoom(
 
 export async function clearPortraitOnCharacter(characterId: string): Promise<void> {
   await patchCharacterRecord(characterId, CLEAR_PORTRAIT_PATCH);
+}
+
+async function patchTorCharacterRecord(
+  characterId: string,
+  body: Record<string, unknown>
+): Promise<{ character?: TorCharacterSheet }> {
+  const res = await fetch(`/api/tor-characters/${encodeURIComponent(characterId)}`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    credentials: "same-origin",
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) {
+    const data = await res.json().catch(() => ({}));
+    throw new Error((data as { error?: string }).error ?? `Erro ${res.status}`);
+  }
+  return res.json() as Promise<{ character?: TorCharacterSheet }>;
+}
+
+export async function persistPortraitBundleToTorCharacter(
+  characterId: string,
+  bundle: PortraitBundle
+): Promise<{ character?: TorCharacterSheet }> {
+  return patchTorCharacterRecord(characterId, portraitBundleToPatch(bundle));
+}
+
+export async function clearPortraitOnTorCharacter(characterId: string): Promise<void> {
+  await patchTorCharacterRecord(characterId, CLEAR_PORTRAIT_PATCH);
 }
 
 export async function clearPortraitOnRoom(

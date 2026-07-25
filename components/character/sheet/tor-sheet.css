@@ -42,6 +42,46 @@
   padding-bottom: 0.6rem;
 }
 
+.tor-sheet__masthead--with-portrait {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.tor-sheet__masthead-text {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Retrato/token na ficha do Um Anel — sem a moldura de brasão do Eldarin
+   (portrait--frameless herda clip-path de escudo de components/vtt/eldarin-v4.css
+   quando fora do contexto .sheet-shell--ddb; aqui sobrescrevemos pra um quadro liso). */
+.tor-sheet__masthead-portrait .portrait--ddb {
+  width: 88px;
+  height: auto;
+  aspect-ratio: 3 / 4;
+  flex: none;
+}
+
+.tor-sheet__masthead-portrait .portrait--frameless .portrait-inner {
+  inset: 0;
+  clip-path: none;
+  border-radius: 6px;
+  background: var(--tor-paper-2);
+  border: 1px solid var(--tor-border);
+}
+
+.tor-sheet__masthead-portrait .portrait--ddb img,
+.tor-sheet__masthead-portrait .portrait--ddb .portrait-focus-fill {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.tor-sheet__masthead-portrait .portrait-initials {
+  color: var(--tor-ink-muted);
+}
+
 .tor-sheet__masthead h1 {
   margin: 0;
   font-size: 2rem;

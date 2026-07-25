@@ -23,6 +23,9 @@ import {
   TOR_NAMELESS_CHARACTERISTICS,
   TOR_NAMELESS_FELL_ABILITIES,
 } from "@/lib/character/um-anel/nameless-things";
+import { TOR_PREGEN_CHARACTERS } from "@/lib/character/um-anel/pregens";
+import { attributeTN } from "@/lib/character/um-anel/rules";
+import type { TorCombatProficiencyId } from "@/lib/character/um-anel/types";
 import "./tor-compendium.css";
 
 const ADVERSARY_TIER_LABEL: Record<string, string> = {
@@ -387,6 +390,81 @@ export function TorCompendiumPage() {
               <p className="tor-compendium__blessing">
                 <strong>{p.advantageName}</strong> — {p.advantageText}
               </p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section>
+        <h2>Personagens Pré-Gerados (Starter Set)</h2>
+        <p className="tor-compendium__lead">
+          Os 8 heróis prontos-pra-jogar do Starter Set — use pra começar uma mesa sem passar pelo assistente
+          de criação.
+        </p>
+        <div className="tor-compendium__grid">
+          {TOR_PREGEN_CHARACTERS.map((p) => (
+            <article key={p.id} className="tor-compendium__card">
+              <h3>
+                {p.name} <span className="tor-compendium__tier">{CULTURE_BY_ID[p.culture]?.name}</span>
+              </h3>
+              <p className="tor-compendium__meta">
+                {p.age} anos · Traços: {p.distinctiveFeatureIds.map((id) => DISTINCTIVE_FEATURE_BY_ID[id]?.label).join(", ")}
+              </p>
+              <p className="tor-compendium__meta">
+                Força {p.attributes.forca} (NA {attributeTN(p.attributes.forca)}) · Coração {p.attributes.coracao} (NA{" "}
+                {attributeTN(p.attributes.coracao)}) · Astúcia {p.attributes.argucia} (NA{" "}
+                {attributeTN(p.attributes.argucia)})
+              </p>
+              <p className="tor-compendium__meta">
+                Resistência {p.endurance} · Esperança {p.hope} · Bloqueio {p.parry} · Valor {p.valour} · Sabedoria{" "}
+                {p.wisdom}
+              </p>
+              <p className="tor-compendium__meta">
+                Perícias:{" "}
+                {SKILLS.filter((s) => p.skills[s.id] > 0)
+                  .map((s) => `${s.label} ${p.skills[s.id]}${p.favouredSkills.includes(s.id) ? " (Favorecida)" : ""}`)
+                  .join(" · ")}
+              </p>
+              <p className="tor-compendium__meta">
+                Proficiências:{" "}
+                {(Object.keys(p.combatProficiencies) as TorCombatProficiencyId[])
+                  .filter((id) => p.combatProficiencies[id] > 0)
+                  .map((id) => `${COMBAT_PROFICIENCY_LABEL[id]} ${p.combatProficiencies[id]}`)
+                  .join(" · ") || "—"}
+              </p>
+              {p.rewards.length ? <p className="tor-compendium__meta">Recompensas: {p.rewards.join("; ")}</p> : null}
+              {p.virtues.length ? (
+                <ul className="tor-compendium__blessing-list">
+                  {p.virtues.map((v, i) => (
+                    <li key={i}>
+                      <strong>{v.name}:</strong> {v.text}
+                    </li>
+                  ))}
+                </ul>
+              ) : null}
+              {p.warGear.length ? (
+                <p className="tor-compendium__meta">
+                  Equipamento de Guerra:{" "}
+                  {p.warGear
+                    .map((w) => `${w.name} (Dano ${w.damage}/Ferimento ${w.injury}/Carga ${w.load}${w.notes ? `, ${w.notes}` : ""})`)
+                    .join(" · ")}
+                </p>
+              ) : null}
+              {p.armour ? (
+                <p className="tor-compendium__meta">
+                  Armadura: {p.armour.name} (Proteção {p.armour.protection}, Carga {p.armour.load})
+                </p>
+              ) : null}
+              {p.shield ? (
+                <p className="tor-compendium__meta">
+                  Escudo: {p.shield.name} (+{p.shield.parryBonus} Bloqueio, Carga {p.shield.load})
+                </p>
+              ) : null}
+              <p className="tor-compendium__meta">Equipamento de Viagem: {p.travellingGear}</p>
+              <p className="tor-compendium__blessing">
+                <em>&ldquo;{p.quote}&rdquo;</em>
+              </p>
+              <p>{p.background}</p>
             </article>
           ))}
         </div>

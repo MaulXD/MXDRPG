@@ -1,4 +1,5 @@
 import type { BaseCharacterFields } from "@/lib/character/types";
+import type { PortraitFocus } from "@/lib/media/portrait-focus";
 
 /** Os três Atributos do Um Anel — Força, Coração, Astúcia. */
 export type TorAttributeKey = "forca" | "coracao" | "argucia";
@@ -84,6 +85,12 @@ export type TorResourcePatch = Partial<{
   injury: string;
   treasure: number;
   fellowship: number;
+  /** Retrato/token — ver lib/character/portrait-persist-client.ts::persistPortraitBundleToTorCharacter. */
+  portraitUrl: string | null;
+  tokenImageUrl: string | null;
+  portraitFocus: PortraitFocus | null;
+  coverFocus: PortraitFocus | null;
+  tokenFocus: PortraitFocus | null;
 }>;
 
 /**

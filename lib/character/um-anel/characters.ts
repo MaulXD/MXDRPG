@@ -141,6 +141,11 @@ export async function patchTorCharacterResources(
       ...sheet.conditions,
       wounded: patch.wounded !== undefined ? patch.wounded : sheet.conditions.wounded,
     },
+    portraitUrl: patch.portraitUrl !== undefined ? patch.portraitUrl : sheet.portraitUrl,
+    tokenImageUrl: patch.tokenImageUrl !== undefined ? patch.tokenImageUrl : sheet.tokenImageUrl,
+    portraitFocus: patch.portraitFocus !== undefined ? patch.portraitFocus : sheet.portraitFocus,
+    coverFocus: patch.coverFocus !== undefined ? patch.coverFocus : sheet.coverFocus,
+    tokenFocus: patch.tokenFocus !== undefined ? patch.tokenFocus : sheet.tokenFocus,
   };
 
   return saveTorCharacter(normalizeTorCharacter(next));

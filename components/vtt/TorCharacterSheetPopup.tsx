@@ -91,6 +91,7 @@ export function TorCharacterSheetPopup({
           <TorCharacterSheetView
             character={character}
             interactive
+            canEditPortrait
             onRoll={handleRoll}
             onResourceChange={(patch) => void handleResourceChange(patch)}
           />

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { SheetPopupPortrait } from "@/components/character/SheetPopupPortrait";
 import {
   ARMOUR_BY_ID,
   ATTRIBUTE_LABEL,
@@ -25,6 +26,10 @@ import type {
   TorResourcePatch,
   TorSkillId,
 } from "@/lib/character/um-anel/types";
+import { persistPortraitBundleToTorCharacter } from "@/lib/character/portrait-persist-client";
+import type { PortraitBundle } from "@/lib/media/image-upload-client";
+import type { PortraitFocus } from "@/lib/media/portrait-focus";
+import "@/components/character/sheet-ddb.css";
 import "./tor-sheet.css";
 
 type Props = {
@@ -33,6 +38,15 @@ type Props = {
   interactive?: boolean;
   onRoll?: (message: string) => void;
   onResourceChange?: (patch: TorResourcePatch) => void;
+  /** Habilita upload/edição de retrato + token (dono da ficha ou mestre). */
+  canEditPortrait?: boolean;
+};
+
+type PortraitOverride = {
+  portraitUrl: string | null;
+  tokenImageUrl: string | null;
+  portraitFocus: PortraitFocus | null;
+  tokenFocus: PortraitFocus | null;
 };
 
 const PIP_MAX = 6;
@@ -85,12 +99,34 @@ function Stepper({
   );
 }
 
-export function TorCharacterSheetView({ character, interactive = false, onRoll, onResourceChange }: Props) {
+export function TorCharacterSheetView({
+  character,
+  interactive = false,
+  onRoll,
+  onResourceChange,
+  canEditPortrait = false,
+}: Props) {
   const culture = CULTURE_BY_ID[character.culture];
   const calling = CALLING_BY_ID[character.calling];
   const shadowPath = SHADOW_PATH_BY_ID[character.shadowPathId];
   const standard = STANDARDS_OF_LIVING.find((s) => s.id === character.standardOfLiving);
   const [lastRoll, setLastRoll] = useState<string | null>(null);
+  const [portraitOverride, setPortraitOverride] = useState<PortraitOverride | null>(null);
+
+  const portraitUrl = portraitOverride ? portraitOverride.portraitUrl : character.portraitUrl ?? null;
+  const tokenImageUrl = portraitOverride ? portraitOverride.tokenImageUrl : character.tokenImageUrl ?? null;
+  const portraitFocus = portraitOverride ? portraitOverride.portraitFocus : character.portraitFocus ?? null;
+  const tokenFocus = portraitOverride ? portraitOverride.tokenFocus : character.tokenFocus ?? null;
+
+  async function persistPortrait(bundle: PortraitBundle) {
+    await persistPortraitBundleToTorCharacter(character.id, bundle);
+    setPortraitOverride({
+      portraitUrl: bundle.portraitUrl,
+      tokenImageUrl: bundle.tokenImageUrl,
+      portraitFocus: bundle.portraitFocus,
+      tokenFocus: bundle.tokenFocus,
+    });
+  }
 
   const rewards = character.rewards.map((id) => STARTING_REWARDS.find((r) => r.id === id)).filter(Boolean);
   const virtues = character.virtues.map((id) => STARTING_VIRTUES.find((v) => v.id === id)).filter(Boolean);
@@ -112,21 +148,39 @@ export function TorCharacterSheetView({ character, interactive = false, onRoll, 
 
   return (
     <div className="tor-sheet">
-      <header className="tor-sheet__masthead">
-        <h1>{character.name}</h1>
-        <p className="tor-sheet__masthead-meta">
-          <span>{culture?.name}</span>
-          <span aria-hidden>·</span>
-          <span>{calling?.name}</span>
-          {character.age ? (
-            <>
-              <span aria-hidden>·</span>
-              <span>{character.age} anos</span>
-            </>
-          ) : null}
-          <span aria-hidden>·</span>
-          <span>Padrão de Vida: {standard?.label}</span>
-        </p>
+      <header className="tor-sheet__masthead tor-sheet__masthead--with-portrait">
+        {portraitUrl || canEditPortrait ? (
+          <div className="tor-sheet__masthead-portrait">
+            <SheetPopupPortrait
+              actorId={character.id}
+              name={character.name}
+              portraitUrl={portraitUrl}
+              tokenImageUrl={tokenImageUrl}
+              portraitFocus={portraitFocus}
+              tokenFocus={tokenFocus}
+              canEdit={canEditPortrait}
+              onSaved={() => {}}
+              onPersistBundle={persistPortrait}
+              layout="ddb"
+            />
+          </div>
+        ) : null}
+        <div className="tor-sheet__masthead-text">
+          <h1>{character.name}</h1>
+          <p className="tor-sheet__masthead-meta">
+            <span>{culture?.name}</span>
+            <span aria-hidden>·</span>
+            <span>{calling?.name}</span>
+            {character.age ? (
+              <>
+                <span aria-hidden>·</span>
+                <span>{character.age} anos</span>
+              </>
+            ) : null}
+            <span aria-hidden>·</span>
+            <span>Padrão de Vida: {standard?.label}</span>
+          </p>
+        </div>
       </header>
 
       {character.biography ? <p className="tor-sheet__bio">{character.biography}</p> : null}

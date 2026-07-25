@@ -38,9 +38,10 @@ export default async function PersonagemPage({ params }: Props) {
   if (id.startsWith("tor-")) {
     const torCharacter = await resolveTorCharacter(id);
     if (!torCharacter) notFound();
+    const canEditPortrait = torCharacter.ownerId === session.user.id;
     return (
       <div className="page-wrap page-wrap--sheet-ddb">
-        <TorCharacterSheetView character={torCharacter} />
+        <TorCharacterSheetView character={torCharacter} canEditPortrait={canEditPortrait} />
       </div>
     );
   }
