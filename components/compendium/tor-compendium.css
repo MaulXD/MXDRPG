@@ -9,6 +9,23 @@
   margin: 0 0 0.75rem;
 }
 
+.tor-compendium__lead {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  margin: -0.4rem 0 0.85rem;
+  max-width: 62ch;
+}
+
+.tor-compendium__blessing-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  font-size: 0.85rem;
+}
+
 .tor-compendium__grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));

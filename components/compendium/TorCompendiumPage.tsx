@@ -12,6 +12,7 @@ import {
   WEAPONS,
 } from "@/lib/character/um-anel/data";
 import { TOR_ADVERSARIES } from "@/lib/character/um-anel/adversaries";
+import { TOR_BLESSINGS, TOR_CURSED_ITEMS, TOR_ENCHANTED_REWARDS, TOR_HOARD_TABLE } from "@/lib/character/um-anel/treasure";
 import "./tor-compendium.css";
 
 const ADVERSARY_TIER_LABEL: Record<string, string> = {
@@ -184,6 +185,84 @@ export function TorCompendiumPage() {
             <article key={v.id} className="tor-compendium__card">
               <h3>{v.label}</h3>
               <p>{v.description}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section>
+        <h2>Tesouro</h2>
+        <table className="tor-compendium__table">
+          <thead>
+            <tr>
+              <th>Nível</th>
+              <th>Exemplos</th>
+              <th>Valor de Tesouro</th>
+              <th>Rolagens de Tesouro Mágico</th>
+            </tr>
+          </thead>
+          <tbody>
+            {TOR_HOARD_TABLE.map((h) => (
+              <tr key={h.id}>
+                <td>{h.label}</td>
+                <td>{h.examples}</td>
+                <td>{h.treasureValue}</td>
+                <td>{h.magicalTreasureRolls}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </section>
+
+      <section>
+        <h2>Bênçãos (Artefatos Maravilhosos &amp; Itens Prodigiosos)</h2>
+        <p className="tor-compendium__lead">
+          Um Artefato Maravilhoso tem 1 Bênção, um Item Prodigioso tem 2 — role um Dado de Sucesso pra categoria,
+          outro pra Perícia dentro dela. O portador ganha (2d) em rolagens dessa Perícia, com sucesso Mágico.
+        </p>
+        <div className="tor-compendium__grid">
+          {TOR_BLESSINGS.map((cat) => (
+            <article key={cat.id} className="tor-compendium__card">
+              <h3>{cat.label}</h3>
+              <ul className="tor-compendium__blessing-list">
+                {cat.entries.map((e) => (
+                  <li key={e.rollRange}>
+                    <strong>{e.rollRange}:</strong> {e.skill}{" "}
+                    <span className="tor-compendium__meta">({e.suggestedItems})</span>
+                  </li>
+                ))}
+              </ul>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section>
+        <h2>Recompensas Encantadas (Armas &amp; Armaduras Famosas)</h2>
+        <p className="tor-compendium__lead">
+          Máx. 3 qualidades por item (Recompensas comuns ou Encantadas), mín. 1 Recompensa Encantada.
+        </p>
+        <div className="tor-compendium__grid">
+          {TOR_ENCHANTED_REWARDS.map((r) => (
+            <article key={r.id} className="tor-compendium__card">
+              <h3>{r.name}</h3>
+              <p className="tor-compendium__meta">
+                {r.craftsmanship} · {r.item}
+                {r.special ? ` · ${r.special}` : ""}
+              </p>
+              <p>{r.description}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section>
+        <h2>Itens Amaldiçoados</h2>
+        <div className="tor-compendium__grid">
+          {TOR_CURSED_ITEMS.map((c) => (
+            <article key={c.id} className="tor-compendium__card">
+              <h3>{c.name}</h3>
+              <p>{c.description}</p>
             </article>
           ))}
         </div>

@@ -270,7 +270,6 @@
   gap: 0.65rem;
   width: 100%;
   max-width: 260px;
-  aspect-ratio: 1;
   margin: 0 auto;
   padding: 0.85rem;
   border-radius: var(--radius);
@@ -412,7 +411,7 @@
 .mesa-panel-scroll--invite {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   padding: 0.65rem;
   min-height: 0;
 }
@@ -421,7 +420,8 @@
 .foundry-window--invite .foundry-window__body {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
+  overflow-y: auto;
 }
 
 @media (max-width: 900px) {

@@ -1982,3 +1982,22 @@ kubectl -n raul rollout status deployment/mxdrpg
 **Arquivos tocados:** ver lista completa no plano; novos principais — `lib/character/um-anel/{adversary-types,adversaries,adversary-token}.ts`, `lib/combat/um-anel/{resolve-attack,vitals}.ts`, `lib/room/handlers/{tor-tokens,tor-combat-attack}.ts`, `lib/vtt/tor-player-token.ts`, `components/vtt/TorAttackPopup.tsx`, 2 rotas de API novas; editados — `lib/vtt/types.ts`, `lib/room/store.ts`, `app/api/room/[roomId]/combat/attack/route.ts`, `components/vtt/{Battlefield,MesaWorkspace,TurnOrderPanel,TorPlayableCharactersPanel}.tsx`, `components/vtt/mesa/{MesaBattlefieldStage,MesaFoundryFloatingWindows}.tsx`, `hooks/useRoomSync.ts`, `lib/character/um-anel/{characters,rules,types}.ts`.
 
 ---
+
+### 2026-07-25 (cont.) — Bestiário completo (21 adversários) + Tesouro Mágico do Um Anel
+
+**Pedido:** usuário apontou que os 4 adversários da Fase 4 eram só amostra ("isso era o básico") e pediu extração completa do bestiário e dos itens do livro, reforçando que a mesa do Um Anel não pode puxar nada do Eldarin.
+
+**Passo a passo:**
+1. Releitura integral de `livros/um-anel/08-mestre-e-adversarios.md` (~1780 linhas) pra cobrir as seções ainda não extraídas: Homens Maus (5), Orcs (7, incluindo os 2 já feitos), Trolls (4, incluindo o já feito), Mortos-Vivos (3), Lobos Selvagens (2, incluindo o já feito) e Lobisomens (1) — total 21 adversários únicos em `lib/character/um-anel/adversaries.ts` (era 4).
+2. Extraído também o capítulo de Tesouro (`lib/character/um-anel/{treasure-types,treasure}.ts`, novo): tabela de Tesouros (Menor/Maior/Maravilhoso), 20 Recompensas Encantadas (qualidades mágicas de Armas/Armaduras Famosas — Ajuste Ancestral, Afiado Superior, Extermínio de Inimigos, Armadura de Mithril etc.), 6 categorias de Bênçãos (36 combinações Perícia+tipo de item pra Artefatos Maravilhosos/Itens Prodigiosos), 9 Itens Amaldiçoados (Maldição da Fraqueza, Escurecer, Caçado, Má Sorte, Mau Presságio, Malícia, Possuído, Mancha da Sombra, Enfraquecimento). Ficou de fora deliberadamente: geração procedural de Objetos Preciosos (tabelas de Forma/Material) e o sistema de "Olho de Mordor"/Caçada (mecânica de campanha separada, não é bestiário nem item) — não pedidos, não mecanizados.
+3. `TorCompendiumPage.tsx` ganhou 3 seções novas (Tesouro, Bênçãos, Recompensas Encantadas, Itens Amaldiçoados) lendo os arrays acima — mesmo padrão das seções existentes, sem tocar em `CompendiumPackId`/compêndio Eldarin.
+4. Verificação explícita de isolamento (pedido reforçado do usuário): `grep` em todo `lib/character/um-anel/`, `lib/combat/um-anel/` e componentes TOR por imports de `lib/vtt/monsters`, `monstros.json`, `lib/compendium/*`, `lib/combat/attack.ts` — zero ocorrências (o único import de fora é `BaseCharacterFields` de `lib/character/types.ts`, os ~7 campos genéricos compartilhados por design desde a Fase 2, não conteúdo de jogo do Eldarin).
+5. Bug reportado separadamente pelo usuário e corrigido de passagem: painel de Convite (`RoomInvitePanel`) tinha `aspect-ratio: 1` forçando quadrado + `justify-content: center` em `.mesa-panel-scroll--invite`/`.foundry-window--invite .foundry-window__body` — com conteúdo mais alto que o quadrado, a centralização cortava/sobrepunha o topo (bug clássico de flexbox "overflow + center"). Corrigido: removido o `aspect-ratio`, `justify-content` trocado pra `flex-start` + `overflow-y: auto` no body da janela. Não relacionado à Fase 4 (pré-existente).
+
+**Deferido (não investigado ainda):** ícone de dado pequeno não aparece no chat pra rolagens (`1d10 → 1`) — vive em `DiceBoxMini`/`combat-dice-model.ts`/`dice-combat-box.ts`, um sistema de dados 3D (WebGL) via lib vendor, completamente separado do trabalho desta sessão. Reportado pelo usuário, não investigado a fundo ainda (provável falha de asset/render específica de d10 na lib 3D, não confirmado).
+
+**Verificação:** `tsc --noEmit` + `npm run build` limpos.
+
+**Arquivos tocados:** `lib/character/um-anel/adversaries.ts` (4→21 entradas), `lib/character/um-anel/{treasure-types,treasure}.ts` (novos), `components/compendium/{TorCompendiumPage.tsx,tor-compendium.css}`, `components/vtt/vtt.css` (fix painel de convite).
+
+---
