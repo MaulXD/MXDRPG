@@ -123,7 +123,7 @@ function ChatEvent({
     );
   }
 
-  if (message.kind === "roll" && message.roll) {
+  if (message.roll) {
     const natural = message.roll.rolls[0] ?? message.roll.total;
     return (
       <article className="room-chat-event room-chat-event--roll">
@@ -138,14 +138,18 @@ function ChatEvent({
             <strong className="room-chat-author">{message.authorName}</strong>
           </div>
         </div>
-        <p className="room-chat-roll-body">
-          <span className="room-chat-roll-formula">{message.roll.formula}</span>
-          <span className="room-chat-roll-arrow">→</span>
-          <em className="room-chat-roll-total">{message.roll.total}</em>
-          {message.roll.rolls.length > 1 ? (
-            <span className="room-chat-roll-parts"> [{message.roll.rolls.join(", ")}]</span>
-          ) : null}
-        </p>
+        {message.kind === "chat" ? (
+          <p className="room-chat-roll-body room-chat-roll-body--narrative">{message.text}</p>
+        ) : (
+          <p className="room-chat-roll-body">
+            <span className="room-chat-roll-formula">{message.roll.formula}</span>
+            <span className="room-chat-roll-arrow">→</span>
+            <em className="room-chat-roll-total">{message.roll.total}</em>
+            {message.roll.rolls.length > 1 ? (
+              <span className="room-chat-roll-parts"> [{message.roll.rolls.join(", ")}]</span>
+            ) : null}
+          </p>
+        )}
       </article>
     );
   }

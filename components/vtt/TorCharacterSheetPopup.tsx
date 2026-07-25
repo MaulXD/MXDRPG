@@ -5,6 +5,7 @@ import { FoundryWindow } from "@/components/vtt/foundry/FoundryWindow";
 import { TorCharacterSheetView } from "@/components/character/sheet/TorCharacterSheetView";
 import { postRoomChat } from "@/hooks/useRoomSync";
 import type { FoundryWindowLayout } from "@/hooks/vtt/useFoundryWindows";
+import type { TorFeatDieRollPayload } from "@/lib/character/um-anel/dice";
 import type { TorCharacterSheet, TorResourcePatch } from "@/lib/character/um-anel/types";
 
 type Props = {
@@ -67,8 +68,8 @@ export function TorCharacterSheetPopup({
     }
   }
 
-  function handleRoll(message: string) {
-    void postRoomChat(roomId, { text: message, kind: "chat" });
+  function handleRoll(message: string, featDie?: TorFeatDieRollPayload) {
+    void postRoomChat(roomId, { text: message, kind: "chat", torFeatDie: featDie });
   }
 
   if (!characterId) return null;

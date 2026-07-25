@@ -2,6 +2,7 @@ import { WEAPON_BY_ID } from "@/lib/character/um-anel/data";
 import { resolveWeaponInjury } from "@/lib/character/um-anel/rules";
 import { resolveTorCharacter, patchTorCharacterResources } from "@/lib/character/um-anel/characters";
 import { resolveTorAttack, formatTorAttackMessage } from "@/lib/combat/um-anel/resolve-attack";
+import { featDieRollPayload } from "@/lib/character/um-anel/dice";
 import { applyTorAttackResultToDefender } from "@/lib/combat/um-anel/vitals";
 import { appendRoomChatMessage } from "./chat";
 import { syncCombatOrderWithTokens } from "../combat-order";
@@ -145,7 +146,13 @@ export async function executeRoomTorAttack(
   syncCombatOrderWithTokens(room);
 
   const message = formatTorAttackMessage(attackerToken.name, defenderToken.name, weaponLabel, result);
-  appendRoomChatMessage(room, { ...author, kind: "chat", text: message });
+  const { sides, value } = featDieRollPayload(result.attackRoll.featDie);
+  appendRoomChatMessage(room, {
+    ...author,
+    kind: "chat",
+    text: message,
+    roll: { formula: `1d${sides}`, rolls: [value], total: value },
+  });
 
   try {
     return { ok: true, snapshot: toSnapshot(await persistRoom(roomId, room)) };

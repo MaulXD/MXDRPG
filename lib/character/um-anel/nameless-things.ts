@@ -63,6 +63,69 @@ export const TOR_NAMELESS_FEATURE: Record<number, string> = {
   6: "…ainda maior",
 };
 
+/** Tabela 3 — No Primeiro Encontro (2 rolagens de Dado de Proeza independentes). */
+export const TOR_NAMELESS_BEFORE_SEEN: Record<string, string> = {
+  olho: "Você nota um silêncio mortal.",
+  "1": "Você ouve um silvo sinistro.",
+  "2": "Você ouve um rosnado grave.",
+  "3": "Você vê os ossos de suas vítimas.",
+  "4": "Sua pele se arrepia.",
+  "5": "Você ouve um som ou grito ensurdecedor.",
+  "6": "Você nota seus rastros.",
+  "7": "Você ouve um grito aterrorizante.",
+  "8": "Você sente um fedor hediondo.",
+  "9": "Você sente uma rajada violenta de ar.",
+  "10": "Você ouve um som agudo e sibilante.",
+  runa: "Você sente um frio terrível.",
+};
+
+export const TOR_NAMELESS_FIRST_SEEN: Record<string, string> = {
+  olho: "Uma grande sombra, no meio da qual há uma forma escura.",
+  "1": "Suas garras enormes.",
+  "2": "Seus olhos, brilhando no escuro.",
+  "3": "Que seu corpo é flácido e translúcido, como se feito de material gelatinoso.",
+  "4": "Sua boca escancarada, abrindo e fechando como se ofegasse por ar.",
+  "5": "Uma grande goela, com presas estranhamente parecidas com dentes humanos.",
+  "6": "Que enxames de insetos ou outras alimárias rastejam à sua frente.",
+  "7": "Um longo tentáculo sinuoso, deslizando em sua direção.",
+  "8": "Suas presas enormes, tão grandes e compridas que não consegue fechar a boca.",
+  "9": "Seus olhos largos e cegos.",
+  "10": "Muitos chifres retorcidos de marfim manchado.",
+  runa: "Uma visão de uma bela criatura, um fantasma da mente.",
+};
+
+/** Tabela 4 — Um Boato Sobre a Coisa (Dado de Proeza, um só, texto de sabor histórico). */
+export const TOR_NAMELESS_RUMOURS: Record<string, string> = {
+  olho: "…foi aprisionada por Sauron em Dol Guldur, libertada durante o ataque do Conselho Branco, hoje jurada inimiga de tudo que vive.",
+  "1": "…foi perturbada no Lago Evendim pelos primeiros Homens de Arnor, arrastando navios e tripulações pras profundezas.",
+  "2": "…lutou em Dagorlad a serviço de Sauron, até Gil-galad e Aiglos a forçarem a recuar.",
+  "3": "…causou o colapso da ponte de Tharbad depois da Grande Peste.",
+  "4": "…perseguiu Othar, escudeiro de Isildur, depois dos Campos Gladden.",
+  "5": "…foi solta pelo Rei-Bruxo de Angmar pra derrubar as defesas de Fornost.",
+  "6": "…assombrou as minas Anãs das Montanhas Cinzentas, eventualmente expulsa (dizem que pelo próprio Thorin).",
+  "7": "…foi cultuada como deus pelos Homens das Colinas, até ser expulsa por Elfos e Homens.",
+  "8": "…massacrou um vilarejo de Homens da Floresta no lado leste das Montanhas Nebulosas.",
+  "9": "…retorna periodicamente a Trevamata, fazendo as Aranhas se agitarem de terror.",
+  "10": "…é gananciosa por ossos, principalmente os de Elfos.",
+  runa: "…fugiu da ruína de Beleriand e vem se movendo pro leste desde então.",
+};
+
+/** Tabela 5 — Onde a Coisa É Lembrada (Dado de Proeza, quem/o quê guarda esse saber). */
+export const TOR_NAMELESS_LORE_SOURCES: Record<string, string> = {
+  olho: "Orcs, que costumam alimentá-la com presas e podem ser fonte útil se alguém conseguir fazê-los falar.",
+  "1": "As Grandes Águias, que viram uma monstruosidade fluvial desaparecer sem deixar rastro.",
+  "2": "Uma canção Élfica raramente cantada no Salão do Fogo em Valfenda, que dizem afastá-la se cantada por completo.",
+  "3": "Uma inscrição numa caverna escura ao norte, perto do Ermo Cinzento.",
+  "4": "Pergaminhos antigos em Minas Tirith que citam um mal sob o Monte Mindolluin.",
+  "5": "Um monumento funerário coberto de musgo entre os Homens do Norte do sudeste de Trevamata.",
+  "6": "Uma cantiga de ninar Hobbit recitada na margem do Brandevin, sobre uma coisa das trevas na água.",
+  "7": "Histórias de Rangers sobre uma criatura que pode aparecer ao seu lado enquanto você dorme.",
+  "8": "Os textos bem providos (ainda que nunca totalmente classificados) de Saruman sobre as criaturas sombrias da Terra-média.",
+  "9": "A Pedra-vidente de Elostirion, que só se vira pra observar quando um mal tão antigo se aproxima dos Portos Cinzentos.",
+  "10": "Um pergaminho na biblioteca privada de Elrond em Valfenda, com hábitos e covis anotados.",
+  runa: "Só os mais sábios da Terra-média a conhecem — e a temem, oferecendo apenas conselho de evitá-la, nunca de como enfrentá-la.",
+};
+
 /** Tabela 6 — Características (Dado de Proeza). */
 export type TorNamelessCharacteristics = {
   roll: string;

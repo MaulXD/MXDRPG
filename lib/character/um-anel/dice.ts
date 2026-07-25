@@ -10,7 +10,22 @@ import type { TorCharacterSheet, TorCombatProficiencyId, TorSkillId } from "./ty
 
 type FeatDieKind = "number" | "eye" | "gandalf";
 
-type FeatDieRoll = { kind: FeatDieKind; numeric: number; label: string };
+export type FeatDieRoll = { kind: FeatDieKind; numeric: number; label: string };
+
+/** Face física do d12 (1-12) — pro visual do dado no chat; distinto do valor de jogo
+ * (`numeric`, que já zera o Olho e conta a Runa de Gandalf como 10). */
+export function featDiePhysicalFace(featDie: Pick<FeatDieRoll, "kind" | "numeric">): number {
+  if (featDie.kind === "eye") return 11;
+  if (featDie.kind === "gandalf") return 12;
+  return featDie.numeric;
+}
+
+/** Payload pro ícone de dado no chat (ver RoomChat.tsx) — sempre um d12 (Dado de Proeza). */
+export type TorFeatDieRollPayload = { sides: 12; value: number };
+
+export function featDieRollPayload(featDie: Pick<FeatDieRoll, "kind" | "numeric">): TorFeatDieRollPayload {
+  return { sides: 12, value: featDiePhysicalFace(featDie) };
+}
 
 function rollOneFeatDie(): FeatDieRoll {
   const raw = 1 + Math.floor(Math.random() * 12);

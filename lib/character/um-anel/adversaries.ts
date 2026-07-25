@@ -509,6 +509,38 @@ export const TOR_ADVERSARIES: TorAdversaryStats[] = [
       },
     ],
   },
+
+  // ——— Adversária única de Marco (livros/um-anel/13-apendice-patronos-e-ficha.md, "The Star of the Mist") ———
+  {
+    id: "elwen-a-espectra-funesta",
+    name: "Elwen, a Espectra Funesta",
+    traits: "Horrível, Pesarosa",
+    tier: "boss",
+    attributeLevel: 5,
+    endurance: 24,
+    might: 2,
+    hate: 5,
+    hateKind: "hate",
+    parry: 2,
+    armour: 2,
+    description: "A nobre viúva do Senhor Hadirion, consumida pelo pesar após vê-lo torturado até a morte pelo Rei-Bruxo — ao longo dos anos, tornou-se a Espectra Funesta que assombra a Torre da Estrela na Bruma, no sopé sul das Montanhas Azuis.",
+    actions: [
+      { id: "lamina-corroida", label: "Lâmina Corroída", rating: 3, damage: 4, injury: 16, specialDamage: ["Perfurar"] },
+      { id: "lanca", label: "Lança", rating: 2, damage: 4, injury: 14, specialDamage: ["Perfurar"] },
+    ],
+    fellAbilities: [
+      { name: "Moradora das Trevas", text: "Rolagens de ataque são Favorecidas na escuridão." },
+      { name: "Medo do Fogo", text: "Perde 1 Ódio no início de cada rodada engajada em combate corpo a corpo com um adversário empunhando tocha ou item em chamas." },
+      {
+        name: "Sem Morte",
+        text: "Gaste 1 Ódio pra cancelar uma Ferida, ou dano que a levaria a 0 de Resistência. Imune à Tarefa de Combate Intimidar Inimigo, a menos que se obtenha um sucesso Mágico.",
+      },
+      {
+        name: "Golpe de Pavor",
+        text: "Gaste 1 Ódio pra fazer todos os heróis à vista ganharem 3 pontos de Sombra (Pavor). Quem falhar no Teste de Sombra se perde na névoa e não pode se reunir ao grupo até a rodada seguinte.",
+      },
+    ],
+  },
 ];
 
 export const TOR_ADVERSARY_BY_ID: Record<string, TorAdversaryStats> = Object.fromEntries(

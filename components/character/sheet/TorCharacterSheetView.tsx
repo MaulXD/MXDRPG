@@ -18,7 +18,12 @@ import {
   WEAPON_BY_ID,
   WEAPONS,
 } from "@/lib/character/um-anel/data";
-import { rollTorCombatProficiencyCheck, rollTorSkillCheck } from "@/lib/character/um-anel/dice";
+import {
+  featDieRollPayload,
+  rollTorCombatProficiencyCheck,
+  rollTorSkillCheck,
+  type TorFeatDieRollPayload,
+} from "@/lib/character/um-anel/dice";
 import { attributeTN } from "@/lib/character/um-anel/rules";
 import type {
   TorCharacterSheet,
@@ -36,7 +41,7 @@ type Props = {
   character: TorCharacterSheet;
   /** Mesa: habilita rolagem de dados e ajuste de recursos. Página solo: fica só leitura. */
   interactive?: boolean;
-  onRoll?: (message: string) => void;
+  onRoll?: (message: string, featDie?: TorFeatDieRollPayload) => void;
   onResourceChange?: (patch: TorResourcePatch) => void;
   /** Habilita upload/edição de retrato + token (dono da ficha ou mestre). */
   canEditPortrait?: boolean;
@@ -135,15 +140,15 @@ export function TorCharacterSheetView({
     .filter(Boolean);
 
   function rollSkill(skillId: TorSkillId) {
-    const { message } = rollTorSkillCheck(character, skillId);
+    const { message, outcome } = rollTorSkillCheck(character, skillId);
     setLastRoll(message);
-    onRoll?.(message);
+    onRoll?.(message, featDieRollPayload(outcome.featDie));
   }
 
   function rollCombat(profId: TorCombatProficiencyId) {
-    const { message } = rollTorCombatProficiencyCheck(character, profId);
+    const { message, outcome } = rollTorCombatProficiencyCheck(character, profId);
     setLastRoll(message);
-    onRoll?.(message);
+    onRoll?.(message, featDieRollPayload(outcome.featDie));
   }
 
   return (

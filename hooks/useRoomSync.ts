@@ -1072,7 +1072,13 @@ export async function revealRoomCell(roomId: string, q: number, r: number) {
 
 export async function postRoomChat(
   roomId: string,
-  body: { text?: string; kind?: "chat" | "roll"; formula?: string }
+  body: {
+    text?: string;
+    kind?: "chat" | "roll";
+    formula?: string;
+    /** Ícone de d12 (Dado de Proeza) anexado a uma mensagem kind:"chat" — ver lib/character/um-anel/dice.ts::featDieRollPayload. */
+    torFeatDie?: { sides: 12; value: number };
+  }
 ) {
   const res = await roomFetch(
     `/api/room/${roomId}/chat`,

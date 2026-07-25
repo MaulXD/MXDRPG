@@ -14,7 +14,6 @@ export type MesaWindowId =
   | "createCharacter"
   | "monsterSheet"
   | "status"
-  | "torParty"
   | "torFicha"
   | "compendium";
 

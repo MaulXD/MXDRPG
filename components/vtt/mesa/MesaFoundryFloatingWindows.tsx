@@ -200,49 +200,34 @@ export function MesaFoundryFloatingWindows(props: MesaFoundryFloatingWindowsProp
           onClose={() => onCloseWindow("ficha")}
         >
           <div className="mesa-panel-scroll mesa-panel-scroll--rail">
-            <PlayableCharactersPanel
-              roomId={roomId}
-              adventureId={adventureId}
-              actors={mesaActors}
-              session={session}
-              selectedActorId={sheetPopupActorId}
-              canCreateCharacter={canCreateCharacter}
-              isRoomGm={effectiveIsGm}
-              roomOwnerId={roomOwnerId}
-              memberIds={memberIds}
-              tokens={mapScene.tokens}
-              spawnAxial={spawnAxial}
-              onOpenSheet={onOpenSheet}
-              onCharactersChanged={onRefresh}
-              onCreateCharacter={canCreateCharacter ? onOpenCharacterWizard : undefined}
-              onPlaced={onApplySnapshot}
-            />
-          </div>
-        </FoundryWindow>
-      ) : null}
-
-      {rpgSystemId === "um-anel" && panel("torParty").open ? (
-        <FoundryWindow
-          title="Personagens (Um Anel)"
-          layout={panel("torParty")}
-          className="foundry-window--ficha"
-          minHeight={280}
-          onLayoutChange={(patch) => onPatchWindow("torParty", patch)}
-          onFocus={() => onFocusWindow("torParty")}
-          onMinimize={() =>
-            panel("torParty").minimized ? onRestoreWindow("torParty") : onMinimizeWindow("torParty")
-          }
-          onClose={() => onCloseWindow("torParty")}
-        >
-          <div className="mesa-panel-scroll mesa-panel-scroll--rail">
-            <TorPlayableCharactersPanel
-              adventureId={adventureId}
-              onOpenSheet={(id) => onOpenTorSheet?.(id)}
-              roomId={roomId}
-              spawnAxial={spawnAxial}
-              onPlaced={onApplySnapshot}
-              isRoomGm={effectiveIsGm}
-            />
+            {rpgSystemId === "um-anel" ? (
+              <TorPlayableCharactersPanel
+                adventureId={adventureId}
+                onOpenSheet={(id) => onOpenTorSheet?.(id)}
+                roomId={roomId}
+                spawnAxial={spawnAxial}
+                onPlaced={onApplySnapshot}
+                isRoomGm={effectiveIsGm}
+              />
+            ) : (
+              <PlayableCharactersPanel
+                roomId={roomId}
+                adventureId={adventureId}
+                actors={mesaActors}
+                session={session}
+                selectedActorId={sheetPopupActorId}
+                canCreateCharacter={canCreateCharacter}
+                isRoomGm={effectiveIsGm}
+                roomOwnerId={roomOwnerId}
+                memberIds={memberIds}
+                tokens={mapScene.tokens}
+                spawnAxial={spawnAxial}
+                onOpenSheet={onOpenSheet}
+                onCharactersChanged={onRefresh}
+                onCreateCharacter={canCreateCharacter ? onOpenCharacterWizard : undefined}
+                onPlaced={onApplySnapshot}
+              />
+            )}
           </div>
         </FoundryWindow>
       ) : null}

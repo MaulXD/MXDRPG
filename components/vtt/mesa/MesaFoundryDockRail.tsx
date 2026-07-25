@@ -26,6 +26,10 @@ const TorCompendiumPage = dynamic(
   () => import("@/components/compendium/TorCompendiumPage").then((m) => m.TorCompendiumPage),
   { ssr: false }
 );
+const TorPlayableCharactersPanel = dynamic(
+  () => import("@/components/vtt/TorPlayableCharactersPanel").then((m) => m.TorPlayableCharactersPanel),
+  { ssr: false }
+);
 import type { CombatChatRevealPhase } from "@/lib/combat/chat-display";
 
 const DiceRoller = dynamic(
@@ -155,23 +159,34 @@ export function MesaFoundryDockRail({
           }
         >
           <div className="mesa-panel-scroll mesa-panel-scroll--rail">
-            <PlayableCharactersPanel
-              roomId={roomId}
-              adventureId={adventureId}
-              actors={mesaActors}
-              session={session}
-              selectedActorId={sheetPopupActorId}
-              canCreateCharacter={canCreateCharacter}
-              isRoomGm={effectiveIsGm}
-              roomOwnerId={roomOwnerId}
-              memberIds={memberIds}
-              tokens={mapScene.tokens}
-              spawnAxial={spawnAxial}
-              onOpenSheet={onOpenSheet}
-              onCharactersChanged={onRefresh}
-              onCreateCharacter={canCreateCharacter ? onOpenCharacterWizard : undefined}
-              onPlaced={onApplySnapshot}
-            />
+            {rpgSystemId === "um-anel" ? (
+              <TorPlayableCharactersPanel
+                adventureId={adventureId}
+                roomId={roomId}
+                spawnAxial={spawnAxial}
+                isRoomGm={effectiveIsGm}
+                onOpenSheet={onOpenSheet}
+                onPlaced={onApplySnapshot}
+              />
+            ) : (
+              <PlayableCharactersPanel
+                roomId={roomId}
+                adventureId={adventureId}
+                actors={mesaActors}
+                session={session}
+                selectedActorId={sheetPopupActorId}
+                canCreateCharacter={canCreateCharacter}
+                isRoomGm={effectiveIsGm}
+                roomOwnerId={roomOwnerId}
+                memberIds={memberIds}
+                tokens={mapScene.tokens}
+                spawnAxial={spawnAxial}
+                onOpenSheet={onOpenSheet}
+                onCharactersChanged={onRefresh}
+                onCreateCharacter={canCreateCharacter ? onOpenCharacterWizard : undefined}
+                onPlaced={onApplySnapshot}
+              />
+            )}
           </div>
         </FoundryDockPanel>
       ) : null}

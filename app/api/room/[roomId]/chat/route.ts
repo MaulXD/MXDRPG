@@ -12,6 +12,9 @@ type Body = {
   text?: string;
   kind?: "chat" | "roll";
   formula?: string;
+  /** Ícone de d12 (Dado de Proeza) do Um Anel — anexado como kind:"chat" (o texto já traz
+   * o resultado completo calculado no cliente; o servidor só repassa, não re-rola). */
+  torFeatDie?: { sides: 12; value: number };
 };
 
 export async function POST(req: Request, { params }: Params) {
@@ -73,10 +76,18 @@ export async function POST(req: Request, { params }: Params) {
     return NextResponse.json({ error: "Mensagem inválida (máx 500)" }, { status: 400 });
   }
 
+  const featDieValue =
+    body.torFeatDie && Number.isFinite(body.torFeatDie.value)
+      ? Math.min(12, Math.max(1, Math.round(body.torFeatDie.value)))
+      : null;
+
   const snapshot = await addRoomChatMessage(roomId, {
     ...author,
     kind: "chat",
     text,
+    ...(featDieValue != null
+      ? { roll: { formula: "1d12", rolls: [featDieValue], total: featDieValue } }
+      : {}),
   });
 
   if (!snapshot) {

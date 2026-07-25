@@ -1,4 +1,4 @@
-﻿.comp-shell {
+.comp-shell {
   display: grid;
   grid-template-columns: 220px 1fr;
   gap: 1.25rem;

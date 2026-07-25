@@ -42,17 +42,14 @@ const DEFAULT_LAYOUTS: Record<MesaWindowId, Omit<FoundryWindowLayout, "open" | "
   createCharacter: { x: 48, y: 32, width: 1040, height: 720 },
   monsterSheet: { x: 96, y: 56, width: 520, height: 640 },
   status: { x: 52, y: 48, width: 400, height: 520 },
-  torParty: { x: 52, y: 48, width: 280, height: 420 },
   torFicha: { x: 360, y: 48, width: 460, height: 640 },
   compendium: { x: 72, y: 40, width: 560, height: 620 },
 };
 
-// torParty abre por padrão em toda mesa, mas só é renderizado quando a mesa é
-// do sistema "um-anel" (gate em MesaFoundryFloatingWindows) — inofensivo pra Eldarin.
-const DEFAULT_OPEN: MesaWindowId[] = ["initiative", "torParty"];
+const DEFAULT_OPEN: MesaWindowId[] = ["initiative"];
 
 /** Painéis abertos por padrão como janela flutuante (não na barra lateral). */
-const DEFAULT_FLOATING: MesaWindowId[] = ["initiative", "torParty", "torFicha"];
+const DEFAULT_FLOATING: MesaWindowId[] = ["initiative", "torFicha"];
 
 function storageKey(roomId?: string): string {
   return `eldarin-foundry-windows${roomId ? `-${roomId}` : ""}`;
