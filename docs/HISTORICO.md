@@ -2159,3 +2159,17 @@ kubectl -n raul rollout status deployment/mxdrpg
 **Arquivos tocados:** editados — `components/vtt/{MapTokenList,ActiveCharactersPanel,TokenStatusBody,EndTurnConfirmDialog,Battlefield}.tsx`.
 
 ---
+
+### 2026-07-26 — Ícone "Invocar" mostrava o bestiário do Eldarin numa mesa do Um Anel
+
+**Pedido:** "por que no TOR ta usando o bestiário de eldarin? me explica" — usuário viu monstros do Eldarin ao clicar em invocar numa mesa do Um Anel.
+
+**Causa raiz:** mesmo padrão de bug já corrigido várias vezes nesta sessão (painel/ícone compartilhado sem checar `rpgSystemId`). O ícone "Invocar" do rail (`MesaIconBar.tsx`) sempre aparecia pra qualquer mestre (`show: showGm`, sem checar sistema), e o painel por trás dele (`MonsterSpawnPanel`, tanto no dock quanto na janela flutuante) é 100% Eldarin — lê `lib/vtt/monsters.ts`/`monstros.json`, nunca `TOR_ADVERSARIES`. O Um Anel já tem sua própria forma de invocar adversário — a seção "Adversários" dentro do painel "Ficha" (`TorPlayableCharactersPanel`, corrigido numa entrada anterior) — só que ninguém tinha reparado que o ícone "Invocar" continuava ali do lado, apontando pro bestiário errado.
+
+**Correção:** ícone "Invocar" escondido pra `rpgSystemId === "um-anel"` (`MesaIconBar.tsx` ganhou prop `rpgSystemId`, repassada por `MesaFoundrySidebar.tsx` → `MesaFoundryDockRail.tsx`, que já tinha o valor). Como defesa extra, o conteúdo do painel "spawn" em si (dock **e** flutuante) também ganhou o mesmo guard — mesmo se alguém reabrir a janela por algum estado antigo salvo, o `MonsterSpawnPanel` não renderiza mais fora do Eldarin.
+
+**Verificação:** `tsc --noEmit` + `npm run build` limpos. Não testado contra uma mesa real (mesmo bloqueio de sempre — sem banco neste sandbox).
+
+**Arquivos tocados:** editados — `components/vtt/foundry/{MesaIconBar,MesaFoundrySidebar}.tsx`, `components/vtt/mesa/{MesaFoundryDockRail,MesaFoundryFloatingWindows}.tsx`.
+
+---

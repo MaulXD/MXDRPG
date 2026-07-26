@@ -2,6 +2,7 @@
 
 import type { MesaWindowId } from "@/hooks/vtt/useFoundryWindows";
 import { MesaRailIcon, type MesaRailIconName } from "@/components/vtt/foundry/MesaRailIcon";
+import type { RpgSystemId } from "@/lib/rpg/systems";
 import "./foundry.css";
 
 type IconDef = {
@@ -20,6 +21,7 @@ type Props = {
   onOpenPopup: (id: MesaWindowId) => void;
   showGm?: boolean;
   showInvite?: boolean;
+  rpgSystemId?: RpgSystemId;
 };
 
 function IconButton({
@@ -68,7 +70,11 @@ export function MesaIconBar({
   onOpenPopup,
   showGm = false,
   showInvite = false,
+  rpgSystemId = "eldarin",
 }: Props) {
+  // Invocar monstros (MonsterSpawnPanel) só existe pro bestiário Eldarin — no Um Anel,
+  // invocar adversários já vive dentro do painel "Ficha" (TorPlayableCharactersPanel).
+  const showSpawn = showGm && rpgSystemId !== "um-anel";
   const icons: IconDef[] = [
     { id: "status", label: "Status", icon: "status", section: "play" },
     { id: "initiative", label: "Turno", icon: "initiative", section: "play" },
@@ -79,7 +85,7 @@ export function MesaIconBar({
     { id: "invite", label: "Convite", icon: "invite", section: "play", show: showInvite },
     { id: "dungeon", label: "Mapa", icon: "dungeon", section: "gm", show: showGm },
     { id: "gm", label: "Mestre", icon: "gm", section: "gm", show: showGm },
-    { id: "spawn", label: "Invocar", icon: "spawn", section: "gm", show: showGm },
+    { id: "spawn", label: "Invocar", icon: "spawn", section: "gm", show: showSpawn },
   ];
 
   const playIcons = icons.filter((i) => i.section === "play" && i.show !== false);

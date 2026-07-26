@@ -294,7 +294,7 @@ export function MesaFoundryFloatingWindows(props: MesaFoundryFloatingWindowsProp
         </FoundryWindow>
       ) : null}
 
-      {isActualGm && isFloating("spawn") ? (
+      {isActualGm && rpgSystemId !== "um-anel" && isFloating("spawn") ? (
         <FoundryWindow
           title="Invocar monstros"
           layout={panel("spawn")}

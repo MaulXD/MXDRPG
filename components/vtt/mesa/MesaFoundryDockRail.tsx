@@ -125,6 +125,7 @@ export function MesaFoundryDockRail({
       onOpenPopup={onOpenPopup}
       showGm={effectiveCanControlCombat}
       showInvite={showInviteUi}
+      rpgSystemId={rpgSystemId}
       dockOpen={dockOpen}
     >
       {!isFloating("chat") ? (
@@ -235,7 +236,7 @@ export function MesaFoundryDockRail({
         </FoundryDockPanel>
       ) : null}
 
-      {isActualGm && !isFloating("spawn") ? (
+      {isActualGm && rpgSystemId !== "um-anel" && !isFloating("spawn") ? (
         <FoundryDockPanel
           title="Invocar monstros"
           open={panel("spawn").open}
