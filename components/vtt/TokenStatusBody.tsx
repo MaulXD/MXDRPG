@@ -48,7 +48,7 @@ export function TokenStatusBody({
           {token.defesa != null ? (
             <span className="vtt-status-modal-stat">CA {token.defesa}</span>
           ) : null}
-          <PaHudMeter token={token} />
+          {!token.torCombat ? <PaHudMeter token={token} /> : null}
         </div>
       ) : null}
 

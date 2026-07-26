@@ -49,7 +49,9 @@ export function EndTurnConfirmDialog({
         }
       : undefined);
   const bankPlan =
-    token && rules && !isMonsterToken(token) ? planEndOfTurnPaBank(token, rules) : null;
+    token && rules && !isMonsterToken(token) && !token.torCombat
+      ? planEndOfTurnPaBank(token, rules)
+      : null;
   const bankMessage =
     bankPlan && rules && bankPlan.saved > 0
       ? formatEndTurnPaBankMessage(bankPlan, rules)

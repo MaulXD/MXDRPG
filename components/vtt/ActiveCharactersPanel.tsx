@@ -126,7 +126,7 @@ export function ActiveCharactersPanel({
                 <span className="token-dot" style={{ background: t.color }} />
                 <span className="vtt-token-list-label">
                   <span className="vtt-token-list-name">{t.name}</span>
-                  {canViewTokenPa(t) ? (
+                  {canViewTokenPa(t) && !t.torCombat ? (
                     <PaDotMeter
                       current={t.pa}
                       max={t.paMax}

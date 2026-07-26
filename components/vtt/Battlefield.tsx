@@ -2281,7 +2281,8 @@ export function Battlefield({
   }, [canManageMarkups, displayMarkups.length, persistMapMarkups]);
 
   const canViewTokenPaFn =
-    canViewTokenPa ?? (() => canControlCombat || Boolean(selected?.linked));
+    canViewTokenPa ??
+    ((t: BattleToken) => !t.torCombat && (canControlCombat || Boolean(selected?.linked)));
 
   const canUseToken =
     selected &&

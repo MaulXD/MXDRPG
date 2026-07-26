@@ -2140,3 +2140,22 @@ kubectl -n raul rollout status deployment/mxdrpg
 **Arquivos tocados:** novo — `docs/PRD-MESA-UM-ANEL.md`; editados — `app/{page,layout,manifest,sistema/page}.tsx`, `components/home/home.css`, `lib/site-metadata.ts`, `lib/combat/exploration-pa.ts`, `components/vtt/{CharacterCombatHud,GmMesaModeToggle,MesaWorkspace}.tsx`, `components/vtt/mesa/MesaFoundryStageHeader.tsx`.
 
 ---
+
+### 2026-07-25 (cont.) — Resto do HUD/medidor de PA vazando pra tokens do Um Anel
+
+**Pedido:** usuário reportou (bem irritado, com razão) que ainda tinha HUD de PA aparecendo na mesa do Um Anel depois da correção anterior — o fix passado só cobriu `CharacterCombatHud.tsx`, faltavam outros pontos que também desenham o medidor.
+
+**Achados e correção — cada widget de PA ganhou guard `!token.torCombat` no ponto exato de renderização:**
+- `components/vtt/MapTokenList.tsx` — a lista "No mapa" (visível na lateral, era exatamente o "8 PA" que apareceu no print do usuário junto de um token).
+- `components/vtt/ActiveCharactersPanel.tsx` — mesma lista, variante "Ativos agora".
+- `components/vtt/TokenStatusBody.tsx` — modal de status do token, renderizava `<PaHudMeter>` sem nenhum guard (nem checava `canViewTokenPa`).
+- `components/vtt/EndTurnConfirmDialog.tsx` — modal de "Passar turno" podia mostrar uma mensagem de "PA guardado" calculada em cima de `token.paMax` (a constante alta do Um Anel), sem sentido pro sistema.
+- `components/vtt/Battlefield.tsx` — o fallback de `canViewTokenPaFn` (usado quando a prop não é passada) também ganhou o guard.
+
+**Erro cometido e revertido no caminho — importante registrar:** a primeira tentativa foi um fix central em `lib/auth/combat-turn-access.ts::canViewTokenPa`, fazendo a função retornar `false` sempre que `token.torCombat` existisse. Passou no `tsc`/`build`, mas era **errado**: essa mesma função é usada por `lib/room/snapshot-for-viewer.ts` pra decidir se **zera** `pa`/`paMax` (`redactTokenPa`, seta os dois pra `0`) antes de mandar o snapshot pro cliente — não é só um gate de exibição de UI, é também redação de dado no servidor. Com o fix central, todo token do Um Anel passaria a receber `pa:0/paMax:0` de verdade, o que quebraria a garantia de `TOR_TOKEN_PA` (constante alta pra nunca travar `checkCanSpendPa`) e travaria o movimento de qualquer token do Um Anel assim que a mesa carregasse. Revertido antes de commitar; a correção certa é sempre no **componente que desenha o widget**, nunca na função que decide se o dado cru trafega ou é redigido.
+
+**Verificação:** `tsc --noEmit` + `npm run build` limpos. Não testado contra uma mesa real com banco (mesmo bloqueio de sempre — sem MariaDB local neste sandbox). Recomendado ao usuário: abrir uma mesa do Um Anel com token no mapa e conferir que nenhum "PA" aparece em nenhum lugar (lista lateral, modal de status, ao passar turno) — e que o token continua se movendo normalmente.
+
+**Arquivos tocados:** editados — `components/vtt/{MapTokenList,ActiveCharactersPanel,TokenStatusBody,EndTurnConfirmDialog,Battlefield}.tsx`.
+
+---
