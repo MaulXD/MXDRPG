@@ -2173,3 +2173,17 @@ kubectl -n raul rollout status deployment/mxdrpg
 **Arquivos tocados:** editados — `components/vtt/foundry/{MesaIconBar,MesaFoundrySidebar}.tsx`, `components/vtt/mesa/{MesaFoundryDockRail,MesaFoundryFloatingWindows}.tsx`.
 
 ---
+
+### 2026-07-26 (cont.) — Push pendente + varredura final de PA (achado: guia de ajuda "?" também era só-Eldarin)
+
+**Contexto:** usuário testou em produção e viu tudo igual — porque os últimos 6 commits nunca tinham sido enviados (`git push`), só existiam localmente neste sandbox. Dado push (`ead9834..a428ee3`). Depois pediu confirmação explícita: "tirou o PA de tudo que se trata de TOR? inclusive hud e td mais?" — refeita uma varredura completa em vez de responder de cabeça.
+
+**Reconfirmado (já corrigido em entradas anteriores):** `CharacterCombatHud`, `TokenStatusBody`, `MapTokenList`, `ActiveCharactersPanel` e `EndTurnConfirmDialog` — todos com guard `!token.torCombat` intacto.
+
+**Achado novo:** o botão de ajuda "?" no canto do mapa (`VttHelpButton.tsx`) nunca tinha recebido `rpgSystemId` — guia inteiro hardcoded pro Eldarin (título "Mesa Eldarin", seção inteira "Pontos de Ação (PA) e movimento", "anel de ações (mover, atacar, magia, habilidade)", ícone "Invocar" que nem existe mais no Um Anel). Corrigido com o mesmo padrão de sempre: `rpgSystemId` encadeado por 4 componentes (`Battlefield.tsx` → `BattlefieldMapCanvas.tsx` → `VttMapGuideCluster.tsx` → `VttHelpButton.tsx`, reaproveitando o objeto `mapGuide` já existente) e o conteúdo do guia reescrito com uma versão própria do Um Anel: sem PA, ordem de turno por posição no mapa, popup de ataque (arma+alvo), Dado de Proeza + Sucesso, seção "Adversários" no lugar do ícone "Invocar".
+
+**Verificação:** `tsc --noEmit` + `npm run build` limpos. Não testado contra uma mesa real (mesmo bloqueio de sempre — sem banco neste sandbox).
+
+**Arquivos tocados:** editados — `components/vtt/{Battlefield,VttHelpButton,VttMapGuideCluster}.tsx`, `components/vtt/battlefield/BattlefieldMapCanvas.tsx`.
+
+---

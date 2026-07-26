@@ -2821,6 +2821,7 @@ export function Battlefield({
                 session,
                 isRoomGm,
                 watchOnly,
+                rpgSystemId,
               }
             : undefined
         }

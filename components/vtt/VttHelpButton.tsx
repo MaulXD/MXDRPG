@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState, type ReactNode } from "react";
 import { createPortal } from "react-dom";
+import type { RpgSystemId } from "@/lib/rpg/systems";
 
 function stopWheelBubble(e: React.WheelEvent) {
   e.stopPropagation();
@@ -16,7 +17,12 @@ function HelpSection({ title, children }: { title: string; children: ReactNode }
   );
 }
 
-export function VttHelpButton() {
+type Props = {
+  rpgSystemId?: RpgSystemId;
+};
+
+export function VttHelpButton({ rpgSystemId = "eldarin" }: Props) {
+  const isTor = rpgSystemId === "um-anel";
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
 
@@ -62,7 +68,7 @@ export function VttHelpButton() {
                 onWheel={stopWheelBubble}
               >
             <h3 id="vtt-help-title" className="vtt-help-panel__title">
-              Dicas de jogo — Mesa Eldarin
+              Dicas de jogo — Mesa {isTor ? "O Um Anel" : "Eldarin"}
             </h3>
             <p className="vtt-help-panel__lead">
               Guia rápido da interface. Use os ícones na coluna esquerda para abrir painéis; o mapa
@@ -106,7 +112,8 @@ export function VttHelpButton() {
                   terminar suas ações.
                 </li>
                 <li>
-                  <strong>Chat</strong> — mensagens da mesa e do combate (ataques, dano, PA). Todos
+                  <strong>Chat</strong> — mensagens da mesa e do combate
+                  {isTor ? " (ataques, rolagens de Perícia)" : " (ataques, dano, PA)"}. Todos
                   os participantes com acesso ao chat podem enviar texto.
                 </li>
                 <li>
@@ -131,59 +138,100 @@ export function VttHelpButton() {
                   iniciativa, etc.), progresso de XP dos jogadores e criações do mestre (NPCs e
                   criaturas customizadas).
                 </li>
-                <li>
-                  <strong>Invocar</strong> — arraste monstros do compêndio para a célula desejada no
-                  mapa. Monstros entram na iniciativa quando o combate já está rolando.
-                </li>
+                {isTor ? null : (
+                  <li>
+                    <strong>Invocar</strong> — arraste monstros do compêndio para a célula desejada
+                    no mapa. Monstros entram na iniciativa quando o combate já está rolando.
+                  </li>
+                )}
+                {isTor ? (
+                  <li>
+                    <strong>Ficha</strong> — a seção <em>Adversários</em>, no mesmo painel dos
+                    personagens jogáveis, lista o bestiário completo com botão <em>Invocar</em> por
+                    adversário.
+                  </li>
+                ) : null}
               </ul>
             </HelpSection>
 
             <HelpSection title="Combate e turnos">
               <ul className="vtt-help-panel__list">
-                <li>
-                  O mestre rola iniciativa no painel <strong>Turno</strong>. Quem está na vez tem
-                  o token destacado com <strong>anel dourado</strong> no mapa.
-                </li>
-                <li>
-                  No seu turno, <strong>clique direito</strong> no seu personagem ou na célula dele
-                  para abrir o <strong>anel de ações</strong> (mover, atacar, magia, habilidade).
-                </li>
-                <li>
-                  Passe o mouse sobre cada botão do anel para ver descrição, alcance, dano/cura e
-                  custo em <strong>Pontos de Ação (PA)</strong>.
-                </li>
-                <li>
-                  Escolha uma ação → o mapa entra em modo de <strong>alvo</strong> ou{" "}
-                  <strong>movimento</strong> (células coloridas). Clique no alvo ou célula válida.{" "}
-                  <kbd>Esc</kbd> cancela.
-                </li>
-                <li>
-                  Magias de <strong>área</strong> pedem um clique no centro (e às vezes na direção
-                  em uma célula vizinha).
-                </li>
-                <li>
-                  Ao terminar, clique em <em>Passar turno</em> (barra inferior). PA não gastos podem
-                  acumular até o limite da ficha.
-                </li>
+                {isTor ? (
+                  <>
+                    <li>
+                      Sem rolagem de iniciativa — a ordem de turno segue a{" "}
+                      <strong>posição de colocação no mapa</strong>. Quem está na vez tem o token
+                      destacado com <strong>anel dourado</strong>.
+                    </li>
+                    <li>
+                      No seu turno, <strong>clique direito</strong> no seu personagem para abrir o{" "}
+                      <strong>popup de ataque</strong>: escolha a arma equipada (ou a ação do
+                      adversário) e o alvo.
+                    </li>
+                    <li>
+                      O resultado usa <strong>Dado de Proeza (d12) + Dados de Sucesso</strong> —
+                      aparece completo no chat, incluindo Golpe Perfurante e Feridas quando ocorrem.
+                    </li>
+                    <li>
+                      Movimento é livre, sem custo — o Um Anel não usa Pontos de Ação. Arraste o
+                      token pra nova posição no mapa.
+                    </li>
+                    <li>
+                      Ao terminar, clique em <em>Passar turno</em> (barra inferior).
+                    </li>
+                  </>
+                ) : (
+                  <>
+                    <li>
+                      O mestre rola iniciativa no painel <strong>Turno</strong>. Quem está na vez tem
+                      o token destacado com <strong>anel dourado</strong> no mapa.
+                    </li>
+                    <li>
+                      No seu turno, <strong>clique direito</strong> no seu personagem ou na célula
+                      dele para abrir o <strong>anel de ações</strong> (mover, atacar, magia,
+                      habilidade).
+                    </li>
+                    <li>
+                      Passe o mouse sobre cada botão do anel para ver descrição, alcance, dano/cura e
+                      custo em <strong>Pontos de Ação (PA)</strong>.
+                    </li>
+                    <li>
+                      Escolha uma ação → o mapa entra em modo de <strong>alvo</strong> ou{" "}
+                      <strong>movimento</strong> (células coloridas). Clique no alvo ou célula
+                      válida. <kbd>Esc</kbd> cancela.
+                    </li>
+                    <li>
+                      Magias de <strong>área</strong> pedem um clique no centro (e às vezes na
+                      direção em uma célula vizinha).
+                    </li>
+                    <li>
+                      Ao terminar, clique em <em>Passar turno</em> (barra inferior). PA não gastos
+                      podem acumular até o limite da ficha.
+                    </li>
+                  </>
+                )}
               </ul>
             </HelpSection>
 
-            <HelpSection title="Pontos de Ação (PA) e movimento">
-              <ul className="vtt-help-panel__list">
-                <li>
-                  Ataques, magias e habilidades gastam <strong>PA</strong> (valor em cada ação no
-                  anel ou compêndio).
-                </li>
-                <li>
-                  <strong>Caminhada</strong> usa células gratuitas por turno; <strong>corrida</strong>{" "}
-                  além disso pode gastar 1 PA. Células verdes/âmbar no mapa mostram onde você pode ir.
-                </li>
-                <li>
-                  Ícones de <strong>condição/buff</strong> no token mostram efeitos ativos; passe o
-                  mouse para ver a regra e a duração (ex.: <em>Inspirado: 2 turnos</em>).
-                </li>
-              </ul>
-            </HelpSection>
+            {isTor ? null : (
+              <HelpSection title="Pontos de Ação (PA) e movimento">
+                <ul className="vtt-help-panel__list">
+                  <li>
+                    Ataques, magias e habilidades gastam <strong>PA</strong> (valor em cada ação no
+                    anel ou compêndio).
+                  </li>
+                  <li>
+                    <strong>Caminhada</strong> usa células gratuitas por turno;{" "}
+                    <strong>corrida</strong> além disso pode gastar 1 PA. Células verdes/âmbar no
+                    mapa mostram onde você pode ir.
+                  </li>
+                  <li>
+                    Ícones de <strong>condição/buff</strong> no token mostram efeitos ativos; passe o
+                    mouse para ver a regra e a duração (ex.: <em>Inspirado: 2 turnos</em>).
+                  </li>
+                </ul>
+              </HelpSection>
+            )}
 
             <HelpSection title="Status, condições e buffs">
               <ul className="vtt-help-panel__list">
@@ -244,10 +292,17 @@ export function VttHelpButton() {
                   Abra pelo painel <strong>Ficha</strong> — arraste o retrato para o mapa ou use ⠿ no
                   popup. A janela da ficha pode ser movida e redimensionada como os outros painéis.
                 </li>
-                <li>
-                  Inventário separado (armas, equipamento, magias). Subir de nível pela aba dedicada
-                  quando tiver XP suficiente.
-                </li>
+                {isTor ? (
+                  <li>
+                    Resistência, Esperança, Sombra e Fadiga ficam sempre visíveis, com ajuste direto
+                    na ficha. Perícias e Proficiências de Combate rolam pelo botão <em>Rolar</em>.
+                  </li>
+                ) : (
+                  <li>
+                    Inventário separado (armas, equipamento, magias). Subir de nível pela aba
+                    dedicada quando tiver XP suficiente.
+                  </li>
+                )}
                 <li>
                   Fichas de outros jogadores abrem em <strong>somente leitura</strong>.
                 </li>

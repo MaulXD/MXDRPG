@@ -9,6 +9,7 @@ import { MapMarkupTextEditor } from "@/components/vtt/MapMarkupTextEditor";
 import { VttHelpButton } from "@/components/vtt/VttHelpButton";
 import { VttMapGuideCluster } from "@/components/vtt/VttMapGuideCluster";
 import type { SessionUser } from "@/lib/auth/types";
+import type { RpgSystemId } from "@/lib/rpg/systems";
 
 type BattlefieldViewHandle = {
   view: { scale: number; panX: number; panY: number };
@@ -71,6 +72,7 @@ export type BattlefieldMapCanvasProps = {
     session: SessionUser | null;
     isRoomGm: boolean;
     watchOnly?: boolean;
+    rpgSystemId?: RpgSystemId;
   };
 };
 
@@ -125,6 +127,7 @@ export function BattlefieldMapCanvas({
           session={mapGuide.session}
           isRoomGm={mapGuide.isRoomGm}
           watchOnly={mapGuide.watchOnly}
+          rpgSystemId={mapGuide.rpgSystemId}
         />
       ) : (
         <VttHelpButton />
