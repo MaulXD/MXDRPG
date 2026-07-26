@@ -3,7 +3,6 @@
 import type { ReactNode } from "react";
 import type { MesaWindowId } from "@/hooks/vtt/useFoundryWindows";
 import { MesaIconBar } from "@/components/vtt/foundry/MesaIconBar";
-import type { RpgSystemId } from "@/lib/rpg/systems";
 
 type Props = {
   isActive: (id: MesaWindowId) => boolean;
@@ -11,7 +10,6 @@ type Props = {
   onOpenPopup: (id: MesaWindowId) => void;
   showGm?: boolean;
   showInvite?: boolean;
-  rpgSystemId?: RpgSystemId;
   dockOpen: boolean;
   children: ReactNode;
 };
@@ -22,7 +20,6 @@ export function MesaFoundrySidebar({
   onOpenPopup,
   showGm = false,
   showInvite = false,
-  rpgSystemId = "eldarin",
   dockOpen,
   children,
 }: Props) {
@@ -37,7 +34,6 @@ export function MesaFoundrySidebar({
         onOpenPopup={onOpenPopup}
         showGm={showGm}
         showInvite={showInvite}
-        rpgSystemId={rpgSystemId}
       />
       <div
         id="foundry-sidebar-dock"

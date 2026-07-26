@@ -2,11 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { CULTURE_BY_ID, CALLING_BY_ID } from "@/lib/character/um-anel/data";
-import { TOR_ADVERSARIES } from "@/lib/character/um-anel/adversaries";
 import type { TorCharacterSheet } from "@/lib/character/um-anel/types";
 import type { Axial } from "@/lib/vtt/grid-math";
 import type { RoomSnapshot } from "@/lib/room/types";
-import { placeRoomTorCharacterOnCell, spawnRoomTorAdversary } from "@/hooks/useRoomSync";
+import { placeRoomTorCharacterOnCell } from "@/hooks/useRoomSync";
 
 type Props = {
   adventureId: string;
@@ -14,7 +13,6 @@ type Props = {
   roomId?: string;
   spawnAxial?: Axial | null;
   onPlaced?: (snapshot: RoomSnapshot) => void;
-  isRoomGm?: boolean;
 };
 
 export function TorPlayableCharactersPanel({
@@ -23,7 +21,6 @@ export function TorPlayableCharactersPanel({
   roomId,
   spawnAxial = null,
   onPlaced,
-  isRoomGm = false,
 }: Props) {
   const [characters, setCharacters] = useState<TorCharacterSheet[] | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -58,19 +55,6 @@ export function TorPlayableCharactersPanel({
       onPlaced?.(snapshot);
     } catch (e) {
       setError(e instanceof Error ? e.message : "Falha ao colocar no mapa");
-    } finally {
-      setBusy(false);
-    }
-  }
-
-  async function invokeAdversary(adversaryId: string) {
-    if (!roomId || !spawnAxial || busy) return;
-    setBusy(true);
-    try {
-      const snapshot = await spawnRoomTorAdversary(roomId, adversaryId, spawnAxial.q, spawnAxial.r);
-      onPlaced?.(snapshot);
-    } catch (e) {
-      setError(e instanceof Error ? e.message : "Falha ao invocar adversário");
     } finally {
       setBusy(false);
     }
@@ -131,40 +115,6 @@ export function TorPlayableCharactersPanel({
             );
           })}
         </ul>
-      ) : null}
-
-      {isRoomGm && canPlaceOnMap ? (
-        <>
-          <p className="vtt-eyebrow" style={{ marginTop: "0.75rem" }}>
-            Adversários
-          </p>
-          <ul className="vtt-playable-list" role="list">
-            {TOR_ADVERSARIES.map((a) => (
-              <li key={a.id}>
-                <div className="vtt-playable-card">
-                  <div className="vtt-playable-card__main">
-                    <div className="vtt-playable-card__body">
-                      <div className="vtt-playable-card__head">
-                        <strong>{a.name}</strong>
-                      </div>
-                      <span className="vtt-playable-card__meta">
-                        Resistência {a.endurance} · Bloqueio {a.parry || "—"} · Proteção {a.armour}d
-                      </span>
-                    </div>
-                  </div>
-                </div>
-                <button
-                  type="button"
-                  className="btn btn-ghost vtt-spawn-sheet-btn"
-                  disabled={busy || !spawnAxial}
-                  onClick={() => void invokeAdversary(a.id)}
-                >
-                  Invocar
-                </button>
-              </li>
-            ))}
-          </ul>
-        </>
       ) : null}
     </div>
   );

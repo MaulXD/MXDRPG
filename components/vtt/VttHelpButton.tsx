@@ -138,19 +138,12 @@ export function VttHelpButton({ rpgSystemId = "eldarin" }: Props) {
                   iniciativa, etc.), progresso de XP dos jogadores e criações do mestre (NPCs e
                   criaturas customizadas).
                 </li>
-                {isTor ? null : (
-                  <li>
-                    <strong>Invocar</strong> — arraste monstros do compêndio para a célula desejada
-                    no mapa. Monstros entram na iniciativa quando o combate já está rolando.
-                  </li>
-                )}
-                {isTor ? (
-                  <li>
-                    <strong>Ficha</strong> — a seção <em>Adversários</em>, no mesmo painel dos
-                    personagens jogáveis, lista o bestiário completo com botão <em>Invocar</em> por
-                    adversário.
-                  </li>
-                ) : null}
+                <li>
+                  <strong>Invocar</strong> —{" "}
+                  {isTor
+                    ? "bestiário do Um Anel (22 adversários), com busca por nome/traço. Clique em Invocar pra colocar o adversário na célula alvo."
+                    : "arraste monstros do compêndio para a célula desejada no mapa. Monstros entram na iniciativa quando o combate já está rolando."}
+                </li>
               </ul>
             </HelpSection>
 

@@ -2187,3 +2187,21 @@ kubectl -n raul rollout status deployment/mxdrpg
 **Arquivos tocados:** editados — `components/vtt/{Battlefield,VttHelpButton,VttMapGuideCluster}.tsx`, `components/vtt/battlefield/BattlefieldMapCanvas.tsx`.
 
 ---
+
+### 2026-07-26 (cont.) — Painel "Invocar" dedicado pro bestiário do Um Anel (era escondido dentro da Ficha)
+
+**Contexto:** usuário viu um monstro Eldarin ("Fênix de Caverna") com PA numa mesa de teste do Um Anel e concluiu (razoavelmente, dado o histórico de bugs desta sessão) que o bestiário do Um Anel não existia de verdade. Confirmado com prova concreta que **existe** — `lib/character/um-anel/adversaries.ts` tem 22 entradas reais, nenhuma chamada "Fênix de Caverna" (esse token era um monstro Eldarin de verdade, colocado na mesa antes do ícone "Invocar" ter sido escondido pro Um Anel numa correção anterior — não um bug novo, só sobra de teste).
+
+Aproveitando o esclarecimento, atendido o pedido de melhorar de verdade a UX: até agora, invocar adversário do Um Anel vivia **escondido** dentro do painel "Ficha" (seção "Adversários", junto da lista de personagens jogáveis) — o ícone dedicado "Invocar" do rail, que o Eldarin sempre teve, tinha sido só **escondido** pro Um Anel na correção anterior, em vez de ganhar conteúdo próprio.
+
+**Refatoração:**
+1. Novo `components/vtt/TorAdversaryPanel.tsx` — painel dedicado, busca por nome/traço, cards com nível de atributo/resistência/bloqueio/proteção e badge de tier (Bando/Elite/Chefe), botão Invocar por adversário. Reaproveita `spawnRoomTorAdversary` (já existia) — nenhuma mudança no motor de invocação, só na UI.
+2. Ícone "Invocar" volta a aparecer pra mestres do Um Anel (`MesaIconBar.tsx` simplificado — remove a lógica `showSpawn` que escondia); o conteúdo por trás dele agora despacha por `rpgSystemId` (`TorAdversaryPanel` vs `MonsterSpawnPanel` do Eldarin), no mesmo padrão já usado pra "ficha" e "compêndio".
+3. Seção "Adversários" removida de dentro de `TorPlayableCharactersPanel.tsx` (evita duplicar a mesma função em dois lugares) — esse painel volta a ser só a lista de personagens jogáveis, como o nome sempre disse.
+4. Texto do guia de ajuda "?" ajustado de volta (a versão anterior apontava pra "Ficha → Adversários" porque o ícone estava escondido; agora descreve o ícone "Invocar" dedicado, igual ao Eldarin).
+
+**Verificação:** `tsc --noEmit` + `npm run build` limpos. Teste visual com `puppeteer-core` (instalado/desinstalado, `git status` limpo) confirmou que as classes CSS reaproveitadas (`.comp-search`, `.tor-compendium__tier`) renderizam certo na categoria "Adversários" do compêndio — não achei uma forma de testar o painel `TorAdversaryPanel` dentro de uma mesa de verdade neste sandbox (sem banco de dados), então recomendo ao usuário abrir o ícone "Invocar" numa mesa do Um Anel e confirmar que a lista aparece e o Invocar funciona.
+
+**Arquivos tocados:** novo — `components/vtt/TorAdversaryPanel.tsx`; editados — `components/vtt/TorPlayableCharactersPanel.tsx`, `components/vtt/foundry/{MesaIconBar,MesaFoundrySidebar}.tsx`, `components/vtt/mesa/{MesaFoundryDockRail,MesaFoundryFloatingWindows}.tsx`, `components/vtt/VttHelpButton.tsx`.
+
+---

@@ -55,6 +55,10 @@ const TorPlayableCharactersPanel = dynamic(
   () => import("@/components/vtt/TorPlayableCharactersPanel").then((m) => m.TorPlayableCharactersPanel),
   { ssr: false }
 );
+const TorAdversaryPanel = dynamic(
+  () => import("@/components/vtt/TorAdversaryPanel").then((m) => m.TorAdversaryPanel),
+  { ssr: false }
+);
 const TorCharacterSheetPopup = dynamic(
   () => import("@/components/vtt/TorCharacterSheetPopup").then((m) => m.TorCharacterSheetPopup),
   { ssr: false }
@@ -207,7 +211,6 @@ export function MesaFoundryFloatingWindows(props: MesaFoundryFloatingWindowsProp
                 roomId={roomId}
                 spawnAxial={spawnAxial}
                 onPlaced={onApplySnapshot}
-                isRoomGm={effectiveIsGm}
               />
             ) : (
               <PlayableCharactersPanel
@@ -294,9 +297,9 @@ export function MesaFoundryFloatingWindows(props: MesaFoundryFloatingWindowsProp
         </FoundryWindow>
       ) : null}
 
-      {isActualGm && rpgSystemId !== "um-anel" && isFloating("spawn") ? (
+      {isActualGm && isFloating("spawn") ? (
         <FoundryWindow
-          title="Invocar monstros"
+          title="Invocar"
           layout={panel("spawn")}
           className="foundry-window--spawn"
           minHeight={200}
@@ -308,13 +311,21 @@ export function MesaFoundryFloatingWindows(props: MesaFoundryFloatingWindowsProp
           onClose={() => onCloseWindow("spawn")}
         >
           <div className="mesa-panel-scroll mesa-panel-scroll--rail">
-            <MonsterSpawnPanel
-              roomId={roomId}
-              scene={mapScene}
-              spawnAxial={spawnAxial}
-              onSpawned={(snap) => onApplySnapshot(snap)}
-              onOpenMonsterSheet={onOpenMonsterSheet}
-            />
+            {rpgSystemId === "um-anel" ? (
+              <TorAdversaryPanel
+                roomId={roomId}
+                spawnAxial={spawnAxial}
+                onPlaced={(snap) => onApplySnapshot(snap)}
+              />
+            ) : (
+              <MonsterSpawnPanel
+                roomId={roomId}
+                scene={mapScene}
+                spawnAxial={spawnAxial}
+                onSpawned={(snap) => onApplySnapshot(snap)}
+                onOpenMonsterSheet={onOpenMonsterSheet}
+              />
+            )}
           </div>
         </FoundryWindow>
       ) : null}
