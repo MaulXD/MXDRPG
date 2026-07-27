@@ -214,57 +214,65 @@ function EquipamentoSection() {
     <>
       <section>
         <h2>Armas</h2>
-        <table className="tor-compendium__table">
-          <thead>
-            <tr>
-              <th>Arma</th>
-              <th>Dano</th>
-              <th>Ferimento</th>
-              <th>Carga</th>
-              <th>Proficiência</th>
-            </tr>
-          </thead>
-          <tbody>
-            {WEAPONS.map((w) => (
-              <tr key={w.id}>
-                <td>{w.label}</td>
-                <td>{w.damage}</td>
-                <td>{w.injury ?? "—"}</td>
-                <td>{w.load}</td>
-                <td>{w.proficiency === "brawling" ? "Desarmado" : COMBAT_PROFICIENCY_LABEL[w.proficiency]}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <div className="tor-compendium__grid">
+          {WEAPONS.map((w) => {
+            const handedness = w.twoHanded
+              ? "Só 2 mãos"
+              : w.twoHandedOptional
+                ? "1 ou 2 mãos"
+                : null;
+            const flair = [
+              w.thrown ? "Arremessável" : null,
+              w.ranged ? "À distância" : null,
+              handedness,
+            ]
+              .filter(Boolean)
+              .join(" · ");
+            const tip = [w.notes, flair].filter(Boolean).join(" — ");
+            return (
+              <article
+                key={w.id}
+                className="tor-compendium__card"
+                data-site-tip={tip || undefined}
+              >
+                <h3>{w.label}</h3>
+                <p className="tor-compendium__meta">
+                  Dano {w.damage} · Ferimento {w.injury ?? "—"} · Carga {w.load}
+                </p>
+                <p className="tor-compendium__meta">
+                  {w.proficiency === "brawling" ? "Desarmado" : COMBAT_PROFICIENCY_LABEL[w.proficiency]}
+                  {flair ? ` · ${flair}` : ""}
+                </p>
+              </article>
+            );
+          })}
+        </div>
       </section>
 
       <section>
         <h2>Armaduras e Escudos</h2>
-        <table className="tor-compendium__table">
-          <thead>
-            <tr>
-              <th>Item</th>
-              <th>Proteção / Bloqueio</th>
-              <th>Carga</th>
-            </tr>
-          </thead>
-          <tbody>
-            {[...ARMOURS, HELM].map((a) => (
-              <tr key={a.id}>
-                <td>{a.label}</td>
-                <td>{a.protection}</td>
-                <td>{a.load}</td>
-              </tr>
-            ))}
-            {SHIELDS.map((s) => (
-              <tr key={s.id}>
-                <td>{s.label}</td>
-                <td>+{s.parryModifier} Bloqueio</td>
-                <td>{s.load}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <div className="tor-compendium__grid">
+          {[...ARMOURS, HELM].map((a) => (
+            <article
+              key={a.id}
+              className="tor-compendium__card"
+              data-site-tip={a.removable ? "Pode ser retirado sem tirar o resto da armadura." : undefined}
+            >
+              <h3>{a.label}</h3>
+              <p className="tor-compendium__meta">
+                Proteção {a.protection} · Carga {a.load}
+              </p>
+            </article>
+          ))}
+          {SHIELDS.map((s) => (
+            <article key={s.id} className="tor-compendium__card">
+              <h3>{s.label}</h3>
+              <p className="tor-compendium__meta">
+                +{s.parryModifier} Bloqueio · Carga {s.load}
+              </p>
+            </article>
+          ))}
+        </div>
       </section>
     </>
   );

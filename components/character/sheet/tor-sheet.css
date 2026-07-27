@@ -453,6 +453,38 @@
   color: var(--tor-ink-muted);
 }
 
+.tor-sheet__gear-remove {
+  background: transparent;
+  border: 1px solid var(--tor-red-line);
+  color: var(--tor-red);
+  border-radius: 999px;
+  width: 1.4rem;
+  height: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.tor-sheet__gear-remove:hover {
+  background: var(--tor-red-soft);
+}
+
+.tor-sheet__gear-add {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin-top: 0.6rem;
+}
+
+.tor-sheet select {
+  background: var(--tor-paper);
+  border: 1px solid var(--tor-border-strong);
+  color: var(--tor-ink);
+  border-radius: 6px;
+  padding: 0.25rem 0.5rem;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+}
+
 .tor-sheet__footer {
   display: flex;
   gap: 1.5rem;

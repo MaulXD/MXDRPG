@@ -2225,3 +2225,20 @@ Aproveitando o esclarecimento, atendido o pedido de melhorar de verdade a UX: at
 **Arquivos tocados:** editados — `components/vtt/TorPlayableCharactersPanel.tsx`, `components/vtt/mesa/{MesaFoundryDockRail,MesaFoundryFloatingWindows}.tsx`, `app/mesa/[roomId]/page.tsx`, `lib/character/um-anel/adversaries.ts`.
 
 ---
+
+### 2026-07-26 (cont.) — Equipamento do compêndio em cards+tooltip; adicionar/remover Equipamento de Guerra na ficha
+
+**Pedido:** usuário pediu (a) separar cada arma/armadura do compêndio com tooltip em vez de tabela, e (b) mestre e jogador poderem "importar o item pra mesa". Pesquisei primeiro como o Eldarin resolve um pedido parecido (arrastar personagem pro mapa, adicionar item do compêndio no inventário, retrato no assistente) pra reaproveitar os mesmos padrões em vez de inventar do zero — essa pesquisa também orienta os próximos itens da lista (arrastar e retrato no wizard).
+
+**Achado:** no Eldarin, "importar item" não é um drag-and-drop pro mapa — é um botão + modal na própria ficha (`CharacterSheet.tsx::addFromCompendium`), que adiciona ao `inventory` do personagem. O Um Anel não tem essa infraestrutura pra `warGear`/`armour` (só é setado uma vez no assistente) — repliquei o mesmo padrão (ação na ficha, não no compêndio) em vez de inventar um mecanismo novo de arrastar item pro mapa (que nem o Eldarin tem).
+
+**Correção:**
+1. `TorCompendiumPage.tsx`: seção "Armas" e "Armaduras e Escudos" viram grids de cards (`.tor-compendium__card`, mesmo estilo já usado em Adversários/Marcos/etc.), com `data-site-tip` (o sistema de tooltip global já usado no resto do site) mostrando empunhadura, arremesso/alcance e notas de cada arma.
+2. `TorResourcePatch` ganhou `warGear`/`armour` (substituição completa, mesmo padrão dos outros campos) — `patchTorCharacterResources` aplica e `normalizeTorCharacter` já recalcula Carga automaticamente.
+3. `TorCharacterSheetView.tsx`: quando `interactive` + `onResourceChange` (mesma checagem de permissão — dono ou mestre, validada no servidor), a tabela de Equipamento de Guerra ganha botão de remover por linha e um `<select>` + "Adicionar arma"; Armadura/Escudo viram `<select>`, Elmo vira um botão de vestir/tirar.
+
+**Verificação:** `tsc --noEmit` + `npm run build` limpos. Não testado dentro de uma mesa real (sem banco neste sandbox).
+
+**Arquivos tocados:** editados — `components/compendium/TorCompendiumPage.tsx`, `lib/character/um-anel/{types,characters}.ts`, `components/character/sheet/{TorCharacterSheetView,tor-sheet.css}`.
+
+---

@@ -3,13 +3,16 @@
 import { useState } from "react";
 import { SheetPopupPortrait } from "@/components/character/SheetPopupPortrait";
 import {
+  ARMOURS,
   ARMOUR_BY_ID,
   ATTRIBUTE_LABEL,
   CALLING_BY_ID,
   COMBAT_PROFICIENCY_LABEL,
   CULTURE_BY_ID,
   DISTINCTIVE_FEATURE_BY_ID,
+  HELM,
   SHADOW_PATH_BY_ID,
+  SHIELDS,
   SHIELD_BY_ID,
   SKILLS,
   STANDARDS_OF_LIVING,
@@ -131,6 +134,35 @@ export function TorCharacterSheetView({
       portraitFocus: bundle.portraitFocus,
       tokenFocus: bundle.tokenFocus,
     });
+  }
+
+  const [addWeaponId, setAddWeaponId] = useState(WEAPONS[0]?.id ?? "");
+
+  function addWeapon() {
+    const weapon = WEAPON_BY_ID[addWeaponId];
+    if (!onResourceChange || !weapon) return;
+    onResourceChange({
+      warGear: [
+        ...character.warGear,
+        { instanceId: crypto.randomUUID(), weaponId: weapon.id, twoHanded: weapon.twoHanded || undefined },
+      ],
+    });
+  }
+
+  function removeWeapon(instanceId: string) {
+    onResourceChange?.({ warGear: character.warGear.filter((w) => w.instanceId !== instanceId) });
+  }
+
+  function setArmourId(armourId: string | null) {
+    onResourceChange?.({ armour: { ...character.armour, armourId } });
+  }
+
+  function toggleHelm() {
+    onResourceChange?.({ armour: { ...character.armour, helm: !character.armour.helm } });
+  }
+
+  function setShieldId(shieldId: string | null) {
+    onResourceChange?.({ armour: { ...character.armour, shieldId } });
   }
 
   const rewards = character.rewards.map((id) => STARTING_REWARDS.find((r) => r.id === id)).filter(Boolean);
@@ -364,6 +396,7 @@ export function TorCharacterSheetView({
                 <th>Dano</th>
                 <th>Ferimento</th>
                 <th>Carga</th>
+                {interactive && onResourceChange ? <th /> : null}
               </tr>
             </thead>
             <tbody>
@@ -375,6 +408,18 @@ export function TorCharacterSheetView({
                     <td>{weapon?.damage}</td>
                     <td>{weapon?.injury ?? "—"}</td>
                     <td>{weapon?.load}</td>
+                    {interactive && onResourceChange ? (
+                      <td>
+                        <button
+                          type="button"
+                          className="tor-sheet__gear-remove"
+                          onClick={() => removeWeapon(item.instanceId)}
+                          aria-label={`Remover ${weapon?.label ?? "arma"}`}
+                        >
+                          ×
+                        </button>
+                      </td>
+                    ) : null}
                   </tr>
                 );
               })}
@@ -382,17 +427,73 @@ export function TorCharacterSheetView({
           </table>
         )}
 
+        {interactive && onResourceChange ? (
+          <div className="tor-sheet__gear-add">
+            <select value={addWeaponId} onChange={(e) => setAddWeaponId(e.target.value)}>
+              {WEAPONS.map((w) => (
+                <option key={w.id} value={w.id}>
+                  {w.label}
+                </option>
+              ))}
+            </select>
+            <button type="button" className="btn btn-ghost" onClick={addWeapon}>
+              + Adicionar arma
+            </button>
+          </div>
+        ) : null}
+
         <div className="tor-sheet__grid-2" style={{ marginTop: "0.75rem" }}>
           <p>
             <strong>Armadura:</strong>{" "}
-            {character.armour.armourId ? ARMOUR_BY_ID[character.armour.armourId]?.label : "Nenhuma"}
+            {interactive && onResourceChange ? (
+              <select
+                value={character.armour.armourId ?? ""}
+                onChange={(e) => setArmourId(e.target.value || null)}
+              >
+                <option value="">Nenhuma</option>
+                {ARMOURS.map((a) => (
+                  <option key={a.id} value={a.id}>
+                    {a.label}
+                  </option>
+                ))}
+              </select>
+            ) : character.armour.armourId ? (
+              ARMOUR_BY_ID[character.armour.armourId]?.label
+            ) : (
+              "Nenhuma"
+            )}
           </p>
           <p>
-            <strong>Elmo:</strong> {character.armour.helm ? "Sim" : "Não"}
+            <strong>Elmo ({HELM.label}):</strong>{" "}
+            {interactive && onResourceChange ? (
+              <button type="button" className="btn btn-ghost" onClick={toggleHelm}>
+                {character.armour.helm ? "Tirar" : "Vestir"}
+              </button>
+            ) : character.armour.helm ? (
+              "Sim"
+            ) : (
+              "Não"
+            )}
           </p>
           <p>
             <strong>Escudo:</strong>{" "}
-            {character.armour.shieldId ? SHIELD_BY_ID[character.armour.shieldId]?.label : "Nenhum"}
+            {interactive && onResourceChange ? (
+              <select
+                value={character.armour.shieldId ?? ""}
+                onChange={(e) => setShieldId(e.target.value || null)}
+              >
+                <option value="">Nenhum</option>
+                {SHIELDS.map((s) => (
+                  <option key={s.id} value={s.id}>
+                    {s.label}
+                  </option>
+                ))}
+              </select>
+            ) : character.armour.shieldId ? (
+              SHIELD_BY_ID[character.armour.shieldId]?.label
+            ) : (
+              "Nenhum"
+            )}
           </p>
           <p>
             <strong>Tesouro:</strong>{" "}

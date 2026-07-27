@@ -91,6 +91,9 @@ export type TorResourcePatch = Partial<{
   portraitFocus: PortraitFocus | null;
   coverFocus: PortraitFocus | null;
   tokenFocus: PortraitFocus | null;
+  /** Equipamento de Guerra/Armadura — sempre a lista/objeto completo (substitui, não soma). */
+  warGear: TorWarGearItem[];
+  armour: TorArmourLoadout;
 }>;
 
 /**

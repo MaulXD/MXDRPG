@@ -146,6 +146,8 @@ export async function patchTorCharacterResources(
     portraitFocus: patch.portraitFocus !== undefined ? patch.portraitFocus : sheet.portraitFocus,
     coverFocus: patch.coverFocus !== undefined ? patch.coverFocus : sheet.coverFocus,
     tokenFocus: patch.tokenFocus !== undefined ? patch.tokenFocus : sheet.tokenFocus,
+    warGear: patch.warGear !== undefined ? patch.warGear : sheet.warGear,
+    armour: patch.armour !== undefined ? patch.armour : sheet.armour,
   };
 
   return saveTorCharacter(normalizeTorCharacter(next));
