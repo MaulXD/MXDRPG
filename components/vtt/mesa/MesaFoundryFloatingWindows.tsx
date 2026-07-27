@@ -211,6 +211,8 @@ export function MesaFoundryFloatingWindows(props: MesaFoundryFloatingWindowsProp
                 roomId={roomId}
                 spawnAxial={spawnAxial}
                 onPlaced={onApplySnapshot}
+                canCreateCharacter={canCreateCharacter}
+                onCreateCharacter={canCreateCharacter ? onOpenCharacterWizard : undefined}
               />
             ) : (
               <PlayableCharactersPanel

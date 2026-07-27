@@ -21,6 +21,7 @@ import { getAdventure, bindPlayerToAdventure } from "@/lib/adventure/store";
 import { isAdventureClosed } from "@/lib/adventure/access";
 import { shouldAutoJoinRoom } from "@/lib/auth/adventure-room-access";
 import { MAX_CHARACTERS_PER_USER } from "@/lib/character/characters";
+import { MAX_TOR_CHARACTERS_PER_USER } from "@/lib/character/um-anel/characters";
 import { MesaClosedGate } from "@/components/vtt/MesaClosedGate";
 import { joinRoomMembers } from "@/lib/room/adventure-room";
 import { joinRoomByInvite } from "@/lib/room/store";
@@ -190,7 +191,9 @@ export default async function MesaRoomPage({ params, searchParams }: Props) {
   ]);
   const adventureName = adventure?.name ?? room.name;
   // Contagens carregadas no cliente — removidas do SSR para reduzir latência inicial
-  const characterSlotsLeft = canParticipate ? MAX_CHARACTERS_PER_USER : 0;
+  const maxCharactersPerUser =
+    room.rpgSystemId === "um-anel" ? MAX_TOR_CHARACTERS_PER_USER : MAX_CHARACTERS_PER_USER;
+  const characterSlotsLeft = canParticipate ? maxCharactersPerUser : 0;
   const charactersInAdventure = 0;
   const canEdit = canParticipate;
 

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { CULTURE_BY_ID, CALLING_BY_ID } from "@/lib/character/um-anel/data";
 import type { TorCharacterSheet } from "@/lib/character/um-anel/types";
 import type { Axial } from "@/lib/vtt/grid-math";
@@ -13,6 +14,8 @@ type Props = {
   roomId?: string;
   spawnAxial?: Axial | null;
   onPlaced?: (snapshot: RoomSnapshot) => void;
+  canCreateCharacter?: boolean;
+  onCreateCharacter?: () => void;
 };
 
 export function TorPlayableCharactersPanel({
@@ -21,6 +24,8 @@ export function TorPlayableCharactersPanel({
   roomId,
   spawnAxial = null,
   onPlaced,
+  canCreateCharacter = false,
+  onCreateCharacter,
 }: Props) {
   const [characters, setCharacters] = useState<TorCharacterSheet[] | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -115,6 +120,22 @@ export function TorPlayableCharactersPanel({
             );
           })}
         </ul>
+      ) : null}
+
+      {canCreateCharacter ? (
+        onCreateCharacter ? (
+          <button
+            type="button"
+            className="btn btn-secondary vtt-playable-create"
+            onClick={onCreateCharacter}
+          >
+            + Criar novo personagem
+          </button>
+        ) : (
+          <Link href={`/aventura/${adventureId}/personagem/novo`} className="btn btn-secondary vtt-playable-create">
+            + Criar novo personagem
+          </Link>
+        )
       ) : null}
     </div>
   );

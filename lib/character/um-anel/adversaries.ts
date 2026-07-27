@@ -7,7 +7,7 @@ import type { TorAdversaryStats } from "./adversary-types";
  * Ódio/Resolução pra ativá-las não é mecanizado ainda — ver plano da Fase 4,
  * "Deferido pra v1.1").
  */
-export const TOR_ADVERSARIES: TorAdversaryStats[] = [
+const TOR_ADVERSARIES_RAW: TorAdversaryStats[] = [
   // ——— Homens Maus ———
   {
     id: "invasor-do-sul",
@@ -542,6 +542,22 @@ export const TOR_ADVERSARIES: TorAdversaryStats[] = [
     ],
   },
 ];
+
+const TIER_DIFFICULTY_RANK: Record<TorAdversaryStats["tier"], number> = {
+  mob: 0,
+  elite: 1,
+  boss: 2,
+};
+
+/** Bestiário ordenado por dificuldade — tier (Bando → Elite → Chefe) e, dentro de
+ * cada tier, Nível de Atributo crescente (do mais fraco pro mais forte). Ordem de
+ * extração do livro por categoria (Homens Maus, Orcs, Trolls...) fica só nos
+ * comentários acima, em `TOR_ADVERSARIES_RAW`. */
+export const TOR_ADVERSARIES: TorAdversaryStats[] = [...TOR_ADVERSARIES_RAW].sort(
+  (a, b) =>
+    TIER_DIFFICULTY_RANK[a.tier] - TIER_DIFFICULTY_RANK[b.tier] ||
+    a.attributeLevel - b.attributeLevel
+);
 
 export const TOR_ADVERSARY_BY_ID: Record<string, TorAdversaryStats> = Object.fromEntries(
   TOR_ADVERSARIES.map((a) => [a.id, a])

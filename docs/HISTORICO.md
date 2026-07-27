@@ -2205,3 +2205,23 @@ Aproveitando o esclarecimento, atendido o pedido de melhorar de verdade a UX: at
 **Arquivos tocados:** novo — `components/vtt/TorAdversaryPanel.tsx`; editados — `components/vtt/TorPlayableCharactersPanel.tsx`, `components/vtt/foundry/{MesaIconBar,MesaFoundrySidebar}.tsx`, `components/vtt/mesa/{MesaFoundryDockRail,MesaFoundryFloatingWindows}.tsx`, `components/vtt/VttHelpButton.tsx`.
 
 ---
+
+### 2026-07-26 (cont.) — Fix "não permite criar ficha" + bestiário ordenado por dificuldade
+
+**Pedido 1:** usuário reportou "não tá permitindo criar ficha" — print mostrava o painel "Personagens Jogáveis" corretamente despachado pro Um Anel (confirma que o fix anterior funcionou), mas **sem nenhum botão** de criar personagem, mesmo dizendo no texto "use 'Novo personagem' pra criar o primeiro".
+
+**Causa raiz:** `TorPlayableCharactersPanel.tsx` nunca teve o botão "+ Criar novo personagem" — ao contrário do painel Eldarin (`PlayableCharactersPanel.tsx`), que sempre teve esse botão (com callback pro wizard em popup, ou link de fallback pra `/aventura/[id]/personagem/novo`). Quando o painel "ficha" mostrava (incorretamente) o painel Eldarin numa mesa do Um Anel, o botão aparecia mas criava personagem Eldarin; depois do fix que despachou corretamente pro painel do Um Anel, sobrou sem nenhum botão — o painel do Um Anel nunca tinha sido construído com essa função.
+
+**Achado extra no caminho:** `app/mesa/[roomId]/page.tsx` calculava `characterSlotsLeft` sempre com `MAX_CHARACTERS_PER_USER` (constante do Eldarin), independente do `rpgSystemId` da sala — corrigido pra usar `MAX_TOR_CHARACTERS_PER_USER` numa mesa do Um Anel.
+
+**Correção:** `TorPlayableCharactersPanel.tsx` ganhou `canCreateCharacter`/`onCreateCharacter` (mesmo formato do painel Eldarin — callback pro wizard em popup, com fallback de `Link` pra página de criação) e o botão "+ Criar novo personagem", encadeado nos dois lugares que renderizam esse painel (`MesaFoundryDockRail.tsx`/`MesaFoundryFloatingWindows.tsx`, reaproveitando `canCreateCharacter`/`onOpenCharacterWizard` que já existiam no escopo).
+
+**Pedido 2:** "coloca a ordem do bestiário pelo nível de dificuldade e força pra melhorar tudo".
+
+**Correção:** `lib/character/um-anel/adversaries.ts` — array bruto renomeado pra `TOR_ADVERSARIES_RAW` (mantém a ordem de extração do livro por categoria, com os comentários originais intactos); o export público `TOR_ADVERSARIES` agora é essa mesma lista **ordenada** por tier (Bando → Elite → Chefe) e, dentro de cada tier, por Nível de Atributo crescente. Como `TOR_ADVERSARY_BY_ID`, `TorAdversaryPanel.tsx` e a seção "Adversários" do compêndio já consomem `TOR_ADVERSARIES` direto (sem assumir uma ordem específica), o novo ordenamento passou a valer em todo lugar automaticamente, sem editar mais nada.
+
+**Verificação:** `tsc --noEmit` + `npm run build` limpos nas duas correções. Ordem final conferida com um script Node descartável (não commitado) — bate com a expectativa (mob nível 2-4, elite 4-8, boss 5-10). Não testado o clique do botão "Criar novo personagem" dentro de uma mesa real (sem banco neste sandbox).
+
+**Arquivos tocados:** editados — `components/vtt/TorPlayableCharactersPanel.tsx`, `components/vtt/mesa/{MesaFoundryDockRail,MesaFoundryFloatingWindows}.tsx`, `app/mesa/[roomId]/page.tsx`, `lib/character/um-anel/adversaries.ts`.
+
+---

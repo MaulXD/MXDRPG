@@ -170,6 +170,8 @@ export function MesaFoundryDockRail({
                 spawnAxial={spawnAxial}
                 onOpenSheet={onOpenSheet}
                 onPlaced={onApplySnapshot}
+                canCreateCharacter={canCreateCharacter}
+                onCreateCharacter={canCreateCharacter ? onOpenCharacterWizard : undefined}
               />
             ) : (
               <PlayableCharactersPanel
