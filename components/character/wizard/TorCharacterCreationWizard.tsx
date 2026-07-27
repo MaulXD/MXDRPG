@@ -1,9 +1,13 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { WizardProgress } from "@/components/character/wizard/WizardProgress";
 import { WizardHoverTip } from "@/components/character/wizard/WizardHoverTip";
+import {
+  WizardPortraitStep,
+  type WizardPortraitStepHandle,
+} from "@/components/character/wizard/WizardPortraitStep";
 import {
   ARMOUR_BY_ID,
   ARMOURS,
@@ -41,6 +45,7 @@ const STEPS = [
   "Traços",
   "Dádivas",
   "Equipamento",
+  "Retrato",
   "Revisão",
 ] as const;
 
@@ -53,6 +58,7 @@ const STEP_HINTS: Record<(typeof STEPS)[number], string> = {
   Traços: "Escolha 2 Traços Distintivos da lista da Cultura.",
   Dádivas: "Toda ficha começa com 1 Recompensa e 1 Virtude.",
   Equipamento: "Uma arma por Proficiência de Combate e uma armadura inicial.",
+  Retrato: "Envie uma imagem pro retrato e token — ou pule por agora.",
   Revisão: "Confira tudo e crie — você pode editar depois.",
 };
 
@@ -97,6 +103,8 @@ export function TorCharacterCreationWizard({
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
   const [showValidation, setShowValidation] = useState(false);
+  const portraitStepRef = useRef<WizardPortraitStepHandle>(null);
+  const portraitStepIndex = STEPS.indexOf("Retrato");
 
   function patch(p: Partial<TorCharacterWizardDraft>) {
     setDraft((d) => ({ ...d, ...p }));
@@ -163,13 +171,25 @@ export function TorCharacterCreationWizard({
     setStep(i);
   }
 
-  function next() {
+  async function flushPortraitStep(): Promise<boolean> {
+    if (step !== portraitStepIndex) return true;
+    const ok = (await portraitStepRef.current?.flushPending()) ?? true;
+    if (!ok) {
+      setErr(
+        "Não foi possível salvar o retrato. Use uma imagem menor ou clique em Aplicar retrato + token."
+      );
+    }
+    return ok;
+  }
+
+  async function next() {
     const e = stepError(step);
     if (e) {
       setShowValidation(true);
       setErr(e);
       return;
     }
+    if (!(await flushPortraitStep())) return;
     setErr(null);
     setStep((s) => Math.min(STEPS.length - 1, s + 1));
   }
@@ -179,6 +199,7 @@ export function TorCharacterCreationWizard({
   }
 
   async function finish() {
+    if (!(await flushPortraitStep())) return;
     const invalidAt = firstInvalidStep();
     if (invalidAt !== null) {
       setShowValidation(true);
@@ -223,7 +244,7 @@ export function TorCharacterCreationWizard({
   }
 
   function handleNextOrFinish() {
-    if (step < STEPS.length - 1) next();
+    if (step < STEPS.length - 1) void next();
     else void finish();
   }
 
@@ -676,9 +697,23 @@ export function TorCharacterCreationWizard({
               </>
             ) : null}
 
+            {stepLabel === "Retrato" ? (
+              <>
+                <StepHead index={8} title="Retrato" />
+                <WizardPortraitStep
+                  ref={portraitStepRef}
+                  portraitUrl={draft.portraitUrl}
+                  tokenImageUrl={draft.tokenImageUrl}
+                  portraitFocus={draft.portraitFocus}
+                  tokenFocus={draft.tokenFocus}
+                  onChange={(p) => patch(p)}
+                />
+              </>
+            ) : null}
+
             {stepLabel === "Revisão" ? (
               <>
-                <StepHead index={8} title="Revisão" />
+                <StepHead index={9} title="Revisão" />
                 {(() => {
                   const invalid = validateTorWizardDraft(draft);
                   if (invalid) {
@@ -686,6 +721,16 @@ export function TorCharacterCreationWizard({
                   }
                   return (
                     <dl className="char-wizard-review-list">
+                      {draft.portraitUrl ? (
+                        <>
+                          <dt>Retrato</dt>
+                          <dd>
+                            <div className="char-wizard-review-portrait">
+                              <img src={draft.portraitUrl} alt="" />
+                            </div>
+                          </dd>
+                        </>
+                      ) : null}
                       <dt>Nome</dt>
                       <dd>{draft.name}</dd>
                       <dt>Cultura</dt>

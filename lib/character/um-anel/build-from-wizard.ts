@@ -78,7 +78,11 @@ export function buildTorCharacterFromWizard(
     campaignRoomId: null,
     name: draft.name.trim().slice(0, 80),
     biography: draft.biography.trim(),
-    portraitUrl: null,
+    portraitUrl: draft.portraitUrl,
+    tokenImageUrl: draft.tokenImageUrl,
+    portraitFocus: draft.portraitFocus,
+    coverFocus: draft.coverFocus,
+    tokenFocus: draft.tokenFocus,
     system: "um-anel",
 
     culture: culture.id,

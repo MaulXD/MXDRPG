@@ -1,3 +1,4 @@
+import type { PortraitFocus } from "@/lib/media/portrait-focus";
 import type { TorAttributeKey, TorCallingId, TorCombatProficiencyId, TorCultureId, TorSkillId } from "./types";
 
 export type TorCharacterWizardDraft = {
@@ -25,6 +26,11 @@ export type TorCharacterWizardDraft = {
   helm: boolean;
   shieldId: string | null;
   biography: string;
+  portraitUrl: string | null;
+  tokenImageUrl: string | null;
+  portraitFocus: PortraitFocus | null;
+  coverFocus: PortraitFocus | null;
+  tokenFocus: PortraitFocus | null;
 };
 
 export const EMPTY_TOR_WIZARD_DRAFT: TorCharacterWizardDraft = {
@@ -47,6 +53,11 @@ export const EMPTY_TOR_WIZARD_DRAFT: TorCharacterWizardDraft = {
   helm: false,
   shieldId: null,
   biography: "",
+  portraitUrl: null,
+  tokenImageUrl: null,
+  portraitFocus: null,
+  coverFocus: null,
+  tokenFocus: null,
 };
 
 /** Proficiências ativas (rating > 0) — deduplica quando A e B caem na mesma. */

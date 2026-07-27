@@ -2259,3 +2259,18 @@ Aproveitando o esclarecimento, atendido o pedido de melhorar de verdade a UX: at
 **Arquivos tocados:** novo — `lib/vtt/tor-spawn-drag-ui.ts`; editados — `lib/vtt/spawn-drag.ts`, `hooks/vtt/useMonsterSpawnDrop.ts`, `components/vtt/{Battlefield,TorPlayableCharactersPanel,TorAdversaryPanel}.tsx`.
 
 ---
+
+### 2026-07-26 (cont.) — Passo "Retrato" no assistente de criação do Um Anel
+
+**Pedido:** "...adicione a opção de adicionar na ficha e na criação a imagem do personagem" — a ficha já permitia trocar retrato/token (sessão anterior); faltava o mesmo durante a criação (assistente), igual o Eldarin já faz.
+
+**Implementação — reaproveitando o passo de retrato do Eldarin tal qual, sem inventar componente novo:**
+1. `lib/character/um-anel/wizard-types.ts`: `TorCharacterWizardDraft` (e `EMPTY_TOR_WIZARD_DRAFT`) ganharam os 5 campos de retrato (`portraitUrl`, `tokenImageUrl`, `portraitFocus`, `coverFocus`, `tokenFocus`) — mesmos campos que `TorCharacterSheet` já suporta desde a sessão anterior.
+2. `components/character/wizard/TorCharacterCreationWizard.tsx`: novo passo "Retrato" inserido entre "Equipamento" e "Revisão" (9→10 passos), renderizando `WizardPortraitStep` (componente já existente e agnóstico de sistema, usado pelo Eldarin) com o padrão de "flush pendente": `next()`/`finish()` agora são `async` e chamam `flushPortraitStep()` (via `portraitStepRef`/`useImperativeHandle`) antes de avançar, garantindo que uma imagem sendo processada não se perca se o usuário clicar "Próximo"/"Criar" rápido demais — mesmo mecanismo do wizard do Eldarin, copiado, não reinventado. Revisão ganhou uma miniatura do retrato quando presente.
+3. `lib/character/um-anel/build-from-wizard.ts`: `buildTorCharacterFromWizard` para de gravar `portraitUrl: null` fixo e passa a ler os 5 campos direto do `draft`.
+
+**Verificação:** `tsc --noEmit` + `npm run build` limpos. Não testado ao vivo (upload real de imagem dentro do assistente) — criar personagem exige login, e o passo de retrato reaproveita 100% o `WizardPortraitStep`/`PortraitEditorPanel` já validados visualmente em produção pelo Eldarin; risco de integração já coberto pelo `tsc` (props tipadas estritamente) e pelo build.
+
+**Arquivos tocados:** editados — `lib/character/um-anel/{wizard-types,build-from-wizard}.ts`, `components/character/wizard/TorCharacterCreationWizard.tsx`.
+
+---
