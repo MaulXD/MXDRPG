@@ -2242,3 +2242,20 @@ Aproveitando o esclarecimento, atendido o pedido de melhorar de verdade a UX: at
 **Arquivos tocados:** editados — `components/compendium/TorCompendiumPage.tsx`, `lib/character/um-anel/{types,characters}.ts`, `components/character/sheet/{TorCharacterSheetView,tor-sheet.css}`.
 
 ---
+
+### 2026-07-26 (cont.) — Arrastar personagem/adversário do Um Anel pro mapa
+
+**Pedido:** "Quero a possibilidade de arrastar os personagens para a mesa" — hoje só dava pra colocar via botão "Colocar no mapa"/"Invocar" depois de passar o mouse na célula.
+
+**Implementação — mesmo mecanismo de arrastar-e-soltar do Eldarin, dado próprio pro Um Anel:**
+1. `lib/vtt/spawn-drag.ts` ganhou dois pares novos de payload+MIME (`TOR_CHARACTER_SPAWN_DRAG_MIME`/`TOR_ADVERSARY_SPAWN_DRAG_MIME`), espelhando o padrão já usado por monstro/ator/criação-GM do Eldarin; `isBoardSpawnDrag` passou a reconhecer os dois novos tipos.
+2. Novo `lib/vtt/tor-spawn-drag-ui.ts` — mesma função de "ghost" de arrasto do Eldarin (`actor-spawn-drag-ui.ts`), em arquivo próprio pra não misturar import de um sistema com o outro.
+3. `hooks/vtt/useMonsterSpawnDrop.ts` ganhou `allowTorCharacterDrop`/`allowTorAdversaryDrop` — no `performDrop`, os payloads novos são lidos com a mesma prioridade dos existentes e despacham pra `placeRoomTorCharacterOnCell`/`spawnRoomTorAdversary` (endpoints que já existiam, usados até agora só pelo fluxo de clique).
+4. `Battlefield.tsx`: os flags que já existiam (`enabled`/`allowActorDrop`, controlando monstro/ator do Eldarin) ganharam `&& rpgSystemId !== "um-anel"` — sem isso, uma mesa do Um Anel aceitaria (silenciosamente, sem nunca disparar antes) um drop de monstro/ator do Eldarin também; os dois novos flags (`allowTorCharacterDrop`/`allowTorAdversaryDrop`) só ativam quando `rpgSystemId === "um-anel"`.
+5. `TorPlayableCharactersPanel.tsx`/`TorAdversaryPanel.tsx`: cards ganharam `draggable`/`onDragStart`/`onDragEnd`, reaproveitando a mesma classe CSS `vtt-playable-card--draggable` que o Eldarin já usa — nenhum CSS novo.
+
+**Verificação:** `tsc --noEmit` + `npm run build` limpos. Não testado o arrasto de verdade dentro de uma mesa (sem banco neste sandbox) — recomendado testar arrastando um personagem e um adversário pro mapa numa mesa do Um Anel.
+
+**Arquivos tocados:** novo — `lib/vtt/tor-spawn-drag-ui.ts`; editados — `lib/vtt/spawn-drag.ts`, `hooks/vtt/useMonsterSpawnDrop.ts`, `components/vtt/{Battlefield,TorPlayableCharactersPanel,TorAdversaryPanel}.tsx`.
+
+---

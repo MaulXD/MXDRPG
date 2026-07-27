@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { CULTURE_BY_ID, CALLING_BY_ID } from "@/lib/character/um-anel/data";
 import type { TorCharacterSheet } from "@/lib/character/um-anel/types";
 import type { Axial } from "@/lib/vtt/grid-math";
 import type { RoomSnapshot } from "@/lib/room/types";
 import { placeRoomTorCharacterOnCell } from "@/hooks/useRoomSync";
+import { endTorCharacterSpawnDrag, startTorCharacterSpawnDrag } from "@/lib/vtt/tor-spawn-drag-ui";
 
 type Props = {
   adventureId: string;
@@ -30,6 +31,7 @@ export function TorPlayableCharactersPanel({
   const [characters, setCharacters] = useState<TorCharacterSheet[] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const dragGhostRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -91,7 +93,21 @@ export function TorPlayableCharactersPanel({
             const calling = CALLING_BY_ID[c.calling];
             return (
               <li key={c.id}>
-                <button type="button" className="vtt-playable-card" onClick={() => onOpenSheet(c.id)}>
+                <button
+                  type="button"
+                  className={`vtt-playable-card${canPlaceOnMap ? " vtt-playable-card--draggable" : ""}`}
+                  draggable={canPlaceOnMap && !busy}
+                  title={canPlaceOnMap ? "Arraste pro mapa, ou clique pra abrir a ficha" : undefined}
+                  onDragStart={(e) => {
+                    if (!canPlaceOnMap || busy) {
+                      e.preventDefault();
+                      return;
+                    }
+                    startTorCharacterSpawnDrag(e, c.id, c.name, dragGhostRef);
+                  }}
+                  onDragEnd={() => endTorCharacterSpawnDrag(dragGhostRef)}
+                  onClick={() => onOpenSheet(c.id)}
+                >
                   <div className="vtt-playable-card__main">
                     <div className="vtt-playable-card__body">
                       <div className="vtt-playable-card__head">

@@ -1,10 +1,11 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { TOR_ADVERSARIES } from "@/lib/character/um-anel/adversaries";
 import type { Axial } from "@/lib/vtt/grid-math";
 import type { RoomSnapshot } from "@/lib/room/types";
 import { spawnRoomTorAdversary } from "@/hooks/useRoomSync";
+import { endTorAdversarySpawnDrag, startTorAdversarySpawnDrag } from "@/lib/vtt/tor-spawn-drag-ui";
 import "@/components/compendium/compendium.css";
 import "@/components/compendium/tor-compendium.css";
 
@@ -25,6 +26,7 @@ export function TorAdversaryPanel({ roomId, spawnAxial, onPlaced }: Props) {
   const [query, setQuery] = useState("");
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState<string | null>(null);
+  const dragGhostRef = useRef<HTMLElement | null>(null);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -73,7 +75,19 @@ export function TorAdversaryPanel({ roomId, spawnAxial, onPlaced }: Props) {
         <ul className="vtt-playable-list" role="list">
           {filtered.map((a) => (
             <li key={a.id}>
-              <div className="vtt-playable-card">
+              <div
+                className="vtt-playable-card vtt-playable-card--draggable"
+                draggable={!busy}
+                title="Arraste pro mapa, ou use o botão Invocar"
+                onDragStart={(e) => {
+                  if (busy) {
+                    e.preventDefault();
+                    return;
+                  }
+                  startTorAdversarySpawnDrag(e, a.id, a.name, dragGhostRef);
+                }}
+                onDragEnd={() => endTorAdversarySpawnDrag(dragGhostRef)}
+              >
                 <div className="vtt-playable-card__main">
                   <div className="vtt-playable-card__body">
                     <div className="vtt-playable-card__head">

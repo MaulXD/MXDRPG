@@ -178,7 +178,122 @@ export function clearActiveGmCreationSpawnDragPayload(): void {
   activeGmCreationSpawnDragPayload = null;
 }
 
+export const TOR_CHARACTER_SPAWN_DRAG_MIME = "application/x-um-anel-character-spawn";
+const TOR_CHARACTER_PLAIN_PREFIX = "um-anel-character:";
+
+export type TorCharacterSpawnDragPayload = { characterId: string };
+
+let activeTorCharacterSpawnDragPayload: TorCharacterSpawnDragPayload | null = null;
+
+export function setActiveTorCharacterSpawnDragPayload(
+  payload: TorCharacterSpawnDragPayload | null
+): void {
+  activeTorCharacterSpawnDragPayload = payload;
+}
+
+export function writeTorCharacterSpawnDrag(dt: DataTransfer, payload: TorCharacterSpawnDragPayload): void {
+  const json = JSON.stringify(payload);
+  setActiveTorCharacterSpawnDragPayload(payload);
+  dt.setData(TOR_CHARACTER_SPAWN_DRAG_MIME, json);
+  dt.setData("text/plain", `${TOR_CHARACTER_PLAIN_PREFIX}${json}`);
+  dt.effectAllowed = "copy";
+}
+
+export function readTorCharacterSpawnDrag(dt: DataTransfer): TorCharacterSpawnDragPayload | null {
+  const rawMime = dt.getData(TOR_CHARACTER_SPAWN_DRAG_MIME);
+  if (rawMime) {
+    try {
+      const parsed = JSON.parse(rawMime) as TorCharacterSpawnDragPayload;
+      if (parsed?.characterId && typeof parsed.characterId === "string") return parsed;
+    } catch {
+      /* ignore */
+    }
+  }
+  const plain = dt.getData("text/plain");
+  if (plain.startsWith(TOR_CHARACTER_PLAIN_PREFIX)) {
+    try {
+      const parsed = JSON.parse(plain.slice(TOR_CHARACTER_PLAIN_PREFIX.length)) as TorCharacterSpawnDragPayload;
+      if (parsed?.characterId) return parsed;
+    } catch {
+      /* ignore */
+    }
+  }
+  return activeTorCharacterSpawnDragPayload;
+}
+
+export function isTorCharacterSpawnDrag(dt: DataTransfer): boolean {
+  if (activeTorCharacterSpawnDragPayload) return true;
+  const types = Array.from(dt.types);
+  return types.includes(TOR_CHARACTER_SPAWN_DRAG_MIME);
+}
+
+export function clearActiveTorCharacterSpawnDragPayload(): void {
+  activeTorCharacterSpawnDragPayload = null;
+}
+
+export const TOR_ADVERSARY_SPAWN_DRAG_MIME = "application/x-um-anel-adversary-spawn";
+const TOR_ADVERSARY_PLAIN_PREFIX = "um-anel-adversary:";
+
+export type TorAdversarySpawnDragPayload = { adversaryId: string };
+
+let activeTorAdversarySpawnDragPayload: TorAdversarySpawnDragPayload | null = null;
+
+export function setActiveTorAdversarySpawnDragPayload(
+  payload: TorAdversarySpawnDragPayload | null
+): void {
+  activeTorAdversarySpawnDragPayload = payload;
+}
+
+export function writeTorAdversarySpawnDrag(
+  dt: DataTransfer,
+  payload: TorAdversarySpawnDragPayload
+): void {
+  const json = JSON.stringify(payload);
+  setActiveTorAdversarySpawnDragPayload(payload);
+  dt.setData(TOR_ADVERSARY_SPAWN_DRAG_MIME, json);
+  dt.setData("text/plain", `${TOR_ADVERSARY_PLAIN_PREFIX}${json}`);
+  dt.effectAllowed = "copy";
+}
+
+export function readTorAdversarySpawnDrag(dt: DataTransfer): TorAdversarySpawnDragPayload | null {
+  const rawMime = dt.getData(TOR_ADVERSARY_SPAWN_DRAG_MIME);
+  if (rawMime) {
+    try {
+      const parsed = JSON.parse(rawMime) as TorAdversarySpawnDragPayload;
+      if (parsed?.adversaryId && typeof parsed.adversaryId === "string") return parsed;
+    } catch {
+      /* ignore */
+    }
+  }
+  const plain = dt.getData("text/plain");
+  if (plain.startsWith(TOR_ADVERSARY_PLAIN_PREFIX)) {
+    try {
+      const parsed = JSON.parse(plain.slice(TOR_ADVERSARY_PLAIN_PREFIX.length)) as TorAdversarySpawnDragPayload;
+      if (parsed?.adversaryId) return parsed;
+    } catch {
+      /* ignore */
+    }
+  }
+  return activeTorAdversarySpawnDragPayload;
+}
+
+export function isTorAdversarySpawnDrag(dt: DataTransfer): boolean {
+  if (activeTorAdversarySpawnDragPayload) return true;
+  const types = Array.from(dt.types);
+  return types.includes(TOR_ADVERSARY_SPAWN_DRAG_MIME);
+}
+
+export function clearActiveTorAdversarySpawnDragPayload(): void {
+  activeTorAdversarySpawnDragPayload = null;
+}
+
 /** Monstro ou personagem sendo arrastado para o tabuleiro. */
 export function isBoardSpawnDrag(dt: DataTransfer): boolean {
-  return isMonsterSpawnDrag(dt) || isActorSpawnDrag(dt) || isGmCreationSpawnDrag(dt);
+  return (
+    isMonsterSpawnDrag(dt) ||
+    isActorSpawnDrag(dt) ||
+    isGmCreationSpawnDrag(dt) ||
+    isTorCharacterSpawnDrag(dt) ||
+    isTorAdversarySpawnDrag(dt)
+  );
 }

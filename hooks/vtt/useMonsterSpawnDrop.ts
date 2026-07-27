@@ -10,14 +10,24 @@ import {
   clearActiveActorSpawnDragPayload,
   clearActiveGmCreationSpawnDragPayload,
   clearActiveSpawnDragPayload,
+  clearActiveTorAdversarySpawnDragPayload,
+  clearActiveTorCharacterSpawnDragPayload,
   getActiveSpawnDragPayload,
   isBoardSpawnDrag,
   readActorSpawnDrag,
   readGmCreationSpawnDrag,
   readMonsterSpawnDrag,
+  readTorAdversarySpawnDrag,
+  readTorCharacterSpawnDrag,
 } from "@/lib/vtt/spawn-drag";
 import { resolveMonsterSpawnPlacement } from "@/lib/vtt/spawn-placement";
-import { placeRoomActorOnCell, spawnGmCreation, spawnRoomMonster } from "@/hooks/useRoomSync";
+import {
+  placeRoomActorOnCell,
+  placeRoomTorCharacterOnCell,
+  spawnGmCreation,
+  spawnRoomMonster,
+  spawnRoomTorAdversary,
+} from "@/hooks/useRoomSync";
 import type { BattleScene } from "@/lib/vtt/types";
 
 type Params = {
@@ -29,6 +39,10 @@ type Params = {
   enabled: boolean;
   /** Permite soltar personagens da aventura no mapa (jogadores + mestre) */
   allowActorDrop?: boolean;
+  /** Permite soltar aventureiros do Um Anel no mapa (jogadores + mestre) */
+  allowTorCharacterDrop?: boolean;
+  /** Permite soltar adversários do bestiário do Um Anel (só mestre) */
+  allowTorAdversaryDrop?: boolean;
   onSpawned: (snapshot: RoomSnapshot) => void;
   setHoverAxial: (a: Axial | null) => void;
   onHoverAxialChange?: (a: Axial | null) => void;
@@ -43,6 +57,8 @@ export function useMonsterSpawnDrop({
   roomId,
   enabled,
   allowActorDrop = true,
+  allowTorCharacterDrop = false,
+  allowTorAdversaryDrop = false,
   onSpawned,
   setHoverAxial,
   onHoverAxialChange,
@@ -86,7 +102,7 @@ export function useMonsterSpawnDrop({
     setSpawnDragActive(active);
   }, []);
 
-  const dropZoneActive = enabled || allowActorDrop;
+  const dropZoneActive = enabled || allowActorDrop || allowTorCharacterDrop || allowTorAdversaryDrop;
 
   const pointOnCanvas = useCallback(
     (clientX: number, clientY: number) => {
@@ -114,18 +130,29 @@ export function useMonsterSpawnDrop({
         allowActorDrop && dataTransfer && !gmPayload && !monsterPayload
           ? readActorSpawnDrag(dataTransfer)
           : null;
+      const torCharacterPayload =
+        allowTorCharacterDrop && dataTransfer && !gmPayload && !monsterPayload && !actorPayload
+          ? readTorCharacterSpawnDrag(dataTransfer)
+          : null;
+      const torAdversaryPayload =
+        allowTorAdversaryDrop && dataTransfer && !gmPayload && !monsterPayload && !actorPayload && !torCharacterPayload
+          ? readTorAdversarySpawnDrag(dataTransfer)
+          : null;
 
       clearActiveSpawnDragPayload();
       clearActiveActorSpawnDragPayload();
       clearActiveGmCreationSpawnDragPayload();
+      clearActiveTorCharacterSpawnDragPayload();
+      clearActiveTorAdversarySpawnDragPayload();
 
       const axial = axialFromEvent(clientX, clientY);
       reportHover(null);
       dragDepthRef.current = 0;
       setSpawnActive(false);
 
-      if ((!monsterPayload && !actorPayload && !gmPayload) || !axial) {
-        if (!monsterPayload && !actorPayload && !gmPayload) {
+      const anyPayload = monsterPayload || actorPayload || gmPayload || torCharacterPayload || torAdversaryPayload;
+      if (!anyPayload || !axial) {
+        if (!anyPayload) {
           onError?.("Solte no mapa (arraste da ficha ou do painel Invocar).");
         } else {
           onError?.("Célula inválida — solte sobre o tabuleiro.");
@@ -156,11 +183,16 @@ export function useMonsterSpawnDrop({
             }
           );
           onSpawned(snapshot);
+        } else if (gmPayload) {
+          onSpawned(await spawnGmCreation(roomId, gmPayload.creationId, axial.q, axial.r));
+        } else if (torCharacterPayload) {
+          onSpawned(
+            await placeRoomTorCharacterOnCell(roomId, torCharacterPayload.characterId, axial.q, axial.r)
+          );
+        } else if (torAdversaryPayload) {
+          onSpawned(await spawnRoomTorAdversary(roomId, torAdversaryPayload.adversaryId, axial.q, axial.r));
         } else {
-          const snapshot = gmPayload
-            ? await spawnGmCreation(roomId, gmPayload.creationId, axial.q, axial.r)
-            : await placeRoomActorOnCell(roomId, actorPayload!.actorId, axial.q, axial.r);
-          onSpawned(snapshot);
+          onSpawned(await placeRoomActorOnCell(roomId, actorPayload!.actorId, axial.q, axial.r));
         }
       } catch (err) {
         onError?.(err instanceof Error ? err.message : "Falha ao colocar no mapa");
@@ -172,6 +204,8 @@ export function useMonsterSpawnDrop({
       dropZoneActive,
       enabled,
       allowActorDrop,
+      allowTorCharacterDrop,
+      allowTorAdversaryDrop,
       axialFromEvent,
       reportHover,
       setSpawnActive,
@@ -262,6 +296,8 @@ export function useMonsterSpawnDrop({
       clearActiveSpawnDragPayload();
       clearActiveActorSpawnDragPayload();
       clearActiveGmCreationSpawnDragPayload();
+      clearActiveTorCharacterSpawnDragPayload();
+      clearActiveTorAdversarySpawnDragPayload();
     }
 
     window.addEventListener("dragover", onWindowDragOver);
