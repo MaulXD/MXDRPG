@@ -57,7 +57,8 @@ export async function GET(req: Request, { params }: Params) {
     return {
       userId,
       nickname: user?.nickname ?? null,
-      name: user?.name ?? userId,
+      // Nome real nunca trafega pra outros membros — só apelido/rótulo genérico.
+      displayName: user?.nickname?.trim() || user?.name?.trim() || "Jogador",
       isOwner: userId === adventure.ownerId || rawId === adventure.ownerId,
     };
   });

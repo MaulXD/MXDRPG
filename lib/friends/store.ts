@@ -54,7 +54,7 @@ async function friendSummaryFromUserId(
   return {
     id: user.id,
     nickname: user.nickname ?? null,
-    name: user.name,
+    displayName: displayName(user),
     avatarUrl: resolveUserAvatarUrl(user),
     avatarFocus: user.avatarFocus ?? null,
     addedAt,
@@ -281,7 +281,7 @@ export async function listFriends(userId: string): Promise<FriendSummary[]> {
     out.push({
       id: user.id,
       nickname: user.nickname ?? null,
-      name: user.name,
+      displayName: displayName(user),
       avatarUrl: resolveUserAvatarUrl(user),
       avatarFocus: user.avatarFocus ?? null,
       addedAt: link.addedAt,
@@ -451,7 +451,8 @@ export async function getUserPublicProfile(
     profile: {
       id: target.id,
       nickname: target.nickname ?? null,
-      name: target.name,
+      // Nome real fica de fora aqui de propósito — só o dono do perfil (branch "self"
+      // acima) recebe seu próprio nome. Pra qualquer outro relationship, só apelido/displayName.
       displayName: displayName(target),
       avatarUrl: resolveUserAvatarUrl(target),
       avatarFocus: target.avatarFocus ?? null,

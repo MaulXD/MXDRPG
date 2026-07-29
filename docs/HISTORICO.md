@@ -2304,3 +2304,26 @@ Aproveitando o esclarecimento, atendido o pedido de melhorar de verdade a UX: at
 **Arquivos tocados:** editados — `lib/room/adventure-room.ts`, `lib/room/internal/registry.ts`.
 
 ---
+
+### 2026-07-29 (cont.) — Auditoria: nome real exposto a outros usuários (perfil, amigos, membros da aventura)
+
+**Pedido:** usuário pediu explicitamente, após o fix do chat, garantia de que nada de conta dá pra acessar via console/rede — "não quero que possa acessar nada das contas via console".
+
+**Achados (auditoria de toda resposta JSON que inclui dado de outro usuário):**
+1. `GET /api/users/[userId]` (`getUserPublicProfile`, `lib/friends/store.ts`) devolvia `name` (nome real) pra **qualquer** usuário logado que soubesse/adivinhasse o ID de outro — inclusive `relationship: "none"` (estranhos, não só amigos). `PlayerProfileCard.tsx` renderizava esse nome como subtítulo visível sempre que a pessoa tinha apelido, sem checar se era o próprio dono do perfil — ou seja, não era só um vazamento de rede, aparecia na tela.
+2. `listFriends`/`addFriendByNickname`/`addFriendByUserId` (mesma lib) — lista de amigos também devolvia `name` cru de cada amigo.
+3. `GET /api/adventures/[adventureId]/members` — qualquer membro da aventura (não só o mestre) conseguia ver o nome real de todo mundo; usado pelo diálogo de transferir/apagar personagem (`CharacterManageDialog.tsx`).
+
+**Correção — mesmo padrão já usado em `presence-enrich.ts`/`list-enrich.ts` (nickname sempre, nome real nunca como campo próprio pra terceiros):**
+1. `lib/friends/types.ts`: `FriendSummary.name` → `displayName` (calculado, nickname-first); `PublicUserProfile.name` vira opcional e só vem preenchido no branch `relationship: "self"`.
+2. `lib/friends/store.ts`: `friendSummaryFromUserId`, `listFriends` e o branch não-self de `getUserPublicProfile` param de mandar `name` — mandam só `displayName`/`nickname`. Branch `self` continua com `name` (é o próprio usuário vendo o próprio dado).
+3. `components/friends/{friend-label,PlayerProfileCard,SendMesaInvitePicker}.tsx`: usam `displayName` em vez de `name`; o subtítulo de nome real no card de perfil agora só aparece quando `isSelf`.
+4. `app/api/adventures/[adventureId]/members/route.ts` + `components/character/CharacterManageDialog.tsx`: endpoint devolve `displayName` (nickname-first) em vez de `nickname`+`name` separados.
+
+**Fora do escopo da correção (avaliado e considerado aceitável):** `lib/admin/mesas.ts` (`AdminMemberSummary.name`) continua expondo nome real — mas só pra `role: "admin"`, gate confirmado em `app/api/admin/adventures/route.ts::requireRole(["admin"])`; é a mesma exceção que qualquer painel de suporte/moderação tem. `presence-enrich.ts`/`list-enrich.ts`/`events`/`presence` route já seguiam o padrão certo (nickname-first) desde antes, só usam nome real como último fallback interno pra montar uma única string, nunca como campo separado.
+
+**Verificação:** `tsc --noEmit` + `npm run build` limpos — a mudança de tipo (`name` obrigatório→opcional/removido) não quebrou nenhum consumidor por acidente porque o compilador teria acusado. Grep final em `app/api/**` confirmou que todo `.name` restante já segue o padrão `nickname || name || "Jogador"` interno (sem expor campo próprio).
+
+**Arquivos tocados:** editados — `lib/friends/{types,store}.ts`, `components/friends/{friend-label,PlayerProfileCard,SendMesaInvitePicker}.tsx`, `app/api/adventures/[adventureId]/members/route.ts`, `components/character/CharacterManageDialog.tsx`.
+
+---

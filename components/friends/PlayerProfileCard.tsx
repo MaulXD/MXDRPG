@@ -127,7 +127,7 @@ export function PlayerProfileCard({
         />
         <div className="player-profile-card__head">
           <h3 className="player-profile-card__name">{label}</h3>
-          {profile.nickname && profile.name ? (
+          {isSelf && profile.nickname && profile.name ? (
             <p className="player-profile-card__sub">{profile.name}</p>
           ) : null}
           <span className="player-profile-card__badge">{relationshipLabel(profile)}</span>

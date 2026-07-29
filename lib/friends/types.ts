@@ -3,7 +3,8 @@ import type { PortraitFocus } from "@/lib/media/portrait-focus";
 export type FriendSummary = {
   id: string;
   nickname: string | null;
-  name: string;
+  /** Nome real nunca trafega pra outros usuários — só apelido/rótulo genérico. */
+  displayName: string;
   avatarUrl: string | null;
   avatarFocus?: PortraitFocus | null;
   addedAt: number;
@@ -26,7 +27,8 @@ export type FriendRequestSummary = {
 export type PublicUserProfile = {
   id: string;
   nickname: string | null;
-  name: string;
+  /** Nome real só vem preenchido quando relationship é "self" — nunca pra outro usuário. */
+  name?: string;
   displayName: string;
   avatarUrl: string | null;
   avatarFocus?: PortraitFocus | null;

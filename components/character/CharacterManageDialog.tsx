@@ -5,7 +5,7 @@ import { useCallback, useEffect, useState } from "react";
 type MemberOption = {
   userId: string;
   nickname: string | null;
-  name: string;
+  displayName: string;
   isOwner: boolean;
 };
 
@@ -137,7 +137,7 @@ export function CharacterManageDialog({
               >
                 {members.map((m) => (
                   <option key={m.userId} value={m.userId}>
-                    {m.nickname ? `@${m.nickname}` : m.name}
+                    {m.nickname ? `@${m.nickname}` : m.displayName}
                     {m.isOwner ? " (mestre)" : ""}
                   </option>
                 ))}

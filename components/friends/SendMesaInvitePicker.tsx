@@ -78,7 +78,7 @@ export function SendMesaInvitePicker({ adventureId }: Props) {
             <option value="">Amigo da lista…</option>
             {friends.map((f) => (
               <option key={f.id} value={f.id}>
-                {f.nickname ? `@${f.nickname}` : f.name}
+                {f.nickname ? `@${f.nickname}` : f.displayName}
               </option>
             ))}
           </select>
