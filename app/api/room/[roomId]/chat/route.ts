@@ -37,7 +37,7 @@ export async function POST(req: Request, { params }: Params) {
 
   const author = {
     authorId: session.user.id,
-    authorName: session.user.name,
+    authorName: session.user.nickname?.trim() || session.user.name,
     authorRole: session.user.role as ChatMessage["authorRole"],
   };
   const body = (await req.json()) as Body;

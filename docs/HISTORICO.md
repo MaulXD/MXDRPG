@@ -2274,3 +2274,17 @@ Aproveitando o esclarecimento, atendido o pedido de melhorar de verdade a UX: at
 **Arquivos tocados:** editados — `lib/character/um-anel/{wizard-types,build-from-wizard}.ts`, `components/character/wizard/TorCharacterCreationWizard.tsx`.
 
 ---
+
+### 2026-07-29 — Vazamento de nome real no chat e nos logs de combate
+
+**Pedido:** usuário reportou (com print mostrando "Raul Luz" no chat da mesa) que o chat mostra o nome real em vez do apelido — "isso é dado pessoal perigoso".
+
+**Causa raiz:** `authorName` das mensagens de chat e das entradas de log de combate (ataque, área, habilidade, consumo de item) usava `session.user.name` direto — o nome real vindo do provedor OAuth (Google/Discord) — em vez do apelido público que o usuário escolhe no cadastro (`session.user.nickname`). O padrão correto já existia e era usado em outros lugares do próprio código (`MesaWorkspace.tsx`, `presence-enrich.ts`, `events/route.ts`: `nickname?.trim() || name`) — só não tinha sido aplicado nesses 9 pontos.
+
+**Correção:** `authorName: session.user.nickname?.trim() || session.user.name` nos 9 call sites — `app/api/room/[roomId]/chat/route.ts` e os 4 pares (2 cada) em `combat/{attack,area,ability,consume}/route.ts`. Mensagens já enviadas antes da correção continuam com o nome real gravado (não há reescrita retroativa de histórico); a partir do deploy, toda mensagem nova usa o apelido.
+
+**Verificação:** `tsc --noEmit` + `npm run build` limpos. Confirmado por grep que não sobrou nenhum outro `authorName: session.user.name` no projeto.
+
+**Arquivos tocados:** editados — `app/api/room/[roomId]/chat/route.ts`, `app/api/room/[roomId]/combat/{attack,area,ability,consume}/route.ts`.
+
+---
