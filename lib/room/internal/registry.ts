@@ -20,6 +20,9 @@ import { scheduleSave } from "./periodic-save";
 import { syncLinkedTokens } from "../sync";
 import type { RoomSnapshot, RoomState } from "../types";
 
+/** Deve bater com DISPLAY_GRID_RADIUS_CAP em lib/vtt/grid-cells.ts (ver comentário abaixo). */
+const MIN_SAFE_GRID_RADIUS = 24;
+
 declare global {
   // eslint-disable-next-line no-var
   var __eldarinRooms: Map<string, RoomState> | undefined;
@@ -193,6 +196,13 @@ export async function getRoom(roomId: string, opts?: GetRoomOpts): Promise<RoomS
       room.scene = { ...room.scene, tokens: [] };
     }
     room.scene = normalizeSceneTokens(room.scene);
+    // Mesas antigas herdam um gridRadius menor que DISPLAY_GRID_RADIUS_CAP
+    // (lib/vtt/grid-cells.ts) — o grid desenhado sempre preenche o viewport até esse
+    // raio, então um raio real menor cria uma "zona morta" invisível onde soltar
+    // token falha com "Célula bloqueada, ocupada ou sem espaço". Repara no load.
+    if (room.scene.gridRadius < MIN_SAFE_GRID_RADIUS) {
+      room.scene = { ...room.scene, gridRadius: MIN_SAFE_GRID_RADIUS };
+    }
     room.combat = normalizeCombatTrack(room.combat, room.scene.tokens);
   }
   if (room && repairStaleCombatPa(room)) {

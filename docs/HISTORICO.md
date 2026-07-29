@@ -2288,3 +2288,19 @@ Aproveitando o esclarecimento, atendido o pedido de melhorar de verdade a UX: at
 **Arquivos tocados:** editados — `app/api/room/[roomId]/chat/route.ts`, `app/api/room/[roomId]/combat/{attack,area,ability,consume}/route.ts`.
 
 ---
+
+### 2026-07-29 (cont.) — Drag-and-drop bloqueado com "Célula bloqueada, ocupada ou sem espaço"
+
+**Pedido:** usuário reportou (print do toast de erro) que arrastar um adversário e um personagem pro mapa falha sempre com esse erro.
+
+**Investigação:** reproduzido ao vivo (conta de teste + mesa "O Um Anel" nova, `ELDARIN_DISABLE_DB=1`, Chrome real via Puppeteer). Chamar `spawn-tor-adversary`/`place-tor-character` direto via API com `q:0,r:0` funcionava — descartando bug no motor de posicionamento (`resolveSpawnAnchor`) em si. Screenshot da mesa mostrou o grid quadriculado preenchendo o canvas inteiro (686×828px), sem nenhuma borda visível — mas o grid **desenhado** e o grid **válido pra colocar token** são raios diferentes por design: `lib/vtt/grid-cells.ts::displayGridRadius` desenha o quadriculado expandido até preencher o viewport (raio até `DISPLAY_GRID_RADIUS_CAP = 24`, "evita borda do grid andando" no zoom/pan), enquanto a validação de posicionamento (`cellInGridBounds`) usa o `scene.gridRadius` real da mesa — que uma mesa nova cria com **8** (`DEFAULT_SCENE_TEMPLATE` em `lib/room/adventure-room.ts`). Resultado: qualquer célula visualmente normal fora do quadrado central 17×17 (raio 8) parece válida mas sempre falha — uma "zona morta" invisível que cobre a maior parte do canvas em qualquer tela normal. Confirmado o diagnóstico repetindo o spawn em `q:15,r:15` (fora do raio 8, dentro do raio 24) — falhava antes da correção.
+
+**Correção:**
+1. `lib/room/adventure-room.ts`: `DEFAULT_SCENE_TEMPLATE.gridRadius` 8→24 (mesas novas já nascem com raio real ≥ raio desenhado).
+2. `lib/room/internal/registry.ts::getRoom`: mesas já existentes (raio < 24 persistido) são reparadas na leitura (`MIN_SAFE_GRID_RADIUS = 24`) — sem precisar recriar a mesa nem rodar migração; o valor corrigido persiste no próximo `persistRoom` natural (ex: o próprio spawn que disparou a leitura).
+
+**Verificação:** `tsc --noEmit` + `npm run build` limpos. Reproduzido e confirmado ao vivo: spawn em `q:15,r:15` numa mesa já existente (criada antes da correção, portanto com `gridRadius:8` salvo) passou a funcionar e a resposta já vem com `scene.gridRadius:24`, sem precisar recriar a mesa.
+
+**Arquivos tocados:** editados — `lib/room/adventure-room.ts`, `lib/room/internal/registry.ts`.
+
+---
